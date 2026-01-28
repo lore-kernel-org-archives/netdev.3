@@ -1,704 +1,260 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11010014.outbound.protection.outlook.com [52.101.84.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9D1346E60
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 09:29:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769592577; cv=none; b=RLDq7ugRUYFOuDZjX0c3+aSgD8hkt837RTADec8j24sUiH9te4cWMmU2/JNMhS4CvL3yPyJFZmLAeHdsShQM3cxiQ3LNyjqYoEQGLhM7Xa9K15F5ozSmuaixVtO0tuKC9ZTt0v9ICXnc6aWVGWHp6po4WgJI1+URgD/ZhFC5fls=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769592577; c=relaxed/simple;
-	bh=M6qYArSwg/zM32lWCEWmVbctmOKve6707XcOz91s0J4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QeSyUvz30n4Rn6WPTuAa/4BAew5rI4YNHbwbM0ukFMdT4DayGyezARCDP8ff8jsUkJ0ZvEAaOEbDEi7Spr43QhGjPvGeTeoXxodYiWf1YUQuK/LmorVhkTYLSOfOdnLyk+V639juOnGewcdJrqr98Wn6h22cfZyJ07QNdNPWvdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vl1rN-0007xW-Mu; Wed, 28 Jan 2026 10:29:13 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vl1rN-002tQF-1K;
-	Wed, 28 Jan 2026 10:29:12 +0100
-Received: from hardanger.blackshift.org (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 4A8B94DA02D;
-	Wed, 28 Jan 2026 09:29:12 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Wed, 28 Jan 2026 10:28:54 +0100
-Subject: [PATCH can-next v2 2/6] can: add CAN skb extension infrastructure
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E319534A773;
+	Wed, 28 Jan 2026 09:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769592991; cv=fail; b=pAjKe+4AjIlh3OgD5VEXicrSCXeKvlMVd3QfX0ZvnSL8gF6Ck91vHtbSW9bZf6qzm/mgdVdEpkY8PKaVf7GQpscxQUk0vzAXI6eRmkKyDmMA0NFz0lnAPrb4nP4lg2BQQrHtwAWkxZFJN1+xcUwUDLAoxS7UdpGzKGaytInIAvA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769592991; c=relaxed/simple;
+	bh=b/E0NHqp0x31RUIfwvpIuDlVD1poSe5p4Pk4ywFrmNE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=iV0ikt6GEk3zKz7kizY4sZ2a0G1j9DrP9oGhuK/oS4VWzoNqpD2xZbqfUVoS7PtYMKbSF0zJA4KlpRZ0kgqkF8HJhXGcxx/ISnbvm4OzyW3HY9Sl322cgO+RxavAOTxSYN+NmA3CJx3OvF7xVdvTKIPeIHkK2XackUjKojNlsGw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=djsLdXw+; arc=fail smtp.client-ip=52.101.84.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="djsLdXw+"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZmNklQuZGHgfApbM5lY80bWHQaKYUw3dqG9SCPM+u6mKcrO4RgK42NsqiTU0bJ2cR3CaCVmMpS+v/3StGT+I6ewW8D5xoIcEyh/qpzTZnDXfcS3Arro2tDd3kzpqYn/UXgwBGS/ejqyAlvtYxQwwKVl3jYfpmS0nLIPziaF8HxjLtBP9WrNuf6s6wizfsChds8ZK9CnVKB1ZncsQZ5IqoLbC+jGggb6sb3l44zqMPYBy/6HoQdYcJW3m3RFyyT59IWKPopfr2LQMz6AaJrleXBMTkE10QoJn3sot3A0aTAEJXuxdzuN3vWTmHGqQxdd0OcHK6xZQiUZep2xGKb8zuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pQFzVruX/vMkfUBOZlVeWqe+O1hXVPkoJjTwWR/sKT0=;
+ b=e5fGz1ZJjHX80moCiELnublnrnqaMHVFVeIzQlVm9/3rkVMmcoTvclsYHDfS6Unu50ZvWcXAvKYaoxGsnD4MvrZBb1J3HrI+11SBkeXd9OSldPGW9JCeiNve0M+lVcqDg36z/3R87o7K23YSYSgd1/yi9bfNVWsF6fFlfgFmsdnTOmAwTHyqoP3xtbpTv+VIV2Y/g7xV0t3qEvG6jLvKRGyU+u5Qv/wFXMO0yQ6MkwXxbxsYJvp5U4a3zxG5lkWqZ6tB1GiXVbBSNSdnDoQLKSqdon3c0LSnkVwhn5jSHe5Z3I3SE1Hqh2joJQfM47eUo5tMW2KzkvmcL5c7TYKSjw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pQFzVruX/vMkfUBOZlVeWqe+O1hXVPkoJjTwWR/sKT0=;
+ b=djsLdXw+ylK64HX2IoBOSWPz88OZi+sZFNcG0Onz8U+ab+O1/3wiBMD096Dtxhtt6yhETyhkKmczRtPKTENZ64nAmIdevtZHNzKxxqDrQP6OygkCHnGiIcECnhJ7Q7YA7xATzgVvhpK3KKOMHNozxUNFXSOBO7/WmYC7YdRayfLIVPJCAsqrG8f81IP+DUALpEDPbxK1qARoPXpvmtX2QwF5c+pzxy8qcRRtBdpPmm5uiGXUR5jRoP12Kx9eqdbPZzi9D7HAhLK75GGVFdjW/P0PNvHpyhfhvWdX8Uhk7s70IzSN2cmLtnEhs4DAJbRIbtc1si61ULOLlRrohfJu1w==
+Received: from AM9PR04MB8505.eurprd04.prod.outlook.com (2603:10a6:20b:40a::14)
+ by AS5PR04MB11394.eurprd04.prod.outlook.com (2603:10a6:20b:6c4::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9542.15; Wed, 28 Jan
+ 2026 09:36:24 +0000
+Received: from AM9PR04MB8505.eurprd04.prod.outlook.com
+ ([fe80::dc5a:b0aa:4a1b:c55e]) by AM9PR04MB8505.eurprd04.prod.outlook.com
+ ([fe80::dc5a:b0aa:4a1b:c55e%6]) with mapi id 15.20.9542.010; Wed, 28 Jan 2026
+ 09:36:24 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>, "andrew@lunn.ch"
+	<andrew@lunn.ch>, "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+	"linux@armlinux.org.uk" <linux@armlinux.org.uk>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"florian.fainelli@broadcom.com" <florian.fainelli@broadcom.com>
+CC: "imx@lists.linux.dev" <imx@lists.linux.dev>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH net] net: phy: micrel: fix clk warning when removing the
+ driver
+Thread-Topic: [PATCH net] net: phy: micrel: fix clk warning when removing the
+ driver
+Thread-Index: AQHcjpwDS84Xw0yFx0WqOjcxpgF66LVmFjyAgAE4ozA=
+Date: Wed, 28 Jan 2026 09:36:24 +0000
+Message-ID:
+ <AM9PR04MB8505744A93921B488AD9505C8891A@AM9PR04MB8505.eurprd04.prod.outlook.com>
+References: <20260126081544.983517-1-wei.fang@nxp.com>
+ <13f1599a-afd7-4350-a395-83c57ab91f18@bootlin.com>
+In-Reply-To: <13f1599a-afd7-4350-a395-83c57ab91f18@bootlin.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM9PR04MB8505:EE_|AS5PR04MB11394:EE_
+x-ms-office365-filtering-correlation-id: db3a7af7-60e2-4494-bf87-08de5e50b437
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|19092799006|7416014|376014|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?hoda4V0fBEwpMvdsfszGh/qZaapWSg4a3QJadmn0cF76hYfVMnqVVcNd0ufs?=
+ =?us-ascii?Q?RNAUyDUjpbwJKcv4kfVGjQiHU0Rp9N3+HFSEpmbk1U2pZFFUr51GVCaM2BGt?=
+ =?us-ascii?Q?GkV8J6MnFaKBxjQiMGQ0naDHZqq9fRtjECbDrLsHlWcgFWK0x3ze0/OtzxK/?=
+ =?us-ascii?Q?XMidei7kPjWagHVNTSeTTLalCn7+Wchs+Xv4LrDkX5xf3pdEEX53ctWT8VDd?=
+ =?us-ascii?Q?4WCA+TDQKlqPRJ+ajiVKoZN4OGlhn41e2PqARZE6ZQrLbsPVAIdSDnkaH64V?=
+ =?us-ascii?Q?YRGQhAfma9JnzBJf56vFOu4uPXBhYZQXMn24rma1+eOMImNSEsO1DNsaYfUA?=
+ =?us-ascii?Q?5TSSw5VLDQgOCVEv6rszVB2PzYA0Y9+qUWVgEEGRXlnDXqZlF0AI1q6wygVX?=
+ =?us-ascii?Q?xzkmB8tMlVzkH3L789xck3epPDgcXyYtk+/IFLux/1sm9/mkWHg+EcCjEHEk?=
+ =?us-ascii?Q?19e1qPuYq4umSv/fmMpbJIJfJzqKMiaacVE07n64OYyx8KudBj6mL5R/wCiM?=
+ =?us-ascii?Q?Y8Yh8PweEhVZQBzGX2xmaqvi7oLfd6Y8Yiss6lU3u9arApDAPM/syrJvamOw?=
+ =?us-ascii?Q?Jo7esw66f55FHsEuiR36i+uFwwXwVzewnPSbXYkQmfEzq6ylA5ao5dR4+y1+?=
+ =?us-ascii?Q?rWCLpywlzTJZD+cIe8zfRFVYfr02NjVlpaQPbiOzsr/F05abrp+sqv10Z03X?=
+ =?us-ascii?Q?ZXSwYivPAUbA29S2hWMaQVZLW/7/+f4Tn6a5MptSwyf07ZrpDN8JZJn+asUh?=
+ =?us-ascii?Q?37Ifpqu3n7tqebk0wKa3ioGE9BOi16eIk097LMq3v2v7sIBGCfJGLvAtDIAn?=
+ =?us-ascii?Q?TLTWF5d18SOneo1FBzdmE6TQ+JeIvd0T6hrg0BLoCHT98iMeQBC/QYXQYH76?=
+ =?us-ascii?Q?WLlaQ3PmJlijHAX6p12TsYtOCFV2S4nFST+dcBr3iifWVjDm7KvZqfbReFq4?=
+ =?us-ascii?Q?D87MEObQfy275iGE2rWQNimO5n/m8Nm/niPqx5slrvGu2dEgRC5PvdVyl89D?=
+ =?us-ascii?Q?0GH+tlAvcd8YgTWtlS1qURdcpB686NeiGhPr935nYhfD+sBTtz+oIMVFXeDH?=
+ =?us-ascii?Q?iFteJ7Q6wxb9Mi3knIh/u/s0VdCPYb/aai2n3KnCzfR1NBw3nQunp4UE55Rv?=
+ =?us-ascii?Q?/xI8RycUlwyU3oxKncjGIlkD2rLM5U6qELp9f+Pd+/n0SOhUAKsKK5Ob1oRF?=
+ =?us-ascii?Q?LkJoGieH7h6TBhj5dAHmVKC+uRany6xWq9ryAJmPA5F9BkLIgC5u5YhpNvGM?=
+ =?us-ascii?Q?GHa4Xx31kUq6Ewm8zuHpIl1o3+a5BZYOjEwt5puu0ngQsCBHM3ssgTb4dvki?=
+ =?us-ascii?Q?8cDHKFgzsEJMBuwSos5Ew7EjK5gtkM6AGLSbVoYMttL0hyalMSiSNzD0jnLT?=
+ =?us-ascii?Q?uDDpTdVzhsMzIP+akfOLbsTJSX5RXwhUJzXnd9OSRgaXqMMjDr3RehDbsWQB?=
+ =?us-ascii?Q?vO4A2xz9zjVJ147t6M4fKKYeYWqIpv9SP39Glz9ZcwzzbIT31UnaeLyl+0bA?=
+ =?us-ascii?Q?iUbDr9vuiFy0jNwdZ+3D01SOV4Ga9hnoItNRNo72rztYe25clrA5hnrrCCaC?=
+ =?us-ascii?Q?SM74lE5oQlPkM0FImobtjFJWDerhMsDNixhx17jgoXqbjD39jRFXxDcqcmzC?=
+ =?us-ascii?Q?eYnTdYXuGX7ggqqsszIeGpE=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR04MB8505.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?CqO+GOOA52JeRpTB3tShDhNJbD/S7gUqC3GrY4NIhEDSwUINzSbMogN7rMwd?=
+ =?us-ascii?Q?VmFXP+y1PQBlebbXDIZYFQPeVNpNvKqBLX49fNM3FvpQ1hqZvMEmWFPrkCEl?=
+ =?us-ascii?Q?FrKcFwZ72a70WKz4+d6AZ5SGbDubTCk9fpD13BITbKqVOib7J3frRQmpjVBt?=
+ =?us-ascii?Q?1U4fFj05Dl9p6tai8rYB+23fDxiagpV2qeZ+BasUn8O33YHY2Xorv6h7XkuE?=
+ =?us-ascii?Q?a97p4FrijfMmP9xbdlcqjNhXIRL/qdGqLamu82t9TgE7BZoIjEml6bckRxj1?=
+ =?us-ascii?Q?LpIwUWMlMe2KyNX5Yoxl3Oi2SC0sAYq3PsjBqFjn3uuNLshMryvh4wnRowB0?=
+ =?us-ascii?Q?UkohB8qObTrvn1K+HuhKBaEjwg+3OEqUkCp1U/UOb3uQ268W5QCzfKZ+8uw2?=
+ =?us-ascii?Q?/j1Kxc+gWX7ApvXoVJYoWRjm8OJrs44SD3g/Tc6+5JlgUFjAj89Z8ANw9/HY?=
+ =?us-ascii?Q?KBMZZWDuo1g8QiLg8lNdjVzbEmE2FHP7THyNA8IE1g+NR3pH6E9Fe2QaNSVD?=
+ =?us-ascii?Q?6zM4Ht+X0NEr2La4SoIuPmuWGRcmVrRqfJvnBYFTylD5eM4altVuNRPXlPMi?=
+ =?us-ascii?Q?JAcB6Z1qRRTdXmD6OJal0MuwiMcvsdb+ppwdmxH85VL9JYTIxn8F0uDc+5+W?=
+ =?us-ascii?Q?hmWSGlD197m0Oq5OQxfXBI0e2UBwUy+2NKG91Ep7kIzzG4RvwKCaEZpFNzVG?=
+ =?us-ascii?Q?Chi5GN0vl4xaHxMwkN539bI+O1EsZoVMvhpaHKUK1d24sSLsLk8i5fJgwz+P?=
+ =?us-ascii?Q?PA+R383MNs2Ood2cdT7GasjzgmuLXXlj0XCDOyVqPubY3uJm3A5Jpja86zmK?=
+ =?us-ascii?Q?9aJcxPYaLH9J2IzF2avCbXrJFYPwIsDyIXYBN5eSpX2SWQ7RfeMOqn61LTqD?=
+ =?us-ascii?Q?GI+L0EYtDJJxskuh/7HdwPGhoczieCBZlRj5//hl9IgoFj9B9KD4eI+7ucc2?=
+ =?us-ascii?Q?BcCriBiWXbSOnPlNoNxxsOaZ9y3fgDXNuk0gIlwg0W91r/LC+fu353c85cwH?=
+ =?us-ascii?Q?DvD+U7pIYAM0ACQKgzQXpd07rLGiJJu/qkfbgAJ/BJJFAWO/5brnzpKRpCwh?=
+ =?us-ascii?Q?ma41alVxd4GzT85H0Y0RES50F1ClKtyc7QDF00VjNJd/boiTGBhFRoJRQZKz?=
+ =?us-ascii?Q?Z/xZXGLFigMQBZ5Ydlke7ESyahJ4dVOU38juQCOdz0Y5f+nzOMJVhrYPwUJT?=
+ =?us-ascii?Q?ATlmTPwwwdOhJ4KXspMob2WRHuqVX2p+OFC0l/Vd2oP7abxV+P+oyNuByuNT?=
+ =?us-ascii?Q?robohe/FZeOS9TOspHwpPvFeJpiYvcvXZyJYOJg/QcfVfmMzJ/dcz6mXmEjf?=
+ =?us-ascii?Q?r/HxiJwKnx6yIAameE327VRSaYA84lPK5g6RruszLkXh+gtP7vndRnwBSMws?=
+ =?us-ascii?Q?l/eaXVv7jYxrBoFxsL2Lwfi81laGoe8PcxJ58NsxulFrrLaDBsP9gqbrLM6C?=
+ =?us-ascii?Q?k2Q9TOhd1d3sG/LEP6hS4UNE6ETukXjv9PB0qrjkwQaesb3JVVVfP9fpEqwK?=
+ =?us-ascii?Q?KzVF6ixwbHY9PB1ZEsBQ1+U4O4FHMi8G3BceXvd0CtXV6USIgK9jsBr1qyho?=
+ =?us-ascii?Q?L+Hy/ePWkI/8TQc4vF8E06YvKHT8C7vXEbNKril3JgbQ13rrnHZEYw9WHRo5?=
+ =?us-ascii?Q?tsWkPOL9lxthKSjqzJ+MLIR89utLtFxQB2mEV/WWWuJCyvaMliL0lBkLztxe?=
+ =?us-ascii?Q?BBj06eDxDqzPqs31EjGoo4n7z21DoB6aiNiLeaYU9Wkn73Kp?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260128-can-skb-ext-v2-2-fe64aa152c8a@pengutronix.de>
-References: <20260128-can-skb-ext-v2-0-fe64aa152c8a@pengutronix.de>
-In-Reply-To: <20260128-can-skb-ext-v2-0-fe64aa152c8a@pengutronix.de>
-To: Marc Kleine-Budde <mkl@pengutronix.de>, 
- Vincent Mailhol <mailhol@kernel.org>, 
- Oliver Hartkopp <socketcan@hartkopp.net>, 
- Robin van der Gracht <robin@protonic.nl>, 
- Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>
-Cc: linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
- netdev@vger.kernel.org
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=18749; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=egTIrte9okHBnHo0mVWojeObZtqUgebbD4ASzpmqfxo=;
- b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBpedbegAOp4s05jquVQK1on/jgQdhj684GhAf+3
- v1JnWDEW4WJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaXnW3gAKCRAMdGXf+ZCR
- nKk4B/4ooUICVGn7bJOUy2s1m1kWI7ePa8ZjveCEXae1/Gni5flmGu+76x/JeE7uBvkiN6A5FvN
- TMlhp+3auQxvQpbt8HixNT3wKAqi5Aaq73Bvt2gmRMCsEnggWKrIThd66FMQo9HEy6Jy9cwCRDH
- L8Ov9EAjDRECY/26IO8wFZSFCK53h6tlxYt5GFNPtLIGOpB7gJjzPoeNIqXK5r+b9lbGYExtw61
- 3/ItBZNGVN6lnOEG856ZdJ/fdfCaQYvN5Uj0mIBomqQFuOSNv9sxAiK7w56VbGNzeTMeALdphRf
- HJtoLUsvFfGD7jsAitAccLN3FSCi9muPGRCRhAsxvOE4wax2
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR04MB8505.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: db3a7af7-60e2-4494-bf87-08de5e50b437
+X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Jan 2026 09:36:24.6510
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: oqYTY6jmE/RWrTlxY/xvKnPixO2b+G+DvvOW5yV66iIJMaiykhlYA1Z1QLKhkSIOL8lyk0RmhQ9mwgckbyAvTw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB11394
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+> On 26/01/2026 09:15, Wei Fang wrote:
+> > Since the commit 25c6a5ab151f ("net: phy: micrel: Dynamically control
+> > external clock of KSZ PHY"), the clock of Micrel PHY has been enabled
+> > by phy_driver::resume() and disabled by phy_driver::suspend(). However,
+> > devm_clk_get_optional_enabled() is used in kszphy_probe(), so the clock
+> > will automatically be disabled when the device is unbound from the bus.
+> > Therefore, this could cause the clock to be disabled twice, resulting
+> > in clk driver warnings.
+> >
+> > For example, this issue can be reproduced on i.MX6ULL platform, and we
+> > can see the following logs when removing the FEC MAC drivers.
+> >
+> > $ echo 2188000.ethernet > /sys/bus/platform/drivers/fec/unbind
+> > $ echo 20b4000.ethernet > /sys/bus/platform/drivers/fec/unbind
+> > [  109.758207] ------------[ cut here ]------------
+> > [  109.758240] WARNING: drivers/clk/clk.c:1188 at
+> clk_core_disable+0xb4/0xd0, CPU#0: sh/639
+> > [  109.771011] enet2_ref already disabled
+> > [  109.793359] Call trace:
+> > [  109.822006]  clk_core_disable from clk_disable+0x28/0x34
+> > [  109.827340]  clk_disable from clk_disable_unprepare+0xc/0x18
+> > [  109.833029]  clk_disable_unprepare from devm_clk_release+0x1c/0x28
+> > [  109.839241]  devm_clk_release from devres_release_all+0x98/0x100
+> > [  109.845278]  devres_release_all from device_unbind_cleanup+0xc/0x70
+> > [  109.851571]  device_unbind_cleanup from
+> device_release_driver_internal+0x1a4/0x1f4
+> > [  109.859170]  device_release_driver_internal from
+> bus_remove_device+0xbc/0xe4
+> > [  109.866243]  bus_remove_device from device_del+0x140/0x458
+> > [  109.871757]  device_del from phy_mdio_device_remove+0xc/0x24
+> > [  109.877452]  phy_mdio_device_remove from
+> mdiobus_unregister+0x40/0xac
+> > [  109.883918]  mdiobus_unregister from
+> fec_enet_mii_remove+0x40/0x78
+> > [  109.890125]  fec_enet_mii_remove from fec_drv_remove+0x4c/0x158
+> > [  109.896076]  fec_drv_remove from
+> device_release_driver_internal+0x17c/0x1f4
+> > [  109.962748] WARNING: drivers/clk/clk.c:1047 at
+> clk_core_unprepare+0xfc/0x13c, CPU#0: sh/639
+> > [  109.975805] enet2_ref already unprepared
+> > [  110.002866] Call trace:
+> > [  110.031758]  clk_core_unprepare from clk_unprepare+0x24/0x2c
+> > [  110.037440]  clk_unprepare from devm_clk_release+0x1c/0x28
+> > [  110.042957]  devm_clk_release from devres_release_all+0x98/0x100
+> > [  110.048989]  devres_release_all from device_unbind_cleanup+0xc/0x70
+> > [  110.055280]  device_unbind_cleanup from
+> device_release_driver_internal+0x1a4/0x1f4
+> > [  110.062877]  device_release_driver_internal from
+> bus_remove_device+0xbc/0xe4
+> > [  110.069950]  bus_remove_device from device_del+0x140/0x458
+> > [  110.075469]  device_del from phy_mdio_device_remove+0xc/0x24
+> > [  110.081165]  phy_mdio_device_remove from
+> mdiobus_unregister+0x40/0xac
+> > [  110.087632]  mdiobus_unregister from
+> fec_enet_mii_remove+0x40/0x78
+> > [  110.093836]  fec_enet_mii_remove from fec_drv_remove+0x4c/0x158
+> > [  110.099782]  fec_drv_remove from
+> device_release_driver_internal+0x17c/0x1f4
+> >
+> > After analyzing the process of removing the FEC driver, as shown below,
+> > it can be seen that the clock was disabled twice by the PHY driver.
+> >
+> > fec_drv_remove()
+> >   --> fec_enet_close()
+> >     --> phy_stop()
+> >       --> phy_suspend()
+> >         --> kszphy_suspend() #1 The clock is disabled
+> >   --> fec_enet_mii_remove()
+> >     --> mdiobus_unregister()
+> >       --> phy_mdio_device_remove()
+> >         --> device_del()
+> >           --> devm_clk_release() #2 The clock is disabled again
+> >
+> > Therefore, devm_clk_get_optional() is used to fix the above issue. And
+> > to avoid the issue mentioned by the commit 985329462723 ("net: phy:
+> > micrel: use devm_clk_get_optional_enabled for the rmii-ref clock"), the
+> > clock is enabled by clk_prepare_enable() to get the correct clock rate.
+> >
+> > Fixes: 25c6a5ab151f ("net: phy: micrel: Dynamically control external cl=
+ock of
+> KSZ PHY")
+> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+>=20
+> This should fix the issue indeed. The dance of enabling/disabling then
+> re-enabling at resume() again feels odd, but at least it's balanced.
+>=20
+> We may be able to avoid that entirely by dealing with the ref_mii_clk
+> selection only in the .resume() path, as it's also called no long after
+> config_init(). That would mean reading the clock rate in
+> kszphy_config_reset(), then performing the kszphy_rmii_clk_sel()
+> accordingly.
+>=20
 
-To remove the private CAN bus skb headroom infrastructure 8 bytes need to
-be stored in the skb. The skb extensions are a common pattern and an easy
-and efficient way to hold private data travelling along with the skb. We
-only need the skb_ext_add() and skb_ext_find() functions to allocate and
-access CAN specific content as the skb helpers to copy/clone/free skbs
-automatically take care of skb extensions and their final removal.
+It seems rather strange to get the clock rate every time the .resume()
+is called. Otherwise, we would need to add some additional logic to=20
+kszphy_rmii_clk_sel() to ensure that the clock rate is only obtained
+once. IMO, it would be more reasonable to only get the clock rate in
+the .probe() during the lifetime of the PHY driver.
 
-This patch introduces the complete CAN skb extensions infrastructure:
-- add struct can_skb_ext in new file include/net/can.h
-- add include/net/can.h in MAINTAINERS
-- add SKB_EXT_CAN to skbuff.c and skbuff.h
-- select SKB_EXTENSIONS in Kconfig when CONFIG_CAN is enabled
-- check for existing CAN skb extensions in can_rcv() in af_can.c
-- add CAN skb extensions allocation at every skb_alloc() location
-- introduce can_skb_ext_add() and can_skb_ext_find() helpers
-
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- MAINTAINERS               |  1 +
- drivers/net/can/dev/skb.c | 56 +++++++++++++++++++++++++++++++++++++----------
- include/linux/can/skb.h   | 11 ++++++++++
- include/linux/skbuff.h    |  3 +++
- include/net/can.h         | 28 ++++++++++++++++++++++++
- net/can/Kconfig           |  1 +
- net/can/af_can.c          |  9 +++++---
- net/can/bcm.c             | 15 +++++++++++++
- net/can/gw.c              | 13 +++++++++++
- net/can/isotp.c           | 24 ++++++++++++++++++++
- net/can/j1939/socket.c    |  8 +++++++
- net/can/j1939/transport.c | 15 +++++++++++++
- net/can/raw.c             |  8 +++++++
- net/core/skbuff.c         |  4 ++++
- 14 files changed, 182 insertions(+), 14 deletions(-)
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c3df85fd5acd..97f276375219 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -5634,6 +5634,7 @@ F:	Documentation/networking/iso15765-2.rst
- F:	include/linux/can/can-ml.h
- F:	include/linux/can/core.h
- F:	include/linux/can/skb.h
-+F:	include/net/can.h
- F:	include/net/netns/can.h
- F:	include/uapi/linux/can.h
- F:	include/uapi/linux/can/bcm.h
-diff --git a/drivers/net/can/dev/skb.c b/drivers/net/can/dev/skb.c
-index 0da615afa04d..c572745565f6 100644
---- a/drivers/net/can/dev/skb.c
-+++ b/drivers/net/can/dev/skb.c
-@@ -6,6 +6,7 @@
- 
- #include <linux/can/dev.h>
- #include <linux/module.h>
-+#include <net/can.h>
- 
- #define MOD_DESC "CAN device driver interface"
- 
-@@ -207,13 +208,17 @@ static void init_can_skb_reserve(struct sk_buff *skb)
- struct sk_buff *alloc_can_skb(struct net_device *dev, struct can_frame **cf)
- {
- 	struct sk_buff *skb;
-+	struct can_skb_ext *csx;
- 
- 	skb = netdev_alloc_skb(dev, sizeof(struct can_skb_priv) +
- 			       sizeof(struct can_frame));
--	if (unlikely(!skb)) {
--		*cf = NULL;
-+	if (unlikely(!skb))
-+		goto out_error_cc;
- 
--		return NULL;
-+	csx = can_skb_ext_add(skb);
-+	if (!csx) {
-+		kfree_skb(skb);
-+		goto out_error_cc;
- 	}
- 
- 	skb->protocol = htons(ETH_P_CAN);
-@@ -223,6 +228,11 @@ struct sk_buff *alloc_can_skb(struct net_device *dev, struct can_frame **cf)
- 	*cf = skb_put_zero(skb, sizeof(struct can_frame));
- 
- 	return skb;
-+
-+out_error_cc:
-+	*cf = NULL;
-+
-+	return NULL;
- }
- EXPORT_SYMBOL_GPL(alloc_can_skb);
- 
-@@ -230,13 +240,17 @@ struct sk_buff *alloc_canfd_skb(struct net_device *dev,
- 				struct canfd_frame **cfd)
- {
- 	struct sk_buff *skb;
-+	struct can_skb_ext *csx;
- 
- 	skb = netdev_alloc_skb(dev, sizeof(struct can_skb_priv) +
- 			       sizeof(struct canfd_frame));
--	if (unlikely(!skb)) {
--		*cfd = NULL;
-+	if (unlikely(!skb))
-+		goto out_error_fd;
- 
--		return NULL;
-+	csx = can_skb_ext_add(skb);
-+	if (!csx) {
-+		kfree_skb(skb);
-+		goto out_error_fd;
- 	}
- 
- 	skb->protocol = htons(ETH_P_CANFD);
-@@ -249,6 +263,11 @@ struct sk_buff *alloc_canfd_skb(struct net_device *dev,
- 	(*cfd)->flags = CANFD_FDF;
- 
- 	return skb;
-+
-+out_error_fd:
-+	*cfd = NULL;
-+
-+	return NULL;
- }
- EXPORT_SYMBOL_GPL(alloc_canfd_skb);
- 
-@@ -257,14 +276,21 @@ struct sk_buff *alloc_canxl_skb(struct net_device *dev,
- 				unsigned int data_len)
- {
- 	struct sk_buff *skb;
-+	struct can_skb_ext *csx;
- 
- 	if (data_len < CANXL_MIN_DLEN || data_len > CANXL_MAX_DLEN)
--		goto out_error;
-+		goto out_error_xl;
- 
- 	skb = netdev_alloc_skb(dev, sizeof(struct can_skb_priv) +
- 			       CANXL_HDR_SIZE + data_len);
- 	if (unlikely(!skb))
--		goto out_error;
-+		goto out_error_xl;
-+
-+	csx = can_skb_ext_add(skb);
-+	if (!csx) {
-+		kfree_skb(skb);
-+		goto out_error_xl;
-+	}
- 
- 	skb->protocol = htons(ETH_P_CANXL);
- 	init_can_skb_reserve(skb);
-@@ -278,7 +304,7 @@ struct sk_buff *alloc_canxl_skb(struct net_device *dev,
- 
- 	return skb;
- 
--out_error:
-+out_error_xl:
- 	*cxl = NULL;
- 
- 	return NULL;
-@@ -303,13 +329,21 @@ EXPORT_SYMBOL_GPL(alloc_can_err_skb);
- /* Check for outgoing skbs that have not been created by the CAN subsystem */
- static bool can_skb_headroom_valid(struct net_device *dev, struct sk_buff *skb)
- {
-+	struct can_skb_ext *csx = can_skb_ext_find(skb);
-+
- 	/* af_packet creates a headroom of HH_DATA_MOD bytes which is fine */
- 	if (WARN_ON_ONCE(skb_headroom(skb) < sizeof(struct can_skb_priv)))
- 		return false;
- 
- 	/* af_packet does not apply CAN skb specific settings */
--	if (skb->ip_summed == CHECKSUM_NONE) {
--		/* init headroom */
-+	if (skb->ip_summed == CHECKSUM_NONE || !csx) {
-+		/* init CAN skb content */
-+		if (!csx) {
-+			csx = can_skb_ext_add(skb);
-+			if (!csx)
-+				return false;
-+		}
-+
- 		can_skb_prv(skb)->ifindex = dev->ifindex;
- 
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
-diff --git a/include/linux/can/skb.h b/include/linux/can/skb.h
-index 869ea574a40a..aeb08f47de48 100644
---- a/include/linux/can/skb.h
-+++ b/include/linux/can/skb.h
-@@ -14,6 +14,7 @@
- #include <linux/types.h>
- #include <linux/skbuff.h>
- #include <linux/can.h>
-+#include <net/can.h>
- #include <net/sock.h>
- 
- void can_flush_echo_skb(struct net_device *dev);
-@@ -68,6 +69,16 @@ static inline void can_skb_reserve(struct sk_buff *skb)
- 	skb_reserve(skb, sizeof(struct can_skb_priv));
- }
- 
-+static inline struct can_skb_ext *can_skb_ext_add(struct sk_buff *skb)
-+{
-+	return skb_ext_add(skb, SKB_EXT_CAN);
-+}
-+
-+static inline struct can_skb_ext *can_skb_ext_find(struct sk_buff *skb)
-+{
-+	return skb_ext_find(skb, SKB_EXT_CAN);
-+}
-+
- static inline void can_skb_set_owner(struct sk_buff *skb, struct sock *sk)
- {
- 	/* If the socket has already been closed by user space, the
-diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
-index e6bfe5d0c525..b5beb28e5730 100644
---- a/include/linux/skbuff.h
-+++ b/include/linux/skbuff.h
-@@ -4988,6 +4988,9 @@ enum skb_ext_id {
- #endif
- #if IS_ENABLED(CONFIG_INET_PSP)
- 	SKB_EXT_PSP,
-+#endif
-+#if IS_ENABLED(CONFIG_CAN)
-+	SKB_EXT_CAN,
- #endif
- 	SKB_EXT_NUM, /* must be last */
- };
-diff --git a/include/net/can.h b/include/net/can.h
-new file mode 100644
-index 000000000000..6db9e826f0e0
---- /dev/null
-+++ b/include/net/can.h
-@@ -0,0 +1,28 @@
-+/* SPDX-License-Identifier: (GPL-2.0 OR BSD-3-Clause) */
-+/*
-+ * net/can.h
-+ *
-+ * Definitions for the CAN network socket buffer extensions
-+ *
-+ * Copyright (C) 2026 Oliver Hartkopp <socketcan@hartkopp.net>
-+ *
-+ */
-+
-+#ifndef _NET_CAN_H
-+#define _NET_CAN_H
-+
-+/**
-+ * struct can_skb_ext - skb extensions for CAN specific content
-+ * @can_iif: ifindex of the first interface the CAN frame appeared on
-+ * @can_framelen: cached echo CAN frame length for bql
-+ * @can_gw_hops: can-gw CAN frame time-to-live counter
-+ * @can_ext_flags: CAN skb extensions flags
-+ */
-+struct can_skb_ext {
-+	int	can_iif;
-+	u16	can_framelen;
-+	u8	can_gw_hops;
-+	u8	can_ext_flags;
-+};
-+
-+#endif /* _NET_CAN_H */
-diff --git a/net/can/Kconfig b/net/can/Kconfig
-index af64a6f76458..abbb4be7ad21 100644
---- a/net/can/Kconfig
-+++ b/net/can/Kconfig
-@@ -5,6 +5,7 @@
- 
- menuconfig CAN
- 	tristate "CAN bus subsystem support"
-+	select SKB_EXTENSIONS
- 	help
- 	  Controller Area Network (CAN) is a slow (up to 1Mbit/s) serial
- 	  communications protocol. Development of the CAN bus started in
-diff --git a/net/can/af_can.c b/net/can/af_can.c
-index 70659987ef4d..22c65a014861 100644
---- a/net/can/af_can.c
-+++ b/net/can/af_can.c
-@@ -687,7 +687,8 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
- static int can_rcv(struct sk_buff *skb, struct net_device *dev,
- 		   struct packet_type *pt, struct net_device *orig_dev)
- {
--	if (unlikely(dev->type != ARPHRD_CAN || !can_get_ml_priv(dev) || !can_is_can_skb(skb))) {
-+	if (unlikely(dev->type != ARPHRD_CAN || !can_get_ml_priv(dev) ||
-+		     !can_skb_ext_find(skb) || !can_is_can_skb(skb))) {
- 		pr_warn_once("PF_CAN: dropped non conform CAN skbuff: dev type %d, len %d\n",
- 			     dev->type, skb->len);
- 
-@@ -702,7 +703,8 @@ static int can_rcv(struct sk_buff *skb, struct net_device *dev,
- static int canfd_rcv(struct sk_buff *skb, struct net_device *dev,
- 		     struct packet_type *pt, struct net_device *orig_dev)
- {
--	if (unlikely(dev->type != ARPHRD_CAN || !can_get_ml_priv(dev) || !can_is_canfd_skb(skb))) {
-+	if (unlikely(dev->type != ARPHRD_CAN || !can_get_ml_priv(dev) ||
-+		     !can_skb_ext_find(skb) || !can_is_canfd_skb(skb))) {
- 		pr_warn_once("PF_CAN: dropped non conform CAN FD skbuff: dev type %d, len %d\n",
- 			     dev->type, skb->len);
- 
-@@ -717,7 +719,8 @@ static int canfd_rcv(struct sk_buff *skb, struct net_device *dev,
- static int canxl_rcv(struct sk_buff *skb, struct net_device *dev,
- 		     struct packet_type *pt, struct net_device *orig_dev)
- {
--	if (unlikely(dev->type != ARPHRD_CAN || !can_get_ml_priv(dev) || !can_is_canxl_skb(skb))) {
-+	if (unlikely(dev->type != ARPHRD_CAN || !can_get_ml_priv(dev) ||
-+		     !can_skb_ext_find(skb) || !can_is_canxl_skb(skb))) {
- 		pr_warn_once("PF_CAN: dropped non conform CAN XL skbuff: dev type %d, len %d\n",
- 			     dev->type, skb->len);
- 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index 8ed60f18c2ea..38452069dea8 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -59,6 +59,7 @@
- #include <linux/can/bcm.h>
- #include <linux/slab.h>
- #include <linux/spinlock.h>
-+#include <net/can.h>
- #include <net/sock.h>
- #include <net/net_namespace.h>
- 
-@@ -291,6 +292,7 @@ static int bcm_proc_show(struct seq_file *m, void *v)
- static void bcm_can_tx(struct bcm_op *op)
- {
- 	struct sk_buff *skb;
-+	struct can_skb_ext *csx;
- 	struct net_device *dev;
- 	struct canfd_frame *cf;
- 	int err;
-@@ -314,6 +316,12 @@ static void bcm_can_tx(struct bcm_op *op)
- 	if (!skb)
- 		goto out;
- 
-+	csx = can_skb_ext_add(skb);
-+	if (!csx) {
-+		kfree_skb(skb);
-+		goto out;
-+	}
-+
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = dev->ifindex;
- 
-@@ -1317,6 +1325,7 @@ static int bcm_tx_send(struct msghdr *msg, int ifindex, struct sock *sk,
- 		       int cfsiz)
- {
- 	struct sk_buff *skb;
-+	struct can_skb_ext *csx;
- 	struct net_device *dev;
- 	int err;
- 
-@@ -1328,6 +1337,12 @@ static int bcm_tx_send(struct msghdr *msg, int ifindex, struct sock *sk,
- 	if (!skb)
- 		return -ENOMEM;
- 
-+	csx = can_skb_ext_add(skb);
-+	if (!csx) {
-+		kfree_skb(skb);
-+		return -ENOMEM;
-+	}
-+
- 	can_skb_reserve(skb);
- 
- 	err = memcpy_from_msg(skb_put(skb, cfsiz), msg, cfsiz);
-diff --git a/net/can/gw.c b/net/can/gw.c
-index 55eccb1c7620..8894ab5d2087 100644
---- a/net/can/gw.c
-+++ b/net/can/gw.c
-@@ -55,6 +55,7 @@
- #include <linux/can/core.h>
- #include <linux/can/skb.h>
- #include <linux/can/gw.h>
-+#include <net/can.h>
- #include <net/rtnetlink.h>
- #include <net/net_namespace.h>
- #include <net/sock.h>
-@@ -459,6 +460,7 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
- 	struct cgw_job *gwj = (struct cgw_job *)data;
- 	struct canfd_frame *cf;
- 	struct sk_buff *nskb;
-+	struct can_skb_ext *csx, *ncsx;
- 	struct cf_mod *mod;
- 	int modidx = 0;
- 
-@@ -471,6 +473,10 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
- 			return;
- 	}
- 
-+	csx = can_skb_ext_find(skb);
-+	if (!csx)
-+		return;
-+
- 	/* Do not handle CAN frames routed more than 'max_hops' times.
- 	 * In general we should never catch this delimiter which is intended
- 	 * to cover a misconfiguration protection (e.g. circular CAN routes).
-@@ -518,6 +524,13 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
- 		return;
- 	}
- 
-+	ncsx = can_skb_ext_find(nskb);
-+	if (!ncsx) {
-+		kfree_skb(nskb);
-+		gwj->dropped_frames++;
-+		return;
-+	}
-+
- 	/* put the incremented hop counter in the cloned skb */
- 	cgw_hops(nskb) = cgw_hops(skb) + 1;
- 
-diff --git a/net/can/isotp.c b/net/can/isotp.c
-index 4bb60b8f9b96..c4fb8afde165 100644
---- a/net/can/isotp.c
-+++ b/net/can/isotp.c
-@@ -69,6 +69,7 @@
- #include <linux/can/skb.h>
- #include <linux/can/isotp.h>
- #include <linux/slab.h>
-+#include <net/can.h>
- #include <net/sock.h>
- #include <net/net_namespace.h>
- 
-@@ -214,6 +215,7 @@ static int isotp_send_fc(struct sock *sk, int ae, u8 flowstatus)
- {
- 	struct net_device *dev;
- 	struct sk_buff *nskb;
-+	struct can_skb_ext *csx;
- 	struct canfd_frame *ncf;
- 	struct isotp_sock *so = isotp_sk(sk);
- 	int can_send_ret;
-@@ -222,6 +224,12 @@ static int isotp_send_fc(struct sock *sk, int ae, u8 flowstatus)
- 	if (!nskb)
- 		return 1;
- 
-+	csx = can_skb_ext_add(nskb);
-+	if (!csx) {
-+		kfree_skb(nskb);
-+		return 1;
-+	}
-+
- 	dev = dev_get_by_index(sock_net(sk), so->ifindex);
- 	if (!dev) {
- 		kfree_skb(nskb);
-@@ -762,6 +770,7 @@ static void isotp_send_cframe(struct isotp_sock *so)
- {
- 	struct sock *sk = &so->sk;
- 	struct sk_buff *skb;
-+	struct can_skb_ext *csx;
- 	struct net_device *dev;
- 	struct canfd_frame *cf;
- 	int can_send_ret;
-@@ -777,6 +786,13 @@ static void isotp_send_cframe(struct isotp_sock *so)
- 		return;
- 	}
- 
-+	csx = can_skb_ext_add(skb);
-+	if (!csx) {
-+		kfree_skb(skb);
-+		dev_put(dev);
-+		return;
-+	}
-+
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = dev->ifindex;
- 
-@@ -938,6 +954,7 @@ static int isotp_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
- 	struct sock *sk = sock->sk;
- 	struct isotp_sock *so = isotp_sk(sk);
- 	struct sk_buff *skb;
-+	struct can_skb_ext *csx;
- 	struct net_device *dev;
- 	struct canfd_frame *cf;
- 	int ae = (so->opt.flags & CAN_ISOTP_EXTEND_ADDR) ? 1 : 0;
-@@ -1005,6 +1022,13 @@ static int isotp_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
- 		goto err_out_drop;
- 	}
- 
-+	csx = can_skb_ext_add(skb);
-+	if (!csx) {
-+		kfree_skb(skb);
-+		dev_put(dev);
-+		goto err_out_drop;
-+	}
-+
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = dev->ifindex;
- 
-diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
-index 1589e8ca634e..fc28a7677369 100644
---- a/net/can/j1939/socket.c
-+++ b/net/can/j1939/socket.c
-@@ -17,6 +17,7 @@
- #include <linux/can/skb.h>
- #include <linux/errqueue.h>
- #include <linux/if_arp.h>
-+#include <net/can.h>
- 
- #include "j1939-priv.h"
- 
-@@ -884,6 +885,7 @@ static struct sk_buff *j1939_sk_alloc_skb(struct net_device *ndev,
- 	struct j1939_sock *jsk = j1939_sk(sk);
- 	struct j1939_sk_buff_cb *skcb;
- 	struct sk_buff *skb;
-+	struct can_skb_ext *csx;
- 	int ret;
- 
- 	skb = sock_alloc_send_skb(sk,
-@@ -895,6 +897,12 @@ static struct sk_buff *j1939_sk_alloc_skb(struct net_device *ndev,
- 	if (!skb)
- 		goto failure;
- 
-+	csx = can_skb_ext_add(skb);
-+	if (!csx) {
-+		kfree_skb(skb);
-+		goto failure;
-+	}
-+
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = ndev->ifindex;
- 	skb_reserve(skb, offsetof(struct can_frame, data));
-diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
-index d5d3e5320f7a..0514f3504e39 100644
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -9,6 +9,7 @@
- //                         Oleksij Rempel <kernel@pengutronix.de>
- 
- #include <linux/can/skb.h>
-+#include <net/can.h>
- 
- #include "j1939-priv.h"
- 
-@@ -591,6 +592,7 @@ sk_buff *j1939_tp_tx_dat_new(struct j1939_priv *priv,
- 			     bool swap_src_dst)
- {
- 	struct sk_buff *skb;
-+	struct can_skb_ext *csx;
- 	struct j1939_sk_buff_cb *skcb;
- 
- 	skb = alloc_skb(sizeof(struct can_frame) + sizeof(struct can_skb_priv),
-@@ -598,6 +600,12 @@ sk_buff *j1939_tp_tx_dat_new(struct j1939_priv *priv,
- 	if (unlikely(!skb))
- 		return ERR_PTR(-ENOMEM);
- 
-+	csx = can_skb_ext_add(skb);
-+	if (!csx) {
-+		kfree_skb(skb);
-+		return ERR_PTR(-ENOMEM);
-+	}
-+
- 	skb->dev = priv->ndev;
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = priv->ndev->ifindex;
-@@ -1525,6 +1533,7 @@ j1939_session *j1939_session_fresh_new(struct j1939_priv *priv,
- 				       const struct j1939_sk_buff_cb *rel_skcb)
- {
- 	struct sk_buff *skb;
-+	struct can_skb_ext *csx;
- 	struct j1939_sk_buff_cb *skcb;
- 	struct j1939_session *session;
- 
-@@ -1532,6 +1541,12 @@ j1939_session *j1939_session_fresh_new(struct j1939_priv *priv,
- 	if (unlikely(!skb))
- 		return NULL;
- 
-+	csx = can_skb_ext_add(skb);
-+	if (!csx) {
-+		kfree_skb(skb);
-+		return NULL;
-+	}
-+
- 	skb->dev = priv->ndev;
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = priv->ndev->ifindex;
-diff --git a/net/can/raw.c b/net/can/raw.c
-index fb4f9c854df0..03438e9bc535 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -53,6 +53,7 @@
- #include <linux/can/core.h>
- #include <linux/can/skb.h>
- #include <linux/can/raw.h>
-+#include <net/can.h>
- #include <net/sock.h>
- #include <net/net_namespace.h>
- 
-@@ -918,6 +919,7 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
- 	struct raw_sock *ro = raw_sk(sk);
- 	struct sockcm_cookie sockc;
- 	struct sk_buff *skb;
-+	struct can_skb_ext *csx;
- 	struct net_device *dev;
- 	unsigned int txmtu;
- 	int ifindex;
-@@ -956,6 +958,12 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
- 	if (!skb)
- 		goto put_dev;
- 
-+	csx = can_skb_ext_add(skb);
-+	if (!csx) {
-+		kfree_skb(skb);
-+		goto put_dev;
-+	}
-+
- 	can_skb_reserve(skb);
- 	can_skb_prv(skb)->ifindex = dev->ifindex;
- 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 4d3920e5b141..648c20e19038 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -78,6 +78,7 @@
- #include <net/mpls.h>
- #include <net/mptcp.h>
- #include <net/mctp.h>
-+#include <net/can.h>
- #include <net/page_pool/helpers.h>
- #include <net/psp/types.h>
- #include <net/dropreason.h>
-@@ -5139,6 +5140,9 @@ static const u8 skb_ext_type_len[] = {
- #if IS_ENABLED(CONFIG_INET_PSP)
- 	[SKB_EXT_PSP] = SKB_EXT_CHUNKSIZEOF(struct psp_skb_ext),
- #endif
-+#if IS_ENABLED(CONFIG_CAN)
-+	[SKB_EXT_CAN] = SKB_EXT_CHUNKSIZEOF(struct can_skb_ext),
-+#endif
- };
- 
- static __always_inline unsigned int skb_ext_total_length(void)
-
--- 
-2.51.0
+Furthermore, this seems to break the previous logic: when the clock
+rate is incorrect, the .probe() will return an error, meaning the PHY
+driver will not be loaded.
 
