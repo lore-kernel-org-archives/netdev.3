@@ -1,44 +1,48 @@
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C6830F555;
-	Wed, 28 Jan 2026 15:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945CB3064B3;
+	Wed, 28 Jan 2026 15:51:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769615099; cv=none; b=YTg5nx+HwTc4LIlnCzY5zwGm7ULgJnf4Jbpq+7zwTyj1jUx3/6EFRw1XSeVdzqkF7ADSWbavauXgkl4tlwbP+b/NlspFMBFxp0Y3Ov3IdbuLDuZtqusAARuqDd0lbvfa8qc1Bn8M3LHff06tleYd4u0Q1mO2DQotcbiepleSmHo=
+	t=1769615475; cv=none; b=jddrkKsnVBo55tWhAx+hHOM+KukEQfHCn6ddetisLcK7wZjMB2UivkGMNiv89cnczdkdgdgOiNN+NjCqYHkdCaCwG1Pb2MOES+eo0hjwKB7/xxviyrTHAQyEdYr709CZhVbZi+c/eAMVXCjZbr4BcN1p4MVlshTtVlaYdBdjgos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769615099; c=relaxed/simple;
-	bh=4ohvm5fhYBh6VZdJuEVdOpHMU7B4aefcxRQthZ1EpU8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ggk65Zzk7etleefKhPTRkvxB/krhkiTlvXskbpOeS0vzbOHUydQBF3DUtbykI4scaQVta4kGGGHr5QT2a+iTUJLvYaV9i3CbLFwX8CgskuozCe9B+F79JrLkHHXwm4QONJ0C+wN5aFbDxv5tdn+gHkU1f3AjwTaIhQDsL1tPbms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=K+iLZ2zq; arc=none smtp.client-ip=45.254.49.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1769615475; c=relaxed/simple;
+	bh=P9cT+ob1BKJYN7qrEVW9vUVBN/C7HG47qynnVheZugc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AGTdMug+/R8McDEHpoAeUGQ5Q4BmzjZT1VJQtpfwHSmLbeNvD9CCCyiVEHZ+UVwCyqlAIJ4dc2s1Z0H80P3uf7cZJkg7XZSiDFBuIZF4oL3pymiTNNZ3CtVCDd1qQvLjxTr6sOFU6y4+D1ifkfbmCrwl6fSYC6x45XIdI04NsSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNhUGAeT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="K+iLZ2zq"
-Received: from LAPTOP-N070L597.localdomain (unknown [58.215.202.202])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 324da1fd9;
-	Wed, 28 Jan 2026 23:44:48 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: andrew+netdev@lunn.ch
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNhUGAeT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083A2C4CEF1;
+	Wed, 28 Jan 2026 15:51:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1769615475;
+	bh=P9cT+ob1BKJYN7qrEVW9vUVBN/C7HG47qynnVheZugc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=UNhUGAeT2CAbShMwQ4oRMFXyZURiHbuHV90oFpOeWqMbr2r1qi4BdkyoBG7u5SZvy
+	 jQXBHV7vSWZySsMU+yLi+P/KYdSLPcwz6mAI9fr12Dx0XiKHWKIvKL73eNrRpE++sc
+	 ETETikVJn1rvl9se9neNyXzvw3rG5aVkMusnSKAc=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Yingying Tang <yingying.tang@oss.qualcomm.com>,
+	Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	linux-next@vger.kernel.org,
 	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kory.maincent@bootlin.com,
-	horms@kernel.org,
-	jianhao.xu@seu.edu.cn,
-	marco.crivellari@suse.com,
-	vadim.fedorenko@linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH net v4 3/3] net: liquidio: Fix off-by-one error in VF setup_nic_devices() cleanup
-Date: Wed, 28 Jan 2026 15:44:40 +0000
-Message-Id: <20260128154440.278369-4-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260128154440.278369-1-zilin@seu.edu.cn>
-References: <20260128154440.278369-1-zilin@seu.edu.cn>
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 020/227] wifi: ath12k: Fix wrong P2P device link id issue
+Date: Wed, 28 Jan 2026 16:21:05 +0100
+Message-ID: <20260128145345.069879352@linuxfoundation.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260128145344.331957407@linuxfoundation.org>
+References: <20260128145344.331957407@linuxfoundation.org>
+User-Agent: quilt/0.69
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,51 +50,83 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9c054759fa03a1kunm1b02b57ddb3e5
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDSEIeVh5LHU9OGRpJTU8dTlYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlOQ1VJSk5VSUtJVUlLSVlXWRYaDxIVHRRZQVlPS0hVSktJSE5DQ1VKS0tVS1
-	kG
-DKIM-Signature: a=rsa-sha256;
-	b=K+iLZ2zq+W/jQd+hyYK8k3Nm7/eBuO+AT41YW+pX3UYqMLCyy2bfKC+oBCm4AuDpRefN+7j9CJ+D+0VQHyDyXlJMBjvWC1HaX3j5biclLp1A6iTR/YryHD44HXQO9m12EuSwRukht119UzFZXBSPkNSsjAbs2VCs0Oxd3G0wCDc=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=CBdMc180N7C4v3ADEW9t7d40OZ9GfRgKpYtOHjIS0Ys=;
-	h=date:mime-version:subject:message-id:from;
 
-In setup_nic_devices(), the initialization loop jumps to the label
-setup_nic_dev_free on failure. The current cleanup loop while(i--)
-skip the failing index i, causing a memory leak.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
-Fix this by changing the loop to iterate from the current index i
-down to 0.
+------------------
 
-Compile tested only. Issue found using code review.
+From: Yingying Tang <yingying.tang@oss.qualcomm.com>
 
-Fixes: 846b46873eeb ("liquidio CN23XX: VF offload features")
-Suggested-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+[ Upstream commit 31707572108da55a005e7fed32cc3869c16b7c16 ]
+
+Wrong P2P device link id value of 0 was introduced in ath12k_mac_op_tx() by [1].
+
+During the P2P negotiation process, there is only one scan vdev with link ID 15.
+Currently, the device link ID is incorrectly set to 0 in ath12k_mac_op_tx()
+during the P2P negotiation process, which leads to TX failures.
+
+Set the correct P2P device link ID to 15 to fix the TX failure issue.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00302-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.115823.3
+
+Fixes: 648a121bafa3 ("wifi: ath12k: ath12k_mac_op_tx(): MLO support") # [1]
+Signed-off-by: Yingying Tang <yingying.tang@oss.qualcomm.com>
+Reviewed-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Cc: linux-next@vger.kernel.org
+Cc: netdev@vger.kernel.org
+Link: https://patch.msgid.link/20260113054636.2620035-1-yingying.tang@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+
 ---
- drivers/net/ethernet/cavium/liquidio/lio_vf_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c b/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c
-index e02942dbbcce..43c595f3b84e 100644
---- a/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c
-+++ b/drivers/net/ethernet/cavium/liquidio/lio_vf_main.c
-@@ -2212,11 +2212,11 @@ static int setup_nic_devices(struct octeon_device *octeon_dev)
+Note to linux-next and netdev maintainers:
+
+This patch going through the "current" tree conflicts with
+the following going through the "next" tree:
+commit 631ee338f04d ("Merge branch 'ath12k-ng' into ath-next")
+
+The conflict resolution is to leave the following file unmodified:
+drivers/net/wireless/ath/ath12k/mac.
+
+And to apply the following patch to ath12k_wifi7_mac_op_tx()
+in the file drivers/net/wireless/ath/ath12k/wifi7/hw.c -705,7 +705,10
+
+ 			return;
+ 		}
+ 	} else {
+-		link_id = 0;
++		if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
++			link_id = ATH12K_FIRST_SCAN_LINK;
++		else
++			link_id = 0;
+ 	}
+
+ 	arvif = rcu_dereference(ahvif->link[link_id]);
+
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/ath/ath12k/mac.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index d6a44c19e2245..256ffae4d7f7d 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -8840,7 +8840,10 @@ static void ath12k_mac_op_tx(struct ieee80211_hw *hw,
+ 			return;
+ 		}
+ 	} else {
+-		link_id = 0;
++		if (vif->type == NL80211_IFTYPE_P2P_DEVICE)
++			link_id = ATH12K_FIRST_SCAN_LINK;
++		else
++			link_id = 0;
+ 	}
  
- setup_nic_dev_free:
- 
--	while (i--) {
-+	do {
- 		dev_err(&octeon_dev->pci_dev->dev,
- 			"NIC ifidx:%d Setup failed\n", i);
- 		liquidio_destroy_nic_device(octeon_dev, i);
--	}
-+	} while (i--);
- 
- setup_nic_dev_done:
- 
+ 	arvif = rcu_dereference(ahvif->link[link_id]);
 -- 
-2.34.1
+2.51.0
+
+
 
