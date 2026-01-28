@@ -1,37 +1,37 @@
 Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C86037F0ED;
-	Thu, 29 Jan 2026 08:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB88937E310;
+	Thu, 29 Jan 2026 08:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769677135; cv=none; b=YRFuICrCJ3PhdkbG3TScgqJ/+rjNJC9xVZ71jPKGAsULrfAGzB2ZoutBOfmp7v9anYXjNBnIMTRlgjKJYVNBepAtyue+G+aXfE3DY0mq/trljRb5s0OQubDdOxvTIV+63+MBxFZWnZv8/JLUnLOjF31U+jkiPVjM6iFMzUkUP7E=
+	t=1769677141; cv=none; b=Viiml8P2qvEyGDNKPwTWQRE4fFxJ8BFxQ1TuBFPqi7fN/AJFJGcsnupLzwHnSZXWwPW31iMjBYFchnrYdPuydoyWGfF3CcViQ6YNRdT/IegFMaCou0wbP7p/jNUrgOSyfe4YAQ2zaWPO/laGpHv94yHIijTJcGNzEjsjy9VWbB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769677135; c=relaxed/simple;
-	bh=XC/0IuX5F/xzqrGyca384WV3NKdUzfetZ+5Q4Dr4qv4=;
+	s=arc-20240116; t=1769677141; c=relaxed/simple;
+	bh=ZEM07gUZA4atbSTuRc39eyPkVvIyZcjTej1KPQqC0G8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iDUwtY0SP1bVNrRgCWUydOu44WQuJcG8BU0JJPsTc3NYYaS7SCXnuIc8FbBhn5BsI/X5TP8m3Y/gQG6WuetDx2Xfiwj/+hQhe/f2tHdJWt0GQXFOFy95DqmOzAFt307GMEjlRiwYLHex6c1T5w4RC2PL1O0R2lYXBSGUhvaa4Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=lnQCiIGf; arc=none smtp.client-ip=185.171.202.116
+	 MIME-Version:Content-Type; b=lScnxntsMQzXwWwhdwxtAOs9Tjh+Ijiq5JV1kzCtjISNLDuElgp0FyiJU/O6q0HLT0JsvxGla9+X+WK+IizhsOB8D4dzTwpbl6tmhzVKPzFLjjecS/nsLm0a07fWvKJXKSfw6EnZI6ynkwavQaQKWusrsOWbmPIcsMmXxXRPPP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=DYAAX1Za; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="lnQCiIGf"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="DYAAX1Za"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id A7084C211FA;
-	Thu, 29 Jan 2026 08:58:53 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 48525C211FB;
+	Thu, 29 Jan 2026 08:58:56 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id C2792606B6;
-	Thu, 29 Jan 2026 08:58:50 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D613F119A884D;
-	Thu, 29 Jan 2026 09:58:47 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 65C00606B6;
+	Thu, 29 Jan 2026 08:58:53 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3B6E2119A884E;
+	Thu, 29 Jan 2026 09:58:50 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769677129; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=XDhKbWZAQ1kfrBnd+dkCxhzWAa4k8KYqwn6w8oJkK00=;
-	b=lnQCiIGflG9Yo1kuINcM13U3yAGds02GIHi/2erF+zMV7mC6qhExC7UPLIvyajs8eadZqe
-	QhH1EiqXeYTP3ITZ+SoaxXEuyxXvX1qKoApql9VajS7RtkYdhm6MtJJbBstnYjoA8ZYccf
-	zaJ/VfHdwRagtHnBB6CANKDxZ8/VNXz1UM7QAopv8fycZ2DJvCzY2mcJzA0qEw0n/4o9Ci
-	eYeWjZEaBCzYOGNsyBe0E/pPLazfLt7EwcwQ52BvaiLZV/9wHkOEhbmj8mT9AY0BwTRWyl
-	FKCK50mIEuNSmu3auvZr23+80+vnCnLOkc1xrLpE+HJaFZ2+njPFxTuif6x9Lw==
+	t=1769677132; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=M87QZDRyHQhsV+Pkt7dg5f1DCunyRH2lCoxOtMpqWO8=;
+	b=DYAAX1ZaK3X9kvpOrtOpiZuMTFiy42ulDDrblGemIJWLrdB2UKRx+Gx7Iox0SR49qmIdTV
+	dZgJ9GedO0o9zgKhq6SJ1L2rrLaFsURAF6Ohcu+jcpdrkVZ1GJZ2ME9wBvfRhm/R+PUj32
+	lSjTrwBTC+8DSgq+3XfIvb6+ScmN7Hxb1HmcFcYpODe5JhHZ0UCw6fABCYhD7YTiT3hJ2K
+	9yow6bJqIay8n8+FuGT91Iwa5RFjd9dVi2tODIT6V/YbhvXRx5YaGNfHiCf0Q0wy3z/Ln9
+	ZfqQ1B3Xyto0JJZOxSs2+nJXOSQoPDp26FXvxwQpbGt6gPwOEpYmvk0COytfKg==
 From: Romain Gantois <romain.gantois@bootlin.com>
 To: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>,
  Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
@@ -52,47 +52,40 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>, netdev@vger.kernel.org,
  Daniel Golle <daniel@makrotopia.org>,
  Dimitri Fedrau <dimitri.fedrau@liebherr.com>
 Subject:
- Re: [PATCH net-next 07/13] net: phy: Represent PHY-less SFP modules with
- phy_port
-Date: Wed, 28 Jan 2026 16:54:43 +0100
-Message-ID: <5045774.GXAFRqVoOG@fw-rgant>
-In-Reply-To: <20260127134202.8208-8-maxime.chevallier@bootlin.com>
+ Re: [PATCH net-next 05/13] net: phy: Create SFP phy_port before registering
+ usptream
+Date: Wed, 28 Jan 2026 16:49:30 +0100
+Message-ID: <5074665.31r3eYUQgx@fw-rgant>
+In-Reply-To: <20260127134202.8208-6-maxime.chevallier@bootlin.com>
 References:
  <20260127134202.8208-1-maxime.chevallier@bootlin.com>
- <20260127134202.8208-8-maxime.chevallier@bootlin.com>
+ <20260127134202.8208-6-maxime.chevallier@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="nextPart1946632.tdWV9SEqCh";
+Content-Type: multipart/signed; boundary="nextPart4710557.LvFx2qVVIh";
  micalg="pgp-sha512"; protocol="application/pgp-signature"
 X-Last-TLS-Session-Version: TLSv1.3
 
---nextPart1946632.tdWV9SEqCh
+--nextPart4710557.LvFx2qVVIh
 Content-Transfer-Encoding: 7Bit
 Content-Type: text/plain; charset="utf-8"; protected-headers="v1"
 From: Romain Gantois <romain.gantois@bootlin.com>
-Date: Wed, 28 Jan 2026 16:54:43 +0100
-Message-ID: <5045774.GXAFRqVoOG@fw-rgant>
-In-Reply-To: <20260127134202.8208-8-maxime.chevallier@bootlin.com>
+Date: Wed, 28 Jan 2026 16:49:30 +0100
+Message-ID: <5074665.31r3eYUQgx@fw-rgant>
+In-Reply-To: <20260127134202.8208-6-maxime.chevallier@bootlin.com>
 MIME-Version: 1.0
 
-On Tuesday, 27 January 2026 14:41:55 CET Maxime Chevallier wrote:
-> Now that th SFP bus infrastructure notifies when PHY-less modules are
+Hi Maxime,
 
-There's a typo here.
+On Tuesday, 27 January 2026 14:41:53 CET Maxime Chevallier wrote:
+> When dealing with PHY-driver SFP, we create a phy_port representing the
+> SFP bus when we know we have such a bus.
 
-> connected, we can create a phy_port to represent it. Instead of letting
-> the SFP subsystem handle that, the Bus' upstream is in charge of
-> maintaining that phy_port and register it to the topology, as the
-> upstream (in this case a phy device) is directly interacting with the
-> underlying net_device.
-> 
-> Add a phy_caps helper alongside to get the achievable modes on this
-
-Alongside what?
+Shouldn't this be "with a PHY-driven SFP"?
 
 Thanks,
 
@@ -101,29 +94,29 @@ Romain Gantois, Bootlin
 Embedded Linux and Kernel engineering
 https://bootlin.com
 
---nextPart1946632.tdWV9SEqCh
+--nextPart4710557.LvFx2qVVIh
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: This is a digitally signed message part.
 Content-Transfer-Encoding: 7Bit
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAml6MUMACgkQKCYAIARz
-eA4NKw/+M6DFcb/i3M9/8NN4IN5Emym+F8H1V/riHo3bA7rraCVBr9Mka55gUqUb
-FetS6K+kxHJOgdjBzsfg3qzdlJy75C4x2lkkwyk585uFerrNF6OY6U8yE+MrBZ9e
-uW6BdAP0IhY6aLkbXkBMEQq2W50aZ9IMCTfrcA12DAEIUKzehH9TGSq5cuEZkizX
-PCficEPaxpZxp+mZ0NOGAuGc4eiGiYC6gorFF10Usnwby2jErLUYoWDi0Qw5expy
-//XKPuIuI9Ednjb4r0ybgcwjOY47uwuOIisrXAMFJIS1ZPYKl5iCll8m27j2MUOU
-gLAk/SP/2jJxSR4YACf6jAO1JgcsHu0ImNrVuyN8iiA5uUpIr6iUjvONI4zGlCEQ
-C6pD71F5Oww9AF2xDQrlXeeW4tfHYQXBC9i/JAS4y6M3fkmAWRESYNUzcdt6s4YP
-RRJ47X83qXB1Rt5QOsJysBbdrClVX9FF9UaoKl73x1mG2Aof9e9DXsY1c/sKJLJt
-f6R9+nVNnQPOZQXCxf7PmEPrqLRgGcHwamtQOJMJQu5TT0+fR6vMSzucUpJTCTW0
-TN/1QfaqEznJEJcHBZt1+pNdq3+N4WeSr3WMakWna+llKxSwtYNSE9B0ofUKvKLu
-jxqD4M6eWKsNiaTl4L+dOM1kuTGcX2u5nF7IUFglpOaq41Mqqc4=
-=rED9
+iQIzBAABCgAdFiEEIcCsAScRrtr7W0x0KCYAIARzeA4FAml6MAoACgkQKCYAIARz
+eA6m+w//fQDaTf82LEx8j3/5nKvbOhYFHbQuNbwr2zOCYvg6MKmt8NhNr6E2SYL3
+sw7Far2XBvxgL5ZdOVIVCjPVGN1OpBWb0HhzmF3G06Gx9s2iHOcytJeR8r8EKzlL
+6ANY7dWjNiEUJlnUtEZxWVnEGDmUdKJR67FsoNNipocxdYSQdS2tCCAH0K1O0VSw
+4PWKO5mHWK6duemrl+y/XkFlIWhmgIFRAvGdo9E3on7HvwC1Ew44o2jRnkXpSbx6
+iaPTZ8EYWP/WCipI3d1dqO5ziUC0aN3TDrxZVJK0ttSBzV7IEFG0dDr2zpyvP0Ce
+Z4gOL9sL9/Wh0f5z6Bv/s0yavZMDIfjygHHPvTUV5WsaZf371zU5STp1y3qeWcdz
+lN2iKzVsZRmjKSYKQVyBnS6isQZ9FCYtVEGB+nuvmDrRaub9V3NYRbNvWcd2yuED
+Xdnmj+FiDF1MdHjBwGPcSIOuI1OsLyha75paIaexgMIDh1tGPgrmssxJG9evGpIn
+SSHGJE9gVA/6khCKpu2/xcAR7Yzn3ZawEHy8GNpbgp+ESO30ENOXruNwge++WbZY
+J0sCyp3pFplRQhfGbOEfcpoF9kqq/3Us1ae94GoxtLGFYTy/NHklsPx69OJvw588
+HLoZnaNx2toi9iDzVNX0KoII4+UPsI7Horbv4IAoALl9sKLsqW0=
+=H/CG
 -----END PGP SIGNATURE-----
 
---nextPart1946632.tdWV9SEqCh--
+--nextPart4710557.LvFx2qVVIh--
 
 
 
