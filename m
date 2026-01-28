@@ -1,67 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6018633DEF7;
-	Wed, 28 Jan 2026 09:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E75313959D;
+	Wed, 28 Jan 2026 09:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769592121; cv=none; b=tU2VCHQaf7JXqeO1xQj1pPf99IJczyEsvLcOM8DZp6WOq4zs1zcNsqqS0bvw1vO7y6PZkHKcHFF8SiHv792mb1l5erwqbbjLfgyAN6rd8n/FwFIDHLFOMjGUdEvmDia/u7UgEsBniN/EjpsoKe6sNoIN58In5Y39uZrbURHI6e4=
+	t=1769592182; cv=none; b=gBplN6rDvsOW6GvwmTC28tY9MXjyxmNzvrA0+mtiSLlu2GfVHnVROQ80iM75fpH7IGMMaCP+CuwBdASzgV9wa9bAmNW7+RC6XUWe7PLRW7cZ4Ppe7TDrDiXa9Qy5ccmIvkGFOkrlU8YHNilqpEzBHx3zK5Yd6HFx4url2ZBoVfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769592121; c=relaxed/simple;
-	bh=2fjoNUbfOIM8UhUstTCpYZgfZ8OMpqLgrhdWkrlQ4T8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lUDpTJ80ILnWUVx6OEzOlsJGUlJCCV76gPCHVbirD0cA/Ssy2so5mVyLs3uwlv7BnBa13eOZMRnE7koJsLKz/FWvrJoslLAWGRs1mHyX22utlLTe/bRPJP7ppq4IjlwDeAMamRpI1ws0mTUnTJgI2+D3RczdM8vYKiaNvXEJfcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f03/7C7N; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769592182; c=relaxed/simple;
+	bh=yxdJgcyAaZdNv2F+vvtMiEG2f16J1xKSCRg4XJXtNN0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VV4c92o4hWbrslOkEVBr2lBpLAgj33FzAYvv323iNVBLsoASwtfPSgNh9R125EXb6jb/rHb8hiHZ4CdEuWbXWmdpPAeNAjC8X98ZcZowRC2HZazvzfFARRN3sCO8b/s/XlE+ZnflOF3rj3YoGj/TluJ+EyhzqGoDG/3Mf2lIOEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GnG/sfck; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f03/7C7N"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CBDC4CEF1;
-	Wed, 28 Jan 2026 09:21:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769592120;
-	bh=2fjoNUbfOIM8UhUstTCpYZgfZ8OMpqLgrhdWkrlQ4T8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f03/7C7N5F6vtRxB7CndZoLyobtXPUCg6ICyN3DjS2ENDHcR2YY/6NPBMw2RhJDqe
-	 xTtNVrHgp+cc98ai0UoIDj+9gkaJBCHajjYTEuxIBijx32xKg9oG5Aa+ccbDGP/C1N
-	 WM4LzQA8z6/lQncvDI56B6yFkq25IZlcRnIGIVLBIFMqqytorNTBx9nHQV7yenJpYl
-	 0brQDtdVVvNsMCRgI92n1MqquU4CraHyyvYmu9H7nrNcnRwEmswdY6057wwP8R83zk
-	 DvxcICzmKkplfwzjgISpC7K7lVD1ag64oRBNBQGcY14+c1Hjn0rT5jHCTukR4OPWi0
-	 VSBiRdVAuYf1Q==
-Date: Wed, 28 Jan 2026 09:21:55 +0000
-From: Simon Horman <horms@kernel.org>
-To: Brian Vazquez <brianvv@google.com>
-Cc: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>,
-	Brian Vazquez <brianvv.kernel@gmail.com>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	David Decotigny <decot@google.com>, Li Li <boolli@google.com>,
-	"Singhai, Anjali" <anjali.singhai@intel.com>,
-	"Samudrala, Sridhar" <sridhar.samudrala@intel.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"Tantilov, Emil S" <emil.s.tantilov@intel.com>
-Subject: Re: [Intel-wired-lan] [iwl-net PATCH] idpf: change IRQ naming to
- match netdev and ethtool queue numbering
-Message-ID: <aXnVM9MBRuXWgACz@horms.kernel.org>
-References: <20260123204058.651080-1-brianvv@google.com>
- <IA3PR11MB8986BB2FDDBB664CB318FB15E593A@IA3PR11MB8986.namprd11.prod.outlook.com>
- <aXj652w2_ogi6ysW@horms.kernel.org>
- <CAMzD94T=VS8J5A1VZH_KriY7BMHf90rrGEK=4Jyuzc3SxHJhKA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GnG/sfck"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 7DF6C4E422F3;
+	Wed, 28 Jan 2026 09:22:52 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 536E46071A;
+	Wed, 28 Jan 2026 09:22:52 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E38FF119A8695;
+	Wed, 28 Jan 2026 10:22:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769592171; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=kfr+T6NkfKEu9kIgHzq6J+epCZO3duBfoXYVaEh4cnE=;
+	b=GnG/sfckcsRl4lAH3d4XT/7hJr8X9TofMMVxxFdQK7sfgBH/PReb7TX4n/vvCc9oorcsid
+	BJxuxb4IbW1ZL0qmBUpqsH3NLYGPskwRa79+Nai2hvZjD3ttFHNDOY87gTBE3a3tiUO90b
+	WZTknPWr36SXI2IcwIkdf2UBzgm3vvE/4GqoWoFbYq1/AlBLGiIMmtlymAHH5jm1YD3dxk
+	WYorsV2YndJtbn33dLywGkJEyfa/VG2km0jkkePvlvlkQxmNHCrf8obd0IFSXCas0HC7qe
+	MC91DBirulm1xdB0AvQtw1XS3Dip3YEffYeAQS3GT22Cq4xGENg//phnLzkQhA==
+Message-ID: <c9cb204b-e079-4f5b-b670-dcce14101390@bootlin.com>
+Date: Wed, 28 Jan 2026 10:22:46 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMzD94T=VS8J5A1VZH_KriY7BMHf90rrGEK=4Jyuzc3SxHJhKA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 1/8] net: dsa: microchip: Add support for
+ KSZ8463 global irq
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+ Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
+ Simon Horman <horms@kernel.org>, Pascal Eberhard <pascal.eberhard@se.com>,
+ =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260127-ksz8463-ptp-v4-0-652e021aae86@bootlin.com>
+ <20260127-ksz8463-ptp-v4-1-652e021aae86@bootlin.com>
+ <20260127190327.79d3f154@kernel.org>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260127190327.79d3f154@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Jan 27, 2026 at 06:36:14PM -0500, Brian Vazquez wrote:
-> Hey Simon, last version is v3 it does have the Fixes tag now. Thanks!
+Hi Jakub,
 
-Great, thanks.
-And sorry for not noticing that earlier.
+On 1/28/26 4:03 AM, Jakub Kicinski wrote:
+> On Tue, 27 Jan 2026 10:06:43 +0100 Bastien Curutchet (Schneider
+> Electric) wrote:
+>>   	/* Read interrupt status register */
+>> -	ret = ksz_read8(dev, kirq->reg_status, &data);
+>> +	ret = ksz_read16(dev, kirq->reg_status, &data);
+> 
+> AI code review points out that we're potentially over-reading here for
+> !ksz_is_ksz8463(kirq->dev), I'm assuming the wider read is okay for all
+> chips? Is this something that'll be obvious to all readers of this code
+> or should we perhaps leave a relevant comment here? (assuming you need
+> to respin, not sure its worth a respin by itself)
+
+The loop below this read only iterates over the first kirq->nirqs bits, 
+so I assume a wider read is fine. I wanted to avoid adding if 
+(ksz_is_ksz8463()) branches as much as possible.
+
+Indeed, a comment wouldn't hurt here; I'll add one if I need to respin.
+
+
+Best regards,
+Bastien
+
+
+
