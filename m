@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A28C3376493;
-	Wed, 28 Jan 2026 20:45:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E676837474C;
+	Wed, 28 Jan 2026 20:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769633161; cv=none; b=IsO+2QeSB/IQ8aG5WCmt9kysMrzM+aKIAfJqha5QknRj+LJPVWo9Z+7J4KMwwATtNEOg5hLbMBX1ZVsEQB6VMf0bjGf2QoQyLoTbqI+PPQOSHyOta7uAnCkavG6tvH4foCuIjufdQHh750lItTEPfSC9zd4MvrqxJpU3tvvBbG4=
+	t=1769633165; cv=none; b=CEiqHRTpzFrFtYEOyVe4oP8jMsQF6meTUm1ZyOzBN6axzfSkHkIMuvl8HeSh9QKZ0pdwQapkLqX0s/Ce2aD4N5gb9xYG0awoM2IqJvBYz7txDMBvTHKwIEiAc+GRJjJDykzV0PCUfjZrMLJiBqXBnBn3sa9HG2CK+2e6gVb8vN8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769633161; c=relaxed/simple;
-	bh=LIOzkeb8MmRc7Gcgsk5W2lA3KQk1ZvuYPSWHZdB8sG8=;
+	s=arc-20240116; t=1769633165; c=relaxed/simple;
+	bh=07iRNpUNsbBPH6Szj7tXNtrkE9omvubg/HSfMgsnHeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXO0koQKA3hl3+4UF6fbMZlGO/4ah9kS+oR0u5Vw+QfZhpTEGifig33jaHCRGQ4hiFU0dYZrSDv3C/40UMDRYs9n7NDJdYKDHpZPldISYVbmaBJTwpitodGnnfTGYY+pcYwNCe6RbW0JbZlX67gMgYe2FiKED6vsChWYY8TPO2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oY6cfJn1; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=HbolO32qVZBW03EAHC9byY19cJIWHc5C+IcQ8JqFN+8OrFiorT/2JW3bAakftdwLvhonzl6INQk/P/HMhlWHKWobrhG8NhjxvnPWSidL3hNVYwiqZkOURMGWNM7359IfkNjedlzDecwZPGcUaU3aaTg+gW+9f5XF1JK9B6P9Vmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Q1s+mY2T; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oY6cfJn1"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Q1s+mY2T"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 305CC1A2AD7;
-	Wed, 28 Jan 2026 20:45:54 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 26A77C211F2;
+	Wed, 28 Jan 2026 20:46:01 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 052556071F;
-	Wed, 28 Jan 2026 20:45:54 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C03AF119A882A;
-	Wed, 28 Jan 2026 21:45:50 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 7B2C56071F;
+	Wed, 28 Jan 2026 20:45:58 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 730D3119A8839;
+	Wed, 28 Jan 2026 21:45:55 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769633152; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1769633157; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=kXnbfwlkpR6I07iWNxCuRlXJndeAV79de3SlIqZ50qc=;
-	b=oY6cfJn19CeOZ+pFwhqBv6wBZvznvX/Ievdgz+e9QBfM+UjiHVdMOEHhzIlRQGk4W/tnPH
-	QD/MjzSOgNnTUmxgbtDtS7qloJ0KqkLd9iaQAGYvRBd0v6D/hIDUnTs1TMKNOh/ZBuGT4k
-	wKb5rFn8o9n4Xg5Sl/7n1ZKQ3eku9Kd0NdaCpj6fNXq4+E8CbBepFYL6x/J7XaxbexIniG
-	PHf0Hoj9ZYZ1P/SYUatsp565znNnTo4v/h/lfl3EShdsAn2A3oqyNae7Q3UIn+ldVWh9Vv
-	vehNIGPonyEwDzM9n0JWgC+7kN83njuBWKQwK+4Uv5iMpYnVvHym6XAp4gtF0g==
+	bh=aSlo6fpytFPeRO/3rcUa8O6Tp4iGzNbOtCMyHVTaty0=;
+	b=Q1s+mY2Ton5mlNsrOlHjSulUZrAlhlKD5obe7wcJU9FHm+FF2Gx0KfT40BW+gK146k/Nvk
+	YxLITH/mpbifJbLiExWSboq85psYkq7XNTuDBS+GZGBJ7rB3E9pOYcIwK/DVNuKJaOBVHk
+	fMIZ8nzAg7jwYFckHaH4lkVH1YMirG+Keq/NYfD69t8A06AJUJEkIbFyKR6BBOIpHfle+k
+	7u5NRTOurPNoZWpStm9SQcgHTeMyAGZCasKgEQ/7f6g+Q4FzATyrfQPBXeUYwevz+Zc2iv
+	vmyi7+v9ZInaZ954LX6xrmnaPIvWCKsf38QXiET3RZ+mZ02UZRl9S0esWns1/w==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -58,9 +58,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next v2 06/12] net: sfp: Add a sfp-bus ops when connecting a module without PHY
-Date: Wed, 28 Jan 2026 21:45:19 +0100
-Message-ID: <20260128204526.170927-7-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v2 08/12] net: phylink: Represent PHY-less SFP modules with phy_port
+Date: Wed, 28 Jan 2026 21:45:21 +0100
+Message-ID: <20260128204526.170927-9-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260128204526.170927-1-maxime.chevallier@bootlin.com>
 References: <20260128204526.170927-1-maxime.chevallier@bootlin.com>
@@ -73,135 +73,122 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The SFP bus infrastructure notifies its upstream when a PHY device was
-discovered on the module. However, we don't have any indication when a
-module with no PHY was inserted, except for the .insert() and .start()
-notifications.
-
-We want to keep track of the SFP module's capabilities using phy_port.
-When the module contains an embedded PHY, the PHY driver will expose a
-phy_port for it. However when there's no PHY, we have no hook to
-populate the phy_port, so let's introduce one. It is called when we
-have parsed the module's caps, applied the fixups, tried and failed to
-probe for a PHY.
-
-This will allow the bus' upstream to create the corresponding port, and
-register it to the topology.
+Let phylink handle the phy_port for PHY-less modules, and register it to
+the topology.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/phy/sfp-bus.c | 20 ++++++++++++++++++++
- drivers/net/phy/sfp.c     | 14 ++++++++++++++
- drivers/net/phy/sfp.h     |  2 ++
- include/linux/sfp.h       |  5 +++++
- 4 files changed, 41 insertions(+)
+ drivers/net/phy/phylink.c | 71 +++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 69 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/sfp-bus.c b/drivers/net/phy/sfp-bus.c
-index b945d75966d5..a3d9e28badd0 100644
---- a/drivers/net/phy/sfp-bus.c
-+++ b/drivers/net/phy/sfp-bus.c
-@@ -753,6 +753,26 @@ void sfp_remove_phy(struct sfp_bus *bus)
- }
- EXPORT_SYMBOL_GPL(sfp_remove_phy);
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 310af33d49a0..21af1dffa837 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -96,6 +96,7 @@ struct phylink {
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(sfp_support);
+ 	u8 sfp_port;
+ 	struct phy_port *sfp_bus_port;
++	struct phy_port *mod_port;
  
-+int sfp_module_connect_nophy(struct sfp_bus *bus)
-+{
-+	const struct sfp_upstream_ops *ops = sfp_get_upstream_ops(bus);
+ 	struct eee_config eee_cfg;
+ 
+@@ -1786,13 +1787,31 @@ static int phylink_create_sfp_port(struct phylink *pl)
+ 	else
+ 		pl->sfp_bus_port = port;
+ 
++	if (pl->mod_port) {
++		ret = phy_link_topo_add_port(pl->netdev, pl->mod_port);
++		if (ret)
++			goto out_bus_port;
++	}
 +
-+	if (ops && ops->connect_nophy)
-+		return ops->connect_nophy(bus->upstream);
++	return 0;
++out_bus_port:
++	phy_link_topo_del_port(pl->netdev, port);
++	phy_port_destroy(port);
+ 	return ret;
+ }
+ 
+ static void phylink_destroy_sfp_port(struct phylink *pl)
+ {
+-	if (pl->netdev && pl->sfp_bus_port)
+-		phy_link_topo_del_port(pl->netdev, pl->sfp_bus_port);
++	if (pl->netdev) {
++		if (pl->sfp_bus_port)
++			phy_link_topo_del_port(pl->netdev, pl->sfp_bus_port);
++
++		/* Only remove it from the topology, it will be destroyed at
++		 * module removal.
++		 */
++		if (pl->mod_port)
++			phy_link_topo_del_port(pl->netdev, pl->mod_port);
++	}
+ 
+ 	if (pl->sfp_bus_port)
+ 		phy_port_destroy(pl->sfp_bus_port);
+@@ -3998,6 +4017,52 @@ static void phylink_sfp_disconnect_phy(void *upstream,
+ 	phylink_disconnect_phy(upstream);
+ }
+ 
++static int phylink_sfp_connect_nophy(void *upstream)
++{
++	const struct sfp_module_caps *caps;
++	struct phylink *pl = upstream;
++	struct phy_port *port;
++	int ret = 0;
++
++	if (!pl->sfp_bus_port)
++		return 0;
++
++	/* Create mod port */
++	port = phy_port_alloc();
++	if (!port)
++		return -ENOMEM;
++
++	port->active = true;
++
++	caps = sfp_get_module_caps(pl->sfp_bus);
++
++	phy_caps_linkmode_filter_ifaces(port->supported, caps->link_modes,
++					pl->sfp_bus_port->interfaces);
++
++	if (pl->netdev) {
++		ret = phy_link_topo_add_port(pl->netdev, port);
++		if (ret) {
++			phy_port_destroy(port);
++			return ret;
++		}
++	}
++
++	pl->mod_port = port;
 +
 +	return 0;
 +}
-+EXPORT_SYMBOL_GPL(sfp_module_connect_nophy);
 +
-+void sfp_module_disconnect_nophy(struct sfp_bus *bus)
++static void phylink_sfp_disconnect_nophy(void *upstream)
 +{
-+	const struct sfp_upstream_ops *ops = sfp_get_upstream_ops(bus);
++	struct phylink *pl = upstream;
 +
-+	if (ops && ops->disconnect_nophy)
-+		ops->disconnect_nophy(bus->upstream);
-+}
-+EXPORT_SYMBOL_GPL(sfp_module_disconnect_nophy);
++	if (pl->netdev)
++		phy_link_topo_del_port(pl->netdev, pl->mod_port);
 +
- void sfp_link_up(struct sfp_bus *bus)
- {
- 	const struct sfp_upstream_ops *ops = sfp_get_upstream_ops(bus);
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 47f095bd91ce..050952bc7bce 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -1918,6 +1918,11 @@ static int sfp_sm_probe_phy(struct sfp *sfp, int addr, bool is_c45)
- 	return 0;
- }
- 
-+static int sfp_sm_connect_nophy(struct sfp *sfp)
-+{
-+	return sfp_module_connect_nophy(sfp->sfp_bus);
++	phy_port_destroy(pl->mod_port);
++	pl->mod_port = NULL;
 +}
 +
- static void sfp_sm_link_up(struct sfp *sfp)
- {
- 	sfp_link_up(sfp->sfp_bus);
-@@ -2646,6 +2651,8 @@ static void sfp_sm_main(struct sfp *sfp, unsigned int event)
- 			sfp_module_stop(sfp->sfp_bus);
- 		if (sfp->mod_phy)
- 			sfp_sm_phy_detach(sfp);
-+		else
-+			sfp_module_disconnect_nophy(sfp->sfp_bus);
- 		if (sfp->i2c_mii)
- 			sfp_i2c_mdiobus_destroy(sfp);
- 		sfp_module_tx_disable(sfp);
-@@ -2749,6 +2756,13 @@ static void sfp_sm_main(struct sfp *sfp, unsigned int event)
- 			sfp_sm_next(sfp, SFP_S_FAIL, 0);
- 			break;
- 		}
-+		if (!sfp->mod_phy) {
-+			ret = sfp_sm_connect_nophy(sfp);
-+			if (ret) {
-+				sfp_sm_next(sfp, SFP_S_FAIL, 0);
-+				break;
-+			}
-+		}
- 		if (sfp_module_start(sfp->sfp_bus)) {
- 			sfp_sm_next(sfp, SFP_S_FAIL, 0);
- 			break;
-diff --git a/drivers/net/phy/sfp.h b/drivers/net/phy/sfp.h
-index 879dff7afe6a..02f3814aac84 100644
---- a/drivers/net/phy/sfp.h
-+++ b/drivers/net/phy/sfp.h
-@@ -37,6 +37,8 @@ int sfp_module_insert(struct sfp_bus *bus, const struct sfp_eeprom_id *id,
- void sfp_module_remove(struct sfp_bus *bus);
- int sfp_module_start(struct sfp_bus *bus);
- void sfp_module_stop(struct sfp_bus *bus);
-+int sfp_module_connect_nophy(struct sfp_bus *bus);
-+void sfp_module_disconnect_nophy(struct sfp_bus *bus);
- struct sfp_bus *sfp_register_socket(struct device *dev, struct sfp *sfp,
- 				    const struct sfp_socket_ops *ops);
- void sfp_unregister_socket(struct sfp_bus *bus);
-diff --git a/include/linux/sfp.h b/include/linux/sfp.h
-index 5c71945a5e4d..1c18de1eb268 100644
---- a/include/linux/sfp.h
-+++ b/include/linux/sfp.h
-@@ -561,6 +561,9 @@ struct sfp_module_caps {
-  *   on the module.
-  * @disconnect_phy: called when a module with an I2C accessible PHY has
-  *   been removed.
-+ * @connect_nophy: called when it was established that the connected module
-+ *		   doesn't have an I2C PHY accessible.
-+ * @disconnect_nophy: called when the PHY-less module has been removed.
-  */
- struct sfp_upstream_ops {
- 	void (*attach)(void *priv, struct sfp_bus *bus);
-@@ -573,6 +576,8 @@ struct sfp_upstream_ops {
- 	void (*link_up)(void *priv);
- 	int (*connect_phy)(void *priv, struct phy_device *);
- 	void (*disconnect_phy)(void *priv, struct phy_device *);
-+	int (*connect_nophy)(void *priv);
-+	void (*disconnect_nophy)(void *priv);
+ static const struct sfp_upstream_ops sfp_phylink_ops = {
+ 	.attach = phylink_sfp_attach,
+ 	.detach = phylink_sfp_detach,
+@@ -4009,6 +4074,8 @@ static const struct sfp_upstream_ops sfp_phylink_ops = {
+ 	.link_down = phylink_sfp_link_down,
+ 	.connect_phy = phylink_sfp_connect_phy,
+ 	.disconnect_phy = phylink_sfp_disconnect_phy,
++	.connect_nophy = phylink_sfp_connect_nophy,
++	.disconnect_nophy = phylink_sfp_disconnect_nophy,
  };
  
- #if IS_ENABLED(CONFIG_SFP)
+ /* Helpers for MAC drivers */
 -- 
 2.49.0
 
