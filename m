@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E331228CA9
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 20:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B61A227BB9
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 20:45:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769633154; cv=none; b=dtE1OsaaqJ9vtX6oI+FhX92p/Q+TvDTfEUXwJS8kJ/zZXcpsRzPXUIp/S7oPDmI5ECZ4Q1UiiT73M2gdev8QSSdh99FcFEf6bFWMnI5V8srsP7uwlrNm7ONd7w0EjFZ9QIaYISVaFWKvNq7e4aKgF0sAxfzWYn/9p6IzuGQZB7U=
+	t=1769633154; cv=none; b=XX9vKo31cboVJ9ohuSkvpAlSgDWe0/Nu0rehsCcxVscr9r2j4JPXVLyVFZKDrZtbEkKF3lZvtE1JEvOkDzyzCY94sRvv3lSOjBpp1dGft+KgQNXWBIgykHtt6ulMrVMcZHFOybIzRoC5tLAHuNewRSu+aEH+CZj8nZxJPsrshhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769633154; c=relaxed/simple;
-	bh=OxrKQGgl7jwc6cMbSQSoC3uDdqvUZmwAerGyXvmUbEc=;
+	bh=g37agUL8FgbZky24zM8Dt6qgHALVVJNhYrx/wBMGpgA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C6KgHmhNXUxY0wbHHK2FcX0TYnoscZtILr9hHBcJZuM3JbQck3XEt24HJjGtU4P4LYkAeptgobgWGWKzjsbBPQXUXM5sg1yhPouMXaBzeyZd7UNzyA76XzPvPrtOLMpLqocqqNBFBcOsucZDXi2PXSYNdDeejrWPMbiXMzzrAXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jrnG0/8S; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=VDudrY0gWkx+UCNvlahbkl6FSfT0h2pg8SPTW64IhwiGhJe4u3QblViOem8u4r6zse37LA0cVFzvse1ZpiCpv3c4KU6e+xJerHhK26G8KDIjmKNcN8rggCbu7Vjc8jQVnrXSF2xaRT+agTVYMaljV1GCY01SvmbfFogVrz070yM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=a6otiCJI; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jrnG0/8S"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="a6otiCJI"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id D4FC81A2AD4;
-	Wed, 28 Jan 2026 20:45:51 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9D9704E42308;
+	Wed, 28 Jan 2026 20:45:49 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9F6456071F;
-	Wed, 28 Jan 2026 20:45:51 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6FCC6119A8838;
-	Wed, 28 Jan 2026 21:45:48 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 737926071F;
+	Wed, 28 Jan 2026 20:45:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 32422119A8836;
+	Wed, 28 Jan 2026 21:45:46 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769633150; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1769633148; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=ilIZ+rjhaF0/E9ISqt8iyKSvoUti0FNYVSjKP6RBlgI=;
-	b=jrnG0/8SQy9RU+SRidXD0essJhZRkFEqPNZhMltH+NKycvwcacgiqVjO6ywcK5peFWQ8vU
-	8qDUnT51LJagJxyObEsj7AZy08YEy/WZr9Hcg/oD4epDK31mx51G7IM32BMZT9zhRLyeaV
-	6j9S2drgg/BpmFyoMdJvbOGdZB4lsAL0Y3+lLXdVtY2xzVDhpSaHksvxws6Q0WDoJDEWkF
-	/ux7byRvTLgmR1T3HG07RZT6XN1sQVYz3uec/PNQ9VoEWAKZGjwp5kN2X9neg3qAhYhFBo
-	MBdmxdY8iL9aV0EEEqz/ua7ev/ml7e8WxROGoFqrFdD6OJ/XjqWOvU4O2sPcDw==
+	bh=Q7in5B95gGhGNfbBBp9uk5VsumQg75Ew576JfetW28U=;
+	b=a6otiCJIFiHIM57LLzlIfUXLVofWB8JWwIlGSA78mVc6L15HiMU9iJTJ1UbLOIO+mrkSdt
+	597czVYH1kaCD/L/WbCLqfUAj+q1+T6UHIziw1+ciclFVgJPsRbk4b3VOqulXdiHhXFyCw
+	Z0RfUH7ErZAuAuWAL0/KLJ41Iu76nOaXklYvP2iGW1/430b9KmxFFu3Bp5/Sfha3oDV4hT
+	plA497VfgqAgb41r6ndnCAATJRV3MDRVWojHHncmZS/NnTmn2EZE1eJmWuDgTQ9ib95eel
+	fWUxl9Vg+Gus4nr33MJiXV2rmjKj0f0lbFgFRJewIs9XSuujFhWvzAbP1MRSvA==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -58,9 +58,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next v2 05/12] net: phy: Create SFP phy_port before registering usptream
-Date: Wed, 28 Jan 2026 21:45:18 +0100
-Message-ID: <20260128204526.170927-6-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v2 04/12] net: phylink: Register a phy_port for MAC-driven SFP busses
+Date: Wed, 28 Jan 2026 21:45:17 +0100
+Message-ID: <20260128204526.170927-5-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260128204526.170927-1-maxime.chevallier@bootlin.com>
 References: <20260128204526.170927-1-maxime.chevallier@bootlin.com>
@@ -73,98 +73,119 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-When dealing with PHY-driver SFP, we create a phy_port representing the
-SFP bus when we know we have such a bus.
+phy_port tracks the interfaces that a netdevice feeds into. SFP cages are
+such ports, but so far we are only tracking the ones that are driven by
+PHYs acting as media-converters.
 
-We can move the port creation before registering the sfp upstream ops,
-as long as we know the SFP bus is there. This will allow passing the
-phy_port along with the upstream information to the SFP bus.
+Let's populate a phy_port for MAC driver SFP cages, handled by phylink.
+
+This phy_port represents the SFP cage itself, and not the module that
+may be plugged into it. It's therefore not an MDI interface, so only the
+'interfaces' field is relevant here.
+
+The phy_port is only populated for 'NETDEV' phylink instances, as
+otherwise we don't have any topology to attach the port to.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/phy/phy_device.c | 42 ++++++++++++++++++++++++------------
- 1 file changed, 28 insertions(+), 14 deletions(-)
+ drivers/net/phy/phylink.c | 53 +++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 53 insertions(+)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 8a3eb1839a3d..49696b1a2f13 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1665,13 +1665,13 @@ static void phy_del_port(struct phy_device *phydev, struct phy_port *port)
- 	phydev->n_ports--;
- }
+diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
+index 7641f1f41e39..310af33d49a0 100644
+--- a/drivers/net/phy/phylink.c
++++ b/drivers/net/phy/phylink.c
+@@ -14,6 +14,8 @@
+ #include <linux/of_mdio.h>
+ #include <linux/phy.h>
+ #include <linux/phy_fixed.h>
++#include <linux/phy_link_topology.h>
++#include <linux/phy_port.h>
+ #include <linux/phylink.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/spinlock.h>
+@@ -93,6 +95,7 @@ struct phylink {
+ 	DECLARE_PHY_INTERFACE_MASK(sfp_interfaces);
+ 	__ETHTOOL_DECLARE_LINK_MODE_MASK(sfp_support);
+ 	u8 sfp_port;
++	struct phy_port *sfp_bus_port;
  
--static int phy_setup_sfp_port(struct phy_device *phydev)
-+static struct phy_port *phy_setup_sfp_port(struct phy_device *phydev)
- {
- 	struct phy_port *port = phy_port_alloc();
- 	int ret;
+ 	struct eee_config eee_cfg;
  
- 	if (!port)
--		return -ENOMEM;
-+		return ERR_PTR(-ENOMEM);
+@@ -1757,6 +1760,46 @@ static void phylink_fixed_poll(struct timer_list *t)
  
- 	port->parent_type = PHY_PORT_PHY;
- 	port->phy = phydev;
-@@ -1686,10 +1686,12 @@ static int phy_setup_sfp_port(struct phy_device *phydev)
- 	 * when attaching the port to the phydev.
- 	 */
- 	ret = phy_add_port(phydev, port);
--	if (ret)
-+	if (ret) {
- 		phy_port_destroy(port);
-+		return ERR_PTR(ret);
-+	}
+ static const struct sfp_upstream_ops sfp_phylink_ops;
  
--	return ret;
-+	return port;
- }
- 
- /**
-@@ -1698,22 +1700,34 @@ static int phy_setup_sfp_port(struct phy_device *phydev)
-  */
- static int phy_sfp_probe(struct phy_device *phydev)
- {
++static int phylink_create_sfp_port(struct phylink *pl)
++{
 +	struct phy_port *port;
- 	struct sfp_bus *bus;
--	int ret = 0;
-+	int ret;
- 
--	if (phydev->mdio.dev.fwnode) {
--		bus = sfp_bus_find_fwnode(phydev->mdio.dev.fwnode);
--		if (IS_ERR(bus))
--			return PTR_ERR(bus);
-+	if (!phydev->mdio.dev.fwnode)
++	int ret = 0;
++
++	if (!pl->netdev || !pl->sfp_bus)
 +		return 0;
 +
-+	bus = sfp_bus_find_fwnode(phydev->mdio.dev.fwnode);
-+	if (IS_ERR(bus))
-+		return PTR_ERR(bus);
- 
--		phydev->sfp_bus = bus;
-+	phydev->sfp_bus = bus;
- 
--		ret = sfp_bus_add_upstream(bus, phydev, &sfp_phydev_ops);
--		sfp_bus_put(bus);
-+	if (bus) {
-+		port = phy_setup_sfp_port(phydev);
-+		if (IS_ERR(port)) {
-+			sfp_bus_put(bus);
-+			return PTR_ERR(port);
-+		}
- 	}
- 
--	if (!ret && phydev->sfp_bus)
--		ret = phy_setup_sfp_port(phydev);
-+	ret = sfp_bus_add_upstream(bus, phydev, &sfp_phydev_ops);
-+	sfp_bus_put(bus);
++	port = phy_port_alloc();
++	if (!port)
++		return -ENOMEM;
 +
-+	if (ret && port) {
-+		phy_del_port(phydev, port);
++	port->is_sfp = true;
++	port->is_mii = true;
++	port->active = true;
++
++	phy_interface_and(port->interfaces, pl->config->supported_interfaces,
++			  phylink_sfp_interfaces);
++	phy_port_update_supported(port);
++
++	ret = phy_link_topo_add_port(pl->netdev, port);
++	if (ret)
 +		phy_port_destroy(port);
-+	}
++	else
++		pl->sfp_bus_port = port;
++
++	return ret;
++}
++
++static void phylink_destroy_sfp_port(struct phylink *pl)
++{
++	if (pl->netdev && pl->sfp_bus_port)
++		phy_link_topo_del_port(pl->netdev, pl->sfp_bus_port);
++
++	if (pl->sfp_bus_port)
++		phy_port_destroy(pl->sfp_bus_port);
++
++	pl->sfp_bus_port = NULL;
++}
++
+ static int phylink_register_sfp(struct phylink *pl,
+ 				const struct fwnode_handle *fwnode)
+ {
+@@ -1774,9 +1817,18 @@ static int phylink_register_sfp(struct phylink *pl,
  
+ 	pl->sfp_bus = bus;
+ 
++	ret = phylink_create_sfp_port(pl);
++	if (ret) {
++		sfp_bus_put(bus);
++		return ret;
++	}
++
+ 	ret = sfp_bus_add_upstream(bus, pl, &sfp_phylink_ops);
+ 	sfp_bus_put(bus);
+ 
++	if (ret)
++		phylink_destroy_sfp_port(pl);
++
  	return ret;
  }
+ 
+@@ -1938,6 +1990,7 @@ EXPORT_SYMBOL_GPL(phylink_create);
+ void phylink_destroy(struct phylink *pl)
+ {
+ 	sfp_bus_del_upstream(pl->sfp_bus);
++	phylink_destroy_sfp_port(pl);
+ 	if (pl->link_gpio)
+ 		gpiod_put(pl->link_gpio);
+ 
 -- 
 2.49.0
 
