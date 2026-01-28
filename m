@@ -1,92 +1,149 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E75313959D;
-	Wed, 28 Jan 2026 09:22:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A34344DB3
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 09:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769592182; cv=none; b=gBplN6rDvsOW6GvwmTC28tY9MXjyxmNzvrA0+mtiSLlu2GfVHnVROQ80iM75fpH7IGMMaCP+CuwBdASzgV9wa9bAmNW7+RC6XUWe7PLRW7cZ4Ppe7TDrDiXa9Qy5ccmIvkGFOkrlU8YHNilqpEzBHx3zK5Yd6HFx4url2ZBoVfo=
+	t=1769592573; cv=none; b=Qrg4rlW7bj71yvDEddQhr9yirN3HtIM39/p10oFyj5ADvWmrnKh2ISAk6Zedn57+EjxGpQqGZ+/GWcwVxBe7jHtCO/wFbUoGJHInN9HIo1lx/h42wJhsQF1gjHc9OvgcfCPNjdLzqmbanuABtkrw5cvqupzlb5jofR4ErEKRCxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769592182; c=relaxed/simple;
-	bh=yxdJgcyAaZdNv2F+vvtMiEG2f16J1xKSCRg4XJXtNN0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VV4c92o4hWbrslOkEVBr2lBpLAgj33FzAYvv323iNVBLsoASwtfPSgNh9R125EXb6jb/rHb8hiHZ4CdEuWbXWmdpPAeNAjC8X98ZcZowRC2HZazvzfFARRN3sCO8b/s/XlE+ZnflOF3rj3YoGj/TluJ+EyhzqGoDG/3Mf2lIOEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=GnG/sfck; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="GnG/sfck"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 7DF6C4E422F3;
-	Wed, 28 Jan 2026 09:22:52 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 536E46071A;
-	Wed, 28 Jan 2026 09:22:52 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E38FF119A8695;
-	Wed, 28 Jan 2026 10:22:46 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769592171; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=kfr+T6NkfKEu9kIgHzq6J+epCZO3duBfoXYVaEh4cnE=;
-	b=GnG/sfckcsRl4lAH3d4XT/7hJr8X9TofMMVxxFdQK7sfgBH/PReb7TX4n/vvCc9oorcsid
-	BJxuxb4IbW1ZL0qmBUpqsH3NLYGPskwRa79+Nai2hvZjD3ttFHNDOY87gTBE3a3tiUO90b
-	WZTknPWr36SXI2IcwIkdf2UBzgm3vvE/4GqoWoFbYq1/AlBLGiIMmtlymAHH5jm1YD3dxk
-	WYorsV2YndJtbn33dLywGkJEyfa/VG2km0jkkePvlvlkQxmNHCrf8obd0IFSXCas0HC7qe
-	MC91DBirulm1xdB0AvQtw1XS3Dip3YEffYeAQS3GT22Cq4xGENg//phnLzkQhA==
-Message-ID: <c9cb204b-e079-4f5b-b670-dcce14101390@bootlin.com>
-Date: Wed, 28 Jan 2026 10:22:46 +0100
+	s=arc-20240116; t=1769592573; c=relaxed/simple;
+	bh=WVu8/kqahlNbZGD8WK1R44jw+AVgtyIkl0iWAfZYO74=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=IXWPYkzJ2wjt1pOOfqE9MGNwsTcMTwBsLHRIUD/ar06yr0eWHtIEFhq7IE3Q0SlekvySXYeysq0A/MhzMgEXZpsYdOKPc/EGwO3Jxkq5ObdXArozyjMs6/09SLeh3VvgIu0XU9J2BHMyi/aDaDUX/AUnZXODmwzb8Ij9S4CxnQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vl1rN-0007xb-Mv; Wed, 28 Jan 2026 10:29:13 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vl1rN-002tQM-24;
+	Wed, 28 Jan 2026 10:29:13 +0100
+Received: from hardanger.blackshift.org (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id A32044DA031;
+	Wed, 28 Jan 2026 09:29:12 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Wed, 28 Jan 2026 10:28:58 +0100
+Subject: [PATCH can-next v2 6/6] can: gw: use can_gw_hops instead of
+ sk_buff::csum_start
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v4 1/8] net: dsa: microchip: Add support for
- KSZ8463 global irq
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
- Simon Horman <horms@kernel.org>, Pascal Eberhard <pascal.eberhard@se.com>,
- =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260127-ksz8463-ptp-v4-0-652e021aae86@bootlin.com>
- <20260127-ksz8463-ptp-v4-1-652e021aae86@bootlin.com>
- <20260127190327.79d3f154@kernel.org>
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <20260127190327.79d3f154@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Message-Id: <20260128-can-skb-ext-v2-6-fe64aa152c8a@pengutronix.de>
+References: <20260128-can-skb-ext-v2-0-fe64aa152c8a@pengutronix.de>
+In-Reply-To: <20260128-can-skb-ext-v2-0-fe64aa152c8a@pengutronix.de>
+To: Marc Kleine-Budde <mkl@pengutronix.de>, 
+ Vincent Mailhol <mailhol@kernel.org>, 
+ Oliver Hartkopp <socketcan@hartkopp.net>, 
+ Robin van der Gracht <robin@protonic.nl>, 
+ Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2771; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=PqxHagvAwkQO9Lf5q1TvpNsqgySOE9ALOyhaXCgYc/I=;
+ b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBpedbmnCmd7pg6V2J/gIHUMyhBfsh4BovVkjgIM
+ c/w7R7QCEeJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaXnW5gAKCRAMdGXf+ZCR
+ nLujB/9ErsWjPCf6h2BvdnHuxENIVNerpNC5grQGH4jEUdKyaLtf4pqeGETqSSAXjg7EfbK70/E
+ 5NrVIPek73IXsSXEmPZxB31kve9dgER6RBf+BYHy2qC8Wc0K6i1Dm8pQePA+YqXRpWu1oESAylS
+ pqsuM6+ufe1IntqdbT0MV54azsqgWXj5tBA5ePAVC5RRut1W0BKB49nNK38NRsfLzPl48mK0Thn
+ SQvzvuB/LcmY4Snj1wSzNw6w3vIpVDdIpf2vligwec6sWz/f3KwzBMSxPbNJrT+UbKJT+DNhLlz
+ FcvKgpSyFDfPmS04Dcdtr86YjFg06MBxV7Mr1rJw62Kut5fk
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hi Jakub,
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-On 1/28/26 4:03 AM, Jakub Kicinski wrote:
-> On Tue, 27 Jan 2026 10:06:43 +0100 Bastien Curutchet (Schneider
-> Electric) wrote:
->>   	/* Read interrupt status register */
->> -	ret = ksz_read8(dev, kirq->reg_status, &data);
->> +	ret = ksz_read16(dev, kirq->reg_status, &data);
-> 
-> AI code review points out that we're potentially over-reading here for
-> !ksz_is_ksz8463(kirq->dev), I'm assuming the wider read is okay for all
-> chips? Is this something that'll be obvious to all readers of this code
-> or should we perhaps leave a relevant comment here? (assuming you need
-> to respin, not sure its worth a respin by itself)
+As CAN skbs don't use IP checksums the skb->csum_start variable was used to
+store the can-gw CAN frame time-to-live counter together with
+skb->ip_summed set to CHECKSUM_UNNECESSARY.
 
-The loop below this read only iterates over the first kirq->nirqs bits, 
-so I assume a wider read is fine. I wanted to avoid adding if 
-(ksz_is_ksz8463()) branches as much as possible.
+Remove the 'hack' using the skb->csum_start variable and move the content
+to can_skb_ext::can_gw_hops of the CAN skb extensions.
 
-Indeed, a comment wouldn't hurt here; I'll add one if I need to respin.
+The module parameter 'max_hops' has been reduced to a single byte to fit
+can_skb_ext::can_gw_hops as the maximum value to be stored is 6.
 
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ net/can/gw.c | 23 ++++++-----------------
+ 1 file changed, 6 insertions(+), 17 deletions(-)
 
-Best regards,
-Bastien
+diff --git a/net/can/gw.c b/net/can/gw.c
+index ad89a1913b34..2c134c9e5159 100644
+--- a/net/can/gw.c
++++ b/net/can/gw.c
+@@ -71,8 +71,8 @@ MODULE_ALIAS(CAN_GW_NAME);
+ #define CGW_MAX_HOPS 6
+ #define CGW_DEFAULT_HOPS 1
+ 
+-static unsigned int max_hops __read_mostly = CGW_DEFAULT_HOPS;
+-module_param(max_hops, uint, 0444);
++static unsigned char max_hops __read_mostly = CGW_DEFAULT_HOPS;
++module_param(max_hops, byte, 0444);
+ MODULE_PARM_DESC(max_hops,
+ 		 "maximum " CAN_GW_NAME " routing hops for CAN frames "
+ 		 "(valid values: " __stringify(CGW_MIN_HOPS) "-"
+@@ -480,19 +480,8 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
+ 	/* Do not handle CAN frames routed more than 'max_hops' times.
+ 	 * In general we should never catch this delimiter which is intended
+ 	 * to cover a misconfiguration protection (e.g. circular CAN routes).
+-	 *
+-	 * The Controller Area Network controllers only accept CAN frames with
+-	 * correct CRCs - which are not visible in the controller registers.
+-	 * According to skbuff.h documentation the csum_start element for IP
+-	 * checksums is undefined/unused when ip_summed == CHECKSUM_UNNECESSARY.
+-	 * Only CAN skbs can be processed here which already have this property.
+ 	 */
+-
+-#define cgw_hops(skb) ((skb)->csum_start)
+-
+-	BUG_ON(skb->ip_summed != CHECKSUM_UNNECESSARY);
+-
+-	if (cgw_hops(skb) >= max_hops) {
++	if (csx->can_gw_hops >= max_hops) {
+ 		/* indicate deleted frames due to misconfiguration */
+ 		gwj->deleted_frames++;
+ 		return;
+@@ -532,11 +521,11 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
+ 	}
+ 
+ 	/* put the incremented hop counter in the cloned skb */
+-	cgw_hops(nskb) = cgw_hops(skb) + 1;
++	ncsx->can_gw_hops = csx->can_gw_hops + 1;
+ 
+ 	/* first processing of this CAN frame -> adjust to private hop limit */
+-	if (gwj->limit_hops && cgw_hops(nskb) == 1)
+-		cgw_hops(nskb) = max_hops - gwj->limit_hops + 1;
++	if (gwj->limit_hops && ncsx->can_gw_hops == 1)
++		ncsx->can_gw_hops = max_hops - gwj->limit_hops + 1;
+ 
+ 	nskb->dev = gwj->dst.dev;
+ 
 
-
+-- 
+2.51.0
 
