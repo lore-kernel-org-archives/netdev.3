@@ -1,166 +1,224 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750DE32ED24;
-	Wed, 28 Jan 2026 11:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE78227CB04;
+	Wed, 28 Jan 2026 11:16:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769598830; cv=none; b=LWuPoZTZMRKzG29om/bpnj9r3dAYUXxrCwQ10A9d4doLFUgTLxoxKOkkh4qJthz10PO9rbAwsspABcJj2SwAmtQlzORrf4aEnFMPvarHykHMOjl7sqhFla1HPciJhQhCCoqoX8UJypTVEai1r1fwE8oJ+ExkaX+SbGAEO8SyS0k=
+	t=1769598983; cv=none; b=pU5OAtQCk6pt1RHrdWenrX3nYj537+2cKCmY2/B4Y2Zj8+Y8yFf6cOTpOAgg09w/WJeMOfdt1YUZ09fiDZe2YEWgy37QTAF83CSr2H8xT3lXFroABzYbb+zzFSeABgLsuiZrZHb7qQHUadA4UINDkMRWzdGoeGJApqfx3sRLPio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769598830; c=relaxed/simple;
-	bh=XhAa/knyZ6haG7FHsLWt0DcbM4mnkccj/WzXt56VTpQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oTeTdPz3FIlMC8KZepjA4CutgSr1HJ3P6/dXIrQZ50cqJOi8ELLIEfyc1lOa4CFOqHcvHpQawAJQ0Je3EiHEwoM1O5siMSoCn+fKrVwFZ/Ve+NyPnVLakEmRgxxIIdYiDchNpxoe3epa9D0QqDFU8Qx3+L5O/cK2eCkqUPf/YD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QsOIO6cV; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769598983; c=relaxed/simple;
+	bh=zmT41P/PEUmTJaTpMuvIsgHatzDSDnhYuLokfcqBJh4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jTPzbTBLFCfEIWt5XzR0c1YTmi6XRtA7OtwgBW6JFyinyKWKtbkLj/xnhPKyHS1CEmtGZ765Kmy27FpqWnlAWrc99I4rXSq8zaX0ZY4NKc9XZc0sD/1g28efZo0dVjv5JVK8v/+J+xFxTeZr4v0Ds/rFFWEHvW7YY7aAB95flIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=z+NB5rwR; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=z+NB5rwR; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QsOIO6cV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E815DC4CEF1;
-	Wed, 28 Jan 2026 11:13:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769598830;
-	bh=XhAa/knyZ6haG7FHsLWt0DcbM4mnkccj/WzXt56VTpQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QsOIO6cV70uo0MZSW5kkJyDzI6RcSrMOzS5q7b7ULZKvuvWOx/IEA15z5DVAGIIJB
-	 coB0IBdwYPmvjySgO+Q5k0Jh7yt3uJdRV7gfvJoAN354mNNBcRN0nPgfT+cNOutquJ
-	 ZpegGQAj4wSMSonkLxC7IwKMy3Ey977CuGMoGbkKTiCHGIQ0NLz5TwtRb/TERR82EW
-	 gi+yJN3vH9nFSz8UetoM6ON9giYtcaD2dAs7OBryHfj7ofCebLLX0mZMO5KXNUbTV6
-	 tJEsoktIRK3o+24kAK4i4HfY3V6Kp+kTlsfAFbeP/LXceIkOsVtbdbiUnMiqvrXZhI
-	 Zl1Y90LMpECMQ==
-Date: Wed, 28 Jan 2026 13:13:46 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: "D. Wythe" <alibuda@linux.alibaba.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-rdma@vger.kernel.org,
-	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
-	oliver.yang@linux.alibaba.com
-Subject: Re: [PATCH net-next 2/3] mm: vmalloc: export find_vm_area()
-Message-ID: <20260128111346.GD12149@unreal>
-References: <20260123082349.42663-1-alibuda@linux.alibaba.com>
- <20260123082349.42663-3-alibuda@linux.alibaba.com>
- <aXPEFdEdtSmd6AzF@milan>
- <20260124093505.GA98529@j66a10360.sqa.eu95>
- <aXSjm1DXm6yP62tD@pc636>
- <20260124145754.GA57116@j66a10360.sqa.eu95>
- <20260127133417.GU13967@unreal>
- <20260128034558.GA126415@j66a10360.sqa.eu95>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="z+NB5rwR";
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="z+NB5rwR"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=VPCF7oe3aSRZOrTu6fR7Jfgi4D8KmzGxI2cvCpAp8Do=;
+	b=z+NB5rwRt3Z7QKn8wj3ZEvYzDPP7tVfxoXHeBXmFDjHYmeyrkj90ccIHS/tOxjMlhK32oLOEz
+	k6HbUtRtE1gq8UgIZc2mFJhucMJfot9BEdjCExvwWVdL1uCZDnCh6z73D2aVc5g9QlNEKp6DH0t
+	gfI/tOsjG7eOb0N6DYuPHIA=
+Received: from canpmsgout11.his.huawei.com (unknown [172.19.92.148])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTPS id 4f1KSw0xvQz1BFnl;
+	Wed, 28 Jan 2026 19:15:44 +0800 (CST)
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=VPCF7oe3aSRZOrTu6fR7Jfgi4D8KmzGxI2cvCpAp8Do=;
+	b=z+NB5rwRt3Z7QKn8wj3ZEvYzDPP7tVfxoXHeBXmFDjHYmeyrkj90ccIHS/tOxjMlhK32oLOEz
+	k6HbUtRtE1gq8UgIZc2mFJhucMJfot9BEdjCExvwWVdL1uCZDnCh6z73D2aVc5g9QlNEKp6DH0t
+	gfI/tOsjG7eOb0N6DYuPHIA=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4f1KPR6WZLzKm4b;
+	Wed, 28 Jan 2026 19:12:43 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9EE8440562;
+	Wed, 28 Jan 2026 19:16:12 +0800 (CST)
+Received: from kwepemq200002.china.huawei.com (7.202.195.90) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 28 Jan 2026 19:16:12 +0800
+Received: from localhost.localdomain (10.50.85.175) by
+ kwepemq200002.china.huawei.com (7.202.195.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 28 Jan 2026 19:16:11 +0800
+From: Dong Chenchen <dongchenchen2@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <horms@kernel.org>, <andrew+netdev@lunn.ch>,
+	<sdf@fomichev.me>, <kuniyu@google.com>, <skhawaja@google.com>,
+	<ahmed.zaki@intel.com>, <willemb@google.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<zhangchangzhong@huawei.com>, Dong Chenchen <dongchenchen2@huawei.com>
+Subject: [BUG Report] BUG: soft lockup in ptype seq_file traversal
+Date: Wed, 28 Jan 2026 19:23:48 +0800
+Message-ID: <20260128112348.3950437-1-dongchenchen2@huawei.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260128034558.GA126415@j66a10360.sqa.eu95>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq200002.china.huawei.com (7.202.195.90)
 
-On Wed, Jan 28, 2026 at 11:45:58AM +0800, D. Wythe wrote:
-> On Tue, Jan 27, 2026 at 03:34:17PM +0200, Leon Romanovsky wrote:
-> > On Sat, Jan 24, 2026 at 10:57:54PM +0800, D. Wythe wrote:
-> > > On Sat, Jan 24, 2026 at 11:48:59AM +0100, Uladzislau Rezki wrote:
-> > > > Hello, D. Wythe!
-> > > > 
-> > > > > On Fri, Jan 23, 2026 at 07:55:17PM +0100, Uladzislau Rezki wrote:
-> > > > > > On Fri, Jan 23, 2026 at 04:23:48PM +0800, D. Wythe wrote:
-> > > > > > > find_vm_area() provides a way to find the vm_struct associated with a
-> > > > > > > virtual address. Export this symbol to modules so that modularized
-> > > > > > > subsystems can perform lookups on vmalloc addresses.
-> > > > > > > 
-> > > > > > > Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-> > > > > > > ---
-> > > > > > >  mm/vmalloc.c | 1 +
-> > > > > > >  1 file changed, 1 insertion(+)
-> > > > > > > 
-> > > > > > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > > > > > > index ecbac900c35f..3eb9fe761c34 100644
-> > > > > > > --- a/mm/vmalloc.c
-> > > > > > > +++ b/mm/vmalloc.c
-> > > > > > > @@ -3292,6 +3292,7 @@ struct vm_struct *find_vm_area(const void *addr)
-> > > > > > >  
-> > > > > > >  	return va->vm;
-> > > > > > >  }
-> > > > > > > +EXPORT_SYMBOL_GPL(find_vm_area);
-> > > > > > >  
-> > > > > > This is internal. We can not just export it.
-> > > > > > 
-> > > > > > --
-> > > > > > Uladzislau Rezki
-> > > > > 
-> > > > > Hi Uladzislau,
-> > > > > 
-> > > > > Thank you for the feedback. I agree that we should avoid exposing
-> > > > > internal implementation details like struct vm_struct to external
-> > > > > subsystems.
-> > > > > 
-> > > > > Following Christoph's suggestion, I'm planning to encapsulate the page
-> > > > > order lookup into a minimal helper instead:
-> > > > > 
-> > > > > unsigned int vmalloc_page_order(const void *addr){
-> > > > > 	struct vm_struct *vm;
-> > > > >  	vm = find_vm_area(addr);
-> > > > > 	return vm ? vm->page_order : 0;
-> > > > > }
-> > > > > EXPORT_SYMBOL_GPL(vmalloc_page_order);
-> > > > > 
-> > > > > Does this approach look reasonable to you? It would keep the vm_struct
-> > > > > layout private while satisfying the optimization needs of SMC.
-> > > > > 
-> > > > Could you please clarify why you need info about page_order? I have not
-> > > > looked at your second patch.
-> > > > 
-> > > > Thanks!
-> > > > 
-> > > > --
-> > > > Uladzislau Rezki
-> > > 
-> > > Hi Uladzislau,
-> > > 
-> > > This stems from optimizing memory registration in SMC-R. To provide the
-> > > RDMA hardware with direct access to memory buffers, we must register
-> > > them with the NIC. During this process, the hardware generates one MTT
-> > > entry for each physically contiguous block. Since these hardware entries
-> > > are a finite and scarce resource, and SMC currently defaults to a 4KB
-> > > registration granularity, a single 2MB buffer consumes 512 entries. In
-> > > high-concurrency scenarios, this inefficiency quickly exhausts NIC
-> > > resources and becomes a major bottleneck for system scalability.
-> > 
-> > I believe this complexity can be avoided by using the RDMA MR pool API,
-> > as other ULPs do, for example NVMe.
-> > 
-> > Thanks
-> > 
-> 
-> Hi Leon,
-> 
-> Am I correct in assuming you are suggesting mr_pool to limit the number
-> of MRs as a way to cap MTTE consumption?
+Hello,
 
-I don't see this a limit, but something that is considered standard
-practice to reduce MTT consumption.
+syzkaller found a data race during concurrent traversal and modification
+of packet_type list that can lead to soft lockups.
 
-> 
-> However, our goal is to maximize the total registered memory within
-> the MTTE limits rather than to cap it. In SMC-R, each connection
-> occupies a configurable, fixed-size registered buffer; consequently,
-> the more memory we can register, the more concurrent connections
-> we can support.
+call trace as below:
 
-It is not cap, but more efficient use of existing resources.
+watchdog: BUG: soft lockup - CPU#3 stuck for 35819s! [test:611]
+Modules linked in:
+CPU: 3 UID: 0 PID: 611 Comm: test Tainted: G -
+L      6.19.0-rc4-00013-g7f98ab9da046 #2 NONE
+Tainted: [L]=SOFTLOCKUP
+Hardware name: linux,dummy-virt (DT)
+pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+pc : __asan_load8+0x4c/0xc0
+lr : ptype_seq_next+0x3c/0x280
+Call trace:
+ __asan_load8+0x4c/0xc0 (P)
+ ptype_seq_next+0x3c/0x280
+ traverse.part.0+0xe8/0x250
+ seq_read_iter+0x49c/0x780
+ seq_read+0x190/0x210
+ proc_reg_read+0x110/0x180
+ do_loop_readv_writev.part.0+0x184/0x208
+ vfs_readv+0x290/0x300
+ __arm64_sys_preadv+0x15c/0x1c8
+ invoke_syscall+0x68/0x190
+ el0_svc_common.constprop.0+0x11c/0x150
+ do_el0_svc+0x3c/0x58
+ el0_svc+0x40/0xf8
+ el0t_64_sync_handler+0xa0/0xe8
+ el0t_64_sync+0x1ac/0x1b0
 
-> 
-> By leveraging vmalloc_huge() and the proposed helper to increase the
-> page_size in ib_map_mr_sg(), each MTTE covers a much larger contiguous
-> physical block. This significantly reduces the total number of entries
-> required to map the same amount of memory, allowing us to serve more
-> connections under the same hardware constraints
-> 
-> D. Wythe
+Root cause analysis:
+The ptype_head maintains two lists: net->ptype_all and dev->ptype_all.
+It determines whether the current pt belongs to the net->ptype_all or
+dev->ptype_all list by examining the value of pt->dev. When pt->dev does
+not correspond to the list that pt is currently in, the list head detection
+will no longer work correctly.
+
+The race condition occurs when ptype_seq_next() is traversing the list
+while another thread concurrently modifies the list by removing/readding
+packet_type entries.
+
+CPU1				CPU2
+ptype_seq_next
+    nxt = pt->list.next;
+    //nxt = ptype_head(pt) = dev->ptype_all
+				packet_release/packet_notifier
+				    unregister_prot_hook(sk, false);
+				    //no sync wait, pt->list.next not change
+				    po->prot_hook.dev = NULL;
+    if (pt->dev) //check fail 
+        if (nxt != &pt->dev->ptype_all)
+            goto found;
+    if (nxt != &ptype_all) //check success
+        goto found;
+found:
+    return list_entry(nxt, struct packet_type, list);
+    //return list head to seq traversal
+
+reproduce flow:
+fd=socket(AF_PACKET)
+packet_bind(fd, dev)
+			cat /proc/net/ptype //can add delay to ptype_seq_next
+close(fd)
+
+I have a preliminary fix as bellow[1], but the ptype file traversal may
+block the psock release and dev unregister.
+Does anyone have a good idea to solve this problem?
+
+-----
+Best Regards,
+Dong Chenchen
+
+[1] 
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 5870a9e514a5..ff92b8e8fc46 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -2947,6 +2947,8 @@ struct packet_type {
+        struct list_head        list;
+ };
+ 
++extern rwlock_t ptype_lock;
++
+ struct offload_callbacks {
+        struct sk_buff          *(*gso_segment)(struct sk_buff *skb,
+                                                netdev_features_t features);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 36dc5199037e..240702ac247e 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -168,7 +168,9 @@
+ #include "devmem.h"
+ #include "net-sysfs.h"
+ 
+-static DEFINE_SPINLOCK(ptype_lock);
++DEFINE_RWLOCK(ptype_lock);
++EXPORT_SYMBOL(ptype_lock);
++
+ struct list_head ptype_base[PTYPE_HASH_SIZE] __read_mostly;
+ 
+ static int netif_rx_internal(struct sk_buff *skb);
+@@ -609,9 +611,9 @@ void dev_add_pack(struct packet_type *pt)
+        if (WARN_ON_ONCE(!head))
+                return;
+ 
+-       spin_lock(&ptype_lock);
++       write_lock(&ptype_lock);
+        list_add_rcu(&pt->list, head);
+-       spin_unlock(&ptype_lock);
++       write_unlock(&ptype_lock);
+ }
+ EXPORT_SYMBOL(dev_add_pack);
+ 
+@@ -636,7 +638,7 @@ void __dev_remove_pack(struct packet_type *pt)
+        if (!head)
+                return;
+ 
+-       spin_lock(&ptype_lock);
++       write_lock(&ptype_lock);
+ 
+        list_for_each_entry(pt1, head, list) {
+                if (pt == pt1) {
+@@ -647,7 +649,7 @@ void __dev_remove_pack(struct packet_type *pt)
+ 
+        pr_warn("dev_remove_pack: %p not found\n", pt);
+ out:
+-       spin_unlock(&ptype_lock);
++       write_unlock(&ptype_lock);
+ }
+ EXPORT_SYMBOL(__dev_remove_pack);
+ 
+diff --git a/net/core/net-procfs.c b/net/core/net-procfs.c
+index 70e0e9a3b650..e6234f8e243f 100644
+--- a/net/core/net-procfs.c
++++ b/net/core/net-procfs.c
+@@ -213,6 +213,7 @@ static void *ptype_seq_start(struct seq_file *seq, loff_t *pos)
+        __acquires(RCU)
+ {
+        rcu_read_lock();
++       read_lock(&ptype_lock);
+        return *pos ? ptype_get_idx(seq, *pos - 1) : SEQ_START_TOKEN;
+ }
+ 
+@@ -274,6 +275,7 @@ static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ static void ptype_seq_stop(struct seq_file *seq, void *v)
+        __releases(RCU)
+ {
++       read_unlock(&ptype_lock);
+        rcu_read_unlock();
+ }
