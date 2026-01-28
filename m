@@ -1,306 +1,159 @@
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAA3333D6C9
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 09:29:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.125.188.123
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769592571; cv=pass; b=fZ32bZ6g8j62KvcPDM+pNAfr7cirAn4Rj4xGf0MfhQmQLOLQt8cwRp7nFykagxiNmRLRzDxaZ51GwsQmMWOre+epF2p1VCrQqBaElLt0g4zctVQlVBWZTWmRL+3naDMbW4E5FJTm2soSv321abIeib1HfWAKPS4Z0zzI5fedOmw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769592571; c=relaxed/simple;
-	bh=RSIAd/nJtkq9oPfjNS35NWWtyldhhz18m0qHrSgjs0E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rB2txh1f5tS/2C0ebx/kluaKnsDXGo291x8vY1yvb1h/t7rKzQJJ2OxaeetkRBRSniNCby4cMXhjLvzCUvEuzWylUzPa9eEsRe0Vu7buyFXvVOeNxZPCl058WveBstjVkkgaFJGxe4DFL0S2pEkzkQAmajsL0Xgb0HeofuXat2w=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=ZStqnL97; arc=pass smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="ZStqnL97"
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC475345CB0
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 09:29:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769592573; cv=none; b=tNfZ/bRWWPOqkH7Ci0BL6rAZRI5Vp4CxjcNbP1sb2a1MUzm19i27yyldwBNX7vD7dTgOxPjDX5w7a1NxrFu2Nk8RitGNuSaVn5iyn7rOqsPFPnqsX7L9c1zz27O9OdYaqQSJUIT3x+4PywOtdP5x00RxidUgYyzUsSlHsPi+jyw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769592573; c=relaxed/simple;
+	bh=6QE6P2emKGdKilTZmin3/Ozf9IWg6pkT0Y+9AlYKLgQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=PB2kapayzVcxztDTJituyHhIVCPy2UI34MGTLUMsN2zd4VWl0xxQTyUzPN6J1a8t6QdOP9SBir3rV5My2T9kfI3B1Dm0kN3L8hzeUs+Gm0j9BQ8LsEMtAqbynxqv1DyC30ObIerY86+njrH3avOXWHNNkAK2e154ZeJpZUCvq9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vl1rN-0007xZ-Mw; Wed, 28 Jan 2026 10:29:13 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vl1rN-002tQJ-1a;
+	Wed, 28 Jan 2026 10:29:12 +0100
+Received: from hardanger.blackshift.org (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 3EB5C3F6EE
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 09:29:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20251003; t=1769592566;
-	bh=1qE6rKoNiQxDL9EWiREE6xxOPhSv5w6cMT8lb0+AlqQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=ZStqnL97LMqhYjszKKnSXiQAj9Q2LSwXC3o3b3+5pgzTtGvJnF3dk7Psjis+G2m0C
-	 InYXxbunoNpLJUfJbUGnUtChG9EISKI0K2ndHHAPilnwhbD31OJvRZCg7l/FwOboj2
-	 A94yXYi6O+FWglfMvKkad06hrTEZ+llRwYjzaIIIB+vc0i5c4nWkpun1kYlsIm3dZV
-	 3payobt+10Ly06dgqjP4oGIArqKbRN6Vdfq+5WWKbpUrbT8lMm+LnxuVYMGDTw0liQ
-	 h4QMq7SHatWd7gqlHDP4GjBUsJlRsBcLi740vXrIYdhXNuDV2JG0R1Xi6DeaH5OlsU
-	 L6t5F9BZhG95pGIt2Q9FWLuBQFmh9bpAkFR8dMPpvefLXnLwTmM1iuyVSnHp6yniUV
-	 ceWrDKW3KkUwd0yI7ng/C1hWJ8UXVQc2cpk+O/+rJ7p0n7t/onczoDijgjMwgXUdEp
-	 rz+DiMf+r8cH+FnloJYVusGBc7z/OKpUPZmbmOMj0Vh9wNoydRdAag76faQDs+IfZT
-	 iIlHkWJxEhloCnvPhcXR8zVEeZ28DyVGO+eqkgm6iZqs96ISZs4jW6gM6TW3+J7XQx
-	 CIbZJh/XjcbYpLpUQ1MqU/cV2OlX3LFrwiNDBBvceZ3AAAO7JuUHGt5dtXSTiS7gZq
-	 fIPfZZXdsza6AUUx90C1IZ0k=
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2b74766fae7so5617691eec.0
-        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 01:29:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1769592564; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dSPzUdXfYhvCUr4J6Q8N/Z2Pq7bI0XIqXw7YxGAjPYu3afHsw6XugT4754XgzB+dCY
-         PEGWVBR6VDYzdixeH8nbmbOOsv6U8M8P43yhcOOLa+VyvrARcW8KC6pReckPOnjPgfCg
-         qbyzPnePbZRJnjEONpH8bBi93CbLVlPwJ4NTUOwQjn4JjnLejiL276Es5WJLRU1Q8NHD
-         h6Q9TDnQ64fkb14KbfVRgXOcLzENFgxIHZzujeIZPY+9IrF9TT2UTyVhy6NaDhfzeOwZ
-         g2y2F6Y/qpGk2MOXWXwVXRvuFzyxkeHxBAPWc4HME8BwHbw8F2CtPYNQzsw1/+5iWx5s
-         ReOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=1qE6rKoNiQxDL9EWiREE6xxOPhSv5w6cMT8lb0+AlqQ=;
-        fh=N7pSRZ6d67A69mOBp+y1cfedA9QOCOypl2t2phpGEN8=;
-        b=fKJo3aZqvVj5pdtGM8NNGizO5R4wy1SG6pE2a0wXrVuwg2/xHBLJ5OBo5bIrMQXyXs
-         MGBzt0RAqLAIgMxhj5DunKaOYbA7wMX4P+9nohaMzPay7xYylJeFzZm9WXrSnoxhnQIY
-         +NOhZh483dBG3q+Fe1CA+Mo+c4RJTi8swZuUTLGRSSnBHUpeXzKOsL8hKm4q7Ht1q3dx
-         CYNfAA4q/9btybwoWkSmXYBccZfvMhM9xpaPgZR9ACr2NM/xXVpKEY906tGVnRGd34PF
-         z2/bSHGe7X4VP7QWPPCsVa8K/gtqf5IOXtrsQLcqOhfqwFJU8XK8e3PDuHjjf2B0/1fE
-         n9OQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769592564; x=1770197364;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1qE6rKoNiQxDL9EWiREE6xxOPhSv5w6cMT8lb0+AlqQ=;
-        b=sl6dQRR+2dEpvdfAAYM27YZm0Io9xXyvZoB5NXPQ0ajsrvq0Ag3AlkFq6hLjCVtmQW
-         385IjbM91WVzCsVNCkIVA6YF62TRqxCq9RTI7/yXTj09j30pLtcii77zhNQC8O0I93Sn
-         /PwndY89i1XWR5nkhniRqfzDxpJaexdGdsGZh01Jua/TjpEcbVpoBUE71+ncOZ3+pfb1
-         4jDruGkh25RQgUT9wHrREqewBO4Or3WLcqOh2eF4Z51KN8KYQG2CVUefciptP4sHYiDE
-         prbss3CsBEecO0eMYFng+UzepoWMIM3sUmXLs9axjdN+H/Zw5CgwWXYkIvoxGYoOTcgp
-         ZDaw==
-X-Forwarded-Encrypted: i=1; AJvYcCUovFOtKsFLn0ynmriR8S0JACaeBtKJlv/C7e9IfKi6g9vu+JLZmixbh7yb28GPBE1lHbW5D5I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKZfQzJVmFgkzGvVc6czbdkaTfHVWgoAU/ccdKE1gIPQajCzW3
-	WgA118LHm15CQcOK1i5ElRyEQstgsf1sqGgKJETOYHGetYtB+UY3KI1X93Nc5C2Nw7urCkM9nFn
-	mFyvgr76P7FuzQ2TdJ7Yb1G0BC6zHaoCEafLVa+UlMYzIl+vTM3OtFmv3BHGnL4Bjv1g62syBpT
-	4zaGKnWHgqTciSjqD4fhkDj4p4q+GglSgD/LD/OQdNDK2YdjA6
-X-Gm-Gg: AZuq6aLI0LTJL+4NWqr0cxvCapUsGVaFRL0QO+7k7Our9ra1wD01WLao9A+i69T2O5N
-	gYm7IZ+ugFQ8gZo2v6KoOkv90BcBNABpMtj6P4IT0yPAvcHwPqIP5MMhVFkGxTsrVWIrjJEUV9X
-	SUaj0r6HDRIIO7bMQR9NNBjDMN5flhOLtTQsQj/pw//yuZJ9McGJZwM2VWPB/LOiN9T54=
-X-Received: by 2002:a05:7022:1e0f:b0:11e:65b5:75ce with SMTP id a92af1059eb24-124a00638dcmr2673613c88.10.1769592564449;
-        Wed, 28 Jan 2026 01:29:24 -0800 (PST)
-X-Received: by 2002:a05:7022:1e0f:b0:11e:65b5:75ce with SMTP id
- a92af1059eb24-124a00638dcmr2673601c88.10.1769592563932; Wed, 28 Jan 2026
- 01:29:23 -0800 (PST)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 85B5A4DA02F;
+	Wed, 28 Jan 2026 09:29:12 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Wed, 28 Jan 2026 10:28:56 +0100
+Subject: [PATCH can-next v2 4/6] can: move frame_len to CAN skb extensions
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251225062122.736308-1-aaron.ma@canonical.com>
- <20251225062122.736308-2-aaron.ma@canonical.com> <4a771aef-4227-4f83-9852-80105190722c@intel.com>
-In-Reply-To: <4a771aef-4227-4f83-9852-80105190722c@intel.com>
-From: Aaron Ma <aaron.ma@canonical.com>
-Date: Wed, 28 Jan 2026 17:29:12 +0800
-X-Gm-Features: AZwV_QgL6FJ04T2ofaJuqdex-U7OER7rhndajJNjXZ3ipnT0x2aQoU_xK3CxizQ
-Message-ID: <CAJ6xRxUa8h3yO8OksnddWJp6-XkYOsb0qg4vAmt+8MHs0ncEyQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] ice: recap the VSI and QoS info after rebuild
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: przemyslaw.kitszel@intel.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, "Ertman, David M" <david.m.ertman@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260128-can-skb-ext-v2-4-fe64aa152c8a@pengutronix.de>
+References: <20260128-can-skb-ext-v2-0-fe64aa152c8a@pengutronix.de>
+In-Reply-To: <20260128-can-skb-ext-v2-0-fe64aa152c8a@pengutronix.de>
+To: Marc Kleine-Budde <mkl@pengutronix.de>, 
+ Vincent Mailhol <mailhol@kernel.org>, 
+ Oliver Hartkopp <socketcan@hartkopp.net>, 
+ Robin van der Gracht <robin@protonic.nl>, 
+ Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2779; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=geY5hUgKqeV8IUfPzEuc6SQo1DjeohDhEAPDEaY406Q=;
+ b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBpedbiVdeZUaGPxfxPb8nFjGAoMfwE9lBc29Az0
+ 803HoPP4CSJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaXnW4gAKCRAMdGXf+ZCR
+ nI9DB/4or5E4Dm//ft3Hok3SpDyzv+Ef2jXo5lHI4xKoUNhaiumScoEV9YgtHCVER9nVq6d691k
+ NimfdyQBTjl40I3FjTIwyCZdUCxZc9CZWCducEoAhyr0hWaJXipj1GC8KpkRotOdmqjYbW7ajm8
+ heU5DIjZjCjDkBtl7BqPSkuI8+aMoLBs0Yto9VnqtxWVelxdHARK92YUqyMbt0iMFz1ooxQpB3K
+ rUGTSV9Z5DEzb/IvzX6vMacLAfLeDNTZ74mpWvicwn++3Xk6eYXX5ieIo38vbxAEih0N4lS0a8s
+ jCCOrtMUn1Mzn/hZQpJtHppNdByffj8Je3ghPWwOLEliiVPD
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-On Wed, Jan 28, 2026 at 6:32=E2=80=AFAM Tony Nguyen <anthony.l.nguyen@intel=
-.com> wrote:
->
->
->
-> On 12/24/2025 10:21 PM, Aaron Ma wrote:
-> > Fix IRDMA hardware initialization timeout (-110) after resume by
-> > separating VSI-dependent configuration from RDMA resource allocation,
-> > ensuring VSI is rebuilt before IRDMA accesses it.
-> >
-> > After resume from suspend, IRDMA hardware initialization fails:
-> >    ice: IRDMA hardware initialization FAILED init_state=3D4 status=3D-1=
-10
-> >
-> > Separate RDMA initialization into two phases:
-> > 1. ice_init_rdma() - Allocate resources only (no VSI/QoS access, no plu=
-g)
-> > 2. ice_rdma_finalize_setup() - Assign VSI/QoS info and plug device
-> >
-> > This allows:
-> > - ice_init_rdma() to stay in ice_resume() (mirrors ice_deinit_rdma()
-> >    in ice_suspend()
-> > - VSI assignment deferred until after ice_vsi_rebuild() completes
-> > - QoS info updated after ice_dcb_rebuild() completes
-> > - Device plugged only when control queues, VSI, and DCB are all ready
-> Hi Aaron,
->
-> Sorry for the late feedback, but I'm working on getting AI Review in
-> place and when I ran it against this path it flagged a couple of things..=
-.
->
-> > Fixes: bc69ad74867db ("ice: avoid IRQ collision to fix init failure on =
-ACPI S3 resume")
-> > Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> > Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-> > ---
-> > V1 -> V2: no changes.
-> > V2 -> V3:
-> > - mirrors init_rdma in resume as Tony Nguyen suggested to fix
-> > the memleak and move ice_plug_aux_dev/ice_unplug_aux_dev out of
-> > init/deinit rdma.
-> > - ensure the correct VSI/QoS info is loaded after rebuild.
-> >
-> >   drivers/net/ethernet/intel/ice/ice.h      |  1 +
-> >   drivers/net/ethernet/intel/ice/ice_idc.c  | 41 +++++++++++++++++-----=
--
-> >   drivers/net/ethernet/intel/ice/ice_main.c |  7 +++-
-> >   3 files changed, 38 insertions(+), 11 deletions(-)
-> >
-> > diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/etherne=
-t/intel/ice/ice.h
-> > index 147aaee192a79..6463c1fea7871 100644
-> > --- a/drivers/net/ethernet/intel/ice/ice.h
-> > +++ b/drivers/net/ethernet/intel/ice/ice.h
-> > @@ -989,6 +989,7 @@ int ice_schedule_reset(struct ice_pf *pf, enum ice_=
-reset_req reset);
-> >   void ice_print_link_msg(struct ice_vsi *vsi, bool isup);
-> >   int ice_plug_aux_dev(struct ice_pf *pf);
-> >   void ice_unplug_aux_dev(struct ice_pf *pf);
-> > +void ice_rdma_finalize_setup(struct ice_pf *pf);
-> >   int ice_init_rdma(struct ice_pf *pf);
-> >   void ice_deinit_rdma(struct ice_pf *pf);
-> >   bool ice_is_wol_supported(struct ice_hw *hw);
-> > diff --git a/drivers/net/ethernet/intel/ice/ice_idc.c b/drivers/net/eth=
-ernet/intel/ice/ice_idc.c
-> > index 420d45c2558b6..b6079a6cb7736 100644
-> > --- a/drivers/net/ethernet/intel/ice/ice_idc.c
-> > +++ b/drivers/net/ethernet/intel/ice/ice_idc.c
-> > @@ -360,6 +360,35 @@ void ice_unplug_aux_dev(struct ice_pf *pf)
-> >       auxiliary_device_uninit(adev);
-> >   }
-> >
-> > +/**
-> > + * ice_rdma_finalize_setup - Complete RDMA setup after VSI is ready
-> > + * @pf: ptr to ice_pf
-> > + *
-> > + * Sets VSI-dependent information and plugs aux device.
-> > + * Must be called after ice_init_rdma(), ice_vsi_rebuild(), and
-> > + * ice_dcb_rebuild() complete.
-> > + */
-> > +void ice_rdma_finalize_setup(struct ice_pf *pf)
-> > +{
-> > +     struct iidc_rdma_priv_dev_info *privd;
-> > +
-> > +     if (!ice_is_rdma_ena(pf) || !pf->cdev_info)
-> > +             return;
-> > +
-> > +     privd =3D pf->cdev_info->iidc_priv;
-> > +     if (!privd || !pf->vsi[0] || !pf->vsi[0]->netdev)
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-Aleksandr raised this change to:
-  if (!privd || !pf->vsi || !pf->vsi[0] || !pf->vsi[0]->netdev)
+The can_skb_priv::frame_len variable is used to cache a previous
+calculated CAN frame length to be passed to BQL queueing disciplines.
 
-I will add this in v4.
+Move the can_skb_priv::frame_len content to can_skb_ext::can_framelen.
 
-> > +             return;
-> > +
-> > +     /* Assign VSI info now that VSI is valid */
-> > +     privd->netdev =3D pf->vsi[0]->netdev;
-> > +     privd->vport_id =3D pf->vsi[0]->vsi_num;
-> > +
-> > +     /* Update QoS info after DCB has been rebuilt */
-> > +     ice_setup_dcb_qos_info(pf, &privd->qos_info);
-> > +
-> > +     ice_plug_aux_dev(pf);
->
-> "
-> Does making ice_rdma_finalize_setup() void lose error reporting? The
-> old ice_init_rdma() called ice_plug_aux_dev() and propagated errors to
-> callers with error cleanup. Now ice_plug_aux_dev() returns int but
-> ice_rdma_finalize_setup() is void, so the return value is ignored.
->
-> If ice_plug_aux_dev() fails (kzalloc failure, auxiliary_device_init
-> failure, or auxiliary_device_add failure), the error is silently
-> ignored and RDMA functionality won't be available. The old code would
-> return an error that ice_load() and ice_resume() would log, helping
-> users understand why RDMA isn't working.
->
-> Should ice_rdma_finalize_setup() return int and propagate the error, or
-> at least log a message when ice_plug_aux_dev() fails?
-> "
->
-> I agree that logging a message would be helpful to inform the user.
-> Either here or propagating it and printing a differentiated messages
-> would be nice.
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/dev/skb.c | 27 ++++++++++++++++++++-------
+ 1 file changed, 20 insertions(+), 7 deletions(-)
 
-Aleksandr also raised this.
-Since ice_rebuild() which called this function can't propagate errors,
-so I think logging a dev_warn() when ice_plug_aux_dev() fails is more
-appropriate.
+diff --git a/drivers/net/can/dev/skb.c b/drivers/net/can/dev/skb.c
+index 470255fe7367..408ee49abce1 100644
+--- a/drivers/net/can/dev/skb.c
++++ b/drivers/net/can/dev/skb.c
+@@ -49,6 +49,7 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
+ 		     unsigned int idx, unsigned int frame_len)
+ {
+ 	struct can_priv *priv = netdev_priv(dev);
++	struct can_skb_ext *csx;
+ 
+ 	if (idx >= priv->echo_skb_max) {
+ 		netdev_err(dev, "%s: BUG! Trying to access can_priv::echo_skb out of bounds (%u/max %u)\n",
+@@ -75,7 +76,9 @@ int can_put_echo_skb(struct sk_buff *skb, struct net_device *dev,
+ 		skb->dev = dev;
+ 
+ 		/* save frame_len to reuse it when transmission is completed */
+-		can_skb_prv(skb)->frame_len = frame_len;
++		csx = can_skb_ext_find(skb);
++		if (csx)
++			csx->can_framelen = frame_len;
+ 
+ 		if (skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP)
+ 			skb_shinfo(skb)->tx_flags |= SKBTX_IN_PROGRESS;
+@@ -112,7 +115,7 @@ __can_get_echo_skb(struct net_device *dev, unsigned int idx,
+ 		 * length is supported on both CAN and CANFD frames.
+ 		 */
+ 		struct sk_buff *skb = priv->echo_skb[idx];
+-		struct can_skb_priv *can_skb_priv = can_skb_prv(skb);
++		struct can_skb_ext *csx;
+ 
+ 		if (skb_shinfo(skb)->tx_flags & SKBTX_IN_PROGRESS)
+ 			skb_tstamp_tx(skb, skb_hwtstamps(skb));
+@@ -120,8 +123,13 @@ __can_get_echo_skb(struct net_device *dev, unsigned int idx,
+ 		/* get the real payload length for netdev statistics */
+ 		*len_ptr = can_skb_get_data_len(skb);
+ 
+-		if (frame_len_ptr)
+-			*frame_len_ptr = can_skb_priv->frame_len;
++		if (frame_len_ptr) {
++			csx = can_skb_ext_find(skb);
++			if (csx)
++				*frame_len_ptr = csx->can_framelen;
++			else
++				*frame_len_ptr = 0;
++		}
+ 
+ 		priv->echo_skb[idx] = NULL;
+ 
+@@ -181,10 +189,15 @@ void can_free_echo_skb(struct net_device *dev, unsigned int idx,
+ 
+ 	if (priv->echo_skb[idx]) {
+ 		struct sk_buff *skb = priv->echo_skb[idx];
+-		struct can_skb_priv *can_skb_priv = can_skb_prv(skb);
++		struct can_skb_ext *csx;
+ 
+-		if (frame_len_ptr)
+-			*frame_len_ptr = can_skb_priv->frame_len;
++		if (frame_len_ptr) {
++			csx = can_skb_ext_find(skb);
++			if (csx)
++				*frame_len_ptr = csx->can_framelen;
++			else
++				*frame_len_ptr = 0;
++		}
+ 
+ 		dev_kfree_skb_any(skb);
+ 		priv->echo_skb[idx] = NULL;
 
->
-> > +}
-> > +
-> >   /**
-> >    * ice_init_rdma - initializes PF for RDMA use
-> >    * @pf: ptr to ice_pf
-> > @@ -398,23 +427,16 @@ int ice_init_rdma(struct ice_pf *pf)
-> >       }
-> >
-> >       cdev->iidc_priv =3D privd;
-> > -     privd->netdev =3D pf->vsi[0]->netdev;
-> >
-> >       privd->hw_addr =3D (u8 __iomem *)pf->hw.hw_addr;
-> >       cdev->pdev =3D pf->pdev;
-> > -     privd->vport_id =3D pf->vsi[0]->vsi_num;
-> >
-> >       pf->cdev_info->rdma_protocol |=3D IIDC_RDMA_PROTOCOL_ROCEV2;
-> > -     ice_setup_dcb_qos_info(pf, &privd->qos_info);
-> > -     ret =3D ice_plug_aux_dev(pf);
-> > -     if (ret)
-> > -             goto err_plug_aux_dev;
-> > +
-> >       return 0;
-> >
-> > -err_plug_aux_dev:
-> > -     pf->cdev_info->adev =3D NULL;
-> > -     xa_erase(&ice_aux_id, pf->aux_idx);
-> >   err_alloc_xa:
-> > +     xa_erase(&ice_aux_id, pf->aux_idx);
->
-> "
-> Does this error path call xa_erase() with an uninitialized pf->aux_idx?
->
-> When xa_alloc() fails at line 423, the code jumps to err_alloc_xa which
-> now calls xa_erase(). But if xa_alloc() failed, nothing was allocated
-> into the xarray, and pf->aux_idx contains an undefined value from the
-> failed xa_alloc() call. Calling xa_erase() with this undefined index
-> seems incorrect.
->
-> In the original code, the err_plug_aux_dev label came after successful
-> xa_alloc(), so xa_erase() was only called when something was actually
-> allocated. The err_alloc_xa label came after err_plug_aux_dev and fell
-> through without calling xa_erase().
-> "
->
+-- 
+2.51.0
 
-Right, after xa_alloc failed, it should not call xa_rease, I will remove it=
-.
-
-I will send v4 patch to fix 3 issues above.
-Thanks for the detail review.
-
-> Semi-related. I sent patch 1 of this series on since it seems like it
-> can be independent of this one so no need to carry that one with this.
->
-
-Thank you very much.
-Aaron
-
-> Thanks,
-> Tony
->
-> >       kfree(privd);
-> >   err_privd_alloc:
-> >       kfree(cdev);
