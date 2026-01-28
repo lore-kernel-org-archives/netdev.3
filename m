@@ -1,144 +1,115 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D1A31062C
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 10:52:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10B792EA75E;
+	Wed, 28 Jan 2026 10:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769597522; cv=none; b=V69yABOdQHWUgTPxHVahdisb+Utn+kFyDY3MzrIMTphZ7AqlQHtSOfzKUGyZO7Kr0QF6VHDMdJwY2rMs6i/jGCqfHDN8FKeQP2WrLSlt2y87Dax8FdtbQnmCNfcfyzcWMxDFUfFz0nMQC08WCdyD77jfvX4I5XyXpGKYVAtVuIE=
+	t=1769597551; cv=none; b=lnfqWINouIKamn3RffRzWXZCSKkHkwDwnwl6dw2Y8FEp7dTfeMQwgJRCi/4M6u8VdEtfx3a7p0ra+/IupaaaI85GiYFsOYknZrucnQtg0WBU+7nbs4FJT6w+262o6LoFeuzy6bwWxi0o2FOEpv0G/6pqZeVe2mWXapzd9yCgArw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769597522; c=relaxed/simple;
-	bh=c9Eiagdq6U48mRTb9hfve6FYWqdBjsr8AYWZRxD3hag=;
-	h=From:To:Cc:Subject:MIME-Version:Content-Disposition:Content-Type:
-	 Message-Id:Date; b=QxyMHfVi7+S7Cc58Whph2GktW096hxZt5rW+NByoZhgoxgDbz+s1nMNHbzdh9VbW1jRL2EQfEMctqJKeEg6XQRb5S0FcEbUxKD3m9UyXG9mkJ0WXkN5H17aNNiDA8YZi3YRPKWRSOzVlif1L00vqYR7/skQbNCOUQYxjJhrXZYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=nqvYJteQ; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1769597551; c=relaxed/simple;
+	bh=tucQhTlV8za1lu8MMrRqeJJ31gz69ypAvVJoriihhkE=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=vABlLNeVHXwyRZkaBeP19GAgNd07Yvv4M2TRY/oT3CFjW0jcfXYVqC3w3Tijm0XXrAdiFIah4TK0YcsjmnR2qjs9mp/YS3JyBf1tw2Hj1exyUqPxN0AEhieiuiYTmqWhhu3pYMj/jsk8Nbxvs3z86M++3bkSnOqX11J8KpGDTtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ViEGIoH8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="nqvYJteQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:Reply-To:Content-ID
-	:Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:
-	Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=XtC8yJQgyjPmZTdImoZeQxZHnTGIV1u/ZfImELjtTq4=; b=nqvYJteQoEGSF1YlajDty2HRBs
-	Peq9TUComiO7lbywl06o8X61iGWDhLn5XTYKvxlL+he6UY9ByWSJd2vsPx5JN5Rdu7d4GJvLccW86
-	FS3vztXNXK4Cm20Y1Bi/wSdFMi/t3gK6rqk8iREoZgeULvynGxlImQOPfhTFUr4THEo4P9jSVLHlR
-	Wf0rqOXMXrRIdsLmZh0YzHHw6oUheBA9aJzAUjHl3SN20d6B6BLDAjCUdnWdWndJCGPSVG+dZSXv2
-	MA0MYnv991258qcLK7N5ozfxGuHv7NPucTw0ol+0kiOMGJxuzyobECBOqovjPxcFBMzJkchO7Gyzs
-	LZmgIWpA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:38786 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vl39R-000000007ER-0oWK;
-	Wed, 28 Jan 2026 10:51:57 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vl39Q-00000006utm-229h;
-	Wed, 28 Jan 2026 10:51:56 +0000
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next] net: phylink: fix NULL pointer deref in
- phylink_major_config()
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ViEGIoH8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B58EC4CEF1;
+	Wed, 28 Jan 2026 10:52:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769597550;
+	bh=tucQhTlV8za1lu8MMrRqeJJ31gz69ypAvVJoriihhkE=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=ViEGIoH8WISDNhvOrX04vjPKG2JsdeQzC++K+VPDpBjbApVieCzQdka6GCKlJJZQM
+	 kJma+zcQwuo0OVZDkJ15DjXbzkJ9jCcPYFv4ZlKyk1P9KnmzLQuxjdWdoLG47nEIi/
+	 zDbiLcOCm7Dj8/UDWp4qXwoh+OOdf+L3B0wjytpMZK6giYRDkSx+hHnimaxwvwfELy
+	 OLDor3AvwD6N+RNTuPJXi6Y3MM9lSyGyv0Z99LeemMHZfyE7wejSGsaHHCdxLWt2ES
+	 SxedeNVs95NdSTuG1A+uh5Pq9Tj0kMP2VBUO0csiNlt3bDroJsfIcRiQ3H/JGbcUtO
+	 KJ8VHi9KMczbw==
+Date: Wed, 28 Jan 2026 04:52:29 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vl39Q-00000006utm-229h@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Wed, 28 Jan 2026 10:51:56 +0000
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, Albert Ou <aou@eecs.berkeley.edu>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Yao Zi <ziyao@disroot.org>, 
+ Longbin Li <looong.bin@gmail.com>, linux-stm32@st-md-mailman.stormreply.com, 
+ Choong Yong Liang <yong.liang.choong@linux.intel.com>, 
+ Yixun Lan <dlan@gentoo.org>, Quentin Schulz <quentin.schulz@cherry.de>, 
+ Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org, 
+ Paolo Abeni <pabeni@redhat.com>, Conor Dooley <conor+dt@kernel.org>, 
+ Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
+ Paul Walmsley <pjw@kernel.org>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
+ Boon Khai Ng <boon.khai.ng@altera.com>, 
+ Yanteng Si <siyanteng@cqsoftware.com.cn>, spacemit@lists.linux.dev, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Shangjuan Wei <weishangjuan@eswincomputing.com>, 
+ Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org, 
+ Chen-Yu Tsai <wens@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Jose Abreu <joabreu@synopsys.com>, 
+ "David S. Miller" <davem@davemloft.net>
+To: Inochi Amaoto <inochiama@gmail.com>
+In-Reply-To: <20260128072931.875041-2-inochiama@gmail.com>
+References: <20260128072931.875041-1-inochiama@gmail.com>
+ <20260128072931.875041-2-inochiama@gmail.com>
+Message-Id: <176959754960.624625.3292309980701778789.robh@kernel.org>
+Subject: Re: [PATCH net-next v3 1/3] dt-bindings: net: Add support for
+ Spacemit K3 dwmac
 
-When a MAC driver returns a PCS for an interface mode, and then we
-attempt to switch to a different mode that doesn't require a PCS,
-this causes phylink to oops:
 
-Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
-Mem abort info:
-  ESR = 0x0000000096000044
-  EC = 0x25: DABT (current EL), IL = 32 bits
-  SET = 0, FnV = 0
-  EA = 0, S1PTW = 0
-  FSC = 0x04: level 0 translation fault
-Data abort info:
-  ISV = 0, ISS = 0x00000044, ISS2 = 0x00000000
-  CM = 0, WnR = 1, TnD = 0, TagAccess = 0
-  GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-user pgtable: 4k pages, 48-bit VAs, pgdp=0000000137f96000
-[0000000000000010] pgd=0000000000000000, p4d=0000000000000000
-Internal error: Oops: 0000000096000044 [#1]  SMP
-Modules linked in: --
-CPU: 1 UID: 0 PID: 55 Comm: kworker/u33:0 Not tainted 6.19.0-rc5-00581-g73cb8467a63e #1 PREEMPT
-Hardware name: Qualcomm Technologies, Inc. Lemans Ride Rev3 (DT)
-Workqueue: events_power_efficient phylink_resolve
-pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS    +BTYPE=--)
-pc : phylink_major_config+0x408/0x948
-lr : phylink_major_config+0x3fc/0x948
-sp : ffff800080353c60
-x29: ffff800080353cb0 x28: ffffb305068a8a00 x27: ffffb305068a8000
-x26: ffff000080092100 x25: 0000000000000000 x24: 0000000000000000
-x23: 0000000000000001 x22: 0000000000000000 x21: ffffb3050555b3d0
-x20: ffff800080353d10 x19: ffff0000b6059400 x18: 00000000ffffffff
-x17: 74756f2f79687020 x16: ffffb305045e4f18 x15: 6769666e6f632072
-x14: 6f6a616d203a3168 x13: 782d657361623030 x12: ffffb305068c6a98
-x11: 0000000000000583 x10: 0000000000000018 x9 : ffffb305068c6a98
-x8 : 0000000100006583 x7 : 0000000000000000 x6 : ffff00008083cc40
-x5 : ffff00008083cc40 x4 : 0000000000000001 x3 : 0000000000000001
-x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0000b269e5a8
-Call trace:
- phylink_major_config+0x408/0x948 (P)
- phylink_resolve+0x294/0x6e4
- process_one_work+0x148/0x28c
- worker_thread+0x2d8/0x3d8
- kthread+0x134/0x208
- ret_from_fork+0x10/0x20
-Code: d63f0020 f9400e60 b4000040 f900081f (f9000ad3)
----[ end trace 0000000000000000 ]---
+On Wed, 28 Jan 2026 15:29:27 +0800, Inochi Amaoto wrote:
+> The GMAC IP on Spacemit K3 is almost a standard Synopsys DesignWare
+> MAC (version 5.40a) with some extra clock.
+> 
+> Add necessary compatible string for this device.
+> 
+> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
+> ---
+>  .../devicetree/bindings/net/snps,dwmac.yaml   |   2 +
+>  .../bindings/net/spacemit,k3-dwmac.yaml       | 103 ++++++++++++++++++
+>  2 files changed, 105 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/net/spacemit,k3-dwmac.yaml
+> 
 
-This is caused by "pcs" being NULL when we attempt to execute:
+My bot found errors running 'make dt_binding_check' on your patch:
 
-		pcs->phylink = pl;
+yamllint warnings/errors:
 
-Make this conditional on pcs being non-null.
+dtschema/dtc warnings/errors:
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/spacemit,k3-dwmac.example.dtb: ethernet@cac80000 (spacemit,k3-dwmac): compatible: ['spacemit,k3-dwmac', 'snps,dwmac-5.40a'] does not contain items matching the given schema
+	from schema $id: http://devicetree.org/schemas/net/snps,dwmac.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/spacemit,k3-dwmac.example.dtb: ethernet@cac80000 (spacemit,k3-dwmac): compatible: ['spacemit,k3-dwmac', 'snps,dwmac-5.40a'] does not contain items matching the given schema
+	from schema $id: http://devicetree.org/schemas/net/spacemit,k3-dwmac.yaml
+/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/net/spacemit,k3-dwmac.example.dtb: ethernet@cac80000 (spacemit,k3-dwmac): Unevaluated properties are not allowed ('phy-handle', 'phy-mode' were unexpected)
+	from schema $id: http://devicetree.org/schemas/net/spacemit,k3-dwmac.yaml
 
-Fixes: 486dc391ef43 ("net: phylink: allow mac_select_pcs() to remove a PCS")
-Reported-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
-Even though this is marked with a Fixes tag, and has been noticed by
-Mohd while testing my other PCS patches, I would like it merged into
-net-next rather than net so Mohd doesn't have to apply this in
-addition to my series when testing. This isn't a bug that will be
-seen by others.
+doc reference errors (make refcheckdocs):
 
- drivers/net/phy/phylink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+See https://patchwork.kernel.org/project/devicetree/patch/20260128072931.875041-2-inochiama@gmail.com
 
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 7641f1f41e39..e1f01d7fc4da 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -1293,7 +1293,8 @@ static void phylink_major_config(struct phylink *pl, bool restart,
- 		if (pl->pcs)
- 			pl->pcs->phylink = NULL;
- 
--		pcs->phylink = pl;
-+		if (pcs)
-+			pcs->phylink = pl;
- 
- 		pl->pcs = pcs;
- 	}
--- 
-2.47.3
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
 
