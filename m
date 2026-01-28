@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D2437647F;
-	Wed, 28 Jan 2026 16:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EB5376461;
+	Wed, 28 Jan 2026 16:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769619036; cv=none; b=VhUb1ZE9gZbioRC7ZhhDmxvBVCkSnTdg82qZsP0fwDUmI5x7xnYq3BE59o+Lo6LkUEXnbOc+xZhFpyvCFsrZ1Ru5EU2FfS3osFs5+6M4C9y1Xr15arzfAuxWNCctVosh3azo6Hidv6ZWVvh8UK+bpiaBaqmwpFUjjsU76wssHIo=
+	t=1769619036; cv=none; b=jqVMTu4/CrdtJ8r1VC752Z7MT4N/E+UATJbkmXnvkiSm7xwGQA7zkpiGgidhmXmB0f3QzcKR3ZK6jTUY9Ft1l7CZbVbsWfwbi/ODcGDTV/dXMcyBdJYtBOELEsrOo9oiZT85OzwNiuSKmsh4iYEE8WPXlASv0UlQNV/4gvs191g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769619036; c=relaxed/simple;
-	bh=0ot0R67HaXRc1V/itdeBaIZAxY2fnyJVatiNePQaLeE=;
+	bh=gkns4e3uFG3waqW3gYcl7M5Q1Ru6AdLSMlaBiCnqdQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WXn1zCtEHBJvRigOL0WzwIsU9yBTEo1zUh7d4DGzHqLBCCFB4ox9XL+Kdcg2a0cB6AluOnJb/fltqgiyYQcFJrO0Bag0dL+rFa5tBn02Wxm8NmNPfW1vcPGT0kqaOPDtG40kif1hM7vjcJ8OGwrYDLipC8//LSIFVABmz2sqUwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LCWNel7W; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=Lb9bl36EwAwC+YXYacS4C7nujjsZM6cyGq0RTeNl3J2+Brk2/Cs+GpzjyYUnUaiMYMLyUMggTfJLWSMIOqFctKTye9jlKoWwZXqxyWcW4NL+PPenO/FLRrCtbiDE+IYP4UUZ26rVli7Wfo2kGTtorFsCwz+0zS+kiV01NwYerSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JeZbi13G; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LCWNel7W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFACC4CEF7;
-	Wed, 28 Jan 2026 16:50:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JeZbi13G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C06C4CEF1;
+	Wed, 28 Jan 2026 16:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769619036;
-	bh=0ot0R67HaXRc1V/itdeBaIZAxY2fnyJVatiNePQaLeE=;
+	s=k20201202; t=1769619035;
+	bh=gkns4e3uFG3waqW3gYcl7M5Q1Ru6AdLSMlaBiCnqdQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LCWNel7W+vLM6dl/jinSacwdQxpfjma+Mnc2KSAAOYfec6Qvlw8DJOtrX6eKffEVv
-	 t5xlaeZAN8mnyGOXevISJ9p50QMyZDe3d9cygCfaFOKQEyfTJ4/DgiBfAv44qS4SMX
-	 UYXxWwiEhp5OJrf73W/gnMJcanu0nwCjOc19IiyFpnB2fKte+fWpzK24b9BLvh/iMd
-	 CrMZxvxXLV4kzEAInJApk+N6Ma+aAsx16YoBB/LEXyHU1VfwcXRUXKqFsY9WidTlKC
-	 NYNPcqqpuRmFKGae/I/KfL3i7ZHLHtAdaIu5kzLHIRLhEyavK5qXRXfzP6EVBfX2HF
-	 SRxv+bO8kaFPQ==
+	b=JeZbi13GwrgsGYtpPX4XumjmqUTcWoMbNC7coPCjBC++DdYd/ZIjEs7oPtwtCD2ec
+	 iYu85X20yNh9re5IieGZfJ+0PelHr0Nb3Wom0j3Ccf9JTjXOswoeGSOOX2rB5o2wm2
+	 bQPS9/SaJm1it19zLoXOgibNlG8BrlWgZM4HQ3xxQoBZPp/gZNOeLQg8HhsiX8RZff
+	 fW9uP635BswyPr/K4OGEpjqIOO3utDH/V7FsZwlS+72TXrxJE1l/l/KRXLes8ad9wf
+	 msDFRZuixzV66dpXFw8NXVEcnNstAaeF1AeNBpT9jiHlENNEDnWGhiUT2c1Z1m9KNE
+	 3Yut7q0em1qEQ==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vl8kU-0000000DB6E-1TqQ;
-	Wed, 28 Jan 2026 17:50:34 +0100
+	id 1vl8kT-0000000DB3p-2pLf;
+	Wed, 28 Jan 2026 17:50:33 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Linux Doc Mailing List <linux-doc@vger.kernel.org>
@@ -41,9 +41,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Randy Dunlap <rdunlap@infradead.org>,
 	Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: [PATCH v2 19/25] docs: kdoc_re: make NextedMatch use KernRe
-Date: Wed, 28 Jan 2026 17:50:17 +0100
-Message-ID: <da1582cddce141b76692d9a3a778613a75fe8682.1769617841.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v2 17/25] docs: kdoc_re: don't recompile NextMatch regex every time
+Date: Wed, 28 Jan 2026 17:50:15 +0100
+Message-ID: <0eabdd8b9c895230b98b289ab3352303b816858e.1769617841.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769617841.git.mchehab+huawei@kernel.org>
 References: <cover.1769617841.git.mchehab+huawei@kernel.org>
@@ -57,183 +57,91 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Instead of using re_compile, let's create the class with the
-rejex and use KernRe to keep it cached.
+Store delimiters and its regex-compiled version as const vars.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- tools/lib/python/kdoc/kdoc_parser.py | 55 ++++++++--------------------
- tools/lib/python/kdoc/kdoc_re.py     | 15 +++++---
- 2 files changed, 25 insertions(+), 45 deletions(-)
+ tools/lib/python/kdoc/kdoc_re.py | 35 ++++++++++++++++++++------------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
 
-diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
-index 4d52a00acfad..3a5614106af7 100644
---- a/tools/lib/python/kdoc/kdoc_parser.py
-+++ b/tools/lib/python/kdoc/kdoc_parser.py
-@@ -153,32 +153,7 @@ struct_xforms = [
-     (KernRe(r'DEFINE_DMA_UNMAP_ADDR\s*\(' + struct_args_pattern + r'\)', re.S), r'dma_addr_t \1'),
-     (KernRe(r'DEFINE_DMA_UNMAP_LEN\s*\(' + struct_args_pattern + r'\)', re.S), r'__u32 \1'),
-     (KernRe(r'VIRTIO_DECLARE_FEATURES\(([\w_]+)\)'), r'union { u64 \1; u64 \1_array[VIRTIO_FEATURES_U64S]; }'),
--]
--#
--# Struct regexes here are guaranteed to have the end delimiter matching
--# the start delimiter. Yet, right now, only one replace group
--# is allowed.
--#
--struct_nested_prefixes = [
--    (re.compile(r'\bSTRUCT_GROUP\('), r'\0'),
--]
--
--#
--# Function Regexes here are guaranteed to have the end delimiter matching
--# the start delimiter.
--#
--function_nested_prefixes = [
--    (re.compile(r"__cond_acquires\s*\("), ""),
--    (re.compile(r"__cond_releases\s*\("), ""),
--    (re.compile(r"__acquires\s*\("), ""),
--    (re.compile(r"__releases\s*\("), ""),
--    (re.compile(r"__must_hold\s*\("), ""),
--    (re.compile(r"__must_not_hold\s*\("), ""),
--    (re.compile(r"__must_hold_shared\s*\("), ""),
--    (re.compile(r"__cond_acquires_shared\s*\("), ""),
--    (re.compile(r"__acquires_shared\s*\("), ""),
--    (re.compile(r"__releases_shared\s*\("), ""),
--    (re.compile(r"__attribute__\s*\("), ""),
-+    (NestedMatch(r'\bSTRUCT_GROUP\('), r'\0'),
- ]
- 
- #
-@@ -210,6 +185,17 @@ function_xforms = [
-     (KernRe(r"DECL_BUCKET_PARAMS\s*\(\s*(\S+)\s*,\s*(\S+)\s*\)"), r"\1, \2"),
-     (KernRe(r"__no_context_analysis\s*"), ""),
-     (KernRe(r"__attribute_const__ +"), ""),
-+    (NestedMatch(r"__cond_acquires\s*\("), ""),
-+    (NestedMatch(r"__cond_releases\s*\("), ""),
-+    (NestedMatch(r"__acquires\s*\("), ""),
-+    (NestedMatch(r"__releases\s*\("), ""),
-+    (NestedMatch(r"__must_hold\s*\("), ""),
-+    (NestedMatch(r"__must_not_hold\s*\("), ""),
-+    (NestedMatch(r"__must_hold_shared\s*\("), ""),
-+    (NestedMatch(r"__cond_acquires_shared\s*\("), ""),
-+    (NestedMatch(r"__acquires_shared\s*\("), ""),
-+    (NestedMatch(r"__releases_shared\s*\("), ""),
-+    (NestedMatch(r"__attribute__\s*\("), ""),
- ]
- 
- #
-@@ -230,7 +216,6 @@ var_xforms = [
- # Ancillary functions
- #
- 
--
- multi_space = KernRe(r'\s\s+')
- def trim_whitespace(s):
-     """
-@@ -424,8 +409,6 @@ class KernelDoc:
-         # Place all potential outputs into an array
-         self.entries = []
- 
--        self.nested = NestedMatch()
--
-         #
-         # We need Python 3.7 for its "dicts remember the insertion
-         # order" guarantee
-@@ -523,14 +506,11 @@ class KernelDoc:
-         # State flags
-         self.state = state.NORMAL
- 
--    def apply_transforms(self, regex_xforms, nested_xforms, text):
-+    def apply_transforms(self, xforms, text):
-         """Apply a set of transforms to a block of text."""
--        for search, subst in regex_xforms:
-+        for search, subst in xforms:
-             text = search.sub(subst, text)
- 
--        for search, sub in nested_xforms:
--            text = self.nested.sub(search, sub, text)
--
-         return text.strip()
- 
-     def push_parameter(self, ln, decl_type, param, dtype,
-@@ -909,8 +889,7 @@ class KernelDoc:
-         # Go through the list of members applying all of our transformations.
-         #
-         members = trim_private_members(members)
--        members = self.apply_transforms(struct_xforms, struct_nested_prefixes,
--                                        members)
-+        members = self.apply_transforms(struct_xforms, members)
- 
-         #
-         # Deal with embedded struct and union members, and drop enums entirely.
-@@ -1125,9 +1104,7 @@ class KernelDoc:
-             #
-             # Apply the initial transformations.
-             #
--            prototype = self.apply_transforms(function_xforms,
--                                              function_nested_prefixes,
--                                              prototype)
-+            prototype = self.apply_transforms(function_xforms, prototype)
- 
-         # Yes, this truly is vile.  We are looking for:
-         # 1. Return type (may be nothing if we're looking at a macro)
 diff --git a/tools/lib/python/kdoc/kdoc_re.py b/tools/lib/python/kdoc/kdoc_re.py
-index 28ca5032f40c..aabfd6c4fd71 100644
+index f082f82bad67..b6e11ee0be21 100644
 --- a/tools/lib/python/kdoc/kdoc_re.py
 +++ b/tools/lib/python/kdoc/kdoc_re.py
-@@ -182,7 +182,10 @@ class NestedMatch:
+@@ -81,6 +81,13 @@ class KernRe:
+         self.last_match = self.regex.search(string)
+         return self.last_match
+ 
++    def finditer(self,  string):
++        """
++        Alias to re.finditer.
++        """
++
++        return self.regex.finditer(string)
++
+     def findall(self, string):
+         """
+         Alias to re.findall.
+@@ -116,6 +123,16 @@ class KernRe:
+ 
+         return self.last_match.groups()
+ 
++#: Nested delimited pairs (brackets and parenthesis)
++DELIMITER_PAIRS = {
++    '{': '}',
++    '(': ')',
++    '[': ']',
++}
++
++#: compiled delimiters
++RE_DELIM = KernRe(r'[\{\}\[\]\(\)]')
++
+ 
+ class NestedMatch:
+     """
+@@ -165,14 +182,6 @@ class NestedMatch:
      #
      #   FOO(arg1, arg2, arg3)
  
--    def _search(self, regex, line):
-+    def __init__(self, regex):
-+        self.regex = KernRe(regex)
-+
-+    def _search(self, line):
+-    DELIMITER_PAIRS = {
+-        '{': '}',
+-        '(': ')',
+-        '[': ']',
+-    }
+-
+-    RE_DELIM = re.compile(r'[\{\}\[\]\(\)]')
+-
+     def _search(self, regex, line):
          """
          Finds paired blocks for a regex that ends with a delimiter.
+@@ -202,13 +211,13 @@ class NestedMatch:
+             escape = False
  
-@@ -204,7 +207,7 @@ class NestedMatch:
+             d = line[offset - 1]
+-            if d not in self.DELIMITER_PAIRS:
++            if d not in DELIMITER_PAIRS:
+                 continue
  
-         stack = []
+-            end = self.DELIMITER_PAIRS[d]
++            end = DELIMITER_PAIRS[d]
+             stack.append(end)
  
--        for match_re in regex.finditer(line):
-+        for match_re in self.regex.finditer(line):
-             start = match_re.start()
-             offset = match_re.end()
-             string_char = None
-@@ -252,7 +255,7 @@ class NestedMatch:
-                         yield start, offset, pos + 1
-                         break
+-            for match in self.RE_DELIM.finditer(line[offset:]):
++            for match in RE_DELIM.finditer(line[offset:]):
+                 pos = match.start() + offset
  
--    def search(self, regex, line):
-+    def search(self, line):
-         """
-         This is similar to re.search:
+                 d = line[pos]
+@@ -229,8 +238,8 @@ class NestedMatch:
+                     string_char = d
+                     continue
  
-@@ -260,11 +263,11 @@ class NestedMatch:
-         returning occurrences only if all delimiters are paired.
-         """
+-                if d in self.DELIMITER_PAIRS:
+-                    end = self.DELIMITER_PAIRS[d]
++                if d in DELIMITER_PAIRS:
++                    end = DELIMITER_PAIRS[d]
  
--        for t in self._search(regex, line):
-+        for t in self._search(line):
- 
-             yield line[t[0]:t[2]]
- 
--    def sub(self, regex, sub, line, count=0):
-+    def sub(self, sub, line, count=0):
-         """
-         This is similar to re.sub:
- 
-@@ -283,7 +286,7 @@ class NestedMatch:
-         cur_pos = 0
-         n = 0
- 
--        for start, end, pos in self._search(regex, line):
-+        for start, end, pos in self._search(line):
-             out += line[cur_pos:start]
- 
-             # Value, ignoring start/end delimiters
+                     stack.append(end)
+                     continue
 -- 
 2.52.0
 
