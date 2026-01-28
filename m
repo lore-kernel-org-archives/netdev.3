@@ -1,64 +1,40 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44C5327C18
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 20:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A177327C18
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 20:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769631790; cv=none; b=lHebAKztXbMAmTvVehfGcuaz2OEPGwBjzCFHxTJ4h4NZZ3ja/egxkJJ3WDLFGDMLwRdrG2byRIWpfuobm6lO9pnsw8oIS5JikN2QtOV3190HyKKkbbuVXfDBD/JccZiu222gfdW5uwArcRvdWVH5ptX8Lupg2s8ArpjkC3V4nIw=
+	t=1769631922; cv=none; b=bnrwJFbH+jbCza5smZP+YgF+pSepoMt8VA/14wSRYcdjyVOuYi8SzuZJr1ncB9mUvUOiYw2YyIqzFPW6ObEwnv+KLeXf6CQgty4DNqsuWVa3QG0xWQ8Gx2xiLnV4K0uO3XAWWMuEI516RcPlk/xkpgybFe03nF7go852QrpsaCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769631790; c=relaxed/simple;
-	bh=b9MCvtvWh2E/1tF0+UKczrhKhqZPr8uIauzicyTvNgE=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=knuL2PHnywGi1qRJynaFzZOJgs9cUCWeaiK1NByvaGGUna+dAuLQahcrNeQv1vEouAEbFecjdPMl1qUJxfZXGg7cdlg+CEx+GMb+3kwPU+px1LrVioscGo8WVzFmFbIP47hve9+4KNIptQUmgyO5v0XmFyqsrhKi/olsqpegJIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DGReanjm; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769631922; c=relaxed/simple;
+	bh=1THU/IXqc2zov1vCJBRjkt4WEKVf9VZSfAJe/fhn0Mw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YUeikzDl9fnPi5Em5JTAYIw3AQYYUO+HJGHQ5l1BO1JFW3nqQeZS6r7Xbh0DpaCmJPILjBtA57ARKwpXZG4RZkZ+NuJJv1P8c0u2nJYsS93EWVikvLksMt2HUZUCsPtTKyDFhlqKKhOWGkls7qwVDAGO1ghix0H3DVF02uYPoww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=f+3eECS5; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DGReanjm"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4807068eacbso1742805e9.2
-        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 12:23:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769631787; x=1770236587; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O76YH7CnxQgojGVzsZVBTRj1IdDcsbxWCr4bVn0nPfk=;
-        b=DGReanjm4kdGYa1jdfkp7y4iEFYJDrVSnzOxO0WAhSNIyLtRhxPKivlaGdBHV7RT+B
-         U2vQXTACaSE2ElM7Gf57rS94POeOdBp7TnPPfFfgqhB2Ab9H3yaafMp4OyJWMTjKmH3C
-         RuSwC/EiwZIL6TmwtWBl2tfL5bH8sxFcnY59JHjM4DNsM8bu/TPgCjN53c+YdMLVlDgJ
-         bXByxjuGRsrk97STR0Z6uTK9YK6g0N60gWAZQakFArWZovQ3vDsXUe5Z9vBW8nHe0hvX
-         rrYB8Qx1IAGd4t6Faf8GwXgCIhVoKZAZ6PFqtb9Gi8g2xc3uGHX6H7thjvPXiXK83Ozb
-         6QhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769631787; x=1770236587;
-        h=content-transfer-encoding:cc:to:subject:from:content-language
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=O76YH7CnxQgojGVzsZVBTRj1IdDcsbxWCr4bVn0nPfk=;
-        b=sT/ks0LwpsGbQbBW+iG61wnqOcZNXqrnUjAo1MmvU+8zht2DvyLi8FBdnQRvojUFZd
-         7Sj5jbRcLZ+DA06zLIj4CjLaC6uawt3nsRw2qH2jHhqbrd/MeTsilvGD4Evx3xkWRmhe
-         i3HPd64qXkqXsLRae16ooWIjEMn844QdBO/0ARwrNUZpB+4C0rsMImpaaaYWtjr+exWe
-         6ilGhadkWcdeih4g8hn2BX91c34ThK6tVHTxkvNlVfTh4LFHF2zx2IYpzvhLeltToRW3
-         5dOFQRuvI+FqVjw8EtnJaJZoPia4sFGdx/kUV+fvWLhkpTi7t6nQ6j6Rt9qeEiteEBV6
-         ioPA==
-X-Gm-Message-State: AOJu0YxSfoOfrMwP8LkPEAEAYp3mAKXqFQkX/eJkkQOOu7OMhITqJAX8
-	SKDbm7D3JvXEjRi7Rq5RkVvvFxEnhMWX1C+oFmnIBMu89AVTrHJVpRIG
-X-Gm-Gg: AZuq6aLaLAy1IRM3zAF5iHTGzHcdWYmrVot7ZbCPjS0jKh6fJtGzBRgsCeZftrZRD7B
-	8/SFc1jpI7w3nF08MCaU+3yGDgh4F3ApVrkiVJ5tQBHzFX6c44KH786n4K1OEeKi6smaVG20qYC
-	mbZruOHiLt/cX650BnzB38umITsYavipOXjEIXU/VrmLBwtx0QhDPyNLnNV6LVGUcoYnwzEVr3P
-	PqJZuCFH9ISgwxgO9OQmlOevMNo/237OyVCFRQPgPa9N7lb+KJ0qZrfGED+owei7JUqN2pUBPNG
-	X+8pWmmtXGaiJR+zFCS0wB8S98zTACTn4NKHcxv/CGQpsN5wSxdEIQLJ1NYd14mDDsqDoQvn+Uu
-	YbQXVG60KnBcBvNu4t43JB5D3hfx9sVRA+/sMdrXa+yuWKueVZ4NOeWojUbA6c4PfMCPRJCcoI/
-	/zZ/pCSxRKhivlXIXdcnasilZ8rpn404PDM1C3lqdt3jQ63SJXWCcivwFv9OLZISKoiaT+eXM7l
-	sZj3cHGct6zV1ofQEzdbbdEJdW1mlLY/8WCR2DTi0fno9RFRC6p1Q==
-X-Received: by 2002:a05:600c:3b1a:b0:480:3ad0:93c0 with SMTP id 5b1f17b1804b1-48069c6949cmr75215005e9.23.1769631787039;
-        Wed, 28 Jan 2026 12:23:07 -0800 (PST)
-Received: from ?IPV6:2003:ea:8f2b:7200:a9b8:4711:836e:e074? (p200300ea8f2b7200a9b84711836ee074.dip0.t-ipconnect.de. [2003:ea:8f2b:7200:a9b8:4711:836e:e074])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4806ce4c3d1sm85556935e9.9.2026.01.28.12.23.06
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Jan 2026 12:23:06 -0800 (PST)
-Message-ID: <43dff7cf-cb00-4480-8856-501a8313951e@gmail.com>
-Date: Wed, 28 Jan 2026 21:23:05 +0100
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="f+3eECS5"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id D78F34E422F0;
+	Wed, 28 Jan 2026 20:25:16 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 96E6D6071F;
+	Wed, 28 Jan 2026 20:25:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 73AC9119A882A;
+	Wed, 28 Jan 2026 21:25:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769631915; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=SMfXIGAVa52Lc0KHAoLt8kPypfvKVyXFIVQcUwllpO0=;
+	b=f+3eECS5rX9nJuCYjiQNpi6vq9rORfn4RDkY6QY6l5DjrlEKm62iUNOiXtUGoGRa4zR1P7
+	XkADItiyHSDdWG05D5BNZIKAF0ZGmFBOZ8UXXDiOpaXMVHa67UKNkUPIj1vO3ocRIz+8+3
+	PqG6JYx0J3azkIzHzRdXOnrl+ZuhN/+o9pqt5MRO4RxBtmZA80WpVacDVkzhQFt5g3fUyS
+	bGANNyM+F/XlXsfEGmsN1+AJKpWuvkT3YbKIe/1qYPlEJzIKXdgWS9trSel7NyYG9SE4ff
+	ia+F15x0NcrTXqTaA7rrj3F0b+EEaSfHN6wIN8wX7Pb986Ipl9hpaL+GT/L0yg==
+Message-ID: <65ba2124-3940-4dd6-bbab-a31cdc67f573@bootlin.com>
+Date: Wed, 28 Jan 2026 21:25:10 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -66,33 +42,69 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: sfp: Fix quirk for Ubiquiti U-Fiber Instant SFP
+ module
+To: =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, netdev@vger.kernel.org,
+ Russell King <linux@armlinux.org.uk>
+Cc: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>,
+ Heiner Kallweit <hkallweit1@gmail.com>, Andrew Lunn <andrew@lunn.ch>
+References: <20260128175714.11411-1-kabel@kernel.org>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 Content-Language: en-US
-From: Heiner Kallweit <hkallweit1@gmail.com>
-Subject: Status of orphaned ltq_etop ethernet driver: mainline vs. OpenWRT
-To: John Crispin <blogic@openwrt.org>, Ralph Hempel
- <ralph.hempel@lantiq.com>, John Crispin <john@phrozen.org>,
- Hauke Mehrtens <hauke@hauke-m.de>, Daniel Golle <daniel@makrotopia.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>,
- Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+In-Reply-To: <20260128175714.11411-1-kabel@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-This driver in mainline lost its in-tree user with commit
-cd93b4895ea5 ("MIPS: lantiq: drop mips_machine support")
-in 2012. Since then it has had no in-tree user.
+Hi Marek,
 
-Only (?) user seems to be OpenWRT, with several changes to
-the in-tree driver version:
-target/linux/lantiq/patches-6.12/035-owrt-lantiq-wifi-and-ethernet-eeprom-handling.patch
-target/linux/lantiq/patches-6.12/028-NET-lantiq-various-etop-fixes.patch
-target/linux/lantiq/patches-6.12/701-NET-lantiq-etop-of-mido.patch
-So it seems the driver is maintained in OpenWrt only
-(except tree-wide in-tree changes).
+On 28/01/2026 18:57, Marek Behún wrote:
+> Commit fd580c9830316eda ("net: sfp: augment SFP parsing with
+> phy_interface_t bitmap") did not add augumentation for the interface
+                                       ^^^^^^^^^^^^^
+                                       augmentation
+> bitmap in the quirk for Ubiquiti U-Fiber Instant.
+> 
+> The subsequent commit f81fa96d8a6c7a77 ("net: phylink: use
+> phy_interface_t bitmaps for optical modules") then changed phylink code
+> for selection of SFP interface: instead of using link mode bitmap, the
+> interface bitmap is used, and the fastest interface mode supported by
+> both SFP module and MAC is chosen.
+> 
+> Since the interface bitmap contains also modes faster than 1000base-x,
+> this caused a regression wherein this module stopped working
+> out-of-the-box.
+> 
+> Fix this.
+> 
+> Fixes: fd580c9830316eda ("net: sfp: augment SFP parsing with phy_interface_t bitmap")
+> Signed-off-by: Marek Behún <kabel@kernel.org>
+> ---
+>  drivers/net/phy/sfp.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+> index 47f095bd91ce..eb6fa98e5d71 100644
+> --- a/drivers/net/phy/sfp.c
+> +++ b/drivers/net/phy/sfp.c
+> @@ -479,6 +479,8 @@ static void sfp_quirk_ubnt_uf_instant(const struct sfp_eeprom_id *id,
+>  	linkmode_zero(caps->link_modes);
+>  	linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseX_Full_BIT,
+>  			 caps->link_modes);
+> +	bitmap_zero(caps->interfaces, PHY_INTERFACE_MODE_MAX);
 
-To me this leaves two questions:
-- Move this driver to OpenWRT completely?
-- Or mainline all downstream changes, maintain driver in
-  mainline, and mainline also the users of this driver?
+small nit, you can use phy_interface_zero() here.
+
+> +	__set_bit(PHY_INTERFACE_MODE_1000BASEX, caps->interfaces);
+>  }
+>  
+>  #define SFP_QUIRK(_v, _p, _s, _f) \
+
+With that, it looks good to me,
+
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Maxime
+
 
