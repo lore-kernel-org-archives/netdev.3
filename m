@@ -1,89 +1,179 @@
-Received: from mail-m49197.qiye.163.com (mail-m49197.qiye.163.com [45.254.49.197])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A385265CC2;
-	Wed, 28 Jan 2026 04:20:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C044F32F74D
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 04:26:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769574027; cv=none; b=EysWUjNuUczO72K00N4nQsikbcF8ZddeqCmmARAESn/aRPHJThmUnp0XRtwZW2HP0XABgb8y0Z5B9mYMcFGPXh7WbGyw0A50SzHOFQJXKJIwbvTRmXA4V7b+PnlieGNeSOPvOGh7hJ27LzGDCF+oCzxHGJDXSbddPNXEOS/OFnk=
+	t=1769574416; cv=none; b=lJKbTIHsWGqUO9+UcTyGvjaHkvs/PEvF6HkL4/0nZACx0Ef+8BnP3/+cTWwmPocMwR2iE7VRyLKZ8+WAXyOApCUqlaM6nyKZzYYrbaiIjPWiFGSvRJnyFnkR1ryyPU7e236k1A7HsofE6wpSm2Oo8KJhDvra+0MGowBj5rpD258=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769574027; c=relaxed/simple;
-	bh=EvP/yjeV8vViKHCgiamrBj2IOA0SoGnxDSfIsxW0BhM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qo9yJxAXnwK37yT9EsPvSeOK2ZoZN9jTuQA/LmJ5shHPZjcUvd3N8PfmGenNG4GLkDJL2FkuHDC6cXVocmt6XzFQEIHd1GWlnDxz2dqPzqYR5hTdLSW//sGpvhO0tXIdsoxfCvIjDioJvGuNtmKhWJZOTSCj1ubc6bHOnycaez8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn; spf=pass smtp.mailfrom=seu.edu.cn; dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b=i3fpqlWi; arc=none smtp.client-ip=45.254.49.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=seu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=seu.edu.cn
+	s=arc-20240116; t=1769574416; c=relaxed/simple;
+	bh=oM89C4h0+705Q5QrOC+AfMkyUp4pRbPcDrBjP080Sos=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KZMpGwWHUoViV8I+3RvRPAw+H2HEhvygc56Xwxxb+ZmhbCvCwSbvcyOZNruD5tmSNKrupKsAVwb2gPzti3FJHL10Xi7Fmj9906PjzXsLJ1lgJBlXyoYh6nBrI55BZ2Tg/FNhi6qn87boGa11adiGPXDm3aWyRvfR9NCbRmPQUg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kSCbreYE; arc=none smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=seu.edu.cn header.i=@seu.edu.cn header.b="i3fpqlWi"
-Received: from LAPTOP-N070L597.localdomain (unknown [223.112.146.162])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 3239de2c4;
-	Wed, 28 Jan 2026 12:20:19 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: kuba@kernel.org
-Cc: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
-	jianhao.xu@seu.edu.cn,
-	kory.maincent@bootlin.com,
-	linux-kernel@vger.kernel.org,
-	marco.crivellari@suse.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	vadim.fedorenko@linux.dev,
-	zilin@seu.edu.cn
-Subject: Re: [PATCH net v3 0/3] net: liquidio: Fix memory leaks in setup_nic_devices()
-Date: Wed, 28 Jan 2026 04:20:19 +0000
-Message-Id: <20260128042019.1631049-1-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260127130546.7f53b313@kernel.org>
-References: <20260127130546.7f53b313@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kSCbreYE"
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7d18d02af68so345403a34.2
+        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 20:26:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769574413; x=1770179213; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VklwEd5dwuBjikrAPpEFP/UQPzhOaAWoIKJ/0tvPqOU=;
+        b=kSCbreYEXAhYBbYLYGpFyiN+NWpLZGu1kwM5p1Enx2QxAirsG+QvfJQoU4CoXS1gzH
+         U3FZ9xihO5Pd/Nn+hameRMXYf/vGhludPcd+JkSHDEvBXL1fIKHGCFxSfe2MR2wlbmGI
+         tDyl0lhyt6e23w1oQlgdD6RqfhuTz2dmCpRA0M2WBTiBJ/79iw/WN3QisPul/SfGlDhk
+         8tdljfB2qPBr/+Kpa+krat5/9cNjNMgJHRCbel53bNRaBM6qq9WGAPZB/OYbDyGsIwYE
+         wriGLq8SBK46OJdFmgs/YS1z/Et905tXZ9KR4qOUrjVwLqiFqoRESi5/HYofezzkQTeF
+         Z65Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769574413; x=1770179213;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VklwEd5dwuBjikrAPpEFP/UQPzhOaAWoIKJ/0tvPqOU=;
+        b=UVN2QCefBarqeqwRhKUU0xSOh1Hme3E2akoC457GSNkadUp+HTMH5i6CAyM1PCAs4q
+         SnCnJM8nAqbopCXvb4OM5KuhfnwX1h8QI208LNIE+lbMcM1AmqcaQ15mXi9k2ulGkDwb
+         bsvjTPC4va7yeXskDflQn1CPJwMO0dDVBT9h45yflNcSKiAyIBfvzabXdi0WENaW6ae6
+         CgF4l3NJCg8z/p/w/wbkXZRtOiWmHAKnrvHkD9dAs/99jcugaw/K3/Vn1JEx2axxnEnm
+         0bwFZ1E7VVxzyj3nLE3kE8GeMv/6i9D11YUYRZXzWpyU7y33UC+yba6tcqEp0Wdw9Wjd
+         sYtg==
+X-Forwarded-Encrypted: i=1; AJvYcCUPF199UPWnexqNiTVyXwwFAXJthNrA/3DDrDEgUlATBh+z2/SjPGxhbkpP3SXh6MxY6qaZUwQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/a/PokYx0MtzSRpq25UGPrWLHtN/jqi6wqcf/UuRZ5IrcxsgM
+	AyqgMOwTAY0q2PmnWGXVAeWlpD2OrbgQoke2B1tTwunsF0EhAOzxlrwYfzB74Q==
+X-Gm-Gg: AZuq6aIwyU1SksHTbGBT2ngPZ+9O1oGwWCFdj54zJ26YBLPW159SNXuwYB0d5oTqrZ9
+	Aiqz3kBwvZ90sFdHXl9GzrbocsiHCpoMnkfz2Yci8+dbQdShjPt7PQRj7V8aM/xH4icW90WC/dx
+	Y+WEyN4IR7tXmChoXsrchx3lODeLxe1lmobKiUqqlpjavvL10IpxHv7Ncd0VFJUDIswQXfYIrXC
+	f+Sb1hUy92CHy6cWPgY/s+I7x7SYN3mw9i+VHGXKod5Ljm+lMD10uFiMRTI1mv5Hch3D9xrbfCB
+	rfyICaJVgaU2KJ+wuaBo1a3oK90s8tqw50LfSCaSJD6wxHSXJBk3Ybj+MYH6TXfunxgWT4x0MHG
+	Gtq4K6msJ43VFxuUKd2SCYMUqONawERBYls26zZoWFiiXMr429oIW9uAsMjfmzO3KXBxBMayHpb
+	IYSdp3IiKQVC+g71XA25zMzdAzR50RCuOYcVnCp3X37TAKjg==
+X-Received: by 2002:a05:7022:1099:b0:123:3488:89a3 with SMTP id a92af1059eb24-124a00bd734mr1918278c88.24.1769567650952;
+        Tue, 27 Jan 2026 18:34:10 -0800 (PST)
+Received: from [172.16.0.242] ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a1addafesm780825eec.25.2026.01.27.18.34.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Jan 2026 18:34:10 -0800 (PST)
+Message-ID: <973f2b4b-bf8d-4a77-a27a-47495bc21ff8@gmail.com>
+Date: Tue, 27 Jan 2026 18:38:28 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/2] dt-bindings: ethernet: eswin: add clock sampling
+ control
+To: Min Lin <linmin@eswincomputing.com>,
+ "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Krzysztof Kozlowski <krzk@kernel.org>,
+ =?UTF-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>,
+ devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+ mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+ linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ ningyu@eswincomputing.com, pinkesh.vaghela@einfochips.com,
+ weishangjuan@eswincomputing.com
+References: <308b676.2d03.19bb0caebed.Coremail.lizhi2@eswincomputing.com>
+ <59cec617-0189-4dc3-bc3f-6346155a62ae@lunn.ch>
+ <4e2a55e7.3662.19be8cb9c3c.Coremail.lizhi2@eswincomputing.com>
+ <c5c0bfdb-316d-4796-afa0-f6f018ceb414@lunn.ch>
+ <abf12a3f-9cdd-472d-a02e-af4da594b84f@gmail.com>
+ <e6f7da45-3dec-4af6-a5b1-a72210bf24f4@kernel.org>
+ <43923bf9-6202-4147-8eac-5bd7bb653fd4@gmail.com>
+ <bd202cfa-d6eb-4d0e-982d-b49795dd25f7@lunn.ch>
+ <009aefc4-fbc9-4f91-9230-23d18c281bf3@gmail.com>
+ <73ea5619.2b71.19bf847c80d.Coremail.linmin@eswincomputing.com>
+ <aXeydXuWEMDz-yVM@shell.armlinux.org.uk>
+ <32a1f814.2c79.19bfe173225.Coremail.linmin@eswincomputing.com>
+Content-Language: en-US
+From: Bo Gan <ganboing@gmail.com>
+In-Reply-To: <32a1f814.2c79.19bfe173225.Coremail.linmin@eswincomputing.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9c02d4b14403a1kunm26f07c7488273
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVlDGRlKVkwYHR8dQk8YS08aSFYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlJSUhVSkpJVUpPTVVKTUlZV1kWGg8SFR0UWUFZT0tIVUpLSUhOQ0NVSktLVU
-	tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=i3fpqlWitm6zc2D1UytD3MN245PnJKsri+FqW8+kaklmTzWSfSNK+GFvZn7qDVLRso/941MQMNzWarlLek7wfAHwJJkAL206ILkyr81A30HrdggvzPHZu+hDnrNQcTWZEitkfl7DImlZjLQYl6iyz0fhO0HSbqJYEQBs9YNdcoY=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=48HlpW0XQnKVlol0xdOLHQn1go+nIuTPixswB9F7kn4=;
-	h=date:mime-version:subject:message-id:from;
 
-On Tue, Jan 27, 2026 at 01:05:46PM -0800, Jakub Kicinski wrote:
-> On Tue, 27 Jan 2026 15:12:38 +0000 Zilin Guan wrote:
-> > This series fixes memory leaks in the initialization paths of the 
-> > NIC devices.
-> > 
-> > Patch 1 fixes an off-by-one error in the PF cleanup loop. It ensures
-> > the current device index is cleaned up and correctly handles the 
-> > post-loop devlink_alloc failure case.
-> > 
-> > Patch 2 fixes the same off-by-one error in the VF cleanup loop.
-> > 
-> > Patch 3 moves the initialization of oct->props[i].netdev before queue 
-> > setup calls. This ensures that if queue setup fails, the cleanup function 
-> > can find and free the allocated netdev. It also initializes lio->oct_dev 
-> > early to prevent a crash in the cleanup path.
+Hi Min, Russell, Krzysztof,
+
+On 1/26/26 22:14, Min Lin wrote:
+> Hi Russell,
 > 
-> Coccicheck says:
 > 
-> drivers/net/ethernet/cavium/liquidio/lio_main.c:3769:8-9: WARNING: Unsigned expression compared with zero: i >= 0
-> drivers/net/ethernet/cavium/liquidio/lio_vf_main.c:2215:8-9: WARNING: Unsigned expression compared with zero: i >= 0
-> -- 
-> pw-bot: cr
+>> -----Original Messages-----
+>> From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+>> Send time:Tuesday, 27/01/2026 02:29:09
+>> To: "Min Lin" <linmin@eswincomputing.com>
+>> Cc: "Bo Gan" <ganboing@gmail.com>, "Andrew Lunn" <andrew@lunn.ch>, "Krzysztof Kozlowski" <krzk@kernel.org>, 李志 <lizhi2@eswincomputing.com>, devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, ningyu@eswincomputing.com, pinkesh.vaghela@einfochips.com, weishangjuan@eswincomputing.com
+>> Subject: Re: Re: [PATCH v1 1/2] dt-bindings: ethernet: eswin: add clock sampling control
+>>
+>> On Mon, Jan 26, 2026 at 11:10:12AM +0800, Min Lin wrote:
+>>> Due to chip backend reasons, there is already a ~4-5ns skew between the RX
+>>> clock and data of the eth1 MAC controller inside the silicon.
+>>
+>> Let's analyse this.
+>>
+>> 	TXC / RXC	TXC / RXC
+>> Speed	Clock rate	Clock period
+>> 1G	125MHz		8ns
+>> 100M	25MHz		40ns
+>> 10M	2.5MHz		400ns
+>>
+>> The required skew for TXC and RXC at the receiver is specified to be
+>> between 1 and 2.6ns irrespective of the speed. The edge of the clock
+>> is also important: the rising edge indicates the lower 4 bits, and
+>> the falling edge indicates the upper 4 bits.
+>>
+>> At 1G speed, with a "4 to 5ns" skew in the chip. If this is accurate,
+>> then inverting the clock and adding 1ns of additional skew by some
+>> means (PCB trace, or at the MAC or PHY) will give the required clock
+>> at the receiver.
+>>
+> 
+> Yes, that's exactly the case.
+> 
+>> The timing table in the RGMII standard (3.3) allows for Tcyc (the
+>> clock rate) to be scaled, but there is no allowance for scaling
+>> TskewR (the required 1 to 2.6ns skew.) This skew parameter is
+>> fixed.
+>>
+>> So, at the other speeds, you are completely unable to meet the timing
+>> specification, whether irrespective of the clock inversion. In effect,
+>> the only speed that you can meet the specification is 1G.
+>>
+> 
+> The timing table in the RGMII standard(3.3) says the max value of Tskew
+> for 10/100 is unspecified.
+> Quotation:"note1: ...,For 10/100 the Max value is unspecified."
+> 
+> I think for 10/100, the "4 to 5ns" skew in the chip doesn't break the
+> standard. At 10/100 speeds, it meets the timing specification without
+> having to to add clock inversion.
+> In practice, it works at 10/100 speeds in the rgmii-id phy mode.
+> 
+>> Thus, I think this is something that needs a lot more than just "do
+>> we need to invert the clock". You also need to prevent 10M and 100M
+>> being supported IMHO.
+>>
+> 
+> Regards,
+> Lin Min
 
-Apologies for missing the unsigned integer issue here. I was worried 
-about a potential underflow during the devlink_alloc failure path if 
-the loop hadn't run, which led to the while (i >= 0) approach. I'll 
-fix this in v4. Thanks for catching that!
+I had an offline discussion with Yao Zi and others regarding this. We feel
+like the proper way for ESWIN to deal with this broken eth1 is to have a
+different compatible string just for eth1, where it can be associated with
+platform data with quirks to do eswin,rx-clk-invert at 1G. The property is
+therefore not required to be exposed in DT. (Pretend it conforms to spec
+for 1G). Need confirmation for 10M/100M, though. I double checked Lin Min's
+claim, and indeed the spec says "For 10/100 the Max value is unspecified":
+https://community.nxp.com/pwmxy87654/attachments/pwmxy87654/imx-processors/20655/1/RGMIIv2_0_final_hp.pdf
 
-Regards,
-Zilin
+Thoughts?
+
+Bo
