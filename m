@@ -1,89 +1,76 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from mail.twlab.de (mail.twlab.de [80.151.39.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8B4350D67;
-	Wed, 28 Jan 2026 13:40:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7032E35294B
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 13:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.151.39.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769607615; cv=none; b=ZLM5+6gpvvG45MPd/pwQhpiaoMPrHHTmj4whf5KyjDtiOYdsT/yy1vf2yFF9/pO5fOvlEz+XXQINgNfWtpfBxiCsnnqeJNVLZWYvsagfHZFCYm81NQulWX3jGAJoxMJxuWsJN6zm3HQB36yBQ897h/WWrk2d7h8F+qE5PIMSL2U=
+	t=1769608090; cv=none; b=SCxw5zs1jZ6gOfcyDtXne8JYuHjTSKe99IRkcscfFgiN8jJH35ye0ZUOipjh5UG6HaIZX5O1sn+cw0Uwq/Rdr4CojI5W9hG+XdSMncW/Ox0CgMOwBPxoJF27gIH7ZT0jhb95P75Tvg1v07MSznCDDK3+WbXb5g7JnIuuG+HT+6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769607615; c=relaxed/simple;
-	bh=cxr2RzuWif9CaT2hCFNa0VeL+SaUHvAQer05FMApM3g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nh/txacwgjBhEuM88rKuxMKWUwR/XA4ZSL73iOC2DEbqoJjgYmuYl7NRbpywEVPorkIvqA4rODMNYWbD6vK9EB5wg8HXKNLCYbzOWD79u+UumlibjWk8KmA1Jqtxa4yiVd26bjbPDvV4t8ev0+jR/GqiZPBTT4DYDPmcczPoobs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 7288660516; Wed, 28 Jan 2026 14:40:11 +0100 (CET)
-Date: Wed, 28 Jan 2026 14:40:12 +0100
-From: Florian Westphal <fw@strlen.de>
-To: syzbot <syzbot+d417922a3e7935517ef6@syzkaller.appspotmail.com>
-Cc: coreteam@netfilter.org, davem@davemloft.net, edumazet@google.com,
-	horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, netfilter-devel@vger.kernel.org,
-	pabeni@redhat.com, pablo@netfilter.org, phil@nwl.cc,
-	syzkaller-bugs@googlegroups.com
-Subject: Re: [syzbot] [netfilter?] KASAN: slab-use-after-free Read in
- nft_array_get_cmp
-Message-ID: <aXoRvAottF2YRD3a@strlen.de>
-References: <6979fc44.050a0220.c9109.003b.GAE@google.com>
+	s=arc-20240116; t=1769608090; c=relaxed/simple;
+	bh=hldVqX3Quk7giyVzykrfz86LE13bs5CDvO4VOUko7KQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=q9FMYBqumKVBm7R3M7HnZVB4CkD0wjaVVgKt51OBPXc2S4KkfZz52CccXp+UM1q8FmtDjnm2E3pXGPFIxqc5pDLW9+rja6oWjC7xi8NDFBuA65eMIptDn8sKCtUNqcb8k+YDf3EKbQSycy/IGGfRpCrXBiPF3XS/4a+3KlPwmec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=twx-software.de; spf=pass smtp.mailfrom=twx-software.de; dkim=pass (2048-bit key) header.d=twx-software.de header.i=@twx-software.de header.b=QcwLbjx4; arc=none smtp.client-ip=80.151.39.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=twx-software.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=twx-software.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=twx-software.de header.i=@twx-software.de header.b="QcwLbjx4"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 35BD55EAB00;
+	Wed, 28 Jan 2026 14:39:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=twx-software.de;
+	s=dkim; t=1769607545; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Z68UtEQ6cKL/RoAlYP3zKb10sL5Xk9ZL0geCebXXneM=;
+	b=QcwLbjx4t22x5NQJYPFxG99b2gdLWrh3FNYXVNXFSZ2ArMj7wa4LvSeUvqGNuOroKCVwL3
+	fBF/JvyAEW/vomW6BQqh7p9426ntnQxmvxaNJCw2CZoPwnZa1bA5iA3EwWEbrnjV9xV3+2
+	PlGDKwx2MBirWJ4SCFLwqTK71ahdjMXFb6c2Ir75x+0R9EjzDIvyPfmFJeQhaYphb8bCzw
+	BXAWPpzk8V35UdqW5I0+7ELyR3nDGrfi8wjokDmgPISxaYRC0vfSxclAuxN3xPMbin89/a
+	ER0siJv6NzjGQ0ajLgF4HQdToBtXx2cZRFfNYts5adBYZiFFNY4TCBP9Gwpv3g==
+From: Heinrich Toews <ht@twx-software.de>
+To: netdev@vger.kernel.org
+Cc: andrew@lunn.ch,
+	f.fainelli@gmail.com,
+	olteanv@gmail.com,
+	robh+dt@kernel.org,
+	krzysztof.kozlowski+dt@linaro.org
+Subject: [PATCH v1 2/3] net: phy: micrel: add flag for KSZ9477 LED erratum
+Date: Wed, 28 Jan 2026 14:38:32 +0100
+Message-ID: <20260128133842.1173406-3-ht@twx-software.de>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260128133842.1173406-1-ht@twx-software.de>
+References: <20260128133842.1173406-1-ht@twx-software.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6979fc44.050a0220.c9109.003b.GAE@google.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-syzbot <syzbot+d417922a3e7935517ef6@syzkaller.appspotmail.com> wrote:
-> Hello,
-> 
-> syzbot found the following issue on:
-> 
-> HEAD commit:    62777c8015f3 Merge branch 'net-stmmac-rk-simplify-per-soc-..
-> git tree:       net-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=103e49b2580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=aeae47237b696a30
-> dashboard link: https://syzkaller.appspot.com/bug?extid=d417922a3e7935517ef6
-> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=15e50160580000
-> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=155ce322580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/1eb82c60e767/disk-62777c80.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/e421b2bad029/vmlinux-62777c80.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/3bc19b11eaeb/bzImage-62777c80.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+d417922a3e7935517ef6@syzkaller.appspotmail.com
-> 
-> ==================================================================
-> BUG: KASAN: slab-use-after-free in nft_set_ext include/net/netfilter/nf_tables.h:795 [inline]
-> BUG: KASAN: slab-use-after-free in nft_set_ext_key include/net/netfilter/nf_tables.h:800 [inline]
-> BUG: KASAN: slab-use-after-free in nft_array_get_cmp+0x1f6/0x2a0 net/netfilter/nft_set_rbtree.c:133
-> Read of size 1 at addr ffff888058618b19 by task syz.3.79/6217
-> 
-> CPU: 1 UID: 0 PID: 6217 Comm: syz.3.79 Not tainted syzkaller #0 PREEMPT(full) 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/13/2026
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
->  print_address_description mm/kasan/report.c:378 [inline]
->  print_report+0xba/0x230 mm/kasan/report.c:482
->  kasan_report+0x117/0x150 mm/kasan/report.c:595
->  nft_set_ext include/net/netfilter/nf_tables.h:795 [inline]
->  nft_set_ext_key include/net/netfilter/nf_tables.h:800 [inline]
->  nft_array_get_cmp+0x1f6/0x2a0 net/netfilter/nft_set_rbtree.c:133
->  __inline_bsearch include/linux/bsearch.h:15 [inline]
->  bsearch+0x50/0xc0 lib/bsearch.c:33
->  nft_rbtree_get+0x16b/0x400 net/netfilter/nft_set_rbtree.c:169
+Add a new flag MICREL_KSZ9_LED_ERRATA to indicate support for a specific
+LED erratum workaround on Microchip KSZ9477 switches. This flag
+will be used by the DSA driver to trigger a hardware-specific register
+write required for correct LED activity in single-LED mode.
 
-Use after free, its possible for rbtree insert to evict elements
-due to expiry, but still return -EEXIST.
+Signed-off-by: Heinrich Toews <ht@twx-software.de>
+---
+ include/linux/micrel_phy.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-We can thus end up with removed elements but without a call to
-->commit(), hence we have a stale binary blob referencing free'd
-elements.
+diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
+index ca691641788b8..1dcbb0c93d9e1 100644
+--- a/include/linux/micrel_phy.h
++++ b/include/linux/micrel_phy.h
+@@ -45,6 +45,7 @@
+ #define MICREL_PHY_50MHZ_CLK	BIT(0)
+ #define MICREL_PHY_FXEN		BIT(1)
+ #define MICREL_KSZ8_P1_ERRATA	BIT(2)
++#define MICREL_KSZ9_LED_ERRATA	BIT(3)
+ 
+ #define MICREL_KSZ9021_EXTREG_CTRL	0xB
+ #define MICREL_KSZ9021_EXTREG_DATA_WRITE	0xC
+-- 
+2.52.0
+
