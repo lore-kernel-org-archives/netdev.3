@@ -1,53 +1,58 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6647732D45C;
-	Wed, 28 Jan 2026 10:52:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8059533123D
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 10:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769597572; cv=none; b=Dx8V12KQS3JJCPufnlpTD8C7P7HK6byWoU8ceQ9QvTUgj0megAwoRhWiWUzPY8xna/OLg0GUtWUOkUL4M3kGz/ieNfuw8dKE0Cb+2gq6bCTDGjYChhpUzBh+xd1kXGTXA3pc7ix+e7m0tlY6liauysotTM9GMo4UJbWf8WCjh1Y=
+	t=1769597913; cv=none; b=VMgTg7q+fQ+LuHXIJkDyjRUdeB0OeSfXnjOSrg+ltzC0aBUwDoyNPn5Hqit3V74e4KNk2y3kj5CRJatDDazcUAHXl4lLyT5aL/grr4dLGhVBScYuKX3F+WDDgKzxzUObT6QrRudghEahQVXwM8GB15E5+ANAg60feG2ld0xPH1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769597572; c=relaxed/simple;
-	bh=chFVlExx02x7eOkOc52rAKK3G+AgR3nxx/rr3P2A+tE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lDQmrA8xjWRoQbiRMzLGojVom1KMRvTt2JKkVKeLJBPJ/604ClA3/HA5wpXyVA4rUoOpA1fM/zaFbra57J9MkaVn8ha+8ES4nJt8Asl141CE5CSHKu8Gbxfi5JPvs4e5qtUtGz43pYl89q5wXqoF3+XakREjuAo3XXWm/aMfoZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=E9BCQzLO; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	s=arc-20240116; t=1769597913; c=relaxed/simple;
+	bh=AmbjtKCiYoXg5J7ERzVVCZxi06mbj+/SiIaGnVZ8q1o=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=mlmyhkJnP7KN+Wvc4rM+pqwRgfnXz+8iBtb+dXlZ92YU0XkOUvsNVncVloONSKRODAplfislBOgdfbf1hAI5myBtL2ZEF12O9Gx4/38lOwpbEHbvsKBL9u1MlL3uw1T5zWOkJ1G66GSGRfG+WhztAki4QRJq85l5WyDHcI2UWDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=CwoFBNrI; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="E9BCQzLO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=TkMLrcCk4up3zhJI58Pdp/XlfDts76WUyYeW8kG7V2k=; b=E9BCQzLOfQCqzzVpXEWsfVE6n/
-	hQKoIEVWKmXFSQyitLOtpcpkrWaa84GEj7yjpdf8x+cYG7FUM/iwG/KGmq6938EbLbkqsSWRWrcS2
-	79JNrqqqkbEhyyIGhPI4IGwopDVzp38qNkXpOviNo4Ts5aVKLDQGIH4bb8oT48FQiEwMhV+pmxfMp
-	lvkq36QijUtp5LHhibj5m7r8ZqB2EZXhMJ8nIOZee/F59cLkTA/ilYscMEMSvQQ3GqdDQOh6FCHoa
-	L0pOz/pbR+cYNjuh5/ft22WO18vUe7FnRs6MKdjAdIMEsRauAzAGCL1kMKsRhZTNryU7FTrqpPrCY
-	CU7X28Hw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vl39v-00077K-7T; Wed, 28 Jan 2026 10:52:27 +0000
-Date: Wed, 28 Jan 2026 02:52:21 -0800
-From: Breno Leitao <leitao@debian.org>
-To: John Ogness <john.ogness@linutronix.de>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, pmladek@suse.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
-	gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, mpdesouza@suse.com, 
-	kernel-team@meta.com
-Subject: Re: [PATCH net-next v4 1/5] printk: Add execution context (task
- name/CPU) to printk_info
-Message-ID: <aXnp0uRXlrSMUlcH@gmail.com>
-References: <20260123-nbcon-v4-0-46a5cf567926@debian.org>
- <20260123-nbcon-v4-1-46a5cf567926@debian.org>
- <87ldhi7pn6.fsf@jogness.linutronix.de>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="CwoFBNrI"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=WjAk+WsIgQye24hk1wlnOeBf4+qL7selZY8821b7xpk=; b=CwoFBNrI6o1EDsfMPyR06myCUu
+	3OPzbYpEHA8FfvNpBmhZDsAJCAivcsr1Pt9BOb+mv6zTqZNT5F6MUcJg+Ll3ZOkWJuOEU0YDTuRwM
+	CEaMX6pYUj6bPKQmu8/HfeqR67aM/d4dgdinQ1M44009JCDAYgLb6EjS5l270KcJs4NEdqBEeAcE2
+	UCft2R6RzQKHYSitLaZK4sPjDyKJ1mNWSDB6YI+uIOHk//b+3c5YhS/7TxiIy5wc2a3c2ji6BbUIY
+	oZ6duDd6MTcj21yywJOQtZ7ufI3ZuZH2EPgM9nIydXx+GcSdFPoCb0U8bS67o3eNopZ8Q5ZTpNXty
+	70PKtKtg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:51056)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vl3Ff-000000007FI-0fEG;
+	Wed, 28 Jan 2026 10:58:23 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vl3Fc-000000006uY-1acE;
+	Wed, 28 Jan 2026 10:58:20 +0000
+Date: Wed, 28 Jan 2026 10:58:20 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Heiko Stuebner <heiko@sntech.de>, Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Philipp Zabel <p.zabel@pengutronix.de>
+Subject: [PATCH net-next 0/3] net: stmmac: rk: second chunk of cleanups
+Message-ID: <aXnrzIbZN-gaZTia@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,104 +61,19 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87ldhi7pn6.fsf@jogness.linutronix.de>
-X-Debian-User: leitao
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Hello John,
+Hi,
 
-On Tue, Jan 27, 2026 at 09:49:25PM +0106, John Ogness wrote:
-> On 2026-01-23, Breno Leitao <leitao@debian.org> wrote:
-> > diff --git a/kernel/printk/nbcon.c b/kernel/printk/nbcon.c
-> > index 32fc12e536752..391a58be0c5b3 100644
-> > --- a/kernel/printk/nbcon.c
-> > +++ b/kernel/printk/nbcon.c
-> > @@ -946,6 +946,19 @@ void nbcon_reacquire_nobuf(struct nbcon_write_context *wctxt)
-> >  }
-> >  EXPORT_SYMBOL_GPL(nbcon_reacquire_nobuf);
-> >  
-> > +#ifdef CONFIG_PRINTK_EXECUTION_CTX
-> > +static void wctxt_load_execution_ctx(struct nbcon_write_context *wctxt,
-> > +				     struct printk_message *pmsg)
-> > +{
-> > +	wctxt->cpu = pmsg->cpu;
-> > +	wctxt->pid = pmsg->pid;
-> > +	memcpy(wctxt->comm, pmsg->comm, TASK_COMM_LEN);
-> 
-> Perhaps using sizeof() instead?
-> 
-> 	memcpy(wctxt->comm, pmsg->comm, sizeof(wctxt->comm));
-> 
-> And adding a static assert that the sizes match?
-> 
-> 	static_assert(sizeof(wctxt->comm) == sizeof(pmsg->comm));
+This series is a cut-down installment of the dwmac-rk cleanups, covering
+up to the point that the AI review had its first issue with the patches.
+Unfortunately, this means that we introduce ->init but do not add any
+users for it yet. That will be in the next round once this has got
+through AI review and merged.
 
-Sure, I move the size from TASK_COMM_LEN to sizeof(wctxt->comm) and also
-adding the build time assert.
+ drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c | 120 ++++++++++++-------------
+ 1 file changed, 57 insertions(+), 63 deletions(-)
 
-> > diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
-> > index 1d765ad242b82..7daaa27705339 100644
-> > --- a/kernel/printk/printk.c
-> > +++ b/kernel/printk/printk.c
-> > @@ -2131,12 +2131,37 @@ static inline void printk_delay(int level)
-> >  	}
-> >  }
-> >  
-> > +#define CALLER_ID_MASK 0x80000000
-> > +
-> >  static inline u32 printk_caller_id(void)
-> >  {
-> >  	return in_task() ? task_pid_nr(current) :
-> > -		0x80000000 + smp_processor_id();
-> > +		CALLER_ID_MASK + smp_processor_id();
-> > +}
-> > +
-> > +#ifdef CONFIG_PRINTK_EXECUTION_CTX
-> > +/* Store the opposite info than caller_id. */
-> > +static u32 printk_caller_id2(void)
-> > +{
-> > +	return !in_task() ? task_pid_nr(current) :
-> > +		CALLER_ID_MASK + smp_processor_id();
-> >  }
-> >  
-> > +static pid_t printk_info_get_pid(const struct printk_info *info)
-> > +{
-> > +	u32 caller_id = info->caller_id;
-> > +	u32 caller_id2 = info->caller_id2;
-> > +
-> > +	return caller_id & CALLER_ID_MASK ? caller_id2 : caller_id;
-> > +}
-> > +
-> > +static int printk_info_get_cpu(const struct printk_info *info)
-> > +{
-> > +	return ((info->caller_id & CALLER_ID_MASK ?
-> > +		 info->caller_id : info->caller_id2) & ~CALLER_ID_MASK);
-> > +}
-> 
-> It is a bit odd that printk_info_get_pid() uses local variables and
-> printk_info_get_cpu() does not. I could understand if things evolve that
-> way over time, but it is odd to use the two different styles from the
-> beginning.
->
-> I would prefer the local variable variant. But mostly I would prefer
-> that they are the same style.
-
-They evolve different, I will get both of them using local variables and
-in the same style.
-
-> > +
-> > +static void pmsg_load_execution_ctx(struct printk_message *pmsg,
-> > +				    const struct printk_info *info)
-> > +{
-> > +	pmsg->cpu = printk_info_get_cpu(info);
-> > +	pmsg->pid = printk_info_get_pid(info);
-> > +	memcpy(pmsg->comm, info->comm, TASK_COMM_LEN);
-> 
-> Here I also suggest using sizeof() and static_assert():
-> 
-> 	memcpy(pmsg->comm, info->comm, sizeof(pmsg->comm));
-> 	static_assert(sizeof(pmsg->comm) == sizeof(info->comm));
-
-Ack! I will respin it.
-
-Thanks for the review,
---breno
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
