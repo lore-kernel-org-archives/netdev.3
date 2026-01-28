@@ -1,154 +1,191 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97F832571F
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 21:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9619F3033F4;
+	Wed, 28 Jan 2026 21:20:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769635139; cv=none; b=Kxunrl6VwD4Far1kMr9t0Lv+1eR622ncmqUsOz/sTyYM6cNw5i5uQFYiiH8bgrQ/NBNHQRZ6El5eJDNf6UzEGY2EnOVYln2X8T2mdR6AmjCb5/DWKv8vVNdey8+ZYlt8qnMQmTx7boYO9WC5nUL5Q781Dsb/G9vGXEMg5bkQadk=
+	t=1769635251; cv=none; b=WNlR77Wd3boc5NPkh1zGziwQ1NKpO/kunosIp6//9C+joMU3+GomnCkFRvXd4RQi0P401z3EwgBfF+SxV4exy7gjxdXb/0nXsHX0V1iB16UJZ2C4tubb3Nmdpriwp+av1YTV+zsMNX4lsVgBQVDBC4vsNpn3wzhkOru6mDHAGOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769635139; c=relaxed/simple;
-	bh=R26B82zxPcid0PkRJfA5J9VLBvvgfckzt4BZtC2Buu8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cr9NlOcJWzZFMLG8pdA3WenpTN07NNCAABeuFLG53f5i/8fSJpDDyJ7/ssSDdcgFMYBG0VgbSqyxV61wjoLGN/oBpN6SuWS4E0KRWWzyyfPjgmlzF49/mTnhNeyEMRbF65lgVUgtqvS0j8HYv+B8WDM7m7jI1C+6pEKTsVKQOaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=H6/Pt2QS; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1769635251; c=relaxed/simple;
+	bh=sote/VAIMN8Y4Sk5k0bjotb9QR9MKYCXDNjzh6wnwtw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FPdQtR+6O3TgzJhXoOjGd5ZF6mFovWpGVrWkIjhCCJY6+Uk7rkFrDQcO1BXx3vEXWPY150GB8xRhl6xAfHxbtHkw7Ew4AflcHyAzYpz6zkwzXWKO4gjhxTvsy+yhJjy0E91kBNFQwLRlxVXcn6Xcyrd0aLs1SH+q6HWnu+SSuWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=e4zSDpnq; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="H6/Pt2QS"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4801eb2c0a5so2550905e9.3
-        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 13:18:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1769635136; x=1770239936; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KW1Mn8hE3xrcR5j18KDZNCCnIS+/tf2Xt9JxG670/6k=;
-        b=H6/Pt2QSJL40tHRjCnqTJlyeIJBSCnr6XIoN79q068X0MJU9XhocPvQi3HFIkZymOP
-         p8kxmgBVkKuyGCdOTB6i9edsgCbEngNrTzpB+fJmWfV0QD5weM0n/jRnTPjP7dR8i0fd
-         XPcJli/57tpaiplIsRRfu/P7GpWnWHZ7UOuoOtvXdjd8lOWeFXblOPmGyTJgQGpUDdVX
-         TjBp17TAhFz4dhaYtX7FHH3TO+d7uWcui8ah2wAxjnHEdJf2DAaU243XGNDazfe4iT80
-         ZPl523HaMWYMdHiUL4T38lxBoNV59O7P5kaPK3MmoGwSuq7gWlGhXbmGHaRcqptdF3co
-         lYyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769635136; x=1770239936;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KW1Mn8hE3xrcR5j18KDZNCCnIS+/tf2Xt9JxG670/6k=;
-        b=lO80bZjVLE+ECUAbqoabkOL7Rjuwq73GTwxXUMkbt5rgm95JYC7tDg45OknpWJAsZi
-         vsyAJ9jBjwp32081B2qM+niiL5c1tEMihlFh9hpyi11SOqc6wae3k7aCqDMJVlxmJ4vp
-         kbvl6CxNL3/FZ3zKjwxtSPTyVPM3aHKhcFHjLfjBt+RnIQ2F4/Dm9jgY9QPk3JTjAFx+
-         XMu48kZmJEHZ+K9YwNkZH3uYZ1EVbbtmyYMrcd+LUaJzyiIAkHPxCilO6kOma5o8V9PM
-         pBxPookXGc6hjFW/czfvlmDbUtvVYmEaS9WkpDdfNRVPMTGnbSbpEwEZVUf3zEdyI+VQ
-         Dz/w==
-X-Forwarded-Encrypted: i=1; AJvYcCVk4qZnJXcryla9o2S6S00p9JJ25Y4SsVgKGvAWnXNkodU6SmcRzYO6s9Yzt7Zwf35ETmjlSJw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5QGNajeoDMUzRakKf94ROFfQYsmwRul2saO9tAlAGgGt/f9oo
-	irXP/RMQqfRro2Zw5gAb0V2HYHrACOBWc+UdJgU8zVLxJH+SAnu2I/e0NRWcaQa6AbM=
-X-Gm-Gg: AZuq6aKsTzLn5THrOcp4oH8sgPfY5W3uOKnfhbGd35iW3Wp29z6dtqjY3v/w1wioDNl
-	QGbBr43WDbj5+6oKT8m3gPRdfXSkWUCsWfDm5Rm1bSndhNxiuUTULfhJxhZLZXeyOCzHMqKyu8t
-	8KQt4VkGGeOgTva0Lt1xVCF/YcMgSow3+hrvDlFpCscKw9T81ebfb1wS9J2ser77II3TSENcFmS
-	ydY5JeYcX5+jGvKaDy1nOIgQ0zURLzu3PXUe8+JV6wAJtEjaze05AtkoYdkyA4duoULNC2s8WlS
-	wMrl6Z0OqRtqX16qZSnq4xs1Lo8wyzw0cSo5ft9zNGGzJGICPsCibaggntRf/SUYyw1GenFVoze
-	qsEpZtBsSRbG0/iIaMwbVgggCPezY5VMqCNlmqhME17Sk5Dd02AB1Ou83cBY3NK31wpUROfYtoB
-	qkflUtacR9qhNcKwue1T3spArb
-X-Received: by 2002:a05:600c:3e16:b0:477:755b:5587 with SMTP id 5b1f17b1804b1-48069c10f78mr74663935e9.8.1769635136165;
-        Wed, 28 Jan 2026 13:18:56 -0800 (PST)
-Received: from localhost (109-81-26-156.rct.o2.cz. [109.81.26.156])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4806d78cb6csm3510525e9.2.2026.01.28.13.18.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 13:18:55 -0800 (PST)
-Date: Wed, 28 Jan 2026 22:18:54 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 04/33] mm: vmstat: Prepare to protect against concurrent
- isolated cpuset change
-Message-ID: <aXp9Pp4YvlbJumeY@tiehlicka>
-References: <20260125224541.50226-1-frederic@kernel.org>
- <20260125224541.50226-5-frederic@kernel.org>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="e4zSDpnq"
+Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60SKnSMG1218206;
+	Wed, 28 Jan 2026 13:20:35 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=gnNkE483piJuelQNFXSfB9+R9CbdWoca6wGcPfV6L/c=; b=e4zSDpnq+kZK
+	i3MSsXV/dLntv7OvwW6kXakpWxd4esCliQewKtzITkJFkNgmM0iucSySE6xhOsdS
+	Zfudjv5TLWUZSqUia8sdx3yzKdGAz2XHCYlYUCiREiOnYwXdOWeJWDE1Ey6ge60h
+	i4/s7OR/nSVP2fkRGe1TBTo+oumhE9FTWFCivEhf9p4bGF4gFPTjAlVBFFQBKAlT
+	sscPoPb/97oq60pWmmHWGje50TC3s9f/CI1z9xIc07sgxT00IL360t9oKquliKV+
+	VIs/3DqOQ2R/bP/9d8+1j9eOv/mMQoleJ1n5MUh+nV3KZda0LjoYjvJVDTsSiZxX
+	WsIxE6K9wg==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4bysu38amx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Wed, 28 Jan 2026 13:20:35 -0800 (PST)
+Received: from localhost (2620:10d:c0a8:1c::11) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.35; Wed, 28 Jan
+ 2026 21:20:33 +0000
+From: Vishwanath Seshagiri <vishs@meta.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
+CC: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        =?UTF-8?q?Eugenio=20P=C3=A9rez?=
+	<eperezma@redhat.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S .
+ Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, David Wei
+	<dw@davidwei.uk>,
+        <netdev@vger.kernel.org>, <virtualization@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 net-next 2/2] selftests: virtio_net: add buffer circulation test
+Date: Wed, 28 Jan 2026 13:20:31 -0800
+Message-ID: <20260128212031.1431746-3-vishs@meta.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260128212031.1431746-1-vishs@meta.com>
+References: <20260128212031.1431746-1-vishs@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260125224541.50226-5-frederic@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTI4MDE3NiBTYWx0ZWRfXw26/VrKjQjMH
+ zW09v8/Yym265BGK80ajaxq/ocv43idPtGMTdVAV2e8dZ381dTLhxlztufG5otsYzb0nir6gRgQ
+ HflbNyBio6AoGabd2BHT7HsvtXgAtb/tGHTXYNaUl10CzwxITO6zvRvlQD8JOOzkAP6hmLa4WhV
+ x2IlJUD7l/p8pKqEYeEZxOFiwgDmsIXmIumSk2B36zLJcV30L9WTKvGziUniP14TLPMM44spo6+
+ SqrEuVAJmeJt1k+ws0+UvNMM6Mx4oqgMakzztQS4dmJ6zP9BT0iZE161o6pKJjXo8ZLeYq7tqns
+ IYPtIoIrtUuDfJLZXJwTQ7o1UFGEcGDhwW+O5B8/aDAjxQDO67qx1Ak8e+xuPbClNCCRnH58WKS
+ BSgYFCnSjV4PTAUozjGFQoU6tIilZq00qgOmKeeXFsQivAhDn8+axVTB+pofPwKbtpj2SL6EiAw
+ Vtp/AZdz8XAGmpHDu5A==
+X-Proofpoint-GUID: w5yBQG5QgZziHWyBYKN8rM9SYJdwhBD3
+X-Authority-Analysis: v=2.4 cv=ecMwvrEH c=1 sm=1 tr=0 ts=697a7da3 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VabnemYjAAAA:8
+ a=-RNOp1hDGyVVwNzvGBsA:9 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: w5yBQG5QgZziHWyBYKN8rM9SYJdwhBD3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-01-28_06,2026-01-28_03,2025-10-01_01
 
-On Sun 25-01-26 23:45:11, Frederic Weisbecker wrote:
-> The HK_TYPE_DOMAIN housekeeping cpumask will soon be made modifiable at
-> runtime. In order to synchronize against vmstat workqueue to make sure
-> that no asynchronous vmstat work is pending or executing on a newly made
-> isolated CPU, target and queue a vmstat work under the same RCU read
-> side critical section.
-> 
-> Whenever housekeeping will update the HK_TYPE_DOMAIN cpumask, a vmstat
-> workqueue flush will also be issued in a further change to make sure
-> that no work remains pending after a CPU has been made isolated.
-> 
-> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Add iperf3-based test to verify RX buffer handling under load.
+Optionally logs page_pool tracepoints when available.
 
-Acked-by: Michal Hocko <mhocko@suse.com>
-Thanks!
+Signed-off-by: Vishwanath Seshagiri <vishs@meta.com>
+---
+ .../drivers/net/virtio_net/basic_features.sh  | 70 +++++++++++++++++++
+ 1 file changed, 70 insertions(+)
 
-> ---
->  mm/vmstat.c | 10 ++++++----
->  1 file changed, 6 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/vmstat.c b/mm/vmstat.c
-> index 65de88cdf40e..ed19c0d42de6 100644
-> --- a/mm/vmstat.c
-> +++ b/mm/vmstat.c
-> @@ -2144,11 +2144,13 @@ static void vmstat_shepherd(struct work_struct *w)
->  		 * infrastructure ever noticing. Skip regular flushing from vmstat_shepherd
->  		 * for all isolated CPUs to avoid interference with the isolated workload.
->  		 */
-> -		if (cpu_is_isolated(cpu))
-> -			continue;
-> +		scoped_guard(rcu) {
-> +			if (cpu_is_isolated(cpu))
-> +				continue;
->  
-> -		if (!delayed_work_pending(dw) && need_update(cpu))
-> -			queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
-> +			if (!delayed_work_pending(dw) && need_update(cpu))
-> +				queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
-> +		}
->  
->  		cond_resched();
->  	}
-> -- 
-> 2.51.1
-> 
-
+diff --git a/tools/testing/selftests/drivers/net/virtio_net/basic_features.sh b/tools/testing/selftests/drivers/net/virtio_net/basic_features.sh
+index cf8cf816ed48..c2c8023d2b92 100755
+--- a/tools/testing/selftests/drivers/net/virtio_net/basic_features.sh
++++ b/tools/testing/selftests/drivers/net/virtio_net/basic_features.sh
+@@ -6,6 +6,7 @@
+ ALL_TESTS="
+ 	initial_ping_test
+ 	f_mac_test
++	buffer_circulation_test
+ "
+ 
+ source virtio_net_common.sh
+@@ -16,6 +17,8 @@ source "$lib_dir"/../../../net/forwarding/lib.sh
+ h1=${NETIFS[p1]}
+ h2=${NETIFS[p2]}
+ 
++require_command iperf3
++
+ h1_create()
+ {
+ 	simple_if_init $h1 $H1_IPV4/24 $H1_IPV6/64
+@@ -83,6 +86,73 @@ f_mac_test()
+ 	log_test "$test_name"
+ }
+ 
++buffer_circulation_test()
++{
++	RET=0
++	local test_name="buffer circulation"
++	local tracefs="/sys/kernel/tracing"
++
++	setup_cleanup
++	setup_prepare
++
++	ping -c 1 -I $h1 $H2_IPV4 >/dev/null
++	if [ $? -ne 0 ]; then
++		check_err 1 "Ping failed"
++		log_test "$test_name"
++		return
++	fi
++
++	local rx_start=$(cat /sys/class/net/$h2/statistics/rx_packets)
++	local tx_start=$(cat /sys/class/net/$h1/statistics/tx_packets)
++
++	if [ -d "$tracefs/events/page_pool" ]; then
++		echo > "$tracefs/trace"
++		echo 1 > "$tracefs/events/page_pool/enable"
++	fi
++
++	iperf3 -s --bind-dev $h2 -p 5201 &>/dev/null &
++	local server_pid=$!
++	sleep 1
++
++	if ! kill -0 $server_pid 2>/dev/null; then
++		if [ -d "$tracefs/events/page_pool" ]; then
++			echo 0 > "$tracefs/events/page_pool/enable"
++		fi
++		check_err 1 "iperf3 server died"
++		log_test "$test_name"
++		return
++	fi
++
++	iperf3 -c $H2_IPV4 --bind-dev $h1 -p 5201 -t 5 >/dev/null 2>&1
++	local iperf_ret=$?
++
++	kill $server_pid 2>/dev/null || true
++	wait $server_pid 2>/dev/null || true
++
++	if [ -d "$tracefs/events/page_pool" ]; then
++		echo 0 > "$tracefs/events/page_pool/enable"
++		local trace="$tracefs/trace"
++		local hold=$(grep -c "page_pool_state_hold" "$trace" 2>/dev/null)
++		local release=$(grep -c "page_pool_state_release" "$trace" 2>/dev/null)
++		log_info "page_pool events: hold=${hold:-0}, release=${release:-0}"
++	fi
++
++	local rx_end=$(cat /sys/class/net/$h2/statistics/rx_packets)
++	local tx_end=$(cat /sys/class/net/$h1/statistics/tx_packets)
++	local rx_delta=$((rx_end - rx_start))
++	local tx_delta=$((tx_end - tx_start))
++
++	log_info "Circulated TX:$tx_delta RX:$rx_delta"
++
++	if [ $iperf_ret -ne 0 ]; then
++		check_err 1 "iperf3 failed"
++	elif [ "$rx_delta" -lt 10000 ]; then
++		check_err 1 "Too few packets: $rx_delta"
++	fi
++
++	log_test "$test_name"
++}
++
+ setup_prepare()
+ {
+ 	virtio_device_rebind $h1
 -- 
-Michal Hocko
-SUSE Labs
+2.47.3
+
