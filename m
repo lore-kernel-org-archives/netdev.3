@@ -1,62 +1,137 @@
-Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1B736EABD
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 18:37:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.189
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0141A25A2B4
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 18:37:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769625452; cv=none; b=UyPWO9oNoaFuUPC1nTNA7ggx/1I8Q9tpBeenLL0q3lDCqwHFYLRnQa/3BoNM2C9c1Mfn8G221LRc1/aktQn0OH0pidG2KJJkznRHaPKLEe76+ih+v8lmb4a1mqBkCpweD5ecIK6nxzAG5mKi17k/xCjBb0JwKeriQOqniKz1k7M=
+	t=1769625461; cv=none; b=J7MSeDhlDEUGXJhtCfRBjKkPRx+/UBUUllPcDccQ1xO4wAxPnJTco+X85+rfHXgx+qV3vyYVrMDH7iL1THNIFAzOzd8YLKQQUKVtFtZNuFxB1CPKSLznsTscSvBz6OSramjg3fBa2I1miyRjfldr0cxgAEINrlO9ipDTMkkZxSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769625452; c=relaxed/simple;
-	bh=4kjkTYxNQW11oVA9POYh0geshLO3N3MT7nsipEm3MaQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VRVtok1abY4y4x5UlDSDEeyWqtsns/fBNDpkbJcLjRlEIctyEdVW1K8QkWQRa/CHLfxt5eGJACL4jSG2deAKhGpDofM07+ZJ7ZK4OxkqHg7rPh/Re8qNsPfxDsfRtQTPUiAQtdxuG1JzzlmKyymaeTnDzLLGBMimwtgzFWrXR4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=nzQ/l0Gb; arc=none smtp.client-ip=95.215.58.189
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1769625461; c=relaxed/simple;
+	bh=G77Vg9NCoEOfzWSMqpCfpI3vtHhFc7WHgv7Y4TJrTcE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hx9leDb66kaLwB/ITdmL+KwAsPrPe2/7Fset5OFAA5BoNfKdnqFfSE1NMNmZ5bCHYbOYsWNkFXtRxZOI/Z4RaiwZ0ZoayloSkK2AGozFYczY0m/Stqs/MCYk6Og0VBEFE5bB9/ZTOlCDn+udVlzlWFzQIhOm2yC2FHZWY0rC228=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BDux226i; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="nzQ/l0Gb"
-Message-ID: <e989841a-6dc1-49e1-a4e2-773a5a1d144a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769625439;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BDux226i"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769625459;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4kjkTYxNQW11oVA9POYh0geshLO3N3MT7nsipEm3MaQ=;
-	b=nzQ/l0GbaU+NBH+noBsS9SXMu0av8A18VB9MKKlZt0VT+pKwCPE6bJ9kObBuGUej6ofPfz
-	kVO91O0HLOGTvHJmIo1QOy4I0Gvkajgbx9oxKt8CIDPib9i2rI9ahmHxTcbYWvSk5xdpOc
-	BHpzV72SIVZCKHmvSAf9U5Mb1+ETLKE=
-Date: Wed, 28 Jan 2026 10:37:10 -0800
+	bh=+Rp6W/5BvogCjZr+iOOJYHLX2W86xKh8vpmayGVFhwA=;
+	b=BDux226iltuK4aALC2qBWun67Pm8jJDHhV/Xi4pnRzm3b8N7BqkoBSR4vWTrgtjmGAwX/O
+	WNk2olOKXFyB7npKeGq18JHeP9sRmES9pnD0j7Yr4GSm1y0GmP8bL+bRKhueTV2VMNHDE8
+	Fhy4J76KH7RtpRmj2KIhxy2hivB4yp4=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-253-C2i-XW3JPxeZn9nTHXkHUw-1; Wed,
+ 28 Jan 2026 13:37:33 -0500
+X-MC-Unique: C2i-XW3JPxeZn9nTHXkHUw-1
+X-Mimecast-MFC-AGG-ID: C2i-XW3JPxeZn9nTHXkHUw_1769625451
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8693C1936189;
+	Wed, 28 Jan 2026 18:37:30 +0000 (UTC)
+Received: from thinkpad (unknown [10.44.33.100])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6F83318002A6;
+	Wed, 28 Jan 2026 18:37:26 +0000 (UTC)
+Date: Wed, 28 Jan 2026 19:37:23 +0100
+From: Felix Maurer <fmaurer@redhat.com>
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, jkarrenpalo@gmail.com,
+	tglx@linutronix.de, mingo@kernel.org, allison.henderson@oracle.com,
+	petrm@nvidia.com, antonio@openvpn.net, bigeasy@linutronix.de,
+	Steffen Lindner <steffen.lindner@de.abb.com>
+Subject: Re: [PATCH net-next v2 4/9] hsr: Implement more robust duplicate
+ discard for PRP
+Message-ID: <aXpXY0YSjA-ctoBa@thinkpad>
+References: <cover.1769093335.git.fmaurer@redhat.com>
+ <fe1dbc483482e98fbc286290a2a3e88f555894d4.1769093335.git.fmaurer@redhat.com>
+ <20260128163824.GB172540@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net] net: don't touch dev->stats in BPF redirect paths
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- Gal Pressman <gal@nvidia.com>, ast@kernel.org, daniel@iogearbox.net,
- andrii@kernel.org, eddyz87@gmail.com, song@kernel.org,
- yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org,
- sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, dsahern@gmail.com,
- bpf@vger.kernel.org
-References: <20260128161030.39870-1-kuba@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <20260128161030.39870-1-kuba@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260128163824.GB172540@kernel.org>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On 1/28/26 8:10 AM, Jakub Kicinski wrote:
-> Gal reports that BPF redirect increments dev->stats.tx_errors
-> on failure. This is not correct, most modern drivers completely
-> ignore dev->stats so these drops will be invisible to the user.
-> Core code should use the dedicated core stats which are folded
-> into device stats in dev_get_stats().
+On Wed, Jan 28, 2026 at 04:38:24PM +0000, Simon Horman wrote:
+> On Thu, Jan 22, 2026 at 03:56:59PM +0100, Felix Maurer wrote:
+>
+> ...
+>
+> > diff --git a/net/hsr/hsr_framereg.c b/net/hsr/hsr_framereg.c
+>
+> ...
+>
+> > +/* Get the currently active sequence number block. If there is no block yet, or
+> > + * the existing one is expired, a new block is created. The idea is to maintain
+> > + * a "sparse bitmap" where a bitmap for the whole sequence number space is
+> > + * split into blocks and not all blocks exist all the time. The blocks can
+> > + * expire after time (in low traffic situations) or when they are replaced in
+> > + * the backing fixed size buffer (in high traffic situations).
+> > + */
+> > +static struct hsr_seq_block *hsr_get_seq_block(struct hsr_node *node,
+> > +					       u16 block_idx)
+> > +{
+> > +	struct hsr_seq_block *block, *res;
+> > +
+> > +	block = xa_load(&node->seq_blocks, block_idx);
+> > +
+> > +	if (block && hsr_seq_block_is_old(block)) {
+> > +		hsr_forget_seq_block(node, block);
+> > +		block = NULL;
+> > +	}
+> > +
+> > +	if (!block) {
+> > +		block = &node->block_buf[node->next_block];
+> > +		hsr_forget_seq_block(node, block);
+> > +
+> > +		memset(block, 0, sizeof(*block));
+> > +		block->time = jiffies;
+> > +		block->block_idx = block_idx;
+> > +
+> > +		res = xa_store(&node->seq_blocks, block_idx, block, GFP_ATOMIC);
+> > +		if (xa_is_err(res))
+>
+> Hi Felix,
+>
+> I ran Claude Code over this with review-prompts [1] and it flags
+> that in the error path above, the following is needed so that the
+> block can be re-used.
+>
+> 			block->time = 0;
 
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+I agree. It would nonetheless be reused at some point, but not setting
+time = 0 may lead to an unexpected block getting removed when it is
+reused (or at least an attempt to do so). I'll fix this in v3.
+
+Thanks,
+   Felix
+
+
+> [1] https://github.com/masoncl/review-prompts/
+>
+> > +			return NULL;
+> > +
+> > +		node->next_block =
+> > +			(node->next_block + 1) & (HSR_MAX_SEQ_BLOCKS - 1);
+> > +	}
+> > +
+> > +	return block;
+> > +}
+> > +
+>
+> ...
+
