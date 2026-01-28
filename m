@@ -1,32 +1,30 @@
 Received: from mail.twlab.de (mail.twlab.de [80.151.39.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7032E35294B
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 13:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A811350A3B
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 13:48:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.151.39.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769608090; cv=none; b=SCxw5zs1jZ6gOfcyDtXne8JYuHjTSKe99IRkcscfFgiN8jJH35ye0ZUOipjh5UG6HaIZX5O1sn+cw0Uwq/Rdr4CojI5W9hG+XdSMncW/Ox0CgMOwBPxoJF27gIH7ZT0jhb95P75Tvg1v07MSznCDDK3+WbXb5g7JnIuuG+HT+6w=
+	t=1769608092; cv=none; b=LET0AzxV5En9HwxTDFmujDaqnLzCr8GS3WB6ylihnht7lpVtpEBiEK/MtIzwBLYW2aafLcVGU3Scy1kX7ogrUgZ+kCdAHpHJCDNL5AShYb0+4QkKCav9jlkbt1xpmbfYXSTvfv+T6Hblq52D+htsYrxwOsIRXJ/qN/zQst3WonE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769608090; c=relaxed/simple;
-	bh=hldVqX3Quk7giyVzykrfz86LE13bs5CDvO4VOUko7KQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q9FMYBqumKVBm7R3M7HnZVB4CkD0wjaVVgKt51OBPXc2S4KkfZz52CccXp+UM1q8FmtDjnm2E3pXGPFIxqc5pDLW9+rja6oWjC7xi8NDFBuA65eMIptDn8sKCtUNqcb8k+YDf3EKbQSycy/IGGfRpCrXBiPF3XS/4a+3KlPwmec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=twx-software.de; spf=pass smtp.mailfrom=twx-software.de; dkim=pass (2048-bit key) header.d=twx-software.de header.i=@twx-software.de header.b=QcwLbjx4; arc=none smtp.client-ip=80.151.39.74
+	s=arc-20240116; t=1769608092; c=relaxed/simple;
+	bh=c2aLOBMj/ufy4HJDaWIuwuW9HHjACYHfUy26L4y0iNo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X3yuRFUtbWlXVYjmpZ7H5oKV3iD5kLqpnhkUYmWV0NPOv2M1UB24b9Cq/x1689BVJa8tolpeCTey3CIc9AZza0AeujhFy43BIOYTXexyU94I9nnFzbi3khkVBWfqnFn1MTWYgZqI/jvRBFWFFNY8LQdY11KbGjRuWqb3j5bR7dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=twx-software.de; spf=pass smtp.mailfrom=twx-software.de; dkim=pass (2048-bit key) header.d=twx-software.de header.i=@twx-software.de header.b=bIK2GdXC; arc=none smtp.client-ip=80.151.39.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=twx-software.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=twx-software.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=twx-software.de header.i=@twx-software.de header.b="QcwLbjx4"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 35BD55EAB00;
-	Wed, 28 Jan 2026 14:39:05 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=twx-software.de header.i=@twx-software.de header.b="bIK2GdXC"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id F3ABB5EAAF9;
+	Wed, 28 Jan 2026 14:38:53 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=twx-software.de;
-	s=dkim; t=1769607545; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Z68UtEQ6cKL/RoAlYP3zKb10sL5Xk9ZL0geCebXXneM=;
-	b=QcwLbjx4t22x5NQJYPFxG99b2gdLWrh3FNYXVNXFSZ2ArMj7wa4LvSeUvqGNuOroKCVwL3
-	fBF/JvyAEW/vomW6BQqh7p9426ntnQxmvxaNJCw2CZoPwnZa1bA5iA3EwWEbrnjV9xV3+2
-	PlGDKwx2MBirWJ4SCFLwqTK71ahdjMXFb6c2Ir75x+0R9EjzDIvyPfmFJeQhaYphb8bCzw
-	BXAWPpzk8V35UdqW5I0+7ELyR3nDGrfi8wjokDmgPISxaYRC0vfSxclAuxN3xPMbin89/a
-	ER0siJv6NzjGQ0ajLgF4HQdToBtXx2cZRFfNYts5adBYZiFFNY4TCBP9Gwpv3g==
+	s=dkim; t=1769607542; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=pazKv2dYTA9HZXmk/6LbmIvOQ29ZrenFyD1Q4vFlZ2g=;
+	b=bIK2GdXCkcIEU/TKkOxGV26UY5+rOMJHiDfkzhv3fhW5ikyAPG+QG2UvwrbgBg2O4QJhud
+	vg8j6pJalcJWyXeLeh5xosOmt6X/49nEj4a9CriT0wpNdFQwAKyplR7VAoBjdqmzD3gHO4
+	+QN3Xk+tG5hZjmfoK9KhkJpHlIVmPJMNqH4tE201E95MHC/FqWI4mQbO+HxpIs4BTty62V
+	fJpscJi15aaSAR+Ewd5pKsKowWmXCDwy3b81e2o2Vlk4bEmeuuRA2UASR+Gyl1ZdkvTzvR
+	eKudykc2P36WgNxZHJRVmKrx3CJ5KYXst8RxxljDBfsJggHuoxfPTEbMdAvtzQ==
 From: Heinrich Toews <ht@twx-software.de>
 To: netdev@vger.kernel.org
 Cc: andrew@lunn.ch,
@@ -34,12 +32,10 @@ Cc: andrew@lunn.ch,
 	olteanv@gmail.com,
 	robh+dt@kernel.org,
 	krzysztof.kozlowski+dt@linaro.org
-Subject: [PATCH v1 2/3] net: phy: micrel: add flag for KSZ9477 LED erratum
-Date: Wed, 28 Jan 2026 14:38:32 +0100
-Message-ID: <20260128133842.1173406-3-ht@twx-software.de>
+Subject: [PATCH net-next v1 0/3] net: dsa: microchip: add single-led-mode support
+Date: Wed, 28 Jan 2026 14:38:30 +0100
+Message-ID: <20260128133842.1173406-1-ht@twx-software.de>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128133842.1173406-1-ht@twx-software.de>
-References: <20260128133842.1173406-1-ht@twx-software.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,28 +45,27 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Add a new flag MICREL_KSZ9_LED_ERRATA to indicate support for a specific
-LED erratum workaround on Microchip KSZ9477 switches. This flag
-will be used by the DSA driver to trigger a hardware-specific register
-write required for correct LED activity in single-LED mode.
+This series adds support for single LED mode to KSZ9477 switches.
 
-Signed-off-by: Heinrich Toews <ht@twx-software.de>
----
- include/linux/micrel_phy.h | 1 +
- 1 file changed, 1 insertion(+)
+The first patch adds the YAML device tree binding documentation for the
+new 'microchip,single-led-mode' property.
 
-diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
-index ca691641788b8..1dcbb0c93d9e1 100644
---- a/include/linux/micrel_phy.h
-+++ b/include/linux/micrel_phy.h
-@@ -45,6 +45,7 @@
- #define MICREL_PHY_50MHZ_CLK	BIT(0)
- #define MICREL_PHY_FXEN		BIT(1)
- #define MICREL_KSZ8_P1_ERRATA	BIT(2)
-+#define MICREL_KSZ9_LED_ERRATA	BIT(3)
- 
- #define MICREL_KSZ9021_EXTREG_CTRL	0xB
- #define MICREL_KSZ9021_EXTREG_DATA_WRITE	0xC
+The second patch implements the mode configuration in the ksz_common
+driver, including a necessary hardware workaround for Errata Module 19
+(DS80000754F), which requires an additional write to a debug register to
+ensure proper LED activity.
+
+Heinrich Toews (3):
+  dt-bindings: net: dsa: microchip: add microchip,single-led-mode flag
+  net: phy: micrel: add flag for KSZ9477 LED erratum
+  net: dsa: microchip: add single-led-mode support for KSZ9477
+
+ .../bindings/net/dsa/microchip,ksz.yaml       |  6 ++++
+ drivers/net/dsa/microchip/ksz_common.c        | 34 +++++++++++++++++++
+ drivers/net/dsa/microchip/ksz_common.h        |  4 +++
+ include/linux/micrel_phy.h                    |  1 +
+ 4 files changed, 45 insertions(+)
+
 -- 
 2.52.0
 
