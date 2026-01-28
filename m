@@ -1,35 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F6030BF4F;
-	Wed, 28 Jan 2026 16:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FD22DECDF;
+	Wed, 28 Jan 2026 16:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769619031; cv=none; b=IVI42wVNz9uq89QSE/oB9WqKJ3F+4zMPjNkiKZtJ7ZX1ABaotZ+E1EUBB3qCDT1zzwB3MZMmA1pGf1mPGioBTFws7XIHbzBbiGJLn4C9/fuec/8TxYAaX5vFx8ESfeIXERg8qirwBvxNgXcCE7mXLGcb6qx+zdo0o6Y3r7Dg0V4=
+	t=1769619032; cv=none; b=oKTRdMcihEqT3AKSgBWkjoUnxdmG/du5J50MQtLRsxav1u1U+mbt1W1NUUx9NG8f1Vy1RMLQl9c1oqYZXfrknjhmDbeYTRpYthgbW/86IdnXgSVG79JWi/bVoZZIR2uz9tk0+Pl9hVlfigcj8WeLjcXS75UKKvBhH/06aE8uQaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769619031; c=relaxed/simple;
-	bh=1OHigLaB0I9Gr4pd6M4Zc3FWOaEqquAXFRRO/Gxw3CM=;
+	s=arc-20240116; t=1769619032; c=relaxed/simple;
+	bh=1UyEpa3PQCXAaiGwapZKBeWnBxx40S80+WhX3uQJt4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NOMki0x03rCpl/PMz7iaMApdLBt5k5N6uCu8Wncl02TO5Uw0iuiAArGfynuERVWBBJVNMzg+XGs3SwIhclhSMggbN/0rA8rDxXWveK/s56bZraGVAL+0iNT2reY/CYvoBD49uoJNlXRyVOyE0xNGhKKVRYi0hJ3r9MYo4KOUIGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TjfXEptm; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=XJRpokZSjemknL5aYB3lHGhCBelsbKyeps7CrwaKQemCgAvG5F5bp+EYf8KgjUQLijj5dg8YbxS2vEO3icRFhmT/S+IQ1sEIZnVKmIjOqju1Ky1Ght5koZLWCsYmX566n7kuloSd9PPMfJZ05O+e38WKt53VyU2nPRV3myDIUqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KXBvlD1Y; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TjfXEptm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA2BC2BC86;
-	Wed, 28 Jan 2026 16:50:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KXBvlD1Y"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62FC9C4CEF1;
+	Wed, 28 Jan 2026 16:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769619031;
-	bh=1OHigLaB0I9Gr4pd6M4Zc3FWOaEqquAXFRRO/Gxw3CM=;
+	s=k20201202; t=1769619032;
+	bh=1UyEpa3PQCXAaiGwapZKBeWnBxx40S80+WhX3uQJt4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TjfXEptm0ADY3ifgqaYHKezKdvmZ0vdiu4HJLMBS7TERWWChwTE1Xzyeiuawdcaau
-	 7989W1/+LpY6k5kTjByO0/pedG+2Fau/rP7VQrEFfnNa21MOP98mp6x+tpR/0t8g1F
-	 ZZUyM2fgjTeBFBBGeu53u1D/WrM7HHTeTKuNF32yRhacr0ydl40FC6ViV+OKZfx9Cp
-	 cVe49eQdgNKHSOAJr+sb8eo5n6T5Le49xwuw8FTQrCTdAbEUDlwa9IwlwPQZLTaOdC
-	 zEw58RSxgeWu+Nrfi6iiYe0ALr0VH7//l/jWCLXmAZRGQXl/rrV9BkB0gorneZ3QFh
-	 fMboor8w+ReGw==
+	b=KXBvlD1YlPUkuhCdRNoOlAMLVwBTw2cEK/blQt2z+tT6+6xhg/bb/acS8rd7SM5Qt
+	 XBqvwMDb/YXDBAn/cuwuy5rjpHfmBF3YVCKWiKRE7mSussyKmfWaRlkngZSYZNXwJL
+	 Scrgtfdb1ppIWwWXuBShOIh5H3y5CQ9k7vJSEM9FsltuL2STrp4Mt7MxHTco1JsqYh
+	 cStQhhCFszwUTKZkTUVUfsB24IxOhEQQ8WVcuauqr0++QiLuSCOr0DNhdbTOSlJDRL
+	 FScuHqnceVeZ0E/N++vKAczeV9305tVX7xsDoV59JcxzFAbwMssB+sMXahhne29zKR
+	 mTBODpcVzijsw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vl8kP-0000000DAn7-2H9M;
-	Wed, 28 Jan 2026 17:50:29 +0100
+	id 1vl8kQ-0000000DApU-0X8N;
+	Wed, 28 Jan 2026 17:50:30 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Linux Doc Mailing List <linux-doc@vger.kernel.org>
@@ -41,9 +41,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Randy Dunlap <rdunlap@infradead.org>,
 	Stephen Rothwell <sfr@canb.auug.org.au>
-Subject: [PATCH v2 03/25] docs: kdoc_parser: move var transformers to the beginning
-Date: Wed, 28 Jan 2026 17:50:01 +0100
-Message-ID: <ee823af3eebc4ece0278c9859f4d109dd0de54ab.1769617841.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v2 05/25] docs: kdoc_parser: add functions support for NestedMatch
+Date: Wed, 28 Jan 2026 17:50:03 +0100
+Message-ID: <43b1fb838ba73c3efc18ab605b892f531ffbed01.1769617841.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769617841.git.mchehab+huawei@kernel.org>
 References: <cover.1769617841.git.mchehab+huawei@kernel.org>
@@ -57,67 +57,111 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Just like functions and structs had their transform variables
-placed at the beginning, move variable transforms to there
-as well.
+Some annotations macros may have nested parenthesis, causing normal
+regex parsing to fail.
 
-No functional changes.
+Extend apply_transforms to also use NestedMatch and add support
+for nested functions.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Acked-by: Randy Dunlap <rdunlap@infradead.org>
 Tested-by: Randy Dunlap <rdunlap@infradead.org>
 ---
- tools/lib/python/kdoc/kdoc_parser.py | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ tools/lib/python/kdoc/kdoc_parser.py | 38 ++++++++++++++++++----------
+ 1 file changed, 25 insertions(+), 13 deletions(-)
 
 diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
-index fd57944ae907..0b68b140cd02 100644
+index 3ba2cda2487a..ae5b2ef80f75 100644
 --- a/tools/lib/python/kdoc/kdoc_parser.py
 +++ b/tools/lib/python/kdoc/kdoc_parser.py
-@@ -191,6 +191,18 @@ function_xforms  = [
-     (KernRe(r"__attribute__\s*\(\((?:[\w\s]+(?:\([^)]*\))?\s*,?)+\)\)\s+"), ""),
+@@ -152,7 +152,7 @@ struct_xforms = [
+     (KernRe(r'DEFINE_DMA_UNMAP_LEN\s*\(' + struct_args_pattern + r'\)', re.S), r'__u32 \1'),
+ ]
+ #
+-# Regexes here are guaranteed to have the end delimiter matching
++# Struct regexes here are guaranteed to have the end delimiter matching
+ # the start delimiter. Yet, right now, only one replace group
+ # is allowed.
+ #
+@@ -160,6 +160,13 @@ struct_nested_prefixes = [
+     (re.compile(r'\bSTRUCT_GROUP\('), r'\1'),
  ]
  
 +#
-+# Transforms for variable prototypes
++# Function Regexes here are guaranteed to have the end delimiter matching
++# the start delimiter.
 +#
-+var_xforms = [
-+    (KernRe(r"__read_mostly"), ""),
-+    (KernRe(r"__ro_after_init"), ""),
-+    (KernRe(r"(?://.*)$"), ""),
-+    (KernRe(r"(?:/\*.*\*/)"), ""),
-+    (KernRe(r";$"), ""),
-+    (KernRe(r"=.*"), ""),
++function_nested_prefixes = [
 +]
 +
  #
+ # Transforms for function prototypes
+ #
+@@ -207,13 +214,6 @@ var_xforms = [
  # Ancillary functions
  #
-@@ -971,15 +983,6 @@ class KernelDoc:
-         ]
-         OPTIONAL_VAR_ATTR = "^(?:" + "|".join(VAR_ATTRIBS) + ")?"
  
--        sub_prefixes = [
--            (KernRe(r"__read_mostly"), ""),
--            (KernRe(r"__ro_after_init"), ""),
--            (KernRe(r"(?://.*)$"), ""),
--            (KernRe(r"(?:/\*.*\*/)"), ""),
--            (KernRe(r";$"), ""),
--            (KernRe(r"=.*"), ""),
--        ]
--
-         #
-         # Store the full prototype before modifying it
-         #
-@@ -1003,7 +1006,7 @@ class KernelDoc:
-         # Drop comments and macros to have a pure C prototype
-         #
-         if not declaration_name:
--            for r, sub in sub_prefixes:
-+            for r, sub in var_xforms:
-                 proto = r.sub(sub, proto)
+-def apply_transforms(xforms, text):
+-    """
+-    Apply a set of transforms to a block of text.
+-    """
+-    for search, subst in xforms:
+-        text = search.sub(subst, text)
+-    return text
  
-         proto = proto.rstrip()
+ multi_space = KernRe(r'\s\s+')
+ def trim_whitespace(s):
+@@ -408,6 +408,8 @@ class KernelDoc:
+         # Place all potential outputs into an array
+         self.entries = []
+ 
++        self.nested = NestedMatch()
++
+         #
+         # We need Python 3.7 for its "dicts remember the insertion
+         # order" guarantee
+@@ -505,6 +507,16 @@ class KernelDoc:
+         # State flags
+         self.state = state.NORMAL
+ 
++    def apply_transforms(self, regex_xforms, nested_xforms, text):
++        """Apply a set of transforms to a block of text."""
++        for search, subst in regex_xforms:
++            text = search.sub(subst, text)
++
++        for search, sub in nested_xforms:
++            text = self.nested.sub(search, sub, text)
++
++        return text.strip()
++
+     def push_parameter(self, ln, decl_type, param, dtype,
+                        org_arg, declaration_name):
+         """
+@@ -881,11 +893,9 @@ class KernelDoc:
+         # Go through the list of members applying all of our transformations.
+         #
+         members = trim_private_members(members)
+-        members = apply_transforms(struct_xforms, members)
++        members = self.apply_transforms(struct_xforms, struct_nested_prefixes,
++                                        members)
+ 
+-        nested = NestedMatch()
+-        for search, sub in struct_nested_prefixes:
+-            members = nested.sub(search, sub, members)
+         #
+         # Deal with embedded struct and union members, and drop enums entirely.
+         #
+@@ -1088,7 +1098,9 @@ class KernelDoc:
+             #
+             # Apply the initial transformations.
+             #
+-            prototype = apply_transforms(function_xforms, prototype)
++            prototype = self.apply_transforms(function_xforms,
++                                              function_nested_prefixes,
++                                              prototype)
+ 
+         # Yes, this truly is vile.  We are looking for:
+         # 1. Return type (may be nothing if we're looking at a macro)
 -- 
 2.52.0
 
