@@ -1,79 +1,81 @@
-Received: from mail.twlab.de (mail.twlab.de [80.151.39.74])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E5F35FF48
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 13:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.151.39.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481D635EDBB;
+	Wed, 28 Jan 2026 13:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769608093; cv=none; b=HqKIq1nmVoOiyEt8CCxSWukak1bwxz3/1pHpK/sGmM4tCvoXKN4uZffiau+GlwQPRq9yF0Tl7uXfy7cYKm0TCjerJmKWS5T4pJ907T/Aw2b96K0FFOqg/E81DTTIpK7biWDOTN65jnLnUZQUQW0Qfji/Z6NtCcw+67ATnYaVCA4=
+	t=1769608118; cv=none; b=bwj2JASiXjxWDRdtP//EMF7Htwc7VUaZtYV2TsotNdNciZaV84ResAwpi06T7ArUWASSeWGhG8rmEjgpRDXq3l98hIwPGNCQR5pFR1JJa2XhdziQlL56bZ4s9mjvJKlXks9AqXf27HJfM7RE7fxCiyPNFE5nxhFII3Ly3EYudtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769608093; c=relaxed/simple;
-	bh=BYKR7TsZQ7XIAVJQYUkOStc9M4JZEoi2K5jYRAS8Ldo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eoz80AIgEaoPSlnTEwiZoQm28JQlWl8B2H0LB+z1U5qxWVoGkDR7ipPUj6kibdSsShf9wTtSMTLYUgTYmtGUp+aq7giiCJ8wrNUs6bLlJpmGA/67DK+gVJHAyYFG8LwVTJ0dF1N22U1A1nz2nNglE62/3jakTOtPY/+H2F4emco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=twx-software.de; spf=pass smtp.mailfrom=twx-software.de; dkim=pass (2048-bit key) header.d=twx-software.de header.i=@twx-software.de header.b=N2v0CNf1; arc=none smtp.client-ip=80.151.39.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=twx-software.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=twx-software.de
+	s=arc-20240116; t=1769608118; c=relaxed/simple;
+	bh=1oi4RXMKOgsQulwTR7LeXmX/5KQRkzwlphiR1nqA0sQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZwiRTb03HUhAzKzNHYhgkHrFAF2W3eOCxTYEE3rf6sgciAXaBh6naq0n1QzcTWWsfK+H7LJIAtjJYxwRKcpAF90+Z+MJ0NBlmkbgHDWcCyD5l+/72Hlf9ESUypGPlzaYvu1Mas2cMxx0eTWhcBxzxhKkyIGtNfBcLD+yYFSrgFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=XUAerFIF; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=twx-software.de header.i=@twx-software.de header.b="N2v0CNf1"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2B96E5EAAFD;
-	Wed, 28 Jan 2026 14:39:04 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=twx-software.de;
-	s=dkim; t=1769607544; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=Yod0m6lBYZOmcFC9CfW69zI3HGnAZgjD3UH5xU6etE0=;
-	b=N2v0CNf14EafGxC5r2enq84WHDlaCrIME6aFwoqlN25HpxBR/qMD+bSoVS5rn4jSDWdCJ4
-	jAPV+yqjdY4WI51Qltp2Rra/UvVVdjqImv9H/a3mBDAoyNc8pxQ6WQJUjyUYSs9fr7vUIl
-	u9zaiAcN20P2Bgyu1zHcTEQQCGGf01kA1R4CMZAyI/fzRxPpiS9wnOf0TXnMhrV8lldZ5x
-	LJwQJMh6b35WBLKxiJGK6mmHciYm9wvDwhV4g+eWzKGXAR/UR8al5ZJkH4M5Pa9tjQFavg
-	a3/MdOpo/bWcxQJ2ZTwu2cLo2a//ZIQtHqTQiAK9rXYrCaT0x6x0VN+gF+YHyg==
-From: Heinrich Toews <ht@twx-software.de>
-To: netdev@vger.kernel.org
-Cc: andrew@lunn.ch,
-	f.fainelli@gmail.com,
-	olteanv@gmail.com,
-	robh+dt@kernel.org,
-	krzysztof.kozlowski+dt@linaro.org
-Subject: [PATCH v1 1/3] dt-bindings: net: dsa: microchip: add microchip,single-led-mode flag
-Date: Wed, 28 Jan 2026 14:38:31 +0100
-Message-ID: <20260128133842.1173406-2-ht@twx-software.de>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128133842.1173406-1-ht@twx-software.de>
-References: <20260128133842.1173406-1-ht@twx-software.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="XUAerFIF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Etq37S/kWwlxG+pkXPUe6EmUtqjBTPB15zLQ90Mr2yQ=; b=XUAerFIF2vP9gq+uOpl2eGjeSd
+	5qkuR0GMuCG3p+Vszo81Lx0MIyZdWVA13JT94VhzKngzNXxU0SMIZgtDpF4g0MGKW2ccTR6gLq9Pj
+	fkEYmPo/L0NaCBgAe174Up8XNX8VJfUJQD5gSZ4HnWFZHRy2LQ1062SiOgeuEEysUG3o=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vl5uE-005BkZ-AS; Wed, 28 Jan 2026 14:48:26 +0100
+Date: Wed, 28 Jan 2026 14:48:26 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Junrui Luo <moonafterrain@outlook.com>
+Cc: Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Yuhao Jiang <danisjiang@gmail.com>
+Subject: Re: [PATCH] dpaa2-switch: prevent ZERO_SIZE_PTR dereference when
+ num_ifs is zero
+Message-ID: <8241c7f7-6de4-4621-ad80-3f1af000afdd@lunn.ch>
+References: <SYBPR01MB7881BEABA8DA896947962470AF91A@SYBPR01MB7881.ausprd01.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SYBPR01MB7881BEABA8DA896947962470AF91A@SYBPR01MB7881.ausprd01.prod.outlook.com>
 
-Enable single LED mode globally for all non-CPU ports to indicate
-link and activity via a single LED per port.
+On Wed, Jan 28, 2026 at 04:07:34PM +0800, Junrui Luo wrote:
+> The driver allocates arrays for ports, FDBs, and filter blocks using
+> kcalloc() with ethsw->sw_attr.num_ifs as the element count. When the
+> device reports zero interfaces (either due to hardware configuration
+> or firmware issues), kcalloc(0, ...) returns ZERO_SIZE_PTR (0x10)
+> instead of NULL.
+> 
+> Later in dpaa2_switch_probe(), the NAPI initialization unconditionally
+> accesses ethsw->ports[0]->netdev, which attempts to dereference
+> ZERO_SIZE_PTR (address 0x10), resulting in a kernel panic.
+> 
+> Add a check to ensure num_ifs is greater than zero after retrieving
+> device attributes. This prevents the zero-sized allocations and
+> subsequent invalid pointer dereference.
+> 
+> Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+> Reported-by: Junrui Luo <moonafterrain@outlook.com>
+> Fixes: 0b1b71370458 ("staging: dpaa2-switch: handle Rx path on control interface")
+> Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
 
-Signed-off-by: Heinrich Toews <ht@twx-software.de>
----
- .../devicetree/bindings/net/dsa/microchip,ksz.yaml          | 6 ++++++
- 1 file changed, 6 insertions(+)
+The patch itself looks O.K. However, we ask that fixes are based on
+net, and indicate this in the subject line.
 
-diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-index 8d4a3a9a33fcc..35abe242a7741 100644
---- a/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-+++ b/Documentation/devicetree/bindings/net/dsa/microchip,ksz.yaml
-@@ -65,6 +65,12 @@ properties:
-     description:
-       Indicates if the PME pin polarity is active-high.
- 
-+  microchip,single-led-mode:
-+    type: boolean
-+    description:
-+      Enable single LED mode for all non-CPU ports. In this mode, a single LED
-+      indicates both link and activity.
-+
-   microchip,io-drive-strength-microamp:
-     description:
-       IO Pad Drive Strength
--- 
-2.52.0
+https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
 
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew
