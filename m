@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB61129B8DB;
-	Wed, 28 Jan 2026 02:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E97D2BD5B4;
+	Wed, 28 Jan 2026 02:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769567371; cv=none; b=Vv1jD2J392ZQ/U2pSIqfu0uP3GsKyIrmHQQIjEtEp8iK7jPIjXZdugFM3XSz7fAJEn7Jj7lWM3t+mO8xBx0WXgDXSpDwp7uQJFijDaG/c8QoHO9zUm+DE92160/Ff6QbZqnHdPt8DY42qGXl03OmZOafytecOFQS51d830BNU/M=
+	t=1769567374; cv=none; b=REgU8/ga3yRSpAe9HXcYMlWUTTpqrRG5T/PBQxzinpE0RAF0CtLnMF5vF6H9qX5MyB9d8y2+mesTF6X4iJaQyt26LAbMxHHvGjwhe4LwGyrxk/Si153mt3OUXC/kWTLjZGAS8CqokFfI+QYy+XqPSm4ndj3kK6g/4TsG14vK/qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769567371; c=relaxed/simple;
-	bh=AadjOGl9E8lbn2TzvWiTeYz2XeOY9Rn7hDPdGzWjF4I=;
+	s=arc-20240116; t=1769567374; c=relaxed/simple;
+	bh=S2CcuGWCCyTnBoIT1fg9E5ORgW2+IZwQle6xt3mhhtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OM4dUng8flkYLRXRCmrGUvpFAJr1LVCgyo8+ZAcphU/9KFFwYJwzaZnGMf8BWJslZLuAZrODgxxaTbDXr67SJFXQ+uyu6GVDxTKeMJAgaj7izWHNLivjP8zM09HkCK7sn3AXsPk34+43xuQdRr0UYQ7kgtDAxnn2FBgXutx1cxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S2oXVzWR; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=HwpEjnuh9wahzFn6CUGmQXkCrGMhRnA6WSqC7SDXtAf5eMnz6tzBj0jAMmh1v80WdAKKwS5xtALID/rTDTDGkCy4JR0FSM9uuz0B3CLaiJw8e9Z673VpcLm9J02IZBZHCTvou6JH2NfkwiZ5+tO9JjFg2OzFFhus7i9WiEYUxfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ouBYWQEN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2oXVzWR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304ACC116C6;
-	Wed, 28 Jan 2026 02:29:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ouBYWQEN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464DDC19425;
+	Wed, 28 Jan 2026 02:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769567371;
-	bh=AadjOGl9E8lbn2TzvWiTeYz2XeOY9Rn7hDPdGzWjF4I=;
+	s=k20201202; t=1769567369;
+	bh=S2CcuGWCCyTnBoIT1fg9E5ORgW2+IZwQle6xt3mhhtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2oXVzWRbhryxNhNnr6ajXUX+1mnbCLMDWqELJkDOjL/RTMeiboE2nETN0/TQJW65
-	 zImRMW+ZcBUjLoDo88NN4rCXPHyztye3uVpm5hCtRXo9ahRJrY5X8pH0kR1sUoEQwY
-	 Szas7aq73Vo2UG/LiZkt4mhH1caRKz2Pvf0fa9+O+c176IOPh+XqKHoKR7SBnZ3I9c
-	 S5TJROkVxL6dBxmt/gmVH63vnKPrT6Ur+R153AcZ0BvLuvxex3YtFwLuk0xP1yAHxC
-	 L1MiPrAr4XsCpQEFnfliZN2BKYkbses9rm5hvaBJnfozy77GmuEw/O4NtV8O51BgcB
-	 Obtoxi5ihdfrg==
+	b=ouBYWQENFMa8aZDbnI+GGXfiza18EcXdYqqRL4Yuc8mRo3Xs62H8L8sPmGOpk7a4e
+	 XX5QTDFmJCqYA2MOOuiEktK4NnUCZj4GXgOQ6nsxRSu7lf2cZi156IE2zQWRy8epL8
+	 SGXQwri4xR7ofQS3GwtWynSjBViqQM2Sm1e9Pbl4spCD2KfSAF8cg9n06ViFZc3XzC
+	 OiduYuLJwc5XFZdptkb0QSAMGJFRsJO6aqavHNenmASVkuX+7sBXbpHhVwu0zW+2bL
+	 vwY00Y5VtThblSu6Tyu0Sl4zYXtY4xfiqV5xD8fd2d+SvTFd0aDFlGg5p1RfQJnMyn
+	 AgEp4foChiOPw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: rkannoth@marvell.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -38,12 +38,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	pabeni@redhat.com,
 	davem@davemloft.net,
 	linux-kernel@vger.kernel.org
-Subject: Re: [net-next,v5,10/13] octeontx2-af: npc: cn20k: Allocate MCAM entry for flow installation
-Date: Tue, 27 Jan 2026 18:29:30 -0800
-Message-ID: <20260128022930.4153164-1-kuba@kernel.org>
+Subject: Re: [net-next,v5,09/13] octeontx2-af: npc: cn20k: virtual index support
+Date: Tue, 27 Jan 2026 18:29:28 -0800
+Message-ID: <20260128022928.4153136-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260126123254.1000480-11-rkannoth@marvell.com>
-References: <20260126123254.1000480-11-rkannoth@marvell.com>
+In-Reply-To: <20260126123254.1000480-10-rkannoth@marvell.com>
+References: <20260126123254.1000480-10-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,85 +57,97 @@ email has considered the AI review valid, or at least plausible.
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-octeontx2-af: npc: cn20k: Allocate MCAM entry for flow installation
+octeontx2-af: npc: cn20k: virtual index support
 
-This patch extends the install_flow mailbox request message with additional
-fields that allow the AF driver to determine the required NPC MCAM entry
-type, allocate the MCAM entry, and complete the flow installation in a
-single step for CN20K.
+This patch adds support for virtual MCAM index allocation and improves
+CN20K MCAM defragmentation handling.  Virtual indexes allow the hardware
+to move mapped MCAM entries internally, enabling defragmentation.
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-> index 052d989f2d9a..efd994c65b32 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_flows.c
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+> index 8b77ac053d8d..d1a927f3d5db 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
 
 [ ... ]
 
-> +static int otx2_get_kw_type(struct otx2_nic *pfvf,
-> +			    struct npc_install_flow_req *fl_req,
-> +			    u8 *kw_type)
+> +static int npc_vidx_maps_modify(struct rvu *rvu, u16 vidx, u16 new_midx)
 > +{
-> +	struct npc_get_num_kws_req *req;
-> +	struct npc_get_num_kws_rsp *rsp;
-> +	u8 *src, *dst;
-> +	int off, err;
-> +	int kw_bits;
+> +	u16 old_midx;
+> +	void *map;
+> +	int rc;
 > +
-> +	off = offsetof(struct npc_install_flow_req, packet);
-> +
-> +	mutex_lock(&pfvf->mbox.lock);
-> +
-> +	req = otx2_mbox_alloc_msg_npc_get_num_kws(&pfvf->mbox);
-> +
-> +	dst = (u8 *)&req->fl + off;
-                  ^^^
-
-Can this dereference a NULL pointer? otx2_mbox_alloc_msg_* functions can
-return NULL on allocation failure, and this line accesses req->fl without
-first checking if req is NULL.
-
-Other similar functions in this file (e.g., otx2_mcam_pfl_info_get(),
-otx2_get_dft_rl_idx()) properly check for NULL after the mailbox
-allocation before using the returned pointer.
-
-> +	src = (u8 *)fl_req + off;
-> +
-> +	memcpy(dst, src, sizeof(struct npc_install_flow_req) - off);
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-> index 963d12ecd328..5fe077935c97 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
-
-[ ... ]
-
-> @@ -1759,8 +1857,11 @@ int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
->  		enable = true;
->
->  	/* Do not allow requests from uninitialized VFs */
-> -	if (from_vf && !enable)
-> +	if (from_vf && !enable) {
-> +		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
-> +						    allocated, req->entry);
->  		return NPC_FLOW_VF_NOT_INIT;
+> +	if (!npc_is_vidx(vidx)) {
+> +		dev_err(rvu->dev,
+> +			"%s: vidx(%u) does not map to proper mcam idx\n",
+> +			__func__, vidx);
+> +		return -ESRCH;
 > +	}
->
->  	/* PF sets VF mac & VF NIXLF is not attached, update the mac addr */
->  	if (pf_set_vfs_mac && !enable) {
->  		ether_addr_copy(pfvf->default_mac, req->packet.dmac);
->  		ether_addr_copy(pfvf->mac_addr, req->packet.dmac);
->  		set_bit(PF_SET_VF_MAC, &pfvf->flags);
->  		return 0;
-                ^^^^^^^^^^
+> +
+> +	map = xa_erase(&npc_priv.xa_vidx2idx_map, vidx);
+> +	if (!map) {
+> +		dev_err(rvu->dev,
+> +			"%s: vidx(%u) could not be deleted from vidx2idx map\n",
+> +			__func__, vidx);
+> +		return -ESRCH;
+> +	}
+> +
+> +	old_midx = xa_to_value(map);
+> +
+> +	rc = xa_insert(&npc_priv.xa_vidx2idx_map, vidx,
+> +		       xa_mk_value(new_midx), GFP_KERNEL);
+> +	if (rc) {
+> +		dev_err(rvu->dev,
+> +			"%s: vidx(%u) cannot be added to vidx2idx map\n",
+> +			__func__, vidx);
+> +		return rc;
+> +	}
+> +
+> +	map = xa_erase(&npc_priv.xa_idx2vidx_map, old_midx);
+> +	if (!map) {
+> +		dev_err(rvu->dev,
+> +			"%s: old_midx(%u, vidx(%u)) cannot be added to idx2vidx map\n",
+> +			__func__, old_midx, vidx);
+> +		return -ESRCH;
 
-Does this path leak the allocated MCAM entry? When rvu_npc_alloc_entry_for_
-flow_install() allocates an entry (setting allocated=true), but then this
-early return path is taken, rvu_npc_free_entry_for_flow_install() is not
-called. All other early return paths in this function properly free the
-entry, but this one does not.
+If this error path is taken, xa_vidx2idx_map now has vidx pointing to
+new_midx, but xa_idx2vidx_map still has old_midx pointing back to vidx.
+The bidirectional mapping becomes inconsistent.  Can this leave the maps
+in a corrupted state?
 
->  	}
->
->  	mutex_lock(&rswitch->switch_lock);
+> +	}
+> +
+> +	rc = xa_insert(&npc_priv.xa_idx2vidx_map, new_midx,
+> +		       xa_mk_value(vidx), GFP_KERNEL);
+> +	if (rc) {
+> +		dev_err(rvu->dev,
+> +			"%s: new_midx(%u, vidx(%u)) cannot be added to idx2vidx map\n",
+> +			__func__, new_midx, vidx);
+> +		return rc;
+
+Similarly here, if xa_insert fails (e.g., memory pressure), the maps are
+left inconsistent: xa_vidx2idx_map has vidx -> new_midx but xa_idx2vidx_map
+has neither old_midx nor new_midx pointing to vidx.  Subsequent lookups
+via npc_idx2vidx() for new_midx would fail to find the correct vidx.
+Should these error paths restore the previous map state?
+
+> +	}
+> +
+> +	return 0;
+> +}
+
+[ ... ]
+
+> +static int npc_defrag_process(struct rvu *rvu, struct list_head *lh)
+> +{
+
+[ ... ]
+
+> +err:
+> +	/* TODO: how to go back to old state ? */
+> +	return rc;
+> +}
+
+The TODO comment here suggests awareness that error recovery is incomplete.
+Given that npc_defrag_move_vdx_to_free() calls npc_vidx_maps_modify() which
+can fail mid-operation, should the defragmentation be made atomic or have
+proper rollback?
