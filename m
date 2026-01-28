@@ -1,143 +1,140 @@
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF3A33ADA9
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 09:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790DA33DEE0
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 09:07:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769591161; cv=none; b=MZlfNGrUrVANqJtiJjoKzzLlxuAnEOK2pAmj4dVpvP9EtWmIM4RwLUWQPh+0SU0SXIaos1a8cX7x1s/28+10/N+YAu3iJJC+vqf7BB3BGojW/QzN8lhVgD3BDAFrAwpBQxFSaQLhG5IZDPJNVpalcl5E3N+cYWsv2JXbkardMds=
+	t=1769591244; cv=none; b=fgCuq168eSfFZN9B66on7gWf78gE/tZw5sa/BjU81Z2YoXOPVVmHzPOSeljscxtuFaDB4T3wDsOOmtpY+QIBK4iD6hC6JNZbJlvDvQAlShsOEG9ypvVkpczW7NLCZI7V2NLDMgCRxbbOoh9OCv8n1O7zHX9P5PzK0NUly7ZBA7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769591161; c=relaxed/simple;
-	bh=lPgd1fWauLsts9m0KDQbm3Ug8oCkJcJIAGnRci/Z2yQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wz2f+0zjaEPVQn89iocZPYxxZHQG4+gmwn2J85t+Evp7Us43PXr76OfhmCZk6A/nJmI3Bhiih7j3WDxho82frhWHC/QAuTaR/LSoG6Vn8+uedp4Wrhjr2Aj8mO5DkQodC45wOi5YPvSWLTrA9X3xCUr7JaxNlHyGI7fiwAlFgDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Q1LsQCfs; arc=none smtp.client-ip=91.218.175.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Q1LsQCfs"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769591147;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=g+5thfnGjQOKRcs4OihZYQE+Ax33GKHZEGUMxgVoAec=;
-	b=Q1LsQCfsKlSPnHvyEvhx2WjgQ6kBTaEvt3M51Te54bDVWuYmf4E4zy+qMvBg2pXiZQa/ex
-	FD8t1agVndiUbXATD+9b923/jN7p//d8NXTTe2PytlmxI0uyqerLZ2KNfTIk5b3ekfMQdy
-	VPhK/PSgq32BWMCppyIXazaqnG1sEWA=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
-	syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v1] icmp: fix ip_rt_bug race in icmp_route_lookup reverse path
-Date: Wed, 28 Jan 2026 17:05:22 +0800
-Message-ID: <20260128090523.356953-1-jiayuan.chen@linux.dev>
+	s=arc-20240116; t=1769591244; c=relaxed/simple;
+	bh=q20nxD76+Q+wL9SPZdlE5mMCzD15ljcJ64PXAESkvD0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ILB3L93jeqcIxCy3Z4AmM5qQ1Iz7GvO1Mi7iijaBTIsH5KQ1CCGcmmlxZM/70bC28If9dYJd0P2NAuXRWyQivAOIISLjMMzNrKfwz7dtn0ZDQ1Czw0yQ/UGGIeMAJccrXi+CMEa1eDKvsQ8b4O9p/w5dxEe2JJuzLlpAONFeb80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vl1W6-0005SR-Ez; Wed, 28 Jan 2026 10:07:14 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vl1W6-002tBa-2d;
+	Wed, 28 Jan 2026 10:07:14 +0100
+Received: from pengutronix.de (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id D0BC14D9FDC;
+	Wed, 28 Jan 2026 09:07:13 +0000 (UTC)
+Date: Wed, 28 Jan 2026 10:07:13 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Oliver Hartkopp <socketcan@hartkopp.net>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
+	linux-can@vger.kernel.org
+Subject: Re: [net-next 0/6] move CAN skb headroom content to skb extensions
+Message-ID: <20260128-booby-of-phenomenal-proficiency-4db5ab-mkl@pengutronix.de>
+X-AI: stop_reason: "refusal"
+References: <20260125201601.5018-1-socketcan@hartkopp.net>
+ <20260127174937.4c5fc226@kernel.org>
+ <67cb17f4-2f72-4847-aa04-3633f3d8df33@hartkopp.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="oecpvtn4tbaqv6yo"
+Content-Disposition: inline
+In-Reply-To: <67cb17f4-2f72-4847-aa04-3633f3d8df33@hartkopp.net>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-icmp_route_lookup() performs multiple route lookups to find a suitable
-route for sending ICMP error messages, with special handling for XFRM
-(IPsec) policies.
+--oecpvtn4tbaqv6yo
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [net-next 0/6] move CAN skb headroom content to skb extensions
+MIME-Version: 1.0
 
-The lookup sequence is:
-1. First, lookup output route for ICMP reply (dst = original src)
-2. Pass through xfrm_lookup() for policy check
-3. If blocked (-EPERM) or dst is not local, enter "reverse path"
-4. In reverse path, call xfrm_decode_session_reverse() to get fl4_dec
-   which reverses the original packet's flow (saddr<->daddr swapped)
-5. If fl4_dec.saddr is local (we are the original destination), use
-   __ip_route_output_key() for output route lookup
-6. If fl4_dec.saddr is NOT local (we are a forwarding node), use
-   ip_route_input() to simulate the reverse packet's input path
-7. Finally, pass rt2 through xfrm_lookup() with XFRM_LOOKUP_ICMP flag
+On 28.01.2026 09:42:14, Oliver Hartkopp wrote:
+> On 28.01.26 02:49, Jakub Kicinski wrote:
+> > On Sun, 25 Jan 2026 21:15:55 +0100 Oliver Hartkopp wrote:
+> > > CAN bus related skbuffs (ETH_P_CAN/ETH_P_CANFD/ETH_P_CANXL) simply co=
+ntain
+> > > CAN frame structs for CAN CC/FD/XL of skb->len length at skb->data.
+> > > Those CAN skbs do not have network/mac/transport headers nor other su=
+ch
+> > > references for encapsulated protocols like ethernet/IP protocols.
+> > >
+> > > To store data for CAN specific use-cases all CAN bus related skbuffs =
+are
+> > > created with a 16 byte private skb headroom (struct can_skb_priv).
+> > > Using the skb headroom and accessing skb->head for this private data
+> > > led to several problems in the past likely due to "The struct can_skb=
+_priv
+> > > business is highly unconventional for the networking stack." [1]
+> > >
+> > > This patch set aims to remove the unconventional skb headroom usage f=
+or
+> > > CAN bus related skbuffs and use the common skb extensions instead.
+> >
+> > This is fine. Wish we could make md_dst work, since skb_ext still burns
+> > a bit in the skb (last extension bit in fact, next user will have to
+> > bump the filed size). And you very much do not route these frames,
+> > so dst would work perfectly fine. But whatever.
+> >
+> > lore never received patch 6, tho, you'll need to repost.
+>
+> Thanks for looking at it.
+>
+> In fact patch 6 stuck in my providers mail system which responded this to
+> (only) patch 6 =C2=AF\_(=E3=83=84)_/=C2=AF
+>
+> 5.7.1 Refused by local policy. No SPAM please! (B-EX
+> 155302::1769588601-AC38E895-223F95BA/10/71040183929) see https://www.stra=
+to-hosting.co.uk/faq/product/why-are-my-emails-not-being-delivered
+> [MSG0011]
+>
+> As this could not been solved since Sunday I'll kindly ask Marc to send t=
+he
+> attached v2 patchset (including your __u32 remark) to the mailing list, so
+> that also the AI bot can take a look at it.
 
-The bug occurs in step 6: ip_route_input() is called with fl4_dec.daddr
-(original packet's source) as destination. If this address becomes local
-between the initial check and ip_route_input() call (e.g., due to
-concurrent "ip addr add"), ip_route_input() returns a LOCAL route with
-dst.output set to ip_rt_bug.
+I'll do. In the mean time, please have a look at b4, it has support for
+sending patches via a web hook.
 
-This route is then used for ICMP output, causing dst_output() to call
-ip_rt_bug(), triggering a WARN_ON:
+regards,
+Marc
 
- ------------[ cut here ]------------
- WARNING: net/ipv4/route.c:1275 at ip_rt_bug+0x21/0x30, CPU#1
- Call Trace:
-  <TASK>
-  ip_push_pending_frames+0x202/0x240
-  icmp_push_reply+0x30d/0x430
-  __icmp_send+0x1149/0x24f0
-  ip_options_compile+0xa2/0xd0
-  ip_rcv_finish_core+0x829/0x1950
-  ip_rcv+0x2d7/0x420
-  __netif_receive_skb_one_core+0x185/0x1f0
-  netif_receive_skb+0x90/0x450
-  tun_get_user+0x3413/0x3fb0
-  tun_chr_write_iter+0xe4/0x220
-  ...
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
-Fix this by checking rt2->rt_type after ip_route_input(). If it's
-RTN_LOCAL, the route cannot be used for output, so treat it as an error.
+--oecpvtn4tbaqv6yo
+Content-Type: application/pgp-signature; name="signature.asc"
 
-The reproducer requires kernel modification to widen the race window,
-making it unsuitable as a selftest. It is available at:
+-----BEGIN PGP SIGNATURE-----
 
-  https://gist.github.com/mrpre/eae853b72ac6a750f5d45d64ddac1e81
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAml50b0ACgkQDHRl3/mQ
+kZygZgf/VWTJ2JkoEt/40+QxwYk9FrPmBoGP/kAPdwGnUlTbInH9pGSHi3xYgl/H
+pFASJ2WVslfXsb2I7pNAMbAzgWu8G3ze1ZHU1hPFBFNElKRrKtu4GvJZItrb7cgK
+vXkCrvdefN3F3EpcE4vnRPo2+rY0zz662VUN1NMVYNY3Sy42DaR4qNqC/a+PVSzf
+M/rip52cYRhohIZr0YdR8tphKKi3vHx22EveK7e74oEW53UbpWjLnaCGUe6vCOKN
+Mx9g/T6cKMEw3mfG1DvsXiUvd9QzuXcvJpmf8Vf9KLi2ty7AawoTWJ2ZbNj3yUZ+
+gWIrxF+LOXQ3FCta5qJEFFeSUTtLmw==
+=y1V3
+-----END PGP SIGNATURE-----
 
-Reported-by: syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000b1060905eada8881@google.com/T/
-Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
----
- net/ipv4/icmp.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
-
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 19c9c838967f..dc9dcc799824 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -559,6 +559,23 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
- 		/* steal dst entry from skb_in, don't drop refcnt */
- 		skb_dstref_steal(skb_in);
- 		skb_dstref_restore(skb_in, orefdst);
-+
-+		/*
-+		 * At this point, fl4_dec.daddr should NOT be local (we
-+		 * checked fl4_dec.saddr above). However, a race condition
-+		 * may occur if the address is added to the interface
-+		 * concurrently. In that case, ip_route_input() returns a
-+		 * LOCAL route with dst.output=ip_rt_bug, which must not
-+		 * be used for output.
-+		 */
-+		if (!err && rt2 && rt2->rt_type == RTN_LOCAL) {
-+			net_warn_ratelimited("%s: detected local route for %pI4 "
-+					     "during ICMP error handling (src %pI4), "
-+					     "possible address race\n",
-+					     __func__, &fl4_dec.daddr, &fl4_dec.saddr);
-+			dst_release(&rt2->dst);
-+			err = -EINVAL;
-+		}
- 	}
- 
- 	if (err)
--- 
-2.43.0
-
+--oecpvtn4tbaqv6yo--
