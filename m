@@ -1,166 +1,346 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81041EBFE0
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 07:02:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769583761; cv=none; b=HmnRdQ6ovT4tb4nvJVOv/+A497gfLUIsuoeAr2mzS0UVD0VSexz55HBN/ekVU30WaThKUE70P4KRNoRwwh9/hu/bL0DLYHJdNxsVfGZUwRaZXWimuylNRNAM7+oDnh/O/Cown1Pb5IdvWuI1OlYNpR+XeecWqeon8EPeAvecBgg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769583761; c=relaxed/simple;
-	bh=jNWVs3NoJCDLt3Uob6MZkTWfmT/4JmZ5ZegDFFtHMQ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XSrlQ8AyEQiJSbmu1727DZuajn0fvaTWQ3T0bh1Mbj9QBru1bLVH1UybEsVcv+VcAwBt5YRtxmSgugQsiXvv4TTk+afMPUUKa8tH5aGDuZ8mF2X8iwFlCwZfLQ4K0hr2800WxsLfLJlKEfo//J759CwSFHl2AaRJOJQGfzbEoUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Eu/btvwj; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E7D231832
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 07:03:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769583815; cv=pass; b=GPPvWydJ62S7cv27QJeaRMCMCduRtjVsKiBcg+0feuneZ+uqvNvQ2JWKMCtF2H0dIEO0Os3X6aDLwezF9wq2pFTfnmk/s3P9WRKafQZfFa3VZpjpz9Uvg1vV3VIwJZwn0BGRqTw5lCUB0w6beWANO8MT2bPLYiMZHkFTnrHgCpg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769583815; c=relaxed/simple;
+	bh=Cg45hZ0q54h2bhG/P3fSulN0EvcFY+v0s3Ih49jJOI8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gt/T18D3yt5B0CZBoha+523rsV5cxR19hhkHvibWVDSDFPCTcggSlhMNW0awV8mqUR/UYZYLTMjCfQQk8EAPKXbJm4A7FTcvIKJnxJumd6thw7K4H+Cs973F+mbAjP69298sPaT+P3wGrinCwrvFY+3N70fQxzEcck1oBIm5/Vs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JzHXaKhg; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=YOEM4+gn; arc=pass smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Eu/btvwj"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-29efd139227so45814415ad.1
-        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 23:02:39 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JzHXaKhg";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="YOEM4+gn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769583810;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xuKStyX4gBGrd4NIad9hOrKnHqdXGE6jzr0Ewri1egY=;
+	b=JzHXaKhgC+tf+K5NHHHsL73MN9lhcJwiZTpUAbpitz0zqpblGCIxvNwChOPQLp/brN6Uvv
+	JrtIkDQcjaEEb3TOa+2u67Wn/vSAgelMSxyZaZH7yIwmLsoqKL2SsP1efvhnY+n9PSy5jr
+	YKoLuuRG8InAte22BFXT4U8uQW/PCfw=
+Received: from mail-pg1-f197.google.com (mail-pg1-f197.google.com
+ [209.85.215.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-403-hfEgysMqOkSPlmPUdavRDw-1; Wed, 28 Jan 2026 02:03:28 -0500
+X-MC-Unique: hfEgysMqOkSPlmPUdavRDw-1
+X-Mimecast-MFC-AGG-ID: hfEgysMqOkSPlmPUdavRDw_1769583807
+Received: by mail-pg1-f197.google.com with SMTP id 41be03b00d2f7-c613929d317so3712194a12.2
+        for <netdev@vger.kernel.org>; Tue, 27 Jan 2026 23:03:28 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769583807; cv=none;
+        d=google.com; s=arc-20240605;
+        b=D8NJbyVePH4DwcV54t7Xu0PeGKN13LM9HLtxokXENsC5Ub6Hq2Llw1n6Eg0Kawl0dt
+         51t7yP0O4r7PB/NaIzujt5EFjPe+eyh6lOCH+oghX19r1wk+TivgS9c2zCDRwVqTCNQa
+         nOGOFl18mJIp7a/CtjmH4rUibT4Oh/Vx+Np1dn3jqqV92gA4DqtXT2ClFlVSr2+BMBbH
+         ESUdlqT+1jP2cY5Y6QnfmxbKGbA5kDM1rZUWePrHqUN4xK2nBW/YB4d6sehO2B0f4Q0z
+         afejvb4uvwnn++it8KrkljCJvc1vGV0vpgtB5S+qUi9lKl60Zr/v5Zb62zhmo1KhkMfe
+         nTkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xuKStyX4gBGrd4NIad9hOrKnHqdXGE6jzr0Ewri1egY=;
+        fh=mq8jVJvv0DFHt8zGD2Cu5FID6dK5Whd3XZsssQu/CW8=;
+        b=KGA+Kv/7pLaqFbiACLQlxclI2fNrvHwWSTzbXtO4HXNin1VrkIfqvszEzW0cKD5aGe
+         KryZB8UHbLlDznsBKpLWABIDsiijRKiitbW5gJHCWUD+r+UQc+IzAmFn2CpLjSWwsklX
+         ykgSCydcnQ130iT/YO/+1EcxoiW5ALnYfVjtymdx+CEbUsDIQvxP9dSbGHiv75+bSQli
+         j3O6ogwYPBfPCI6NSaCkt9lnLV5l7PBwtofaA8uqMNt26ojk9OuoN8V0pFhn/PLh4WTr
+         5GbJrCP5nL4hpS5BThgXpJLVhSA3RQaU2nsKJzbbKVU+4uWDimDlP3ZVu5FwJFxgYyNJ
+         ZbeA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1769583759; x=1770188559; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zpz1+E5bIfL6Vl+vGItOAAFJ78Sq/brE0PF9AQXfuD0=;
-        b=Eu/btvwjDHWSVkM9sBMw1iYxgv4q/mCO7Cw+OEWWYn2R9r5ftSc8DJ4Zsx+LGvcBM9
-         +nfPnxxJETpAAKIx6p2eYeI5qqEO/fgie7iWQwsITNKGv3DW1SUF8lmPFHc52nWdZ4ZS
-         eLCJcB3xtHYc4uz9gNZQmv5pfyjMpXzC5cpBs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769583759; x=1770188559;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=redhat.com; s=google; t=1769583807; x=1770188607; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zpz1+E5bIfL6Vl+vGItOAAFJ78Sq/brE0PF9AQXfuD0=;
-        b=nJhpbtSeAA2pelj6ByTu0Sbl9/k2AYwabJ+Xl9bcZpzc/2ZCXq5BEKKKRbo904KnJ9
-         qkjxHOHJSlsrSWSAOfhgeqnFPydffI4ZK+9lM0nEh7oORxalKgMZ5BLfMtJkuMooA0jk
-         VBjRY7BmlON04bOzsdWfL5LrpVQMgsIoSYUfN92bv4FD5T0sxADKHD1K8pH36J41xApL
-         FRPK9Cq6kKgAtlurwYH+2yoW+K5XBzhAsHah9EVUomydcz5tsy7/tOZo89hAURLKOFlY
-         DL+yXmnDpXaBP/jBB0Bx7BC8CQUREzkOEe4HTjHweM5gjPAPYfFuriUrglhSpkfUWS/t
-         NjEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXOra3+JBjpZlDIeplf/xYyVweVazEoHYkcG0YZRMCcRrRwFugwcsiWLYUgzy+Md2p2jTS24Y0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynBVrTKBNWLS6/2sBdlCDUZ4uN2swsG01iLGQr5O/6td441JFw
-	U+9ecNmh/sS0v+FfelOqC3Z4y3OEtUoIvT0ZrUOf3zCMINJ7pwbpyAtspfcI/ImTpw==
-X-Gm-Gg: AZuq6aJx12H92Z1gw/quUrn8uS5y55tFYoKPnl6Xyv10Gwf3N143DJfoPkDdCpXuHqS
-	MOLNyqgP+qV/2gDTyAoa9TSf790TJ7DmUseLJr09FjubLfsOdM551HU0bA7cGCgHOgd3oZmOxFc
-	KvBlBZq17Xflp+ETFesPNX2YwV2zXwGqKTLy+SEq5cLTkvG4FQA7jY4Rhzz1CCQS9ChhPQvizlU
-	FHx+v52/ZM8AYRBYUIXqQ3in7Y3/EQyUtFuWkqbwGRWSaVkOPiineA6tqyCEvL6ikMJENI/dLrJ
-	9xRZ3sWHAzTIBrJlcJQeYvLdek6/uziztroN8Jg8HfMFy98bA1hwnO+tHPh1QMPJdf12woHJS1g
-	D1+dJSApoqXbrplkjBJ9T5soaZcFHX5e5UgfOt8N952zDjr5JIslJi0AzmFaAVGbBK3XDwqWf1+
-	yhEnIdLgBQbi4RdCT2ch0l43MCgSZpEAzd4cldO7RoslLoR45Oa9CzdhNl7cJtVhI3hbzULbzV
-X-Received: by 2002:a17:903:40ca:b0:2a0:f0db:690e with SMTP id d9443c01a7336-2a870e8ac0bmr41142995ad.52.1769583758569;
-        Tue, 27 Jan 2026 23:02:38 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:bf24:413d:1e8a:6aa])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a88b3eedd0sm12975735ad.3.2026.01.27.23.02.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Jan 2026 23:02:37 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Douglas Anderson <dianders@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH] net: usb: r8152: fix resume reset deadlock
-Date: Wed, 28 Jan 2026 16:01:52 +0900
-Message-ID: <20260128070222.3393746-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.53.0.rc1.225.gd81095ad13-goog
+        bh=xuKStyX4gBGrd4NIad9hOrKnHqdXGE6jzr0Ewri1egY=;
+        b=YOEM4+gnJZUk30LUPLwLrlFKtK+Y6MLBmsx6mHfzbvg9tCn2h3cdA3OSsB83ftVhDo
+         W7REoM6jGoVG2qv67oUorc6F+RQSCC4C+bXv3dpuQp/UAuUh2K7EekJ9Y0soUYZ4dvUW
+         q+rwUOL8PuOBcHe+oueDgExV93EEg+uoRrC6f8w1BqztuVyrsz/hrtZx2dP393PDL0pP
+         w9jQqWuTWlxovUmMKkDUIkYZ9Nbla33KFVca6fHxbM55mPWqQ5BrVqJw02SPd4reKGgV
+         RQhtn1jTqcSSh0OxbmEWZUOqVGYLv2UJEgnxw7nZeDlOH/oOoZHlD+ekbbTTO4qKFM3k
+         ad1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769583807; x=1770188607;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xuKStyX4gBGrd4NIad9hOrKnHqdXGE6jzr0Ewri1egY=;
+        b=c0nGCd0iH9PEZZm+dsFiYbEEqbLy0oMeSlM6pFwv9jxa09j8oBwcqints5ZzvrjpGS
+         4wTMK5qbvyqtvIklwRT4fB7hekAdbLdpKioTndgDGqXQ9+6I0NSDqoyV7eemYHnIO991
+         FFCugsA4JTQnmnctqvt5T7FKweyjWK3XjHibYALaEq5aSPkWzRPZCJLdNUi7OYJm3xlE
+         FUj3coT+FnlqyDsyy1T7/ORE/CdCv8c1OJUB5pDLBQBV6uqQ2nht6xOmKo/S5iDlIpXz
+         pXSZjVTqvx1udTTlB5GlBc6Ltrd0jk+7OwCYnCptY3rxDgqjJKcL6wj+GctIAlaxPN0T
+         hNpw==
+X-Forwarded-Encrypted: i=1; AJvYcCXGYQoToHAw9q9ykIYLwqcqFnHY57SR+jOi/Ne8uAmqfC1nmqBmysa6ZYOTp1oHNNW+4SlvaH0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyexe/eXOa+PmyphRTbByZzF49CgzafDTrqQwP9+FVPmK7RIfFi
+	xM+Nv0L7jNa6ck/wUvC6QuUFGENbC4cosuZoeqvrwemWStQsnzIQa9MVVYMDTOZ9CJpLrO/wHgE
+	Ui1kiTDYQDWUyQfrHBA91AF/opHveuDnTwAN4XueYFBvU+/IdNsHCSFKkQMyMrRYE4v3zsEEot0
+	MyFAlUe8024LFxQpSoBGzfvGFcxGSFasl8
+X-Gm-Gg: AZuq6aLBjbES7bz60EATL6omKLSwJAKpC9FhLsybchNx1VuhtgIueuP1QIdfwwmj49R
+	k5ejbTKdHpIdWfNgQASsa4Tn1QCrG9d6OLl/FpBP0dPBn0ugUigCT30TGRxrxWxpmsxj22lTv6s
+	kYQdN55ECbfbKOVFugcEXrDIeeJvs/lJu09CBfHHsoDi2RbtZVuT3pYXQwo/h6yElN
+X-Received: by 2002:a05:6a21:3388:b0:38d:ee4a:e833 with SMTP id adf61e73a8af0-38ec6549c19mr3702317637.62.1769583806875;
+        Tue, 27 Jan 2026 23:03:26 -0800 (PST)
+X-Received: by 2002:a05:6a21:3388:b0:38d:ee4a:e833 with SMTP id
+ adf61e73a8af0-38ec6549c19mr3702286637.62.1769583806348; Tue, 27 Jan 2026
+ 23:03:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260107210448.37851-1-simon.schippers@tu-dortmund.de>
+ <20260107210448.37851-4-simon.schippers@tu-dortmund.de> <CACGkMEuSiEcyaeFeZd0=RgNpviJgNvUDq_ctjeMLT5jZTgRkwQ@mail.gmail.com>
+ <1e30464c-99ae-441e-bb46-6d0485d494dc@tu-dortmund.de> <CACGkMEtzD3ORJuJcc8VeqwASiGeVFdQmJowsK6PYVEF_Zkcn8Q@mail.gmail.com>
+ <afa40345-acbe-42b0-81d1-0a838343792d@tu-dortmund.de> <CACGkMEtxRoavBMTXom8Z=FM-pvu3pHbsuwCs+e450b1B=V7iWA@mail.gmail.com>
+ <CACGkMEsJKeEsH=G8H5RzMNHY4g3HNdciMDMhciShawh-9Xb9hg@mail.gmail.com>
+ <bc1078e5-65fc-4de6-8475-517f626d8d96@tu-dortmund.de> <3a1d6232-efe4-4e79-a196-44794fdc0f33@tu-dortmund.de>
+In-Reply-To: <3a1d6232-efe4-4e79-a196-44794fdc0f33@tu-dortmund.de>
+From: Jason Wang <jasowang@redhat.com>
+Date: Wed, 28 Jan 2026 15:03:11 +0800
+X-Gm-Features: AZwV_QhDC_bWR-juret8NZb1IfXLfm23zEjia-LWh6nai9zCNajkiH0ao9SG7CE
+Message-ID: <CACGkMEv71kn91FPAUrxJg=YB3+B0MRTgOidMPHjK7Qq0WEhGtw@mail.gmail.com>
+Subject: Re: [PATCH net-next v7 3/9] tun/tap: add ptr_ring consume helper with
+ netdev queue wakeup
+To: Simon Schippers <simon.schippers@tu-dortmund.de>
+Cc: willemdebruijn.kernel@gmail.com, andrew+netdev@lunn.ch, 
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
+	mst@redhat.com, eperezma@redhat.com, leiyang@redhat.com, 
+	stephen@networkplumber.org, jon@nutanix.com, tim.gebauer@tu-dortmund.de, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-rtl8152 can trigger device reset during reset which
-potentially can result in a deadlock:
+On Wed, Jan 28, 2026 at 12:48=E2=80=AFAM Simon Schippers
+<simon.schippers@tu-dortmund.de> wrote:
+>
+> On 1/23/26 10:54, Simon Schippers wrote:
+> > On 1/23/26 04:05, Jason Wang wrote:
+> >> On Thu, Jan 22, 2026 at 1:35=E2=80=AFPM Jason Wang <jasowang@redhat.co=
+m> wrote:
+> >>>
+> >>> On Wed, Jan 21, 2026 at 5:33=E2=80=AFPM Simon Schippers
+> >>> <simon.schippers@tu-dortmund.de> wrote:
+> >>>>
+> >>>> On 1/9/26 07:02, Jason Wang wrote:
+> >>>>> On Thu, Jan 8, 2026 at 3:41=E2=80=AFPM Simon Schippers
+> >>>>> <simon.schippers@tu-dortmund.de> wrote:
+> >>>>>>
+> >>>>>> On 1/8/26 04:38, Jason Wang wrote:
+> >>>>>>> On Thu, Jan 8, 2026 at 5:06=E2=80=AFAM Simon Schippers
+> >>>>>>> <simon.schippers@tu-dortmund.de> wrote:
+> >>>>>>>>
+> >>>>>>>> Introduce {tun,tap}_ring_consume() helpers that wrap __ptr_ring_=
+consume()
+> >>>>>>>> and wake the corresponding netdev subqueue when consuming an ent=
+ry frees
+> >>>>>>>> space in the underlying ptr_ring.
+> >>>>>>>>
+> >>>>>>>> Stopping of the netdev queue when the ptr_ring is full will be i=
+ntroduced
+> >>>>>>>> in an upcoming commit.
+> >>>>>>>>
+> >>>>>>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> >>>>>>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> >>>>>>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+> >>>>>>>> ---
+> >>>>>>>>  drivers/net/tap.c | 23 ++++++++++++++++++++++-
+> >>>>>>>>  drivers/net/tun.c | 25 +++++++++++++++++++++++--
+> >>>>>>>>  2 files changed, 45 insertions(+), 3 deletions(-)
+> >>>>>>>>
+> >>>>>>>> diff --git a/drivers/net/tap.c b/drivers/net/tap.c
+> >>>>>>>> index 1197f245e873..2442cf7ac385 100644
+> >>>>>>>> --- a/drivers/net/tap.c
+> >>>>>>>> +++ b/drivers/net/tap.c
+> >>>>>>>> @@ -753,6 +753,27 @@ static ssize_t tap_put_user(struct tap_queu=
+e *q,
+> >>>>>>>>         return ret ? ret : total;
+> >>>>>>>>  }
+> >>>>>>>>
+> >>>>>>>> +static void *tap_ring_consume(struct tap_queue *q)
+> >>>>>>>> +{
+> >>>>>>>> +       struct ptr_ring *ring =3D &q->ring;
+> >>>>>>>> +       struct net_device *dev;
+> >>>>>>>> +       void *ptr;
+> >>>>>>>> +
+> >>>>>>>> +       spin_lock(&ring->consumer_lock);
+> >>>>>>>> +
+> >>>>>>>> +       ptr =3D __ptr_ring_consume(ring);
+> >>>>>>>> +       if (unlikely(ptr && __ptr_ring_consume_created_space(rin=
+g, 1))) {
+> >>>>>>>> +               rcu_read_lock();
+> >>>>>>>> +               dev =3D rcu_dereference(q->tap)->dev;
+> >>>>>>>> +               netif_wake_subqueue(dev, q->queue_index);
+> >>>>>>>> +               rcu_read_unlock();
+> >>>>>>>> +       }
+> >>>>>>>> +
+> >>>>>>>> +       spin_unlock(&ring->consumer_lock);
+> >>>>>>>> +
+> >>>>>>>> +       return ptr;
+> >>>>>>>> +}
+> >>>>>>>> +
+> >>>>>>>>  static ssize_t tap_do_read(struct tap_queue *q,
+> >>>>>>>>                            struct iov_iter *to,
+> >>>>>>>>                            int noblock, struct sk_buff *skb)
+> >>>>>>>> @@ -774,7 +795,7 @@ static ssize_t tap_do_read(struct tap_queue =
+*q,
+> >>>>>>>>                                         TASK_INTERRUPTIBLE);
+> >>>>>>>>
+> >>>>>>>>                 /* Read frames from the queue */
+> >>>>>>>> -               skb =3D ptr_ring_consume(&q->ring);
+> >>>>>>>> +               skb =3D tap_ring_consume(q);
+> >>>>>>>>                 if (skb)
+> >>>>>>>>                         break;
+> >>>>>>>>                 if (noblock) {
+> >>>>>>>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> >>>>>>>> index 8192740357a0..7148f9a844a4 100644
+> >>>>>>>> --- a/drivers/net/tun.c
+> >>>>>>>> +++ b/drivers/net/tun.c
+> >>>>>>>> @@ -2113,13 +2113,34 @@ static ssize_t tun_put_user(struct tun_s=
+truct *tun,
+> >>>>>>>>         return total;
+> >>>>>>>>  }
+> >>>>>>>>
+> >>>>>>>> +static void *tun_ring_consume(struct tun_file *tfile)
+> >>>>>>>> +{
+> >>>>>>>> +       struct ptr_ring *ring =3D &tfile->tx_ring;
+> >>>>>>>> +       struct net_device *dev;
+> >>>>>>>> +       void *ptr;
+> >>>>>>>> +
+> >>>>>>>> +       spin_lock(&ring->consumer_lock);
+> >>>>>>>> +
+> >>>>>>>> +       ptr =3D __ptr_ring_consume(ring);
+> >>>>>>>> +       if (unlikely(ptr && __ptr_ring_consume_created_space(rin=
+g, 1))) {
+> >>>>>>>
+> >>>>>>> I guess it's the "bug" I mentioned in the previous patch that lea=
+ds to
+> >>>>>>> the check of __ptr_ring_consume_created_space() here. If it's tru=
+e,
+> >>>>>>> another call to tweak the current API.
+> >>>>>>>
+> >>>>>>>> +               rcu_read_lock();
+> >>>>>>>> +               dev =3D rcu_dereference(tfile->tun)->dev;
+> >>>>>>>> +               netif_wake_subqueue(dev, tfile->queue_index);
+> >>>>>>>
+> >>>>>>> This would cause the producer TX_SOFTIRQ to run on the same cpu w=
+hich
+> >>>>>>> I'm not sure is what we want.
+> >>>>>>
+> >>>>>> What else would you suggest calling to wake the queue?
+> >>>>>
+> >>>>> I don't have a good method in my mind, just want to point out its i=
+mplications.
+> >>>>
+> >>>> I have to admit I'm a bit stuck at this point, particularly with thi=
+s
+> >>>> aspect.
+> >>>>
+> >>>> What is the correct way to pass the producer CPU ID to the consumer?
+> >>>> Would it make sense to store smp_processor_id() in the tfile inside
+> >>>> tun_net_xmit(), or should it instead be stored in the skb (similar t=
+o the
+> >>>> XDP bit)? In the latter case, my concern is that this information ma=
+y
+> >>>> already be significantly outdated by the time it is used.
+> >>>>
+> >>>> Based on that, my idea would be for the consumer to wake the produce=
+r by
+> >>>> invoking a new function (e.g., tun_wake_queue()) on the producer CPU=
+ via
+> >>>> smp_call_function_single().
+> >>>> Is this a reasonable approach?
+> >>>
+> >>> I'm not sure but it would introduce costs like IPI.
+> >>>
+> >>>>
+> >>>> More generally, would triggering TX_SOFTIRQ on the consumer CPU be
+> >>>> considered a deal-breaker for the patch set?
+> >>>
+> >>> It depends on whether or not it has effects on the performance.
+> >>> Especially when vhost is pinned.
+> >>
+> >> I meant we can benchmark to see the impact. For example, pin vhost to
+> >> a specific CPU and the try to see the impact of the TX_SOFTIRQ.
+> >>
+> >> Thanks
+> >>
+> >
+> > I ran benchmarks with vhost pinned to CPU 0 using taskset -p -c 0 ...
+> > for both the stock and patched versions. The benchmarks were run with
+> > the full patch series applied, since testing only patches 1-3 would not
+> > be meaningful - the queue is never stopped in that case, so no
+> > TX_SOFTIRQ is triggered.
+> >
+> > Compared to the non-pinned CPU benchmarks in the cover letter,
+> > performance is lower for pktgen with a single thread but higher with
+> > four threads. The results show no regression for the patched version,
+> > with even slight performance improvements observed:
+> >
+> > +-------------------------+-----------+----------------+
+> > | pktgen benchmarks to    | Stock     | Patched with   |
+> > | Debian VM, i5 6300HQ,   |           | fq_codel qdisc |
+> > | 100M packets            |           |                |
+> > | vhost pinned to core 0  |           |                |
+> > +-----------+-------------+-----------+----------------+
+> > | TAP       | Transmitted | 452 Kpps  | 454 Kpps       |
+> > |  +        +-------------+-----------+----------------+
+> > | vhost-net | Lost        | 1154 Kpps | 0              |
+> > +-----------+-------------+-----------+----------------+
+> >
+> > +-------------------------+-----------+----------------+
+> > | pktgen benchmarks to    | Stock     | Patched with   |
+> > | Debian VM, i5 6300HQ,   |           | fq_codel qdisc |
+> > | 100M packets            |           |                |
+> > | vhost pinned to core 0  |           |                |
+> > | *4 threads*             |           |                |
+> > +-----------+-------------+-----------+----------------+
+> > | TAP       | Transmitted | 71 Kpps   | 79 Kpps        |
+> > |  +        +-------------+-----------+----------------+
+> > | vhost-net | Lost        | 1527 Kpps | 0              |
+> > +-----------+-------------+-----------+----------------+
 
- **** DPM device timeout after 10 seconds; 15 seconds until panic ****
- Call Trace:
- <TASK>
- schedule+0x483/0x1370
- schedule_preempt_disabled+0x15/0x30
- __mutex_lock_common+0x1fd/0x470
- __rtl8152_set_mac_address+0x80/0x1f0
- dev_set_mac_address+0x7f/0x150
- rtl8152_post_reset+0x72/0x150
- usb_reset_device+0x1d0/0x220
- rtl8152_resume+0x99/0xc0
- usb_resume_interface+0x3e/0xc0
- usb_resume_both+0x104/0x150
- usb_resume+0x22/0x110
+The PPS seems to be low. I'd suggest using testpmd (rxonly) mode in
+the guest or an xdp program that did XDP_DROP in the guest.
 
-The problem is that rtl8152 resume calls reset under
-tp->control mutex while reset basically re-enters rtl8152
-and attempts to acquire the same tp->control lock once
-again.
+> >
+> > +------------------------+-------------+----------------+
+> > | iperf3 TCP benchmarks  | Stock       | Patched with   |
+> > | to Debian VM 120s      |             | fq_codel qdisc |
+> > | vhost pinned to core 0 |             |                |
+> > +------------------------+-------------+----------------+
+> > | TAP                    | 22.0 Gbit/s | 22.0 Gbit/s    |
+> > |  +                     |             |                |
+> > | vhost-net              |             |                |
+> > +------------------------+-------------+----------------+
+> >
+> > +---------------------------+-------------+----------------+
+> > | iperf3 TCP benchmarks     | Stock       | Patched with   |
+> > | to Debian VM 120s         |             | fq_codel qdisc |
+> > | vhost pinned to core 0    |             |                |
+> > | *4 iperf3 client threads* |             |                |
+> > +---------------------------+-------------+----------------+
+> > | TAP                       | 21.4 Gbit/s | 21.5 Gbit/s    |
+> > |  +                        |             |                |
+> > | vhost-net                 |             |                |
+> > +---------------------------+-------------+----------------+
+>
+> What are your thoughts on this?
+>
+> Thanks!
+>
+>
 
-Reset INACCESSIBLE device outside of tp->control mutex
-scope to avoid recursive mutex_lock() deadlock.
-
-Fixes: 4933b066fefb ("r8152: If inaccessible at resume time, issue a reset")
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
- drivers/net/usb/r8152.c | 27 ++++++++++++++-------------
- 1 file changed, 14 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 30f937527cd2..c4f4e6a35ff4 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -8538,19 +8538,6 @@ static int rtl8152_system_resume(struct r8152 *tp)
- 		usb_submit_urb(tp->intr_urb, GFP_NOIO);
- 	}
- 
--	/* If the device is RTL8152_INACCESSIBLE here then we should do a
--	 * reset. This is important because the usb_lock_device_for_reset()
--	 * that happens as a result of usb_queue_reset_device() will silently
--	 * fail if the device was suspended or if too much time passed.
--	 *
--	 * NOTE: The device is locked here so we can directly do the reset.
--	 * We don't need usb_lock_device_for_reset() because that's just a
--	 * wrapper over device_lock() and device_resume() (which calls us)
--	 * does that for us.
--	 */
--	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
--		usb_reset_device(tp->udev);
--
- 	return 0;
- }
- 
-@@ -8661,6 +8648,7 @@ static int rtl8152_suspend(struct usb_interface *intf, pm_message_t message)
- static int rtl8152_resume(struct usb_interface *intf)
- {
- 	struct r8152 *tp = usb_get_intfdata(intf);
-+	bool system_resume = !test_bit(SELECTIVE_SUSPEND, &tp->flags);
- 	int ret;
- 
- 	mutex_lock(&tp->control);
-@@ -8674,6 +8662,19 @@ static int rtl8152_resume(struct usb_interface *intf)
- 
- 	mutex_unlock(&tp->control);
- 
-+	/* If the device is RTL8152_INACCESSIBLE here then we should do a
-+	 * reset. This is important because the usb_lock_device_for_reset()
-+	 * that happens as a result of usb_queue_reset_device() will silently
-+	 * fail if the device was suspended or if too much time passed.
-+	 *
-+	 * NOTE: The device is locked here so we can directly do the reset.
-+	 * We don't need usb_lock_device_for_reset() because that's just a
-+	 * wrapper over device_lock() and device_resume() (which calls us)
-+	 * does that for us.
-+	 */
-+	if (system_resume && test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+		ret = usb_reset_device(tp->udev);
-+
- 	return ret;
- }
- 
--- 
-2.53.0.rc1.225.gd81095ad13-goog
+Thanks
 
