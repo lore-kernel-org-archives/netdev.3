@@ -1,210 +1,667 @@
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-10698.protonmail.ch (mail-10698.protonmail.ch [79.135.106.98])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9515F33FE0A
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 11:22:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD34F327BE7
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 11:26:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769599344; cv=none; b=BNs1UziqTGlkS7acga3M5YBKuQSHGHJB5PBXAF+6SfgEKigWvGKUKArvrXqkZGyP70GhTRKC68ZzE2A3Tcp0m5VnRkdkQ0FnsYlCbadVSRDqYZJyOJQess18mc+8nVEHTBUUk2fUZfIYSC/IujZ4vmiNOOTAuzM0eFxlT/QPvIY=
+	t=1769599573; cv=none; b=Q5PzqKHi6m/9vau77sAVOEOFrEoIL50g8xm65mjp1MTobb3TJj88PeEXOyzhNKw542cL0VEcqFfOopoMGuMD6KDZaDeguw4UX7v8tZxuoIQaP13E8c5GEyrIqpTI3j1KxYaPCVsm/xHz5dWokhQ/NZlQQuQxMrVPRBX1HryYk2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769599344; c=relaxed/simple;
-	bh=XNI1PdxzUMCdX20UCO6iHB0ZsB5uIDvd2qbamyYZI5A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H9bDUExR5L5/4TzLrED2gvz4AqX2M8+05lSRdnWhWkLJK1VsuYozbIOKeXkwXqYeCYlAgvJEmse5i6rwuYByrEm8zncHk7g4QP4kwNhJmJI5wkHuldCw1cD7R1AzdnJ7HEa3NdkwP/8DBnwRtyNF6/+e86DUANJq6iMHcMG0ukU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U+KcOV2J; arc=none smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769599573; c=relaxed/simple;
+	bh=Va9OymS6I62hmBAGNUTB18fS/BXPW/oP1CxxsmBqxdw=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=nAaLmCpU3LTFbgt5nqzU4lHOe9VRNY0bXnABqjmPh4dyft05Jrb7P3jb1yEqnEImOzM10N9EgkdxmTLBO0hlBQJTape/nfMUGxJ/Neb0k/A8anNDHf/uvo/bVdwtD7jmR7x/p1glNMuMEgjRKhcvFl9j5ZubCl4pRnYMow28mx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=NU+YQ0gw; arc=none smtp.client-ip=79.135.106.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U+KcOV2J"
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-124a95e592fso325508c88.0
-        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 03:22:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769599341; x=1770204141; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QJUI8NJKVSDnIT+QSuw3y5qsdf/HcwP4R02WUPv/Zns=;
-        b=U+KcOV2JO58Jj7i04m+T8AYbKXUUCEDwamVIz8AFpmgLIcrimxphPntYYDUeFPVG8z
-         SCNXgWq3X87/5LOJZ7sCg1F7fkivA2ocgM738bj1F7a5pPFX30VoBdgRuKfsTqWR7Y2l
-         OphdO3BJ2zE+stG0BOtAABDHpc01m+NFWTwtYVLU53O03vT7JkfXMAFARlXe/EbknLW3
-         bgY+MMavaPS2Yk4lEhob+AYRNqNruMWCH1ZKXM8c2hFYYWrE1xudFz9/wdYfXYyRPnHy
-         nBSKjjtx46l7aF8cSyhpSFn7Uy2zMYwP2MUDxxG7KCi70/65nKe/fY2ZTWzfDGf5fvre
-         Na4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769599341; x=1770204141;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QJUI8NJKVSDnIT+QSuw3y5qsdf/HcwP4R02WUPv/Zns=;
-        b=BhtdL9pZige1cy5gEYFT7j8fZQkfC2RVsbfKIWjCdnVc6u99h28CDFfYJc3qbESRv5
-         0G8qUupif+6BPKdiUxH7XEry1QhIFjr2PCgmZXGHtZ/9XgtT4M0hX19Zca9E5Vs3YPH/
-         u8NtxMYcfoIpDlPy4YSveaNuwZ7cLJm5yCfA8cLUvp96wxP1SPRzx2xGaRyJGw2RiiOi
-         Y0X0cSvoQbMlwPlYqoNoCPi/Rxjxj68spXXShA0ktSFpx+yIC9bxVu9lBm0mMDb0AgFR
-         DxIopIPTCvHySMzGXNWC35MW84DimaNUse3zL7k/3P5VvWc8k9A2cuQ6AUx0F7XCi0d2
-         QYVg==
-X-Gm-Message-State: AOJu0YwQ19lDu+NzRAaG9gnJQl5Alm+ZHOfy4s/2YiGZIHlcnEaklmzH
-	64uB4vHAxdyUJXGApOWhF1sdiMTu/k5ESUid5Ioyi0ixvHhS8nNYLJjE
-X-Gm-Gg: AZuq6aLHiTsLQoUIVCTmMNo4NlYEsweMz4ns4aPDv6n3B6P+umVpWXuZYmKIdhK93GX
-	IyhZYQEzEe7Iq0ZvuUNG5zPL0QSYAny2IzHKmzjj8axw3bS8uZ/xRMwAJWffAaw3LJRnEkCf0na
-	L+KxA/upj1Dw/VC26pFJobYGqi/kyPR0q/LwHfZGITNg3uXL8TlMot2B873mhIadWPwvTztG3B+
-	r/OpcNS/nqiwhOJb+obtYajOuuEOHLhDd4xyZeF7R5aVZHnN2UzN0LibUfxIcDcmQZW0RWn0+8i
-	HnFIHlvWNfIvpoep2emDz3DdW0BXr2vVkrmsF/MF8vU22GR+d/GiGI8weOSFCVg3Ns3ZTbWLGiD
-	RP1JLf9BvdTT2U9e0/8B9WNxqmvVd5wVV6BFWRxfkRW0df0USX0npdkXjZsazd+BTjDanB38nZa
-	DgJJdvjNlYtQ==
-X-Received: by 2002:a05:7022:eb47:20b0:11d:fd26:234e with SMTP id a92af1059eb24-124a0070cbdmr2385944c88.16.1769599341399;
-        Wed, 28 Jan 2026 03:22:21 -0800 (PST)
-Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7a16cf8d6sm2140833eec.3.2026.01.28.03.22.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 03:22:20 -0800 (PST)
-Date: Wed, 28 Jan 2026 19:22:02 +0800
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Vivian Wang <wangruikang@iscas.ac.cn>, 
-	Inochi Amaoto <inochiama@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>, 
-	Yao Zi <ziyao@disroot.org>, Yanteng Si <siyanteng@cqsoftware.com.cn>, 
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Choong Yong Liang <yong.liang.choong@linux.intel.com>, Chen-Yu Tsai <wens@kernel.org>, 
-	Shangjuan Wei <weishangjuan@eswincomputing.com>, Boon Khai Ng <boon.khai.ng@altera.com>, 
-	Quentin Schulz <quentin.schulz@cherry.de>, Giuseppe Cavallaro <peppe.cavallaro@st.com>, 
-	Jose Abreu <joabreu@synopsys.com>
-Cc: netdev@vger.kernel.org, devicetree@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, spacemit@lists.linux.dev, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
-	Longbin Li <looong.bin@gmail.com>
-Subject: Re: [PATCH net-next v3 3/3] net: stmmac: Add glue layer for Spacemit
- K3 SoC
-Message-ID: <aXnxDlExQRYrbf6s@inochi.infowork>
-References: <20260128072931.875041-1-inochiama@gmail.com>
- <20260128072931.875041-4-inochiama@gmail.com>
- <f73fc83c-b38d-4974-ba3c-80c5e5556e7e@iscas.ac.cn>
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="NU+YQ0gw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1769599561; x=1769858761;
+	bh=/0yAKNGguHhvwY57MgQS48RwpAmQAERfAjPDBJbwlQU=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=NU+YQ0gwAHxNA3Zn3ybNPFkIGrT5qlrx0luvDeivu/K1HZcwNQ0ViTj5HyQYQvKw6
+	 hRLesXpq76O9lfzdtoJ2O/mb9J9Kh2aVfUZ1eThnA/1GQMaOsqICKMGEbwa5mAxEJS
+	 4GWhPrl0XJcWbIDPt6pxg7nRnzB6CPQzoH6ZM6qKDVRjxP6eQe0KUDFDm3IAsbQmUd
+	 UgfZp1peVGq073sen0G6o/sHj3fTdtUlwNUAVoBixuS8txtHmy6JRbJGlpFDsmg+NJ
+	 D2mPDYNshoZDMv0eNioShD7fT2lIOi+zIco/lEPAaSQV8HfDyx1UROhyRyjaNldvDe
+	 S1dDJsPpYKzKA==
+Date: Wed, 28 Jan 2026 11:25:57 +0000
+To: Linux Networking <netdev@vger.kernel.org>
+From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
+Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
+Subject: Finally managed to get rsync script working after working on it for more than 7 hours since 1.30 AM on 28 Jan 2026 Wednesday
+Message-ID: <aFkDZy9fzBmqwpNggSLUGICQ1zv0HHho57ZpJexFyvgwRkWUdJZxoqyzFuI03CprptRBp1Ht1rN98zKMAW5rgajQ5StJ-xtPAfhPXu4dLnw=@protonmail.com>
+Feedback-ID: 39510961:user:proton
+X-Pm-Message-ID: 95ca48af27b2d451e43cc3edfb04baf9f5805dbe
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <f73fc83c-b38d-4974-ba3c-80c5e5556e7e@iscas.ac.cn>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jan 28, 2026 at 05:16:46PM +0800, Vivian Wang wrote:
-> Hi Inochi,
-> 
-> I have some comments below.
-> 
-> On 1/28/26 15:29, Inochi Amaoto wrote:
-> > The etherenet controller on Spacemit K3 SoC is Synopsys DesignWare
-> Typo: etherenet -> ethernet
-> > MAC (version 5.40a), with the following special point:
-> Nit: point -> points 
+Subject: Finally managed to get rsync script working after working on it fo=
+r more than 7 hours since 1.30 AM on 28 Jan 2026 Wednesday
 
-Thanks
+Good day from Singapore,
 
-> > 1. The rate of the tx clock line is auto changed when the mac speed
-> >    rate is changed, and no need for changing the input tx clock.
-> > 2. This controller require a extra syscon device to configure the
-> >    interface type, enable wake up interrupt and delay configuration
-> >    if needed.
-> >
-> > Add Spacemit dwmac driver support on the Spacemit K3 SoC.
-> >
-> > Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-> > ---
-> >  drivers/net/ethernet/stmicro/stmmac/Kconfig   |  12 +
-> >  drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
-> >  .../ethernet/stmicro/stmmac/dwmac-spacemit.c  | 218 ++++++++++++++++++
-> >  3 files changed, 231 insertions(+)
-> >  create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-spacemit.c
-> >
-> > [...]
-> >
-> > +
-> > +/* dline register bits */
-> > +#define RGMII_RX_DLINE_EN		BIT(0)
-> > +#define RGMII_RX_DLINE_STEP		GENMASK(5, 4)
-> > +#define RGMII_RX_DLINE_CODE		GENMASK(15, 8)
-> > +#define RGMII_TX_DLINE_EN		BIT(16)
-> > +#define RGMII_TX_DLINE_STEP		GENMASK(21, 20)
-> > +#define RGMII_TX_DLINE_CODE		GENMASK(31, 24)
-> > +
-> > +#define MAX_DLINE_DELAY_CODE		0xff
-> > +#define MAX_WORKED_DELAY		2800
-> > +
-> > +/* Note: the delay step value is at 0.1ps */
-> > +static const unsigned int k3_delay_step_10x[4] = {
-> > +	367, 493, 559, 685
-> > +};
-> > +
-> > +static int spacemit_dwmac_set_delay(struct regmap *apmu,
-> > +				    unsigned int dline_offset,
-> > +				    unsigned int tx_code, unsigned int tx_config,
-> > +				    unsigned int rx_code, unsigned int rx_config)
-> > +{
-> > +	unsigned int mask, val;
-> > +
-> > +	mask = RGMII_TX_DLINE_STEP | RGMII_TX_DLINE_CODE | RGMII_TX_DLINE_EN |
-> > +	       RGMII_RX_DLINE_STEP | RGMII_RX_DLINE_CODE | RGMII_RX_DLINE_EN;
-> > +	val = FIELD_PREP(RGMII_TX_DLINE_STEP, tx_config) |
-> > +	      FIELD_PREP(RGMII_TX_DLINE_CODE, tx_code) | RGMII_TX_DLINE_EN |
-> > +	      FIELD_PREP(RGMII_RX_DLINE_STEP, rx_config) |
-> > +	      FIELD_PREP(RGMII_RX_DLINE_CODE, rx_code) | RGMII_RX_DLINE_EN;
-> > +
-> > +	return regmap_update_bits(apmu, dline_offset, mask, val);
-> > +}
-> > +
-> > +static int spacemit_dwmac_detected_delay_value(unsigned int delay,
-> > +					       unsigned int *config)
-> > +{
-> > +	unsigned int best_delay = 0;
-> > +	unsigned int best_config = 0;
-> > +	int best_code = 0;
-> > +	int i;
-> > +
-> > +	if (delay == 0)
-> > +		return 0;
-> > +
-> > +	if (delay > MAX_WORKED_DELAY)
-> > +		return -EINVAL;
-> > +
-> > +	/*
-> > +	 * Note K3 require a specific factor for calculate
-> > +	 * the delay, in this scenario it is 0.9. So the
-> > +	 * formula is code * step / 10 * 0.9
-> > +	 */
-> > +	for (i = 0; i < ARRAY_SIZE(k3_delay_step_10x); i++) {
-> > +		unsigned int step = k3_delay_step_10x[i];
-> > +		int code = DIV_ROUND_CLOSEST(delay * 10 * 10, step * 9);
-> > +		unsigned int tmp = code * step * 9 / 10 / 10;
-> > +
-> > +		if (abs(tmp - delay) < abs(best_delay - delay)) {
-> > +			best_code = code;
-> > +			best_delay = tmp;
-> > +			best_config = i;
-> > +		}
-> > +	}
-> > +
-> > +	*config = best_config;
-> > +
-> > +	return best_code;
-> 
-> Is this really necessary? For K1 I just used the smallest step size.
-> 
-> It seems to me you have, for the smallest step size, about 36.7ps * 0.9
-> = 33ps per step. Theoretically speaking that lets you fine tune the
-> delay to within 1% of the 2ns total required RGMII delay (MAC + PCB +
-> PHY). In practice this number shouldn't be that marginal. 
-> 
+I have finally managed to get rsync script working after working on it for =
+more than 7 hours since 1.30 AM on 28 Jan 2026 Wednesday.
 
-I think it is reasonable, I will take you advice and use the
-smallest step size.
+The old Synology DS713+ NAS was backed up to USB external harddisk using Hy=
+per Backup.
+
+The Hyper Backup on the USB external harddisk was fully restored on the new=
+ Synology DS1522+ NAS at 1.30 AM on 28 Jan 2026 Wednesday.
+
+Since 1.30 AM in the morning, I have been working for more than 7 hours to =
+get the rsync script working, all throughout the night.
+
+rsync daemon keeps failing with errors, so I had no choice but to turn to r=
+sync SSH.
+
+Before running rsync SSH, I need to get passwordless SSH login working firs=
+t.
+
+1=EF=B8=8F=E2=83=A3 Generate an SSH key on DS713+ (client)
+
+ssh-keygen -t rsa -b 4096
+
+Press Enter to accept the default path: /var/services/homes/rsyncuser/.ssh/=
+id_rsa
+
+Press Enter again for no passphrase (needed for automation)
+
+This creates:
+
+/var/services/homes/rsyncuser/.ssh/id_rsa       =E2=86=90 private key (keep=
+ secret!)
+/var/services/homes/rsyncuser/.ssh/id_rsa.pub   =E2=86=90 public key
+
+2=EF=B8=8F=E2=83=A3 Copy the public key to DS1522+ (server) manually
+
+SSH into DS1522+ as rsyncuser
+
+mkdir -p ~/.ssh
+
+chmod 700 ~/.ssh
+
+On DS713+, print your public key:
+
+cat /var/services/homes/rsyncuser/.ssh/id_rsa.pub
+
+---public key snipped---
+
+On DS1522+, append it to authorized_keys:
+
+vi ~/.ssh/authorized_keys
+
+chmod 600 ~/.ssh/authorized_keys
+
+3=EF=B8=8F=E2=83=A3 Test passwordless login
+
+ssh rsyncuser@192.168.0.101
+
+The authenticity of host '192.168.0.101 (192.168.0.101)' can't be establish=
+ed.
+ECDSA key fingerprint is ---snipped---
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '192.168.0.101' (ECDSA) to the list of known hos=
+ts.
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+Permissions 0777 for '/var/services/homes/rsyncuser/.ssh/id_rsa' are too op=
+en.
+It is required that your private key files are NOT accessible by others.
+This private key will be ignored.
+Load key "/var/services/homes/rsyncuser/.ssh/id_rsa": bad permissions
+rsyncuser@192.168.0.101's password:
+
+On DS713+:
+
+chmod 700 /var/services/homes/rsyncuser/.ssh
+
+chmod 600 /var/services/homes/rsyncuser/.ssh/id_rsa
+
+chmod 644 /var/services/homes/rsyncuser/.ssh/id_rsa.pub
+
+Passwordless ssh login is now successful.
+
+Test rsync for 1 shared folder
+
+1st test:
+
+nohup rsync -aHAX --numeric-ids \
+  --partial --info=3Dprogress2,stats2,name \
+  --outbuf=3DL \
+  -e "ssh -o ServerAliveInterval=3D30 -o ServerAliveCountMax=3D20" \
+  "/volume1/1 Sales/" \
+  "rsyncuser@192.168.0.101:/volume1/1 Sales/" \
+  >> /volume1/rsync_1_Sales.log 2>&1 &
+
+2nd test:
+
+nohup rsync -aHAX --numeric-ids \
+  --partial --progress --verbose \
+  --outbuf=3DL \
+  -e "ssh -o ServerAliveInterval=3D30 -o ServerAliveCountMax=3D20" \
+  "/volume1/1 Sales/" \
+  "rsyncuser@192.168.0.101:/volume1/1 Sales/" \
+  >> /volume1/rsync_1_Sales.log 2>&1 &
+
+No output for above rsync runs.
+
+Test rsync for small folder "web"
+
+rsync -av --progress \
+  -e "ssh -o ServerAliveInterval=3D30 -o ServerAliveCountMax=3D20" \
+  "/volume1/web/" \
+  "rsyncuser@192.168.0.101:/volume1/web/"
+
+Result:
+
+sending incremental file list
+rsync: opendir "/volume1/web/web_images" failed: Permission denied (13)
+./
+@eaDir/
+@eaDir/@tmp/
+
+sent 356 bytes  received 29 bytes  256.67 bytes/sec
+total size is 2,310  speedup is 6.00
+rsync error: some files/attrs were not transferred (see previous errors) (c=
+ode 23) at main.c(1462) [sender=3D3.1.2]
+
+
+Test rsync again with exclude eaDir
+
+rsync -av --progress \
+  --exclude=3D'@eaDir/' \
+  -e "ssh -o ServerAliveInterval=3D30 -o ServerAliveCountMax=3D20" \
+  "/volume1/web/" \
+  "rsyncuser@192.168.0.101:/volume1/web/"
+
+Result:
+
+sending incremental file list
+rsync: opendir "/volume1/web/web_images" failed: Permission denied (13)
+
+sent 275 bytes  received 14 bytes  192.67 bytes/sec
+total size is 2,310  speedup is 7.99
+rsync error: some files/attrs were not transferred (see previous errors) (c=
+ode 23) at main.c(1462) [sender=3D3.1.2]
+
+=E2=9C=85 CORRECT FIX (safe, Synology-approved)
+
+You need to re-apply and enforce ACL inheritance on the source NAS (DS713+)=
+.
+
+sudo synoacltool -add /volume1/web rsyncuser:allow:rwx
+
+Result:
+
+(synoacltool.c, 253)Unknown error
+
+
+sudo synoacltool -enforce-inherit /volume1/web
+
+rsyncuser@DiskStation:~/.ssh$ sudo -u rsyncuser ls /volume1/web/web_images
+ls: cannot open directory '/volume1/web/web_images': Permission denied
+
+=E2=9C=85 Working approach: run rsync as root via SSH
+
+Since your goal is migration to DS1522+, the easiest solution that actually=
+ works on DS713+ is:
+
+Use root on DS713+ as the source
+
+Use SSH rsync with passwordless keys for root
+
+Exclude @eaDir
+
+This avoids all ACL problems because root can read every folder, including =
+legacy ACL-protected subfolders.
+
+On DS713+:
+
+sudo -i
+ssh-keygen -t rsa
+
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa
+Your public key has been saved in /root/.ssh/id_rsa.pub
+The key fingerprint is:
+---snipped---
+The key's randomart image is:
++---[RSA 3072]----+
+---snipped---
++----[SHA256]-----+
+
+cat /root/.ssh/id_rsa.pub
+
+---public key snipped---
+
+On DS1522+:
+
+echo "---public key snipped---" >> /var/services/homes/rsyncuser/.ssh/autho=
+rized_keys
+
+
+chmod 600 /var/services/homes/rsyncuser/.ssh/authorized_keys
+chown -R rsyncuser:users /var/services/homes/rsyncuser/.ssh
+
+Now root on DS713+ =E2=86=92 rsyncuser on DS1522+ is passwordless.
+
+Test rsync again.
+
+rsync -aAX --numeric-ids --partial \
+  --exclude=3D'@eaDir/' \
+  -e "ssh -o ServerAliveInterval=3D30 -o ServerAliveCountMax=3D20" \
+  "/volume1/web/" \
+  "rsyncuser@192.168.0.101:/volume1/web/" \
+  >> /volume1/rsync_web.log=20
+
+rsync: failed to modify permissions on "/volume1/web/intranet": Operation n=
+ot permitted (1)
+rsync: rsync_xal_set: set_xattr_syno_acl(""/volume1/web/."","user.rsync.syn=
+oacl") failed: Permission denied (13)
+rsync error: some files/attrs were not transferred (see previous errors) (c=
+ode 23) at main.c(1462) [sender=3D3.1.2]
+
+Test rsync again:
+
+rsync -a --numeric-ids --partial \
+  --exclude=3D'@eaDir/' \
+  --no-acls --no-xattrs \
+  -e "ssh -o ServerAliveInterval=3D30 -o ServerAliveCountMax=3D20" \
+  "/volume1/web/" \
+  "rsyncuser@192.168.0.101:/volume1/web/" \
+  >> /volume1/rsync_web.log=20
+
+rsync: failed to set permissions on "/volume1/web/.htaccess": Operation not=
+ permitted (1)
+rsync: failed to set permissions on "/volume1/web/index.html": Operation no=
+t permitted (1)
+rsync: failed to set permissions on "/volume1/web/intranet": Operation not =
+permitted (1)
+rsync: failed to modify permissions on "/volume1/web/intranet": Operation n=
+ot permitted (1)
+rsync: failed to set permissions on "/volume1/web/intranet/***_index.php": =
+Operation not permitted (1)
+rsync: failed to set permissions on "/volume1/web/intranet/index.php": Oper=
+ation not permitted (1)
+rsync error: some files/attrs were not transferred (see previous errors) (c=
+ode 23) at main.c(1462) [sender=3D3.1.2]
+
+Test rsync again:
+
+rsync -av --numeric-ids --partial \
+  --exclude=3D'@eaDir/' \
+  --chmod=3Dugo=3DrwX \
+  --no-acls --no-xattrs \
+  -e "ssh -o ServerAliveInterval=3D30 -o ServerAliveCountMax=3D20" \
+  "/volume1/web/" \
+  "rsyncuser@192.168.0.101:/volume1/web/" \
+  >> /volume1/rsync_web.log
+
+rsync: failed to set permissions on "/volume1/web/.htaccess": Operation not=
+ permitted (1)
+rsync: failed to set permissions on "/volume1/web/intranet/***_index.php": =
+Operation not permitted (1)
+rsync: failed to set permissions on "/volume1/web/intranet/index.php": Oper=
+ation not permitted (1)
+rsync: failed to set permissions on "/volume1/web/web_images": Operation no=
+t permitted (1)
+rsync: failed to set permissions on "/volume1/web/web_images/bg.png": Opera=
+tion not permitted (1)
+rsync: failed to set permissions on "/volume1/web/web_images/icon.png": Ope=
+ration not permitted (1)
+rsync error: some files/attrs were not transferred (see previous errors) (c=
+ode 23) at main.c(1462) [sender=3D3.1.2]
+
+Test rsync again:
+
+rsync -rltDv --progress \
+  --exclude=3D'@eaDir/' \
+  --no-perms --no-owner --no-group --no-acls --no-xattrs \
+  -e "ssh -o ServerAliveInterval=3D30 -o ServerAliveCountMax=3D20" \
+  "/volume1/web/" \
+  "rsyncuser@192.168.0.101:/volume1/web/" \
+  >> /volume1/rsync_web.log
+
+Output:
+
+sending incremental file list
+
+sent 280 bytes  received 14 bytes  196.00 bytes/sec
+total size is 233,274  speedup is 793.45
+
+New rsync script:
+
+vi rsync_script.sh
+
+#!/bin/bash
+# DS713+ -> DS1522+ migration via rsync over SSH
+# All shared folders in a loop, passwordless SSH, background-safe
+
+# Target NAS and user
+TARGET_USER=3D"rsyncuser"
+TARGET_HOST=3D"192.168.0.101"
+
+# Shared folders to migrate
+FOLDERS=3D(
+"1 Sales"
+"2 OPERATIONS"
+"3 Admin"
+"4 ISO 9001"
+"5 Finance"
+"6 IT"
+"7 Volume_1"
+"8"
+"8 SynologyLog"
+"Completed Projects"
+"Disk 2"
+"docker"
+"OSV and LLP"
+"Volume_2"
+"web"
+"web_packages"
+)
+
+# Base log folder on source NAS
+LOGDIR=3D"/volume1/rsync_logs"
+mkdir -p "$LOGDIR"
+
+# Loop over folders
+for F in "${FOLDERS[@]}"; do
+    # Escape spaces in folder name for rsync destination
+    DEST_FOLDER=3D"$F"
+
+    echo "Starting rsync for folder: $F"
+
+    nohup rsync -rltDv --progress \
+        --exclude=3D'@eaDir/' \
+        --no-perms --no-owner --no-group --no-acls --no-xattrs \
+        -e "ssh -o ServerAliveInterval=3D30 -o ServerAliveCountMax=3D20" \
+        "/volume1/$F/" \
+        "$TARGET_USER@$TARGET_HOST:/volume1/$DEST_FOLDER/" \
+        >> "$LOGDIR/rsync_$(echo $F | tr ' ' '_').log" 2>&1 &
+
+done
+
+echo "All rsync jobs started in background. Logs are in $LOGDIR"
+
+End of script.
+
+
+
+chmod +x rsync_script.sh
+
+/root/rsync_script.sh
+
+Output:
+
+root@DiskStation:/volume1/rsync_logs# tail -f rsync_1_Sales.log
+kex_exchange_identification: Connection closed by remote host
+rsync error: unexplained error (code 255) at io.c(254) [sender=3D3.1.2]
+
+Test another script:
+
+#!/bin/bash
+# Sequential background rsync for Synology migration
+# Source: DS713+, Target: DS1522+ (rsyncuser)
+# One folder at a time to avoid SSH session limits
+
+TARGET_USER=3D"rsyncuser"
+TARGET_HOST=3D"192.168.0.101"
+
+FOLDERS=3D(
+"1 Sales"
+"2 OPERATIONS"
+"3 Admin"
+"4 ISO 9001"
+"5 Finance"
+"6 IT"
+"7 Volume_1"
+"8"
+"8 SynologyLog"
+"Completed Projects"
+"Disk 2"
+"docker"
+"OSV and LLP"
+"Volume_2"
+"web"
+"web_packages"
+)
+
+LOGDIR=3D"/volume1/rsync_logs"
+mkdir -p "$LOGDIR"
+
+for F in "${FOLDERS[@]}"; do
+    LOGFILE=3D"$LOGDIR/rsync_$(echo $F | tr ' ' '_').log"
+    echo "=3D=3D=3D=3D=3D Starting rsync for folder: $F at $(date) =3D=3D=
+=3D=3D=3D" >> "$LOGFILE"
+
+    # Run rsync sequentially but in background via nohup
+    nohup rsync -rltDv --progress \
+        --exclude=3D'@eaDir/' \
+        --no-perms --no-owner --no-group --no-acls --no-xattrs \
+        -e "ssh -o ServerAliveInterval=3D30 -o ServerAliveCountMax=3D20" \
+        "/volume1/$F/" \
+        "$TARGET_USER@$TARGET_HOST:/volume1/$F/" \
+        >> "$LOGFILE" 2>&1
+
+    echo "=3D=3D=3D=3D=3D Completed rsync for folder: $F at $(date) =3D=3D=
+=3D=3D=3D" >> "$LOGFILE"
+done
+
+echo "All rsync folders queued sequentially in nohup. Logs in $LOGDIR"
+
+End of script
+
+nohup /root/rsync_script.sh &
+
+Output:
+
+=3D=3D=3D=3D=3D Starting rsync for folder: 1 Sales at Wed Jan 28 12:31:35 +=
+08 2026 =3D=3D=3D=3D=3D
+sending incremental file list
+rsync: [sender] write error: Broken pipe (32)
+rsync error: error in socket IO (code 10) at io.c(871) [sender=3D3.1.2]
+=3D=3D=3D=3D=3D Completed rsync for folder: 1 Sales at Wed Jan 28 12:31:37 =
++08 2026 =3D=3D=3D=3D=3D
+
+Testing another script:
+
+#!/bin/bash
+# DS713+ -> DS1522+ migration via SSH rsync
+# Sequentially process 16 shared folders, per-folder logging
+# Skip ACLs/xattrs to avoid permission errors
+# Exclude @eaDir
+
+# Target NAS and user
+TARGET_USER=3D"rsyncuser"
+TARGET_HOST=3D"192.168.0.101"
+
+# Shared folders to migrate
+FOLDERS=3D(
+"1 Sales"
+"2 OPERATIONS"
+"3 Admin"
+"4 ISO 9001"
+"5 Finance"
+"6 IT"
+"7 Volume_1"
+"8"
+"8 SynologyLog"
+"Completed Projects"
+"Disk 2"
+"docker"
+"OSV and LLP"
+"Volume_2"
+"web"
+"web_packages"
+)
+
+# Base log folder on source NAS
+LOGDIR=3D"/volume1/rsync_logs"
+mkdir -p "$LOGDIR"
+
+# Loop through folders sequentially
+for F in "${FOLDERS[@]}"; do
+    LOGFILE=3D"$LOGDIR/rsync_$(echo "$F" | tr ' ' '_').log"
+    echo "=3D=3D=3D=3D=3D Starting rsync for folder: $F at $(date) =3D=3D=
+=3D=3D=3D" >> "$LOGFILE"
+
+    rsync -rltDv --progress \
+        --exclude=3D'@eaDir/' \
+        --no-perms --no-owner --no-group --no-acls --no-xattrs \
+        -e "ssh -o ServerAliveInterval=3D30 -o ServerAliveCountMax=3D20" \
+        "/volume1/$F/" \
+        "$TARGET_USER@$TARGET_HOST:/volume1/$F/" \
+        >> "$LOGFILE" 2>&1
+
+    echo "=3D=3D=3D=3D=3D Completed rsync for folder: $F at $(date) =3D=3D=
+=3D=3D=3D" >> "$LOGFILE"
+done
+
+echo "All folders have been processed sequentially. Logs are in $LOGDIR"
+
+
+
+
+nohup /root/rsync_script.sh > /volume1/rsync_master.log 2>&1 &
+
+Output:
+
+=3D=3D=3D=3D=3D Starting rsync for folder: 1 Sales at Wed Jan 28 12:37:26 +=
+08 2026 =3D=3D=3D=3D=3D
+sending incremental file list
+rsync: [sender] write error: Broken pipe (32)
+rsync error: error in socket IO (code 10) at io.c(871) [sender=3D3.1.2]
+=3D=3D=3D=3D=3D Completed rsync for folder: 1 Sales at Wed Jan 28 12:37:27 =
++08 2026 =3D=3D=3D=3D=3D
+
+
+
+
+GRAND FINAL WORKING RSYNC SCRIPT - CONFIRMED AND TESTED TO BE WORKING! - AS=
+ AT 28 JAN 2026 Wednesday 1.36 PM
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+#!/bin/bash
+# Bulletproof Synology migration script: DS713+ -> DS1522+
+# Sequential SSH rsync for 16 shared folders
+# Handles spaces, retries, logs, #recycle excluded
+
+# ----------------------------
+# Configuration
+# ----------------------------
+TARGET_USER=3D"rsyncuser"
+TARGET_HOST=3D"192.168.0.101"
+BW_LIMIT=3D3000          # KB/s, adjust as needed
+MAX_RETRIES=3D3
+LOGDIR=3D"/volume1/rsync_logs"
+mkdir -p "$LOGDIR"
+
+# List of shared folders to migrate
+FOLDERS=3D(
+"1 Sales"
+"2 OPERATIONS"
+"3 Admin"
+"4 ISO 9001"
+"5 Finance"
+"6 IT"
+"7 Volume_1"
+"8"
+"8 SynologyLog"
+"Completed Projects"
+"Disk 2"
+"docker"
+"OSV and LLP"
+"Volume_2"
+"web"
+"web_packages"
+)
+
+# ----------------------------
+# Pre-create all destination folders on DS1522+
+# ----------------------------
+echo "Creating all target folders on $TARGET_HOST..."
+for F in "${FOLDERS[@]}"; do
+    ssh "$TARGET_USER@$TARGET_HOST" "mkdir -p '/volume1/$F'"
+done
+echo "All destination folders created."
+
+# ----------------------------
+# Migration loop
+# ----------------------------
+for F in "${FOLDERS[@]}"; do
+    LOGFILE=3D"$LOGDIR/rsync_$(echo "$F" | tr ' ' '_').log"
+    echo "=3D=3D=3D=3D=3D Starting rsync for folder: $F at $(date) =3D=3D=
+=3D=3D=3D" >> "$LOGFILE"
+
+    RETRY_COUNT=3D0
+    SUCCESS=3D0
+
+    while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do
+        rsync -rltDv --progress \
+            --exclude=3D'@eaDir/' \
+            --exclude=3D'#recycle/' \
+            --no-perms --no-owner --no-group --no-acls --no-xattrs \
+            --bwlimit=3D$BW_LIMIT \
+            -e "ssh -o ServerAliveInterval=3D15 -o ServerAliveCountMax=3D10=
+ -o TCPKeepAlive=3Dyes" \
+            "/volume1/$F/" \
+            "$TARGET_USER@$TARGET_HOST:'/volume1/$F/'" \
+            >> "$LOGFILE" 2>&1
+
+        if [ $? -eq 0 ]; then
+            SUCCESS=3D1
+            echo "=3D=3D=3D=3D=3D Completed rsync for folder: $F at $(date)=
+ SUCCESS =3D=3D=3D=3D=3D" >> "$LOGFILE"
+            break
+        else
+            RETRY_COUNT=3D$((RETRY_COUNT+1))
+            echo "=3D=3D=3D=3D=3D rsync FAILED for folder: $F, retry $RETRY=
+_COUNT/$MAX_RETRIES at $(date) =3D=3D=3D=3D=3D" >> "$LOGFILE"
+            sleep 5
+        fi
+    done
+
+    if [ $SUCCESS -eq 0 ]; then
+        echo "=3D=3D=3D=3D=3D Folder $F FAILED after $MAX_RETRIES retries a=
+t $(date) =3D=3D=3D=3D=3D" >> "$LOGFILE"
+    fi
+done
+
+echo "All folders processed sequentially. Logs are in $LOGDIR"
+
+End of script.
+
+
+chmod +x rsync_script.sh
+
+nohup /root/rsync_script.sh > /volume1/rsync_master.log 2>&1 &
+
+Thank you.
 
 Regards,
-Inochi
+
+Mr. Turritopsis Dohrnii Teo En Ming
+Extremely Democratic People's Republic of Singapore
+28 Jan 2026 Wednesday 7.24 pm Singapore Time
+
+
+
+
