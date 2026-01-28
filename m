@@ -1,153 +1,106 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E97D2BD5B4;
-	Wed, 28 Jan 2026 02:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C8229B8DB;
+	Wed, 28 Jan 2026 02:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769567374; cv=none; b=REgU8/ga3yRSpAe9HXcYMlWUTTpqrRG5T/PBQxzinpE0RAF0CtLnMF5vF6H9qX5MyB9d8y2+mesTF6X4iJaQyt26LAbMxHHvGjwhe4LwGyrxk/Si153mt3OUXC/kWTLjZGAS8CqokFfI+QYy+XqPSm4ndj3kK6g/4TsG14vK/qM=
+	t=1769568290; cv=none; b=R7IOUDhgcEQoYZifdn7rqi/gXpENZWO9/NTzUu3CFn1YHG6FyrvBCnrRrF/zoinA2HUXx2FR+P4Xfqp6S0sw+szp9u3+O+Nu1LNfbr4mrpR6qF6lkNNjeNqxMf0R8Gu6aB1mcO4U1YAQim9caJx0t30NiASaYsmi4YNV3+WwqJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769567374; c=relaxed/simple;
-	bh=S2CcuGWCCyTnBoIT1fg9E5ORgW2+IZwQle6xt3mhhtI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HwpEjnuh9wahzFn6CUGmQXkCrGMhRnA6WSqC7SDXtAf5eMnz6tzBj0jAMmh1v80WdAKKwS5xtALID/rTDTDGkCy4JR0FSM9uuz0B3CLaiJw8e9Z673VpcLm9J02IZBZHCTvou6JH2NfkwiZ5+tO9JjFg2OzFFhus7i9WiEYUxfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ouBYWQEN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769568290; c=relaxed/simple;
+	bh=QI4eswQrEkadHsXfTL8PxZRa+DYKd57x62u0Yj8uH8c=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PfPhwl1qYoSaRqTYWi6ShUHd+VMjtvysPqTUhZRBckcGO+FxAutwi1rRxg9Sw07otK9NOcxVEvF120WuUZmAj8ePldVeCsE8cq/v+ZVw9fLykJNoz3Hy3Pl4qAYBiwU4tWTzO3DgBf8AMbK+1g7fpvJ1ct3zX7IBJ8p9NOVwXYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HMd74uBu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ouBYWQEN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464DDC19425;
-	Wed, 28 Jan 2026 02:29:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HMd74uBu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06E2C116C6;
+	Wed, 28 Jan 2026 02:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769567369;
-	bh=S2CcuGWCCyTnBoIT1fg9E5ORgW2+IZwQle6xt3mhhtI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ouBYWQENFMa8aZDbnI+GGXfiza18EcXdYqqRL4Yuc8mRo3Xs62H8L8sPmGOpk7a4e
-	 XX5QTDFmJCqYA2MOOuiEktK4NnUCZj4GXgOQ6nsxRSu7lf2cZi156IE2zQWRy8epL8
-	 SGXQwri4xR7ofQS3GwtWynSjBViqQM2Sm1e9Pbl4spCD2KfSAF8cg9n06ViFZc3XzC
-	 OiduYuLJwc5XFZdptkb0QSAMGJFRsJO6aqavHNenmASVkuX+7sBXbpHhVwu0zW+2bL
-	 vwY00Y5VtThblSu6Tyu0Sl4zYXtY4xfiqV5xD8fd2d+SvTFd0aDFlGg5p1RfQJnMyn
-	 AgEp4foChiOPw==
+	s=k20201202; t=1769568290;
+	bh=QI4eswQrEkadHsXfTL8PxZRa+DYKd57x62u0Yj8uH8c=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HMd74uBuf5bN0n4U/rfjpjS/v17wlub0COHTcgH1Q/h8ogrPIgvsP2NpJXoyP89Y3
+	 zm4xRLfGcjVnj5LaQIFBJ/Wwwz+hR5KrcuwXaQNaVrtcGwyOasSH86SXqEt7iDDL+F
+	 7sulgKKzY6JcAFrrvkXdFB0UZytQ868zY1jhcmeW2BUJpIXy9B+QRKNphMPXyOkgik
+	 Pv27KHBaSlq/tvj4Ttaisd2L8i8FN33gVlLZEP7GiPkOnI9P+rQfxDOYunQ/lg4OqR
+	 X1Q676fu8WQPar615rwUhwGpzrDdHxQFOuqdLsyAjDhaQ7WpUl7J6k15pF7/L2G4FD
+	 fLbnQD8c6edhg==
+Date: Tue, 27 Jan 2026 18:44:48 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: rkannoth@marvell.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	sbhatta@marvell.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	sgoutham@marvell.com,
-	sumang@marvell.com,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	linux-kernel@vger.kernel.org
-Subject: Re: [net-next,v5,09/13] octeontx2-af: npc: cn20k: virtual index support
-Date: Tue, 27 Jan 2026 18:29:28 -0800
-Message-ID: <20260128022928.4153136-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260126123254.1000480-10-rkannoth@marvell.com>
-References: <20260126123254.1000480-10-rkannoth@marvell.com>
+To: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, Aaron Conole
+ <aconole@redhat.com>, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 0/5] selftests: net: fix false failures due to
+ missing features and host interference
+Message-ID: <20260127184448.2976475f@kernel.org>
+In-Reply-To: <20260127225134.304362-1-aleksey.oladko@virtuozzo.com>
+References: <20260127225134.304362-1-aleksey.oladko@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Tue, 27 Jan 2026 22:51:29 +0000 Aleksei Oladko wrote:
+> This series addresses several issues in the networking kselftests
+> that cause false-positive failures depending on the host environment,
+> kernel configuration, or library versions.
+> 
+> The main focus of these changes is to isolate tests from the host
+> environment (using namespaces) and to ensure proper fallback or
+> skipping when dependencies are missing.
+> 
+> Summary of changes:
+> 1. Adds a check for cls_basic module in fib_tests. Without this
+>    module, the test fails when attempting to add tc rules instead
+>    of skipping.
+> 2. Fixes ovs-dpctl.py to return a non-zero exit code when pyroute2
+>    is too old. This allows pmtu.sh to correctly fall back to ovs-vsctl
+>    instead of assuming the configuration was successful.
+> 3,4. Move reuseport and pmtu.sh tests info dedicated network namespaces.
+>    This prevents failures caused by port conflicts with host processes
+>    or interference from host firewall rules.
+> 5. Ensures io_uring is enabled via sysctl before running io_uring_zerocopy
+>    test, preventing failures on systems where kernel.io_uring_disabled
+>    is set.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-octeontx2-af: npc: cn20k: virtual index support
+Something in this series breaks the pmtu test for us in the CI:
 
-This patch adds support for virtual MCAM index allocation and improves
-CN20K MCAM defragmentation handling.  Virtual indexes allow the hardware
-to move mapped MCAM entries internally, enabling defragmentation.
+# 64.84 [+2.54] TEST: IPv6, bridged geneve6: PMTU exceptions - nexthop objects      [ OK ]
+# 65.73 [+0.89]   ovs_bridge not supported
+# 65.73 [+0.00] TEST: IPv4, OVS vxlan4: PMTU exceptions                             [SKIP]
+# 67.20 [+1.47]   ovs_bridge not supported
+# 67.20 [+0.00] TEST: IPv6, OVS vxlan4: PMTU exceptions                             [SKIP]
+# 68.66 [+1.45]   ovs_bridge not supported
+# 68.66 [+0.00] TEST: IPv4, OVS vxlan6: PMTU exceptions                             [SKIP]
+# 70.11 [+1.45]   ovs_bridge not supported
+# 70.11 [+0.00] TEST: IPv6, OVS vxlan6: PMTU exceptions                             [SKIP]
+# 71.57 [+1.45]   ovs_bridge not supported
+# 71.57 [+0.00] TEST: IPv4, OVS geneve4: PMTU exceptions                            [SKIP]
+# 73.01 [+1.44]   ovs_bridge not supported
+# 73.01 [+0.00] TEST: IPv6, OVS geneve4: PMTU exceptions                            [SKIP]
+# 74.46 [+1.45]   ovs_bridge not supported
+# 74.46 [+0.00] TEST: IPv4, OVS geneve6: PMTU exceptions                            [SKIP]
+# 75.92 [+1.46]   ovs_bridge not supported
+# 75.93 [+0.00] TEST: IPv6, OVS geneve6: PMTU exceptions                            [SKIP]
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-> index 8b77ac053d8d..d1a927f3d5db 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/net/results/492641/137-pmtu-wrapper-sh/stdout
 
-[ ... ]
+It was fine before:
 
-> +static int npc_vidx_maps_modify(struct rvu *rvu, u16 vidx, u16 new_midx)
-> +{
-> +	u16 old_midx;
-> +	void *map;
-> +	int rc;
-> +
-> +	if (!npc_is_vidx(vidx)) {
-> +		dev_err(rvu->dev,
-> +			"%s: vidx(%u) does not map to proper mcam idx\n",
-> +			__func__, vidx);
-> +		return -ESRCH;
-> +	}
-> +
-> +	map = xa_erase(&npc_priv.xa_vidx2idx_map, vidx);
-> +	if (!map) {
-> +		dev_err(rvu->dev,
-> +			"%s: vidx(%u) could not be deleted from vidx2idx map\n",
-> +			__func__, vidx);
-> +		return -ESRCH;
-> +	}
-> +
-> +	old_midx = xa_to_value(map);
-> +
-> +	rc = xa_insert(&npc_priv.xa_vidx2idx_map, vidx,
-> +		       xa_mk_value(new_midx), GFP_KERNEL);
-> +	if (rc) {
-> +		dev_err(rvu->dev,
-> +			"%s: vidx(%u) cannot be added to vidx2idx map\n",
-> +			__func__, vidx);
-> +		return rc;
-> +	}
-> +
-> +	map = xa_erase(&npc_priv.xa_idx2vidx_map, old_midx);
-> +	if (!map) {
-> +		dev_err(rvu->dev,
-> +			"%s: old_midx(%u, vidx(%u)) cannot be added to idx2vidx map\n",
-> +			__func__, old_midx, vidx);
-> +		return -ESRCH;
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-dbg/results/492461/6-pmtu-sh/stdout
 
-If this error path is taken, xa_vidx2idx_map now has vidx pointing to
-new_midx, but xa_idx2vidx_map still has old_midx pointing back to vidx.
-The bidirectional mapping becomes inconsistent.  Can this leave the maps
-in a corrupted state?
+Since this is a bash test there are of course no logs to go by.. :/
 
-> +	}
-> +
-> +	rc = xa_insert(&npc_priv.xa_idx2vidx_map, new_midx,
-> +		       xa_mk_value(vidx), GFP_KERNEL);
-> +	if (rc) {
-> +		dev_err(rvu->dev,
-> +			"%s: new_midx(%u, vidx(%u)) cannot be added to idx2vidx map\n",
-> +			__func__, new_midx, vidx);
-> +		return rc;
+I tried running 
+ python tools/testing/selftests/net/openvswitch/ovs-dpctl.py add-dp br0
+in a netns and that works just fine. 
 
-Similarly here, if xa_insert fails (e.g., memory pressure), the maps are
-left inconsistent: xa_vidx2idx_map has vidx -> new_midx but xa_idx2vidx_map
-has neither old_midx nor new_midx pointing to vidx.  Subsequent lookups
-via npc_idx2vidx() for new_midx would fail to find the correct vidx.
-Should these error paths restore the previous map state?
-
-> +	}
-> +
-> +	return 0;
-> +}
-
-[ ... ]
-
-> +static int npc_defrag_process(struct rvu *rvu, struct list_head *lh)
-> +{
-
-[ ... ]
-
-> +err:
-> +	/* TODO: how to go back to old state ? */
-> +	return rc;
-> +}
-
-The TODO comment here suggests awareness that error recovery is incomplete.
-Given that npc_defrag_move_vdx_to_free() calls npc_vidx_maps_modify() which
-can fail mid-operation, should the defragmentation be made atomic or have
-proper rollback?
+No idea what's going on..
