@@ -1,109 +1,128 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586F230BBAE
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 16:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62B030BF7D;
+	Wed, 28 Jan 2026 16:10:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769616508; cv=none; b=UDff0QEIPDzDiSTFmbt6HXUFaKGN2S/QUH/RnssVDKhy9BjYZCAvfipwJusbZx7zWS+q0Nz5GTQHfRR6WUIM2o/lSS/v7jo3y4wsSG+bvmg/lvMzF+mbIDfu+IoKvsrzqrDTrs+5i3UVdVHsYBr8+o/cadIcrVPrcuv/GMqlXV4=
+	t=1769616637; cv=none; b=GR2wafogdSgfzZWiJlHRnzMO82AIgjrCWXVCziO4TVTuMAPOICzGgb294zaTp0uou9SeDnJE/5VgBpVQI5WVz9GWLNGEhIKX2lKalxjNl4zx2n5bKxpv/zazffRN8+QGb/E01BqJ0MwO7F32a/4TngC3IXXi3JloPG1WhXO5bXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769616508; c=relaxed/simple;
-	bh=Ck3/TVpGdm5XlyDxvF+26c/QDieIZ9lm12lyWxVd61Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eg9nYmwGfiqSOhd7ITpE4Nna5w4Npbr1Jqou2m9Fa62tKBmoM52hzBBfi1TqL0cwKSdjmYEEReBqwZyNOIoMHO50CQGC+gKngDzc2nfGD1tnAiV/Fju7FH3mK2cgovKgy2xqF+Si7zpmBA9Z/2PcS3SZ6HIizCjy+GtN82qk//c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=nHxaf6B1; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	s=arc-20240116; t=1769616637; c=relaxed/simple;
+	bh=/TSbgLkOttYTU5dCzEgWW/zjDEa0pxwVG9ja2wTemaU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HTOp9r2DR1ZfIGZRh+LGBK82N+Cz0cxelm8zTocr+++qsPvawmsY6EOxOa6Wv/T8lgxJo9GcwzdcbyTiiE4csqC0vdgRSqAizMLrQcrwp9aWi38yVcSM1Zvi78CcuQ5FKq1gpi8IB1k2xpIlxqlMqdYcAmMOlwW74RvdEYEVaT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HmFTn0QD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="nHxaf6B1"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4806ce0f97bso128095e9.0
-        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 08:08:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1769616506; x=1770221306; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WiKaoWtjMRDBROQANeCkUjaTheWdM6fcaXZ1pKr3nZg=;
-        b=nHxaf6B15jotdI2axA3YudjRkAFwxCm0qGEUjgzS+MUfGkWpCfdtwaj+nD4uyxcW6Y
-         EwQmXaJ4qwofIGbqbkKqn4+azI4sQATqDEWNYOrasKVmh9o2DSUCLdAdiZzU88z1453z
-         KyoccNrcsPWtNVuwJCmPgOpEp+xHh37UOLgtYGCb6m1hXlkAirlImsILuM5FHu7bncim
-         OlkYmuLqUJ31JFbDAXx/XpDyioDqtTs2loThh7gkihAmwHqYWgdkUWZ4PMb5ZCZ+akt3
-         ykvnpHOdw/7VeKHKA3rZkojG2shZKMP8XUvX4B25SeR9EZDcr211ErgM1CobJXQpJqof
-         WQsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769616506; x=1770221306;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WiKaoWtjMRDBROQANeCkUjaTheWdM6fcaXZ1pKr3nZg=;
-        b=UUAcniTQrcigOHxV7wI+LJBoVvKQazqzXjFvKGe4HU902GMS6cZVxbNJCVzGBYZQI7
-         q6D7Tq34lR6SqAIFEU5t2izVkryWecfk7TT6erBstwLh7KRv61nu+tCBM2MF5Cg0LQ8F
-         lAZjt/fzZNHQoj7hDY54o5qQiwJJcXLCCCGHKAKzgrNa8MLLBbNfXJYdD01fMnd1Q2f2
-         xyGbS0PSQld2DVFy8COeLp8MH2FlhAN9/CdRFa9JvL1BIAZeQitFS0WmwbHl7AsOn6+m
-         kHtuM1Wa2ZK821zwFl70KCoNx1xAPi4e7LL/9qllHSnqOfpGw51u/6iF+9SYThRrvZod
-         r4XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSpsghrS+VfNUGDfIixyPAOgrO+zkmx1IKkrlets5tcRvVFEVjmSb8qNPNBV89pIxpaALg6xg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YygfxhvvdVTsJw08p4cVib/OTAurbaA2aRyUhEWr5KfkKSJcOt1
-	ag1iZ0CmTGs/Gr/x/obB0Ws+nQ0/Xaklr1ACeLAzgAdUW2kUs28Ap/UW9KTMAH6r1lscLU8EG42
-	Ni3Tf
-X-Gm-Gg: AZuq6aLmfSf4pxJk/0kgHPDnE6R7cRRj7dxbpA9xRh1yAiUZdIpT7D2n9Qp3Bi9G+JK
-	9gc/S14qcObbLHtHW2CCU/c31kuMjbJQ6YXqIKmO/hzCYOvJmfG5S6oA2HsXCduEqfd1gNObZgt
-	0y/F5LnARZhj5KA5WSRQuj2tYyAKmSuUxmGf8ev0uJdnLJyt3s7SLx6zBcpVYcSKZG9l8MhFgwR
-	XG9u1JHESiZR54mAjVChjNbtPHuud2DlqVZIdp10klyQmKEspXvqvnu+6fMWbF61WcPOwMo3win
-	n7PQIyx5yUvZhPJkZ94JEMMzEr9Dvy1swn12BW/sbomNWzu54/9iuV+8q0vtIWUETr8947b2hAJ
-	oRMlQJdyz+g2oAG882c80jZ60bSPXG6CaXVJqAJZG7b/JjVFrzNvYRy/zmJOMMmEdNTdMwEn3cV
-	DQSHD6hWLgA8iCxfOjFrQ1eKzADycMZ8yoxBCYEUriPw==
-X-Received: by 2002:a05:600c:458a:b0:47b:e2a9:2bd7 with SMTP id 5b1f17b1804b1-48069c6970fmr66761015e9.19.1769616505584;
-        Wed, 28 Jan 2026 08:08:25 -0800 (PST)
-Received: from [192.168.0.161] (78-154-15-142.ip.btc-net.bg. [78.154.15.142])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48066c40e04sm138669265e9.13.2026.01.28.08.08.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Jan 2026 08:08:25 -0800 (PST)
-Message-ID: <15f092c1-fb1d-4dc0-b04b-a389c53cd62d@blackwall.org>
-Date: Wed, 28 Jan 2026 18:08:24 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HmFTn0QD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4053C4CEF1;
+	Wed, 28 Jan 2026 16:10:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769616637;
+	bh=/TSbgLkOttYTU5dCzEgWW/zjDEa0pxwVG9ja2wTemaU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HmFTn0QD2XagFXnkSzoK7j1sJOZt+R/0cz2rm16V2mUcqraO8aIYigNADaOVy0Jll
+	 assaFrN1NdVgvSYcvtzQD/zNQOBFpLhKJJXcdBfHQ89oSfHPsYNMTYFvjfJGngHmgc
+	 Bgo4O5bNs9Xbxz1UsybqZ475TQu6edM0EfsCLzL8GRWz0UGehMgyFdUJ3yYg0kjbp3
+	 ZnrLPXqdL8MSTcamgpvVMYKiW9uINtlaBlZSYt2nHBjBXdGuuOWsJFY4/rhRW6yBQY
+	 3NsohmgX9P4wQQ5cBI+8OoQhvQI6fYBQlDbzpjowyrKVLNIZisQJ6wSKLTB7NxcZ9S
+	 CqicarcAk7H4w==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Gal Pressman <gal@nvidia.com>,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com,
+	song@kernel.org,
+	yonghong.song@linux.dev,
+	john.fastabend@gmail.com,
+	kpsingh@kernel.org,
+	sdf@fomichev.me,
+	haoluo@google.com,
+	jolsa@kernel.org,
+	dsahern@gmail.com,
+	bpf@vger.kernel.org
+Subject: [PATCH net] net: don't touch dev->stats in BPF redirect paths
+Date: Wed, 28 Jan 2026 08:10:30 -0800
+Message-ID: <20260128161030.39870-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net: bridge: fix static key check
-To: Martin Kaiser <martin@kaiser.cx>, Ido Schimmel <idosch@nvidia.com>
-Cc: bridge@lists.linux.dev, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20260127101925.1754425-1-martin@kaiser.cx>
-Content-Language: en-US
-From: Nikolay Aleksandrov <razor@blackwall.org>
-In-Reply-To: <20260127101925.1754425-1-martin@kaiser.cx>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 27/01/2026 12:19, Martin Kaiser wrote:
-> Fix the check if netfilter's static keys are available. netfilter defines
-> and exports static keys if CONFIG_JUMP_LABEL is enabled. (HAVE_JUMP_LABEL
-> is never defined.)
-> 
-> Fixes: 971502d77faa ("bridge: netfilter: unroll NF_HOOK helper in bridge input path")
-> Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-> ---
->   net/bridge/br_input.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/bridge/br_input.c b/net/bridge/br_input.c
-> index e355a15bf5ab..1405f1061a54 100644
-> --- a/net/bridge/br_input.c
-> +++ b/net/bridge/br_input.c
-> @@ -274,7 +274,7 @@ static int nf_hook_bridge_pre(struct sk_buff *skb, struct sk_buff **pskb)
->   	int ret;
->   
->   	net = dev_net(skb->dev);
-> -#ifdef HAVE_JUMP_LABEL
-> +#ifdef CONFIG_JUMP_LABEL
->   	if (!static_key_false(&nf_hooks_needed[NFPROTO_BRIDGE][NF_BR_PRE_ROUTING]))
->   		goto frame_finish;
->   #endif
+Gal reports that BPF redirect increments dev->stats.tx_errors
+on failure. This is not correct, most modern drivers completely
+ignore dev->stats so these drops will be invisible to the user.
+Core code should use the dedicated core stats which are folded
+into device stats in dev_get_stats().
 
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reported-by: Gal Pressman <gal@nvidia.com>
+Link: https://lore.kernel.org/c5df3b60-246a-4030-9c9a-0a35cd1ca924@nvidia.com
+Fixes: b4ab31414970 ("bpf: Add redirect_neigh helper as redirect drop-in")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: ast@kernel.org
+CC: daniel@iogearbox.net
+CC: andrii@kernel.org
+CC: martin.lau@linux.dev
+CC: eddyz87@gmail.com
+CC: song@kernel.org
+CC: yonghong.song@linux.dev
+CC: john.fastabend@gmail.com
+CC: kpsingh@kernel.org
+CC: sdf@fomichev.me
+CC: haoluo@google.com
+CC: jolsa@kernel.org
+CC: dsahern@gmail.com
+CC: bpf@vger.kernel.org
+---
+ net/core/filter.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/net/core/filter.c b/net/core/filter.c
+index 616e0520a0bb..2c21735798a5 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -2289,12 +2289,12 @@ static int __bpf_redirect_neigh_v6(struct sk_buff *skb, struct net_device *dev,
+ 
+ 	err = bpf_out_neigh_v6(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		DEV_STATS_INC(dev, tx_errors);
++		dev_core_stats_tx_dropped_inc(dev);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	DEV_STATS_INC(dev, tx_errors);
++	dev_core_stats_tx_dropped_inc(dev);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
+@@ -2396,12 +2396,12 @@ static int __bpf_redirect_neigh_v4(struct sk_buff *skb, struct net_device *dev,
+ 
+ 	err = bpf_out_neigh_v4(net, skb, dev, nh);
+ 	if (unlikely(net_xmit_eval(err)))
+-		DEV_STATS_INC(dev, tx_errors);
++		dev_core_stats_tx_dropped_inc(dev);
+ 	else
+ 		ret = NET_XMIT_SUCCESS;
+ 	goto out_xmit;
+ out_drop:
+-	DEV_STATS_INC(dev, tx_errors);
++	dev_core_stats_tx_dropped_inc(dev);
+ 	kfree_skb(skb);
+ out_xmit:
+ 	return ret;
+-- 
+2.52.0
 
