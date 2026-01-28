@@ -1,140 +1,153 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f169.google.com (mail-dy1-f169.google.com [74.125.82.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790DA33DEE0
-	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 09:07:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7393B33F38C
+	for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 09:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769591244; cv=none; b=fgCuq168eSfFZN9B66on7gWf78gE/tZw5sa/BjU81Z2YoXOPVVmHzPOSeljscxtuFaDB4T3wDsOOmtpY+QIBK4iD6hC6JNZbJlvDvQAlShsOEG9ypvVkpczW7NLCZI7V2NLDMgCRxbbOoh9OCv8n1O7zHX9P5PzK0NUly7ZBA7c=
+	t=1769591564; cv=none; b=mdGep4m2UsKeXzqy4nOcIHma1YUTY0+Y69pZtvgjQ6AlcFZ+rqc9fhp2FjSmZD4/pEmJhtlw0EXzfw1rgAedhB/KPBtZrh0LJXSFzH5BN0qPw7eCMLj+WzUgiugY9BhWvuVj+37E/9cAdFdfQcmTVlXTXdeqzmnlkibzo/3JuzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769591244; c=relaxed/simple;
-	bh=q20nxD76+Q+wL9SPZdlE5mMCzD15ljcJ64PXAESkvD0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ILB3L93jeqcIxCy3Z4AmM5qQ1Iz7GvO1Mi7iijaBTIsH5KQ1CCGcmmlxZM/70bC28If9dYJd0P2NAuXRWyQivAOIISLjMMzNrKfwz7dtn0ZDQ1Czw0yQ/UGGIeMAJccrXi+CMEa1eDKvsQ8b4O9p/w5dxEe2JJuzLlpAONFeb80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vl1W6-0005SR-Ez; Wed, 28 Jan 2026 10:07:14 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vl1W6-002tBa-2d;
-	Wed, 28 Jan 2026 10:07:14 +0100
-Received: from pengutronix.de (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id D0BC14D9FDC;
-	Wed, 28 Jan 2026 09:07:13 +0000 (UTC)
-Date: Wed, 28 Jan 2026 10:07:13 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Oliver Hartkopp <socketcan@hartkopp.net>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	linux-can@vger.kernel.org
-Subject: Re: [net-next 0/6] move CAN skb headroom content to skb extensions
-Message-ID: <20260128-booby-of-phenomenal-proficiency-4db5ab-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260125201601.5018-1-socketcan@hartkopp.net>
- <20260127174937.4c5fc226@kernel.org>
- <67cb17f4-2f72-4847-aa04-3633f3d8df33@hartkopp.net>
+	s=arc-20240116; t=1769591564; c=relaxed/simple;
+	bh=F2sKQvI2Wxs9yMPIhHBEa5EO4gyyFL4yoeoWdcuXXWo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VQIKtjyRzvRCtpzWEgCw5hQZjyJsbawTi9CPjWS1RZ6zn+FFFwPm2icSfzuOMALC/M0a5YrQMSQIMGlFxqZmgTYDfHLQ48AkuvyCK3tFHWklbv/vImJGVAMxJDwWqaRwKBGhlxJxnFcgWOOWFyrt/ukFBSQnL/0GD1fugqAwihI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KX/eShPv; arc=none smtp.client-ip=74.125.82.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KX/eShPv"
+Received: by mail-dy1-f169.google.com with SMTP id 5a478bee46e88-2b6fd5bec41so4132305eec.1
+        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 01:12:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769591559; x=1770196359; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uKUvT1UkLVoSBo2GeUIFsYzGNbYkZ2w4SGalbBin6yo=;
+        b=KX/eShPvX4n+VSTiGD16Rj7PCSl6OZFmsPQLZA4PxY86tfSvuwIhoBE7qvQ6saX0v0
+         i0oZBPvolVnM9ZaNGwTW2Q0ADfWkWi7zmRNlhn2BOUmEbjkAHCTmv/IxbbjZLCuVRbrU
+         BxHP0SQHuWFoRBZJ7ogc+mX2Vk0Rw490jOKrerJG+lE+nRjNcn2AoEBqj8jvC4GYHEb1
+         p4UDgjYd5IPORSWrqpI/PCjAgIKc0eer2kQzoNV5YiZZLc65PftHdqyAMkaQjpqFxNM7
+         2AdrIs6cmKUtpbpGS2DSitTqJ6GY2dPZUsnCqsvghtl9KF7ZHsI9TeN4+UEIfIx2dXiM
+         GUDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769591559; x=1770196359;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uKUvT1UkLVoSBo2GeUIFsYzGNbYkZ2w4SGalbBin6yo=;
+        b=HakQvZS0BjdDJjbkZXiEpzmRZ1k6gxej+dULoDRHklP9i6HiB7+1G2lBAC7BArjFiF
+         HPNNFUsaAaGbBnxRughkHX5vh0+CoSxywxoF2cwy4GOG9HWwz3xWE8fCw+sjORS8vVSz
+         li3wRFN1n8ao3Jau+4CZo6+kUAZltE8FML/dY4fgH2OQnhRieza/tMPiOfWmlLPq1N66
+         Mhv7PP0siTfj4g69c3whcqfC2zuqUxHCH5VFGEeJ0/4gD7YjCcNeiosXITCw1KAhGD+i
+         ZlQmLgIeCBt5M1mIKrF6g0plYqs+BpHHw73CWs+UJVvN8r0veyhV3AoHRKg+ND0Z5x0F
+         f6zg==
+X-Gm-Message-State: AOJu0Yxa/ISGY6PS24X8XhtAmiHvTAdoDMGMdrI3lIqco/ujRPGVrL3x
+	nbeaAKJFtTOmk35/De+gx2VFusOTQJDtUllbTJlPqInhHC3PKt/w0O3s4CC18Gdm
+X-Gm-Gg: AZuq6aL1yUopyZIqo8ijl3DKaAZEJef72NU7F8KJm4OAILZ67+FcEfDPzgb5AMYkTD7
+	ez4HahdF6f79BRNNIirjdcCPZT+mUzFEZuzXCOkIuJH133lSBNktwzg2z1cBF9ASM4ptPVb42/2
+	1CE5SjqlZApCYjSlqJ4s4QlRuD/B2Uk4IKHhuxVHhaNKLrXOd5pKrwDe7rsWtUkbXTD+wRXu4LG
+	n1r90GoPLOcBVrt8TX8LGJYhGbnfgctEwQJeMkwk5tOtDyEQbnSYIXiHWbPBA2ElxMUB0OcEYZ8
+	/gvD7wjKskl7GUEiJ1kdfyudHYnqsg8+Yt3YH/dvBhN/e8c182InEwufDNviM9LLRzQvo0Mo72M
+	6lEX1VUSxaCeW+FC2UW3mPRVy4XNV4X2XNCR4SYvfnAkdbfpo3NPaFj6IBrLw4zcyCIQwn6YCJK
+	hd/tvPX+uxPu7q4U+teCI6
+X-Received: by 2002:a05:7300:6d08:b0:2b7:2664:aeae with SMTP id 5a478bee46e88-2b78da0b4a8mr2419091eec.37.1769585393102;
+        Tue, 27 Jan 2026 23:29:53 -0800 (PST)
+Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9d6b658sm1374769c88.3.2026.01.27.23.29.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Jan 2026 23:29:52 -0800 (PST)
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Yixun Lan <dlan@gentoo.org>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Yao Zi <ziyao@disroot.org>,
+	Yanteng Si <siyanteng@cqsoftware.com.cn>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Inochi Amaoto <inochiama@gmail.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Choong Yong Liang <yong.liang.choong@linux.intel.com>,
+	Chen-Yu Tsai <wens@kernel.org>,
+	Shangjuan Wei <weishangjuan@eswincomputing.com>,
+	Boon Khai Ng <boon.khai.ng@altera.com>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>
+Cc: netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	spacemit@lists.linux.dev,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	Longbin Li <looong.bin@gmail.com>
+Subject: [PATCH net-next v3 0/3] riscv: spacemit: Add ethernet support for K3
+Date: Wed, 28 Jan 2026 15:29:26 +0800
+Message-ID: <20260128072931.875041-1-inochiama@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="oecpvtn4tbaqv6yo"
-Content-Disposition: inline
-In-Reply-To: <67cb17f4-2f72-4847-aa04-3633f3d8df33@hartkopp.net>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 
+Add initial support for ethernet controller of the Spacemit K3 SoC.
+This ethernet controller is almost a standard Synopsys DesignWare
+MAC (version 5.40a). This controller require a syscon device to
+configure some basic features, like interface type and internal delay.
 
---oecpvtn4tbaqv6yo
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [net-next 0/6] move CAN skb headroom content to skb extensions
-MIME-Version: 1.0
+Change from v2:
+- https://lore.kernel.org/netdev/20260121071315.940130-1-inochiama@gmail.com
+patch 1:
+1. remove not needed compatible for select
+2. drop empty line in "spacemit,apmu" properties
+3. add spacemit,apmu properties to required.
+patch 3:
+1. remove misused phy_fix_phy_mode_for_mac_delays.
+2. use local tx clock instead of the clk_tx_i in the dwmac.
 
-On 28.01.2026 09:42:14, Oliver Hartkopp wrote:
-> On 28.01.26 02:49, Jakub Kicinski wrote:
-> > On Sun, 25 Jan 2026 21:15:55 +0100 Oliver Hartkopp wrote:
-> > > CAN bus related skbuffs (ETH_P_CAN/ETH_P_CANFD/ETH_P_CANXL) simply co=
-ntain
-> > > CAN frame structs for CAN CC/FD/XL of skb->len length at skb->data.
-> > > Those CAN skbs do not have network/mac/transport headers nor other su=
-ch
-> > > references for encapsulated protocols like ethernet/IP protocols.
-> > >
-> > > To store data for CAN specific use-cases all CAN bus related skbuffs =
-are
-> > > created with a 16 byte private skb headroom (struct can_skb_priv).
-> > > Using the skb headroom and accessing skb->head for this private data
-> > > led to several problems in the past likely due to "The struct can_skb=
-_priv
-> > > business is highly unconventional for the networking stack." [1]
-> > >
-> > > This patch set aims to remove the unconventional skb headroom usage f=
-or
-> > > CAN bus related skbuffs and use the common skb extensions instead.
-> >
-> > This is fine. Wish we could make md_dst work, since skb_ext still burns
-> > a bit in the skb (last extension bit in fact, next user will have to
-> > bump the filed size). And you very much do not route these frames,
-> > so dst would work perfectly fine. But whatever.
-> >
-> > lore never received patch 6, tho, you'll need to repost.
->
-> Thanks for looking at it.
->
-> In fact patch 6 stuck in my providers mail system which responded this to
-> (only) patch 6 =C2=AF\_(=E3=83=84)_/=C2=AF
->
-> 5.7.1 Refused by local policy. No SPAM please! (B-EX
-> 155302::1769588601-AC38E895-223F95BA/10/71040183929) see https://www.stra=
-to-hosting.co.uk/faq/product/why-are-my-emails-not-being-delivered
-> [MSG0011]
->
-> As this could not been solved since Sunday I'll kindly ask Marc to send t=
-he
-> attached v2 patchset (including your __u32 remark) to the mailing list, so
-> that also the AI bot can take a look at it.
+Change from v1:
+- https://lore.kernel.org/netdev/20260120043609.910302-1-inochiama@gmail.com
+patch 1:
+1. remove phy clock
+patch 3:
+1. improve comment and include something special about Spacmit K3 dwmac
+2. reorder the included file
+3. fix wrong delay macro used in spacemit_dwmac_set_delay.
+4. add check for maximum supported delay.
+5. use DIV_ROUND_CLOSEST to calculate best delay configuration.
+6. use assign for the ctrl register initial value.
+7. fix input when calling of_property_read_u32().
 
-I'll do. In the mean time, please have a look at b4, it has support for
-sending patches via a web hook.
+Inochi Amaoto (3):
+  dt-bindings: net: Add support for Spacemit K3 dwmac
+  net: stmmac: platform: Add snps,dwmac-5.40a IP compatible string
+  net: stmmac: Add glue layer for Spacemit K3 SoC
 
-regards,
-Marc
+ .../devicetree/bindings/net/snps,dwmac.yaml   |   2 +
+ .../bindings/net/spacemit,k3-dwmac.yaml       | 103 +++++++++
+ drivers/net/ethernet/stmicro/stmmac/Kconfig   |  12 +
+ drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
+ .../ethernet/stmicro/stmmac/dwmac-spacemit.c  | 218 ++++++++++++++++++
+ .../ethernet/stmicro/stmmac/stmmac_platform.c |   1 +
+ 6 files changed, 337 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/spacemit,k3-dwmac.yaml
+ create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-spacemit.c
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+--
+2.52.0
 
---oecpvtn4tbaqv6yo
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAml50b0ACgkQDHRl3/mQ
-kZygZgf/VWTJ2JkoEt/40+QxwYk9FrPmBoGP/kAPdwGnUlTbInH9pGSHi3xYgl/H
-pFASJ2WVslfXsb2I7pNAMbAzgWu8G3ze1ZHU1hPFBFNElKRrKtu4GvJZItrb7cgK
-vXkCrvdefN3F3EpcE4vnRPo2+rY0zz662VUN1NMVYNY3Sy42DaR4qNqC/a+PVSzf
-M/rip52cYRhohIZr0YdR8tphKKi3vHx22EveK7e74oEW53UbpWjLnaCGUe6vCOKN
-Mx9g/T6cKMEw3mfG1DvsXiUvd9QzuXcvJpmf8Vf9KLi2ty7AawoTWJ2ZbNj3yUZ+
-gWIrxF+LOXQ3FCta5qJEFFeSUTtLmw==
-=y1V3
------END PGP SIGNATURE-----
-
---oecpvtn4tbaqv6yo--
