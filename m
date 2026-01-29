@@ -1,323 +1,206 @@
-Received: from mout-p-202.mailbox.org (mout-p-202.mailbox.org [80.241.56.172])
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40D0F3859E5;
-	Thu, 29 Jan 2026 11:03:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D857333D4F4;
+	Thu, 29 Jan 2026 11:03:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769684586; cv=none; b=U20iznxm3JM2d4l+dWQ17C0NCm4u/G/T5OKzkQmqzahZNv+0IrYgQN4hgYAkXT04RoshrBJzpwxoNJ8EWIHl45IrbtSScXdbTixM5OhiVCOV8d0xgMKCWclhgiw5dQ7M4t/yAzCHh2WLr2jCfFWlnPqYe4N8iL8Yl9CwZKIwvCs=
+	t=1769684611; cv=none; b=ukOLhrpykVr4EyXBmnJj7m0UJMG75WL6Yelpgp/1GeLSFbnJOGC/ASAKH3Ss+ZIdaHxW/9S+plppy9Y3oc0m5qan4pXOa4lX6Flz4ZMtDO0/XubZhgypKR5qR+vZ+zp4RB5+oSaSc4WIhFmRCKRi7nxVwrZoAhsggdmY7y8Sf5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769684586; c=relaxed/simple;
-	bh=MYsUrsrkC5HFYW8v3Rw3eo+wRCJSxZmlUjTXkSGsCic=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=X/oxjCmsgH/xumyZgUtSYElEmOQK5Mb2F8JjbFpruZCnllzBqBdCmkj32EV7TpFBkfXHIcNnYNCF/v0a4HqdKQDBE2GwNth/+Z8BinGcsD3iTt9ecOoFAvrYjDoXvEdT5DOXNrpL3O2nQ1/RxFynHRmsp+Q4KH6CbntM73T/Wyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=cEhLDdBS; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=bgEYM67v; arc=none smtp.client-ip=80.241.56.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1769684611; c=relaxed/simple;
+	bh=s+7eKjfiFWwp/XMzM1I3YIG7pT5T6zNPNymOXIdiByQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o6fSlisRc6zOy3+8bG3xhyOsoTdTRncbbgd3lflV5uJrgxbhRkpkOKU6VVZVl7Bgs2NvFmxozfnHlmZT+n4Hhenj8g3eD/tKCMKrRdrijcPd8t8DNK/4eujsG5Jg3XTpuVcMupO4uHLe4AD0QdiB6ODPVWXh5aNZWaie2JlLyIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=saizImo6; arc=none smtp.client-ip=115.124.30.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="cEhLDdBS";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="bgEYM67v"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-202.mailbox.org (Postfix) with ESMTPS id 4f1x7q4YSMz9srt;
-	Thu, 29 Jan 2026 12:03:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1769684583;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QZpgtM9ex/KwEMCtGxHcHi7KHU3c1uW7H4EyPg/cQNI=;
-	b=cEhLDdBSg1tSgCPVxxOgPLJ1g7DjWLYNr3YP4sNJLXeJ/NumyeBDMMEHYs3UH5BAnbSm+H
-	JbwWpas3lXnBmW8cOUmzYw+ljoXhCJmkv/LiajU/QlunOxQ5esyeAon0XQcdM1LU0Ax36o
-	xnQPM+6hOGOS20zU2kEIq5L6kJ9qCOB8fdLwDnmKL/TA355aEMYPfw+NYSsCWut9eY8CMV
-	vNpATh3eAO7g0Z1R316vnsx93gHcxBN+1P6r7xEc43R8FIvAotpQPm4zxrMHDkNPa8mI8C
-	jCbIIvBIiEEBK5Uc3V8F0U30t4QSvtYXDWQYo//M8Ly7npC9+6AJRgd3UETlqQ==
-From: Lukasz Majewski <lukasz.majewski@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1769684581;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QZpgtM9ex/KwEMCtGxHcHi7KHU3c1uW7H4EyPg/cQNI=;
-	b=bgEYM67v/9G6mRRCGoEoYAmVEE74GjeoD5nfnf7VASnG7Ya+uXPq6llVkVfBppDVRxsa1D
-	w37ZwjRXND/1LU64AtDfNFK/0VA8ouWXo51DNRl/K+4d+iTUVaE21V2Ox1uAhrwvTqIzD5
-	VjvIrUKlrG1lqEkrbb291lleiFFmySk2ZD0i1wE/nRK4y/ie66sSjifwRt8nS5f9MCQ1di
-	5xLj5yHT8LgIgvDyO6DCAwE8+aEFaSLEp1nQJ345G2UO3HMpOhO7i6CrfeNHojhUN6qg+8
-	hCbltUXPdGUTd/WRET2SFn13ZJIH8HTsXiuSxofzWSbbT+GocPg2GQobSUiUoA==
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="saizImo6"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1769684604; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=DelJ78oXDrf5D0hOyeRyjgDAeKvn8heincO0PqIPRF8=;
+	b=saizImo6hmMmEFLMgGMQz1xhfHLGTjleTmgFAOC3dJir+mbDnG2daLLohrSw/384Jz5xllZ4gFlula8pl99Sjuk7xGhNTtU2rSxBOpDUMtD21krhBlazBjprRyYXmBPxZB/y78tivGEUIb59GVy/990M4CH2wKn/C53TA0stQ7M=
+Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0Wy7BXL7_1769684603 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 29 Jan 2026 19:03:23 +0800
+Date: Thu, 29 Jan 2026 19:03:23 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com    >
+To: Leon Romanovsky <leon@kernel.org>
+Cc: "D. Wythe" <alibuda@linux.alibaba.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dust Li <dust.li@linux.alibaba.com>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Lukasz Majewski <lukasz.majewski@mailbox.org>
-Subject: [net-next v21 7/7] net: mtip: Extend the L2 switch driver for imx287 with bridge operations
-Date: Thu, 29 Jan 2026 12:01:54 +0100
-Message-Id: <20260129110154.1699976-8-lukasz.majewski@mailbox.org>
-In-Reply-To: <20260129110154.1699976-1-lukasz.majewski@mailbox.org>
-References: <20260129110154.1699976-1-lukasz.majewski@mailbox.org>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+	oliver.yang@linux.alibaba.com
+Subject: Re: [PATCH net-next 2/3] mm: vmalloc: export find_vm_area()
+Message-ID: <20260129110323.GA80118@j66a10360.sqa.eu95>
+References: <20260123082349.42663-3-alibuda@linux.alibaba.com>
+ <aXPEFdEdtSmd6AzF@milan>
+ <20260124093505.GA98529@j66a10360.sqa.eu95>
+ <aXSjm1DXm6yP62tD@pc636>
+ <20260124145754.GA57116@j66a10360.sqa.eu95>
+ <20260127133417.GU13967@unreal>
+ <20260128034558.GA126415@j66a10360.sqa.eu95>
+ <20260128111346.GD12149@unreal>
+ <20260128124404.GA96868@j66a10360.sqa.eu95>
+ <20260128134934.GD40916@unreal>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: af3980298664df9a39d
-X-MBO-RS-META: xhnebz3eeyy4txbtweo3mbzoshmj1aww
+In-Reply-To: <20260128134934.GD40916@unreal>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-After this change the MTIP L2 switch can be configured as offloading
-device for packet switching when bridge on its interfaces is created.
+On Wed, Jan 28, 2026 at 03:49:34PM +0200, Leon Romanovsky wrote:
+> On Wed, Jan 28, 2026 at 08:44:04PM +0800, D. Wythe wrote:
+> > On Wed, Jan 28, 2026 at 01:13:46PM +0200, Leon Romanovsky wrote:
+> > > On Wed, Jan 28, 2026 at 11:45:58AM +0800, D. Wythe wrote:
+> > > > On Tue, Jan 27, 2026 at 03:34:17PM +0200, Leon Romanovsky wrote:
+> > > > > On Sat, Jan 24, 2026 at 10:57:54PM +0800, D. Wythe wrote:
+> > > > > > On Sat, Jan 24, 2026 at 11:48:59AM +0100, Uladzislau Rezki wrote:
+> > > > > > > Hello, D. Wythe!
+> > > > > > > 
+> > > > > > > > On Fri, Jan 23, 2026 at 07:55:17PM +0100, Uladzislau Rezki wrote:
+> > > > > > > > > On Fri, Jan 23, 2026 at 04:23:48PM +0800, D. Wythe wrote:
+> > > > > > > > > > find_vm_area() provides a way to find the vm_struct associated with a
+> > > > > > > > > > virtual address. Export this symbol to modules so that modularized
+> > > > > > > > > > subsystems can perform lookups on vmalloc addresses.
+> > > > > > > > > > 
+> > > > > > > > > > Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
+> > > > > > > > > > ---
+> > > > > > > > > >  mm/vmalloc.c | 1 +
+> > > > > > > > > >  1 file changed, 1 insertion(+)
+> > > > > > > > > > 
+> > > > > > > > > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > > > > > > > > > index ecbac900c35f..3eb9fe761c34 100644
+> > > > > > > > > > --- a/mm/vmalloc.c
+> > > > > > > > > > +++ b/mm/vmalloc.c
+> > > > > > > > > > @@ -3292,6 +3292,7 @@ struct vm_struct *find_vm_area(const void *addr)
+> > > > > > > > > >  
+> > > > > > > > > >  	return va->vm;
+> > > > > > > > > >  }
+> > > > > > > > > > +EXPORT_SYMBOL_GPL(find_vm_area);
+> > > > > > > > > >  
+> > > > > > > > > This is internal. We can not just export it.
+> > > > > > > > > 
+> > > > > > > > > --
+> > > > > > > > > Uladzislau Rezki
+> > > > > > > > 
+> > > > > > > > Hi Uladzislau,
+> > > > > > > > 
+> > > > > > > > Thank you for the feedback. I agree that we should avoid exposing
+> > > > > > > > internal implementation details like struct vm_struct to external
+> > > > > > > > subsystems.
+> > > > > > > > 
+> > > > > > > > Following Christoph's suggestion, I'm planning to encapsulate the page
+> > > > > > > > order lookup into a minimal helper instead:
+> > > > > > > > 
+> > > > > > > > unsigned int vmalloc_page_order(const void *addr){
+> > > > > > > > 	struct vm_struct *vm;
+> > > > > > > >  	vm = find_vm_area(addr);
+> > > > > > > > 	return vm ? vm->page_order : 0;
+> > > > > > > > }
+> > > > > > > > EXPORT_SYMBOL_GPL(vmalloc_page_order);
+> > > > > > > > 
+> > > > > > > > Does this approach look reasonable to you? It would keep the vm_struct
+> > > > > > > > layout private while satisfying the optimization needs of SMC.
+> > > > > > > > 
+> > > > > > > Could you please clarify why you need info about page_order? I have not
+> > > > > > > looked at your second patch.
+> > > > > > > 
+> > > > > > > Thanks!
+> > > > > > > 
+> > > > > > > --
+> > > > > > > Uladzislau Rezki
+> > > > > > 
+> > > > > > Hi Uladzislau,
+> > > > > > 
+> > > > > > This stems from optimizing memory registration in SMC-R. To provide the
+> > > > > > RDMA hardware with direct access to memory buffers, we must register
+> > > > > > them with the NIC. During this process, the hardware generates one MTT
+> > > > > > entry for each physically contiguous block. Since these hardware entries
+> > > > > > are a finite and scarce resource, and SMC currently defaults to a 4KB
+> > > > > > registration granularity, a single 2MB buffer consumes 512 entries. In
+> > > > > > high-concurrency scenarios, this inefficiency quickly exhausts NIC
+> > > > > > resources and becomes a major bottleneck for system scalability.
+> > > > > 
+> > > > > I believe this complexity can be avoided by using the RDMA MR pool API,
+> > > > > as other ULPs do, for example NVMe.
+> > > > > 
+> > > > > Thanks
+> > > > > 
+> > > > 
+> > > > Hi Leon,
+> > > > 
+> > > > Am I correct in assuming you are suggesting mr_pool to limit the number
+> > > > of MRs as a way to cap MTTE consumption?
+> > > 
+> > > I don't see this a limit, but something that is considered standard
+> > > practice to reduce MTT consumption.
+> > > 
+> > > > 
+> > > > However, our goal is to maximize the total registered memory within
+> > > > the MTTE limits rather than to cap it. In SMC-R, each connection
+> > > > occupies a configurable, fixed-size registered buffer; consequently,
+> > > > the more memory we can register, the more concurrent connections
+> > > > we can support.
+> > > 
+> > > It is not cap, but more efficient use of existing resources.
+> > 
+> > Got it. While MRs pool might be more standard practice, but it doesn't
+> > address our specific bottleneck. In fact, smc already has its own internal
+> > MR reuse; our core issue remains reducing MTTE consumption by increasing the
+> > registration granularity to maximize the memory size mapped per MTT entry.
+> 
+> And this is something MR pools can handle as well. We are going in circles,
+> so let's summarize.
 
-Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
----
+I believe some points need to be thoroughly clarified here:
 
-Changes for v13:
-- New patch - created by excluding some code from large (i.e. v12 and
-  earlier) MTIP driver
+> 
+> I see SMC‑R as one of the RDMA ULPs, and it should ideally rely on the
+> existing ULP API used by NVMe, NFS, and others, rather than maintaining its
+> own internal logic.
 
-Changes for v14 - v15:
-- None
+SMC is not opposed to adopting newer RDMA interfaces; in fact, I have
+already planned a gradual migration to the updated RDMA APIs. We are
+currently in the process of adapting to ib_cqe, for instance. As long as
+functionality remains intact, there is no reason to oppose changes that
+reduce maintenance overhead or provide additional gains, but such a
+transition takes time.
 
-Changes for v16:
-- Enable MTIP ports to support bridge offloading
+> 
+> I also do not know whether vmalloc_page_order() is an appropriate solution;
+> I only want to show that we can probably achieve the same result without
+> introducing a new function.
 
-Changes for v17 - v20:
-- None
+Regarding the specific issue under discussion, I believe the newer RDMA
+APIs you mentioned do not solve my problem, at least for now. My
+understanding is that regardless of how MRs are pooled, the core
+requirement is to increase the page_size parameter in ib_map_mr_sg to
+maximize the physical size mapped per MTTE. From the code I have
+examined, I see no evidence of these new APIs utilizing values other
+than 4KB.
 
-Changes for v21:
-- Avoid double call of notifier_from_errno() on -EOPNOTSUPP
-- Rollback changes to driver state when switchdev_bridge_port_offload()
-  fails
----
- .../net/ethernet/freescale/mtipsw/Makefile    |   2 +-
- .../net/ethernet/freescale/mtipsw/mtipl2sw.c  |   9 +-
- .../net/ethernet/freescale/mtipsw/mtipl2sw.h  |   2 +
- .../ethernet/freescale/mtipsw/mtipl2sw_br.c   | 136 ++++++++++++++++++
- 4 files changed, 147 insertions(+), 2 deletions(-)
- create mode 100644 drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
+Of course, I believe that regardless of whether this issue
+currently exists, it is something the RDMA community can resolve.
+However, as I mentioned, adapting to new API takes time. Before a
+complete transition is achieved, we need to allow for some necessary
+updates to SMC.
 
-diff --git a/drivers/net/ethernet/freescale/mtipsw/Makefile b/drivers/net/ethernet/freescale/mtipsw/Makefile
-index a99aaf6ddfb2..81e2b0e03e6c 100644
---- a/drivers/net/ethernet/freescale/mtipsw/Makefile
-+++ b/drivers/net/ethernet/freescale/mtipsw/Makefile
-@@ -1,4 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- obj-$(CONFIG_FEC_MTIP_L2SW) += nxp-mtipl2sw.o
--nxp-mtipl2sw-objs := mtipl2sw.o mtipl2sw_mgnt.o
-+nxp-mtipl2sw-objs := mtipl2sw.o mtipl2sw_mgnt.o mtipl2sw_br.o
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-index d9a8fc2eeb06..c296abc87c81 100644
---- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-@@ -1925,11 +1925,15 @@ static int mtip_sw_probe(struct platform_device *pdev)
- 	if (ret)
- 		return dev_err_probe(&pdev->dev, ret, "Could not alloc IRQ\n");
- 
-+	ret = mtip_register_notifiers(fep);
-+	if (ret)
-+		return ret;
-+
- 	ret = mtip_switch_dma_init(fep);
- 	if (ret) {
- 		dev_err(&pdev->dev, "%s: ethernet switch init fail (%d)!\n",
- 			__func__, ret);
--		return ret;
-+		goto unregister_notifiers;
- 	}
- 
- 	ret = mtip_mii_init(fep, pdev);
-@@ -1961,6 +1965,8 @@ static int mtip_sw_probe(struct platform_device *pdev)
- 			  fep->bd_dma);
- 	fep->rx_bd_base = NULL;
- 	fep->tx_bd_base = NULL;
-+ unregister_notifiers:
-+	mtip_unregister_notifiers(fep);
- 
- 	return ret;
- }
-@@ -1969,6 +1975,7 @@ static void mtip_sw_remove(struct platform_device *pdev)
- {
- 	struct switch_enet_private *fep = platform_get_drvdata(pdev);
- 
-+	mtip_unregister_notifiers(fep);
- 	mtip_ndev_cleanup(fep);
- 
- 	mtip_mii_remove(fep);
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-index 4054415d39f9..449eca41e6b6 100644
---- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.h
-@@ -640,6 +640,8 @@ int mtip_port_learning_config(struct switch_enet_private *fep, int port,
- int mtip_port_blocking_config(struct switch_enet_private *fep, int port,
- 			      bool enable);
- bool mtip_is_switch_netdev_port(const struct net_device *ndev);
-+int mtip_register_notifiers(struct switch_enet_private *fep);
-+void mtip_unregister_notifiers(struct switch_enet_private *fep);
- int mtip_port_enable_config(struct switch_enet_private *fep, int port,
- 			    bool tx_en, bool rx_en);
- void mtip_clear_atable(struct switch_enet_private *fep);
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
-new file mode 100644
-index 000000000000..e9a64d1b52ec
---- /dev/null
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw_br.c
-@@ -0,0 +1,136 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ *  L2 switch Controller driver for MTIP block - bridge network interface
-+ *
-+ *  Copyright (C) 2025 DENX Software Engineering GmbH
-+ *  Lukasz Majewski <lukma@denx.de>
-+ */
-+
-+#include <linux/etherdevice.h>
-+#include <linux/netdevice.h>
-+#include <linux/platform_device.h>
-+#include <net/switchdev.h>
-+
-+#include "mtipl2sw.h"
-+
-+static int mtip_ndev_port_link(struct net_device *ndev,
-+			       struct net_device *br_ndev,
-+			       struct netlink_ext_ack *extack)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(ndev), *other_priv;
-+	struct switch_enet_private *fep = priv->fep;
-+	struct net_device *other_ndev;
-+	int err;
-+
-+	/* Check if one port of MTIP switch is already bridged */
-+	if (fep->br_members && !fep->br_offload) {
-+		/* Get the second bridge ndev */
-+		other_ndev = fep->ndev[fep->br_members - 1];
-+		other_priv = netdev_priv(other_ndev);
-+		if (other_priv->master_dev != br_ndev) {
-+			NL_SET_ERR_MSG_MOD(extack,
-+					   "L2 offloading only possible for the same bridge!");
-+			return -EOPNOTSUPP;
-+		}
-+
-+		fep->br_offload = 1;
-+		mtip_switch_dis_port_separation(fep);
-+		mtip_clear_atable(fep);
-+	}
-+
-+	if (!priv->master_dev)
-+		priv->master_dev = br_ndev;
-+
-+	fep->br_members |= BIT(priv->portnum - 1);
-+
-+	err = switchdev_bridge_port_offload(ndev, ndev, NULL, NULL, NULL,
-+					    false, extack);
-+	if (err) {
-+		dev_err(&ndev->dev, "can't offload bridge port %s [err: %d]\n",
-+			ndev->name, err);
-+
-+		fep->br_members &= ~BIT(priv->portnum - 1);
-+		priv->master_dev = NULL;
-+
-+		return err;
-+	}
-+
-+	dev_dbg(&ndev->dev,
-+		"%s: ndev: %s br: %s fep: %p members: 0x%x offload: %d\n",
-+		__func__, ndev->name,  br_ndev->name, fep, fep->br_members,
-+		fep->br_offload);
-+
-+	return NOTIFY_DONE;
-+}
-+
-+static void mtip_netdevice_port_unlink(struct net_device *ndev)
-+{
-+	struct mtip_ndev_priv *priv = netdev_priv(ndev);
-+	struct switch_enet_private *fep = priv->fep;
-+
-+	dev_dbg(&ndev->dev, "%s: ndev: %s members: 0x%x\n", __func__,
-+		ndev->name, fep->br_members);
-+
-+	switchdev_bridge_port_unoffload(ndev, NULL, NULL, NULL);
-+
-+	fep->br_members &= ~BIT(priv->portnum - 1);
-+	priv->master_dev = NULL;
-+
-+	if (fep->br_members && fep->br_offload) {
-+		fep->br_offload = 0;
-+		mtip_switch_en_port_separation(fep);
-+		mtip_clear_atable(fep);
-+	}
-+}
-+
-+/* netdev notifier */
-+static int mtip_netdevice_event(struct notifier_block *unused,
-+				unsigned long event, void *ptr)
-+{
-+	struct net_device *ndev = netdev_notifier_info_to_dev(ptr);
-+	struct netdev_notifier_changeupper_info *info = ptr;
-+	struct netlink_ext_ack *extack;
-+	int ret = NOTIFY_DONE;
-+
-+	if (!mtip_is_switch_netdev_port(ndev))
-+		return NOTIFY_DONE;
-+
-+	extack = netdev_notifier_info_to_extack(&info->info);
-+
-+	switch (event) {
-+	case NETDEV_CHANGEUPPER:
-+		if (!netif_is_bridge_master(info->upper_dev))
-+			break;
-+
-+		if (info->linking)
-+			ret = mtip_ndev_port_link(ndev, info->upper_dev,
-+						  extack);
-+		else
-+			mtip_netdevice_port_unlink(ndev);
-+
-+		break;
-+	default:
-+		return NOTIFY_DONE;
-+	}
-+
-+	return notifier_from_errno(ret);
-+}
-+
-+static struct notifier_block mtip_netdevice_nb __read_mostly = {
-+	.notifier_call = mtip_netdevice_event,
-+};
-+
-+int mtip_register_notifiers(struct switch_enet_private *fep)
-+{
-+	int ret = register_netdevice_notifier(&mtip_netdevice_nb);
-+
-+	if (ret)
-+		dev_err(&fep->pdev->dev, "can't register netdevice notifier\n");
-+
-+	return ret;
-+}
-+
-+void mtip_unregister_notifiers(struct switch_enet_private *fep)
-+{
-+	unregister_netdevice_notifier(&mtip_netdevice_nb);
-+}
--- 
-2.39.5
-
+Thanks
