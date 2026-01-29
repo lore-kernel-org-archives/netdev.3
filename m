@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C04319D071
-	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 04:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68501288C96;
+	Thu, 29 Jan 2026 04:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769659817; cv=none; b=bidmwdmf/XwdafXPqMHLehs2IQhpT+R3fFDKcbb5ZEApXvnHw0jLlnJG77Qwf26ZD+zy9omquCP2dHedz2Iz5nmUdcQLSw9Bgr2kXyJNrFZSCj+bFby4RXUde/h+JtvJ28F2UwnyccSAdBwUpGP/OZ+Vf5y1X2f/KOEpLp2VfLk=
+	t=1769659818; cv=none; b=t7TUT/HEWPcn54mHlo44MSoge06T4vIjEIIJoQnmGrqk3YtaGMIDxzeo+YPPq52bbg3IuTbgeCe2ztXAFrp1rqdhpyWU0NXpqPAQ4FVbY5GEPqIMbRYCFrj8HTB9tC8NRr2+rMdbdpmdxWZ2eih6a6Wgs7o8fClu1cyXA+W8p0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769659817; c=relaxed/simple;
-	bh=/Y4xPxXVeKcFK+djUgaaEeNt9bE24fjOQjlzctbi7ls=;
+	s=arc-20240116; t=1769659818; c=relaxed/simple;
+	bh=Z9XhaWwhC+dTsFmBP9WqQXbPwaY04N6Wz94IjIvW2ZE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kg6JeOrNRb0GmosR9e0znnQW28hAFgOzntXsHt9Y3OGMDrctv2D9e/IPty3S2ket4zYiSpcNLnhcLe/PmYJXcF8deibjHmFaXtVNyuO4TKkwxFilRdkKAVsx3/eEZ19RlhyLgN5HuounpWL3tfZQMd675mWClylMOZ2ritjZztM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jCIHsfVm; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Q9WBKZR2vsRdM3TVqe1AXMa673Ys+CdObMKy5Zg2oHs67TWf9HQSM8qqLHfPKjXyQd+aybd1yZY+AwQCHdr/WxlDLXjvz5O882mykIzX6Mtku/q5gDBao6TC0FSkdQclF7SSu5UwzQGPHWsgVb4yPcsrFphyZIhLicIbvItgZ2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cwhFAiyf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jCIHsfVm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E049EC116D0;
-	Thu, 29 Jan 2026 04:10:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cwhFAiyf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20228C116D0;
+	Thu, 29 Jan 2026 04:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769659816;
-	bh=/Y4xPxXVeKcFK+djUgaaEeNt9bE24fjOQjlzctbi7ls=;
+	s=k20201202; t=1769659818;
+	bh=Z9XhaWwhC+dTsFmBP9WqQXbPwaY04N6Wz94IjIvW2ZE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=jCIHsfVm43anRX5tnfKdTZMYW3I9u/fDAeCPxYPQXHc55fKWUYGWd3F5RDZAyZ+dD
-	 tFEDQG1oBs6xufiURu8eq4l3W7TWHhBs9TNJOaNh3qhrUu3Ia17Xegw5aTYkgawaae
-	 ftQ8SGif47wtrJCMsP7DG+d6wd7yI5WTnfeoP2uepLJTJtb49bxVheVDygrZJVK2gq
-	 GGfUEmcQH/YXI8SakPe5kdgrf9j+kJxGoThjqXdKdtYUyYI6jRHTd+UXdMTv9DX6kL
-	 qKu734ODwbng2MueZcr4r5aQwS4qdQNKXO3RjEfZCpH8uEZO09p9bE0CpE2kfwGgLE
-	 9nGYoTp7FpudQ==
+	b=cwhFAiyf9hazZGfonbK924QOzzJgCkNsi9SQJiqBBT2WUu4ikwfp7AmTQl0hAyVGv
+	 sNSsrbCWXWhHJ7LOus7rJis05kBKf/YWGWV5QBdqAib54p5aZ28qMOmiHb0DXhv75k
+	 AL8Mfqw2dj7YJycRbkPG2dgtWSHwuSPRbNx7/aloO6RsuF06RRgCzJsqnRb27vNFl3
+	 HgZZDOMkVxNiDyZvcwYzKpjS/WtsZUI8NfVxJedunRY4DHtVw7/AISOl0ulKsnIlqk
+	 5E9X088FCyx9BqKiiXH3ad8WL9z5V+W7z5EW59z27pXwYPTctssMZkI384Sb788hTY
+	 M/7tgdkv0r34A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4EC55380AA61;
-	Thu, 29 Jan 2026 04:10:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8BCC1380AA61;
+	Thu, 29 Jan 2026 04:10:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/4][pull request] Intel Wired LAN Driver Updates
- 2026-01-27 (ixgbe, ice)
+Subject: Re: [PATCH v2] net/mlx5e: don't assume psp tx skbs are ipv6 csum
+ handling
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176965981010.2343973.12459834676591978429.git-patchwork-notify@kernel.org>
-Date: Thu, 29 Jan 2026 04:10:10 +0000
-References: <20260127223047.3979404-1-anthony.l.nguyen@intel.com>
-In-Reply-To: <20260127223047.3979404-1-anthony.l.nguyen@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
- edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
+ <176965981134.2343973.3337681948486173683.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Jan 2026 04:10:11 +0000
+References: <20260126-dzahka-fix-tx-csum-partial-v2-1-0a905590ea5f@gmail.com>
+In-Reply-To: <20260126-dzahka-fix-tx-csum-partial-v2-1-0a905590ea5f@gmail.com>
+To: Daniel Zahka <daniel.zahka@gmail.com>
+Cc: borisp@nvidia.com, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
+ mbloch@nvidia.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ rrameshbabu@nvidia.com, raeds@nvidia.com, cratiu@nvidia.com,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
-by Tony Nguyen <anthony.l.nguyen@intel.com>:
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 27 Jan 2026 14:30:41 -0800 you wrote:
-> For ixgbe:
-> Kohei Enju adjusts the cleanup path on firmware error to resolve some
-> memory leaks and removes an instance of double init, free on ACI mutex.
+On Mon, 26 Jan 2026 11:38:17 -0800 you wrote:
+> mlx5e_psp_handle_tx_skb() assumes skbs are ipv6 when doing a partial
+> TCP checksum with tso. Make correctly mlx5e_psp_handle_tx_skb() handle
+> ipv4 packets.
 > 
-> For ice:
-> Aaron Ma adds NULL checks for q_vectors to avoid NULL pointer
-> dereference.
+> Fixes: e5a1861a298e ("net/mlx5e: Implement PSP Tx data path")
+> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,1/4] ixgbe: fix memory leaks in the ixgbe_recovery_probe() path
-    https://git.kernel.org/netdev/net/c/638344712aef
-  - [net,2/4] ixgbe: don't initialize aci lock in ixgbe_recovery_probe()
-    https://git.kernel.org/netdev/net/c/100cf7b4ca6e
-  - [net,3/4] ice: Fix NULL pointer dereference in ice_vsi_set_napi_queues
-    https://git.kernel.org/netdev/net/c/9bb30be4d89f
-  - [net,4/4] ice: stop counting UDP csum mismatch as rx_errors
-    https://git.kernel.org/netdev/net/c/05faf2c0a765
+  - [v2] net/mlx5e: don't assume psp tx skbs are ipv6 csum handling
+    https://git.kernel.org/netdev/net/c/a62f7d62d2b1
 
 You are awesome, thank you!
 -- 
