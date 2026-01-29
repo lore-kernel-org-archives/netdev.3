@@ -1,560 +1,254 @@
-Received: from mail-ot1-f65.google.com (mail-ot1-f65.google.com [209.85.210.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SEYPR02CU001.outbound.protection.outlook.com (mail-koreacentralazon11023101.outbound.protection.outlook.com [40.107.44.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C393D2F3C19
-	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 06:05:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769666711; cv=none; b=mXjMdrXlQU4jvD8kgidVLzQjS1fD+uTCpi7lJJ4duCJCYb6k/xhVHJ3WjVvJOAYPn+ZsXHeWojreY6Oo4HolGtkrEp6bGBYd7j/zzOH/IIV/hEBHgkj5JcD453CO+wbVFB+1CH4dcIBBkjP5yxUfVzybUcsNi+ZPsts93zn9k38=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769666711; c=relaxed/simple;
-	bh=PhWQWuNHpjWIHj6wY5nSHrhoUrx5ijR01V6xXwNaxuQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Pk4AzC9xSqNW8J7GC6NG71hc4w/Jn818P4H7YZnDhZdGmxOfRKuHtVpM7fgzHEWujDVqBcJi7RTj8IXOHL/Ty8WWb9Nmgeq5ie5I4ZTJEqaPyL6Rw4o83a+axHCmefvBQhutUoNb9sitfhtTgjf2vuWufqP7v/meBXULMWXH2NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OpdRvLyx; arc=none smtp.client-ip=209.85.210.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1AE376BFD
+	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 06:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.44.101
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769666847; cv=fail; b=MyZ6LmoRBXN72FMVmYMGAVrzOmcgc4abgMYjIyc+DPN0mkYN8spqTUnCHBzL/r3lm7Y1zuPsYIjMQMDtfH3A45vFr8cOsbTj6g1rVwRggufsUoOWy1j4S/NFtBh8Q/AMBBjzKhbmRhKSGkOyG9jEvL4Pi23eu57k0ccBU+rDHYM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769666847; c=relaxed/simple;
+	bh=HLTapAHLNJtHL8on/GdcCIE7OeuH/hK8ZqWEPifW95M=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=IjL62M9qWWBnwLOjSASrz4iT8ihe1qcK6ElwLJi8oActY/4ihgFzuqO20uLj92gIKb0IVu8R31KB0iBXWSDBy9z6r9HHse2j66eeRcOimX9zm6lEQroo6QEF9yGwgANOYCtb4G7yS3gph0gEfVDW4UQN/Dpusz98SXiILY2bByk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; dkim=pass (2048-bit key) header.d=aspeedtech.com header.i=@aspeedtech.com header.b=n3mmrc6a; arc=fail smtp.client-ip=40.107.44.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OpdRvLyx"
-Received: by mail-ot1-f65.google.com with SMTP id 46e09a7af769-7d1890f7cefso461232a34.3
-        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 22:05:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769666707; x=1770271507; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=poDplWlPg5s5EBtVI6yFIXbfIxZPfz/xfOLeBPwU+R4=;
-        b=OpdRvLyx9+BJsRfnplPa9m7qyl9Itinm8NsU3BDPBDtQ0TOXaow5F07t5XyIUy63Qc
-         JK1MAHhYptN8ufdI4DysD2iWYFxPcCx53zSx8R65tm8EQQ27SlRBuR6CNZlIWn06cDE/
-         Ucb9zRS4ubnC7+eZT8YVe0YwhDFGxgU1MVsCTTpjTwUcbeFsHPOBr2M3ZzF2RF3e9ang
-         dPfeuHZeaCx4jrD/0n0F7PSEDY7yS7lAY1PCe+5Gw0bvj3MmQdQvx3crXEqVcfrBgCVT
-         y26UdBilVSCJIYG0qMmkCKH+A8fNl98LZiKXQkUdqb+uREkYzlX4A90htJrl38raM9aR
-         AxpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769666707; x=1770271507;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=poDplWlPg5s5EBtVI6yFIXbfIxZPfz/xfOLeBPwU+R4=;
-        b=RD+WGheY0FBOD5nED13scSdNn6tmoCHHgIJjMMAsA2W7aAZHtTZM5Iy2tRzWTdjbVZ
-         eB6O5x6g/Tw0eU/tePWgeJ/sCVimD3w8QPI4nLdMqt7mUio9LkfQrlCSGukhSTb6P32v
-         /CZi6l52FMm1NiDhzWwEE7M7EXoOISY+bX9GNUcOh7Nd5ycilhN0dR6bXC9ASsPI3GpG
-         XkFKCE7ogt20APQFWS24fbxQzRxa6kD+Klf/kq15d/8Mj3zMmDX8pOh8yMKucizLn/nt
-         7cLJzmqrXWIfv1Ei3fiVYIL09oz92PkvpFn4VGuImAWR+q2OAmDLiatShEmRPpNx75lv
-         cnkA==
-X-Gm-Message-State: AOJu0YwXY+mUlNif0GEjY/Df4zu//npZQBO/V496U4LIjonYb4Zg55LI
-	T9ikpqYHyZaMKRCD++WfLRXC/T/q2Lapcikat40JNLQP+JCqqYOxY2ia48zGheu4
-X-Gm-Gg: AZuq6aIci0xLbdbo3HlKuxpfTFa8+7PC6sYZzsiN7SeuV+0Z8BSNhHWWQ8Fa4y2uOeL
-	kCiU+uRDnPRPvYiOiohFCb4PrqBS+fAhDhb7GVxRhyxGrMgh4J2Yg5pChMpPiwgCemDULE6qBZF
-	ck9j357NTggVgquUV0QaS72ZOLaU0JgRbkjcHzDglUzmYVihoxM6x7kMghJpfhGb/5mKfEjxNDY
-	QMi5M1wR4XZBBpoBV7DhNHelRQpLg4YEknp8+LvS12xNlHt+hsRdKTFsXYBOOK4svvSfKBD/hu9
-	W4cc6PzZHjZXSsoDWjfRFwanfIzesQ314VWFr9+SfRjBQSFEnNX6Aus/mvqikjkwPTJ2015bwUi
-	FnkkLka05f0L4f537ZynAB+TsxCVUSWZw1Ed0biKilWiKE4NsUXzMU6tckp6VD/CrOi8vDNMaL6
-	ouhuNxnNJgtmSRSa3Rc5Zgx8wNoaL6fO+5ivLBIAfV8A8c04IWHj2/53QWh+OfDBqRbB1qUZU27
-	Pjl8K4apyVuKUT5Ad820Ygh6cvtPPsAEz8VlaPtuc3/V9vG0JeIrXjgHKzFr10p/4lcr5+7bIds
-	RsT4
-X-Received: by 2002:a05:7022:a8a:b0:119:e55a:9c06 with SMTP id a92af1059eb24-124a011454fmr4973192c88.34.1769660760245;
-        Wed, 28 Jan 2026 20:26:00 -0800 (PST)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9efb4casm5019894c88.16.2026.01.28.20.25.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 20:25:59 -0800 (PST)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Petko Manolov <petkan@nucleusys.com>,
-	Steve Glendinning <steve.glendinning@shawell.net>,
-	UNGLinuxDriver@microchip.com,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Oliver Neukum <oneukum@suse.com>,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Max Schulze <max.schulze@online.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Eric Biggers <ebiggers@google.com>
-Subject: [PATCH net-next v4] net: usb: remove unnecessary get_drvinfo code and driver versions
-Date: Wed, 28 Jan 2026 20:23:01 -0800
-Message-ID: <20260129042435.13395-2-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=aspeedtech.com header.i=@aspeedtech.com header.b="n3mmrc6a"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MdS04nL68/FjjjhcPfL1t0GSU6GTehHVk00fR+tpQ1PKrge6v+Uu7KnonYrGKKNKUhGrj4I3rSBYAwIdvGZTpg0ft57e9rRuiK8M4oScUn2cFZUPa2AI9XVk9yYwo9N4q1EHX923gnYSOORM98HR0m5LfoYIKC+WPbrXgsxDKlM1p0VRAh7fJqF0XfYT2hVnKloFXaLK/IgfSio89QuSThJlzrN8ffcNVnF7tNnkE6i1F0Lv3ErStnIMCWxOkTJi8DECOrXDSWYUuYGU7yM3WXF64iwkm3FqrE8MRf/WBs8GNCUfiSHhl5XguCFXp7TomIQ4NuMZoELn7QykiLxAzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=I9fOpeSommGxOzVHIWGPLY65CRo+udcY7iFKVUCje/U=;
+ b=a3ITeD8uQW8lIDqZg0GSRuaGashdHw5YSh307rhuFUZp+2km1T1AGeyrx0bvbNq9NcW+zpYmWAGt6/CmjdJX8iTWob5toLzRF4TEPHoEJ64sH/IRcj02a5076wB+6diktEh++pz4gzKOMReXdbhR+wiqlOamMe5WCj/1DMfjwk7nP4SMywVo8IS2p0w1hCIY/8w2Q0PQvUXxh42QVi4dGjy2S7b558stQV+vUtMh/90ma5wXxVgdRWIpEL+8UlKoDSR+Ej+Wy6YcCgOpt5RMPLxUgUkMdADDWolu1AyH3zOgTPJh4SLYsukUR0apYbWtOVVVWP/7KyUM0Vnhpe96QQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=aspeedtech.com; dmarc=pass action=none
+ header.from=aspeedtech.com; dkim=pass header.d=aspeedtech.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aspeedtech.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=I9fOpeSommGxOzVHIWGPLY65CRo+udcY7iFKVUCje/U=;
+ b=n3mmrc6asaQgiPx8vNgxhbMCOGInk2k23ZSxOB9z7d8JNN+KrWdtvsNfF8VD8kqSXc2i2i//taZOPiIJTX5VqgKwriecxzfVJ1ZwgQ8Dh/6L5hJUoFptTROy2R6NcfldXqOPA4qWCX2+gsMxOF+pf9OG4iweFPJHGYI6UXL0u3h7W0oDzW2+oOxNil9swv0jas3kgyxOfhm84AsikpY8TuYBNPo0STvPaEr3++o6voTP/7URho6CqmcGWN5w0B6m0BOYpxxmNckaG96OfzqIIpVN9dZ4WHNhgXDUgwzHrTxL71i9OiEggf/J2ZzaM6KPdzz66HDc5vs2AGQoSGH+kQ==
+Received: from SEYPR06MB5134.apcprd06.prod.outlook.com (2603:1096:101:5a::12)
+ by JH0PR06MB6703.apcprd06.prod.outlook.com (2603:1096:990:36::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.9; Thu, 29 Jan
+ 2026 06:07:21 +0000
+Received: from SEYPR06MB5134.apcprd06.prod.outlook.com
+ ([fe80::f53d:547a:8c11:fc6c]) by SEYPR06MB5134.apcprd06.prod.outlook.com
+ ([fe80::f53d:547a:8c11:fc6c%4]) with mapi id 15.20.9564.006; Thu, 29 Jan 2026
+ 06:07:20 +0000
+From: Jacky Chou <jacky_chou@aspeedtech.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Simon Horman <horms@kernel.org>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: [net-next,v2,09/15] net: ftgmac100: Always register the MDIO bus when
+ it exists
+Thread-Topic: [net-next,v2,09/15] net: ftgmac100: Always register the MDIO bus
+ when it exists
+Thread-Index: AQHcigZP8DCE3uwsu0OrjMZguO4jabVbGG4AgAK0otCAA+8JgIAG94OA
+Date: Thu, 29 Jan 2026 06:07:20 +0000
+Message-ID:
+ <SEYPR06MB5134A65B925BAC871927C9C69D9EA@SEYPR06MB5134.apcprd06.prod.outlook.com>
+References: <20260116-ftgmac-cleanup-v2-9-81f41f01f2a8@aspeedtech.com>
+ <20260120121407.795529-1-horms@kernel.org>
+ <8ab0e121-5ffb-4dd8-afc8-11b6ce3898bb@lunn.ch>
+ <SEYPR06MB513455F4FBCB9AF4F6E4CB199D97A@SEYPR06MB5134.apcprd06.prod.outlook.com>
+ <e6f9ee03-91d8-4d3d-bf9b-c08ffa991c01@lunn.ch>
+In-Reply-To: <e6f9ee03-91d8-4d3d-bf9b-c08ffa991c01@lunn.ch>
+Accept-Language: zh-TW, en-US
+Content-Language: zh-TW
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=aspeedtech.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SEYPR06MB5134:EE_|JH0PR06MB6703:EE_
+x-ms-office365-filtering-correlation-id: 4d371c45-4e2a-47e4-1258-08de5efca97c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?zZHySyA52NIMMZVIM2DANzepnlq8nwTCpohpn8DB4sNUvmy7c4zRY8bZUZ+w?=
+ =?us-ascii?Q?9h+syR9x4EpdttZcGJwtULxbo+cDswhOjJ9dBze3mflX3GJhXFnaoLHyEKf3?=
+ =?us-ascii?Q?+xVTXXOFYPxqXCKrh3q7zgzkuUEXz2qyV6s8OjjVumhNXM+hhGEkK2IWv9f0?=
+ =?us-ascii?Q?WdHwDVwEYsfkQIibdmutlhrkDunWk14hFXULG05eyeLVVpuSspMLEELh/D8p?=
+ =?us-ascii?Q?+4x8wot5Au3NxK+zC8fuFNYIGxtMbEdBWC7orArBD+Ui04pNsjS70+Oi/e9X?=
+ =?us-ascii?Q?ij5yDppA11NR2NLrCXRfp4pNUNleXuq8eFl6udztaB0pyc7/BCD+PCiVgaJp?=
+ =?us-ascii?Q?GYZ+8FkHrXMfie/FkCidPDVxvz8qgK60JVJCXN+fhKNqPk51N5TttLvglKZ9?=
+ =?us-ascii?Q?K5l3fzWXVxurB/fRQIHHKWqzFVpQRB5u7MAR2VlMaC3L/uqgaFKdk+mnPUNW?=
+ =?us-ascii?Q?lzdkN7nQ1kw3PY5NNHsIIlW/zOoOO9w2DfcaTARRRtuTp1bAySvNNpQRrzr3?=
+ =?us-ascii?Q?8BSmcmzwTImZnEMD2pkNn4e9c03LblH2I7BG9xsORlifZ3hiM7/0NnwNxPqL?=
+ =?us-ascii?Q?Q6rXAZOkXu6Np6ixqPPbnDEChGwCwzyDoa3xAUU8OofxMnj0KYI7laTkzNS2?=
+ =?us-ascii?Q?56cnaYa+RFBskLI1gu60qmDW8RolQrvP8x4byLCSvlbPPU/etZp449QrqMAU?=
+ =?us-ascii?Q?oKWWWUYKSG3QDhaDNNvBvaQBUTR+8p+pYLPpra1wl00AQ1AFfbjXQG2Fn4Nh?=
+ =?us-ascii?Q?cP9eA4rkffqUk3dpcoEeE80Ckk8aoztMwCwVoKJ+RnV8m8TVgwURroAFnpU7?=
+ =?us-ascii?Q?89a+qG3QIK73hqlkRpatc26yynJBOq8o0oFvAO6Qc39FZWV1JCb8ErdTId4F?=
+ =?us-ascii?Q?3LGEmN3aLAMNv1JrE3/8Pnyd2oyUvXBS9G3y2h52m5fBYbbgh9gY1lmGlSLM?=
+ =?us-ascii?Q?yOD6czERMjhB8+IAAMv+EFhYHxSuIMkiQpxMrJ/FvyPNRpPwYOd9Z6U7dCM8?=
+ =?us-ascii?Q?YJZ1vfp6Vul4WkmbzK2zgUQ309WvqatOqRx9q9cJHAXWM3yXi/+qCah5oTKm?=
+ =?us-ascii?Q?lDk507xTg0j9jdBkkJGl5bbTPdgbJCuFVAp18U2QyB1vRPGy4+KIKbiU5nwz?=
+ =?us-ascii?Q?MnbifCLvJLeWjly4Vle3Db+H0ppP8U/+rwKiMol0gl3RuwpRD39xbsYBpD2j?=
+ =?us-ascii?Q?0UQl8l/gs61K5z1r0uUewL8FTKdtUBSphZsDmDGtoo3FxnV4JKaCUcOhU98d?=
+ =?us-ascii?Q?1YVMHjc8w+wNElHCBlJppY5aB2wPwsqGnMjnNjzurDbChI/1NmXP2HNxF56w?=
+ =?us-ascii?Q?lysN/tECrjxhHo/rAtBErhFDJNR3mR8JZSyjtFq/b89Gq9pT9uA0dxStn8qt?=
+ =?us-ascii?Q?zl2UNJWptqnNsls445X3VQgYFZfNJuBzrnLbusv9AkkseKB0l7HJDHXOCcOw?=
+ =?us-ascii?Q?R/zOp4Om7VpFvfIEJVZGwFE7ibBmArrjFK82/Ist7LHcNhV6zgtg7tjoxVAm?=
+ =?us-ascii?Q?zIxa4Vb613N/FG4AORhPXlNahjSAld+F6TV5Cvk7Fy7ByKvqzQJea+camuG0?=
+ =?us-ascii?Q?OfQ7EjpM4PxazF+5yGpg56WNEUn+BOY/8guRP9tuSVAbNgW9QyIDRcThtJLO?=
+ =?us-ascii?Q?2VGn068Gx/FXv9gNidsoeT8=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SEYPR06MB5134.apcprd06.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700021);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?hFncDUeaGKQlNmxAIvBR37W3VDvtTuFoqvh+2Wz2l3vmucxXXqI48JAkDYXf?=
+ =?us-ascii?Q?3G9lWTBre7aH0LGO0mOSZzDd5sJJN6qmUy3Zeq5ZjePW6xxqP8S9QW/xTTJS?=
+ =?us-ascii?Q?nM/1eZgXXSwFaXzy6UXEfzyZgwjDWeBq7NIYWHZ3sSgQ2pdowtiGnJG1qLXi?=
+ =?us-ascii?Q?1rogg2vGwXVP3HdDkrAUjNE/wEprM9y5VUdLyzS+8zYtaf0NIkWvZrmsTtxl?=
+ =?us-ascii?Q?+6B2H9HP0GGc8TR2sA2GfWj3y6QhLVsrmc+r8fFWzov035Ih2Lttc23RzHKt?=
+ =?us-ascii?Q?76ykGY+BbLbD5UkIRq5T2XR0ja25lN3rDI5QCjGCJLo1vRY+jDKusWUBB1XH?=
+ =?us-ascii?Q?1LFdzJbbsWp7NFQG53dHYq2Mgm3Cr/jW6irLiydNxDRJsfgzKpsBcEuMiP4d?=
+ =?us-ascii?Q?vkFQ+fCEHiMYfZIdfCkyxK5mZwWmIwGpiNKz78AgV5cjfEwvjbYB6bTNaFJV?=
+ =?us-ascii?Q?z/aM+hZ8tZnCTSCfbohxlA+M0WqII+B1CEdzZSBQcFxknMFIvKiIC63xQQ8V?=
+ =?us-ascii?Q?gxuP7CAW+fiRwK6u1bAJtSzdNR6RtnqupgNG4YNGZtL9vbRlurYZT00IOLWv?=
+ =?us-ascii?Q?li40W2uZyk06tvo7LklrE3iurHuuBDnJQzNT6i7wNcrQ31Qr7wvlgzTUUwfb?=
+ =?us-ascii?Q?JfdOIVU5JRGV0uRF7HpooVicKhOGTnoOjd02IgE6TMxZ0l5nsZdYtpE6/r+N?=
+ =?us-ascii?Q?gR0REtujNXT7R4YL/rpMRSGZcWXRQmHZyCXKv4ACdH4BQ1npmyS2ELn6BwXb?=
+ =?us-ascii?Q?WE/c9A7GlZz68xKbmWcCpwY73DW9H7bA+BGO8xHv5WpjiTeTJvvJu+RvICew?=
+ =?us-ascii?Q?qCfCKyuIVDMVDnenITskdIZrwnkhvn7g1NrA32ObG61PngbiyxHzcvHfJois?=
+ =?us-ascii?Q?Lcob0LsTqY5MUCdexyoWPUyZe0qKtNNPMFCgsthAZLIgAjIk7klIbNBepYHp?=
+ =?us-ascii?Q?XTwVJS1zW+/Hos1CEomFzplXtZ5sAmLPqumJR+WR6JiGEIBpG9egfuaeYMZh?=
+ =?us-ascii?Q?bmuExWadKmGUmjgRrR6TPxXFaWUpFhm5A4z+0YafYLu7TAeTImK72dLjlN49?=
+ =?us-ascii?Q?TTQA/tKXAfXrbK+jXh69akCAp5t1viQO9bWHNNInVZOlrrhMjNi9/3WC1+KH?=
+ =?us-ascii?Q?CcsuiFCGVOmdtuRwmwv8oVFMWnEhuFr4VUxXzZInvI56GShb12/XdqNRjBRc?=
+ =?us-ascii?Q?2qWrCpPbbdPgarNjDwRyhbt9tt8Z0BBetkPqVSu+j1JENShSKNmGyoZETTtD?=
+ =?us-ascii?Q?hcfU1Qokn0Cx0731LgjFhjC7xpfj98n0w2u3a/+J7xxmAdndToow6ORmYfHx?=
+ =?us-ascii?Q?Fi1aU6/HtjZuzaJLSeJ0wIDtsrBUdZw3bapWCj16bj8vP8xgrA9eXMC7A8lA?=
+ =?us-ascii?Q?i17dM/gzejTdzjbQ/LnPMjrzr64b6hNefqEqUGXzx5V0tEWWmnA2hQedaBOG?=
+ =?us-ascii?Q?ZRsF7/4yCgpKKKaksmLci4H6ZVPtVUHIKUeZo0HH4eU12RmQpqXn3dGBi3eD?=
+ =?us-ascii?Q?REaoSqEuuTq6HiZ4Dm9BPcC/9xyOSj/e0iyLVVxh3A1WHE5JtJKl8PLn78SF?=
+ =?us-ascii?Q?4S6ud6mDLZbRk9RaHeRdVxXdVHzHHYnX4yHKWrQ6OlZHK0/qoRx8bJm/XbFE?=
+ =?us-ascii?Q?xpG619Kn8yB5VbQUcsMcXhcW+2kyLrB/8KzZmKDraskPJ/GoeLQVwZKE8anA?=
+ =?us-ascii?Q?hUzrq9hc+OF2aiTTNd3cQg+1Z0HcmhUu8eb7JpCLEoOyxuDUkad0bU7zMtxi?=
+ =?us-ascii?Q?L3t0xRvzPg=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: aspeedtech.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SEYPR06MB5134.apcprd06.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4d371c45-4e2a-47e4-1258-08de5efca97c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 29 Jan 2026 06:07:20.1401
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 43d4aa98-e35b-4575-8939-080e90d5a249
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: RtTfw8bnoZIs0BQo2iWqjFuj6QjCJQPzVDuQffZ0yvXKo12hN3koM763UKFeELGIvGAnRK6ddaKSTCCV10PUU9DrkMuo5WSnZ0EDuJhiiTc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: JH0PR06MB6703
 
-Many USB network drivers define get_drvinfo functions which add no
-value over usbnet_get_drvinfo, only setting the driver name and
-version. usbnet_get_drvinfo automatically sets the driver name, and
-separate driver versions are now frowned upon in the kernel. Remove all
-driver versions and replace these get_drvinfo functions with references
-to usbnet_get_drvinfo where possible. Where that is not possible,
-remove unnecessary code to set the driver name. Also remove two
-unnecessary initializations from aqc111_get_drvinfo, an inaccurate
-comment in pegasus.c, and an unused macro in catc.c.
+> > > > > +	if (priv->mac_id =3D=3D FTGMAC100_FARADAY ||
+> > > > > +	    priv->mac_id =3D=3D FTGMAC100_AST2400 ||
+> > > > > +	    priv->mac_id =3D=3D FTGMAC100_AST2500) {
+> > > > > +		err =3D ftgmac100_setup_mdio(netdev);
+> > > > > +		if (err)
+> > > > > +			goto err_phy_connect;
+> > > > > +	}
+> > > >
+> > > > If ftgmac100_setup_mdio() fails after of_mdiobus_register()
+> > > > returns an error, it calls mdiobus_free(priv->mii_bus) but does
+> > > > not set
+> > > > priv->mii_bus to NULL. The goto err_phy_connect then leads to
+> > > > ftgmac100_destroy_mdio() which checks if (!priv->mii_bus) but
+> > > > finds a dangling pointer, resulting in mdiobus_unregister() on
+> > > > freed memory
+> > > followed by a double free.
+>=20
+> I took another look at this. The goto err_phy_connect is wrong.  At this =
+point,
+> if there is an error nothing else needs cleaning up, so the goto should b=
+e
+> replaced with a return err;
+>=20
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Peter Korsgaard <peter@korsgaard.com> (for dm9601.c)
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
----
-Changes in v4:
-Rebase against latest net-next
-Add more received tags
+Agreed.
+When ftgmac100_setup_mdio() fails, the MDIO bus is not registered and the
+probe function returns an error immediately.
 
-Changes in v3:
-Add changelog
-Add received Reviewed-by tag
+> It is not however the full solution. If ftgmac100_probe_ncsi() fails, it =
+jumps to
+> err_setup_mdio, which currently just does a return, leaking the mdiobus. =
+The
+> ftgmac100_destroy_mdio() call needs moving after the err_setup_mdio: labe=
+l.
+>=20
 
-Changes in v2:
-Also remove driver versions from smsc[79]5xx (missed in the original
-patch because they had a version definition but didn't use it in
-get_drvinfo)
+In NC-SI mode, MDIO is not required.
+Therefore, always registering the MDIO bus is redundant when the interface
+operates in NC-SI mode.
 
- drivers/net/usb/aqc111.c       |  5 -----
- drivers/net/usb/asix.h         |  3 ---
- drivers/net/usb/asix_common.c  |  8 --------
- drivers/net/usb/asix_devices.c |  8 +++-----
- drivers/net/usb/ax88172a.c     |  2 +-
- drivers/net/usb/catc.c         |  7 -------
- drivers/net/usb/dm9601.c       |  9 +--------
- drivers/net/usb/mcs7830.c      |  7 +------
- drivers/net/usb/pegasus.c      |  3 ---
- drivers/net/usb/r8152.c        | 10 ----------
- drivers/net/usb/rtl8150.c      |  3 ---
- drivers/net/usb/sierra_net.c   | 14 +-------------
- drivers/net/usb/smsc75xx.c     |  3 ---
- drivers/net/usb/smsc95xx.c     |  3 ---
- drivers/net/usb/sr9800.c       | 12 +-----------
- drivers/net/usb/sr9800.h       |  3 +--
- 16 files changed, 9 insertions(+), 91 deletions(-)
+Perhaps the adjustments in this patch could be moved to follow
+"net: ftgmac100: Move DT probe into a helper".
+And add to this location in ftgmac100_probe_dt() like below.
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index 9201ee10a13f..0722050dbe32 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -20,8 +20,6 @@
- 
- #include "aqc111.h"
- 
--#define DRIVER_NAME "aqc111"
--
- static int aqc111_read_cmd_nopm(struct usbnet *dev, u8 cmd, u16 value,
- 				u16 index, u16 size, void *data)
- {
-@@ -207,13 +205,10 @@ static void aqc111_get_drvinfo(struct net_device *net,
- 
- 	/* Inherit standard device info */
- 	usbnet_get_drvinfo(net, info);
--	strscpy(info->driver, DRIVER_NAME, sizeof(info->driver));
- 	snprintf(info->fw_version, sizeof(info->fw_version), "%u.%u.%u",
- 		 aqc111_data->fw_ver.major,
- 		 aqc111_data->fw_ver.minor,
- 		 aqc111_data->fw_ver.rev);
--	info->eedump_len = 0x00;
--	info->regdump_len = 0x00;
- }
- 
- static void aqc111_get_wol(struct net_device *net,
-diff --git a/drivers/net/usb/asix.h b/drivers/net/usb/asix.h
-index 8531b804021a..cf97bc3d388b 100644
---- a/drivers/net/usb/asix.h
-+++ b/drivers/net/usb/asix.h
-@@ -29,7 +29,6 @@
- #include <net/selftests.h>
- #include <linux/phylink.h>
- 
--#define DRIVER_VERSION "22-Dec-2011"
- #define DRIVER_NAME "asix"
- 
- /* ASIX AX8817X based USB 2.0 Ethernet Devices */
-@@ -248,8 +247,6 @@ int asix_get_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom,
- int asix_set_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom,
- 		    u8 *data);
- 
--void asix_get_drvinfo(struct net_device *net, struct ethtool_drvinfo *info);
--
- int asix_set_mac_address(struct net_device *net, void *p);
- 
- #endif /* _ASIX_H */
-diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
-index 6ab3486072cb..4f03f4e57655 100644
---- a/drivers/net/usb/asix_common.c
-+++ b/drivers/net/usb/asix_common.c
-@@ -731,14 +731,6 @@ int asix_set_eeprom(struct net_device *net, struct ethtool_eeprom *eeprom,
- 	return ret;
- }
- 
--void asix_get_drvinfo(struct net_device *net, struct ethtool_drvinfo *info)
--{
--	/* Inherit standard device info */
--	usbnet_get_drvinfo(net, info);
--	strscpy(info->driver, DRIVER_NAME, sizeof(info->driver));
--	strscpy(info->version, DRIVER_VERSION, sizeof(info->version));
--}
--
- int asix_set_mac_address(struct net_device *net, void *p)
- {
- 	struct usbnet *dev = netdev_priv(net);
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index c73cf52a65a8..d8744291d843 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -108,7 +108,7 @@ static int asix_ioctl (struct net_device *net, struct ifreq *rq, int cmd)
-    own structure so we don't interfere with other usbnet
-    devices that may be connected at the same time. */
- static const struct ethtool_ops ax88172_ethtool_ops = {
--	.get_drvinfo		= asix_get_drvinfo,
-+	.get_drvinfo		= usbnet_get_drvinfo,
- 	.get_link		= usbnet_get_link,
- 	.get_msglevel		= usbnet_get_msglevel,
- 	.set_msglevel		= usbnet_set_msglevel,
-@@ -317,7 +317,7 @@ static int ax88772_ethtool_set_pauseparam(struct net_device *ndev,
- }
- 
- static const struct ethtool_ops ax88772_ethtool_ops = {
--	.get_drvinfo		= asix_get_drvinfo,
-+	.get_drvinfo		= usbnet_get_drvinfo,
- 	.get_link		= usbnet_get_link,
- 	.get_msglevel		= usbnet_get_msglevel,
- 	.set_msglevel		= usbnet_set_msglevel,
-@@ -978,7 +978,7 @@ static void ax88178_unbind(struct usbnet *dev, struct usb_interface *intf)
- }
- 
- static const struct ethtool_ops ax88178_ethtool_ops = {
--	.get_drvinfo		= asix_get_drvinfo,
-+	.get_drvinfo		= usbnet_get_drvinfo,
- 	.get_link		= usbnet_get_link,
- 	.get_msglevel		= usbnet_get_msglevel,
- 	.set_msglevel		= usbnet_set_msglevel,
-@@ -1635,7 +1635,5 @@ static struct usb_driver asix_driver = {
- module_usb_driver(asix_driver);
- 
- MODULE_AUTHOR("David Hollis");
--MODULE_VERSION(DRIVER_VERSION);
- MODULE_DESCRIPTION("ASIX AX8817X based USB 2.0 Ethernet Devices");
- MODULE_LICENSE("GPL");
--
-diff --git a/drivers/net/usb/ax88172a.c b/drivers/net/usb/ax88172a.c
-index 758a423a459b..3100fbe153c0 100644
---- a/drivers/net/usb/ax88172a.c
-+++ b/drivers/net/usb/ax88172a.c
-@@ -114,7 +114,7 @@ static const struct net_device_ops ax88172a_netdev_ops = {
- };
- 
- static const struct ethtool_ops ax88172a_ethtool_ops = {
--	.get_drvinfo		= asix_get_drvinfo,
-+	.get_drvinfo		= usbnet_get_drvinfo,
- 	.get_link		= usbnet_get_link,
- 	.get_msglevel		= usbnet_get_msglevel,
- 	.set_msglevel		= usbnet_set_msglevel,
-diff --git a/drivers/net/usb/catc.c b/drivers/net/usb/catc.c
-index 6759388692f8..5c7f19cbacf6 100644
---- a/drivers/net/usb/catc.c
-+++ b/drivers/net/usb/catc.c
-@@ -37,14 +37,8 @@
- 
- #include <linux/usb.h>
- 
--/*
-- * Version information.
-- */
--
--#define DRIVER_VERSION "v2.8"
- #define DRIVER_AUTHOR "Vojtech Pavlik <vojtech@suse.cz>"
- #define DRIVER_DESC "CATC EL1210A NetMate USB Ethernet driver"
--#define SHORT_DRIVER_DESC "EL1210A NetMate USB Ethernet"
- 
- MODULE_AUTHOR(DRIVER_AUTHOR);
- MODULE_DESCRIPTION(DRIVER_DESC);
-@@ -673,7 +667,6 @@ static void catc_get_drvinfo(struct net_device *dev,
- {
- 	struct catc *catc = netdev_priv(dev);
- 	strscpy(info->driver, driver_name, sizeof(info->driver));
--	strscpy(info->version, DRIVER_VERSION, sizeof(info->version));
- 	usb_make_path(catc->usbdev, info->bus_info, sizeof(info->bus_info));
- }
- 
-diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
-index 5540f7ec4906..9e5649cefcbc 100644
---- a/drivers/net/usb/dm9601.c
-+++ b/drivers/net/usb/dm9601.c
-@@ -259,13 +259,6 @@ static void dm9601_mdio_write(struct net_device *netdev, int phy_id, int loc,
- 	dm_write_shared_word(dev, 1, loc, res);
- }
- 
--static void dm9601_get_drvinfo(struct net_device *net,
--			       struct ethtool_drvinfo *info)
--{
--	/* Inherit standard device info */
--	usbnet_get_drvinfo(net, info);
--}
--
- static int dm9601_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
- {
- 	struct usbnet *dev = netdev_priv(net);
-@@ -274,7 +267,7 @@ static int dm9601_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
- }
- 
- static const struct ethtool_ops dm9601_ethtool_ops = {
--	.get_drvinfo	= dm9601_get_drvinfo,
-+	.get_drvinfo	= usbnet_get_drvinfo,
- 	.get_link	= usbnet_get_link,
- 	.get_msglevel	= usbnet_get_msglevel,
- 	.set_msglevel	= usbnet_set_msglevel,
-diff --git a/drivers/net/usb/mcs7830.c b/drivers/net/usb/mcs7830.c
-index fdda0616704e..3a551ad363d0 100644
---- a/drivers/net/usb/mcs7830.c
-+++ b/drivers/net/usb/mcs7830.c
-@@ -438,11 +438,6 @@ static int mcs7830_get_regs_len(struct net_device *net)
- 	return 0;
- }
- 
--static void mcs7830_get_drvinfo(struct net_device *net, struct ethtool_drvinfo *drvinfo)
--{
--	usbnet_get_drvinfo(net, drvinfo);
--}
--
- static void mcs7830_get_regs(struct net_device *net, struct ethtool_regs *regs, void *data)
- {
- 	struct usbnet *dev = netdev_priv(net);
-@@ -452,11 +447,11 @@ static void mcs7830_get_regs(struct net_device *net, struct ethtool_regs *regs,
- }
- 
- static const struct ethtool_ops mcs7830_ethtool_ops = {
--	.get_drvinfo		= mcs7830_get_drvinfo,
- 	.get_regs_len		= mcs7830_get_regs_len,
- 	.get_regs		= mcs7830_get_regs,
- 
- 	/* common usbnet calls */
-+	.get_drvinfo		= usbnet_get_drvinfo,
- 	.get_link		= usbnet_get_link,
- 	.get_msglevel		= usbnet_get_msglevel,
- 	.set_msglevel		= usbnet_set_msglevel,
-diff --git a/drivers/net/usb/pegasus.c b/drivers/net/usb/pegasus.c
-index c514483134f0..7b6d6eb60709 100644
---- a/drivers/net/usb/pegasus.c
-+++ b/drivers/net/usb/pegasus.c
-@@ -18,9 +18,6 @@
- #include <linux/uaccess.h>
- #include "pegasus.h"
- 
--/*
-- * Version Information
-- */
- #define DRIVER_AUTHOR "Petko Manolov <petkan@nucleusys.com>"
- #define DRIVER_DESC "Pegasus/Pegasus II USB Ethernet driver"
- 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 880b59ed5422..e8e6689d2c70 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -30,13 +30,6 @@
- #include <linux/usb/r8152.h>
- #include <net/gso.h>
- 
--/* Information for net-next */
--#define NETNEXT_VERSION		"12"
--
--/* Information for net */
--#define NET_VERSION		"13"
--
--#define DRIVER_VERSION		"v1." NETNEXT_VERSION "." NET_VERSION
- #define DRIVER_AUTHOR "Realtek linux nic maintainers <nic_swsd@realtek.com>"
- #define DRIVER_DESC "Realtek RTL8152/RTL8153 Based USB Ethernet Adapters"
- #define MODULENAME "r8152"
-@@ -8756,7 +8749,6 @@ static void rtl8152_get_drvinfo(struct net_device *netdev,
- 	struct r8152 *tp = netdev_priv(netdev);
- 
- 	strscpy(info->driver, MODULENAME, sizeof(info->driver));
--	strscpy(info->version, DRIVER_VERSION, sizeof(info->version));
- 	usb_make_path(tp->udev, info->bus_info, sizeof(info->bus_info));
- 	if (!IS_ERR_OR_NULL(tp->rtl_fw.fw))
- 		strscpy(info->fw_version, tp->rtl_fw.version,
-@@ -9950,7 +9942,6 @@ static int rtl8152_probe_once(struct usb_interface *intf,
- 		goto out2;
- 
- 	set_bit(PROBED_WITH_NO_ERRORS, &tp->flags);
--	netif_info(tp, probe, netdev, "%s\n", DRIVER_VERSION);
- 
- 	return 0;
- 
-@@ -10145,4 +10136,3 @@ module_exit(rtl8152_driver_exit);
- MODULE_AUTHOR(DRIVER_AUTHOR);
- MODULE_DESCRIPTION(DRIVER_DESC);
- MODULE_LICENSE("GPL");
--MODULE_VERSION(DRIVER_VERSION);
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index e40b0669d9f4..2f1f134b5b48 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -13,8 +13,6 @@
- #include <linux/usb.h>
- #include <linux/uaccess.h>
- 
--/* Version Information */
--#define DRIVER_VERSION "v0.6.2 (2004/08/27)"
- #define DRIVER_AUTHOR "Petko Manolov <petkan@users.sourceforge.net>"
- #define DRIVER_DESC "rtl8150 based usb-ethernet driver"
- 
-@@ -785,7 +783,6 @@ static void rtl8150_get_drvinfo(struct net_device *netdev, struct ethtool_drvinf
- 	rtl8150_t *dev = netdev_priv(netdev);
- 
- 	strscpy(info->driver, driver_name, sizeof(info->driver));
--	strscpy(info->version, DRIVER_VERSION, sizeof(info->version));
- 	usb_make_path(dev->udev, info->bus_info, sizeof(info->bus_info));
- }
- 
-diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
-index 36c73db44f77..3ca60ebdd468 100644
---- a/drivers/net/usb/sierra_net.c
-+++ b/drivers/net/usb/sierra_net.c
-@@ -12,10 +12,8 @@
-  * Sierra Wireless. Use at your own risk.
-  */
- 
--#define DRIVER_VERSION "v.2.0"
- #define DRIVER_AUTHOR "Paxton Smith, Matthew Safar, Rory Filer"
- #define DRIVER_DESC "USB-to-WWAN Driver for Sierra Wireless modems"
--static const char driver_name[] = "sierra_net";
- 
- /* if defined debug messages enabled */
- /*#define	DEBUG*/
-@@ -607,15 +605,6 @@ static void sierra_net_status(struct usbnet *dev, struct urb *urb)
- 	}
- }
- 
--static void sierra_net_get_drvinfo(struct net_device *net,
--		struct ethtool_drvinfo *info)
--{
--	/* Inherit standard device info */
--	usbnet_get_drvinfo(net, info);
--	strscpy(info->driver, driver_name, sizeof(info->driver));
--	strscpy(info->version, DRIVER_VERSION, sizeof(info->version));
--}
--
- static u32 sierra_net_get_link(struct net_device *net)
- {
- 	struct usbnet *dev = netdev_priv(net);
-@@ -624,7 +613,7 @@ static u32 sierra_net_get_link(struct net_device *net)
- }
- 
- static const struct ethtool_ops sierra_net_ethtool_ops = {
--	.get_drvinfo = sierra_net_get_drvinfo,
-+	.get_drvinfo = usbnet_get_drvinfo,
- 	.get_link = sierra_net_get_link,
- 	.get_msglevel = usbnet_get_msglevel,
- 	.set_msglevel = usbnet_set_msglevel,
-@@ -973,5 +962,4 @@ module_usb_driver(sierra_net_driver);
- 
- MODULE_AUTHOR(DRIVER_AUTHOR);
- MODULE_DESCRIPTION(DRIVER_DESC);
--MODULE_VERSION(DRIVER_VERSION);
- MODULE_LICENSE("GPL");
-diff --git a/drivers/net/usb/smsc75xx.c b/drivers/net/usb/smsc75xx.c
-index 78c821349f48..fbc9d796f605 100644
---- a/drivers/net/usb/smsc75xx.c
-+++ b/drivers/net/usb/smsc75xx.c
-@@ -21,7 +21,6 @@
- #include "smsc75xx.h"
- 
- #define SMSC_CHIPNAME			"smsc75xx"
--#define SMSC_DRIVER_VERSION		"1.0.0"
- #define HS_USB_PKT_SIZE			(512)
- #define FS_USB_PKT_SIZE			(64)
- #define DEFAULT_HS_BURST_CAP_SIZE	(16 * 1024 + 5 * HS_USB_PKT_SIZE)
-@@ -1447,8 +1446,6 @@ static int smsc75xx_bind(struct usbnet *dev, struct usb_interface *intf)
- 	struct smsc75xx_priv *pdata = NULL;
- 	int ret;
- 
--	printk(KERN_INFO SMSC_CHIPNAME " v" SMSC_DRIVER_VERSION "\n");
--
- 	ret = usbnet_get_endpoints(dev, intf);
- 	if (ret < 0) {
- 		netdev_warn(dev->net, "usbnet_get_endpoints failed: %d\n", ret);
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index c65402d850c9..7ecf98d97493 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -27,7 +27,6 @@
- #include "smsc95xx.h"
- 
- #define SMSC_CHIPNAME			"smsc95xx"
--#define SMSC_DRIVER_VERSION		"2.0.0"
- #define HS_USB_PKT_SIZE			(512)
- #define FS_USB_PKT_SIZE			(64)
- #define DEFAULT_HS_BURST_CAP_SIZE	(16 * 1024 + 5 * HS_USB_PKT_SIZE)
-@@ -1152,8 +1151,6 @@ static int smsc95xx_bind(struct usbnet *dev, struct usb_interface *intf)
- 	int ret, phy_irq;
- 	u32 val;
- 
--	printk(KERN_INFO SMSC_CHIPNAME " v" SMSC_DRIVER_VERSION "\n");
--
- 	ret = usbnet_get_endpoints(dev, intf);
- 	if (ret < 0) {
- 		netdev_warn(dev->net, "usbnet_get_endpoints failed: %d\n", ret);
-diff --git a/drivers/net/usb/sr9800.c b/drivers/net/usb/sr9800.c
-index ee8c6c9d3962..e3f6233e5866 100644
---- a/drivers/net/usb/sr9800.c
-+++ b/drivers/net/usb/sr9800.c
-@@ -469,15 +469,6 @@ static int sr_get_eeprom(struct net_device *net,
- 	return 0;
- }
- 
--static void sr_get_drvinfo(struct net_device *net,
--				 struct ethtool_drvinfo *info)
--{
--	/* Inherit standard device info */
--	usbnet_get_drvinfo(net, info);
--	strscpy(info->driver, DRIVER_NAME, sizeof(info->driver));
--	strscpy(info->version, DRIVER_VERSION, sizeof(info->version));
--}
--
- static int sr_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
- {
- 	struct usbnet *dev = netdev_priv(net);
-@@ -511,7 +502,7 @@ static int sr_set_mac_address(struct net_device *net, void *p)
- }
- 
- static const struct ethtool_ops sr9800_ethtool_ops = {
--	.get_drvinfo	= sr_get_drvinfo,
-+	.get_drvinfo	= usbnet_get_drvinfo,
- 	.get_link	= usbnet_get_link,
- 	.get_msglevel	= usbnet_get_msglevel,
- 	.set_msglevel	= usbnet_set_msglevel,
-@@ -865,6 +856,5 @@ static struct usb_driver sr_driver = {
- module_usb_driver(sr_driver);
- 
- MODULE_AUTHOR("Liu Junliang <liujunliang_ljl@163.com");
--MODULE_VERSION(DRIVER_VERSION);
- MODULE_DESCRIPTION("SR9800 USB 2.0 USB2NET Dev : http://www.corechip-sz.com");
- MODULE_LICENSE("GPL");
-diff --git a/drivers/net/usb/sr9800.h b/drivers/net/usb/sr9800.h
-index 952e6f7c0321..98ac1c45740e 100644
---- a/drivers/net/usb/sr9800.h
-+++ b/drivers/net/usb/sr9800.h
-@@ -147,8 +147,7 @@
- #define SR_EEPROM_MAGIC			0xdeadbeef
- #define SR9800_EEPROM_LEN		0xff
- 
--/* SR9800 Driver Version and Driver Name */
--#define DRIVER_VERSION			"11-Nov-2013"
-+/* SR9800 Driver Name and Flags */
- #define DRIVER_NAME			"CoreChips"
- #define	DRIVER_FLAG		\
- 	(FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |  FLAG_MULTI_PACKET)
--- 
-2.43.0
+static int ftgmac100_probe_dt(struct net_device *netdev,
+			      struct platform_device *pdev,
+			      struct ftgmac100 *priv,
+			      struct device_node *np)
+{
+	struct phy_device *phy;
+	int err;
+
+	if (of_get_property(np, "use-ncsi", NULL))
+		return ftgmac100_probe_ncsi(netdev, priv, pdev);
+
+
+=3D=3D=3D=3D=3D=3D=3D=3D > Add here
+    if (priv->mac_id =3D=3D FTGMAC100_FARADAY ||
+	    priv->mac_id =3D=3D FTGMAC100_AST2400 ||
+	    priv->mac_id =3D=3D FTGMAC100_AST2500) {
+		err =3D ftgmac100_setup_mdio(netdev);
+		if (err)
+			return err;
+	}
+=3D=3D=3D=3D=3D=3D=3D=3D
+
+	if (of_phy_is_fixed_link(np) ||
+	    of_get_property(np, "phy-handle", NULL)) {
+		/* Support "mdio"/"phy" child nodes for ast2400/2500
+		 * with an embedded MDIO controller. Automatically
+		 * scan the DTS for available PHYs and register
+		 * them. 2600 has an independent MDIO controller, not
+		 * part of the MAC.
+		 */
+		phy =3D of_phy_get_and_connect(priv->netdev, np,
+					     &ftgmac100_adjust_link);
+		if (!phy) {
+			dev_err(&pdev->dev, "Failed to connect to phy\n");
+			return -EINVAL;
+		}
+
+		/* Indicate that we support PAUSE frames (see comment in
+		 * Documentation/networking/phy.rst)
+		 */
+		phy_support_asym_pause(phy);
+
+		/* Display what we found */
+		phy_attached_info(phy);
+		return 0;
+	}
+....
+}
+
+Thanks,
+Jacky
 
