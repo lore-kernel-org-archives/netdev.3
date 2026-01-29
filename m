@@ -1,170 +1,422 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8223859E4
-	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 11:08:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9972E286D4E;
+	Thu, 29 Jan 2026 11:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769684892; cv=none; b=NOLovAfvPr23HLZV2p8PgYX6H2sUF3RlHGfO+wHT8lgsUmms4AO/bzG7plwmI5hJiLGbsXO2VrTaJ7c2FyzaiAO5ok4N1MUOsFujhQ3AAhUxxNqF8MPnXVJgs2dSJ6SHrttBAm5BvN+ZaS0AifQpzKUGLh+5jwEbFZjCWiCmSA4=
+	t=1769684941; cv=none; b=QZxd51WtCESDG/iIo/6cPvFQv36b4Sz+PTjCrZrj1WY8ZN1zeFXOFQj+MFwRXFSbaAVEY32UaeiYV6acQs7emCsEd1pkXByEYoh8BsJ3vhmwCD3HpN25IRVhgseZmk8KmpT9oDNw+LjdgTBEge427RoP7pBfzInsnUXdKW+BIVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769684892; c=relaxed/simple;
-	bh=ZpzWLfxWdzI35hED67bvl18C7frsG8QVBVGY1Td1kwQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jXmllO1FOGOh2lJT45zZFpYMOlx7sbi5ECkz43qTmXUiEiwkA3z4jeHljMBhp8c3CBmQmAGMVQ2Lvw2s8R925BRG7MH2GSqp5tynECJlJS9bNk4JVcnOXHrTgVzoHGb8lExsOABKgN3fGkU41h+u9JTbUWpDY0+ekHQI0OvR+vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LqI6iBWO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ATYJxrXC; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1769684941; c=relaxed/simple;
+	bh=5tj3u34P//O1kuWn/qKihi9MofYqfuFCkteoItVPUKo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=t/n+BJ+4Qb7fAwMEJsF3AUpzPDQ3d63LovWs3jzjO4kz4sEDy079XMWCcY7eshtNQVH8gImAuGuo/grOcyIaBRxb+k13e72D/oZdqSZXFsVJ7f6xNA7DatCObs7DtCqjYii9yPrZdMAUObQvkMsgpHbIR5P7WIWgFYg4gvqr98w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=MBH4lhBY; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=kQLmoqmh; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LqI6iBWO";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ATYJxrXC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769684889;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="MBH4lhBY";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="kQLmoqmh"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4f1x7d4zFwz9tgJ;
+	Thu, 29 Jan 2026 12:02:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1769684573;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=EjyeEr/0YxMv+W2aN9EYwTKNL4Eg3DNxiBTghibwjm0=;
-	b=LqI6iBWOPrUp5eqMQ+LAZs6jpvzykNBEWc0fpl7f4Do7gGmrCJFunLZvxdNeKknl04br9J
-	xYuWNyitlH9IG84vxpsshRQQ+m4+nwt79H411uomcRSEzBEA3JXrKoB0pbFtFshOnH51Zl
-	/O7qIPWv2KS1MCXxeWFMtmJwtMFBLIg=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-9OhhSiyCM-ah_vdUOOtJPg-1; Thu, 29 Jan 2026 06:08:08 -0500
-X-MC-Unique: 9OhhSiyCM-ah_vdUOOtJPg-1
-X-Mimecast-MFC-AGG-ID: 9OhhSiyCM-ah_vdUOOtJPg_1769684887
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-47edf8ba319so6967935e9.2
-        for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 03:08:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1769684887; x=1770289687; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=EjyeEr/0YxMv+W2aN9EYwTKNL4Eg3DNxiBTghibwjm0=;
-        b=ATYJxrXCJz8Y4aChUZmeIMgiXonOkJfa52AsnUpZwTavfhIUUeOFx3wPpPLbdu1JWg
-         m6uFzWR9UmnBH+BuwOCX3XMse7OBrlgPtXWj8CVH0QaIxSfe945k/csKoUyDBaCBf5RU
-         NkPM8YOUECKEtwbpnFKhiRstipjZBRJ7DLz/mhBFnqfhunJQJ6aedJBC+FXNpSDNKk1o
-         nfsE+mCGxn9xNObyv6/e6jPmbOFcC9SZCuxy9rRowPnY1SklVFY+EXgz5b7ZDrAQRDGG
-         fic2r7C1nsoJW2WsD2Qs55QXNSeyZFRfelQ7jhBYgRsIw92kIZfaFVA+Q3cQPvBh7Mdg
-         ZQqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769684887; x=1770289687;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EjyeEr/0YxMv+W2aN9EYwTKNL4Eg3DNxiBTghibwjm0=;
-        b=Rq4aGTz1zxaVBE6JxQOym7NvMjEVR5Z5KBMU6T50t1ytfkZq0hijX1aqobpA5Ov2Ca
-         iF6ViRzqPnSe1pGsQPfnyYelEl/rNiKQ/eU6sZdkDQm+uBMDc2krFUXORVrg1AORglmh
-         3fMmWa+AoMP9wakWlRmMv6YN/isS3xchYE9du1UuDL4Wh/MBwR8Nd6+sPaIjELy6w2Xl
-         79ZNDGfh3cvsDKX7tgy1vE7GKQHrW2f32jNzFINBAvTANAmSW2GtfVEceYVy0hTF8DVh
-         wOR+pyFyQWc6pjl7sIqy4BYEWqhbUegkY9sb3ieT6KfS3bZ/wtD1zEQSpoUrFvtgPdvb
-         tFLA==
-X-Gm-Message-State: AOJu0YwWpajOobx1nOIBRxrgi/N816DDtn/F4IX1BgfZy1X8cR8/mJCJ
-	ElMsYvSHaJTYrASl+SM0zlTqLMXUXYB7TlxUVwe2OX/vbximccHywkZKpPeiicGcGjxcKO3Jy8+
-	n5Wb5mAwbMi5xNW+uNQVKiIiMRvYNQK0ICg5kz+gWA+W8mKQKs+H50oXgJw==
-X-Gm-Gg: AZuq6aJg8JG+3uvk+ZW/4oBQat+V1ng9o3n7nVias9bPTGRzxJvS0xQUhTFnNyBYdRj
-	KkMlmdLjWAPJGKFFSE19mjSUdlynpZwvB5cjlbEWZ5iUt2MUxup7F7ZAvcNt7rjegoPfNueCffj
-	BOFNfz8lIiFah68urybRTMzlomIj+OYK2teACMwRbzFlwIGlf/hyUg4eFDrTbFh9VGU9DB54Vrq
-	D/A6NF7irQCYyOinTFPTrtIifXCHk+gWgBu7gJRqI7teLWJv/g2OmqkGpRieu17yPgUSxgvooKs
-	3ZaWxGXWbBqSX9anZMp0EO7RGDrMbo6opOZDOFVQ8nVr4MeVQ1YC1Qe9NNAVI+EvpzEcbks7P9f
-	33PMrilfYi+y/
-X-Received: by 2002:a05:6000:2387:b0:431:3a5:d9b2 with SMTP id ffacd0b85a97d-435dd1c1d77mr12493990f8f.39.1769684886724;
-        Thu, 29 Jan 2026 03:08:06 -0800 (PST)
-X-Received: by 2002:a05:6000:2387:b0:431:3a5:d9b2 with SMTP id ffacd0b85a97d-435dd1c1d77mr12493963f8f.39.1769684886252;
-        Thu, 29 Jan 2026 03:08:06 -0800 (PST)
-Received: from [192.168.88.32] ([212.105.153.56])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10e474csm13833115f8f.2.2026.01.29.03.08.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Jan 2026 03:08:05 -0800 (PST)
-Message-ID: <b906bf83-a2b3-45fa-b3fc-1a9242b783a0@redhat.com>
-Date: Thu, 29 Jan 2026 12:08:04 +0100
+	bh=XyYuyOH5DCFY0dDdeaLsmfuFY6eGZKgIu8P7iVMFgEY=;
+	b=MBH4lhBY8sHjl21usuEo4T2UJohchp6gLNLW5DLnXdjXaOgfexU0hiTzdPGOQXgw7UKgAF
+	/IlxF6WyLapuNWVDFPH8GwXLcvFuTen5MG1tz+sR/hQvxznOy3h2P95n51ZFEHYFzOI1ul
+	J8s3ytUiwlVWuq1tUSuBCY0umaei+wcgXk5IFp8RMoW7i2arwvfAHi7qUJDv6XjJ9b/j0C
+	RW/uyIRbXzwl5E05lwjtd5NeGKvzHJOavPVPmiG8UPTk15IbeGw9AxKEqcttKxazcCwhmO
+	+FQJTkxBGk9w+nidQ9/ftJfvv09mdr6d6/nA4y12jBTSDrA+YlebkIYXN2zqeA==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=kQLmoqmh;
+	spf=pass (outgoing_mbo_mout: domain of lukasz.majewski@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=lukasz.majewski@mailbox.org
+From: Lukasz Majewski <lukasz.majewski@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1769684571;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XyYuyOH5DCFY0dDdeaLsmfuFY6eGZKgIu8P7iVMFgEY=;
+	b=kQLmoqmhHZGrwObFLxAuMYIzU3zkHta2a4UzGvrTQsWSlOKV6kw4QbgqM5IfA1PWwMDcZt
+	pI3H/Gzw/ra8fK6CSQd8Gl5Vl0DHifN1zAQF+/XjnMEcD2LbesVsFRUI5mrEknrMCMiSdM
+	+GD7+T2bAt6dJuWAlPxCTLgnxWEAkiLiciLfF1/+jutrmJa7bNFaWPrY4ztR1D8JM5HMUR
+	5tcExM1/GoX+yHLFZW8j5VDIXe3QnfmMFiUrCIH3bKARrPOJDY1s55Rp+0/xzLUeqNJtGh
+	Qe0NBz1aqxhn1qiGNEsgSSOwMFXzrkAmkD1jeK/3P6rCEzF+XlrNVEauj5VVYw==
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Lukasz Majewski <lukasz.majewski@mailbox.org>
+Subject: [net-next v21 5/7] net: mtip: Add mtip_switch_{rx|tx} functions to the L2 switch driver
+Date: Thu, 29 Jan 2026 12:01:52 +0100
+Message-Id: <20260129110154.1699976-6-lukasz.majewski@mailbox.org>
+In-Reply-To: <20260129110154.1699976-1-lukasz.majewski@mailbox.org>
+References: <20260129110154.1699976-1-lukasz.majewski@mailbox.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 net 1/2] net: vlan: always set hard_header_len with
- VLAN_HLEN
-To: Chen Zhen <chenzhen126@huawei.com>, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- huyizhen2@huawei.com, gaoxingwang1@huawei.com
-References: <20260126040426.2570396-1-chenzhen126@huawei.com>
- <20260126040426.2570396-2-chenzhen126@huawei.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260126040426.2570396-2-chenzhen126@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: d8b7f907d07e138eebe
+X-MBO-RS-META: xzucjdrsgkoe4qdo5kuc8gtzzmfjnufi
+X-Rspamd-Queue-Id: 4f1x7d4zFwz9tgJ
 
-On 1/26/26 5:04 AM, Chen Zhen wrote:
-> When tx-vlan-hw-insert is toggled to on, vlan device hard_header_len
-> will be reduced to dev->hard_header_len since commit 029f5fc31cdb
-> ("8021q: set hard_header_len when VLAN offload features are toggled"),
-> but the header_ops remains unchanged, ndisc skb will be allocated
-> with this len and filled in vlan hdr in vlan_dev_hard_header(), but
-> with reorder_hdr off, the skb room is not enough so it triggers
-> skb_panic() as below:
-> 
-> skbuff: skb_under_panic: text:ffffffffa0535126 len:90 put:14
->  head:ffff916c04232ec0 data:ffff916c04232ebe tail:0x58 end:0x180 dev:veth0.10
-> ------------[ cut here ]------------
->  kernel BUG at net/core/skbuff.c:197!
->  <TASK>
->   skb_push+0x39/0x40 net/core/skbuff.c:207
->   eth_header+0x26/0xb0 net/ethernet/eth.c:90
->   vlan_dev_hard_header+0x58/0x130 net/8021q/vlan_dev.c:85 [8021q]
->   neigh_connected_output+0xae/0x100 net/core/neighbour.c:1589
->   ip6_finish_output2+0x2cc/0x650 net/ipv6/ip6_output.c:213
->   ip6_finish_output+0x27/0xd0 net/ipv6/ip6_output.c:246
->   ndisc_send_skb+0x1d0/0x370 net/ipv6/ndisc.c:516
->   ndisc_send_ns+0x5a/0xb0 net/ipv6/ndisc.c:672
->   addrconf_dad_work+0x2b5/0x380 net/ipv6/addrconf.c:4258
->   process_one_work+0x17f/0x320 kernel/workqueue.c:2743
-> 
-> In case of possible crash from other callers, fix this by always
-> reserving VLAN_HLEN in hard_header_len even if the header_ops would
-> not request it.
-> 
-> Fixes: 029f5fc31cdb ("8021q: set hard_header_len when VLAN offload features are toggled")
-> Signed-off-by: Chen Zhen <chenzhen126@huawei.com>
-> ---
->  net/8021q/vlan.c     | 5 -----
->  net/8021q/vlan_dev.c | 8 +++-----
->  2 files changed, 3 insertions(+), 10 deletions(-)
-> 
-> diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-> index 2b74ed56eb16..a7b5da7f9999 100644
-> --- a/net/8021q/vlan.c
-> +++ b/net/8021q/vlan.c
-> @@ -323,11 +323,6 @@ static void vlan_transfer_features(struct net_device *dev,
->  
->  	netif_inherit_tso_max(vlandev, dev);
->  
-> -	if (vlan_hw_offload_capable(dev->features, vlan->vlan_proto))
-> -		vlandev->hard_header_len = dev->hard_header_len;
-> -	else
-> -		vlandev->hard_header_len = dev->hard_header_len + VLAN_HLEN;
-> -
->  #if IS_ENABLED(CONFIG_FCOE)
->  	vlandev->fcoe_ddp_xid = dev->fcoe_ddp_xid;
->  #endif
-> diff --git a/net/8021q/vlan_dev.c b/net/8021q/vlan_dev.c
-> index fbf296137b09..9e81669bffd6 100644
-> --- a/net/8021q/vlan_dev.c
-> +++ b/net/8021q/vlan_dev.c
-> @@ -572,13 +572,11 @@ static int vlan_dev_init(struct net_device *dev)
->  #endif
->  
->  	dev->needed_headroom = real_dev->needed_headroom;
-> -	if (vlan_hw_offload_capable(real_dev->features, vlan->vlan_proto)) {
-> +	dev->hard_header_len = real_dev->hard_header_len + VLAN_HLEN;
+This patch provides mtip_switch_tx and mtip_switch_rx functions
+code for MTIP L2 switch.
 
-I'm wondering if the above would foul hard_header_len users to do
-wrong/bad mac comparison, i.e. in gro_list_prepare()  ?
+Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
+---
+Changes for v13:
+- New patch - created by excluding some code from large (i.e. v12 and
+  earlier) MTIP driver
 
-/P
+Changes for v14:
+- Rewrite RX error handling code
+- Remove } else { from if (unlikely(!skb)) { condition in mtip_switch_rx()
+- Remove locking from RX patch (done under NAPI API and similar to fec_main.c
+  driver)
+- Use net_prefetch() instead of prefetch()
+
+Changes for v15:
+- Use page_address() instead of __va()
+- Remove the check if data is NOT null, as it cannot be (those values are
+  assured to be allocated earlier for RX path).
+
+Changes for v16:
+- Disable RX interrupt when in switch RX function
+- Set offload_fwd_mark when L2 offloading is enabled (fix broadcast flooding)
+- Replace spin_{un}lock() with _bh variant
+
+Changes for v17 - v18:
+- None
+
+Changes for v19:
+- Pass the page with data to upper part of the network stack
+- Use new page from page pool for new transfer
+- Remove extra copy of the data
+
+Changes for v20:
+- Use dev_err_ratelimited() to not spam console
+- Replace dev_consume_skb_irq() with dev_consume_skb_any()
+- Use skb->dev to assign it to tx packet device (avoid assigning to
+  napi->dev)
+- Remove the need to export the port information
+- Do not use fep->skb_dirty (calculate proper 'index' instead)
+- Use information about stopped queues to determine if driver can accept
+  further the packets for TX
+
+Changes for v21:
+- None
+---
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 257 +++++++++++++++++-
+ 1 file changed, 256 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+index 364ba9010db4..512eb38644d3 100644
+--- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
++++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+@@ -246,6 +246,39 @@ struct mtip_port_info *mtip_portinfofifo_read(struct switch_enet_private *fep)
+ 	return info;
+ }
+ 
++static void mtip_atable_get_entry_port_number(struct switch_enet_private *fep,
++					      unsigned char *mac_addr, u8 *port)
++{
++	int block_index, block_index_end, entry;
++	u32 mac_addr_lo, mac_addr_hi;
++	u32 read_lo, read_hi;
++
++	mac_addr_lo = (u32)((mac_addr[3] << 24) | (mac_addr[2] << 16) |
++			    (mac_addr[1] << 8) | mac_addr[0]);
++	mac_addr_hi = (u32)((mac_addr[5] << 8) | (mac_addr[4]));
++
++	block_index = GET_BLOCK_PTR(crc8_calc(mac_addr));
++	block_index_end = block_index + ATABLE_ENTRY_PER_SLOT;
++
++	/* now search all the entries in the selected block */
++	for (entry = block_index; entry < block_index_end; entry++) {
++		mtip_read_atable(fep, entry, &read_lo, &read_hi);
++		*port = MTIP_PORT_FORWARDING_INIT;
++
++		if (read_lo == mac_addr_lo &&
++		    ((read_hi & 0x0000FFFF) ==
++		     (mac_addr_hi & 0x0000FFFF))) {
++			/* found the correct address */
++			if ((read_hi & (1 << 16)) && (!(read_hi & (1 << 17))))
++				*port = FIELD_GET(AT_PORT_MASK, read_hi);
++			break;
++		}
++	}
++
++	dev_dbg(&fep->pdev->dev, "%s: MAC: %pM PORT: 0x%x\n", __func__,
++		mac_addr, *port);
++}
++
+ /* Clear complete MAC Look Up Table */
+ void mtip_clear_atable(struct switch_enet_private *fep)
+ {
+@@ -826,11 +859,233 @@ static irqreturn_t mtip_interrupt(int irq, void *ptr_fep)
+ 
+ static void mtip_switch_tx(struct switch_enet_private *fep)
+ {
++	struct net_device *dev;
++	unsigned short status;
++	struct sk_buff *skb;
++	struct cbd_t *bdp;
++	int index;
++
++	spin_lock_bh(&fep->hw_lock);
++	bdp = fep->dirty_tx;
++
++	while (((status = bdp->cbd_sc) & BD_ENET_TX_READY) == 0) {
++		if (bdp == fep->cur_tx &&
++		    !mtip_netif_queues_stopped(fep))
++			break;
++
++		index = bdp - fep->tx_bd_base;
++		dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
++				 MTIP_SWITCH_TX_FRSIZE, DMA_TO_DEVICE);
++		bdp->cbd_bufaddr = 0;
++		skb = fep->tx_skbuff[index];
++		dev = skb->dev;
++		/* Check for errors */
++		if (status & (BD_ENET_TX_HB | BD_ENET_TX_LC |
++				   BD_ENET_TX_RL | BD_ENET_TX_UN |
++				   BD_ENET_TX_CSL)) {
++			dev->stats.tx_errors++;
++			if (status & BD_ENET_TX_HB)  /* No heartbeat */
++				dev->stats.tx_heartbeat_errors++;
++			if (status & BD_ENET_TX_LC)  /* Late collision */
++				dev->stats.tx_window_errors++;
++			if (status & BD_ENET_TX_RL)  /* Retrans limit */
++				dev->stats.tx_aborted_errors++;
++			if (status & BD_ENET_TX_UN)  /* Underrun */
++				dev->stats.tx_fifo_errors++;
++			if (status & BD_ENET_TX_CSL) /* Carrier lost */
++				dev->stats.tx_carrier_errors++;
++		} else {
++			dev->stats.tx_packets++;
++		}
++
++		if (status & BD_ENET_TX_READY)
++			dev_err_ratelimited(&fep->pdev->dev,
++					    "xmit interrupt and TX_READY.\n");
++
++		/* Deferred means some collisions occurred during transmit,
++		 * but we eventually sent the packet OK.
++		 */
++		if (status & BD_ENET_TX_DEF)
++			dev->stats.collisions++;
++
++		/* Free the sk buffer associated with this last transmit */
++		dev_consume_skb_any(skb);
++		fep->tx_skbuff[index] = NULL;
++
++		/* Update pointer to next buffer descriptor to be transmitted */
++		if (status & BD_ENET_TX_WRAP)
++			bdp = fep->tx_bd_base;
++		else
++			bdp++;
++
++		/* Since we have freed up a buffer, the ring is no longer
++		 * full.
++		 */
++		if (fep->dirty_tx == fep->cur_tx &&
++		    mtip_netif_queues_stopped(fep))
++			mtip_netif_wake_queues(fep);
++	}
++	fep->dirty_tx = bdp;
++	spin_unlock_bh(&fep->hw_lock);
++}
++
++static int mtip_update_cbd(struct switch_enet_private *fep, struct cbd_t *bdp,
++			   int index)
++{
++	struct page *new_page;
++
++	new_page = page_pool_dev_alloc_pages(fep->page_pool);
++	if (unlikely(!new_page))
++		return -ENOMEM;
++
++	fep->page[index] = new_page;
++	bdp->cbd_bufaddr = page_pool_get_dma_addr(new_page);
++
++	return 0;
+ }
+ 
++/* During a receive, the cur_rx points to the current incoming buffer.
++ * When we update through the ring, if the next incoming buffer has
++ * not been given to the system, we just set the empty indicator,
++ * effectively tossing the packet.
++ */
+ static int mtip_switch_rx(struct net_device *dev, int budget)
+ {
+-	return -ENOMEM;
++	struct mtip_ndev_priv *priv = netdev_priv(dev);
++	u8 *data, rx_port = MTIP_PORT_FORWARDING_INIT;
++	struct switch_enet_private *fep = priv->fep;
++	unsigned short status, pkt_len;
++	struct net_device *pndev;
++	struct ethhdr *eth_hdr;
++	int pkt_received = 0;
++	struct sk_buff *skb;
++	struct cbd_t *bdp;
++	struct page *page;
++	int index;
++
++	/* First, grab all of the stats for the incoming packet.
++	 * These get messed up if we get called due to a busy condition.
++	 */
++	bdp = fep->cur_rx;
++
++	while (!((status = bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
++		if (pkt_received >= budget)
++			break;
++
++		pkt_received++;
++
++		writel(MCF_ESW_IMR_RXF, fep->hwp + ESW_ISR);
++		if (!fep->usage_count)
++			goto rx_processing_done;
++
++		status ^= BD_ENET_RX_LAST;
++		/* Check for errors. */
++		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH | BD_ENET_RX_NO |
++			      BD_ENET_RX_CR | BD_ENET_RX_OV | BD_ENET_RX_LAST |
++			      BD_ENET_RX_CL)) {
++			dev->stats.rx_errors++;
++			if (status & BD_ENET_RX_OV) {
++				/* FIFO overrun */
++				dev->stats.rx_fifo_errors++;
++				goto rx_processing_done;
++			}
++			if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH
++				      | BD_ENET_RX_LAST)) {
++				/* Frame too long or too short. */
++				dev->stats.rx_length_errors++;
++				if (status & BD_ENET_RX_LAST)
++					netdev_err(dev, "rcv is not +last\n");
++			}
++			if (status & BD_ENET_RX_CR)	/* CRC Error */
++				dev->stats.rx_crc_errors++;
++
++			/* Report late collisions as a frame error. */
++			if (status & (BD_ENET_RX_NO | BD_ENET_RX_CL))
++				dev->stats.rx_frame_errors++;
++			goto rx_processing_done;
++		}
++
++		/* Get correct RX page */
++		index = bdp - fep->rx_bd_base;
++		page = fep->page[index];
++		/* Process the incoming frame */
++		pkt_len = bdp->cbd_datlen;
++
++		dma_sync_single_for_cpu(&fep->pdev->dev, bdp->cbd_bufaddr,
++					pkt_len, DMA_FROM_DEVICE);
++		net_prefetch(page_address(page));
++		data = page_address(page);
++
++		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
++			swap_buffer(data, pkt_len);
++
++		eth_hdr = (struct ethhdr *)data;
++		mtip_atable_get_entry_port_number(fep, eth_hdr->h_source,
++						  &rx_port);
++		if (rx_port == MTIP_PORT_FORWARDING_INIT)
++			mtip_atable_dynamicms_learn_migration(fep,
++							      mtip_get_time(),
++							      eth_hdr->h_source,
++							      &rx_port);
++
++		if ((rx_port == 1 || rx_port == 2) && fep->ndev[rx_port - 1])
++			pndev = fep->ndev[rx_port - 1];
++		else
++			pndev = dev;
++
++		if (mtip_update_cbd(fep, bdp, index)) {
++			pndev->stats.rx_dropped++;
++			goto rx_processing_done;
++		}
++
++		/* The packet length includes FCS, but we don't want to
++		 * include that when passing upstream as it messes up
++		 * bridging applications.
++		 */
++		skb = build_skb(page_address(page), PAGE_SIZE);
++		if (unlikely(!skb)) {
++			page_pool_recycle_direct(fep->page_pool, page);
++			pndev->stats.rx_dropped++;
++
++			netdev_err_once(pndev, "build_skb failed!\n");
++			goto rx_processing_done;
++		}
++
++		skb_put(skb, pkt_len);      /* Make room */
++		skb_mark_for_recycle(skb);
++		skb->protocol = eth_type_trans(skb, pndev);
++		skb->offload_fwd_mark = fep->br_offload;
++		napi_gro_receive(&fep->napi, skb);
++
++		pndev->stats.rx_packets++;
++		pndev->stats.rx_bytes += pkt_len;
++
++ rx_processing_done:
++		/* Clear the status flags for this buffer */
++		status &= ~BD_ENET_RX_STATS;
++
++		/* Mark the buffer empty */
++		status |= BD_ENET_RX_EMPTY;
++		/* Make sure that updates to the descriptor are performed */
++		wmb();
++		bdp->cbd_sc = status;
++
++		/* Update BD pointer to next entry */
++		if (status & BD_ENET_RX_WRAP)
++			bdp = fep->rx_bd_base;
++		else
++			bdp++;
++
++		/* Doing this here will keep the FEC running while we process
++		 * incoming frames.  On a heavily loaded network, we should be
++		 * able to keep up at the expense of system resources.
++		 */
++		writel(MCF_ESW_RDAR_R_DES_ACTIVE, fep->hwp + ESW_RDAR);
++	} /* while (!((status = bdp->cbd_sc) & BD_ENET_RX_EMPTY)) */
++
++	fep->cur_rx = bdp;
++
++	return pkt_received;
+ }
+ 
+ static void mtip_adjust_link(struct net_device *dev)
+-- 
+2.39.5
 
