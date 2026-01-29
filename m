@@ -1,75 +1,35 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D242BD597
-	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 03:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09BD238159;
+	Thu, 29 Jan 2026 03:40:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769656299; cv=none; b=AMwl5hU4aIAOury0SqFVkt0sOVq5YP0DEuK8+dzuwP0DivrlQoiKNBLWKOWvxLPU9F9zmT4m3DI3YlSLgFRYBi9kgRi37MhGpj1xTDuf1xvKm6HaGHlFgPtma9ZcJTY8cwcbvhmufYe4ex5qo7obZrHO+etBBd2RqmAdEUjOE6A=
+	t=1769658013; cv=none; b=egekLZPGoCZt2t7J3+uTTg2nw+kSGRtz0O+Ad3lIHGFkGBNT4yaUlfytyy35SJQqUsuPTrbqXizTSoMuxHNHrEDYyXGLRmgICI9O6TM3pYSRp4+lGOnArOr+ogE0bNKzP4v9eXvXsjDqFS6t4P75Z3/OYLNKBnFDbKv5oUKdBwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769656299; c=relaxed/simple;
-	bh=ji+mYPFRCqdMnMluhdPnzHWfS6NeTlfDWXmEfqSErag=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qGGDIlRzmCbXFKbCsz8C++2e0lJkspu9f0p7xwZSFvFKg0hh3bkFCl7VsOVqkpnqul+qBCBxU3IIO3W3TAE1hD+5f8uY91qf7/Egl0jxKEUOadmN+20RV2+Zxhw+yOyRa7jRViYaw13HY5QsVeSXhM3ZP9NMTbNz+D0rE4Tiefw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=kNWAnEmJ; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+	s=arc-20240116; t=1769658013; c=relaxed/simple;
+	bh=SAcfDDr39ZzbcKHfiR2Q7sWJKOvFRmGgM8KQHEsRjUg=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=EiaQEXuzayme4w4lrs/qK6lJeyN4oDJyg2GGigot/sEpQxHqWB4hLk2/A9VGBU8tnwUXBW8ejTHVZQkimDOGoP6Y3+1p36nJSzlmnxBuw/A7TcyqNKyTLtESiHfvJoiaB/Vu3wss7jgN0CCBEf2Rh5SomDsXzXOiBLtEfD8dvj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OS4gXBOM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="kNWAnEmJ"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-81f4dfa82edso266265b3a.0
-        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 19:11:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1769656297; x=1770261097; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JWJWtMvK3cJ/FZi3+gRtm63An6XKMQkwUbbJsEmUhfg=;
-        b=kNWAnEmJ2ETKf3i+YJAeUn7dcr8mETIzYmD2Xdta2jCVAZdlhiVZhXrJsz3XolNGB0
-         u6/MYaDDG5iOXupVPX7gBjVa52XTnnO+Mdrb4IkiuSXIR24lL8UNZQ7x7v8EruLDvbUH
-         m0tYzEToULHFceaiw7ORoeAUN8q5YNLqeR8gw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769656297; x=1770261097;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JWJWtMvK3cJ/FZi3+gRtm63An6XKMQkwUbbJsEmUhfg=;
-        b=n1t/Ezqkov7eD6rcut8i6jIck5PFSQTsJhef9zMlhxhGsZq74Mzrk30frFBN5Dr8PL
-         TO3K/Y1XJEVMvuKNphTRX+VYKnm07B8j3cbc+InwCSJF/stdHYj37hbPWB6iJMgv9si4
-         L7HPYPwbcV6+PbEQioZTHrOjvlGkYGftLjTC7n5qOqZxHSu3T3oxALBBJ+e1Gc1jRQ1h
-         CWrUNoAF0MthFqnm74uVuAf8PLEr55BsNsSDKcXOWESkME075fUn4WoThQfgFjXNRFmQ
-         Vy3O1vZrSKz7vDiE9cyvFEVX3GCRXYVC8BAHwsNfUmDPI1vEoDt6yf4gZIA74Q6xCHNX
-         y4gg==
-X-Forwarded-Encrypted: i=1; AJvYcCUPwyH9JaArs2Ydn7h5OUXNjYWqzJH4BFjAJ8VcN2mCme8YPq06ZcfTX5GY91MB9g3HbIckvYU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7FlvdeT3qVnFVTkaxCJ9R5qz4IYORgrZZqR+rXl9Y0E8OLM9L
-	bVazWD6x/O/0O37mXp8wfqkVe6i/tZTsIb8/4MSY897YOMjRf/Q3sRnHfhhpKvQ5eg==
-X-Gm-Gg: AZuq6aJzAAroEU0f1dgg3ZCGemHrgUwz/HMngURORuYkWgY5RQJ+CiregfnlrlMfCUG
-	yyAvV6VxPK8d8/+ZPdrvcza8/IFG4jHM1gtqOGuQKsJFsFRxwBulKJ9MaoIldx7DUvtFZ4M4Gm8
-	wKCh3ByxAjQphB+sxjGVhhTpXnn2ZWgldXTTmXUxBc6DJtiNiHWF1O/CAKLKU2Jkprrha+4IG3V
-	UBnl40brSpZNKdTGI1qepNfK9JEU7IbCnEZSI3avRw3OKw8bCFUJA4hOzUfpoes5tZap2uulH7N
-	igygEypZGryZ1cEPtE4sC/flBd54qJcVC4quWaVyddmTo7kIdIKExsrwGB/bXAzOXoUVM3w6vej
-	GpJT1j1UzKMYDobSsJN+/W0727yB8/NSLKEXYfw12mVkzwvchGmcG6UTBUfiTrKg6SSMd21b6yj
-	c/Ceo7j46Q3w1eSM3IFUTqPz7vhzlNu7xr2A8c10/X3D3A/kcHKCc2PK4PneA1RJ8eIQ9bBPdX
-X-Received: by 2002:a05:6a00:244e:b0:81d:d666:72e1 with SMTP id d2e1a72fcca58-8236914777amr6825599b3a.10.1769656297157;
-        Wed, 28 Jan 2026 19:11:37 -0800 (PST)
-Received: from tigerii.tok.corp.google.com ([2a00:79e0:2031:6:356d:f98:467f:7e27])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b1ee89sm3898394b3a.14.2026.01.28.19.11.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 19:11:36 -0800 (PST)
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Douglas Anderson <dianders@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
-	George-Daniel Matei <danielgeorgem@chromium.org>,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCHv2] net: usb: r8152: fix resume reset deadlock
-Date: Thu, 29 Jan 2026 12:10:30 +0900
-Message-ID: <20260129031106.3805887-1-senozhatsky@chromium.org>
-X-Mailer: git-send-email 2.53.0.rc1.217.geba53bf80e-goog
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OS4gXBOM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2141DC116D0;
+	Thu, 29 Jan 2026 03:40:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769658013;
+	bh=SAcfDDr39ZzbcKHfiR2Q7sWJKOvFRmGgM8KQHEsRjUg=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=OS4gXBOMD83xqG8C8i10PviyJvqUv9Merdd1uZOZ8RDUjMEjKFzUayCov9lYz9ex+
+	 63PdseGceohRxa0sk1vSuMR9zC45u7ACrlEwCvGoYzpIyWEu5ZAia6t8os0U8WwdF0
+	 Xbum766Z84r/SI85DmUYRwgn+YynLnlqbAUQAED1oYSwl3rEu6wDiz8kMv4HEk60QC
+	 gqu1bzvV5MH9WOLjiVJCIlWxwHxzBdqvW88LdBjy/GP1vW0pEYxqVv4/a9OfM0nq/c
+	 JucOm7CPp6W8J1ywVORmZJo2qKdd3B0zZg1Qg427+xS94XlRwCYuCy3252X6+hFsUf
+	 wKXAQNXwNSFrA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8BBED380AA61;
+	Thu, 29 Jan 2026 03:40:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,103 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] net: bridge: fix static key check
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176965800635.2337808.7777015611484468506.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Jan 2026 03:40:06 +0000
+References: <20260127101925.1754425-1-martin@kaiser.cx>
+In-Reply-To: <20260127101925.1754425-1-martin@kaiser.cx>
+To: Martin Kaiser <martin@kaiser.cx>
+Cc: razor@blackwall.org, idosch@nvidia.com, bridge@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
-rtl8152 can trigger device reset during reset which
-potentially can result in a deadlock:
+Hello:
 
- **** DPM device timeout after 10 seconds; 15 seconds until panic ****
- Call Trace:
- <TASK>
- schedule+0x483/0x1370
- schedule_preempt_disabled+0x15/0x30
- __mutex_lock_common+0x1fd/0x470
- __rtl8152_set_mac_address+0x80/0x1f0
- dev_set_mac_address+0x7f/0x150
- rtl8152_post_reset+0x72/0x150
- usb_reset_device+0x1d0/0x220
- rtl8152_resume+0x99/0xc0
- usb_resume_interface+0x3e/0xc0
- usb_resume_both+0x104/0x150
- usb_resume+0x22/0x110
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-The problem is that rtl8152 resume calls reset under
-tp->control mutex while reset basically re-enters rtl8152
-and attempts to acquire the same tp->control lock once
-again.
+On Tue, 27 Jan 2026 11:19:23 +0100 you wrote:
+> Fix the check if netfilter's static keys are available. netfilter defines
+> and exports static keys if CONFIG_JUMP_LABEL is enabled. (HAVE_JUMP_LABEL
+> is never defined.)
+> 
+> Fixes: 971502d77faa ("bridge: netfilter: unroll NF_HOOK helper in bridge input path")
+> Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+> 
+> [...]
 
-Reset INACCESSIBLE device outside of tp->control mutex
-scope to avoid recursive mutex_lock() deadlock.
+Here is the summary with links:
+  - net: bridge: fix static key check
+    https://git.kernel.org/netdev/net/c/cc0cf10fdaea
 
-Fixes: 4933b066fefb ("r8152: If inaccessible at resume time, issue a reset")
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
----
-
-v1 -> v2:
-- incorporated review feedback from Doug
-
- drivers/net/usb/r8152.c | 29 +++++++++++++++--------------
- 1 file changed, 15 insertions(+), 14 deletions(-)
-
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 30f937527cd2..5e556e26c682 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -8538,19 +8538,6 @@ static int rtl8152_system_resume(struct r8152 *tp)
- 		usb_submit_urb(tp->intr_urb, GFP_NOIO);
- 	}
- 
--	/* If the device is RTL8152_INACCESSIBLE here then we should do a
--	 * reset. This is important because the usb_lock_device_for_reset()
--	 * that happens as a result of usb_queue_reset_device() will silently
--	 * fail if the device was suspended or if too much time passed.
--	 *
--	 * NOTE: The device is locked here so we can directly do the reset.
--	 * We don't need usb_lock_device_for_reset() because that's just a
--	 * wrapper over device_lock() and device_resume() (which calls us)
--	 * does that for us.
--	 */
--	if (test_bit(RTL8152_INACCESSIBLE, &tp->flags))
--		usb_reset_device(tp->udev);
--
- 	return 0;
- }
- 
-@@ -8661,19 +8648,33 @@ static int rtl8152_suspend(struct usb_interface *intf, pm_message_t message)
- static int rtl8152_resume(struct usb_interface *intf)
- {
- 	struct r8152 *tp = usb_get_intfdata(intf);
-+	bool runtime_resume = test_bit(SELECTIVE_SUSPEND, &tp->flags);
- 	int ret;
- 
- 	mutex_lock(&tp->control);
- 
- 	rtl_reset_ocp_base(tp);
- 
--	if (test_bit(SELECTIVE_SUSPEND, &tp->flags))
-+	if (runtime_resume)
- 		ret = rtl8152_runtime_resume(tp);
- 	else
- 		ret = rtl8152_system_resume(tp);
- 
- 	mutex_unlock(&tp->control);
- 
-+	/* If the device is RTL8152_INACCESSIBLE here then we should do a
-+	 * reset. This is important because the usb_lock_device_for_reset()
-+	 * that happens as a result of usb_queue_reset_device() will silently
-+	 * fail if the device was suspended or if too much time passed.
-+	 *
-+	 * NOTE: The device is locked here so we can directly do the reset.
-+	 * We don't need usb_lock_device_for_reset() because that's just a
-+	 * wrapper over device_lock() and device_resume() (which calls us)
-+	 * does that for us.
-+	 */
-+	if (!runtime_resume && test_bit(RTL8152_INACCESSIBLE, &tp->flags))
-+		usb_reset_device(tp->udev);
-+
- 	return ret;
- }
- 
+You are awesome, thank you!
 -- 
-2.53.0.rc1.217.geba53bf80e-goog
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
