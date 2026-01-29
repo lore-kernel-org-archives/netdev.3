@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15E1F2DB78F;
-	Thu, 29 Jan 2026 05:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D7C25332E;
+	Thu, 29 Jan 2026 05:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769663593; cv=none; b=ipLsl+82UEvGJGbkBkDdS01ETTFRRzmJr9kxpG+J3I96Up3+inYHEPL1CSdO1cWnnDZodq8doztHTWz1I2F2I0QTCcr+OuG+42dskkGBeFiKG3VLGzqROSjmKEcneZBzd1s5Jz20INX18RIjDSeL3cEmdqUSMoRSWHWFkfmj9M0=
+	t=1769663593; cv=none; b=g7Xr3WJ0O1Gv0HRR+07zVQLApAls3mmzWTZDcK4b5j06EQT9yxByUWQePmznujeLqXEdq1heanpJJsnW2sbe0Cp3yPqe4zvdikzI4sEz1KSS9DC9WaIQZIjT/wJEw7TVfujNdp59RpPWaIq8Xt0/NLnLHyE+QROCbk5BM8uClqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769663593; c=relaxed/simple;
-	bh=6StV8OaED8DOktFkrjo+Yo2WkSMhVo+GDhmefkuZJx0=;
+	bh=G+NlfwUBgakE9GFP/kt8+9HheUg6TSAq9NXWmYcqrgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkpmehM9a1rWIHaBXSpyueUb+2S+pkVNP70XzmPUwsuoUd3fN0fWpDCoIK+JhoDIb2yCVf9xbzq9f5+fGHuyDidVak0VHbNm4rbLvlPGNNbyTYouZX9rTFM8qKB92rVIuwHWfShzbNcpQtwyg0z9TywS+QMgFAJWT7bDwnsWmTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JAcJIRKR; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ZT5eQ56L/XAKzWDkPC+KIcKFmgydBFAPdSz8zVVfXh55hjrc/Upeyf4oYIUIRuP4Xbl1iSACBrJJRzFjb2t7KuRcZ6+VNpJHbk2kfcgNRL4SS1a5Zwrxbr2vxc8YaAXA0JDcQEdvcrm6WIY2qEiBaH19qUL8tYDyh7H+/etiNOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Si3mX+vj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAcJIRKR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F9CCC116D0;
-	Thu, 29 Jan 2026 05:13:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Si3mX+vj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 863BAC19422;
+	Thu, 29 Jan 2026 05:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769663592;
-	bh=6StV8OaED8DOktFkrjo+Yo2WkSMhVo+GDhmefkuZJx0=;
+	s=k20201202; t=1769663591;
+	bh=G+NlfwUBgakE9GFP/kt8+9HheUg6TSAq9NXWmYcqrgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JAcJIRKRFqCs2Dk5ONKX3Szon9Mq1azY8G7jsNZGVL2pELYI3/Dqn8WAkxiDXjQaX
-	 twMZm9xyCfyBN0emSV7+94YhtpMaDFL1jWCvz6ZNi9QAf/o9ZQberEXXvHvvDZVsyt
-	 3b/oMwAbkYnh0S21FUn0azf099zT/2L5E79torIyaRA0AUUWgHY//s5GRnghciZ2XU
-	 gF0hGVRFRqN7p7a5ahMK+I4aFgSmn0fq+oxQgcyQuy1WyZOBMG18YyfGAT5gLWmCxF
-	 RlTHLRbeU76vwgHSRLonxO/UrrZ2xT+tBb9avufMD5gbtqrJrgrTnUSOLTcQbnHL8/
-	 Z+stdIgc0Qbxg==
+	b=Si3mX+vj5CP4XiImhIkxeCZnhWwRKwpRUEoz41moMa+ceKJBYizqniST2jrD0LNDB
+	 Pe8ifcRzXeKbg2Wy02OKYGkUn1P01KCmDBRXeyVAyA3hOs94vBc8Y+C1qZAd8uEmyh
+	 ATnD3tOXgZNEDydXYhI/bApnuwdK2deaThrcQ1MlGmJVKNBvklOLqzNuI7hFUl0i4G
+	 KeCb1PkSWmsphFYvL5ns1B+UvOtxAeNKEUY+g2uwECntQa25i4K7q8/QSZAM+lXzpH
+	 NnzkA1oDJuhdqSZdzfTWWYvq617iE8IVI6GvJiOv5+NJDslf1cFDcyPXdvHLf3A4H8
+	 Tfg19S9tkz5tA==
 From: Jakub Kicinski <kuba@kernel.org>
 To: rkannoth@marvell.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -38,12 +38,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	pabeni@redhat.com,
 	andrew+netdev@lunn.ch,
 	sgoutham@marvell.com
-Subject: Re: [net-next,v6,11/13] octeontx2-pf: cn20k: Add TC rules support
-Date: Wed, 28 Jan 2026 21:13:11 -0800
-Message-ID: <20260129051311.376689-1-kuba@kernel.org>
+Subject: Re: [net-next,v6,10/13] octeontx2-af: npc: cn20k: Allocate MCAM entry for flow installation
+Date: Wed, 28 Jan 2026 21:13:09 -0800
+Message-ID: <20260129051309.376665-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260128071235.3577206-12-rkannoth@marvell.com>
-References: <20260128071235.3577206-12-rkannoth@marvell.com>
+In-Reply-To: <20260128071235.3577206-11-rkannoth@marvell.com>
+References: <20260128071235.3577206-11-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,76 +57,96 @@ email has considered the AI review valid, or at least plausible.
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-octeontx2-pf: cn20k: Add TC rules support
+octeontx2-af: npc: cn20k: Allocate MCAM entry for flow installation
 
-This patch adds dynamic MCAM entry allocation for TC rules on CN20K
-silicon. The AF driver allocates entries on the fly when the user
-installs a rule.
+This patch extends the install_flow mailbox request message with
+additional fields that allow the AF driver to determine the required
+NPC MCAM entry type, allocate the entry, and install the flow in a
+single step for CN20K.
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-> index 26a08d2cfbb1..866d9451f5d6 100644
-> --- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
-> +++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_tc.c
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+> index 82afb4993346..7a48ba1db5e9 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc_fs.c
 
 [ ... ]
 
-> @@ -1292,7 +1277,23 @@ static int otx2_tc_add_flow(struct otx2_nic *nic,
->  	if (old_node)
->  		otx2_tc_del_flow(nic, tc_flow_cmd);
+> @@ -1642,6 +1643,75 @@ static int npc_install_flow(struct rvu *rvu, int blkaddr, u16 target,
+>  	return 0;
+>  }
 >
-> +	if (is_cn20k(nic->pdev)) {
-> +		rc = cn20k_tc_alloc_entry(nic, tc_flow_cmd, new_node, &dummy);
-> +		if (rc) {
-> +			NL_SET_ERR_MSG_MOD(extack,
-> +					   "MCAM rule allocation failed");
-> +			kfree_rcu(new_node, rcu);
-> +			return rc;
-> +		}
-> +	}
-> +
-> +	entry = otx2_tc_update_mcam_table(nic, flow_cfg, new_node, true);
-> +	if (entry < 0) {
-> +		NL_SET_ERR_MSG_MOD(extack, "Adding rule failed");
-> +		rc = entry;
-> +		goto free_leaf;
-> +	}
-> +
->  	mutex_lock(&nic->mbox.lock);
->  	req = otx2_mbox_alloc_msg_npc_install_flow(&nic->mbox);
->  	if (!req) {
->  		mutex_unlock(&nic->mbox.lock);
->  		rc = -ENOMEM;
->  		goto free_leaf;
-                ^^^^^^^^^^^^^^
-
-For CN20K, cn20k_tc_alloc_entry() allocates an MCAM entry from the AF
-driver and stores it in new_node->entry. If otx2_mbox_alloc_msg_npc_install_flow()
-or otx2_sync_mbox_msg() later fails, the code jumps to free_leaf.
-
-Looking at the free_leaf cleanup path below, it calls
-otx2_tc_del_from_flow_list() and kfree_rcu() but does not call
-cn20k_tc_free_mcam_entry() to release the AF-allocated entry.
-
-Can this leak the MCAM entry on CN20K when these error paths are taken?
-
-The cn20k_tc_update_mcam_table_add_req() function does call
-cn20k_tc_free_mcam_entry() when it fails internally (due to X2/X4 mix),
-which suggests MCAM entry cleanup is expected on error.
+> +static int
+> +rvu_npc_free_entry_for_flow_install(struct rvu *rvu, u16 pcifunc,
+> +				    bool free_entry, int mcam_idx)
+> +{
 
 [ ... ]
 
-> @@ -1328,0 +1328,24 @@ free_leaf:
-> +free_leaf:
-> +	otx2_tc_del_from_flow_list(flow_cfg, new_node);
-> +	if (new_node->is_act_police) {
+> +static int
+> +rvu_npc_alloc_entry_for_flow_install(struct rvu *rvu,
+> +				     struct npc_install_flow_req *fl_req,
+> +				     u16 *mcam_idx, u8 *kw_type,
+> +				     bool *allocated)
+> +{
 
 [ ... ]
 
-> +	kfree_rcu(new_node, rcu);
-                 ^^^^^^^^
+> +	if (!is_cn20k(rvu->pdev))
+> +		return 0;
+> +
+> +	if (!fl_req->alloc_entry)
+> +		return 0;
 
-The node is freed here without first calling cn20k_tc_free_mcam_entry()
-to return the MCAM entry to the AF driver.
+[ ... ]
 
-This was previously noted during review:
-https://lore.kernel.org/netdev/20260118004028.1044419-1-kuba@kernel.org/
+>  int rvu_mbox_handler_npc_install_flow(struct rvu *rvu,
+>  				      struct npc_install_flow_req *req,
+>  				      struct npc_install_flow_rsp *rsp)
+>  {
+
+[ ... ]
+
+> +	bool allocated = false;
+>  	bool enable = true;
+> +	u8 kw_type;
+>  	u16 target;
+
+[ ... ]
+
+> +	err = rvu_npc_alloc_entry_for_flow_install(rvu, req, &req->entry,
+> +						   &kw_type, &allocated);
+> +	if (err) {
+> +		dev_err(rvu->dev,
+> +			"%s: Error to alloc mcam entry for pcifunc=%#x\n",
+> +			__func__, req->hdr.pcifunc);
+> +		return err;
+> +	}
+
+[ ... ]
+
+>  	mutex_lock(&rswitch->switch_lock);
+>  	err = npc_install_flow(rvu, blkaddr, target, nixlf, pfvf,
+>  			       req, rsp, enable, pf_set_vfs_mac);
+> +	if (err)
+> +		rvu_npc_free_entry_for_flow_install(rvu, req->hdr.pcifunc,
+> +						    allocated, req->entry);
+> +
+> +	rsp->kw_type = kw_type;
+> +	rsp->entry = req->entry;
+            ^^^^^^^^
+
+Is kw_type initialized in all paths here?
+
+When rvu_npc_alloc_entry_for_flow_install() returns early because either
+is_cn20k() is false or alloc_entry is not set, kw_type is never written.
+The function returns 0 without setting *kw_type, leaving the local variable
+uninitialized.
+
+The uninitialized stack value then gets copied to rsp->kw_type.
+
+Should this be initialized to 0 at declaration?
+
+>  	mutex_unlock(&rswitch->switch_lock);
+>
+>  	return err;
+>  }
