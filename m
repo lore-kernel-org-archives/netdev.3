@@ -1,126 +1,152 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65FD326D69;
-	Thu, 29 Jan 2026 22:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA9135DD19;
+	Thu, 29 Jan 2026 22:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769724055; cv=none; b=mjlr10czhk6Yzila4jCKCJRFpJ8Au7cywedtl2YRoDofCFP7g2Iwh65hEKt49Qjgxd2Q//J56Lakv0WkQLa9d6eYJ5JjEMV3dd+if9N+Eq4MlFANUehhHEAXD3m9sB4gfo4rAtD6dzNkTsaLfdjCHGTn4xwC9sHaTXLYuBx/VTA=
+	t=1769725734; cv=none; b=qqYJvVwqL/9QGm5pbo6O8hrkXOKb+b8aDqvHjWbcKfwZnc+RzNrE7fVvgncTVbajLKTFGl0lHXL5mtT3H1d8S4kcCIFs524jHXzGVGVURP0K47D+f1jdN9GuD5APullQ/NUV27f/AuG82QKluPw+Y90OtWhHdEug3NMwC6YPSP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769724055; c=relaxed/simple;
-	bh=YqNWb+uEWkjz1XXk8wLbalCffPtk4g7xZuyyJzhd2iA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NXaaz4PLtKg6nSOcfw4guB6naEy4HNlpRhhNgEV/5A7zHcGH20DpMLAsoFJ28YUC3hcXX/9HI7cUdsRs6S5Drew6bixbEhsam9nXOkQ4OS93EyEEmI68KdbZQ9wQ8NbRk2GgPMDDAYPigmX4BlyI/NwFpc5qwRn1x9hjbc7F+DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=FuORfFkK; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1769725734; c=relaxed/simple;
+	bh=WxGCo4B+xs44ufdHDtaWTvOdcwdcEiP2MpOJ88nLfLU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=TQGRKUYxai4ZBtMeAAW1LoqH9EOVYwqyBcunnnwHqNZcBXU8dd9wWboNYU5zws8qSvhby1+Pl0AzgCBaPIBbhecp5NxAABr14T9F1MtcDIKaF5+TpA7a2OZDh9Z1K4uJ9EGaYfhDyuAyIZ05R7+BmzW+y1tqM0tZdl/tpCiLNdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=neWQO8yD; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="FuORfFkK"
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="neWQO8yD"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=5NaZq7/qOx5j3sYVWWAXyxivGGckilTrm3I0MWAebJ0=; b=FuORfFkKV0DQIUUuMAonHTBSMq
-	HF2MOUM/Hc7enwPm0B5st77tQNNjf0eKU/pZo/h8uFpZk3KazeRogVT16rnuLFu4rRtaZ6WB50HuT
-	oQloQVUjqsYNnVPMNueythTNsQumeeZJpD7lFjQuMi2kGPSSZ/2aqJe5xufgqTlMcawAYyslgphns
-	OxxQAsBSIewVc03grwlhmNGyURyOFRkdaZLHvnAGAntQeeeLslHwVSeWeW1Nl1gP66MfK6N91OFj9
-	5OB/+2cFKWTslP6LNj6Kz3pKBbMrqn4RcR2kAjhsppKEXH6aexaqY+7IKQt7qE+B8ThTjVf70J7OS
-	v6U1biyg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39260)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vla4A-000000000Va-0f2c;
-	Thu, 29 Jan 2026 22:00:42 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vla44-000000008Kd-1QMZ;
-	Thu, 29 Jan 2026 22:00:36 +0000
-Date: Thu, 29 Jan 2026 22:00:36 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH net-next v2 00/14] net: stmmac: SerDes, PCS, BASE-X, and
- inband goodies
-Message-ID: <aXvYhM6mHE4p_B14@shell.armlinux.org.uk>
-References: <aXNEwBW3OA1xLEUj@shell.armlinux.org.uk>
- <aXN5BFXMshnhwBQ7@oss.qualcomm.com>
- <aXPo5R1Q-qWG3r3l@shell.armlinux.org.uk>
- <aXjSbu6L6ICYOPiJ@oss.qualcomm.com>
- <aXjdAZeUl2Dsu4mE@shell.armlinux.org.uk>
- <aXsLyb+x76/WaXcs@oss.qualcomm.com>
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=IB6/fGkfZ6cuSpfm5KIQwKbKvYk0Q6eMLp+G0krjZi0=; b=neWQO8yDAb6o6sD3i9MVAEHZoQ
+	DmnMvT3U25V8NT20zAVbJJ1ptY8y1JQwG+iKCARnohBEnNXK52+Q3sI8zDtsJmm0/hmqHEf9YsK0J
+	dxeboFQDwlbNOZ2tKRKr9gMGyfrJUJtjG4lbda3FwWp8wV1UZ9h6o2eRWXJ27U4AHXazTv7Y7pSgY
+	kUbxMJt3IfWMxEwW7pdcFNIFtNvm0152HsZ77LUJvAni2H6LT/0QV3WXMau40U9pUlWIJPc//741A
+	F/sLWHJ105GvvPURm47Nki+HsaqMzJKZLeEZbcZRpWa9NEGWHYUud+iAaLUw76rmbdb7183cYVR7J
+	f0vRxaKw==;
+Received: from localhost ([127.0.0.1])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1vlaVA-0008oo-2O;
+	Thu, 29 Jan 2026 23:28:36 +0100
+From: Daniel Borkmann <daniel@iogearbox.net>
+To: netdev@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	kuba@kernel.org,
+	davem@davemloft.net,
+	razor@blackwall.org,
+	pabeni@redhat.com,
+	willemb@google.com,
+	sdf@fomichev.me,
+	john.fastabend@gmail.com,
+	martin.lau@kernel.org,
+	jordan@jrife.io,
+	maciej.fijalkowski@intel.com,
+	magnus.karlsson@intel.com,
+	dw@davidwei.uk,
+	toke@redhat.com,
+	yangzhenze@bytedance.com,
+	wangdongdong.6@bytedance.com
+Subject: [PATCH net-next v8 04/16] net, ethtool: Disallow leased real rxqs to be resized
+Date: Thu, 29 Jan 2026 23:28:18 +0100
+Message-ID: <20260129222830.439687-5-daniel@iogearbox.net>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260129222830.439687-1-daniel@iogearbox.net>
+References: <20260129222830.439687-1-daniel@iogearbox.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aXsLyb+x76/WaXcs@oss.qualcomm.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27896/Thu Jan 29 08:24:11 2026)
 
-On Thu, Jan 29, 2026 at 12:57:05PM +0530, Mohd Ayaan Anwar wrote:
-> I was thinking about the "good" sequence (i.e., the current net-next
-> tree):
-> 	-> phylink_up
-> 	  -> mac_link_up
-> 	    -> fix_mac_speed
-> 	      -> SerDes configured via phy_set_speed
-> 	      -> stmmac_pcs_ctrl_ane(priv, enable/disable, 0)
-> 
-> Please let me know if you want me to try any other experiments.
-> Maybe I need to do some more testing after playing around with the
-> sequence followed by this series?
+Similar to AF_XDP, do not allow queues in a physical netdev to be
+resized by ethtool -L when they are leased.
 
-Given discussion elsewhere, it seems that the generic PHY maintainers
-have come to the conclusion (at my request) that the documentation is
-incorrect and needs to be changed:
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Co-developed-by: David Wei <dw@davidwei.uk>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+---
+ net/ethtool/channels.c | 12 +++++++-----
+ net/ethtool/ioctl.c    |  9 +++++----
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
-	Order of API calls
-	==================
-
-	The general order of calls should be::
-
-	    [devm_][of_]phy_get()
-	    phy_init()
-	    phy_power_on()
-	    [phy_set_mode[_ext]()]
-	    ...
-	    phy_power_off()
-	    phy_exit()
-	    [[of_]phy_put()]
-
-Essentially, most users of generic PHY do not follow this, but call
-phy_set_mode[_ext]() before phy_power_on().
-
-This will have implications for this patch series, particularly the
-serdes related changes, and will make the update to qcom-sgmii-eth
-more complex (as its current phy_power_on() implementation does
-very little and isn't the reverse of phy_power_off().)
-
-
-In the mean time, please test patch 2 to see whether that can be
-merged.
-
-I'm going to re-order some of the patches in this series to see what
-else can be merged without depending on that and without affecting
-dwmac-qcom-ethqos, and thus shrinking this series.
-
+diff --git a/net/ethtool/channels.c b/net/ethtool/channels.c
+index ca4f80282448..797d2a08c515 100644
+--- a/net/ethtool/channels.c
++++ b/net/ethtool/channels.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
+-#include <net/xdp_sock_drv.h>
++#include <net/netdev_queues.h>
+ 
+ #include "netlink.h"
+ #include "common.h"
+@@ -169,14 +169,16 @@ ethnl_set_channels(struct ethnl_req_info *req_info, struct genl_info *info)
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Disabling channels, query zero-copy AF_XDP sockets */
++	/* ensure channels are not busy at the moment */
+ 	from_channel = channels.combined_count +
+ 		       min(channels.rx_count, channels.tx_count);
+-	for (i = from_channel; i < old_total; i++)
+-		if (xsk_get_pool_from_qid(dev, i)) {
+-			GENL_SET_ERR_MSG(info, "requested channel counts are too low for existing zerocopy AF_XDP sockets");
++	for (i = from_channel; i < old_total; i++) {
++		if (netdev_queue_busy(dev, i, NULL)) {
++			GENL_SET_ERR_MSG(info,
++					 "requested channel counts are too low due to busy queues (AF_XDP or queue leasing)");
+ 			return -EINVAL;
+ 		}
++	}
+ 
+ 	ret = dev->ethtool_ops->set_channels(dev, &channels);
+ 	return ret < 0 ? ret : 1;
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 9431e305b233..02a3454234d6 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -27,12 +27,13 @@
+ #include <linux/net.h>
+ #include <linux/pm_runtime.h>
+ #include <linux/utsname.h>
++#include <linux/ethtool_netlink.h>
+ #include <net/devlink.h>
+ #include <net/ipv6.h>
+-#include <net/xdp_sock_drv.h>
+ #include <net/flow_offload.h>
+ #include <net/netdev_lock.h>
+-#include <linux/ethtool_netlink.h>
++#include <net/netdev_queues.h>
++
+ #include "common.h"
+ 
+ /* State held across locks and calls for commands which have devlink fallback */
+@@ -2282,12 +2283,12 @@ static noinline_for_stack int ethtool_set_channels(struct net_device *dev,
+ 	if (ret)
+ 		return ret;
+ 
+-	/* Disabling channels, query zero-copy AF_XDP sockets */
++	/* Disabling channels, query busy queues (AF_XDP, queue leasing) */
+ 	from_channel = channels.combined_count +
+ 		min(channels.rx_count, channels.tx_count);
+ 	to_channel = curr.combined_count + max(curr.rx_count, curr.tx_count);
+ 	for (i = from_channel; i < to_channel; i++)
+-		if (xsk_get_pool_from_qid(dev, i))
++		if (netdev_queue_busy(dev, i, NULL))
+ 			return -EINVAL;
+ 
+ 	ret = dev->ethtool_ops->set_channels(dev, &channels);
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.43.0
+
