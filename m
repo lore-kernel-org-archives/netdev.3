@@ -1,422 +1,86 @@
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9972E286D4E;
-	Thu, 29 Jan 2026 11:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128D93859F4;
+	Thu, 29 Jan 2026 11:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769684941; cv=none; b=QZxd51WtCESDG/iIo/6cPvFQv36b4Sz+PTjCrZrj1WY8ZN1zeFXOFQj+MFwRXFSbaAVEY32UaeiYV6acQs7emCsEd1pkXByEYoh8BsJ3vhmwCD3HpN25IRVhgseZmk8KmpT9oDNw+LjdgTBEge427RoP7pBfzInsnUXdKW+BIVs=
+	t=1769685142; cv=none; b=Eaekjv/Ri+158HePSWBCGP9+WRD3LkiX/XPlqeIS4dPjPRt7kdkcFQQx03kaQ/Yklt8jOR2AWYwYtQIg9DO58wYgPkq1fFDH6yvKxXQUuKzjrZ45ULi0Oytsew8eFBOkGM+b6V1M+OERV37Sck045lKMuOf2HVlwHELQlyxWn0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769684941; c=relaxed/simple;
-	bh=5tj3u34P//O1kuWn/qKihi9MofYqfuFCkteoItVPUKo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t/n+BJ+4Qb7fAwMEJsF3AUpzPDQ3d63LovWs3jzjO4kz4sEDy079XMWCcY7eshtNQVH8gImAuGuo/grOcyIaBRxb+k13e72D/oZdqSZXFsVJ7f6xNA7DatCObs7DtCqjYii9yPrZdMAUObQvkMsgpHbIR5P7WIWgFYg4gvqr98w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=MBH4lhBY; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=kQLmoqmh; arc=none smtp.client-ip=80.241.56.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1769685142; c=relaxed/simple;
+	bh=WkAg+DQRNVI7tJ7g9umIgS0rIdaTcjXYEshkGDsAhzU=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=Lp95RDkpIPPNKAj/mi8xy7DgoMKcDxGMlBRjf7AE9vbWQR8BlTlmhn+hOA76E0OM4cel5JccviU9udv1/Fn5os/zrjRyaRDCcb1xJM6lugyK4SKyK70tvz9LS2pMOQxz0nFk6uzCZfCgggDhnlJjAmSmVnAvWxY7u4eBxP6V4FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=gFMwlE0H; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="MBH4lhBY";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="kQLmoqmh"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4f1x7d4zFwz9tgJ;
-	Thu, 29 Jan 2026 12:02:53 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1769684573;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XyYuyOH5DCFY0dDdeaLsmfuFY6eGZKgIu8P7iVMFgEY=;
-	b=MBH4lhBY8sHjl21usuEo4T2UJohchp6gLNLW5DLnXdjXaOgfexU0hiTzdPGOQXgw7UKgAF
-	/IlxF6WyLapuNWVDFPH8GwXLcvFuTen5MG1tz+sR/hQvxznOy3h2P95n51ZFEHYFzOI1ul
-	J8s3ytUiwlVWuq1tUSuBCY0umaei+wcgXk5IFp8RMoW7i2arwvfAHi7qUJDv6XjJ9b/j0C
-	RW/uyIRbXzwl5E05lwjtd5NeGKvzHJOavPVPmiG8UPTk15IbeGw9AxKEqcttKxazcCwhmO
-	+FQJTkxBGk9w+nidQ9/ftJfvv09mdr6d6/nA4y12jBTSDrA+YlebkIYXN2zqeA==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=kQLmoqmh;
-	spf=pass (outgoing_mbo_mout: domain of lukasz.majewski@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=lukasz.majewski@mailbox.org
-From: Lukasz Majewski <lukasz.majewski@mailbox.org>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1769684571;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=XyYuyOH5DCFY0dDdeaLsmfuFY6eGZKgIu8P7iVMFgEY=;
-	b=kQLmoqmhHZGrwObFLxAuMYIzU3zkHta2a4UzGvrTQsWSlOKV6kw4QbgqM5IfA1PWwMDcZt
-	pI3H/Gzw/ra8fK6CSQd8Gl5Vl0DHifN1zAQF+/XjnMEcD2LbesVsFRUI5mrEknrMCMiSdM
-	+GD7+T2bAt6dJuWAlPxCTLgnxWEAkiLiciLfF1/+jutrmJa7bNFaWPrY4ztR1D8JM5HMUR
-	5tcExM1/GoX+yHLFZW8j5VDIXe3QnfmMFiUrCIH3bKARrPOJDY1s55Rp+0/xzLUeqNJtGh
-	Qe0NBz1aqxhn1qiGNEsgSSOwMFXzrkAmkD1jeK/3P6rCEzF+XlrNVEauj5VVYw==
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Lukasz Majewski <lukasz.majewski@mailbox.org>
-Subject: [net-next v21 5/7] net: mtip: Add mtip_switch_{rx|tx} functions to the L2 switch driver
-Date: Thu, 29 Jan 2026 12:01:52 +0100
-Message-Id: <20260129110154.1699976-6-lukasz.majewski@mailbox.org>
-In-Reply-To: <20260129110154.1699976-1-lukasz.majewski@mailbox.org>
-References: <20260129110154.1699976-1-lukasz.majewski@mailbox.org>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="gFMwlE0H"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1769685131; h=Message-ID:Subject:Date:From:To;
+	bh=c+Gq2aLJ72NvCATpEEA0htSSDWqZ+7d6i33HsHlh7uU=;
+	b=gFMwlE0H+olpZKYztSHGUNYji69dm444Y2kLnXrU2tREzIk0Drvtm4DiFU/GgvQX1l42E1dKTfSa/oO0s5zRlUlBMZJF8nDz7CsThmfT95qIIy3vzsAt2IRpVAm9gFPWQMNQrepmkpE4t/boxBh8Kqv2Y7miEfwfEjXOIylnWK8=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0Wy7Eiug_1769685130 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 29 Jan 2026 19:12:11 +0800
+Message-ID: <1769684595.7934678-1-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH RFC v2 2/2] virtio-net: support receive timestamp
+Date: Thu, 29 Jan 2026 19:03:15 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: virtualization@lists.linux.dev,
+ netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ "Michael S. Tsirkin" <mst@redhat.com>,
+ Jason Wang <jasowang@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>,
+ Richard Cochran <richardcochran@gmail.com>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>,
+ =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>
+References: <20260129-v6-7-topic-virtio-net-ptp-v2-0-30a27dc52760@pengutronix.de>
+ <20260129-v6-7-topic-virtio-net-ptp-v2-2-30a27dc52760@pengutronix.de>
+ <1769680105.7884188-1-xuanzhuo@linux.alibaba.com>
+ <87343og290.fsf@pengutronix.de>
+In-Reply-To: <87343og290.fsf@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: d8b7f907d07e138eebe
-X-MBO-RS-META: xzucjdrsgkoe4qdo5kuc8gtzzmfjnufi
-X-Rspamd-Queue-Id: 4f1x7d4zFwz9tgJ
 
-This patch provides mtip_switch_tx and mtip_switch_rx functions
-code for MTIP L2 switch.
+On Thu, 29 Jan 2026 11:08:27 +0100, Steffen Trumtrar <s.trumtrar@pengutronix.de> wrote:
+>
+> Hi,
+>
+> On 2026-01-29 at 17:48 +08, Xuan Zhuo <xuanzhuo@linux.alibaba.com> wrote:
+> >
+> > Since patch #1 used this struct, this one should be placed first in the series.
+>
+> oh, you are right, the order should be the other way around.
+>
+> > Also, has the virtio specification process accepted such a draft proposal?
+>
+> I haven't sent the draft yet, because I'm unsure if I understood the way this should be implemented with the flow filter correctly.
+> If the direction is correct, I'd try and get the specification process going again.
+> (That is not that easy, if you're not used to it and not that deep into the whole virtio universe ;))
 
-Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
----
-Changes for v13:
-- New patch - created by excluding some code from large (i.e. v12 and
-  earlier) MTIP driver
 
-Changes for v14:
-- Rewrite RX error handling code
-- Remove } else { from if (unlikely(!skb)) { condition in mtip_switch_rx()
-- Remove locking from RX patch (done under NAPI API and similar to fec_main.c
-  driver)
-- Use net_prefetch() instead of prefetch()
+There have been many historical attempts in this area- you may want to take a
+look first.
 
-Changes for v15:
-- Use page_address() instead of __va()
-- Remove the check if data is NOT null, as it cannot be (those values are
-  assured to be allocated earlier for RX path).
+Thanks.
 
-Changes for v16:
-- Disable RX interrupt when in switch RX function
-- Set offload_fwd_mark when L2 offloading is enabled (fix broadcast flooding)
-- Replace spin_{un}lock() with _bh variant
-
-Changes for v17 - v18:
-- None
-
-Changes for v19:
-- Pass the page with data to upper part of the network stack
-- Use new page from page pool for new transfer
-- Remove extra copy of the data
-
-Changes for v20:
-- Use dev_err_ratelimited() to not spam console
-- Replace dev_consume_skb_irq() with dev_consume_skb_any()
-- Use skb->dev to assign it to tx packet device (avoid assigning to
-  napi->dev)
-- Remove the need to export the port information
-- Do not use fep->skb_dirty (calculate proper 'index' instead)
-- Use information about stopped queues to determine if driver can accept
-  further the packets for TX
-
-Changes for v21:
-- None
----
- .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 257 +++++++++++++++++-
- 1 file changed, 256 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-index 364ba9010db4..512eb38644d3 100644
---- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-+++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
-@@ -246,6 +246,39 @@ struct mtip_port_info *mtip_portinfofifo_read(struct switch_enet_private *fep)
- 	return info;
- }
- 
-+static void mtip_atable_get_entry_port_number(struct switch_enet_private *fep,
-+					      unsigned char *mac_addr, u8 *port)
-+{
-+	int block_index, block_index_end, entry;
-+	u32 mac_addr_lo, mac_addr_hi;
-+	u32 read_lo, read_hi;
-+
-+	mac_addr_lo = (u32)((mac_addr[3] << 24) | (mac_addr[2] << 16) |
-+			    (mac_addr[1] << 8) | mac_addr[0]);
-+	mac_addr_hi = (u32)((mac_addr[5] << 8) | (mac_addr[4]));
-+
-+	block_index = GET_BLOCK_PTR(crc8_calc(mac_addr));
-+	block_index_end = block_index + ATABLE_ENTRY_PER_SLOT;
-+
-+	/* now search all the entries in the selected block */
-+	for (entry = block_index; entry < block_index_end; entry++) {
-+		mtip_read_atable(fep, entry, &read_lo, &read_hi);
-+		*port = MTIP_PORT_FORWARDING_INIT;
-+
-+		if (read_lo == mac_addr_lo &&
-+		    ((read_hi & 0x0000FFFF) ==
-+		     (mac_addr_hi & 0x0000FFFF))) {
-+			/* found the correct address */
-+			if ((read_hi & (1 << 16)) && (!(read_hi & (1 << 17))))
-+				*port = FIELD_GET(AT_PORT_MASK, read_hi);
-+			break;
-+		}
-+	}
-+
-+	dev_dbg(&fep->pdev->dev, "%s: MAC: %pM PORT: 0x%x\n", __func__,
-+		mac_addr, *port);
-+}
-+
- /* Clear complete MAC Look Up Table */
- void mtip_clear_atable(struct switch_enet_private *fep)
- {
-@@ -826,11 +859,233 @@ static irqreturn_t mtip_interrupt(int irq, void *ptr_fep)
- 
- static void mtip_switch_tx(struct switch_enet_private *fep)
- {
-+	struct net_device *dev;
-+	unsigned short status;
-+	struct sk_buff *skb;
-+	struct cbd_t *bdp;
-+	int index;
-+
-+	spin_lock_bh(&fep->hw_lock);
-+	bdp = fep->dirty_tx;
-+
-+	while (((status = bdp->cbd_sc) & BD_ENET_TX_READY) == 0) {
-+		if (bdp == fep->cur_tx &&
-+		    !mtip_netif_queues_stopped(fep))
-+			break;
-+
-+		index = bdp - fep->tx_bd_base;
-+		dma_unmap_single(&fep->pdev->dev, bdp->cbd_bufaddr,
-+				 MTIP_SWITCH_TX_FRSIZE, DMA_TO_DEVICE);
-+		bdp->cbd_bufaddr = 0;
-+		skb = fep->tx_skbuff[index];
-+		dev = skb->dev;
-+		/* Check for errors */
-+		if (status & (BD_ENET_TX_HB | BD_ENET_TX_LC |
-+				   BD_ENET_TX_RL | BD_ENET_TX_UN |
-+				   BD_ENET_TX_CSL)) {
-+			dev->stats.tx_errors++;
-+			if (status & BD_ENET_TX_HB)  /* No heartbeat */
-+				dev->stats.tx_heartbeat_errors++;
-+			if (status & BD_ENET_TX_LC)  /* Late collision */
-+				dev->stats.tx_window_errors++;
-+			if (status & BD_ENET_TX_RL)  /* Retrans limit */
-+				dev->stats.tx_aborted_errors++;
-+			if (status & BD_ENET_TX_UN)  /* Underrun */
-+				dev->stats.tx_fifo_errors++;
-+			if (status & BD_ENET_TX_CSL) /* Carrier lost */
-+				dev->stats.tx_carrier_errors++;
-+		} else {
-+			dev->stats.tx_packets++;
-+		}
-+
-+		if (status & BD_ENET_TX_READY)
-+			dev_err_ratelimited(&fep->pdev->dev,
-+					    "xmit interrupt and TX_READY.\n");
-+
-+		/* Deferred means some collisions occurred during transmit,
-+		 * but we eventually sent the packet OK.
-+		 */
-+		if (status & BD_ENET_TX_DEF)
-+			dev->stats.collisions++;
-+
-+		/* Free the sk buffer associated with this last transmit */
-+		dev_consume_skb_any(skb);
-+		fep->tx_skbuff[index] = NULL;
-+
-+		/* Update pointer to next buffer descriptor to be transmitted */
-+		if (status & BD_ENET_TX_WRAP)
-+			bdp = fep->tx_bd_base;
-+		else
-+			bdp++;
-+
-+		/* Since we have freed up a buffer, the ring is no longer
-+		 * full.
-+		 */
-+		if (fep->dirty_tx == fep->cur_tx &&
-+		    mtip_netif_queues_stopped(fep))
-+			mtip_netif_wake_queues(fep);
-+	}
-+	fep->dirty_tx = bdp;
-+	spin_unlock_bh(&fep->hw_lock);
-+}
-+
-+static int mtip_update_cbd(struct switch_enet_private *fep, struct cbd_t *bdp,
-+			   int index)
-+{
-+	struct page *new_page;
-+
-+	new_page = page_pool_dev_alloc_pages(fep->page_pool);
-+	if (unlikely(!new_page))
-+		return -ENOMEM;
-+
-+	fep->page[index] = new_page;
-+	bdp->cbd_bufaddr = page_pool_get_dma_addr(new_page);
-+
-+	return 0;
- }
- 
-+/* During a receive, the cur_rx points to the current incoming buffer.
-+ * When we update through the ring, if the next incoming buffer has
-+ * not been given to the system, we just set the empty indicator,
-+ * effectively tossing the packet.
-+ */
- static int mtip_switch_rx(struct net_device *dev, int budget)
- {
--	return -ENOMEM;
-+	struct mtip_ndev_priv *priv = netdev_priv(dev);
-+	u8 *data, rx_port = MTIP_PORT_FORWARDING_INIT;
-+	struct switch_enet_private *fep = priv->fep;
-+	unsigned short status, pkt_len;
-+	struct net_device *pndev;
-+	struct ethhdr *eth_hdr;
-+	int pkt_received = 0;
-+	struct sk_buff *skb;
-+	struct cbd_t *bdp;
-+	struct page *page;
-+	int index;
-+
-+	/* First, grab all of the stats for the incoming packet.
-+	 * These get messed up if we get called due to a busy condition.
-+	 */
-+	bdp = fep->cur_rx;
-+
-+	while (!((status = bdp->cbd_sc) & BD_ENET_RX_EMPTY)) {
-+		if (pkt_received >= budget)
-+			break;
-+
-+		pkt_received++;
-+
-+		writel(MCF_ESW_IMR_RXF, fep->hwp + ESW_ISR);
-+		if (!fep->usage_count)
-+			goto rx_processing_done;
-+
-+		status ^= BD_ENET_RX_LAST;
-+		/* Check for errors. */
-+		if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH | BD_ENET_RX_NO |
-+			      BD_ENET_RX_CR | BD_ENET_RX_OV | BD_ENET_RX_LAST |
-+			      BD_ENET_RX_CL)) {
-+			dev->stats.rx_errors++;
-+			if (status & BD_ENET_RX_OV) {
-+				/* FIFO overrun */
-+				dev->stats.rx_fifo_errors++;
-+				goto rx_processing_done;
-+			}
-+			if (status & (BD_ENET_RX_LG | BD_ENET_RX_SH
-+				      | BD_ENET_RX_LAST)) {
-+				/* Frame too long or too short. */
-+				dev->stats.rx_length_errors++;
-+				if (status & BD_ENET_RX_LAST)
-+					netdev_err(dev, "rcv is not +last\n");
-+			}
-+			if (status & BD_ENET_RX_CR)	/* CRC Error */
-+				dev->stats.rx_crc_errors++;
-+
-+			/* Report late collisions as a frame error. */
-+			if (status & (BD_ENET_RX_NO | BD_ENET_RX_CL))
-+				dev->stats.rx_frame_errors++;
-+			goto rx_processing_done;
-+		}
-+
-+		/* Get correct RX page */
-+		index = bdp - fep->rx_bd_base;
-+		page = fep->page[index];
-+		/* Process the incoming frame */
-+		pkt_len = bdp->cbd_datlen;
-+
-+		dma_sync_single_for_cpu(&fep->pdev->dev, bdp->cbd_bufaddr,
-+					pkt_len, DMA_FROM_DEVICE);
-+		net_prefetch(page_address(page));
-+		data = page_address(page);
-+
-+		if (fep->quirks & FEC_QUIRK_SWAP_FRAME)
-+			swap_buffer(data, pkt_len);
-+
-+		eth_hdr = (struct ethhdr *)data;
-+		mtip_atable_get_entry_port_number(fep, eth_hdr->h_source,
-+						  &rx_port);
-+		if (rx_port == MTIP_PORT_FORWARDING_INIT)
-+			mtip_atable_dynamicms_learn_migration(fep,
-+							      mtip_get_time(),
-+							      eth_hdr->h_source,
-+							      &rx_port);
-+
-+		if ((rx_port == 1 || rx_port == 2) && fep->ndev[rx_port - 1])
-+			pndev = fep->ndev[rx_port - 1];
-+		else
-+			pndev = dev;
-+
-+		if (mtip_update_cbd(fep, bdp, index)) {
-+			pndev->stats.rx_dropped++;
-+			goto rx_processing_done;
-+		}
-+
-+		/* The packet length includes FCS, but we don't want to
-+		 * include that when passing upstream as it messes up
-+		 * bridging applications.
-+		 */
-+		skb = build_skb(page_address(page), PAGE_SIZE);
-+		if (unlikely(!skb)) {
-+			page_pool_recycle_direct(fep->page_pool, page);
-+			pndev->stats.rx_dropped++;
-+
-+			netdev_err_once(pndev, "build_skb failed!\n");
-+			goto rx_processing_done;
-+		}
-+
-+		skb_put(skb, pkt_len);      /* Make room */
-+		skb_mark_for_recycle(skb);
-+		skb->protocol = eth_type_trans(skb, pndev);
-+		skb->offload_fwd_mark = fep->br_offload;
-+		napi_gro_receive(&fep->napi, skb);
-+
-+		pndev->stats.rx_packets++;
-+		pndev->stats.rx_bytes += pkt_len;
-+
-+ rx_processing_done:
-+		/* Clear the status flags for this buffer */
-+		status &= ~BD_ENET_RX_STATS;
-+
-+		/* Mark the buffer empty */
-+		status |= BD_ENET_RX_EMPTY;
-+		/* Make sure that updates to the descriptor are performed */
-+		wmb();
-+		bdp->cbd_sc = status;
-+
-+		/* Update BD pointer to next entry */
-+		if (status & BD_ENET_RX_WRAP)
-+			bdp = fep->rx_bd_base;
-+		else
-+			bdp++;
-+
-+		/* Doing this here will keep the FEC running while we process
-+		 * incoming frames.  On a heavily loaded network, we should be
-+		 * able to keep up at the expense of system resources.
-+		 */
-+		writel(MCF_ESW_RDAR_R_DES_ACTIVE, fep->hwp + ESW_RDAR);
-+	} /* while (!((status = bdp->cbd_sc) & BD_ENET_RX_EMPTY)) */
-+
-+	fep->cur_rx = bdp;
-+
-+	return pkt_received;
- }
- 
- static void mtip_adjust_link(struct net_device *dev)
--- 
-2.39.5
-
+>
+>
+> Best regards,
+> Steffen
+>
+> --
+> Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
+> Steuerwalder Str. 21            | https://www.pengutronix.de/    |
+> 31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
+> Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
