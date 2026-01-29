@@ -1,72 +1,31 @@
-Received: from mo4-p00-ob.smtp.rzone.de (mo4-p00-ob.smtp.rzone.de [81.169.146.160])
+Received: from www262.sakura.ne.jp (www262.sakura.ne.jp [202.181.97.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B2F37AA71;
-	Thu, 29 Jan 2026 07:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=81.169.146.160
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769673159; cv=pass; b=ph/KUb5dSIXSOy+SSlPIcoA2+usbl45/CKLzHICRYzzBc7LAW+GLwFGzEVphf/CXvtBbXUkvqUphUb1HLxkx2V7IX0uHxH9+qd+ourwYwsdcu4fUMWvXVx/sUbgi/Um7Gj/5ppsFHDfJZyj5SPof5r+xdmbz8+qLXsxEC/Gp+Jw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769673159; c=relaxed/simple;
-	bh=KPZ3RT8p1UvPX0aNTW40NX4V+qmWEGgwkM/A1+r6nNM=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789B21DDC2B
+	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 08:06:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.181.97.72
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769673973; cv=none; b=i8SN+fPLCAwQuMS22CfhSPtYZSR+SK9d5nMdNjOoP7p2lnpkYEkO+QXkxOEwvL0DQ/o3NTvx2xkBZA/nAvlh2fU8h+M68g4EhRsukw9YGpeWPfPAIahahY8exy+gsTuWcyBR2C0w9ip6Age3ha2bMhOOgR43iv1pFQNBTtaBW3c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769673973; c=relaxed/simple;
+	bh=spQ6ptuyKVcePq/EcEzdBWb3run++SbCN8Gbv0Chm7c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PmUzNluRei6kWdzB+mZJMl9zRlUNgDDvdbO/AkOJzY73xVWrnvs7qUx8pxpdpOivgfxqq8hWcJjCPAuPlwKUT8bA9NjkElpVYfWIKHShTmpJsES+h4nZb4uJwjeS7Z1cSP0DPkVMg6MQQbaCUjlOHj5Y9hzRioIMq6CYcsh8abc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hartkopp.net; spf=pass smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=XcyZ0P62; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=nJC6m8my; arc=pass smtp.client-ip=81.169.146.160
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="XcyZ0P62";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="nJC6m8my"
-ARC-Seal: i=1; a=rsa-sha256; t=1769672970; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=r1bLmwQcw2duwxsvT0v8BWosgehEoAGFzn9hDYRiGIEad11wgpJrmOS9cddeOErvgl
-    aeHtJ8YDLuZmMl71pvXZoNwP1COoCTUjceL4g+zVSeE8ob7Z/f/78bl8W6vzQ3FPBE2I
-    xEZvaBV979aYIHWvMXJWImkyqolsYlpveAbp5O77P70Y3s4KWfRBEGB4aem+y/Aucbge
-    ApU0chUwmdsgZNa/Uj7R4eB/JGipCVGWq3Uc9+1Sah0/4o52brcizJ7ikEsgNqO3er4h
-    1wnRY0v0Z/a/3PizvKzzFnhdb0BLbAxPY6FheClnBJCvs1jSCTNpHxT4aDuWapjNLa2P
-    TcWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1769672970;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Z+WqTAg9LUbI0GhBY+6VoNRxElDKvMCBB5g8TUsqTbY=;
-    b=fp6f0CHBB4GEfr7QVw5VJzKKO/WZ4pI6tr/7p9dPX6BTHepFA2pL4E3y+vTnxg0iJ6
-    rDQkKk+CzC1vJCDY5O/l5yMc8FelLGWZTbcxjiYYGDWPfye75YfUow0CC6wGPDW+WAEx
-    TrcXRbyCYteb4X3r37yU4OUuiMY8A/56rRlIlBcZKluON8TPvQWk8w/OoX4c5jJn/mC+
-    CknsFiVVo4Bo+403CYEM1WQFjkCvF+w0YrhPdeDzHzPwhvS6Vx8BRK+xFdLtd2D1CKxF
-    Wq9c++7nVdkAxbQ60tlKsezscXxAKhj+1py0BpxV3nkDLdpeqdN+XpfJFLbiOuwQkbxe
-    Ueig==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo00
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1769672970;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Z+WqTAg9LUbI0GhBY+6VoNRxElDKvMCBB5g8TUsqTbY=;
-    b=XcyZ0P626blEtjlCbtDxdsEpEEon6OZ6yqnfBKtbj/5bqnRY1RDYfEOgzEaX9KOwHZ
-    Par1esuC1RVQkpPtCrFACa9iIBubEOeKk3CuCvU7aeP5LuqRsPoONOjjWSNLh0P5ZS1x
-    9I4dDhcxn+SSoYluY2pFFL/wHNrPomE6dVXIGlETpFWZma9R93pz3ws8YUJEdge48A9t
-    wMgDf/DZ8d0ew+qxfY2zOT5N5NV7zGtBw2NhhSqM+wsIC64Jp+NwEKn0MI5gkA/u8wOP
-    T73d9FGsNrWUeXXKo0xczbX4yP2as1ltnpx0G/XbHZPgkcLrLBwcP7lV5BzCH3DCTLYY
-    +B6A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1769672970;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=Z+WqTAg9LUbI0GhBY+6VoNRxElDKvMCBB5g8TUsqTbY=;
-    b=nJC6m8myKdhaJqhsMIGI1Q3KBTE9SgMgbkfn4Q/i5WYS7jNrQLoWcOjYruKVLMQ+1B
-    GNHCI0IAwgaMbfH2TbBw==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeEQ7s8YjX10Q=="
-Received: from [IPV6:2a00:6020:4a38:6810::76e]
-    by smtp.strato.de (RZmta 54.1.0 AUTH)
-    with ESMTPSA id K0e68b20T7nTpwc
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Thu, 29 Jan 2026 08:49:29 +0100 (CET)
-Message-ID: <f47126ee-8256-4077-a09c-47a1ed461f65@hartkopp.net>
-Date: Thu, 29 Jan 2026 08:49:24 +0100
+	 In-Reply-To:Content-Type; b=PvEwIbyr/MRMlBSkQ/GaCJ4ZCl6StEmfbUjsKdDzr1+JSoBTZaZiYcTC1lLktg+x/YkUZZmHOaMICES0/sgOlwXEdrbEUg2P/aM2HF8KLW2pTogE9Jsnfb8A5u6c1u69Avuwa5YYUvzyh9JEB10ew3kQBN+emj04+B+r9VHQjko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp; arc=none smtp.client-ip=202.181.97.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=I-love.SAKURA.ne.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=I-love.SAKURA.ne.jp
+Received: from www262.sakura.ne.jp (localhost [127.0.0.1])
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 60T8686d087496;
+	Thu, 29 Jan 2026 17:06:08 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Received: from [192.168.1.10] (M106072142033.v4.enabler.ne.jp [106.72.142.33])
+	(authenticated bits=0)
+	by www262.sakura.ne.jp (8.15.2/8.15.2) with ESMTPSA id 60T867oH087492
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NO);
+	Thu, 29 Jan 2026 17:06:07 +0900 (JST)
+	(envelope-from penguin-kernel@I-love.SAKURA.ne.jp)
+Message-ID: <b91432c3-5ed4-4669-8d7c-02cf7ea6f8fa@I-love.SAKURA.ne.jp>
+Date: Thu, 29 Jan 2026 17:06:08 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -74,65 +33,125 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next 0/6] move CAN skb headroom content to skb extensions
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
- linux-can@vger.kernel.org
-References: <20260125201601.5018-1-socketcan@hartkopp.net>
- <20260127174937.4c5fc226@kernel.org>
- <67cb17f4-2f72-4847-aa04-3633f3d8df33@hartkopp.net>
- <20260128-booby-of-phenomenal-proficiency-4db5ab-mkl@pengutronix.de>
- <20260129-versatile-tuscan-mongrel-f9b173-mkl@pengutronix.de>
+Subject: Re: [PATCH net] xfrm: always flush state and policy upon
+ NETDEV_DOWN/NETDEV_UNREGISTER events
+To: Leon Romanovsky <leon@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Ilan Tayari <ilant@mellanox.com>, Guy Shapiro <guysh@mellanox.com>,
+        Yossi Kuperman <yossiku@mellanox.com>,
+        Network Development <netdev@vger.kernel.org>
+References: <1de734e2-1da6-4b5c-8e03-66af7f88d074@I-love.SAKURA.ne.jp>
+ <20260128102404.GC12149@unreal>
+ <83d06aca-4437-4d61-9c99-ac19b797a243@I-love.SAKURA.ne.jp>
+ <20260128123546.GC40916@unreal>
 Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <20260129-versatile-tuscan-mongrel-f9b173-mkl@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+In-Reply-To: <20260128123546.GC40916@unreal>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Virus-Status: clean
+X-Anti-Virus-Server: fsav105.rs.sakura.ne.jp
 
-On 29.01.26 07:44, Marc Kleine-Budde wrote:
-> On 28.01.2026 10:07:13, Marc Kleine-Budde wrote:
->> I'll do. In the mean time, please have a look at b4, it has support for
->> sending patches via a web hook.
+On 2026/01/28 21:35, Leon Romanovsky wrote:
+> On Wed, Jan 28, 2026 at 07:44:02PM +0900, Tetsuo Handa wrote:
+>> On 2026/01/28 19:24, Leon Romanovsky wrote:
+>>> I think this can work, but IMHO the more robust approach is to ensure that all
+>>> states and policies are removed when the NETIF_F_HW_ESP feature bit is cleared.
+>>
+>> The transaction will become complicated, for dev->features manipulation
+>> function can fail.
 > 
-> Hooray for switching to b4!
+> Line above returning NOTIFY_OK, check that NETIF_F_HW_ESP is cleared,
+> and remove everything.
 
-Yes! Unfortunately one of the most relevant features does not work:
+That answer needs more clarification. I came to get confused about what we should do.
 
-$ b4 prep --auto-to-cc
-Will collect To: addresses using get_maintainer.pl
-Will collect Cc: addresses using get_maintainer.pl
-Traceback (most recent call last):
-   File "/usr/bin/b4", line 8, in <module>
-     sys.exit(cmd())
-              ~~~^^
-   File "/usr/lib/python3/dist-packages/b4/command.py", line 417, in cmd
-     cmdargs.func(cmdargs)
-     ~~~~~~~~~~~~^^^^^^^^^
-   File "/usr/lib/python3/dist-packages/b4/command.py", line 83, in cmd_prep
-     b4.ez.cmd_prep(cmdargs)
-     ~~~~~~~~~~~~~~^^^^^^^^^
-   File "/usr/lib/python3/dist-packages/b4/ez.py", line 2835, in cmd_prep
-     auto_to_cc()
-     ~~~~~~~~~~^^
-   File "/usr/lib/python3/dist-packages/b4/ez.py", line 2655, in auto_to_cc
-     logger.debug('added %s to seen', ltr.addr[1])
-                                      ~~~~~~~~^^^
-TypeError: 'NoneType' object is not subscriptable
+Question 1:
 
+  Since NETIF_F_HW_ESP is a hardware dependent flag, not all "struct net_device"
+  support NETIF_F_HW_ESP flag. Is this interpretation correct?
 
-$ b4 --version
-0.14.2
+Question 2:
 
-While get_maintainer.pl itself works ...
+  Sabrina Dubroca commented
 
-$ scripts/get_maintainer.pl net/can/bcm.c
-Oliver Hartkopp <socketcan@hartkopp.net> (maintainer:CAN NETWORK LAYER)
-Marc Kleine-Budde <mkl@pengutronix.de> (maintainer:CAN NETWORK LAYER)
-linux-can@vger.kernel.org (open list:CAN NETWORK LAYER)
-linux-kernel@vger.kernel.org (open list)
+    But the current behavior ("ignore NETIF_F_HW_ESP and call
+    xdo_dev_state_add for new states anyway") has been established for
+    multiple years. Changing that now seems a bit risky.
 
-At least posting via b4 relay works fine and downloading of the v2 
-patchset you sent was comparably easy too.
+  at https://lkml.kernel.org/r/aXd3QjzwOVm0Q9LF@krikkit .
 
-Best regards,
-Oliver
+  Is that comment saying that we have been permitting a "struct net_device"
+  to be selected by xfrm_dev_state_add() even if that "struct net_device"
+  does not support NETIF_F_HW_ESP flag. Is this interpretation correct?
+
+Question 3:
+
+  Leon Romanovsky suggested that, as a more robust approach, remove all states
+  and policies when the NETIF_F_HW_ESP feature bit is cleared.
+
+  But I consider that such approach will not work, for (according to Q2 above)
+  xfrm_dev_state_add() can be called even if the NETIF_F_HW_ESP feature bit is not
+  set. Also, I think that there is no guarantee that dev->features manipulation
+  function is called after xfrm_dev_state_add() was called.
+
+  Therefore, we need an event that are guaranteed to be called.
+  The NETDEV_UNREGISTER event is guaranteed to be called when unregistring
+  a "struct net_device", and therefore a good place to remove all states and
+  policies.
+
+  Is this interpretation correct?
+
+Question 4:
+
+  If Q1 is correct, Sabrina's comment
+
+    Changing that now seems a bit risky.
+
+  in Q2 might be applicable to xfrm_dev_down().
+
+  That is, someone who is using xfrm with a !NETIF_F_HW_ESP hardware might be
+  expecting that state and policy are not flushed upon NETDEV_DOWN event.
+
+  If there is such possibility, I think we should avoid changing xfrm_dev_down()
+  and instead re-introduce xfrm_dev_unregister(). What do you think?
+
+ net/xfrm/xfrm_device.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
+index 52ae0e034d29..550457e4c4f0 100644
+--- a/net/xfrm/xfrm_device.c
++++ b/net/xfrm/xfrm_device.c
+@@ -544,6 +544,14 @@ static int xfrm_dev_down(struct net_device *dev)
+ 	return NOTIFY_DONE;
+ }
+ 
++static int xfrm_dev_unregister(struct net_device *dev)
++{
++	xfrm_dev_state_flush(dev_net(dev), dev, true);
++	xfrm_dev_policy_flush(dev_net(dev), dev, true);
++
++	return NOTIFY_DONE;
++}
++
+ static int xfrm_dev_event(struct notifier_block *this, unsigned long event, void *ptr)
+ {
+ 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
+@@ -556,8 +564,10 @@ static int xfrm_dev_event(struct notifier_block *this, unsigned long event, void
+ 		return xfrm_api_check(dev);
+ 
+ 	case NETDEV_DOWN:
+-	case NETDEV_UNREGISTER:
+ 		return xfrm_dev_down(dev);
++
++	case NETDEV_UNREGISTER:
++		return xfrm_dev_unregister(dev);
+ 	}
+ 	return NOTIFY_DONE;
+ }
+
