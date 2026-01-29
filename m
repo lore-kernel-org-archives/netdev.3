@@ -1,75 +1,75 @@
-Received: from mail-qk1-f228.google.com (mail-qk1-f228.google.com [209.85.222.228])
+Received: from mail-yw1-f227.google.com (mail-yw1-f227.google.com [209.85.128.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5552741DF
-	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 06:17:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.228
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9F51ADFE4
+	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 06:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769667450; cv=none; b=ZG+RlONg0lVBwbvkqqEotUqxikds1lJSKBU57e5p5AGXjfLcVH+yqBYAy51kvs6FCIA2MR1r9ZDt3n5d7dKp3cuwdK3ndUuJSXo+ARqjw0GKDFRVFpHeMH96/o1TZAnbIevsmD+Ruadx6iKeEPvjkHblLzdf8cjWVZXvOXioSuE=
+	t=1769667453; cv=none; b=KcpoB6/18tZPRiL3KURFS0PzFNh3HEWIgJe/32G5gNZT62CwZIlCNSCSXJXNFibzYMRgmVx/5AG2h9pYKozy9XLygDgZxzXxlR9o6xGxE8hSw6ObNd/I84ovsL2OThyEiNkPPEP0ANWAybBIkg3IukeFbtgwvGicPgIoU1K81ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769667450; c=relaxed/simple;
-	bh=tuE75+S/17HCrd3U2MT5kt15eXwfN60Ek1+La5U1yZE=;
+	s=arc-20240116; t=1769667453; c=relaxed/simple;
+	bh=/f78JPPOX6javyZRThC7ZF2Z5atogSF9CGyesS3/qYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MaGKyr2FuBKSkAzT/1mjNOk4V6RpmCsI0+EfQPIx/JjIZ6IT8l84aqc+bXCCuA9EcGw76gho4Fj0WeaGBlmOKl8ZIHseXpt3NHwKJn5ts/bABZV6KdSaywWkhN57zR2SAYw80aH1NmOYu4xJsR5zClrFJhgYuSqQLsZd5aOeYTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=bAQSU18c; arc=none smtp.client-ip=209.85.222.228
+	 MIME-Version; b=BokFStNk0JN4NtMSGaOY3kxqMQeamPHCyjDmQFpKHkDLoF0HQWvuuPgpxNSlple2mRKqT3JX0/+6TniPIl4bLsf+ylWIf6J6N1wgAtdBeBUVqduRav7oB3t7dNDWkq/uI4XN58U6iflmtiPf74sqxb0JakGLUap+7eqRaSnvD9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=aPwZXG4o; arc=none smtp.client-ip=209.85.128.227
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="bAQSU18c"
-Received: by mail-qk1-f228.google.com with SMTP id af79cd13be357-8c5349ba802so65892085a.1
-        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 22:17:28 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="aPwZXG4o"
+Received: by mail-yw1-f227.google.com with SMTP id 00721157ae682-78f89501423so17734557b3.1
+        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 22:17:31 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769667448; x=1770272248;
+        d=1e100.net; s=20230601; t=1769667451; x=1770272251;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v/KMvR4XXUfM51MqXNT75FdNtnGXJ71jqIXy+OvFE3k=;
-        b=mN8MMdtJ/eIT4m7/BB0hIrKj98tQLcsv40vi4Sx2uDHtYQuF/eLlC9WdJ69BgCeHC4
-         YeJQrvGNmGy6a4vYyUShCX4tSwKk4ze17rz4iOrBKQieSjTRNTi7IMEMn/n3v4IdWYnQ
-         5+/eXOwaLe8LhVBGmdIZQLT1aHvTxYI+nQnurvEPRsAORuo0SHu2K/D7WZzn43Cwao0C
-         olMKwSCzQHs+u2uEoPGoWLvMAh99TQjuVCMcDSefqToF/SgW+E5xlyZ5QxZ1SBA4DYY6
-         cWaodQydLU6AKfuX1J2kEvdzlYuDOjavX2jbWpaZd+LDk71Rw0UFsnK2ZeMikZCjkGHh
-         7iig==
-X-Gm-Message-State: AOJu0Yw5rWUt3MEnVn6cO5XPhnqrtUuTU6pR889SyBOZvLJulGn9f/Q2
-	EKXqxbR/Oq5vYALDgGTXoe4R6rJgmvAsCIMBzcS9irLrnbG0jfTIHMINkx8tLlSvy7xsNNlhPLe
-	M6/CWCfdWrqOwuXM3BSWw0gVqT1l9ljZekJG3Dtw2+WUyezb73cM6v2d9jjbf3QSQyi6xEeCl9w
-	SqTvyY2dRL9VO00s4h4U1nkQUYDRfiUE53X7gYzpT54PRGdQuqngTox0TWS3xrWRRNNFcJgIwNt
-	NoPi221wMA=
-X-Gm-Gg: AZuq6aJkkdIT0deG0PMhnhUtmZ+mFZdaDYdu/iAxizTHxwe0CAWfdae8ThL9iT496fE
-	i4loteQtGIw8CuN15AUaAp4kuW3SgSPBM3EApVIyfpiOCZ5EIEw5MPT6s1J6TQ+AJaVH5YDnfUL
-	BKO6w32nmmmxWWiyggCN7+r35Lnsm3osYPFEIF6hD2+zgtbtGLeSWTd3gnEqhU+nBm668dJbpGH
-	X9TJx65Td7GJlrtvqqe0jcGtcyNEAUJIrtoLIvvLRqIafmpmjEM6qw4LAqN53kQZhwpE7tcXZ7Y
-	wVe11/r1QbzRPnPWRiXungbL/UGszfjYe+YFliD0NaUx62+Ckav14BhGWnIvMmTlcxinjj8BrSG
-	V+Xr3HB8jW/aLkMxiJCdc1v5fFNmXHRp4TdQ96kzpZe3tLg1wI0SuxblweJDI+Pob/qjeP/pu6H
-	rKfyWmb36Om87JqJZ9l4USwyu87iyCMPs4PMId7x9eFQ==
-X-Received: by 2002:a05:620a:40d5:b0:8c3:7e05:db01 with SMTP id af79cd13be357-8c70b84cee3mr999277685a.2.1769667447940;
-        Wed, 28 Jan 2026 22:17:27 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-0.dlp.protect.broadcom.com. [144.49.247.0])
-        by smtp-relay.gmail.com with ESMTPS id 6a1803df08f44-894d3756c6asm5928666d6.31.2026.01.28.22.17.27
+        bh=pN45g4kRUVrmjUV0gV9PNhxI0auS5Q/eGFieZxaPaH8=;
+        b=AzgoBhvM44dcvcBhklxxiWWDnTb8UDFIGTA1ZQdgcOm2SqZwe1SetTUwvYpxk5FLWT
+         5SWWxmIasyBuyV0TD0bLNYba4j5hEtqUw30mjpIEtnrXyj6pw3Iq24fVpeh249YPCA2d
+         Zau0D0zCZtCJaHwxhcng6EOtDpuS6SXPeoSEPQt5M0SM1mez42vYDrjoSv7ZrUVcoy29
+         0ZKwpqv8mo5kh5PfGL6wBHlGZF11YXs7zul8huIeyVYw/s1enhBqjh53hR8Vk+WFcLx7
+         kAbLMWgARx2bi+qFETe3eznuPoTwk8BU5WqNQFsGyQUZlzksXLmpE2eKOVC3cOaZebGI
+         6tEQ==
+X-Gm-Message-State: AOJu0YwBQzfBmlV1SUzMinSuVZvoTjSt0RNzuPdPVRfV1QU/ChqczXiI
+	pUtiucl/Yb66zIr5amy2GLCEs07Zp0QLieVM/bvvXRYrN2djH4ZrX/S3vL3wqhnPAuIhMA9bnLt
+	LShKH0bBYNqj8FprpIMYyJZ3J24JAv+nJlhEkZI7AOv98i6D5CzRJoSMu1erykRMzIlRBOIYfdL
+	8NrI7q9i4bdoOa6HP+nDzqv/Mpur/D4BUTdrLuXo8QG0ztlPj5R0Ubkykn2IW3n30PKzQCmEw1a
+	h6dw2BYO5c=
+X-Gm-Gg: AZuq6aICzd6p9YIC9A3esp6SlwobbsqrUq+/txdIKLEgpfKCmxhYoeM6RV8inBB4I2W
+	K51X9rfNByewUF1Vo0Aesv1/0x5H4Rug80QShoZBYpQBLt9kqoTUr9v3taN6oRlhRk1hegqUTBm
+	wvqHpQ0tBHY8kXAG39A6jd8j8QQSQHzikd5NVtBwMy642xEvJr30ZLFjdNX91Sz3SZ5bBr+EqKw
+	T4cPH/P5XrhZQIw43ceiqTNbdvtQbqTk763+csbFCbkXMZ98RiIUKX61g9uDNUg6vGVNZ0qT5H6
+	nqadsM5bO/c4A47e1rW4RDvir75262ytBKu5NuGnPYZihcISYQehiXPpdquq91LSp3gGAibsND3
+	67V70Q3LEU09VQXH6ICMDpalYhu84Rj2GNUJA6OFamu6tngQRCrC7oz9X+RAhnfsfh7MdQ3V59y
+	pjMcu3mLIHsbsGiYssL3bafYx8pSnJu53VNxj/cxyGdaGQ
+X-Received: by 2002:a05:690e:bca:b0:649:432f:2810 with SMTP id 956f58d0204a3-6499f0b784amr1508689d50.25.1769667450875;
+        Wed, 28 Jan 2026 22:17:30 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-20.dlp.protect.broadcom.com. [144.49.247.20])
+        by smtp-relay.gmail.com with ESMTPS id 956f58d0204a3-649960727f4sm390672d50.3.2026.01.28.22.17.30
         for <netdev@vger.kernel.org>
         (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Wed, 28 Jan 2026 22:17:27 -0800 (PST)
+        Wed, 28 Jan 2026 22:17:30 -0800 (PST)
 X-Relaying-Domain: broadcom.com
 X-CFilter-Loop: Reflected
-Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-124ac76ea5bso3768377c88.0
-        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 22:17:27 -0800 (PST)
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-1232dd9a256so1189387c88.1
+        for <netdev@vger.kernel.org>; Wed, 28 Jan 2026 22:17:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1769667446; x=1770272246; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1769667450; x=1770272250; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=v/KMvR4XXUfM51MqXNT75FdNtnGXJ71jqIXy+OvFE3k=;
-        b=bAQSU18cHFtHipY3iZtnWv66owCA205+QZWxsUv0+p+l6SLtTkQTY+wfzCQmVtA1H8
-         0s0IdgesrgkeP38fhEKCzsEc6gO+MsFOYLi1EIOdEk222M1nHnQnXVJKfP0Xvx+fNqJv
-         DNdr3Bzk/ABxTOGK1Lob6xOQiTt0pW/JKZvNU=
-X-Received: by 2002:a05:7022:79e:b0:119:e569:fb9a with SMTP id a92af1059eb24-124a005f933mr5024143c88.9.1769667446549;
-        Wed, 28 Jan 2026 22:17:26 -0800 (PST)
-X-Received: by 2002:a05:7022:79e:b0:119:e569:fb9a with SMTP id a92af1059eb24-124a005f933mr5024131c88.9.1769667446019;
-        Wed, 28 Jan 2026 22:17:26 -0800 (PST)
+        bh=pN45g4kRUVrmjUV0gV9PNhxI0auS5Q/eGFieZxaPaH8=;
+        b=aPwZXG4oni6sWVem91zu8BuaTjDao+2gQ/ItC/ybFwdzLqUjmNuFjlFC3ZE/e0dD5A
+         Lni/DFzDQ/x273DwgNusgIOiAwmBHPvtgHPvuPh15TDg+RqFDtStPpS9qFnuX+f2Mp3T
+         27uZqf0rh9zuAoJk6nOOGDCwlwI/f0473VWNQ=
+X-Received: by 2002:a05:7022:6182:b0:123:36f3:2d2f with SMTP id a92af1059eb24-124b10bb9cbmr984422c88.26.1769667449524;
+        Wed, 28 Jan 2026 22:17:29 -0800 (PST)
+X-Received: by 2002:a05:7022:6182:b0:123:36f3:2d2f with SMTP id a92af1059eb24-124b10bb9cbmr984414c88.26.1769667448993;
+        Wed, 28 Jan 2026 22:17:28 -0800 (PST)
 Received: from lvnvda3289.lvn.broadcom.net ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9e0304bsm5318226c88.14.2026.01.28.22.17.25
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9e0304bsm5318226c88.14.2026.01.28.22.17.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Jan 2026 22:17:25 -0800 (PST)
+        Wed, 28 Jan 2026 22:17:28 -0800 (PST)
 From: Michael Chan <michael.chan@broadcom.com>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -78,11 +78,10 @@ Cc: netdev@vger.kernel.org,
 	pabeni@redhat.com,
 	andrew+netdev@lunn.ch,
 	pavan.chebbi@broadcom.com,
-	andrew.gospodarek@broadcom.com,
-	Jakub Kicinski <kicinski@meta.com>
-Subject: [PATCH net 1/4] bnxt_en: Fix RSS context delete logic
-Date: Wed, 28 Jan 2026 22:16:43 -0800
-Message-ID: <20260129061646.1417185-2-michael.chan@broadcom.com>
+	andrew.gospodarek@broadcom.com
+Subject: [PATCH net 3/4] bnxt_en: Fix deleting of Ntuple filters
+Date: Wed, 28 Jan 2026 22:16:45 -0800
+Message-ID: <20260129061646.1417185-4-michael.chan@broadcom.com>
 X-Mailer: git-send-email 2.45.4
 In-Reply-To: <20260129061646.1417185-1-michael.chan@broadcom.com>
 References: <20260129061646.1417185-1-michael.chan@broadcom.com>
@@ -97,59 +96,149 @@ X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
 From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-We need to free the corresponding RSS context VNIC
-in FW everytime an RSS context is deleted in driver.
-Commit 667ac333dbb7 added a check to delete the VNIC
-in FW only when netif_running() is true to help delete
-RSS contexts with interface down.
+Ntuple filters can be deleted when the interface
+is down. The current code blindly sends the filter
+delete command to FW. When the interface is down, all
+the VNICs are deleted in the FW. When the VNIC is
+freed in the FW, all the associated filters are also
+freed. We need not send the free command explicitly.
+Sending such command will generate FW error in the
+dmesg.
 
-Having that condition will make the driver leak VNICs
-in FW whenever close() happens with active RSS contexts.
-On the subsequent open(), as part of RSS context restoration,
-we will end up trying to create extra VNICs for which we
-did not make any reservation. FW can fail this request,
-thereby making us lose active RSS contexts.
+In order to fix this, save a pointer to the corresponding
+VNIC of an Ntuple filter in the ntuple filter's base
+structure. Use this pointer to check if the VNIC is
+already freed whenever we are freeing the Ntuple filters.
+Now that we have access to the vnic itself, remove the
+redundant reference to fw_vnic_id from all places.
 
-Suppose an RSS context is deleted already and we try to
-process a delete request again, then the HWRM functions
-will check for validity of the request and they simply
-return if the resource is already freed. So, even for
-delete-when-down cases, netif_running() check is not
-necessary.
-
-Remove the netif_running() condition check when deleting
-an RSS context.
-
-Reported-by: Jakub Kicinski <kicinski@meta.com>
-Fixes: 667ac333dbb7 ("eth: bnxt: allow deleting RSS contexts when the device is down")
+Fixes: 8336a974f37d ("bnxt_en: Save user configured filters in a lookup list")
 Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
 Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
 Signed-off-by: Michael Chan <michael.chan@broadcom.com>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c         | 14 ++++++++++++--
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h         |  2 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  7 +++----
+ 3 files changed, 16 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 8419d1eb4035..64832289e18d 100644
+index 6fae0490bc1c..6ec173a25332 100644
 --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
 +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -10827,12 +10827,10 @@ void bnxt_del_one_rss_ctx(struct bnxt *bp, struct bnxt_rss_ctx *rss_ctx,
- 	struct bnxt_ntuple_filter *ntp_fltr;
- 	int i;
+@@ -6156,6 +6156,7 @@ int bnxt_hwrm_l2_filter_alloc(struct bnxt *bp, struct bnxt_l2_filter *fltr)
+ {
+ 	struct hwrm_cfa_l2_filter_alloc_output *resp;
+ 	struct hwrm_cfa_l2_filter_alloc_input *req;
++	u16 dst_id = INVALID_HW_RING_ID;
+ 	u16 target_id = 0xffff;
+ 	int rc;
  
--	if (netif_running(bp->dev)) {
--		bnxt_hwrm_vnic_free_one(bp, &rss_ctx->vnic);
--		for (i = 0; i < BNXT_MAX_CTX_PER_VNIC; i++) {
--			if (vnic->fw_rss_cos_lb_ctx[i] != INVALID_HW_RING_ID)
--				bnxt_hwrm_vnic_ctx_free_one(bp, vnic, i);
--		}
-+	bnxt_hwrm_vnic_free_one(bp, &rss_ctx->vnic);
-+	for (i = 0; i < BNXT_MAX_CTX_PER_VNIC; i++) {
-+		if (vnic->fw_rss_cos_lb_ctx[i] != INVALID_HW_RING_ID)
-+			bnxt_hwrm_vnic_ctx_free_one(bp, vnic, i);
+@@ -6177,7 +6178,10 @@ int bnxt_hwrm_l2_filter_alloc(struct bnxt *bp, struct bnxt_l2_filter *fltr)
+ 	if (!BNXT_CHIP_TYPE_NITRO_A0(bp))
+ 		req->flags |=
+ 			cpu_to_le32(CFA_L2_FILTER_ALLOC_REQ_FLAGS_OUTERMOST);
+-	req->dst_id = cpu_to_le16(fltr->base.fw_vnic_id);
++
++	if (fltr->base.vnic)
++		dst_id = fltr->base.vnic->fw_vnic_id;
++	req->dst_id = cpu_to_le16(dst_id);
+ 	req->enables =
+ 		cpu_to_le32(CFA_L2_FILTER_ALLOC_REQ_ENABLES_L2_ADDR |
+ 			    CFA_L2_FILTER_ALLOC_REQ_ENABLES_DST_ID |
+@@ -6212,6 +6216,9 @@ int bnxt_hwrm_cfa_ntuple_filter_free(struct bnxt *bp,
+ 	int rc;
+ 
+ 	set_bit(BNXT_FLTR_FW_DELETED, &fltr->base.state);
++	if (fltr->base.vnic->fw_vnic_id == INVALID_HW_RING_ID)
++		return 0;
++
+ 	rc = hwrm_req_init(bp, req, HWRM_CFA_NTUPLE_FILTER_FREE);
+ 	if (rc)
+ 		return rc;
+@@ -6263,6 +6270,7 @@ bnxt_cfg_rfs_ring_tbl_idx(struct bnxt *bp,
+ 		if (ctx) {
+ 			rss_ctx = ethtool_rxfh_context_priv(ctx);
+ 			vnic = &rss_ctx->vnic;
++			fltr->base.vnic = vnic;
+ 
+ 			req->dst_id = cpu_to_le16(vnic->fw_vnic_id);
+ 		}
+@@ -6273,6 +6281,7 @@ bnxt_cfg_rfs_ring_tbl_idx(struct bnxt *bp,
+ 		u32 enables;
+ 
+ 		vnic = &bp->vnic_info[BNXT_VNIC_NTUPLE];
++		fltr->base.vnic = vnic;
+ 		req->dst_id = cpu_to_le16(vnic->fw_vnic_id);
+ 		enables = CFA_NTUPLE_FILTER_ALLOC_REQ_ENABLES_RFS_RING_TBL_IDX;
+ 		req->enables |= cpu_to_le32(enables);
+@@ -6311,6 +6320,7 @@ int bnxt_hwrm_cfa_ntuple_filter_alloc(struct bnxt *bp,
+ 		bnxt_cfg_rfs_ring_tbl_idx(bp, req, fltr);
+ 	} else {
+ 		vnic = &bp->vnic_info[fltr->base.rxq + 1];
++		fltr->base.vnic = vnic;
+ 		req->dst_id = cpu_to_le16(vnic->fw_vnic_id);
  	}
- 	if (!all)
- 		return;
+ 	req->enables |= cpu_to_le32(BNXT_NTP_FLTR_FLAGS);
+@@ -6365,7 +6375,7 @@ static int bnxt_hwrm_set_vnic_filter(struct bnxt *bp, u16 vnic_id, u16 idx,
+ 	if (IS_ERR(fltr))
+ 		return PTR_ERR(fltr);
+ 
+-	fltr->base.fw_vnic_id = bp->vnic_info[vnic_id].fw_vnic_id;
++	fltr->base.vnic = &bp->vnic_info[vnic_id];
+ 	rc = bnxt_hwrm_l2_filter_alloc(bp, fltr);
+ 	if (rc)
+ 		bnxt_del_l2_filter(bp, fltr);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index e2d52841fa86..fd7201283364 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -1424,9 +1424,9 @@ struct bnxt_filter_base {
+ #define BNXT_ACT_RSS_CTX	0x10
+ 	u16			sw_id;
+ 	u16			rxq;
+-	u16			fw_vnic_id;
+ 	u16			rss_ctx_id;
+ 	u16			vf_idx;
++	struct bnxt_vnic_info	*vnic;
+ 	unsigned long		state;
+ #define BNXT_FLTR_VALID		0
+ #define BNXT_FLTR_INSERTED	1
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index 8fd0e06ef2a7..f8aacd2822f9 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -1267,9 +1267,9 @@ static int bnxt_add_l2_cls_rule(struct bnxt *bp,
+ 	u8 vf = ethtool_get_flow_spec_ring_vf(fs->ring_cookie);
+ 	struct ethhdr *h_ether = &fs->h_u.ether_spec;
+ 	struct ethhdr *m_ether = &fs->m_u.ether_spec;
++	struct bnxt_vnic_info *vnic = NULL;
+ 	struct bnxt_l2_filter *fltr;
+ 	struct bnxt_l2_key key;
+-	u16 vnic_id;
+ 	u8 flags;
+ 	int rc;
+ 
+@@ -1291,17 +1291,16 @@ static int bnxt_add_l2_cls_rule(struct bnxt *bp,
+ 
+ 	if (vf) {
+ 		flags = BNXT_ACT_FUNC_DST;
+-		vnic_id = 0xffff;
+ 		vf--;
+ 	} else {
+ 		flags = BNXT_ACT_RING_DST;
+-		vnic_id = bp->vnic_info[ring + 1].fw_vnic_id;
++		vnic = &bp->vnic_info[ring + 1];
+ 	}
+ 	fltr = bnxt_alloc_new_l2_filter(bp, &key, flags);
+ 	if (IS_ERR(fltr))
+ 		return PTR_ERR(fltr);
+ 
+-	fltr->base.fw_vnic_id = vnic_id;
++	fltr->base.vnic = vnic;
+ 	fltr->base.rxq = ring;
+ 	fltr->base.vf_idx = vf;
+ 	rc = bnxt_hwrm_l2_filter_alloc(bp, fltr);
 -- 
 2.51.0
 
