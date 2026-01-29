@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A242972634;
-	Thu, 29 Jan 2026 05:00:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91581EB5FD;
+	Thu, 29 Jan 2026 05:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769662821; cv=none; b=lcyql2Y+JDl62vBMVxZrH1VpGEFNNyLVY8nhs+V1+xJGeJV9aUNvlHM7+NhAb4ThnQWJTUezaPe+f0XKFoKppQB0hkE+gDjZPQ9OZfz78Rh0WQXfwtjm4KE4ney6LlpJUdiZFMisExi7kxMtQmCH97eBPpKzZ5XFh8DrXA+RK+s=
+	t=1769662825; cv=none; b=jvQYIggpc4Ayvb1YyM2Yl6iqfcHWfG4etTvKKyEWY1kVgYukfpaxQ3N3GQ85zL2qUuR+JCEY1nd17BnWpD8wPEDopF9lUod/M+w613N3a8dtXZbWUQxcWbSKA94uvvMPlxggsJ0SW0gMvReVE6YPUgzGLql+0BK094Sk9CqSvf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769662821; c=relaxed/simple;
-	bh=eIGSLH9LnjZI03Hz2zkiahhthvbBZijztdpDMjguHPM=;
+	s=arc-20240116; t=1769662825; c=relaxed/simple;
+	bh=U9ISJ2KDjOyPzPKwTm6AD9pt7euDC4veAsPtcj8Du54=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=h0v9aLYoDUyAk9jzaNrk+rEk7rQYRi4rJVLndlnayS4Kf0A2s0tyFgj4FmUuFr7JrAS6ml6IZa3m5cVd/vRbh4AMIsZf4s8AmFrqE6dd+TVUiDoQp+iR8xV3PJk/dd3nxizI9vxTU7muDJl6wuTnr3A8xHFHynlFGTMJQRHGjRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UCoUs/C7; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=WoeqW4ZdMzaUSQqvArfCYFuLa8CBVndgrxCnLl7f7Z7nB5+wvi5aMfcLni7Ljgi27VmWAkpG78/M2YU5DrnRjqJk/IxaM2Bn0rbhdQT7mfEUUWLUNiyWpgLDflGxxbvGJJKyKUjUNn0E86BzNsF3LejyxyAVrr6kRMYnWA2/DnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=da88MNC9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UCoUs/C7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D04C116D0;
-	Thu, 29 Jan 2026 05:00:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="da88MNC9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ECF1C116D0;
+	Thu, 29 Jan 2026 05:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769662821;
-	bh=eIGSLH9LnjZI03Hz2zkiahhthvbBZijztdpDMjguHPM=;
+	s=k20201202; t=1769662825;
+	bh=U9ISJ2KDjOyPzPKwTm6AD9pt7euDC4veAsPtcj8Du54=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=UCoUs/C7XgL4MhQiJ2k50bAsmfnCH835kG4opAk8pdj6gDx6rqHQz7oCiQojKZA7B
-	 kM4ZpEl2MzCeiBpLsnF+s9Ec8/fZbIUZkmvm2uRv0aTYD7ieeRP86NbT6na1DjWqDV
-	 C8jeuZ5TaX8811yyFXlAqd/PSQgVN5mbEiOM9sbr2IqRDc3B0Nd6qifosQhA1NRSnH
-	 +ORqQi0O+3Scew9TUd2NaKVY/VdV+Di6XgOh8IW9OCHH6A0tIH3zerTDypKxNDttat
-	 HG8+7c918mE74CLV7O/NHMu7hx2ziKks5LQ5jrWBNUJKcxO58t958QRl+doeannlxF
-	 nvqKJOnaOlgow==
+	b=da88MNC9sKTq68aX+hdCzQbV7WEIc/oJPndbWzWJbGhOMCmKEsU/MkyVLPl9Z0FTx
+	 nQvKUs1Y+JVmAdVmoNoQsHj6WeLv4XzjCS4L4Q2O9evTj9oZPjeFkgbbzt4oJGLypA
+	 C7BgDdirTJFNSjpPJNURqh7xSko4RKom22yUHVb+6epWHdGgtaxqij8nQku1PowpFM
+	 dwrce6ITTtU9hBCJ/NmFwUMsv8oMlQ5tUGJyQzXiiI8rG7KQopQvWcXk/JT+SZ9bhP
+	 EJt6zcPXX08BeTd7xvmNKACuFFYapRimMFMUMqoIJwQLaLNoAuMcdVyYb8EmWfLE4+
+	 sbDxglOu2XInA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8BBF2380AA69;
-	Thu, 29 Jan 2026 05:00:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id C8DAF380AA69;
+	Thu, 29 Jan 2026 05:00:19 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,45 +37,61 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net V2 0/4] mlx5 misc fixes 2026-01-27
+Subject: Re: [PATCH net-next v2] net: ethernet: neterion: s2io: remove unused
+ driver
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176966281410.2353118.7838493607749129728.git-patchwork-notify@kernel.org>
-Date: Thu, 29 Jan 2026 05:00:14 +0000
-References: <1769503961-124173-1-git-send-email-tariqt@nvidia.com>
-In-Reply-To: <1769503961-124173-1-git-send-email-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
- leon@kernel.org, mbloch@nvidia.com, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, gal@nvidia.com,
- moshe@nvidia.com, horms@kernel.org
+ <176966281835.2353118.1929748319198442783.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Jan 2026 05:00:18 +0000
+References: <20260126031352.22997-1-enelsonmoore@gmail.com>
+In-Reply-To: <20260126031352.22997-1-enelsonmoore@gmail.com>
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-pci@vger.kernel.org, linux-mips@vger.kernel.org,
+ linux-s390@vger.kernel.org, corbet@lwn.net, linasvepstas@gmail.com,
+ mahesh@linux.ibm.com, oohall@gmail.com, bhelgaas@google.com,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ horms@kernel.org, tsbogend@alpha.franken.de, maddy@linux.ibm.com,
+ mpe@ellerman.id.au, npiggin@gmail.com, chleroy@kernel.org, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+ svens@linux.ibm.com, andrew+netdev@lunn.ch, akpm@linux-foundation.org,
+ martink@posteo.de, pavel@ucw.cz, danishanwar@ti.com,
+ mengyuanlou@net-swift.com, pablo@netfilter.org, tiwai@suse.de,
+ chenhuacai@kernel.org, tytso@mit.edu, ebiggers@google.com,
+ vineethr@linux.ibm.com, sshegde@linux.ibm.com, geert@linux-m68k.org,
+ ardb@kernel.org, martin.petersen@oracle.com, fbarrat@linux.ibm.com,
+ ajd@linux.ibm.com, herbert@gondor.apana.org.au, kshk@linux.ibm.com,
+ vadim.fedorenko@linux.dev, lorenzo@kernel.org, lukas.bulwahn@redhat.com,
+ dong100@mucse.com, hkallweit1@gmail.com, tglx@kernel.org, mingo@kernel.org,
+ lukas@wunner.de, giovanni.cabiddu@intel.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 27 Jan 2026 10:52:37 +0200 you wrote:
-> Hi,
-> 
-> This patchset provides misc bug fixes from the team to the mlx5 core and
-> Eth drivers.
-> 
-> Thanks,
-> Tariq.
+On Sun, 25 Jan 2026 19:08:07 -0800 you wrote:
+> The s2io driver supports Exar (formerly Neterion and S2io) PCI-X 10
+> Gigabit Ethernet cards. Hardware supporting PCI-X has not been
+> manufactured in years. On x86, it was quickly replaced by PCIe. While
+> it stuck around longer on POWER hardware, the last POWER hardware to
+> support it was POWER7, which is not supported by ppc64le Linux
+> distributions. The last supported mainstream ppc64 Linux distribution
+> was RHEL 7; while it is still supported under ELS, ELS is only
+> available for x86 and IBM Z. It is possible to use many PCI-X cards in
+> standard PCI slots (which are still available on new motherboards), but
+> it does not make sense to do so for 10 Gigabit Ethernet because the
+> maximum bandwidth of standard PCI is only 1067 Mbps. It is therefore
+> highly unlikely that this driver is still being used. Remove the
+> driver, and move the former maintainer to the CREDITS file (restoring
+> credit for the vxge driver, which was removed in commit f05643a0f60b
+> ("eth: remove neterion/vxge").
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,V2,1/4] net/mlx5: fs, Fix inverted cap check in tx flow table root disconnect
-    https://git.kernel.org/netdev/net/c/2610a3d65691
-  - [net,V2,2/4] net/mlx5: Fix deadlock between devlink lock and esw->wq
-    (no matching commit)
-  - [net,V2,3/4] net/mlx5: Fix vhca_id access call trace use before alloc
-    https://git.kernel.org/netdev/net/c/a8f930b7be7b
-  - [net,V2,4/4] net/mlx5e: Skip ESN replay window setup for IPsec crypto offload
-    https://git.kernel.org/netdev/net/c/011be342dd24
+  - [net-next,v2] net: ethernet: neterion: s2io: remove unused driver
+    https://git.kernel.org/netdev/net-next/c/aba0138eb7d7
 
 You are awesome, thank you!
 -- 
