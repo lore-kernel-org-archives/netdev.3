@@ -1,80 +1,66 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68501288C96;
-	Thu, 29 Jan 2026 04:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D5602C21FC;
+	Thu, 29 Jan 2026 04:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769659818; cv=none; b=t7TUT/HEWPcn54mHlo44MSoge06T4vIjEIIJoQnmGrqk3YtaGMIDxzeo+YPPq52bbg3IuTbgeCe2ztXAFrp1rqdhpyWU0NXpqPAQ4FVbY5GEPqIMbRYCFrj8HTB9tC8NRr2+rMdbdpmdxWZ2eih6a6Wgs7o8fClu1cyXA+W8p0I=
+	t=1769660103; cv=none; b=gEuSCb5aikTd6xamF5fFsxa96C06OO8lXugySTSKaKwaLLPE2s4pQf36DyHVXmvMe+QnfSseQGX/7bZw84jUo4CqLkNrzzSa32FnNzrgtx5FkgivAAjsJJJh68axCZ0bLKVTwZYALyvv9eqFVrmZV3R6wam0uCW1PBEevqRCKmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769659818; c=relaxed/simple;
-	bh=Z9XhaWwhC+dTsFmBP9WqQXbPwaY04N6Wz94IjIvW2ZE=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Q9WBKZR2vsRdM3TVqe1AXMa673Ys+CdObMKy5Zg2oHs67TWf9HQSM8qqLHfPKjXyQd+aybd1yZY+AwQCHdr/WxlDLXjvz5O882mykIzX6Mtku/q5gDBao6TC0FSkdQclF7SSu5UwzQGPHWsgVb4yPcsrFphyZIhLicIbvItgZ2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cwhFAiyf; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769660103; c=relaxed/simple;
+	bh=tklfjJ2fsw6uvBg8OT9edwP9ZXz8vD7PiMJOH17oFwE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GWvip+BoPX/AhPAZ9oEvRFvwmundxKaAo1tcg/VkXvPXtNKrDWfC/f8xiajI2fyCyyOytkQV0IBE4YZ81jH0pTJTQi7nFBzWh7l3BqT6WI3kaWLs5ilCqsh2IqhP0MHHmAOHBC5e4DW94ms/odFL8kPm5CtbFbSKvjqXciTS2Tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPm6YNwr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cwhFAiyf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20228C116D0;
-	Thu, 29 Jan 2026 04:10:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPm6YNwr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74B6DC116D0;
+	Thu, 29 Jan 2026 04:15:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769659818;
-	bh=Z9XhaWwhC+dTsFmBP9WqQXbPwaY04N6Wz94IjIvW2ZE=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=cwhFAiyf9hazZGfonbK924QOzzJgCkNsi9SQJiqBBT2WUu4ikwfp7AmTQl0hAyVGv
-	 sNSsrbCWXWhHJ7LOus7rJis05kBKf/YWGWV5QBdqAib54p5aZ28qMOmiHb0DXhv75k
-	 AL8Mfqw2dj7YJycRbkPG2dgtWSHwuSPRbNx7/aloO6RsuF06RRgCzJsqnRb27vNFl3
-	 HgZZDOMkVxNiDyZvcwYzKpjS/WtsZUI8NfVxJedunRY4DHtVw7/AISOl0ulKsnIlqk
-	 5E9X088FCyx9BqKiiXH3ad8WL9z5V+W7z5EW59z27pXwYPTctssMZkI384Sb788hTY
-	 M/7tgdkv0r34A==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8BCC1380AA61;
-	Thu, 29 Jan 2026 04:10:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1769660103;
+	bh=tklfjJ2fsw6uvBg8OT9edwP9ZXz8vD7PiMJOH17oFwE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=FPm6YNwrhyVu4qvkXirQXEIjo23t4WhbcqQV1KUXzGn6TGgUkAT2pELakGRoof5QI
+	 TB9oRDx5QD6a0092M6LsaNZHqBXxM0maNTE3ovPyVmjBbbnKfN3ofla1xypfzB71/I
+	 OpEHsTIhrpdAPwe+gzENCIRjbDKk6qccCUjoVULX0g3E9iG27p7Qak+OYEjjeJ0bX6
+	 1vpcBYZWarnJ6J1R7ihYTVC8zfnMyf78KGNcpo+qHS0nGNFFbbMUOw7JVxZIwO52en
+	 fel99emUpyGtmIntjGwZBqXbQNXqU6o86qwrHq4X+5Vha3CAxORvmtc0mRugABIY3i
+	 qL9RnljkS4jjQ==
+Date: Wed, 28 Jan 2026 20:15:01 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: andrew@lunn.ch, hkallweit1@gmail.com, linux@armlinux.org.uk,
+ florian.fainelli@broadcom.com, xiaolei.wang@windriver.com
+Cc: Wei Fang <wei.fang@nxp.com>, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, maxime.chevallier@bootlin.com,
+ quic_abchauha@quicinc.com, quic_sarohasa@quicinc.com, imx@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net] net: phy: add device link between MAC device and
+ MDIO device
+Message-ID: <20260128201501.04bb6e5c@kernel.org>
+In-Reply-To: <20260126104409.1070403-1-wei.fang@nxp.com>
+References: <20260126104409.1070403-1-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] net/mlx5e: don't assume psp tx skbs are ipv6 csum
- handling
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176965981134.2343973.3337681948486173683.git-patchwork-notify@kernel.org>
-Date: Thu, 29 Jan 2026 04:10:11 +0000
-References: <20260126-dzahka-fix-tx-csum-partial-v2-1-0a905590ea5f@gmail.com>
-In-Reply-To: <20260126-dzahka-fix-tx-csum-partial-v2-1-0a905590ea5f@gmail.com>
-To: Daniel Zahka <daniel.zahka@gmail.com>
-Cc: borisp@nvidia.com, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
- mbloch@nvidia.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- rrameshbabu@nvidia.com, raeds@nvidia.com, cratiu@nvidia.com,
- netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
-
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Mon, 26 Jan 2026 11:38:17 -0800 you wrote:
-> mlx5e_psp_handle_tx_skb() assumes skbs are ipv6 when doing a partial
-> TCP checksum with tso. Make correctly mlx5e_psp_handle_tx_skb() handle
-> ipv4 packets.
+On Mon, 26 Jan 2026 18:44:09 +0800 Wei Fang wrote:
+> The commit bc66fa87d4fd ("net: phy: Add link between phy dev and mac
+> dev") has created a device link between the MAC and the PHY if the MAC
+> uses a shared MDIO bus (The MDIO and the MAC are two separate devices).
+> Sarosh Hasan tried to change the DL_FLAG_STATELESS flag to
+> DL_FLAG_AUTOREMOVE_SUPPLIER to fix the issue [1]. However, the solution
+> does not take into account the hot-swappable PHY devices (such as SFP).
+> so when the PHY device is unplugged, the MAC driver will automatically
+> be removed, which is not the expected behavior.
 > 
-> Fixes: e5a1861a298e ("net/mlx5e: Implement PSP Tx data path")
-> Signed-off-by: Daniel Zahka <daniel.zahka@gmail.com>
-> 
-> [...]
+> Therefore, to solve this issue of the shared MDIO bus, we create the
+> device link between the MAC device and the MDIO device, rather than
+> between the MAC device and the PHY device. And when the shared MDIO bus
+> is removed, all MAC drivers that depend on it will also be removed.
 
-Here is the summary with links:
-  - [v2] net/mlx5e: don't assume psp tx skbs are ipv6 csum handling
-    https://git.kernel.org/netdev/net/c/a62f7d62d2b1
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+Anyone willing to venture a review tag?
