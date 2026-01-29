@@ -1,95 +1,103 @@
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A8B34F48A
-	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 17:32:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB7E35294A
+	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 17:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769707939; cv=none; b=fBQkISnIfZXMzWzhE/DH+8kbW4jZKi8fealvMV/HGmNN6Q32dHaiF2B3NB+Ui4kdpzntTHVH5TUearbmf3DvxhyYZ5Bt0HETknhlzfoFVqYeozzwmW6qObwlapf7xzQRMWuDsO+kkGz12lq/5ysm/nTFpp7khBpYxx83WVIHkFk=
+	t=1769708035; cv=none; b=JCEpaQdItJj+u+YEg0oAvwc9VrJE9UGoOtdAYlsA1ixxmOSnras6VrHygE79F8p8iqYqqL/ZxbIpJIjvTLpLfnkjhwD3Z/GAECdphbZsmKUGDdd6bXBlT0kl0x8AmkuHKILF8jqDRgvk5gMWNjZeTJndy1SQf+c5bW67/pS9dlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769707939; c=relaxed/simple;
-	bh=pNyMwAitK1xdxu4JsBwQYguSf6D+OoodR5st+y3neBs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=is1F3HDT19kgSoQwxpbaOnk8vBLMR+Lj4PAD+EsCOg9wsgbczLlRIlPLfLMRhvQmuvMha+kXzpnfAOrZRqF2122xwguuFwgsgztDUBaqH1FzwSAd6LrsL13zX0ybkQ1XzcL8OTq3AkhbeA3Lznk3bipFqNBRAMBRWd7IWBgDKdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FkvI46SD; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1769708035; c=relaxed/simple;
+	bh=wvvhLxpUEzjH/aPyrEvcmEFhPUBwZcBiCHVY0w9yFpE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ooVhGf4kPW2UH9ja+j7DCFHLUtD7hQ8dcdzQSld7pmjd/BJX9k80r8ZSSzmhxQIfYmsV305urTmrVx3s2i5XASexiJGKXY8dtQjx8dQ8Gaflte0jFCRMvWbXtu08apmz5PNbLl2QH8HUTbX6nhwYj6t7PwdB5K2kT57k1MKGyAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FZdCRG/G; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FkvI46SD"
-Message-ID: <de1d615d-85a6-495d-b830-b169f7f8310a@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1769707924;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DU0NlzLsv/ZHnOibbN99rSZRlseR1GJV4rT25Fxf2/I=;
-	b=FkvI46SD3wOuXghjvLFqJjLSnRoZALqE+srW+2C8FJt3z4/2MQN6SmLWEiew5xhHrUsDyb
-	8rfKWM8vJehR2uDSuWzMjYhXOyht0phVtcLkBRjXOYGg+tqWfO/FHpxh1u1JN0CsgPeiNI
-	wPJs82cZQJ767Mw4Gz3Sir/siv2eoiY=
-Date: Thu, 29 Jan 2026 12:32:00 -0500
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FZdCRG/G"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769708034; x=1801244034;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=wvvhLxpUEzjH/aPyrEvcmEFhPUBwZcBiCHVY0w9yFpE=;
+  b=FZdCRG/Gwx14Pd84GDbv8mLeSHsoO8yuMXlBASbV8b8BNsOxLkeFNY+q
+   NzdqQa1gBMXGa7RaMs6+kI2HR+XlkhyCgo14S0ymVmOl/1SbxAVnDWCMk
+   Bw5wNzfaP3zw24wy+rQl3JmXucTziMqLBuq+6Y/00UXw9dyu61Wp80OoK
+   mL2LiwnNq7fPgm0pc8CVfijpXCzTRzvnUBaSY8dB3X+QKi6G9D/8NOW2y
+   GerPONdZVhaUm2Svxw3kV6thNGI3qinjh5FbX/j3gd0nOHbD2kFRuYMuL
+   msWqCTBdljUw8qy9Glc2g9r4K8xrAMwiU9i/8AquxRSXNWXM1NOu6ftQ6
+   A==;
+X-CSE-ConnectionGUID: iOrbVDjCTzGXkR/xeOckKA==
+X-CSE-MsgGUID: qrxDrJdQSByps0ZPEacu5w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="70669871"
+X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
+   d="scan'208";a="70669871"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 09:33:53 -0800
+X-CSE-ConnectionGUID: 4X0A2IIfTjq0eptgPZDixw==
+X-CSE-MsgGUID: TehO8w2/S227xSzpkeJksQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,261,1763452800"; 
+   d="scan'208";a="212714930"
+Received: from amlin-018-252.igk.intel.com ([10.102.18.252])
+  by orviesa003.jf.intel.com with ESMTP; 29 Jan 2026 09:33:52 -0800
+From: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	dan.carpenter@linaro.org,
+	horms@kernel.org,
+	pmenzel@molgen.mpg.de,
+	Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Subject: [PATCH iwl-next] ixgbe: e610: remove redundant assignment
+Date: Thu, 29 Jan 2026 18:54:55 +0100
+Message-ID: <20260129175455.174241-1-piotr.kwapulinski@intel.com>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH net-next 2/2] net: phy: dp83867: Always program R/SGMII
- enable bits
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
-References: <20260129171205.3868605-1-sean.anderson@linux.dev>
- <20260129171205.3868605-3-sean.anderson@linux.dev>
- <aXuXWxhtR-1Hvlv4@shell.armlinux.org.uk>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <aXuXWxhtR-1Hvlv4@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-Hi Russell,
+Remove unnecessary code. No functional impact.
 
-On 1/29/26 12:22, Russell King (Oracle) wrote:
-> On Thu, Jan 29, 2026 at 12:12:05PM -0500, Sean Anderson wrote:
->> If the board designers have neglected to populate the appropriate
->> resistors on the strapping pins then the phy may default to the wrong
->> interface mode. Enable/disable the RGMII/SGMII enable bits as necessary
->> to select the correct interface.
->> 
->> The dp83867 strapping pins have four levels and typically configure two
->> features at once. LED_0 controls both port mirroring and whether SGMII
->> is enabled. If it is pulled to VDDIO, both port mirroring and SGMII
->> will be enabled. For variants of the dp83867 that do not support SGMII,
->> this will prevent data from being transferred. As we now explicitly set
->> the SGMII and RGMII enable bits, we do not need to detect whether SGMII
->> has been inadvertently enabled.
->> 
->> Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-> 
-> Something to consider:
-> 
-> You have separate enable bits for SGMII and RGMII. The code you're
-> submitting sets the SGMII enable before clearing the RGMII enable.
-> Is it permitted to have both set?
+Fixes: 46761fd52a88 ("ixgbe: Add support for E610 FW Admin Command Interface")
+Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+---
+ drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-Section 7.4.1 of SNLS504F says:
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+index c2f8189..6f380fc 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
+@@ -142,20 +142,14 @@ static int ixgbe_aci_send_cmd_execute(struct ixgbe_hw *hw,
+ 			  IXGBE_PF_HICR);
+ 
+ 	/* Read sync Admin Command response */
+-	if ((hicr & IXGBE_PF_HICR_SV)) {
+-		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
++	if ((hicr & IXGBE_PF_HICR_SV))
++		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++)
+ 			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA(i));
+-			raw_desc[i] = raw_desc[i];
+-		}
+-	}
+ 
+ 	/* Read async Admin Command response */
+-	if ((hicr & IXGBE_PF_HICR_EV) && !(hicr & IXGBE_PF_HICR_C)) {
+-		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
++	if ((hicr & IXGBE_PF_HICR_EV) && !(hicr & IXGBE_PF_HICR_C))
++		for (i = 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++)
+ 			raw_desc[i] = IXGBE_READ_REG(hw, IXGBE_PF_HIDA_2(i));
+-			raw_desc[i] = raw_desc[i];
+-		}
+-	}
+ 
+ 	/* Handle timeout and invalid state of HICR register */
+ 	if (hicr & IXGBE_PF_HICR_C)
+-- 
+2.47.1
 
-| The SGMII enable has higher priority than the RGMII enable. Table 7-1 is
-| the configuration table for the MAC interfaces:
-| 
-| Table 7-1. Configuration Table for the MAC Interfaces
-| SGMII ENABLE              RGMII ENABLE             DEVICE FUNCTIONAL MODE
-| (REGISTER 0x0010, BIT 11) (REGISTER 0x0032, BIT 7)
-| ========================= ======================== ======================
-|                       0x1                      0x1 SGMII
-|                       0x1                      0x0 SGMII
-|                       0x0                      0x1 RGMII
-
-So I don't think we will have any problems.
-
---Sean
