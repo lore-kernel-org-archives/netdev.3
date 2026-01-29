@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E3837C0F2;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CA437C0F6;
 	Thu, 29 Jan 2026 08:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769674111; cv=none; b=uTTqEy8ob3UXH3Bqba3/XsxFhrRgfAev9XVomCJRKIhqjiimQ0+Xv/HsoXxyrIZCpmpX3lagsycv2p8XYVxlF0s0jV6fSZ1vdxrmUMVV/vNn7ux4ndj2XK86fktcDf/8zlsMw7CYDKQnngV7I6jpLpjONpuaGPaGbHcIwNJSr+k=
+	t=1769674111; cv=none; b=ArtXMIcKOuPbvkrH3Hys2N9Wl8rXj3eZTMziwhfq0ZUERFfOBY0Tz9bm/Wi2EkzOhDRPXMKDbkXN2xib20cckVD19Urwlb4AsMJ+3lYForP8S6gHLy3d16zMFT6myFAmcU+OINhYD5YC4PciCGMP1f8AY7HnvFSu5Pjr08y/dP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769674111; c=relaxed/simple;
-	bh=HZIWPQtHuKRBHDG4lIuIJ9k4nhNjGP3jcqbI9/NYBFM=;
+	bh=zrn1R99JmhSDpw80vFG4cNPSq/xnegn/WMP5J1mznhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j2nvXdTkWTG2kS9CeK+RZfOHWYpUhARvzwzASi1rD/xPERbLJgQfAURROynFDfyObg00FSTYtut6+bBCbdXfeXOkaZLTaZttbVVqMIkZSNwBc2AG6b/IB6Ftkq6PbGlETZ5Lupga0Eh51llD+J9/jy5L0lXvTfm++Iehmab5lhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GSjxV5N8; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=XCDURU2mhzsgMAECovZjpwrotwFzjH5hWfc7EUIiXtrgI8NaJ3lJ1ODj/MPH0jRevjh8uVRuTwwhFXswuBWHe2ZEog0lEMHmWGH2XyDMA9H/pHXKFdjk+mGtn+VvLNbGk8MzVuhg2aAFlEX6l3gIUtTUPZNP6inMRv9rHhnJnmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhVQE0cl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GSjxV5N8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26799C2BCFC;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhVQE0cl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A3C2C2BD04;
 	Thu, 29 Jan 2026 08:08:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1769674111;
-	bh=HZIWPQtHuKRBHDG4lIuIJ9k4nhNjGP3jcqbI9/NYBFM=;
+	bh=zrn1R99JmhSDpw80vFG4cNPSq/xnegn/WMP5J1mznhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GSjxV5N8m6DyFxui8ZZdGu4+xPizuar3wU0AtGMsI1qMuSXRq0l1WC9X+Zm3hRWAb
-	 uHyt5mVPJxNtLtSoi/g5xBZ+XgycQK5IV5d3TCaY/cONDpBFpi5AZyMGEDMZSMAaS7
-	 PvNQ9d8qwDoZkcH6vynHxk5dHtdrfMEC/byQCk12jutLU9F/f4tGSLoCiUvVb+ZNzT
-	 3plvFnws7sQ+qDOtrTZrwPZvo0lOixx671zZ3a8i3gmYGclELOt1gfZs/iCquZRctV
-	 r9AB9hYU9TzKNAtgXBplJu0RrpHkoOish+Q/YVMq167JVSHF23onkBcndBpuq5xnaA
-	 thMRLBM+FNnVg==
+	b=uhVQE0clrmRRFi6sGV6bb+5Ub4LO1z8yNb9HI/vnrJW+Jp3s1Br8Ym/rNoefncoiC
+	 nA/7J5lgEJMtAXkHq6CY/wh84UMpacfDQkvPayr4v4Er5buS5c+Vm8psLK21oXkf6A
+	 BaJnF4xeffly1o7j0tzxhLJLrA6B5FRmk95Wjf0/eZ35OGyx6juJ1Bdkl1pVWkgZ1D
+	 yljMKKDrrJM3H4UHjz5mvwyNNGAUJ5MWu6WwwtgzhCVRr50bigYZmwY5yF7qanLyBP
+	 pdX8AHr2XMznKUKthYQgDBRLSb0pETFbZPskImF6+HcUYgHYDI1dKqc2KcAI70hDly
+	 SxomQMtuh381g==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vlN4n-0000000EROD-1cdk;
+	id 1vlN4n-0000000EROT-25XE;
 	Thu, 29 Jan 2026 09:08:29 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
+	Kees Cook <kees@kernel.org>,
 	Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	bpf@vger.kernel.org,
@@ -39,11 +40,12 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v3 26/30] docs: kdoc_parser: use the new CFunction class
-Date: Thu, 29 Jan 2026 09:08:17 +0100
-Message-ID: <4ca4e256922bc42ce1c86e70c20e6a35a599fcfd.1769673038.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v3 30/30] docs: xforms_lists.py: use CFuntion to handle all function macros
+Date: Thu, 29 Jan 2026 09:08:21 +0100
+Message-ID: <823756f6f8e5864817464560227820d8ef3a600f.1769673038.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769673038.git.mchehab+huawei@kernel.org>
 References: <cover.1769673038.git.mchehab+huawei@kernel.org>
@@ -57,86 +59,104 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-The match logic for transforms becomes a lot clearer if we use
-CFunction convenient alias class instead of NestedMatch.
+The new CFunction class handles better macros, as it works the same
+way C compilers do, handling delimiters tha right way.
+
+This allows removing complex regular expressions, placing instead
+just a simple one with the name(s) of the functions to be replaced.
+
+Doing a before/after check using "kernel-doc -man ." shows only
+cosmetic changes (whitespaces, mostly).
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- tools/lib/python/kdoc/kdoc_parser.py | 38 ++++++++++++++--------------
- 1 file changed, 19 insertions(+), 19 deletions(-)
+ tools/lib/python/kdoc/xforms_lists.py | 54 +++++++++++----------------
+ 1 file changed, 21 insertions(+), 33 deletions(-)
 
-diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
-index d2eb93f9d489..50d57c6799bb 100644
---- a/tools/lib/python/kdoc/kdoc_parser.py
-+++ b/tools/lib/python/kdoc/kdoc_parser.py
-@@ -13,7 +13,7 @@ import sys
- import re
- from pprint import pformat
+diff --git a/tools/lib/python/kdoc/xforms_lists.py b/tools/lib/python/kdoc/xforms_lists.py
+index 88968bafdb78..6e917beceb89 100644
+--- a/tools/lib/python/kdoc/xforms_lists.py
++++ b/tools/lib/python/kdoc/xforms_lists.py
+@@ -17,51 +17,38 @@ class CTransforms:
  
--from kdoc.kdoc_re import NestedMatch, KernRe
-+from kdoc.kdoc_re import CFunction, KernRe
- from kdoc.kdoc_item import KdocItem
+     #: Transforms for structs and unions
+     struct_xforms = [
+-        # Strip attributes
+-        (KernRe(r"__attribute__\s*\(\([a-z0-9,_\*\s\(\)]*\)\)", flags=re.I | re.S, cache=False), ' '),
+-        (KernRe(r'\s*__aligned\s*\([^;]*\)', re.S), ' '),
+-        (KernRe(r'\s*__counted_by\s*\([^;]*\)', re.S), ' '),
+-        (KernRe(r'\s*__counted_by_(le|be)\s*\([^;]*\)', re.S), ' '),
+-        (KernRe(r'\s*__guarded_by\s*\([^\)]*\)', re.S), ' '),
+-        (KernRe(r'\s*__pt_guarded_by\s*\([^\)]*\)', re.S), ' '),
++        (CFunction("__attribute__"), ' '),
++        (CFunction('__aligned'), ' '),
++        (CFunction('__counted_by'), ' '),
++        (CFunction('__counted_by_(le|be)'), ' '),
++        (CFunction('__guarded_by'), ' '),
++        (CFunction('__pt_guarded_by'), ' '),
++
+         (KernRe(r'\s*__packed\s*', re.S), ' '),
+         (KernRe(r'\s*CRYPTO_MINALIGN_ATTR', re.S), ' '),
+         (KernRe(r'\s*__private', re.S), ' '),
+         (KernRe(r'\s*__rcu', re.S), ' '),
+         (KernRe(r'\s*____cacheline_aligned_in_smp', re.S), ' '),
+         (KernRe(r'\s*____cacheline_aligned', re.S), ' '),
+-        (KernRe(r'\s*__cacheline_group_(begin|end)\([^\)]+\);'), ''),
++
++        (CFunction('__cacheline_group_(begin|end)'), ''),
  
- #
-@@ -119,22 +119,22 @@ struct_xforms = [
-     #
-     # As it doesn't properly match the end parenthesis on some cases.
-     #
--    # So, a better solution was crafted: there's now a NestedMatch
-+    # So, a better solution was crafted: there's now a CFunction
-     # class that ensures that delimiters after a search are properly
-     # matched. So, the implementation to drop STRUCT_GROUP() will be
-     # handled in separate.
-     #
--    (NestedMatch(r'\bstruct_group\s*\('), r'\2'),
--    (NestedMatch(r'\bstruct_group_attr\s*\('), r'\3'),
--    (NestedMatch(r'\bstruct_group_tagged\s*\('), r'struct \1 { \3 } \2;'),
--    (NestedMatch(r'\b__struct_group\s*\('), r'\4'),
-+    (CFunction('struct_group'), r'\2'),
-+    (CFunction('struct_group_attr'), r'\3'),
-+    (CFunction('struct_group_tagged'), r'struct \1 { \3 } \2;'),
-+    (CFunction('__struct_group'), r'\4'),
+         (CFunction('struct_group'), r'\2'),
+         (CFunction('struct_group_attr'), r'\3'),
+         (CFunction('struct_group_tagged'), r'struct \1 \2; \3'),
+         (CFunction('__struct_group'), r'\4'),
  
-     #
-     # Replace macros
-     #
--    # TODO: use NestedMatch for FOO($1, $2, ...) matches
-+    # TODO: use CFunction on all FOO($1, $2, ...) matches
-     #
--    # it is better to also move those to the NestedMatch logic,
-+    # it is better to also move those to the CFunction logic,
-     # to ensure that parentheses will be properly matched.
-     #
-     (KernRe(r'__ETHTOOL_DECLARE_LINK_MODE_MASK\s*\(([^\)]+)\)', re.S),
-@@ -185,17 +185,17 @@ function_xforms = [
-     (KernRe(r"DECL_BUCKET_PARAMS\s*\(\s*(\S+)\s*,\s*(\S+)\s*\)"), r"\1, \2"),
-     (KernRe(r"__no_context_analysis\s*"), ""),
-     (KernRe(r"__attribute_const__ +"), ""),
--    (NestedMatch(r"__cond_acquires\s*\("), ""),
--    (NestedMatch(r"__cond_releases\s*\("), ""),
--    (NestedMatch(r"__acquires\s*\("), ""),
--    (NestedMatch(r"__releases\s*\("), ""),
--    (NestedMatch(r"__must_hold\s*\("), ""),
--    (NestedMatch(r"__must_not_hold\s*\("), ""),
--    (NestedMatch(r"__must_hold_shared\s*\("), ""),
--    (NestedMatch(r"__cond_acquires_shared\s*\("), ""),
--    (NestedMatch(r"__acquires_shared\s*\("), ""),
--    (NestedMatch(r"__releases_shared\s*\("), ""),
--    (NestedMatch(r"__attribute__\s*\("), ""),
-+    (CFunction("__cond_acquires"), ""),
-+    (CFunction("__cond_releases"), ""),
-+    (CFunction("__acquires"), ""),
-+    (CFunction("__releases"), ""),
-+    (CFunction("__must_hold"), ""),
-+    (CFunction("__must_not_hold"), ""),
-+    (CFunction("__must_hold_shared"), ""),
-+    (CFunction("__cond_acquires_shared"), ""),
-+    (CFunction("__acquires_shared"), ""),
-+    (CFunction("__releases_shared"), ""),
-+    (CFunction("__attribute__"), ""),
- ]
+-        #
+-        # Replace macros
+-        #
+-        # TODO: use CFunction on all FOO($1, $2, ...) matches
+-        #
+-        # it is better to also move those to the CFunction logic,
+-        # to ensure that parentheses will be properly matched.
+-        #
+-        (KernRe(r'__ETHTOOL_DECLARE_LINK_MODE_MASK\s*\(([^\)]+)\)', re.S),
+-        r'DECLARE_BITMAP(\1, __ETHTOOL_LINK_MODE_MASK_NBITS)'),
+-        (KernRe(r'DECLARE_PHY_INTERFACE_MASK\s*\(([^\)]+)\)', re.S),
+-        r'DECLARE_BITMAP(\1, PHY_INTERFACE_MODE_MAX)'),
+-        (KernRe(r'DECLARE_BITMAP\s*\(' + struct_args_pattern + r',\s*' + struct_args_pattern + r'\)',
+-                re.S), r'unsigned long \1[BITS_TO_LONGS(\2)]'),
+-        (KernRe(r'DECLARE_HASHTABLE\s*\(' + struct_args_pattern + r',\s*' + struct_args_pattern + r'\)',
+-                re.S), r'unsigned long \1[1 << ((\2) - 1)]'),
+-        (KernRe(r'DECLARE_KFIFO\s*\(' + struct_args_pattern + r',\s*' + struct_args_pattern +
+-                r',\s*' + struct_args_pattern + r'\)', re.S), r'\2 *\1'),
+-        (KernRe(r'DECLARE_KFIFO_PTR\s*\(' + struct_args_pattern + r',\s*' +
+-                struct_args_pattern + r'\)', re.S), r'\2 *\1'),
+-        (KernRe(r'(?:__)?DECLARE_FLEX_ARRAY\s*\(' + struct_args_pattern + r',\s*' +
+-                struct_args_pattern + r'\)', re.S), r'\1 \2[]'),
+-        (KernRe(r'DEFINE_DMA_UNMAP_ADDR\s*\(' + struct_args_pattern + r'\)', re.S), r'dma_addr_t \1'),
+-        (KernRe(r'DEFINE_DMA_UNMAP_LEN\s*\(' + struct_args_pattern + r'\)', re.S), r'__u32 \1'),
+-        (KernRe(r'VIRTIO_DECLARE_FEATURES\(([\w_]+)\)'), r'union { u64 \1; u64 \1_array[VIRTIO_FEATURES_U64S]; }'),
++        (CFunction('__ETHTOOL_DECLARE_LINK_MODE_MASK'), r'DECLARE_BITMAP(\1, __ETHTOOL_LINK_MODE_MASK_NBITS)'),
++        (CFunction('DECLARE_PHY_INTERFACE_MASK',), r'DECLARE_BITMAP(\1, PHY_INTERFACE_MODE_MAX)'),
++        (CFunction('DECLARE_BITMAP'), r'unsigned long \1[BITS_TO_LONGS(\2)]'),
++
++        (CFunction('DECLARE_HASHTABLE'), r'unsigned long \1[1 << ((\2) - 1)]'),
++        (CFunction('DECLARE_KFIFO'), r'\2 *\1'),
++        (CFunction('DECLARE_KFIFO_PTR'), r'\2 *\1'),
++        (CFunction('(?:__)?DECLARE_FLEX_ARRAY'), r'\1 \2[]'),
++        (CFunction('DEFINE_DMA_UNMAP_ADDR'), r'dma_addr_t \1'),
++        (CFunction('DEFINE_DMA_UNMAP_LEN'), r'__u32 \1'),
++        (CFunction('VIRTIO_DECLARE_FEATURES'), r'union { u64 \1; u64 \1_array[VIRTIO_FEATURES_U64S]; }'),
+     ]
  
- #
+     #: Transforms for function prototypes
+@@ -91,6 +78,7 @@ class CTransforms:
+         (KernRe(r"DECL_BUCKET_PARAMS\s*\(\s*(\S+)\s*,\s*(\S+)\s*\)"), r"\1, \2"),
+         (KernRe(r"__no_context_analysis\s*"), ""),
+         (KernRe(r"__attribute_const__ +"), ""),
++
+         (CFunction("__cond_acquires"), ""),
+         (CFunction("__cond_releases"), ""),
+         (CFunction("__acquires"), ""),
 -- 
 2.52.0
 
