@@ -1,54 +1,35 @@
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890CC293C4E;
-	Thu, 29 Jan 2026 04:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C04319D071
+	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 04:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769659296; cv=none; b=bv1H/3hP4JR5/t5kbxOWlbNn6zJfG0Er1tM3XhcgqV5d7pOIrIGjDmd4o8pJVvrpGWigeVs4dauozwKyD6Ca9nG52NL8pjZ5jQEkt7hEdCZx0vVoMcedTM1WueHyaDfqkVL4tsx41nwlviL7faR9udNBj7fRHUSYmGA4dga6x5c=
+	t=1769659817; cv=none; b=bidmwdmf/XwdafXPqMHLehs2IQhpT+R3fFDKcbb5ZEApXvnHw0jLlnJG77Qwf26ZD+zy9omquCP2dHedz2Iz5nmUdcQLSw9Bgr2kXyJNrFZSCj+bFby4RXUde/h+JtvJ28F2UwnyccSAdBwUpGP/OZ+Vf5y1X2f/KOEpLp2VfLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769659296; c=relaxed/simple;
-	bh=UKr6hUIN8lEhbTpowr90NC6/IYy5O2qLuzxD7VvO16w=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DCnx6aUC9d8TzPcqCcLwCKzB3P7+erIs9N4GNRKOVhbwtVq4wZMz/sLOF007NA6XlS3uybBXmnIP9RD/IfrNiOwtoIITkq3J6bkdI5Wi9OuyakzDQ3cAOfzx9AVHBB6CKsmGUWOxjTjYlLezbHYUi+ZT4R6xuoPtkXpnOBoyjPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=uspDWEAa; arc=none smtp.client-ip=113.46.200.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1769659817; c=relaxed/simple;
+	bh=/Y4xPxXVeKcFK+djUgaaEeNt9bE24fjOQjlzctbi7ls=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=kg6JeOrNRb0GmosR9e0znnQW28hAFgOzntXsHt9Y3OGMDrctv2D9e/IPty3S2ket4zYiSpcNLnhcLe/PmYJXcF8deibjHmFaXtVNyuO4TKkwxFilRdkKAVsx3/eEZ19RlhyLgN5HuounpWL3tfZQMd675mWClylMOZ2ritjZztM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jCIHsfVm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="uspDWEAa"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=WTmurGlQCMkCkWDcKq8Td0eQuXfFJHK3iydsOHwlq3E=;
-	b=uspDWEAapNM0peGZe1Ks2sXOV5CeHQTUXiYaF+I2e8mrXw4bJV6H7Y+dmCNcEEzL21x7wivMC
-	706qs7uJ1rMfUfD3coFXjoxHnvRstbuWHiaphnUGaTYSF6oB0bl6D88MhNun5wCKBv1AP1+r6ch
-	PndnLR32e3amlttLKhxeSU4=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4f1ljF5FDGz1cyv1;
-	Thu, 29 Jan 2026 11:57:53 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id AAE6640565;
-	Thu, 29 Jan 2026 12:01:21 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.188.120) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Thu, 29 Jan 2026 12:01:20 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>,
-	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
-	<andrew+netdev@lunn.ch>
-CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
-	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
-	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
-	<shijing34@huawei.com>, Luo Yang <luoyang82@h-partners.com>
-Subject: [PATCH net-next v03 2/4] hinic3: Remove defensive txq_num check
-Date: Thu, 29 Jan 2026 12:01:09 +0800
-Message-ID: <c23daa9b79fa731c1caaec9b8245f6b2c4994afb.1769656467.git.zhuyikai1@h-partners.com>
-X-Mailer: git-send-email 2.51.0.windows.1
-In-Reply-To: <cover.1769656467.git.zhuyikai1@h-partners.com>
-References: <cover.1769656467.git.zhuyikai1@h-partners.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jCIHsfVm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E049EC116D0;
+	Thu, 29 Jan 2026 04:10:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769659816;
+	bh=/Y4xPxXVeKcFK+djUgaaEeNt9bE24fjOQjlzctbi7ls=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=jCIHsfVm43anRX5tnfKdTZMYW3I9u/fDAeCPxYPQXHc55fKWUYGWd3F5RDZAyZ+dD
+	 tFEDQG1oBs6xufiURu8eq4l3W7TWHhBs9TNJOaNh3qhrUu3Ia17Xegw5aTYkgawaae
+	 ftQ8SGif47wtrJCMsP7DG+d6wd7yI5WTnfeoP2uepLJTJtb49bxVheVDygrZJVK2gq
+	 GGfUEmcQH/YXI8SakPe5kdgrf9j+kJxGoThjqXdKdtYUyYI6jRHTd+UXdMTv9DX6kL
+	 qKu734ODwbng2MueZcr4r5aQwS4qdQNKXO3RjEfZCpH8uEZO09p9bE0CpE2kfwGgLE
+	 9nGYoTp7FpudQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4EC55380AA61;
+	Thu, 29 Jan 2026 04:10:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,42 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemf100013.china.huawei.com (7.202.181.12)
+Subject: Re: [PATCH net 0/4][pull request] Intel Wired LAN Driver Updates
+ 2026-01-27 (ixgbe, ice)
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <176965981010.2343973.12459834676591978429.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Jan 2026 04:10:10 +0000
+References: <20260127223047.3979404-1-anthony.l.nguyen@intel.com>
+In-Reply-To: <20260127223047.3979404-1-anthony.l.nguyen@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+ edumazet@google.com, andrew+netdev@lunn.ch, netdev@vger.kernel.org
 
-Since commit 1f3838b84a63 ("hinic3: Add Rss function") nic_dev->num_txqs
-cannot be zero in hinic3_alloc_txqs(). So remove the check for this case.
+Hello:
 
-Link: https://lore.kernel.org/netdev/20250902180843.5ba05bf2@kernel.org/
-Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
-Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
----
- drivers/net/ethernet/huawei/hinic3/hinic3_tx.c | 6 ------
- 1 file changed, 6 deletions(-)
+This series was applied to netdev/net.git (main)
+by Tony Nguyen <anthony.l.nguyen@intel.com>:
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-index 4e361c9bd043..6d3dc930ca97 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_tx.c
-@@ -44,16 +44,10 @@ static void hinic3_txq_stats_init(struct hinic3_txq *txq)
- int hinic3_alloc_txqs(struct net_device *netdev)
- {
- 	struct hinic3_nic_dev *nic_dev = netdev_priv(netdev);
--	struct hinic3_hwdev *hwdev = nic_dev->hwdev;
- 	u16 q_id, num_txqs = nic_dev->max_qps;
- 	struct pci_dev *pdev = nic_dev->pdev;
- 	struct hinic3_txq *txq;
- 
--	if (!num_txqs) {
--		dev_err(hwdev->dev, "Cannot allocate zero size txqs\n");
--		return -EINVAL;
--	}
--
- 	nic_dev->txqs = kcalloc(num_txqs, sizeof(*nic_dev->txqs),  GFP_KERNEL);
- 	if (!nic_dev->txqs)
- 		return -ENOMEM;
+On Tue, 27 Jan 2026 14:30:41 -0800 you wrote:
+> For ixgbe:
+> Kohei Enju adjusts the cleanup path on firmware error to resolve some
+> memory leaks and removes an instance of double init, free on ACI mutex.
+> 
+> For ice:
+> Aaron Ma adds NULL checks for q_vectors to avoid NULL pointer
+> dereference.
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,1/4] ixgbe: fix memory leaks in the ixgbe_recovery_probe() path
+    https://git.kernel.org/netdev/net/c/638344712aef
+  - [net,2/4] ixgbe: don't initialize aci lock in ixgbe_recovery_probe()
+    https://git.kernel.org/netdev/net/c/100cf7b4ca6e
+  - [net,3/4] ice: Fix NULL pointer dereference in ice_vsi_set_napi_queues
+    https://git.kernel.org/netdev/net/c/9bb30be4d89f
+  - [net,4/4] ice: stop counting UDP csum mismatch as rx_errors
+    https://git.kernel.org/netdev/net/c/05faf2c0a765
+
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
