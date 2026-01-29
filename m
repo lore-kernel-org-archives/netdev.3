@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4E937BE62;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F83337BE6A;
 	Thu, 29 Jan 2026 08:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769674111; cv=none; b=aXUvHwQlsCF2Wo/ODUwxQYh/DbG3EXOF56/Hby9UkYMF2E5CwyxkAbcZdig3BswdG2VEv/Q84ztWSNukPvK0wTTH4P1EhDBVkyTDM7ZkZCRmFy//KexkI+mqrpphsW31yElI3HlWG/UiDYA52GpfUGjMzCI1pzPOwT2hBsiEGzM=
+	t=1769674111; cv=none; b=IoCFvcEKlYZ56d57/GR4iJTUSShQen1H0q7sKjXzMynPtJCYWMQmEykCrobq+bfMQ7jTLEIHw0U84IlrezrInmRPBT7rCV+PhjplPblhskSSggKuSUBxGG1HSVJXpd56BhmuCW1/0LKZe8AS85VuWNgVOPvX9KG9URyFe1YGoqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769674111; c=relaxed/simple;
-	bh=1OHigLaB0I9Gr4pd6M4Zc3FWOaEqquAXFRRO/Gxw3CM=;
+	bh=Rc+cvBbCrvl5gHPyjY0jltfZsAtkaYF+V2rrj3nvojw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YdbIdywY2w4l8CH3i967pIL+pzl4g2NfuI30DzfciceVuwdFFYdOsBJgKBx/BX3qMySo4uuvm0QBSqO0kiz77Tvda/eB6Gt0JLJWprJC4HwlgpUjTZ7CEJhefEg00ptD0iFwlsrgFHWo2n16+UYCVpcm9rt+cSPaRjo8zeq98Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D6iaNGnd; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=LmcZ6q3ED1TFIWzFGME2IArt6iP702cqUQZwdJxZx20DEm7l3pEmN5HHE7kpmsEVtExROrlbvppeD1Ortq0r/DfsNtCmZcxByxgBD0Vlbh5D322vJpqiMj+0P68BXU0HXlZTsieOl/AU4jc03qM/M/8h6xZE2aq3pWNI9jBT31E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iy0rZPfm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D6iaNGnd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F6EC116D0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iy0rZPfm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3923C16AAE;
 	Thu, 29 Jan 2026 08:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1769674110;
-	bh=1OHigLaB0I9Gr4pd6M4Zc3FWOaEqquAXFRRO/Gxw3CM=;
+	bh=Rc+cvBbCrvl5gHPyjY0jltfZsAtkaYF+V2rrj3nvojw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6iaNGndPXupEiDumBkRLVZUMruiYFF60cis6DEkfHTMrT1ojRfOsSFhzKX/Zl6oJ
-	 1vihi+Xcwg3SCGXFyfkwhrQ52Yf25g53aaFKNYHcMfBSnpLiTS+bcBDtHDO2LX23bf
-	 uDPjD6KwQgxEOXOw4ndW8UXPQW0yCWa5gRJmQ6A+JBxx2G7/mWgUjRZU5R9SneThS4
-	 jq9xDUSGEkqrOePWqAA9ZLLY159RU9DIUHFKbb2X+D0pNpnUoUkBINLeyKUlNHHAu3
-	 iFUhgeNG05Bc1iolBe7MxaMA9uMffQBDtoB8vOoSMV/IidVdHazt8c8Wt6T9r39bP7
-	 kCQKG2s61cLtg==
+	b=iy0rZPfmlg0iZMenj0l8iK0/UODQjeNmySHulwExq9W4tJTI4+X34weZAGmD+DlNG
+	 02I7db29dVZWpQbhf1GTtI3P5f7kT/JU9Wc/HbbWmN3H95WvvGBR2ibZLVyLqh/D+L
+	 i0qnZB0TpPKMyZ33nDgcj0IHabhens0ostWAR8O+BKfI+3R2XDirm1wAq9AFva0d8J
+	 fL5dn2yA8P6xFQ3Wop2u62wPfIyPCel2SuzREMdnPrFq1PSDRx6FVd8/z+Sm+3PvSn
+	 2O0vmumx1UuyTZ4OPgErcjRGPx3UlWsYr5T2jFieuW7V/KexcVsJoiLwjv4DeTZ5ol
+	 9Us1o2dafHTUQ==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vlN4m-0000000ERMj-330l;
+	id 1vlN4m-0000000ERMv-3OoE;
 	Thu, 29 Jan 2026 09:08:28 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
@@ -41,9 +41,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	netdev@vger.kernel.org,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v3 03/30] docs: kdoc_parser: move var transformers to the beginning
-Date: Thu, 29 Jan 2026 09:07:54 +0100
-Message-ID: <aa7f027e5b2f8599c9e268790f9ffbca9f0634e6.1769673038.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v3 06/30] docs: kdoc_parser: use NestedMatch to handle __attribute__ on functions
+Date: Thu, 29 Jan 2026 09:07:57 +0100
+Message-ID: <aeffb85481cd2ee13d68377d4bed03cff1e7b378.1769673038.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769673038.git.mchehab+huawei@kernel.org>
 References: <cover.1769673038.git.mchehab+huawei@kernel.org>
@@ -57,67 +57,40 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Just like functions and structs had their transform variables
-placed at the beginning, move variable transforms to there
-as well.
+Some annotations macros may have nested parenthesis, causing normal
+regex parsing to fail. The __attribute__ regex is currently very
+complex to try to avoid that, but it doesn't catch all cases.
 
-No functional changes.
+Ensure that the parenthesis will be properly handled by using
+the NestedMatch() logic.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Acked-by: Randy Dunlap <rdunlap@infradead.org>
 Tested-by: Randy Dunlap <rdunlap@infradead.org>
 ---
- tools/lib/python/kdoc/kdoc_parser.py | 23 +++++++++++++----------
- 1 file changed, 13 insertions(+), 10 deletions(-)
+ tools/lib/python/kdoc/kdoc_parser.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
-index fd57944ae907..0b68b140cd02 100644
+index ae5b2ef80f75..64165d8df84e 100644
 --- a/tools/lib/python/kdoc/kdoc_parser.py
 +++ b/tools/lib/python/kdoc/kdoc_parser.py
-@@ -191,6 +191,18 @@ function_xforms  = [
-     (KernRe(r"__attribute__\s*\(\((?:[\w\s]+(?:\([^)]*\))?\s*,?)+\)\)\s+"), ""),
+@@ -165,6 +165,7 @@ struct_nested_prefixes = [
+ # the start delimiter.
+ #
+ function_nested_prefixes = [
++    (re.compile(r"__attribute__\s*\("), ""),
  ]
  
-+#
-+# Transforms for variable prototypes
-+#
-+var_xforms = [
-+    (KernRe(r"__read_mostly"), ""),
-+    (KernRe(r"__ro_after_init"), ""),
-+    (KernRe(r"(?://.*)$"), ""),
-+    (KernRe(r"(?:/\*.*\*/)"), ""),
-+    (KernRe(r";$"), ""),
-+    (KernRe(r"=.*"), ""),
-+]
-+
  #
- # Ancillary functions
+@@ -195,7 +196,6 @@ function_xforms = [
+     (KernRe(r"__diagnose_as\s*\(\s*\S+\s*(?:,\s*\d+\s*)*\) +"), ""),
+     (KernRe(r"DECL_BUCKET_PARAMS\s*\(\s*(\S+)\s*,\s*(\S+)\s*\)"), r"\1, \2"),
+     (KernRe(r"__attribute_const__ +"), ""),
+-    (KernRe(r"__attribute__\s*\(\((?:[\w\s]+(?:\([^)]*\))?\s*,?)+\)\)\s+"), ""),
+ ]
+ 
  #
-@@ -971,15 +983,6 @@ class KernelDoc:
-         ]
-         OPTIONAL_VAR_ATTR = "^(?:" + "|".join(VAR_ATTRIBS) + ")?"
- 
--        sub_prefixes = [
--            (KernRe(r"__read_mostly"), ""),
--            (KernRe(r"__ro_after_init"), ""),
--            (KernRe(r"(?://.*)$"), ""),
--            (KernRe(r"(?:/\*.*\*/)"), ""),
--            (KernRe(r";$"), ""),
--            (KernRe(r"=.*"), ""),
--        ]
--
-         #
-         # Store the full prototype before modifying it
-         #
-@@ -1003,7 +1006,7 @@ class KernelDoc:
-         # Drop comments and macros to have a pure C prototype
-         #
-         if not declaration_name:
--            for r, sub in sub_prefixes:
-+            for r, sub in var_xforms:
-                 proto = r.sub(sub, proto)
- 
-         proto = proto.rstrip()
 -- 
 2.52.0
 
