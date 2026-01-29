@@ -1,28 +1,27 @@
-Received: from DB3PR0202CU003.outbound.protection.outlook.com (mail-northeuropeazon11020119.outbound.protection.outlook.com [52.101.84.119])
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazon11022084.outbound.protection.outlook.com [52.101.66.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3AC3043D2;
-	Thu, 29 Jan 2026 14:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.84.119
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0371E385500;
+	Thu, 29 Jan 2026 14:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.84
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769696037; cv=fail; b=lzGl9owyiWI7NnoGnKqgllh2LtCkHfjwIOM/w0k8e727nyPyLTmnmZ13fU7gD5IRQK3bwxQYGY4ekanUpPyxUv3l4RhvNn/fwQFoSCrMsU3XoO1O1bs+si5LmI87n7QKitIFa4j7rYKmCVxBghdcTp/UasxHB28PuC1e0vFOkK0=
+	t=1769696039; cv=fail; b=Cy1VCFjmvHLMhkj+R6cwZ7VeeAyRQcwI/naqy6ya83icUpwm7t5yfYIbFZxuCe3SapNZyaiUNu9kBbzBiaSWzKuCzURud0yjkYbIHSWpN0UzN1tb2WXpGumRwegGMEm1VsIN66soCEU8qOz7tEi1ouKZasUxNvxI7qM6JDYZJlw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769696037; c=relaxed/simple;
-	bh=0PogtmBN1R54yFv7mWIftTu+wtF6eyOdTO9+fKt4p7U=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=X60thuCfcK5TZf+Eu6QW1eDHSym/BKJ5BwaLWGsSpUel7elQDFhohPx1rW/EEMAjYpB1rJfx05gafKTBV18LWzFCkIYjSEWIkrSCq1qtb50A8C0B1M6HncmfN7Wzcmh2oBNbEmliDPUlbkw2WQCWFLiLsVYGXSuKETnbB/C1FXo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=f4S6/9WV; arc=fail smtp.client-ip=52.101.84.119
+	s=arc-20240116; t=1769696039; c=relaxed/simple;
+	bh=pjYvFznFsxe5W9iFrFpfQZwFMMqYbt2uhR8i6yH85eI=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=TbBU+hL7eigoU+87sCoKFgC9/GwYVmg6Z6i1OfQEwSP7GQ7BKOUWxK6xDsSf8QnLw2XAEVeZtxqq5byWqEkyUOHlBx4KMBYHdK7U8nXAOdf0y+Nzg6gYkraZcU7haInbgL0BUqtZHyTTXcsV5eq7duHZl16TjrIIBN4SZ9+vjsI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de; spf=pass smtp.mailfrom=phytec.de; dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b=Zht6Yn+E; arc=fail smtp.client-ip=52.101.66.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=phytec.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phytec.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="f4S6/9WV"
+	dkim=pass (2048-bit key) header.d=phytec.de header.i=@phytec.de header.b="Zht6Yn+E"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=A99vur9RYJS0o8ljogeNoZRpUsvtCviGcBFfJNneQNfzYJLYzyD4bXYwY6n8T4UBrc5dFQ7mZBIn8rFptdprUgifnldGd73HX1vBNz1AtjkiFEapWK0ffAEQWSN7O9sZP4LI2wqpY1FZ5RqEdKXwNQXr1emstGEqO/uToQL2Lx7uM6rWXhO1Rxgo3s6M8CPkj+yCWG46nExKXtJLr/GAGR/9SkWebuYJTq4nFC9Vs4Xrocg0KbjgjHuGPuzvOTXqJvrCfB1bFaxJjZBgjU4osL2FRsSc7gpWdE4rJcjbAHrkpLs67QN1R7xB1Df73Fihgr+ZrmLnUYK/mnbqLAqKQg==
+ b=chw2ZTcKlhkpVYXqyerYg8E+J290s4gRg4hidvsoos01vXqhfcRzWF5fpMrHn1CrqUKS7+dOU5xNTh4/YhbwxL9HlnBeZFrCIEJhgKPI0xo7puB5ayw6NBGFwBhAq/16hrtuRftj3oVySRc6sLOF9JwKEqN0HFAeASvm5Nk+Kn663jxy7/9+J2qwmhSYq+HRJ9sBFTEalbhnJXO4Zflqpaom5ljCXYFYMBW7AFvvN4lko3dISEbLIjfmUctfqmk8qsMNksIf/AIaUbeMftBFt4Ho7eS868ueFwsUSmUuWFGpqRtdmtOJqAO5XUdr0NmNoEI7dfOlLaMHyXB6GWBKyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KLuMZDs28VpaQRN7EEI0yT/+WV5kn2toEMzlLxu/eOI=;
- b=h8iI8/MNtiV9eU0R2GdEoBRAuCIONYiM43+FWGOR08SkM6Td/0JPsvqaE9+Uu/5f9pAmW9LZbqz3Yidgn77QKAj8+zq0co3zKvEOKzX30DkJSlcjC8GvZ8rYQ9OTzQ4xMtLA5VUk1IWLSV8WkJH/O7konvf4hr7uejMYF8pZHCtuuoHu7nbSh6k1Py/YM5oNiOgm5+FqLy1U/1Vf2BIvtNaDQT3fjedJ34v6Q8SeCTn1bgtR4Rv4P6ko6Qeo8Wiw6K5RWebrPQdmz6RtX3l2KKyWmCHyJ7Waf62tBN4foByZVZsBaR+B0Y3Iqnoh5IzqOi94lE7q/pDlQLL8caEo/w==
+ bh=Usx3Pm7LTQrR2UpdLniRRo5fm283tYxi1Fniwo6keGI=;
+ b=IvjeiToIYTSqTxzvuSedVCXr2obVBCnJ2EvAryxZcbh3gD6l/kyMtNmXxadoWr5qMBrgUNcGhMeGtC3PiG4BS2XciFcIPtGTiAaZOltM5N/PqduBqBXhbbvz3F3emao76334Vma5KstOZFgk4DKuDlrDnr4OteGVza+uQSNr7CYYmbs58+arwhcSeZGiZ6wtLoMuNheil3ABYZOxQumpH75wA4BpRP9XfjdAGJN13AA0Zk+z34Yz9fKrMx6cDwSpespaUuYUX1PEXWmxu9wA599KFPrCkA87Q+lltU8BilbPe7ELZFjDgBhVPtgoCIbrqfIs/W+Gz5VcZpEiV3qP6Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
  is 91.26.50.189) smtp.rcpttodomain=kernel.org smtp.mailfrom=phytec.de;
  dmarc=fail (p=quarantine sp=quarantine pct=100) action=quarantine
@@ -30,18 +29,18 @@ ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=softfail (sender ip
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=phytec.de;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KLuMZDs28VpaQRN7EEI0yT/+WV5kn2toEMzlLxu/eOI=;
- b=f4S6/9WVQTMurYOoMR4jEd707UuE0eggBP5NvvaXhqwgWsLMylsnfhrx3/kha97y1vB5ekCvpgHSvMGxEncC8KuZaVMAjBePn6pTzrsU5Sqkdj1a4cO8oUPMf8O01RlzQUy5MZzhopkq95mAYwFjpu88YsNz3xBnSEuK5p/2trz/ZbLpl9ps6uOkG67vbFTRkFy1mydtusaytSF/2kRXywGMIGxg4O2mtJ3nCD+0PfDG91Vu4gjPl4XTgPVOXO7JPi42n2h18T7RLKWjsQvZR7NlpuVF4VyDKOb4KJaCJcOYG0sUd1BxHSCjpM24tLmzHQhC2pnOAhaNlwb1i087Mg==
-Received: from DBBPR09CA0043.eurprd09.prod.outlook.com (2603:10a6:10:d4::31)
- by DU4P195MB3180.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:615::20) with
+ bh=Usx3Pm7LTQrR2UpdLniRRo5fm283tYxi1Fniwo6keGI=;
+ b=Zht6Yn+ENj6w9uMhg3VzzpnN7rqgWTvZMoGVDbYWMP+klGLt+GZLZl94FUCw12BouxjwssDzgCRWKP2GNAuFxl86E04771buU8kf5TM9ojUWmYfH8/zObapS3QUi0V1dkHZEHdS6aZDlAaGFFRWxOJRdyw1I9xLMbmH/xd0QdU4y7xPX2BpHyX8Bjg5NCm+p4FTcq3J3ds2EfyAycYN7uoFHt+okgcXZJnJUJtdBoJd/TtMaPxc7DcSzv/DUbCXwXd/HMPYPssu3utRy1UYSod5aq5zR2a3o71I0fzj1u1iu5miT2ymS/GUho9cNyXep5moZGv5PMCyhECWqueP8dg==
+Received: from DBBPR09CA0047.eurprd09.prod.outlook.com (2603:10a6:10:d4::35)
+ by DB8P195MB0694.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:15c::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Thu, 29 Jan
- 2026 14:13:52 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.9; Thu, 29 Jan
+ 2026 14:13:51 +0000
 Received: from DU6PEPF0000A7E2.eurprd02.prod.outlook.com
- (2603:10a6:10:d4:cafe::42) by DBBPR09CA0043.outlook.office365.com
- (2603:10a6:10:d4::31) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.7 via Frontend Transport; Thu,
- 29 Jan 2026 14:13:53 +0000
+ (2603:10a6:10:d4:cafe::56) by DBBPR09CA0047.outlook.office365.com
+ (2603:10a6:10:d4::35) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.8 via Frontend Transport; Thu,
+ 29 Jan 2026 14:13:51 +0000
 X-MS-Exchange-Authentication-Results: spf=softfail (sender IP is 91.26.50.189)
  smtp.mailfrom=phytec.de; dkim=none (message not signed)
  header.d=none;dmarc=fail action=quarantine header.from=phytec.de;
@@ -50,15 +49,15 @@ Received-SPF: SoftFail (protection.outlook.com: domain of transitioning
 Received: from Postix.phytec.de (91.26.50.189) by
  DU6PEPF0000A7E2.mail.protection.outlook.com (10.167.8.42) with Microsoft SMTP
  Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9564.3 via Frontend Transport; Thu, 29 Jan 2026 14:13:52 +0000
+ 15.20.9564.3 via Frontend Transport; Thu, 29 Jan 2026 14:13:51 +0000
 Received: from llp-tremmet2.phytec.de (172.25.39.70) by Postix.phytec.de
  (172.25.0.11) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Thu, 29 Jan
- 2026 15:13:51 +0100
+ 2026 15:13:50 +0100
 From: Teresa Remmet <t.remmet@phytec.de>
-Date: Thu, 29 Jan 2026 15:13:34 +0100
-Subject: [PATCH 2/2] net: phy: dp83867: add numeric io impedance DT
- property
+Subject: [PATCH 0/2] net: phy: dp83867: add numeric impedance DT property
+Date: Thu, 29 Jan 2026 15:13:32 +0100
+Message-ID: <20260129-wip-t-remmet-phytec-de-bspimx95-132_upstream-v1-0-8deccd658d16@phytec.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,9 +66,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260129-wip-t-remmet-phytec-de-bspimx95-132_upstream-v1-2-8deccd658d16@phytec.de>
-References: <20260129-wip-t-remmet-phytec-de-bspimx95-132_upstream-v1-0-8deccd658d16@phytec.de>
-In-Reply-To: <20260129-wip-t-remmet-phytec-de-bspimx95-132_upstream-v1-0-8deccd658d16@phytec.de>
+X-B4-Tracking: v=1; b=H4sIAAxre2kC/x3NQQ6CMBBA0auQWTsJrS1Wr2KMqTDKLIrNTAUM4
+ e42Lt/m/w2UhEnh0mwgNLPye6owhwb6MU4vQh6qwba2a40NuHDGgkIpUcE8fgv1OBA+NHNazx7
+ N0d4/WYtQTOiCCSH67uSdg5rMQk9e/7vrbd9/iIg/I34AAAA=
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
 	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
 	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
@@ -86,121 +85,103 @@ X-ClientProxiedBy: Postix.phytec.de (172.25.0.11) To Postix.phytec.de
  (172.25.0.11)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DU6PEPF0000A7E2:EE_|DU4P195MB3180:EE_
-X-MS-Office365-Filtering-Correlation-Id: 39f9e3d2-a763-47ec-f07d-08de5f40a1a6
+X-MS-TrafficTypeDiagnostic: DU6PEPF0000A7E2:EE_|DB8P195MB0694:EE_
+X-MS-Office365-Filtering-Correlation-Id: fef55f7a-dd7e-473b-9ce1-08de5f40a10b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|1800799024|36860700013|921020;
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|7416014|36860700013|7053199007|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RTkrRFJidWhOS3lncVRKZE1Wa1RQb2djU2c4MW5WSHVTY3NSUTlQenZMTEh0?=
- =?utf-8?B?UGU4d3UySWJ1WkplTVZvRXIrejMxQ0NsKyttTmFZU291RnJPUkhHR2s1Ly8x?=
- =?utf-8?B?b3lCdy9wZDBhUytNdU9oZFBoMTVIV2V1R3ZJS3pKZndXQzM1WkdVcnkyMldj?=
- =?utf-8?B?NUNheG9jQUl0OHMvc2k3cUo3am45STh0NWtZcXd5Z3IwL2ZEQTN5dXVyY1RC?=
- =?utf-8?B?SW1odmwyTnZRR3pMS1V0T3JQdXlocjNsY2VsR2piSVRmVXJHc3JzZXRQdk9F?=
- =?utf-8?B?anEvWk1udG0yN2dpQjd5VzRFaFMvTXdRVnd3c2d0UzZYYWY4MnF4NUczZFV4?=
- =?utf-8?B?VUNkY0xNWVpZRTF0aTg1V2pFdEd2QXhOUS9YZzBLVjNhN085S25FVUNMTFNF?=
- =?utf-8?B?Vk93UG5YV2ZRWmlVb3RkZzlYNWNaclRCbFBEUTlmbU9VRWFNNVZEOVZiSVpm?=
- =?utf-8?B?Uy9WVnB0clptVDJWUEhzWSt6SjVJeVBPWndGejErSkhlMXdkdzVYNnorZTND?=
- =?utf-8?B?cU0vZjh6UnNrMTdDTTdvWC9vYWpJMlp6eXo1QitEbnBkUlEzWXkwT1RaNUdQ?=
- =?utf-8?B?Q3FKUHdtUUtGbUNiUVd6b21WeFhjRlQxMU1HM1ltL2E3Tno5Q0xYUmtucjJi?=
- =?utf-8?B?MXNZeEprSkExTUdMV3ZtbVoxbURZQUMwcURCdmVOZ29QVS9TdjZnNWpqNnhi?=
- =?utf-8?B?YnVwZU9vQ3dQcFp6dXU4bGM4Vzc1MmJ1cmtHZm9Xb3RIMU8xQXg2dlNWNklp?=
- =?utf-8?B?a0Z4V09DMFh5WWhLTXNCdENTTGhzZGoxUlRWdHJXaVdFR2RpelVYcmEyaldX?=
- =?utf-8?B?Z1VPQUVURGZjcjF0aTFZK2pWb0RhOUFOcjRKbFdIVnNZbjBsdVJ3NHZMeUpm?=
- =?utf-8?B?VjZzaGpmcTNlbGdRVUl4SlJaQ1kwTjB5NnQ5RmJJZmV3V0ljNnFtT01Fd2dH?=
- =?utf-8?B?RjR1U0F0UVJKb29PWXRubkhkSDlqbVM4YUFVZ3lIbXkwVDYwSFVraDBuYndP?=
- =?utf-8?B?dGFXbitSVzhjUEh0d1J3cUtwMDFzaGpiL0N2eUJIcndodlY2V0srSmNJd1dl?=
- =?utf-8?B?aVc3RXUybmlOa0N1NEhxK2VPaTJpRGhHaERjT1FWbndvMHRGVWs3WlRZUG5z?=
- =?utf-8?B?aWhpdTdoMGxsOTJFd0pLM2dtUFM0SHBvanM3TnZxS1VKenBFam1DV0h3ZXdx?=
- =?utf-8?B?YXNwTGV1M295ODFwaWdJLy9tUFNOampUbnJDTVRhY1pIZURRN0ZqSWx5blI3?=
- =?utf-8?B?MjNML1pOUFU2Y1lkUEhvdWhWOWhFRk10U3Qra0V5RlhlRkdQYjdDMjgyb2NL?=
- =?utf-8?B?aU9hVlh5UHpWZjlHRzRpNk0rQXRjTUFwdmgvQ1UxaG5IbER6bWIzVERNZVhw?=
- =?utf-8?B?M2tldkdKYXJMbFFuNDNSRGV2b00wWENUQ0lrbXlvQU1oLzh4UlpZbk5VTHho?=
- =?utf-8?B?ZXpGeDZLOURCUjE4TllYVjM2bmZYeU96ZVM1WWlvejJBNnk2N3RMaVVSQjZv?=
- =?utf-8?B?SnNDWDJ5QkZGRnRSWkVadGJTSTVnMGU2UVlnSWg3cHhWdzRkVVcrUDhCM25R?=
- =?utf-8?B?ZVJ6dVJKalhIM2VRQ3MwblV1Sks0akVhaEdyVjhWY0FrcUw4a3BOVnRZNEh2?=
- =?utf-8?B?cVV4aFVkUDJadHNndlIvVCs2T1JPbjdRaVNVM0NjajdPMTBOVkdxZUM1eXY3?=
- =?utf-8?B?Tk14RHczMHcwTE9LQzJkdjFZU2lvYm9VNFhRTGhXRk5NWmp5RXoxaXlHbGhO?=
- =?utf-8?B?YyttM2NWMzJkbjNUdDBvNlRkR2NFVzd5dE9lby91YmljZjFwUkwydThwWXdC?=
- =?utf-8?B?WGJOSWR6SHB0NnkrdW1oc1V3cGNMQXhydVVPL3BiNU51SnpPWTVGejJVdmF3?=
- =?utf-8?B?dW9JV0tvRGY5RjZyRloya05lNnRTTjg4ajhDZUJTNGRldklBU2dFMnByWC9m?=
- =?utf-8?B?dGtJZDdkaExFMUJmTHBvelRidTNpcUNuc05vRUhtZU0rS3gvVEZ5ekRaZEhl?=
- =?utf-8?B?RGFkSHN3dzEwcXV4Z3M4Mm5sR2xwMVU0T25OR0k1YVhES1R4TmJUdUk0WVJi?=
- =?utf-8?B?b3FGMGQvNTRUK1FScjQwVGl0WDk4ZmYvTG1EdzVIU1ZzQktXTXRJSGdSL1lS?=
- =?utf-8?B?YnppSFFHR2x1OFdSMTlGOVBobkJPUjFRUldpVW1oZ3JpV0dQOEt1RERNN0RZ?=
- =?utf-8?B?a1R0dWZINmp1UDVZUGZ4d3ByUlZLejVlbEZpYm84VzhTcUZzWW1LckVTeFp4?=
- =?utf-8?Q?1sRbYVSBwSAkbkJ4gaLQMb6aQoFf2OtBnrqaNteGUg=3D?=
+	=?utf-8?B?bjJidGU1RUxlb3pvSndYWTdnQnhQVXNmekpFaUVab3ZUbTBLbmExZENNSkdL?=
+ =?utf-8?B?V2hpUU1leDQxcllYeHN2SXFvYWJCZTh6Y09qeGFGZCtYSGROMlhxYUlhSlFj?=
+ =?utf-8?B?Mk5lUTBWUDk5Z29IRUVCaGZYbFl3eE5SaS9tblpLNWJOZ1lSajRMVndkcSs2?=
+ =?utf-8?B?enVZQ2ZGSSt6c1NvWk4zOXlOVEZNTUtTZ0ZQeXlwZm1HalZpK0ZUMXV4YWtt?=
+ =?utf-8?B?d1Z3WU5wSUZmMGwxMm5RcVpvWWt5ZUN6cHhTYlpvVHJ0ZDdPd3gzcDlFTERz?=
+ =?utf-8?B?Z0pod2hBVlpSMTJRZzN2ZFp3L29uRWhLODNCSTdVQVRmNWVDOG1paXVZdFhY?=
+ =?utf-8?B?ZFdQQzNCWjI5ekc3YWJmenZpMFFBbmMvc3FLSGxObllub3dJb0JuOVB5dDQ3?=
+ =?utf-8?B?endRNjlESHlVd0ZLNkVLbzN2WWhwNndDNkMwcWlGQXhVL2FuaHduZnQ3bjYy?=
+ =?utf-8?B?TzdPVlZwR0JqSStSelZnYWd1ZE1QQXN0YlpVelFrcVJHYi9od3RlR2NjSmEy?=
+ =?utf-8?B?MFV0RWVHTnpoemJieEprZWk1SGNIaU9DZ05tdnFueVYyZ1JqajB3L2V3OGZL?=
+ =?utf-8?B?OC8rVTVZSVU4T3dkbHNQOGNKNEY1MlBHdDI5QmJRMFUzeUQ0L1kvRTVkNVc1?=
+ =?utf-8?B?emx4ZTM2ZWxENWxqRVpvUXo0NTl2SWZ5NXAzTVF3WDBlNmFRbTA4Q2xYSXBw?=
+ =?utf-8?B?dmFkQnRtNXJ4dGt0eklVb0RUeGhCUmwxd2dqcUZ1NUxXZDZmZFQrZXUrVkpV?=
+ =?utf-8?B?cDRTc1hxYUtza1FXdEdLUTZEWElCQXloY1M1RkMxMDQ2MUYvMzZVUkUwa3FG?=
+ =?utf-8?B?ODVxbjNxS2psVFgvcXA0RDU3T25kVHNzd3dRdU03MG1kYlhyd1phQ25vQnZv?=
+ =?utf-8?B?KzVUTVJ2ZnBEUmovdm9aUWhoVmFEaU1OUlpJNDRmWlBVZldOUlVDc2RVNUxI?=
+ =?utf-8?B?bFZSbVEzelNrNTNwWnhoRTE1NTBoZXNJNnRBcDNMcVlEU0RPcWd4MFd1Q295?=
+ =?utf-8?B?TTliSHc3dk5hYkVUUzBoUmlFMWtIeVlYS2tyWDhqNFF4MTBBWGJiTlNsRFRS?=
+ =?utf-8?B?QWVjamV2eEZYLzgyY29lemV6ejZYYWtMRyttR3pRVGlRZTZBa0NsUUtqY1dH?=
+ =?utf-8?B?WTE0alJhZzBtVDhzN3d5Y2gvc0xlMU9Dc3pJSjNvb3RzaHUyLzRaM0RvN2Ew?=
+ =?utf-8?B?SUZhVVB6eGRnQ2tMaWsxWXNZcjlPUkk4Ym5odTR1eFlCYmtUZDk1ZzQ1dERn?=
+ =?utf-8?B?VWZmeG1Deko3NWUrRHROelU4YTgwZ3dYUzR6eE9rOW9Rd0dRQmRoaFJTWmdR?=
+ =?utf-8?B?UzdXbUJ1T0pWbXVRVElXQ25McHlwNkZnbzgyRFZIQjZudkdzRHg2SHR5TDdE?=
+ =?utf-8?B?TktGUDJ2THN5ellMOURuMXNPMG9kbzJGWE1BTTFZcGdjc0NnVW05ZW9EdEtP?=
+ =?utf-8?B?Vms5ZWJmRUgySXJLSi9abmJWeHRDR05PdjRpT04zZFNxeGxTQ3FST3NpWXRQ?=
+ =?utf-8?B?ZExUSTVEbXNiUkVJanpPcXdGeDlWSTBBYnlyUzN2SEJ2K2tOeVdDQXM5cjJH?=
+ =?utf-8?B?T09WSFZTWStmQThENGV1endWd0NzNC9Mamc0ek1nemdrSmpyUmtIbmJTNk5H?=
+ =?utf-8?B?Nm9jUHNhOCt6cURkRkdDb0E2K25aMnYvRFVWNEwwdWs5ZHJGdUtmUzdkOXZy?=
+ =?utf-8?B?THBCbWtCajFhN0Irc1dpWm1VSStGT0lEWDJxR09xaTlBOGUxRS9rT0RXSE1W?=
+ =?utf-8?B?K0JySlMyMmNZZnEvZFkzWTlCbVRyTTJ1Ry85T2c4bXBsR0ZVcVpXbzV2Ukdi?=
+ =?utf-8?B?OUF0R1Rvbmd0TVQ3eHk2TC9jMno2elhZVWlwNVFIZGdzdEYzLy9hZVVSUmFW?=
+ =?utf-8?B?Z004ditQdHU3V2xSVVBaWkQwd3ZKQmkrd0JOenYrQ2ljVFFtWC8yMUxWN2g1?=
+ =?utf-8?B?YXlpOWhLWGNieWJac29RMFcvZU9MU0ZFdVU3c0NIMDdKdlJTbGhmZWF4V1hZ?=
+ =?utf-8?B?K1FkeWU2aGxtdjBBdXJyZlYwMjBiTHJLSWh5Ym5kK0pRQU40dG13Z0NOOXBJ?=
+ =?utf-8?B?SEN1VTZhWk1yZFQycVVOUjhpWCtjQmF2TVl4YmFpbWtQT2s5SXc5cHdscXYx?=
+ =?utf-8?B?L1prbXBHVDJYdm82MXU1WlZDK0pMS0dqaFFJYTUxUU1lTG1YRDRaSCtRclpy?=
+ =?utf-8?B?SGpGWGY2L0xFYXJGQ1RLRjUyeW15VjhjV0NHcXMxdnRna1N2QzVnd3dlNmtM?=
+ =?utf-8?B?VmtmWk5Jd2pOVkF3V0xjVVEydDVRPT0=?=
 X-Forefront-Antispam-Report:
-	CIP:91.26.50.189;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:Postix.phytec.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(1800799024)(36860700013)(921020);DIR:OUT;SFP:1102;
+	CIP:91.26.50.189;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:Postix.phytec.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(7416014)(36860700013)(7053199007)(921020);DIR:OUT;SFP:1102;
 X-OriginatorOrg: phytec.de
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 14:13:52.7103
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Jan 2026 14:13:51.6898
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 39f9e3d2-a763-47ec-f07d-08de5f40a1a6
+X-MS-Exchange-CrossTenant-Network-Message-Id: fef55f7a-dd7e-473b-9ce1-08de5f40a10b
 X-MS-Exchange-CrossTenant-Id: e609157c-80e2-446d-9be3-9c99c2399d29
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e609157c-80e2-446d-9be3-9c99c2399d29;Ip=[91.26.50.189];Helo=[Postix.phytec.de]
 X-MS-Exchange-CrossTenant-AuthSource:
 	DU6PEPF0000A7E2.eurprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU4P195MB3180
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8P195MB0694
 
-The DP83867 MAC-side IO impedance is currently configured in the driver
-either via an NVMEM cell or via the two boolean device tree properties
-ti,min-output-impedance and ti,max-output-impedance.
+Introduce a new way to set the output impedance over device tree.
+So far it is possible to pass the value either over an nvmem
+cell or to set the min and max booleans over device tree.
 
-Some boards require an impedance setting different from the default,
-minimum, or maximum values, and may not have NVMEM storage available.
-For such cases, a device tree configuration option is needed.
+In our use case we want to be able to set the impedance over
+device tree but the boolean values are not the right fit to 
+provide best signal integrity for the hardware.
 
-Add a optional device-tree property "ti,output-impedance", that passes
-the raw register field value (0x0 - 0x1f) representing the range
-between approximately 70 ohms and 35 ohms. Because the actual impedance
-range and step size varies depending on the production process, no exact
-mapping between register value and impedance can be made. The values
-are determined empirically.
-
-If the property is not set the existing behavior is maintained. NVMEM cell
-has still priority but ti,output-impedance is checked before the
-boolean min and max values.
+To: Andrew Lunn <andrew+netdev@lunn.ch>
+To: David S. Miller <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Rob Herring <robh@kernel.org>
+To: Krzysztof Kozlowski <krzk+dt@kernel.org>
+To: Conor Dooley <conor+dt@kernel.org>
+To: Andrew Davis <afd@ti.com>
+To: Andrew Lunn <andrew@lunn.ch>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+To: Russell King <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org
+Cc: devicetree@vger.kernel.org
+Cc: upstream@lists.phytec.de
 
 Signed-off-by: Teresa Remmet <t.remmet@phytec.de>
 ---
- drivers/net/phy/dp83867.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+Teresa Remmet (2):
+      dt-bindings: dp83867: add binding for ti,output-impedance property
+      net: phy: dp83867: add numeric io impedance DT property
 
-diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-index 5f5de01c41e1..b06d851c3487 100644
---- a/drivers/net/phy/dp83867.c
-+++ b/drivers/net/phy/dp83867.c
-@@ -516,13 +516,22 @@ static int dp83867_of_init_io_impedance(struct phy_device *phydev)
- 			return phydev_err_probe(phydev, ret,
- 						"failed to get nvmem cell io_impedance_ctrl\n");
- 
--		/* If no nvmem cell, check for the boolean properties. */
--		if (of_property_read_bool(of_node, "ti,max-output-impedance"))
-+		/* If no nvmem cell, check for the device tree entries */
-+		ret = of_property_read_u32(of_node, "ti,output-impedance",
-+					   (u32 *)&dp83867->io_impedance);
-+		if (!ret) {
-+			if (dp83867->io_impedance > DP83867_IO_MUX_CFG_IO_IMPEDANCE_MASK) {
-+				phydev_err(phydev, "'ti,output-impedance' value %u out of range\n",
-+					   dp83867->io_impedance);
-+				return -EINVAL;
-+			}
-+		} else if (of_property_read_bool(of_node, "ti,max-output-impedance")) {
- 			dp83867->io_impedance = DP83867_IO_MUX_CFG_IO_IMPEDANCE_MAX;
--		else if (of_property_read_bool(of_node, "ti,min-output-impedance"))
-+		} else if (of_property_read_bool(of_node, "ti,min-output-impedance")) {
- 			dp83867->io_impedance = DP83867_IO_MUX_CFG_IO_IMPEDANCE_MIN;
--		else
-+		} else {
- 			dp83867->io_impedance = -1; /* leave at default */
-+		};
- 
- 		return 0;
- 	}
+ Documentation/devicetree/bindings/net/ti,dp83867.yaml | 19 ++++++++++++++-----
+ drivers/net/phy/dp83867.c                             | 17 +++++++++++++----
+ 2 files changed, 27 insertions(+), 9 deletions(-)
+---
+base-commit: 1f97d9dcf53649c41c33227b345a36902cbb08ad
+change-id: 20260128-wip-t-remmet-phytec-de-bspimx95-132_upstream-48188a567544
 
+Best regards,
 -- 
-2.43.0
+Teresa Remmet <t.remmet@phytec.de>
 
