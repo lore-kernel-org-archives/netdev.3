@@ -1,167 +1,78 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015D1279DCD
-	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 15:25:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6339032ED43
+	for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 15:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769700321; cv=none; b=F1MsMxccCYSpxh7ane1uwBqsU2G5VRv5yZ55sz7JpLkXNRUhPFuZhKb841yL3o76V07rFXJogFcMW7VOhcmXRAY0iTpj6glrbh7gPtFkbXeRnbvNmwtJB7ATTStQNRdb7xQfCOqwqbl8ZXntGK9VuDN3lNmvfKC7BOZmMDpsz1o=
+	t=1769700566; cv=none; b=CxMcJEBvkDteMamMCGYmBUknGCCHioOp5FVFV4KQvw8FtL9M7R5P9F9N2EP6PPzu+45ji/ZvJX1ja6ivvVApgujziwB/XGQtA1VCcDOF+9ZLqDPskouJgpd42Pes9MEpb2SUNIuDiDNNmbOq8ko9uOTGClpwPG3O/jAfJbMNvVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769700321; c=relaxed/simple;
-	bh=yXwOQNSKQi1HIRb3VPnfl2hh4kD4Y2qAMS04wTmDn74=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=X255R5yV+wWF8ZJTgh0Xm3oT+yG+CWjCwLJQYkmlMWPmSxbFoytLhbA0KXcjVUlhT2QP/zFY+YAI7P/z33qurqwvOAErBm7ZcOQWOWYeYfvb85e7HQF2+ehYeN/MEsIkNnnvtnVYmx6EnbbEjWwZqmZXsVrN/AK03ik+kI5VcfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M1xhXkHn; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1769700566; c=relaxed/simple;
+	bh=1xbevfEFLMw6cxLSTvnpNWu1vvnf1bRZMX1cid9N778=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dXMTIPufN2GI5XioVPcz7HUYjVyAeeMhJPfXRm3u1M3cJx9nAkQoPNFoWuH3Z5GtbmljYLvfTAyW1Ep5PzEMLRUgHyFjNppewsSJ4ap1nh2ZNpE0Fi7EDF097nV2PT1EyhVBhA+ePR9XhFtLASH60vm+9ux0vYOAnh64MaRa9e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=tuEDeIQr; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=GHNAYGdA; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M1xhXkHn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769700318;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="tuEDeIQr";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="GHNAYGdA"
+Date: Thu, 29 Jan 2026 16:29:22 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1769700563;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=I6bWQAN1rIj0xbb2CSVI3kq+wfrJAUDt2IKFNSNtP6E=;
-	b=M1xhXkHnwEF7ba/o1s3oD4kowpca/7xat63Htsgq1U/dp3EG/WiJjziHpZ49dc+J2CvZcp
-	z3Y3jQQOnm845JLmIY2uaHUspFW9paGm+27lUVgobPngZo2Axdx4Vn/Ly1CF5h9dfoOC7d
-	Xp+2m2LPMdMJA8PuFyrA5jXwoKlMjf8=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-xDnfBf4_OUyoWujsIn3SPg-1; Thu,
- 29 Jan 2026 10:25:08 -0500
-X-MC-Unique: xDnfBf4_OUyoWujsIn3SPg-1
-X-Mimecast-MFC-AGG-ID: xDnfBf4_OUyoWujsIn3SPg_1769700307
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7E86019560A6;
-	Thu, 29 Jan 2026 15:25:06 +0000 (UTC)
-Received: from dcaratti.users.ipa.redhat.com (unknown [10.44.33.192])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 22F3918004D8;
-	Thu, 29 Jan 2026 15:25:02 +0000 (UTC)
-From: Davide Caratti <dcaratti@redhat.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org
-Subject: [PATCH net-next] net/sched: don't use dynamic lockdep keys with clsact/ingress/noqueue
-Date: Thu, 29 Jan 2026 16:24:35 +0100
-Message-ID: <68f55cee98e5402af2509f1d3873fbc7a27f67e9.1769699825.git.dcaratti@redhat.com>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dHdep/or8hrGdYdzJ64DA7zDDlSnl955IPWsfg+rGAM=;
+	b=tuEDeIQrrvqVjhN6qMt7aGkFn6LuJSBrq17HUdalxvXOvPPpv8enzwTGzKnrTQR/Oc9ZP3
+	bKJB8vT2/S7x3KiJpnL7gyCWJ61fMvZsPICevtLu6jfZRCkGEcap+OqbFlqhfdYMww5q+e
+	HjE8ysZpy8UPr0U/frkIxt0Yu+9TJB1tn+Z6G+JSagH5dla5nDxJrV0sV2Xckze9MTZQP9
+	TkV79IK08z/lF+IVXVDvkKu7B/bWnqQgcbEC6Q3Fse3SJRAnyrFIPmi63MWmtlElPqK1Ac
+	kcSs0MlzbXjHChvngr+aAP7aH3DiBkAOt66C/681F8sTS9UAGdPqBjtGA8zToA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1769700563;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dHdep/or8hrGdYdzJ64DA7zDDlSnl955IPWsfg+rGAM=;
+	b=GHNAYGdAZGwaxnbSkXWLisj4o9fmTx+j1h1zKL6S5014t0LlaOs7/Ok4/mHskzdvqYDFSV
+	pRxXo+wW6hEY+3AA==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Felix Maurer <fmaurer@redhat.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
+	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+	horms@kernel.org, jkarrenpalo@gmail.com, tglx@linutronix.de,
+	mingo@kernel.org, allison.henderson@oracle.com, petrm@nvidia.com,
+	antonio@openvpn.net
+Subject: Re: [PATCH net-next v2 0/9] hsr: Implement more robust duplicate
+ discard algorithm
+Message-ID: <20260129152922.P0efzzu6@linutronix.de>
+References: <20260122173556.44d8b77f@kernel.org>
+ <aXczshu7nvWWFMy4@thinkpad>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <aXczshu7nvWWFMy4@thinkpad>
 
-Currently we are registering one dynamic lockdep key for each allocated
-qdisc, to avoid false deadlock reports when mirred (or TC eBPF) redirects
-packets to another device while the root lock is acquired [1].
-Since dynamic keys are a limited resource, we can save them at least for
-qdiscs that are not meant to acquire the root lock in the traffic path, or
-to carry traffic at all. A good (initial) example is:
+On 2026-01-26 10:28:18 [+0100], Felix Maurer wrote:
+> 
+> I'll wait for feedback from Sebastian, but I'm also fine with merging
+> the fixes for the KUnit test into the other patches and reposting.
 
- - clsact
- - ingress
- - noqueue
+Overall the new algorithm is very nice. Feel free to add
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-Don't register dynamic keys for the above schedulers, so that we hit
-MAX_LOCKDEP_KEYS later in our tests.
+I made a few comments where I think it should be possible to avoid
+tracking the sequence number for interface A and B but since you
+preserve what is done now, I don't mind to keep it as-it and try to
+remove it later on (unless I'm wrong and it is not doable).
 
-[1] https://github.com/multipath-tcp/mptcp_net-next/issues/451
+> Thanks,
+>    Felix
 
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
----
- include/net/pkt_sched.h | 22 ++++++++++++++++++++++
- net/sched/sch_api.c     |  2 +-
- net/sched/sch_generic.c |  8 +++-----
- 3 files changed, 26 insertions(+), 6 deletions(-)
-
-diff --git a/include/net/pkt_sched.h b/include/net/pkt_sched.h
-index e703c507d0da..e68a7bbb84b4 100644
---- a/include/net/pkt_sched.h
-+++ b/include/net/pkt_sched.h
-@@ -308,4 +308,26 @@ static inline unsigned int qdisc_peek_len(struct Qdisc *sch)
- 	return len;
- }
- 
-+static inline void qdisc_lock_init(struct Qdisc *sch, const struct Qdisc_ops *ops)
-+{
-+	bool skip_dynamic_key = (ops->static_flags & TCQ_F_INGRESS) ||
-+				(ops == &noqueue_qdisc_ops);
-+
-+	if (!skip_dynamic_key)
-+		lockdep_register_key(&sch->root_lock_key);
-+
-+	spin_lock_init(&sch->q.lock);
-+	if (!skip_dynamic_key)
-+		lockdep_set_class(&sch->q.lock, &sch->root_lock_key);
-+}
-+
-+static inline void qdisc_lock_uninit(struct Qdisc *sch, const struct Qdisc_ops *ops)
-+{
-+	bool skip_dynamic_key = (ops->static_flags & TCQ_F_INGRESS) ||
-+				(ops == &noqueue_qdisc_ops);
-+
-+	if (!skip_dynamic_key)
-+		lockdep_unregister_key(&sch->root_lock_key);
-+}
-+
- #endif
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index f56b18c8aebf..443c116e8663 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1353,7 +1353,7 @@ static struct Qdisc *qdisc_create(struct net_device *dev,
- 		ops->destroy(sch);
- 	qdisc_put_stab(rtnl_dereference(sch->stab));
- err_out3:
--	lockdep_unregister_key(&sch->root_lock_key);
-+	qdisc_lock_uninit(sch, ops);
- 	netdev_put(dev, &sch->dev_tracker);
- 	qdisc_free(sch);
- err_out2:
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 852e603c1755..98ffe64de51f 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -955,9 +955,7 @@ struct Qdisc *qdisc_alloc(struct netdev_queue *dev_queue,
- 	__skb_queue_head_init(&sch->gso_skb);
- 	__skb_queue_head_init(&sch->skb_bad_txq);
- 	gnet_stats_basic_sync_init(&sch->bstats);
--	lockdep_register_key(&sch->root_lock_key);
--	spin_lock_init(&sch->q.lock);
--	lockdep_set_class(&sch->q.lock, &sch->root_lock_key);
-+	qdisc_lock_init(sch, ops);
- 
- 	if (ops->static_flags & TCQ_F_CPUSTATS) {
- 		sch->cpu_bstats =
-@@ -987,7 +985,7 @@ struct Qdisc *qdisc_alloc(struct netdev_queue *dev_queue,
- 
- 	return sch;
- errout1:
--	lockdep_unregister_key(&sch->root_lock_key);
-+	qdisc_lock_uninit(sch, ops);
- 	kfree(sch);
- errout:
- 	return ERR_PTR(err);
-@@ -1076,7 +1074,7 @@ static void __qdisc_destroy(struct Qdisc *qdisc)
- 	if (ops->destroy)
- 		ops->destroy(qdisc);
- 
--	lockdep_unregister_key(&qdisc->root_lock_key);
-+	qdisc_lock_uninit(qdisc, ops);
- 	bpf_module_put(ops, ops->owner);
- 	netdev_put(dev, &qdisc->dev_tracker);
- 
--- 
-2.52.0
-
+Sebastian
