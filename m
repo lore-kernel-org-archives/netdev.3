@@ -1,56 +1,58 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFCA3803CD;
-	Thu, 29 Jan 2026 12:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6E7F3446D0;
+	Thu, 29 Jan 2026 12:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769690179; cv=none; b=mk+/ptCnpwiRKJWL1UXODoVRBIcTqzn664eUBaW8CyQ7VcAR5cJho9D3iFSN7asIQaYU4tEipTKHlM02y+QEc2nMUaXsqVFFaRouyv8c0O6wRvBq5J1QuRcuba7AIzoFVtuFuIP/BdKLOQsAmDL96Etj2a9LDI81dW0t35Sps6Q=
+	t=1769691044; cv=none; b=rYOXvpg9EWLfTc0o/Z451FjGyGiVXYuAV+feFjVit9vBoIrizIYE3bflgqrMb1RP+PeMkOiuDp06XEjzdsKo31V/W1haGvkOeSQUEEeQMbAgeGQo61Eu21ZlJC/afG51Cc42CxLZl2GXvyVp8mSRNn4DwscufA7pGr/qc4S0EKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769690179; c=relaxed/simple;
-	bh=Y0Jxoq88PpNlF5UrRxPdlkMqFmuGOuYPU04czbyA3f0=;
+	s=arc-20240116; t=1769691044; c=relaxed/simple;
+	bh=dKEyniS8msElg9I2eUpjPbKKyQaDxmxe3UKN/HK+008=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HFFnJoMEVnWsm/kmRzDyv6dC3cZU+P/mLWQoE4+aK+OSDBmbQUTOBZkuCP1AGYsnIRdHgyTqxBSmf8jMxUQfJF4OyO/TpzJLdhWQmRPHYJkJHAJkfynMjSvPWKfhQHSlzUgK+oIOXYZuYveSGMr7gma/DUURsybm/0cr1/IorgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Qg0oT4uR; arc=none smtp.client-ip=78.32.30.218
+	 Content-Type:Content-Disposition:In-Reply-To; b=pV3KAM44fsOdgATPnBMRmteI6ymE4JqXR5P96RZHD/BjIuo3iST/7NWhHVL8G4qqyQKLRLG26z4LFTBzMUBd4AW1GSz0xT5ooVz+oicOLb7zGS1czDMH17whv62UvTp3taFdrlBkqsSGqANXI0OuFJHg2pkkxzQsMJUxiB1k664=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=YBsbgzet; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Qg0oT4uR"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="YBsbgzet"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
 	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Kcs9CE9aIhIZ7Tc+WAZafu3mN0H9ikMUQFBt3Ov3La4=; b=Qg0oT4uR+AzUhHLOpoVDPUwiUF
-	rCayhl2TB2274ELNl8kCGPWohMn5RRHXPUAezkvmluqO+7SPvez8201vG7qCdYeWbbn9vQm9UlxsN
-	EardAUYn9naa+LrVm79NOHr1zfsaY0yJ6RQzVUrNSPelkdyIsfvUo45JWJs4lw6+GRoQC0MP72w66
-	/1XHWUUXvFFe72vFHZ06QgkYPseC6KFDS7a1j4Q1wrxr2+3O9NCFGzJcOn106QvymNdjmkqV7+MF5
-	Q5rDLtytOWHRUVI1x8PdT5PRojOiCiZN59vOVY2Xh/2g0UVTeEVqB9fIcIRAmqFLMcbDsGJNPV/FR
-	ySqpNWKg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54900)
+	bh=Ri8FmvbEKjZW/onf1C/Nwis8086NQS8jtNxaTm37K7I=; b=YBsbgzetUI+pZ0B+dhC0HTSbIH
+	FCQ4UA5XTl4KDjqgho0iNjJCUMplsRJGlH3R7CKYGddxbYYC1WTtpxSybVDmJj8wMEaU2kCgW0ae1
+	Voe7H//VPd/i5NGIiieHcglCf62kUTn4TFZReeuePCTcRLTct+JNRvXczYtDxl5UWCAS9tfUGy+C5
+	HoxcmvjDG+nW69BvFtx7bZ7GfMFy1B4rhw7NuosQWlxMQ136BHCjoPCcCCvczxKxOvHfOz+SWkSzb
+	pjMLUDodHA4RZBUQtnLdXs5iDrN1/zS9tJNC+O/ULTcu5XlPvTW8jX7cm2nsxrZ+nSbcVYwI4OUPY
+	bExHcVqA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33910)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <linux@armlinux.org.uk>)
-	id 1vlRFo-000000008VW-3xXM;
-	Thu, 29 Jan 2026 12:36:09 +0000
+	id 1vlRTm-000000008Vz-1IP1;
+	Thu, 29 Jan 2026 12:50:34 +0000
 Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vlRFn-000000007y2-1Hr9;
-	Thu, 29 Jan 2026 12:36:07 +0000
-Date: Thu, 29 Jan 2026 12:36:07 +0000
+	id 1vlRTk-000000007z5-2C1q;
+	Thu, 29 Jan 2026 12:50:32 +0000
+Date: Thu, 29 Jan 2026 12:50:32 +0000
 From: "Russell King (Oracle)" <linux@armlinux.org.uk>
 To: Vincent Guittot <vincent.guittot@linaro.org>
 Cc: vkoul@kernel.org, neil.armstrong@linaro.org, krzk+dt@kernel.org,
 	conor+dt@kernel.org, ciprianmarian.costea@oss.nxp.com, s32@nxp.com,
 	p.zabel@pengutronix.de, ghennadi.procopciuc@nxp.com,
-	Ionut.Vicovan@nxp.com, linux-phy@lists.infradead.org,
+	bogdan-gabriel.roman@nxp.com, Ionut.Vicovan@nxp.com,
+	alexandru-catalin.ionita@nxp.com, linux-phy@lists.infradead.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
 	Frank.li@nxp.com
-Subject: Re: [PATCH 0/4] Serdes: s32g: Add support for serdes subsystem
-Message-ID: <aXtUNxEmxcvuNj6J@shell.armlinux.org.uk>
+Subject: Re: [PATCH 1/4] dt-bindings: serdes: s32g: Add NXP serdes subsystem
+Message-ID: <aXtXmN1V8wg57yuE@shell.armlinux.org.uk>
 References: <20260126092159.815968-1-vincent.guittot@linaro.org>
+ <20260126092159.815968-2-vincent.guittot@linaro.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,25 +61,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260126092159.815968-1-vincent.guittot@linaro.org>
+In-Reply-To: <20260126092159.815968-2-vincent.guittot@linaro.org>
 Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Please drop these addresses from future patch series:
+On Mon, Jan 26, 2026 at 10:21:56AM +0100, Vincent Guittot wrote:
+> Describe the serdes subsystem available on the S32G platforms.
+> 
+> Signed-off-by: Vincent Guittot <vincent.guittot@linaro.org>
+> ---
+>  .../bindings/phy/nxp,s32g-serdes.yaml         | 154 ++++++++++++++++++
+>  1 file changed, 154 insertions(+)
+>  create mode 100644 Documentation/devicetree/bindings/phy/nxp,s32g-serdes.yaml
+> 
+> diff --git a/Documentation/devicetree/bindings/phy/nxp,s32g-serdes.yaml b/Documentation/devicetree/bindings/phy/nxp,s32g-serdes.yaml
+> new file mode 100644
+> index 000000000000..fad34bee2a4f
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/phy/nxp,s32g-serdes.yaml
+> @@ -0,0 +1,154 @@
+> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/phy/nxp,s32g-serdes.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: NXP S32G2xxx/S32G3xxx SerDes PHY subsystem
+> +
+> +maintainers:
+> +  - Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
+> +
+> +description: |
+> +  The SerDes subsystem on S32G SoC Family includes two types of PHYs:
+> +    - One PCIe PHY: Supports various PCIe operation modes
+> +    - Two Ethernet Physical Coding Sublayer (XPCS) controllers
+> +
+> +  SerDes operation mode selects the enabled PHYs and speeds. Clock frequency
+> +  must be adapted accordingly. Below table describes all possible operation
+> +  modes.
+> +
+> +  Mode  PCIe	XPCS0		XPCS1		PHY clock	Description
+> +                SGMII		SGMII		  (MHz)
+> +  -------------------------------------------------------------------------
+> +  0	Gen3	N/A		N/A		100		Single PCIe
+> +  1	Gen2	1.25Gbps	N/A		100		PCIe/SGMII
+> +  2	Gen2	N/A		1.25Gbps	100		PCIe/SGMII
+> +  3	N/A	1.25Gbps	1.25Gbps	100,125		SGMII
+> +  4	N/A	3.125/1.25Gbps	3.125/1.25Gbps 	125		SGMII
+> +  5	Gen2	N/A	        3.125Gbps     	100		PCIe/SGMII
 
-  alexandru-catalin.ionita@nxp.com
-    host nxp-com.mail.protection.outlook.com [2a01:111:f403:ca09::7]
-    SMTP error from remote mail server after RCPT TO:<alexandru-catalin.ionita@n
-xp.com>:
-    550 5.4.1 Recipient address rejected: Access denied. For more information se
-e https://aka.ms/EXOSmtpErrors [AM4PEPF00027A62.eurprd04.prod.outlook.com 2026-0
-1-29T12:31:01.197Z 08DE5971FB66165F]
-  bogdan-gabriel.roman@nxp.com
-    host nxp-com.mail.protection.outlook.com [2a01:111:f403:ca09::6]
-    SMTP error from remote mail server after RCPT TO:<bogdan-gabriel.roman@nxp.c
-om>:
-    550 5.4.1 Recipient address rejected: Access denied. For more information se
-e https://aka.ms/EXOSmtpErrors [AM3PEPF0000A798.eurprd04.prod.outlook.com 2026-0
-1-29T12:31:00.781Z 08DE596525364766]
+Shouldn't the mode be configured via phy_set_mode_ext()?
+
+This identifies whether it is operating as PCIe or for networking and
+in the case of networking, the PHY interface mode should be passed as
+the submode.
+
+Have a look at include/linux/phy/pcie.h to see the submodes that may
+be appropriate to pass to phy_set_mode_ext() - but talk to the PHY
+subsystem maintainers.
 
 -- 
 RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
