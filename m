@@ -1,246 +1,366 @@
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93533126B4
-	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 08:41:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769762480; cv=fail; b=g9vVb3UfRcXw4KHb5oFlf2b8KAC1gDXpXxgcjdlYvu/EcYW1xB+K0MXIE3NB9hKsXvc9o9uGb88chl+D7kS2BcFxAcQtT/QjCMqx1cy7dEdJDTOOak7kaSRN+yvTpbJMQO5luJK/ThjwFbEtBqnjvgDahFkvQ+paT4CMy5bsSkI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769762480; c=relaxed/simple;
-	bh=xu5qKMLwT4xWYOiYGVn54MgEs/iVIYmg2lXwXSv/p3Q=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=U++xQa05qN6Rjp/hm6P0W1XEQNUWfFeSu4hHGTr72VOBLdciAN/4ZjvAYAKrc3Z3N5loDQ50U+uK110ksltvbSNUpHQIKhZuX3IIAsIvn5fTsoV9ypw1FPhW/Zpla5AHiDUsMCTul0wLvcaBPOSt7Zhx0GmVNkGCrgfiM3bRRjY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=VyyzP7gT; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=uvJBbgbA; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AAA2335579;
+	Fri, 30 Jan 2026 08:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769762538; cv=none; b=Y3BNj4/qcioKJlE+C3e3aT4J28dd7i+AMVHaTMNT2etlAbxc8COBrDIT0serpZJgfEc+1668+4oE9p08DHGnBL2fSk8ZDr/n9aP0shaVkOYkj26YVRQGmfFB/6yIcGtkF0rXIY1qdtlYCfaGid8DXXMrtd6c1DOiaW99abFBp8s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769762538; c=relaxed/simple;
+	bh=JBFIByEVATCHIEF3t0UYW6l3zge4t/kRXZbMpYmFA+c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=ScWvrl87XGPYi3Orxx3pG2MUrpsg188TrZbBJuEypADXJL69zBrowQkXBjl5BV0rJt7ArcVl9Zhn9Xd2oAA5gwUisRC/j5tcVww3+E5WXByUrFNLPir344J6fbBXR3D4VrImUltgILovN8qzuqZT61oik7fWcCy2L/gwphvrD5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tB5lymVU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="VyyzP7gT";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="uvJBbgbA"
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60TLTgA8682573;
-	Fri, 30 Jan 2026 08:41:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=jN38NZqM7lAwj0Qy/ppnubsRII/XyMMtDLMS4jBCywk=; b=
-	VyyzP7gTX5LVBz2YWLJCK70GLzrwrSD2t9xPFX4+ZIZuC0qi0CBEtOze7iWwmcPd
-	fjsm4qfP9hNie13H2ZSYosziDvchRNbiWqdekIDTS2Hl/3t/jNJN9D1FB/FuzbWe
-	jEn9+ZBpuxa3HgcRoT+RnKya0jBIH6G+oR2Z9FAc0RgGdlB29V0DNOCWLxJr7ndp
-	Y30tr2dBcV7BQ2IwxwdYrDFDsc1RhDTxwepx4leQ4Z78QCpcg0NpoWrl75OC/0w7
-	6V/ce8HNtEE+Ye/+mJHb5oBxU3b+oL2gsCwf6ym3lu3jrJHRHfPag5egKF0EHx3V
-	zUHLTkOHcL4n6QRJxx/puA==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4by5t6cfyb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 30 Jan 2026 08:41:01 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60U6bUVl001768;
-	Fri, 30 Jan 2026 08:41:00 GMT
-Received: from cy7pr03cu001.outbound.protection.outlook.com (mail-westcentralusazon11010049.outbound.protection.outlook.com [40.93.198.49])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4bvmhhyh4d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 30 Jan 2026 08:41:00 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xhG6tIVv1FoYMOp+j5gx3AxHm6X4rQjC9TCa0EEruNh02k4vq9UGhKWoEavOsasoXyY8V3eLBwx2k5gP+q1TE7goyjNCRn8px/IddrSCT74NgXYa0eoh4m3Ibi1jQbiH69Tm42iPZIUiJEkv+D/wO1qADxr3dAxyYMhp0m29yTuoUSwktAbWH/ONcVuqbG1tq6yzv/3beIndKmaJJGxo8liQBxCwYEa+fHwjl8/ps1dfD0on79ofQPt3WoHtvsd3tt7OPfDupBj8xF9dBvjmj4X999TbJrwWXz/lN5aU2iXxSpd0b06FS2DKyhArgEdVwGNkDIuPunOasp0FJpvApA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jN38NZqM7lAwj0Qy/ppnubsRII/XyMMtDLMS4jBCywk=;
- b=tlwU0xK9ug/HkFoU2QQ1qD/ynZVbbqosMyn1pIF8hWLL93k4mSMIfO9e8oeNqQGeVlu1oepw9pknIRF/iB/lMp83hj0ZOcinuWmGawCmGznTet5Fqef8xYlTBq9o4R4iWgJR3Z42H+Nz8YaBPi4XVJvKkRosa5wFuVvJg22jVmRbJ7jGIK0ZohqpfVdydYFHSZwpYr0iGpHxszdMuAmz4UrYiqZhOcFbo3Nb7xnFbLU+CoSa9c9y3OPyLfmcSy/qRthAwVM12HDkazTom38C6kxQPaWetsHqKEpnndyUX71q0V0Cb7IqGJn0c94D5/UYY1nle0/Hy4rBAJyLwMMClA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jN38NZqM7lAwj0Qy/ppnubsRII/XyMMtDLMS4jBCywk=;
- b=uvJBbgbA22JkrVRJiTJ8s7RbhzTURzXijALt52+ITgPCvAedjlJe+dn11PW/K7Yt2f+IqmGOvcpkMJwq/vh78xECY2ynD/0pHkP2XoQoSKP8raU7QtTCOjjngc/FeLGsz6OsLigk5lHsMxJ4/Z+5Gr8Z27ey/WLcyYavJTgZ7Pk=
-Received: from DS7PR10MB5328.namprd10.prod.outlook.com (2603:10b6:5:3a6::12)
- by SA1PR10MB997654.namprd10.prod.outlook.com (2603:10b6:806:4b6::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Fri, 30 Jan
- 2026 08:40:58 +0000
-Received: from DS7PR10MB5328.namprd10.prod.outlook.com
- ([fe80::ea13:c6c1:9956:b29c]) by DS7PR10MB5328.namprd10.prod.outlook.com
- ([fe80::ea13:c6c1:9956:b29c%5]) with mapi id 15.20.9564.010; Fri, 30 Jan 2026
- 08:40:58 +0000
-Message-ID: <c102db6f-c676-4bb9-a1ee-3a43b35e6290@oracle.com>
-Date: Fri, 30 Jan 2026 14:10:50 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] bng_en: fix misleading error message for generic
- firmware version
-To: Vikas Gupta <vikas.gupta@broadcom.com>
-Cc: bhargava.marreddy@broadcom.com, rajashekar.hudumula@broadcom.com,
-        netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com
-References: <20260130073055.1609162-1-alok.a.tiwari@oracle.com>
- <CAHLZf_vxzcOpavJ-rNUsmi3XQ-NAqmWBvy2MRgGb2A3iWFHFHw@mail.gmail.com>
-Content-Language: en-US
-From: ALOK TIWARI <alok.a.tiwari@oracle.com>
-In-Reply-To: <CAHLZf_vxzcOpavJ-rNUsmi3XQ-NAqmWBvy2MRgGb2A3iWFHFHw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: PN5P287CA0015.INDP287.PROD.OUTLOOK.COM
- (2603:1096:c01:265::10) To DS7PR10MB5328.namprd10.prod.outlook.com
- (2603:10b6:5:3a6::12)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tB5lymVU"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id C5FE1C19421;
+	Fri, 30 Jan 2026 08:42:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769762537;
+	bh=JBFIByEVATCHIEF3t0UYW6l3zge4t/kRXZbMpYmFA+c=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=tB5lymVUO5JjZHx2Wdp6/r94e5Bsqgorxa/wTLo/TV8XiVAl8wjPSaE238wR1mkg7
+	 B+iPYF+x+s+/xNQeghuV0DF1T1gCdhSHKR7y/umN/qVDE9Xsg8XB3eGdlgVzkBUEWT
+	 BXRaIPc5niKcKWiJTe+rR66ZdEpuioraOR//iJvuhDBvEP9Pk5QE5hmg4XAHozyNrw
+	 tMPqYPCMb9fLqlm3+/ghu4Rvg49DOyszcuiws58ttCvTMYMGbyprautqUzG3p//wSY
+	 SYuGQ43EQG12RWGlOxQfkc8u/cnZ3j4XTIoCXV4eQhMF4UmiMCHPb5pmELR8DK2RUx
+	 7S5EwIpgEJiBQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id B020ED49C7C;
+	Fri, 30 Jan 2026 08:42:17 +0000 (UTC)
+From: Oliver Hartkopp via B4 Relay <devnull+socketcan.hartkopp.net@kernel.org>
+Date: Fri, 30 Jan 2026 09:41:55 +0100
+Subject: [PATCH net-next v6 1/6] can: use skb hash instead of private
+ variable in headroom
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR10MB5328:EE_|SA1PR10MB997654:EE_
-X-MS-Office365-Filtering-Correlation-Id: 05137738-0359-4adc-2244-08de5fdb49e0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?U1lJQ3JKZEE0WHROb1RpVHc1MGhVQjhzTFZuYUdTTUtPa0M0eFM3WkZHQThC?=
- =?utf-8?B?RkI4QUJSdXdzRko4K2E3eXg4MjNJRXlVS2Rzc0piUHZhMmZONTNjTkI3cUpB?=
- =?utf-8?B?MGJyc1VYa3BOZzlvN1p3eE4yanhSbGlXalMyMW84eFJwUTFkbVVFM0l6RXg4?=
- =?utf-8?B?YmxwUlhWVzdiNkVUWVBoTE5Ea2Y4RU9LSmdwYWR4SVNxYzNSMlYvUkM2aS84?=
- =?utf-8?B?cENraEdYYTFhMStnY0VrNjljT243ZS9WK0pEcTdhNjZOZmZ6QWh3V0pEWWR5?=
- =?utf-8?B?M3p0aUVwbklYZFg1d293R0Q1bnExc05kNUhnR25nNDBqNEhGRXA5Vk1Kd2tu?=
- =?utf-8?B?WU8ySGNrVjgwNVhGclNzLzZjSnA2dkZsWVAxdXd3SFRKdUI5d1lDbjZ3NHdN?=
- =?utf-8?B?NzlOY09CWURHM2Q2aFduQVgxMG5lbnlGNGpYMzdWRUxJVHEyQTNxb29zeHhG?=
- =?utf-8?B?ZytRZ2RNYVY5Z0d2Qm9QSVlDMHV2UEdyM0NEeE1ZWHJ4d0FPVXJGdW52WGhZ?=
- =?utf-8?B?emJtN1VnOWdXeXJ5UW1IY3VIZEo1dWtRL1BmU05mZk5saVExYlpTMHo2VFhx?=
- =?utf-8?B?R2FudjlEeTA4MEtVTHNxbTZtU2RPOUFpUWlDY0wwSWpaZitzZWJtQlZ0Vm9O?=
- =?utf-8?B?RmpvOWdZSVYwdXZLWTdFYzVjUzdoWTJiQzB2WGoyNjU5aU5LRFNIckVsdHJ0?=
- =?utf-8?B?NHFoMW1mTFI4dXUyc2NrOTlMY0c1ZnZnS1dqRnJjNUZlY2RNZ1UxL21vNzdY?=
- =?utf-8?B?QUptcDBWcUhtb3B5QVZJVXVTZEVwbFdCRW1sN29jN2lkQXFBUkxIT2o1M0Ru?=
- =?utf-8?B?SU1iVklPSnFKYmwxcjQ5NjllZWZBWkYrMU5UNGt1cFJVNnJFUWR0M1ludnJO?=
- =?utf-8?B?MEovTzJBM2tOM3FaWDNURVNiV2RBTFpIS3ZyOVdqZ3hHQWhnbS9LTi9xZEN5?=
- =?utf-8?B?VHJUcnBlRFpKVnh1Q3RoRi9PMVpCbml2R2Z0d013c0xlZlZVUno1N296NGNL?=
- =?utf-8?B?NUxmdkpUM0IvdVBVcksyNW5laTVUdkZ0MER5Snc2OSs4RlBCaFlqRkxGL2No?=
- =?utf-8?B?ZUQ0VXlxa1JxWk5wakdVeDJKOSttMFlIbFlsMFIvNGFPL0lncTE3Ry9LY2hl?=
- =?utf-8?B?QWQyQjZmMlZhVmV1R1hrc2xTQ1lCdW5jcURYd1Q2a3I1OXFNcmRsWmd2aDd3?=
- =?utf-8?B?N01EbkFNa3lkejlRdE4xS2lIRDhTajB1eVQwaWE5WnpJWDJBclduc1ZMUGxI?=
- =?utf-8?B?RlcvcUUxc0ZPcWtDamdSK1p1aStvYk5HN0h1UkpOTGJwODkzeFIyb2VySGRn?=
- =?utf-8?B?ZXIrSVNadk0xcktsR0dlVTl3SzVUZTdOSklxY3NYMGpUOHRORTZsKy9WNWdk?=
- =?utf-8?B?cnVrNGlyMzRMeFJrU1k1ZVNNVTNUWWhZQlZETEtzT3NwS0I2eGlvKzRRR1ZO?=
- =?utf-8?B?VXNoTnpFQzY1am5EQmc1QkVvWEZaNFREL2lxRDdBZnE5Q1VMV3BMRHJPeWhL?=
- =?utf-8?B?aC9qS2pPeVpWZE1NUnV6SHZKcFpYZ1ZBOE9oUnE3cDdDOWZzNyt4aUxETW8w?=
- =?utf-8?B?dHU0Y0JMTHlrWFR5S1VYTkhTd0F6RWlSMnlJZi9GVFdXLzl2WUFSaVkwMWM2?=
- =?utf-8?B?SDRnTzhqOE1XVi83UnlhM2FSTm1TUE9hOWpuUmJZSThuUHY0RnlxSUVFZnBJ?=
- =?utf-8?B?TCtxTzZLUDVUb0tSeWVBcXBCTnZZOFY1cjNVMW9xN3hEWHMrZG8zQ1dlSnJs?=
- =?utf-8?B?OTRPZ1A1WU1Da25Qd213QXVxTDdwR1Njb3VLMjhlT2xEM2xsVS9vMVRYRWhj?=
- =?utf-8?B?a2ZXOXQrUUx3VUI0RnE5dWU0eHM1ZEFkWjcwV0lmdm5ZWFJPRlJkWHZCM1RX?=
- =?utf-8?B?aHZrbDE1bUNzbmZnbnZKN0Vyak9BT1RrZUE0WXNid2I0TGZTTldFVEsrOHBk?=
- =?utf-8?B?QktlNXBkREJWTTBCQ2hCR2VxVHc5MG1tYlJtUUt3R0VDY3NnZ2thalJZVHJs?=
- =?utf-8?B?SnJOVExoa09CS3ljT0t3YzlwKy9nUXg2VzdLMEVGR3h0bFl1cE8zczNITlhZ?=
- =?utf-8?B?VkVqTkpRTGNGOE9JdXdCU1h5MDJNWTFjM1NlRnVkL3A3WVBYOCtOaWFNa3JE?=
- =?utf-8?Q?h4FU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR10MB5328.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?RzR0RmUvU1ZYdTVaT0ozRm1halNnSUpZTDEwNTFKMVhQaTBBYVppQUIwc3lh?=
- =?utf-8?B?RDlrWVRsanFjV2tQVndQYTRaZmFIVVNBU3YydjBXL0JOT3NhVEZnTTM2Mkd6?=
- =?utf-8?B?U3Z3dHVER1VJRkNoMkRvUXkra1A0R3RUa044eENNemlMQ0haYnJmaUIrRmdS?=
- =?utf-8?B?OVBocWo1ejdVUTB6bDJpRUZhZS96eVY3Mm9FYWxDUk92QVV0bWdrUlZqSTFr?=
- =?utf-8?B?aXJueFlMV0cxUm16SlVGeFR2WUQvUTQxT2oxMXN4ZjhLSCtBQ2kwY3djNktq?=
- =?utf-8?B?K1lmaWt1dTFETTJ6ekhWZG42WXptQ3Y3MUxmR1RLWEFYS1QrdGtJRjIvRjZI?=
- =?utf-8?B?bWFBS2kvajRzQ1h4UFFjY0kyRDRzZjVtSkNrOGhhQnZxTVNMTXZabU1wbkNG?=
- =?utf-8?B?Rjk1SHZJbkVNNUFkRzlGYUlDWVJ5aC85TlVTdEVtNys5cSsyaUpZTWZRczB2?=
- =?utf-8?B?bGFKVHdGSUgwUFAzNk1YZEJ0WmE3Z01KdmRkVzg5N0NTNE9MK292Tms4MlVu?=
- =?utf-8?B?SkVlSWdIVjR1S1lpcGtvbUZlZlF6WVhydzdkc3BwYWt1LzdMdGRsL0ZGeGhk?=
- =?utf-8?B?UUFoQU9sUm0rdTVrNTh6UEhuWHZhRnBVY3pHVjVmeEJySTM1SjBPWmw5bUR6?=
- =?utf-8?B?SjJZemlqVys5RG51ZDBSSWxja1hJeHlLVGk0VDRrZ1diTUdCUkkzMHNxT2tT?=
- =?utf-8?B?a09hMWpSb3VSdE1nQUkvNW15V21vbmRQY2NMNis1ZjFOdytMRVZzRDFQaUVR?=
- =?utf-8?B?Zm1lZXo2Mk93WVNrNERrc0pHZVp2M0kwYy9pQnQwQVliZk5yOFNwOFZyNTA3?=
- =?utf-8?B?cmdya2hReno0SDBqZmpzUXF4emVMSmxQWU9oWmdVOTRLSm5BdDFyemZoU3lr?=
- =?utf-8?B?WUszbklORGE0cFZzb1lXaGpJQURXckZIWDZxZjNrTW9UajNhL2ZwQ21vYk1T?=
- =?utf-8?B?bHowZjlpVW04RDNYMGhYbUN2OUk4NXNXRmJPTGRRSzVYbGUwbHNNc2kxYUg2?=
- =?utf-8?B?eUNUYUtraWRMMGM4MzdJMmx5QW5NV0FzV1lMY2NTUVg2UGtYUFFjUjZ3dG5T?=
- =?utf-8?B?T0JjTzhzYnBSUEpWNE5ibFVpVW9BUTZGdnBJVzVNT01hbmNBdVpKdmk3bG9Q?=
- =?utf-8?B?eHlRVmhMUDNYajFxWVlGOUF3WThveVBmY1Ztak01RlRWNE56bGZDbUdhaVFy?=
- =?utf-8?B?cGhJN1lpMFZ4cXA1QmRweG5tRzF5WTVhRU9KT2ppRkVRN1JKazY1NDdxeTZI?=
- =?utf-8?B?ZUo4bjh2QlNJekt1RHVtZHB3enhHMi83YnRMYTBOMGgzbG56QmFlL2lDTEpB?=
- =?utf-8?B?b09LV3Job21NVVdxM3pUcmszaGZwUHpnZjBmU3RrbjZULzRDZjhOSWR1QmRo?=
- =?utf-8?B?VnZZcENESzB2c28wQjNYdWw2cERrbmcrYVl5ckhWVUVPbURvWmFhd3VUWWI5?=
- =?utf-8?B?U2RuZnFKMWZJdzRPbU82eGx5RVIyYmk1YzhkbDZmZTNkTVlNckFhQThUdmdH?=
- =?utf-8?B?b1FTTzFWYnpybFNTSGxXN3RBOERaYjlBbVhFM2xkc295VnVFaWxDT3FPNVZW?=
- =?utf-8?B?RmRiaTFqQkNqMWZGbUVDQWZ3bitIR3pOWWNmQU1ZQzRFWFZpS3FqdEtzc05O?=
- =?utf-8?B?NzA4QmpPUGZzT296RE9qaWNFUHlFbW5ValFWajd3ZW5ZY1U0RFIrdG50S1B2?=
- =?utf-8?B?RVV2MFJUNU9JdEdManEvRFF1dUtoaVhVOEJ1a1phcGFnaGdxeE9WblVLY0NX?=
- =?utf-8?B?anlLUTgvTGlVUlZIaVE1N3gzd08wdVJScDk0emdoTGgzRVBYdFFWbjRRMWtt?=
- =?utf-8?B?MmplYnY0SnpCVGFoTTRjV2lsaXFKOEY0REZDdVN3YXNXWUtkTElkczBoc2VR?=
- =?utf-8?B?UzdTNVU3cGFGcnVEVTV3bXQ1anFESnp2VHJia1orTXFmVy85RXkvNnJzNzYy?=
- =?utf-8?B?dkZXN0Q0S2QwS3NDYmlOMHUybm54NUM3Zi80WTZvZWpnaW1IS0s5MWFqUi90?=
- =?utf-8?B?aEEwMGFwK0pSeHU5Y1VFaUVEWXYrQnVHS3NIYXFXMlJKaUdoMDlVZXA2NG9E?=
- =?utf-8?B?MFlzZHdQL1dxOWtBYjhDejlYbnlVY3NkK05idHRnK3ExeXBPbUpBTHMvU0tK?=
- =?utf-8?B?M3J1QlZVZDRDSnUwOE02SnhGZXhiYWVUVStnMTMrNFlBNFplbHFwQ3g3ME9r?=
- =?utf-8?B?dDduK0ExcmpVdGxuN0VSdEkzeXU5Ykh0TlRRelNqRnIzM1RpUXFyNWZWNVBt?=
- =?utf-8?B?Mm5EcWgwQmJtMEY2cHVSTmpaTEVPd0FhWjkwQllHenkvNExuRnlTNlJLeldT?=
- =?utf-8?B?RVh2Q1dJcEVCeWVVd2N3NE96eW1nQ3YzNkQxblJVU015SDJQdUJiRGJRUzNU?=
- =?utf-8?Q?FZvDo8ca7G0jOTzQ=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Nq1IlbCOe5KRXngDMGzr60Oc8CrbdNWCStMkexyWtpy7nRkLLRiO0TU7g9tllZBlFqFjLEoMIIzl0zErlxpH6DTPQButUrqphjofp7dpPTDZSZOf7QuNem/93a5/Cqx5OcCfU6qbO1FwQEitQHYIcyG0Cu050HLqDAPaqyIxMReE5Y8aSsif+k8Cs6eNzl55ZFTMm1ZKiqnaHlGq2ag1TJJ7jtHvwMKS9Df8NIy07q0hHnpqqZ1CpiSQgEmaT8WE+bSpFk88SIcpCD0ljkc8BcSPnRHoG6yXxyeexL3SNeimDiCTEuRvyYt91ZaEN3a7cLvvHsZ8g9n7N5EZnokoFHXRCMuflJW7TJGb3yAQuV3Mt9sUoVtcLm1kHoe4jXPgyCvHt/U1I4BnUybb4L7zSaIp9MLJLdVdqVdJRv0OxlJp8y4xD16xdJBYnrMSs0M7Lh354MqvcVrdAdsPaDfC19RU3dW5R62Kim+fWZGpLS6st/Fi2j9C1isVg3MIp1Mdc8HwlMji5ezthF/oIaapF0eDKWXWheDHBvH8tC9aaZISKT6SZUIY1ejZpNayX2q8aj4u9zwDMCPiYV+nSks12fbh2pB+6ZNq7Eh90KroHjM=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 05137738-0359-4adc-2244-08de5fdb49e0
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR10MB5328.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Jan 2026 08:40:58.2735
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +nHGnihf1ONuUcb6hg4JX0dMBbGxoqytJhol97aJ/G76B9F7OF6GhyXENt2z9RFH0hwKVLUZhnQY3v3gaoz9cGsko0BUHbjpilwKRfSsSLo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB997654
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-29_03,2026-01-29_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 spamscore=0 bulkscore=0 mlxlogscore=999
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2601150000 definitions=main-2601300068
-X-Proofpoint-ORIG-GUID: dq-2kk2X-D1Qv7z_DjebKA2qJZdsyzpK
-X-Proofpoint-GUID: dq-2kk2X-D1Qv7z_DjebKA2qJZdsyzpK
-X-Authority-Analysis: v=2.4 cv=IIcPywvG c=1 sm=1 tr=0 ts=697c6e9d b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=vUbySO9Y5rIA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=JHiWTemmuvCGNp9YPdsA:9 a=QEXdDO2ut3YA:10 cc=ntf awl=host:13644
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMwMDA2OCBTYWx0ZWRfX2MKiH3hxGsOR
- PY5Ou+AKrASzxsdcmaTXZAi08iE/9LlXmmGcuVHou9rVlBv06V/JyuK1OFWq3+33QInBM/8cInO
- YCBFBw3fv/P/XRGlezUhITApqi3SLCr9X2WUolcURl8+d0aGSkABQ3hx0FPuP+CIwDsMi0QciMY
- Lfd+3lGwXsckoK3V+ubDLmLf8XgqFnR+y2cG8K8A4jOKNCSKgGRLjvV8u7ATtHeQmMBNXJSaE1R
- LYXsOPdAJ1jBqvqgBMRnjJ6zCnxC22ky4QYwTi3vxcOzwCDb5cjSQemKcQN7uVbjOVhL/eOrA/C
- fX2g3nNuiRYetOXdjE3wqfwACfWVunQlfCcS+lfC6x82VzheLsiIsT7BqsyVaqeYqzpWD0Po7DN
- IURGnJHBaIOlHw4w22PJwJkYvLC1hrtnmyVjnkgpgIc0LZAoLc+GKtNBvxayA7UvRxpkyc7pHR0
- 0PYdfPA8o8AZOaKCzYMRBSE1J7V+k/fzkSlgxBzs=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260130-can_skb_ext-v6-1-8fceafab7f26@hartkopp.net>
+References: <20260130-can_skb_ext-v6-0-8fceafab7f26@hartkopp.net>
+In-Reply-To: <20260130-can_skb_ext-v6-0-8fceafab7f26@hartkopp.net>
+To: Marc Kleine-Budde <mkl@pengutronix.de>, 
+ Vincent Mailhol <mailhol@kernel.org>, 
+ Oliver Hartkopp <socketcan@hartkopp.net>, 
+ Robin van der Gracht <robin@protonic.nl>, 
+ Oleksij Rempel <o.rempel@pengutronix.de>, kernel@pengutronix.de, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ netdev@vger.kernel.org
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1769762535; l=9579;
+ i=socketcan@hartkopp.net; s=20260128; h=from:subject:message-id;
+ bh=zxcFoiKJF2100rOz6zKnSRW+KicEl2DYfMk7Y/gmvbI=;
+ b=QL1OZsmGqQCwigE/0hkN7bKolyti2tSOwNyfaDm+JehtMk6+YIIo+o2YV4hteB63hf9++VWwc
+ aA9NcrWqPBjARBvmEWDo8NHWS8A8yLLkEJ7k0XDWwv26Q5D1rDxt8m2
+X-Developer-Key: i=socketcan@hartkopp.net; a=ed25519;
+ pk=/gU/7/wBqak3kTsTeFbCCqUi9dnh+1i6ITEkfPj/BvU=
+X-Endpoint-Received: by B4 Relay for socketcan@hartkopp.net/20260128 with
+ auth_id=620
+X-Original-From: Oliver Hartkopp <socketcan@hartkopp.net>
+Reply-To: socketcan@hartkopp.net
+
+From: Oliver Hartkopp <socketcan@hartkopp.net>
+
+The can_skb_priv::skbcnt variable is used to identify CAN skbs in the RX
+path analogue to the skb->hash.
+
+As the skb hash is not filled in CAN skbs move the private skbcnt value to
+skb->hash and set skb->sw_hash accordingly. The skb->hash is a value used
+for RPS to identify skbs. Use it as intended.
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+---
+ drivers/net/can/dev/skb.c |  2 --
+ include/linux/can/core.h  |  1 +
+ include/linux/can/skb.h   |  2 --
+ net/can/af_can.c          | 14 +++++++++++---
+ net/can/bcm.c             |  2 --
+ net/can/isotp.c           |  3 ---
+ net/can/j1939/socket.c    |  1 -
+ net/can/j1939/transport.c |  2 --
+ net/can/raw.c             |  7 +++----
+ 9 files changed, 15 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/net/can/dev/skb.c b/drivers/net/can/dev/skb.c
+index 3ebd4f779b9b..0da615afa04d 100644
+--- a/drivers/net/can/dev/skb.c
++++ b/drivers/net/can/dev/skb.c
+@@ -200,11 +200,10 @@ static void init_can_skb_reserve(struct sk_buff *skb)
+ 	skb_reset_mac_header(skb);
+ 	skb_reset_network_header(skb);
+ 	skb_reset_transport_header(skb);
+ 
+ 	can_skb_reserve(skb);
+-	can_skb_prv(skb)->skbcnt = 0;
+ }
+ 
+ struct sk_buff *alloc_can_skb(struct net_device *dev, struct can_frame **cf)
+ {
+ 	struct sk_buff *skb;
+@@ -310,11 +309,10 @@ static bool can_skb_headroom_valid(struct net_device *dev, struct sk_buff *skb)
+ 
+ 	/* af_packet does not apply CAN skb specific settings */
+ 	if (skb->ip_summed == CHECKSUM_NONE) {
+ 		/* init headroom */
+ 		can_skb_prv(skb)->ifindex = dev->ifindex;
+-		can_skb_prv(skb)->skbcnt = 0;
+ 
+ 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+ 
+ 		/* perform proper loopback on capable devices */
+ 		if (dev->flags & IFF_ECHO)
+diff --git a/include/linux/can/core.h b/include/linux/can/core.h
+index 5fb8d0e3f9c1..3287232e3cad 100644
+--- a/include/linux/can/core.h
++++ b/include/linux/can/core.h
+@@ -56,8 +56,9 @@ extern void can_rx_unregister(struct net *net, struct net_device *dev,
+ 			      canid_t can_id, canid_t mask,
+ 			      void (*func)(struct sk_buff *, void *),
+ 			      void *data);
+ 
+ extern int can_send(struct sk_buff *skb, int loop);
++void can_set_skb_uid(struct sk_buff *skb);
+ void can_sock_destruct(struct sock *sk);
+ 
+ #endif /* !_CAN_CORE_H */
+diff --git a/include/linux/can/skb.h b/include/linux/can/skb.h
+index 1abc25a8d144..869ea574a40a 100644
+--- a/include/linux/can/skb.h
++++ b/include/linux/can/skb.h
+@@ -47,17 +47,15 @@ bool can_dropped_invalid_skb(struct net_device *dev, struct sk_buff *skb);
+  */
+ 
+ /**
+  * struct can_skb_priv - private additional data inside CAN sk_buffs
+  * @ifindex:	ifindex of the first interface the CAN frame appeared on
+- * @skbcnt:	atomic counter to have an unique id together with skb pointer
+  * @frame_len:	length of CAN frame in data link layer
+  * @cf:		align to the following CAN frame at skb->data
+  */
+ struct can_skb_priv {
+ 	int ifindex;
+-	int skbcnt;
+ 	unsigned int frame_len;
+ 	struct can_frame cf[];
+ };
+ 
+ static inline struct can_skb_priv *can_skb_prv(struct sk_buff *skb)
+diff --git a/net/can/af_can.c b/net/can/af_can.c
+index 770173d8db42..70659987ef4d 100644
+--- a/net/can/af_can.c
++++ b/net/can/af_can.c
+@@ -639,10 +639,20 @@ static int can_rcv_filter(struct can_dev_rcv_lists *dev_rcv_lists, struct sk_buf
+ 	}
+ 
+ 	return matches;
+ }
+ 
++void can_set_skb_uid(struct sk_buff *skb)
++{
++	/* create non-zero unique skb identifier together with *skb */
++	while (!(skb->hash))
++		skb->hash = atomic_inc_return(&skbcounter);
++
++	skb->sw_hash = 1;
++}
++EXPORT_SYMBOL(can_set_skb_uid);
++
+ static void can_receive(struct sk_buff *skb, struct net_device *dev)
+ {
+ 	struct can_dev_rcv_lists *dev_rcv_lists;
+ 	struct net *net = dev_net(dev);
+ 	struct can_pkg_stats *pkg_stats = net->can.pkg_stats;
+@@ -650,13 +660,11 @@ static void can_receive(struct sk_buff *skb, struct net_device *dev)
+ 
+ 	/* update statistics */
+ 	atomic_long_inc(&pkg_stats->rx_frames);
+ 	atomic_long_inc(&pkg_stats->rx_frames_delta);
+ 
+-	/* create non-zero unique skb identifier together with *skb */
+-	while (!(can_skb_prv(skb)->skbcnt))
+-		can_skb_prv(skb)->skbcnt = atomic_inc_return(&skbcounter);
++	can_set_skb_uid(skb);
+ 
+ 	rcu_read_lock();
+ 
+ 	/* deliver the packet to sockets listening on all devices */
+ 	matches = can_rcv_filter(net->can.rx_alldev_list, skb);
+diff --git a/net/can/bcm.c b/net/can/bcm.c
+index 7eba8ae01a5b..8ed60f18c2ea 100644
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -314,11 +314,10 @@ static void bcm_can_tx(struct bcm_op *op)
+ 	if (!skb)
+ 		goto out;
+ 
+ 	can_skb_reserve(skb);
+ 	can_skb_prv(skb)->ifindex = dev->ifindex;
+-	can_skb_prv(skb)->skbcnt = 0;
+ 
+ 	skb_put_data(skb, cf, op->cfsiz);
+ 
+ 	/* send with loopback */
+ 	skb->dev = dev;
+@@ -1342,11 +1341,10 @@ static int bcm_tx_send(struct msghdr *msg, int ifindex, struct sock *sk,
+ 		kfree_skb(skb);
+ 		return -ENODEV;
+ 	}
+ 
+ 	can_skb_prv(skb)->ifindex = dev->ifindex;
+-	can_skb_prv(skb)->skbcnt = 0;
+ 	skb->dev = dev;
+ 	can_skb_set_owner(skb, sk);
+ 	err = can_send(skb, 1); /* send with loopback */
+ 	dev_put(dev);
+ 
+diff --git a/net/can/isotp.c b/net/can/isotp.c
+index ce588b85665a..4bb60b8f9b96 100644
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -228,11 +228,10 @@ static int isotp_send_fc(struct sock *sk, int ae, u8 flowstatus)
+ 		return 1;
+ 	}
+ 
+ 	can_skb_reserve(nskb);
+ 	can_skb_prv(nskb)->ifindex = dev->ifindex;
+-	can_skb_prv(nskb)->skbcnt = 0;
+ 
+ 	nskb->dev = dev;
+ 	can_skb_set_owner(nskb, sk);
+ 	ncf = (struct canfd_frame *)nskb->data;
+ 	skb_put_zero(nskb, so->ll.mtu);
+@@ -778,11 +777,10 @@ static void isotp_send_cframe(struct isotp_sock *so)
+ 		return;
+ 	}
+ 
+ 	can_skb_reserve(skb);
+ 	can_skb_prv(skb)->ifindex = dev->ifindex;
+-	can_skb_prv(skb)->skbcnt = 0;
+ 
+ 	cf = (struct canfd_frame *)skb->data;
+ 	skb_put_zero(skb, so->ll.mtu);
+ 
+ 	/* create consecutive frame */
+@@ -1007,11 +1005,10 @@ static int isotp_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
+ 		goto err_out_drop;
+ 	}
+ 
+ 	can_skb_reserve(skb);
+ 	can_skb_prv(skb)->ifindex = dev->ifindex;
+-	can_skb_prv(skb)->skbcnt = 0;
+ 
+ 	so->tx.len = size;
+ 	so->tx.idx = 0;
+ 
+ 	cf = (struct canfd_frame *)skb->data;
+diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
+index ff9c4fd7b433..1589e8ca634e 100644
+--- a/net/can/j1939/socket.c
++++ b/net/can/j1939/socket.c
+@@ -895,11 +895,10 @@ static struct sk_buff *j1939_sk_alloc_skb(struct net_device *ndev,
+ 	if (!skb)
+ 		goto failure;
+ 
+ 	can_skb_reserve(skb);
+ 	can_skb_prv(skb)->ifindex = ndev->ifindex;
+-	can_skb_prv(skb)->skbcnt = 0;
+ 	skb_reserve(skb, offsetof(struct can_frame, data));
+ 
+ 	ret = memcpy_from_msg(skb_put(skb, size), msg, size);
+ 	if (ret < 0)
+ 		goto free_skb;
+diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
+index 8656ab388c83..d5d3e5320f7a 100644
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -599,11 +599,10 @@ sk_buff *j1939_tp_tx_dat_new(struct j1939_priv *priv,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	skb->dev = priv->ndev;
+ 	can_skb_reserve(skb);
+ 	can_skb_prv(skb)->ifindex = priv->ndev->ifindex;
+-	can_skb_prv(skb)->skbcnt = 0;
+ 	/* reserve CAN header */
+ 	skb_reserve(skb, offsetof(struct can_frame, data));
+ 
+ 	/* skb->cb must be large enough to hold a j1939_sk_buff_cb structure */
+ 	BUILD_BUG_ON(sizeof(skb->cb) < sizeof(*re_skcb));
+@@ -1534,11 +1533,10 @@ j1939_session *j1939_session_fresh_new(struct j1939_priv *priv,
+ 		return NULL;
+ 
+ 	skb->dev = priv->ndev;
+ 	can_skb_reserve(skb);
+ 	can_skb_prv(skb)->ifindex = priv->ndev->ifindex;
+-	can_skb_prv(skb)->skbcnt = 0;
+ 	skcb = j1939_skb_to_cb(skb);
+ 	memcpy(skcb, rel_skcb, sizeof(*skcb));
+ 
+ 	session = j1939_session_new(priv, skb, size);
+ 	if (!session) {
+diff --git a/net/can/raw.c b/net/can/raw.c
+index 12293363413c..fb4f9c854df0 100644
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -74,11 +74,11 @@ MODULE_ALIAS("can-proto-1");
+  * storing the single filter in dfilter, to avoid using dynamic memory.
+  */
+ 
+ struct uniqframe {
+ 	const struct sk_buff *skb;
+-	int skbcnt;
++	u32 hash;
+ 	unsigned int join_rx_count;
+ };
+ 
+ struct raw_sock {
+ 	struct sock sk;
+@@ -162,21 +162,21 @@ static void raw_rcv(struct sk_buff *oskb, void *data)
+ 		}
+ 	}
+ 
+ 	/* eliminate multiple filter matches for the same skb */
+ 	if (this_cpu_ptr(ro->uniq)->skb == oskb &&
+-	    this_cpu_ptr(ro->uniq)->skbcnt == can_skb_prv(oskb)->skbcnt) {
++	    this_cpu_ptr(ro->uniq)->hash == oskb->hash) {
+ 		if (!ro->join_filters)
+ 			return;
+ 
+ 		this_cpu_inc(ro->uniq->join_rx_count);
+ 		/* drop frame until all enabled filters matched */
+ 		if (this_cpu_ptr(ro->uniq)->join_rx_count < ro->count)
+ 			return;
+ 	} else {
+ 		this_cpu_ptr(ro->uniq)->skb = oskb;
+-		this_cpu_ptr(ro->uniq)->skbcnt = can_skb_prv(oskb)->skbcnt;
++		this_cpu_ptr(ro->uniq)->hash = oskb->hash;
+ 		this_cpu_ptr(ro->uniq)->join_rx_count = 1;
+ 		/* drop first frame to check all enabled filters? */
+ 		if (ro->join_filters && ro->count > 1)
+ 			return;
+ 	}
+@@ -956,11 +956,10 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
+ 	if (!skb)
+ 		goto put_dev;
+ 
+ 	can_skb_reserve(skb);
+ 	can_skb_prv(skb)->ifindex = dev->ifindex;
+-	can_skb_prv(skb)->skbcnt = 0;
+ 
+ 	/* fill the skb before testing for valid CAN frames */
+ 	err = memcpy_from_msg(skb_put(skb, size), msg, size);
+ 	if (err < 0)
+ 		goto free_skb;
+
+-- 
+2.51.0
 
 
-
-On 1/30/2026 2:05 PM, Vikas Gupta wrote:
->>   drivers/net/ethernet/broadcom/bnge/bnge_devlink.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_devlink.c b/drivers/net/ethernet/broadcom/bnge/bnge_devlink.c
->> index a987afebd64d..57db3caabcfb 100644
->> --- a/drivers/net/ethernet/broadcom/bnge/bnge_devlink.c
->> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_devlink.c
->> @@ -221,7 +221,7 @@ static int bnge_devlink_info_get(struct devlink *devlink,
->>                                DEVLINK_INFO_VERSION_GENERIC_FW, buf);
->>          if (rc) {
->>                  NL_SET_ERR_MSG_MOD(extack,
->> -                                  "Failed to set roce firmware version");
->> +                                  "Failed to set generic firmware version");
-> Thanks for fixing. I believe instead of generic, "Failed to set
-> firmware version"  is enough.
-
-ACK. will send v2.
-
-> 
->>                  return rc;
->>          }
->>
->> --
-
-Thanks,
-Alok
