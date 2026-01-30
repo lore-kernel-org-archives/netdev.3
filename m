@@ -1,165 +1,125 @@
-Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE59137D11D;
-	Fri, 30 Jan 2026 17:37:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.26.1.71
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4F7A37F8DA;
+	Fri, 30 Jan 2026 17:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769794674; cv=none; b=NhOQSHb9Ie4DcPOoZ5IbdSNCz4xEH6tS8KnzWSm8/sJJQIqasK39d6+rk7oltZZ1UdOi+zp4iryAA9OldxQEJpOvw8yFss2Kfh0wmG3aPgy7myyQKMwFOK1vEZioEEXfUhPFNbnKlLMe2OxSMy0hrN1U0VDjAE1LtA56rDq4vqk=
+	t=1769794676; cv=none; b=ll4gQ+IonLNEIeRVKwm3QKaA++G/iz3L0bnNvcouMP7PO7RKbfAOolKeITL6dOFeyhM9NoPyRMC4q5aQiGhnN7dLIAHiTp5H0yFfb6epcRCTq7/MdRkYdyFo5NOKHzcJmqQNMNXE/78QuoBzKnkKCAiAH70y+bUZ6iD+dhfShzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769794674; c=relaxed/simple;
-	bh=eKrGQqZndJmbrN53FpEmbmtFGaPkTxWIUsyQnfI9a2Y=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ue2sYrLxn9me9qHf2a1Miq54ylQ1hlYG7X1umlSAZvOrhResXLLpgupwEUfG7EjRfNO8Jk+HKAxk49+U48/iy35kf10ERubt0RbmA5sfpglNzGk2J/DEFlmM9ILjX4yWwJxkw6jiMXTY3VH6GNV5vcXuuO7wfDtImvUMJPjGcP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=jjrA99IT; arc=none smtp.client-ip=52.26.1.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+	s=arc-20240116; t=1769794676; c=relaxed/simple;
+	bh=Kp43aeOrmWm2Tj+NQSMvYnRpmZMjeJ7jb+EOUkIw9Ko=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GpK9mdCuAvyX0U8hmirZvvIo0x9hk3jIjfRlStS7RVskupbknq7cHMEhkGCE9Bc6N0EGZO5puDfKRCvsj/V2Lq7um4m1R9lewCxlcBoRKoWJZyzJWjz0l79v5VREJHh/t/WEB6dxCihIgRZvJuvf+nIc68QKv9UEwrkBaHIfiU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=sYZhe7s7; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="jjrA99IT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1769794672; x=1801330672;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ldAsiYfE+Zft1YuwKt94MhHJ/sfiO6sqo+h4iUvVj1s=;
-  b=jjrA99ITKGYj/5tf89tp+oXOKK8Mc1hcnFcHKMZhC9Ybpws7QgoFELmx
-   Q+Pj3lpSVv6qKumFiUIPbAQl8IZEEUzTa62Gu/zVIy28GZ+gL1tzVt84i
-   NMRK1/f8HEnyQwGniKKSa25gb3TU/6bGOYtQE2XVuHj8pXAsuTupjhJeG
-   AATBehxseSXOqlk8BbMdZQO8ebh5ALzjJYGwVqjEambBgkh06a6+JkUA7
-   bx1FHJne2UBQlQc9U3MYDcNaA0WjdT6g1i/iVG13Y1fe4F6KjylnLJN/F
-   O1ibLamJxmkUOPUyYK3CO2qRaU0X/68QULv08nng4eSm/KRlrX5bG3CCe
-   w==;
-X-CSE-ConnectionGUID: 7vK6jhG3QAydF2XPuesCIA==
-X-CSE-MsgGUID: 98aam8x6R3Sk+Yxy6ds3sQ==
-X-IronPort-AV: E=Sophos;i="6.21,263,1763424000"; 
-   d="scan'208";a="11938904"
-Received: from ip-10-5-12-219.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.12.219])
-  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 17:37:52 +0000
-Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.236:9356]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.0.174:2525] with esmtp (Farcaster)
- id 8a299df5-e528-45d4-9fe7-56531cccbba8; Fri, 30 Jan 2026 17:37:52 +0000 (UTC)
-X-Farcaster-Flow-ID: 8a299df5-e528-45d4-9fe7-56531cccbba8
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Fri, 30 Jan 2026 17:37:50 +0000
-Received: from dev-dsk-itazur-1b-11e7fc0f.eu-west-1.amazon.com (172.19.66.53)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Fri, 30 Jan 2026 17:37:47 +0000
-From: Takahiro Itazuri <itazur@amazon.com>
-To: <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
-	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-	<kuba@kernel.org>, <pabeni@redhat.com>
-CC: <devicetree@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Babis Chalios <mail@bchalios.io>, "Alexander
- Graf" <graf@amazon.de>, <mzxreary@0pointer.de>, Marco Cali
-	<xmarcalx@amazon.co.uk>, David Woodhouse <dwmw@amazon.co.uk>, "Takahiro
- Itazuri" <itazur@amazon.com>
-Subject: [PATCH v7 6/7] ptp: ptp_vmclock: remove dependency on CONFIG_ACPI
-Date: Fri, 30 Jan 2026 17:36:05 +0000
-Message-ID: <20260130173704.12575-7-itazur@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260130173704.12575-1-itazur@amazon.com>
-References: <20260130173704.12575-1-itazur@amazon.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="sYZhe7s7"
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id C028A20B7167; Fri, 30 Jan 2026 09:37:54 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C028A20B7167
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1769794674;
+	bh=Ced02JqsdMOXdpl+3gOHWLgk7vkUuuy1N4DnGGgJd9o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=sYZhe7s7nvoekEvj3PiowdevAC4arZFQNRDr7XkuiBbj6CgWjuGBrYBn+ZU1Ur5v8
+	 T6pebwWFGNfk9RPEFXr+FfQuoBrPLxXykuIdCorCsGLz199BibNw4dityM1eHbZWKT
+	 AiaIH21gl5t7kFC1gCeRe//Lx2shIJ1UUTG6pBXo=
+Date: Fri, 30 Jan 2026 09:37:54 -0800
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, kys@microsoft.com,
+	haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+	longli@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, kotaranov@microsoft.com,
+	shradhagupta@linux.microsoft.com, yury.norov@gmail.com,
+	dipayanroy@linux.microsoft.com, shirazsaleem@microsoft.com,
+	ssengar@linux.microsoft.com, gargaditya@linux.microsoft.com,
+	linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2] net: mana: Improve diagnostic logging for
+ better debuggability
+Message-ID: <aXzsckNbI1FLdA+l@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20260121065655.18249-1-ernis@linux.microsoft.com>
+ <20260121201412.179f9b37@kernel.org>
+ <aXJhzi58GqLKtui4@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <20260122180745.3b5607cf@kernel.org>
+ <20260126195850.GO13967@unreal>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D041UWA001.ant.amazon.com (10.13.139.124) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+In-Reply-To: <20260126195850.GO13967@unreal>
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On Mon, Jan 26, 2026 at 09:58:50PM +0200, Leon Romanovsky wrote:
+> On Thu, Jan 22, 2026 at 06:07:45PM -0800, Jakub Kicinski wrote:
+> > On Thu, 22 Jan 2026 09:43:42 -0800 Erni Sri Satya Vennela wrote:
+> > > On Wed, Jan 21, 2026 at 08:14:12PM -0800, Jakub Kicinski wrote:
+> > > > On Tue, 20 Jan 2026 22:56:55 -0800 Erni Sri Satya Vennela wrote:  
+> > 
+> > You will have to build proper support tooling like every single vendor
+> > before you. Presumably you can also log from the hypervisor side which
+> > makes your life so much easier than supporting real HW. Yet, real
+> > NIC don't spew random trash to the logs all the time. SMH. Respectfully,
+> > next time y'all "discuss things internally" start with the question of
+> > what makes your case special :|
+> 
+> +100
+> 
+> Interesting. Completely independent of your comment, I provided the same
+> feedback on their mana_ib driver. They added debug logs to nearly every
+> command, even though those commands already had existing debug logging.
+> 
+> https://lore.kernel.org/linux-rdma/20260122131442.GL13201@unreal/T/#m51e8a12f4bca4a6c1377c5531c8a6d94a43af1e5
+> 
+> "In order to simplify things for you: unless you can clearly justify why this
+> print is required and why you cannot proceed without it, I must ask you to stop
+> adding any new debug or error messages to the mana_ib driver. There is a wide
+> range of existing tools and well‑established practices for debugging the kernel,
+> and none of them require spamming dmesg."
+> 
+> Thanks
 
-Now that we added device tree support we can remove dependency on
-CONFIG_ACPI.
+Hi Jakub, Leon,
 
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Signed-off-by: Babis Chalios <bchalios@amazon.es>
-Tested-by: Takahiro Itazuri <itazur@amazon.dom>
----
- drivers/ptp/Kconfig       |  2 +-
- drivers/ptp/ptp_vmclock.c | 14 ++++++++++----
- 2 files changed, 11 insertions(+), 5 deletions(-)
+We agree with the concerns pointed out by adding new lines of logging,
+hence we are planning to get the soc logs required for debugging issues
+from customers by modifying the existing logs itself and would not be
+adding any new lines.
 
-diff --git a/drivers/ptp/Kconfig b/drivers/ptp/Kconfig
-index 5f8ea34d1..b93640ca0 100644
---- a/drivers/ptp/Kconfig
-+++ b/drivers/ptp/Kconfig
-@@ -134,7 +134,7 @@ config PTP_1588_CLOCK_KVM
- config PTP_1588_CLOCK_VMCLOCK
- 	tristate "Virtual machine PTP clock"
- 	depends on X86_TSC || ARM_ARCH_TIMER
--	depends on PTP_1588_CLOCK && ACPI && ARCH_SUPPORTS_INT128
-+	depends on PTP_1588_CLOCK && ARCH_SUPPORTS_INT128
- 	default PTP_1588_CLOCK_KVM
- 	help
- 	  This driver adds support for using a virtual precision clock
-diff --git a/drivers/ptp/ptp_vmclock.c b/drivers/ptp/ptp_vmclock.c
-index 2a173bd28..b6e9d4c96 100644
---- a/drivers/ptp/ptp_vmclock.c
-+++ b/drivers/ptp/ptp_vmclock.c
-@@ -490,6 +490,7 @@ static const struct file_operations vmclock_miscdev_fops = {
- 
- /* module operations */
- 
-+#if IS_ENABLED(CONFIG_ACPI)
- static acpi_status vmclock_acpi_resources(struct acpi_resource *ares, void *data)
- {
- 	struct vmclock_state *st = data;
-@@ -573,6 +574,7 @@ static int vmclock_probe_acpi(struct device *dev, struct vmclock_state *st)
- 
- 	return 0;
- }
-+#endif /* CONFIG_ACPI */
- 
- static irqreturn_t vmclock_of_irq_handler(int __always_unused irq, void *_st)
- {
-@@ -616,11 +618,11 @@ static int vmclock_setup_notification(struct device *dev,
- 	if (!(le64_to_cpu(st->clk->flags) & VMCLOCK_FLAG_NOTIFICATION_PRESENT))
- 		return 0;
- 
--	if (has_acpi_companion(dev)) {
-+#if IS_ENABLED(CONFIG_ACPI)
-+	if (has_acpi_companion(dev))
- 		return vmclock_setup_acpi_notification(dev);
--	} else {
--		return vmclock_setup_of_notification(dev);
--	}
-+#endif
-+	return vmclock_setup_of_notification(dev);
- }
- 
- static void vmclock_remove(void *data)
-@@ -633,10 +635,12 @@ static void vmclock_remove(void *data)
- 		return;
- 	}
- 
-+#if IS_ENABLED(CONFIG_ACPI)
- 	if (has_acpi_companion(dev))
- 		acpi_remove_notify_handler(ACPI_COMPANION(dev)->handle,
- 					   ACPI_DEVICE_NOTIFY,
- 					   vmclock_acpi_notification_handler);
-+#endif
- 
- 	if (st->ptp_clock)
- 		ptp_clock_unregister(st->ptp_clock);
-@@ -664,9 +668,11 @@ static int vmclock_probe(struct platform_device *pdev)
- 	if (!st)
- 		return -ENOMEM;
- 
-+#if IS_ENABLED(CONFIG_ACPI)
- 	if (has_acpi_companion(dev))
- 		ret = vmclock_probe_acpi(dev, st);
- 	else
-+#endif
- 		ret = vmclock_probe_dt(dev, st);
- 
- 	if (ret) {
--- 
-2.50.1
+Old Logs:
 
+mana 7870:00:00.0: Microsoft Azure Network Adapter protocol version:
+0.1.1
+mana 7870:00:00.0 enP30832s1: Configured vPort 0 PD 18 DB 16
+mana 7870:00:00.0 enP30832s1: Configured steering vPort 0 entries 64
+
+Modified logs:
+
+Initialization:
+mana 7870:00:00.0: Microsoft Azure Network Adapter protocol version:
+0.1.1 Max Resources: msix_usable=33 max_queues=32 VF version:
+protocol=0x0 pf_caps=[0x1d]
+
+Module load:
+mana 7870:00:00.0 enP30832s1: Enabled vPort 0 PD 18 DB 16 MAC
+60:45:bd:7b:76:30 Vport Config: max_txq=32 max_rxq=32 indir_ent=64
+Device Config: max_vports=1 adapter_mtu=9216 bm_hostmode=0
+mana 7870:00:00.0 enP30832s1: Configured steering vPort 0 entries 64 MAC
+60:45:bd:7b:76:30 [rx:1 rss:1 update_indirection_table:1
+cqe_coalescing:0]
+
+Module unload:
+mana 7870:00:00.0 enP30832s1: Configured steering vPort 0 entries 64 MAC
+60:45:bd:7b:76:30 [rx:1 rss:1 update_indirection_table:1
+cqe_coalescing:0]
+mana 7870:00:00.0 enP30832s1: Disabled vPort 0 MAC 60:45:bd:7b:76:30
+
+We considered this approach because we wanted to support older kernels,
+which the customers are using and it is an easier way to backport these
+changes. Is this approach acceptable? 
+ 
