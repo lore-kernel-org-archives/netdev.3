@@ -1,125 +1,68 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7A02D97B4
-	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 13:47:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D0127AC31
+	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 14:10:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769780872; cv=none; b=j404nOvr+oW14KrxFH6BLXYIX7sW8Bcxms/ltaWDegMCEEJUgDkWFRPGPikwkLhW5CHn9Ip21Ih+xDMgDR/b4PliNEopTof7FLX0TFg0BVoDmVzBzeYzmPVnSraw76mzgZuivDtp8S7N9rUQl+NJHTEXDE9s6Avhe7Jofad+eUY=
+	t=1769782246; cv=none; b=Jrlf4xw3B/mDL5aCbYYZ7DdLoxzVzlROBQfM/htlPls2Jzp/nAfrs/5m0gtnSMnSpfZU2kiCbgNRmKCWxjUq63CTmaDsP1ZvPqLU4mNEE+fkmSJBrs1TP0Ja9YRsBD2luCV7R2QDwXb3m4pglZP6VeA3r+2rxyardSr7z+cZcu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769780872; c=relaxed/simple;
-	bh=d95vyHE5VFHsMR0/siOYn9RQj1yoKkTPxH6ixL5nFHU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bOWtRki7HWndj09TKtzAf4nf4+0q+qYIfymbpEEi1O0G1+IFKL40rKUD5edJ1c0tOsZpQPmBGAjYUpkKt0yOQFls0t3s9viaKwC+T0cAg1i52hja1ZcTKdXAUjclK0YDz4I2qvYcyBLRVy6pusoQJcsyIZjgpg88pIe9KM9kJnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VYuvV0Xh; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VYuvV0Xh"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b8849dc12f6so323795666b.1
-        for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 05:47:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769780869; x=1770385669; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=0EdujWQoBAn/IwVhOEaFp9E9St0lYVYzZ1tCazrBN34=;
-        b=VYuvV0Xhf5fokEsAsNwZZZl3EiUuLvO5zLf3bZcXOBUKzahCU7P71aD2YAgIKS7isv
-         cOa4wLaPwGYXxCOtsUxV1MrWqCbyb1LFBatKJGlEzHJHMaBCoVmpnZTCy/LeptW7AzHR
-         AYQEPgol9jDbXCfvej0AJiXmoKPls6VzI4qgyIswj4UXKxIPHi+vhusJJnZlUjLln66J
-         +BAdUW3F4LMsNYzSiQ3zDWtL8KXMD7WPFEvLAf6kUfgKvNEEQmBVVN61yWI+qVvhUKdZ
-         BU/0+hhAgNCG8Oy9i9NoLHYsTGYsEfWWT+GVhDk+6KpYnOl4QKd/wLcy208KwMTmRXsC
-         RX/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769780869; x=1770385669;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0EdujWQoBAn/IwVhOEaFp9E9St0lYVYzZ1tCazrBN34=;
-        b=cJI2gaMxR9CvREN3QeqEZ/ixUkXpKnfGn5wXT7Z9qZFbSrU6086+fT4KDbyJfaupfr
-         VFvyY7XHG9Xj8tSkPiTZhAj27jUDulsEjULdcTaK8j7jnJuFrp2HCGqs8AJqh+1oPiXg
-         cjHYYUTVxHAlJHzFMIzgz6a0rJzOmF9xsqleoWQkwH7zZUuWcPwUbViXEbdEonxYR6gi
-         Ewy7NuCv1nH2YZ0gWkUAjq2Q47KJzMn19hbwyPrxGCtIePJTKKZwjuqmRbTABBhAAftR
-         ZDvWJLO52JXKf4n42So1K/+H6uWhNBCpdt/qfPDeUku51l1pmUnvRPArpoBKuS1d+6T/
-         RNig==
-X-Forwarded-Encrypted: i=1; AJvYcCXM892dPlCkzJ1AyrAmr1UtCmFxOk1WBWfH+bXIy2JbFovyz6AjE/Ex9S157HaN1AUxXSIZcb4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyad2qQ2IFWEDFD0fJ5UwX9rCA4SOD9vTPxdmTJPj7MFaAISm2u
-	oTE1Oc2cpQmCctGiIQ2Cij+JmR3NwbBIQA/q6gT+1kxcrdwNRlKc29TXqglLiw==
-X-Gm-Gg: AZuq6aJH1km3tR95AgQW4FgZOaEfvh+/S92Lap4NOAEkh0fTRD66PW75lp84HSYXutm
-	Wll/2IqanDB5OxAaUWyqvwWcC6trGv3H8XYQfsftD47JTtlXeLaj8EdrYChvm45rSllM7yeGMxB
-	xxopkWWIHJFLfBo7tiFrolkfFdosZTr5OYW17Ar1O7NAzm9mzDxajGZEtDq0gK8NHUIte2kBSbd
-	edSEUS9HXH871vGHq2O6TH5Kw0p2hVx+OZvLzsQNify1FDNFL5qF8F6P5BZJZnH7gfZITcK69yf
-	UAI9WmloIypRKvkIHmi3dy/IoqJgH9+LW97JfhAnDodE9yL2M+IaNU+fSbhrpqcXJNVdUgE1nGs
-	0Lwgw8dUBjI5mCnX+9n0NnB690jSOHr8iWtpHmvWsuyWQfK52MGSufieo/KSHs7C3yJjx/NmQPC
-	P3b2lJgP+oPwmotjnZE7EOsbEQJv3LjftspLA=
-X-Received: by 2002:a17:907:7212:b0:b87:daee:a6c4 with SMTP id a640c23a62f3a-b8dff6846admr145665366b.36.1769773667338;
-        Fri, 30 Jan 2026 03:47:47 -0800 (PST)
-Received: from localhost.localdomain ([2a00:23c4:a758:8a01:bd64:2984:fe71:7633])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8de3046abasm243751266b.2.2026.01.30.03.47.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jan 2026 03:47:47 -0800 (PST)
-From: Biju <biju.das.au@gmail.com>
-X-Google-Original-From: Biju <biju.das.jz@bp.renesas.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Magnus Damm <magnus.damm@gmail.com>
-Cc: Biju Das <biju.das.jz@bp.renesas.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	netdev@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Biju Das <biju.das.au@gmail.com>
-Subject: [PATCH net-next v2 0/2] Add support for Renesas RZ/G3L GBETH
-Date: Fri, 30 Jan 2026 11:47:38 +0000
-Message-ID: <20260130114744.252533-1-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1769782246; c=relaxed/simple;
+	bh=0W27QFew4CaxE2Y8p24O0EQN+GgOlw15dThWBwgPflA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=NSGn7Ap4+8a2RlOCuphUVM2aA8vFvizBuwhuh9sknDaKwlCISW5BRR2gLUOiMwyo7kLf84oHvwSRYK13v6/STYXs5BUlXarDISufd1uRcmPObm4WomUitVZQojgghFWP1QoLNLUffSvVUDUT+ymDpirqZC91cRMIa6QKcFs6nqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+Received: from inva020.nxp.com (localhost [127.0.0.1])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 9D9A71A071F;
+	Fri, 30 Jan 2026 15:10:38 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 919641A071E;
+	Fri, 30 Jan 2026 15:10:38 +0100 (CET)
+Received: from lsv15141.swis.ro-buh01.nxp.com (lsv15141.swis.ro-buh01.nxp.com [10.162.246.138])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 34473203AA;
+	Fri, 30 Jan 2026 15:10:37 +0100 (CET)
+From: Claudiu Manoil <claudiu.manoil@nxp.com>
+To: vladimir.oltean@nxp.com,
+	wei.fang@nxp.com,
+	xiaoning.wang@nxp.com,
+	Frank.Li@nxp.com
+Cc: kuba@kernel.org,
+	davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	imx@lists.linux.dev,
+	netdev@vger.kernel.org
+Subject: [PATCH net 0/4] ENETC v4 hardware integration fixes
+Date: Fri, 30 Jan 2026 16:10:31 +0200
+Message-Id: <20260130141035.272471-1-claudiu.manoil@nxp.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+ENETC v4 targeted fixes addressing SoC level integration issues
+regarding AXI settings and register access width.
 
-The Renesas RZ/G3L GBETH IP uses Synopsys DesignWare MAC version 5.30
-compared to other Renesas SoC such as RZ/V2H that use MAC version 5.20.
+Claudiu Manoil (4):
+  net: enetc: Remove SI/BDR cacheability AXI settings for ENETC v4
+  net: enetc: Remove CBDR cacheability AXI settings for ENETC v4
+  net: enetc: Convert 16-bit register writes to 32-bit for ENETC v4
+  net: enetc: Convert 16-bit register reads to 32-bit for ENETC v4
 
-The RZ/G3L GBETH requires an extra clock compared to RZ/G3E and has pps
-interrupts. Document the Renesas RZ/G3L GBETH IP in bindings and enable
-the Gigabit Ethernet Interface (GBETH0) populated on the RZ/G3L SMARC
-EVK. The eth1, pincontrol definitions and hotplug support will be added
-later.
-
-v1->v2:
- * Separated ethernet patches from series [1]
- * Collected tag for binding patch
-
-[1] https://lore.kernel.org/all/20260128125850.425264-1-biju.das.jz@bp.renesas.com/
-
-Biju Das (2):
-  dt-bindings: net: renesas,rzv2h-gbeth: Document Renesas RZ/G3L SoC
-  net: stmmac: dwmac-renesas-gbeth: Add support for RZ/G3L SoC
-
- .../bindings/net/renesas,rzv2h-gbeth.yaml     | 77 ++++++++++++++++---
- .../devicetree/bindings/net/snps,dwmac.yaml   |  3 +
- .../stmicro/stmmac/dwmac-renesas-gbeth.c      |  1 +
- 3 files changed, 70 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c    | 11 +++++++----
+ .../net/ethernet/freescale/enetc/enetc4_pf.c    |  6 +++---
+ .../net/ethernet/freescale/enetc/enetc_cbdr.c   |  4 ----
+ drivers/net/ethernet/freescale/enetc/enetc_hw.h | 17 ++++++++++++++---
+ 4 files changed, 24 insertions(+), 14 deletions(-)
 
 -- 
-2.43.0
+2.34.1
 
