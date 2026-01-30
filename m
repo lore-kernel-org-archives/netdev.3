@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7931B284665;
-	Fri, 30 Jan 2026 03:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD8D284665;
+	Fri, 30 Jan 2026 03:40:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769744416; cv=none; b=A5hlJdTctAJn+mqirDTfCG8NMooGZQ37Q66VX1T1VcCcnQLa+xdRAZJDKefar9Kkgx+C5U27JIB8HY7HSVd6/Oj2zcqy1p/NF0gzoewNxaciGHtE9ET3twL1yzcjgSqNnID7DmXj2padYnvbADQkWLMo0NtvMOepr1MhPwzXZpY=
+	t=1769744420; cv=none; b=oJ04cKBfYKZIPolRh8RubbfqibupJ49QbF/uV0BJc33ZbaeILx+Md6BeXoGKsv6tbuehcaAcJ9aX7KwU7RoVlcP/sifzfKk/5MBa5jdTUY3FdIoFg2Rh+QaFPAuWiqI95A6NWDwy8b3RbXEwyj4Onz4J1XMWZ4xpsiPfuKC2dbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769744416; c=relaxed/simple;
-	bh=/q61X7K5Ao1+PSggzDE0UDQBFk/GTp7Q2YX80NNH6Ec=;
+	s=arc-20240116; t=1769744420; c=relaxed/simple;
+	bh=Qxinxyl20wLv11EZeIQLPfuV1s06icKYCS/fEEZ14eM=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Pj/nNORGcRGGV+wxeWa5usNZzVL7MOIwbaUeVi4Q7/ccdv09yJHQEpYpEfg4Js3nf1SDNikhJJYhrdyYva4wr8kbRunK6/1jZgVx22IEI1dXJF90VPzdjkO15XvXxlmrK3YtEaeyMEKmCzwxKpO+JmjJcxGYdzbp3zvn3vcNVE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y0IwKNwg; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=sxKEjNdS6VuqWpweK1Gpyvef3MALqy+kf07X8IaEZ2SWszSRqAjhldADY32/RL0YXnDHdugxqQz/4g8/EjhHTac3SjZ+aqt9auL4VMBuf6zKVfMNoV0w1jg7z/ug07qiB7vW+hllBx5oWKB+KUaFqq35wRL9mliFjcy6P+zjvgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vMxKgCZH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y0IwKNwg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F125C4CEF7;
-	Fri, 30 Jan 2026 03:40:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vMxKgCZH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AD23C4CEF7;
+	Fri, 30 Jan 2026 03:40:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769744416;
-	bh=/q61X7K5Ao1+PSggzDE0UDQBFk/GTp7Q2YX80NNH6Ec=;
+	s=k20201202; t=1769744420;
+	bh=Qxinxyl20wLv11EZeIQLPfuV1s06icKYCS/fEEZ14eM=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Y0IwKNwgmwuWNL/q9C6bZTPiJEPCsNwAbzWYVu+IgRNs5B2PquVClRJJVX+GI1og3
-	 ZrlScpgV8RnMJZpI+l0fzGBqd8v2F6nJp/ezBioqsqSNGXi0/KJlFLm46bqHRMwHxj
-	 srtrfusY86Aibms6T2xskamnrhK8mr0P6LknPVHU577e5/R0wD/BAO67zIg+TjM9wx
-	 xLls3F///RnP8fiRlt39umEN6bYFrw/WAJrRKyqY5tRzo2AwwaBapWcwhlX6mrlMpY
-	 vJHQ9UpfApeYPmrLxoxoG+H2GCR7GqAtJVmnWVQy393dRohMBpvm70HJmvYSPR1V30
-	 3dpum1gJFhl3g==
+	b=vMxKgCZH4SfvPuq3POsWl/n3cjdqy6zFfy6sUgl9BWvpmSxz4tAFaT5clP5YhA5eJ
+	 sGhEDUYFWKCseJLigeAuZF6/9O1OuBhKZEEpzixoNadB1dnTsUa3dvgUhC964hgXbX
+	 jrofwTsMUGiHRrok/vx5vXPrsuZzQjDDDE8zVcgkZX9nC/6RG+c2qp2ZLocN/G41qF
+	 cu4f2WD0QcHEw3NFGk3Bze/RB8hHTtDfFCwVSVVN2z6lO3G3ZmSDMJs56qYCJ1Lnd3
+	 xeCHEV6iYEuIHd+o6L0lhiUWfREjMHkgLcZQWrmmlEZWhllWgL6jKXp8PZMo4lGT/1
+	 4aXgzqMulX3NQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 11AE4380CEE0;
-	Fri, 30 Jan 2026 03:40:10 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 11AED380CEE0;
+	Fri, 30 Jan 2026 03:40:14 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,43 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v4 0/3] net: liquidio: Fix memory leaks in
- setup_nic_devices()
+Subject: Re: [net-next PATCH v2] octeontx2-pf: cn10k/cn20k: Update count_eot
+ in
+ NPA_LF_AURA_BATCH_FREE0
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176974440885.3161630.1867982366440159638.git-patchwork-notify@kernel.org>
-Date: Fri, 30 Jan 2026 03:40:08 +0000
-References: <20260128154440.278369-1-zilin@seu.edu.cn>
-In-Reply-To: <20260128154440.278369-1-zilin@seu.edu.cn>
-To: Zilin Guan <zilin@seu.edu.cn>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kory.maincent@bootlin.com, horms@kernel.org,
- jianhao.xu@seu.edu.cn, marco.crivellari@suse.com, vadim.fedorenko@linux.dev
+ <176974441260.3161630.17605690465239171654.git-patchwork-notify@kernel.org>
+Date: Fri, 30 Jan 2026 03:40:12 +0000
+References: <20260128022448.4402-1-gakula@marvell.com>
+In-Reply-To: <20260128022448.4402-1-gakula@marvell.com>
+To: Geetha sowjanya <gakula@marvell.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org,
+ davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
+ andrew+netdev@lunn.ch, sgoutham@marvell.com, sbhatta@marvell.com,
+ hkelam@marvell.com
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Wed, 28 Jan 2026 15:44:37 +0000 you wrote:
-> This series fixes memory leaks in the initialization paths of the
-> NIC devices.
+On Wed, 28 Jan 2026 07:54:48 +0530 you wrote:
+> This patch updates the count_eot calculation for CN20K devices.
+> Where the count_eot feild extended to 2 bits, while maintaining
+> CN10K compatibility where only bit 0 is used.
 > 
-> Patch 1 moves the initialization of oct->props[i].netdev before queue
-> setup calls. This ensures that if queue setup fails, the cleanup function
-> can find and free the allocated netdev. It also initializes lio->oct_dev
-> early to prevent a crash in the cleanup path.
+> Signed-off-by: Geetha sowjanya <gakula@marvell.com>
+> ---
+> v1-v2: Fix size value based on count_eot
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v4,1/3] net: liquidio: Initialize netdev pointer before queue setup
-    https://git.kernel.org/netdev/net/c/926ede0c85e1
-  - [net,v4,2/3] net: liquidio: Fix off-by-one error in PF setup_nic_devices() cleanup
-    https://git.kernel.org/netdev/net/c/8558aef4e8a1
-  - [net,v4,3/3] net: liquidio: Fix off-by-one error in VF setup_nic_devices() cleanup
-    https://git.kernel.org/netdev/net/c/6cbba46934ae
+  - [net-next,v2] octeontx2-pf: cn10k/cn20k: Update count_eot in NPA_LF_AURA_BATCH_FREE0
+    https://git.kernel.org/netdev/net-next/c/988719c5eafd
 
 You are awesome, thank you!
 -- 
