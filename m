@@ -1,28 +1,28 @@
-Received: from inva020.nxp.com (inva020.nxp.com [92.121.34.13])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AFB42DFA5A
-	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 14:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F3A31D72B
+	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 14:10:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769782247; cv=none; b=ly/zNg9AP/mTG+3ZjVCUXCFIwl9XRybGWbOIZ1N7B6CfZUapbUer5wW4z+s3/Li+HAcbzqQeQyHigfg+er2Nq3ogJoPYg0cSVZz/q1/0UaERJJRJUl5JGoUoAWp8bPzSJbRQe/nutj/uqACiJvDo9iWxXcgT/eXgPrNnrlsXFUc=
+	t=1769782249; cv=none; b=tT8n5iBnvRzXfNpqLascizciIgc4gAASqjfvmLdFbdGGxiGR/D/OpDzsRlWOVQoCxgGQJxyROtDXkLSFwkNapozLS3EsQfL3WreTwmk9ztSXsLiNHIJnYE9+8SVSX9W1/EKcbZLLZUCNiZx35MI0cyfG6b8QXpMANYDntpyPAPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769782247; c=relaxed/simple;
-	bh=OF/Ccgm4fDLGt5AzDImX+bKVosWbb/r92z4HMyUHmWA=;
+	s=arc-20240116; t=1769782249; c=relaxed/simple;
+	bh=kKysxAZk48FOOwromC64Vuv3HvTQ6QsR8vCARd3WMeI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EXa1FsZDHJHTeUDS4USYo2HuQ2BLAa07zh/LZYxpQTME4397zGIooy4aUbzTj31NuKxnwKDdD/9EQxfmQF8d5LaKOXrdMrpwkwhQQs+4zL5h6insgGpwMoAZqVEYVIH53nVaBTK8esj6+/E+H8dRIWtWAlXlA4V05SZcYpIxS74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.13
+	 MIME-Version; b=MYzhTqc6WuNeNXxQlEkh82ksSuDbXYFTFsHS6PJhtnCHPI+hhzg75hV3Pws1UL3mwrjPVX6BZt8uWMtdT5PtiAsTzj7XMBWRkdpYvE5CkJoQes94rBm5aZHyr1F7xpAIAlgSgkUWyaHmO1QVLVvGo5iaDEOWQEASxEUPBSADPwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; arc=none smtp.client-ip=92.121.34.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-Received: from inva020.nxp.com (localhost [127.0.0.1])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 5B6B81A072B;
-	Fri, 30 Jan 2026 15:10:39 +0100 (CET)
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 22949200704;
+	Fri, 30 Jan 2026 15:10:40 +0100 (CET)
 Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva020.eu-rdc02.nxp.com (Postfix) with ESMTP id 4ECD41A071E;
-	Fri, 30 Jan 2026 15:10:39 +0100 (CET)
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 14DFC2006E8;
+	Fri, 30 Jan 2026 15:10:40 +0100 (CET)
 Received: from lsv15141.swis.ro-buh01.nxp.com (lsv15141.swis.ro-buh01.nxp.com [10.162.246.138])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id EF9B120263;
-	Fri, 30 Jan 2026 15:10:37 +0100 (CET)
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id AC36F20263;
+	Fri, 30 Jan 2026 15:10:38 +0100 (CET)
 From: Claudiu Manoil <claudiu.manoil@nxp.com>
 To: vladimir.oltean@nxp.com,
 	wei.fang@nxp.com,
@@ -35,9 +35,9 @@ Cc: kuba@kernel.org,
 	pabeni@redhat.com,
 	imx@lists.linux.dev,
 	netdev@vger.kernel.org
-Subject: [PATCH net 1/4] net: enetc: Remove SI/BDR cacheability AXI settings for ENETC v4
-Date: Fri, 30 Jan 2026 16:10:32 +0200
-Message-Id: <20260130141035.272471-2-claudiu.manoil@nxp.com>
+Subject: [PATCH net 2/4] net: enetc: Remove CBDR cacheability AXI settings for ENETC v4
+Date: Fri, 30 Jan 2026 16:10:33 +0200
+Message-Id: <20260130141035.272471-3-claudiu.manoil@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260130141035.272471-1-claudiu.manoil@nxp.com>
 References: <20260130141035.272471-1-claudiu.manoil@nxp.com>
@@ -51,41 +51,34 @@ Content-Transfer-Encoding: 8bit
 X-Virus-Scanned: ClamAV using ClamSMTP
 
 For ENETC v4 these settings are controlled by the global ENETC
-message and buffer cache attribute registers (EnBCAR and EnMCAR),
-from the IERB register block.
+command cache attribute registers (EnCAR), from the IERB register
+block.
 
-The hardcoded cacheability settings were inherited from LS1028A,
+The hardcoded CDBR cacheability settings were inherited from LS1028A,
 and should be removed from the ENETC v4 driver as they conflict
 with the global IERB settings.
 
-Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
+Fixes: e3f4a0a8ddb4 ("net: enetc: add command BD ring support for i.MX95 ENETC")
 Signed-off-by: Claudiu Manoil <claudiu.manoil@nxp.com>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc_cbdr.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 53b26cece16a..e380a4f39855 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -2512,10 +2512,13 @@ int enetc_configure_si(struct enetc_ndev_priv *priv)
- 	struct enetc_hw *hw = &si->hw;
- 	int err;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c b/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
+index 3d5f31879d5c..a635bfdc30af 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
+@@ -74,10 +74,6 @@ int enetc4_setup_cbdr(struct enetc_si *si)
+ 	if (!user->ring)
+ 		return -ENOMEM;
  
--	/* set SI cache attributes */
--	enetc_wr(hw, ENETC_SICAR0,
+-	/* set CBDR cache attributes */
+-	enetc_wr(hw, ENETC_SICAR2,
 -		 ENETC_SICAR_RD_COHERENT | ENETC_SICAR_WR_COHERENT);
--	enetc_wr(hw, ENETC_SICAR1, ENETC_SICAR_MSI);
-+	if (is_enetc_rev1(si)) {
-+		/* set SI cache attributes */
-+		enetc_wr(hw, ENETC_SICAR0,
-+			 ENETC_SICAR_RD_COHERENT | ENETC_SICAR_WR_COHERENT);
-+		enetc_wr(hw, ENETC_SICAR1, ENETC_SICAR_MSI);
-+	}
-+
- 	/* enable SI */
- 	enetc_wr(hw, ENETC_SIMR, ENETC_SIMR_EN);
- 
+-
+ 	regs.pir = hw->reg + ENETC_SICBDRPIR;
+ 	regs.cir = hw->reg + ENETC_SICBDRCIR;
+ 	regs.mr = hw->reg + ENETC_SICBDRMR;
 -- 
 2.34.1
 
