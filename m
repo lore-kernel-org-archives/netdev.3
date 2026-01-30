@@ -1,188 +1,309 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543BC3358B8;
-	Fri, 30 Jan 2026 16:54:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF64352C5A
+	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 16:54:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769792050; cv=none; b=KkYm+ssQsPZsoaEAQciSI+/Wmnn9f+K/sq5p4looiQ0D1U5txaD4LRAWT0Zn0USeGbhw3eTqAhqwhox7M/zWv+ESW3trduPrQOFLcEo0oc6MeNwyihnK996LhpBXyzNYMMPyPkD1FV+sJ9TnsxxWQoaKbZ6pQrLJxnWUIE+L0S8=
+	t=1769792055; cv=none; b=a+sbbHnE1o0pLSaUnU4Rfzv7AJZoRzrri4hoTXXzIvMM22V0XrND9kFIj3kT3Go4eyst98WNWRC3kUysdHOKHZigsFlQU0Mqk9/DRtp8AxMygpTeaD2zbBNwSHwp6QlHfW9En+hPkVlW6kMTuPKd2Gy1yhuqmzHP/5fAr1SHxmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769792050; c=relaxed/simple;
-	bh=ephIT4v1KrY7rnsSJlQo+RxoFpbdo5aelPh8LwSP4Lo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wzr1zxKnHUmw5HiT0LTIfIXfAOD93kpg7M353xYoG87vicFNwzdBawZPvSWPlFt8BbxoecmSkCV7blbRlUmTSIgGAciIS+vdNFF7P31odW3wnqfcpTFS1KP/nN/Hq6iAPVWMU3+TjvOlbndBweQnALqhpgrNYc5zMyZ+87dCfHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tYCkOJDH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769792055; c=relaxed/simple;
+	bh=UMVbQXpNhGuXh4d9d+GU3CMtTSAg9PzQvuTtsZc18+I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ctFEXWByC8xUIFbYS3bpIhtOkmQs2AyyYPD6/uwra0WXFqA85LJsKkq5FIvzW/CkcM18M9UGyiyx5DLXvj1V6W1ZhK84Xr8/hKN3S82IwfOzE8AMhUjd5UQexWxolH1hVX4Zg3CfESgcWdlMMnBRQ66wxf45JHHOhCyNaVUm01Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DkQgSLUW; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tYCkOJDH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7AD1C4CEF7;
-	Fri, 30 Jan 2026 16:54:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769792049;
-	bh=ephIT4v1KrY7rnsSJlQo+RxoFpbdo5aelPh8LwSP4Lo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=tYCkOJDHKoHSYCl4GKsQWl4+Te6GuPmT5jLEFPmyWjCwi4wMtVvpCvkaux2IH6JdG
-	 hSYz8LLKLaeAnzcxG9MKua54mWFv4Dx4ycRE3HT6srjxIJkv7OYc2FynIrTLEZ3I7i
-	 nPsTuV5Xb6vSfMx/z1ItBfGHlLsPzvJAgrEsqM2Ib4oGJiBiwZfrJotyELTGk6t2+o
-	 aQjwkDW5o1/7jFBIfpIZSanwxeQynrs7YwiHyPdLicVE717l3UdIs/VdPiSd7URI0M
-	 u/41++oSrAPpcCqwKc2o9jCshSxwebAvezYo8xfziUY7/Krm20rcJQSbIXjjoPvWzO
-	 yp/Fyqc49JzSA==
-Message-ID: <6be17a08-f8aa-4f91-9bd0-d9e1f0a92d90@kernel.org>
-Date: Fri, 30 Jan 2026 17:54:05 +0100
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DkQgSLUW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1769792053;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ixS7CS4PXwTW9bvfkcESkxmK+4/9u4Hbnj0iEc5lOvE=;
+	b=DkQgSLUWCMD/UKgINxWcGdTX149YvBovQvS5SWqPOkBzXve1/5ebL0HDYLU/THQThqvjz/
+	M1+XXt8YsN1QIYU1YXDbjeK30DqX3O4yCe2Q5kAWa7Pa9RyBkzLRl0C3YPkhOweJDmIarP
+	lWMRcMTvXDaitRpFYZ0kHZnkq8rE//A=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-394-1FTrGvk3NKK16kloj-iNQg-1; Fri,
+ 30 Jan 2026 11:54:08 -0500
+X-MC-Unique: 1FTrGvk3NKK16kloj-iNQg-1
+X-Mimecast-MFC-AGG-ID: 1FTrGvk3NKK16kloj-iNQg_1769792046
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D1ADE180034A;
+	Fri, 30 Jan 2026 16:54:05 +0000 (UTC)
+Received: from p16v.redhat.com (unknown [10.45.226.27])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D47091800109;
+	Fri, 30 Jan 2026 16:53:59 +0000 (UTC)
+From: Ivan Vecera <ivecera@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Petr Oros <poros@redhat.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Jonathan Lemon <jonathan.lemon@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Prathosh Satish <Prathosh.Satish@microchip.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH net-next v3 3/9] dpll: Add notifier chain for dpll events
+Date: Fri, 30 Jan 2026 17:53:32 +0100
+Message-ID: <20260130165338.101860-4-ivecera@redhat.com>
+In-Reply-To: <20260130165338.101860-1-ivecera@redhat.com>
+References: <20260130165338.101860-1-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3] net: sched: sfq: add detailed drop reasons
- for monitoring
-To: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
- netdev@vger.kernel.org, Eric Dumazet <eric.dumazet@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>
-Cc: bpf@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, horms@kernel.org,
- jiri@resnulli.us, edumazet@google.com, xiyou.wangcong@gmail.com,
- jhs@mojatatu.com, carges@cloudflare.com, kernel-team@cloudflare.com
-References: <176917072608.1186611.11185920960590396939.stgit@firesoul>
- <87zf5v3347.fsf@toke.dk>
-Content-Language: en-US
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-In-Reply-To: <87zf5v3347.fsf@toke.dk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
+From: Petr Oros <poros@redhat.com>
 
+Currently, the DPLL subsystem reports events (creation, deletion, changes)
+to userspace via Netlink. However, there is no mechanism for other kernel
+components to be notified of these events directly.
 
-On 30/01/2026 09.40, Toke Høiland-Jørgensen wrote:
-> Jesper Dangaard Brouer <hawk@kernel.org> writes:
-> 
->> Add specific drop reasons to SFQ qdisc to improve packet drop
->> observability and monitoring capabilities. This change replaces
->> generic qdisc_drop() calls with qdisc_drop_reason() to provide
->> granular metrics about different drop scenarios in production
->> environments.
->>
->> Two new drop reasons are introduced:
->>
->> - SKB_DROP_REASON_QDISC_SFQ_MAXFLOWS: Used when a new flow cannot
->>    be created because the maximum number of flows (flows parameter)
->>    has been reached and no free flow slots are available.
->>
->> - SKB_DROP_REASON_QDISC_SFQ_MAXDEPTH: Used when a flow's queue
->>    length exceeds the per-flow depth limit (depth parameter),
->>    triggering either tail drop or head drop depending on headdrop
->>    configuration.
->>
->> The existing SKB_DROP_REASON_QDISC_OVERLIMIT is used in sfq_drop()
->> when the overall qdisc limit is exceeded and packets are dropped
->> from the longest queue.
->>
->> The naming uses qdisc-specific drop reasons tied to SFQ tunables,
->> following the pattern established by Eric's FQ commit 5765c7f6e317
->> ("net_sched: sch_fq: add three drop_reason") which introduced
->> FQ_BAND_LIMIT, FQ_HORIZON_LIMIT, and FQ_FLOW_LIMIT.
->>
->> The new drop reasons are inserted in the middle of the enum after
->> SKB_DROP_REASON_QDISC_CONGESTED to group all qdisc-related reasons
->> together. While drop reason enum values are not UAPI, the enum
->> names implicitly become UAPI as userspace tools rely on BTF to
->> resolve names to values. This makes middle-insertion safe as long
->> as names remain stable.
->>
->> These detailed drop reasons enable production monitoring systems
->> to distinguish between different SFQ drop scenarios and generate
->> specific metrics for:
->> - Flow table exhaustion (flows exceeded)
->> - Per-flow congestion (depth limit exceeded)
->> - Global qdisc congestion (overall limit exceeded)
->>
->> This granular visibility allows operators to identify capacity
->> planning needs, detect traffic patterns, and optimize SFQ
->> configuration based on real-world drop patterns.
->>
->> Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
-> 
-> Okay, so I went looking for ways to get the information (which qdisc did
-> the drop come from) with a generic drop reason and... it's not exactly
-> trivial?
-> 
+Add a raw notifier chain to the DPLL core protected by dpll_lock. This
+allows other kernel subsystems or drivers to register callbacks and
+receive notifications when DPLL devices or pins are created, deleted,
+or modified.
 
-(Correct, it is actually not possible to get the qdisc from the call
-location (see below), because we don't have the txq.)
+Define the following:
+- Registration helpers: {,un}register_dpll_notifier()
+- Event types: DPLL_DEVICE_CREATED, DPLL_PIN_CREATED, etc.
+- Context structures: dpll_{device,pin}_notifier_info  to pass relevant
+  data to the listeners.
 
-> My thought was that you could get it from the location, but that ends up
-> being in the generic __dev_queue_xmit:
-> 
->             ping-117101  [017] b.s2. 155651.231372: kfree_skb: skbaddr=0000000019495eb6 rx_sk=0000000000000000 protocol=34525 location=__dev_queue_xmit+0xcbd/0xee0 reason: QDISC_DROP
-> 
-> So you can't actually use the kfree_skb trace point to go backwards to
-> the qdisc.
+The notification chain is invoked alongside the existing Netlink event
+generation to ensure in-kernel listeners are kept in sync with the
+subsystem state.
 
-Thanks you for providing this example. Showing what info is provided by
-the tracepoint to existing tools.  (The location=__dev_queue_xmit is
-key, but realize this is actually __dev_xmit_skb being inlined)
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Co-developed-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Petr Oros <poros@redhat.com>
+---
+ drivers/dpll/dpll_core.c    | 57 +++++++++++++++++++++++++++++++++++++
+ drivers/dpll/dpll_core.h    |  4 +++
+ drivers/dpll/dpll_netlink.c |  6 ++++
+ include/linux/dpll.h        | 29 +++++++++++++++++++
+ 4 files changed, 96 insertions(+)
 
-
-> Given that we have a sometimes-NULL socket parameter to the kfree_skb
-> tracepoint, I think it would make sense to augment it with a 'dev'
-> parameter as well, but that would require some restructuring of the drop
-> code, I guess.
-> 
-
-Adding 'dev' parameter to drop tracepoint is IMHO a can-of-worms.
-I.e. do you mean the ingress or egress device?
-The skb->dev pointer changes meaning ingress or egress depending on
-where in the network stack code we are.  And sometimes it is not even a
-net_device pointer, see the double union[1] skb->dev belongs to.
-Besides having the 'dev' doesn't help my use-case, I need the qdisc.
-
-  [1] 
-https://elixir.bootlin.com/linux/v6.18.6/source/include/linux/skbuff.h#L886-L900
-
-I've been looking over the code multiple times. A possible alternative
-is to have a new tracepoint for qdisc drops (meaning it no-longer calls
-trace_kfree_skb / skb:kfree_skb). We could argue that qdisc drops have
-it's own meaning like "consume".  Would this be acceptable?
-
-This will allow tracepoint to have it's own enum set of
-qdisc_drop_reasons.  This new tracepoint should have the same arguments
-as __dev_xmit_skb, and we know the 'dev' is egress :
-
-  static inline int __dev_xmit_skb(struct sk_buff *skb, struct Qdisc *q,
-				 struct net_device *dev,
-				 struct netdev_queue *txq)
-
-Doing this work involves removing all the qdisc specific drop_reason,
-except SKB_DROP_REASON_QDISC_DROP.  Is that acceptable?
-
-I need some buy-in from maintainers Paolo/Jakub/Eric if you want me to
-go down this road.  It is a lot of churn and restructuring for
-something, that might be overkill.  Current patch solves my use-case,
-but it would be cool/powerful to have qdisc pointer readable by BPF,
-although I don't have a use-case in mind.
-
-
-> Another option would be to add new stats members to sfq for each of
-> these drop reasons? Assuming you're only after the counts, that would
-> allow you to get those without adding new drop reasons to the core code?
->
-
-I'm fine with someone adding more stats members to SFQ, but it doesn't
-solve my use-case.  As mentioned before, we also sample packets and have
-different sample rates based on drop_reasons.  We also use this as a
-cmdline troubleshooting tool when debugging a prod issue, e.g. just
-using perf record.
-
-
-> OTOH, since we already have per-qdisc specific drop reasons for FQ and
-> CAKE, and adding more enums is cheap, I am also OK with adding these; so
-> with that in mind:
-> 
-> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-
-Thanks a lot for your review.
-
---Jesper
-
-
+diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
+index 55f3ff50a8709..4bcffe3507cd7 100644
+--- a/drivers/dpll/dpll_core.c
++++ b/drivers/dpll/dpll_core.c
+@@ -23,6 +23,8 @@ DEFINE_MUTEX(dpll_lock);
+ DEFINE_XARRAY_FLAGS(dpll_device_xa, XA_FLAGS_ALLOC);
+ DEFINE_XARRAY_FLAGS(dpll_pin_xa, XA_FLAGS_ALLOC);
+ 
++static RAW_NOTIFIER_HEAD(dpll_notifier_chain);
++
+ static u32 dpll_device_xa_id;
+ static u32 dpll_pin_xa_id;
+ 
+@@ -46,6 +48,39 @@ struct dpll_pin_registration {
+ 	void *cookie;
+ };
+ 
++static int call_dpll_notifiers(unsigned long action, void *info)
++{
++	lockdep_assert_held(&dpll_lock);
++	return raw_notifier_call_chain(&dpll_notifier_chain, action, info);
++}
++
++void dpll_device_notify(struct dpll_device *dpll, unsigned long action)
++{
++	struct dpll_device_notifier_info info = {
++		.dpll = dpll,
++		.id = dpll->id,
++		.idx = dpll->device_idx,
++		.clock_id = dpll->clock_id,
++		.type = dpll->type,
++	};
++
++	call_dpll_notifiers(action, &info);
++}
++
++void dpll_pin_notify(struct dpll_pin *pin, unsigned long action)
++{
++	struct dpll_pin_notifier_info info = {
++		.pin = pin,
++		.id = pin->id,
++		.idx = pin->pin_idx,
++		.clock_id = pin->clock_id,
++		.fwnode = pin->fwnode,
++		.prop = &pin->prop,
++	};
++
++	call_dpll_notifiers(action, &info);
++}
++
+ struct dpll_device *dpll_device_get_by_id(int id)
+ {
+ 	if (xa_get_mark(&dpll_device_xa, id, DPLL_REGISTERED))
+@@ -539,6 +574,28 @@ void dpll_netdev_pin_clear(struct net_device *dev)
+ }
+ EXPORT_SYMBOL(dpll_netdev_pin_clear);
+ 
++int register_dpll_notifier(struct notifier_block *nb)
++{
++	int ret;
++
++	mutex_lock(&dpll_lock);
++	ret = raw_notifier_chain_register(&dpll_notifier_chain, nb);
++	mutex_unlock(&dpll_lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(register_dpll_notifier);
++
++int unregister_dpll_notifier(struct notifier_block *nb)
++{
++	int ret;
++
++	mutex_lock(&dpll_lock);
++	ret = raw_notifier_chain_unregister(&dpll_notifier_chain, nb);
++	mutex_unlock(&dpll_lock);
++	return ret;
++}
++EXPORT_SYMBOL_GPL(unregister_dpll_notifier);
++
+ /**
+  * dpll_pin_get - find existing or create new dpll pin
+  * @clock_id: clock_id of creator
+diff --git a/drivers/dpll/dpll_core.h b/drivers/dpll/dpll_core.h
+index d3e17ff0ecef0..b7b4bb251f739 100644
+--- a/drivers/dpll/dpll_core.h
++++ b/drivers/dpll/dpll_core.h
+@@ -91,4 +91,8 @@ struct dpll_pin_ref *dpll_xa_ref_dpll_first(struct xarray *xa_refs);
+ extern struct xarray dpll_device_xa;
+ extern struct xarray dpll_pin_xa;
+ extern struct mutex dpll_lock;
++
++void dpll_device_notify(struct dpll_device *dpll, unsigned long action);
++void dpll_pin_notify(struct dpll_pin *pin, unsigned long action);
++
+ #endif
+diff --git a/drivers/dpll/dpll_netlink.c b/drivers/dpll/dpll_netlink.c
+index 499bca460b1e1..a3c87ca5943a4 100644
+--- a/drivers/dpll/dpll_netlink.c
++++ b/drivers/dpll/dpll_netlink.c
+@@ -753,17 +753,20 @@ dpll_device_event_send(enum dpll_cmd event, struct dpll_device *dpll)
+ 
+ int dpll_device_create_ntf(struct dpll_device *dpll)
+ {
++	dpll_device_notify(dpll, DPLL_DEVICE_CREATED);
+ 	return dpll_device_event_send(DPLL_CMD_DEVICE_CREATE_NTF, dpll);
+ }
+ 
+ int dpll_device_delete_ntf(struct dpll_device *dpll)
+ {
++	dpll_device_notify(dpll, DPLL_DEVICE_DELETED);
+ 	return dpll_device_event_send(DPLL_CMD_DEVICE_DELETE_NTF, dpll);
+ }
+ 
+ static int
+ __dpll_device_change_ntf(struct dpll_device *dpll)
+ {
++	dpll_device_notify(dpll, DPLL_DEVICE_CHANGED);
+ 	return dpll_device_event_send(DPLL_CMD_DEVICE_CHANGE_NTF, dpll);
+ }
+ 
+@@ -821,16 +824,19 @@ dpll_pin_event_send(enum dpll_cmd event, struct dpll_pin *pin)
+ 
+ int dpll_pin_create_ntf(struct dpll_pin *pin)
+ {
++	dpll_pin_notify(pin, DPLL_PIN_CREATED);
+ 	return dpll_pin_event_send(DPLL_CMD_PIN_CREATE_NTF, pin);
+ }
+ 
+ int dpll_pin_delete_ntf(struct dpll_pin *pin)
+ {
++	dpll_pin_notify(pin, DPLL_PIN_DELETED);
+ 	return dpll_pin_event_send(DPLL_CMD_PIN_DELETE_NTF, pin);
+ }
+ 
+ int __dpll_pin_change_ntf(struct dpll_pin *pin)
+ {
++	dpll_pin_notify(pin, DPLL_PIN_CHANGED);
+ 	return dpll_pin_event_send(DPLL_CMD_PIN_CHANGE_NTF, pin);
+ }
+ 
+diff --git a/include/linux/dpll.h b/include/linux/dpll.h
+index f2e8660e90cdf..8ed90dfc65f05 100644
+--- a/include/linux/dpll.h
++++ b/include/linux/dpll.h
+@@ -11,6 +11,7 @@
+ #include <linux/device.h>
+ #include <linux/netlink.h>
+ #include <linux/netdevice.h>
++#include <linux/notifier.h>
+ #include <linux/rtnetlink.h>
+ 
+ struct dpll_device;
+@@ -172,6 +173,30 @@ struct dpll_pin_properties {
+ 	u32 phase_gran;
+ };
+ 
++#define DPLL_DEVICE_CREATED	1
++#define DPLL_DEVICE_DELETED	2
++#define DPLL_DEVICE_CHANGED	3
++#define DPLL_PIN_CREATED	4
++#define DPLL_PIN_DELETED	5
++#define DPLL_PIN_CHANGED	6
++
++struct dpll_device_notifier_info {
++	struct dpll_device *dpll;
++	u32 id;
++	u32 idx;
++	u64 clock_id;
++	enum dpll_type type;
++};
++
++struct dpll_pin_notifier_info {
++	struct dpll_pin *pin;
++	u32 id;
++	u32 idx;
++	u64 clock_id;
++	const struct fwnode_handle *fwnode;
++	const struct dpll_pin_properties *prop;
++};
++
+ #if IS_ENABLED(CONFIG_DPLL)
+ void dpll_netdev_pin_set(struct net_device *dev, struct dpll_pin *dpll_pin);
+ void dpll_netdev_pin_clear(struct net_device *dev);
+@@ -242,4 +267,8 @@ int dpll_device_change_ntf(struct dpll_device *dpll);
+ 
+ int dpll_pin_change_ntf(struct dpll_pin *pin);
+ 
++int register_dpll_notifier(struct notifier_block *nb);
++
++int unregister_dpll_notifier(struct notifier_block *nb);
++
+ #endif
+-- 
+2.52.0
 
