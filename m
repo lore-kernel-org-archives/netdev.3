@@ -1,306 +1,261 @@
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942CF313558
-	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 07:39:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769758752; cv=none; b=fMCe5XppvJc4+OEy07GQZ7emOZXgEDrx95u0852v2w4vwqihSoaOppvi+3F0Y3sMNiqO/0bglKl8ByJEJH0PZuoix/UvKrgC5auUDeHrY3FUmvsdGwxT9i1C/lKrnHfC8AY55cs1GzQ1PQZWFHSVEtnh5AoG51uqidIWscPNhyc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769758752; c=relaxed/simple;
-	bh=947Ihnztamc5xCRw/MGVHd3zDD8SrHrHL7SG/64BBXs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SVq9twIZL2qL7HsdkB9TYX4q8DJ/2gpIVzprxdpoqsR7TUbqOVZJ/WPdjxSNO7Dyszz2JyA5TDl4mnYxxlNSUZu8HIwVZa2/0QSKDzsHc8vrFw0Y2MucyZS9N5wb7rgUn2uMgKLYBMbGNqoQXcuDMHX/FvII+VnSfDrN9bOvkK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lURW+nxZ; arc=none smtp.client-ip=74.125.82.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCC427281D;
+	Fri, 30 Jan 2026 07:40:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769758856; cv=fail; b=omoZWCKXBPc1IDol26pZHp8HI7A9Ogd4h21D5bvn5l9fy9S4C65WxI3h1fEbO7owaKC7d6ROar9znudBfx72Kpc5dHru9SYjdMVwGZf3DSgK/Hxy5vzndTg6gn11Nm3RIRL1hBLNYjKtK+iUoVFicZnHW2dh0Num3kDyUyZ3JvQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769758856; c=relaxed/simple;
+	bh=dTuKRI/qN301nuOgFbh/63m/aQWfM5t8thAKwbPADo8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=bgq3MoL5fyt8SkhhKKC40iBf+5OEp+AHaYnEV/v4p9jpGNItdRaMuqzO514heabiCMyOpGwdkn7AYKDGB6lnH+AcDcnamqz15wqopGs7iqpR99uhYxjGmrzk5FpVYEg21R/epD/X2Yv2dyFm/rdwsMzQuz44azF9Y3Stxleq9nU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XJZFAYpw; arc=fail smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lURW+nxZ"
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-11f1fb91996so173473c88.1
-        for <netdev@vger.kernel.org>; Thu, 29 Jan 2026 23:39:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769758749; x=1770363549; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=DdVE2+FCBzVjnnVs+2tHZ0yjRqOVQO47L49tKgXTrYw=;
-        b=lURW+nxZxDrOQa7lZUhD0XUexud1wi1OuRgsi25Jk6GOLuZzQ62A4r86skKx3ChuVi
-         e/br+84UFV3Jb+UQTp8lz/wtpLDkKRtiID2tiN4qOI314ZqixT0DLALCtQmcDhsldRit
-         OZXmq7MlXmLOEySZtauHf2y3McPTPDhx2TNUo5fre9xBgGjjcL4IkUgp2VJz/0dU4nTT
-         uaXnICRaDiDdkBauRDq4U7joN8HuKTzGngsUDUSe+JgqRCFCLq7b+yAq5BHqlCatJvDU
-         twVqRPuGYmKSHmyH9nQ04WgM70f7WoRhaVKG3vfXktqUkGSrKelYHGmauKJ1ud/fkEXu
-         0X4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769758749; x=1770363549;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DdVE2+FCBzVjnnVs+2tHZ0yjRqOVQO47L49tKgXTrYw=;
-        b=J9+hg3fBhaNvcsv5WmuoXiFZlgjVdzv3SZyckyFtVdayBZpFYVivpeMoQ8aHy1ZuA9
-         9ao2rvdMphFoXBR/qLS4xX5ofbl6dtGHwO/SP2/ZRUwp6g5XwueC4IVeouceDaJVv3du
-         wdiIYw0fJc3s4+vBxe1AmwqcTE606jsbMYazORl3vXZw/M3wU2zBN0L66eUWDMNLknNx
-         DcLbVq3Xonzw6BgsCy5xK0jakfRt0SvA/CwAfhfV5C9Baj62iTd8A+ajxhw9Utxu3XcH
-         7LYbvt3PMt19IY6Ogtd+DVHE0IB4XX1u22HJbWPoqNglwyKqOVMisLAxsMeFKtzo1iee
-         GnNA==
-X-Gm-Message-State: AOJu0YxqsIwzYN/zdE5oP+6dT+owiE90cICTt3oH5B28+Gy4qe5iXmfY
-	GR7oTP6d2NfAzf6xH9Zj4DE2y6gfDPH9TRk9tz7ISGmJxQknUCHBAqI449EP8RNP
-X-Gm-Gg: AZuq6aJGyhe0MJq5eKr1tKPZu38F6/rmdV6kcEtYiLgEvex8QCdOM6SADhj/jz3tVpp
-	yNzgTQQ6p2JIgkZalv9aQ5/NzW0B73GZlcaoQ323s1kwi8h7JhLOW8TpWpdP6HMqE91RreEIKSY
-	+oy+MpQ2lQI24ps29w5dLBuVmOj9w3JU2Vkj4ljzaPDxoYKeSTaAHVTIAQLsT3f+gDPRexfz+/e
-	Pin+wApZqs6IfQKFNIGK/gJc53tBQLu7QAoAM5fLrg7cypvQYBj8WWlcWpckcwT80HmTGDqp8ke
-	c7Q34a102Zurm3J4tZgGAzY5Fke7RL7OnhKv/5vTQ4gLOLhbzZyGndIqxWYnpsxV2vk8tFpzpY3
-	u9dx3CLpVg3sUGVvX8rS+3iCMrUUXGAsH0ZVPGufrkpA1JwwS0UmoLcQHKatwG2fB/3JYc9FCvJ
-	6ZWssAMtjh9vWnvGLK6tzgt/VnS8AsC7ws22UZPLUSZ3HL7+aOpIOeRvyyPXfCV5DgRRRBiNwge
-	PQXKdJNhLzLrURBJzn6NmOWPnJZIBr6XNJHwWVR/FQRiwP36DkN3CJfBBg5AT+iiP0a+kkNY/2n
-	qX+n
-X-Received: by 2002:a05:7022:2486:b0:11b:9386:a3c0 with SMTP id a92af1059eb24-125c1041f6emr983267c88.43.1769758749278;
-        Thu, 29 Jan 2026 23:39:09 -0800 (PST)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9de948esm10187112c88.9.2026.01.29.23.39.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jan 2026 23:39:08 -0800 (PST)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-usb@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Korsgaard <peter@korsgaard.com>,
-	Steve Glendinning <steve.glendinning@shawell.net>,
-	Oliver Neukum <oneukum@suse.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Max Schulze <max.schulze@online.de>,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>
-Subject: [PATCH net-next v3] net: usb: introduce usbnet_mii_ioctl helper function
-Date: Thu, 29 Jan 2026 23:37:49 -0800
-Message-ID: <20260130073810.29090-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XJZFAYpw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1769758854; x=1801294854;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=dTuKRI/qN301nuOgFbh/63m/aQWfM5t8thAKwbPADo8=;
+  b=XJZFAYpwG76DBOZZHg+MLpbtoqw0w8ZmsXTL432aEr9CC5UhRbuV3FlT
+   JiLY+cMEYp4E1oe1ACnaIE+CyK58Sr/Jc+aO5+GhbrZARvVfx8Q5vBGOz
+   7UkVfPHC1ogfALhyCiz32HOX1GEJeAK2JhJEpYFk0Mo52lV7Lepq+EW2J
+   iL8pH1n79epntd+BVKVljP5DOGoNGjp3Gy6j8fGlUioFi+50j/AqUomzn
+   /e6hY3WvdXEN1ymP4viDgJzo8z8FPFuXrYcJvEOejZZjUEVeLOk0FpZ8C
+   tJYls26DNHKgD3cxchYFc7FSNnHtsfeZz/cbvX9roR1vfRisSNSxAQUgY
+   w==;
+X-CSE-ConnectionGUID: Be+hdXgSTEqcoAj1dRtRFw==
+X-CSE-MsgGUID: SjpaucaKShSqrW9Pr+ydZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="81323356"
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; 
+   d="scan'208";a="81323356"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 23:40:54 -0800
+X-CSE-ConnectionGUID: eIfmX2noT5eCeqVc3ZyG0A==
+X-CSE-MsgGUID: Kl2BpxkkRaqOCf3n1tTpPA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; 
+   d="scan'208";a="240049953"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 23:40:53 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Thu, 29 Jan 2026 23:40:52 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Thu, 29 Jan 2026 23:40:52 -0800
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.9) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Thu, 29 Jan 2026 23:40:52 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BrLEs5rRT2tPAVnGWIDGXkxTWb24VyMSwiteYa4mWYN5ag3QCzhdZeyNf6e2ogecT1qQ7/GE/7tGU2c6ROccwPD8xZyzYPQhJaGlAJjhuGjNnHdqUZLxVMCvF+YhpnS9/rD0yWnfWnbxYO7/vu+HGiVX0rmuWffE0F4y9Ek/2GueEDUMBTZ5co+YX4+i47Y0DYHfLJoQhf7uk6fZ3UUiEaQEr18Q96HSW2Q5705re1pcKgraS5cU3/RKeacW9p/klCtiQ9RW8CD8GdhpkiyXkpjGg09ViL6PfaIozvcByQV7XA377BtXnbZU9F6+9tB0efsLd4qnzYCbKlXxsU6NEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=AL1fhz8akFh+Y6SaLCBMZ1UszF4RRwfIuS3jGY7RXpw=;
+ b=DT6dAlaTzb/OCHwndAXXo/KgJpx5YqrjJ4d4N645yM47pCA0ICau2KveF0CtgCN9Q5kfxgb6awh1JqVq7jp6LjRB4d2NDuBiNpxoKWHj/k6bu9PZIBdv/f/hrT7I/YddT+ERyxgYEu0hp/lkyvwIuBPRvsGnh6LneHQUWKpJNQTkiHGjIRbZ07l8pPkUhhBFVF/Rn0yQ5yO0GGOxDVFztPfg7OHXBoiW7yp+bIQY1D3bS3vLaUXJvSoUGPF/aosiprn/Xg+o3rfLiXeKrs0rlKfeg/hOvOKcKWAxKEhIRwQ6wd9MJiF95eabS6nkx8je4PoxXHHe68x1txhMWQoFdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by IA3PR11MB9110.namprd11.prod.outlook.com (2603:10b6:208:576::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Fri, 30 Jan
+ 2026 07:40:49 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::395e:7a7f:e74c:5408]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::395e:7a7f:e74c:5408%3]) with mapi id 15.20.9542.010; Fri, 30 Jan 2026
+ 07:40:49 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "Vecera, Ivan" <ivecera@redhat.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Richard Cochran <richardcochran@gmail.com>,
+	Eric Dumazet <edumazet@google.com>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "Nguyen,
+ Anthony L" <anthony.l.nguyen@intel.com>, Simon Horman <horms@kernel.org>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>, "Keller, Jacob E"
+	<jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
+Subject: RE: [Intel-wired-lan] [PATCH net] iavf: fix PTP use-after-free during
+ reset
+Thread-Topic: [Intel-wired-lan] [PATCH net] iavf: fix PTP use-after-free
+ during reset
+Thread-Index: AQHckQXFHGAflyesJE2zHtlyWD0ZIbVqVWOw
+Date: Fri, 30 Jan 2026 07:40:49 +0000
+Message-ID: <IA3PR11MB8986D77869E75AA14C8A793AE59FA@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260129095723.7269-1-poros@redhat.com>
+In-Reply-To: <20260129095723.7269-1-poros@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|IA3PR11MB9110:EE_
+x-ms-office365-filtering-correlation-id: e32e9be8-139c-4327-d377-08de5fd2e339
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?AB5/q+jeE0JtVU2yNnxY/wKXx1LaaHzFLlq/SD2E/EYz3oljcNLNILnhhR9b?=
+ =?us-ascii?Q?TYfYh+prg54H9amMx0OnnBaf0ouWTfv5qHC60JBR67U9Nlnlm23IkfmvftI2?=
+ =?us-ascii?Q?v/ggp2ZHkc9JOiRCKMS2m26cWg6N3/jjEjLJHeYhsYmEKptG3wV62ZYxmLxh?=
+ =?us-ascii?Q?VjIw3pmyHOWMekMuphO5Wys56qFlPDRnXRgT1w1DdUoYE9SMmBRNGl23uPSj?=
+ =?us-ascii?Q?WH39higqIQAKmMh6F/BN7OJiYcV3hL70OyMZLB1/rQCuY72phvs46adA2B5C?=
+ =?us-ascii?Q?LxgjkTwCecROoIT/CfqvG2cx5IlK5gE4rGpZgT4pulyUXS4oI24eybFa6UzQ?=
+ =?us-ascii?Q?MXZlJegt6mM790mnLgQFY+Kdvje8UGLtKXI2bthm6KuzHFZPAeWmMnujxOYP?=
+ =?us-ascii?Q?jBJ/146FknKULSYahQjX/kNvQ4Ep90H1ZuTRlKquZyGWyZs4u0hUb2kQQUru?=
+ =?us-ascii?Q?9WLZsmDIYHrxaoeZS4jEkkQtDStMnhYnQKqNfTHEwOgo5ZWY0SBM24wAkDxs?=
+ =?us-ascii?Q?ceQFvSNN+2OXjlXmGF+l4/Pt9w+SefApMy1OPdXWA/UQjfG4lHymQiW8dPJ4?=
+ =?us-ascii?Q?TZe+E+Z4hhpQvxx4dPuRCiSwoKdlUQpP3VjRm1vetIgOThE12gqCNEQgaRvj?=
+ =?us-ascii?Q?eTiZmj6JKeJqGFy+/LpN/poPOTVB9MYoYRVjlkM6NBLWaEqilEHALNAwBdWJ?=
+ =?us-ascii?Q?2gNayyv0Xh7gyfW8kfAifxH0yIiTxe8Zopwp3gDf/GbUOmbM8kSeXp/p6d8e?=
+ =?us-ascii?Q?7zOUkLkQGVOlBJZvCf6JpMyY41ZbWnVkedlbfBu4pl8qWLiOddQvwIuouQfH?=
+ =?us-ascii?Q?dIw5b5vx+IMPUMgjmOE9nhPqSpChnbeNrQoAlOx1LRW/vjXGerEYE/A9Ca3T?=
+ =?us-ascii?Q?bl/xES6VlcV4osWRE991gFneAZeu4lY3WZs1rWhb8bnrLRjwOYwxaZkAGZrl?=
+ =?us-ascii?Q?IsbNQbpV+ysdf8HJW09wRoYQ4MvF/T11hG4T8ZKwyzRc62o4zgWNh9R6BJTh?=
+ =?us-ascii?Q?1FWyshRGvaBUoOVfzY0iw0+Ry7D+mSF4x6j5HonMbPV2spJ+kmeCthRf2qj6?=
+ =?us-ascii?Q?B2YEDVWSJoRfDGAV7aS9RI3ahivwHvo9YNxI2OTy45xicxQTqIuTVd6hnnd9?=
+ =?us-ascii?Q?5huJhCuDid3sjAhdrYzCecVB/cycITcL8ifDWwDA8HtCrLKzsSTTOCz54gj6?=
+ =?us-ascii?Q?TqvdSDwV2RYU2kUPjzS8lQogTXYxhQF5ZME4td4mfUy7308C0rPRT8isi9Wm?=
+ =?us-ascii?Q?acaLpsIYqw5MuK1lCvwwH/z1N4Eoo9p9kOtSX85crmzkYcfWDdK1pykV1R5N?=
+ =?us-ascii?Q?0oqxkAz20ihPlNOkqVZde+qv4VMmdjyQgnhc9EgWQK0lhw2hKvlOMEZLBC2B?=
+ =?us-ascii?Q?TlxAPjAD8yeIIMV09hJIiy84n6U5BTaq4g3t54KWLAJliWXwApvVKKHw+H+7?=
+ =?us-ascii?Q?RYYRS2anuz4v0mbO6YN3oehG9eI0aoboSgi4zzgwHpi0IEXZeJZyweysoDgI?=
+ =?us-ascii?Q?zRkaFKlQtUgDCUCektVcoDht0XdPt6ye8KxrIrqXTW8wU8k0e/dXT8LvOy19?=
+ =?us-ascii?Q?wqCMjBCXn1ZIRXnK+Ju25O5QYfrqacF7WRCE2/5zfHyiNZnXdLMbCWWCzSqZ?=
+ =?us-ascii?Q?vEdb+ZooL17vebeOFwmWuDY=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?NNVN2ZY2UOVdla6mnfKT2Kyu3qGuHoCky+TX7M17K69zRctA9AwIjk4S/zye?=
+ =?us-ascii?Q?GOSZENcuEGP47faYSnoV7oaQnFb3WuHttLFkjJ0VkXBKThGtr7Smp1QXh1rP?=
+ =?us-ascii?Q?FTBhOQAfkiEqxdc2YEPr+SBFR/C78rZ14+4z6+zPYMHoqigCX+JXyoUmlYaO?=
+ =?us-ascii?Q?URmg/CzLq4Pzq2ZUlwl4d7YFhd50lCE84zSoyamlq8CslxYrfayxObkJRFq/?=
+ =?us-ascii?Q?gA7w/S0S8kphMH8HJ5unsX8dm8XZI2fFeXwnKbZQdrLLPox8hWRi2qg4B9Gd?=
+ =?us-ascii?Q?SzSwiTneXbQgTmRO0G9d59OR0DMGnSXiJGbsPzPMJUvOJ/VWJxgSvoWYFwHw?=
+ =?us-ascii?Q?N/PVJJmqc9Al4RgOqSvRI2sd1iaGfSZYEwxcvmQqHhLtdFvfY8cXXjWMBNIX?=
+ =?us-ascii?Q?8OHcx3z0nFc8qwkzhuWEFT7fRr4SOwdLbPXiJcKZMGLXdqq2ugJ+YWQGmvMu?=
+ =?us-ascii?Q?dB5MiFifsX6XEpHRUE0cN3G4TFDZiOzwElme/FhUbwq9tj1PDmS/KBPXfEqR?=
+ =?us-ascii?Q?PnQw5hTBE/I0L1kbZBELuPQ83oYMvEaajgA0WtrlAjfsVSWa3LuiFSbtBxkS?=
+ =?us-ascii?Q?dlMz0Q4gJAykJbSsxcKOFvGXNmh5NkavW3WOS1doBvTCsKUTTW12Tj+PyfwH?=
+ =?us-ascii?Q?hP5uHbuCEWg0VUHPgOymB0RljkQNJTgPhjNStWZKaaNGhXQYYCbf0i+LqEdl?=
+ =?us-ascii?Q?xJOqaspkRN703nHlvcbDry4xMKpdQIIGDrpPGy1akqRGkm0AtZcVGbsCZqYL?=
+ =?us-ascii?Q?UNq8d27HQPpzYtSJ+Tuy4YHT2uFek5ko65u59SNMyfFgx0ML+DUMUnfDTt64?=
+ =?us-ascii?Q?/DZi1myM+1qwkjPY+V7KQaLiHBx9RM/T4hFtvwrhl+p0YcY+FNJ4fvR5gvT7?=
+ =?us-ascii?Q?PT0vcWM/DRNqZfciDS2Wxpi8pEBGAUSZI/JvX+oMohXiLX+B+C46OFZZOwDy?=
+ =?us-ascii?Q?pIP3nIkja/Z/iBxpP7lkRX88FKnrqtoydaxIGJbLRg8QZoCw+QT6OnVOffyT?=
+ =?us-ascii?Q?XveiCJmcw8uEBs78wdXOrofX9btC6fZ9S5bHXUH0rWQra0F4ZJfLCrswxirY?=
+ =?us-ascii?Q?bKaiJJ1JoAPj55HkeZtFYp/NV2A0v3gMjyTICi5/hc5sd0VFgSl/IMJXK8jV?=
+ =?us-ascii?Q?5cb+bHSIWKXutBwejDMlXS1EAbSnbV2IB1pEyJTWe/hmF6s0RE0uXF2kRF62?=
+ =?us-ascii?Q?Ccvt5oFepP9zkSyCzn+B2xNectUnLu3N1e3x3/7BZJiSp6t9TEeVgyyq2MdQ?=
+ =?us-ascii?Q?orNomLd5nNPZ3c9myfdCrP154HPJri4KIofJGURDxls0lQFQt2+w4tyT2YaA?=
+ =?us-ascii?Q?cWbbr8k5Gip9w6e/fA2VuGPstmUisUqTf8lohLygXMcVrZGlBhnRNmU0QEoV?=
+ =?us-ascii?Q?N6nvzZhXI4H0jQ8vxfNBlEgfU/lrSVBJw7bAXQOpQG6qY797Am6QNM8wypMv?=
+ =?us-ascii?Q?azIdCKJUGfpfcVsXZAGvZuUYaubtuitkQZiNxIoehutedAhfraR/Y6rJFoAa?=
+ =?us-ascii?Q?SkPA+sQhwS4qSe0vzTacftTgAY3IXGg8kpDULzqPGh5sVxT7HYXtGw4lFJ/f?=
+ =?us-ascii?Q?Eg6BldFsZ651fxKLTzhtM5HPFanpyyGFrgNy+OX/HDi40fb7zdRR/yMb/tRx?=
+ =?us-ascii?Q?ROi5N8lzVq8RjI4lhGoz0WU++gHzlR1T2jR6U6ihn356JXiaKqXrv8YeZTnF?=
+ =?us-ascii?Q?69uiD6JJRGU169R2s1+/PItYcbgpAC9sieJ/Q0loByXcgZDTVzMI3/CSkqjX?=
+ =?us-ascii?Q?8ExtOIipzhCjvGeQrdL6tUltH3gqZjc=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e32e9be8-139c-4327-d377-08de5fd2e339
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jan 2026 07:40:49.2929
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: b/Og7flp5uT+uofbNoEhr8bkm5J+vUgm6kad2oyNsXSf8N+Cf5yRoQXDni1fFeN3boJrwUxMPIUG/c5KhKIU2v42oYoWPLfbmjN8BlGsif0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9110
+X-OriginatorOrg: intel.com
 
-Many USB network drivers use identical code to pass ioctl
-requests on to the MII layer. Reduce code duplication by
-refactoring this code into a helper function.
 
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev> (v1)
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
----
-Changes in v3:
-Rebase on latest net-next
-Add changelog
-Add received Reviewed-by tag
-Changes in v2 (not numbered):
-Resent with maintainer CCs
 
- drivers/net/usb/asix_devices.c | 11 ++---------
- drivers/net/usb/ax88179_178a.c |  8 +-------
- drivers/net/usb/dm9601.c       |  9 +--------
- drivers/net/usb/mcs7830.c      |  8 +-------
- drivers/net/usb/smsc75xx.c     |  4 +---
- drivers/net/usb/sr9800.c       |  9 +--------
- drivers/net/usb/usbnet.c       |  8 ++++++++
- include/linux/usb/usbnet.h     |  1 +
- 8 files changed, 16 insertions(+), 42 deletions(-)
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> Of Petr Oros
+> Sent: Thursday, January 29, 2026 10:57 AM
+> To: netdev@vger.kernel.org
+> Cc: Vecera, Ivan <ivecera@redhat.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Richard Cochran
+> <richardcochran@gmail.com>; Eric Dumazet <edumazet@google.com>; linux-
+> kernel@vger.kernel.org; Andrew Lunn <andrew+netdev@lunn.ch>; Nguyen,
+> Anthony L <anthony.l.nguyen@intel.com>; Simon Horman
+> <horms@kernel.org>; Mateusz Polchlopek <mateusz.polchlopek@intel.com>;
+> Keller, Jacob E <jacob.e.keller@intel.com>; Jakub Kicinski
+> <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; David S. Miller
+> <davem@davemloft.net>; intel-wired-lan@lists.osuosl.org
+> Subject: [Intel-wired-lan] [PATCH net] iavf: fix PTP use-after-free
+> during reset
+>=20
+> Commit 7c01dbfc8a1c5f ("iavf: periodically cache PHC time") introduced
+> a worker to cache PHC time, but failed to stop it during reset or
+> disable.
+>=20
+> This creates a race condition where `iavf_reset_task()` or
+> `iavf_disable_vf()` free adapter resources (AQ) while the worker is
+> still running. If the worker triggers `iavf_queue_ptp_cmd()` during
+> teardown, it accesses freed memory/locks, leading to a crash.
+>=20
+> Fix this by calling `iavf_ptp_release()` before tearing down the
+> adapter.
+> This ensures `ptp_clock_unregister()` synchronously cancels the worker
+> and cleans up the chardev before the backing resources are destroyed.
+>=20
+> Fixes: 7c01dbfc8a1c5f ("iavf: periodically cache PHC time")
+> Signed-off-by: Petr Oros <poros@redhat.com>
+> ---
+>  drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c
+> b/drivers/net/ethernet/intel/iavf/iavf_main.c
+> index 4b0fc8f354bc90..0dd58ce5a53ab1 100644
+> --- a/drivers/net/ethernet/intel/iavf/iavf_main.c
+> +++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+> @@ -3025,6 +3025,8 @@ static void iavf_disable_vf(struct iavf_adapter
+> *adapter)
+>=20
+>  	adapter->flags |=3D IAVF_FLAG_PF_COMMS_FAILED;
+>=20
+> +	iavf_ptp_release(adapter);
+> +
+>  	/* We don't use netif_running() because it may be true prior to
+>  	 * ndo_open() returning, so we can't assume it means all our
+> open
+>  	 * tasks have finished, since we're not holding the rtnl_lock
+> here.
+> @@ -3200,6 +3202,8 @@ static void iavf_reset_task(struct work_struct
+> *work)
+>  	iavf_change_state(adapter, __IAVF_RESETTING);
+>  	adapter->flags &=3D ~IAVF_FLAG_RESET_PENDING;
+>=20
+> +	iavf_ptp_release(adapter);
+> +
+>  	/* free the Tx/Rx rings and descriptors, might be better to
+> just
+>  	 * re-use them sometime in the future
+>  	 */
+> --
+> 2.52.0
 
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index c73cf52a65a8..a453e4275e2f 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -97,13 +97,6 @@ static u32 asix_get_phyid(struct usbnet *dev)
- 	return phy_id;
- }
- 
--static int asix_ioctl (struct net_device *net, struct ifreq *rq, int cmd)
--{
--	struct usbnet *dev = netdev_priv(net);
--
--	return generic_mii_ioctl(&dev->mii, if_mii(rq), cmd, NULL);
--}
--
- /* We need to override some ethtool_ops so we require our
-    own structure so we don't interfere with other usbnet
-    devices that may be connected at the same time. */
-@@ -190,7 +183,7 @@ static const struct net_device_ops ax88172_netdev_ops = {
- 	.ndo_get_stats64	= dev_get_tstats64,
- 	.ndo_set_mac_address 	= eth_mac_addr,
- 	.ndo_validate_addr	= eth_validate_addr,
--	.ndo_eth_ioctl		= asix_ioctl,
-+	.ndo_eth_ioctl		= usbnet_mii_ioctl,
- 	.ndo_set_rx_mode	= ax88172_set_multicast,
- };
- 
-@@ -1269,7 +1262,7 @@ static const struct net_device_ops ax88178_netdev_ops = {
- 	.ndo_set_mac_address 	= asix_set_mac_address,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_set_rx_mode	= asix_set_multicast,
--	.ndo_eth_ioctl		= asix_ioctl,
-+	.ndo_eth_ioctl		= usbnet_mii_ioctl,
- 	.ndo_change_mtu 	= ax88178_change_mtu,
- };
- 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index b034ef8a73ea..0e9ae89b840e 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -847,12 +847,6 @@ static int ax88179_set_eee(struct net_device *net, struct ethtool_keee *edata)
- 	return ret;
- }
- 
--static int ax88179_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
--{
--	struct usbnet *dev = netdev_priv(net);
--	return generic_mii_ioctl(&dev->mii, if_mii(rq), cmd, NULL);
--}
--
- static const struct ethtool_ops ax88179_ethtool_ops = {
- 	.get_link		= ethtool_op_get_link,
- 	.get_msglevel		= usbnet_get_msglevel,
-@@ -998,7 +992,7 @@ static const struct net_device_ops ax88179_netdev_ops = {
- 	.ndo_change_mtu		= ax88179_change_mtu,
- 	.ndo_set_mac_address	= ax88179_set_mac_addr,
- 	.ndo_validate_addr	= eth_validate_addr,
--	.ndo_eth_ioctl		= ax88179_ioctl,
-+	.ndo_eth_ioctl		= usbnet_mii_ioctl,
- 	.ndo_set_rx_mode	= ax88179_set_multicast,
- 	.ndo_set_features	= ax88179_set_features,
- };
-diff --git a/drivers/net/usb/dm9601.c b/drivers/net/usb/dm9601.c
-index 5540f7ec4906..f040b9673579 100644
---- a/drivers/net/usb/dm9601.c
-+++ b/drivers/net/usb/dm9601.c
-@@ -266,13 +266,6 @@ static void dm9601_get_drvinfo(struct net_device *net,
- 	usbnet_get_drvinfo(net, info);
- }
- 
--static int dm9601_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
--{
--	struct usbnet *dev = netdev_priv(net);
--
--	return generic_mii_ioctl(&dev->mii, if_mii(rq), cmd, NULL);
--}
--
- static const struct ethtool_ops dm9601_ethtool_ops = {
- 	.get_drvinfo	= dm9601_get_drvinfo,
- 	.get_link	= usbnet_get_link,
-@@ -344,7 +337,7 @@ static const struct net_device_ops dm9601_netdev_ops = {
- 	.ndo_change_mtu		= usbnet_change_mtu,
- 	.ndo_get_stats64	= dev_get_tstats64,
- 	.ndo_validate_addr	= eth_validate_addr,
--	.ndo_eth_ioctl		= dm9601_ioctl,
-+	.ndo_eth_ioctl		= usbnet_mii_ioctl,
- 	.ndo_set_rx_mode	= dm9601_set_multicast,
- 	.ndo_set_mac_address	= dm9601_set_mac_address,
- };
-diff --git a/drivers/net/usb/mcs7830.c b/drivers/net/usb/mcs7830.c
-index fdda0616704e..1aa57645f9ca 100644
---- a/drivers/net/usb/mcs7830.c
-+++ b/drivers/net/usb/mcs7830.c
-@@ -325,12 +325,6 @@ static void mcs7830_mdio_write(struct net_device *netdev, int phy_id,
- 	mcs7830_write_phy(dev, location, val);
- }
- 
--static int mcs7830_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
--{
--	struct usbnet *dev = netdev_priv(net);
--	return generic_mii_ioctl(&dev->mii, if_mii(rq), cmd, NULL);
--}
--
- static inline struct mcs7830_data *mcs7830_get_data(struct usbnet *dev)
- {
- 	return (struct mcs7830_data *)&dev->data;
-@@ -473,7 +467,7 @@ static const struct net_device_ops mcs7830_netdev_ops = {
- 	.ndo_change_mtu		= usbnet_change_mtu,
- 	.ndo_get_stats64	= dev_get_tstats64,
- 	.ndo_validate_addr	= eth_validate_addr,
--	.ndo_eth_ioctl		= mcs7830_ioctl,
-+	.ndo_eth_ioctl		= usbnet_mii_ioctl,
- 	.ndo_set_rx_mode	= mcs7830_set_multicast,
- 	.ndo_set_mac_address	= mcs7830_set_mac_address,
- };
-diff --git a/drivers/net/usb/smsc75xx.c b/drivers/net/usb/smsc75xx.c
-index 78c821349f48..cbc7101e05a6 100644
---- a/drivers/net/usb/smsc75xx.c
-+++ b/drivers/net/usb/smsc75xx.c
-@@ -744,12 +744,10 @@ static const struct ethtool_ops smsc75xx_ethtool_ops = {
- 
- static int smsc75xx_ioctl(struct net_device *netdev, struct ifreq *rq, int cmd)
- {
--	struct usbnet *dev = netdev_priv(netdev);
--
- 	if (!netif_running(netdev))
- 		return -EINVAL;
- 
--	return generic_mii_ioctl(&dev->mii, if_mii(rq), cmd, NULL);
-+	return usbnet_mii_ioctl(netdev, rq, cmd);
- }
- 
- static void smsc75xx_init_mac_address(struct usbnet *dev)
-diff --git a/drivers/net/usb/sr9800.c b/drivers/net/usb/sr9800.c
-index ee8c6c9d3962..d32b0f78ab33 100644
---- a/drivers/net/usb/sr9800.c
-+++ b/drivers/net/usb/sr9800.c
-@@ -478,13 +478,6 @@ static void sr_get_drvinfo(struct net_device *net,
- 	strscpy(info->version, DRIVER_VERSION, sizeof(info->version));
- }
- 
--static int sr_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
--{
--	struct usbnet *dev = netdev_priv(net);
--
--	return generic_mii_ioctl(&dev->mii, if_mii(rq), cmd, NULL);
--}
--
- static int sr_set_mac_address(struct net_device *net, void *p)
- {
- 	struct usbnet *dev = netdev_priv(net);
-@@ -677,7 +670,7 @@ static const struct net_device_ops sr9800_netdev_ops = {
- 	.ndo_get_stats64	= dev_get_tstats64,
- 	.ndo_set_mac_address	= sr_set_mac_address,
- 	.ndo_validate_addr	= eth_validate_addr,
--	.ndo_eth_ioctl		= sr_ioctl,
-+	.ndo_eth_ioctl		= usbnet_mii_ioctl,
- 	.ndo_set_rx_mode        = sr_set_multicast,
- };
- 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 9280ef544bbb..41b95b04143d 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1085,6 +1085,14 @@ int usbnet_nway_reset(struct net_device *net)
- }
- EXPORT_SYMBOL_GPL(usbnet_nway_reset);
- 
-+int usbnet_mii_ioctl(struct net_device *net, struct ifreq *rq, int cmd)
-+{
-+	struct usbnet *dev = netdev_priv(net);
-+
-+	return generic_mii_ioctl(&dev->mii, if_mii(rq), cmd, NULL);
-+}
-+EXPORT_SYMBOL_GPL(usbnet_mii_ioctl);
-+
- void usbnet_get_drvinfo(struct net_device *net, struct ethtool_drvinfo *info)
- {
- 	struct usbnet *dev = netdev_priv(net);
-diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
-index 2945923a8a95..b0e84896e6ac 100644
---- a/include/linux/usb/usbnet.h
-+++ b/include/linux/usb/usbnet.h
-@@ -290,6 +290,7 @@ extern u32 usbnet_get_msglevel(struct net_device *);
- extern void usbnet_set_msglevel(struct net_device *, u32);
- extern void usbnet_set_rx_mode(struct net_device *net);
- extern void usbnet_get_drvinfo(struct net_device *, struct ethtool_drvinfo *);
-+extern int usbnet_mii_ioctl(struct net_device *net, struct ifreq *rq, int cmd);
- extern int usbnet_nway_reset(struct net_device *net);
- 
- extern int usbnet_manage_power(struct usbnet *, int);
--- 
-2.43.0
-
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
