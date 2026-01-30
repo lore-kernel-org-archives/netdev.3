@@ -1,190 +1,182 @@
-Received: from mailtransmit04.runbox.com (mailtransmit04.runbox.com [185.226.149.37])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C9ED28C2BF;
-	Fri, 30 Jan 2026 11:00:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.226.149.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BEAB28C2BF
+	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 11:00:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769770837; cv=none; b=VTJJMwa+9/+d4UOkJVEfOGFZ9NwJp33UbiOefr5IouM6G/+Lv1Y+3HKGSLkpH+1i1EuunB7b4vYfGKmsUeJeAfOkbAtVZWqq5TeAAgaQyPADTjZx5+21lh1PB+qg1OpE5vLRWSP+wHNQSK34t7T4LvdeZ9mcPvSf8fTditJAPJw=
+	t=1769770852; cv=none; b=ueA/zM/oycZnNXuBDIUTlTaLZi1nE9HAJDodOk73o7ntnTr2i0itIZsMdSg6VEy0bpt6ye2p+icU5R1QWRWQKZASx3WGj40/Khc/22QZ69SDT/Ss3UG6nhVKHPsip8lMlnlWa47DUuMmh2AmGJo7k8F/FRQ9KKVFoNufDxJzZ8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769770837; c=relaxed/simple;
-	bh=h98j0GiF5Q46i/BCECwqBU7tYPkSKApo0FwwUxRx2Sg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tNE6yUoSLoZHJMnil821Zj5Egb5XD6ak7msq+U24dq4CNxQszrJLGKi7CXKuSffQ6CZuM3KP4yvH8Fu788PHkbfNd9Xg8vJBAvdPXsWii5r4zi4uWeBC1X0p4plwr4ZHauwPE2IofGxksbpnug8xpmAoCbg+dDLti6nYkBXBtLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co; spf=pass smtp.mailfrom=rbox.co; dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b=HlxXhSs+; arc=none smtp.client-ip=185.226.149.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rbox.co
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rbox.co
+	s=arc-20240116; t=1769770852; c=relaxed/simple;
+	bh=mZ7xkqfCCvs/HU5/2ZlLFYiQ7xVMb1XinETxyHQ9Yz8=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=dzMX5sDih9FWk5jSWLeEUXj3v/1DkZbZ6R136bai9gUb2VG+3e8xs3E6jxHaSYeLiTEKIPx6tHMM6EeLUw+X7Xgpy41VRQtdHhgtH5ii8hnxnpghDF4tSftKRjxiB6z1Z5WfTI9fO0KjRt79Gz60R2CEKuw/IBK2kYoJYg3Vryk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=jzx4rtGL; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rbox.co header.i=@rbox.co header.b="HlxXhSs+"
-Received: from mailtransmit03.runbox ([10.9.9.163] helo=aibo.runbox.com)
-	by mailtransmit04.runbox.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.93)
-	(envelope-from <mhal@rbox.co>)
-	id 1vlmEX-001rVx-CS; Fri, 30 Jan 2026 12:00:13 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=rbox.co;
-	s=selector2; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID;
-	bh=+/P0hfZfmKtbQtXdnzfsK7ESYSfyI04sajFusIV+zlA=; b=HlxXhSs+nyhLHSZP6SGNBIbw/X
-	ivrEGuc+Sic8atG+2PjP31yHS8imLh6cnnn0POsgsvJwoD391H/8NkgN5GtsZlQ9yHcnAolMRePt3
-	P5TX1p8iCjxTNWqkM6p8pNOjmUMvoXfiA7gHTQyMzL9K+lvFmeuJdHUMtJ+ASGaNifay8/XRaf8n+
-	f8oIuBUqR6GBpRB+7rl+zhpdYfzdEn37Ik5FaaJLtw/U9I/sSgv6vxG+DiFITIO+FG4DtdNrZustH
-	RZ8HAZQEOgPN5gca20n66W2+0WNeIxlZuUUvP+IM1VUKdqXb8k4M5w8N/yRRnVPV8RCrxywhMTZaQ
-	h4KP8QCA==;
-Received: from [10.9.9.74] (helo=submission03.runbox)
-	by mailtransmit03.runbox with esmtp (Exim 4.86_2)
-	(envelope-from <mhal@rbox.co>)
-	id 1vlmEW-0006Qe-1Y; Fri, 30 Jan 2026 12:00:12 +0100
-Received: by submission03.runbox with esmtpsa  [Authenticated ID (604044)]  (TLS1.2:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.93)
-	id 1vlmEV-004svS-IM; Fri, 30 Jan 2026 12:00:11 +0100
-Message-ID: <3362017f-9c3d-46cd-b3ce-cb750b565d5b@rbox.co>
-Date: Fri, 30 Jan 2026 12:00:09 +0100
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="jzx4rtGL"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=zywiIYip9INWXQADAtjh5YpZ//IGbM2WaNbXBkX94mM=; b=jzx4rtGLD03/+fPrs2fz+VtlZt
+	rQ5cbmDZb9+doznFUCC8QKJ0qqHj5XJa2z2K6wH+VWh63ZJFVGXw494PT7J51xzHh1593qRY3lZZ7
+	LF3ssRKM3XWR/J/GiNDjda8Qy+vR4ZHuf6CPu9S+ZPSzKni4v8O1IBRae838wdu5c9gfvt7ACocK/
+	SEeSU5JTnp8523j78m1+eIp8sLiEdAYaoaqDN+ZEBhsjwdOSLQCUJrBFVYd17kln8tMZZO9fvzsTo
+	vp8hl/lK5Z90ww4Gt6bljsxhk7BkdZV696oRrUSxHAIfezGdzZlASipS28HCq8jrYGGKL3noJOJmr
+	yHfB/urA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:50638 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1vlmEq-000000000xo-0jio;
+	Fri, 30 Jan 2026 11:00:32 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1vlmEn-00000006zo6-1sgO;
+	Fri, 30 Jan 2026 11:00:29 +0000
+In-Reply-To: <aXyPK9rlMt8h_fze@shell.armlinux.org.uk>
+References: <aXyPK9rlMt8h_fze@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 04/10] net: stmmac: rk: convert rk3588 to
+ rk_set_reg_speed()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf] bpf, sockmap: Fix af_unix null-ptr-deref in proto
- update
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: John Fastabend <john.fastabend@gmail.com>,
- Jakub Sitnicki <jakub@cloudflare.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org,
- bpf@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260129-unix-proto-update-null-ptr-deref-v1-1-e1daeb7012fd@rbox.co>
- <3fc5611f-394f-40db-b49d-2f26402e221a@linux.dev>
-Content-Language: pl-PL, en-GB
-From: Michal Luczaj <mhal@rbox.co>
-In-Reply-To: <3fc5611f-394f-40db-b49d-2f26402e221a@linux.dev>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1vlmEn-00000006zo6-1sgO@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Fri, 30 Jan 2026 11:00:29 +0000
 
-On 1/29/26 20:41, Martin KaFai Lau wrote:
-> On 1/29/26 8:47 AM, Michal Luczaj wrote:
->> BPF_MAP_UPDATE_ELEM races unix_stream_connect(): when
->> sock_map_sk_state_allowed() passes (sk_state == TCP_ESTABLISHED),
->> unix_peer(sk) in unix_stream_bpf_update_proto() may still return NULL.
->>
->> 	T0 bpf				T1 connect
->> 	------				----------
->>
->> 				WRITE_ONCE(sk->sk_state, TCP_ESTABLISHED)
->> sock_map_sk_state_allowed(sk)
->> ...
->> sk_pair = unix_peer(sk)
->> sock_hold(sk_pair)
->> 				sock_hold(newsk)
->> 				smp_mb__after_atomic()
->> 				unix_peer(sk) = newsk
->>
->> BUG: kernel NULL pointer dereference, address: 0000000000000080
->> RIP: 0010:unix_stream_bpf_update_proto+0xa0/0x1b0
->> Call Trace:
->>   sock_map_link+0x564/0x8b0
->>   sock_map_update_common+0x6e/0x340
->>   sock_map_update_elem_sys+0x17d/0x240
->>   __sys_bpf+0x26db/0x3250
->>   __x64_sys_bpf+0x21/0x30
->>   do_syscall_64+0x6b/0x3a0
->>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
->>
->> Follow-up to discussion at
->> https://lore.kernel.org/netdev/20240610174906.32921-1-kuniyu@amazon.com/.
-> 
-> It is a long thread to dig. Please summarize the discussion in the 
-> commit message.
+Update rk_set_reg_speed() to use either the grf or php_grf regmap
+depending on the SoC's requirements and convert rk3588, removing
+its custom code.
 
-OK, there we go:
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ .../net/ethernet/stmicro/stmmac/dwmac-rk.c    | 63 ++++++++++---------
+ 1 file changed, 34 insertions(+), 29 deletions(-)
 
-The root cause of the null-ptr-deref is that unix_stream_connect() sets
-sk_state (`WRITE_ONCE(sk->sk_state, TCP_ESTABLISHED)`) _before_ it assigns
-a peer (`unix_peer(sk) = newsk`). sk_state == TCP_ESTABLISHED makes
-sock_map_sk_state_allowed() believe that socket is properly set up, which
-would include having a defined peer.
-
-In other words, there's a window when you can call
-unix_stream_bpf_update_proto() on socket which still has unix_peer(sk) == NULL.
-
-My initial idea was to simply move peer assignment _before_ the sk_state
-update, but the maintainer wasn't interested in changing the
-unix_stream_connect() hot path. He suggested taking care of it in the
-sockmap code.
-
-My understanding is that users are not supposed to put sockets in a sockmap
-when said socket is only half-way through connect() call. Hence `return
--EINVAL` on a missing peer. Now, if users should be allowed to legally race
-connect() vs. sockmap update, then I guess we can wait for connect() to
-"finalize" e.g. by taking the unix_state_lock(), as discussed below.
-
->  From looking at this commit message, if the existing lock_sock held by 
-> update_elem is not useful for af_unix,
-
-Right, the existing lock_sock is not useful. update's lock_sock holds
-sock::sk_lock, while unix_state_lock() holds unix_sock::lock.
-
-> it is not clear why a new test 
-> "!sk_pair" on top of the existing WRITE_ONCE(sk->sk_state...) is a fix. 
-
-"On top"? Just to make sure we're looking at the same thing: above I was
-trying to show two parallel flows with unix_peer() fetch in thread-0 and
-WRITE_ONCE(sk->sk_state...) and `unix_peer(sk) = newsk` in thread-1.
-
-It fixes the problem because now update_proto won't call sock_hold(NULL).
-
-> A minor thing is sock_map_sk_state_allowed doesn't have 
-> READ_ONCE(sk->sk_state) for sk_is_stream_unix also.
-
-Ok, I'll add this as a separate patch in v2. Along with the !tcp case of
-sock_map_redirect_allowed()?
-
-> If unix_stream_connect does not hold lock_sock, can unix_state_lock be 
-> used here? lock_sock has already been taken, update_elem should not be 
-> the hot path.
-
-Yes, it can be used, it was proposed in the old thread. In fact, critical
-section can be empty; only used to wait for unix_stream_connect() to
-release the lock, which would guarantee unix_peer(sk) != NULL by then.
-
-        if (!psock->sk_pair) {
-+               unix_state_lock(sk);
-+               unix_state_unlock(sk);
-                sk_pair = unix_peer(sk);
-                sock_hold(sk_pair);
-
->> Fixes: 8866730aed51 ("bpf, sockmap: af_unix stream sockets need to hold ref for pair sock")
->> Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
->> Signed-off-by: Michal Luczaj <mhal@rbox.co>
->> ---
->> Re-triggered while working on an unrelated selftest:
->> https://lore.kernel.org/bpf/20260123-selftest-signal-on-connect-v1-0-b0256e7025b6@rbox.co/
->> ---
->>   net/unix/unix_bpf.c | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/net/unix/unix_bpf.c b/net/unix/unix_bpf.c
->> index e0d30d6d22ac..57f3124c9d8d 100644
->> --- a/net/unix/unix_bpf.c
->> +++ b/net/unix/unix_bpf.c
->> @@ -185,6 +185,9 @@ int unix_stream_bpf_update_proto(struct sock *sk, struct sk_psock *psock, bool r
->>   	 */
->>   	if (!psock->sk_pair) {
->>   		sk_pair = unix_peer(sk);
->> +		if (unlikely(!sk_pair))
->> +			return -EINVAL;
->> +
->>   		sock_hold(sk_pair);
->>   		psock->sk_pair = sk_pair;
->>   	}
->>
->> ---
->> base-commit: 63804fed149a6750ffd28610c5c1c98cce6bd377
->> change-id: 20260129-unix-proto-update-null-ptr-deref-6a2733bcbbf8
->>
->> Best regards,
-> 
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+index 4b103a2e9c1f..5bb805330cbc 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
+@@ -53,6 +53,7 @@ struct rk_gmac_ops {
+ 	u16 clock_grf_reg;
+ 
+ 	bool gmac_grf_reg_in_php;
++	bool clock_grf_reg_in_php;
+ 	bool php_grf_required;
+ 	bool regs_valid;
+ 	u32 regs[];
+@@ -145,7 +146,14 @@ static int rk_write_gmac_grf_reg(struct rk_priv_data *bsp_priv, u32 val)
+ 
+ static int rk_write_clock_grf_reg(struct rk_priv_data *bsp_priv, u32 val)
+ {
+-	return regmap_write(bsp_priv->grf, bsp_priv->clock_grf_reg, val);
++	struct regmap *regmap;
++
++	if (bsp_priv->ops->clock_grf_reg_in_php)
++		regmap = bsp_priv->php_grf;
++	else
++		regmap = bsp_priv->grf;
++
++	return regmap_write(regmap, bsp_priv->clock_grf_reg, val);
+ }
+ 
+ static int rk_set_reg_speed(struct rk_priv_data *bsp_priv,
+@@ -1338,39 +1346,33 @@ static void rk3588_set_to_rmii(struct rk_priv_data *bsp_priv)
+ 		     RK3588_GMAC_CLK_RMII_MODE(bsp_priv->id));
+ }
+ 
++static const struct rk_reg_speed_data rk3588_gmac0_speed_data = {
++	.rgmii_10 = RK3588_GMAC_CLK_RGMII(0, GMAC_CLK_DIV50_2_5M),
++	.rgmii_100 = RK3588_GMAC_CLK_RGMII(0, GMAC_CLK_DIV5_25M),
++	.rgmii_1000 = RK3588_GMAC_CLK_RGMII(0, GMAC_CLK_DIV1_125M),
++	.rmii_10 = RK3588_GMA_CLK_RMII_DIV20(0),
++	.rmii_100 = RK3588_GMA_CLK_RMII_DIV2(0),
++};
++
++static const struct rk_reg_speed_data rk3588_gmac1_speed_data = {
++	.rgmii_10 = RK3588_GMAC_CLK_RGMII(1, GMAC_CLK_DIV50_2_5M),
++	.rgmii_100 = RK3588_GMAC_CLK_RGMII(1, GMAC_CLK_DIV5_25M),
++	.rgmii_1000 = RK3588_GMAC_CLK_RGMII(1, GMAC_CLK_DIV1_125M),
++	.rmii_10 = RK3588_GMA_CLK_RMII_DIV20(1),
++	.rmii_100 = RK3588_GMA_CLK_RMII_DIV2(1),
++};
++
+ static int rk3588_set_gmac_speed(struct rk_priv_data *bsp_priv,
+ 				 phy_interface_t interface, int speed)
+ {
+-	unsigned int val = 0, id = bsp_priv->id;
+-
+-	switch (speed) {
+-	case 10:
+-		if (interface == PHY_INTERFACE_MODE_RMII)
+-			val = RK3588_GMA_CLK_RMII_DIV20(id);
+-		else
+-			val = RK3588_GMAC_CLK_RGMII(id, GMAC_CLK_DIV50_2_5M);
+-		break;
+-	case 100:
+-		if (interface == PHY_INTERFACE_MODE_RMII)
+-			val = RK3588_GMA_CLK_RMII_DIV2(id);
+-		else
+-			val = RK3588_GMAC_CLK_RGMII(id, GMAC_CLK_DIV5_25M);
+-		break;
+-	case 1000:
+-		if (interface != PHY_INTERFACE_MODE_RMII)
+-			val = RK3588_GMAC_CLK_RGMII(id, GMAC_CLK_DIV1_125M);
+-		else
+-			goto err;
+-		break;
+-	default:
+-		goto err;
+-	}
++	const struct rk_reg_speed_data *rsd;
+ 
+-	regmap_write(bsp_priv->php_grf, RK3588_GRF_CLK_CON1, val);
++	if (bsp_priv->id == 0)
++		rsd = &rk3588_gmac0_speed_data;
++	else
++		rsd = &rk3588_gmac1_speed_data;
+ 
+-	return 0;
+-err:
+-	return -EINVAL;
++	return rk_set_reg_speed(bsp_priv, rsd, interface, speed);
+ }
+ 
+ static void rk3588_set_clock_selection(struct rk_priv_data *bsp_priv, bool input,
+@@ -1395,6 +1397,9 @@ static const struct rk_gmac_ops rk3588_ops = {
+ 	.gmac_grf_reg_in_php = true,
+ 	.gmac_grf_reg = RK3588_GRF_GMAC_CON0,
+ 
++	.clock_grf_reg_in_php = true,
++	.clock_grf_reg = RK3588_GRF_CLK_CON1,
++
+ 	.php_grf_required = true,
+ 	.regs_valid = true,
+ 	.regs = {
+-- 
+2.47.3
 
