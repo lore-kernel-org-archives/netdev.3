@@ -1,43 +1,73 @@
-Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B65318ED8;
-	Fri, 30 Jan 2026 20:48:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 068972FC00D
+	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 20:53:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769806091; cv=none; b=Lw13yihvD+Iwi9L1C4uZ0/B1taJtyxSosa4SFtMYTDwm4ZuA4kA2l99MvNzfLiMUCyI/GXWkdhKqDgY2qWNKLvvbe4/6jIArOVbuxOupfrcCU59jeAtybfGrTtTNO5dGGsr4svqYfEpcKiiD1++aAmww6Hf36JujoDefDeX/vpI=
+	t=1769806426; cv=none; b=HHh19TMo2Ttzef/uKo94Tlf/JsugQfKMHz0rMAq8sYRwovmKiNhq9RY1Ue9XcDopMpSVnrXvjMOYRuXUSHBos780c2CO1Unohuqsr5N7+fLdBG8osp5r1TEq6PVwdJjVHZ+PriZZou+CbrwbZBL91mrzSgRWDuHSpiJOeHqKWpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769806091; c=relaxed/simple;
-	bh=NH3nSMZ3689wk1k+Ydtvm9911igQwjgTtxEraXA3qqE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=I6ic1KTtbaj+02jglOSZdyk3f7kgd0Di0IGj67vvsiEUwv/8nWGwQ3hqMGSWE+pQcxQ5mFGOD3MC2FCaYT2mF7OLFPl5HgYi9CnP5PjC+9jFja2iY4Rdw7GOsv+4ULIsOinueKXUckMO9X5wZcmSEC4QjKwQdTYfGzc3zvBIGD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=DZYGi1pX; arc=none smtp.client-ip=85.9.206.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+	s=arc-20240116; t=1769806426; c=relaxed/simple;
+	bh=lkPwYTzl0DbCZYhLCGJ65Pus+xrdtoKH3YxMB4vzDoY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nLMw4edTpAaCIds7cCuG2AN/XhWnKzJifglAIovm8z4Xnv1ZptDkpIRnlUThW91IIEmscUN9EMByAWtZ5sqYKqLEbjfJ0XD7NzXSiXBbPBJf1ehrQlClNTcxZ9LDA3jSCTSZz5d2nJu6wQ0/m/ERHy30vbvG2TfeQPxGZTE3ric=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fpWTrKv8; arc=none smtp.client-ip=74.125.82.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="DZYGi1pX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1769806078; x=1770065278;
-	bh=Ns6aX4kVdG2x2DS59nidc0rJohsMUdrNgcAO4lwVAHY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=DZYGi1pXMmC/ubxw0V9VFT3GCanL1MXxliYflYZFJ0cpNFRDkbhmac4wXsyyWFpyk
-	 C0lJwJ34OSynuEP4MSuqk+6JEUe/nInqPxYzOx23wSwJO2NXCurpA3AJnX78idfvKg
-	 kQvsTMKmAzSQQA8PPrwMNTYwOWxAC2sWMOYsW1FWx6cFsfoOHD7Rk3OWCFkxcRZoc1
-	 4ONFQ7npa9bZlgP4BTreEjbydmy2mNu0Vs9vBAwPh5PFS6cK+oxwj3umDjPnco3/Fq
-	 2uxHkZ0xEbXDQcotJjGyiFEqS47iQ9zlRa+mehX0+KY6vS1t/U0jCDtfV3SPQNHUUi
-	 RpMd6vCpJ7Uaw==
-Date: Fri, 30 Jan 2026 20:47:52 +0000
-To: Jamal Hadi Salim <jhs@mojatatu.com>
-From: Paul Moses <p@1g4.org>
-Cc: netdev@vger.kernel.org, xiyou.wangcong@gmail.com, jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net] net: sched: act_api: size RTM_GETACTION reply by fill size
-Message-ID: <pXV1wsavqcYDq5HfAVaW_gMoTITR9M0PBWKhnz9n6VHYxhW56DQU7qfCEoaYcCixz4iqrj31Mt9vL9bHqTNGygLK5pYvyw1z3san5ndlkkQ=@1g4.org>
-In-Reply-To: <CAM0EoMmY-v0HWAkB5EgSYhpca8fXVX7SQ1SpVbUBcFpbvuTd1g@mail.gmail.com>
-References: <20260130134220.305757-1-p@1g4.org> <CAM0EoMkS2Uoarr+551wNe7zvmPTGFZxdb-otKYLBPF5+2s+FEg@mail.gmail.com> <Fkv_0Ju_R82Hh-rBUDW7uALCp8vjL8WZqAsQhreDrulXNad2A2PlNWkSO-95bSzYNai0wYDsZZZFtC2-YAr-B9ZWWtNg8iqafAMDUA0F7Pc=@1g4.org> <CAM0EoMmY-v0HWAkB5EgSYhpca8fXVX7SQ1SpVbUBcFpbvuTd1g@mail.gmail.com>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: f7035d83a69cc823dd322282f4eb5a8914867daf
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fpWTrKv8"
+Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-1249b9f5703so3674820c88.0
+        for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 12:53:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769806424; x=1770411224; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=YJJRhfFtrMmO8MclixSPtlLRJyCgYpUlgh2rmwRF9PU=;
+        b=fpWTrKv8MRlKW0KhMJxQfuY8opi59Hayz7tOUKqc3a1kZ+wjQdYB7uo3IDI/e9ol+W
+         3Z5Jwlm9OPZHibfIC5C9bEGKNrUdlcCkiHlmoEkNb0DZS704/UepepJBQZHLx/jcd0bt
+         IHLonElnykCOOd1VT93kSSQYqhPqayXNf7t8K5pbspOCZ5NWgkipKJo8qvyDq9NG/3Cq
+         T7oZHhPaL3LU2JBSio9MoCOS1NovvBJ9WFdVGPQcjLn+OyK3tb0bNPkTpG56bdDTYcms
+         DST8FWax+ri8Qe1som4kHdgHD2LxeFEs5vvHFyUj1BSv14dHmYTNYsL4h7ab9gVcqgcN
+         kulw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769806424; x=1770411224;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YJJRhfFtrMmO8MclixSPtlLRJyCgYpUlgh2rmwRF9PU=;
+        b=oPFdqIVy0CgP6LiE32k8VHnO6MH5ssCxk9LPXC6d/5Sbx7BBB78i8PIK1SE9rWpsif
+         obYZZTgq2bvTqQB85n9lH8LQGXgFmLF+VQn7osLvFQ1KJjv74+jzcSj00mapywc1R2MB
+         8mC/Vt3Tg/rwn78d3XdgEgG4cShl97/pmB1rzhzz/XTvS6j98Hgpp+h2Kv1OCwXquEnC
+         +mfwjOsuY7gHF1iQui0o1BQ0XHb7R7DSEilWht9QTz5VSnkyrv7vrZhHMQAhxzvTv0dY
+         HfFW7E2DmGHo55Iv7WqAhIO7CuEVNVpe0V2oCWt/3n77dpHQyTJHe+k3kp+QFXAJSXwn
+         SX5A==
+X-Forwarded-Encrypted: i=1; AJvYcCVY+x6LCtmaEzIbtGtAUT7FgK/YDPwzCPwuMzswyXqZ7rpMvZ0JMy62rt50VYu5rXwXhWkGOl4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLA9xrWgtNkLYWMU3i5HXsbmgnm1PJ2Dc4UNN6zk6wcFoqWwbH
+	eMzSHwhlBrfN7qasaLVjRzizfiF6W0qUfM1kvI4QKxvpPygrUH/EX+WO
+X-Gm-Gg: AZuq6aL3MU19y0SFPmlj2LCyKyds5ZYPOP70qobsSR/ph9PxlWTOSCLlvwPKvrJXqmv
+	DciPByxq2BvsAV+4uQMopORZ4Bd1kZn6YFi3OePjaJsI/ljm2lo2ehZBIjfGA3RUmgkBstB2cOZ
+	8/c9x9s7zkYTgwJj0CYIZ109BEDp7vS7UNsTp9Rrto8gr73zIenQ5+q0UoVbCvADfwdXfpyqfb/
+	dPWw7CEdCjy6BP2qHz0TEuwi923v+ig3JDy9ZoPyZ+8qlenllFMJIM9r3rSBUI1tx7pkaOfTlni
+	mREeJhuNAKpl8HJeHWjwMeWzVZUoEfpXeybLHxhxKd9MXYqDydDMNMQIwmzkRfdKFAmLokSzfa6
+	Y2LYvclz8oMhAFJL96MpysNZMsdYc32pfC9PLrYfvzTQCJqOSZZzyct4ZlAvv+jj8grpf8Bnxed
+	X/LhJy3exoEbFsdts=
+X-Received: by 2002:a05:7022:221b:b0:119:e569:f61b with SMTP id a92af1059eb24-125c0fbf76cmr1460200c88.20.1769806424094;
+        Fri, 30 Jan 2026 12:53:44 -0800 (PST)
+Received: from localhost ([129.210.115.107])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9de7febsm11278545c88.10.2026.01.30.12.53.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Jan 2026 12:53:43 -0800 (PST)
+Date: Fri, 30 Jan 2026 12:53:42 -0800
+From: Cong Wang <xiyou.wangcong@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, netdev@vger.kernel.org
+Subject: Re: [Patch net v8 0/9] netem: Fix skb duplication logic and prevent
+ infinite loops
+Message-ID: <aX0aVgCBTGpGYaJV@pop-os.localdomain>
+References: <20260118061515.930322-1-xiyou.wangcong@gmail.com>
+ <CAM0EoMn=bx-AMR0RbFmSj8MjWTxLtB_xo5419AW18paZ9r1wDQ@mail.gmail.com>
+ <20260127091556.052604cd@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,98 +75,57 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260127091556.052604cd@kernel.org>
 
-What version of act_gate.c are you currently testing? Did you actually run =
-the tests? =E2=80=9Clarge dump=E2=80=9D creates ONE action at base_index, w=
-ith num_entries=3D100, then immediately does GETACTION. So =E2=80=9Ctc acti=
-ons ls action gate | grep index | wc -l=E2=80=9D won=E2=80=99t exercise thi=
-s, because it only counts actions. It doesn=E2=80=99t amplify the per actio=
-n dump size (the entry list does). It uses libmnl (mnl_socket_sendto / mnl_=
-socket_recvfrom) with MNL_SOCKET_BUFFER_SIZE. There is no custom netlink ha=
-ndling. The failure is returned by the kernel before userspace parses anyth=
-ing. The dumps are transactional at the netlink level, but an individual ac=
-tion dump still has to fit in the skb backing that message.=20
+On Tue, Jan 27, 2026 at 09:15:56AM -0800, Jakub Kicinski wrote:
+> On Sun, 18 Jan 2026 10:07:37 -0500 Jamal Hadi Salim wrote:
+> > On Sun, Jan 18, 2026 at 1:16 AM Cong Wang <xiyou.wangcong@gmail.com> wrote:
+> > > This patchset fixes the infinite loops due to duplication in netem, the
+> > > real root cause of this problem is enqueuing to the root qdisc, which is
+> > > now changed to enqueuing to the same qdisc. This is more reasonable,
+> > > more intuitive from users' perspective, less error-prone and more elegant
+> > > from kernel developers' perspective.
+> > >
+> > > Please see more details in patch 4/9 which contains two pages of detailed
+> > > explanation including why it is safe and better.
+> > >
+> > > This reverts the offending commits from William which clearly broke
+> > > mq+netem use cases, as reported by two users.
+> > >
+> > > All the TC test cases pass with this patchset.
+> > >  
+> > 
+> > These patches should not be considered for any review because they are
+> > not following the rules that are set for the community. The rules,
+> > which are well documented, state that you must cc all stakeholders.
+> > When someone does this _on purpose_ such as Cong, some accountability
+> > needs to be imposed. I would say totally ignoring these patches is one
+> > option. Otherwise anyone can just throw a tantrum and decide those
+> > rules dont apply to them. Either that or we modify the rules to state
+> > it is ok to do this..
+> 
+> We (the netdev maintainers) had a chat off list and concluded that it'd
+> be great if we (the two of you and one maintainer) met over VC. Either
+> technical solution is fine, but we want to make sure there's no ongoing
+> animosity. No agenda for the meeting, just want to make sure you can
+> have a friendly chat. We can talk about the weather, AI code reviews or
+> everyone's favorite animals. At the end of the meeting we can either
+> decide or flip a coin.
 
-look at af_netlink.c
-=09/* NLMSG_GOODSIZE is small to avoid high order allocations being
-=09 * required, but it makes sense to _attempt_ a 32KiB allocation
-=09 * to reduce number of system calls on dump operations, if user
-=09 * ever provided a big enough buffer.
-=09 */
-         ...
-=09/* Trim skb to allocated size. User is expected to provide buffer as
-=09 * large as max(min_dump_alloc, 32KiB (max_recvmsg_len capped at
-=09 * netlink_recvmsg())). dump will pack as many smaller messages as
-=09 * could fit within the allocated skb. skb is typically allocated
-=09 * with larger space than required (could be as much as near 2x the
-=09 * requested size with align to next power of 2 approach). Allowing
-=09 * dump to use the excess space makes it difficult for a user to have a
-=09 * reasonable static buffer based on the expected largest dump of a
-=09 * single netdev. The outcome is MSG_TRUNC error.
-=09 */
+I offered people involved here for a video chat, *check note*, in
 
-This is where I am currently but I have seen these bugs appear throughout a=
-ll my iterations including what's in the tree currently, if you show me bet=
-ter alternatives that solve my problems, I'll gladly accept.=20
-https://github.com/torvalds/linux/compare/master...jopamo:linux:net-stable-=
-upstream-v4
+26 Nov 2025:
+https://lore.kernel.org/netdev/aSe%2FIfNSZBTTAfTA@pop-os.localdomain/
+8 Jul 2025:
+https://lore.kernel.org/netdev/aG2OUoDD2m5MqdSz@pop-os.localdomain/
 
-gatebench --selftest=20
-Configuration:
-  Iterations per run: 1000
-  Warmup iterations:  100
-  Runs:               5
-  Gate entries:       10
-  Gate interval:      1000000 ns
-  Starting index:     1000
-  CPU pinning:        no
-  Netlink timeout:    1000 ms
-  Selftest:           yes
-  JSON output:        no
-  Sampling:           no
-  Clock ID:           11
-  Base time:          0 ns
-  Cycle time:         0 ns
-  Cycle time ext:     0 ns
+No one responded, obviously.
 
-Environment:
-  Kernel: Linux 6.18.7 x86_64
-  Current CPU: 7
-  Clock source: CLOCK_MONOTONIC_RAW
+Jakub, please let me know how to talk to people who kept rejecting to
+talk. It is just logically impossible to me, and I have tried my best.
 
-Running selftests...
-Running 20 selftests...
-  create missing parms           PASS (got -22)
-  create missing entry list      PASS (got -22)
-  create empty entry list        PASS (got -22)
-  create zero interval           PASS (got -22)
-  create bad clockid             PASS (got -22)
-  replace without existing       PASS (got 0)
-  duplicate create               PASS (got -17)
-  dump correctness               PASS (got 0)
-  replace persistence            PASS (got 0)
-  clockid variants               PASS (got 0)
-  cycle time derivation          PASS (got 0)
-  cycle time extension parsing   PASS (got 0)
-  replace preserve schedule      PASS (got 0)
-  base time update               PASS (got 0)
-  multiple entries               PASS (got 0)
-  malformed nesting              PASS (got -22)
-  bad attribute size             PASS (got -22)
-  param validation               PASS (got 0)
-  replace invalid                PASS (got 0)
-  large dump                     DEBUG: msg->len =3D 3112
-PASS (got 0)
+I wish you best luck for doing so.
 
-Selftests: 20/20 passed
-Selftests passed
-
-Running benchmark...
-Run 1/5... done (311721.5 ops/sec)
-Run 2/5... done (321045.7 ops/sec)
-Run 3/5... done (336402.3 ops/sec)
-Run 4/5... done (338419.7 ops/sec)
-Run 5/5... done (316618.9 ops/sec)
-Benchmark completed successfully
-
+Thanks!
