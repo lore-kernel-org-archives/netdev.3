@@ -1,244 +1,187 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C546E2DAFDF
-	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 07:41:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769758897; cv=fail; b=tzmq+j2GHFUTAThjOcaNYhdv+Lk6lz5r2tp6I0uRno065DPSQZ7N9Sz8OC/iac49nQ1tc3bSiOzoWYIk0sEK3MwlwnjP7urmH14PprQPsiPKRRRygnvrykpV4lGAAqq+mVEQHUVunZEbK6Jr3X1raq9mlZ6kzUyss34m81MA5CQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769758897; c=relaxed/simple;
-	bh=kt8i5VwiQ3HI6QjXLclF2qUnjUph23IKk8e+XcMx7B4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=K2pKmrmxgXV8gCUJkUIX9xNwoM6D4p14eLkM5XeNDNRnI1RO9/TYbCBDR61RwjflUoLzz8cGGKTPfn5Y8YAIL58QYpF5UzwVviNBRtvglHRybrrQGLs2J1C7899SbtVDTbG4RULt0eKu5ODnd1hkGaudIQmL3dBZ0Gfjf9ir8iQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cG+vxnFo; arc=fail smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B49A3112B4;
+	Fri, 30 Jan 2026 07:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769758907; cv=none; b=uX5YF1Rmo/7/5Dc3tOnT8Hk4FaNYmLRFJlR9z7/e8esD8kg1xeKLZ52B10RRd5n64wPA3RIq8iJSMkCuMAAB0zNTIFbBpPiYhwRdjZzHoP5XFmaXAKuLVmLfrkDlTnkJdw0a3tnUVraep7dE5gUoGk86CM0oT9uQuuoEbcThIco=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769758907; c=relaxed/simple;
+	bh=CoghMDarm31ncDtGmy3+/C7MA74iQBTvl/1xN6lsCNo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zar/imJFngKnKbIwxdT/hSFDAGfojDPiE5dRTWJTO1wwy2EqiuFAYCEOhlohGLUN+E+rQR9J90J4Q762267oTWqAmYDfoKvjpsKlozrpvdVQSqz9bEmFngfYURyQ3lDXVhsjpcAa/SIzK41/EEvx2pyQqEmNJEVyV7lBVVAu090=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GCu6JACI; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cG+vxnFo"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GCu6JACI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769758895; x=1801294895;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=kt8i5VwiQ3HI6QjXLclF2qUnjUph23IKk8e+XcMx7B4=;
-  b=cG+vxnFol/BkM+Zf6wjXWRL4CVqCvlOlOYh+63t541H/2NiT1BnD6LGu
-   JYLHiQOX9xouvArNDHwR0qe7dA5SMghx4Dl0ISg1WtymGaKJjOwi+oK7X
-   JkMWrJdnPd302srCf19T9//6XXqVHhurmrxWkBvEIzNPFyyp4BjVTiuMW
-   d92q7+dXJwOFlPlfnoG5gIVwlrpyCUQAFE/ETmBLiA5SS5QO2YIHwjg0G
-   otx3X+iGvwmBKA9y7dNpuwvNKRoM0LMS2b8yLP8nhbdvIbAPjpQKUCIaE
-   lyFH30Jz1/VEYn6uAb8rOIsaX2zQVWt/SiAuVXgNQYmugCI7C85FAdhY1
-   w==;
-X-CSE-ConnectionGUID: Dp9tELgYTbSc0qX1G6Br1A==
-X-CSE-MsgGUID: q/vBqI8bSgaaCGY2mYN1MQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="81323405"
+  t=1769758906; x=1801294906;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=CoghMDarm31ncDtGmy3+/C7MA74iQBTvl/1xN6lsCNo=;
+  b=GCu6JACIDw5tnKmCGDJ74otv1Cl67zvzw+oBjhcW7EAc2FGsi4JBtl+P
+   6+GoCXm9vAEs+4SnmxfrOdTgxuIhqGcnvShtTb28QQA6LJ9qSUeVlzK5p
+   OMuJT/wLocmC5+L5OUIds2M5Oxm0mw2wcTdTlvat6iRvByl5oPkTMeLHB
+   biP+3ANeMhBTt6ypiI5sIWvErSVI2v3I60qW/lDzui1mcPY7ZnLa/VhEx
+   AXdZmfqiOMWBy9MAVhC1XTlw0jQ6p/Dse1ryVh5XMXXvm3QZopAJUUTtD
+   QZW9cEcVjlX5XNL99LDH3wWl3xB4Q7obSLSD1jwfvXWkoP0AtQOoU4BS8
+   g==;
+X-CSE-ConnectionGUID: zj8Gb5VUSCuup34Z6gTPzg==
+X-CSE-MsgGUID: PoIL6DisST+VB9sq/Xzdvg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="81323431"
 X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; 
-   d="scan'208";a="81323405"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 23:41:35 -0800
-X-CSE-ConnectionGUID: 1ieBZehhQ4ilzgfq3OjyRg==
-X-CSE-MsgGUID: 0HEqhrz0RayX30KwEC/6jg==
+   d="scan'208";a="81323431"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 23:41:46 -0800
+X-CSE-ConnectionGUID: zehV8ryPT6KSXxgQ0osYOw==
+X-CSE-MsgGUID: PcQASZoQTUeETTFDMtO1nA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; 
-   d="scan'208";a="240050143"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 23:41:34 -0800
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Thu, 29 Jan 2026 23:41:34 -0800
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Thu, 29 Jan 2026 23:41:34 -0800
-Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.61) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Thu, 29 Jan 2026 23:41:34 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=d2SNoEtfqQOAEmz+TW9QPYmnCvt/MplIKh6I7R9Tav3Aui2FeBH+CBFTSL7aYeCOu9JYTDAVuY6IrDY5nRt4Nplld4EkmuvTjQOHeP0M4/5o6PFBdKzaQlw5HC2hzx0f4Av+zR7nkpjY0fDBwJO8+jFYiqYCopvvq+sELq6K7GV+SADmUIliAxEWAd9RVHRqNR5slJh38dm5mzViNxOvTj0ctuoJM9V545QPW3gjSsLZPZ524G6+9OTRRER4oAkR7x9riD0hphzVjLpsTtALDxDPd3dZAaF+tYVp9kw1BR+cGANlA60jnRCohYaKe7CSav5rsO/Gtd7AM3G565zZoQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=I2w2A76WF8k/qRC68tNKXVo4v7TDJukmcrDwfcxHXpw=;
- b=h0n4QzeSaMYvPycok3hljhzLot8BfzZLXnrFd5a+j8UR64/TvC1TxVp3vsLfYvZe+KqIyN955FYPeO0JNwS5vZj34MtzMfEUj1YD8T+wYDEEK3mKnKl1IAkLksOwpY46MYt0gV/f+tY72HgV+tDpcVzlnv67nUAmiyUZ67UriYLnhOvx3WTbliITtRtdeXJVfAUnTHHWkCGN+U5q4pGuGz0kOuGZYFxxtBW6VI6UhMQvlKx57EuLMrkRfV+NUSr0aEJpKnZ5/yx21xRsQuS4+VpZ8BDerMBPnf8bVx080YbbGrIzqzKq6FN4xOt6ARDB8L9sJaNLQIuSWGcOMw8tsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
- by IA3PR11MB9110.namprd11.prod.outlook.com (2603:10b6:208:576::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Fri, 30 Jan
- 2026 07:41:27 +0000
-Received: from IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::395e:7a7f:e74c:5408]) by IA3PR11MB8986.namprd11.prod.outlook.com
- ([fe80::395e:7a7f:e74c:5408%3]) with mapi id 15.20.9542.010; Fri, 30 Jan 2026
- 07:41:27 +0000
-From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-To: "Kwapulinski, Piotr" <piotr.kwapulinski@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
-CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"dan.carpenter@linaro.org" <dan.carpenter@linaro.org>, "horms@kernel.org"
-	<horms@kernel.org>, "pmenzel@molgen.mpg.de" <pmenzel@molgen.mpg.de>,
-	"Kwapulinski, Piotr" <piotr.kwapulinski@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next] ixgbe: e610: remove redundant
- assignment
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next] ixgbe: e610: remove redundant
- assignment
-Thread-Index: AQHckUWJR99Omumd/0Oe8BwQOqqyGrVqVRrQ
-Date: Fri, 30 Jan 2026 07:41:27 +0000
-Message-ID: <IA3PR11MB8986996AD2961AF685C8F894E59FA@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <20260129175455.174241-1-piotr.kwapulinski@intel.com>
-In-Reply-To: <20260129175455.174241-1-piotr.kwapulinski@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|IA3PR11MB9110:EE_
-x-ms-office365-filtering-correlation-id: 409b5096-22e9-4947-a4ae-08de5fd2f9c8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?coF9zrIaDB/d/Z1foxqX0zKlrr5t3MIWpHwO/awYV5hQDsUeDEioHdUzjeAu?=
- =?us-ascii?Q?ax85a0Hod2Fj2OhxyOzNMP1YxDexe5a4blwcnsYYAE72FBub4y2Z0qtQGYXj?=
- =?us-ascii?Q?TefNpLgd2pB7dbKdXt1K1qINEbwn2tIlXymTGaT0Pt0FeynD+0rWdBUUFlz5?=
- =?us-ascii?Q?t3KOKbsDDlPVlbj/n9EU/3jIF/rM46fbG4qaO0r5Emtv/2TW7fDTjHwtDGeD?=
- =?us-ascii?Q?/ED9neVp51plSuE2kS43bdqDCvWGJKzkJjX8/dREgnSQbaqG82kp1rBKTwcs?=
- =?us-ascii?Q?dfudlcVh2SJ4KvGbrxopGE3SCzMk1XVXF1bWWhzhIt+cADSWV60erHhWkmw0?=
- =?us-ascii?Q?snSzHH4eWbiPZRifAIFXE9u0nslFhNpH/rLq3j600jO+mJNPx57nNui56xoA?=
- =?us-ascii?Q?PcSORgnAP7ML0f16pihz73Z+aCZ8ILc4x2azMh7R/E/QCukv3LRmL34A2h1a?=
- =?us-ascii?Q?JMkBD+GkJT93wrUMBRSmQF5Kco72WR/7Ml9AdsKVhqdHk+rAq9OeHSDOWft0?=
- =?us-ascii?Q?FNTTgDzg7s8aFR/4R84/biqbZtmM/fiRMTrZsCn2z0cCtrkwW06SPkKXqEfU?=
- =?us-ascii?Q?tCg32Cow/B1yrqTS95483cSKrOk4OjLgzlk76Dp9itDhdqxUb3OO2E5QGOt8?=
- =?us-ascii?Q?z4VNy/S081UhsxUxFTgWwJU9/PDFyWffFkB4S7/RKCx9PMd87ixrGLIfkqBv?=
- =?us-ascii?Q?5r2O5QRrzkho8A3e47x30vvqO1B0aDfw45A0TBU+kzJ1Lj7J9T57WKiBhj5z?=
- =?us-ascii?Q?kSaMmdIK/XsBy2GR0+kVyuI4YRdyzzSI4T1QwfbLoH5MQlCEIe1al1ct64PK?=
- =?us-ascii?Q?xZjV540ez1AuAdUwPavHNxXDpRy42f6WKYQK1TU5/mTVUda5xq9nIjqywQHo?=
- =?us-ascii?Q?V1XY04wCzgwLFStzjBG9K+2A4ztgBqwvejaUbjSwms4UNUgfGenTxSU8vMa1?=
- =?us-ascii?Q?eTZ3MKw8W0sDcuHj452tIZUYCw9BHc3CRD3VFBGuBwDeyEfJ7vx9A9bV3TcL?=
- =?us-ascii?Q?G8+2rInWjoPvMVBoyYe0CDGCxHBj/atP9tH1I5TsGsy0FOWkZuZv5KIgdsx6?=
- =?us-ascii?Q?ysi4MIwKBdeKdvIQHdop0cSEP6/1HDVHs/kWlvqrqh8l8oBoB00otoFhAWN2?=
- =?us-ascii?Q?nnOwV8H9wGHIkuuJ+0aRr93bywFq9TM2+iVS921JycqFbpgkFUd1OumZmYV2?=
- =?us-ascii?Q?Rinje5e2yJg56hPs7YeWpxsQsdsV+w2CpRo4J3E+63KrI9mE8IvoyZDT2Fqf?=
- =?us-ascii?Q?CkupAjnkaHCEcgFDDipeMr0vNEEmLUdwxE+w26p2fMDQ6lGRQzpp6NraJluo?=
- =?us-ascii?Q?16pFOHHQQ5Q4PbZiELG4MbbcWay9VPbYSWjR+dGpBYW+tVFCP4fecnN9U65V?=
- =?us-ascii?Q?GBLMI/TP2NZzBOOqYqJJXw0sfZ5K0CECN7V3CMIew9KoaDAebrz0CMoPPxm4?=
- =?us-ascii?Q?KZbGB6vwccUn5knU0GjGrgar4DYWBAl30yJuzlYr7p3eJjtvcsVY5yrjF6fZ?=
- =?us-ascii?Q?BiGuXikDF4dWCvF5GejPwqUEBrDqCSmwLRm6zvfkEAUwaRAjLVD/4LoY6hVb?=
- =?us-ascii?Q?b+iLGLJyok20+1qRg6mFtZpCJmJaw3r3zS7FA6a60kLkYcJHWn5rhcTvkfQP?=
- =?us-ascii?Q?eyQJp6Od4t+jvMr4i5VBLrQ=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?drBl3A4bY0putsNO5ZhzCffJ9BhRlPHoEZQWVj+rUvQxWaeHwTzla3eJ3GJH?=
- =?us-ascii?Q?bNc18CPUOzEx3iaqjtU7ZI/wxaotcgvFkMoNAaNhCZ5FrD/2HkdimsNJU/hW?=
- =?us-ascii?Q?jJ6CVkPsDm7NkyNeQDOKlB5RZAqN/NzOWEMeUJJ2sPPBWcnj+81HjtLn64K6?=
- =?us-ascii?Q?9DmeSmlKvKJuPWL0RaAapw6/4cebOG6vv8CGgMHUXwwi39iKMp2OxCkH2EeU?=
- =?us-ascii?Q?uowTaBygVqSGBlLUB5YfJtAafLOmM+sQFAIQ+o50mfRhjSXDWnZPotVRGoVS?=
- =?us-ascii?Q?y7yRiCUVN4x5Qc4cGijX2tXmH7Hz9GISilcmQfWRJ38bo708NACkb8HTeFgP?=
- =?us-ascii?Q?yRRQfFZEu4ARivnuuE3UNJvQA+bkWu4xmGrEbkXMWEMp7dIvHwFzglp2+bt+?=
- =?us-ascii?Q?63xBUGNwxCXRDE8jSSCwoSuWzpfuoErcebqpJn47jG5wUmn3uLiDaX7ffpiN?=
- =?us-ascii?Q?f+ESu7LT/PwYT1nFtGn2llDKKoXyfQqvnargiYBWivMSjh01L9Z9IbCNZds/?=
- =?us-ascii?Q?Jom1h3mUBH7Vj9SDPBQc55HrUMkVQblQN7tx762McxpPpQKV3MuAVVDzdCLX?=
- =?us-ascii?Q?VqD292Ymvw4HcGw7Me3zw9yMPCOnUyh2KSLplJr6i3klothDPJNNQ7YshMt7?=
- =?us-ascii?Q?pOi1GYHZarB322/iBONrQJ7YuTGol8uVba2vBN0KE5E11U1lNCYWNzdqdSvi?=
- =?us-ascii?Q?BhjWwql/GTXrwBFQk+qzxoZq1yBJz0tqxEpVzVXOeb88kZtBJSSj2IHkqemI?=
- =?us-ascii?Q?FEy5rIdJuSLIlIxMbNpxH8KQ1XxdvZbUasJyzUV26tfQTTphRWUlycorH2H1?=
- =?us-ascii?Q?Q1JGYkUyeXHZV+lzJcoIpegBBvroUyyV+PSUQFLtzU9vohvkt3pE6zPinoeE?=
- =?us-ascii?Q?ihxv/sJOtbZ+BWNsFeDuQ29y8mTTGqi/ZikzNKGiVHo8OqPMh+/+k6Pxcdza?=
- =?us-ascii?Q?ElPETXw08TOf3Nq14AQLmuMC5AHxKtnYqXmQziEFRomnL4rqIqgP51YroBdN?=
- =?us-ascii?Q?rCi/2JoaUmrDgB64545UuKPaInDHYHz8EBur6Ed9n8ObPsa7Y49JD0jHDQ+p?=
- =?us-ascii?Q?sJSto84mGbZ9byagra6OfdX1O+Xe0ZggaHVwCf/jSY91xB/6dCS++MBIhGcS?=
- =?us-ascii?Q?D1I0S4HdaV+ekHfBl89cTBIgulMOlDyDLZjxWOUNWzQJifbQ6L5z3B0zQiCX?=
- =?us-ascii?Q?V2Z/ZhcIK5s3JQ32wmo6jYanN9nz4R8x/rZf68JPrYuAuN5r2S7x9+us/m6g?=
- =?us-ascii?Q?+oONsUZY0QQ6SE0BoaQPwALFa2vAYpr+5SxcGRDTiz0eaxfHIgPn6JlWiNxy?=
- =?us-ascii?Q?t5wo7ZRGJXAGNOpicF8Et3LzaDbolIl2Q6jLK6Ofw3UslmRMV1hA6ask1sP6?=
- =?us-ascii?Q?C8bQ6BBVnnYKvr96j8GNYUDa2Ke42rDc7zqmwXGITg7l5Xe8FKdF482VCpgS?=
- =?us-ascii?Q?spp/8xz8rwt5ZTDXfzKNJO0cgJELnQ2l/T3auY0M8PkcSCQZvynVr/15G86G?=
- =?us-ascii?Q?5zH1WWpMKFCmFqs65uGQeJLnDRqpkvgl3xDPtrz5AsZKxIbqOoGPM6U7MDxh?=
- =?us-ascii?Q?5WHaMxjIEhF2vdLmlhYLQ1LJh6aUJ+SDuRjunmWox9LKHty3aOz3hiqAPU4B?=
- =?us-ascii?Q?vM7c7qGKWv8VTU0U8jhFygE2TVdq0SarDD9fizddcSqQByMuO61c5T/wLtsR?=
- =?us-ascii?Q?I5B8V5wCGkpwLwE0NkMz/4AySVIGfDKLgGGebQGhT6AytYQ9MVS78rPu2hHB?=
- =?us-ascii?Q?VlEg5SGA01nwUG1C0UTw4/Ie6v7P4nc=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+   d="scan'208";a="209046123"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa008.fm.intel.com with ESMTP; 29 Jan 2026 23:41:39 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vlj8L-00000000cKm-1W0m;
+	Fri, 30 Jan 2026 07:41:37 +0000
+Date: Fri, 30 Jan 2026 15:40:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Simon Horman <horms@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
+	Juraj Povazanec <jpovazanec@maxlinear.com>,
+	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	"Livia M. Rosu" <lrosu@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH net-next v10 4/4] net: dsa: add basic initial driver for
+ MxL862xx switches
+Message-ID: <202601301540.5yveQiWq-lkp@intel.com>
+References: <281fd7e777b51849fac9ef5191679586cc2a1b54.1769731630.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 409b5096-22e9-4947-a4ae-08de5fd2f9c8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Jan 2026 07:41:27.1551
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: b0FQmLnI+GxwWUU1/+SXLCAuFVafIaCKVNd+d40a7nMVHpWKg4XW/RbJZICX7/V8W7ZwUVUQPoUdK2eBWnC8XTDttOmR0STVq4f+F90STT8=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR11MB9110
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <281fd7e777b51849fac9ef5191679586cc2a1b54.1769731630.git.daniel@makrotopia.org>
+
+Hi Daniel,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Golle/dt-bindings-net-dsa-add-MaxLinear-MxL862xx/20260130-085313
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/281fd7e777b51849fac9ef5191679586cc2a1b54.1769731630.git.daniel%40makrotopia.org
+patch subject: [PATCH net-next v10 4/4] net: dsa: add basic initial driver for MxL862xx switches
+config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20260130/202601301540.5yveQiWq-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260130/202601301540.5yveQiWq-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601301540.5yveQiWq-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/net/dsa/mxl862xx/mxl862xx.c: In function 'mxl862xx_port_setup':
+   drivers/net/dsa/mxl862xx/mxl862xx.c:331:32: error: passing argument 1 of 'dsa_port_is_unused' from incompatible pointer type [-Werror=incompatible-pointer-types]
+     331 |         if (dsa_port_is_unused(ds, port) ||
+         |                                ^~
+         |                                |
+         |                                struct dsa_switch *
+   In file included from drivers/net/dsa/mxl862xx/mxl862xx.c:16:
+   include/net/dsa.h:546:56: note: expected 'struct dsa_port *' but argument is of type 'struct dsa_switch *'
+     546 | static inline bool dsa_port_is_unused(struct dsa_port *dp)
+         |                                       ~~~~~~~~~~~~~~~~~^~
+>> drivers/net/dsa/mxl862xx/mxl862xx.c:331:13: error: too many arguments to function 'dsa_port_is_unused'
+     331 |         if (dsa_port_is_unused(ds, port) ||
+         |             ^~~~~~~~~~~~~~~~~~
+   In file included from drivers/net/dsa/mxl862xx/mxl862xx.c:16:
+   include/net/dsa.h:546:20: note: declared here
+     546 | static inline bool dsa_port_is_unused(struct dsa_port *dp)
+         |                    ^~~~~~~~~~~~~~~~~~
+   drivers/net/dsa/mxl862xx/mxl862xx.c:332:29: error: passing argument 1 of 'dsa_port_is_dsa' from incompatible pointer type [-Werror=incompatible-pointer-types]
+     332 |             dsa_port_is_dsa(ds, port))
+         |                             ^~
+         |                             |
+         |                             struct dsa_switch *
+   In file included from drivers/net/dsa/mxl862xx/mxl862xx.c:16:
+   include/net/dsa.h:531:53: note: expected 'struct dsa_port *' but argument is of type 'struct dsa_switch *'
+     531 | static inline bool dsa_port_is_dsa(struct dsa_port *port)
+         |                                    ~~~~~~~~~~~~~~~~~^~~~
+>> drivers/net/dsa/mxl862xx/mxl862xx.c:332:13: error: too many arguments to function 'dsa_port_is_dsa'
+     332 |             dsa_port_is_dsa(ds, port))
+         |             ^~~~~~~~~~~~~~~
+   In file included from drivers/net/dsa/mxl862xx/mxl862xx.c:16:
+   include/net/dsa.h:531:20: note: declared here
+     531 | static inline bool dsa_port_is_dsa(struct dsa_port *port)
+         |                    ^~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
 
 
+vim +/dsa_port_is_unused +331 drivers/net/dsa/mxl862xx/mxl862xx.c
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> Of Piotr Kwapulinski
-> Sent: Thursday, January 29, 2026 6:55 PM
-> To: intel-wired-lan@lists.osuosl.org
-> Cc: netdev@vger.kernel.org; dan.carpenter@linaro.org;
-> horms@kernel.org; pmenzel@molgen.mpg.de; Kwapulinski, Piotr
-> <piotr.kwapulinski@intel.com>
-> Subject: [Intel-wired-lan] [PATCH iwl-next] ixgbe: e610: remove
-> redundant assignment
->=20
-> Remove unnecessary code. No functional impact.
->=20
-> Fixes: 46761fd52a88 ("ixgbe: Add support for E610 FW Admin Command
-> Interface")
-> Signed-off-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
-> ---
->  drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c | 14 ++++----------
->  1 file changed, 4 insertions(+), 10 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-> b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-> index c2f8189..6f380fc 100644
-> --- a/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-> +++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_e610.c
-> @@ -142,20 +142,14 @@ static int ixgbe_aci_send_cmd_execute(struct
-> ixgbe_hw *hw,
->  			  IXGBE_PF_HICR);
->=20
->  	/* Read sync Admin Command response */
-> -	if ((hicr & IXGBE_PF_HICR_SV)) {
-> -		for (i =3D 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
-> +	if ((hicr & IXGBE_PF_HICR_SV))
-> +		for (i =3D 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++)
->  			raw_desc[i] =3D IXGBE_READ_REG(hw,
-> IXGBE_PF_HIDA(i));
-> -			raw_desc[i] =3D raw_desc[i];
-> -		}
-> -	}
->=20
->  	/* Read async Admin Command response */
-> -	if ((hicr & IXGBE_PF_HICR_EV) && !(hicr & IXGBE_PF_HICR_C)) {
-> -		for (i =3D 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++) {
-> +	if ((hicr & IXGBE_PF_HICR_EV) && !(hicr & IXGBE_PF_HICR_C))
-> +		for (i =3D 0; i < IXGBE_ACI_DESC_SIZE_IN_DWORDS; i++)
->  			raw_desc[i] =3D IXGBE_READ_REG(hw,
-> IXGBE_PF_HIDA_2(i));
-> -			raw_desc[i] =3D raw_desc[i];
-> -		}
-> -	}
->=20
->  	/* Handle timeout and invalid state of HICR register */
->  	if (hicr & IXGBE_PF_HICR_C)
-> --
-> 2.47.1
+   317	
+   318	static int mxl862xx_port_setup(struct dsa_switch *ds, int port)
+   319	{
+   320		bool is_cpu_port = dsa_is_cpu_port(ds, port);
+   321		int ret;
+   322	
+   323		/* disable port and flush MAC entries */
+   324		ret = mxl862xx_port_state(ds, port, false);
+   325		if (ret)
+   326			return ret;
+   327	
+   328		mxl862xx_port_fast_age(ds, port);
+   329	
+   330		/* skip setup for unused and DSA ports */
+ > 331		if (dsa_port_is_unused(ds, port) ||
+ > 332		    dsa_port_is_dsa(ds, port))
+   333			return 0;
+   334	
+   335		/* configure tag protocol */
+   336		ret = mxl862xx_configure_sp_tag_proto(ds, port, is_cpu_port);
+   337		if (ret)
+   338			return ret;
+   339	
+   340		/* assign CTP port IDs */
+   341		ret = mxl862xx_configure_ctp_port(ds, port, port,
+   342						  is_cpu_port ? 32 - port : 1);
+   343		if (ret)
+   344			return ret;
+   345	
+   346		if (is_cpu_port)
+   347			/* assign user ports to CPU port bridge */
+   348			return mxl862xx_setup_cpu_bridge(ds, port);
+   349	
+   350		/* setup single-port bridge for user ports */
+   351		return mxl862xx_add_single_port_bridge(ds, port);
+   352	}
+   353	
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
