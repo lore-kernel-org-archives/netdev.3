@@ -1,108 +1,180 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4A338944D;
-	Fri, 30 Jan 2026 19:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5863803D1;
+	Fri, 30 Jan 2026 19:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769801098; cv=none; b=c6vpzwy9RjEQfJcxfq37X3cMzEE+LlygTOkNH9F1g4fKevGSCNEivlWvIebQiwru5B5RBRs11YNAlZjrDEdxR4ZY2FOAkJz0sAEm+sSqbeBa47+Wu0AR/5T6DEF5EFInxSCsGya9gswlYQZ0W3uqSQSufJJJse1bGzC/8ZC5dxQ=
+	t=1769801358; cv=none; b=by4j2VBOKfK+1dAmkTL5d5uBhOgUliWZ1+TvlGtC6gVFZuYG/LsNQ/RpVHAoRRq3CnbXNperm7m8OkIqX9fY3BO/H58jKFIqAtH4tbrkPZJiNUkNM1MLpGoufF6i0Elzl1SBLOy0tN2pKIscP/jUyt2bOVhnt2EmqCWn9KrbUIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769801098; c=relaxed/simple;
-	bh=NYrKe3jSMM7YRKmWugfiByo4IRoIPSw7w1LnB+9W8sI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=uS+TlzhFrQ3XROO+mBjgRmqfK0EH3kp6QMCKL601t6LHDmk7Y55OCIu3FqL9m9Q5VcJ7heumSlRLshHz+fkcUB75ch3dcQQ4Tzr5V250NO8cVLTUEAU6lIUjYjQHE92oiJFZ/YA4YWtoG1T8T2PjVusP8CW6IzMlGks9ugWn78w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eOffG6yS; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769801358; c=relaxed/simple;
+	bh=zq6M2ieGwRe+GhEG3KF4BXzKoi5EDrjXrv88b4TY3lk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EkHXyxvgHO3j6KB+v4n/OstoLkDSrJjpKqLRaT8Sb6jJahXCR/Ked2ByyG9Bfz2oq3AIXlGJzOqNOmHbpwHHCGkWdsCJjWtZXUrMsRwkbJScCZLI+V9fjQZeMYO0n4S6IMl/ss7uPiYxsHzpleUfnNUv+njO9iCAM+UnQCK2FNU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HcN6dUJO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eOffG6yS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57741C4CEF7;
-	Fri, 30 Jan 2026 19:24:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HcN6dUJO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DEEC4CEF7;
+	Fri, 30 Jan 2026 19:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769801098;
-	bh=NYrKe3jSMM7YRKmWugfiByo4IRoIPSw7w1LnB+9W8sI=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=eOffG6ySIuakA/3fn6GKxx5l9aNw6miEHvNZQIBwlap3RvTL/EYEhHTVVUdm4benP
-	 NbePk61TpDL5PQD54yI7AdywSD8vHm1b2T8STHKqhE+SYumQY0CiVf0pnf1sRiBPGI
-	 hy1fHd+MEeMejYTs4ggHfECjzXTv6lvCEFYbrdWDdjeIKKtVTXLNfiRtgr6rnBtfFn
-	 cBI+Rx5PVPnmLckWdMCuEBOjZVV6cIamvzO/vbJzCeuD6t7j3r3LoBeghmbtDd2wTT
-	 l7h9ZQY0HKp5jB52w/s8OilLjxeuyFQxwRIA2M5A0RR4bK9lAYb0++MODYYr2j5mKR
-	 bq5+vq8ve3d3Q==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Fri, 30 Jan 2026 20:24:29 +0100
-Subject: [PATCH net-next v2 6/6] selftests: mptcp: connect: cover splice
- mode
+	s=k20201202; t=1769801358;
+	bh=zq6M2ieGwRe+GhEG3KF4BXzKoi5EDrjXrv88b4TY3lk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HcN6dUJOJuTHXw/R1apQEHOpKcXjCNi+GNgzFnSImRYxYPi3d2W46FRB+/wZEQnGC
+	 1t3LiM0Yzx+Mm6wv4gOsKXruVYbqmE+oogY3bocsL5RXvkvRCSfPvNpYUAeVVZ4qV0
+	 XJoRm4FeJYkJwCOjIgvV/mY1PsAHIZhfCVaA781SfMZ6vPI2HrHjkMUAio/fJxuOrm
+	 SvukIGv8Sb7SMQ4xVdq1ChJ335DHzHCeQhyurTRiWwX4Oq3D10aDSwUbFDNApWIadS
+	 MPpOcgNKnzQljAAnEzQTk093DjjemCu1wFdRhmKNCIgJlDd1B50E5vuol/ARtApF/b
+	 Duajkzx1wmKsg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	shuah@kernel.org,
+	willemb@google.com,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next] selftests: drv-net: rss: validate min RSS table size
+Date: Fri, 30 Jan 2026 11:29:12 -0800
+Message-ID: <20260130192912.826454-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260130-net-next-mptcp-splice-v2-6-31332ba70d7f@kernel.org>
-References: <20260130-net-next-mptcp-splice-v2-0-31332ba70d7f@kernel.org>
-In-Reply-To: <20260130-net-next-mptcp-splice-v2-0-31332ba70d7f@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, David Ahern <dsahern@kernel.org>, 
- Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
- Geliang Tang <geliang@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1570; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=8UGJgd2vetfhMEQYLqhsyCyu0GJ8G+zo8jWjkOXYN3c=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJrWcuC999yWZed83Hy3P6bNX1M1+cwqty/1nfjxMZqD
- elHPoc/dJSyMIhxMciKKbJIt0Xmz3xexVvi5WcBM4eVCWQIAxenAEzkYT7DP13Loo9v1A+tq/ih
- +1bTQOiExDeny56JrPfcJmyrvVUrdoeR4cgWietmq/rvHO+x8Zoz/7+y+E2OK+7F7+ftY6k/Emx
- wkBMA
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-From: Geliang Tang <tanggeliang@kylinos.cn>
+Add a test which checks that the RSS table is at least 4x the max
+queue count supported by the device. The original RSS spec from
+Microsoft stated that the RSS indirection table should be 2 to 8
+times the CPU count, presumably assuming queue per CPU. If the
+CPU count is not a power of two, however, a power-of-2 table
+2x larger than queue count results in a 33% traffic imbalance.
+Validate that the indirection table is at least 4x the queue
+count. This lowers the imbalance to 16% which empirically
+appears to be more acceptable to memcache-like workloads.
 
-The "splice" alternate mode for mptcp_connect.sh/.c is available now,
-this patch adds mptcp_connect_splice.sh to test it in the MPTCP CI by
-default.
-
-Note that this mode is also supported by stable kernel versions, but
-optimised in this patch series.
-
-Suggested-by: Matthieu Baerts <matttbe@kernel.org>
-Signed-off-by: Geliang Tang <tanggeliang@kylinos.cn>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/Makefile                | 1 +
- tools/testing/selftests/net/mptcp/mptcp_connect_splice.sh | 5 +++++
- 2 files changed, 6 insertions(+)
+CC: shuah@kernel.org
+CC: willemb@google.com
+CC: linux-kselftest@vger.kernel.org
+---
+ .../testing/selftests/drivers/net/hw/Makefile |  1 +
+ .../selftests/drivers/net/hw/rss_drv.py       | 88 +++++++++++++++++++
+ 2 files changed, 89 insertions(+)
+ create mode 100755 tools/testing/selftests/drivers/net/hw/rss_drv.py
 
-diff --git a/tools/testing/selftests/net/mptcp/Makefile b/tools/testing/selftests/net/mptcp/Makefile
-index 4dd6278cd3dd..22ba0da2adb8 100644
---- a/tools/testing/selftests/net/mptcp/Makefile
-+++ b/tools/testing/selftests/net/mptcp/Makefile
-@@ -11,6 +11,7 @@ TEST_PROGS := \
- 	mptcp_connect_checksum.sh \
- 	mptcp_connect_mmap.sh \
- 	mptcp_connect_sendfile.sh \
-+	mptcp_connect_splice.sh \
- 	mptcp_join.sh \
- 	mptcp_sockopt.sh \
- 	pm_netlink.sh \
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_connect_splice.sh b/tools/testing/selftests/net/mptcp/mptcp_connect_splice.sh
+diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
+index 9c163ba6feee..a64140333a46 100644
+--- a/tools/testing/selftests/drivers/net/hw/Makefile
++++ b/tools/testing/selftests/drivers/net/hw/Makefile
+@@ -35,6 +35,7 @@ TEST_PROGS = \
+ 	pp_alloc_fail.py \
+ 	rss_api.py \
+ 	rss_ctx.py \
++	rss_drv.py \
+ 	rss_flow_label.py \
+ 	rss_input_xfrm.py \
+ 	toeplitz.py \
+diff --git a/tools/testing/selftests/drivers/net/hw/rss_drv.py b/tools/testing/selftests/drivers/net/hw/rss_drv.py
 new file mode 100755
-index 000000000000..241254a966c9
+index 000000000000..2d1a33189076
 --- /dev/null
-+++ b/tools/testing/selftests/net/mptcp/mptcp_connect_splice.sh
-@@ -0,0 +1,5 @@
-+#!/bin/bash
++++ b/tools/testing/selftests/drivers/net/hw/rss_drv.py
+@@ -0,0 +1,88 @@
++#!/usr/bin/env python3
 +# SPDX-License-Identifier: GPL-2.0
 +
-+MPTCP_LIB_KSFT_TEST="$(basename "${0}" .sh)" \
-+	"$(dirname "${0}")/mptcp_connect.sh" -m splice "${@}"
-
++"""
++Driver-related behavior tests for RSS.
++"""
++
++from lib.py import ksft_run, ksft_exit, ksft_ge
++from lib.py import ksft_variants, KsftNamedVariant, KsftSkipEx
++from lib.py import defer, ethtool
++from lib.py import EthtoolFamily, NlError
++from lib.py import NetDrvEnv
++
++
++def _is_power_of_two(n):
++    return n > 0 and (n & (n - 1)) == 0
++
++
++def _get_rss(cfg, context=0):
++    return ethtool(f"-x {cfg.ifname} context {context}", json=True)[0]
++
++
++def _test_rss_indir_size(cfg, qcnt, context=0):
++    """Test that indirection table size is at least 4x queue count."""
++    ethtool(f"-L {cfg.ifname} combined {qcnt}")
++
++    rss = _get_rss(cfg, context=context)
++    indir = rss['rss-indirection-table']
++    ksft_ge(len(indir), 4 * qcnt, "Table smaller than 4x")
++    return len(indir)
++
++
++def _maybe_create_context(cfg, create_context):
++    """ Either create a context and return its ID or return 0 for main ctx """
++    if not create_context:
++        return 0
++    try:
++        ctx = cfg.ethnl.rss_create_act({'header': {'dev-index': cfg.ifindex}})
++        ctx_id = ctx['context']
++        defer(cfg.ethnl.rss_delete_act,
++              {'header': {'dev-index': cfg.ifindex}, 'context': ctx_id})
++    except NlError:
++        raise KsftSkipEx("Device does not support additional RSS contexts")
++
++    return ctx_id
++
++
++@ksft_variants([
++    KsftNamedVariant("main", False),
++    KsftNamedVariant("ctx", True),
++])
++def indir_size_4x(cfg, create_context):
++    """
++    Test that the indirection table has at least 4 entries per queue.
++    Empirically network-heavy workloads like memcache suffer with the 33%
++    imbalance of a 2x indirection table size.
++    4x table translates to a 16% imbalance.
++    """
++    channels = cfg.ethnl.channels_get({'header': {'dev-index': cfg.ifindex}})
++    ch_max = channels.get('combined-max', 0)
++    qcnt = channels['combined-count']
++
++    if ch_max < 3:
++        raise KsftSkipEx(f"Not enough queues for the test: max={ch_max}")
++
++    defer(ethtool, f"-L {cfg.ifname} combined {qcnt}")
++    ethtool(f"-L {cfg.ifname} combined 3")
++
++    ctx_id = _maybe_create_context(cfg, create_context)
++
++    indir_sz = _test_rss_indir_size(cfg, 3, context=ctx_id)
++
++    # Test with max queue count (max - 1 if max is a power of two)
++    test_max = ch_max - 1 if _is_power_of_two(ch_max) else ch_max
++    if test_max > 3 and indir_sz < test_max * 4:
++        _test_rss_indir_size(cfg, test_max, context=ctx_id)
++
++
++def main() -> None:
++    """ Ksft boiler plate main """
++    with NetDrvEnv(__file__) as cfg:
++        cfg.ethnl = EthtoolFamily()
++        ksft_run([indir_size_4x], args=(cfg, ))
++    ksft_exit()
++
++
++if __name__ == "__main__":
++    main()
 -- 
-2.51.0
+2.52.0
 
