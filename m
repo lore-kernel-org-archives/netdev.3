@@ -1,53 +1,53 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B49A3112B4;
-	Fri, 30 Jan 2026 07:41:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73A2A3128A2;
+	Fri, 30 Jan 2026 07:41:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769758907; cv=none; b=uX5YF1Rmo/7/5Dc3tOnT8Hk4FaNYmLRFJlR9z7/e8esD8kg1xeKLZ52B10RRd5n64wPA3RIq8iJSMkCuMAAB0zNTIFbBpPiYhwRdjZzHoP5XFmaXAKuLVmLfrkDlTnkJdw0a3tnUVraep7dE5gUoGk86CM0oT9uQuuoEbcThIco=
+	t=1769758909; cv=none; b=Vf6ZgfDZnteVZATDDo8QZgsufdOmjwBQ8T3UMZ/4sCKsxKtYY67t69oV1GrGhPGkTPhK70YCKEzKi1TOgtjuJCT5ZcbbVdc7VTaVHp9EY2cuihr0lGoYpQBjzPHIbhQJx6+738xHHM3w1+OySexgdE6n2txmP1Zo3kfQOPu0+Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769758907; c=relaxed/simple;
-	bh=CoghMDarm31ncDtGmy3+/C7MA74iQBTvl/1xN6lsCNo=;
+	s=arc-20240116; t=1769758909; c=relaxed/simple;
+	bh=cXi0KRzZoV34WeDhHHBqcZR1/JcRSeqxXpA0StBk5vM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zar/imJFngKnKbIwxdT/hSFDAGfojDPiE5dRTWJTO1wwy2EqiuFAYCEOhlohGLUN+E+rQR9J90J4Q762267oTWqAmYDfoKvjpsKlozrpvdVQSqz9bEmFngfYURyQ3lDXVhsjpcAa/SIzK41/EEvx2pyQqEmNJEVyV7lBVVAu090=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GCu6JACI; arc=none smtp.client-ip=198.175.65.11
+	 Content-Type:Content-Disposition:In-Reply-To; b=M0T5ARg2jMdnT+Tjc6NXNRWFWAvqF08JWRK8vPMQyx2ivOcZUVMer8k/LHfM+uQfkdiB/jDyd4UlRTkOk7WNa3w97Cfzj70aw0s/7P7JKu9bFqg/YVV7Paw1gYBvFhW0b7ZyHIdkNXFir96yb9h4d2m7oVFbJFQ9zkni5EEHoaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jfMgV1Pl; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GCu6JACI"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jfMgV1Pl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769758906; x=1801294906;
+  t=1769758907; x=1801294907;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=CoghMDarm31ncDtGmy3+/C7MA74iQBTvl/1xN6lsCNo=;
-  b=GCu6JACIDw5tnKmCGDJ74otv1Cl67zvzw+oBjhcW7EAc2FGsi4JBtl+P
-   6+GoCXm9vAEs+4SnmxfrOdTgxuIhqGcnvShtTb28QQA6LJ9qSUeVlzK5p
-   OMuJT/wLocmC5+L5OUIds2M5Oxm0mw2wcTdTlvat6iRvByl5oPkTMeLHB
-   biP+3ANeMhBTt6ypiI5sIWvErSVI2v3I60qW/lDzui1mcPY7ZnLa/VhEx
-   AXdZmfqiOMWBy9MAVhC1XTlw0jQ6p/Dse1ryVh5XMXXvm3QZopAJUUTtD
-   QZW9cEcVjlX5XNL99LDH3wWl3xB4Q7obSLSD1jwfvXWkoP0AtQOoU4BS8
-   g==;
-X-CSE-ConnectionGUID: zj8Gb5VUSCuup34Z6gTPzg==
-X-CSE-MsgGUID: PoIL6DisST+VB9sq/Xzdvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="81323431"
+  bh=cXi0KRzZoV34WeDhHHBqcZR1/JcRSeqxXpA0StBk5vM=;
+  b=jfMgV1Pleth1hGdOzquRHRKyrsnGEgTUfTHisBmSASa/XJR8P0zY5kDo
+   4RhMu0f6I9ERTndhlcXB7wzopsmIIv+Mea12fA9cplDCN8vxwSVIKRJL2
+   QnUn196t4oOBSuA7ZC8lCYP5NnL5M2WvqUpbFioCdt0V3lwgQIl8ei7CW
+   hlGFfGH6mBCDMMjUhgLAtY0HQrN5gBK3vlj5o3cQjXKaYma0LA6Aw5h3R
+   k4TFr7h3r8ftnFVaNCr9k6IWwzdMdSi2adwD1b6NMhHvwI9DzZa+cPBZk
+   Q6YCHmrpbbWWO522Pre4v3V1XVVKYo0I/IldNg3p+OGRfivOfjgBfOnbo
+   A==;
+X-CSE-ConnectionGUID: 3apuhws5R/iaOsyrdCuiZg==
+X-CSE-MsgGUID: XS7I4GrZRRuZjn+NhcV6wA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11686"; a="82378407"
 X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; 
-   d="scan'208";a="81323431"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 23:41:46 -0800
-X-CSE-ConnectionGUID: zehV8ryPT6KSXxgQ0osYOw==
-X-CSE-MsgGUID: PcQASZoQTUeETTFDMtO1nA==
+   d="scan'208";a="82378407"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Jan 2026 23:41:46 -0800
+X-CSE-ConnectionGUID: KMnMedBOSHyr8E/b7Ob4jQ==
+X-CSE-MsgGUID: wLknmg+BTlSWpoyN9Da0yw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,262,1763452800"; 
-   d="scan'208";a="209046123"
+   d="scan'208";a="246411346"
 Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 29 Jan 2026 23:41:39 -0800
+  by orviesa001.jf.intel.com with ESMTP; 29 Jan 2026 23:41:40 -0800
 Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
 	(envelope-from <lkp@intel.com>)
-	id 1vlj8L-00000000cKm-1W0m;
+	id 1vlj8L-00000000cKo-1bmS;
 	Fri, 30 Jan 2026 07:41:37 +0000
-Date: Fri, 30 Jan 2026 15:40:41 +0800
+Date: Fri, 30 Jan 2026 15:40:42 +0800
 From: kernel test robot <lkp@intel.com>
 To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
 	Vladimir Oltean <olteanv@gmail.com>,
@@ -73,7 +73,7 @@ Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
 	John Crispin <john@phrozen.org>
 Subject: Re: [PATCH net-next v10 4/4] net: dsa: add basic initial driver for
  MxL862xx switches
-Message-ID: <202601301540.5yveQiWq-lkp@intel.com>
+Message-ID: <202601301504.2pd3tNrg-lkp@intel.com>
 References: <281fd7e777b51849fac9ef5191679586cc2a1b54.1769731630.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -95,19 +95,19 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Golle/dt-bindings-
 base:   net-next/main
 patch link:    https://lore.kernel.org/r/281fd7e777b51849fac9ef5191679586cc2a1b54.1769731630.git.daniel%40makrotopia.org
 patch subject: [PATCH net-next v10 4/4] net: dsa: add basic initial driver for MxL862xx switches
-config: nios2-allmodconfig (https://download.01.org/0day-ci/archive/20260130/202601301540.5yveQiWq-lkp@intel.com/config)
-compiler: nios2-linux-gcc (GCC) 11.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260130/202601301540.5yveQiWq-lkp@intel.com/reproduce)
+config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20260130/202601301504.2pd3tNrg-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260130/202601301504.2pd3tNrg-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202601301540.5yveQiWq-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202601301504.2pd3tNrg-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
    drivers/net/dsa/mxl862xx/mxl862xx.c: In function 'mxl862xx_port_setup':
-   drivers/net/dsa/mxl862xx/mxl862xx.c:331:32: error: passing argument 1 of 'dsa_port_is_unused' from incompatible pointer type [-Werror=incompatible-pointer-types]
+>> drivers/net/dsa/mxl862xx/mxl862xx.c:331:32: error: passing argument 1 of 'dsa_port_is_unused' from incompatible pointer type [-Wincompatible-pointer-types]
      331 |         if (dsa_port_is_unused(ds, port) ||
          |                                ^~
          |                                |
@@ -116,30 +116,26 @@ All errors (new ones prefixed by >>):
    include/net/dsa.h:546:56: note: expected 'struct dsa_port *' but argument is of type 'struct dsa_switch *'
      546 | static inline bool dsa_port_is_unused(struct dsa_port *dp)
          |                                       ~~~~~~~~~~~~~~~~~^~
->> drivers/net/dsa/mxl862xx/mxl862xx.c:331:13: error: too many arguments to function 'dsa_port_is_unused'
+>> drivers/net/dsa/mxl862xx/mxl862xx.c:331:13: error: too many arguments to function 'dsa_port_is_unused'; expected 1, have 2
      331 |         if (dsa_port_is_unused(ds, port) ||
-         |             ^~~~~~~~~~~~~~~~~~
-   In file included from drivers/net/dsa/mxl862xx/mxl862xx.c:16:
+         |             ^~~~~~~~~~~~~~~~~~     ~~~~
    include/net/dsa.h:546:20: note: declared here
      546 | static inline bool dsa_port_is_unused(struct dsa_port *dp)
          |                    ^~~~~~~~~~~~~~~~~~
-   drivers/net/dsa/mxl862xx/mxl862xx.c:332:29: error: passing argument 1 of 'dsa_port_is_dsa' from incompatible pointer type [-Werror=incompatible-pointer-types]
+>> drivers/net/dsa/mxl862xx/mxl862xx.c:332:29: error: passing argument 1 of 'dsa_port_is_dsa' from incompatible pointer type [-Wincompatible-pointer-types]
      332 |             dsa_port_is_dsa(ds, port))
          |                             ^~
          |                             |
          |                             struct dsa_switch *
-   In file included from drivers/net/dsa/mxl862xx/mxl862xx.c:16:
    include/net/dsa.h:531:53: note: expected 'struct dsa_port *' but argument is of type 'struct dsa_switch *'
      531 | static inline bool dsa_port_is_dsa(struct dsa_port *port)
          |                                    ~~~~~~~~~~~~~~~~~^~~~
->> drivers/net/dsa/mxl862xx/mxl862xx.c:332:13: error: too many arguments to function 'dsa_port_is_dsa'
+>> drivers/net/dsa/mxl862xx/mxl862xx.c:332:13: error: too many arguments to function 'dsa_port_is_dsa'; expected 1, have 2
      332 |             dsa_port_is_dsa(ds, port))
-         |             ^~~~~~~~~~~~~~~
-   In file included from drivers/net/dsa/mxl862xx/mxl862xx.c:16:
+         |             ^~~~~~~~~~~~~~~     ~~~~
    include/net/dsa.h:531:20: note: declared here
      531 | static inline bool dsa_port_is_dsa(struct dsa_port *port)
          |                    ^~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
 
 
 vim +/dsa_port_is_unused +331 drivers/net/dsa/mxl862xx/mxl862xx.c
