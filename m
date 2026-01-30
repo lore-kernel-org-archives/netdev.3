@@ -1,85 +1,117 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E9B327210;
-	Fri, 30 Jan 2026 09:01:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6451334DCE3
+	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 09:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769763703; cv=none; b=hOxX5FW4CWI+eAcyCSz6PmeirDZkjzH3prSGfJ07KRcW+Lr90I6RF3zpmJiM8eZ03GRfkFGuJ80zlx56r77BfRNFnunBdK8fbtR0O71WtlAPu14cAgJUY2WanaKajspm6MQgKLk8ndgCKH37JzTeOxrimhn3G0QbMNeYKHw714k=
+	t=1769764374; cv=none; b=gHV9FHomo2JTiW12rQPhwG3wFNvG6b5xvTCxQz/YIXIl7Za7G7Nncuxou0pk2j0V+4RzMj3CZ6TY5zEogfxq2/sRaD0t7U2bBrZ/quMkB33oAqsYgZPVASYcsrLVt3uY6g+gZ9qLiA/0aksy6Kd0G7oNSCmOFT2Vw8pRLDimfR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769763703; c=relaxed/simple;
-	bh=SGn6rcjYmhqxxcVgKcE5FUgMgb0AGIyJmqyFW//I6dM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jcx3g0XUqnOw3WWbUe2kVLcPmTfOQlognuFvQ7gHYan4SiEHq5MLLcYwbGa8f1KtYlW+2XGfWRN04lb0V0CPb+RrKHFAeL1ksQnqggd1wedF4XQqD4qNMDbLB5kSugpuLlt3UPwB2Bt48/ruUKDxSA4Kqi1vYibivI6urM1KKTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=nY/WOovL; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	s=arc-20240116; t=1769764374; c=relaxed/simple;
+	bh=o4qpJAfiNyeL6Fj9BGIqCCcCv4uIJ4uVIS/X4VFGV64=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E+hczmk2ON6EQStIQVBxnHuJ1SiNkNF3g+LfV00X4zkM71ozUOM2dlf+4sV21Zm8eGgOAMPnCs75Jw6DU8KhgHAw3xN4wVFr+QmOMCuSwoVKHmOiKZoNocqRy+I3VQMa5p+upj+3OFABQxwOTRETf/GaA7jLDuFcU3BtagbU+Uo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=kZ65059O; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="nY/WOovL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=dg1aAyK0fD1irzZQrfqcf/pxsLPYajOmV9tpjiRFf7c=; b=nY/WOovLAZBdvNGpSKTZUwZ+1S
-	cjDtG43+YSkjT/IwA1Jn2gdEY2XAIhsbGgBeSej8AwGXuOWBDxOpJLSl9KXNvfSES9UhSUtXU3ZHn
-	oypoUahFG6LubCKx+S/l/wcqV8vNAZgZHyS+oRMKKRkfOTfMcwRLRadbMl6rPLHdbPegODpBwaKBy
-	twWDlnzkxLZV+ID2K5vCxsdODRrfZvmIsXaFChhu/567DE+SrnQnHr7AJvDh7Ot192145v4aDinzk
-	Ah9wnn5rhSEEuv4k6nIIc5qBz5sUnJY45eyv76qh+Jh1CWgi1zquYynZJL8GZuto2x1/g0TaF/O3h
-	+RGVAldg==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vlkNS-001bOC-CF; Fri, 30 Jan 2026 09:01:18 +0000
-Date: Fri, 30 Jan 2026 01:01:11 -0800
-From: Breno Leitao <leitao@debian.org>
-To: John Ogness <john.ogness@linutronix.de>, pmladek@suse.com
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, pmladek@suse.com, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Sergey Senozhatsky <senozhatsky@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
-	gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, mpdesouza@suse.com, 
-	kernel-team@meta.com
-Subject: Re: [PATCH net-next v5 1/4] printk: Add execution context (task
- name/CPU) to printk_info
-Message-ID: <aXxy7usBz1-TTkVB@gmail.com>
-References: <20260128-nbcon-v5-0-93b4ddbc181a@debian.org>
- <20260128-nbcon-v5-1-93b4ddbc181a@debian.org>
- <87ikcllrxz.fsf@jogness.linutronix.de>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="kZ65059O"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id C29034E42340;
+	Fri, 30 Jan 2026 09:12:49 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 944CF6075A;
+	Fri, 30 Jan 2026 09:12:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B8D95119A8884;
+	Fri, 30 Jan 2026 10:12:41 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1769764368; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=7Z16KRUuvvver/+C25LTNG/C+Q38nHHdfZUCB5foSSU=;
+	b=kZ65059O4gt6+PeWcYsv5PEpVuCXbD6Re1yntra0/GSQDtgvYup9hlwb9WZK/KoU9vIOWq
+	MoTWngAqbmZFpyhy26iQ9HhTmHBMVfV5nJwvXvub12qnez4O/zScYiVND5UybdaxfJW4ab
+	v75QCHZqML3qCqA1XFz6p7g1K9UrLLOu2meH+g/NM0V9FX0fvDqBRsc9JoVL0cVXEDkLAv
+	NZvxrjMZNfjUi4dpca/8l2/iW/TDZv892cbWt8pdJt6s8fxzPnSUEiAf9QvvccYqQuaK2A
+	NUZ9gHvNmtkWNvxJA0h+A4s4XC4sab4jg9vRbEZGafdY+zZ4zUjh6Y6gO6Ak8A==
+Message-ID: <7fc065e8-c85b-4faf-9104-1b6b54327a02@bootlin.com>
+Date: Fri, 30 Jan 2026 10:12:40 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87ikcllrxz.fsf@jogness.linutronix.de>
-X-Debian-User: leitao
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: phy: add device link between MAC device and MDIO
+ device
+To: Wei Fang <wei.fang@nxp.com>, Russell King <linux@armlinux.org.uk>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: "andrew@lunn.ch" <andrew@lunn.ch>,
+ "hkallweit1@gmail.com" <hkallweit1@gmail.com>,
+ "florian.fainelli@broadcom.com" <florian.fainelli@broadcom.com>,
+ "xiaolei.wang" <xiaolei.wang@windriver.com>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "pabeni@redhat.com" <pabeni@redhat.com>,
+ "quic_abchauha@quicinc.com" <quic_abchauha@quicinc.com>,
+ "quic_sarohasa@quicinc.com" <quic_sarohasa@quicinc.com>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20260126104409.1070403-1-wei.fang@nxp.com>
+ <20260128201501.04bb6e5c@kernel.org> <aXsxJa0D0bohafRs@shell.armlinux.org.uk>
+ <PAXPR04MB85106B63AF43DE0830B4C362889FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <PAXPR04MB85106B63AF43DE0830B4C362889FA@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Jan 28, 2026 at 03:48:16PM +0106, John Ogness wrote:
-> On 2026-01-28, Breno Leitao <leitao@debian.org> wrote:
-> > Extend struct printk_info to include the task name, pid, and CPU
-> > number where printk messages originate. This information is captured
-> > at vprintk_store() time and propagated through printk_message to
-> > nbcon_write_context, making it available to nbcon console drivers.
-> >
-> > This is useful for consoles like netconsole that want to include
-> > execution context in their output, allowing correlation of messages
-> > with specific tasks and CPUs regardless of where the console driver
-> > actually runs.
-> >
-> > The feature is controlled by CONFIG_PRINTK_EXECUTION_CTX, which is
-> > automatically selected by CONFIG_NETCONSOLE_DYNAMIC. When disabled,
-> > the helper functions compile to no-ops with no overhead.
-> >
-> > Suggested-by: John Ogness <john.ogness@linutronix.de>
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > Signed-off-by: Petr Mladek <pmladek@suse.com>
+Hi again,
+
+On 30/01/2026 04:41, Wei Fang wrote:
+[...]
 > 
-> Reviewed-by: John Ogness <john.ogness@linutronix.de>
+> diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+> index 81984d4ebb7c..c48335bfc7b6 100644
+> --- a/drivers/net/phy/phy_device.c
+> +++ b/drivers/net/phy/phy_device.c
+> @@ -1771,9 +1771,17 @@ int phy_attach_direct(struct net_device *dev, struct phy_device *phydev,
+>          * another mac interface, so we should create a device link between
+>          * phy dev and mac dev.
+>          */
+> -       if (dev && phydev->mdio.bus->parent && dev->dev.parent != phydev->mdio.bus->parent)
+> -               phydev->devlink = device_link_add(dev->dev.parent, &phydev->mdio.dev,
+> -                                                 DL_FLAG_PM_RUNTIME | DL_FLAG_STATELESS);
+> +       if (dev && bus->parent && dev->dev.parent != bus->parent) {
+> +               if (phydev->sfp_bus_attached)
+                      ^ assuming we replace with phy_on_sfp()
+> +                       phydev->devlink = device_link_add(dev->dev.parent,
+> +                                                         bus->parent,
+> +                                                         DL_FLAG_PM_RUNTIME |
+> +                                                         DL_FLAG_STATELESS);
+> +               else
+> +                       device_link_add(dev->dev.parent, bus->parent,
+> +                                       DL_FLAG_PM_RUNTIME |
+> +                                       DL_FLAG_AUTOREMOVE_SUPPLIER);
+> +       }
 
-Thank you for the review. To confirm, it is acceptable to queue this for
-the next netdev version, isn't it?
+I think we should let the phy_on_sfp() case alone for now. The lifetime
+of the SFP phydev and the MAC are completely independent here, the PHY
+can be probed/removed without the MAC being there, and vice versa.
+
+The MDIO bus that controls that SFP PHY's lifetime is the same as the
+PHY itself, the mdio bus in that case exists solely to drive that single
+PHY, and in can't be shared between multiple PHYs even if we have
+multiple SFP ports in the entire system.
+
+The logical thing to do IMO is not to tie the MAC and the MDIO Bus
+itself, but rather the MAC and the PHY as was done before. As you state,
+we couldn't set DL_FLAG_AUTOREMOVE_SUPPLIER because of SFP PHYs, but
+if we add the check on "phy_on_sfp()", it should now be fine.
+
+Maxime
+
+
+
