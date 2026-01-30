@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1373803D1
-	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 18:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59942385ECF
+	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 18:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769799249; cv=none; b=SwpUG05ilrskQz4DPOFHDyFNnC2XDaK9UD0BH/4xTfIX4DaHaQlRN1pVCeNXAQHm2Br5PpvtYT9kCLWPLnRUmJHzPtoEdQOM5AvWHr9tlBkrTxvUzA6UwVdsl90AqhVIBs/S6RXSBo0XnMXyYjHphaZqtfDaI5P4bPLMjc89I0M=
+	t=1769799249; cv=none; b=AOh2ZonB36682c0aT3Frj3DsjdzU2AJSbykIJhK2gNAIdJB5DDViVhtntCvmOso87xouwA8H6G4GWz+hp+X0dUggChK8GzZTpFscDswD/qOnlZrxRobEwBpXfQLgkpvDdzuoUT49NdFjK/NSvij/7kUY6lmEbB2LF20Y3oCUlps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769799249; c=relaxed/simple;
-	bh=QiPGWXLNtkw+nuEKvcpmVFINTkulPUYzjN0N9rib4ec=;
+	bh=fgHt9wm/iMoXvdHrQlGkAoGemZ42a79ZTV/jfChuTaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZtOUaJFfiRqziRK6qdbdcbNT3BMYhrHdCxb4cmkdQhpSRRto0hhCIyoua2y2HZtZmooJ+4tG+v3q+N/jv2GYqr0WIwn0doz8+djkfbW/lf1Pwaug2EQnybR3V4sFwugjwt0VoNnM0E8ksduMdMcaBLvNcYjt2umo2r94scGYO88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K6I+BDiE; arc=none smtp.client-ip=198.175.65.18
+	 MIME-Version; b=o32D3XNwgFpNy+241osDNvWIKkpVHlP+n676OEkurYQ6wolh6Hc99qBKxcdNt4bBH19svAgdqsLoyFPNYV+0FKW3R8JezZXw9api4lwC8xpAEpvJvu6xb0Abr0ym6Y39oyaOZLYKNl4vy5Hx9xnDrShKI8vA/7bqzLhyOWw5se4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AKdC68P6; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K6I+BDiE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AKdC68P6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1769799247; x=1801335247;
+  t=1769799248; x=1801335248;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=QiPGWXLNtkw+nuEKvcpmVFINTkulPUYzjN0N9rib4ec=;
-  b=K6I+BDiESfoG+2RmMj1xLSndDTEO5A3aWoxQfnpQb/SRDjI+Jjl/awCl
-   MtyJrEwdGRSJ6geynfY8WtLLacPJe4dnv5GfJQRms5E1QeKQi1v+RHViz
-   I5g1KtzUND+ZdnBfTo7AOhHLghfGbew2qa/pZ1ZRDGkPEekdo/X8hUF4g
-   U8IcyQ/xtOiOX4jqAyEdMtOcqyO6jDI9LBy03ILBHc2tinOUCRr7v73Xm
-   wfXXPUZ8GNkOkiacgAb40J/EAOQVke5Q5wgFaug9a4ZMQjrzHwDynK+i5
-   2ya3vGKmg86LSZjGgoPX3gdfxlgx/TtRRU0nZIWaEL2t3jm6A0otcCw6F
-   Q==;
-X-CSE-ConnectionGUID: sfZTKkLVRTqm5q9Xq01yRQ==
-X-CSE-MsgGUID: 9WruXdR8RN6+lIk1OIJtsA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11687"; a="71091270"
+  bh=fgHt9wm/iMoXvdHrQlGkAoGemZ42a79ZTV/jfChuTaQ=;
+  b=AKdC68P6Oz4VULmHyOJwR0CLsIKanmWQ0x/u5Sucjf+Hl+TfuqnJTcz9
+   bSIJZ7n60nIkMeeuEOzqqWGkqZckE+p2wmMIwf7USalUxJ5x9zb8bGmVT
+   Fs4NLpI1Gd0zRk3hcSVHTgjFcTpTkbNqv8QxCcE8tYd1LgfnxPxf1lR0M
+   rMmZTPZE8CmSLUE2cMUV2iIwSg1X+++N2iI7Bcmn4C5cKY0DD8hh89GeD
+   JD952HBQYNI3p5xZSznS5uQg8aWvEVByL03HQF+W5+NXfeWLzbIFnRh37
+   6X+qghdp+foP6PGmpy3kbUYsIDrJ7bK35g++ZZu06+/W77V/uEd4Bzwzq
+   w==;
+X-CSE-ConnectionGUID: 4QFHBr7ASWqXXWK84nEgyw==
+X-CSE-MsgGUID: 0i/aQ1A9R0y1h7kYO3hb4Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11687"; a="71091285"
 X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="71091270"
+   d="scan'208";a="71091285"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 10:54:06 -0800
-X-CSE-ConnectionGUID: RvczcAM/QdimjUNrpwifPQ==
-X-CSE-MsgGUID: 4xmx8kH4TeSJWnUw39S2fQ==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 10:54:07 -0800
+X-CSE-ConnectionGUID: zm4dkThLQR+xlXnGVK6FUw==
+X-CSE-MsgGUID: eN/2ReTATOiSjcyqhFzUAg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,263,1763452800"; 
-   d="scan'208";a="231841001"
+   d="scan'208";a="231841008"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa002.fm.intel.com with ESMTP; 30 Jan 2026 10:54:05 -0800
+  by fmviesa002.fm.intel.com with ESMTP; 30 Jan 2026 10:54:06 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,16 +50,17 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Grzegorz Nitka <grzegorz.nitka@intel.com>,
+Cc: Aaron Ma <aaron.ma@canonical.com>,
 	anthony.l.nguyen@intel.com,
 	przemyslaw.kitszel@intel.com,
 	jacob.e.keller@intel.com,
+	grzegorz.nitka@intel.com,
 	richardcochran@gmail.com,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	horms@kernel.org,
 	Sunitha Mekala <sunithax.d.mekala@intel.com>
-Subject: [PATCH net 1/5] ice: fix missing TX timestamps interrupts on E825 devices
-Date: Fri, 30 Jan 2026 10:53:54 -0800
-Message-ID: <20260130185401.1091523-2-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 3/5] ice: Fix PTP NULL pointer dereference during VSI rebuild
+Date: Fri, 30 Jan 2026 10:53:56 -0800
+Message-ID: <20260130185401.1091523-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260130185401.1091523-1-anthony.l.nguyen@intel.com>
 References: <20260130185401.1091523-1-anthony.l.nguyen@intel.com>
@@ -71,69 +72,147 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Grzegorz Nitka <grzegorz.nitka@intel.com>
+From: Aaron Ma <aaron.ma@canonical.com>
 
-Modify PTP (Precision Time Protocol) configuration on link down flow.
-Previously, PHY_REG_TX_OFFSET_READY register was cleared in such case.
-This register is used to determine if the timestamp is valid or not on
-the hardware side.
-However, there is a possibility that there is still the packet in the
-HW queue which originally was supposed to be timestamped but the link
-is already down and given register is cleared.
-This potentially might lead to the situation in which that 'delayed'
-packet's timestamp is treated as invalid one when the link is up
-again.
-This in turn leads to the situation in which the driver is not able to
-effectively clean timestamp memory and interrupt configuration.
-From the hardware perspective, that 'old' interrupt was not handled
-properly and even if new timestamp packets are processed, no new
-interrupts is generated. As a result, providing timestamps to the user
-applications (like ptp4l) is not possible.
-The solution for this problem is implemented at the driver level rather
-than the firmware, and maintains the tx_ready bit high, even during
-link down events. This avoids entering a potential inconsistent state
-between the driver and the timestamp hardware.
+Fix race condition where PTP periodic work runs while VSI is being
+rebuilt, accessing NULL vsi->rx_rings.
 
-Testing hints:
-- run PTP traffic at higher rate (like 16 PTP messages per second)
-- observe ptp4l behaviour at the client side in the following
-  conditions:
-	a) trigger link toggle events. It needs to be physiscal
-           link down/up events
-	b) link speed change
-In all above cases, PTP processing at ptp4l application should resume
-always. In failure case, the following permanent error message in ptp4l
-log was observed:
-controller-0 ptp4l: err [6175.116] ptp4l-legacy timed out while polling
-	for tx timestamp
+The sequence was:
+1. ice_ptp_prepare_for_reset() cancels PTP work
+2. ice_ptp_rebuild() immediately queues PTP work
+3. VSI rebuild happens AFTER ice_ptp_rebuild()
+4. PTP work runs and accesses NULL vsi->rx_rings
 
-Fixes: 7cab44f1c35f ("ice: Introduce ETH56G PHY model for E825C products")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Fix: Keep PTP work cancelled during rebuild, only queue it after
+VSI rebuild completes in ice_rebuild().
+
+Added ice_ptp_queue_work() helper function to encapsulate the logic
+for queuing PTP work, ensuring it's only queued when PTP is supported
+and the state is ICE_PTP_READY.
+
+Error log:
+[  121.392544] ice 0000:60:00.1: PTP reset successful
+[  121.392692] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[  121.392712] #PF: supervisor read access in kernel mode
+[  121.392720] #PF: error_code(0x0000) - not-present page
+[  121.392727] PGD 0
+[  121.392734] Oops: Oops: 0000 [#1] SMP NOPTI
+[  121.392746] CPU: 8 UID: 0 PID: 1005 Comm: ice-ptp-0000:60 Tainted: G S                  6.19.0-rc6+ #4 PREEMPT(voluntary)
+[  121.392761] Tainted: [S]=CPU_OUT_OF_SPEC
+[  121.392773] RIP: 0010:ice_ptp_update_cached_phctime+0xbf/0x150 [ice]
+[  121.393042] Call Trace:
+[  121.393047]  <TASK>
+[  121.393055]  ice_ptp_periodic_work+0x69/0x180 [ice]
+[  121.393202]  kthread_worker_fn+0xa2/0x260
+[  121.393216]  ? __pfx_ice_ptp_periodic_work+0x10/0x10 [ice]
+[  121.393359]  ? __pfx_kthread_worker_fn+0x10/0x10
+[  121.393371]  kthread+0x10d/0x230
+[  121.393382]  ? __pfx_kthread+0x10/0x10
+[  121.393393]  ret_from_fork+0x273/0x2b0
+[  121.393407]  ? __pfx_kthread+0x10/0x10
+[  121.393417]  ret_from_fork_asm+0x1a/0x30
+[  121.393432]  </TASK>
+
+Fixes: 803bef817807d ("ice: factor out ice_ptp_rebuild_owner()")
+Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
 Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ptp.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c |  3 +++
+ drivers/net/ethernet/intel/ice/ice_ptp.c  | 26 ++++++++++++++++++-----
+ drivers/net/ethernet/intel/ice/ice_ptp.h  |  5 +++++
+ 3 files changed, 29 insertions(+), 5 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 25cbbe67d992..c1033070d0c7 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -7809,6 +7809,9 @@ static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
+ 
+ 	/* Restore timestamp mode settings after VSI rebuild */
+ 	ice_ptp_restore_timestamp_mode(pf);
++
++	/* Start PTP periodic work after VSI is fully rebuilt */
++	ice_ptp_queue_work(pf);
+ 	return;
+ 
+ err_vsi_rebuild:
 diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
-index 4c8d20f2d2c0..0b7c2a13ab04 100644
+index b5cef6396319..272683001476 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ptp.c
 +++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
-@@ -1347,9 +1347,12 @@ void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
- 		/* Do not reconfigure E810 or E830 PHY */
- 		return;
- 	case ICE_MAC_GENERIC:
--	case ICE_MAC_GENERIC_3K_E825:
- 		ice_ptp_port_phy_restart(ptp_port);
- 		return;
-+	case ICE_MAC_GENERIC_3K_E825:
-+		if (linkup)
-+			ice_ptp_port_phy_restart(ptp_port);
-+		return;
- 	default:
- 		dev_warn(ice_pf_to_dev(pf), "%s: Unknown PHY type\n", __func__);
+@@ -2839,6 +2839,20 @@ static void ice_ptp_periodic_work(struct kthread_work *work)
+ 				   msecs_to_jiffies(err ? 10 : 500));
+ }
+ 
++/**
++ * ice_ptp_queue_work - Queue PTP periodic work for a PF
++ * @pf: Board private structure
++ *
++ * Helper function to queue PTP periodic work after VSI rebuild completes.
++ * This ensures that PTP work only runs when VSI structures are ready.
++ */
++void ice_ptp_queue_work(struct ice_pf *pf)
++{
++	if (test_bit(ICE_FLAG_PTP_SUPPORTED, pf->flags) &&
++	    pf->ptp.state == ICE_PTP_READY)
++		kthread_queue_delayed_work(pf->ptp.kworker, &pf->ptp.work, 0);
++}
++
+ /**
+  * ice_ptp_prepare_rebuild_sec - Prepare second NAC for PTP reset or rebuild
+  * @pf: Board private structure
+@@ -2857,10 +2871,15 @@ static void ice_ptp_prepare_rebuild_sec(struct ice_pf *pf, bool rebuild,
+ 		struct ice_pf *peer_pf = ptp_port_to_pf(port);
+ 
+ 		if (!ice_is_primary(&peer_pf->hw)) {
+-			if (rebuild)
++			if (rebuild) {
++				/* TODO: When implementing rebuild=true:
++				 * 1. Ensure secondary PFs' VSIs are rebuilt
++				 * 2. Call ice_ptp_queue_work(peer_pf) after VSI rebuild
++				 */
+ 				ice_ptp_rebuild(peer_pf, reset_type);
+-			else
++			} else {
+ 				ice_ptp_prepare_for_reset(peer_pf, reset_type);
++			}
+ 		}
  	}
+ }
+@@ -3006,9 +3025,6 @@ void ice_ptp_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
+ 
+ 	ptp->state = ICE_PTP_READY;
+ 
+-	/* Start periodic work going */
+-	kthread_queue_delayed_work(ptp->kworker, &ptp->work, 0);
+-
+ 	dev_info(ice_pf_to_dev(pf), "PTP reset successful\n");
+ 	return;
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.h b/drivers/net/ethernet/intel/ice/ice_ptp.h
+index 8489bd842710..8c44bd758a4f 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.h
+@@ -318,6 +318,7 @@ void ice_ptp_prepare_for_reset(struct ice_pf *pf,
+ void ice_ptp_init(struct ice_pf *pf);
+ void ice_ptp_release(struct ice_pf *pf);
+ void ice_ptp_link_change(struct ice_pf *pf, bool linkup);
++void ice_ptp_queue_work(struct ice_pf *pf);
+ #else /* IS_ENABLED(CONFIG_PTP_1588_CLOCK) */
+ 
+ static inline int ice_ptp_hwtstamp_get(struct net_device *netdev,
+@@ -386,6 +387,10 @@ static inline void ice_ptp_link_change(struct ice_pf *pf, bool linkup)
+ {
+ }
+ 
++static inline void ice_ptp_queue_work(struct ice_pf *pf)
++{
++}
++
+ static inline int ice_ptp_clock_index(struct ice_pf *pf)
+ {
+ 	return -1;
 -- 
 2.47.1
 
