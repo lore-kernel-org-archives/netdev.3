@@ -1,16 +1,16 @@
 Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C593F2F4A05;
-	Fri, 30 Jan 2026 00:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48991308F1A;
+	Fri, 30 Jan 2026 00:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769734212; cv=none; b=S6xKHx1O3ZT50+2LhK3e4qsDEZ0AAmkh+67MNtQij4uOpmqVE48sFfviN7E05Goo5+RyGbkMVukmVrl1FTXo4Eff+iiqRvSLvRrY5R42+Q4oKiSgLrk5KZlUgJlLzxACtOU0iNJP+9PWh4ynPy3Uo/lQKP38fUIir44QtIo0ffU=
+	t=1769734226; cv=none; b=TWK0VYbhKsvLBf7JbOtJNt/6QzGFLQ4SPwQVrFYAcFPckPzG4ovIzhaW306nqkRt6HscPNdPrhQXZKQeKvyib3rrNS+VyGNOiJrfqUcjonargRc4UaPrO/buCuO3s+a5Xnb1FbHf7MKRw6ygU53cY1iT5Dzdzqp9vGiT8CNteIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769734212; c=relaxed/simple;
-	bh=OPPaz39xkiwRNPcSlxBta1EIML2qCuGDBFEHllfkcLU=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rL2oWwn79tpOqjk7z4xE0ornFwWu6jrX0GevL1MQlyAcZkBhUMciNIMERo0qow8m6WDn7Tzke8asS0JcUWN/O+K8Khbb4WJDDMgHh/UDr3L/bH5qY2WeY+UfMN8+iwlvqY2AuW/Jjr0bQVTBcDVlwlXEczyw6muaHwSxDoko9nw=
+	s=arc-20240116; t=1769734226; c=relaxed/simple;
+	bh=6ywnDcLeBhx/4EhVCkd6XUgH/sn2H03ZCKcu6ZSdaZA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ArIrCEXZWdEVdVeimW+jDzR40wkDRmOY2kcG/qOyuzXEFf0LkGfTaI6rfDcVNpCgQQyQNiN9E6Io9EjT22xHwSsxJtCcoOgA5odveTzZawfDOmTlrlQWArvlsijoK/bgZwEIXKREY0KT39Ktm9EcoHZCkbibPIUnSeh6lAXu3Uw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
@@ -18,23 +18,34 @@ Received: from local
 	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
 	 (Exim 4.99)
 	(envelope-from <daniel@makrotopia.org>)
-	id 1vlci6-000000007rJ-3n2k;
-	Fri, 30 Jan 2026 00:50:07 +0000
-Date: Fri, 30 Jan 2026 00:50:04 +0000
+	id 1vlcVg-000000007jO-2b7S;
+	Fri, 30 Jan 2026 00:37:16 +0000
+Date: Fri, 30 Jan 2026 00:37:12 +0000
 From: Daniel Golle <daniel@makrotopia.org>
-To: Hauke Mehrtens <hauke@hauke-m.de>, Andrew Lunn <andrew@lunn.ch>,
+To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
 	Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v2 3/3] net: dsa: mxl-gsw1xx: validate chip ID
-Message-ID: <9455dd521ea3f43a7c017d79f187aca88f12c486.1769733972.git.daniel@makrotopia.org>
-References: <cover.1769733972.git.daniel@makrotopia.org>
- <875329426cffe416ebe6a3064ed632604f29f100.1769733972.git.daniel@makrotopia.org>
+Cc: Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
+	Juraj Povazanec <jpovazanec@maxlinear.com>,
+	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	"Livia M. Rosu" <lrosu@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: [PATCH net-next v10 0/4] net: dsa: initial support for MaxLinear
+ MxL862xx switches
+Message-ID: <cover.1769731630.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,97 +54,255 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <875329426cffe416ebe6a3064ed632604f29f100.1769733972.git.daniel@makrotopia.org>
 
-No check for actually present hardware is being performed in the probe
-function of the mxl-gsw1xx switch driver. So even if the switch isn't
-present at the configured MDIO bus address the driver wrongly tells the
-user that a "GSWIP version 0 mod 0" was found, outputting errors about
-PHY capabilities not matching.
+This series adds very basic DSA support for the MaxLinear MxL86252
+(5x 2500Base-T PHYs) and MxL86282 (8x 2500Base-T PHYs) switches.
+In addition to the 2.5G TP ports both switches also come with two
+SerDes interfaces which can be used either to connect external PHYs
+or SFP cages, or as CPU port when using the switch with this DSA driver.
 
-Read and validate the chip MANU_ID and PNUM_ID registers and output
-information while probing, but return an error and abort probing in case
-the hardware is not actually present.
+MxL862xx integrates a firmware running on an embedded processor (running
+Zephyr RTOS). Host interaction uses a simple netlink-like API transported
+over MDIO/MMD.
 
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+This series includes only what's needed to pass traffic between user
+ports and the CPU port: relayed MDIO to internal PHYs, basic port
+enable/disable, and CPU-port special tagging.
+
+The SerDes interface of the CPU port is automatically configured by the
+switch after reset using a board-specific configuration stored together
+with the firmware in the flash chip attached to the switch, so no action
+is needed from the driver to setup the interface mode of the CPU port.
+
+Also MAC settings of the PHY ports are automatically configured, which
+means the driver works fine with phylink_mac_ops being all no-op stubs.
+
+Multiple follow up series will bring support for setting up the other
+SerDes PCS interface (ie. not used for the CPU port), bridge, VLAN, ...
+offloading, and support for using an 802.1Q-based special tag instead of
+the proprietary 8-byte tag.
 ---
-v2: no changes
+basic DSA selftests were run, results:
+ * no_forwarding.sh: all tests PASS
+ * bridge_vlan_unaware.sh: all tests PASS
+ * bridge_vlan_mcast.sh: all tests PASS
+ * bridge_vlan_aware.sh: all tests PASS
+ * local_termination.sh: all tests PASS or XFAIL, except for
+TEST: VLAN over vlan_filtering=1 bridged port: Unicast IPv4 to unknown MAC address   [FAIL]
+        reception succeeded, but should have failed
+TEST: VLAN over vlan_filtering=1 bridged port: Unicast IPv4 to unknown MAC address, allmulti   [FAIL]
+        reception succeeded, but should have failed
 
- drivers/net/dsa/lantiq/mxl-gsw1xx.c | 27 ++++++++++++++++++++++++++-
- drivers/net/dsa/lantiq/mxl-gsw1xx.h |  9 +++++++++
- 2 files changed, 35 insertions(+), 1 deletion(-)
+As obviously this is mostly testing the Linux software bridge at this
+point so I didn't bother to run any of the FDB or MDB related tests.
 
-diff --git a/drivers/net/dsa/lantiq/mxl-gsw1xx.c b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
-index df89707dc59e..69858d73245c 100644
---- a/drivers/net/dsa/lantiq/mxl-gsw1xx.c
-+++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.c
-@@ -685,7 +685,9 @@ static int gsw1xx_probe(struct mdio_device *mdiodev)
- {
- 	struct device *dev = &mdiodev->dev;
- 	struct gsw1xx_priv *priv;
--	u32 version;
-+	u32 version, val;
-+	u8 shellver;
-+	u16 pnum;
- 	int ret;
- 
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-@@ -733,6 +735,27 @@ static int gsw1xx_probe(struct mdio_device *mdiodev)
- 	if (IS_ERR(priv->shell))
- 		return PTR_ERR(priv->shell);
- 
-+	ret = regmap_read(priv->shell, GSW1XX_SHELL_MANU_ID, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	/* validate chip ID */
-+	if (FIELD_GET(GSW1XX_SHELL_MANU_ID_FIX1, val) != 1)
-+		return -ENODEV;
-+
-+	if (FIELD_GET(GSW1XX_SHELL_MANU_ID_MANID, val) !=
-+	    GSW1XX_SHELL_MANU_ID_MANID_VAL)
-+		return -ENODEV;
-+
-+	pnum = FIELD_GET(GSW1XX_SHELL_MANU_ID_PNUML, val);
-+
-+	ret = regmap_read(priv->shell, GSW1XX_SHELL_PNUM_ID, &val);
-+	if (ret < 0)
-+		return ret;
-+
-+	pnum |= FIELD_GET(GSW1XX_SHELL_PNUM_ID_PNUMM, val) << 4;
-+	shellver = FIELD_GET(GSW1XX_SHELL_PNUM_ID_VER, val);
-+
- 	ret = gsw1xx_serdes_pcs_init(priv);
- 	if (ret < 0)
- 		return ret;
-@@ -753,6 +776,8 @@ static int gsw1xx_probe(struct mdio_device *mdiodev)
- 	if (ret)
- 		return ret;
- 
-+	dev_info(dev, "standalone switch part number 0x%x v1.%u\n", pnum, shellver);
-+
- 	dev_set_drvdata(dev, &priv->gswip);
- 
- 	return 0;
-diff --git a/drivers/net/dsa/lantiq/mxl-gsw1xx.h b/drivers/net/dsa/lantiq/mxl-gsw1xx.h
-index d1fded56e967..caa8f1008587 100644
---- a/drivers/net/dsa/lantiq/mxl-gsw1xx.h
-+++ b/drivers/net/dsa/lantiq/mxl-gsw1xx.h
-@@ -110,6 +110,15 @@
- #define GSW1XX_SHELL_BASE			0xfa00
- #define  GSW1XX_SHELL_RST_REQ			0x01
- #define   GSW1XX_RST_REQ_SGMII_SHELL		BIT(5)
-+#define  GSW1XX_SHELL_MANU_ID			0x10
-+#define   GSW1XX_SHELL_MANU_ID_PNUML		GENMASK(15, 12)
-+#define   GSW1XX_SHELL_MANU_ID_MANID		GENMASK(11, 1)
-+#define    GSW1XX_SHELL_MANU_ID_MANID_VAL	0x389
-+#define   GSW1XX_SHELL_MANU_ID_FIX1		BIT(0)
-+#define  GSW1XX_SHELL_PNUM_ID			0x11
-+#define   GSW1XX_SHELL_PNUM_ID_VER		GENMASK(15, 12)
-+#define   GSW1XX_SHELL_PNUM_ID_PNUMM		GENMASK(11, 0)
-+
- /* RGMII PAD Slew Control Register */
- #define  GSW1XX_SHELL_RGMII_SLEW_CFG		0x78
- #define   RGMII_SLEW_CFG_DRV_TXC		BIT(2)
+Some mystery about the relationship between the sub-interface ID and CTP
+port assignment remains for now, so I cannot yet fully explain the magic
+numbers when calculating the two.
+(Why is it neccesary to allocate 23 CTPs when using port 9 as CPU port
+while there are at most 17 phyiscal interfaces in total, and only at
+most 13 when using one of the two SerDes as CPU interface? Why is there
+an offset of 16 when calculating the sub-interface ID? How will a total
+of 17 ports be possibly represented in a 4-bit field in the tag RX
+path?)
+
+At this point this doesn't impact functionality, and I hope for further
+clarification discussing all that with MaxLinear engineers.
+
+I believe the initial driver is anyway in good shape now, a follow-up
+series addressing configuring the SerDes interfaces will also have to
+take care of CTP assignment and sub-interfaces to not hit the mentioned
+4-bit cap in the tag driver.
+
+Changes since v9:
+1/4 dt-bindings: net: dsa: add MaxLinear MxL862xx
+ * add microcontroller port 0
+2/4 net: dsa: add tag format for MxL862xx switches
+ * count ports starting from 0
+3/4 net: mdio: add unlocked mdiodev C45 bus accessors
+ * no changes
+4/4 net: dsa: add basic initial driver for MxL862xx switches
+ * fix indentation in kernel-doc
+ * remove misleading comment regarding sub-interface IDs
+ * remove unused macros, set MXL862XX_MAX_PORTS to 17
+ * count ports starting from 0, 0 being the microcontroller
+ * improve port setup:
+   - split tag protocol and CTP port assignment
+   - use ports cpu_dp instead of relying on single (ie. first) CPU port
+   - handle CPU port like any other port
+   - prepare forward DT compatibility with multiple CPU ports
+
+Changes since v8:
+1/4 dt-bindings: net: dsa: add MaxLinear MxL862xx
+ * no changes
+2/4 net: dsa: add tag format for MxL862xx switches
+ * no changes
+3/4 net: mdio: add unlocked mdiodev C45 bus accessors
+ * no changes
+4/4 net: dsa: add basic initial driver for MxL862xx switches
+ * remove practically unused struct hw_info
+ * lots of kerneldoc improvements in mxl862xx-api.h
+ * drop .mac_select_pcs() stub
+ * better handling for firmware error return value
+ * apply reverse xmas tree in mxl862xx_api_wrap
+ * guard headers with #ifdef macro
+ * include net/dsa.h and linux/mdio.h in mxl862xx.h
+ * call mxl862xx_port_fast_age() only once in .port_setup
+ * don't create isolation bridges for unused ports
+ * replace errornous cast with correct range of values denoting firmware errors
+
+Changes since v7
+1/4 dt-bindings: net: dsa: add MaxLinear MxL862xx
+ * no changes
+2/4 net: dsa: add tag format for MxL862xx switches
+ * no changes
+3/4 net: mdio: add unlocked mdiodev C45 bus accessors
+ * no changes
+4/4 net: dsa: add basic initial driver for MxL862xx switches
+ * use little-endian in bridge_port_config API
+ * remove duplciate assignment of br_port_cfg.bridge_port_id when setting
+   up CPU port
+
+Changes since v6
+1/4 dt-bindings: net: dsa: add MaxLinear MxL862xx
+ * no changes
+2/4 net: dsa: add tag format for MxL862xx switches
+ * no changes
+3/4 net: mdio: add unlocked mdiodev C45 bus accessors
+ * no changes
+4/4 net: dsa: add basic initial driver for MxL862xx switches
+ * fix kerneldoc style
+
+Changes since RFC v5
+1/4 dt-bindings: net: dsa: add MaxLinear MxL862xx
+ * no changes
+
+2/4 net: dsa: add tag format for MxL862xx switches
+ * remove unnecessary check for skb != NULL
+ * merge consecutively printed warnings into single dev_warn_ratelimited
+
+3/4 net: mdio: add unlocked mdiodev C45 bus accessors
+ * no changes
+
+4/4 net: dsa: add basic initial driver for MxL862xx switches
+ * include bridge and bridgeport API needed to isolate ports
+ * remove warning in .setup as ports are now isolated
+ * make ready-after-reset check more robust by adding delay
+ * sort structs in order of struct definitions
+ * best effort to sort functions without introducing additional prototypes
+ * always use enums with kerneldoc comments in mxl862xx-api.h
+ * remove bogus .phy_read and .phy_write DSA ops as the driver anyway registers
+   a user MDIO bus with Clause-22 and Clause-45 operations
+ * various small style fixes
+
+Changes since RFC v4
+1/4 dt-bindings: net: dsa: add MaxLinear MxL862xx
+ * no changes
+
+2/4 net: dsa: add tag format for MxL862xx switches
+ * drop unused precompiler macros
+
+3/4 net: mdio: add unlocked mdiodev C45 bus accessors
+ * fix indentation
+
+4/4 net: dsa: add basic initial driver for MxL862xx switches
+ * output warning in .setup regarding unknown pre-configuration
+ * add comment explaining why CFGGET is used in reset function
+
+Changes since RFC v3
+1/4 dt-bindings: net: dsa: add MaxLinear MxL862xx
+ * remove labels from example
+ * remove 'bindings for' from commit title
+
+2/4 net: dsa: add tag format for MxL862xx switches
+ * describe fields and variables with comments
+ * sub-interface is only 5 bits
+ * harmonize Kconfig symbol name
+ * maintain alphabetic order in Kconfig
+ * fix typo s/beginnig/beginning/
+ * fix typo s/swtiches/switches/
+ * arrange local variables in reverse xmas tree order
+
+3/4 net: mdio: add unlocked mdiodev C45 bus accessors
+ * unchanged
+
+4/4 net: dsa: add basic initial driver for MxL862xx switches
+ * poll switch readiness after reset
+ * implement driver shutdown
+ * added port_fast_aging API call and driver op
+ * unified port setup in new .port_setup op
+ * improve comment explaining special handlign for unaligned API read
+ * various typos and formatting improvements
+
+Changes since RFC v2
+1/4, 2/4, 3/4: unchanged
+
+4/4 net: dsa: add basic initial driver for MxL862xx switches
+ * fix return value being uninitialized on error in mxl862xx_api_wrap()
+ * add missing description in kerneldoc comment of
+   struct mxl862xx_ss_sp_tag
+
+Changes since initial RFC
+
+1/4 dt-bindings: net: dsa: add bindings for MaxLinear MxL862xx
+ * better description in dt-bindings doc
+
+2/4 net: dsa: add tag formats for MxL862xx switches
+ * make sure all tag fields are initialized
+
+3/4 net: mdio: add unlocked mdiodev C45 bus accessors
+ * new patch
+
+4/4 net: dsa: add basic initial driver for MxL862xx switches
+ * make use of struct mdio_device
+ * add phylink_mac_ops stubs
+ * drop leftover nonsense from mxl862xx_phylink_get_caps()
+ * fix endian conversions
+ * use __le32 instead of enum types in over-the-wire structs
+ * use existing MDIO_* macros whenever possible
+ * simplify API constants to be more readable
+ * use readx_poll_timeout instead of open-coding poll timeout loop
+ * add mxl862xx_reg_read() and mxl862xx_reg_write() helpers
+ * demystify error codes returned by the firmware
+ * add #defines for mxl862xx_ss_sp_tag member values
+ * move reset to dedicated function, clarify magic number being the
+   reset command ID
+
+
+Daniel Golle (4):
+  dt-bindings: net: dsa: add MaxLinear MxL862xx
+  net: dsa: add tag format for MxL862xx switches
+  net: mdio: add unlocked mdiodev C45 bus accessors
+  net: dsa: add basic initial driver for MxL862xx switches
+
+ .../bindings/net/dsa/maxlinear,mxl862xx.yaml  | 160 +++++
+ MAINTAINERS                                   |   8 +
+ drivers/net/dsa/Kconfig                       |   2 +
+ drivers/net/dsa/Makefile                      |   1 +
+ drivers/net/dsa/mxl862xx/Kconfig              |  12 +
+ drivers/net/dsa/mxl862xx/Makefile             |   3 +
+ drivers/net/dsa/mxl862xx/mxl862xx-api.h       | 671 ++++++++++++++++++
+ drivers/net/dsa/mxl862xx/mxl862xx-cmd.h       |  49 ++
+ drivers/net/dsa/mxl862xx/mxl862xx-host.c      | 245 +++++++
+ drivers/net/dsa/mxl862xx/mxl862xx-host.h      |  12 +
+ drivers/net/dsa/mxl862xx/mxl862xx.c           | 476 +++++++++++++
+ drivers/net/dsa/mxl862xx/mxl862xx.h           |  16 +
+ include/linux/mdio.h                          |  13 +
+ include/net/dsa.h                             |   2 +
+ net/dsa/Kconfig                               |   7 +
+ net/dsa/Makefile                              |   1 +
+ net/dsa/tag_mxl862xx.c                        | 110 +++
+ 17 files changed, 1788 insertions(+)
+ create mode 100644 Documentation/devicetree/bindings/net/dsa/maxlinear,mxl862xx.yaml
+ create mode 100644 drivers/net/dsa/mxl862xx/Kconfig
+ create mode 100644 drivers/net/dsa/mxl862xx/Makefile
+ create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-api.h
+ create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-cmd.h
+ create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-host.c
+ create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx-host.h
+ create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx.c
+ create mode 100644 drivers/net/dsa/mxl862xx/mxl862xx.h
+ create mode 100644 net/dsa/tag_mxl862xx.c
+
 -- 
 2.52.0
