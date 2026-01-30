@@ -1,47 +1,47 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F382ECEBB
-	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 16:54:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8473134FF76
+	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 16:54:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769792075; cv=none; b=mSjqU7QxFAorpYWc1COXmufZnn49iKXLdzPBZB/XGXjJ4PADQZPaWjTefmEwdq2qimBUCniIfLPbR+NjxebTbEVH6sCO8ryvJl0shTa5y7LLe68BGsnZT965bbtINA/P4ZLV0cmoVcz3w2/xIH1b1s1IZB0f2rX6OYPawIYBatE=
+	t=1769792084; cv=none; b=UdpvySLDWZ6+OKIsLkNfEtyrMphTq+pOT//rdoyJTnpRonwW5dzDWIXeai7z1Rjc+6Hv5ZBBa86ZwY5S5zSUsKVp4ZUzVFX1DGW8P2tll0FM1oDjrKIyUCEz8lg2AH6BvEW5NpwbKaaJzNrTL+yGbbbT3guKJT2/IeGTffN5Fk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769792075; c=relaxed/simple;
-	bh=3MBtY6v4LxOG7fvcSa9Ha6oD5N2H9rpjVPuciFjiAgI=;
+	s=arc-20240116; t=1769792084; c=relaxed/simple;
+	bh=UFEe1ayhgdpj5+8JgAIHh654hikChW+ZP2k2RsTN0TQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+95Ml2sQZLOvtUj1wu+YdVmR1QsPYhYu6a8zsQMaQP+IVRtOoXt53DfhuIwBrKB/+YFf5LZWaCjzlXtJ413bKyO7Mn8t3Udwofm2ZQ5GrNgQaqIMFVxPOdmSGJOUZcC9V1GL+RvILPP7r+esdnft6Zp51kUSHZCxeHgofImgMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TRHmapsF; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=DDDNPK9uJ5CIfZQ00Hh5zdwVguybk7dHFIM9ziP7qVvtTPPIXHb1Vj8TCcTex/rtwJxdWeurB2SI81DoNwk7UIRbyAW7cqPB33iBXxUupI73ijrmKptTI8AZp9ljA6M4FT1f4GwTKX7hdRwl0DxP3lpWOENWofYJdW8rkB6Tyuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Eij5qjq6; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TRHmapsF"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Eij5qjq6"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1769792072;
+	s=mimecast20190719; t=1769792081;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=uTBTj4DoaFmkqsXx1XgP6uN+/m2jHUuaY9pESwmHTHk=;
-	b=TRHmapsFNhBvnUt2rskFF5ue62hL+InsGvpzn/Es2UVZaG8NcWzgAnCYYCgIqjG7yQTnTF
-	ytuBE8xX98ED/TnLShfEw7eoKoAPEPQ5MJP4GmhIzm7vPOrasipFmWhWP9Z/07MV0C/wjb
-	enPkkp+9/tOEzAYeiq2SDO0vEuAuXI8=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=vlH3zZ3zAky8wBHCp0wj84m3iDGPm2OSXPquImCsqt8=;
+	b=Eij5qjq6nfS/NYiUTKDcip0o5gTSZ1MAlfWuvo5bPQrbib1/wb3HLwkvrKJDa531HFckOI
+	mgPU/QnCZq93/a1zVxw6YgwJkW84dcXmhvyClLB+1tA7jeR48rHIz7iN3T0o1/CY5pMoTK
+	ONEarbY/AHEtlBVOVRNM42GCThTTnFs=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-TDGkagajNgixYmPMPWSmgQ-1; Fri,
- 30 Jan 2026 11:54:27 -0500
-X-MC-Unique: TDGkagajNgixYmPMPWSmgQ-1
-X-Mimecast-MFC-AGG-ID: TDGkagajNgixYmPMPWSmgQ_1769792064
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-14-v0LWTJWoPB2mKIx6r5uJkA-1; Fri,
+ 30 Jan 2026 11:54:39 -0500
+X-MC-Unique: v0LWTJWoPB2mKIx6r5uJkA-1
+X-Mimecast-MFC-AGG-ID: v0LWTJWoPB2mKIx6r5uJkA_1769792077
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6236F180035D;
-	Fri, 30 Jan 2026 16:54:24 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0FC81195605A;
+	Fri, 30 Jan 2026 16:54:37 +0000 (UTC)
 Received: from p16v.redhat.com (unknown [10.45.226.27])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A9EBF18009BC;
-	Fri, 30 Jan 2026 16:54:18 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6D0AC180086E;
+	Fri, 30 Jan 2026 16:54:31 +0000 (UTC)
 From: Ivan Vecera <ivecera@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
@@ -65,9 +65,9 @@ Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
 	intel-wired-lan@lists.osuosl.org,
 	linux-kernel@vger.kernel.org,
 	linux-rdma@vger.kernel.org
-Subject: [PATCH net-next v3 6/9] dpll: Enhance and consolidate reference counting logic
-Date: Fri, 30 Jan 2026 17:53:35 +0100
-Message-ID: <20260130165338.101860-7-ivecera@redhat.com>
+Subject: [PATCH net-next v3 8/9] drivers: Add support for DPLL reference count tracking
+Date: Fri, 30 Jan 2026 17:53:37 +0100
+Message-ID: <20260130165338.101860-9-ivecera@redhat.com>
 In-Reply-To: <20260130165338.101860-1-ivecera@redhat.com>
 References: <20260130165338.101860-1-ivecera@redhat.com>
 Precedence: bulk
@@ -79,217 +79,358 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-Refactor the reference counting mechanism for DPLL devices and pins to
-improve consistency and prevent potential lifetime issues.
+Update existing DPLL drivers to utilize the DPLL reference count
+tracking infrastructure.
 
-Introduce internal helpers __dpll_{device,pin}_{hold,put}() to
-centralize reference management.
+Add dpll_tracker fields to the drivers' internal device and pin
+structures. Pass pointers to these trackers when calling
+dpll_device_get/put() and dpll_pin_get/put().
 
-Update the internal XArray reference helpers (dpll_xa_ref_*) to
-automatically grab a reference to the target object when it is added to
-a list, and release it when removed. This ensures that objects linked
-internally (e.g., pins referenced by parent pins) are properly kept
-alive without relying on the caller to manually manage the count.
-
-Consequently, remove the now redundant manual `refcount_inc/dec` calls
-in dpll_pin_on_pin_{,un}register()`, as ownership is now correctly handled
-by the dpll_xa_ref_* functions.
-
-Additionally, ensure that dpll_device_{,un}register()` takes/releases
-a reference to the device, ensuring the device object remains valid for
-the duration of its registration.
+This allows developers to inspect the specific references held by this
+driver via debugfs when CONFIG_DPLL_REFCNT_TRACKER is enabled, aiding
+in the debugging of resource leaks.
 
 Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 ---
- drivers/dpll/dpll_core.c | 74 +++++++++++++++++++++++++++-------------
- 1 file changed, 50 insertions(+), 24 deletions(-)
+ drivers/dpll/zl3073x/dpll.c                    | 14 ++++++++------
+ drivers/dpll/zl3073x/dpll.h                    |  2 ++
+ drivers/net/ethernet/intel/ice/ice_dpll.c      | 15 ++++++++-------
+ drivers/net/ethernet/intel/ice/ice_dpll.h      |  4 ++++
+ drivers/net/ethernet/mellanox/mlx5/core/dpll.c | 15 +++++++++------
+ drivers/ptp/ptp_ocp.c                          | 17 ++++++++++-------
+ 6 files changed, 41 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/dpll/dpll_core.c b/drivers/dpll/dpll_core.c
-index b91f4dc6bb972..33333bc2f0cc8 100644
---- a/drivers/dpll/dpll_core.c
-+++ b/drivers/dpll/dpll_core.c
-@@ -83,6 +83,45 @@ void dpll_pin_notify(struct dpll_pin *pin, unsigned long action)
- 	call_dpll_notifiers(action, &info);
+diff --git a/drivers/dpll/zl3073x/dpll.c b/drivers/dpll/zl3073x/dpll.c
+index 8788bcab7ec53..a99d143a7acde 100644
+--- a/drivers/dpll/zl3073x/dpll.c
++++ b/drivers/dpll/zl3073x/dpll.c
+@@ -29,6 +29,7 @@
+  * @list: this DPLL pin list entry
+  * @dpll: DPLL the pin is registered to
+  * @dpll_pin: pointer to registered dpll_pin
++ * @tracker: tracking object for the acquired reference
+  * @label: package label
+  * @dir: pin direction
+  * @id: pin id
+@@ -44,6 +45,7 @@ struct zl3073x_dpll_pin {
+ 	struct list_head	list;
+ 	struct zl3073x_dpll	*dpll;
+ 	struct dpll_pin		*dpll_pin;
++	dpll_tracker		tracker;
+ 	char			label[8];
+ 	enum dpll_pin_direction	dir;
+ 	u8			id;
+@@ -1480,7 +1482,7 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
+ 
+ 	/* Create or get existing DPLL pin */
+ 	pin->dpll_pin = dpll_pin_get(zldpll->dev->clock_id, index, THIS_MODULE,
+-				     &props->dpll_props, NULL);
++				     &props->dpll_props, &pin->tracker);
+ 	if (IS_ERR(pin->dpll_pin)) {
+ 		rc = PTR_ERR(pin->dpll_pin);
+ 		goto err_pin_get;
+@@ -1503,7 +1505,7 @@ zl3073x_dpll_pin_register(struct zl3073x_dpll_pin *pin, u32 index)
+ 	return 0;
+ 
+ err_register:
+-	dpll_pin_put(pin->dpll_pin, NULL);
++	dpll_pin_put(pin->dpll_pin, &pin->tracker);
+ err_prio_get:
+ 	pin->dpll_pin = NULL;
+ err_pin_get:
+@@ -1534,7 +1536,7 @@ zl3073x_dpll_pin_unregister(struct zl3073x_dpll_pin *pin)
+ 	/* Unregister the pin */
+ 	dpll_pin_unregister(zldpll->dpll_dev, pin->dpll_pin, ops, pin);
+ 
+-	dpll_pin_put(pin->dpll_pin, NULL);
++	dpll_pin_put(pin->dpll_pin, &pin->tracker);
+ 	pin->dpll_pin = NULL;
  }
  
-+static void __dpll_device_hold(struct dpll_device *dpll)
-+{
-+	refcount_inc(&dpll->refcount);
-+}
-+
-+static void __dpll_device_put(struct dpll_device *dpll)
-+{
-+	if (refcount_dec_and_test(&dpll->refcount)) {
-+		ASSERT_DPLL_NOT_REGISTERED(dpll);
-+		WARN_ON_ONCE(!xa_empty(&dpll->pin_refs));
-+		xa_destroy(&dpll->pin_refs);
-+		xa_erase(&dpll_device_xa, dpll->id);
-+		WARN_ON(!list_empty(&dpll->registration_list));
-+		kfree(dpll);
-+	}
-+}
-+
-+static void __dpll_pin_hold(struct dpll_pin *pin)
-+{
-+	refcount_inc(&pin->refcount);
-+}
-+
-+static void dpll_pin_idx_free(u32 pin_idx);
-+static void dpll_pin_prop_free(struct dpll_pin_properties *prop);
-+
-+static void __dpll_pin_put(struct dpll_pin *pin)
-+{
-+	if (refcount_dec_and_test(&pin->refcount)) {
-+		xa_erase(&dpll_pin_xa, pin->id);
-+		xa_destroy(&pin->dpll_refs);
-+		xa_destroy(&pin->parent_refs);
-+		xa_destroy(&pin->ref_sync_pins);
-+		dpll_pin_prop_free(&pin->prop);
-+		fwnode_handle_put(pin->fwnode);
-+		dpll_pin_idx_free(pin->pin_idx);
-+		kfree_rcu(pin, rcu);
-+	}
-+}
-+
- struct dpll_device *dpll_device_get_by_id(int id)
- {
- 	if (xa_get_mark(&dpll_device_xa, id, DPLL_REGISTERED))
-@@ -152,6 +191,7 @@ dpll_xa_ref_pin_add(struct xarray *xa_pins, struct dpll_pin *pin,
- 	reg->ops = ops;
- 	reg->priv = priv;
- 	reg->cookie = cookie;
-+	__dpll_pin_hold(pin);
- 	if (ref_exists)
- 		refcount_inc(&ref->refcount);
- 	list_add_tail(&reg->list, &ref->registration_list);
-@@ -174,6 +214,7 @@ static int dpll_xa_ref_pin_del(struct xarray *xa_pins, struct dpll_pin *pin,
- 		if (WARN_ON(!reg))
- 			return -EINVAL;
- 		list_del(&reg->list);
-+		__dpll_pin_put(pin);
- 		kfree(reg);
- 		if (refcount_dec_and_test(&ref->refcount)) {
- 			xa_erase(xa_pins, i);
-@@ -231,6 +272,7 @@ dpll_xa_ref_dpll_add(struct xarray *xa_dplls, struct dpll_device *dpll,
- 	reg->ops = ops;
- 	reg->priv = priv;
- 	reg->cookie = cookie;
-+	__dpll_device_hold(dpll);
- 	if (ref_exists)
- 		refcount_inc(&ref->refcount);
- 	list_add_tail(&reg->list, &ref->registration_list);
-@@ -253,6 +295,7 @@ dpll_xa_ref_dpll_del(struct xarray *xa_dplls, struct dpll_device *dpll,
- 		if (WARN_ON(!reg))
- 			return;
- 		list_del(&reg->list);
-+		__dpll_device_put(dpll);
- 		kfree(reg);
- 		if (refcount_dec_and_test(&ref->refcount)) {
- 			xa_erase(xa_dplls, i);
-@@ -323,8 +366,8 @@ dpll_device_get(u64 clock_id, u32 device_idx, struct module *module)
- 		if (dpll->clock_id == clock_id &&
- 		    dpll->device_idx == device_idx &&
- 		    dpll->module == module) {
-+			__dpll_device_hold(dpll);
- 			ret = dpll;
--			refcount_inc(&ret->refcount);
- 			break;
- 		}
+@@ -1708,7 +1710,7 @@ zl3073x_dpll_device_register(struct zl3073x_dpll *zldpll)
+ 				       dpll_mode_refsel);
+ 
+ 	zldpll->dpll_dev = dpll_device_get(zldev->clock_id, zldpll->id,
+-					   THIS_MODULE, NULL);
++					   THIS_MODULE, &zldpll->tracker);
+ 	if (IS_ERR(zldpll->dpll_dev)) {
+ 		rc = PTR_ERR(zldpll->dpll_dev);
+ 		zldpll->dpll_dev = NULL;
+@@ -1720,7 +1722,7 @@ zl3073x_dpll_device_register(struct zl3073x_dpll *zldpll)
+ 				  zl3073x_prop_dpll_type_get(zldev, zldpll->id),
+ 				  &zl3073x_dpll_device_ops, zldpll);
+ 	if (rc) {
+-		dpll_device_put(zldpll->dpll_dev, NULL);
++		dpll_device_put(zldpll->dpll_dev, &zldpll->tracker);
+ 		zldpll->dpll_dev = NULL;
  	}
-@@ -347,14 +390,7 @@ EXPORT_SYMBOL_GPL(dpll_device_get);
- void dpll_device_put(struct dpll_device *dpll)
- {
- 	mutex_lock(&dpll_lock);
--	if (refcount_dec_and_test(&dpll->refcount)) {
--		ASSERT_DPLL_NOT_REGISTERED(dpll);
--		WARN_ON_ONCE(!xa_empty(&dpll->pin_refs));
--		xa_destroy(&dpll->pin_refs);
--		xa_erase(&dpll_device_xa, dpll->id);
--		WARN_ON(!list_empty(&dpll->registration_list));
--		kfree(dpll);
--	}
-+	__dpll_device_put(dpll);
- 	mutex_unlock(&dpll_lock);
+ 
+@@ -1743,7 +1745,7 @@ zl3073x_dpll_device_unregister(struct zl3073x_dpll *zldpll)
+ 
+ 	dpll_device_unregister(zldpll->dpll_dev, &zl3073x_dpll_device_ops,
+ 			       zldpll);
+-	dpll_device_put(zldpll->dpll_dev, NULL);
++	dpll_device_put(zldpll->dpll_dev, &zldpll->tracker);
+ 	zldpll->dpll_dev = NULL;
  }
- EXPORT_SYMBOL_GPL(dpll_device_put);
-@@ -416,6 +452,7 @@ int dpll_device_register(struct dpll_device *dpll, enum dpll_type type,
- 	reg->ops = ops;
- 	reg->priv = priv;
- 	dpll->type = type;
-+	__dpll_device_hold(dpll);
- 	first_registration = list_empty(&dpll->registration_list);
- 	list_add_tail(&reg->list, &dpll->registration_list);
- 	if (!first_registration) {
-@@ -455,6 +492,7 @@ void dpll_device_unregister(struct dpll_device *dpll,
+ 
+diff --git a/drivers/dpll/zl3073x/dpll.h b/drivers/dpll/zl3073x/dpll.h
+index e8c39b44b356c..c65c798c37927 100644
+--- a/drivers/dpll/zl3073x/dpll.h
++++ b/drivers/dpll/zl3073x/dpll.h
+@@ -18,6 +18,7 @@
+  * @check_count: periodic check counter
+  * @phase_monitor: is phase offset monitor enabled
+  * @dpll_dev: pointer to registered DPLL device
++ * @tracker: tracking object for the acquired reference
+  * @lock_status: last saved DPLL lock status
+  * @pins: list of pins
+  * @change_work: device change notification work
+@@ -31,6 +32,7 @@ struct zl3073x_dpll {
+ 	u8				check_count;
+ 	bool				phase_monitor;
+ 	struct dpll_device		*dpll_dev;
++	dpll_tracker			tracker;
+ 	enum dpll_lock_status		lock_status;
+ 	struct list_head		pins;
+ 	struct work_struct		change_work;
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 64b7b045ecd58..4eca62688d834 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -2814,7 +2814,7 @@ static void ice_dpll_release_pins(struct ice_dpll_pin *pins, int count)
+ 	int i;
+ 
+ 	for (i = 0; i < count; i++)
+-		dpll_pin_put(pins[i].pin, NULL);
++		dpll_pin_put(pins[i].pin, &pins[i].tracker);
+ }
+ 
+ /**
+@@ -2840,7 +2840,7 @@ ice_dpll_get_pins(struct ice_pf *pf, struct ice_dpll_pin *pins,
+ 
+ 	for (i = 0; i < count; i++) {
+ 		pins[i].pin = dpll_pin_get(clock_id, i + start_idx, THIS_MODULE,
+-					   &pins[i].prop, NULL);
++					   &pins[i].prop, &pins[i].tracker);
+ 		if (IS_ERR(pins[i].pin)) {
+ 			ret = PTR_ERR(pins[i].pin);
+ 			goto release_pins;
+@@ -2851,7 +2851,7 @@ ice_dpll_get_pins(struct ice_pf *pf, struct ice_dpll_pin *pins,
+ 
+ release_pins:
+ 	while (--i >= 0)
+-		dpll_pin_put(pins[i].pin, NULL);
++		dpll_pin_put(pins[i].pin, &pins[i].tracker);
+ 	return ret;
+ }
+ 
+@@ -3037,7 +3037,7 @@ static void ice_dpll_deinit_rclk_pin(struct ice_pf *pf)
+ 	if (WARN_ON_ONCE(!vsi || !vsi->netdev))
  		return;
- 	}
- 	list_del(&reg->list);
-+	__dpll_device_put(dpll);
- 	kfree(reg);
- 
- 	if (!list_empty(&dpll->registration_list)) {
-@@ -666,8 +704,8 @@ dpll_pin_get(u64 clock_id, u32 pin_idx, struct module *module,
- 		if (pos->clock_id == clock_id &&
- 		    pos->pin_idx == pin_idx &&
- 		    pos->module == module) {
-+			__dpll_pin_hold(pos);
- 			ret = pos;
--			refcount_inc(&ret->refcount);
- 			break;
- 		}
- 	}
-@@ -690,16 +728,7 @@ EXPORT_SYMBOL_GPL(dpll_pin_get);
- void dpll_pin_put(struct dpll_pin *pin)
- {
- 	mutex_lock(&dpll_lock);
--	if (refcount_dec_and_test(&pin->refcount)) {
--		xa_erase(&dpll_pin_xa, pin->id);
--		xa_destroy(&pin->dpll_refs);
--		xa_destroy(&pin->parent_refs);
--		xa_destroy(&pin->ref_sync_pins);
--		dpll_pin_prop_free(&pin->prop);
--		fwnode_handle_put(pin->fwnode);
--		dpll_pin_idx_free(pin->pin_idx);
--		kfree_rcu(pin, rcu);
--	}
-+	__dpll_pin_put(pin);
- 	mutex_unlock(&dpll_lock);
+ 	dpll_netdev_pin_clear(vsi->netdev);
+-	dpll_pin_put(rclk->pin, NULL);
++	dpll_pin_put(rclk->pin, &rclk->tracker);
  }
- EXPORT_SYMBOL_GPL(dpll_pin_put);
-@@ -740,8 +769,8 @@ struct dpll_pin *fwnode_dpll_pin_find(struct fwnode_handle *fwnode)
- 	mutex_lock(&dpll_lock);
- 	xa_for_each(&dpll_pin_xa, index, pin) {
- 		if (pin->fwnode == fwnode) {
-+			__dpll_pin_hold(pin);
- 			ret = pin;
--			refcount_inc(&ret->refcount);
- 			break;
+ 
+ /**
+@@ -3247,7 +3247,7 @@ ice_dpll_deinit_dpll(struct ice_pf *pf, struct ice_dpll *d, bool cgu)
+ {
+ 	if (cgu)
+ 		dpll_device_unregister(d->dpll, d->ops, d);
+-	dpll_device_put(d->dpll, NULL);
++	dpll_device_put(d->dpll, &d->tracker);
+ }
+ 
+ /**
+@@ -3271,7 +3271,8 @@ ice_dpll_init_dpll(struct ice_pf *pf, struct ice_dpll *d, bool cgu,
+ 	u64 clock_id = pf->dplls.clock_id;
+ 	int ret;
+ 
+-	d->dpll = dpll_device_get(clock_id, d->dpll_idx, THIS_MODULE, NULL);
++	d->dpll = dpll_device_get(clock_id, d->dpll_idx, THIS_MODULE,
++				  &d->tracker);
+ 	if (IS_ERR(d->dpll)) {
+ 		ret = PTR_ERR(d->dpll);
+ 		dev_err(ice_pf_to_dev(pf),
+@@ -3287,7 +3288,7 @@ ice_dpll_init_dpll(struct ice_pf *pf, struct ice_dpll *d, bool cgu,
+ 		ice_dpll_update_state(pf, d, true);
+ 		ret = dpll_device_register(d->dpll, type, ops, d);
+ 		if (ret) {
+-			dpll_device_put(d->dpll, NULL);
++			dpll_device_put(d->dpll, &d->tracker);
+ 			return ret;
+ 		}
+ 		d->ops = ops;
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.h b/drivers/net/ethernet/intel/ice/ice_dpll.h
+index c0da03384ce91..63fac6510df6e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.h
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.h
+@@ -23,6 +23,7 @@ enum ice_dpll_pin_sw {
+ /** ice_dpll_pin - store info about pins
+  * @pin: dpll pin structure
+  * @pf: pointer to pf, which has registered the dpll_pin
++ * @tracker: reference count tracker
+  * @idx: ice pin private idx
+  * @num_parents: hols number of parent pins
+  * @parent_idx: hold indexes of parent pins
+@@ -37,6 +38,7 @@ enum ice_dpll_pin_sw {
+ struct ice_dpll_pin {
+ 	struct dpll_pin *pin;
+ 	struct ice_pf *pf;
++	dpll_tracker tracker;
+ 	u8 idx;
+ 	u8 num_parents;
+ 	u8 parent_idx[ICE_DPLL_RCLK_NUM_MAX];
+@@ -58,6 +60,7 @@ struct ice_dpll_pin {
+ /** ice_dpll - store info required for DPLL control
+  * @dpll: pointer to dpll dev
+  * @pf: pointer to pf, which has registered the dpll_device
++ * @tracker: reference count tracker
+  * @dpll_idx: index of dpll on the NIC
+  * @input_idx: currently selected input index
+  * @prev_input_idx: previously selected input index
+@@ -76,6 +79,7 @@ struct ice_dpll_pin {
+ struct ice_dpll {
+ 	struct dpll_device *dpll;
+ 	struct ice_pf *pf;
++	dpll_tracker tracker;
+ 	u8 dpll_idx;
+ 	u8 input_idx;
+ 	u8 prev_input_idx;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/dpll.c b/drivers/net/ethernet/mellanox/mlx5/core/dpll.c
+index 7c6789c478fee..e1f3d4dae557e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/dpll.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/dpll.c
+@@ -9,7 +9,9 @@
+  */
+ struct mlx5_dpll {
+ 	struct dpll_device *dpll;
++	dpll_tracker dpll_tracker;
+ 	struct dpll_pin *dpll_pin;
++	dpll_tracker pin_tracker;
+ 	struct mlx5_core_dev *mdev;
+ 	struct workqueue_struct *wq;
+ 	struct delayed_work work;
+@@ -438,7 +440,8 @@ static int mlx5_dpll_probe(struct auxiliary_device *adev,
+ 	auxiliary_set_drvdata(adev, mdpll);
+ 
+ 	/* Multiple mdev instances might share one DPLL device. */
+-	mdpll->dpll = dpll_device_get(clock_id, 0, THIS_MODULE, NULL);
++	mdpll->dpll = dpll_device_get(clock_id, 0, THIS_MODULE,
++				      &mdpll->dpll_tracker);
+ 	if (IS_ERR(mdpll->dpll)) {
+ 		err = PTR_ERR(mdpll->dpll);
+ 		goto err_free_mdpll;
+@@ -452,7 +455,7 @@ static int mlx5_dpll_probe(struct auxiliary_device *adev,
+ 	/* Multiple mdev instances might share one DPLL pin. */
+ 	mdpll->dpll_pin = dpll_pin_get(clock_id, mlx5_get_dev_index(mdev),
+ 				       THIS_MODULE, &mlx5_dpll_pin_properties,
+-				       NULL);
++				       &mdpll->pin_tracker);
+ 	if (IS_ERR(mdpll->dpll_pin)) {
+ 		err = PTR_ERR(mdpll->dpll_pin);
+ 		goto err_unregister_dpll_device;
+@@ -480,11 +483,11 @@ static int mlx5_dpll_probe(struct auxiliary_device *adev,
+ 	dpll_pin_unregister(mdpll->dpll, mdpll->dpll_pin,
+ 			    &mlx5_dpll_pins_ops, mdpll);
+ err_put_dpll_pin:
+-	dpll_pin_put(mdpll->dpll_pin, NULL);
++	dpll_pin_put(mdpll->dpll_pin, &mdpll->pin_tracker);
+ err_unregister_dpll_device:
+ 	dpll_device_unregister(mdpll->dpll, &mlx5_dpll_device_ops, mdpll);
+ err_put_dpll_device:
+-	dpll_device_put(mdpll->dpll, NULL);
++	dpll_device_put(mdpll->dpll, &mdpll->dpll_tracker);
+ err_free_mdpll:
+ 	kfree(mdpll);
+ 	return err;
+@@ -500,9 +503,9 @@ static void mlx5_dpll_remove(struct auxiliary_device *adev)
+ 	destroy_workqueue(mdpll->wq);
+ 	dpll_pin_unregister(mdpll->dpll, mdpll->dpll_pin,
+ 			    &mlx5_dpll_pins_ops, mdpll);
+-	dpll_pin_put(mdpll->dpll_pin, NULL);
++	dpll_pin_put(mdpll->dpll_pin, &mdpll->pin_tracker);
+ 	dpll_device_unregister(mdpll->dpll, &mlx5_dpll_device_ops, mdpll);
+-	dpll_device_put(mdpll->dpll, NULL);
++	dpll_device_put(mdpll->dpll, &mdpll->dpll_tracker);
+ 	kfree(mdpll);
+ 
+ 	mlx5_dpll_synce_status_set(mdev,
+diff --git a/drivers/ptp/ptp_ocp.c b/drivers/ptp/ptp_ocp.c
+index f39b3966b3e8c..1b16a9c3d7fdc 100644
+--- a/drivers/ptp/ptp_ocp.c
++++ b/drivers/ptp/ptp_ocp.c
+@@ -285,6 +285,7 @@ struct ptp_ocp_sma_connector {
+ 	u8	default_fcn;
+ 	struct dpll_pin		   *dpll_pin;
+ 	struct dpll_pin_properties dpll_prop;
++	dpll_tracker		   tracker;
+ };
+ 
+ struct ocp_attr_group {
+@@ -383,6 +384,7 @@ struct ptp_ocp {
+ 	struct ptp_ocp_sma_connector sma[OCP_SMA_NUM];
+ 	const struct ocp_sma_op *sma_op;
+ 	struct dpll_device *dpll;
++	dpll_tracker tracker;
+ 	int signals_nr;
+ 	int freq_in_nr;
+ };
+@@ -4788,7 +4790,7 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	devlink_register(devlink);
+ 
+ 	clkid = pci_get_dsn(pdev);
+-	bp->dpll = dpll_device_get(clkid, 0, THIS_MODULE, NULL);
++	bp->dpll = dpll_device_get(clkid, 0, THIS_MODULE, &bp->tracker);
+ 	if (IS_ERR(bp->dpll)) {
+ 		err = PTR_ERR(bp->dpll);
+ 		dev_err(&pdev->dev, "dpll_device_alloc failed\n");
+@@ -4801,7 +4803,8 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 
+ 	for (i = 0; i < OCP_SMA_NUM; i++) {
+ 		bp->sma[i].dpll_pin = dpll_pin_get(clkid, i, THIS_MODULE,
+-						   &bp->sma[i].dpll_prop, NULL);
++						   &bp->sma[i].dpll_prop,
++						   &bp->sma[i].tracker);
+ 		if (IS_ERR(bp->sma[i].dpll_pin)) {
+ 			err = PTR_ERR(bp->sma[i].dpll_pin);
+ 			goto out_dpll;
+@@ -4810,7 +4813,7 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		err = dpll_pin_register(bp->dpll, bp->sma[i].dpll_pin, &dpll_pins_ops,
+ 					&bp->sma[i]);
+ 		if (err) {
+-			dpll_pin_put(bp->sma[i].dpll_pin, NULL);
++			dpll_pin_put(bp->sma[i].dpll_pin, &bp->sma[i].tracker);
+ 			goto out_dpll;
  		}
  	}
-@@ -893,7 +922,6 @@ int dpll_pin_on_pin_register(struct dpll_pin *parent, struct dpll_pin *pin,
- 	ret = dpll_xa_ref_pin_add(&pin->parent_refs, parent, ops, priv, pin);
- 	if (ret)
- 		goto unlock;
--	refcount_inc(&pin->refcount);
- 	xa_for_each(&parent->dpll_refs, i, ref) {
- 		ret = __dpll_pin_register(ref->dpll, pin, ops, priv, parent);
- 		if (ret) {
-@@ -913,7 +941,6 @@ int dpll_pin_on_pin_register(struct dpll_pin *parent, struct dpll_pin *pin,
- 					      parent);
- 			dpll_pin_delete_ntf(pin);
+@@ -4820,9 +4823,9 @@ ptp_ocp_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ out_dpll:
+ 	while (i--) {
+ 		dpll_pin_unregister(bp->dpll, bp->sma[i].dpll_pin, &dpll_pins_ops, &bp->sma[i]);
+-		dpll_pin_put(bp->sma[i].dpll_pin, NULL);
++		dpll_pin_put(bp->sma[i].dpll_pin, &bp->sma[i].tracker);
+ 	}
+-	dpll_device_put(bp->dpll, NULL);
++	dpll_device_put(bp->dpll, &bp->tracker);
+ out:
+ 	ptp_ocp_detach(bp);
+ out_disable:
+@@ -4843,11 +4846,11 @@ ptp_ocp_remove(struct pci_dev *pdev)
+ 	for (i = 0; i < OCP_SMA_NUM; i++) {
+ 		if (bp->sma[i].dpll_pin) {
+ 			dpll_pin_unregister(bp->dpll, bp->sma[i].dpll_pin, &dpll_pins_ops, &bp->sma[i]);
+-			dpll_pin_put(bp->sma[i].dpll_pin, NULL);
++			dpll_pin_put(bp->sma[i].dpll_pin, &bp->sma[i].tracker);
  		}
--	refcount_dec(&pin->refcount);
- 	dpll_xa_ref_pin_del(&pin->parent_refs, parent, ops, priv, pin);
- unlock:
- 	mutex_unlock(&dpll_lock);
-@@ -940,7 +967,6 @@ void dpll_pin_on_pin_unregister(struct dpll_pin *parent, struct dpll_pin *pin,
- 	mutex_lock(&dpll_lock);
- 	dpll_pin_delete_ntf(pin);
- 	dpll_xa_ref_pin_del(&pin->parent_refs, parent, ops, priv, pin);
--	refcount_dec(&pin->refcount);
- 	xa_for_each(&pin->dpll_refs, i, ref)
- 		__dpll_pin_unregister(ref->dpll, pin, ops, priv, parent);
- 	mutex_unlock(&dpll_lock);
+ 	}
+ 	dpll_device_unregister(bp->dpll, &dpll_ops, bp);
+-	dpll_device_put(bp->dpll, NULL);
++	dpll_device_put(bp->dpll, &bp->tracker);
+ 	devlink_unregister(devlink);
+ 	ptp_ocp_detach(bp);
+ 	pci_disable_device(pdev);
 -- 
 2.52.0
 
