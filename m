@@ -1,54 +1,54 @@
-Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56349387582
-	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 21:03:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC8E38884B
+	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 21:03:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769806990; cv=none; b=Q0V9FXw8Ov5P3trrjedRwngIAcEkvIweQ9eHA6iCQPC3vsB+ZYEhd6ZoItDikr5dFiNbLiJusrnrzEhYhYJzRY9Djj+BKsz3wrQYtoE8zfOWGSFPBelysSCIhZm8Pqb3Zmiy8YZl+NQNCX9C3EZ1UZ4d+p1+0CSW+e2t3x3n1JU=
+	t=1769806993; cv=none; b=Sr2HwlayQ21gkkrA9U6enOxL24amOeNq39iuo4zZjRtYbSkDFNY9N/KSWGY9DnKJ51vonFsoqbZHYGmWx/MKjoIHS49O5FKpoEFxGMSqdPDWgwuC9Ct8SLVXSzOFjZtlEtuLmbZDS6s2rG8bXPCCrYydFnr1L8PMQ0+6Jl0O8k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769806990; c=relaxed/simple;
-	bh=gXab1LauaUn6K+8KT1b+U0Y8Jswet+BwL5W3UeeRbe4=;
+	s=arc-20240116; t=1769806993; c=relaxed/simple;
+	bh=Y9b/jODNF5fXCx/FUcTOqKUodQaWqzwF85jHPmS68hk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=eXdIdiMO0zQTmrO9LW9rPbUjmgMavlmbxGlk8PvZmhh/fMc8nJM3/gTFbhJm7y9hUqi5fHW693bxdPX6AiADtIga9opXmUmR5U56Q5THXdn4q5VFJ7VQXU5MLEkSzmZgVb36nDI5xXN4b0neJE9XFdof0a/IDav+otzVGXevxHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yB3UTr9A; arc=none smtp.client-ip=209.85.222.201
+	 To:Cc:Content-Type; b=AZ1e7ud91ONuPg6u7mTj+4lam08v2azv8xdzB4g5LUq1+9JAaABrCUM7SRgavgd91YH7r/MD9CabvlwriQsJ8SxaDc8zebpdZHbrl4Jc3S8tziRMWLmvL/mQZhcHfLCcnleCIiXNmpvPEBtO+Lq/zPEVOC3wIrVtacHVs1M55zQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fc8IMgoy; arc=none smtp.client-ip=209.85.222.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yB3UTr9A"
-Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8c70fadd9a3so843951185a.0
-        for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 13:03:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fc8IMgoy"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-8c70b6a5821so566601685a.0
+        for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 13:03:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1769806988; x=1770411788; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1769806991; x=1770411791; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/GoSJhINDLed/7WD10AIxGT110SkCLncFEsNHScX1og=;
-        b=yB3UTr9AzcYco6n5lGBIL+USAtaNj9flFVH6Ey2mZVg00qL63q3p7iJI1T1QTWAFW5
-         d0l14p59pqcPCNh2ZoOtJ+wEHW8shCpBg6XOi4o9cZmYKsIkLw0S+iVpMUF4D+z7JtWS
-         Lom4N4EArilHUus+vfxBrJgRPsZAk53cqZM7em8Yz8ldDZtdm+lSqyrdwXjsRrD7rceT
-         MRt8UJwywgFcQyQtRdjFZyFrqyhe1uuyl9kKkNbEk4VhXUEmadSOrNjUJCn1lrAlyvYg
-         UeBACTP6hXO88hv5B55neXFltxb5jU9tEqVoczau8ZLyyNpEk2tRWRqOlflanMY6d5S6
-         sGHg==
+        bh=mR9vp7V4NbWDJo35TU4fbEkZTIrnYaXU9aEJvrEzNd8=;
+        b=fc8IMgoy88PTxw2kw1H3E/QDymd5t5PdmHgvh/UZDR/EYaxo6aACZuz2FxYeM4ehdh
+         vZUgH6yaM1W6NZl1nEUIipQ86c4II5QYbMsHnxcStWCE4ex3RUPDbiuzXQqcYTxpccXs
+         Mi2cGvBQdj9Iw6O1CdsdPOV5R0if7ZH3u48ZDd+hPGSmcfNl1lHIupikpw1Bi27cVAxL
+         +XzjiweYi6CmHZE/xtQeKl+82k+ga9YsVjUeOQrb0QiLI5ayyVgUpSTCVXVluAt1DdNS
+         ZwBxaeLZkLW2ExkyYpTAqEFM4B27AKIqQOtPNOBRn8XLI3r1CMivE+c+G1E+c4BttfMg
+         z4Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769806988; x=1770411788;
+        d=1e100.net; s=20230601; t=1769806991; x=1770411791;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/GoSJhINDLed/7WD10AIxGT110SkCLncFEsNHScX1og=;
-        b=Pvy4zjVCI0mXJ7t7dIcdbgsmGk4hXODLjpzd/DigxPEp+a9mMgh2X6GteIsbsbQrRE
-         pJzOvzmQ9qaa43UnxtZZQW7zS+k8BYNUicaLWA75jW8mZhL8KbVO0DQrZH3E2W416LuY
-         SzhtPb9VYoUo7+/RGdopdsEavx2S/20DnRqjpsrAEJTsu41QxIOBvgzA89WdNBUFuws6
-         tlb+uNETCdFCdM+fzh79ncxU8a4tlCrYu1M6txPRLcO1lZ6ys9X7cmlOtMaUcpJrGCR3
-         mpsZchcErg0O1tWimkBRRyHvoBCmh9vTEqCn4Q22vfEnODVUG3TbYxxG3vS3RqtfWPvr
-         fY9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVbb6TuPhNjOROziuhKzLpoSnMeQcpL1Emkcp0r07DOLivR2VHCqVL47/xQjz3SO+07xo2CEII=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu9wjiD2ivo6yCq69Cdfhb/gYhipMK5To4owOVDAYFnXgFLflZ
-	VSNc8EEcx1H8xet2TVvVoloZGWRKpwvHuachVZyMNBDuBwh4L9+dgXWCMvFU26a4Juc0YavFqLs
-	CUOHlFx+BjSUVJg==
-X-Received: from qknqv11.prod.google.com ([2002:a05:620a:8acb:b0:8b2:fb0b:e690])
+        bh=mR9vp7V4NbWDJo35TU4fbEkZTIrnYaXU9aEJvrEzNd8=;
+        b=PFQGWQWi9APy8PLPUKT1hM0PERSM8j458pR69c3mG6B7Z7pYFz/7fTVyzqcyQFWb74
+         tmpFouRdvWMqPdHH1b/F7zA8fsKq57qoVEZ9q8hgQZBE9n49WTBa0isCbRpZOiZUhDI+
+         +Xb7VKM9mhKjZjkNYd/bo8KSkLzcYwoFNxWREztjhhaRiyZUeah3tgLyEYQ5fNlMMHNL
+         Z5wptvv3PVdY6om4bFfToW0wbH6AOQNhYDB4LPO/ojoXrmaDUX/bOygX96/QHh4KMmfs
+         LtLcPXHNyzvbgDj2SK1lfyBSdB7MHkFRCcb8mucsgYXInb9djLQTJiyc+viWioiSayRQ
+         PVYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUcaEN2DWQ0M/5Nk1vg9UPjpPpr0OmdN53Q5/XS0Tp+Q7QetfnRYS9ZHHtSbBZ9AwgvRK2DiGs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy37U6NPiHcQL8cVvkE2Cbk/wiPoJOmYvtdabWqItv7boKM1nyq
+	Cs2kiYMkNU/RLdT3u+ZdVsgjq+YgaV7y5T5hYdgzTmFGSoGcUG9UGfVxHMTAZv9Rw3X7732yivr
+	Wv70BiIRVKt6EYw==
+X-Received: from qknsu4.prod.google.com ([2002:a05:620a:4b44:b0:8c5:2681:83ea])
  (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:f05:b0:82e:ef43:38f0 with SMTP id af79cd13be357-8c9eb0f87b5mr556064485a.0.1769806988089;
- Fri, 30 Jan 2026 13:03:08 -0800 (PST)
-Date: Fri, 30 Jan 2026 21:02:57 +0000
+ 2002:a05:620a:80b:b0:8c9:eb6a:1659 with SMTP id af79cd13be357-8c9eb6a177fmr402034085a.9.1769806991038;
+ Fri, 30 Jan 2026 13:03:11 -0800 (PST)
+Date: Fri, 30 Jan 2026 21:02:59 +0000
 In-Reply-To: <20260130210303.3888261-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260130210303.3888261-1-edumazet@google.com>
 X-Mailer: git-send-email 2.53.0.rc1.225.gd81095ad13-goog
-Message-ID: <20260130210303.3888261-3-edumazet@google.com>
-Subject: [PATCH net-next 2/8] ipv6: add some unlikely()/likely() clauses in ip6_output.c
+Message-ID: <20260130210303.3888261-5-edumazet@google.com>
+Subject: [PATCH net-next 4/8] ipv6: use SKB_DROP_REASON_PKT_TOO_BIG in ip6_xmit()
 From: Eric Dumazet <edumazet@google.com>
 To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
 	Paolo Abeni <pabeni@redhat.com>
@@ -68,122 +68,26 @@ Cc: Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>,
 	Eric Dumazet <edumazet@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-1) daddr is unlikely a multicast in ip6_finish_output2().
-
-2) ip6_finish_output_gso_slowpath_drop() should not be called often.
-
-3) ip6_fragment() should not be called often.
-
-4) opt is unlikely to be set.
-
-5) ip6_xmit() and ip6_forward() mostly sends not too big packets.
-
-6) Most __ip6_make_skb() calls are for UDP packets,
-   not ICMPV6 ones.
+When a too big packet is dropped, use SKB_DROP_REASON_PKT_TOO_BIG.
 
 Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv6/ip6_output.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ net/ipv6/ip6_output.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index e4bed95ae5bba173c2418d402cba46e946335219..5c2cfcc3cf6e56192123c5830250865d37e72581 100644
+index 279d4daa85c442eb3db8add1d97c57c1ffbe820f..4bb61265f1d8f870dbfd60bd22b8ab78828fb4cd 100644
 --- a/net/ipv6/ip6_output.c
 +++ b/net/ipv6/ip6_output.c
-@@ -80,7 +80,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+@@ -383,7 +383,7 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
+ 	ipv6_local_error((struct sock *)sk, EMSGSIZE, fl6, mtu);
  
- 	hdr = ipv6_hdr(skb);
- 	daddr = &hdr->daddr;
--	if (ipv6_addr_is_multicast(daddr)) {
-+	if (unlikely(ipv6_addr_is_multicast(daddr))) {
- 		if (!(dev->flags & IFF_LOOPBACK) && sk_mc_loop(sk) &&
- 		    ((mroute6_is_socket(net, skb) &&
- 		     !(IP6CB(skb)->flags & IP6SKB_FORWARDED)) ||
-@@ -179,8 +179,8 @@ ip6_finish_output_gso_slowpath_drop(struct net *net, struct sock *sk,
- static int ip6_finish_output_gso(struct net *net, struct sock *sk,
- 				 struct sk_buff *skb, unsigned int mtu)
- {
--	if (!(IP6CB(skb)->flags & IP6SKB_FAKEJUMBO) &&
--	    !skb_gso_validate_network_len(skb, mtu))
-+	if (unlikely(!(IP6CB(skb)->flags & IP6SKB_FAKEJUMBO) &&
-+	    !skb_gso_validate_network_len(skb, mtu)))
- 		return ip6_finish_output_gso_slowpath_drop(net, sk, skb, mtu);
- 
- 	return ip6_finish_output2(net, sk, skb);
-@@ -202,8 +202,8 @@ static int __ip6_finish_output(struct net *net, struct sock *sk, struct sk_buff
- 	if (skb_is_gso(skb))
- 		return ip6_finish_output_gso(net, sk, skb, mtu);
- 
--	if (skb->len > mtu ||
--	    (IP6CB(skb)->frag_max_size && skb->len > IP6CB(skb)->frag_max_size))
-+	if (unlikely(skb->len > mtu ||
-+	    (IP6CB(skb)->frag_max_size && skb->len > IP6CB(skb)->frag_max_size)))
- 		return ip6_fragment(net, sk, skb, ip6_finish_output2);
- 
- 	return ip6_finish_output2(net, sk, skb);
-@@ -301,7 +301,7 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 		}
- 	}
- 
--	if (opt) {
-+	if (unlikely(opt)) {
- 		seg_len += opt->opt_nflen + opt->opt_flen;
- 
- 		if (opt->opt_flen)
-@@ -354,7 +354,7 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 	skb->mark = mark;
- 
- 	mtu = dst_mtu(dst);
--	if ((skb->len <= mtu) || skb->ignore_df || skb_is_gso(skb)) {
-+	if (likely((skb->len <= mtu) || skb->ignore_df || skb_is_gso(skb))) {
- 		IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTREQUESTS);
- 
- 		/* if egress device is enslaved to an L3 master device pass the
-@@ -654,7 +654,7 @@ int ip6_forward(struct sk_buff *skb)
- 	if (mtu < IPV6_MIN_MTU)
- 		mtu = IPV6_MIN_MTU;
- 
--	if (ip6_pkt_too_big(skb, mtu)) {
-+	if (unlikely(ip6_pkt_too_big(skb, mtu))) {
- 		/* Again, force OUTPUT device used as source address */
- 		skb->dev = dev;
- 		icmpv6_send(skb, ICMPV6_PKT_TOOBIG, 0, mtu);
-@@ -1368,7 +1368,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
- 	/*
- 	 * setup for corking
- 	 */
--	if (opt) {
-+	if (unlikely(opt)) {
- 		if (WARN_ON(v6_cork->opt))
- 			return -EINVAL;
- 
-@@ -1885,7 +1885,7 @@ static void ip6_cork_steal_dst(struct sk_buff *skb, struct inet_cork_full *cork)
- static void ip6_cork_release(struct inet_cork_full *cork,
- 			     struct inet6_cork *v6_cork)
- {
--	if (v6_cork->opt) {
-+	if (unlikely(v6_cork->opt)) {
- 		struct ipv6_txoptions *opt = v6_cork->opt;
- 
- 		kfree(opt->dst0opt);
-@@ -1941,7 +1941,7 @@ struct sk_buff *__ip6_make_skb(struct sock *sk,
- 	__skb_pull(skb, skb_network_header_len(skb));
- 
- 	final_dst = &fl6->daddr;
--	if (opt) {
-+	if (unlikely(opt)) {
- 		if (opt->opt_flen)
- 			proto = ipv6_push_frag_opts(skb, opt, proto);
- 		if (opt->opt_nflen)
-@@ -1969,7 +1969,7 @@ struct sk_buff *__ip6_make_skb(struct sock *sk,
- 
- 	ip6_cork_steal_dst(skb, cork);
- 	IP6_INC_STATS(net, rt->rt6i_idev, IPSTATS_MIB_OUTREQUESTS);
--	if (proto == IPPROTO_ICMPV6) {
-+	if (unlikely(proto == IPPROTO_ICMPV6)) {
- 		struct inet6_dev *idev = ip6_dst_idev(skb_dst(skb));
- 		u8 icmp6_type;
- 
+ 	IP6_INC_STATS(net, idev, IPSTATS_MIB_FRAGFAILS);
+-	kfree_skb(skb);
++	kfree_skb_reason(skb, SKB_DROP_REASON_PKT_TOO_BIG);
+ unlock:
+ 	rcu_read_unlock();
+ 	return ret;
 -- 
 2.53.0.rc1.225.gd81095ad13-goog
 
