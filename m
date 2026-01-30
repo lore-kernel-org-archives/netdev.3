@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02086342CBB;
-	Fri, 30 Jan 2026 02:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5DA34C128;
+	Fri, 30 Jan 2026 02:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769741446; cv=none; b=fwF4EnhBbWRgQqI+dnrgqp8pHTZ34Z3kiamjvmZnUZcW2t0xh9vYMbUfXp4qGlzj01ZCKNx+PrVG0irCT240tHY1+o74aKOyki0kMXDrONj5rTnQ+TiwsY5msNLTBbln7bfMIpc+wXxMTcnywvY8oN0MJhkO8eqKHH7QRD8/yBg=
+	t=1769741448; cv=none; b=Ld1DHDVzTMM2sgyTaF3xjm+M1hTffN9u6YaTmgywQAxGTMjurXUMEaC8Urw1+alEdUV56dm7hWnHdz/11Wisu5TMbLDWzuhHjNsFHPFRYDjWEJn9TSSFMSF6tBx33X+tyGv7BJFPUXQPRJq/FHAi0KRd5rsJDfHRmGVidzaTkA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769741446; c=relaxed/simple;
-	bh=mhuMetPpX87bX0Sl/nc1fYnEUf2eQbwFt68DLNLMwqs=;
+	s=arc-20240116; t=1769741448; c=relaxed/simple;
+	bh=kbDgp/9oUx3zNEWhZFBn0BY0X6oyRhQRKHlObRZxJJo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=BqYo2nBTdrZQtUoGhrUgLVZLqVw/7J3fFe75JZyGo9eh3Dz/7fdvQwefYM+mQuiMSrT+2piU7xCiZZdhxQWBmK353Z/UQ8K2cUfwcuTyfF0e63e+qt9EJFygMKLwqQ2TayazQDcdiAcp2WawMZSMJ0AJCVB+TNbTJthMe1niFoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fbdyesc/; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=S9Mmq7nOJdg9lK83surQUAcCM7INWStOB9BVGule4h4ztncFaX3DwLLqlGRKP37fFRZDT49wsRw8JN70a1YR2GFiPF/a7FxPWkeIKfQIPTmJkIZ6vsseVhS0/YwTz6tlpR658mCFzFcC+306h9OadSIEC5Df+JfRV+tRdnbFHE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fko9zgbI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fbdyesc/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4872C2BCB5;
-	Fri, 30 Jan 2026 02:50:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fko9zgbI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783C0C4AF0F;
+	Fri, 30 Jan 2026 02:50:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769741445;
-	bh=mhuMetPpX87bX0Sl/nc1fYnEUf2eQbwFt68DLNLMwqs=;
+	s=k20201202; t=1769741447;
+	bh=kbDgp/9oUx3zNEWhZFBn0BY0X6oyRhQRKHlObRZxJJo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=fbdyesc/D9u6ia2BNG2w25ukF0vUneWNMLccBMdSzNVor96IdsI1e8J3Nep0wr8Ow
-	 tHp6RfwUlrlq9xKyuv5NWc+GiZMPfjgDcq9COc5pMksCdXklOsMrIvsUofUXiIlwKt
-	 oqRlnZg2QGu5dNDqrWK78Z59Lww/6XlW8Q3PwIpmboa+JqQaHaYcXXzhC3W+vTo4Ke
-	 xu3n6H34E1O/RPVjQctfFSJwdcgg9iHKAMoY3ux+8wTdgaXD65+7YSoQ6/1uQn8jgC
-	 YrWgia69uzWyNYKWissGZprJ2Iq8slw9jSahoXwzoKt9tkjE5S4Qugv75qJL1GYYuE
-	 lS3hiZ0bO9rHQ==
+	b=Fko9zgbIwk0+l3QMKDXyvaKZ9xQn8qT///vO1Og+sZn4RYb5+qPEM1WXpWvAhnUgs
+	 KdNLce/Yw6sAf1vFeCqFr4pGOlYJCFmK3Oyx8y8cHXVDmE9x3a1Ghbfbfru3ViRsJH
+	 8fUWm9n6D6M1vO/j4pMjiOptIu7TTsyC/r/QdB9AcbzU+Uz4Vd49ps06GMtiFPDXMX
+	 5va7zehHlNVWKRd5z9Q93JrzW7zI+7Sl/OVaAJWEuuxhHo/z/aQrOouQecmEc0l6SB
+	 UGO7k6RucDbtsvnruf5UcnFP1sAAjN8NbhU/r+U9dg94KPQvGK8aPVM6wLB8doNssF
+	 4+uxP+2i4o3YQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id C8C6B380CEE0;
-	Fri, 30 Jan 2026 02:50:39 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 4EB1C380CEE0;
+	Fri, 30 Jan 2026 02:50:41 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,47 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [net-next PATCH] octeontx2-af: Workaround SQM/PSE stalls by
- disabling
- sticky
+Subject: Re: [PATCH net-next] dpll: expose fractional frequency offset in ppt
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <176974143835.3149010.13587073395074604681.git-patchwork-notify@kernel.org>
-Date: Fri, 30 Jan 2026 02:50:38 +0000
-References: <20260127125147.1642-1-gakula@marvell.com>
-In-Reply-To: <20260127125147.1642-1-gakula@marvell.com>
-To: Geetha sowjanya <gakula@marvell.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, kuba@kernel.org,
- davem@davemloft.net, pabeni@redhat.com, edumazet@google.com,
- andrew+netdev@lunn.ch, sgoutham@marvell.com, sbhatta@marvell.com,
- hkelam@marvell.com
+ <176974143985.3149010.12354728128408469050.git-patchwork-notify@kernel.org>
+Date: Fri, 30 Jan 2026 02:50:39 +0000
+References: <20260126162253.27890-1-ivecera@redhat.com>
+In-Reply-To: <20260126162253.27890-1-ivecera@redhat.com>
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: netdev@vger.kernel.org, donald.hunter@gmail.com, kuba@kernel.org,
+ davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ horms@kernel.org, vadim.fedorenko@linux.dev, arkadiusz.kubalewski@intel.com,
+ jiri@resnulli.us, Prathosh.Satish@microchip.com, saeedm@nvidia.com,
+ leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch,
+ poros@redhat.com, linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 27 Jan 2026 18:21:47 +0530 you wrote:
-> NIX SQ manager sticky mode is known to cause stalls when multiple SQs
-> share an SMQ and transmit concurrently. Additionally, PSE may deadlock
-> on transitions between sticky and non-sticky transmissions. There is
-> also a credit drop issue observed when certain condition clocks are
-> gated.
+On Mon, 26 Jan 2026 17:22:51 +0100 you wrote:
+> Currently, the dpll subsystem exports the fractional frequency offset
+> (FFO) in parts per million (ppm). This granularity is insufficient for
+> high-precision synchronization scenarios which often require parts per
+> trillion (ppt) resolution.
 > 
-> work around these hardware errata by:
-> - Disabling SQM sticky operation:
->   - Clear TM6 (bit 15)
->   - Clear TM11 (bit 14)
-> - Disabling sticky → non-sticky transition path that can deadlock PSE:
->   - Clear TM5 (bit 23)
-> - Preventing credit drops by keeping the control-flow clock enabled:
->   - Set TM9 (bit 21)
+> Add a new netlink attribute DPLL_A_PIN_FRACTIONAL_FREQUENCY_OFFSET_PPT
+> to expose the FFO in ppt.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] octeontx2-af: Workaround SQM/PSE stalls by disabling sticky
-    https://git.kernel.org/netdev/net-next/c/70e9a5760abf
+  - [net-next] dpll: expose fractional frequency offset in ppt
+    https://git.kernel.org/netdev/net-next/c/bc443c253fcd
 
 You are awesome, thank you!
 -- 
