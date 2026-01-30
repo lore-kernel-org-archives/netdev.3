@@ -1,74 +1,93 @@
-Received: from mail-dy1-f195.google.com (mail-dy1-f195.google.com [74.125.82.195])
+Received: from mail-ed1-f67.google.com (mail-ed1-f67.google.com [209.85.208.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DA236C597
-	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 11:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E587436C5B4
+	for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 11:47:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.67
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769773318; cv=none; b=KSvCRyQxw7s5GI3qCtDNOv8FMWnH4l08ZZMjaXF2GAQ7PbrhJ+/WyIh3NtwRHzOLCCjjwTTLYMMQCmqMq589O7l2duqgnNFEQNwA6TzomeU0aWCPl3FhQq5/PX2on1JVZbO2A5yjMzw4alq6ZJIzpLc+B3SxtDoNXxtlw2z4yXU=
+	t=1769773671; cv=none; b=NkMJ7xAHwxB+a/UQaAxv1Hj4Un9sOPgMil9PxVzmKo9pxu2VlvpC2VtGOWc+CVofnukZK6FnAeK/p7dOO4VsQ5kVYt5e6e1h247lt5B+15fhUkMwVvvY0Kjpwn5ujvPIXVsMqpg2BuzUzs/lMj035jVBaLDGJkdPk1PFN6V3F10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769773318; c=relaxed/simple;
-	bh=QYbm57pbO7UP72Nd6eTkTa1GxsZUUno9GSyI0kkRqQw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ah9uv0bWMeMeoE8F0l9XmLqltoj+Rk28oOznEEIxaj+T89QQpnScIT7I5KsWQy96pjJocL1cN/1Hs5d+KqYqGbcHY+raeSa7gUx0PpMomhMujca2w+2GW/POQ/u2xnvmKZ/sUQgB1WqG27KU1ukTSUYq9xhLv3NOo9F2K5V2tqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aNGVY6gR; arc=none smtp.client-ip=74.125.82.195
+	s=arc-20240116; t=1769773671; c=relaxed/simple;
+	bh=MGhvFRxe1NNo7xLt+3aHdT5eJAUyDKTnSre/6IBXckU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mPKLspiVi3dwFQPpOq6W9A16aC+Vi0RineJu/d6vOVu9CXyWI7iMqMe+nsJ8XRZgt1sLYvbgJKCT/x+Lzzq0fhqr9IS9gfFVdKydtEylt+Clj7xokMGUi44IjwU4tVYLvDXU9fKkmBPDj1D9nUg9ZH2WGFWr+7mLBuiuskeEXEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lWJO9uoD; arc=none smtp.client-ip=209.85.208.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aNGVY6gR"
-Received: by mail-dy1-f195.google.com with SMTP id 5a478bee46e88-2b4520f6b32so4043496eec.0
-        for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 03:41:56 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lWJO9uoD"
+Received: by mail-ed1-f67.google.com with SMTP id 4fb4d7f45d1cf-6505d3adc3aso2761478a12.1
+        for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 03:47:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769773316; x=1770378116; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xecIX2fMDAwRib/lst+YsPeYlfC8fIbaBNXW8TdPxjw=;
-        b=aNGVY6gREu1bjNZinnmBxXxEs/J5h9aZ4e9gqVKA5/bvlAmD9oJj5H32iZdPe7IMG1
-         ZfNO30iL3Bl7Emeklueo7SHWZwOjNRURc6ZPOiRq19OjVsD0tChQ7gZGolwWQv88+dmj
-         Ms2zl2MDwdQct68JiyyDHGfFRllXEj7g8HLj75eQ0dfCwRBreAQfc4KQHELrHjqXfLqd
-         fwFMebQ0M9GAKwHkCdSVhmpW7+9CdsCsawABpBtI5QIXoqx19FgHQa57uvusLq/8SIn3
-         422iIbGG2tcvEuTmFUXuUC9eE4HthA5J7cU2nO3uPOGJIk9X34Qs4lNLwfy2LU4JW2kh
-         XgXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769773316; x=1770378116;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1769773668; x=1770378468; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xecIX2fMDAwRib/lst+YsPeYlfC8fIbaBNXW8TdPxjw=;
-        b=OzVP/WMP/j5PU1qlS4W4IuRLM6Y1Sw8jOVDjm29XPx+xSwz953nPlivdtR28STDSBx
-         6nYcBL9ey8c+z9h8Eh7kC5ZxEWopUPPO2hqzT9jHS1rwGd/4hpXevBLWcCDXglKNsOan
-         naMJLxtTOm28Fei5LqIaPVfgD7iW5iudwqtEFKcTwzWi/ewyTPSH+H7dxNC8HNUOvFnW
-         /9QaH568n4Fo8VYdaNooUS0EL42q0QYxQcVYECViW1WCiS68pzRif9Ir86qd9tob2OYY
-         vm2mVGs/HeX8/7JpUp8ucwoJMoouV0ho2yOcZ+a/okyQ6/T1P13L9KI1YmKi9avJPuSl
-         uC5Q==
-X-Gm-Message-State: AOJu0YxUR86KSOJ6N3aYobiPXG7ftK0kqvziwAG4uKYLKSdZYTmXlNW0
-	9gPOF0rK1wYYNKTWF71DS/TLZZJUzBcda+iQ6RTcsr3VQ0mGSwZuGDXbLs1+ZZMQ
-X-Gm-Gg: AZuq6aIDeID/2BbJgW8DFYx7i9VGuAX4joGx5F6OxUhOS3m4v/O1AJOLP+1jHVAmErr
-	wuxffVx6HZ2/QdjOb7w+dd4iTGg/lNaxv/MIz3QXbvFLonZKHScaXZ8gLeC5KRjNLyw3EuRL/NU
-	9nrVLhCKMX+1ltJJHUDfdvceRptXZTkp+icJg9lFUFfK0p/VwFgFR2MvvyU85AuPQChPVyG5z/u
-	sbARJb7Jifb8zPPRYkWLd/0sgf2pV11MXsWiTXISey4UTyqHKqAZ7L4iMBkS+wBRGUaR1jhTRka
-	bCMk7cWAo2Qd8Bd5PUvoLRzM4ivTGaMxQVazS1pKz1uFQx1j38RYZ/T5J3LtKysR0goc9l+BXx4
-	Frttrt4yDwnezjV4WAieRiz3C4S81wm8+o1tjj18SGrjXT3GqUv+Cyp8hhoVNqMYh+wFLqkscCt
-	t3BsKIAUlNmYcw08oUkEL6f/atpCWY3/Q1rD0M4+R0M24MOkjmSVSglofNBb6lXBwUgbf3J/EFv
-	k75epTdNz2X3BrsmiokqiNfJhkEk31hvE4GIOg1fHSlls3ljTnhQ2i3g6sJTPrBt+ZkeJIoWXuj
-	1YXr
-X-Received: by 2002:a05:7300:3249:b0:2ab:8ef5:df2 with SMTP id 5a478bee46e88-2b7c891b404mr1101106eec.35.1769773314519;
-        Fri, 30 Jan 2026 03:41:54 -0800 (PST)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b7bb9ca10csm5424424eec.30.2026.01.30.03.41.53
+        bh=v5uLnmPZ377+nkXuOYWLduQd55UQQkrY+wqK7qtadoE=;
+        b=lWJO9uoDN5DnLnslzD4+2HEpSY1JUJkxfdZbehNBP2z55GUobnbgr8ZjvC/x4DmIpP
+         xEiUjxxpkAQ6FSMtA2Dl/f+ZiT2UjO1502SGQwQpsNa5lmmALbuL1JbAEcLjugFdtaXC
+         puNINTu4gF+srodacvY0K20iMLUJmXx3KuyZYu7QrbkE7IiFW9wLDzu2Bt0zV3TVwF+x
+         0+0/QnkVqSOJVGphCoKARo2YNfm560T7IS1TxhsZodi1zCACm7KPIYQRQi8ibBtk+WUn
+         ljVJ6bzHnetR2rhaFIsSemaOMx4/XBSOxY5r2hiIjnU85X97jGA3xdTJIdfuW76mqaDG
+         3/pA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769773668; x=1770378468;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=v5uLnmPZ377+nkXuOYWLduQd55UQQkrY+wqK7qtadoE=;
+        b=YsIh9tepsVRdySCYiqwchABikoZFVKdFY1lgI2bREMHKr7qNUaI2RZrD5YMLaCR2zl
+         OffY0kctNNnz9Bl4cuLTY8zGxyJKuBkS8eDQAReAspZ85e1KRQGwoEG4pTPebUjwySgG
+         FAaGaejxcMP4jVZSYZiIpbiKdPusPLu2IN/ugPsJ/tkCkJIxngV7Oksnz/b8ZaIEqqVU
+         ZLTVcXG7oIgbktvYDmRHXhplWs0v2ktW46i3/wpz6EUtn5Ww4fzH0BfI87N7V1N+1zst
+         zzHW7r8Gf3k7VHo8azUU2Y6zdAP17c3akpPFbEmLPxFWsfrRZrknvrnDjtn27YHkoN9O
+         S15w==
+X-Forwarded-Encrypted: i=1; AJvYcCUbMLQZwTaxm7CEkVLHh6ItTmLICu3w+NeNMbgzqEFsaBQROlhFZboI8nd//AOf1qNWntjENCI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YypdFX9FxjDYu8BWF6Tzz6W86uoP+l2Q73VBaYVoQUgila3/+Vj
+	EhkI/i0nkkiKcnmqJ01R5hKmWbZNG/u4R57IJaLiX6XRz/rVgSpq0T7v
+X-Gm-Gg: AZuq6aKDfdD2/RabkMlv1z4V35BYWtbW3/u40Dfuj7CDVRlGCK4wbNOXKSYHZyzeCU7
+	uy5Opz1csOnpeflNdr+Q1S0U0dryLv/KxY45L2oX7IqpExeDYNFr4Kjy5OiKslBb30tQDni4Ay7
+	4EFjm5SeenHlmXKRXQ6y08vGena0X+/bTFeRE+oodrulaWPXgB2imnP3lEQ09FbbN8ZQOcK0ln3
+	aXogflA5IndTc5CQub3GJran0lWWi52lzAI4RsKxGa8Ki5wEvHOQVHpPHMksWRLsOUmsX+e0fKW
+	egN9NPBoW5cU9CtkDmrphSSYNEOkkuzTuodBHl9VJ8sdklQdZ5o0ue0S7E+42jL+AU8CK2sUYQW
+	ez0Ydf4wJaohCieNC7l8umRxoIxhd0OGaTEhNob65051CEp8IzGIZU5SEnI8x7vHPml4Xr22+gP
+	NV70YPuvJozKsGtlFnqndqc26wO+5dwoxWzA4=
+X-Received: by 2002:a17:907:1c96:b0:b88:5a44:fe23 with SMTP id a640c23a62f3a-b8dff7a3461mr144840066b.39.1769773668012;
+        Fri, 30 Jan 2026 03:47:48 -0800 (PST)
+Received: from localhost.localdomain ([2a00:23c4:a758:8a01:bd64:2984:fe71:7633])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8de3046abasm243751266b.2.2026.01.30.03.47.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jan 2026 03:41:54 -0800 (PST)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: netdev@vger.kernel.org,
-	linux-can@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Pavel Pisa <pisa@cmp.felk.cvut.cz>,
-	Ondrej Ille <ondrej.ille@gmail.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>
-Subject: [PATCH net-next] net: can: ctucanfd: remove useless copy of PCI_DEVICE_DATA macro
-Date: Fri, 30 Jan 2026 03:41:33 -0800
-Message-ID: <20260130114134.47421-1-enelsonmoore@gmail.com>
+        Fri, 30 Jan 2026 03:47:47 -0800 (PST)
+From: Biju <biju.das.au@gmail.com>
+X-Google-Original-From: Biju <biju.das.jz@bp.renesas.com>
+To: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>
+Cc: Biju Das <biju.das.jz@bp.renesas.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Biju Das <biju.das.au@gmail.com>,
+	Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH net-next v2 1/2] dt-bindings: net: renesas,rzv2h-gbeth: Document Renesas RZ/G3L SoC
+Date: Fri, 30 Jan 2026 11:47:39 +0000
+Message-ID: <20260130114744.252533-2-biju.das.jz@bp.renesas.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260130114744.252533-1-biju.das.jz@bp.renesas.com>
+References: <20260130114744.252533-1-biju.das.jz@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,35 +96,189 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ctucanfd driver has its own copy of the PCI_DEVICE_DATA macro. I
-assume this was done to support older kernel versions where it didn't
-exist, but that is irrelevant once the driver is in the mainline
-kernel. Remove it.
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Add device tree binding support for the Gigabit Ethernet (GBETH) IP on
+Renesas RZ/G3L SoC. This SoC uses different Synopsys DesignWare MAC
+version 5.30 compared to RZ/G3E.
+
+RZ/G3L requires an extra clock compared to RZ/G3E and has pps interrupts.
+
+Add a new compatible string "renesas,r9a08g046-gbeth" for RZ/G3L SoC and
+update the schema to handle hardware differences between SoC variants.
+
+Extend the base snps,dwmac.yaml schema to accommodate the PPS interrupts.
+
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
 ---
- drivers/net/can/ctucanfd/ctucanfd_pci.c | 8 --------
- 1 file changed, 8 deletions(-)
+v1->v2:
+ * Collected tag
+---
+ .../bindings/net/renesas,rzv2h-gbeth.yaml     | 77 ++++++++++++++++---
+ .../devicetree/bindings/net/snps,dwmac.yaml   |  3 +
+ 2 files changed, 69 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/can/ctucanfd/ctucanfd_pci.c b/drivers/net/can/ctucanfd/ctucanfd_pci.c
-index 9da09e7dd63a..35edac9c0a5c 100644
---- a/drivers/net/can/ctucanfd/ctucanfd_pci.c
-+++ b/drivers/net/can/ctucanfd/ctucanfd_pci.c
-@@ -22,14 +22,6 @@
+diff --git a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
+index bd53ab300f50..21ac3c20bb61 100644
+--- a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
++++ b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
+@@ -26,6 +26,9 @@ select:
+ properties:
+   compatible:
+     oneOf:
++      - items:
++          - const: renesas,r9a08g046-gbeth # RZ/G3L
++          - const: snps,dwmac-5.30a
+       - items:
+           - enum:
+               - renesas,r9a09g047-gbeth # RZ/G3E
+@@ -47,13 +50,17 @@ properties:
+   clocks:
+     oneOf:
+       - items:
+-          - description: CSR clock
+-          - description: AXI system clock
++          - description: CSR/Register access clock
++          - description: AXI system/Main clock
+           - description: PTP clock
+           - description: TX clock
+           - description: RX clock
+           - description: TX clock phase-shifted by 180 degrees
+           - description: RX clock phase-shifted by 180 degrees
++          - description: RMII clock
++
++        minItems: 7
++
+       - items:
+           - description: CSR clock
+           - description: AXI system clock
+@@ -69,6 +76,10 @@ properties:
+           - const: rx
+           - const: tx-180
+           - const: rx-180
++          - const: rmii
++
++        minItems: 7
++
+       - items:
+           - const: stmmaceth
+           - const: pclk
+@@ -88,6 +99,22 @@ properties:
+           - const: tx-queue-1
+           - const: tx-queue-2
+           - const: tx-queue-3
++      - items:
++          - const: macirq
++          - const: eth_wake_irq
++          - const: eth_lpi
++          - const: rx-queue-0
++          - const: rx-queue-1
++          - const: rx-queue-2
++          - const: rx-queue-3
++          - const: tx-queue-0
++          - const: tx-queue-1
++          - const: tx-queue-2
++          - const: tx-queue-3
++          - const: ppt-pps-0
++          - const: ppt-pps-1
++          - const: ppt-pps-2
++          - const: ppt-pps-3
+       - items:
+           - const: macirq
+           - const: eth_wake_irq
+@@ -135,6 +162,27 @@ required:
+ allOf:
+   - $ref: snps,dwmac.yaml#
  
- #include "ctucanfd.h"
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: renesas,r9a08g046-gbeth
++    then:
++      properties:
++        clocks:
++          minItems: 8
++
++        clock-names:
++          minItems: 8
++
++        interrupts:
++          minItems: 15
++          maxItems: 15
++
++        interrupt-names:
++          minItems: 15
++          maxItems: 15
++
+   - if:
+       properties:
+         compatible:
+@@ -163,12 +211,26 @@ allOf:
+       required:
+         - reset-names
+     else:
++      properties:
++        resets:
++          maxItems: 1
++
++        pcs-handle: false
++
++        reset-names: false
++
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: renesas,rzv2h-gbeth
++    then:
+       properties:
+         clocks:
+-          minItems: 7
++          maxItems: 7
  
--#ifndef PCI_DEVICE_DATA
--#define PCI_DEVICE_DATA(vend, dev, data) \
--.vendor = PCI_VENDOR_ID_##vend, \
--.device = PCI_DEVICE_ID_##vend##_##dev, \
--.subvendor = PCI_ANY_ID, .subdevice = PCI_ANY_ID, 0, 0, \
--.driver_data = (kernel_ulong_t)(data)
--#endif
+         clock-names:
+-          minItems: 7
++          maxItems: 7
+ 
+         interrupts:
+           minItems: 11
+@@ -178,13 +240,6 @@ allOf:
+           minItems: 11
+           maxItems: 11
+ 
+-        resets:
+-          maxItems: 1
 -
- #ifndef PCI_VENDOR_ID_TEDIA
- #define PCI_VENDOR_ID_TEDIA 0x1760
- #endif
+-        pcs-handle: false
+-
+-        reset-names: false
+-
+ unevaluatedProperties: false
+ 
+ examples:
+diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+index dd3c72e8363e..38bc34dc4f09 100644
+--- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
+@@ -75,6 +75,7 @@ properties:
+         - qcom,sc8280xp-ethqos
+         - qcom,sm8150-ethqos
+         - renesas,r9a06g032-gmac
++        - renesas,r9a08g046-gbeth
+         - renesas,r9a09g077-gbeth
+         - renesas,rzn1-gmac
+         - renesas,rzv2h-gbeth
+@@ -142,6 +143,8 @@ properties:
+           pattern: '^rx-queue-[0-7]$'
+         - description: Per channel transmit completion interrupt
+           pattern: '^tx-queue-[0-7]$'
++        - description: PPS interrupt
++          pattern: '^ptp-pps-[0-3]$'
+ 
+   clocks:
+     minItems: 1
 -- 
 2.43.0
 
