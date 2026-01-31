@@ -1,49 +1,51 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CC835A93B;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0C4359F88;
 	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769869522; cv=none; b=Z1V2qWONqM4HChq0CxOUihiQy/OaO9KJ92p73XB8++aU7r/4s6panXOf8V3f43oJIe5H9askYBHDhOxfKPOmd3CqqnUv0geKChUMZAAJY4TbqUnsElGJGvrLzSe2QDIGKEcM29WmmwgxkphtW6SDpNoW03397xHPQGP4FyvyHqI=
+	t=1769869522; cv=none; b=hf/7Eojp+sO5kNF1UFOYGCbOsAStSGT971b3ZmzN1OjmhJ/NahJbEoU0aj5VEqX9JCgOM0/kCHVcnpMI4NufIUwcBZBc8Yh/oo7fLVJgH4oOmTqavNCnXWO9HUXAZfiffyiN2Nqe4C0Z6mML6g82iEzETLCXaYhmFHPLBKE7K04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769869522; c=relaxed/simple;
-	bh=C2cStPoOoGCftK6fYM/VQjKEO1UC2wtJ9483nmjaklU=;
+	bh=c78VBSuB3zJR1YCeHGb5UJcGA9b8DZwRfytxgWk/nVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cEOfetqAl1XlXVsZlqdJHNBO6Eqeu/fodY7hFQ6jhgWaS0MS2gGzJtLf5rYihITKGnIY7ly0QSiEQJLKDQ/REILIU+C3nS+ZFtl7DO5vmn34BPXvda5eohjeLJLY4Ojy+nsE3sJe5HrTLgxZykh0KfRz0Ra/ZjhkOHR9W6f4vy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XUlq74Q3; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=paJnUAMntG6yxEOje+bkag+xHAkbE2eqlBetkzhDylg4xkle54EhJlvFxhdWax4h7vyISFVfrcvf7rSjKviYeCetyjkMiYXsiAf/Khxc8BRxhkCyt6+hNJpryjXEQk1F0N+i9G+PEIAmkK+plGtoJXJ4IMo1TayR6oN82ahUuiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FlayTHJs; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XUlq74Q3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04926C4AF67;
-	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FlayTHJs"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6D96C4AF1B;
+	Sat, 31 Jan 2026 14:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769869522;
-	bh=C2cStPoOoGCftK6fYM/VQjKEO1UC2wtJ9483nmjaklU=;
+	s=k20201202; t=1769869521;
+	bh=c78VBSuB3zJR1YCeHGb5UJcGA9b8DZwRfytxgWk/nVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUlq74Q3cKfYzyY2KmtaeWNQkjLbbRDt5JtA5d4kbIkyhkSG2+r9AGrHLU4Qs3OAO
-	 3CImQgNMNaRltbbsjangUr8/RFy/xKGsHu358A75l53bxFqHHyasF1Y45xDrcFc7ZZ
-	 zUGz4lPK3g2E73Jcj6dtY4eaNtIuN0oRlF39s22PGLYoBlu/2KrKfAQvAhr+IyXRR+
-	 fiDNVldhW85MRQCVRgbBHJVmTVarAAtjw7rDnTFIEHavj+WTvsWpLmLJ87yKpKiD0Q
-	 +HIoB2dNIDt/n0P2oHfuEaY5mV8k8GNS3pw9TsRmf1W18wyoLE9yQyFvxtldDB8Ism
-	 kso7P7jRnB1bA==
+	b=FlayTHJs2JUrQOYizmq+bu9LbW2w66UJVg9tbVq+HjdhRH0wnlriOKQ+ObL4grHnZ
+	 +r98L9a4ebz0IGwaVufND7ECK2QORhXbBvQVK5a+kMDa7qGwng3sDR4o0E+xDmh6Op
+	 VlmGodLkSbAOyoXmJxvDaIwuRmHzyOtGFbDIInKiTpzGbIK10Z0gzL/C6WkfT6FQTL
+	 Ppij1jr5RxAiEHQouiIYV7XVqh0HDtQumuNQ46hazfxSkW5WVTVX3lu2dcaOXH1KrM
+	 y3vvDQo+EnhPO+Mu8nbkXFfGeeANwYzVECJbdDObW/IbfycnsGRe0ICaCffV0Ut1G7
+	 58BrPSt6HvYoA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vmBua-0000000AVlv-0v7X;
+	id 1vmBua-0000000AVlf-0TIM;
 	Sat, 31 Jan 2026 15:25:20 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
+	Kees Cook <kees@kernel.org>,
 	Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	intel-wired-lan@lists.osuosl.org,
 	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v4 33/41] tools: sphinx-build-wrapper: improve its help message
-Date: Sat, 31 Jan 2026 15:25:07 +0100
-Message-ID: <9a41e5aa1da74e30a05bc21537a0c170450f01e3.1769867954.git.mchehab+huawei@kernel.org>
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH v4 29/41] docs: xforms_lists.py: use CFuntion to handle all function macros
+Date: Sat, 31 Jan 2026 15:25:03 +0100
+Message-ID: <4ad68fce80ea7f994665ce2d72b39f0098df2476.1769867953.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769867953.git.mchehab+huawei@kernel.org>
 References: <cover.1769867953.git.mchehab+huawei@kernel.org>
@@ -57,74 +59,130 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Besides the parameters that are passed via command line arguments,
-the wrapper's behavior is affected by several environment variables.
+The new CFunction class handles better macros, as it works the same
+way C compilers do, handling delimiters tha right way.
 
-Document that. While here, use __doc__ for its description.
+This allows removing complex regular expressions, placing instead
+just a simple one with the name(s) of the functions to be replaced.
+
+Doing a before/after check using "kernel-doc -man ." shows only
+cosmetic changes (whitespaces, mostly).
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- tools/docs/sphinx-build-wrapper | 28 +++++++++++++++++++++++++---
- 1 file changed, 25 insertions(+), 3 deletions(-)
+ tools/lib/python/kdoc/xforms_lists.py | 71 ++++++++++++---------------
+ 1 file changed, 31 insertions(+), 40 deletions(-)
 
-diff --git a/tools/docs/sphinx-build-wrapper b/tools/docs/sphinx-build-wrapper
-index 8080ace60680..b7c149dff06b 100755
---- a/tools/docs/sphinx-build-wrapper
-+++ b/tools/docs/sphinx-build-wrapper
-@@ -814,20 +814,42 @@ def jobs_type(value):
-     except ValueError:
-         raise argparse.ArgumentTypeError(f"Must be 'auto' or positive integer, got {value}")  # pylint: disable=W0707
+diff --git a/tools/lib/python/kdoc/xforms_lists.py b/tools/lib/python/kdoc/xforms_lists.py
+index 88968bafdb78..ea6520b38ea2 100644
+--- a/tools/lib/python/kdoc/xforms_lists.py
++++ b/tools/lib/python/kdoc/xforms_lists.py
+@@ -17,51 +17,38 @@ class CTransforms:
  
-+EPILOG="""
-+Besides the command line arguments, several environment variables affect its
-+default behavior, meant to be used when called via Kernel Makefile:
+     #: Transforms for structs and unions
+     struct_xforms = [
+-        # Strip attributes
+-        (KernRe(r"__attribute__\s*\(\([a-z0-9,_\*\s\(\)]*\)\)", flags=re.I | re.S, cache=False), ' '),
+-        (KernRe(r'\s*__aligned\s*\([^;]*\)', re.S), ' '),
+-        (KernRe(r'\s*__counted_by\s*\([^;]*\)', re.S), ' '),
+-        (KernRe(r'\s*__counted_by_(le|be)\s*\([^;]*\)', re.S), ' '),
+-        (KernRe(r'\s*__guarded_by\s*\([^\)]*\)', re.S), ' '),
+-        (KernRe(r'\s*__pt_guarded_by\s*\([^\)]*\)', re.S), ' '),
++        (CFunction("__attribute__"), ' '),
++        (CFunction('__aligned'), ' '),
++        (CFunction('__counted_by'), ' '),
++        (CFunction('__counted_by_(le|be)'), ' '),
++        (CFunction('__guarded_by'), ' '),
++        (CFunction('__pt_guarded_by'), ' '),
 +
-+- KERNELVERSION:  Kernel major version
-+- KERNELRELEASE:  Kernel release
-+- KBUILD_VERBOSE: Contains the value of "make V=[0|1] variable.
-+                  When V=0 (KBUILD_VERBOSE=0), sets verbose level to "-q".
-+- SPHINXBUILD:    Documentation build tool (default: "sphinx-build").
-+- SPHINXOPTS:     Extra options pased to SPHINXBUILD
-+                  (default: "-j auto" and "-q" if KBUILD_VERBOSE=0).
-+                  The "-v" flag can be used to increase verbosity.
-+                  If V=0, the first "-v" will drop "-q".
-+- PYTHON3:        Python command to run SPHINXBUILD
-+- PDFLATEX:       LaTeX PDF engine. (default: "xelatex")
-+- LATEXOPTS:      Optional set of command line arguments to the LaTeX engine
-+- srctree:        Location of the Kernel root directory (default: ".").
+         (KernRe(r'\s*__packed\s*', re.S), ' '),
+         (KernRe(r'\s*CRYPTO_MINALIGN_ATTR', re.S), ' '),
+         (KernRe(r'\s*__private', re.S), ' '),
+         (KernRe(r'\s*__rcu', re.S), ' '),
+         (KernRe(r'\s*____cacheline_aligned_in_smp', re.S), ' '),
+         (KernRe(r'\s*____cacheline_aligned', re.S), ' '),
+-        (KernRe(r'\s*__cacheline_group_(begin|end)\([^\)]+\);'), ''),
 +
-+"""
++        (CFunction('__cacheline_group_(begin|end)'), ''),
+ 
+         (CFunction('struct_group'), r'\2'),
+         (CFunction('struct_group_attr'), r'\3'),
+         (CFunction('struct_group_tagged'), r'struct \1 \2; \3'),
+         (CFunction('__struct_group'), r'\4'),
+ 
+-        #
+-        # Replace macros
+-        #
+-        # TODO: use CFunction on all FOO($1, $2, ...) matches
+-        #
+-        # it is better to also move those to the CFunction logic,
+-        # to ensure that parentheses will be properly matched.
+-        #
+-        (KernRe(r'__ETHTOOL_DECLARE_LINK_MODE_MASK\s*\(([^\)]+)\)', re.S),
+-        r'DECLARE_BITMAP(\1, __ETHTOOL_LINK_MODE_MASK_NBITS)'),
+-        (KernRe(r'DECLARE_PHY_INTERFACE_MASK\s*\(([^\)]+)\)', re.S),
+-        r'DECLARE_BITMAP(\1, PHY_INTERFACE_MODE_MAX)'),
+-        (KernRe(r'DECLARE_BITMAP\s*\(' + struct_args_pattern + r',\s*' + struct_args_pattern + r'\)',
+-                re.S), r'unsigned long \1[BITS_TO_LONGS(\2)]'),
+-        (KernRe(r'DECLARE_HASHTABLE\s*\(' + struct_args_pattern + r',\s*' + struct_args_pattern + r'\)',
+-                re.S), r'unsigned long \1[1 << ((\2) - 1)]'),
+-        (KernRe(r'DECLARE_KFIFO\s*\(' + struct_args_pattern + r',\s*' + struct_args_pattern +
+-                r',\s*' + struct_args_pattern + r'\)', re.S), r'\2 *\1'),
+-        (KernRe(r'DECLARE_KFIFO_PTR\s*\(' + struct_args_pattern + r',\s*' +
+-                struct_args_pattern + r'\)', re.S), r'\2 *\1'),
+-        (KernRe(r'(?:__)?DECLARE_FLEX_ARRAY\s*\(' + struct_args_pattern + r',\s*' +
+-                struct_args_pattern + r'\)', re.S), r'\1 \2[]'),
+-        (KernRe(r'DEFINE_DMA_UNMAP_ADDR\s*\(' + struct_args_pattern + r'\)', re.S), r'dma_addr_t \1'),
+-        (KernRe(r'DEFINE_DMA_UNMAP_LEN\s*\(' + struct_args_pattern + r'\)', re.S), r'__u32 \1'),
+-        (KernRe(r'VIRTIO_DECLARE_FEATURES\(([\w_]+)\)'), r'union { u64 \1; u64 \1_array[VIRTIO_FEATURES_U64S]; }'),
++        (CFunction('__ETHTOOL_DECLARE_LINK_MODE_MASK'), r'DECLARE_BITMAP(\1, __ETHTOOL_LINK_MODE_MASK_NBITS)'),
++        (CFunction('DECLARE_PHY_INTERFACE_MASK',), r'DECLARE_BITMAP(\1, PHY_INTERFACE_MODE_MAX)'),
++        (CFunction('DECLARE_BITMAP'), r'unsigned long \1[BITS_TO_LONGS(\2)]'),
 +
- def main():
-     """
-     Main function. The only mandatory argument is the target. If not
-     specified, the other arguments will use default values if not
-     specified at os.environ.
-     """
--    parser = argparse.ArgumentParser(description="Kernel documentation builder")
-+    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
-+                                     description=__doc__,
-+                                     epilog=EPILOG)
++        (CFunction('DECLARE_HASHTABLE'), r'unsigned long \1[1 << ((\2) - 1)]'),
++        (CFunction('DECLARE_KFIFO'), r'\2 *\1'),
++        (CFunction('DECLARE_KFIFO_PTR'), r'\2 *\1'),
++        (CFunction('(?:__)?DECLARE_FLEX_ARRAY'), r'\1 \2[]'),
++        (CFunction('DEFINE_DMA_UNMAP_ADDR'), r'dma_addr_t \1'),
++        (CFunction('DEFINE_DMA_UNMAP_LEN'), r'__u32 \1'),
++        (CFunction('VIRTIO_DECLARE_FEATURES'), r'union { u64 \1; u64 \1_array[VIRTIO_FEATURES_U64S]; }'),
+     ]
  
-     parser.add_argument("target", choices=list(TARGETS.keys()),
-                         help="Documentation target to build")
-     parser.add_argument("--sphinxdirs", nargs="+",
-                         help="Specific directories to build")
-     parser.add_argument("--builddir", default="output",
--                        help="Sphinx configuration file")
-+                        help="Sphinx configuration file (default: %(default)s)")
- 
-     parser.add_argument("--theme", help="Sphinx theme to use")
- 
-@@ -843,7 +865,7 @@ def main():
-                         help="place build in verbose mode")
- 
-     parser.add_argument('-j', '--jobs', type=jobs_type,
--                        help="Sets number of jobs to use with sphinx-build")
-+                        help="Sets number of jobs to use with sphinx-build(default: auto)")
- 
-     parser.add_argument('-i', '--interactive', action='store_true',
-                         help="Change latex default to run in interactive mode")
+     #: Transforms for function prototypes
+@@ -85,12 +72,14 @@ class CTransforms:
+         (KernRe(r"__sched +"), ""),
+         (KernRe(r"_noprof"), ""),
+         (KernRe(r"__always_unused *"), ""),
+-        (KernRe(r"__printf\s*\(\s*\d*\s*,\s*\d*\s*\) +"), ""),
+-        (KernRe(r"__(?:re)?alloc_size\s*\(\s*\d+\s*(?:,\s*\d+\s*)?\) +"), ""),
+-        (KernRe(r"__diagnose_as\s*\(\s*\S+\s*(?:,\s*\d+\s*)*\) +"), ""),
+-        (KernRe(r"DECL_BUCKET_PARAMS\s*\(\s*(\S+)\s*,\s*(\S+)\s*\)"), r"\1, \2"),
+         (KernRe(r"__no_context_analysis\s*"), ""),
+         (KernRe(r"__attribute_const__ +"), ""),
++
++        (CFunction('__printf'), ""),
++        (CFunction('__(?:re)?alloc_size'), ""),
++        (CFunction("__diagnose_as"), ""),
++        (CFunction("DECL_BUCKET_PARAMS"), r"\1, \2"),
++
+         (CFunction("__cond_acquires"), ""),
+         (CFunction("__cond_releases"), ""),
+         (CFunction("__acquires"), ""),
+@@ -108,9 +97,11 @@ class CTransforms:
+     var_xforms = [
+         (KernRe(r"__read_mostly"), ""),
+         (KernRe(r"__ro_after_init"), ""),
+-        (KernRe(r'\s*__guarded_by\s*\([^\)]*\)', re.S), ""),
+-        (KernRe(r'\s*__pt_guarded_by\s*\([^\)]*\)', re.S), ""),
+-        (KernRe(r"LIST_HEAD\(([\w_]+)\)"), r"struct list_head \1"),
++
++        (CFunction('__guarded_by'), ""),
++        (CFunction('__pt_guarded_by'), ""),
++        (CFunction("LIST_HEAD"), r"struct list_head \1"),
++
+         (KernRe(r"(?://.*)$"), ""),
+         (KernRe(r"(?:/\*.*\*/)"), ""),
+         (KernRe(r";$"), ""),
 -- 
 2.52.0
 
