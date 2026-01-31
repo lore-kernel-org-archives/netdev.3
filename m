@@ -1,310 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D08364042;
-	Sat, 31 Jan 2026 17:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769882130; cv=none; b=ehR7ktVtGWGLedQgoC7fB9QbsvRS+HP10seRS0LPGZbk7mbytamNswZyHfZMEAKZTTcnSfWHldhVXBGv0k5higrUtwBUFXv1+WRG5mGUFEkKfBW0jLUcay6osubGCNjspsLsvKf2HfG/AliSBL4UEdIrnsZxXzn2zpzdPMpzomU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769882130; c=relaxed/simple;
-	bh=Z7+3/I6jiIVbes0Ajpxa4+cV1VONvsQL7MJjHuwUuKQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gjY1UsztqsBehhu2c7ZgcsQIfI0XFAKxNH0VJOsBN33O64Dskuf3YAuqAbOJeR19FGJQiGu5QMa/dhtqStDSrGDDA1LyZLzlERTUC1kzovYUVJDQAsOD3tiyUwAxqTt8MTajb03xyoPVhuzh2yqfkEVz2rhOQBf1iUr0GOprWnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fiHz/z8w; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6657A33D6E3
+	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 18:00:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769882461; cv=pass; b=G14p4zosrQjpTcLlTL3VN1Ih2nRfnX+FKeTcCZ0X19vExYnOJjTbjlq5hxk6Y4H9snk6K77WdsYYFMNDN4FkBGBDuhMfGnfLr4ym9kGflhJTFD1+73L90RtV7BCjv9x9mOWjoigqM68zYsMlXT1fP2PqiR6i9M+7PK2NDW8Xps0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769882461; c=relaxed/simple;
+	bh=x6EhicmvsIORcv2Wj/fthNPVt/aqXjI3o5YcJJ87xig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bdiZDtQndZ1hLSiDY7BFvCll69voYb6LNLoMX+UTahi7Dc8sqAe4TZHNDCcuaAJaigYWjEDRwIrsxt4BES6R69CY6Bna8FOpvPTgy/ZWjQZp7+FrvXc/tWpWNt/KRDYcFvmlLlC0l7Qhsvxj06XNImwGwkpkFNMCzTWIUFwX8pg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pwIOK6Ca; arc=pass smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fiHz/z8w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49407C4CEF1;
-	Sat, 31 Jan 2026 17:55:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769882130;
-	bh=Z7+3/I6jiIVbes0Ajpxa4+cV1VONvsQL7MJjHuwUuKQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fiHz/z8wVdRzM4KxGgdQzZXPLMrVXsK0R8lSQ52rVRMxRAJppXU1mx/antmwqX13k
-	 GLD5B50cdyGYtXxIPB1abBCHFubpBjCLvD/f8Vc0kN0SyQPwbH5JyTuXC8TLxHBJAe
-	 6eaLTpSZBVVq4KnSoxPfW+gwcv0yA6qXCKThilxaf2beh0us5MZrmBiQlHOGWKk3mq
-	 imE/Jl8EWytmolQnaO4NLywoeD4uHxQ8/XHOs4kU9QTjtw3QPA9T/mbgQZH3ei6iEn
-	 pV18DbaegeGidAV4w+JjIb1sW0TTyOnSnWOc1yc1FazqKnTbaHfLcpx+g4DQZ4oKeH
-	 r7F6p6q3OeSSA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: daniel@makrotopia.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	lxu@maxlinear.com,
-	hkallweit1@gmail.com,
-	yweng@maxlinear.com,
-	ajayaraman@maxlinear.com,
-	andrew@lunn.ch,
-	netdev@vger.kernel.org,
-	bxu@maxlinear.com,
-	olteanv@gmail.com,
-	krzk+dt@kernel.org,
-	linux-kernel@vger.kernel.org,
-	lrosu@maxlinear.com,
-	chad@monroe.io,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org,
-	robh@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	cezary.wilmanski@adtran.com,
-	davem@davemloft.net,
-	john@phrozen.org,
-	frankwu@gmx.de,
-	jpovazanec@maxlinear.com,
-	linux@armlinux.org.uk,
-	fchan@maxlinear.com,
-	horms@kernel.org
-Subject: Re: [net-next,v11,4/4] net: dsa: add basic initial driver for MxL862xx switches
-Date: Sat, 31 Jan 2026 09:52:44 -0800
-Message-ID: <20260131175243.1122906-2-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <46226b74030f76bd04149ed5c92b3e263abbe6c2.1769817939.git.daniel@makrotopia.org>
-References: <46226b74030f76bd04149ed5c92b3e263abbe6c2.1769817939.git.daniel@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pwIOK6Ca"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-5029aa94f28so27346731cf.1
+        for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 10:00:59 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769882458; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hx9sYWidD7lnWg9vT7yPUb4nDZ9i3e8yzh8a4fRi6c119yDJGooTCAT7OUqjlqplXk
+         L3hR8ZO66qOj44pVYLnG8WI/PWK0bOrNZoOqkyhM+1ZqLfbeXkajhVfA0sNh4IUZUYGy
+         ty0nRne8co4pwN9NvbgG2lvZ+y/bJBeC+3C/uVOjc76w/Sn3RNybTq5M7sqHrR80SvtW
+         SNp0bASmewdjJvKKYecfk4ZkkG8jOmkuPk5n/dst2jX/loX31q9WekdTSLazgQvx1DXg
+         fCK6t7XtHFSe5FH6AQYzcHp6sQ5HHESB2gUFox+eP111bsb8uIInZlR4dBByrilXVPD5
+         bXiQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=sgNckIufnj2Azhwp2/JuXSIz0qrsLqnvaLAyrHeRjA4=;
+        fh=ARKuBZ1HVE67qZy9UsF0xrLaGRZu7izCp+gCdvEqrtk=;
+        b=DKNvsWMlTM8dQxPmy4R38iOQKrfEt0fgqYNZnDdpa6RIDpz3wwItDLWjCelsI104tg
+         EGfd1r+T6aH+TG7WJgraBWIG/hmEDKx7jFPUIxIQ1aOzffk2wxRtjp6Y4u2OOHpNUGOa
+         +4bBGyIuU+G+Y3nCR3v1CkDre7wrK1BvTrKvSRvoxJk/MjLEqqkLE8txh6V8kjF6ofmi
+         m+Ym6hqSJgDWWfUnK6D5XvjG5yv4t36l9S6elecflkO9c5y6Fyfd9LXAaeKSwewvwC6P
+         W/A0ZygC+UK2nHWxnnJ01ldHNaTB7Fvy0DkPuYGxv2Fv3w35I7ikHGuTpdImnX72R8/s
+         erSg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769882458; x=1770487258; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sgNckIufnj2Azhwp2/JuXSIz0qrsLqnvaLAyrHeRjA4=;
+        b=pwIOK6Cag1r3aoN4xYqqfPYv4MbDqp9RlIHxoN/junQpsVEmQN42lQ8w4YcV7tbXO0
+         Zubt/5VTvfxKguGnx6+fp3YpAHyyEX6gJgl9/nV1qAw1g9dHdyPLmbMRiyowIsxZ64fj
+         8HrzC+YEVFDqCkVEcQKHDR4+JygPg5/OKrsb9hLQz7rFu0nWju/7gPz2Tyz60IkD9Ura
+         3yMWunodkcOZf3BTHruKSr5DmOBbsYCKIoX0FyzZueqffnXoyVHyIy8F7NDichnkn2Fb
+         HK7f/RHgl9LFVVa+NMCJuAJs/LvDb4XAIYj4rSYvkiqKTuhA8xplELslDd1mGkqIQkBf
+         Se9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769882458; x=1770487258;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=sgNckIufnj2Azhwp2/JuXSIz0qrsLqnvaLAyrHeRjA4=;
+        b=dHiDbS6jY7ifjAUd/pz1xGTbZ3Bk642I3h8n4WmkHC5JtvAmRFNyaCXX+IOQcRCu44
+         ZCCv6fKHYFlEOjFwW8Tnd8yFSksRp5P+w7cJ1vwwrtA9+MyXdaoexjxiKyFC34p8/ows
+         2Zdmj9XhXdWmpy4pmqDVi3qmlGjqyjGwil5ELi9Rso9VQwzBOYigcWkbrDQoVB8xnee0
+         PqmJBJZfQNJO2k4pI8D+xUxkjZnhlZNAAnNRKNYv4Zk3qSPT4vafd1lOfcCTwen1fgN5
+         OXi+mkLh8jvRHqzsPkDLzSy4b6IjjkLx9e/WA2FrQE/jgB6eVPlyJQ9mPibu7ucMeoaE
+         3Rkg==
+X-Forwarded-Encrypted: i=1; AJvYcCX0xQmYPcNj/zVm+feYhTynGvvCgtjEhagu9ONcJi0cJUmInLb8UfuMo23RmKS2C52IS3l8YQU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxp7pFUPz7H3DUCBdBB81DYP9oGj8/UZghWcgzf0HXrPPaoh0Yy
+	2LFZrE7UTqdR0WrwJBEYvH+mAdPblUuuEBf5M47WGMKazmJBB6IYh/FacTe8ttDKm+83TfWHRyj
+	OjK/2Q4uHaJvxIfWWIcyFHPAl1BPbv6VSDT08jqz2
+X-Gm-Gg: AZuq6aKipZNfy2reKJ+QfPUIhwzOkmrkLlQlgrQ4QHvsz3198AFiFht/dd3RkAVMGbt
+	QAnA62yvkCvYIgsc0QS+st/8UBcQZGwj9Hjn8Zh+7KM4VwBwhRJYnRmgWqSFU0IkYRIIQdWcjZk
+	itTFwvlOahun1nhryvqZCMoL+Csnrh8/74ydR8D7nKhn3P48n3/Zj4lXlTC9t5eAOPoH3jphMM4
+	55smu8yhxkT4PWUaxjNb6w+tXMt5jLifBHy32/PeBioCOogW5Wc752ANzmN6Pbrk+g+yBIBE7za
+	kzy+
+X-Received: by 2002:a05:622a:342:b0:501:4ff7:2641 with SMTP id
+ d75a77b69052e-5036a934216mr131835051cf.37.1769882457729; Sat, 31 Jan 2026
+ 10:00:57 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260128070359.6762-1-fengwei_yin@linux.alibaba.com>
+ <20260130191845.404c5e64@kernel.org> <willemdebruijn.kernel.39472926ed88e@gmail.com>
+ <CANn89i+pv6ECtn5zrPYgUfcKkoEMF1BABfxQb13yTP41QhcGvg@mail.gmail.com>
+In-Reply-To: <CANn89i+pv6ECtn5zrPYgUfcKkoEMF1BABfxQb13yTP41QhcGvg@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Sat, 31 Jan 2026 19:00:46 +0100
+X-Gm-Features: AZwV_QjIqDHn7ugPppv7WGJ1U_sl8a32sYbk19WHxOse6RGaiVS3HjK8rqBzcf8
+Message-ID: <CANn89iKRRKPnWjJmb-_3a=sq+9h6DvTQM4DBZHT5ZRGPMzQaiA@mail.gmail.com>
+Subject: Re: [PATCH] net: procfs: Fix RCU stall and soft lockup in ptype_seq_next()
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, fengwei_yin@linux.alibaba.com, davem@davemloft.net, 
+	pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Sat, Jan 31, 2026 at 6:50=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> On Sat, Jan 31, 2026 at 6:41=E2=80=AFPM Willem de Bruijn
+> <willemdebruijn.kernel@gmail.com> wrote:
+> >
+> > Jakub Kicinski wrote:
+> > > On Wed, 28 Jan 2026 15:03:59 +0800 fengwei_yin@linux.alibaba.com wrot=
+e:
+> > > > The root cause is in ptype_seq_next(): when iterating over packet
+> > > > types, it's possible that a packet type entry (pt) has been removed=
+,
+> > > > its dev set to NULL, and pt->af_packet_net is not initialized.
+> > > > In that case, the function may return the same 'nxt' pointer indefi=
+nitely.
+> > > > This results in an infinite loop under RCU read-side critical secti=
+on,
+> > > > causing an RCU stall and eventually a soft lockup.
+> > > >
+> > > > Fix the issue by properly handling the case where 'nxt' points to
+> > > > an empty list, ensuring forward progress in the iterator.
+> > >
+> > > > @@ -247,7 +247,7 @@ static void *ptype_seq_next(struct seq_file *se=
+q, void *v, loff_t *pos)
+> > > >
+> > > >     if (pt->af_packet_net) {
+> > > >  net_ptype_all:
+> > > > -           if (nxt !=3D &net->ptype_all && nxt !=3D &net->ptype_sp=
+ecific)
+> > > > +           if (!list_empty(nxt) && nxt !=3D &net->ptype_all && nxt=
+ !=3D &net->ptype_specific)
+> > > >                     goto found;
+> > > >
+> > > >             if (nxt =3D=3D &net->ptype_all) {
+> > > > @@ -267,6 +267,9 @@ static void *ptype_seq_next(struct seq_file *se=
+q, void *v, loff_t *pos)
+> > > >                     return NULL;
+> > > >             nxt =3D ptype_base[hash].next;
+> > > >     }
+> > > > +
+> > > > +   if (list_empty(nxt))
+> > > > +           return NULL;
+> > > >  found:
+> > > >     return list_entry(nxt, struct packet_type, list);
+> > > >  }
+> > >
+> > > I'm not sure this fix works, TBH, we're dealing with an RCU list here=
+.
+> > > The elements are not deleted with list_del_init(), so they won't
+> > > look "empty".
+> > >
+> > > If the pt entries are under RCU protection I think the issue is that
+> > > af_packet is clearing pt->dev before waiting for the grace period to
+> > > expire.
+> > >
+> > > Willem, is there a reason for that or just convenience?
+> >
+> > That would be wrong. Do we see it doing that somewhere?
+> >
+> > These handlers should get removed with dev_remove_pack. Or
+> > __dev_remove_pack and observe the RCU grace period some other way.
+> > I can review these, but was not aware of any abuses.
+> >
+>
+> packet_notifier()
+>
+> case NETDEV_DOWN:
+> if (dev->ifindex =3D=3D po->ifindex) {
+> spin_lock(&po->bind_lock);
+> if (packet_sock_flag(po, PACKET_SOCK_RUNNING)) {
+> __unregister_prot_hook(sk, false);
+> /* removed without a synchronize_rcu() */
+> sk->sk_err =3D ENETDOWN;
+> if (!sock_flag(sk, SOCK_DEAD))
+> sk_error_report(sk);
+> }
+> if (msg =3D=3D NETDEV_UNREGISTER) {
+> packet_cached_dev_reset(po);
+> WRITE_ONCE(po->ifindex, -1);
+> netdev_put(po->prot_hook.dev,
+>    &po->prot_hook.dev_tracker);
+> po->prot_hook.dev =3D NULL;                       // pointer set to NULL
+> }
+> spin_unlock(&po->bind_lock);
+> }
+> break;
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-net: dsa: add basic initial driver for MxL862xx switches
+And other places as well...
 
-Add very basic DSA driver for MaxLinear's MxL862xx switches. In contrast
-to previous MaxLinear switches the MxL862xx has a built-in processor that
-runs a sophisticated firmware based on Zephyr RTOS. Interaction between
-the host and the switch hence is organized using a software API of that
-firmware rather than accessing hardware registers directly. Add
-descriptions of the most basic firmware API calls to access the built-in
-MDIO bus hosting the 2.5GE PHYs, basic port control as well as setting up
-the CPU port. Implement a very basic DSA driver using that API which is
-sufficient to get packets flowing between the user ports and the CPU port.
-
-> diff --git a/drivers/net/dsa/mxl862xx/Kconfig b/drivers/net/dsa/mxl862xx/Kconfig
-> new file mode 100644
-> index 000000000000..3722260da7d8
-> --- /dev/null
-> +++ b/drivers/net/dsa/mxl862xx/Kconfig
-> @@ -0,0 +1,12 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +config NET_DSA_MXL862
-> +	tristate "MaxLinear MxL862xx"
-> +	depends on NET_DSA
-> +	select MAXLINEAR_GPHY
-> +	select NET_DSA_TAG_MXL_862XX
-> +	help
-> +	  This enables support for the MaxLinear MxL862xx switch family.
-> +	  These switches have two 10GE SerDes interfaces, one typically
-> +	  used as CPU port.
-> +	   MxL86282 has eight 2.5 Gigabit PHYs
-> +	   MxL86252 has five 2.5 Gigabit PHYs
-
-This isn't a bug, but the last two lines have inconsistent indentation.
-The help text lines describing MxL86282 and MxL86252 have three spaces
-after the tab while the other help text lines have two spaces.
-
-[Jakub] maybe add a "-" or such in front to make it clear this is a list?
-
-> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx-api.h b/drivers/net/dsa/mxl862xx/mxl862xx-api.h
-> new file mode 100644
-> index 000000000000..535c37514455
-> --- /dev/null
-> +++ b/drivers/net/dsa/mxl862xx/mxl862xx-api.h
-
-[ ... ]
-
-> +/**
-> + * struct mxl862xx_bridge_alloc - Bridge Allocation
-> + * @bridge_id: If the bridge allocation is successful, a valid ID will be
-> + *             returned in this field. Otherwise, INVALID_HANDLE is
-> + *             returned. For bridge free, this field should contain a
-> + *             valid ID returned by the bridge allocation. ID 0 is not
-> + *             used for historic reasons.
-> + *
-> + * Used by MXL862XX_BRIDGE_ALLOC and MXL862XX_BRIDGE_FREE.
-> + */
-> +struct mxl862xx_bridge_alloc {
-> +	__le16 bridge_id;
-> +} __packed;
-
-[ ... ]
-
-> +/**
-> + * struct mxl862xx_bridge_port_alloc - Bridge Port Allocation
-> + * @bridge_port_id: If the bridge port allocation is successful, a valid ID
-> + *                  will be returned in this field. Otherwise, INVALID_HANDLE
-> + *                  is returned. For bridge port free, this field should
-> + *                  contain a valid ID returned by the bridge port allocation.
-> + *
-> + * Used by MXL862XX_BRIDGE_PORT_ALLOC and MXL862XX_BRIDGE_PORT_FREE.
-> + */
-> +struct mxl862xx_bridge_port_alloc {
-> +	__le16 bridge_port_id;
-> +};
-
-Is the __packed attribute missing here? The similar struct
-mxl862xx_bridge_alloc has __packed, and both structures have identical
-layout with a single __le16 field. Both are used for firmware
-communication where padding could break the protocol.
-
-[Jakub] please remove the __packed attribute on structs which are
-        naturally packed according to C rules.
-
-> diff --git a/drivers/net/dsa/mxl862xx/mxl862xx.c b/drivers/net/dsa/mxl862xx/mxl862xx.c
-> new file mode 100644
-> index 000000000000..83946b50ea5f
-> --- /dev/null
-> +++ b/drivers/net/dsa/mxl862xx/mxl862xx.c
-
-[ ... ]
-
-> +static void mxl862xx_port_disable(struct dsa_switch *ds, int port)
-> +{
-> +	mxl862xx_port_state(ds, port, false);
-> +}
-
-Should the error return from mxl862xx_port_state() be logged?
-
-The function mxl862xx_port_state() can fail and returns an error code,
-but mxl862xx_port_disable() ignores this return value. While the DSA
-framework defines port_disable as returning void so errors cannot be
-propagated to the caller, silently ignoring errors could leave the port's
-SDMA or FDMA enabled if the API call fails. The function
-mxl862xx_port_fast_age() logs errors when its API call fails.
-
-> +static int mxl862xx_add_single_port_bridge(struct dsa_switch *ds, int port)
-> +{
-> +	struct mxl862xx_bridge_port_config br_port_cfg = {};
-> +	struct dsa_port *dp = dsa_to_port(ds, port);
-> +	struct mxl862xx_bridge_alloc br_alloc = {};
-> +	int ret;
-> +
-> +	ret = MXL862XX_API_READ(ds->priv, MXL862XX_BRIDGE_ALLOC, br_alloc);
-> +	if (ret) {
-> +		dev_err(ds->dev, "failed to allocate a bridge for port %d\n", port);
-> +		return ret;
-> +	}
-> +
-> +	br_port_cfg.bridge_id = br_alloc.bridge_id;
-> +	br_port_cfg.bridge_port_id = cpu_to_le16(port);
-> +	br_port_cfg.mask = cpu_to_le32(MXL862XX_BRIDGE_PORT_CONFIG_MASK_BRIDGE_ID |
-> +				       MXL862XX_BRIDGE_PORT_CONFIG_MASK_BRIDGE_PORT_MAP |
-> +				       MXL862XX_BRIDGE_PORT_CONFIG_MASK_MC_SRC_MAC_LEARNING |
-> +				       MXL862XX_BRIDGE_PORT_CONFIG_MASK_VLAN_BASED_MAC_LEARNING);
-> +	br_port_cfg.src_mac_learning_disable = true;
-> +	br_port_cfg.vlan_src_mac_vid_enable = false;
-> +	br_port_cfg.vlan_dst_mac_vid_enable = false;
-> +	br_port_cfg.bridge_port_map[0] = cpu_to_le16(BIT(dp->cpu_dp->index));
-
-Can this dereference NULL pointers?
-
-The dsa_to_port() function can return NULL if the port is not found in
-the switch tree. The code stores the result in dp but doesn't check if
-dp is NULL before dereferencing dp->cpu_dp->index.
-
-Looking at include/net/dsa.h, dsa_to_port() returns NULL when the port
-is not found:
-
-    static inline struct dsa_port *dsa_to_port(struct dsa_switch *ds, int p)
-    {
-        struct dsa_switch_tree *dst = ds->dst;
-        struct dsa_port *dp;
-
-        list_for_each_entry(dp, &dst->ports, list)
-            if (dp->ds == ds && dp->index == p)
-                return dp;
-
-        return NULL;
-    }
-
-Additionally, even if dp is non-NULL, dp->cpu_dp could also be NULL if
-the CPU port hasn't been properly assigned during initialization.
-
-> +static int mxl862xx_setup_mdio(struct dsa_switch *ds)
-> +{
-> +	struct mxl862xx_priv *priv = ds->priv;
-> +	struct device *dev = ds->dev;
-> +	struct device_node *mdio_np;
-> +	struct mii_bus *bus;
-> +	static int idx;
-> +	int ret;
-> +
-> +	bus = devm_mdiobus_alloc(dev);
-> +	if (!bus)
-> +		return -ENOMEM;
-> +
-> +	bus->priv = priv;
-> +	ds->user_mii_bus = bus;
-> +	bus->name = KBUILD_MODNAME "-mii";
-> +	snprintf(bus->id, MII_BUS_ID_SIZE, KBUILD_MODNAME "-%d", idx++);
-
-Can concurrent probes race on the idx variable?
-
-The static int idx is shared across all driver instances and accessed
-without synchronization. If multiple instances of this driver are probed
-concurrently on different CPU cores, they could race on the idx++
-operation potentially leading to duplicate MII bus IDs. MII bus IDs must
-be unique system-wide.
-
-[ ... ]
-
-> +static int mxl862xx_setup_cpu_bridge(struct dsa_switch *ds, int port)
-> +{
-> +	struct mxl862xx_bridge_port_config br_port_cfg = {};
-> +	struct mxl862xx_priv *priv = ds->priv;
-> +	u16 bridge_port_map = 0;
-> +	struct dsa_port *dp;
-> +
-> +	/* CPU port bridge setup */
-> +	br_port_cfg.mask = cpu_to_le32(MXL862XX_BRIDGE_PORT_CONFIG_MASK_BRIDGE_PORT_MAP |
-> +				       MXL862XX_BRIDGE_PORT_CONFIG_MASK_MC_SRC_MAC_LEARNING |
-> +				       MXL862XX_BRIDGE_PORT_CONFIG_MASK_VLAN_BASED_MAC_LEARNING);
-> +
-> +	br_port_cfg.bridge_port_id = cpu_to_le16(port);
-> +	br_port_cfg.src_mac_learning_disable = false;
-> +	br_port_cfg.vlan_src_mac_vid_enable = true;
-> +	br_port_cfg.vlan_dst_mac_vid_enable = true;
-> +
-> +	/* include all assigned user ports in the CPU portmap */
-> +	dsa_switch_for_each_user_port(dp, ds) {
-> +		if (dp->cpu_dp->index != port)
-> +			continue;
-
-Can dp->cpu_dp be dereferenced safely here?
-
-The code dereferences dp->cpu_dp->index without checking if cpu_dp is
-NULL. While the DSA framework should ensure user ports have a CPU port
-assigned during initialization, there is no explicit NULL check. If
-cpu_dp is NULL for any reason such as incomplete initialization or
-configuration error, this will cause a NULL pointer dereference and
-kernel crash.
-
-> +	ret = dsa_register_switch(ds);
-> +	if (ret)
-> +		return ret;
-
-Is dev_set_drvdata() called too early?
-
-The function calls dev_set_drvdata(dev, ds) before calling
-dsa_register_switch(ds). If dsa_register_switch() fails, the function
-returns the error but leaves the driver data pointing to an unregistered
-switch.
-
-This creates a problem for cleanup paths. The mxl862xx_remove() function
-retrieves the switch with dev_get_drvdata() and calls
-dsa_unregister_switch(ds). If probe failed, ds is not NULL so the check
-passes but the switch was never successfully registered. Similarly,
-mxl862xx_shutdown() could be called and would also operate on an
-unregistered switch. While dsa_switch_shutdown() has a check for
-ds->setup flag that provides some protection, this is fragile and could
-lead to inconsistent state or crashes in error scenarios.
-
-[Jakub] AI is a bit pedantic about leaving the drvdata pointer in place
-        but I guess it's not a bad thing to clean up
--- 
-pw-bot: cr
+I would suggest adding proper RCU protection to prot_hook.dev
