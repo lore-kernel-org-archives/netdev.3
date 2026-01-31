@@ -1,145 +1,193 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12FF830DEC0
-	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 18:01:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879FD2472A5;
+	Sat, 31 Jan 2026 18:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769882495; cv=none; b=kwJSbEjoHX3fHMXW59U8Kf7qi3TzyHNGDygCBmZ+f5N/laYzcJvQGutxuRC6pURlbs2rRLTBvMzGviFDitl5pRXg0/v/mWD39ay8U5dJdKRdSFFqiogbbtHWOzG3w91c9NKaclRfkYQuRpRk/k2dqxc+5rkHh3sP6Zpe5T31mdg=
+	t=1769882509; cv=none; b=YfB71Wg79yRANiQcK0cPvb9Pv0M9tOH8NMsDt4hlvmj3jjIebu+VXkmLo3r5YfTfN25JhV0emB9FAEJ2DS58IMfT47RZk3HjaOKACgw5X6l7cm9tTBTxflcgwRGmMUtHhJgYBXZe0Cy3DCAbIGz8rB868MbJ863/ed+Tf1dCtEA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769882495; c=relaxed/simple;
-	bh=+19jXWzOxkMOnxFEs3HcD6qzXWy42+n/Tim8BASurCU=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P6zwZzVeIfEImKgzx9xgTZSv5NDUmRb2cYbSdDlDDX12OD6357BFv9dI0T+c3MG+k6zzrkIeCG/zFinngtI1y1qYUj/6rqCjSVgRgCy1/Znv2i4wGNBdDeU8t8PeOl+wfNlcYonrTaGh274qYbJx+gxkA2QrPdIzGr+wZ2S4dYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=k+Ds22Q8; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1769882509; c=relaxed/simple;
+	bh=h3sHRNhd6LWAMOJi2q65CpHktFtBLPcu5uN9obg1hB0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=faNxYzC3xJondgzKcNrG+VhCjsOy3l+jRUg3R26rLG1qXsbf6yDBfh/vQ6WNrVEZBWQGfkTKG7jthciQ5IGqE7IQpGire3on3rbzcmNDA5FzBqYsuvNZIi15OwDrpLkPcHHH0hca7r+UVRTS0HHzSItzckPrL22NN5g7gvpsRe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hxf9mYK+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="k+Ds22Q8"
-Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60VAv5eU1201528
-	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 10:01:32 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=s2048-2025-q2; bh=RLdg62LEJ87UX2jmlI
-	BkSmqLa0qAGPTN9TVDGF46k04=; b=k+Ds22Q8Vr5xdmLaIjFCpdEf6TjuJIYbAh
-	etr9BEUgkGhgGUdM1KouZO98z4fRqH2IU+4RrHOzPG1bEOVc1gno3CJjwuyLjRZS
-	WB7KO2qmBYz3rouODa8SkKY2JXlZ+J/KfS8j3Q82ynwy/mcH1BDWdg9+wy4QiH9B
-	zo6GteFnAWM2O7MbGzNKWazUw9MR+seksUVu+eq87lh0Ju7c2RNkwEgUV9EYt7AK
-	FPzU7V9pfNp5YtQE77BXuV5rCgf5DJO0yw5T1KBOs+X9OuRJJN3ODRlfp+ZkR50I
-	aDNru5Q4pcJoSLKhuq/Inrq4XrQ2+XsxGKxtq5iQJpBJzEwZ/tbw==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4c1ge928bk-5
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 10:01:32 -0800 (PST)
-Received: from twshared13080.31.frc3.facebook.com (2620:10d:c085:108::150d) by
- mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Sat, 31 Jan 2026 18:01:29 +0000
-Received: by devbig010.atn3.facebook.com (Postfix, from userid 224791)
-	id 1E395748AA3; Sat, 31 Jan 2026 10:01:14 -0800 (PST)
-From: Daniel Hodges <hodgesd@meta.com>
-To: Jon Maloy <jmaloy@redhat.com>, <davem@davemloft.net>,
-        <edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
-CC: <horms@kernel.org>, <tuong.t.lien@dektech.com.au>,
-        <netdev@vger.kernel.org>, <tipc-discussion@lists.sourceforge.net>,
-        Daniel
- Hodges <hodgesd@meta.com>
-Subject: [PATCH RESEND] tipc: use kfree_sensitive() for session key material
-Date: Sat, 31 Jan 2026 10:01:14 -0800
-Message-ID: <20260131180114.2121438-1-hodgesd@meta.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hxf9mYK+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73587C4CEF1;
+	Sat, 31 Jan 2026 18:01:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769882509;
+	bh=h3sHRNhd6LWAMOJi2q65CpHktFtBLPcu5uN9obg1hB0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Hxf9mYK+pu5fN9zy66iZL93zb70NR0akn1q1/VDNc3Ap/nPm8VQcAlLl6X5lEg5dK
+	 UZsaBqgdA2UmjCxF+/pg6CSGQKgOVGTrzZNLPLgQrv6njqG7JqTVd/RuvWiALK+fso
+	 7/d7tCp96ZfPJnuNak2j5/FQMF9oW9Om6xeckRZ73EMScsO2hXIAfcH/1phU+29OFP
+	 lNot9D4wDDRh3oKQQqBiGXuGJcdaLIfSgDTBro3Kl+Tzex8OfQ8aaCwm1erSEp+PE0
+	 lWGWtrN8wTgS2PsTw1at/i5O4oECfGqpRDoIaPbA56sXpn8HWWuDz5NAtOtsE9mI3u
+	 0uZzktbgLipsQ==
+From: Jakub Kicinski <kuba@kernel.org>
+To: socketcan@hartkopp.net
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	robin@protonic.nl,
+	netdev@vger.kernel.org,
+	linux-can@vger.kernel.org,
+	davem@davemloft.net,
+	mailhol@kernel.org,
+	linux-kernel@vger.kernel.org,
+	o.rempel@pengutronix.de,
+	kernel@pengutronix.de,
+	mkl@pengutronix.de
+Subject: Re: [net-next,v7,2/6] can: add CAN skb extension infrastructure
+Date: Sat, 31 Jan 2026 10:00:26 -0800
+Message-ID: <20260131180025.1124810-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260131-can_skb_ext-v7-2-dd0f8f84a83d@hartkopp.net>
+References: <20260131-can_skb_ext-v7-2-dd0f8f84a83d@hartkopp.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-FB-Internal: Safe
-Content-Type: text/plain
-X-Proofpoint-GUID: DMjz5wKZRn-v2pMCqZnNasUgYkGOe1XB
-X-Proofpoint-ORIG-GUID: DMjz5wKZRn-v2pMCqZnNasUgYkGOe1XB
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTMxMDE1MiBTYWx0ZWRfX225nekovJAhH
- vCJsBopavB6U2UBgCHASJ7JPB7wuvxDAig7be+6AbZVwwVsHtY1M3Q5Oh6lS7tJpaMV7j6fZyXB
- oDmVYQXjW+KidkUz7qDSPiLlkswlSaFpGWvNjKhCG7CZn/ZlSALkd/gm8j8zZl+qYFe49Tglmzd
- Rwm3uuiCnGs8VTX79/e/SGcNqXp14fRUoX81Vg5xGQIkU8RxaVADjA0XKaN5QFzb4TitPXwWvoo
- wF5WhQVeV8uXth/9g6u5Gg5elkIgTku9AnjDsqVEJi9BsMNYkruHIYezYaERIL/Njhw7Ei3iglS
- Crl0Oj+sIXBjtNvohZfV9K1+IpNe2vksa+l9QOv4OMB4HUtiz9UgvaLmWdUma2U4Ku23ZBOD9Ao
- Hla6a0TUJMOaJEuQxKQH2KZKwReXb0nL6bDR05kqvBmiXvv3pdikyNgrCKCPfJWpRH+142Lvpwm
- H6IfZjsK2fMR/2um2AQ==
-X-Authority-Analysis: v=2.4 cv=B8i0EetM c=1 sm=1 tr=0 ts=697e437c cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VabnemYjAAAA:8
- a=cPLOpp3optabX5KMabIA:9 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-01-31_03,2026-01-30_04,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 
-The rx->skey field contains a struct tipc_aead_key with GCM-AES
-encryption keys used for TIPC cluster communication. Using plain
-kfree() leaves this sensitive key material in freed memory pages
-where it could potentially be recovered.
+This is an AI-generated review of your patch. The human sending this
+email says:
 
-Switch to kfree_sensitive() to ensure the key material is zeroed
-before the memory is freed.
+  Not sure about the first issue, I think you mentioned we have
+  an extra ref? The uninitialized errors should probably be fixed
+  "in net", before this series? :(
 
-Fixes: 1ef6f7c9390f ("tipc: add automatic session key exchange")
-Signed-off-by: Daniel Hodges <hodgesd@meta.com>
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
- net/tipc/crypto.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+can: add CAN skb extension infrastructure
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 751904f10aab..970db62bd029 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -1212,21 +1212,21 @@ void tipc_crypto_key_flush(struct tipc_crypto *c)
- {
- 	struct tipc_crypto *tx, *rx;
- 	int k;
-=20
- 	spin_lock_bh(&c->lock);
- 	if (is_rx(c)) {
- 		/* Try to cancel pending work */
- 		rx =3D c;
- 		tx =3D tipc_net(rx->net)->crypto_tx;
- 		if (cancel_delayed_work(&rx->work)) {
--			kfree(rx->skey);
-+			kfree_sensitive(rx->skey);
- 			rx->skey =3D NULL;
- 			atomic_xchg(&rx->key_distr, 0);
- 			tipc_node_put(rx->node);
- 		}
- 		/* RX stopping =3D> decrease TX key users if any */
- 		k =3D atomic_xchg(&rx->peer_rx_active, 0);
- 		if (k) {
- 			tipc_aead_users_dec(tx->aead[k], 0);
- 			/* Mark the point TX key users changed */
- 			tx->timer1 =3D jiffies;
-@@ -2387,21 +2387,21 @@ static void tipc_crypto_work_rx(struct work_struc=
-t *work)
- 			pr_warn("%s: unable to attach received skey, err %d\n",
- 				rx->name, rc);
- 		switch (rc) {
- 		case -EBUSY:
- 		case -ENOMEM:
- 			/* Resched the key attaching */
- 			resched =3D true;
- 			break;
- 		default:
- 			synchronize_rcu();
--			kfree(rx->skey);
-+			kfree_sensitive(rx->skey);
- 			rx->skey =3D NULL;
- 			break;
- 		}
- 	}
-=20
- 	if (resched && queue_delayed_work(tx->wq, &rx->work, delay))
- 		return;
-=20
- 	tipc_node_put(rx->node);
- }
---=20
-2.47.3
+This patch introduces CAN skb extension infrastructure to store per-frame
+metadata (interface index, frame length, gateway hops, flags) using the
+standard skb_ext mechanism instead of the private CAN bus skb headroom.
 
+> diff --git a/drivers/net/can/vxcan.c b/drivers/net/can/vxcan.c
+> index f14c6f02b662..53d7d9046f85 100644
+> --- a/drivers/net/can/vxcan.c
+> +++ b/drivers/net/can/vxcan.c
+
+[ ... ]
+
+> @@ -39,6 +40,7 @@ static netdev_tx_t vxcan_xmit(struct sk_buff *oskb, struct net_device *dev)
+>  	struct vxcan_priv *priv = netdev_priv(dev);
+>  	struct net_device *peer;
+>  	struct net_device_stats *peerstats, *srcstats = &dev->stats;
+> +	struct can_skb_ext *csx;
+>  	struct sk_buff *skb;
+>  	unsigned int len;
+>
+> @@ -63,6 +65,18 @@ static netdev_tx_t vxcan_xmit(struct sk_buff *oskb, struct net_device *dev)
+>  		goto out_unlock;
+>  	}
+>
+> +	/* the cloned skb points to the skb extension of the original oskb
+> +	 * with an increased refcount. skb_ext_add() creates a copy to
+> +	 * separate the skb extension data which is needed to start with a
+> +	 * fresh can_gw_hops counter in the other namespace.
+> +	 */
+> +	csx = skb_ext_add(skb, SKB_EXT_CAN);
+> +	if (!csx) {
+> +		kfree_skb(skb);
+> +		kfree_skb(oskb);
+                ^^^^^^^^^^^^^^^^
+
+Is this a double-free of oskb? Looking at the code flow:
+
+    skb = skb_clone(oskb, GFP_ATOMIC);  /* line 60 */
+    if (unlikely(!skb)) { ... }
+    consume_skb(oskb);                   /* line 62 - frees oskb */
+
+At this point oskb has been freed by consume_skb(). If skb_ext_add() then
+fails, the error handler calls kfree_skb(oskb) on the already-freed pointer.
+
+This can occur under memory pressure when skb_clone() succeeds but the
+subsequent skb_ext_add() allocation fails. The kfree_skb(oskb) line should
+be removed from this error path.
+
+> +		goto out_unlock;
+> +	}
+
+[ ... ]
+
+> diff --git a/net/can/isotp.c b/net/can/isotp.c
+> index 4bb60b8f9b96..94103fe654ff 100644
+> --- a/net/can/isotp.c
+> +++ b/net/can/isotp.c
+
+[ ... ]
+
+> @@ -1005,6 +1022,13 @@ static int isotp_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
+>  		goto err_out_drop;
+>  	}
+>
+> +	csx = can_skb_ext_add(skb);
+> +	if (!csx) {
+> +		kfree_skb(skb);
+> +		netdev_put(dev, NULL);
+> +		goto err_out_drop;
+> +	}
+
+Does this error path return an uninitialized value to userspace? The variable
+err is declared without initialization at line 959 and sock_alloc_send_skb()
+only sets it on failure. When can_skb_ext_add() fails after a successful
+sock_alloc_send_skb(), err contains garbage.
+
+Other error paths in this function set err explicitly before jumping to
+err_out_drop. Should this add err = -ENOMEM before the goto?
+
+> diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
+> index 1589e8ca634e..fc28a7677369 100644
+> --- a/net/can/j1939/socket.c
+> +++ b/net/can/j1939/socket.c
+
+[ ... ]
+
+> @@ -895,6 +897,12 @@ static struct sk_buff *j1939_sk_alloc_skb(struct net_device *ndev,
+>  	if (!skb)
+>  		goto failure;
+>
+> +	csx = can_skb_ext_add(skb);
+> +	if (!csx) {
+> +		kfree_skb(skb);
+> +		goto failure;
+> +	}
+
+Similar concern here: ret is declared without initialization at line 891.
+sock_alloc_send_skb() only writes to ret on failure. When can_skb_ext_add()
+fails after successful allocation, ret is uninitialized when returned via
+*errcode at the failure label.
+
+Should this set ret = -ENOMEM before goto failure?
+
+> diff --git a/net/can/raw.c b/net/can/raw.c
+> index fb4f9c854df0..03438e9bc535 100644
+> --- a/net/can/raw.c
+> +++ b/net/can/raw.c
+
+[ ... ]
+
+> @@ -956,6 +958,12 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
+>  	if (!skb)
+>  		goto put_dev;
+>
+> +	csx = can_skb_ext_add(skb);
+> +	if (!csx) {
+> +		kfree_skb(skb);
+> +		goto put_dev;
+> +	}
+
+This returns -EINVAL (from line 923) when can_skb_ext_add() fails due to
+memory allocation failure. Should this be -ENOMEM instead? The
+sock_alloc_send_skb() above this code returns -ENOMEM for allocation
+failures.
+-- 
+pw-bot: cr
