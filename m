@@ -1,310 +1,117 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D456319DF8D;
-	Sat, 31 Jan 2026 06:29:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769841000; cv=none; b=jpLSAkG06l0coLbILGixecFEpjzIF4ceRAoQ7myZkuJjVoHJ5Lup8XhsTDWmiklK1sZzkt7ot+hg1NxWw+F9BtUkZq7PW2j7ncZRQ9t4IZkSFlakBRtrf92x2FTVQQEkSIqydsGvnO9NASoOAw1kfdsIOQK6eU7s4Rut4ePGY7o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769841000; c=relaxed/simple;
-	bh=V5xIqyYurQPNEo8jk7yq+1ddaXML8sPuAJCL9N0PTqk=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LFh0aJFNRM3HRj/jdyMivqMPSubGJ4kKPd5XAshp1OEJCbdBDxa1ye3aRWCFNlvWrNqhYKWKdbNwtAj7CgYfjUvd77uHbVQVEu0lazgdLEQ3VGV4Fu2WCLmxUlDyZ5ZaEosSgKHeo0WwV6aWpj8IlVkW1ojbuZNEzs+YreWvP0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=fzBsX1WG; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400762DECC5
+	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 06:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1769841024; cv=pass; b=FX6MmrY6lGxnel9dt50ETGwLkcKrsI9btAE9gzamC1dwQccNK7d6qBbjQrPlnF2xgphqD1Ug9V679vFRxavicRuSTfcq6CmN8IErwwINfOBs7UgfuLmWpewOO9yUeNR1pQwLBlT3q3Ws/wDTSol1F76yA5d/z+P8EngMsC17OQI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1769841024; c=relaxed/simple;
+	bh=IB/d1bpFBtjorTlV7sSEGNcRfYmhNWPbg3jBoWLczlY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QkOolPhMatIpy/um0N0LFDO5/iMKATFDN1jPMHJ4awgS6s5dimRUdGN9f8tDCPmbLV4fFT3moEqyMLUFscOu0ug0YpU5Mble83VgITHSK/GJ4CH66apPxCRCB9Uck8tFNQxddUo7yQ/1w3wiWqIB/ra3kSTr1gFdaBgvp4mHpBQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CU1ONAQo; arc=pass smtp.client-ip=74.125.82.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="fzBsX1WG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1769840998; x=1801376998;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=V5xIqyYurQPNEo8jk7yq+1ddaXML8sPuAJCL9N0PTqk=;
-  b=fzBsX1WG7MH9SPQwo7CXkttg+Cvxye0s8OSafyAIOzw4/p60H9DmX/VV
-   P+cRlkod01VFIMsPDynp6SiGOWGMK61GHD+KefFz7lp02CLAPzNo+uNkO
-   Pi0MAg/d+JgWeNEG0tYV/IdLWPh+rLmkvXXy06E+5X2ZOra1CwtOcqLys
-   DgtiVubswXzdmtN8A+q0v7P8hJoNqKEHHtStmNM+frsF1kky/x0Eq2hig
-   6sHMRaSrtFsL3CcjNYQ6xTNJdBeiDAeg9XZPY72zkDa4A06E3MBa+LjqA
-   D3Ogb+PyzhQgIKs2XPSXPTl/nse0HjH3PZAVn5IgvBEhiqMhgxHRJlI57
-   Q==;
-X-CSE-ConnectionGUID: B4Glp9FvQU2v3xThMLnv+w==
-X-CSE-MsgGUID: r1vVGn2BRyCJ+LI1P5C/nw==
-X-IronPort-AV: E=Sophos;i="6.21,264,1763449200"; 
-   d="scan'208";a="53172003"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Jan 2026 23:29:51 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
- chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Fri, 30 Jan 2026 23:29:37 -0700
-Received: from [10.205.29.40] (10.10.85.11) by chn-vm-ex03.mchp-main.com
- (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Fri, 30 Jan 2026 23:29:33 -0700
-Message-ID: <92ba22ee64b2670448295b44d663d8ae7e8fe9c4.camel@microchip.com>
-Subject: Re: [PATCH net-next v2] net: phy: micrel: Add support for lan9645x
- internal phy
-From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Horatiu Vultur
-	<horatiu.vultur@microchip.com>, <o.rempel@pengutronix.de>, Steen Hegelund
-	<Steen.Hegelund@microchip.com>, Daniel Machon <daniel.machon@microchip.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Date: Sat, 31 Jan 2026 07:29:24 +0100
-In-Reply-To: <20260130-phy_micrel_add_support_for_lan9645x_internal_phy-v2-1-202ac31cf9c4@microchip.com>
-References: <20260130-phy_micrel_add_support_for_lan9645x_internal_phy-v2-1-202ac31cf9c4@microchip.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CU1ONAQo"
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-12460a7caa2so4446361c88.1
+        for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 22:30:23 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1769841022; cv=none;
+        d=google.com; s=arc-20240605;
+        b=hNpNiE5KtTI9xNAt4hJl4BQigP9SBDBidPCIDmJs+JOLUW4Lqn1G6VYy/D3QPrGC2P
+         DtWvTJpWQN+XlDFFjMlO/C1qwrV2Wo0jm3UBBsA1+BGXj+M6Qr8CKOewbk4s2Bf92bix
+         Hqx0ZN3m1JTSR0gPfNPmZK917n6vWRbNhvLRk3CtY+ArA5e+NiyfjpMZlstyJe4470kh
+         e0hAIYI6mzp3bEf/lOEypWYLtch9UuX0M+8oM3PE1MZag/rUCmEKhAHjnkJF8CMH0/N2
+         Gdvdl8l/DMMIFW1WvPQYyyG0BLc52gPKt1N2R2IKpuhYwFotbe9n2okhxESEifKn8YMb
+         nd1w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=lm83Oof6F9m5KEzmYsGqRF9zhIFkCrdUCJ/Is9jiD+c=;
+        fh=PxvN4NcYbJDz3CkZbOrKNXVs/q+wOPHByev/ikr187Y=;
+        b=hQlbvoMr7fuK7I/fE0vonzICU2xD2ZNNakwXM3swi5QMzs/ah/LvIXfAw+B4rTl/3k
+         7C+sY9OkMcv/iTI1UF5mGizqcQYvo2vkC+NvDHNmQ0f62vvicqVOkHT+niWkQSIHxEWA
+         cLKV8ZNHjrU+3m7vUNphacLlR6NB+Bq3l5ePIOE/VvsOgBOnWtftpBM/swbUqPMHDvEu
+         6JjbYDVL7L4Yqf3stGq+dxLnEoRsqEFlRb82kIOf4Ypjy6l/WuLJNHO2XTmsDzrlcXX+
+         LZB7LLkxe64Yr7oHtxJAe5ERi5tJVPVALrqH0mPyhmBshmYHQZxMgePjKHwkCfSp3wnH
+         cy/A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1769841022; x=1770445822; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lm83Oof6F9m5KEzmYsGqRF9zhIFkCrdUCJ/Is9jiD+c=;
+        b=CU1ONAQo1PG0VHxtm0bPUc1I36aR9iy2uQlvy6uMzoQQgvly6wa7hU4cWIXo6H4oqI
+         pd1q5ZPv17iTY/6+4dkwbrRE9AL89CgVpq38CKhAK1ydeEaVGf/HZ9YsDCrRNF6qgHbC
+         mLEb3IcTwuW3Is3pDyCK6ldfXJNSUdCOw/LnOPYa3LiQqKpwqzw1ROWuHG1nAt7z5+p9
+         gNAXiqasGfhMiKIBNJgO1kjyR1rx4YgWE2Rj1E+eKHEGFzNptoJlA0SKAgpURe8gO7fm
+         D0G2xb0FOWFJg6hHrbFjwjEx+FzZkU8tauPs3YykTDD0AUrRdMjkAqnYTQAPC9jWMlgG
+         TNJA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769841022; x=1770445822;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=lm83Oof6F9m5KEzmYsGqRF9zhIFkCrdUCJ/Is9jiD+c=;
+        b=VjTHTa5PHcR4DKahAFJrOhSeI6lwCN/+CD8mB0dy1HcoVhsgtNjnupwZr/23ojvnOh
+         MxYUzrg7GqpzyKHEDnZGEmKj5CWcgStj9zqqYjbHZbmD/tfLDPftjNnRZbcRTuxJ9j4M
+         O5fSJn1Au8cdLIv0eFxFJPlQsunAtnruQyP1atyOw/sRlYtNTm7fvnd87YDhCIuhImyX
+         DsKNNnrTgeU+MDrqUPNRd2fkClAK+Q9JoTiDjrq40DMoAEtQtuSp0bbjqT21PYnrtrQA
+         PNN4iocLnTZzgz9n4AOdMWkjFde4ltsG8k+NolwqcPUePkveDTdr/w9fp7WupwHMMObt
+         p8XA==
+X-Forwarded-Encrypted: i=1; AJvYcCVkzM7mmerXKhM/uRxfm5V7PXpE8Ae3iZIErKTaORItTiY7uZKTD0CD3AU025Q3RTp5QssaqM0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYIkeRz+E08/trvX0p9WZH73K0ltjFHxb/bjB9xqs+vlDjlBSu
+	L6AnUEJx06ZaL8L5N6ANDg1e11jHBQcjIszbIznhMkC1UeFlP8/sDPgs7QdvJTI1GiOnyPOIf8p
+	AZzaKzwzXeX3EQ2y5mflwmxeN3AzXJCrmHo2eayYH
+X-Gm-Gg: AZuq6aJjOFm7qGk2GZR0yGKDT71I3SjoC4i4RQ0hm89HQW4hYP+OOcaTgzZwDX0PuTU
+	DrCuBK/W+s8xuRT0CeWLTZPk5rfUyI31xntBSQVgSy6qxhOQjsavY1lYZBadtM1FwIyBj6y09Xd
+	GDQaN/upVD3oDI8VGlk6pk1zgW3k2C0/N5V/SK5mHOx2s7D1/khYMbj7q70KNmMdykWMAsgCM0p
+	3mGoWwsQWYGoKz2R5nfmnISLe695KhBCnWVqSgOOr190l5tDKH0fYyRj4DIe1+LYN+pq1+wYwFU
+	OWPVQOCH6GKnCpYns3Ognqvz2Qlj2i59r3mCp4P+ptrVv++ZST1xNJrJWbwu
+X-Received: by 2002:a05:7022:660b:b0:11a:2f10:fa46 with SMTP id
+ a92af1059eb24-125c0f1cb17mr2323688c88.0.1769841022025; Fri, 30 Jan 2026
+ 22:30:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260130210303.3888261-1-edumazet@google.com> <20260130210303.3888261-3-edumazet@google.com>
+In-Reply-To: <20260130210303.3888261-3-edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Fri, 30 Jan 2026 22:30:10 -0800
+X-Gm-Features: AZwV_Qh1moXy-rl8ebugxNimhwYieWcn_2ro-h9K3tcAy6hI9qbgbH591RnIqOs
+Message-ID: <CAAVpQUDxd5EzMNz1_=3mgBirMj8RERNgP57bK1uhxB+_tgp4aQ@mail.gmail.com>
+Subject: Re: [PATCH net-next 2/8] ipv6: add some unlikely()/likely() clauses
+ in ip6_output.c
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, David Ahern <dsahern@kernel.org>, 
+	netdev@vger.kernel.org, eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Fri, Jan 30, 2026 at 1:03=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> 1) daddr is unlikely a multicast in ip6_finish_output2().
+>
+> 2) ip6_finish_output_gso_slowpath_drop() should not be called often.
+>
+> 3) ip6_fragment() should not be called often.
+>
+> 4) opt is unlikely to be set.
+>
+> 5) ip6_xmit() and ip6_forward() mostly sends not too big packets.
+>
+> 6) Most __ip6_make_skb() calls are for UDP packets,
+>    not ICMPV6 ones.
+>
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-On Fri, 2026-01-30 at 10:12 +0100, Jens Emil Schulz =C3=98stergaard wrote:
-> LAN9645X is a family of switch chips with 5 internal copper phys. The
-> internal PHY is based on parts of LAN8832. This is a low-power, single
-> port triple-speed (10BASE-T/100BASE-TX/1000BASE-T) ethernet physical
-> layer transceiver (PHY) that supports transmission and reception of data
-> on standard CAT-5, as well as CAT-5e and CAT-6 Unshielded Twisted
-> Pair (UTP) cables.
->=20
-> Add support for the internal PHY of the lan9645x chip family.
->=20
-> Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-> Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
-> Signed-off-by: Jens Emil Schulz =C3=98stergaard <jensemil.schulzostergaar=
-d@microchip.com>
-> ---
-> Changes in v2:
-> - Check write errors in lan9645x_config_intr.
-> - Added more comments for the erratas which are not yet documented in
->   the datasheet.
-> - Change workaround in lan9645x_suspend from ANEG restart and sleep to
->   asserting Software Soft Reset and poll for self-clear.
-> - Return IRQ_NONE when IRQ is not handled in lan9645x_handle_interrupt.
-> - Link to v1: https://lore.kernel.org/r/20260123-phy_micrel_add_support_f=
-or_lan9645x_internal_phy-v1-1-8484b1a5a7fd@microchip.com
-> ---
->  drivers/net/phy/micrel.c   | 152 +++++++++++++++++++++++++++++++++++++++=
-++++++
->  include/linux/micrel_phy.h |   1 +
->  2 files changed, 153 insertions(+)
->=20
-> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-> index 225d4adf28be..fe77ad899f10 100644
-> --- a/drivers/net/phy/micrel.c
-> +++ b/drivers/net/phy/micrel.c
-> @@ -6502,6 +6502,142 @@ static void lan8842_get_phy_stats(struct phy_devi=
-ce *phydev,
->  	stats->tx_errors =3D priv->phy_stats.tx_errors;
->  }
-> =20
-> +#define LAN9645X_CONTROL_REGISTER		0x1f
-> +#define LAN9645X_CONTROL_REGISTER_SOFT_RESET	BIT(1)
-> +
-> +#define LAN9645X_DAC_ICAS_AMP_POWER_DOWN	0x47
-> +#define LAN9645X_BTRX_QBIAS_POWER_DOWN		0x46
-> +#define LAN9645X_TX_LOW_I_CH_CD_POWER_MGMT	0x45
-> +#define LAN9645X_TX_LOW_I_CH_B_POWER_MGMT	0x44
-> +#define LAN9645X_TX_LOW_I_CH_A_POWER_MGMT	0x43
-> +
-> +static const struct lanphy_reg_data force_dac_tx_errata[] =3D {
-> +	/* Force channel A/B/C/D TX on */
-> +	{ LAN8814_PAGE_POWER_REGS,
-> +	  LAN9645X_DAC_ICAS_AMP_POWER_DOWN,
-> +	  0 },
-> +	/* Force channel A/B/C/D QBias on */
-> +	{ LAN8814_PAGE_POWER_REGS,
-> +	  LAN9645X_BTRX_QBIAS_POWER_DOWN,
-> +	  0xaa },
-> +	/* Tx low I on channel C/D overwrite */
-> +	{ LAN8814_PAGE_POWER_REGS,
-> +	  LAN9645X_TX_LOW_I_CH_CD_POWER_MGMT,
-> +	  0xbfff },
-> +	/* Channel B low I overwrite */
-> +	{ LAN8814_PAGE_POWER_REGS,
-> +	  LAN9645X_TX_LOW_I_CH_B_POWER_MGMT,
-> +	  0xabbf },
-> +	/* Channel A low I overwrite */
-> +	{ LAN8814_PAGE_POWER_REGS,
-> +	  LAN9645X_TX_LOW_I_CH_A_POWER_MGMT,
-> +	  0xbd3f },
-> +};
-> +
-> +static int lan9645x_config_init(struct phy_device *phydev)
-> +{
-> +	int ret;
-> +
-> +	/* Apply erratas from previous generations.  */
-> +	ret =3D lan8842_erratas(phydev);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	/* Apply errata for an issue where bringing a port down, can cause a fe=
-w
-> +	 * CRC errors for traffic flowing through adjacent ports.
-> +	 */
-> +	return lanphy_write_reg_data(phydev, force_dac_tx_errata,
-> +				     ARRAY_SIZE(force_dac_tx_errata));
-> +}
-> +
-> +static int lan9645x_suspend(struct phy_device *phydev)
-> +{
-> +	int ret, val;
-> +
-> +	/* Force link down before software power down (SPD), by doing software
-> +	 * soft reset. This resets the PHY, but keeps all register configuratio=
-n
-> +	 * intact. The bit self clears.
-> +	 *
-> +	 * This is needed as a workaround for an issue where performing SPD on =
-a
-> +	 * port can bring adjacent ports down, when there is traffic flowing
-> +	 * through the ports.
-> +	 */
-> +	ret =3D phy_modify(phydev, LAN9645X_CONTROL_REGISTER,
-> +			 LAN9645X_CONTROL_REGISTER_SOFT_RESET, 1);
-> +	if (ret)
-> +		return ret;
-> +
-
-AI review pointed out an error here. I will fix in the next version.
-
-> +	ret =3D phy_read_poll_timeout(phydev, LAN9645X_CONTROL_REGISTER, val,
-> +				    !(val & LAN9645X_CONTROL_REGISTER_SOFT_RESET),
-> +				    3000, 100000, true);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return genphy_suspend(phydev);
-> +}
-> +
-> +static int lan9645x_config_intr(struct phy_device *phydev)
-> +{
-> +	int err;
-> +
-> +	/* enable / disable interrupts */
-> +	if (phydev->interrupts =3D=3D PHY_INTERRUPT_ENABLED) {
-> +		/* This is an internal PHY of lan9645x and is not possible to
-> +		 * change the polarity of irq sources in the OIC (CPU_INTR)
-> +		 * found in lan9645x. Therefore change the polarity of the
-> +		 * interrupt in the PHY from being active low instead of active
-> +		 * high.
-> +		 */
-> +		err =3D phy_write(phydev, LAN8804_CONTROL,
-> +				LAN8804_CONTROL_INTR_POLARITY);
-> +		if (err)
-> +			return err;
-> +
-> +		/* By default interrupt buffer is open-drain in which case the
-> +		 * interrupt can be active only low. Therefore change the
-> +		 * interrupt buffer to be push-pull to be able to change
-> +		 * interrupt polarity.
-> +		 */
-> +		err =3D phy_write(phydev, LAN8804_OUTPUT_CONTROL,
-> +				LAN8804_OUTPUT_CONTROL_INTR_BUFFER);
-> +		if (err)
-> +			return err;
-> +
-> +		err =3D lan8814_ack_interrupt(phydev);
-> +		if (err)
-> +			return err;
-> +
-> +		err =3D phy_write(phydev, LAN8814_INTC,
-> +				LAN8814_INT_LINK | LAN8814_INT_FLF);
-> +	} else {
-> +		err =3D phy_write(phydev, LAN8814_INTC, 0);
-> +		if (err)
-> +			return err;
-> +
-> +		err =3D lan8814_ack_interrupt(phydev);
-> +	}
-> +
-> +	return err;
-> +}
-> +
-> +static irqreturn_t lan9645x_handle_interrupt(struct phy_device *phydev)
-> +{
-> +	int status;
-> +
-> +	status =3D phy_read(phydev, LAN8814_INTS);
-> +	if (status < 0) {
-> +		phy_error(phydev);
-> +		return IRQ_NONE;
-> +	}
-> +
-> +	if (status & (LAN8814_INT_LINK | LAN8814_INT_FLF)) {
-> +		phy_trigger_machine(phydev);
-> +		return IRQ_HANDLED;
-> +	}
-> +
-> +	return IRQ_NONE;
-> +}
-> +
->  static struct phy_driver ksphy_driver[] =3D {
->  {
->  	PHY_ID_MATCH_MODEL(PHY_ID_KS8737),
-> @@ -6740,6 +6876,21 @@ static struct phy_driver ksphy_driver[] =3D {
->  	.set_tunable	=3D lan8842_set_tunable,
->  	.cable_test_start	=3D lan8814_cable_test_start,
->  	.cable_test_get_status	=3D ksz886x_cable_test_get_status,
-> +}, {
-> +	PHY_ID_MATCH_MODEL(PHY_ID_LAN9645X),
-> +	.name		=3D "Microchip LAN9645X Gigabit PHY",
-> +	.config_init	=3D lan9645x_config_init,
-> +	.driver_data	=3D &ksz9021_type,
-> +	.probe		=3D kszphy_probe,
-> +	.soft_reset	=3D genphy_soft_reset,
-> +	.suspend	=3D lan9645x_suspend,
-> +	.resume		=3D genphy_resume,
-> +	.config_intr	=3D lan9645x_config_intr,
-> +	.handle_interrupt =3D lan9645x_handle_interrupt,
-> +	.get_tunable	=3D lan8842_get_tunable,
-> +	.set_tunable	=3D lan8842_set_tunable,
-> +	.get_phy_stats	=3D lan8842_get_phy_stats,
-> +	.update_stats	=3D lan8842_update_stats,
->  }, {
->  	PHY_ID_MATCH_MODEL(PHY_ID_KSZ9131),
->  	.name		=3D "Microchip KSZ9131 Gigabit PHY",
-> @@ -6838,6 +6989,7 @@ static const struct mdio_device_id __maybe_unused m=
-icrel_tbl[] =3D {
->  	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN8804) },
->  	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN8841) },
->  	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN8842) },
-> +	{ PHY_ID_MATCH_MODEL(PHY_ID_LAN9645X) },
->  	{ }
->  };
-> =20
-> diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
-> index ca691641788b..9c6f9817383f 100644
-> --- a/include/linux/micrel_phy.h
-> +++ b/include/linux/micrel_phy.h
-> @@ -33,6 +33,7 @@
->  #define PHY_ID_LAN8804		0x00221670
->  #define PHY_ID_LAN8841		0x00221650
->  #define PHY_ID_LAN8842		0x002216C0
-> +#define PHY_ID_LAN9645X		0x002216D0
-> =20
->  #define PHY_ID_KSZ886X		0x00221430
->  #define PHY_ID_KSZ8863		0x00221435
->=20
-> ---
-> base-commit: cbe8e6bef6a3b4b895b47ea56f5952f1936aacb6
-> change-id: 20260114-phy_micrel_add_support_for_lan9645x_internal_phy-6ef9=
-a782cb8b
->=20
-> Best regards,
-
-Thanks,
-
-Emil
-
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
