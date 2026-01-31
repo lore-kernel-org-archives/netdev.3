@@ -1,50 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055D0357711;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1681A357A20;
 	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769869522; cv=none; b=CDAFB32cl24ddX+2/XegV7NB/FuOhIZpt4HW+HsS0/krwK3obieJTIpEgHdDQi9hee6+fmFlo3KqZlbCd57g+nn/W6OKKpXBFmSGHhhb0t7oV2NQLyGrV1d1XAazy7J2XCrWVWQiFwCtKkLFlLPIB3ztnVXAQaVxgaJ+qWLSQgI=
+	t=1769869522; cv=none; b=G2HMvXho3JYfmYO4AGA5hN0LG2WAnsUcKlSAEKVJQs8o2h8eD8C3yA6HIB/BL4jF9W+uSaATPdhK/kZ3pAcXKlb/i9v1ytYBhkLHG9sNeY+zTQm2usaJDGoxA+KS7QmCmGP/1SQACJTsSALmbydi2d/ponFAk0w+zgnakT8gkFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769869522; c=relaxed/simple;
-	bh=uOq+nl7eJthPvVG9hgcDgM2eUmvJY3Ts+Jdl+DSpsYI=;
+	bh=aiHLIfS5F+miX7dW9x3ionw6eHjNQsSUUYhH3F5IK/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TgP/iHFH72JujyJKggJ+9iJucNIFJOhVkru1B8B4oybBMUR1NwGmhjDtsiI6fUQ6Lc57Tk+0VdTwUaKFiIKhEJfaNC7IdDi+u3Z8XKg1MiEclKr9eOniCS2IugdcRtEkEk8nPBPlOsyANrlpcKVe0P6RuklxiaouOZXu+5nFj/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=neOACnZT; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=dgcI4ixYV9DCuI5GCdsSjaCnF1LGwY5/cF6Sbe3mKBKnZEkU+YJxRgAwJjWANby5XB3P8ZzinQ9UQCynzS8nJZ3z72z7BR5QFBGqwiUAYbG9ztkT/soXD+0rRDp3SaLYJh+0bSSIMQf29jGml+Q6nJOx3hVW7c+5qnbeNKctAKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GZ8ffB0o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="neOACnZT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CABC2BCAF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GZ8ffB0o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B123C2BCB2;
 	Sat, 31 Jan 2026 14:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1769869521;
-	bh=uOq+nl7eJthPvVG9hgcDgM2eUmvJY3Ts+Jdl+DSpsYI=;
+	bh=aiHLIfS5F+miX7dW9x3ionw6eHjNQsSUUYhH3F5IK/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=neOACnZTJdN4hBjqEVf5dn93zlY5Ke3dCNR50AducSB2fWBw/1/3YKlYFd8Nx66S2
-	 PklvVqDS/z4xvv/8X6Wr+gQhcFgKEtYKyyuHIwRN0z8+3gQ1XEyPwlGZ8AJmwgNsmx
-	 qhY2MCJQ1T4dmkDUOm3SuanelIuDfqLQkBcdufrLnbdK5dF271OT+L9iN3qtE9BWeT
-	 dGsRFsDy4mXqeldzejd3nBHO1vKh4jIE+8Zd9WVsJBChrEW4E4YEMiyELWJxV+/Kwk
-	 d02ZYDhtL+hqo8nm/HajufmJdYPdqDF4/oh1zcuXp3bVB1VjvOnGO5Gbewsn8T3U0W
-	 NRuAPxDuPxRwA==
+	b=GZ8ffB0okAa/JZq9EY0ksEvsodBd6UavOLLuUMYwJGch0xaJ5NzYy/XmzPvHPCo3q
+	 RqSaKMODYYaWzPYPITpqTiZ4yCGBhA0Hqk0xQYThuoP3/dzmCL9UShHBcj9vbLKvXk
+	 5iYtPT8ML/OhYwkWrBTnCoRX14C8GyC0dy4WHAaf2dj5JS8NnxttcDA2fqoZ8+Qdec
+	 9pp7YED0qK5vhb7GtLxFuNVzNwefL1IxAyM3xMdf0X3e2Bo7Suzfbz4hi0xetRN8TL
+	 1VHVBEenAyQxB8YZ8M0U7zBdg2/K4wZpYEhp7J2WPpk3U60jnUMJVi2JX2ltmfVDss
+	 pqkDmdp3yNW+w==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vmBuZ-0000000AVkW-2fUw;
+	id 1vmBuZ-0000000AVkS-2YEf;
 	Sat, 31 Jan 2026 15:25:19 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
 	Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc: Randy Dunlap <rdunlap@infradead.org>,
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	intel-wired-lan@lists.osuosl.org,
 	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH v4 12/41] docs: kdoc_parser: ignore context analysis and lock attributes
-Date: Sat, 31 Jan 2026 15:24:46 +0100
-Message-ID: <e1b8c0052ea99cca8428d3aec8a4fcf10412cee8.1769867953.git.mchehab+huawei@kernel.org>
+	Randy Dunlap <rdunlap@infradead.org>
+Subject: [PATCH v4 11/41] docs: kdoc_parser: fix parser to support multi-word types
+Date: Sat, 31 Jan 2026 15:24:45 +0100
+Message-ID: <f2b1c15602871f866ea179808fded10dbad447da.1769867953.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769867953.git.mchehab+huawei@kernel.org>
 References: <cover.1769867953.git.mchehab+huawei@kernel.org>
@@ -58,78 +57,41 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-From: Randy Dunlap <rdunlap@infradead.org>
+The regular expression currently expects a single word for the
+type, but it may be something like  "struct foo".
 
-Drop all context analysis and lock (tracking) attributes to avoid
-kernel-doc warnings.
+Add support for it.
 
-Documentation/core-api/kref:328: ../include/linux/kref.h:72: WARNING: Invalid C declaration: Expected end of definition. [error at 96]
-  int kref_put_mutex (struct kref *kref, void (*release)(struct kref *kref), struct mutex *mutex) __cond_acquires(true# mutex)
-  ------------------------------------------------------------------------------------------------^
-Documentation/core-api/kref:328: ../include/linux/kref.h:94: WARNING: Invalid C declaration: Expected end of definition. [error at 92]
-  int kref_put_lock (struct kref *kref, void (*release)(struct kref *kref), spinlock_t *lock) __cond_acquires(true# lock)
-  --------------------------------------------------------------------------------------------^
-
-The regex is suggested by Mauro; mine was too greedy. Thanks.
-Updated context analysis and lock macros list provided by PeterZ. Thanks.
-
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/all/20260107161548.45530e1c@canb.auug.org.au/
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
- tools/lib/python/kdoc/kdoc_parser.py | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tools/lib/python/kdoc/kdoc_parser.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
-index 21cc4e19a1e8..92b550189988 100644
+index 0b6cba442d72..21cc4e19a1e8 100644
 --- a/tools/lib/python/kdoc/kdoc_parser.py
 +++ b/tools/lib/python/kdoc/kdoc_parser.py
-@@ -81,6 +81,8 @@ struct_xforms = [
-     (KernRe(r'\s*__aligned\s*\([^;]*\)', re.S), ' '),
-     (KernRe(r'\s*__counted_by\s*\([^;]*\)', re.S), ' '),
-     (KernRe(r'\s*__counted_by_(le|be)\s*\([^;]*\)', re.S), ' '),
-+    (KernRe(r'\s*__guarded_by\s*\([^\)]*\)', re.S), ' '),
-+    (KernRe(r'\s*__pt_guarded_by\s*\([^\)]*\)', re.S), ' '),
-     (KernRe(r'\s*__packed\s*', re.S), ' '),
-     (KernRe(r'\s*CRYPTO_MINALIGN_ATTR', re.S), ' '),
-     (KernRe(r'\s*__private', re.S), ' '),
-@@ -165,6 +167,16 @@ struct_nested_prefixes = [
- # the start delimiter.
- #
- function_nested_prefixes = [
-+    (re.compile(r"__cond_acquires\s*\("), ""),
-+    (re.compile(r"__cond_releases\s*\("), ""),
-+    (re.compile(r"__acquires\s*\("), ""),
-+    (re.compile(r"__releases\s*\("), ""),
-+    (re.compile(r"__must_hold\s*\("), ""),
-+    (re.compile(r"__must_not_hold\s*\("), ""),
-+    (re.compile(r"__must_hold_shared\s*\("), ""),
-+    (re.compile(r"__cond_acquires_shared\s*\("), ""),
-+    (re.compile(r"__acquires_shared\s*\("), ""),
-+    (re.compile(r"__releases_shared\s*\("), ""),
-     (re.compile(r"__attribute__\s*\("), ""),
- ]
+@@ -1026,7 +1026,7 @@ class KernelDoc:
  
-@@ -195,6 +207,7 @@ function_xforms = [
-     (KernRe(r"__(?:re)?alloc_size\s*\(\s*\d+\s*(?:,\s*\d+\s*)?\) +"), ""),
-     (KernRe(r"__diagnose_as\s*\(\s*\S+\s*(?:,\s*\d+\s*)*\) +"), ""),
-     (KernRe(r"DECL_BUCKET_PARAMS\s*\(\s*(\S+)\s*,\s*(\S+)\s*\)"), r"\1, \2"),
-+    (KernRe(r"__no_context_analysis\s*"), ""),
-     (KernRe(r"__attribute_const__ +"), ""),
- ]
+         default_val = None
  
-@@ -204,6 +217,8 @@ function_xforms = [
- var_xforms = [
-     (KernRe(r"__read_mostly"), ""),
-     (KernRe(r"__ro_after_init"), ""),
-+    (KernRe(r'\s*__guarded_by\s*\([^\)]*\)', re.S), ""),
-+    (KernRe(r'\s*__pt_guarded_by\s*\([^\)]*\)', re.S), ""),
-     (KernRe(r"(?://.*)$"), ""),
-     (KernRe(r"(?:/\*.*\*/)"), ""),
-     (KernRe(r";$"), ""),
+-        r= KernRe(OPTIONAL_VAR_ATTR + r"[\w_]*\s+(?:\*+)?([\w_]+)\s*[\d\]\[]*\s*(=.*)?")
++        r= KernRe(OPTIONAL_VAR_ATTR + r"\s*[\w_\s]*\s+(?:\*+)?([\w_]+)\s*[\d\]\[]*\s*(=.*)?")
+         if r.match(proto):
+             if not declaration_name:
+                 declaration_name = r.group(1)
+@@ -1037,7 +1037,7 @@ class KernelDoc:
+                                   r.groups(), proto)
+ 
+         else:
+-            r= KernRe(OPTIONAL_VAR_ATTR + r"(?:[\w_]*)?\s+(?:\*+)?(?:[\w_]+)\s*[\d\]\[]*\s*(=.*)?")
++            r= KernRe(OPTIONAL_VAR_ATTR + r"(?:[\w_\s]*)?\s+(?:\*+)?(?:[\w_]+)\s*[\d\]\[]*\s*(=.*)?")
+ 
+             if r.match(proto):
+                 default_val = r.group(1)
 -- 
 2.52.0
 
