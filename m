@@ -1,37 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC61358D1A;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 491923590BE;
 	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769869522; cv=none; b=g7SmVFHz/nUiOdzuliDM8d6OFBvuw34KC+4OlG43OmTjG3tRmg08kS4QWDDpuEfv1X7K1mWrqRVHXIHA6+hy5+got6vf2es2Em22s4pa7cTpHYfi100TYuleWu8DrFQp8tEvVABZcXrzZN3EpLcmeWeMVFC6z2I5KNtSzhXkBKY=
+	t=1769869522; cv=none; b=gRCWJxPB5aEQdK9vvueM/KID83Ertx1TfN2VcReUHtsVPU67lMTeM1DvNZ+HOVOOq+HmQzsLFlu12zisoXl2voNT8QUGMRUsFosVKAMTfIsjC2hOHcWjdRMo3eZHfq4pprvYxzY6Mpw+vf/gLG6ksoxOAsKVPveraDExVfpgldY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769869522; c=relaxed/simple;
-	bh=exVw90yVLaIyCuiKNYXLsf4VR9OXQdWgf2cZhrnzV2Q=;
+	bh=PjcYZUAUNaiqUM2WGTjsaVLZOk4Wa72JQZXaktFxmLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ar+jO2XD+JGxXUyZ/07D7YDEjlzF23EDwZnodyms0bi7pUK7m3kK/ouDZrdswXrBUN6GMegYmyEEEsw2uHeCNEY88mshTJNLYz5nCPrW/GXU5rWerZIyZtw6rBbqVNBI3IZSsaRZQ6uk0yfUiNqm8D+mnYmnTKH5vS4mrt6cJhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jhqi27Bi; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=jDsfYW/8dk2EGf/XKc3DKd/vRAqQk1qO3GuJfUuWx0oR89M3WahJtOEZBvoboDFvSdxfRlgm+ubA7fQVwgkcwFylN97XCe+4R/MLJ3Uaxx5D4Da2AkXgl55bho8zXsUrha61WfOwL0Dzj/2Zdd4J8zgKkxwxldhTZg3OB0wUfGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=itO0YwQZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jhqi27Bi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9414FC2BCF6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="itO0YwQZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B60E0C2BCB4;
 	Sat, 31 Jan 2026 14:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1769869521;
-	bh=exVw90yVLaIyCuiKNYXLsf4VR9OXQdWgf2cZhrnzV2Q=;
+	bh=PjcYZUAUNaiqUM2WGTjsaVLZOk4Wa72JQZXaktFxmLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jhqi27BiIT4Cy//A3hEMRtGYKj50D5duVDfRfGkKdNgh6LD77COjmfBm64oC/rxgq
-	 Chi6eJlVjvFKzFZuicwjfCRd11XLJCUS4y/RL0kbRwZ93UpgHzfdcmU7UGDcOZrvVc
-	 b0AQNa8jXCKYwbGEB4m4iBCrAiRwlde4FiB95ffOYcdlvFbEW50gZvUNn9bI+RzTgA
-	 YvT9Fp7wKQG7suV9128aCSi0eZxhIBzXVaHZA1C7ebawmkE7z0rtN5py4KusvhVf45
-	 Mf4siTxDUozZqHAqMAb3GDntztQCBlHnv0NkDutJpfgao47cERvK1EirAQQ6kCAmTq
-	 M7HeP0nAPIEaA==
+	b=itO0YwQZpIhW76BAuJiH93sAQFczal11Ra0KiNpY9EcXSC3ymmLIypzntUYYzoQ0g
+	 yyIlO/SwbI5WDTenKTX0cHWL6npF88k3qPYSMwknuD8JNELfOjKIawqmjoJ2BFA/vc
+	 1EC78b+yPTddRm9OIN5kE3Gm8I9r8lQA6YWPJRoj4A785sR1Y7DoBoHpGy1totldS6
+	 33lBlJ2SBS9Bv/JGW6hmUUzhGxXEIy1ArhLnmC97F5CDW2DrOZAoIo0JxFhU1gZxeR
+	 6vCRZJPkqYjep91x15m0vecyfcIfujpsw9QBtJ8U64SlxkdN04RuL0V8oNB+qCa73P
+	 8VIzzXg6gQ8LQ==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vmBuZ-0000000AVl2-3bSB;
-	Sat, 31 Jan 2026 15:25:19 +0100
+	id 1vmBuZ-0000000AVlN-4Buk;
+	Sat, 31 Jan 2026 15:25:20 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Jonathan Corbet <corbet@lwn.net>,
+To: Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
 	Linux Doc Mailing List <linux-doc@vger.kernel.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	intel-wired-lan@lists.osuosl.org,
@@ -41,9 +42,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v4 20/41] docs: kdoc_re: add support on NestedMatch for argument replacement
-Date: Sat, 31 Jan 2026 15:24:54 +0100
-Message-ID: <ff9a001e213558d419b3e149710db4c5ba8a53e3.1769867953.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v4 25/41] docs: kdoc_parser: minimize differences with struct_group_tagged
+Date: Sat, 31 Jan 2026 15:24:59 +0100
+Message-ID: <3e6a3336d4f62f65df3ce1b464c8233fc59611b0.1769867953.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769867953.git.mchehab+huawei@kernel.org>
 References: <cover.1769867953.git.mchehab+huawei@kernel.org>
@@ -57,127 +58,57 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Currently, NestedMatch has very limited support for aguments
-replacement: it is all or nothing.
+While the previous version does a better job representing
+the actual struct, it ends losing documentation from each
+member.
 
-Add support to allow replacing individual arguments as well.
+Change the replacements to minimize such changes. With that,
+the only differences before/after using NestedMatch new
+replacement logic are (at man page output):
+
+    --- before.log  2026-01-29 06:14:20.163592584 +0100
+    +++ after.log   2026-01-29 06:32:04.811370234 +0100
+    @@ -1573701 +1573701 @@
+    -.BI "    struct ice_health_tx_hang_buf  tx_hang_buf;"
+    +.BI "    struct ice_health_tx_hang_buf tx_hang_buf;"
+    @@ -4156451 +4156451 @@
+    -.BI "    struct libeth_fq_fp  fp;"
+    +.BI "    struct libeth_fq_fp fp;"
+    @@ -4164041 +4164041 @@
+    -.BI "    struct libeth_xskfq_fp  fp;"
+    +.BI "    struct libeth_xskfq_fp fp;"
+    @@ -4269434 +4269434 @@
+    -.BI "    struct page_pool_params_fast  fast;"
+    +.BI "    struct page_pool_params_fast fast;"
+    @@ -4269452 +4269452 @@
+    -.BI "    struct page_pool_params_slow  slow;"
+    +.BI "    struct page_pool_params_slow slow;"
+    @@ -4269454 +4269454 @@
+    -.BI "    STRUCT_GROUP( struct net_device *netdev;"
+    +.BI "    struct net_device *netdev;"
+
+e.g. basically whitespaces, plus a fix NestedMatch to
+better handle /* private */ comments.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
- tools/lib/python/kdoc/kdoc_re.py | 84 ++++++++++++++++++++++----------
- 1 file changed, 59 insertions(+), 25 deletions(-)
+ tools/lib/python/kdoc/kdoc_parser.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/python/kdoc/kdoc_re.py b/tools/lib/python/kdoc/kdoc_re.py
-index e34d55c25680..858cc688a58f 100644
---- a/tools/lib/python/kdoc/kdoc_re.py
-+++ b/tools/lib/python/kdoc/kdoc_re.py
-@@ -177,29 +177,6 @@ class NestedMatch:
-     will ignore the search string.
-     """
+diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
+index 50d57c6799bb..1e8e156e2a9e 100644
+--- a/tools/lib/python/kdoc/kdoc_parser.py
++++ b/tools/lib/python/kdoc/kdoc_parser.py
+@@ -126,7 +126,7 @@ struct_xforms = [
+     #
+     (CFunction('struct_group'), r'\2'),
+     (CFunction('struct_group_attr'), r'\3'),
+-    (CFunction('struct_group_tagged'), r'struct \1 { \3 } \2;'),
++    (CFunction('struct_group_tagged'), r'struct \1 \2; \3'),
+     (CFunction('__struct_group'), r'\4'),
  
--    # TODO: make NestedMatch handle multiple match groups
--    #
--    # Right now, regular expressions to match it are defined only up to
--    #       the start delimiter, e.g.:
--    #
--    #       \bSTRUCT_GROUP\(
--    #
--    # is similar to: STRUCT_GROUP\((.*)\)
--    # except that the content inside the match group is delimiter-aligned.
--    #
--    # The content inside parentheses is converted into a single replace
--    # group (e.g. r`\1').
--    #
--    # It would be nice to change such definition to support multiple
--    # match groups, allowing a regex equivalent to:
--    #
--    #   FOO\((.*), (.*), (.*)\)
--    #
--    # it is probably easier to define it not as a regular expression, but
--    # with some lexical definition like:
--    #
--    #   FOO(arg1, arg2, arg3)
--
-     def __init__(self, regex):
-         self.regex = KernRe(regex)
- 
-@@ -285,6 +262,59 @@ class NestedMatch:
- 
-             yield line[t[0]:t[2]]
- 
-+    @staticmethod
-+    def _split_args(all_args, delim=","):
-+        """
-+        Helper method to split comma-separated function arguments
-+        or struct elements, if delim is set to ";".
-+
-+        It returns a list of arguments that can be used later on by
-+        the sub() method.
-+        """
-+        args = [all_args]
-+        stack = []
-+        arg_start = 0
-+        string_char = None
-+        escape = False
-+
-+        for idx, d in enumerate(all_args):
-+            if escape:
-+                escape = False
-+                continue
-+
-+            if string_char:
-+                if d == '\\':
-+                    escape = True
-+                elif d == string_char:
-+                    string_char = None
-+
-+                continue
-+
-+            if d in ('"', "'"):
-+                string_char = d
-+                continue
-+
-+            if d in DELIMITER_PAIRS:
-+                end = DELIMITER_PAIRS[d]
-+
-+                stack.append(end)
-+                continue
-+
-+            if stack and d == stack[-1]:
-+                stack.pop()
-+                continue
-+
-+            if d == delim and not stack:
-+                args.append(all_args[arg_start:idx].strip())
-+                arg_start = idx + 1
-+
-+        # Add the last argument (if any)
-+        last = all_args[arg_start:].strip()
-+        if last:
-+            args.append(last)
-+
-+        return args
-+
-     def sub(self, sub, line, count=0):
-         """
-         This is similar to re.sub:
-@@ -310,9 +340,13 @@ class NestedMatch:
-             # Value, ignoring start/end delimiters
-             value = line[end:pos - 1]
- 
--            # replaces \0 at the sub string, if \0 is used there
-+            # replace arguments
-             new_sub = sub
--            new_sub = new_sub.replace(r'\0', value)
-+            if "\\" in sub:
-+                args = self._split_args(value)
-+
-+                new_sub = re.sub(r'\\(\d+)',
-+                                 lambda m: args[int(m.group(1))], new_sub)
- 
-             out += new_sub
- 
+     #
 -- 
 2.52.0
 
