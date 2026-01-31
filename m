@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26B21308F39
-	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 10:15:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97EC0322C60
+	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 10:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769854533; cv=none; b=SVZUgk9OJaAq4kMQlfmxESAQ/gVNbjtt/cpVOOt8wZjtBm65kQ/k41JbaGtt7stHftU+E0cDpfGYgeZmJaCuaEvq0ptunsKObWyulRpfsqByCVF5YgX8wIiXeB8eLmpyKYHe2KRCDkg7XxanBO1uh4Ylapioet8OMfasJxeJ2Nk=
+	t=1769854533; cv=none; b=CNzBMPRgw6SCZpMn5ZWeSyjyMliklP78bQ1DL/IPZENCPt2CfT8yI0PnFafLmpCOdlGsnQ9bSK5OX9/68TuRGMYyM+DkDY2qnbLx7ml1I6myEArK3LuH3KiK0O+Mvb49mn1s3hA7MyQhcTiRjdzJQ+HmP9h2EBlz/itEbNvApJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769854533; c=relaxed/simple;
-	bh=YmbOhiK6GjcEGD/K0EU/sAh8QYSSjYPqGtAYy75SJ8k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=j+7l+RfwPKKiMNRbiOwAmmA7iZfKvB8YXWxgUaNrI2oa7fZULP9rRo4KXUFkl/kC0HcTnYzyW67l+9rFKQ1BkoQTxnYsmL3cp5/E9cu3YyEUeG8NSZdZCBxIYIhg/3MeFc+ped9kn8cELds6DxcNnr/mlL308cF7ntgI1k9/ktk=
+	bh=H8njuP2RfdhUVjk6Rcg0JgF3gT7rjkm+xyCc1BnDJNc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IBbxYTGLGVaZtu5AsKYzYAdMSDT5PnK9kdlhI8W+JxL5mJRaulNsbvFW6sEzlJxX2hFMgt5ZfHPMPDQs6c2Pi69AwGvjCPjcruAxhPQk7aA0qF05miZu/KENzwq7zNbriklwf8V4W/BC8gKEngOgY5WODAwyWzICUbcBrYAfTPM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,30 +18,36 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vm80b-0002Py-VE; Sat, 31 Jan 2026 11:15:17 +0100
+	id 1vm80c-0002QI-Hb; Sat, 31 Jan 2026 11:15:18 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vm80b-003OWE-1x;
-	Sat, 31 Jan 2026 11:15:16 +0100
+	id 1vm80c-003OWN-2Z;
+	Sat, 31 Jan 2026 11:15:18 +0100
 Received: from blackshift.org (unknown [IPv6:2001:67c:1810:f051:d04a:1c63:e2:421c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 5A8344DC56B;
-	Sat, 31 Jan 2026 10:15:16 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 9717E4DC56F;
+	Sat, 31 Jan 2026 10:15:17 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
-	kernel@pengutronix.de
-Subject: [PATCH net-next 0/8] pull-request: can-next 2026-01-31
-Date: Sat, 31 Jan 2026 11:11:41 +0100
-Message-ID: <20260131101512.1958907-1-mkl@pengutronix.de>
+	kernel@pengutronix.de,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net-next 3/8] dt-bindings: can: renesas,rcar-canfd: Specify reset-names
+Date: Sat, 31 Jan 2026 11:11:44 +0100
+Message-ID: <20260131101512.1958907-4-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260131101512.1958907-1-mkl@pengutronix.de>
+References: <20260131101512.1958907-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,59 +60,94 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Hello netdev-team,
+From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
 
-this is a pull request of 8 patches for net-next/main.
+Specify the expected reset-names for the Renesas CAN-FD controller on
+RZ/G2L and RZ/G3E SoCs.
 
-This first 2 patches are by Biju Das, target the rcar_canfd driver and
-add support for FD-only mode.
+The reset names rstp_n and rstc_n are defined in the SoC hardware manual
+and are already used by the driver since commit 76e9353a80e9 ("can:
+rcar_canfd: Add support for RZ/G2L family"). The reset-names property
+existed previously but was dropped by commit 466c8ef7b66b ("dt-bindings:
+can: renesas,rcar-canfd: Simplify the conditional schema").
 
-Lad Prabhakar's patches, also for the rcar_canfd driver add support
-for the RZ/T2H SoC.
+Restore and constrain reset-names in the binding so DT schema checks
+match the actual hardware requirements and driver expectations.
 
-The last 2 patches are by Michael Tretter and me, target the sja1000
-driver and clean up the CAN state handling.
-
-regards,
-Marc
+Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20260114154525.3169992-2-prabhakar.mahadev-lad.rj@bp.renesas.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
+ .../bindings/net/can/renesas,rcar-canfd.yaml  | 33 +++++++++++--------
+ 1 file changed, 19 insertions(+), 14 deletions(-)
 
-The following changes since commit 74ecff77dace0f9aead6aac852b57af5d4ad3b85:
+diff --git a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+index e129bdceef84..9bfd4f44e4d4 100644
+--- a/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
++++ b/Documentation/devicetree/bindings/net/can/renesas,rcar-canfd.yaml
+@@ -122,6 +122,11 @@ properties:
+ 
+   resets: true
+ 
++  reset-names:
++    items:
++      - const: rstp_n
++      - const: rstc_n
++
+   renesas,no-can-fd:
+     $ref: /schemas/types.yaml#/definitions/flag
+     description:
+@@ -195,13 +200,6 @@ allOf:
+           minItems: 2
+           maxItems: 2
+ 
+-        reset-names:
+-          minItems: 2
+-          maxItems: 2
+-
+-      required:
+-        - reset-names
+-
+   - if:
+       properties:
+         compatible:
+@@ -239,13 +237,6 @@ allOf:
+           minItems: 2
+           maxItems: 2
+ 
+-        reset-names:
+-          minItems: 2
+-          maxItems: 2
+-
+-      required:
+-        - reset-names
+-
+   - if:
+       properties:
+         compatible:
+@@ -299,6 +290,20 @@ allOf:
+       properties:
+         renesas,no-can-fd: false
+ 
++  - if:
++      properties:
++        compatible:
++          contains:
++            enum:
++              - renesas,r9a09g047-canfd
++              - renesas,rzg2l-canfd
++    then:
++      required:
++        - reset-names
++    else:
++      properties:
++        reset-names: false
++
+ unevaluatedProperties: false
+ 
+ examples:
+-- 
+2.51.0
 
-  xgbe: Use netlink extack to report errors to ethtool (2026-01-15 20:02:22 -0800)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can-next.git tags/linux-can-next-for-6.20-20260131
-
-for you to fetch changes up to 173eb9a902d1d9ce6d0d6a88546f0f7a07bfbdf4:
-
-  Merge patch series "can: sja1000: clean up CAN state handling" (2026-01-23 14:37:27 +0100)
-
-----------------------------------------------------------------
-linux-can-next-for-6.20-20260131
-
-----------------------------------------------------------------
-Biju Das (2):
-      dt-bindings: can: renesas,rcar-canfd: Document renesas,fd-only property
-      can: rcar_canfd: Add support for FD-Only mode
-
-Lad Prabhakar (4):
-      dt-bindings: can: renesas,rcar-canfd: Specify reset-names
-      dt-bindings: can: renesas,rcar-canfd: Document RZ/V2H(P) and RZ/V2N SoCs
-      dt-bindings: can: renesas,rcar-canfd: Document RZ/T2H and RZ/N2H SoCs
-      can: rcar_canfd: Add RZ/T2H support
-
-Marc Kleine-Budde (4):
-      Merge patch series "Add FD-Only mode support for R-Car CANFD"
-      Merge patch series "Add CANFD support to R9A09G056/057/077/087 SoCs"
-      can: sja1000: sja1000_err(): make use of sja1000_get_berr_counter() to read error counters
-      Merge patch series "can: sja1000: clean up CAN state handling"
-
-Michael Tretter (1):
-      can: sja1000: sja1000_err(): use error counter for error state
-
- .../bindings/net/can/renesas,rcar-canfd.yaml       | 117 ++++++++++++++++++---
- drivers/net/can/rcar/rcar_canfd.c                  |  32 +++++-
- drivers/net/can/sja1000/sja1000.c                  |  42 ++------
- 3 files changed, 142 insertions(+), 49 deletions(-)
