@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44BD231ED9D
-	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 10:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A8529B789
+	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 10:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769854533; cv=none; b=S3T/Rj2ZY7+SbIB95DvYC8yKcKXqLNrLYWUPgPUYrHvRICL90/fLzwssVEtdKCF0jkizEhBz061AV9Q5dcUswn4UUiMztWn6mMvMrXAMU3gNdPOlC2SF4WnbeZjl6lO+i6R3p0cyfjeQ9rHlqUsR7IKr4c207P9psC7yX5bdPaM=
+	t=1769854533; cv=none; b=mFeZf11ibtycB65hotk5wJFS+O65Xfi0DE/8ck4/z9LvY4Ghb6DzWccv0mmvEKFqMKPzwEnWOHkNOXKwEwz9ZXAuPQcYMxk7perVQN1p1lFs9kobxgz9XCz225Ylwg6Cb4BDsxIs5AdSqTLd/3Pe6P92FKmWKnxg11y6zBPy+m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769854533; c=relaxed/simple;
-	bh=tU2qEJ0eGIbKg+D8G7fmDypR7946DkN7o1hINdNqE18=;
+	bh=yJEM19TKPK8Lkj2rFjErC95dTA2VwhZ8bpyLwZHtoXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oty0lkTZipzNO5N7iaZtg2xj/aJeWaiB3qJZI4UEPGpfYHgjYteAfH12/9ca06BpnCie7fwsibWlqWgFNcXjFIRNq482N3X0BTZQDjlPbg/ow2GKbmRW9kpvXYrccxoIUV7oqa7qxnNvtWu0YAGAqErVw+fBOW2UZYRH1JoBouA=
+	 MIME-Version; b=S0HoMTFW63AxE6ZEJtQ7qajH+JpXNAmxq5a1e4MDnJT9VJ7uIQHvDfdOOz5MCjvWITx5+XVanIW1CMM0ZCI3toElBP4BLc8WVNQHn7ZzrDdyKcLnq7REvtbLIjHCge2MEzsfP+USxQl5ORusrSI1gdE/wccEI1kqlEoXDi1m3lw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,32 +18,32 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vm80d-0002Rw-RH; Sat, 31 Jan 2026 11:15:19 +0100
+	id 1vm80f-0002Sz-Ou; Sat, 31 Jan 2026 11:15:21 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vm80e-003OWe-0j;
-	Sat, 31 Jan 2026 11:15:19 +0100
+	id 1vm80f-003OWn-1Y;
+	Sat, 31 Jan 2026 11:15:20 +0100
 Received: from blackshift.org (unknown [IPv6:2001:67c:1810:f051:d04a:1c63:e2:421c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id EDDB14DC573;
-	Sat, 31 Jan 2026 10:15:18 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id E0CDF4DC575;
+	Sat, 31 Jan 2026 10:15:19 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Achim Baumgartner <abaumgartner@topcon.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 6/8] can: rcar_canfd: Add RZ/T2H support
-Date: Sat, 31 Jan 2026 11:11:47 +0100
-Message-ID: <20260131101512.1958907-7-mkl@pengutronix.de>
+Subject: [PATCH net-next 8/8] can: sja1000: sja1000_err(): use error counter for error state
+Date: Sat, 31 Jan 2026 11:11:49 +0100
+Message-ID: <20260131101512.1958907-9-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260131101512.1958907-1-mkl@pengutronix.de>
 References: <20260131101512.1958907-1-mkl@pengutronix.de>
@@ -59,55 +59,98 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+From: Michael Tretter <m.tretter@pengutronix.de>
 
-The CAN-FD IP on the RZ/T2H SoC is similar to R-Car Gen4, but differs in
-the AFLPN and CFTML bits and supports two channels with eight interrupts.
+The CAN controller sends the EPI interrupt whenever it reaches the error
+passive status or enters the error active status from the error passive
+status.
 
-Signed-off-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/20260114154525.3169992-5-prabhakar.mahadev-lad.rj@bp.renesas.com
+Instead of keeping track of the controller status in the driver, read the
+txerr and rxerr counters and use can_state_get_by_berr_counter() to
+determine the state of the CAN controller.
+
+Suggested-by: Achim Baumgartner <abaumgartner@topcon.com>
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Link: https://patch.msgid.link/20260123-sja1000-state-handling-v2-2-687498087dad@pengutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/rcar/rcar_canfd.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/net/can/sja1000/sja1000.c | 33 +++++++------------------------
+ 1 file changed, 7 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index 4a653d8978ba..eaf8cac78038 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -670,6 +670,23 @@ static const struct rcar_canfd_hw_info r9a09g047_hw_info = {
- 	.external_clk = 0,
- };
- 
-+static const struct rcar_canfd_hw_info r9a09g077_hw_info = {
-+	.nom_bittiming = &rcar_canfd_gen4_nom_bittiming_const,
-+	.data_bittiming = &rcar_canfd_gen4_data_bittiming_const,
-+	.tdc_const = &rcar_canfd_gen4_tdc_const,
-+	.regs = &rcar_gen4_regs,
-+	.sh = &rcar_gen4_shift_data,
-+	.rnc_field_width = 16,
-+	.max_aflpn = 15,
-+	.max_cftml = 31,
-+	.max_channels = 2,
-+	.postdiv = 1,
-+	.multi_channel_irqs = 1,
-+	.ch_interface_mode = 1,
-+	.shared_can_regs = 1,
-+	.external_clk = 1,
-+};
-+
- /* Helper functions */
- static inline void rcar_canfd_update(u32 mask, u32 val, u32 __iomem *reg)
+diff --git a/drivers/net/can/sja1000/sja1000.c b/drivers/net/can/sja1000/sja1000.c
+index ae3244b63b65..67fccc15ed20 100644
+--- a/drivers/net/can/sja1000/sja1000.c
++++ b/drivers/net/can/sja1000/sja1000.c
+@@ -407,10 +407,9 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
  {
-@@ -2345,6 +2362,7 @@ static DEFINE_SIMPLE_DEV_PM_OPS(rcar_canfd_pm_ops, rcar_canfd_suspend,
- static const __maybe_unused struct of_device_id rcar_canfd_of_table[] = {
- 	{ .compatible = "renesas,r8a779a0-canfd", .data = &rcar_gen4_hw_info },
- 	{ .compatible = "renesas,r9a09g047-canfd", .data = &r9a09g047_hw_info },
-+	{ .compatible = "renesas,r9a09g077-canfd", .data = &r9a09g077_hw_info },
- 	{ .compatible = "renesas,rcar-gen3-canfd", .data = &rcar_gen3_hw_info },
- 	{ .compatible = "renesas,rcar-gen4-canfd", .data = &rcar_gen4_hw_info },
- 	{ .compatible = "renesas,rzg2l-canfd", .data = &rzg2l_hw_info },
+ 	struct sja1000_priv *priv = netdev_priv(dev);
+ 	struct net_device_stats *stats = &dev->stats;
++	enum can_state state, rx_state, tx_state;
+ 	struct can_frame *cf;
+ 	struct sk_buff *skb;
+-	enum can_state state = priv->can.state;
+-	enum can_state rx_state, tx_state;
+ 	struct can_berr_counter bec;
+ 	uint8_t ecc, alc;
+ 	int ret = 0;
+@@ -418,6 +417,12 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 	skb = alloc_can_err_skb(dev, &cf);
+ 
+ 	sja1000_get_berr_counter(dev, &bec);
++	can_state_get_by_berr_counter(dev, &bec, &tx_state, &rx_state);
++
++	if (status & SR_BS)
++		rx_state = CAN_STATE_BUS_OFF;
++
++	state = max(tx_state, rx_state);
+ 
+ 	if (isrc & IRQ_DOI) {
+ 		/* data overrun interrupt */
+@@ -440,18 +445,6 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 		if (priv->flags & SJA1000_QUIRK_RESET_ON_OVERRUN)
+ 			ret = IRQ_WAKE_THREAD;
+ 	}
+-
+-	if (isrc & IRQ_EI) {
+-		/* error warning interrupt */
+-		netdev_dbg(dev, "error warning interrupt\n");
+-
+-		if (status & SR_BS)
+-			state = CAN_STATE_BUS_OFF;
+-		else if (status & SR_ES)
+-			state = CAN_STATE_ERROR_WARNING;
+-		else
+-			state = CAN_STATE_ERROR_ACTIVE;
+-	}
+ 	if (state != CAN_STATE_BUS_OFF && skb) {
+ 		cf->can_id |= CAN_ERR_CNT;
+ 		cf->data[6] = bec.txerr;
+@@ -493,15 +486,6 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 			stats->rx_errors++;
+ 		}
+ 	}
+-	if (isrc & IRQ_EPI) {
+-		/* error passive interrupt */
+-		netdev_dbg(dev, "error passive interrupt\n");
+-
+-		if (state == CAN_STATE_ERROR_PASSIVE)
+-			state = CAN_STATE_ERROR_WARNING;
+-		else
+-			state = CAN_STATE_ERROR_PASSIVE;
+-	}
+ 	if (isrc & IRQ_ALI) {
+ 		/* arbitration lost interrupt */
+ 		netdev_dbg(dev, "arbitration lost interrupt\n");
+@@ -514,9 +498,6 @@ static int sja1000_err(struct net_device *dev, uint8_t isrc, uint8_t status)
+ 	}
+ 
+ 	if (state != priv->can.state) {
+-		tx_state = bec.txerr >= bec.rxerr ? state : 0;
+-		rx_state = bec.txerr <= bec.rxerr ? state : 0;
+-
+ 		can_change_state(dev, cf, tx_state, rx_state);
+ 
+ 		if(state == CAN_STATE_BUS_OFF)
 -- 
 2.51.0
 
