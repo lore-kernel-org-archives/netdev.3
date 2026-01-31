@@ -1,62 +1,62 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9830339872
-	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 05:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC4033C190
+	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 05:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769836177; cv=none; b=PLy1Yb4ImS3akCtliJl50+gk34RBedv1Wx4Pk0JNdjPeMGEmQKa/wqyqgYcU9PGjsVp4mqDhZehssX1E/R6DnRwwsYxnlDDo83y8Rn7S1ZFy8rNmVFXtHLH53Aar8lDQtOD0HEz6/hpU32tN3rzoQE/fk6HqWmGSUMgQmaH7Dls=
+	t=1769836179; cv=none; b=WAHbQgVZz8jOjxJjGxUk5iLR6G3S1xrGJ616IR4OTqkP2QhybjGgPrd/7jJeV/MpETxX3jXvPKgSeuPar2ZSiIUiJRO0NsTIALeZf3BnCGIPIujRJmBxVAN8MH7XH2G0CIjfNi3JWGUs4pUHwlBjJsrzEf65YdphDIBJNxEHAgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769836177; c=relaxed/simple;
-	bh=3iS/7iavCieY0vGjt3CSw+m+ZHXLXWxjaSalApUkmvc=;
+	s=arc-20240116; t=1769836179; c=relaxed/simple;
+	bh=An8BnmX9Br7RS5E/JK5+AuLgGH68OZSuI8tJGKtCb0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhJr7WURuL54KVN37zbBuvXl4dNVAmju2uMajNW6duiGdpU/DVsXQO2kWbh4u8d+yEQWfj6j1kqSDDIGCCTqvbvH3zswQIRkCHOcjGQRbXxXB9rVy9Xpe/OrU8gJwkGJel503B6GaGPLCUq0amrWmd7r/gzBZDl9Yf6cm0zdwHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=anzbueIU; arc=none smtp.client-ip=209.85.210.172
+	 MIME-Version; b=SlgtIq/anZVAdhCJJF5BjqS/Fm4MQ54EURFdmMZuQp/7D0OwXr+9xgOEBBQttKD7napQw5sYTX2GICDIOYIxGLd6SYojXQK2o96ejKhxk+RyihyDT9tXYlgwQlXTo/RQfxvFUfhQQ7OSZR4tKRAh1QN21jCGQhVpVU3pb8XUDOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AwyV9RkG; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="anzbueIU"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-81f4f4d4822so1431484b3a.3
-        for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 21:09:35 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AwyV9RkG"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-81f4c0e2b42so1554991b3a.1
+        for <netdev@vger.kernel.org>; Fri, 30 Jan 2026 21:09:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769836175; x=1770440975; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1769836177; x=1770440977; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=QVecu991SVFveWbBZhAv7g6YYbwLWhpF7kmZTPpREKw=;
-        b=anzbueIUVjJy9s0fxs6E6bvkYh0JV6n8Yo34BghbRCIgk3cMquDb/gCLNMdfIwXgij
-         oMzrognigpYNB6aar25mIEg/rXyG4jikSDYMGJXwiifNLVhLDbF14b3KW5W2CEm2A/Ls
-         /EOwiSmu6TUbrwppu8HzgY9LtV8bE6U3F72PZJDJSMzDlNM7GqNbepZg9GYlOlv1eYjQ
-         2PngI6NXdBc2ac3r9E8IfWl89PgiJlR28OH1ogsTUARx20sL5Ui5COHXrYAXNSXEONhx
-         tfvXLck/vBq+cZ5YBzSZPxfNC5ZLvY1L4T5ebMFSQ/FftQsEe5t6sr8ZCWZo2KcM3iBQ
-         BcAA==
+        bh=nuNvMHG7EsV3WDXcTIQ0sCJGxiwxkoeLevbL1JCpO94=;
+        b=AwyV9RkGB0dbIB+mYd2veXeggBvyLT0flWLb8gOIgnPy39rqnpJDErOSVxfoW6HusS
+         Yn9LSAG1ufYzjGX7Sy3V8lUVDD1v8eS+k8tZilSft8lNNLQWhk46FjEPpw3u254SNzdP
+         fctW+mdqB1BFGlkESn6uLJwwCKINPc3lnoTKZyswta43NpgoEuRZqqsRW2yPKO/Yy/zO
+         tQvjpfKywcyuQzfagRxxfMyd4OXHJPYzdHs9V1KEPFZ6qsOqlWFnQBZmTOsDKFSNapn2
+         +Hj8pZJJys4FBv5Obrlztv53PJJ4r4BkGgIa+dGpYWj0dJU4nl9caRUevfU9Cdjm+gh9
+         EJ3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769836175; x=1770440975;
+        d=1e100.net; s=20230601; t=1769836177; x=1770440977;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=QVecu991SVFveWbBZhAv7g6YYbwLWhpF7kmZTPpREKw=;
-        b=p6TEvV+hF3hYw0nGWu6AOv2qEl5gHwlmN90DhIyF91EyXLbJeG8toFeRm7/wJhU4Hf
-         8CutXgs7+dSFvBdhU6M+GqF1eYgh/Ny1bSrhq04dSmGwBPeJ5mwxehwZvatGjuglmKtR
-         tG7jc/I1mhihtPtyRf8nKYzKPVk10ZoZI/nzFbhQQZeLlUlUhtjhew5bwgm538IrgYcd
-         yzwrfUbhINLnJ1Wged67/aJibeUbarVwo/qr1B2paYIZEenL4MgFQpGAmALTBblL2Kvr
-         /8lJGfuhYRdsDNBvU8jiIfVHbr5L19t4GhSjhBUEGcMCPRMeZE/xrh7PveSzwdsTO85c
-         9T4w==
-X-Gm-Message-State: AOJu0YyvGubkn4KyqBAUE42218ImQG4YNk44Mjjnwhgd7khd6yCm7CmT
-	Z+R9wtmcpBvR61mSTw9Gs2FRKz3urJUfAzolRdM08XZFGiEl7qwhib9Q
-X-Gm-Gg: AZuq6aK85MGQETsr1Zb9xZ1z7veTcTUY65ngSxlCBvKXEhJSl1YnI0989MKTTRCwv6N
-	XeWova1+mxxyojyUPTNutjC9EXuH0B/OPm/yJjO0zeDNU1juaqpY7g5tJGmLUN2O8ln36A28OFj
-	AwIkG51GLq7gredKTeCOW26p7H2HB2PHp1whF+h37mBCh7tUnmSlL8Dv21sMPBqgBNyItHyr5iK
-	ynHaFgJ5clH4zJcP+nKuuFdNpUMruMau/37FI8RJcYrRQVANDAbSAod5gS4PJbhPsL4rP8/u7KK
-	jZHfM2d4ViOwKWzszYvXLxBuryjjNkgoEZWUlwNW/DoQ/3ZlDNOS2LGeM/chCEmOPCxkt0hcY8j
-	Iyq65e3sJQXktz1SPJnAzCG7PZ58LzHM/FGGveHaHCi9Bb9KdnvlpsABKcBkH2xKvt5gBiBT3pz
-	+D
-X-Received: by 2002:a05:6a20:2d0b:b0:38d:f084:e349 with SMTP id adf61e73a8af0-392e0143724mr4623459637.54.1769836175397;
-        Fri, 30 Jan 2026 21:09:35 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:7::])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c64277e4efdsm9123359a12.3.2026.01.30.21.09.34
+        bh=nuNvMHG7EsV3WDXcTIQ0sCJGxiwxkoeLevbL1JCpO94=;
+        b=iu/lXgkQ8tXHlaq5g+En775IsxM8uuoMsJZKfprD258I4/bmJpwPLzwh1yO6rvZa1z
+         zoITzijvQePjEt0SLTyWlsCwwqyzOWxlArsDKiLF/D2vcqVhdTZABDCltS668w6/c5dQ
+         lJgW1/Dl3B0KUv3GKS5m8+D/6Kyx0Loz+Vgb/pcQFVKWJjnKM7sfRBTVGKUsOSNFAV32
+         bSwFJnaKo3fBz+SCTP4pzLtMva4xSrAHl1PPhL4jfKOaOAqmNLs0mXrWGjM7unTbx3aI
+         TWkfeR+NW4nMcPfv5VRLRA5z0j3OOX34xO+6Un0YAIPr8iSKJvxpQZ1Ndh7MHy3apm5W
+         NIGQ==
+X-Gm-Message-State: AOJu0YyrMdfcI/YgYylEHQauCKIbeblqkbliCzx9PpxuP9mOlYw2N+/P
+	QcwMheKfmgorHsVdX3NWYlopKyg7yukMAtfDAaIkogqB6NO5zFN3bul9
+X-Gm-Gg: AZuq6aLBgm+Z0udrVq6ZwIDAm/MSevj30B+OsBf3nSZ5P020avEkCXAc83caD+TyxQq
+	AB2zyFPmaXkL3i5GZU+tK31zQeLCmFZvs8U400gAdBofYXW71z4Hh9m+IRZv3utIefq5JS4JVNf
+	8RmzXEUX9OWWj4YPnuYMo8HyJSdKCr0YlQNtHutPXePg54z5dVnuJkxgl8Yi+rf7i8lYnEE2KvL
+	k/yfpDkExi950jNGxEWbI4OecaEdcjARDN8sR4OP1H6E94IQqZ2a0SlcBC2+oqDyi9NeKf8secz
+	5mcbwzXSiMQwl+iJZygLp9RRDdDx4XQHyppiaMvLRIYSeW4ihb6hFSEf4J05PUwUxeDKarRrM+k
+	QkiL9ZVO/JAhjZsw843bbFAZx2EbYFVq23WjXI0AcFCPP5Hql+Q868w0fR0mPMhXIyxmPLTFxLe
+	MDZgIckqqAX7ha
+X-Received: by 2002:a05:6a20:486:b0:38e:8878:91bb with SMTP id adf61e73a8af0-392dffd9db4mr4756810637.4.1769836177232;
+        Fri, 30 Jan 2026 21:09:37 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:52::])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c642a3356b4sm8859134a12.17.2026.01.30.21.09.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Jan 2026 21:09:35 -0800 (PST)
+        Fri, 30 Jan 2026 21:09:36 -0800 (PST)
 From: Amery Hung <ameryhung@gmail.com>
 To: bpf@vger.kernel.org
 Cc: netdev@vger.kernel.org,
@@ -71,9 +71,9 @@ Cc: netdev@vger.kernel.org,
 	haoluo@google.com,
 	ameryhung@gmail.com,
 	kernel-team@meta.com
-Subject: [PATCH bpf-next v4 12/16] selftests/bpf: Update sk_storage_omem_uncharge test
-Date: Fri, 30 Jan 2026 21:09:15 -0800
-Message-ID: <20260131050920.2574084-13-ameryhung@gmail.com>
+Subject: [PATCH bpf-next v4 14/16] selftests/bpf: Update task_local_storage/task_storage_nodeadlock test
+Date: Fri, 30 Jan 2026 21:09:17 -0800
+Message-ID: <20260131050920.2574084-15-ameryhung@gmail.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260131050920.2574084-1-ameryhung@gmail.com>
 References: <20260131050920.2574084-1-ameryhung@gmail.com>
@@ -85,60 +85,42 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Check sk_omem_alloc when the caller of bpf_local_storage_destroy()
-returns. bpf_local_storage_destroy() now returns the memory to uncharge
-to the caller instead of directly uncharge. Therefore, in the
-sk_storage_omem_uncharge, check sk_omem_alloc when bpf_sk_storage_free()
-returns instead of bpf_local_storage_destroy().
+Adjsut the error code we are checking against as bpf_task_storage_get()
+now returns -EDEADLK or -ETIMEDOUT when deadlock happens.
 
 Signed-off-by: Amery Hung <ameryhung@gmail.com>
 ---
- .../selftests/bpf/progs/sk_storage_omem_uncharge.c   | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ .../testing/selftests/bpf/progs/task_storage_nodeadlock.c  | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/sk_storage_omem_uncharge.c b/tools/testing/selftests/bpf/progs/sk_storage_omem_uncharge.c
-index 46d6eb2a3b17..c8f4815c8dfb 100644
---- a/tools/testing/selftests/bpf/progs/sk_storage_omem_uncharge.c
-+++ b/tools/testing/selftests/bpf/progs/sk_storage_omem_uncharge.c
-@@ -6,7 +6,6 @@
+diff --git a/tools/testing/selftests/bpf/progs/task_storage_nodeadlock.c b/tools/testing/selftests/bpf/progs/task_storage_nodeadlock.c
+index 986829aaf73a..6ce98fe9f387 100644
+--- a/tools/testing/selftests/bpf/progs/task_storage_nodeadlock.c
++++ b/tools/testing/selftests/bpf/progs/task_storage_nodeadlock.c
+@@ -1,15 +1,12 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ #include "vmlinux.h"
++#include <errno.h>
+ #include <bpf/bpf_helpers.h>
  #include <bpf/bpf_tracing.h>
- #include <bpf/bpf_core_read.h>
  
--void *local_storage_ptr = NULL;
- void *sk_ptr = NULL;
- int cookie_found = 0;
- __u64 cookie = 0;
-@@ -19,21 +18,17 @@ struct {
- 	__type(value, int);
- } sk_storage SEC(".maps");
+ char _license[] SEC("license") = "GPL";
  
--SEC("fexit/bpf_local_storage_destroy")
--int BPF_PROG(bpf_local_storage_destroy, struct bpf_local_storage *local_storage)
-+SEC("fexit/bpf_sk_storage_free")
-+int BPF_PROG(bpf_sk_storage_free, struct sock *sk)
- {
--	struct sock *sk;
+-#ifndef EBUSY
+-#define EBUSY 16
+-#endif
 -
--	if (local_storage_ptr != local_storage)
-+	if (sk_ptr != sk)
- 		return 0;
+ extern bool CONFIG_PREEMPTION __kconfig __weak;
+ int nr_get_errs = 0;
+ int nr_del_errs = 0;
+@@ -40,7 +37,7 @@ int BPF_PROG(socket_post_create, struct socket *sock, int family, int type,
  
--	sk = bpf_core_cast(sk_ptr, struct sock);
- 	if (sk->sk_cookie.counter != cookie)
- 		return 0;
- 
- 	cookie_found++;
- 	omem = sk->sk_omem_alloc.counter;
--	local_storage_ptr = NULL;
- 
- 	return 0;
- }
-@@ -50,7 +45,6 @@ int BPF_PROG(inet6_sock_destruct, struct sock *sk)
- 	if (value && *value == 0xdeadbeef) {
- 		cookie_found++;
- 		sk_ptr = sk;
--		local_storage_ptr = sk->sk_bpf_storage;
- 	}
+ 	ret = bpf_task_storage_delete(&task_storage,
+ 				      bpf_get_current_task_btf());
+-	if (ret == -EBUSY)
++	if (ret == -EDEADLK || ret == -ETIMEDOUT)
+ 		__sync_fetch_and_add(&nr_del_errs, 1);
  
  	return 0;
 -- 
