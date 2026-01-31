@@ -1,193 +1,56 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 879FD2472A5;
-	Sat, 31 Jan 2026 18:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0CE2DEA7A
+	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 18:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769882509; cv=none; b=YfB71Wg79yRANiQcK0cPvb9Pv0M9tOH8NMsDt4hlvmj3jjIebu+VXkmLo3r5YfTfN25JhV0emB9FAEJ2DS58IMfT47RZk3HjaOKACgw5X6l7cm9tTBTxflcgwRGmMUtHhJgYBXZe0Cy3DCAbIGz8rB868MbJ863/ed+Tf1dCtEA=
+	t=1769882676; cv=none; b=er2dkH987jhFyxzGU97wErmBCiguyU0mr1BkiM/MpLi1J4hGH266xXuvJxdti/sBEiL0dRxglCURcQD1ZyIkq8mi1cdQt4mw18cPIi/NDglfcddZDsG3Wa0aAT8tRdGbHMaefDMI/GkyHh7d+gQfSv66shKPPRA57yuAFDNpT0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769882509; c=relaxed/simple;
-	bh=h3sHRNhd6LWAMOJi2q65CpHktFtBLPcu5uN9obg1hB0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=faNxYzC3xJondgzKcNrG+VhCjsOy3l+jRUg3R26rLG1qXsbf6yDBfh/vQ6WNrVEZBWQGfkTKG7jthciQ5IGqE7IQpGire3on3rbzcmNDA5FzBqYsuvNZIi15OwDrpLkPcHHH0hca7r+UVRTS0HHzSItzckPrL22NN5g7gvpsRe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hxf9mYK+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769882676; c=relaxed/simple;
+	bh=JrATpqB6uJf7cMES6fsC24E8Iotb22Do0DyecbQxtBg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IM0Dj/KIVrIRkSVVMKo67o5ZMebMHz+BpCI6+SL/8rMveJmLpbEecZKiS8Ft7lWy2idffYnvD1/O8MMM8vGcQuRgzHD1G4Vgh0pLBvaW+PIl5BhDfj63J6l4xxGnuzrqqnh2J344gkvAB8Gzm+yJdBWlnEhLsTO3vKioH13z3Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ha7jrGjq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hxf9mYK+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73587C4CEF1;
-	Sat, 31 Jan 2026 18:01:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ha7jrGjq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35243C4CEF1;
+	Sat, 31 Jan 2026 18:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769882509;
-	bh=h3sHRNhd6LWAMOJi2q65CpHktFtBLPcu5uN9obg1hB0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hxf9mYK+pu5fN9zy66iZL93zb70NR0akn1q1/VDNc3Ap/nPm8VQcAlLl6X5lEg5dK
-	 UZsaBqgdA2UmjCxF+/pg6CSGQKgOVGTrzZNLPLgQrv6njqG7JqTVd/RuvWiALK+fso
-	 7/d7tCp96ZfPJnuNak2j5/FQMF9oW9Om6xeckRZ73EMScsO2hXIAfcH/1phU+29OFP
-	 lNot9D4wDDRh3oKQQqBiGXuGJcdaLIfSgDTBro3Kl+Tzex8OfQ8aaCwm1erSEp+PE0
-	 lWGWtrN8wTgS2PsTw1at/i5O4oECfGqpRDoIaPbA56sXpn8HWWuDz5NAtOtsE9mI3u
-	 0uZzktbgLipsQ==
+	s=k20201202; t=1769882676;
+	bh=JrATpqB6uJf7cMES6fsC24E8Iotb22Do0DyecbQxtBg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ha7jrGjqR5uRqo6voSoQZ22n7SGKHPW2A0CX7NecNfu6Ubhi/8ZXaU7QrqnEM5sjF
+	 Ddi519375UP8mMsXTHpaErJCDCS2DFcVWYkKh7cab1/MMZKb+lnV0/0C1yM5xnYQAB
+	 nhlmwafgpmAM2Zna+pG/YTf5HlXfuM1qGVJnFMr+QpxFA4YuIdB5lhhvtWUjQRz9Cc
+	 FyOPNHInyaFTRa+1vzsrxqDzGjriujJ6IZaTAr7UHDpd2A6NwnH2MzaHT8dEA8TzWp
+	 +d03rlygBg/Y9WsRqWOfJFYgwx+GKSBro9mLf1n2gBiVai6yULyUWO3H7nIG7KyNKO
+	 vzG5tt4Bo20Pg==
+Date: Sat, 31 Jan 2026 10:04:35 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: socketcan@hartkopp.net
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	horms@kernel.org,
-	robin@protonic.nl,
-	netdev@vger.kernel.org,
-	linux-can@vger.kernel.org,
-	davem@davemloft.net,
-	mailhol@kernel.org,
-	linux-kernel@vger.kernel.org,
-	o.rempel@pengutronix.de,
-	kernel@pengutronix.de,
-	mkl@pengutronix.de
-Subject: Re: [net-next,v7,2/6] can: add CAN skb extension infrastructure
-Date: Sat, 31 Jan 2026 10:00:26 -0800
-Message-ID: <20260131180025.1124810-2-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260131-can_skb_ext-v7-2-dd0f8f84a83d@hartkopp.net>
-References: <20260131-can_skb_ext-v7-2-dd0f8f84a83d@hartkopp.net>
+To: Ingyu Jang <ingyujang25@korea.ac.kr>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, dsahern@kernel.org,
+ edumazet@google.com
+Subject: Re: [Question] Dead code in rawv6_mh_filter_register()?
+Message-ID: <20260131100435.36c2aa34@kernel.org>
+In-Reply-To: <20260131150212.3292929-1-ingyujang25@korea.ac.kr>
+References: <20260131150212.3292929-1-ingyujang25@korea.ac.kr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email says:
+On Sun,  1 Feb 2026 00:02:12 +0900 Ingyu Jang wrote:
+> Since rawv6_mh_filter_register() never fails, this error path
+> appears to be dead code. The same applies to
+> rawv6_mh_filter_unregister() in mip6_fini().
 
-  Not sure about the first issue, I think you mentioned we have
-  an extra ref? The uninitialized errors should probably be fixed
-  "in net", before this series? :(
-
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-can: add CAN skb extension infrastructure
-
-This patch introduces CAN skb extension infrastructure to store per-frame
-metadata (interface index, frame length, gateway hops, flags) using the
-standard skb_ext mechanism instead of the private CAN bus skb headroom.
-
-> diff --git a/drivers/net/can/vxcan.c b/drivers/net/can/vxcan.c
-> index f14c6f02b662..53d7d9046f85 100644
-> --- a/drivers/net/can/vxcan.c
-> +++ b/drivers/net/can/vxcan.c
-
-[ ... ]
-
-> @@ -39,6 +40,7 @@ static netdev_tx_t vxcan_xmit(struct sk_buff *oskb, struct net_device *dev)
->  	struct vxcan_priv *priv = netdev_priv(dev);
->  	struct net_device *peer;
->  	struct net_device_stats *peerstats, *srcstats = &dev->stats;
-> +	struct can_skb_ext *csx;
->  	struct sk_buff *skb;
->  	unsigned int len;
->
-> @@ -63,6 +65,18 @@ static netdev_tx_t vxcan_xmit(struct sk_buff *oskb, struct net_device *dev)
->  		goto out_unlock;
->  	}
->
-> +	/* the cloned skb points to the skb extension of the original oskb
-> +	 * with an increased refcount. skb_ext_add() creates a copy to
-> +	 * separate the skb extension data which is needed to start with a
-> +	 * fresh can_gw_hops counter in the other namespace.
-> +	 */
-> +	csx = skb_ext_add(skb, SKB_EXT_CAN);
-> +	if (!csx) {
-> +		kfree_skb(skb);
-> +		kfree_skb(oskb);
-                ^^^^^^^^^^^^^^^^
-
-Is this a double-free of oskb? Looking at the code flow:
-
-    skb = skb_clone(oskb, GFP_ATOMIC);  /* line 60 */
-    if (unlikely(!skb)) { ... }
-    consume_skb(oskb);                   /* line 62 - frees oskb */
-
-At this point oskb has been freed by consume_skb(). If skb_ext_add() then
-fails, the error handler calls kfree_skb(oskb) on the already-freed pointer.
-
-This can occur under memory pressure when skb_clone() succeeds but the
-subsequent skb_ext_add() allocation fails. The kfree_skb(oskb) line should
-be removed from this error path.
-
-> +		goto out_unlock;
-> +	}
-
-[ ... ]
-
-> diff --git a/net/can/isotp.c b/net/can/isotp.c
-> index 4bb60b8f9b96..94103fe654ff 100644
-> --- a/net/can/isotp.c
-> +++ b/net/can/isotp.c
-
-[ ... ]
-
-> @@ -1005,6 +1022,13 @@ static int isotp_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
->  		goto err_out_drop;
->  	}
->
-> +	csx = can_skb_ext_add(skb);
-> +	if (!csx) {
-> +		kfree_skb(skb);
-> +		netdev_put(dev, NULL);
-> +		goto err_out_drop;
-> +	}
-
-Does this error path return an uninitialized value to userspace? The variable
-err is declared without initialization at line 959 and sock_alloc_send_skb()
-only sets it on failure. When can_skb_ext_add() fails after a successful
-sock_alloc_send_skb(), err contains garbage.
-
-Other error paths in this function set err explicitly before jumping to
-err_out_drop. Should this add err = -ENOMEM before the goto?
-
-> diff --git a/net/can/j1939/socket.c b/net/can/j1939/socket.c
-> index 1589e8ca634e..fc28a7677369 100644
-> --- a/net/can/j1939/socket.c
-> +++ b/net/can/j1939/socket.c
-
-[ ... ]
-
-> @@ -895,6 +897,12 @@ static struct sk_buff *j1939_sk_alloc_skb(struct net_device *ndev,
->  	if (!skb)
->  		goto failure;
->
-> +	csx = can_skb_ext_add(skb);
-> +	if (!csx) {
-> +		kfree_skb(skb);
-> +		goto failure;
-> +	}
-
-Similar concern here: ret is declared without initialization at line 891.
-sock_alloc_send_skb() only writes to ret on failure. When can_skb_ext_add()
-fails after successful allocation, ret is uninitialized when returned via
-*errcode at the failure label.
-
-Should this set ret = -ENOMEM before goto failure?
-
-> diff --git a/net/can/raw.c b/net/can/raw.c
-> index fb4f9c854df0..03438e9bc535 100644
-> --- a/net/can/raw.c
-> +++ b/net/can/raw.c
-
-[ ... ]
-
-> @@ -956,6 +958,12 @@ static int raw_sendmsg(struct socket *sock, struct msghdr *msg, size_t size)
->  	if (!skb)
->  		goto put_dev;
->
-> +	csx = can_skb_ext_add(skb);
-> +	if (!csx) {
-> +		kfree_skb(skb);
-> +		goto put_dev;
-> +	}
-
-This returns -EINVAL (from line 923) when can_skb_ext_add() fails due to
-memory allocation failure. Should this be -ENOMEM instead? The
-sock_alloc_send_skb() above this code returns -ENOMEM for allocation
-failures.
--- 
-pw-bot: cr
+Please do not send such reports for networking.
+register and alloc functions should always be assumed to
+need error handling, so that we don't have to fix all
+the callers once they do and check why there's no error 
+checking when reviewing the code..
