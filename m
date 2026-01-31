@@ -1,112 +1,129 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD2E2F7478
-	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 20:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93101E1024;
+	Sat, 31 Jan 2026 20:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769891431; cv=none; b=Cpf3DdK4J2ntgOzQs8D7kHt5WFUHSa43Bd6Kz7E7SFjQOa9QK5Qm18YagRsW8q65LD5P/NkFp57LTuie+J1QicIFIHE+C8cM3WmUvvBW/1Gm8hIHHUlSyBXw74EbiyLGr+apBjrUFnPBsDKojImS9hk6yddzxTrhkiHIWR24VYw=
+	t=1769892082; cv=none; b=SGSWWqE8tnalFYWa1iRNqPzopx/Sjh3cT85GLhVgZew2g8KN4u8zEAnF6OBufndvgbyozyLslPm7wLkRr7RneIhuS1Vuch1oK8ANltSkHDBzvKPfeTDcgKwWo50/7mVZ7UK6QIpWPFIoXjJBAlApBPgGke9MU9o05gvN/DmMjyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769891431; c=relaxed/simple;
-	bh=YrLARkMIUubX1RMXUb206ecBLrRdcpgg5pAUbAAH9+Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kwG2tSv6MTHLVqDmlN+B3RbjL3Sj52d0ExfSvPHwsV92ijigH92Ls83RRqtjmwpNc2lhQqs2jYfIwVVgCae5IBk0PiYba34mpYk9tcSh8Ui0pCRQpdJ4BJrkxNZBTE6qgXuQzk/mtnlJh81dwDKbFimGoqLSCPsvw5FIQUxsF4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T5K9lXfi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769892082; c=relaxed/simple;
+	bh=0L9KHIRomV4Jf/gGMn8eAxBc1vQow6EnmR9i9GB45X8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=smoXNIgiq0UeF+8z2Jx/2IXhTnVLgyzu4E1PVDvod6ulUwgYEAXA/ElPFH3Q3g/x39kYO0i3I9vtwXXNT4ac98BhKD6e9+ViEpegfNqiow45OvBEeU6hijV//MqSMTxnlyEv/Vi4zyjvLDXDqrnZ33Q6U0xTU40/rfFT2BAUcxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s9wfntQV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T5K9lXfi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D224AC4CEF1;
-	Sat, 31 Jan 2026 20:30:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s9wfntQV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0D0C4CEF1;
+	Sat, 31 Jan 2026 20:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769891431;
-	bh=YrLARkMIUubX1RMXUb206ecBLrRdcpgg5pAUbAAH9+Q=;
-	h=From:To:Cc:Subject:Date:From;
-	b=T5K9lXfiuAVrVLOR9EiLXAZzvzIFcSPEu9ePejLmyAEXSOJjGBgvVMkGbvEmuuOwi
-	 1nGeUnb4P8JvGJqeWFuJrq35jMJVm7woTi3A+MkFtDpaYgMqsKmqIj4IQqyNwSo/jo
-	 Pii44hHeXT2UhcYL8xDPhXcZitW3IFYt6ZU2PRzD3xdFUxTl1CQkqP3w11TTJOJXoa
-	 bbJv0h51R6Tsye6W55+1gI07/HZdcIpnN2wvcsjk2LtKXKgMyo6b7WXlz+tPTKXznr
-	 SU5OA3yUw3nlh6ieue4p5vDHtKjstkceS5XRLYMPwLRis7zzlFj2zSwuIWm2RPanWU
-	 nb9GmV2FeQKEQ==
+	s=k20201202; t=1769892082;
+	bh=0L9KHIRomV4Jf/gGMn8eAxBc1vQow6EnmR9i9GB45X8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=s9wfntQV4G/S6o0H1SS0WjOXHPLfqyfakQr52mFSxxf9YnVifL+OnZlm+RBTK/Lo3
+	 tTef/j3HOyWcyLM2/32Rcj7B/BsaeKwRcVid1BJ8E/xVwXbWcOJGoJQxtLc7JMq1Nb
+	 S++LeiHWawD8rI9dv383XRRVJySmDjzZdic2qF5xGAjMQIQINcqgIYt40F7LHphoI+
+	 nP+czU+BscUZITDR/KpIDCycZNDeIWewB9wQxA2Kp+LwryBfdap8SAxHBkrzrixl+b
+	 NyJnQBbna9/YeEwYiz6SIgK1tXJteoDseT92oU7fb57uQcroVjRL55kIqMFIdyKxM6
+	 NJSSbtOYJ2GGg==
+Date: Sat, 31 Jan 2026 12:41:20 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
-	Jakub Kicinski <kuba@kernel.org>,
-	donald.hunter@gmail.com,
-	sdf@fomichev.me,
-	gal@nvidia.com
-Subject: [PATCH net-next] tools: ynl: cli: make the output compact
-Date: Sat, 31 Jan 2026 12:30:29 -0800
-Message-ID: <20260131203029.1173492-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
+To: Kevin Hao <haokexin@gmail.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, Siddharth Vadapalli
+ <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Vladimir
+ Oltean <vladimir.oltean@nxp.com>, Kuniyuki Iwashima <kuniyu@google.com>,
+ linux-omap@vger.kernel.org
+Subject: Re: [PATCH net v4] net: cpsw_new: Execute ndo_set_rx_mode callback
+ in a work queue
+Message-ID: <20260131124120.744bd931@kernel.org>
+In-Reply-To: <20260130-bbb-v4-1-2bd000a15c34@gmail.com>
+References: <20260130-bbb-v4-1-2bd000a15c34@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Make the default (non-JSON) output more compact. Looking at RSS
-context dumps is pretty much impossible without this, because
-default print shows the indirection table with line per entry:
+On Fri, 30 Jan 2026 13:34:07 +0800 Kevin Hao wrote:
+> --- a/drivers/net/ethernet/ti/cpsw_new.c
+> +++ b/drivers/net/ethernet/ti/cpsw_new.c
 
-  'indir': [0,
-            1,
-            2,
-	    ...
+What's your plan for fixing drivers/net/ethernet/ti/cpsw.c ?
+My preference would be to post both of the fixes at once,
+I think this version is quite close, just a couple of nit picks
+below..
 
-And indirection tables have 100-200 entries each.
+> @@ -248,15 +248,25 @@ static int cpsw_purge_all_mc(struct net_device *ndev, const u8 *addr, int num)
+>  	return 0;
+>  }
+>  
+> -static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
+> +static void cpsw_ndo_set_rx_mode_work(struct work_struct *work)
+>  {
+> -	struct cpsw_priv *priv = netdev_priv(ndev);
+> +	struct cpsw_priv *priv = container_of(work, struct cpsw_priv, rx_mode_work);
+>  	struct cpsw_common *cpsw = priv->cpsw;
+> +	struct net_device *ndev = priv->ndev;
+>  
+> +	rtnl_lock();
+> +	if (!netif_running(ndev)) {
+> +		rtnl_unlock();
+> +		return;
 
-The compact output is far more readable:
+since the "undo" logic is getting complex you should use a goto.
+Replace the unlock and the return; here with:
 
-    'indir': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-              16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+		goto unlock_rtnl;
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: donald.hunter@gmail.com
-CC: sdf@fomichev.me
-CC: gal@nvidia.com
----
- tools/net/ynl/pyynl/cli.py | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+> +	}
+> +
+> +	netif_addr_lock_bh(ndev);
+>  	if (ndev->flags & IFF_PROMISC) {
+>  		/* Enable promiscuous mode */
+>  		cpsw_set_promiscious(ndev, true);
+>  		cpsw_ale_set_allmulti(cpsw->ale, IFF_ALLMULTI, priv->emac_port);
+> +		netif_addr_unlock_bh(ndev);
+> +		rtnl_unlock();
 
-diff --git a/tools/net/ynl/pyynl/cli.py b/tools/net/ynl/pyynl/cli.py
-index fdac1ab10a40..94a5ba348b69 100755
---- a/tools/net/ynl/pyynl/cli.py
-+++ b/tools/net/ynl/pyynl/cli.py
-@@ -44,6 +44,10 @@ RELATIVE_SCHEMA_DIR='../../../../Documentation/netlink'
-         return f"{modifiers}{text}{Colors.RESET}"
-     return text
- 
-+def term_width():
-+    """ Get terminal width in columns (80 if stdout is not a terminal) """
-+    return shutil.get_terminal_size().columns
-+
- def schema_dir():
-     """
-     Return the effective schema directory, preferring in-tree before
-@@ -103,8 +107,7 @@ RELATIVE_SCHEMA_DIR='../../../../Documentation/netlink'
- 
-             if attr.yaml.get('doc'):
-                 doc_prefix = prefix + ' ' * 4
--                term_width = shutil.get_terminal_size().columns
--                doc_text = textwrap.fill(attr.yaml['doc'], width=term_width,
-+                doc_text = textwrap.fill(attr.yaml['doc'], width=term_width(),
-                                          initial_indent=doc_prefix,
-                                          subsequent_indent=doc_prefix)
-                 attr_info += f"\n{doc_text}"
-@@ -264,7 +267,7 @@ RELATIVE_SCHEMA_DIR='../../../../Documentation/netlink'
-         if args.output_json:
-             print(json.dumps(msg, cls=YnlEncoder))
-         else:
--            pprint.PrettyPrinter().pprint(msg)
-+            pprint.pprint(msg, width=term_width(), compact=True)
- 
-     if args.list_families:
-         for filename in sorted(os.listdir(spec_dir())):
+
+		goto unlock_addr;
+
+>  		return;
+>  	}
+>  
+> @@ -270,6 +280,15 @@ static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
+>  	/* add/remove mcast address either for real netdev or for vlan */
+>  	__hw_addr_ref_sync_dev(&ndev->mc, ndev, cpsw_add_mc_addr,
+>  			       cpsw_del_mc_addr);
+
+And place a labels here:
+
+unlock_addr:
+
+> +	netif_addr_unlock_bh(ndev);
+
+unlock_rtnl:
+
+> +	rtnl_unlock();
+> +}
+
+>  	for (i = 0; i < cpsw->data.slaves; i++) {
+> -		if (!cpsw->slaves[i].ndev)
+> +		ndev = cpsw->slaves[i].ndev;
+> +		if (!ndev)
+>  			continue;
+>  
+> -		unregister_netdev(cpsw->slaves[i].ndev);
+> +		priv = netdev_priv(ndev);
+> +		disable_work_sync(&priv->rx_mode_work);
+> +		unregister_netdev(ndev);
+
+I understand that this is safe but I think that more logical ordering
+would be to shut things down _after_ object is unregistered.
 -- 
-2.52.0
-
+pw-bot: cr
