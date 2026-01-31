@@ -1,48 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8211235A933;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749CC359FAF;
 	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769869522; cv=none; b=mFYx+Vxj1Jp0C1IL1X3jvWGYLaTbDE6y75v5RD1a+7SfUGxtoeiQeASrt0HhFIS9j5cBX1+g04v84rZvnMRwXh7Lsd0opcbacLDEZVD8vr5BPSxOawWlIdoNgrgfsZUSzajZpwOWfZKrbGC888BKpzXkIvGyOTas7j2da8Ztmjk=
+	t=1769869522; cv=none; b=CmbQZiQe0EcCcPv+U49bmZqqi+Sa30H7s6yDATlO9SBaDe2HKzDdBB6mgZtOHaLv0r/6qCFaZakBPhJXNb2HWHyUFcgcFNcIZ+2uoOSLuZ0HsJBNkuzO3RQPcXDi3ych/fACSbDba+VGEJv6plCi6Htpw0DJf+q7RJaaJkhLkcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769869522; c=relaxed/simple;
-	bh=93FI6HCbFuKLoTGysvIesP/671jVJYX05qdlxtKR9Kk=;
+	bh=4aMfKYcVERhHxWAsYjEi8+tgICvrID1mZsAmSUTyoxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lv8Bsp4uR0rIb+9k+MVlxAXmI1rVp76A6robz6Q6jBkjmsqA4tSGyTbzf/qftyxKQPVvBUrmz3q2cRQYu1Y6zsEfdfaMSIDH/untHH+9tqTE3yz3eVVUAtEpqMji1vy1Y/mlkzRzUifxgki9xuVBj0W+Csp/4Z6xvlf+W/RDTts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SqYzYt4I; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=th9Tign/ogcZUgLi3jjfBzw97d8T2X1DpH9VRj/qxpnqtvC0BPGVWc8U14fDxSiUg0OdM35aUEfcbvF8QJoBn0KatSC0YxWOCetMZMKdEjugVqgdX672sV0qsyu+9Bgd2GznMqiM+hPZDXpT+0NMON1gaiwa5pE/Rqb9rI6JKqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GwEnvRTB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SqYzYt4I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03990C4AF64;
-	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GwEnvRTB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E75FEC4CEF1;
+	Sat, 31 Jan 2026 14:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1769869522;
-	bh=93FI6HCbFuKLoTGysvIesP/671jVJYX05qdlxtKR9Kk=;
+	bh=4aMfKYcVERhHxWAsYjEi8+tgICvrID1mZsAmSUTyoxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SqYzYt4IVbQPk0+jVuZ5Mhm77EzcOYeCDYr1W2HuJd8hXnAxnVEJQ8JMaAIBj6hDK
-	 F9ld/mXQMtTt6G+oCP/+SOwNUStMoI62trzL72ps7dw3/2PBRffb/epek6i+75z9Wo
-	 sw4shcSs4yVNiPTU/KitBkVX6jiSrQKT3by6VGT9JLow1pCHB/xI615IOPPlwhv+S9
-	 ZTnQTEIGjPQZ8CPMO+MKH+8LP+9uC1b2j1P0P/+UCCa+2G8evst/yofLjr2xolWBwa
-	 NSAD99xusS4nq3x5iW/Wvjx6ul+7/wgQFUyHaNSK6Y4u6n1IcPC+t8lH3OJrGuxYJm
-	 AAWAO5q9fQ7JA==
+	b=GwEnvRTBbcukjFCvBXvPdgcMk8cgUg/NaCFQ0rJOvDeTecyO+ZPAkjpB/Ku3JxiY8
+	 GMBLmijNIKMU44tEeKWSwefOeYvvim8vyZpfqFsjJMPO27NfrgSeVMkDacZNKm60Cb
+	 XNLdkazVD4yre6r7b0aF1is/lkAwGwRGaMrdozz4fvmF7zDzMfTsOM4TI6kuu2Slbq
+	 HzMCVXVkDYQh+J+b9YGeyPpOtOwVbT/ma64oMzW8R51OIxHD7f2f8KzCF9jzsjf+ZK
+	 Yy7GXjlkf9Owx8xrNBMDZGTq6Wzv4s0SsQNowqDsocRn2CoCKudSeOONO5uwmZbHCx
+	 3ZESXL3Kdrumg==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vmBua-0000000AVlz-11Zm;
+	id 1vmBua-0000000AVlr-0oEC;
 	Sat, 31 Jan 2026 15:25:20 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
-	Linux Doc Mailing List <linux-doc@vger.kernel.org>
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	intel-wired-lan@lists.osuosl.org,
 	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v4 34/41] docs: kdoc_files: document KernelFiles() ABI
-Date: Sat, 31 Jan 2026 15:25:08 +0100
-Message-ID: <ba775b448df3255dbae6ce6e22a02144949291c2.1769867954.git.mchehab+huawei@kernel.org>
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH v4 32/41] docs: sphinx-build-wrapper: allow -v override -q
+Date: Sat, 31 Jan 2026 15:25:06 +0100
+Message-ID: <64fe15e0ddaba7de59a7c031db03f87c19873c04.1769867954.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769867953.git.mchehab+huawei@kernel.org>
 References: <cover.1769867953.git.mchehab+huawei@kernel.org>
@@ -56,75 +57,63 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-The KernelFiles is the main entry point to run kernel-doc,
-being used by both tools/docs/kernel-doc and
-Documentation/sphinx/kerneldoc.py.
+Documentation builds were using "-q" for a long time, but sometimes
+it is nice to see the Sphinx progress, without increasing build
+verbosity - which would also turn on kernel-doc verbosity.
 
-It is also used on QEMU, which also uses the kernel-doc
-libraries from tools/lib/python/kdoc.
+Instead of doing that, let's parse the sphinx-build already-existing
+-v: each time it is used, it increases the verbosity level.
 
-Properly describe its ABI contract.
+With that, if the default is to use -q, a single -v will disable
+quiet mode. Passing more -v will keep increasing its verbosity.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- tools/lib/python/kdoc/kdoc_files.py | 44 ++++++++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ tools/docs/sphinx-build-wrapper | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/python/kdoc/kdoc_files.py b/tools/lib/python/kdoc/kdoc_files.py
-index c35e033cf123..8c2059623949 100644
---- a/tools/lib/python/kdoc/kdoc_files.py
-+++ b/tools/lib/python/kdoc/kdoc_files.py
-@@ -91,7 +91,49 @@ class KernelFiles():
-     """
-     Parse kernel-doc tags on multiple kernel source files.
+diff --git a/tools/docs/sphinx-build-wrapper b/tools/docs/sphinx-build-wrapper
+index 78ff7ac202ef..8080ace60680 100755
+--- a/tools/docs/sphinx-build-wrapper
++++ b/tools/docs/sphinx-build-wrapper
+@@ -168,6 +168,7 @@ class SphinxBuilder:
+         parser = argparse.ArgumentParser()
+         parser.add_argument('-j', '--jobs', type=int)
+         parser.add_argument('-q', '--quiet', action='store_true')
++        parser.add_argument('-v', '--verbose', default=0, action='count')
  
--    There are two type of parsers defined here:
-+    This is the main entry point to run kernel-doc. This class is initialized
-+    using a series of optional arguments:
+         #
+         # Other sphinx-build arguments go as-is, so place them
+@@ -179,10 +180,14 @@ class SphinxBuilder:
+         # Build a list of sphinx args, honoring verbosity here if specified
+         #
+ 
+-        verbose = self.verbose
+         sphinx_args, self.sphinxopts = parser.parse_known_args(sphinxopts)
 +
-+    ``verbose``
-+        If True, enables kernel-doc verbosity. Default: False.
++        verbose = sphinx_args.verbose
++        if self.verbose:
++            verbose += 1
 +
-+    ``out_style``
-+        Class to be used to format output. If None (default),
-+        only report errors.
-+
-+    ``xforms``
-+        Transforms to be applied to C prototypes and data structs.
-+        If not specified, defaults to xforms = CFunction()
-+
-+    ``werror``
-+        If True, treat warnings as errors, retuning an error code on warnings.
-+
-+        Default: False.
-+
-+    ``wreturn``
-+        If True, warns about the lack of a return markup on functions.
-+
-+        Default: False.
-+    ``wshort_desc``
-+        If True, warns if initial short description is missing.
-+
-+        Default: False.
-+
-+    ``wcontents_before_sections``
-+        If True, warn if there are contents before sections (deprecated).
-+        This option is kept just for backward-compatibility, but it does
-+        nothing, neither here nor at the original Perl script.
-+
-+        Default: False.
-+
-+    ``logger``
-+        Optional logger class instance.
-+
-+        If not specified, defaults to use: ``logging.getLogger("kernel-doc")``
-+
-+    Note:
-+        There are two type of parsers defined here:
-+
-         - self.parse_file(): parses both kernel-doc markups and
-           ``EXPORT_SYMBOL*`` macros;
-         - self.process_export_file(): parses only ``EXPORT_SYMBOL*`` macros.
+         if sphinx_args.quiet is True:
+-            verbose = False
++            verbose = 0
+ 
+         #
+         # If the user explicitly sets "-j" at command line, use it.
+@@ -195,8 +200,11 @@ class SphinxBuilder:
+         else:
+             self.n_jobs = None
+ 
+-        if not verbose:
++        if verbose < 1:
+             self.sphinxopts += ["-q"]
++        else:
++            for i in range(1, sphinx_args.verbose):
++                self.sphinxopts += ["-v"]
+ 
+     def __init__(self, builddir, venv=None, verbose=False, n_jobs=None,
+                  interactive=None):
 -- 
 2.52.0
 
