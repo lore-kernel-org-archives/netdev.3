@@ -1,114 +1,93 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from cvsmtppost102.wmail.worksmobile.com (cvsmtppost102.wmail.worksmobile.com [125.209.209.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA703587C6
-	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 15:12:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3D676026
+	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 15:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=125.209.209.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769872324; cv=none; b=jngbfg23JFaXVsDNv+uifm486zKXsQxrIX6OMQv1mTGXRciWE+idUZFzUT734SzcIfBo8kFXC9ZlC1IOuKoHlel0fsST4cLEkEHxJTrMIvRNesn9+Pk1JYqxJnJe93QWQvAdiGVjq/wRIuQuPEEj2593HRPxzF330X/RtEouqrg=
+	t=1769872344; cv=none; b=VfrrOiUg0MiswaBLUYty+/bGLztZj0N76mBFsnLQJHs6fe+Bgos3jcInpvG16fGlmFSFEz2Gf+bw1/FwLSsOOWwbb63awb8VUvRzS3P7eDGVqn/hInhY54V4lJgzMhgOs7MBZFYLq2wgsVUcwUjce4RRb33GJi3cZ3yIxchPYZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769872324; c=relaxed/simple;
-	bh=Rw88yKb3KZqqYW+ZvJrAaS4iZ9qjJKr36+r+XVg7YKw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WsGMv1RLBlrG8fvYnn/2I1fKwmgbIDrTo6bjKEuJZxaPxwZ4eBWke729i5X7Q7mFZZmOB+0q5aTXjsktk1MkfKr91f8ze5icP104+Fj21iRsGghYJ19/m+2him5+BB+c9cnrKYNWSPg1x/0oVpXtvGSxZVXTLHCt3aSbtzLGHWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vmCdI-0004OL-MZ; Sat, 31 Jan 2026 16:11:32 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vmCdG-003QgM-0O;
-	Sat, 31 Jan 2026 16:11:29 +0100
-Received: from pengutronix.de (unknown [IPv6:2001:67c:1810:f051:561c:856e:5964:a6ed])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 4331E4DC6F6;
-	Sat, 31 Jan 2026 15:11:28 +0000 (UTC)
-Date: Sat, 31 Jan 2026 16:11:25 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, Michael Grzeschik <m.grzeschik@pengutronix.de>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Vincent Mailhol <mailhol@kernel.org>, 
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>, 
-	Sridhar Samudrala <sridhar.samudrala@intel.com>, Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>, 
-	Ping-Ke Shih <pkshih@realtek.com>, Thomas =?utf-8?Q?M=C3=BChlbacher?= <tmuehlbacher@posteo.net>, 
-	Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: Re: [PATCH net-next] net: remove unnecessary module_init/exit
- functions
-Message-ID: <20260131-wooden-overjoyed-rook-f04e62-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260131004327.18112-1-enelsonmoore@gmail.com>
+	s=arc-20240116; t=1769872344; c=relaxed/simple;
+	bh=ciCf9zWxPZMOZBBnRub5O+kI9eVweIpwhRVBGgBcsCk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=VCSsQm+O/CktfatAcBTWMCifA/31etqJ0ZyBH5StLy9a+AxWY8KZsNMpxqwSWr0SBOi103gaB6InaeDP4WhIbSxYCHilN7Oyl2c3pjV/oAyS7kQr9gFpt35OXoYmwrHV1gTyS7XlxuRDE8wQAYVTqonQzAfttHhmhoyhqZ91biE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=korea.ac.kr; spf=pass smtp.mailfrom=korea.ac.kr; dkim=pass (2048-bit key) header.d=worksmobile.com header.i=@worksmobile.com header.b=TrVi/VSi; dkim=pass (1024-bit key) header.d=korea.ac.kr header.i=@korea.ac.kr header.b=AvTeZz/l; arc=none smtp.client-ip=125.209.209.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=korea.ac.kr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=korea.ac.kr
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=worksmobile.com header.i=@worksmobile.com header.b="TrVi/VSi";
+	dkim=pass (1024-bit key) header.d=korea.ac.kr header.i=@korea.ac.kr header.b="AvTeZz/l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=worksmobile.com;
+	s=s20171120; t=1769871732;
+	bh=ciCf9zWxPZMOZBBnRub5O+kI9eVweIpwhRVBGgBcsCk=;
+	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=TrVi/VSie5OKj5eaRUSjA3B2ffIdnlPI3HtX+mjMyB/wgMBL83mJIeMGnYPVOcVdu
+	 XcF0Vdk12OkAuqc0e3QgUX905b+aJPZncwXrAPOuiNocVWr3V7O3/Y4wQvSX7IAYmu
+	 zSlbE9pUpT6wB6EYn+jUAG3jN90mgyvkpz1SrbCW8Pog2FGMq9CB4H7E3HD0hsej9d
+	 1EE176fI73yAebPnm03Q2QhWvWYoIw4YgOKSeS5zBNAvHA9yTNh6OYZD0PcuoLTb4r
+	 hRv5G3AMfqgyVCh/0uYlqJobp7U/MTq/HNpuxYUwG1IUfl5K4KWoy57L3vKFUTdyrJ
+	 h2eqv2fAFBaHQ==
+Received: from cvsendbo004.wmail ([10.113.20.173])
+  by cvsmtppost102.wmail.worksmobile.com with ESMTP id tjmlbN4ISeqwiP7cNhoRKA
+  for <netdev@vger.kernel.org>;
+  Sat, 31 Jan 2026 15:02:12 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=korea.ac.kr;
+	s=naverworks; t=1769871732;
+	bh=ciCf9zWxPZMOZBBnRub5O+kI9eVweIpwhRVBGgBcsCk=;
+	h=From:To:Subject:Date:Message-Id:From:Subject:Feedback-ID:
+	 X-Works-Security;
+	b=AvTeZz/lMOKdVz7HHIdPDgDwESS0cbNVlC0x7ZY7eFz9VJmLiArJSaW7ueEr3VSEA
+	 N33uLL8SCJrGCW7/2VYbG7XitiO52uqMHfr7ThNmtLtmGatDY+AxDaO1m358E2G+nS
+	 +FcXDPaXkRWQgjVf4lWl1HFLYGNtGo9lmuReyuaE=
+X-Session-ID: hJBwT7RFQOqptNZpQGn8yg
+X-Works-Send-Opt: kendjAJYjHm/FqM9FqJYFxMqFNwYjAg=
+X-Works-Smtp-Source: VqbqaAvrFqJZ+HmZKqKl+6E=
+Received: from s2lab05.. ([163.152.163.130])
+  by cvnsmtp103.wmail.worksmobile.com with ESMTP id hJBwT7RFQOqptNZpQGn8yg
+  for <multiple recipients>
+  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+  Sat, 31 Jan 2026 15:02:12 -0000
+From: Ingyu Jang <ingyujang25@korea.ac.kr>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	Ingyu Jang <ingyujang25@korea.ac.kr>
+Subject: [Question] Dead code in rawv6_mh_filter_register()?
+Date: Sun,  1 Feb 2026 00:02:12 +0900
+Message-Id: <20260131150212.3292929-1-ingyujang25@korea.ac.kr>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6yd7qrhj4jkcdcod"
-Content-Disposition: inline
-In-Reply-To: <20260131004327.18112-1-enelsonmoore@gmail.com>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 
+Hi,
 
---6yd7qrhj4jkcdcod
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH net-next] net: remove unnecessary module_init/exit
- functions
-MIME-Version: 1.0
+I noticed that in net/ipv6/raw.c, the function
+rawv6_mh_filter_register() always returns 0.
 
-On 30.01.2026 16:42:56, Ethan Nelson-Moore wrote:
-> Many network drivers have unnecessary empty module_init and module_exit
-> functions. Remove them (including some that just print a message). Note
-> that if a module_init function exists, a module_exit function must also
-> exist; otherwise, the module cannot be unloaded.
->
-> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-> ---
->  drivers/net/can/sja1000/sja1000.c             | 16 ----------
+The function (at line 117) simply performs:
+  - rcu_assign_pointer(mh_filter, filter)
+  - return 0
 
-For drivers/net/can
+However, in net/ipv6/mip6.c, the function mip6_init() checks the
+return value and has error handling (at line 381):
 
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
+  if (rawv6_mh_filter_register(mip6_mh_filter) < 0) {
+      pr_info("%s: can't add rawv6 mh filter\n", __func__);
+      goto mip6_rawv6_mh_fail;
+  }
 
-regards,
-Marc
+Since rawv6_mh_filter_register() never fails, this error path
+appears to be dead code. The same applies to
+rawv6_mh_filter_unregister() in mip6_fini().
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+Is this intentional defensive coding for potential future changes,
+or could this be cleaned up by making these functions return void?
 
---6yd7qrhj4jkcdcod
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAml+G5oACgkQDHRl3/mQ
-kZwFxQgAqTWarHnOMLQgAfktq8C6b1xbDfGkeLEVgqQLgeK3hr1CXec3E3TbKYn9
-n5CEvjy5bGfh0RJ/tLDbPATx5kzwrGteRHpqmd8mO+Cn063l06OpcLLLJ/HxEU1Y
-icgrkF8XRG4pCrzHtFFLtI5lxDIbx1Gb4T3o3IiusfphN5bN0ySKkPQVluOrK0nG
-S1lwcjqHjGYr2kXQ0PB5ULHdOiugYBGk1ZgOoOrZyjQSyC0sye50YThQhek3xEDV
-cMBf/NMFIfSjXkx/z8B87YOK2hotfB5qHilqje1AClDuK45Bjs6A+xb+EwAPc3Lt
-ktHD4Px12IJbaBaJo4hCFxyCM1Xm4g==
-=iYrI
------END PGP SIGNATURE-----
-
---6yd7qrhj4jkcdcod--
+Thanks,
+Ingyu Jang
