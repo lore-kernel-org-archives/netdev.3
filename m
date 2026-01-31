@@ -1,128 +1,126 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566CA340D84
-	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 10:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C44932B99F;
+	Sat, 31 Jan 2026 10:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769854534; cv=none; b=dWFoTRU5pmOzB4YlZsVAUs3dELn21gl5sSuKdpUA1bMM1qtexz4c9cZ9uog9bLfXSlIxHUXWg1TWBX92/UhBcf3SPH8l3fXwnRgqxzLhfYSwW87rJHiJufCoxkxXruS9wpiqgqXjfGOoaP4Eh2JKrOatF9/6E6vLUfCUPfS9gM8=
+	t=1769855204; cv=none; b=rAGGL4irw/u/c2xh9s3ZLkq7bcQQZD3n8bXccw1Sdbhek89M0Tb5k2Dn+6RNvV1gNsLLMIGiCDjCLpCB4W7JhIOi3QICMn8ejQ5A8DsUlwPjApM3HiCerUtuGePn8gIrHeoypSBFg/9uWrjE300KyX5cziwqpPim0zSx2ugzCkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769854534; c=relaxed/simple;
-	bh=Vv4IiphQbKguM28KLcNoTFbFQdKsFQXjOWT6P8dxtDE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNvbtL+Jfux5+ArHKTVU6RSRWxwuEbU4PPoOqxYosy035Imq63okpZ6bjR+WBedefRUD/hj2WdHAJ26Z0kFUa5MJRmEtkMG+LKuPAgMd/NT8iwdD14Y1nonpSPxomsXc8RycbIsM3cVfrjU/aR0mBuyE4r0nF+FvyoFGjrRGIxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vm80b-0002Q0-VE; Sat, 31 Jan 2026 11:15:17 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vm80c-003OWK-1D;
-	Sat, 31 Jan 2026 11:15:17 +0100
-Received: from blackshift.org (unknown [IPv6:2001:67c:1810:f051:d04a:1c63:e2:421c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 37EE94DC56E;
-	Sat, 31 Jan 2026 10:15:17 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	linux-can@vger.kernel.org,
-	kernel@pengutronix.de,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net-next 2/8] can: rcar_canfd: Add support for FD-Only mode
-Date: Sat, 31 Jan 2026 11:11:43 +0100
-Message-ID: <20260131101512.1958907-3-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260131101512.1958907-1-mkl@pengutronix.de>
-References: <20260131101512.1958907-1-mkl@pengutronix.de>
+	s=arc-20240116; t=1769855204; c=relaxed/simple;
+	bh=fSYUV7IS3o69dTdqJYCTCDDpkpgEmF9ZMQCatBCrxIY=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=PstHHjJ1DIEtlA3xO7/oN6p3z6qcnGUPwjmqzP4gy0f27NypuIJ2JkTgdf+Tpv1wa6PL6b2bxhc0eJJvosS/AKI/lF97t2e3ChXdhuEzgszN/zU66tmVLAojrERySmF7pmijecH9AiCR+16r09uqbSFEqyEO74MA1A2MSGgXGHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=ujFcBGUs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=o3Mf3maH; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="ujFcBGUs";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="o3Mf3maH"
+Date: Sat, 31 Jan 2026 11:26:32 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1769855200;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fSYUV7IS3o69dTdqJYCTCDDpkpgEmF9ZMQCatBCrxIY=;
+	b=ujFcBGUsImqUv9Waw+ZtvA+p6fZ4LIbAmiS6QztDYuHyPXm/6tntcMoEMIYEjU8lOqcO84
+	JUUDN/6Kukil9yK//36hXfaWpntbhqwS7rpoYqgNp8J7vH2rEgPLSWBSOJCFhT370lMrz/
+	7gRztUGxucgA8FZM7aBr49ieKm/ipXKorVgUa2YcofyppS0h5L2o6S+vxx6wdHHiyZuQP7
+	4tDa97C40tHmopdF7sfKWCecB4iWhSWR6wxuCMHjQF5PnvXeR7OeAHevgmM2vMyuDCG3al
+	xfxPZ+QZ+kVu3G/6B75qY9SyFT5dp8UfXmQfVcVLA1dNhzZVtJfmKcKv2Y6xrg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1769855200;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fSYUV7IS3o69dTdqJYCTCDDpkpgEmF9ZMQCatBCrxIY=;
+	b=o3Mf3maHGlMurUXPFEwRlLNYIUYFFIj6zqdetL38/IGpMYAIMViNT6qayDv5qUM3kMIQ3B
+	XwdioEIZ+jxY1TDQ==
+From: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	Geliang Tang <geliang@kernel.org>,
+	=?UTF-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
+	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-api@vger.kernel.org,
+	Arnd Bergmann <arnd@arndb.de>, linux-kselftest@vger.kernel.org,
+	mptcp@lists.linux.dev, linux-security-module@vger.kernel.org,
+	bpf@vger.kernel.org, libc-alpha@sourceware.org,
+	Carlos O'Donell <carlos@redhat.com>,
+	Adhemerval Zanella <adhemerval.zanella@linaro.org>,
+	Rich Felker <dalias@libc.org>, klibc@zytor.com,
+	Florian Weimer <fweimer@redhat.com>
+Message-ID: <3c46fc49-b41b-44a2-b42a-669cc7e6bb02@linutronix.de>
+In-Reply-To: <20260130081741.425a92e0@kernel.org>
+References: <20260120-uapi-sockaddr-v2-0-63c319111cf6@linutronix.de> <20260121192729.2095aa25@kernel.org> <20260130112309-28f2645b-e756-4173-96da-cf5c59191520@linutronix.de> <20260130081741.425a92e0@kernel.org>
+Subject: Re: [PATCH net-next v2 0/4] net: uapi: Provide an UAPI definition
+ of 'struct sockaddr'
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Correlation-ID: <3c46fc49-b41b-44a2-b42a-669cc7e6bb02@linutronix.de>
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+Jan 30, 2026 17:17:46 Jakub Kicinski <kuba@kernel.org>:
 
-The RZ/{G2L,G3E} and R-Car Gen4 SoCs support additional CAN FD mode called
-FD-only mode. In this mode, communication in Classical CAN frame format is
-disabled.
+> On Fri, 30 Jan 2026 11:34:15 +0100 Thomas Wei=C3=9Fschuh wrote:
+>>> Are all those selftests / samples getting broken by this patch set?=C2=
+=A0
+>>
+>> Yes.
+>>
+>> Some of them get broken by the new 'struct sockaddr', but some others ar=
+e
+>> already broken just by the new transitive inclusion of libc-compat.h.
+>> So any header starting to use the compatibility machinery may trigger br=
+eakage
+>> in code including UAPI headers before libc header, even for completely n=
+ew type
+>> definitions which themselves would not conflict with libc.
+>
+> Let's split the uAPI header changes from any selftest changes.
+> If you're saying the the selftests no longer build after the uAPI
+> header changes then of course we can't apply the patches.
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://patch.msgid.link/20251126155911.320563-3-biju.das.jz@bp.renesas.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/rcar/rcar_canfd.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+Yes, the selftests don't build anymore after the uAPI changes.
 
-diff --git a/drivers/net/can/rcar/rcar_canfd.c b/drivers/net/can/rcar/rcar_canfd.c
-index 7895e1fdea1c..4a653d8978ba 100644
---- a/drivers/net/can/rcar/rcar_canfd.c
-+++ b/drivers/net/can/rcar/rcar_canfd.c
-@@ -472,6 +472,7 @@ struct rcar_canfd_global {
- 	unsigned long channels_mask;	/* Enabled channels mask */
- 	bool extclk;			/* CANFD or Ext clock */
- 	bool fdmode;			/* CAN FD or Classical CAN only mode */
-+	bool fd_only_mode;		/* FD-Only mode for CAN-FD */
- 	struct reset_control *rstc1;
- 	struct reset_control *rstc2;
- 	const struct rcar_canfd_hw_info *info;
-@@ -829,12 +830,20 @@ static int rcar_canfd_reset_controller(struct rcar_canfd_global *gpriv)
- 							 RCANFD_GEN4_FDCFG_FDOE);
- 				rcar_canfd_set_bit_reg(&gpriv->fcbase[ch].cfdcfg,
- 						       RCANFD_GEN4_FDCFG_CLOE);
-+			} else if (gpriv->fd_only_mode) {
-+				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
-+							 RCANFD_GEN4_FDCFG_CLOE);
-+				rcar_canfd_set_bit_reg(&gpriv->fcbase[ch].cfdcfg,
-+						       RCANFD_GEN4_FDCFG_FDOE);
- 			} else {
- 				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
- 							 RCANFD_GEN4_FDCFG_FDOE);
- 				rcar_canfd_clear_bit_reg(&gpriv->fcbase[ch].cfdcfg,
- 							 RCANFD_GEN4_FDCFG_CLOE);
- 			}
-+		} else if (gpriv->fd_only_mode) {
-+			rcar_canfd_set_bit_reg(&gpriv->fcbase[ch].cfdcfg,
-+					       RCANFD_GEN4_FDCFG_FDOE);
- 		}
- 	}
- 
-@@ -2140,6 +2149,9 @@ static int rcar_canfd_probe(struct platform_device *pdev)
- 	gpriv->fdmode = fdmode;
- 	gpriv->info = info;
- 
-+	if (of_property_read_bool(dev->of_node, "renesas,fd-only"))
-+		gpriv->fd_only_mode = true; /* FD-Only mode for CAN-FD */
-+
- 	gpriv->rstc1 = devm_reset_control_get_optional_exclusive(dev, "rstp_n");
- 	if (IS_ERR(gpriv->rstc1))
- 		return dev_err_probe(dev, PTR_ERR(gpriv->rstc1),
-@@ -2239,7 +2251,7 @@ static int rcar_canfd_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, gpriv);
- 	dev_info(dev, "global operational state (%s clk, %s mode)\n",
- 		 gpriv->extclk ? "ext" : "canfd",
--		 gpriv->fdmode ? "fd" : "classical");
-+		 gpriv->fdmode ? (gpriv->fd_only_mode ? "fd-only" : "fd") : "classical");
- 	return 0;
- 
- fail_channel:
--- 
-2.51.0
+"can't apply" as in
+* "can't apply separately"
+* "are unacceptable in general"
+* "are too late for this cycle"
+?
 
+None of this is urgent.
+We can do the selftests in one cycle and the uAPI in another one.
+Feel free to pick up the patches as you see fit.
+(The mptcp changes already go through their tree, so need to be dropped her=
+e)
+I can also resubmit the patches differently if preferred.
+
+
+Thomas
