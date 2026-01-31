@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F8A3596ED;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88CC835A93B;
 	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769869522; cv=none; b=C9OxefML0YkzoFz+sbXLWTrto3t7R8ecMF8FcsbUN0iaNvvz2I41YXK0b6R8ZIi2jPtO45y4yjdOGYcQf58uN2vv265ZoPitnTcFR3FERJFOUqgiCcFQX96wNMwJELnB9bAM5ZtfI/Dq6zAKWdkPEDCPT9hXHQIITKRZv9PLU6A=
+	t=1769869522; cv=none; b=Z1V2qWONqM4HChq0CxOUihiQy/OaO9KJ92p73XB8++aU7r/4s6panXOf8V3f43oJIe5H9askYBHDhOxfKPOmd3CqqnUv0geKChUMZAAJY4TbqUnsElGJGvrLzSe2QDIGKEcM29WmmwgxkphtW6SDpNoW03397xHPQGP4FyvyHqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769869522; c=relaxed/simple;
-	bh=3n5zkoFrFUOIWGD8NapCIbtnoFCw7B0BzF+EBvzaUy8=;
+	bh=C2cStPoOoGCftK6fYM/VQjKEO1UC2wtJ9483nmjaklU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gWSMovoNjRfEGQ+DU6ym9kl6CykgTCZT35xGu9Sv2ClLPCpuQMaCcoJ2xDZJe8AVtcc+8mkYdRoeQZqwTCGQwkDjH+f8ay5/8xnKGDqdkpxa+bR2cYxuVJS6YQgFzZ6raGA9onrpbg11TISH4UtSYYDKqccLr3Mju7iyuSmFa50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dHMXU/pk; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=cEOfetqAl1XlXVsZlqdJHNBO6Eqeu/fodY7hFQ6jhgWaS0MS2gGzJtLf5rYihITKGnIY7ly0QSiEQJLKDQ/REILIU+C3nS+ZFtl7DO5vmn34BPXvda5eohjeLJLY4Ojy+nsE3sJe5HrTLgxZykh0KfRz0Ra/ZjhkOHR9W6f4vy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XUlq74Q3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dHMXU/pk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A65C4AF48;
-	Sat, 31 Jan 2026 14:25:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XUlq74Q3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04926C4AF67;
+	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769869521;
-	bh=3n5zkoFrFUOIWGD8NapCIbtnoFCw7B0BzF+EBvzaUy8=;
+	s=k20201202; t=1769869522;
+	bh=C2cStPoOoGCftK6fYM/VQjKEO1UC2wtJ9483nmjaklU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dHMXU/pk4asVAvvkpHiG3eEJ5oA7riAKDCt3bzpKkOYdYUxfNrsNR73LYNJVGZuAU
-	 S8TXpfIoIBqt5UuHSafFQzct84M+zzW8u96y7Vw1vbNbAquzD6dvnE2qmeM75Afg6n
-	 xWdPbDEofdwioK5S71f/8SMHuxI4kCCY5uP/zsFstkvlsaq5Ec3TYOppshkcLZAF23
-	 Inn3PDCwICFQoGtuh2TWzXrljwmhDiw5UpFOu6Vn1OIuWmG1cIBdiBdoqL1NwrqGkQ
-	 9QjAAda+dkEIbjVqIzsJns52YoGLV+ASOJc8IN/6N1V4YKWhdDJQMwVCL76+vX4JQS
-	 bwP7h8SY6Wnew==
+	b=XUlq74Q3cKfYzyY2KmtaeWNQkjLbbRDt5JtA5d4kbIkyhkSG2+r9AGrHLU4Qs3OAO
+	 3CImQgNMNaRltbbsjangUr8/RFy/xKGsHu358A75l53bxFqHHyasF1Y45xDrcFc7ZZ
+	 zUGz4lPK3g2E73Jcj6dtY4eaNtIuN0oRlF39s22PGLYoBlu/2KrKfAQvAhr+IyXRR+
+	 fiDNVldhW85MRQCVRgbBHJVmTVarAAtjw7rDnTFIEHavj+WTvsWpLmLJ87yKpKiD0Q
+	 +HIoB2dNIDt/n0P2oHfuEaY5mV8k8GNS3pw9TsRmf1W18wyoLE9yQyFvxtldDB8Ism
+	 kso7P7jRnB1bA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vmBua-0000000AVlj-0aF2;
+	id 1vmBua-0000000AVlv-0v7X;
 	Sat, 31 Jan 2026 15:25:20 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
@@ -39,10 +39,11 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v4 30/41] docs: kdoc_files: allows the caller to use a different xforms class
-Date: Sat, 31 Jan 2026 15:25:04 +0100
-Message-ID: <a6ff5862682267a0a8e0c6dffa6df69f5700e933.1769867953.git.mchehab+huawei@kernel.org>
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH v4 33/41] tools: sphinx-build-wrapper: improve its help message
+Date: Sat, 31 Jan 2026 15:25:07 +0100
+Message-ID: <9a41e5aa1da74e30a05bc21537a0c170450f01e3.1769867954.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769867953.git.mchehab+huawei@kernel.org>
 References: <cover.1769867953.git.mchehab+huawei@kernel.org>
@@ -56,58 +57,74 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-While the main goal for kernel-doc is to be used inside the Linux
-Kernel, other open source projects could benefit for it. That's
-currently the case of QEMU, which has a fork, mainly due to two
-reasons:
+Besides the parameters that are passed via command line arguments,
+the wrapper's behavior is affected by several environment variables.
 
-  - they need an extra C function transform rule;
-  - they handle the html output a little bit different.
-
-Add an extra optional argument to make easier for the code to be
-shared, as, with that, QEMU can just create a new derivated class
-that will contain its specific rulesets, and just copy the
-remaining kernel-doc files as-is.
+Document that. While here, use __doc__ for its description.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- tools/lib/python/kdoc/kdoc_files.py | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ tools/docs/sphinx-build-wrapper | 28 +++++++++++++++++++++++++---
+ 1 file changed, 25 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/python/kdoc/kdoc_files.py b/tools/lib/python/kdoc/kdoc_files.py
-index 7357c97a4b01..c35e033cf123 100644
---- a/tools/lib/python/kdoc/kdoc_files.py
-+++ b/tools/lib/python/kdoc/kdoc_files.py
-@@ -118,7 +118,7 @@ class KernelFiles():
-         if fname in self.files:
-             return
+diff --git a/tools/docs/sphinx-build-wrapper b/tools/docs/sphinx-build-wrapper
+index 8080ace60680..b7c149dff06b 100755
+--- a/tools/docs/sphinx-build-wrapper
++++ b/tools/docs/sphinx-build-wrapper
+@@ -814,20 +814,42 @@ def jobs_type(value):
+     except ValueError:
+         raise argparse.ArgumentTypeError(f"Must be 'auto' or positive integer, got {value}")  # pylint: disable=W0707
  
--        doc = KernelDoc(self.config, fname, CTransforms)
-+        doc = KernelDoc(self.config, fname, self.xforms)
-         export_table, entries = doc.parse_kdoc()
- 
-         self.export_table[fname] = export_table
-@@ -154,7 +154,7 @@ class KernelFiles():
- 
-         self.error(f"Cannot find file {fname}")
- 
--    def __init__(self, verbose=False, out_style=None,
-+    def __init__(self, verbose=False, out_style=None, xforms=None,
-                  werror=False, wreturn=False, wshort_desc=False,
-                  wcontents_before_sections=False,
-                  logger=None):
-@@ -193,6 +193,11 @@ class KernelFiles():
-         self.config.wshort_desc = wshort_desc
-         self.config.wcontents_before_sections = wcontents_before_sections
- 
-+        if xforms:
-+            self.xforms = xforms
-+        else:
-+            self.xforms = CTransforms()
++EPILOG="""
++Besides the command line arguments, several environment variables affect its
++default behavior, meant to be used when called via Kernel Makefile:
 +
-         if not logger:
-             self.config.log = logging.getLogger("kernel-doc")
-         else:
++- KERNELVERSION:  Kernel major version
++- KERNELRELEASE:  Kernel release
++- KBUILD_VERBOSE: Contains the value of "make V=[0|1] variable.
++                  When V=0 (KBUILD_VERBOSE=0), sets verbose level to "-q".
++- SPHINXBUILD:    Documentation build tool (default: "sphinx-build").
++- SPHINXOPTS:     Extra options pased to SPHINXBUILD
++                  (default: "-j auto" and "-q" if KBUILD_VERBOSE=0).
++                  The "-v" flag can be used to increase verbosity.
++                  If V=0, the first "-v" will drop "-q".
++- PYTHON3:        Python command to run SPHINXBUILD
++- PDFLATEX:       LaTeX PDF engine. (default: "xelatex")
++- LATEXOPTS:      Optional set of command line arguments to the LaTeX engine
++- srctree:        Location of the Kernel root directory (default: ".").
++
++"""
++
+ def main():
+     """
+     Main function. The only mandatory argument is the target. If not
+     specified, the other arguments will use default values if not
+     specified at os.environ.
+     """
+-    parser = argparse.ArgumentParser(description="Kernel documentation builder")
++    parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
++                                     description=__doc__,
++                                     epilog=EPILOG)
+ 
+     parser.add_argument("target", choices=list(TARGETS.keys()),
+                         help="Documentation target to build")
+     parser.add_argument("--sphinxdirs", nargs="+",
+                         help="Specific directories to build")
+     parser.add_argument("--builddir", default="output",
+-                        help="Sphinx configuration file")
++                        help="Sphinx configuration file (default: %(default)s)")
+ 
+     parser.add_argument("--theme", help="Sphinx theme to use")
+ 
+@@ -843,7 +865,7 @@ def main():
+                         help="place build in verbose mode")
+ 
+     parser.add_argument('-j', '--jobs', type=jobs_type,
+-                        help="Sets number of jobs to use with sphinx-build")
++                        help="Sets number of jobs to use with sphinx-build(default: auto)")
+ 
+     parser.add_argument('-i', '--interactive', action='store_true',
+                         help="Change latex default to run in interactive mode")
 -- 
 2.52.0
 
