@@ -1,119 +1,84 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CE232ABE1
-	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 21:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28170389447
+	for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 22:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769895011; cv=none; b=F4fm5Rc/gAzFiyUwyEd2qW4SmiFIigq+sKFVidzrIit7aPwWSWOv9oS/96k34URHbMpEpKZN7efMGh/6KBG/QlrWWmUMKh9ImZ2rikkvyetwCtHHdAqLPsMFgT6weHETrxsaJi5XTwLkFaJGiQgVCsrKcpxwAaDbBioj9+PahdU=
+	t=1769897332; cv=none; b=ag4fuNqaFmK2RhRmMr1Ewpf9Yl6oCmd+aYZ5as1tdepIj1N1I68pR1bKaq5CR+EDqFembK8v8un92prdl6y9EZFyMz5VtjjyPwNSslSpM69LCE2nPs655dMLKP6rHFF3C3MIEIoVj4NwSgz5hQaIgq8gSUnwWPySbbYRV4ql03U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769895011; c=relaxed/simple;
-	bh=bVN+iVq2LVQdCnKQNtrh4bLJRpC4u0FuCf9+45b8zG4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UVmcq0FpjCF5I3kABtiTemzuc1tdeu7FRvl9pnFvWAsm60qa81tWEv2ClRQY1cmqIwNtREG9rBGsj/fSP/CRLO61ZIHo59/pgBM2D0ym+BglR+nB2J9jRCpgRrsKtPZEMoM9dYu+47vzT4dXKNGRYuwcVktL8GBJlqjsUE80cGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1vmIXb-0000Vp-B7; Sat, 31 Jan 2026 22:30:03 +0100
-Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1vmIXY-003T6i-2x;
-	Sat, 31 Jan 2026 22:30:00 +0100
-Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1vmIXY-008Yda-0E;
-	Sat, 31 Jan 2026 22:30:00 +0100
-Date: Sat, 31 Jan 2026 22:30:00 +0100
-From: Michael Grzeschik <mgr@pengutronix.de>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: netdev@vger.kernel.org, linux-can@vger.kernel.org,
-	linux-wireless@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Ido Schimmel <idosch@nvidia.com>, Petr Machata <petrm@nvidia.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Toke =?iso-8859-15?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Thomas =?iso-8859-15?Q?M=FChlbacher?= <tmuehlbacher@posteo.net>,
-	Oliver Hartkopp <socketcan@hartkopp.net>
-Subject: Re: [PATCH net-next] net: remove unnecessary module_init/exit
- functions
-Message-ID: <aX50WNrI9LN0TfoC@pengutronix.de>
-References: <20260131004327.18112-1-enelsonmoore@gmail.com>
+	s=arc-20240116; t=1769897332; c=relaxed/simple;
+	bh=Hn8w/ZxgQKZB1pqDOktEsWsMFqCOzwf2moKrHkSKVE8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XsYAEEIVSYeJzkkqRa2ItYz8ezcT+OSzsUKhSJ5KU6HBITBpY/HBCeXtAcHOa2GqUd2/I3gfxRhHePK2aIjiqTpXJTi5ZaBaCeiXft/CHasCYM8z8gx4ld5/aCYdsLI3c+MoG7nPfWC5BMypwKNwO9VZ9OPDe8/1Ff8wXFaZxO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H9r9IU5+; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H9r9IU5+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B85BC4CEF1;
+	Sat, 31 Jan 2026 22:08:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769897331;
+	bh=Hn8w/ZxgQKZB1pqDOktEsWsMFqCOzwf2moKrHkSKVE8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=H9r9IU5+7sYqoinIEQH1ySie6BgWaECZAb0Q5MFZ1kMuAG6Qi2n+B6TLTquqRSagO
+	 RYdz3jEFc1sZXCOExF0vvuG2y73z+DD/8DJIxht6zCN3pMoed+nWMYduJNKkUzZf09
+	 VeR7Fu8CxztCorCGYB+q5jDNozzNl71ADEmdyVAq7n+3TOlDo7T7ikgSVCR7gKt/0V
+	 wVhGk2UJ2iX3gyIMCW6NjYfuJtKyCMRIhHFSykO/Gcly78dpZHR4hw7k35DtHY3UoW
+	 K9e0O6JV0VdGx3hErxZ5mKc3t3Cs4b++DRXAoXSY73aSnNPPSSmlbcpNdDrX/T7P7U
+	 oEO1ggyX1v7Ig==
+Date: Sat, 31 Jan 2026 14:08:50 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Torgue
+ <alexandre.torgue@foss.st.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Heiko
+ Stuebner <heiko@sntech.de>, linux-arm-kernel@lists.infradead.org,
+ linux-rockchip@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org, Paolo
+ Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next 01/10] net: stmmac: rk: convert to mask-based
+ interface mode configuration
+Message-ID: <20260131140850.3c35f95a@kernel.org>
+In-Reply-To: <E1vlmEY-00000006znn-0N0Q@rmk-PC.armlinux.org.uk>
+References: <aXyPK9rlMt8h_fze@shell.armlinux.org.uk>
+	<E1vlmEY-00000006znn-0N0Q@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ORv+QzYuE6v8IEJJ"
-Content-Disposition: inline
-In-Reply-To: <20260131004327.18112-1-enelsonmoore@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mgr@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Fri, 30 Jan 2026 11:00:14 +0000 Russell King (Oracle) wrote:
+> +	ret = rk_get_phy_intf_sel(bsp_priv->phy_iface);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	intf = ret;
+> +
+>  	ret = gmac_clk_enable(bsp_priv, true);
+>  	if (ret)
+>  		return ret;
+>  
+> +	if (bsp_priv->gmac_phy_intf_sel_mask ||
+> +	    bsp_priv->gmac_rmii_mode_mask) {
+> +		/* If defined, encode the phy_intf_sel value */
+> +		val = rk_encode_wm16(intf, bsp_priv->gmac_phy_intf_sel_mask);
+> +
+> +		/* If defined, encode the RMII mode mask setting. */
+> +		val |= rk_encode_wm16(intf == PHY_INTF_SEL_RMII,
+> +				      bsp_priv->gmac_rmii_mode_mask);
+> +
+> +		ret = regmap_write(bsp_priv->grf, bsp_priv->gmac_grf_reg, val);
+> +		if (ret < 0)
 
---ORv+QzYuE6v8IEJJ
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+missing
+	gmac_clk_enable(bsp_priv, false);
+here?
 
-On Fri, Jan 30, 2026 at 04:42:56PM -0800, Ethan Nelson-Moore wrote:
->Many network drivers have unnecessary empty module_init and module_exit
->functions. Remove them (including some that just print a message). Note
->that if a module_init function exists, a module_exit function must also
->exist; otherwise, the module cannot be unloaded.
->
->Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
->---
-> drivers/net/arcnet/com20020.c                 | 16 ----------
-
-For drivers/net/arcnet:
-
-Acked-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-
-Michael
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---ORv+QzYuE6v8IEJJ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAml+dFIACgkQC+njFXoe
-LGTXNg//bvb0zku2NhtssRocv3TCAmztScaj1GTWJDMPG3DloaH+QHKk0urYEF9M
-1MnNzuReMBuq7jNNP0u8006plqueXvnTnqqpCfNRRar+ycegW2PPwcT1I6z3vFP2
-dR/k4ICBtXr4OIMxalzATJNgj7N/YJ0+sRclt+1h2IrI//r/lq7xmDVwrmWI780+
-/zE5EXLYMsY7PPRDvy1i2QMZGBdFT17tWNu1EpHEPRw57F7N+4lBu2bpJMUO6tJc
-datWBEGwFnCDp0ymPQuMabKtguiT+kqEQk5rFanCFPYGrGb9X0fpSRoLU+A81qjv
-4UGPzWRxgzmbA/EgHN7h8bSuyqNk8fmMEvLiKG19FRwLYcya0L0e0yMZtv4tPEXf
-O03wGQvEdNYmpV36TyMv1eViHSVaa6lZjv1YfQ8BrnxVrrEEVv/FK2/4/CkragRQ
-GnIHuUBijn5y1ZFYIDlsoAgOUGMbNa4JRXjBn+tR/kAp6t6OjUeFWbLbv4+7oiF/
-MOOHImuAwscGA1ONwMN8xwOGwqmDivPYxX2lHJzO3pMQcVc+jKWrdbkysPxHMw8o
-CihsNzmc6gJy5RrP3b8STwQ2Ns6yxL1cOUD+tNqyGwSlV9wGSXdWzMItEC0xuRUe
-dZwtadcUppPIOs0oso/Qpt6susdJHWpzmYemLKzVSDuX0s79dJc=
-=v+0W
------END PGP SIGNATURE-----
-
---ORv+QzYuE6v8IEJJ--
+> +			return ret;
+> +	}
+-- 
+pw-bot: cr
