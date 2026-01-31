@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1490E357735;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436A53590A4;
 	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769869522; cv=none; b=Ahfmxdvjz5En2UcrgU/X+u4vWDSsrT+Sj4uoG8Kyi/G1M6rCjtIhA5RWQTvuJu2JIoF7eiAIbx30DjNZe2M+7S1jATGUv2rwk6R/Zk/WdDx2JsEypNeD2mOAFkAxNbvVRfOpzwmO4LAAcoMBXibqXVycJMRZF3dtg1bLsUDqzkM=
+	t=1769869522; cv=none; b=hdDRfeaZPq0X8lFmcM4pMNxB0KJsGx7OClfkl0TGkjPtvj2a+DUtxfClpo901/X6Jne0mKNV9tlRC9k9pVoDOHQdAkF0d0tRU410FLCu2ANHo6Hu/PHoYQX6QuK3HTVKaoJqOReoMbzVaqaTBlq4q0WY0V6bOy+auN4QxpQ07Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769869522; c=relaxed/simple;
-	bh=V32t6uLUsEQqW7vNUksHzA79JzrYmV4ZBSdrs4RvwEY=;
+	bh=yHTvoLbqPGgQzPgBOzeytRzZYEiySFBnO0ERiQ2SquU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o9ESJTyZ5UAwqMW7WOEh6GCuUcGs0DAJ6xoTM0c6NHgGcubw56tDEdtm1gNewc9OwoRkDetuVz0mprOEdg77EIrvOd0XpvlJ3Y8t6NsVlPvzstUU/97qYGBtCOej0ol6HcBkXDHw2PaiV402uOujpOPXrhQIaIcy2AihR6uMTPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=twPIeT4R; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=nvvtcUAYp9W5LTC9FmeBrQwMTmpN09ZWxRejUwWShncSQYqfPXsPAqhKbQtcxpKlNCepumCHfLQKVjLF1BTVfvb7K72YHPAfIK+/dAK1nMGoyX0Ey14G6pbvHndxdOWwMu7wiK5IRVWYaMBiZI7BASHH7RpdDwYx/u0mfN5V0to=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ih6ncNpr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="twPIeT4R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C010C2BCB5;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ih6ncNpr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E79C2BCFF;
 	Sat, 31 Jan 2026 14:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1769869521;
-	bh=V32t6uLUsEQqW7vNUksHzA79JzrYmV4ZBSdrs4RvwEY=;
+	bh=yHTvoLbqPGgQzPgBOzeytRzZYEiySFBnO0ERiQ2SquU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=twPIeT4Rza2Xt2SsVtRnszHcVtnu6rcM6vlPHqYmtRoo4W4fhwWMkFJ8/Thd8Wpg8
-	 Jj6dWe3H7UWul3858QpmKj8oj5KNQK7DaXx5xulHCbn73xHTqez/j86dsA0C9Augn6
-	 EXWBdzo2ibtS4r/78SLMsOXD85EIUMxy2mDuR6rDnI09XAXF9Vyqknp6axIAYzizeV
-	 HgpBgxTMnNhyBigDautwd3nCBNwU0XeNIup6NP9GUjYCneezJGkTvMdqO8/tu4eYz0
-	 a5wWphteWVRXNj+v3vq8g2UGOnA1lx7Bge5lTxi9H1P6uxdiRzUyXRm1G+rhWe18bd
-	 fAWS1TsIu3eQA==
+	b=ih6ncNprGLq//Yqu8qYVTYKtlrKIjoBVXKfVLoguaydHod2z+8k7gZ6WyA/N99XnD
+	 aVmqJ1ksWogW5q1zJ91xrSLLDm8+9PFa7aAf5ibzhqslu1QAOCI58+mOTpypB3Tfhh
+	 24l13tvvffnuD1TAOLXKEkN36JwdtG8XHPr/hbglzW0F4e1U8+yY0udtZ0IC+VO2/e
+	 Mv1cgFZh8gH6ux25BlTIZJjc4wgHzRTvTe1G1uflypKUwYQj4RLxZvVulqDimJURbK
+	 DhHUMw4HXQzQn3tlxcnDOdXyskwU27kvekbm8SddgOvCAzKSCTc0c3aszXzWrnv3P+
+	 WjC4vo4U+ZG3g==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vmBuZ-0000000AVk4-1r1L;
+	id 1vmBuZ-0000000AVl6-3ii2;
 	Sat, 31 Jan 2026 15:25:19 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
@@ -41,9 +41,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v4 05/41] docs: kdoc_parser: add functions support for NestedMatch
-Date: Sat, 31 Jan 2026 15:24:39 +0100
-Message-ID: <c514c8968aa5be22fdefcbe76ac28bf1391e668a.1769867953.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v4 21/41] docs: kdoc_parser: better handle struct_group macros
+Date: Sat, 31 Jan 2026 15:24:55 +0100
+Message-ID: <5429d80aaf51f22a8b840f269ef2e0a2b55bca82.1769867953.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769867953.git.mchehab+huawei@kernel.org>
 References: <cover.1769867953.git.mchehab+huawei@kernel.org>
@@ -57,112 +57,44 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Some annotations macros may have nested parenthesis, causing normal
-regex parsing to fail.
-
-Extend apply_transforms to also use NestedMatch and add support
-for nested functions.
+Instead of converting them on two steps, implement a single
+logic to parse them using the new sub functionality of
+NestedMatch.sub().
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
- tools/lib/python/kdoc/kdoc_parser.py | 38 ++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 13 deletions(-)
+ tools/lib/python/kdoc/kdoc_parser.py | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
-index 3ba2cda2487a..ae5b2ef80f75 100644
+index 3a5614106af7..d2eb93f9d489 100644
 --- a/tools/lib/python/kdoc/kdoc_parser.py
 +++ b/tools/lib/python/kdoc/kdoc_parser.py
-@@ -152,7 +152,7 @@ struct_xforms = [
+@@ -124,10 +124,11 @@ struct_xforms = [
+     # matched. So, the implementation to drop STRUCT_GROUP() will be
+     # handled in separate.
+     #
+-    (KernRe(r'\bstruct_group\s*\(([^,]*,)', re.S), r'STRUCT_GROUP('),
+-    (KernRe(r'\bstruct_group_attr\s*\(([^,]*,){2}', re.S), r'STRUCT_GROUP('),
+-    (KernRe(r'\bstruct_group_tagged\s*\(([^,]*),([^,]*),', re.S), r'struct \1 \2; STRUCT_GROUP('),
+-    (KernRe(r'\b__struct_group\s*\(([^,]*,){3}', re.S), r'STRUCT_GROUP('),
++    (NestedMatch(r'\bstruct_group\s*\('), r'\2'),
++    (NestedMatch(r'\bstruct_group_attr\s*\('), r'\3'),
++    (NestedMatch(r'\bstruct_group_tagged\s*\('), r'struct \1 { \3 } \2;'),
++    (NestedMatch(r'\b__struct_group\s*\('), r'\4'),
++
+     #
+     # Replace macros
+     #
+@@ -153,7 +154,6 @@ struct_xforms = [
+     (KernRe(r'DEFINE_DMA_UNMAP_ADDR\s*\(' + struct_args_pattern + r'\)', re.S), r'dma_addr_t \1'),
      (KernRe(r'DEFINE_DMA_UNMAP_LEN\s*\(' + struct_args_pattern + r'\)', re.S), r'__u32 \1'),
- ]
- #
--# Regexes here are guaranteed to have the end delimiter matching
-+# Struct regexes here are guaranteed to have the end delimiter matching
- # the start delimiter. Yet, right now, only one replace group
- # is allowed.
- #
-@@ -160,6 +160,13 @@ struct_nested_prefixes = [
-     (re.compile(r'\bSTRUCT_GROUP\('), r'\1'),
+     (KernRe(r'VIRTIO_DECLARE_FEATURES\(([\w_]+)\)'), r'union { u64 \1; u64 \1_array[VIRTIO_FEATURES_U64S]; }'),
+-    (NestedMatch(r'\bSTRUCT_GROUP\('), r'\0'),
  ]
  
-+#
-+# Function Regexes here are guaranteed to have the end delimiter matching
-+# the start delimiter.
-+#
-+function_nested_prefixes = [
-+]
-+
  #
- # Transforms for function prototypes
- #
-@@ -207,13 +214,6 @@ var_xforms = [
- # Ancillary functions
- #
- 
--def apply_transforms(xforms, text):
--    """
--    Apply a set of transforms to a block of text.
--    """
--    for search, subst in xforms:
--        text = search.sub(subst, text)
--    return text
- 
- multi_space = KernRe(r'\s\s+')
- def trim_whitespace(s):
-@@ -408,6 +408,8 @@ class KernelDoc:
-         # Place all potential outputs into an array
-         self.entries = []
- 
-+        self.nested = NestedMatch()
-+
-         #
-         # We need Python 3.7 for its "dicts remember the insertion
-         # order" guarantee
-@@ -505,6 +507,16 @@ class KernelDoc:
-         # State flags
-         self.state = state.NORMAL
- 
-+    def apply_transforms(self, regex_xforms, nested_xforms, text):
-+        """Apply a set of transforms to a block of text."""
-+        for search, subst in regex_xforms:
-+            text = search.sub(subst, text)
-+
-+        for search, sub in nested_xforms:
-+            text = self.nested.sub(search, sub, text)
-+
-+        return text.strip()
-+
-     def push_parameter(self, ln, decl_type, param, dtype,
-                        org_arg, declaration_name):
-         """
-@@ -881,11 +893,9 @@ class KernelDoc:
-         # Go through the list of members applying all of our transformations.
-         #
-         members = trim_private_members(members)
--        members = apply_transforms(struct_xforms, members)
-+        members = self.apply_transforms(struct_xforms, struct_nested_prefixes,
-+                                        members)
- 
--        nested = NestedMatch()
--        for search, sub in struct_nested_prefixes:
--            members = nested.sub(search, sub, members)
-         #
-         # Deal with embedded struct and union members, and drop enums entirely.
-         #
-@@ -1088,7 +1098,9 @@ class KernelDoc:
-             #
-             # Apply the initial transformations.
-             #
--            prototype = apply_transforms(function_xforms, prototype)
-+            prototype = self.apply_transforms(function_xforms,
-+                                              function_nested_prefixes,
-+                                              prototype)
- 
-         # Yes, this truly is vile.  We are looking for:
-         # 1. Return type (may be nothing if we're looking at a macro)
 -- 
 2.52.0
 
