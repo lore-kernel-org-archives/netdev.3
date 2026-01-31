@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B0B93590D1;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8211235A933;
 	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769869522; cv=none; b=TAu8twgfii/bda07ACGAGApLETArhIuCkBBnMgGmm6A+IU6KFhsCyy1YgxgSJS88frGPROVUOB6YvvmxtOJhMtLbjJFSI0Y6sOw+zS5UIHF8Vjy9I1d9wttlObqIb1b6IaKenwAiQshTiGNEAWFz7LTXnvI+VFuvGQkwFBynUF4=
+	t=1769869522; cv=none; b=mFYx+Vxj1Jp0C1IL1X3jvWGYLaTbDE6y75v5RD1a+7SfUGxtoeiQeASrt0HhFIS9j5cBX1+g04v84rZvnMRwXh7Lsd0opcbacLDEZVD8vr5BPSxOawWlIdoNgrgfsZUSzajZpwOWfZKrbGC888BKpzXkIvGyOTas7j2da8Ztmjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769869522; c=relaxed/simple;
-	bh=I/r87jAWKSx+9k53qSEfwjXKAwqwD5/EwejaTkqMOBg=;
+	bh=93FI6HCbFuKLoTGysvIesP/671jVJYX05qdlxtKR9Kk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CVh5rBv5qY+jifKVd8ITMMzztpVQkl0hCGBMxv1UrW2rmIPkL2655FSWihKuTOmgzU9gH29etjLTx9mswKE32C1/swSGE2DCbzUxkPCdFNzVMF0wpafEEG11iWq/ubJ398VXwhqtYD4ixOfNK/jYrs94T7TnCcV+/IzeLoWLUJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ls6wCREO; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=lv8Bsp4uR0rIb+9k+MVlxAXmI1rVp76A6robz6Q6jBkjmsqA4tSGyTbzf/qftyxKQPVvBUrmz3q2cRQYu1Y6zsEfdfaMSIDH/untHH+9tqTE3yz3eVVUAtEpqMji1vy1Y/mlkzRzUifxgki9xuVBj0W+Csp/4Z6xvlf+W/RDTts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SqYzYt4I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ls6wCREO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE8C2C4AF17;
-	Sat, 31 Jan 2026 14:25:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SqYzYt4I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03990C4AF64;
+	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769869521;
-	bh=I/r87jAWKSx+9k53qSEfwjXKAwqwD5/EwejaTkqMOBg=;
+	s=k20201202; t=1769869522;
+	bh=93FI6HCbFuKLoTGysvIesP/671jVJYX05qdlxtKR9Kk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ls6wCREOsdkPS2BTmCqVOWdk0RKi1xRFTee7pRAQWejzpXdGMH6S1Hh9Na1813ySw
-	 26AORe9EZE7bUOTYNO0dMl3b1hsqYSZkM6Nsc8V8v50Y74yttswcOUv0cuFkGIdyJi
-	 aklMf1EzHWX0lj0jtHYhsJQOX+zKcc1cZEgwjbMckY2ydS+d3sz9dPsJpJ78bgvUJf
-	 RUtbk80zbUoz1VbLWqo1Oa6kRd1nhaSFxvk3BdQtxwUSVDXbSKq1XuVKBfKfhmvfdr
-	 j6qbCWbGDl0m7Uf9wbBqlBfjkHDTuUgqqfg06a41UeHtQ1NhP32rJxRWJwkWeWJdQk
-	 wisdK+HAXSpRg==
+	b=SqYzYt4IVbQPk0+jVuZ5Mhm77EzcOYeCDYr1W2HuJd8hXnAxnVEJQ8JMaAIBj6hDK
+	 F9ld/mXQMtTt6G+oCP/+SOwNUStMoI62trzL72ps7dw3/2PBRffb/epek6i+75z9Wo
+	 sw4shcSs4yVNiPTU/KitBkVX6jiSrQKT3by6VGT9JLow1pCHB/xI615IOPPlwhv+S9
+	 ZTnQTEIGjPQZ8CPMO+MKH+8LP+9uC1b2j1P0P/+UCCa+2G8evst/yofLjr2xolWBwa
+	 NSAD99xusS4nq3x5iW/Wvjx6ul+7/wgQFUyHaNSK6Y4u6n1IcPC+t8lH3OJrGuxYJm
+	 AAWAO5q9fQ7JA==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vmBua-0000000AVlX-0Eaz;
+	id 1vmBua-0000000AVlz-11Zm;
 	Sat, 31 Jan 2026 15:25:20 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
@@ -38,12 +38,11 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v4 27/41] docs: kdoc_re: don't remove the trailing ";" with NestedMatch
-Date: Sat, 31 Jan 2026 15:25:01 +0100
-Message-ID: <68f663611c61411b0e638947347fb3b8f33c8630.1769867953.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v4 34/41] docs: kdoc_files: document KernelFiles() ABI
+Date: Sat, 31 Jan 2026 15:25:08 +0100
+Message-ID: <ba775b448df3255dbae6ce6e22a02144949291c2.1769867954.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769867953.git.mchehab+huawei@kernel.org>
 References: <cover.1769867953.git.mchehab+huawei@kernel.org>
@@ -57,30 +56,75 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Removing it causes the parse to break some conversions, when
-NestedMatch is used on macros like __attribute__().
+The KernelFiles is the main entry point to run kernel-doc,
+being used by both tools/docs/kernel-doc and
+Documentation/sphinx/kerneldoc.py.
+
+It is also used on QEMU, which also uses the kernel-doc
+libraries from tools/lib/python/kdoc.
+
+Properly describe its ABI contract.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
- tools/lib/python/kdoc/kdoc_re.py | 4 ----
- 1 file changed, 4 deletions(-)
+ tools/lib/python/kdoc/kdoc_files.py | 44 ++++++++++++++++++++++++++++-
+ 1 file changed, 43 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/python/kdoc/kdoc_re.py b/tools/lib/python/kdoc/kdoc_re.py
-index a49b42e3d189..294051dbc050 100644
---- a/tools/lib/python/kdoc/kdoc_re.py
-+++ b/tools/lib/python/kdoc/kdoc_re.py
-@@ -358,10 +358,6 @@ class NestedMatch:
+diff --git a/tools/lib/python/kdoc/kdoc_files.py b/tools/lib/python/kdoc/kdoc_files.py
+index c35e033cf123..8c2059623949 100644
+--- a/tools/lib/python/kdoc/kdoc_files.py
++++ b/tools/lib/python/kdoc/kdoc_files.py
+@@ -91,7 +91,49 @@ class KernelFiles():
+     """
+     Parse kernel-doc tags on multiple kernel source files.
  
-             out += new_sub
- 
--            # Drop end ';' if any
--            if pos < len(line) and line[pos] == ';':
--                pos += 1
--
-             cur_pos = pos
-             n += 1
- 
+-    There are two type of parsers defined here:
++    This is the main entry point to run kernel-doc. This class is initialized
++    using a series of optional arguments:
++
++    ``verbose``
++        If True, enables kernel-doc verbosity. Default: False.
++
++    ``out_style``
++        Class to be used to format output. If None (default),
++        only report errors.
++
++    ``xforms``
++        Transforms to be applied to C prototypes and data structs.
++        If not specified, defaults to xforms = CFunction()
++
++    ``werror``
++        If True, treat warnings as errors, retuning an error code on warnings.
++
++        Default: False.
++
++    ``wreturn``
++        If True, warns about the lack of a return markup on functions.
++
++        Default: False.
++    ``wshort_desc``
++        If True, warns if initial short description is missing.
++
++        Default: False.
++
++    ``wcontents_before_sections``
++        If True, warn if there are contents before sections (deprecated).
++        This option is kept just for backward-compatibility, but it does
++        nothing, neither here nor at the original Perl script.
++
++        Default: False.
++
++    ``logger``
++        Optional logger class instance.
++
++        If not specified, defaults to use: ``logging.getLogger("kernel-doc")``
++
++    Note:
++        There are two type of parsers defined here:
++
+         - self.parse_file(): parses both kernel-doc markups and
+           ``EXPORT_SYMBOL*`` macros;
+         - self.process_export_file(): parses only ``EXPORT_SYMBOL*`` macros.
 -- 
 2.52.0
 
