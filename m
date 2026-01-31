@@ -1,35 +1,50 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B919317715;
-	Sat, 31 Jan 2026 01:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C1119F121;
+	Sat, 31 Jan 2026 01:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769824215; cv=none; b=NfQ1kROxZwR0DBOY+dhZokktqrgLRn04Ak7LyVpNLSNvbgpzx8CuF0VBchG2WW6KoAIKYV31K0N8IUyo9wYPbLYeVmEaHm8Ud7TnsFVVbHxlEZWlFDnktgY0HmkGcgiNlfjeXv7lKAuLVS+vqFTPQR5YhoMpJkoAS48jt2qCq2w=
+	t=1769824403; cv=none; b=hIURfpwhCI+PioxRU1eHDiFGEeh5+7lHFJuu8OG/BLPUDH5PdgSs1rsLyZn/8UgliLJ+TImvHDXyxNksPo1p+KmbYpB3lsoAXwa/qtY6H85vadbxKC8Y8ZtJeJk34Ko00/0HarwJPpy04nRxPTPq9y6Tb9wSDNlCRg2f8yiOtxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769824215; c=relaxed/simple;
-	bh=KveGONG7UJdElvqV315bWlMz8AD27Y9PZLI+Vh0KgjU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IwMNSVtzOOZJDbpjIFcgN/jv5st10i6Us3Zg62OKmzFIxqTMnkJjTDAuV+RTKXGFRfjQw9Ua8AvD9QNODyabcPHc9talUqGpiMDF7A6UpaleNHw8+GPyyZj6gbtElQ1uIIzV3eIZYxEwKKPZ5eMS8v/7j7vMVDh2Ip+umwFvMzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GX4SYWdy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1769824403; c=relaxed/simple;
+	bh=99KJhPk8+9eW+ygqQJ11pSf6I+P6NX17cvOfztpm/Uw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=VaCIdFrZpafFrBMG2zwrqF0A+n3E0qfSIHeqmINzEusKabGy2DnD92ih/WKkf5HTPu53FCop7ywdE8k52xWOpfsCz2PyOflEwjGJ4TqyDPRlazElLDPhNPrf9gGYl7SECxO/94ehvvdDH1cvp94oSA6uXgQZPmHyC4xwJuxBfcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/kAt6sA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GX4SYWdy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249B2C116D0;
-	Sat, 31 Jan 2026 01:50:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/kAt6sA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B5CC4CEF7;
+	Sat, 31 Jan 2026 01:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769824215;
-	bh=KveGONG7UJdElvqV315bWlMz8AD27Y9PZLI+Vh0KgjU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=GX4SYWdycMxo+2vTLOeR/ZBoTMWGL8AgvbwdETbXxJVMdby1l6Dl/yDEby0l+bAq9
-	 9c6Q3Ki4B+bTUnQbsrudX3kJlBk7gdDK6na9gXWgC1zrDWUW1D8AI/xuaO62XKAHNz
-	 7KBl252hzYi7jCPIyLfasU49uL767ZC6Z4XMBFGqjlwJeCKovdwCkF4QZXfgLvw6ZD
-	 D/mcX2MYw6EilRtyq7BbVr626UBsoRRvZTRjwOMFTTTQq0bay74A5d7p/9ms1wP+5m
-	 xCmKiBfwRLNb5F0zTpAInNgI6E6+gWD86d68SAQ6+GF/qJ1X8ABgRJC3WNeCF52EYt
-	 aYEQDXnTXp2bg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8BC98380CFFB;
-	Sat, 31 Jan 2026 01:50:08 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1769824402;
+	bh=99KJhPk8+9eW+ygqQJ11pSf6I+P6NX17cvOfztpm/Uw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=n/kAt6sAmiu3YK1Yx3s2icYGlVsyVeQ5jwqbyDLkiopyaTmOqEI9Zqc6F3URaxdpT
+	 EdgY+LCrvQDHy5yjGlfc6w854JLtZxKkZvcGF6ZpiCv8HTWEApgK3YHiGzaLDOwyvJ
+	 BANHrv0vASrR/E5yiDKGwUTdZ9JFYLBpkGoGU8CUDh9JLifXOG7yzGcwlJ88TiwWMz
+	 jrWZVbqf7HBxRYpN+JAuAt+134qHEi/Y/+J5RcV9ynOlKrkztUl4t5OsUDS2UtTo9G
+	 ZH4iIHdMqWn9GoMFSlROOcrYW94bHJYJGiQ60QA/BpC217s99ZwTU+6APOIPmvtImG
+	 fHQpetXJom7jw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: dam.dejean@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	andrew@lunn.ch,
+	davem@davemloft.net,
+	hkallweit1@gmail.com,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	edumazet@google.com
+Subject: Re: [v4,2/4] net: phy: realtek: add RTL8224 pair order support
+Date: Fri, 30 Jan 2026 17:53:20 -0800
+Message-ID: <20260131015320.971482-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260129101606.33972-2-dam.dejean@gmail.com>
+References: <20260129101606.33972-2-dam.dejean@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,52 +52,74 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: stmmac: spelling corrections
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <176982420710.3961929.13739265763800349219.git-patchwork-notify@kernel.org>
-Date: Sat, 31 Jan 2026 01:50:07 +0000
-References: <20260129-stmmac-spell-v1-1-c7df9a96e482@kernel.org>
-In-Reply-To: <20260129-stmmac-spell-v1-1-c7df9a96e482@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, wens@kernel.org,
- jernej.skrabec@gmail.com, samuel@sholland.org, netdev@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com,
- linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev,
- linux-sunxi@lists.linux.dev
 
-Hello:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+net: phy: realtek: add RTL8224 pair order support
 
-On Thu, 29 Jan 2026 17:35:03 +0000 you wrote:
-> Correct spelling as flagged by codespell.
-> 
-> Signed-off-by: Simon Horman <horms@kernel.org>
-> ---
->  drivers/net/ethernet/stmicro/stmmac/dwmac-imx.c        |  4 ++--
->  drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c      |  4 ++--
->  drivers/net/ethernet/stmicro/stmmac/dwmac1000.h        |  2 +-
->  drivers/net/ethernet/stmicro/stmmac/dwmac100_core.c    |  2 +-
->  drivers/net/ethernet/stmicro/stmmac/enh_desc.c         |  2 +-
->  drivers/net/ethernet/stmicro/stmmac/mmc_core.c         |  4 ++--
->  drivers/net/ethernet/stmicro/stmmac/stmmac_hwtstamp.c  |  2 +-
->  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c      | 10 +++++-----
->  drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c      |  2 +-
->  drivers/net/ethernet/stmicro/stmmac/stmmac_selftests.c |  2 +-
->  10 files changed, 17 insertions(+), 17 deletions(-)
+This patch adds MDI pair order configuration support for the RTL8224 PHY,
+allowing device tree configuration of pair swap (ABCD to DCBA) via the
+enet-phy-lane-order property.
 
-Here is the summary with links:
-  - [net-next] net: stmmac: spelling corrections
-    https://git.kernel.org/netdev/net-next/c/96e1c895b5ec
+> diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
+> --- a/drivers/net/phy/realtek/realtek_main.c
+> +++ b/drivers/net/phy/realtek/realtek_main.c
 
-You are awesome, thank you!
+[ ... ]
+
+> +static int rtl8224_mdi_config_order(struct phy_device *phydev)
+> +{
+> +	struct device_node *np = phydev->mdio.dev.of_node;
+> +	u8 port_offset = phydev->mdio.addr & 3;
+> +	u32 order = 0;
+> +	int ret, val;
+> +
+> +	ret = of_property_read_u32(np, "enet-phy-lane-order", &order);
+> +
+> +	/* Do nothing in case the property is not present */
+> +	if (ret == -EINVAL)
+> +		return 0;
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (order & ~1)
+> +		return -EINVAL;
+> +
+> +	val = __phy_package_read_mmd(phydev, 0, MDIO_MMD_VEND1,
+> +				     RTL8224_VND1_MDI_PAIR_SWAP);
+
+Should the MDIO bus lock be held before calling __phy_package_read_mmd()?
+
+The __phy_package_read_mmd() documentation states "Same calling rules as
+for __phy_read()", and __phy_read() requires: "The caller must have taken
+the MDIO bus lock."
+
+Looking at __mdiobus_read(), there is a lockdep_assert_held_once() check
+for bus->mdio_lock, which confirms this requirement.
+
+Other PHY drivers using these APIs acquire the lock first. For example,
+qca807x_phy_package_config_init_once() wraps its __phy_package_read_mmd()
+calls with phy_lock_mdio_bus()/phy_unlock_mdio_bus().
+
+Additionally, since this is a read-modify-write on a shared register that
+contains bits for all 4 ports in the package, could concurrent config_init
+calls from different ports race and overwrite each other's settings without
+the lock protecting the entire sequence?
+
+> +	if (val < 0)
+> +		return val;
+> +
+> +	if (order)
+> +		val |= (1 << port_offset);
+> +	else
+> +		val &= ~(1 << port_offset);
+> +
+> +	return __phy_package_write_mmd(phydev, 0, MDIO_MMD_VEND1,
+> +				       RTL8224_VND1_MDI_PAIR_SWAP, val);
+> +}
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
