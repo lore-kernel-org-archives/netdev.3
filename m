@@ -1,49 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DD8E3590D8;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86FF435A939;
 	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769869522; cv=none; b=S3pwLa9O+qnPO16iR5XTJ/Ohc2pQilX0z+X63IlsPvv+sG0v6bEi7m7PtBgMPpHJZiw7oRLm/hDWUwfmbkVpRmqs08c4Vp0TFstZUBiQiWCDXzrJKnd1+dG2xiHvJiQl+4GKLYFy0UUzBBGwbfQaeMivpe5jDWeiGE4fxjiwGgs=
+	t=1769869522; cv=none; b=p6ycvzFYgw7bRVloHzXTSCiru1Q+apx101GzcXXY1a5TdXdPo2Yym/RwUdBMO3DktknvkPoov1SDUhEq9CRy0cSiYnWl8mFl/5iTYq+rHIB+WArYY1EAKcqNMKYO86E2kZ1Rm7rVk8bfc3pNeSZ6OFoyuuAmvKyle8duYLIFURs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769869522; c=relaxed/simple;
-	bh=5oi2Tl2xWpO7qRnpBsDD+tLfzI2AZ4/vIG5DDw/7oQE=;
+	bh=J9gpBcUhWSmksHEje7HfFrvd/UJKiZjrUhxoxqAfK3o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OcWhYShW0/zWvE4si87D3OSW7mgSrsEqoj728lkI4yHCa+Ja6se8vnxX2L8Z4ve0KuW5BcvG8KeLXWo3VfUTA+Uo2Xt2R/vDjWgJqn0kDhCCv16pz9O46UWsXRJHuf5MQGHVwjfo4Z1cxakr5RH0D3zOpOzF6r3vYCIXSf7eI/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RVDclQXu; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=nxJB30JKScPypBtBN4EDPcpC77+oqphn5qrBCPT5EiJykYRPS7a2s1YjbhDjV+Iq1xeBp3j3tkEPFA/sDJpdWsyaO0jiZb4ufsWpFcjW1qPTl7T2nzaAQO7mH35lSFHZYegGqke7ZGJlX/koIy9bLjZmBacvPpGgR5E+nYWmOd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=etJT7UQk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RVDclQXu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0E27C4AF15;
-	Sat, 31 Jan 2026 14:25:21 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="etJT7UQk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE0AC4DDE2;
+	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769869521;
-	bh=5oi2Tl2xWpO7qRnpBsDD+tLfzI2AZ4/vIG5DDw/7oQE=;
+	s=k20201202; t=1769869522;
+	bh=J9gpBcUhWSmksHEje7HfFrvd/UJKiZjrUhxoxqAfK3o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVDclQXuAyozih8q+rZxUGbQC7kga7zXBPj1SQtLdXQMWOBq9vTCiHyP0yWfGjamY
-	 5c5n6DO+c6X1qnQod2ReiapHWU7OxOmVYt1yuXnp0WNC+9oGBnyq9zGlHTcgZcar5j
-	 0SXODn3RgFXvRob/iOywCjtwyB8TBH2hvU6xObs7hVKqsY7TCVlS8W5wptNwV48SEl
-	 LB/revnYGsJYy2PvLk2+IewUIYMCB5CQfCr0XHcJxKnYVkRpk9DTdDSWdv1eQZMhfU
-	 X6np2g1+sRpBF2X9ZiyfBre68WQvdaSntSCeTX96du5Ik58dbQUp3daI6QymqYeF/k
-	 uAjDiHjtc7GYg==
+	b=etJT7UQkV81clZC3G9h1rJ6n/Coqg5VDtA8GfexHi9ncJVJvmpBQn1iDvm2eAuBhd
+	 Fj2wqeMsPUTEWk9IWBwYb7NqerSM4TNrTRMxWYPUk7i181CDG8Gi7dOnc3eOZ24S0X
+	 h1Z4uZMcX8n+nsH0YSf0+ou5Y+ltihG+SwY/lHVlE0E/JmJyjrHO4O2jsrAHbuRtPA
+	 rmuphAK/iswiSm/1w46YZxxM8R7TX0lmY6q9CKMz7x188BBO3DQlNRe0dm7aCy16zZ
+	 /5ICALjF/4Z/ZMxwm6EtuGqjEOym6sXbhoG/WTbzLDMJ08JaKg/9CVMtBUVXBc3OmR
+	 5GBDzj4RSnRIw==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vmBua-0000000AVlb-0LvG;
+	id 1vmBua-0000000AVm7-1FNc;
 	Sat, 31 Jan 2026 15:25:20 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
-	Linux Doc Mailing List <linux-doc@vger.kernel.org>
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>
 Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	intel-wired-lan@lists.osuosl.org,
 	linux-hardening@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v4 28/41] docs: kdoc_re: prevent adding whitespaces on sub replacements
-Date: Sat, 31 Jan 2026 15:25:02 +0100
-Message-ID: <99fafea263739c19781c4e4d0dd2dbbd2c472df3.1769867953.git.mchehab+huawei@kernel.org>
+	Randy Dunlap <rdunlap@infradead.org>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH v4 36/41] docs: sphinx-build-wrapper: better handle troff .TH markups
+Date: Sat, 31 Jan 2026 15:25:10 +0100
+Message-ID: <56468f3cf9ba583a0759953a931bddc361b869aa.1769867954.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769867953.git.mchehab+huawei@kernel.org>
 References: <cover.1769867953.git.mchehab+huawei@kernel.org>
@@ -57,43 +57,49 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-When NestedMatch is used, blank whitespaces may be placed after
-substitutions. As such spaces are part of the C syntax, we can
-safelly drop them, improving the quality of the output.
+Using a regular expression to match .TH is problematic, as it
+doesn't handle well quotation marks.
+
+Use shlex instead.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 ---
- tools/lib/python/kdoc/kdoc_re.py | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ tools/docs/sphinx-build-wrapper | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/lib/python/kdoc/kdoc_re.py b/tools/lib/python/kdoc/kdoc_re.py
-index 294051dbc050..886e33ffd2b9 100644
---- a/tools/lib/python/kdoc/kdoc_re.py
-+++ b/tools/lib/python/kdoc/kdoc_re.py
-@@ -341,8 +341,12 @@ class NestedMatch:
+diff --git a/tools/docs/sphinx-build-wrapper b/tools/docs/sphinx-build-wrapper
+index b7c149dff06b..e6418e22e2ff 100755
+--- a/tools/docs/sphinx-build-wrapper
++++ b/tools/docs/sphinx-build-wrapper
+@@ -576,7 +576,6 @@ class SphinxBuilder:
+         """
  
-         cur_pos = 0
-         n = 0
-+        l = len(line)
+         re_kernel_doc = re.compile(r"^\.\.\s+kernel-doc::\s*(\S+)")
+-        re_man = re.compile(r'^\.TH "[^"]*" (\d+) "([^"]*)"')
  
-         for start, end, pos in self._search(line):
-+            while cur_pos < l and line[cur_pos] == ' ':
-+                cur_pos += 1
-+
-             out += line[cur_pos:start]
+         if docs_dir == src_dir:
+             #
+@@ -616,8 +615,7 @@ class SphinxBuilder:
+         fp = None
+         try:
+             for line in result.stdout.split("\n"):
+-                match = re_man.match(line)
+-                if not match:
++                if not line.startswith(".TH"):
+                     if fp:
+                         fp.write(line + '\n')
+                     continue
+@@ -625,7 +623,9 @@ class SphinxBuilder:
+                 if fp:
+                     fp.close()
  
-             # Value, ignoring start/end delimiters
-@@ -365,7 +369,9 @@ class NestedMatch:
-                 break
+-                fname = f"{output_dir}/{match.group(2)}.{match.group(1)}"
++                # Use shlex here, as it handles well parameters with commas
++                args = shlex.split(line)
++                fname = f"{output_dir}/{args[3]}.{args[2]}"
  
-         # Append the remaining string
--        l = len(line)
-+        while cur_pos < l and line[cur_pos] == ' ':
-+            cur_pos += 1
-+
-         out += line[cur_pos:l]
- 
-         return out
+                 if self.verbose:
+                     print(f"Creating {fname}")
 -- 
 2.52.0
 
