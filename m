@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CDBB358D27;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42387358D3A;
 	Sat, 31 Jan 2026 14:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769869522; cv=none; b=sxmeSCqnS1O3SaQZnUr9xMVOZ+NUlg1FT4c7NTrhJKGZsofEcTzo9/HNGGdftfdkPcYYGH2TzNYnuI3DEsmKNGmGUS21m4BRpQYW/9dEc74OzgB3EaKiw2tsr9E9pfZF/9XXxiTTuKjxG9h4whTL8KdjVjWLNgfaRKUCG1Xr8P0=
+	t=1769869522; cv=none; b=FNob03bQjTuIY7U/jySsgwHzluvfUh01uW9lYqjxemQlDpyyHw9XBlHneUjlTk4pAzqxrMkLK5ksYqEN0AnocYR5y8FPO5y1az1PmisS/rbWYgcxYFduWoPj2NxO/+YaYQMWXOoGuM9wjNs3ez78I2cx/+6VvMEzXujh1MMU99g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769869522; c=relaxed/simple;
-	bh=iz9xyvW3XE7yzsvjnd3rhkZs9CrYswt5vPlbqVTvJig=;
+	bh=3ksnXE7vkIV4Gy30ihYdParnXgZsaJn15iVxtzuvJ4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sOyuvEOF03mGr/94FvyW52aqPEbMyND19V2phPgzXORuoRG7N3me6XGDaAbfHyXINs33EbPZgIiZWbauuvieTjaikTiey3ljx9bmm//7337DuZ9B/Ike0QYrE5E1p224MJadOASoerR0uDPtDjvcNOjK77LmScQK8ppvfpkCxJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMa+luBP; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=CNJRLt5hfswOfCA+A/sKeuQL2b1CdxJSHhlf/RgPeKE7VFwExFqL6DZnm/aBN+kpjOdj15jJkxJWEBhk+ddUUFsHu0R1A5Ts6B6jMqN815J2cjyDwuomXTU9tMnoryL7SRfcCh2BxD4SPRlA+cJhk5EuxFeSucbxrZEiO1zkWyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=maeQ6NIQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMa+luBP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BAEFC2BCF4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="maeQ6NIQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7430C2BD00;
 	Sat, 31 Jan 2026 14:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1769869521;
-	bh=iz9xyvW3XE7yzsvjnd3rhkZs9CrYswt5vPlbqVTvJig=;
+	bh=3ksnXE7vkIV4Gy30ihYdParnXgZsaJn15iVxtzuvJ4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lMa+luBPJ+zqyvOKQ8UuTGthfF+2TtQ/CWvwB5BZwiH5tjhj+j7tP78WOQIcjq1q3
-	 z9utSNnb2u18xV2StNusik9UkeaQCD4/blOqo9cGO1oiAGK4SYrf0v+ZQ7hhHRUBZa
-	 Lv/RmhZbQJQkh99vGMaaLaUmfjQ+7tvF2OlvlHM1qJWIyX1JSz0UKk0ZlsyYtQSJNp
-	 0yJ33k3qum1OVb3t1kMevOJ+Yyjp+oMKLHon7AbC+TK8MvW6Pq0gUKhO59/VSLU8GO
-	 DqcXAsYA83Ol1TmkaIZI/vWQk21uMiBE8JO2EJqWsPEd6cHO1hht0LwZ0IRCzoducH
-	 /LiW+wK0uJElQ==
+	b=maeQ6NIQqyOmmMZ1bq5xg5TRiG9YE2TRuw+KFDcCAsstytrpri5AUbDdMoLYCiXr/
+	 Rzio2GydR6Dv/NeY8AaELoinK8d3kO8b14GsDxBQOXiKDSIfrvkW8VRmUcxB9cEZgC
+	 fXjwoxKc20EccgAV+k3X/REHlwxfOR/k6YuxvsezhNWh+8S+X8rPO6+cVeCa2XjZOM
+	 GnM0CzQiWWMBEOlM30V2pP+ybuhnqmpUJToGMueBZ32g3EaVRy1gC7nL+NVQabpkRV
+	 UqhQyt5cLn+oBww9CIfdBLoka3VzVOScA55A2YjFcQ6k823LBoIjCs56dpbGTYn3wR
+	 8nre1pj0Z7i+g==
 Received: from mchehab by mail.kernel.org with local (Exim 4.99.1)
 	(envelope-from <mchehab+huawei@kernel.org>)
-	id 1vmBuZ-0000000AVku-3NDi;
+	id 1vmBuZ-0000000AVlE-3xBx;
 	Sat, 31 Jan 2026 15:25:19 +0100
 From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 To: Jonathan Corbet <corbet@lwn.net>,
@@ -41,9 +41,9 @@ Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
 	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH v4 18/41] docs: kdoc_re: Change NestedMath args replacement to \0
-Date: Sat, 31 Jan 2026 15:24:52 +0100
-Message-ID: <b57510c349fecec95a5b2be1ca22f8fa95f2b3be.1769867953.git.mchehab+huawei@kernel.org>
+Subject: [PATCH v4 23/41] docs: kdoc_re: add a helper class to declare C function matches
+Date: Sat, 31 Jan 2026 15:24:57 +0100
+Message-ID: <019e85b047f25aa5472d447e1ed087cd077a79f6.1769867953.git.mchehab+huawei@kernel.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <cover.1769867953.git.mchehab+huawei@kernel.org>
 References: <cover.1769867953.git.mchehab+huawei@kernel.org>
@@ -57,60 +57,34 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-Future patches will allow parsing each argument instead of the
-hole set. Prepare for it by changing the replace all args from
-\1 to \0.
-
-No functional changes.
+Add a more convenient class to match C functions and avoiding
+issues at the beginning and ending of NestedMatch inits.
 
 Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 ---
- tools/lib/python/kdoc/kdoc_parser.py | 2 +-
- tools/lib/python/kdoc/kdoc_re.py     | 9 +++++----
- 2 files changed, 6 insertions(+), 5 deletions(-)
+ tools/lib/python/kdoc/kdoc_re.py | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
-index db140363104a..4d52a00acfad 100644
---- a/tools/lib/python/kdoc/kdoc_parser.py
-+++ b/tools/lib/python/kdoc/kdoc_parser.py
-@@ -160,7 +160,7 @@ struct_xforms = [
- # is allowed.
- #
- struct_nested_prefixes = [
--    (re.compile(r'\bSTRUCT_GROUP\('), r'\1'),
-+    (re.compile(r'\bSTRUCT_GROUP\('), r'\0'),
- ]
- 
- #
 diff --git a/tools/lib/python/kdoc/kdoc_re.py b/tools/lib/python/kdoc/kdoc_re.py
-index 7b7ddc50ac36..8933e1a62776 100644
+index 5f455ffff7b2..a49b42e3d189 100644
 --- a/tools/lib/python/kdoc/kdoc_re.py
 +++ b/tools/lib/python/kdoc/kdoc_re.py
-@@ -289,8 +289,9 @@ class NestedMatch:
-         It matches a regex that it is followed by a delimiter,
-         replacing occurrences only if all delimiters are paired.
+@@ -380,3 +380,14 @@ class NestedMatch:
+         """
  
--        if r'\1' is used, it works just like re: it places there the
--        matched paired data with the delimiter stripped.
-+        if r'\0' is used, it works on a similar way of using re.group(0):
-+        it places the entire args of the matched paired data, with the
-+        delimiter stripped.
- 
-         If count is different than zero, it will replace at most count
-         items.
-@@ -306,9 +307,9 @@ class NestedMatch:
-             # Value, ignoring start/end delimiters
-             value = line[end:pos - 1]
- 
--            # replaces \1 at the sub string, if \1 is used there
-+            # replaces \0 at the sub string, if \0 is used there
-             new_sub = sub
--            new_sub = new_sub.replace(r'\1', value)
-+            new_sub = new_sub.replace(r'\0', value)
- 
-             out += new_sub
- 
+         return f'NestedMatch("{self.regex.regex.pattern}")'
++
++
++class CFunction(NestedMatch):
++    r"""
++    Variant of NestedMatch.
++
++    It overrides the init method to ensure that the regular expression will
++    start with a ``\b`` and end with a C function delimiter (open parenthesis).
++    """
++    def __init__(self, regex):
++        self.regex = KernRe(r"\b" + regex + r"\s*\(")
 -- 
 2.52.0
 
