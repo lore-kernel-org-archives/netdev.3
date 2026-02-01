@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D47522D7B6;
-	Sun,  1 Feb 2026 15:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297392397AA;
+	Sun,  1 Feb 2026 15:13:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769958820; cv=none; b=uko5AR5KFpiCrUD0yCnrKy94kV/WUIxv3BJj+WenLzlpZzawiHmDcnya7uWMVgj+BI9A1rDE9JrNnrTPb3URxX9L9mCJMMRrZmGeiCKX5HYdKkCXZrTaSJfSWhaR55AJ24e8NyiIk5mXpsnHCsJ3OtG8+gf96BXI5WUfgvRZilk=
+	t=1769958823; cv=none; b=STXZpaPEPFRI2/9jN5vPMSY5Zz8E/fYXNippv6+bkt67UHczYTtHzrT5hJGlyo1ccNZ50fgDBif+RZX+Kt/5HZc9ndDF8ASchnkQS3vWw8ZJZuP6BK0VSPt22TtuK9JB62IuRUwIQVQAfslwPthBUNfgre6eWCqGLhzjJGEXTDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769958820; c=relaxed/simple;
-	bh=o4C5JoFvdaKbDLz0PCFiqU8VJ+VNFNhbpi6kQWKE2GY=;
+	s=arc-20240116; t=1769958823; c=relaxed/simple;
+	bh=Hi0hgp7iKwULXA+T7jYAxiFylxpAewRHWgQsebJPiqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TV8IhXmHISxTdD2T9KGaIAAlFh9ZX014Nd0VjM2E0kwh+NqHtGtnRMvVNV1GOWMO6zYss/7rlo7HXv5qGF6MpTCGXeyCuUnM5I6BgBmjo5lnWpFuwWjh6/2Lqi3vAkUM94w7m3hrG5z0UAA7jQQqzE5JYBmIvNwAyaHqwtXMXkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=tKqSmm+f; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=gkZKeuMT18dP0OmQOsLfz6Cq9d9KgblEkCnfB/CbKs9iXnxqth9K8ce5lhzyOyzDx4Uw9IoxgQesZ0InU/3042uOhDBen2RPCC6ssGSon9B0ckU8ruZ1okvnPR6F1FmUNwuPnIipuTrmPx13XMs/jyrHtiVEjLwPMNvZ3lniD5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=L+xjFEkJ; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="tKqSmm+f"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="L+xjFEkJ"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 2B4274E423A7;
-	Sun,  1 Feb 2026 15:13:34 +0000 (UTC)
+	by smtpout-02.galae.net (Postfix) with ESMTPS id EF86A1A2B83;
+	Sun,  1 Feb 2026 15:13:39 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id F271A60720;
-	Sun,  1 Feb 2026 15:13:33 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 310F1119A88FE;
-	Sun,  1 Feb 2026 16:13:30 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C283C60720;
+	Sun,  1 Feb 2026 15:13:39 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EBAAE119A865B;
+	Sun,  1 Feb 2026 16:13:35 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769958812; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1769958818; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=3JyNXaJPV1JN+oROG8njfZR+nQrPMM6HIkQN7k5HMQU=;
-	b=tKqSmm+fZDn2K/P4HbFn1x6uxvZRNsZiUW3+QpxhHoYJFF5AkKGOGraJK6G5fKveaTHj5k
-	Ur35Lk2YOZkQGTt+OK3D2sBMr15PMUQ5/fv1ZX2ij0wvMBDkFNyquGNtfO/S6H38cEWss5
-	Z3MNcJ7yZxXpQX5G1I0vT9mzwxHYSjH3h7zX6D27t+lGhfmNuVnja+2NUy4MWvPtpt2duX
-	b4LskC8eYAuIUIwY7KQDkEnIluGWjBl8BIsHla2T907qGYZqWfVlIJFEjGrPK5d43bp2aM
-	TB1VMVFt2cQ9ifLSj/0PBdsxvDGjPleIT/WuJixLUUQ0+nNFSlnz/TCmwE2Cjw==
+	bh=5hkEWysS/CxNma2DqiXrYZTcYVE95ux9SHUasDRkTEk=;
+	b=L+xjFEkJsk4EmZLWaIY6giPNIXvVVMxwV59L1gECzFPuwsOWFB8ZlmobCAbaZJP4RZrmPC
+	VldjcR9Rocv5V4Jx3Qe8NF8Zq1VsWzXbpqQdso9xfqHjHGsOtN4i4vWm78/xjCoEnjuP61
+	6/Ag5p6BYn4I0qwDjZDMNNbG3X9ec0K1NWikVHacyOwP3P8NEQOtYAL7SD4CI9Y5v/NvaF
+	QLp27GHR6wGk50/+kx1gmVhAmL+vHn+1htDt91vl4txhRGK0PtLsQ8rPEjXSnEpxsKaBBI
+	+QuvOdZQFqOWxXiqB+xoYcBXh8WY1X5PmDGm/EHJCJGIWarZIZZuX8LFh26Cbg==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -58,9 +58,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next v3 09/11] net: phy: phy_link_topology: Add a helper to retrieve ports
-Date: Sun,  1 Feb 2026 16:12:46 +0100
-Message-ID: <20260201151249.642015-10-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v3 11/11] net: ethtool: Introduce ethtool command to list ports
+Date: Sun,  1 Feb 2026 16:12:48 +0100
+Message-ID: <20260201151249.642015-12-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260201151249.642015-1-maxime.chevallier@bootlin.com>
 References: <20260201151249.642015-1-maxime.chevallier@bootlin.com>
@@ -73,50 +73,534 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-In order to allow netlink access to phy_ports, let's add a helper to
-retrieve them. When handling a port coming from phy_link_topology, the
-caller must hold rtnl until it's done with it.
+Expose the phy_port information to userspace, so that we can know how
+many ports are available on a given interface, as well as their
+capabilities. For MDI ports, we report the list of supported linkmodes
+based on what the PHY that drives this port says.
+For MII ports, i.e. empty SFP cages, we report the MII linkmodes that we
+can output on this port.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- include/linux/phy_link_topology.h | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ MAINTAINERS           |   1 +
+ net/ethtool/Makefile  |   2 +-
+ net/ethtool/netlink.c |  26 +++
+ net/ethtool/netlink.h |   8 +
+ net/ethtool/port.c    | 376 ++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 412 insertions(+), 1 deletion(-)
+ create mode 100644 net/ethtool/port.c
 
-diff --git a/include/linux/phy_link_topology.h b/include/linux/phy_link_topology.h
-index 66bceff72b19..b05858086e42 100644
---- a/include/linux/phy_link_topology.h
-+++ b/include/linux/phy_link_topology.h
-@@ -66,6 +66,17 @@ phy_link_topo_get_phy(struct net_device *dev, u32 phyindex)
- 	return NULL;
- }
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 0caa8aee5840..cc8999191357 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18219,6 +18219,7 @@ F:	Documentation/devicetree/bindings/net/ethernet-connector.yaml
+ F:	Documentation/networking/phy-port.rst
+ F:	drivers/net/phy/phy_port.c
+ F:	include/linux/phy_port.h
++F:	net/ethtool/port.c
+ K:	struct\s+phy_port|phy_port_
  
-+static inline struct phy_port *
-+phy_link_topo_get_port(struct net_device *dev, u32 port_id)
+ NETWORKING [GENERAL]
+diff --git a/net/ethtool/Makefile b/net/ethtool/Makefile
+index 629c10916670..9b5b09670008 100644
+--- a/net/ethtool/Makefile
++++ b/net/ethtool/Makefile
+@@ -9,4 +9,4 @@ ethtool_nl-y	:= netlink.o bitset.o strset.o linkinfo.o linkmodes.o rss.o \
+ 		   channels.o coalesce.o pause.o eee.o tsinfo.o cabletest.o \
+ 		   tunnels.o fec.o eeprom.o stats.o phc_vclocks.o mm.o \
+ 		   module.o cmis_fw_update.o cmis_cdb.o pse-pd.o plca.o \
+-		   phy.o tsconfig.o mse.o
++		   phy.o tsconfig.o mse.o port.o
+diff --git a/net/ethtool/netlink.c b/net/ethtool/netlink.c
+index 6e5f0f4f815a..90674aed7777 100644
+--- a/net/ethtool/netlink.c
++++ b/net/ethtool/netlink.c
+@@ -18,6 +18,8 @@ static u32 ethnl_bcast_seq;
+ 			     ETHTOOL_FLAG_OMIT_REPLY)
+ #define ETHTOOL_FLAGS_STATS (ETHTOOL_FLAGS_BASIC | ETHTOOL_FLAG_STATS)
+ 
++char phy_interface_names[PHY_INTERFACE_MODE_MAX][ETH_GSTRING_LEN] __ro_after_init;
++
+ const struct nla_policy ethnl_header_policy[] = {
+ 	[ETHTOOL_A_HEADER_DEV_INDEX]	= { .type = NLA_U32 },
+ 	[ETHTOOL_A_HEADER_DEV_NAME]	= { .type = NLA_NUL_STRING,
+@@ -421,6 +423,7 @@ ethnl_default_requests[__ETHTOOL_MSG_USER_CNT] = {
+ 	[ETHTOOL_MSG_TSCONFIG_SET]	= &ethnl_tsconfig_request_ops,
+ 	[ETHTOOL_MSG_PHY_GET]		= &ethnl_phy_request_ops,
+ 	[ETHTOOL_MSG_MSE_GET]		= &ethnl_mse_request_ops,
++	[ETHTOOL_MSG_PORT_GET]		= &ethnl_port_request_ops,
+ };
+ 
+ static struct ethnl_dump_ctx *ethnl_dump_context(struct netlink_callback *cb)
+@@ -1544,6 +1547,16 @@ static const struct genl_ops ethtool_genl_ops[] = {
+ 		.policy = ethnl_mse_get_policy,
+ 		.maxattr = ARRAY_SIZE(ethnl_mse_get_policy) - 1,
+ 	},
++	{
++		.cmd	= ETHTOOL_MSG_PORT_GET,
++		.doit	= ethnl_default_doit,
++		.start	= ethnl_port_dump_start,
++		.dumpit	= ethnl_port_dumpit,
++		.done	= ethnl_port_dump_done,
++		.policy = ethnl_port_get_policy,
++		.maxattr = ARRAY_SIZE(ethnl_port_get_policy) - 1,
++	},
++
+ };
+ 
+ static const struct genl_multicast_group ethtool_nl_mcgrps[] = {
+@@ -1566,10 +1579,23 @@ static struct genl_family ethtool_genl_family __ro_after_init = {
+ 
+ /* module setup */
+ 
++static void __init ethnl_phy_names_populate(void)
 +{
-+	struct phy_link_topology *topo = dev->link_topo;
++	const char *name;
++	int i;
 +
-+	if (!topo)
-+		return NULL;
-+
-+	return xa_load(&topo->ports, port_id);
++	for (i = 0; i < PHY_INTERFACE_MODE_MAX; i++) {
++		name = phy_modes(i);
++		strscpy(phy_interface_names[i], name, ETH_GSTRING_LEN);
++	}
 +}
 +
- #else
- static inline int phy_link_topo_add_phy(struct net_device *dev,
- 					struct phy_device *phy,
-@@ -95,6 +106,12 @@ phy_link_topo_get_phy(struct net_device *dev, u32 phyindex)
+ static int __init ethnl_init(void)
  {
- 	return NULL;
- }
-+
-+static inline struct phy_port *
-+phy_link_topo_get_port(struct net_device *dev, u32 port_id)
-+{
-+	return NULL;
-+}
- #endif
+ 	int ret;
  
- #endif /* __PHY_LINK_TOPOLOGY_H */
++	ethnl_phy_names_populate();
++
+ 	ret = genl_register_family(&ethtool_genl_family);
+ 	if (WARN(ret < 0, "ethtool: genetlink family registration failed"))
+ 		return ret;
+diff --git a/net/ethtool/netlink.h b/net/ethtool/netlink.h
+index 89010eaa67df..e849bc63ac58 100644
+--- a/net/ethtool/netlink.h
++++ b/net/ethtool/netlink.h
+@@ -5,11 +5,14 @@
+ 
+ #include <linux/ethtool_netlink.h>
+ #include <linux/netdevice.h>
++#include <linux/phy.h>
+ #include <net/genetlink.h>
+ #include <net/sock.h>
+ 
+ struct ethnl_req_info;
+ 
++extern char phy_interface_names[PHY_INTERFACE_MODE_MAX][ETH_GSTRING_LEN];
++
+ u32 ethnl_bcast_seq_next(void);
+ int ethnl_parse_header_dev_get(struct ethnl_req_info *req_info,
+ 			       const struct nlattr *nest, struct net *net,
+@@ -443,6 +446,7 @@ extern const struct ethnl_request_ops ethnl_mm_request_ops;
+ extern const struct ethnl_request_ops ethnl_phy_request_ops;
+ extern const struct ethnl_request_ops ethnl_tsconfig_request_ops;
+ extern const struct ethnl_request_ops ethnl_mse_request_ops;
++extern const struct ethnl_request_ops ethnl_port_request_ops;
+ 
+ extern const struct nla_policy ethnl_header_policy[ETHTOOL_A_HEADER_FLAGS + 1];
+ extern const struct nla_policy ethnl_header_policy_stats[ETHTOOL_A_HEADER_FLAGS + 1];
+@@ -499,6 +503,7 @@ extern const struct nla_policy ethnl_phy_get_policy[ETHTOOL_A_PHY_HEADER + 1];
+ extern const struct nla_policy ethnl_tsconfig_get_policy[ETHTOOL_A_TSCONFIG_HEADER + 1];
+ extern const struct nla_policy ethnl_tsconfig_set_policy[ETHTOOL_A_TSCONFIG_MAX + 1];
+ extern const struct nla_policy ethnl_mse_get_policy[ETHTOOL_A_MSE_HEADER + 1];
++extern const struct nla_policy ethnl_port_get_policy[ETHTOOL_A_PORT_ID + 1];
+ 
+ int ethnl_set_features(struct sk_buff *skb, struct genl_info *info);
+ int ethnl_act_cable_test(struct sk_buff *skb, struct genl_info *info);
+@@ -514,6 +519,9 @@ int ethnl_tsinfo_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
+ int ethnl_tsinfo_done(struct netlink_callback *cb);
+ int ethnl_rss_create_doit(struct sk_buff *skb, struct genl_info *info);
+ int ethnl_rss_delete_doit(struct sk_buff *skb, struct genl_info *info);
++int ethnl_port_dump_start(struct netlink_callback *cb);
++int ethnl_port_dumpit(struct sk_buff *skb, struct netlink_callback *cb);
++int ethnl_port_dump_done(struct netlink_callback *cb);
+ 
+ extern const char stats_std_names[__ETHTOOL_STATS_CNT][ETH_GSTRING_LEN];
+ extern const char stats_eth_phy_names[__ETHTOOL_A_STATS_ETH_PHY_CNT][ETH_GSTRING_LEN];
+diff --git a/net/ethtool/port.c b/net/ethtool/port.c
+new file mode 100644
+index 000000000000..9e6821a8d00b
+--- /dev/null
++++ b/net/ethtool/port.c
+@@ -0,0 +1,376 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright 2026 Bootlin
++ *
++ */
++#include "common.h"
++#include "bitset.h"
++#include "netlink.h"
++
++#include <linux/phy.h>
++#include <linux/phy_link_topology.h>
++#include <linux/phy_port.h>
++#include <net/netdev_lock.h>
++
++struct port_req_info {
++	struct ethnl_req_info base;
++	u32 port_id;
++};
++
++struct port_reply_data {
++	struct ethnl_reply_data	base;
++	__ETHTOOL_DECLARE_LINK_MODE_MASK(supported);
++	DECLARE_PHY_INTERFACE_MASK(interfaces);
++	u32 port_id;
++	bool mii;
++	bool sfp;
++	bool vacant;
++};
++
++#define PORT_REQINFO(__req_base) \
++	container_of(__req_base, struct port_req_info, base)
++
++#define PORT_REPDATA(__reply_base) \
++	container_of(__reply_base, struct port_reply_data, base)
++
++const struct nla_policy ethnl_port_get_policy[ETHTOOL_A_PORT_ID + 1] = {
++	[ETHTOOL_A_PORT_HEADER] = NLA_POLICY_NESTED(ethnl_header_policy),
++	[ETHTOOL_A_PORT_ID] = { .type = NLA_U32},
++};
++
++static int port_parse_request(struct ethnl_req_info *req_info,
++			      struct nlattr **tb,
++			      struct netlink_ext_ack *extack)
++{
++	struct port_req_info *request = PORT_REQINFO(req_info);
++
++	/* PORT id is required for GET requests */
++	if (tb[ETHTOOL_A_PORT_ID])
++		request->port_id = nla_get_u32(tb[ETHTOOL_A_PORT_ID]);
++
++	if (!request->port_id) {
++		NL_SET_ERR_MSG(extack, "port id missing");
++		return -ENODEV;
++	}
++
++	return 0;
++}
++
++static int port_prepare_data(const struct ethnl_req_info *req_info,
++			     struct ethnl_reply_data *reply_data,
++			     const struct genl_info *info)
++{
++	struct port_reply_data *reply = PORT_REPDATA(reply_data);
++	struct port_req_info *request = PORT_REQINFO(req_info);
++	struct phy_port *port;
++
++	/* RTNL must be held while holding a ref to the phy_port. Here, caller
++	 * holds RTNL.
++	 */
++	port = phy_link_topo_get_port(req_info->dev, request->port_id);
++	if (!port)
++		return -ENODEV;
++
++	linkmode_copy(reply->supported, port->supported);
++	phy_interface_copy(reply->interfaces, port->interfaces);
++	reply->port_id = port->id;
++	reply->mii = port->is_mii;
++	reply->sfp = port->is_sfp;
++	reply->vacant = port->vacant;
++
++	return 0;
++}
++
++static int port_reply_size(const struct ethnl_req_info *req_info,
++			   const struct ethnl_reply_data *reply_data)
++{
++	bool compact = req_info->flags & ETHTOOL_FLAG_COMPACT_BITSETS;
++	struct port_reply_data *reply = PORT_REPDATA(reply_data);
++	size_t size = 0;
++	int ret;
++
++	/* ETHTOOL_A_PORT_ID */
++	size += nla_total_size(sizeof(u32));
++
++	if (!reply->mii) {
++		/* ETHTOOL_A_PORT_SUPPORTED_MODES */
++		ret = ethnl_bitset_size(reply->supported, NULL,
++					__ETHTOOL_LINK_MODE_MASK_NBITS,
++					link_mode_names, compact);
++		if (ret < 0)
++			return ret;
++
++		size += ret;
++	} else {
++		/* ETHTOOL_A_PORT_SUPPORTED_INTERFACES */
++		ret = ethnl_bitset_size(reply->interfaces, NULL,
++					PHY_INTERFACE_MODE_MAX,
++					phy_interface_names, compact);
++		if (ret < 0)
++			return ret;
++
++		size += ret;
++	}
++
++	/* ETHTOOL_A_PORT_TYPE */
++	size += nla_total_size(sizeof(u8));
++
++	/* ETHTOOL_A_PORT_VACANT */
++	size += nla_total_size(sizeof(u8));
++
++	return size;
++}
++
++static int port_fill_reply(struct sk_buff *skb,
++			   const struct ethnl_req_info *req_info,
++			   const struct ethnl_reply_data *reply_data)
++{
++	bool compact = req_info->flags & ETHTOOL_FLAG_COMPACT_BITSETS;
++	struct port_reply_data *reply = PORT_REPDATA(reply_data);
++	int ret, port_type = ETHTOOL_PORT_TYPE_MDI;
++
++	if (nla_put_u32(skb, ETHTOOL_A_PORT_ID, reply->port_id))
++		return -EMSGSIZE;
++
++	if (!reply->mii) {
++		ret = ethnl_put_bitset(skb, ETHTOOL_A_PORT_SUPPORTED_MODES,
++				       reply->supported, NULL,
++				       __ETHTOOL_LINK_MODE_MASK_NBITS,
++				       link_mode_names, compact);
++		if (ret < 0)
++			return -EMSGSIZE;
++	} else {
++		ret = ethnl_put_bitset(skb, ETHTOOL_A_PORT_SUPPORTED_INTERFACES,
++				       reply->interfaces, NULL,
++				       PHY_INTERFACE_MODE_MAX,
++				       phy_interface_names, compact);
++		if (ret < 0)
++			return -EMSGSIZE;
++	}
++
++	if (reply->mii || reply->sfp)
++		port_type = ETHTOOL_PORT_TYPE_SFP;
++
++	if (nla_put_u8(skb, ETHTOOL_A_PORT_TYPE, port_type) ||
++	    nla_put_u8(skb, ETHTOOL_A_PORT_VACANT, reply->vacant))
++		return -EMSGSIZE;
++
++	return 0;
++}
++
++struct port_dump_ctx {
++	struct port_req_info	*req_info;
++	struct port_reply_data	*reply_data;
++	unsigned long		ifindex;
++	unsigned long		pos_portid;
++};
++
++static struct port_dump_ctx *
++port_dump_ctx_get(struct netlink_callback *cb)
++{
++	return (struct port_dump_ctx *)cb->ctx;
++}
++
++int ethnl_port_dump_start(struct netlink_callback *cb)
++{
++	const struct genl_dumpit_info *info = genl_dumpit_info(cb);
++	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
++	struct nlattr **tb = info->info.attrs;
++	struct port_reply_data *reply_data;
++	struct port_req_info *req_info;
++	int ret;
++
++	BUILD_BUG_ON(sizeof(*ctx) > sizeof(cb->ctx));
++
++	req_info = kzalloc(sizeof(*req_info), GFP_KERNEL);
++	if (!req_info)
++		return -ENOMEM;
++
++	reply_data = kmalloc(sizeof(*reply_data), GFP_KERNEL);
++	if (!reply_data) {
++		ret = -ENOMEM;
++		goto free_req_info;
++	}
++
++	ret = ethnl_parse_header_dev_get(&req_info->base, tb[ETHTOOL_A_PORT_HEADER],
++					 genl_info_net(&info->info),
++					 info->info.extack, false);
++	if (ret < 0)
++		goto free_rep_data;
++
++	ctx->ifindex = 0;
++
++	/* For filtered DUMP requests, let's just store the ifindex. We'll check
++	 * again if the netdev is still there when looping over the netdev list
++	 * in the DUMP loop.
++	 */
++	if (req_info->base.dev) {
++		ctx->ifindex = req_info->base.dev->ifindex;
++		netdev_put(req_info->base.dev, &req_info->base.dev_tracker);
++		req_info->base.dev = NULL;
++	}
++
++	ctx->req_info = req_info;
++	ctx->reply_data = reply_data;
++
++	return 0;
++
++free_rep_data:
++	kfree(reply_data);
++free_req_info:
++	kfree(req_info);
++
++	return ret;
++}
++
++static int port_dump_one(struct sk_buff *skb, struct net_device *dev,
++			 struct netlink_callback *cb)
++{
++	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
++	void *ehdr;
++	int ret;
++
++	ehdr = ethnl_dump_put(skb, cb, ETHTOOL_A_PORT_HEADER);
++	if (!ehdr)
++		return -EMSGSIZE;
++
++	memset(ctx->reply_data, 0, sizeof(struct port_reply_data));
++	ctx->reply_data->base.dev = dev;
++
++	rtnl_lock();
++	netdev_lock_ops(dev);
++
++	ret = port_prepare_data(&ctx->req_info->base, &ctx->reply_data->base,
++				genl_info_dump(cb));
++
++	netdev_unlock_ops(dev);
++	rtnl_unlock();
++
++	if (ret < 0)
++		goto out;
++
++	ret = ethnl_fill_reply_header(skb, dev, ETHTOOL_A_PORT_HEADER);
++	if (ret < 0)
++		goto out;
++
++	ret = port_fill_reply(skb, &ctx->req_info->base, &ctx->reply_data->base);
++
++out:
++	ctx->reply_data->base.dev = NULL;
++	if (ret < 0)
++		genlmsg_cancel(skb, ehdr);
++	else
++		genlmsg_end(skb, ehdr);
++
++	return ret;
++}
++
++static int port_dump_one_dev(struct sk_buff *skb, struct netlink_callback *cb)
++{
++	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
++	struct net_device *dev;
++	struct phy_port *port;
++	int ret;
++
++	dev = ctx->req_info->base.dev;
++
++	if (!dev->link_topo)
++		return 0;
++
++	xa_for_each_start(&dev->link_topo->ports, ctx->pos_portid, port,
++			  ctx->pos_portid) {
++		ctx->req_info->port_id = ctx->pos_portid;
++
++		ret = port_dump_one(skb, dev, cb);
++		if (ret)
++			return ret;
++	}
++
++	ctx->pos_portid = 0;
++
++	return 0;
++}
++
++static int port_dump_all_dev(struct sk_buff *skb, struct netlink_callback *cb)
++{
++	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
++	struct net *net = sock_net(skb->sk);
++	netdevice_tracker dev_tracker;
++	struct net_device *dev;
++	int ret = 0;
++
++	rcu_read_lock();
++	for_each_netdev_dump(net, dev, ctx->ifindex) {
++		netdev_hold(dev, &dev_tracker, GFP_ATOMIC);
++		rcu_read_unlock();
++
++		ctx->req_info->base.dev = dev;
++		ret = port_dump_one_dev(skb, cb);
++
++		rcu_read_lock();
++		netdev_put(dev, &dev_tracker);
++		ctx->req_info->base.dev = NULL;
++
++		if (ret < 0 && ret != -EOPNOTSUPP) {
++			if (likely(skb->len))
++				ret = skb->len;
++			break;
++		}
++		ret = 0;
++	}
++	rcu_read_unlock();
++
++	return ret;
++}
++
++int ethnl_port_dumpit(struct sk_buff *skb, struct netlink_callback *cb)
++{
++	const struct genl_dumpit_info *info = genl_dumpit_info(cb);
++	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
++	int ret = 0;
++
++	if (ctx->ifindex) {
++		netdevice_tracker dev_tracker;
++		struct net_device *dev;
++
++		dev = netdev_get_by_index(genl_info_net(&info->info),
++					  ctx->ifindex, &dev_tracker,
++					  GFP_KERNEL);
++		if (!dev)
++			return -ENODEV;
++
++		ctx->req_info->base.dev = dev;
++		ret = port_dump_one_dev(skb, cb);
++		if (ret < 0 && ret != -EOPNOTSUPP && likely(skb->len))
++			ret = skb->len;
++
++		netdev_put(dev, &dev_tracker);
++	} else {
++		ret = port_dump_all_dev(skb, cb);
++	}
++
++	return ret;
++}
++
++int ethnl_port_dump_done(struct netlink_callback *cb)
++{
++	struct port_dump_ctx *ctx = port_dump_ctx_get(cb);
++
++	kfree(ctx->req_info);
++	kfree(ctx->reply_data);
++
++	return 0;
++}
++
++const struct ethnl_request_ops ethnl_port_request_ops = {
++	.request_cmd		= ETHTOOL_MSG_PORT_GET,
++	.reply_cmd		= ETHTOOL_MSG_PORT_GET_REPLY,
++	.hdr_attr		= ETHTOOL_A_PORT_HEADER,
++	.req_info_size		= sizeof(struct port_req_info),
++	.reply_data_size	= sizeof(struct port_reply_data),
++
++	.parse_request		= port_parse_request,
++	.prepare_data		= port_prepare_data,
++	.reply_size		= port_reply_size,
++	.fill_reply		= port_fill_reply,
++};
 -- 
 2.49.0
 
