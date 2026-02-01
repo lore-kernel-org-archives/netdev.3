@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16269210F59;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174C721CC43;
 	Sun,  1 Feb 2026 15:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769958799; cv=none; b=Sn04W3/f8Sdjusd4VHpHzXVZrwXGRo5FesJCTjyp34wAzz6mZ0fwVg6UycGjePXevFfam0gmvHXwQI2YHDs8ooc8+/jaYe10fZ19EYSGR/pROliU3PJvHaX/EkQNL4KDVS+/WZQzrhHixTN64eSy00Edf71/o5eeJWCN1bf7Uu8=
+	t=1769958799; cv=none; b=EJU5JsTA6h8G4H9ypeqJJ0WX9Ooj6dYHVfCUGXkye+Wq7fogd7VHbUozdnTEjwsmuZYZl1XqOQqyxhkXROIJPb5zN2ywePgD7UH80uzbWd70HsC69yEco6ow4ySgKhJFkJYZaHr/aHCIvllTvOr3w/OY4dT5GG9HRxKPAJaschg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1769958799; c=relaxed/simple;
-	bh=uOT0ACkkaQE7Tu05Lo6cceFSzMxC66TIiG83sESc9b4=;
+	bh=ceTw3Y+2k1owesKq9VRkvE3lyH9jPSiyaxkXTcGp/Vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sIlz0p/tKmyQXo1bMMdMD/ZgKcv6dCIx9n67Ml21V5cr+m1X9ro7bDIiHBUkjoK88XK7OTY4Gz8ggcC/4DxxFKUE52Ykv8V6RpGsnJYGBHLr/Fi0AQyKf6AhwuTt4VhaNa1xwPtIxM1XX2hHkgtMsK4yblGKfNUSUnPELbq9bJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OUT8vVDU; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=frf6PJsaPEJ0A4I+XkQ7BP4dgVTzQSpkxUIaKXgRv0ZZB46Hm+nKqdey0D41d7etu/F+5YHQmG3t+39PVlNkUOzd3685WSN0+wbkhfbWptWtnt5KIOYI6Fn0tlv2gNXdSV+nNL8i1/1GccKBCJRUWJQ0KgLXa6yApZaLhu4qULM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=JjVGhx7R; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OUT8vVDU"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="JjVGhx7R"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 0EE991A2B84;
-	Sun,  1 Feb 2026 15:13:11 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id B2C534E423A9;
+	Sun,  1 Feb 2026 15:13:16 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id D8FD760720;
-	Sun,  1 Feb 2026 15:13:10 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 99AE1119A88EE;
-	Sun,  1 Feb 2026 16:13:06 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 86FFC60720;
+	Sun,  1 Feb 2026 15:13:16 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B09EE119A865B;
+	Sun,  1 Feb 2026 16:13:12 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1769958789; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1769958795; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=l+Rp6Yl7ITjibk5awHjn/5hIqdMq5jHRP74fmk55B4Y=;
-	b=OUT8vVDUYupKBZic8J6Suw2qME6++37jLwBg6mfTDbIIA2rOAUBOFyqqc97lmjY9fmzPvo
-	zeYMmXj0pqQAKSmllolwow++BlaoHEVdTHHOdF5ZD2iLRuRQh5soeOg+Z1xMgCHR3LewS+
-	0fk7My0Pe/MIu3CWV/O2YD9UjjV0DCqtVKeO4j8zZDTm7K2ouMmK00igwfFeR2DjEH/rff
-	PaL6FfsgXr7InZUO5bbRH4fwaU4eo1oflwfoIJvwGtWtYY1j0a/4DdjSkzO/qfd0FVukuN
-	yon5zkrnlMPCT4DoxiKQzo5G38MGGwieCA++6QmHkwgIiRATMBbZMuD2OKnFzA==
+	bh=IRk0K+iuT7PNYANBHukpfnb6ronXpCa6nfbjQJcF9QU=;
+	b=JjVGhx7RcPefBfXdDsml8taKKA965xEAlJotmFf0SHqqHxb0Hn//swc3XM9QwV7lec34d9
+	khy/eAxTYBufMyDbvzkNKzrv6zHgvH9itgJ64WgoUQMRiCb937ciqHRwGRSd1tBiHXuFCI
+	osg1LSH1iCeDlBGZMq1Zg8xKii5aAcLvI5sdaCAObTrhs6ycYttDLJSO1V+MsnxptnagFM
+	f6zZLmaDcJA7nYfeqaFgP4Apo+oZj7DMMPbyca+6fFPJvb4dhs9GpXzYIynpx6bdcxCwlq
+	yjX/6jx4irEZVa77ltBJIBo2qOo6SibWUNObzuQhry3noirvPdMZvy6FrnmZ7Q==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -58,9 +58,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next v3 01/11] net: phy: phy_port: Correctly recompute the port's linkmodes
-Date: Sun,  1 Feb 2026 16:12:38 +0100
-Message-ID: <20260201151249.642015-2-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v3 03/11] net: phy: phy_link_topology: Track ports in phy_link_topology
+Date: Sun,  1 Feb 2026 16:12:40 +0100
+Message-ID: <20260201151249.642015-4-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260201151249.642015-1-maxime.chevallier@bootlin.com>
 References: <20260201151249.642015-1-maxime.chevallier@bootlin.com>
@@ -73,63 +73,206 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-a PHY-driven phy_port contains a 'supported' field containing the
-linkmodes available on this port. This is populated based on :
- - The PHY's reported features
- - The DT representation of the connector
- - The PHY's attach_mdi() callback
+phy_port is aimed at representing the various physical interfaces of a
+net_device. They can be controlled by various components in the link,
+such as the Ethernet PHY, the Ethernet MAC, and SFP module, etc.
 
-As these different attrbution methods work in conjunction, the helper
-phy_port_update_supported() recomputes the final 'supported' value based
-on the populated mediums, linkmodes and pairs.
+Let's therefore make so we keep track of all the ports connected to a
+netdev in phy_link_topology. The only ports added for now are phy-driven
+ports.
 
-However this recompute wasn't correctly implemented, and added more
-modes than necessary by or'ing the medium-specific modes to the existing
-support. Let's fix this and properly filter the modes.
-
-Fixes: 589e934d2735 ("net: phy: Introduce PHY ports representation")
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/phy/phy_port.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/phy/phy_link_topology.c | 53 +++++++++++++++++++++++++++++
+ include/linux/phy_link_topology.h   | 18 ++++++++++
+ include/linux/phy_port.h            |  2 ++
+ net/core/dev.c                      |  1 +
+ 4 files changed, 74 insertions(+)
 
-diff --git a/drivers/net/phy/phy_port.c b/drivers/net/phy/phy_port.c
-index ec93c8ca051e..6c1d3c487b13 100644
---- a/drivers/net/phy/phy_port.c
-+++ b/drivers/net/phy/phy_port.c
-@@ -117,12 +117,6 @@ void phy_port_update_supported(struct phy_port *port)
- 	unsigned long mode;
- 	int i;
+diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
+index 7dc2ff10c74a..456f1144e83e 100644
+--- a/drivers/net/phy/phy_link_topology.c
++++ b/drivers/net/phy/phy_link_topology.c
+@@ -7,6 +7,7 @@
+  */
  
--	for_each_set_bit(i, &port->mediums, __ETHTOOL_LINK_MEDIUM_LAST) {
--		linkmode_zero(supported);
--		phy_caps_medium_get_supported(supported, i, port->pairs);
--		linkmode_or(port->supported, port->supported, supported);
--	}
--
- 	/* If there's no pairs specified, we grab the default number of
- 	 * pairs as the max of the default pairs for each linkmode
- 	 */
-@@ -132,6 +126,19 @@ void phy_port_update_supported(struct phy_port *port)
- 			port->pairs = max_t(int, port->pairs,
- 					    ethtool_linkmode_n_pairs(mode));
+ #include <linux/phy_link_topology.h>
++#include <linux/phy_port.h>
+ #include <linux/phy.h>
+ #include <linux/rtnetlink.h>
+ #include <linux/xarray.h>
+@@ -22,6 +23,9 @@ static int netdev_alloc_phy_link_topology(struct net_device *dev)
+ 	xa_init_flags(&topo->phys, XA_FLAGS_ALLOC1);
+ 	topo->next_phy_index = 1;
  
-+	if (linkmode_empty(port->supported)) {
-+		for_each_set_bit(i, &port->mediums,
-+				 __ETHTOOL_LINK_MEDIUM_LAST) {
-+			__ETHTOOL_DECLARE_LINK_MODE_MASK(med_supported) = {0};
++	xa_init_flags(&topo->ports, XA_FLAGS_ALLOC1);
++	topo->next_port_index = 1;
 +
-+			phy_caps_medium_get_supported(med_supported, i,
-+						      port->pairs);
-+			linkmode_or(supported, supported, med_supported);
-+		}
+ 	dev->link_topo = topo;
+ 
+ 	return 0;
+@@ -44,12 +48,45 @@ static struct phy_link_topology *phy_link_topo_get_or_alloc(struct net_device *d
+ 	return dev->link_topo;
+ }
+ 
++int phy_link_topo_add_port(struct net_device *dev, struct phy_port *port)
++{
++	struct phy_link_topology *topo;
++	int ret;
 +
-+		linkmode_and(port->supported, port->supported, supported);
++	topo = phy_link_topo_get_or_alloc(dev);
++	if (IS_ERR(topo))
++		return PTR_ERR(topo);
++
++	/* Attempt to re-use a previously allocated port_id */
++	if (port->id)
++		ret = xa_insert(&topo->ports, port->id, port, GFP_KERNEL);
++	else
++		ret = xa_alloc_cyclic(&topo->ports, &port->id, port,
++				      xa_limit_32b, &topo->next_port_index,
++				      GFP_KERNEL);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(phy_link_topo_add_port);
++
++void phy_link_topo_del_port(struct net_device *dev, struct phy_port *port)
++{
++	struct phy_link_topology *topo = dev->link_topo;
++
++	if (!topo)
++		return;
++
++	xa_erase(&topo->ports, port->id);
++}
++EXPORT_SYMBOL_GPL(phy_link_topo_del_port);
++
+ int phy_link_topo_add_phy(struct net_device *dev,
+ 			  struct phy_device *phy,
+ 			  enum phy_upstream upt, void *upstream)
+ {
+ 	struct phy_link_topology *topo;
+ 	struct phy_device_node *pdn;
++	struct phy_port *port;
+ 	int ret;
+ 
+ 	topo = phy_link_topo_get_or_alloc(dev);
+@@ -89,8 +126,20 @@ int phy_link_topo_add_phy(struct net_device *dev,
+ 	if (ret < 0)
+ 		goto err;
+ 
++	/* Add all the PHY's ports to the topology */
++	list_for_each_entry(port, &phy->ports, head) {
++		ret = phy_link_topo_add_port(dev, port);
++		if (ret)
++			goto del_ports;
 +	}
 +
- 	/* Serdes ports supported through SFP may not have any medium set,
- 	 * as they will output PHY_INTERFACE_MODE_XXX modes. In that case, derive
- 	 * the supported list based on these interfaces
+ 	return 0;
+ 
++del_ports:
++	list_for_each_entry_from_reverse(port, &phy->ports, head)
++		phy_link_topo_del_port(dev, port);
++
++	xa_erase(&topo->phys, phy->phyindex);
+ err:
+ 	kfree(pdn);
+ 	return ret;
+@@ -102,10 +151,14 @@ void phy_link_topo_del_phy(struct net_device *dev,
+ {
+ 	struct phy_link_topology *topo = dev->link_topo;
+ 	struct phy_device_node *pdn;
++	struct phy_port *port;
+ 
+ 	if (!topo)
+ 		return;
+ 
++	list_for_each_entry(port, &phy->ports, head)
++		phy_link_topo_del_port(dev, port);
++
+ 	pdn = xa_erase(&topo->phys, phy->phyindex);
+ 
+ 	/* We delete the PHY from the topology, however we don't re-set the
+diff --git a/include/linux/phy_link_topology.h b/include/linux/phy_link_topology.h
+index 68a59e25821c..66bceff72b19 100644
+--- a/include/linux/phy_link_topology.h
++++ b/include/linux/phy_link_topology.h
+@@ -16,11 +16,15 @@
+ 
+ struct xarray;
+ struct phy_device;
++struct phy_port;
+ struct sfp_bus;
+ 
+ struct phy_link_topology {
+ 	struct xarray phys;
+ 	u32 next_phy_index;
++
++	struct xarray ports;
++	u32 next_port_index;
+ };
+ 
+ struct phy_device_node {
+@@ -43,6 +47,9 @@ int phy_link_topo_add_phy(struct net_device *dev,
+ 
+ void phy_link_topo_del_phy(struct net_device *dev, struct phy_device *phy);
+ 
++int phy_link_topo_add_port(struct net_device *dev, struct phy_port *port);
++void phy_link_topo_del_port(struct net_device *dev, struct phy_port *port);
++
+ static inline struct phy_device *
+ phy_link_topo_get_phy(struct net_device *dev, u32 phyindex)
+ {
+@@ -72,6 +79,17 @@ static inline void phy_link_topo_del_phy(struct net_device *dev,
+ {
+ }
+ 
++static inline int phy_link_topo_add_port(struct net_device *dev,
++					 struct phy_port *port)
++{
++	return 0;
++}
++
++static inline void phy_link_topo_del_port(struct net_device *dev,
++					  struct phy_port *port)
++{
++}
++
+ static inline struct phy_device *
+ phy_link_topo_get_phy(struct net_device *dev, u32 phyindex)
+ {
+diff --git a/include/linux/phy_port.h b/include/linux/phy_port.h
+index 0ef0f5ce4709..4e2a3fdd2f2e 100644
+--- a/include/linux/phy_port.h
++++ b/include/linux/phy_port.h
+@@ -36,6 +36,7 @@ struct phy_port_ops {
+ /**
+  * struct phy_port - A representation of a network device physical interface
+  *
++ * @id: Unique identifier for the port within the topology
+  * @head: Used by the port's parent to list ports
+  * @parent_type: The type of device this port is directly connected to
+  * @phy: If the parent is PHY_PORT_PHYDEV, the PHY controlling that port
+@@ -52,6 +53,7 @@ struct phy_port_ops {
+  * @is_sfp: Indicates if this port drives an SFP cage.
+  */
+ struct phy_port {
++	u32 id;
+ 	struct list_head head;
+ 	enum phy_port_parent parent_type;
+ 	union {
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 43de5af0d6ec..fe2dfcc95400 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -11277,6 +11277,7 @@ static void netdev_free_phy_link_topology(struct net_device *dev)
+ 
+ 	if (IS_ENABLED(CONFIG_PHYLIB) && topo) {
+ 		xa_destroy(&topo->phys);
++		xa_destroy(&topo->ports);
+ 		kfree(topo);
+ 		dev->link_topo = NULL;
+ 	}
 -- 
 2.49.0
 
