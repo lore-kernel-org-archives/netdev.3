@@ -1,115 +1,84 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD799280324
-	for <netdev@vger.kernel.org>; Sun,  1 Feb 2026 17:51:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1532F22759C;
+	Sun,  1 Feb 2026 18:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769968277; cv=none; b=iQCL4JUqlgqCfawuAAXouDPYTCQ25zYOTyOtTqftMpZ2IxpJ86+R8hhNXp03RuL0RYwVvySiNKxF+nZ2cYt0gtQ7viuT5itHroWOH0G+DyzRg03kBETzPS47j8PC+vDFnOpdUHcJAa3bxGpnqCxfrJTwZ2AG8T/OWoSFHrsUJuk=
+	t=1769970170; cv=none; b=OOrY7YXCfl1ZU9YCKf6A3wH7iIKP4a9rou6AA/HOkbMpjKoxrFxmqg7QP9YPM7IBwIbhe60qCxMX6OMng59Itez2xeMLvB19g8PxQiNq5nzB/Rwfi3xz84B8vBB+iikCVF7Pjnu7jV60kp3ikHm8c1tfP7QtBnc4tD53o0sIkFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769968277; c=relaxed/simple;
-	bh=exa/YP9fyICJ77EYEDHbnzjy54eXhqjQuSP7ACG5gVg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNF3ffCjS8GS7vX3a9MfH94oqTCS33MhNYDGyY6SHbyuML69BUfXJ4KtWmOP3IlU56tv5np8s/8lxiOLTV6IBwDPGt2kjPpHtnWOqLICEZGyxxnB1nSiNPWoIz2Uz7H+I9xjA25vf3obI5CCO3bs48gBRDRNIIqGmxJLUyXEftQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bGPew7Nr; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1769970170; c=relaxed/simple;
+	bh=grlXjdm8xmThX3zhXh4qR9eXyekhcJ8bFV4lxhv8hKM=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=EYLxW9diqXWh0X6kSFcIvjjL4AGqG0BhdAC/vMvpg17+M1a6Fgrhr/N8GB7akZ0yZJerO6yCaxiZA8wir3ljR4DhTSF786KL4CWj8xpRhE696DhouKCXy2XeLMrtJWHKZLh8bxmP61fOoRXOLQcNaWhU2nxU3Y7yPHzOHh198wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X8+fFDWG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bGPew7Nr"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-81f47610542so1989351b3a.0
-        for <netdev@vger.kernel.org>; Sun, 01 Feb 2026 09:51:11 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1769968271; x=1770573071; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uRf+SRIGQU8su06GPIQHkqNg5txYSi+urlSE/fCNWGY=;
-        b=bGPew7NrLebHj9dB9DEE/zsshkLACYQGdPowqtgsISA/yLaheVQQBRlWLZ6hyBDQPf
-         tw3KN29xR5M+VlBbO4tmGSuS9MRBIHHhb8h17YlFxPaQXfNNY8c1+9C6ArIh9i9+2ELJ
-         NMsFcLqMpnHoWKgJlIJr236lJMv6t9sfLiOhgvko5QD7HycB4w+NnYfZmuCg8lVOPQr/
-         6GvAASG6ti7tkWN8O1bwQsY5p0/cnkdXRvyvPG4+JrQc+Cs4url6ZkusZyXmVuJMcogX
-         YjynDHHS4Q/KuGuDbtIgVa6ZVHbog6amISPqz51b9c7++LthejbHPimZJzz3PwNvXcB8
-         yt4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1769968271; x=1770573071;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uRf+SRIGQU8su06GPIQHkqNg5txYSi+urlSE/fCNWGY=;
-        b=hU1L+zqezmOvfOFLhNNMbrojivYuAvQ8pmNbOSbHvFFr+iaL6C9x/4LQghdANUwTei
-         hkPYSVsUSYYYjQ38WudYnJvoCQVE1x+oUIJxWDINTbOlEo3VPo8uXn9u8RSLqE5pxQGC
-         +q8q8CT0PmrMFhcT4LCEHs06GEeDX+V+154MNylREHpH9lfw4N9oU3dInqv2M+KoTrct
-         Pdk7Ye7Zv5/oTOCIIkSDswDFo5ZfvKwoHeoI9BFsLimRnV9Q0DFx/v4k2gPAc3SJapxW
-         xCEm8rQIMEhBF8b4QFiqmbZLlHzy3fLsWqBAV5fLbXEm2e5taIAIOyaE5bz2qCIoLEC3
-         Zceg==
-X-Gm-Message-State: AOJu0Yxo6iGrPgRWUx+7z3pC2w01+Sa9gll+GgIjkEgZIzTzf/FM1bCS
-	Kn2aCsu8xsbiPhW48tO6P9j2BlJZkpHT989huZVUnhMTvMCrIydTcXJn
-X-Gm-Gg: AZuq6aJwsvSghijp0ImzL+9UyLLn8+PQID7YGAQlrBG99VhlQG0V7LGCdS6hI8sc5rQ
-	BnkmAXUHfYiLuHuuEHYeaaE8uYLuf6zRt30ciAJtGQLHGf1bAh5kkzXwl/5XwU0/I6YjgQ9Muhl
-	oaAGNzGy2pPOz9w/5M6NGO8mr3rbYknfvXY5i7WuCjYS55PY6sg33TajQjqbPsBJhKtYjjk6jzz
-	yZqz4UDWNFmz9M5AtjPt0FBG8ffwTcyNqTzhXNJZn4XH8WUu/wamPeB/Towum5lTSoMJydaAKo9
-	rCP7KO+T7qZFFTfnWiNyi+ldznlzN60M9of1NO420dE63JpqSEDyqTUKZmQrlMCyACLYoloa08j
-	b9iH0FUVdlAfJm2NcZsSZqWaftIgE89ooEboqYyTxvh7e5mQg0XQeNdSdFfSD1qjLBhGJlB4VZo
-	dchA==
-X-Received: by 2002:a05:6a00:2316:b0:81f:394a:489e with SMTP id d2e1a72fcca58-823ab65ef08mr8539752b3a.10.1769968271114;
-        Sun, 01 Feb 2026 09:51:11 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:5e::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82379b1bc1asm13967537b3a.9.2026.02.01.09.51.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Feb 2026 09:51:10 -0800 (PST)
-From: Amery Hung <ameryhung@gmail.com>
-To: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	alexei.starovoitov@gmail.com,
-	andrii@kernel.org,
-	daniel@iogearbox.net,
-	memxor@gmail.com,
-	martin.lau@kernel.org,
-	kpsingh@kernel.org,
-	yonghong.song@linux.dev,
-	song@kernel.org,
-	haoluo@google.com,
-	ameryhung@gmail.com,
-	kernel-team@meta.com
-Subject: [PATCH bpf-next v5 16/16] selftests/bpf: Choose another percpu variable in bpf for btf_dump test
-Date: Sun,  1 Feb 2026 09:50:49 -0800
-Message-ID: <20260201175050.468601-17-ameryhung@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260201175050.468601-1-ameryhung@gmail.com>
-References: <20260201175050.468601-1-ameryhung@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X8+fFDWG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7443AC4CEF7;
+	Sun,  1 Feb 2026 18:22:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1769970169;
+	bh=grlXjdm8xmThX3zhXh4qR9eXyekhcJ8bFV4lxhv8hKM=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=X8+fFDWGKvmGL/kZL1a4RmRCl5FZ4L1eJsOUy16c+f9p/XvE5lgwFYLlVJYDEnn/F
+	 jiR6NAa5bgJNSQozAjx205p1yaBerkmfPh/+E9Z0m6acTezM/w44gkC58KjNNrZ9ii
+	 bkJi6VHBPy7uwRdiSb7cx6uofduFTfEPIqwoHbqPf1n8qJn3+jjoIJiNRVS6hX/U6D
+	 Gt9WFjVNX1+2EFfLXk/Oa9/Q30ZX51gdC0uM0Ad0JjeEHLQm3e3QY0OnO54k3SoM6l
+	 3JxlS+KHaiADCB//hGkGlpBzAwzpDz6ek9kIYVMxp4rkfNpu4BgTzxBFRhPnPvFV4e
+	 F/6759iIg5X4A==
+Content-Type: multipart/mixed; boundary="===============5808050125888543634=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Message-Id: <805211652ab5a5433408cf5070e41ea289611a908c1f1f3c2584ba0c334a9560@mail.kernel.org>
+In-Reply-To: <20260201175050.468601-11-ameryhung@gmail.com>
+References: <20260201175050.468601-11-ameryhung@gmail.com>
+Subject: Re: [PATCH bpf-next v5 10/16] bpf: Support lockless unlink when freeing map or local storage
+From: bot+bpf-ci@kernel.org
+To: ameryhung@gmail.com,bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,alexei.starovoitov@gmail.com,andrii@kernel.org,daniel@iogearbox.net,memxor@gmail.com,martin.lau@kernel.org,kpsingh@kernel.org,yonghong.song@linux.dev,song@kernel.org,haoluo@google.com,ameryhung@gmail.com,kernel-team@meta.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Sun,  1 Feb 2026 18:22:49 +0000 (UTC)
 
-bpf_cgrp_storage_busy has been removed. Use bpf_bprintf_nest_level
-instead. This percpu variable is also in the bpf subsystem so that
-if it is removed in the future, BPF-CI will catch this type of CI-
-breaking change.
+--===============5808050125888543634==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
+
+commit 5ca113c57e19a4ef0ccfc390cc9274cc9ff66abc
+Author: Amery Hung <ameryhung@gmail.com>
+
+bpf: Support lockless unlink when freeing map or local storage
+
+This commit introduces bpf_selem_unlink_nofail() to handle errors from
+rqspinlock during map or local storage freeing. It uses a link_cnt refcount
+to coordinate between map_free() and destroy() when lock acquisition fails.
+
+> Under normal circumstances, bpf_selem_unlink_nofail() will be able to
+> grab locks and unlink a selem from map and local storage in sequeunce,
+
+This isn't a bug, but there is a typo: "sequeunce" should be "sequence".
+
+> Then, only when both map and
+> local storage are gone, an selem can be free by the last caller that
+
+This isn't a bug, but there is a grammar issue: "can be free by" should be
+"can be freed by".
+
+
 ---
- tools/testing/selftests/bpf/prog_tests/btf_dump.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/btf_dump.c b/tools/testing/selftests/bpf/prog_tests/btf_dump.c
-index 10cba526d3e6..f1642794f70e 100644
---- a/tools/testing/selftests/bpf/prog_tests/btf_dump.c
-+++ b/tools/testing/selftests/bpf/prog_tests/btf_dump.c
-@@ -875,8 +875,8 @@ static void test_btf_dump_var_data(struct btf *btf, struct btf_dump *d,
- 	TEST_BTF_DUMP_VAR(btf, d, NULL, str, "cpu_number", int, BTF_F_COMPACT,
- 			  "int cpu_number = (int)100", 100);
- #endif
--	TEST_BTF_DUMP_VAR(btf, d, NULL, str, "bpf_cgrp_storage_busy", int, BTF_F_COMPACT,
--			  "static int bpf_cgrp_storage_busy = (int)2", 2);
-+	TEST_BTF_DUMP_VAR(btf, d, NULL, str, "bpf_bprintf_nest_level", int, BTF_F_COMPACT,
-+			  "static int bpf_bprintf_nest_level = (int)2", 2);
- }
- 
- struct btf_dump_string_ctx {
--- 
-2.47.3
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/21567682421
 
+AI-authorship-score: low
+AI-authorship-explanation: The commit shows deep understanding of kernel synchronization primitives and BPF local storage internals with natural technical writing style typical of experienced kernel developers.
+issues-found: 2
+issue-severity-score: low
+issue-severity-explanation: Minor typo and grammar errors in commit message only, no code issues found.
+
+--===============5808050125888543634==--
