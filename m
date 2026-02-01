@@ -1,54 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964BD3EBF1F;
-	Sun,  1 Feb 2026 00:45:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 435BC3EBF1F;
+	Sun,  1 Feb 2026 00:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769906719; cv=none; b=OlNwRV7bBYQPxhvxF+DVgdiw3CmZkTq2VQwCZgUBMTymfGI7cXXTT4cAhj9CN8cmytc5vpIQPwnhhHFnMEoMWo2M/YFBwWFmS8s7QENJcZ2s5s35fpj3EAJlgyP0MKxGqff26FjnYMxjMFUxK5hdnC9mh17nqhWc/4+Lo7PB9ZA=
+	t=1769906962; cv=none; b=UiZuOrWt8hKtMtXusl8HtnemPdushBSQZ3auXr+ZyQfAkX3OUmA9NaG7HQYDkVTOO8eaw7ZrtSXi3poynZYbPgS6kv942347H7kK+IBVSQPthJ26hDbxHQgODCT5fGlf9wyrnOEzO1bFHs2SRlRfdMtOn9rZRPlY7MDKXOsdukU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769906719; c=relaxed/simple;
-	bh=3H50njZHf/MxF1LMF+V5Pv639i4KiMLWrfP4zBIYZyI=;
+	s=arc-20240116; t=1769906962; c=relaxed/simple;
+	bh=NJ5+zTrjpK/C/d7JBXEq+LHzGzjvo1Z3mf8hdmSu5Ao=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XFSlELtCOYrfIVXq1ybsR55Zi0wfEEaM8bBuKqp/yfx04GDMqKCoTpEmyvp4D3IRcYjOWQrmX9vURq0a4X7my5A3cMHjVX3In5SGh/VkOF1a6QjO9q+lHfvFnYtzMKbuL/9PyL1xmOtcIsmX693ppHyRdyRX7kzW0ES+Y3sS4Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7bY3VXT; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=GlkVzzek5NOm5re5iyOa1tM0oXrgUY/F8h6GvDcbnA4OMK2Y78etvlMuww2b4m+JaTC3jiXH01+uV3gc9TdnfssbgoliPoUqRkIjLj2HhUI/tIibMqLVIK4nUrCibIeIGAC2M6j3L4jtaYWqQF/NNEF1Q4P48T9vLHV8SIX76+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K7jcg+kp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7bY3VXT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165EBC4CEF1;
-	Sun,  1 Feb 2026 00:45:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K7jcg+kp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DBB5C4CEF1;
+	Sun,  1 Feb 2026 00:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1769906719;
-	bh=3H50njZHf/MxF1LMF+V5Pv639i4KiMLWrfP4zBIYZyI=;
+	s=k20201202; t=1769906961;
+	bh=NJ5+zTrjpK/C/d7JBXEq+LHzGzjvo1Z3mf8hdmSu5Ao=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=S7bY3VXTi93jajlzzf9u55uwY1CbLXh0X1C+sbA+21hInHUw0Fpej/aYRhSU3/jXh
-	 nBooIc/RlWsgFA/cGDkdsLhGmVYdaNWGpjHaWxhjtx4sMbsZcqB5HAQtYYHzIOJdhm
-	 lrkfaUHOyP5Vf6mqT/2D3UFb/0eGVCbrSV9yENRYzeN5a5FEJpzGjms7dHoravUEi/
-	 B05bkLXi+uGuGGJ5x1xp8hbG3dZFgWdNAsgNoCWEHTs7/m/EsK03somqEOGxIrna83
-	 xZHPgiuGZS5Wd8T2nPL9S3XufRfuaV1SRvpVzRDh0v0lK25et8Bkl0zgfD/id0oj3/
-	 TSKJyytk0CGZQ==
-Date: Sat, 31 Jan 2026 16:45:16 -0800
+	b=K7jcg+kpf2EYnTnQ8cIPQXY/0kwwp1Q5FVq8aVvD2co01bISKURWfsN8dtblRjv/j
+	 kB5BqB38k3z4Xns57abHbJYTm7oOPJBWrhyrsCfroGpsjx74J7Pw6ClhMsW1xmqWnm
+	 qDID2eisiU1QuIfbw0+saYfvFZqnWo6lqyWVIqK3ssG/SBo7akNA2UAi4jj+WMLHs7
+	 sbSKXmvbpAvpy3lKCu+ehaJXUo+5Uj+njBJoCluiE5I3UqEh8vVmwmp3FnlZG7DJ0t
+	 bRMuLyiU2MglpH0cMqnRfpG7B3XXCuna0DJT7iPPxe/yUnKOmd2DrezepQ6MpGoLSt
+	 cv47KjISNgDSg==
+Date: Sat, 31 Jan 2026 16:49:20 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: chia-yu.chang@nokia-bell-labs.com
-Cc: tariqt@nvidia.com, linux-rdma@vger.kernel.org, shaojijie@huawei.com,
- shenjian15@huawei.com, salil.mehta@huawei.com, mbloch@nvidia.com,
- saeedm@nvidia.com, leon@kernel.org, eperezma@redhat.com,
- brett.creeley@amd.com, jasowang@redhat.com, virtualization@lists.linux.dev,
- mst@redhat.com, xuanzhuo@linux.alibaba.com, pabeni@redhat.com,
- edumazet@google.com, parav@nvidia.com, linux-doc@vger.kernel.org,
- corbet@lwn.net, horms@kernel.org, dsahern@kernel.org, kuniyu@google.com,
- bpf@vger.kernel.org, netdev@vger.kernel.org, dave.taht@gmail.com,
- jhs@mojatatu.com, stephen@networkplumber.org, xiyou.wangcong@gmail.com,
- jiri@resnulli.us, davem@davemloft.net, andrew+netdev@lunn.ch,
- donald.hunter@gmail.com, ast@fiberby.net, liuhangbin@gmail.com,
- shuah@kernel.org, linux-kselftest@vger.kernel.org, ij@kernel.org,
- ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com,
- g.white@cablelabs.com, ingemar.s.johansson@ericsson.com,
- mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at,
- Jason_Livingood@comcast.com, vidhi_goel@apple.com
-Subject: Re: [PATCH v1 net-next 0/3] ECN offload handling for AccECN series
-Message-ID: <20260131164516.4a423230@kernel.org>
-In-Reply-To: <20260131225510.2946-1-chia-yu.chang@nokia-bell-labs.com>
-References: <20260131225510.2946-1-chia-yu.chang@nokia-bell-labs.com>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: netdev@vger.kernel.org, Alexandra Winter <wintera@linux.ibm.com>,
+ Thorsten Winkler <twinkler@linux.ibm.com>, linux-s390@vger.kernel.org,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>
+Subject: Re: [PATCH net-next] net/iucv: clean up iucv kernel-doc warnings
+Message-ID: <20260131164920.7e92896f@kernel.org>
+In-Reply-To: <16c2528a-85be-4f7b-a60a-923613ecc8fb@infradead.org>
+References: <20260130054759.1301608-1-rdunlap@infradead.org>
+	<20260131131131.0d854805@kernel.org>
+	<16c2528a-85be-4f7b-a60a-923613ecc8fb@infradead.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,26 +49,21 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Sat, 31 Jan 2026 23:55:07 +0100 chia-yu.chang@nokia-bell-labs.com
-wrote:
-> ---
-> v2:
-> - Replace VIRTIO_NET_HDR_GSO_ECN with VIRTIO_NET_HDR_GSO_ECN_FLAGS
+On Sat, 31 Jan 2026 16:01:04 -0800 Randy Dunlap wrote:
+> On 1/31/26 1:11 PM, Jakub Kicinski wrote:
+> > On Thu, 29 Jan 2026 21:47:59 -0800 Randy Dunlap wrote:  
+> >>   * @path: address of iucv path structure
+> >>   * @msg: address of iucv msg structure
+> >>   * @flags: how the reply is sent (IUCV_IPRMDATA, IUCV_IPPRTY, IUCV_IPBUFLST)  
+> > 
+> > In general -- Could we possibly delete the duplicated kdocs in 
+> > the header. As clearly shown by this patch it's double the work
+> > and kernel-doc will be able to find the definition wherever it is.
+> > Kernel coding guide recommends kdoc next to definition.  
+> 
+> Thanks. I'll check all of that.
 
-For the future:
-
-Quoting documentation:
-
-  Limit patches outstanding on mailing list
-  -----------------------------------------
-  
-  Avoid having more than 15 patches, across all series, outstanding for
-  review on the mailing list for a single tree. In other words, a maximum of
-  15 patches under review on net, and a maximum of 15 patches under review on
-  net-next.
-  
-  This limit is intended to focus developer effort on testing patches before
-  upstream review. Aiding the quality of upstream submissions, and easing the
-  load on reviewers.
-    
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#limit-patches-outstanding-on-mailing-list
+You probably figured this out but reading back I realize that my
+message wasn't very clear -- I meant that some of the functions
+are both documented next to their fwd declaration in
+include/net/iucv/iucv.h and the definition in net/iucv/iucv.c
