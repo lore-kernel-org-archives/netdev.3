@@ -1,115 +1,135 @@
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E24326FA6F;
-	Sun,  1 Feb 2026 18:36:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B3231DF25F;
+	Sun,  1 Feb 2026 18:38:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769971002; cv=none; b=e3ttjWsjlyaTVlArFI/SJ2eOKjxVLL/U70uYqCr8sJtvkxIR+hTRh0iSPZuLk1WAYGiab1wSWuUMYzjcPggZagtpsvzlK0uC1trwnN+l4QqX+HRyO57qrki4A1r2L67iG0lO5FNS1IQ83KdqIBDLTs6UsDBb1fgRUB9fHRjMKrw=
+	t=1769971106; cv=none; b=cSFST5bXdSdRnqD+Wkki4PHZm2AJmVd8Tl9cXtB6NPt6Jw9Q7Db+nUbEcPPO9azJRQlZXzGT4o0+cucDL0WnrsmXErQQF+e5e08Rvozg+IHgjqAwm5/UNWVJQvMlJgOTFOQ8+iYE0lrESFrBAk0YQLN88qfR04ioNWzpbtn/5eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769971002; c=relaxed/simple;
-	bh=FKQ+iMI50ehFmBlFkW5r/p6X/TrPjJq5F3z6fG9hjE4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UPei46GbmbRUiQRKB9hwcAZkJ0zRp5ELxFxWQ2RCJf6qsAl3MPI+lNimE6PJ74JfHeL7AjqdxeP1qwMtOmZ/ZXgelgpJIFV3CoQJJkJ3OkGZVomIPVgW2MTrkI0MbNf0qZMzUvNHQYFYFzMBNMuJtCn/HviEsT1PmGaNerW8Kjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=NBNAV/Wq; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+	s=arc-20240116; t=1769971106; c=relaxed/simple;
+	bh=6xuqKg+GrCudEOVi3hiXo4OVT7nz9eZJ5Z1ERtSYe0E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=i8Sl94mWUHmo4Q1W6/1VA1Dho9lDWVl0I8o+CXq+x05SiH4jIvJDYuF6k90OvJtshM7dhsuHyMG+hHO+jOCLhxIzx54JFpm+/wgdV6kzuOUBAoETlOvzXM+DjMqsfcssbAiH/FDUt5Qvn3m2OYPlPXoiPnryP4cPv5R9+gkaROE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se; spf=pass smtp.mailfrom=ragnatech.se; dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b=CEuxUVSZ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Q5npvgpw; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ragnatech.se
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ragnatech.se
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="NBNAV/Wq"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5F55C109D9D;
-	Sun,  1 Feb 2026 19:36:23 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1769970991;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=LARm2Y3oL9MqfVRvr87lH7jEV+ZHtuB87P+3QLUsfN8=;
-	b=NBNAV/WqTMJCNSC3XKmzFMaQg50nfqsgqNjohQWgTwz2cl63bw7bslLiPdI7BHXhL/Czq7
-	FOeJO9GgdbK7MVeCHC8R7tilL8fqzmPLqNh7TiJcxRp4BoaYI+6CqlY4d5fe55jho6HQEU
-	9tmHj3kpUwsKNhQyYMYrmdRHKPQi8atOhn9uj6n20dGBsqoGFybPwDpSmRiN7iH3p3qKH2
-	NDZhfrvRzkRz33AokZ7yITLhWf6B3ysRdf2lk+rQHg44Uyg84JbZH3lXJYWoPZTMlM6bV0
-	SMEcPVnREi3xMMEgNGgiz/oGwm9csACAkFjfxPSV3MJXaH6JRgYbT0cVtc8tWw==
-Message-ID: <35d31893-2a28-410f-a1c7-038b4167e265@nabladev.com>
-Date: Sun, 1 Feb 2026 19:20:09 +0100
+	dkim=pass (2048-bit key) header.d=ragnatech.se header.i=@ragnatech.se header.b="CEuxUVSZ";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Q5npvgpw"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 1432E7A00F0;
+	Sun,  1 Feb 2026 13:38:23 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Sun, 01 Feb 2026 13:38:23 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ragnatech.se; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm2; t=1769971102; x=1770057502; bh=qq
+	PX1DAJpcS6WM8ffzRbukkbvsolsaErTSrgi+r6RWY=; b=CEuxUVSZeydQAlVylc
+	4G+crhIdjfv2WPI50rk2uNoCZSPtun7W+TCI2YHYk+AgT88nwV2si0kklp6qlLYG
+	gvxRrP+pBUiZ5r7IEMLU5pOlOIb4KrEmrL1EB0V3NcXgL3MqIZcns+je4GGllYUx
+	Iy7jERwhup193WB+NFePRcXSfhjuuwXoEcooNfuSu+7NdKgBULimDC9ISR7UqlA8
+	LJE0SLTdCXsmeRqfoDET3NiMH7D7SNkJY/m67VQPWYJsvtTdwHUIyHijnN2iF/6D
+	pDl4MIa2Wmsn0C2+JwmF6SySn0p1iVrfNPZ3uyoQxuf8wzI7xlImtEPpF4Iq+v8S
+	vQ6w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1769971102; x=1770057502; bh=qqPX1DAJpcS6WM8ffzRbukkbvsol
+	saErTSrgi+r6RWY=; b=Q5npvgpwVAUXBg9Pzg0Giv1hXMMgZb24sVZZxsmNX67I
+	MX0oz9e4hfqf73y1l5G0E8hI3L4xHB3gibaiNlbI4ZpPyGQ98KWXZCNV5+t763Nc
+	UsoIVNS6XOS6LgvF9h/wfGIynoSBNkD1cLjCBJfP3lH/tdgFBJMygcRgjmSm3Ggb
+	m8Zqeb6OnyP30hCCXzpAH4HEM3t9bUfizZx5++Lyl6qA8ZI01yTrLI39ttCXXeQF
+	Ux1u/AoMYt+OltyzgOHr1kNMOzbI24U/tdwAzpOou86AsCUIMTrCfHO0xCK+qcWC
+	RVcQLfGKG1dCuICemQkznLUU/E/Ui1LI9NG6SEU1kw==
+X-ME-Sender: <xms:nZ1_aZv_zZS8CUhK1IPLLFXWbJtZo9fz0z_7XTkMeLlMh_RN4-P6Dg>
+    <xme:nZ1_aX-tycKJPoFBR5W3kjdLScHN40Mkm9YMCNxNG6FkJPCx3k1c9FBOy6cavTXHl
+    MIa1S-KfJ2sUcusBMZy5rsoBABepg9x5ME1Gyx_QZGSpCxqWMd07Q>
+X-ME-Received: <xmr:nZ1_ab3K0V9KwwfFgerElfSAD6WEapW-eBymaB_GLINy6Fc04LWa7vz0gG0bZCHrOyliJ2MIcowgSypXqTUWbxtx>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddujeehheefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefufffkofggtgfgsehtkeertdertdejnecuhfhrohhmpefpihhklhgrshcu
+    ufpnuggvrhhluhhnugcuoehnihhklhgrshdrshhouggvrhhluhhnugdorhgvnhgvshgrsh
+    esrhgrghhnrghtvggthhdrshgvqeenucggtffrrghtthgvrhhnpeehudelteetkefgffef
+    udefuedvjeeivdekhfevieefgeffheeltddvvefhfeetgeenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehnihhklhgrshdrshhouggvrhhluhhn
+    ugesrhgrghhnrghtvggthhdrshgvpdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmh
+    htphhouhhtpdhrtghpthhtohephihoshhhihhhihhrohdrshhhihhmohgurgdruhhhsehr
+    vghnvghsrghsrdgtohhmpdhrtghpthhtoheprghnughrvgifodhnvghtuggvvheslhhunh
+    hnrdgthhdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghp
+    thhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtghomhdprhgtphhtthhopehkuhgsrg
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsggvnhhisehrvgguhhgrthdrtgho
+    mhdprhgtphhtthhopehgvggvrhhtodhrvghnvghsrghssehglhhiuggvrhdrsggvpdhrtg
+    hpthhtohepmhgrghhnuhhsrdgurghmmhesghhmrghilhdrtghomhdprhgtphhtthhopehr
+    ihgthhgrrhgutghotghhrhgrnhesghhmrghilhdrtghomh
+X-ME-Proxy: <xmx:nZ1_aUguTt7lAIoBh-QsHpuF96J2djQm42I1TmmjcTRVRUY9_YXy_g>
+    <xmx:nZ1_aTbjqFFJgAyvaQ-AqKpQniVRrjtGRt8wrQ2u-wmMaSKpmWQLYQ>
+    <xmx:nZ1_aYVjw0cs76IRyzrL2WrortxJnOCA2qc-hR_1bAhlgl9UARDSbg>
+    <xmx:nZ1_aTF9pJN-6VQ5MPmCrjSAIxzHbFh_kuHD77P2urmGNmWUQnA96g>
+    <xmx:np1_aeTproz9uE6hbflPNcgGteAFCGcGdFfbqOuHmUoJAXTtKkdtUPSx>
+Feedback-ID: i80c9496c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 1 Feb 2026 13:38:20 -0500 (EST)
+From: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Magnus Damm <magnus.damm@gmail.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org
+Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>
+Subject: [net-next 0/4] net: ethernet: renesas: rcar_gen4_ptp: Hide private data
+Date: Sun,  1 Feb 2026 19:37:41 +0100
+Message-ID: <20260201183745.1075399-1-niklas.soderlund+renesas@ragnatech.se>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,PATCH] net: stmmac: stm32: Do not suspend downed
- interface
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- Christophe Roullier <christophe.roullier@st.com>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- Krzysztof Kozlowski <krzk@kernel.org>,
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- kernel@dh-electronics.com, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com
-References: <20260114081809.12758-1-marex@nabladev.com>
- <aWfEXX1iMHy3V5sK@shell.armlinux.org.uk>
- <aWfOYf_YmJFUakvP@shell.armlinux.org.uk>
- <6c9cadc2-67b7-4bfe-9cf7-2b102a0a3c21@nabladev.com>
- <aXzT1UCpG4kN-dQv@shell.armlinux.org.uk>
-Content-Language: en-US
-From: Marek Vasut <marex@nabladev.com>
-In-Reply-To: <aXzT1UCpG4kN-dQv@shell.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 1/30/26 4:52 PM, Russell King (Oracle) wrote:
-> On Thu, Jan 15, 2026 at 12:27:05AM +0100, Marek Vasut wrote:
->> On 1/14/26 6:12 PM, Russell King (Oracle) wrote:
->>> I think I'm going to start over, trying to figure out what happened.
->>>
->>> c7308b2f3d0d net: stmmac: stm32: convert to suspend()/resume() methods
->>>
->>> Did the conversion, and it always called stm32_dwmac_clk_disable() and
->>> where it exists, dwmac->ops->suspend() on suspend, provided
->>> stmmac_suspend() returns zero (which it will do, even if the interface
->>> is down. On resume, it always calls dwmac->ops->resume() and
->>> stm32_dwmac_init() before calling stmmac_resume().
->>>
->>> The conversion added hooks into ny new ->suspend() and ->resume()
->>> methods to handle the stm32_dwmac_clk_disable(), dwmac->ops->suspend(),
->>> dwmac->ops->resume() and stm32_dwmac_init() steps.
->>>
->>> However, in 07bbbfe7addf I failed to realise that, in order to keep
->>> things compatible with how stuff works, we need to call
->>> priv->plat->suspend() even if the interface is down. This is where
->>> the bug is, not in your glue driver.
->>>
->>> Please try this:
->>>
->>> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->>> index a8a78fe7d01f..2acbb0107cd3 100644
->>> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->>> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
->>> @@ -8066,7 +8066,7 @@ int stmmac_suspend(struct device *dev)
->>>    	u32 chan;
->>>    	if (!ndev || !netif_running(ndev))
->>> -		return 0;
->>> +		goto suspend_bsp;
->>>    	mutex_lock(&priv->lock);
->>> @@ -8106,6 +8106,7 @@ int stmmac_suspend(struct device *dev)
->>>    	if (stmmac_fpe_supported(priv))
->>>    		ethtool_mmsv_stop(&priv->fpe_cfg.mmsv);
->>> +suspend_bsp:
->>>    	if (priv->plat->suspend)
->>>    		return priv->plat->suspend(dev, priv->plat->bsp_priv);
->> This works too, thank you.
->>
->> Will you send this fix ?
-> 
-> Sorry, I appear to have dropped this patch on the floor, and just
-> tripped over it. I'm just build testing it and will send it later
-> today.
-> 
-> This problem affects every user of the platform ->suspend/resume()
-> stuff, so is not just a stm32 issue.
-ACK, thank you.
+Hello,
+
+The R-Car Gen4 PTP module started out as an exclusive feature of a 
+single driver, but have since been extended to cover both R-Car Switch 
+and TSN driver implementations on Gen4.
+
+The feature have already been extended to be built as its own module 
+with an interface exposed thru a local header file. The header file 
+however also exposes the modules private data structure. The two 
+existing users have already started to poke at members of the struct.  
+
+The exposed private data being manipulated by users makes refactoring 
+and future rework hard as the interface for the module becomes to 
+chaotic. This small series aims to create two helpers to hide the 
+private data.
+
+This is done as a small preparation before a third, new, users of the 
+Gen4 PTP will be added in a follow up series.
+
+Niklas Söderlund (4):
+  net: ethernet: renesas: rcar_gen4_ptp: Move address assignment
+  net: ethernet: renesas: rcar_gen4_ptp: Add helper to get clock index
+  net: ethernet: renesas: rcar_gen4_ptp: Add helper to read time
+  net: ethernet: renesas: rcar_gen4_ptp: Hide private data from users
+
+ drivers/net/ethernet/renesas/rcar_gen4_ptp.c | 34 +++++++++++++++++++-
+ drivers/net/ethernet/renesas/rcar_gen4_ptp.h | 18 ++++-------
+ drivers/net/ethernet/renesas/rswitch_main.c  | 11 +++----
+ drivers/net/ethernet/renesas/rtsn.c          | 30 +++++++----------
+ 4 files changed, 57 insertions(+), 36 deletions(-)
+
+-- 
+2.52.0
+
