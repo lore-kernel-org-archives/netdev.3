@@ -1,208 +1,333 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D4A261B8F;
-	Sun,  1 Feb 2026 16:23:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E7D2BD0B
+	for <netdev@vger.kernel.org>; Sun,  1 Feb 2026 17:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769963025; cv=none; b=MvD8javF5OxbMPtKLvhSNzTgpFnqzAnKRn+YPlME3UzbxJXHqUPw3BgcXfYH71RjDCdw3kd0EbtT3gVJ2v3T5IBKMPchXg/VWPhyJRqeSdA5Sv8GNPRT+SOYmU0yD6Ju7DcExPN1FzCm/3IhaEUvuigTcB+dmBtharo9M+hv+/w=
+	t=1769968254; cv=none; b=W70mJKZoZBDDu8lZBjCxt02uyCiiFNhR1Fn7pCeD7c7GwTErxPQSfz50+h+xfyiR1MGvPgYQhxzTFzMbb9JdHF4zcyvJ+wCowz73GjmLjGeo+UeinOCCfxl6VdkhuvIR5Flk1DzS+lxDwJDqeMhM4GUcVTt9nZ+99zcb4Y6I34w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769963025; c=relaxed/simple;
-	bh=8Lgp/LuJGrbVcthaVAZkdgVt5sGv5K0RUp7GfkqM8ng=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XqzwOHwFkd9mXih9jnxGYyXixLdRKE1LcuPjIqV4kjeabZ+zjdr0u3Z5ueAcLrx4AzJEg3MbqtWWHDIiLbtTMXo31Mz1QELAMm0ubpVo+6LVtYesb1GEzJA2+n9X3QEncTPdnyapBhtFJd1UmUGxxyK0RZjBz7kd35HXHs9ypfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=pe0dJo3f; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	s=arc-20240116; t=1769968254; c=relaxed/simple;
+	bh=cg2jzwGRtktucXorh7E51T4BJc6i2Qfqj8YvDRg53gQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=T3COT0Rrpu/zkdaNU8DoS865I91eP6f/ldh6+s54MiXIAV5x4UH0qELvQ3Pm0E7PeH+s7YF3JSKUpIKYGiVooAT44vjxSOy+PQ/NyKosWoOELrRKG3wONhodY18/Sxqm/dSCpytbRTVY1XPzgebIMYVsxjOV6qWAcjDTs1Mkags=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gDkFFyiq; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="pe0dJo3f"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=sptY+Vec9i6BrPBhci8RbFua9miGnc4R4xyvrvF5GdM=; b=pe0dJo3fMl4t0zWsHJr7fzy+2H
-	PucZBaMJTJAMBz7WJ7wdXuV2JugecBc5oEFdCNbcJ5+A2XbWun4cWKNfo8GKpAJAyEDbgLX2QIGN2
-	GRJyYB2H7QrO+Wye+n5SeIyanEcAJUsjn2U2tuwvT2i8p1wQIibqH6VAN1mkyceWD7xXO8cIEfF7Z
-	0uHaBsGrHc6nWYri/9h0jhmtAEKmatsDQ2hqj6Tuff/9SYAPvwoUb9qcLZ2yH7wuZZjc1apVz6kwk
-	nnulVR/84NHlFNmWukI6kB+OgneohJXN308kWKIYwlhY+HCbAPUcL7CjbdmIIOiTHc7AFX7L0xEcz
-	ox3vQgyQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <carnil@debian.org>)
-	id 1vmaEI-003Oqv-64; Sun, 01 Feb 2026 16:23:18 +0000
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 28902BE2EE7; Sun, 01 Feb 2026 17:23:17 +0100 (CET)
-Date: Sun, 1 Feb 2026 17:23:17 +0100
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Jon Penn <jpenn@bentonvillek12.org>,
-	Antonio Quartulli <antonio@openvpn.net>,
-	Sabrina Dubroca <sd@queasysnail.net>
-Cc: 1126499@bugs.debian.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: Bug#1126499: linux-image-6.17.13+deb14-amd64: ovpn NULL pointer
- dereference and lockup under heavy load
-Message-ID: <176996279620.3109699.15382994681575380467@eldamar.lan>
-References: <4be2e796-77ba-4864-a288-e6edf3b7de12@bentonvillek12.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gDkFFyiq"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c227206e6dcso2318449a12.2
+        for <netdev@vger.kernel.org>; Sun, 01 Feb 2026 09:50:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769968252; x=1770573052; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pGovWk3eDn9d3GPvSOihLmUJ/7H/QIKO7jdquJXXWrY=;
+        b=gDkFFyiqvVPsIxKKG5v4Zbbq451UKghub6WNt5hN1sis7EI1vhND7YffPqYE2hlcpG
+         LGzsF6oCyZLI7klGFEKwb+4w69ivIOpZFMnX02BDmoHMOxBYMWqvm/DXm63I4Lrjpzf0
+         H0X4mxeAq+VaXrtMobpmSbBfdFVQxjoryorJ7oUmiMejh4sxmIiFHqjiKcUbIuDFBYZw
+         vPUwu1onL+/1Fp7rC4R8/Ze5F2NXj+nI8BXLXnWkgj9olKB5WkJ2Gf3zWdBGdnBJfvVp
+         F0hcPRYyikAS3eKNt1kQjtKGOsujgiqwZlclZ8PUaHH236yV5vd7cNa9DnZT9C2Z+Iut
+         vTOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769968252; x=1770573052;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pGovWk3eDn9d3GPvSOihLmUJ/7H/QIKO7jdquJXXWrY=;
+        b=ma5525BQld9ThG4bMJfpRMtoxEPXSu2gebSXlJvqUxhqUMYLyv0O3ZXYneM+L1C1rf
+         p0jZ2lJNC/9EV8uCEqPjrWf1DyjUf2pmKn9JsbI3uTj5zD8Q3U9B03JGd6ySlLai3UJn
+         hKZH91UhCVPZSXhsjyqtABFC6KfkZ4s54kElDK6qI00TpGHsNUvT+xeUHV66ejfpmpVW
+         /uaApwyLeySx5JeJuj4TnBsszw4UjmMHywdgQM1rzVHNai9T7YDvgm90UWfExDcX/Zbi
+         ov0U/Ydpl1thopF89z/eZoHjfiYUlEQfRJsGhYkx/TvRcia9S61w99ICKeXbTJco7xv5
+         AXeA==
+X-Gm-Message-State: AOJu0YyJ2XNli6U7K7peErdIMz6eMKop803jxixaX3bof02Cz8dLb/O0
+	3tn+E01Df4O3dFsLRjRqii1GNGrOPpMY4AIHWfWBN4Uuz2AIlEAkzznv
+X-Gm-Gg: AZuq6aItDTpgtQJAX/HaU1jc/s8jGtTaScs59/QrCiG9UwDmRXUUIwjEIYv5QlDP+2k
+	zmL9HUc8IEicUBdbcnGuqbOjmNut2X/PJBQQ/XH/tg0o/S/d6vpdOb2kr0c3tgkLwPFYZkRDBbV
+	i4CmJ6zX6OXnVp6lBST8gFwd6Kb0EXaSG7Ax69l55CKs5gzXzW1hJmgIMWII1MJvly+52idSFDX
+	441L6GdtlmKq5rJtiZs24KMuS63pWCJ/bB/c3WdhPIWLwfXyXWd9qQVIyIEhhpSrI75zKvbYPZo
+	yBpLX+y3CIuCJghwYiTZC/qwMcquH/QwwIY2zvYkyibOxKG+4HTjwuHUCF+YE/W1vtMF87Nb3Gj
+	YH7Vda6pjfA0RIzzKf9Ro23qNewgqyi+hbQiiQf5J4JLvOKZPWAZ0fLjiYe9s7k1oI3lReMX8c6
+	GUNQ==
+X-Received: by 2002:a17:90b:578c:b0:34a:48ff:694 with SMTP id 98e67ed59e1d1-3543b3b5d3bmr8250363a91.31.1769968251797;
+        Sun, 01 Feb 2026 09:50:51 -0800 (PST)
+Received: from localhost ([2a03:2880:ff:42::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3543bc01bc0sm4617042a91.1.2026.02.01.09.50.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Feb 2026 09:50:51 -0800 (PST)
+From: Amery Hung <ameryhung@gmail.com>
+To: bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	alexei.starovoitov@gmail.com,
+	andrii@kernel.org,
+	daniel@iogearbox.net,
+	memxor@gmail.com,
+	martin.lau@kernel.org,
+	kpsingh@kernel.org,
+	yonghong.song@linux.dev,
+	song@kernel.org,
+	haoluo@google.com,
+	ameryhung@gmail.com,
+	kernel-team@meta.com
+Subject: [PATCH bpf-next v5 00/16] Remove task and cgroup local storage percpu counters
+Date: Sun,  1 Feb 2026 09:50:33 -0800
+Message-ID: <20260201175050.468601-1-ameryhung@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4be2e796-77ba-4864-a288-e6edf3b7de12@bentonvillek12.org>
-X-Debian-User: carnil
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Control: forwarded -1 https://lore.kernel.org/netdev/176996279620.3109699.15382994681575380467@eldamar.lan
+* Motivation *
 
-Hi Antonio and all,
+The goal of this patchset is to make bpf syscalls and helpers updating
+task and cgroup local storage more robust by removing percpu counters
+in them. Task local storage and cgroup storage each employs a percpu
+counter to prevent deadlock caused by recursion. Since the underlying
+bpf local storage takes spinlocks in various operations, bpf programs
+running recursively may try to take a spinlock which is already taken.
+For example, when a tracing bpf program called recursively during
+bpf_task_storage_get(..., F_CREATE) tries to call
+bpf_task_storage_get(..., F_CREATE) again, it will cause AA deadlock
+if the percpu variable is not in place.
 
-In Debian we got the following report from Jon Penn using ovpn,
-reported at https://bugs.debian.org/1126499
+However, sometimes, the percpu counter may cause bpf syscalls or helpers
+to return errors spuriously, as soon as another threads is also updating
+the local storage or the local storage map. Ideally, the two threads
+could have taken turn to take the locks and perform their jobs
+respectively. However, due to the percpu counter, the syscalls and
+helpers can return -EBUSY even if one of them does not run recursively
+in another one. All it takes for this to happen is if the two threads run
+on the same CPU. This happened when BPF-CI ran the selftest of task local
+data. Since CI runs the test on VM with 2 CPUs, bpf_task_storage_get(...,
+F_CREATE) can easily fail.
 
-On Tue, Jan 27, 2026 at 10:37:40AM -0600, Jon Penn wrote:
-> Package: src:linux
-> Version: 6.17.13-1
-> Severity: normal
-> 
-> Dear Maintainer,
-> 
-> This is an OpenVPN server serving primarially TCP clients (but also some UDP
-> clients). As I write this there are 1161 TCP clients and 74 UDP clients. It
-> is running debian testing in order to have ovpn-dco-offload functionality
-> for TCP connections. We observe that under hevy load (in terms of
-> connections count, not really under much load in terms of bandwidth) this
-> server will become locked up from time to time and the graphical console
-> will become completely non-responsive. When this happens we reset the VM and
-> things continue running normally. I attempted to monitor the system using
-> dmesg and notice that I am getting some interesting messages about "BUG:
-> kernel NULL pointer dereference" that mention the ovpn module, leading me to
-> believe that this is a kernel bug in that module. Unfortunatly this issue
-> only occours when the server has many connections, and that is only
-> happening because most of my users are working from home today due to
-> weather. This gives me a rather small window of reproducability but if there
-> is any additional information I can provide let me know.
-> -- Package-specific info:
-> ** Version:
-> Linux version 6.17.13+deb14-amd64 (debian-kernel@lists.debian.org)
-> (x86_64-linux-gnu-gcc-15 (Debian 15.2.0-12) 15.2.0, GNU ld (GNU Binutils for
-> Debian) 2.45.50.20251209) #1 SMP PREEMPT_DYNAMIC Debian 6.17.13-1
-> (2025-12-20)
-> 
-> ** Command line:
-> BOOT_IMAGE=/boot/vmlinuz-6.17.13+deb14-amd64
-> root=UUID=f00f1200-b8d8-4432-bb0b-593a5ab9075a ro quiet
-> 
-> ** Tainted: D (128)
-> * kernel died recently, i.e. there was an OOPS or BUG
-> 
-> ** Kernel log:
-> [ 709.018150] tun1: deleting peer with id 719, reason 1
-> [ 709.056997] tun1: deleting peer with id 1055, reason 1
-> [ 711.054524] tun1: deleting peer with id 201, reason 2
-> [ 711.055070] BUG: kernel NULL pointer dereference, address:
-> 0000000000000020
-> [ 711.055096] #PF: supervisor write access in kernel mode
-> [ 711.055429] #PF: error_code(0x0002) - not-present page
-> [ 711.055656] PGD 0 P4D 0
-> [ 711.055824] Oops: Oops: 0002 [#1] SMP NOPTI
-> [ 711.055991] CPU: 12 UID: 0 PID: 527 Comm: kworker/12:2 Not tainted
-> 6.17.13+deb14-amd64 #1 PREEMPT(lazy) Debian 6.17.13-1
-> [ 711.056154] Hardware name: Red Hat KVM, BIOS
-> edk2-20221207gitfff6d81270b5-9.el9_2 12/07/2022
-> [ 711.056333] Workqueue: events ovpn_peer_keepalive_work [ovpn]
-> [ 711.056524] RIP: 0010:ovpn_tcp_socket_detach+0x61/0x80 [ovpn]
-> [ 711.056695] Code: 01 00 00 48 8b 83 b8 01 00 00 48 89 85 c0 02 00 00 48 8b
-> 83 c0 01 00 00 48 89 45 28 48 8b 85 20 01 00 00 48 8b 93 c8 01 00 00 <48> 89
-> 50 20 48 c7 85 98 02 00 00 00 00 00 00 5b 5d c3 cc cc cc cc
-> [ 711.056986] RSP: 0018:ffffd3988153fdb8 EFLAGS: 00010246
-> [ 711.057136] RAX: 0000000000000000 RBX: ffff8e65873a5400 RCX:
-> 0000000000000004
-> [ 711.057314] RDX: ffffffff92d6d660 RSI: 0000000000000068 RDI:
-> ffff8e65873a5568
-> [ 711.057475] RBP: ffff8e6590fb4280 R08: 0000000000000000 R09:
-> 0000000000000101
-> [ 711.057644] R10: 0000000000000000 R11: ffffffff93a080e0 R12:
-> 000000006978de32
-> [ 711.057794] R13: 0000000000000001 R14: ffff8e65839c1aa8 R15:
-> 0000000000000000
-> [ 711.057940] FS: 0000000000000000(0000) GS:ffff8e695b708000(0000)
-> knlGS:0000000000000000
-> [ 711.058087] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [ 711.058246] CR2: 0000000000000020 CR3: 000000010862d001 CR4:
-> 00000000007726f0
-> [ 711.058412] PKRU: 55555554
-> [ 711.058584] Call Trace:
-> [ 711.058739] <TASK>
-> [ 711.058892] ovpn_socket_release+0x165/0x1a0 [ovpn]
-> [ 711.059048] unlock_ovpn+0x48/0x80 [ovpn]
-> [ 711.059199] ovpn_peer_keepalive_work+0xf3/0x1b0 [ovpn]
-> [ 711.059360] ? __schedule+0x464/0xd20
-> [ 711.059557] process_one_work+0x18f/0x350
-> [ 711.059740] worker_thread+0x25a/0x3a0
-> [ 711.059889] ? __pfx_worker_thread+0x10/0x10
-> [ 711.060046] kthread+0xfc/0x240
-> [ 711.060203] ? __pfx_kthread+0x10/0x10
-> [ 711.060358] ? __pfx_kthread+0x10/0x10
-> [ 711.060559] ret_from_fork+0x194/0x1c0
-> [ 711.060801] ? __pfx_kthread+0x10/0x10
-> [ 711.061019] ret_from_fork_asm+0x1a/0x30
-> [ 711.061269] </TASK>
-> [ 711.061494] Modules linked in: intel_rapl_msr intel_rapl_common
-> intel_uncore_frequency_common isst_if_mbox_msr isst_if_common ovpn
-> ip6_udp_tunnel udp_tunnel skx_edac_common nfit libnvdimm kvm_intel kvm
-> binfmt_misc irqbypass ghash_clmulni_intel aesni_intel rapl nls_ascii
-> nls_cp437 vfat fat qxl drm_ttm_helper ttm drm_exec pcspkr drm_client_lib sg
-> drm_kms_helper button evdev joydev drm configfs efi_pstore nfnetlink
-> vsock_loopback vmw_vsock_virtio_transport_common vmw_vsock_vmci_transport
-> vsock vmw_vmci efivarfs qemu_fw_cfg autofs4 ext4 crc16 mbcache jbd2
-> crc32c_cryptoapi hid_generic usbhid hid sr_mod sd_mod cdrom ahci libahci
-> xhci_pci libata xhci_hcd iTCO_wdt intel_pmc_bxt iTCO_vendor_support watchdog
-> psmouse usbcore scsi_mod e1000 serio_raw i2c_i801 lpc_ich scsi_common
-> usb_common i2c_smbus
-> [ 711.062827] CR2: 0000000000000020
-> [ 711.063051] ---[ end trace 0000000000000000 ]---
-> [ 711.600092] RIP: 0010:ovpn_tcp_socket_detach+0x61/0x80 [ovpn]
-> [ 711.602044] Code: 01 00 00 48 8b 83 b8 01 00 00 48 89 85 c0 02 00 00 48 8b
-> 83 c0 01 00 00 48 89 45 28 48 8b 85 20 01 00 00 48 8b 93 c8 01 00 00 <48> 89
-> 50 20 48 c7 85 98 02 00 00 00 00 00 00 5b 5d c3 cc cc cc cc
-> [ 711.602680] RSP: 0018:ffffd3988153fdb8 EFLAGS: 00010246
-> [ 711.602951] RAX: 0000000000000000 RBX: ffff8e65873a5400 RCX:
-> 0000000000000004
-> [ 711.603218] RDX: ffffffff92d6d660 RSI: 0000000000000068 RDI:
-> ffff8e65873a5568
-> [ 711.603487] RBP: ffff8e6590fb4280 R08: 0000000000000000 R09:
-> 0000000000000101
-> [ 711.603739] R10: 0000000000000000 R11: ffffffff93a080e0 R12:
-> 000000006978de32
-> [ 711.603990] R13: 0000000000000001 R14: ffff8e65839c1aa8 R15:
-> 0000000000000000
-> [ 711.604231] FS: 0000000000000000(0000) GS:ffff8e695b708000(0000)
-> knlGS:0000000000000000
-> [ 711.604483] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [ 711.604723] CR2: 0000000000000020 CR3: 000000019ce2c006 CR4:
-> 00000000007726f0
-> [ 711.604958] PKRU: 55555554
-> [ 711.605202] note: kworker/12:2[527] exited with irqs disabled
-> [ 711.967459] tun1: deleting peer with id 201, reason 1
-> [ 718.617453] tun1: deleting peer with id 1057, reason 1
-> [ 719.779198] tun1: deleting peer with id 176, reason 1
-> [ 733.398723] tun1: deleting peer with id 1059, reason 1
-> [ 733.926421] tun1: deleting peer with id 154, reason 1
+The failure mode is not good for users as they need to add retry logic
+in user space or bpf programs to avoid it. Even with retry, there
+is no guaranteed upper bound of the loop for a success call. Therefore,
+this patchset seeks to remove the percpu counter and makes the related
+bpf syscalls and helpers more reliable, while still make sure recursion
+deadlock will not happen, with the help of resilient queued spinlock
+(rqspinlock).
 
-Is there anything Jon can do providing more information help
-indentifying the problem?
 
-FWIW, I have not asked Jon yet to test mainline or 6.18.8-1 (but
-afaics there were no relevant changes since to drivers/net/ovpn/).
-John in Debian you should soon available 6.18.8-1 and please do test
-as well 6.19~rc6-1~exp1 from experimental (or 6.19~rc7-1~exp1 once it
-passes).
+* Implementation *
 
-Regards,
-Salvatore
+To remove the percpu counter without introducing deadlock,
+bpf_local_storage is refactored by changing the locks from raw_spin_lock
+to rqspinlock, which prevents deadlock with deadlock detection and a
+timeout mechanism.
+
+The refactor basically repalces the locks with rqspinlock and propagates
+errors returned by the locking function to BPF helpers or syscalls.
+bpf_selem_unlink_nofail() is introduced to handle rqspinlock errors
+in two lock acquiring functions that cannot fail,
+bpf_local_storage_destroy() and bpf_local_storage_map_free()
+(i.e., local storage is being freed by the subsystem or the map is
+being freed). The high level idea is to refcounting selem when any locks
+cannot be acquired. Additional care is needed to make sure special fields
+are freed and owner memory are uncharged safely and correctly.
+
+If not familiar with local storage, the last section briefly describe
+the locks and structure of local storage. It also shows the abbreviation
+used in the rest of the letter.
+
+
+* Test *
+
+Task and cgroup local storage selftests have already covered deadlock
+caused by recursion. Patch 10 updates the expected result of task local
+storage selftests as task local storage bpf helpers can now run on the
+same CPU as they don't cause deadlock.
+
+
+* Benchmark *
+
+./bench -p 1 local-storage-create --storage-type <socket,task> \
+  --batch-size <16,32,64>
+
+The benchmark is a microbenchmark stress-testing how fast local storage
+can be created. No significant change in the performance after swicthing
+to rqspinlock and bpf_unlink_selem_nofail().
+
+Socket local storage
+                 batch  creation speed              creation speed diff
+---------------  ----   ------------------                         ----
+Before            16    126.346 ± 1.618k/s  3.17 kmallocs/create
+                  32    126.683 ± 1.350k/s  3.16 kmallocs/create
+                  64    125.899 ± 0.864k/s  3.13 kmallocs/create
+                  
+After             16    128.398 ± 2.734k/s  3.14 kmallocs/create  +1.0%
+                  32    128.123 ± 5.185k/s  3.13 kmallocs/create  +1.1%
+                  64    128.135 ± 5.444k/s  3.15 kmallocs/create  +1.8%
+                   
+Task local storage
+                  batch  creation speed              creation speed diff
+---------------  ----   ------------------                         ----
+Before           16     25.008 ± 0.649k/s  2.59 kmallocs/create
+                 32     23.616 ± 0.680k/s  2.64 kmallocs/create
+                 64     22.858 ± 0.292k/s  2.67 kmallocs/create
+               
+After            16     25.989 ± 0.083k/s  2.52 kmallocs/create  +3.9%
+                 32     24.111 ± 0.402k/s  2.50 kmallocs/create  +2.1%
+                 64     23.660 ± 0.252k/s  2.60 kmallocs/create  +3.5%
+
+
+* Patchset organization *
+
+Patch 1-4 convert local storage internal helpers to failable.
+
+Patch 5 changes the locks to rqspinlock and propagate the error
+returned from raw_res_spin_lock_irqsave() to BPF heleprs and syscalls.
+
+Patch 6-8 remove percpu counters in task and cgroup local storage.
+
+Patch 9-11 address the unlikely rqspinlock errors by switching to
+bpf_selem_unlink_nofail() in map_free() and destroy().
+
+Patch 12-16 update selftests.
+
+
+* Appendix: local storage internal *
+
+There are two locks in bpf_local_storage due to the ownership model as
+illustrated in the figure below. A map value, which consists of a
+pointer to the map and the data, is a bpf_local_storage_map_data (sdata)
+stored in a bpf_local_storage_elem (selem). A selem belongs to a
+bpf_local_storage and bpf_local_storage_map at the same time. 
+bpf_local_storage::lock (lock_storage->lock in short) protects the list
+in a bpf_local_storage and bpf_local_storage_map_bucket::lock (b->lock)
+protects the hash bucket in a bpf_local_storage_map.
+
+
+ task_struct
+┌ task1 ───────┐       bpf_local_storage
+│ *bpf_storage │---->┌─────────┐
+└──────────────┘<----│ *owner  │         bpf_local_storage_elem
+                     │ *cache[16]        (selem)              selem
+                     │ *smap   │        ┌──────────┐         ┌──────────┐
+                     │ list    │------->│ snode    │<------->│ snode    │
+                     │ lock    │  ┌---->│ map_node │<--┐ ┌-->│ map_node │
+                     └─────────┘  │     │ sdata =  │   │ │   │ sdata =  │
+ task_struct                      │     │ {&mapA,} │   │ │   │ {&mapB,} │
+┌ task2 ───────┐      bpf_local_storage └──────────┘   │ │   └──────────┘
+│ *bpf_storage │---->┌─────────┐  │                    │ │
+└──────────────┘<----│ *owner  │  │                    │ │
+                     │ *cache[16] │      selem         │ │    selem
+                     │ *smap   │  │     ┌──────────┐   │ │   ┌──────────┐
+                     │ list    │--│---->│ snode    │<--│-│-->│ snode    │
+                     │ lock    │  │ ┌-->│ map_node │   └-│-->│ map_node │
+                     └─────────┘  │ │   │ sdata =  │     │   │ sdata =  │
+ bpf_local_storage_map            │ │   │ {&mapB,} │     │   │ {&mapA,} │
+ (smap)                           │ │   └──────────┘     │   └──────────┘
+┌ mapA ───────┐                   │ │                    │
+│ bpf_map map │      bpf_local_storage_map_bucket        │
+│ *buckets    │---->┌ b[0] ┐      │ │                    │
+└─────────────┘     │ list │------┘ │                    │
+                    │ lock │        │                    │
+                    └──────┘        │                    │
+ smap                 ...           │                    │
+┌ mapB ───────┐                     │                    │
+│ bpf_map map │      bpf_local_storage_map_bucket        │
+│ *buckets    │---->┌ b[0] ┐        │                    │
+└─────────────┘     │ list │--------┘                    │
+                    │ lock │                             │
+                    └──────┘                             │
+                    ┌ b[1] ┐                             │
+                    │ list │-----------------------------┘
+                    │ lock │
+                    └──────┘
+                      ...
+
+* Changelog *
+
+v4 -> v5
+  - Patch 1: Fix incorrect bucket calculation (AI)
+  - Patch 3: Fix memory leak in bpf_sk_storage_clone() (AI)
+  - Patch 5: Fix memory leak in bpf_local_storage_update() (AI)
+  - Fix typo/comment/commit msg (AI)
+  - Patch 10: Replace smp_rmb() with smp_mb(). smp_rmb does not imply
+    acquire semantics
+  Link: https://lore.kernel.org/bpf/20260131050920.2574084-1-ameryhung@gmail.com/ 
+
+v3 -> v4
+  - Add performance numbers
+  - Avoid stale element when calling bpf_local_storage_map_free()
+    by allowing it to unlink selem from local_storage->list and uncharge
+    memory. Block destroy() from returning when pending map_free()
+    are uncharging
+  - Fix an -EAGAIN bug in bpf_local_storage_update() as map_free() now
+    does not free local storage
+  - Fix possible double-free of selem by ensuring an selem is only
+    processed once for each caller (Kumar)
+  - Fix possible inifinite loop in bpf_selem_unlink_nofail() when
+    iterating b->list by replacing while loop with
+    hlist_for_each_entry_rcu
+  - Fix unsafe iteration in destroy() by iterating local_storage->list
+    using hlist_for_each_entry_rcu
+  - Fix UAF due to clearing storage_owner after destroy(). Flip the order
+    to fix it
+  - Misc clean-up suggested by Martin
+  Link: https://lore.kernel.org/bpf/20251218175628.1460321-1-ameryhung@gmail.com/
+
+v2 -> v3
+  - Rebase to bpf-next where BPF memory allocator is replaced with
+    kmalloc_nolock()
+  - Revert to selecting bucket based on selem
+  - Introduce bpf_selem_unlink_lockless() to allow unlinking and
+    freeing selem without taking locks
+  Link: https://lore.kernel.org/bpf/20251002225356.1505480-1-ameryhung@gmail.com/
+
+v1 -> v2
+  - Rebase to bpf-next  
+  - Select bucket based on local_storage instead of selem (Martin)
+  - Simplify bpf_selem_unlink (Martin)
+  - Change handling of rqspinlock errors in bpf_local_storage_destroy()
+    and bpf_local_storage_map_free(). Retry instead of WARN_ON.
+  Link: https://lore.kernel.org/bpf/20250729182550.185356-1-ameryhung@gmail.com/
+
+---
+
+Amery Hung (16):
+  bpf: Select bpf_local_storage_map_bucket based on bpf_local_storage
+  bpf: Convert bpf_selem_unlink_map to failable
+  bpf: Convert bpf_selem_link_map to failable
+  bpf: Convert bpf_selem_unlink to failable
+  bpf: Change local_storage->lock and b->lock to rqspinlock
+  bpf: Remove task local storage percpu counter
+  bpf: Remove cgroup local storage percpu counter
+  bpf: Remove unused percpu counter from bpf_local_storage_map_free
+  bpf: Prepare for bpf_selem_unlink_nofail()
+  bpf: Support lockless unlink when freeing map or local storage
+  bpf: Switch to bpf_selem_unlink_nofail in bpf_local_storage_{map_free,
+    destroy}
+  selftests/bpf: Update sk_storage_omem_uncharge test
+  selftests/bpf: Update task_local_storage/recursion test
+  selftests/bpf: Update task_local_storage/task_storage_nodeadlock test
+  selftests/bpf: Remove test_task_storage_map_stress_lookup
+  selftests/bpf: Choose another percpu variable in bpf for btf_dump test
+
+ include/linux/bpf_local_storage.h             |  25 +-
+ kernel/bpf/bpf_cgrp_storage.c                 |  63 +--
+ kernel/bpf/bpf_inode_storage.c                |   7 +-
+ kernel/bpf/bpf_local_storage.c                | 386 +++++++++++++-----
+ kernel/bpf/bpf_task_storage.c                 | 155 +------
+ kernel/bpf/helpers.c                          |   4 -
+ net/core/bpf_sk_storage.c                     |  22 +-
+ .../bpf/map_tests/task_storage_map.c          | 128 ------
+ .../selftests/bpf/prog_tests/btf_dump.c       |   4 +-
+ .../bpf/prog_tests/task_local_storage.c       |  10 +-
+ .../bpf/progs/read_bpf_task_storage_busy.c    |  38 --
+ .../bpf/progs/sk_storage_omem_uncharge.c      |  12 +-
+ .../bpf/progs/task_storage_nodeadlock.c       |   7 +-
+ 13 files changed, 352 insertions(+), 509 deletions(-)
+ delete mode 100644 tools/testing/selftests/bpf/map_tests/task_storage_map.c
+ delete mode 100644 tools/testing/selftests/bpf/progs/read_bpf_task_storage_busy.c
+
+-- 
+2.47.3
+
