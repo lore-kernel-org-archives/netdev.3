@@ -1,124 +1,205 @@
-Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBFC3EBF1F;
-	Sun,  1 Feb 2026 00:55:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DD8219FC
+	for <netdev@vger.kernel.org>; Sun,  1 Feb 2026 01:15:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1769907341; cv=none; b=Tv0SAoswms+2JwbVWGlpSTrURRjhrZfNS62oeAVcoA2pCZ6DxZTKJ2F5nCWQFtUCmyXFbVW2nJY8Tn2RPHhGJjxzKNFWKXW0KV0E/aQHkvmwhJl66hlnFcT4RRqM1FGAxX9auelaVcXE72UPIiWDSwsMixHTCyQl+iucpBZeh2s=
+	t=1769908522; cv=none; b=hAD5cu8EBREbQmZ+kPIbwNF/S5roLnGQ2Caykeoaqchb+w5uN4iio+Je2h7zndspQYLyiCEChHcjH5PgimU+I50N7oQdaE5q7QWHEJyG+HU5aE4Zwhfyl3zOHp2nUy+6iHYuiBWfiufuBtFQhOU/9YzbkPEpy4MphfvgvJT5VsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1769907341; c=relaxed/simple;
-	bh=Rmk/RdLFUM79fJ5ed5sOVj+mDcJ1RXrHfn64ScstHkM=;
+	s=arc-20240116; t=1769908522; c=relaxed/simple;
+	bh=95ouaZ23Vhl2t+iYu6rYXs9qTxKPHcqylEIKC50PuIs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JRHxs0aJboXUUCpqzbRC0sMAqiKpq/21ThP03/ekzdo277yNNkczcY/JS475ma3c0OtpGXH+C27kWvHJwOVeDKHdGc7dgnilYvBiSPLwx2FCXarXNXWbkKThg82bjlOoe+X4zZ6J0q28G4sH0RmqbrzYGUuncNfNpTdyflRjyWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
-Received: from local
-	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
-	 (Exim 4.99)
-	(envelope-from <daniel@makrotopia.org>)
-	id 1vmLkM-00000000252-1sc2;
-	Sun, 01 Feb 2026 00:55:26 +0000
-Date: Sun, 1 Feb 2026 00:55:22 +0000
-From: Daniel Golle <daniel@makrotopia.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nhRu7/M6PJ9UryvZIeDxJYYRaLmzKuYsI5aIMVlNDx+Kc0Tz/m23Ai0M21TnrTm0NYmvO7aN9lLp88hC+mbAbIF1k3c7f92PfgL3J1Tn1zdL9Rrly7P1NRbnSuYZDQh7EyckGlKNKod7p4V9uoRV3r3tnCN42VbinM0QWDLB9mE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BD3REvSD; arc=none smtp.client-ip=209.85.222.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BD3REvSD"
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8c52c67f64cso313562585a.0
+        for <netdev@vger.kernel.org>; Sat, 31 Jan 2026 17:15:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1769908519; x=1770513319; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZJm1H3CZ3seZ1f2WLe4nYJDs1xC8Xdq/DSJguIofri0=;
+        b=BD3REvSDHeQoHZqlgssSQaDryNcl5lwnZJHG7bKAOrwqNb3f/t2zD+Ln/nd/eyP72q
+         FHXMAZ2FIvAFvlp5vILlot30wy/uSDrMS4VZrz1jlscxG4DxjFw0YVTZ2EP3kDYk04kp
+         S6t7JFyCgZ/3PB1aU1XRG5elY+pW3HdFHDL2mbfTpULbK+8KE5qpAsgK0cyJEu+AHGbr
+         Y2IQPH1eedhndtjfablHYGjJDq6rIY5+B68F02m8QisSJirE2KujnGNdBmOm8uFJa34P
+         dYdLfrxO4lsMpUyNhfjXYGNegGA+NUBIjSbOl7fV0fzmM/gRVSMkCmygf+qjzaVfsOqU
+         JvFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1769908519; x=1770513319;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZJm1H3CZ3seZ1f2WLe4nYJDs1xC8Xdq/DSJguIofri0=;
+        b=qSWLACLD1VG3tR4FKRVYOW7+8QrGWRBLdQl0R2zGrFwAf+dqvCSJWRQv1tfkD95iXU
+         tr0bY05YtsCl47K3I/EVeILmFx30zXMIK84SUSQoLvy1ElIzefX4mvxK3GyKBL1kjrRX
+         Fvjlu5OHeaqaGlRewTTBm/AT4ho738DgUL7KY3JaS2/L0kfGIaWMaDE0pxjoFc8+fXGq
+         NCF3S8p8tRnjIFCypBeCMNket5Pzz/GITvHrPEiUL5M8NgWDveEtYglR+hqrItWaUw19
+         2r5tXI4gvK/rbYxVAcHQYFg/FEdBfKEF1g565MjnoeiluOI2b4o/EnjvvhpWMvVL+Aqg
+         tW0w==
+X-Gm-Message-State: AOJu0YyxNtX3gLP8WOQjmBtBm8ZFbNxwZg+0iXsGzOrWtCO0zr4sX6CE
+	YSS3V7d7S87Klcw/3rLP0JOWX7XBE0faWo+IGDlClr4LbK5N1uwiYzbs
+X-Gm-Gg: AZuq6aLgpKashkXtl88bixbQEupsxoXwB77X27+N02Qr5ZawGKRsPUV90f8NNCm/Z6Q
+	utV7xG79HYb9UI/jeyIAYK5Vbr8jqu1clvu+wlI6ydot14Ju2Brd++rN6RtsEE73DJ/CDBz0ZkU
+	Y/EE9OZuP6ns5APeJRkY0wesRsV85F4Plv24JtZPCD+RIebEagQDnIKa+dJBNwYXd4eRqWMKlOh
+	acXRm0XOaddyw2SzIl8Qa4xUPKcR9achBcKq+rnI0dL6BhO3P1z+PAZuUVV8xeeOZoyByeZ5aSq
+	vmtNyHVa7jrtIbAC/IQTDiFxVoT6L4v2tURBbpkDlQr9EM6W9pvBoS97AlBp4NGEJqEAWyQ5X4D
+	xFJQmyd4IVrMH7JeIrw3c34tBcpS3YhvVCFiw9qzCvB7kp77n+HBBh9I/C6ElnOpF0QadmgWra3
+	w2CiRhHEA=
+X-Received: by 2002:a05:620a:3704:b0:8c3:87eb:f with SMTP id af79cd13be357-8c9eb2f95b4mr1018046085a.53.1769908519059;
+        Sat, 31 Jan 2026 17:15:19 -0800 (PST)
+Received: from pek-khao-d3 ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c711b7c670sm903220085a.6.2026.01.31.17.15.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Jan 2026 17:15:18 -0800 (PST)
+Date: Sun, 1 Feb 2026 09:15:10 +0800
+From: Kevin Hao <haokexin@gmail.com>
 To: Jakub Kicinski <kuba@kernel.org>
-Cc: lxu@maxlinear.com, hkallweit1@gmail.com, yweng@maxlinear.com,
-	ajayaraman@maxlinear.com, andrew@lunn.ch, netdev@vger.kernel.org,
-	bxu@maxlinear.com, olteanv@gmail.com, krzk+dt@kernel.org,
-	linux-kernel@vger.kernel.org, lrosu@maxlinear.com, chad@monroe.io,
-	conor+dt@kernel.org, devicetree@vger.kernel.org, robh@kernel.org,
-	edumazet@google.com, pabeni@redhat.com, cezary.wilmanski@adtran.com,
-	davem@davemloft.net, john@phrozen.org, frankwu@gmx.de,
-	jpovazanec@maxlinear.com, linux@armlinux.org.uk,
-	fchan@maxlinear.com, horms@kernel.org
-Subject: Re: [net-next,v11,4/4] net: dsa: add basic initial driver for
- MxL862xx switches
-Message-ID: <aX6keghdVMI-A6Fq@makrotopia.org>
-References: <46226b74030f76bd04149ed5c92b3e263abbe6c2.1769817939.git.daniel@makrotopia.org>
- <20260131175243.1122906-2-kuba@kernel.org>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>, linux-omap@vger.kernel.org
+Subject: Re: [PATCH net v4] net: cpsw_new: Execute ndo_set_rx_mode callback
+ in a work queue
+Message-ID: <aX6pHiB0tk6xvrCX@pek-khao-d3>
+References: <20260130-bbb-v4-1-2bd000a15c34@gmail.com>
+ <20260131124120.744bd931@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="/7d4g+wwdxZxeLY6"
 Content-Disposition: inline
-In-Reply-To: <20260131175243.1122906-2-kuba@kernel.org>
+In-Reply-To: <20260131124120.744bd931@kernel.org>
 
-On Sat, Jan 31, 2026 at 09:52:44AM -0800, Jakub Kicinski wrote:
-> > [...]
-> > +/**
-> > + * struct mxl862xx_bridge_port_alloc - Bridge Port Allocation
-> > + * @bridge_port_id: If the bridge port allocation is successful, a valid ID
-> > + *                  will be returned in this field. Otherwise, INVALID_HANDLE
-> > + *                  is returned. For bridge port free, this field should
-> > + *                  contain a valid ID returned by the bridge port allocation.
-> > + *
-> > + * Used by MXL862XX_BRIDGE_PORT_ALLOC and MXL862XX_BRIDGE_PORT_FREE.
-> > + */
-> > +struct mxl862xx_bridge_port_alloc {
-> > +	__le16 bridge_port_id;
-> > +};
-> 
-> Is the __packed attribute missing here? The similar struct
-> mxl862xx_bridge_alloc has __packed, and both structures have identical
-> layout with a single __le16 field. Both are used for firmware
-> communication where padding could break the protocol.
-> 
-> [Jakub] please remove the __packed attribute on structs which are
->         naturally packed according to C rules.
 
-I'll do that for the upcoming submission of v12, but wonder if using
-'#pragma pack(push, 1)' around the complete API header file wouldn't be
-the better option, as anyway *everything* should always be packed there,
-as the switch firmware expects data byte-aligned.
+--/7d4g+wwdxZxeLY6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-> > [...]
-> > +static int mxl862xx_setup_mdio(struct dsa_switch *ds)
-> > +{
-> > +	struct mxl862xx_priv *priv = ds->priv;
-> > +	struct device *dev = ds->dev;
-> > +	struct device_node *mdio_np;
-> > +	struct mii_bus *bus;
-> > +	static int idx;
-> > +	int ret;
+On Sat, Jan 31, 2026 at 12:41:20PM -0800, Jakub Kicinski wrote:
+> On Fri, 30 Jan 2026 13:34:07 +0800 Kevin Hao wrote:
+> > --- a/drivers/net/ethernet/ti/cpsw_new.c
+> > +++ b/drivers/net/ethernet/ti/cpsw_new.c
+>=20
+> What's your plan for fixing drivers/net/ethernet/ti/cpsw.c ?
+> My preference would be to post both of the fixes at once,
+
+Sure, I will include the fix for cpsw.c in the next version.
+
+> I think this version is quite close, just a couple of nit picks
+> below..
+>=20
+> > @@ -248,15 +248,25 @@ static int cpsw_purge_all_mc(struct net_device *n=
+dev, const u8 *addr, int num)
+> >  	return 0;
+> >  }
+> > =20
+> > -static void cpsw_ndo_set_rx_mode(struct net_device *ndev)
+> > +static void cpsw_ndo_set_rx_mode_work(struct work_struct *work)
+> >  {
+> > -	struct cpsw_priv *priv =3D netdev_priv(ndev);
+> > +	struct cpsw_priv *priv =3D container_of(work, struct cpsw_priv, rx_mo=
+de_work);
+> >  	struct cpsw_common *cpsw =3D priv->cpsw;
+> > +	struct net_device *ndev =3D priv->ndev;
+> > =20
+> > +	rtnl_lock();
+> > +	if (!netif_running(ndev)) {
+> > +		rtnl_unlock();
+> > +		return;
+>=20
+> since the "undo" logic is getting complex you should use a goto.
+> Replace the unlock and the return; here with:
+>=20
+> 		goto unlock_rtnl;
+>=20
+> > +	}
 > > +
-> > +	bus = devm_mdiobus_alloc(dev);
-> > +	if (!bus)
-> > +		return -ENOMEM;
-> > +
-> > +	bus->priv = priv;
-> > +	ds->user_mii_bus = bus;
-> > +	bus->name = KBUILD_MODNAME "-mii";
-> > +	snprintf(bus->id, MII_BUS_ID_SIZE, KBUILD_MODNAME "-%d", idx++);
-> 
-> Can concurrent probes race on the idx variable?
-> 
-> The static int idx is shared across all driver instances and accessed
-> without synchronization. If multiple instances of this driver are probed
-> concurrently on different CPU cores, they could race on the idx++
-> operation potentially leading to duplicate MII bus IDs. MII bus IDs must
-> be unique system-wide.
-> 
+> > +	netif_addr_lock_bh(ndev);
+> >  	if (ndev->flags & IFF_PROMISC) {
+> >  		/* Enable promiscuous mode */
+> >  		cpsw_set_promiscious(ndev, true);
+> >  		cpsw_ale_set_allmulti(cpsw->ale, IFF_ALLMULTI, priv->emac_port);
+> > +		netif_addr_unlock_bh(ndev);
+> > +		rtnl_unlock();
+>=20
+>=20
+> 		goto unlock_addr;
+>=20
+> >  		return;
+> >  	}
+> > =20
+> > @@ -270,6 +280,15 @@ static void cpsw_ndo_set_rx_mode(struct net_device=
+ *ndev)
+> >  	/* add/remove mcast address either for real netdev or for vlan */
+> >  	__hw_addr_ref_sync_dev(&ndev->mc, ndev, cpsw_add_mc_addr,
+> >  			       cpsw_del_mc_addr);
+>=20
+> And place a labels here:
+>=20
+> unlock_addr:
+>=20
+> > +	netif_addr_unlock_bh(ndev);
+>=20
+> unlock_rtnl:
 
-Do you think it's worth to fix this also in other drivers which follow
-the same pattern? (bcm_sf2, mt7530 and mv88e6xxx if OF node is NULL --
-if there is an OF node it uses %pOF, and I'm not sure that's such a good
-idea either)
+Will do. Thanks.
 
-Apart from being racy, this also means the MII bus name depends on probe
-order which isn't very nice either. Using
+>=20
+> > +	rtnl_unlock();
+> > +}
+>=20
+> >  	for (i =3D 0; i < cpsw->data.slaves; i++) {
+> > -		if (!cpsw->slaves[i].ndev)
+> > +		ndev =3D cpsw->slaves[i].ndev;
+> > +		if (!ndev)
+> >  			continue;
+> > =20
+> > -		unregister_netdev(cpsw->slaves[i].ndev);
+> > +		priv =3D netdev_priv(ndev);
+> > +		disable_work_sync(&priv->rx_mode_work);
+> > +		unregister_netdev(ndev);
+>=20
+> I understand that this is safe but I think that more logical ordering
+> would be to shut things down _after_ object is unregistered.
 
-snprintf(bus->id, MII_BUS_ID_SIZE, "%s-mii", dev_name(priv->dev));
+I'm a bit confused=E2=80=94are you suggesting that we move disable_work_syn=
+c() after
+unregister_netdev()? If that's the case, the scheduled cpsw_ndo_set_rx_mode=
+_work()
+could potentially run after the network device has been unregistered, leadi=
+ng to
+a use-after-free issue. Or am I misunderstanding something here?
 
-may result in a slightly more ugly-looking, but predictable and
-non-racy (ie. always unique) name.
+Thanks,
+Kevin
 
-Other than that there is also
-snprintf(bus->id, MII_BUS_ID_SIZE, "%s-%d.%d",
-         KBUILD_MODNAME, ds->dst->index, ds->index);
+--/7d4g+wwdxZxeLY6
+Content-Type: application/pgp-signature; name=signature.asc
 
-The real question here is if we consider MII bus names to be ABI,
-ie. if they should never change once a driver is part of the kernel.
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEHc6qFoLCZqgJD98Zk1jtMN6usXEFAml+qR0ACgkQk1jtMN6u
+sXFiMQgAgXhM+XjfpOGaw/OgbkrwPRvaJ2E9diBBKdfT5GneZ2xQLqoX5yrDbn69
+x9ywnY0WcVrrZPBnlDb6+gylB3kexPm1bkKoXVCLZgMfmjTgMUn5ZgW2AJFeF0Jo
+6e749TYfvlP+sK1fT8vK3ljM853Sgne9GoyWjnSwM4UMX86DGXiOaoA9/t4S2Ik5
+BeiuMisqwUHhk5wmGUWdKNWrCcrCuWXEHfVVE6yeHwiRv1VBPqrBQr0w/ct+VSay
++Afvrd3fiQsVSG2NL9hOg3ri/QChk0HEjPlUTA6/5k7Qyy8CWzKxM1R3V6I5I3oB
+8ohHti4FG6auchSaoIGJp+RStRu+cg==
+=ackL
+-----END PGP SIGNATURE-----
+
+--/7d4g+wwdxZxeLY6--
