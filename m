@@ -1,416 +1,530 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012031.outbound.protection.outlook.com [40.107.209.31])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB0737D13C;
-	Mon,  2 Feb 2026 16:01:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.31
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770048096; cv=fail; b=qAsv+H+1RjfmjVtk9RxHgLdg1pgi7uuntjXcqI2Qd+sRakhwiAfuSAsVo0VbjWEjDETjJdAND44COtJg06dc0cVYUVM4Q/KTY2kurMVRi/W4W/Ng+zVM+Hpxd34LGMUlweKRk2Hfz7SibTRCb5spUWCOJtWrf3oQ7jh3OQsoBsg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770048096; c=relaxed/simple;
-	bh=1tZkdIBL8cH/T3iBUqTvbzbHyNUjiF9giM1wEx/bykE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=D1cLmkhxepsGRSOSlhWllelzz02shjPjE6mv/m1Kqc2+uVEXbnhSfbp14a5OrfG+LTaEW1YscdIgCcxaf4/WGGECd+BmnaQlX5rZKzNetn/L27Is54LNLkCnxgrzSpEwDDkHGI6MYBhRlGwPJ6Kso4EUEUgeQsYf0Kva4LogEDM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=nOGWTwLg; arc=fail smtp.client-ip=40.107.209.31
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC9E22FAFD
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 16:03:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770048214; cv=none; b=hiDE3z166vbL57Gdg4Pby7q9lhhX5Jsxpsur5aePQb0m08N5TOLjwPLp+o4mLj6sfG1KGA75z+Ayw7ybtmTxzOM/rxV1nVp1/McSWHU3QalKCg0fzrgw0k0sH1u0ziQYgNwuWhxZKaBSGGMUsXgM839gyxtrZsclkx++1e4H4xo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770048214; c=relaxed/simple;
+	bh=f+HrC0iWonAH7sbFK2rFbMBR2gQQoVHp1Fhe7Yzvaz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EWVxj4t0kX8qRQe+57ODEc3jRFD3F46QlKqHMH+YOsFn+bK1b3RjISHsD4bN1N3qRDo4Rgk88Ke5nFaE3batKE3NajrQOeBb23e6hBJEQja4ezEZW/ONr6KMY5ldsGdGu8xkRzEV7kDZJKbKoBJgD7IPPvNpNm8I20G18JKmLwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UgeIeegf; arc=none smtp.client-ip=209.85.216.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="nOGWTwLg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MJ4Rls09LLw9Pdr3Df4T4sa4VodoePdL0zCJfWTHll4VtJdtIam7JdO3QCqELea7Ioao26ZaNh0JWDO3rZYhSL/MV1GLJlpYkMKQgiWOdqasol+h/xF5DPqHgCnRmelVxn7ZNIGxlFFlGTZf3P+QIpSu2T1JWPyqQUziSwWBUUEP3JibRtceuFJxXM/C06t6bg8Ea8W/Vo89D8eIzPeUBOF3OyOwd42IZaG1sD9WlAQZzOf9PxXcXugJD40GT+85XoAkFAvjSOWFRJ0TAXBBnNpHIPHB1MutIQj+yR2lzLmmpGZFwKm+4i0AYxZ1m5qacLGSlheDmZnyctXkWedMVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PuC5Qu1mNYDuOgWC3k9XzK/4gub9rnTcYJdZrDxC14U=;
- b=tR7A7EWGrS5/uRUBCmNCWJ+3gdUzvnc2IP+87p1bN3odqVTtmRkoF4AgcdXGQFLo2TK8GPlEQqimmVNSwtQvjM3BhPeqCqniz2Yiz8JXmzCAUnygRXM9Y25kynAvWNleblpXEYXQaWsluDrORYDeSTEI7fdVktxoxdnI25nB2qyG4OlmDzmyGP/ggm1XBPqRuXh7yRwMv18x3GkiIGFvnd0dRQQ50XihEHweCCQrdzDNN30TmCN2ZhMoiMDxMgAp+xlFk0AfNUYLhrV8RHsbaDnAtlfo0OFx9R9+YT2mmDsYuWwsW0aBfvhjImz2LS5ycBtZSwZbw83COTKZlJh6eA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=ziepe.ca smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PuC5Qu1mNYDuOgWC3k9XzK/4gub9rnTcYJdZrDxC14U=;
- b=nOGWTwLge5rnzEotQURAJ4jAGPuQkRAfi8a74tkU5Pgxi8SZZ3UIV++IvbIXtoPLN+fxUrm+Fv5IjU5xh4FtMJLcvcRVcu0O+q1El6TvPWnfvPGYTgZQtXdVTxhCDcy+j5TZvAV0pbHpQfECWA1QpnVxej56K3s4yUZlVQqehLvAtaUid0xNQdrPgKKzJgpf2CSotv3L7qlwbXkSsBLB6FvK//ILMp2OSq14xd8tyAByzjF7IaaacsiH3qfpm7T+Gr9DmNJQ/9cvwC91uOo9sJrwObI+33MLrcMaZ1Pxp03Wa9jmhksQjXrTiBMP5c1rRb8Y60Kk/xKNtnPT9J9acw==
-Received: from SN7PR04CA0002.namprd04.prod.outlook.com (2603:10b6:806:f2::7)
- by IA1PR12MB8554.namprd12.prod.outlook.com (2603:10b6:208:450::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Mon, 2 Feb
- 2026 16:01:17 +0000
-Received: from SA2PEPF00003F64.namprd04.prod.outlook.com
- (2603:10b6:806:f2:cafe::95) by SN7PR04CA0002.outlook.office365.com
- (2603:10b6:806:f2::7) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9564.16 via Frontend Transport; Mon,
- 2 Feb 2026 16:01:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SA2PEPF00003F64.mail.protection.outlook.com (10.167.248.39) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.10 via Frontend Transport; Mon, 2 Feb 2026 16:01:17 +0000
-Received: from rnnvmail204.nvidia.com (10.129.68.6) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 2 Feb
- 2026 08:00:50 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail204.nvidia.com
- (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 2 Feb
- 2026 08:00:50 -0800
-Received: from c-237-169-180-182.mtl.labs.mlnx (10.127.8.13) by
- mail.nvidia.com (10.129.68.8) with Microsoft SMTP Server id 15.2.2562.20 via
- Frontend Transport; Mon, 2 Feb 2026 08:00:45 -0800
-From: Edward Srouji <edwards@nvidia.com>
-Date: Mon, 2 Feb 2026 18:00:00 +0200
-Subject: [PATCH rdma-next v3 08/11] RDMA/nldev: Add command to get FRMR
- pools
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UgeIeegf"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34ab8e0df53so3875934a91.3
+        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 08:03:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770048212; x=1770653012; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1a9l567QPE61uruLEu3GPyK0pRg9wkjFHjtbUXOYHUk=;
+        b=UgeIeegfGSzPNEKCLlWvsxL4lpUl7bYWOvAX6se73v8dvhUZHZrgbdsx5oFbW/Vg3X
+         BVDiZ0uFfGY0MbVXpr0KqubIeYfZTRk3wfZVfJryu5lHL6MtRMDA0UKBq0b4cPPRcWY/
+         /zhjA1BHhWGOFJJ61NeaDVCfjIg5GM/mFozpSVLaoButsugsB/1DxQMDcZcG0VpMoo2n
+         WFAotyFnNfCxyIzqrHaOSsDC+xSZmZSk3afCSQ0St3PRKrVgiCi3oKNFmEzlpjYTrTuD
+         KmeJDYjXDvN2beVVqsKHZT6khpIF+WsouTJHNfvW4+h9WqzkFN1AtHUw2wY7a7HjFK8/
+         vI4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770048212; x=1770653012;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=1a9l567QPE61uruLEu3GPyK0pRg9wkjFHjtbUXOYHUk=;
+        b=xGFnnguVVt8mMSywWlJgBgq5e/FdZqCxjiGYlMSIjbaLCP8IOUGtpR+p6XPEzL2dTI
+         RDVatkstlUqVFAFnmI8dTMXLLPLlqNUssH91t6VqqzK00G+jbvuHRJgYupdw5eNdnX9g
+         j1QG88WXXvjssErFMPDAMOCA+mfsy34nv9fEUxCzQwHlAOPpXI4v86cT30mescc7hf0S
+         1calgAHLIw8Y2LCjzPSTb4vvWSaco50QtzrL0lsJJCCie3/U5wO+KvgtV/OiXPCQJYAX
+         +oPiOFt5QVqO/paG9UdDwL663JwJMWxezToxgbzg6hZPDBYygJkLkNxns+qS6izN56Ud
+         MwEg==
+X-Gm-Message-State: AOJu0YyVRPcuk9YCB6NnvKCBmVNIc/d0at4rWR0fkMRrWC4aWiHkC7h1
+	i9ZTMQj215CPVxdg365gp+D1v7BF5RBgz4OTdtvFfUoIsQkJuKDDMW2j5ZcGPKZv
+X-Gm-Gg: AZuq6aJYalJgaqEuwrpOagL5tQt1oyNzk077NkWZ+TTgzeyMItHah3WSTwJeCR2/uRn
+	sSAS32foP+Ap88oSDPPLMn/M8ekCwBzFWSAZQgM3yEaExHgyVbsEA0zhxU0KLyH1ANgF841iYqa
+	uAUV2vWmK9CjrKGuWpMyd+C0MOLPVzjHsImXS6qztrAi6rIX/L2Hb7ur7GDYBLgtRGRZO1djzJO
+	noYu7pAiMZjMxRcml3Studrmwp9izp6SzLsO0VCwcg/DFn2QXjJaEHNBTRteSWRi7dlkCZYJCAc
+	UBGHSUvHC8ZjPhylcoGMY+jwLJaI/SNMnAGXkFoPdfa0H/aunqh+0ukP/oQjK3cvBn2kcNSy+nr
+	UgFi/Zm4yW5aAJnlo59m/ATT5/7S2HB6rEnk/85YreOi13Z43AiaJXEYreSTmum+V/SSlDFFN1y
+	OfvPSu13UGhZod5txCyIoh2f34Ljq8Oy5FBd4+brWR8EnwChRvtZM=
+X-Received: by 2002:ac8:7f0f:0:b0:4f3:5361:7609 with SMTP id d75a77b69052e-505d22cf23fmr169838961cf.79.1770042598744;
+        Mon, 02 Feb 2026 06:29:58 -0800 (PST)
+Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50337ba3981sm106865171cf.16.2026.02.02.06.29.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 06:29:58 -0800 (PST)
+From: Xin Long <lucien.xin@gmail.com>
+To: network dev <netdev@vger.kernel.org>,
+	quic@lists.linux.dev
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefan Metzmacher <metze@samba.org>,
+	Moritz Buhl <mbuhl@openbsd.org>,
+	Tyler Fanelli <tfanelli@redhat.com>,
+	Pengtao He <hepengtao@xiaomi.com>,
+	Thomas Dreibholz <dreibh@simula.no>,
+	linux-cifs@vger.kernel.org,
+	Steve French <smfrench@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Tom Talpey <tom@talpey.com>,
+	kernel-tls-handshake@lists.linux.dev,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Steve Dickson <steved@redhat.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Alexander Aring <aahringo@redhat.com>,
+	David Howells <dhowells@redhat.com>,
+	Matthieu Baerts <matttbe@kernel.org>,
+	John Ericson <mail@johnericson.me>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"D . Wythe" <alibuda@linux.alibaba.com>,
+	Jason Baron <jbaron@akamai.com>,
+	illiliti <illiliti@protonmail.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+	Daniel Stenberg <daniel@haxx.se>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Subject: [PATCH net-next v9 05/15] quic: provide quic.h header files for kernel and userspace
+Date: Mon,  2 Feb 2026 09:27:31 -0500
+Message-ID: <b3e81a27cc3e4c03fa8357c2c77b238997e48610.1770042461.git.lucien.xin@gmail.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <cover.1770042461.git.lucien.xin@gmail.com>
+References: <cover.1770042461.git.lucien.xin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260202-frmr_pools-v3-8-b8405ed9deba@nvidia.com>
-References: <20260202-frmr_pools-v3-0-b8405ed9deba@nvidia.com>
-In-Reply-To: <20260202-frmr_pools-v3-0-b8405ed9deba@nvidia.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, "Saeed
- Mahameed" <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
-	<mbloch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-CC: <linux-kernel@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<netdev@vger.kernel.org>, Michael Guralnik <michaelgur@nvidia.com>, "Edward
- Srouji" <edwards@nvidia.com>, Patrisious Haddad <phaddad@nvidia.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770048005; l=7559;
- i=edwards@nvidia.com; s=20251029; h=from:subject:message-id;
- bh=H69IJT0gSWJ/BQ1rnshAH8OOgF2pvDd2RNh8fItgBpw=;
- b=+7516NGBuLE+PBwXW5D4nmJagNmaCq0N3sjtxHQ6wHJqMgzd4uCTJopOMr1WRCFSTRgnqUKoF
- 2s7XxQkdKmjD5lnfWpe91ZaP8CUduTUQRT0R/kqPeQMFwpH2+/hxdHH
-X-Developer-Key: i=edwards@nvidia.com; a=ed25519;
- pk=VME+d2WbMZT5AY+AolKh2XIdrnXWUwwzz/XLQ3jXgDM=
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00003F64:EE_|IA1PR12MB8554:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d79b18e-ca3f-41f9-02d3-08de62744ce3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|7416014|376014|36860700013|82310400026|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UTRUZElrbXhLdUJENEptQ0pCSk81NWFnZTVCZE9vZE14RUNBUVg2ZThnNXpj?=
- =?utf-8?B?b1NpZi84Ym1IWUVEZ0xNa0xMSUU5L2lnL3JsVElvVXllVW9ZNmNCcjhMQW1K?=
- =?utf-8?B?WmhEUFBBbTFPUkN5YzdlcnkvSUE1aVU4d1pHck55dzRpY0Z3NXp1WGlFTnEv?=
- =?utf-8?B?RkNpTUNGK0dlcVIxaXRLN2lkUUFoeGR1bnM0Z0JJM0JqWHMxLzRJWTFyTEpQ?=
- =?utf-8?B?Z3ZlbkVUSDN3am9Vb2RteVYzNUFJUmdGckdjdm9vTzdUd1dBblhPeUZNRW9G?=
- =?utf-8?B?b3RxY3RYdHBNR0pnQU1zSnNPZVdhVllTblhzVkRPbVgrMkFOUXNLRmlyWEw0?=
- =?utf-8?B?SmI5aUpWMW9McCs1c3JiU1QvK1V5czNBOHFua1d5Q1V1SU5Yb0c1UWJUR1Fj?=
- =?utf-8?B?am5DSkxSVzhnQ3RPbW56M1JZUU9iNkl2cXJxOEUrb0JSS3ZFQW1haVBVdXpa?=
- =?utf-8?B?bTNucW5UNDMybGdCUUR5RWZyYVZYYlFFV2VHV1U4UXdsQ1Fyc2FzSXhUSzhj?=
- =?utf-8?B?dlREb05Dd3NDdkhQRU9Kc2l5eXVJbTRJWUdldnVvOXZjSk51c2FmRGxDU1Fy?=
- =?utf-8?B?MzMrdHpaRUp3OGROWUhJSGlWazdUeko1Z0VHeGJRQVBnVDJrdGJoOFZyVjBY?=
- =?utf-8?B?ZTlrU1dMM0hIMnhxbnpvcjA0RTVhSEpVOU1pK2ROdTgwbXl0TWhMNnRwNjJu?=
- =?utf-8?B?R2pyNy9zK25OSU1iVTdTdnlPdWlYSDRFWEN0Z01Jam5SdzVObkNaMGNEOVVp?=
- =?utf-8?B?eDZYTjdUL1pHLzUwVnRJZVBENC84dDhkSFZwR1paalRUdHFiZjFJU2hGdlhS?=
- =?utf-8?B?SmQzSmhuc3BPQmR6RzZPeXVQMndxeDh1MjVOWGg0aTIxUEtocFNHTG90ZU5M?=
- =?utf-8?B?bisxc2NhamsrdzVlM3JtZEVMTjl6V01tVHVTcEllb3VHdEVvUmUvYURBL3Bq?=
- =?utf-8?B?U1NlYndOTkduUjE4anJUdnpTdWc5eGFnNURWREl6YlhKS0pyd0pDcXQyaDN2?=
- =?utf-8?B?enhTZFN3SGlFeThPczBUb2dsd3BKTXV4NlBJNklXWDBzeTU4VUg5VFhIU1lz?=
- =?utf-8?B?N2xlT3lGV3RMT0VUVTNiZXdGQzlkQUtjZ0FsQkJsSkVQQ01vWnQveTJPZklP?=
- =?utf-8?B?a0ZQYnV2VXYrOTlyNE52cXZ1Ym1nZVkwVGJoZEp4RERUc0hISWpyb01HVFFL?=
- =?utf-8?B?ZHFTeUZGaURtSVRBMkYxZFpWMktpWjFXc1ZvQzI5UGQwMkRQRTFmajEwUUVk?=
- =?utf-8?B?dEFqdFlLQ0IyOVRRWCtJK0loSWs3bURCSXRmV2tYTXdQYjJodWtFT0NDK0dC?=
- =?utf-8?B?dU5HdGdpUFFrcEsxQjBibTB6N1ZQeFpWRTF6dzZWQmYyMVQrYVl0M0VVQXZh?=
- =?utf-8?B?QnN2Nk5iMjdHMUVZQW9WU0ovaENRdFpvU2poSG83bWJERC9iSmV1WEU4QVdx?=
- =?utf-8?B?RlNHUlhXZTIxUExCVytZUkZCQWUzcHNqWlhwem1hVTdFaXp1Z3VrdVVQand3?=
- =?utf-8?B?UjhaSDNkVTFQOVJ2Mm8vRVB4cHZ3QzlSRzNHckc4U1I5YndBOTZhS0Q5Rndk?=
- =?utf-8?B?TjRzM2JTd3QxbS9hL1g5cmt6Z1ZkcnQyR2ZQMm1NUVlYa21sNWU1Q1dFQUZ1?=
- =?utf-8?B?L3Q1QWppbUkxU0pxelR2amZVSU96bmVPekk2V2lBZy8vWCtkWkRYMldNdGF1?=
- =?utf-8?B?TWJmZ1ZKVHJHZE4yNDF5K1NsWkFoNnp3UUFwYzAwWWt4bHNhTWZSOFlQTmFx?=
- =?utf-8?B?TTdhaWg3RWxFRUovaS9NTHV0a2R5WHRRSnR2MllucmJwNXc3N3RmRHZoRFZQ?=
- =?utf-8?B?SGE4Um5tbWpUNUQ1czlhQk9sbTdRZHRmc1lZVkNlRjdOQ3lUSG56R2FuUFhF?=
- =?utf-8?B?bG9EVmFITEdIeFVqQXRKaGdzcllwWW16c29lTUQ5TjZrTTgvSnk0MFVKb3NC?=
- =?utf-8?B?WUVHQ0JTOFdzaW9ncG5HcjJmOXRxYWh3dHJ1dTUvc1RCWW1VcDFSc0lNTDlr?=
- =?utf-8?B?elF2ZzY3OGJtMEhVMFEwZHdVNFNDSldyRS9zU051WTd2eFhKTDFMd3EzU2Rm?=
- =?utf-8?B?YWlGck85NHUyTThwMWZTWG81Sm00dzNnYzNGVXBiMVNpZlp6YWhBTVJjdUJm?=
- =?utf-8?B?YmtwNmFsZG1zeHhScHovV2lmVzlPTWhvSFdTYU1pZEhsNDBveGNEc1hVbEN0?=
- =?utf-8?B?c0ZHTks1RkQwRW5oNThZVW05SWJ2TFp0TGdrNmovNXJvUVZ3dm9mNlV6SXVu?=
- =?utf-8?Q?y4mZLbn1rEAiQ2E1zH36PO5aztMhJtYoxdSRm9CTDs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(36860700013)(82310400026)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	DXJk9k7XHAR4dGmf9CnJR8NXlwWc44vpYAhTCmu/ttET1MN35P7dv62vHPzpZMjYjz/NUQ7dM/TDAtlqjf8qb/cS/JHG+eESER1fUt46yr++qYHZXzKSg6TacybYjZ+PqjdW1xFzx7quqf3fU3WMO7exZ9VqVlGlyrZ9o6dQ2dCfJ386YC+aFg2hLb8ju187MCp5xnHGcmjMnShSkVK4brIMXTOEzuFVJVJi3rWhHNdWNXUH4pJPYRMvzLYtOUuvpRCsOZtuUjPrdiIphn7jgJvR7eoRRFh7OaPORdcRR7qZPNpBuxmIWrXPhqPsR6V/MJFM8Jtljsizhylo5JVQOyG3vOew6T+MMdrbfB260EqGTpom/+1uYI/M7EjUA62umdRUCV1GQw1sFNhKOUTCzvfKXLBPQ9Nb4H9WRCoGFOLTETCjqrFokcvc3q7m7LOA
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Feb 2026 16:01:17.7403
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d79b18e-ca3f-41f9-02d3-08de62744ce3
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00003F64.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB8554
+Content-Transfer-Encoding: 8bit
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+This commit adds quic.h to include/uapi/linux, providing the necessary
+definitions for the QUIC socket API. Exporting this header allows both
+user space applications and kernel subsystems to access QUIC-related
+control messages, socket options, and event/notification interfaces.
 
-Add support for a new command in netlink to dump to user the state of
-the FRMR pools on the devices.
-Expose each pool with its key and the usage statistics for it.
+Since kernel_get/setsockopt() is no longer available to kernel consumers,
+a corresponding internal header, include/linux/quic.h, is added. This
+exposes quic_do_get/setsockopt() to handle QUIC socket options directly
+for kernel subsystems.
 
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
-Signed-off-by: Edward Srouji <edwards@nvidia.com>
+Detailed descriptions of these structures are available in [1], and will
+be also provided when adding corresponding socket interfaces in the
+later patches.
+
+[1] https://datatracker.ietf.org/doc/html/draft-lxin-quic-socket-apis
+
+Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Thomas Dreibholz <dreibh@simula.no>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
 ---
- drivers/infiniband/core/nldev.c  | 165 +++++++++++++++++++++++++++++++++++++++
- include/uapi/rdma/rdma_netlink.h |  17 ++++
- 2 files changed, 182 insertions(+)
+v2:
+  - Fix a kernel API description warning, found by Jakub.
+  - Replace uintN_t with __uN, capitalize _UAPI_LINUX_QUIC_H, and
+    assign explicit values for QUIC_TRANSPORT_ERROR_ enum in UAPI
+    quic.h, suggested by David Howells.
+v4:
+  - Use MSG_QUIC_ prefix for MSG_* flags to avoid conflicts with other
+    protocols, such as MSG_NOTIFICATION in SCTP (reported by Thomas).
+  - Remove QUIC_CONG_ALG_CUBIC; only NEW RENO congestion control is
+    supported in this version.
+v5:
+  - Add include/linux/quic.h and include/uapi/linux/quic.h to the
+    QUIC PROTOCOL entry in MAINTAINERS.
+v6:
+  - Fix the copy/pasted the uAPI path for SCTP to the QUIC entry (noted
+    by Jakub).
+v7:
+  - Expose quic_do_get/setsockopt() instead of quic_kernel_get/setsockopt()
+    (suggested by Paolo).
+---
+ MAINTAINERS               |   2 +
+ include/linux/quic.h      |  20 ++++
+ include/uapi/linux/quic.h | 235 ++++++++++++++++++++++++++++++++++++++
+ net/quic/socket.c         |  32 +++++-
+ net/quic/socket.h         |   7 ++
+ 5 files changed, 294 insertions(+), 2 deletions(-)
+ create mode 100644 include/linux/quic.h
+ create mode 100644 include/uapi/linux/quic.h
 
-diff --git a/drivers/infiniband/core/nldev.c b/drivers/infiniband/core/nldev.c
-index 2220a2dfab24..6637c76165be 100644
---- a/drivers/infiniband/core/nldev.c
-+++ b/drivers/infiniband/core/nldev.c
-@@ -37,11 +37,13 @@
- #include <net/netlink.h>
- #include <rdma/rdma_cm.h>
- #include <rdma/rdma_netlink.h>
-+#include <rdma/frmr_pools.h>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 7e41961dbd01..cf424d94c1d6 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -21687,6 +21687,8 @@ M:	Xin Long <lucien.xin@gmail.com>
+ L:	quic@lists.linux.dev
+ S:	Maintained
+ W:	https://github.com/lxin/quic
++F:	include/linux/quic.h
++F:	include/uapi/linux/quic.h
+ F:	net/quic/
  
- #include "core_priv.h"
- #include "cma_priv.h"
- #include "restrack.h"
- #include "uverbs.h"
-+#include "frmr_pools.h"
- 
- /*
-  * This determines whether a non-privileged user is allowed to specify a
-@@ -172,6 +174,16 @@ static const struct nla_policy nldev_policy[RDMA_NLDEV_ATTR_MAX] = {
- 	[RDMA_NLDEV_ATTR_NAME_ASSIGN_TYPE]	= { .type = NLA_U8 },
- 	[RDMA_NLDEV_ATTR_EVENT_TYPE]		= { .type = NLA_U8 },
- 	[RDMA_NLDEV_ATTR_STAT_OPCOUNTER_ENABLED] = { .type = NLA_U8 },
-+	[RDMA_NLDEV_ATTR_FRMR_POOLS]		= { .type = NLA_NESTED },
-+	[RDMA_NLDEV_ATTR_FRMR_POOL_ENTRY]	= { .type = NLA_NESTED },
-+	[RDMA_NLDEV_ATTR_FRMR_POOL_KEY]		= { .type = NLA_NESTED },
-+	[RDMA_NLDEV_ATTR_FRMR_POOL_KEY_ATS]	= { .type = NLA_U8 },
-+	[RDMA_NLDEV_ATTR_FRMR_POOL_KEY_ACCESS_FLAGS] = { .type = NLA_U32 },
-+	[RDMA_NLDEV_ATTR_FRMR_POOL_KEY_VENDOR_KEY] = { .type = NLA_U64 },
-+	[RDMA_NLDEV_ATTR_FRMR_POOL_KEY_NUM_DMA_BLOCKS] = { .type = NLA_U64 },
-+	[RDMA_NLDEV_ATTR_FRMR_POOL_QUEUE_HANDLES] = { .type = NLA_U32 },
-+	[RDMA_NLDEV_ATTR_FRMR_POOL_MAX_IN_USE]	= { .type = NLA_U64 },
-+	[RDMA_NLDEV_ATTR_FRMR_POOL_IN_USE]	= { .type = NLA_U64 },
- };
- 
- static int put_driver_name_print_type(struct sk_buff *msg, const char *name,
-@@ -2637,6 +2649,156 @@ static int nldev_deldev(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	return ib_del_sub_device_and_put(device);
+ RADEON and AMDGPU DRM DRIVERS
+diff --git a/include/linux/quic.h b/include/linux/quic.h
+new file mode 100644
+index 000000000000..c246f6349f9c
+--- /dev/null
++++ b/include/linux/quic.h
+@@ -0,0 +1,20 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/* QUIC kernel implementation
++ * (C) Copyright Red Hat Corp. 2023
++ *
++ * This file is part of the QUIC kernel implementation
++ *
++ * Written or modified by:
++ *    Xin Long <lucien.xin@gmail.com>
++ */
++
++#ifndef _LINUX_QUIC_H
++#define _LINUX_QUIC_H
++
++#include <linux/sockptr.h>
++#include <uapi/linux/quic.h>
++
++int quic_do_setsockopt(struct sock *sk, int optname, sockptr_t optval, unsigned int optlen);
++int quic_do_getsockopt(struct sock *sk, int optname, sockptr_t optval, sockptr_t optlen);
++
++#endif
+diff --git a/include/uapi/linux/quic.h b/include/uapi/linux/quic.h
+new file mode 100644
+index 000000000000..990b70c3afb0
+--- /dev/null
++++ b/include/uapi/linux/quic.h
+@@ -0,0 +1,235 @@
++/* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
++/* QUIC kernel implementation
++ * (C) Copyright Red Hat Corp. 2023
++ *
++ * This file is part of the QUIC kernel implementation
++ *
++ * Written or modified by:
++ *    Xin Long <lucien.xin@gmail.com>
++ */
++
++#ifndef _UAPI_LINUX_QUIC_H
++#define _UAPI_LINUX_QUIC_H
++
++#include <linux/types.h>
++#ifdef __KERNEL__
++#include <linux/socket.h>
++#else
++#include <sys/socket.h>
++#endif
++
++/* NOTE: Structure descriptions are specified in:
++ * https://datatracker.ietf.org/doc/html/draft-lxin-quic-socket-apis
++ */
++
++/* Send or Receive Options APIs */
++enum quic_cmsg_type {
++	QUIC_STREAM_INFO,
++	QUIC_HANDSHAKE_INFO,
++};
++
++#define QUIC_STREAM_TYPE_SERVER_MASK	0x01
++#define QUIC_STREAM_TYPE_UNI_MASK	0x02
++#define QUIC_STREAM_TYPE_MASK		0x03
++
++enum quic_msg_flags {
++	/* flags for stream_flags */
++	MSG_QUIC_STREAM_NEW		= MSG_SYN,
++	MSG_QUIC_STREAM_FIN		= MSG_FIN,
++	MSG_QUIC_STREAM_UNI		= MSG_CONFIRM,
++	MSG_QUIC_STREAM_DONTWAIT	= MSG_WAITFORONE,
++	MSG_QUIC_STREAM_SNDBLOCK	= MSG_ERRQUEUE,
++
++	/* extented flags for msg_flags */
++	MSG_QUIC_DATAGRAM		= MSG_RST,
++	MSG_QUIC_NOTIFICATION		= MSG_MORE,
++};
++
++enum quic_crypto_level {
++	QUIC_CRYPTO_APP,
++	QUIC_CRYPTO_INITIAL,
++	QUIC_CRYPTO_HANDSHAKE,
++	QUIC_CRYPTO_EARLY,
++	QUIC_CRYPTO_MAX,
++};
++
++struct quic_handshake_info {
++	__u8	crypto_level;
++};
++
++struct quic_stream_info {
++	__s64	stream_id;
++	__u32	stream_flags;
++};
++
++/* Socket Options APIs */
++#define QUIC_SOCKOPT_EVENT				0
++#define QUIC_SOCKOPT_STREAM_OPEN			1
++#define QUIC_SOCKOPT_STREAM_RESET			2
++#define QUIC_SOCKOPT_STREAM_STOP_SENDING		3
++#define QUIC_SOCKOPT_CONNECTION_ID			4
++#define QUIC_SOCKOPT_CONNECTION_CLOSE			5
++#define QUIC_SOCKOPT_CONNECTION_MIGRATION		6
++#define QUIC_SOCKOPT_KEY_UPDATE				7
++#define QUIC_SOCKOPT_TRANSPORT_PARAM			8
++#define QUIC_SOCKOPT_CONFIG				9
++#define QUIC_SOCKOPT_TOKEN				10
++#define QUIC_SOCKOPT_ALPN				11
++#define QUIC_SOCKOPT_SESSION_TICKET			12
++#define QUIC_SOCKOPT_CRYPTO_SECRET			13
++#define QUIC_SOCKOPT_TRANSPORT_PARAM_EXT		14
++
++#define QUIC_VERSION_V1			0x1
++#define QUIC_VERSION_V2			0x6b3343cf
++
++struct quic_transport_param {
++	__u8	remote;
++	__u8	disable_active_migration;
++	__u8	grease_quic_bit;
++	__u8	stateless_reset;
++	__u8	disable_1rtt_encryption;
++	__u8	disable_compatible_version;
++	__u8	active_connection_id_limit;
++	__u8	ack_delay_exponent;
++	__u16	max_datagram_frame_size;
++	__u16	max_udp_payload_size;
++	__u32	max_idle_timeout;
++	__u32	max_ack_delay;
++	__u16	max_streams_bidi;
++	__u16	max_streams_uni;
++	__u64	max_data;
++	__u64	max_stream_data_bidi_local;
++	__u64	max_stream_data_bidi_remote;
++	__u64	max_stream_data_uni;
++	__u64	reserved;
++};
++
++struct quic_config {
++	__u32	version;
++	__u32	plpmtud_probe_interval;
++	__u32	initial_smoothed_rtt;
++	__u32	payload_cipher_type;
++	__u8	congestion_control_algo;
++	__u8	validate_peer_address;
++	__u8	stream_data_nodelay;
++	__u8	receive_session_ticket;
++	__u8	certificate_request;
++	__u8	reserved[3];
++};
++
++struct quic_crypto_secret {
++	__u8	send;  /* send or recv */
++	__u8	level; /* crypto level */
++	__u32	type; /* TLS_CIPHER_* */
++#define QUIC_CRYPTO_SECRET_BUFFER_SIZE 48
++	__u8	secret[QUIC_CRYPTO_SECRET_BUFFER_SIZE];
++};
++
++enum quic_cong_algo {
++	QUIC_CONG_ALG_RENO,
++	QUIC_CONG_ALG_MAX,
++};
++
++struct quic_errinfo {
++	__s64	stream_id;
++	__u32	errcode;
++};
++
++struct quic_connection_id_info {
++	__u8	dest;
++	__u32	active;
++	__u32	prior_to;
++};
++
++struct quic_event_option {
++	__u8	type;
++	__u8	on;
++};
++
++/* Event APIs */
++enum quic_event_type {
++	QUIC_EVENT_NONE,
++	QUIC_EVENT_STREAM_UPDATE,
++	QUIC_EVENT_STREAM_MAX_DATA,
++	QUIC_EVENT_STREAM_MAX_STREAM,
++	QUIC_EVENT_CONNECTION_ID,
++	QUIC_EVENT_CONNECTION_CLOSE,
++	QUIC_EVENT_CONNECTION_MIGRATION,
++	QUIC_EVENT_KEY_UPDATE,
++	QUIC_EVENT_NEW_TOKEN,
++	QUIC_EVENT_NEW_SESSION_TICKET,
++	QUIC_EVENT_MAX,
++};
++
++enum {
++	QUIC_STREAM_SEND_STATE_READY,
++	QUIC_STREAM_SEND_STATE_SEND,
++	QUIC_STREAM_SEND_STATE_SENT,
++	QUIC_STREAM_SEND_STATE_RECVD,
++	QUIC_STREAM_SEND_STATE_RESET_SENT,
++	QUIC_STREAM_SEND_STATE_RESET_RECVD,
++
++	QUIC_STREAM_RECV_STATE_RECV,
++	QUIC_STREAM_RECV_STATE_SIZE_KNOWN,
++	QUIC_STREAM_RECV_STATE_RECVD,
++	QUIC_STREAM_RECV_STATE_READ,
++	QUIC_STREAM_RECV_STATE_RESET_RECVD,
++	QUIC_STREAM_RECV_STATE_RESET_READ,
++};
++
++struct quic_stream_update {
++	__s64	id;
++	__u8	state;
++	__u32	errcode;
++	__u64	finalsz;
++};
++
++struct quic_stream_max_data {
++	__s64	id;
++	__u64	max_data;
++};
++
++struct quic_connection_close {
++	__u32	errcode;
++	__u8	frame;
++	__u8	phrase[];
++};
++
++union quic_event {
++	struct quic_stream_update	update;
++	struct quic_stream_max_data	max_data;
++	struct quic_connection_close	close;
++	struct quic_connection_id_info	info;
++	__u64	max_stream;
++	__u8	local_migration;
++	__u8	key_update_phase;
++};
++
++enum {
++	QUIC_TRANSPORT_ERROR_NONE			= 0x00,
++	QUIC_TRANSPORT_ERROR_INTERNAL			= 0x01,
++	QUIC_TRANSPORT_ERROR_CONNECTION_REFUSED		= 0x02,
++	QUIC_TRANSPORT_ERROR_FLOW_CONTROL		= 0x03,
++	QUIC_TRANSPORT_ERROR_STREAM_LIMIT		= 0x04,
++	QUIC_TRANSPORT_ERROR_STREAM_STATE		= 0x05,
++	QUIC_TRANSPORT_ERROR_FINAL_SIZE			= 0x06,
++	QUIC_TRANSPORT_ERROR_FRAME_ENCODING		= 0x07,
++	QUIC_TRANSPORT_ERROR_TRANSPORT_PARAM		= 0x08,
++	QUIC_TRANSPORT_ERROR_CONNECTION_ID_LIMIT	= 0x09,
++	QUIC_TRANSPORT_ERROR_PROTOCOL_VIOLATION		= 0x0a,
++	QUIC_TRANSPORT_ERROR_INVALID_TOKEN		= 0x0b,
++	QUIC_TRANSPORT_ERROR_APPLICATION		= 0x0c,
++	QUIC_TRANSPORT_ERROR_CRYPTO_BUF_EXCEEDED	= 0x0d,
++	QUIC_TRANSPORT_ERROR_KEY_UPDATE			= 0x0e,
++	QUIC_TRANSPORT_ERROR_AEAD_LIMIT_REACHED		= 0x0f,
++	QUIC_TRANSPORT_ERROR_NO_VIABLE_PATH		= 0x10,
++
++	/* The cryptographic handshake failed. A range of 256 values is reserved
++	 * for carrying error codes specific to the cryptographic handshake that
++	 * is used. Codes for errors occurring when TLS is used for the
++	 * cryptographic handshake are described in Section 4.8 of [QUIC-TLS].
++	 */
++	QUIC_TRANSPORT_ERROR_CRYPTO			= 0x0100,
++};
++
++#endif /* _UAPI_LINUX_QUIC_H */
+diff --git a/net/quic/socket.c b/net/quic/socket.c
+index a0eedf59545a..b86989080184 100644
+--- a/net/quic/socket.c
++++ b/net/quic/socket.c
+@@ -107,10 +107,24 @@ static void quic_close(struct sock *sk, long timeout)
+ 	sk_common_release(sk);
  }
  
-+static int fill_frmr_pool_key(struct sk_buff *msg, struct ib_frmr_key *key)
+-static int quic_do_setsockopt(struct sock *sk, int optname, sockptr_t optval, unsigned int optlen)
++/**
++ * quic_do_setsockopt - set a QUIC socket option
++ * @sk: socket to configure
++ * @optname: option name (QUIC-level)
++ * @optval: user buffer containing the option value
++ * @optlen: size of the option value
++ *
++ * Sets a QUIC socket option on a given socket.
++ *
++ * Return:
++ * - On success, 0 is returned.
++ * - On error, a negative error value is returned.
++ */
++int quic_do_setsockopt(struct sock *sk, int optname, sockptr_t optval, unsigned int optlen)
+ {
+ 	return -EOPNOTSUPP;
+ }
++EXPORT_SYMBOL_GPL(quic_do_setsockopt);
+ 
+ static int quic_setsockopt(struct sock *sk, int level, int optname,
+ 			   sockptr_t optval, unsigned int optlen)
+@@ -121,10 +135,24 @@ static int quic_setsockopt(struct sock *sk, int level, int optname,
+ 	return quic_do_setsockopt(sk, optname, optval, optlen);
+ }
+ 
+-static int quic_do_getsockopt(struct sock *sk, int optname, sockptr_t optval, sockptr_t optlen)
++/**
++ * quic_do_getsockopt - get a QUIC socket option
++ * @sk: socket to query
++ * @optname: option name (QUIC-level)
++ * @optval: user buffer to receive the option value
++ * @optlen: in/out parameter for buffer size; updated with actual length on return
++ *
++ * Gets a QUIC socket option from a given socket.
++ *
++ * Return:
++ * - On success, 0 is returned.
++ * - On error, a negative error value is returned.
++ */
++int quic_do_getsockopt(struct sock *sk, int optname, sockptr_t optval, sockptr_t optlen)
+ {
+ 	return -EOPNOTSUPP;
+ }
++EXPORT_SYMBOL_GPL(quic_do_getsockopt);
+ 
+ static int quic_getsockopt(struct sock *sk, int level, int optname,
+ 			   char __user *optval, int __user *optlen)
+diff --git a/net/quic/socket.h b/net/quic/socket.h
+index 0aa642e3b0ae..7ee190af4454 100644
+--- a/net/quic/socket.h
++++ b/net/quic/socket.h
+@@ -9,6 +9,7 @@
+  */
+ 
+ #include <net/udp_tunnel.h>
++#include <linux/quic.h>
+ 
+ #include "common.h"
+ #include "family.h"
+@@ -29,6 +30,7 @@ struct quic_sock {
+ 	struct inet_sock		inet;
+ 	struct list_head		reqs;
+ 
++	struct quic_config		config;
+ 	struct quic_data		ticket;
+ 	struct quic_data		token;
+ 	struct quic_data		alpn;
+@@ -49,6 +51,11 @@ static inline struct list_head *quic_reqs(const struct sock *sk)
+ 	return &quic_sk(sk)->reqs;
+ }
+ 
++static inline struct quic_config *quic_config(const struct sock *sk)
 +{
-+	struct nlattr *key_attr;
-+
-+	key_attr = nla_nest_start(msg, RDMA_NLDEV_ATTR_FRMR_POOL_KEY);
-+	if (!key_attr)
-+		return -EMSGSIZE;
-+
-+	if (nla_put_u8(msg, RDMA_NLDEV_ATTR_FRMR_POOL_KEY_ATS, key->ats))
-+		goto err;
-+	if (nla_put_u32(msg, RDMA_NLDEV_ATTR_FRMR_POOL_KEY_ACCESS_FLAGS,
-+			key->access_flags))
-+		goto err;
-+	if (nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_FRMR_POOL_KEY_VENDOR_KEY,
-+			      key->vendor_key, RDMA_NLDEV_ATTR_PAD))
-+		goto err;
-+	if (nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_FRMR_POOL_KEY_NUM_DMA_BLOCKS,
-+			      key->num_dma_blocks, RDMA_NLDEV_ATTR_PAD))
-+		goto err;
-+
-+	nla_nest_end(msg, key_attr);
-+	return 0;
-+
-+err:
-+	return -EMSGSIZE;
++	return &quic_sk(sk)->config;
 +}
 +
-+static int fill_frmr_pool_entry(struct sk_buff *msg, struct ib_frmr_pool *pool)
-+{
-+	if (fill_frmr_pool_key(msg, &pool->key))
-+		return -EMSGSIZE;
-+
-+	spin_lock(&pool->lock);
-+	if (nla_put_u32(msg, RDMA_NLDEV_ATTR_FRMR_POOL_QUEUE_HANDLES,
-+			pool->queue.ci + pool->inactive_queue.ci))
-+		goto err_unlock;
-+	if (nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_FRMR_POOL_MAX_IN_USE,
-+			      pool->max_in_use, RDMA_NLDEV_ATTR_PAD))
-+		goto err_unlock;
-+	if (nla_put_u64_64bit(msg, RDMA_NLDEV_ATTR_FRMR_POOL_IN_USE,
-+			      pool->in_use, RDMA_NLDEV_ATTR_PAD))
-+		goto err_unlock;
-+	spin_unlock(&pool->lock);
-+
-+	return 0;
-+
-+err_unlock:
-+	spin_unlock(&pool->lock);
-+	return -EMSGSIZE;
-+}
-+
-+static int nldev_frmr_pools_get_dumpit(struct sk_buff *skb,
-+				       struct netlink_callback *cb)
-+{
-+	struct nlattr *tb[RDMA_NLDEV_ATTR_MAX];
-+	struct ib_frmr_pools *pools;
-+	int err, ret = 0, idx = 0;
-+	struct ib_frmr_pool *pool;
-+	struct nlattr *table_attr;
-+	struct nlattr *entry_attr;
-+	struct ib_device *device;
-+	int start = cb->args[0];
-+	struct rb_node *node;
-+	struct nlmsghdr *nlh;
-+	bool filled = false;
-+
-+	err = __nlmsg_parse(cb->nlh, 0, tb, RDMA_NLDEV_ATTR_MAX - 1,
-+			    nldev_policy, NL_VALIDATE_LIBERAL, NULL);
-+	if (err || !tb[RDMA_NLDEV_ATTR_DEV_INDEX])
-+		return -EINVAL;
-+
-+	device = ib_device_get_by_index(
-+		sock_net(skb->sk), nla_get_u32(tb[RDMA_NLDEV_ATTR_DEV_INDEX]));
-+	if (!device)
-+		return -EINVAL;
-+
-+	pools = device->frmr_pools;
-+	if (!pools) {
-+		ib_device_put(device);
-+		return 0;
-+	}
-+
-+	nlh = nlmsg_put(skb, NETLINK_CB(cb->skb).portid, cb->nlh->nlmsg_seq,
-+			RDMA_NL_GET_TYPE(RDMA_NL_NLDEV,
-+					 RDMA_NLDEV_CMD_FRMR_POOLS_GET),
-+			0, NLM_F_MULTI);
-+
-+	if (!nlh || fill_nldev_handle(skb, device)) {
-+		ret = -EMSGSIZE;
-+		goto err;
-+	}
-+
-+	table_attr = nla_nest_start_noflag(skb, RDMA_NLDEV_ATTR_FRMR_POOLS);
-+	if (!table_attr) {
-+		ret = -EMSGSIZE;
-+		goto err;
-+	}
-+
-+	read_lock(&pools->rb_lock);
-+	for (node = rb_first(&pools->rb_root); node; node = rb_next(node)) {
-+		pool = rb_entry(node, struct ib_frmr_pool, node);
-+		if (pool->key.kernel_vendor_key)
-+			continue;
-+
-+		if (idx < start) {
-+			idx++;
-+			continue;
-+		}
-+
-+		filled = true;
-+
-+		entry_attr = nla_nest_start_noflag(
-+			skb, RDMA_NLDEV_ATTR_FRMR_POOL_ENTRY);
-+		if (!entry_attr) {
-+			ret = -EMSGSIZE;
-+			goto end_msg;
-+		}
-+
-+		if (fill_frmr_pool_entry(skb, pool)) {
-+			nla_nest_cancel(skb, entry_attr);
-+			ret = -EMSGSIZE;
-+			goto end_msg;
-+		}
-+
-+		nla_nest_end(skb, entry_attr);
-+		idx++;
-+	}
-+end_msg:
-+	read_unlock(&pools->rb_lock);
-+
-+	nla_nest_end(skb, table_attr);
-+	nlmsg_end(skb, nlh);
-+	cb->args[0] = idx;
-+
-+	/*
-+	 * No more entries to fill, cancel the message and
-+	 * return 0 to mark end of dumpit.
-+	 */
-+	if (!filled)
-+		goto err;
-+
-+	ib_device_put(device);
-+	return skb->len;
-+
-+err:
-+	nlmsg_cancel(skb, nlh);
-+	ib_device_put(device);
-+	return ret;
-+}
-+
- static const struct rdma_nl_cbs nldev_cb_table[RDMA_NLDEV_NUM_OPS] = {
- 	[RDMA_NLDEV_CMD_GET] = {
- 		.doit = nldev_get_doit,
-@@ -2743,6 +2905,9 @@ static const struct rdma_nl_cbs nldev_cb_table[RDMA_NLDEV_NUM_OPS] = {
- 		.doit = nldev_deldev,
- 		.flags = RDMA_NL_ADMIN_PERM,
- 	},
-+	[RDMA_NLDEV_CMD_FRMR_POOLS_GET] = {
-+		.dump = nldev_frmr_pools_get_dumpit,
-+	},
- };
- 
- static int fill_mon_netdev_rename(struct sk_buff *msg,
-diff --git a/include/uapi/rdma/rdma_netlink.h b/include/uapi/rdma/rdma_netlink.h
-index f41f0228fcd0..8f17ffe0190c 100644
---- a/include/uapi/rdma/rdma_netlink.h
-+++ b/include/uapi/rdma/rdma_netlink.h
-@@ -308,6 +308,8 @@ enum rdma_nldev_command {
- 
- 	RDMA_NLDEV_CMD_MONITOR,
- 
-+	RDMA_NLDEV_CMD_FRMR_POOLS_GET, /* can dump */
-+
- 	RDMA_NLDEV_NUM_OPS
- };
- 
-@@ -582,6 +584,21 @@ enum rdma_nldev_attr {
- 	RDMA_NLDEV_SYS_ATTR_MONITOR_MODE,	/* u8 */
- 
- 	RDMA_NLDEV_ATTR_STAT_OPCOUNTER_ENABLED,	/* u8 */
-+
-+	/*
-+	 * FRMR Pools attributes
-+	 */
-+	RDMA_NLDEV_ATTR_FRMR_POOLS,		/* nested table */
-+	RDMA_NLDEV_ATTR_FRMR_POOL_ENTRY,	/* nested table */
-+	RDMA_NLDEV_ATTR_FRMR_POOL_KEY,		/* nested table */
-+	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_ATS,	/* u8 */
-+	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_ACCESS_FLAGS,	/* u32 */
-+	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_VENDOR_KEY,	/* u64 */
-+	RDMA_NLDEV_ATTR_FRMR_POOL_KEY_NUM_DMA_BLOCKS,	/* u64 */
-+	RDMA_NLDEV_ATTR_FRMR_POOL_QUEUE_HANDLES,	/* u32 */
-+	RDMA_NLDEV_ATTR_FRMR_POOL_MAX_IN_USE,	/* u64 */
-+	RDMA_NLDEV_ATTR_FRMR_POOL_IN_USE,	/* u64 */
-+
- 	/*
- 	 * Always the end
- 	 */
-
+ static inline struct quic_data *quic_token(const struct sock *sk)
+ {
+ 	return &quic_sk(sk)->token;
 -- 
 2.47.1
 
