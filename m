@@ -1,273 +1,118 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78750126BF1
-	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 10:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770027064; cv=pass; b=Ad88kWE2+DZsTN4yDoEcIMil90+SA5/COLtaWCti0uo+1jLEmGgSuJyiio3x56vDwi5mYrJp247TAdbZl0L3ZLq28F68S6LPev3Y895PsrE58IJtm4tVT61pXfTfWbyII6BQXoeevcjmgElTeJxU67aaDKF9RmQB2CcE3f36pEQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770027064; c=relaxed/simple;
-	bh=s8jkXMkjCGV/E5vW0aAw3oB5IaPoxxZes8GJmqiNvdk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eSqdp4VXtf1ShpOesgUX29S76Pj5zkfw5vl+W0jFy7tMuSdcby3s8avVtJRXeOIxr5XU/rRL1VW3UqC4FdqjakIqiFEM7NtKpBfsXuF3qC8r4GdP61fQYfyADugwdBbzKHtxd6eTYw8Pn+T7JAKkDkDGnXYTLjfklX2NQS0fYRg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H0Zp3Owb; arc=pass smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852EE357707
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 10:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770027273; cv=none; b=Xy7tl8kdu4PsPsfMOSgof8rSNcHhYKNcbhg523upmmtc7S24uUcPNQeWld9pli1Wq8lFhkEVVcqwuMa2JrMRP94K3XW/72FTHzW4sFUYi5lwKA6harfc2MPfSlX6hHdIttnrcGbdTBcfoKKtcDW7YT2EwEVgpFcnQpDSk+X16KE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770027273; c=relaxed/simple;
+	bh=8VzmCD6zmthbjJ6e29NsFnoebW8tRXPgQWLhoogWYDk=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dEe4xZKNz2wFkNjAoFpV2GCREqpZOo9ELpWvIbi7gV9mT8PZss2SArLZ0Jl+kJIi8nyGNJ+Q/xcQ4m40dnLQIHeSbP8z9kWJfk7gzHXLknrQWKd4PJ8WQ8fDmOIJW30NFsJziikgEQZIBBIefwMmbdwyZTy+5vOr8jTpU6HWaT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PkyEPkwj; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H0Zp3Owb"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5033a2c4b81so51907301cf.0
-        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 02:11:03 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770027062; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PEsqSwoAioH3C9AhsU1NypqFK7l/+A4Xun6+uofQxstKRiljiIfuNrkfcRW2jf0Xro
-         xP4e12XoRjbZD65MqgawKODhNaBx6wCET02izIrYhJVV2+U6YaEh2hAA2T2OAxWRInWO
-         D00RV7IiXkYlAQ1UxZxNJpGCMqlTYLPj4eTQtIeOCAZPLw54MtHsBVt9ur0Yw8pIGQSq
-         voGcH0W3jTeCCYMs9ADFcpqbHbAJfHMa8xFIzsOwo88sZQjKZZzIu9vav8fc4wHlE2cT
-         HUi/UwVNMCY9oAJWqmujwZxEaav6QwoTnGUTB+xGNwr0GH6hYbzCzYUIFPoXzZwBLFQC
-         CmjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Btp1cSJ3gD5Q5hHrfWq6ySyy2b2lUTGs3ekCWWjad0s=;
-        fh=kVh3VRP0gxQbJ/U4EdgL4R6o/NDaGFziGL68Lf5U2RQ=;
-        b=GPch9n5PfJjfwg6Pk96/A8WMnl4Aq4fkAp7/+lO/Y8cDHmfA8aZhMxUSuZ7Tw5SF34
-         Q66vT1+VtTXOrjsUZX8/o5rpN3mKLjtk4to02ad/fi8Bq06LEUuMqRSuzeDYbMl/ormS
-         EGB1LElsWWAYBcX+qS0JLklCc5me4d/8GSvb4Ho0gOH2FkRFYPUvmmh8O2AQZ7ySknDW
-         h8yzGWSwYDYK6KT+nrOD3Tl7OBJpCDVUOLr1FwTHhYqn7IK2wMNayg9WRhC28iA0YXJ8
-         xfVurPAX5Dc2nfFh8jT7rTSu9jLvIuq8AuSznNc+mBzrIvJxZQh3p3K1Gk6nHeEvOFpI
-         yQGg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PkyEPkwj"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4806dffc64cso31759265e9.1
+        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 02:14:31 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770027062; x=1770631862; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Btp1cSJ3gD5Q5hHrfWq6ySyy2b2lUTGs3ekCWWjad0s=;
-        b=H0Zp3Owb6lmoYYZIw8PRW7oXs0W71kb3i3nHYm86oUGFsAQ45Rf/yLolkSGdTeUzum
-         WcDyjty6xZlNNlSPVPnV+NiUY5Q4r+0p/Oj9IEXLQQ+ZddSemMHPhom/KzgJ9AlT0pVL
-         PaI4kpG7JFrEwHnGt1YcLMYpSH5qo8OFkEVbm5aJbAw/Oo42/59lZ0BkJBhThA3yDSmd
-         IaX3pot7GaWw1EWDWMLJ/Lf2APvVp3KM9ThLH/j0nqRnpTSTzTylawI0cfs2lyCN1rv0
-         jn3bX9ySDoa/Y8hvYpF1u35eOLVKqrG7cCp5XLTGRmlx8t3VaVltkcnW7Sb+2MIVh/IE
-         RM3Q==
+        d=gmail.com; s=20230601; t=1770027270; x=1770632070; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=qrYZR6rjkuzxmU3P4nDHzp2Z/smbaycErCPCyN/9Pdo=;
+        b=PkyEPkwjq8nlF8HnND3XJr8eZb2DGW/dH+4Q/9AI6w4qYoXJH+N4aChpBvFQFl2EMz
+         cgtmu+2oIhrwyIOuj7B9M6rqURKzA2t5TQkGHwIEQzpfV8zFeXMYpTiiBZF7Vc1TkI1x
+         LuzaUEJRQkYADLzeCFyfFyaFg7YvwpCJ/P81b04taF4YNCo9GRGJurGcJkUVpf4wZvzI
+         0HYgyPJPZCWZusyy9X3ZUXz+wjkEeBdH1EAJZLepfLKdDXKQUWrBzbW2KHa3cjQ9HUvq
+         oY/Nh8IqShYySpEuye75Lyq4YMz/aGg4LPT7Tjg116r+SuqT8H9N0mxoegD/+inlTr/T
+         ytzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770027062; x=1770631862;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Btp1cSJ3gD5Q5hHrfWq6ySyy2b2lUTGs3ekCWWjad0s=;
-        b=GOz2RIeRDvUHP/mHz3BrApVf3akvenB95/1P0NjsDrQs2gn9HMTVmWZZPNd129bIOO
-         8QfPZVXOgCGanmkcLCzLD6M3iFZ2t0trMRDSVXtqYlNKEp8hS3BP2UmM65YZxAfheMCF
-         9IiwfX68Ckoo7Znm93ck+nhZnL4M7lem5bbe4QgnTtAZWZ6TS82oT3RqtR0gQve6pQyL
-         B2kEg25pwtcb0kBaAZpKhmDI5E529B8v2jLLCTp8e9ZxoEabVQfpH6qBkwAHABLsFCpj
-         qv/SE1LdvtdFhOpWEAJBXZ7P6uVqlOsRdUCCOczLSdmX0xkcY6fP8WEev3ORl56XtfZ0
-         CS6g==
-X-Forwarded-Encrypted: i=1; AJvYcCXDSDT6yVe+EjkIiuoI1eqo97qIIEGNi6403T2VPegXY9tQIjQdT2UqX1sOg7fXatKt5Fp4vlE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzSyVuTn7nDcv9lkeHW3vBtMWGwO5QgvUHupPPAj/CvbGI86I9U
-	CUkWgy5CRBNSzuMVwaOyH5y7b0I6i3b/mgMaySiyf8NkZp2gJoAKgbekchXU3j6Hv9bdUbB9veO
-	gH96YvGHLLOGwsfBrMOxgEhCmgLMyHIqR0l5Qdks/
-X-Gm-Gg: AZuq6aJarduj7qbT/bHtEUQRUAe64QpDhXpPSIDZXtIgG8a3uESNzIwFPW992MTg6f5
-	fsx1/QPQtZ4uzGmGP6KoZ8dgnSziOAe9wjKFyYMl8Gc8ORhlXQHXHc1Pxpa3VzoukRE0quAHxot
-	5t0fB2wze5AYC61uHFSpnejckcrgz7QhDRUN4ETUXmK611V+RqHuGPhK+pU3Oy6U+4WvX6y6YCF
-	bWvIDLT3GM1uWVd3Jnv7FYfZUUbmyiWdYNNgImlNBh1JBmVrHONUoVqUDEZJARHjKoyj0M=
-X-Received: by 2002:a05:622a:48f:b0:4ee:26ef:7f4c with SMTP id
- d75a77b69052e-505d217c4e4mr137983991cf.17.1770027061826; Mon, 02 Feb 2026
- 02:11:01 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770027270; x=1770632070;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qrYZR6rjkuzxmU3P4nDHzp2Z/smbaycErCPCyN/9Pdo=;
+        b=LHJPk9mWliE3eyOOvZzHlmYKWPnReSrqmWNfNwgtU2dChqFwRiGswAWZH9kVSgckU4
+         0NnK2ktuBzHxaaTHaKe1J+wR2X8tv7iHf4AmWpbiL2k+JiMsDVIjwMtjFGIHVd1D+EXj
+         S1SUuPpt8Pv/GeR+Ere6ZrFoWQqlrzYVzntVqUugwyB+Hn+QMVRHrvEmZm38t1ITI4un
+         sQOCnrYO2nyKev2wGGnsih1WLBMdc8W9o7GX0qiQHaIRH9RfF2KTAqCsnFcqAc8RQv/2
+         839z9myLDqhZ+J0FzBvKOnRrzs5WyS4bjPgAEIyw2ZQDRWTrLZd5/n8sdsfrBRvPMj2H
+         pYqw==
+X-Gm-Message-State: AOJu0Yzo5DiM+CDvNrBxe7xDJfL0xtlH+iYPZJbalEnidxNwaHZWodz9
+	wzVEZjBos6LUgxesGZgPLDOH3L8GcYZMUtQY2NrCzmPdGokp55mS+0pc
+X-Gm-Gg: AZuq6aLAI31UbfBzZDI5+/MT3KkJenZT+2+XLTPa4X4GgqUzS+ffFkG+SoCDY1vtc0z
+	LADdG2HG2CmHpYXsaQCl+rBvegKIl8oYyn/AlVL9N6F5st6RI9GOpxLa+tiFLW9KGixi6W2wrX5
+	oMB4lyLouNar5//+BtVPbU9Z/BpO3WBZpzg3+e9O9tRwnglNG8Wz50TDYbL2uuIU+zJpiUUqND0
+	jBVQGNQbSV9pY/PFtd3umO9OG1q/ONdLZ0QvYCFodDK0WjObSMedWW0/MhUrayRo0BTKJcxbKFU
+	C9O8+jBBwXLKhdGDcXKg8nh+ZdO8CBtG4Z2J7NaCdfYar6++FhSI3S9qSr9Z6Zk50s/5izikzSX
+	6sIc+IB7mnPxv2ZZzUowM2BWZVhZm0qf6W/99AtGCna8R9cNAOp5c4ow9u+IeyjmPz7k0P27lz7
+	o62Eg1vV6jHnBTCERrI3U=
+X-Received: by 2002:a05:600c:6298:b0:480:5951:fc1e with SMTP id 5b1f17b1804b1-482db45fbf4mr141852155e9.11.1770027269821;
+        Mon, 02 Feb 2026 02:14:29 -0800 (PST)
+Received: from [192.168.1.187] ([148.63.225.166])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482da8eb486sm109926285e9.2.2026.02.02.02.14.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 02:14:29 -0800 (PST)
+Message-ID: <d1ce010411a0acc56393dde86cdec38cc4866e09.camel@gmail.com>
+Subject: Re: [PATCH net-next] net: ethernet: adi: adin1110: Check return
+ value of devm_gpiod_get_optional() in adin1110_check_spi()
+From: Nuno =?ISO-8859-1?Q?S=E1?= <noname.nuno@gmail.com>
+To: Chen Ni <nichen@iscas.ac.cn>, andrew+netdev@lunn.ch,
+ davem@davemloft.net, 	edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, kuniyu@google.com, 	nicolas.dichtel@6wind.com,
+ alexandru.tachici@analog.com
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 02 Feb 2026 10:15:11 +0000
+In-Reply-To: <20260202040228.4129097-1-nichen@iscas.ac.cn>
+References: <20260202040228.4129097-1-nichen@iscas.ac.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.2 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260131212934.2547995-1-edumazet@google.com> <j3fofrzb4c3xcckk55y7rdpc7x5m23mphkksnp7vuijimzqpml@3nzu5xyfuyer>
- <CANn89iJh67=bSTS_ziVuQUS-ht0yqeW_Q8eaFCV=8M7zuETAsw@mail.gmail.com>
- <c63047b5-3059-4176-8d9d-5465d557e605@huawei.com> <CANn89iK95qb_=KWrcsvqEB9Bn0PXi3JkY5h09NiWuVWARABOww@mail.gmail.com>
- <CANn89iJRmEPJiz5-L_yJorU+xH5kBwraFy2_-=TwgkHzzfjKEg@mail.gmail.com>
-In-Reply-To: <CANn89iJRmEPJiz5-L_yJorU+xH5kBwraFy2_-=TwgkHzzfjKEg@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 2 Feb 2026 11:10:50 +0100
-X-Gm-Features: AZwV_QgbqiYSnOe_cp77sJ-3hAskXlj85vMYZZA5bFuBmkAX_OjtT-3sDaoIcHA
-Message-ID: <CANn89iJd_jCkYsoey5Zf0zc8ASwt4+sg6bOjgyesQefWkBVE5w@mail.gmail.com>
-Subject: Re: [PATCH net] net: add RCU protection to (struct packet_type)->dev
-To: "dongchenchen (A)" <dongchenchen2@huawei.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	fengwei_yin@linux.alibaba.com, zhangchangzhong@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Feb 2, 2026 at 10:14=E2=80=AFAM Eric Dumazet <edumazet@google.com> =
-wrote:
->
-> On Mon, Feb 2, 2026 at 9:47=E2=80=AFAM Eric Dumazet <edumazet@google.com>=
- wrote:
-> >
-> > On Mon, Feb 2, 2026 at 9:21=E2=80=AFAM dongchenchen (A)
-> > <dongchenchen2@huawei.com> wrote:
-> > >
-> > >
-> > > }
-> > >
-> > > [2] add delay to pype_seq_next
-> > > diff --git a/net/core/net-procfs.c b/net/core/net-procfs.c
-> > > index 160dd729178f..73f5a20ef57c 100644
-> > > --- a/net/core/net-procfs.c
-> > > +++ b/net/core/net-procfs.c
-> > > @@ -230,11 +230,14 @@ static void *ptype_seq_next(struct seq_file *se=
-q, void *v, loff_t *pos)
-> > >
-> > >          pt =3D v;
-> > >          nxt =3D pt->list.next;
-> > > +       if (pt->dev)
-> > > +               mdelay(5000);
-> >
-> > Waiting 5 seconds while holding RCU is going to fire the soft lockup
-> > detection after ~two calls to ptype_seq_next()
-> >
-> > What is the actual trace you got, and what happens if you reduce to
-> > mdelay(1000) ?
->
-> OK, I took a look, and ptype_get_idx() needs to return information
-> about what list the returned pt is in.
->
-> I will send a V2 ,thanks.
+On Mon, 2026-02-02 at 12:02 +0800, Chen Ni wrote:
+> The devm_gpiod_get_optional() function may return an ERR_PTR in case of
+> genuine GPIO acquisition errors, not just NULL which indicates the
+> legitimate absence of an optional GPIO.
+>=20
+> Add an IS_ERR() check after the call in adin1110_check_spi(). On error,
+> return the error code to ensure proper failure handling rather than
+> proceeding with invalid pointers.
+>=20
+> Fixes: 36934cac7aaf ("net: ethernet: adi: adin1110: add reset GPIO")
+> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+> ---
 
-Here is what I will squash, the diff against V1 is :
+For the change itself:
 
-diff --git a/net/core/net-procfs.c b/net/core/net-procfs.c
-index 160dd729178fd37a6340148d9e35f95bd92aecdb..ad63556c9e0abd15cbfac7777c3=
-1894d2eef037b
-100644
---- a/net/core/net-procfs.c
-+++ b/net/core/net-procfs.c
-@@ -170,8 +170,15 @@ static const struct seq_operations softnet_seq_ops =3D=
- {
-        .show  =3D softnet_seq_show,
- };
+Reviewed-by: Nuno S=C3=A1 <nuno.sa@analog.com>
 
-+
-+struct ptype_iter_state {
-+       struct seq_net_private  p;
-+       struct net_device       *dev;
-+};
-+
- static void *ptype_get_idx(struct seq_file *seq, loff_t pos)
- {
-+       struct ptype_iter_state *iter =3D seq->private;
-        struct list_head *ptype_list =3D NULL;
-        struct packet_type *pt =3D NULL;
-        struct net_device *dev;
-@@ -181,12 +188,16 @@ static void *ptype_get_idx(struct seq_file *seq,
-loff_t pos)
-        for_each_netdev_rcu(seq_file_net(seq), dev) {
-                ptype_list =3D &dev->ptype_all;
-                list_for_each_entry_rcu(pt, ptype_list, list) {
--                       if (i =3D=3D pos)
-+                       if (i =3D=3D pos) {
-+                               iter->dev =3D dev;
-                                return pt;
-+                       }
-                        ++i;
-                }
-        }
-
-+       iter->dev =3D NULL;
-+
-        list_for_each_entry_rcu(pt, &seq_file_net(seq)->ptype_all, list) {
-                if (i =3D=3D pos)
-                        return pt;
-@@ -218,6 +229,7 @@ static void *ptype_seq_start(struct seq_file *seq,
-loff_t *pos)
-
- static void *ptype_seq_next(struct seq_file *seq, void *v, loff_t *pos)
- {
-+       struct ptype_iter_state *iter =3D seq->private;
-        struct net *net =3D seq_file_net(seq);
-        struct net_device *dev;
-        struct packet_type *pt;
-@@ -229,19 +241,21 @@ static void *ptype_seq_next(struct seq_file
-*seq, void *v, loff_t *pos)
-                return ptype_get_idx(seq, 0);
-
-        pt =3D v;
--       nxt =3D pt->list.next;
--       dev =3D rcu_dereference(pt->dev);
-+       nxt =3D READ_ONCE(pt->list.next);
-+       dev =3D iter->dev;
-        if (dev) {
-                if (nxt !=3D &dev->ptype_all)
-                        goto found;
-
-                for_each_netdev_continue_rcu(seq_file_net(seq), dev) {
--                       if (!list_empty(&dev->ptype_all)) {
--                               nxt =3D dev->ptype_all.next;
-+                       nxt =3D READ_ONCE(dev->ptype_all.next);
-+                       if (nxt !=3D &dev->ptype_all) {
-+                               iter->dev =3D NULL;
-                                goto found;
-                        }
-                }
--               nxt =3D net->ptype_all.next;
-+               iter->dev =3D NULL;
-+               nxt =3D READ_ONCE(net->ptype_all.next);
-                goto net_ptype_all;
-        }
-
-@@ -252,20 +266,20 @@ static void *ptype_seq_next(struct seq_file
-*seq, void *v, loff_t *pos)
-
-                if (nxt =3D=3D &net->ptype_all) {
-                        /* continue with ->ptype_specific if it's not empty=
- */
--                       nxt =3D net->ptype_specific.next;
-+                       nxt =3D READ_ONCE(net->ptype_specific.next);
-                        if (nxt !=3D &net->ptype_specific)
-                                goto found;
-                }
-
-                hash =3D 0;
--               nxt =3D ptype_base[0].next;
-+               nxt =3D READ_ONCE(ptype_base[0].next);
-        } else
-                hash =3D ntohs(pt->type) & PTYPE_HASH_MASK;
-
-        while (nxt =3D=3D &ptype_base[hash]) {
-                if (++hash >=3D PTYPE_HASH_SIZE)
-                        return NULL;
--               nxt =3D ptype_base[hash].next;
-+               nxt =3D READ_ONCE(ptype_base[hash].next);
-        }
- found:
-        return list_entry(nxt, struct packet_type, list);
-@@ -279,6 +293,7 @@ static void ptype_seq_stop(struct seq_file *seq, void *=
-v)
-
- static int ptype_seq_show(struct seq_file *seq, void *v)
- {
-+       struct ptype_iter_state *iter =3D seq->private;
-        struct packet_type *pt =3D v;
-        struct net_device *dev;
-
-@@ -286,7 +301,7 @@ static int ptype_seq_show(struct seq_file *seq, void *v=
-)
-                seq_puts(seq, "Type Device      Function\n");
-                return 0;
-        }
--       dev =3D rcu_dereference(pt->dev);
-+       dev =3D iter->dev;
-        if ((!pt->af_packet_net || net_eq(pt->af_packet_net,
-seq_file_net(seq))) &&
-                 (!dev || net_eq(dev_net(dev), seq_file_net(seq)))) {
-                if (pt->type =3D=3D htons(ETH_P_ALL))
-@@ -319,7 +334,7 @@ static int __net_init dev_proc_net_init(struct net *net=
-)
-                         &softnet_seq_ops))
-                goto out_dev;
-        if (!proc_create_net("ptype", 0444, net->proc_net, &ptype_seq_ops,
--                       sizeof(struct seq_net_private)))
-+                       sizeof(struct ptype_iter_state)))
-                goto out_softnet;
-
-        if (wext_proc_init(net))
+> =C2=A0drivers/net/ethernet/adi/adin1110.c | 3 +++
+> =C2=A01 file changed, 3 insertions(+)
+>=20
+> diff --git a/drivers/net/ethernet/adi/adin1110.c b/drivers/net/ethernet/a=
+di/adin1110.c
+> index 30f9d271e595..71a2397edf2b 100644
+> --- a/drivers/net/ethernet/adi/adin1110.c
+> +++ b/drivers/net/ethernet/adi/adin1110.c
+> @@ -1089,6 +1089,9 @@ static int adin1110_check_spi(struct adin1110_priv =
+*priv)
+> =C2=A0
+> =C2=A0	reset_gpio =3D devm_gpiod_get_optional(&priv->spidev->dev, "reset"=
+,
+> =C2=A0					=C2=A0=C2=A0=C2=A0=C2=A0 GPIOD_OUT_LOW);
+> +	if (IS_ERR(reset_gpio))
+> +		return dev_err_probe(&priv->spidev->dev, PTR_ERR(reset_gpio),
+> +				=C2=A0=C2=A0=C2=A0=C2=A0 "failed to get reset gpio\n");
+> =C2=A0	if (reset_gpio) {
+> =C2=A0		/* MISO pin is used for internal configuration, can't have
+> =C2=A0		 * anyone else disturbing the SDO line.
