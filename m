@@ -1,175 +1,163 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96BA3367F3A;
-	Mon,  2 Feb 2026 13:29:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5E819E819
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 13:31:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770039000; cv=none; b=DrLoNia1q0P/s7Lt3gRAi2pEhfFvzx/XZl47TU+FUTkSnYF363TLbyfZGRJn4RKFGrzRF5UmCc0T7moVljHIxySCR1a854cK1XokhdYNroITLcLEdfMG41zluw7YT146zE/D6OxZlbA6HXDma3Hj0kqYxOwnPLrnJYNiVIWlMvM=
+	t=1770039065; cv=none; b=oRC/I68xrrG5AYO494Y29UtJQdBy74CiMHInNKE2R6nmB9uWKlOquQ6zpBPaOE2+YYk2RumWGKmnOf1AKNNVLBxzyEX3D4UStdSARlY47GQaYR2pe+BEWKoJieFwpGlBrUCZfLUPE6U39Tx454WG5ky9fJCqZEXhUQAE11AGti4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770039000; c=relaxed/simple;
-	bh=Po4XURyEzCW8smpz/DmF0VKvnXajycyLgM7X+skVhFU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LZROhbA065oE+F6QMuCTe0yIYZqhrJ/nUG+7ItuS9QGdbEycx6smsZqUgjlfmxb62R+sBzzE+8IaaCnZqoC3FQJCpFbgzwuisGAXj4D9iL/QqY0Wn+BUegB+MP4hA8hFMnGd4vIbGgzi5LWvHzIvRerTib3KHwjaVC4ITs3WF2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U/0KRZek; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1770039065; c=relaxed/simple;
+	bh=Ilzh9ciqWATBs9AlKHDb+gm1BEnXioRQZHASm6hE6xE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jZL4cnpB6U0Uwypx3mY1NcCVS2ryOz3cRxOf+a0390kCJTYp1t+NxOPIaVLa6aE8YHqFWpaNmLjZDj5h/8jxOgaYkXp0WhX/53CSPnDPSZ8NzFkzClYxwpbSaGPMfVpicTTDPAcDQQq9HJGn0503Gw297AsLRpyxf1NCHo9t+38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=i1USnL06; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U/0KRZek"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770038998; x=1801574998;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Po4XURyEzCW8smpz/DmF0VKvnXajycyLgM7X+skVhFU=;
-  b=U/0KRZekQNjIenTlHjmSICTXHvakT6d2/JcvnXkVA3wtdEP2z1GYL7Lc
-   UCFjJ1DdgtwgRKTalSuSSL65rLYUrtQqnPl9JVfuAGurGjwuv1jLOKqQg
-   aOPWH0CvERrlTTwM5WAa0rSA7O8uXX4u8ymDEe7ClUn+yZYmaeg13r6aq
-   9kx2bJ9/JrI2GTegNj1Ss0VyWHy6ckEqtPNbqCpwKzpP4BQFNV78bZTtP
-   +UfELfjt401S8AntAsr0WzBlMw7A9/lzBmnp0IgNHpOwkmDnFTz15gsro
-   qlC71dkjrvF60twcjWCq9fXhJx5qyNLMz3PUVf2Sq99qh6DgsnZe4U9RD
-   w==;
-X-CSE-ConnectionGUID: Xykm/tHeTX6aojYrTLWWHA==
-X-CSE-MsgGUID: +PuUh3KnRRKWjY/WFmWZKg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11689"; a="58775899"
-X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; 
-   d="scan'208";a="58775899"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Feb 2026 05:29:58 -0800
-X-CSE-ConnectionGUID: ZYPY+pYURVuRlB3Zf8gDvQ==
-X-CSE-MsgGUID: 90mJWH+vQrC4SbdR7ZitkQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,268,1763452800"; 
-   d="scan'208";a="232445658"
-Received: from vverma7-mobl3.amr.corp.intel.com (HELO kuha) ([10.124.221.53])
-  by fmviesa002.fm.intel.com with SMTP; 02 Feb 2026 05:29:55 -0800
-Received: by kuha (sSMTP sendmail emulation); Mon, 02 Feb 2026 15:29:27 +0200
-Date: Mon, 2 Feb 2026 15:29:27 +0200
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: Jeremy Kerr <jk@codeconstruct.com.au>
-Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Matt Johnston <matt@codeconstruct.com.au>,
-	linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] i2c: SMBus ARP support
-Message-ID: <aYCmt6Jnn9uieXwy@kuha>
-References: <20260121092328.2308705-1-heikki.krogerus@linux.intel.com>
- <30ad166e2b3d7f10080356ec232e604f3ac9ea2e.camel@codeconstruct.com.au>
- <aXdyll4KVOF6SWni@kuha>
- <6ca4bc87620bb0c2e5bfb264ec88189f32b53757.camel@codeconstruct.com.au>
- <aXjDENOsmWe5_VqS@kuha>
- <189d4a03f32ace3fd995596e8b5415ced6ae9c3a.camel@codeconstruct.com.au>
- <aXokxtlFTeZK8lP8@kuha>
- <547a1a5fd7238897b35b26e83ac27db452e6a5f7.camel@codeconstruct.com.au>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="i1USnL06"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770039063;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=eBN4sgUDtqNg4GpSirkeIULyv0JMY2X6vXXcs8fqAFc=;
+	b=i1USnL061XtcNb1yezRAl94iNj6wg0AX2AE+3K5BF01NbKcDTjqiEsvkLLD/VZrZsqAtWf
+	1MfwUhf4OdAWYoHy2+PCmd8W7HyL/f8S1GEHucQODKdhYz5JhNJDpV6RrlXfHv8dw13Tj2
+	WufOmFTV2NN85lnFh0VynogECzMccns=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-189-BBHCiaKeNxGZckjG__3xLw-1; Mon,
+ 02 Feb 2026 08:31:00 -0500
+X-MC-Unique: BBHCiaKeNxGZckjG__3xLw-1
+X-Mimecast-MFC-AGG-ID: BBHCiaKeNxGZckjG__3xLw_1770039058
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1E265195608A;
+	Mon,  2 Feb 2026 13:30:58 +0000 (UTC)
+Received: from [10.45.225.123] (unknown [10.45.225.123])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5469518008FF;
+	Mon,  2 Feb 2026 13:30:54 +0000 (UTC)
+Message-ID: <1e28083b-691a-480b-bcf6-cd57222e08a1@redhat.com>
+Date: Mon, 2 Feb 2026 14:30:52 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <547a1a5fd7238897b35b26e83ac27db452e6a5f7.camel@codeconstruct.com.au>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] iavf: fix deadlock in reset handling
+To: Petr Oros <poros@redhat.com>, netdev@vger.kernel.org
+Cc: mschmidt@redhat.com, Tony Nguyen <anthony.l.nguyen@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, intel-wired-lan@lists.osuosl.org,
+ linux-kernel@vger.kernel.org
+References: <20260202084820.260033-1-poros@redhat.com>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <20260202084820.260033-1-poros@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Hi,
+On 2/2/26 9:48 AM, Petr Oros wrote:
+> Three driver callbacks schedule a reset and wait for its completion:
+> ndo_change_mtu(), ethtool set_ringparam(), and ethtool set_channels().
+> 
+> Waiting for reset in ndo_change_mtu() and set_ringparam() was added by
+> commit c2ed2403f12c74 ("iavf: Wait for reset in callbacks which trigger
+> it") to fix a race condition where adding an interface to bonding
+> immediately after MTU or ring parameter change failed because the
+> interface was still in __RESETTING state. The same commit also added
+> waiting in iavf_set_priv_flags(), which was later removed by commit
+> 53844673d55529 ("iavf: kill "legacy-rx" for good").
+> 
+> Waiting in set_channels() was introduced earlier by commit 4e5e6b5d9d13
+> ("iavf: Fix return of set the new channel count") to ensure the PF has
+> enough time to complete the VF reset when changing channel count, and to
+> return correct error codes to userspace.
+> 
+> Commit ef490bbb226702 ("iavf: Add net_shaper_ops support") added
+> net_shaper_ops to iavf, which required reset_task to use _locked NAPI
+> variants (napi_enable_locked, napi_disable_locked) that need the netdev
+> instance lock.
+> 
+> Later, commit 7e4d784f5810 ("net: hold netdev instance lock during
+> rtnetlink operations") and commit 2bcf4772e45adb ("net: ethtool: try to
+> protect all callback with netdev instance lock") started holding the
+> netdev instance lock during ndo and ethtool callbacks for drivers with
+> net_shaper_ops.
+> 
+> The combination of waiting for reset and the new locking requirements
+> creates a deadlock: the callback holds the lock and waits for reset_task,
+> but reset_task is blocked waiting for the same lock:
+> 
+>    Thread 1 (callback)               Thread 2 (reset_task)
+>    -------------------               ---------------------
+>    netdev_lock()
+>    ndo_change_mtu() or ethtool op
+>      iavf_schedule_reset()
+>      iavf_wait_for_reset()           iavf_reset_task()
+>        waiting...                      netdev_lock() <- DEADLOCK
+> 
+> Reproducer:
+> 
+>    # echo 16 > /sys/class/net/$PF/device/sriov_numvfs
+>    # ip link set $VF up
+>    # ip link set $VF mtu 5000
+>    RTNETLINK answers: Device or resource busy
+> 
+>    # dmesg | tail -1
+>    iavf: MTU change interrupted waiting for reset
+> 
+> Fix this by temporarily releasing the lock while waiting for reset to
+> complete. This follows the pattern used elsewhere in the kernel (e.g.,
+> do_set_master() releases rtnl_lock before calling ndo_add_slave()).
+> 
+> Fixes: 7e4d784f5810 ("net: hold netdev instance lock during rtnetlink operations")
+> Signed-off-by: Petr Oros <poros@redhat.com>
+> ---
+>   drivers/net/ethernet/intel/iavf/iavf_main.c | 15 ++++++++++++---
+>   1 file changed, 12 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+> index 8aa6e92c16431f..d7738fb8fa60bc 100644
+> --- a/drivers/net/ethernet/intel/iavf/iavf_main.c
+> +++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+> @@ -189,13 +189,22 @@ static bool iavf_is_reset_in_progress(struct iavf_adapter *adapter)
+>    * iavf_wait_for_reset - Wait for reset to finish.
+>    * @adapter: board private structure
+>    *
+> + * The iavf driver selects NET_SHAPER, so callbacks that trigger reset are
+> + * always called with netdev instance lock held, while reset_task also needs
+> + * this lock. Release the lock while waiting to avoid deadlock.
+> + *
+>    * Returns 0 if reset finished successfully, negative on timeout or interrupt.
+>    */
+>   int iavf_wait_for_reset(struct iavf_adapter *adapter)
+>   {
+> -	int ret = wait_event_interruptible_timeout(adapter->reset_waitqueue,
+> -					!iavf_is_reset_in_progress(adapter),
+> -					msecs_to_jiffies(5000));
+> +	struct net_device *netdev = adapter->netdev;
+> +	int ret;
+> +
+> +	netdev_unlock(netdev);
+> +	ret = wait_event_interruptible_timeout(adapter->reset_waitqueue,
+> +					       !iavf_is_reset_in_progress(adapter),
+> +					       msecs_to_jiffies(5000));
+> +	netdev_lock(netdev);
+>   
+>   	/* If ret < 0 then it means wait was interrupted.
+>   	 * If ret == 0 then it means we got a timeout while waiting
 
-> > There seems to be another a bit more severe issue with ARP and
-> > i2c-dev. Right now it seems that anything that can access the i2c
-> > character devices can silently (without the kernel having any idea
-> > what's going on) assign a conflicting address to a dynamically
-> > addressed ARP-device. Perhaps more importantly, the user space can
-> > remove access to an ARP-device by silently assigning a new address to
-> > it or simply by resetting its state with Prepare to ARP.
-> > 
-> > That can happen accidentally, but it can also be done intentionally.
-> > 
-> > Unless I've missed something, this really is a major threat that we
-> > have to solve. Right now the only idea that I have is that we simply
-> > prevent the i2c-dev from using the SMBus Default Address.
-> 
-> I don't necessarily see this as an issue; access to the chardev somewhat
-> implies full access to the i2c bus, and so arbitrary interactions with
-> devices to alter device states. Including the i2c address as part of the
-> affected state doesn't seem like a huge difference in access.
-> 
-> There may be a specific case that is interesting though:
-> 
->  - an ARP-able device is in use by a kernel driver, which excludes
->    access through the chardev
-> 
->  - interactions with that device are possible using ARP commands to
->    address 0x61 over the chardev
-> 
->  - so, the device may be re-addressed, now allowing accesses through
->    the chardev
-> 
-> However, I am not sure there are existing cases where access to the
-> chardev is a distinct privilege domain to not just unbind the driver
-> anyway.
+Reviewed-by: Ivan Vecera <ivecera@redhat.com>
 
-Thanks for the answer. I don't think this is necessarily a major
-problem either, but since it was raiced (internally) I had to make a
-note. Let's not worry about this for now.
-
-> I would have a few requests:
-> 
->  - that ARP is enabled explicitly. I'd be interested in having a DT
->    property on the controller node that allows us to enable ARP on a
->    per-bus basis.
-> 
->    Otherwise, I'm pretty sure we'll break someone's existing platform
->    by assuming we can start interactions on the SMBus default address.
-> 
->    Is there some equivalent facility for ACPI based config?
-
-With ACPI systems, we just don't know what the platform is going to be
-used for in the end. This is a bit tricky with ACPI.
-
-But I'll make the registration of the feature conditional somehow in
-any case.
-
-> > > Is that possible at present? how are you planning to represent ARPed
-> > > devices in the DT - or more importantly, correlate DT (or other fwnode)
-> > > nodes to discovered devices?
-> > 
-> > I don't know about DT, but with ACPI the devices are expected to
-> > either be fixed address devices or just use target address that
-> > matches to the address in the I2C Serial Bus Connection Resource
-> > Descriptor. The mapping is not yet done, but the idea is to just
-> > assign the detected UDID to the i2c-client that was already created
-> > from the fwnode.
-> 
-> OK, but how do you map the UDID to the resource descriptor? I don't know
-> much about ACPI, but the descriptor seems to be only keyed on a target
-> address, which is now dynamic.
-> 
-> (same with DT, devices are keyed by target address)
-
-I don't know how a dynamically addressed device, that does not return
-any kind of target address with the UDID, could be mapped to the
-fwnode.
-
-> > > Assuming we go with a kernel approach: For the MCTP case, for full ARP
-> > > support of MCTP endpoints, we would still need to consume a hotplug
-> > > event that indicates that the device is available at its new address
-> > > - there is no kernel driver bound for the remote MCTP endpoints. This
-> > > event would be consumed by the (existing) MCTP infrastructure in order
-> > > to start MCTP enumeration. Is this something you have looked at
-> > > already? If so, if you can send an example of an actual event, I will
-> > > look at the mctpd part of this.
-> > 
-> > We will have the address attribute file that the user space can use.
-> > If the address changes uevent will be send it.
-> 
-> Sounds good, but for MCTP there is no struct device bound to the remote
-> i2c device/address. Are you proposing we change that?
-
-I'm sorry, I'm probable missing something here. If the address gets
-changed, then you have to inform the remote endpoint about the new
-address somehow in any case, right? So how did you do that with the
-user space approach?
-
-Br,
-
--- 
-heikki
