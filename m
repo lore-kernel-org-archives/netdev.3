@@ -1,233 +1,120 @@
-Received: from n169-113.mail.139.com (n169-113.mail.139.com [120.232.169.113])
+Received: from TWMBX01.aspeed.com (mail.aspeedtech.com [211.20.114.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69FB2AD24;
-	Mon,  2 Feb 2026 06:47:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D352BDC1C;
+	Mon,  2 Feb 2026 06:58:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.20.114.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770014858; cv=none; b=DTao07s1gaEcUqDq5JC7Jk3nvoJGMW/75/9yeO7TozRMk89u5TIoxItsUu8UjgvuxRoTHmDY1gJNq9PYPc8vH4VQuFHD9Z7LaR2yIy8alsvtxwWrl8swGoJsEmCqVcvQL9PpQD6Pi5zZcKJOEyu7d/m1k9L85+G4tPWl/OCuFQU=
+	t=1770015494; cv=none; b=OfXnLHiftg/fzMycObC/4eXDjQyXl+1+z2XxshrEL0bw/C6CiW7t9nchFj2cleO5oe3lqzG4HDEBx3FdziQribMj7whWWt1BdHbJwjXyQ69fssFIsj8G/cAo1Iw2ih2J3r2yQSVl0y3eRmw8sSaHcXt8kpEcj/A4GlrjyPwWwZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770014858; c=relaxed/simple;
-	bh=79QRdfY8Kh+DAQbA6nusrCU+fQQBIGh+BTOLrtWJ15M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=smU4fpgLhqZBBXKxSvRUamWXasudLxjlMH+qRdnCkL6v/YoiI8OPgJsWtjz/Sgn6OSDc2+MN4q4tRnDDhe5aw3AG1GMT98sL9JxOwkITxSm46a+cHtv00G20qe49TcEZWFZm2LalQjUYhV32184DuvHvYyEiBNQ3op63g9vagQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=Ea7hJZIc; arc=none smtp.client-ip=120.232.169.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="Ea7hJZIc"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=Ea7hJZIcRwhgFQQhJKhefcXvmBkcNsRnweH1xGaUt9jFHnpLK3veN5QXseIugetZkpT8l+ifj+m4q
-	 ytaKl49Zi5FE56UTl3lp0axemitE/8mPsG+JenpR1ifs5RaFZm3eK4wBNMDH8h8x1mG6L3ozJyInBu
-	 8jHZMQ/qNtSLeVnc=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from NTT-kernel-dev (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-36-12050 (RichMail) with SMTP id 2f1269804dba213-0223f;
-	Mon, 02 Feb 2026 15:09:54 +0800 (CST)
-X-RM-TRANSID:2f1269804dba213-0223f
-From: Li hongliang <1468888505@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	michael.christie@oracle.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	mst@redhat.com,
-	jasowang@redhat.com,
-	pbonzini@redhat.com,
-	stefanha@redhat.com,
-	mlombard@redhat.com,
-	asias@redhat.com,
-	nab@linux-iscsi.org,
-	virtualization@lists.linux-foundation.org,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org,
-	wh1sper@zju.edu.cn,
-	sgarzare@redhat.com
-Subject: [PATCH 6.1.y] vhost-scsi: Fix handling of multiple calls to vhost_scsi_set_endpoint
-Date: Mon,  2 Feb 2026 14:47:19 +0800
-Message-Id: <20260202064719.642351-1-1468888505@139.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1770015494; c=relaxed/simple;
+	bh=ceYR9uOBjSpJRI2oiBkcEl1sbI98TqqWni7uo64dK5I=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=dRRXWMJARy3DDmSDZ+atb7HrNexU37QLQzeWTntRXd0vYwAmummV1+J8IZtJzgipaMndFZXS4zO3+uSr3gjNKb+LvsN9VZIdUUaA8/VI1FtpHRXKplqUnZsnIXOYdfX594Slk6ZB/pR8CLIXKsTK2K+zRoW3ip+vOiEULHMLn/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; arc=none smtp.client-ip=211.20.114.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
+Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 2 Feb
+ 2026 14:57:00 +0800
+Received: from [127.0.1.1] (192.168.10.13) by TWMBX01.aspeed.com
+ (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
+ Transport; Mon, 2 Feb 2026 14:57:00 +0800
+From: Jacky Chou <jacky_chou@aspeedtech.com>
+Date: Mon, 2 Feb 2026 14:56:59 +0800
+Subject: [PATCH net-next v3 05/15] net: ftgmac100: Use
+ devm_request_memory_region/devm_ioremap
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20260202-ftgmac-cleanup-v3-5-6a6a8d45280a@aspeedtech.com>
+References: <20260202-ftgmac-cleanup-v3-0-6a6a8d45280a@aspeedtech.com>
+In-Reply-To: <20260202-ftgmac-cleanup-v3-0-6a6a8d45280a@aspeedtech.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Andrew Lunn
+	<andrew@lunn.ch>, Jacky Chou <jacky_chou@aspeedtech.com>, Simon Horman
+	<horms@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770015419; l=1997;
+ i=jacky_chou@aspeedtech.com; s=20251031; h=from:subject:message-id;
+ bh=PabSzzWHuOc4GjJAVT/Ar4WEHvlB1Z2Il9a4L8Pq5xY=;
+ b=UealA8MQUvPt394swGWa6cSd3LUKbrLyOXgyMKqfUdg266dFocu3tHSAG/trMwDoIR77Sr7hZ
+ Y7BcBVgS66BBC8bOYyBWca/bnSSASuLmOCd+Exq1JfJmUNyDDGWo/xs
+X-Developer-Key: i=jacky_chou@aspeedtech.com; a=ed25519;
+ pk=8XBx7KFM1drEsfCXTH9QC2lbMlGU4XwJTA6Jt9Mabdo=
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Andrew Lunn <andrew@lunn.ch>
 
-[ Upstream commit 5dd639a1646ef5fe8f4bf270fad47c5c3755b9b6 ]
+Make use of devm_ methods to request and remap the device memory to
+simplify cleanup.
 
-If vhost_scsi_set_endpoint is called multiple times without a
-vhost_scsi_clear_endpoint between them, we can hit multiple bugs
-found by Haoran Zhang:
-
-1. Use-after-free when no tpgs are found:
-
-This fixes a use after free that occurs when vhost_scsi_set_endpoint is
-called more than once and calls after the first call do not find any
-tpgs to add to the vs_tpg. When vhost_scsi_set_endpoint first finds
-tpgs to add to the vs_tpg array match=true, so we will do:
-
-vhost_vq_set_backend(vq, vs_tpg);
-...
-
-kfree(vs->vs_tpg);
-vs->vs_tpg = vs_tpg;
-
-If vhost_scsi_set_endpoint is called again and no tpgs are found
-match=false so we skip the vhost_vq_set_backend call leaving the
-pointer to the vs_tpg we then free via:
-
-kfree(vs->vs_tpg);
-vs->vs_tpg = vs_tpg;
-
-If a scsi request is then sent we do:
-
-vhost_scsi_handle_vq -> vhost_scsi_get_req -> vhost_vq_get_backend
-
-which sees the vs_tpg we just did a kfree on.
-
-2. Tpg dir removal hang:
-
-This patch fixes an issue where we cannot remove a LIO/target layer
-tpg (and structs above it like the target) dir due to the refcount
-dropping to -1.
-
-The problem is that if vhost_scsi_set_endpoint detects a tpg is already
-in the vs->vs_tpg array or if the tpg has been removed so
-target_depend_item fails, the undepend goto handler will do
-target_undepend_item on all tpgs in the vs_tpg array dropping their
-refcount to 0. At this time vs_tpg contains both the tpgs we have added
-in the current vhost_scsi_set_endpoint call as well as tpgs we added in
-previous calls which are also in vs->vs_tpg.
-
-Later, when vhost_scsi_clear_endpoint runs it will do
-target_undepend_item on all the tpgs in the vs->vs_tpg which will drop
-their refcount to -1. Userspace will then not be able to remove the tpg
-and will hang when it tries to do rmdir on the tpg dir.
-
-3. Tpg leak:
-
-This fixes a bug where we can leak tpgs and cause them to be
-un-removable because the target name is overwritten when
-vhost_scsi_set_endpoint is called multiple times but with different
-target names.
-
-The bug occurs if a user has called VHOST_SCSI_SET_ENDPOINT and setup
-a vhost-scsi device to target/tpg mapping, then calls
-VHOST_SCSI_SET_ENDPOINT again with a new target name that has tpgs we
-haven't seen before (target1 has tpg1 but target2 has tpg2). When this
-happens we don't teardown the old target tpg mapping and just overwrite
-the target name and the vs->vs_tpg array. Later when we do
-vhost_scsi_clear_endpoint, we are passed in either target1 or target2's
-name and we will only match that target's tpgs when we loop over the
-vs->vs_tpg. We will then return from the function without doing
-target_undepend_item on the tpgs.
-
-Because of all these bugs, it looks like being able to call
-vhost_scsi_set_endpoint multiple times was never supported. The major
-user, QEMU, already has checks to prevent this use case. So to fix the
-issues, this patch prevents vhost_scsi_set_endpoint from being called
-if it's already successfully added tpgs. To add, remove or change the
-tpg config or target name, you must do a vhost_scsi_clear_endpoint
-first.
-
-Fixes: 25b98b64e284 ("vhost scsi: alloc cmds per vq instead of session")
-Fixes: 4f7f46d32c98 ("tcm_vhost: Use vq->private_data to indicate if the endpoint is setup")
-Reported-by: Haoran Zhang <wh1sper@zju.edu.cn>
-Closes: https://lore.kernel.org/virtualization/e418a5ee-45ca-4d18-9b5d-6f8b6b1add8e@oracle.com/T/#me6c0041ce376677419b9b2563494172a01487ecb
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
-Message-Id: <20250129210922.121533-1-michael.christie@oracle.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Stefano Garzarella <sgarzare@redhat.com>
-[ Minor conflict resolved. ]
-Signed-off-by: Li hongliang <1468888505@139.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
 ---
- drivers/vhost/scsi.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/faraday/ftgmac100.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index de6f108a50a9..f9ef17c3e566 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -1572,14 +1572,19 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
- 		}
+diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
+index 397ada43c851..ec2e7ec23ddf 100644
+--- a/drivers/net/ethernet/faraday/ftgmac100.c
++++ b/drivers/net/ethernet/faraday/ftgmac100.c
+@@ -1897,19 +1897,18 @@ static int ftgmac100_probe(struct platform_device *pdev)
+ 	INIT_WORK(&priv->reset_task, ftgmac100_reset_task);
+ 
+ 	/* map io memory */
+-	priv->res = request_mem_region(res->start, resource_size(res),
+-				       dev_name(&pdev->dev));
++	priv->res = devm_request_mem_region(&pdev->dev,
++					    res->start, resource_size(res),
++					    dev_name(&pdev->dev));
+ 	if (!priv->res) {
+ 		dev_err(&pdev->dev, "Could not reserve memory region\n");
+-		err = -ENOMEM;
+-		goto err_req_mem;
++		return -ENOMEM;
  	}
  
-+	if (vs->vs_tpg) {
-+		pr_err("vhost-scsi endpoint already set for %s.\n",
-+		       vs->vs_vhost_wwpn);
-+		ret = -EEXIST;
-+		goto out;
-+	}
-+
- 	len = sizeof(vs_tpg[0]) * VHOST_SCSI_MAX_TARGET;
- 	vs_tpg = kzalloc(len, GFP_KERNEL);
- 	if (!vs_tpg) {
- 		ret = -ENOMEM;
- 		goto out;
- 	}
--	if (vs->vs_tpg)
--		memcpy(vs_tpg, vs->vs_tpg, len);
- 
- 	list_for_each_entry(tpg, &vhost_scsi_list, tv_tpg_list) {
- 		mutex_lock(&tpg->tv_tpg_mutex);
-@@ -1594,11 +1599,6 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
- 		tv_tport = tpg->tport;
- 
- 		if (!strcmp(tv_tport->tport_name, t->vhost_wwpn)) {
--			if (vs->vs_tpg && vs->vs_tpg[tpg->tport_tpgt]) {
--				mutex_unlock(&tpg->tv_tpg_mutex);
--				ret = -EEXIST;
--				goto undepend;
--			}
- 			/*
- 			 * In order to ensure individual vhost-scsi configfs
- 			 * groups cannot be removed while in use by vhost ioctl,
-@@ -1643,15 +1643,15 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
- 		}
- 		ret = 0;
- 	} else {
--		ret = -EEXIST;
-+		ret = -ENODEV;
-+		goto free_tpg;
+-	priv->base = ioremap(res->start, resource_size(res));
++	priv->base = devm_ioremap(&pdev->dev, res->start, resource_size(res));
+ 	if (!priv->base) {
+ 		dev_err(&pdev->dev, "Failed to ioremap ethernet registers\n");
+-		err = -EIO;
+-		goto err_ioremap;
++		return -EIO;
  	}
  
- 	/*
--	 * Act as synchronize_rcu to make sure access to
--	 * old vs->vs_tpg is finished.
-+	 * Act as synchronize_rcu to make sure requests after this point
-+	 * see a fully setup device.
- 	 */
- 	vhost_scsi_flush(vs);
--	kfree(vs->vs_tpg);
- 	vs->vs_tpg = vs_tpg;
- 	goto out;
+ 	netdev->irq = irq;
+@@ -2074,10 +2073,6 @@ static int ftgmac100_probe(struct platform_device *pdev)
+ 		ncsi_unregister_dev(priv->ndev);
+ 	ftgmac100_destroy_mdio(netdev);
+ err_setup_mdio:
+-	iounmap(priv->base);
+-err_ioremap:
+-	release_resource(priv->res);
+-err_req_mem:
+ 	return err;
+ }
  
-@@ -1668,6 +1668,7 @@ vhost_scsi_set_endpoint(struct vhost_scsi *vs,
- 			target_undepend_item(&tpg->se_tpg.tpg_group.cg_item);
- 		}
- 	}
-+free_tpg:
- 	kfree(vs_tpg);
- out:
- 	mutex_unlock(&vs->dev.mutex);
-@@ -1757,6 +1758,7 @@ vhost_scsi_clear_endpoint(struct vhost_scsi *vs,
- 	vhost_scsi_flush(vs);
- 	kfree(vs->vs_tpg);
- 	vs->vs_tpg = NULL;
-+	memset(vs->vs_vhost_wwpn, 0, sizeof(vs->vs_vhost_wwpn));
- 	WARN_ON(vs->vs_events_nr);
- 	mutex_unlock(&vs->dev.mutex);
- 	mutex_unlock(&vhost_scsi_mutex);
+@@ -2104,9 +2099,6 @@ static void ftgmac100_remove(struct platform_device *pdev)
+ 	ftgmac100_phy_disconnect(netdev);
+ 	ftgmac100_destroy_mdio(netdev);
+ 
+-	iounmap(priv->base);
+-	release_resource(priv->res);
+-
+ 	netif_napi_del(&priv->napi);
+ }
+ 
+
 -- 
 2.34.1
-
 
