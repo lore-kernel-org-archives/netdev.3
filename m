@@ -1,42 +1,67 @@
-Received: from mail.codelabs.ch (mail.codelabs.ch [109.202.192.35])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A16337AA81;
-	Mon,  2 Feb 2026 15:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.202.192.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0074E23D7FC;
+	Mon,  2 Feb 2026 15:35:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770045843; cv=none; b=pMYhhr02Iy9re4v46dXCeZwnNuUHCibwOqDwSzc7cdySGAxwR62PHgllCmVYRy7+5x0OQ4ON5p5Tcc1WVj31VamkSLHg0yqGdelxsvHER+MlIX2PXHSljML5asIESQrYQhYUb4ei8RSAhA6GV9j+sD2r/S9D5e7y39ozYi4i+eY=
+	t=1770046549; cv=none; b=evF+ocHcvbGGrwx2GfKAyMQjB2JLeayKq1rw8YP0XPxMeaPM8G/OYgBQUW99LpmzRBRW3XojpLs4TRXNtl7vsgQqew81cV9ioSjVpgLWd0ByO1esNGlkBL5t+CKAW6LfYH9ZsSLvp/y/7wv3WCOkMV4nhNuk7vaJjZNr1gK2flM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770045843; c=relaxed/simple;
-	bh=ZOMvloZpNoMhFlLtr09Mi3WPCTznnwTUTRzItsEszKg=;
+	s=arc-20240116; t=1770046549; c=relaxed/simple;
+	bh=JSV3GkPQFWTvQDoMtc9vQalyIuWccRoO2J2Vlt7ee8M=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D1pWI+Hs3x8zapqh6SJG5e/SWQiPwdp5zvJRxQmTw/o+8AdzqElrIbuJ0FXTJNvegs5OWaZn4zLC5WsGZjpLSsz9bqaAYLSB1HKr48p/eS3ZoBZVjrdtCHCbF+3BMAiWc3aF1PYEvs2BoQyumyGP6dOxyweM4/OwU3r3K6ERR5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org; spf=pass smtp.mailfrom=strongswan.org; dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b=uEklFGEc; arc=none smtp.client-ip=109.202.192.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strongswan.org
+	 In-Reply-To:Content-Type; b=o8ZPDJPS0PVvDsmkmNcmyei0m3am27ChDJT/PxZUTEy+TVPflokiFyWefLIv1RxxEmVUc9OurvyUcUyQEYwv90IfQyNlwPGIDi6rdkJ5TMFBBgevq2wT8lZLvLu84Nvb3qjYK35w9GTfvQk10rSsnTtexrR4bxz4i6PIOYMGyRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=SnFVY670; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b="uEklFGEc"
-Received: from localhost (localhost [127.0.0.1])
-	by mail.codelabs.ch (Postfix) with ESMTP id 30E9A5A0003;
-	Mon, 02 Feb 2026 16:16:05 +0100 (CET)
-Received: from mail.codelabs.ch ([127.0.0.1])
- by localhost (fenrir.codelabs.ch [127.0.0.1]) (amavis, port 10024) with ESMTP
- id DhGq3aCiKGkT; Mon,  2 Feb 2026 16:16:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=strongswan.org;
-	s=default; t=1770045363;
-	bh=ZOMvloZpNoMhFlLtr09Mi3WPCTznnwTUTRzItsEszKg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=uEklFGEchrx5Q7Mc7TCb+vZYPro4WvC5aOuP1tfKi35uw2e3C7bhPd456HjI6yGO8
-	 4HKqkc1EAW/dOQ+xGrAUegk+K1JLV+1m9B+33JBFAV84i+nLm9bnbPGCnM6NJ4NLmy
-	 FsWddc/EfMU37CiqI/G79+cw6f7IP18DcPwEPwHOQAvF2aW1leJnFnNXxWV8po0glw
-	 HzSoIzPFApqBIUCuYFVmF+rUmAF+wYGN4bhc1RWnqjvdrubRNyB9YkMaIp1WdkXaqA
-	 gJSEw3z06Cf5NTAlmHN3jG27AeOhrcJMaSg1hQgPmyX8HkqK6vihVFY4hv961z68iq
-	 xSW5D1RVV5hdw==
-Received: from [IPV6:2a02:16a:6e09::1f84] (unknown [IPv6:2a02:16a:6e09::1f84])
-	by mail.codelabs.ch (Postfix) with ESMTPSA id B0C515A0001;
-	Mon, 02 Feb 2026 16:16:03 +0100 (CET)
-Message-ID: <4eb261ce-5f05-49dd-a668-6bb18e332f91@strongswan.org>
-Date: Mon, 2 Feb 2026 16:16:03 +0100
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="SnFVY670"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 612ERMpu006538;
+	Mon, 2 Feb 2026 15:35:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=+bNH8c
+	8azHGqltgCQV3/8XTF0YASLgikDm2nMiipNE0=; b=SnFVY670H9s5+S5EEGaSvA
+	CA8aR30PKPcVrhbD4iqSwtfqioebXcchmCOJ1b7ZkHbvkuG3sg34fwTr5VGdhAxH
+	7nVNu/+iMgBqVDWRxMdR3lSaa69Xg66AAvOZMh4nlodjrPHGxR+AsQq046cj7x8N
+	eWnnC3sqR+h7By4oKImBDvWluZTQDy4uJXtQBdpKEp3RB6/OJ2skB0tfHQ/T3lCl
+	y0ga7OXZRQTIqzz8HL/I4rt+dK7MS80x5rS1MhbuaKW+4gkNCM20ubi6fxJwM3zN
+	Fy6kInoqaM/9kbY+PcmVtiYnw5WqMIutP0UyBGptCnW6xOPKe/3aopxXgEo4X/YQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c185gqmub-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Feb 2026 15:35:34 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 612FZYXC026409;
+	Mon, 2 Feb 2026 15:35:34 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4c185gqmu6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Feb 2026 15:35:34 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 612FA3iu005938;
+	Mon, 2 Feb 2026 15:35:33 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4c1x9j5c6v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 02 Feb 2026 15:35:33 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 612FZVAB30081728
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 2 Feb 2026 15:35:31 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 85D862004B;
+	Mon,  2 Feb 2026 15:35:31 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 566EC20040;
+	Mon,  2 Feb 2026 15:35:31 +0000 (GMT)
+Received: from [9.52.217.119] (unknown [9.52.217.119])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  2 Feb 2026 15:35:31 +0000 (GMT)
+Message-ID: <2ddf6abd-d10c-4d75-8f84-0fd1ccb5435c@linux.ibm.com>
+Date: Mon, 2 Feb 2026 16:35:31 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,119 +69,143 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [devel-ipsec] Re: [PATCH net-next v4 1/2] icmp: fix ICMP error
- source address when xfrm policy matches
-To: Paul Wouters <paul@nohats.ca>, Antony Antony <antony@phenome.org>
-Cc: Jakub Kicinski <kuba@kernel.org>,
- Antony Antony <antony.antony@secunet.com>,
- Steffen Klassert <steffen.klassert@secunet.com>, netdev@vger.kernel.org,
- "David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, Shuah Khan <shuah@kernel.org>,
- devel@linux-ipsec.org, Simon Horman <horms@kernel.org>,
- stable+noautosel@kernel.org, linux-kernel@vger.kernel.org
-References: <cover.1769595011.git.antony.antony@secunet.com>
- <f820e0e9f80b1467f97d1408f00f61b1fdb1b986.1769595011.git.antony.antony@secunet.com>
- <20260129184510.01319683@kernel.org> <aYCTfwblH8wtnF6c@Antony2201.local>
- <d54db2a8-d3ab-b8ff-21fc-a26716a21494@nohats.ca>
-From: Tobias Brunner <tobias@strongswan.org>
-Content-Language: de-CH, en-US
-Autocrypt: addr=tobias@strongswan.org; keydata=
- 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
- tvkh7XWO2ycrW1UlzUzM4KV3SDLIhfOU
-In-Reply-To: <d54db2a8-d3ab-b8ff-21fc-a26716a21494@nohats.ca>
+Subject: Re: [PATCH v2 net-next] net/iucv: clean up iucv kernel-doc warnings
+To: Randy Dunlap <rdunlap@infradead.org>, netdev@vger.kernel.org
+Cc: Thorsten Winkler <twinkler@linux.ibm.com>, linux-s390@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+References: <20260201072309.222155-1-rdunlap@infradead.org>
+Content-Language: en-US
+From: Alexandra Winter <wintera@linux.ibm.com>
+In-Reply-To: <20260201072309.222155-1-rdunlap@infradead.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=UdxciaSN c=1 sm=1 tr=0 ts=6980c446 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=JfrnYn6hAAAA:8 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=J1Y8HTJGAAAA:8
+ a=1XWaLZrsAAAA:8 a=20KFwNOVAAAA:8 a=870lcERhYe6XzqJw7_QA:9 a=QEXdDO2ut3YA:10
+ a=1CNFftbPRP8L7MoqJWF3:22 a=y1Q9-5lHfBjTkpIzbSAN:22
+X-Proofpoint-GUID: eYdBFQ2MAJ_pblbNvaBPYQJY-0S9WFLx
+X-Proofpoint-ORIG-GUID: r-y7vermKIigoHM0DSEUBBdDhV2CK284
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAyMDEyMSBTYWx0ZWRfX/9qiXIyf3Dze
+ tLf7RiqJ+EVCIrJN6o21BTgnZyWh9VKLi0aBKd0fIJOTIj5PK6QLMA63JMyUn+Nb9uD3ChxjSsP
+ W+twnyfbHebOODtHGgTGsRheFQA0/2d7NcOBGhnK+0SbT1xDSOa5BdLUHIpP8X2Z3UmV22oAk6X
+ sgtbe87mryUl39QyBDrYM3rMXT5/cVcMkSgJLvcWMeAyzWD81T3acFT17Sk5Xc8F+WyT3QtJyaW
+ yUhXavCTQZ4IPBQfX7+O820UrFIDJyyaavV/jsaE5tDBu7J4W/X77GrqyBKsfuimrXQBmUhIaZu
+ CIkEdZiiO6eTiQsVmMGjYbZyP+N4djx2BBnPyUY6l/iEqH4lgmXJycWeUrOr1V/paH0c41R8IGo
+ wXKq7A+glToNlq8ZJCb8pdfSqilINMYd3gtKkJVDJrhnWtnuDu7aMX7CWF9pQLR+TAQuVDWaEw+
+ bcCPm3myXd7OxaOh1Hw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-02_04,2026-01-30_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 malwarescore=0 impostorscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1011 bulkscore=0 spamscore=0 phishscore=0
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2601150000
+ definitions=main-2602020121
 
-On 02.02.26 15:53, Paul Wouters wrote:
-> On Mon, 2 Feb 2026, Antony Antony via Devel wrote:
+
+
+On 01.02.26 08:23, Randy Dunlap wrote:
+> Fix numerous (many) kernel-doc warnings in iucv.[ch]:
 > 
->> Hi Jakub,
->>
->> On Thu, Jan 29, 2026 at 06:45:10PM -0800, Jakub Kicinski via Devel wrote:
->>> On Wed, 28 Jan 2026 11:25:14 +0100 Antony Antony wrote:
->>>> Subject: [PATCH net-next v4 1/2] icmp: fix ICMP error source address when xfrm policy matches
->>>
->>>> Fixes: 415b3334a21a ("icmp: Fix regression in nexthop resolution during replies.")
->>>> Cc: stable+noautosel@kernel.org # Avoid false positives in tests
->>>
->>> I don't understand what you're trying to express with all these tags.
->>> We are sending incorrect ICMP packets, seems like a normal net-worthy
->>> fix to me?
->>
->> You're right that we're sending incorrect ICMP packets when IPsec/xfrm is
->> enabled and this is a legitimate fix. My concern with backporting is about
->> potential disruption rather than the correctness of the fix itself.
->> The issue is that some existing test scripts and monitoring tools may have
->> hardcoded expectations for the current(incorrect) source address behavior.
->> When this one-line fix gets backported to all maintained kernels, those
->> tests would start failing, potentially triggering regression reports and
->> requests to revert the fix from stable kernels.
->>
->> Additionally, without the
->> commit 63b21caba17e ("xfrm: introduce forwarding of ICMP Error messages")
->> being present in older kernels, the behavior change could be viewed
->> differently in stable branches.
->>
->> This is also the sense I got from IPsec users.
->> Given these considerations, I opted for the safer path of targeting net-next
->> with stable+noautosel, no backporting.
+> - remove kernel-doc on static functions in iucv.c
+> - convert function documentation comments to a common (kernel-doc) look,
+>   even for static functions (without "/**")
+> - use matching parameter and parameter description names
 > 
-> libreswan is unaffected, other than the old code showing a weird
-> unexplainable log message.  So we are not really affected by whether or
-> not this get backported. We would slightly prefer the backport just to
-> get proper icmp messages out there (and we might need to fix a few test
-> cases but that is okay with us). If someone reaches out with strong
-> arguments to not backport, we would be fine with not doing it.
+> Examples:
+> 
+> Warning: include/net/iucv/iucv.h:210 missing initial short description
+>  on line: * iucv_unregister
+> Warning: include/net/iucv/iucv.h:216 function parameter 'handle' not
+>  described in 'iucv_unregister'
+> Warning: include/net/iucv/iucv.h:467 function parameter 'answer' not
+>  described in 'iucv_message_send2way'
+> Warning: net/iucv/iucv.c:727 missing initial short description on line:
+>  * iucv_cleanup_queue
+> 
+> Build-tested with both "make htmldocs" and "make ARCH=s390 defconfig all".
+> 
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> ---
 
-I think the main concern is that without Antony's patch that adds ICMP
-forwarding via reverse lookup (63b21caba17e ("xfrm: introduce forwarding
-of ICMP Error messages")), which was not backported, packets with the
-correct source IP will not get tunneled if the gateway's IP is not
-contained in the traffic selectors.  So if at all, backporting should
-only be considered to v6.9+ and not anything earlier (the commit
-Antony's Fixes tag references, 415b3334a21a, was released with v3.1).
+Thank you very much for your effort Randy.
+FYI: I had to use 'scripts/kernel-doc.py -none -Wall include/net/iucv/*' to see the warnings.
 
-Regards,
-Tobias
+
+
+> v2:
+> - correct verbs in descriptions of 2 functions (Jakub)
+> - removed duplicate kernel-doc comments from the header file (Jakub)
+> 
+> Cc: Alexandra Winter <wintera@linux.ibm.com>
+> Cc: Thorsten Winkler <twinkler@linux.ibm.com>
+> Cc: linux-s390@vger.kernel.org
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Eric Dumazet <edumazet@google.com>
+> Cc: Jakub Kicinski <kuba@kernel.org>
+> Cc: Paolo Abeni <pabeni@redhat.com>
+> Cc: Simon Horman <horms@kernel.org>
+> 
+>  include/net/iucv/iucv.h |  209 ------------------------------
+>  net/iucv/iucv.c         |  259 ++++++++++++++++++--------------------
+>  2 files changed, 128 insertions(+), 340 deletions(-)
+> 
+> --- linux-next-20260130.orig/include/net/iucv/iucv.h
+> +++ linux-next-20260130/include/net/iucv/iucv.h
+> @@ -70,7 +70,7 @@
+>  #define IUCV_IPLOCAL	0x01
+>  
+>  /*
+> - * iucv_array : Defines buffer array.
+> + * iucv_array - Defines buffer array.
+
+Did that create a kernel doc warning? It's a struct, not a function.
+I propose
++ * struct iucv_array
+like other structs in this file.
+
+[...]
+
+> @@ -757,13 +742,12 @@ static void iucv_cleanup_queue(void)
+>  }
+>
+>  /**
+> - * iucv_register:
+> + * iucv_register - Registers a driver with IUCV.
+> + *
+>   * @handler: address of iucv handler structure
+>   * @smp: != 0 indicates that the handler can deal with out of order messages
+>   *
+> - * Registers a driver with IUCV.
+> - *
+> - * Returns 0 on success, -ENOMEM if the memory allocation for the pathid
+> + * Returns: 0 on success, -ENOMEM if the memory allocation for the pathid
+>   * table failed, or -EIO if IUCV_DECLARE_BUFFER failed on all cpus.
+>   */
+>  int iucv_register(struct iucv_handler *handler, int smp)
+
+Before this one, you changed /** to /*
+after this one you left /**
+That's a bit inconsistent.
+
+
+
+
+
+All the fixes look good to me. And they get rid of the mentioned warnings.
+I appreciate your approach to use the existing wording, though it may not
+be according to the latest style guidelines.
+
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+
+
+
+
+
 
