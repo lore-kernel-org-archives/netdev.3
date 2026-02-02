@@ -1,643 +1,244 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MRWPR03CU001.outbound.protection.outlook.com (mail-francesouthazon11011013.outbound.protection.outlook.com [40.107.130.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42ACD37F0E2
-	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 16:35:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770050107; cv=none; b=hfpFJXVgwep94X2gBpXaSf6iTlakXMterCbTNLsUNAlnVyDeDGH6sZ1lJx3ltvbAOMHQMtZ3/jNDIuuM6RwsQAZ3OZOQMHSxqt6+skSkXD53hfo4cWBLMlQn/pQUbNixyWjRm+is4kTxMPKNuO+3+/+YA8LQThJm3fcXyorzYYA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770050107; c=relaxed/simple;
-	bh=Lsf0r6ygGq0r8nc1j6uQTb9OW8NYQ5pQ2Gfc3ZQjDAM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XSOJniR5lrpthKCpkAZzMwshqQ+r4tS7Up9KKM6n6jCm6G5XKipya8i1hVSl50lufxN4lMqaUr4sZfERYHeuYMcSeCvjjOsYXHo5heYp9fu37iJFjln9jvnjAaqox05impXn3gzxunKOmQNMrDQ9NAyG0XS1MDNooXEuijpKa+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UMcN9ffp; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1530291C07;
+	Mon,  2 Feb 2026 16:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.130.13
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770050659; cv=fail; b=o53RJbH1frRG74vq5XfWijkDb7Hi5yopN3GB5ui+Wqo2rKae2mmOHmcRJck5txLs5aLpumPhJzoi6WHiM3XNJE2QII5EJMLvdMZqLA6jcVSXVc7WipX4uAHkDWQU9WojQ80qauxuXihFp+iSBx14tpUlZYnrIJsy3cVzWfUFzMQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770050659; c=relaxed/simple;
+	bh=qL4BZWdCxL6sYc7KV/VzxYtNXI2qldRi8GvVXEfKNl8=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=uca3/W4BEHdT4IzcotPzyNMHDFmmHhZhd6V8yYMz+WixfA6uxlRrfu1WY1kjg+E7QAMPM1pSVDEN5OUfiIPfB26pDsbVzZC+vzq+DyJnV/2loM3AF3ONcfB7vIlLAXTCs61qJRVjpIHXWYnjfHTar1oTM46Fw/zFnkISJhflzyw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com; spf=fail smtp.mailfrom=nokia-bell-labs.com; dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b=jTX0dXE/; arc=fail smtp.client-ip=40.107.130.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nokia-bell-labs.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nokia-bell-labs.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UMcN9ffp"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8947e6ffd20so60943456d6.1
-        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 08:35:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770050104; x=1770654904; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AS1hJx3ikcHj5CChRyaC8QVss5Qd7u0zalxXPiS1rVU=;
-        b=UMcN9ffpYhgWk30ysiTicduth2YwmXAyuvBr/Qqpt287exsnP/QBos/ISIimt7yyhc
-         mX2jlJ1B3rClHFqEj/O/pxTvR/plN5pp5ajjXVKbx8CcwbNV8gKG+/TjQ+jKaksSDdaQ
-         Ug4Kp0+O+qxq6ijuTRg4KJ6QfJTtgU2ZKLOLGMMYj088tDL2J78cwgbHzPhi5fruS+wl
-         ZouRicuXgKIDWGXQQTj/uqJf0pmOD4XRh/T1vThZd2nI8KWRyAzgssJQ3eoPFtT8PL4P
-         bF2oqwDYWYYCdbQj23Yw9DbmQbL+XaLj/QaXPeFsw0VJYYuNRHnFNJzT6/aXrtBnkSwX
-         iCUg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770050104; x=1770654904;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AS1hJx3ikcHj5CChRyaC8QVss5Qd7u0zalxXPiS1rVU=;
-        b=nJcUOhrcGYzmb/YFPFwckkILZRNlZvo6lFarP8XPXC+exN6rNNiqrV6/tUauwO0+rO
-         yXVVaRYFiRNpsrHCESKYvVwG3zbiZ6QiRrWtntcP5xmAl9SFgo56C/xmJzldLr85m4BX
-         +hcFBuilPMKC+l9ZITL+hAx70DF5bjVVecZcB9+pdWoBITDnq3VDTyoqdkxSQzXRg8XB
-         WHgeniqwkmUHZRobfQcOMrmxLbm2nfo52djBCgl2MXugTA0ceyAerd51WZLD/6X55gzf
-         JnVjvaJEXnDVC1qBofSI2nRmRG2T+aI8Vgh7w7A4GklwP9xkl3ZgUTm7Sbluo6KYf5v1
-         1NEA==
-X-Gm-Message-State: AOJu0YwYF/r+XCMhYxRaPnEEA8c6I7BRJWziXz5fGAChEnjFUcLm+g9i
-	pf7csiiLKLcBOijkbChQPclOaysHF1sec11UwMZPxkhJFtdg6pTFOFazZQxaf6h5
-X-Gm-Gg: AZuq6aKwhLtglt1U+F65rekWq5Kf5wHRFHis4gyU1i+7q8ZxhYz0W4Gzhif+XzHeevt
-	fieIXh81qwFgdvJjv1Sfu/8RyQN7QQFnjGNkrlzhx7tfaEW4avNwtgQq0/4iIJjag5wmKmA7dwS
-	Iguvb0lUn7T24yAUMXK8m3ey74wj82hdh9ayW686ZWa2bg9pE3iLZRvd7o1fs0jnk6+GUafoPpb
-	gxlluGXULlatpw2TdeKb8yJTIo54HwO3Sn4M1wYwPkqJyfO4ZE2O+cnaQ1252Dbb6ZoDsGjqz2u
-	F7yIRbaFrOnXQMZG6NbToTzsx0kluvEKCe3IPtO+d6PPTmI3lg9oClbCfJdIYYEhoiURA9J/yjs
-	PD3yqhil0LOZ2xHGjAkQFlwynCtvfm9/emoIE86raNrh7wMrOojWX+9epJh4Dt4L47/+eEomiN+
-	/OPgP9DCwhwAGhcAOlh2X8h+KRWno/JaPUb157itjhOGqcsRgKVe4DI+ADwPMU8A==
-X-Received: by 2002:a05:622a:1884:b0:4ef:c655:2ff8 with SMTP id d75a77b69052e-505d22c8f17mr131253631cf.84.1770042601480;
-        Mon, 02 Feb 2026 06:30:01 -0800 (PST)
-Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50337ba3981sm106865171cf.16.2026.02.02.06.30.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 06:30:00 -0800 (PST)
-From: Xin Long <lucien.xin@gmail.com>
-To: network dev <netdev@vger.kernel.org>,
-	quic@lists.linux.dev
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stefan Metzmacher <metze@samba.org>,
-	Moritz Buhl <mbuhl@openbsd.org>,
-	Tyler Fanelli <tfanelli@redhat.com>,
-	Pengtao He <hepengtao@xiaomi.com>,
-	Thomas Dreibholz <dreibh@simula.no>,
-	linux-cifs@vger.kernel.org,
-	Steve French <smfrench@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Tom Talpey <tom@talpey.com>,
-	kernel-tls-handshake@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Steve Dickson <steved@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Alexander Aring <aahringo@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"D . Wythe" <alibuda@linux.alibaba.com>,
-	Jason Baron <jbaron@akamai.com>,
-	illiliti <illiliti@protonmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Daniel Stenberg <daniel@haxx.se>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Subject: [PATCH net-next v9 07/15] quic: add connection id management
-Date: Mon,  2 Feb 2026 09:27:33 -0500
-Message-ID: <2f61fab7b171fcd4b28214d383980174eebe5fdf.1770042461.git.lucien.xin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1770042461.git.lucien.xin@gmail.com>
-References: <cover.1770042461.git.lucien.xin@gmail.com>
+	dkim=pass (2048-bit key) header.d=nokia-bell-labs.com header.i=@nokia-bell-labs.com header.b="jTX0dXE/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=EHva7si8mj6JdysAzrTpbhNfl2XdJ9wPRiDufC7oRRulUS8HD7Z2lwTFrXj+MYO1DcmhJgTgxPu65oJYD6V2J6XaDnAxt2sUCEg7//vwvBRAs3bLf+ydTsbt8XsBL+0iBD5L8ZvPpt7e8iRRb5YffUNqxRNncyrndmDhmj6tDhAr9JRD+/z8M+0HqMxN0pTuMnr6VvW0/X9nN7NMhqwcWv/EYjEr5mjtR7CA+MvkyYj/6ToaczdyqCgdZsvz7Fsv1Jq/VpMaLHyEmL5EIbV52k3bZ3JjBZ3dAC344158hlcen9N/F0sIr2MaSKNXrON7AuK8/9cKX6sPNOOpX7IA6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qL4BZWdCxL6sYc7KV/VzxYtNXI2qldRi8GvVXEfKNl8=;
+ b=ZEKY1OkSVxtAFruAXCRRlK8URDhoNETDl2dQJlO3rTBymmd34wAlDgGL59FVP3mHfP414YPSDAYbsDpwqMq7kZ3lss0uzLWcSzhRWHSnOahPKY/BZyvtBJ/efLuZs5jDPFvDuloHgNlrImZgFEjzXPa97nUv3v+iUGpFQ6GFtoZ1H88GlkGcCQLYpFHpZaiqQSbqFSEVW8g8CTOySjuHQqIGg32+vWG4qYByoX4QVndiRrK4a1deZvo9HZXTpmr3q2hCUmb/Xx/IW5BOWoTxZe8quFPPJVqzw3y06+ytkA5mkw+BHR/Ch+B782AWfdKwaBgsqfNbxFcaORoToZd+tA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nokia-bell-labs.com; dmarc=pass action=none
+ header.from=nokia-bell-labs.com; dkim=pass header.d=nokia-bell-labs.com;
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nokia-bell-labs.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qL4BZWdCxL6sYc7KV/VzxYtNXI2qldRi8GvVXEfKNl8=;
+ b=jTX0dXE/dhGlB0KdziuOEIkLMFAejRnEHJUPb9BG8hYF98zy32Z4RwIYoNH9pwEt8ySeIfx5S54yiayAoyPZMgvkTkGXo8yvkS0OZzsyRyT34NnR4W9W/MAsiWqyV13VSoKHOHKe/WwVNcPEtvbPv2eScZHc0sK5cMUkNVV3xFEQ26CV2ZzEFc1iDGP5IT1FGxPmst9AYYFlsOXThhWNlplbk41nD5VnAdibb/Fpnb8ieav9kD4oKR6n/Cohap87dtcgKK/VaKvAVbXn7Je560W19BmwtjHw4DXNRRMFdXF/Xc2H7O6MF+64dvbg1DEi8ySkbq4UOc5/YAFH/Ae1RA==
+Received: from AM9PR07MB7969.eurprd07.prod.outlook.com (2603:10a6:20b:302::15)
+ by DB9PR07MB7866.eurprd07.prod.outlook.com (2603:10a6:10:2a9::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.7; Mon, 2 Feb
+ 2026 16:44:13 +0000
+Received: from AM9PR07MB7969.eurprd07.prod.outlook.com
+ ([fe80::b676:5e6b:e3e7:4bbd]) by AM9PR07MB7969.eurprd07.prod.outlook.com
+ ([fe80::b676:5e6b:e3e7:4bbd%5]) with mapi id 15.20.9564.007; Mon, 2 Feb 2026
+ 16:44:13 +0000
+From: "Chia-Yu Chang (Nokia)" <chia-yu.chang@nokia-bell-labs.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+CC: "tariqt@nvidia.com" <tariqt@nvidia.com>, "linux-rdma@vger.kernel.org"
+	<linux-rdma@vger.kernel.org>, "shaojijie@huawei.com" <shaojijie@huawei.com>,
+	"shenjian15@huawei.com" <shenjian15@huawei.com>, "salil.mehta@huawei.com"
+	<salil.mehta@huawei.com>, "mbloch@nvidia.com" <mbloch@nvidia.com>,
+	"saeedm@nvidia.com" <saeedm@nvidia.com>, "leon@kernel.org" <leon@kernel.org>,
+	"eperezma@redhat.com" <eperezma@redhat.com>, "brett.creeley@amd.com"
+	<brett.creeley@amd.com>, "jasowang@redhat.com" <jasowang@redhat.com>,
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "edumazet@google.com"
+	<edumazet@google.com>, "parav@nvidia.com" <parav@nvidia.com>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, "corbet@lwn.net"
+	<corbet@lwn.net>, "horms@kernel.org" <horms@kernel.org>, "dsahern@kernel.org"
+	<dsahern@kernel.org>, "kuniyu@google.com" <kuniyu@google.com>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "dave.taht@gmail.com" <dave.taht@gmail.com>,
+	"jhs@mojatatu.com" <jhs@mojatatu.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"stephen@networkplumber.org" <stephen@networkplumber.org>,
+	"xiyou.wangcong@gmail.com" <xiyou.wangcong@gmail.com>, "jiri@resnulli.us"
+	<jiri@resnulli.us>, "davem@davemloft.net" <davem@davemloft.net>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "donald.hunter@gmail.com"
+	<donald.hunter@gmail.com>, "ast@fiberby.net" <ast@fiberby.net>,
+	"liuhangbin@gmail.com" <liuhangbin@gmail.com>, "shuah@kernel.org"
+	<shuah@kernel.org>, "linux-kselftest@vger.kernel.org"
+	<linux-kselftest@vger.kernel.org>, "ij@kernel.org" <ij@kernel.org>,
+	"ncardwell@google.com" <ncardwell@google.com>, "Koen De Schepper (Nokia)"
+	<koen.de_schepper@nokia-bell-labs.com>, "g.white@cablelabs.com"
+	<g.white@cablelabs.com>, "ingemar.s.johansson@ericsson.com"
+	<ingemar.s.johansson@ericsson.com>, "mirja.kuehlewind@ericsson.com"
+	<mirja.kuehlewind@ericsson.com>, "cheshire@apple.com" <cheshire@apple.com>,
+	"rs.ietf@gmx.at" <rs.ietf@gmx.at>, "Jason_Livingood@comcast.com"
+	<Jason_Livingood@comcast.com>, "vidhi_goel@apple.com" <vidhi_goel@apple.com>
+Subject: RE: [PATCH v1 net-next 2/3] net: hns3/mlx5e: avoid corrupting CWR
+ flag when receiving GRO packet
+Thread-Topic: [PATCH v1 net-next 2/3] net: hns3/mlx5e: avoid corrupting CWR
+ flag when receiving GRO packet
+Thread-Index: AQHckwSt1lZq3PZXMEC6xBSDLZdEMrVtjakAgAIRs4A=
+Date: Mon, 2 Feb 2026 16:44:13 +0000
+Message-ID:
+ <AM9PR07MB796950DABBAD4F5052DB9B39A39AA@AM9PR07MB7969.eurprd07.prod.outlook.com>
+References: <20260131225510.2946-1-chia-yu.chang@nokia-bell-labs.com>
+ <20260131225510.2946-3-chia-yu.chang@nokia-bell-labs.com>
+ <20260201040151-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20260201040151-mutt-send-email-mst@kernel.org>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nokia-bell-labs.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: AM9PR07MB7969:EE_|DB9PR07MB7866:EE_
+x-ms-office365-filtering-correlation-id: 94dbcc9c-40fb-491b-162a-08de627a4c42
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700021;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?L2r/SEgNC7cJonuGSuhXuDmx70cmqDRAAd2YxrALFa6+kzcm7pED6uxQzI2W?=
+ =?us-ascii?Q?PjjazxRksu39nCu0xq5aIzJrdKVYvE7l1HbDJqkH1aEFXqF0NWjxgFVU4fFH?=
+ =?us-ascii?Q?NmYAWrexqFt06KoRMV/a3vY/sDGD3d/zYycPIsy/hzSD3W8UmsCWDYOU3yP7?=
+ =?us-ascii?Q?vofOp0pGLpXcFIQ7uPk2agzcvulCyWPoc2yRK3y5S5o7HVN4nF4OsVm2MCtL?=
+ =?us-ascii?Q?Judt1wp5PgsAY/tLzCtJAbYW1CgVlvPlHxj9sD9L/ekPwPTGc0e0IVJ85aOR?=
+ =?us-ascii?Q?MRPHqJM9dMc01SIzybXDnkPXcMcXBzbXztmLZgn2qxuASQiY1mbModDjipny?=
+ =?us-ascii?Q?3/pL/yExKurv1kddFWBxOZrNFzK3pbOD04OdvSMCdcTD2AIZo/uVqYltTSo1?=
+ =?us-ascii?Q?+3CDTFh6c9qz//XCHU1z+DSG4HcqdYxkaf+4yXi3UwfxWw58ZqI+IhS04Io+?=
+ =?us-ascii?Q?OpQf63yo1gAnDc0Z+fQ/N8BuIKAPAjuZEx6kzVXqSxIduqDWx4KUbNdeMplp?=
+ =?us-ascii?Q?bly/AZjMvHtMMEhuU3XyJkFDc4u0SF8xMqGFXDNq11pEYws8D1AbxMNRzyYY?=
+ =?us-ascii?Q?kX5m1dk4jRimBdLoKd7BNAFdk5HszOMqtG5OiynxHJCKErzYQ93N1sgeu6C9?=
+ =?us-ascii?Q?aCzHEn8WIPHapfBc80FecX712Pv+xIhZbpuK2/NL77048gY6X5C5xpTzKulM?=
+ =?us-ascii?Q?G0GR8rgcvEMZSHwvgRRxHNGzoAlhpYHL87ktX8tF+adHNa3ViiMIkg66OGew?=
+ =?us-ascii?Q?Nn+1rpWkYGASiG4MOjsAwpZ7RKV8Qp8nXJodb4BIysOu+juVN0RtKnKfsFGj?=
+ =?us-ascii?Q?ChB6pgM1fd6PAU2DlaDnGws+vAhxUcG9EpqxChbC9mH32EH/4aoryYbkDppt?=
+ =?us-ascii?Q?RrbphqCSIJ7zGYAiEe7kK1vl1rEb3XDSFZXcUwHO7juXY6G6FfYx7V8hLh2F?=
+ =?us-ascii?Q?kzD7si7cdITeMNWTiKYSLkxHtv4ovmMNZzy1pRkxeLCSiYmY8ZtpyITuOx/K?=
+ =?us-ascii?Q?hG/BmyNr1BEdbPy+FWqEFwGD9Uqn6VqKy7dqU9lhRX97zhZKHH9mQghwY4Dj?=
+ =?us-ascii?Q?jzLv3OlIbCZ1ATrveaurkJiz6hqCxDtM0uIIUHKmfzjIoYLvgwFChSFBO+gC?=
+ =?us-ascii?Q?cKTAulnEdMzzLHxFHPQeNmA93fRI5GxzjoLM2ebGBwTNVtRHp3TngovSTDV0?=
+ =?us-ascii?Q?74t/hNHwyCBUh/cBVYbLeLNdNiNwHE2shgMHxi+uZZGjKJzdvYZBb6Pjf9N0?=
+ =?us-ascii?Q?QGqInPdcIpv7fD58/TC/RQ2fxCnXzaOtrK2uD7KWDYlGxUXcZLWq6ClkVbNi?=
+ =?us-ascii?Q?eQ/tLcj2lOGrkCr8aFbmUgI3k+Z8YDSfpJhTj6pp4UA9quLkkJA1wKZQVo10?=
+ =?us-ascii?Q?iVQEgjvS1l0fZrKvn6kTlAQysErJCHQlorH9i3rema28qUTlpeRSvFXjeDoJ?=
+ =?us-ascii?Q?rMZ7SMCzcy5hF1VKFC9Jp8JByJmWJMRqyifnPp9sg5bTDQTmkerdyoYeVLhG?=
+ =?us-ascii?Q?DLL+XvewiCjGT6k7Y2MBOI6VqI6y37t+Hy1uJncwtn6lR15H10T2tjhCAQjQ?=
+ =?us-ascii?Q?BHcPYWjlJwAH2OQcYkMfFdieaE3ysmPwmYh57BjSeb4PPWX6Dyte3O+RSvzt?=
+ =?us-ascii?Q?+pJ9S7JP1JHk0/ylNu4PhI8=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9PR07MB7969.eurprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?pagT5sopuPumoWZmyCwcHEnt/9KbRWq1PRpjoI4RCd37Ip2ShnQdVsLNh0Nk?=
+ =?us-ascii?Q?dUI5xDTfNCs2sZsRI1d1UmWraDEIER6OKJLKAsMWAQgmb2ieaF7864MrQLzF?=
+ =?us-ascii?Q?FpQCZWh8lVz2Bmq4f+dYBUxUjB6tcWYOOFtrBQcREghjkFGR9uSWzoUN90Or?=
+ =?us-ascii?Q?z9WxYQdqezhIjWfEo8wswsKcMixKJmO51GrP5y+wJ9PS3rscG3/GRs/V811N?=
+ =?us-ascii?Q?bAUY6L+T0kpOamNywMdM8jTF07ryQrEJlOAqsinutfmSfC+oTxQcGVfQ2DLb?=
+ =?us-ascii?Q?CWHygwJDC0CkbrcA9m9hX9v6gbpWzdq5Qw5SoHUCaFlJrWSaO5C85DMAzTjc?=
+ =?us-ascii?Q?+sFqA2R1K5RZyS9AdGGU0vZ5xQfhVwY19wpKhA63AQHXKDJOHt0L1Lh7H6DT?=
+ =?us-ascii?Q?dQTQYXiz7P2yV9llzwaUiBhRWdDEkAR1X+4rVmC1yL8JjJCK1BPGIJVW+lOR?=
+ =?us-ascii?Q?yuu2pWCLX/ipUMAusC9Mp9sDFg3TeoHfULzHgwRdz7JtweozJoW2w3kwzbsd?=
+ =?us-ascii?Q?TaWEeA5of4A/lhEVYKtGe6RQ9iFyGqz0qvmcksnmKWhZ4FWbr4cctylCbBm0?=
+ =?us-ascii?Q?GKatSTmHkoZxBLye1e3NCaBxVwBIGh4Ne2uHFQdu29t3a3AXQeh8sefB2qrw?=
+ =?us-ascii?Q?zXRQgQYCRI52jfYFm9gpFKZK/+ioF4dasvOB6NzROwg3OkRzVBnkbsALtOM7?=
+ =?us-ascii?Q?kpnUbhyBSCvVrRlpm44AzaT3nwxRZOrsxXSy3HsYXi23OyVZEA+OVX47ERVh?=
+ =?us-ascii?Q?JttRX06JGaEtSalehAY5aqhmGD6pCyfOHViun67wFGEP6u2VxJpRMIATJrey?=
+ =?us-ascii?Q?cs4+iliNtpnytgscrZpZkBmmFigSLNvOk1xZk7df2FKFdccTcGWVpoqLjeFX?=
+ =?us-ascii?Q?f4V823Q27ukXVPKtlXyCy4KU1qMNX1LvEyE6JaGXr+b7rvu1z03sbQu4mse8?=
+ =?us-ascii?Q?icVJyEnlrCs3K2z/l8M2bf7i3+o6I+ySU9zCLXZ9sEowjEd3wjDDH88K1tdg?=
+ =?us-ascii?Q?yqX5lfZVrcbu8Ox1dazPIL4RXcseIAHmWoZYm6D+DXhVbaLpmza/A8ncnRJ9?=
+ =?us-ascii?Q?Fp5MmY/n1Hg6iCqNtG6/MXbEDRxA9XOqH3Jr8v/pVFvoSU87XvHBAblIM4n5?=
+ =?us-ascii?Q?Hazr/dvEb4DcaDTKBm1GRJm8PpokmZwKSSb4RfjL2Hs+p4tudpVGKf6TVYgN?=
+ =?us-ascii?Q?JeM66FiDSURYrqieN1Nm1RRRzqPzUzKWMDf/gcvI4x49C7b3CTJPFiEQKIPY?=
+ =?us-ascii?Q?oc388UKM0fdzZdPLsRGROghDbWbHHIW1JUTvUAbUqselJx1+absrPkMfx0w8?=
+ =?us-ascii?Q?K9o19LffBVv7ciq3kNzcYGRt8q3jQWhX7OvPpM6e4nejPjn36o8xyFbF+7lj?=
+ =?us-ascii?Q?JQ3hMv/sYF+ZvP7YR3fAFBeEkgUt/9dSEIMJQTK4fCVIj+tOFYs6hNtPOn6r?=
+ =?us-ascii?Q?LpkGpWhZ8H80krX/31L02/jmo6QBM0VzPbWjkAId+LFZa0xu5i02X2avaMPw?=
+ =?us-ascii?Q?2i55Yy4qgI1IVkGJhv6gLYKJLMfbH7C4iSqepJcTYE/L67M3CbcCKNnUz6EF?=
+ =?us-ascii?Q?ALDirBYQKrCso15oBJ6VQyeWbeeT3kpzVg80t56mlVxfrDgQf0nmaA6r6pV2?=
+ =?us-ascii?Q?wGvd2FzYaO63lv2FH3Sr52q2NCkx3EPqz3LGeLrFBz8KKk3LK837sVQraDm3?=
+ =?us-ascii?Q?kvohUrvZajpSlLGXDtEniqg8rn/zK0v/lEy+Y7u383XAdMdgpYxJcf0p+Bxi?=
+ =?us-ascii?Q?CFS84c3csIfu9ACK5nO2a1Kr641L2Yo=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: nokia-bell-labs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: AM9PR07MB7969.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 94dbcc9c-40fb-491b-162a-08de627a4c42
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Feb 2026 16:44:13.7914
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 5d471751-9675-428d-917b-70f44f9630b0
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: gFdEicGF9UD198qsTgBjw34PgWUJAm3DUDpD9pIj3rxu7aaWTxuGHi0mgkK5W8LlrkgY+t3RzpLsJPhCuVT8LlpoGDhXbsoeZMkk0ZFYJbL9cxY5RARi7FmPkPd0x+Sq
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR07MB7866
 
-This patch introduces 'struct quic_conn_id_set' for managing Connection
-IDs (CIDs), which are represented by 'struct quic_source_conn_id'
-and 'struct quic_dest_conn_id'.
+> -----Original Message-----
+> From: Michael S. Tsirkin <mst@redhat.com>=20
+> Sent: Sunday, February 1, 2026 10:05 AM
+> To: Chia-Yu Chang (Nokia) <chia-yu.chang@nokia-bell-labs.com>
+> Cc: tariqt@nvidia.com; linux-rdma@vger.kernel.org; shaojijie@huawei.com; =
+shenjian15@huawei.com; salil.mehta@huawei.com; mbloch@nvidia.com; saeedm@nv=
+idia.com; leon@kernel.org; eperezma@redhat.com; brett.creeley@amd.com; jaso=
+wang@redhat.com; virtualization@lists.linux.dev; xuanzhuo@linux.alibaba.com=
+; pabeni@redhat.com; edumazet@google.com; parav@nvidia.com; linux-doc@vger.=
+kernel.org; corbet@lwn.net; horms@kernel.org; dsahern@kernel.org; kuniyu@go=
+ogle.com; bpf@vger.kernel.org; netdev@vger.kernel.org; dave.taht@gmail.com;=
+ jhs@mojatatu.com; kuba@kernel.org; stephen@networkplumber.org; xiyou.wangc=
+ong@gmail.com; jiri@resnulli.us; davem@davemloft.net; andrew+netdev@lunn.ch=
+; donald.hunter@gmail.com; ast@fiberby.net; liuhangbin@gmail.com; shuah@ker=
+nel.org; linux-kselftest@vger.kernel.org; ij@kernel.org; ncardwell@google.c=
+om; Koen De Schepper (Nokia) <koen.de_schepper@nokia-bell-labs.com>; g.whit=
+e@cablelabs.com; ingemar.s.johansson@ericsson.com; mirja.kuehlewind@ericsso=
+n.com; cheshire@apple.com; rs.ietf@gmx.at; Jason_Livingood@comcast.com; vid=
+hi_goel@apple.com
+> Subject: Re: [PATCH v1 net-next 2/3] net: hns3/mlx5e: avoid corrupting CW=
+R flag when receiving GRO packet
+>=20
+>=20
+> CAUTION: This is an external email. Please be very careful when clicking =
+links or opening attachments. See the URL nok.it/ext for additional informa=
+tion.
+>=20
+>=20
+>=20
+> On Sat, Jan 31, 2026 at 11:55:09PM +0100, chia-yu.chang@nokia-bell-labs.c=
+om wrote:
+> > From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+> >
+> > In Accurate ECN, ACE counter (AE, ECE, CWR flags) changes only when=20
+> > new CE packets arrive, while setting SKB_GSO_TCP_ECN in case of not=20
+> > knowing the ECN variant can result in header change that corrupts the A=
+CE field.
+> > The new flag SKB_GSO_TCP_ACCECN is to prevent SKB_GSO_TCP_ECN or=20
+> > NETIF_F_TSO_ECN offloading to be used because they would corrupt CWR=20
+> > flag somewhere.
+> >
+> > Signed-off-by: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+>=20
+> Not my driver, but a better format is something along the lines of:
+>=20
+> Currently .... this is wrong because ... as the result .... fix this by .=
+..
+> so that ....
+>=20
+> the coding style does say that you should use the imperative form.
+>=20
+Hi Michael,
 
-It provides helpers to add and remove CIDs from the set, and handles
-insertion of source CIDs into the global connection ID hash table
-when necessary.
+I will update the commit messages for all these 3 patches.
+And sorry for the typo, this shall be v2, and the next version will be v3 -=
+ will clarify it.
+Thanks.
 
-- quic_conn_id_add(): Add a new Connection ID to the set, and inserts
-  it to conn_id hash table if it is a source conn_id.
-
-- quic_conn_id_remove(): Remove connection IDs the set with sequence
-  numbers less than or equal to a number.
-
-It also adds utilities to look up CIDs by value or sequence number,
-search the global hash table for incoming packets, and check for
-stateless reset tokens among destination CIDs. These functions are
-essential for RX path connection lookup and stateless reset processing.
-
-- quic_conn_id_find(): Find a Connection ID in the set by seq number.
-
-- quic_conn_id_lookup(): Lookup a Connection ID from global hash table
-  using the ID value, typically used for socket lookup on the RX path.
-
-- quic_conn_id_token_exists(): Check if a stateless reset token exists
-  in any dest Connection ID (used during stateless reset processing).
-
-Note source/dest conn_id set is per socket, the operations on it are
-always protected by the sock lock.
-
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
----
-v3:
-  - Clarify in changelog that conn_id set is always protected by sock lock
-    (suggested by Paolo).
-  - Adjust global source conn_id hashtable operations for the new hashtable
-    type.
-v4:
-  - Replace struct hlist_node with hlist_nulls_node for the node in
-    struct quic_source_conn_id to support lockless lookup.
-v7:
-  - Break the loop earlier if common->number > number in
-    quic_conn_id_remove/find() (suggested by Paolo).
-  - Add a comment in quic_conn_id_first_number().
-v8:
-  - Add a comment to quic_conn_id_remove() clarifying that the ID number
-    must be smaller than the sequence number of the last ID in the set.
----
- net/quic/Makefile |   2 +-
- net/quic/connid.c | 227 ++++++++++++++++++++++++++++++++++++++++++++++
- net/quic/connid.h | 163 +++++++++++++++++++++++++++++++++
- net/quic/socket.c |   6 ++
- net/quic/socket.h |  13 +++
- 5 files changed, 410 insertions(+), 1 deletion(-)
- create mode 100644 net/quic/connid.c
- create mode 100644 net/quic/connid.h
-
-diff --git a/net/quic/Makefile b/net/quic/Makefile
-index 094e9da5d739..eee7501588d3 100644
---- a/net/quic/Makefile
-+++ b/net/quic/Makefile
-@@ -5,4 +5,4 @@
- 
- obj-$(CONFIG_IP_QUIC) += quic.o
- 
--quic-y := common.o family.o protocol.o socket.o stream.o
-+quic-y := common.o family.o protocol.o socket.o stream.o connid.o
-diff --git a/net/quic/connid.c b/net/quic/connid.c
-new file mode 100644
-index 000000000000..5473b1086927
---- /dev/null
-+++ b/net/quic/connid.c
-@@ -0,0 +1,227 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Initialization/cleanup for QUIC protocol support.
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+#include <linux/quic.h>
-+#include <net/sock.h>
-+
-+#include "common.h"
-+#include "connid.h"
-+
-+/* Lookup a source connection ID (scid) in the global source connection ID hash table. */
-+struct quic_conn_id *quic_conn_id_lookup(struct net *net, u8 *scid, u32 len)
-+{
-+	struct quic_shash_head *head = quic_source_conn_id_head(net, scid, len);
-+	struct quic_source_conn_id *s_conn_id;
-+	struct quic_conn_id *conn_id = NULL;
-+	struct hlist_nulls_node *node;
-+
-+	hlist_nulls_for_each_entry_rcu(s_conn_id, node, &head->head, node) {
-+		if (net == sock_net(s_conn_id->sk) && s_conn_id->common.id.len == len &&
-+		    !memcmp(scid, &s_conn_id->common.id.data, s_conn_id->common.id.len)) {
-+			if (likely(refcount_inc_not_zero(&s_conn_id->sk->sk_refcnt)))
-+				conn_id = &s_conn_id->common.id;
-+			break;
-+		}
-+	}
-+	return conn_id;
-+}
-+
-+/* Check if a given stateless reset token exists in any connection ID in the connection ID set. */
-+bool quic_conn_id_token_exists(struct quic_conn_id_set *id_set, u8 *token)
-+{
-+	struct quic_common_conn_id *common;
-+	struct quic_dest_conn_id *dcid;
-+
-+	dcid = (struct quic_dest_conn_id *)id_set->active;
-+	if (!memcmp(dcid->token, token, QUIC_CONN_ID_TOKEN_LEN)) /* Fast path. */
-+		return true;
-+
-+	list_for_each_entry(common, &id_set->head, list) {
-+		dcid = (struct quic_dest_conn_id *)common;
-+		if (common == id_set->active)
-+			continue;
-+		if (!memcmp(dcid->token, token, QUIC_CONN_ID_TOKEN_LEN))
-+			return true;
-+	}
-+	return false;
-+}
-+
-+static void quic_source_conn_id_free_rcu(struct rcu_head *head)
-+{
-+	struct quic_source_conn_id *s_conn_id;
-+
-+	s_conn_id = container_of(head, struct quic_source_conn_id, rcu);
-+	kfree(s_conn_id);
-+}
-+
-+static void quic_source_conn_id_free(struct quic_source_conn_id *s_conn_id)
-+{
-+	u8 *data = s_conn_id->common.id.data;
-+	u32 len = s_conn_id->common.id.len;
-+	struct quic_shash_head *head;
-+
-+	if (!hlist_nulls_unhashed(&s_conn_id->node)) {
-+		head = quic_source_conn_id_head(sock_net(s_conn_id->sk), data, len);
-+		spin_lock_bh(&head->lock);
-+		hlist_nulls_del_init_rcu(&s_conn_id->node);
-+		spin_unlock_bh(&head->lock);
-+	}
-+
-+	/* Freeing is deferred via RCU to avoid use-after-free during concurrent lookups. */
-+	call_rcu(&s_conn_id->rcu, quic_source_conn_id_free_rcu);
-+}
-+
-+static void quic_conn_id_del(struct quic_common_conn_id *common)
-+{
-+	list_del(&common->list);
-+	if (!common->hashed) {
-+		kfree(common);
-+		return;
-+	}
-+	quic_source_conn_id_free((struct quic_source_conn_id *)common);
-+}
-+
-+/* Add a connection ID with sequence number and associated private data to the connection ID set. */
-+int quic_conn_id_add(struct quic_conn_id_set *id_set,
-+		     struct quic_conn_id *conn_id, u32 number, void *data)
-+{
-+	struct quic_source_conn_id *s_conn_id;
-+	struct quic_dest_conn_id *d_conn_id;
-+	struct quic_common_conn_id *common;
-+	struct quic_shash_head *head;
-+	struct list_head *list;
-+
-+	/* Locate insertion point to keep list ordered by number. */
-+	list = &id_set->head;
-+	list_for_each_entry(common, list, list) {
-+		if (number == common->number)
-+			return 0; /* Ignore if it already exists on the list. */
-+		if (number < common->number) {
-+			list = &common->list;
-+			break;
-+		}
-+	}
-+
-+	if (conn_id->len > QUIC_CONN_ID_MAX_LEN)
-+		return -EINVAL;
-+	common = kzalloc(id_set->entry_size, GFP_ATOMIC);
-+	if (!common)
-+		return -ENOMEM;
-+	common->id = *conn_id;
-+	common->number = number;
-+	if (id_set->entry_size == sizeof(struct quic_dest_conn_id)) {
-+		/* For destination connection IDs, copy the stateless reset token if available. */
-+		if (data) {
-+			d_conn_id = (struct quic_dest_conn_id *)common;
-+			memcpy(d_conn_id->token, data, QUIC_CONN_ID_TOKEN_LEN);
-+		}
-+	} else {
-+		/* For source connection IDs, mark as hashed and insert into the global source
-+		 * connection ID hashtable.
-+		 */
-+		common->hashed = 1;
-+		s_conn_id = (struct quic_source_conn_id *)common;
-+		s_conn_id->sk = data;
-+
-+		head = quic_source_conn_id_head(sock_net(s_conn_id->sk), common->id.data,
-+						common->id.len);
-+		spin_lock_bh(&head->lock);
-+		hlist_nulls_add_head_rcu(&s_conn_id->node, &head->head);
-+		spin_unlock_bh(&head->lock);
-+	}
-+	list_add_tail(&common->list, list);
-+
-+	if (number == quic_conn_id_last_number(id_set) + 1) {
-+		if (!id_set->active)
-+			id_set->active = common;
-+		id_set->count++;
-+
-+		/* Increment count for consecutive following IDs. */
-+		list_for_each_entry_continue(common, &id_set->head, list) {
-+			if (common->number != ++number)
-+				break;
-+			id_set->count++;
-+		}
-+	}
-+	return 0;
-+}
-+
-+/* Remove connection IDs from the set with sequence numbers less than or equal to a number.
-+ * The number must be smaller than the sequence number of the last ID in the set.
-+ */
-+void quic_conn_id_remove(struct quic_conn_id_set *id_set, u32 number)
-+{
-+	struct quic_common_conn_id *common, *tmp;
-+	struct list_head *list;
-+
-+	list = &id_set->head;
-+	list_for_each_entry_safe(common, tmp, list, list) {
-+		if (common->number > number)
-+			break;
-+		if (id_set->active == common)
-+			id_set->active = tmp;
-+		quic_conn_id_del(common);
-+		id_set->count--;
-+	}
-+}
-+
-+struct quic_conn_id *quic_conn_id_find(struct quic_conn_id_set *id_set, u32 number)
-+{
-+	struct quic_common_conn_id *common;
-+
-+	list_for_each_entry(common, &id_set->head, list) {
-+		if (common->number > number)
-+			break;
-+		if (common->number == number)
-+			return &common->id;
-+	}
-+	return NULL;
-+}
-+
-+void quic_conn_id_update_active(struct quic_conn_id_set *id_set, u32 number)
-+{
-+	struct quic_conn_id *conn_id;
-+
-+	if (number == id_set->active->number)
-+		return;
-+	conn_id = quic_conn_id_find(id_set, number);
-+	if (!conn_id)
-+		return;
-+	quic_conn_id_set_active(id_set, conn_id);
-+}
-+
-+void quic_conn_id_set_init(struct quic_conn_id_set *id_set, bool source)
-+{
-+	id_set->entry_size = source ? sizeof(struct quic_source_conn_id) :
-+				      sizeof(struct quic_dest_conn_id);
-+	INIT_LIST_HEAD(&id_set->head);
-+}
-+
-+void quic_conn_id_set_free(struct quic_conn_id_set *id_set)
-+{
-+	struct quic_common_conn_id *common, *tmp;
-+
-+	list_for_each_entry_safe(common, tmp, &id_set->head, list)
-+		quic_conn_id_del(common);
-+	id_set->count = 0;
-+	id_set->active = NULL;
-+}
-+
-+void quic_conn_id_get_param(struct quic_conn_id_set *id_set, struct quic_transport_param *p)
-+{
-+	p->active_connection_id_limit = id_set->max_count;
-+}
-+
-+void quic_conn_id_set_param(struct quic_conn_id_set *id_set, struct quic_transport_param *p)
-+{
-+	id_set->max_count = p->active_connection_id_limit;
-+}
-diff --git a/net/quic/connid.h b/net/quic/connid.h
-new file mode 100644
-index 000000000000..f5bb590ffd93
---- /dev/null
-+++ b/net/quic/connid.h
-@@ -0,0 +1,163 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+#define QUIC_CONN_ID_LIMIT	8
-+#define QUIC_CONN_ID_DEF	7
-+#define QUIC_CONN_ID_LEAST	2
-+
-+#define QUIC_CONN_ID_TOKEN_LEN	16
-+
-+/* Common fields shared by both source and destination Connection IDs */
-+struct quic_common_conn_id {
-+	struct quic_conn_id id;	/* The actual Connection ID value and its length */
-+	struct list_head list;	/* Linked list node for conn_id list management */
-+	u32 number;		/* Sequence number assigned to this Connection ID */
-+	u8 hashed;		/* Non-zero if this ID is stored in source_conn_id hashtable */
-+};
-+
-+struct quic_source_conn_id {
-+	struct quic_common_conn_id common;
-+	struct hlist_nulls_node node;	/* Hash table node for fast lookup by Connection ID */
-+	struct rcu_head rcu;		/* RCU header for deferred destruction */
-+	struct sock *sk;		/* Pointer to sk associated with this Connection ID */
-+};
-+
-+struct quic_dest_conn_id {
-+	struct quic_common_conn_id common;
-+	u8 token[QUIC_CONN_ID_TOKEN_LEN];	/* Stateless reset token in rfc9000#section-10.3 */
-+};
-+
-+struct quic_conn_id_set {
-+	/* Connection ID in use on the current path */
-+	struct quic_common_conn_id *active;
-+	/* Connection ID to use for a new path (e.g., after migration) */
-+	struct quic_common_conn_id *alt;
-+	struct list_head head;	/* Head of the linked list of available connection IDs */
-+	u8 entry_size;		/* Size of each connection ID entry (in bytes) in the list */
-+	u8 max_count;		/* active_connection_id_limit in rfc9000#section-18.2 */
-+	u8 count;		/* Current number of connection IDs in the list */
-+};
-+
-+static inline u32 quic_conn_id_first_number(struct quic_conn_id_set *id_set)
-+{
-+	struct quic_common_conn_id *common;
-+
-+	/* The id_set is guaranteed to be non-empty when called (sk is not in CLOSE state). */
-+	common = list_first_entry(&id_set->head, struct quic_common_conn_id, list);
-+	return common->number;
-+}
-+
-+static inline u32 quic_conn_id_last_number(struct quic_conn_id_set *id_set)
-+{
-+	return quic_conn_id_first_number(id_set) + id_set->count - 1;
-+}
-+
-+static inline void quic_conn_id_generate(struct quic_conn_id *conn_id)
-+{
-+	get_random_bytes(conn_id->data, QUIC_CONN_ID_DEF_LEN);
-+	conn_id->len = QUIC_CONN_ID_DEF_LEN;
-+}
-+
-+/* Select an alternate destination Connection ID for a new path (e.g., after migration). */
-+static inline bool quic_conn_id_select_alt(struct quic_conn_id_set *id_set, bool active)
-+{
-+	if (id_set->alt)
-+		return true;
-+	/* NAT rebinding: peer keeps using the current source conn_id.
-+	 * In this case, continue using the same dest conn_id for the new path.
-+	 */
-+	if (active) {
-+		id_set->alt = id_set->active;
-+		return true;
-+	}
-+	/* Treat the prev conn_ids as used.
-+	 * Try selecting the next conn_id in the list, unless at the end.
-+	 */
-+	if (id_set->active->number != quic_conn_id_last_number(id_set)) {
-+		id_set->alt = list_next_entry(id_set->active, list);
-+		return true;
-+	}
-+	/* If there's only one conn_id in the list, reuse the active one. */
-+	if (id_set->active->number == quic_conn_id_first_number(id_set)) {
-+		id_set->alt = id_set->active;
-+		return true;
-+	}
-+	/* No alternate conn_id could be selected.  Caller should send a
-+	 * QUIC_FRAME_RETIRE_CONNECTION_ID frame to request new connection IDs from the peer.
-+	 */
-+	return false;
-+}
-+
-+static inline void quic_conn_id_set_alt(struct quic_conn_id_set *id_set, struct quic_conn_id *alt)
-+{
-+	id_set->alt = (struct quic_common_conn_id *)alt;
-+}
-+
-+/* Swap the active and alternate destination Connection IDs after path migration completes,
-+ * since the path has already been switched accordingly.
-+ */
-+static inline void quic_conn_id_swap_active(struct quic_conn_id_set *id_set)
-+{
-+	void *active = id_set->active;
-+
-+	id_set->active = id_set->alt;
-+	id_set->alt = active;
-+}
-+
-+/* Choose which destination Connection ID to use for a new path migration if alt is true. */
-+static inline struct quic_conn_id *quic_conn_id_choose(struct quic_conn_id_set *id_set, u8 alt)
-+{
-+	return (alt && id_set->alt) ? &id_set->alt->id : &id_set->active->id;
-+}
-+
-+static inline struct quic_conn_id *quic_conn_id_active(struct quic_conn_id_set *id_set)
-+{
-+	return &id_set->active->id;
-+}
-+
-+static inline void quic_conn_id_set_active(struct quic_conn_id_set *id_set,
-+					   struct quic_conn_id *active)
-+{
-+	id_set->active = (struct quic_common_conn_id *)active;
-+}
-+
-+static inline u32 quic_conn_id_number(struct quic_conn_id *conn_id)
-+{
-+	return ((struct quic_common_conn_id *)conn_id)->number;
-+}
-+
-+static inline struct sock *quic_conn_id_sk(struct quic_conn_id *conn_id)
-+{
-+	return ((struct quic_source_conn_id *)conn_id)->sk;
-+}
-+
-+static inline void quic_conn_id_set_token(struct quic_conn_id *conn_id, u8 *token)
-+{
-+	memcpy(((struct quic_dest_conn_id *)conn_id)->token, token, QUIC_CONN_ID_TOKEN_LEN);
-+}
-+
-+static inline int quic_conn_id_cmp(struct quic_conn_id *a, struct quic_conn_id *b)
-+{
-+	return a->len != b->len || memcmp(a->data, b->data, a->len);
-+}
-+
-+int quic_conn_id_add(struct quic_conn_id_set *id_set, struct quic_conn_id *conn_id,
-+		     u32 number, void *data);
-+bool quic_conn_id_token_exists(struct quic_conn_id_set *id_set, u8 *token);
-+void quic_conn_id_remove(struct quic_conn_id_set *id_set, u32 number);
-+
-+struct quic_conn_id *quic_conn_id_find(struct quic_conn_id_set *id_set, u32 number);
-+struct quic_conn_id *quic_conn_id_lookup(struct net *net, u8 *scid, u32 len);
-+void quic_conn_id_update_active(struct quic_conn_id_set *id_set, u32 number);
-+
-+void quic_conn_id_get_param(struct quic_conn_id_set *id_set, struct quic_transport_param *p);
-+void quic_conn_id_set_param(struct quic_conn_id_set *id_set, struct quic_transport_param *p);
-+void quic_conn_id_set_init(struct quic_conn_id_set *id_set, bool source);
-+void quic_conn_id_set_free(struct quic_conn_id_set *id_set);
-diff --git a/net/quic/socket.c b/net/quic/socket.c
-index d6f25669c693..ad581d84f684 100644
---- a/net/quic/socket.c
-+++ b/net/quic/socket.c
-@@ -41,6 +41,9 @@ static int quic_init_sock(struct sock *sk)
- 	sk->sk_write_space = quic_write_space;
- 	sock_set_flag(sk, SOCK_USE_WRITE_QUEUE);
- 
-+	quic_conn_id_set_init(quic_source(sk), 1);
-+	quic_conn_id_set_init(quic_dest(sk), 0);
-+
- 	if (quic_stream_init(quic_streams(sk)))
- 		return -ENOMEM;
- 
-@@ -55,6 +58,9 @@ static int quic_init_sock(struct sock *sk)
- 
- static void quic_destroy_sock(struct sock *sk)
- {
-+	quic_conn_id_set_free(quic_source(sk));
-+	quic_conn_id_set_free(quic_dest(sk));
-+
- 	quic_stream_free(quic_streams(sk));
- 
- 	quic_data_free(quic_ticket(sk));
-diff --git a/net/quic/socket.h b/net/quic/socket.h
-index 0dfd3f8f3115..34363dd3345a 100644
---- a/net/quic/socket.h
-+++ b/net/quic/socket.h
-@@ -14,6 +14,7 @@
- #include "common.h"
- #include "family.h"
- #include "stream.h"
-+#include "connid.h"
- 
- #include "protocol.h"
- 
-@@ -37,6 +38,8 @@ struct quic_sock {
- 	struct quic_data		alpn;
- 
- 	struct quic_stream_table	streams;
-+	struct quic_conn_id_set		source;
-+	struct quic_conn_id_set		dest;
- };
- 
- struct quic6_sock {
-@@ -79,6 +82,16 @@ static inline struct quic_stream_table *quic_streams(const struct sock *sk)
- 	return &quic_sk(sk)->streams;
- }
- 
-+static inline struct quic_conn_id_set *quic_source(const struct sock *sk)
-+{
-+	return &quic_sk(sk)->source;
-+}
-+
-+static inline struct quic_conn_id_set *quic_dest(const struct sock *sk)
-+{
-+	return &quic_sk(sk)->dest;
-+}
-+
- static inline bool quic_is_serv(const struct sock *sk)
- {
- 	return !!sk->sk_max_ack_backlog;
--- 
-2.47.1
-
+Chia-Yu
