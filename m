@@ -1,95 +1,162 @@
-Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.codelabs.ch (mail.codelabs.ch [109.202.192.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7E937B3F6
-	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 15:21:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A16337AA81;
+	Mon,  2 Feb 2026 15:23:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.202.192.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770045699; cv=none; b=nID6Cwdqt3X4ekjCtX2MNAs2fpFvH3oCR2t0KGdBqRtWvoyTWQK9duSJ14Cy0vBtuNRO+ZrV29s4qYkzkgcqeNlm5smeA06Y8Zx2eHB9hsFrD3yCLArn5ZOq54iuuW/rPVJmdK71kvRAx4YpPj/CPhX59tnyTA2nI2HJcBz4FPY=
+	t=1770045843; cv=none; b=pMYhhr02Iy9re4v46dXCeZwnNuUHCibwOqDwSzc7cdySGAxwR62PHgllCmVYRy7+5x0OQ4ON5p5Tcc1WVj31VamkSLHg0yqGdelxsvHER+MlIX2PXHSljML5asIESQrYQhYUb4ei8RSAhA6GV9j+sD2r/S9D5e7y39ozYi4i+eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770045699; c=relaxed/simple;
-	bh=8Q88YVpVN3f3KDYwz/Bw/XL91VtecrW4X14Cb3DAFDU=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=p5kdOPRN3stM6ukghe96yvcRUxHjzEilHL+u5c5BrbZEUSf64jCxPYYjsYGk7VmbX7RMwLb8T41B5FPBMINnV78tv0J97EImca+F5cN9KsDe1EiczOG84rTAhoEtsVsXpk0G/MiSGA6FkTAncx5JN28U+ZNL21l8R8GbIQNEUdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=aiYrJAju; arc=none smtp.client-ip=209.85.210.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+	s=arc-20240116; t=1770045843; c=relaxed/simple;
+	bh=ZOMvloZpNoMhFlLtr09Mi3WPCTznnwTUTRzItsEszKg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=D1pWI+Hs3x8zapqh6SJG5e/SWQiPwdp5zvJRxQmTw/o+8AdzqElrIbuJ0FXTJNvegs5OWaZn4zLC5WsGZjpLSsz9bqaAYLSB1HKr48p/eS3ZoBZVjrdtCHCbF+3BMAiWc3aF1PYEvs2BoQyumyGP6dOxyweM4/OwU3r3K6ERR5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org; spf=pass smtp.mailfrom=strongswan.org; dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b=uEklFGEc; arc=none smtp.client-ip=109.202.192.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strongswan.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="aiYrJAju"
-Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-7d15b8feca3so4426435a34.3
-        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 07:21:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1770045697; x=1770650497; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uLiAs6xCi3OF/LJRXhhuk0xFYAWHNsdktdbtat4hSjg=;
-        b=aiYrJAjueiUgJ/jQVBQdnW7Du4jBRFhi/+UzWwaLimkR6qgXB9O3yF26ivKn6H2aZg
-         SIL0MmRfQd+Zz7+tgKTkX3Y+Cas3nZSirA3to+/IhpmfMcSvD7Rkeeg+k1dQcFETSzh0
-         2Qd7ab5uRLelI1KCwKvEUJJBI1aeAcve9sG36yWt2n0c1j7Ozuetk78rflGVPJUyeDFl
-         fxH5JOkw8pCxVm34ECaC2VCmEWGwETtcqIjzK7/uvJV9UZF7RPgCutkPmLC/lsMQPofz
-         Oph0KEfmp6hPwOt4Xb9Pzdm24OExKOuorQNuf/dPXCoE4T4h1cAy5ip9HhpIjc/xK8jv
-         dNlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770045697; x=1770650497;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=uLiAs6xCi3OF/LJRXhhuk0xFYAWHNsdktdbtat4hSjg=;
-        b=qN2G/Sz4yvp0aBy2XmMWVSAkIjcPnnYrUOcf/nubdJ0t1bFOJk0MptyI7MDTulzw6s
-         GAbTy3sf7238oVuIXOaK/64j2MOG6V/8CB4VojrTR/KpXocTo1ODQ2nubG079+AMxOFm
-         kve/iEAR4uy1pBgIqwYHh3vu5atpLJmXmOCK/xAKjV48Ea1wymeZOHwQhZyxFEZJ5mPo
-         Umd2fH7nw/4W07vc0L77jYMEdWyrxOqHrxo3vopBtbLL3poGPv51Ix0QkzBxcBwi0zvc
-         mW4VIC2iwDgxBofopOki/6HUWYFOz9eXFhAhM9sgW6DLcsH9d+bXRiA19cLQG1Dfjer5
-         XFeg==
-X-Gm-Message-State: AOJu0YxacdRMIGHYVafEs9WrzzGXvhCrh/K6GeEq8vNTtIKfWjY3Kmgv
-	/dgkvfx+We/5sGviFp0YoRBNATRZkstprZj9Cb6TK2Ly0L7v9dfrktofwTjyFCdHQiw=
-X-Gm-Gg: AZuq6aLFraLSboDOpG/oHprFcigL/gk9EkzLFdV/S8RDQhBdAK589AhQ8NtzbfZR0fh
-	5GFAffda0qQwAS0tbAwNrD/USwKczBXs1lHv1jynVYk4LkAWTnxW5s5CeNe5+Sw9TuashCuvjH0
-	4bAozOyZ4WpoO6O1fSkJwnRck+QbnNI7SBaZ5btTiQOVr9dvKA/enV23Wa8sHo45SQrKOvggXTU
-	5QiKgMSbuWhfit0IBISXhBcCsqKyh5+STeDKvBkll4eveDPAYpb7hfo2IMkLlh/V7/4NARursz0
-	pWOLv7Nem8LsXC6nj54IwTz2+8J+0juGSsEpS8pHSEb1BpwBw2uQ1tf0nf4Ms7igW0IRHMS3FVK
-	aYydq+plkUwIlKgXUe+Mhrbz6ePI1r7oB3ERvgqn16QEBsjkarNbChaAF4XVYNlfb8zuPi1bD0O
-	r5V+465GXtgcXoGaKAycjRAzHjgi8nqJ+Zk4Fr7DtqKBoV6SiahjEdjnOGqLT6AuSh
-X-Received: by 2002:a05:6830:3103:b0:7cf:d168:1f3e with SMTP id 46e09a7af769-7d1a52a738bmr6797945a34.3.1770045696904;
-        Mon, 02 Feb 2026 07:21:36 -0800 (PST)
-Received: from [127.0.0.1] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d18c7ffcbcsm10613171a34.24.2026.02.02.07.21.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 07:21:36 -0800 (PST)
-From: Jens Axboe <axboe@kernel.dk>
-To: io-uring@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>
-Cc: netdev@vger.kernel.org
-In-Reply-To: <634b9ef89352140259494d6d08086aaa30a72e02.1769962683.git.asml.silence@gmail.com>
-References: <634b9ef89352140259494d6d08086aaa30a72e02.1769962683.git.asml.silence@gmail.com>
-Subject: Re: [PATCH io_uring 1/1] io_uring/zcrx: fix rq flush locking
-Message-Id: <177004569590.1085433.5381405081805742961.b4-ty@kernel.dk>
-Date: Mon, 02 Feb 2026 08:21:35 -0700
+	dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b="uEklFGEc"
+Received: from localhost (localhost [127.0.0.1])
+	by mail.codelabs.ch (Postfix) with ESMTP id 30E9A5A0003;
+	Mon, 02 Feb 2026 16:16:05 +0100 (CET)
+Received: from mail.codelabs.ch ([127.0.0.1])
+ by localhost (fenrir.codelabs.ch [127.0.0.1]) (amavis, port 10024) with ESMTP
+ id DhGq3aCiKGkT; Mon,  2 Feb 2026 16:16:03 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=strongswan.org;
+	s=default; t=1770045363;
+	bh=ZOMvloZpNoMhFlLtr09Mi3WPCTznnwTUTRzItsEszKg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=uEklFGEchrx5Q7Mc7TCb+vZYPro4WvC5aOuP1tfKi35uw2e3C7bhPd456HjI6yGO8
+	 4HKqkc1EAW/dOQ+xGrAUegk+K1JLV+1m9B+33JBFAV84i+nLm9bnbPGCnM6NJ4NLmy
+	 FsWddc/EfMU37CiqI/G79+cw6f7IP18DcPwEPwHOQAvF2aW1leJnFnNXxWV8po0glw
+	 HzSoIzPFApqBIUCuYFVmF+rUmAF+wYGN4bhc1RWnqjvdrubRNyB9YkMaIp1WdkXaqA
+	 gJSEw3z06Cf5NTAlmHN3jG27AeOhrcJMaSg1hQgPmyX8HkqK6vihVFY4hv961z68iq
+	 xSW5D1RVV5hdw==
+Received: from [IPV6:2a02:16a:6e09::1f84] (unknown [IPv6:2a02:16a:6e09::1f84])
+	by mail.codelabs.ch (Postfix) with ESMTPSA id B0C515A0001;
+	Mon, 02 Feb 2026 16:16:03 +0100 (CET)
+Message-ID: <4eb261ce-5f05-49dd-a668-6bb18e332f91@strongswan.org>
+Date: Mon, 2 Feb 2026 16:16:03 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [devel-ipsec] Re: [PATCH net-next v4 1/2] icmp: fix ICMP error
+ source address when xfrm policy matches
+To: Paul Wouters <paul@nohats.ca>, Antony Antony <antony@phenome.org>
+Cc: Jakub Kicinski <kuba@kernel.org>,
+ Antony Antony <antony.antony@secunet.com>,
+ Steffen Klassert <steffen.klassert@secunet.com>, netdev@vger.kernel.org,
+ "David S . Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Shuah Khan <shuah@kernel.org>,
+ devel@linux-ipsec.org, Simon Horman <horms@kernel.org>,
+ stable+noautosel@kernel.org, linux-kernel@vger.kernel.org
+References: <cover.1769595011.git.antony.antony@secunet.com>
+ <f820e0e9f80b1467f97d1408f00f61b1fdb1b986.1769595011.git.antony.antony@secunet.com>
+ <20260129184510.01319683@kernel.org> <aYCTfwblH8wtnF6c@Antony2201.local>
+ <d54db2a8-d3ab-b8ff-21fc-a26716a21494@nohats.ca>
+From: Tobias Brunner <tobias@strongswan.org>
+Content-Language: de-CH, en-US
+Autocrypt: addr=tobias@strongswan.org; keydata=
+ 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
+ tvkh7XWO2ycrW1UlzUzM4KV3SDLIhfOU
+In-Reply-To: <d54db2a8-d3ab-b8ff-21fc-a26716a21494@nohats.ca>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3
 
-
-On Sun, 01 Feb 2026 21:19:56 +0000, Pavel Begunkov wrote:
-> zcrx needs to keep the rq lock for uref manipulations, for now move all
-> zcrx_return_buffers() under the lock.
+On 02.02.26 15:53, Paul Wouters wrote:
+> On Mon, 2 Feb 2026, Antony Antony via Devel wrote:
 > 
+>> Hi Jakub,
+>>
+>> On Thu, Jan 29, 2026 at 06:45:10PM -0800, Jakub Kicinski via Devel wrote:
+>>> On Wed, 28 Jan 2026 11:25:14 +0100 Antony Antony wrote:
+>>>> Subject: [PATCH net-next v4 1/2] icmp: fix ICMP error source address when xfrm policy matches
+>>>
+>>>> Fixes: 415b3334a21a ("icmp: Fix regression in nexthop resolution during replies.")
+>>>> Cc: stable+noautosel@kernel.org # Avoid false positives in tests
+>>>
+>>> I don't understand what you're trying to express with all these tags.
+>>> We are sending incorrect ICMP packets, seems like a normal net-worthy
+>>> fix to me?
+>>
+>> You're right that we're sending incorrect ICMP packets when IPsec/xfrm is
+>> enabled and this is a legitimate fix. My concern with backporting is about
+>> potential disruption rather than the correctness of the fix itself.
+>> The issue is that some existing test scripts and monitoring tools may have
+>> hardcoded expectations for the current(incorrect) source address behavior.
+>> When this one-line fix gets backported to all maintained kernels, those
+>> tests would start failing, potentially triggering regression reports and
+>> requests to revert the fix from stable kernels.
+>>
+>> Additionally, without the
+>> commit 63b21caba17e ("xfrm: introduce forwarding of ICMP Error messages")
+>> being present in older kernels, the behavior change could be viewed
+>> differently in stable branches.
+>>
+>> This is also the sense I got from IPsec users.
+>> Given these considerations, I opted for the safer path of targeting net-next
+>> with stable+noautosel, no backporting.
 > 
+> libreswan is unaffected, other than the old code showing a weird
+> unexplainable log message.  So we are not really affected by whether or
+> not this get backported. We would slightly prefer the backport just to
+> get proper icmp messages out there (and we might need to fix a few test
+> cases but that is okay with us). If someone reaches out with strong
+> arguments to not backport, we would be fine with not doing it.
 
-Applied, thanks!
+I think the main concern is that without Antony's patch that adds ICMP
+forwarding via reverse lookup (63b21caba17e ("xfrm: introduce forwarding
+of ICMP Error messages")), which was not backported, packets with the
+correct source IP will not get tunneled if the gateway's IP is not
+contained in the traffic selectors.  So if at all, backporting should
+only be considered to v6.9+ and not anything earlier (the commit
+Antony's Fixes tag references, 415b3334a21a, was released with v3.1).
 
-[1/1] io_uring/zcrx: fix rq flush locking
-      commit: af07330e28ad65352126270b0b3af226df46e307
-
-Best regards,
--- 
-Jens Axboe
-
-
+Regards,
+Tobias
 
