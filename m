@@ -1,163 +1,162 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6BE36A033;
-	Mon,  2 Feb 2026 14:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4359C1A76DE
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 14:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770042334; cv=none; b=cjX4mSEcphtyb18WoeOw/3Qa4tpEWKYPonVuJvaMAmldZ2QcBpl0qZKxSLvFsKt5wnJ5cT35tXP/2iCDE5IzhvaM5OKfkHrsr/9aw0FJcGlwf07K7Q4GznF68rfdjU7lGwyBWPkEByxVg/eNYr2KdI8J4tfrq7Ec7PkZ4Krqwhg=
+	t=1770042459; cv=none; b=mYYtkDIWlgxM3YiDgnW2RVIIuHXMAwGY6HS5oVlGFDN6yXkWskXlo0YMieAvwuwM09PqrRiSwXGjxtx210Ba7b+FkzEJg0dNK9HYQl+FDk/ouQYsGgRkiM486WTW5DFQX81mmkCtg33adZiUBaTYhN/zFKt12Ky2m1pDCcrQATs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770042334; c=relaxed/simple;
-	bh=GGdDwTUpk5EUeNzmFSrWkTf1lB4XJJ1VZLtzjfdQSuk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EyOb4yIf3s1QCF7MlkGXK3Fv44rxXR1oHcJI/suhKINl4LJM+Wt5COv9FAMtXkv7DJ2khoeA73DgLY10pvjFh9g0LrTudOq4PdVt1+eFkxPYRYLKGIQRdvNIuOYNZtjGQZvipbdnqsI1HbhWrHrHPcqNgqac1lYxiMIov0Gz2jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=13AE52ga; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1770042459; c=relaxed/simple;
+	bh=+R4++M8FUTG1DIxvU5O6fXt+ps/irZYihVg1KCToE6M=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NMgKesbowzyxtiDiIv4pJaMCGmgJ10JP49GqKV7n3Kl9WTJk6Rlu/7/gUJsttYm4N0ylKpZcG/5JNL+1JguDzHEb6L8qE+EUQ8NR5c9CfgVxEMZXMf4QvIxNekkG9M8ZhNk7yDGVszjHvkF/I+Xl77fJZw0bVTLNOqK5tN+g8lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=ppNC/Xa5; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="13AE52ga"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=rhBN/4CEHrHWFvjQolbwtIzJ8rg0Id6dJ4/fTSIzWQg=; b=13AE52galpTNyjipvDVESbKnoi
-	UaXvLNM/NjMJsIhewAJZBBaX05Bk1R3bO3S6OK7W3T9RrxTN5/ESCBgrUvBjeoedIgqhqWMz7b25t
-	evfwsiY+UVOMZAJ6Lxh9CJEzkso4rQUnTcbl5ZVNmwHQJpMlRJ2/HfO+Qt4nZerDkoWSPex9tZ3qj
-	FJKbL9XgcmBZOx0CDZFQoR9k6DvCNPIysBa2dnJ7ajDe7LPxfK7J7H/2edJlxC/1uVjmEw3i7sdpO
-	fI7fA8KPw0Aur7E82XilZTeb/vt7c46Haof66U7S1b2M7Tyhu4BQ0l132yu9xJpbSHsKr1W3I8zZF
-	6aHw2dBg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41688)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vmurb-0000000045o-3qFZ;
-	Mon, 02 Feb 2026 14:25:15 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vmurV-000000003T2-190d;
-	Mon, 02 Feb 2026 14:25:09 +0000
-Date: Mon, 2 Feb 2026 14:25:09 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Cc: Wei Fang <wei.fang@nxp.com>, andrew@lunn.ch, hkallweit1@gmail.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, florian.fainelli@broadcom.com,
-	xiaolei.wang@windriver.com, quic_abchauha@quicinc.com,
-	quic_sarohasa@quicinc.com, imx@lists.linux.dev,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 net] net: phy: change devlink flag to
- AUTOREMOVE_SUPPLIER for non-SFP PHYs
-Message-ID: <aYCzxVTTZvok9_d1@shell.armlinux.org.uk>
-References: <20260202054533.539883-1-wei.fang@nxp.com>
- <267c78c1-4ad2-4f06-be63-0fb506c5134d@bootlin.com>
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="ppNC/Xa5"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id 3CE45201E2;
+	Mon,  2 Feb 2026 15:27:34 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id MQSt0OA811MK; Mon,  2 Feb 2026 15:27:33 +0100 (CET)
+Received: from EXCH-02.secunet.de (rl2.secunet.de [10.32.0.232])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 3871F201A1;
+	Mon,  2 Feb 2026 15:27:33 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 3871F201A1
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1770042453;
+	bh=K4RY8oKI9qwfYPI3CVBDF4ISYDibmHkncYTTzUEs0PA=;
+	h=Date:From:To:CC:Subject:Reply-To:References:In-Reply-To:From;
+	b=ppNC/Xa5vz1xnSD6lcj6JS7V9Lezp58YMU9R1H8FzbcifpVDG2s90QPg0L3K+iBZ7
+	 Hm4ewws7Peo4ON8A3D7pe6W4JHBkHNRjHbhKhSBBTox6EYZzQMKM7ME8IOVf/7nPzY
+	 9GXWNyPJjonob7LS+ymespHBhv3aQPRy2v/c/f0+4p/NocLMVdTKaNTQgq2eUbFh0u
+	 33q4Zkxvtts5Ay4uBinZHMezKNePxsRHyXmFvzBrOh5Fa29Gl6hwID9QbnDzMgiFrc
+	 LCrgF3dl6U914qtazX95VSxZUx5rjfzecaTpMIVW88k4QWGdGPCxkgozma0YlPW3nx
+	 zTXhWAFytZqTQ==
+Received: from moon.secunet.de (172.18.149.1) by EXCH-02.secunet.de
+ (10.32.0.172) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 2 Feb
+ 2026 15:27:32 +0100
+Date: Mon, 2 Feb 2026 15:27:06 +0100
+From: Antony Antony <antony.antony@secunet.com>
+To: Yan Yan <evitayan@google.com>
+CC: <netdev@vger.kernel.org>, Steffen Klassert <steffen.klassert@secunet.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>, <antony.antony@secunet.com>, "David
+ S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
+	<saakashkumar@marvell.com>, <akamluddin@marvell.com>, Nathan Harold
+	<nharold@google.com>, <greg@kroah.com>
+Subject: Re: [REGRESSION] Discussion on "xfrm: Duplicate SPI Handling"
+Message-ID: <aYC0OvkVPkOnVU-i@moon.secunet.de>
+Reply-To: <antony.antony@secunet.com>
+References: <CADHa2dChQ=4UVY5X5Ad=jryGRCBPQ37Z_Sw60-6h6h_EcUFG9g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="utf-8"
 Content-Disposition: inline
-In-Reply-To: <267c78c1-4ad2-4f06-be63-0fb506c5134d@bootlin.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CADHa2dChQ=4UVY5X5Ad=jryGRCBPQ37Z_Sw60-6h6h_EcUFG9g@mail.gmail.com>
+Precedence: first-class
+Priority: normal
+Organization: secunet
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-02.secunet.de
+ (10.32.0.172)
 
-On Mon, Feb 02, 2026 at 12:10:41PM +0100, Maxime Chevallier wrote:
-> Hi Wei,
+Hi Yan,
+
+On Wed, Jan 28, 2026 at 16:43:06 +0800, Yan Yan wrote:
+> Hi all,
 > 
-> On 02/02/2026 06:45, Wei Fang wrote:
-> > For the shared MDIO bus use case, multiple MACs will share the same MDIO
-> > bus. Therefore, these MACs all depend on this MDIO bus. If this shared
-> > MDIO bus is removed, all the PHY devices attached to this MDIO bus will
-> > also be removed. Consequently, the MAC driver should not access the PHY
-> > device, otherwise, it will lead to some potential crashes. Because the
-> > corresponding phydev and the mii_bus have been freed, some pointers have
-> > become invalid.
-> > 
-> > For example. Abhishek reported a crash issue that occurred if the MDIO
-> > bus driver was removed first, followed by the MAC driver. The crash log
-> > is as below.
-> > 
-> > Call trace:
-> >  __list_del_entry_valid_or_report+0xa8/0xe0
-> >  __device_link_del+0x40/0xf0
-> >  device_link_put_kref+0xb4/0xc8
-> >  device_link_del+0x38/0x58
-> >  phy_detach+0x2c/0x170
-> >  phy_disconnect+0x4c/0x70
-> >  phylink_disconnect_phy+0x6c/0xc0 [phylink]
-> >  stmmac_release+0x60/0x358 [stmmac]
-> > 
-> > Another example is the i.MX95-15x15 platform which has two ENETC ports.
-> > When all the external PHYs are managed the EMDIO (the MDIO controller),
-> > if the enetc driver is removed after the EMDIO driver. Users will see
-> > the below crash log and the console is hanged.
-> > 
-> > Call trace:
-> >  _phy_state_machine+0x230/0x36c (P)
-> >  phy_stop+0x74/0x190
-> >  phylink_stop+0x28/0xb8
-> >  enetc_close+0x28/0x8c
-> >  __dev_close_many+0xb4/0x1d8
-> >  netif_close_many+0x8c/0x13c
-> >  enetc4_pf_remove+0x2c/0x84
-> >  pci_device_remove+0x44/0xe8
-> > 
-> > To address this issue, Sarosh Hasan tried to change the devlink flag to
-> > DL_FLAG_AUTOREMOVE_SUPPLIER [1], so that the MAC driver will be removed
-> > along with the PHY driver. However, the solution does not take into
-> > account the hot-swappable PHY devices (SFP PHYs), so when the PHY device
-> > is unplugged, the MAC driver will automatically be removed, which is not
-> > the expected behavior. This issue should not exist for SFP PHYs, so based
-> > on the Sarosh's patch, the flag is changed to DL_FLAG_AUTOREMOVE_SUPPLIER
-> > for non-SFP PHYs.
-> > 
-> > Reported-by: Abhishek Chauhan (ABC) <quic_abchauha@quicinc.com>
-> > Closes: https://lore.kernel.org/all/d696a426-40bb-4c1a-b42d-990fb690de5e@quicinc.com/
-> > Link: https://lore.kernel.org/imx/20250703090041.23137-1-quic_sarohasa@quicinc.com/ # [1]
-> > Fixes: bc66fa87d4fd ("net: phy: Add link between phy dev and mac dev")
-> > Suggested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-> > Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> I am writing because unfortunately commit: 94f39804d891 ("xfrm:
+> Duplicate SPI Handling") has caused a regression in the Android OS, so
+> we would like to gain some context to help determine next steps. The
+> issue is caused by the new requirement for global SPI uniqueness
+> during allocation. Based on our review of RFC 4301 and the previous
+> review history, we would like to highlight a few concerns:
 > 
-> I gave that patch a test, with the following cases :
+> 1. Regression on Android:
+> This change breaks production behavior in Android, which uses
+> XFRM_MSG_ALLOCSPI to create larval SAs for both directions. Since RFC
+> 4301 allows duplicate outbound SPIs, and larval SAs are often created
+
+To clarify, how are larval outbound SAs created in Android?
+Are they created with zero or non-zero SPIs? Multiple zero SPIs (acquire states) are allowed. However, I guess there is no user API for managing these acquire states. Only the kernel can create them and handle expiration or deletion via SA updates with acq_req?
+
+A user API (UAPI) for creating and deleting acquire states might be a possible solution.
+
+I haven’t been able to consistently reproduce the issue Marvell reported,
+but I suspect the bug could also affect outbound SAs with non-zero SPIs.
+Also when one peer is behind NAT. 
+
+I wonder wouldn't duplicate SPI when behind NAT cause issues for output SAs? 
+Because the triplet is SPI, Protocol, Daddr. There is  no dport in it.
+
+> before direction or selectors are finalized, the allocator must remain
+> permissive (at least in our current design).
+> This also aligns with a concern Herbert Xu raised during the initial
+> review regarding compatibility:
+> >    "It's also dangerous to unilaterally do this since existing deployments
+> >    could rely on the old behaviour. You'd need to add a toggle for
+> >    compatibility."
 > 
->  - On Macchiatobin (we have PHYs that share an mdiobus).
-> When unbinding a PHY, the MAC dissapears as well :
+> 2. Inbound SPI uniqueness should not be a hard requirement:
+> The justification for enforcing global SPI uniqueness often cites the
+> statement in RFC 4301, Section 4.1, that for unicast traffic, the SPI
+> "by itself suffices to specify an SA." However, we don’t think this
+> means inbound SPI uniqueness is a hard requirement because of the two
+> following reasons:
+> 
+> – Another statement implies that SPI uniqueness is just an
+> implementation choice:
+> >    "Each entry in the SA Database (SAD) MUST
+> >    indicate whether the SA lookup makes use of the destination IP address, or the
+> >    destination and source IP addresses, in addition to the SPI."
+> 
+> – There is a "Longest Match" mandate which makes SPI uniqueness unnecessary:
+> >    "For each inbound, IPsec-protected packet, an implementation MUST
+> >    conduct its search of the SAD such that it finds the entry that
+> >    matches the 'longest' SA identifier. In this context, if two or more
+> >    SAD entries match based on the SPI value, then the entry that also
+> >    matches based on destination address... is the 'longest' match."
+> 
+> 3. Further clarification on the specific problem being addressed would
+> be helpful. The "real-world" problem this commit intends to fix
+> remains unclear. The patch mentions:
+> >    "This behavior causes inconsistencies during SPI lookups for inbound packets.
+> >    Since the lookup may return an arbitrary SA among those with the same SPI,
+> >    packet processing can fail, resulting in packet drops."
+> 
+> However, Linux kernel lookups using the triplet (SPI, Protocol, Daddr)
+> are deterministic. The lookup will not return an "arbitrary" SA
+> because the destination address is used to disambiguate the state.
+> 
+> As Antony suggested, this change may cater to SPI-only hardware
+> indexing. If that is the case, we are concerned about applying such
+> hardware-specific limits to the software stack, especially if the
+> behavior is not opt-in, as it appears to require an overly-narrow
+> reading of the RFC 4301. 
 
-Correct, this is why these band-aids are harmful. One "device" can
-correspond with *multiple* network interfaces, and the loss of one
-PHY can have a *very* detrimental effect.
+I agree with your suggestion that making the behavior opt-in. 
+I would prefer the Default : to allow duplicate.
 
-Consider the case where root-NFS is being used, and removing a PHY
-on another interface takes out the interface that root-NFS is
-using. Your machine is now dead in the water.
+> Given these concerns, would it be possible to discuss a revert or,
+> alternatively, could further context be provided regarding the
+> specific real-world problem this commit was intended to address? Once
+> the underlying issue is clearly defined, we can work together to find
+> a backward-compatible solution that satisfies all requirements.
+> 
+> Review threads are attached for easy reference:
+> https://lore.kernel.org/netdev/aDQhZ_ikHEt_pLn_@gondor.apana.org.au/T/#r45c1786651ce5af730f757aca7438474d494a323
+> https://lore.kernel.org/netdev/20250616100621.837472-1-saakashkumar@marvell.com/T/#u
 
-In my opinion, we should be concentrating more on the issue behind
-the oops.
-
-Given that this problem is because of the bus being removed, one
-thing that would help would be for the MDIO bus to be properly
-refcounted, and when the bus is unbound, to replace the bus ops
-with versions that return -ENXIO or similar under the MII bus
-lock. This would be easier of the MDIO bus ops were a separate struct
-to struct mii_bus.
-
-Similar with the PHY itself - if the PHY is in-use, it should be
-refcounted to stop the struct phy_device from going away, and
-should we have the situation where the PHY driver is unbound,
-phydev->drv should be set to a set of dummy ops (under the phydev
-mutex and probably rtnl.)
-
-It seems to me that throwing devlinks at this problem is giving us
-more problems than it's solving.
-
-A graceful way to handle a MAC losing its PHY is for phylib to
-indicate that the PHY has gone down, rather than removing the
-network interface (and potentially a whole host of other network
-interfaces in the case of one struct device being associated
-with many interfaces.)
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+-antony
