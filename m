@@ -1,123 +1,64 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from a8-237.smtp-out.amazonses.com (a8-237.smtp-out.amazonses.com [54.240.8.237])
+	(using TLSv1.2 with cipher AES128-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EBF2F0C6A;
-	Mon,  2 Feb 2026 18:41:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA922BEC2C;
+	Mon,  2 Feb 2026 19:03:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.240.8.237
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770057699; cv=none; b=dyKvezZYeh6VrT77FB2C8EGBR1/p0oz7PmhQxQJdLSSr6mrgrNno2X7nnaZBhBsEfKEkIkCnjqjES016ipgJhGRgumcgigyb+X0XFWNr/T0m7gP6rGsCjc+F6L7HNQvC3oXDRTnqtipd914SKYC+3tEDeunuCISbRHe4gGUf/DE=
+	t=1770058986; cv=none; b=m5likWw4VpSYd9o+4zsyxKT8KiDbx7NVCHS4TWawURw4PBZSmO7t/oAXr1lHhf1Jt2UZiaSzRl4tYtESLwAlwiKBfMed+jX6zE+njf2ToyWuffW67XWVQcAn2Do2tBa/HDJYVGqQscKp7SE6c1eZt+iKy36hF5itLUpndvIx/l8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770057699; c=relaxed/simple;
-	bh=p4XRwZ/6o5ZB7v1K1pUKC2mtPp1ItnetvzxJkA5gE0g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MBtHVqpwHGZ0c5KXsgdAKtgBcNp9dwfkHdaDSzo5GwKIo9OHSiDTKp2Ul7Jt7i9iYgC8CdRHDGN/msjgPOW5BOiwfrIX0YOIZ0G7V/IQ5w6lEZKiigdHj3xd43cOeL74jFz0WaAkJAq/VCtBw9dbsVS8Xs2C/LsVdS8sVZ/V3j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tJaGx704; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770058986; c=relaxed/simple;
+	bh=frHfKa0JZKFWPCG2h85KlUf1gIaXEk13F3YDDS917Bo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=LYC9+g/hGsSjDIT7TwyFovl8pzINIpkimAO8HkWlXowEacUlriH7+BdaKdze796zdHUplJDT7dIaz47B50x46RT3kKyYmkZwUxX5b/UFnvy72cDmH7SX9mMXO5BSHL6sbMntug3TezChx3F3M4mtUiWLotKuUxMZrRn0ICyue+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corvaglia.dev; spf=pass smtp.mailfrom=mail.corvaglia.dev; dkim=pass (2048-bit key) header.d=corvaglia.dev header.i=@corvaglia.dev header.b=IOvkeqDf; dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b=dtYzgcwp; arc=none smtp.client-ip=54.240.8.237
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=corvaglia.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.corvaglia.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tJaGx704"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D067DC116C6;
-	Mon,  2 Feb 2026 18:41:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770057698;
-	bh=p4XRwZ/6o5ZB7v1K1pUKC2mtPp1ItnetvzxJkA5gE0g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tJaGx704PRvbxyLUAKLJY1RSxACoUJ+DiIK1abp3+JexDrY0r/BIIFaS6YRqsxL/x
-	 s0cBm17VSQhYiuzjCc4GJChsBP/I8ojzikERV2vzTsrZDpF/G0Rg6kyv277aMPuflk
-	 jD71FKz4cclCYyJBcFeUDNHcwLcE23DLZxj6OvScyTpKvvCPuOjq7ZfG/GOwjULnvQ
-	 IYOPduH9oO6KPBvoO/5crPhKAJm3rMJ+Jm8lGzn3rfvWVZOeZ7YaHc8i/NWaRqj4oX
-	 MxckD9NkdzDFpYTY1DoAum+pk9kaa4yW4Vey/FmKNmtMWM6QzpWh1tMDOrssaWEElr
-	 uAmXAGVVme9Tw==
-Date: Mon, 2 Feb 2026 10:41:36 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: David Wei <dw@davidwei.uk>
-Cc: Daniel Borkmann <daniel@iogearbox.net>, netdev@vger.kernel.org,
- bpf@vger.kernel.org, davem@davemloft.net, razor@blackwall.org,
- pabeni@redhat.com, willemb@google.com, sdf@fomichev.me,
- john.fastabend@gmail.com, martin.lau@kernel.org, jordan@jrife.io,
- maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, toke@redhat.com,
- yangzhenze@bytedance.com, wangdongdong.6@bytedance.com
-Subject: Re: [PATCH net-next v8 15/16] selftests/net: Add env for container
- based tests
-Message-ID: <20260202104136.4a7adbdf@kernel.org>
-In-Reply-To: <9037828b-c7fd-4eb1-9dd8-19ee49063361@davidwei.uk>
-References: <20260129222830.439687-1-daniel@iogearbox.net>
-	<20260129222830.439687-16-daniel@iogearbox.net>
-	<20260131163834.2c3d160d@kernel.org>
-	<9037828b-c7fd-4eb1-9dd8-19ee49063361@davidwei.uk>
+	dkim=pass (2048-bit key) header.d=corvaglia.dev header.i=@corvaglia.dev header.b="IOvkeqDf";
+	dkim=pass (1024-bit key) header.d=amazonses.com header.i=@amazonses.com header.b="dtYzgcwp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=bvgar2idfqx6rr2b3v3v2bwbuxumhdxo; d=corvaglia.dev; t=1770058984;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding;
+	bh=frHfKa0JZKFWPCG2h85KlUf1gIaXEk13F3YDDS917Bo=;
+	b=IOvkeqDf4vjk6YUoVrQzRZ5827Q7/Z3h13p6UgwPOC/l1+nBBn3bGXTrKATODj86
+	E825QABFWh1L5sm7NWEKbCRkFO199eLy/WYGM8qohBbt19CZ2RdzCmmnjx1ZNx7e/4z
+	/OaNDzcrtsHQdNSiCk4j7F3gvwy8a/S+BkTlgeW2xLwapvR0uTv/x9cWALmPoUZw+Hr
+	NwspNcEhdoySDLvOtigL6HJ6NxmZVK7+yrm147p3xXfdyo3p4SyEiEOqXIMTD7isZAL
+	HPdFHfBxZkUzKtUJGAZ74rvelbQAFu8atnzHQsfgHiUKDjhqDkrOFj+LSZcTxg7qv0T
+	Oyv/vTnzFg==
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/simple;
+	s=6gbrjpgwjskckoa6a5zn6fwqkn67xbtw; d=amazonses.com; t=1770058984;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Feedback-ID;
+	bh=frHfKa0JZKFWPCG2h85KlUf1gIaXEk13F3YDDS917Bo=;
+	b=dtYzgcwpt0RcUv31SJD/8JrnhPb7c+LqwvEvUC8B1WQcbw15NWnMVfMnz+QeOkKQ
+	J1m95ZYazIVEdRx1xk0ApYMpcXGLQPsKxLx6mPMV3lN0vxC1tGVpgnh/Hjkdm5wu/rw
+	ULOksf4Hc+jDbo0Nbk8730w091ezokBjf8lWEDLE=
+From: David Corvaglia <david@corvaglia.dev>
+To: idosch@nvidia.com
+Cc: bridge@lists.linux.dev, davem@davemloft.net, david@corvaglia.dev, 
+	edumazet@google.com, horms@kernel.org, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, razor@blackwall.org
+Subject: Re: [PATCH net-next v2] net: bridge: use sysfs_emit instead of sprintf
+Date: Mon, 2 Feb 2026 19:03:03 +0000
+Message-ID: <0100019c1fbca989-a2726974-1033-4468-bd63-a5c306949e37-000000@email.amazonses.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260202174409.GA127339@shredder>
+References: <20260202174409.GA127339@shredder>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Feedback-ID: ::1.us-east-1.Dw79TYOMY2hrNmvZ7e9+qnciE2cwcAniRLo3LdoqSVI=:AmazonSES
+X-SES-Outgoing: 2026.02.02-54.240.8.237
 
-On Mon, 2 Feb 2026 07:53:34 +0900 David Wei wrote:
-> On 2026-02-01 09:38, Jakub Kicinski wrote:
-> > I'm not a Python expert but the pre-init of variables that are set
-> > later on in __init__() (on all possible paths) seems like a waste of LoC  
-> 
-> It's so that exceptions thrown -> __del__() don't complain about
-> undefined vars.
+Hi Ido,
 
-I see. I guess that's cleaner than hasattr(self, "xyz"), fair.
+Will fix the whitespace issue and send v3 soon. Thanks for the review, sorry about that.
 
-> >> +
-> >> +        ip(f"link add type netkit mode l2 forward peer forward numrxqueues {rxqueues}")  
-> > 
-> > Would we be able to do this with YNL?
-> > no big deal but always nice to avoid the dependency on very latest CLI  
-> 
-> Hmm, I tried looking into this already. My understanding is that this
-> can be done in C but not currently in YNL, not without adding a spec.
-
-I thought the only thing C can do that Python can't is deciding nested
-extacks.. Ah, of course.. I missed that patch 10 is not updating the
-YAML spec. That needs to be fixed, we want YAML to stay in sync for the
-families that are already YAML-ized.
-
-> >> +    def _setup_ns(self):
-> >> +        self.netns = NetNS()
-> >> +        cmd("ip netns attach init 1")
-> >> +        self._init_ns_attached = True
-> >> +        ip("netns set init 0", ns=self.netns)  
-> > 
-> > Hm, refactor class NetNSEnter or just use its enter method?  
-> 
-> I did consider this but I didn't feel like it fit the very specific
-> purpose of NetNSEnter. I needed the init ns to have a valid nsid from
-> within the test netns, which I didn't think many other tests would need.
-
-What about the "ip netns attach init 1" ?
-that's the main thing that gave me pause TBH
-Why is it needed?
-
-> > Don't we need to also add a qdisc if there isn't one already?  
-> 
-> Sorry, why would qdisc be needed? The bpf prog attaches to tc. I don't
-> know anything about qdisc, though.
-
-There's a new way of attaching qdisc-less (TCX) but IIUC here you're
-attaching in the old way. So you must have a parent object. The ingress
-/ clsact qdisc isn't really for queuing packets, it's just a fake qdisc
-that lets you attach TC filters to an interface. Machines at Meta have 
-a clsact qdisc installed by init, but that's far from normal (try to
-run this command in vng, you'll see)
-
-> >> +        match = re.search(r'pref (\d+).*nk_forward\.bpf.*id (\d+)', tc_info)  
-> > 
-> > I haven't checked but TC doesn't support enough JSON and YNL doesn't
-> > support enough TC to avoid re hacks? :( :(  
-> 
-> Yeah the old TC tool doesn't give me this info programmatically :(
-> 
-> Borkmann mentioned TC is outdated/unmaintained. I did use tcx via a C
-> loader before, but that was removed in an earlier iteration.
-
-Not sure what you're saying. tc bpf CLI supports JSON output since:
-
-commit 3175bca7182b0867c6e9a3d5d1551fdecf70118c
-Author: Davide Caratti <dcaratti@redhat.com>
-Date:   Thu Apr 30 20:03:30 2020 +0200
-
-    tc: full JSON support for 'bpf' filter
+Best,
+David Corvaglia
