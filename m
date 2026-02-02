@@ -1,131 +1,174 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2CA1EDA2B
-	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 09:14:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.181
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770023692; cv=pass; b=scXpMG7doHRT7bpj/EytRt8n5Kn1h/cmKXQtp0XdBiQDGvSU+W+pahTk26NMmMzcWfKE0tja8gdcbKJmeE56qRJVjDXZTTMF2b/A7V+20Qf/GcFSpYU5ip0IaP9jWkyWLfRGtYjQjiTyUjIFLbZZTfUpKy9+ZVlKU/rTe+OmL08=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770023692; c=relaxed/simple;
-	bh=Hlmx6itvnTRIc2QCHXdbaz9IppUzZpOrcPsAZ1RIVlI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YHy0Qaw1QQQYaM2PtyYYGaHdL0OZaHA/AJs72Dps8KPf/enmu1kq84CiAHFC9leqIZJkba/teHt2JvKWzNN2SoU+9Pi0d72vGmLQHmTk2Jo14ShStxAed29Lm7CgLJYiWysycOUvxgt6zANegEni9Azb17g1UvzB5oc2r2ZN/Kw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rpEDHWU5; arc=pass smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D5F2C08CB
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 09:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770024085; cv=none; b=LdhDZNBhxcs0/wWxp1+DAs9ASrjZJ7vYBUD0tttTBz7nU9HaP1UEqtV3L0HMO60ykAFXFGWNt/spM3Ah3elgFqbaV8q6XgH2gJONf4gywWp3lEGcDr6OzorPJSeQomjbbRXCLnGwyAMuexK4FdQi/ARqft7eMZZbT6yyB3p6JNE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770024085; c=relaxed/simple;
+	bh=fFtqSMHXb9fNhsIfufDnR1QvTKYu6ig+lcJhqVNRf+8=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=ljVlI3qyBgZkWL3cawTl6UkPE00iaqR2zcwiakKEbXx1zcgEiTbFzd7KPUY7vkK4Q6pjDpxbCylMDvjpG7zvH07huYZKiLEIuwpKK8eTjQ89NG5YBaWFN6Jx0G2P1fJ2kWT6/h5lZMG2qPJXalWoc0nyPLqR1PSPXp0swvaaVpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A74BCzbh; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rpEDHWU5"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-50336cffef9so32951031cf.0
-        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 01:14:51 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770023690; cv=none;
-        d=google.com; s=arc-20240605;
-        b=HUL6+5EqjMyBl1Pk/otjIVnyBo0rXXGRGeKeuEhnSHgKAdZiIKFkPsz+znbu/oqUBg
-         zhZI5Bcn9SO/0GLUKyl52EY85YnyhM/hQEONsKOsXPg0XL091U9rSC9iv2OFWT8a9uxx
-         Iu0BjS6py+skbuX3w2hqu7h0D49fN/UDi8N+fKqosW2x2ppkMdAOav9oAAZv+HPeKZQc
-         BKNfSslAyslVhFztoZayQJMOPDzCNmEoGeHakn09vI62NvJRMcnWwoXYjIQCPRhgvQWT
-         pUR5pMo7c8LuWEh5UbxOBz6a8VQ3Wyn0h5FM7OXbMu+5fDI3q4eiE3jCSLoS9mYLaDU8
-         z35A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=bshSp5/gIbOmkc5jxRvILFyEO5Spmn2DFmzf3Fkly+I=;
-        fh=q6aiJ0kxxKX/uGNy69dzJDrdq3XS2iG7fkiur9JYQzU=;
-        b=FxJSzxmjCzdoyCEsYvljNN6DXThX5fmtBvH6cgWb/Dsx0u7RncQA49X3zUkhBSeI+y
-         dl20Pm1GIWa5dZCdzVZ8Dv6K6ebFSHou7ZWyuNXqdVv9hev1x8duATa3Z6ePMizqzwNw
-         5oO7P3QgbwfTDejhQktNasGZQn/tuXZGLrL4h5bJ4vYC7SCWTUP2abfR0AICVnNc/mIn
-         pQ5zkejx5Iwtl9B0ncpLkdoVWFryrGrir2QuM8H25eNTM6dufwXdYQnw+TYAfU6ovmjJ
-         B4MzajFzfw3U+4H31P5UOrYDYfWoLTTOix7DI5n1rRqY5mDRTpwL+IImKQ38IZDDWFrH
-         Z8Pw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A74BCzbh"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6581327d6baso5997000a12.3
+        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 01:21:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770023690; x=1770628490; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bshSp5/gIbOmkc5jxRvILFyEO5Spmn2DFmzf3Fkly+I=;
-        b=rpEDHWU5v8irxPuWKhOwtrOavEm8xUGlUg2BpOneQR3girn6QAnSGyxCdcEk1NHG9C
-         Q+5xlVtIBo1hBwDxjWOnnySEbubR9cljII32DR70UA44XYzlF6Ir2LAxBRu1Nwww0AGd
-         Ej7FIg9PxRp/mvXGuAW8SNTbMrLnS0BVjx6RHhz2aIw/Rx+T0HXqi8AR4SfKsNCZoj+q
-         lyMRu3dA08Y3ZCk5DnOeqi4TjCIHPvHs31PQnTU6mYcH+KE2Kg7hNva8PaU233h5AR84
-         bYbfpDYybVqri+Q1sOWM0yrT4xRB3v0wdY903xk9B2wLetA4YGJgsYzOsJEMOjI918eK
-         S+rQ==
+        d=gmail.com; s=20230601; t=1770024082; x=1770628882; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=naVjf+oFoEPGbCcN7OBJPZpgIFxQpMICtFGQ99z2yDo=;
+        b=A74BCzbhBSg9/nZaAETyOxSicTLoHOEZubPjgL1U8PK2HGaz7Gokyn88vt2MBsK9B+
+         y768u1lQIDcM37EvqamYyvpR3lCpTHzkRSJuiUc1WLgUf043mMa9GvA13APqOuAFQ2m4
+         XI6zRPt1v6989xcDJaFolPSZ4AV4zeOc1BxcgV9iw3qxD7xrhtd8zbxcXK6jCwUIRkBC
+         Q0cPVuck8WtWhARXsGpalAIqoAJDdg7Gcy8JDJPJJZOtEE8RkLvJU/zOJ+GJVUiQmdkf
+         68ifs5K6TUTGfUGq8sBldqb0rv11TMFA3NVMRE2pm6HsZRnfcSyZo6AdA7odW8upWsMN
+         MP7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770023690; x=1770628490;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=bshSp5/gIbOmkc5jxRvILFyEO5Spmn2DFmzf3Fkly+I=;
-        b=vd4h7BAwMU66CQEsGS8zWJ/B+XXouo9SOMw/EfWAbnNJ5k2nqH0WTe4cuR/MsKV7/E
-         eX+frxVPa7QXmsCdcpseVCrcsKwmrQswDgn9+OiT9RxWqMOPqZyL68d5O5abja4Nv7sv
-         YKbiUF+axFfN3x/SOvMLRcah92z/RNejIc5c7uCbqfkgzQs/NHGPw6ZbGNrhW58mdHe8
-         SPiytBJXyjadV6NWtzjkEZounWaSS1eVKt7P2PebDkWiA+iszuif4G2y6vFLwp2NKdPp
-         ssy78MvwnJu7ammLIVi3kIjwsjvnRFfPvF37emHN/ZSNcW1fn8qN2b+vvUweGwJ2VlV0
-         jhTw==
-X-Forwarded-Encrypted: i=1; AJvYcCWPkZTdyAXVzXBOBByT+c25QqZ31wKU+R/mkTwYSIWmGfhlq+OgnPkcqos5EfPvSTeHCobPaGw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy2fVhsFvv8UOFiqAK4YkJT8Yv4oZYksyLgNcu7vsWI+HWboi7D
-	JdHxF8MHVCQVraHyFHKrNfFlbrnmBt/BUcIiLC3JGuzkVPLZujKUcQNscItJolBELUpHVhxzjfG
-	I6bXX8MnVvETxGjwwAEijwuXq0GuWLLL7cGBFTWWE
-X-Gm-Gg: AZuq6aL6oERO9LfiGdfMGUQCvvMI4IpshHuG+Oxw04cjljJa6mkALBlNLNhCFmC+Hbw
-	3X8vW0y7K3b/EUAUZV/B9T2I+DT2j6VdzJQI4bVCjRF/jjWaoyH/d+CDcVbnL/PHJ/ow1zd6Crz
-	b2/yt7R6fvkF5Sn1oLYDSS6KHFpsQ20zM2QKfQk1iMCqC0p09jtAaZuZq3P8MF7wxvdb64MsJkd
-	CQG9PAOlZvOQsZPhWr0XIPgcU8lHafK2JZZesjXQjdu/Tw+8u3LMKgSjfG608lKLmIMDC0=
-X-Received: by 2002:ac8:7fcc:0:b0:502:f81b:9961 with SMTP id
- d75a77b69052e-505d2191537mr151329231cf.19.1770023689958; Mon, 02 Feb 2026
- 01:14:49 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770024082; x=1770628882;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=naVjf+oFoEPGbCcN7OBJPZpgIFxQpMICtFGQ99z2yDo=;
+        b=N41mh/rIxaoD28yPSqNg73r2P23/8aws7DuzXhy96ZpV1V6xFSOWGw5c1j6OhnPky1
+         0TBDzxehWML2NtAFlxgay1IOTH2ASj6ypwRP7OuItkR/b8i0ULA7fk2ZoO7RzUUPi5ur
+         fWdwRWTe8s0NiTDUqjPZa0kVUMdIt42LhGsggSZVkiLeaEAa7oOb4CD4EvjgYAwWp1FQ
+         2ORfLLXW5KFG7sXHYvooCkobZEdI9dfPaV2H3vUoLf7zGnvd0DlJNVad85EjtWAxoyl1
+         F7Ata0MF6Vh6q61CdQUyIlyN8Q2s+s48NpmjyYCqfIRY77lxTiuGXc+8TDiP/UFs6QJc
+         NRdw==
+X-Forwarded-Encrypted: i=1; AJvYcCU4gafD1uXFmi8D9CqbJb7ZdCArsR4W4qVYWm7JVi7110kfqymgfQjxB7xM50wkDVBhXEU3hNs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz134yuIoNHNwYpEVPLFyQUVlWzqdREhZgy+tqRc29Ts/zgbTY9
+	ioXZwf9Yt++r3LqRvAQ4mUNZFR8YBKpJ1dJgZmWeSlIw5N+fhGBw3rlH
+X-Gm-Gg: AZuq6aIpIDZrPZvIPUrixUki0ME3Jt9vAvX1x+wIa4dhUmwmcX1szTqIT4NJCZ5BNn0
+	Idw6yHmPKE8E8BBhBmmmDC9y+L/qcYUVXzZOk3bo/L+eynrm+r+mJDuIN2U60TLaxg9pPhW59HG
+	IPDQwqOF1tBseXPi+kdhYnNXoQ0nwzoqkm63opECgrAWkCbA518XsRDMAfOfVZ6QYQrBQ8egJiR
+	U7kx7NzJn83TXWtr6RHs4kZ8BRT6gb+m67qAnqPdtENTexBoPzIAUa4FNdeMXarsZbZvHeu7FHM
+	ZHNrMs6M4ymMnVM7u09CPZOmi6frNmgHqOqQ78FeQnC7i4V+nHlLc7Orh9Pd4Q2A+5Barf/oOzd
+	kH1XjjEvBHYExCEGKcvk6EVKyavgvPOILm4lxewPXEZqGV5kBEe3gxrIZi4XhfdsRmg==
+X-Received: by 2002:a17:907:ea6:b0:b8a:fc17:56e1 with SMTP id a640c23a62f3a-b8dff56b0d8mr752769966b.6.1770024081936;
+        Mon, 02 Feb 2026 01:21:21 -0800 (PST)
+Received: from gmail.com ([2a09:bac5:4e22:26fa::3e2:4])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b8dbeffedd3sm823213166b.29.2026.02.02.01.21.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Feb 2026 01:21:21 -0800 (PST)
+From: Qingfang Deng <dqfext@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-ppp@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2] ppp: remove ppp->closing check
+Date: Mon,  2 Feb 2026 17:21:15 +0800
+Message-ID: <20260202092116.266568-1-dqfext@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260131212934.2547995-1-edumazet@google.com> <j3fofrzb4c3xcckk55y7rdpc7x5m23mphkksnp7vuijimzqpml@3nzu5xyfuyer>
- <CANn89iJh67=bSTS_ziVuQUS-ht0yqeW_Q8eaFCV=8M7zuETAsw@mail.gmail.com>
- <c63047b5-3059-4176-8d9d-5465d557e605@huawei.com> <CANn89iK95qb_=KWrcsvqEB9Bn0PXi3JkY5h09NiWuVWARABOww@mail.gmail.com>
-In-Reply-To: <CANn89iK95qb_=KWrcsvqEB9Bn0PXi3JkY5h09NiWuVWARABOww@mail.gmail.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 2 Feb 2026 10:14:38 +0100
-X-Gm-Features: AZwV_Qi0gfsGjTjcyckB_u84fUFbzITBZEkqxZr12ZKTxQJSbBRzxpVQEJCpcmE
-Message-ID: <CANn89iJRmEPJiz5-L_yJorU+xH5kBwraFy2_-=TwgkHzzfjKEg@mail.gmail.com>
-Subject: Re: [PATCH net] net: add RCU protection to (struct packet_type)->dev
-To: "dongchenchen (A)" <dongchenchen2@huawei.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	fengwei_yin@linux.alibaba.com, zhangchangzhong@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 2, 2026 at 9:47=E2=80=AFAM Eric Dumazet <edumazet@google.com> w=
-rote:
->
-> On Mon, Feb 2, 2026 at 9:21=E2=80=AFAM dongchenchen (A)
-> <dongchenchen2@huawei.com> wrote:
-> >
-> >
-> > }
-> >
-> > [2] add delay to pype_seq_next
-> > diff --git a/net/core/net-procfs.c b/net/core/net-procfs.c
-> > index 160dd729178f..73f5a20ef57c 100644
-> > --- a/net/core/net-procfs.c
-> > +++ b/net/core/net-procfs.c
-> > @@ -230,11 +230,14 @@ static void *ptype_seq_next(struct seq_file *seq,=
- void *v, loff_t *pos)
-> >
-> >          pt =3D v;
-> >          nxt =3D pt->list.next;
-> > +       if (pt->dev)
-> > +               mdelay(5000);
->
-> Waiting 5 seconds while holding RCU is going to fire the soft lockup
-> detection after ~two calls to ptype_seq_next()
->
-> What is the actual trace you got, and what happens if you reduce to
-> mdelay(1000) ?
+The ppp->closing flag is used to test if an interface is closing down.
+However, when .ndo_uninit() is called (where ppp->closing is set to 1),
+dev_close() has already brought down the interface, and
+synchronize_net() guarantees that no pending TX/RX in the network path
+can take place. Thus, the check in the network path is unnecessary.
 
-OK, I took a look, and ptype_get_idx() needs to return information
-about what list the returned pt is in.
+For file operations - ppp_read(), ppp_write(), and ppp_poll(), can
+normally still send or receive skbs. ppp_read() and ppp_poll() are safe
+because ppp_dev_uninit() sets pf->dead before waking them up, causing
+both to exit cleanly. ppp_write() does not check pf->dead, but
+ppp_push() verifies that ppp->channels list is not empty before sending.
 
-I will send a V2 ,thanks.
+Remove the ppp->closing check.
+
+Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+---
+v2: explain that the race against file operations is safe.
+ - https://lore.kernel.org/linux-ppp/20241104092434.2677-1-dqfext@gmail.com/
+
+ drivers/net/ppp/ppp_generic.c | 38 ++++++++++++-----------------------
+ 1 file changed, 13 insertions(+), 25 deletions(-)
+
+diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+index f9f0f16c41d1..c24a2721ac9b 100644
+--- a/drivers/net/ppp/ppp_generic.c
++++ b/drivers/net/ppp/ppp_generic.c
+@@ -142,7 +142,6 @@ struct ppp {
+ 	unsigned long	last_xmit;	/* jiffies when last pkt sent 9c */
+ 	unsigned long	last_recv;	/* jiffies when last pkt rcvd a0 */
+ 	struct net_device *dev;		/* network interface device a4 */
+-	int		closing;	/* is device closing down? a8 */
+ #ifdef CONFIG_PPP_MULTILINK
+ 	int		nxchan;		/* next channel to send something on */
+ 	u32		nxseq;		/* next sequence number to send */
+@@ -1566,10 +1565,6 @@ static void ppp_dev_uninit(struct net_device *dev)
+ 	struct ppp *ppp = netdev_priv(dev);
+ 	struct ppp_net *pn = ppp_pernet(ppp->ppp_net);
+ 
+-	ppp_lock(ppp);
+-	ppp->closing = 1;
+-	ppp_unlock(ppp);
+-
+ 	mutex_lock(&pn->all_ppp_mutex);
+ 	unit_put(&pn->units_idr, ppp->file.index);
+ 	mutex_unlock(&pn->all_ppp_mutex);
+@@ -1652,23 +1647,19 @@ static void ppp_setup(struct net_device *dev)
+ static void __ppp_xmit_process(struct ppp *ppp, struct sk_buff *skb)
+ {
+ 	ppp_xmit_lock(ppp);
+-	if (!ppp->closing) {
+-		ppp_push(ppp);
++	ppp_push(ppp);
+ 
+-		if (skb)
+-			skb_queue_tail(&ppp->file.xq, skb);
+-		while (!ppp->xmit_pending &&
+-		       (skb = skb_dequeue(&ppp->file.xq)))
+-			ppp_send_frame(ppp, skb);
+-		/* If there's no work left to do, tell the core net
+-		   code that we can accept some more. */
+-		if (!ppp->xmit_pending && !skb_peek(&ppp->file.xq))
+-			netif_wake_queue(ppp->dev);
+-		else
+-			netif_stop_queue(ppp->dev);
+-	} else {
+-		kfree_skb(skb);
+-	}
++	if (skb)
++		skb_queue_tail(&ppp->file.xq, skb);
++	while (!ppp->xmit_pending &&
++	       (skb = skb_dequeue(&ppp->file.xq)))
++		ppp_send_frame(ppp, skb);
++	/* If there's no work left to do, tell the core net
++	   code that we can accept some more. */
++	if (!ppp->xmit_pending && !skb_peek(&ppp->file.xq))
++		netif_wake_queue(ppp->dev);
++	else
++		netif_stop_queue(ppp->dev);
+ 	ppp_xmit_unlock(ppp);
+ }
+ 
+@@ -2218,10 +2209,7 @@ static inline void
+ ppp_do_recv(struct ppp *ppp, struct sk_buff *skb, struct channel *pch)
+ {
+ 	ppp_recv_lock(ppp);
+-	if (!ppp->closing)
+-		ppp_receive_frame(ppp, skb, pch);
+-	else
+-		kfree_skb(skb);
++	ppp_receive_frame(ppp, skb, pch);
+ 	ppp_recv_unlock(ppp);
+ }
+ 
+-- 
+2.43.0
+
