@@ -1,38 +1,38 @@
 Received: from oak.phenome.org (unknown [193.110.157.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159DF23EA8B;
-	Mon,  2 Feb 2026 12:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EBD23EA8B;
+	Mon,  2 Feb 2026 12:17:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.110.157.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770034547; cv=none; b=C7bFMWhEDLSRSoYNrjoGdT4pCNsKgQw4r+nUpaApH+zEcTND63BEmT/JjafaaNec98fj0MPkNTfFkBfBPX86DeGihnulyfUgjIdERVYOG9jBgBDQEDDifG/1n/ruapeVrdKbj7a3Gc53f46DvJC4WI6kol0RgnylV0nsEi/a0es=
+	t=1770034626; cv=none; b=aAfh1LAb1t5NXU52LrHtK/+MswHJVBVYkMI2mtrUeyLAGP9PaJPtRx3R1Ij/YmEl6tsuRsNX6bv2m9PCpy5LTAEQBNpXImYZKfucn47+vYIf0vwURzCdwkqzfA0weJK8bXc7tkuPgykKvwptXdw/clbFH3/Ygq6MjMdodCQ/K3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770034547; c=relaxed/simple;
-	bh=J5YAUEvdRSPdIe0eFvACFFSbO6JcdQgRSZZxwU2kLRU=;
+	s=arc-20240116; t=1770034626; c=relaxed/simple;
+	bh=KiiVfW7gDbgRUN6d93pvTDSOaEYSsBVczE80UlUTzqg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gvk3L1Mw6w668wtPZ7+oBTkLrqid/jmjexYxnT4LfLsBUaUHef4dhVavcEEaKk+q5bUAcpXyW3onw9riuU7N+0kDyR0mxoirsDTYB3yFlbLVYESFsXdpA/EEaiLKOVkImk7Lz/b8BrmW8Ah/QPil/MxYbm6DMgddDS07duQZQrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org; spf=pass smtp.mailfrom=phenome.org; dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b=lHdwoUwx; arc=none smtp.client-ip=193.110.157.52
+	 Content-Type:Content-Disposition:In-Reply-To; b=pe1VFOGwMXRX7GZ5gGzFZur2d8duDZp5UtS2G6Mmz75aVvMzY6Cz9uFLFUU6a8vQyqkxML2q+eFNqeXwej4ZpnceqoWQlbqBnEBQBCxTeveR+7Ah+b+qW5vurCfMn7id5SrVDoIXDbdNuwsO/nQjLpLoqkr+rzdxci8J3Q/hqhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org; spf=pass smtp.mailfrom=phenome.org; dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b=NvYeWq9E; arc=none smtp.client-ip=193.110.157.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phenome.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b="lHdwoUwx"
+	dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b="NvYeWq9E"
 Authentication-Results: oak.phenome.org (amavisd); dkim=pass (2048-bit key)
  reason="pass (just generated, assumed good)" header.d=phenome.org
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=phenome.org; h=
 	in-reply-to:content-disposition:content-type:content-type
 	:mime-version:references:message-id:subject:subject:from:from
-	:date:date:received; s=oak1; t=1770034542; x=1770898543; bh=J5YA
-	UEvdRSPdIe0eFvACFFSbO6JcdQgRSZZxwU2kLRU=; b=lHdwoUwx2joWLS4FlpXc
-	UM5HqfMgCeTj2EVirubP+HrLXnFhSbab7KGj4jdKsAC8hjHBMKD1WietnKYxOndb
-	OZHeHlgoMK/iXwo9dVymB0BlSYTO+b1bYVHyZX5wE7YUxI4EXeQk3uXMLG2mfGVf
-	en+Ts0b/ZXaIXRE8arKx5XvzVti51wD5d5bHtD6JkTcpSKA8fWecVu2qsxwlLX6r
-	PWhCod1rMs3bDs07wEMe8JLnYsNg5H1qsqKlfGWwYVcD2aEuTcvOlNqlWxK7QqN7
-	5rdQ06dcT4ht21TUy7lZW0rtOExhnypiKzmbon1yne+lE3Ds4wO7YvLfT0ENSN2n
-	rg==
+	:date:date:received; s=oak1; t=1770034052; x=1770898053; bh=KiiV
+	fW7gDbgRUN6d93pvTDSOaEYSsBVczE80UlUTzqg=; b=NvYeWq9EfSE4NTafBqH6
+	kCbrtHFCOUVeSASFt94qdiY9DwtTmO3YSogqZuVyjeu73XUU8tBEHW3yI+e1+Lv8
+	pd773AM38wdjZJMKuTUupC3cEnwPf9xdbbzQgkFGw6ENMiu7pQSZTfy8VlrbKzm8
+	EwHepLCF28HS4j2bmDTXzPB6h/ZYGcX5YqVmt1/b3TwnCfQwdDrSI9uMpb9CnKiE
+	qLpr3gfeYeTRSGMqXIJOg03DLcMird4LWGCY30xcJT7uK/x4GzB600wSR1LOxLqm
+	l612THu3LRV9tX5PQxz3F4cDXxifCcLD3BkR9vrMgFrNAGsyORL5K/H6GYoPcnay
+	rQ==
 X-Virus-Scanned: amavisd at oak.phenome.org
 Received: by oak.phenome.org (Postfix);
-	Mon, 02 Feb 2026 13:15:42 +0100 (CET)
-Date: Mon, 2 Feb 2026 13:15:41 +0100
+	Mon, 02 Feb 2026 13:07:29 +0100 (CET)
+Date: Mon, 2 Feb 2026 13:07:27 +0100
 From: Antony Antony <antony@phenome.org>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: Antony Antony <antony.antony@secunet.com>,
@@ -42,15 +42,15 @@ Cc: Antony Antony <antony.antony@secunet.com>,
 	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Shuah Khan <shuah@kernel.org>, devel@linux-ipsec.org,
-	linux-kselftest@vger.kernel.org,
 	Tobias Brunner <tobias@strongswan.org>,
-	Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [devel-ipsec] Re: [PATCH net-next v4 2/2] selftests: net: add
- ICMP error source address test over xfrm tunnel
-Message-ID: <aYCVbatEuE4kpVpg@Antony2201.local>
+	Simon Horman <horms@kernel.org>, stable+noautosel@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [devel-ipsec] Re: [PATCH net-next v4 1/2] icmp: fix ICMP error
+ source address when xfrm policy matches
+Message-ID: <aYCTfwblH8wtnF6c@Antony2201.local>
 References: <cover.1769595011.git.antony.antony@secunet.com>
- <af9a189bee31f7d8f3759ed71d09ab5a82437592.1769595011.git.antony.antony@secunet.com>
- <20260129184318.53b1dabf@kernel.org>
+ <f820e0e9f80b1467f97d1408f00f61b1fdb1b986.1769595011.git.antony.antony@secunet.com>
+ <20260129184510.01319683@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -59,48 +59,37 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260129184318.53b1dabf@kernel.org>
+In-Reply-To: <20260129184510.01319683@kernel.org>
 
-On Thu, Jan 29, 2026 at 06:43:18PM -0800, Jakub Kicinski via Devel wrote:
-> On Wed, 28 Jan 2026 11:20:45 +0100 Antony Antony wrote:
-> > Test that ICMP error messages generated by an IPsec gateway use
-> > the correct source address (the gateway's address, not the
-> > unreachable destination).
+Hi Jakub,
+
+On Thu, Jan 29, 2026 at 06:45:10PM -0800, Jakub Kicinski via Devel wrote:
+> On Wed, 28 Jan 2026 11:25:14 +0100 Antony Antony wrote:
+> > Subject: [PATCH net-next v4 1/2] icmp: fix ICMP error source address when xfrm policy matches
 > 
-> could you check / fix shellcheck warnings?
-
-lots of warnings. It looks like x-mas lights are still on:)
-
+> > Fixes: 415b3334a21a ("icmp: Fix regression in nexthop resolution during replies.")
+> > Cc: stable+noautosel@kernel.org # Avoid false positives in tests
 > 
-> +In xfrm_state.sh line 115:
-> +	$ksft_skip)
-> +        ^--------^ SC2254 (warning): Quote expansions in case patterns to match literally rather than as a glob.
+> I don't understand what you're trying to express with all these tags.
+> We are sending incorrect ICMP packets, seems like a normal net-worthy
+> fix to me?
 
-I will add quotes to. Thare 30-40 of those!  
+You're right that we're sending incorrect ICMP packets when IPsec/xfrm is 
+enabled and this is a legitimate fix. My concern with backporting is about 
+potential disruption rather than the correctness of the fix itself.
+The issue is that some existing test scripts and monitoring tools may have
+hardcoded expectations for the current(incorrect) source address behavior.  
+When this one-line fix gets backported to all maintained kernels, those 
+tests would start failing, potentially triggering regression reports and 
+requests to revert the fix from stable kernels.
 
-> 
-> +In xfrm_state.sh line 157:
-> +	[ -n "${NS_R1}" ] && ns_r1="ip netns exec ${NS_R1}" && ns_active="${ns_active} $NS_R1"
-> +                             ^---^ SC2034 (warning): ns_r1 appears unused. Verify use (or export if used externally).
-> +
-> +
-> +In xfrm_state.sh line 162:
-> +	[ -n "${NS_B}" ] && ns_b="ip netns exec ${NS_B}" && ns_active="${ns_active} $NS_B"
-> +                            ^--^ SC2034 (warning): ns_b appears unused. Verify use (or export if used externally).
-> 
-> +In xfrm_state.sh line 166:
-> +	local ns_cmd=$(nscmd $1)
-> +              ^----^ SC2155 (warning): Declare and assign separately to avoid masking return values.
+Additionally, without the
+commit 63b21caba17e ("xfrm: introduce forwarding of ICMP Error messages") 
+being present in older kernels, the behavior change could be viewed 
+differently in stable branches.
 
-other shell checks are harder to fix.
+This is also the sense I got from IPsec users.
+Given these considerations, I opted for the safer path of targeting net-next
+with stable+noautosel, no backporting.
 
-+In xfrm_state.sh line 417:
-test_unreachable_ipv6() {
-^-- SC2329 (info): This function is never invoked. Check usage (or ignored 
-if invoked indirectly).
-
-those are invoked indirectly.  eval code I would like to keep. Would that 
-work for you? are you aiming fori strictly zero warnings?
-
-regards,
 -antony
