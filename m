@@ -1,530 +1,168 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC9E22FAFD
-	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 16:03:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DCC26FDAC
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 16:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770048214; cv=none; b=hiDE3z166vbL57Gdg4Pby7q9lhhX5Jsxpsur5aePQb0m08N5TOLjwPLp+o4mLj6sfG1KGA75z+Ayw7ybtmTxzOM/rxV1nVp1/McSWHU3QalKCg0fzrgw0k0sH1u0ziQYgNwuWhxZKaBSGGMUsXgM839gyxtrZsclkx++1e4H4xo=
+	t=1770048816; cv=none; b=cKF5zOoWbin7sza6AgK0UHwtiPkHXaqWpcGFUvjfFFXXDUkA35/T99NYRQzVmbcsYVLj/rbOUIhhlsBirEt/uGwMDxMYbHPXkopZWAu1T9iIfRPsgQNEyRPziNIStTpMJXmYtaxcTAuo48vaVAUQ32U8IvvmGxiS3X3YpnMtuC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770048214; c=relaxed/simple;
-	bh=f+HrC0iWonAH7sbFK2rFbMBR2gQQoVHp1Fhe7Yzvaz4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EWVxj4t0kX8qRQe+57ODEc3jRFD3F46QlKqHMH+YOsFn+bK1b3RjISHsD4bN1N3qRDo4Rgk88Ke5nFaE3batKE3NajrQOeBb23e6hBJEQja4ezEZW/ONr6KMY5ldsGdGu8xkRzEV7kDZJKbKoBJgD7IPPvNpNm8I20G18JKmLwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UgeIeegf; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770048816; c=relaxed/simple;
+	bh=a4N7z8UAB/VGHl+U+pzsuK5fOZS3vCpucP5duJHCtNo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=agB90dbLyXMNLAeaQ+VvlqqhFgw/qH/ps9YJDOyVGjpVMaEIyJghz+kJH+mPjWZZVNHSnC0Dvxr4TfHVtpF2JoRJvVtHrqu/G5San5gz5Q7Ad6oS3cwTJAv8GVTOlYfNYTKimySjyWxntGx9IgutlpdS4EzIB4+Mln2TH7M68ys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=YQL3lGEq; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UgeIeegf"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-34ab8e0df53so3875934a91.3
-        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 08:03:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770048212; x=1770653012; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1a9l567QPE61uruLEu3GPyK0pRg9wkjFHjtbUXOYHUk=;
-        b=UgeIeegfGSzPNEKCLlWvsxL4lpUl7bYWOvAX6se73v8dvhUZHZrgbdsx5oFbW/Vg3X
-         BVDiZ0uFfGY0MbVXpr0KqubIeYfZTRk3wfZVfJryu5lHL6MtRMDA0UKBq0b4cPPRcWY/
-         /zhjA1BHhWGOFJJ61NeaDVCfjIg5GM/mFozpSVLaoButsugsB/1DxQMDcZcG0VpMoo2n
-         WFAotyFnNfCxyIzqrHaOSsDC+xSZmZSk3afCSQ0St3PRKrVgiCi3oKNFmEzlpjYTrTuD
-         KmeJDYjXDvN2beVVqsKHZT6khpIF+WsouTJHNfvW4+h9WqzkFN1AtHUw2wY7a7HjFK8/
-         vI4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770048212; x=1770653012;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1a9l567QPE61uruLEu3GPyK0pRg9wkjFHjtbUXOYHUk=;
-        b=xGFnnguVVt8mMSywWlJgBgq5e/FdZqCxjiGYlMSIjbaLCP8IOUGtpR+p6XPEzL2dTI
-         RDVatkstlUqVFAFnmI8dTMXLLPLlqNUssH91t6VqqzK00G+jbvuHRJgYupdw5eNdnX9g
-         j1QG88WXXvjssErFMPDAMOCA+mfsy34nv9fEUxCzQwHlAOPpXI4v86cT30mescc7hf0S
-         1calgAHLIw8Y2LCjzPSTb4vvWSaco50QtzrL0lsJJCCie3/U5wO+KvgtV/OiXPCQJYAX
-         +oPiOFt5QVqO/paG9UdDwL663JwJMWxezToxgbzg6hZPDBYygJkLkNxns+qS6izN56Ud
-         MwEg==
-X-Gm-Message-State: AOJu0YyVRPcuk9YCB6NnvKCBmVNIc/d0at4rWR0fkMRrWC4aWiHkC7h1
-	i9ZTMQj215CPVxdg365gp+D1v7BF5RBgz4OTdtvFfUoIsQkJuKDDMW2j5ZcGPKZv
-X-Gm-Gg: AZuq6aJYalJgaqEuwrpOagL5tQt1oyNzk077NkWZ+TTgzeyMItHah3WSTwJeCR2/uRn
-	sSAS32foP+Ap88oSDPPLMn/M8ekCwBzFWSAZQgM3yEaExHgyVbsEA0zhxU0KLyH1ANgF841iYqa
-	uAUV2vWmK9CjrKGuWpMyd+C0MOLPVzjHsImXS6qztrAi6rIX/L2Hb7ur7GDYBLgtRGRZO1djzJO
-	noYu7pAiMZjMxRcml3Studrmwp9izp6SzLsO0VCwcg/DFn2QXjJaEHNBTRteSWRi7dlkCZYJCAc
-	UBGHSUvHC8ZjPhylcoGMY+jwLJaI/SNMnAGXkFoPdfa0H/aunqh+0ukP/oQjK3cvBn2kcNSy+nr
-	UgFi/Zm4yW5aAJnlo59m/ATT5/7S2HB6rEnk/85YreOi13Z43AiaJXEYreSTmum+V/SSlDFFN1y
-	OfvPSu13UGhZod5txCyIoh2f34Ljq8Oy5FBd4+brWR8EnwChRvtZM=
-X-Received: by 2002:ac8:7f0f:0:b0:4f3:5361:7609 with SMTP id d75a77b69052e-505d22cf23fmr169838961cf.79.1770042598744;
-        Mon, 02 Feb 2026 06:29:58 -0800 (PST)
-Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50337ba3981sm106865171cf.16.2026.02.02.06.29.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 06:29:58 -0800 (PST)
-From: Xin Long <lucien.xin@gmail.com>
-To: network dev <netdev@vger.kernel.org>,
-	quic@lists.linux.dev
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stefan Metzmacher <metze@samba.org>,
-	Moritz Buhl <mbuhl@openbsd.org>,
-	Tyler Fanelli <tfanelli@redhat.com>,
-	Pengtao He <hepengtao@xiaomi.com>,
-	Thomas Dreibholz <dreibh@simula.no>,
-	linux-cifs@vger.kernel.org,
-	Steve French <smfrench@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Tom Talpey <tom@talpey.com>,
-	kernel-tls-handshake@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Steve Dickson <steved@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Alexander Aring <aahringo@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"D . Wythe" <alibuda@linux.alibaba.com>,
-	Jason Baron <jbaron@akamai.com>,
-	illiliti <illiliti@protonmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Daniel Stenberg <daniel@haxx.se>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Subject: [PATCH net-next v9 05/15] quic: provide quic.h header files for kernel and userspace
-Date: Mon,  2 Feb 2026 09:27:31 -0500
-Message-ID: <b3e81a27cc3e4c03fa8357c2c77b238997e48610.1770042461.git.lucien.xin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1770042461.git.lucien.xin@gmail.com>
-References: <cover.1770042461.git.lucien.xin@gmail.com>
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="YQL3lGEq"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=0/1yOWNK+/yM30idaZ3iUunkcFAEII9ZljB8J8tox94=; b=YQL3lGEqXNsTS6UaRqgujdtAbH
+	rbG8sdMUrBTf71w/xflKakudCsgwA3ZBa93RAA6iDJtnhasesq3FGABfM7bVq46s8LP1ylCrEtPxv
+	OUWBdcXL9zfeDN5gwflIRyCVNkV6wTfQmzk7B/MpUrwcuR1ezX3ga/Zgz1G/dI+ThXtXxO3l6khNv
+	Hgt1WwQV9OZ2LWBOXDrKUUXXa1nJuXJX8XpFfkmiqraxk1lcvxVo9smxveqY7b1oquurgeuPKg6tp
+	ukogT8oVroovWX08IyOtd0817EHOXc2ljNDsycdbQD7iUmezBh+t/wWctE0EO/o3Z2U3MsgrTiTxy
+	KwtcMI3g==;
+Received: from sslproxy04.your-server.de ([78.46.152.42])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1vmwYD-0000BL-35;
+	Mon, 02 Feb 2026 17:13:22 +0100
+Received: from localhost ([127.0.0.1])
+	by sslproxy04.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1vmwYE-0006gv-0J;
+	Mon, 02 Feb 2026 17:13:21 +0100
+Message-ID: <2a3bd098-0d88-4c11-8ac3-7b13f8bbbd9f@iogearbox.net>
+Date: Mon, 2 Feb 2026 17:13:20 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net/mlx5e: Undo saving per-channel async ICOSQ
+To: Tariq Toukan <ttoukan.linux@gmail.com>, netdev@vger.kernel.org
+Cc: William Tu <witu@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
+ David Wei <dw@davidwei.uk>, Jakub Kicinski <kuba@kernel.org>,
+ Gal Pressman <gal@nvidia.com>, alice.kernel@fastmail.im
+References: <20260123223916.361295-1-daniel@iogearbox.net>
+ <85776531-d5fa-4762-90aa-74c8397dc09b@gmail.com>
+ <6188b9f5-ce38-4de9-80b7-c7b1cab48595@iogearbox.net>
+ <421d9b09-a157-4f95-8775-7883ea097038@gmail.com>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ xsFNBGNAkI0BEADiPFmKwpD3+vG5nsOznvJgrxUPJhFE46hARXWYbCxLxpbf2nehmtgnYpAN
+ 2HY+OJmdspBntWzGX8lnXF6eFUYLOoQpugoJHbehn9c0Dcictj8tc28MGMzxh4aK02H99KA8
+ VaRBIDhmR7NJxLWAg9PgneTFzl2lRnycv8vSzj35L+W6XT7wDKoV4KtMr3Szu3g68OBbp1TV
+ HbJH8qe2rl2QKOkysTFRXgpu/haWGs1BPpzKH/ua59+lVQt3ZupePpmzBEkevJK3iwR95TYF
+ 06Ltpw9ArW/g3KF0kFUQkGXYXe/icyzHrH1Yxqar/hsJhYImqoGRSKs1VLA5WkRI6KebfpJ+
+ RK7Jxrt02AxZkivjAdIifFvarPPu0ydxxDAmgCq5mYJ5I/+BY0DdCAaZezKQvKw+RUEvXmbL
+ 94IfAwTFA1RAAuZw3Rz5SNVz7p4FzD54G4pWr3mUv7l6dV7W5DnnuohG1x6qCp+/3O619R26
+ 1a7Zh2HlrcNZfUmUUcpaRPP7sPkBBLhJfqjUzc2oHRNpK/1mQ/+mD9CjVFNz9OAGD0xFzNUo
+ yOFu/N8EQfYD9lwntxM0dl+QPjYsH81H6zw6ofq+jVKcEMI/JAgFMU0EnxrtQKH7WXxhO4hx
+ 3DFM7Ui90hbExlFrXELyl/ahlll8gfrXY2cevtQsoJDvQLbv7QARAQABzSZEYW5pZWwgQm9y
+ a21hbm4gPGRhbmllbEBpb2dlYXJib3gubmV0PsLBkQQTAQoAOxYhBCrUdtCTcZyapV2h+93z
+ cY/jfzlXBQJjQJCNAhsDBQkHhM4ACAsJCAcNDAsKBRUKCQgLAh4BAheAAAoJEN3zcY/jfzlX
+ dkUQAIFayRgjML1jnwKs7kvfbRxf11VI57EAG8a0IvxDlNKDcz74mH66HMyhMhPqCPBqphB5
+ ZUjN4N5I7iMYB/oWUeohbuudH4+v6ebzzmgx/EO+jWksP3gBPmBeeaPv7xOvN/pPDSe/0Ywp
+ dHpl3Np2dS6uVOMnyIsvmUGyclqWpJgPoVaXrVGgyuer5RpE/a3HJWlCBvFUnk19pwDMMZ8t
+ 0fk9O47HmGh9Ts3O8pGibfdREcPYeGGqRKRbaXvcRO1g5n5x8cmTm0sQYr2xhB01RJqWrgcj
+ ve1TxcBG/eVMmBJefgCCkSs1suriihfjjLmJDCp9XI/FpXGiVoDS54TTQiKQinqtzP0jv+TH
+ 1Ku+6x7EjLoLH24ISGyHRmtXJrR/1Ou22t0qhCbtcT1gKmDbTj5TcqbnNMGWhRRTxgOCYvG0
+ 0P2U6+wNj3HFZ7DePRNQ08bM38t8MUpQw4Z2SkM+jdqrPC4f/5S8JzodCu4x80YHfcYSt+Jj
+ ipu1Ve5/ftGlrSECvy80ZTKinwxj6lC3tei1bkI8RgWZClRnr06pirlvimJ4R0IghnvifGQb
+ M1HwVbht8oyUEkOtUR0i0DMjk3M2NoZ0A3tTWAlAH8Y3y2H8yzRrKOsIuiyKye9pWZQbCDu4
+ ZDKELR2+8LUh+ja1RVLMvtFxfh07w9Ha46LmRhpCzsFNBGNAkI0BEADJh65bNBGNPLM7cFVS
+ nYG8tqT+hIxtR4Z8HQEGseAbqNDjCpKA8wsxQIp0dpaLyvrx4TAb/vWIlLCxNu8Wv4W1JOST
+ wI+PIUCbO/UFxRy3hTNlb3zzmeKpd0detH49bP/Ag6F7iHTwQQRwEOECKKaOH52tiJeNvvyJ
+ pPKSKRhmUuFKMhyRVK57ryUDgowlG/SPgxK9/Jto1SHS1VfQYKhzMn4pWFu0ILEQ5x8a0RoX
+ k9p9XkwmXRYcENhC1P3nW4q1xHHlCkiqvrjmWSbSVFYRHHkbeUbh6GYuCuhqLe6SEJtqJW2l
+ EVhf5AOp7eguba23h82M8PC4cYFl5moLAaNcPHsdBaQZznZ6NndTtmUENPiQc2EHjHrrZI5l
+ kRx9hvDcV3Xnk7ie0eAZDmDEbMLvI13AvjqoabONZxra5YcPqxV2Biv0OYp+OiqavBwmk48Z
+ P63kTxLddd7qSWbAArBoOd0wxZGZ6mV8Ci/ob8tV4rLSR/UOUi+9QnkxnJor14OfYkJKxot5
+ hWdJ3MYXjmcHjImBWplOyRiB81JbVf567MQlanforHd1r0ITzMHYONmRghrQvzlaMQrs0V0H
+ 5/sIufaiDh7rLeZSimeVyoFvwvQPx5sXhjViaHa+zHZExP9jhS/WWfFE881fNK9qqV8pi+li
+ 2uov8g5yD6hh+EPH6wARAQABwsF8BBgBCgAmFiEEKtR20JNxnJqlXaH73fNxj+N/OVcFAmNA
+ kI0CGwwFCQeEzgAACgkQ3fNxj+N/OVfFMhAA2zXBUzMLWgTm6iHKAPfz3xEmjtwCF2Qv/TT3
+ KqNUfU3/0VN2HjMABNZR+q3apm+jq76y0iWroTun8Lxo7g89/VDPLSCT0Nb7+VSuVR/nXfk8
+ R+OoXQgXFRimYMqtP+LmyYM5V0VsuSsJTSnLbJTyCJVu8lvk3T9B0BywVmSFddumv3/pLZGn
+ 17EoKEWg4lraXjPXnV/zaaLdV5c3Olmnj8vh+14HnU5Cnw/dLS8/e8DHozkhcEftOf+puCIl
+ Awo8txxtLq3H7KtA0c9kbSDpS+z/oT2S+WtRfucI+WN9XhvKmHkDV6+zNSH1FrZbP9FbLtoE
+ T8qBdyk//d0GrGnOrPA3Yyka8epd/bXA0js9EuNknyNsHwaFrW4jpGAaIl62iYgb0jCtmoK/
+ rCsv2dqS6Hi8w0s23IGjz51cdhdHzkFwuc8/WxI1ewacNNtfGnorXMh6N0g7E/r21pPeMDFs
+ rUD9YI1Je/WifL/HbIubHCCdK8/N7rblgUrZJMG3W+7vAvZsOh/6VTZeP4wCe7Gs/cJhE2gI
+ DmGcR+7rQvbFQC4zQxEjo8fNaTwjpzLM9NIp4vG9SDIqAm20MXzLBAeVkofixCsosUWUODxP
+ owLbpg7pFRJGL9YyEHpS7MGPb3jSLzucMAFXgoI8rVqoq6si2sxr2l0VsNH5o3NgoAgJNIg=
+In-Reply-To: <421d9b09-a157-4f95-8775-7883ea097038@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27900/Mon Feb  2 08:24:10 2026)
 
-This commit adds quic.h to include/uapi/linux, providing the necessary
-definitions for the QUIC socket API. Exporting this header allows both
-user space applications and kernel subsystems to access QUIC-related
-control messages, socket options, and event/notification interfaces.
+Hi Tariq,
 
-Since kernel_get/setsockopt() is no longer available to kernel consumers,
-a corresponding internal header, include/linux/quic.h, is added. This
-exposes quic_do_get/setsockopt() to handle QUIC socket options directly
-for kernel subsystems.
+On 2/1/26 1:50 PM, Tariq Toukan wrote:
+> On 26/01/2026 11:23, Daniel Borkmann wrote:
+>> On 1/25/26 9:33 AM, Tariq Toukan wrote:
+>>> On 24/01/2026 0:39, Daniel Borkmann wrote:
+>>>> This reverts the following commits:
+>>>>
+>>>>    - ea945f4f3991 ("net/mlx5e: Move async ICOSQ lock into ICOSQ struct")
+>>>>    - 56aca3e0f730 ("net/mlx5e: Use regular ICOSQ for triggering NAPI")
+>>>>    - 1b080bd74840 ("net/mlx5e: Move async ICOSQ to dynamic allocation")
+>>>>    - abed42f9cd80 ("net/mlx5e: Conditionally create async ICOSQ")
+>>>>
+>>>> There are a couple of regressions on the xsk side I ran into:
+>>>>
+>>>> Commit 56aca3e0f730 triggers an illegal synchronize_rcu() in an RCU read-
+>>>> side critical section via mlx5e_xsk_wakeup() -> mlx5e_trigger_napi_icosq()
+>>>> -> synchronize_net(). The stack holds RCU read-lock in xsk_poll().
+>>>>
+>>>> Additionally, this also hits a NULL pointer dereference in mlx5e_xsk_wakeup():
+>>>>
+>>>>    [  103.963735] BUG: kernel NULL pointer dereference, address: 0000000000000240
+>>>>    [  103.963743] #PF: supervisor read access in kernel mode
+>>>>    [  103.963746] #PF: error_code(0x0000) - not-present page
+>>>>    [  103.963749] PGD 0 P4D 0
+>>>>    [  103.963752] Oops: Oops: 0000 [#1] SMP
+>>>>    [  103.963756] CPU: 0 UID: 0 PID: 2255 Comm: qemu-system-x86 Not tainted 6.19.0-rc5+ #229 PREEMPT(none)
+>>>>    [  103.963761] Hardware name: [...]
+>>>>    [  103.963765] RIP: 0010:mlx5e_xsk_wakeup+0x53/0x90 [mlx5_core]
+>>>>
+>>>> What happens is that c->async_icosq is NULL when in mlx5e_xsk_wakeup()
+>>>> and therefore access to c->async_icosq->state triggers it. (On the NIC
+>>>> there is an XDP program installed by the control plane where traffic
+>>>> gets redirected into an xsk map - there was no xsk pool set up yet.
+>>>> At some later time a xsk pool is set up and the related xsk socket is
+>>>> added to the xsk map of the XDP program.)
+>>>
+>>> Thanks for your report.
+>>>
+>>>> Reverting the series fixes the problems again.
+>>>
+>>> Revert is too aggressive here. A fix is preferable.
+>>> We're investigating the issue in order to fix it.
+>>> We'll update.
+>> Ok, sounds good. Certainly the kTLS fixes seem independent, from the cause
+>> of the issues I've hit it just seemed to me that they were quite fundamental
+>> and that perhaps a different approach would be needed (or alternatively only
+>> kTLS would need fixing, and the xsk optimization left as it was originally).
+>> Anyway, I'll keep the revert locally for now, and happy to test patches.
+> 
+> Please check attached patch.
+> We were able to repro the issues internally and verify the fix.
+> We're finalizing it before submission.
+> 
+> I'd be glad if you can confirm it solves the issues for you.
+That seems to work for me, yes. Feel free to add my Tested-by.
 
-Detailed descriptions of these structures are available in [1], and will
-be also provided when adding corresponding socket interfaces in the
-later patches.
-
-[1] https://datatracker.ietf.org/doc/html/draft-lxin-quic-socket-apis
-
-Signed-off-by: Tyler Fanelli <tfanelli@redhat.com>
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Thomas Dreibholz <dreibh@simula.no>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
----
-v2:
-  - Fix a kernel API description warning, found by Jakub.
-  - Replace uintN_t with __uN, capitalize _UAPI_LINUX_QUIC_H, and
-    assign explicit values for QUIC_TRANSPORT_ERROR_ enum in UAPI
-    quic.h, suggested by David Howells.
-v4:
-  - Use MSG_QUIC_ prefix for MSG_* flags to avoid conflicts with other
-    protocols, such as MSG_NOTIFICATION in SCTP (reported by Thomas).
-  - Remove QUIC_CONG_ALG_CUBIC; only NEW RENO congestion control is
-    supported in this version.
-v5:
-  - Add include/linux/quic.h and include/uapi/linux/quic.h to the
-    QUIC PROTOCOL entry in MAINTAINERS.
-v6:
-  - Fix the copy/pasted the uAPI path for SCTP to the QUIC entry (noted
-    by Jakub).
-v7:
-  - Expose quic_do_get/setsockopt() instead of quic_kernel_get/setsockopt()
-    (suggested by Paolo).
----
- MAINTAINERS               |   2 +
- include/linux/quic.h      |  20 ++++
- include/uapi/linux/quic.h | 235 ++++++++++++++++++++++++++++++++++++++
- net/quic/socket.c         |  32 +++++-
- net/quic/socket.h         |   7 ++
- 5 files changed, 294 insertions(+), 2 deletions(-)
- create mode 100644 include/linux/quic.h
- create mode 100644 include/uapi/linux/quic.h
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7e41961dbd01..cf424d94c1d6 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -21687,6 +21687,8 @@ M:	Xin Long <lucien.xin@gmail.com>
- L:	quic@lists.linux.dev
- S:	Maintained
- W:	https://github.com/lxin/quic
-+F:	include/linux/quic.h
-+F:	include/uapi/linux/quic.h
- F:	net/quic/
- 
- RADEON and AMDGPU DRM DRIVERS
-diff --git a/include/linux/quic.h b/include/linux/quic.h
-new file mode 100644
-index 000000000000..c246f6349f9c
---- /dev/null
-+++ b/include/linux/quic.h
-@@ -0,0 +1,20 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+#ifndef _LINUX_QUIC_H
-+#define _LINUX_QUIC_H
-+
-+#include <linux/sockptr.h>
-+#include <uapi/linux/quic.h>
-+
-+int quic_do_setsockopt(struct sock *sk, int optname, sockptr_t optval, unsigned int optlen);
-+int quic_do_getsockopt(struct sock *sk, int optname, sockptr_t optval, sockptr_t optlen);
-+
-+#endif
-diff --git a/include/uapi/linux/quic.h b/include/uapi/linux/quic.h
-new file mode 100644
-index 000000000000..990b70c3afb0
---- /dev/null
-+++ b/include/uapi/linux/quic.h
-@@ -0,0 +1,235 @@
-+/* SPDX-License-Identifier: GPL-2.0+ WITH Linux-syscall-note */
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+#ifndef _UAPI_LINUX_QUIC_H
-+#define _UAPI_LINUX_QUIC_H
-+
-+#include <linux/types.h>
-+#ifdef __KERNEL__
-+#include <linux/socket.h>
-+#else
-+#include <sys/socket.h>
-+#endif
-+
-+/* NOTE: Structure descriptions are specified in:
-+ * https://datatracker.ietf.org/doc/html/draft-lxin-quic-socket-apis
-+ */
-+
-+/* Send or Receive Options APIs */
-+enum quic_cmsg_type {
-+	QUIC_STREAM_INFO,
-+	QUIC_HANDSHAKE_INFO,
-+};
-+
-+#define QUIC_STREAM_TYPE_SERVER_MASK	0x01
-+#define QUIC_STREAM_TYPE_UNI_MASK	0x02
-+#define QUIC_STREAM_TYPE_MASK		0x03
-+
-+enum quic_msg_flags {
-+	/* flags for stream_flags */
-+	MSG_QUIC_STREAM_NEW		= MSG_SYN,
-+	MSG_QUIC_STREAM_FIN		= MSG_FIN,
-+	MSG_QUIC_STREAM_UNI		= MSG_CONFIRM,
-+	MSG_QUIC_STREAM_DONTWAIT	= MSG_WAITFORONE,
-+	MSG_QUIC_STREAM_SNDBLOCK	= MSG_ERRQUEUE,
-+
-+	/* extented flags for msg_flags */
-+	MSG_QUIC_DATAGRAM		= MSG_RST,
-+	MSG_QUIC_NOTIFICATION		= MSG_MORE,
-+};
-+
-+enum quic_crypto_level {
-+	QUIC_CRYPTO_APP,
-+	QUIC_CRYPTO_INITIAL,
-+	QUIC_CRYPTO_HANDSHAKE,
-+	QUIC_CRYPTO_EARLY,
-+	QUIC_CRYPTO_MAX,
-+};
-+
-+struct quic_handshake_info {
-+	__u8	crypto_level;
-+};
-+
-+struct quic_stream_info {
-+	__s64	stream_id;
-+	__u32	stream_flags;
-+};
-+
-+/* Socket Options APIs */
-+#define QUIC_SOCKOPT_EVENT				0
-+#define QUIC_SOCKOPT_STREAM_OPEN			1
-+#define QUIC_SOCKOPT_STREAM_RESET			2
-+#define QUIC_SOCKOPT_STREAM_STOP_SENDING		3
-+#define QUIC_SOCKOPT_CONNECTION_ID			4
-+#define QUIC_SOCKOPT_CONNECTION_CLOSE			5
-+#define QUIC_SOCKOPT_CONNECTION_MIGRATION		6
-+#define QUIC_SOCKOPT_KEY_UPDATE				7
-+#define QUIC_SOCKOPT_TRANSPORT_PARAM			8
-+#define QUIC_SOCKOPT_CONFIG				9
-+#define QUIC_SOCKOPT_TOKEN				10
-+#define QUIC_SOCKOPT_ALPN				11
-+#define QUIC_SOCKOPT_SESSION_TICKET			12
-+#define QUIC_SOCKOPT_CRYPTO_SECRET			13
-+#define QUIC_SOCKOPT_TRANSPORT_PARAM_EXT		14
-+
-+#define QUIC_VERSION_V1			0x1
-+#define QUIC_VERSION_V2			0x6b3343cf
-+
-+struct quic_transport_param {
-+	__u8	remote;
-+	__u8	disable_active_migration;
-+	__u8	grease_quic_bit;
-+	__u8	stateless_reset;
-+	__u8	disable_1rtt_encryption;
-+	__u8	disable_compatible_version;
-+	__u8	active_connection_id_limit;
-+	__u8	ack_delay_exponent;
-+	__u16	max_datagram_frame_size;
-+	__u16	max_udp_payload_size;
-+	__u32	max_idle_timeout;
-+	__u32	max_ack_delay;
-+	__u16	max_streams_bidi;
-+	__u16	max_streams_uni;
-+	__u64	max_data;
-+	__u64	max_stream_data_bidi_local;
-+	__u64	max_stream_data_bidi_remote;
-+	__u64	max_stream_data_uni;
-+	__u64	reserved;
-+};
-+
-+struct quic_config {
-+	__u32	version;
-+	__u32	plpmtud_probe_interval;
-+	__u32	initial_smoothed_rtt;
-+	__u32	payload_cipher_type;
-+	__u8	congestion_control_algo;
-+	__u8	validate_peer_address;
-+	__u8	stream_data_nodelay;
-+	__u8	receive_session_ticket;
-+	__u8	certificate_request;
-+	__u8	reserved[3];
-+};
-+
-+struct quic_crypto_secret {
-+	__u8	send;  /* send or recv */
-+	__u8	level; /* crypto level */
-+	__u32	type; /* TLS_CIPHER_* */
-+#define QUIC_CRYPTO_SECRET_BUFFER_SIZE 48
-+	__u8	secret[QUIC_CRYPTO_SECRET_BUFFER_SIZE];
-+};
-+
-+enum quic_cong_algo {
-+	QUIC_CONG_ALG_RENO,
-+	QUIC_CONG_ALG_MAX,
-+};
-+
-+struct quic_errinfo {
-+	__s64	stream_id;
-+	__u32	errcode;
-+};
-+
-+struct quic_connection_id_info {
-+	__u8	dest;
-+	__u32	active;
-+	__u32	prior_to;
-+};
-+
-+struct quic_event_option {
-+	__u8	type;
-+	__u8	on;
-+};
-+
-+/* Event APIs */
-+enum quic_event_type {
-+	QUIC_EVENT_NONE,
-+	QUIC_EVENT_STREAM_UPDATE,
-+	QUIC_EVENT_STREAM_MAX_DATA,
-+	QUIC_EVENT_STREAM_MAX_STREAM,
-+	QUIC_EVENT_CONNECTION_ID,
-+	QUIC_EVENT_CONNECTION_CLOSE,
-+	QUIC_EVENT_CONNECTION_MIGRATION,
-+	QUIC_EVENT_KEY_UPDATE,
-+	QUIC_EVENT_NEW_TOKEN,
-+	QUIC_EVENT_NEW_SESSION_TICKET,
-+	QUIC_EVENT_MAX,
-+};
-+
-+enum {
-+	QUIC_STREAM_SEND_STATE_READY,
-+	QUIC_STREAM_SEND_STATE_SEND,
-+	QUIC_STREAM_SEND_STATE_SENT,
-+	QUIC_STREAM_SEND_STATE_RECVD,
-+	QUIC_STREAM_SEND_STATE_RESET_SENT,
-+	QUIC_STREAM_SEND_STATE_RESET_RECVD,
-+
-+	QUIC_STREAM_RECV_STATE_RECV,
-+	QUIC_STREAM_RECV_STATE_SIZE_KNOWN,
-+	QUIC_STREAM_RECV_STATE_RECVD,
-+	QUIC_STREAM_RECV_STATE_READ,
-+	QUIC_STREAM_RECV_STATE_RESET_RECVD,
-+	QUIC_STREAM_RECV_STATE_RESET_READ,
-+};
-+
-+struct quic_stream_update {
-+	__s64	id;
-+	__u8	state;
-+	__u32	errcode;
-+	__u64	finalsz;
-+};
-+
-+struct quic_stream_max_data {
-+	__s64	id;
-+	__u64	max_data;
-+};
-+
-+struct quic_connection_close {
-+	__u32	errcode;
-+	__u8	frame;
-+	__u8	phrase[];
-+};
-+
-+union quic_event {
-+	struct quic_stream_update	update;
-+	struct quic_stream_max_data	max_data;
-+	struct quic_connection_close	close;
-+	struct quic_connection_id_info	info;
-+	__u64	max_stream;
-+	__u8	local_migration;
-+	__u8	key_update_phase;
-+};
-+
-+enum {
-+	QUIC_TRANSPORT_ERROR_NONE			= 0x00,
-+	QUIC_TRANSPORT_ERROR_INTERNAL			= 0x01,
-+	QUIC_TRANSPORT_ERROR_CONNECTION_REFUSED		= 0x02,
-+	QUIC_TRANSPORT_ERROR_FLOW_CONTROL		= 0x03,
-+	QUIC_TRANSPORT_ERROR_STREAM_LIMIT		= 0x04,
-+	QUIC_TRANSPORT_ERROR_STREAM_STATE		= 0x05,
-+	QUIC_TRANSPORT_ERROR_FINAL_SIZE			= 0x06,
-+	QUIC_TRANSPORT_ERROR_FRAME_ENCODING		= 0x07,
-+	QUIC_TRANSPORT_ERROR_TRANSPORT_PARAM		= 0x08,
-+	QUIC_TRANSPORT_ERROR_CONNECTION_ID_LIMIT	= 0x09,
-+	QUIC_TRANSPORT_ERROR_PROTOCOL_VIOLATION		= 0x0a,
-+	QUIC_TRANSPORT_ERROR_INVALID_TOKEN		= 0x0b,
-+	QUIC_TRANSPORT_ERROR_APPLICATION		= 0x0c,
-+	QUIC_TRANSPORT_ERROR_CRYPTO_BUF_EXCEEDED	= 0x0d,
-+	QUIC_TRANSPORT_ERROR_KEY_UPDATE			= 0x0e,
-+	QUIC_TRANSPORT_ERROR_AEAD_LIMIT_REACHED		= 0x0f,
-+	QUIC_TRANSPORT_ERROR_NO_VIABLE_PATH		= 0x10,
-+
-+	/* The cryptographic handshake failed. A range of 256 values is reserved
-+	 * for carrying error codes specific to the cryptographic handshake that
-+	 * is used. Codes for errors occurring when TLS is used for the
-+	 * cryptographic handshake are described in Section 4.8 of [QUIC-TLS].
-+	 */
-+	QUIC_TRANSPORT_ERROR_CRYPTO			= 0x0100,
-+};
-+
-+#endif /* _UAPI_LINUX_QUIC_H */
-diff --git a/net/quic/socket.c b/net/quic/socket.c
-index a0eedf59545a..b86989080184 100644
---- a/net/quic/socket.c
-+++ b/net/quic/socket.c
-@@ -107,10 +107,24 @@ static void quic_close(struct sock *sk, long timeout)
- 	sk_common_release(sk);
- }
- 
--static int quic_do_setsockopt(struct sock *sk, int optname, sockptr_t optval, unsigned int optlen)
-+/**
-+ * quic_do_setsockopt - set a QUIC socket option
-+ * @sk: socket to configure
-+ * @optname: option name (QUIC-level)
-+ * @optval: user buffer containing the option value
-+ * @optlen: size of the option value
-+ *
-+ * Sets a QUIC socket option on a given socket.
-+ *
-+ * Return:
-+ * - On success, 0 is returned.
-+ * - On error, a negative error value is returned.
-+ */
-+int quic_do_setsockopt(struct sock *sk, int optname, sockptr_t optval, unsigned int optlen)
- {
- 	return -EOPNOTSUPP;
- }
-+EXPORT_SYMBOL_GPL(quic_do_setsockopt);
- 
- static int quic_setsockopt(struct sock *sk, int level, int optname,
- 			   sockptr_t optval, unsigned int optlen)
-@@ -121,10 +135,24 @@ static int quic_setsockopt(struct sock *sk, int level, int optname,
- 	return quic_do_setsockopt(sk, optname, optval, optlen);
- }
- 
--static int quic_do_getsockopt(struct sock *sk, int optname, sockptr_t optval, sockptr_t optlen)
-+/**
-+ * quic_do_getsockopt - get a QUIC socket option
-+ * @sk: socket to query
-+ * @optname: option name (QUIC-level)
-+ * @optval: user buffer to receive the option value
-+ * @optlen: in/out parameter for buffer size; updated with actual length on return
-+ *
-+ * Gets a QUIC socket option from a given socket.
-+ *
-+ * Return:
-+ * - On success, 0 is returned.
-+ * - On error, a negative error value is returned.
-+ */
-+int quic_do_getsockopt(struct sock *sk, int optname, sockptr_t optval, sockptr_t optlen)
- {
- 	return -EOPNOTSUPP;
- }
-+EXPORT_SYMBOL_GPL(quic_do_getsockopt);
- 
- static int quic_getsockopt(struct sock *sk, int level, int optname,
- 			   char __user *optval, int __user *optlen)
-diff --git a/net/quic/socket.h b/net/quic/socket.h
-index 0aa642e3b0ae..7ee190af4454 100644
---- a/net/quic/socket.h
-+++ b/net/quic/socket.h
-@@ -9,6 +9,7 @@
-  */
- 
- #include <net/udp_tunnel.h>
-+#include <linux/quic.h>
- 
- #include "common.h"
- #include "family.h"
-@@ -29,6 +30,7 @@ struct quic_sock {
- 	struct inet_sock		inet;
- 	struct list_head		reqs;
- 
-+	struct quic_config		config;
- 	struct quic_data		ticket;
- 	struct quic_data		token;
- 	struct quic_data		alpn;
-@@ -49,6 +51,11 @@ static inline struct list_head *quic_reqs(const struct sock *sk)
- 	return &quic_sk(sk)->reqs;
- }
- 
-+static inline struct quic_config *quic_config(const struct sock *sk)
-+{
-+	return &quic_sk(sk)->config;
-+}
-+
- static inline struct quic_data *quic_token(const struct sock *sk)
- {
- 	return &quic_sk(sk)->token;
--- 
-2.47.1
-
+Thanks,
+Daniel
