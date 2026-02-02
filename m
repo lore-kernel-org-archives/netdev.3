@@ -1,95 +1,109 @@
-Received: from oak.phenome.org (unknown [193.110.157.52])
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EBD23EA8B;
-	Mon,  2 Feb 2026 12:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.110.157.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD03A125A9;
+	Mon,  2 Feb 2026 12:21:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770034626; cv=none; b=aAfh1LAb1t5NXU52LrHtK/+MswHJVBVYkMI2mtrUeyLAGP9PaJPtRx3R1Ij/YmEl6tsuRsNX6bv2m9PCpy5LTAEQBNpXImYZKfucn47+vYIf0vwURzCdwkqzfA0weJK8bXc7tkuPgykKvwptXdw/clbFH3/Ygq6MjMdodCQ/K3Y=
+	t=1770034867; cv=none; b=GRE1R1LKws3Tu7Ipu+rK0Pbs+8cBUmdG2HyitpZAPI1v5vXFB2eqj4OwHDKxCfC6zSEUdUQNLdnCtsEbUF7QIfu4mYMcwl9RKsMjm6PYI/RMAcCp7AqLc5GLm5xVTB8eEl/eZRmPYXYB2Ch46lqLeXQmUY+ERZ4AOE3XLvIb0v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770034626; c=relaxed/simple;
-	bh=KiiVfW7gDbgRUN6d93pvTDSOaEYSsBVczE80UlUTzqg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pe1VFOGwMXRX7GZ5gGzFZur2d8duDZp5UtS2G6Mmz75aVvMzY6Cz9uFLFUU6a8vQyqkxML2q+eFNqeXwej4ZpnceqoWQlbqBnEBQBCxTeveR+7Ah+b+qW5vurCfMn7id5SrVDoIXDbdNuwsO/nQjLpLoqkr+rzdxci8J3Q/hqhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org; spf=pass smtp.mailfrom=phenome.org; dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b=NvYeWq9E; arc=none smtp.client-ip=193.110.157.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=phenome.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=phenome.org
+	s=arc-20240116; t=1770034867; c=relaxed/simple;
+	bh=AnT2YVUFFJTO+No6eubNJyX2iZEY+PrnugKi2bq8Qmk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qGZf058aioP6E1h+UGV4DSiPP/bpd6UL4JQckXPa6seVijQDML/fgTuRN1so44JtVKaHCSFnx44aOB/suUvarLmXzoRJjC6xm1uTXHnSrIcuslw7PTS7XwrCKqzJ7pnRBTXu4+OHGCaiKJJXA3MwcXBzM4+BSJJLY8lgK8z4r2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=L0P7fYB9; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=phenome.org header.i=@phenome.org header.b="NvYeWq9E"
-Authentication-Results: oak.phenome.org (amavisd); dkim=pass (2048-bit key)
- reason="pass (just generated, assumed good)" header.d=phenome.org
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=phenome.org; h=
-	in-reply-to:content-disposition:content-type:content-type
-	:mime-version:references:message-id:subject:subject:from:from
-	:date:date:received; s=oak1; t=1770034052; x=1770898053; bh=KiiV
-	fW7gDbgRUN6d93pvTDSOaEYSsBVczE80UlUTzqg=; b=NvYeWq9EfSE4NTafBqH6
-	kCbrtHFCOUVeSASFt94qdiY9DwtTmO3YSogqZuVyjeu73XUU8tBEHW3yI+e1+Lv8
-	pd773AM38wdjZJMKuTUupC3cEnwPf9xdbbzQgkFGw6ENMiu7pQSZTfy8VlrbKzm8
-	EwHepLCF28HS4j2bmDTXzPB6h/ZYGcX5YqVmt1/b3TwnCfQwdDrSI9uMpb9CnKiE
-	qLpr3gfeYeTRSGMqXIJOg03DLcMird4LWGCY30xcJT7uK/x4GzB600wSR1LOxLqm
-	l612THu3LRV9tX5PQxz3F4cDXxifCcLD3BkR9vrMgFrNAGsyORL5K/H6GYoPcnay
-	rQ==
-X-Virus-Scanned: amavisd at oak.phenome.org
-Received: by oak.phenome.org (Postfix);
-	Mon, 02 Feb 2026 13:07:29 +0100 (CET)
-Date: Mon, 2 Feb 2026 13:07:27 +0100
-From: Antony Antony <antony@phenome.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Antony Antony <antony.antony@secunet.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	netdev@vger.kernel.org, "David S . Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Shuah Khan <shuah@kernel.org>, devel@linux-ipsec.org,
-	Tobias Brunner <tobias@strongswan.org>,
-	Simon Horman <horms@kernel.org>, stable+noautosel@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [devel-ipsec] Re: [PATCH net-next v4 1/2] icmp: fix ICMP error
- source address when xfrm policy matches
-Message-ID: <aYCTfwblH8wtnF6c@Antony2201.local>
-References: <cover.1769595011.git.antony.antony@secunet.com>
- <f820e0e9f80b1467f97d1408f00f61b1fdb1b986.1769595011.git.antony.antony@secunet.com>
- <20260129184510.01319683@kernel.org>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="L0P7fYB9"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=ryEz7iWunP67PC5bU94lyAnDGpTcxQMYgCmjDULTlMg=;
+	b=L0P7fYB9UrI9o9eIxZc2flmv4Gqj4ILOnxz1Ar659XR2GeVKDjvrXIUniritYKaeGp+T/G68B
+	212cX8hPa3MU/SvXygbgVKuy5UfeEjCRECa5ZvB4OMQLhEc0Qk/Qq3OUmvVwMXdTrmcyVhXfb5w
+	/lBGCad1/eSCi/Yf1oTtA5A=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4f4Qbl3TF5zKm4p;
+	Mon,  2 Feb 2026 20:17:23 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3A12040565;
+	Mon,  2 Feb 2026 20:20:55 +0800 (CST)
+Received: from localhost.localdomain (10.90.31.46) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Mon, 2 Feb 2026 20:20:54 +0800
+From: Jijie Shao <shaojijie@huawei.com>
+To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
+CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
+	<chenhao418@huawei.com>, <lantao5@huawei.com>,
+	<huangdonghua3@h-partners.com>, <yangshuaisong@h-partners.com>,
+	<jonathan.cameron@huawei.com>, <salil.mehta@huawei.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<shaojijie@huawei.com>
+Subject: [PATCH net] net: hns3: fix double free issue for tx spare buffer
+Date: Mon, 2 Feb 2026 18:58:37 +0800
+Message-ID: <20260202105837.1909444-1-shaojijie@huawei.com>
+X-Mailer: git-send-email 2.30.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260129184510.01319683@kernel.org>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-Hi Jakub,
+From: Jian Shen <shenjian15@huawei.com>
 
-On Thu, Jan 29, 2026 at 06:45:10PM -0800, Jakub Kicinski via Devel wrote:
-> On Wed, 28 Jan 2026 11:25:14 +0100 Antony Antony wrote:
-> > Subject: [PATCH net-next v4 1/2] icmp: fix ICMP error source address when xfrm policy matches
-> 
-> > Fixes: 415b3334a21a ("icmp: Fix regression in nexthop resolution during replies.")
-> > Cc: stable+noautosel@kernel.org # Avoid false positives in tests
-> 
-> I don't understand what you're trying to express with all these tags.
-> We are sending incorrect ICMP packets, seems like a normal net-worthy
-> fix to me?
+The driver missed to clear ring->tx_spare to NULL when
+fail to initialize tx spare buffer. And it will try to
+free the tx spare buffer in hns3_fini_ring() if tx_spare
+is not NULL. So it may cause double free issue.
 
-You're right that we're sending incorrect ICMP packets when IPsec/xfrm is 
-enabled and this is a legitimate fix. My concern with backporting is about 
-potential disruption rather than the correctness of the fix itself.
-The issue is that some existing test scripts and monitoring tools may have
-hardcoded expectations for the current(incorrect) source address behavior.  
-When this one-line fix gets backported to all maintained kernels, those 
-tests would start failing, potentially triggering regression reports and 
-requests to revert the fix from stable kernels.
+Fixes: 907676b130711 ("net: hns3: use tx bounce buffer for small packets")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+---
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-Additionally, without the
-commit 63b21caba17e ("xfrm: introduce forwarding of ICMP Error messages") 
-being present in older kernels, the behavior change could be viewed 
-differently in stable branches.
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 7a9573dcab74..e879b04e21b0 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -1048,13 +1048,13 @@ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
+ 	int order;
+ 
+ 	if (!alloc_size)
+-		return;
++		goto not_init;
+ 
+ 	order = get_order(alloc_size);
+ 	if (order > MAX_PAGE_ORDER) {
+ 		if (net_ratelimit())
+ 			dev_warn(ring_to_dev(ring), "failed to allocate tx spare buffer, exceed to max order\n");
+-		return;
++		goto not_init;
+ 	}
+ 
+ 	tx_spare = devm_kzalloc(ring_to_dev(ring), sizeof(*tx_spare),
+@@ -1092,6 +1092,13 @@ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
+ 	devm_kfree(ring_to_dev(ring), tx_spare);
+ devm_kzalloc_error:
+ 	ring->tqp->handle->kinfo.tx_spare_buf_size = 0;
++not_init:
++	/* When driver init or reset_init, the ring->tx_spare is always NULL;
++	 * but when called from hns3_set_ringparam, it's usually not NULL, and
++	 * will be restored if hns3_init_all_ring() failed. So it's safe to set
++	 * ring->tx_spare to NULL here.
++	 */
++	ring->tx_spare = NULL;
+ }
+ 
+ /* Use hns3_tx_spare_space() to make sure there is enough buffer
+-- 
+2.33.0
 
-This is also the sense I got from IPsec users.
-Given these considerations, I opted for the safer path of targeting net-next
-with stable+noautosel, no backporting.
-
--antony
