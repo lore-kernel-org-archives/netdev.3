@@ -1,151 +1,129 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1C727B340
-	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 04:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E873F287516
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 04:20:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770005284; cv=pass; b=e+l/liAUubAY9Onn9hpsHx/LcBdyMAyVCJM37vgxpGA8afmqjLxlnXRyqWHI+9f3LhUDx1tQsCLXGmd9ybV+cSmRQAIkq6E/L0EzE8zEOrNpUf7IfO8GjrPI2MBItit1v+zNnDBQqjZ+bflu6WW0vDxwA/VvgaDrMEfRelb84gU=
+	t=1770006012; cv=pass; b=alJMK4c2b6uSr5obtSveXbMYeHIoi9vL7221UlyXd11umdLLDmxpdH2H0ykiNXsxeqC6YGLu5LWjtSNKmMsyxesgC4nIPnByy2YHDEpDMtPG+N/i68ooFOCKgRF61cdQESJJxraS6cCMtFD/Tr1duZ0hn5zSYoYzJqX0jrKkto8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770005284; c=relaxed/simple;
-	bh=YOKr40N5NMnJSSsWi5gI3boLeIf3C3Tjpjo+QN3HJjg=;
+	s=arc-20240116; t=1770006012; c=relaxed/simple;
+	bh=MlC502H4mtzxv/Iv+kvgIwAd80Ce/PNP2XjJa9d1K+E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qdfz9T3v2Fzp0hQ0nRipZPzZ5o3ceLbYqEYX3PQOSls19WqvuP2HQ3Bodzvb9GCUBSCx//XO7PviZ8dmA1mGMx5Qp3ZrDEXkhbnFZf5riEopzx3xfUHzkwAeuXAz+PYn40LUoVvgvfVnUnNgRa0bXgTwCPbXsWgMGzubaQGskzs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=IvWIS+Xz; arc=pass smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
+	 To:Cc:Content-Type; b=hcTN0O9LwyZiVXx+rc1kFK8rAGLgSIfqarMkypxLEA58ebED67RqQcNIH/OAyLJmPa05wDUz+EKSbEVRHbduC7cNweTl+ym/VFksCLHdLNnGPeaa+p+qktvyT5X0UnPd2ET0hHE22Lx/DEtwYASfoc/hATaiiG8amnCCA3bPzAw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aX9jt42l; arc=pass smtp.client-ip=209.85.219.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="IvWIS+Xz"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-34f634dbfd6so3110520a91.2
-        for <netdev@vger.kernel.org>; Sun, 01 Feb 2026 20:08:03 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770005283; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aX9jt42l"
+Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8947ddce09fso32233736d6.3
+        for <netdev@vger.kernel.org>; Sun, 01 Feb 2026 20:20:10 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770006010; cv=none;
         d=google.com; s=arc-20240605;
-        b=aZzgNPNeu/CoKEvPMOGMlqOeYY5CU6LLDAiHeHIdymSpCn1FF2hLxo03JqRgOQ+gca
-         512zpOQzlWcAZITexrtK03G/RWUc49XJAK49D+f4jgAHMrDBvSdz0iSzY+zXoVOsh+qH
-         4PIJsX4OPFHIqWkPsKu4wsrQ/B9MydDYr0T+ly1Qykz0g6ZNERnVONzFDRt00zMN5idR
-         xmrhlPLwatkZHXkv0Usq5ZQrHkoGaSy7AqkjdfOuWMHHA/OOX7RGXxkkXz4JBH3qLPVg
-         Lrfk2xL8+VUCBdXCdNa5+iUgsd8Tf+X0LaTp4Rg0CbHiW6YDuqcdPxtX0zIbCPOkti0d
-         d4Dg==
+        b=eObIhgu/GuYHy9HucDL5EIuT4/HuUQfdCtOi6QBBXgYrjQEa8U20CrGfEw+D9+VIrO
+         YceDB3lSkDqhAMfPZIKRAEgQVWeGH7vaN6EHv4qpm4IiWv67mRnhIRToIGnKpHwOFzCF
+         zEz7zRAqm0KxzAK9nbfv6BvgIwm2J5ueAhZYJ3hQx12MSjBpjInkNWfrnU7pfEDp1m1M
+         aPOgtWwEAUTQaDxvEvLn3yJUYiGS/Ei0FUo6Bvr0wOO73s5o1n0w86gpT0TOVPey9BgB
+         BbW7gmmYae0HqJB4w2p20DfsDFJExNiuY6wgElhmyOwngAAzmyLbUUZ2B97DsbtmkS+L
+         rX3Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=V0H+rWHAjETqi9RQMu+lWQENmuwh8JTpCpYCQS4X1u8=;
-        fh=E/Xc0oC8vd26r9Af1kCsdX5ecafYKfTV8kBU38a+898=;
-        b=S6OtXVQ+fIo2sfdyKSH4A+4hhnY5dqV8r4hnVGa5hlNFvtQbiuTSiBoVfC45v/BAZZ
-         akYZKK03HcvbA23cHEg9ea9zZ4UB9S/ueeRjh4p6+oeoB90kqZfvI7hBQCt6/GyZOYNf
-         SMGvl7HHriYptsj3tQapnFlp4Dnzv3INOB1nKzktSAtAs9E8/zEP/BT6nrquVv1ZGbDS
-         ZrYQ1VhOUuYG1JtT5qjRr9SqHMJnWM2cel52+KrK4BuXdLXcVQ+Tr1k0oM2z+PV/QAo6
-         dGzk3huypHGJk0+BKSBYbdyN8iZo2tAPtzE17k/v7aKZwOtF9hWBuUIZIa0Oh2f36aoL
-         TMkQ==;
+        bh=MlC502H4mtzxv/Iv+kvgIwAd80Ce/PNP2XjJa9d1K+E=;
+        fh=EXvIki7nP+lPrm1n7Wo31SULqATn7ZXfe9ZXH6oXFfg=;
+        b=PvT7g5dcjGhG63KLCtn7DH/vIZnONcHu409rq0Tx8eA5D0fVJ45/dXMkyN8RkFiKGO
+         FUUYSYsptJ1n64hh+x3Nodpv3oBmZ/nelBCImj4LACZDuQbXlE8QnutlBNqWQwf8RdeB
+         aol9CqzeOcwgEODu36x85Y883KddfNdfkEcq/Vtdu6evAtd6Qav2OdTpcRPvMwqN0oPa
+         C53R4euAivQ/mxxSV9TTbngsdFc2aEMwmIEZHTfRFM5RVjvvcir+jAX4nTW+NPjufpqS
+         P7cGo2hmr/p0OxUstG1B9oHQxcb8sITzMZeSAyZ7nIlfo98lbcyCrGuYzuK4gKbR/8ku
+         QF7Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1770005283; x=1770610083; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1770006010; x=1770610810; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=V0H+rWHAjETqi9RQMu+lWQENmuwh8JTpCpYCQS4X1u8=;
-        b=IvWIS+XzZ6U7rFPnUSWCGO8Q3sknl0BedpgeIZL6i8mAFEWGtcK5Efs2l8bT8pM6PV
-         SGcDQmHDZ2mURMsU9hej5blJxnPZ3iNIuBcZPQy6nXkhztPJdB6dDkQCtYefYPl30Puo
-         /DJPPseUGvDG0ijkPFAo4Nzv49LIKIxHY+DYElnW2U9NIhfj7cLnyodQWno48Oem4hJA
-         SmS2rCOdhbxZpedZMgomtz8EnynLBJDX5PFDpRy83dJ/JMADB5zhhdFQbEcLabIFADqL
-         QpDxWjfjVjeaxnwUdbnXriMMXSU6JrOnIcbyOzlsfYYvmlpXoBJ1MftB7Nu4VlgNhZQk
-         +SBA==
+        bh=MlC502H4mtzxv/Iv+kvgIwAd80Ce/PNP2XjJa9d1K+E=;
+        b=aX9jt42lzTiSMb356EWVWtcDyyJQ4xs9uw8UaT4mOcP8uSPjMyPYQY+bDKNWtMvHL9
+         NBZECvJWfFFVDMbToM9LSdtmdlmbBVug+ipXM+DMi+BmRJMC32Dsm/lW6AtM0t2uwZVV
+         xpmgdli39LF0HDDRZIbhKZIw5grDPDDuuBBFUXyEdtDjG8ZvEP/Z1u0LT3LKp0tvKgZm
+         v/XWGYiU2Avt0w95qB1iC8vmGrWz6Sjvs5GZg9iKZnnMDKWVTejtZXANnBuekX59Y2Tg
+         xU+65X5euxQYbHN9i1V73IdhGWGa4Sev8zlqfNI/Eza90FXNFTX0Nv6Xbn8WQP9lF5nI
+         1evg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770005283; x=1770610083;
+        d=1e100.net; s=20230601; t=1770006010; x=1770610810;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=V0H+rWHAjETqi9RQMu+lWQENmuwh8JTpCpYCQS4X1u8=;
-        b=bs5hFRclLyqTnccXrjYJbSxFzos+M3aj3XF6aHDQpuesFL+zzMOopJWdDqpDiTtZ5r
-         lfReyz/+2ar5b6j3N68TSeZmj8nnqz/b9cFf1Asxu1k9pJiImaGJxw2i0XoBgaNvmqWv
-         LAW6CTsLsGdgHfDEjqBri5julrn6bQDB36FZldfLJzREMjoPEWZFm9Kwhr43Ry9tcPy/
-         BIJ8S37dEhBcnrFj3S3S5Ah9oUuWgKh+2mQ6j7PvfSTY/uBUQum5r4FtQ8fe3geEQO/x
-         8iNwu36ICBQlY6IXwIG+ZSwqAkeQP7t8sBCJ3bUWRY5TncgWswNlIRP3ap+q5lEF+oPC
-         g5Zg==
-X-Forwarded-Encrypted: i=1; AJvYcCVY4HCEkcWPiauacIQ9ZeI13r2KfuJfA84AA1fbMRwyyLzJZXjIEcveA8lKYw1MP9uzefiIxcM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwuXaNRzdTdfz+ILfo9ruF6AmrCw0jHFMOHRuuvQMElJuG36UHk
-	Nn30ye33cyVgohJ3OQGFbh/b26oJM73daXux5yz8egr2bdW6jExVndMkJLE4gCLXV4JdrU5aRVS
-	HSawUl1OvSmTjAA4j/PZb2oJvICM8WiyPVj0j5Rwy
-X-Gm-Gg: AZuq6aIW3E+PU3gNyWZufY3JX+Ful99cwawxeb+w/LgZXkpmQkj2OE1SAlnpZYofcbY
-	Fw7d+cUX/dotE1yaQth4zuMvGtaG5kHpSVj5wz5+ZFlQibnw4z24cJhD+we7dZMyJL57HLAm0c+
-	nA0Hm/AyEfGqY+bsM+A8B+HH3APIEv4Yww4LRMVb9GSo2OaZ7TzRldWcMYE2p6HiuvUCuFVKmwc
-	dCkYTPBD0i0IgCOpcl05yMIQR8p7f/7AfPjihqJG2WHWG4lAUJssfFylEaGEQAKYZD8+h0=
-X-Received: by 2002:a17:90b:2e47:b0:34a:b8fc:f1d8 with SMTP id
- 98e67ed59e1d1-3543b3e3a6amr10303423a91.37.1770005282654; Sun, 01 Feb 2026
- 20:08:02 -0800 (PST)
+        bh=MlC502H4mtzxv/Iv+kvgIwAd80Ce/PNP2XjJa9d1K+E=;
+        b=cT/RPKy4SfVtpLIjEMBzooWc9kaezitSPNJQnywOkYNpCamMJ3NWcBACVMjwdeWa0V
+         pRIoihdneTu3QR1HfPxNccmMZGaGG+0NLgTvQ3bk1+fLm7NNvqtIlbpVwddMSQn3pSbC
+         ngg1wdNE4E/c7WwnHluJQ0QlMNTsLHSK6TCqBIjWdp5FEmKtsTDQvR3Q1+PofyFnG9f3
+         OZbFyZBp0OwGZBz0xkVeiE/lm917Jpw0lZpASuTTy8DaQY3BLHRenDPDYmAuEOYeOeAl
+         J687VSOryhs+TPRAadDgOiz9fpixLbxQLavfa9Tp/1yPNCZzyehN8FTJgLC44nQCSMlD
+         s9LA==
+X-Forwarded-Encrypted: i=1; AJvYcCV2kj1SGY77c7ntjFBPaZnJ7qzpz5En4Q1A4WsQth1AzdfafkBPV2ZPiMulKLN0Qs9f0D+ZVoY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxPlMsXZDJSqMgQvk4GkxzBOCAdfXVFxd87mkpSaZfzt80ytbMr
+	WhDi07ogPqQHpUhfSGYRhlh8rpak0kx0B1/7oY3Dn6wcW4MIUliIeUrGpcko30EiKPA4zSX3RON
+	vaSG42yNGxeqr/q8aVfc4BUOk+yg7PgnsEI5ABCleNfYQXMd6tleAYVEj
+X-Gm-Gg: AZuq6aIY8ZKXGksAUUxvT2hTsLCv5JQUeNXzrxQREYJQ4JyDqyYEdAj2dvWY3uUHjaM
+	QWXgH9nX9wP9gCb/q6IfnhpMyq3uLCPss6nGZsq1MK2fIWCwV+c4dpppJJhLRal2kYwRAUSQ1Gu
+	5p3yoJyhu+NO8ANvokadHjDBWZMAyWAT/x1QZlRXcRrq0D48J+nsUrmQ5MFfrgRNt16cL1GWbh4
+	jnVt3kRQ6AO55PgzPuq74pAioVeWAEhoXt9nvGRUZZ76hWkQRXjcYV8HDLvW6kjuF/LdF8=
+X-Received: by 2002:a05:6214:1303:b0:894:2f28:54b9 with SMTP id
+ 6a1803df08f44-894e9f891f5mr142539646d6.27.1770006009563; Sun, 01 Feb 2026
+ 20:20:09 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2ec9c137-79a5-4562-8587-43dd2633f116@I-love.SAKURA.ne.jp>
- <CAHC9VhQikhv+qCyQdnJguvy-qTkGXB+NU7=QZjw5d+WfyVxZhw@mail.gmail.com>
- <00ed59a3-a9c9-47c3-97da-5a8e3da1ea82@I-love.SAKURA.ne.jp>
- <CAHC9VhQq6jY63kYEQCp2t89Vv+_PDqv54RV6TO_TePDQyU6Vug@mail.gmail.com>
- <1bb453af-3ef2-4ab6-a909-0705bd07c136@I-love.SAKURA.ne.jp>
- <CAHC9VhQEKfxXzFgYShojESpQn10LES5zL6Ua0YV9b8seEKFqyA@mail.gmail.com> <93d291db-4175-48c4-830c-e83bab373ae2@I-love.SAKURA.ne.jp>
-In-Reply-To: <93d291db-4175-48c4-830c-e83bab373ae2@I-love.SAKURA.ne.jp>
-From: Paul Moore <paul@paul-moore.com>
-Date: Sun, 1 Feb 2026 23:07:51 -0500
-X-Gm-Features: AZwV_Qj0ZPr30GBIZpy2KTBmQCeMzIbAaQJB4ILIbQRznBk2H145kQkQiYyOBUA
-Message-ID: <CAHC9VhQPKU5DqG-ryZsiCV2vZeGGf_a-JStR_LVVCCn03C4usQ@mail.gmail.com>
-Subject: Re: [PATCH] xfrm: kill xfrm_dev_{state,policy}_flush_secctx_check()
-To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: SELinux <selinux@vger.kernel.org>, 
-	linux-security-module <linux-security-module@vger.kernel.org>, 
-	Steffen Klassert <steffen.klassert@secunet.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Network Development <netdev@vger.kernel.org>
+References: <20260131212934.2547995-1-edumazet@google.com> <j3fofrzb4c3xcckk55y7rdpc7x5m23mphkksnp7vuijimzqpml@3nzu5xyfuyer>
+In-Reply-To: <j3fofrzb4c3xcckk55y7rdpc7x5m23mphkksnp7vuijimzqpml@3nzu5xyfuyer>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 2 Feb 2026 05:19:58 +0100
+X-Gm-Features: AZwV_Qhok4iJ4P9AqtKrya9WRM6ecyliUtzvLo4EixwpwlDdAHOrYBDTESqVkbU
+Message-ID: <CANn89iJh67=bSTS_ziVuQUS-ht0yqeW_Q8eaFCV=8M7zuETAsw@mail.gmail.com>
+Subject: Re: [PATCH net] net: add RCU protection to (struct packet_type)->dev
+To: YinFengwei <fengwei_yin@linux.alibaba.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	dongchenchen2@huawei.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jan 31, 2026 at 1:01=E2=80=AFAM Tetsuo Handa
-<penguin-kernel@i-love.sakura.ne.jp> wrote:
-> On 2026/01/31 6:56, Paul Moore wrote:
-> > On Wed, Jan 28, 2026 at 5:28=E2=80=AFAM Tetsuo Handa
-> > <penguin-kernel@i-love.sakura.ne.jp> wrote:
-> >> On 2026/01/28 6:59, Paul Moore wrote:
-> >>> It sounds like we either need to confirm that
-> >>> security_xfrm_{policy,state}_delete() is already present in all code
-> >>> paths that result in SPD/SAD deletions (in a place that can safely
-> >>> fail and return an error),
-> >>
-> >> Yes.
-> >
-> > To clarify, do you mean "yes, I agree", or "yes, I've already checked
-> > this and can confirm that the LSM hooks are already being called"?
+On Mon, Feb 2, 2026 at 4:16=E2=80=AFAM YinFengwei <fengwei_yin@linux.alibab=
+a.com> wrote:
 >
-> I mean "yes, I agree".
+> + Chenchen as he hit the exact same issue.
 >
-> >
-> >>>                            or we need to place
-> >>> xfrm_dev_{policy,state}_flush_secctx_check() in a location that can
-> >>> safely fail.
-> >>
-> >> Did you mean xfrm_{policy,state}_flush_secctx_check() ?
-> >
-> > They both call into the security_xfrm_policy_delete() LSM hook which
-> > is what I care about as that hook is what authorizes the operation.
+> Hi Eric,
 >
-> I can't understand what your authorization is.
+> > Yin Fengwei reported an RCU stall in ptype_seq_show() and provided a pa=
+tch.
+> >
+> > Real issue is that (struct packet_type)->dev needs RCU protection:
+> >
+> > ptype_seq_show() runs under rcu_read_lock(), and reads pt->dev
+> > to get device name without any barrier.
+> >
+> > At the same time, concurrent writer can remove a packet_type structure
+> > (which is correctly freed after an RCU grace period) _and_ clear pt->de=
+v
+> > without an RCU grace period.
+> >
+> > Fix this issue by using proper RCU on pt->dev pointer.
+> Still can hit this issue with same backtrace even with this fixing patch.
+>
+> Look at the __dev_remove_pack(), the pt->list is protected by ptype_lock
+> while prot_hook.dev is protected by bind_lock. Could it make sure the
+> procfs interface see either the list element with prot_hook.dev not NULL
+> or can't see the list element with NULL prot_hook.dev?
+>
+> Regards
+> Yin, Fengwei
 
-I'm asking you to verify that we have the LSM xfrm hooks in all of the
-necessary locations to ensure that we are safely and comprehensively
-gating all of the operations that result in removal of SPD and SAD
-entries.
-
-> No authorization can be placed during must-not-fail operation.
-
-Of course, but that means that we simply need to make sure we have the
-authorization hooks placed elsewhere to ensure that users can not
-remove SPD and SAD entries if they are not allowed.  I'm not arguing
-about if returning an error in a place that can not handle an error
-condition is correct or not, I'm arguing that you should audit the SPD
-and SAD removal code paths to ensure that they all have the proper LSM
-xfrm hook authorizations.
-
---=20
-paul-moore.com
+Please share the new stack trace (with the symbols), or the repro, thanks !
