@@ -1,86 +1,106 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945C735EDC9
-	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 11:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284C736166F;
+	Mon,  2 Feb 2026 11:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770032769; cv=none; b=nTwarWhLiqPnM7qeDf+fwhlbH42WxbxZbn+xanijhVMObSKZpngHJvySpbFojypc8vQMiUXjR4qezzrUJtsopzWxUIJYCUqj5IHAEnqqyeiVBiY4+6Xnf7INevENW6tSMkmuDGU/O8U5O3rVuO9uwLeYmvabz6iNu5xh7srFa/U=
+	t=1770033010; cv=none; b=KmlwOzULV5kcFos78rysFw64J080JWuoRyLDYz7uzErL3MGYLYub6di05txmrmU7HybGK1ImtnQIlXeDjVSFEDSWASjGnBWVzTYqUdl2NL/CKWlQT7/4QzGqvh0vdRd1mfyIbc2QACkuDi/VUcg5My2K6QXtd7XKhMbHx3hng3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770032769; c=relaxed/simple;
-	bh=3hNBtBGDkQPJWapZDKQ/bB2f1GQppgKQ2llQ4Eq+yIU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uqTE/9Io2Iw3nu259lzxAbuagcV5vICsMzIdtzXX6MOQeyaivrJvS5rqqtsdEjvErUMMIPNd2+0kkyZ6dRBN3yJ+tnXMuesyRlzHyATeBXBaIy9yNH1ruAUsC7QvovjqPYTyoWVHFMO8hXEewjPKMlnk73MyDUE3wLqSmG+wAzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AfAdtyD2; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1770033010; c=relaxed/simple;
+	bh=kXvnfinhZiYCbgGMJg8Xh9KSm64a3yapRQylokUJwLU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P5aFAXRixUen0Duw+TNo8MOZgbhfLZim4u4yJSagTTmQWwYrcqgPrGQShxMNRMia+u3Un1ryL8VR5ZI4gekAU9n6lkC/aoiIOI4t0XCIc7V/ffWRGmlU2TSLkG/TxCH6dkDG0Wyv5EeRsL3XpKpoEjobMzA/CxQ4MDT0W6Ksw/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=pz2uI5Zy; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AfAdtyD2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770032767;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=0m2WNskmehLOpzG2Tsn8qxJQ9fl2058+6Lxdh3ceV8s=;
-	b=AfAdtyD2+KYfBhl940djlJa3tFGP+OCTrEuxb2U8+ecphNKof8m/y/CHtuLP/Pt0W6jubD
-	74irPaZ5TMbNS7fcijfnE5Fgck4xEdW4MDsoeIch/1cEP+nR/IbTCSZFANmRr69A+YKYq+
-	QKA0TTbBeinSU76E/ZmUpAYK1rtaa4E=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-93-n2Vt-5pGNTSAQUG7d_9Bhw-1; Mon,
- 02 Feb 2026 06:43:37 -0500
-X-MC-Unique: n2Vt-5pGNTSAQUG7d_9Bhw-1
-X-Mimecast-MFC-AGG-ID: n2Vt-5pGNTSAQUG7d_9Bhw_1770032615
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1386E180045C;
-	Mon,  2 Feb 2026 11:43:35 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.45.224.250])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C28BE1956056;
-	Mon,  2 Feb 2026 11:43:31 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Willem de Bruijn <willemb@google.com>,
-	Richard Gobert <richardbgobert@gmail.com>,
-	linux-kselftest@vger.kernel.org,
-	aleksander.lobakin@intel.com
-Subject: [PATCH v2 net 0/2] net: gro: fix outer network offset
-Date: Mon,  2 Feb 2026 12:43:13 +0100
-Message-ID: <cover.1770032084.git.pabeni@redhat.com>
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="pz2uI5Zy"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=c8x3hVVlSe3yBAUyt8ShoEyWnsoTcwMhB08qqtBA3iU=; b=pz2uI5Zy88V4Pm2qtdkC4BBKNY
+	tPc3oNUXR38HCgi/h7aKvCvX55zbIksp/tOna03g0GFE9cFq53Za6G8iRXMmEUgj5z3rdkgniPzJl
+	RLAhyYuyEEkH1LUXKJNWH5tqyI530LIwkjCk7HjmNRFOuRq1WJ6LyNchvrUppfV/iP9gpt2gq1MGo
+	LnQ3ScfyR98HcTGq7zmgcjiszwgThNiTgpPbjauaw6gRbJU5/dgstP5ITF/u5UdKbn40gchZOklNO
+	aLQMeMT5EEDIf8BDbbdSauVL3m36MmqGG/P70q0WnNgpdnBmD7b/efhxBO6L3oUuCA4tmSXibP1ah
+	hmvJPzNA==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vmsR1-0041ND-JT; Mon, 02 Feb 2026 11:49:40 +0000
+Date: Mon, 2 Feb 2026 03:49:32 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, pmladek@suse.com, john.ogness@linutronix.de, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
+	gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, mpdesouza@suse.com, 
+	kernel-team@meta.com
+Subject: Re: [PATCH net-next v5 1/4] printk: Add execution context (task
+ name/CPU) to printk_info
+Message-ID: <aYCFnYCga1dgWniG@gmail.com>
+References: <20260128-nbcon-v5-0-93b4ddbc181a@debian.org>
+ <20260128-nbcon-v5-1-93b4ddbc181a@debian.org>
+ <20260130173243.4e3fff89@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260130173243.4e3fff89@kernel.org>
+X-Debian-User: leitao
 
-The GRO stage has still problems in some edge scenarios when dealing
-with encapsulated traffic: the first patch address an issue there
-leading to bad checksums.
+Hello Jakub,
 
-The second patch introduces a test case covering the relevant scenario:
-S/W segmentation after GRO for encapsulated traffic.
+On Fri, Jan 30, 2026 at 05:32:43PM -0800, Jakub Kicinski wrote:
+> On Wed, 28 Jan 2026 06:17:37 -0800 Breno Leitao wrote:
+> > +config CONSOLE_HAS_EXECUTION_CTX
+> > +	bool
+> > +	help
+> > +	  Selected by console drivers that support execution context
+> > +	  (task name/CPU) in their output. This enables PRINTK_EXECUTION_CTX
+> > +	  to provide the necessary infrastructure.
+> > +
+> > +config PRINTK_EXECUTION_CTX
+> > +	bool "Include execution context (task/CPU) in printk messages"
+> > +	depends on PRINTK && CONSOLE_HAS_EXECUTION_CTX
+> > +	default CONSOLE_HAS_EXECUTION_CTX
+>
+> AFAIU the double-symbol thing serves no practical purpose?
+>
+> If none of the console drivers uses the metadata what would be the
+> point of capturing it?
+>
+> Conversely if some console driver wants this data there's no option
+> for the user to disable it.
+>
+> AFAICT this patch should only add one invisible symbol for capturing
+> the context and have netcons enable it.
 
-v1 -> v2:
-  - fixed typos in patch 2/2
+The two-symbol design establishes a clear separation between what console
+drivers require and how the printk core implements it.
 
-Paolo Abeni (2):
-  net: gro: fix outer network offset
-  selftest: net: add a test-case for encap segmentation after GRO
+This approach was discussed here:
+https://lore.kernel.org/all/87eco09hgb.fsf@jogness.linutronix.de/
 
- net/core/gro.c                            |  2 +
- tools/testing/selftests/net/udpgro_fwd.sh | 64 +++++++++++++++++++++++
- 2 files changed, 66 insertions(+)
+> I don't see a reason at this
+> stage to prompt users with netcons disabled whether they want
+> PRINTK_EXECUTION_CTX
 
--- 
-2.52.0
+Users won't see a prompt when netconsole is disabled. Since
+CONSOLE_HAS_EXECUTION_CTX is only selected when NETCONSOLE_DYNAMIC is
+enabled, PRINTK_EXECUTION_CTX will be automatically deselected without
+prompting. Additionally, CONSOLE_HAS_EXECUTION_CTX is a hidden symbol that
+cannot be manually forced.
 
+That said, I'm open to making PRINTK_EXECUTION_CTX invisible as well,
+given it is behaving like one already.
