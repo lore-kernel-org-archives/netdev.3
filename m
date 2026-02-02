@@ -1,30 +1,30 @@
 Received: from TWMBX01.aspeed.com (mail.aspeedtech.com [211.20.114.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1F03161BB;
-	Mon,  2 Feb 2026 06:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D56313532;
+	Mon,  2 Feb 2026 06:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.20.114.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770015512; cv=none; b=Fglmc6gqNDiSUzfz2aHtCby4ygN+Abr01xvrVgTK6a3nR4Xed54AaI94rdjQyYK3mFy4Atn76qWpFtOnkVK9vypbNubAMIeInl+P1LtatKfe2uEiaotnnYedilB2POrMenZQ66UezGfX9UE2yFBgr4Da57qbG5qoEktOIO2qxDc=
+	t=1770015513; cv=none; b=rTpK55YnD/sHPejl3DoXab6CeTwomeQOZnS6kphzsVt3CFcBiV29C8WrGf6AW6G4otthJsvmpNydr7DmrO3xnKEexv6sHOe5v+Mr/rmVGRMdwH1rpwNcvVsjqQA86RENmI6KHQs+OmFmnMYDgK42g0F4EDFRNu1fH9Jp57LNwq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770015512; c=relaxed/simple;
-	bh=8z5Asf4hOzuHazRpZ4TfjfOeTZlsMlsx0v93+W03d8o=;
+	s=arc-20240116; t=1770015513; c=relaxed/simple;
+	bh=onLWbZUbnTMgDK4y8kzfyvlIWWGQE8LKDFBj5Fq38Dw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=gswVRN4+BS79JgRWCtxmlq7FhlDPwm8FXJY8eguJRlIt+aYoYyPwxSxQXCTDsD0Iw+gO8BO7aQidVx1umBEycn0Im4ogsG2e2sqbqG1Uxx1oLz3SYOPA/4sNRsHD3sOehg7Pk7teh0eXalE123F0Dj7a715vWh3vhNccjP4ffQw=
+	 In-Reply-To:To:CC; b=AmpaFp4Vslpehx43jRVPIS/8b/ZZBjBuXYyRC4uA0neaB4i0Pg+hyoUNb8SI0TAD0s9tatOH883jav8hiuNvKcDUers1Ruelavh/yl9ue9z0GpKg+0q3CCPeuaUqNMgzKGOTUkbumAOQ0OBzkh3Ch2R0VsAEpsLzFfY6Q0EEKnI=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; arc=none smtp.client-ip=211.20.114.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
 Received: from TWMBX01.aspeed.com (192.168.0.62) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.10; Mon, 2 Feb
- 2026 14:57:01 +0800
+ 2026 14:57:00 +0800
 Received: from [127.0.1.1] (192.168.10.13) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
- Transport; Mon, 2 Feb 2026 14:57:01 +0800
+ Transport; Mon, 2 Feb 2026 14:57:00 +0800
 From: Jacky Chou <jacky_chou@aspeedtech.com>
-Date: Mon, 2 Feb 2026 14:57:09 +0800
-Subject: [PATCH net-next v3 15/15] net: ftgmac100: Use
- devm_mdiobus_alloc/devm_of_mdiobus_register
+Date: Mon, 2 Feb 2026 14:56:58 +0800
+Subject: [PATCH net-next v3 04/15] net: ftgmac100: Use
+ devm_alloc_etherdev()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -33,98 +33,68 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260202-ftgmac-cleanup-v3-15-6a6a8d45280a@aspeedtech.com>
+Message-ID: <20260202-ftgmac-cleanup-v3-4-6a6a8d45280a@aspeedtech.com>
 References: <20260202-ftgmac-cleanup-v3-0-6a6a8d45280a@aspeedtech.com>
 In-Reply-To: <20260202-ftgmac-cleanup-v3-0-6a6a8d45280a@aspeedtech.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
 	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
 	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Andrew Lunn
-	<andrew@lunn.ch>, Jacky Chou <jacky_chou@aspeedtech.com>
+	<andrew@lunn.ch>, Jacky Chou <jacky_chou@aspeedtech.com>, Simon Horman
+	<horms@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770015420; l=2368;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770015419; l=1418;
  i=jacky_chou@aspeedtech.com; s=20251031; h=from:subject:message-id;
- bh=8z5Asf4hOzuHazRpZ4TfjfOeTZlsMlsx0v93+W03d8o=;
- b=xtAOu7T0BfUKJ5qHYr7c7kiIRnrG0s0iKMJkZo4AJWCjRqYcZWDqb+fRgpNYu699j+/9salV+
- kAsT8+K/pi5AS6Dbsaitszv3OjEwrsOSDp240ne5weU8DILWMmjAB5F
+ bh=o3nIYAscEW7qqYCVm0zoQKSDXM36iO60MZ4R096iN0U=;
+ b=gTR0yC8zHVVV5shYd7P8IFwV5wjXykFCOMKRYtsBSCsd3WaGAueFPox6N31p1ac/ByCzRom7A
+ r6sjrptOQCUAWy0oHbeBON78k0o5B0kLJUL6Qia9vVZ54Jkx0xqyjKG
 X-Developer-Key: i=jacky_chou@aspeedtech.com; a=ed25519;
  pk=8XBx7KFM1drEsfCXTH9QC2lbMlGU4XwJTA6Jt9Mabdo=
 
-Make use of devm_ methods to allocate and register mdiobus to simplify
-cleanup.
+From: Andrew Lunn <andrew@lunn.ch>
 
+Make use of devm_alloc_etherdev() to simplify cleanup.
+
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
 ---
- drivers/net/ethernet/faraday/ftgmac100.c | 26 ++++----------------------
- 1 file changed, 4 insertions(+), 22 deletions(-)
+ drivers/net/ethernet/faraday/ftgmac100.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-index 45312b9ef35f..36ec230312ad 100644
+index f07167cabf39..397ada43c851 100644
 --- a/drivers/net/ethernet/faraday/ftgmac100.c
 +++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -1716,7 +1716,7 @@ static int ftgmac100_setup_mdio(struct net_device *netdev)
- 	u32 reg;
+@@ -1877,11 +1877,9 @@ static int ftgmac100_probe(struct platform_device *pdev)
+ 		return irq;
  
- 	/* initialize mdio bus */
--	priv->mii_bus = mdiobus_alloc();
-+	priv->mii_bus = devm_mdiobus_alloc(priv->dev);
- 	if (!priv->mii_bus)
- 		return -EIO;
+ 	/* setup net_device */
+-	netdev = alloc_etherdev(sizeof(*priv));
+-	if (!netdev) {
+-		err = -ENOMEM;
+-		goto err_alloc_etherdev;
+-	}
++	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
++	if (!netdev)
++		return -ENOMEM;
  
-@@ -1742,19 +1742,14 @@ static int ftgmac100_setup_mdio(struct net_device *netdev)
+ 	SET_NETDEV_DEV(netdev, &pdev->dev);
  
- 	mdio_np = of_get_child_by_name(np, "mdio");
- 
--	err = of_mdiobus_register(priv->mii_bus, mdio_np);
-+	err = devm_of_mdiobus_register(priv->dev, priv->mii_bus, mdio_np);
-+	of_node_put(mdio_np);
- 	if (err) {
- 		dev_err(priv->dev, "Cannot register MDIO bus!\n");
--		goto err_register_mdiobus;
-+		return err;
- 	}
- 
--	of_node_put(mdio_np);
--
- 	return 0;
--
--err_register_mdiobus:
--	mdiobus_free(priv->mii_bus);
--	return err;
- }
- 
- static void ftgmac100_phy_disconnect(struct net_device *netdev)
-@@ -1773,17 +1768,6 @@ static void ftgmac100_phy_disconnect(struct net_device *netdev)
- 		fixed_phy_unregister(phydev);
- }
- 
--static void ftgmac100_destroy_mdio(struct net_device *netdev)
--{
--	struct ftgmac100 *priv = netdev_priv(netdev);
--
--	if (!priv->mii_bus)
--		return;
--
--	mdiobus_unregister(priv->mii_bus);
--	mdiobus_free(priv->mii_bus);
--}
--
- static void ftgmac100_ncsi_handler(struct ncsi_dev *nd)
- {
- 	if (unlikely(nd->state != ncsi_dev_state_functional))
-@@ -2078,7 +2062,6 @@ static int ftgmac100_probe(struct platform_device *pdev)
- 	ftgmac100_phy_disconnect(netdev);
- 	if (priv->ndev)
- 		ncsi_unregister_dev(priv->ndev);
--	ftgmac100_destroy_mdio(netdev);
+@@ -2080,8 +2078,6 @@ static int ftgmac100_probe(struct platform_device *pdev)
+ err_ioremap:
+ 	release_resource(priv->res);
+ err_req_mem:
+-	free_netdev(netdev);
+-err_alloc_etherdev:
  	return err;
  }
  
-@@ -2100,7 +2083,6 @@ static void ftgmac100_remove(struct platform_device *pdev)
- 	cancel_work_sync(&priv->reset_task);
+@@ -2112,7 +2108,6 @@ static void ftgmac100_remove(struct platform_device *pdev)
+ 	release_resource(priv->res);
  
- 	ftgmac100_phy_disconnect(netdev);
--	ftgmac100_destroy_mdio(netdev);
+ 	netif_napi_del(&priv->napi);
+-	free_netdev(netdev);
  }
  
  static const struct ftgmac100_match_data ftgmac100_match_data_ast2400 = {
