@@ -1,173 +1,105 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB1B2DC350;
-	Mon,  2 Feb 2026 10:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E0623EA99;
+	Mon,  2 Feb 2026 11:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770029939; cv=none; b=B0YvNVXXL4xqtKrXII9L2nbKI8sFJPiPbHIQSy51QKUhXos8i4lmp012IQfPE2mZ2tEar7jmFpH4tfyhxxj3u6S/ZyZuxgHaARkox/4RNuHhSuRTY3+eSe9I68PI8J52z9yyiT18b0XmW8Pb4V7lrZ5yDZX5Se8rxXnI/iIDQjI=
+	t=1770030166; cv=none; b=SNlzZ6rPrhqEiQjdxetKdsI3TkqALhrGsucNXEyAlWjDxlTIejO1LH+yaKn+8ABH/1ZuhaXMGRTPw3wqDrH0xl8Hw/7RTsiQBy4JdPvxpV+l+3fYGMZ0nJHkapydCFB8Dven9ILB7CUOS+l80ClaTiF6iuOoxmqWmfxkdi3aBQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770029939; c=relaxed/simple;
-	bh=Kr4xlp7hql1XhH1KWDjne4Ev0/XV8IqbArp1UAZeyng=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uM6jYg6vcr5ujb0h13IqhkK0erx7nvA3xbkq8Ol+ls35fqieKZfa944Tp8zsmL8j2wvEnnDaufERR4kfFHLSi5cy2MCYfbSGW3BVnCfRmG0ui0t2Peb8XWV8E91ktJVkWaRbfGVHBQPhs8voVQWEdJKPFZCD0Xf7wK2eQwUq15k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=Ct2bhptj; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	s=arc-20240116; t=1770030166; c=relaxed/simple;
+	bh=hZ26fDidiQHdeKBfaZdypSRdmQ/WD1YSdkZPa9SDtxo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TTlUSGWfBJaoI1kGjvzLXiz28SCGn/ZUq/3v+uNCgqXa0m5wy+pVv0ygrKpEyfM2W9ST3DUabkVVag7dzekG7TyK4iof/ee2aAjf6M+7oHQ6kjG9NLZvbR7z4dQDtpm//GTSl3cBPXl8arqpT+j5CFgLSJMuRRIeMmNUIs7F/fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=e1C5v3m7; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="Ct2bhptj"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 612AwVy652742819, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1770029911;
-	bh=oX/C4xa7TMiGDx7uHTOOiJSVb5BTNoxDmGroJYS9BYM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:
-	 Content-Transfer-Encoding:Content-Type;
-	b=Ct2bhptjHkvrtiGpPISRf7Y2dUrmzLOGnqceDd6MJh6vqZk1hEfvDOF3mDeIUaDIL
-	 P2QLfszxbUcmz05k/JRWpROpBRp/NNTo5wPVNirXu2yM9HTLy9c9uekxZgena4MFtq
-	 MW8cbwc4emH4Ll2nk+5zC2uzjE/a43QEjQOD3R5KgreRjC4D0osY+PHp5shqsZxIUq
-	 UZe9aUR2X7ZQw3Q2y0Jc68Z2aLe+djPtx3N5oKROaIwXA+qKgJhfCaKMhQRzfPxt3I
-	 ehkfofeUHrQ0MfkhxRu5ex3gpK2KIeP8T4mS+cQHIpGGWijsHpqvXgaeSSdcCNAUs+
-	 SpxIP62dmuPog==
-Received: from RS-EX-MBS1.realsil.com.cn ([172.29.17.101])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 612AwVy652742819
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 2 Feb 2026 18:58:31 +0800
-Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
- RS-EX-MBS1.realsil.com.cn (172.29.17.101) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.39; Mon, 2 Feb 2026 18:58:30 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS1.realsil.com.cn
- (172.29.17.101) with Microsoft SMTP Server id 15.2.1748.39 via Frontend
- Transport; Mon, 2 Feb 2026 18:58:30 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Javen Xu
-	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v3] r8169: add support for RTL8125cp
-Date: Mon, 2 Feb 2026 18:58:28 +0800
-Message-ID: <20260202105828.54-1-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="e1C5v3m7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=IOYz2TuhVp85h0jhI1HUwXLqYbeA4OKb+Y19Cz43y/E=; b=e1C5v3m71HQEFE+NdXuiJSWjVf
+	WB+g3NMiak3HrbVsDD1ryKPCC/bZC6BdPzGClmo5S5UttzXBG3gtgYBlL2T23POoudKMZQU57QxQQ
+	0P6JTwiarTXfajkZT2ws3UtV83W+PQGrORIYUun5jvxSSxPm72VlBJSL5ROI9mbazCwfIBFPuH55w
+	cPQMfKqLwmMzWo+G/J/aXjyywDBils1KDt/M5s5v64mrSO7c3izOuCto1chym22gCymLRlXoCR4yt
+	1ZpFfRXB5paLK4lkQOiiUFePEiU/dWnSCTRYEYpgQeDTGyBqq005UNEcMcTp5VftEsC4Y6S8caen1
+	RLgaCQVQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:44854)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vmrhO-000000003tp-1v8X;
+	Mon, 02 Feb 2026 11:02:30 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vmrhL-000000003L4-3UCM;
+	Mon, 02 Feb 2026 11:02:27 +0000
+Date: Mon, 2 Feb 2026 11:02:27 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Daniel Golle <daniel@makrotopia.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	Bing tao Xu <bxu@maxlinear.com>, Liang Xu <lxu@maxlinear.com>,
+	Juraj Povazanec <jpovazanec@maxlinear.com>,
+	"Fanni (Fang-Yi) Chan" <fchan@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	"Livia M. Rosu" <lrosu@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH RFC net-next v4 3/4] net: mdio: add unlocked mdiodev C45
+ bus accessors
+Message-ID: <aYCEQ1fAzc2OWcPP@shell.armlinux.org.uk>
+References: <cover.1767718090.git.daniel@makrotopia.org>
+ <36fbca0aaa0ca86450c565190931d987931ab958.1767718090.git.daniel@makrotopia.org>
+ <aV1MGQirTHyFdv7Q@shell.armlinux.org.uk>
+ <aV2OWT4g0jwfS548@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aV2OWT4g0jwfS548@makrotopia.org>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+On Tue, Jan 06, 2026 at 10:36:09PM +0000, Daniel Golle wrote:
+> On Tue, Jan 06, 2026 at 05:53:29PM +0000, Russell King (Oracle) wrote:
+> > On Tue, Jan 06, 2026 at 05:14:57PM +0000, Daniel Golle wrote:
+> > > +static inline int __mdiodev_c45_write(struct mdio_device *mdiodev, u32 devad,
+> > > +				      u16 regnum, u16 val)
+> > > +{
+> > > +	return __mdiobus_c45_write(mdiodev->bus, mdiodev->addr, devad, regnum,
+> > > +				 val);
+> > 
+> > Something doesn't look right here - missing a couple of spaces to
+> > correctly align? I suspect checkpatch would spot it?
+> 
+> Somehow those two spaces got dropped somewhere on the way. Strangely
+> neither checkpatch.pl locally nor on patchwork[1] caught that -- maybe
+> because 'return' statements are somehow treated differently?
+> 
+> Anyway, fixed in my local tree now and going to be fixed in v5.
+> 
+> Are you otherwise fine with adding those unlocked mdiodev c45 helpers?
 
-This patch adds support for chip RTL8125cp. Its XID is 0x708. We apply
-different and firmware for RTL8125cp.
+Yes.
 
-Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
-
----
-v2: This patch fix one mistake on phy_modify_paged(phydev, 0xa43, 0x10,
-0x0000, 0x1001) which is phy_modify_paged(phydev, 0xa43, 0x00, 0x0000, 0x1001) on patch v1.
-
-v3: Set phy_modify_paged(phydev, 0xa43, 0x10, 0x0000, 0x0003), bit 0
-means 'link speed 10m PLL OFF', bit 1 means 'ALDPS PLL OFF', bit 2 means
-'ENABLE ALDPS', bit 12 means 'ALDPS XTAL OFF'.
----
- drivers/net/ethernet/realtek/r8169.h          |  1 +
- drivers/net/ethernet/realtek/r8169_main.c     |  6 +++++
- .../net/ethernet/realtek/r8169_phy_config.c   | 22 +++++++++++++++++++
- 3 files changed, 29 insertions(+)
-
-diff --git a/drivers/net/ethernet/realtek/r8169.h b/drivers/net/ethernet/realtek/r8169.h
-index aed4cf852091..0b9c1d4eb48b 100644
---- a/drivers/net/ethernet/realtek/r8169.h
-+++ b/drivers/net/ethernet/realtek/r8169.h
-@@ -68,6 +68,7 @@ enum mac_version {
- 	RTL_GIGA_MAC_VER_61,
- 	RTL_GIGA_MAC_VER_63,
- 	RTL_GIGA_MAC_VER_64,
-+	RTL_GIGA_MAC_VER_65,
- 	RTL_GIGA_MAC_VER_66,
- 	RTL_GIGA_MAC_VER_70,
- 	RTL_GIGA_MAC_VER_80,
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 2f7d9809c373..d040f2074db6 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -60,6 +60,7 @@
- #define FIRMWARE_8125D_2	"rtl_nic/rtl8125d-2.fw"
- #define FIRMWARE_8125K_1	"rtl_nic/rtl8125k-1.fw"
- #define FIRMWARE_8125BP_2	"rtl_nic/rtl8125bp-2.fw"
-+#define FIRMWARE_8125CP_1	"rtl_nic/rtl8125cp-1.fw"
- #define FIRMWARE_9151A_1	"rtl_nic/rtl9151a-1.fw"
- #define FIRMWARE_8126A_2	"rtl_nic/rtl8126a-2.fw"
- #define FIRMWARE_8126A_3	"rtl_nic/rtl8126a-3.fw"
-@@ -112,6 +113,9 @@ static const struct rtl_chip_info {
- 	/* 8125BP family. */
- 	{ 0x7cf, 0x681,	RTL_GIGA_MAC_VER_66, "RTL8125BP", FIRMWARE_8125BP_2 },
- 
-+	/* 8125CP family*/
-+	{ 0x7cf, 0x708, RTL_GIGA_MAC_VER_65, "RTL8125CP", FIRMWARE_8125CP_1 },
-+
- 	/* 8125D family. */
- 	{ 0x7cf, 0x68b, RTL_GIGA_MAC_VER_64, "RTL9151A", FIRMWARE_9151A_1 },
- 	{ 0x7cf, 0x68a, RTL_GIGA_MAC_VER_64, "RTL8125K", FIRMWARE_8125K_1 },
-@@ -802,6 +806,7 @@ MODULE_FIRMWARE(FIRMWARE_8125D_1);
- MODULE_FIRMWARE(FIRMWARE_8125D_2);
- MODULE_FIRMWARE(FIRMWARE_8125K_1);
- MODULE_FIRMWARE(FIRMWARE_8125BP_2);
-+MODULE_FIRMWARE(FIRMWARE_8125CP_1);
- MODULE_FIRMWARE(FIRMWARE_9151A_1);
- MODULE_FIRMWARE(FIRMWARE_8126A_2);
- MODULE_FIRMWARE(FIRMWARE_8126A_3);
-@@ -4021,6 +4026,7 @@ static void rtl_hw_config(struct rtl8169_private *tp)
- 		[RTL_GIGA_MAC_VER_61] = rtl_hw_start_8125a_2,
- 		[RTL_GIGA_MAC_VER_63] = rtl_hw_start_8125b,
- 		[RTL_GIGA_MAC_VER_64] = rtl_hw_start_8125d,
-+		[RTL_GIGA_MAC_VER_65] = rtl_hw_start_8125d,
- 		[RTL_GIGA_MAC_VER_66] = rtl_hw_start_8125d,
- 		[RTL_GIGA_MAC_VER_70] = rtl_hw_start_8126a,
- 		[RTL_GIGA_MAC_VER_80] = rtl_hw_start_8127a,
-diff --git a/drivers/net/ethernet/realtek/r8169_phy_config.c b/drivers/net/ethernet/realtek/r8169_phy_config.c
-index 032d9d2cfa2a..a880df7c1f70 100644
---- a/drivers/net/ethernet/realtek/r8169_phy_config.c
-+++ b/drivers/net/ethernet/realtek/r8169_phy_config.c
-@@ -1102,6 +1102,27 @@ static void rtl8125d_hw_phy_config(struct rtl8169_private *tp,
- 	rtl8125_config_eee_phy(phydev);
- }
- 
-+static void rtl8125cp_hw_phy_config(struct rtl8169_private *tp,
-+				   struct phy_device *phydev)
-+{
-+	r8169_apply_firmware(tp);
-+	rtl8168g_enable_gphy_10m(phydev);
-+
-+	phy_modify_paged(phydev, 0xad0, 0x17, 0x007f, 0x000b);
-+	phy_modify_paged(phydev, 0xad7, 0x14, 0x0000, BIT(4));
-+	rtl8125_phy_param(phydev, 0x807f, 0xff00, 0x5300);
-+	r8168g_phy_param(phydev, 0x81b8, 0xffff, 0x00b4);
-+	r8168g_phy_param(phydev, 0x81ba, 0xffff, 0x00e4);
-+	r8168g_phy_param(phydev, 0x81c5, 0xffff, 0x0104);
-+	r8168g_phy_param(phydev, 0x81d0, 0xffff, 0x054d);
-+	phy_modify_paged(phydev, 0xa43, 0x10, 0x0000, 0x0003);
-+	phy_modify_paged(phydev, 0xa44, 0x11, 0x0000, BIT(7));
-+
-+	rtl8125_legacy_force_mode(phydev);
-+	rtl8168g_disable_aldps(phydev);
-+	rtl8125_config_eee_phy(phydev);
-+}
-+
- static void rtl8125bp_hw_phy_config(struct rtl8169_private *tp,
- 				    struct phy_device *phydev)
- {
-@@ -1344,6 +1365,7 @@ void r8169_hw_phy_config(struct rtl8169_private *tp, struct phy_device *phydev,
- 		[RTL_GIGA_MAC_VER_61] = rtl8125a_2_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_63] = rtl8125b_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_64] = rtl8125d_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_65] = rtl8125cp_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_66] = rtl8125bp_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_70] = rtl8126a_hw_phy_config,
- 		[RTL_GIGA_MAC_VER_80] = rtl8127a_1_hw_phy_config,
 -- 
-2.43.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
