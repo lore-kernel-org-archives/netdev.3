@@ -1,121 +1,108 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A113624A3
-	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 11:30:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A29335B65F
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 11:43:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770031858; cv=none; b=lbrCbo/RwYtFP61U40JhXu117O7GEx6OG5O0kqRkwSPLMMAmu+YbPK6o99mTk8E3i7HslNIPZENFwcj5KDdSIre9DJEh6ylqezfI0pg1pKFUs9OgslPH06BiG9QVp+bbCyoebmdXQXCgS2p4oUQeDHCrXszvngIJWXk1VNpHXHU=
+	t=1770032627; cv=none; b=K0h4Qm4U+B990iznh//Y+IJi/SjDz6NUib/91lDr0Ub957ivE+vZcyrbYdsvHHdRNnY2mSHuETHBj+r4y80IvORGzF8y7N3ucN4eVCKUOUJXju8eyOUPXWSb3Tl7s33pdzwLwo6Lycy0q4xMYDXg+l8B/P9zij5PnXfyRFxjPJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770031858; c=relaxed/simple;
-	bh=i2Lgk8oY2JEF8F21tGM3+u1FdkvAXBzchBLAiGxc3NI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BeBSaRoIodr83k3xmR/oxGT281lJfHIpVDkSy8+15qBh+U67AAb/qHOMMUpi2Lpf0+cV6WgAk+GUXxXNlVUlQLPxqGUifxDlcNZlbJWk1ShT9r0VFo/89MJu3JVFsr3skCWMEU22bYrqEBbzr+WGqhJWxQOolWFja4pVYVw9xRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N66S74+o; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1770032627; c=relaxed/simple;
+	bh=q6JRx6Z2sTvpO0DlYWA9FoGJtfrY1lI6o3Dg5NkqmHc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UlRBNsjcE8gu3/MrTtaqzibHPS6lYOmI1oIei/SpYUdLYYzUZFBBmm65FNqvtjjxcRRy0RtNqahneQsW26jGjVEKXnJGL8Hdl6dQ6L/oTR2L7ReDWmQ4rhOdmNc67vWLynYoOpRsboxIW1xca1T1th+ZrPVSNEAGnTcdAB55b/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RcO0/9d9; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N66S74+o"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RcO0/9d9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770031856;
+	s=mimecast20190719; t=1770032624;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Pu7lsKCbclEnruBJpuzF4ShVJxdVhrn3aSCbruUCHTE=;
-	b=N66S74+oYYjrV87rMe6zH4vVoj6swx7Rb9Wuzb5xzas7iJuKvluOPbmfA10JUAHzB6is5B
-	NzUeUuEkbCc6RMfJ6iAvn8wReEQ91ydV52X4kOv99jkQyDcnSKnzqFuMKA2mL5/HLnkhmh
-	jQrPHrnkgWOyYkj7M4A9V5Vk2GqNRww=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+	bh=QpHLz0BLpLSn02lwpwBiCDnmIRcWV97F9fijXGtLVCQ=;
+	b=RcO0/9d9ekNPzwb/0awM7PE/nYD9JxFUVujo3Xjt4xLNxxzDLDVkZGn/vNv/42UHOID4PZ
+	Ja9D7sTE0wF1IpMgv5n4yHTOYkud4xno7SthvicQUi5kJU0TJeMJFss/ulbkCleZ3PQILX
+	5rOf4VbHatouWNTF+t1jc3ZZD/j4l1s=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-85-T1YurJWVO0uyqrzlPVRLQA-1; Mon,
- 02 Feb 2026 06:30:52 -0500
-X-MC-Unique: T1YurJWVO0uyqrzlPVRLQA-1
-X-Mimecast-MFC-AGG-ID: T1YurJWVO0uyqrzlPVRLQA_1770031851
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-664-F8zhD0s3Po6CUuBIzfXlGg-1; Mon,
+ 02 Feb 2026 06:43:40 -0500
+X-MC-Unique: F8zhD0s3Po6CUuBIzfXlGg-1
+X-Mimecast-MFC-AGG-ID: F8zhD0s3Po6CUuBIzfXlGg_1770032618
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CACE41956052;
-	Mon,  2 Feb 2026 11:30:50 +0000 (UTC)
-Received: from thinkpad (unknown [10.44.34.1])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3208E1800285;
-	Mon,  2 Feb 2026 11:30:46 +0000 (UTC)
-Date: Mon, 2 Feb 2026 12:30:44 +0100
-From: Felix Maurer <fmaurer@redhat.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	jkarrenpalo@gmail.com, tglx@linutronix.de, mingo@kernel.org,
-	allison.henderson@oracle.com, petrm@nvidia.com, antonio@openvpn.net
-Subject: Re: [PATCH net-next v2 5/9] selftests: hsr: Add tests for more link
- faults with PRP
-Message-ID: <aYCK5Dczg_0tbuEA@thinkpad>
-References: <cover.1769093335.git.fmaurer@redhat.com>
- <774d7a2327d1c05b78ee30ac21297794bfcb0245.1769093335.git.fmaurer@redhat.com>
- <20260129133217.xNoDm9nn@linutronix.de>
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9A51619560B3;
+	Mon,  2 Feb 2026 11:43:38 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.45.224.250])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7B3BE1956053;
+	Mon,  2 Feb 2026 11:43:35 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: netdev@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Willem de Bruijn <willemb@google.com>,
+	Richard Gobert <richardbgobert@gmail.com>,
+	linux-kselftest@vger.kernel.org,
+	aleksander.lobakin@intel.com
+Subject: [PATCH v2 net 1/2] net: gro: fix outer network offset
+Date: Mon,  2 Feb 2026 12:43:14 +0100
+Message-ID: <562638dbebb3b15424220e26a180274b387e2a88.1770032084.git.pabeni@redhat.com>
+In-Reply-To: <cover.1770032084.git.pabeni@redhat.com>
+References: <cover.1770032084.git.pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260129133217.xNoDm9nn@linutronix.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Thu, Jan 29, 2026 at 02:32:17PM +0100, Sebastian Andrzej Siewior wrote:
-> On 2026-01-22 15:57:00 [+0100], Felix Maurer wrote:
-> > Add tests where one link has different rates of packet loss or reorders
-> > packets. PRP should still be able to recover from these link faults and
-> > show no packet loss.  However, it is acceptable to receive some level of
-> > duplicate packets. This matches the current specification (IEC
-> > 62439-3:2021) of the duplicate discard algorithm that requires it to be
-> > "designed such that it never rejects a legitimate frame, while occasional
-> > acceptance of a duplicate can be tolerated." The rate of acceptable
-> > duplicates in this test is intentionally high (10%) to make the test
-> > stable, the values I observed in the worst test cases (20% loss) are around
-> > 5% duplicates.
->
-> Do you know why we have the duplicates? It is because of the high
-> sending rate at which point the blocks are dropped and we can't
-> recognise the duplicate?
+The udp GRO complete stage assumes that all the packets inserted the RX
+have the `encapsulation` flag zeroed. Such assumption is not true, as a
+few H/W NICs can set such flag when H/W offloading the checksum for
+an UDP encapsulated traffic, the tun driver can inject GSO packets with
+UDP encapsulation and the problematic layout can also be created via
+a veth based setup.
 
-I could not give a definitive answer on this last week, I had to dig a
-bit and think through this. The reason for the duplicates is not a high
-sending rate leading to dropped blocks. Rather, it's the low sending
-rate leading to expiring blocks: in the test, the ping interval is set
-to 10ms. As the blocks expire based on the timestamp of the first
-received sequence number, the 400ms entry expiry gets hit every ca. 40
-frames, at which we basically clear all received sequence number in the
-block by creating a new block. This happens on both nodes (for ping
-requests and replies) ca. 10 times during the test, leading to about 20
-duplicate packets, which is the ca. 5% duplicates I observed in multiple
-runs of this test.
+Due to the above, in the problematic scenarios, udp4_gro_complete() uses
+the wrong network offset (inner instead of outer) to compute the outer
+UDP header pseudo checksum, leading to csum validation errors later on
+in packet processing.
 
-This means the duplicate rate is highly dependent on the traffic pattern
-and the test manages to hit exactly this situation. I'll add the
-explanation to the message in v3. If similar traffic patterns are hit in
-the real world too often, we could test different block sizes. I just
-did this and the results are as expected:
-- 64 bit blocks: the duplicate rate is about the same because the block
-  still expires once.
-- 32 bit blocks: the duplicate rate drops to around 4% because,
-  including the netem delay in the test, this is roughly the edge
-  between expiring a block and already hitting a new one. But if we keep
-  the bitmap as it is, we waste 50% of memory.
-- 16 bit blocks: duplicate rate is zero because we use new blocks way
-  before the expiry time. But this wastes about 75% memory for each
-  block and the overhead of the timestamp in each block gets quite
-  significant.
+Address the issue always clearing the encapsulation flag at GRO completion
+time. Such flag will be set again as needed for encapsulated packets by
+udp_gro_complete().
 
-I'd suggest to keep the 128 bit blocks to have a chance to detect
-duplicates at higher data rates for some delay difference (up to about
-5.5ms with 1Gbit/s). 64 bit blocks would halve the maximum delay
-difference, but probably still strike a good balance between memory
-overhead and duplicate rate. Do you prefer one over the other?
+Fixes: 5ef31ea5d053 ("net: gro: fix udp bad offset in socket lookup by adding {inner_}network_offset to napi_gro_cb")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+---
+ net/core/gro.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Thanks,
-   Felix
+diff --git a/net/core/gro.c b/net/core/gro.c
+index 76f9c3712422..482fa7d7f598 100644
+--- a/net/core/gro.c
++++ b/net/core/gro.c
+@@ -265,6 +265,8 @@ static void gro_complete(struct gro_node *gro, struct sk_buff *skb)
+ 		goto out;
+ 	}
+ 
++	/* NICs can feed encapsulated packets into GRO */
++	skb->encapsulation = 0;
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(ptype, head, list) {
+ 		if (ptype->type != type || !ptype->callbacks.gro_complete)
+-- 
+2.52.0
 
