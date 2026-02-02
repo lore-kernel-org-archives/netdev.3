@@ -1,103 +1,113 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3022BD5A2;
-	Mon,  2 Feb 2026 04:37:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 401183EBF37
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 05:29:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770007032; cv=none; b=MeJbF/8TNdgvdKGe6tsih+gZRylD00oHt7mqFQPys21C/Xt2RwLqRUMmLWCasNL65haaAuu6vpOAgDX492TsXWfRt8531MZ93fdSXBu9/9d7N1PnolOnS+Rr5Sm6VZ4/n6XPzXYX+xmiFJPCS9/HM95GVq6fLjUEWD1kDICofgk=
+	t=1770010176; cv=none; b=a5cYMcc/3EqOoW/DmBY0s8i4ueqLVY0Z1lb4NtpxeKvSz2sw6W+ycFueApoMzvA8G3Xd+BINp8vNk3NjXV63Sdwencp7K/sD/+ptYURsWqP/mEmaOW5uyYDuqDEdQtcXQ4O0TRqsQLZmaYDZeqhGuoMEB3R9TvW25E3ekziHt30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770007032; c=relaxed/simple;
-	bh=2M1FlUwZmy9rpiw3aEyqteFrrP++1HMD9u+KqGT+ipA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=emcFMFuZvu+qWOrjvJMuruRE7ZFsKpLT7aGxMxSBpSrGGOxQwJQkK7BX/uMDgTL9/B8a8W3nEFNJu8yy9tyWulDmq9sMVX7iCl2HXKo4ZRgZQmJkxU3TS4NIBkA6t49qGSw3Q+qd9nXz0X+QRF25zW0fiyJ1frsUiRX2Q+CdiWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=YAY9zmia; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1770010176; c=relaxed/simple;
+	bh=O+JAxNMAU5QnUiJHT4tzSd08Dci8HvG2osvHjufpcTc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IIUv+wrKIiAjlHVW+d46n3UywQcPQLNTmsa0unsHlnpbrSsaLbIaq8iDrJbqf1N6mZKOyoKQFMKwGEqf85UZRvbThvTxoCGZpBxubgOZ32q3D+HNTNhPNzHMWymlibdZzUnIeJdF2uFWdWF3hzRSV+OCiC2D2NDwhKAXZTPfBmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=IgtGD+G0; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="YAY9zmia"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 611NsDP93463246;
-	Sun, 1 Feb 2026 20:11:10 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pfpt0220; bh=Mgp9VulRLNfMc5bfmTK+x0ifw
-	Ky71HfYrFn4vr1yauc=; b=YAY9zmiaE2ZoCdnTNrvLohp4vlrVAWgnJfHbnhjb8
-	qv34WQ3p1VGiVo7DtpgEID1de3ZqqPDoRBpqmzP/Yb54cJuvP69Sv81NQTTmK7ws
-	YmlXGkBjZmh0i9JeLH1sdfKXvcghgTt7Cc3GM46YrmqUc1ENPP0fZT8TX+lIxt03
-	Uond4BOuGlcAr3YeZ1Xf3MgjgXQN0xvZF6L1mykzieb94FEo7PSZzNPa9GLAWxeP
-	Er1JfbmhTcIfAo0P8x1IkBqiopKZ1eMB9ceiPy6+50QA2U08wnGU+b6fWmnWcpQu
-	Th5NwqcsGjjE+roCPH2j/i+1k53YMMQiJObQsJLgknVLg==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4c28mvrvgy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 01 Feb 2026 20:11:09 -0800 (PST)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sun, 1 Feb 2026 20:11:08 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Sun, 1 Feb 2026 20:11:08 -0800
-Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with SMTP id 5E47A3F70E6;
-	Sun,  1 Feb 2026 20:11:07 -0800 (PST)
-Date: Mon, 2 Feb 2026 09:41:06 +0530
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: Re: [net-next,v7,09/13] octeontx2-af: npc: cn20k: virtual index
- support
-Message-ID: <aYAj2gIfrlNq2_zt@rkannoth-OptiPlex-7090>
-References: <20260129083339.264386-10-rkannoth@marvell.com>
- <20260131033322.1013834-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="IgtGD+G0"
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 611Mw9Eo293218;
+	Mon, 2 Feb 2026 05:29:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=8/zTt7K32lDSml0jOg2zsnz3fPuUn
+	8GLvVhi21bT8vI=; b=IgtGD+G0LCQ68rcws62ewY3LbHrT2UM5wcxy3/iPPl1+n
+	tq76lqHUu1GTW9EGmyHdOK3BzVxfI9+txLaPM8Sx0bLFjL9HdJa1JT8vuSXmKvuI
+	zT77p74JcW8nyNl85c4hHBmtsKNysAmrZAzmTZ0ORO0Y5vS7QDd6FQy3B60F4zSt
+	KHDecYM16VpXZ75xWDIFouYGbE+RuX61yTmOzTf/or1vrCz3WWKDXrfjOr/3XTlW
+	e8OI00heyovyAgGQMjMksQ/RUyEVtNPQAsJneXfL4ANLcKCiEzP8gNQKYfy3Svkv
+	5Y9DIZn5OWG/GRD9drKiTDPH2RzRB7Aq0cf9SfNFQ==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4c1as39fth-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 02 Feb 2026 05:29:21 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 6121gXMC034752;
+	Mon, 2 Feb 2026 05:29:20 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4c1867x6va-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 02 Feb 2026 05:29:20 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 6125Skno006196;
+	Mon, 2 Feb 2026 05:28:48 GMT
+Received: from ca-dev110.us.oracle.com (ca-dev110.us.oracle.com [10.129.136.45])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4c1867x6uu-1;
+	Mon, 02 Feb 2026 05:28:46 +0000
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
+To: tchornyi@marvell.com, vmytnyk@marvell.com, yevhen.orlov@plvision.eu,
+        vkochan@marvell.com, taras.chornyi@plvision.eu, pabeni@redhat.com,
+        kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
+        andrew+netdev@lunn.ch, netdev@vger.kernel.org
+Cc: alok.a.tiwarilinux@gmail.com, alok.a.tiwari@oracle.com
+Subject: [PATCH net-next] net: marvell: prestera: fix FEC error message for SFP ports
+Date: Sun,  1 Feb 2026 21:28:08 -0800
+Message-ID: <20260202052816.28191-1-alok.a.tiwari@oracle.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260131033322.1013834-1-kuba@kernel.org>
-X-Authority-Analysis: v=2.4 cv=MuhfKmae c=1 sm=1 tr=0 ts=698023dd cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=7eULd4cwdJC3NnIBy84A:9 a=CjuIK1q_8ugA:10
- a=lhd_8Stf4_Oa5sg58ivl:22
-X-Proofpoint-ORIG-GUID: _Id3mGfy8m2JQyijmOMVQgvNX9wt6Jyc
-X-Proofpoint-GUID: _Id3mGfy8m2JQyijmOMVQgvNX9wt6Jyc
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAyMDAzMyBTYWx0ZWRfX4xo81nCLnTTW
- lK+0kPOUrg4PjkqNy17im8AV0oEr6bzjfQ8xNfmGzEwrL/GEsHvEAwsLwVvoxl2PUxXEVWCXT86
- j0oV5d0gKE4WfawWoRKEXIo7ZEEvxROKh793ZPVtK7t70X6dbxUiUtpr/v0dgRoFCSCLKrERXN1
- OodRoM2rP7ZnGqpmCK/XXULKD4AF+A6Wb5bZzK6RsDUboHFs50GUQxO4ZqJCJ8Ig4OoyzbhqzPI
- 32tTicAofyMQMWZs84UTHlcV1SWG7yVitjl5w9D2/w2vuc8HLK7wUBnNsGhigtAhZjytVTYnts/
- gdCjyPDaV5huMMOXEzMu8p5tw1ptMA5DujBMPnAsa0fuHpFOnvGm52Ugpl53wkPJK/ipLt+c482
- yrILSlkC1WjmeslmVapySdcTCaBcCeII0L3dc9Ni25FP5eRkC5z/IxGTBhjURA0MfBanjtaZhKp
- RQTPMXaN9gJbijUulGQ==
+Content-Transfer-Encoding: 8bit
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-02_01,2026-01-30_04,2025-10-01_01
+ definitions=2026-02-02_02,2026-01-30_04,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 mlxlogscore=999
+ malwarescore=0 spamscore=0 bulkscore=0 adultscore=0 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2601150000 definitions=main-2602020044
+X-Proofpoint-ORIG-GUID: AYdRRB2EzwhOvKU6C0Wduiw7849LRJnf
+X-Authority-Analysis: v=2.4 cv=Sq6dKfO0 c=1 sm=1 tr=0 ts=69803631 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
+ a=-y2SokaO-GGFvZjGeZUA:9
+X-Proofpoint-GUID: AYdRRB2EzwhOvKU6C0Wduiw7849LRJnf
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAyMDA0NSBTYWx0ZWRfXzEwD9h6uA9oS
+ q/iXjub15qQFqgfvwjieLsuxmODwqzLt8xRY2ksmZzX2BaJeypldIEuxgRmRYA5VV2wR3y37l4J
+ DXVYmZpe7W6aBzrg9nKY5ZN4mNnZNgVXzyHfRrZuTQ2EP3nX0HPDGC75Okfqba2C8h9rSs/aB3q
+ ii8+f3q5k+wPIJ40MK6tWHvE1JPnuh/WiHvgf99t5xBnPoBpNFiDieBhKYYk/KUNqIUuF3I66ak
+ HX7UFge2NZ6jHdmsTjbSK9BZm2VfM24GvaN9/Fm5OVyqvCnQCy+5um+jm0HDcUHbVcpFeb5/t8t
+ uzdYi5KlqFLOKtimuFyZh5vCifv6a6SH/cYPbg/TK0nh6NtnLgTgqo15R6dGR7WaNxzJGisn91y
+ qnEw8yxYpKIimT4Or/JXixE+I3OSSlHcOSwREt+onDQHcE7PqmLJsLMfUJYUBkjp1BkgF7O5uWy
+ I5rbMHa9Pb5ID6fOySA==
 
-On 2026-01-31 at 09:03:22, Jakub Kicinski (kuba@kernel.org) wrote:
->
-> > +fail1:
-> > +	if (xa_insert(&npc_priv.xa_idx2vidx_map, old_midx,
-> > +		      xa_mk_value(vidx), GFP_KERNEL))
-> > +		dev_err(rvu->dev,
-> > +			"%s: Faled to roll back vidx2idx to old_midx=%u, vidx=%u\n",
-> > +			__func__, old_midx, vidx);
-> > +
-> > +	return rc;
-> > +}
->
-> When we jump to fail1, it's because the xa_insert() into xa_vidx2idx_map
-> failed (around line 352). At that point, xa_idx2vidx_map hasn't been touched
-> yet - only xa_vidx2idx_map had the vidx erased. The rollback here tries to
-> insert into xa_idx2vidx_map, but shouldn't this restore vidx -> old_midx
-> in xa_vidx2idx_map instead? This appears to be operating on the wrong xarray
-> and would leave the mapping inconsistent on error.
->
-> This was also raised in lore review feedback:
-> https://lore.kernel.org/all/20260129051307.376632-1-kuba@kernel.org/
-Label fall1: is modifying vidx2idx_map in V7. Am i missing anything here ?
+In prestera_ethtool_set_fecparam(), the error message is opposite of
+the condition checking PRESTERA_PORT_TCVR_SFP. FEC configuration is
+not allowed on SFP ports, but the message says "non-SFP ports", which
+does not match the condition.
+
+Fix the message to match the condition.
+
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+---
+ drivers/net/ethernet/marvell/prestera/prestera_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/marvell/prestera/prestera_ethtool.c b/drivers/net/ethernet/marvell/prestera/prestera_ethtool.c
+index 2f52daba58e6..a259da9f30f4 100644
+--- a/drivers/net/ethernet/marvell/prestera/prestera_ethtool.c
++++ b/drivers/net/ethernet/marvell/prestera/prestera_ethtool.c
+@@ -718,7 +718,7 @@ static int prestera_ethtool_set_fecparam(struct net_device *dev,
+ 	}
+ 
+ 	if (port->caps.transceiver == PRESTERA_PORT_TCVR_SFP) {
+-		netdev_err(dev, "FEC set is not allowed on non-SFP ports\n");
++		netdev_err(dev, "FEC set is not allowed on SFP ports\n");
+ 		return -EINVAL;
+ 	}
+ 
+-- 
+2.50.1
+
