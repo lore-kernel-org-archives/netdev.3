@@ -1,109 +1,124 @@
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD03A125A9;
-	Mon,  2 Feb 2026 12:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770034867; cv=none; b=GRE1R1LKws3Tu7Ipu+rK0Pbs+8cBUmdG2HyitpZAPI1v5vXFB2eqj4OwHDKxCfC6zSEUdUQNLdnCtsEbUF7QIfu4mYMcwl9RKsMjm6PYI/RMAcCp7AqLc5GLm5xVTB8eEl/eZRmPYXYB2Ch46lqLeXQmUY+ERZ4AOE3XLvIb0v0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770034867; c=relaxed/simple;
-	bh=AnT2YVUFFJTO+No6eubNJyX2iZEY+PrnugKi2bq8Qmk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qGZf058aioP6E1h+UGV4DSiPP/bpd6UL4JQckXPa6seVijQDML/fgTuRN1so44JtVKaHCSFnx44aOB/suUvarLmXzoRJjC6xm1uTXHnSrIcuslw7PTS7XwrCKqzJ7pnRBTXu4+OHGCaiKJJXA3MwcXBzM4+BSJJLY8lgK8z4r2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=L0P7fYB9; arc=none smtp.client-ip=113.46.200.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88262D060D
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 12:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770034962; cv=pass; b=H4ExDrXfTcW/dd3fGcH3LMLvBzieMZN73DrlnqUuB1sUeBqUAV051W/qbH+fWHTr1H0kXXQoGmmTd6qXj75N+qDVClOiCmvjIR2Op1hodNljBGbR0lg3bjoK0fkdBXA32ax/lablC8LoEBgNQl5uevRTJTPajckxGjE6W3COmMw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770034962; c=relaxed/simple;
+	bh=9pfwSnYRbuqMRB57vP+4N+UsP6yRFCNRCgCrL1+OKPA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F48e/YhF93/qy1joU/Q8+C1J0QuDWevZducOkTL4ejIpi3ojlseXfE/HKF+lbnJLxOEy7Wuc+vr0jn5zz/mC48K6bUSh/ihU4BbhiQ5ij+djRo5OU4o21ud7SxfuFSqoW89TODGNc853JXURbBwOicUWFgjZjB1xPwc/EA5H+t4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1KZL/wTg; arc=pass smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="L0P7fYB9"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=ryEz7iWunP67PC5bU94lyAnDGpTcxQMYgCmjDULTlMg=;
-	b=L0P7fYB9UrI9o9eIxZc2flmv4Gqj4ILOnxz1Ar659XR2GeVKDjvrXIUniritYKaeGp+T/G68B
-	212cX8hPa3MU/SvXygbgVKuy5UfeEjCRECa5ZvB4OMQLhEc0Qk/Qq3OUmvVwMXdTrmcyVhXfb5w
-	/lBGCad1/eSCi/Yf1oTtA5A=
-Received: from mail.maildlp.com (unknown [172.19.162.92])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4f4Qbl3TF5zKm4p;
-	Mon,  2 Feb 2026 20:17:23 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3A12040565;
-	Mon,  2 Feb 2026 20:20:55 +0800 (CST)
-Received: from localhost.localdomain (10.90.31.46) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Mon, 2 Feb 2026 20:20:54 +0800
-From: Jijie Shao <shaojijie@huawei.com>
-To: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>
-CC: <shenjian15@huawei.com>, <liuyonglong@huawei.com>,
-	<chenhao418@huawei.com>, <lantao5@huawei.com>,
-	<huangdonghua3@h-partners.com>, <yangshuaisong@h-partners.com>,
-	<jonathan.cameron@huawei.com>, <salil.mehta@huawei.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<shaojijie@huawei.com>
-Subject: [PATCH net] net: hns3: fix double free issue for tx spare buffer
-Date: Mon, 2 Feb 2026 18:58:37 +0800
-Message-ID: <20260202105837.1909444-1-shaojijie@huawei.com>
-X-Mailer: git-send-email 2.30.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1KZL/wTg"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-5029af2b4bcso23851391cf.0
+        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 04:22:40 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770034960; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Pnfq2DDhWl4Llrrg+cMub+1RowZjZdxSqVfLH8QjgBXQ7nm4V1mswW2HzawOc4DFtm
+         0bcRSdc5gmPpgtTN1tRFs2XsryqFpovsJdhZvTa2UUMlZcE1Koky4K3F1EjO52faZckR
+         Q0QzSwiaP88f602yuFcFocy1S2YA7dxTDpviDUixhDjzRV+diuBtNVRgRD4lZGGsBcmm
+         PJPadCf/02MlzEQc2SgwHtFkl+t3CTJrf5WiOKbV4jmlRd0SprYz+2qVvMxxI9ARl1mL
+         S7uZq7bN3R7r1eDLXU3kVuUVQs/Z5a8BXd8ki1SU8ay3wd6pfa2+KwFvDibmIjLjCTqb
+         bMuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9pfwSnYRbuqMRB57vP+4N+UsP6yRFCNRCgCrL1+OKPA=;
+        fh=8xeuYFObQOYk989QdWXuM9sxZUi9IVaU7nKSL7S9QrA=;
+        b=lvjM9p775EpfpmpttwWcFOuR3kfKeoPalmGUDZmOzItpMLrCFHCks+uMAPTVdhKrlz
+         6mco4Q82m19mjmzlyv2OWHaX6ZP+34OXJpqWlkB11WaqD4QczRx9Ai+k6TpBC8rlktsk
+         +FA2cx9gEIEwsQlVB9tWpwV0mEeA4+CnM7A2UCMppdhe6fc+04aVD+Lb/gTdPVvYy6qs
+         vcnX0z0MYXWnX6n/Yl4bixLosVLEi+I+Diso+Q9J+mRmjWOxh1ehRhUU4QLfypUaWNi2
+         dIZl4Nk0EzSIjGl1s3SH86iHDT/faM5IJ9bf0YKVWBiTpvSi9hnJ1E13tHfzhiF5rdH9
+         vrDw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770034960; x=1770639760; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9pfwSnYRbuqMRB57vP+4N+UsP6yRFCNRCgCrL1+OKPA=;
+        b=1KZL/wTgAQse6U0No6nNXtbbo/oLIL90JB4EH8oXLM/7VVwimrmufuFL8rHuNgV9eq
+         yRXJ0K3bpzXiajQ6vB2NVlRW4m0Q+kT1n4Zn3ml8x7RUEzfA0gfBzfVOi/jw0xgWaOfD
+         7D4VMkLdB6VElXXGX9QPEXfwLYmJoGcJbpDTR5DgANgIA2QksNnaRBTIVdRWFgAC8LSY
+         PfMRitsnmA+ENOPPWOdesjy1VjOpKMldC/AbNEyFzL3DOf5yKeC/3/2tr9feC2uB+gRK
+         OXXTqruShJK7Sg/T3sNvEwyOJPFbY1ZDjxuzBLQFMUcje/KwbWOT7QcbSExzZa78cdDm
+         QJ4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770034960; x=1770639760;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9pfwSnYRbuqMRB57vP+4N+UsP6yRFCNRCgCrL1+OKPA=;
+        b=jmQUbXO7TA3To5ZFvUDcRt5ryYzz0ZOHhhdBmmKxQgxVqmRzjGyOO+pQaIiuE9uRJR
+         sPuld9rmJkHohjjnbz2iVw9KdootWyWtza/m1zowEYV4pYNxZagzk71o4pQRE21ucwiH
+         CEyPgqHS6JUzppH+yPxhZvIjynR2ddaaHuZtZ9Q8aiNtGBzhtNS+VtaDzlWJBemnfRx8
+         MQTS/4cU3Y3IcMCyjRh7cn4KRscGmsOuLGE5mOd99S++1lZnAalZ3lGSaXxLfxqBKNU3
+         agYk0UIrU8sKslT0HXXe4qu0Rl3rOR0m78dhrs0l6rplZC/J39bRy1iF4ytsRSWyxaWp
+         086g==
+X-Gm-Message-State: AOJu0YxHFWe01ry+dhyMdiS1cnyK3LTbQimQBj/Z9C+wfC9WG/Tt3mIk
+	6ByaxOwYarFP9vFbMncYorOXK+RmB4/KPdweWRH53nLQNkFtsScWpfZE6BkWUiT5vpIAM5KWjU2
+	cQaLRH6WEOVFsNurYBykAR25M1s27zfewEeXKd8h8
+X-Gm-Gg: AZuq6aIhPDjiJxhiCCn/rJEpqXtLlBCB57s2m+jzLudCCwMJA2X9tGVDY5H/+1d6whr
+	HgDA9gK8a4Cu36G3IjxtfFDvOfyLiWrqvOXm7fo8wABo2KpCxunNKjQiy0JPEZG8kdYrVjaWKga
+	F0fFsDzUNfR8udv16zXuTJabqL9kZIYHZZox47Ke/rgOgEM8syra/KZk8iXRjpXvyg36q2yHRhS
+	9LLWJCtABguoV76gBMjefvpqAhdTHrJhezvrv/jZSNl8BwMJNYOR3QJlXFDB8jkMxI1Jcr9ivHU
+	kZCPnA==
+X-Received: by 2002:ac8:5a8c:0:b0:4ed:b83f:78a3 with SMTP id
+ d75a77b69052e-505d2264074mr140685471cf.47.1770034959265; Mon, 02 Feb 2026
+ 04:22:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+References: <cover.1770032084.git.pabeni@redhat.com> <562638dbebb3b15424220e26a180274b387e2a88.1770032084.git.pabeni@redhat.com>
+In-Reply-To: <562638dbebb3b15424220e26a180274b387e2a88.1770032084.git.pabeni@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 2 Feb 2026 13:22:27 +0100
+X-Gm-Features: AZwV_QgvBa-oT_GRK6FHEVAJW1yt1Df7ZjFVbgtcNuFODuwiXmakPwocOjt-MqY
+Message-ID: <CANn89i+fAQ3fCvJwmCJ9gvN4Yx9Xms0hTMdPrJs_qLnNnZdL4g@mail.gmail.com>
+Subject: Re: [PATCH v2 net 1/2] net: gro: fix outer network offset
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Willem de Bruijn <willemb@google.com>, Richard Gobert <richardbgobert@gmail.com>, 
+	linux-kselftest@vger.kernel.org, aleksander.lobakin@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jian Shen <shenjian15@huawei.com>
+On Mon, Feb 2, 2026 at 12:43=E2=80=AFPM Paolo Abeni <pabeni@redhat.com> wro=
+te:
+>
+> The udp GRO complete stage assumes that all the packets inserted the RX
+> have the `encapsulation` flag zeroed. Such assumption is not true, as a
+> few H/W NICs can set such flag when H/W offloading the checksum for
+> an UDP encapsulated traffic, the tun driver can inject GSO packets with
+> UDP encapsulation and the problematic layout can also be created via
+> a veth based setup.
+>
+> Due to the above, in the problematic scenarios, udp4_gro_complete() uses
+> the wrong network offset (inner instead of outer) to compute the outer
+> UDP header pseudo checksum, leading to csum validation errors later on
+> in packet processing.
+>
+> Address the issue always clearing the encapsulation flag at GRO completio=
+n
+> time. Such flag will be set again as needed for encapsulated packets by
+> udp_gro_complete().
+>
+> Fixes: 5ef31ea5d053 ("net: gro: fix udp bad offset in socket lookup by ad=
+ding {inner_}network_offset to napi_gro_cb")
+> Reviewed-by: Willem de Bruijn <willemb@google.com>
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> ---
 
-The driver missed to clear ring->tx_spare to NULL when
-fail to initialize tx spare buffer. And it will try to
-free the tx spare buffer in hns3_fini_ring() if tx_spare
-is not NULL. So it may cause double free issue.
-
-Fixes: 907676b130711 ("net: hns3: use tx bounce buffer for small packets")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
----
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 7a9573dcab74..e879b04e21b0 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -1048,13 +1048,13 @@ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
- 	int order;
- 
- 	if (!alloc_size)
--		return;
-+		goto not_init;
- 
- 	order = get_order(alloc_size);
- 	if (order > MAX_PAGE_ORDER) {
- 		if (net_ratelimit())
- 			dev_warn(ring_to_dev(ring), "failed to allocate tx spare buffer, exceed to max order\n");
--		return;
-+		goto not_init;
- 	}
- 
- 	tx_spare = devm_kzalloc(ring_to_dev(ring), sizeof(*tx_spare),
-@@ -1092,6 +1092,13 @@ static void hns3_init_tx_spare_buffer(struct hns3_enet_ring *ring)
- 	devm_kfree(ring_to_dev(ring), tx_spare);
- devm_kzalloc_error:
- 	ring->tqp->handle->kinfo.tx_spare_buf_size = 0;
-+not_init:
-+	/* When driver init or reset_init, the ring->tx_spare is always NULL;
-+	 * but when called from hns3_set_ringparam, it's usually not NULL, and
-+	 * will be restored if hns3_init_all_ring() failed. So it's safe to set
-+	 * ring->tx_spare to NULL here.
-+	 */
-+	ring->tx_spare = NULL;
- }
- 
- /* Use hns3_tx_spare_space() to make sure there is enough buffer
--- 
-2.33.0
-
+Reviewed-by: Eric Dumazet <edumazet@google.com>
