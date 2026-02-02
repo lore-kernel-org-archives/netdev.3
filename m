@@ -1,252 +1,213 @@
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f68.google.com (mail-qv1-f68.google.com [209.85.219.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3107030F812;
-	Mon,  2 Feb 2026 06:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770013742; cv=none; b=KJof4/BbMbUD5VUuU/ktHGXY1UA7RaEtECGfDskgV581jqdr5GtY1bC8hCDTXAkfsUp4xbr4LUhK1STvbcx0kfry4MH7Yf/Z5C/lht4CNXd2Vb1JhNDp9j4nwO/FhhFQuOC2fZw3xIDyccFSfncW+OjsvJdJ6ozVhIFeD1QEUhA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770013742; c=relaxed/simple;
-	bh=NSCSfJeBfWrfRraN5dgfurFdcAOvOJHC5z5eGn9EuHk=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qJEjXOkfISvPVuZpVhQJfw2gp+rgE0FAKpQ6oxD5cMhKdC1XEwJ47ktZ7/EH/wR6Ys5CTIDU28Oy4weyLIGirGOcMmbQgsdITQEXeT4O9zQYt9lBcKuXWgEIRoZOiZUj5va9CTU9+MqYCO9Wdh2aznu2BQ6wu1S79MYQRu4CIMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=j2QqW0gC; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF1A2FCBF0
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 06:30:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770013843; cv=pass; b=FBxGe2cI3JvNoEBaj5GxwuMmKZuiY90K1yFFrlQdX2W3iZMs6zMFctZI3vrWwgBwNLXXrAap2XqW0zDkqUausnlN7wUmn6xiRyMeInpTllQJObgS9JMbpIIVy4FTYMdvkJCIcUvGXCW9sfdYKLaSzJQlMK4B69gMtNnEJUU70vA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770013843; c=relaxed/simple;
+	bh=0zraJzkxOajgXTgtKkUFw2uXCSWJ9QuHB8iGSCYjh90=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=OZrRSA60qHUUUyAsgFqXiwo2p3VXsMULB5LkqV0tQNgR2AlzKPqhpbCv/KiFAbJjPYPmkpHt+UVSbOPIR88nWY/LCX3HDtBbHl80ZIqH77OxF2kh7GTjG6Px13bn7CVa5van+Xt1RkH2ZiPmVgjDPdl+hO3t7Rui9P+CSJENiH8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zs6BR8BD; arc=pass smtp.client-ip=209.85.219.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="j2QqW0gC"
-X-UUID: 6d7010b0000011f1b7fc4fdb8733b2bc-20260202
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=OmUrdjVHH0P0x20Qt4DZuaWLYdlFliOusvN0733gjkM=;
-	b=j2QqW0gC/202GJ2C+lE2GZfl9uGbdKW2EKRl60aa4MOEz5WdrjPJoW331XpNBYzWRu9dn8cg6JsqwCirTLIz71raNKac69T4Ov6jKrwE08Z2SsUq1/J/0fX4PPh0gW7d4irgv9dze1izU7R8J31DeclZm3RRtiUyzouQdvALtLM=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:d5a15bfe-b910-4518-9d92-6059657bb883,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:89c9d04,CLOUDID:c3347b7a-8c8a-4fc4-88c0-3556e7711556,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
-	0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI
-	:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 2,SSN|SDN
-X-CID-BAS: 2,SSN|SDN,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 6d7010b0000011f1b7fc4fdb8733b2bc-20260202
-Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw02.mediatek.com
-	(envelope-from <irving-ch.lin@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 641395540; Mon, 02 Feb 2026 14:28:46 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 2 Feb 2026 14:28:44 +0800
-Received: from mtksitap99.mediatek.inc (10.233.130.16) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Mon, 2 Feb 2026 14:28:44 +0800
-From: irving.ch.lin <irving-ch.lin@mediatek.com>
-To: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
-	<sboyd@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Matthias Brugger
-	<matthias.bgg@gmail.com>, AngeloGioacchino Del Regno
-	<angelogioacchino.delregno@collabora.com>, Richard Cochran
-	<richardcochran@gmail.com>, Bartosz Golaszewski <brgl@kernel.org>, Chen-Yu
- Tsai <wenst@chromium.org>, Miles Chen <miles.chen@mediatek.com>
-CC: <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-mediatek@lists.infradead.org>, <netdev@vger.kernel.org>,
-	<Project_Global_Chrome_Upstream_Group@mediatek.com>, Qiqi Wang
-	<qiqi.wang@mediatek.com>, <sirius.wang@mediatek.com>,
-	<vince-wl.liu@mediatek.com>, <jh.hsu@mediatek.com>,
-	<irving-ch.lin@mediatek.com>
-Subject: [PATCH v5 11/18] clk: mediatek: Add MT8189 i2c clock support
-Date: Mon, 2 Feb 2026 14:28:18 +0800
-Message-ID: <20260202062840.342707-12-irving-ch.lin@mediatek.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20260202062840.342707-1-irving-ch.lin@mediatek.com>
-References: <20260202062840.342707-1-irving-ch.lin@mediatek.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zs6BR8BD"
+Received: by mail-qv1-f68.google.com with SMTP id 6a1803df08f44-88888c41a13so53107746d6.3
+        for <netdev@vger.kernel.org>; Sun, 01 Feb 2026 22:30:41 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770013840; cv=none;
+        d=google.com; s=arc-20240605;
+        b=dnZkIjYqOIy5Z7a68OQCKs98HMQcL8bLiDlP5soZDXkr3oMIatBwZUh4fWtSO0oQ4y
+         oQyEjYNwicz0iJEUzcJGtOK5zAm9gOdCSKGT4tY3hxWzarOCf+t3avFkKkVOEWZRU+Hh
+         aW6YeZR9M70wrIE53pQ+2ZMZeHwZ59pi+AmrhMGuBzWp2G3ygIIj8RPJmQr2OsNHtGXC
+         rTXVffvs/khZXznzMMH3DzKNlVNPHgo6ntSzF/jRbDhP9njeHD9hGjfmjQ0SYLlyGrc0
+         02h5m6B4fq/R6Sh0oeUiMlXRrDalQbNoy5rTDduCzuRJSiSvgySiRV8Sh7fpAuxQW9/W
+         Eoow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:mime-version:dkim-signature;
+        bh=2y6ySxf5NVRWcDzQ+3oBiGHXVLADtYNaXVj1D+wkB4w=;
+        fh=0MZHTIZSOTnyU9O5PV+kSpyb88pl47JZ+e3WYORTrsE=;
+        b=Htq8mmGeHI3IOKq+jVqj7zwFXVp0TxUcT7GTxmE6EfrbAqo8CImXS+YB/u+4vvTGil
+         DqfkdqaG8/KivuHeJMIH9aTsO4/l0gE0QioudwZxfcvE7avxZ13qozWgx/knS7oCMopc
+         6+nxZXilFQmzKiCgpP2QTELcwNknSqXTuGhUTZN892aoBfEDIGyU+4/4NXe11GJ73xWP
+         NssUyxhZNehHP41FNh64mr5WLqvEsgi/enNzppV2Mb1voy1FhqZONICG4RUTfSr0ix2Y
+         esnoNuMQpaJXnApP4xD9KnayPv6lJBKE9RPWFextievCrQX7r0Rdi029kenjN+GUzyAe
+         dwaw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770013840; x=1770618640; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2y6ySxf5NVRWcDzQ+3oBiGHXVLADtYNaXVj1D+wkB4w=;
+        b=Zs6BR8BDGeElumZqvczw/a1hgdmHV1aLR1+GI72N3t3uVKYMKEndZs+r3MOsZ6A/AB
+         861elzNLEF7Ms+OoxFrMl3Xc232CN30PTAT6uly+cwaRdLCliDJ1Pz2YZpHPL2TtK2vY
+         NcCDBfb295DZxajjzZmrAhdZFtGoR99XzZBsClIPEUT2ENaE0gQ85FnJUDP3HBoeOwUF
+         LN90gHJMtSFxJFeSwjZTHqUStybH4MMyHwH8piUYU42R3Xh3jaPhjKLPUn5EVQTAEcoa
+         4vhZP8t0VGq64AkySlGF7YGp/tiQhnqhQcRYv2IMWVArw+goQZ17ak1nMF7JHiPJg6oD
+         C4WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770013840; x=1770618640;
+        h=to:subject:message-id:date:from:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2y6ySxf5NVRWcDzQ+3oBiGHXVLADtYNaXVj1D+wkB4w=;
+        b=p+zgx0uoaqueVrieMpJi8BpHZYMgvEEbGx/MYtN7zAO9L+iUq+wOJpvvAAsW3b8wNm
+         O1AdCKgdKCHBH49N77wof2Sp5ppnV2ZmwQCxH3M+ldkjy1x+44fvsEVrTytEcsBQKmPa
+         LA61acH6uiuBSf77yc74d/uWjsG/U01fzjeMV0oAdjgyZ5zk3AmGGtV5Fs9580wMpSob
+         FhHWQXfasnv9PdYCqa2udmsT2key/vU+B2ViqSRhZjj4JkYwqHutBwi5ZNGB2o/Bv9gu
+         uG7B2tbjSkDteyt+7SuUxT3FapoIJAypduY7vc/Qwfsj/LAJbBlekIMPOOaSC0oONtwn
+         HO/A==
+X-Forwarded-Encrypted: i=1; AJvYcCUxf+IakK7AQhqw/thjqZCsZaK1TRUohZb/GmrNuaz+5C1Nzhp+WtFIOf2NTNqOrBEHGlpaWpI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywhn5blEAOUlDbteeKiK9KjcdYbQFp/jVanQgOQ+v2UlXB/EXTX
+	m0rUFq4funT01ZDI2JlwTWBhbXHFJ0+UtccxPQrsO152ohzUJI7jPozRaD0eH9B2vmvnQLeaiTc
+	huoQKnEXwosWVpbeMOza2Trav5Ybs+RQ=
+X-Gm-Gg: AZuq6aL2MyFa8Z5PjxrekVsV4YxrnkYeHeyUGLI2cyqlbdELBRI8T+0aSOP5C+C3ob4
+	+A8ZQBVAeGRuk4SUPUaE4ozz8mSmVCgftxyjK5WWoMSfzdegNVb2y/q6cUOOg87GVpIbkD7NkVM
+	5R2eB+HqjGgC0Z8ArIhFt9998X9xtSs7VAExr1wyE3zqqLCDi4pJixW06yK7F+/31FAazFX7ox4
+	7HbMktKngoly98CjJZFuNWjMm0TiI7mwsZJa1pLqztjxfdEbtZUd/8E+srbtftRj5oZqueo3Tci
+	ygPGcwSc4h2CDOm3p15RUovJ7Q==
+X-Received: by 2002:a05:6214:5014:b0:894:6f21:3138 with SMTP id
+ 6a1803df08f44-894ea021037mr156253926d6.45.1770013839953; Sun, 01 Feb 2026
+ 22:30:39 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+From: =?UTF-8?B?5p2O6b6Z5YW0?= <coregee2000@gmail.com>
+Date: Mon, 2 Feb 2026 14:30:28 +0800
+X-Gm-Features: AZwV_QhYYkmtXjFL7ZCH2_jrIfOuTZMZ8Ea49A-mLoShnudMUuffcVum-dUymCc
+Message-ID: <CAHPqNmyOxnhrqOCkbBXqHOPN0AU5GmzEsNLDbi9vU42skk0aCg@mail.gmail.com>
+Subject: [Kernel Bug] possible deadlock in ipv6_mc_config
+To: syzkaller@googlegroups.com, davem@davemloft.net, dsahern@kernel.org, 
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: Irving-CH Lin <irving-ch.lin@mediatek.com>
+Dear Linux kernel developers and maintainers,
 
-Add support for the MT8189 i2c clock controller,
-which provides clock gate control for i2c.
+We would like to report a new kernel bug found by our tool. possible
+deadlock in ipv6_mc_config. Details are as follows.
 
-Signed-off-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
----
- drivers/clk/mediatek/Kconfig          |  13 +++
- drivers/clk/mediatek/Makefile         |   1 +
- drivers/clk/mediatek/clk-mt8189-iic.c | 118 ++++++++++++++++++++++++++
- 3 files changed, 132 insertions(+)
- create mode 100644 drivers/clk/mediatek/clk-mt8189-iic.c
+Kernel commit: v6.18.2
+Kernel config: see attachment
+report: see attachment
 
-diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
-index 5def42855b62..89e85c70d3e6 100644
---- a/drivers/clk/mediatek/Kconfig
-+++ b/drivers/clk/mediatek/Kconfig
-@@ -870,6 +870,19 @@ config COMMON_CLK_MT8189_DVFSRC
- 	  vcore dvfs clocks. If you want to control its clocks, say Y or M
- 	  to include this driver in your kernel build.
- 
-+config COMMON_CLK_MT8189_IIC
-+	tristate "Clock driver for MediaTek MT8189 iic"
-+	depends on COMMON_CLK_MT8189
-+	default COMMON_CLK_MT8189
-+	help
-+	  Enable this option to support the clock framework for MediaTek MT8189
-+	  integrated circuits (iic). This driver is responsible for managing
-+	  clock sources, dividers, and gates specifically designed for MT8189
-+	  SoCs. Enabling this driver ensures that the system can correctly
-+	  manage clock frequencies and power for various components within
-+	  the MT8189 chipset, improving the overall performance and power
-+	  efficiency of the device.
-+
- config COMMON_CLK_MT8192
- 	tristate "Clock driver for MediaTek MT8192"
- 	depends on ARM64 || COMPILE_TEST
-diff --git a/drivers/clk/mediatek/Makefile b/drivers/clk/mediatek/Makefile
-index 3a8dad865c97..0eed1edf7c63 100644
---- a/drivers/clk/mediatek/Makefile
-+++ b/drivers/clk/mediatek/Makefile
-@@ -129,6 +129,7 @@ obj-$(CONFIG_COMMON_CLK_MT8189_BUS) += clk-mt8189-bus.o
- obj-$(CONFIG_COMMON_CLK_MT8189_CAM) += clk-mt8189-cam.o
- obj-$(CONFIG_COMMON_CLK_MT8189_DBGAO) += clk-mt8189-dbgao.o
- obj-$(CONFIG_COMMON_CLK_MT8189_DVFSRC) += clk-mt8189-dvfsrc.o
-+obj-$(CONFIG_COMMON_CLK_MT8189_IIC) += clk-mt8189-iic.o
- obj-$(CONFIG_COMMON_CLK_MT8192) += clk-mt8192-apmixedsys.o clk-mt8192.o
- obj-$(CONFIG_COMMON_CLK_MT8192_AUDSYS) += clk-mt8192-aud.o
- obj-$(CONFIG_COMMON_CLK_MT8192_CAMSYS) += clk-mt8192-cam.o
-diff --git a/drivers/clk/mediatek/clk-mt8189-iic.c b/drivers/clk/mediatek/clk-mt8189-iic.c
-new file mode 100644
-index 000000000000..5feeb6cd83cf
---- /dev/null
-+++ b/drivers/clk/mediatek/clk-mt8189-iic.c
-@@ -0,0 +1,118 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2025 MediaTek Inc.
-+ * Author: Qiqi Wang <qiqi.wang@mediatek.com>
-+ */
-+
-+#include <linux/clk-provider.h>
-+#include <linux/module.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+
-+#include "clk-mtk.h"
-+#include "clk-gate.h"
-+
-+#include <dt-bindings/clock/mediatek,mt8189-clk.h>
-+
-+static const struct mtk_gate_regs impe_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0x4,
-+	.sta_ofs = 0x0,
-+};
-+
-+#define GATE_IMPE(_id, _name, _parent, _shift)				\
-+	GATE_MTK_FLAGS(_id, _name, _parent, &impe_cg_regs, _shift,	\
-+		&mtk_clk_gate_ops_setclr, CLK_OPS_PARENT_ENABLE)
-+
-+static const struct mtk_gate impe_clks[] = {
-+	GATE_IMPE(CLK_IMPE_I2C0, "impe_i2c0", "i2c_sel", 0),
-+	GATE_IMPE(CLK_IMPE_I2C1, "impe_i2c1", "i2c_sel", 1),
-+};
-+
-+static const struct mtk_clk_desc impe_mcd = {
-+	.clks = impe_clks,
-+	.num_clks = ARRAY_SIZE(impe_clks),
-+};
-+
-+static const struct mtk_gate_regs impen_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0x4,
-+	.sta_ofs = 0x0,
-+};
-+
-+#define GATE_IMPEN(_id, _name, _parent, _shift)				\
-+	GATE_MTK_FLAGS(_id, _name, _parent, &impen_cg_regs, _shift,	\
-+		&mtk_clk_gate_ops_setclr, CLK_OPS_PARENT_ENABLE)
-+
-+static const struct mtk_gate impen_clks[] = {
-+	GATE_IMPEN(CLK_IMPEN_I2C7, "impen_i2c7", "i2c_sel", 0),
-+	GATE_IMPEN(CLK_IMPEN_I2C8, "impen_i2c8", "i2c_sel", 1),
-+};
-+
-+static const struct mtk_clk_desc impen_mcd = {
-+	.clks = impen_clks,
-+	.num_clks = ARRAY_SIZE(impen_clks),
-+};
-+
-+static const struct mtk_gate_regs imps_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0x4,
-+	.sta_ofs = 0x0,
-+};
-+
-+#define GATE_IMPS(_id, _name, _parent, _shift)				\
-+	GATE_MTK_FLAGS(_id, _name, _parent, &imps_cg_regs, _shift,	\
-+		&mtk_clk_gate_ops_setclr, CLK_OPS_PARENT_ENABLE)
-+
-+static const struct mtk_gate imps_clks[] = {
-+	GATE_IMPS(CLK_IMPS_I2C3, "imps_i2c3", "i2c_sel", 0),
-+	GATE_IMPS(CLK_IMPS_I2C4, "imps_i2c4", "i2c_sel", 1),
-+	GATE_IMPS(CLK_IMPS_I2C5, "imps_i2c5", "i2c_sel", 2),
-+	GATE_IMPS(CLK_IMPS_I2C6, "imps_i2c6", "i2c_sel", 3),
-+};
-+
-+static const struct mtk_clk_desc imps_mcd = {
-+	.clks = imps_clks,
-+	.num_clks = ARRAY_SIZE(imps_clks),
-+};
-+
-+static const struct mtk_gate_regs impws_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0x4,
-+	.sta_ofs = 0x0,
-+};
-+
-+#define GATE_IMPWS(_id, _name, _parent, _shift)				\
-+	GATE_MTK_FLAGS(_id, _name, _parent, &impws_cg_regs, _shift,	\
-+		&mtk_clk_gate_ops_setclr, CLK_OPS_PARENT_ENABLE)
-+
-+static const struct mtk_gate impws_clks[] = {
-+	GATE_IMPWS(CLK_IMPWS_I2C2, "impws_i2c2", "i2c_sel", 0),
-+};
-+
-+static const struct mtk_clk_desc impws_mcd = {
-+	.clks = impws_clks,
-+	.num_clks = ARRAY_SIZE(impws_clks),
-+};
-+
-+static const struct of_device_id of_match_clk_mt8189_iic[] = {
-+	{ .compatible = "mediatek,mt8189-iic-wrap-e", .data = &impe_mcd },
-+	{ .compatible = "mediatek,mt8189-iic-wrap-en", .data = &impen_mcd },
-+	{ .compatible = "mediatek,mt8189-iic-wrap-s", .data = &imps_mcd },
-+	{ .compatible = "mediatek,mt8189-iic-wrap-ws", .data = &impws_mcd },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, of_match_clk_mt8189_iic);
-+
-+static struct platform_driver clk_mt8189_iic_drv = {
-+	.probe = mtk_clk_simple_probe,
-+	.remove = mtk_clk_simple_remove,
-+	.driver = {
-+		.name = "clk-mt8189-iic",
-+		.of_match_table = of_match_clk_mt8189_iic,
-+	},
-+};
-+
-+module_platform_driver(clk_mt8189_iic_drv);
-+MODULE_DESCRIPTION("MediaTek MT8189 iic clocks driver");
-+MODULE_LICENSE("GPL");
--- 
-2.45.2
+We are currently analyzing the root cause and  working on a
+reproducible PoC. We will provide further updates in this thread as
+soon as we have more information.
 
+Best regards,
+Longxing Li
+
+======================================================
+WARNING: possible circular locking dependency detected
+6.18.2 #1 Not tainted
+------------------------------------------------------
+syz.1.2664/55127 is trying to acquire lock:
+ffffffff8e364140 (fs_reclaim){+.+.}-{0:0}, at: might_alloc
+include/linux/sched/mm.h:318 [inline]
+ffffffff8e364140 (fs_reclaim){+.+.}-{0:0}, at: slab_pre_alloc_hook
+mm/slub.c:4929 [inline]
+ffffffff8e364140 (fs_reclaim){+.+.}-{0:0}, at: slab_alloc_node
+mm/slub.c:5264 [inline]
+ffffffff8e364140 (fs_reclaim){+.+.}-{0:0}, at: __do_kmalloc_node
+mm/slub.c:5649 [inline]
+ffffffff8e364140 (fs_reclaim){+.+.}-{0:0}, at:
+__kmalloc_noprof+0xc3/0x880 mm/slub.c:5662
+
+but task is already holding lock:
+ffff88810d75e558 (k-sk_lock-AF_INET6){+.+.}-{0:0}, at: lock_sock
+include/net/sock.h:1679 [inline]
+ffff88810d75e558 (k-sk_lock-AF_INET6){+.+.}-{0:0}, at:
+ipv6_mc_config+0x42/0xf0 net/ipv6/addrconf.c:3000
+
+which lock already depends on the new lock.
+
+...
+
+other info that might help us debug this:
+
+Chain exists of:
+  fs_reclaim --> sk_lock-AF_INET6 --> k-sk_lock-AF_INET6
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(k-sk_lock-AF_INET6);
+                               lock(sk_lock-AF_INET6);
+                               lock(k-sk_lock-AF_INET6);
+  lock(fs_reclaim);
+
+ *** DEADLOCK ***
+
+2 locks held by syz.1.2664/55127:
+ #0: ffffffff8fee6948 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_net_lock
+include/linux/rtnetlink.h:130 [inline]
+ #0: ffffffff8fee6948 (rtnl_mutex){+.+.}-{4:4}, at:
+inet6_rtm_newaddr+0x4e4/0x1c70 net/ipv6/addrconf.c:5027
+ #1: ffff88810d75e558 (k-sk_lock-AF_INET6){+.+.}-{0:0}, at: lock_sock
+include/net/sock.h:1679 [inline]
+ #1: ffff88810d75e558 (k-sk_lock-AF_INET6){+.+.}-{0:0}, at:
+ipv6_mc_config+0x42/0xf0 net/ipv6/addrconf.c:3000
+
+stack backtrace:
+CPU: 0 UID: 0 PID: 55127 Comm: syz.1.2664 Not tainted 6.18.2 #1 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_circular_bug+0x275/0x350 kernel/locking/lockdep.c:2043
+ check_noncircular+0x14c/0x170 kernel/locking/lockdep.c:2175
+ check_prev_add kernel/locking/lockdep.c:3165 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+ validate_chain kernel/locking/lockdep.c:3908 [inline]
+ __lock_acquire+0x126f/0x1c90 kernel/locking/lockdep.c:5237
+ lock_acquire kernel/locking/lockdep.c:5868 [inline]
+ lock_acquire+0x179/0x350 kernel/locking/lockdep.c:5825
+ __fs_reclaim_acquire mm/page_alloc.c:4264 [inline]
+ fs_reclaim_acquire+0x102/0x150 mm/page_alloc.c:4278
+ might_alloc include/linux/sched/mm.h:318 [inline]
+ slab_pre_alloc_hook mm/slub.c:4929 [inline]
+ slab_alloc_node mm/slub.c:5264 [inline]
+ __do_kmalloc_node mm/slub.c:5649 [inline]
+ __kmalloc_noprof+0xc3/0x880 mm/slub.c:5662
+ kmalloc_noprof include/linux/slab.h:961 [inline]
+ sock_kmalloc+0x111/0x170 net/core/sock.c:2850
+ __ipv6_sock_mc_join+0x3ef/0x8f0 net/ipv6/mcast.c:216
+ ipv6_mc_config+0x64/0xf0 net/ipv6/addrconf.c:3002
+ inet6_addr_add+0x1f2/0x960 net/ipv6/addrconf.c:3039
+ inet6_rtm_newaddr+0x1619/0x1c70 net/ipv6/addrconf.c:5059
+ rtnetlink_rcv_msg+0x95e/0xe90 net/core/rtnetlink.c:6951
+ netlink_rcv_skb+0x158/0x420 net/netlink/af_netlink.c:2552
+ netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
+ netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1346
+ netlink_sendmsg+0x8c8/0xdd0 net/netlink/af_netlink.c:1896
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ ____sys_sendmsg+0xa98/0xc70 net/socket.c:2630
+ ___sys_sendmsg+0x134/0x1d0 net/socket.c:2684
+ __sys_sendmsg+0x16d/0x220 net/socket.c:2716
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x5656ed
+Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48
+89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d
+01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f4a9d192fc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 0000000000715f80 RCX: 00000000005656ed
+RDX: 0000000000000000 RSI: 00000000200001c0 RDI: 0000000000000048
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000715f8c
+R13: 0000000000000000 R14: 0000000000715f80 R15: 00007f4a9d173000
+ </TASK>
+
+https://drive.google.com/file/d/17HbDTI_iPjA72SkV5MnO-_w7IQZ9HIHW/view?usp=drive_link
+
+https://drive.google.com/file/d/1xHrRE-c-KtJRuWz_HLANn7z5r-LKYC4v/view?usp=drive_link
