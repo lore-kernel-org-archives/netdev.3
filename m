@@ -1,61 +1,61 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0773009DA
-	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 21:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D103C314D0B
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 21:46:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770068814; cv=none; b=sk0BJ/OOuEcGyBlUhjFLJX5gNsx4R9X+LyeCI5DgXdSUC1SoC2af1msNHA1eySCrLEmpB51SMwy4oqwK+C7MvDmtbIlWSsRC+wLgr+WIVlKSBRLQniP09eGzUUbdANSJLYrFcpXcOu6O8RmvSPEK1li2jmeYHQPhm8L/WOGp4NQ=
+	t=1770068816; cv=none; b=OtSeTGHNYwh6e5XART2TA6WOBFxHHR46mizwEuFky5vtvk1vovwx14gzE5R0aTHEnFw6gDTC1b695RGHEwqm6kL40TfqbWL/G13v5O976dyujw2j4JUsHKVhvA4rlrs8SE9ijqBEzZrsyETgIm8vSfJjnhl+bSbfUxoZNSNzx28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770068814; c=relaxed/simple;
-	bh=xdhHPYeAdFOZYR4Zg7U8+mkp0K+rotzh7dWu4j8zGwk=;
+	s=arc-20240116; t=1770068816; c=relaxed/simple;
+	bh=gBGCPpGyRHwMDIBD5kcKShgONrYAgcwaovDBHoI9j5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jVZFBaUccsOs7s1f3o87nfOjfz06Uq4PNgvDtxKAwH+Sf/rPXgV1l+2x0LIO1w8i8RqURngHVU91V2DdUVuaxB+IGsOEZQQsbaDu990oUA0niNVvDassMQrXyXh3RYPOXh545L7phJwlHTr5PJLjtkBzdp6m/u8oOGWuv8OJb9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PtFskrdB; arc=none smtp.client-ip=209.85.216.52
+	 MIME-Version; b=Cv8sx+GYRBI/PmucTWn+iLYFI+ZzJNqlZcaoKBA4TAPpbCCENuSmtcE0MyvvY4kATOeKgOQEHY5Wf56yR16lrY6HA+nbF2WZ6CFPTCoS/ScKXsM64/BjOxuPId6XPbcZKOmrjjekq3r1JeBQDmQXbbZ8/lpaoHw/jCEFEXZ606A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DmaFB0UJ; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PtFskrdB"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-352c5bd2769so2943221a91.1
-        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 13:46:53 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DmaFB0UJ"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-34c2f335681so2590438a91.1
+        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 13:46:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770068813; x=1770673613; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1770068814; x=1770673614; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jHIwykhdUieAex5HshaCUwDG1Gzu7+lRTTqsGi4c63g=;
-        b=PtFskrdBj5y9IaxKIuryc4DfPI2fbAqXroyEUMqoWYQcbCRG79XSE4YeI9U/0QTdUD
-         +5UsOnOro5ncwDfSrwYY06F7RabP9WrjF2INrPnu0KBdKjRnAwN9i4k5aeo1kpA7+U10
-         MUit6nWHtE+TAKsqgnBCPLkyU+jXuEmXoYUwL09U/MhzmtdJ/HMKMlekee2I4ZaMcrXl
-         EHRY3if2cy0/BVis5T78l9v5N6VYz1OUXg6LkMPHi5Aa9AzezxMuAGL8u9kaaNMg9+Ex
-         MPFQsboeG4J7CXcNuG/AVDa/0lcsASk+noJlqMnVI2W3XudBTbqUhJuq4kEfod0BM2K8
-         cEyA==
+        bh=WYwkWIa62iKMGNb+/cN0lfCIRQboySo0Z2wCV3jAcY8=;
+        b=DmaFB0UJFLFBKIlJroRai25z0KwwC8GWpCjIV1mC3dlYO7lzHXNYH7FthkaYWjJu4i
+         wCRV0NpASQW55ImwUlMJ74N7s2CJFCH3HUD2wtz/UNGfUFlDs1JgTdrlWGD/ZdcEV7bY
+         buw9UGfpzR53Nazn5D1rA5pWjF59BxNWeQ+gXBWhKZ8IqAzYo/qYntV6YfzMbOKtggeB
+         IAYjhWpsi5gh8qF15BYqvV3FKh9G+0vv0uqBD7aF3/ZbvId341AoGeMwTlai6cBWEBj8
+         1eNIEP9B/KN26XV0VaB6t6IY036R/IeYIaBAN+keYJSQR0XwdD+TgdJ52iiWOR18XP7c
+         qECQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770068813; x=1770673613;
+        d=1e100.net; s=20230601; t=1770068814; x=1770673614;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=jHIwykhdUieAex5HshaCUwDG1Gzu7+lRTTqsGi4c63g=;
-        b=rnhmHZjq7L8TNNaPz58w5mWg2gFY2YmHhnJsz3EUNs/W8eK5SPi/mwlr1wf5ZJ8+eA
-         JXcgL5OWObmrXPIBHkKZju/bJDoCNz7Cig/iKP7BMY7BAPMLx+NY314PB958glav7A8i
-         8ilT6vtbuOJCidgkdKVJrOAgl4+qqDktCOVrYGeNw5SizoNKLDa0EyA3j1axAqpseP38
-         dU44XZ3fB9MSJmiGj0JpMvO5vQHwcE5uEpAbU8iDNjFfCSm22OnwJ1CDOIpSx4wyhvww
-         U6TtkAIrjfEl3FRkOYrGNRg+sDCyeb4IdRtz/FwuH9tGuGTTTEksol9rdFc29eAVzgC6
-         Kpuw==
-X-Gm-Message-State: AOJu0YwthSJ3iJrij8aOibq2Lj/szOUelq4cxbo6KBwbQTC/Yxwvxb9V
-	qVum9r+dC7/RCSprbccvEEnKx9YFjMq0unAAbfz+AXipFdSLMUwsqFhVENZasA==
-X-Gm-Gg: AZuq6aKx6SZWeNzgb+uPtuqFsVQ9nnXfys2x1syZUKr2hAIW5RlD2ORIEYbI+OXjwoz
-	A8sLbCk7zS4tkhlUsagBaqT80TXAnADG9vWgnZBD/0cEQCPLUXBMql3H0Ps7qIhzV5rosEMpQ4t
-	NdONUmHCDxB4Pww3iluE2BwOh/eMM34l7n30vaol2BorfoWN1sutRSc0Vg4trRb4+2VJWhxKPNe
-	1t8qMXTtS0GwCtryC/PYsYJNyo2ivS7gi8SK2Oo4GJjN6Hcx1/AAsL899C6tKB5Do0GzSvrRit4
-	VlZICcLltKfoKUIF+xTQmtjDeYvQ5owdgmj3B/w7tRnmCjX4uQckPMiRpVl+VDnzJsKxVal4yb6
-	+NOgG48iDyalizUpv4gkhC1vx61ux6HWaQ4a2B9avN8G/dfoTf6un9teYuA==
-X-Received: by 2002:a17:90b:578c:b0:34a:48ff:694 with SMTP id 98e67ed59e1d1-3543b3b5d3bmr11004585a91.31.1770068812658;
-        Mon, 02 Feb 2026 13:46:52 -0800 (PST)
+        bh=WYwkWIa62iKMGNb+/cN0lfCIRQboySo0Z2wCV3jAcY8=;
+        b=cW91/1KceLSD4g1fc1zqJWh5I+WTup6vkO9F3QFtQ3jQYTla46O6/8hsLt4rZedNwX
+         dDZwek30V9J6TKJIHH1zCchgcInYyhyQ/1eBwn/oidOkxJyQDLw7q6sDTOuEIMyxqUnJ
+         PfnXVx03c/nLs8Bwbd6CQV940QZ2N6JtgWUasuj6Xd7g0TiGAwm4HwgSpnmTxFL6htUC
+         EHkDN5hINAeAMPuTA9u8kEyixuX4Yzcrbsi+NSvChyKo0eJeWUwDcoi06zZTXcypv9bE
+         QMXDKxgcjIO/7xVaIm4fvPmbVvGdph6ScZ79ca4TeEVuaPByVkG0NQTGRFm36wcHzGhN
+         BaKA==
+X-Gm-Message-State: AOJu0YwLiCK+gP65RgPhSIVctt/AoCyQYCepyazCXxGe901Ej809jQgs
+	7dzG0mVdLbW1YWBl/BomSfP1tlYuqg6wjoElJkf+wbo0Lmp5ODiqjOgID9xd+w==
+X-Gm-Gg: AZuq6aJqeXiRbydjeuXvDzFOsz48VWDs6O51DYSHNwjJVgE2ETW6YohydNrx5NY2sft
+	d/pHPU3PYsb7NpA8fop0cqML94nuFDF7jxtQp61ZBVZiHajSor59uVdYfo4hP6HLxh7gfgJQMhH
+	inHbzt7ETZOnTwdQabtsnAPKyZUbHIMsYAAPTp71pUvoMtbLwzxlE7KfeJ6VtX/3lLZJTuhev6q
+	q6IQa4ey9/cXW6Hy3+NZwc7m7aWktlOw7b4N7Il1CVtFFya7/KwWrPEyE4tnvofM6VMBbkpyjJP
+	buGf5paIzZgyjzW6aZHvtqZJt7TalzxBRtY+7l0HCod2uFvjmFpqtF0F18Xe0EVthR11cJo8hwJ
+	1jRM5luCZdflYfPaLuLjaKqkvFA/SLXgqrXYnriI6N6DIba5UmdI/3FTlug==
+X-Received: by 2002:a17:90b:5446:b0:340:9cf1:54d0 with SMTP id 98e67ed59e1d1-3543b2ebd00mr11957551a91.1.1770068813848;
+        Mon, 02 Feb 2026 13:46:53 -0800 (PST)
 Received: from ryzen ([2601:644:8000:8e26::ea0])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3547767cf29sm391215a91.10.2026.02.02.13.46.51
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3547767cf29sm391215a91.10.2026.02.02.13.46.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 02 Feb 2026 13:46:52 -0800 (PST)
+        Mon, 02 Feb 2026 13:46:53 -0800 (PST)
 From: Rosen Penev <rosenp@gmail.com>
 To: netdev@vger.kernel.org
 Cc: Chris Snook <chris.snook@gmail.com>,
@@ -66,9 +66,9 @@ Cc: Chris Snook <chris.snook@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Russell King <linux@armlinux.org.uk> (maintainer:SFF/SFP/SFP+ MODULE SUPPORT:Keyword:phylink\.h|struct\s+phylink|\.phylink|>,
 	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH net 2/3] Revert "net: ag71xx: remove platform_set_drvdata"
-Date: Mon,  2 Feb 2026 13:46:33 -0800
-Message-ID: <20260202214634.72738-2-rosenp@gmail.com>
+Subject: [PATCH net 3/3] net: ag71xx: call phylink_destroy on failure
+Date: Mon,  2 Feb 2026 13:46:34 -0800
+Message-ID: <20260202214634.72738-3-rosenp@gmail.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260202214634.72738-1-rosenp@gmail.com>
 References: <20260202214634.72738-1-rosenp@gmail.com>
@@ -80,46 +80,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This reverts commit 94656823c1ac31b35549fc0d96cd7862254e7c3d.
-
-platform_set_drvdata is needed in order to destroy phylink on platform
-device removal.
+phylink_create has no devm equivalent and must therefore be handled
+manually in probe and remove.
 
 Signed-off-by: Rosen Penev <rosenp@gmail.com>
 ---
- drivers/net/ethernet/atheros/ag71xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/atheros/ag71xx.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/ethernet/atheros/ag71xx.c b/drivers/net/ethernet/atheros/ag71xx.c
-index f2f12642529e..7114f2970ac6 100644
+index 7114f2970ac6..285a99ee35f5 100644
 --- a/drivers/net/ethernet/atheros/ag71xx.c
 +++ b/drivers/net/ethernet/atheros/ag71xx.c
-@@ -1921,6 +1921,8 @@ static int ag71xx_probe(struct platform_device *pdev)
+@@ -1921,8 +1921,6 @@ static int ag71xx_probe(struct platform_device *pdev)
  	if (err)
  		return err;
  
-+	platform_set_drvdata(pdev, ndev);
-+
+-	platform_set_drvdata(pdev, ndev);
+-
  	err = ag71xx_phylink_setup(ag);
  	if (err)
  		return dev_err_probe(&pdev->dev, err,
-@@ -1929,6 +1931,7 @@ static int ag71xx_probe(struct platform_device *pdev)
+@@ -1931,25 +1929,29 @@ static int ag71xx_probe(struct platform_device *pdev)
  	err = register_netdev(ndev);
  	if (err) {
  		netif_err(ag, probe, ndev, "unable to register net device\n");
-+		platform_set_drvdata(pdev, NULL);
- 		return err;
+-		platform_set_drvdata(pdev, NULL);
+-		return err;
++		goto err_phylink;
  	}
  
-@@ -2035,7 +2038,7 @@ MODULE_DEVICE_TABLE(of, ag71xx_match);
++	platform_set_drvdata(pdev, ndev);
++
+ 	netif_info(ag, probe, ndev, "Atheros AG71xx at 0x%08lx, irq %d, mode:%s\n",
+ 		   (unsigned long)ag->mac_base, ndev->irq,
+ 		   phy_modes(ag->phy_if_mode));
  
- static struct platform_driver ag71xx_driver = {
- 	.probe		= ag71xx_probe,
--	.remove_new	= ag71xx_remove,
-+	.remove		= ag71xx_remove,
- 	.driver = {
- 		.name	= "ag71xx",
- 		.of_match_table = ag71xx_match,
+ 	return 0;
++
++err_phylink:
++	phylink_destroy(ag->phylink);
++	return err;
+ }
+ 
+ static void ag71xx_remove(struct platform_device *pdev)
+ {
+ 	struct net_device *ndev = platform_get_drvdata(pdev);
+-
+-	if (!ndev)
+-		return;
++	struct ag71xx *ag = netdev_priv(ndev);
+ 
+ 	unregister_netdev(ndev);
++	phylink_destroy(ag->phylink);
+ 	platform_set_drvdata(pdev, NULL);
+ }
+ 
 -- 
 2.52.0
 
