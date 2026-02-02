@@ -1,129 +1,161 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4C641DF987
-	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 08:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770022059; cv=pass; b=d9aKlF2dNflVS39qR8VVLbyBAPyt0frUYh33BkGb9YxZGFq5bc1OsDdqSJtfQVhlmfH7GrOvoEPnFFw7nGw5CXbRgwACgcQmrhsATwGF5dq0USscH92mKYOApRboETWJ9coMUuTFTyodN4t8VYf7r49GaClBbIVT2L6ARWp/tKg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770022059; c=relaxed/simple;
-	bh=f3EBzQ1DR9ZztD+yc2ZFRCl0v05AEKWfZjRkL+FGqng=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e6DGdsPmPfUUcvZjzSUH0k2e7+k16nqn5FuJf24WwbXM7U+WfQvdWloFF8si1a0dkHfJII4H6kn8MwDdf8jDDMJJhHHCfyxx4o4Lzut1xu0enkaw+JhlM9qH+El1go5WYsmSMH8koLWHuA9bNs3/RrcddMCh1yyN0zp1E182mLY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nnmsuCZJ; arc=pass smtp.client-ip=209.85.160.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 013241DF987
+	for <netdev@vger.kernel.org>; Mon,  2 Feb 2026 08:48:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770022116; cv=none; b=qvlGGt/ZSqop83tnMPjQ7tQPBGHtRclg66fi2kuh34e+uIJHO5sUh/efcyCVj9XQ26iJCetu5jAh30CIb+18+VpyolrZ/0LC3724GMtnYrsZfwK9fI6M2s4lk8XsJwBPzlBxHDq2QpqVRBFYa1psOy/ocmnM8HsoIr4z4x7dFLQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770022116; c=relaxed/simple;
+	bh=DmkFICASqUCuaw1zsTrqq3F5bMziojXG5teY9pvx6LE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ondW7s2tcUkJCTI8KDasa4DOvi2KFiPkqc/dFGbkJ93VtQXQBBSLTOrVbeKCSEeoltFTqe+inH8/0pVAaWQ6F86W4eSZ3unHRcVc+R2/YXIpIOl8nZE0J5LVzo9PYxsfxLVfNpjg0CEipKJl2pAvhcEGX4XEwYp8QsxtkegxS98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EsmE26uI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nnmsuCZJ"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-5029901389dso33311051cf.2
-        for <netdev@vger.kernel.org>; Mon, 02 Feb 2026 00:47:37 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770022056; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YS1MDGudAkfnulMd2S6bavk0St9qHFRgJmG0MLxK0TlDU0u8rHs0pwXwww9eX5imSy
-         8z/7Yi1RbS4xmgl+KLvayvjZR55LmRa7oAHBhF0jtjqsDXhUS2O+NtL69W0V+sPuw4h5
-         BFAMyFP73Hdn+Y44ootL8Pf2ChB23xR4amI4pzohihdg0Zu9yhDoQ+pCUHQPUYizJHlo
-         DYyzq/it0ZlLFJq4zBF7zjwJWmdgqppv2/XsEpUYJlAlZg5LlAIJrnhPd2HFqSDnawI2
-         IWu39Y/KJTNK7JJ0foKYY83PcK3/VxD9erh65sD+ojLhkFhbVWEytnKFZJhXcbZs20Sa
-         DCTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=2Wh158BDeQKIEKJM83wsN0YWinwVY007qOkdgvTYjsw=;
-        fh=1YIesu/keCjUywDRFFMK4q4soZu9zqUWc1y8BbVXIQ8=;
-        b=FJiY7bn2NaP+48ClGmtxU0PaJnYxeyXhI0R61P1ea62T12usLH6Z2Pd9nYB3hte4S+
-         JPIRqf2HkpB9gNc/bKTX0Zxck2kqyUAGmUHXFDNBYFSlFTRrVtmpRHE+4iUj5xHWPo7Y
-         4BaIUnRJwchugC7srGdDT9uXoshBoyvFRbmAozUqsqRAv2mxsfvfH1fSqgk1r7TcA5AT
-         UxrxMJf5LlzbKEynlrxjKpWZ5R0B6wu9skvJHWWcy8aOBJLoULGp6SjE4TXXuKpBNAa4
-         6e29SKN86AtW/IFC59jQa/+mMVv6EdSM1sSmanXTIWuumWJq/uVse2iqqFnrPq0MKf/d
-         haqA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770022056; x=1770626856; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2Wh158BDeQKIEKJM83wsN0YWinwVY007qOkdgvTYjsw=;
-        b=nnmsuCZJztErw6He1ntfb+/KJglWEZSPUfN/uBYyZ5/Jr0erxZguXzOmldsd9EkPne
-         zY+gKxMxd0WW20PmGQrwqrY6BSKHXafDeyr+eGlhyQpXxJD/ID0McgZLKy9/drfF0sBA
-         LFZ8zr2rRDUybn39wSMsiwtbLKi9abMubLa9JQrOTlaj2PHThSPJZOgOGce4rkcHzmT8
-         zso1zH8CkHXcLSVNPqexZOYM0AyElduR1+hvgjRrKJDIADa5RvrFYQM7z/ik9i0X0Ydq
-         IcfgE4CcNT3do7BaL9+XXBrKXVIuN9BlzIb56kut7QDJ+ZennlSh6mwAi/v9j8nEc7An
-         nLfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770022056; x=1770626856;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=2Wh158BDeQKIEKJM83wsN0YWinwVY007qOkdgvTYjsw=;
-        b=EswFtaKQDTU5hcj5WOoZq6pRcAfh8F7WpLHvi3mu2zQ5tCPjwdY/o79XMFqFPRMVx1
-         uEIH3y1R+IT3/WNczR0MVPEMz/GZ5Hpttsal4B6es1rQtk2ud2UW7dAbjh4zJozY6m8u
-         hgWw5FWVpriSrY2XyUe7Rt9+Sd4MfNQtUZNb7ALzmXkbiWLC+Ei5aPKrlAlr9kXwuXwh
-         EKtGCJyVISus+yIN0WY+ce3nxA5UuhYiSwGwbcnnomeRgGu5jNLTLMDg5E+saP5FuWMB
-         PCIeuY0CUdi8yIXeeEuPOndnuAlFItjlgGBS1xhSMIuqaWTQ42P+1fkFSBGRAA9ncwdj
-         TyVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXakdxZGAT57svin7ztEXv9Aja4Kl2S4H5ZDqsDNlOgKW36zipe69fmkMWFzmflYI6vNQPb644=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKM/YY1yippa9HQW9tQcsYYezYbylC27qP5Qd9vitaeaRtQVai
-	fOwWu1Q0w5yJz/doJfEd1Z12p0DH749hd68dZyY6qeQutqRonFhqp9/m5A+JpTfteVk5XS8hq2h
-	zzy8Q0Zy+OuUaVmAkcliyndDzut3deUGYIQZT1pqr
-X-Gm-Gg: AZuq6aLZVAGnNQjaGtmnkiQAthUk2OOwxua6by3QMWRnkfOx6FNFEjmjZdP0vlyL2Oi
-	3grx4xuvSVzDVUBREKT0/0FjA9hMVJyz3nnJVZb0cjnRtFwApMp2Jl+e0C+PFZ7vsOJc1QT+ROI
-	egBb4an1EdaeJgh9XoWMt/9szmfIHUu+MLKa4/M2oykOwXhWvUUTfUYcL8hzFCagDwF4Jz/0ghN
-	5WlJOAqSHRvt7Nf9KMaC7wQIA5FK9SQj/2OBXwpkVKSZSVnFzsUcEwU6o/xxtrMNBIpPx8=
-X-Received: by 2002:a05:622a:164b:b0:501:498e:5c29 with SMTP id
- d75a77b69052e-505d22a6026mr140164241cf.59.1770022056291; Mon, 02 Feb 2026
- 00:47:36 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EsmE26uI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770022113;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=HTwQrQT+ZoBH+fw1ExFDWdLwscSVJv6fNBdaB+KAnVs=;
+	b=EsmE26uIYa7Er0JUyVQSPPtIDztuEI2LeqbnLUny1bNJmVGwkTxT/Jua8zYlZg76UeOydf
+	9bsHp8g0y8mQo/zpguqitFsTGDDeo5eetQKZ9KlXRcFsU562F8+qPGbc+NC5LPx3YOgaMw
+	l26gGHfrNMd9gfVSDmD+SehoHIF30pI=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-529-t_tByHraPmeWlBukj8Y70w-1; Mon,
+ 02 Feb 2026 03:48:29 -0500
+X-MC-Unique: t_tByHraPmeWlBukj8Y70w-1
+X-Mimecast-MFC-AGG-ID: t_tByHraPmeWlBukj8Y70w_1770022108
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ED371180047F;
+	Mon,  2 Feb 2026 08:48:27 +0000 (UTC)
+Received: from ShadowPeak.redhat.com (unknown [10.44.32.10])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 146911956053;
+	Mon,  2 Feb 2026 08:48:23 +0000 (UTC)
+From: Petr Oros <poros@redhat.com>
+To: netdev@vger.kernel.org
+Cc: ivecera@redhat.com,
+	mschmidt@redhat.com,
+	Petr Oros <poros@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	intel-wired-lan@lists.osuosl.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] iavf: fix deadlock in reset handling
+Date: Mon,  2 Feb 2026 09:48:20 +0100
+Message-ID: <20260202084820.260033-1-poros@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260131212934.2547995-1-edumazet@google.com> <j3fofrzb4c3xcckk55y7rdpc7x5m23mphkksnp7vuijimzqpml@3nzu5xyfuyer>
- <CANn89iJh67=bSTS_ziVuQUS-ht0yqeW_Q8eaFCV=8M7zuETAsw@mail.gmail.com> <c63047b5-3059-4176-8d9d-5465d557e605@huawei.com>
-In-Reply-To: <c63047b5-3059-4176-8d9d-5465d557e605@huawei.com>
-From: Eric Dumazet <edumazet@google.com>
-Date: Mon, 2 Feb 2026 09:47:24 +0100
-X-Gm-Features: AZwV_Qihiqmyuz2svNCzoKpZgPPdX5H4t-ycwMXpy02kDXVhkRM4_j5kuyUYDc4
-Message-ID: <CANn89iK95qb_=KWrcsvqEB9Bn0PXi3JkY5h09NiWuVWARABOww@mail.gmail.com>
-Subject: Re: [PATCH net] net: add RCU protection to (struct packet_type)->dev
-To: "dongchenchen (A)" <dongchenchen2@huawei.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	fengwei_yin@linux.alibaba.com, zhangchangzhong@huawei.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On Mon, Feb 2, 2026 at 9:21=E2=80=AFAM dongchenchen (A)
-<dongchenchen2@huawei.com> wrote:
->
->
-> }
->
-> [2] add delay to pype_seq_next
-> diff --git a/net/core/net-procfs.c b/net/core/net-procfs.c
-> index 160dd729178f..73f5a20ef57c 100644
-> --- a/net/core/net-procfs.c
-> +++ b/net/core/net-procfs.c
-> @@ -230,11 +230,14 @@ static void *ptype_seq_next(struct seq_file *seq, v=
-oid *v, loff_t *pos)
->
->          pt =3D v;
->          nxt =3D pt->list.next;
-> +       if (pt->dev)
-> +               mdelay(5000);
+Three driver callbacks schedule a reset and wait for its completion:
+ndo_change_mtu(), ethtool set_ringparam(), and ethtool set_channels().
 
-Waiting 5 seconds while holding RCU is going to fire the soft lockup
-detection after ~two calls to ptype_seq_next()
+Waiting for reset in ndo_change_mtu() and set_ringparam() was added by
+commit c2ed2403f12c74 ("iavf: Wait for reset in callbacks which trigger
+it") to fix a race condition where adding an interface to bonding
+immediately after MTU or ring parameter change failed because the
+interface was still in __RESETTING state. The same commit also added
+waiting in iavf_set_priv_flags(), which was later removed by commit
+53844673d55529 ("iavf: kill "legacy-rx" for good").
 
-What is the actual trace you got, and what happens if you reduce to
-mdelay(1000) ?
+Waiting in set_channels() was introduced earlier by commit 4e5e6b5d9d13
+("iavf: Fix return of set the new channel count") to ensure the PF has
+enough time to complete the VF reset when changing channel count, and to
+return correct error codes to userspace.
 
->          dev =3D rcu_dereference(pt->dev);
->
-> [3] run_test.sh
-> ./packet_type_test &
-> cat /proc/$(pgrep -x "packet_type_test")/net/ptype &
->
+Commit ef490bbb226702 ("iavf: Add net_shaper_ops support") added
+net_shaper_ops to iavf, which required reset_task to use _locked NAPI
+variants (napi_enable_locked, napi_disable_locked) that need the netdev
+instance lock.
+
+Later, commit 7e4d784f5810 ("net: hold netdev instance lock during
+rtnetlink operations") and commit 2bcf4772e45adb ("net: ethtool: try to
+protect all callback with netdev instance lock") started holding the
+netdev instance lock during ndo and ethtool callbacks for drivers with
+net_shaper_ops.
+
+The combination of waiting for reset and the new locking requirements
+creates a deadlock: the callback holds the lock and waits for reset_task,
+but reset_task is blocked waiting for the same lock:
+
+  Thread 1 (callback)               Thread 2 (reset_task)
+  -------------------               ---------------------
+  netdev_lock()
+  ndo_change_mtu() or ethtool op
+    iavf_schedule_reset()
+    iavf_wait_for_reset()           iavf_reset_task()
+      waiting...                      netdev_lock() <- DEADLOCK
+
+Reproducer:
+
+  # echo 16 > /sys/class/net/$PF/device/sriov_numvfs
+  # ip link set $VF up
+  # ip link set $VF mtu 5000
+  RTNETLINK answers: Device or resource busy
+
+  # dmesg | tail -1
+  iavf: MTU change interrupted waiting for reset
+
+Fix this by temporarily releasing the lock while waiting for reset to
+complete. This follows the pattern used elsewhere in the kernel (e.g.,
+do_set_master() releases rtnl_lock before calling ndo_add_slave()).
+
+Fixes: 7e4d784f5810 ("net: hold netdev instance lock during rtnetlink operations")
+Signed-off-by: Petr Oros <poros@redhat.com>
+---
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 8aa6e92c16431f..d7738fb8fa60bc 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -189,13 +189,22 @@ static bool iavf_is_reset_in_progress(struct iavf_adapter *adapter)
+  * iavf_wait_for_reset - Wait for reset to finish.
+  * @adapter: board private structure
+  *
++ * The iavf driver selects NET_SHAPER, so callbacks that trigger reset are
++ * always called with netdev instance lock held, while reset_task also needs
++ * this lock. Release the lock while waiting to avoid deadlock.
++ *
+  * Returns 0 if reset finished successfully, negative on timeout or interrupt.
+  */
+ int iavf_wait_for_reset(struct iavf_adapter *adapter)
+ {
+-	int ret = wait_event_interruptible_timeout(adapter->reset_waitqueue,
+-					!iavf_is_reset_in_progress(adapter),
+-					msecs_to_jiffies(5000));
++	struct net_device *netdev = adapter->netdev;
++	int ret;
++
++	netdev_unlock(netdev);
++	ret = wait_event_interruptible_timeout(adapter->reset_waitqueue,
++					       !iavf_is_reset_in_progress(adapter),
++					       msecs_to_jiffies(5000));
++	netdev_lock(netdev);
+ 
+ 	/* If ret < 0 then it means wait was interrupted.
+ 	 * If ret == 0 then it means we got a timeout while waiting
+-- 
+2.52.0
+
