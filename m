@@ -1,138 +1,222 @@
-Received: from mail-wm1-f67.google.com (mail-wm1-f67.google.com [209.85.128.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232FA2D5C7A
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 10:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA43327C13
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 10:55:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770115547; cv=none; b=POP1lGWZJ44BkHs3MK1NINtzsbaEAr9WOGCKW5bv4gpnPzi0WA0b6wBcJQXyjA0jWiI56byeBmpTAGdjnvgZ6psUQSMKEmj5z/5Pazwp09os1Tyhh2o+UPlFFf1CyV+VGJMyXC+O+21KLnx+yNYSWolTIRYSA9fc734Q47bJWlo=
+	t=1770116113; cv=none; b=jdso54q3wm7rdCtC6wsQwZK2H8abvzgSB3QgZgVgaLPFOOaTC16+lnHfbXuqfH/0/3MVKRNsBD/BqVxX7czc4+p2GPHydl8U0o1pW3XQyNswMjxdNOaSsg3LKar5yBdy3q6/bCFZm8oqdT0CgGVrf1ElGOwA0Wk/IXOXfs7+IiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770115547; c=relaxed/simple;
-	bh=zsphaFUwrIMo+pf0TuXkBfQPvCURjbSZqfmjuT5IT4c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DDQg1nvpdjZPeVBSNsmBiW1Q02dWNQNM78YBbe/1/P3MQYFplfDMOLcndlzBaGrvkFEwRx0n1I2g4BCCniMvxol9jxUL8QV1jD86IuPv9QUmiaED2fOH2abEdJX5TlvzGB6EZgqU+vuG4KIC54VaOBLYY3T5AXsAt86jRMPvZMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K3xECGcF; arc=none smtp.client-ip=209.85.128.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770116113; c=relaxed/simple;
+	bh=wsT1DCBVScKEpY7lkQ5lAK6GmXaE2h8dBINyYKRIc8o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=d6Bkw0uN9WEnz6NCGnAmHHA5VkPjo9NXRzBetKnsIU/mT6l/6l1KxE6NT4KCr2mOpWgNYbJqW481/7VmAUKPqf1KGueB0stpp+GOrYA4LuPMuUfy6H945PuGV3/TCcpP4UBC+R1efy/3woCBUu0xJwPs9sJXZayYgJlHj6POj7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XakpJmOu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=bhemfROC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K3xECGcF"
-Received: by mail-wm1-f67.google.com with SMTP id 5b1f17b1804b1-48069a48629so56570865e9.0
-        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 02:45:45 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XakpJmOu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="bhemfROC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770116109;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3zdSIwol8eIwonvoR4fHbLrzSsymY7+cYRfeKmjVX+w=;
+	b=XakpJmOut3UNC6muQc/uNnCVojmfVwROZ3WvMHWEXGRNPbwRSpCOy5lWcFXy/+S6Zn99uZ
+	+vu9fmhanmV2264ZaV7XllQyaHGQ6opNVpQWc6uR5vNt5a4o52UmAs0096WHhMajs5krFb
+	8MgCBX7Ipz6TVMCxxISssjkUi+dW7NA=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-605-2TIrVt38Orm_LRGMYrYD2g-1; Tue, 03 Feb 2026 05:55:08 -0500
+X-MC-Unique: 2TIrVt38Orm_LRGMYrYD2g-1
+X-Mimecast-MFC-AGG-ID: 2TIrVt38Orm_LRGMYrYD2g_1770116107
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-47edf8ba319so58296225e9.2
+        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 02:55:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770115544; x=1770720344; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3pjjTKOk0euh5gASu/21SEOkboYtVXo/rQHyHB6vLHE=;
-        b=K3xECGcFtQIlQ2dgUF4Gi9SK/20rSsb84EMVhbCL8kdqXnfG/IEmWus4SpXifRokId
-         WrzzUIGvxmYNcWC8DlBnEnizdvnJnvtMNdxmPRUeiSoSX6kTZ+q+1ql0Z682mSOqUrDT
-         N1REgcgoMRISNCBz2Ku5+OdQAoOaMaOQtMlRKJwH6ZSeZy1PTmTpNC1TUGM7icfTME/m
-         yUfeRHOxcyZy9WUb2H1pMYtj+uz8nMyzgt5HaH16q/P/jo9K+F+wzF3IYJ19uB+QC2uF
-         XPjbK/VS/iHvWhuIjr5HMF8HHpXxZgf3FWmZKnLVOsiwUn6KuGdotiq8gtefOWiWuV6y
-         pcPg==
+        d=redhat.com; s=google; t=1770116107; x=1770720907; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3zdSIwol8eIwonvoR4fHbLrzSsymY7+cYRfeKmjVX+w=;
+        b=bhemfROCsxFA63pJLCnMytTaHS4WP6idd7ylHy4w3WKTT4L2sJQEgx9MZ/Bw3xAhEC
+         h5KLuTDSc8PVvUaAhSkQOeT3yiug961YwbiRVNU2gBgchviAXx3pCnxVqg9uSyOjIAZa
+         nILxk9mWZVTSW5OUIuapm9dx1gSh4jzksvVRSnt/eFukH5Z0+Sb2ohcSi6L3i/IKvVfH
+         E5TgLzcwl1dpiICV9QVRDjkdRX1EsweSUphBqLrduS7ApFMCZDM0jWzmMM01HENooT6b
+         HNoo3N5E6W3u48YwOKd4hUhmlGfnc4xhq1ecdhApYG8kYGdkDRVsU0/2EzDyhYeBtnU6
+         VrcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770115544; x=1770720344;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3pjjTKOk0euh5gASu/21SEOkboYtVXo/rQHyHB6vLHE=;
-        b=OlemhIXSbZZRYwGFe3cJ6/lcC41yUI2VGGq4fNsXVuOlmTS4NAjgDjKhSa832s3hAI
-         HZufUy2jmH9zBIyFBb2PcO96f7bHGSM910dHRsoalpKtfVaJJMmOmVZU7053YZhHit2q
-         2qWP/yHw6KSQf2Uv6RUW/sAn1/sE296R4JhCAx9gRzeeoHwKK706v3SrA4de6r0C3Cf4
-         kbVB9k8usRJfsr7DQNW3fvUY2IndoxQbSXsup0kkd0ZcWuWcZyFA8lkg65jY+ZpAoPgr
-         G9XCPOOrTCHScpEdE8BKPjHh4yMWNpmmdPzUtVwQvTiylW72X+tQtPfXSp7bY+WTNwXu
-         EaTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUmd4w6uxLdZ7lpzVBPumJ4eJ3TybYYGaLrALOsCu8v9C1ofRgeUGbaiiAgUAk/hUVrvJ9x0zU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeOQTsMWkQxbQZVLaTnCji/H5gkvREhJ3MD/2Um19TxdIcQXOP
-	Vvl399D3A+nVf31gR6evGadOvjZFc94zU4/G0vFdfHsdHttj5gmvmGeF
-X-Gm-Gg: AZuq6aKqmtm6y90jrWbVcZ12GyGCemneNcf8BSj4AssFpE86dXTscaNdtvuIbDEQ8Pd
-	6zq8aC1cmEoaT5vl7cLfROir95IFO9B3NDMjKbpoAc2EAsdO0+qjouhSoBPDLt/RHvRxAQdJLaE
-	aLEKt9yAZk/ojiCu+PuubN4fYsvn52WfY4JZBE7/cK6DAKNpbve/f2dm1RKYjjapQMjfRKhLB11
-	hDZfkdoY4iWsw1FpxPJfBYcxWOzhTJCyjAbh+zGAtjZVGf+ibyEWR/5M/9JMee3AsHWHVM0nHfg
-	08Fa5UEl5SQWrFQmDfI/cwrxtWga8UXsah6oYCnjZawO+RRC0LKiROvkbPiu7qGnFFGg1epKXp9
-	DoXcBLEZ4+LWA3yQdDqL19O4WhHZKl+K5OIPcirSSKjhT4ocKV7K4bakLdlZ1XHbeidOreBro0M
-	Y3Nv9sLORk5bTmZikJNaOlvI529aLc
-X-Received: by 2002:a05:600c:c4a5:b0:480:6941:d38c with SMTP id 5b1f17b1804b1-482db492393mr191878015e9.29.1770115544341;
-        Tue, 03 Feb 2026 02:45:44 -0800 (PST)
-Received: from biju.lan ([2a00:23c4:a758:8a01:9cd9:f748:166d:55fc])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4830512ddd0sm56554995e9.9.2026.02.03.02.45.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 02:45:43 -0800 (PST)
-From: Biju <biju.das.au@gmail.com>
-X-Google-Original-From: Biju <biju.das.jz@bp.renesas.com>
-To: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Magnus Damm <magnus.damm@gmail.com>
-Cc: Biju Das <biju.das.jz@bp.renesas.com>,
-	netdev@vger.kernel.org,
-	linux-renesas-soc@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Biju Das <biju.das.au@gmail.com>
-Subject: [PATCH net-next] dt-bindings: net: renesas,rzv2h-gbeth: Document Renesas RZ/G3L RMII{tx,rx} clocks
-Date: Tue,  3 Feb 2026 10:45:38 +0000
-Message-ID: <20260203104541.264759-1-biju.das.jz@bp.renesas.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1770116107; x=1770720907;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3zdSIwol8eIwonvoR4fHbLrzSsymY7+cYRfeKmjVX+w=;
+        b=GuLIgcPvIDfRfGcDTtcF6NbjoX0f5LzkPCr6d06cB8SKcBrjnucnJz9U48UO79bT/U
+         kSjQFUSWvyKKCCngyMA0Vukfz9RNLEbHaRtt4CzNX2pHAIGSxzhmq6xcvtApUg0kgCnu
+         Ab77nNT1sUJEtWO9rRjhxgE+3iIx1ybQAwxJWFPng+H0Yai2fuFaChyg8rbplfjkEMp2
+         Arre7uFtWut/0DfBBsoiDLyH13vTeeVoIfPNEa+LwLw9XYnFxol+m+0Szzyo7GAl4y05
+         SS1sEOQewQNur2tsvcABq6dyU1o+gg4fvpbxJACs9O/FHulJWNeJxWGesGHBytXMuBW0
+         Bmxw==
+X-Forwarded-Encrypted: i=1; AJvYcCVjpbfr6+BFvEdyUZeF09PCzsivG3KfIErm8cQqVPdy02cqYvBebdfB+l6CpWFs0wTSm4R79WM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx3RGAVaeOKAfs8rxXFRUIZ5u1Il0/N2w3+qjLIzqMiwyzqdi8H
+	2x+nrdCbcQLvsFBe27m3VPAjkckwPFwf6u1X6ijyuPUJOjMNgXKUjJmoeJkyN5OkgV49gXJ985z
+	fQCiffBseJw9Iviqq76jOpubH3sRxhdyfhkOMFy7RzBad/cDxWPuO1yo2Lw==
+X-Gm-Gg: AZuq6aLwqWxQ3NF+s7+9mznBzxeLVqjRePs3i85hNokiWAe8p6eGdvas3x4hSmP3Qfx
+	OZiS5r0/SnvRO/dtqVd9jeaGMJ+1G0727JbG4ntokaT883h/8X5/zetcQN5rKPwhHcXBfFaCN6n
+	n/LQcxdY1kmaLX0FtfcsYdWIcYWzVlDoRdDpG8j64OdVEJr0b3+eCElJSK6V0yrezzIxbEu5rUf
+	fj+hogkMe2i56IIn7XIymPzOvbZ1xspO7Y+IkX6hJ753IAQuQAJp3+YpZtCcLphijyn5C9Gtzto
+	r02w7fXUoQPhGoZqJi9sGtdV74R1VD+2OuRdTG0sQZEBi8WyXjtu4Op8u9EEk1jgmkEfwWC3OG2
+	nXxVvPL7OecE=
+X-Received: by 2002:a05:600c:45c5:b0:47d:403e:9cd5 with SMTP id 5b1f17b1804b1-482db45fcb4mr193220635e9.11.1770116107136;
+        Tue, 03 Feb 2026 02:55:07 -0800 (PST)
+X-Received: by 2002:a05:600c:45c5:b0:47d:403e:9cd5 with SMTP id 5b1f17b1804b1-482db45fcb4mr193220235e9.11.1770116106669;
+        Tue, 03 Feb 2026 02:55:06 -0800 (PST)
+Received: from [192.168.88.32] ([150.228.93.21])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4830515381esm58912085e9.11.2026.02.03.02.55.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Feb 2026 02:55:06 -0800 (PST)
+Message-ID: <03c714f3-edd5-43fb-a0be-8c4a43bf6101@redhat.com>
+Date: Tue, 3 Feb 2026 11:55:02 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4] ppp: enable TX scatter-gather
+To: Qingfang Deng <dqfext@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, linux-ppp@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+References: <20260129012902.941-1-dqfext@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260129012902.941-1-dqfext@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+On 1/29/26 2:29 AM, Qingfang Deng wrote:
+> PPP channels using chan->direct_xmit prepend the PPP header to a skb and
+> call dev_queue_xmit() directly. In this mode the skb does not need to be
+> linear, but the PPP netdevice currently does not advertise
+> scatter-gather features, causing unnecessary linearization and
+> preventing GSO.
+> 
+> Enable NETIF_F_SG and NETIF_F_FRAGLIST on PPP devices. In case a linear
+> buffer is required (PPP compression, multilink, and channels without
+> direct_xmit), call skb_linearize() explicitly.
+> 
+> Signed-off-by: Qingfang Deng <dqfext@gmail.com>
+> ---
+> v3 -> v4:
+>  Always expose SG and FRAGLIST, and linearize the skb if necessary.
+>  - https://lore.kernel.org/linux-ppp/20260123014214.225278-1-dqfext@gmail.com/
+> 
+>  drivers/net/ppp/ppp_generic.c | 30 +++++++++++++++++++++++++-----
+>  1 file changed, 25 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/ppp/ppp_generic.c b/drivers/net/ppp/ppp_generic.c
+> index f9f0f16c41d1..f8814d7be6f1 100644
+> --- a/drivers/net/ppp/ppp_generic.c
+> +++ b/drivers/net/ppp/ppp_generic.c
+> @@ -1641,6 +1641,8 @@ static void ppp_setup(struct net_device *dev)
+>  	dev->flags = IFF_POINTOPOINT | IFF_NOARP | IFF_MULTICAST;
+>  	dev->priv_destructor = ppp_dev_priv_destructor;
+>  	dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
+> +	dev->features = NETIF_F_SG | NETIF_F_FRAGLIST;
+> +	dev->hw_features = dev->features;
+>  	netif_keep_dst(dev);
+>  }
+>  
+> @@ -1710,6 +1712,10 @@ pad_compress_skb(struct ppp *ppp, struct sk_buff *skb)
+>  		ppp->xcomp->comp_extra + ppp->dev->hard_header_len;
+>  	int compressor_skb_size = ppp->dev->mtu +
+>  		ppp->xcomp->comp_extra + PPP_HDRLEN;
+> +
+> +	if (skb_linearize(skb))
+> +		return NULL;
+> +
+>  	new_skb = alloc_skb(new_skb_size, GFP_ATOMIC);
+>  	if (!new_skb) {
+>  		if (net_ratelimit())
+> @@ -1797,6 +1803,10 @@ ppp_send_frame(struct ppp *ppp, struct sk_buff *skb)
+>  	case PPP_IP:
+>  		if (!ppp->vj || (ppp->flags & SC_COMP_TCP) == 0)
+>  			break;
+> +
+> +		if (skb_linearize(skb))
+> +			goto drop;
+> +
+>  		/* try to do VJ TCP header compression */
+>  		new_skb = alloc_skb(skb->len + ppp->dev->hard_header_len - 2,
+>  				    GFP_ATOMIC);
+> @@ -1894,19 +1904,26 @@ ppp_push(struct ppp *ppp)
+>  	}
+>  
+>  	if ((ppp->flags & SC_MULTILINK) == 0) {
+> +		struct ppp_channel *chan;
+>  		/* not doing multilink: send it down the first channel */
+>  		list = list->next;
+>  		pch = list_entry(list, struct channel, clist);
+>  
+>  		spin_lock(&pch->downl);
+> -		if (pch->chan) {
+> -			if (pch->chan->ops->start_xmit(pch->chan, skb))
+> -				ppp->xmit_pending = NULL;
+> -		} else {
+> -			/* channel got unregistered */
+> +		chan = pch->chan;
+> +		if (unlikely(!chan || (!chan->direct_xmit && skb_linearize(skb)))) {
+> +			/* channel got unregistered, or it requires a linear
+> +			 * skb but linearization failed
+> +			 */
+>  			kfree_skb(skb);
+>  			ppp->xmit_pending = NULL;
+> +			goto out;
 
-As per the RZ/G3L Hardware manual, CPG_CLKON_ETH register bits{12,13} are
-to control the RMII{tx, rx} clocks. Document the rmii{tx.rx} clocks for
-RZ/G3L SoC.
+I'm sorry for missing this point before, but AFAICS channels with
+chan->direct_xmit == 0 do not support GSO packets at all, and here such
+packets will be transmitted after linearization (but still as GSO).
 
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
----
- .../devicetree/bindings/net/renesas,rzv2h-gbeth.yaml      | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+I think that while transmitting over !chan->direct_xmit you additionally
+need to check for GSO packet. If ppp features are recomputed depending
+on the channels configuration, you could chose to drop such packets.
+Otherwise you will need to segment them before transmission, and that
+looks error prone in case of multilink.
 
-diff --git a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-index fb60f745a1ff..2125b5ddf73d 100644
---- a/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-+++ b/Documentation/devicetree/bindings/net/renesas,rzv2h-gbeth.yaml
-@@ -58,6 +58,8 @@ properties:
-           - description: TX clock phase-shifted by 180 degrees
-           - description: RX clock phase-shifted by 180 degrees
-           - description: RMII clock
-+          - description: RMII TX clock
-+          - description: RMII RX clock
- 
-         minItems: 7
- 
-@@ -77,6 +79,8 @@ properties:
-           - const: tx-180
-           - const: rx-180
-           - const: rmii
-+          - const: rmii_tx
-+          - const: rmii_rx
- 
-         minItems: 7
- 
-@@ -170,10 +174,10 @@ allOf:
-     then:
-       properties:
-         clocks:
--          minItems: 8
-+          minItems: 10
- 
-         clock-names:
--          minItems: 8
-+          minItems: 10
- 
-         interrupts:
-           minItems: 15
--- 
-2.43.0
+/P
+
+
+
+>  		}
+> +
+> +		if (chan->ops->start_xmit(chan, skb))
+> +			ppp->xmit_pending = NULL;
+> +
+> +out:
+>  		spin_unlock(&pch->downl);
+>  		return;
+>  	}
+> @@ -1991,6 +2008,8 @@ static int ppp_mp_explode(struct ppp *ppp, struct sk_buff *skb)
+>  		return 0; /* can't take now, leave it in xmit_pending */
+>  
+>  	/* Do protocol field compression */
+> +	if (skb_linearize(skb))
+> +		goto err_linearize;
+>  	p = skb->data;
+>  	len = skb->len;
+>  	if (*p == 0 && mp_protocol_compress) {
+> @@ -2149,6 +2168,7 @@ static int ppp_mp_explode(struct ppp *ppp, struct sk_buff *skb)
+>  
+>   noskb:
+>  	spin_unlock(&pch->downl);
+> + err_linearize:
+>  	if (ppp->debug & 1)
+>  		netdev_err(ppp->dev, "PPP: no memory (fragment)\n");
+>  	++ppp->dev->stats.tx_errors;
 
