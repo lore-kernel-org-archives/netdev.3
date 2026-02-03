@@ -1,143 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB24433FE0C
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 12:24:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415DB34026B;
+	Tue,  3 Feb 2026 12:25:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770121444; cv=none; b=DDNSr/kFHDgfVLz+76VOxhSdHvPWDm3CvtU6Ijxv9lgBZu0l/iBQd/aXHAtNY84DDppRVARVo2uub2oDTkscKplLrOB4/dcmhKGM/FpcMb7uJLaHmutcf8fwBJcFRUHCI642jsdZO31qKy+zTk0eo1ZH+1A7nuavagWYSnnHOy8=
+	t=1770121519; cv=none; b=FUWQ8sZwomf6rBQu3kx1dJNH3VU8rh8mkQWDize+aqZXLetqpVoOUOu6SJgxli60qjebhILwc75yqHv+QiLnx+QF+o1OiTLKu2s6phpZeRCWWnZeP/mHSGR05xKR0GiNkEtyiDaZZOXyjw8d98aDhQr4NMOYP/WraD9pSCmF+jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770121444; c=relaxed/simple;
-	bh=JmC3o7t+ZDZfPLPPdFtV+BoPLkKHQN8OC4Lcvdj+DqY=;
+	s=arc-20240116; t=1770121519; c=relaxed/simple;
+	bh=zmW9iZ8OTMDOnUFlsSj9dHUE8b3JXtp0PZ2MDJrb9Rw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oMQitA1MpcJVN/sTCwy/eMo4Z5ocUeHMGh9QqnhgPLLUQ6bGZckehd+CVgXovXPRrR873Hm/WMMJMIkvG63j8tgeQk0pX59SzcNHoNUXjNkIA4B3ayfA3NzwccDzttOqVrIOKsTyTRu2uqweboJbFypNDqd604qEMxZPieRdjRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fyiPcclb; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y/YkfZ26Sda0a7/iKX0YtMDkn0ddvl389aesAWT15vIBItMnjQeFClIKCBiCYWf/DHOW2jwmuS9aiW4PS/gV4qAbWSXOPl1XnL5Pstmf4qYmOaNhk1oYBMPby8AZkOTSdEJKwmxp5WEZmxtMzC2AV/wZqmRk/fmtlUWI2I+Fuas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mi4ndnHQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fyiPcclb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770121441;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nydlJhhd54DuyndBF+Yma/53jn9dbImQ+yXAYDAQ1wM=;
-	b=fyiPcclbEE3FBehmnM9y8S16piLLMjZlpHZM+Suea1dlYPdbzVFY+/ASHkNrtl+9SdEL9b
-	v9VYMnrxZD0+p78Jqw22WnpgqUNrAlpe4NULlUuz3o8HW0ZemoeGuyc3qKFQ7/f+gkg8SC
-	9pEFhk+lI7pd0lwKO9QXtPkhKRtOFoI=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-GP5TsYLONsC-QScNlYLNQQ-1; Tue,
- 03 Feb 2026 07:23:58 -0500
-X-MC-Unique: GP5TsYLONsC-QScNlYLNQQ-1
-X-Mimecast-MFC-AGG-ID: GP5TsYLONsC-QScNlYLNQQ_1770121437
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CA1C618002C8;
-	Tue,  3 Feb 2026 12:23:56 +0000 (UTC)
-Received: from thinkpad (unknown [10.44.34.184])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3AB33180009E;
-	Tue,  3 Feb 2026 12:23:53 +0000 (UTC)
-Date: Tue, 3 Feb 2026 13:23:50 +0100
-From: Felix Maurer <fmaurer@redhat.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	jkarrenpalo@gmail.com, tglx@linutronix.de, mingo@kernel.org,
-	allison.henderson@oracle.com, petrm@nvidia.com, antonio@openvpn.net
-Subject: Re: [PATCH net-next v2 1/9] selftests: hsr: Add ping test for PRP
-Message-ID: <aYHo1uEK2e8Vg4WM@thinkpad>
-References: <cover.1769093335.git.fmaurer@redhat.com>
- <b54f9225ae39d0d4bd9c8c1b0b98fe47fb7211eb.1769093335.git.fmaurer@redhat.com>
- <20260129110500.l2jOMEYp@linutronix.de>
- <aXthMlr6Hpas1LBt@thinkpad>
- <20260129152149.dKwN1yGM@linutronix.de>
- <aXucj8L-cBUVIYHX@thinkpad>
- <aYCPsDZeJvCrJYRH@thinkpad>
- <20260202155510.C1zpsxnk@linutronix.de>
- <aYHJ9KHdiBEGfjwA@thinkpad>
- <20260203115526._PRE3nvY@linutronix.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mi4ndnHQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2242FC116D0;
+	Tue,  3 Feb 2026 12:25:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770121519;
+	bh=zmW9iZ8OTMDOnUFlsSj9dHUE8b3JXtp0PZ2MDJrb9Rw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mi4ndnHQpEXB8yLdqJdVP31htPDKnXXQG4QWtfNa0SM2+lbmf5xFl5ix4bAUaW+ZG
+	 a7jw6DqnyPAnhCxZ9Jd5j1bZHhyq4r1jhp1991IikVHHburF/5iS4KlpMxoII4ARwN
+	 LRQxmzKDdqjApDYsMVuYFa3HMfEtuXxq1JONgRkaBMHYBhP50mBv1469e0SiW3I7lD
+	 zNrtTwdrt6HxiEyymnuEvvicoXwf5BPG6+iv9QUnoUqPO9HlxDsD93TUmW3bmJww/X
+	 YExGY3L6Ey382/DlP9AYGn8VGoufvSL9xgewVIbob6ahC1D2r/mhHAvgtjSREeUN9a
+	 5cm/BW6mWtrXA==
+Date: Tue, 3 Feb 2026 12:25:14 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
+	linux-phy@lists.infradead.org, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	=?iso-8859-1?Q?Bj=F8rn?= Mork <bjorn@mork.no>,
+	linux-kernel@vger.kernel.org,
+	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+Subject: Re: [PATCH phy] phy: enter drivers/phy/Makefile even without
+ CONFIG_GENERIC_PHY
+Message-ID: <57002ace-400d-4cc0-8225-3dc326e5c528@sirena.org.uk>
+References: <20260123110600.3118561-1-vladimir.oltean@nxp.com>
+ <007a2100-0913-4a8f-82d3-8118664fc1a7@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="h62oFimrhVL7k4f2"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260203115526._PRE3nvY@linutronix.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+In-Reply-To: <007a2100-0913-4a8f-82d3-8118664fc1a7@linux.ibm.com>
+X-Cookie: Do you know Montana?
 
-On Tue, Feb 03, 2026 at 12:55:26PM +0100, Sebastian Andrzej Siewior wrote:
-> On 2026-02-03 11:12:36 [+0100], Felix Maurer wrote:
-> > On Mon, Feb 02, 2026 at 04:55:10PM +0100, Sebastian Andrzej Siewior wrote:
-> > > On 2026-02-02 12:51:12 [+0100], Felix Maurer wrote:
-> > > > > Hm, I am not sure? For PRP, it's an explicit requirement to use the same
-> > > > > MAC addresses for both ports. For HSR, I think the standard is less
-> > > > > clear about the MAC addresses. And at least our code seems to assume
-> > > > > that there could be different MACs on the two interfaces of a node? But
-> > > > > yes, the node merging addresses this.
-> > > >
-> > > > I'm still not 100% certain, but I agree that the standard reads more
-> > > > like the MAC addresses should be the same for the two HSR ports. At the
-> > > > moment, the kernel and the test assumes that they can/should be
-> > > > different. Therefore, I think we should fix this across the board in
-> > > > another patchset if we agree that's the right thing to do.
-> > >
-> > > I would suggest to do so. This could serve as bad example and my PTP
-> > > userland patches expect the same MAC on both ports. So ;)
-> >
-> > I'll put it on my list for another patchset :)
-> > But this of course brings up how the MAC addresses should be handled on
-> > the HSR interfaces in general. At the moment, for HSR we copy the MAC of
-> > portA to master. For PRP, the MAC of portA is copied to master and
-> > portB.
-> >
-> > If the MACs should be the same for both ports of an HSR interface,
-> > should we set them when creating the HSR interface, similarly to PRP?
-> We do this?
 
-We didn't always do this, but since b65999e7238e ("net: hsr: sync hw
-addr of slave2 according to slave1 hw addr on PRP"), we are doing this
-for PRP.
+--h62oFimrhVL7k4f2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> > And does it make sense to copy from portA (feels somewhat arbitrary to
-> > me) or would it be cleaner to copy from master to portA and portB?
->
-> I do
-> | ip link set $portA down
-> | ip link set $portB down
-> | ip link set dev $portA address $mac
-> | ip link set dev $portB address $mac
-> | ip link add name $if type hsr slave1 $portA slave2 $portB supervision 45 version 1
->
-> and then up, up, up to get up the three interfaces functional. $mac is
-> the MAC $portA.
->
-> On the other hand it shouldn't matter because while adding the HSR tag,
-> the MAC of the hsr interface should be taken but somehow I observed that
-> packets, which originate on the $portB interface have the MAC address of
-> this interface. So I did this and forgot about it later…
-> But then hardware offloading might behave different if it considers the
-> address of the interface so it might required to set the MAC address.
->
-> I am uncertain what the best practice would be here.
-> Forcing the MAC of portA to portB could be done at setup phase by the
-> stack but would require that the interface is down…
+On Tue, Feb 03, 2026 at 03:26:47PM +0530, Venkat Rao Bagalkote wrote:
 
-I think that's a pretty common series of setup steps, yes. But as even
-we are not sure how the MAC addresses should be set, I think we should
-not expect that users will configure this correctly, but do the right
-thing(tm) automatically.
+> I still see linux-next build failures with next-20260202. Can we please have
+> this patch merged.
 
-But like you, I'm uncertain what would be the right thing to do and
-which port should control the MAC for all the others.
+> Mark, can you please pull this one.
 
-Thanks,
-   Felix
+Patches aren't applied directly to linux-next, they are applied to the
+various trees and then merged into -next.
 
+--h62oFimrhVL7k4f2
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmB6SkACgkQJNaLcl1U
+h9C52Af+IUUoMAI2QCfbuabrqV+840eg/Nk+Gopoh1c98ZPyewZMPNznIYkvtWLM
+rVWnRdeZYDX8zrCkbzJcTeF6eSVAAClLrEvzFMVTsNlIcujYo/92kEszJ5QlQM+3
+P2KxmXJB+oDd2dWsay6+X3m3tiYlezSKEldLtShYpt5TmxhHE07pxAaZUeeVFw4E
+A1P5PTxiZ7SfaKf98hgJqlEqF2JMZ6axLYIEw6ROdDx2q8FGrNq8f3Mf1uJXQJYI
+fmtfSZ/+/o1loG2Cp70hUAlYjrYZf2CdivyqChk6Ka8ZrU1aNBweFdP7CMOarpMo
+T8wG9KNr+clGOB9cK/lg5julQmMP4w==
+=Od2n
+-----END PGP SIGNATURE-----
+
+--h62oFimrhVL7k4f2--
