@@ -1,189 +1,103 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FDB86341
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 15:43:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A389A190462;
+	Tue,  3 Feb 2026 16:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770133419; cv=none; b=lm1r4+Qz/rn2lM/NGV7t+mn85RUviKVbUvK1xNHs5nRrFpxsEbaIdzCsC6tNqaBI1/X2stCjl8fdC/cwOMYGrAWn6RySqeL2uAcaLIb7xKQpXF3/zqlRD6CcxQpLi87bbvtTKDkNKj9tiNIkev6E4qTG6w3fuUkPmfFxS0T0sTA=
+	t=1770135080; cv=none; b=G5jIgwQoyp2g3J3vh7iaKcFQ7p1Wmt+HqsqZCGJMTzcFMT79A+CDu5YgcK3Zu+2m5I14PcZA6dIUUmDXwO+ivkILYk6TWCWbaO/f9oqbQptWlZrzjponOxwSVTKXTOrD51o/TR+/BUZnIqeC6ta6+JWZf7ZqedcQyV2fjGGUJLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770133419; c=relaxed/simple;
-	bh=o3x6/g/1y67NEu99YmPMUek/Tb68no2EGtXXsL3PEPs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TTNeykP2QvqwwioVRRKyR8Vbsybftdf0EtiwA8PU0zh4hai2lR7p0vSvmmJZxXRfINQ81vH8imbe1Yzcu3wvmVN0ACH8emxwKgXbR/rhM3d20BlzaHJLypL211CxrXGHwEhkZmUgdplkt1C4BhJvG+kd8yWUJxzE+fvMgQ+OB9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Jt0kIIiv; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1770135080; c=relaxed/simple;
+	bh=1tbIX25+8uE6MY6wp88tD9hkDQp221nFtwfC6Jl67ow=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nLfG9iAiHcj6ifmuL6VmxJu6whZLc+SS5QdpMWSaARzHwO1Aa8V16VgR849iLxeJNCuEWlaEL9kSQFH4AjzTJJDwQ82Nq1lw9+W6th1tCBRT/aG8tNgneCERtWbfHHjhmkdvTTHcq1wouYb7GG2jaS7UKckXRwjCBDkvx7RIjUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jmsb8G4q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Jt0kIIiv"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=RzeM8oaESwR5f6Qc18NJENPAHewlAD17RZTiqrl1jUw=; b=Jt0kIIivMsAafQg+iXRknxBUz6
-	F/yuYSd/CfJA/N0eRjBsL+4fi2Q3FsHCPR9M5rdXzRrQWKlPH7WnXlgXUnZ+b4s2MD5nHekUB2MCL
-	ThA/6rkEuHK2KZyrXiR1bGbRYvoH8F+Oebt9U7lOWk9KSAjVk46UxW/ZQuv7wsyT8ttlaJj4xHac/
-	NmW/h1b2jqJpPk1aEiB6Wq7N8sfvM6q6uH7JYE8wL++vKpFL9JkfmtzbAzrUz0ywT0dJ9TeABywca
-	mJDKj6Oi3LUbfI1dsueqDjZK8SMsaRR6Ao9flVloipD9KuSGLQisEH6eWPU5dTZGh1qA4rE7OrvcP
-	7nUacWuQ==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:42522)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vnIYn-000000005EC-41oW;
-	Tue, 03 Feb 2026 15:43:26 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vnIYk-000000004UW-1y5v;
-	Tue, 03 Feb 2026 15:43:22 +0000
-Date: Tue, 3 Feb 2026 15:43:22 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Daniel Scally <dan.scally@ideasonboard.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Emanuele Ghidoli <ghidoliemanuele@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>, imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Rob Herring <robh@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Stefan Klug <stefan.klug@ideasonboard.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: Re: [PATCH RFC net-next] net: stmmac: provide flag to disable EEE
-Message-ID: <aYIXmsIG_ZJO-cg4@shell.armlinux.org.uk>
-References: <E1vNUjC-0000000FhjR-0h6P@rmk-PC.armlinux.org.uk>
- <f95f73b9-d024-4697-bca1-02fb8bc044af@gmail.com>
- <aYEj8VM5AfvcDHrl@shell.armlinux.org.uk>
- <ea2434e6-d1db-4ea2-90f4-0a77961b7918@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jmsb8G4q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7489C116D0;
+	Tue,  3 Feb 2026 16:11:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770135080;
+	bh=1tbIX25+8uE6MY6wp88tD9hkDQp221nFtwfC6Jl67ow=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Jmsb8G4qpkmXi91BggH1JrBWPeFNli0npPW+MBfy9+3crsdSYQ2EtJt5uEvWy+8EF
+	 p1pfJz0kXtBcroFMeY2v9SjKhWZixreEcjYD8e/PX/AISi6b/VpLq41N4tGWiYk/Yo
+	 K00vxt3eE1vsNY5n7YlgG1moDVr4rCj2Bko/ksSMwOXwBjMX57ZmBZA0XAmIL6/Q6g
+	 3wb4g3I2XqnGXLc4mSzDU15k0uqzm6a/nEzS3uGMcfWlXYHBs7oNF0IzX3VCz7M665
+	 l9zYsUfA2hL7QiBh9l4i6CFPvrI9oEW33iOo8o4FwgUWiP3URE0GjmDEVTEeqh/2Qx
+	 jwvcaSWrGf/vg==
+From: Simon Horman <horms@kernel.org>
+To: ivecera@redhat.com
+Cc: Simon Horman <horms@kernel.org>,
+	richardcochran@gmail.com,
+	arkadiusz.kubalewski@intel.com,
+	przemyslaw.kitszel@intel.com,
+	aleksandr.loktionov@intel.com,
+	andrew+netdev@lunn.ch,
+	pabeni@redhat.com,
+	saeedm@nvidia.com,
+	kuba@kernel.org,
+	tariqt@nvidia.com,
+	netdev@vger.kernel.org,
+	grzegorz.nitka@intel.com,
+	poros@redhat.com,
+	davem@davemloft.net,
+	vadim.fedorenko@linux.dev,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	aleksander.lobakin@intel.com,
+	jonathan.lemon@gmail.com,
+	jiri@resnulli.us,
+	anthony.l.nguyen@intel.com,
+	intel-wired-lan@lists.osuosl.org,
+	Prathosh.Satish@microchip.com,
+	leon@kernel.org,
+	edumazet@google.com,
+	mbloch@nvidia.com
+Subject: Re: [net-next,v4,7/9] dpll: Add reference count tracking support
+Date: Tue,  3 Feb 2026 16:11:02 +0000
+Message-ID: <20260203161102.1894146-1-horms@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260202171638.17427-8-ivecera@redhat.com>
+References: <20260202171638.17427-8-ivecera@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ea2434e6-d1db-4ea2-90f4-0a77961b7918@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 03, 2026 at 05:42:07PM +0200, Ovidiu Panait wrote:
-> 
-> Hi Russell,
-> 
-> On 2/3/26 12:23 AM, Russell King (Oracle) wrote:
-> > On Mon, Feb 02, 2026 at 08:54:52PM +0200, Ovidiu Panait wrote:
-> >>
-> >> Hi Russell,
-> >>
-> >> On 11/24/25 1:27 PM, Russell King (Oracle) wrote:
-> >>> Some platforms have problems when EEE is enabled, and thus need a way
-> >>> to disable stmmac EEE support. Add a flag before the other LPI related
-> >>> flags which tells stmmac to avoid populating the phylink LPI
-> >>> capabilities, which causes phylink to call phy_disable_eee() for any
-> >>> PHY that is attached to the affected phylink instance.
-> >>>
-> >>> iMX8MP is an example - the lpi_intr_o signal is wired to an OR gate
-> >>> along with the main dwmac interrupts. Since lpi_intr_o is synchronous
-> >>> to the receive clock domain, and takes four clock cycles to clear, this
-> >>> leads to interrupt storms as the interrupt remains asserted for some
-> >>> time after the LPI control and status register is read.
-> >>>
-> >>> This problem becomes worse when the receive clock from the PHY stops
-> >>> when the receive path enters LPI state - which means that lpi_intr_o
-> >>> can not deassert until the clock restarts. Since the LPI state of the
-> >>> receive path depends on the link partner, this is out of our control.
-> >>> We could disable RX clock stop at the PHY, but that doesn't get around
-> >>> the slow-to-deassert lpi_intr_o mentioned in the above paragraph.
-> >>>
-> >>> Previously, iMX8MP worked around this by disabling gigabit EEE, but
-> >>> this is insufficient - the problem is also visible at 100M speeds,
-> >>> where the receive clock is slower.
-> >>>
-> >>> There is extensive discussion and investigation in the thread linked
-> >>> below, the result of which is summarised in this commit message.
-> >>>
-> >>
-> >> We are seeing the same lpi_intr_o interrupt storm on the Renesas RZ/V2H
-> >> EVK (dwmac-renesas-gbeth.c). On this platform, lpi_intr_o is routed as a
-> >> separate, dedicated interrupt line to the CPU rather than being OR'd
-> >> with the main DWMAC interrupt as on iMX8MP. This corresponds to the
-> >> "eth_lpi" interrupt in the stmmac bindings:
-> >> """
-> >> - description: The interrupt that occurs when Rx exits the LPI state
-> >> const: eth_lpi
-> >> """
-> >>
-> >> Looking through the other glue drivers/device-trees, it looks to me that
-> >> every platform that defines a separate "eth_lpi" irq might have the
-> >> interrupt storm problem.
-> > 
-> > That is highly likely.
-> > 
-> >> To fix this issue on these platforms, rather than disabling EEE
-> >> altogether, would it be possible to just not request the eth_lpi
-> >> interrupt and let EEE continue to work? Perhaps a new flag could let
-> >> each platform decide.
-> > 
-> > Yes, because lpi_intr_o serves no purpose from a software point of
-> > view - see the commit message below for the details. I do like
-> > removing code from stmmac :)
-> > 
-> >> If not, maybe this patch could be merged to add the flag that disables
-> >> EEE and I will just send a patch to disable EEE on our platforms as well.
-> > 
-> > We still need the flag to disable EEE for platforms where lpi_intr_o is
-> > logically OR'd with the other interrupts, so there's no way to ignore
-> > its persistent assertion.
-> > 
-> > 8<===
-> > From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-> > Subject: [PATCH net-next] net: stmmac: remove support for lpi_intr_o
-> > 
-> > The dwmac databook for v3.74a states that lpi_intr_o is a sideband
-> > signal which should be used to ungate the application clock, and this
-> > signal is synchronous to the receive clock. The receive clock can run
-> > at 2.5, 25 or 125MHz depending on the media speed, and can stop under
-> > the control of the link partner. This means that the time it takes to
-> > clear is dependent on the negotiated media speed, and thus can be 8,
-> > 40, or 400ns after reading the LPI control and status register.
-> > 
-> > It has been observed with some aggressive link partners, this clock
-> > can stop while lpi_intr_o is still asserted, meaning that the signal
-> > remains asserted for an indefinite period that the local system has
-> > no direct control over.
-> > 
-> > The LPI interrupts will still be signalled through the main interrupt
-> > path in any case, and this path is not dependent on the receive clock.
-> > 
-> > This, since we do not gate the application clock, and the chances of
-> > adding clock gating in the future are slim due to the clocks being
-> > ill-defined, lpi_intr_o serves no useful purpose. Remove the code which
-> > requests the interrupt, and all associated code.
-> > 
-> > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> 
-> Thanks for fixing this. I did some testing on the Renesas RZ/V2H board
-> with this patch and didn't see any issues:
-> 
-> Tested-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-Would you say this is a regression or a new problem?
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+dpll: Add reference count tracking support
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+This commit adds REF_TRACKER infrastructure support to the DPLL subsystem,
+allowing developers to track and debug reference counting leaks for
+dpll_device and dpll_pin objects via debugfs.
+
+> diff --git a/include/linux/dpll.h b/include/linux/dpll.h
+> --- a/include/linux/dpll.h
+> +++ b/include/linux/dpll.h
+
+[ ... ]
+
+> @@ -223,16 +231,17 @@ dpll_netdev_add_pin_handle(struct sk_buff *msg, const struct net_device *dev)
+>  }
+>
+>  static inline struct dpll_pin *
+> -fwnode_dpll_pin_find(struct fwnode_handle *fwnode)
+> +fwnode_dpll_pin_find(struct fwnode_handle *fwnode, dpll_tracker *tracker);
+>  {
+>  	return NULL;
+>  }
+
+There appears to be a stray semicolon at the end of the function signature
+on the line with the tracker parameter. This would cause a compile error
+when CONFIG_DPLL is disabled since the function body follows what looks
+like a forward declaration.
+
+Should the semicolon be removed so the stub function compiles correctly?
