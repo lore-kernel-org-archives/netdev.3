@@ -1,85 +1,62 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AD5DF59;
-	Tue,  3 Feb 2026 02:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963732F3608
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 02:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770085214; cv=none; b=cAlpGWzsqB3TBhztc2dfQeZzwZqVku3wjBMOMoJ0mMrEKZPDKSA0tlzHm/TVslVFDsKsZaE80CvMvw0q5MkgkIW9PCOw2woPZmSkvR4UCKn00IQxQuoRvfV/spjkp9k1gHvuE97gSM0NECd1fLQvTLqnmUp48t5XIfvdpQ9m474=
+	t=1770085256; cv=none; b=UqJ57On/bc2fr+jxmK44atoUtB3BylyEXIy9CfBAsPA4v4Wl3kxp3h8TVUaAWSDdK/KhgQGAivNiA6EtTYPvBUjRcndaSAggW+eFQkn/jUwAQq299e1lmlDZ1qbL6Smuc+B7x0xuNcnaGkDJvFokktNqfVrff98/CF7SJAAWgII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770085214; c=relaxed/simple;
-	bh=dyLD5CTe0D0uWf3n3Bqu7uYGDnqb5256m3nU0+c4CEo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Y3EKdrzm3MkNQsg5m9mBVx8ySavTWgGrJrBzqQI/Cua2VrXnS8JFzV08r/1vaqEjwKYCal9myrpMysstz3y6sdqgtFbotT9v0gcE2vpJPGJn4zh9iAvPrWJDXuI6vld8UampxMsrV4joEprY5vPwHwHCLX/tRK2Qc7R8Lx/+fmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p/cW8Cd9; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770085256; c=relaxed/simple;
+	bh=xymFwFpJdFhDLLlEMBm1kLd8cDzjnY7GN2CpPvbJg1g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d650t5JPyYcLAI6ZF/YUC3hy0Mtko4opLA7NhkZercg5Sx0LuUTe+pLb3FwiSBQakQCTe5Zh2RMQPlFuFMZZ4Q4DL+pJKVLynOU50pH0wgLOaw/GFuU0/bqurfx4eQ57dJTsvDitYyGwK+gxFLvhrVq07UYlP5Hja5YFN70hRbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HifA20UV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p/cW8Cd9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D655BC116C6;
-	Tue,  3 Feb 2026 02:20:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HifA20UV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F55C2BC86;
+	Tue,  3 Feb 2026 02:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770085213;
-	bh=dyLD5CTe0D0uWf3n3Bqu7uYGDnqb5256m3nU0+c4CEo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=p/cW8Cd9YezGfO9k+MnVX+VCyHYpRZzRGFL+DUtR+MpZaFqC+qvdzcE2oBnV3u5BI
-	 PVPGpAclYv3+Zva71kFQ2SSurqTSpPGuKG+Jum2+JPWnSf39818XbVwnwtewK8UFqu
-	 y7KU2BQ+lIMJ8qUV+oLfEkCCag+xoFqpCegjxqIBLtHOao/BN7uEeQ8fA8XXBJMyNY
-	 wnKf8faUPna7qUFG0Vi5knzqDQOGK5uSgKu1ApJa2XjfkmJq9L8tgZLfNbgtnkLfXY
-	 k0SrLrQnmMDZDLq4poxMHPHpnnU50Kp6zyP57Iglsg6q6NpDmZUQ5qm1fiIEFW3XTK
-	 Vg+8RJ8cY2e4g==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id CE03E3808200;
-	Tue,  3 Feb 2026 02:20:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1770085256;
+	bh=xymFwFpJdFhDLLlEMBm1kLd8cDzjnY7GN2CpPvbJg1g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=HifA20UVBMCmWTSZVgmsE8IksS/j3bGxAkbJbLUZ6Yzts7dTDIxL19t6wXzQDSHIp
+	 0VMhx95yt7IjtBna9ZFh1/ja4ycmcM/Av/sMBxE+DiBszAmpRihCdFScpjH+yfUtYK
+	 eKI1vNHG5i40SKPRXMouGsFdvEyM4CPzZNfXiu0f/5dwy4og94NX54QaXlMF58Smu0
+	 +zlJzdfdgeT1ROoQcEbi44Y58Gk2bmhoaPCdUwQDTdNTMe5IOtiLj34F9DLK77kRw0
+	 HCFlLcORC3wY2bcPllpcvBbthLMMmAKozPHOVvt6+p384zY9qEQU5BQcqX3a21I4qz
+	 wB+/zmPzZyoLA==
+Date: Mon, 2 Feb 2026 18:20:54 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: netdev@vger.kernel.org, Don Fry <pcnet32@frontier.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next v2] net: ethernet: pcnet32: remove VLB support
+Message-ID: <20260202182054.0a755aea@kernel.org>
+In-Reply-To: <20260131012119.25863-1-enelsonmoore@gmail.com>
+References: <20260131012119.25863-1-enelsonmoore@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/4] ENETC v4 hardware integration fixes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177008521062.1279978.3424361690437875214.git-patchwork-notify@kernel.org>
-Date: Tue, 03 Feb 2026 02:20:10 +0000
-References: <20260130141035.272471-1-claudiu.manoil@nxp.com>
-In-Reply-To: <20260130141035.272471-1-claudiu.manoil@nxp.com>
-To: Claudiu Manoil <claudiu.manoil@nxp.com>
-Cc: vladimir.oltean@nxp.com, wei.fang@nxp.com, xiaoning.wang@nxp.com,
- Frank.Li@nxp.com, kuba@kernel.org, davem@davemloft.net,
- andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
- imx@lists.linux.dev, netdev@vger.kernel.org
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On Fri, 30 Jan 2026 17:21:19 -0800 Ethan Nelson-Moore wrote:
+> The VLB bus is very obsolete and last appeared on P5 Pentium-era
+> hardware. Support for it has been removed from other drivers, and it is
+> highly unlikely anyone is using it with modern Linux kernels. The VLB
+> auto-probing code also has the potential to affect other devices that
+> use the same I/O ports in unexpected ways. Remove support for VLB cards
+> from the driver. This allows the code managing device instances to be
+> simplified significantly.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Fri, 30 Jan 2026 16:10:31 +0200 you wrote:
-> ENETC v4 targeted fixes addressing SoC level integration issues
-> regarding AXI settings and register access width.
-> 
-> Claudiu Manoil (4):
->   net: enetc: Remove SI/BDR cacheability AXI settings for ENETC v4
->   net: enetc: Remove CBDR cacheability AXI settings for ENETC v4
->   net: enetc: Convert 16-bit register writes to 32-bit for ENETC v4
->   net: enetc: Convert 16-bit register reads to 32-bit for ENETC v4
-> 
-> [...]
-
-Here is the summary with links:
-  - [net,1/4] net: enetc: Remove SI/BDR cacheability AXI settings for ENETC v4
-    https://git.kernel.org/netdev/net/c/a69c17230cab
-  - [net,2/4] net: enetc: Remove CBDR cacheability AXI settings for ENETC v4
-    https://git.kernel.org/netdev/net/c/9ae13b2e64fc
-  - [net,3/4] net: enetc: Convert 16-bit register writes to 32-bit for ENETC v4
-    https://git.kernel.org/netdev/net/c/21d0fc95b592
-  - [net,4/4] net: enetc: Convert 16-bit register reads to 32-bit for ENETC v4
-    https://git.kernel.org/netdev/net/c/c28d765ec5da
-
-You are awesome, thank you!
+Unless the maintainers acks this I think we should just wait until 
+we can delete this driver completely. Unless this unblocks removal
+of some VLB-related APIs (which I wasn't able to spot..)
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
 
-
+pw-bot: reject
