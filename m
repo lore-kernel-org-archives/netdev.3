@@ -1,103 +1,185 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF4339E6EF
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 14:11:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8ACF3A4F48
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 14:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770127865; cv=none; b=ilNkaoaPf1LxjHyn4eVe3q2211SahIDfnEgGOYW7PEBTFAjeb0XXWD6psd2loU9ylNoLfVW5uXigUo402I9H+oicYVV+lwKEIZzW1LIPqRjFSSB682dPScX7Xjebz5Wd+w4/XrNnnpttAU5+Fk0tmt0+2cuNGptvw6zOKKLoQtY=
+	t=1770127918; cv=none; b=MI3DzF8DhRmtTeV+ilqFQZAVzcqjzAeagzTxftFKMDeIklWQJXGFYzgoG7TgaueGFpCK4zpzLAGZhPLjcsoc6bjxeCSxum3u8jdt+GN30Cu2m3X7lHuphAHRIyhfgLm8MEg/TcO7x7AwsNFOVfPHaAmDABRhuviEE938ldphcF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770127865; c=relaxed/simple;
-	bh=Pyy4Ud5YR50xGXylHe5nNlnTzMYlylWFtHYirAjMfrw=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F9P9GDESm43T5n0GtXPeOZ3x/dGuZ1vTg/iAtFxMGr9JO7DVci+KTLws2yx3xknnA1u4SDr/Ll66fAjJdMOtG3shieldml8aX4E3y4OlLlOwj5tA39wa6qrOE8KOwte8exy/q1sVPUCcQHGFrnh5qC1VrO2+zGHwBLzXzPlhUQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=ZWVe0Xow; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1770127918; c=relaxed/simple;
+	bh=TX/BuBNdfcXbY7I6FBnyQtnO2IYNCp9D92IFrM4t4Rs=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=F2lLt8c2l1WnbeX7dj+OWjkO23cemaLsaMQWspQqxXaliE4x8nBtVJP/JJEDUxPmAzLlDZA4OLcBAks0WTgrVswKvu/mT9iD2Qr25MzLXsiXQNkzCF61glRzUcQeEmI1VAQlFNZcOjFozY0YtQS23H0Jq0fGp4/cogIWaZhyk2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Xx2/mPu2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6pbbJOQn; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Xx2/mPu2; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=6pbbJOQn; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="ZWVe0Xow"
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 613EAb7U2593544
-	for <netdev@vger.kernel.org>; Tue, 3 Feb 2026 06:11:02 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=s2048-2025-q2; bh=xPwa66gSxYzT9+eApTEv
-	0hHKetW3SWjPgCTZ/WnD5iE=; b=ZWVe0Xowl5JzZJOU6X+TdeNjVlT9WAQIIjjX
-	poVKLvHvQgdO30ecqbVFUy93gjHZImhkbz94Qd9CFqJbEBOiBOAPco+dwg0v16/Q
-	AQZnBgkuS2mbtetynROmaQRNJK6La9RiaDjhG6Tv83NJMIO6wX4pRFgo/s0TyuNc
-	3+ttYvQsqspoJHy5J6oUGZshddpkc2E+7pqXznuutaCEGHyaVYQG7+T5g8SgkrhT
-	Srbz7yahf/H1Lc+CeUoFsL3jnzL88UNClO/6DM6vIhmvbHNrpnEbo3rxP9lJOIf/
-	tshM7whLv1SXtSYCUov4kqJwc1umRBWkqcNFZ6PvrihorQ37og==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4c3jhx804m-5
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 06:11:02 -0800 (PST)
-Received: from twshared26871.17.frc2.facebook.com (2620:10d:c0a8:1b::30) by
- mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Tue, 3 Feb 2026 14:11:00 +0000
-Received: by devbig010.atn3.facebook.com (Postfix, from userid 224791)
-	id 6DFC490F750; Tue,  3 Feb 2026 06:05:20 -0800 (PST)
-Date: Tue, 3 Feb 2026 06:05:20 -0800
-From: Daniel Hodges <hodgesd@meta.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Jon Maloy <jmaloy@redhat.com>, "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-        Simon
- Horman <horms@kernel.org>, Ying Xue <ying.xue@windreiver.com>,
-        Tuong Lien
-	<tuong.t.lien@dektech.com.au>, <netdev@vger.kernel.org>,
-        <tipc-discussion@lists.sourceforge.net>,
-        <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH] tipc: fix RCU dereference race in tipc_aead_users_dec()
-Message-ID: <aYIAWS7wm1WGeDIq@fb.com>
-References: <20260201022128.2658251-1-hodgesd@meta.com>
- <20260202174833.3e0ea821@kernel.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Xx2/mPu2";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6pbbJOQn";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Xx2/mPu2";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="6pbbJOQn"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 17EDF3E6C3;
+	Tue,  3 Feb 2026 14:11:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770127915; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0RMzXHsPQlgkeAYbDLGcLFgF5Ph+Gtc4fbF+WDWzyf0=;
+	b=Xx2/mPu2ak55Dbxq6DT8bviMY+MDKO0Nxzn2YiGxDj2MozgmuOK77lQqD13RroYFH6EOkj
+	vQs4YqOER2OUumuTTVS4vaY9KRgs8+6ttHD0hslG95zjDEyLa3wwGUTi53j3PIyd8eqO6I
+	yLaO0Q3qLo0sjlsGTsU1S0dFTBgxpM0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770127915;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0RMzXHsPQlgkeAYbDLGcLFgF5Ph+Gtc4fbF+WDWzyf0=;
+	b=6pbbJOQntLAl8IkzFpb4gogbh01ipertL8l3EIZLfLBBuT32b4ISt+gf3/yVuCCEFx/74C
+	Gi8+3c9GU28ZpUAw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="Xx2/mPu2";
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=6pbbJOQn
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770127915; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0RMzXHsPQlgkeAYbDLGcLFgF5Ph+Gtc4fbF+WDWzyf0=;
+	b=Xx2/mPu2ak55Dbxq6DT8bviMY+MDKO0Nxzn2YiGxDj2MozgmuOK77lQqD13RroYFH6EOkj
+	vQs4YqOER2OUumuTTVS4vaY9KRgs8+6ttHD0hslG95zjDEyLa3wwGUTi53j3PIyd8eqO6I
+	yLaO0Q3qLo0sjlsGTsU1S0dFTBgxpM0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770127915;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=0RMzXHsPQlgkeAYbDLGcLFgF5Ph+Gtc4fbF+WDWzyf0=;
+	b=6pbbJOQntLAl8IkzFpb4gogbh01ipertL8l3EIZLfLBBuT32b4ISt+gf3/yVuCCEFx/74C
+	Gi8+3c9GU28ZpUAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ED71C3EA62;
+	Tue,  3 Feb 2026 14:11:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id Yw7cOSoCgmkSGQAAD6G6ig
+	(envelope-from <tbogendoerfer@suse.de>); Tue, 03 Feb 2026 14:11:54 +0000
+From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+To: Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Weiping Pan <wpan@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 net] bonding: only set speed/duplex to unknown, if getting speed failed
+Date: Tue,  3 Feb 2026 15:11:52 +0100
+Message-ID: <20260203141153.51581-1-tbogendoerfer@suse.de>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260202174833.3e0ea821@kernel.org>
-X-FB-Internal: Safe
-X-Proofpoint-GUID: l-o7_SGGC2Zruq-dh9qmf43qBxzVLdCL
-X-Authority-Analysis: v=2.4 cv=faKgCkQF c=1 sm=1 tr=0 ts=698201f6 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8 a=zGRTnv7GGmDJrsnug2wA:9 a=CjuIK1q_8ugA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-ORIG-GUID: l-o7_SGGC2Zruq-dh9qmf43qBxzVLdCL
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjAzMDExMyBTYWx0ZWRfXx/DAy9/L5n2c
- L6GRTPc/I+qFrBMg9iSCFxl96nGXdebcezPyOjmYZLzrtHF/wrZ/KpnNgP3knHaIWAhfZM0aAmD
- WmBv/Rtyq+zO+HdqUR/CY/AhPP7d4HTIzhT4ApMIZABsgazfdSqad8ITrmvMmd1Cu6k9+arwyZy
- 88OL/Yq9WICQ4jE/unbCp/Hg8/qZATzgCrbaCfbdMyS7VJviXr6ewPbdIt57nEKEZKreq9nuNzX
- pDrP+3BF2DSsH5OPZ1R8+N8bCHTELggSW6BFHfWDpfrKtQgo32IvjG3f/MIQWQvz76LRwFLujy+
- /rBMva/BS5Jxg3pdKvIYloPtTjMqfnu0Cb+4OjYKBdnhJFzK+7o96IpDPh7bOIusCXTunPqylyE
- Y7VG87TZoRfCNK9XL1QFdLaHgVpYyU9mjuyQzRtk/ubmM2mePbo50+BBiE/HUB2Dw1IhGzIv9qa
- kuLAel3tCu7iZgKeEpA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-03_04,2026-02-02_01,2025-10-01_01
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -1.51
+X-Spamd-Result: default: False [-1.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TAGGED_RCPT(0.00)[netdev];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 17EDF3E6C3
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
 
-On Mon, Feb 02, 2026 at 05:48:33PM -0800, Jakub Kicinski wrote:
-> On Sat, 31 Jan 2026 18:21:28 -0800 Daniel Hodges wrote:
-> > tipc_aead_users_dec() calls rcu_dereference(aead) twice: once to store
-> > in 'tmp' for the NULL check, and again inside the atomic_add_unless()
-> > call.
-> > 
-> > Use the already-dereferenced 'tmp' pointer consistently, matching the
-> > correct pattern used in tipc_aead_users_inc() and tipc_aead_users_set().
-> > 
-> > Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
-> > Cc: stable@vger.kernel.org
-> > 
-> > Signed-off-by: Daniel Hodges <hodgesd@meta.com>
-> 
-> Somehow this didn't reach patchwork, please resend, and while you do
-> that please remove the empty line between cc stable and you sob.
+bond_update_speed_duplex() first set speed/duplex to unknown and
+then asks slave driver for current speed/duplex. Since getting
+speed/duplex might take longer there is a race, where this false state
+is visible by /proc/net/bonding. With commit 691b2bf14946 ("bonding:
+ update port speed when getting bond speed") this race gets more visible,
+if user space is calling ethtool on a regular base.
 
-Sounds good, the corp email keeps getting filtered so I'll resend from
-my personal email.
+Fix this by only setting speed/duplex to unknown, if link speed is
+really unknown/unusable.
+
+Fixes: 98f41f694f46 ("bonding:update speed/duplex for NETDEV_CHANGE")
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+---
+v2: corrected fixes tag
+v1: https://lore.kernel.org/all/20260130111904.144024-1-tbogendoerfer@suse.de/
+
+ drivers/net/bonding/bond_main.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index e7caf400a59c..4cdf89b21ca0 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -791,26 +791,29 @@ static int bond_update_speed_duplex(struct slave *slave)
+ 	struct ethtool_link_ksettings ecmd;
+ 	int res;
+ 
+-	slave->speed = SPEED_UNKNOWN;
+-	slave->duplex = DUPLEX_UNKNOWN;
+-
+ 	res = __ethtool_get_link_ksettings(slave_dev, &ecmd);
+ 	if (res < 0)
+-		return 1;
++		goto speed_duplex_unknown;
+ 	if (ecmd.base.speed == 0 || ecmd.base.speed == ((__u32)-1))
+-		return 1;
++		goto speed_duplex_unknown;
+ 	switch (ecmd.base.duplex) {
+ 	case DUPLEX_FULL:
+ 	case DUPLEX_HALF:
+ 		break;
+ 	default:
+-		return 1;
++		goto speed_duplex_unknown;
+ 	}
+ 
+ 	slave->speed = ecmd.base.speed;
+ 	slave->duplex = ecmd.base.duplex;
+ 
+ 	return 0;
++
++speed_duplex_unknown:
++	slave->speed = SPEED_UNKNOWN;
++	slave->duplex = DUPLEX_UNKNOWN;
++
++	return 1;
+ }
+ 
+ const char *bond_slave_link_status(s8 link)
+-- 
+2.43.0
+
