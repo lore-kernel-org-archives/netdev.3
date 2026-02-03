@@ -1,89 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A97C3D3B3
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 19:36:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770147401; cv=none; b=gNnuwGRWTXi87OtR0uAAgWmKDZ0vD9Vo+udAAHbGpadj1RxUq61GOi51GtslXdYsQJN7dEZoUBXsjmhjmcuBJeWa9lIDduY11+ABsHuOIX4DwH4T/XpL4rUoVNCLGEBfHKp6lKzWsZ+edy92jt5jHxallG5IHIx4CUE+EoxAElk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770147401; c=relaxed/simple;
-	bh=VXxXrFR7FOAeHWVzQhn1Sz/LPEHliuLvfiDtTIU10YQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Zn/FulawGQRLVEUa8ro6jJnPm8yUAGMPDpXMLkfbMAK9jIgGuLxUcnbuti70xGYJzvWIFf+Ltpd3u9Y87MZAf5R4tsZqJrNYBEJ8N2jPVt/6x3w41r0tNDIyB44YjO24aGGRRKiDyiyhKAzWqw9ADayTZImSxzUbLemCWfj6c8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OFW8nQd/; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE0F2D7D41
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 19:52:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770148345; cv=pass; b=mWBdVDSQo9kWL44S05sAyfSBh1gE/6HkAzsdmvY+cEcAEoQKIxkvETy+fOoB2NHkihx4AlkBJ/i5GrvboZGOz9ndUxjB2NFnnizVQf1Nup9NtfhBPPGtHfKuNW7zELe6VbAndG/RZ8VI/W8ttLu3Lu9r/gOh9fl1q5tpVsodzCw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770148345; c=relaxed/simple;
+	bh=+KAh+xvIiuzTinmuwZkrGBCwy1I/jlikotrCcBlMtwY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uyybkc0RUBJWioSqKQytBAtq6wwJ6WGxjffKkb9vMvXc1IsHbRkkj1i62xGSOYdDXKf1QgDumIwwNmMbRpEeOLIBX/l7pkqq4T5O67vN73eIZc8GTD9Wd9YPN1aZD1PYoc3m5eYuQ6baMBlIwzphhPofU6fJzkwX6nj5lHeTbwI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Q5ckSNkZ; arc=pass smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OFW8nQd/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5C7C19422;
-	Tue,  3 Feb 2026 19:36:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770147400;
-	bh=VXxXrFR7FOAeHWVzQhn1Sz/LPEHliuLvfiDtTIU10YQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OFW8nQd/RRf7I/7OqnEfel1RFGngPtyZVUNhxXzPI47EKSr0kfV6axyAZWiFGBey3
-	 2RG5//5WTGQsb25QFg1rYW0hgQxpQz82+K1fatUS8nyZdFLf/48yIGTRdNkA8IExm3
-	 r/zCQgQd+tL1Y/aQ42gC9I//frrpoqIf8+7IbrhXjbaJJDJEulTHgkJtziE6SE9xKD
-	 0ECrlvMs23rtfwIS51ZTIh959pHENEr3YWp/zG4kpdOG3TRnkFcTILsIS2g6Rqxdfq
-	 fvRTTUEncfJQB48Ab5AHNSB7O88GTkjFbMMY1Pimmjf7C1V0uZB6KhX6M2gxtRx/1X
-	 22oBGShxMLMBw==
-Message-ID: <b0ed91ce-cf96-430d-aef9-9b42bc52277c@kernel.org>
-Date: Tue, 3 Feb 2026 12:36:39 -0700
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Q5ckSNkZ"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-658ad86082dso10455936a12.0
+        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 11:52:24 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770148343; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gS3b5QM6TjUc3MGZxCwfgHGBvgCUxe6At09crHKXrYg10FwlG6sIpAvoSQvvVA1Xhj
+         gAfok/wS6OpdOqk1Ro/upCPwCcxBTVFn989g0KkjdDokjcg17o0Q6nAJVhWpGk0swrXn
+         29c9O6b0Jz1IjPwY9zdAhfnnagRDDqd+eI0pXcsnagCjUtmQFX6paQkdNx+CC88Ye+R1
+         3wmUc8VwkkQFYV8TAr2gJeDl8PAQR8uLeUgyFDAtCiJSwVPI7KPUxfyR4Z6hPW8Pyou1
+         ouvSs4YbPG3kgGotnK8Da6jBiGx0NkPyoEyf2Kkdjvi7fMX7svdYUNtpCL21Edlqukvh
+         B4Tg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+KAh+xvIiuzTinmuwZkrGBCwy1I/jlikotrCcBlMtwY=;
+        fh=ea6iwhPt93VCp/g2qdaTgOSdIIiEOVRm3J+7QJbF0Zo=;
+        b=FcOqaAX3OJfMYHxEs7VD8f1naJkTZMtFEnG1jm2ysHz0KfndknrYmLO2y70+laIpvC
+         uZiNvAWBsoX/6qFRH5JNS4wP5aM8EQtdyIxbbH6uKmjh/nEW+TxlagMtyP8e+o3J0gHh
+         09j2PyT5W7lRSeyZVSQVp+t4H7GSBc4SzMslQ7ZL9k8H/oNheYjSrAkwY33FEFtHkyrd
+         Sx4QQeXwJC/JXljtT59HyBtBTlv4r9e+LC26NdpAZs3qvb848Y6CTzlJ/EID4LE/pzyx
+         VHTmNyPwRxJ6yzNUXaAw91OWOFBvwcSmod3JxMlUmnnpH1j2nCee4TQ+ggCJrJ/lEJgl
+         Bp6Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770148343; x=1770753143; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+KAh+xvIiuzTinmuwZkrGBCwy1I/jlikotrCcBlMtwY=;
+        b=Q5ckSNkZnRHMRtC+i4Qw9XhZJErh3c+gu8TxzMYxLLR++CyV7Jc7pKsOvTQFTBkDfh
+         5eP4gisgaUa9Qij5Elyw3AY+6pPtH0OYRYgTASQm6vWMaGzYUoiEC37UVMJJIK9Ipbxi
+         zQAAjDOgu/RxFXwIPVwivxyr/u83Gwcnb9hTEHn1tZ4bMnvY11Ja62p0ZhEiSBHNupef
+         2+eM1YtAbG2Trhbkx3Lq1HI6JJHlkwT+7A8koCAPPmvMZKy+vrq8UOd2vNVHPxU2m7vF
+         +1QV60LjP6Yr7zoZ1I3CaBC+cHa0zWqa+326zDu47HuZziwEEKZ9Rz1uPAplAPzSrCgp
+         SmVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770148343; x=1770753143;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+KAh+xvIiuzTinmuwZkrGBCwy1I/jlikotrCcBlMtwY=;
+        b=hNVjBc4OSNd93iam09XjifqH6koznHgUr3ig/IL956kYEVYAmrWXRLmemtBXR5w9tx
+         RWl3MSf5icon8fV6jFEAUctAKx7oMMmm7pOENN2lPSxiuJM+gEvvibylx7YkNEdB/ual
+         2Z6ihptGpo1HT1fkdl2FPmkBozik6spT8snWx6n605uPzTwwsz2jgeoxafFDz0AUe4WL
+         T6T3Q2e3EQ0V866ZQzP6AVS6hc7BNlMm4pAjr/mOHQnE+VOnKfabjiWskGoehWZu+4YZ
+         zfWDCbR9Lk1uPppex3lgYOWzxv7bvAlsrpm80U8L99ASFArd3HJ7r9Ia8JE/WebRgjw8
+         zQRA==
+X-Gm-Message-State: AOJu0Yyz9P3GmVu+SrggF3Qt3jWu+uKWh8bEsLdsdVMMvo9XyowkXJR6
+	OaOhe3aZK20fPtBrFG5P8sf++MZPwPVva0ZOgwdH3b4jvwmt5nGx0VJ7z3qKXgTldJEloBlPkJA
+	N4QUTnOHqVAwFhmIC9E1GV/Nq3O8Fvno=
+X-Gm-Gg: AZuq6aI4/fvtL5JE6FEkTahwQc4eFCRsQLFqIWxgVwDDXhLAUaPdhifnZ0TR8oO2Stw
+	gJAQy/rKgaX1abmh62sRc+c186g/HpTDEHk47FSB76DpxMZVavBYvr/IbeOTlWqdg60hVmjzpAf
+	MW5is4YULhW2FIJjvDJ6SPJWu/BikQXYi2OzLp6icQNGleuiQmnS/sOjvwq3GXrKj2xGuaczBv0
+	M0Y7T4axaM4TnxeKIimh5O3oz7GXb8AHxe0xsu8dypKguZnq14eMf3HQNUZwlwt2NqWOnZBl8ok
+	uCdUdrku
+X-Received: by 2002:a05:6402:274b:b0:658:eca:1fa5 with SMTP id
+ 4fb4d7f45d1cf-65949fd4a88mr530985a12.20.1770148342590; Tue, 03 Feb 2026
+ 11:52:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] inet: RAW sockets using IPPROTO_RAW MUST drop
- incoming ICMP
-Content-Language: en-US
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Willem de Bruijn <willemb@google.com>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com,
- Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>,
- Ido Schimmel <idosch@nvidia.com>
-References: <20260203192509.682208-1-edumazet@google.com>
-From: David Ahern <dsahern@kernel.org>
-In-Reply-To: <20260203192509.682208-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260202214634.72738-1-rosenp@gmail.com> <CAMRc=MfwuhrUZiFp5v0EjbMJw0fYZTfznqPN_6yuMWxnD4ircQ@mail.gmail.com>
+In-Reply-To: <CAMRc=MfwuhrUZiFp5v0EjbMJw0fYZTfznqPN_6yuMWxnD4ircQ@mail.gmail.com>
+From: Rosen Penev <rosenp@gmail.com>
+Date: Tue, 3 Feb 2026 11:52:10 -0800
+X-Gm-Features: AZwV_QhUhGkiHiwFOa2GkG39dG5L-lytsv2PhBNzT1qvMKtk87kXCYDBtdnQZMk
+Message-ID: <CAKxU2N-zUJsgX8dFewAQk-xVdjHULDDGVy0zht8-qYd7_8Asow@mail.gmail.com>
+Subject: Re: [PATCH net 1/3] Revert "net: ag71xx: use devm for register_netdev"
+To: Bartosz Golaszewski <brgl@kernel.org>
+Cc: netdev@vger.kernel.org, Chris Snook <chris.snook@gmail.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Russell King <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/3/26 12:25 PM, Eric Dumazet wrote:
-> Yizhou Zhao reported that simply having one RAW socket on protocol
-> IPPROTO_RAW (255) was dangerous.
-> 
->   socket(AF_INET, SOCK_RAW, 255);
-> 
-> A malicious incoming ICMP packet can set the protocol field to 255
-> and match this socket, leading to FNHE cache changes.
-> 
-> inner = IP(src="192.168.2.1", dst="8.8.8.8", proto=255)/Raw("TEST")
-> pkt = IP(src="192.168.1.1", dst="192.168.2.1")/ICMP(type=3, code=4, nexthopmtu=576)/inner
-> 
-> "man 7 raw" states:
-> 
->   A protocol of IPPROTO_RAW implies enabled IP_HDRINCL and is able
->   to send any IP protocol that is specified in the passed header.
->   Receiving of all IP protocols via IPPROTO_RAW is not possible
->   using raw sockets.
-> 
-> Make sure we drop these malicious packets.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Reported-by: Yizhou Zhao <zhaoyz24@mails.tsinghua.edu.cn>
-> Link: https://lore.kernel.org/netdev/20251109134600.292125-1-zhaoyz24@mails.tsinghua.edu.cn/
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
-> Cc: Ido Schimmel <idosch@nvidia.com>
-> Cc: David Ahern <dsahern@kernel.org>
-> ---
->  net/ipv4/icmp.c | 14 ++++++++++----
->  net/ipv6/icmp.c |  6 ++++++
->  2 files changed, 16 insertions(+), 4 deletions(-)
-> 
+On Tue, Feb 3, 2026 at 2:29=E2=80=AFAM Bartosz Golaszewski <brgl@kernel.org=
+> wrote:
+>
+> On Mon, Feb 2, 2026 at 10:48=E2=80=AFPM Rosen Penev <rosenp@gmail.com> wr=
+ote:
+> >
+> > This reverts commit cc20a4791641a1cbd1525695fac0d4725dd72509.
+> >
+> > register_netdev gets called after phylink_create which has no devm
+> > equivalent. phylink_destroy must be called after unregister_netdev and
+> > not before.
+> >
+> > Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> > ---
+>
+> Can we just use devm_add_action_or_reset() with a callback calling
+> phylink_destroy()? It will surely make error handling in probe easier
+> and avoid mixing devm and non-managed APIs.
+netdev seems to not like devm, at least according to
+process/maintainer-netdev.rst
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
-
+Anyway, I'm wary of custom devm_add_action_or_reset calls.
+>
+> Bart
