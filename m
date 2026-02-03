@@ -1,102 +1,175 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFAAB303CB6
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 10:12:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4C7303CB6;
+	Tue,  3 Feb 2026 10:13:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770113571; cv=none; b=n3aIOmkqnCVIVtDpjOP6ZoTSzKOD9hi6fvK0pQYuB82XahpgOGX4sBB/fMfeGu/oYbB/WGc3xboaC0i2ma6OllK6LR5kWFNuL4aFSbXGsTPDUrgd/4HRwyPHBT4YJqFPryXXEd9uum0mHDGjG3MSV/1FIrOQxHRug2Uq/Sx2zAU=
+	t=1770113588; cv=none; b=HUPzMeoLZrU4co3LhgyrPIJzpSvKsTJH1H37lYn+c+iGs7jJQceuzUwciPzxxtsChRcqvgxCWLm1HIZklrh6YWCyOjYB74lFwTRtFL4ksk4qV+JMi54RGykiYgeu58Svl3JclsfNOmExwpq8xqLM9Zj6K7Q4iYtuf8NOlX/8p+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770113571; c=relaxed/simple;
-	bh=DnvSTSv7LBx+Vzu1CvkDgGdKvfZghPhdaJxtfT+MCqk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bFiwQniCjykykpgWC7gIJN7lkSCX1rwPW4nSIMOJvBujTyobb0/e0fF8EzQJzEIg79IDZHvjzu/saoi6ZVgvUkR8P9rVy34q1GKHQK+ThLcSaafRqSmN1ndivZbB0BjlFF9uP8Y5Mf5du7IZUtpuTk4IcqnL4VmdABc6SwwCbzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VEbFE3Re; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1770113588; c=relaxed/simple;
+	bh=pJ0goWwKS6MP4ur7vxzRvhXTxeUm60Sw2ceZqjxHz+o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Eo5O9MQI470wJSEdKUvbClkYlKeeWvBzdfusLXDueq2V9e44yGjyEwc6LRHl9hVZUXcUMa1MjF3ftMB0H767BGlYMYCt2Uxr0ooz+1CyhtJdZ0Zsp8Tv7mDYFpqzVjQMuLsk8/KGmfzN5hXzg5u82znYBZ7+9EiGlC1PUATannM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=kIGWXhrH; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VEbFE3Re"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770113568;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="kIGWXhrH"
+Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4f4zbH658Rz9thY;
+	Tue,  3 Feb 2026 11:03:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1770113036;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=nP1IfYkUQ7uY1f69gZHH45lNWuRMCFoJZjwdxVzExvE=;
-	b=VEbFE3ReTNrnqtr3GzRQn4dpzpNbv3Tmir4Wm7n25+ytIhx2tjJ3FhJX5EC4gtVZ1V1uKQ
-	YrcJTCQICtZ/mTJdG0F/tRM4uwczmye8tpeY/C60IPx5FHPWPwpkLTM652wtzSZ8WRk26V
-	aQI0bNgYDWmpDLUee/ClelXbjU1MjiI=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-578-0y91T9zWNUO2rMCnxhDWaA-1; Tue,
- 03 Feb 2026 05:12:45 -0500
-X-MC-Unique: 0y91T9zWNUO2rMCnxhDWaA-1
-X-Mimecast-MFC-AGG-ID: 0y91T9zWNUO2rMCnxhDWaA_1770113563
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4525B19560B7;
-	Tue,  3 Feb 2026 10:12:43 +0000 (UTC)
-Received: from thinkpad (unknown [10.44.34.184])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7A1431956053;
-	Tue,  3 Feb 2026 10:12:39 +0000 (UTC)
-Date: Tue, 3 Feb 2026 11:12:36 +0100
-From: Felix Maurer <fmaurer@redhat.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
-	jkarrenpalo@gmail.com, tglx@linutronix.de, mingo@kernel.org,
-	allison.henderson@oracle.com, petrm@nvidia.com, antonio@openvpn.net
-Subject: Re: [PATCH net-next v2 1/9] selftests: hsr: Add ping test for PRP
-Message-ID: <aYHJ9KHdiBEGfjwA@thinkpad>
-References: <cover.1769093335.git.fmaurer@redhat.com>
- <b54f9225ae39d0d4bd9c8c1b0b98fe47fb7211eb.1769093335.git.fmaurer@redhat.com>
- <20260129110500.l2jOMEYp@linutronix.de>
- <aXthMlr6Hpas1LBt@thinkpad>
- <20260129152149.dKwN1yGM@linutronix.de>
- <aXucj8L-cBUVIYHX@thinkpad>
- <aYCPsDZeJvCrJYRH@thinkpad>
- <20260202155510.C1zpsxnk@linutronix.de>
+	bh=I/WLesTWjIpwef38SdQ4JX0gdMp0IJsjyMkm8xAgFWc=;
+	b=kIGWXhrH/fv5Z6UEAwBwiKWnU1HgR++qoAwUtaSjL0r2h36xtP6PXwALTo9+2xHpHvNDpX
+	7zzG/igQFe7TZlu/681yxRxR8YlgD6kHLF6QuhXJseIxd0hRuJkjd7lHXb4skFBFEXqdzh
+	jgCyWStCK5A94b3tELO/6fl8zgCGCNMb/s3//jcJUMlZV/K5Pr/H1HM+uH6cHsMNb0K0+p
+	dqlec2zoPzHAwiMB28GejqjFcDd7uK3S7/EQdz1XjIryuXQq9Qs4emeM15JzfeIKdplYVO
+	6p1jwz37A7xjGvN5mW8FZ4tYdhEKjcGECe2yHgo5PKxvwsyUKjSv9jnrfNM/XA==
+Date: Tue, 3 Feb 2026 11:03:41 +0100
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew@lunn.ch, shawnguo@kernel.org, krzk+dt@kernel.org,
+ linux-kernel@vger.kernel.org, edumazet@google.com, netdev@vger.kernel.org,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ conor+dt@kernel.org, horms@kernel.org, richardcochran@gmail.com,
+ robh@kernel.org, imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ devicetree@vger.kernel.org, wahrenst@gmx.net, s.hauer@pengutronix.de,
+ kernel@pengutronix.de, festevam@gmail.com
+Subject: Re: [net-next,v22,4/7] net: mtip: Add net_device_ops functions to
+ the L2 switch driver
+Message-ID: <20260203110341.1ce21455@wsk>
+In-Reply-To: <20260203014247.824561-2-kuba@kernel.org>
+References: <20260131233459.1625279-5-lukasz.majewski@mailbox.org>
+	<20260203014247.824561-2-kuba@kernel.org>
+Organization: mailbox.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260202155510.C1zpsxnk@linutronix.de>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-ID: fe9904b47499ae8f7ea
+X-MBO-RS-META: zwqoyhezb5rx5qmpyzoc4ik3614jqbee
 
-On Mon, Feb 02, 2026 at 04:55:10PM +0100, Sebastian Andrzej Siewior wrote:
-> On 2026-02-02 12:51:12 [+0100], Felix Maurer wrote:
-> > > Hm, I am not sure? For PRP, it's an explicit requirement to use the same
-> > > MAC addresses for both ports. For HSR, I think the standard is less
-> > > clear about the MAC addresses. And at least our code seems to assume
-> > > that there could be different MACs on the two interfaces of a node? But
-> > > yes, the node merging addresses this.
-> >
-> > I'm still not 100% certain, but I agree that the standard reads more
-> > like the MAC addresses should be the same for the two HSR ports. At the
-> > moment, the kernel and the test assumes that they can/should be
-> > different. Therefore, I think we should fix this across the board in
-> > another patchset if we agree that's the right thing to do.
->
-> I would suggest to do so. This could serve as bad example and my PTP
-> userland patches expect the same MAC on both ports. So ;)
+Hi Jakub,
 
-I'll put it on my list for another patchset :)
-But this of course brings up how the MAC addresses should be handled on
-the HSR interfaces in general. At the moment, for HSR we copy the MAC of
-portA to master. For PRP, the MAC of portA is copied to master and
-portB.
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+>=20
+> For local reproduction steps see
+> https://netdev-ai.bots.linux.dev/ai-local.html ---
+> net: mtip: Add net_device_ops functions to the L2 switch driver
+>=20
+> This patch adds net_device_ops callbacks for the MTIP L2 switch
+> driver, including transmit, multicast configuration, MAC address
+> handling, and timeout recovery functions.
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c ---
+> > a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c +++
+> > b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c =20
+>=20
+> [ ... ]
+>=20
+> > +static netdev_tx_t mtip_start_xmit_port(struct sk_buff *skb,
+> > +					struct net_device *dev,
+> > int port) +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +	struct switch_enet_private *fep =3D priv->fep;
+> > +	unsigned short status;
+> > +	unsigned int index;
+> > +	struct cbd_t *bdp;
+> > +	void *bufaddr;
+> > +
+> > +	spin_lock_bh(&fep->hw_lock); =20
+>=20
+> [ ... ]
+>=20
+> > +	/* Save skb pointer. */
+> > +	fep->tx_skbuff[index] =3D skb; =20
+>=20
+> mtip_start_xmit_port() stores sk_buffs in fep->tx_skbuff[index] and
+> creates DMA mappings, but mtip_switch_tx() which should complete TX
+> operations is empty:
+>=20
+> static void mtip_switch_tx(struct switch_enet_private *fep)
+> {
+> }
+>=20
+> The NAPI poll handler mtip_rx_napi() calls mtip_switch_tx() to reclaim
+> transmitted buffers. Since it does nothing, won't every transmitted
+> packet leak the skb and DMA mapping? Also, dirty_tx is never
+> advanced, so the TX ring will fill (cur_tx =3D=3D dirty_tx) and stop
+> accepting packets.
+>=20
+> jakub: maybe add a TODO comment transiently here, since later patch
+> implements the cleanup?
 
-If the MACs should be the same for both ports of an HSR interface,
-should we set them when creating the HSR interface, similarly to PRP?
-And does it make sense to copy from portA (feels somewhat arbitrary to
-me) or would it be cleaner to copy from master to portA and portB?
+The mtip_switch_tx() is empty as we have agreed, that I will divide
+this driver to several patches to ease the review.
 
-Thanks,
-   Felix
+Adding TODO seems to only make AI review happy, as:
 
+- The patch which adds support for FEC_MTIP_L2SW in Kconfig will be
+  sent after the driver is accepted to net-next
+
+- Those commits are even now bisectable when FEC_MTIP_L2SW is
+  enabled (when I test the setup).
+
+Anyway, if you still would like to have the TODO comment, then please
+give me a hint how it shall be written to make the AI happy...
+
+
+
+And maybe a few my thoughts:
+
+1. AI review seems to bring each time different issues - even the
+"grammatic" ones were not provided with the first AI generated review.
+
+2. I have tried to setup claudie> to run the patch set through it -
+however, it requires a paid account on a cloud/AI vendor (and I guess
+that different vendors' AI engines produce different output for the same
+"AI prompt")?
+
+
+Anyway, I do appreciate the AI review - it provides very deep insights
+through the code.
+
+>=20
+> > +static void mtip_timeout(struct net_device *dev, unsigned int
+> > txqueue) +{
+> > +	struct mtip_ndev_priv *priv =3D netdev_priv(dev);
+> > +
+> > +	dev->stats.tx_errors++; =20
+>=20
+> Jakub Kicinski noted in v16 review that tx_errors are already counted
+> by the network stack, and the statistic is exposed per-queue in
+> sysfs. Does incrementing tx_errors here double-count timeout events?
+>=20
+> https://lore.kernel.org/all/20250725151618.0bc84bdb@kernel.org/
+>=20
+
+Yes, this shall been removed.
+
+> > +	DO_ONCE(mtip_print_hw_state, dev);
+> > +
+> > +	schedule_work(&priv->tx_timeout_work);
+> > +} =20
+
+
+
+--=20
+Best regards,
+
+=C5=81ukasz Majewski
