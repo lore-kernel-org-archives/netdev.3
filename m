@@ -1,60 +1,49 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EF0385EDD;
-	Tue,  3 Feb 2026 13:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DDF17A31E;
+	Tue,  3 Feb 2026 13:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770124582; cv=none; b=jrbW3BAk0ce2p+syCfFDTQjN/s9+gI5Sqrl1RBUxpayaXWyR2zl1jjdSeKCkFz9sN3Ta/Mwl9BIed9ntoVQaIeyLlBe8SY/+DZXgqYwCMhdDGVgVXpDAHI1jOwDf4oxgmGNgukeqLD6Wd5L24Ok8E0dq0zILqdwQy5rRzualQXw=
+	t=1770125573; cv=none; b=oCes1obbPCZcU4U1BhSfBq873P/fNBX3cAgallmjCOrILqQ9X/lcqGNpaJ0Efqzkqt6MbNxcVOp/rhjvNlOcsWOWiC23R3c3y/nn9rijLmtSQ/xA52BTKAnq35VoNPI/HN89UkGyG20tGD0a7+clrssQ5lvaUqRFH2QEj/+srTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770124582; c=relaxed/simple;
-	bh=HDPneb55qtgvNu3+d9TVk6u81VfL16ep3qPvTyk+8uw=;
+	s=arc-20240116; t=1770125573; c=relaxed/simple;
+	bh=qm4YUTuDw+jWrgfNNkyliipxvN94JoXrfQZAS3LoZec=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dTPtJW39ztqwkaK59gzDlViQj+5s24jKfFUaBROKuD28KLUAdHK7r6deGEa9fCinjEPD6hkMBQPzVIqiEpBB0eOxZzWtwiABiry02MPOzy0dwHSLQNELvRhxhn6ZAbCta3m7AOy/pE7lgX/qyHXpsleEvJ5OYAGH1l0GoXKGWhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=DSo22puK; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=HOU3knruEz1MfCpQpiR/W0uFv4+f9LIWkdUpVzlk9pzguBX21PAqBDuR/LmE0GvMRCO6bhx60cNt3WgOpBZYep3e4V5zZneBJ0Yc56WTy0bl+I0S+dzdg5ZTJk4gl1QrcVKJnMiCtTpkZDmSjuhc4ORbPR8eebBPoDwaNAQn4KE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=hn35khLI; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="DSo22puK"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="hn35khLI"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=DqEfoVQW+S/wbK56us6FBxe4eLE4pqP9qq5Ho+feXg0=; b=DSo22puKAJc6J757xa9dy+juua
-	N2WMkIep7hEbXa7+auSowaMb+3Peyv9KGFR2dXunWxoLrJXF/S/oH4DKNVPhbrNaU6mZsXsHSW6Ro
-	8VZqdy47XMKB+Hfk2dnd/1a9YbYeN0uX0b3xS9wAIgPckBzrmrj0UGRGAi1XF6tpE0/8=;
+	bh=SWGKlBRXsvslJKCJ791DxTaky6mRbtocoIFvmRiqDpg=; b=hn35khLI9F+pQXZndNVLk9eWGu
+	e5pdDrsNjn9640vLGnMmqtEN7pXRuPz7UuKOZVZ5F50nJ6Vfu/ONU0pb1BLR52+DJDct1m9VTZC3p
+	AO4CTi/+XgjtGceZY6FNAS8lBwAdPdeRQ3iaDfeziTQUN4Le+n+LTZDHrkTNyomjqNus=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1vnGGB-005wry-Ku; Tue, 03 Feb 2026 14:16:03 +0100
-Date: Tue, 3 Feb 2026 14:16:03 +0100
+	id 1vnGW2-005wva-Bx; Tue, 03 Feb 2026 14:32:26 +0100
+Date: Tue, 3 Feb 2026 14:32:26 +0100
 From: Andrew Lunn <andrew@lunn.ch>
-To: Min Lin <linmin@eswincomputing.com>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
-	Krzysztof Kozlowski <krzk@kernel.org>, Bo Gan <ganboing@gmail.com>,
-	=?utf-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>,
-	devicetree@vger.kernel.org, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
-	netdev@vger.kernel.org, pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	ningyu@eswincomputing.com, pinkesh.vaghela@einfochips.com,
-	weishangjuan@eswincomputing.com
-Subject: Re: Re: Re: [PATCH v1 1/2] dt-bindings: ethernet: eswin: add clock
- sampling control
-Message-ID: <dd8e35c7-d7a9-44d1-9929-5a6a1cfb4f05@lunn.ch>
-References: <e6f7da45-3dec-4af6-a5b1-a72210bf24f4@kernel.org>
- <43923bf9-6202-4147-8eac-5bd7bb653fd4@gmail.com>
- <bd202cfa-d6eb-4d0e-982d-b49795dd25f7@lunn.ch>
- <009aefc4-fbc9-4f91-9230-23d18c281bf3@gmail.com>
- <73ea5619.2b71.19bf847c80d.Coremail.linmin@eswincomputing.com>
- <aXeydXuWEMDz-yVM@shell.armlinux.org.uk>
- <32a1f814.2c79.19bfe173225.Coremail.linmin@eswincomputing.com>
- <973f2b4b-bf8d-4a77-a27a-47495bc21ff8@gmail.com>
- <5c835fe9.2d60.19c0325df03.Coremail.linmin@eswincomputing.com>
- <43c97440.30bb.19c221bd137.Coremail.linmin@eswincomputing.com>
+To: =?utf-8?Q?=C5=81ukasz?= Majewski <lukasz.majewski@mailbox.org>
+Cc: Jakub Kicinski <kuba@kernel.org>, shawnguo@kernel.org,
+	krzk+dt@kernel.org, linux-kernel@vger.kernel.org,
+	edumazet@google.com, netdev@vger.kernel.org, pabeni@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, conor+dt@kernel.org,
+	horms@kernel.org, richardcochran@gmail.com, robh@kernel.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org, wahrenst@gmx.net,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com
+Subject: Re: [net-next,v22,4/7] net: mtip: Add net_device_ops functions to
+ the L2 switch driver
+Message-ID: <3632215c-24cc-42a3-b565-c2e48be5bdf7@lunn.ch>
+References: <20260131233459.1625279-5-lukasz.majewski@mailbox.org>
+ <20260203014247.824561-2-kuba@kernel.org>
+ <20260203110341.1ce21455@wsk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,13 +52,47 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <43c97440.30bb.19c221bd137.Coremail.linmin@eswincomputing.com>
+In-Reply-To: <20260203110341.1ce21455@wsk>
 
-> Do you think it would be reasonable for eth1 to have another different compatible
-> string, such as "eswin,eic7700-qos-eth-quirk"?
+> > jakub: maybe add a TODO comment transiently here, since later patch
+> > implements the cleanup?
+> 
+> The mtip_switch_tx() is empty as we have agreed, that I will divide
+> this driver to several patches to ease the review.
+> 
+> Adding TODO seems to only make AI review happy, as:
+> 
+> - The patch which adds support for FEC_MTIP_L2SW in Kconfig will be
+>   sent after the driver is accepted to net-next
+> 
+> - Those commits are even now bisectable when FEC_MTIP_L2SW is
+>   enabled (when I test the setup).
+> 
+> Anyway, if you still would like to have the TODO comment, then please
+> give me a hint how it shall be written to make the AI happy...
 
-I think you can argue the two Ethernets are not compatible with each
-other. But i personally would not use 'quirk'. Maybe something which
-says how they differ?
+I would not make too much effort in keeping the AI happy, for
+something we understand is transient. It is currently not a gate for
+acceptance.
 
-     Andrew
+> And maybe a few my thoughts:
+> 
+> 1. AI review seems to bring each time different issues - even the
+> "grammatic" ones were not provided with the first AI generated review.
+
+The rules are being tweaked as we gain experience with it, so i would
+not expect it to produce the same output every time. Even if it was
+stable, it is not clear to me if it is reproducible.
+ 
+> 2. I have tried to setup claudie> to run the patch set through it -
+> however, it requires a paid account on a cloud/AI vendor (and I guess
+> that different vendors' AI engines produce different output for the same
+> "AI prompt")?
+
+I expect so. It is clearly not checkpatch.pl and the like were you can
+run it 100 times and get the same answer every time. But i think that
+is understood. So long as there has been a discussion about its
+output, patches should get merged even if there are still AI
+comments. It is just another tool used in the review conversations.
+
+	Andrew
