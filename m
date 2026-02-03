@@ -1,138 +1,162 @@
-Received: from galaxy.gendns.com (galaxy.gendns.com [66.235.175.158])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8370280CC9;
-	Tue,  3 Feb 2026 22:26:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.235.175.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEED2369208
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 22:29:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770157565; cv=none; b=mlaMQu1RsC96JtEcRNIVtrQLsX+IqaiOgw/MNrvkWrC7vHghtSzuvZpzh8jePQiRMQ/l6Pr3g8glLFGbg1z+MYGQf630th6eMWyKDAPILKw3cWjUQQ4VHL1G/tAWwDBKNSxPJtHp+IqkVfdH9DPOtg0Bwlp8+wKH372LhN1AEzs=
+	t=1770157748; cv=none; b=YYNZ7iKgoPBtVXMYih07DyanIvfc4bi3EqaVUD6WGVPFwp99/eJnVSPXXDtd5K0S1XaVFjsCqNcEr177IEzJ94gD2adygJSSu48z9TRnAM2djaK+NPKikzYYNp4sihyQ86suKcRN8vCjgf779dwXJKtNXwEKy4zolLmpFAA1de8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770157565; c=relaxed/simple;
-	bh=hW5ALRU4pRTytfRcBR/ccmGuaty8zrbzEgBBu7TRXgk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A0ue5GNWz1h7V7e0gQnTOibuYnEAXq+ISHHHoL35SxdVYRVcnoKlHTflYaEq1CNxzMj0lADTY/1X34oGyh8+s079nCQHw6KKvqJRYmSzcCSGGtJEvGQ1kTG93hZeZIJWJ458UvkAbvgfIePvDJOh1ow6/9MzXplkhij6LRjQDS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com; spf=pass smtp.mailfrom=lechnology.com; dkim=pass (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b=rl40TErI; arc=none smtp.client-ip=66.235.175.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lechnology.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lechnology.com
+	s=arc-20240116; t=1770157748; c=relaxed/simple;
+	bh=KVuVxATK6tiu2JVfmX0IasB0mDRYeBOPP6q7SnmEn+4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GE26nTQ3Rh+UbcowcykJ38LqceaDqg3mwYcEwuCSpWrt2OK7oYggni2q0DBhzCTqfsVAd6wDPs2O9UGSYkpnAvDPnRghx+KYUdqTLIT1K9AmlcCiz+9sKZP4Wcq3wRi6xuqpWSq/nLFpkxtQFPKx9+Roy3E6StSlkfbsfbtnF80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LTnuiWcj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lechnology.com header.i=@lechnology.com header.b="rl40TErI"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lechnology.com; s=default; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=wm24Jp5La5O55tojWMeVfNjPmY1+xEaXsFnYX/lbqr0=; b=rl40TErII5/QB2Jk29BUUB8Vqr
-	1XQ2JTVmoypvUL13fl+RpKGOOHNnHzJQymDFI14PSAa95KQQNFYfLUo0pHMDlK922AoqJ6DbVj12H
-	7O8l4IzpamQFei7zmgEN6tWyCKsG141+AbRfwW9Y33SHJd7Uep91LqWBRchvXd3DobAkBMsuhcHFT
-	/HRs3y2plmIVnHhNDF+rXEaLXUud9Z9UP3O/IQNM+yrSueVTvfRjJvKzAdmuBZUeS3G+8IPP7W77N
-	2qO9aDJgzdRxZGSUE8Xm30s+MIY6fbvuSA4JH/EVbOVi0hOGPl4fzTsAQc+RJT4zyqrrSjHHjQJx+
-	g7JTFVzQ==;
-Received: from ip98-183-112-25.ok.ok.cox.net ([98.183.112.25]:53062 helo=[192.168.1.142])
-	by galaxy.gendns.com with essmtpa  (TLS1.3) tls TLS_AES_128_GCM_SHA256
-	(Exim 4.99.1)
-	(envelope-from <david@lechnology.com>)
-	id 1vnOYM-0000000A5to-3Xyp;
-	Tue, 03 Feb 2026 17:07:21 -0500
-Message-ID: <dfd2801b-75dd-48eb-9e87-2b88fc00b66e@lechnology.com>
-Date: Tue, 3 Feb 2026 16:07:19 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LTnuiWcj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9867C2BC9E
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 22:29:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770157747;
+	bh=KVuVxATK6tiu2JVfmX0IasB0mDRYeBOPP6q7SnmEn+4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=LTnuiWcjB9ZD16t8sN3E7L48QKEWK+7aeT3V64p3pfV/qQVin4erfnxlgdRTzk8HP
+	 xJvl/ds/epCPGZ/kwLm9E6dfxZoFy9KOCjQYrLd+kY6e75+xCW0fXSXKTvEY34Qc6I
+	 bSKGzgiWwjsrJ81AdbHyT59U1Bw+aXP0FiZG6v+cT9JqSLTJuWMlOGtMF7x15t6bz0
+	 +zZhnQqj2nS6yZE7cuwDGSUuNWuVOFkzRFZSD7bt+8IULrkG6JwqhZ23pXd9UKJQWh
+	 dWzatRo0mGgrmTWrI19UanBozLh2P8UFzsqhTcFwwlZM+WXqbpExUn6T2/OOk7LY28
+	 ivoAtVuiQiUyQ==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b88593aa4dcso850729966b.3
+        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 14:29:07 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUC8SeuTCznRX3udMVYhrensuYx75eYg+KhHly5jeo4C1mx//SAFz/0UTH+DlIFGEC2iOoZUyU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCGXM7o783MY7gxuuqDu+oejAYRPY9Kf6+A0auLK4b3z9E/DEA
+	/XnzM2a0qRbUMZKTMQhvxhD7XYOiH+PBYJF3LJ8z83dLODrhGWyUVeqimCaPwadA1zvNJ/sYUG/
+	OqBCO2hgqJj1yEln3PgjPLGBTJvAnSQ==
+X-Received: by 2002:a17:907:9342:b0:b8d:be68:bc20 with SMTP id
+ a640c23a62f3a-b8e9f340685mr62370266b.64.1770157746137; Tue, 03 Feb 2026
+ 14:29:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 01/18] dt-bindings: clock: Add MediaTek MT8189 clock
-To: "irving.ch.lin" <irving-ch.lin@mediatek.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Bartosz Golaszewski <brgl@kernel.org>, Chen-Yu Tsai <wenst@chromium.org>,
- Miles Chen <miles.chen@mediatek.com>
-Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
- Project_Global_Chrome_Upstream_Group@mediatek.com,
- Qiqi Wang <qiqi.wang@mediatek.com>, sirius.wang@mediatek.com,
- vince-wl.liu@mediatek.com, jh.hsu@mediatek.com
-References: <20260202062840.342707-1-irving-ch.lin@mediatek.com>
- <20260202062840.342707-2-irving-ch.lin@mediatek.com>
-Content-Language: en-US
-From: David Lechner <david@lechnology.com>
-Autocrypt: addr=david@lechnology.com; keydata=
- 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
-In-Reply-To: <20260202062840.342707-2-irving-ch.lin@mediatek.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - galaxy.gendns.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - lechnology.com
-X-Get-Message-Sender-Via: galaxy.gendns.com: authenticated_id: davidmain+lechnology.com/only user confirmed/virtual account not confirmed
-X-Authenticated-Sender: galaxy.gendns.com: davidmain@lechnology.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+References: <20260203121723.312336-1-biju.das.jz@bp.renesas.com>
+In-Reply-To: <20260203121723.312336-1-biju.das.jz@bp.renesas.com>
+From: Rob Herring <robh@kernel.org>
+Date: Tue, 3 Feb 2026 16:28:55 -0600
+X-Gmail-Original-Message-ID: <CAL_JsqJK3brXxSeD-U42PBCeHoxUhWJYho3ZWj__t5C1LL-n-Q@mail.gmail.com>
+X-Gm-Features: AZwV_QhH4etfKSeilVLLahZp8med19LJeiVxQYVbCtyPxrnrsbuwVmr_thOPHWs
+Message-ID: <CAL_JsqJK3brXxSeD-U42PBCeHoxUhWJYho3ZWj__t5C1LL-n-Q@mail.gmail.com>
+Subject: Re: [PATCH net-next] dt-bindings: net: micrel: Fix dtbs compatible
+ too long warnings
+To: Biju <biju.das.au@gmail.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
+	Biju Das <biju.das.jz@bp.renesas.com>, Stefan Eichenberger <eichest@gmail.com>, netdev@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Geert Uytterhoeven <geert+renesas@glider.be>, 
+	Prabhakar Mahadev Lad <prabhakar.mahadev-lad.rj@bp.renesas.com>, linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2/2/26 12:28 AM, irving.ch.lin wrote:
-> From: Irving-CH Lin <irving-ch.lin@mediatek.com>
-> 
-> Add dt schema and IDs for the clocks of MediaTek MT8189 SoC.
-> The MT8189 clock IP provide clock control for main system
-> (apmixedsys, topcksys and vlpcksys) and
-> subsys (eg. peri, mfg, venc/vdec ...).
-> 
+On Tue, Feb 3, 2026 at 6:17=E2=80=AFAM Biju <biju.das.au@gmail.com> wrote:
+>
+> From: Biju Das <biju.das.jz@bp.renesas.com>
+>
+> The KSZ9131 PHY is suitable for IEEE 802.3 applications.
+>
+> Fix the below dtbs warning "compatible: ['ethernet-phy-id0022.1640',
+> 'ethernet-phy-ieee802.3-c22'] is too long" on the below dts:
+>
+> r8a774b1-beacon-rzg2n-kit.dtb
+> r8a774a1-beacon-rzg2m-kit.dtb
+> r8a774e1-beacon-rzg2h-kit.dtb
+> r9a08g046l48-smarc.dtb
+> r9a07g043u11-smarc.dtb
+> r9a07g044c2-smarc.dtb
+> r9a07g044l2-smarc.dtb
+> r9a07g044l2-smarc.dtb
+> r9a07g054l2-smarc.dtb
+> r9a07g054l2-smarc.dtb
+> r9a09g047e57-smarc.dtb
+> r9a09g047e57-smarc.dtb
+> r9a09g056n48-rzv2n-evk.dtb
+> r9a09g056n48-rzv2n-evk.dtb
+> r9a09g057h44-rzv2h-evk.dtb
+> r9a09g057h44-rzv2h-evk.dtb
+> r9a07g043u11-smarc-cru-csi-ov5645.dtb
+> r9a07g043u11-smarc-pmod.dtb
+> r9a07g043u11-smarc-du-adv7513.dtb
+> r9a09g047e57-smarc-cru-csi-ov5645.dtb
+> r9a07g044c2-smarc-cru-csi-ov5645.dtb
+> r9a09g047e57-smarc-cru-csi-ov5645.dtb
+> r9a07g044l2-smarc-cru-csi-ov5645.dtb
+> r9a07g044l2-smarc-cru-csi-ov5645.dtb
+> r9a07g054l2-smarc-cru-csi-ov5645.dtb
+> r9a07g054l2-smarc-cru-csi-ov5645.dtb
+> r9a09g056n48-rzv2n-evk-cn15-emmc.dtb
+> r9a09g056n48-rzv2n-evk-cn15-emmc.dtb
+> r9a09g056n48-rzv2n-evk-cn15-sd.dtb
+> r9a09g057h44-rzv2h-evk-cn15-sd.dtb
+> r9a09g056n48-rzv2n-evk-cn15-sd.dtb
+> r9a09g057h44-rzv2h-evk-cn15-emmc.dtb
+> r9a09g057h44-rzv2h-evk-cn15-sd.dtb
+> r9a09g057h44-rzv2h-evk-cn15-emmc.dtb
+>
+> Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+> ---
+>  .../bindings/net/micrel,gigabit.yaml          | 23 +++++++++++--------
+>  1 file changed, 14 insertions(+), 9 deletions(-)
+>
+> diff --git a/Documentation/devicetree/bindings/net/micrel,gigabit.yaml b/=
+Documentation/devicetree/bindings/net/micrel,gigabit.yaml
+> index 384b4ea6181e..284c3ba379f3 100644
+> --- a/Documentation/devicetree/bindings/net/micrel,gigabit.yaml
+> +++ b/Documentation/devicetree/bindings/net/micrel,gigabit.yaml
+> @@ -17,15 +17,20 @@ description:
+>
+>  properties:
+>    compatible:
+> -    enum:
+> -      - ethernet-phy-id0022.1610  # KSZ9021
+> -      - ethernet-phy-id0022.1611  # KSZ9021RLRN
+> -      - ethernet-phy-id0022.1620  # KSZ9031
+> -      - ethernet-phy-id0022.1631  # KSZ9477
+> -      - ethernet-phy-id0022.1640  # KSZ9131
+> -      - ethernet-phy-id0022.1650  # LAN8841
+> -      - ethernet-phy-id0022.1660  # LAN8814
+> -      - ethernet-phy-id0022.1670  # LAN8804
+> +    oneOf:
+> +      - items:
+> +          - const: ethernet-phy-id0022.1640
+> +          - const: ethernet-phy-ieee802.3-c22
 
-> +#define CLK_TOP_VOWPLL                                  174
-This one seems out of place. It is not used in the driver. It is
-a fixed 1:1 divider AFAKCT, so should not be included. (And this
-line has spaces while the rest of the file uses tabs for indent.)
+To avoid the errors, you would need a custom 'select' that excludes
+the c22 compatible from this schema (IOW, lists all the other
+compatibles here).
 
+However, I think the correct fix is probably dropping the c22
+compatible from your .dts files. I don't that compatible is useful on
+its own?
 
+Also, it doesn't make sense that ethernet-phy-id0022.1640 is sometimes
+compatible with ethernet-phy-ieee802.3-c22 and sometimes isn't.
+
+> +      - items:
+> +          - enum:
+> +              - ethernet-phy-id0022.1610  # KSZ9021
+> +              - ethernet-phy-id0022.1611  # KSZ9021RLRN
+> +              - ethernet-phy-id0022.1620  # KSZ9031
+> +              - ethernet-phy-id0022.1631  # KSZ9477
+> +              - ethernet-phy-id0022.1640  # KSZ9131
+> +              - ethernet-phy-id0022.1650  # LAN8841
+> +              - ethernet-phy-id0022.1660  # LAN8814
+> +              - ethernet-phy-id0022.1670  # LAN8804
+>
+>    micrel,force-master:
+>      type: boolean
+> --
+> 2.43.0
+>
