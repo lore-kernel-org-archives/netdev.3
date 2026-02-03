@@ -1,99 +1,137 @@
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B41D396B76
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 09:11:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9839396D09;
+	Tue,  3 Feb 2026 09:15:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770109871; cv=none; b=Bn1PcRrNLUpMAOy1su2ydr1J98zurwDOofOEHZXDTkvZURHwhJFYXB1tUNOe04gA0KrqhzPl/VYpc9tx9SYjLF6CdVKaND6ihE37WWb82niRIgjIt64k3yPKX467QG/9V+rHbjomf9DBHyoOGVaeOYmA3Dk4DEJecXm4A957JYg=
+	t=1770110111; cv=none; b=KXE6lThOVA1ObGUY5pBRqN5gho5sjvtbm4O5NBLDl20Ekw9LbW4kYewdQ0+KQki5vmW3VOJS4dxqEpnfMLGyw45JJY/wCk0jKbbsswnbytMnJZogZaNm7mhLhF0xInPWhvgeX456wOaHrt3pPZuNUF5wVKNaGABBL+cOlW+GPTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770109871; c=relaxed/simple;
-	bh=cfdU1kSo8gBSVmXxXxV+VeJp31P0ZwNjDc7NslD7Etg=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=R0Atur1RdsW2DfEvG1e8N5NHzfmgJdxEoQE9N+MAhSL/4ptmVEBOg9Vf0FEruDp46rnUDIYFIMnWBHbD3/uoV03f+BPFzLvVClQmUzT/lHDxFoTKSQQgrTE4nqLiBpWnTfkmLASaXXe6lBqXCr45CH9nGQM4GzF5+EfC8vvZnIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NrpWvaUQ; arc=none smtp.client-ip=209.85.208.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770110111; c=relaxed/simple;
+	bh=ZC1CA6vrdOzcMrcHn5G00HpXHg18TikDxYVKMBh9tuI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lX4uZwkeU5WTIW3HXzl/cJPqvcbREwQt0ZvgEhzD+M1kQUdcVsoJMm1M3V3/l/J/sG3PzMYngQ+znE3nCvywlY4gtMrhyAKFB5xDa/U78Mpgc5XSObjy9Rv5y1d9DeP1lN7T3gJxwNoIECmXvac/AUMnIoiGURzIMRye7RnTA+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lvIBivLS; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NrpWvaUQ"
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-658b7d13f09so9713318a12.2
-        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 01:11:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770109868; x=1770714668; darn=vger.kernel.org;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cfdU1kSo8gBSVmXxXxV+VeJp31P0ZwNjDc7NslD7Etg=;
-        b=NrpWvaUQ7ZMI9gIow61dAaW4Ip7by6kXP9mns53l8SYTiJpJ3xRC2CVHYNWuWBVT/q
-         8Qj0/oyvoqt+/2w1AeAvmQQRce2E5PXsJThn5RI+Olwo7VvXwmclR85KRq3oIoxWbduf
-         f/3IJxns7vWqYy8JK30LrO4dgubIGk7vV9q/yELstasx9PvdVN0XSFVEUjen2rS26eXG
-         rXlLJq4zCzUTshwIcOEQRuGlORLqIkwubzL7CgegZFFrF1HR1M2pXtWyIZ7eBYkSTzBs
-         PxD1Kv1GAcl4fehwcAERT1BEsC+yQWzoXae/tbNJbU5g7+QVfOrL1FetJiaaxdbJwsjS
-         RL9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770109868; x=1770714668;
-        h=mime-version:user-agent:references:message-id:date:in-reply-to
-         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cfdU1kSo8gBSVmXxXxV+VeJp31P0ZwNjDc7NslD7Etg=;
-        b=akZW3QOObRrlVqYKLXBEumiE65sOnof+fISmr1QFo3gM+qt8pfvq74G9Gg7kCM4G4r
-         KFWG+i5x8MUsvgE4NRjOik74D2P5/QD5kLHY+Lk79/3jkHJXTLmkeTTFAPKBgLNow/Pc
-         Bi+wf8W00BWVrpyZXQ7ht8cLjtaRRBZQRc7OOx52wE4KXvgPg/BjLmmDFFvd6EZ/sw2h
-         br7gLfOCmOIYFFFth8yv26eZJN6nwTrL/3WFfa6S1w9rLil6OsxCVYlgXvea5GIA3Vo1
-         Mk/nJX0wzdce8jrvuN6rcgNsH4gocTABWiUrzVEhDm5svc+7B/YM6CgT/w9Nt12/djK0
-         VHHA==
-X-Forwarded-Encrypted: i=1; AJvYcCWYuivp3McAJoD94cbdI/XbBD5oO8fnE/RtmdRsvH2JeMlLe/oSqIMAsh8i8zeza+PuWdd3PvQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzmZxjoUrN3i+w/B2q4seUY/NIQxOAfEkSLoeodQYxXKPvZlou
-	pZ8sYPEMq3pAc35h254DSRtLRsrx2MspS4LvmYp8Zd+GVSTRm4nVcGDw
-X-Gm-Gg: AZuq6aKfCffoXBMbDct40hosMO5sYJAfAGk6tMgDQ6RAfp+3lo9i+GUNLPTnz9nuA7I
-	2LKCU9j8nOSro4LBHCYLkCDPzVNut9VBQUtkXAyDW7Q5xLZ2DzFfTzOprkgrhbqi4rZYZ7Adymi
-	wIrAkFC2F2rxFa+UZ+f82yZa0xd0giRcprtSyT0/2W4rB/CG8PmA5/UVrVyKMuqK2q/tw+rxAK8
-	2q50g53Yrhav9MKkT49QhYI/z3ZZOBJdZrp0Nphgk+pkNTNEClB3D6Wv4PP/kYC23VqNtVoVM42
-	7ypiALFMfRjtKwAiz2C65C/mpzP9Tpz9dL+bAD/Q+cHNmw5UiaR4mRho9xeZt7IRJrMJ/tJH7qv
-	ZU2q4wQdT8WBFfCoKBNeJjRwCEXhvYh1BPz5Oh/sWGDyoABgnYfHTwKpbOaBc+vcMWeL0qvuUKi
-	bCYUTzhX2FW1FgcTAgLhPKzpQ=
-X-Received: by 2002:a05:6402:50cd:b0:64d:2082:d027 with SMTP id 4fb4d7f45d1cf-658de5a2f83mr7948742a12.29.1770109867713;
-        Tue, 03 Feb 2026 01:11:07 -0800 (PST)
-Received: from imac ([2a02:8010:60a0:0:c42b:3329:fccc:c347])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-658b42563dbsm9307740a12.3.2026.02.03.01.11.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 01:11:07 -0800 (PST)
-From: Donald Hunter <donald.hunter@gmail.com>
-To: "Remy D. Farley" <one-d-wide@protonmail.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,  netdev@vger.kernel.org,  Pablo Neira
- Ayuso <pablo@netfilter.org>,  Florian Westphal <fw@strlen.de>,  Phil
- Sutter <phil@nwl.cc>,  netfilter-devel@vger.kernel.org,
-  coreteam@netfilter.org
-Subject: Re: [PATCH net-next v7 2/5] doc/netlink: nftables: Add definitions
-In-Reply-To: <20260202093928.742879-3-one-d-wide@protonmail.com>
-Date: Tue, 03 Feb 2026 09:04:05 +0000
-Message-ID: <m2jywu9p16.fsf@gmail.com>
-References: <20260202093928.742879-1-one-d-wide@protonmail.com>
-	<20260202093928.742879-3-one-d-wide@protonmail.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lvIBivLS"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1770110099; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=KV7iB2cX0YsCo/vw3xU3Pyo02q+0048t1T+E30Gigtg=;
+	b=lvIBivLSh9GpQ/9XItSiA5L3Ae5Abhgd3YILZJXyPQApT6jv/boUE3Hb2IC8SoZ58+a26VlUYRi6pGgxBqTIXEPZBFfSFuum5+mKUeAD331FlL00z8ZNIizgZeE9XNN/nZPYS5HRCm17TApalp7+cWnWUI5+1fEpbfNFzRNLYuo=
+Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0WySViK7_1770110098 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 03 Feb 2026 17:14:59 +0800
+Date: Tue, 3 Feb 2026 17:14:58 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com    >
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: "D. Wythe" <alibuda@linux.alibaba.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Dust Li <dust.li@linux.alibaba.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>,
+	Mahanta Jambigi <mjambigi@linux.ibm.com>,
+	Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+	oliver.yang@linux.alibaba.com
+Subject: Re: [PATCH net-next 2/3] mm: vmalloc: export find_vm_area()
+Message-ID: <20260203091458.GA89766@j66a10360.sqa.eu95>
+References: <20260124093505.GA98529@j66a10360.sqa.eu95>
+ <aXSjm1DXm6yP62tD@pc636>
+ <20260124145754.GA57116@j66a10360.sqa.eu95>
+ <20260127133417.GU13967@unreal>
+ <20260128034558.GA126415@j66a10360.sqa.eu95>
+ <20260128180629.GT1641016@ziepe.ca>
+ <20260129113609.GA37734@j66a10360.sqa.eu95>
+ <20260129132058.GC2307128@ziepe.ca>
+ <20260130085131.GA122673@j66a10360.sqa.eu95>
+ <20260130151636.GF2328995@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260130151636.GF2328995@ziepe.ca>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-"Remy D. Farley" <one-d-wide@protonmail.com> writes:
+On Fri, Jan 30, 2026 at 11:16:36AM -0400, Jason Gunthorpe wrote:
+> On Fri, Jan 30, 2026 at 04:51:31PM +0800, D. Wythe wrote:
+> > On Thu, Jan 29, 2026 at 09:20:58AM -0400, Jason Gunthorpe wrote:
+> > > On Thu, Jan 29, 2026 at 07:36:09PM +0800, D. Wythe wrote:
+> > > 
+> > > > > From there you can check the resulting scatterlist and compute the
+> > > > > page_size to pass to ib_map_mr_sg().
+> > > 
+> > > I should clarify this is done after DMA mapping the scatterlist. dma
+> > > mapping can improve the page size.
+> > > 
+> > > And maybe the core code should be helping compute the MR's target page
+> > > size for a scatterlist.. We already have code to do this in umem, and
+> > > it is a pretty bit tricky considering the IOVA related rules.
+> > >
+> > 
+> > Hi Jason,
+> > 
+> > After a deep dive into ib_umem_find_best_pgsz(), I have to say it is
+> > much more subtle than it first appears. The IOVA-to-PA relative offset
+> > rules, in particular, make it quite easy to get wrong.
+> > 
+> > While SMC could duplicate this logic, it is certainly not ideal for
+> > maintenance. Are there any plans to refactor this into a generic RDMA
+> > core helper—for instance, one that can determine the best page size
+> > directly from an sg_table or scatterlist?
+> 
+> I have not heard of anyone touching this.
+> 
+> It looks like there are only two users in the kernel that pass
+> something other than PAGE_SIZE, so it seems nobody has cared about
+> this till now.
+> 
+> With high order folios being more common it seems like something
+> missing.
+> 
+> However, I wonder what the drivers do with the input page size, 
+> segmenting a scatterlist is a bit hard and we have helpers for that
+> already too.
+> 
+> It is a bigger project but probably the right thing is to remove the
+> page size input, wrap the scatterlist in a umem and fixup the drivers
+> to use the existing umem support for building mtts, splitting
+> scatterlists into blocks and so on.
+> 
+> The kernel side here has been left alone for a long time..
 
-> New enums/flags:
-> - payload-base
-> - range-ops
-> - registers
-> - numgen-types
-> - log-level
-> - log-flags
->
-> Added missing enumerations:
-> - bitwise-ops
->
-> Annotated doc comment or associated enum:
-> - bitwise-ops
->
-> Signed-off-by: Remy D. Farley <one-d-wide@protonmail.com>
+I am also curious about the original design intent behind requiring the 
+caller to explicitly pass `page_size`. From what I can see, its primary 
+role is to define the memory size per MTTE, but calculating the optimal 
+value is surprisingly complex.
 
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
+I completely agree that providing an automatic way to optimize or 
+calculate the best page size should be the responsibility of the drivers
+or the RDMA core themselves. Handling such low-level hardware-related 
+details in a ULP like SMC feels misplaced.
+
+Since it appears this isn't a high-priority issue for the community at
+the moment, and a proper fix requires a much larger architectural effort 
+in the RDMA core, I will withdraw this patch series. 
+
+I'll keep an eye on the RDMA subsystem's progress and see if a more 
+generic solution emerges in the future.
+
+Thanks,
+D. Wythe
+
+
