@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB22C39B496
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 10:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BAE30F921
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 10:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770112896; cv=none; b=cMmKUD0hgJ402nprp8UntyxJ7+1P1/nKiVqJUUUoW0jLVdlOjHRlBpW9FUmj3OFGzOH4VLiSNXaqyv3LXbsRahBLUtmhYNp6gY+JRf3zMkPktkGTBMXTjqyWyVyYVnR0GXAPp25mAgpIlX/QaDxC6hxttz0F3o9Tr6TNo42TEqw=
+	t=1770112900; cv=none; b=qPGAXs5foD8JCEP2fpHKo5BSDctrSKGDJ/GbUQY3MnsamuL5UnoCmQYAqMSQsX163fJvUUZHqUEuuBZWQrWB2tLwT27UIMyAN2WqoRZhQwGxWQ9RE1n2v5Slu4IQWxcBKOzGuLlRotkPZyz7nLTwdw3D0+S9oAmbfOCIMkkIyPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770112896; c=relaxed/simple;
-	bh=u89I6KD6qvHXBGtoOq6YNPVbmJUH26ru0FQq596nrh0=;
+	s=arc-20240116; t=1770112900; c=relaxed/simple;
+	bh=IxRdrK6ujncZXP7my5h8MRT4BCETVuA/x1NgqJVhaBc=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=YGDCMVYeDraqRsmVBDg8JR88klTD0SeUc85KpHqQO7xjmIkgRaL57gYrjL6wcFa5CgLznmsIWPDycUTk21tGs4mmv5BKLjS6tlFxc407gWBlkIYPQU8lCygMcjFYmNnG9US4Xqi0ZmtZ7OtuyFp6ssCRDLuEsCtc76uMR0yIows=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=RgBvXZX3; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=Kgu02Bl7Wsg9ZpawYwb5ZvApF3H2SYIQIFHf+883SKjzYO9O5y6PQ9TWfdBBrZoXgEXaZKoYCcPHzpYFSITqNeV6E3DjJK6H1X39wELjtTb0Y4lwoq5T19jYprZyAy4QWl4eyhkSMOfQVXSBF6g7sNmgLkg8TjtbYQVtux2/hjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=yH6Ed3id; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="RgBvXZX3"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="yH6Ed3id"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+glT1WUCuKKRwLLSyDdKdz7/iH8B4iVFWpjJ7rAM32I=; b=RgBvXZX3BO0h4gx+wAS1NsQHr0
-	wxM1Nx375bb/gzMAB8DAwmbHT8eBprkmKNQQLUj84gIHxeU817sFFR+KRvzmRxw8/fkBCtTQAemJV
-	8Q9kUiLj51RCcvAd3ShmWlG+YIE8bCL+uVQ4opsTe+jsatHsFho9HqBc9z2lhiDFtG8OfyHp1DsKF
-	1Qgn17OeG5AmgG5yS9TCt6EeUYDJpr5wXvHQbwbj4875y4FEw4NVjTOLw8IL2I5hn47UCv0KS2oRY
-	jWAtub3QW/+VRmpS3GSs3sce3hz7LrqpYzWOVBOk4PN5pF5NHa8+/FamY3l5Hei3DN+YsAxY5M+G+
-	fIEYMvig==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:40622 helo=rmk-PC.armlinux.org.uk)
+	bh=UENQcPP3bF2ZA0ADQ4abpHHj29Ib66umM+PFjhQQHc8=; b=yH6Ed3idSUHAp6Lx+IkGjLwpve
+	IRjQphIw8UGp9DcXazS3s2pSSQmisnwPXCWIM5g944Qvh9hkJbLZ3KL9KnpSQu7/7g7scRNGKGG9K
+	6ACw0TVHKzVs6fSG8+naujz/PxO/7DXPII6/qzAAHDg5pAfxw8AgMqe1IhaFXuRfRpazLXlYEc61A
+	t2Gm0QLAVG/DjMTUgsg4B9/1l2v8YRuGiO41J6vNgorE4lFVpsLWfxXbQoLFdv4eCq7EktqP8TpLT
+	DcGVu5NtOUuJhfjujpEgD/jVfsp/DF6fQOIyCsQnNfM0J9qC6F97F37kL+O3RnNSwWYDmHTBXHThC
+	pgsweyRQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:57930 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vnDDp-000000004xC-2P37;
-	Tue, 03 Feb 2026 10:01:25 +0000
+	id 1vnDDu-000000004xS-2otx;
+	Tue, 03 Feb 2026 10:01:30 +0000
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vnDDo-00000007Xx9-3RZ8;
-	Tue, 03 Feb 2026 10:01:24 +0000
+	id 1vnDDt-00000007XxF-3uUK;
+	Tue, 03 Feb 2026 10:01:29 +0000
 In-Reply-To: <aYHHWm5UkD1JVa7D@shell.armlinux.org.uk>
 References: <aYHHWm5UkD1JVa7D@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -52,8 +52,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
 	netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 3/4] net: stmmac: add missing serdes power down in
- error paths
+Subject: [PATCH net-next 4/4] net: stmmac: move serdes power methods to
+ stmmac_[open|release]()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,52 +63,90 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vnDDo-00000007Xx9-3RZ8@rmk-PC.armlinux.org.uk>
+Message-Id: <E1vnDDt-00000007XxF-3uUK@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Tue, 03 Feb 2026 10:01:24 +0000
+Date: Tue, 03 Feb 2026 10:01:29 +0000
 
-The open path is missing cleanup of a successful serdes power up if
-stmmac_hw_setup() or stmmac_request_irq() fails.
-
-stmmac_resume() is also missing cleanup of the serdes power up if
-stmmac_hw_setup() fails.
-
-Add the missing cleanups.
+Move the SerDes power up and down calls for the non-"after linkup"
+case out of __stmmac_open() and __stmmac_release() into the
+stmmac_open() and stmmac_release() methods, which means the SerDes
+will only change power state on administrative changes or suspend/
+resume, not while changing the interface MTU.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 21 +++++++++----------
+ 1 file changed, 10 insertions(+), 11 deletions(-)
 
 diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 9efdde915229..05b0b080bade 100644
+index 05b0b080bade..d561b0a0f5ac 100644
 --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
 +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4137,7 +4137,7 @@ static int __stmmac_open(struct net_device *dev,
- 	if (!(priv->plat->flags & STMMAC_FLAG_SERDES_UP_AFTER_PHY_LINKUP)) {
- 		ret = stmmac_legacy_serdes_power_up(priv);
- 		if (ret < 0)
--			goto init_error;
-+			return ret;
- 	}
+@@ -4134,12 +4134,6 @@ static int __stmmac_open(struct net_device *dev,
  
+ 	stmmac_reset_queues_param(priv);
+ 
+-	if (!(priv->plat->flags & STMMAC_FLAG_SERDES_UP_AFTER_PHY_LINKUP)) {
+-		ret = stmmac_legacy_serdes_power_up(priv);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
  	ret = stmmac_hw_setup(dev);
-@@ -4170,6 +4170,7 @@ static int __stmmac_open(struct net_device *dev,
+ 	if (ret < 0) {
+ 		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
+@@ -4170,7 +4164,6 @@ static int __stmmac_open(struct net_device *dev,
  
  	stmmac_release_ptp(priv);
  init_error:
-+	stmmac_legacy_serdes_power_down(priv);
+-	stmmac_legacy_serdes_power_down(priv);
  	return ret;
  }
  
-@@ -8273,6 +8274,7 @@ int stmmac_resume(struct device *dev)
- 	ret = stmmac_hw_setup(ndev);
- 	if (ret < 0) {
- 		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-+		stmmac_legacy_serdes_power_down(priv);
- 		mutex_unlock(&priv->lock);
- 		rtnl_unlock();
- 		return ret;
+@@ -4196,9 +4189,15 @@ static int stmmac_open(struct net_device *dev)
+ 	if (ret)
+ 		goto err_runtime_pm;
+ 
++	if (!(priv->plat->flags & STMMAC_FLAG_SERDES_UP_AFTER_PHY_LINKUP)) {
++		ret = stmmac_legacy_serdes_power_up(priv);
++		if (ret < 0)
++			goto err_disconnect_phy;
++	}
++
+ 	ret = __stmmac_open(dev, dma_conf);
+ 	if (ret)
+-		goto err_disconnect_phy;
++		goto err_serdes;
+ 
+ 	kfree(dma_conf);
+ 
+@@ -4207,6 +4206,8 @@ static int stmmac_open(struct net_device *dev)
+ 
+ 	return ret;
+ 
++err_serdes:
++	stmmac_legacy_serdes_power_down(priv);
+ err_disconnect_phy:
+ 	phylink_disconnect_phy(priv->phylink);
+ err_runtime_pm:
+@@ -4241,9 +4242,6 @@ static void __stmmac_release(struct net_device *dev)
+ 	/* Release and free the Rx/Tx resources */
+ 	free_dma_desc_resources(priv, &priv->dma_conf);
+ 
+-	/* Powerdown Serdes if there is */
+-	stmmac_legacy_serdes_power_down(priv);
+-
+ 	stmmac_release_ptp(priv);
+ 
+ 	if (stmmac_fpe_supported(priv))
+@@ -4269,6 +4267,7 @@ static int stmmac_release(struct net_device *dev)
+ 
+ 	__stmmac_release(dev);
+ 
++	stmmac_legacy_serdes_power_down(priv);
+ 	phylink_disconnect_phy(priv->phylink);
+ 	pm_runtime_put(priv->device);
+ 
 -- 
 2.47.3
 
