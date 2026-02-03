@@ -1,136 +1,116 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D7A2C026C
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 08:32:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B656D29BDBA
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 08:43:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770107552; cv=none; b=RWESYpCFD52G3UF2Fgl5kR4zZ8V8Y9Zhr2WeUmx+nq2ykOw5Fwoiid0+4YNp+n/7jbv4/pJB0WjihxJ8VexYBiLHKM/DRYOT5499BFk/9SjlXH4gS8/Xb3Ar9duEpJDp5YZJlb9YeWVDUXBbuAh0bzBk3AcVMaT38uXc0SHsZEA=
+	t=1770108223; cv=none; b=pu09rzlmYM5d+WFp6zlN4VgYaLx0NxLLFofXHLCMWEWPKWKdiSZNKFHj0SBDfmjFSvVCe1dVPPJwU9qkMTlFiS1bK35JU7tMzxTL6tRXaVgmy1iIJ/kmhCfSqbJMyy+TpzV2Cgu/pSVoRb37gicgWkiHe+WU67GppJXV1dHP6cM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770107552; c=relaxed/simple;
-	bh=XwLGcHZPOqxu1Tr+vmfMhPAG2OUB3TbvDXlQ2wzB/Kc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lg6gshjzYk3kxPJ582jsilpSs8DP/TkyCqeFUt1B41e2bvtRSOzezm2z0VZ8MeKKUniQYcWIu94xXipjx7YxsQAsZ79LSVEV+lFAmaVme6nVoFYCnRYN3JR1iN2KunPYLhrZoW4xjW/kaKRlrg63KXYDqoerJGZXkRCa14CGpr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bD2s2/7p; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MNRker4m; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1770108223; c=relaxed/simple;
+	bh=/vj8FfFEYx4ybfsw1a4KFbNnoLnIwN3x1fS6W+SsamE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e3+Q+ItEziFiBELvQY1/EhoW2v+0R67oWIZdmNSzX51A06+bJXXeBXY5/+8fvLvS2b1RHzp7A8OHAYxRCrb8F2usKYafmtO3Zj+zA88f/M+x2y6VOzijxoqc0NmEnBOZNPSFr3jVay5Q55eikzP3NMDjvRuOC1SwzxqeBNuKsjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DXWZfW1P; arc=none smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bD2s2/7p";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MNRker4m"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770107548;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RP0V2EEbdTJyskSM6vT8Q05yw0ANUNR7tmop2Pnro4A=;
-	b=bD2s2/7pNJeyeIH7P2PNQ8VOgFzPyzDsPePMyyekun6JBiAMBxo+0o36Nks4J2YhB/4o4e
-	8EpQhBO0esQDvClWxWgbrPjWCWGLnnFySBZCoklcwyDYnpg4/p1ubfFppGP5HyHxvH3FfI
-	3zO7wdAnL1ZUnEan9+x05UcoYZ1be1A=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-318-51nTInb2PM6ae0r_-ZA4sg-1; Tue, 03 Feb 2026 03:32:27 -0500
-X-MC-Unique: 51nTInb2PM6ae0r_-ZA4sg-1
-X-Mimecast-MFC-AGG-ID: 51nTInb2PM6ae0r_-ZA4sg_1770107546
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-435add03f12so3460408f8f.3
-        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 00:32:27 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DXWZfW1P"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-11f36012fb2so6272201c88.1
+        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 00:43:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1770107546; x=1770712346; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RP0V2EEbdTJyskSM6vT8Q05yw0ANUNR7tmop2Pnro4A=;
-        b=MNRker4mp+1J4D8ocJ4cA2x8P57VSePMu9w2e//cnl7jLn6pjsoBZvVMw04Mi7xNvC
-         CgmoD51aw8jOr6MkssB445Wu8uRRNYkTb0oHcQQUyrzxoRG53/GtMxEhvUqhPuMt0fA8
-         8a8Odw+NggXxC0IZq0ia51UQX1RRLDHJGtcX6yU3uPt284kXbQfjawTF/n6/xK27KJuE
-         sJKI2cQxkP/0MTOhzlXdXqGxO750FkC1/ZyWrqq6DgAjQFODo8rEIhOclsVfgHlx3RKu
-         X86YepZl/wuQUkQr+2ldXZOAsGkbgcXBQibBtwH1aKodSxFWRb4y8mQYzU0Y17e1aAAx
-         j2zg==
+        d=gmail.com; s=20230601; t=1770108221; x=1770713021; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LMDFXYLSzSLdaG2mbvsH2lIntPnUeMn+Wtbmb/TRzL4=;
+        b=DXWZfW1Pbqf5tAchQwTkhkzEkKpbYmUAmkOVc09XZQgaChOEXeb0cleetV6fPnLkxj
+         ySLv83h5Y7Whi/4zpTCbPd3qnu493aUfwP8uIcc1gO7OotsIZ3GXnbE9xxp2HG8wXXO9
+         nQmcygmf7jH4fKSZb8sCzTcdyYejKlYnb31bKpQfBoJXEtHS2iDlOuFXLitoEhltwiDa
+         2K07J+CHxXQuP4B+/jtwQnnl8xxBVRCvGVH2PuqqS/Z2HQOkPZ41QO/IgZpfeVK9zkLC
+         2e8S7P/WcscKuFo3s7qwEbjNV0DyJMre7ovPR4TmoqIB03pxvDrh+yZJYLjMli41oR//
+         xcRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770107546; x=1770712346;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RP0V2EEbdTJyskSM6vT8Q05yw0ANUNR7tmop2Pnro4A=;
-        b=lgxQBpCrQFI+8ivaee1Km7quWodnCnCcL9ggrbQ+EDZgntSCCm5BjI8BOxGXUBk5Tc
-         L302Up/eR/5eV4eO1EvbbIKfeX5WjQqTtXDIzEfI6ORSkrWxnh3TmZp2dNMcHfhwXf74
-         Fr9OaFTYF2nKje+jMD686kUqRmN9v3ydZVUbCFJNroNBE/Qpf9zwrCmdQtTnUqzKHVzo
-         UOu7McRhB/ijthBC1iFRLqVICMiJGN7hUot4lappFsrqYv1Sf36wA2gK27wnXeXFkdkm
-         IpQf4cw0q4rob5xHjPBFOIkEdzhX4umVa0Pr/aymvfm7soaJHaueLe4ywX3iLTBE7KdP
-         I7Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCVGnuQcAn7eqgf9bLNs6OuuYoISmTczQnFH5olaRZJKBiu6Fhsk+gRVDbmQHe/XH/sSeGILxwI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyNCVBn80u7+7CV2E0WVZoP/qnw/2dWkfKlrNm0FQz2Q5cKQ9hW
-	fcjIWK3YqHvZpazU6RrWLGMj8Mf18iI/zsKoEcFwZGBviK+1q3yAy9E6JGEooZMTg8vZbrgyNCm
-	GpI3W0hCIiDQSQJUlz323n0JU2OkXZpw3UiTofQBqxH7TfHLn7fTxdiDsuxJ12/T1uw==
-X-Gm-Gg: AZuq6aI7D9KyJow3ps2jScb9H+z2esEZ+YGXovAPdt1MyWXsC7ljCQ8UDfh6PQO+qzR
-	vFtlNVIkoDpNs5oIn7ZuRchJeotvEUv8xEW5Hwc6j9XhINfOPmouZYxVBU2oLw4epxResjYJuGH
-	NW0cMKKEFndfJ/vJE8qV3FU/WMvGa/NGRyXV3UyWAqxUZpqckOFlCNlAeCM/sv7xyY3bbV98L+k
-	Gv7xLdRPDN4DHCrKMbzt3/29poLYLeygBST9PWuZAMsxmkA2bAvBPF/M2G02thdvei6XZQzqL0j
-	JY3qmd9Mtrp0txIFVK1QW2kDwZZ4mgIMh1UtqOLIAkCExna1V2LN0QxjaDzrRfI/Jtx3igsI0He
-	yVWsNXZ9QlEs=
-X-Received: by 2002:a05:6000:1a87:b0:435:9882:2342 with SMTP id ffacd0b85a97d-435f3aa91b8mr21129606f8f.33.1770107545713;
-        Tue, 03 Feb 2026 00:32:25 -0800 (PST)
-X-Received: by 2002:a05:6000:1a87:b0:435:9882:2342 with SMTP id ffacd0b85a97d-435f3aa91b8mr21129576f8f.33.1770107545344;
-        Tue, 03 Feb 2026 00:32:25 -0800 (PST)
-Received: from [192.168.88.32] ([150.228.93.21])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e1323770sm51756926f8f.32.2026.02.03.00.32.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Feb 2026 00:32:24 -0800 (PST)
-Message-ID: <a8ea949a-ac36-4753-b8ab-f9a85004750a@redhat.com>
-Date: Tue, 3 Feb 2026 09:32:21 +0100
+        d=1e100.net; s=20230601; t=1770108221; x=1770713021;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LMDFXYLSzSLdaG2mbvsH2lIntPnUeMn+Wtbmb/TRzL4=;
+        b=w4stkpheXgf2QQmafgSrOZd1fpVqTpSzoNqqynhyBpTsLhFmKTHSdXM01yy8WTJJX8
+         ke10oGhr6YELy4TDeAyLRJlHa/eV6pjCtdG7VPIpd2e3Pln4RMomWYShO2rZRZP1NXqJ
+         GwACHxyMgLf0R1R0Fx4ar/xteKG99V57nGQ5G0NmCP5AyfXdFiDNpl4s0q/RROWmu0g/
+         iWIQ/BbxHvRYgGluTUk7SFjz6VvzjyZk0oqUe3iJ+2ckb/VDDOZvLNcaxuRKfCYQZbk1
+         NWZ7GMWZ45KTFVADB9xjl5t6o/NdE7Q8SuKl36DQXtOU4jbXAMZEOd7JzJ+mFqP4Djp1
+         xcLg==
+X-Forwarded-Encrypted: i=1; AJvYcCXzZLoTcJequOgfW8cgDapK1y1Fjdhyaq6wg7fFYdhhus3Zl98hgij/DBxRflH4kAs69Pekx9c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8OlT7iM7KcH+8MxZj1xe+z8QYbrk1Msma/UBUtbB+CjSK5Ggg
+	iwiVS6N/UbCIVhGnHjYhFTK8SgMccKWLK+1aY6oq7VLd/hIM/pENvT1O
+X-Gm-Gg: AZuq6aL/YcwlYQkEm8ll7oxVwRDV6e24BHoDIpWFFFF5Qqg2AfwaDM+SqP2pltSxJ/6
+	85lriUI7Cn2lRQUgMZ4ahHcedEdEPj0/ct+aChYxKEUao2cyuHtuxdYabSDjoipY4xlBiYI5OMI
+	KNM62/uewGy54CDLvmcsCu4ejeOsjOReXu29LGsB/c+/52R0X7sG9ON154SAK0kS0G2o573CFD7
+	r9VBsM/7IsSQoRScCA/b+liHBFCrCC4hcui+aX4QhYXS3H85ij1HyEu3bZdcxk5YGGsCqfwsRBh
+	0fvFEmLN2R5neDzHDF334ftBIUBjqhExJjuWkLbrqO1QW5oDz3VjKo2T/4eiTrDsFVKCBwo9YqT
+	9Qb9jzuWp3hOD7Kc8YlAOyqcMKhhCQebvC1wVcAzzpjEnwD0TxsKW1MMwlhJkQvtVAUnULKqaT5
+	3xx3tzUe6PS5s//hQVb3+YjGhXKSGHYNJ2w1usYHcuZq4KKRxAkjKuk3bQNcdwOQhFhIhAJ2EIS
+	mRPzM0/CA==
+X-Received: by 2002:a05:7022:7a6:b0:11b:95fe:beed with SMTP id a92af1059eb24-125c0ffbbecmr5515230c88.38.1770108220751;
+        Tue, 03 Feb 2026 00:43:40 -0800 (PST)
+Received: from localhost.localdomain (108-214-96-168.lightspeed.sntcca.sbcglobal.net. [108.214.96.168])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-124a9d7f597sm19048396c88.5.2026.02.03.00.43.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 00:43:40 -0800 (PST)
+From: Sun Jian <sun.jian.kdev@gmail.com>
+To: Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>
+Cc: Phil Sutter <phil@nwl.cc>,
+	Simon Horman <horms@kernel.org>,
+	netfilter-devel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Sun Jian <sun.jian.kdev@gmail.com>
+Subject: [PATCH] netfilter: bpf: add missing declaration for bpf_ct_set_nat_info
+Date: Tue,  3 Feb 2026 16:43:23 +0800
+Message-ID: <20260203084323.2685140-1-sun.jian.kdev@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 00/11] net: tunnel: introduce noref xmit flows
- for tunnels
-To: Marek Mietus <mmietus97@yahoo.com>, netdev@vger.kernel.org,
- sd@queasysnail.net, kuba@kernel.org
-Cc: Jason@zx2c4.com
-References: <20260127070452.6581-1-mmietus97.ref@yahoo.com>
- <20260127070452.6581-1-mmietus97@yahoo.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260127070452.6581-1-mmietus97@yahoo.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On 1/27/26 8:04 AM, Marek Mietus wrote:
-> Currently, tunnel xmit flows always take a reference on the dst_entry
-> for each xmitted packet. These atomic operations are redundant in some
-> flows.
-> 
-> This patchset introduces the infrastructure required for converting
-> the tunnel xmit flows to noref, and converts them where possible.
-> 
-> These changes improve tunnel performance, since less atomic operations
-> are used.
-> 
-> There are already noref optimizations in both ipv4 and ip6.
-> (See __ip_queue_xmit, inet6_csk_xmit)
-> This patchset implements similar optimizations in ip and udp tunnels.
-> 
-> Benchmarks:
-> I used a vxlan tunnel over a pair of veth peers and measured the average
-> throughput over multiple samples.
-> 
-> I ran 100 samples on a clean build, and another 100 on a patched
-> build. Each sample ran for 120 seconds. These were my results:
-> 
-> clean:      71.95 mb/sec, stddev = 1.71
-> patched:    74.92 mb/sec, stddev = 1.35
+When building with Sparse (C=2), the following warning is reported:
 
-Which H/W are you using? I've never seen so low figures in this decade,
-possibly not even in the previous one. Expected tput on not too
-obsoleted H/W is orders of magnitude higher, and we need more relevant
-figures.
+net/netfilter/nf_nat_bpf.c:31:17: warning: symbol 'bpf_ct_set_nat_info'
+ was not declared. Should it be static?
 
-Thanks,
+This function is a BPF kfunc and must remain non-static to be visible
+to the BPF verifier via BTF. However, it lacks a proper declaration
+in the header file, which triggers the sparse warning.
 
-Paolo
+Fix this by adding the missing declaration in
+include/net/netfilter/nf_conntrack_bpf.h inside the CONFIG_NF_NAT
+conditional block.
+
+Signed-off-by: Sun Jian <sun.jian.kdev@gmail.com>
+---
+ include/net/netfilter/nf_conntrack_bpf.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/net/netfilter/nf_conntrack_bpf.h b/include/net/netfilter/nf_conntrack_bpf.h
+index 2d0da478c8e0..25b51fa783c8 100644
+--- a/include/net/netfilter/nf_conntrack_bpf.h
++++ b/include/net/netfilter/nf_conntrack_bpf.h
+@@ -33,6 +33,9 @@ static inline void cleanup_nf_conntrack_bpf(void)
+     (IS_MODULE(CONFIG_NF_NAT) && IS_ENABLED(CONFIG_DEBUG_INFO_BTF_MODULES))
+ 
+ extern int register_nf_nat_bpf(void);
++int bpf_ct_set_nat_info(struct nf_conn___init *nfct,
++			union nf_inet_addr *addr, int port,
++			enum nf_nat_manip_type manip);
+ 
+ #else
+ 
+-- 
+2.43.0
 
