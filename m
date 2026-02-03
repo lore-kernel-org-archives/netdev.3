@@ -1,93 +1,107 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404D32DE1E0;
-	Tue,  3 Feb 2026 07:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A8242F6928
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 07:59:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770105534; cv=none; b=Wh2lCh3GLaEpVhFhBl7T4sqac6VHKd2fag8wXdN93faUo9PixC++mwxIdHYmu+5AC/DQFXdmDRhkeMpdylFLsYZGEOJO1sU700mAz3kNQmqqifuL60UDnax7nWli5F3MvFnZysd79LGxquSVqMkBkW1+0MMSpU8/E4QZGjk5ONk=
+	t=1770105577; cv=none; b=FSAxbh3deh0SMJ/D2z2NsvslWxNAN3C+YmDd6l4nlKRQbu8VmNo33XSq23t7ZMdkt2PSXLDNo1NpOQH5pgqvnZqqFiqYhzJgK4XV79W0k9Ruqcnkd8RCkDss98CaQix+eWMaSRLObYxVUdVMiwU+KsmnSmuj0Ov2Kdx/pIH+Vv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770105534; c=relaxed/simple;
-	bh=+ja1XQ34PxaYoSbR+FZTEod3U6fPO8QQgIkTQxil2fs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HFW+9ZGBoM3U2OfK3ERvGqA0Glnk47nAOIdEPc+bWI3oo04IUGuLEU30WM1n8DqTzxDBCOXUhQTOO+EK6xNlfetkvEeiouzv0nyprEf5656R1EhIJRnryAFBARX6GFybeQJUMtKujmNxCf+lpP+G6XR3iqOEM5QIuKj+nq+lIsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=QriQiOPV; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="QriQiOPV"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6137wAXI1496104, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1770105490;
-	bh=+ja1XQ34PxaYoSbR+FZTEod3U6fPO8QQgIkTQxil2fs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=QriQiOPVdY7z2FHwflqCY12KCQNWxfbsChFdsUlu67Lno+L+BGaqRZUDE39FcRRHg
-	 vgy5fPA+RpALI8eOzGphpjzLWrDdIjeaaHpApRdDhBJSlwD99kQRS6Uf3NzAuMqosI
-	 mTvN3cVlt5YPwszOLBuh8Shgtd/XN79neVfvFzDCzzhk4IgYCsW+jfEQJzbfIH0tUI
-	 5LRytGFX3WeIH2SzVjHmwdbbD7EbOn0nXhRUptVzAhAwrSZbUbviaSZosfmLBuWPXS
-	 S+qur3T3qhKZAjcUOShpcDm9xAZPmRsZFKkMJISMCQzesmvgMt4DxZKisn46MMaNC4
-	 LKMuLRuNL4jiw==
-Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 6137wAXI1496104
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Tue, 3 Feb 2026 15:58:10 +0800
-Received: from RS-EX-MBS2.realsil.com.cn (172.29.17.102) by
- RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.39; Tue, 3 Feb 2026 15:58:09 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS2.realsil.com.cn
- (172.29.17.102) with Microsoft SMTP Server id 15.2.1748.39 via Frontend
- Transport; Tue, 3 Feb 2026 15:58:09 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>
-CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
-        <horms@kernel.org>, <javen_xu@realsil.com.cn>, <kuba@kernel.org>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <nic_swsd@realtek.com>, <pabeni@redhat.com>
-Subject: Re: [PATCH net-next v3] r8169: add support for RTL8125cp
-Date: Tue, 3 Feb 2026 15:58:08 +0800
-Message-ID: <20260203075808.175-1-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <f54e4d2a-666c-444a-a79e-0df2ddec97d9@gmail.com>
-References: <f54e4d2a-666c-444a-a79e-0df2ddec97d9@gmail.com>
+	s=arc-20240116; t=1770105577; c=relaxed/simple;
+	bh=7tY65D2hRJTEZwdIFKCVAygjB4i8sZW+z6K8GQPtGiY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=r2hSUqT2bwhOOf3Cd9qocoqTtSyrMCsE9GXYcWYzOw5GgRGR1LvW8XM/5dGcKIx5pAjEeIviibx+j+xx3E6BwOt+Jabu6+Acg9/KlF7omkFZZBG71SxvthCTTrIRyb4yCwyepI9NSJnki9uAIR8alG0VsDzq51fUBo5LVs14hTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=15.184.224.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: zesmtpgz7t1770105497tfca62438
+X-QQ-Originating-IP: QAtK9cekhtfzk0D/37llOmat0pCehS0AwmM/LooQvfU=
+Received: from lap-jiawenwu.trustnetic.com ( [36.20.47.234])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 03 Feb 2026 15:58:14 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 1280410290080532181
+EX-QQ-RecipientCnt: 9
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v1 0/7] Wangxun improvement and new support
+Date: Tue,  3 Feb 2026 15:57:52 +0800
+Message-Id: <20260203075759.5852-1-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: OTaQrRjuGKLtTXqXXY8AW57dm+WrQPHAfHNp5J2Q1L9Ak2dN4j6Zx2mn
+	FU3LOGcsQFC9k/wKmioyHMDWln4N1kP4oTTXRlFVgsh9JvhxeZCbK5Dz2vcyeuUOrDpVzib
+	150747PFd4stvQK18XCH+DzOtSaJ0qC90m0YHOi0qnxk6xqVEGz1T4kdPlWualkqO/L6SWA
+	RncEr7uJcMBTp/heIdNADuF0CaTrZ6VzKt5zhlv2k7Y3SfMZbARZAquWluJoirGPwUAYvvd
+	49LClq3k4Odtx14lbG5qfYHwVyMdPmdZgb9PEZGqVeWZBc/pcI++fmEtHbeWjaPsofetQc8
+	Fla/0ju98dKs8PTkndXRmyNsb1rkCUFaornC8cRkL+zfUNadi6rzILZ1cq64+Gu3+AA37hm
+	Ih913llGGKzRxhxq8LNO3zXrpZrUJ6YPAJm+Y1yYdv6YNML/Iy2NBgHpaH6Qqksht1Ht3jK
+	TA2RmooXe0TKGo6Ju3LnOetHb0ADklzUhFNdYQA1sssyguvfbWnrv1DkHnSSkpKiB9DR3p+
+	fhUmrsQO6OLPq0Y1q2ZP7TrWsES8fb3pWZO/Vw9JKRHvEC6NN9Z3bVEV7/c86/R2JLZfRiD
+	ZZhPUrGPa2F2kdjNx1rXu9ApSeyHt1rKJIvYdLSxFtrPArvuNNkKGoGpli6Sk2pJYMWOM2g
+	ctagdsmMGqfe49NAdr9CGJNTBhnLpDGRhcJFRf5O2VYtbmmHN3tpzKWXWhKJFVij3hsFbdy
+	0iPldctrFKZ9QPFD+Iz76scTwVtxcO83o5JODffBm1sBxLbw8CTF5Qt67ySqZdvwDEWpiQh
+	ZElMPZwV5C0ZnVA4DNM0HKPa5+1PppUjwRwsLzqi1v/NwuFfFFy8JbHiGzqX5u1Dbekr0MM
+	1XwestmzpUgQ3sXJ0jTy1/T79ge6maH7C/AU3DB/wLtp3xq9neVV/jRFaeqRU9cEBg8TZ8X
+	NN9u4ByVbHY6nHHD0Z5C3nrQFw3RO0ZCt+ZvO2f951P9fRpQWZ+yIA4EaQVLLlRP1OBY7lD
+	VlvHxRvA2Thzs2jAmla4tRs3fGqy2KoAtgWbuoucyYR5qs6OTQibuSMPGXxm8vQwzMSRHyM
+	Q==
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
->On 2/2/2026 11:58 AM, javen wrote:=0D
->> From: Javen Xu <javen_xu@realsil.com.cn>=0D
->>=0D
->> This patch adds support for chip RTL8125cp. Its XID is 0x708. We apply =
-=0D
->> different and firmware for RTL8125cp.=0D
->>=0D
->> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>=0D
->>=0D
->> ---=0D
->> v2: This patch fix one mistake on phy_modify_paged(phydev, 0xa43, =0D
->> 0x10, 0x0000, 0x1001) which is phy_modify_paged(phydev, 0xa43, 0x00, 0x0=
-000, 0x1001) on patch v1.=0D
->>=0D
->> v3: Set phy_modify_paged(phydev, 0xa43, 0x10, 0x0000, 0x0003), bit 0 =0D
->> means 'link speed 10m PLL OFF', bit 1 means 'ALDPS PLL OFF', bit 2 =0D
->> means 'ENABLE ALDPS', bit 12 means 'ALDPS XTAL OFF'.=0D
->=0D
->ALDPS is disabled two lines later in rtl8125cp_hw_phy_config().=0D
->So why bother with ALDPS settings if ALDPS is disabled anyway?=0D
-=0D
-Bit 2 means 'ENABLE ALDPS', we prefer to treat it as a master switch that c=
-ontrols=0D
-some sub-features like bit 1(ALDPS PLL OFF) and bit 12(ALDPS XTAL OFF), ins=
-tead of=0D
-controlling these sub-features individually. And bit 0(link speed 10m PLL O=
-FF)=0D
-has noting to do with aldps.=0D
-=0D
-Thanks,=0D
-Javen Xu=
+Implement power management function for txgbe. Clean up the same code in
+the two drivers, to make more use of lib functions.
+
+Add Tx timeout process and PCIe error handling flow, to recover the
+devices.
+
+Jiawen Wu (7):
+  net: ngbe: move the WOL functions to libwx
+  net: ngbe: improve the reset flow
+  net: wangxun: move reusable PCI driver ops functions into libwx
+  net: txgbe: add power management support
+  net: wangxun: move ethtool_ops.set_channels into libwx
+  net: wangxun: add Tx timeout process
+  net: wangxun: add pcie error handler
+
+ drivers/net/ethernet/wangxun/libwx/Makefile   |   2 +-
+ drivers/net/ethernet/wangxun/libwx/wx_err.c   | 359 ++++++++++++++++++
+ drivers/net/ethernet/wangxun/libwx/wx_err.h   |  17 +
+ .../net/ethernet/wangxun/libwx/wx_ethtool.c   |  38 +-
+ .../net/ethernet/wangxun/libwx/wx_ethtool.h   |   4 +
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  60 ++-
+ drivers/net/ethernet/wangxun/libwx/wx_hw.h    |   2 +
+ drivers/net/ethernet/wangxun/libwx/wx_lib.c   | 139 ++++++-
+ drivers/net/ethernet/wangxun/libwx/wx_lib.h   |   4 +
+ drivers/net/ethernet/wangxun/libwx/wx_type.h  |  26 +-
+ .../net/ethernet/wangxun/ngbe/ngbe_ethtool.c  |  52 +--
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 207 +++++-----
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h |  21 +-
+ .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |  17 +-
+ .../net/ethernet/wangxun/txgbe/txgbe_irq.c    |   7 +
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   |  82 ++--
+ .../net/ethernet/wangxun/txgbe/txgbe_type.h   |   8 +-
+ 17 files changed, 810 insertions(+), 235 deletions(-)
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.c
+ create mode 100644 drivers/net/ethernet/wangxun/libwx/wx_err.h
+
+-- 
+2.48.1
+
+
