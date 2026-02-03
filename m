@@ -1,208 +1,233 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4739431D37B;
-	Tue,  3 Feb 2026 17:24:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04317325711
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 17:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770139489; cv=none; b=Gus5VHRSBLki2YCu5DYtGLR4XBAmzPOdFDwNZazadvBJ0YJ/NM9q3heGVCgZPspAzhGjlWsZuzWnZ0w9Hm427jv37TFQW6EcIT2hdekHkwk9jpo2BJ/1cTxdSIgNT2UlU6H7WZRk/p2dF5MCWWrpGnLTU971LPGX5tJp19Y7PMo=
+	t=1770139491; cv=none; b=g7YxZhEcRpgf35X+m2I0X7HS9xK5qEQBORmmN1coZ1iFeXQRH+Z6joRBhHBLcetegie48k2xfjaqC+7VISzRqKGZan5910G7RO68URBHc0018oz0y2ZFbEvkLL1VgeAoCUQXAmtGTF7UEEp/i2S670n9Y+f8cCM0n5LFwxl2Tr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770139489; c=relaxed/simple;
-	bh=OmeG44rKgyBKxyORuh8V0/p6i8lhDoFG7ZQ9oEafjoE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Nmrpn6QWyVJqHLrXL/T0pSp7BZpf/vYbEaFfykDxyt5rl1juKl5HR/rvnFw0W0yEi0J/+hxJBbDARTP2AG3lSBhOZ/gtVKYhcZFVSdwJgg8SUMaCahNuOTdLMwdkGHM2KPyzKbgZraruiJwnJtgNTjSf2OI6vjTjngz08GMAlS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=gvRI65f2; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	s=arc-20240116; t=1770139491; c=relaxed/simple;
+	bh=NwQadxIsbAVicBdlN5JoSnhWAwdMRsWYGibuwLb2uqw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gCw96I6VdKTP4auL5Dy8khQfqGTmu8UWsW92tOj9b2s6fcSx2UGUYg3sFgzrn69p9PKFUt3xWeXtefiQb8YbhtBxdDyMGHJd5ztRz+JlDFQy6OA5hZBm4/ZSe8cIt22iU2K0LZ96SMB/E4D8YZSnSPkpCjSe3fu2H4oDlPT25UU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ksiHnGVP; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="gvRI65f2"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description;
-	bh=NOP0zvwBDzRaeuaCcbKzyT5NMRYIeO5b3qJSQLlYOAE=; b=gvRI65f21quzrM1XtkczJoXNFD
-	kKLF/R6fT+4+ru5BxXevAVjvJsYSUD1roGzX1xjiotrI97O9f21Nf4gZUJm621SEJcs0UNp8uyK72
-	44210lv6dMUPNC4AvEN/0epN+ExI4vyVZmmsb8se0VbowkYWx7BJCuq2BoMXcS5UgwfQwwP6hO+tl
-	YYZ27Z+MEE24ZnbUBiboYUIDcT7CeWt0lww2uCi4C6eW2IATYzBGGacRbfWSLm3ahXwBSUdDQLaNk
-	mawdnfyZxfsA7TbTNKELdDWTGfABs2kdzl0UUdcxWwtayRRZDN6tU3v0gfBshVrROZO9RfmEqRLW+
-	BWu593iw==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vnK8r-004z6I-IX; Tue, 03 Feb 2026 17:24:45 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Tue, 03 Feb 2026 09:23:55 -0800
-Subject: [PATCH net-next v6 4/4] netconsole: Use printk context for CPU and
- task information
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ksiHnGVP"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2a8a7269547so56963565ad.0
+        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 09:24:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770139489; x=1770744289; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LF/dpo4BeQSytcLLWoC5FgkTqSqyB60iXXH6RwLfoVg=;
+        b=ksiHnGVPU3C4rLF57d2ord97g3XGYtyds1LuQFPD1dTYgVmPn9u8Hhkx1pBel8P+Db
+         47qB0tetJINtuIoAee7tuQUBp/zLBsOAMgdlWoB5VAWKqqe3DmgiZaG2+lvDn0xh28gX
+         Qg2veIOHW7xEIveCjxMG4BjhZepdj4wOJ31m9Rgu1GNlem+X7ut+Zyw6nZI+yEGkQI1A
+         6SFkeWr0IRNw5Z7x8qTpAFvO2RfOhsZjrL/CcEMFRaluaMWWMNGLJkEjpwdy61XdRPz1
+         qTvW0u369Zo0xSV00FDFmdxtG/dC7GntccY4RpFfECwNvTbUsh3Nisy4TsKvg0/3rIVj
+         3lqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770139489; x=1770744289;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LF/dpo4BeQSytcLLWoC5FgkTqSqyB60iXXH6RwLfoVg=;
+        b=Vfpp0GnYVi9KNQM7glGNLAIPrKsHKrf8yuDT8xrRQuqg5FPjl8Cvf5o4KnrcyMRDWh
+         7woKQLV0Ev2UTQ1ZeQaWIGZ86gqNfI3Cp8V9FlkckFdAe1zga8X636v7iiq6Noc4JtEq
+         ryqEcY1rA3EbcKagFTp/kOYYN/rfDVxehsIkmhg7yAUBFG5OdzFdT3YOgH02dfm6iOQR
+         siXQExRnc4HDCuznzFA0BSwJMhgV/2qTtSyWXe1+B/zZlP9bZv/DQK5rJNYX9JFiX2lH
+         zlFO3e1bsCawGfenNtqyCWUQtzxHcvKU0dTjkx6TIVSKlaTM4kWW2RgENrKw/FSNqATS
+         Fnlg==
+X-Gm-Message-State: AOJu0Yy5lVNMblbu6S1jcdrcoX18OOEJ2mUgOPp77UsjjhDV6dbbuENU
+	397uV4FNYDBKoPvKEUfY9Ysi8evauKMkYGgzqM31RgBK15tbZCBmlq+rP+DMBPw2
+X-Gm-Gg: AZuq6aJbKrEFeYHpeCOVqTgALum4vpsgycrhlH2H6GtstarXmM+0ynvKHBkT2KRu1r9
+	w4slJ6VhOSeaVBS9nbuG3pDqLo5UOFb451uQvjJsG+P3Kt8cSaId6yosk/pyI+UY0BSyqcfc6EH
+	FSVp8MCGq645PLi9kC2A4GBop1wcWfhXKx9JLhZhlaDeNsngFohvdlXUb9sIuIcngHYQMUipFmm
+	GkLB72d3T+Z828raPW7x66WUf8tMdmUpRPXSybJL49J8tgipINju+zVXEED844Wa0yoWVQ0a10a
+	4r4cPt6uKFdsR8Jv4Ej7+xO+bhvktVWvhoCMvt17KNcmlA7RCQhPZJWgHH4jFhlVN9qvBrlfoyU
+	f+oWDPvMTdNdJgmVAsCyiaQItF8F1uhvwjQHZVkjZyhkkyJBUqQ8aUwvL0ssXCjbQKmudjVZktb
+	mD8hWOHy6HBjXCA+tt7/PzCXH1nzsLQ25tx9bY6aDOA6ifQqtEtx3vowem8lT+9u9qzOn3OvnHd
+	qEDm4Kw4YZqPaV/Oe+EzDg=
+X-Received: by 2002:a17:902:d585:b0:2a9:2942:e15d with SMTP id d9443c01a7336-2a933cdbaa3mr472525ad.5.1770139489167;
+        Tue, 03 Feb 2026 09:24:49 -0800 (PST)
+Received: from d.home.mmyangfl.win (tunnel997320-pt.tunnel.tserv3.fmt2.ipv6.he.net. [2001:470:1f04:2c7::2])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a933966f12sm506025ad.76.2026.02.03.09.24.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Feb 2026 09:24:48 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>,
+	David Yang <mmyangfl@gmail.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	UNGLinuxDriver@microchip.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v3] net: dsa: eliminate local type for tc policers
+Date: Wed,  4 Feb 2026 01:22:02 +0800
+Message-ID: <20260203172207.98533-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260203-nbcon-v6-4-985f3bdb3267@debian.org>
-References: <20260203-nbcon-v6-0-985f3bdb3267@debian.org>
-In-Reply-To: <20260203-nbcon-v6-0-985f3bdb3267@debian.org>
-To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- pmladek@suse.com, john.ogness@linutronix.de
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, 
- Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
- gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, 
- mpdesouza@suse.com, kernel-team@meta.com
-X-Mailer: b4 0.15-dev-f4305
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4958; i=leitao@debian.org;
- h=from:subject:message-id; bh=OmeG44rKgyBKxyORuh8V0/p6i8lhDoFG7ZQ9oEafjoE=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpgi9C9TjbwH9w/25/iMSIrFYq4SO4EmttgncGk
- 4bfTIuHln6JAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaYIvQgAKCRA1o5Of/Hh3
- bSSlEACAjJLScr4+jdfDmtjpshnG3+sTBIWuysPaQO4/SXqA09C6q5lMANG15yzDl1TkbSkORM7
- YO45ntFkkIJKYv7QhFazeVorNx36CKxhY/Q4lV22kU2tXwC8+ep+WNOpwNF1FNDw7xxrYmu4Y9/
- A78plDqn3/qeh7aqYSv05SW1V1uo9sR8WhBLne91uOB5JS1WjXcrWVoPUDxa795Avpv57fHNxkc
- FE7L+HD8tUUdVmYWyvJlp6aqUj+iWqM+ZCjoItYMMVGBOKIsbpXlijSjtlpmwA10pB3olNP72AU
- rehoCmtWbCvfRYuvnJZI1qxpKCi6REwGfREifpqzYqisGHHLVu/r61owqpSB7bhYCh9CgdPFrJ2
- HysbaR1GyzhPNSbfh+jOu1e5LKhmljBep5soBtwM969j3gWx3YPj1ixwNCI+xNxu6mY/t3kmMiq
- 6KwAKkOtc6fWAHaQaZ9TbNIweKs4f6hLf3S/ResGWIHh0EkkCH227WkknEf/UuJWAdgLUVz80XN
- 3TPHRJP3vDw8qIe4mNDKcOY3HelZgdG8PdmQ8OY1HhyU8atpSDKtp5JrrdAI7py7+ByirscORIq
- aixxPH9m1W8kWq0xmYogMRy8GXhjCmAQLW4xx+PP4sxlm++RT0+0BE5l7taKmnB/o9UjvOd0tB6
- VTyygQ6FnQY/6JQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
 
-Use the CPU and task name captured at printk() time from
-nbcon_write_context instead of querying the current execution context.
-This provides accurate information about where the message originated,
-rather than where netconsole happens to be running.
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-For CPU, use wctxt->cpu instead of raw_smp_processor_id().
+David Yang is saying that struct flow_action_entry in
+include/net/flow_offload.h has gained new fields and DSA's struct
+dsa_mall_policer_tc_entry, derived from that, isn't keeping up.
+This structure is passed to drivers and they are completely oblivious to
+the values of fields they don't see.
 
-For taskname, use wctxt->comm directly which contains the task
-name captured at printk time.
+This has happened before, and almost always the solution was to make the
+DSA layer thinner and use the upstream data structures. Here, the reason
+why we didn't do that is because struct flow_action_entry :: police is
+an anonymous structure.
 
-This change ensures netconsole outputs reflect the actual context that
-generated the log message, which is especially important when the
-console driver runs asynchronously in a dedicated thread.
+That is easily enough fixable, just name those fields "struct
+flow_action_police" and reference them from DSA.
 
-Reviewed-by: John Ogness <john.ogness@linutronix.de>
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Make the according transformations to the two users (sja1105 and felix):
+"rate_bytes_per_sec" -> "rate_bytes_ps".
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Co-developed-by: David Yang <mmyangfl@gmail.com>
+Signed-off-by: David Yang <mmyangfl@gmail.com>
 ---
- drivers/net/netconsole.c | 40 +++++++++++++++++++++++-----------------
- 1 file changed, 23 insertions(+), 17 deletions(-)
+v2: https://lore.kernel.org/r/20260131045821.3451873-1-mmyangfl@gmail.com
+  - use Oltean's version and export struct flow_action_police
+v1: https://lore.kernel.org/r/20260126061340.757543-1-mmyangfl@gmail.com
+  - fix DSA core only
+ drivers/net/dsa/ocelot/felix.c         |  4 ++--
+ drivers/net/dsa/sja1105/sja1105_main.c |  4 ++--
+ include/net/dsa.h                      | 10 ++--------
+ include/net/flow_offload.h             |  2 +-
+ net/dsa/user.c                         |  5 ++---
+ 5 files changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/netconsole.c b/drivers/net/netconsole.c
-index ec000f477c2a8..0f44ce5ccc0ab 100644
---- a/drivers/net/netconsole.c
-+++ b/drivers/net/netconsole.c
-@@ -1490,18 +1490,20 @@ static void populate_configfs_item(struct netconsole_target *nt,
- 	init_target_config_group(nt, target_name);
+diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
+index 9e5ede932b42..5d34eb82e639 100644
+--- a/drivers/net/dsa/ocelot/felix.c
++++ b/drivers/net/dsa/ocelot/felix.c
+@@ -2003,11 +2003,11 @@ static int felix_cls_flower_stats(struct dsa_switch *ds, int port,
  }
  
--static int sysdata_append_cpu_nr(struct netconsole_target *nt, int offset)
-+static int sysdata_append_cpu_nr(struct netconsole_target *nt, int offset,
-+				 struct nbcon_write_context *wctxt)
+ static int felix_port_policer_add(struct dsa_switch *ds, int port,
+-				  struct dsa_mall_policer_tc_entry *policer)
++				  const struct flow_action_police *policer)
  {
- 	return scnprintf(&nt->sysdata[offset],
- 			 MAX_EXTRADATA_ENTRY_LEN, " cpu=%u\n",
--			 raw_smp_processor_id());
-+			 wctxt->cpu);
+ 	struct ocelot *ocelot = ds->priv;
+ 	struct ocelot_policer pol = {
+-		.rate = div_u64(policer->rate_bytes_per_sec, 1000) * 8,
++		.rate = div_u64(policer->rate_bytes_ps, 1000) * 8,
+ 		.burst = policer->burst,
+ 	};
+ 
+diff --git a/drivers/net/dsa/sja1105/sja1105_main.c b/drivers/net/dsa/sja1105/sja1105_main.c
+index 2a4a0fe20dae..71a817c07a90 100644
+--- a/drivers/net/dsa/sja1105/sja1105_main.c
++++ b/drivers/net/dsa/sja1105/sja1105_main.c
+@@ -2841,7 +2841,7 @@ static void sja1105_mirror_del(struct dsa_switch *ds, int port,
  }
  
--static int sysdata_append_taskname(struct netconsole_target *nt, int offset)
-+static int sysdata_append_taskname(struct netconsole_target *nt, int offset,
-+				   struct nbcon_write_context *wctxt)
+ static int sja1105_port_policer_add(struct dsa_switch *ds, int port,
+-				    struct dsa_mall_policer_tc_entry *policer)
++				    const struct flow_action_police *policer)
  {
- 	return scnprintf(&nt->sysdata[offset],
- 			 MAX_EXTRADATA_ENTRY_LEN, " taskname=%s\n",
--			 current->comm);
-+			 wctxt->comm);
- }
+ 	struct sja1105_l2_policing_entry *policing;
+ 	struct sja1105_private *priv = ds->priv;
+@@ -2852,7 +2852,7 @@ static int sja1105_port_policer_add(struct dsa_switch *ds, int port,
+ 	 * the value of RATE bytes divided by 64, up to a maximum of SMAX
+ 	 * bytes.
+ 	 */
+-	policing[port].rate = div_u64(512 * policer->rate_bytes_per_sec,
++	policing[port].rate = div_u64(512 * policer->rate_bytes_ps,
+ 				      1000000);
+ 	policing[port].smax = policer->burst;
  
- static int sysdata_append_release(struct netconsole_target *nt, int offset)
-@@ -1522,8 +1524,10 @@ static int sysdata_append_msgid(struct netconsole_target *nt, int offset)
- /*
-  * prepare_sysdata - append sysdata in runtime
-  * @nt: target to send message to
-+ * @wctxt: nbcon write context containing message metadata
-  */
--static int prepare_sysdata(struct netconsole_target *nt)
-+static int prepare_sysdata(struct netconsole_target *nt,
-+			   struct nbcon_write_context *wctxt)
- {
- 	int sysdata_len = 0;
+diff --git a/include/net/dsa.h b/include/net/dsa.h
+index 6b2b5ed64ea4..656990365798 100644
+--- a/include/net/dsa.h
++++ b/include/net/dsa.h
+@@ -216,12 +216,6 @@ struct dsa_mall_mirror_tc_entry {
+ 	bool ingress;
+ };
  
-@@ -1531,9 +1535,9 @@ static int prepare_sysdata(struct netconsole_target *nt)
- 		goto out;
+-/* TC port policer entry */
+-struct dsa_mall_policer_tc_entry {
+-	u32 burst;
+-	u64 rate_bytes_per_sec;
+-};
+-
+ /* TC matchall entry */
+ struct dsa_mall_tc_entry {
+ 	struct list_head list;
+@@ -229,7 +223,7 @@ struct dsa_mall_tc_entry {
+ 	enum dsa_port_mall_action_type type;
+ 	union {
+ 		struct dsa_mall_mirror_tc_entry mirror;
+-		struct dsa_mall_policer_tc_entry policer;
++		struct flow_action_police policer;
+ 	};
+ };
  
- 	if (nt->sysdata_fields & SYSDATA_CPU_NR)
--		sysdata_len += sysdata_append_cpu_nr(nt, sysdata_len);
-+		sysdata_len += sysdata_append_cpu_nr(nt, sysdata_len, wctxt);
- 	if (nt->sysdata_fields & SYSDATA_TASKNAME)
--		sysdata_len += sysdata_append_taskname(nt, sysdata_len);
-+		sysdata_len += sysdata_append_taskname(nt, sysdata_len, wctxt);
- 	if (nt->sysdata_fields & SYSDATA_RELEASE)
- 		sysdata_len += sysdata_append_release(nt, sysdata_len);
- 	if (nt->sysdata_fields & SYSDATA_MSGID)
-@@ -1831,31 +1835,33 @@ static void send_msg_fragmented(struct netconsole_target *nt,
- /**
-  * send_ext_msg_udp - send extended log message to target
-  * @nt: target to send message to
-- * @msg: extended log message to send
-- * @msg_len: length of message
-+ * @wctxt: nbcon write context containing message and metadata
-  *
-- * Transfer extended log @msg to @nt.  If @msg is longer than
-+ * Transfer extended log message to @nt.  If message is longer than
-  * MAX_PRINT_CHUNK, it'll be split and transmitted in multiple chunks with
-  * ncfrag header field added to identify them.
-  */
--static void send_ext_msg_udp(struct netconsole_target *nt, const char *msg,
--			     int msg_len)
-+static void send_ext_msg_udp(struct netconsole_target *nt,
-+			     struct nbcon_write_context *wctxt)
- {
- 	int userdata_len = 0;
- 	int release_len = 0;
- 	int sysdata_len = 0;
-+	int len;
+@@ -1110,7 +1104,7 @@ struct dsa_switch_ops {
+ 	void	(*port_mirror_del)(struct dsa_switch *ds, int port,
+ 				   struct dsa_mall_mirror_tc_entry *mirror);
+ 	int	(*port_policer_add)(struct dsa_switch *ds, int port,
+-				    struct dsa_mall_policer_tc_entry *policer);
++				    const struct flow_action_police *policer);
+ 	void	(*port_policer_del)(struct dsa_switch *ds, int port);
+ 	int	(*port_setup_tc)(struct dsa_switch *ds, int port,
+ 				 enum tc_setup_type type, void *type_data);
+diff --git a/include/net/flow_offload.h b/include/net/flow_offload.h
+index 596ab9791e4d..a2b1b752958a 100644
+--- a/include/net/flow_offload.h
++++ b/include/net/flow_offload.h
+@@ -275,7 +275,7 @@ struct flow_action_entry {
+ 			u32			trunc_size;
+ 			bool			truncate;
+ 		} sample;
+-		struct {				/* FLOW_ACTION_POLICE */
++		struct flow_action_police {		/* FLOW_ACTION_POLICE */
+ 			u32			burst;
+ 			u64			rate_bytes_ps;
+ 			u64			peakrate_bytes_ps;
+diff --git a/net/dsa/user.c b/net/dsa/user.c
+index f59d66f0975d..df25a8891c01 100644
+--- a/net/dsa/user.c
++++ b/net/dsa/user.c
+@@ -1459,8 +1459,8 @@ dsa_user_add_cls_matchall_police(struct net_device *dev,
+ 	struct netlink_ext_ack *extack = cls->common.extack;
+ 	struct dsa_port *dp = dsa_user_to_port(dev);
+ 	struct dsa_user_priv *p = netdev_priv(dev);
+-	struct dsa_mall_policer_tc_entry *policer;
+ 	struct dsa_mall_tc_entry *mall_tc_entry;
++	struct flow_action_police *policer;
+ 	struct dsa_switch *ds = dp->ds;
+ 	struct flow_action_entry *act;
+ 	int err;
+@@ -1497,8 +1497,7 @@ dsa_user_add_cls_matchall_police(struct net_device *dev,
+ 	mall_tc_entry->cookie = cls->cookie;
+ 	mall_tc_entry->type = DSA_PORT_MALL_POLICER;
+ 	policer = &mall_tc_entry->policer;
+-	policer->rate_bytes_per_sec = act->police.rate_bytes_ps;
+-	policer->burst = act->police.burst;
++	memcpy(policer, &act->police, sizeof(*policer));
  
- #ifdef CONFIG_NETCONSOLE_DYNAMIC
--	sysdata_len = prepare_sysdata(nt);
-+	sysdata_len = prepare_sysdata(nt, wctxt);
- 	userdata_len = nt->userdata_length;
- #endif
- 	if (nt->release)
- 		release_len = strlen(init_utsname()->release) + 1;
- 
--	if (msg_len + release_len + sysdata_len + userdata_len <= MAX_PRINT_CHUNK)
--		return send_msg_no_fragmentation(nt, msg, msg_len, release_len);
-+	len = wctxt->len + release_len + sysdata_len + userdata_len;
-+	if (len <= MAX_PRINT_CHUNK)
-+		return send_msg_no_fragmentation(nt, wctxt->outbuf,
-+						 wctxt->len, release_len);
- 
--	return send_msg_fragmented(nt, msg, msg_len, release_len,
-+	return send_msg_fragmented(nt, wctxt->outbuf, wctxt->len, release_len,
- 				   sysdata_len);
- }
- 
-@@ -1900,7 +1906,7 @@ static void netconsole_write(struct nbcon_write_context *wctxt, bool extended)
- 			return;
- 
- 		if (extended)
--			send_ext_msg_udp(nt, wctxt->outbuf, wctxt->len);
-+			send_ext_msg_udp(nt, wctxt);
- 		else
- 			send_msg_udp(nt, wctxt->outbuf, wctxt->len);
- 
-
+ 	err = ds->ops->port_policer_add(ds, dp->index, policer);
+ 	if (err) {
 -- 
-2.47.3
+2.51.0
 
