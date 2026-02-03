@@ -1,118 +1,141 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809152FDC29
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 20:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6F73659F4
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 20:13:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770148965; cv=none; b=KcNmWeP7MJCeXEVP5Kvg30Zo1QbE3lUtGddPs6ae0hONSWd/yhAGlcCjhSwzYixfixnjqG0B5KZZZkiAPoI/JwAy/ISlvaYpQ0OQppBxlDVLIR5F12q4nmagDLFA9hvixX9OEtcgUTg9/O4LrBlxmbsBDc1tYe35x2F9pdpL0Bk=
+	t=1770149632; cv=none; b=a0ggY1LzIAy3wXnfKcRPFWzEmRZNaRScAtq5jdhiURZWrVlFtKssHUDJb6hKi1cgSvNNqvELKAjGakMhBtW5ntl9xz/L7d2LCuqhdVRgsgKTOXscN0hQj1GHyaEslIwHqL0C6IjLD1nHgWARrmbTDTV+5JdiVOIJrttA9D+kPrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770148965; c=relaxed/simple;
-	bh=M02wuj7dQBeNDh5EnBEnzH9wOuvFcVq5LO80sKSrTIk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AhW0eV09x33X6BQ+909FMglwukoUzXJijQuOfsiXbl6PlDLXSWkSUXjXMs2DBfZVyuu21jOmSw52eCsmoY5ZK7eXk7LkThEptjL8uW3lNCXJAW4OpNY/6YjMN181S/sYIi8CbXz0pNPhncJxZ5z5Dq5AuCXon47ChrQWzQQ9ddU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=USF4va27; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1770149632; c=relaxed/simple;
+	bh=NODE1ex6xHPNfYT9o/gG2lncoCylLf2pyACo62WSVtc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BTtlZu4RJ9/kV2OqUA9aku0/KSottjb9EhdN9WOgEtNYT5tQ+wsDaxl0H62FItSoVKk3yTdmWzKGKcvqhNplkTH05nAR+U/hUJPdVCNGRPPqkFW0Q0esxhAH4YqFp9DXnBVRqFpMxVexb1liBiwZDMhUhC/KSSeshciEV9/l2ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L/u8+vut; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="USF4va27"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-352e6fcd72dso10585307a91.3
-        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 12:02:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L/u8+vut"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43596062728so115861f8f.1
+        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 12:13:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770148964; x=1770753764; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=58vpAXhIDs5lQirqOw7wql3Y51LdDMCZyU1M/Hgn72A=;
-        b=USF4va27vFuU5gTD2E3+9XjcgZJNHEz3xPOnQEgHp9F+L+gt6Qa+fzSq9ewU1UyaF7
-         h3EiLHWq110TT9QWohP1aUIIhp+YsU8SYa2Lk5CXI/3TOoxNHSclu5zqT3zIQuwkJgnN
-         VTSqjl35zZw5gwmk/qeaZhtj30uggJc0ccTB2km7LyffBd79xx+4qTxy2Gbue7BF/gdx
-         qN80uCrFmIr78MqfGVWQ57WV7z401S9iu8HFlA9OxrQLBfgd8HEu6DZ3B2ygO9FWQnLY
-         qtv4kWjWiQlj/12arz4mWS12xjb8exbbz1EuWFMfUP8firxnh8s+r1HxA9P1ze29otBR
-         sfCw==
+        d=gmail.com; s=20230601; t=1770149629; x=1770754429; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=STBiAbnohjENbHefVxHOrw1vMjfV2CLsUHaeC+WEYyI=;
+        b=L/u8+vut29lru0zfp/u0xZTDA3eBnDjqTJeBBdmUWRt+7RefIuFdpHd3spk0GEkHig
+         oVRXB4LMZ/CMiFrGA47hvTApdeZS6gtkYiybSV2NcdnTkQ42yUkeZTgszphblCVvbo1u
+         9ZE29YPpgVdrDVc83rx/hDmqIZUhGFKx/zv1QrT/LeornLLzvrZ8uIgbHaQnrlqEg+J5
+         j2fjtZQGP4+Nt1KLYV4lQ0ZuEGsE+a0XVyQyAUdvRilWa8KX+u1ZU2vnqgLEA8hSI6t0
+         OR50r1M2/4e5vjpZkQ3QTJuWuPa/nT3+MTiOcUqdp/bSuePI3g9j6ShQ0a+K12c1kRNz
+         HLpw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770148964; x=1770753764;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=58vpAXhIDs5lQirqOw7wql3Y51LdDMCZyU1M/Hgn72A=;
-        b=XTieKNMiTwmcGnVpeR1kr/Yflj8oT5FURBvgx0G79bodHmrwIFytBNc0jqnhLLXLAE
-         EXRZYyeFevRRmcq+OgDcqhGVTqLozmLqXrO/jjaQbW/VmZFu7CiwVgyrs92gb6EjLWja
-         M06gA7eD6XiTWwaGsFIf/K/zcdM1MWGIKY8YyGIscpH8rZUHfi63K9D7jzxInFzUPjys
-         6drsOXr9+zKmuGznetycau3rhnZdqTrpWYbxDcNhrmk8DfLji//PDhnbnZv0OMbe2ElK
-         urJ8xviPmNt6pqd5E2KZHMgD4szihpNft3od8LoUKIS3FrOMvEd4jQ3sUs4z/UdCs6N9
-         pj4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXfcfVkgWxqNE+2HZESmdc8mzVxKvWrDk1u6cSbY/U0U0jheIZUH9YwLz7r8W8i5vae6xBOajM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKMxyCJ3vokEi8qCusb3HsNLslK19inJQwx4q2//E5XpLA+Hlk
-	d0EkQKQxScJeIqJOsTO8qTofqCCrJ0bBCcFPqPYoM0kfXIuAWkxKg+YjTRnFajh/Atv9kkJ/Xq/
-	F+IY5zQ==
-X-Received: from pjbgq23.prod.google.com ([2002:a17:90b:1057:b0:352:f2a4:7e27])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:548c:b0:340:ca7d:936a
- with SMTP id 98e67ed59e1d1-354871ad6dcmr487515a91.18.1770148963801; Tue, 03
- Feb 2026 12:02:43 -0800 (PST)
-Date: Tue,  3 Feb 2026 19:47:50 +0000
-In-Reply-To: <8d055903-fe44-4bbf-a1a5-e0176343bf0b@rbox.co>
+        d=1e100.net; s=20230601; t=1770149629; x=1770754429;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=STBiAbnohjENbHefVxHOrw1vMjfV2CLsUHaeC+WEYyI=;
+        b=UGk6Fn0OHA2G2HQMm9pUxKx52Po2YkNGeBHDDR4mKYF1gv+W4eP/LSilHGhc7RbxCd
+         drFZLlYutgEJh4G9fNDt+JwawzQoGTfP+1VldvdmIMwNzrkPFy9FW1PcR05s9wgVyGzd
+         B9mvbFogAYp8nLl0ZhkaNPTqO97EYH/9s4xvRSZGzGYFIqBVOOCK/tBTr7YVgOi/0LbR
+         MgUD/ub2/bvvMpDkGf5yQ331/BN9P61vU/VaQx1RX4zHOIw7TiUdn8IXf4ciqf8UEhEN
+         C4ZAzwfhIlAdE5JT1YKuVniPU1X8Lvt9Bkgb9bXGpQGrppy9urkMu9wPOek4gom4bVSY
+         nrAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWo5MT7I4yWIUwU1lb/IEm4KtXJS2hcqxUJedBukWLDVzUSyOZw4F+THYuJx1YS8yTNoG9OVgA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yza4IHBzOcg0GOzh2FgCZlOFzU6z20o5FLpbnTWNFRPfM437zq6
+	RogNSCobN/cF3yp0ih8kCK5qqBt3yvHJY3JGCnmIwMRNTsbhqCHszuaB6eLbCQ==
+X-Gm-Gg: AZuq6aLFuovx8W8ZPWbDh070yeoGJRiNEiDZ5o/VqJiiHjnq2I5vjfQN/zvzp3sseIE
+	lKBxvaMYF2BaY0mgdRyukY9SvlTKfHWMpZ0ucCTQc3Ev4JDHoWA8d0/F2WYl/h7pVpFf4RJEu9H
+	mwX9Rc1W4Td6pgiAnPGsaJsT+6JBFLMlyi3/7L9p5qIP+JBUquypOxL8G8kVaB1wEDjjMAR5W8G
+	Do/4aclsogDRPlJ6Bc3wnal6QpBFrG89VMxA499FDOCAdqeXWvfqgdtKC5kbg+ITxMNEMRs01yw
+	lpCRVx113nytqqEJLiwiP3RyThnOyaI0sVbtJNIGptUVsqQR8WpBzoFQaXs5sHQooMS1AWLR2i6
+	Pf5PJekQfAdoN5SYsY6/6a+i/PN5BPPeUeTc3m2Gl0KcQNSI2Qyft6zp5fXP88/LkSfKAInsmpD
+	TXS+f438UhnmGMlD7KGHowRYZ1QRDdnGCc/emtJfBY/9gRA3PGZWwS0R75NNeg59iuedyx7nOkn
+	a54GkVSEMP01kzbX2OmumLBN1OI8ZtNnmL6YwQg6VAE2Wwh3hTEYhOKKZ3vGA==
+X-Received: by 2002:a05:6000:18a7:b0:435:db9b:5881 with SMTP id ffacd0b85a97d-43617c8d34emr942617f8f.25.1770149628855;
+        Tue, 03 Feb 2026 12:13:48 -0800 (PST)
+Received: from ?IPV6:2003:ea:8f39:1b00:cd1:4684:14eb:6540? (p200300ea8f391b000cd1468414eb6540.dip0.t-ipconnect.de. [2003:ea:8f39:1b00:cd1:4684:14eb:6540])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43617e38ec5sm1284665f8f.14.2026.02.03.12.13.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Feb 2026 12:13:48 -0800 (PST)
+Message-ID: <81407a61-1e6a-436c-83f3-fc403a706af6@gmail.com>
+Date: Tue, 3 Feb 2026 21:13:47 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <8d055903-fe44-4bbf-a1a5-e0176343bf0b@rbox.co>
-X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
-Message-ID: <20260203200242.404131-1-kuniyu@google.com>
-Subject: Re: [PATCH bpf] bpf, sockmap: Fix af_unix null-ptr-deref in proto update
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: mhal@rbox.co
-Cc: bpf@vger.kernel.org, daniel@iogearbox.net, davem@davemloft.net, 
-	edumazet@google.com, horms@kernel.org, jakub@cloudflare.com, 
-	john.fastabend@gmail.com, kuba@kernel.org, kuniyu@google.com, 
-	linux-kernel@vger.kernel.org, martin.lau@linux.dev, netdev@vger.kernel.org, 
-	pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v3] r8169: add support for RTL8125cp
+To: javen <javen_xu@realsil.com.cn>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ horms@kernel.org, kuba@kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, nic_swsd@realtek.com, pabeni@redhat.com
+References: <f54e4d2a-666c-444a-a79e-0df2ddec97d9@gmail.com>
+ <20260203075808.175-1-javen_xu@realsil.com.cn>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+In-Reply-To: <20260203075808.175-1-javen_xu@realsil.com.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Michal Luczaj <mhal@rbox.co>
-Date: Tue, 3 Feb 2026 10:57:46 +0100
-> On 2/3/26 04:53, Martin KaFai Lau wrote:
-> > On 2/2/26 7:10 AM, Michal Luczaj wrote:
-> >> In related news, looks like bpf_iter_unix_seq_show() is missing
-> >> unix_state_lock(): lock_sock_fast() won't stop unix_release_sock(). E.g.
-> >> bpf iterator can grab unix_sock::peer as it is being released.
-> > 
-> > If the concern is the bpf iterator prog may use a released unix_peer(sk) 
-> > pointer, it should be fine. The unix_peer(sk) pointer is not a trusted 
-> > pointer to the bpf prog, so nothing bad will happen other than 
-> > potentially reading incorrect values.
+On 2/3/2026 8:58 AM, javen wrote:
+>> On 2/2/2026 11:58 AM, javen wrote:
 > 
-> But if the prog passes a released peer pointer to a bpf helper:
+>>> From: Javen Xu <javen_xu@realsil.com.cn>
 > 
-> BUG: KASAN: slab-use-after-free in bpf_skc_to_unix_sock+0x95/0xb0
-> Read of size 1 at addr ffff888110654c92 by task test_progs/1936
+>>>
+> 
+>>> This patch adds support for chip RTL8125cp. Its XID is 0x708. We apply 
+> 
+>>> different and firmware for RTL8125cp.
+> 
+>>>
+> 
+>>> Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
+> 
+>>>
+> 
+>>> ---
+> 
+>>> v2: This patch fix one mistake on phy_modify_paged(phydev, 0xa43, 
+> 
+>>> 0x10, 0x0000, 0x1001) which is phy_modify_paged(phydev, 0xa43, 0x00, 0x0000, 0x1001) on patch v1.
+> 
+>>>
+> 
+>>> v3: Set phy_modify_paged(phydev, 0xa43, 0x10, 0x0000, 0x0003), bit 0 
+> 
+>>> means 'link speed 10m PLL OFF', bit 1 means 'ALDPS PLL OFF', bit 2 
+> 
+>>> means 'ENABLE ALDPS', bit 12 means 'ALDPS XTAL OFF'.
+> 
+>>
+> 
+>> ALDPS is disabled two lines later in rtl8125cp_hw_phy_config().
+> 
+>> So why bother with ALDPS settings if ALDPS is disabled anyway?
+> 
+> 
+> 
+> Bit 2 means 'ENABLE ALDPS', we prefer to treat it as a master switch that controls
+> 
+> some sub-features like bit 1(ALDPS PLL OFF) and bit 12(ALDPS XTAL OFF), instead of
+> 
+> controlling these sub-features individually. And bit 0(link speed 10m PLL OFF)
+> 
+> has noting to do with aldps.
+> 
+I see, you changed the value of a43/10 to 0x0003 in v3. Then just this question:
+Few lines later ALDPS gets disabled, so is it beneficial to set bit 1 here?
+Thanks for mentioning that bit 0 isn't related to ALDPS.
 
-Can you cook a patch for this ? probably like below
+> 
+> 
+> Thanks,
+> 
+> Javen Xu
 
----8<---
-diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-index 02ebad6afac7..9c7e9fbde362 100644
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -3740,8 +3740,9 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
- 		return 0;
- 
- 	slow = lock_sock_fast(sk);
-+	unix_state_lock(sk);
- 
--	if (unlikely(sk_unhashed(sk))) {
-+	if (unlikely(sock_flag(other, SOCK_DEAD))) {
- 		ret = SEQ_SKIP;
- 		goto unlock;
- 	}
-@@ -3751,6 +3752,7 @@ static int bpf_iter_unix_seq_show(struct seq_file *seq, void *v)
- 	prog = bpf_iter_get_info(&meta, false);
- 	ret = unix_prog_seq_show(prog, &meta, v, uid);
- unlock:
-+	unix_staet_unlock(sk);
- 	unlock_sock_fast(sk, slow);
- 	return ret;
- }
----8<---
-
-Thanks!
