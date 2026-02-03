@@ -1,168 +1,180 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1312472AA
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 17:17:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0441D5ABA;
+	Tue,  3 Feb 2026 17:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770139035; cv=none; b=UhM02lx6kMDnc5UUXocYnaEiTO/L6GbZJu6L0ozOxlDcvOnczIe6SPNOZpYDNk8eLFFzIw5ba7NfhpczZ+XtAkhR5dCpEGHAMDRP9/HV5xOizs3mB1ipmpWPzPgBus3FDWAvtjYRFlH2kE0EKSOhWhAkXjy4OwoFhN3ET1xNSj4=
+	t=1770139474; cv=none; b=GR0QKEBPoNb/O/H/e44UPPSzPMaKnCxYxREMlHKXgPWAUEJj1t5nj/Socx8S2tRD4NdlUKcy1iK8qt2liEfc6SgtXupi0wvILrjbqDqWBgjGL6hxMCaaHlxz4R3Kk3DlkhFDleLpEQFlo6XHy2KFrGj6iO72eff58U5gLI3Vcvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770139035; c=relaxed/simple;
-	bh=L+tfV6h2aIEs31IPZyRpeRladsy47nV8RT4uOW/3s6Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KeUhGa32vO+8ZbKSdZTaQJS5mti8s2ZTDuypRn3264H8WPyIjgHtYiLxMO6KHPgJ6XoBPVlxS8dvNCp86mwzo5Rja+YOISDpR8FpotGEk+0Iaf9crc49qWN5EHpH65su3L+nhUXSEurlh+VwE5yIXhl4WL5D0niY9JkeSz9Bl04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CqiF60qh; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1770139474; c=relaxed/simple;
+	bh=EXVzYIkb1ujewKXqi19rPswvAVNTy/OSkqy9SEyu5zE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IQR9jnhXXqMTERC8pM1D2yA3l+c0WsLXV+YQ6VB+t4d+t7bkiW8TWuvQVP0moDo7AdlspakTZ3fh3ptrd7HlOjc508aPbcQSqYDQCnmC4d3H67ajpaNFM0dCp3L2dWP+68+MMh2us93xGMXUzWMUr0Ojx2kFVjwnIPbOWvAG3O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=OId2dtKR; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CqiF60qh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770139033;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W7bWkTI4zqaEsibgzb4DhWv0fCgI0/Cq4xXCwoJlLUw=;
-	b=CqiF60qhRAf3sf9lrWX3sGcv1JJyp92cMbOrhojGmVTC7VstpzhuUmRd9PbPPFPBaDCkcd
-	BOkIRp1R5AeQst8JPo24n0QK6Zi/0AB1mH8mzDHkrMi3d4GudgkjWGiEclFNVh0FSpECDN
-	SZ6b2HpUcRIigw36ox2dtDdea1WydTQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-Vn56I230NhuLOl4ARr0TCw-1; Tue,
- 03 Feb 2026 12:17:08 -0500
-X-MC-Unique: Vn56I230NhuLOl4ARr0TCw-1
-X-Mimecast-MFC-AGG-ID: Vn56I230NhuLOl4ARr0TCw_1770139024
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 424DC1954204;
-	Tue,  3 Feb 2026 17:17:03 +0000 (UTC)
-Received: from [10.45.224.28] (unknown [10.45.224.28])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 791DC19560B4;
-	Tue,  3 Feb 2026 17:16:56 +0000 (UTC)
-Message-ID: <b8d56202-cae9-4759-bed9-0556dbca571e@redhat.com>
-Date: Tue, 3 Feb 2026 18:16:54 +0100
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="OId2dtKR"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=pGo/bVwRRzzDTEL6tmGB8mNjA/zMc2P3BfZOOCY6Bmg=; b=OId2dtKRfjb1LZHrT4rjihi3pz
+	OWiUBKNt/0AJK+Lps4gz9CMG0eBEkZgnHQPXno18jkkrtNitrq7W6MGtoemzCpTn0iaG4j43y57J2
+	ChYP00ll2R7c/YhHwuSfEJic+8imE8DC3S9eKeuZxo6VrYsHDPay6D1+jdSJfvI7HPSdBlbo8e5cU
+	DJD07LG3VsgNl1oCa0meVB6uBqhasCiwxRKZGiH8/jJrdUg9f2rW99zG4WbiWAWnv127nKop3FPqX
+	78n9iQrAzTx2bVULmcT1hXrRhIJxqPZPL72Wn2Lp/JdfnMrVkRJjssmX7dSjAEQc8ZQa6RPLKUJTV
+	J7/Hz/Yg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <leitao@debian.org>)
+	id 1vnK8V-004z5H-KJ; Tue, 03 Feb 2026 17:24:24 +0000
+From: Breno Leitao <leitao@debian.org>
+Subject: [PATCH net-next v6 0/4] net: netconsole: convert to NBCON console
+ infrastructure
+Date: Tue, 03 Feb 2026 09:23:51 -0800
+Message-Id: <20260203-nbcon-v6-0-985f3bdb3267@debian.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,v4,9/9] ice: dpll: Support E825-C SyncE and dynamic pin
- discovery
-To: Simon Horman <horms@kernel.org>
-Cc: richardcochran@gmail.com, arkadiusz.kubalewski@intel.com,
- przemyslaw.kitszel@intel.com, aleksandr.loktionov@intel.com,
- andrew+netdev@lunn.ch, pabeni@redhat.com, saeedm@nvidia.com,
- kuba@kernel.org, tariqt@nvidia.com, netdev@vger.kernel.org,
- grzegorz.nitka@intel.com, poros@redhat.com, davem@davemloft.net,
- vadim.fedorenko@linux.dev, linux-rdma@vger.kernel.org,
- linux-kernel@vger.kernel.org, aleksander.lobakin@intel.com,
- jonathan.lemon@gmail.com, jiri@resnulli.us, anthony.l.nguyen@intel.com,
- intel-wired-lan@lists.osuosl.org, Prathosh.Satish@microchip.com,
- leon@kernel.org, edumazet@google.com, mbloch@nvidia.com
-References: <20260202171638.17427-10-ivecera@redhat.com>
- <20260203161120.1894163-1-horms@kernel.org>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <20260203161120.1894163-1-horms@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-B4-Tracking: v=1; b=H4sIACgvgmkC/2XNzWqEMBSG4VsJZ+0pJyd/6qr3McwiiclMNrGoy
+ JTBey9ILRbXH8/7vWFOU0kz9OINU1rLXMYKvbCNgPj09ZGwDNALYGIjpXRYQxwrZtbauei7rBI
+ 0Ar6mlMtr79ygpgVrei1wbwQ8y7yM0/d+sMp931vM/NtaJRJaE7SK1LWO2s8hheLrxzg99sTKB
+ 7MkmQ7GSBiszJ0l0zp/ZerM/t4UEnrHnDnTkL25MH1m6mAaCbX1JmZjXcf2wsyZtQczSNipoIc
+ hRNlK/49t2/YDkA7q8oEBAAA=
+X-Change-ID: 20251117-nbcon-f24477ca9f3e
+To: Breno Leitao <leitao@debian.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ pmladek@suse.com, john.ogness@linutronix.de
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, asantostc@gmail.com, efault@gmx.de, 
+ gustavold@gmail.com, calvin@wbinvd.org, jv@jvosburgh.net, 
+ mpdesouza@suse.com, kernel-team@meta.com, Simon Horman <horms@kernel.org>
+X-Mailer: b4 0.15-dev-f4305
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4262; i=leitao@debian.org;
+ h=from:subject:message-id; bh=EXVzYIkb1ujewKXqi19rPswvAVNTy/OSkqy9SEyu5zE=;
+ b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpgi9C9LpjWG3jxQbV3bhP9GtfK5h0KqtIF705y
+ ymf4BzJJOGJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaYIvQgAKCRA1o5Of/Hh3
+ bfmfD/sGwL+svysHp7M0sRpIstH9O6d/EYpPufB8kXTn8ebTQ4URzfb/Nk4VRH9if5b1ekmSvMK
+ kbdHGEh8+BxsQc9qc2h6MEc/mW7mwsBy3w1jdOQ6yQKEDm9Sf/p22bp25QQZamyzU6tR6sFkdGl
+ vvfTrz3mZyaddbGlakc44xk679vstQRMmwGU33J7zHNLkAuHhAjCVysFHXxFqWbM2+C4vDd6lCQ
+ 5aUiZBh4qEP/Q5txQ0d9H0AsHbBpNc+igw06ILFbe+XGBSVNqZdb+kknP5nP9NyTWnJAR17Ts0P
+ KIfvQBpQ7V3/d/XNsAeRw/a7od23vRf2Xg9/zyXiuw6AIbQbIkxKMLnSO4CF818iCh2110Hvb4k
+ MdGsgso2mDfaJ9F5KDewwCKoiLrWbQAbG4Y/H0ilesbcnSFDCITOw37/riBkP6xFO8xSj6QVIPR
+ Ch4VuaBnD2SoLchz40Ns7E8QD7eBv+8p4HcyjTG3Uq1KX2GY2poY3UyNBJgfvleERrIryDmU/Ox
+ u5TbeXZqvTpdYwOt5HCSbTQ2Q6o475saskVCZUckAuINDP8mMJ/z3SEm9p4gci/Ni2cuoF1WjiP
+ MQUoMy5gBiswYd7v5NYWrZ0EzV8X6Qpkt9nBgk6ihBP7sIYPgPNn7P61Ps5mz3IU0oT4lFfWINi
+ 36KLwKCZ8pssE6A==
+X-Developer-Key: i=leitao@debian.org; a=openpgp;
+ fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
+X-Debian-User: leitao
 
-On 2/3/26 5:11 PM, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
-> 
-> For local reproduction steps seehttps://netdev-ai.bots.linux.dev/ai-local.html
-> ---
-> ice: dpll: Support E825-C SyncE and dynamic pin discovery
-> 
-> This patch implements SyncE support for the E825-C Ethernet controller
-> using the DPLL subsystem, with dynamic pin discovery via firmware (ACPI)
-> and asynchronous registration using the DPLL notifier chain.
-> 
->> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
->> index 4eca62688d83..a8c99e49bfae 100644
->> --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
->> +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-> [ ... ]
-> 
->> @@ -528,6 +529,92 @@ ice_dpll_pin_disable(struct ice_hw *hw, struct ice_dpll_pin *pin,
->>   	return ret;
->>   }
->>
->> +/**
->> + * ice_dpll_rclk_update - updates the state of rclk pin on a device
->> + * @pf: private board struct
->> + * @pin: pointer to a pin
->> + * @port_num: port number
->> + *
->> + * Update struct holding pin states info, states are separate for each parent
->> + *
->> + * Context: Called under pf->dplls.lock
->> + * Return:
->> + * * 0 - OK
->> + * * negative - error
->> + */
->> +static int ice_dpll_rclk_update(struct ice_pf *pf, struct ice_dpll_pin *pin,
->> +				u8 port_num)
->> +{
->> +	int ret;
->> +
->> +	for (u8 parent = 0; parent < pf->dplls.rclk.num_parents; parent++) {
->> +		ret = ice_aq_get_phy_rec_clk_out(&pf->hw, &parent, &port_num,
->> +						 &pin->flags[parent], NULL);
-> Is it safe to pass &parent as an output parameter when it's also the loop
-> counter? Looking at ice_aq_get_phy_rec_clk_out():
-> 
->      int ice_aq_get_phy_rec_clk_out(struct ice_hw *hw, u8 *phy_output, ...)
->      {
->          cmd->phy_output = *phy_output;  // Read as input
->          status = ice_aq_send_cmd(hw, &desc, NULL, 0, NULL);
->          if (!status) {
->              *phy_output = cmd->phy_output;  // Write back from firmware
->          ...
-> 
-> The firmware could potentially return a different value than was sent,
-> which would be written back to 'parent', corrupting the loop counter.
-> 
-> This corrupted value is then used as an array index:
-> 
->> +		if (ret)
->> +			return ret;
->> +
->> +		ice_dpll_pin_store_state(pin, parent,
->> +					 ICE_AQC_GET_PHY_REC_CLK_OUT_OUT_EN &
->> +					 pin->flags[parent]);
-> Both pin->flags[parent] and pin->state[parent] (inside
-> ice_dpll_pin_store_state) could access out of bounds if firmware returns
-> a value >= ICE_DPLL_RCLK_NUM_MAX (which is 2).
-> 
-> Would it be safer to use a separate variable for the phy_output parameter
-> and validate that firmware echoes back the expected value?
+This series adds support for the nbcon (new buffer console) infrastructure
+to netconsole, enabling lock-free, priority-based console operations that
+are safer in crash scenarios.
 
-Yes, there should be a separate variable like in previous code prior
-this refactor...
+The implementation is introduced in three steps:
 
-<snip>
-         case ICE_DPLL_PIN_TYPE_RCLK_INPUT:
--               for (parent = 0; parent < pf->dplls.rclk.num_parents;
--                    parent++) {
--                       u8 p = parent; <--- HERE
--
--                       ret = ice_aq_get_phy_rec_clk_out(&pf->hw, &p,
--                                                        &port_num,
-- 
-&pin->flags[parent],
--                                                        NULL);
-</snip>
+0) Extend printk to expose CPU and taskname (task->comm) where the
+   printk originated from. (Thanks John and Petr for the support in
+   getting this done)
+1) Refactor the message fragmentation logic into a reusable helper function
+2) Extend nbcon support to non-extended (basic) consoles using the same
+   infrastructure.
 
-Arek, I will fix it by myself.
+The initial discussion about it appeared a while ago in [1], in order to
+solve Mike's HARDIRQ-safe -> HARDIRQ-unsafe lock order warning, and the root
+cause is that some hosts were calling IRQ unsafe locks from inside console
+lock.
 
-Thanks,
-Ivan
+At that time, we didn't have the CON_NBCON_ATOMIC_UNSAFE yet. John
+kindly implemented CON_NBCON_ATOMIC_UNSAFE in 187de7c212e5 ("printk:
+nbcon: Allow unsafe write_atomic() for panic"), and now we can
+implement netconsole on top of nbcon.
+
+Important to note that netconsole continues to call netpoll and the
+network TX helpers with interrupt disable, given the TX are called with
+target_list_lock.
+
+Netdev maintainers, Petr suggested that this patchset goes through netdev[2]
+
+Link: https://lore.kernel.org/all/b2qps3uywhmjaym4mht2wpxul4yqtuuayeoq4iv4k3zf5wdgh3@tocu6c7mj4lt/ [1]
+Link: https://lore.kernel.org/all/aW9D5M0o9_8hdVvt@pathway.suse.cz/ [2]
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+
+---
+Changes in v6:
+- Do not select PRINTK_EXECUTION_CTX in NETCONSOLE_DYNAMIC (Jakub)
+- Do not make PRINTK_EXECUTION_CTX user visible (Jakub)
+- Link to v5: https://patch.msgid.link/20260128-nbcon-v5-0-93b4ddbc181a@debian.org
+
+Changes in v5:
+- Replace the memcpy size from TASK_COMM_LEN to sizeof(wctxt->comm)
+  (John)
+- Add some compilation time asserts (John)
+- Change the implementation of printk_info_get_cpu()
+- Link to v4: https://patch.msgid.link/20260123-nbcon-v4-0-46a5cf567926@debian.org
+
+Changes in v4:
+- Added __acquires/__releases compiler annotations (Simon)
+- Rebased on top of net-next, which included changes from Andre
+- Netconsole Dynamic now selects PRINTK_EXECUTION_CTX and
+  CONSOLE_HAS_EXECUTION_CTX
+- Link to v3: https://patch.msgid.link/20260122-nbcon-v3-0-a722f2f0dfa5@debian.org
+
+Changes in v3:
+- Fixed netconsole selection (s/CONSOLE_HAS_EXECUTION_CTX/PRINTK_EXECUTION_CTX)
+- Removed unnecessary "inline" in C file.
+- Tried to shrink the get the lines to fit 80-columns
+- Link to v2: https://patch.msgid.link/20260120-nbcon-v2-0-b61f960587a8@debian.org
+
+Changes in v2:
+- Return if not able to nbcon_enter_unsafe() instead of retrying on
+  a different target (Marcos)
+- Add printk that supports context information, which will be used later
+  by netconsole sysdata. (John, Petr)
+- An extra patch to bring symmetry to send_msg_udp()
+- Link to v1: https://patch.msgid.link/20251222-nbcon-v1-0-65b43c098708@debian.org
+
+Changes in V1 from RFC:
+  * Removed the extra CONFIG for NBCON, given we don't want to support
+    both console. Move to nbcon as the only console framework supported
+  * Incorporated the changes from Petr.
+  * Some renames to make the code more consistent.
+  * RFC Link: https://lore.kernel.org/all/20251121-nbcon-v1-0-503d17b2b4af@debian.org/
+
+---
+Breno Leitao (4):
+      printk: Add execution context (task name/CPU) to printk_info
+      netconsole: extract message fragmentation into send_msg_udp()
+      netconsole: convert to NBCON console infrastructure
+      netconsole: Use printk context for CPU and task information
+
+ drivers/net/Kconfig               |   1 +
+ drivers/net/netconsole.c          | 153 +++++++++++++++++++++++---------------
+ include/linux/console.h           |   8 ++
+ kernel/printk/internal.h          |   8 ++
+ kernel/printk/nbcon.c             |  16 ++++
+ kernel/printk/printk.c            |  54 +++++++++++++-
+ kernel/printk/printk_ringbuffer.h |   5 ++
+ lib/Kconfig.debug                 |  20 +++++
+ 8 files changed, 205 insertions(+), 60 deletions(-)
+---
+base-commit: bf2e36c9dab95e41516fbcf7b1cc804539b2d021
+change-id: 20251117-nbcon-f24477ca9f3e
+
+Best regards,
+--  
+Breno Leitao <leitao@debian.org>
 
