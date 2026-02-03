@@ -1,165 +1,127 @@
-Received: from mailhub11-fb.kaspersky-labs.com (mailhub11-fb.kaspersky-labs.com [81.19.104.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDA9E274B3A;
-	Tue,  3 Feb 2026 11:41:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.104.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDC232F75B;
+	Tue,  3 Feb 2026 11:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770118895; cv=none; b=BwD60A2adoXasf3pnRlmpHHlUxgebyOdMQFKTaSqw+9jSqrukN4lLwUfYZlh3h/KdVU5AKdTVW2Zqmqwioy2M0PVCiyj/jhYrbeRIkRrTMmU289y4eCDLAjxtIb7BimC8YO8jt3WWgc8tf7DikNdyYDUQJKSpfVlJT09X/qkSAQ=
+	t=1770118947; cv=none; b=u+3w7mj0eD+/qD9qvco0Nb3t5c/Hing72O/vImV8t0TjCWohVtzkjLwhujsyJV0YxvPAIY4gkrEHPZ9iTbSBtntuxyFrCE3DMZRI20Io+GmOlN6sblznsB12Ei4tGha4sVobEod5NG2O83qx+TXWLMJRQLflkJD3ntpUgPNp/IU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770118895; c=relaxed/simple;
-	bh=BUiikn3ciRWKGL6zJXbhUy/3/71llULE1nnDlIezANc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RlWZrieJ912r1GZmxquRMOzfnBapDm/nH8k1S4iYqw71kgJQr4Hz7lfkioqJe1hYNs6lu8RW4DT9KMpzEMEj/Q9nyxFfWG8wgsChEbf+FAhID4RPGq+TyovWqV79gDcL8rQYocrpIVSWlfiDqv/Em+bplTRiJcmcFIxvX0njlPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=qQ1o68rm; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=knM74zwa; arc=none smtp.client-ip=81.19.104.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
+	s=arc-20240116; t=1770118947; c=relaxed/simple;
+	bh=f/4jPZjlH43hVd7djQf+N42+eV6nxJtc05EPg7iYKfI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d9xh8asrCGIzfjpQdYFzhSMPSOYu0DGaaGqMMSxIg3m36oZcpL8CghP0gj0QhmQogS3/8Qy3XlCwHDWTl+rx93hoBxZwAHAEKATgdlEtAq3JaUT7rEIX3OrgW5XsFkaUXh2ehhXzkn7Ybr3TWfS32NyUvrbelTFjToxcKlVOsqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Is5q8smq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kzcip55z; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="qQ1o68rm";
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="knM74zwa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1770118334;
-	bh=QgwXDA7y8ElPew3Bm76Ii7abYAwPdkjzXVimtuAJjTA=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=qQ1o68rmr5sWm0vlgi7vHdaB3kTi8ZQh2d1m1VNn9Kqd0RWWVfLV+Wr34Bo/YyG1v
-	 R9A7x1nCZAdbAUtoDdcUmgI0FvkBy3U6mWj8SdnbaM2R3N6C16GaoiTHDrIQuV10mA
-	 40yRunjaHdPMVfzERFUEOwHHI+iB/s1XV6Q5IVgtg6AGeinD7daF9v+1ERN1E57h02
-	 t2UJJeo+sFkKL7nqfSt+uqlFATKDVllRG3GOiLhHO04lTPxEj0SKnA1SIaPio0ry0c
-	 vOhF6mCph6dbZAs0snbxHa4Gm8e2t4zA6RGQwRu5UpCBcmrScSR5LOTBwlYA7NXwKV
-	 EfNVwEq5KaDBw==
-Received: from mailhub11-fb.kaspersky-labs.com (localhost [127.0.0.1])
-	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTP id B82AEE8394D;
-	Tue,  3 Feb 2026 14:32:14 +0300 (MSK)
-Received: from mx9.kaspersky-labs.com (mx9.kaspersky-labs.com [195.122.169.44])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "mx9.kaspersky-labs.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTPS id 9459AE80D14;
-	Tue,  3 Feb 2026 14:32:14 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1770118327;
-	bh=QgwXDA7y8ElPew3Bm76Ii7abYAwPdkjzXVimtuAJjTA=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=knM74zwazdq53HyT/LWGOqx9pnfGp4ZXQeVe4XD617xzkJ9vKlDZYN4Qxa5bht9QW
-	 8Z9R0WxWpc/k2BOOQX8kFXlFrF22bruzTLZMANvAGO0pgGLSIYQLX4iL0551Cler7G
-	 pmQQZxJWiyJSrdOKw5SU/uRTRB9XL/IRm+Ep94PfnyxAazaGvQMD3YlIyw5OyXzJHf
-	 YbXvQa+erDH0KlFMzI7GqWPOnxg5roGpRNsMB/3S3vfJ59R6/+zfYoHW+eunXGE1rT
-	 m4FQCpNcPTLNrc6242FYNI41Ab9Bh/Yx+cuP0TL69Z2eclbPNPgNhybeEskvtdiZOx
-	 zRrOojsQXyWig==
-Received: from relay9.kaspersky-labs.com (localhost [127.0.0.1])
-	by relay9.kaspersky-labs.com (Postfix) with ESMTP id EAAC38A00CB;
-	Tue,  3 Feb 2026 14:32:06 +0300 (MSK)
-Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub9.kaspersky-labs.com (Postfix) with ESMTPS id A85898A000F;
-	Tue,  3 Feb 2026 14:32:06 +0300 (MSK)
-Received: from Votokina.avp.ru (10.16.104.187) by HQMAILSRV2.avp.ru
- (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.35; Tue, 3 Feb
- 2026 14:32:05 +0300
-From: Votokina Victoria <Victoria.Votokina@kaspersky.com>
-To: "David S . Miller" <davem@davemloft.net>
-CC: Votokina Victoria <Victoria.Votokina@kaspersky.com>, Eric Dumazet
-	<edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Thomas Gleixner
-	<tglx@kernel.org>, Ingo Molnar <mingo@kernel.org>, Eric Lapuyade
-	<eric.lapuyade@linux.intel.com>, Samuel Ortiz <sameo@linux.intel.com>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>
-Subject: [PATCH] nfc: hci: shdlc: Stop timers and work before freeing context
-Date: Tue, 3 Feb 2026 14:31:57 +0300
-Message-ID: <20260203113158.2008723-1-Victoria.Votokina@kaspersky.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Is5q8smq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kzcip55z"
+Date: Tue, 3 Feb 2026 12:42:22 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1770118943;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Okjru8snA57GtyYjXxOgEFvqQ11nIpWc1KWAif9Vb94=;
+	b=Is5q8smq+1zCbNi8BcIT2F9JYkNoW4I2f6h3IsAC9+TAHZAJA+ptGoNxcksmNb9TJO7ASM
+	GrBNDpYopQXBfgTY5M6dWw4bCJMOtSruU2w8tp2eZKjimAA7Ubd1/OALNQQKUG+MLkwnUd
+	QRxbn1zb/g1zvxcC0GPrJcXHA9tPI/baTjQBdtonqWrDpkipE2wNvACjNoyebH1Ydp8s50
+	A946N23gdg226yVCStxech6jmC/7kbE9izKiwBmJX4vSz09YNs35yZeWZTuvY25R9TIzTe
+	p6tIfDELXJ+D1UMNJYD9v/kqx9EK1ZaQ5UlQiuNoexqlLkUa4DGFCiYIuHFNLQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1770118943;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Okjru8snA57GtyYjXxOgEFvqQ11nIpWc1KWAif9Vb94=;
+	b=kzcip55zJZvPYHswIjpDmmP5Hv1N0sjB+RQRB7cIM929AaKZ+VGOUSayo7E5Sl+KS/jTXA
+	BYV4WQ5EQ7zRpvCA==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-kselftest@vger.kernel.org, 
+	mptcp@lists.linux.dev, linux-security-module@vger.kernel.org, bpf@vger.kernel.org, 
+	libc-alpha@sourceware.org, Carlos O'Donell <carlos@redhat.com>, 
+	Adhemerval Zanella <adhemerval.zanella@linaro.org>, Rich Felker <dalias@libc.org>, klibc@zytor.com, 
+	Florian Weimer <fweimer@redhat.com>
+Subject: Re: [PATCH net-next v2 0/4] net: uapi: Provide an UAPI definition of
+ 'struct sockaddr'
+Message-ID: <20260203122715-eeb304f9-4b42-4fc6-a527-658182a92ba5@linutronix.de>
+References: <20260120-uapi-sockaddr-v2-0-63c319111cf6@linutronix.de>
+ <20260121192729.2095aa25@kernel.org>
+ <20260130112309-28f2645b-e756-4173-96da-cf5c59191520@linutronix.de>
+ <20260130081741.425a92e0@kernel.org>
+ <3c46fc49-b41b-44a2-b42a-669cc7e6bb02@linutronix.de>
+ <20260131092517.6639d84c@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HQMAILSRV5.avp.ru (10.64.57.55) To HQMAILSRV2.avp.ru
- (10.64.57.52)
-X-KSE-ServerInfo: HQMAILSRV2.avp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 02/03/2026 11:16:10
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 200084 [Feb 03 2026]
-X-KSE-AntiSpam-Info: Version: 6.1.1.20
-X-KSE-AntiSpam-Info: Envelope from: Victoria.Votokina@kaspersky.com
-X-KSE-AntiSpam-Info: LuaCore: 86 0.3.86
- 47cb2a3d3f5c7e795bff2d0998e8c196722872ab
-X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
-X-KSE-AntiSpam-Info: {Tracking_black_eng_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;kaspersky.com:5.0.1,7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Tracking_white_helo}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 02/03/2026 11:18:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 2/3/2026 9:04:00 AM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/02/03 10:20:00 #28174714
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 52
+In-Reply-To: <20260131092517.6639d84c@kernel.org>
 
-llc_shdlc_deinit() purges SHDLC skb queues and frees the llc_shdlc
-structure while its timers and state machine work may still be active.
+On Sat, Jan 31, 2026 at 09:25:17AM -0800, Jakub Kicinski wrote:
+> On Sat, 31 Jan 2026 11:26:32 +0100 Thomas Weißschuh wrote:
+> > Jan 30, 2026 17:17:46 Jakub Kicinski <kuba@kernel.org>:
+> > 
+> > > On Fri, 30 Jan 2026 11:34:15 +0100 Thomas Weißschuh wrote:  
+> > >> Some of them get broken by the new 'struct sockaddr', but some others are
+> > >> already broken just by the new transitive inclusion of libc-compat.h.
+> > >> So any header starting to use the compatibility machinery may trigger breakage
+> > >> in code including UAPI headers before libc header, even for completely new type
+> > >> definitions which themselves would not conflict with libc.  
+> > >
+> > > Let's split the uAPI header changes from any selftest changes.
+> > > If you're saying the the selftests no longer build after the uAPI
+> > > header changes then of course we can't apply the patches.  
+> > 
+> > Yes, the selftests don't build anymore after the uAPI changes.
+> > 
+> > "can't apply" as in
+> > * "can't apply separately"
+> > * "are unacceptable in general"
+> 
+> this one
+> 
+> > * "are too late for this cycle"
+> > ?
+> > 
+> > None of this is urgent.
+> > We can do the selftests in one cycle and the uAPI in another one.
+> > Feel free to pick up the patches as you see fit.
+> > (The mptcp changes already go through their tree, so need to be dropped here)
+> > I can also resubmit the patches differently if preferred.
+> 
+> The selftests are just a canary in the coalmine. If we break a bunch of
+> selftests chances are we'll also break compilation of real applications
+> for people. Subjective, but I don't see a sufficient upside here to do
+> that.
 
-Timer callbacks can schedule sm_work, and sm_work accesses SHDLC state
-and the skb queues. If teardown happens in parallel with a queued/running
-work item, it can lead to UAF and other shutdown races.
+Okay. We'll have around this inconsistency then.
 
-Stop all SHDLC timers and cancel sm_work synchronously before purging the
-queues and freeing the context.
+> FWIW the typelimits change broke compilation of ethtool, we'll see if
+> anyone "outside kernel community itself" complains.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Can you point me to that breakage? I was unable to find it.
 
-Fixes: 4a61cd6687fc ("NFC: Add an shdlc llc module to llc core")
-Signed-off-by: Votokina Victoria <Victoria.Votokina@kaspersky.com>
----
- net/nfc/hci/llc_shdlc.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
 
-diff --git a/net/nfc/hci/llc_shdlc.c b/net/nfc/hci/llc_shdlc.c
-index 4fc37894860c..08c8aa1530d8 100644
---- a/net/nfc/hci/llc_shdlc.c
-+++ b/net/nfc/hci/llc_shdlc.c
-@@ -762,6 +762,14 @@ static void llc_shdlc_deinit(struct nfc_llc *llc)
- {
- 	struct llc_shdlc *shdlc = nfc_llc_get_data(llc);
- 
-+	timer_shutdown_sync(&shdlc->connect_timer);
-+	timer_shutdown_sync(&shdlc->t1_timer);
-+	timer_shutdown_sync(&shdlc->t2_timer);
-+	shdlc->t1_active = false;
-+	shdlc->t2_active = false;
-+
-+	cancel_work_sync(&shdlc->sm_work);
-+
- 	skb_queue_purge(&shdlc->rcv_q);
- 	skb_queue_purge(&shdlc->send_q);
- 	skb_queue_purge(&shdlc->ack_pending_q);
--- 
-2.43.0
-
+Thomas
