@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051F8324B16
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 17:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C714325704
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 17:29:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770139744; cv=none; b=e4ueKB8rO7ieL3Czk+9dBRE2uA3jSwpfT5MBNNzbZlZWmUZnXmKuBmK1cvXNezypJ2IJe1dBLy92MbdC8F8Kwj//tqA99hOQ5i6q+fOfBYJsIhxMG2u1RcwPU/6E3AH5r6ckAPAdS+VRq+2knKwuXhOP1thwQeZJqb2o0ORtlpg=
+	t=1770139744; cv=none; b=Mor81GjbUv9d3PIO5ioaRSxqXPWtSv+Zqc6L6aPd36MYxccH/kx5hHXp7VN83C38X9WFF66mVs7d0NdnTcX+GKOsBLxXGB3Vpn2VYcrPP67Hglmg0aA0kea1CcXX++1A1dx+EEf6/GdF8lX4/OiCqi/Pg8uE2w5fM4izxwhykoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770139744; c=relaxed/simple;
-	bh=mWyMx4Wb/HCw51vDYbHGsY4S6C9v30+HtBdi1q1SCSQ=;
+	bh=FzfPssaMTtMlTXsQB3uWK2d1KPWw1AhO9CiOrY0mA4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sa9F41irhjodFU/M27/RZmNtMjgNWI8RwVK7sXvn1+UqF/QgPeosLLNEWzBIrmVM/VFjWWbPRormsJtaE28xKSxbmcnwvkEB/SWvuADsFOPbxNkK2a43GBJ9fEaRrs83e6iloOlF89C5lXCPkzEvnu7PNV1A0de2hx0P/LXAygY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=0oL+5ezK; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version; b=feHel3YAvhsQyhf7GjMrzC55DZCoHGLFEPkGksP+wCPX5OKhxHaoxXfLhz2SIR49dRZv6+cpKJ2zDuNfaGIWfk+bOh6OGgMGjW0eOe5qODDrAFhieo/caW+bf2DKgfNv1ttlJgGFjj+ROZ9xD/NUH4W1jtsdhlrlSX8QxIHlHEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=j/ei7iPV; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="0oL+5ezK"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="j/ei7iPV"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 40EAC1A2BC6;
-	Tue,  3 Feb 2026 17:28:56 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 304F5C24384;
+	Tue,  3 Feb 2026 17:29:07 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 10D3160728;
-	Tue,  3 Feb 2026 17:28:56 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A7D8A119A8891;
-	Tue,  3 Feb 2026 18:28:52 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id DFC8360728;
+	Tue,  3 Feb 2026 17:29:01 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 1F98B119A8888;
+	Tue,  3 Feb 2026 18:28:58 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770139734; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1770139740; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=KecJRPe2Bv70TIJpdknGkVxhofD7qopvizBIlkrUTDs=;
-	b=0oL+5ezK79vBEpfRX9ZMmL99O5b7ITFB+focEqMtyIuOjKO0HftypZfxC+GmiV3wGeyUi+
-	cNq6JDVr+wFjGMmGwl2pyzaWGOuUED8TuwlsBkrseEX4/I42tfPlMcqFUy2X2I6q07HGUN
-	ZqunLmyZVgbRNhv17NHnaOXAeR8jHrRzOalZJEJEG6mLwbqo3BJ/JlVu9i00dq1XqjLsUK
-	KS4cE2lX+VAc/prdbkzM1huEoO0bbnzzCCxDoZ4TFJ8EIIyPYtiD7omwqPKT2Tm+KtkLWZ
-	EcVQou92bUb9DOvavoBfUp56qddqW/7RGq90K/MMiRGAN6XN14R4sGtfsogORg==
+	bh=LWzrt0LzFGZIeHx1tJakp6EzeCmz9kccT2ixoT2csH8=;
+	b=j/ei7iPVujZdtSqt2MVqSKmjWTR9qur2AkBCVkW54acroTYt60S5FKffooCvAtBwB18Nji
+	IeemVRcuz9ofpGMHH04AA3SKqj+RMPw6MWx3KGajG9I3s+mfQkQfZVnnoYwvvqzXIr2LOw
+	8YP68oFk4TX/goRnKx2OzRVeYobxvR46NiUZxerW5brdLJ10AMcDDwngIPoy/Uj81r3A3t
+	PC/rz4OwIUnb/zlpj718LGsNNiFrM+Rzi14LqpsW0tMjI5ANAqOnC5aULDoaqqphMZIfUh
+	31CucLhBvmLIjTrk+aPVbYXsnNHBygED7M51qrUnwXZZt+dO9e5O1pjpyx84Nw==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -58,9 +58,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next v4 02/13] net: phy: phy_port: Cleanup the of-parsing logic for phy_port
-Date: Tue,  3 Feb 2026 18:28:26 +0100
-Message-ID: <20260203172839.548524-3-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v4 04/13] net: phy: phy_link_topology: Add a helper for opportunistic alloc
+Date: Tue,  3 Feb 2026 18:28:28 +0100
+Message-ID: <20260203172839.548524-5-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260203172839.548524-1-maxime.chevallier@bootlin.com>
 References: <20260203172839.548524-1-maxime.chevallier@bootlin.com>
@@ -73,46 +73,66 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-We don't need to maintain a mediums bitfield, let's drop it and drop a
-bogus check for empty mediums, as we already check it above.
+The phy_link_topology structure stores information about the PHY-related
+components connected to a net_device. It is opportunistically allocated,
+when we add the first item to the topology, as this is not relevant for
+all kinds of net_devices.
+
+In preparation for the addition of phy_port tracking in the topology,
+let's make a dedicated helper for that allocation sequence.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/phy/phy_port.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ drivers/net/phy/phy_link_topology.c | 29 +++++++++++++++++++++--------
+ 1 file changed, 21 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/phy/phy_port.c b/drivers/net/phy/phy_port.c
-index ec93c8ca051e..a269e9ea12c4 100644
---- a/drivers/net/phy/phy_port.c
-+++ b/drivers/net/phy/phy_port.c
-@@ -53,7 +53,7 @@ struct phy_port *phy_of_parse_port(struct device_node *dn)
- 	enum ethtool_link_medium medium;
- 	struct phy_port *port;
- 	const char *med_str;
--	u32 pairs = 0, mediums = 0;
-+	u32 pairs = 0;
+diff --git a/drivers/net/phy/phy_link_topology.c b/drivers/net/phy/phy_link_topology.c
+index 0e9e987f37dd..7dc2ff10c74a 100644
+--- a/drivers/net/phy/phy_link_topology.c
++++ b/drivers/net/phy/phy_link_topology.c
+@@ -27,21 +27,34 @@ static int netdev_alloc_phy_link_topology(struct net_device *dev)
+ 	return 0;
+ }
+ 
++static struct phy_link_topology *phy_link_topo_get_or_alloc(struct net_device *dev)
++{
++	int ret;
++
++	if (dev->link_topo)
++		return dev->link_topo;
++
++	/* The topology is allocated the first time we add an object to it.
++	 * It is freed alongside the netdev.
++	 */
++	ret = netdev_alloc_phy_link_topology(dev);
++	if (ret)
++		return ERR_PTR(ret);
++
++	return dev->link_topo;
++}
++
+ int phy_link_topo_add_phy(struct net_device *dev,
+ 			  struct phy_device *phy,
+ 			  enum phy_upstream upt, void *upstream)
+ {
+-	struct phy_link_topology *topo = dev->link_topo;
++	struct phy_link_topology *topo;
+ 	struct phy_device_node *pdn;
  	int ret;
  
- 	ret = fwnode_property_read_string(fwnode, "media", &med_str);
-@@ -85,17 +85,12 @@ struct phy_port *phy_of_parse_port(struct device_node *dn)
- 		return ERR_PTR(-EINVAL);
- 	}
- 
--	mediums |= BIT(medium);
+-	if (!topo) {
+-		ret = netdev_alloc_phy_link_topology(dev);
+-		if (ret)
+-			return ret;
 -
--	if (!mediums)
--		return ERR_PTR(-EINVAL);
--
- 	port = phy_port_alloc();
- 	if (!port)
- 		return ERR_PTR(-ENOMEM);
+-		topo = dev->link_topo;
+-	}
++	topo = phy_link_topo_get_or_alloc(dev);
++	if (IS_ERR(topo))
++		return PTR_ERR(topo);
  
- 	port->pairs = pairs;
--	port->mediums = mediums;
-+	port->mediums = BIT(medium);
- 
- 	return port;
- }
+ 	pdn = kzalloc(sizeof(*pdn), GFP_KERNEL);
+ 	if (!pdn)
 -- 
 2.49.0
 
