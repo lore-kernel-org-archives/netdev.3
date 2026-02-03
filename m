@@ -1,184 +1,116 @@
-Received: from b2412.mx.srv.dfn.de (b2412.mx.srv.dfn.de [194.95.235.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f67.google.com (mail-qv1-f67.google.com [209.85.219.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E88395DA6
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 08:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.95.235.75
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770108310; cv=none; b=CrwqWq83kARMtWaNC01Is6FLQHyFkYasmpYu77/n5zgjm9TFNECHB7G3dTHcbLE+b0bJpC4FLIJjlWiKyMo18o+s6o/R7LpUHB7U7/a8RqgTenv2i5U26bhULnEhFxA24Jk6yJmPy5SfJKgCRj4tmNkgFrDwkNJvcXsSHz47ZRE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770108310; c=relaxed/simple;
-	bh=cJpqgIenyiyOxPSekoOEzAxk2xItdzdV/2wEW2fiyxA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bGeiOknceoLBlYVd2iz23RLDtFRD8NRRjuSaFSqEs5Aj4yJ07XrgZ3BYZGAkQksbKPQ2G3XSqZ7k/wzwhVk+kK6nTG+O4Q+AsTFiy7beJMzhZmlN0pCbc/NixIZQrWFbbs70fYEiML+o8S0U1oFYIjrL84TxxTS6hmIZMqSBClY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uni-osnabrueck.de; spf=pass smtp.mailfrom=uni-osnabrueck.de; arc=none smtp.client-ip=194.95.235.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uni-osnabrueck.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uni-osnabrueck.de
-Received: from vm411.rz.uni-osnabrueck.de (smtp-auth-1.serv.uni-osnabrueck.de [131.173.16.143])
-	by b2412.mx.srv.dfn.de (Postfix) with ESMTPS id 5EBF71C018F;
-	Tue,  3 Feb 2026 09:36:25 +0100 (CET)
-Received: from [IPV6:2001:638:508:fe02::35] (unknown [IPv6:2001:638:508:fe02::35])
-	(using TLSv1.2 with cipher ECDHE-ECDSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	(Authenticated sender: kelmenhorst)
-	by vm411.rz.uni-osnabrueck.de (Postfix) with ESMTPSA id 1CA8D30056C3;
-	Tue,  3 Feb 2026 09:36:25 +0100 (CET)
-Message-ID: <f1137fcf-1778-4811-9211-4beb95db3a32@uni-osnabrueck.de>
-Date: Tue, 3 Feb 2026 09:36:24 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9371393DED
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 08:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770108610; cv=pass; b=WOldgutWXSZlbi7rjh/M3BXJX9S11s2EfcjEt+OSrjkXVlOKG7MXR1kUTPpsYbpXQBO3Ber6gDPWt7hqTMusmiz+WIJKZh2KiU6ETsjbgkU7U5zfpYZ0oEkjWCPkIv/X1aJu7RgSCMPlN2hkiAg+GzGrKhNeuu6Yh35L41EvyA8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770108610; c=relaxed/simple;
+	bh=i+dCt4DeKmE0vkJJ36XHq9U/eP0bq1C7KWOcgsKggKw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Eqt+42+W52ld/VEMZm4Zqau2o1PlFjw9Se6cckLp69Q/9A5Mw4bo9Kh5dbQ2hRYAtN1UO1gYbfY6HhUmSsgmJjkdGfNa9etMBWec9BLKhOow3V4SsYOsdTqEfr9XPapRnkCR5bjzW1hM33pIySUkkR9TH07KIMn/aa742f3SyLQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aYTqh5e4; arc=pass smtp.client-ip=209.85.219.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aYTqh5e4"
+Received: by mail-qv1-f67.google.com with SMTP id 6a1803df08f44-88ffcb14e11so74623346d6.0
+        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 00:50:08 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770108608; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AYmDYSanzAjejO5HS9tMKVh2uH6ceCRH5R4hygcjB6Nh1U0eWBHE6Ecadx5EykoXbZ
+         W9l3M65EAsxxm+KA+5VTQaGbmg0KdiSEM4QcTpViqyBDgsZoSYCoUp3RWEXlq0erhl7P
+         1JA4SNY2pY67oi5iJvzw1aSMM1vdZkhJ++fRWN8g3QeotW2qg5UH5qp/rhUZiXcLO2lL
+         Pqf6PY6Jo5xs87PfwGFa6jCq1ifPd0QfkR0SlLZ/lLs53QjPsULRWznVFjQ5ZVI7Ds2h
+         FVADFfp5sXP3Sqshf9OTthvQqpNM1z9USCk5FxsUxvFnkUHz8ClxZeST/diTIOlQ9+Bj
+         LC4A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=i+dCt4DeKmE0vkJJ36XHq9U/eP0bq1C7KWOcgsKggKw=;
+        fh=DMgw9SLMn2nBkTHvTdn6wIHE+IqrSQNe43UzrjjDBmk=;
+        b=gx3Q0DC8n24xnlOmFSnaDK4Ty366+TXoT9C5tOpGQWBGJNxqZAfEdtVSRCOCoFi52c
+         8CaZR/Cut0GDSLYSo14yGPHyP2amcJMFMbxQAIcnHI6N/vjbQfjMRE9m+8HHPi62x0Wo
+         GPdOKUCqskYXbkCHbXjhcd2QZE3cqU7K9F85zgIJEUnyWMj+VnMA/1ea/3jrftsH+yDV
+         TEa/nkuspKZJsxCduyiLV1iXtu6unyrQFFtQPkt72MYcZjnj3NbNs5S2nhVZ7x/NHzzM
+         fc11YccuJY43qqqGragYXnfIE670MS6TkdxzucLzd0E4IqQiN6qqMiupdbKBRX8h8Pf4
+         7ZGQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770108608; x=1770713408; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i+dCt4DeKmE0vkJJ36XHq9U/eP0bq1C7KWOcgsKggKw=;
+        b=aYTqh5e4gx8q2j0Tnslvr6tH6jp+WMgl2bSf15QPzb/B9GIBoDcRVVbN/8fOMr47Lf
+         FhjYrSKtDs2+/NpU3IXJkGdhYPoEqN+qiKE1/UZ2HFerFAH8S1fWuu6lyt2WMCuXDu24
+         uBczyOW1VTVHUbq/16gAXLkpM0nE0t8XuInwYaLRz41bjcmOjUerpzMi6AMxdHHfjuZ0
+         /DagcOOHeIkL4How3/zP3+HaMEcbDI8RhHTkloC3/InAMOj4yuF/T0D/lJc1obrBN909
+         fqi1N3VWZbCESIZIboxAuJjF88XC6ZTe4DMaL+Do6U3a1M1wt00XeqXa9/yb2qL+hkxB
+         jHaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770108608; x=1770713408;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=i+dCt4DeKmE0vkJJ36XHq9U/eP0bq1C7KWOcgsKggKw=;
+        b=WDKIJtoUA8ocbAUmL5Bkuhlct0lO6muc/6V8iJQen3K5lCKicaKfPkAi79KX8Kw+Po
+         70AasNSoAsW3hdRpy8T+8//F+ltyJ3nmKU7crBSjjLZJdc2IljPJwsZ9Mrl1R/uPjJqj
+         EtjhTLYfdy8vIa/LJi3eTSeCQc0w/Ss5NUfkfBqZEucg4gTQh5ura+9VFZ4ediLk6GDb
+         TzHqRIieE5/fWl+piYYr/MNlnib77mjj0IMHbGIF/qHDn1SEzbItIveIFSKP0uqaAKdv
+         y5rtxcx8gIXJDZJt4RkiHlIX+HEvUquwGTbyYO10L4rv8+hc21mcIva7gIU+MtNc184W
+         bt8g==
+X-Forwarded-Encrypted: i=1; AJvYcCXoq35Fa3QLOuqh0juGtvqPRcHfLaLmtM6NXWDj4TfYhuRAVte6BbbCPPTE/RegBumP1CT5dHg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+Xxcbb0aTi3IRElS7JIuf3iZqZOPgqStn7RqsessLTFiRkhMo
+	8Nqi4zNhmVz0lzJJbTkIxQP6z5Nr2nxplnjEWzEk07PU6YHlkzXM5GbcctmeekYJThQTut0/6Hp
+	dexdD9etPtNIx6Tb2anPM3hNvx0bpK18=
+X-Gm-Gg: AZuq6aIbeFjtrskFxu/oAFCuMVOL6iS3GbvrORObQNVAIW0hIKlIITQT8i2CzG+0/Ya
+	ZO9kTF0uodeYw4a52gVOKthVA7bbFzSOZwpVUWKg1bAqqaWjHzySA6b11rTF/RhLtgPakxbtUHC
+	eNAhi326opaWcORwZZ2mkrz80NJ5GyUJan8no+C4Onk43uF/2ppSaAwEP5yZ3zWTsWXiXettt57
+	sFueh2Xkt1qVP0+Ub3Ze/EKYMBFhixu9wkwiQSBdv6vwUAG+Ka90AFTWbrIAVGUxBRg+ALGuYjJ
+	7ezXawZlGqfndwnV8aieqNc8gwH3dnDkkbe5ufcGKgc41uQpjlXTuBmP
+X-Received: by 2002:a05:6214:262e:b0:894:610c:3a22 with SMTP id
+ 6a1803df08f44-894e9f99fa3mr206356306d6.20.1770108607720; Tue, 03 Feb 2026
+ 00:50:07 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: tcp_bbr: use high pacing gain when the
- sender fails to put enough data inflight
-To: Neal Cardwell <ncardwell@google.com>
-Cc: Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima
- <kuniyu@google.com>, netdev@vger.kernel.org
-References: <20260202101454.89445-1-kelmenhorst@uni-osnabrueck.de>
- <CADVnQykLpW+GV6sSG5py1J+WTZFM-=JObhYS7Pwd=9ut1GY1BQ@mail.gmail.com>
-Content-Language: en-US
-From: Kathrin Elmenhorst <kelmenhorst@uni-osnabrueck.de>
-In-Reply-To: <CADVnQykLpW+GV6sSG5py1J+WTZFM-=JObhYS7Pwd=9ut1GY1BQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20260203013517.26170-1-enelsonmoore@gmail.com> <aYGw80IvE0TG7WOx@smile.fi.intel.com>
+In-Reply-To: <aYGw80IvE0TG7WOx@smile.fi.intel.com>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Tue, 3 Feb 2026 00:49:57 -0800
+X-Gm-Features: AZwV_QgXt7IS2wkY_QcWhvRgLnL-HnrRbnKcnppOhB9zD-eHSPXSoomX_beDp-U
+Message-ID: <CADkSEUgmX1tk-qJ7ee=P3EYcvriW91nVJZ6AFDpVEVjj7O8pJg@mail.gmail.com>
+Subject: Re: [PATCH net-next v4] net: usb: introduce usbnet_mii_ioctl helper function
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>, Andrew Lunn <andrew@lunn.ch>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Peter Korsgaard <peter@korsgaard.com>, Steve Glendinning <steve.glendinning@shawell.net>, 
+	Oliver Neukum <oneukum@suse.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Oleksij Rempel <o.rempel@pengutronix.de>, Max Schulze <max.schulze@online.de>, 
+	=?UTF-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> AFAICT this patch does not look like a safe solution, because there
-> are many reasons that the actual number of bytes in flight can be less
-> than the target inflight. Notably, it is very common for applications
-> to be application-limited, i.e., they don't have enough data to send
-> to fully utilize the BDP of the network path. This is very common for
-> the most common kinds of TCP workloads: web, streaming video, RPC,
-> SSH, etc. It does not seem safe to increase the pacing gain to
-> bbr_high_gain in these common application-limited scenarios, because
-> this can cause bursts of data to arrive at the bottleneck link at more
-> than twice the available bandwidth, which can cause very high queuing
-> and packet loss.
+Hi, Andy,
 
-Absolutely, app-limited and contention-limited sockets exhibit similar
-characteristics in terms of inflight bytes. My understanding was that
-BBR uses high pacing gain when the socket is app-limited anyways, is
-that not correct?
-For example, bbr_check_full_bw_reached returns early if the socket is
-app-limited, so that BBR stays in (or is reset to) STARTUP mode with
-high pacing gain. This behavior actually gave me the idea to fix the
-contention-limited socket in a similar way. But maybe I am missing
-other cases where BBR reacts differently to app-limitation.
-
-> But if you have further results that you can share, I'd appreciate it.
-
-I separately sent you the arXiv link to our paper. Due to a conference
-submission policy, we are not allowed to advertise it on a public
-mailing list yet.
-
-
-Thanks,
-Kathrin
-
-
-
-
-On 2/2/26 17:22, Neal Cardwell wrote:
-
-> On Mon, Feb 2, 2026 at 5:15 AM kelmenhorst
-> <kelmenhorst@uni-osnabrueck.de> wrote:
->> This patch addresses a robustness issue of TCP BBR when run in Virtual Machines
->> - a common use case considering modern web hosting.
->> Prior experiments in AWS VMs (https://ieeexplore.ieee.org/abstract/document/9546441),
->> and our recent measurements in a controlled setup show that VM-based BBR senders
->> heavily underestimate the available bandwidth during periods of CPU contention.
->> In our configuration with 10ms periodic timeslices, BBR already degrades in VMs
->> with less than 70% CPU time share, and the throughput continuously drops with
->> decreasing CPU shares until it is bandwidth-independently capped at 10 Mbps for
->> CPU time shares at 35% and lower.
->> Considering the common use case of BBR in (resource-limited) Linux VMs, this
->> issue could potentially compromise the robustness of the Internet's transport
->> layer.
->>
->> In contrast to Cubic, BBR is very sensitive to off-CPU times. This is because
->> pacing evenly spreads the target inflight over the RTT, essentially assuming
->> that the CPU is available during the whole RTT. If this assumption is not met,
->> the BBR sender cannot achieve the target pacing rate and concludes that the full
->> bandwidth has been reached, even though the throughput is far below the actual
->> bandwidth limit.
-> Thanks, I agree this is an issue worth working on. And I appreciate
-> your contributions in this area, as well as the work of others who
-> have worked on the challenges of BBR throughput in VM guests.
+On Tue, Feb 3, 2026 at 12:25=E2=80=AFAM Andy Shevchenko
+<andriy.shevchenko@linux.intel.com> wrote:
+> > +extern int usbnet_mii_ioctl(struct net_device *net, struct ifreq *rq, =
+int cmd);
 >
->> This commit detects the problematic condition in bbr_update_gains() by
->> comparing BBR's current target inflight (bbr_inflight() * tp->mss_cache) with
->> the actual number of bytes inflight (tp->bytes_sent - tp->bytes_acked), and
->> applies high pacing gain (bbr_high_gain), until the inflight deficit recovers.
->> With a higher pacing gain, BBR can send faster when the VM does have the CPU,
->> so that the target inflight volume can be achieved despite off-CPU times.
->> Re-using the constant STARTUP gain can only solve the issue up to a certain
->> point, but avoids complex algorithm changes.
->> Effectively, the patch solves the degradation problem for most critical cases:
->> with 10ms periodic timeslices, BBRv1 is robust for CPU time shares of 35% and
->> higher -  instead of 70% and higher when using the original code.
-> AFAICT this patch does not look like a safe solution, because there
-> are many reasons that the actual number of bytes in flight can be less
-> than the target inflight. Notably, it is very common for applications
-> to be application-limited, i.e., they don't have enough data to send
-> to fully utilize the BDP of the network path. This is very common for
-> the most common kinds of TCP workloads: web, streaming video, RPC,
-> SSH, etc. It does not seem safe to increase the pacing gain to
-> bbr_high_gain in these common application-limited scenarios, because
-> this can cause bursts of data to arrive at the bottleneck link at more
-> than twice the available bandwidth, which can cause very high queuing
-> and packet loss.
->
-> On a broader note, before making such a significant change to a CC
-> algorithm, we would need to see a broad array of test results showing
-> that the change is safe and performant in a representative set of
-> scenarios: multiple BBR flows, shallow buffers, deep buffers,
-> policers, application-limited traffic, BBR coexistence with CUBIC,
-> performance on wifi paths, etc.
->
->> We can share further results of our measurement study upon individual request.
-> Yes, if you could please share further results, I would appreciate it.
-> I'm aware of your work here:
->
->    POSTER: Clouded Comparisons - On the Impact of VirtualMachines on
-> TCP-BBR Performance
->    https://dl.acm.org/doi/epdf/10.1145/3744969.3748455
->
-> But if you have further results that you can share, I'd appreciate it.
->
->> Signed-off-by: Kathrin Elmenhorst <kelmenhorst@uni-osnabrueck.de>
->> ---
->>   net/ipv4/tcp_bbr.c | 7 +++++++
->>   1 file changed, 7 insertions(+)
->>
->> diff --git a/net/ipv4/tcp_bbr.c b/net/ipv4/tcp_bbr.c
->> index 760941e55153..ca6361931491 100644
->> --- a/net/ipv4/tcp_bbr.c
->> +++ b/net/ipv4/tcp_bbr.c
->> @@ -1011,6 +1011,13 @@ static void bbr_update_gains(struct sock *sk)
->>                  WARN_ONCE(1, "BBR bad mode: %u\n", bbr->mode);
->>                  break;
->>          }
->> +        // overwrite pacing gain in case the sender fails to put enough data inflight
->> +        struct tcp_sock *tp = tcp_sk(sk);
->> +        u64 real_inflight = tp->bytes_sent - tp->bytes_acked;
->> +        u32 target_inflight = bbr_inflight(sk, bbr_bw(sk), BBR_UNIT) * tp->mss_cache;
->> +        if (real_inflight < target_inflight) {
->> +                bbr->pacing_gain = bbr_high_gain;
->> +        }
->>   }
-> Just a note on style: before your next patch submission to the Linux
-> netdev mailing list:
->
-> (1) please read the netdev FAQ at:
->    https://www.kernel.org/doc/html/v6.18/process/maintainer-netdev.html#netdev-faq
->
-> (2) please run ./scripts/checkpatch.pl on the patch to catch and fix
-> style issues (./scripts/checkpatch.pl shows: "total: 7 errors, 10
-> warnings, 0 checks, 13 lines checked")
->
-> Thanks!
->
-> best regards,
-> neal
+> Do we still need to populate 'extern'? Can we get rid of this redundancy?
+In my opinion, while you're right that it isn't necessary because all
+functions (unlike variables) are implied to be extern, the use of
+extern to indicate functions that are exported/intended to be part of
+the API is a good idea.
+
+Ethan
