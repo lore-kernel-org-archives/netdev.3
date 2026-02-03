@@ -1,58 +1,62 @@
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C72D314D16
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 11:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4E933D507
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 12:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770119843; cv=none; b=lVkXB6mBRqr6Ge3le7SZ5XC0td+O7aXWWaHx2gM76S44TfdDKFusiUlL7F0rswwkUWhynA9EZl6grWB4I6VyYeByZHN1xJ20LynNhp2Gvlyw7Uq3Z9E7cIsoLiE/C6KAvx1XXl9ZvgBZu7aBRus2OSQhRosiv1fQ3mSspDKwkPQ=
+	t=1770120498; cv=none; b=NX4G0VuppfoXOUGbVZ3cOr0bQoMSnYpk9Opn1V2pAxkaLHeU9/OLBfTOuxtipOMo8PCsAcojFOGpwRGgpHjL5sjvlrejEds330CpYdT9iYj0hXYjEwpE33pZTkotgApozYG9qVlNK3isv09SjvhBfpOl1f47cl5fXZB9RvyVzxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770119843; c=relaxed/simple;
-	bh=cAfTxGKxjW5d3vRnbV3xTwC6vBIYq4Av9CerqTSTB1s=;
+	s=arc-20240116; t=1770120498; c=relaxed/simple;
+	bh=8bSysvQh9zNKGwuLq+TYG/kdhuPi5MrukSfdlgYfzPI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zfk4t/Rg5sTn+w8neWEhcWOhxkWWL85RtL8BHKwxyhNwXsxhLBbg24dQCC2A1pkNcfM0xRsXoyAFJz9fjhBfKcbPEZrZvnqGZ0QgTf1L9uY3rLvJDgyw2cgQuvvdFzN5NVQk4ulspjIZTjEAJu8i7xF/HWwsOe/42UUhyuiOBak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aOZplOHn; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Cy90x2mm; arc=none smtp.client-ip=193.142.43.55
+	 Content-Type:Content-Disposition:In-Reply-To; b=YGI9fkVb9x5/tYkKZI4AVfWBhxCCDc28KEDKAHxMo6tL2+wfHP713QsljI0OV6ja4FcZm7qYuLUDZdxQN41GPe3qOFarpYdxVUNjb/Ry+FP33QMDhNuaX8sPHAGprdJ3kdezYnK+bo8hcsQj60yGv1GC5iH25E4B3pWx9vAT7wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=hjGIxiwM; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Dlxj3Vks; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aOZplOHn";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Cy90x2mm"
-Date: Tue, 3 Feb 2026 12:57:19 +0100
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="hjGIxiwM";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Dlxj3Vks"
+Date: Tue, 3 Feb 2026 13:08:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1770119840;
+	s=2020; t=1770120495;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9N0zUV33y6tlASOxKp8jQarBDqubWd4gAbaXPL2Ab/s=;
-	b=aOZplOHnh934JXndMgTmxlOZjme3HWm8olPhK5NhD5OBlJ+spL8ERw02OYUe61awHmWIKV
-	CLDiPn0FkINEXbwH+oupf48dXrKzaHYH0pYxuvfxxjWV6QaNSuQuznROx5cjKuXF6isiIl
-	dNcgU61lHIWwop/CprceEZCyiJg9MLOrtdtUtND1Wj+ROjCRXj4O5ocX6KFbqx4IoLkQEf
-	XdPYA6Om40pWjBkW3TMVoczyGL4SbWa6EfMRBnBft1nKxQKNx4AoYGTmGwzJKKyw83T0tF
-	5VNlatzYg3S0pFO/AQVRoxrVGZGyYltknfMV7xUB/eZz6bwK6qXqFImf3sekGA==
+	bh=XEZipE0D329CXpQUVmd9S2ilaIWX19xXCTc10NTNPfU=;
+	b=hjGIxiwM8+o/k8ZARcLamjk/DPyxeGOBns80cWDjWLRiWPPbsGuMOMm0NmrJ0N6fAPFaag
+	lPPNwqK6RPk5PVxOz/0B/ana2DnDzyVTkGTgTAnwkBCu0o5RTU+hdaXXQMwJdo5wPRuy6L
+	qnst5GIa2FxnL7BMWnlZ8lqPDmnqOjJWXekJcAaoKbXmXsOr2jJDDq6T+OvWbJgFRjZ2dZ
+	Qo+W79hKBNRMjcyhOqDiKebU5IkwU+RdXesJL4IRI8AX68SomXLraTTgCgvKxBSlXrfgGF
+	Y1MJOI5YkvnfAsFZzhxkRZYgU1Nl+DvoySc4eJ5dQmT7Iq5HlrP2LeyQq8H0wA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1770119840;
+	s=2020e; t=1770120495;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9N0zUV33y6tlASOxKp8jQarBDqubWd4gAbaXPL2Ab/s=;
-	b=Cy90x2mmllSjtBiS7u4LUYvLCrnp2Rjy+pQXEaV2tIpfaLCb+xOGmdRF3M5bCSyQ7XF0CQ
-	vjsPxMdzIcd4XWDg==
+	bh=XEZipE0D329CXpQUVmd9S2ilaIWX19xXCTc10NTNPfU=;
+	b=Dlxj3Vks/hoEDOOYITUZ/hSUgtc3yDEZFxRZzNDMJCwH+lTZlw03Tm+wry8Ssz40ktuuNh
+	qUIFSwlCd3y+v1AA==
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 To: Felix Maurer <fmaurer@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, jkarrenpalo@gmail.com, tglx@linutronix.de,
-	mingo@kernel.org, allison.henderson@oracle.com, petrm@nvidia.com,
-	antonio@openvpn.net, Steffen Lindner <steffen.lindner@de.abb.com>
-Subject: Re: [PATCH net-next v2 4/9] hsr: Implement more robust duplicate
- discard for PRP
-Message-ID: <20260203115719.cU_6tnal@linutronix.de>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	jkarrenpalo@gmail.com, tglx@linutronix.de, mingo@kernel.org,
+	allison.henderson@oracle.com, petrm@nvidia.com, antonio@openvpn.net,
+	Yoann Congal <yoann.congal@smile.fr>
+Subject: Re: [PATCH net-next v2 6/9] hsr: Implement more robust duplicate
+ discard for HSR
+Message-ID: <20260203120813.hSgDgi4e@linutronix.de>
 References: <cover.1769093335.git.fmaurer@redhat.com>
- <fe1dbc483482e98fbc286290a2a3e88f555894d4.1769093335.git.fmaurer@redhat.com>
- <20260128163824.GB172540@kernel.org>
- <aXpXY0YSjA-ctoBa@thinkpad>
- <20260202165702.R9PI3JSM@linutronix.de>
- <aYHMvaGiuQSHBevG@thinkpad>
+ <07b90a435ed7d3450c1949e3a21910916d8538de.1769093335.git.fmaurer@redhat.com>
+ <20260129144348.CIs44m-d@linutronix.de>
+ <aXuIAFJ_m6gMUFFO@thinkpad>
+ <aXugXpSajp6jzG1o@thinkpad>
+ <aXyJTzwJ3x34B-xR@thinkpad>
+ <20260202175311.m2Qu8pEp@linutronix.de>
+ <aYHg08WMQyQKmgZO@thinkpad>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -61,50 +65,63 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <aYHMvaGiuQSHBevG@thinkpad>
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <aYHg08WMQyQKmgZO@thinkpad>
 
-On 2026-02-03 11:23:57 [+0100], Felix Maurer wrote:
-> On Mon, Feb 02, 2026 at 05:57:02PM +0100, Sebastian Andrzej Siewior wrote:
-> > On 2026-01-28 19:37:23 [+0100], Felix Maurer wrote:
-> > > > > +	if (!block) {
-> > > > > +		block = &node->block_buf[node->next_block];
-> > > > > +		hsr_forget_seq_block(node, block);
-> > > > > +
-> > > > > +		memset(block, 0, sizeof(*block));
-> > > > > +		block->time = jiffies;
-> > > > > +		block->block_idx = block_idx;
-> > > > > +
-> > > > > +		res = xa_store(&node->seq_blocks, block_idx, block, GFP_ATOMIC);
-> > > > > +		if (xa_is_err(res))
-> > > >
-> > > > Hi Felix,
-> > > >
-> > > > I ran Claude Code over this with review-prompts [1] and it flags
-> > > > that in the error path above, the following is needed so that the
-> > > > block can be re-used.
-> > > >
-> > > > 			block->time = 0;
-> > >
-> > > I agree. It would nonetheless be reused at some point, but not setting
-> > > time = 0 may lead to an unexpected block getting removed when it is
-> > > reused (or at least an attempt to do so). I'll fix this in v3.
-> >
-> > Not sure I follow. If xa_store() fails then the block is not added to
-> > the "sequence-blocks" and it will be attempted once the next packet is
-> > received, right?. Otherwise node->next_block is not updated at which
-> > point this block will be added twice which sounds worse.
-> 
-> Yes, it will be attempted again on the next frame that needs a new
-> block. But every attempt to recycle the next_block starts with calling
-> hsr_forget_seq_block(), which tries to xa_erase() the block if time!=0.
-> Generally, time==0 is the marker that a block is not stored in the
-> xarray. So for consistency it's correct to set time=0 if the block can't
-> be added to the xarray, even though I don't think it would cause any
-> trouble at the moment if the time is not reset.
+On 2026-02-03 12:49:39 [+0100], Felix Maurer wrote:
+> I think the duplicates can occur on RedBoxes if they are used to couple
+> the HSR ring and another redundant network (either with a PRP network
+> through HSR-PRP mode or with an HSR network through HSR-HSR mode, which
+> we both don't implement at the moment). In both cases, two RedBoxes are
+> used to maintain redundancy and both independently inject a frame they
+> receive into the HSR ring (see Figure 12 and 16 in the IEC
+> 62439-3:2021). But it's also the RedBoxes that would remove the
+> duplicates, so we would be aware that we should discard duplicates on
+> port A and B.
+>=20
+> However, I'm not sure if these are the only cases where duplicates are
+> to be expected in the ring and I don't want to prematurely make the
+> decision to just forward everything within the ring.
 
-My point is that the block will not be recycled if it failed to be added
-here. It remains the "next" block to be used and added to the list if it
-fails that xa_store().
+I would have to study the spec first to understand how PRP, HSR mix
+works with the redbox before I can give a statement. But yeah=E2=80=A6
+
+> > If you track duplicates for A and B in a single "bitmap" then this would
+> > mode X.
+>=20
+> I think I didn't understand this clearly and I mixed this up in some of
+> my replies, so just to make sure; there are two ideas:
+> 1) Track port A and B together, i.e., don't forward the
+>    counter-duplicate, i.e., Mode X (which is optional to implement).
+> 2) Don't track duplicates for port A or B at all. We consider duplicates
+>    in the ring as a failure of another node.
+>=20
+> We don't consider 1), i.e., Mode X, at the moment. We are only
+> discussing idea 2), right?
+
+correct.
+
+> > I nag here a bit because you allocate 16 + (128 / 8) * 4 * 64 =3D 4112
+> > bytes for this bitmap per node. That is a bit over 4kib. Then adding and
+> > removing sequences got a bit more expensive. Anyway. There is table
+> > F.19+ specifying HSR tests and don't find "forwarding duplicate over
+> > port A". So lets keep it.
+>=20
+> I totally understand that. It's quite some memory for each node and I'm
+> very much in for reducing that. But I'd suggest that, for now, we follow
+> what we had before and what the standard explicitly asks, which is to
+> track (and discard) duplicates on port A and B as well. I'm not sure if
+> we should diverge from the standard in one of the few points where it is
+> explicit. If I understand your last sentence correctly, you're okay with
+> that as well?
+
+Yes. Because you reworked the duplicate-detect algorithm and I would
+like to keep the "unrelated" details (tracking A, B, =E2=80=A6) as it was s=
+o if
+it serious regressions get reported we can easily pin point it. So we
+replace just one thing and both multiples. At the expense that more
+memory is now consumed but this is fine I hope.
+So this might be for the future.
 
 > Thanks,
 >    Felix
