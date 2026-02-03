@@ -1,152 +1,204 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BAE30F921
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 10:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EAF39A7EF
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 10:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770112900; cv=none; b=qPGAXs5foD8JCEP2fpHKo5BSDctrSKGDJ/GbUQY3MnsamuL5UnoCmQYAqMSQsX163fJvUUZHqUEuuBZWQrWB2tLwT27UIMyAN2WqoRZhQwGxWQ9RE1n2v5Slu4IQWxcBKOzGuLlRotkPZyz7nLTwdw3D0+S9oAmbfOCIMkkIyPQ=
+	t=1770113279; cv=none; b=cE7n9+6eAT3W34GNX9UjeAlaw7li7Nr7i9lzDEWVRTmCfo5BQByOk9+2VWZYV9jkjbbvBkvjKW2/xNAJ1pR18dga6Umsn35QDSu4cMq1EW1BUO7BOlXADxgDaIjS56N4sMp9T+qT/rysaDgbqRWEh0co5DP/D3jroC/pxpJuUs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770112900; c=relaxed/simple;
-	bh=IxRdrK6ujncZXP7my5h8MRT4BCETVuA/x1NgqJVhaBc=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=Kgu02Bl7Wsg9ZpawYwb5ZvApF3H2SYIQIFHf+883SKjzYO9O5y6PQ9TWfdBBrZoXgEXaZKoYCcPHzpYFSITqNeV6E3DjJK6H1X39wELjtTb0Y4lwoq5T19jYprZyAy4QWl4eyhkSMOfQVXSBF6g7sNmgLkg8TjtbYQVtux2/hjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=yH6Ed3id; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1770113279; c=relaxed/simple;
+	bh=GJgu6W5rJwbIyNtNorr8rYsILnJchB4cpfPCSfzgtVM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=VSTsDAStxH0KsIzzV4D10/8zBJjAnvdTXAasAVQuTI7lHZqiC+WT0qfabeK6WiHs+Leeufd8uJjfIDXYjh4WyEYU68JS1MUwDWjnRqZCXyX5QsxGFHn48jinP3Yx8PiLUSCY4B3c4t4FrJ6Dig4EHYNN73CAyQvZzHcYK1trD8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SvydTPGI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KDRIwq+O; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="yH6Ed3id"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=UENQcPP3bF2ZA0ADQ4abpHHj29Ib66umM+PFjhQQHc8=; b=yH6Ed3idSUHAp6Lx+IkGjLwpve
-	IRjQphIw8UGp9DcXazS3s2pSSQmisnwPXCWIM5g944Qvh9hkJbLZ3KL9KnpSQu7/7g7scRNGKGG9K
-	6ACw0TVHKzVs6fSG8+naujz/PxO/7DXPII6/qzAAHDg5pAfxw8AgMqe1IhaFXuRfRpazLXlYEc61A
-	t2Gm0QLAVG/DjMTUgsg4B9/1l2v8YRuGiO41J6vNgorE4lFVpsLWfxXbQoLFdv4eCq7EktqP8TpLT
-	DcGVu5NtOUuJhfjujpEgD/jVfsp/DF6fQOIyCsQnNfM0J9qC6F97F37kL+O3RnNSwWYDmHTBXHThC
-	pgsweyRQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:57930 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vnDDu-000000004xS-2otx;
-	Tue, 03 Feb 2026 10:01:30 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vnDDt-00000007XxF-3uUK;
-	Tue, 03 Feb 2026 10:01:29 +0000
-In-Reply-To: <aYHHWm5UkD1JVa7D@shell.armlinux.org.uk>
-References: <aYHHWm5UkD1JVa7D@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 4/4] net: stmmac: move serdes power methods to
- stmmac_[open|release]()
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SvydTPGI";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KDRIwq+O"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770113276;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=IGs2YkYoWlfGHazFM7O3osfPUjK8eaN/zd8OtSRCmyA=;
+	b=SvydTPGIxpvwbowm2bInXGSEREEOkkgTRKV48G/UK0p6+hquFCroVEMihAYO0cxq/Q1vc8
+	6/L0yCmL5/9np6TAzR8SRglZQTZfZTL719jwWveENjML0WHPk5JJPasMgUYVGJ7lFfBcGW
+	Xl+Cnx2eFHZ8h1ls3nPUt6zssf465ic=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-539-5ZAyjsHGNfOdP4tjqvHDOg-1; Tue, 03 Feb 2026 05:07:55 -0500
+X-MC-Unique: 5ZAyjsHGNfOdP4tjqvHDOg-1
+X-Mimecast-MFC-AGG-ID: 5ZAyjsHGNfOdP4tjqvHDOg_1770113274
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4359d70faa2so3325475f8f.1
+        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 02:07:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1770113274; x=1770718074; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=IGs2YkYoWlfGHazFM7O3osfPUjK8eaN/zd8OtSRCmyA=;
+        b=KDRIwq+ON8DU8K6jPDKLvdHekKcSdH1ftr4U6UQIv+QGK5l6ZNfw9rtxG6Ceaoy+cJ
+         AWPbrwuoB2kLxwopj/T3POHdi1FOA4nQJOR0rRlMAF3kuBbNyZtMezMBSJUVqkln/fQK
+         R/6qJDG+PQkhj18ogN9wjaRZFCuZN4/ObAbN6cDK7cmzFypwQa+CseNPY6ShxrDzofHI
+         7YDC12V7RmxNhUWwn6WeiomC1oqZc34e66YCB9Z1r7RHq+63N7IQq3EvCrDV3jCDofMh
+         emPJy8YyJgTP5w5tG5ZIYh59H30g/3ObCKW5sFlgezNn/Idq1AmDvkf6dn6JXuq9G5+I
+         2ZFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770113274; x=1770718074;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IGs2YkYoWlfGHazFM7O3osfPUjK8eaN/zd8OtSRCmyA=;
+        b=tB4+sX5eu3B20MKr5/qq+k2cl79XSeT/3vmzLKXE9G5qqKlYrdxQCCyWCkdOaHD1Np
+         2J8OR0Fx2vT6hbcUcXQ3gCZaNs1TaYD3j4DPllpuGgV41KLBeq6qfv06uvVEgvHYA9kx
+         J9zrorXyhLehHt+kiMcznoKPZIV5TNthLpCZGFf6n2IHDp8jsvHlrxnuDZOxv57Q6/gg
+         1wF5UKXlJJ2O85SsF2qbFb2cR4FRidbMRCtcL0XHhLRU2II9EwcaozzrxqCo/Nga5hd1
+         A3ibmd1N8SwdVml4YCO+JpMsVt8AwMKM802VGXxgUHW+g3GH4k+7C+snYFoTzC921wIz
+         SilA==
+X-Forwarded-Encrypted: i=1; AJvYcCWTscsOUKPHZRyMXgrJkkBtUICHhXTr8GUCI/56WVvJAyKQWx93Q9Ck9MK+GEoGrCEew9wQBCU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfNvxr9rIh/4ee1x9beN5MNZNJDKNqNxc9tWqkLXQK/w6DF5T2
+	GBO3RW4nFlE0DT0uIumEXHtptRZ23sBXoFedEbjrv5ZFBy342d6kSFPxkdlWNAadSHTSC2jjKwF
+	PIfh4wMvRIzy8w8HWbjUzlTPKp/idXDlw/64kjyS2+vLVxdaHIJzae23DOQ==
+X-Gm-Gg: AZuq6aLwNJYvA3Kbhs3eyTqYs6BBn+FyZF4bZIvBFBEOfi5ku89kTsmK/iA6PcRap2V
+	x7/mZg1kcbwzDjg+IqwAzzmmn/XQZ8C/WsXnA+DRJfQcPbVQ+ofbqSLlXjmHx23nhz9Hw9+eRoO
+	GvtZ7KNxJ4twoe6dF8HMj0dE2b4hPb6kcRr7EfXpffUohEeb23+XmKcPdSOmOyGVNsyvyQrEFV3
+	CEKDQ1HPVHKPTRCr2qU5z1P/2BrWc+Ptr/yTA7RdUxjkKEhGqCc0TjST2kPapGP2ZFvoYDP6Drc
+	liZ7n4AMSTsS8N0RiZUVcvvRIswCW9JDPX7irx0ahMW3gHxoYqCFGYtQZ/sf9Cok/2xzC6/3hhF
+	fbrV2cdtX3/I=
+X-Received: by 2002:a05:600c:1f14:b0:47e:e807:a05a with SMTP id 5b1f17b1804b1-482db4a6193mr194760605e9.33.1770113273864;
+        Tue, 03 Feb 2026 02:07:53 -0800 (PST)
+X-Received: by 2002:a05:600c:1f14:b0:47e:e807:a05a with SMTP id 5b1f17b1804b1-482db4a6193mr194760295e9.33.1770113273418;
+        Tue, 03 Feb 2026 02:07:53 -0800 (PST)
+Received: from [192.168.88.32] ([150.228.93.21])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-482e04d168bsm114722155e9.6.2026.02.03.02.07.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Feb 2026 02:07:53 -0800 (PST)
+Message-ID: <e68843a2-632c-4703-8a75-551c56232224@redhat.com>
+Date: Tue, 3 Feb 2026 11:07:48 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vnDDt-00000007XxF-3uUK@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Tue, 03 Feb 2026 10:01:29 +0000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 10/10] test: Add networking sefltest for eh
+ limits
+To: Tom Herbert <tom@herbertland.com>, davem@davemloft.net, kuba@kernel.org,
+ netdev@vger.kernel.org, justin.iurman@uliege.be,
+ willemdebruijn.kernel@gmail.com
+References: <20260203004853.94438-1-tom@herbertland.com>
+ <20260203004853.94438-11-tom@herbertland.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260203004853.94438-11-tom@herbertland.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Move the SerDes power up and down calls for the non-"after linkup"
-case out of __stmmac_open() and __stmmac_release() into the
-stmmac_open() and stmmac_release() methods, which means the SerDes
-will only change power state on administrative changes or suspend/
-resume, not while changing the interface MTU.
+On 2/3/26 1:48 AM, Tom Herbert wrote:
+> Add a networking selftest for Extension Header limits. The
+> limits to test are in systcls:
+> 
+> 	net.ipv6.enforce_ext_hdr_order
+> 	net.ipv6.max_dst_opts_number
+> 	net.ipv6.max_hbh_opts_number
+> 	net.ipv6.max_hbh_length
+> 	net.ipv6.max_dst_opts_length
+> 
+> The basic idea of the test is to fabricate ICMPv6 Echo Request
+> packets with various combinations of Extension Headers. The packets
+> are sent to a host in another namespace. If a an ICMPv6 Echo Reply
+> is received then the packet wasn't dropped due to a limit being
+> exceeded, and if it was dropped then we assume that a limit was
+> exceeded. For each test packet we derive an expectation as to
+> whether the packet will be dropped or not. Test success depends
+> on whether our expectation is matched. i.e. if we expect a reply
+> then the test succeeds if we see a reply, and if we don't expect a
+> reply then the test succeeds if we don't see a reply.
+> 
+> The test is divided into a frontend bash script (eh_limits.sh) and a
+> backend Python script (eh_limits.py).
+> 
+> The frontend sets up two network namespaces with IPv6 addresses
+> configured on veth's. We then invoke the backend to send the
+> test packets. This first pass is done with default sysctl settings.
+> On a second pass we change the various sysctl settings and run
+> again.
+> 
+> The backend runs through the various test cases described in the
+> Make_Test_Packets function. This function calls Make_Packet for
+> a test case where arguments provide the Extension Header chain to
+> be tested. The Run_Test function loops through the various packets
+> and tests if a reply is received versus the expectation. If a test
+> case fails then an error status is returned by the backend.
+> 
+> The backend script can also be run with the "-w <pcap_file>" to
+> write the created packets to a pcap file instead of running the
+> test.
+> 
+> Signed-off-by: Tom Herbert <tom@herbertland.com>
+> ---
+>  tools/testing/selftests/net/Makefile     |   1 +
+>  tools/testing/selftests/net/eh_limits.py | 352 +++++++++++++++++++++++
+>  tools/testing/selftests/net/eh_limits.sh | 205 +++++++++++++
+>  3 files changed, 558 insertions(+)
+>  create mode 100755 tools/testing/selftests/net/eh_limits.py
+>  create mode 100755 tools/testing/selftests/net/eh_limits.sh
+> 
+> diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+> index afdea6d95bde..73195a2e8f1e 100644
+> --- a/tools/testing/selftests/net/Makefile
+> +++ b/tools/testing/selftests/net/Makefile
+> @@ -24,6 +24,7 @@ TEST_PROGS := \
+>  	cmsg_time.sh \
+>  	double_udp_encap.sh \
+>  	drop_monitor_tests.sh \
+> +	eh_limits.sh \
+>  	fcnal-ipv4.sh \
+>  	fcnal-ipv6.sh \
+>  	fcnal-other.sh \
+> diff --git a/tools/testing/selftests/net/eh_limits.py b/tools/testing/selftests/net/eh_limits.py
+> new file mode 100755
+> index 000000000000..01fcf15c6b94
+> --- /dev/null
+> +++ b/tools/testing/selftests/net/eh_limits.py
+> @@ -0,0 +1,352 @@
+> +#!/usr/bin/env python3
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +# Test of extension header limits
+> +
+> +import ext_hdr
+> +import getopt
+> +import proto_nums
+> +import shlex
+> +
+> +from scapy.all import *
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 21 +++++++++----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+Not a real review yet, but this is causing self-test failure, because
+scapy is not available/installed in our runners.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 05b0b080bade..d561b0a0f5ac 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4134,12 +4134,6 @@ static int __stmmac_open(struct net_device *dev,
- 
- 	stmmac_reset_queues_param(priv);
- 
--	if (!(priv->plat->flags & STMMAC_FLAG_SERDES_UP_AFTER_PHY_LINKUP)) {
--		ret = stmmac_legacy_serdes_power_up(priv);
--		if (ret < 0)
--			return ret;
--	}
--
- 	ret = stmmac_hw_setup(dev);
- 	if (ret < 0) {
- 		netdev_err(priv->dev, "%s: Hw setup failed\n", __func__);
-@@ -4170,7 +4164,6 @@ static int __stmmac_open(struct net_device *dev,
- 
- 	stmmac_release_ptp(priv);
- init_error:
--	stmmac_legacy_serdes_power_down(priv);
- 	return ret;
- }
- 
-@@ -4196,9 +4189,15 @@ static int stmmac_open(struct net_device *dev)
- 	if (ret)
- 		goto err_runtime_pm;
- 
-+	if (!(priv->plat->flags & STMMAC_FLAG_SERDES_UP_AFTER_PHY_LINKUP)) {
-+		ret = stmmac_legacy_serdes_power_up(priv);
-+		if (ret < 0)
-+			goto err_disconnect_phy;
-+	}
-+
- 	ret = __stmmac_open(dev, dma_conf);
- 	if (ret)
--		goto err_disconnect_phy;
-+		goto err_serdes;
- 
- 	kfree(dma_conf);
- 
-@@ -4207,6 +4206,8 @@ static int stmmac_open(struct net_device *dev)
- 
- 	return ret;
- 
-+err_serdes:
-+	stmmac_legacy_serdes_power_down(priv);
- err_disconnect_phy:
- 	phylink_disconnect_phy(priv->phylink);
- err_runtime_pm:
-@@ -4241,9 +4242,6 @@ static void __stmmac_release(struct net_device *dev)
- 	/* Release and free the Rx/Tx resources */
- 	free_dma_desc_resources(priv, &priv->dma_conf);
- 
--	/* Powerdown Serdes if there is */
--	stmmac_legacy_serdes_power_down(priv);
--
- 	stmmac_release_ptp(priv);
- 
- 	if (stmmac_fpe_supported(priv))
-@@ -4269,6 +4267,7 @@ static int stmmac_release(struct net_device *dev)
- 
- 	__stmmac_release(dev);
- 
-+	stmmac_legacy_serdes_power_down(priv);
- 	phylink_disconnect_phy(priv->phylink);
- 	pm_runtime_put(priv->device);
- 
--- 
-2.47.3
+To prevent such failures you should add:
+
+require_command scapy
+
+in the test shell script.
+
+Also please be aware that CI runs linters vs python and shell code, and
+there are quite a few complains with them. You can use the
+`ingest_mdir.py` tool from:
+
+ https://github.com/linux-netdev/nipa/blob/main/ingest_mdir.py
+
+to automate the pre-submit checks.
+
+Thanks,
+
+Paolo
+
 
