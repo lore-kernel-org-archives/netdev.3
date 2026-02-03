@@ -1,85 +1,30 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from b2412.mx.srv.dfn.de (b2412.mx.srv.dfn.de [194.95.235.75])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A0F155322
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 08:44:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E88395DA6
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 08:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.95.235.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770108280; cv=none; b=JJwZ0vD8aFJnsouKh7juIKe6yOeKRS3c4xzYvdozEXrcGSKra3qaLUONJypSbFYBt+gE6cPeAIRpTMy07GYXQJ2limsuMSrSJ/iuXGHJr2i6/sGP7wTV8Foc/xAXW+wDu6B00snKtF1RwqOFehRMnsmLgdfmnM1PDCGMeAc7aks=
+	t=1770108310; cv=none; b=CrwqWq83kARMtWaNC01Is6FLQHyFkYasmpYu77/n5zgjm9TFNECHB7G3dTHcbLE+b0bJpC4FLIJjlWiKyMo18o+s6o/R7LpUHB7U7/a8RqgTenv2i5U26bhULnEhFxA24Jk6yJmPy5SfJKgCRj4tmNkgFrDwkNJvcXsSHz47ZRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770108280; c=relaxed/simple;
-	bh=c/MlIGyRe6Ua1hKekR0FD9JRU3veBk2Rq2u+/LF8An0=;
+	s=arc-20240116; t=1770108310; c=relaxed/simple;
+	bh=cJpqgIenyiyOxPSekoOEzAxk2xItdzdV/2wEW2fiyxA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p4PLiw35ufhgrzx9tg3G4Rt3IME3kUZUPKQjLPJYyhmj6knhDOxGvkwpJ7+nY6RhoM6Yh7w3MGgU0v+pt+q8F+vC/+bZL0dz4F9uTCyiFzQx7ofsjOxi3+dHfI7t/FFkUJhN1PF9DQWYOth5gx/saoeBAuZ3mQK8zjqdkA5i3I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KrLTachw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sv6+gmwx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KrLTachw";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sv6+gmwx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770108278;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VgHLoc4JJmVQ+DPngHL651kkYSwBeL/ZVkdO3ynZe2Q=;
-	b=KrLTachwdTNW1/0GOjExkeEUIetDqjSAdKM9lue5jOygPh25b1SZJ1qfZjbpwqrEqtPrWd
-	Cm5UXg379g6K6vA1/bRJSnbttGqjpJgE2OdmEJo8ib2yU4CRe58Fg26iIzjFNNjCmAknPH
-	XmF6F6BhrMbYBbXML1YSI6oh9BC0LZc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-249-FVhVLrx5MwiZ8LlH3_-LJw-1; Tue, 03 Feb 2026 03:44:37 -0500
-X-MC-Unique: FVhVLrx5MwiZ8LlH3_-LJw-1
-X-Mimecast-MFC-AGG-ID: FVhVLrx5MwiZ8LlH3_-LJw_1770108276
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-430fcf10287so4920572f8f.0
-        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 00:44:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1770108274; x=1770713074; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=VgHLoc4JJmVQ+DPngHL651kkYSwBeL/ZVkdO3ynZe2Q=;
-        b=sv6+gmwxcaS4rSTI5aPgrABvTFXRxbk7YnuehxEVfptDh446D544wBE/8K+HMSgGto
-         3rBmY5uAflwOBWTxML8DYa2835TZ6RtrWuK5NadnEmayEZchIyY9iRp2xNFfjtsfJBgK
-         VCxCwxxVIl8w28P69AmG7+6e7NJU21QMmeX0q8rFNFOFpFhelkNqgOLIOP3ZH9v0z4Pi
-         RlRT9mk6i/j6etlDDW9ecLkZBFnX7+cjiuzPBiT/R5nL26p2bn8cc96Dn5gZnrDot+5M
-         wkywuwEQMp0pWr+L2hIwclq0ulANHO4M/fa7ZvImrVfahWC6S0e5FasY5CQBGoVFHdWJ
-         b8gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770108274; x=1770713074;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VgHLoc4JJmVQ+DPngHL651kkYSwBeL/ZVkdO3ynZe2Q=;
-        b=urI1NJLaleZ8pmM5NzzweAdsqaYJN+31lFJZNwqbiRWBp2z0Uw6OwsRxGLiokNVGQI
-         WsfIr3ubGIsag8ApOyk9WqrzsnVVz0/6OhemkLA4/WxSrYfsZwYbKTuyI55HqLkqQqzr
-         Qb8+N+SI5j8oHPN9t6FNqQzyKIJdVq09CtPmAhBiOiF8/gSIidvHSg8+BX2lEnag0+gr
-         FEux0qfD7UZqmSMhfGwuSUiqeG1/SM5JENikE7H8KysRjR73oTRN0bxPEdvuAUnHTRXs
-         NXqLEGRtL2yHtNxwrUWDrS8HVavWFMCEkuHTTvOZ5VdfHoatdlZBQJNPE54441Jw5wWT
-         HyOA==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ4jHTXfv861JwPA/wDE+9qVsFUaH19BdfKEDYO3lfRGM6yejEM47ffJryhdJiOPtx6BJTjzk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxXnRe0rNfOlioDYG5Yj0z4Cyl7hNM4Bw11XRVA/C1iem9Ttf7
-	iTWmV0qDv/Mf6EeOzkOZgWCE36ZZKJDqrTleANDlz7l90LX1T8BCQ+XEww2OuGncbvL++LTzyBM
-	cIo9E0U3HHIQG174GdgQrawzrs8mF/4gjLXwOcd8oqOQ1arB6/UjrWI2v5RBBwvny2Q==
-X-Gm-Gg: AZuq6aL9lZfJ0ZC/EYWclLK8VETaUQoOEWY1Pd/3cTUxjhRqAqJy5NMWOI1V6t80GRB
-	oshei6bkNOi4/l4o00Y8l6alqo1+/VZ20ezcuvwAJT+nCmwuw/ulVZd1bDhx+wqxjiomh2e6mp2
-	beXCzvZwXjHSIFjV9SKfw4Vd8a2nHz443/Ok9qkx5O6FpnzHvy1ohzrJmpfDRHQl6tPO6mtXrzo
-	28ecGP3G3zNTRTNq2XtuMOP80/ZvsiJA4blj0hpB0BR1q6R+50uMNeJxG3QzN7XA9wcZtmnF+8y
-	dpfUxen890wrJjGi1TiLxGlG4HfXLPRxhBymBN3wxkYwaHVRUZ27QdjkLqJNur2foCjNjN0rGbz
-	Hh0IdJIvm
-X-Received: by 2002:a05:6000:401f:b0:430:f241:a11f with SMTP id ffacd0b85a97d-435f3aaa5aemr19352657f8f.30.1770108274184;
-        Tue, 03 Feb 2026 00:44:34 -0800 (PST)
-X-Received: by 2002:a05:6000:401f:b0:430:f241:a11f with SMTP id ffacd0b85a97d-435f3aaa5aemr19352628f8f.30.1770108273800;
-        Tue, 03 Feb 2026 00:44:33 -0800 (PST)
-Received: from [192.168.2.83] ([46.175.183.46])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-435e10f82aesm52194011f8f.19.2026.02.03.00.44.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 03 Feb 2026 00:44:33 -0800 (PST)
-Message-ID: <14cb0b22-ec39-43e4-a35b-22ad558b2e34@redhat.com>
-Date: Tue, 3 Feb 2026 09:44:31 +0100
+	 In-Reply-To:Content-Type; b=bGeiOknceoLBlYVd2iz23RLDtFRD8NRRjuSaFSqEs5Aj4yJ07XrgZ3BYZGAkQksbKPQ2G3XSqZ7k/wzwhVk+kK6nTG+O4Q+AsTFiy7beJMzhZmlN0pCbc/NixIZQrWFbbs70fYEiML+o8S0U1oFYIjrL84TxxTS6hmIZMqSBClY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uni-osnabrueck.de; spf=pass smtp.mailfrom=uni-osnabrueck.de; arc=none smtp.client-ip=194.95.235.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uni-osnabrueck.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uni-osnabrueck.de
+Received: from vm411.rz.uni-osnabrueck.de (smtp-auth-1.serv.uni-osnabrueck.de [131.173.16.143])
+	by b2412.mx.srv.dfn.de (Postfix) with ESMTPS id 5EBF71C018F;
+	Tue,  3 Feb 2026 09:36:25 +0100 (CET)
+Received: from [IPV6:2001:638:508:fe02::35] (unknown [IPv6:2001:638:508:fe02::35])
+	(using TLSv1.2 with cipher ECDHE-ECDSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	(Authenticated sender: kelmenhorst)
+	by vm411.rz.uni-osnabrueck.de (Postfix) with ESMTPSA id 1CA8D30056C3;
+	Tue,  3 Feb 2026 09:36:25 +0100 (CET)
+Message-ID: <f1137fcf-1778-4811-9211-4beb95db3a32@uni-osnabrueck.de>
+Date: Tue, 3 Feb 2026 09:36:24 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,70 +32,153 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH net] iavf: fix deadlock in reset
- handling
-To: Jacob Keller <jacob.e.keller@intel.com>, Jakub Kicinski <kuba@kernel.org>
-Cc: ivecera@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- Stanislav Fomichev <sdf@fomichev.me>,
- Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- intel-wired-lan@lists.osuosl.org, Paolo Abeni <pabeni@redhat.com>,
- "David S. Miller" <davem@davemloft.net>
-References: <20260202084820.260033-1-poros@redhat.com>
- <20260202155813.3f8fbc27@kernel.org>
- <b064ca33-1d94-4c7e-b0d0-78430d8cd0ac@intel.com>
+Subject: Re: [PATCH net-next] net: tcp_bbr: use high pacing gain when the
+ sender fails to put enough data inflight
+To: Neal Cardwell <ncardwell@google.com>
+Cc: Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima
+ <kuniyu@google.com>, netdev@vger.kernel.org
+References: <20260202101454.89445-1-kelmenhorst@uni-osnabrueck.de>
+ <CADVnQykLpW+GV6sSG5py1J+WTZFM-=JObhYS7Pwd=9ut1GY1BQ@mail.gmail.com>
 Content-Language: en-US
-From: Petr Oros <poros@redhat.com>
-In-Reply-To: <b064ca33-1d94-4c7e-b0d0-78430d8cd0ac@intel.com>
+From: Kathrin Elmenhorst <kelmenhorst@uni-osnabrueck.de>
+In-Reply-To: <CADVnQykLpW+GV6sSG5py1J+WTZFM-=JObhYS7Pwd=9ut1GY1BQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+> AFAICT this patch does not look like a safe solution, because there
+> are many reasons that the actual number of bytes in flight can be less
+> than the target inflight. Notably, it is very common for applications
+> to be application-limited, i.e., they don't have enough data to send
+> to fully utilize the BDP of the network path. This is very common for
+> the most common kinds of TCP workloads: web, streaming video, RPC,
+> SSH, etc. It does not seem safe to increase the pacing gain to
+> bbr_high_gain in these common application-limited scenarios, because
+> this can cause bursts of data to arrive at the bottleneck link at more
+> than twice the available bandwidth, which can cause very high queuing
+> and packet loss.
 
-On 2/3/26 02:00, Jacob Keller wrote:
->
->
-> On 2/2/2026 3:58 PM, Jakub Kicinski wrote:
->> On Mon,  2 Feb 2026 09:48:20 +0100 Petr Oros wrote:
->>> +    netdev_unlock(netdev);
->>> +    ret = wait_event_interruptible_timeout(adapter->reset_waitqueue,
->>> + !iavf_is_reset_in_progress(adapter),
->>> +                           msecs_to_jiffies(5000));
->>> +    netdev_lock(netdev);
+Absolutely, app-limited and contention-limited sockets exhibit similar
+characteristics in terms of inflight bytes. My understanding was that
+BBR uses high pacing gain when the socket is app-limited anyways, is
+that not correct?
+For example, bbr_check_full_bw_reached returns early if the socket is
+app-limited, so that BBR stays in (or is reset to) STARTUP mode with
+high pacing gain. This behavior actually gave me the idea to fix the
+contention-limited socket in a similar way. But maybe I am missing
+other cases where BBR reacts differently to app-limitation.
+
+> But if you have further results that you can share, I'd appreciate it.
+
+I separately sent you the arXiv link to our paper. Due to a conference
+submission policy, we are not allowed to advertise it on a public
+mailing list yet.
+
+
+Thanks,
+Kathrin
+
+
+
+
+On 2/2/26 17:22, Neal Cardwell wrote:
+
+> On Mon, Feb 2, 2026 at 5:15 AM kelmenhorst
+> <kelmenhorst@uni-osnabrueck.de> wrote:
+>> This patch addresses a robustness issue of TCP BBR when run in Virtual Machines
+>> - a common use case considering modern web hosting.
+>> Prior experiments in AWS VMs (https://ieeexplore.ieee.org/abstract/document/9546441),
+>> and our recent measurements in a controlled setup show that VM-based BBR senders
+>> heavily underestimate the available bandwidth during periods of CPU contention.
+>> In our configuration with 10ms periodic timeslices, BBR already degrades in VMs
+>> with less than 70% CPU time share, and the throughput continuously drops with
+>> decreasing CPU shares until it is bandwidth-independently capped at 10 Mbps for
+>> CPU time shares at 35% and lower.
+>> Considering the common use case of BBR in (resource-limited) Linux VMs, this
+>> issue could potentially compromise the robustness of the Internet's transport
+>> layer.
 >>
->> Dropping locks taken by the core around the driver callback
->> is obviously unacceptable. SMH.
+>> In contrast to Cubic, BBR is very sensitive to off-CPU times. This is because
+>> pacing evenly spreads the target inflight over the RTT, essentially assuming
+>> that the CPU is available during the whole RTT. If this assumption is not met,
+>> the BBR sender cannot achieve the target pacing rate and concludes that the full
+>> bandwidth has been reached, even though the throughput is far below the actual
+>> bandwidth limit.
+> Thanks, I agree this is an issue worth working on. And I appreciate
+> your contributions in this area, as well as the work of others who
+> have worked on the challenges of BBR throughput in VM guests.
 >
-> Right. It seems like the correct fix is to either a) have reset take 
-> and hold the netdev lock (now that its distinct from the global RTNL 
-> lock) or b) refactor reset so that it can defer any of the netdev 
-> related stuff somehow.
+>> This commit detects the problematic condition in bbr_update_gains() by
+>> comparing BBR's current target inflight (bbr_inflight() * tp->mss_cache) with
+>> the actual number of bytes inflight (tp->bytes_sent - tp->bytes_acked), and
+>> applies high pacing gain (bbr_high_gain), until the inflight deficit recovers.
+>> With a higher pacing gain, BBR can send faster when the VM does have the CPU,
+>> so that the target inflight volume can be achieved despite off-CPU times.
+>> Re-using the constant STARTUP gain can only solve the issue up to a certain
+>> point, but avoids complex algorithm changes.
+>> Effectively, the patch solves the degradation problem for most critical cases:
+>> with 10ms periodic timeslices, BBRv1 is robust for CPU time shares of 35% and
+>> higher -  instead of 70% and higher when using the original code.
+> AFAICT this patch does not look like a safe solution, because there
+> are many reasons that the actual number of bytes in flight can be less
+> than the target inflight. Notably, it is very common for applications
+> to be application-limited, i.e., they don't have enough data to send
+> to fully utilize the BDP of the network path. This is very common for
+> the most common kinds of TCP workloads: web, streaming video, RPC,
+> SSH, etc. It does not seem safe to increase the pacing gain to
+> bbr_high_gain in these common application-limited scenarios, because
+> this can cause bursts of data to arrive at the bottleneck link at more
+> than twice the available bandwidth, which can cause very high queuing
+> and packet loss.
 >
-I modeled this after the existing pattern in iavf_close() (ndo_stop), 
-which also temporarily releases the netdev instance lock taken by the 
-core to wait for an async operation to complete:
-
-static int iavf_close(struct net_device *netdev)
-{
-         netdev_assert_locked(netdev);
-         ...
-         iavf_down(adapter);
-         iavf_change_state(adapter, __IAVF_DOWN_PENDING);
-         iavf_free_traffic_irqs(adapter);
-
-         netdev_unlock(netdev);
-
-         status = wait_event_timeout(adapter->down_waitqueue,
-                                     adapter->state == __IAVF_DOWN,
-                                     msecs_to_jiffies(500));
-         if (!status)
-                 netdev_warn(netdev, "Device resources not yet released\n");
-         netdev_lock(netdev);
-         ...
-}
-
-This was introduced by commit 120f28a6f314fe ("iavf: get rid of the crit 
-lock"), and ndo_stop is called with netdev instance lock held by the 
-core just like ndo_change_mtu is. Could you clarify why the 
-unlock-wait-lock pattern is acceptable in ndo_stop but not here?
-
+> On a broader note, before making such a significant change to a CC
+> algorithm, we would need to see a broad array of test results showing
+> that the change is safe and performant in a representative set of
+> scenarios: multiple BBR flows, shallow buffers, deep buffers,
+> policers, application-limited traffic, BBR coexistence with CUBIC,
+> performance on wifi paths, etc.
+>
+>> We can share further results of our measurement study upon individual request.
+> Yes, if you could please share further results, I would appreciate it.
+> I'm aware of your work here:
+>
+>    POSTER: Clouded Comparisons - On the Impact of VirtualMachines on
+> TCP-BBR Performance
+>    https://dl.acm.org/doi/epdf/10.1145/3744969.3748455
+>
+> But if you have further results that you can share, I'd appreciate it.
+>
+>> Signed-off-by: Kathrin Elmenhorst <kelmenhorst@uni-osnabrueck.de>
+>> ---
+>>   net/ipv4/tcp_bbr.c | 7 +++++++
+>>   1 file changed, 7 insertions(+)
+>>
+>> diff --git a/net/ipv4/tcp_bbr.c b/net/ipv4/tcp_bbr.c
+>> index 760941e55153..ca6361931491 100644
+>> --- a/net/ipv4/tcp_bbr.c
+>> +++ b/net/ipv4/tcp_bbr.c
+>> @@ -1011,6 +1011,13 @@ static void bbr_update_gains(struct sock *sk)
+>>                  WARN_ONCE(1, "BBR bad mode: %u\n", bbr->mode);
+>>                  break;
+>>          }
+>> +        // overwrite pacing gain in case the sender fails to put enough data inflight
+>> +        struct tcp_sock *tp = tcp_sk(sk);
+>> +        u64 real_inflight = tp->bytes_sent - tp->bytes_acked;
+>> +        u32 target_inflight = bbr_inflight(sk, bbr_bw(sk), BBR_UNIT) * tp->mss_cache;
+>> +        if (real_inflight < target_inflight) {
+>> +                bbr->pacing_gain = bbr_high_gain;
+>> +        }
+>>   }
+> Just a note on style: before your next patch submission to the Linux
+> netdev mailing list:
+>
+> (1) please read the netdev FAQ at:
+>    https://www.kernel.org/doc/html/v6.18/process/maintainer-netdev.html#netdev-faq
+>
+> (2) please run ./scripts/checkpatch.pl on the patch to catch and fix
+> style issues (./scripts/checkpatch.pl shows: "total: 7 errors, 10
+> warnings, 0 checks, 13 lines checked")
+>
+> Thanks!
+>
+> best regards,
+> neal
