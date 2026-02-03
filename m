@@ -1,40 +1,40 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E059535D603;
-	Tue,  3 Feb 2026 18:13:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FAA27A916
+	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 18:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770142413; cv=none; b=A4Orxb11s2pJAnH1NMA6B4riFHbVQgYLgQP9vbk1G3yhzwz/+eClgQF2Ft9cujyaobzph4O9DEuPcKYqC7Plldhhvm/HORL/D2p5+5EVo+HAAIzQnNMzg7TK/FH8LkkiDpvPxCG6L9U/yS7i8XAV9kGmDObqV+uTCQl9VaHIfow=
+	t=1770142484; cv=none; b=afbJeMYnUk6zFPubcru51vB6snU8kLKL20SmpdHwoX3ZnQOKqJ+CjK5Q3X0Mx8PTksKcxp8c4vsheiuZ9u3w2OqHvgO8oDGRf6ZwEpTQ6oodQ+v4URzZyF6amh7JXLJBnCRzWwGCp9IvYwKvCot1y+XdK7OImQh2/y2cEO0L9EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770142413; c=relaxed/simple;
-	bh=u8NylxVF2JlP5nMbnnSG+Oe77PCNA/XQK/X9dE9mpfQ=;
+	s=arc-20240116; t=1770142484; c=relaxed/simple;
+	bh=beE9oQ8nLlVRe8/YiWUTZyc4GmVn4vV0Pmrv+nxFBG8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j6lZNg2MaByCGqixqX7Xj5L5huY+o/IgiuSMHmM6LjL9YnYOhfQOjVT1RH5ff1SiiH3oSVwpfon4x6fxQ1EFWAPYfs2NXWiInTUivQaMA+doWVIr/XJXHcf2xLfwGoXQpMe24qmbdE2m0fCxkTenitiNISHUQVnZYTHBRQbcya8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=c4TzU77g; arc=none smtp.client-ip=185.246.84.56
+	 In-Reply-To:Content-Type; b=tsTeOVhm1qwEXK9+GdBSsEwgagmqeHTU4HmuAiZ3xxdfDiqVaexOw6LXBhDgZVCMoqT+z0Ui5/fOPGd37M1+EKt6KdeFYVMSJcg+kNS20Zqlac73yZD9l+UTFpy5fkfpFGmiMgvVPo/4E9+mssnKCMXhoY58e1zR60jcPnyIbyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=IEiJBWwC; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="c4TzU77g"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="IEiJBWwC"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 79AB31A2BC8;
-	Tue,  3 Feb 2026 18:13:30 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 9CBE5C24387;
+	Tue,  3 Feb 2026 18:14:45 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 4F4DE60728;
-	Tue,  3 Feb 2026 18:13:30 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 84584119A8888;
-	Tue,  3 Feb 2026 19:13:25 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 553AA60728;
+	Tue,  3 Feb 2026 18:14:40 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3F875119A8888;
+	Tue,  3 Feb 2026 19:14:36 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770142409; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1770142479; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=Ed3or68aEwgmwcc/zs1hej7Lg065JiO88cddjD7f2II=;
-	b=c4TzU77gFBa2+aUPDBspPWDfcQv6HPPTIMJQjlXA06GZ4Pkbt+u2A19AmaNPPh0Yrj1nNd
-	rO2u2Vobh0V9IMdWxoOgfxlilJxAr+B8h/ilzq0lvq+qSOWXPS1S0ZKuUfjC7+IdZSJOUS
-	fnXFJ+9gfM6GMnXVI+OwgtsW4LkGAb/pWH1Ffdjh/Dn1lmkKrNcthCEDKaETevutxCP/78
-	qS+ycGFe9SueHR/UpVsxfyjnEeTC0RHbfVPQFxEO0YTPYDXjNjz2eCcMUr32jIrxzVD0yX
-	lO4MIUacxLBN0MVvVyWGArwAx+1Z6cDZDSQwYlXjGonnJE6busQlk7OkJf3ZDw==
-Message-ID: <fd033a0e-4154-47e0-a15e-df92dd114f27@bootlin.com>
-Date: Tue, 3 Feb 2026 19:13:25 +0100
+	bh=8ltGvsqYxO64uG+3VjjJYH8ZR4dn0u5VjBsKIwyYqOw=;
+	b=IEiJBWwCZ8Zs01FujA6ZPFFA/kzE3/GXlF0YwZ0gWner62riylNqgMAPQMtQYfjl8wyxoM
+	/Sks8aK/Q/WImLP6N4/lPYD3RKVKYWooECwSHpbByYIXzfZcyUzR1sqHNGV90SRHLzsamu
+	1izzhSzTHVpSJGsAswUCsAPjGO6/8zWVW25ZqeLwFPgDOB13WJAaIxo8xr57hxeHSM+PNa
+	O9E+GX5UQiRwNF1YCL2cnrSBte10KmDn6WKTnTC58U1sgL2Apr4Jbw9L/8FTV/NtB+gcj8
+	4JqNSSalMpu27HEb53Rffn2CVcMJLU3yOfe1LU2sQ5AY1RGSWNswmpxgZ2SBWQ==
+Message-ID: <c4fa6923-1a80-4bf4-9dfd-eb5a77cf6532@bootlin.com>
+Date: Tue, 3 Feb 2026 19:14:35 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -42,82 +42,71 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [net-next,v3,01/11] net: phy: phy_port: Correctly recompute the
- port's linkmodes
+Subject: Re: [PATCH net-next v3 10/11] netlink: specs: Add ethernet port
+ listing with ethtool
 To: Simon Horman <horms@kernel.org>
-Cc: christophe.leroy@csgroup.eu, thomas.petazzoni@bootlin.com,
- andrew@lunn.ch, kuba@kernel.org, mwojtas@chromium.org, kabel@kernel.org,
- linux-kernel@vger.kernel.org, pabeni@redhat.com, davem@davemloft.net,
- nicveronese@gmail.com, hkallweit1@gmail.com, linux@armlinux.org.uk,
- edumazet@google.com, dimitri.fedrau@liebherr.com, herve.codina@bootlin.com,
- o.rempel@pengutronix.de, romain.gantois@bootlin.com, netdev@vger.kernel.org,
- daniel@makrotopia.org, vladimir.oltean@nxp.com, f.fainelli@gmail.com,
- kory.maincent@bootlin.com
-References: <20260201151249.642015-2-maxime.chevallier@bootlin.com>
- <20260203175813.2175230-1-horms@kernel.org>
+Cc: davem@davemloft.net, Andrew Lunn <andrew@lunn.ch>,
+ Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
+ Heiner Kallweit <hkallweit1@gmail.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, thomas.petazzoni@bootlin.com,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Herve Codina <herve.codina@bootlin.com>,
+ Florian Fainelli <f.fainelli@gmail.com>,
+ Vladimir Oltean <vladimir.oltean@nxp.com>,
+ =?UTF-8?Q?K=C3=B6ry_Maincent?= <kory.maincent@bootlin.com>,
+ =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
+ Oleksij Rempel <o.rempel@pengutronix.de>,
+ =?UTF-8?Q?Nicol=C3=B2_Veronese?= <nicveronese@gmail.com>,
+ mwojtas@chromium.org, Romain Gantois <romain.gantois@bootlin.com>,
+ Daniel Golle <daniel@makrotopia.org>,
+ Dimitri Fedrau <dimitri.fedrau@liebherr.com>
+References: <20260201151249.642015-1-maxime.chevallier@bootlin.com>
+ <20260201151249.642015-11-maxime.chevallier@bootlin.com>
+ <aYI2fZPCehPkke1G@horms.kernel.org>
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 Content-Language: en-US
-In-Reply-To: <20260203175813.2175230-1-horms@kernel.org>
+In-Reply-To: <aYI2fZPCehPkke1G@horms.kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Simon
+Hi Simon,
 
-On 03/02/2026 18:58, Simon Horman wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
+On 03/02/2026 18:55, Simon Horman wrote:
+> On Sun, Feb 01, 2026 at 04:12:47PM +0100, Maxime Chevallier wrote:
 > 
-> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
-> ---
-> net: phy: phy_port: Correctly recompute the port's linkmodes
+> ...
 > 
-> This commit fixes phy_port_update_supported() to properly filter linkmodes
-> instead of incorrectly or'ing medium-specific modes to the existing support.
-> It moves the medium iteration inside a check for empty port->supported.
-> 
-> Fixes: 589e934d2735 ("net: phy: Introduce PHY ports representation")
-> 
->> diff --git a/drivers/net/phy/phy_port.c b/drivers/net/phy/phy_port.c
->> --- a/drivers/net/phy/phy_port.c
->> +++ b/drivers/net/phy/phy_port.c
-> 
-> [ ... ]
-> 
->> @@ -132,6 +126,19 @@ void phy_port_update_supported(struct phy_port *port)
->>  			port->pairs = max_t(int, port->pairs,
->>  					    ethtool_linkmode_n_pairs(mode));
->>
->> +	if (linkmode_empty(port->supported)) {
->> +		for_each_set_bit(i, &port->mediums,
->> +				 __ETHTOOL_LINK_MEDIUM_LAST) {
->> +			__ETHTOOL_DECLARE_LINK_MODE_MASK(med_supported) = {0};
+>> diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
+>> index af56c304cef4..3e673755800b 100644
+>> --- a/Documentation/networking/ethtool-netlink.rst
+>> +++ b/Documentation/networking/ethtool-netlink.rst
+>> @@ -2522,6 +2522,40 @@ Within each channel nest, only the metrics supported by the PHY will be present.
+>>  See ``struct phy_mse_snapshot`` kernel documentation in
+>>  ``include/linux/phy.h``.
+>>  
+>> +PORT_GET
+>> +========
 >> +
->> +			phy_caps_medium_get_supported(med_supported, i,
->> +						      port->pairs);
->> +			linkmode_or(supported, supported, med_supported);
->> +		}
+>> +Retrieve information about the physical connection points of a network device,
+>> +referred to as "ports". User needs to specify a PORT_ID for the DO operation,
+>> +in which case the DO request returns information about that specific port.
 >> +
->> +		linkmode_and(port->supported, port->supported, supported);
+>> +As there can be more than one port, the DUMP operation can be used to list the
+>> +ports present on a given interface, by passing an interface index or name in
+>> +the dump request.
+>> +
+>> +Request contents:
+>> +
+>> +====================================  ======  =================================
+> 
+> Hi Maxime,
+> 
+> make htmldocs complains that "Bottom/header table border does not match top
+> border.".
 
-Yeah :(
-
->> +	}
-> 
-> Jakub Kicinski raised a concern in v2 about the AND operation when
-> port->supported starts empty. The v3 fix adds the
-> 'if (linkmode_empty(port->supported))' check, but then still performs:
-> 
->     linkmode_and(port->supported, port->supported, supported);
-> 
-> inside that block. Since we just confirmed port->supported is empty,
-> ANDing it with anything will always produce an empty result.
-> 
-> Should this be linkmode_copy() or linkmode_or() instead of linkmode_and()
-> when port->supported starts empty?
-> 
-> Reference: https://lore.kernel.org/all/20260130040009.707764-1-kuba@kernel.org/
-
-True, that's already addressed in V4 :)
+Ah indeed ! I'll address this in V5 then. Thank you for the report !
 
 Maxime
+
