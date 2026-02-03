@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9121DB125
-	for <netdev@vger.kernel.org>; Tue,  3 Feb 2026 01:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6901F5834;
+	Tue,  3 Feb 2026 01:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770081019; cv=none; b=pEtzPYHTlizxGo1HFA4KqeScnAyDE+5QwKMQfY//9vYDcWeH4ktJCDpiv4+cqrcgquXbSKe47crgeur34/70WUE3HMH4BzzCVBjIBKw7R8QH5nB3u3shmPVQZypkIJRyPKRGPuvzqN8YFPP9ItECa5VbgUAa20vYi6vdlaRf6bs=
+	t=1770081020; cv=none; b=PndtIdDJ6tngT5prpFlrIQMi12IlxEPUAFHfXOqaE6j0Jjz1Wo+pBTemMAaJJDA/ib2NTUgBcVNH9hsv/9JS4ithdQ0yZBX6TVgvPglKsQiDCXfuFgWmo6pmAmzP2p7KPOfI50DBVw0eHaVjkCShdNp9wcqiQIylJVzYUcr7vDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770081019; c=relaxed/simple;
-	bh=Q+lV1n+Oyx/gFvcrMTeu3krmIc44vvcH+yvdHx4EHy0=;
+	s=arc-20240116; t=1770081020; c=relaxed/simple;
+	bh=EKgj3Aa47/PCZioEJ22o+4oGTZco8139iWKl3oThvKY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Rp2yEzy5UNAq+SiMglkTV6dxCZ9VoJC/zsTz/PVS0/pszMpXSWsWQrdQb5Tsyg1iaYFTj9rAujLmRdUX7dfr6opMVGMdo6YI0LHWDPoMF7xaOgcU5hLvrJn59QUanOFs7PNz2+i5+qEl84L6+sx7zD6lPmZqOtzTM3NKdpJcZ2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q5o0C39T; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=DTqSCyjDq1TWm6lX4qDrvJWe9SrxzUVTxcEH5btv2Hm+ZZbllmZT+iy4f/vpD46v8bAvd02JpojiJt6rAJjkW83P3nKXu4PYva/T7B9gpw85s/Xke7Zop2x3tanonRixsLkBwR/vK9t36m7w8XttaL4FBy/3Ng883D/X1WyAE70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rRwcraTe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q5o0C39T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1115CC2BC86;
-	Tue,  3 Feb 2026 01:10:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rRwcraTe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89259C116C6;
+	Tue,  3 Feb 2026 01:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770081019;
-	bh=Q+lV1n+Oyx/gFvcrMTeu3krmIc44vvcH+yvdHx4EHy0=;
+	s=k20201202; t=1770081020;
+	bh=EKgj3Aa47/PCZioEJ22o+4oGTZco8139iWKl3oThvKY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Q5o0C39TELHXAVZELHuMUjU33LT//UPe9JaL3pCLxvNFzGFiwZg3LWbSpfGXtnkNe
-	 iyBHtCcQaaILf9fUcfah1f3plBllWg/3QeSCjwrZQg3/v0rfJOMsoF4bVFqz9QXLlK
-	 qwmdthkGO/f23BrQigLAEfK55tNAlEc5k5SpFIN8Ped5nTj7oUGNTuleFu8BPHfqv8
-	 6Y5nNMRgPOFtbLY9jwWhMqpLkO+2Nucoi+55eMXy8H+8OLdm/Huqhuolh1ckj6AgeN
-	 lzTU0vLm1/jvvCJGLBGMp/5kZbZsDT2IkyRwnP2MTX6/06G85B/8S50RLtL5nzTJEz
-	 f/hfQfZ1mSgqg==
+	b=rRwcraTewFEOqh+wEgFxsq97JP23rqGyizrRgYICCoc8GlqPQ8zF+mukuI5/RJkpL
+	 zXd7UAl2uItZt+aTnyUdQ5byPHRgEkQ3RvVJ4/bmhPayosoSgINXYEgT/F+yxasg/+
+	 0VFyE96sDGCeMcbXOI/qW9hEmyB1kNTIYiFXy83LRZpw+TccCy2H6SjCoT9s1PPgeo
+	 lrHPifTjK2RoVpFUGAdKsDRGc8QA3Oqg0MIvyWOQQhv+xuwMnaszBqn/4TKb3E6+Wb
+	 qfrJk2G8dKcmfJDYA6OVK4g3ujdJjNSakTfhPOVHDHlGBJP8O1ICqfoi1GSyGRX4Cw
+	 pVwL3E2zeT05g==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 16C1F3808200;
-	Tue,  3 Feb 2026 01:10:17 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 90D9C3808200;
+	Tue,  3 Feb 2026 01:10:18 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,42 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] tools: ynl: cli: make the output compact
+Subject: Re: [PATCH net-next v2 1/2] selftests: drv-net: rss: validate min RSS
+ table size
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177008101562.1258089.5728890809462033826.git-patchwork-notify@kernel.org>
-Date: Tue, 03 Feb 2026 01:10:15 +0000
-References: <20260131203029.1173492-1-kuba@kernel.org>
-In-Reply-To: <20260131203029.1173492-1-kuba@kernel.org>
+ <177008101712.1258089.1843088845527602329.git-patchwork-notify@kernel.org>
+Date: Tue, 03 Feb 2026 01:10:17 +0000
+References: <20260131225454.1225151-1-kuba@kernel.org>
+In-Reply-To: <20260131225454.1225151-1-kuba@kernel.org>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
  pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
- donald.hunter@gmail.com, sdf@fomichev.me, gal@nvidia.com
+ willemb@google.com, shuah@kernel.org, linux-kselftest@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 31 Jan 2026 12:30:29 -0800 you wrote:
-> Make the default (non-JSON) output more compact. Looking at RSS
-> context dumps is pretty much impossible without this, because
-> default print shows the indirection table with line per entry:
-> 
->   'indir': [0,
->             1,
->             2,
-> 	    ...
+On Sat, 31 Jan 2026 14:54:53 -0800 you wrote:
+> Add a test which checks that the RSS table is at least 4x the max
+> queue count supported by the device. The original RSS spec from
+> Microsoft stated that the RSS indirection table should be 2 to 8
+> times the CPU count, presumably assuming queue per CPU. If the
+> CPU count is not a power of two, however, a power-of-2 table
+> 2x larger than queue count results in a 33% traffic imbalance.
+> Validate that the indirection table is at least 4x the queue
+> count. This lowers the imbalance to 16% which empirically
+> appears to be more acceptable to memcache-like workloads.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] tools: ynl: cli: make the output compact
-    https://git.kernel.org/netdev/net-next/c/71a58ec6672f
+  - [net-next,v2,1/2] selftests: drv-net: rss: validate min RSS table size
+    https://git.kernel.org/netdev/net-next/c/9e3d4dae9832
+  - [net-next,v2,2/2] docs: networking: mention that RSS table should be 4x the queue count
+    https://git.kernel.org/netdev/net-next/c/ba9c5611f088
 
 You are awesome, thank you!
 -- 
