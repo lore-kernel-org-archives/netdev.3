@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1A9C42B734;
-	Wed,  4 Feb 2026 20:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308CB42B75B;
+	Wed,  4 Feb 2026 20:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770236690; cv=none; b=TVKjldbZt9GsyfHOONlL0+2Zr+Cb8O4mhHjDaMLMa3UDgJTSEBMQxaU+ewJ8G/Pjw/Ki/qjKLjn84lDQJ5mynLMEuPPKklHAbnTakC59YQL/JuWrsCb/X3PkjLyiiH3eqlVSN3/aL4iSymAUT2o7HmB2vMMHux432p4VrxEPvhI=
+	t=1770236690; cv=none; b=SMuMvIssbNB3x2tdUcUwT0s4yg852hwznK+PL+VraR9OZmCCORBrxr66K+wWFrQTUAVBXQBtIrvC3Na04F+n/CLqMb41M0vuozkDuJ8R+YeXdlRw7ncUl1ReNgCsIfl7W99YdwUOpKEzaRW7YkVValXpJInx52ENW5h2JFcr6nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1770236690; c=relaxed/simple;
-	bh=OlUC+x5nhHFV5fOq7wpyv8K9/gz0YbcLlcJ9oT/FA4M=;
+	bh=dmqGhAEEjvF2kzN6DSWhxs6/5RKAmacfK4jkDSNWMiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PkM443RR/7VzvYnDp/9GIL4takX5YeIUUueY8zMoKq6pLxrVTtkiim2NDlpkk9Wa/rv5Zy8vRdZK8dpvx913DGHg6LPH5iDWJ+rkvjQuWqfGO4e6J7uVGZd8u7O8DqF7YfNLdu+lRhuhYucQNicL8rAS7vOdzf/nYCBnrGBSBU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JDKiUT3A; arc=none smtp.client-ip=198.175.65.10
+	 MIME-Version; b=dwH2sHv5BuMWQpFf4z08xIU63w95QoRo4pVXmHm4JqKiFuWVdXTKx2MtfVlwW6q9cJrms2VKlyA/Pmy+i5xXiXWNcqpw3LtGW1rfhU+30ECnRZohx4UGfUiyZIJ6XXB6Vmhow29OwtFi1HlapQhGqc9ZH40iqpRHhBqkDDKnfYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L/8YhKye; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JDKiUT3A"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L/8YhKye"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770236690; x=1801772690;
+  t=1770236691; x=1801772691;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=OlUC+x5nhHFV5fOq7wpyv8K9/gz0YbcLlcJ9oT/FA4M=;
-  b=JDKiUT3AWuRAHQGGtsNlZn8UKCYqTh+IVWk9wqKj/q3/tidKlFoCX3Ne
-   64I6lvJCnc4uZ0Dewloftt+dCZwZheJ4tiqlQ8BxcR9gGdMLc8uus8xV5
-   h583QMq27NWA3uZLqzwUkyp/Em1iQjuoS8+LnMgRSKPfkNA5z7GV79jux
-   eshjC+alakncUQzo5SX8Ge+xsT8pcP3ays7yxYltcCnu31Wy745fGZLKu
-   YtgjZZbPvgGrDXXKSSbdBiQMSn2Oo6wGBptfQUo5eJaKCnFf2HeVa0ju6
-   3D5S5xi1ZiQYGQKMMGUQQCA16LxCyKLjOaE6HpRt09MQMlMjh1cVbzxvA
-   A==;
-X-CSE-ConnectionGUID: LXIQfvVPTl2aWL05Bdc3oQ==
-X-CSE-MsgGUID: p0BRKqyURuKkA1MymjelCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="88853926"
+  bh=dmqGhAEEjvF2kzN6DSWhxs6/5RKAmacfK4jkDSNWMiA=;
+  b=L/8YhKye2lVRTceLs88/AZrXo6W37rrl1soFUhAZd91SLEkoJxazdE/7
+   9fI/audasb/ZsulltsHzZLNToHFRr25/rxvAd8ykxfwvWbjbLDKpd9XE+
+   kDalk9ad24qtf81bdml8JY/psY7zcZrblQU81nWKMgTEc/jorqm7aEsC7
+   hm9GgpYgjhZueE7LxL4GeA8mvWwSAhw766qP7LdnVIOgO72TpbLrgad1+
+   oRQeimSdRyRq6kk94gwnWhSU5762fWirioNfVQnCC/OlNBWOujkBN1qiL
+   vxY/SJM7vHfoujtWK6yUbk3ZVSmMSCrekrGLZ3AejskFxh38vlYHhMefz
+   Q==;
+X-CSE-ConnectionGUID: rYDvZRrTS3yKcO3r6xxOOg==
+X-CSE-MsgGUID: bju1qxuoRISkpFUVCsC/4g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="88853940"
 X-IronPort-AV: E=Sophos;i="6.21,273,1763452800"; 
-   d="scan'208";a="88853926"
+   d="scan'208";a="88853940"
 Received: from orviesa010.jf.intel.com ([10.64.159.150])
   by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 12:24:50 -0800
-X-CSE-ConnectionGUID: +ueJ6/YOQ0evEnqGTjKfXA==
-X-CSE-MsgGUID: CKId/F1hRj66Hgv5xkL1Fw==
+X-CSE-ConnectionGUID: x+h0fAG4QPK0eHuzGvDJAA==
+X-CSE-MsgGUID: TWFc+xevSK6eAz+iEoq87g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,273,1763452800"; 
-   d="scan'208";a="209567816"
+   d="scan'208";a="209567817"
 Received: from black.igk.intel.com ([10.91.253.5])
   by orviesa010.jf.intel.com with ESMTP; 04 Feb 2026 12:24:45 -0800
 Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 7CA8198; Wed, 04 Feb 2026 21:24:43 +0100 (CET)
+	id 867CF9B; Wed, 04 Feb 2026 21:24:43 +0100 (CET)
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 To: Chuck Lever <chuck.lever@oracle.com>,
 	Jeff Layton <jlayton@kernel.org>,
@@ -69,10 +69,10 @@ Cc: Trond Myklebust <trondmy@kernel.org>,
 	Bill Wendling <morbo@google.com>,
 	Justin Stitt <justinstitt@google.com>,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Anna Schumaker <anna.schumkaer@oracle.com>
-Subject: [PATCH v3 1/3] nfs/blocklayout: Fix compilation error (`make W=1`) in bl_write_pagelist()
-Date: Wed,  4 Feb 2026 21:21:49 +0100
-Message-ID: <20260204202437.2762161-2-andriy.shevchenko@linux.intel.com>
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH v3 3/3] sunrpc: Fix compilation error (`make W=1`) when dprintk() is no-op
+Date: Wed,  4 Feb 2026 21:21:51 +0100
+Message-ID: <20260204202437.2762161-4-andriy.shevchenko@linux.intel.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260204202437.2762161-1-andriy.shevchenko@linux.intel.com>
 References: <20260204202437.2762161-1-andriy.shevchenko@linux.intel.com>
@@ -84,49 +84,89 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Clang compiler is not happy about set but unused variable
-(when dprintk() is no-op):
+Clang compiler is not happy about set but unused variables:
 
-.../blocklayout/blocklayout.c:384:9: error: variable 'count' set but not used [-Werror,-Wunused-but-set-variable]
+.../flexfilelayout/flexfilelayoutdev.c:56:9: error: variable 'ret' set but not used [-Werror,-Wunused-but-set-variable]
+.../flexfilelayout/flexfilelayout.c:1505:6: error: variable 'err' set but not used [-Werror,-Wunused-but-set-variable]
+.../nfs4proc.c:9244:12: error: variable 'ptr' set but not used [-Werror,-Wunused-but-set-variable]
 
-Remove a leftover from the previous cleanup.
+Fix these by forwarding parameters of dprintk() to no_printk().
+The positive side-effect is a format-string checker enabled even for the cases
+when dprintk() is no-op.
 
-Fixes: 3a6fd1f004fc ("pnfs/blocklayout: remove read-modify-write handling in bl_write_pagelist")
-Acked-by: Anna Schumaker <anna.schumkaer@oracle.com>
+Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
+Fixes: fc931582c260 ("nfs41: create_session operation")
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- fs/nfs/blocklayout/blocklayout.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/lockd/svclock.c           | 5 +++++
+ include/linux/sunrpc/debug.h | 8 ++++++--
+ include/linux/sunrpc/sched.h | 3 ---
+ 3 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfs/blocklayout/blocklayout.c b/fs/nfs/blocklayout/blocklayout.c
-index 0e4c67373e4f..83e4a32b3018 100644
---- a/fs/nfs/blocklayout/blocklayout.c
-+++ b/fs/nfs/blocklayout/blocklayout.c
-@@ -381,14 +381,13 @@ bl_write_pagelist(struct nfs_pgio_header *header, int sync)
- 	sector_t isect, extent_length = 0;
- 	struct parallel_io *par = NULL;
- 	loff_t offset = header->args.offset;
--	size_t count = header->args.count;
- 	struct page **pages = header->args.pages;
- 	int pg_index = header->args.pgbase >> PAGE_SHIFT;
- 	unsigned int pg_len;
- 	struct blk_plug plug;
- 	int i;
+diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
+index 712df1e025d8..dcd3e0b4d997 100644
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -80,6 +80,11 @@ static const char *nlmdbg_cookie2a(const struct nlm_cookie *cookie)
  
--	dprintk("%s enter, %zu@%lld\n", __func__, count, offset);
-+	dprintk("%s enter, %u@%lld\n", __func__, header->args.count, offset);
+ 	return buf;
+ }
++#else
++static inline const char *nlmdbg_cookie2a(const struct nlm_cookie *cookie)
++{
++	return "???";
++}
+ #endif
  
- 	/* At this point, header->page_aray is a (sequential) list of nfs_pages.
- 	 * We want to write each, and if there is an error set pnfs_error
-@@ -429,7 +428,6 @@ bl_write_pagelist(struct nfs_pgio_header *header, int sync)
- 		}
+ /*
+diff --git a/include/linux/sunrpc/debug.h b/include/linux/sunrpc/debug.h
+index e947d668f7b7..82239d5c262e 100644
+--- a/include/linux/sunrpc/debug.h
++++ b/include/linux/sunrpc/debug.h
+@@ -40,6 +40,8 @@ extern unsigned int		nlm_debug;
+ do {									\
+ 	ifdebug(fac)							\
+ 		__sunrpc_printk(fmt, ##__VA_ARGS__);			\
++	else								\
++		no_printk(fmt, ##__VA_ARGS__);				\
+ } while (0)
  
- 		offset += pg_len;
--		count -= pg_len;
- 		isect += (pg_len >> SECTOR_SHIFT);
- 		extent_length -= (pg_len >> SECTOR_SHIFT);
- 	}
+ # define dfprintk_rcu(fac, fmt, ...)					\
+@@ -48,13 +50,15 @@ do {									\
+ 		rcu_read_lock();					\
+ 		__sunrpc_printk(fmt, ##__VA_ARGS__);			\
+ 		rcu_read_unlock();					\
++	} else {							\
++		no_printk(fmt, ##__VA_ARGS__);				\
+ 	}								\
+ } while (0)
+ 
+ #else
+ # define ifdebug(fac)		if (0)
+-# define dfprintk(fac, fmt, ...)	do {} while (0)
+-# define dfprintk_rcu(fac, fmt, ...)	do {} while (0)
++# define dfprintk(fac, fmt, ...)	no_printk(fmt, ##__VA_ARGS__)
++# define dfprintk_rcu(fac, fmt, ...)	no_printk(fmt, ##__VA_ARGS__)
+ #endif
+ 
+ /*
+diff --git a/include/linux/sunrpc/sched.h b/include/linux/sunrpc/sched.h
+index ccba79ebf893..0dbdf3722537 100644
+--- a/include/linux/sunrpc/sched.h
++++ b/include/linux/sunrpc/sched.h
+@@ -95,10 +95,7 @@ struct rpc_task {
+ 	int			tk_rpc_status;	/* Result of last RPC operation */
+ 	unsigned short		tk_flags;	/* misc flags */
+ 	unsigned short		tk_timeouts;	/* maj timeouts */
+-
+-#if IS_ENABLED(CONFIG_SUNRPC_DEBUG) || IS_ENABLED(CONFIG_TRACEPOINTS)
+ 	unsigned short		tk_pid;		/* debugging aid */
+-#endif
+ 	unsigned char		tk_priority : 2,/* Task priority */
+ 				tk_garb_retry : 2,
+ 				tk_cred_retry : 2;
 -- 
 2.50.1
 
