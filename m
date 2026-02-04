@@ -1,116 +1,337 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380C71E25F9
-	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 03:56:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC9B3009EC
+	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 04:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770177414; cv=none; b=EPI1jiyxWNPqBW1d+9eH2WtBYFIWFjgwnTCczwX3nVN4A2US/lMe6Qrs6sdcAfLDpRpSU0mrAKDT2zsxZUdU4Zhw4xlVsFnKWz29obNZSOW/ofB9JC8+qwqLiLMHORwNrtoSw9ci1wbssFIu1aY1YduzsT8UejwOG9yOhDQyDvE=
+	t=1770178122; cv=none; b=G35ads9XsvKruo5xvdHO05ZMsWgmJ9tx3PoaOHhUHs80KrBynrMhyXgwjXC3K2DwaBYmlz13JSFeEx3HXIabwaSCaO2AK4RMb2iEW2aWuyO79rvOW8SgmGBw355jD7Jf8gLFXEpHapD+Es/sGB+993oUGJhbw8nBhR0YQZUP0fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770177414; c=relaxed/simple;
-	bh=AGkaUKeA48k63GxPvSgLYxDOipDNRk5KS3ygY4PCKG8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=boOkDzp2TnROnchFmMxqeEh99P8o8E1T85IC9Z/tIP85POh1wMSurZ24YXq36HdLmkl67rbhMmrisv56f0RNwMtN6xVkIM8m3OdjEcEBFngSi3CIU6in/52ddyqt7FizDrbIpTfe92tPL40xubs5Inx4B1CucJ7VA/+h0+U0PZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BmO0cAEb; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770178122; c=relaxed/simple;
+	bh=e8huZO4xz0ml+BI2F97/KQfPwH7LID94bWdHKbwJG50=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=df++/hpfeIGTuGX1prgLJxH7c3sDUZ2Q1bSO2bYJFUzTHgtizVtnR5/TgJpxuumhRZ2kJhdsjoHWjl/ozSeHOE4F9/3ANVCNrVclKJ3mYgRQxrKK+Zu7bYsNSR+BOUK/+g92WthbPdgbFFXFv4E3Qy6t1dlJYG3zuCAHd/zQPx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q8vMOyLk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BmO0cAEb"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8c531473fdcso830699485a.3
-        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 19:56:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770177412; x=1770782212; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kCf4lzrMziBndOsmo8GuusOdBN8cx0cDMD3sdQZPXW0=;
-        b=BmO0cAEbtwvKngu30nYUWhuu3aW14QnGxWrBCqzYBGToAW15+DBOKjBy4BzuJubv6s
-         Bu0U3vuCvBKWik7uVuvyCOIFsz2RAY9W+UIj5KyLaYlKHO1UwzQC0NDjjtkIJ6PuWvsR
-         95KppZttig5Kcd9D5MwUSyQmNRsTyxD4Tzo1iS3zPbGE4v5/9TeolRejz0yhs8v5hEjI
-         6d02GWMSEq7X2aIVmvZpPXpvDxYoTd/SCbMPBYGDYCFv4PMAOiCX7hbypHHIjJog1UJz
-         4Ep905TS7u4OoIcUOO1vuvaOFtiAk8ICAbbvhLRuIqCsXAH823A/5lA0Heq3to1t1pJj
-         PZyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770177412; x=1770782212;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kCf4lzrMziBndOsmo8GuusOdBN8cx0cDMD3sdQZPXW0=;
-        b=TQzHLeU7i1imP18xRhXb4Het93n+knKsiTUa74+Q7jFH26G2Mv4NWKXeCU9KSgh4h2
-         /S50bbntPFs2pi68vrXOFEO68X8iuAR4pqKaym7h0Wjtqd0kHjxCaI/7O7lwvwC63t8C
-         sZ/X0itBU6cIbGNp3YVmLagoQY33VX6bLj0bH4IFiR00NFenHag2/s2oImC2O3N5gZXG
-         M/NF8x9bluYPvEXVuDql4jBvFTL5fwOzTDbPI3HrcOdw7UtU8uToo57pUeXmwJ9wzlR9
-         oYh1IpatDOSeUvgDeFM51UIQZ37zUAXWs2hXb/GWaot05CSDN+tKB3gad1q8OG30qD9C
-         zS4A==
-X-Forwarded-Encrypted: i=1; AJvYcCX+KMKqVKgOctQy9VSWWRwmqlN1esqornNEWsZ3X6P2MK7fo0rx9iyVYKMNSb7WfAbxHUqhjx4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWVJ/bn8h7AY0QO42R4UlNiIJudRbdoBaaj6n0aIYciaKkYI55
-	FkXRwz57h0yfL0ICSxxPkBuAWuSKk/EB8ZcepnUankGQ1th1QNE/2f1dJgaIoHsG
-X-Gm-Gg: AZuq6aJam+mDJER3P66FCNP15EmnGRQ9JJGtKDpDmEtcPjuxIT+z8PLEL31gLiBLcjR
-	zSgfxaIRtfR9UvgSdkgzuejZp+wGfinPjdlmtd4FKGxjEosU0MsFLQ4xyCspRaK0+tfCGIzNa5j
-	wJiawph9yiFXEdn9SIwyrnamw+e1L0GsTUaAhDwjRV9j2dO7Asqh9C/b8Xd6vEqw3zJqCuRLljG
-	jGCWFPXiR/qbDOFwSN7K/v4ua6mGKHTvvl/H4l5UKGhM3Zd7k0vDfcwpESda+/E3k9D74yi02qH
-	DRa2fjVPOHSl4uMgNdK40d2KOedk7g2IAwAa+bmRONPztypKjn9VwIf2h7/xyT1FOHsT+NPYB7k
-	M8MTKpBGWfylctWX5NUBxLRmjMIljZe5U6SVz1GiDcdtwCPlUcMKqHGUGIZyXMVdc4dShKAjJaZ
-	b2cpG9crV8k/g7Brab6TVA
-X-Received: by 2002:a05:7301:7003:b0:2b7:32fe:4bbb with SMTP id 5a478bee46e88-2b832895197mr603971eec.11.1770171121283;
-        Tue, 03 Feb 2026 18:12:01 -0800 (PST)
-Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b832fafc2fsm746589eec.24.2026.02.03.18.12.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Feb 2026 18:12:00 -0800 (PST)
-Date: Wed, 4 Feb 2026 10:11:36 +0800
-From: Inochi Amaoto <inochiama@gmail.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>, 
-	Inochi Amaoto <inochiama@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Yixun Lan <dlan@gentoo.org>, 
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue <alexandre.torgue@foss.st.com>, 
-	Richard Cochran <richardcochran@gmail.com>, Paul Walmsley <pjw@kernel.org>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Alexandre Ghiti <alex@ghiti.fr>, Yanteng Si <siyanteng@cqsoftware.com.cn>, 
-	Yao Zi <ziyao@disroot.org>, Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>, 
-	Shangjuan Wei <weishangjuan@eswincomputing.com>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Chen-Yu Tsai <wens@kernel.org>, Zhi Li <lizhi2@eswincomputing.com>, 
-	Boon Khai Ng <boon.khai.ng@altera.com>, Quentin Schulz <quentin.schulz@cherry.de>, 
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>, netdev@vger.kernel.org, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	spacemit@lists.linux.dev, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, Longbin Li <looong.bin@gmail.com>
-Subject: Re: [PATCH net-next v4 1/3] dt-bindings: net: Add support for
- Spacemit K3 dwmac
-Message-ID: <aYKqh7SmoHO83Avr@inochi.infowork>
-References: <20260130022705.1059214-1-inochiama@gmail.com>
- <20260130022705.1059214-2-inochiama@gmail.com>
- <aYIyuulFADU_j3V0@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q8vMOyLk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361D0C19425;
+	Wed,  4 Feb 2026 04:08:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770178120;
+	bh=e8huZO4xz0ml+BI2F97/KQfPwH7LID94bWdHKbwJG50=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=q8vMOyLkwrgV9ef9CaXWAPKv8ujkJf1JZ8Q6U5SuSbPpleeLX7nv6feQ0mSWOMbme
+	 c72ELJfdwy33nfwlFpLT91BxF5tkkWipzlXu0HiWk682gfxe3cmC+FQEzHlnjjgmEA
+	 ssdOochGixsVCdOIDVI2NfETLnDEUVc7KNb5a66Bl2d6d15OpRNfPCRilSrCdy9w6T
+	 oyXj3/Fkh3WeC47GGZye0Wj2txgo69LFtmctaUO5NP+Zqs0Bo285y8eLqFu4ek9Ztv
+	 pEPgKNoWWPUHtyfAVMiUyF7uIuP3SPGG5KMDBex6l8UJ8t4lpICfa1mIZ1CN/T+PZi
+	 aKXL9fwMXfRwg==
+From: Jakub Kicinski <kuba@kernel.org>
+To: xuanzhuo@linux.alibaba.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	lorenzo@kernel.org,
+	andrew+netdev@lunn.ch,
+	pabeni@redhat.com,
+	vadim.fedorenko@linux.dev,
+	davem@davemloft.net,
+	guwen@linux.alibaba.com,
+	lulie@linux.alibaba.com,
+	hkallweit1@gmail.com,
+	edumazet@google.com,
+	lukas.bulwahn@redhat.com,
+	andrew@lunn.ch,
+	dong100@mucse.com,
+	dust.li@linux.alibaba.com,
+	netdev@vger.kernel.org
+Subject: Re: [net-next,v25,4/6] eea: create/destroy rx,tx queues for netdevice open and stop
+Date: Tue,  3 Feb 2026 20:00:55 -0800
+Message-ID: <20260204040054.1698677-2-kuba@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260202090638.46836-5-xuanzhuo@linux.alibaba.com>
+References: <20260202090638.46836-5-xuanzhuo@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYIyuulFADU_j3V0@shell.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 03, 2026 at 05:39:06PM +0000, Russell King (Oracle) wrote:
-> On Fri, Jan 30, 2026 at 10:27:02AM +0800, Inochi Amaoto wrote:
-> > +  clocks:
-> > +    items:
-> > +      - description: GMAC main clock
-> 
-> If you know what this is in terms of dwmac databook clock terms, it
-> would be helpful to use it here. I suspect "application clock" would
-> probably summarise it, that being the clock for the bus interfaces
-> that dwmac provides to the host.
-> 
-> -- 
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-That's a good point, In fact, I have no dwmac databook now. So if you
-think it is fine, I will change this description to the "application
-clock". Thanks.
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+eea: create/destroy rx,tx queues for netdevice open and stop
 
-Regards,
-Inochi
+This commit introduces the implementation for netdevice open and stop
+operations for the Alibaba Elastic Ethernet Adapter (EEA). It adds RX/TX
+queue creation/destruction, interrupt handling, and basic packet processing.
+
+> diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.c b/drivers/net/ethernet/alibaba/eea/eea_net.c
+> index 31cb9ca5b408..3439152eaf79 100644
+> --- a/drivers/net/ethernet/alibaba/eea/eea_net.c
+> +++ b/drivers/net/ethernet/alibaba/eea/eea_net.c
+
+[ ... ]
+
+> @@ -18,6 +18,353 @@
+>
+>  #define EEA_SPLIT_HDR_SIZE 128
+>
+> +/* resources: ring, buffers, irq */
+> +int eea_reset_hw_resources(struct eea_net *enet, struct eea_net_init_ctx *ctx)
+> +{
+> +	int err;
+> +
+> +	if (!netif_running(enet->netdev)) {
+> +		enet->cfg = ctx->cfg;
+> +		return 0;
+> +	}
+> +
+> +	err = eea_alloc_rxtx_q_mem(ctx);
+> +	if (err) {
+> +		netdev_warn(enet->netdev,
+> +			    "eea reset: alloc q failed. stop reset. err %d\n",
+> +			    err);
+> +		return err;
+> +	}
+> +
+> +	eea_netdev_stop(enet->netdev);
+> +
+> +	/* If we encounter an error (which is, of course, a very
+> +	 * low-probability event), but we do not immediately free the queues
+> +	 * resources here. Instead, we defer their release until the normal NIC
+> +	 * cleanup, or until the user or hardware triggers a reset operation.
+> +	 * Because that the dev is running.
+> +	 */
+> +
+> +	err = enet_bind_new_q_and_cfg(enet, ctx);
+> +	if (err) {
+> +		netdev_err(enet->netdev,
+> +			   "eea reset: bind new queues failed. err %d\n",
+> +			   err);
+> +
+> +		return err;
+> +	}
+
+When enet_bind_new_q_and_cfg() fails, what happens to the queues allocated
+by eea_alloc_rxtx_q_mem() at line 289? They're now assigned to ctx->rx and
+ctx->tx but haven't been bound to enet yet.
+
+After eea_netdev_stop() sets enet->started = false, a subsequent call to
+eea_netdev_stop() will return early at line 228 without calling
+eea_free_rxtx_q_mem(). If enet_bind_new_q_and_cfg() fails before binding,
+the queues remain in ctx with no cleanup path.
+
+The comment suggests deferring cleanup to "normal NIC cleanup" but
+eea_net_remove() doesn't call eea_free_rxtx_q_mem(), and future reset
+attempts would allocate new queues without freeing these.
+
+> +
+> +	err = eea_active_ring_and_irq(enet);
+> +	if (err) {
+> +		netdev_err(enet->netdev,
+> +			   "eea reset: active new ring and irq failed. err %d\n",
+> +			   err);
+> +		return err;
+> +	}
+
+If eea_active_ring_and_irq() fails after enet_bind_new_q_and_cfg()
+succeeded, are the queues now bound to enet->rx/enet->tx? If so, the same
+cleanup issue applies since enet->started remains false.
+
+Should both error paths call eea_free_rxtx_q_mem(enet) before returning?
+
+> diff --git a/drivers/net/ethernet/alibaba/eea/eea_net.h b/drivers/net/ethernet/alibaba/eea/eea_net.h
+> index 03a9abda345e..109aa638559d 100644
+> --- a/drivers/net/ethernet/alibaba/eea/eea_net.h
+> +++ b/drivers/net/ethernet/alibaba/eea/eea_net.h
+
+[ ... ]
+
+> @@ -134,9 +153,38 @@ struct eea_net {
+>  	u64 hw_ts_offset;
+>  };
+>
+> +/* tx apis */
+> +int eea_poll_tx(struct eea_net_tx *tx, int budget);
+> +void eea_poll_cleantx(struct eea_net_rx *rx);
+> +netdev_tx_t eea_tx_xmit(struct sk_buff *skb, struct net_device *netdev);
+> +
+> +void eea_tx_timeout(struct net_device *netdev, u32 txqueue);
+
+This isn't a bug, but the header declares eea_poll_cleantx() without any
+implementation or callers in the codebase. Should this be removed?
+
+Also, eea_tx_timeout() is declared with parameter type u32 txqueue, but the
+implementation uses unsigned int txqueue. The kernel's ndo_tx_timeout
+callback signature expects unsigned int. The header should match.
+
+> diff --git a/drivers/net/ethernet/alibaba/eea/eea_pci.c b/drivers/net/ethernet/alibaba/eea/eea_pci.c
+> index 182e463d73a0..f426d003a813 100644
+> --- a/drivers/net/ethernet/alibaba/eea/eea_pci.c
+> +++ b/drivers/net/ethernet/alibaba/eea/eea_pci.c
+
+[ ... ]
+
+> @@ -250,6 +259,153 @@ void eea_pci_active_aq(struct eea_ring *ering)
+>  				    cfg_read32(ep_dev->reg, aq_db_off));
+>  }
+>
+> +static int eea_ha_handle_reset(struct eea_pci_device *ep_dev)
+> +{
+> +	struct eea_device *edev;
+> +	struct pci_dev *pci_dev;
+> +	u16 reset;
+> +
+> +	if (!ep_dev->reset_pos)
+> +		return 0;
+> +
+> +	edev = &ep_dev->edev;
+> +
+> +	pci_read_config_word(ep_dev->pci_dev, ep_dev->reset_pos, &reset);
+> +
+> +	/* clear bit */
+> +	pci_write_config_word(ep_dev->pci_dev, ep_dev->reset_pos, 0xFFFF);
+> +
+> +	if (reset & EEA_PCI_CAP_RESET_FLAG) {
+> +		dev_warn(&ep_dev->pci_dev->dev, "recv device reset request.\n");
+> +
+> +		pci_dev = ep_dev->pci_dev;
+> +
+> +		/* The pci remove callback may hold this lock. If the
+> +		 * pci remove callback is called, then we can ignore the
+> +		 * ha interrupt.
+> +		 */
+> +		if (mutex_trylock(&edev->ha_lock)) {
+> +			edev->ha_reset = true;
+> +
+> +			__eea_pci_remove(pci_dev, false);
+> +			__eea_pci_probe(pci_dev, ep_dev);
+
+What happens if __eea_pci_probe() fails during this HA reset recovery?
+Looking at __eea_pci_probe(), it can fail in eea_pci_setup(),
+eea_init_device(), or eea_pci_ha_init().
+
+If probe fails after remove succeeded, the device is left in a removed
+state with no error logged. The function returns 1 indicating success, even
+though reprobe failed.
+
+The normal probe path at line 512 checks the return value and handles
+errors. Should this path also check for errors and at minimum log them?
+
+> @@ -336,6 +507,8 @@ static int eea_pci_probe(struct pci_dev *pci_dev,
+>
+>  	ep_dev->pci_dev = pci_dev;
+>
+> +	mutex_init(&edev->ha_lock);
+> +
+>  	err = __eea_pci_probe(pci_dev, ep_dev);
+>  	if (err) {
+>  		pci_set_drvdata(pci_dev, NULL);
+>  		kfree(ep_dev);
+
+Is mutex_destroy() needed on this error path? The mutex ha_lock is
+initialized at line 510, but when __eea_pci_probe() fails, the error path
+calls kfree(ep_dev) without calling mutex_destroy(&edev->ha_lock).
+
+Looking at eea_pci_remove() which calls mutex_destroy() at line 534 before
+kfree(ep_dev) at line 535, there's an inconsistency between the error path
+and success path. Should mutex_destroy() be added before kfree(ep_dev) in
+the error handler?
+
+> diff --git a/drivers/net/ethernet/alibaba/eea/eea_rx.c b/drivers/net/ethernet/alibaba/eea/eea_rx.c
+> new file mode 100644
+> index 000000000000..55c1d19c5706
+> --- /dev/null
+> +++ b/drivers/net/ethernet/alibaba/eea/eea_rx.c
+
+[ ... ]
+
+> +static struct sk_buff *eea_rx_build_split_hdr_skb(struct eea_net_rx *rx,
+> +						  struct eea_rx_ctx *ctx)
+> +{
+> +	struct eea_rx_meta *meta = ctx->meta;
+> +	struct sk_buff *skb;
+> +	u32 truesize;
+> +
+> +	dma_sync_single_for_cpu(rx->enet->edev->dma_dev, meta->hdr_dma,
+> +				ctx->hdr_len, DMA_FROM_DEVICE);
+> +
+> +	skb = napi_alloc_skb(&rx->napi, ctx->hdr_len);
+> +	if (unlikely(!skb))
+> +		return NULL;
+> +
+> +	truesize = meta->headroom + ctx->len;
+> +
+> +	skb_put_data(skb, ctx->meta->hdr_addr, ctx->hdr_len);
+> +
+> +	if (ctx->len) {
+> +		skb_add_rx_frag(skb, 0, meta->page,
+> +				meta->offset + meta->headroom,
+> +				ctx->len, truesize);
+> +
+> +		eea_consume_rx_buffer(rx, meta, truesize);
+> +	}
+
+Is the truesize calculation correct for split header mode? Looking at line
+255, truesize is calculated as meta->headroom + ctx->len.
+
+In eea_rx_post() at line 500, buffers are allocated with space for
+[headroom][data][tailroom], where tailroom is typically 128 bytes for
+skb_shared_info. The tailroom is reserved but not included in the truesize
+calculation here.
+
+When eea_consume_rx_buffer() advances meta->offset by only
+(headroom + data_len), the reserved tailroom space remains unconsumed. After
+alignment in meta_align_offset(), the next fragment may overlap with the
+previous fragment's tailroom space.
+
+Compare with the non-split header path in eea_rx_build_skb() at line 290,
+which includes shinfo_size in truesize:
+
+    truesize = meta->headroom + ctx->len + shinfo_size;
+
+Should the split header path also include meta->tailroom or shinfo_size in
+the truesize calculation?
+
+> diff --git a/drivers/net/ethernet/alibaba/eea/eea_tx.c b/drivers/net/ethernet/alibaba/eea/eea_tx.c
+> new file mode 100644
+> index 000000000000..3ef8a2f2eac2
+> --- /dev/null
+> +++ b/drivers/net/ethernet/alibaba/eea/eea_tx.c
+
+[ ... ]
+
+> +static void eea_free_meta(struct eea_net_tx *tx, struct eea_net_cfg *cfg)
+> +{
+> +	struct eea_sq_free_stats stats;
+> +	struct eea_tx_meta *meta;
+> +	int i;
+> +
+> +	while ((meta = eea_tx_meta_get(tx)))
+> +		meta->skb = NULL;
+> +
+> +	for (i = 0; i < cfg->tx_ring_depth; i++) {
+> +		meta = &tx->meta[i];
+> +
+> +		if (!meta->skb)
+> +			continue;
+> +
+> +		eea_tx_meta_put_and_unmap(tx, meta);
+> +
+> +		eea_meta_free_xmit(tx, meta, 0, NULL, &stats);
+> +	}
+
+Is the stats variable initialized here? At line 293, stats is declared
+without initialization, then passed to eea_meta_free_xmit() at line 308.
+
+Looking at eea_meta_free_xmit() in lines 87-88, the code performs
+++stats->packets and stats->bytes += meta->skb->len, which reads and
+increments uninitialized memory.
+
+Compare with eea_clean_tx() at line 96 which initializes:
+struct eea_sq_free_stats stats = {0};
+
+Should line 293 use the same initialization?
