@@ -1,166 +1,101 @@
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f67.google.com (mail-qv1-f67.google.com [209.85.219.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3149639E180
-	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 08:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770195503; cv=none; b=CQPguXH9JwBuhfC2X2FCCYGq3QdTvLTz9x6TvHVDhHtNPrOelyyybKjOOXpgxxECOGgRzrRsYemIrUIxd+Pb96vhRqPrqFQyIy8+EwjUkIHq19POo/sWplhQmEzcnh1H9N9s4twIin8FqWk8Er7XynTyE6ztcinCK0kOL8jvgek=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770195503; c=relaxed/simple;
-	bh=kMSy5c7vVSWgQsdtb2fYQMhyeIpomZ9NAf+hi6xHiT4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AoIDlZA92I09su6BqemXlY26/xB3zUSO8qZIHrms5vlNp0kZaX9ZYyk7ZnQ377/8Kz7SsRUKoLLfAkpnFzyhqOfTPc2PQue+0c1DkSNERu5jd03RukkIMMgzhX/RzrFEYrwSK9qpj2olfN4dyrfWfUx8co+2RH7LlJIS4YjHMBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BUAMtQtt; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FAAC2264CA
+	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 09:00:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770195650; cv=pass; b=m+r4BYTJhsLVMMhuO5YM5iyy4eehivR+4CdVXDXbdel22GE/aI2GDrCtFQid71NbzXMc/rvshPyzTHZR+RI+jCunAy91PuHVTuUTfmuwSWceHeXI1456L9z3D3S1F+xtCv/k4V5AXLM8/g4fa2c2ViHAZQM1xyh8MV3pImQKYio=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770195650; c=relaxed/simple;
+	bh=Ls1D+yxmbY6bYCTOk0C6MSrbomU6CnAzVv656Mw/4fQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z8/zbXf9TUnvolyRviBVk0e1JRTsRyg0IB71Tb2sdrmMV4I23doc+IM7h5Vil1X/8JOGEzked7z6qac5xt6m9Y/LOlsQQdgs5OGKAczFSnv8FWZR4QHwimkL4DnGscx/yriGRzEVSUYiWKNvxcKUzVnEs9sOYKaL9eH/0PFQ55Y=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bU4dwAQU; arc=pass smtp.client-ip=209.85.219.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BUAMtQtt"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770195501;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=NeDzn3ZIpPl8RtxQ8UBkT2sOS4jMnERoC4vLjBOwnog=;
-	b=BUAMtQtt/ptCud5saYVIgTmDduA4o+i70Q2mjpckwXNPLtvcR9U/RDQT4TDmvqA/iuFMlk
-	dCvI6XN9z3S2O7OhvNQE2tx6yJ4L80u0P6ACxUFJW3ev+0pZl1NmQLkz45PWlum/9afOHt
-	8J+SKEK45lPhWSzMVbkN1Rus1GF3dLw=
-From: Hui Zhu <hui.zhu@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Jeff Xu <jeffxu@chromium.org>,
-	mkoutny@suse.com,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Christian Brauner <brauner@kernel.org>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Brian Gerst <brgerst@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	davem@davemloft.net,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Paul Chaignon <paul.chaignon@gmail.com>,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Amery Hung <ameryhung@gmail.com>,
-	Chen Ridong <chenridong@huaweicloud.com>,
-	Lance Yang <lance.yang@linux.dev>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>,
-	Geliang Tang <geliang@kernel.org>
-Subject: [RFC PATCH bpf-next v6 06/12] bpf: Pass flags in bpf_link_create for struct_ops
-Date: Wed,  4 Feb 2026 16:56:27 +0800
-Message-ID: <3879deea2efdbc75740e985e6cdbd67a57aa5651.1770194182.git.zhuhui@kylinos.cn>
-In-Reply-To: <cover.1770194182.git.zhuhui@kylinos.cn>
-References: <cover.1770194182.git.zhuhui@kylinos.cn>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bU4dwAQU"
+Received: by mail-qv1-f67.google.com with SMTP id 6a1803df08f44-894770e34afso87512216d6.0
+        for <netdev@vger.kernel.org>; Wed, 04 Feb 2026 01:00:49 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770195649; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gBTlccV0ZyTH9mxf12hAzo2R7ehwFzPQsjNPEpqc82I8Wb7yB3SVdgA8guJsDLU07n
+         rl12nEAamPWGT7BIOxQ9aePvF0D27bsAiUVUu6BsXRBZ5PMjzjPDbraXCr/w2vURpD7Y
+         VweZQKC/Rfk4FNuUO4BozvJmqa2Wi8DqVbbO4bZESo+SLwnZZrtM4FlrLdOgwfuwAFFd
+         E4XGnTmiVVc9w6hmxeDFF7lC1hn246oeDHm6VRvKoGXNpyXwoFhTR9JbJRvmMBFZVekp
+         3w7OXzGMyW6O/mzjMkKwMfulUyL3IYQpYBEPkDNfIPj9Ek0cKlUJi4EG+lJe362JF3OR
+         rO/Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=Ls1D+yxmbY6bYCTOk0C6MSrbomU6CnAzVv656Mw/4fQ=;
+        fh=qJR1M71IQO3jjQz/0ilccUDTsaZYro5NQcCgk5LYiiw=;
+        b=XpPH2eGbwFavyE1cqM0JKjHgFkdbxGJBd3InkV0IIJ8FOYJpPl0cRBtrFIB6tNRIpc
+         USLO9nvWmCPZB8c55VO6IsysNSwm2RmVF/IKWEhTFBAKLJz6pF1/+yicIc/wH6Q9Gtlh
+         TaGMrwNR016pwokA4raKi+bOLU3LpIgNBvXeawXyB1FbaFYOH2y/3q96puU97AIlVaqc
+         g46VnIVSLp1yzujGILzwOVPVqemFO1JNlhpDdyKivuEWCFraq0CrMHUThQkZSwGIbGt3
+         XUybm8kyra3JC3/jdPxeIvV6ZLdzp8NwwHrxJYo7BGbDVRdJ5W+evT6fkOmkFb0cP3Rf
+         Lv/g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770195649; x=1770800449; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ls1D+yxmbY6bYCTOk0C6MSrbomU6CnAzVv656Mw/4fQ=;
+        b=bU4dwAQU9oTDP+tZVWb6cS1lDuhhR0ALS2C8Rw1SJ3PQAB3DxD6O3UA3pDBbI1W9B2
+         jl7G/MIJzfQ14Cd0J3agYiJrP3IgQ8tF2IjApR0dXHZPt2RLkIva7R8N8xOARQXcHpxf
+         s6jKwNFAUYj3X4N/WMDU7nNDgHf61GsDZ37sle7djWIUrtPJViR2fqnYOkZ0X3IC9dgt
+         AwZ0mhUUDIOEBCJGZVMAnOO4iWA3TAdzPEJbmAHFL/aSe7RwfcD7uP4nUhXU4ZEmXE4b
+         vPJTtzuWdVaBaqmyJM1eavzsOoe0U66f7WnZSIAycY8OAfCSPNshz7d7cfJHhd5FkT67
+         gdAA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770195649; x=1770800449;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ls1D+yxmbY6bYCTOk0C6MSrbomU6CnAzVv656Mw/4fQ=;
+        b=hCIVgVaNBEOug1HnFiNCj4afwvm2sCw4hri0kR0ba8yPgoAAG3oPSe2j1mw0Hp7ZiC
+         /VUK3FObt8PZz9rD4YKyEMPs27X6/V3xFN5oNLYtDiNamGPR3bA49lBG1VuXkJRp4DME
+         ZPy8tA2b4EqGt4RyoNyIhG7zOu2SY51ieIn6sAWBbIHrd28rTSrzVCUoXLe2BY4IQLsn
+         cBW06KPd1y9oBCV+TsKOH1J0U1hGEwS92YyuCgMWBZoM9TIMvTnwouzSjAz8Zwe7jBuA
+         Up6yyJgS+lAhWl1Rxif4WJSTKKpFYDj0E1Le87NViNns3TBqDVhnzzOVTVY01fZJ/zAX
+         sH3w==
+X-Gm-Message-State: AOJu0YwU4y3Dj5+dmkKgIItSi0koLD3bqHrghYtLcN84EIFQBisRaMq5
+	h89KCAYrzJc2mdowUjC6ZBbEuqsVM2I5+VJ9gsKVxeH6yWAFV9R3YPuXmW3vUjapMscOH5AB60H
+	lvEVPsShyNKP8hG2uvHVGdV7XRVsYuvFTXI8R
+X-Gm-Gg: AZuq6aI6gtCcc2Mz0UaWb2S/bGTq0qfD0bMYAUxYQe5gscUY3INq8CVYqT6zqgFl6CV
+	/OhmawMfA2wvJUbV0bRJFuMIFiTmZ2CiMvzupFo2coAW72mfs8H4/Q6lyVMz/vfdTsMw06pF+mX
+	aXuuc/IDKILA1gRXsrF0Dc7SWj3JyWvKxl7Q4Qj6vZtibntCMc7cW6GnNfSGwHUHb8v31hJIkut
+	nTP/QRQzuQ19LVB7cSZ+xFEO8ofXA0WuJFQkaLw15/uyKsz4u/CfiOYxbwQ1D/zbYdFrVrEzSWp
+	EjVjasN9UnkHmVKrq35kvBDPdN9WO8jcLbAeUoSLDssOb0FYYryKEItK
+X-Received: by 2002:a05:6214:27ef:b0:88a:568b:f4af with SMTP id
+ 6a1803df08f44-895221019c8mr32165666d6.23.1770195648713; Wed, 04 Feb 2026
+ 01:00:48 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <CADkSEUjsT8OW9QVa-U4PQMG+8c1tjjxk7tNJu3U+6yoC82Y7FQ@mail.gmail.com>
+In-Reply-To: <CADkSEUjsT8OW9QVa-U4PQMG+8c1tjjxk7tNJu3U+6yoC82Y7FQ@mail.gmail.com>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Wed, 4 Feb 2026 01:00:38 -0800
+X-Gm-Features: AZwV_QiUBEYt9Z4YPvvCmmjZlvxL9F7JYPI99S5U1hMZ9MhB000fgNB3ionh72c
+Message-ID: <CADkSEUhCgkMFrGxJ_ov9MHxF1xakSvb1HJyKisS2LQxPGhgkGQ@mail.gmail.com>
+Subject: Re: PCI ID 10ec:8129 is in both 8139too and r8169
+To: netdev@vger.kernel.org
+Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 
-From: Hui Zhu <zhuhui@kylinos.cn>
+1186:4302 is also in both r8169 and
+drivers/net/ethernet/marvell/skge.c; it is labeled "D-Link DGE-530T
+Rev C1" in skge.
 
-To support features like allowing overrides in cgroup hierarchies,
-we need a way to pass flags from userspace to the kernel when
-attaching a struct_ops.
-
-Extend `bpf_struct_ops_link` to include a `flags` field. This field
-is populated from `attr->link_create.flags` during link creation. This
-will allow struct_ops implementations, such as the upcoming memory
-controller ops, to interpret these flags and modify their attachment
-behavior accordingly.
-
-UAPI Change:
-This patch updates the comment in include/uapi/linux/bpf.h to reflect
-that the cgroup-bpf attach flags (such as BPF_F_ALLOW_OVERRIDE) are
-now applicable to both BPF_PROG_ATTACH and BPF_LINK_CREATE commands.
-Previously, these flags were only documented for BPF_PROG_ATTACH.
-
-The actual flag definitions remain unchanged, so this is a compatible
-extension of the existing API. Older userspace will continue to work
-(by not passing flags), and newer userspace can opt-in to the new
-functionality by setting appropriate flags.
-
-Signed-off-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
----
- include/linux/bpf.h            | 1 +
- kernel/bpf/bpf_struct_ops.c    | 1 +
- tools/include/uapi/linux/bpf.h | 2 +-
- 3 files changed, 3 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index 720055d1dbce..13c933cfc614 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1896,6 +1896,7 @@ struct bpf_struct_ops_link {
- 	struct bpf_map __rcu *map;
- 	wait_queue_head_t wait_hup;
- 	u64 cgroup_id;
-+	u32 flags;
- };
- 
- struct bpf_link_primer {
-diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
-index c807793e7633..0df608c88403 100644
---- a/kernel/bpf/bpf_struct_ops.c
-+++ b/kernel/bpf/bpf_struct_ops.c
-@@ -1392,6 +1392,7 @@ int bpf_struct_ops_link_create(union bpf_attr *attr)
- 		cgroup_put(cgrp);
- 	}
- #endif /* CONFIG_CGROUPS */
-+	link->flags = attr->link_create.flags;
- 
- 	err = bpf_link_prime(&link->link, &link_primer);
- 	if (err)
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 3ca7d76e05f0..4e1c5d6d91ae 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -1185,7 +1185,7 @@ enum bpf_perf_event_type {
- 	BPF_PERF_EVENT_EVENT = 6,
- };
- 
--/* cgroup-bpf attach flags used in BPF_PROG_ATTACH command
-+/* cgroup-bpf attach flags used in BPF_PROG_ATTACH and BPF_LINK_CREATE command
-  *
-  * NONE(default): No further bpf programs allowed in the subtree.
-  *
--- 
-2.43.0
-
+I wrote a script to find these ID collisions, but it currently has too
+many false positives to be broadly useful. I can share it once that is
+fixed, if anyone is interested.
