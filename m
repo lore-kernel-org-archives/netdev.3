@@ -1,174 +1,117 @@
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E8628727F
-	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 12:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E773ED11A
+	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 12:08:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770206576; cv=none; b=GR2A34pLwre0zpPtqlLgumiHxOjhFuiZJettCQRf98csjo8lHMTt7PJibMtOR2tT/jfC32spfx/zJDKdYLZQHXiRtx1HjZeQHa6SqcLUvKiN98hMISi8zE6HufEcvjFHjjd4eSGk01VUvjLEQb4JEdVnYSgS2zr42UvjbKoNDAs=
+	t=1770206903; cv=none; b=mkVaDwYQv1qjVciCKa3OF/0sr023Y8NiPRnMd3Yc1FaSr3KpHfPPAL6Bz5Ckt2nn0rI7TOqxopKXj4JohW6xzlZDiyhSCbeZ7C7++92AI9Z8lRpHzteEpkmgHsj1xM9qgZmzn5aFYnwzEXnk5LtChoHIZxEhMiCv2CI3jvFCHuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770206576; c=relaxed/simple;
-	bh=3ywqktAHwas+gjtottmC7MLNDdcnrWVO6DGDzrzNQD0=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=rcOKk+PMpICTOkDDxdLfIqOX6uxI3mkl6/3Q7ubKZN0BPJyaJ9fa3dce5Us9CgoLbOWcIFUZpgp8sZmR7BqW3QYKptlKYyAESQcuK+Z/zHuR4tMlgAmPNN5xoOkvL8ORid63vnJYD6E2XYtZhP/RYclI9XjftKR8JCPR6Xu/wGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=i69LGXaw; arc=none smtp.client-ip=115.124.30.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1770206903; c=relaxed/simple;
+	bh=0t+tXL15cJtzOgmIlBvdrfTA3tDyLplIdYq8kcwmDUQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ElDVDrjj12bfB0Zj2C+FCVYHm+ahXhJV8y2/B5dIJbPBgVJ1PGadAp+FBU2sPQHv4LENCsNQr8f8fjZmtW5Ce98o6O2TbxRqVD3g8fjoQ7vr2f58azUNIhrcIzshx52U3oVIFzYhksykk/QRfH4PYkHZPCDSG9aNOjzh3uda51Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AIr7YRM5; arc=none smtp.client-ip=209.85.221.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="i69LGXaw"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1770206567; h=Message-ID:Subject:Date:From:To;
-	bh=YqQDW6R62ey1uY1RoAvvQNpAMqZuUf05gtPjECXDXqg=;
-	b=i69LGXawsDCOjoL92ASIIZ5C582mWR3e/uIei7oe5NrlB6aSO1v7XDJyesWMIc2kcd8HKPGh0J7UtEEDZYNEYOT1i73xX9EVHPGt+Js4cnnEAnxAQFVMR96WLPInJoR3bDAAXlVqe62SusLgEzjDmiOaveAXJe4CpTOW5vi138Q=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WyWuRXF_1770206566 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 04 Feb 2026 20:02:46 +0800
-Message-ID: <1770205572.2731752-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [net-next,v25,4/6] eea: create/destroy rx,tx queues for netdevice open and stop
-Date: Wed, 4 Feb 2026 19:46:12 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: lorenzo@kernel.org,
- andrew+netdev@lunn.ch,
- pabeni@redhat.com,
- vadim.fedorenko@linux.dev,
- davem@davemloft.net,
- guwen@linux.alibaba.com,
- lulie@linux.alibaba.com,
- hkallweit1@gmail.com,
- edumazet@google.com,
- lukas.bulwahn@redhat.com,
- andrew@lunn.ch,
- dong100@mucse.com,
- dust.li@linux.alibaba.com,
- netdev@vger.kernel.org
-References: <20260202090638.46836-1-xuanzhuo@linux.alibaba.com>
- <20260202090638.46836-5-xuanzhuo@linux.alibaba.com>
- <20260204040054.1698677-2-kuba@kernel.org>
- <20260203201237.35c5f756@kernel.org>
-In-Reply-To: <20260203201237.35c5f756@kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AIr7YRM5"
+Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-43246af170aso596180f8f.0
+        for <netdev@vger.kernel.org>; Wed, 04 Feb 2026 04:08:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1770206901; x=1770811701; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ioG9uYV0HuJP9D1DgqNAsKhOMqjhdFQVQ0SW047PMUE=;
+        b=AIr7YRM5vayvaqnsm8eOOu7Q1osYzpWKW/nmd1Ki4/81p+V2W21R26/YuB2ZEKYku2
+         7NfulbJktMBG38DvAl2ipnH1vBobwikzHmH5Ofs0HvGPGt33EKqEKnOjlvURSH1qazNl
+         yDsfXnLu7/KvZMlfIUbj+Z6a/nE3ysFCzG60qAv3K36ofEkHIt4N5H0exxJtof4EMv7y
+         iy2aHUlfHTdRnZlVITvDFBfAssbnwIom9Y3+CXN21UaBh7tSRb6BolehAP/eD2QUw6Bs
+         usSGRS/VWbuHuxFq/WB00Z8AoBOBtMMEjoc/YoRiYGYCsBOIQijT+R9WZjoUUkhqgFfa
+         0DBA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770206901; x=1770811701;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ioG9uYV0HuJP9D1DgqNAsKhOMqjhdFQVQ0SW047PMUE=;
+        b=vaSdPrNw4WBVJt4DDREqvSFbyUH4k1BrQs7mZx39bRQKv5W017/mI0YIGvLFkz5i6m
+         xE2Ac4KDxxlR08MclzKxgaELJYwEi8D12Xu7APAPOLL2eBAbp0ZpD0xhs/aH/zsnaTcj
+         kzRgABHdjKdx5WOB3SGMBZEF85zW3qGE/D97/GTbpj7c8X1uW/LxHCu+/7EJH1R0frqG
+         NDe6AjPUs2xPkmUXrdyAZO3dnWPM/cDI9ETKXsUfuUlkaT2bHBJ+SUZ+ij+IihaimoST
+         rW0MIbeK+68qw1Npd9Gow7mRcDR62bru1saAJv+1tJHufpDpKzMBbWChYTLvFkVhXopX
+         o8Lg==
+X-Forwarded-Encrypted: i=1; AJvYcCXkvOC1/Im5lblviiLVWMcTX5MNFzjemSEMUon4+La4HwEJjWXn1uH+0gLKglZn9RygMObMUa4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfdNRyPCpM/Y7+az0UcqTvqB/SyZoHjifTr2Kivyyg89yqUmE8
+	J4rDZ2RwRA+jA1Z2ttBibIwiRsdOcm8AgkyRrupWX8qHukz80FSWzgqxdEN9NHfX0WA=
+X-Gm-Gg: AZuq6aLW/rHBR15Vux9ZueSuQ5fw4dJXzJFXT3iIQkBnxe7w67FWmwDPSwqLeMwsbsg
+	7T0ew7ymQJkVZaH+c4xLEteJhsz0j9h3VmakEc0dZLhMGrWQUicy6AL1YVv89GuW3M0jwZFpoM6
+	zNFhCB0FSZc+lW4bI0hJ1HeZsYfzAZpkECA/TO7cM655mzgzvGnrtN+qEw2Xjs8/ngeIBwDFH2p
+	m+re8tZccKhS7jM1xvfVfbOjkGokhh0yDPnbYK/QQ1FK1OsERmSG099u/r4bgiWsS7U4onBU8k8
+	rBbQPQSnSszz/KFIFOfM42Nw0GGhnZiW8DYRwYjgIFqjjug1vuTMyV9wmL7BWaZyCxrv6jvpdZ8
+	6ePz33p2+JcDnIJ3mAjeBXkThYmQPPAz8Jy6xVtu4HPpMaRi2bbrvmut8Kd1vzyUSYS3/DPgG8k
+	v8KzcarKroE2fNEcV+40MBFGxJRVs=
+X-Received: by 2002:a05:6000:288a:b0:435:92c6:d556 with SMTP id ffacd0b85a97d-43617c84202mr4190603f8f.16.1770206901187;
+        Wed, 04 Feb 2026 04:08:21 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43618057f7csm5851345f8f.23.2026.02.04.04.08.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 04:08:20 -0800 (PST)
+Date: Wed, 4 Feb 2026 15:08:17 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Jakub Kicinski <kuba@kernel.org>, Rob Herring <robh@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>, Chester Lin <chester62515@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Conor Dooley <conor+dt@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Fabio Estevam <festevam@gmail.com>, Frank Li <Frank.Li@nxp.com>,
+	Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>,
+	imx@lists.linux.dev, Jan Petrous <jan.petrous@oss.nxp.com>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Matthias Brugger <mbrugger@suse.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, netdev@vger.kernel.org,
+	NXP S32 Linux Team <s32@nxp.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>, linaro-s32@linaro.org
+Subject: Re: [PATCH v6 0/3] s32g: Use a syscon for GPR
+Message-ID: <aYM2sXq2FXCISrCI@stanley.mountain>
+References: <cover.1769764941.git.dan.carpenter@linaro.org>
+ <bdb7cd69-7dcd-4e8a-b04a-14a2eb902311@redhat.com>
+ <20260203145438.5a850b61@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203145438.5a850b61@kernel.org>
 
-On Tue, 3 Feb 2026 20:12:37 -0800, Jakub Kicinski <kuba@kernel.org> wrote:
-> On Tue,  3 Feb 2026 20:00:55 -0800 Jakub Kicinski wrote:
-> > > +	err = enet_bind_new_q_and_cfg(enet, ctx);
-> > > +	if (err) {
-> > > +		netdev_err(enet->netdev,
-> > > +			   "eea reset: bind new queues failed. err %d\n",
-> > > +			   err);
-> > > +
-> > > +		return err;
-> > > +	}
-> >
-> > When enet_bind_new_q_and_cfg() fails, what happens to the queues allocated
-> > by eea_alloc_rxtx_q_mem() at line 289? They're now assigned to ctx->rx and
-> > ctx->tx but haven't been bound to enet yet.
-> >
-> > After eea_netdev_stop() sets enet->started = false, a subsequent call to
-> > eea_netdev_stop() will return early at line 228 without calling
-> > eea_free_rxtx_q_mem(). If enet_bind_new_q_and_cfg() fails before binding,
-> > the queues remain in ctx with no cleanup path.
-> >
-> > The comment suggests deferring cleanup to "normal NIC cleanup" but
-> > eea_net_remove() doesn't call eea_free_rxtx_q_mem(), and future reset
-> > attempts would allocate new queues without freeing these.
->
-> I think AI is slightly confused here but so am I. I don't get where you
-> free he previous resources in this flow. The "bind_new_q_and_cfg" just
-> overrides stuff, who frees the old set of rings?
+On Tue, Feb 03, 2026 at 02:54:38PM -0800, Jakub Kicinski wrote:
+> On Tue, 3 Feb 2026 12:18:54 +0100 Paolo Abeni wrote:
+> > It looks like patch 3/3 depends on 1/3 but it should land in a different
+> > tree, as patches 1 && 2 looks suitable for 'net-next' and 3/3 should
+> > probably go via the arm/freescale tree.
+> > 
+> > We either need explicit ack from freescale maintainers or this should be
+> > split across subtrees, right?
+> 
+> FWIW normally we don't touch the dts patch at all, unless the
+> maintainer chimes in and tells us to take it. No waiting for acks.
+> Off the top of my head us taking dts patches only happens if 
+> the person posting the patch _is_ the platform maintainer..
+> 
+> For this series we're waiting for the bindings to be reviewed.
 
+Ugh.  Crap.  Rob already reviewed them.  I included his Reviewed-by tag
+in v5 but I accidentally removed it that from v6.  I'm so sorry.
 
-	err = eea_alloc_rxtx_q_mem(ctx);
-	if (err) {
-		netdev_warn(enet->netdev,
-			    "eea reset: alloc q failed. stop reset. err %d\n",
-			    err);
-		return err;
-	}
+https://lore.kernel.org/all/939fdaf94038613486bdbba510a92a1e57e18c71.1769592679.git.dan.carpenter@linaro.org/
 
-	eea_netdev_stop(enet->netdev); <---- here call eea_free_rxtx_q_mem
-
-	err = enet_bind_new_q_and_cfg(enet, ctx);
-	if (err) {
-		netdev_err(enet->netdev,
-			   "eea reset: bind new queues failed. err %d\n",
-			   err);
-
-		return err;
-	}
-
-	err = eea_active_ring_and_irq(enet);
-	if (err) {
-		netdev_err(enet->netdev,
-			   "eea reset: active new ring and irq failed. err %d\n",
-			   err);
-		return err;
-	}
-
-	eea_start_rxtx(enet->netdev);
-
->
-> Also as I already mentioned in previous manual review you are not
-> pre-allocating enough. You should also request necessary extra IRQs
-> _before_ you start tearing down the old state.
-
-
-I might have misunderstood your point; I will implement it that way in the next
-version.
-
-Thanks.
-
->
-> > > +static struct sk_buff *eea_rx_build_split_hdr_skb(struct eea_net_rx *rx,
-> > > +						  struct eea_rx_ctx *ctx)
-> > > +{
-> > > +	struct eea_rx_meta *meta = ctx->meta;
-> > > +	struct sk_buff *skb;
-> > > +	u32 truesize;
-> > > +
-> > > +	dma_sync_single_for_cpu(rx->enet->edev->dma_dev, meta->hdr_dma,
-> > > +				ctx->hdr_len, DMA_FROM_DEVICE);
-> > > +
-> > > +	skb = napi_alloc_skb(&rx->napi, ctx->hdr_len);
-> > > +	if (unlikely(!skb))
-> > > +		return NULL;
-> > > +
-> > > +	truesize = meta->headroom + ctx->len;
-> > > +
-> > > +	skb_put_data(skb, ctx->meta->hdr_addr, ctx->hdr_len);
-> > > +
-> > > +	if (ctx->len) {
-> > > +		skb_add_rx_frag(skb, 0, meta->page,
-> > > +				meta->offset + meta->headroom,
-> > > +				ctx->len, truesize);
-> > > +
-> > > +		eea_consume_rx_buffer(rx, meta, truesize);
-> > > +	}
-> >
-> > Is the truesize calculation correct for split header mode? Looking at line
-> > 255, truesize is calculated as meta->headroom + ctx->len.
-> >
-> > In eea_rx_post() at line 500, buffers are allocated with space for
-> > [headroom][data][tailroom], where tailroom is typically 128 bytes for
-> > skb_shared_info. The tailroom is reserved but not included in the truesize
-> > calculation here.
-> >
-> > When eea_consume_rx_buffer() advances meta->offset by only
-> > (headroom + data_len), the reserved tailroom space remains unconsumed. After
-> > alignment in meta_align_offset(), the next fragment may overlap with the
-> > previous fragment's tailroom space.
-> >
-> > Compare with the non-split header path in eea_rx_build_skb() at line 290,
-> > which includes shinfo_size in truesize:
-> >
-> >     truesize = meta->headroom + ctx->len + shinfo_size;
-> >
-> > Should the split header path also include meta->tailroom or shinfo_size in
-> > the truesize calculation?
->
-> This one - I think the AI is just confused by how frags work.
->
+regards,
+dan carpenter
