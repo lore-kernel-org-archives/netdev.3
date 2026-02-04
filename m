@@ -1,62 +1,62 @@
-Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E56C3ED11F
-	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 12:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6CB3ED12F
+	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 12:10:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770206938; cv=none; b=jX1v/ciesoPaK0q7EyfW2xLYpVR89h4ka1DN4iJ0oSVlOQKDZpVjqcel5esXDdSqFC6iR8wsOs6XnPft6YqbjX5rkxaiutSmFqfGftysK/cWhSPi0VaeJmvwFunibpjQgH4lh0uEdbvl/p+MC/BPIKwscJEphpEgQolHScoCS/8=
+	t=1770207027; cv=none; b=Rni2vO4rvk0HJ81DUGMOiKPM9IYeEbSB3DuNRu0rVMCAoiiHlECSAEwgbTl7Av3Dz+pA3vGsfmBOn7Z/z+UTkb9TqmrGBMybJDVp1sOvqpQoUC/iGqAWEJcY25IhiXnDeYv1jrMouDnjRNKZZO5+BLwGbX4HIPu/+1ASk4ilv0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770206938; c=relaxed/simple;
-	bh=UUviRPGbzzkQIB3bfEJMdwX3h0vP0qCfzC2iQvSakNA=;
+	s=arc-20240116; t=1770207027; c=relaxed/simple;
+	bh=viUsIz0u1WXEFTH4ZpONzhlMPFimqGztc2Q86y8MegE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VT9PXEac5o27Vs5sa/LV6C1nHswInTdV4WBDe1EFU6JbnQ7exNRRELgLzgZjteOp2iiJdqMT9UqoKRet7T7DetSjwsGygh+cDgyqFPdqjkSvECyLcuxdHkYBces4ebwxbaVXHJJIHY5YZ0Nnh+Tg90ImUhfW5nvSmBKhVls2NsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DpT9SBxm; arc=none smtp.client-ip=209.85.160.182
+	 Content-Type:Content-Disposition:In-Reply-To; b=njlqgHhiE4D9z241Z1fIwSgm6uJLuj5PbDhxxDowJ2we1Hd6654sxWU4Vn4Hrm6dDyEZVb7VhslHhahy4WmZHhgPD73JIthKn0WpU8Ak9dHni8oveaVVwH4xWesuoruDIhGCw/9FSGL58hu/5SaOri6JpIXFQUswWXFQw3ZZajk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bKgFlgvW; arc=none smtp.client-ip=209.85.222.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DpT9SBxm"
-Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-501488a12cbso81542551cf.3
-        for <netdev@vger.kernel.org>; Wed, 04 Feb 2026 04:08:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bKgFlgvW"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8c52f15c5b3so74256485a.3
+        for <netdev@vger.kernel.org>; Wed, 04 Feb 2026 04:10:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770206937; x=1770811737; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1770207026; x=1770811826; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UUviRPGbzzkQIB3bfEJMdwX3h0vP0qCfzC2iQvSakNA=;
-        b=DpT9SBxm4QHMs3xEjMvQDY4zQI52NWnWeFEkb3Hh5iUEroDNniek5sEf29M/IDfLFN
-         s8oK96nXmjh9flID8RYtVDnPgSbAZhFBEPdqg5c5kG+cNtGf0scvgnyMGIG4ssDH4/gP
-         aNXGtdFEvAucnMNVQ56npOOmfkRt+0iKq4iZ4VjFeVeEdy+yQeeRtu2ap9A7BT//eNdn
-         D/F1RsJFSs+fM2oxQpZuM84qd9jDLcb8v1DCKo6diQhW2+a/V4zhX/vo22+7Tj3syTog
-         4OYk8W+OsDhFIuaax2x22FQBgU+1MOscldmJNHuwk8RllOc103LXWNGScUZcMFeGDXku
-         9v4w==
+        bh=y8j03KsnP+WY4a9H678qmXjMqSuVnhErtf2XtQN2/1o=;
+        b=bKgFlgvWaEfigIpxa6+Wfu+bBzMDaw89UMpbsJaL30YOR1LaNHg0dvgRv8/6dHnPJT
+         esnm8xd9VighPZIzs4qT6AEpetDjqYPTZQF4m44cq5OBzg+6f6dgjB+Hu4ze2U+8lUmt
+         gwGkqr40QNSj8HdJZb+cuY0TCfU8yFvzJbmEUdO42+TvsLblii/rmUIQEHfd/g78EmTq
+         JwCWsNQl+qLnv2iNtl4SmbWE4I5Nktgic8pyIj8+PIsxopnqJkL8q3N7XcAko+uBmlDT
+         4D3AoP0ahg2kIeRqenAXCdzJYmluimBiHM3PUqaU/fgqa0vu9ewmuOsxoSXTnnJIaDkV
+         O9Jw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770206937; x=1770811737;
+        d=1e100.net; s=20230601; t=1770207026; x=1770811826;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UUviRPGbzzkQIB3bfEJMdwX3h0vP0qCfzC2iQvSakNA=;
-        b=aRp+wuCPLr0yxG74oXguR5qxto07ro4IRSrNH50V+rc5VBPoidv9lAFOJipXJzzxFU
-         A2e53NIV5B7hzYyQ3svJJ1wIB0cpJc98gpZOLJe+k6R8VRz5zxpWtnUbragdWGYqOJp0
-         pbs8L7NXH273SD7HZA1ye2R3ZAQrY7ga7/9s49z/OTA+PewxB5fq8KtizSHBKhvC4mo+
-         PCRuKwHKC3j5E4dgAymdHp/bDOepN3hy8P9fIFlStj3rR5QEg4i/2lXTG72SCEoPMuSY
-         t25F2KQ+KZ578N51Ym/Vu0YI8GbXAs9enzBlUFJZXSDPUbfV2CrPweKdrV38hsaxEfaW
-         w3pQ==
-X-Gm-Message-State: AOJu0Yy0bFgdFwlKfX+upV5GNEbnLIe1mDvUV1W2DohZkNObAtjGaVLd
-	mcOLztXPHrq8NBdP2JUi/Jh4eE1orOLJJg2mfVd108nVABodWoBcZqOh
-X-Gm-Gg: AZuq6aJJXjzuVgX6vx7XcabC8M99TSAYLmmvT4UyCPRUEtW+8wROcGZtLgHpG0puB9w
-	GTAq5VzFKXmwvJoUxeYZYO60gj4eO+OoxaZL9YQozUrla6iPfqeHHs1BILyxBIKEB1CpvVCCRXZ
-	a4iS4S88fRxzEkO1p9Kq8LQJCcGWCKyheeBtbtNZVLs6zM9IrqN5MvN1I6gsz1ADVfQAb0eHv3G
-	I72UoRc4SysR3jKoCYYJ8B/bkvjRxW6hQK47YIFahdUZCaQaCCVEOSLtqDWKSNs3LOcqaQuLRjq
-	c6HIgDYTAZaoGc84fVffEUcfbQniDGIuvSKw39t85FtrzG0tcwI/CgYzC4FDi0GfAfmUrTWOdr1
-	lUAP2dx5zpRR1w3frDpJWxBR+9J5xQeez2fLfE9sDG+tf3DjH7MPJ+0K4zuXEcqBu7p6sIsT+Ct
-	jy4pNApok=
-X-Received: by 2002:ac8:5847:0:b0:4ff:a40d:d2b2 with SMTP id d75a77b69052e-5061c0dd361mr33710771cf.16.1770206936812;
-        Wed, 04 Feb 2026 04:08:56 -0800 (PST)
+        bh=y8j03KsnP+WY4a9H678qmXjMqSuVnhErtf2XtQN2/1o=;
+        b=l21qI+IKNmsu7xoJ1VeuR4YyCr97Uujtp0EuVYDw5w1bnp9+/1JOXXzz93NLSecmrs
+         uNMMYoVJytJxlDvalHVbEsI7+p0bR1T+cyX7F3Kbe++sLzcIxFF/0+PBzdWKPK0s7dZd
+         f79LG/z7WtJZrFC3krMlv0+8J4P3hIFx+RWAzIhHLW5qmumApeBHhhCwdXIUQ2iGyUhd
+         hYJE+ru6QadMdG736xh5LWx3JE8TA8AsEoYvKVIkLndMuE9rJgLwy1W5mLN0foQXIWa0
+         mdjR7+QTqGkvsBeBsFB1f/PRite74ppsC7HmEFNxwMT/OZO/5hMQGNn/iHeYv78IujcF
+         nWoQ==
+X-Gm-Message-State: AOJu0Yxnk7pgLCF704gOe84xp2t+6pp8vDRagjuNoeuRkj5FJnpbeHwk
+	wOK+v1MUfWM5u2QoiiWXYklehjCN0zN4GGdpFRE1vFc3JF7B9+p1p3Ha
+X-Gm-Gg: AZuq6aKpdhtduxOiZzgQILaVdV1WBebilkP23M7jH4v2pAfaVm6PLRweNfNJtm4l7ej
+	q+tjpLHUBhIsLWMGKtCqBVO8n9CfGkLar2b9L5WANazGvltW3n0zHwDoBpvC2nuulaxwOWIOg0o
+	Hr5ZAc7tiHcwXEmDPYq1q1je0aL8iTzQh+A+lT2CevGMmQoB+9GhoNC56cokheCrGPtWnVznGeU
+	R05yIJlLT/yTq/wQwIv+1ILwOJXxXRQOBC8ZAACx3D+RW76LTGjVuHH4cl6hfsjiJoEpA74cY7Z
+	UDIarBmd0F1343soYi/x6lOLfOrvDLrEGzethqa6DudCL2nLoTfxemE56PPPA9ZM4DekwQXvXsq
+	MC2mKcie21q1PUpDrnzbs0d/yt/M7b6OIbduw1F1bm6q8AqWiCXLVNtiJLdsYIoFTSggHxWx60Y
+	8h+kAVYMc=
+X-Received: by 2002:a05:620a:2981:b0:8c5:af6:3efa with SMTP id af79cd13be357-8ca2fa653ecmr363157485a.86.1770207025521;
+        Wed, 04 Feb 2026 04:10:25 -0800 (PST)
 Received: from pek-khao-d3 ([128.224.253.2])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-5061c21e75fsm16408671cf.34.2026.02.04.04.08.51
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ca2fa8144csm172588085a.14.2026.02.04.04.10.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 04:08:56 -0800 (PST)
-Date: Wed, 4 Feb 2026 20:08:48 +0800
+        Wed, 04 Feb 2026 04:10:25 -0800 (PST)
+Date: Wed, 4 Feb 2026 20:10:17 +0800
 From: Kevin Hao <haokexin@gmail.com>
 To: Markus Elfring <Markus.Elfring@web.de>
 Cc: netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
@@ -71,12 +71,12 @@ Cc: netdev@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
 	Meghana Malladi <m-malladi@ti.com>, Paolo Abeni <pabeni@redhat.com>,
 	Roger Quadros <rogerq@kernel.org>, Simon Horman <horms@kernel.org>,
 	Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Subject: Re: [PATCH net-next 1/2] net: ti: icssg-prueth-sr1: Remove unused
- workqueue
-Message-ID: <aYM20LhFdizztfrH@pek-khao-d3>
+Subject: Re: [PATCH net-next 2/2] net: ti: icssg-prueth: Use system default
+ workqueue in ndo_set_rx_mode callback
+Message-ID: <aYM3KduEzTb7DyQD@pek-khao-d3>
 References: <20260204-icssg-prueth-workqueue-v1-0-9a892f4b293d@gmail.com>
- <20260204-icssg-prueth-workqueue-v1-1-9a892f4b293d@gmail.com>
- <b81fc1cb-066a-43be-8cb4-90a45bfc4b06@web.de>
+ <20260204-icssg-prueth-workqueue-v1-2-9a892f4b293d@gmail.com>
+ <ead52d66-b594-4dd8-91a7-9baa88230728@web.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,42 +84,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="0eorNAEsC7mvlorp"
+	protocol="application/pgp-signature"; boundary="Mb1aNZiUmsBX9LTF"
 Content-Disposition: inline
-In-Reply-To: <b81fc1cb-066a-43be-8cb4-90a45bfc4b06@web.de>
+In-Reply-To: <ead52d66-b594-4dd8-91a7-9baa88230728@web.de>
 
 
---0eorNAEsC7mvlorp
+--Mb1aNZiUmsBX9LTF
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 04, 2026 at 11:38:37AM +0100, Markus Elfring wrote:
-> > The dedicated workqueue emac->cmd_wq is not utilized in this driver and
-> > can be safely removed.
+On Wed, Feb 04, 2026 at 11:45:24AM +0100, Markus Elfring wrote:
+> > Currently, the actual processing of ndo_set_rx_mode is executed in a wo=
+rk.
 >=20
-> Wording suggestion:
-> Remove the work queue =E2=80=9Cemac->cmd_wq=E2=80=9D because it is not ut=
-ilized in this driver.
+>                                                                          =
+   queue?
 
-Will update.
+Will change to workqueue.
 
 Thanks,
 Kevin
 
---0eorNAEsC7mvlorp
+>=20
+>=20
+> > However, there is no need to create a dedicated workqueue for =E2=80=A6
+>=20
+>=20
+> Regards,
+> Markus
+
+--Mb1aNZiUmsBX9LTF
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCgAdFiEEHc6qFoLCZqgJD98Zk1jtMN6usXEFAmmDNtAACgkQk1jtMN6u
-sXGLFQf+Pl6kC5qcHNXnjVLfsBQrMlYCKCtl/+iv4YRYbnlIpgpc8njzuKjpuVxL
-OHEyryLo0Mf+ctNsh0kDa5P8UHdSueT+A1E9VMc+aSABopzF42Pm1neUEurT7ILg
-v9mkrQo4KFwa0Pil7WhOh+lgqRuxB/8UIYwSnu+fnPTdo6kaBclDCF4t32Rzl0td
-UE8m4fOrIHsDu2821TqsFIBYjX2393NiVp4R4sjxoqcA7MxAZNvlvu66IJEERwE9
-x52Eh+Y3QRA62eIqpjeik8qKrymMaZKKZXMdmO+sFNOA77Lo2IR+zJn/tGZONKt9
-oH44+CFhLBW1WGj0uStrPn8x5fXvaA==
-=U//q
+iQEzBAEBCgAdFiEEHc6qFoLCZqgJD98Zk1jtMN6usXEFAmmDNykACgkQk1jtMN6u
+sXEUoAgApTqyXcgdxPEsnGSk4SwdDIAe9cjn9wHdm7s8LAQDDcBmgmlEJI8f7l1Y
+5cA35FvqcUdSztcFpeVTSnKZ7//WleDs+yrMcqfe0oePCq6wyJFNpYVmJgEvUZcC
+kKft7F19hHVjnaQcVvOZ396X4+xOu+hahp92khvhlUW/AqK9MCO4wiPJ0WT/SAHd
+XICqNkFG5qtBeV1Nfk9zpPd+16VGhrzg/NkskSXFTSsab1APN731ip/jiAPR76cb
+KNbgziOEoPeEfyuiBeOSzEBISOkKGshAmkP20EDE9qIk4oCmDDIvSWY35y//FCJG
+ejAze+4V036DywWg4N3kIEepLeI0Og==
+=SedH
 -----END PGP SIGNATURE-----
 
---0eorNAEsC7mvlorp--
+--Mb1aNZiUmsBX9LTF--
