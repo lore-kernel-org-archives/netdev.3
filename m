@@ -1,60 +1,81 @@
-Received: from sonic314-20.consmr.mail.ne1.yahoo.com (sonic314-20.consmr.mail.ne1.yahoo.com [66.163.189.146])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C69933F37D
-	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 17:12:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.189.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F99334A3DA
+	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 17:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770225163; cv=none; b=LTLUlN0TzEGejHbkscSlRrfjQ2sLYCf9eBUqZmH+WX3RI6q/LBH2LojzB2tdHzd1shNWgAdA4xuu4iPb9VdpoNfw8tBwXEJ1ti5N45pNdU17PJQ9rbLbj51jcmTR1Iatt3GOxW+BP7suowDodELoFbwm8Xx9ZF+3tcDVYsgipkA=
+	t=1770226200; cv=none; b=sZnmqHuTR1qH51elgw7475lVhiam4+kYqqdcl09SRU7Dv4TsmTCpK/Q4bmLLigyfFKNV30B6cekIX5sxPhOJbq5UD4cuML1ySuiswe5rE+JNf1G8G3XctJU+zAyVW+Eqztw+spjhZFpPUItT48fb6Vt0QYUSw6Hz0It9ia0fiAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770225163; c=relaxed/simple;
-	bh=0Hy2Bd3elybwCjmfEqj/GpPLAKkIYB5J6cEtufLYNPk=;
+	s=arc-20240116; t=1770226200; c=relaxed/simple;
+	bh=FjrBp5UQqCfdT86rQD5v1juUlYlbQv1n6OqQlbGbKA8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lA+usjW6AT9yX3dz1Fh5WF0IxEvKktfF1Nd+zC8h2+N5Tfka0uQHIrWQQKGElpAAsKKd1mg8Pfj6LOFPr8fnUsKvviLK2Rlf3cNdmBGNXyNu0AsEU58wO1rSx+QjeP5/xF9XZlNqf/FXD1WHriVikzrdFs4o1rV3Hr9skCwNCIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=N+/HSel0; arc=none smtp.client-ip=66.163.189.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
+	 In-Reply-To:Content-Type; b=WS/0P1wDGYaDjCZh7EloTLyosWnnbxCDHQ9VSq2Ufi0vpmawNznw1p7NYoGHBMBFtY/7NEQDVas0EC+0B/W3ZZzWZYIYKEiyCVQtaBbdU/2rPjwWjD+9XfbDCstFXNZSGp+tsqmLcY7cRgrq7Tf/6CU+f7Q2swWti+l2JIgDI/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kWV4dbKK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FdznD3Oy; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=kWV4dbKK; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=FdznD3Oy; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="N+/HSel0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1770225162; bh=FjFs625tbiJi3Vt3bSwEOcBrDsr7PtUAEn+2aM1qPGo=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=N+/HSel0bQYczXuiH2dB2DFIbWMPVrd+CqLdiW3toJY+2jDlsmF7ksj1fKI+EP9M6XXDjht2XypnuNR5cviITKQjDnEJOjktaiu10xNy8kr+pKMQJp+XcBPqcSaKFcsZVlJ94UqpL44FKwWIIQ+hveId7p/1ThT0YxUkyxy//JKIU2ETeBpQJNO1QJSRoHtXfbr153pQ4SefCQweAsLri5xbIqXpeYLFM/24+beJWbfCSgq6UgBd5Jzxno6bolib6lrnxIpQHHz34oKmvO3jRaeUysv2XKFXOrgkrTJQE6o3U3deu+FSrH/MArfYed2muK7ajBBZWfQA1vWcv3hz0A==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1770225162; bh=WhMw4lnbhqRMGd2u9EzNw4wXjc+T50zMyttYbKvKJ0l=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=eKWBDQq6rH2ES+e5VhE0VJqByfxBw3EpV48P6wMXdP+YP0uUn+v+1Waj/V6xuBct39J8ibSxRX2UqPYONs4DLndVpmmB//aHx92t+KKn8o9VOckbw7v8B+BbiIlKJzqY/qZFo1or7xBGJPCOG/JESMDQzTdCwVtiTPQirXQ3+eamDFs9FcQl6nESkHk/LrY8mqEK2wk/ru1UUrVQla1/VWY0Mx3xiUsawjOJppPuJGywm9V9L+8IEQu5c3247DIiIbsoXg6AxzWANL7RKmb3uERkAc9VylRCHhTAVQVeLrvVotABQWNN7cQ8j9BZM1bD49ZeSFzQ9Ge55ubzAezvQg==
-X-YMail-OSG: AuHOGVsVM1luAUYQlzDXp5udMfSwuVqVPfvVWnFyPP9AEV46.QlG7GvFJMlx6Gm
- bTTo8poSeEk8SKyp4g0umBSepfJ2NqUi0Og_mIsazkkRFiWVmm2o95owH.4TbPvQPaST83MpctAc
- AhK2zB9ZFv7Q8trpYBLdCT3ToztrUnx9GeGf_0Z84q3kv94qyKLvKHVQFeujPLlG.5Vl9ehyYt8S
- d_ub2H9vZXTwjiC7Yn3BO.e9FMkjZoRCwupyUjJrWXSn3ffbNCtBb_96WNVJm_3OGDcJPu4.vBDN
- LTJY5lX4ldYuuEYZCjDhXZS0Eqxm9AZWCJGRV2nZZMt22sdKeJ.bnNUA4PI103znWo.exajF83YA
- w4iYlH5AqcBJckGaotwqdNldzfrM_TPtu5lUgDAFnXtnmRhOqXaKCuKHw67fdWRlSfkVRKf7Z24.
- rh7zUStwzhs1JGpRqwX5_0kzQGzEHlnQzyP3ZULTv4SBLV.ZfLUw.V7gp1el5AB_8.7WiFfZ.UG1
- mv1Zf.Gx1ODqii41pxqipKZtxj.pHXagy1_xrk0YoUtHgEP_pWIZLC_8juswYhKWwSoWp7XmqjnS
- bAT0AE3brf5RHVbjl7nweuhETRjjCBedfMb_galcAfMCSbq_LGsbljEmg7c6EqUiViG77W7U9EdU
- lAZukYTRYJVcJZXkT9dfKcyt.jvZPBIPCBdfO09dIi4kjI6Pun.L9M32lXKW_JipMSeqO.ixVYm5
- xy4hM1COhQXlh9avngZZ0zlzwmNV6oxE8SlYX1YcqZchS6lJUkbqpRbU5sA0lkzdZziYMaqOPzKN
- lmZQED5YbS4pHBUS0zoMrRCMnyed6eFNNBjx4.8DArF9ZOmup9Zp8fIx3W96TLuL9JCceXHaI5a6
- c0mgk18kcM_4.r7QRg_nYaVMnXuhqZSKMy3InCR8UM1Q0ven7pLRWIwS6KnDfZPw531aDtVrf9V6
- SCHTMaXqU1zl7nqVZe1rXpK6N5zerNt4SD_FSdvxVdBFmAajONuPhRYx_f_59stoPoPX0YSarL2h
- 6geN.W66_Jq8kYz1bynuT5DWAO6DLWZUxpGiTRdrjfI6rJJBX7E6Z2H5cmWfQMZWNI_Is.ZIuqcf
- CsAve.LWlQKv8W_tcp4qUH9j1hKvpvMclZSYN6ggTDlBGdGME.WXJXu4JCwGF38lRhu14Y.x9p1w
- XVKGAQqVhgGJP2JAP0ZBcG8PUuKQRisdyglHooyq4ssRYL8pDhPie6IFi8OMS6A_eI64vDFO6szJ
- 8qkJrx5baLSQ04bSH45efLF3zN7Z5C8W.tqIUbRoXpUAq9iRIlOOgn1u6ciiWleoUya9D1u8t0n7
- UhyrT87O11Yl.Spm2AO7l_4T0jCNPMe4aQUXp5JL1iLjL2puAFXJ3QBmRoljBJdIjAo8MTmY0l7a
- 14u0ucTebWPiTqd80s0rlnLxosawVJo5Df63YBIk_UC50nj1TdUSKj.jEC10kgrt2mhZpCKRp3iw
- 8wTyg_ISBqivAFXHlweZLD9Ia9fX5PqY8Q6OTavLTDS5ZcvB5acoen4BD2Gp2qAeZ6SVA9XbXU9.
- pahmK2w7NXu_fqv3o_tjC.P4kauSxC41St.Fac74xK5LQKhmWBLFq7immQ82TYsA7zDMOFx5Qo8N
- ocPhp.uDIpslg33_3eBP5G1cE3N1b9O6tzYOgRML3gUxgUWbjla8D716HvbxDT7jL8rvvrJVH7ga
- vsBc4U3Hk9smbUHnicIYaYcGQYYPK5z4sGlKuRXm2v_vRsajRvyEWMzPZveilkQJj9uPuYMKBH.p
- tc.sLmwTbKhS4udQeRY7JfA0TyB5GnOObtzQOAKRzBlmtxTi3b4fCW1B8bAsNGT643Fkeh2SXqL4
- RvsfRE3TdwP_aOJ34U48rieOB_n7atOEpWa3tt40QKKHM9NSbD1Y9ctvQjqWKhz2TLUbuUmVfy6_
- DbF.zMavOW9uLoGwiDGbfQr_Cyt5PKIUMkB784Dh2uuvtKOmDfjXxbzQ1EF58SMThvm0pWmVNYoq
- r1A7Ebs_kiE9kd2rkePF19ZvzSmkmLaMdFO6sDy20AtDrTtn8xQeEby.xWigLC4Z6xRpfrqCTUkD
- Ox0KOKEr_z6hJ9I_OiswY02wz_akthiICBnybzuapIjAXmYHWt9Gvoyq8IU4a2vFOYLkrJx1I5le
- 38eW0M8cQuE_VXF64imHOuSfg5KPODQ.SsEWdqW79vAA07ox2
-X-Sonic-MF: <mmietus97@yahoo.com>
-X-Sonic-ID: d80b78a2-101d-47e3-be8b-a6e24189b36f
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Wed, 4 Feb 2026 17:12:42 +0000
-Received: by hermes--production-ir2-6fcf857f6f-9zs2m (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 0eabdce53f9ffe9ab888a38850cb8b93;
-          Wed, 04 Feb 2026 16:52:27 +0000 (UTC)
-Message-ID: <60baa2a5-806e-4d8b-8601-976fb62fa203@yahoo.com>
-Date: Wed, 4 Feb 2026 17:52:17 +0100
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kWV4dbKK";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FdznD3Oy";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="kWV4dbKK";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="FdznD3Oy"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3E2CB3E75F;
+	Wed,  4 Feb 2026 17:29:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770226198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qRb7SE2/fIN4Lp9bRZK1Yx2M3pdPz3YbMCfhr00KEO8=;
+	b=kWV4dbKKci+aEZu7o1Y/ikbGlztfGLreLcfE7e5hU2Eya/IE9FcADWBIbG8G6FVsaw5qRC
+	Rl/oAdpwaWGX2Fso73QWgfFWv4ygWr4kA8m13zem9qNFLw0nZ2QO/NXCiOKCc4zY77o74C
+	4b8zEykzRo8LlUU2O43sLJG8minAMhY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770226198;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qRb7SE2/fIN4Lp9bRZK1Yx2M3pdPz3YbMCfhr00KEO8=;
+	b=FdznD3OyAGoOTu1qex9UMEBKt8bITLVoTUr0DwAlyauDWn0WqFeGdocDTEX3Y1gOF3hKWf
+	vBD3VB8qSsQzIIAw==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=kWV4dbKK;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=FdznD3Oy
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1770226198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qRb7SE2/fIN4Lp9bRZK1Yx2M3pdPz3YbMCfhr00KEO8=;
+	b=kWV4dbKKci+aEZu7o1Y/ikbGlztfGLreLcfE7e5hU2Eya/IE9FcADWBIbG8G6FVsaw5qRC
+	Rl/oAdpwaWGX2Fso73QWgfFWv4ygWr4kA8m13zem9qNFLw0nZ2QO/NXCiOKCc4zY77o74C
+	4b8zEykzRo8LlUU2O43sLJG8minAMhY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1770226198;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qRb7SE2/fIN4Lp9bRZK1Yx2M3pdPz3YbMCfhr00KEO8=;
+	b=FdznD3OyAGoOTu1qex9UMEBKt8bITLVoTUr0DwAlyauDWn0WqFeGdocDTEX3Y1gOF3hKWf
+	vBD3VB8qSsQzIIAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5F75A3EA63;
+	Wed,  4 Feb 2026 17:29:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id PcclFBWCg2klHQAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Wed, 04 Feb 2026 17:29:57 +0000
+Message-ID: <8d94faf9-2fb6-483d-9767-bd665c4a4b9a@suse.de>
+Date: Wed, 4 Feb 2026 18:29:56 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,55 +83,161 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v7 02/11] net: tunnel: convert iptunnel_xmit to
- noref
-To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- sd@queasysnail.net, kuba@kernel.org
-Cc: Jason@zx2c4.com
-References: <20260127070452.6581-1-mmietus97@yahoo.com>
- <20260127070452.6581-3-mmietus97@yahoo.com>
- <e3a7f4b4-3569-422b-873f-0f4e1f11392b@redhat.com>
+Subject: Re: [PATCH RFC net-next] inet: add ip_retry_random_port sysctl to
+ reduce sequential port retries
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, corbet@lwn.net, ncardwell@google.com,
+ kuniyu@google.com, dsahern@kernel.org, idosch@nvidia.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Thorsten Toepper <thorsten.toepper@sap.com>
+References: <20260203175422.4620-1-fmancera@suse.de>
+ <CANn89i+UUWx5OhPnJnDhiCfr53BPTAGedBucgqYwyfqkidf_Cg@mail.gmail.com>
 Content-Language: en-US
-From: Marek Mietus <mmietus97@yahoo.com>
-In-Reply-To: <e3a7f4b4-3569-422b-873f-0f4e1f11392b@redhat.com>
-Content-Type: text/plain; charset=UTF-8
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <CANn89i+UUWx5OhPnJnDhiCfr53BPTAGedBucgqYwyfqkidf_Cg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Mailer: WebService/1.1.25116 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
+X-Spam-Score: -4.51
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 3E2CB3E75F
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
 
-W dniu 2/3/26 o 09:21, Paolo Abeni pisze:
-> On 1/27/26 8:04 AM, Marek Mietus wrote:
->> diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
->> index cf37ad9686e6..a0d699082747 100644
->> --- a/net/ipv6/sit.c
->> +++ b/net/ipv6/sit.c
->> @@ -1028,6 +1028,7 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
->>  
->>  	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, protocol, tos, ttl,
->>  		      df, !net_eq(tunnel->net, dev_net(dev)), 0);
->> +	ip_rt_put(rt);
->>  	return NETDEV_TX_OK;
->>  
->>  tx_error_icmp:
+On 2/4/26 5:49 PM, Eric Dumazet wrote:
+> On Tue, Feb 3, 2026 at 6:54 PM Fernando Fernandez Mancera
+> <fmancera@suse.de> wrote:
+>>
+>> With the current port selection algorithm, ports after a reserved port
+>> or long time used port are used more often than others. This combines
+>> with cloud environments blocking connections between the application
+>> server and the database server if there was a previous connection with
+>> the same source port. This leads to connectivity problems between
+>> applications on cloud environments.
+>>
+>> The situation is that a source tuple is usable again after being closed
+>> for a maximum lifetime segment of two minutes while in the firewall it's
+>> still noted as existing for 60 minutes or longer. So in case that the
+>> port is reused for the same target tuple before the firewall cleans up,
+>> the connection will fail due to firewall interference which itself will
+>> reset the activity timeout in its own table. We understand the real
+>> issue here is that these firewalls cannot cope with standards-compliant
+>> port reuse. But this is a workaround for such situations and an
+>> improvement on the distribution of ports selected.
+>>
+>> The proposed solution is instead of incrementing the port number,
+>> performing a re-selection of a new random port within the remaining
+>> range. This solution is configured via sysctl new option
+>> "net.ipv4.ip_retry_random_port".
+>>
+>> The test run consists of two processes, a client and a server, and loops
+>> connect to the server sending some bytes back. The results we got are
+>> promising:
+>>
+>> Executed test: Current algorithm
+>> ephemeral port range: 9000-65499
+>> simulated selections: 10000000
+>> retries during simulation: 14197718
+>> longest retry sequence: 5202
+>>
+>> Executed test: Proposed modified algorithm
+>> ephemeral port range: 9000-65499
+>> simulated selections: 10000000
+>> retries during simulation: 3976671
+>> longest retry sequence: 12
+>>
+>> In addition, on graphs generated we can observe that the distribution of
+>> source ports is more even with the proposed patch.
+>>
+>> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+>> Tested-by: Thorsten Toepper <thorsten.toepper@sap.com>
+>> ---
+>>   .../networking/net_cachelines/netns_ipv4_sysctl.rst        | 1 +
+>>   include/net/netns/ipv4.h                                   | 1 +
+>>   net/ipv4/inet_hashtables.c                                 | 7 ++++++-
+>>   net/ipv4/sysctl_net_ipv4.c                                 | 7 +++++++
+>>   4 files changed, 15 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst b/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst
+>> index beaf1880a19b..c4041fdca01e 100644
+>> --- a/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst
+>> +++ b/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst
+>> @@ -47,6 +47,7 @@ u8                              sysctl_tcp_ecn
+>>   u8                              sysctl_tcp_ecn_fallback
+>>   u8                              sysctl_ip_default_ttl                                                                ip4_dst_hoplimit/ip_select_ttl
+>>   u8                              sysctl_ip_no_pmtu_disc
+>> +u8                              sysctl_ip_retry_random_port
+>>   u8                              sysctl_ip_fwd_use_pmtu                       read_mostly                             ip_dst_mtu_maybe_forward/ip_skb_dst_mtu
+>>   u8                              sysctl_ip_fwd_update_priority                                                        ip_forward
+>>   u8                              sysctl_ip_nonlocal_bind
+>> diff --git a/include/net/netns/ipv4.h b/include/net/netns/ipv4.h
+>> index 2dbd46fc4734..d04b07e7c935 100644
+>> --- a/include/net/netns/ipv4.h
+>> +++ b/include/net/netns/ipv4.h
+>> @@ -156,6 +156,7 @@ struct netns_ipv4 {
+>>
+>>          u8 sysctl_ip_default_ttl;
+>>          u8 sysctl_ip_no_pmtu_disc;
+>> +       u8 sysctl_ip_retry_random_port;
+>>          u8 sysctl_ip_fwd_update_priority;
+>>          u8 sysctl_ip_nonlocal_bind;
+>>          u8 sysctl_ip_autobind_reuse;
+>> diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+>> index f5826ec4bcaa..f1c79a7d3fd3 100644
+>> --- a/net/ipv4/inet_hashtables.c
+>> +++ b/net/ipv4/inet_hashtables.c
+>> @@ -1088,8 +1088,13 @@ int __inet_hash_connect(struct inet_timewait_death_row *death_row,
+>>          for (i = 0; i < remaining; i += step, port += step) {
+>>                  if (unlikely(port >= high))
+>>                          port -= remaining;
+>> -               if (inet_is_local_reserved_port(net, port))
+>> +               if (inet_is_local_reserved_port(net, port)) {
+>> +                       if (net->ipv4.sysctl_ip_retry_random_port) {
+>> +                               port = low + get_random_u32_below(remaining);
+>> +                               port = ((port & 1) == step) ? port : (port - 1);
+>> +                       }
 > 
-> Could you please double check that all ndo_start_xmit caller are under
-> RCU protection?
+> What happens when almost  all ephemeral ports are in use, and
+> hundreds of ports are reserved ?
+> 
+> Choosing a random value each time we meet a reserved port is going to
+> be quite expensive,
+> and we might return an error from this function even if there are many
+> available ports.
+> 
+> Perhaps randomly select @step one time at the beginning of this
+> function so that  @step/2 and @remaining/2
+> are relatively prime numbers.
 > 
 
-The docs in Documentation/networking/netdevices.rst mention that ndo_start_xmit
-is called from a BH context or from a process context with BHs disabled.
+That actually makes sense. It would ensure all ports are visited before 
+returning an error. Let me test this out.
 
-Ever since the consolidation of the different RCU flavors, running with BHs
-disabled implies an RCU read-side critical section. This is mentioned in the docs
-for rcu_read_lock_bh.
-
-> Specifically I don't see it in the
-> xsk_generic_xmit()/__dev_direct_xmit() path.
-> 
-
-As for this, __dev_direct_xmit() calls local_bh_disable() before calling
-netdev_start_xmit(), which eventually calls ops->ndo_start_xmit().
-
-> /P
-> 
-> 
-
+Thank you Eric,
+Fernando.
