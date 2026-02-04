@@ -1,48 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A03B28853A;
-	Wed,  4 Feb 2026 03:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26970285CA8;
+	Wed,  4 Feb 2026 03:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770176063; cv=none; b=PJ4SbvYCpCtlVQEdpaQ/jED4rvFlCN+V3gG7xawbnUYvlKiJmlON/uG7JrLz9wfnkf62ZCi1JWnZBD27gAJB82sWMC+8zxQFj1qwFVYElR8ShWMR8q5Kec9Memgpb+nqEGQgN/xRwpYXf43XSa74LEwHwGrbkSNGrm8CRJYA8/o=
+	t=1770176417; cv=none; b=ZHD0RqYVI2PcPzfIZ5aWZfvkzz4CGLbf9u4XGh+/TRzN0xxmsiOE5nbKa8kIB7TyyHANQilv0bI9YNtaY5NhnrSUojCmr7hjihnK/GwpdpRSgzDYSwlkSNgVW+DqdqJsOLSUsqeUaPcgNV3Q3Xr9uqDdpZeNARqzEhIgzE1MBp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770176063; c=relaxed/simple;
-	bh=7LYvxop/UzbaNuWZbUeogMT49FY0BTln2u5Is5UWtG0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CKmUp871EVhiOQMuKe7Jzpns7nUtK++zS1leItBiS0Q5rLMp8wdlPQhvfTyc3MRCHKl/gD3TvAS05ir7E98EiQoW1EVn/ogI5wnzXix170NH0s+RKLoP0hEIMXsgSgacyi9n+e0vM0h0nIZc2X3RSQq6VvEkxt5CdvNYg1v5rvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qicqvksi; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770176417; c=relaxed/simple;
+	bh=xuzQ7yeJHibCEn7xA4UUhhyO8zG1Diwl4cCpImKyb2M=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=pnxf/GOEYRR4BkP9roaVv+j74+LkWUPyRs5vutsn9FwSh7zwL26jg+UYjB1tZf7QanPioLFTnyxMT39Rj2HN+zuRiiP8qo1R9Cc+Ec7lihnI7OjOcLXPg52NSj9mm85T+ZusGhQcSg+gYbdK5i8VmNal8VTFeCxDaw7rAqzBqns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R2mpXzza; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qicqvksi"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1813C4CEF7;
-	Wed,  4 Feb 2026 03:34:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R2mpXzza"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2894C4CEF7;
+	Wed,  4 Feb 2026 03:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770176063;
-	bh=7LYvxop/UzbaNuWZbUeogMT49FY0BTln2u5Is5UWtG0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QicqvksiKfuumlQN2RbOXdDFALRemeRdpMmD8tlyPW6BnfrutQPnd1StNtVd66p7F
-	 5yG3QN+gxd1kODozSEsOn/piXmVGYGQW48ZeZI3TGSCULVOM43SAQM/lBDliAIwMJq
-	 vp3zexHHWJIcHKaDbZ4tLIj3VCeLlBbuJCCB1lRdhQBUw+dSWtLpYy8y4WLaNSNnsk
-	 aQaIjGwTAyznLS5LE3+WA9I+v52QvvWYl7yJmI93xojqZr2/uJr3fdNIrKSwxxoE/v
-	 1BuFGBnq7n2GuG5Q3nkHZfrYD3Ck7JUcsiXGFTLU4jDJ+ACIl6l2V6kjH/FvbyCPY+
-	 0JVTy7lU5mgMg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: jacky_chou@aspeedtech.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	horms@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org,
-	andrew@lunn.ch
-Subject: Re: [net-next,v3,08/15] net: ftgmac100: Move NCSI probe code into a helper
-Date: Tue,  3 Feb 2026 19:34:21 -0800
-Message-ID: <20260204033421.1665426-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260202-ftgmac-cleanup-v3-8-6a6a8d45280a@aspeedtech.com>
-References: <20260202-ftgmac-cleanup-v3-8-6a6a8d45280a@aspeedtech.com>
+	s=k20201202; t=1770176416;
+	bh=xuzQ7yeJHibCEn7xA4UUhhyO8zG1Diwl4cCpImKyb2M=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=R2mpXzzaMTXFsmemif8Pwpw1bWGLGpoM5B7/2qiUCCxHMVlqv1sVzm4qgfwohn1VG
+	 mU1S4pqpKNoljckUQdnX5BGwesZGVKaGOeSil1tVHpgRcTYZgWf8Zb/mLMH6eD1A8x
+	 LeorkrHph0HFUGZCdSfW47giSHVZkSuyNuXNpuU9fRwpBmxoGrEI3H6di5ypnwCXuM
+	 dPkPrBwvnFOOP43EDtNqjSJhwLxewhG1uIbHj9In9kFUQuu5zy1E1HVx2GJK1VoSuL
+	 tX3s0IeXk9EqYC3Y0YBTs76+puyhNSQ98h7e/O3Cv8PNel7ZPT7Vx1WdxF0hOfliFJ
+	 4YvowdgJPTn0Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 16DA73808200;
+	Wed,  4 Feb 2026 03:40:14 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,94 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/2] gve: Stats reporting fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177017641288.2168983.8087893883904523587.git-patchwork-notify@kernel.org>
+Date: Wed, 04 Feb 2026 03:40:12 +0000
+References: <20260202193925.3106272-1-hramamurthy@google.com>
+In-Reply-To: <20260202193925.3106272-1-hramamurthy@google.com>
+To: Harshitha Ramamurthy <hramamurthy@google.com>
+Cc: netdev@vger.kernel.org, joshwash@google.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ willemb@google.com, ziweixiao@google.com, jordanrhee@google.com,
+ nktgrg@google.com, kuozhao@google.com, yangchun@google.com,
+ awogbemila@google.com, maolson@google.com, ast@kernel.org,
+ daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+ sdf@fomichev.me, bpf@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.com, maxyuan@google.com
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+Hello:
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-net: ftgmac100: Move NCSI probe code into a helper
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-This commit refactors ftgmac100_probe() by extracting NCSI-specific probe
-code into a new helper function ftgmac100_probe_ncsi(). The commit message
-states "No functional change intended."
+On Mon,  2 Feb 2026 19:39:23 +0000 you wrote:
+> From: Max Yuan <maxyuan@google.com>
+> 
+> This series addresses two issues related to statistics in the gve driver.
+> 
+> The first patch fixes a memory corruption issue that occurs when resizing
+> the stats region during queue count changes. By allocating the maximum
+> possible size upfront and aligning offset calculations with the NIC,
+> we ensure stability and accuracy across reconfigurations.
+> 
+> [...]
 
-> diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-> index e511d6d5f7c2..9d8256d4d368 100644
-> --- a/drivers/net/ethernet/faraday/ftgmac100.c
-> +++ b/drivers/net/ethernet/faraday/ftgmac100.c
-> @@ -1839,6 +1839,39 @@ static bool ftgmac100_has_child_node(struct device_node *np, const char *name)
-> 	return ret;
->  }
->
-> +static int ftgmac100_probe_ncsi(struct net_device *netdev,
-> +				struct ftgmac100 *priv,
-> +				struct platform_device *pdev)
-> +{
-> +	struct device_node *np = pdev->dev.of_node;
-> +	struct phy_device *phydev;
-> +	int err;
-> +
-> +	if (!IS_ENABLED(CONFIG_NET_NCSI)) {
-> +		dev_err(&pdev->dev, "NCSI stack not enabled\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	dev_info(&pdev->dev, "Using NCSI interface\n");
-> +	priv->use_ncsi = true;
-> +	priv->ndev = ncsi_register_dev(netdev, ftgmac100_ncsi_handler);
-> +	if (!priv->ndev)
-> +		return -EINVAL;
-> +
-> +	phydev = fixed_phy_register(&ncsi_phy_status, np);
-> +	if (IS_ERR(phydev)) {
-> +		dev_err(&pdev->dev, "failed to register fixed PHY device\n");
-> +		return PTR_ERR(phydev);
+Here is the summary with links:
+  - [net,1/2] gve: Fix stats report corruption on queue count change
+    https://git.kernel.org/netdev/net/c/7b9ebcce0296
+  - [net,2/2] gve: Correct ethtool rx_dropped calculation
+    https://git.kernel.org/netdev/net/c/c7db85d579a1
 
-If fixed_phy_register() fails here, doesn't priv->ndev leak? The NCSI device
-was registered via ncsi_register_dev() above, but this error path returns
-without calling ncsi_unregister_dev().
-
-> +	}
-> +	err = phy_connect_direct(netdev, phydev, ftgmac100_adjust_link,
-> +				 PHY_INTERFACE_MODE_RMII);
-> +	if (err) {
-> +		dev_err(&pdev->dev, "Connecting PHY failed\n");
-> +		fixed_phy_unregister(phydev);
-> +	}
-> +	return err;
-
-Similarly, if phy_connect_direct() fails, fixed_phy_unregister() is called
-but ncsi_unregister_dev(priv->ndev) is not.
-
-[ ... ]
-
-> @@ -1928,32 +1960,9 @@ static int ftgmac100_probe(struct platform_device *pdev)
->  	}
->
->  	if (np && of_get_property(np, "use-ncsi", NULL)) {
-> -		if (!IS_ENABLED(CONFIG_NET_NCSI)) {
-> -			dev_err(&pdev->dev, "NCSI stack not enabled\n");
-> -			err = -EINVAL;
-> -			goto err_phy_connect;
-
-[ ... ]
-
-> -		phydev = fixed_phy_register(&ncsi_phy_status, np);
-> -		if (IS_ERR(phydev)) {
-> -			dev_err(&pdev->dev, "failed to register fixed PHY device\n");
-> -			err = PTR_ERR(phydev);
-> -			goto err_phy_connect;
-
-The old code jumped to err_phy_connect on failure, which falls through to
-err_ncsi_dev where ncsi_unregister_dev(priv->ndev) is called.
-
-> +		err = ftgmac100_probe_ncsi(netdev, priv, pdev);
-> +		if (err)
-> +			goto err_setup_mdio;
-
-The new code jumps to err_setup_mdio, which skips the err_ncsi_dev label
-entirely. Combined with the helper not cleaning up priv->ndev on its error
-paths, this appears to be a behavioral change from the original code.
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
