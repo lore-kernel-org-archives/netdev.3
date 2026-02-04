@@ -1,251 +1,199 @@
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA2BD3ED135;
-	Wed,  4 Feb 2026 12:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49E87359FB8
+	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 12:12:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770207109; cv=none; b=tsUoPQb8Ls7HuqQDy3otKwmtDcETuZqLAlMb0B2i9H9xb+O6+WNgGcj1iB1wyLIsD4oYuncd4aYHg9xvbKLjTmEvIXwH1Lf52v3siS0JZUtNtZfPyUBYK2ULdPTb7I7hIdfNpWAhQ/N/7hml3bg2yvllOcaMmTj3KlQxQ3lGy+s=
+	t=1770207161; cv=none; b=XqLV7ogsDOPrZa06ccU8Ji+RX6gM8cY+vpdDm1K9ZMmiROUE/pcMaz94iWhdILhN58k5vJynalhVjAdmZAJnX0pCU33GwHyjdcVKjF+8lVr7c81pxaa3nYyCl0dfdO8h/lslzPVIBnluFbRdYz9gusvDhxesqWsXEUqsGWLTR78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770207109; c=relaxed/simple;
-	bh=E72lRfffrbjsoxsZ1ANDr7CC2jDG0kCBzSXD6YjGVBM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PzqkiLg/6/U7LpJgfkncqdni+x1M0sy64qaq0IbwvI2U/tXD9kpN3LhKV1GBk9kCAL76Dueo5/9DR9z3rYGKoHALgMSUwMDpqJVqvkmxtgchz+VKwlboK2EvFneYmJ4nEh085nMXoUGanh6aCCA7lOUsEXRyHoycdZhoAR/fFfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=PiwPHlZh; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+	s=arc-20240116; t=1770207161; c=relaxed/simple;
+	bh=32al2y9NedVlQ+5NCmezUbchkwA6XNnFrhycK5R4aLQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L2sWc54fwB5Jazbqq+I9H9JZxxxksYeMpBYB7PiVWKyEM1gY2ieL6e3m3B8isxCb+SK84yRrZBy6OUDUlC21SC9UJSnKsIC9TnCnkXBzgh2tM07WZQ7q3Yen9YjJkDsBckrxrGY7nxoFgBn6Gz+5ITyMCAi+07S4lSsDvPBbkFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fEV8rrua; arc=none smtp.client-ip=209.85.219.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="PiwPHlZh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=Content-Transfer-Encoding:MIME-Version:
-	Message-ID:Date:Subject:Cc:To:From:Content-Type:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-To:Resent-Cc:
-	Resent-Message-ID:In-Reply-To:References;
-	bh=hBGO24IpX+uijpFKMhhUsPdedoPYdDk1kxAezgTwd3M=; t=1770207108; x=1771416708; 
-	b=PiwPHlZhjwlwCWoA4dvWcufeuAtpEHFsbL0qW8rlhy8FmznWaf9pCw/Frojh/dlvpiYgABKidmW
-	BiOJiC0rLP8o+tkC2tm2jn/khjn4mtL5iHHtkIjLoTpkghewwjDt3KZ3EO4lp44oBQEZn1WbVpzCU
-	OXdAXqFVDHZw+g5PtjPGbBeMCf4EO8QNFieRLCmtzpgHMq1MyQXr0hRbw8BD5xVwOfRGCotywflOH
-	LZ8nGxWUzjpp4ReFPCOrsAR36WtoHOd5jvJs8F+6vJvtIyXw1PkCwD7nK6J/YOnu6E7sjyaq7+g0O
-	VmUZMzFqBLxueg1tHxrekm4nVHbcA66y2Q3A==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vnbjW-0000000ELjN-2DhJ;
-	Wed, 04 Feb 2026 13:11:46 +0100
-From: Johannes Berg <johannes@sipsolutions.net>
-To: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Subject: [GIT PULL] wireless-next-2026-02-04
-Date: Wed,  4 Feb 2026 13:09:51 +0100
-Message-ID: <20260204121143.181112-3-johannes@sipsolutions.net>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fEV8rrua"
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-89476eaaf16so67478336d6.1
+        for <netdev@vger.kernel.org>; Wed, 04 Feb 2026 04:12:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770207160; x=1770811960; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OrfzD1lTlAdR3bBur5U4iZ/FZqIOUF/A1GH3WkYhUNk=;
+        b=fEV8rrua2ckSLEV4GzX1Ltvb7XysoxN03vldL9BEC6VZLqvJK+FPEPmzrkCJxJqB1k
+         Zl0RCI66/5yBNSotHcMKaXdznMPWPGLsb6pXMklQrAQQ5shTlth5MLE7KKXN1uHB5rSN
+         vT9J3zaKRgPVd7h9fu6E9qj0vd3tTdBgoVM9sKEO1VKOc6yuJc3nCUTF4/XcYifsqreK
+         Yk+0segYUE3c0FUyuqqzvxvJ1RTRsSH+3REqYyVzwKMSpnxjqC/ivUlMf+ii++kHwn1F
+         NAc8+YNZ6/BKC8jvdeCvWpkuiKo5ZWwURKnxOOnyv2s1pN50N1BnZx6jG5qRYF0qwKmN
+         tIiQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770207160; x=1770811960;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OrfzD1lTlAdR3bBur5U4iZ/FZqIOUF/A1GH3WkYhUNk=;
+        b=dLpPXBLkH7PtCQ4VZsqjoXUfTae8Gzdm+SqVpgaclUKrVJRPUdOH2j5tbqTlkk/0b7
+         oWty9btloJk2yiRhtJRE4sAy4jW/xlypJQZt4C4O8ZIHJ28kDo1SqsihCmg8dU+Fwg+Z
+         EYKagDrjN56L74/qpk7WpLMmDc4ngc/1sU4AOnmMnlyOpgB2vgbAoeZCr85TUYJdPIbp
+         QY/O4vgZw9ogvKsZPu5uOyHYmwsu+cg77qZvyEE9BKoDEA2VZIXU3efTRglDb5hbvgPc
+         i0e45RDUnmTYA6tTIK7/GVTX4iGTCWHlcS1+vnXNOne9+2LXFfrxwgHQTFIpq5dMlJlq
+         H7lQ==
+X-Gm-Message-State: AOJu0YwOMqe5C4q+nGI5AJk1GU+A7fZGb5v2Ezm4hmufZuAUfSoc/riB
+	twen9f2XM0h6d+GWJfm/4Q6e1Mmqtv0O7oahL5w7auhkgW6vWGFpBwaX
+X-Gm-Gg: AZuq6aIeig63y/JVSq+oCmrcjMSZ1zF2XfCVhUE7jehVxSzAo3LHCrPKEDWamqMsnST
+	I4kih61j4BG2trqgt9A6mh/udkOROst+JSryNnR3G3uIJWxfxctHNNNJTJtOy4ej3/H/4E4Z4Np
+	AJDo+Fi6SGI8CtKNiSLBUNySxU7LOat5OgEEvWTvxMGn4C//xiMibOkX9BbyEKU84X9pj8Cp5Y+
+	Q4ImwXdcRefHudrAuqmlnZy69aFnCGhknYbrjxCj6Bq1mQrm0MbvghycPa6XaQMv1EItBcK6iyM
+	oTxjbfRQTL+DeHXLPWXK6++h6KZck3+S41LEZC2qNtOrMRQD+c2BKVrXjPtSc9z8uBFlJHxd0D5
+	J9ZRF6z1+5YMijrzorKP0E2baXvxk+Y+33+uHFSKxPEUWoXpbsd4Dfm32Ide6uBZk0gdvFJQHvL
+	9U/Y8Jy2A0qw9PBoJxiw==
+X-Received: by 2002:a05:6214:519c:b0:895:ad1:c2c8 with SMTP id 6a1803df08f44-895221ec7c7mr41807796d6.68.1770207160087;
+        Wed, 04 Feb 2026 04:12:40 -0800 (PST)
+Received: from pek-khao-d3 ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8ca2fa5576csm176201785a.2.2026.02.04.04.12.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 04:12:39 -0800 (PST)
+Date: Wed, 4 Feb 2026 20:12:32 +0800
+From: Kevin Hao <haokexin@gmail.com>
+To: Meghana Malladi <m-malladi@ti.com>
+Cc: netdev@vger.kernel.org, MD Danish Anwar <danishanwar@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Himanshu Mittal <h-mittal1@ti.com>, Simon Horman <horms@kernel.org>,
+	Byungchul Park <byungchul@sk.com>,
+	Markus Elfring <elfring@users.sourceforge.net>
+Subject: Re: [EXTERNAL] [PATCH net-next 0/2] net: ti: icssg: Remove dedicated
+ workqueue for ndo_set_rx_mode callback
+Message-ID: <aYM3sP6LQU5jOPLE@pek-khao-d3>
+References: <20260204-icssg-prueth-workqueue-v1-0-9a892f4b293d@gmail.com>
+ <583feb00-09a8-4008-ae50-b6f3e3f990ba@ti.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="yk0taMIwVVR7ANj2"
+Content-Disposition: inline
+In-Reply-To: <583feb00-09a8-4008-ae50-b6f3e3f990ba@ti.com>
 
-Hi,
 
-And here's a final set of changes for the -next tree.
-rtw seems to have the biggest changes, refactoring to
-support a new device.
+--yk0taMIwVVR7ANj2
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-Please pull and let us know if there's any problem.
+On Wed, Feb 04, 2026 at 04:44:21PM +0530, Meghana Malladi wrote:
+> Hi Kevin,
+>=20
+> On 2/4/26 08:11, Kevin Hao wrote:
+> > While addressing an issue in the cpsw driver, I based my fix on the
+> > implementation of the emac_ndo_set_rx_mode() function in icssg. During
+> > review, Jakub pointed out that the dedicated workqueue for the
+> > ndo_set_rx_mode callback might be unnecessary.=E2=80=8A
+> > ZjQcmQRYFpfptBannerStart
+> > This message was sent from outside of Texas Instruments.
+> > Do not click links or open attachments unless you recognize the source
+> > of this email and know the content is safe.
+> > Report=C2=A0Suspicious
+> > <https://us-phishalarm-ewt.proofpoint.com/EWT/v1/G3vK!
+> > uxdqXRfPtm1bKoXPFrvrtsCD2dIkXHVJwEzupcwg1k-qY0e_2PUuMdZgJf-
+> > SUVShc4kuXcBnqQbeqGz1dHBW-_OSdROPAjSiNpSTmAhDg8nQbc8$>
+> > ZjQcmQRYFpfptBannerEnd
+> >=20
+> > While addressing an issue in the cpsw driver, I based my fix on the
+> > implementation of the emac_ndo_set_rx_mode() function in icssg. During =
+review,
+> > Jakub pointed out that the dedicated workqueue for the ndo_set_rx_mode
+> > callback might be unnecessary. I subsequently used the system workqueue=
+ for
+> > this purpose in the cpsw driver, and it performed as expected. Therefor=
+e,
+> > I believe the same approach can be applied to the icssg driver. These t=
+wo
+> > patches aim to remove this dedicated workqueue for icssg drivers.
+> >=20
+>=20
+> It would be more helpful, if you could provide link to the cpsw fix which
+> you have mentioned above.
+
+The fix for cpsw is available at:
+  https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=
+=3Dc0b5dc73a38f954e780f93a549b8fe225235c07a
+
+Jakub's suggestion can be found here:
+  https://lore.kernel.org/all/20260127190836.6a420768@kernel.org/
+
+I will also include this information in the v2 cover letter.
 
 Thanks,
-johannes
+Kevin
 
+>=20
+> > Please note: I do not have access to a board that supports the CSSG PRU
+> > Ethernet controller, so this change has only been build-tested.
+> >=20
+> > ---
+> > Cc: MD Danish Anwar <danishanwar@ti.com>
+> > Cc: Roger Quadros <rogerq@kernel.org>
+> > Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+> > Cc: "David S. Miller" <davem@davemloft.net>
+> > Cc: Eric Dumazet <edumazet@google.com>
+> > Cc: Jakub Kicinski <kuba@kernel.org>
+> > Cc: Paolo Abeni <pabeni@redhat.com>
+> > Cc: Meghana Malladi <m-malladi@ti.com>
+> > Cc: Jacob Keller <jacob.e.keller@intel.com>
+> > Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+> > Cc: Himanshu Mittal <h-mittal1@ti.com>
+> > Cc: Simon Horman <horms@kernel.org>
+> > Cc: Byungchul Park <byungchul@sk.com>
+> > Cc: Markus Elfring <elfring@users.sourceforge.net>
+> >=20
+> > ---
+> > Kevin Hao (2):
+> >        net: ti: icssg-prueth-sr1: Remove unused workqueue
+> >        net: ti: icssg-prueth: Use system default workqueue in ndo_set_r=
+x_mode callback
+> >=20
+> >   drivers/net/ethernet/ti/icssg/icssg_common.c     |  1 -
+> >   drivers/net/ethernet/ti/icssg/icssg_prueth.c     | 13 ++++---------
+> >   drivers/net/ethernet/ti/icssg/icssg_prueth.h     |  1 -
+> >   drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c |  9 +--------
+> >   4 files changed, 5 insertions(+), 19 deletions(-)
+> > ---
+> > base-commit: 5c009020744fe129e4728e71c44a6c7816c9105e
+> > change-id: 20260203-icssg-prueth-workqueue-f460eba72132
+> >=20
+> > Best regards,
+> > --=20
+> > Kevin Hao <haokexin@gmail.com>
+> >=20
+>=20
+> Thanks,
+> Meghana
 
+--yk0taMIwVVR7ANj2
+Content-Type: application/pgp-signature; name=signature.asc
 
-The following changes since commit 303c1a66a22068517793284524dd1d24b7316d1b:
+-----BEGIN PGP SIGNATURE-----
 
-  Merge tag 'wireless-next-2026-01-29' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next (2026-01-29 19:17:43 -0800)
+iQEzBAEBCgAdFiEEHc6qFoLCZqgJD98Zk1jtMN6usXEFAmmDN7AACgkQk1jtMN6u
+sXF23Af+OXAy1SHenCjrgpG2Yzng/T7TPESPJAXw8Rdf1rLhOAZct/1ZffmZjpN7
+pHub3jFEHVlClOO7xU3rYmPpoxEYGe9RRJnk8Hl7zU54lreEMm5Gy6TxYF0RRxuX
+wBn+reKKQVP4yHoz7gi4gzuglU5s8JRf7s38GQS3MG7up6VGPq4nnGHVgo37E0M3
+G6TkH9kLkRQnUOFNUJ/ziEWRJGXGggCJMkfRJyM2hYwwWZRuhZb71MUpd+tKwMqI
+MvZTgTvatKQF5U/eR7HA1A2+0Jc7Bu/Kogmi1/7igCnyEg9jI3gywoCzMqPOvjmH
+3hvKY8E4pvnNFJt4smudVO7hlffxdw==
+=ORT6
+-----END PGP SIGNATURE-----
 
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git tags/wireless-next-2026-02-04
-
-for you to fetch changes up to 9825fa8f49905275acef6c8e7fcd017d04616311:
-
-  wifi: brcmsmac: phy: Remove unreachable error handling code (2026-02-03 13:11:12 +0100)
-
-----------------------------------------------------------------
-Some more changes, including pulls from drivers:
- - ath drivers: small features/cleanups
- - rtw drivers: mostly refactoring for rtw89 RTL8922DE support
- - mac80211: use hrtimers for CAC to avoid too long delays
- - cfg80211/mac80211: some initial UHR (Wi-Fi 8) support
-
-----------------------------------------------------------------
-Aaradhana Sahu (4):
-      wifi: ath12k: Fix index decrement when array_len is zero
-      wifi: ath12k: Add support RX PDEV stats
-      wifi: ath12k: Add support TX hardware queue stats
-      wifi: ath12k: clear stale link mapping of ahvif->links_map
-
-Amith A (1):
-      wifi: mac80211: use wiphy_hrtimer_work for CAC timeout
-
-Chih-Kang Chang (1):
-      wifi: rtw89: wow: disable interrupt before swapping FW for 8922D
-
-Dian-Syuan Yang (1):
-      wifi: rtw89: pci: restore LDO setting after device resume
-
-Dmitry Baryshkov (1):
-      wifi: ath10k: snoc: support powering on the device via pwrseq
-
-Eric Huang (5):
-      wifi: rtw89: phy: extend register to read history 2 of PHY env_monitor
-      wifi: rtw89: phy: update bb wrapper TPU init
-      wifi: rtw89: phy: handle C2H event for PS mode report
-      wifi: rtw89: phy: add H2C command to send detail RX gain and link parameters for PS mode
-      wifi: rtw89: phy: update edcca log parsing for RTL8922D
-
-Ingyu Jang (1):
-      wifi: brcmsmac: phy: Remove unreachable error handling code
-
-Johannes Berg (5):
-      Merge tag 'rtw-next-2026-01-30' of https://github.com/pkshih/rtw
-      wifi: ieee80211: add some initial UHR definitions
-      wifi: cfg80211: add initial UHR support
-      wifi: mac80211: add initial UHR support
-      Merge tag 'ath-next-20260202' of git://git.kernel.org/pub/scm/linux/kernel/git/ath/ath
-
-Lachlan Hodges (1):
-      wifi: mac80211: correct ieee80211-{s1g/eht}.h include guard comments
-
-Lorenzo Bianconi (1):
-      wifi: mac80211: Add eMLSR/eMLMR action frame parsing support
-
-Marco Crivellari (1):
-      wifi: rtw88: add WQ_PERCPU to alloc_workqueue users
-
-Miaoqing Pan (2):
-      wifi: ath11k: add usecase firmware handling based on device compatible
-      dt-bindings: net: wireless: ath11k-pci: deprecate 'firmware-name' property
-
-Ping-Ke Shih (22):
-      wifi: rtw89: mac: clear global interrupt right after power-on
-      wifi: rtw89: phy: add {read,write}_rf_v3 for RTL8922D
-      wifi: rtw89: phy: add ops rtw89_phy_gen_be_v1 for RTL8922D
-      wifi: rtw89: phy: abstract start address and EHT of PHY status bitmap
-      wifi: rtw89: phy: abstract BB wrap registers to share initial flow
-      wifi: rtw89: phy: update BB wrapper RFSI
-      wifi: rtw89: phy: write BB wrapper registers with flush
-      wifi: rtw89: phy: refine initial flow of BB wrapper
-      wifi: rtw89: phy: add chip_ops to calculate RX gain from efuse to support PS mode
-      wifi: rtw89: phy: add firmware element of digital TX power compensation
-      wifi: rtw89: mac: clear DTOP disable excluding CID7090 variant for RTL8922D
-      wifi: rtw89: mac: set force MBA duration to 0
-      wifi: rtw89: rfk: add firmware command to do TX IQK
-      wifi: rtw89: rfk: add to print debug log of TX IQK
-      wifi: rtw89: rfk: add firmware command to do CIM3K
-      wifi: rtw89: rfk: add to print debug log of CIM3K
-      wifi: rtw89: rfk: update RFK report format of IQK, DACK and TXGAPK
-      wifi: rtw89: fw: correct content of DACK H2C command
-      wifi: rtw89: phy: add PHY C2H event dummy handler for func 1-7 and 2-10
-      wifi: rtw89: pci: validate release report content before using for RTL8922DE
-      wifi: rtw89: mac: set MU group membership and position to registers
-      wifi: rtw89: pci: warn if SPS OCP happens for RTL8922DE
-
-Po-Hao Huang (3):
-      wifi: rtw89: phy: fix incorrect power limit by mac_id
-      wifi: rtw89: fix unable to receive probe responses under MLO connection
-      wifi: rtw89: 8922a: add digital compensation for 2GHz
-
-Shin-Yi Lin (1):
-      wifi: rtw89: Add default ID 28de:2432 for RTL8832CU
-
-Wei Zhang (2):
-      wifi: ath12k: add WMI support for spatial reuse parameter configuration
-      wifi: ath12k: support OBSS PD configuration for AP mode
-
-Zilin Guan (1):
-      wifi: rtw89: debug: Fix memory leak in __print_txpwr_map()
-
-Ziyi Guo (2):
-      wifi: ath10k: fix lock protection in ath10k_wmi_event_peer_sta_ps_state_chg()
-      wifi: ath10k: sdio: add missing lock protection in ath10k_sdio_fw_crashed_dump()
-
-Zong-Zhe Yang (6):
-      wifi: rtw89: phy: update TSSI flow for RTL8922D
-      wifi: rtw89: 8922a: configure FW version for SIM_SER_L0L1_BY_HALT_H2C
-      wifi: rtw89: get designated link to replace link instance 0
-      wifi: rtw89: regd: update regulatory map to R73-R54
-      wifi: rtw89: debug: rename mac/ctrl error to L0/L1 error
-      wifi: rtw89: debug: tweak Wi-Fi 7 SER L0/L1 simulation methods
-
- .../bindings/net/wireless/qcom,ath11k-pci.yaml     |   1 +
- drivers/net/wireless/ath/ath10k/sdio.c             |   6 +
- drivers/net/wireless/ath/ath10k/snoc.c             |  53 +-
- drivers/net/wireless/ath/ath10k/snoc.h             |   3 +
- drivers/net/wireless/ath/ath10k/wmi.c              |   4 +-
- drivers/net/wireless/ath/ath11k/core.c             |  27 +
- drivers/net/wireless/ath/ath11k/core.h             |   4 +
- .../net/wireless/ath/ath12k/debugfs_htt_stats.c    | 197 ++++++-
- .../net/wireless/ath/ath12k/debugfs_htt_stats.h    |  81 +++
- drivers/net/wireless/ath/ath12k/mac.c              | 174 ++++++-
- drivers/net/wireless/ath/ath12k/mac.h              |   3 +
- drivers/net/wireless/ath/ath12k/wmi.c              | 142 ++++++
- drivers/net/wireless/ath/ath12k/wmi.h              |  47 ++
- .../broadcom/brcm80211/brcmsmac/phy/phy_lcn.c      |   9 +-
- drivers/net/wireless/realtek/rtw88/usb.c           |   3 +-
- drivers/net/wireless/realtek/rtw89/chan.c          |  31 +-
- drivers/net/wireless/realtek/rtw89/core.h          |  40 +-
- drivers/net/wireless/realtek/rtw89/debug.c         |  99 +++-
- drivers/net/wireless/realtek/rtw89/debug.h         |   1 +
- drivers/net/wireless/realtek/rtw89/fw.c            | 297 ++++++++++-
- drivers/net/wireless/realtek/rtw89/fw.h            | 188 ++++++-
- drivers/net/wireless/realtek/rtw89/mac.c           |  23 +-
- drivers/net/wireless/realtek/rtw89/mac.h           |  23 +
- drivers/net/wireless/realtek/rtw89/mac80211.c      |   4 +-
- drivers/net/wireless/realtek/rtw89/mac_be.c        |  23 +-
- drivers/net/wireless/realtek/rtw89/pci.c           |  17 +-
- drivers/net/wireless/realtek/rtw89/pci.h           |   1 +
- drivers/net/wireless/realtek/rtw89/pci_be.c        |   2 +
- drivers/net/wireless/realtek/rtw89/phy.c           | 381 ++++++++++++--
- drivers/net/wireless/realtek/rtw89/phy.h           |  36 +-
- drivers/net/wireless/realtek/rtw89/phy_be.c        | 563 ++++++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/ps.c            |   2 +
- drivers/net/wireless/realtek/rtw89/reg.h           | 368 +++++++++++++-
- drivers/net/wireless/realtek/rtw89/regd.c          |  20 +-
- drivers/net/wireless/realtek/rtw89/rtw8851b.c      |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852a.c      |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852b.c      |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852bt.c     |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852c.c      |   1 +
- drivers/net/wireless/realtek/rtw89/rtw8852cu.c     |   2 +
- drivers/net/wireless/realtek/rtw89/rtw8922a.c      |  58 ++-
- drivers/net/wireless/realtek/rtw89/wow.c           |   6 +-
- include/linux/ieee80211-eht.h                      |  13 +-
- include/linux/ieee80211-s1g.h                      |   2 +-
- include/linux/ieee80211-uhr.h                      | 220 ++++++++
- include/linux/ieee80211.h                          |  39 +-
- include/net/cfg80211.h                             |  58 ++-
- include/net/mac80211.h                             |  67 ++-
- include/uapi/linux/nl80211.h                       |  30 ++
- net/mac80211/Makefile                              |   2 +-
- net/mac80211/cfg.c                                 |  24 +-
- net/mac80211/driver-ops.h                          |  21 +
- net/mac80211/eht.c                                 | 175 +++++++
- net/mac80211/ieee80211_i.h                         |  23 +-
- net/mac80211/iface.c                               |  12 +-
- net/mac80211/link.c                                |   4 +-
- net/mac80211/main.c                                |  15 +-
- net/mac80211/mlme.c                                | 115 ++++-
- net/mac80211/parse.c                               |  22 +-
- net/mac80211/rx.c                                  |  34 ++
- net/mac80211/sta_info.c                            |  13 +-
- net/mac80211/sta_info.h                            |  80 ++-
- net/mac80211/trace.h                               |  32 ++
- net/mac80211/uhr.c                                 |  30 ++
- net/mac80211/util.c                                |  38 +-
- net/wireless/nl80211.c                             | 102 +++-
- net/wireless/reg.c                                 |   4 +-
- net/wireless/util.c                                | 101 +++-
- 68 files changed, 3973 insertions(+), 247 deletions(-)
- create mode 100644 include/linux/ieee80211-uhr.h
- create mode 100644 net/mac80211/uhr.c
+--yk0taMIwVVR7ANj2--
