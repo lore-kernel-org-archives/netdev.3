@@ -1,74 +1,174 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2BB3ED111;
-	Wed,  4 Feb 2026 11:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E8628727F
+	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 12:02:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770206321; cv=none; b=araSf2AbFxIXxepIOWCQ3vkwdbZVC1tX7fJb8nvYI10b2kR6FsTiRL/7gIf7vmHuI3ryI0Qhp0g8o1C2by0Bknpcqt4gZfj2wA4ORqOkC53I6LwUjD9QLSwfy6xPkuaFa6oerQ+AI/G1ixgxslsoTUgye7XEYCMrcFuz7ouJ5sk=
+	t=1770206576; cv=none; b=GR2A34pLwre0zpPtqlLgumiHxOjhFuiZJettCQRf98csjo8lHMTt7PJibMtOR2tT/jfC32spfx/zJDKdYLZQHXiRtx1HjZeQHa6SqcLUvKiN98hMISi8zE6HufEcvjFHjjd4eSGk01VUvjLEQb4JEdVnYSgS2zr42UvjbKoNDAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770206321; c=relaxed/simple;
-	bh=aBgYq5sKLNarh8sJoMQ3wtdCMcUApTBI0ornbC2y7YY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CaB6KqL8HdqIp3XQexRvUPYRpxTy06xMoP0eiOUHXSNr68q5OJh/lW3tdEbbB0gFEEsvURdb9Cfv7tAhmp1qwFocHQJx1ntt4ngAVtoa1kNx5+YD+cLD658HYcxRRe7L2eEsOt1HOLVxj3zmnFqPbrs5KtZRqJ5sVGOfZxj4zc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W8Kz6ly2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770206576; c=relaxed/simple;
+	bh=3ywqktAHwas+gjtottmC7MLNDdcnrWVO6DGDzrzNQD0=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=rcOKk+PMpICTOkDDxdLfIqOX6uxI3mkl6/3Q7ubKZN0BPJyaJ9fa3dce5Us9CgoLbOWcIFUZpgp8sZmR7BqW3QYKptlKYyAESQcuK+Z/zHuR4tMlgAmPNN5xoOkvL8ORid63vnJYD6E2XYtZhP/RYclI9XjftKR8JCPR6Xu/wGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=i69LGXaw; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W8Kz6ly2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA93C16AAE;
-	Wed,  4 Feb 2026 11:58:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770206321;
-	bh=aBgYq5sKLNarh8sJoMQ3wtdCMcUApTBI0ornbC2y7YY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W8Kz6ly2u6h4bavNw72G6Hf58FESgDqolQMQYYpIEDvhwpPiOyUfQt2ZM+xurObbZ
-	 tH9zLXq/95DNhEL2zAUodYlHbc76EqX6Q5R646qCwWIj56R20+OkO/UAUxKAE1qOT4
-	 /nMBsXfzAwDlqljUezJwdqUPkvdu+LmGMhS9RzRTzh456wUqgte5a7aNCcUOHLLglX
-	 YmboBUItpr9H2e0uN4vdJ+apjN1Ey0JKcqtTGRrz/aaSW68/BuqRRT6K8GCR6hVxs9
-	 RhjT6V6mhOiLtlvA5VNrqLkQXQPfSP6t4BCp+fYu01RZtPkITMCnxCai9kWePV8hmh
-	 zr2atUFgAMKjQ==
-Date: Wed, 4 Feb 2026 11:58:36 +0000
-From: Simon Horman <horms@kernel.org>
-To: Aaron Ma <aaron.ma@canonical.com>
-Cc: anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4] ice: recap the VSI and QoS info after rebuild
-Message-ID: <aYM0bLu3GMvcc8Um@horms.kernel.org>
-References: <20260129040026.832452-1-aaron.ma@canonical.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="i69LGXaw"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1770206567; h=Message-ID:Subject:Date:From:To;
+	bh=YqQDW6R62ey1uY1RoAvvQNpAMqZuUf05gtPjECXDXqg=;
+	b=i69LGXawsDCOjoL92ASIIZ5C582mWR3e/uIei7oe5NrlB6aSO1v7XDJyesWMIc2kcd8HKPGh0J7UtEEDZYNEYOT1i73xX9EVHPGt+Js4cnnEAnxAQFVMR96WLPInJoR3bDAAXlVqe62SusLgEzjDmiOaveAXJe4CpTOW5vi138Q=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0WyWuRXF_1770206566 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 04 Feb 2026 20:02:46 +0800
+Message-ID: <1770205572.2731752-1-xuanzhuo@linux.alibaba.com>
+Subject: Re: [net-next,v25,4/6] eea: create/destroy rx,tx queues for netdevice open and stop
+Date: Wed, 4 Feb 2026 19:46:12 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: lorenzo@kernel.org,
+ andrew+netdev@lunn.ch,
+ pabeni@redhat.com,
+ vadim.fedorenko@linux.dev,
+ davem@davemloft.net,
+ guwen@linux.alibaba.com,
+ lulie@linux.alibaba.com,
+ hkallweit1@gmail.com,
+ edumazet@google.com,
+ lukas.bulwahn@redhat.com,
+ andrew@lunn.ch,
+ dong100@mucse.com,
+ dust.li@linux.alibaba.com,
+ netdev@vger.kernel.org
+References: <20260202090638.46836-1-xuanzhuo@linux.alibaba.com>
+ <20260202090638.46836-5-xuanzhuo@linux.alibaba.com>
+ <20260204040054.1698677-2-kuba@kernel.org>
+ <20260203201237.35c5f756@kernel.org>
+In-Reply-To: <20260203201237.35c5f756@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260129040026.832452-1-aaron.ma@canonical.com>
 
-On Thu, Jan 29, 2026 at 12:00:26PM +0800, Aaron Ma wrote:
-> Fix IRDMA hardware initialization timeout (-110) after resume by
-> separating VSI-dependent configuration from RDMA resource allocation,
-> ensuring VSI is rebuilt before IRDMA accesses it.
-> 
-> After resume from suspend, IRDMA hardware initialization fails:
->   ice: IRDMA hardware initialization FAILED init_state=4 status=-110
-> 
-> Separate RDMA initialization into two phases:
-> 1. ice_init_rdma() - Allocate resources only (no VSI/QoS access, no plug)
-> 2. ice_rdma_finalize_setup() - Assign VSI/QoS info and plug device
-> 
-> This allows:
-> - ice_init_rdma() to stay in ice_resume() (mirrors ice_deinit_rdma()
->   in ice_suspend())
-> - VSI assignment deferred until after ice_vsi_rebuild() completes
-> - QoS info updated after ice_dcb_rebuild() completes
-> - Device plugged only when control queues, VSI, and DCB are all ready
-> 
-> Fixes: bc69ad74867db ("ice: avoid IRQ collision to fix init failure on ACPI S3 resume")
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-> Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
+On Tue, 3 Feb 2026 20:12:37 -0800, Jakub Kicinski <kuba@kernel.org> wrote:
+> On Tue,  3 Feb 2026 20:00:55 -0800 Jakub Kicinski wrote:
+> > > +	err = enet_bind_new_q_and_cfg(enet, ctx);
+> > > +	if (err) {
+> > > +		netdev_err(enet->netdev,
+> > > +			   "eea reset: bind new queues failed. err %d\n",
+> > > +			   err);
+> > > +
+> > > +		return err;
+> > > +	}
+> >
+> > When enet_bind_new_q_and_cfg() fails, what happens to the queues allocated
+> > by eea_alloc_rxtx_q_mem() at line 289? They're now assigned to ctx->rx and
+> > ctx->tx but haven't been bound to enet yet.
+> >
+> > After eea_netdev_stop() sets enet->started = false, a subsequent call to
+> > eea_netdev_stop() will return early at line 228 without calling
+> > eea_free_rxtx_q_mem(). If enet_bind_new_q_and_cfg() fails before binding,
+> > the queues remain in ctx with no cleanup path.
+> >
+> > The comment suggests deferring cleanup to "normal NIC cleanup" but
+> > eea_net_remove() doesn't call eea_free_rxtx_q_mem(), and future reset
+> > attempts would allocate new queues without freeing these.
+>
+> I think AI is slightly confused here but so am I. I don't get where you
+> free he previous resources in this flow. The "bind_new_q_and_cfg" just
+> overrides stuff, who frees the old set of rings?
 
-Reviewed-by: Simon Horman <horms@kernel.org>
 
+	err = eea_alloc_rxtx_q_mem(ctx);
+	if (err) {
+		netdev_warn(enet->netdev,
+			    "eea reset: alloc q failed. stop reset. err %d\n",
+			    err);
+		return err;
+	}
+
+	eea_netdev_stop(enet->netdev); <---- here call eea_free_rxtx_q_mem
+
+	err = enet_bind_new_q_and_cfg(enet, ctx);
+	if (err) {
+		netdev_err(enet->netdev,
+			   "eea reset: bind new queues failed. err %d\n",
+			   err);
+
+		return err;
+	}
+
+	err = eea_active_ring_and_irq(enet);
+	if (err) {
+		netdev_err(enet->netdev,
+			   "eea reset: active new ring and irq failed. err %d\n",
+			   err);
+		return err;
+	}
+
+	eea_start_rxtx(enet->netdev);
+
+>
+> Also as I already mentioned in previous manual review you are not
+> pre-allocating enough. You should also request necessary extra IRQs
+> _before_ you start tearing down the old state.
+
+
+I might have misunderstood your point; I will implement it that way in the next
+version.
+
+Thanks.
+
+>
+> > > +static struct sk_buff *eea_rx_build_split_hdr_skb(struct eea_net_rx *rx,
+> > > +						  struct eea_rx_ctx *ctx)
+> > > +{
+> > > +	struct eea_rx_meta *meta = ctx->meta;
+> > > +	struct sk_buff *skb;
+> > > +	u32 truesize;
+> > > +
+> > > +	dma_sync_single_for_cpu(rx->enet->edev->dma_dev, meta->hdr_dma,
+> > > +				ctx->hdr_len, DMA_FROM_DEVICE);
+> > > +
+> > > +	skb = napi_alloc_skb(&rx->napi, ctx->hdr_len);
+> > > +	if (unlikely(!skb))
+> > > +		return NULL;
+> > > +
+> > > +	truesize = meta->headroom + ctx->len;
+> > > +
+> > > +	skb_put_data(skb, ctx->meta->hdr_addr, ctx->hdr_len);
+> > > +
+> > > +	if (ctx->len) {
+> > > +		skb_add_rx_frag(skb, 0, meta->page,
+> > > +				meta->offset + meta->headroom,
+> > > +				ctx->len, truesize);
+> > > +
+> > > +		eea_consume_rx_buffer(rx, meta, truesize);
+> > > +	}
+> >
+> > Is the truesize calculation correct for split header mode? Looking at line
+> > 255, truesize is calculated as meta->headroom + ctx->len.
+> >
+> > In eea_rx_post() at line 500, buffers are allocated with space for
+> > [headroom][data][tailroom], where tailroom is typically 128 bytes for
+> > skb_shared_info. The tailroom is reserved but not included in the truesize
+> > calculation here.
+> >
+> > When eea_consume_rx_buffer() advances meta->offset by only
+> > (headroom + data_len), the reserved tailroom space remains unconsumed. After
+> > alignment in meta_align_offset(), the next fragment may overlap with the
+> > previous fragment's tailroom space.
+> >
+> > Compare with the non-split header path in eea_rx_build_skb() at line 290,
+> > which includes shinfo_size in truesize:
+> >
+> >     truesize = meta->headroom + ctx->len + shinfo_size;
+> >
+> > Should the split header path also include meta->tailroom or shinfo_size in
+> > the truesize calculation?
+>
+> This one - I think the AI is just confused by how frags work.
+>
