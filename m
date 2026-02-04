@@ -1,16 +1,16 @@
 Received: from TWMBX01.aspeed.com (mail.aspeedtech.com [211.20.114.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD013590BE;
-	Wed,  4 Feb 2026 05:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213D4366814;
+	Wed,  4 Feb 2026 05:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.20.114.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770182800; cv=none; b=oBINE//O5jOk7a97gp3ihLMibU6tSWr47skwPOYfTcqJbpPu/lzJv/ZM5lcI1vxegJ+sQvvoi4I5G6P9ur250M0uhdabVIzQPTspNlZ+456RO4DQu7xMXRAuG5dLy13C1mfsL9tBcdF7pMyUqy7HQc50/u3P2h7HztcQkOMdVw0=
+	t=1770182801; cv=none; b=iI+JV+2om05Be9JBYHPVeg04KHQep8v0SQUJ2NYWEUn7cp4BDlD1p1FIhSxsXd3FzelhbAOOl5ssXssqZGk3qKj0qXeCrCLNhVaokOa5LXjOgr1xJ8gMvRhpJyni+30WKb2iz05fb3z0RhDhqsJG0hVEWirAna7iuMotbnvF6X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770182800; c=relaxed/simple;
-	bh=1bEa2Jv/bTv7bHrcPfXv9ul57tdtU4FVmXDJgJry74s=;
+	s=arc-20240116; t=1770182801; c=relaxed/simple;
+	bh=onLWbZUbnTMgDK4y8kzfyvlIWWGQE8LKDFBj5Fq38Dw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=rnQvUJFvR5OfRRggvd/mYiW/e+CAO01DfNwv6m8WbJjFM/jXF9Pmij5IzgpjoQwaWkRj9lqGFccs5QObbVM4Yzd3cTsf3pdebl3o6hRRRQH6eG+Tqf9x9/qu/sUfLDOr9xOukvrdG9sfnKA2P7Y61fTN66VSy20DDzTTr/CLlas=
+	 In-Reply-To:To:CC; b=nZ4gRN+oXEw9KWSO2NVFeMNh7boioyORdeOqlPzS4ZS6KzCgIA/tKiixYudQSIZBFhntNoMQEQIw/LguM8fo3OsXsPtws/8rw2cx35spSpWjDqscD8GAo+fzhSDJYsgyr/FlsM2rLmwr1e4DK5QkAiqXaXLAzvqP04ngN0oeTgM=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com; spf=pass smtp.mailfrom=aspeedtech.com; arc=none smtp.client-ip=211.20.114.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=aspeedtech.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aspeedtech.com
@@ -22,9 +22,9 @@ Received: from [127.0.1.1] (192.168.10.13) by TWMBX01.aspeed.com
  (192.168.0.62) with Microsoft SMTP Server id 15.2.1748.10 via Frontend
  Transport; Wed, 4 Feb 2026 13:26:30 +0800
 From: Jacky Chou <jacky_chou@aspeedtech.com>
-Date: Wed, 4 Feb 2026 13:26:29 +0800
-Subject: [PATCH net-next v4 03/15] net: ftgmac100: Replace all
- of_device_is_compatible()
+Date: Wed, 4 Feb 2026 13:26:30 +0800
+Subject: [PATCH net-next v4 04/15] net: ftgmac100: Use
+ devm_alloc_etherdev()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -33,7 +33,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260204-ftgmac-cleanup-v4-3-b7f379939b76@aspeedtech.com>
+Message-ID: <20260204-ftgmac-cleanup-v4-4-b7f379939b76@aspeedtech.com>
 References: <20260204-ftgmac-cleanup-v4-0-b7f379939b76@aspeedtech.com>
 In-Reply-To: <20260204-ftgmac-cleanup-v4-0-b7f379939b76@aspeedtech.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
@@ -43,88 +43,61 @@ CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Andrew Lunn
 	<andrew@lunn.ch>, Jacky Chou <jacky_chou@aspeedtech.com>, Simon Horman
 	<horms@kernel.org>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770182790; l=3130;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770182790; l=1418;
  i=jacky_chou@aspeedtech.com; s=20251031; h=from:subject:message-id;
- bh=+aILZO8pus/3meVrNzurjk9uWwwKRISZWHJRBZ3qWxI=;
- b=SQI+5hqierrhpffPOQcAD+3Xo63lCiXo1Nn7MV22b3JWr2zVGu7rCrufqUU7r1axAtjhPIXS3
- T9wtJ91M1TuC/nHfAYB4MJiIrjdFD1ZdszWoXvXdj8x+Dp3hpq0AdSJ
+ bh=o3nIYAscEW7qqYCVm0zoQKSDXM36iO60MZ4R096iN0U=;
+ b=FfQWVi5FdhqbaC0Rz9e6BhdGZ0lHXWkXaD5xxB9cYcE0fl8pGcceYwKZhC+SFUzID7M48EzQA
+ KzPoQcvltWnDSPdCZNHFMLomPvg+HDhnMCAEPV8blvszm+dzV1j72fA
 X-Developer-Key: i=jacky_chou@aspeedtech.com; a=ed25519;
  pk=8XBx7KFM1drEsfCXTH9QC2lbMlGU4XwJTA6Jt9Mabdo=
 
 From: Andrew Lunn <andrew@lunn.ch>
 
-Now that the priv structure includes the MAC ID, make use of it
-instead of the more expensive of_device_is_compatible().
+Make use of devm_alloc_etherdev() to simplify cleanup.
 
 Signed-off-by: Andrew Lunn <andrew@lunn.ch>
 Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
 ---
- drivers/net/ethernet/faraday/ftgmac100.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/faraday/ftgmac100.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-index 104eb7b1f5bb..f07167cabf39 100644
+index f07167cabf39..397ada43c851 100644
 --- a/drivers/net/ethernet/faraday/ftgmac100.c
 +++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -1720,8 +1720,8 @@ static int ftgmac100_setup_mdio(struct net_device *netdev)
- 	if (!priv->mii_bus)
- 		return -EIO;
+@@ -1877,11 +1877,9 @@ static int ftgmac100_probe(struct platform_device *pdev)
+ 		return irq;
  
--	if (of_device_is_compatible(np, "aspeed,ast2400-mac") ||
--	    of_device_is_compatible(np, "aspeed,ast2500-mac")) {
-+	if (priv->mac_id == FTGMAC100_AST2400 ||
-+	    priv->mac_id == FTGMAC100_AST2500) {
- 		/* The AST2600 has a separate MDIO controller */
+ 	/* setup net_device */
+-	netdev = alloc_etherdev(sizeof(*priv));
+-	if (!netdev) {
+-		err = -ENOMEM;
+-		goto err_alloc_etherdev;
+-	}
++	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
++	if (!netdev)
++		return -ENOMEM;
  
- 		/* For the AST2400 and AST2500 this driver only supports the
-@@ -1926,9 +1926,9 @@ static int ftgmac100_probe(struct platform_device *pdev)
- 	if (err)
- 		goto err_phy_connect;
+ 	SET_NETDEV_DEV(netdev, &pdev->dev);
  
--	if (np && (of_device_is_compatible(np, "aspeed,ast2400-mac") ||
--		   of_device_is_compatible(np, "aspeed,ast2500-mac") ||
--		   of_device_is_compatible(np, "aspeed,ast2600-mac"))) {
-+	if (priv->mac_id == FTGMAC100_AST2400 ||
-+	    priv->mac_id == FTGMAC100_AST2500 ||
-+	    priv->mac_id == FTGMAC100_AST2600) {
- 		priv->rxdes0_edorr_mask = BIT(30);
- 		priv->txdes0_edotr_mask = BIT(30);
- 		priv->is_aspeed = true;
-@@ -1973,8 +1973,8 @@ static int ftgmac100_probe(struct platform_device *pdev)
- 		 * available PHYs and register them.
- 		 */
- 		if (of_get_property(np, "phy-handle", NULL) &&
--		    (of_device_is_compatible(np, "aspeed,ast2400-mac") ||
--		     of_device_is_compatible(np, "aspeed,ast2500-mac"))) {
-+		    (priv->mac_id == FTGMAC100_AST2400 ||
-+		     priv->mac_id == FTGMAC100_AST2500)) {
- 			err = ftgmac100_setup_mdio(netdev);
- 			if (err)
- 				goto err_setup_mdio;
-@@ -2026,7 +2026,7 @@ static int ftgmac100_probe(struct platform_device *pdev)
- 			goto err_phy_connect;
+@@ -2080,8 +2078,6 @@ static int ftgmac100_probe(struct platform_device *pdev)
+ err_ioremap:
+ 	release_resource(priv->res);
+ err_req_mem:
+-	free_netdev(netdev);
+-err_alloc_etherdev:
+ 	return err;
+ }
  
- 		/* Disable ast2600 problematic HW arbitration */
--		if (of_device_is_compatible(np, "aspeed,ast2600-mac"))
-+		if (priv->mac_id == FTGMAC100_AST2600)
- 			iowrite32(FTGMAC100_TM_DEFAULT,
- 				  priv->base + FTGMAC100_OFFSET_TM);
- 	}
-@@ -2044,11 +2044,11 @@ static int ftgmac100_probe(struct platform_device *pdev)
- 		netdev->hw_features |= NETIF_F_HW_VLAN_CTAG_FILTER;
+@@ -2112,7 +2108,6 @@ static void ftgmac100_remove(struct platform_device *pdev)
+ 	release_resource(priv->res);
  
- 	/* AST2400  doesn't have working HW checksum generation */
--	if (np && (of_device_is_compatible(np, "aspeed,ast2400-mac")))
-+	if (priv->mac_id == FTGMAC100_AST2400)
- 		netdev->hw_features &= ~NETIF_F_HW_CSUM;
+ 	netif_napi_del(&priv->napi);
+-	free_netdev(netdev);
+ }
  
- 	/* AST2600 tx checksum with NCSI is broken */
--	if (priv->use_ncsi && of_device_is_compatible(np, "aspeed,ast2600-mac"))
-+	if (priv->use_ncsi && priv->mac_id == FTGMAC100_AST2600)
- 		netdev->hw_features &= ~NETIF_F_HW_CSUM;
- 
- 	if (np && of_get_property(np, "no-hw-checksum", NULL))
+ static const struct ftgmac100_match_data ftgmac100_match_data_ast2400 = {
 
 -- 
 2.34.1
