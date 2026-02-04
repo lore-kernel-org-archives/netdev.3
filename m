@@ -1,186 +1,100 @@
-Received: from mail115-24.sinamail.sina.com.cn (mail115-24.sinamail.sina.com.cn [218.30.115.24])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA728393DDF
-	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 08:33:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=218.30.115.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B75393DC1;
+	Wed,  4 Feb 2026 08:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770194023; cv=none; b=mY+ELCiU2QX30lZyc93akv6tx4kEYJVAx4/HNd5Gx/TJusLfHGN7meuIsaufqxI0KyQqQqRIztkp4I0ex/w7IBYt82hTzUB+Sg/bTB100X6CeomMDFTFYEsrH6qM1DZyQlEt9faKLmYYntdCzG0mnrVZD9ZSrcp00Ft7spbNDnA=
+	t=1770194042; cv=none; b=IezMpSmAK43jOY2RFv0Y6lZmfFCLoFUhts6n7+wDDt7XIm8r85eE/NhDW17EACvPiLdDtKEGsPsq1ccxUTMwhpDvhyClo8QBEoK3wqer7eGfrlWQfUXVkyo8wSe6VqhxnN6mlPHNl9eInypXfDwzK6Nm3fEC9zMLqYNseMXMvtI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770194023; c=relaxed/simple;
-	bh=uplR7d3QakXfcEJNewTanDErx51xxSFSLq7fHMlabBM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CvmIWAtYExKOZbgliH9BaLfOfHy27OJp2rIUBZR9yzBnEjqwXaiyxml16lxORwjGfmIziK/i/jYtzOzd4AfUdlIR/hzBIvfLHCFgK7bxe9PqlJWRuvdfrTUnTfHec2RUiOnyaI0FjmMm6uVzPYt+SKSTK9EkXWDQZQBgVjYWAi4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn; spf=pass smtp.mailfrom=sina.cn; dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b=bao2dEwM; arc=none smtp.client-ip=218.30.115.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.cn
+	s=arc-20240116; t=1770194042; c=relaxed/simple;
+	bh=ecFO7/L4A/li5bJRaLWDUbJSeXCf5l9ebmA68aTXv14=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To; b=KabNKcmRmLJ5bpntd+WWDfFvcxjQyzMvvh31EPl0V/UrfXswg6m7XgFPuCqN76dUtaSXhOWk0wKr09reEHLvBFsjsxXHW+8dvDfFv/zt0Q0nLG9tTmTUCc93oyaMzULInSahSDb0Y+aNG+7UCbq8IrDAfuJqY+2FnozRNSLjwfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bjeCp9yo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.cn header.i=@sina.cn header.b="bao2dEwM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.cn; s=201208; t=1770194022;
-	bh=2zHdAh87Ti9W34qJ1WNtQAawfLP9VlEp26E3MqcNpIM=;
-	h=From:Subject:Date:Message-Id;
-	b=bao2dEwMGKPMH/wmXHvEslJ6mF8tEvYQxmWtA45er3ykwR9bazlh9TVqjF/5FJ9xt
-	 Unq2KrvkZzwREIGKYP1dCpCx4rBNGv3R9cdG5tK/x3SiXGkLNXF2aedVqMOtDs269L
-	 0ZY+httEF+OruXfCMzLFryLCNnLg3EaSIuGBjDaQ=
-X-SMAIL-HELO: NTT-kernel-dev
-Received: from unknown (HELO NTT-kernel-dev)([60.247.85.88])
-	by sina.cn (10.185.250.22) with ESMTP
-	id 6983036000004828; Wed, 4 Feb 2026 16:29:23 +0800 (CST)
-X-Sender: jianqkang@sina.cn
-X-Auth-ID: jianqkang@sina.cn
-Authentication-Results: sina.cn;
-	 spf=none smtp.mailfrom=jianqkang@sina.cn;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=jianqkang@sina.cn
-X-SMAIL-MID: 2766697602236
-X-SMAIL-UIID: CC369951ADE5458180804BB2A1C452BE-20260204-162923-1
-From: Jianqiang kang <jianqkang@sina.cn>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org,
-	e.kubanski@partner.samsung.com
-Cc: patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	bjorn@kernel.org,
-	magnus.karlsson@intel.com,
-	maciej.fijalkowski@intel.com,
-	jonathan.lemon@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	i.maximets@samsung.com,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH 6.6.y] xsk: Fix race condition in AF_XDP generic RX path
-Date: Wed,  4 Feb 2026 16:29:20 +0800
-Message-Id: <20260204082920.3304571-1-jianqkang@sina.cn>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bjeCp9yo"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id DE382C2BC86;
+	Wed,  4 Feb 2026 08:34:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770194041;
+	bh=ecFO7/L4A/li5bJRaLWDUbJSeXCf5l9ebmA68aTXv14=;
+	h=From:Date:Subject:To:Reply-To:From;
+	b=bjeCp9yoOZIJ1rG4tKLWnUZFCfCKxOs/HSwipcWnNMRzab9rRyxHqBevyvH1FAhJ2
+	 +w6kuhAJyaJii5Jky7qWNm17i42uN3o8sl6mRSxY1YfP/T/fr16DaSvx+kpb2fCSek
+	 vfOfQEAdkPrsxhqJF/9sQxyXDLYqKw9jYOdxpKsAWxbl7EeNwKDZr1P3L4KFW3rk4x
+	 wLq21+QNsjvB5FwCg4UTBf5bugWB8BY9U0zyNatyL8l2OzMiQDm1MnUld83B+zip/s
+	 XTzXEqlAYfYBFSkajaqQEHj+Ghah60NSs4YHbAT4Dy7U9W967VyKOQrO8jt5zoXXtf
+	 KvhpE+e9ep+zQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id D50B6E83EF5;
+	Wed,  4 Feb 2026 08:34:01 +0000 (UTC)
+From: Carl Lee via B4 Relay <devnull+carl.lee.amd.com@kernel.org>
+Date: Wed, 04 Feb 2026 16:33:51 +0800
+Subject: [PATCH] nfc: nxp-nci: remove interrupt trigger type
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260204-fc-nxp-nci-remove-interrupt-trigger-type-v1-1-3bde91593173@amd.com>
+X-B4-Tracking: v=1; b=H4sIAG4Eg2kC/x2NQQqDMBAAvyJ7diEmpUq/UjxoXOMeXMMmiiL+v
+ aHHgWHmhkTKlOBT3aB0cOJNCjR1BX4ZJBDyVBissW9jzQtnj3JGFM+otG5HESST6h4zZuUQSDF
+ fkXBq285ZN7qxa6DkotLM53/17Z/nB0Gg9zl6AAAA
+X-Change-ID: 20260204-fc-nxp-nci-remove-interrupt-trigger-type-d778323b3b81
+To: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, carl.lee@amd.com, 
+ peter.shen@amd.com, colin.huang2@amd.com
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1770194040; l=1133;
+ i=carl.lee@amd.com; s=20260203; h=from:subject:message-id;
+ bh=S4f9MfSDtarUqVAH0McJX6bzbyZME7KFSQONWKA1FKQ=;
+ b=kpvwuOZRaUjemIlIPFCMTW7vpbW0JUD/LrDbcg514SQKKMI40tTfdyIdYQKgh0Z56NMQvofGs
+ co6KmX6FiEWBOEfien2vOMEhBLCiZNVJ/A2p6Bo35geoLGMTa/E5Iwn
+X-Developer-Key: i=carl.lee@amd.com; a=ed25519;
+ pk=pyq7QaQvoxMg806KVkRwpCbiah+7ncWr4MBpK1AEyjA=
+X-Endpoint-Received: by B4 Relay for carl.lee@amd.com/20260203 with
+ auth_id=623
+X-Original-From: Carl Lee <carl.lee@amd.com>
+Reply-To: carl.lee@amd.com
 
-From: "e.kubanski" <e.kubanski@partner.samsung.com>
+From: Carl Lee <carl.lee@amd.com>
 
-[ Upstream commit a1356ac7749cafc4e27aa62c0c4604b5dca4983e ]
+For NXP NCI devices (e.g. PN7150), the interrupt is level-triggered and
+active high, not edge-triggered.
 
-Move rx_lock from xsk_socket to xsk_buff_pool.
-Fix synchronization for shared umem mode in
-generic RX path where multiple sockets share
-single xsk_buff_pool.
+Using IRQF_TRIGGER_RISING in the driver can cause interrupts to fail
+to trigger correctly.
 
-RX queue is exclusive to xsk_socket, while FILL
-queue can be shared between multiple sockets.
-This could result in race condition where two
-CPU cores access RX path of two different sockets
-sharing the same umem.
+Remove IRQF_TRIGGER_RISING and rely on the IRQ trigger type configured
+via Device Tree.
 
-Protect both queues by acquiring spinlock in shared
-xsk_buff_pool.
-
-Lock contention may be minimized in the future by some
-per-thread FQ buffering.
-
-It's safe and necessary to move spin_lock_bh(rx_lock)
-after xsk_rcv_check():
-* xs->pool and spinlock_init is synchronized by
-  xsk_bind() -> xsk_is_bound() memory barriers.
-* xsk_rcv_check() may return true at the moment
-  of xsk_release() or xsk_unbind_dev(),
-  however this will not cause any data races or
-  race conditions. xsk_unbind_dev() removes xdp
-  socket from all maps and waits for completion
-  of all outstanding rx operations. Packets in
-  RX path will either complete safely or drop.
-
-Signed-off-by: Eryk Kubanski <e.kubanski@partner.samsung.com>
-Fixes: bf0bdd1343efb ("xdp: fix race on generic receive path")
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Link: https://patch.msgid.link/20250416101908.10919-1-e.kubanski@partner.samsung.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Conflict is resolved when backporting this fix. ]
-Signed-off-by: Jianqiang kang <jianqkang@sina.cn>
+Signed-off-by: Carl Lee <carl.lee@amd.com>
 ---
- include/net/xdp_sock.h      | 3 ---
- include/net/xsk_buff_pool.h | 2 ++
- net/xdp/xsk.c               | 6 +++---
- net/xdp/xsk_buff_pool.c     | 1 +
- 4 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/nfc/nxp-nci/i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
-index 69b472604b86..660c22521a29 100644
---- a/include/net/xdp_sock.h
-+++ b/include/net/xdp_sock.h
-@@ -63,9 +63,6 @@ struct xdp_sock {
+diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+index 049662ffdf97..6a5ce8ff91f0 100644
+--- a/drivers/nfc/nxp-nci/i2c.c
++++ b/drivers/nfc/nxp-nci/i2c.c
+@@ -305,7 +305,7 @@ static int nxp_nci_i2c_probe(struct i2c_client *client)
  
- 	struct xsk_queue *tx ____cacheline_aligned_in_smp;
- 	struct list_head tx_list;
--	/* Protects generic receive. */
--	spinlock_t rx_lock;
--
- 	/* Statistics */
- 	u64 rx_dropped;
- 	u64 rx_queue_full;
-diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
-index b0bdff26fc88..f0d6ce4bda7a 100644
---- a/include/net/xsk_buff_pool.h
-+++ b/include/net/xsk_buff_pool.h
-@@ -54,6 +54,8 @@ struct xsk_buff_pool {
- 	refcount_t users;
- 	struct xdp_umem *umem;
- 	struct work_struct work;
-+	/* Protects generic receive in shared and non-shared umem mode. */
-+	spinlock_t rx_lock;
- 	struct list_head free_list;
- 	struct list_head xskb_list;
- 	u32 heads_cnt;
-diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
-index 93c802cfb9c6..569d39f19c56 100644
---- a/net/xdp/xsk.c
-+++ b/net/xdp/xsk.c
-@@ -339,13 +339,14 @@ int xsk_generic_rcv(struct xdp_sock *xs, struct xdp_buff *xdp)
- 	u32 len = xdp_get_buff_len(xdp);
- 	int err;
- 
--	spin_lock_bh(&xs->rx_lock);
- 	err = xsk_rcv_check(xs, xdp, len);
- 	if (!err) {
-+		spin_lock_bh(&xs->pool->rx_lock);
- 		err = __xsk_rcv(xs, xdp, len);
- 		xsk_flush(xs);
-+		spin_unlock_bh(&xs->pool->rx_lock);
- 	}
--	spin_unlock_bh(&xs->rx_lock);
-+
- 	return err;
- }
- 
-@@ -1647,7 +1648,6 @@ static int xsk_create(struct net *net, struct socket *sock, int protocol,
- 	xs = xdp_sk(sk);
- 	xs->state = XSK_READY;
- 	mutex_init(&xs->mutex);
--	spin_lock_init(&xs->rx_lock);
- 
- 	INIT_LIST_HEAD(&xs->map_list);
- 	spin_lock_init(&xs->map_list_lock);
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index e83b707da25b..380b0b3f3d8d 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -85,6 +85,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(struct xdp_sock *xs,
- 		XDP_PACKET_HEADROOM;
- 	pool->umem = umem;
- 	pool->addrs = umem->addrs;
-+	spin_lock_init(&pool->rx_lock);
- 	INIT_LIST_HEAD(&pool->free_list);
- 	INIT_LIST_HEAD(&pool->xskb_list);
- 	INIT_LIST_HEAD(&pool->xsk_tx_list);
+ 	r = request_threaded_irq(client->irq, NULL,
+ 				 nxp_nci_i2c_irq_thread_fn,
+-				 IRQF_TRIGGER_RISING | IRQF_ONESHOT,
++				 IRQF_ONESHOT,
+ 				 NXP_NCI_I2C_DRIVER_NAME, phy);
+ 	if (r < 0)
+ 		nfc_err(&client->dev, "Unable to register IRQ handler\n");
+
+---
+base-commit: 4c87cdd0328495759f6e9f9f4e1e53ef8032a76f
+change-id: 20260204-fc-nxp-nci-remove-interrupt-trigger-type-d778323b3b81
+
+Best regards,
 -- 
-2.34.1
+Carl Lee <carl.lee@amd.com>
+
 
