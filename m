@@ -1,154 +1,278 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91F7E3B8BBA;
-	Wed,  4 Feb 2026 09:45:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE72A3B8D4E
+	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 09:51:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770198317; cv=none; b=nMOsoVushry1Z9UUNIERcGy4wujStylgwhG13dQXnCZ8KAKBYC+eeLoBetwE1f1+RuQb+Ix+eNm3GYz/dOY4m6EbMWWQDikOZ411E8M4/5T6QPifeWgAc2Vk/5oxj8zO7TH1Hbzbm7CnlWrG2hpfHq6ojO825dRmVZTalfAP+ns=
+	t=1770198721; cv=none; b=trGIC5BHcts8osEOAMQ50IhHplZDBFkRnNsLeA2aVNIN8vZPvR01kLBs/a0EWupKaQfNsmcQdPQIRlZ5h8MyQ5hJb9RccsiSNtkhKIE2OAVvS4tISsUTArMErhqpHBjmOqzVSfiudIPNnMU9weCLlhnqzfzoCJABA2W5kJhEUx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770198317; c=relaxed/simple;
-	bh=YrUQlyrHEX5MNyRLxbo3Ww4o9KuASOkuXaymD1/wJ98=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hCh1fvwS543yAG59AHOud0cwwOaZ/fxyx3btZb20ZvZ+Z85WfU615W4Ki1KVmVMoC1NpCh/qt26Kn68LN91SvqCJIaNTk+Tqlv9prKahjnpA69PuoephNkuhGNk/y87rkyP/MeK8GF/hlgGMpKJUESqn7U9pZeHWcgdy7NgDk7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nfNdAEEM; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1770198721; c=relaxed/simple;
+	bh=8hDLDbF72dr7b/O4Zo0ApKCVlf3BYvSzKKhomnUdGFs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LGpiwWJvFsHO32h5QMKnQGjbC+TP8o1fSpKCBtuwN7UAXKcVbHag2dJ1QjIzqTQfiMdE78mX4E4ED2UvhFP6fV2GyQydGgYHkLazebp7BzpQnUBzlTPjYXF7asOK5FNJoA7RTzu5OAFVl+oI7YtGpol8U9XMNxx02Y8kUB+6P3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=TwAO/UPJ; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nfNdAEEM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770198318; x=1801734318;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=YrUQlyrHEX5MNyRLxbo3Ww4o9KuASOkuXaymD1/wJ98=;
-  b=nfNdAEEMn8ichNAvnGrf3j2Vl/Cl96AgRsT45SqmTOOMukBXyMtVbddT
-   zPDh47EprxOwf1/XOB5ARhFnjsWwJ4eCdKHtuEsYfscMUUmB+mkxPuZt7
-   JUg6p0RR9/mjkM9A7eGVBORBqSHOISzyjJ4Swk4U6BRG/VAXPr6A7N8rg
-   ImCyPco8b7Qgtv65fA7xazM9zjqFA54G2LzkcVCjTwGy3BtBsmM8Y0QfR
-   Wz00VxFwKdKaZovNdhyCmvAdPFW4y8810k6Z3xHiQm5FuR3E6hPJOPR+S
-   DKMjMarApgBnN2rslAUh1EA4wUs9CFYT4I72EVK/9vsewmA+zKmr1SAGH
-   w==;
-X-CSE-ConnectionGUID: SVcFdlMlSr+MBz2OxwHqLA==
-X-CSE-MsgGUID: fBszilsgQUqqCbWdVGWwCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71110501"
-X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
-   d="scan'208";a="71110501"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 01:45:17 -0800
-X-CSE-ConnectionGUID: zINygFoMTM+ROCfeM5ib3g==
-X-CSE-MsgGUID: kaE1IdPVQPafwuOWu0sj+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
-   d="scan'208";a="214597138"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by fmviesa005.fm.intel.com with ESMTP; 04 Feb 2026 01:45:12 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 1C4B49B; Wed, 04 Feb 2026 10:45:11 +0100 (CET)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Chuck Lever <chuck.lever@oracle.com>,
-	NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	llvm@lists.linux.dev
-Cc: Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH v2 3/3] sunrpc: Fix compilation error (`make W=1`) when dprintk() is no-op
-Date: Wed,  4 Feb 2026 10:41:23 +0100
-Message-ID: <20260204094500.2443455-4-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260204094500.2443455-1-andriy.shevchenko@linux.intel.com>
-References: <20260204094500.2443455-1-andriy.shevchenko@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="TwAO/UPJ"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-432da746749so337850f8f.0
+        for <netdev@vger.kernel.org>; Wed, 04 Feb 2026 01:51:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1770198718; x=1770803518; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dGP603QDqaJG/dpPYsMG8GNhu8nGqxt3dyDV5ITQFhU=;
+        b=TwAO/UPJHfH8/0kLBF6V9c6SiQn6pzA0ohafydvmLqYpFsNd0dNjbP5nnlpGo5RCGT
+         TWXzypiVOeZ+1EHrx1CyH5XxjWsCKVs6WMQKRO0zQ4KVhpdUUZeFT07eezOYwrix6uXr
+         141ZtOR84lWvNw4y8rbWcbL871IXHuRJD68UrKZPeFM8rv+PTEhr+2JwS0D541PcJRu0
+         yeardM6mH9Uq15CVJ5VAho5ogy0mjNVnoSX3ux/fQV+quOAspFtMymX8pewOyk2jscTZ
+         pZ0PeDCK5CnXS1JAazN49NGdcLCX7pSLpgnR9J24EPvR2RtHkmSmMxHL5QujC/Iaa7KF
+         Qq2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770198718; x=1770803518;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dGP603QDqaJG/dpPYsMG8GNhu8nGqxt3dyDV5ITQFhU=;
+        b=cvGdqrHkFosDi2GdUMZ5vqk0aKaOmvY5c2P+Mau6RNEktvtZyALXs76UOMzW8fCM0i
+         lD11spdCbXMao1HqbqtEB+fm1XDySCI2S4fW7KeAa64kJSTx0cNtVCUBaHDVKKNF2E5N
+         ZhNwHLb0WRYhiXCzScHWriKIl5D4NQr/aSsMnjIVEuRHT2FB1CTocRDiN+J9OrTCWrIp
+         /nK5D1OPf44oA8jm/JIwY7BOid5Q0E7ucmDi6OB5RncVkAvT6y2VblYNRCbJ71YEH0Ua
+         AUONZ7u3xUyYdLuTlytE8tXsTdZ5Eh2okKz+2RWenWCEhhQ4XIchGPsdPaWHxn8pRnU/
+         IZeg==
+X-Forwarded-Encrypted: i=1; AJvYcCX8V41C26RtLQYP98p2bAlqR/wdc6twNV+zolSwb7ix7iemzC6nUKM8mtncBZQUTxBl24HV+wk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YywCCk9NdMJl8piymQvD2u7KviTO5mlrZL8BsNjgdAcSAV/lUhk
+	x+dV6b2AKgVoo/9nE/zgJsXDllUizTOmwLthHcqfK/wYjGaY7lv9CuxyBrU2yabPXTU=
+X-Gm-Gg: AZuq6aLHmyM+HzInsrPBvJfgyZfTe0TWJmbHSy9O5EW1jBzZQ8ixLwhSMtRTD0AWuwq
+	tv+enaV6PIdEhDvl8KfpOMrIZKb3ivj51bYbGVAQUr2YDTZi9tFTPvvT9RL74ScoTqAhCh7E2FB
+	OOXPO6LqxK0FjiEp6Qq14RLZ/6Pe0ztU7Qr7qY/dMn+kTQz+YfRxD8tcBYbzTYyhjxPAiJyjTbC
+	oXrhDo+WN1+wrFAegNyzerJdrXR87dF/+kNYPmGF07Luxc/LC3gXhk1uenLiZl8eo4v1/u4WxBF
+	JkBq/gqGAQYUPKFq3DdAQlyLqKV2GhoCels+koFdhUfJpN9hUX1n0giDDENC1viePdCguY5Mqsg
+	9stFBj/f6VLh7o31UcjJqxSGtJw9ObPIk4EK9m1p4LEAb65cvw1qBSG4D+uRaUsSnl8yDX2Im7h
+	cqjckcpj5sopvoHsfBn2k=
+X-Received: by 2002:a05:6000:40d9:b0:435:a370:2d7a with SMTP id ffacd0b85a97d-43618053444mr3194322f8f.36.1770198717973;
+        Wed, 04 Feb 2026 01:51:57 -0800 (PST)
+Received: from FV6GYCPJ69 ([85.163.81.98])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4361805edcfsm5124440f8f.35.2026.02.04.01.51.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 01:51:57 -0800 (PST)
+Date: Wed, 4 Feb 2026 10:51:55 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Tariq Toukan <tariqt@nvidia.com>
+Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Donald Hunter <donald.hunter@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Saeed Mahameed <saeedm@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>, Shuah Khan <shuah@kernel.org>, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, linux-kselftest@vger.kernel.org, Gal Pressman <gal@nvidia.com>, 
+	Moshe Shemesh <moshe@nvidia.com>, Shay Drori <shayd@nvidia.com>, Jiri Pirko <jiri@nvidia.com>, 
+	Or Har-Toov <ohartoov@nvidia.com>
+Subject: Re: [PATCH net-next 1/5] devlink: Add port-level resource
+ infrastructure
+Message-ID: <rye7fponvzxqbeexkreuxwvjlder34vfkofib4gwrhkbw3vres@udo2xxeek6xv>
+References: <20260203071033.1709445-1-tariqt@nvidia.com>
+ <20260203071033.1709445-2-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260203071033.1709445-2-tariqt@nvidia.com>
 
-Clang compiler is not happy about set but unused variables:
+Tue, Feb 03, 2026 at 08:10:29AM +0100, tariqt@nvidia.com wrote:
+>From: Or Har-Toov <ohartoov@nvidia.com>
+>
+>The current devlink resource infrastructure only supports device-level
+>resources. Some hardware resources are associated with specific ports
+>rather than the entire device, and today we have no way to show resource
+>per-port.
+>
+>Add support for registering and querying resources at the port level,
+>allowing drivers to expose per-port resource limits and usage.
+>
+>Example output:
+>
+>  $ devlink port resource show
+>  pci/0000:03:00.0/196608:
+>    name max_SFs size 20 unit entry
+>  pci/0000:03:00.1/262144:
+>    name max_SFs size 20 unit entry
+>
+>  $ devlink port resource show pci/0000:03:00.0/196608
+>  pci/0000:03:00.0/196608:
+>    name max_SFs size 20 unit entry
+>
+>Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
+>Reviewed-by: Shay Drori <shayd@nvidia.com>
+>Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+>Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+>---
+> Documentation/netlink/specs/devlink.yaml |  23 ++
+> include/net/devlink.h                    |   8 +
+> include/uapi/linux/devlink.h             |   2 +
+> net/devlink/netlink.c                    |   2 +-
+> net/devlink/netlink_gen.c                |  32 ++-
+> net/devlink/netlink_gen.h                |   6 +-
+> net/devlink/port.c                       |   3 +
+> net/devlink/resource.c                   | 282 ++++++++++++++++++-----
+> 8 files changed, 301 insertions(+), 57 deletions(-)
 
-.../flexfilelayout/flexfilelayoutdev.c:56:9: error: variable 'ret' set but not used [-Werror,-Wunused-but-set-variable]
-.../flexfilelayout/flexfilelayout.c:1505:6: error: variable 'err' set but not used [-Werror,-Wunused-but-set-variable]
-.../nfs4proc.c:9244:12: error: variable 'ptr' set but not used [-Werror,-Wunused-but-set-variable]
+Way too big for a single patch. Could you split it in logical chunks
+please?
 
-Fix these by forwarding parameters of dprintk() to no_printk().
-The positive side-effect is a format-string checker enabled even for the cases
-when dprintk() is no-op.
 
-Fixes: d67ae825a59d ("pnfs/flexfiles: Add the FlexFile Layout Driver")
-Fixes: fc931582c260 ("nfs41: create_session operation")
-Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- fs/lockd/svclock.c           | 5 +++++
- include/linux/sunrpc/debug.h | 8 ++++++--
- 2 files changed, 11 insertions(+), 2 deletions(-)
+>
+>diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
+>index 837112da6738..0290db1b8393 100644
+>--- a/Documentation/netlink/specs/devlink.yaml
+>+++ b/Documentation/netlink/specs/devlink.yaml
+>@@ -2336,3 +2336,26 @@ operations:
+>             - bus-name
+>             - dev-name
+>             - port-index
+>+
+>+    -
+>+      name: port-resource-get
 
-diff --git a/fs/lockd/svclock.c b/fs/lockd/svclock.c
-index 712df1e025d8..dcd3e0b4d997 100644
---- a/fs/lockd/svclock.c
-+++ b/fs/lockd/svclock.c
-@@ -80,6 +80,11 @@ static const char *nlmdbg_cookie2a(const struct nlm_cookie *cookie)
- 
- 	return buf;
- }
-+#else
-+static inline const char *nlmdbg_cookie2a(const struct nlm_cookie *cookie)
-+{
-+	return "???";
-+}
- #endif
- 
- /*
-diff --git a/include/linux/sunrpc/debug.h b/include/linux/sunrpc/debug.h
-index e947d668f7b7..82239d5c262e 100644
---- a/include/linux/sunrpc/debug.h
-+++ b/include/linux/sunrpc/debug.h
-@@ -40,6 +40,8 @@ extern unsigned int		nlm_debug;
- do {									\
- 	ifdebug(fac)							\
- 		__sunrpc_printk(fmt, ##__VA_ARGS__);			\
-+	else								\
-+		no_printk(fmt, ##__VA_ARGS__);				\
- } while (0)
- 
- # define dfprintk_rcu(fac, fmt, ...)					\
-@@ -48,13 +50,15 @@ do {									\
- 		rcu_read_lock();					\
- 		__sunrpc_printk(fmt, ##__VA_ARGS__);			\
- 		rcu_read_unlock();					\
-+	} else {							\
-+		no_printk(fmt, ##__VA_ARGS__);				\
- 	}								\
- } while (0)
- 
- #else
- # define ifdebug(fac)		if (0)
--# define dfprintk(fac, fmt, ...)	do {} while (0)
--# define dfprintk_rcu(fac, fmt, ...)	do {} while (0)
-+# define dfprintk(fac, fmt, ...)	no_printk(fmt, ##__VA_ARGS__)
-+# define dfprintk_rcu(fac, fmt, ...)	no_printk(fmt, ##__VA_ARGS__)
- #endif
- 
- /*
--- 
-2.50.1
+Why this is not aligned with DEVLINK_CMD_RESOURCE_* ?
+$ git grep CMD_RESOURCE_ include/uapi/linux/devlink.h
+include/uapi/linux/devlink.h:   DEVLINK_CMD_RESOURCE_SET,
+include/uapi/linux/devlink.h:   DEVLINK_CMD_RESOURCE_DUMP,
 
+I'm aware that DEVLINK_CMD_RESOURCE_DUMP only implements "do" now, but I
+think both should be named the same, no?
+
+
+>+      doc: Get port resources.
+>+      attribute-set: devlink
+>+      dont-validate: [strict]
+>+      do:
+>+        pre: devlink-nl-pre-doit-port
+>+        post: devlink-nl-post-doit
+>+        request:
+>+          value: 85
+>+          attributes: *port-id-attrs
+>+        reply: &port-resource-get-reply
+>+          value: 85
+>+          attributes:
+>+            - bus-name
+>+            - dev-name
+>+            - port-index
+>+            - resource-list
+>+      dump:
+>+        request:
+>+          attributes: *dev-id-attrs
+>+        reply: *port-resource-get-reply
+
+[...]
+
+
+>-int devl_resource_register(struct devlink *devlink,
+>-			   const char *resource_name,
+>-			   u64 resource_size,
+>-			   u64 resource_id,
+>-			   u64 parent_resource_id,
+>-			   const struct devlink_resource_size_params *size_params)
+>+static int
+>+devl_resource_reg_by_list(struct devlink *devlink,
+
+
+can't this be "register"?
+
+Also, why "by_list"? Sounds odd. Could you perhaps have it as
+__devl_resource_register(). That's the usual pattern for similar
+functions here, isn't it?
+
+Also, could you do this "list" abstraction in a separate patch?
+
+
+
+>+			  struct list_head *res_list_head,
+>+			  const char *resource_name, u64 resource_size,
+>+			  u64 resource_id, u64 parent_res_id,
+>+			  const struct devlink_resource_size_params *params)
+> {
+> 	struct devlink_resource *resource;
+> 	struct list_head *resource_list;
+>@@ -341,9 +344,10 @@ int devl_resource_register(struct devlink *devlink,
+> 
+> 	lockdep_assert_held(&devlink->lock);
+> 
+>-	top_hierarchy = parent_resource_id == DEVLINK_RESOURCE_ID_PARENT_TOP;
+>+	top_hierarchy = parent_res_id == DEVLINK_RESOURCE_ID_PARENT_TOP;
+> 
+>-	resource = devlink_resource_find(devlink, NULL, resource_id);
+>+	resource = devlink_resource_find_by_list(res_list_head, NULL,
+>+						 resource_id);
+> 	if (resource)
+> 		return -EEXIST;
+> 
+>@@ -352,15 +356,15 @@ int devl_resource_register(struct devlink *devlink,
+> 		return -ENOMEM;
+> 
+> 	if (top_hierarchy) {
+>-		resource_list = &devlink->resource_list;
+>+		resource_list = res_list_head;
+> 	} else {
+>-		struct devlink_resource *parent_resource;
+>+		struct devlink_resource *parent_res;
+> 
+>-		parent_resource = devlink_resource_find(devlink, NULL,
+>-							parent_resource_id);
+>-		if (parent_resource) {
+>-			resource_list = &parent_resource->resource_list;
+>-			resource->parent = parent_resource;
+>+		parent_res = devlink_resource_find_by_list(res_list_head, NULL,
+>+							   parent_res_id);
+>+		if (parent_res) {
+>+			resource_list = &parent_res->resource_list;
+>+			resource->parent = parent_res;
+> 		} else {
+> 			kfree(resource);
+> 			return -EINVAL;
+>@@ -372,46 +376,78 @@ int devl_resource_register(struct devlink *devlink,
+> 	resource->size_new = resource_size;
+> 	resource->id = resource_id;
+> 	resource->size_valid = true;
+>-	memcpy(&resource->size_params, size_params,
+>-	       sizeof(resource->size_params));
+>+	memcpy(&resource->size_params, params, sizeof(resource->size_params));
+> 	INIT_LIST_HEAD(&resource->resource_list);
+> 	list_add_tail(&resource->list, resource_list);
+> 
+> 	return 0;
+> }
+>+
+>+/**
+>+ * devl_resource_register - devlink resource register
+>+ *
+>+ * @devlink: devlink
+>+ * @resource_name: resource's name
+>+ * @resource_size: resource's size
+>+ * @resource_id: resource's id
+>+ * @parent_resource_id: resource's parent id
+>+ * @params: size parameters
+>+ *
+>+ * Generic resources should reuse the same names across drivers.
+>+ * Please see the generic resources list at:
+>+ * Documentation/networking/devlink/devlink-resource.rst
+>+ *
+>+ * Return: 0 on success, negative error code otherwise.
+>+ */
+>+int devl_resource_register(struct devlink *devlink, const char *resource_name,
+>+			   u64 resource_size, u64 resource_id,
+>+			   u64 parent_resource_id,
+>+			   const struct devlink_resource_size_params *params)
+>+{
+>+	return devl_resource_reg_by_list(devlink, &devlink->resource_list,
+>+					      resource_name, resource_size,
+>+					      resource_id, parent_resource_id,
+>+					      params);
+>+}
+
+[...]
