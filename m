@@ -1,81 +1,33 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6630942314B
-	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 16:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B58427A0B;
+	Wed,  4 Feb 2026 16:29:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770222321; cv=none; b=lGrHr+amjKNtMv7W0xrOxVn//iRHat7XwLikJD/JRmhMF3ERybuJeE0f6jq7Gm3X8vWCrmaq3rPrFxQdO7RluYQl+wvBKh+z5UfQYTS7bLqvAf2CAeYL3JW40pbBiTGYpch1rnFvwbMxl5bXEsUVfUdeX4GIQKsTjnoTLmM6eOc=
+	t=1770222560; cv=none; b=u1sSIu8a2HzOZHNdrmPUEHELU8NS3PxzLIemSAHZflBHPXZLNkDqSNoaxAzP1THzJh2sETzOmQjJdoQpLRWRQs880h0+Gc/pNWd19gIZsv3wDMXSwfcfvI6ek4zjfpeiUSaVMiG7NN2Mk1eUKFJlg8Qcew6BPrvj17d1w3KhyNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770222321; c=relaxed/simple;
-	bh=EQDGREbx2eOfIlZCyzYY3XBcflutsIBy47GxcemPVTk=;
+	s=arc-20240116; t=1770222560; c=relaxed/simple;
+	bh=PHdKe9D5um0ozJTCETL/kbKdKgp/SZ5nSJbuDhcuh44=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iVhNFnqVkrbsrojUMNSsKBqvHn6DNZIBNHs3SLgN0ETapxNkY+gEiatQjGGde7HMWDVe86Yj3hjhMUIVIweLtIJh2XcWXdZJBt3Vz4hTL+XB1pjlxNlqfHLf+eS6m1u4Pvwi9uEo8scrvl97WBQFi4iJK38INSBiYP/eLhvjaNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Iz4Bb9jH; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=d8GX2OBO; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Iz4Bb9jH; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=d8GX2OBO; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	 In-Reply-To:Content-Type; b=N2kthZ7AM+zxG7zXw11RiyLx+WruojTbLhsa6sF3rccGnf4urLVEnIIhEm19uhiKOk1kUW3y3+Fo6zCEf3MI2Aq5TkEfT1WIHyG3xvFpRkPm0z0oxTmYzsmTTt4i4/CciP9s3F2nAGPFQSi3VVEosxzJtMqTDK0f24YNBcXwONo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wso5VrtO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Iz4Bb9jH";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="d8GX2OBO";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Iz4Bb9jH";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="d8GX2OBO"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 8C1CD3E756;
-	Wed,  4 Feb 2026 16:25:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770222319; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MNfdfWpxS7ez9doSrQNEseEA9yAII6UibWhm1hCdWfw=;
-	b=Iz4Bb9jHRw+ctTk/qoKbyCOSU+foIH4y+zrlXkUo541/HfcsjOvTdypqpWlTBI3Djz8xGA
-	OjwA5+/0hYkTuaaH0xTRQbBLoPEneHQaP81sTyySsoE0V/iLZx7FInXdFeVEaVOKYBphWX
-	MUojMrl7LpadBz4Ioo8lxirjUdkY93c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770222319;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MNfdfWpxS7ez9doSrQNEseEA9yAII6UibWhm1hCdWfw=;
-	b=d8GX2OBOWzM3Xav8arbsw4w+/7MYslKkJJI5xPd1iJguX1ylyDzFSm3xnWaNyOoARwjKs3
-	xL/Zw/XyxbkQDvCw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Iz4Bb9jH;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=d8GX2OBO
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770222319; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MNfdfWpxS7ez9doSrQNEseEA9yAII6UibWhm1hCdWfw=;
-	b=Iz4Bb9jHRw+ctTk/qoKbyCOSU+foIH4y+zrlXkUo541/HfcsjOvTdypqpWlTBI3Djz8xGA
-	OjwA5+/0hYkTuaaH0xTRQbBLoPEneHQaP81sTyySsoE0V/iLZx7FInXdFeVEaVOKYBphWX
-	MUojMrl7LpadBz4Ioo8lxirjUdkY93c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770222319;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MNfdfWpxS7ez9doSrQNEseEA9yAII6UibWhm1hCdWfw=;
-	b=d8GX2OBOWzM3Xav8arbsw4w+/7MYslKkJJI5xPd1iJguX1ylyDzFSm3xnWaNyOoARwjKs3
-	xL/Zw/XyxbkQDvCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ABFFF3EA63;
-	Wed,  4 Feb 2026 16:25:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wlagJu5yg2mOHAAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Wed, 04 Feb 2026 16:25:18 +0000
-Message-ID: <ad8dec4c-d3e0-46c6-a943-c7f3c786c802@suse.de>
-Date: Wed, 4 Feb 2026 17:25:18 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wso5VrtO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A2AC116C6;
+	Wed,  4 Feb 2026 16:29:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770222560;
+	bh=PHdKe9D5um0ozJTCETL/kbKdKgp/SZ5nSJbuDhcuh44=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Wso5VrtOhK/lDGxJGVBnZAB7HQbB+bx63bMSEFNdBE7sbvwd93JuA4bDnQF4RmJVf
+	 Cfuhme+88RAtw5vrS7SgrIbI4E2e0gM+YA04XVD7UjnbE2V4S29mCetcNdLnfGzifc
+	 GibEg20ZNkZsar2IC3+58UvAQa3ZAsBB/9PBEI8tvCv+UIPyHt7hjmnZ/WPcMpW6aX
+	 xSYDWDT68TA9ith8jG3aIrzzkOcDA/7YNffXfApwUZsTNwc4pjZ5yb94ht7xMDOVEX
+	 lbNlIdnEdedd5dyyeFGamKrb2Oq2cdruSBsFr1LxR0n+1aFvAysuMxm8Zlj0ZCTPbx
+	 V7UtqxNm08yCw==
+Message-ID: <3d7fd4c1-4519-49b1-88df-5770734e8a72@kernel.org>
+Date: Wed, 4 Feb 2026 09:29:19 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -83,187 +35,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC net-next] inet: add ip_retry_random_port sysctl to
- reduce sequential port retries
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, corbet@lwn.net, ncardwell@google.com,
- kuniyu@google.com, dsahern@kernel.org, idosch@nvidia.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- Thorsten Toepper <thorsten.toepper@sap.com>
-References: <20260203175422.4620-1-fmancera@suse.de>
+Subject: Re: [PATCH net-next v1] icmp: fix ip_rt_bug race in icmp_route_lookup
+ reverse path
 Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260203175422.4620-1-fmancera@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, Paolo Abeni <pabeni@redhat.com>,
+ netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+ syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org
+References: <20260128090523.356953-1-jiayuan.chen@linux.dev>
+ <892557d1-9408-40e3-8e79-587713116b93@redhat.com>
+ <1cbd0d2e-2002-4685-99eb-97dd8947cf16@kernel.org>
+ <985568ea543b05f52c453427a6125200bcff0aaf@linux.dev>
+From: David Ahern <dsahern@kernel.org>
+In-Reply-To: <985568ea543b05f52c453427a6125200bcff0aaf@linux.dev>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.51
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:mid,suse.de:email]
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 8C1CD3E756
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
 
-On 2/3/26 6:54 PM, Fernando Fernandez Mancera wrote:
-> With the current port selection algorithm, ports after a reserved port
-> or long time used port are used more often than others. This combines
-> with cloud environments blocking connections between the application
-> server and the database server if there was a previous connection with
-> the same source port. This leads to connectivity problems between
-> applications on cloud environments.
+On 2/3/26 7:27 PM, Jiayuan Chen wrote:
 > 
-> The situation is that a source tuple is usable again after being closed
-> for a maximum lifetime segment of two minutes while in the firewall it's
-> still noted as existing for 60 minutes or longer. So in case that the
-> port is reused for the same target tuple before the firewall cleans up,
-> the connection will fail due to firewall interference which itself will
-> reset the activity timeout in its own table. We understand the real
-> issue here is that these firewalls cannot cope with standards-compliant
-> port reuse. But this is a workaround for such situations and an
-> improvement on the distribution of ports selected.
+> Thanks for the review.
 > 
-> The proposed solution is instead of incrementing the port number,
-> performing a re-selection of a new random port within the remaining
-> range. This solution is configured via sysctl new option
-> "net.ipv4.ip_retry_random_port".
+> Paolo, I'll fix it in newer version.
 > 
-> The test run consists of two processes, a client and a server, and loops
-> connect to the server sending some bytes back. The results we got are
-> promising:
+> Regarding David's question about whether the message provides value:
+> I think it could still be useful for debugging. If a user's configuration
+> change causes ICMP packets to be silently dropped, there's currently no counter
+> or indication of what happened. Adding a dedicated counter for this rare race
+> condition seems overkill, so a rate-limited warning at least gives some visibility
+> into the failure.
 > 
-> Executed test: Current algorithm
-> ephemeral port range: 9000-65499
-> simulated selections: 10000000
-> retries during simulation: 14197718
-> longest retry sequence: 5202
+> That said, I'm open to dropping the message entirely if you both think silent handling
+> is preferred. Let me know and I'll send a new version either way.
 > 
-> Executed test: Proposed modified algorithm
-> ephemeral port range: 9000-65499
-> simulated selections: 10000000
-> retries during simulation: 3976671
-> longest retry sequence: 12
-> 
-> In addition, on graphs generated we can observe that the distribution of
-> source ports is more even with the proposed patch.
-> 
-> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-> Tested-by: Thorsten Toepper <thorsten.toepper@sap.com>
-> ---
->   .../networking/net_cachelines/netns_ipv4_sysctl.rst        | 1 +
->   include/net/netns/ipv4.h                                   | 1 +
->   net/ipv4/inet_hashtables.c                                 | 7 ++++++-
->   net/ipv4/sysctl_net_ipv4.c                                 | 7 +++++++
->   4 files changed, 15 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst b/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst
-> index beaf1880a19b..c4041fdca01e 100644
-> --- a/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst
-> +++ b/Documentation/networking/net_cachelines/netns_ipv4_sysctl.rst
-> @@ -47,6 +47,7 @@ u8                              sysctl_tcp_ecn
->   u8                              sysctl_tcp_ecn_fallback
->   u8                              sysctl_ip_default_ttl                                                                ip4_dst_hoplimit/ip_select_ttl
->   u8                              sysctl_ip_no_pmtu_disc
-> +u8                              sysctl_ip_retry_random_port
->   u8                              sysctl_ip_fwd_use_pmtu                       read_mostly                             ip_dst_mtu_maybe_forward/ip_skb_dst_mtu
->   u8                              sysctl_ip_fwd_update_priority                                                        ip_forward
->   u8                              sysctl_ip_nonlocal_bind
-> diff --git a/include/net/netns/ipv4.h b/include/net/netns/ipv4.h
-> index 2dbd46fc4734..d04b07e7c935 100644
-> --- a/include/net/netns/ipv4.h
-> +++ b/include/net/netns/ipv4.h
-> @@ -156,6 +156,7 @@ struct netns_ipv4 {
->   
->   	u8 sysctl_ip_default_ttl;
->   	u8 sysctl_ip_no_pmtu_disc;
-> +	u8 sysctl_ip_retry_random_port;
->   	u8 sysctl_ip_fwd_update_priority;
->   	u8 sysctl_ip_nonlocal_bind;
->   	u8 sysctl_ip_autobind_reuse;
-> diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-> index f5826ec4bcaa..f1c79a7d3fd3 100644
-> --- a/net/ipv4/inet_hashtables.c
-> +++ b/net/ipv4/inet_hashtables.c
-> @@ -1088,8 +1088,13 @@ int __inet_hash_connect(struct inet_timewait_death_row *death_row,
->   	for (i = 0; i < remaining; i += step, port += step) {
->   		if (unlikely(port >= high))
->   			port -= remaining;
-> -		if (inet_is_local_reserved_port(net, port))
-> +		if (inet_is_local_reserved_port(net, port)) {
-> +			if (net->ipv4.sysctl_ip_retry_random_port) {
-> +				port = low + get_random_u32_below(remaining);
-> +				port = ((port & 1) == step) ? port : (port - 1);
 
-The AI bot did a good observation 
-(https://netdev-ai.bots.linux.dev/ai-review.html?id=c1544ebc-4c9d-45c5-bce9-784764102912). 
-I think this would be better as it will keep the random scan within the 
-same parity when needed.
-
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index f1c79a7d3fd3..c9650079f9e5 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -1090,8 +1090,11 @@ int __inet_hash_connect(struct 
-inet_timewait_death_row *death_row,
-  			port -= remaining;
-  		if (inet_is_local_reserved_port(net, port)) {
-  			if (net->ipv4.sysctl_ip_retry_random_port) {
--				port = low + get_random_u32_below(remaining);
--				port = ((port & 1) == step) ? port : (port - 1);
-+				u32 candidate = low + get_random_u32_below(remaining);
-+
-+				if (step == 2 && (candidate & 1) != (port & 1))
-+					candidate++;
-+				port = candidate;
-  			}
-  			continue;
-  		}
-
-> +			}
->   			continue;
-> +		}
->   		head = &hinfo->bhash[inet_bhashfn(net, port,
->   						  hinfo->bhash_size)];
->   		rcu_read_lock();
-> diff --git a/net/ipv4/sysctl_net_ipv4.c b/net/ipv4/sysctl_net_ipv4.c
-> index a1a50a5c80dc..5eade7d9e4a2 100644
-> --- a/net/ipv4/sysctl_net_ipv4.c
-> +++ b/net/ipv4/sysctl_net_ipv4.c
-> @@ -822,6 +822,13 @@ static struct ctl_table ipv4_net_table[] = {
->   		.mode		= 0644,
->   		.proc_handler	= ipv4_local_port_range,
->   	},
-> +	{
-> +		.procname	= "ip_retry_random_port",
-> +		.maxlen		= sizeof(u8),
-> +		.data		= &init_net.ipv4.sysctl_ip_retry_random_port,
-> +		.mode		= 0644,
-> +		.proc_handler	= proc_dou8vec_minmax,
-> +	},
->   	{
->   		.procname	= "ip_local_reserved_ports",
->   		.data		= &init_net.ipv4.sysctl_local_reserved_ports,
+no strong opinions.
 
