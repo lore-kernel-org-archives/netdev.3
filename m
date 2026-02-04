@@ -1,194 +1,151 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3509134107A;
-	Wed,  4 Feb 2026 16:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C65343200;
+	Wed,  4 Feb 2026 16:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770224271; cv=none; b=GQl450Iu3bQ1vMQtgUHN/FvWuu1Rd0cLbW1EicpiwjBQq6R38Mkpus+ZenByQHhY0YzeMSATPDPx63Q5+p1v+I2Hg/gzipxDmgoT8zurTLxeaGnmB+Zw8CEnEND+OLY8EQJ4NmRHMdIGaIx9TikHmb+lyKlUOvCFlJ3fL2Tj6fM=
+	t=1770224273; cv=none; b=QdCP7FGoVcQbwLkxuUAcWT2hGdescGrmniNyGv/1GClc2S3N+8FaMontCRlpFueC7kJVILwYRqkIY7D3oOj8FMmZ29CsUBQ50VqxSP+4O9lAoUlS5PAxfuLKEAOWHRSNeaXxtE91c7Q1M9ccGdPohHGOCnXtR6V7pRwjHC5Iqro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770224271; c=relaxed/simple;
-	bh=HlMlVnTgmkL7tsK9Wwfic2VfIH66MBM/lH/WwbwuTZI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFPzgCkLYNs+Fsnh9zVAqoXv1wKblGSJDHo8jSAky66tvRgFaQhklk6mhd3ndnrvXbeyssPdxGkyXL0ht1wslUWiWUolQ1zTXO7PGtir3IrEFFRCFT7sBJLw/LzIAKGrQ4APj8TjFWz0pB8idA0LbGTVqtdlORNJNq0Nv05rwFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z/CWkuKD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770224273; c=relaxed/simple;
+	bh=oQrIrDfVl4PepNgPPdzQwgI/kMNP/CA7VfcOXfAUYiQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=qkpj8Jr9lFOOnb5wBq1PQth3Z8XFQRetuW8pz7pjBs9g1gzQBXpkUxiB02wjwW/MLKaKe9rpkrF2he7Wihr4WU5iD+O8qC7qBusFsMZH2h34JaiQ2VrWQ+pTtHv6aqIBT6/XTOIhWhSjbL7TNSFcs1xm2iYKumYzar4EZtt7HwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RJELLuzP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z/CWkuKD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A39DC19425;
-	Wed,  4 Feb 2026 16:57:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RJELLuzP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D86BEC19423;
+	Wed,  4 Feb 2026 16:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770224270;
-	bh=HlMlVnTgmkL7tsK9Wwfic2VfIH66MBM/lH/WwbwuTZI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z/CWkuKDjl0ikFJVKXNmZvvbFK/4Bzk5LnxCWEiyz0IZ4sNfkFp+PId1EsiZMDdQl
-	 qtdTQzsO+r91SPgig0Gk0cWaDfud4EOJtqnOX22WQND7+LHExMMOScdN9V9VETjXv+
-	 ftzXkMffEcxKBGzZpzS01mVQ0UXYTtXCVa2Qipiy6hdNACSo8P8LqB6OhHCap9y44u
-	 xJ6jrBPTSDneS4KpwMGHcMPPzuAzYem9ZqZQ/v5CuiGDL3g1dH4DUHqQzIEDBAKO8l
-	 7trosr0WaIvdOKW5MtLpEB6DWJROrsQQkdwl3FhlNmQsOaLTNJVWgVDhihj3BLSlNF
-	 9sIMQyhKx0Z7A==
-From: Simon Horman <horms@kernel.org>
-To: rkannoth@marvell.com
-Cc: Simon Horman <horms@kernel.org>,
-	sumang@marvell.com,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	sbhatta@marvell.com,
-	sgoutham@marvell.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [net-next,v8,01/13] octeontx2-af: npc: cn20k: Index management
-Date: Wed,  4 Feb 2026 16:57:39 +0000
-Message-ID: <20260204165740.2184444-1-horms@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260202074607.2535569-2-rkannoth@marvell.com>
-References: <20260202074607.2535569-2-rkannoth@marvell.com>
+	s=k20201202; t=1770224272;
+	bh=oQrIrDfVl4PepNgPPdzQwgI/kMNP/CA7VfcOXfAUYiQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=RJELLuzP+RIur+Fsia8tS7AaxU2kaaRTR6KElUpyd8qiL4hRZKKEkuTxpoYsn5lI/
+	 BPflU7nPt+WtoaKXFaD/SUdg2WXVBeQKeHGxFTKAJGU+Uab7zDxXz+WacTDxzZYduy
+	 Hu2qhe2F2zXQZPrTB3pYpwxemsV0xpIRT6nZvktMVJqpUcG+xPabhBoq/CMoH6Lup1
+	 Q+/BfSL0K138IDtHsicOZ7XX/MXRymMQ+asEPGhP1kGRxqgSZDiwtX2egxvhwdU9pC
+	 hTMn0bg+X2YB+zAW9xlZzbCGilL98tG3YD57/6FtaXQnkdOVD4UduV3lGvkpdhPrZN
+	 C9vct5yzHH7AA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Wed, 04 Feb 2026 17:57:27 +0100
+Subject: [PATCH net 3/4] mptcp: fix kdoc warnings
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260204-net-mptcp-misc-fixes-6-19-rc8-v1-3-cb559fb6b50a@kernel.org>
+References: <20260204-net-mptcp-misc-fixes-6-19-rc8-v1-0-cb559fb6b50a@kernel.org>
+In-Reply-To: <20260204-net-mptcp-misc-fixes-6-19-rc8-v1-0-cb559fb6b50a@kernel.org>
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3873; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=oQrIrDfVl4PepNgPPdzQwgI/kMNP/CA7VfcOXfAUYiQ=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKbq9r63lbOn9TOH2MXd0+q4ujbhN1bdUQjhb5Om3WE9
+ 9eZpCyXjlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgInsOMjIsKqn1s5I1Dqj4/as
+ R/Yrc6xaHz0uYuS6/Ef0gM/W9Dn7vRj+e16K8TjtbsWcueq0lW/iFdmLs5ls3i5jrDR8qbtXqEe
+ QDwA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+The following warnings were visible:
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+  $ ./scripts/kernel-doc -Wall -none \
+        net/mptcp/ include/net/mptcp.h include/uapi/linux/mptcp*.h \
+        include/trace/events/mptcp.h
+  Warning: net/mptcp/token.c:108 No description found for return value of 'mptcp_token_new_request'
+  Warning: net/mptcp/token.c:151 No description found for return value of 'mptcp_token_new_connect'
+  Warning: net/mptcp/token.c:246 No description found for return value of 'mptcp_token_get_sock'
+  Warning: net/mptcp/token.c:298 No description found for return value of 'mptcp_token_iter_next'
+  Warning: net/mptcp/protocol.c:4431 No description found for return value of 'mptcp_splice_read'
+  Warning: include/uapi/linux/mptcp_pm.h:13 missing initial short description on line:
+   * enum mptcp_event_type
+
+Address all of them: either by using the 'Return:' keyword, or by adding
+a missing initial short description.
+
+The MPTCP CI will soon report issues with kdoc to avoid introducing new
+issues and being flagged by the Netdev CI.
+
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
-octeontx2-af: npc: cn20k: Index management
+ include/uapi/linux/mptcp_pm.h |  2 +-
+ net/mptcp/token.c             | 16 +++++++++-------
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
-This patch adds MCAM index allocation and management for CN20K silicon.
-The implementation supports contiguous and non-contiguous allocation
-schemes with reference, limit, and priority parameters.
+diff --git a/include/uapi/linux/mptcp_pm.h b/include/uapi/linux/mptcp_pm.h
+index c97d060ee90b..fe9863d75350 100644
+--- a/include/uapi/linux/mptcp_pm.h
++++ b/include/uapi/linux/mptcp_pm.h
+@@ -11,7 +11,7 @@
+ #define MPTCP_PM_VER	1
+ 
+ /**
+- * enum mptcp_event_type
++ * enum mptcp_event_type - Netlink MPTCP event types
+  * @MPTCP_EVENT_UNSPEC: unused event
+  * @MPTCP_EVENT_CREATED: A new MPTCP connection has been created. It is the
+  *   good time to allocate memory and send ADD_ADDR if needed. Depending on the
+diff --git a/net/mptcp/token.c b/net/mptcp/token.c
+index 5bb924534387..f1a50f367add 100644
+--- a/net/mptcp/token.c
++++ b/net/mptcp/token.c
+@@ -103,7 +103,7 @@ static void mptcp_crypto_key_gen_sha(u64 *key, u32 *token, u64 *idsn)
+  * It creates a unique token to identify the new mptcp connection,
+  * a secret local key and the initial data sequence number (idsn).
+  *
+- * Returns 0 on success.
++ * Return: 0 on success.
+  */
+ int mptcp_token_new_request(struct request_sock *req)
+ {
+@@ -146,7 +146,7 @@ int mptcp_token_new_request(struct request_sock *req)
+  * the computed token at a later time, this is needed to process
+  * join requests.
+  *
+- * returns 0 on success.
++ * Return: 0 on success.
+  */
+ int mptcp_token_new_connect(struct sock *ssk)
+ {
+@@ -241,7 +241,7 @@ bool mptcp_token_exists(u32 token)
+  * This function returns the mptcp connection structure with the given token.
+  * A reference count on the mptcp socket returned is taken.
+  *
+- * returns NULL if no connection with the given token value exists.
++ * Return: NULL if no connection with the given token value exists.
+  */
+ struct mptcp_sock *mptcp_token_get_sock(struct net *net, u32 token)
+ {
+@@ -288,11 +288,13 @@ EXPORT_SYMBOL_GPL(mptcp_token_get_sock);
+  * @s_slot: start slot number
+  * @s_num: start number inside the given lock
+  *
+- * This function returns the first mptcp connection structure found inside the
+- * token container starting from the specified position, or NULL.
++ * Description:
++ *   On successful iteration, the iterator is moved to the next position and a
++ *   reference to the returned socket is acquired.
+  *
+- * On successful iteration, the iterator is moved to the next position and
+- * a reference to the returned socket is acquired.
++ * Return:
++ *   The first mptcp connection structure found inside the token container
++ *   starting from the specified position, or NULL.
+  */
+ struct mptcp_sock *mptcp_token_iter_next(const struct net *net, long *s_slot,
+ 					 long *s_num)
 
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
-> new file mode 100644
-> index 000000000000..eb1f54d2bfce
-> --- /dev/null
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
+-- 
+2.51.0
 
-[ ... ]
-
-> + * MCAM resource is divided horizontally into mutltiple subbanks and
-
-This isn't a bug, but "mutltiple" should be "multiple".
-
-[ ... ]
-
-> + * @xa_pf2idx_map:	PF to mcam index map.
-> + * @xa_idx2pf_map:	Mcam index to PF map.
-> + * @xa_pf_map:		Pcifunc to index map.
-> + * @pf_cnt:		Number of PFs.A
-
-This isn't a bug, but there's a spurious trailing 'A' after "PFs." in
-the kernel-doc comment.
-
-> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-> new file mode 100644
-> index 000000000000..9b5da2665b54
-> --- /dev/null
-> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-
-[ ... ]
-
-> +int npc_cn20k_ref_idx_alloc(struct rvu *rvu, int pcifunc, int key_type,
-> +			    int prio, u16 *mcam_idx, int ref, int limit,
-> +			    bool contig, int count)
-> +{
-
-[ ... ]
-
-> +add2map:
-> +	for (i = 0; i < count; i++) {
-> +		rc = npc_add_to_pf_maps(rvu, mcam_idx[i], pcifunc);
-> +		if (rc)
-> +			return rc;
-> +	}
-> +
-> +	return 0;
-> +}
-
-If npc_add_to_pf_maps() fails partway through the loop (when i > 0), does
-this leak the MCAM indexes that were previously allocated?
-
-The allocators (npc_subbank_ref_alloc, npc_subbank_noref_alloc,
-npc_multi_subbank_ref_alloc) have already claimed the MCAM entries before
-reaching add2map. When the loop fails at iteration i, the function returns
-rc without freeing the allocated MCAM indexes or removing the map entries
-that were successfully added in iterations 0 through i-1.
-
-[ ... ]
-
-> +static int
-> +npc_priv_init(struct rvu *rvu)
-> +{
-
-[ ... ]
-
-> +	if (num_subbanks & (num_subbanks - 1)) {
-> +		dev_err(rvu->dev,
-> +			"subbanks cnt(%u) should be a multiple of 2\n",
-> +			num_subbanks);
-> +		return -EINVAL;
-> +	}
-
-The error message says "multiple of 2" but the check
-(num_subbanks & (num_subbanks - 1)) tests for power of 2. For example,
-6 is a multiple of 2 but not a power of 2. Should the message say
-"power of 2" instead?
-
-[ ... ]
-
-> +	npc_priv.xa_pf2idx_map = kcalloc(npc_priv.pf_cnt,
-> +					 sizeof(struct xarray),
-> +					 GFP_KERNEL);
-> +	if (!npc_priv.xa_pf2idx_map)
-> +		goto fail2;
-
-[ ... ]
-
-> +fail2:
-> +	kfree(subbank_srch_order);
-> +
-> +fail1:
-> +	xa_destroy(&npc_priv.xa_sb_used);
-> +	xa_destroy(&npc_priv.xa_sb_free);
-> +	xa_destroy(&npc_priv.xa_idx2pf_map);
-> +	xa_destroy(&npc_priv.xa_pf_map);
-> +	kfree(npc_priv.sb);
-> +	return -ENOMEM;
-> +}
-> +
-> +void npc_cn20k_deinit(struct rvu *rvu)
-> +{
-> +	int i;
-> +
-> +	xa_destroy(&npc_priv.xa_sb_used);
-> +	xa_destroy(&npc_priv.xa_sb_free);
-> +	xa_destroy(&npc_priv.xa_idx2pf_map);
-> +	xa_destroy(&npc_priv.xa_pf_map);
-> +
-> +	for (i = 0; i < npc_priv.pf_cnt; i++)
-> +		xa_destroy(&npc_priv.xa_pf2idx_map[i]);
-> +
-> +	kfree(npc_priv.xa_pf2idx_map);
-> +	/* No need to destroy mutex lock as it is
-> +	 * part of subbank structure
-> +	 */
-> +	kfree(npc_priv.sb);
-> +	kfree(subbank_srch_order);
-> +}
-
-Can npc_cn20k_deinit() be called when npc_priv_init() fails at fail2?
-
-When kcalloc for xa_pf2idx_map fails, fail2 frees subbank_srch_order
-and npc_priv.sb. Then rvu_npc_freemem() calls npc_cn20k_deinit() which:
-
-1. Iterates over npc_priv.xa_pf2idx_map[i] when xa_pf2idx_map is NULL
-2. Calls kfree() on already-freed npc_priv.sb and subbank_srch_order
-
-Should npc_cn20k_deinit() check npc_priv.init_done before cleanup, or
-should fail2 set the freed pointers to NULL?
