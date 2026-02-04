@@ -1,113 +1,194 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79DB341052;
-	Wed,  4 Feb 2026 16:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3509134107A;
+	Wed,  4 Feb 2026 16:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770224270; cv=none; b=Wr27De0FVe7+Mq3IryjkuUVurUKD45kmXbbQ1O/NNlVejSekX+FR65uUSkHZcU1Q2M9Zf06u+06UEkX0uFS3tuQT3v8GsCSItdZKe+ZudD5iaw8A9hH1h12JRr0d3WqLg7484Ww9i7nApBjWFsSwAUDuhVkzQ6eGjQXWwr7YI6A=
+	t=1770224271; cv=none; b=GQl450Iu3bQ1vMQtgUHN/FvWuu1Rd0cLbW1EicpiwjBQq6R38Mkpus+ZenByQHhY0YzeMSATPDPx63Q5+p1v+I2Hg/gzipxDmgoT8zurTLxeaGnmB+Zw8CEnEND+OLY8EQJ4NmRHMdIGaIx9TikHmb+lyKlUOvCFlJ3fL2Tj6fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770224270; c=relaxed/simple;
-	bh=k86znqb/C5wurGTotFhvFsMFzCbZUfP3RFI0jLbub1Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=l89IF64Li3bgSeohOPK0mIQSP0uAaVD6vHqmeBeIWyRXw1z7e0ypJw54oAaua7KNZhhRlvSgbIlOKJPEtVVzNAn245f4ltcKM0a4iw7pN7teq6EBRsIh7RrEC9AgAN/urrx1/CmN87OGx0chlbvOOBu0rnNUmIbd1w/9e5uv+K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ITKusBxr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770224271; c=relaxed/simple;
+	bh=HlMlVnTgmkL7tsK9Wwfic2VfIH66MBM/lH/WwbwuTZI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=bFPzgCkLYNs+Fsnh9zVAqoXv1wKblGSJDHo8jSAky66tvRgFaQhklk6mhd3ndnrvXbeyssPdxGkyXL0ht1wslUWiWUolQ1zTXO7PGtir3IrEFFRCFT7sBJLw/LzIAKGrQ4APj8TjFWz0pB8idA0LbGTVqtdlORNJNq0Nv05rwFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z/CWkuKD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ITKusBxr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DC07C116C6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z/CWkuKD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A39DC19425;
 	Wed,  4 Feb 2026 16:57:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1770224270;
-	bh=k86znqb/C5wurGTotFhvFsMFzCbZUfP3RFI0jLbub1Y=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ITKusBxrg7bQ7WrFjaqePKrJ21maayO555bUcYIBxaFzJcMqUqH7Rhxna/30O6Yde
-	 07CGxn4TKFbJXTqG6peHAIprMBjl1DxYA9c5rZxzmlHX8oypAHpObBYkxO0Zr+H7NN
-	 t4o+Kfumon2FaxTxFfOfIdtF5UdApSt54CgAEypsHN9uUdLr+R74sn+20qH3J7Wx1z
-	 cfRRlw/7SdvETQAIg4Xa4nTyp3LdVYUHkmnLaWoORZtUilLIH0jheU25aEdIdono/E
-	 A9lImyFULL2Bl5SJHO6xRGXh1ZaZxv+lBoC1mMVgyBva6/F3JAflA0ww3Ug/+pk7nt
-	 khbgufWITUpnA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 04 Feb 2026 17:57:26 +0100
-Subject: [PATCH net 2/4] mptcp: pm: in-kernel: clarify
- mptcp_pm_remove_anno_addr()
+	bh=HlMlVnTgmkL7tsK9Wwfic2VfIH66MBM/lH/WwbwuTZI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Z/CWkuKDjl0ikFJVKXNmZvvbFK/4Bzk5LnxCWEiyz0IZ4sNfkFp+PId1EsiZMDdQl
+	 qtdTQzsO+r91SPgig0Gk0cWaDfud4EOJtqnOX22WQND7+LHExMMOScdN9V9VETjXv+
+	 ftzXkMffEcxKBGzZpzS01mVQ0UXYTtXCVa2Qipiy6hdNACSo8P8LqB6OhHCap9y44u
+	 xJ6jrBPTSDneS4KpwMGHcMPPzuAzYem9ZqZQ/v5CuiGDL3g1dH4DUHqQzIEDBAKO8l
+	 7trosr0WaIvdOKW5MtLpEB6DWJROrsQQkdwl3FhlNmQsOaLTNJVWgVDhihj3BLSlNF
+	 9sIMQyhKx0Z7A==
+From: Simon Horman <horms@kernel.org>
+To: rkannoth@marvell.com
+Cc: Simon Horman <horms@kernel.org>,
+	sumang@marvell.com,
+	pabeni@redhat.com,
+	kuba@kernel.org,
+	edumazet@google.com,
+	davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	sbhatta@marvell.com,
+	sgoutham@marvell.com,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [net-next,v8,01/13] octeontx2-af: npc: cn20k: Index management
+Date: Wed,  4 Feb 2026 16:57:39 +0000
+Message-ID: <20260204165740.2184444-1-horms@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260202074607.2535569-2-rkannoth@marvell.com>
+References: <20260202074607.2535569-2-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260204-net-mptcp-misc-fixes-6-19-rc8-v1-2-cb559fb6b50a@kernel.org>
-References: <20260204-net-mptcp-misc-fixes-6-19-rc8-v1-0-cb559fb6b50a@kernel.org>
-In-Reply-To: <20260204-net-mptcp-misc-fixes-6-19-rc8-v1-0-cb559fb6b50a@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1636; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=k86znqb/C5wurGTotFhvFsMFzCbZUfP3RFI0jLbub1Y=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKbq1pV1SZonbyTf3mxem7dfp9WjaLp7Vlvn/0rO11lP
- HlJgbNQRykLgxgXg6yYIot0W2T+zOdVvCVefhYwc1iZQIYwcHEKwETq2Rn++yWk1KrKyv8/1Lk2
- ++rjwNT9NsLCH7L1pm6dsjYnprr+LSPDEZfwWXE717V1HZ9wlinCsqg4ZoVpiMFKEd6qoGMnpfp
- 5AQ==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-The variable 'ret' was used, but it was not cleared what it was, and
-probably led to an issue [1].
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-Rename it to 'announced' to avoid confusions.
-
-While at it, remove the returned value of the helper: it is only used in
-one place, and the returned value is not used.
-
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/606 [1]
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
- net/mptcp/pm_kernel.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+octeontx2-af: npc: cn20k: Index management
 
-diff --git a/net/mptcp/pm_kernel.c b/net/mptcp/pm_kernel.c
-index 4972c19fc73e..b5316a6c7d1b 100644
---- a/net/mptcp/pm_kernel.c
-+++ b/net/mptcp/pm_kernel.c
-@@ -1044,24 +1044,23 @@ int mptcp_pm_nl_add_addr_doit(struct sk_buff *skb, struct genl_info *info)
- 	return ret;
- }
- 
--static bool mptcp_pm_remove_anno_addr(struct mptcp_sock *msk,
-+static void mptcp_pm_remove_anno_addr(struct mptcp_sock *msk,
- 				      const struct mptcp_addr_info *addr,
- 				      bool force)
- {
- 	struct mptcp_rm_list list = { .nr = 0 };
--	bool ret;
-+	bool announced;
- 
- 	list.ids[list.nr++] = mptcp_endp_get_local_id(msk, addr);
- 
--	ret = mptcp_remove_anno_list_by_saddr(msk, addr);
--	if (ret || force) {
-+	announced = mptcp_remove_anno_list_by_saddr(msk, addr);
-+	if (announced || force) {
- 		spin_lock_bh(&msk->pm.lock);
--		if (ret)
-+		if (announced)
- 			msk->pm.add_addr_signaled--;
- 		mptcp_pm_remove_addr(msk, &list);
- 		spin_unlock_bh(&msk->pm.lock);
- 	}
--	return ret;
- }
- 
- static void __mark_subflow_endp_available(struct mptcp_sock *msk, u8 id)
+This patch adds MCAM index allocation and management for CN20K silicon.
+The implementation supports contiguous and non-contiguous allocation
+schemes with reference, limit, and priority parameters.
 
--- 
-2.51.0
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
+> new file mode 100644
+> index 000000000000..eb1f54d2bfce
+> --- /dev/null
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
 
+[ ... ]
+
+> + * MCAM resource is divided horizontally into mutltiple subbanks and
+
+This isn't a bug, but "mutltiple" should be "multiple".
+
+[ ... ]
+
+> + * @xa_pf2idx_map:	PF to mcam index map.
+> + * @xa_idx2pf_map:	Mcam index to PF map.
+> + * @xa_pf_map:		Pcifunc to index map.
+> + * @pf_cnt:		Number of PFs.A
+
+This isn't a bug, but there's a spurious trailing 'A' after "PFs." in
+the kernel-doc comment.
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+> new file mode 100644
+> index 000000000000..9b5da2665b54
+> --- /dev/null
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
+
+[ ... ]
+
+> +int npc_cn20k_ref_idx_alloc(struct rvu *rvu, int pcifunc, int key_type,
+> +			    int prio, u16 *mcam_idx, int ref, int limit,
+> +			    bool contig, int count)
+> +{
+
+[ ... ]
+
+> +add2map:
+> +	for (i = 0; i < count; i++) {
+> +		rc = npc_add_to_pf_maps(rvu, mcam_idx[i], pcifunc);
+> +		if (rc)
+> +			return rc;
+> +	}
+> +
+> +	return 0;
+> +}
+
+If npc_add_to_pf_maps() fails partway through the loop (when i > 0), does
+this leak the MCAM indexes that were previously allocated?
+
+The allocators (npc_subbank_ref_alloc, npc_subbank_noref_alloc,
+npc_multi_subbank_ref_alloc) have already claimed the MCAM entries before
+reaching add2map. When the loop fails at iteration i, the function returns
+rc without freeing the allocated MCAM indexes or removing the map entries
+that were successfully added in iterations 0 through i-1.
+
+[ ... ]
+
+> +static int
+> +npc_priv_init(struct rvu *rvu)
+> +{
+
+[ ... ]
+
+> +	if (num_subbanks & (num_subbanks - 1)) {
+> +		dev_err(rvu->dev,
+> +			"subbanks cnt(%u) should be a multiple of 2\n",
+> +			num_subbanks);
+> +		return -EINVAL;
+> +	}
+
+The error message says "multiple of 2" but the check
+(num_subbanks & (num_subbanks - 1)) tests for power of 2. For example,
+6 is a multiple of 2 but not a power of 2. Should the message say
+"power of 2" instead?
+
+[ ... ]
+
+> +	npc_priv.xa_pf2idx_map = kcalloc(npc_priv.pf_cnt,
+> +					 sizeof(struct xarray),
+> +					 GFP_KERNEL);
+> +	if (!npc_priv.xa_pf2idx_map)
+> +		goto fail2;
+
+[ ... ]
+
+> +fail2:
+> +	kfree(subbank_srch_order);
+> +
+> +fail1:
+> +	xa_destroy(&npc_priv.xa_sb_used);
+> +	xa_destroy(&npc_priv.xa_sb_free);
+> +	xa_destroy(&npc_priv.xa_idx2pf_map);
+> +	xa_destroy(&npc_priv.xa_pf_map);
+> +	kfree(npc_priv.sb);
+> +	return -ENOMEM;
+> +}
+> +
+> +void npc_cn20k_deinit(struct rvu *rvu)
+> +{
+> +	int i;
+> +
+> +	xa_destroy(&npc_priv.xa_sb_used);
+> +	xa_destroy(&npc_priv.xa_sb_free);
+> +	xa_destroy(&npc_priv.xa_idx2pf_map);
+> +	xa_destroy(&npc_priv.xa_pf_map);
+> +
+> +	for (i = 0; i < npc_priv.pf_cnt; i++)
+> +		xa_destroy(&npc_priv.xa_pf2idx_map[i]);
+> +
+> +	kfree(npc_priv.xa_pf2idx_map);
+> +	/* No need to destroy mutex lock as it is
+> +	 * part of subbank structure
+> +	 */
+> +	kfree(npc_priv.sb);
+> +	kfree(subbank_srch_order);
+> +}
+
+Can npc_cn20k_deinit() be called when npc_priv_init() fails at fail2?
+
+When kcalloc for xa_pf2idx_map fails, fail2 frees subbank_srch_order
+and npc_priv.sb. Then rvu_npc_freemem() calls npc_cn20k_deinit() which:
+
+1. Iterates over npc_priv.xa_pf2idx_map[i] when xa_pf2idx_map is NULL
+2. Calls kfree() on already-freed npc_priv.sb and subbank_srch_order
+
+Should npc_cn20k_deinit() check npc_priv.init_done before cleanup, or
+should fail2 set the freed pointers to NULL?
