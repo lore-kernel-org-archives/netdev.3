@@ -1,91 +1,109 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46343B5314
-	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 09:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197EE3B8BA6;
+	Wed,  4 Feb 2026 09:45:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770198245; cv=none; b=JeKdr7nbmIlSaPxWx1Wp5gahNL4st3oESQEv4Quf4gi5O1mJ3DJZZX0bItIxvQF5JwD1pUF7tE83iq/SplgAtNKEhpLemlcq4suhlY3MFbF80qB8+ZOmdbdgMoxAtaecm0GfyPmHRaOOaY+1UgjqQshWaTlvHnop1dD9U+4ZxSY=
+	t=1770198317; cv=none; b=XOR6YB/ucUQlPB4uVvZQQ9DJHOZP2QPGXzfS41XCkg2bOQ7cB5CCVu6RAZjFoEvmWMv2YR6nrJ1XN8+pn4qBTaoRxVZBpHhmCYnJvMdoTHXnsbyqO3X9Cw6H1ccuNq7DyAa4rTRjohv9j7/PKwIzAtSCvTYdWYe+VTGaDbQyHrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770198245; c=relaxed/simple;
-	bh=7kBvKSVvA2L+trqhOTB6NmYV1rSOliG6jkxgGaZ2aJI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gvgmje0qmaOxiA21xh0lzObG0/mMqTqhqhQG/TQHo01U6intyeIHw7/UJg3zvdnPG0+WfCqLa7dRuWHCZEly53ICDqZmgbF5g5jjOMVdzjtDoohOcnLWkY1VcDnqRBGBEV1+GH6KC+UoL2ge3Eek7XGQwNvgib050VHtBkVEk+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=cDoWAubz; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1770198317; c=relaxed/simple;
+	bh=2e9s9fwPW3oN675uLAdbz6Qx4muyla7Q5cCEmFZSCqY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gMMUG6p6Y5hv3bNO5ewC8uI5JJ0jyCkxEqYpBbApf8TtsUP5UKeqQZsDoQr8sbQdskrXTMrRTwvsFgxWTWbpw5XwOBy8XApRzy5CdxF+CyM84PBBCHdyTlARAlp/t/QeUcLwlOkJUeNcr0GxRZrNPNnS+f6pXnLLlk60ymt4NxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gIi3MIpf; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="cDoWAubz"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 114ABC24394;
-	Wed,  4 Feb 2026 09:44:08 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6AEAC60745;
-	Wed,  4 Feb 2026 09:44:02 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7198D119A865B;
-	Wed,  4 Feb 2026 10:43:59 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1770198241; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=w9cK/S9VEg5Sj6NGREX0/AmF5Y2Mv59DI4D5BpBMKuI=;
-	b=cDoWAubzmtE494ajM22ZR5dtQKaregG2Oz6hx9eWKztWaIPgbqhnYeBOwwuscFqHhvw/dh
-	36uj6EFKs4tuJFqlGS6/Pn16v3oKVAb8THaVRY0Nfty8zgxe8nkv5QwaDZhiqtxHBOa5Yb
-	ZMLAdc1/6kvqS8b+l2dhyeeyBAPUhHZbPhAds3k0ZNBEQ26HPKucYKDNVi57o585r9KNwv
-	/E3G8wS33Iq7VhXOei4h2ZAoCsYCynKF0UR6deJHot1QRtW773kvjs8jo7rctauMUJAmG9
-	IKaInstq8V0+ra+sx3Pp/ysxnvJTBtGVCjLd3zjoKuKwME+HWydQolwpmpGK4A==
-Message-ID: <bc094312-8671-432a-ac16-1b1a4d052efd@bootlin.com>
-Date: Wed, 4 Feb 2026 10:43:59 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gIi3MIpf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770198317; x=1801734317;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2e9s9fwPW3oN675uLAdbz6Qx4muyla7Q5cCEmFZSCqY=;
+  b=gIi3MIpfw1tElGsgscxsD394wxft9gN1B9lqMyFz6tTMc/WiIfFQAHGk
+   G0QmOg3f3jHKSqXQZ5upjb9XPwoIjUr/rsuNVzSwHBIHcJMXpTNFLvhnR
+   2c/6jwsnpKGz47HzrDcykyLEcZa0VeBnUDt9JToSSoi3eHgN33ecp5zsx
+   e/9M9UugQXvHu3vVOZ+I1P6QjaKNMjCYkQLz8pE8WVm1mbHs3T4hAVrje
+   6L+4mv49/O9O7MHH36OrKtVCc0//a6SwZLPybcSYTbg4R2+t6BKxNnhlC
+   rhkJgHkYGaa77cF3pmWO0N7xpDlHXaqDyaXJC537g/p2zyS8Y9UtYdNQS
+   Q==;
+X-CSE-ConnectionGUID: qX2/Fc/GSPGlBFN4ZTBGdw==
+X-CSE-MsgGUID: APc6AromRMmpWIW0El0C/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71110482"
+X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
+   d="scan'208";a="71110482"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 01:45:16 -0800
+X-CSE-ConnectionGUID: a2SnfuewQrm27diOooRnXA==
+X-CSE-MsgGUID: d4jwL7IhR9eToI60hx0RmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,272,1763452800"; 
+   d="scan'208";a="214597137"
+Received: from black.igk.intel.com ([10.91.253.5])
+  by fmviesa005.fm.intel.com with ESMTP; 04 Feb 2026 01:45:12 -0800
+Received: by black.igk.intel.com (Postfix, from userid 1003)
+	id 0F5B495; Wed, 04 Feb 2026 10:45:11 +0100 (CET)
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Chuck Lever <chuck.lever@oracle.com>,
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-nfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	llvm@lists.linux.dev
+Cc: Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Subject: [PATCH v2 0/3] sunrpc: Fix `make W=1` build issues
+Date: Wed,  4 Feb 2026 10:41:20 +0100
+Message-ID: <20260204094500.2443455-1-andriy.shevchenko@linux.intel.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next 4/6] net: stmmac: rk: rk3528: gmac0 only supports
- RMII
-To: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
- Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Heiko Stuebner <heiko@sntech.de>, Jakub Kicinski <kuba@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>
-References: <aYMN2gZMfLPKuukG@shell.armlinux.org.uk>
- <E1vnYy1-00000007hp3-0hKm@rmk-PC.armlinux.org.uk>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <E1vnYy1-00000007hp3-0hKm@rmk-PC.armlinux.org.uk>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 8bit
 
+Compiler is not happy about unused variables (especially when
+dprintk() call is defined as no-op). Here is the series to
+address the issues.
 
+Changelog v2:
+- added patch to kill RPC_IFDEBUG() macro (LKP, Geert)
+- united separate patches in the series
+- collected tags (Geert)
 
-On 04/02/2026 10:14, Russell King (Oracle) wrote:
-> RK3528 gmac0 dtsi contains:
-> 
->                 gmac0: ethernet@ffbd0000 {
->                         phy-handle = <&rmii0_phy>;
->                         phy-mode = "rmii";
-> 
->                         mdio0: mdio {
->                                 rmii0_phy: ethernet-phy@2 {
->                                         phy-is-integrated;
->                                 };
->                         };
->                 };
-> 
-> This follows the same pattern as rk3328, where this gmac instance
-> only supports RMII. Disable RGMII in phylink's supported_interfaces
-> mask for this gmac instance.
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+v1: 20260204010402.2149563-1-andriy.shevchenko@linux.intel.com
+v1: 20260204010415.2149607-1-andriy.shevchenko@linux.intel.com
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Andy Shevchenko (3):
+  nfs/blocklayout: Fix compilation error (`make W=1`) in
+    bl_write_pagelist()
+  sunrpc: Kill RPC_IFDEBUG()
+  sunrpc: Fix compilation error (`make W=1`) when dprintk() is no-op
 
-Maxime
+ fs/lockd/svclock.c                       |  5 +++++
+ fs/nfs/blocklayout/blocklayout.c         |  4 +---
+ fs/nfsd/nfsfh.c                          |  9 +++++---
+ include/linux/sunrpc/debug.h             | 10 +++++----
+ net/sunrpc/xprtrdma/svc_rdma_transport.c | 27 ++++++++++++------------
+ 5 files changed, 32 insertions(+), 23 deletions(-)
 
+-- 
+2.50.1
 
