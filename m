@@ -1,56 +1,53 @@
 Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD8339A7F3;
-	Wed,  4 Feb 2026 23:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6D039A7F3;
+	Wed,  4 Feb 2026 23:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770247335; cv=none; b=sSniNlQJ8PAJCe0j72YnaKTFHXfQdhtUCLHzOfstKmfE4auAsa48MAw0XKXP1NXEDXg3o5VZ8A6myNZpwmBDJ9UV1DcHNElNDKIpK2mJfbU1OL1WWYniYxTeOH7IjVmfyl6gdTmQtTjaLuXcifRIF57hO2JwMkgktzPJs7hAU7M=
+	t=1770247343; cv=none; b=hzzL6VizcN71bCpaVeeLzVW/TMDQehyFPuSlSBBBZNHN/3f9nfHAhWApdt2NFBu/JjOF0sQMmV6ndkZ+NzoF5YBzhbqPlww+PwaR5LmEn5HHwdBvI8RiEjyzZwhI3Daygh/jWmlaN9eanPAs7gH8km5I7HHNHSpMcBLSrFgW1pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770247335; c=relaxed/simple;
-	bh=be6+tAJWE0T//k3jmHPFdt2mrs9U0HYhkuWGaUhf7PA=;
+	s=arc-20240116; t=1770247343; c=relaxed/simple;
+	bh=3IIW+m/ksEl4ryoxqU9MOS9jyZf9bHkRhbs1FBUg/Rc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dH1ipWmgpnAp7zHz5WtML0Vln/YMqPMAPhdo8KzTkMeS69HJlS19045vGbqJf8c5GsUQ00ElCdj/AUl3vLGCLbJVy3ReU4KpTCfADw3ce62CUw1ea6VpGPqAinPD++5vi5VgKm1yMoguiwKrWM5xHr4kU48+nw204ndv++2NYRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Qs6eGhb2; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=BEtNpvJ8; arc=none smtp.client-ip=80.241.56.171
+	 MIME-Version; b=IHMJ1wL6+sVubzPvjDhbKqvR9nvk+nCA417orpPSqqEJnOkFvIHwb0OwbeuTMPbaVftP90m+R1zhcFwKAQZbgiwpHK4CL1VoCqENBa/NA6c35XTO3PqAvQ924qMpFEV2Gsnn7xfghxoXsVDNnLTkK891j0PBDamvQKXQ7dmHnUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=oc7177yj; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=sZThBjE8; arc=none smtp.client-ip=80.241.56.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Qs6eGhb2";
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="BEtNpvJ8"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="oc7177yj";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="sZThBjE8"
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4f5xFx08z9z9thn;
-	Thu,  5 Feb 2026 00:22:13 +0100 (CET)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4f5xG562LFz9th0;
+	Thu,  5 Feb 2026 00:22:21 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1770247333;
+	t=1770247341;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fH09QpFOL1u8NiqHZ5qmjkwvvunWu5IHC1GvgJRkhpU=;
-	b=Qs6eGhb2jN1uW7kFzti6NvCKR3nRbCXXtWeBr3H9DDrqInxmVC5SIp+REHmRa2AdIoPOHq
-	1XZ+SXy3QlUkKYbITkIRvhduNxe+jsBts5kJnoX/MeCxDutxy00KI7qudg3kfhFb7+L4FE
-	738cRdwSEoqnrbsNi7CqTa6HpkwHAXa6aItPEcjpb1j4dEmnWSEhPEImirsB5dzwm+706Q
-	LCWE7FCXG6dSlO+ZKGoseUkybaEd8uRQPiW9WDOSGbmGdOMwibtOvLuZ4i8VCcoN+zyjfx
-	HiKaV24uHRh4BN1GxZhfTNfXjTIvTtTBxMftOR3OmhhhxQHhEyc9FlDgv4YKQg==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=pass header.d=mailbox.org header.s=mail20150812 header.b=BEtNpvJ8;
-	spf=pass (outgoing_mbo_mout: domain of lukasz.majewski@mailbox.org designates 2001:67c:2050:b231:465::1 as permitted sender) smtp.mailfrom=lukasz.majewski@mailbox.org
+	bh=itW1FyUB8h6k7+09zTJ1SECAQLv4YsVGdyRI0o2fSoA=;
+	b=oc7177yjXASVeTD9Oc0yM5wV5CuuqSNJ3rGDb9uZtslqhvUGYNGkhWEcUTtvz1v7HQ8tqG
+	ts1IWUiHwJd0waRhlCDHS6e8Wr4rvjcmpT5y5RLiyQBHmM+KloRrWA5eUFkwqvoxqKYw3G
+	ijrOH4UHWOECrTk13MsFJlGsvwxgA3xpGTtpf5u8uhj8x5TFYbqpkDwy3+vTj+814DVRG9
+	o+WGZOUYE9ioYxrtmhlFT7qFkZ+pKJ0f5D7yTgjzjn2+fD6Y6CDji7AFM8YRrG1uEfDgi9
+	RfI87+nsepFzy14G5PV7fgJLw5CbQyBpZmcrzbcbufdHVSkbulKJOCkdEhUu+A==
 From: Lukasz Majewski <lukasz.majewski@mailbox.org>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1770247330;
+	t=1770247340;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fH09QpFOL1u8NiqHZ5qmjkwvvunWu5IHC1GvgJRkhpU=;
-	b=BEtNpvJ8b/vDe1DGXzopBEg+Av9WAtrui9U0jEYMX41ygWjqoBvldU8I/1jrBKtmhB2ki5
-	EEbB/cb20JlQw+dAmc9MDwlL6B3hefR2cHCOY1Fx5PToa8FEh8tKISPt6tYRkp9oqhmVNO
-	PUkxbfXyOuHu9kXT4Bckm78q53x+KiuMYBm92y0oRaaqua/wx66oU7IUQYYNBXZ2kwNcoG
-	uZ1dNRLkeOOaE6IgHHeX0kpacbsngNZIka//GdKjBLzMS67VJrA8R2wo7BRYIlVnT5iD7C
-	dwjR8QZeBsJfUp00o7Y2fsuMMaZbATsiUfRB3g3LV2ETA7Cso2g7ryBXhfwADA==
+	bh=itW1FyUB8h6k7+09zTJ1SECAQLv4YsVGdyRI0o2fSoA=;
+	b=sZThBjE8PmY2vTjErp4lZL+1nztc2Ajd2OQFdisIOA5cH5N6ZCJGsk8qiZSrl5mv8NgoxJ
+	zYDShct98BiV+bLc3QcWmXZzzIaDpP7egomkPeLRHfAE5IIBNFn4MtmE3olF4jSO+aGzz4
+	4teSKn4YHbajhglStLPuI/ihxUtpuONqTslF5hgWpNxU/lq/lhFkxRojCVZ3JqUu/B5UPl
+	nvkB5C22/GQAKgJ9tOK67+XpDSrhet4qMZ2eLX3KKRvrCBqC503RQDQzvDwjgDhLvcY29X
+	NkxoQf/BxH0TvKq1FPiK/Cdyn9sHJrHBvKSjSm5cJxy2vcu18VnFHa6HZnya5A==
 To: Andrew Lunn <andrew+netdev@lunn.ch>,
 	davem@davemloft.net,
 	Eric Dumazet <edumazet@google.com>,
@@ -72,9 +69,9 @@ Cc: Sascha Hauer <s.hauer@pengutronix.de>,
 	Stefan Wahren <wahrenst@gmx.net>,
 	Simon Horman <horms@kernel.org>,
 	Lukasz Majewski <lukasz.majewski@mailbox.org>
-Subject: [net-next v23 1/7] dt-bindings: net: Add MTIP L2 switch description
-Date: Thu,  5 Feb 2026 00:21:29 +0100
-Message-Id: <20260204232135.1024665-2-lukasz.majewski@mailbox.org>
+Subject: [net-next v23 3/7] net: mtip: Add buffers management functions to the L2 switch driver
+Date: Thu,  5 Feb 2026 00:21:31 +0100
+Message-Id: <20260204232135.1024665-4-lukasz.majewski@mailbox.org>
 In-Reply-To: <20260204232135.1024665-1-lukasz.majewski@mailbox.org>
 References: <20260204232135.1024665-1-lukasz.majewski@mailbox.org>
 Precedence: bulk
@@ -84,234 +81,139 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-MBO-RS-ID: 851305da4932c360197
-X-MBO-RS-META: 5iyqe315bs5wrph47kca3w4b4bra93x5
-X-Rspamd-Queue-Id: 4f5xFx08z9z9thn
+X-MBO-RS-META: xixtm75scsgmxyz1rebngd9tkshe7d6t
+X-MBO-RS-ID: 1323bb323bcf88f108b
 
-This patch provides description of the MTIP L2 switch available in some
-NXP's SOCs - e.g. imx287.
+This patch provides buffers management funcions' content for MTIP
+L2 switch.
 
 Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-
 ---
-Changes for v2:
-- Rename the file to match exactly the compatible
-  (nxp,imx287-mtip-switch)
+Changes for v14:
+- New patch - created by excluding some code from large (i.e. v13
+  and earlier) MTIP driver
 
-Changes for v3:
-- Remove '-' from const:'nxp,imx287-mtip-switch'
-- Use '^port@[12]+$' for port patternProperties
-- Drop status = "okay";
-- Provide proper indentation for 'example' binding (replace 8
-  spaces with 4 spaces)
-- Remove smsc,disable-energy-detect; property
-- Remove interrupt-parent and interrupts properties as not required
-- Remove #address-cells and #size-cells from required properties check
-- remove description from reg:
-- Add $ref: ethernet-switch.yaml#
-
-Changes for v4:
-- Use $ref: ethernet-switch.yaml#/$defs/ethernet-ports and remove already
-  referenced properties
-- Rename file to nxp,imx28-mtip-switch.yaml
-
-Changes for v5:
-- Provide proper description for 'ethernet-port' node
-
-Changes for v6:
-- Proper usage of
-  $ref: ethernet-switch.yaml#/$defs/ethernet-ports/patternProperties
-  when specifying the 'ethernet-ports' property
-- Add description and check for interrupt-names property
-
-Changes for v7:
-- Change switch interrupt name from 'mtipl2sw' to 'enet_switch'
-
-Changes for v8:
+Changes for v15 - v20:
 - None
 
-Changes for v9:
-- Add GPIO_ACTIVE_LOW to reset-gpios mdio phandle
+Changes for v21:
+- Add check if fep->page[i] is not NULL before returning it to page pool
 
-Changes for v10:
-- None
-
-Changes for v11:
-- None
-
-Changes for v12:
-- Remove 'label' from required properties
-- Move the reference to $ref: ethernet-switch.yaml#/$defs/ethernet-ports
-  the proper place (under 'allOf:')
-
-Changes for v13 - v22:
-- None
+Changes for v22:
+- Add fep->tx_bounce[i] = NULL; in the mtip_free_buffers
 
 Changes for v23:
-- Update e-mail address
+- None
 ---
- .../bindings/net/nxp,imx28-mtip-switch.yaml   | 150 ++++++++++++++++++
- 1 file changed, 150 insertions(+)
- create mode 100644 Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
+ .../net/ethernet/freescale/mtipsw/mtipl2sw.c  | 90 +++++++++++++++++++
+ 1 file changed, 90 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-new file mode 100644
-index 000000000000..f201951e73d1
---- /dev/null
-+++ b/Documentation/devicetree/bindings/net/nxp,imx28-mtip-switch.yaml
-@@ -0,0 +1,150 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/net/nxp,imx28-mtip-switch.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
+diff --git a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+index 0a193a12e160..d209501a99b0 100644
+--- a/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
++++ b/drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c
+@@ -893,11 +893,101 @@ static void mtip_get_drvinfo(struct net_device *dev,
+ 
+ static void mtip_free_buffers(struct net_device *dev)
+ {
++	struct mtip_ndev_priv *priv = netdev_priv(dev);
++	struct switch_enet_private *fep = priv->fep;
++	int i;
 +
-+title: NXP SoC Ethernet Switch Controller (L2 MoreThanIP switch)
++	for (i = 0; i < RX_RING_SIZE; i++) {
++		if (!fep->page[i])
++			continue;
 +
-+maintainers:
-+  - Lukasz Majewski <lukma@nabladev.com>
++		page_pool_put_full_page(fep->page_pool,
++					fep->page[i], false);
++		fep->page[i] = NULL;
++	}
 +
-+description:
-+  The 2-port switch ethernet subsystem provides ethernet packet (L2)
-+  communication and can be configured as an ethernet switch. It provides the
-+  reduced media independent interface (RMII), the management data input
-+  output (MDIO) for physical layer device (PHY) management.
++	page_pool_destroy(fep->page_pool);
++	fep->page_pool = NULL;
 +
-+allOf:
-+  - $ref: ethernet-switch.yaml#/$defs/ethernet-ports
++	for (i = 0; i < TX_RING_SIZE; i++) {
++		kfree(fep->tx_bounce[i]);
++		fep->tx_bounce[i] = NULL;
++	}
++}
 +
-+properties:
-+  compatible:
-+    const: nxp,imx28-mtip-switch
++static int mtip_create_page_pool(struct switch_enet_private *fep, int size)
++{
++	struct page_pool_params pp_params = {
++		.order = 0,
++		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
++		.pool_size = size,
++		.nid = dev_to_node(&fep->pdev->dev),
++		.dev = &fep->pdev->dev,
++		.dma_dir = DMA_FROM_DEVICE,
++		.offset = 0,
++		.max_len = MTIP_SWITCH_RX_FRSIZE,
++	};
++	int ret = 0;
 +
-+  reg:
-+    maxItems: 1
++	fep->page_pool = page_pool_create(&pp_params);
++	if (IS_ERR(fep->page_pool)) {
++		ret = PTR_ERR(fep->page_pool);
++		fep->page_pool = NULL;
++	}
 +
-+  phy-supply:
-+    description:
-+      Regulator that powers Ethernet PHYs.
++	return ret;
+ }
+ 
+ static int mtip_alloc_buffers(struct net_device *dev)
+ {
++	struct mtip_ndev_priv *priv = netdev_priv(dev);
++	struct switch_enet_private *fep = priv->fep;
++	struct cbd_t *bdp;
++	struct page *page;
++	int i, ret;
 +
-+  clocks:
-+    items:
-+      - description: Register accessing clock
-+      - description: Bus access clock
-+      - description: Output clock for external device - e.g. PHY source clock
-+      - description: IEEE1588 timer clock
++	ret = mtip_create_page_pool(fep, RX_RING_SIZE);
++	if (ret < 0) {
++		dev_err(&fep->pdev->dev, "Failed to create page pool\n");
++		return ret;
++	}
 +
-+  clock-names:
-+    items:
-+      - const: ipg
-+      - const: ahb
-+      - const: enet_out
-+      - const: ptp
++	bdp = fep->rx_bd_base;
++	for (i = 0; i < RX_RING_SIZE; i++) {
++		page = page_pool_dev_alloc_pages(fep->page_pool);
++		if (!page) {
++			dev_err(&fep->pdev->dev,
++				"Failed to allocate page for rx buffer\n");
++			goto err;
++		}
 +
-+  interrupts:
-+    items:
-+      - description: Switch interrupt
-+      - description: ENET0 interrupt
-+      - description: ENET1 interrupt
++		bdp->cbd_bufaddr = page_pool_get_dma_addr(page);
++		fep->page[i] = page;
 +
-+  interrupt-names:
-+    items:
-+      - const: enet_switch
-+      - const: enet0
-+      - const: enet1
++		bdp->cbd_sc = BD_ENET_RX_EMPTY;
++		bdp++;
++	}
 +
-+  pinctrl-names: true
++	mtip_set_last_buf_to_wrap(bdp);
 +
-+  ethernet-ports:
-+    type: object
-+    additionalProperties: true
++	bdp = fep->tx_bd_base;
++	for (i = 0; i < TX_RING_SIZE; i++) {
++		fep->tx_bounce[i] = kmalloc(MTIP_SWITCH_TX_FRSIZE, GFP_KERNEL);
++		if (!fep->tx_bounce[i])
++			goto err;
 +
-+    patternProperties:
-+      '^ethernet-port@[12]$':
-+        type: object
-+        additionalProperties: true
-+        properties:
-+          reg:
-+            items:
-+              - enum: [1, 2]
-+            description: MTIP L2 switch port number
++		bdp->cbd_sc = 0;
++		bdp->cbd_bufaddr = 0;
++		bdp++;
++	}
 +
-+        required:
-+          - reg
-+          - phy-mode
-+          - phy-handle
++	mtip_set_last_buf_to_wrap(bdp);
 +
-+  mdio:
-+    type: object
-+    $ref: mdio.yaml#
-+    unevaluatedProperties: false
-+    description:
-+      Specifies the mdio bus in the switch, used as a container for phy nodes.
+ 	return 0;
 +
-+required:
-+  - compatible
-+  - reg
-+  - clocks
-+  - clock-names
-+  - interrupts
-+  - interrupt-names
-+  - mdio
-+  - ethernet-ports
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include<dt-bindings/interrupt-controller/irq.h>
-+    #include<dt-bindings/gpio/gpio.h>
-+    switch@800f0000 {
-+        compatible = "nxp,imx28-mtip-switch";
-+        reg = <0x800f0000 0x20000>;
-+        pinctrl-names = "default";
-+        pinctrl-0 = <&mac0_pins_a>, <&mac1_pins_a>;
-+        phy-supply = <&reg_fec_3v3>;
-+        interrupts = <100>, <101>, <102>;
-+        interrupt-names = "enet_switch", "enet0", "enet1";
-+        clocks = <&clks 57>, <&clks 57>, <&clks 64>, <&clks 35>;
-+        clock-names = "ipg", "ahb", "enet_out", "ptp";
-+
-+        ethernet-ports {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            mtip_port1: ethernet-port@1 {
-+                reg = <1>;
-+                label = "lan0";
-+                local-mac-address = [ 00 00 00 00 00 00 ];
-+                phy-mode = "rmii";
-+                phy-handle = <&ethphy0>;
-+            };
-+
-+            mtip_port2: ethernet-port@2 {
-+                reg = <2>;
-+                label = "lan1";
-+                local-mac-address = [ 00 00 00 00 00 00 ];
-+                phy-mode = "rmii";
-+                phy-handle = <&ethphy1>;
-+            };
-+        };
-+
-+        mdio_sw: mdio {
-+            #address-cells = <1>;
-+            #size-cells = <0>;
-+
-+            reset-gpios = <&gpio2 13 GPIO_ACTIVE_LOW>;
-+            reset-delay-us = <25000>;
-+            reset-post-delay-us = <10000>;
-+
-+            ethphy0: ethernet-phy@0 {
-+                reg = <0>;
-+            };
-+
-+            ethphy1: ethernet-phy@1 {
-+                reg = <1>;
-+            };
-+        };
-+    };
++ err:
++	mtip_free_buffers(dev);
++	return -ENOMEM;
+ }
+ 
+ static int mtip_rx_napi(struct napi_struct *napi, int budget)
 -- 
 2.39.5
 
