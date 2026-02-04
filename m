@@ -1,185 +1,101 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3095B42B75C;
-	Wed,  4 Feb 2026 20:24:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B14B42982B;
+	Wed,  4 Feb 2026 20:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770236690; cv=none; b=GCrU8okzBgESePtCJt/GPUlwP7GY1Db1+ueR1sQ1xlDc/1Luae29Swdk2HpDVsvKgSQOfrgH5Gr+NQlzB8Q5BfQbiJOvuebBHTt++R3Qp0cMYPUYzxh8RsZ94wzgviqWgGB9k4y2K1Wu9xrPqXdvG6y/qnvTb8EXnqhPIHWtl5k=
+	t=1770236735; cv=none; b=jJVwOaHVX44gAwDBk9ZFGTOp7klPsRcSRqMX2QoaD9LcOi9FeoIniAbxVlmR1dSgW+tE+9fDCXWnEBOr2RQDpaRDZNzxCzXpJNNJzZ3aaYUhxiFRfnhMhZmhXGksbJXCiMYA37cfGu5VIbHX6JWgsu5Xy0FyVuYmj1tsPFgCEBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770236690; c=relaxed/simple;
-	bh=klIpozQMkLc7s5yVg1iFiQSRxFidEGW6c7R0cBcAX10=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgX3kAPftGUFSkKk4ih/YYrb+vp+S1U5AFSR9ZnCB13/feRSTVtddmKD1LBzCpWjXWeRL88LvjVWAey6UfXxqq/NSPHnVFnmyzv7Pi+i+lbZzJ4ge//RwXkuPWbFY8WWrgBL9OVyMgen8FXAjItXBP0sK+8fu0Ek+RVGzNhJEbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kjXKHvni; arc=none smtp.client-ip=198.175.65.21
+	s=arc-20240116; t=1770236735; c=relaxed/simple;
+	bh=Mu7rUnAG7sN1Zo07pAjayKdb+6XBVjosqS2rDV+LOGA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K0dXB3BGBwGXg8kXUjWg+BzgvqYLpgH6pXfcE0J6tM3J3D/63+1BEvOuLl3A71MlBq5YO9gfpS7JMZakdBhEZhYU0/0CzdeRnIRshVuufKTJ1QVIOHXPWYXoMj6HQxbzPpeI4d+Z3ajgtx5KChkoAlIzW3QS3uHuT+x2BNtQI84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bKQTrs57; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kjXKHvni"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bKQTrs57"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770236690; x=1801772690;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=klIpozQMkLc7s5yVg1iFiQSRxFidEGW6c7R0cBcAX10=;
-  b=kjXKHvniL1wc23jDUOGdO7Wo2g7sc4VQYNejTuo2p8XAkdQ1MLF8zCHH
-   mmX8Tp/sziEyIKpW9hEDaamuQDLO1B+vFRC7Zix4LlIEk6dsBP8IZKio4
-   z0e+dHU0prpPwVa4D0Xo6BM8b5adFEaVvNm4LfewaKQ3mun2bkIjuC14z
-   r6x9V0d2l/1GKp/q/oiRO8ZNqj7JJ/3Rq1zE/HncJDZwljvYMm5qMr6AQ
-   tRpdwEiHE1NCr5vwL234bTYDjiemtD9xgMxQdfhTgPK5FkVR8+7wS+yTT
-   ECy9S7+0VQeZ+KbWQJ/mcxZIDglY0Bu/sBOlJ7fczvonyHD8rQP11oY/d
+  t=1770236736; x=1801772736;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Mu7rUnAG7sN1Zo07pAjayKdb+6XBVjosqS2rDV+LOGA=;
+  b=bKQTrs57EaRoTZblV+kpfVionqTRZqaJF/x4YQSD5trux0QSZrrN36M/
+   ZfUJK6clttW2I+aP/7y6+1UiUoEd5k5Gn5r4UWu/yF9M7iXtiOO92N+hV
+   2iHDyEz7BhZZMWXgV64/tvugp2pPJt3MJnuTDWb1Yh7KGBPMjvv7OYzTp
+   wtod3H86xOjoCAdJyBfVenSXbJN9fq+yeWVvkywnb4wIM8vcRDv/+PEUX
+   nJ2vG5uJNMGtqpfpBSt50q2za3ryKN9hZr5E7Iy1rR358+kbQM2xmMFBP
+   R8qRH6qn/VZzs2q5zpNUZq5CooCS9PF+JgE4q5unWSDwq05ge2xvvsnAw
    g==;
-X-CSE-ConnectionGUID: w7qQE0F1ScKuz2MfAJVqoA==
-X-CSE-MsgGUID: o5Y2oh9JRFKb1WIdg6ziLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="71335500"
+X-CSE-ConnectionGUID: ZBsPG+tZSo2YhhlGn0mW8g==
+X-CSE-MsgGUID: iHDYbuofSt+EYwQ7yatvqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11691"; a="82064591"
 X-IronPort-AV: E=Sophos;i="6.21,273,1763452800"; 
-   d="scan'208";a="71335500"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 12:24:49 -0800
-X-CSE-ConnectionGUID: d9oNWrkQTZurP4dKMVyg7w==
-X-CSE-MsgGUID: xTnETfOyQh2hMBb9gRz16Q==
+   d="scan'208";a="82064591"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 12:25:35 -0800
+X-CSE-ConnectionGUID: jHmYirvsSl+AuzN3plx2qQ==
+X-CSE-MsgGUID: OeuJ0L8uQz+PHdJHGlAI5A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,273,1763452800"; 
-   d="scan'208";a="210051958"
-Received: from black.igk.intel.com ([10.91.253.5])
-  by orviesa009.jf.intel.com with ESMTP; 04 Feb 2026 12:24:45 -0800
-Received: by black.igk.intel.com (Postfix, from userid 1003)
-	id 81E6099; Wed, 04 Feb 2026 21:24:43 +0100 (CET)
+   d="scan'208";a="210308305"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.188])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Feb 2026 12:25:30 -0800
+Date: Wed, 4 Feb 2026 22:25:27 +0200
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	llvm@lists.linux.dev
-Cc: Trond Myklebust <trondmy@kernel.org>,
+To: Chuck Lever <chuck.lever@oracle.com>
+Cc: NeilBrown <neil@brown.name>, Jeff Layton <jlayton@kernel.org>,
+	linux-nfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, llvm@lists.linux.dev,
+	Trond Myklebust <trondmy@kernel.org>,
 	Anna Schumaker <anna@kernel.org>,
 	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
 	Nathan Chancellor <nathan@kernel.org>,
 	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
 	Bill Wendling <morbo@google.com>,
 	Justin Stitt <justinstitt@google.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Subject: [PATCH v3 2/3] sunrpc: Kill RPC_IFDEBUG()
-Date: Wed,  4 Feb 2026 21:21:50 +0100
-Message-ID: <20260204202437.2762161-3-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260204202437.2762161-1-andriy.shevchenko@linux.intel.com>
-References: <20260204202437.2762161-1-andriy.shevchenko@linux.intel.com>
+	Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: Re: [PATCH v2 3/3] sunrpc: Fix compilation error (`make W=1`) when
+ dprintk() is no-op
+Message-ID: <aYOrN-C6R0Hniwxl@smile.fi.intel.com>
+References: <20260204094500.2443455-1-andriy.shevchenko@linux.intel.com>
+ <20260204094500.2443455-4-andriy.shevchenko@linux.intel.com>
+ <aYN35agQMKaIGZA0@smile.fi.intel.com>
+ <aYN6zA79q6yOLFmA@smile.fi.intel.com>
+ <c0af23c2-bdf1-456b-a82a-0f224d640473@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c0af23c2-bdf1-456b-a82a-0f224d640473@oracle.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - c/o Alberga Business Park, 6
+ krs, Bertel Jungin Aukio 5, 02600 Espoo
 
-RPC_IFDEBUG() is used in only two places. In one the user of
-the definition is guarded by ifdeffery, in the second one
-it's implied due to dprintk() usage. Kill the macro and move
-the ifdeffery to the regular condition with the variable defined
-inside, while in the second case add the same conditional and
-move the respective code there.
+On Wed, Feb 04, 2026 at 01:29:48PM -0500, Chuck Lever wrote:
+> On 2/4/26 11:58 AM, Andy Shevchenko wrote:
+> > On Wed, Feb 04, 2026 at 06:46:36PM +0200, Andy Shevchenko wrote:
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
- fs/nfsd/nfsfh.c                          |  9 +++++---
- include/linux/sunrpc/debug.h             |  2 --
- net/sunrpc/xprtrdma/svc_rdma_transport.c | 27 ++++++++++++------------
- 3 files changed, 20 insertions(+), 18 deletions(-)
+...
 
-diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-index ed85dd43da18..68b629fbaaeb 100644
---- a/fs/nfsd/nfsfh.c
-+++ b/fs/nfsd/nfsfh.c
-@@ -105,9 +105,12 @@ static __be32 nfsd_setuser_and_check_port(struct svc_rqst *rqstp,
- {
- 	/* Check if the request originated from a secure port. */
- 	if (rqstp && !nfsd_originating_port_ok(rqstp, cred, exp)) {
--		RPC_IFDEBUG(char buf[RPC_MAX_ADDRBUFLEN]);
--		dprintk("nfsd: request from insecure port %s!\n",
--		        svc_print_addr(rqstp, buf, sizeof(buf)));
-+		if (IS_ENABLED(CONFIG_SUNRPC_DEBUG)) {
-+			char buf[RPC_MAX_ADDRBUFLEN];
-+
-+			dprintk("nfsd: request from insecure port %s!\n",
-+			        svc_print_addr(rqstp, buf, sizeof(buf)));
-+		}
- 		return nfserr_perm;
- 	}
- 
-diff --git a/include/linux/sunrpc/debug.h b/include/linux/sunrpc/debug.h
-index 891f6173c951..e947d668f7b7 100644
---- a/include/linux/sunrpc/debug.h
-+++ b/include/linux/sunrpc/debug.h
-@@ -51,12 +51,10 @@ do {									\
- 	}								\
- } while (0)
- 
--# define RPC_IFDEBUG(x)		x
- #else
- # define ifdebug(fac)		if (0)
- # define dfprintk(fac, fmt, ...)	do {} while (0)
- # define dfprintk_rcu(fac, fmt, ...)	do {} while (0)
--# define RPC_IFDEBUG(x)
- #endif
- 
- /*
-diff --git a/net/sunrpc/xprtrdma/svc_rdma_transport.c b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-index 9b623849723e..f2d72181a6fe 100644
---- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-@@ -414,7 +414,6 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
- 	struct ib_qp_init_attr qp_attr;
- 	struct ib_device *dev;
- 	int ret = 0;
--	RPC_IFDEBUG(struct sockaddr *sap);
- 
- 	listen_rdma = container_of(xprt, struct svcxprt_rdma, sc_xprt);
- 	clear_bit(XPT_CONN, &xprt->xpt_flags);
-@@ -560,18 +559,20 @@ static struct svc_xprt *svc_rdma_accept(struct svc_xprt *xprt)
- 		goto errout;
- 	}
- 
--#if IS_ENABLED(CONFIG_SUNRPC_DEBUG)
--	dprintk("svcrdma: new connection accepted on device %s:\n", dev->name);
--	sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.src_addr;
--	dprintk("    local address   : %pIS:%u\n", sap, rpc_get_port(sap));
--	sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.dst_addr;
--	dprintk("    remote address  : %pIS:%u\n", sap, rpc_get_port(sap));
--	dprintk("    max_sge         : %d\n", newxprt->sc_max_send_sges);
--	dprintk("    sq_depth        : %d\n", newxprt->sc_sq_depth);
--	dprintk("    rdma_rw_ctxs    : %d\n", ctxts);
--	dprintk("    max_requests    : %d\n", newxprt->sc_max_requests);
--	dprintk("    ord             : %d\n", conn_param.initiator_depth);
--#endif
-+	if (IS_ENABLED(CONFIG_SUNRPC_DEBUG)) {
-+		struct sockaddr *sap;
-+
-+		dprintk("svcrdma: new connection accepted on device %s:\n", dev->name);
-+		sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.src_addr;
-+		dprintk("    local address   : %pIS:%u\n", sap, rpc_get_port(sap));
-+		sap = (struct sockaddr *)&newxprt->sc_cm_id->route.addr.dst_addr;
-+		dprintk("    remote address  : %pIS:%u\n", sap, rpc_get_port(sap));
-+		dprintk("    max_sge         : %d\n", newxprt->sc_max_send_sges);
-+		dprintk("    sq_depth        : %d\n", newxprt->sc_sq_depth);
-+		dprintk("    rdma_rw_ctxs    : %d\n", ctxts);
-+		dprintk("    max_requests    : %d\n", newxprt->sc_max_requests);
-+		dprintk("    ord             : %d\n", conn_param.initiator_depth);
-+	}
- 
- 	return &newxprt->sc_xprt;
- 
+> > Otherwise I can send a new version.
+> 
+> Please send a full series respin, thanks.
+
+v3 has been sent.
+
 -- 
-2.50.1
+With Best Regards,
+Andy Shevchenko
+
 
