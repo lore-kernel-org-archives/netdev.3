@@ -1,60 +1,45 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DB53EDAC3;
-	Wed,  4 Feb 2026 15:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFBAA41B365;
+	Wed,  4 Feb 2026 15:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770219732; cv=none; b=VXe/y1OEAO+EibdYRoJ2oBaOIDNxkGcpEiXgBPuw8ie85sQH6r21Eavv1ka526B/aU4UIK0wFH0+nGZAJnoetTwjZQMXSZSRrgEi067URdtPTPEO6n1OJBEgN8LjPCGnJzemWkiBooG3whCZGMugzh+mgPHlxn07CnBrV0alaYU=
+	t=1770219846; cv=none; b=Oqa4q5gfBIcure9cCT7QsA7BC6fvUltS7F+HYfdUEvYWwRCBV2iSBe1mJxDWftokbvPl9Bg1OYQUwoMTKI0YHEaVkiDNIIlMFMakjPiO7jrxCjpGOXKmyG2xqvbjpqiQwLeF3q0SQ6nR9Y4R0NiwJQrEEOhE0QddisTm7hE66B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770219732; c=relaxed/simple;
-	bh=j16DCHzTYFhgMNNXLWUYmmV1peJOwGFCMDbhW4/8pRw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=USGDb7pZ2kKCbp8t2Z6UXirINZuASQYrEPsHaSVD30RzJ1v9yqvF3X3ukEj4dm6bkll/xWSbBiQvIcoAGVY/z/8oupNd4TUT/1RdybeBqBcTD2Ep4+qFRdt7ilzWRGfIoyOmU4isfqct6D8hend/XD5CnYbDGucTxHEKAmiodig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LjO2UtoH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770219846; c=relaxed/simple;
+	bh=gM+9C1GefTDiD72/AoT5vSGcQRcVvp7WZ+TBoqKWXi4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=Gp1+0BSYcLFd5NnMN1UoXO9RDsm5nOEVU3MoujYuiXnC0nocppm26qoaNF+9fphybSXksQIOoScWourR9gLvIZpZxoysQIxeMH61sJbaw1mrVFkYCdOvyVAGxz6RctahNUlnv1I6q9PIZ2LlZmAkjBAh2xy358/UW9k0qXwlW/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CJLn11XS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LjO2UtoH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C308CC4CEF7;
-	Wed,  4 Feb 2026 15:42:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CJLn11XS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D134CC4CEF7;
+	Wed,  4 Feb 2026 15:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770219731;
-	bh=j16DCHzTYFhgMNNXLWUYmmV1peJOwGFCMDbhW4/8pRw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LjO2UtoHfMVRTkEXdQMDTZA0npLozUQoJ5DanPKFbBK42cLSd5UsaH8ySBAFAXvXn
-	 UvfTcwUFFvTu1CZNvAc5yDVjMDG8NtbI1yvWudI7sKKOLwChlIDR9BVUlu0MgBsRIz
-	 s+hf5MhmMbI2exexvhO1bblf5KC5Pqsv1bdF2ExoQoBeppDUByDo4K81KWacp3vwWT
-	 5QVH2NFVPeTmqJdkKLqoSJE0uq4KTFajuE1wFhwlZUG5Da5UhdLRo6kqf79oeKIrpK
-	 DZZfOJ1B3acvcb1h7Z/HWinh4WAZ/518G1p+rNmecyAn2UgIFl2ZEcSMPsWGK2uNmr
-	 u72U6Gx2frP/Q==
-From: Chuck Lever <cel@kernel.org>
-To: NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Chuck Lever <chuck.lever@oracle.com>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <Dai.Ngo@oracle.com>,
-	Tom Talpey <tom@talpey.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <nick.desaulniers+lkml@gmail.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>
-Subject: Re: [PATCH v2 0/3] sunrpc: Fix `make W=1` build issues
-Date: Wed,  4 Feb 2026 10:42:06 -0500
-Message-ID: <177021968762.97318.15008544066362314853.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260204094500.2443455-1-andriy.shevchenko@linux.intel.com>
-References: <20260204094500.2443455-1-andriy.shevchenko@linux.intel.com>
+	s=k20201202; t=1770219846;
+	bh=gM+9C1GefTDiD72/AoT5vSGcQRcVvp7WZ+TBoqKWXi4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=CJLn11XSwTacFkFCF0Ytm3O7PtRPN9umWvZr122a/TRw83mrAL3v6P+mVDVUf3hbo
+	 45RoVQyVbbNS+9C+AfEJn47v0nCfkc2BHIqon6UNDoII1Pez5pzQoziu1na/CWHd9n
+	 zaoLQLSfHmfRYeGxJVj0xfl7ZSuNuFaqC/Mp9mk3l6VUBkwp5kdkI7kiyZxzGLYN/8
+	 RK5Alj/3aCD4ynCq0s/uobmEopPVjTb/ucEZIPBa7sDSvnPBHJ458Scklqjm51fLDS
+	 toJD3u43PQdzlsMu1wIgd/5+9vJMUCRblVeoKDKUNhuCVkgwEC91tLOemMc8Xyeo6+
+	 EzgapKA/iUILg==
+From: Vinod Koul <vkoul@kernel.org>
+To: linux-phy@lists.infradead.org, 
+ Neil Armstrong <neil.armstrong@linaro.org>, 
+ Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, 
+ =?utf-8?q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>, linux-kernel@vger.kernel.org, 
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>, 
+ "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260123110600.3118561-1-vladimir.oltean@nxp.com>
+References: <20260123110600.3118561-1-vladimir.oltean@nxp.com>
+Subject: Re: [PATCH phy] phy: enter drivers/phy/Makefile even without
+ CONFIG_GENERIC_PHY
+Message-Id: <177021984348.133434.2174228638477842176.b4-ty@kernel.org>
+Date: Wed, 04 Feb 2026 21:14:03 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,33 +47,30 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.13.0
 
-From: Chuck Lever <chuck.lever@oracle.com>
 
-On Wed, 04 Feb 2026 10:41:20 +0100, Andy Shevchenko wrote:
-> Compiler is not happy about unused variables (especially when
-> dprintk() call is defined as no-op). Here is the series to
-> address the issues.
+On Fri, 23 Jan 2026 13:06:00 +0200, Vladimir Oltean wrote:
+> Kconfig option CONFIG_PHY_COMMON_PROPS, which builds
+> drivers/phy/phy-common-props.c, was intended to be selectable
+> independently of CONFIG_GENERIC_PHY. Yet it lives in drivers/phy/, which
+> is entered by the Makefile only if CONFIG_GENERIC_PHY is set.
 > 
-> Changelog v2:
-> - added patch to kill RPC_IFDEBUG() macro (LKP, Geert)
-> - united separate patches in the series
-> - collected tags (Geert)
+> Allow the Makefile to enter one level deeper, but stop at drivers/phy/
+> if CONFIG_GENERIC_PHY is unselected (i.e. do not enter vendor folders).
+> The other stuff from drivers/phy/Makefile except for CONFIG_PHY_COMMON_PROPS,
+> like CONFIG_PHY_NXP_PTN3222, all depends on CONFIG_GENERIC_PHY.
 > 
 > [...]
 
-Applied to nfsd-testing, thanks!
+Applied, thanks!
 
-Acks from the NFS client maintainers on 1/3 are welcome.
+[1/1] phy: enter drivers/phy/Makefile even without CONFIG_GENERIC_PHY
+      commit: 3ddcd24b4d8454b2b9b2d013a0d61986ae8bbbe7
 
-[1/3] nfs/blocklayout: Fix compilation error (`make W=1`) in bl_write_pagelist()
-      commit: b2e8b11ff47d3ba5075844ac4fb806296b3c4859
-[2/3] sunrpc: Kill RPC_IFDEBUG()
-      commit: 85acbbcb4127f635c062cb52e5dbc62b0635b3f8
-[3/3] sunrpc: Fix compilation error (`make W=1`) when dprintk() is no-op
-      commit: 380f84a3c8fc3809b614a6765c2fb0acc3e8674b
+Best regards,
+-- 
+~Vinod
 
---
-Chuck Lever
 
