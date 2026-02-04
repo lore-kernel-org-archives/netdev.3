@@ -1,93 +1,147 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53FBE34D911
-	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 05:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D405A350A00;
+	Wed,  4 Feb 2026 05:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770184310; cv=none; b=jm58FctMOvRUysV1Ch4ui20LsGEUr7S2S2cf09zBX6jq3xqWobYkb6BowkGjaQp13C92rcP5A1IIfrHrQZoG5vYfBcHwwnnQ1vDb56U2Qj5VLlniwg+FPj7C0IkskR3MiEGtsUjX/iQKUVe97YWcLYXq4LcfKQrms/2vj/jypLM=
+	t=1770184311; cv=none; b=DfNGdCpErIqkxD8AnfDMSyt21id1UwKZc8+eCC3Y4kryu6MJdy5EqW7RYstnG1sfz/T4SCztuGaNWJbVQ0gKBsWkZcJ5MWczTTJRmLRxhw9RU6Jud0ebcK3Tq74DOIZw3cGk6aOw3/n8Bt3L3HhLZWrbuRkOHA1o9qL5i5/A5Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770184310; c=relaxed/simple;
-	bh=HAj1x4/x7EaWdEMVHOrvZvP6qEK01zdI9sDM1k3aNYo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=buHsiHeTIoM2gjl+aGrZfmrqcosta6XbNkao5nGEXPzQLDYHH7yxICdAR/Xcz0kZLnVtAwaA1taTenOvFkcURCvAYma+jtsFeRkE03M4wqIjep2YPtWHtcVO9+WZX19bD8ZSCBuVDQ4iGdxJ1qVWlpY1qyZqh1ErTfDE7J3v19c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=stl8KIuq; arc=none smtp.client-ip=209.85.222.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1770184311; c=relaxed/simple;
+	bh=WyeMu1AkwqKC5I7WTqh9UrxM26rqyj+dwIwTtP2n/uA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OyTpPnMVPJmVRzfW4eAZ1gmzg1ckR0JF4Z8Iia4QBQu/5JdxmUmwamOFdsfBH8xpaQE2OTh1234tVWiIhTB2ETgIpCb3aH2nX8uV7hjL++DtAj1cyzumAqUlugu72FNInSFquMTtomJT5A/WJqDyKr+g9blfFIFiZCXDPp71vlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mH1c+uNa; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=d6ZMtz0u; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="stl8KIuq"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-8bb9f029f31so2062733985a.2
-        for <netdev@vger.kernel.org>; Tue, 03 Feb 2026 21:51:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770184309; x=1770789109; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gOcMhld+vwK7cF8G1o7Xvr4flUuWe87iLrDhQ0cNXI4=;
-        b=stl8KIuqCN2hOCVdNd5QMbMb1G6DJJanqpj8UgBmwnrVM63CU8tbqBYpmpDhzzbA56
-         Y0OMuwgrBEjzF+xrtyFcCgEHvDDeu08ZQiu+NY5Ci3vS2IAf6FKOLrJChZayxRtWzrz8
-         aUK+kHu/CF4mUDULXqulcZy20XSUCaTyb5g/bkLr3eKywEurqmM7xNQWpUXY2aQpqEY+
-         fswlJZQxrsKmsBUMTOSnPhYkKyjpR4IhJ6s4mIaXy4rSJK8inPj/Nw5J5C416aecj2Qp
-         4o4cjM79Jul9Tn0nmx4mX3aVoMWbUipwnjoNQhyaSlPtLVnRb/svGfd1RiEMnloBPOnv
-         3g9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770184309; x=1770789109;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gOcMhld+vwK7cF8G1o7Xvr4flUuWe87iLrDhQ0cNXI4=;
-        b=MdDnE8Hu0ZrJ5gcKFTl3bch95zYJkOsdpOIa/lhx1V5ASH1YD2GCtyh2aPwbUCkQEW
-         QHMwmi+L2L7/jfXBcoYYumMHYxJOlBHDSHcESlNueJao6U5LSMGWhNeGSBu+n4xoMyBr
-         ycZJhyRRiF/K2EMav0MNpDk/Q87tckXF9wucCOzlf/prVqxOOt6GMLgDrLM5V7mzqHQe
-         TMyzeDz4Nq9HJwtl/KPNtBkuugWhUHUyZ4HfNz0qtz+2qhnfa/wPVxKrBfcDO1VhoMzk
-         BhRaJA+1qvVSzx7L6U+v7c7nswWA7qJVrOIJRqIV7SLUfk1D4Dli/AWn4OY/34mpvYLu
-         4NEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUWfkSNMsSVh92RDZPUQpTVMBlchTfXiYvZmsxOmM2e4GCpGPg33ZbO6UM4LWPdTsbGLKdpVhw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwKRw7cxf8DJ10U7docnFjzbolPcBIVx6FwW3nk9z8SfG4TNry
-	V11Ocby0v/Jd0kNLN28UAp5rZFchg6GK6Q9AoSvWnjsPjejO34O4vfKhUkrFyyhJs6XfwxPt7TN
-	pQlZEbcAsTOlT0g==
-X-Received: from qkbbi5.prod.google.com ([2002:a05:620a:3185:b0:8ca:3170:e839])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:f11:b0:8b2:db27:4270 with SMTP id af79cd13be357-8ca2f9b71e6mr265608285a.48.1770184309128;
- Tue, 03 Feb 2026 21:51:49 -0800 (PST)
-Date: Wed,  4 Feb 2026 05:51:43 +0000
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mH1c+uNa";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="d6ZMtz0u"
+Date: Wed, 4 Feb 2026 06:51:46 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1770184308;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sZHCk7fKGvf7QzEKyi64QeW2Liq4IP/rnnD/aBkMl5c=;
+	b=mH1c+uNacxWRUNxmS4+KhnW02S+ScCNg0PSMrRBV3jl5Y9gLNvMzn2wKTFE119EqwrHZVK
+	0Xs2BQCwy0xLs2a7+gdd8+UIN1NJkFxmfKrvCWu8BRowAICffN4IDMn7nvd5n8pRhGlOTI
+	/lcoeDTVwx4C/5arPqxl4Pr1DwVM/XXISPy+Ud/+o5dE+3KjyDGBJawYLfFhBLuzKlHeEe
+	Jjaaa07nXgXxFL74kUd+x+t5iZVGeWcu8qhM/QlOyI3o3mdtjH2S9THZPgLNdLZakBJJlE
+	ZR3GP0J25NhG4p4mppsRJ+sb9ftJwtMZWzQmpngxhxJY0va5sW06twgDzT0yog==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1770184308;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sZHCk7fKGvf7QzEKyi64QeW2Liq4IP/rnnD/aBkMl5c=;
+	b=d6ZMtz0uUl3VOFryIOVmf39EYhSjv1iRpyzj0W6e5d3GCAZeC1TF0aBjXeboj7tm1lJ6gw
+	gmXb8/M6hAEDp/DQ==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Eric Dumazet <edumazet@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	Matthieu Baerts <matttbe@kernel.org>, Mat Martineau <martineau@kernel.org>, 
+	Geliang Tang <geliang@kernel.org>, =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>, 
+	John Fastabend <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-api@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-kselftest@vger.kernel.org, 
+	mptcp@lists.linux.dev, linux-security-module@vger.kernel.org, bpf@vger.kernel.org, 
+	libc-alpha@sourceware.org, Carlos O'Donell <carlos@redhat.com>, 
+	Adhemerval Zanella <adhemerval.zanella@linaro.org>, Rich Felker <dalias@libc.org>, klibc@zytor.com, 
+	Florian Weimer <fweimer@redhat.com>
+Subject: Re: [PATCH net-next v2 0/4] net: uapi: Provide an UAPI definition of
+ 'struct sockaddr'
+Message-ID: <20260204064248-d9c4ab78-f6d4-4ac6-8d55-e939bc1df6d2@linutronix.de>
+References: <20260120-uapi-sockaddr-v2-0-63c319111cf6@linutronix.de>
+ <20260121192729.2095aa25@kernel.org>
+ <20260130112309-28f2645b-e756-4173-96da-cf5c59191520@linutronix.de>
+ <20260130081741.425a92e0@kernel.org>
+ <3c46fc49-b41b-44a2-b42a-669cc7e6bb02@linutronix.de>
+ <20260131092517.6639d84c@kernel.org>
+ <20260203122715-eeb304f9-4b42-4fc6-a527-658182a92ba5@linutronix.de>
+ <20260203144011.32d5b223@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
-Message-ID: <20260204055147.1682705-1-edumazet@google.com>
-Subject: [PATCH v2 net-next 0/4] tcp: remove net/core/request_sock.c and no
- longer inline __reqsk_free()
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260203144011.32d5b223@kernel.org>
 
-After DCCP removal, net/core/request_sock.c makes no more sense.
+On Tue, Feb 03, 2026 at 02:40:11PM -0800, Jakub Kicinski wrote:
+> On Tue, 3 Feb 2026 12:42:22 +0100 Thomas Weißschuh wrote:
+> > > FWIW the typelimits change broke compilation of ethtool, we'll see if
+> > > anyone "outside kernel community itself" complains.  
+> > 
+> > Can you point me to that breakage? I was unable to find it.
+> 
+> Not reported on the ML, and it's kinda annoying to repro because 
+> the uAPI header sync script isn't committed :/ You have to check 
+> this out
+> 
+>  https://git.kernel.org/pub/scm/network/ethtool/ethtool.git/
+> 
+> and run a script like this to sync headers from the kernel (then build):
+> 
+> #!/bin/bash -e
+> 
+> sn="${0##*/}"
+> export ARCH="x86_64"
+> 
+> if [ ! -d "$LINUX_GIT" ]; then
+>     echo "${sn}: LINUX_GIT not set" >&2
+>     exit 1
+> fi
+> 
+> pushd "$LINUX_GIT"
+> if [ -n "$1" ]; then
+>     git checkout "$1"
+> fi
+> desc=$(git describe --exact-match 2>/dev/null \
+>        || git show -s --abbrev=12 --pretty='commit %h')
+> kobj=$(mktemp -d)
 
-Move reqsk_queue_alloc() and reqsk_fastopen_remove() to TCP files.
+> make -j16 O="$kobj" allmodconfig
+> make -j16 O="$kobj" prepare
 
-Then put __reqsk_free() out of line to save ~2 Kbytes of text.
+These are not necessary.
+The UAPI generation does not need a kernel configuration.
 
-v2: use EXPORT_SYMBOL_GPL() instead of EXPORT_IPV6_MOD_GPL for
-    __reqsk_free (Kuniyuki)
+> make -j16 O="$kobj" INSTALL_HDR_PATH="${kobj}/hdr" headers_install
+> popd
+> 
+> pushd uapi
+> find . -type f -name '*.h' -exec cp -v "${kobj}/hdr/include/{}" {} \;
 
-Eric Dumazet (4):
-  inet: move reqsk_queue_alloc() to net/ipv4/inet_connection_sock.c
-  tcp: move reqsk_fastopen_remove to net/ipv4/tcp_fastopen.c
-  net: get rid of net/core/request_sock.c
-  tcp: move __reqsk_free() out of line
+Here only those headers which already exist in ethtool's uapi/ directory
+are copied. As linux/typelimits.h is new, it is now missing.
+Honestly, if a user fiddles with the internals of the UAPI headers like
+this, it is on them to update their code if the internal structure
+changes. In your case a simple 'touch uapi/linux/typelimits.h'
+before running the script will be enough. Also internal.h now requires
+an explicit inclusion of <limits.h>, as that is not satisfied by the
+UAPI anymore.
 
- include/net/request_sock.h      |  11 +--
- net/core/Makefile               |   2 +-
- net/core/request_sock.c         | 127 --------------------------------
- net/ipv4/inet_connection_sock.c |  19 +++++
- net/ipv4/tcp_fastopen.c         |  86 +++++++++++++++++++++
- 5 files changed, 107 insertions(+), 138 deletions(-)
- delete mode 100644 net/core/request_sock.c
-
--- 
-2.53.0.rc2.204.g2597b5adb4-goog
-
+> popd
+> rm -rf "$kobj"
+> 
+> git add uapi
+> git commit -s -F - <<EOT
+> update UAPI header copies
+> 
+> Update to kernel ${desc}.
+> 
+> EOT
