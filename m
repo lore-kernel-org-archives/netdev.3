@@ -1,125 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic314-20.consmr.mail.ne1.yahoo.com (sonic314-20.consmr.mail.ne1.yahoo.com [66.163.189.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8197A346E5E;
-	Wed,  4 Feb 2026 17:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C69933F37D
+	for <netdev@vger.kernel.org>; Wed,  4 Feb 2026 17:12:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.189.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770224594; cv=none; b=uL92f54ZjlqYhbSnoQ3Dn5Gy7aynu2KCOU/6Dh0wqztlfqUW1I7/rYQ1mkMs8vw8bW6vLCvYOablxvvbbLy4F5obzxplJxLChXdwdse6pms/z8tDNLx4qIjvVOaYmsr4Xmm5MaoK8G5e2151uIZLRJBg7Fp+eHEpHeyemZ4Ctvk=
+	t=1770225163; cv=none; b=LTLUlN0TzEGejHbkscSlRrfjQ2sLYCf9eBUqZmH+WX3RI6q/LBH2LojzB2tdHzd1shNWgAdA4xuu4iPb9VdpoNfw8tBwXEJ1ti5N45pNdU17PJQ9rbLbj51jcmTR1Iatt3GOxW+BP7suowDodELoFbwm8Xx9ZF+3tcDVYsgipkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770224594; c=relaxed/simple;
-	bh=Bup6bqy51nLskK4r7e6B2aiti4ZAaB1Rsbevgd7k5i4=;
-	h=Subject:From:To:Cc:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r1UikeRK6vWl/7Q6KadOX/jLzQBhhaVflOhL9A5z9N1BCo6VnSllZKrKjpfJj1aw115MmdWDTnXN8yWwPXmuY2dmna6rEptr7PDPU1YGuREA7vOSV50+grTvF1c7/0Hjlzgq0IIyV7h4Lt8IfS4tgOdg7T+x0DHmBzCOXWr3CDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTE96xyp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770225163; c=relaxed/simple;
+	bh=0Hy2Bd3elybwCjmfEqj/GpPLAKkIYB5J6cEtufLYNPk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lA+usjW6AT9yX3dz1Fh5WF0IxEvKktfF1Nd+zC8h2+N5Tfka0uQHIrWQQKGElpAAsKKd1mg8Pfj6LOFPr8fnUsKvviLK2Rlf3cNdmBGNXyNu0AsEU58wO1rSx+QjeP5/xF9XZlNqf/FXD1WHriVikzrdFs4o1rV3Hr9skCwNCIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com; spf=pass smtp.mailfrom=yahoo.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=N+/HSel0; arc=none smtp.client-ip=66.163.189.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTE96xyp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A363C4CEF7;
-	Wed,  4 Feb 2026 17:03:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770224594;
-	bh=Bup6bqy51nLskK4r7e6B2aiti4ZAaB1Rsbevgd7k5i4=;
-	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-	b=YTE96xyp/EE1COaNo5DRklyrrilmfkflPJoC330ST4Fma/DaFkxLa8BXp08fyDv1c
-	 vrYRyMrZELi3K+U7M0n4hjnQj56G0NbN8+ST4IcZpbwxDpH+SV+9OnWQcypBJeKuC3
-	 woGJRRLkwrP5eSC8vqQGwQ++MqetNRM02y4FXa1DTLL87UKa3rgcBLGydhaErifWDl
-	 qALg4UZwezCFzKXR8TfvNJi+u4TSweDv5aU+zZxP4LEnIn+UA/lZ0y3QRDTk3GmUoa
-	 7KFrpnQXwacvPzdNU+q9UzPOCOLRlE/vbd37KXJ0nU3m1Gqt8kwh+rPZhLq/HAuAnq
-	 jxetGvgEUXPYA==
-Subject: [PATCH net-next RFC v1 3/3] net: sched: sch_cake: use enum
- qdisc_drop_reason for cobalt_should_drop
-From: Jesper Dangaard Brouer <hawk@kernel.org>
-To: netdev@vger.kernel.org, Eric Dumazet <eric.dumazet@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>, bpf@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>, horms@kernel.org, jiri@resnulli.us,
- edumazet@google.com, xiyou.wangcong@gmail.com, jhs@mojatatu.com,
- carges@cloudflare.com, kernel-team@cloudflare.com
-Date: Wed, 04 Feb 2026 18:03:08 +0100
-Message-ID: <177022458894.1827734.4335287797377732478.stgit@firesoul>
-In-Reply-To: <177022452988.1827734.5121740962985640333.stgit@firesoul>
-References: <177022452988.1827734.5121740962985640333.stgit@firesoul>
-User-Agent: StGit/1.5
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="N+/HSel0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1770225162; bh=FjFs625tbiJi3Vt3bSwEOcBrDsr7PtUAEn+2aM1qPGo=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=N+/HSel0bQYczXuiH2dB2DFIbWMPVrd+CqLdiW3toJY+2jDlsmF7ksj1fKI+EP9M6XXDjht2XypnuNR5cviITKQjDnEJOjktaiu10xNy8kr+pKMQJp+XcBPqcSaKFcsZVlJ94UqpL44FKwWIIQ+hveId7p/1ThT0YxUkyxy//JKIU2ETeBpQJNO1QJSRoHtXfbr153pQ4SefCQweAsLri5xbIqXpeYLFM/24+beJWbfCSgq6UgBd5Jzxno6bolib6lrnxIpQHHz34oKmvO3jRaeUysv2XKFXOrgkrTJQE6o3U3deu+FSrH/MArfYed2muK7ajBBZWfQA1vWcv3hz0A==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1770225162; bh=WhMw4lnbhqRMGd2u9EzNw4wXjc+T50zMyttYbKvKJ0l=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=eKWBDQq6rH2ES+e5VhE0VJqByfxBw3EpV48P6wMXdP+YP0uUn+v+1Waj/V6xuBct39J8ibSxRX2UqPYONs4DLndVpmmB//aHx92t+KKn8o9VOckbw7v8B+BbiIlKJzqY/qZFo1or7xBGJPCOG/JESMDQzTdCwVtiTPQirXQ3+eamDFs9FcQl6nESkHk/LrY8mqEK2wk/ru1UUrVQla1/VWY0Mx3xiUsawjOJppPuJGywm9V9L+8IEQu5c3247DIiIbsoXg6AxzWANL7RKmb3uERkAc9VylRCHhTAVQVeLrvVotABQWNN7cQ8j9BZM1bD49ZeSFzQ9Ge55ubzAezvQg==
+X-YMail-OSG: AuHOGVsVM1luAUYQlzDXp5udMfSwuVqVPfvVWnFyPP9AEV46.QlG7GvFJMlx6Gm
+ bTTo8poSeEk8SKyp4g0umBSepfJ2NqUi0Og_mIsazkkRFiWVmm2o95owH.4TbPvQPaST83MpctAc
+ AhK2zB9ZFv7Q8trpYBLdCT3ToztrUnx9GeGf_0Z84q3kv94qyKLvKHVQFeujPLlG.5Vl9ehyYt8S
+ d_ub2H9vZXTwjiC7Yn3BO.e9FMkjZoRCwupyUjJrWXSn3ffbNCtBb_96WNVJm_3OGDcJPu4.vBDN
+ LTJY5lX4ldYuuEYZCjDhXZS0Eqxm9AZWCJGRV2nZZMt22sdKeJ.bnNUA4PI103znWo.exajF83YA
+ w4iYlH5AqcBJckGaotwqdNldzfrM_TPtu5lUgDAFnXtnmRhOqXaKCuKHw67fdWRlSfkVRKf7Z24.
+ rh7zUStwzhs1JGpRqwX5_0kzQGzEHlnQzyP3ZULTv4SBLV.ZfLUw.V7gp1el5AB_8.7WiFfZ.UG1
+ mv1Zf.Gx1ODqii41pxqipKZtxj.pHXagy1_xrk0YoUtHgEP_pWIZLC_8juswYhKWwSoWp7XmqjnS
+ bAT0AE3brf5RHVbjl7nweuhETRjjCBedfMb_galcAfMCSbq_LGsbljEmg7c6EqUiViG77W7U9EdU
+ lAZukYTRYJVcJZXkT9dfKcyt.jvZPBIPCBdfO09dIi4kjI6Pun.L9M32lXKW_JipMSeqO.ixVYm5
+ xy4hM1COhQXlh9avngZZ0zlzwmNV6oxE8SlYX1YcqZchS6lJUkbqpRbU5sA0lkzdZziYMaqOPzKN
+ lmZQED5YbS4pHBUS0zoMrRCMnyed6eFNNBjx4.8DArF9ZOmup9Zp8fIx3W96TLuL9JCceXHaI5a6
+ c0mgk18kcM_4.r7QRg_nYaVMnXuhqZSKMy3InCR8UM1Q0ven7pLRWIwS6KnDfZPw531aDtVrf9V6
+ SCHTMaXqU1zl7nqVZe1rXpK6N5zerNt4SD_FSdvxVdBFmAajONuPhRYx_f_59stoPoPX0YSarL2h
+ 6geN.W66_Jq8kYz1bynuT5DWAO6DLWZUxpGiTRdrjfI6rJJBX7E6Z2H5cmWfQMZWNI_Is.ZIuqcf
+ CsAve.LWlQKv8W_tcp4qUH9j1hKvpvMclZSYN6ggTDlBGdGME.WXJXu4JCwGF38lRhu14Y.x9p1w
+ XVKGAQqVhgGJP2JAP0ZBcG8PUuKQRisdyglHooyq4ssRYL8pDhPie6IFi8OMS6A_eI64vDFO6szJ
+ 8qkJrx5baLSQ04bSH45efLF3zN7Z5C8W.tqIUbRoXpUAq9iRIlOOgn1u6ciiWleoUya9D1u8t0n7
+ UhyrT87O11Yl.Spm2AO7l_4T0jCNPMe4aQUXp5JL1iLjL2puAFXJ3QBmRoljBJdIjAo8MTmY0l7a
+ 14u0ucTebWPiTqd80s0rlnLxosawVJo5Df63YBIk_UC50nj1TdUSKj.jEC10kgrt2mhZpCKRp3iw
+ 8wTyg_ISBqivAFXHlweZLD9Ia9fX5PqY8Q6OTavLTDS5ZcvB5acoen4BD2Gp2qAeZ6SVA9XbXU9.
+ pahmK2w7NXu_fqv3o_tjC.P4kauSxC41St.Fac74xK5LQKhmWBLFq7immQ82TYsA7zDMOFx5Qo8N
+ ocPhp.uDIpslg33_3eBP5G1cE3N1b9O6tzYOgRML3gUxgUWbjla8D716HvbxDT7jL8rvvrJVH7ga
+ vsBc4U3Hk9smbUHnicIYaYcGQYYPK5z4sGlKuRXm2v_vRsajRvyEWMzPZveilkQJj9uPuYMKBH.p
+ tc.sLmwTbKhS4udQeRY7JfA0TyB5GnOObtzQOAKRzBlmtxTi3b4fCW1B8bAsNGT643Fkeh2SXqL4
+ RvsfRE3TdwP_aOJ34U48rieOB_n7atOEpWa3tt40QKKHM9NSbD1Y9ctvQjqWKhz2TLUbuUmVfy6_
+ DbF.zMavOW9uLoGwiDGbfQr_Cyt5PKIUMkB784Dh2uuvtKOmDfjXxbzQ1EF58SMThvm0pWmVNYoq
+ r1A7Ebs_kiE9kd2rkePF19ZvzSmkmLaMdFO6sDy20AtDrTtn8xQeEby.xWigLC4Z6xRpfrqCTUkD
+ Ox0KOKEr_z6hJ9I_OiswY02wz_akthiICBnybzuapIjAXmYHWt9Gvoyq8IU4a2vFOYLkrJx1I5le
+ 38eW0M8cQuE_VXF64imHOuSfg5KPODQ.SsEWdqW79vAA07ox2
+X-Sonic-MF: <mmietus97@yahoo.com>
+X-Sonic-ID: d80b78a2-101d-47e3-be8b-a6e24189b36f
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.ne1.yahoo.com with HTTP; Wed, 4 Feb 2026 17:12:42 +0000
+Received: by hermes--production-ir2-6fcf857f6f-9zs2m (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 0eabdce53f9ffe9ab888a38850cb8b93;
+          Wed, 04 Feb 2026 16:52:27 +0000 (UTC)
+Message-ID: <60baa2a5-806e-4d8b-8601-976fb62fa203@yahoo.com>
+Date: Wed, 4 Feb 2026 17:52:17 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v7 02/11] net: tunnel: convert iptunnel_xmit to
+ noref
+To: Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ sd@queasysnail.net, kuba@kernel.org
+Cc: Jason@zx2c4.com
+References: <20260127070452.6581-1-mmietus97@yahoo.com>
+ <20260127070452.6581-3-mmietus97@yahoo.com>
+ <e3a7f4b4-3569-422b-873f-0f4e1f11392b@redhat.com>
+Content-Language: en-US
+From: Marek Mietus <mmietus97@yahoo.com>
+In-Reply-To: <e3a7f4b4-3569-422b-873f-0f4e1f11392b@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.25116 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Change cobalt_should_drop() return type from enum skb_drop_reason to
-enum qdisc_drop_reason to fix implicit enum conversion warnings.
+W dniu 2/3/26 o 09:21, Paolo Abeni pisze:
+> On 1/27/26 8:04 AM, Marek Mietus wrote:
+>> diff --git a/net/ipv6/sit.c b/net/ipv6/sit.c
+>> index cf37ad9686e6..a0d699082747 100644
+>> --- a/net/ipv6/sit.c
+>> +++ b/net/ipv6/sit.c
+>> @@ -1028,6 +1028,7 @@ static netdev_tx_t ipip6_tunnel_xmit(struct sk_buff *skb,
+>>  
+>>  	iptunnel_xmit(NULL, rt, skb, fl4.saddr, fl4.daddr, protocol, tos, ttl,
+>>  		      df, !net_eq(tunnel->net, dev_net(dev)), 0);
+>> +	ip_rt_put(rt);
+>>  	return NETDEV_TX_OK;
+>>  
+>>  tx_error_icmp:
+> 
+> Could you please double check that all ndo_start_xmit caller are under
+> RCU protection?
+> 
 
-Use QDISC_DROP_UNSPEC as the 'not dropped' sentinel instead of
-SKB_NOT_DROPPED_YET. Both have the same compiled value (0), so the
-comparison logic remains semantically equivalent.
+The docs in Documentation/networking/netdevices.rst mention that ndo_start_xmit
+is called from a BH context or from a process context with BHs disabled.
 
-Signed-off-by: Jesper Dangaard Brouer <hawk@kernel.org>
----
- net/sched/sch_cake.c |   20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+Ever since the consolidation of the different RCU flavors, running with BHs
+disabled implies an RCU read-side critical section. This is mentioned in the docs
+for rcu_read_lock_bh.
 
-diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
-index a2d1b292600d..da3c347574d2 100644
---- a/net/sched/sch_cake.c
-+++ b/net/sched/sch_cake.c
-@@ -497,13 +497,13 @@ static bool cobalt_queue_empty(struct cobalt_vars *vars,
- /* Call this with a freshly dequeued packet for possible congestion marking.
-  * Returns true as an instruction to drop the packet, false for delivery.
-  */
--static enum skb_drop_reason cobalt_should_drop(struct cobalt_vars *vars,
--					       struct cobalt_params *p,
--					       ktime_t now,
--					       struct sk_buff *skb,
--					       u32 bulk_flows)
-+static enum qdisc_drop_reason cobalt_should_drop(struct cobalt_vars *vars,
-+						 struct cobalt_params *p,
-+						 ktime_t now,
-+						 struct sk_buff *skb,
-+						 u32 bulk_flows)
- {
--	enum skb_drop_reason reason = SKB_NOT_DROPPED_YET;
-+	enum qdisc_drop_reason reason = QDISC_DROP_UNSPEC;
- 	bool next_due, over_target;
- 	ktime_t schedule;
- 	u64 sojourn;
-@@ -571,14 +571,14 @@ static enum skb_drop_reason cobalt_should_drop(struct cobalt_vars *vars,
- 	}
- 
- 	/* Simple BLUE implementation.  Lack of ECN is deliberate. */
--	if (vars->p_drop && reason == SKB_NOT_DROPPED_YET &&
-+	if (vars->p_drop && reason == QDISC_DROP_UNSPEC &&
- 	    get_random_u32() < vars->p_drop)
- 		reason = QDISC_DROP_CAKE_FLOOD;
- 
- 	/* Overload the drop_next field as an activity timeout */
- 	if (!vars->count)
- 		vars->drop_next = ktime_add_ns(now, p->interval);
--	else if (ktime_to_ns(schedule) > 0 && reason == SKB_NOT_DROPPED_YET)
-+	else if (ktime_to_ns(schedule) > 0 && reason == QDISC_DROP_UNSPEC)
- 		vars->drop_next = now;
- 
- 	return reason;
-@@ -2004,7 +2004,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- {
- 	struct cake_sched_data *q = qdisc_priv(sch);
- 	struct cake_tin_data *b = &q->tins[q->cur_tin];
--	enum skb_drop_reason reason;
-+	enum qdisc_drop_reason reason;
- 	ktime_t now = ktime_get();
- 	struct cake_flow *flow;
- 	struct list_head *head;
-@@ -2225,7 +2225,7 @@ static struct sk_buff *cake_dequeue(struct Qdisc *sch)
- 					     !!(q->config->rate_flags &
- 						CAKE_FLAG_INGRESS)));
- 		/* Last packet in queue may be marked, shouldn't be dropped */
--		if (reason == SKB_NOT_DROPPED_YET || !flow->head)
-+		if (reason == QDISC_DROP_UNSPEC || !flow->head)
- 			break;
- 
- 		/* drop this packet, get another one */
+> Specifically I don't see it in the
+> xsk_generic_xmit()/__dev_direct_xmit() path.
+> 
 
+As for this, __dev_direct_xmit() calls local_bh_disable() before calling
+netdev_start_xmit(), which eventually calls ops->ndo_start_xmit().
+
+> /P
+> 
+> 
 
