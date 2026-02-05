@@ -1,75 +1,75 @@
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E77C26E719
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 08:26:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793ED31A7FB
+	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 08:30:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770280017; cv=none; b=UCb9IcbVayh41oM3Y5D/zG8sOK+D6c/xAFE0bYgjvJ5kZ6y27+BYDOTZnI59ZLAuiBrkBbffMPGHV7xy13nJYosffqr8nnfL2PLe/4IV5l3b+oa4vmjgLGLmOcLfEwi/Z63AB5LXYmuDGGA9J2i5slSNSOv3so73mHVH6rSs6sY=
+	t=1770280203; cv=none; b=crybahRjPaDX0O/lO81Xfka4IyUmrrQhk6FaqKA+Cyat0JRpLSiAtYhQQF3/NCTDgneMegfqQ0kSKkdXXwXF6VOgyWDH2V9kIEPoO7VUCAVsKottrtVmFpFzEVdyjzWq8V+gZbH4Xq+qw3WRwS6TApVZI8rLV0o0YNF7Z5zPIlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770280017; c=relaxed/simple;
-	bh=IQYcf1KofRAthYkmpgEGVbRvU/UapvywiBR7c53y/nw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=L3B/FkzTjfxDHSjT1cBdjUV0ua/7IZKOwF4+MI/2J77NhGHLXQqTeiCstdkvKn9omtjysJRey1UQUUnQogWm6ctrbWmXEhDdh63vbZ6Aucn86jEopf44UQZ1wG8z6Divsk2xuNIf8YdrS2EcBuUusrE7ayeb4vy652//3JkUJ8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vnuhT-0003X1-FZ; Thu, 05 Feb 2026 09:26:55 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vnuhT-004D12-2f;
-	Thu, 05 Feb 2026 09:26:55 +0100
-Received: from pengutronix.de (p54b15bf8.dip0.t-ipconnect.de [84.177.91.248])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id D363F4E2244;
-	Thu, 05 Feb 2026 08:26:54 +0000 (UTC)
-Date: Thu, 5 Feb 2026 09:26:54 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Michal Kubecek <mkubecek@suse.cz>, kernel@pengutronix.de, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH ethtool v1] ethtool: add --show-mse netlink support
-Message-ID: <20260205-tentacled-amigurumi-eel-3cef9f-mkl@pengutronix.de>
-X-AI: stop_reason: "refusal"
-References: <20260113142031.555787-1-o.rempel@pengutronix.de>
+	s=arc-20240116; t=1770280203; c=relaxed/simple;
+	bh=uMswa8QgyTDD4PSRzJyW7FHr5n7JVIst00rKkccJkbA=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=DjTJt2h9pcivB1UsoMRzQpvgInpHyCmoU/6j1jL9CZHbcg0Ycqz6Yf5mgODbU7Bb7dfDv9mbQ9cIlG09xgAkaRqRb8u7ByFP2Mc26KXcalHYMjX4GyTJJ0eRFLT8i/V8v4HNYatAsBEDtotj0FvRuR1Bg9sN1HfwnhC4G+XswcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-3ff59bab16aso3151594fac.3
+        for <netdev@vger.kernel.org>; Thu, 05 Feb 2026 00:30:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770280202; x=1770885002;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=llRsHVUGZUWzlNHdbad61AK1n7j7FSs2B3eJju6Uw+Q=;
+        b=UdsHC6K8wp/O4pevUKL9MLIUTUD41wWBtBVF6SztTlxrCcyY7auGsuY7Lmy1pWcYU+
+         eijkpemR73rXsPIUWIlIFNMWq0vev2DNndA2xRifkQQ2lnt17Up+3sXNEl27J2RZ3Bg1
+         ZZv3YbnSg6uvC1SA39l5mBUNYSTYNCA7ce6zmrrZBPGeNfQAqjZ48RYu3KGvhEErgJJe
+         ezpnFhzHw0KNqu1L0B+mE9VhoHQTkC4s6CNIBd+nlNL1gjV9ZRmQ/RAFM3plnwhLNRbT
+         aEgld1AEsU3GFBlJfC8qAG5OODvGlk5wXJilyouWnFnWqiIXYA4w8fVL47pR7BR/Qvjp
+         ox8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWm2iOy+/QKq2afa+O6/2DLBzZQ+m5+Dvo83zusX8G92DiPxQK22utjqyC6pVYsUjhlhEtqg18=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyMwAPEoDmy+9ToDlzTtKBDPCDdGaD6apJTCFTp4UPA7PwP1Hrg
+	6eDl8fiKf4C9NfXQSKFQLwc/4YszMwT2cec3uoSzckc4gTYtYUzntWHg4xkcNQRAfrIbufriNNI
+	rtKCcn0dFKlm94lCW7FkMoFKBGn4+LYc+jb/wy+K+yFPkGkZEwwR/ojnL//g=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20260113142031.555787-1-o.rempel@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: netdev@vger.kernel.org
+X-Received: by 2002:a05:6820:1522:b0:663:f65:1c8b with SMTP id
+ 006d021491bc7-66a229794admr2711424eaf.51.1770280202384; Thu, 05 Feb 2026
+ 00:30:02 -0800 (PST)
+Date: Thu, 05 Feb 2026 00:30:02 -0800
+In-Reply-To: <CAGn_ityekaJpFNnaYHS==PcfDdeXY87w50s9VmeiN4r4EyD__g@mail.gmail.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6984550a.050a0220.3b3015.001b.GAE@google.com>
+Subject: Re: [syzbot] [bpf?] WARNING: refcount bug in __add_used_btf
+From: syzbot <syzbot+5a0f1995634f7c1dadbf@syzkaller.appspotmail.com>
+To: a.s.protopopov@gmail.com, alexei.starovoitov@gmail.com, andrii@kernel.org, 
+	ast@kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net, eddyz87@gmail.com, 
+	haoluo@google.com, john.fastabend@gmail.com, jolsa@kernel.org, 
+	kpsingh@kernel.org, linux-kernel@vger.kernel.org, martin.lau@linux.dev, 
+	netdev@vger.kernel.org, sdf@fomichev.me, song@kernel.org, 
+	syzkaller-bugs@googlegroups.com, yonghong.song@linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 13.01.2026 15:20:31, Oleksij Rempel wrote:
-> Add support for querying PHY Mean Square Error (MSE) diagnostics via
-> ETHTOOL_MSG_MSE_GET. This exposes MSE capability information and the
-> latest available snapshots for supported PHYs.
->
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Hello,
 
-Can someone look at this or should we re-send after the merge window?
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-regards,
-Marc
+Reported-by: syzbot+5a0f1995634f7c1dadbf@syzkaller.appspotmail.com
+Tested-by: syzbot+5a0f1995634f7c1dadbf@syzkaller.appspotmail.com
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+Tested on:
+
+commit:         ea7bf7f2 bpf: Fix a potential use-after-free
+git tree:       https://github.com/aspsk/bpf-next.git fix-btf-refcount
+console output: https://syzkaller.appspot.com/x/log.txt?x=150eda5a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=b5a1ee0109784fc2
+dashboard link: https://syzkaller.appspot.com/bug?extid=5a0f1995634f7c1dadbf
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+
+Note: no patches were applied.
+Note: testing is done by a robot and is best-effort only.
