@@ -1,223 +1,273 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D8C034D396;
-	Thu,  5 Feb 2026 06:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770272711; cv=fail; b=MaUQ+yc3MxYDJ+0CbOGvu0byONkdc9RpvUbSEWymksSoCUiEruXX3FjXkCEcU3Qh2M0jMHqK5ev5VRBSHvTe4vo1oe3kZR450suUo98SFFaxUeBv7ZB8i2t+f4pB692EVmJDLZq0UAtHzcxjKtCRW5t43A7l18kLqQL4gwiqwQo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770272711; c=relaxed/simple;
-	bh=u/ExEtlsGqKiLb4GbJNSR4q0UhOJsmgEgpEzoclSWqw=;
-	h=Message-ID:Date:From:Subject:To:Cc:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=MSqQWJUBecfO6eb16H+oNPGGEh33XpFPGA88mLB5dCD2NyepCfd4062Z0EEjut6walF/uYuEBGFO8exZ07lORUzNGk/LD9Y7GpfrrTxGd3cbtmDxZQ/f4xkCNFAI/OjHJVDV4liqQuhbG3qdvSlWKCu2tb286P2XZNCujjIBi+c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=F1vFmYwv; arc=fail smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8FC334696
+	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 06:25:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770272733; cv=none; b=VmJObdUi5nS9JwjT5hweQv+LPtFW/Pgd3e+v1R+WmCl27uGuTyPVdQ0Q7KRqnLDYBEiSVksJkApQiCfBTf9ZrqkoKS813pMHVdkR7bIfri8Y3vfwklG94/gK/iH1hRl+Kz7Y4PkqXj655frkFd6RkNH5UewKaExVSDPcPkJfAcY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770272733; c=relaxed/simple;
+	bh=/B3kX9Jyefw/laVvlQXiBllCLeIh1NtvYVNiIh7k0+U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=fhW6KMi/MUaRgioHjMnsygWiWK5MDlGANhRHQQipYm0zekhy6tJW3S2WRYF/DmhRQ8jqqie69uPPT4swrxjMmzEF1N9y7qWPIqWjNzZpEBgGdBmY0Qlm2rVVqDcMkUEbAhuRw6/8roQl7PALmfw09X94lN87U370FxhtlP3Glhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fiNs2e+z; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="F1vFmYwv"
-Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6151HFYA1818725;
-	Wed, 4 Feb 2026 22:24:57 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=d1ra3w5WrFoY2A7/lUjKObb7eKotCfP8Ma35ncx/82U=; b=F1vFmYwv/abI
-	DhNMlpJozow+ciBPf7sj0WqfngrYf6ul4hTaYqAabvN+jzgzRano3vUVkDJXrbtj
-	qr950amN2xaZfKBhA+PquGj+tH7EI1hrokFs1M5YfZnNdeQxNXs26Yfsu9Tvkjuj
-	ga7EJ8iPKTLwY1bnRvfcLWxvF+kx4ajCtuaSh6U3CXwpxxe6EAldtyXgQ2eFXIVo
-	pyjXTpzyT/y+gVhufRAlRpYu5sm899gLQAoyw6XC0bUseQX+w5sczHxZW/XDVzau
-	qWE9lfqRQ5TkVkPGhgAweDynDMT+LaheMGwFl2bcSDhvHBKj0vQRKQ5HAy2uCad/
-	EKDfNnC1Zg==
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011019.outbound.protection.outlook.com [52.101.62.19])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4c4h3e9wan-2
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Wed, 04 Feb 2026 22:24:57 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R9CZm4/VotNpGD/pMJxk1Yh8Ng/x7ww61x1UXzmXubgred8PBRLhYZboP6WRxDZ6mB+O2taMYjmTKSswlUulbc1A11vNUQ/sthLoj5RnHHGjKOQPr7EtSEVIrewi/Ck0TigCQMhl8imEw+hVzpDKOrzfcNSBT91oL5RyNa6TwC3NyHAzKE0PRd9vUP1Ao1ThlwEKDGQbExSe2LEEG8+wBj9/KSaB7AWVWzPH4gV9XYq4LbMuBkMX7huQ3dtapDoMYcqbQtpp8/JKIaOAa44083MVY/HiNOxCxQCccDlNvGRh5YaKbuhTGsWW3q500j+x+E3aCtMU60jlBgWHlEQyXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=d1ra3w5WrFoY2A7/lUjKObb7eKotCfP8Ma35ncx/82U=;
- b=sPkqQEeDXxPJFvTvuNAyheHT61FCQL4oYibZj1OLpdZewgYXXZZD5tJniTs2ICQnqQj0JlN9WibyDqCi1RXK0mpmgoZtm73YlEZZjYWi5mZ7wAEtA41KCazr2zstmIfHbmEiqT9nwPQQrimRNVsr2oaqxisV7A9s29RWKjK0kNB5LHzCljj8veJBb17ZVehJynHkM8Uzx0Ce/toM2buMnrYRjH+wuiy1aRKRUJ+A7ZWGMJ5AIXvtYdSRS4t6hW6WbUufm2lFym6z6rVoUh1ciSYKNsblD+XkrcWkFaFt/32VhcyFA2fRLvsqazqotWqwfgLtbIxbpiSYmexs+UVOCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=meta.com; dmarc=pass action=none header.from=meta.com;
- dkim=pass header.d=meta.com; arc=none
-Received: from BLAPR15MB3889.namprd15.prod.outlook.com (2603:10b6:208:27a::11)
- by SJ0PR15MB4533.namprd15.prod.outlook.com (2603:10b6:a03:376::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9564.16; Thu, 5 Feb
- 2026 06:24:53 +0000
-Received: from BLAPR15MB3889.namprd15.prod.outlook.com
- ([fe80::d5d7:f18c:a916:6044]) by BLAPR15MB3889.namprd15.prod.outlook.com
- ([fe80::d5d7:f18c:a916:6044%5]) with mapi id 15.20.9587.010; Thu, 5 Feb 2026
- 06:24:53 +0000
-Message-ID: <45f17fbb-9550-47fd-813d-008e647a3624@meta.com>
-Date: Wed, 4 Feb 2026 22:24:22 -0800
-User-Agent: Mozilla Thunderbird
-From: Vishwanath Seshagiri <vishs@meta.com>
-Subject: Re: [PATCH net-next v4 2/2] selftests: virtio_net: add buffer
- circulation test
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-        David Wei <dw@davidwei.uk>, Matteo Croce <technoboy85@gmail.com>,
-        Ilias Apalodimas <ilias.apalodimas@linaro.org>, netdev@vger.kernel.org,
-        virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
-        kernel-team@meta.com
-References: <20260204193617.1200752-1-vishs@meta.com>
- <20260204193617.1200752-3-vishs@meta.com>
- <20260204212511.017153cd@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20260204212511.017153cd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BYAPR05CA0054.namprd05.prod.outlook.com
- (2603:10b6:a03:74::31) To BLAPR15MB3889.namprd15.prod.outlook.com
- (2603:10b6:208:27a::11)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fiNs2e+z"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8c5389c3cd2so55770285a.0
+        for <netdev@vger.kernel.org>; Wed, 04 Feb 2026 22:25:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770272732; x=1770877532; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=F9Zw0XzlsqtrFcnvP0xl+A5lBqr0v+6APGOlL8zpJrQ=;
+        b=fiNs2e+zqKth5p3fFbY4EtXourUAJ1MfPuo3lIgcVV1cGa+jc9cjn5TQT93TRS9/Ue
+         pWO7w6SsrysKyF5nI8sbB/uII0/ksoz+fbc6Li1sPkHgkUsE0DbokLax9KWSm08KgZbt
+         QzidcpnCGWbBn41XbmwOjU8VNdzURUMhmhAsRXwKkmY9hZSH5DmtkZorDgLcDMfa6Q9Z
+         8vy3N1/aVhFrYYsjRqjTG6U/meE72GiE+6nyFPudlR8TtzkbaPCDLVFZtBN9nJCt0mKC
+         b4lUUus939WqXlpaVvSVattYKofpZ458CuE+ukiBzvlGxbWOm5hciJY5RQ3y+ZZiKRhM
+         uqqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770272732; x=1770877532;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F9Zw0XzlsqtrFcnvP0xl+A5lBqr0v+6APGOlL8zpJrQ=;
+        b=qNAthBs+Yk+xq38t/OQxRZsOk9QNBZTc6Lx8zqg+4hRofQQB1vcEugPxk+HdjI3DZo
+         ABu9hjQOhCxzQ88n96QHujIfOYISBVnK7VcA/yKM3Ge+NFoPjkDYtlHpGQRqmr63Ghki
+         bIaqWCY/VSPq2cNA0K/qB9mDt/5yvYrSqqVgLAXQSzawTgwRQTlw+RVVlYbK6/cXY+Rs
+         2ho1Npodgro4fRrVfzbq3uZbucvXgPng+bun1FNkn3/4CoY3iyXyG38yJaIMAVJT6MDd
+         62mHBkQnTB3VGV5vWWAyRGK/cdLlyUdlZtNh8TZXLhW8peVR/P0//O17qcXoMyRnfwYx
+         In+Q==
+X-Gm-Message-State: AOJu0YyV7gF8uDf+yURBiQ6zdILa9/EaK5xaxAMz25r/uf3cS2/LEmJ5
+	oB5Q1qeLJPzNQOkcMyjhgvgiPJ0QC+Xue+RNfj+EKMDYz6BxLhQIeIYe
+X-Gm-Gg: AZuq6aJv1N/ESctviLjg63y0f8FYyQq4JFuRo2iGgl5u7K2lB3f1eFFM51CXCc5RS0u
+	8SYj9KZOmkPInPla8luAJupPdt9kqHuDvkaP0yT/Wvejlb5QszflNdFLLN+bko7ONcag2PijaF/
+	gOviI/84y+cDzTzuciA/BPg1Rq/sibgto29xDnf2nVxvEuVji7O6FqInOfBSg+d6wpiyUNISXTc
+	bRANXQBZZOxP6VNwUF8UUtZ/rIbJd3Jf7zfqsHOma5hDU3S3k1yU6FjJffsEB2yzJ5A/mbNul6f
+	YInKX7UDtVr52Z1FCB+urA33ioaXPsYky+hYxXZAZgStjOMUy40ws3OyZ+GqOIvS5z3MeB6wSmD
+	HgXYa0/QLkqE0UJJyDtOeiOJ49wKPsQ7LpsOprI0ghtxpqInLH+qT90qc395oWYeT7Z13mBkAO8
+	s87NnCZ3yvdz0VHU/4bKGfM06lYomxDfI=
+X-Received: by 2002:a05:620a:857:b0:8ca:407a:c331 with SMTP id af79cd13be357-8ca407ac3c3mr188804185a.84.1770272731372;
+        Wed, 04 Feb 2026 22:25:31 -0800 (PST)
+Received: from localhost.localdomain ([128.224.253.2])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89521d36589sm34824116d6.53.2026.02.04.22.25.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 22:25:31 -0800 (PST)
+From: Kevin Hao <haokexin@gmail.com>
+Date: Thu, 05 Feb 2026 14:25:09 +0800
+Subject: [PATCH net-next v2] net: ti: icssg: Remove dedicated workqueue for
+ ndo_set_rx_mode callback
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BLAPR15MB3889:EE_|SJ0PR15MB4533:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2a469096-eabe-4eda-bd05-08de647f461e
-X-LD-Processed: 8ae927fe-1255-47a7-a2af-5f3a069daaa2,ExtAddr
-X-FB-Source: Internal
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|7416014|376014|366016|10070799003;
-X-Microsoft-Antispam-Message-Info:
- =?utf-8?B?SEovUzNTYlZ2TTZod21qeUdqZ25yYjF1N0hQWG05UnkvNEJZNUYxQ0EzT0tx?=
- =?utf-8?B?eUxqNHdzRDJ3by93MkMxdzBKVU9oWFEwbWdzN0lKWHNNeGEzYlpnMUZBTkpD?=
- =?utf-8?B?ampKTzVLMlp5NTJOQ3g4bzNFRjhjVmEwTmdrejVUYmFOOTlXOWhuVVVwVStG?=
- =?utf-8?B?eVZvZ3Qzdncwekkrc3RFWWxLOEtQZ0VaSGdLdnJLNjQ0Rkx4VUtFa2lUeGFh?=
- =?utf-8?B?aHdhdVFRc3BSN3JlMXlUbWRSQlZMMWJxTEsrWm5QRGlYaThCbXhVZlBVUVJF?=
- =?utf-8?B?SmRwZTdOeE9UekVrRWhGRlFrVXRVUXVGY1BWVUdWYXlKcHpPNG5yY1RnK00z?=
- =?utf-8?B?bis3alFhZmFTeUlwMU5CeE9xdnNQdnNZS21CbTQ5NkRsWkxZSzZyNXFPb1pE?=
- =?utf-8?B?eGtyMktObHlZQ3MvOXdLdVR5Tkl3Y2J2MnFIdmtYcyttQ0QvUE5Vc0VmK1lo?=
- =?utf-8?B?U1YzMjBvQS9taW5pQUhZd1dyOE0zKzBRYlMrVWlaNTR6VzZvVlZTUFN5Mnla?=
- =?utf-8?B?QlppcTZZeHZ3ckhJbHJOUkR3L0p1NlhkNmk0aUpXVTU2NzlBVlRIQkQzd1Vu?=
- =?utf-8?B?MExIWWN5R1B1WTVqSStmOGlraTk3MG5iTGIrK1plLzhYeFU0ZWFzUHBudVgv?=
- =?utf-8?B?aGQ3OE9PN1djRFNxT3UvUnJaZVVwemR0K1V3Y2MwQm9GSStFWWZwL2x1YU5K?=
- =?utf-8?B?STZuWEJna01SVlMyUlBqRHc4ODU1RUZJejdhOXNKZ3o1Zi9aUVVGclFKaEk0?=
- =?utf-8?B?Mks3ZVhDblY2QVFDQjhqNE9JYm1Eb0x5b3RBTFhKc2R3aTFicUYyYlJPTlE1?=
- =?utf-8?B?dkw4cnhIRVNPMHM3ZUdjcHl3TUJPYnhCNmIyeG45ZkVWMDBxN3hvdnlCQ0tG?=
- =?utf-8?B?dyszRjZZTUFJM2JaTWdZSkhmUlU3VTg5Z2drOEF5dTlTYUdSdTFFekZuQU5Q?=
- =?utf-8?B?WVRYT3Q2U3lRbTRoRit5Y0hGSVJHdUUzZUVlVVJHRFk0Uk9VVlh3VVhxQy9q?=
- =?utf-8?B?Tk1tdmMvZWI4N0EvLzF0MDlCdldCSHh3ZlYwVCsxN0tSVjlrb1luWnFvTGpC?=
- =?utf-8?B?bkRyVU1vRmVhYW8vbUpPa2kraklFK3g2czBGRHVxeTZkQ0dhNHhIL0tEK05L?=
- =?utf-8?B?SnhlT2VnRVRqVlYzUitUTlZ6bmQ1UEVlVGN0SVJFdjFmUUE1N29OSzN6eEZy?=
- =?utf-8?B?TkFsamFrdGRQNHFtaTRKYjU2THpwVDRXdmhMMU1HSG1aK090YnZkMXMrWmtB?=
- =?utf-8?B?am5FK3B4ZjFTaDMwSXZKRG51b01VUDZVZk5CL05iNTZHSmtPcHJvYzdmSE9y?=
- =?utf-8?B?cDA4eG9tdDNoZHJCZG40VFNMUHIvd1ozOE14bVk3NHVvQk42WDFaMEI0VFFt?=
- =?utf-8?B?VDVRWjdJQ0M3OFpxRjJmSXdCSHdXS3VhNmZPOXNQdUQ5bjV0bC9NZTRJaUtj?=
- =?utf-8?B?bWMxeG50UVNlYjdLREdJZnRSYVc3ZHc4S0tPVmUrdnZia1JJaExsdG9PY2lD?=
- =?utf-8?B?VHBaaTR5MERRNjR3NHJ2S2tvR1M1YjR3UlR0SG16M3NKaVdzVFNvb1NHRUJy?=
- =?utf-8?B?aTIvQnEzc3ZjbmFzUlY2UmxnaWVwWFlYRlRIYVRVc01sa1laangwNTcvVVgv?=
- =?utf-8?B?SWhOZ2sxZ1U3d1lrbXlhUVBMQk1MV3lRRC9wdHYrczA2ZEZ2OWl3N1BDVmNG?=
- =?utf-8?B?aVpjY3ROSzVmbzBOUjBBbEs2NHJ2dGdnTnZhSlV2YWZkM2hlUnNIYVNOM3RM?=
- =?utf-8?B?bDloWmVpTXNQS1g5L2VVckhXSDJBMzd5WGtUN1RBNWRueXBLMW52ZmJHOHZK?=
- =?utf-8?B?UDJWVHozV2lWVC9YVE5LbTl5K1F2djd4ZnZRME9qZXlIQkNMQTFpM2lMb0FH?=
- =?utf-8?B?N0F4V3VRdXhmY3NJN29jaERLUHdoNUtOLzhSWVZ1QXQ5TFFSdE55Yy84NnZF?=
- =?utf-8?B?dUZ6VWVOdGpmT3dxaExUbjRlWEhhQVorc05ZRmo2NGNaOFByQlRDSllTNG1L?=
- =?utf-8?B?U3Q5U2dUMW5HS3ZLL29nUUdUMXhHN0cza0FNWUZLYkJzeXkydVErUElITVpE?=
- =?utf-8?B?OThubGtaY2VyMjNiTXI4UDVjbTJzNWdXeGpBYSs1VkgwWmEwU2ZVZEt5d3JT?=
- =?utf-8?Q?w0Jw=3D?=
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BLAPR15MB3889.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(10070799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?KytCanNPZllGVmRWRzZkWmZCWXIrOFVTZzlMa1prampHbHV6YUtIaUlYMkdW?=
- =?utf-8?B?OEZLU1ZJeWQ4Y2xlUGhoRmw3a3ZET0hibVRkeWF0TTdITHZKY0VWVCtURjBJ?=
- =?utf-8?B?S3l3bnRoUWxFTUp5eWFLanhGV01mNE5SZDhOTjI5T3I0OTRrQ2hPM1ZOSHhH?=
- =?utf-8?B?SEpzbVBIMUJCbHZXK2t0ZVBkUXo5TDBxRXZRY1pYaTZpanl5cmhBZjVpM2pL?=
- =?utf-8?B?NlRyZjdKZHUwVUdydGUxbGwyeldRWkVSM0krRjdZTW85OGIzR0YxZVRPdmV3?=
- =?utf-8?B?Q05NRjZnY0duSUNpOEpzZ3RwVmJ4dFBXeFdyVUQxcDFKSzN1VGhRdDcyamd0?=
- =?utf-8?B?enc1d2xsL2xRMUtvem1rRVJ4a3JYbWRnNkFyQ2k2V0RkdTBUZTFPY1BBWDV4?=
- =?utf-8?B?NjFzOEVmYTE5UzA3Vmo1UWJ6WUMvLzBMNkl2ZkpCVDVhSllyTHc1aG5BVnR0?=
- =?utf-8?B?dHlmbnZ6Ymd0c2RoSVJ5eWVRZlVLMDI3MkRNQ2ZJU2UzcUd3WUpEbUZkcDdy?=
- =?utf-8?B?OVB0cDlQcDZOZ3IweStGelZDOFArUi85TU1rSURsUDhtWUNlKy94MWJXcVhP?=
- =?utf-8?B?bmVFQjZiN0FOakVNcm9tVnBsdHNGcVEzbUNqUGc4ZU5uTFRjd0JmdFZDK2cz?=
- =?utf-8?B?WjRxNllDdndrajIzeEhYZWtkb1AyZHArZDFwYkpvdGxRMk9jbHJKeGZWWmFL?=
- =?utf-8?B?S1p1TTFnOXJKTTJpWmU2NDhwOTI3ajVSRFVHWmNBTlpldExBOER2ckpWN3U3?=
- =?utf-8?B?Q2t1V2NwV1VaNFB1SGNaM0FndU1wVUw5S1RteWt4bEd6OEJLTlFPRFhOallN?=
- =?utf-8?B?TlNPM25wS1FRb0R2dkhBQVlCVG9uWms2Qm80Q2Q2emZJYU1aTU0zNTdndm5m?=
- =?utf-8?B?enQzME82bjNwTEoyTHNEaTBHeWRpa1M0cGxsWFByMHVZa0VFclJqOEhUaXhh?=
- =?utf-8?B?STVuNDg5ZlhZbDcvaDN4NkVNNWlRajFPZW5uRjNQMmVvSmpyNlhRaEZqQjRY?=
- =?utf-8?B?SE4xZk1FbnluVDZtYThyaGt5V3pBNEg1SDNPZGdTVHIwcGF1UUoySS9reHZM?=
- =?utf-8?B?bnJoWGhXbnNPcm1IeU5WcjkxNDdjVkRneElHSTYzVERabUNqUzNXdGI5S0xr?=
- =?utf-8?B?djV4ajBjVStheTJ0Z2E3UzNIdUswNTlLZVo3QmQ5cmRrRzJONGRucWprMXFu?=
- =?utf-8?B?QjNTSUNrRCtrendFK0g2bzh0V2E0MzNWbVQvWkRTT29sWnBsQkVDYU5NNTZ6?=
- =?utf-8?B?eDFtNTdIVjRlWG1jckNaMjVYTFdURW9LaVBMVVJvNUllUVNtaHlmTlJ4ekRD?=
- =?utf-8?B?NjYxSFZzUU92QlBMT2p3cjRZai8vMFI3VDNGekhmNG5ITS9Ca3JqZW80STlV?=
- =?utf-8?B?eXVNd1ZzQmRzaVRYcjhGK3M1K0FQVW1vdHNLVVRBZTkwbHA2UmhZbDRyK3Nz?=
- =?utf-8?B?ZGV4dnpnd3k4dXlxVEViQWVkNVEwR29sZFd1OExUTkZWUm5RNENza0Z1OTZV?=
- =?utf-8?B?aHVnWkJXZ1RZdm9EZmc5ekxwYVoxVHh5SEdyN3JlWDBBQ2Jjcyt2d2NMNTZp?=
- =?utf-8?B?OC9NV2VFQ3hiY3Vyd1U4ZlVFdVk5elFaRVlCU081UnZJZVAxbGVIMFd1aGZs?=
- =?utf-8?B?N09nZlpqU2ROTksyOHRKaGt6YjZtMkl4TlZaUUxaY2g0bmYwc3cxcytRVCtD?=
- =?utf-8?B?Z3NReDJzbTFTb2ZUL1lSMUQvSzZTM3hscFh2NE1WbmdrZHdvR0FLMEg3MUZ6?=
- =?utf-8?B?cFVNSS9XdnRkNktHdzRtSjFNRDlMYW9xcWNsMGhqTEFzL1BUZWJxVnhaL0M3?=
- =?utf-8?B?dElacXhzQjFDekI1RCtDYkRDUzV0TW9maWFjN0c5bFFhaTFJa2VMVEU5QXE1?=
- =?utf-8?B?QllUVmptTUtZTUlmMWorb3lkSkYrWXI1S01ENjA3ZXV6VlBCQkNRMjNicGJl?=
- =?utf-8?B?cmltYUtWQmdQRW11T2tTb3JKcDNGVG5wQ0lOaFlGT3Jqd0FvZ3ZDVjU3MFAr?=
- =?utf-8?B?QmZ1ZUcrTWc0cnUzYnpYM2tMcFBhNTlXaGhyMW9IQi8zdnpVcllNRmk3c2pU?=
- =?utf-8?B?Y3pKOEx0VUg5d1dLM1dycjdjREM0OTdlSkZtZEs5d0hqYWU1TU5rSmRjU0RF?=
- =?utf-8?B?ZFp6Q0pTOWh2b0dJU01jVFFrUHlQNndvT2RrMmhnbHQ2NVdqVzdzc2Y5dUYy?=
- =?utf-8?B?TEVYZzhDN3JiUGlTSWdqOVZoS0lzb1dsamhZcktqb04xVUtxRTJtaVlpdmll?=
- =?utf-8?B?OC9CbXFDMm1KbW84am5STmd5UUNGWTgzdVhZQVFRdXVvRk55eGU1eU5TOXhI?=
- =?utf-8?B?d01uanhQYThiQ3hvcDVVTGtNMlY4dkt3cWRTd2ZWNjBPYVg1M2t4NXpOME16?=
- =?utf-8?Q?TqUkgGD67LgaLls66JpefmDey+CHOgNgf560a?=
-X-OriginatorOrg: meta.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2a469096-eabe-4eda-bd05-08de647f461e
-X-MS-Exchange-CrossTenant-AuthSource: BLAPR15MB3889.namprd15.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 06:24:53.6417
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: M5aDnsj6W6UyBmSopAwwZTZUkl7f3ibZ0VOfdXO8zfwZMT0c1B7PTcIliU3YkT3P
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR15MB4533
-X-Proofpoint-GUID: GzhmmffF0acmt3s3bQjUbOHdKLc4ZojD
-X-Proofpoint-ORIG-GUID: GzhmmffF0acmt3s3bQjUbOHdKLc4ZojD
-X-Authority-Analysis: v=2.4 cv=TeGbdBQh c=1 sm=1 tr=0 ts=698437b9 cx=c_pps
- a=UyUtkpB65yKBl9uddpDweA==:117 a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=HzLeVaNsDn8A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=HD48bZuOcb1G8hYhV34A:9 a=QEXdDO2ut3YA:10
- a=zZCYzV9kfG8A:10 a=M91JV_wKSCcA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA1MDA0MyBTYWx0ZWRfXyPUCD62EdnFZ
- wIn2GJfuVX25jDckvS+5Rp41aB7JgJ0J8PI3u+8E1LPjX6LEvC/PWceRWum9aoKRD+cqLUPI1yJ
- Kg4QOEWvqbvdDudIHO/hmiAaqvJEiBnscVLBZ9WPgnSKoiQY64QBSRSHQfoKUUqc16oANKKsq16
- fzHj5zRXhIjz73j4FTSzFbi2HKA2CH1mF0yBGFqHJz0Ad1WFP0Py0UmvWUs5H1Cg+FmOU3C7AeQ
- d/AihUYoR+/gAPlGP0yojYzLsQ0dDptLKxUTokZCKvNVwd/i0jrTUpJpZrkLaVq7ub6vyDwSvmk
- szO6GRSL4ROcqCcMBTOktdLsp73vCPD2pACqEyleFGXTT3294vJqh+upsSGndXClx4bKWfzQt52
- sWXSJnk0Q1ntkmG88mmfiEgqgR5V7EjKmHxozQ0grBBpVtH0yJOtthosBPY/zi+S4S8Ul+Co0Fx
- gnZfqm4GIiVqW1Ung9A==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-04_08,2026-02-04_01,2025-10-01_01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260205-icssg-prueth-workqueue-v2-1-cf5cf97efb37@gmail.com>
+X-B4-Tracking: v=1; b=H4sIAMQ3hGkC/3WNQQ6CMBBFr0Jm7ZgyEBRX3sOwKDDARG2xLYgh3
+ N2GuHX58vLfX8GzE/ZwSVZwPIsXayLQIYFm0KZnlDYykKJCkcpQGu97HN3EYcC3dffXxBNjlxe
+ Ka32iNCOI49FxJ8sevoHhgIaXAFU0g/hg3Wd/nNPd/+L5v/icosJSn0vq8prKrL32Ty2PY2OfU
+ G3b9gWnlNJxxgAAAA==
+X-Change-ID: 20260203-icssg-prueth-workqueue-f460eba72132
+To: netdev@vger.kernel.org
+Cc: Kevin Hao <haokexin@gmail.com>, MD Danish Anwar <danishanwar@ti.com>, 
+ Roger Quadros <rogerq@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Meghana Malladi <m-malladi@ti.com>, Jacob Keller <jacob.e.keller@intel.com>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ Himanshu Mittal <h-mittal1@ti.com>, Simon Horman <horms@kernel.org>, 
+ Byungchul Park <byungchul@sk.com>, 
+ Markus Elfring <elfring@users.sourceforge.net>, 
+ linux-arm-kernel@lists.infradead.org
+X-Mailer: b4 0.14.2
 
+Currently, both the icssg-prueth and icssg-prueth-sr1 drivers create
+a dedicated 'emac->cmd_wq' workqueue.
 
+In the icssg-prueth-sr1 driver, this workqueue is not utilized at all.
 
-On 2/4/26 9:25 PM, Jakub Kicinski wrote:
-> On Wed, 4 Feb 2026 11:36:17 -0800 Vishwanath Seshagiri wrote:
->> Add iperf3-based test to verify RX buffer handling under load.
->> Optionally logs page_pool tracepoints when available.
-> 
-> TBH I wouldn't bother with this.
-> 
-> We run full battery of driver tests in netdev CI, there's not much
-> value in a dedicated virtio test that just runs iperf...
+In the icssg-prueth driver, the workqueue is only used to execute the
+actual processing of ndo_set_rx_mode. However, creating a dedicated
+workqueue for such a simple use case is unnecessary. To simplify the
+code, switch to using the system default workqueue instead.
 
-Okay. I will remove it in v5.
+Signed-off-by: Kevin Hao <haokexin@gmail.com>
+---
+While addressing an issue in the cpsw driver, I based my fix [1] on the
+implementation of the emac_ndo_set_rx_mode() function in icssg. During review,
+Jakub pointed out that the dedicated workqueue for the ndo_set_rx_mode
+callback might be unnecessary [2]. I subsequently used the system workqueue for
+this purpose in the cpsw driver, and it performed as expected. Therefore,
+I believe the same approach can be applied to the icssg driver. This
+patch aim to remove this dedicated workqueue for icssg drivers.
+
+Please note: I do not have access to a board that supports the CSSG PRU
+Ethernet controller, so this change has only been build-tested.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit/?id=c0b5dc73a38f954e780f93a549b8fe225235c07a
+[2] https://lore.kernel.org/all/20260127190836.6a420768@kernel.org/
+---
+Cc: MD Danish Anwar <danishanwar@ti.com>
+Cc: Roger Quadros <rogerq@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Meghana Malladi <m-malladi@ti.com>
+Cc: Jacob Keller <jacob.e.keller@intel.com>
+Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Cc: Himanshu Mittal <h-mittal1@ti.com>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Byungchul Park <byungchul@sk.com>
+Cc: Markus Elfring <elfring@users.sourceforge.net>
+Cc: linux-arm-kernel@lists.infradead.org
+---
+Changes in v2:
+- Given the issue identified by the AI [3], squash these two patches into
+  one as suggested by Jakub.
+
+- Include the cpsw fix link and the link to Jakub's email in the cover letter,
+  as requested by Meghana.
+
+- Link to v1: https://lore.kernel.org/r/20260204-icssg-prueth-workqueue-v1-0-9a892f4b293d@gmail.com
+
+[3] https://netdev-ai.bots.linux.dev/ai-review.html?id=02da18ab-455d-4d98-88bb-d8a975623c3f
+---
+ drivers/net/ethernet/ti/icssg/icssg_common.c     |  1 -
+ drivers/net/ethernet/ti/icssg/icssg_prueth.c     | 13 ++++---------
+ drivers/net/ethernet/ti/icssg/icssg_prueth.h     |  1 -
+ drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c |  9 +--------
+ 4 files changed, 5 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_common.c b/drivers/net/ethernet/ti/icssg/icssg_common.c
+index 090aa74d3ce7257ae52158b2ff9a2a1239bfcfc8..0cf9dfe0fa362b4ff986b6815952f95b79cb476d 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_common.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_common.c
+@@ -1720,7 +1720,6 @@ void prueth_netdev_exit(struct prueth *prueth,
+ 	netif_napi_del(&emac->napi_rx);
+ 
+ 	pruss_release_mem_region(prueth->pruss, &emac->dram);
+-	destroy_workqueue(emac->cmd_wq);
+ 	free_netdev(emac->ndev);
+ 	prueth->emac[mac] = NULL;
+ }
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+index f65041662173c1968f7e70dc4a3d897523f24095..0939994c932f5322eebbaa1b2fe43e20d3dca5ae 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
+@@ -1099,7 +1099,7 @@ static void emac_ndo_set_rx_mode(struct net_device *ndev)
+ {
+ 	struct prueth_emac *emac = netdev_priv(ndev);
+ 
+-	queue_work(emac->cmd_wq, &emac->rx_mode_work);
++	schedule_work(&emac->rx_mode_work);
+ }
+ 
+ static netdev_features_t emac_ndo_fix_features(struct net_device *ndev,
+@@ -1451,11 +1451,6 @@ static int prueth_netdev_init(struct prueth *prueth,
+ 	emac->port_id = port;
+ 	emac->xdp_prog = NULL;
+ 	emac->ndev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS;
+-	emac->cmd_wq = create_singlethread_workqueue("icssg_cmd_wq");
+-	if (!emac->cmd_wq) {
+-		ret = -ENOMEM;
+-		goto free_ndev;
+-	}
+ 	INIT_WORK(&emac->rx_mode_work, emac_ndo_set_rx_mode_work);
+ 
+ 	INIT_DELAYED_WORK(&emac->stats_work, icssg_stats_work_handler);
+@@ -1467,7 +1462,7 @@ static int prueth_netdev_init(struct prueth *prueth,
+ 	if (ret) {
+ 		dev_err(prueth->dev, "unable to get DRAM: %d\n", ret);
+ 		ret = -ENOMEM;
+-		goto free_wq;
++		goto free_ndev;
+ 	}
+ 
+ 	emac->tx_ch_num = 1;
+@@ -1566,8 +1561,6 @@ static int prueth_netdev_init(struct prueth *prueth,
+ 
+ free:
+ 	pruss_release_mem_region(prueth->pruss, &emac->dram);
+-free_wq:
+-	destroy_workqueue(emac->cmd_wq);
+ free_ndev:
+ 	emac->ndev = NULL;
+ 	prueth->emac[mac] = NULL;
+@@ -2236,6 +2229,7 @@ static int prueth_probe(struct platform_device *pdev)
+ 			prueth->emac[i]->ndev->phydev = NULL;
+ 		}
+ 		unregister_netdev(prueth->registered_netdevs[i]);
++		disable_work_sync(&prueth->emac[i]->rx_mode_work);
+ 	}
+ 
+ netdev_exit:
+@@ -2295,6 +2289,7 @@ static void prueth_remove(struct platform_device *pdev)
+ 		phy_disconnect(prueth->emac[i]->ndev->phydev);
+ 		prueth->emac[i]->ndev->phydev = NULL;
+ 		unregister_netdev(prueth->registered_netdevs[i]);
++		disable_work_sync(&prueth->emac[i]->rx_mode_work);
+ 	}
+ 
+ 	for (i = 0; i < PRUETH_NUM_MACS; i++) {
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+index 10eadd35665045a98a0c0a639606b7c2691195de..3d94fa5a7ac10992d35fdb63458f8cb6eb3a5a22 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
+@@ -236,7 +236,6 @@ struct prueth_emac {
+ 	/* Mutex to serialize access to firmware command interface */
+ 	struct mutex cmd_lock;
+ 	struct work_struct rx_mode_work;
+-	struct workqueue_struct	*cmd_wq;
+ 
+ 	struct pruss_mem_region dram;
+ 
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
+index 7bb4f0d850cc72d997e5ead38cf56f1dbc2355a1..b8115ca47082f9676067bb65c6eb3a441290fd7c 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_prueth_sr1.c
+@@ -783,11 +783,6 @@ static int prueth_netdev_init(struct prueth *prueth,
+ 	emac->prueth = prueth;
+ 	emac->ndev = ndev;
+ 	emac->port_id = port;
+-	emac->cmd_wq = create_singlethread_workqueue("icssg_cmd_wq");
+-	if (!emac->cmd_wq) {
+-		ret = -ENOMEM;
+-		goto free_ndev;
+-	}
+ 
+ 	INIT_DELAYED_WORK(&emac->stats_work, icssg_stats_work_handler);
+ 
+@@ -798,7 +793,7 @@ static int prueth_netdev_init(struct prueth *prueth,
+ 	if (ret) {
+ 		dev_err(prueth->dev, "unable to get DRAM: %d\n", ret);
+ 		ret = -ENOMEM;
+-		goto free_wq;
++		goto free_ndev;
+ 	}
+ 
+ 	/* SR1.0 uses a dedicated high priority channel
+@@ -883,8 +878,6 @@ static int prueth_netdev_init(struct prueth *prueth,
+ 
+ free:
+ 	pruss_release_mem_region(prueth->pruss, &emac->dram);
+-free_wq:
+-	destroy_workqueue(emac->cmd_wq);
+ free_ndev:
+ 	emac->ndev = NULL;
+ 	prueth->emac[mac] = NULL;
+
+---
+base-commit: 0f8a890c4524d6e4013ff225e70de2aed7e6d726
+change-id: 20260203-icssg-prueth-workqueue-f460eba72132
+
+Best regards,
+-- 
+Kevin Hao <haokexin@gmail.com>
+
