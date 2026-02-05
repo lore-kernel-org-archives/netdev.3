@@ -1,59 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A212B125D0;
-	Thu,  5 Feb 2026 02:16:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519C8279324;
+	Thu,  5 Feb 2026 02:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770257793; cv=none; b=PqYrmZOtP2JifhTs+Y7FEn/enzv0n6jQtI63Yjg1yU1db2IswpHgL/s58ccc8vXVn4oa7+BIZR7TtcMZ0VYOGRBVavrfxHlRIa1ZK8fxVePIjlF+er4htKMIsgD56cNxDpjOnlwfmxyDLYjy+1Tgd9YX2pEQZFxwmbn+siV7pJc=
+	t=1770258011; cv=none; b=CCrjp9AVqsfjMv8i7UPcGL2hD0IbQN47PziJyr1tWUcn0BpwdZfhdjIelkUaGvjXd+rdfL1OZ2eJ/vYPoh2D0MGInZ6fAoYkxYlkBJ4B6dK+bt4J17LUBstxafQFPQcVNKHQnFueh03Lv4AxSxKuLhD6zsMkygumPCwel9s11O0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770257793; c=relaxed/simple;
-	bh=iu/nBZW03fVjULq+MrxpfMr1b9V943jAhl3OQAJBrLw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZfQnvjuD6Xcx5CK9d4g7k52TAEsDxDGlkAxrCIpavKx43ByLhefeFJEIWCglBNxOn1AuoTfLLlzaJp6+kNn8i4QahqTgKv7pBZpdE8R5DGUWFJAdQtuipvc8eaeNa3v7XMz3p1f4k7RIIBr5IiT3Rs3ZJmFDbS3yXHmQsyhVEVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NUEBZuFl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770258011; c=relaxed/simple;
+	bh=Ckmx0GKVNpOSKyHt5m2XWiZUVYGFKxGhni8kQ1Gktb4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=gjyFUTL70FU1XbPSSZXvYY9Yfl3cr0L/JqHrEqsAbtyv5FqhwB+0KhJVgyuTPeMYdvDxESFXK8TnxtVedzzRCp3A3V49JYsCt8PzNQXhJgm5cIk4m7ZHQK/rPbkNsG52r/ru4NbrOF4sZdkdmfJIHwJ8KRGOm+kiyA0Wg6vVoAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N2o6vatD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NUEBZuFl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415B5C4CEF7;
-	Thu,  5 Feb 2026 02:16:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N2o6vatD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09301C4CEF7;
+	Thu,  5 Feb 2026 02:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770257793;
-	bh=iu/nBZW03fVjULq+MrxpfMr1b9V943jAhl3OQAJBrLw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NUEBZuFlXBec0mbp0VKtfBm8KPqkesLGd6gBeEqxq+w4e6HD5Gw7VY1khBdw7fQ9h
-	 vdnEGy8WOYp2mgPmhug6s0IhkuQ58+qzpNaOv4CjTJZeFeQlHIrjzwIq/r18gFAsYE
-	 61F+GxxZMo63VBjpHMsR6bMKc1Ud//vOucuyNbNoWTa1vsgvNkyad4FyMjfGehzpyN
-	 yhqUU7q+KrTirs5B46O1KZycQysvpohEEg9OYVAWn1jPr6cMz/ZcPA4wwLjomagjaq
-	 20YXN9zXJdbistPoFblcKz6ByfaO1RJdI6Qgm1LpEgbaEvDAWLds+Z4RZYvBl9ZYtF
-	 T3c8Xd1fHxoCg==
-Date: Wed, 4 Feb 2026 18:16:31 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: Parvathi Pudi <parvathi@couthit.com>, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- danishanwar@ti.com, rogerq@kernel.org, pmohan@couthit.com,
- basharath@couthit.com, afd@ti.com, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- alok.a.tiwari@oracle.com, pratheesh@ti.com, j-rameshbabu@ti.com,
- vigneshr@ti.com, praneeth@ti.com, srk@ti.com, rogerq@ti.com,
- krishna@couthit.com, mohan@couthit.com
-Subject: Re: [PATCH net-next v13 0/3] STP/RSTP SWITCH support for PRU-ICSSM
- Ethernet driver
-Message-ID: <20260204181631.3a6f7392@kernel.org>
-In-Reply-To: <aYN0xmOIaHeAvWNI@horms.kernel.org>
-References: <20260130124559.1182780-1-parvathi@couthit.com>
-	<aYN0xmOIaHeAvWNI@horms.kernel.org>
+	s=k20201202; t=1770258011;
+	bh=Ckmx0GKVNpOSKyHt5m2XWiZUVYGFKxGhni8kQ1Gktb4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=N2o6vatDJbzPlSdkxwhmk91jq9i3M8ppchl4fJIc0tNapuejOR+vc7OsLApIJ6Q2l
+	 OjLIBg11mF9MfPOQqlN80qxbxHBvGDA927XWE1qxd/R/hEgfePuVXRaEQwGBZC1d7I
+	 OMRL1+1aTaidkNzdQwxhS0E1dnvZSlTFDw86DLQI3B4Y5FCD/ejUxYqAR/oWg67XOT
+	 MPR3LJoszYSmajzVqJa5iviYdinh1T0poJUMcjbKhDKSo3rAvhq3XNlHe3WmOaxsE+
+	 xq+ANUbmCMUazXKxrBRHhvoSlOenAjOWM5BFQ0/9nLqaG6vj02lWEPRrXeTgzmd6/J
+	 R428Efxptc0KQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 481973808200;
+	Thu,  5 Feb 2026 02:20:10 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v13 0/3] STP/RSTP SWITCH support for PRU-ICSSM
+ Ethernet driver
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177025800908.129535.18427051023918224853.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Feb 2026 02:20:09 +0000
+References: <20260130124559.1182780-1-parvathi@couthit.com>
+In-Reply-To: <20260130124559.1182780-1-parvathi@couthit.com>
+To: Parvathi Pudi <parvathi@couthit.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, danishanwar@ti.com, rogerq@kernel.org,
+ pmohan@couthit.com, basharath@couthit.com, afd@ti.com,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, alok.a.tiwari@oracle.com,
+ horms@kernel.org, pratheesh@ti.com, j-rameshbabu@ti.com, vigneshr@ti.com,
+ praneeth@ti.com, srk@ti.com, rogerq@ti.com, krishna@couthit.com,
+ mohan@couthit.com
 
-On Wed, 4 Feb 2026 16:33:10 +0000 Simon Horman wrote:
-> I notice that this series has been marked as Changes Requested in
-> Patchwork. But overall it looks good to me.
+Hello:
 
-Unclear who did this. So I've applied the series..
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Fri, 30 Jan 2026 18:13:42 +0530 you wrote:
+> Hi,
+> 
+> The DUAL-EMAC patch series for Megabit Industrial Communication Sub-system
+> (ICSSM), which provides the foundational support for Ethernet functionality
+> over PRU-ICSS on the TI SOCs (AM335x, AM437x, and AM57x), was merged into
+> net-next recently [1].
+> 
+> [...]
+
+Here is the summary with links:
+  - [net-next,v13,1/3] net: ti: icssm-prueth: Add helper functions to configure and maintain FDB
+    https://git.kernel.org/netdev/net-next/c/4c8566a12f14
+  - [net-next,v13,2/3] net: ti: icssm-prueth: Add switchdev support for icssm_prueth driver
+    https://git.kernel.org/netdev/net-next/c/eea65b87493e
+  - [net-next,v13,3/3] net: ti: icssm-prueth: Add support for ICSSM RSTP switch
+    https://git.kernel.org/netdev/net-next/c/eca327ae9aa6
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
