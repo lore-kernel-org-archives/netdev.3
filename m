@@ -1,174 +1,75 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB814266B1
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 15:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B15429801;
+	Thu,  5 Feb 2026 15:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770306253; cv=none; b=ifOY4JhBFhh639l7csIIqp4tvSKbEJPbzHqLJehm5dgOtaM9D8Cj4rSohWUnmUGZKPDRT0cUX71oWMyA3dTtoSgUOnKmqgPALfEqnhB9GJURE3RI75Rv1dwlceu1W4PNZxRpDruDPj+7VIjfw2U0ufBdFqAD+nIY0hWmrWyDiHo=
+	t=1770306541; cv=none; b=b7KKx0t+kKauIvH5Z4c70QvwanARDSa3nVeHjVVAtapa6S6LTID2qs9FDRtty9uxRym27z0RoWHyuwjzOhRBS09IsWyYlJcEiQexK7zpddsuEiiI8SpYux29H6o7TIZEp10YCuUlG4lT5cWn1oFgAtG28041KituJnLoJ4lZ4/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770306253; c=relaxed/simple;
-	bh=beJbh9Q51hftX3sFzrLlw65qA1wbptRaJa7R+UbWVuU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HfYKF7QAWgoJnLUV4Qo6B+tFxcXahNJ74IrjzkGXfwP0BoUUypfnw7+czaR27kxOA3g7XvHr2TymIBsKLh32Rnu5mTI3N1cIfFNNz2xgN3ZR4FEV6dcfylt0KncYo5jsOOGXziedRlKlsu+rbOlDmDVVazZe46D3NDb0ccpGjNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U8kMs3vO; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1770306541; c=relaxed/simple;
+	bh=t8Qq7n3GBnTkkcRxUptPvkwYXSftlw+UTn4NgWQJVRI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O3I5i7WPZvor1Sn2SbMUOj2MeuK2dPN5oIZ6IaWAgtIk8HdWKpXc6txyvMcHqWrvVizZK8kMPlEqCJ+HqiMj5GDBnt/qemIKPf7VrD3ok1yV3P5IcJJt/b+IJUWuGzFrHNKjQ8rF3Yud1+TFhlVZs51hGt92RgywTVcKI34o4C0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dT8oAQQj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U8kMs3vO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770306251;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iUIU87dxavbL2UbuwPOctpcR60YHm3cGpL66RI9YjQs=;
-	b=U8kMs3vOjPXHkT2bFIQ7Pvge/olR8t0H6OnQ3OgZcbsNaUdLPRwZBsLAiX6uexLTFMiwqA
-	Qdt8F8qFT4+M/eLMWsR2KMmMrLdikSF1ZoC2LykA7abiR79RF/bTHQ16YXsqxbcB3QNbbB
-	cyk3SZGAgvFaSaHD0qxN6fmHnzmYLkg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-84-wS1-gwcLMwaB8eP9VknEig-1; Thu,
- 05 Feb 2026 10:44:08 -0500
-X-MC-Unique: wS1-gwcLMwaB8eP9VknEig-1
-X-Mimecast-MFC-AGG-ID: wS1-gwcLMwaB8eP9VknEig_1770306243
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A46E4195C276;
-	Thu,  5 Feb 2026 15:44:00 +0000 (UTC)
-Received: from cnb-01.lab.eng.brq2.redhat.com (cnb-01.lab.eng.brq2.redhat.com [10.37.129.36])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 282F018003F6;
-	Thu,  5 Feb 2026 15:43:57 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 2/2] dpll: zl3073x: Include current frequency in supported frequencies list
-Date: Thu,  5 Feb 2026 16:43:50 +0100
-Message-ID: <20260205154350.3180465-3-ivecera@redhat.com>
-In-Reply-To: <20260205154350.3180465-1-ivecera@redhat.com>
-References: <20260205154350.3180465-1-ivecera@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dT8oAQQj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605DDC4CEF7;
+	Thu,  5 Feb 2026 15:49:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770306540;
+	bh=t8Qq7n3GBnTkkcRxUptPvkwYXSftlw+UTn4NgWQJVRI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dT8oAQQjBRumDKEXiaiAXR9ZiL6YWgA9SGoPGAvrz54iDCRk5ChA17Xz4x/0mIMWc
+	 HyW42z/+EOLSUcXT/H66ZKEvz1uiHY8XgxeSC/ls9LQvsC2wQ9w096drncwG+vWKcz
+	 S2W6C7yZQMhuWCE8QgavFGrWQahdmFAuoBjuewpuBmh2t0OjrXY7NT+y4Dmp/O9voo
+	 Y9o1wfhp9UP2rA/+9JuJyXdU1rc3Mu6hIRe1KkV5qNHaixiuyhnK2fmA+IYqlmwj+N
+	 QQSdgERFM7reK8lmF+4bpOkabKoXRUcYtyCfdlzJsWFyeUztpN60iuRLsNLhYnKwl7
+	 YMPeHWtI/VapQ==
+Date: Thu, 5 Feb 2026 07:48:59 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bo Sun <bo@mboxify.com>
+Cc: pabeni@redhat.com, sgoutham@marvell.com, lcherian@marvell.com,
+ gakula@marvell.com, jerinj@marvell.com, hkelam@marvell.com,
+ sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net 1/1] octeontx2-af: CGX: fix bitmap leaks
+Message-ID: <20260205074859.27392792@kernel.org>
+In-Reply-To: <ba2c3143-0761-4903-ac0e-88ca502b4e50@mboxify.com>
+References: <20251020143112.357819-1-bo@mboxify.com>
+	<20251020143112.357819-2-bo@mboxify.com>
+	<20251022182226.00967149@kernel.org>
+	<ba2c3143-0761-4903-ac0e-88ca502b4e50@mboxify.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Ensure the current pin frequency is always present in the list of
-supported frequencies reported to userspace. Previously, if the
-firmware node was missing or didn't include the current operating
-frequency in the supported-frequencies-hz property, the pin would
-report a frequency that wasn't in its supported list.
+On Thu, 5 Feb 2026 21:35:29 +0800 Bo Sun wrote:
+> >> Fixes: e740003874ed ("octeontx2-af: Flow control resource management")
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Bo Sun <bo@mboxify.com>  
+> > 
+> > Looks like rvu_free_bitmap() exists. We should probably use it?  
+> 
+> Apologies for the late reply.
+> You're right that rvu_free_bitmap() exists. I stayed with direct kfree()
+> for consistency with the existing code in cgx_lmac_exit(), because which
+> already uses kfree(lmac->mac_to_index_bmap.bmap).
+> 
+> That said, I'm OK with either way:
+> 1. Keep kfree() to match the existing pattern in this function
+> 2. Switch all three bitmap frees (including mac_to_index_bmap) to use
+> rvu_free_bitmap() for consistency with the alloc/free API pairing
+> 
+> What's your preference?
 
-Get the current frequency early in zl3073x_pin_props_get():
-- For input pins: use zl3073x_dev_ref_freq_get()
-- For output pins: use zl3073x_dev_output_pin_freq_get()
-
-Place the current frequency at index 0 of the supported frequencies
-array, then append frequencies from the firmware node (if present),
-skipping any duplicate of the current frequency.
-
-Signed-off-by: Ivan Vecera <ivecera@redhat.com>
----
- drivers/dpll/zl3073x/prop.c | 32 +++++++++++++++++++++-----------
- 1 file changed, 21 insertions(+), 11 deletions(-)
-
-diff --git a/drivers/dpll/zl3073x/prop.c b/drivers/dpll/zl3073x/prop.c
-index 4ed153087570..51748b0e523b 100644
---- a/drivers/dpll/zl3073x/prop.c
-+++ b/drivers/dpll/zl3073x/prop.c
-@@ -193,9 +193,10 @@ struct zl3073x_pin_props *zl3073x_pin_props_get(struct zl3073x_dev *zldev,
- {
- 	struct dpll_pin_frequency *ranges;
- 	struct zl3073x_pin_props *props;
--	int i, j, num_freqs, rc;
-+	int i, j, num_freqs = 0, rc;
-+	u64 *freqs = NULL;
- 	const char *type;
--	u64 *freqs;
-+	u32 curr_freq;
- 
- 	props = kzalloc(sizeof(*props), GFP_KERNEL);
- 	if (!props)
-@@ -207,6 +208,7 @@ struct zl3073x_pin_props *zl3073x_pin_props_get(struct zl3073x_dev *zldev,
- 		props->dpll_props.capabilities =
- 			DPLL_PIN_CAPABILITIES_PRIORITY_CAN_CHANGE |
- 			DPLL_PIN_CAPABILITIES_STATE_CAN_CHANGE;
-+		curr_freq = zl3073x_dev_ref_freq_get(zldev, index);
- 	} else {
- 		u8 out, synth;
- 		u32 f;
-@@ -220,6 +222,7 @@ struct zl3073x_pin_props *zl3073x_pin_props_get(struct zl3073x_dev *zldev,
- 		synth = zl3073x_dev_out_synth_get(zldev, out);
- 		f = 2 * zl3073x_dev_synth_freq_get(zldev, synth);
- 		props->dpll_props.phase_gran = f ? div_u64(PSEC_PER_SEC, f) : 1;
-+		curr_freq = zl3073x_dev_output_pin_freq_get(zldev, index);
- 	}
- 
- 	props->dpll_props.phase_range.min = S32_MIN;
-@@ -230,7 +233,7 @@ struct zl3073x_pin_props *zl3073x_pin_props_get(struct zl3073x_dev *zldev,
- 	/* Get firmware node for the given pin */
- 	rc = zl3073x_prop_pin_fwnode_get(zldev, props, dir, index);
- 	if (rc)
--		return props; /* Return if it does not exist */
-+		goto skip_fwnode_props;
- 
- 	/* Look for label property and store the value as board label */
- 	fwnode_property_read_string(props->fwnode, "label",
-@@ -262,9 +265,10 @@ struct zl3073x_pin_props *zl3073x_pin_props_get(struct zl3073x_dev *zldev,
- 	/* Read supported frequencies property if it is specified */
- 	num_freqs = fwnode_property_count_u64(props->fwnode,
- 					      "supported-frequencies-hz");
--	if (num_freqs <= 0)
--		/* Return if the property does not exist or number is 0 */
--		return props;
-+	if (num_freqs <= 0) {
-+		num_freqs = 0;
-+		goto skip_fwnode_props;
-+	}
- 
- 	/* The firmware node specifies list of supported frequencies while
- 	 * DPLL core pin properties requires list of frequency ranges.
-@@ -281,19 +285,25 @@ struct zl3073x_pin_props *zl3073x_pin_props_get(struct zl3073x_dev *zldev,
- 				       "supported-frequencies-hz", freqs,
- 				       num_freqs);
- 
--	/* Allocate frequency ranges list and fill it */
--	ranges = kcalloc(num_freqs, sizeof(*ranges), GFP_KERNEL);
-+skip_fwnode_props:
-+	/* Allocate frequency ranges list - extra slot for current frequency */
-+	ranges = kcalloc(num_freqs + 1, sizeof(*ranges), GFP_KERNEL);
- 	if (!ranges) {
- 		rc = -ENOMEM;
- 		goto err_alloc_ranges;
- 	}
- 
--	/* Convert list of frequencies to list of frequency ranges but
--	 * filter-out frequencies that are not representable by device
-+	/* Start with current frequency at index 0 */
-+	ranges[0] = (struct dpll_pin_frequency)DPLL_PIN_FREQUENCY(curr_freq);
-+
-+	/* Add frequencies from firmware node, skipping current frequency
-+	 * and filtering out frequencies not representable by device
- 	 */
--	for (i = 0, j = 0; i < num_freqs; i++) {
-+	for (i = 0, j = 1; i < num_freqs; i++) {
- 		struct dpll_pin_frequency freq = DPLL_PIN_FREQUENCY(freqs[i]);
- 
-+		if (freqs[i] == curr_freq)
-+			continue;
- 		if (zl3073x_pin_check_freq(zldev, dir, index, freqs[i])) {
- 			ranges[j] = freq;
- 			j++;
--- 
-2.52.0
-
+3. do what I implied, just use rvu_free_bitmap() in this single case
+for the fix. Follow up separately with a patch to remaining sites if
+any to convert from kfree() to rvu_free_bitmap(). We want the fix
+itself to be small, the cleanup should be separate.
