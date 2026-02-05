@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047632EA48F
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 04:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61D2B2652B6;
+	Thu,  5 Feb 2026 04:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770267020; cv=none; b=ekm5KqD7z/MUUhQ7XDYykTcC2arE169lwMhmsu/b8DsXs8NB9YdcGEKz8pdNmhKlpOTkaLsN2jqfcmwY5BafomgFs7h0vXq80bZRwvonoaR7QOFuSczGD+niTXwA+8eETjXldgl6xLe/oMEOcXX6GPRLWtYI7VEgqUrxxqzL5DQ=
+	t=1770267021; cv=none; b=H2RbkV4ol660IPF6JoWnt3iy+OQzV/w+7Dg3dA2Ywg71Lqj531BpsE/jxKM0NNwYRUCrJCVAZ2DgfFS8UEzlCWcczqt4L4JqxACVj4wz/4h+7ojCdZSM+jX4U8LpHRTfWcUOdSaRLTPonO71qzuVXKkL5zwyAVsOuB7fOxsBGlk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770267020; c=relaxed/simple;
-	bh=qseW78hTkEKmEuXh780JT4GDvzvK1kCW4d7l964LbmE=;
+	s=arc-20240116; t=1770267021; c=relaxed/simple;
+	bh=CGOn+52HseP3hzTaTZsqC/gunaSs0FybtOXk3Vrs3sQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=olRWCIRwawTXtZZ2k9hGDNyH7zjRK/kf9IpOKBAKBtrbm7w3ukLR9aTW30ebpM660NbD921i5YZIaa35Fga5IEj3L7ccMVlEiaRqznlcNiK+CvrFfIY0ZUOQ5IpgmqEjQz9vyrHFFM0yA186Z2n45+Sd6/h51YN6T0u4NTln0z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGYerrrJ; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=b4JCmNF1QYnNbpIso5xw773se5ghVMBKro6D1Er+W4u1cnaw12c42l+qX/xygvISFZgiBaw5HO5ohFcMfBQqWESk3m24hn43Fa3m/QBmnHOzWYmrmFAi4xz7huPMRRe12Fe633G/mCtBTa/lHyMphjsNZPfLBb7Dt1IBAXiyZuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ii+4ZDfU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGYerrrJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A07C2BC9E;
-	Thu,  5 Feb 2026 04:50:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ii+4ZDfU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 099F8C4CEF7;
+	Thu,  5 Feb 2026 04:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770267019;
-	bh=qseW78hTkEKmEuXh780JT4GDvzvK1kCW4d7l964LbmE=;
+	s=k20201202; t=1770267021;
+	bh=CGOn+52HseP3hzTaTZsqC/gunaSs0FybtOXk3Vrs3sQ=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=BGYerrrJke3cFa10Z9xIfYqvbqt0TXf2/SKzxWEyqsnlNST/SUrF4GzClfbf8Ov8h
-	 fBzNxTxL3B8exigXniyiANIzpK2L3H6cVvbVSYdOf6hjmDzE2QNMym1I39pvMqimQf
-	 XS4B32dSSd7MuTkpLE/mAWnN76YqAKVA/r9hxh9ISaUFXqwz5A8pdxWXRUCe+IRGMK
-	 lnlIm4FNGrA4JfSGvwCPkqv/t/eC+ZrxVL+Xp7AI3urSXHztrxBsyVuBc64gc7jLYh
-	 K0BjTYBQLljFN+MENMePZS1T7YiR63htZrNMC6RodanO2eovEC+ppsWPlx1xdjz7C3
-	 Ln0r7MM5cYIAQ==
+	b=ii+4ZDfUA1lLQ+6/Z6El22V2iFUAmSJB14WzMd6rvKXQQ3ws/fidUbADebuR6kJCB
+	 VwEfQoS9xb0r2UYJuPmIqK7qEC4lRrcErrV2OzwlV88jBzuNRVeZqYvwqCg6HOWVEj
+	 7wLka0CQcvvXGZzXFF0QwOng2cWZn22D5MxEIE8MlS1LRxjA7Ri8otgL+RbZjE4toX
+	 SahA2lvzu9IrCkywww7mE8/qyjVCoGme2uMinllCin91QgZndL9AEi1XQvxPy+wy5f
+	 S5pyRBzDH45O/fXjXsfLUcXRfJMMV/cj1ZOAw0UR43ozvntYgfa4XlPvxJ0HAx0582
+	 Gb2ul8X7Hw1CA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id C22543808200;
-	Thu,  5 Feb 2026 04:50:18 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 481B13808200;
+	Thu,  5 Feb 2026 04:50:20 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,47 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] tcp: split tcp_check_space() in two parts
+Subject: Re: [PATCH v3 net-next] net/iucv: clean up iucv kernel-doc warnings
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177026701757.165764.8982996972541300841.git-patchwork-notify@kernel.org>
-Date: Thu, 05 Feb 2026 04:50:17 +0000
-References: <20260203050932.3522221-1-edumazet@google.com>
-In-Reply-To: <20260203050932.3522221-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ncardwell@google.com, kuniyu@google.com, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
+ <177026701882.165764.4197190768444088497.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Feb 2026 04:50:18 +0000
+References: <20260203075248.1177869-1-rdunlap@infradead.org>
+In-Reply-To: <20260203075248.1177869-1-rdunlap@infradead.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: netdev@vger.kernel.org, wintera@linux.ibm.com, twinkler@linux.ibm.com,
+ linux-s390@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  3 Feb 2026 05:09:32 +0000 you wrote:
-> tcp_check_space() is fat and not inlined.
+On Mon,  2 Feb 2026 23:52:48 -0800 you wrote:
+> Fix numerous (many) kernel-doc warnings in iucv.[ch]:
 > 
-> Move its slow path in (out of line) __tcp_check_space()
-> and make tcp_check_space() an inline function for better TCP performance.
-> 
-> $ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
-> add/remove: 2/2 grow/shrink: 4/0 up/down: 708/-582 (126)
-> Function                                     old     new   delta
-> __tcp_check_space                              -     521    +521
-> tcp_rcv_established                         1860    1916     +56
-> tcp_rcv_state_process                       3342    3384     +42
-> tcp_event_new_data_sent                      248     286     +38
-> tcp_data_snd_check                            71     106     +35
-> __pfx___tcp_check_space                        -      16     +16
-> __pfx_tcp_check_space                         16       -     -16
-> tcp_check_space                              566       -    -566
-> Total: Before=24896373, After=24896499, chg +0.00%
+> - convert function documentation comments to a common (kernel-doc) look,
+>   even for static functions (without "/**")
+> - use matching parameter and parameter description names
+> - use better wording in function descriptions (Jakub & AI)
+> - remove duplicate kernel-doc comments from the header file (Jakub)
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] tcp: split tcp_check_space() in two parts
-    https://git.kernel.org/netdev/net-next/c/309dd9942155
+  - [v3,net-next] net/iucv: clean up iucv kernel-doc warnings
+    https://git.kernel.org/netdev/net-next/c/a34b0e4e21d6
 
 You are awesome, thank you!
 -- 
