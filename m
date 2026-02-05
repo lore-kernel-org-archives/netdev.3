@@ -1,65 +1,189 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262BF1F471F;
-	Thu,  5 Feb 2026 05:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9AC1F471F;
+	Thu,  5 Feb 2026 05:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770269113; cv=none; b=d7Kqt/7NyPLIJmATiYHNrY43A1eyH3hLJ0jEoqWGGc5VtH1lKYrfjJJ6vv7TeZG8j8uCNX2+MdHgjqy0uAOeXDcdd9iaI22hCJJCB0wquO6j0zamNoe8wLN6hMKiCwsIe4QlcUmHJb05hf3vwdrhO24e1BfqNSyx4JLbqQXhOZc=
+	t=1770269320; cv=none; b=UAgtf3t83Qyfcs7j3SpJc91HXUgMP17aEu0xLSmcqw/ICYAVm4NU1+YmTWSvEeLalu23cyIR1Ed6kRPMgBlJyiPhQvzvgEWSmjdxdu3S2rU5u6+6vyT+PwsjdIMUtb4N0DQhCfwSbudf9YrueyhvLhmEXIN9bBLEu8J2XyYN3vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770269113; c=relaxed/simple;
-	bh=yGdsgCTf1QDzagy1MDmADcs/xYLOANpJBIngoj1gkM0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gUJCFDCXYHNUliqHCTsozZaZLQvGJFoaQYF0sTUS7J3rDhQiK6GpSpelgJ7LE5aOl/kg75mdFEbApO7sGtBAZCTDjG4R5rx8DWLW0uaOlu0njZjQZMXKol57Ejn0i0RNd9JFR1b5Jp86vZV3ZCLMMvmedByTnRa/woF35p3k5BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=otZ6UgEc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770269320; c=relaxed/simple;
+	bh=BBfLCDc2/uDCwmTSk1Ji6KmW/FlEp2r0PF0c3zsmOBE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FF3dby1bFjSIe3Rmo03D1E4dFoQ53maxcHxTaLtwAkz7fu0chHOl33RSAA5CdR37xpaGX3WH5e3iNbmGTZCpsv+YKgNBKBpSeBClVsKqvxNid4F2JVdYtza2YjN8Yca9r/cuW70vIDTl06nmh+07+uYPduEAbiLox0+3yoC1Ulc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K3KkRD3m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="otZ6UgEc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFD3C4CEF7;
-	Thu,  5 Feb 2026 05:25:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K3KkRD3m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFEA1C4CEF7;
+	Thu,  5 Feb 2026 05:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770269113;
-	bh=yGdsgCTf1QDzagy1MDmADcs/xYLOANpJBIngoj1gkM0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=otZ6UgEcQaXANvWbc/+4y7DpYVVXlME57f/FfVI4OXTkjmbdbw6ixPbJKwOuFFUCB
-	 ulkZiRgmc/HXBm9HhxVJr4zE1PVmuAj7MuaorztuF0yfjCXRE3WLX7pomnXkch8OWk
-	 He9zqfThzs8i+Ph6kqTEHn8jkMji3B2wshA3O/5sNuOzgZEGCthdrm5u75Ru68PSd4
-	 ciFV14yeyhrcsaJr+7pxnVxIkzQ1W6jQmS+ApmcpRkSFR379U+vGpExvG2bsCakiZK
-	 Ctt8iadUOjO+Zp7HpzMWnQcplEpz6NcPRO0553sfaRpeL+CXYBekYcLR099hwEEZ3u
-	 AWf9yCnbd7Cbw==
-Date: Wed, 4 Feb 2026 21:25:11 -0800
+	s=k20201202; t=1770269319;
+	bh=BBfLCDc2/uDCwmTSk1Ji6KmW/FlEp2r0PF0c3zsmOBE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=K3KkRD3mQgYJ18W/8bq3mA9yT+cLveQshHPaHZd/DN3UlCTZleACxtx6uOo3beHjz
+	 8f092D0wOVbKWAoux3EeXpEjPY8KfOgasazv3ekJOfBkCYGi+x4AirUJd/IDEejDGs
+	 LtJfnlarGj17U15Bwie62MofkMQUeRDkEHolXQ3HbiN5CFIvP3L17AWrQQfDgb7Q6V
+	 i711FpbmU/dAZ38ynZr0K044E8kaCF08RKl4pCzeBG9Hm2fWCZOBvbniJO4qB9cupN
+	 GbwdSsJJue9ANOavzpc41UZZkxfnv0j95xK1lBRag9WDpH+3NK8mNl6RsJDj0SGpV7
+	 RYSUnyJQ6W4Sw==
 From: Jakub Kicinski <kuba@kernel.org>
-To: Vishwanath Seshagiri <vishs@meta.com>
-Cc: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang
- <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, David Wei
- <dw@davidwei.uk>, Matteo Croce <technoboy85@gmail.com>, Ilias Apalodimas
- <ilias.apalodimas@linaro.org>, <netdev@vger.kernel.org>,
- <virtualization@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
- <kernel-team@meta.com>
-Subject: Re: [PATCH net-next v4 2/2] selftests: virtio_net: add buffer
- circulation test
-Message-ID: <20260204212511.017153cd@kernel.org>
-In-Reply-To: <20260204193617.1200752-3-vishs@meta.com>
-References: <20260204193617.1200752-1-vishs@meta.com>
-	<20260204193617.1200752-3-vishs@meta.com>
+To: wei.fang@nxp.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	ast@kernel.org,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	xiaoning.wang@nxp.com,
+	john.fastabend@gmail.com,
+	daniel@iogearbox.net,
+	sdf@fomichev.me,
+	frank.li@nxp.com,
+	linux-kernel@vger.kernel.org,
+	hawk@kernel.org,
+	horms@kernel.org,
+	bpf@vger.kernel.org,
+	edumazet@google.com,
+	netdev@vger.kernel.org,
+	imx@lists.linux.dev,
+	shenwei.wang@nxp.com
+Subject: Re: [v6,net-next,06/15] net: fec: add fec_enet_rx_queue_xdp() for XDP path
+Date: Wed,  4 Feb 2026 21:28:37 -0800
+Message-ID: <20260205052837.2449389-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260203052329.1085444-7-wei.fang@nxp.com>
+References: <20260203052329.1085444-7-wei.fang@nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Wed, 4 Feb 2026 11:36:17 -0800 Vishwanath Seshagiri wrote:
-> Add iperf3-based test to verify RX buffer handling under load.
-> Optionally logs page_pool tracepoints when available.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-TBH I wouldn't bother with this.
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+net: fec: add fec_enet_rx_queue_xdp() for XDP path
 
-We run full battery of driver tests in netdev CI, there's not much
-value in a dedicated virtio test that just runs iperf...
+This commit separates XDP path packet processing from fec_enet_rx_queue()
+into a new function fec_enet_rx_queue_xdp() to optimize XDP performance.
+Performance testing on iMX93 shows improvements across all xdp-bench tests.
+
+> diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+> --- a/drivers/net/ethernet/freescale/fec_main.c
+> +++ b/drivers/net/ethernet/freescale/fec_main.c
+> @@ -1666,71 +1666,6 @@ static int fec_enet_update_cbd(struct fec_enet_priv_rx_q *rxq,
+>  	return 0;
+>  }
+>
+> -static u32
+> -fec_enet_run_xdp(struct fec_enet_private *fep, struct bpf_prog *prog,
+> -		 struct xdp_buff *xdp, struct fec_enet_priv_rx_q *rxq, int cpu)
+> -{
+
+[ ... ]
+
+> -	default:
+> -		bpf_warn_invalid_xdp_action(fep->netdev, prog, act);
+> -		fallthrough;
+> -
+> -	case XDP_ABORTED:
+> -		fallthrough;    /* handle aborts by dropping packet */
+> -
+> -	case XDP_DROP:
+> -		rxq->stats[RX_XDP_DROP]++;
+> -xdp_err:
+> -		ret = FEC_ENET_XDP_CONSUMED;
+> -		page = virt_to_head_page(xdp->data);
+> -		page_pool_put_page(rxq->page_pool, page, sync, true);
+> -		if (act != XDP_DROP)
+> -			trace_xdp_exception(fep->netdev, prog, act);
+> -		break;
+> -	}
+> -
+> -	return ret;
+> -}
+> -
+
+[ ... ]
+
+> @@ -1962,7 +1879,167 @@
+
+[ ... ]
+
+> +static int fec_enet_rx_queue_xdp(struct fec_enet_private *fep, int queue,
+> +				 int budget, struct bpf_prog *prog)
+> +{
+
+[ ... ]
+
+> +		switch (act) {
+> +		case XDP_PASS:
+> +			rxq->stats[RX_XDP_PASS]++;
+> +			/* The packet length includes FCS, but we don't want to
+> +			 * include that when passing upstream as it messes up
+> +			 * bridging applications.
+> +			 */
+> +			skb = fec_build_skb(fep, rxq, bdp, page, pkt_len);
+> +			if (!skb)
+> +				trace_xdp_exception(ndev, prog, XDP_PASS);
+> +			else
+> +				napi_gro_receive(&fep->napi, skb);
+> +
+> +			break;
+> +		case XDP_REDIRECT:
+> +			rxq->stats[RX_XDP_REDIRECT]++;
+> +			err = xdp_do_redirect(ndev, &xdp, prog);
+> +			if (unlikely(err)) {
+> +				fec_xdp_drop(rxq, &xdp, sync);
+> +				trace_xdp_exception(ndev, prog, XDP_REDIRECT);
+> +			} else {
+> +				xdp_res |= FEC_ENET_XDP_REDIR;
+> +			}
+> +			break;
+> +		case XDP_TX:
+> +			rxq->stats[RX_XDP_TX]++;
+> +			err = fec_enet_xdp_tx_xmit(fep, cpu, &xdp, sync);
+> +			if (unlikely(err)) {
+> +				rxq->stats[RX_XDP_TX_ERRORS]++;
+> +				fec_xdp_drop(rxq, &xdp, sync);
+> +				trace_xdp_exception(ndev, prog, XDP_TX);
+> +			}
+> +			break;
+> +		default:
+> +			bpf_warn_invalid_xdp_action(ndev, prog, act);
+> +			fallthrough;
+> +		case XDP_ABORTED:
+> +			/* handle aborts by dropping packet */
+> +			fallthrough;
+> +		case XDP_DROP:
+> +			rxq->stats[RX_XDP_DROP]++;
+> +			fec_xdp_drop(rxq, &xdp, sync);
+> +			break;
+
+Are XDP_ABORTED and invalid XDP actions being traced properly? In the
+deleted fec_enet_run_xdp() function, the error path included this check:
+
+    if (act != XDP_DROP)
+        trace_xdp_exception(fep->netdev, prog, act);
+
+This would trace both XDP_ABORTED and invalid actions (after calling
+bpf_warn_invalid_xdp_action). The new code in fec_enet_rx_queue_xdp()
+calls trace_xdp_exception() for XDP_PASS failures, XDP_REDIRECT failures,
+and XDP_TX failures, but not for XDP_ABORTED or invalid actions.
+
+This trace information is useful for debugging XDP program issues and
+monitoring abnormal XDP behavior.
+
+> +		}
+> +
+> +rx_processing_done:
+
+[ ... ]
+
+> +	return pkt_received;
+> +}
 -- 
 pw-bot: cr
