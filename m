@@ -1,215 +1,240 @@
-Received: from AS8PR04CU009.outbound.protection.outlook.com (mail-westeuropeazon11011047.outbound.protection.outlook.com [52.101.70.47])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915FD31B101;
-	Thu,  5 Feb 2026 06:16:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.70.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770272174; cv=fail; b=Wi4m0Tlu5mUaDrKNL8X1Uk754jluojoextVdVBZOAMERTfEDsDjT31qjNgI3v6V1FPISpLTgSxzoxjLlGq8LZZMbpbeb4PCUIouQEAmo9xTZsCFxOwsZx93xnbhHbF+FzAwGqUmB3VzGnE3db1P8V4RDFZZJZG5Evn36xMvsnjY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770272174; c=relaxed/simple;
-	bh=OApJNR2vfFTlRr0c9yeBiMvBHKpRQT0ZBp7nWZ356Ng=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Cp2P9wDjIWJfBw9ftC3xmqxFh4QHxj7Hh5n5qM6L4ZEk+//DFv8yzTo6aNCJIJYUcDf1T2CVm+S4/PpWiPeg0Tp2DVwUMT7G8HGk4U72iWjLm9C6NhYyCs2sVhI1dpHgHM3yjSD9EWNOwB9y9dVgSIsEG4Phfks7GnSMUh/srHs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=c8Cx8AGA; arc=fail smtp.client-ip=52.101.70.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D714934A796
+	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 06:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770272686; cv=none; b=XOPnkwPWGeZzuIV1OkJiCcuoJEwVbGQizOOSLg89Bmf+RbWBfxKdjo+hVNEsLa6vAzfIQMDPWLcNrE30tMYZuZKSt3SVC5ZgC4nFg3uALK1ya+xerAI5CL2jcP8PYO37/yKf4fKGLUzAG29QduzRMEkQKnTeNFwzM+yS8Ko9H+A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770272686; c=relaxed/simple;
+	bh=Mh730ABqeOHc+soxt/YN15a26Ao35FZi4KBbK5G8SHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VxRvW4qHCCA5Rl1A38sBq1qOthQNGZ/z46u24MCH68FDsK5mNrwzpDZXpmtfbfw1slFVoOLYMRnuMXJWqux1YlIiWhRtDWPc3lY8ltHJ8tMl8E1TRMz6eL4YIQtPXunofHi+5ebcclmyzWyazOxE89HWh8bqnLrVrIq7MDV1pCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ibrkM/IM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=m3IhX9zp; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="c8Cx8AGA"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DgNnRg3TAeOjes2ToBgK/kWxVt2s3siLljfv4iMV8Y2hrgZqMkfkPBPzIaypO3nZJo18Gm7jOWrAZkEfNYTSRead0qzEx/GlfvJ5NSVacRB4p1IQjnk2+bEEuxhWO2Da5Q26Lj7PliJrad7VKoSlttGtOiSN1gw4CiMjInjf5oduHseQvb/Vh7TxzrhUbIMjV7v5OCA7jXjQN9RMeLP+39tgktjg67IiX508grf8yTeaHtsSJzP9mTRqRDJYmmKRwEnY22/wxsPJrHqmxLZpjjD2tmVuv7TouJHv4K56SH+pcUr636A0+4wxVwjsdgyVlu8V6hSW8mGYWDBce2ylNA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8mCUcr9yROACfAUnOp7nL1v6Bq3d+7wvd5j+YaWplMY=;
- b=jspA4MbhGro31x4EBeakWdxifMU0qa5T39UpfMVpfgn2PCpQodevQxyFuhvpCaJUaGCbzPUFMx2tjjk35gcSprioECR5+RMRQSoITzbNEZG9XK85inQzft9rnmHSvJNWIdfeAmBzeIIO/01dHrsUzp7e8cB5Q0gOj9L7SAjuaoe6PyJfAB8VU7j2iL0tT0OO24mW2JeIOCtry7V9D8lxAbolcF+M4Em7qNQNPYBlQ+HM3sFgoak6Ve8O5IY44UL3ezBExtJJ6zE0p3fcMXo9mpaAt8uy64LiNeCe8ykET8pq43XjtT2ztzn5iXxInIlDfjKzdE1qoXplhaa+IXXzWw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8mCUcr9yROACfAUnOp7nL1v6Bq3d+7wvd5j+YaWplMY=;
- b=c8Cx8AGAQviH3YXlKBeRzYRKfUuTdmKgUgvh4aW826ZkjmzL4aokFfS7t+GTK1vs92kEVXr2fqegpoaZORurxENFRqjH+d6gRobm9ufLVFmUqnDhMVa5qbCPLjnxip/llHWsUnkfRsbPvRNnUgwB/NH+4Jf4z/dM5b94xHs5ZDR5slpjIz/t3nyVtuWvgCzxg9q1Mntvk1vndGI2MmZpX5pgcayTJSSypL3qDM7YU9mA0amgc1lVsIVZVb8MrVfhdhXnO7n+o1JbPF2pMI7dH3m+k3BrEiGoZLphvZjJWRsowThVw3+yEh7rNGcs1wvPVj9kB5EQpjteiCt0GorxNQ==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by VI1PR04MB9761.eurprd04.prod.outlook.com (2603:10a6:800:1df::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.12; Thu, 5 Feb
- 2026 06:16:08 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9587.013; Thu, 5 Feb 2026
- 06:16:08 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: "ast@kernel.org" <ast@kernel.org>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "daniel@iogearbox.net"
-	<daniel@iogearbox.net>, "sdf@fomichev.me" <sdf@fomichev.me>, Frank Li
-	<frank.li@nxp.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "hawk@kernel.org" <hawk@kernel.org>,
-	"horms@kernel.org" <horms@kernel.org>, "bpf@vger.kernel.org"
-	<bpf@vger.kernel.org>, "edumazet@google.com" <edumazet@google.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>, Shenwei Wang <shenwei.wang@nxp.com>
-Subject: RE: [v6,net-next,06/15] net: fec: add fec_enet_rx_queue_xdp() for XDP
- path
-Thread-Topic: [v6,net-next,06/15] net: fec: add fec_enet_rx_queue_xdp() for
- XDP path
-Thread-Index: AQHclmBLEIj9kUWVTEaaHreGFHtR+7VzoNTw
-Date: Thu, 5 Feb 2026 06:16:08 +0000
-Message-ID:
- <PAXPR04MB8510844B724FB984FB67E9138899A@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20260203052329.1085444-7-wei.fang@nxp.com>
- <20260205052837.2449389-1-kuba@kernel.org>
-In-Reply-To: <20260205052837.2449389-1-kuba@kernel.org>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|VI1PR04MB9761:EE_
-x-ms-office365-filtering-correlation-id: 093bcb5f-6e4f-4aad-a754-08de647e0d37
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|19092799006|1800799024|7416014|376014|38070700021;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?4NlFtCjP1lZZ4arUgtvimdhI9tuOfnQXYP66u+0l11QHSlKoQJhwavfGevQU?=
- =?us-ascii?Q?OsBjWf75DNm6z/19IK+jButXBgIAQiUX4WUvYDanJ54sxftM+0mkC66Nps/t?=
- =?us-ascii?Q?O2FZ7wTsVCZDB7Rr+npIobPLHpY4cmVuffBETRARW0QgJZK2Sy+WO5EmPPPe?=
- =?us-ascii?Q?qHmqD5kh1oJdbSKjgeLRFEc99A8Pxzhed3a+U1RDaZ+KbcD6S3caQBK+FQXQ?=
- =?us-ascii?Q?L4M6TBVpd7VFvTXp0ro7GQXKu7Jwsnncj7ygeLw2PmlasvG6T03mu/m44yHS?=
- =?us-ascii?Q?DEa92bHWCD83Ry3Zi2QstfP3ym5RJpHBzgL7HgS94pgJChUNB9N6uqkk/Bc3?=
- =?us-ascii?Q?aW1ygD9Uk7+4WOm514stO4iNvbpLgyJGCzMqsDC0lTJyngyGaM0wQME9ImN/?=
- =?us-ascii?Q?fXy5I67lZWFKm/VmI/VbiBJZXtzmtNK1pQPavPV5JHRBYB8w2u5sRzIM2A3f?=
- =?us-ascii?Q?UZ7rQj2IxfCf2D3NcNpvbeSq54MB5K6VVtD79jlaax6IR2wnjJTZFLf9dpw1?=
- =?us-ascii?Q?c1oLAMDP6HgXuH4eeyBTwgV9fXw0ZYPRZkn99NNlBb6FD9M9KK1XjwbZJSBm?=
- =?us-ascii?Q?JskryOlK7U8gBAIfoGh6K5G2L0ldymak9GOM30FIK3RY662xdBpkFgAUXwHF?=
- =?us-ascii?Q?IYDSZ58mhCgzT2Fo9on8+cfIvgmP9Qh9LpXfhA5Cj3OoCvrSY3uySe67JHYe?=
- =?us-ascii?Q?xOkWpUZlSENagDINekK2Hu9IL9MU1QGblvg4IfvParCJ3cRFoLS/XCTObJ2e?=
- =?us-ascii?Q?EoOacxfFGPtHq5/Ep98pwV52rKrvx/Aek/mxuQKzxJgHMxW1bApHVnRA0o+k?=
- =?us-ascii?Q?m3GnkVp6xW3xPVTPmWk+r+eIAjcMzgHX6od52qgqa0aluG8oMr6LYoHIwY3Q?=
- =?us-ascii?Q?eInJGDXLmeeowasOJz/mLBHu/Y/GltyaHCQKG+/rxiPmg6z/olhuHlIrknyF?=
- =?us-ascii?Q?XJIvqBrv4VzFneSP2sliJC7tdjyEAb3Ktcn3Rna5kIHlI2kmFVPvYzZD6wuN?=
- =?us-ascii?Q?PsKi6yowuMi1eFqonga17QFG3eahHamNC00UI9pt+a+uT9vTogzvDhJmBKVK?=
- =?us-ascii?Q?ervkWk9LT/lxA1rJXLkSaT/5qsCIoGFwECn2WrWbrbzkOoiudLWW0aSfKLas?=
- =?us-ascii?Q?0untxEo4m7xly20qeG60JB59VdlqmQnMr82SMRN4a7NTv4hQqU4qjTiKKfFd?=
- =?us-ascii?Q?whulcjZGInl0XZDZJtZaUlRS7Pt0eIvNPe1wlQyjxoitqdCU/S1XenIo930/?=
- =?us-ascii?Q?B7+AIx550qNzWXyB8TaOoFLmysITIKecbfClr+yxVuR4EbFo5hrciNh/TiGj?=
- =?us-ascii?Q?NI70X6C0qEPFb4+IpbOLG+vHzLjhblJiNISzIEdFJVlo8s/gci36sK0XiVgq?=
- =?us-ascii?Q?rJzOCNYdvOSv2+c4KK0P0QSrGBd5fgJ+H39sOXdng5ecGIOJJbh78IbiTz61?=
- =?us-ascii?Q?+7zi8dqpI8FCrHWSvlCx2B771ecGUYZL8rU1RmIdLV54Nx5JpQ0PeuqAvpJP?=
- =?us-ascii?Q?l5gYTX0f/oHVk0QuYrj9mjrHy93nsflzzlW20qSN9a1tr3vBYvbHMLeodZjt?=
- =?us-ascii?Q?gnv7uGOPqpnevprO+Smsw//z+iweXMzLcuSUbwJS+9Mxy0NgnXG7seuTN0Pn?=
- =?us-ascii?Q?3LeRwXrRkLpPTTvkI9aP5Pk=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(19092799006)(1800799024)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?WBhvBZg0rIR2SKKGSD/9A7aEI6oJr8WfjytzQ+rEiGu//hTwaLlsLm8Zt3Ri?=
- =?us-ascii?Q?2B8Sgic2cadkdawjovObTuFHRIMeTQMotURLjFL8ns4XQwu0WZlm5Xoh7NjK?=
- =?us-ascii?Q?oPpEVxzzn6gpcvlwQVvbTrctN1CaqRlOqFqdIzl/BHEZpNLQaIEP0sp5kLrr?=
- =?us-ascii?Q?I/g+YxYZG7YKD86V469IOOuNzH6ERLXEOo+ScnXYEDdpgzEONQR/IKLFY6kj?=
- =?us-ascii?Q?Mkmt3o3Fk4uu7m6d0612WhPzbFACKthFSIzOdx9ufY05VZj3yZewH6zwt+fG?=
- =?us-ascii?Q?ncX+bUJ+ghJBj7K5stuQegXp++oPI2+FyfhjxYBg65M7ye6nXGXiTPVLnieI?=
- =?us-ascii?Q?vRq3q6n0aciP4XlpkPJiooF2pusg/qqd9lYEmLH7eXqCfU8opzzI54L73a6f?=
- =?us-ascii?Q?+T/NvE8/IZmdqXJh4AXDKICEPIEt2DcS/WLazT6Db57KlHA1o3ZX9RSNXPlf?=
- =?us-ascii?Q?Ds7BG71GM+fKWK2zLXAzCSyqjoSvlqGP3CF4eIJGbP0DApIUjxspWAC6LuJL?=
- =?us-ascii?Q?9Drid2JQUXgGa+4gOmWR1uJbgZclB6fkp/mRE8CouFYDt6Ok4VkNkVRI/5w1?=
- =?us-ascii?Q?KWGxWdXNf0WObNbIp4I8dOkR7o+tF9C2IfprXR/hBjiWGmtowuKNdLPomQgn?=
- =?us-ascii?Q?+EPBwX1yg1snUDdn7ApmQVjBg+AvJdjXtFDT2Cikke82Nf937dekZYQL4gf5?=
- =?us-ascii?Q?9PTukFPoxAEFal6X8BL3mwZB02wzBTpDNyWP5TQtMuhCWMvEOs5llKxPRXeh?=
- =?us-ascii?Q?FChAIG3dN2T0LFMaj8uGk+gH4V0Nt0+pqOJVM3x5GjbdN05rvqiHULdQHbX8?=
- =?us-ascii?Q?T8GR5JmhBFNSaEUSS6YTGic2nc/QHExaWFTLj7M7rhEcr8Srzyzu0xSu+0eb?=
- =?us-ascii?Q?TxpUce5GdIv0+GqbM0dI+r2c+Dsxk00CqKGyMQLf/BfmvYgKQu0FZrwNb5Jw?=
- =?us-ascii?Q?5wHARDdMzPBOip9J3AbWVBvi0dzAXv6dS9rj8Wdt4rgH82e4g8GNpsvjhKf2?=
- =?us-ascii?Q?Y9xKNwJvL/R/Igg7OOLCnlqvlKmrBF1A2dpKu65eFchMS9JRc725A45BvyiU?=
- =?us-ascii?Q?eOIEpBDyG8CIH4B4fqlpFxO7emfPj4bf8A50HjLJToclEMhVkxVgdQGwbMpc?=
- =?us-ascii?Q?UOYbr8ZCGmk2cX6uqTi0oFheT9Tz4wOstorY/2lqzoWpliw6Fk4mDNh4yuHq?=
- =?us-ascii?Q?uBlzz5iZit3uGD/G8JpkDORjBYoxbNwAJ8FDerefgkxnQqPtep3qfEbkFhib?=
- =?us-ascii?Q?LZqxOHbOw5NpboEpSzvCSxtXpy17QB8rWLtc7ahwXZRMyHSfqSIGLdkCfRL/?=
- =?us-ascii?Q?eDMqXn5/SKu2deCm5wWCQgVwGl5TkImk5Jlez7b5mFeJnZXlBpz8oAzuZnVh?=
- =?us-ascii?Q?yceLzZ6LBE+wYieEEPg5C2RjLYoHs3i8ani1W2/d9vVpdwTbEUUH/+PBAxBq?=
- =?us-ascii?Q?SmucIcy9cfHgRWZJ4N2Rj6nyx5Vj9YQDq7y42GtzfZmnX2bXA/Mb+WgF6e4u?=
- =?us-ascii?Q?yIKy4SeWrx1WB2F4gH2WrShJarFQci2+EX/0ate463td/MURzBl0BRczY7vf?=
- =?us-ascii?Q?JBXMEJlGUn//lkQqxP96nn6rCMcu7WJd5Z2ZTffaH4q+hw+vrpZIEcOUhM4w?=
- =?us-ascii?Q?+VHynHpjzHz/qfWqUNsjma+E8LVV4yfV9Iu5RR9sffExspaHd+7wdBEhaIwi?=
- =?us-ascii?Q?PeDRdo7gtsSd0QHGJhvDx6LSIhCwwIwP5dxNnOb45K90b6yV?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ibrkM/IM";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="m3IhX9zp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770272684;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=18afiwTs2Q1K1O6pkKB+aeDkBjoxoyzyrBart1C+0Rw=;
+	b=ibrkM/IMY7f5gV7ftjT0mpVtgI5Nn9u21gayKf6HVwjrg+3WgfHxDI+uWTk9VCqG5g2CJ+
+	OQYo3wNPvN7I7YOa+63xd9EF7rHqqdyjt3A0B05hMqzLvs2UEGRDEs0h7uxDxBpBTV/rHg
+	/wvQagSD+IX2T21d/lpHanlpoza9jlU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-442-EFxbbSL1NGOWZALPS5w_Cw-1; Thu, 05 Feb 2026 01:24:43 -0500
+X-MC-Unique: EFxbbSL1NGOWZALPS5w_Cw-1
+X-Mimecast-MFC-AGG-ID: EFxbbSL1NGOWZALPS5w_Cw_1770272682
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4801d21c280so6460365e9.1
+        for <netdev@vger.kernel.org>; Wed, 04 Feb 2026 22:24:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1770272682; x=1770877482; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=18afiwTs2Q1K1O6pkKB+aeDkBjoxoyzyrBart1C+0Rw=;
+        b=m3IhX9zpxYz0WcnMrYcSyPjz14f8NH9vAONV33bLuV9pJw8oKZqt6QXB+JPNO0Zptz
+         Xm+43fNiSJ8TuL6meENRrLT1qu06ZCRtu9ulgLz5iXS3d5vHRqulHOq0ZpOXZLTjU/cr
+         XXRXgtfaZKRbaQ53cATuzc0JNtWhccnoDygitvmaEvJLYqmZ6X7SG1buYJSqUnUPbBKK
+         4Bi8nYWVR3jtxXj+NZ3/C9l3N4lJUwxjSqc+WuFjAWu+5l/7LBjRBBwr0UfAyunsCSB5
+         hvPHhcxLCm1cIGsAqnubAmaC5w3HFEncBVWfDgK1dhC8ztgr4HGnxOT+v/AKeXDmidgV
+         jaGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770272682; x=1770877482;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=18afiwTs2Q1K1O6pkKB+aeDkBjoxoyzyrBart1C+0Rw=;
+        b=B02sZLcuSHZjX6fjJw5Q6ZXUmN+c+3cEmU0rNWdqmDoMSlDi68Af1SrxYB4/HquuIs
+         Bf1NUkHWJUrQXMRAqrMq7Ujso5SHqK9Ykq0mtDjyn2JDA4NEy+qF9l9q38mskiAVarQV
+         /UvaRKoILHcP35b4PsJirdVl5ift334HJTI3TPRnfIjcWyAIv75OAvxqbgjW+FSrUGEi
+         Hz5s2d6WefLX6mlLJqSpvyYAinHfX7D+je50hE+UBuCctxU3zLzm5cbxqJ5QA2iNl/e8
+         56/vRfO7jPUPDBhJVM8kUCAQs0sZBQjlHPIMsvJ92w3PAlXx5xMqXIezXgq3Ic0wnMU9
+         5+ug==
+X-Forwarded-Encrypted: i=1; AJvYcCWiAUItirsDzla2AjBFG7CScEybsZSm/WrUN0HEoGV3IAf1YDNA5EcAnkvW98vtUIu2Xqsc24E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyX5u0JNvt0897Hegn6V9uNNAIzBO76l8HUplJ8gEgyX3TjJ4DD
+	QqcgGzVeqsmD/ThhC8TjD1s4aeyYCEQklA19ZfAlCWZKRuG3BDFswB4G8gZvHgrNypprW9nQKXC
+	rlsVkgfHCn+CuQdjzsu0Qi3inc1RrpgyyCo53zToEj9x/4naBuMXjTiJ9+Q==
+X-Gm-Gg: AZuq6aKzCVrlhJxAcgFOPs5c2yZFTJjiPMPMq1SCghfm2UmNGnZzE9QH+AJKERO72Ek
+	Ks00BCBYNoRAU5MDJoQ4odEPyBavcFsxK5VJQXLEaqmpyfjhi2eOkKY7y8TVZ4G+j5kYg0yeg4F
+	OQaxHu/7oiCCApqLNaJQwgUqsyibrnRBX5TYp75W8r0zmRO1hABbO47/KIOQquWn/shZOd1w6Xm
+	W1fuwAbWBgLhOfN33FhExk6VCHpDtwTDtN6v6qRM7jlV6i9I67q3DA7dE5jGPFi7S+qwWyYNrFf
+	umoQXKWKLknVilHh3p/o18UteC6tE91SWno5hqk0kxwgxkACDUlJg5mTdP87fxcddcaTz9lff0n
+	fhCP0QKXc2tj73Q/xombECK96Jw6NTNMczQ==
+X-Received: by 2002:a05:600c:8b30:b0:47d:264e:b435 with SMTP id 5b1f17b1804b1-4830e96ada6mr75710965e9.22.1770272682168;
+        Wed, 04 Feb 2026 22:24:42 -0800 (PST)
+X-Received: by 2002:a05:600c:8b30:b0:47d:264e:b435 with SMTP id 5b1f17b1804b1-4830e96ada6mr75710645e9.22.1770272681559;
+        Wed, 04 Feb 2026 22:24:41 -0800 (PST)
+Received: from redhat.com (IGLD-80-230-34-155.inter.net.il. [80.230.34.155])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48317d299bfsm31921785e9.2.2026.02.04.22.24.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 22:24:41 -0800 (PST)
+Date: Thu, 5 Feb 2026 01:24:37 -0500
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Vishwanath Seshagiri <vishs@meta.com>
+Cc: Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	David Wei <dw@davidwei.uk>, Matteo Croce <technoboy85@gmail.com>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	netdev@vger.kernel.org, virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH net-next v4 2/2] selftests: virtio_net: add buffer
+ circulation test
+Message-ID: <20260205012145-mutt-send-email-mst@kernel.org>
+References: <20260204193617.1200752-1-vishs@meta.com>
+ <20260204193617.1200752-3-vishs@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 093bcb5f-6e4f-4aad-a754-08de647e0d37
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Feb 2026 06:16:08.3009
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: ujHQXJ8typGnETSsibWL9b7xiScxp9FsMV8j9CPaA9M+Z2yGKYkilvsUnf9IGe5mQNShrHevNRbXGD7GO8SCYA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR04MB9761
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260204193617.1200752-3-vishs@meta.com>
 
-> > +static int fec_enet_rx_queue_xdp(struct fec_enet_private *fep, int que=
-ue,
-> > +				 int budget, struct bpf_prog *prog)
-> > +{
->=20
-> [ ... ]
->=20
-> > +		switch (act) {
-> > +		case XDP_PASS:
-> > +			rxq->stats[RX_XDP_PASS]++;
-> > +			/* The packet length includes FCS, but we don't want to
-> > +			 * include that when passing upstream as it messes up
-> > +			 * bridging applications.
-> > +			 */
-> > +			skb =3D fec_build_skb(fep, rxq, bdp, page, pkt_len);
-> > +			if (!skb)
-> > +				trace_xdp_exception(ndev, prog, XDP_PASS);
-> > +			else
-> > +				napi_gro_receive(&fep->napi, skb);
-> > +
-> > +			break;
-> > +		case XDP_REDIRECT:
-> > +			rxq->stats[RX_XDP_REDIRECT]++;
-> > +			err =3D xdp_do_redirect(ndev, &xdp, prog);
-> > +			if (unlikely(err)) {
-> > +				fec_xdp_drop(rxq, &xdp, sync);
-> > +				trace_xdp_exception(ndev, prog, XDP_REDIRECT);
-> > +			} else {
-> > +				xdp_res |=3D FEC_ENET_XDP_REDIR;
-> > +			}
-> > +			break;
-> > +		case XDP_TX:
-> > +			rxq->stats[RX_XDP_TX]++;
-> > +			err =3D fec_enet_xdp_tx_xmit(fep, cpu, &xdp, sync);
-> > +			if (unlikely(err)) {
-> > +				rxq->stats[RX_XDP_TX_ERRORS]++;
-> > +				fec_xdp_drop(rxq, &xdp, sync);
-> > +				trace_xdp_exception(ndev, prog, XDP_TX);
-> > +			}
-> > +			break;
-> > +		default:
-> > +			bpf_warn_invalid_xdp_action(ndev, prog, act);
-> > +			fallthrough;
-> > +		case XDP_ABORTED:
-> > +			/* handle aborts by dropping packet */
-> > +			fallthrough;
-> > +		case XDP_DROP:
-> > +			rxq->stats[RX_XDP_DROP]++;
-> > +			fec_xdp_drop(rxq, &xdp, sync);
-> > +			break;
->=20
-> Are XDP_ABORTED and invalid XDP actions being traced properly? In the
+On Wed, Feb 04, 2026 at 11:36:17AM -0800, Vishwanath Seshagiri wrote:
+> Add iperf3-based test to verify RX buffer handling under load.
+> Optionally logs page_pool tracepoints when available.
 
-I will fix it, thanks.
+but it doesn't verify/validate them - it's just a generic throughput
+test. so what is the value add here?
+
+
+> Signed-off-by: Vishwanath Seshagiri <vishs@meta.com>
+> ---
+>  .../drivers/net/virtio_net/basic_features.sh  | 86 +++++++++++++++++++
+>  1 file changed, 86 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/drivers/net/virtio_net/basic_features.sh b/tools/testing/selftests/drivers/net/virtio_net/basic_features.sh
+> index cf8cf816ed48..fa98505c4674 100755
+> --- a/tools/testing/selftests/drivers/net/virtio_net/basic_features.sh
+> +++ b/tools/testing/selftests/drivers/net/virtio_net/basic_features.sh
+> @@ -6,6 +6,7 @@
+>  ALL_TESTS="
+>  	initial_ping_test
+>  	f_mac_test
+> +	buffer_circulation_test
+>  "
+>  
+>  source virtio_net_common.sh
+> @@ -16,6 +17,8 @@ source "$lib_dir"/../../../net/forwarding/lib.sh
+>  h1=${NETIFS[p1]}
+>  h2=${NETIFS[p2]}
+>  
+> +IPERF_SERVER_PID=""
+> +
+>  h1_create()
+>  {
+>  	simple_if_init $h1 $H1_IPV4/24 $H1_IPV6/64
+> @@ -83,6 +86,84 @@ f_mac_test()
+>  	log_test "$test_name"
+>  }
+>  
+> +buffer_circulation_test()
+> +{
+> +	RET=0
+> +	local test_name="buffer circulation"
+> +	local tracefs="/sys/kernel/tracing"
+> +
+> +	if ! check_command iperf3; then
+> +		log_test_skip "$test_name" "iperf3 not installed"
+> +		return 0
+> +	fi
+> +
+> +	setup_cleanup
+> +	setup_prepare
+> +
+> +	ping -c 1 -I "$h1" "$H2_IPV4" >/dev/null
+> +	if [ $? -ne 0 ]; then
+> +		check_err 1 "Ping failed"
+> +		log_test "$test_name"
+> +		return
+> +	fi
+> +
+> +	local rx_start=$(cat /sys/class/net/"$h2"/statistics/rx_packets)
+> +	local tx_start=$(cat /sys/class/net/"$h1"/statistics/tx_packets)
+> +
+> +	if [ -d "$tracefs/events/page_pool" ]; then
+> +		echo > "$tracefs/trace"
+> +		echo 1 > "$tracefs/events/page_pool/enable"
+> +	fi
+> +
+> +	local port=$(shuf -i 49152-65535 -n 1)
+> +
+> +	iperf3 -s -1 --bind-dev "$h2" -p "$port" &>/dev/null &
+> +	IPERF_SERVER_PID=$!
+> +	sleep 1
+> +
+> +	if ! kill -0 "$IPERF_SERVER_PID" 2>/dev/null; then
+> +		IPERF_SERVER_PID=""
+> +		if [ -d "$tracefs/events/page_pool" ]; then
+> +			echo 0 > "$tracefs/events/page_pool/enable"
+> +		fi
+> +		check_err 1 "iperf3 server died"
+> +		log_test "$test_name"
+> +		return
+> +	fi
+> +
+> +	iperf3 -c "$H2_IPV4" --bind-dev "$h1" -p "$port" -t 5 >/dev/null 2>&1
+> +	local iperf_ret=$?
+> +
+> +	if [ -n "$IPERF_SERVER_PID" ]; then
+> +		kill "$IPERF_SERVER_PID" 2>/dev/null || true
+> +		wait "$IPERF_SERVER_PID" 2>/dev/null || true
+> +		IPERF_SERVER_PID=""
+> +	fi
+> +
+> +	if [ -d "$tracefs/events/page_pool" ]; then
+> +		echo 0 > "$tracefs/events/page_pool/enable"
+> +		local trace="$tracefs/trace"
+> +		local hold=$(grep -c "page_pool_state_hold" "$trace" 2>/dev/null)
+> +		local release=$(grep -c "page_pool_state_release" "$trace" 2>/dev/null)
+> +		log_info "page_pool events: hold=${hold:-0}, release=${release:-0}"
+> +	fi
+> +
+> +	local rx_end=$(cat /sys/class/net/"$h2"/statistics/rx_packets)
+> +	local tx_end=$(cat /sys/class/net/"$h1"/statistics/tx_packets)
+> +	local rx_delta=$((rx_end - rx_start))
+> +	local tx_delta=$((tx_end - tx_start))
+> +
+> +	log_info "Circulated TX:$tx_delta RX:$rx_delta"
+> +
+> +	if [ "$iperf_ret" -ne 0 ]; then
+> +		check_err 1 "iperf3 failed"
+> +	elif [ "$rx_delta" -lt 10000 ]; then
+> +		check_err 1 "Too few packets: $rx_delta"
+> +	fi
+> +
+> +	log_test "$test_name"
+> +}
+> +
+>  setup_prepare()
+>  {
+>  	virtio_device_rebind $h1
+> @@ -113,6 +194,11 @@ setup_cleanup()
+>  
+>  cleanup()
+>  {
+> +	if [ -n "$IPERF_SERVER_PID" ]; then
+> +		kill "$IPERF_SERVER_PID" 2>/dev/null || true
+> +		wait "$IPERF_SERVER_PID" 2>/dev/null || true
+> +	fi
+> +
+>  	pre_cleanup
+>  	setup_cleanup
+>  }
+> -- 
+> 2.47.3
 
