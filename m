@@ -1,103 +1,83 @@
-Received: from exactco.de (exactco.de [176.9.10.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DF6429813
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 16:09:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=176.9.10.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B512C0F91;
+	Thu,  5 Feb 2026 16:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770307747; cv=none; b=WRP3yCjjBnrf3JK02ECn90O8wKvLWjVH6ok28aTUbjZg4/nl/qCSLI+ct1NKJVn+IjkdSo0YeDmkeSsMzWaMefRku0JpK/KeZviCXH4XUOfd274CgG5owtvC35boKc98dUlrtKRBUotvWkapuW0XtKwKKwqPQHHnJEsohGWQSA0=
+	t=1770308176; cv=none; b=caVq2G6GB2BDKXeOQt9E4AXWtn5/xfaVRNz+m+xrDc/VkWJqyUEfgsqibuTelIor16hA0BUUl6myVeTTKpiZx8YWh9Dn143J73z0eEy7MLBFG1ZUgppH/D8J6AQ76BkU0OrB6Li+tEO+Rj+piCMmtVpnkjKBoSeuqfFSQyj7nY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770307747; c=relaxed/simple;
-	bh=10aIrcqCdEdMIKNXQ0abaaQDfh4zdVS1zv0QFBd9pUw=;
-	h=Date:Message-Id:To:Cc:Subject:From:Mime-Version:Content-Type; b=k+cC/EYagpgmbwthZV7Kh7kJveTqPVL5GWyg2V8m5lFaABmmza4ZWoOSjS2DQ+pYuS5FS4oXg4vXdksAm0aTuNkJtAyOWShy408XS18/Iohv8QTOuHTVgE9hxJBRbzLyL8L6CJ+EY6zz7fX3g4OUxyKLMPuDTlW4W38v7GUpnBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de; spf=pass smtp.mailfrom=exactco.de; dkim=pass (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b=jvezvik3; arc=none smtp.client-ip=176.9.10.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=exactco.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=exactco.de
+	s=arc-20240116; t=1770308176; c=relaxed/simple;
+	bh=PV2Zzmkef21eRrCOQf0Q175nJBjzm+KyKai2dRqEd3E=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oPTpPd4PYgAtq591dwL02MohUcOgtUUOREcLCKS6sXjloJzw6prHY+Se+1zBb56mvRu5CRoicPhaHUA51HuyWSRNEIcPvPwu1YI++F9d0rzbbDLe32kW0lzWBMfCwnTomyA3nnyHUb5NPPAvJCij7hbMQtVnWsDn9jX7Le21ZZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XPu012I9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=exactco.de header.i=@exactco.de header.b="jvezvik3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=exactco.de;
-	s=x; h=Content-Transfer-Encoding:Content-Type:Mime-Version:From:Subject:Cc:To
-	:Message-Id:Date:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
-	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
-	List-Owner:List-Archive; bh=w0X+x/tVrh8Uccyo/RP+/OE173S+ry/7Njrrocp4d/A=; b=j
-	vezvik3JX0TB3fasYLppyRCYr6ut/HY54YNJ2AGF3+kO+H1TLkXJCD/U/jbPbJ7Eh3MhIDrZB/FC+
-	LOYYacQ7Sn89Dwcz5R24YNnJpBlhjuoDekh7inZJuszEyfx7bmzxkCfgIgO3he3E/jmOY+Mibow+3
-	QfCJWULJhcpwNJUmZLykCCnQ3fPwAUtfVPuZJaPWnVq/YUSJbpXarpWrkgUIjIxcwfkoXE9Q4OO3u
-	fb2qNBEv0Q1oqUkYMPcwWAxzT/voQFOsUbCuiqpsKZjUxwNCbrBZzr8nCKEvAR6PXlrWB3bLkSTIg
-	bmtDcl71nQFC/DYn6aWOQvzIUEbmTzvDg==;
-Date: Thu, 05 Feb 2026 17:09:59 +0100 (CET)
-Message-Id: <20260205.170959.89574674688839340.rene@exactco.de>
-To: Sean Anderson <seanga2@gmail.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, <netdev@vger.kernel.org>
-Subject: [PATCH] net: sunhme: Fix sbus regression
-From: =?iso-8859-1?Q?Ren=E9?= Rebe <rene@exactco.de>
-X-Mailer: Mew version 6.10 on Emacs 30.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPu012I9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35156C116D0;
+	Thu,  5 Feb 2026 16:16:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770308175;
+	bh=PV2Zzmkef21eRrCOQf0Q175nJBjzm+KyKai2dRqEd3E=;
+	h=From:To:Cc:Subject:Date:From;
+	b=XPu012I95Da8GFicm+it7uSEyUJWRr9grvbTowU01/ql5Q84ZvtvdEMyfi/aEcn8f
+	 sPH8R+a1EAD1KaWzDCyO1K9HGkt3BftsC7lGcJyXqWc0qk4VdSR3bdm8jA3o4qU0E0
+	 cdd0vMvt/zX2k258Do+FwWpUM3i+CbvBcHtdU6RjKovV7N7Hf9UAz2oqkVmAlZEAfY
+	 VfdlPYBsfCsABiURwQ2sRqXLMtj/aVy6Krnpq3e+02yltKjQpmVew6khzAx5HIEKIH
+	 sCB+gQG/LPTfNUKNtyqENBtlCSuUgDohv+zTvCax5KYynvezSvNLUC80kGfgR0qjVu
+	 9DKwAvY9IjuzA==
+From: Arnd Bergmann <arnd@kernel.org>
+To: Fan Gong <gongfan1@huawei.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Zhu Yikai <zhuyikai1@h-partners.com>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Xin Guo <guoxin09@huawei.com>,
+	Gur Stavi <gur.stavi@huawei.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] [net-next] hinic3: select CONFIG_DIMLIB
+Date: Thu,  5 Feb 2026 17:13:48 +0100
+Message-Id: <20260205161530.1308504-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit cc216e4b44ce ("net: sunhme: Switch SBUS to devres") changed
-explicit sized of_ioremap with BMAC_REG_SIZEs to
-devm_platform_ioremap_resource mapping all the resource. However,
-this does not work on my Sun Ultra 2 with SBUS HMEs:
+From: Arnd Bergmann <arnd@arndb.de>
 
-hme f0072f38: error -EBUSY: can't request region for resource [mem 0x1ffe8c07000-0x1ffe8c0701f]
-hme f0072f38: Cannot map TCVR registers.
-hme f0072f38: probe with driver hme failed with error -16
-hme f007ab44: error -EBUSY: can't request region for resource [mem 0x1ff28c07000-0x1ff28c0701f]
-hme f007ab44: Cannot map TCVR registers.
-hme f007ab44: probe with driver hme failed with error -16
+The driver started using dimlib but fails to select the corresponding
+symbol, which results in a link failure:
 
-Turns out the open-firmware resources overlap, at least on this
-machines and PROM version:
+x86_64-linux-ld: drivers/net/ethernet/huawei/hinic3/hinic3_irq.o: in function `hinic3_poll':
+hinic3_irq.c:(.text+0x179): undefined reference to `net_dim'
+x86_64-linux-ld: drivers/net/ethernet/huawei/hinic3/hinic3_irq.o: in function `hinic3_rx_dim_work':
+hinic3_irq.c:(.text+0x1fb): undefined reference to `net_dim_get_rx_moderation'
 
-hexdump /proc/device-tree/sbus@1f,0/SUNW,hme@2,8c00000/reg:
-00 00 00 02 08 c0 00 00  00 00 01 08
-00 00 00 02 08 c0 20 00  00 00 20 00
-00 00 00 02 08 c0 40 00  00 00 20 00
-00 00 00 02 08 c0 60 00  00 00 20 00
-00 00 00 02 08 c0 70 00  00 00 00 20
-
-And the driver previously explicitly mapped way smaller mmio regions:
-
-/proc/iomem:
-1ff28c00000-1ff28c00107 : HME Global Regs
-1ff28c02000-1ff28c02033 : HME TX Regs
-1ff28c04000-1ff28c0401f : HME RX Regs
-1ff28c06000-1ff28c0635f : HME BIGMAC Regs
-1ff28c07000-1ff28c0701f : HME Tranceiver Regs
-
-Quirk this specific issue by truncating the previous resource to not
-overlap into the TCVR registers.
-
-Fixes: cc216e4b44ce ("net: sunhme: Switch SBUS to devres")
-Signed-off-by: René Rebe <rene@exactco.de>
+Fixes: b35a6fd37a00 ("hinic3: Add adaptive IRQ coalescing with DIM")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
-Tested on Sun Ultra 2 running T2/Linux.
-Alternatively we could explicitly size all regions, or check overlap
-in startup code (I also already have a patch for that, too).
----
+ drivers/net/ethernet/huawei/hinic3/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- linux-6.18/drivers/net/ethernet/sun/sunhme.c.vanilla	2026-02-05 11:50:33.288906134 +0100
-+++ linux-6.18/drivers/net/ethernet/sun/sunhme.c	2026-02-05 11:55:22.541384377 +0100
-@@ -2551,6 +2551,9 @@
- 		goto err_out_clear_quattro;
- 	}
- 
-+	/* BIGMAC may have bogus sizes */
-+	if ((op->resource[3].end - op->resource[3].start) >= BMAC_REG_SIZE)
-+		op->resource[3].end = op->resource[3].start + BMAC_REG_SIZE - 1;
- 	hp->bigmacregs = devm_platform_ioremap_resource(op, 3);
- 	if (IS_ERR(hp->bigmacregs)) {
- 		dev_err(&op->dev, "Cannot map BIGMAC registers.\n");
-
+diff --git a/drivers/net/ethernet/huawei/hinic3/Kconfig b/drivers/net/ethernet/huawei/hinic3/Kconfig
+index ce4331d1387b..02d6f91a7f4a 100644
+--- a/drivers/net/ethernet/huawei/hinic3/Kconfig
++++ b/drivers/net/ethernet/huawei/hinic3/Kconfig
+@@ -11,6 +11,7 @@ config HINIC3
+ 	depends on X86 || ARM64 || COMPILE_TEST
+ 	depends on PCI_MSI && 64BIT
+ 	select AUXILIARY_BUS
++	select DIMLIB
+ 	select PAGE_POOL
+ 	help
+ 	  This driver supports HiNIC 3rd gen Network Adapter (HINIC3).
 -- 
-René Rebe, ExactCODE GmbH, Berlin, Germany
-https://exactco.de • https://t2linux.com • https://patreon.com/renerebe
+2.39.5
+
