@@ -1,118 +1,63 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8563301001
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 17:47:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B335D2FF65F;
+	Thu,  5 Feb 2026 17:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770313623; cv=none; b=mFqJQFQopROAhacD6nhTUYDYV2lS4046GeuGIWnh/ATfHfDHKLt1klnF/cp0NOgNUXNQqtzCcMuYd9S/oTUVy7LCswiTp2Tlrv+84iCjpSS/ZcDCu8UfuuxBe267Z2cDG/XC2ckjk6Hc1pH/qXRUz6m45kff0BoWrUDCxySqSjs=
+	t=1770313649; cv=none; b=uwVvlhsjAgpaiLqi9D0ROrgAnbxnqgdSFooxRosRJKeiM28/Cxh+jTEjk3EyawkVOsezp53YPOLvRr8IzyWZ3Y+4XKHClbg11OJGSy19p3ZWsQ9rsynWZ1srw1kNEnJI4JA+dg/cC0cQ0ZtiHRca2lX5n8ft4ZU4fwycdNHf3QA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770313623; c=relaxed/simple;
-	bh=jiUemKPKlmRMVN2/Lj60IZso0aiEzOeF5BiA1KJE6b0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Xi9qpgy+YmAjNf52poAQDReBRKInnoX6zgq61w724gb6Kr6MEI37AobTmK968MXfmy7jkmbQZuJWcv0nmgB15ErMJ02mmLXTlgWU7xjTtpojUi1lF2BVGivm3ajUEslgNLxdc1ThkUCPnU/8C5Dtj/zVP7urHKIEiwimCd8sbXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IeMkSvW9; arc=none smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770313649; c=relaxed/simple;
+	bh=xwl0WuTnfOZ/MCKNV/acsDN1ZWbJA58gs2gtWOStIzA=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=l/utxNheGKHzcNOtikogtwtVjDjjbF0n0JWfMWucf9kvDkgYYQrIqoHR67zJre3/1gvBCDXrMxdKyl7saVc4p5o0rXWv591DKwNUoTavn6vp+JWoHQeF6Klkawye4EIpqPWCTrFKhE1bFBGn7tBsAvW5mrh9KWvYYHY9g7OyLKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PnwUUeRP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IeMkSvW9"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-81f5381d168so1386703b3a.2
-        for <netdev@vger.kernel.org>; Thu, 05 Feb 2026 09:47:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770313623; x=1770918423; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=EWxi5x9NQqhptmr8FMyD2h3Sur2tKgh7uRV919QBxv0=;
-        b=IeMkSvW9u61F3jTO+5Dp9dJuNMcsorVhUyt/EpdX5NGbW9gYJ912doXkqrwxVNhab2
-         3ihKgd0GB10vydyQjOJg9dSOu6Y9k3rzxknUHjjbfQBN6KTnMvRyeGuU8d8AQS8/qZ/M
-         U8HWpAQUXGehq1RxhgLFwpyYs1eEbJb4UimckgOFaeeJs0zSrgMj6+6EFM8t75xY/gZS
-         0+Wrqne4geXH9TZjbzFBeXuaO9Adqw/7VVFUlo4jFFzUDlh9jm5NWnqLAEa+q5jeTU21
-         T0AEYsBVJdhgzDkuB9oM2QS48g6tUzsy1E8o+Y8sfJs8+BO03mLJ4ZsLnJwS09ffUz3M
-         E5yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770313623; x=1770918423;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EWxi5x9NQqhptmr8FMyD2h3Sur2tKgh7uRV919QBxv0=;
-        b=FJ+gcrfBiudil6mAPMP9oY+ucYpoBUHp3kzx3vyV5MVeJbBXC1e0bwnWWjm+6PchQk
-         pGrDvJGVXpntsI82RyxAQHxdicLw+HemQOxa5R+Nn/oTsu7NiOY1iAHGUHu1Zw0BkpmX
-         F/Waz4iE+pKtBvXbtHNH6faA1GN7Skve7qApd9YG6F0ASiSC3cDfPk4ESkx5+s6bRhsz
-         QTec8WvgAEk5dacmn6t52KU5MxWrowcsNgED+VricC3G6AWLt3E4+U/zZ+Jul/YG94YG
-         MDdn1jdYLXINDNQa9M3D0uiaNaLkia59myZRH5ZThx+uYFhtlN9jDWQUkiyxqeDFQmEo
-         HfGg==
-X-Forwarded-Encrypted: i=1; AJvYcCXOVsX25W8Y/fL8LQYyapg7GonUSJnqh4U604Jv9DPL39XICOCDF6wFYWkX33vNvTioYnd+w84=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyn2Wj0ZPm8f40Z0xrxZTC84SY3VkwF+sic5a/YxQhCrUg2+KLW
-	XEwryV71Sy7y6FvUNocDXel4ulEvwjzQTrP6Ti9spP2Da4tDdgs9ABMa
-X-Gm-Gg: AZuq6aIFxkrucsUkj0m2RQTHDwZiGKwBN8tIHswdh0Y3oev2y13SKJjRPmspA75k1Hm
-	V1vUnEy0tq9V2Xmodgx22WsWzOiY7w0LO/OwBo0ZBjP1sOGxduQI22TrYl8jGzo+K4nxZOqrYh6
-	cslNTRUgg/N1ZIcAGsKPQsBF3BpKm2wWw/GXLu5FAvYMIKfcDcAdXtTWTsVJMaFr+EvAfTMYYEA
-	iCQgfGUbP0Q1MRZkiLMKrC2WIF89XdTX93EjPxPpaPuC57OB7+VXQiMqYOQRvwCWleN2SCe6XJu
-	qB3bYkkys+f5fbMPU54rXPz+fIwrTG0sy6Jhu8GeB15EdcB/gpEsG0bUrohBlVpWtRciHnHFD/2
-	tpAYzNJ0kS461WVsXFzz06xi0JyRg358xtuZtj+TuHnPVnOzy33QhEIjbmISGqeSy+wiurhbTFr
-	zDa0Dmx6nfPH0v
-X-Received: by 2002:a05:6a20:d504:b0:38f:df47:87ae with SMTP id adf61e73a8af0-393ad4630damr136816637.79.1770313623221;
-        Thu, 05 Feb 2026 09:47:03 -0800 (PST)
-Received: from mint.. ([2401:4900:53f5:8722:5847:8ba8:5649:5c92])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-354b1e3ca08sm96940a91.4.2026.02.05.09.47.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 09:47:02 -0800 (PST)
-From: Dhyan K Prajapati <dhyan19022009@gmail.com>
-X-Google-Original-From: Dhyan K Prajapati <dhyaan19022009@gmail.com>
-To: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	dhyaan19022009-hue <dhyaan19022009@gmail.com>
-Subject: [PATCH v5 wireless] mac80211: fix NULL pointer dereference in monitor mode
-Date: Thu,  5 Feb 2026 23:16:50 +0530
-Message-ID: <20260205174650.4575-1-dhyaan19022009@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PnwUUeRP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F1B1C4CEF7;
+	Thu,  5 Feb 2026 17:47:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770313649;
+	bh=xwl0WuTnfOZ/MCKNV/acsDN1ZWbJA58gs2gtWOStIzA=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=PnwUUeRPyqj/tctHN5yDckIsFllr/4ojtIaMj/+CXn5XCcI82CJPcnmiDeq8rF+jM
+	 Pi4KK9Kr1PcnMPBNo/VbDkFkB8cemLkVdHEptGbdd5Ku/wDkju9E1BYbiEw0Wl/9QQ
+	 Zd3cb5h3Eg8VUcplC+KakopuFy+BLA18NNuKXfJgbhPUJg23J9pj44eVv9fvbrGJGS
+	 ikd6Gxc8r+KOHgbm7bljycQMz4ZFgaMX9b8txDEcskNraY/D30e4iajsLIObwx3kNz
+	 zUQIkgb8WXuVu6SA1NQxrhd2qdD88l/h3kycym7HADp3aXnxL0YxMT0RCxt1mHMIrI
+	 dGA4ftE7wCItg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 484C33808200;
+	Thu,  5 Feb 2026 17:47:28 +0000 (UTC)
+Subject: Re: [GIT PULL] Networking for v6.19-rc9/final
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20260205171831.1944818-1-kuba@kernel.org>
+References: <20260205171831.1944818-1-kuba@kernel.org>
+X-PR-Tracked-List-Id: <netdev.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20260205171831.1944818-1-kuba@kernel.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-6.19-rc9
+X-PR-Tracked-Commit-Id: bbf4a17ad9ffc4e3d7ec13d73ecd59dea149ed25
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 8fdb05de0e2db89d8f56144c60ab784812e8c3b7
+Message-Id: <177031364685.509822.7533650509276870343.pr-tracker-bot@kernel.org>
+Date: Thu, 05 Feb 2026 17:47:26 +0000
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: torvalds@linux-foundation.org, kuba@kernel.org, davem@davemloft.net, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, pabeni@redhat.com
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: dhyaan19022009-hue <dhyaan19022009@gmail.com>
+The pull request you sent on Thu,  5 Feb 2026 09:18:31 -0800:
 
-Crash trace:
-  RIP: iwlagn_bss_info_changed+0x19d/0x640 [iwldvm]
-  Code: 49 8b 46 10 <8b> 10
-  RAX: 0000000000000000 (NULL link->conf->bss)
-wifi: mac80211: fix NULL pointer deref regression in link notify
-Commit c57e5b974514 ("wifi: mac80211: fix WARN_ON for monitor mode on
-some devices") reorganized link change notifications. This caused a
-regression for hardware using IEEE80211_HW_WANT_MONITOR_VIF. In monitor
-mode, link->conf->bss is uninitialized, but current logic allows these
-notifications to reach driver callbacks, causing a deterministic NULL
-dereference in drivers like iwldvm. Fix this by validating the BSS
-context before driver notification.
-Device: Intel Centrino Advanced-n 6205
-Fixes: c57e5b974514 ("wifi: mac80211: fix WARN_ON for monitor mode on some devices")
-Cc: stable@vger.kernel.org
-Cc: netdev@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Dhyan K Prajapati <dhyaan19022009@gmail.com>
----
- net/mac80211/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+> git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git tags/net-6.19-rc9
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index b05e313c7..190222c26 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -416,6 +416,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
- 	case NL80211_IFTYPE_MONITOR:
- 		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
- 			return;
-+		if (!link->conf->bss)
-+			return;
- 		break;
- 	default:
- 		break;
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/8fdb05de0e2db89d8f56144c60ab784812e8c3b7
+
+Thank you!
+
 -- 
-2.43.0
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
