@@ -1,121 +1,97 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C2D29DB8F;
-	Thu,  5 Feb 2026 05:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9892C2E7653;
+	Thu,  5 Feb 2026 05:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770268095; cv=none; b=Thwc/xcm++tJga2xCP2t/n9Th4ThwEBswnjXTfNft4wrtLMbuuOUceKNUskJcQ5yaXrO/0qEmY5Hx3k50HgpfLFafR5X2wjEV6rJeS5JBoeY4uomjvB2NrtdFeqzZNE9a+1/XFAZ4pnrcPLV8DjCcjaD1ECWwQh9e5G+QquFvmo=
+	t=1770268373; cv=none; b=UVexRBhEklt88v2OazEQIAyTAPENUf7e9Y38K9SQjSx70abklQwcn8tzERkHgvX0rCtLkffynudkS41WmIHFO6NSzwzkGK9ASlNTIdcjh297E6FfXLaOn65ywUhb5qiNtOEQNjh/Hzh/iiY5Ry0VaohP0HspbKKPJWcYxYFxae8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770268095; c=relaxed/simple;
-	bh=inmDEKbqFTqXVQ5qF5Tjt+Mij9tKR0GACRGVtbrQBdQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aX9pvYekojIBfLyTC+ECFFuDqfschVbZ8+/UuYPA1ORYWK2iSR7803P3OK0jgXZCK6bisKnOddpF3BsGJY1ADqQgTSjuVP1ia19CwnZqlk5OsPvfT0s++BbzJmXttH9VF1oEoOUO9gX9pT2nKDNzfeIgxSn4hExeIf7oKKcA9DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lspoIFcb; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770268373; c=relaxed/simple;
+	bh=Vl7TrPprWCwGj19OCOJ+kanJKZiV77f2y6pUNd+/esg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eMeTISQcf2KOuO3Cx6dJKhojbLtEVql25/ecxQ89KwWdUbIw9ygLrYl+cPmHRkoLhHNH2r7bEWLvwdtphDucUaS7vlUVx5mALMH8y5ctLUmQOh+qrD0wTvwQ3WjpwIZRJ2iWPLKwCIgn7jfXXQdAMuWSVQvVllEzxApn5TKX+4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RaNUORRB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lspoIFcb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD2EC4CEF7;
-	Thu,  5 Feb 2026 05:08:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RaNUORRB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBED9C4CEF7;
+	Thu,  5 Feb 2026 05:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770268095;
-	bh=inmDEKbqFTqXVQ5qF5Tjt+Mij9tKR0GACRGVtbrQBdQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lspoIFcbaMfG73s4KgKC+4s9KylwRZ97G/LPrBTRgpbM9G5lc67pWQhLQ8NL2WFud
-	 jDpC6x7SQ85hc0a3o/c9DUScEWFlekKHWFdlFMWAy8jxz15E1do3DcfoX40qPmB0fK
-	 D8uUri15zg8Y4QuXoW8af2LMUlQODjqEfIF5plPdsZCfeZY8Bgxx8UYEuXBl+yrbTO
-	 xzee3HS/m1vcv0YeUOyeJlEUjFYZX3ed1OD8RsGYnvJBnn5Lyk3hdodl+/gIfGty2P
-	 qxeLil2WgWzYrt2kI/UPUb2qiVG4p+bCCdZLwWl4z3Z7AnpXGl/l1b22FJ3+ufuMFh
-	 U5dV55176y/+Q==
+	s=k20201202; t=1770268373;
+	bh=Vl7TrPprWCwGj19OCOJ+kanJKZiV77f2y6pUNd+/esg=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RaNUORRB2KtD8EO5vCPTbTO+/oC2eNHPc8HGlI7G5/Ti5RRB+9d/02RKf4O8Ji5hb
+	 ANjXfaxLMkneFXcZNVHVG6U3KlNWQ8eL7xn27rbTiD71YbnbHZad5KGxip/FNIjULb
+	 uyZmD7mjpstx9/e7Je/D/hbc5pl+I2mqZRHMMlEZiJ1qEPzz0/z4Fpq/6s1PPySakj
+	 8sTgCB8BU7bmMtd8i9KRh99VU9TVr3fR7MbIDu07Aa/1RbVYQtJ6B20xJwkXny3CQx
+	 S8ld7ORnP8LFn3VZvNquGD5qGPzdqsMLkcVdMaIxCuMkWnKUyvb/W6o9qOXlFVZM0z
+	 Ao13CHOERlZwA==
+Date: Wed, 4 Feb 2026 21:12:52 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: mmyangfl@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	olteanv@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	andrew@lunn.ch
-Subject: Re: [net-next,2/3] net: dsa: yt921x: Return early for failed MIB read
-Date: Wed,  4 Feb 2026 21:08:13 -0800
-Message-ID: <20260205050813.2421675-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260203171305.95085-3-mmyangfl@gmail.com>
-References: <20260203171305.95085-3-mmyangfl@gmail.com>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean
+ <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 3/3] net: dsa: yt921x: Use u64_stats_t for MIB
+ stats
+Message-ID: <20260204211252.71b8fa86@kernel.org>
+In-Reply-To: <20260203171305.95085-4-mmyangfl@gmail.com>
+References: <20260203171305.95085-1-mmyangfl@gmail.com>
+	<20260203171305.95085-4-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Wed,  4 Feb 2026 01:12:43 +0800 David Yang wrote:
+> 64-bit variables might not be atomic on 32-bit architectures, thus
+> cannot be unconditionally made lock-free. Use u64_stats_t so it would
+> still be lock-free on 64-bit architectures.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-net: dsa: yt921x: Return early for failed MIB read
+IDK why we need to worry about lock free reading of those 64b values...
 
-This patch refactors error handling in yt921x_read_mib() by checking
-for read failures earlier and returning immediately, before attempting
-to compute statistics from potentially incomplete data.
+> @@ -771,22 +785,27 @@ yt921x_dsa_get_ethtool_stats(struct dsa_switch *ds, int port, uint64_t *data)
+>  	struct yt921x_priv *priv = to_yt921x_priv(ds);
+>  	struct yt921x_port *pp = &priv->ports[port];
+>  	struct yt921x_mib *mib = &pp->mib;
+> +	unsigned int start;
+>  	size_t j;
+>  
+>  	mutex_lock(&priv->reg_lock);
+>  	yt921x_read_mib(priv, port);
+>  	mutex_unlock(&priv->reg_lock);
 
-> net: dsa: yt921x: Return early for failed MIB read
->
-> This patch does not change anything effectively, but serves as a
-> prerequisite for another patch.
+..when in all(?) the readers converted by this patch we take the mutex
+to refresh the stats anyway. And presumably do expensive IO/reg reads
+under that mutex. So just extend the mutex over the read section and
+save us the retry logic, please, it will make no difference to perf.
 
-The claim "This patch does not change anything effectively" is not
-accurate. The patch changes the behavior when MIB register reads fail.
-
-Before the patch: If yt921x_reg_read() fails partway through the loop,
-the function would still compute pp->rx_frames and pp->tx_frames using
-the partially-read MIB values before returning the error code. The frame
-counts would contain a mix of old values (for registers read before the
-error) and new values (for registers read successfully).
-
-After the patch: If yt921x_reg_read() fails, the function returns
-immediately without updating pp->rx_frames and pp->tx_frames, leaving
-them at their previous values from the last successful read.
-
-This affects how five callers behave when reads fail:
-  - yt921x_dsa_get_pause_stats()
-  - yt921x_dsa_get_eth_mac_stats()
-  - yt921x_dsa_get_rmon_stats()
-  - yt921x_dsa_get_eth_ctrl_stats()
-  - yt921x_dsa_get_ethtool_stats()
-
-These functions don't check the return value, so they will now report
-stale data from the last successful read instead of partially-updated
-data from a failed read.
-
-Should the commit message be updated to accurately describe this
-behavior change?
-
-> diff --git a/drivers/net/dsa/yt921x.c b/drivers/net/dsa/yt921x.c
-> --- a/drivers/net/dsa/yt921x.c
-> +++ b/drivers/net/dsa/yt921x.c
-> @@ -714,6 +714,11 @@ static int yt921x_read_mib(struct yt921x_priv *priv, int port)
->  		WRITE_ONCE(*valp, val);
->  	}
->
-> +	if (res) {
-> +		print_port_err(dev, port, res, "read stats for");
-> +		return res;
-> +	}
+> -	j = 0;
+> -	for (size_t i = 0; i < ARRAY_SIZE(yt921x_mib_descs); i++) {
+> -		const struct yt921x_mib_desc *desc = &yt921x_mib_descs[i];
+> +	do {
+> +		start = u64_stats_fetch_begin(&pp->syncp);
+>  
+> -		if (!desc->name)
+> -			continue;
+> +		j = 0;
+> +		for (size_t i = 0; i < ARRAY_SIZE(yt921x_mib_descs); i++) {
+> +			const struct yt921x_mib_desc *desc = &yt921x_mib_descs[i];
+>  
+> -		data[j] = ((u64 *)mib)[i];
+> -		j++;
+> -	}
+> +			if (!desc->name)
+> +				continue;
 > +
->  	pp->rx_frames = mib->rx_64byte + mib->rx_65_127byte +
->  			mib->rx_128_255byte + mib->rx_256_511byte +
->  			mib->rx_512_1023byte + mib->rx_1024_1518byte +
-> @@ -723,9 +728,7 @@
->  			mib->tx_512_1023byte + mib->tx_1024_1518byte +
->  			mib->tx_jumbo;
->
-> -	if (res)
-> -		print_port_err(dev, port, res, "read stats for");
-> -	return res;
-> +	return 0;
+> +			data[j] = u64_stats_read(&((u64_stats_t *)mib)[i]);
+> +			j++;
+> +		}
+> +	} while (u64_stats_fetch_retry(&pp->syncp, start));
 >  }
--- 
-pw-bot: cr
+
