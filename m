@@ -1,257 +1,215 @@
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010040.outbound.protection.outlook.com [52.101.56.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA0E72623
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 07:39:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFDF635D617;
+	Thu,  5 Feb 2026 07:43:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.40
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770277187; cv=pass; b=J0+FVdsNGyb2JwfUXj7oHkD2Ohl1E8Vl+7LwvNApYN9T+1Uu04mL1fTfSHOr0sy4e8wZyIHIEV1bwR3vqdKrsNECFSntxnA8xIVOXDP2IT9dkrVDsZ1Ni+en0tfbDxa/EEPzqzYPXlE8XypKhmaWBkEfryJnXj5tYKantAzl1b4=
+	t=1770277430; cv=fail; b=peJquxI3uKKQGpURUqhhx3sgkmA8Q704fCQVDhOeGCbjYjJDsKhIBoPYewtMVgjagtKofyVBdAhXcBuUk7PFCC8EtTOtwmCSNF+ezxI2rjBoMd7GVN1zEbZK6D70jYweCgZD4MBXAn4Gn5MbBJFV9Zw8yzPlfh2pBPAHUxVlrhA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770277187; c=relaxed/simple;
-	bh=hyTb2fz7I2WzG6R6mU1WVLgerzwno1BLfBB/oeOep1g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mV3uZuyUpyvyVnTrA1khyMnMZIpOA6qx1VS/Ea/48FkMHKlh5dqN7m9R6+7SvVi9Qo3GdnUH+D+bng52pvqhIfkC3cznYeCTs3G2TZPsVZLSSOUf05w4kaJEur7xktWU/MoqtUw9x8NyYQJ24dnDnxhJIZqXqrz6CarVqDsy32o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EgNY1KAc; arc=pass smtp.client-ip=74.125.82.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1770277430; c=relaxed/simple;
+	bh=J6D9bt8XfJqUNMGvJvsV2gLwNV4l+YLXug16zbhfwDs=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=r/jHFxLzXl3gyvk7HS7IkATCTsKq2xFaymI+zAqYbc+PGsbwZ1Wul+nNDcKZd8rOamPnlFF2D40Tv0nXY6YaPcTMxtVJ+EojV83A9NcpPyzZerh3Bpfp2s98RDEsprMb6WppeIa8qyz1YGruU3BSmGzaVWNhDiP4wT6q8xkcSOo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dFz6GdHi; arc=fail smtp.client-ip=52.101.56.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EgNY1KAc"
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-11f36012fb2so826933c88.1
-        for <netdev@vger.kernel.org>; Wed, 04 Feb 2026 23:39:46 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770277186; cv=none;
-        d=google.com; s=arc-20240605;
-        b=hJnpcQSfEMbRGUcavcG7sEh7+wv8qJUMjYm/Hq9gUviQXqg5yIlC3DNlRLJJl25END
-         bUH/1Xat49/PLtlGYj6JFSK8GEYzCTmF/J4TkkK7riPgqBjMt+YpIbI7Km+wLS52hqSv
-         JYHm98oVtsX/Oyb089plqZ/MxNQGkoUHEa4cIVSxan1Dk7jxQanJ1RNH6oXrvst0NLwc
-         cVeTSWoZZHv5zst17eTwfHx+QQVwEObrSqA55RHXQ8c1FlQhNtXf+WHuSMx9kU1ehACB
-         RAGReQ9NcCYuJHOn+JeWILMFKHkfUeUdLEIgWFKRg8imU1BJvxXu9fwZhx0Bn15wJ9SO
-         ekqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=S0SZjZeeddONPmMPtBHPNeiHy+qYDLxVFCrm9enPzko=;
-        fh=YyAlWyX2l7RnLRvS2kRNhXl65F7wMwh6o0BDOvjeKnM=;
-        b=chfQ5VGjbomNM4UGVEF7pKGx6gbwi988yR/ghHrf1qh9hdzU17GSZf614BgvfFF80W
-         c5VgqA3ScbrNQbr+8bcVEy/YEZqCwge5WGFeFB/LPDxhO41tu6bfb5kimnmogqJ42BaW
-         W5RR7xKj1GxaXij6IpAW1MeY1I1CocZ4bHxXSAA2nQf2bchsohacsqGv33HuORLRqtLY
-         rZRnG4B8Ibf7awfCEtV6RivsrG/jjZ/Sg3YCTR5zAo8Jhv6mOwmzCDGln8FhNAwhQaQ1
-         Rs0WxzJXbbJEV4brZ75H1EqW/QsNugYjm2Q4XR7uclKVt4j70RMbuX5LvC/C3+LgRwuE
-         UwSw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770277186; x=1770881986; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S0SZjZeeddONPmMPtBHPNeiHy+qYDLxVFCrm9enPzko=;
-        b=EgNY1KAcSzplh61cVKPOtNA7aoELVI3fHW9nrvUjzT8pnGG2ktdxYuf/5WLeq94QGP
-         Vt0Bm3PHjQjcMnlv5sbLJ1xEMd8St49hN3GslTJiznLrPjZ3MTCNEwO2K9wF7lOqS/qE
-         hmF/EUKn/AGwAkD9UNy9ZGJjGIC3556MeFbZ/44fl8gEe31Se6QRM6HGUmjT9exwnQaW
-         rOOyno/bL2cSojvXQNhCb4NgL7OkmBpyIgKT8hWB/53ZlxzjkGgH9YkxSlk9u1X7Ss9N
-         HsMWA8uuQg1JNQHu7opLssa1L1wGcvcBeypS/RNFFDaoRptF2GhaHicW2yWN5T7aTG9V
-         10rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770277186; x=1770881986;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=S0SZjZeeddONPmMPtBHPNeiHy+qYDLxVFCrm9enPzko=;
-        b=oxnZTUd16mFC5bsJxqfO31QFK8PYPibfxP9K4X5BDvPK3xTANQOPv9iO2UPUh6tKN7
-         DrwXIR/1ywk3pHg2nwfxceaoxJ6k1qssF+RwYLXAc63GuHQux4CT8oG7p7LrTj8jcXrM
-         4qJqAVQCwnCDvph3kbO5V62xfCjLqti30sGT9aEMcOfzvIq8Hlq51xEiTnCvLG4CuOhh
-         KIWN0IkWPjo3TQPl4F1lXFx9X0UkvRJHygERjVvDyX3bDocd/9uOzoIAJnNngfc+U2Hc
-         nf1SJaoYRPPURVvup9Gb7HUZuePMG+096PzSKvYI1p+VJGnpNzXmVQJ8RSOPytv+FZZx
-         mL9A==
-X-Forwarded-Encrypted: i=1; AJvYcCV4OyMwYpbfrUM2ubveWlS1nWvmpsgwilWGIZL7ilkLrh9gqsjAyeKaV3phmGoHfJYqUpTsYo4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxjWOtJANbz7U2NsAGTVtVVl+2FXz3tup/TLhu2TDh8H5IWMyVD
-	jj4bDQ7qppWn8dVp7+wYKgXNIdOd4jkg0iUfHIZRcrHk/Un7fmfpr8Q0LWJI9jmH7bevabJR3Qo
-	tE9epFETINrg0L9px+laKBQeeO1RTZWLpkZ8b3uHD
-X-Gm-Gg: AZuq6aJz0xwi0kXXct8qwdlEUgF8F4OQNxj7zPCizAagXwJTxkpVSfn7oQkHzCVOqX6
-	rvlVSgypghYnVLdwlbbXTB+j5EDg/5KpAlex8XuLO7Unevdl7ano+VotSatkzATqlmvGqVDlfAM
-	NZ20zmIwT2qqkA67FlSz0HO/siD89+9UNQged5uC7h2oh4vJ2N/h8Sj1H6pZwkAaJTbOhUCw6Qc
-	KahW5Vvk8so/Ni2oc8jfA51VIawpuqPdkH/VXEd94JljhBKhCrRYABp70r3nwFgbKwTHvIlF/aY
-	tHZyH+d7k8VwwGJFM0gbzrn7qhh6DJLJU+shXvwCkufcX2FsDoEZMC8ESB0=
-X-Received: by 2002:a05:7022:519:b0:119:e56b:91f6 with SMTP id
- a92af1059eb24-126f47dc251mr2122264c88.39.1770277185811; Wed, 04 Feb 2026
- 23:39:45 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dFz6GdHi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yq3zRm+m4UdRMalP0uMu8bRzaAaSBEZ69VuB7SQXlHUoDxDuGAemr2vEFDVNMvIoWIaMuOUST6TE/OtnqFTmLmpxJxYOOKXZOmWhmTf3coIV0OuPo2vKSYlripYUqDYPiPp20P1eHvwZzRuSuAbf9Gid9TthI2jPqgeYF1mMEiVGMZhQ89+6TATAVA4JV0FyJ/6zh9ZZmVW2Exoa5b463P8mXtTm6bNqyTZkPEYd9flCZCNEo8h6FbHWqpUYFitQ53S2SHz9LiNENMOGQxvrIl51AzzQzRCNSa8IKGGEXUnFBENWavg/Iozik9wWzktAp5FtKtbGa4CzAeABUrxNWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CmSbDkKUK3etPOXdpxD6R3kvhCK7u2zCKJ0METAU5lg=;
+ b=LnKqXPZRHeQzxsrzLk7OOpXiohlrYnsencnrS01w0QkNx96sc4ooPmXqzlRsezQqscN7kQo3m06FjF+1du9BIn7zq7gVARj5Uj2PqA7FjI0gW00x5MImgjuEMtZNenNuGN1dI9zj+pjbSwnIks+9rQMOfT+BmjhS+/H2q1wc+f/ImwvnBNbu9Lpf/WUJpoUyVs3ch+MW3aiTtGT6bIfvfV17dffAIEfCJSZQdTDMyozbltiT4VmUY/Uz06UEI5f/WkCWJqxTWqL6Q4srSc3bxSsNVKnWEvlhQNpcQBLR1NDFcn3qtEA5x1hUJNJBjSF9L6yjqnqvThY12WGDspjTYA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=CmSbDkKUK3etPOXdpxD6R3kvhCK7u2zCKJ0METAU5lg=;
+ b=dFz6GdHiDTV1E5ZP6NEbKTV/C21ahgnlPTBF5yducDwbiwvgszVDz5Sfo5FGxLPENSDJGH0dg6J/jYSAEUntk5XCBvm4Zni69KnpyNfZLIHYgN3Kkp9c6QYIH+qgWZBSoi5yi9lRnfzuOxqIIxcMeBejjw7bm9QK5upqX12ZSQ6qDKaKNKWD9YOAjAHcGMIY+X0ToeZSiZ2kZ87YGQsSX/UX9xl+oKoWTBAxJBaW9WdOxFu7m2eRzCmDzazvJNpA0BZ66SvpJdxT2V17Vj5ghaRmCZFtqf3qfpE9PURFFaWHMtvJQlJZrH6bOHuBWIXVUyCmx0QRd6/WYOVYLz8bwg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SA0PR12MB7003.namprd12.prod.outlook.com (2603:10b6:806:2c0::10)
+ by BL1PR12MB5945.namprd12.prod.outlook.com (2603:10b6:208:398::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.13; Thu, 5 Feb
+ 2026 07:43:46 +0000
+Received: from SA0PR12MB7003.namprd12.prod.outlook.com
+ ([fe80::4099:396e:1f40:169b]) by SA0PR12MB7003.namprd12.prod.outlook.com
+ ([fe80::4099:396e:1f40:169b%4]) with mapi id 15.20.9587.010; Thu, 5 Feb 2026
+ 07:43:46 +0000
+Message-ID: <2d4385d6-c89d-4295-b67b-3e18b6fee65e@nvidia.com>
+Date: Thu, 5 Feb 2026 09:43:39 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next 2/5] net/mlx5e: Report hw_gro_packets and
+ hw_gro_bytes netdev stats
+To: Jakub Kicinski <kuba@kernel.org>, Tariq Toukan <tariqt@nvidia.com>
+Cc: Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Saeed Mahameed <saeedm@nvidia.com>,
+ Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Moshe Shemesh <moshe@nvidia.com>,
+ Dragos Tatulea <dtatulea@nvidia.com>
+References: <20260204193315.1722983-1-tariqt@nvidia.com>
+ <20260204193315.1722983-3-tariqt@nvidia.com>
+ <20260204212334.72b392af@kernel.org>
+From: Gal Pressman <gal@nvidia.com>
+Content-Language: en-US
+In-Reply-To: <20260204212334.72b392af@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: FR3P281CA0110.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a3::7) To SA0PR12MB7003.namprd12.prod.outlook.com
+ (2603:10b6:806:2c0::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <0f8ec4c7-5de4-4e0b-a50e-cf4f8d59709b@linux.dev>
- <20260204211436.1821958-1-kuniyu@google.com> <bf498b0f-7bdb-4668-b2de-80dbf9b0397f@linux.dev>
- <73175419-adbe-4108-a734-ff409ea3d1d4@linux.dev>
-In-Reply-To: <73175419-adbe-4108-a734-ff409ea3d1d4@linux.dev>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 4 Feb 2026 23:39:34 -0800
-X-Gm-Features: AZwV_Qgg1wA_Qp8OpIXs9RmRBR7gamf1VbFSABg4U04-JkUC8Xu-QhokilluFwA
-Message-ID: <CAAVpQUALZXmzJ9jepjkSS51n+puFhz6sWpr9QqcWjt6JxtW1Qw@mail.gmail.com>
-Subject: Re: [PATCH bpf] bpf, sockmap: Fix af_unix null-ptr-deref in proto update
-To: Martin KaFai Lau <martin.lau@linux.dev>
-Cc: Alexei Starovoitov <ast@kernel.org>, bpf@vger.kernel.org, daniel@iogearbox.net, 
-	davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	jakub@cloudflare.com, john.fastabend@gmail.com, kuba@kernel.org, 
-	linux-kernel@vger.kernel.org, mhal@rbox.co, netdev@vger.kernel.org, 
-	pabeni@redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA0PR12MB7003:EE_|BL1PR12MB5945:EE_
+X-MS-Office365-Filtering-Correlation-Id: 930c843e-5168-401c-f4f2-08de648a4aef
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N2I1TFp3cU9zdVlsUjdrNzg5TW1DN1RxV1FFVEkxVzkrNHFNbmt1VWVOYzJt?=
+ =?utf-8?B?WFVhYUlJbWgvUlhyVit3aFlWWjJadG96TFEvejVnTXJUS2JrZUNGSU8xU0Z2?=
+ =?utf-8?B?NXljTFQ1MzdIOVo5WWhMMXZmbW9Fc1lZRGdoT0doV1dkelNPRlRUNDJmT3NP?=
+ =?utf-8?B?cjdsOUdqVE41TzdNT0gzemNXYTFib1dtS2F0bHhMWitoWVFSN1pGZVpHWkM5?=
+ =?utf-8?B?d3NCcG9Oa0pMWDJjL29DVkJ2ZjdMTVJzblhYMGJWNktKTk9naWNIbnY0NzFN?=
+ =?utf-8?B?MFU1dFdoQ1BLTWx1OVZCT09UTENRNWdFdW9FUEt3ZGlNRkNHSU9aVzhaNE9p?=
+ =?utf-8?B?RGdDckgzdzh5NkpoNXdJNzBMTHRaekNEQ3lQWjIzS3Q5OHh4V2RrVysvemE2?=
+ =?utf-8?B?cTZpSzJpbkxHWTJkbW5Ub1FvcEM4OU54c3lXMjkwbGNodXRKQ2w1clhDYytv?=
+ =?utf-8?B?WnZkOThlNmxxeHRvNjA1MGMzaWF3NCtPTWRmVUhSLzNhQTJqbnBkdE43MWpJ?=
+ =?utf-8?B?YURPQUw4c1R6V1F6QmJXRUY1dU8wZXF6ZnFrS1BFenkyK2c0emIrRGMvaWU3?=
+ =?utf-8?B?YlBhVjhNZWIyQUprbWlhaWFkcUpzalVwVUJGUnpPRjJFc29RM1l0NEZLMlhX?=
+ =?utf-8?B?NTBrbXJ2VkJzb1VaK3FZamUvZ21Kem4rR052dnVxY3RlUndXejhmWUtNL2V3?=
+ =?utf-8?B?UDFkZEo0dSs0NFI0em9yOFF4OTlpb1pZRlBUdW53ODUzQ2hPdmRlOW9ZQjNG?=
+ =?utf-8?B?cjhuMzZOc1QrVGVhYnhvN2cvZGZkNDZGZlJOeHlBR2ZOTzJGRUpUOWVUODA0?=
+ =?utf-8?B?cWpGSFFxZHZtZ3h1SkZNQXpZMUhIT1hzTlFYYTZwZXZNQzFXTUlFZ2Y3M1VF?=
+ =?utf-8?B?ZnNaNjlQdVNrTTk0QmJHb2pjVXppZDZQY1JkUEJ4QkNJZFhSc2hJQnNPcGhY?=
+ =?utf-8?B?NXBaVGx1SnRiMjFhOUVldnd1T2JDL0F0b2pKdHNlY1ZMeFdUbFhhdU1Nak1B?=
+ =?utf-8?B?QTl1d3FxMHB6QU1vekZYWlR0SE4xOXFPa1lRVDRKWk9hRUlCdDY0a3JjVCtk?=
+ =?utf-8?B?Y21vL0pQZXBTZUNDeHZYanhwa0trcTFBWCtpT1hGM1R3Z2RBTWM5QktscGpF?=
+ =?utf-8?B?MFBobEZ5Z3FKZnIxeEdMdTNQQzh4VlVXNjhTVUxmUWEvb05NWUlJeW1qQ2hZ?=
+ =?utf-8?B?Vnp0Q01nTWltU1l5eng5R3V2U0FDTEF5ZERPYnlTSzdzZDd6Z2RNSUZocjV6?=
+ =?utf-8?B?dUk0ME1QOWoxbU9tTmtTUU9vSG56Q1Blb1IrckVZZER2Tlh6Y2haOVE3L3Zv?=
+ =?utf-8?B?QWV2NEMvSTFSc0xiSWlGVnhsQ25HTE9WTkdtbCtQaXVRRkp5alF1RW85SHdG?=
+ =?utf-8?B?ZDVBT2gwZy9vOWNzcUNtWUtvMEpRbHpsc0FnR1NpNjdNaTVhVXQ2UUprbEpL?=
+ =?utf-8?B?bFY0Y0h1OWZFb2xrUFdueDFheHVKMFg3OUlEY3JwQWUrRDRFNnkzUzFPNFMv?=
+ =?utf-8?B?RUU1dU91RVRERTZkVWtvejMzT2pTaWV6OHlRWUExWkMrMmlCU3JrcDhPd1ZB?=
+ =?utf-8?B?NkowUG8rTkU4UWxWS3FhUzZnYUhWZUY4MkxyL2R6ZjU2RHVYQzl4RGFPY2hl?=
+ =?utf-8?B?cnJqTVozV0lrdEtpTU95WnM4c1pDOHB1YU8xYXBrZitCQjhENzRZa3o5dzZT?=
+ =?utf-8?B?b2Nza3lkQW4wRTM3V3BqN21mcXI5MEg1RlZJYnJVWjhVbjhvYVphTUZjNFls?=
+ =?utf-8?B?VkEvSHZndFdnMEpCc0tyaHpzbHQ5cmV6TkxyM3ZHbCtVazVRV3BOUGg4dDVs?=
+ =?utf-8?B?SWdyd2UycXBGaTc5OGdtYVozTWpvbVphejNGWVROUUlNcHBzQ3NXald4Q0Jv?=
+ =?utf-8?B?SDdHUnEzVlNVd1ZJWUlYNTJKK1NCcFRZN2Q0YXNUTDRpY1lYd1NQWEN1TG50?=
+ =?utf-8?B?THRsSHFVQmVoZnpVa29nSFZ6bUhDUE83WEVpSGI2VUJiL2dqQmJtMEJoYnFP?=
+ =?utf-8?B?L3NDYk5tL2ZtWGt2RmdiTXA0UzlFRmZxQUZmQXRmQW94RTZXZWRNTS9XTDg2?=
+ =?utf-8?B?QUx1dzQzdkdvajl2eWFVMzVqN2VYSVFNYWFxbUdzV05RdEw2RE1kV09XUVN6?=
+ =?utf-8?Q?uqb4=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA0PR12MB7003.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?MEFZMUswUmZZcE5mZDA0dTZQNHVmcDYvazJQbTFFQnpBUE9vcEZZdXZ5M0o5?=
+ =?utf-8?B?ajR2ZWxQYlRVNmJYbzFuYlgxbFFRZEhXOStZS3ZQVUhZTGUrelRaaW5EWXNE?=
+ =?utf-8?B?NUVvOHJFUDVOdU96WWxuRWRxODI1aFJBVFJTZkNkSkMrYzFITFpqOHhTdjB5?=
+ =?utf-8?B?Y251MVA3YkY5elYxMkxzam9vZG03NnVad0FMQzgvRjYvcXhheUh1cjRTdnU4?=
+ =?utf-8?B?ZjBwaDF5ZkprMWhvVEhtTFlZT0c4NDFFWVd2blJDZGxkalRXcFlKOUh2a0VB?=
+ =?utf-8?B?c0cwc0lwNVZoUHkzeVpSTmR6bWowSG9rN0ZZcmFSQ0dVUWRjVDhSOTliYTU3?=
+ =?utf-8?B?eTBBRjdteW9SckdoMGovU2ZzbFgyZVNVVzJ4V3I2d25ESVdUT1UrWEx6bk95?=
+ =?utf-8?B?NUlCbENxbjIzc09nTEp3NmtaLytVc3pTNHNzTXpBaHZUSjBzL3VteFdQSG9Y?=
+ =?utf-8?B?OSs1L20xdlNnNFhudzI2STBvYlh2S1B5QWlheDRDNEdJNmlTbTc5TlErMy8y?=
+ =?utf-8?B?MDF5c3NqMENWVTFKUHI0dUxOYmN2RCs4cVF3R0FQWDBtdDFIZmZLd3FST3BQ?=
+ =?utf-8?B?bmdCVGR4OTdjaFZDMmQ0MVlNdHRLMEFLV1N2OUs5a1NQOTZ0V1R6dm5lZm9r?=
+ =?utf-8?B?U0xKTGdwUkMxT0NzdDFCeDZVY0MrazZqTzNNR2U1L21obHliNWdmQVdOS0d2?=
+ =?utf-8?B?REdtc1FQVW8zSjdzeHVnMy92UVNJZHEzN056NDRxV09wZGw1ZTFYdTlSYURi?=
+ =?utf-8?B?R05HamNLZ093RzNmbTFKeEFObGpBZ29ycGg2TGV4MWVVUUJ5NjVsMG1BNW5Y?=
+ =?utf-8?B?UE84Y1FlN25oVGYzeVRTYlhNTVFGRlc1UUFZM3d0ZEEwd0gxTnFqSm1RYUhE?=
+ =?utf-8?B?YnROZHRoaWlRdWdPbHlMWGJlUU1oZ2NSVmoxZEthZjZqd1RzNWhWb2NzRVNM?=
+ =?utf-8?B?Vlo3VmZnZStuenJLQ092bFUyYjhFQWtOaHVRUWJ4d2xUUXJzeTUyTzAybDhK?=
+ =?utf-8?B?STNQdTFKcFJuMjk3bWxzb05xT3VlajdUVnNPSWIzc1ZMWGMyZHVGTERqb0Ex?=
+ =?utf-8?B?dlhQQjV4Mm9HWTM5Y0N4VkUvamVuZGwwZkZvMWdpdHJwbXB0QnpmcWZ2Qy9K?=
+ =?utf-8?B?L0J3VHhvWkk1OWJ1N0ZycjB2aG5zTVFGM0VJU0ZtbnBRRUhlb2ViL2Q2Vk51?=
+ =?utf-8?B?eTJmQ2wzamJxNWZ5ajN0RSsvcm9XNlpBa3RueUpvbXFlZmVvREswYVVLYjRr?=
+ =?utf-8?B?bzJDdktaRUN6Ym9GUW9jUXF6QlpPOEs4eGxWM1UzUVdycERScDQrNU5aU3ho?=
+ =?utf-8?B?OWVpU05zUktwVXlrRWtKMm1VQ1ZEWUFqSk16V2tKNlgzaHFkaFp5SUg5VzlB?=
+ =?utf-8?B?Tk5ieDNYREYvcFBsa1hSVlFTSnNpSWVyQkgrNmwxV2RDMUZmSlNMcWhnZ0xW?=
+ =?utf-8?B?eVRzaERweHVuU0tsWVBzK0F6cGRpbWI2RUJLOTF5YlhFK0dWWFNkWlhaT0tI?=
+ =?utf-8?B?YWlIaTIvREExb3c3T3hhQUtGQkN6V0ZvQTZJdTZLUlduSFFLOXFFSHBjQ1hq?=
+ =?utf-8?B?aXIyaUY0SnZ3eEdVcmxERmN5RU04Q2lFek9EZXdDZUNTYkxRc2lCR1pTT1Ji?=
+ =?utf-8?B?K0RVZ3hheEFKMHM5ZXNBeHF5S09OMmZrTEhUeEJaTVpvUEg1bE1iMHB5cm0y?=
+ =?utf-8?B?RUw0OEh6Y01ISEdTNmhGMFllVHNsM1VOTlBLR085b05GZW5oeFV6VjZRYUls?=
+ =?utf-8?B?WTJBNEpzQklTaEN5UU9kdDhwQXhpaW1DZTNLTFhYTzlBZm4wNzhFS3NxcTFh?=
+ =?utf-8?B?TklaS1dBSWVoeXliK3IxSGc1eDhCb1hYbHBQL1QrNmJhTjExalJDeFhJNGc3?=
+ =?utf-8?B?UE0ycG9Cdmg0YU11OUR5bjljVThxM2VQUVhISUU2QUVjcWhTMzRRa2RpcGY0?=
+ =?utf-8?B?U3Vmd3EyYzhrb2Q4TGdQNVE5VnFISFBKdFBHNStDQndWRDNMVjcxNWFzSTdh?=
+ =?utf-8?B?M0ozWG1CU2hUQzBDSFIrbFpyZUxQN1dkM2Q5S0loYkRSWG5CZzBBYTdMQ0s4?=
+ =?utf-8?B?UkdackF5c0FoL2J3cWpMdnF1T29VTHdQdTN3a3AwclFwc3B2OWo2ZENrbUpQ?=
+ =?utf-8?B?NVpTSlE2TFpQMWc2RVo0OWpYaG92MWtXRXR2SDI2bVBNczBiazYvczRNZ0dS?=
+ =?utf-8?B?S21INWJjbjM3TVdPOGJFQkFDV2h6UjUxdjFHblFBeGkvV1poc1lmYTArbFhJ?=
+ =?utf-8?B?QWJiOFBVczNhTGMvVDNFNStETjQ1Q1Bobld2UHVWVWUrSFczZEZyVUdNNWpw?=
+ =?utf-8?Q?PFq98ovxA1pdLuk5rU?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 930c843e-5168-401c-f4f2-08de648a4aef
+X-MS-Exchange-CrossTenant-AuthSource: SA0PR12MB7003.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Feb 2026 07:43:46.1263
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jNkT1HYnvzNMWltSpo1JmHsSOYt1iW5QwB/W+oHjos7dI1c4wwe8wpdJz5RTYEmY
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5945
 
-On Wed, Feb 4, 2026 at 6:00=E2=80=AFPM Martin KaFai Lau <martin.lau@linux.d=
-ev> wrote:
->
->
->
-> On 2/4/26 4:55 PM, Martin KaFai Lau wrote:
-> >
-> >
-> > On 2/4/26 1:09 PM, Kuniyuki Iwashima wrote:
-> >> From: Martin KaFai Lau <martin.lau@linux.dev>
-> >> Date: Wed, 4 Feb 2026 11:34:55 -0800
-> >>> On 2/4/26 7:41 AM, Michal Luczaj wrote:
-> >>>>>>>>> If the concern is the bpf iterator prog may use a released
-> >>>>>>>>> unix_peer(sk)
-> >>>>>>>>> pointer, it should be fine. The unix_peer(sk) pointer is not a
-> >>>>>>>>> trusted
-> >>>>>>>>> pointer to the bpf prog, so nothing bad will happen other than
-> >>>>>>>>> potentially reading incorrect values.
-> >>>
-> >>> I misremembered that following unix->peer would be marked as
-> >>> (PTR_TO_BTF_ID | PTR_UNTRUSTED). I forgot there are some legacy suppo=
-rts
-> >>> on the PTR_TO_BTF_ID (i.e. without PTR_UNTRUSTED marking).
-> >>>
-> >>>>>>>>
-> >>>>>>>> But if the prog passes a released peer pointer to a bpf helper:
-> >>>>>>>>
-> >>>>>>>> BUG: KASAN: slab-use-after-free in bpf_skc_to_unix_sock+0x95/0xb=
-0
-> >>>>>>>> Read of size 1 at addr ffff888110654c92 by task test_progs/1936
-> >>>>>>
-> >>>>>> hmm... bpf_skc_to_unix_sock is exposed to tracing. bpf_iter is a
-> >>>>>> tracing
-> >>>>>> bpf prog.
-> >>>>>>
-> >>>>>>>
-> >>>>>>> Can you cook a patch for this ? probably like below
-> >>>>>>
-> >>>>>> This can help the bpf_iter but not the other tracing prog such as
-> >>>>>> fentry.
-> >>>>>
-> >>>>> Oh well ... then bpf_skc_to_unix_sock() can be used even
-> >>>>> with SEQ_START_TOKEN at fentry of bpf_iter_unix_seq_show() ??
-> >>>
-> >>> It is fine. The type is void.
-> >>>
-> >>>>>
-> >>>>> How about adding notrace to all af_unix bpf iterator functions ?
-> >>>
-> >>> but right, other functions taking [unix_]sock pointer could be audite=
-d.
-> >>> I don't know af_unix well enough to assess the blast radius or whethe=
-r
-> >>> some useful functions may become untraceable.
-> >>
-> >> Considering SOCK_DGRAM, the blast radus is much bigger than
-> >> I thought, so I'd avoid this way if possible by modifying
-> >> the verifier.
-> >>
-> >>
-> >>>
-> >>>>>
-> >>>>> The procfs iterator holds a spinlock of the hashtable from
-> >>>>> ->start/next() to ->stop() to prevent the race with
-> >>>>> unix_release_sock().
-> >>>>>
-> >>>>> I think other (non-iterator) functions cannot do such racy
-> >>>>> access with tracing prog.
-> >>>>
-> >>>> But then there's SOCK_DGRAM where you can drop unix_peer(sk) without
-> >>>> releasing sk; see AF_UNSPEC in unix_dgram_connect(). I think Martin =
-is
-> >>>> right, we can crash at many fentries.
-> >>>>
-> >>>> BUG: KASAN: slab-use-after-free in bpf_skc_to_unix_sock+0xa4/0xb0
-> >>>> Read of size 2 at addr ffff888147d38890 by task test_progs/2495
-> >>>> Call Trace:
-> >>>>    dump_stack_lvl+0x5d/0x80
-> >>>>    print_report+0x170/0x4f3
-> >>>>    kasan_report+0xe1/0x180
-> >>>>    bpf_skc_to_unix_sock+0xa4/0xb0
-> >>>>    bpf_prog_564a1c39c35d86a2_unix_shutdown_entry+0x8a/0x8e
-> >>>>    bpf_trampoline_6442564662+0x47/0xab
-> >>>>    unix_shutdown+0x9/0x880
-> >>>>    __sys_shutdown+0xe1/0x160
-> >>>>    __x64_sys_shutdown+0x52/0x90
-> >>>>    do_syscall_64+0x6b/0x3a0
-> >>>>    entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> >>>
-> >>> This probably is the first case where reading a sk pointer requires a
-> >>> lock. I think it will need to be marked as PTR_UNTRUSTED in the verif=
-ier
-> >>> for the unix->peer access, so that it cannot be passed to a helper.
-> >>> There is a BTF_TYPE_SAFE_TRUSTED list. afaik, there is no untrusted
-> >>> one now.
-> >>
-> >> Just skimmed the code, and I guess something like below would
-> >> do that ?  and if needed, we could add another helper to fetch
-> >> peer with a proper release function ?
-> >>
-> >> ---8<---
-> >> diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-> >> index 3135643d5695..ef8b4dd21923 100644
-> >> --- a/kernel/bpf/verifier.c
-> >> +++ b/kernel/bpf/verifier.c
-> >> @@ -7177,6 +7177,14 @@ static bool type_is_rcu_or_null(struct
-> >> bpf_verifier_env *env,
-> >>       return btf_nested_type_is_trusted(&env->log, reg, field_name,
-> >> btf_id, "__safe_rcu_or_null");
-> >>   }
-> >> +static bool type_is_untrusted(struct bpf_verifier_env *env,
-> >> +                  struct bpf_reg_state *reg,
-> >> +                  const char *field_name, u32 btf_id)
-> >> +{
-> >> +    /* TODO: return true if field_name and btf_id is unix_sock.peer. =
-*/
-> >> +    return false;
-> >> +}
-> >> +
-> >>   static bool type_is_trusted(struct bpf_verifier_env *env,
-> >>                   struct bpf_reg_state *reg,
-> >>                   const char *field_name, u32 btf_id)
-> >> @@ -7307,7 +7315,9 @@ static int check_ptr_to_btf_access(struct
-> >> bpf_verifier_env *env,
-> >>            * A regular RCU-protected pointer with __rcu tag can also
-> >> be deemed
-> >>            * trusted if we are in an RCU CS. Such pointer can be NULL.
-> >>            */
-> >> -        if (type_is_trusted(env, reg, field_name, btf_id)) {
-> >> +        if (type_is_untrusted(env, reg, field_name, btf_id)) {
-> >> +            flag |=3D PTR_UNTRUSTED;
-> >
-> > Something like this but I think the PTR_UNTRUSTED marking should be don=
-e
-> > right after the clear_trusted_flags() where it is for supporting the
-> > depreciated PTR_TO_BTF_ID. Before that ...
-> >
-> > Alexei, can you advise if we should change the verifier to mark
-> > PTR_UNTRUSTED on unix_sock->peer or we can deprecate the bpf_skc_to_*
-> > helper support from tracing and ask the user to switch to bpf_core_cast
-> > (i.e. bpf_rdonly_cast) by using a WARN_ON_ONCE message?
->
-> After trying more, taking out bpf_skc_to_* is not enough. It still needs
-> to reject passing unix->peer to bpf_setsockopt for bpf_iter, so
-> PTR_UNTRUSTED mark is needed.
+On 05/02/2026 7:23, Jakub Kicinski wrote:
+> On Wed, 4 Feb 2026 21:33:12 +0200 Tariq Toukan wrote:
+>> +	stats->hw_gro_packets =
+>> +		rq_stats->gro_packets + xskrq_stats->gro_packets;
+>> +	stats->hw_gro_bytes = rq_stats->gro_bytes + xskrq_stats->gro_bytes;
+> 
+> Doesn't look right.. 
+> 
+> mlx5e_shampo_flush_skb(struct mlx5e_rq *rq, struct mlx5_cqe64 *cqe, bool match) 
+> {                                                                               
+>         struct sk_buff *skb = rq->hw_gro_data->skb;                             
+>         struct mlx5e_rq_stats *stats = rq->stats;                               
+>         u16 gro_count = NAPI_GRO_CB(skb)->count;                                
+>                                                                                 
+>         if (likely(skb_shinfo(skb)->nr_frags))                                  
+>                 mlx5e_shampo_align_fragment(skb, rq->mpwqe.log_stride_sz);      
+>         if (gro_count > 1) {                                                    
+>                 stats->gro_skbs++;                                              
+>                 stats->gro_packets += gro_count;       
+> 
+> And:
+>       -
+>         name: rx-hw-gro-packets
+>         doc: |
+>           Number of packets that were coalesced from smaller packets by the
+>           device. Counts only packets coalesced with the HW-GRO netdevice
+>           feature, LRO-coalesced packets are not counted.
+> 
+>       -
+>         name: rx-hw-gro-wire-packets
+>         doc: |
+>           Number of packets that were coalesced to bigger packetss with the
+>           HW-GRO netdevice feature. LRO-coalesced packets are not counted.
+>         type: uint
+> 
+> Your gro_packets are "gro-wire-packets" and "gro-packets" are your
+> gro_skbs.
 
-Ah exactly, I'll cook a patch in that way.
+You're absolutely right, thanks Jakub!
 
+> 
+> I really wish the AI was clever enough to catch uAPI mis-reading :(
 
->
-> >
-> > The problem is that the unix_sock->peer pointer is not always valid whe=
-n
-> > passing to the bpf_skc_to_* helpers, so it is a UAF.
-> >
->
