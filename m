@@ -1,35 +1,85 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E4292F617D
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 17:40:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E876E2F362D
+	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 17:44:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770313218; cv=none; b=QeyyTl1ZE1DN135HevLYZoFvRAa9G0zN4oYyoraJs7SZxaQ/oY8fGrzt7VfZfy5FVMw9I8fAd8mLYVwWDwUUTXBVDLDeKsHM6LkK+ZJgU4xoXh55NqsW06A0ybK0uja8kOu2rwAZ3ilAt7CFqBTvyFUVCOwa8g95bKtKEGVnC9M=
+	t=1770313477; cv=none; b=Y8f4ZUhLNiCnFHjZPPSPbR8d+3NN8F1+RcvoF+ep3V5Pb5/PRli6bQATTOB4WOsutZsulNN2Uj75bfYw91NpIuZ8Pj8+8owmaF0wkPOaXfi/afoMvXyTH4PgezvWKDecD5Ha9apSOrmjJlcWvC9dYmPmU7JgWE0kJHJb73cG8Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770313218; c=relaxed/simple;
-	bh=7aFm1eK0YYRkoLZDxrqek6Opv9B928YytcKCVOeRoWQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WeYsy8XFs+fsYY0ADtC1mQbBLH7dDBCRUIc+waGtFsX0RCAczPRe9ieBQr+lYONDG2cSjMTsPPRULUJp5nswKtzdY0LlAb7NUKMhhlFOtPYGVBcWu/ncbUFxqiSoGJXWOHArGD6Y4cR7kS5FI4oTK9b41HP5RABtOvyS3YJ4unw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UeQZBXp7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770313477; c=relaxed/simple;
+	bh=o0rJ/k5zbcMcfwxnVLNQ13kQ9L6527ZRZ0Mbmz8faLM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c5ks3B4AwBDNWhcRz50RyTg5/rR/v9mvUHGCrpWRC8tUtfbo/o7NDm91NBzuo2GrrA7hK8g0kwrtZA/5vxLoefPcLMJ1JVcCDzl9qWmGN/zkAftBbhA0TiHjwAEfQSTeLOjfYoD5wqpP3slsPgT0Jt1qqHQupxJGvGHXtbLQ/qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kzbhP5Iz; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UeQZBXp7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1A2C116D0;
-	Thu,  5 Feb 2026 17:40:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770313218;
-	bh=7aFm1eK0YYRkoLZDxrqek6Opv9B928YytcKCVOeRoWQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=UeQZBXp7OO+0DNNMzbpU3z4xaCDfTKXtdjY0m+XwlwMtJEL2kMjvpyCz6tGS/irXY
-	 /UhWXXrMs7o/QgCR4TniFscsP3ZWZoRKyyzDH0RKWrm+YqXw1rtyFJlOsxbLrXOJfm
-	 6Z/lLdrbFOYWfUL8SLO1yMiqou7yGjYc2IIbDaWBLu8T9tMllppesc2F/Nzz+1Jhpz
-	 pryazmAcSEX+befkH/5oNcMflLOFOujmGbQA6kOc+hSpWJfQt9oInmGzCL2UnklRSz
-	 YZNRz9XOAM/69NupahC+lW9Bde1Bc48tBJKWCc0o+gxaj3Dxv8BNpclc5lCkfsCpsg
-	 2+7+InvHrasJw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0AF263808200;
-	Thu,  5 Feb 2026 17:40:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kzbhP5Iz"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0d52768ccso7805585ad.1
+        for <netdev@vger.kernel.org>; Thu, 05 Feb 2026 09:44:36 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770313476; x=1770918276; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gc0E72oPfM3CH+sOdZznPkkUshYA7l2qkcY6ZqG7/gY=;
+        b=kzbhP5IzpXwVVuffRJgA605sEZIj5PdmG+MdfdriZW+7pD7Q4jxzb5KYuE9g4eR2+C
+         sC9rYsHWwS/vrkJWv++ka14VGAT4rMX/BFFEZxvqNc8QosRLBKqb3KL7oXg/fikD0oMA
+         mWsmadwkC25PbXS3OiW+uNR8gCmlanqAqvkjWMf6wI+wCPhu2cojKKtRh7DXLSDrYVYg
+         xfXn7cZtRe6xLsRjYWYA1+itk8DRq3yCeGSdlP8sEKFV5rlCPNNZ2THI8SSrkLdNhpaY
+         V/kejQAx5T+1kSJ55bwSVTwesCBU052W0PyF+jUfEYYruF7VJYdAaM9/AdORZqQJZ7es
+         gZXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770313476; x=1770918276;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Gc0E72oPfM3CH+sOdZznPkkUshYA7l2qkcY6ZqG7/gY=;
+        b=UJmrgvgoLpfRVbUXllfLc7bzYsvwfRoRzUnMbHf3o09rYHS3On+SEjbXf0+L6GPrXu
+         xtTPvBdZ0+Do3m+QPN9//Zq+nyF8GYhbXBItw8TdW20PzQHikWvNH+3LnlBjP5goDemQ
+         4iw9bZ3W59R61M438k/Rf7qMIqJFd4/htrL+o5XtSh8k4zNSulvDHWgZe1y9Pr8C8Qn9
+         3EbybCTs3F1Um8p5cWHT80Qx1NU4VHXO44FQEE87YRXtdkPfR8VBRb0TltsloJ2OGUjx
+         3eu/GaJLw+i++F9uzZTrU93WtLWVUFSEfgW+zrYWQDiU/DaLKsswkZymtr1b5s+8oB9Z
+         Ly3g==
+X-Forwarded-Encrypted: i=1; AJvYcCUtMXuNFitdZk8vaJyn5UvLt6pfhcHb0cdonWExtX7fgSjkHYWccTTHtJ1WHUJk2Hn09NVXrt0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQ28hCIldrWpyX2du2Tnf5Q/qJgq1HF7RRg/7InQz1t0nFY3B6
+	XvolpF27w6MWZlKVGzS6WdW4YoDbyh4wYosrIVV3NWGg8Fdri1Fi4vyw
+X-Gm-Gg: AZuq6aI95Ge8WiMY/TnpehHQgroeSkAegm/SIzg3x8b1LDyi25hu54u2Je683KO7pVu
+	hEsVRpblRGlfrlvpVHaSoyQnpOnAahNCymWQVe0OFr16wIynzpao5hisK+6waV4Ed7HYPbZtHnz
+	QzduYQjDvo+YcYNohEIFbqAy16nWaECebDG4ESaSE176ZqzX1WkjPpXuTi5U9zcZYYZ6m4EWU+V
+	xwqOTAZeEFmmm9GoHa5xj3h3Ui7ps/ecpY4lkHWiKEJYkhWqqr5pfKSPdbfmU7xWkQraCp4AKM+
+	wH5qXyZVdZiqpoFMH82OUgDBzUipbvENJh0mcwepP4Of07oYxDTTJ0JuE3WqILhBbY4GzocVVsV
+	OUXllWOBNHYApvy9HAGktHDIfoCwLQYbCF2GGnmLcJvdpkcVyeb55ANzk9RiOk3OKkjfISSft0V
+	3dZCc+xy+jyxgm
+X-Received: by 2002:a17:902:e5cd:b0:2a9:47d0:12cd with SMTP id d9443c01a7336-2a95164b71emr741655ad.15.1770313476297;
+        Thu, 05 Feb 2026 09:44:36 -0800 (PST)
+Received: from mint.. ([2401:4900:53f5:8722:5847:8ba8:5649:5c92])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a93397e9cesm54372875ad.97.2026.02.05.09.44.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 09:44:35 -0800 (PST)
+From: Dhyan K Prajapati <dhyan19022009@gmail.com>
+X-Google-Original-From: Dhyan K Prajapati <dhyaan19022009@gmail.com>
+To: Johannes Berg <johannes.berg@intel.com>
+Cc: linux-wireless@vger.kernel.org,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	dhyaan19022009-hue <dhyaan19022009@gmail.com>
+Subject: [PATCH v4 wireless] mac80211: fix NULL pointer dereference in monitor
+ mode Crash trace:   RIP: iwlagn_bss_info_changed+0x19d/0x640 [iwldvm]   Code:
+ 49 8b 46 10 <8b> 10   RAX: 0000000000000000 (NULL link->conf->bss) wifi:
+ mac80211: fix NULL pointer deref regression in link notify Commit
+ c57e5b974514 ("wifi: mac80211: fix WARN_ON for monitor mode on some devices")
+ reorganized link change notifications. This caused a regression for hardware
+ using IEEE80211_HW_WANT_MONITOR_VIF. In monitor mode, link->conf->bss is
+ uninitialized, but current logic allows these notifications to reach driver
+ callbacks, causing a deterministic NULL dereference in drivers like iwldvm.
+ Fix this by validating the BSS context before driver notification. Device:
+ Intel Centrino Advanced-n 6205 Fixes: c57e5b974514 ("wifi: mac80211: fix
+ WARN_ON for monitor mode on some devices") Cc: stable@vger.kernel.org Cc:
+ netdev@vger.kernel.org Cc: linux-wireless@vger.kernel.org Cc: Johannes Berg
+ <johannes@sipsolutions.net> Signed-off-by: Dhyan K Prajapati <dhyaan19022009@gmail.com>
+Date: Thu,  5 Feb 2026 23:14:19 +0530
+Message-ID: <20260205174419.4467-1-dhyaan19022009@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,41 +87,26 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] ipv6: change inet6_sk_rebuild_header() to use
- inet->cork.fl.u.ip6
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177031321557.505259.15887697398596098259.git-patchwork-notify@kernel.org>
-Date: Thu, 05 Feb 2026 17:40:15 +0000
-References: <20260204163035.4123817-1-edumazet@google.com>
-In-Reply-To: <20260204163035.4123817-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- dsahern@kernel.org, kuniyu@google.com, netdev@vger.kernel.org,
- eric.dumazet@gmail.com, matttbe@kernel.org
 
-Hello:
+From: dhyaan19022009-hue <dhyaan19022009@gmail.com>
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+---
+ net/mac80211/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-On Wed,  4 Feb 2026 16:30:34 +0000 you wrote:
-> TCP v6 spends a good amount of time rebuilding a fresh fl6 at each
-> transmit in inet6_csk_xmit()/inet6_csk_route_socket().
-> 
-> TCP v4 caches the information in inet->cork.fl.u.ip4 instead.
-> 
-> This patch is a first step converting IPv6 to the same strategy:
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next] ipv6: change inet6_sk_rebuild_header() to use inet->cork.fl.u.ip6
-    https://git.kernel.org/netdev/net-next/c/85d05e281712
-
-You are awesome, thank you!
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index b05e313c7..190222c26 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -416,6 +416,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
+ 	case NL80211_IFTYPE_MONITOR:
+ 		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
+ 			return;
++		if (!link->conf->bss)
++			return;
+ 		break;
+ 	default:
+ 		break;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.43.0
 
