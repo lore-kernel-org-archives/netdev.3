@@ -1,50 +1,49 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7257A2BE7B1;
-	Thu,  5 Feb 2026 02:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 903021F5834;
+	Thu,  5 Feb 2026 02:41:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770259082; cv=none; b=aFvprGhrwUwc9qMOTDJuSWvbVdm6xgOwF14OeSk824lh0QYtTVxcL4PovdCwzArubsGClarryoEskR4IlWSzYOvRCJb99G7QLuN+O+ecLs1ZJbEXWxLj+OD00q6P3RgAsQr6MVF66qayVMi3eQGOTZ8oZG4cqI0FROIG6TCBGwQ=
+	t=1770259278; cv=none; b=NACnkwCZ/U/XXWtJFp6QV3i3nciVYhK5uIXRxM4X6YAE8ADLkZKYePwo3MPwDWfbqfWU5kE9vw1y+2JIpFI9BNWEjE/mUCwSzBa2SocI3dBrPF2C4AfCvj8OFP9xbDpmILFXXDIPsj/F6oUQExsUsgipDX52p69IJXEhihJwjMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770259082; c=relaxed/simple;
-	bh=cto3XPtyqaXxv4BXyDBQtiDFldXDC0LpsCmkQrntc28=;
+	s=arc-20240116; t=1770259278; c=relaxed/simple;
+	bh=IfPF/Ecwpu4CLWUVg28CS2dpUkT27gNfMmd+9r9Gr+A=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BmwrjSVaOtol26X8+ldy1DJnv5tCVgrWLN0JBzyvDH/J9/Az67yiOCZYn814Em3UcVTtmSKwDakmy5ABHymB1OF1UlnMjhDL7gfDrhwKydQ/nLN8RDjMNy4sb7lOEqD5bm6fAOSQADvH+rz2WVzJ91CguOO4kdeE+pHbWp4Hs00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nFI1kC0l; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=m7RhtpZ6+wQoBlPn6mMIjkoJaS1CxIpkQ58uxCe93RIpL/8ky13VeX7Pa2oWTeFpk/htos8oogopwnw2ldDt3VhGV6XDot27D4e6qnNfQLgr2DmvvBxuYdJvvj1mK8vv5ZGfJRSyBouVcXmH1eqTaalvEPzMj3LmL3zUhaQs1VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SAY21sPE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nFI1kC0l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55BB1C4CEF7;
-	Thu,  5 Feb 2026 02:38:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SAY21sPE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E6EC4CEF7;
+	Thu,  5 Feb 2026 02:41:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770259082;
-	bh=cto3XPtyqaXxv4BXyDBQtiDFldXDC0LpsCmkQrntc28=;
+	s=k20201202; t=1770259278;
+	bh=IfPF/Ecwpu4CLWUVg28CS2dpUkT27gNfMmd+9r9Gr+A=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=nFI1kC0lOly5CKPPsTmZmqjQd2euOFj/GI7xPbUJS7HXHxHM+LmfpRUHBdQ2yO817
-	 gwIsASvsTlgWObofrBXlEdY2PX6vYU2Gl/qESfre/xnT0yWbTAWDGCjn98haFog4lp
-	 xmCaAHzvvBGONW5giq3ZQd2XUGuQ6xEL/R+3ds9KwmoEnk2wgsnLIMUMdwpFBWsZdA
-	 E20Fq39V/d0ZAzNL//F8QsMV2ZjKHAm9LX+Jkw82cub1OqHQJrFgCcmTKnLE6shB0R
-	 BMXamdH4ChI8PdsEjrj/WkTg3HXRIBjr/cQ7UxA0AAtJsIZ94jx1hBdMtsipogDahQ
-	 YHVOaHvjFXS1w==
-Date: Wed, 4 Feb 2026 18:38:00 -0800
+	b=SAY21sPEwQpyWxNm5022Q4jfRhYPLMKUgov12iqGyQ6v+Wy9DYbIIhZ34VEC2raM6
+	 rLaHq1/AY0APjp2DsYEDccdwCz8HwjzEI0ibQ+08dVW4gKkNvUT24i2zgfnVO5teH0
+	 nrwXJkhC82je9CzIzZN3h+p+Ax82WM1NlG1oKaBGhzbeqCHqnw4PNu/IKam6kP6lQN
+	 m0T/JKQJ0O+cW3Jh9Lhg8MK+u4npAHM1CNBWC9W4AGhEfhWt5so3hy3Hkr44HODoto
+	 QtXSRB3XgMklkw9q1E4zvnUorX1Y32rliYp1jgbjc7vEmC8U2HJQTN1TWDjF+fuJHk
+	 1LZ5v/b/SjGCQ==
+Date: Wed, 4 Feb 2026 18:41:16 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Conor Dooley <conor@kernel.org>
-Cc: Biju <biju.das.au@gmail.com>, Lad Prabhakar
- <prabhakar.mahadev-lad.rj@bp.renesas.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Geert Uytterhoeven <geert+renesas@glider.be>, Magnus
- Damm <magnus.damm@gmail.com>, Biju Das <biju.das.jz@bp.renesas.com>,
- netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] dt-bindings: net: renesas,rzv2h-gbeth:
- Document Renesas RZ/G3L RMII{tx,rx} clocks
-Message-ID: <20260204183800.3dd59ad0@kernel.org>
-In-Reply-To: <20260204-audience-eastcoast-9e0cf9b96fd2@spud>
-References: <20260203104541.264759-1-biju.das.jz@bp.renesas.com>
-	<20260204-unroasted-obscurity-c3f5cde43036@spud>
-	<20260204-audience-eastcoast-9e0cf9b96fd2@spud>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Arnd Bergmann <arnd@kernel.org>, Bryan Tan <bryan-bt.tan@broadcom.com>,
+ Vishnu Dasa <vishnu.dasa@broadcom.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Arnd Bergmann <arnd@arndb.de>, Broadcom internal
+ kernel review list <bcm-kernel-feedback-list@broadcom.com>, Simon Horman
+ <horms@kernel.org>, HarshaVardhana S A <harshavardhana.sa@broadcom.com>,
+ Bobby Eshleman <bobbyeshleman@meta.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux.dev, netdev@vger.kernel.org
+Subject: Re: [PATCH] vmw_vsock: bypass false-positive Wnonnull warning with
+ gcc-16
+Message-ID: <20260204184116.11ec0a8c@kernel.org>
+In-Reply-To: <aYMqw2HbtKi50b1e@sgarzare-redhat>
+References: <20260203163406.2636463-1-arnd@kernel.org>
+	<aYMqw2HbtKi50b1e@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,14 +53,9 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 4 Feb 2026 18:02:50 +0000 Conor Dooley wrote:
-> On Wed, Feb 04, 2026 at 06:01:33PM +0000, Conor Dooley wrote:
-> > Acked-by: Conor Dooley <conor.dooley@microchip.com>
-> > 
-> > pw-bot: not-applicable  
-> 
-> Aw shit, this is a netdev patch.
-> If I have screwed up the state, hopefully someone can fix it?
+On Wed, 4 Feb 2026 12:29:44 +0100 Stefano Garzarella wrote:
+> Not sure if it's net or net-next material, maybe net to avoid the 
+> warning/error on v6.19 too ?
 
-Ugh, looks like I didn't implement the logic to ignore "+dt"
-in emails right, cause the cmd didn't even work :/
+I think net-next. I assume people who build with werror like pain, 
+and we need to be inclusive.
