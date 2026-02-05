@@ -1,111 +1,112 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E3A13A258;
-	Thu,  5 Feb 2026 17:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7238C2BE64F;
+	Thu,  5 Feb 2026 17:34:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770312867; cv=none; b=kZgoxDKlNz7ZsPBw7QNH4p9r359CI1FDEvwJZrimUW6tka0Le/aVAeXKI9g6YvdmbVCre7rJ0Mxvq2AWX7kPEVKRxoRKuWHMen0hnG9g+Dwom2De0pJux/k3bnEoFTHvVCAzzQtABwrSz4uIomnq+1xrK63uvVAuhnuyeslh1Pw=
+	t=1770312871; cv=none; b=O/vRZfDWf9duOhvWbBOq9AKxddDpGGxxVANCEKqNda47rTucgpmIdhq59/cw2iMiav3MwTnDr2fPeF1YZ+s+I1Lbv0P0neqUEGMGmcihYq3Ny91pyc1uP6hx8PU4tD8qoWMGg3ZnTxU/v7ti7rwzv7evHDBODPWAy8LH7NJBGvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770312867; c=relaxed/simple;
-	bh=4P9nWuTA9SDx3l2KUcFQvPPD8VWHgdAZvIN+fmuFiuE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HvRzUl6OaA8HH+grkm+HrWkgP/KtI8yN5ag6lyIvVqDboyurPh+NSPsSf9fiDRWRxxbsvb8cDnNMAQnIykEyNBw7dm9pmdrdVXIwpnz06ouyXw6wCcZOG2OVZrtMU6sVh4jZCxcDzUacLN5Umm40RQ9I8vx5cE8jLAcTLxZSe2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lRgqxnvW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770312871; c=relaxed/simple;
+	bh=2C16gBetgYeprk8qMWPd4VtC9f+xr40ryhjM9KIq00Y=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=FD+VFWDXmEuoKJZU78bXgcLTgdR6na7SnYIqhcAtOQ8tes2H03ltghtgkqNz5ruNvglpistS/ttw57UAIO1RsxBBhroj50raE1/AyLhY96tf36XjTCVRJWupVLSyHfb70PaN4WVnwOUTKIMGJEVbqKhgmVV9TYEMSxDrtjfkYvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kf7yf/w+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lRgqxnvW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A1DC4CEF7;
-	Thu,  5 Feb 2026 17:34:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1770312866;
-	bh=4P9nWuTA9SDx3l2KUcFQvPPD8VWHgdAZvIN+fmuFiuE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lRgqxnvW41dysbTkcgcf5BgK+YwQNHsxZTZaaB96L7oIIyev7I20LKsbdmJwwwaPK
-	 2cKab8GqpjIlAk8a4WTO4NXozkjozNEjiTF72ua7NtEF+3EuEcTlwyORowTiu13c/r
-	 5HlDVufan73JFZ1hxbY1UwVqgeFeXdLRkll/eOVg=
-Date: Thu, 5 Feb 2026 18:34:23 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Dhyan K Prajapati <dhyan19022009@gmail.com>
-Cc: Johannes Berg <johannes.berg@intel.com>, linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org, stable@vger.kernel.org,
-	dhyaan19022009-hue <dhyaan19022009@gmail.com>
-Subject: Re: [PATCH v3 wireless] mac80211: fix NULL pointer dereference in
- monitor mode
-Message-ID: <2026020502-upgrade-booth-8e4d@gregkh>
-References: <20260205172313.16652-1-dhyaan19022009@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kf7yf/w+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71217C116D0;
+	Thu,  5 Feb 2026 17:34:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770312871;
+	bh=2C16gBetgYeprk8qMWPd4VtC9f+xr40ryhjM9KIq00Y=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Kf7yf/w+xVTMSXALSpMBjZEM5+9KulzLgbhPaAmI0NZ1s882hZqgIp16o4Aqzk6Vb
+	 g7+74uXyMaZq9CyjqkFhe83dSqxNv6JKy1O6j6Ai2vme/k7+netnAIt1M6wVmazSZ6
+	 r69y3XUIWTwINf/l0kXfc2yFoFefGWAcfGtVr722PjqYWYrCyUPZYwoTd5TxVOIaUT
+	 hiOTnKEnUdH3p3H/lWgtN3gd23y5fqZHa+wQz8XFh8jA5aOnVI9DNQOHRHLRiNpRRy
+	 7xLnjyDYoZmulR957gNAN+V7EqvRLditkQM9AbWD0Ol5c9lmVA6U98PxLCHrbNXQD6
+	 FP4c4GhNESxpQ==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net v2 0/4] mptcp: misc fixes for v6.19-rc8
+Date: Thu, 05 Feb 2026 18:34:20 +0100
+Message-Id: <20260205-net-mptcp-misc-fixes-6-19-rc8-v2-0-c2720ce75c34@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260205172313.16652-1-dhyaan19022009@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJzUhGkC/42NTQ6CMBCFr0Jm7Zi2kRFceQ/DotQBJkohU0I0h
+ LvbcAKX7+97GyRW4QS3YgPlVZJMMQt3KiAMPvaM8swanHFknLlg5AXHeQkzjpICdvLhhIS2Rg0
+ VkicKFXnruitkxqx8NDLiAXkKTTYHScuk3+NztUf0J361aDC0ZVl3LbWl8fcXa+T3edIemn3ff
+ 1IfGbTQAAAA
+X-Change-ID: 20260204-net-mptcp-misc-fixes-6-19-rc8-6a66c86a12f7
+To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, 
+ stable@vger.kernel.org, 
+ syzbot+f56f7d56e2c6e11a01b6@syzkaller.appspotmail.com, 
+ Randy Dunlap <rdunlap@infradead.org>, 
+ Donald Hunter <donald.hunter@gmail.com>, Shuah Khan <shuah@kernel.org>, 
+ linux-kselftest@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1936; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=2C16gBetgYeprk8qMWPd4VtC9f+xr40ryhjM9KIq00Y=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDJbriy0WeYXLrFO663/Ks+w4KbLjCWzbl6Iuphc6/lBq
+ eLU+vvrOkpZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACbi3sLIMHfyyVZG5oXzp2/R
+ nTz3cdZv39wCvoPb1Rg4d8g/XdGov4nhf30s04XLn8vdli+5LZgr+105vnbqbeHKB2cMNi5+o6V
+ 1hBkA
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-On Thu, Feb 05, 2026 at 10:53:12PM +0530, Dhyan K Prajapati wrote:
-> From: dhyaan19022009-hue <dhyaan19022009@gmail.com>
-> 
-> Signed-off-by: dhyaan19022009-hue <dhyaan19022009@gmail.com>
-> ---
->  net/mac80211/main.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-> index b05e313c7..190222c26 100644
-> --- a/net/mac80211/main.c
-> +++ b/net/mac80211/main.c
-> @@ -416,6 +416,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
->  	case NL80211_IFTYPE_MONITOR:
->  		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
->  			return;
-> +		if (!link->conf->bss)
-> +			return;
->  		break;
->  	default:
->  		break;
-> -- 
-> 2.43.0
-> 
-> 
+Here are various unrelated fixes:
 
+- Patch 1: when removing an MPTCP in-kernel PM endpoint, always mark the
+  corresponding ID as "available". Syzbot found a corner case where it
+  is not marked as such. A fix for up to v5.10.
 
-Hi,
+- Patch 2: Linked to the previous patch, the variable name was confusing
+  and was probably partly responsible for the issue fixed by patch 1. No
+  "Fixes" tag: no need to backport that for the moment, but better to
+  avoid confusion now.
 
-This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
-a patch that has triggered this response.  He used to manually respond
-to these common problems, but in order to save his sanity (he kept
-writing the same thing over and over, yet to different people), I was
-created.  Hopefully you will not take offence and will fix the problem
-in your patch and resubmit it so that it can be accepted into the Linux
-kernel tree.
+- Patch 3: fix all existing kdoc warnings linked to MPTCP code. No
+  "Fixes" tag: they were there for a while, and not considered as
+  important to backport.
 
-You are receiving this message because of the following common error(s)
-as indicated below:
+- Patch 4: silence a compiler (false-positive) warning in the selftests.
+  No "Fixes" tag: it is a false-positive warning, only seen with some
+  versions.
 
-- You did not specify a description of why the patch is needed, or
-  possibly, any description at all, in the email body.  Please read the
-  section entitled "The canonical patch format" in the kernel file,
-  Documentation/process/submitting-patches.rst for what is needed in
-  order to properly describe the change.
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Changes in v2:
+- patch 1: clarify commit message (NIPA Review assistant)
+- patch 3: also modify mptcp_pm.yaml (NIPA ynl)
+- Link to v1: https://patch.msgid.link/20260204-net-mptcp-misc-fixes-6-19-rc8-v1-0-cb559fb6b50a@kernel.org
 
-- You did not write a descriptive Subject: for the patch, allowing Greg,
-  and everyone else, to know what this patch is all about.  Please read
-  the section entitled "The canonical patch format" in the kernel file,
-  Documentation/process/submitting-patches.rst for what a proper
-  Subject: line should look like.
+---
+Matthieu Baerts (NGI0) (4):
+      mptcp: pm: in-kernel: always set ID as avail when rm endp
+      mptcp: pm: in-kernel: clarify mptcp_pm_remove_anno_addr()
+      mptcp: fix kdoc warnings
+      selftests: mptcp: connect: fix maybe-uninitialize warn
 
-- It looks like you did not use your "real" name for the patch on either
-  the Signed-off-by: line, or the From: line (both of which have to
-  match).  Please read the kernel file,
-  Documentation/process/submitting-patches.rst for how to do this
-  correctly.
+ Documentation/netlink/specs/mptcp_pm.yaml         |  1 +
+ include/uapi/linux/mptcp_pm.h                     |  2 +-
+ net/mptcp/pm_kernel.c                             | 29 ++++++++++-------------
+ net/mptcp/token.c                                 | 16 +++++++------
+ tools/testing/selftests/net/mptcp/mptcp_connect.c |  2 +-
+ 5 files changed, 24 insertions(+), 26 deletions(-)
+---
+base-commit: bbf4a17ad9ffc4e3d7ec13d73ecd59dea149ed25
+change-id: 20260204-net-mptcp-misc-fixes-6-19-rc8-6a66c86a12f7
 
-If you wish to discuss this problem further, or you have questions about
-how to resolve this issue, please feel free to respond to this email and
-Greg will reply once he has dug out from the pending patches received
-from other developers.
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-thanks,
-
-greg k-h's patch email bot
