@@ -1,128 +1,71 @@
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAF43587DA
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 07:44:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA62435CBA4;
+	Thu,  5 Feb 2026 07:44:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770277467; cv=none; b=ji6vINT41Sk5PALXdBMpd0BUhKwpnLA3+9DAVKN+VrKUlNh6BOsMSjw5aaywIDbGBOlwMQS/fCwX+O3Qe3cKPhFWPG/0//AmNGweVGyX8S7NlV8hpkmWsdmymxAdj4pCcALlDWfgoK+vPksrmezuZRNBrfQpN+X+yJTpWIdJFvI=
+	t=1770277497; cv=none; b=a2HjYUPcueOa7t52Y/LFKKER6fzJqLifIghwOfXYwfjukjoS5aAxqm1Db1s4YsloM9T/nTp2HRWqdpxeyMvy8oLj/9s6xk2kfmgSdzN2l0st2g9jKAljsdtRNwV2S5xVepylOvnFASD+YH2sXFzB+FZUrbCQTCEEfu+kiEe/qhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770277467; c=relaxed/simple;
-	bh=HO7q8hapxk1EsSc01u8FLAeUcBFfjRAQQBvPSZbCTtE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JYaluvIjkK8zlgGUPAsaKcSPfMTic1d2KfpxrPVFBCfEyLkFYK6lOwIaoX9JOyqFknpw0oF2SlEuF8JmYSQgsKyMFScfxu4KAOei2yfc3qKya76jvXuFtSNuv3zeE3q4lL4E/sSDvd954EuNCDl2f8jAoyE+6JqQWOHHuWR0AWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=JD9cFskb; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="JD9cFskb"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=Ntdpc/kmU25S8F1eDNB57650TuUB4jKAVLcNz3WP428=; b=JD9cFskb0ndPxsKG6mTXNaig4G
-	AjzKOFM/uI2N0j2aUVwUgcC3SwPYbKsfsc1pabUNvUYnLLVx209LS6nhZAnvXY5BX8ICUrdVb19fB
-	wewmjBHYAs1usCTPHRkN+XodwpBydq99GjSElbGrZ60yAKYLCsDkDcI2lDDLpJbL4ceI7O3CDkc9e
-	gcwDxAN6xJeO50QVSckVR8cfFj13SswOLKmnJ2uunwIVKPVIny+RCf1Dqu85I4ryNCdQe+UbEhdnH
-	/3DMcq2+DuBck+ZT3iQb9/jkiVArfTRJLr/lktcrqnP/yb2Z08mPU/+Yf0zqn1Ed+RylgHGgzBWXu
-	ch73Pyqg==;
-Received: from i53875afe.versanet.de ([83.135.90.254] helo=diego.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1vnu28-0074Ju-66; Thu, 05 Feb 2026 08:44:12 +0100
-From: Heiko =?UTF-8?B?U3TDvGJuZXI=?= <heiko@sntech.de>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>,
- Alexandre Torgue <alexandre.torgue@foss.st.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
- Paolo Abeni <pabeni@redhat.com>
-Subject:
- Re: [PATCH net-next 5/6] net: stmmac: rk: use rk_encode_wm16() for clock
- selection
-Date: Thu, 05 Feb 2026 08:44:11 +0100
-Message-ID: <3561842.ZfL8zNpBrT@diego>
-In-Reply-To: <aYPHjS0wrtXlRb1a@shell.armlinux.org.uk>
-References:
- <aYMN2gZMfLPKuukG@shell.armlinux.org.uk> <20297648.sWSEgdgrri@diego>
- <aYPHjS0wrtXlRb1a@shell.armlinux.org.uk>
+	s=arc-20240116; t=1770277497; c=relaxed/simple;
+	bh=/jkTfzwZ+od9lrq9+34U6g6JorKGDzIX2mk1SC6qlIQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q3DTHVHYTQeSlB2yEb+wcG/+bRtsLbTWhJ2OBWkL3anI5wjuF6EbBYyasbQuVdfcEEYfq4DQO09z5fpcJJkLpOUJzCOrpG2ykE9L92qN5WVOYjlO/purZPiX4Gb6Ofm+WVdLmAKa0TYamM3Lf/ppShovIKQcxbkiSFq/imnUmDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id A8C5E6033F; Thu, 05 Feb 2026 08:44:54 +0100 (CET)
+From: Florian Westphal <fw@strlen.de>
+To: <netdev@vger.kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	<netfilter-devel@vger.kernel.org>,
+	pablo@netfilter.org
+Subject: [PATCH net 0/1] netfilter: update for net
+Date: Thu,  5 Feb 2026 08:44:49 +0100
+Message-ID: <20260205074450.3187-1-fw@strlen.de>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-Hi Russell,
+Hi,
 
-Am Mittwoch, 4. Februar 2026, 23:26:21 Mitteleurop=C3=A4ische Normalzeit sc=
-hrieb Russell King (Oracle):
-> On Wed, Feb 04, 2026 at 11:03:51PM +0100, Heiko St=C3=BCbner wrote:
-> > Am Mittwoch, 4. Februar 2026, 10:14:38 Mitteleurop=C3=A4ische Normalzei=
-t schrieb Russell King (Oracle):
-> > > Use rk_encode_wm16() for RMII clock gating control, and also for the
-> > > io_clksel bit used to select the transmit clock between CRU-derived
-> > > and IO-derived clock sources.
-> > >=20
-> > > Both of these were configured via the "set_clock_selection" method in
-> > > the SoC specific operations, but there is no requirement to change the
-> > > io_clksel except when enabling clocks.
-> > >=20
-> > > It is also possible that we don't need to ungate the RMII clock if we
-> > > are operating in RGMII mode, but this commit makes no change there.
-> > >=20
-> > > Split up the configuration of these as separate functions, and remove
-> > > the set_clock_selection() method. Since these clocking bits are in the
-> > > same register that we call the "speed" register, move the logic for
-> > > writing that register into rk_write_speed_grf_reg().
-> > >=20
-> > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> > > ---
-> > >  .../net/ethernet/stmicro/stmmac/dwmac-rk.c    | 174 ++++++++--------=
-=2D-
-> > >  1 file changed, 75 insertions(+), 99 deletions(-)
-> > >=20
-> > > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c b/drivers=
-/net/ethernet/stmicro/stmmac/dwmac-rk.c
-> > > index 4099cbc5d0de..ed9adac70f0a 100644
-> > > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-> > > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-rk.c
-> > > @@ -27,8 +27,17 @@
-> > >  struct rk_priv_data;
-> > > =20
-> > >  struct rk_clock_fields {
-> > > +	/* io_clksel_cru_mask - io_clksel bit in clock GRF register which,
-> > > +	 * when set, selects the tx clock from CRU.
-> > > +	 */
-> > > +	u16 io_clksel_cru_mask;
-> > > +	/* io_clksel_io_mask - io_clksel bit in clock GRF register which,
-> > > +	 * when set, selects the tx clock from IO.
-> > > +	 */
-> >=20
-> > nit: comment stile does not seem to follow the kernel coding style
-> > https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/process/coding-style.rst#n622
->=20
-> netdev has historically had this style which is separate from the rest
-> of the kernel. The file already uses this comment style, so it is
-> entirely correct to keep to the style which already exists in this
-> file, rather than mixing styles and turning it into a mess.
+This is one last-minute crash fix for nf_tables, from Andrew Fasano:
 
-thanks for the clarification. Then the comment style is obviously fine.
+Logical check is inverted, this makes kernel fail to correctly undo
+the transaction, leading to a use-after-free.
 
-Regards
-Heiko
+Please, pull this change from:
+The following changes since commit 7d6ba706ae5ef7d3d00b67140d2873ae1da6d41f:
 
+  Merge tag 'wireless-2026-02-04' of https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless (2026-02-04 20:29:53 -0800)
 
-> > Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-> > Tested-by: Heiko Stuebner <heiko@sntech.de> #px30,rk3328,rk3568,rk3588
->=20
->=20
+are available in the Git repository at:
 
+  https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf.git tags/nf-26-02-05
 
+for you to fetch changes up to f41c5d151078c5348271ffaf8e7410d96f2d82f8:
 
+  netfilter: nf_tables: fix inverted genmask check in nft_map_catchall_activate() (2026-02-05 08:36:59 +0100)
 
+----------------------------------------------------------------
+netfilter pull request nf-26-02-05
+
+----------------------------------------------------------------
+
+Andrew Fasano (1):
+  netfilter: nf_tables: fix inverted genmask check in
+    nft_map_catchall_activate()
+
+ net/netfilter/nf_tables_api.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+-- 
+2.52.0
