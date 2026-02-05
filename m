@@ -1,82 +1,46 @@
-Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F19D35E554
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 07:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3764C3587C2
+	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 07:02:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770274949; cv=none; b=Oq5WL6UpwnHA5m/HWWqzW72554QAZ0tTSH+9no12572/qezaPzay+KZ0FjI582BMfApx1xDFAvwoyTCMB2g4aKTsEO6dIgF1RaGkNT8NPNpk39hjqL2Rt2t09/ts1kqhKBio0yBdDsynvuje9kqlj9bM4aMvySTD0NLEaDtL7no=
+	t=1770274976; cv=none; b=Nq3N12y/sGpnjkLepSAOif2AAgPIZq6bSl3SWa8UIw8pYo8U2aF5pY7NIvKJTgzGlgNsYC3xgYLiRrWuWwgSpd3W7SwUOGUizuB6UmzFqZYber67LILVahFtB6wI7IfmmrBobiKbk20MNHqdFYUgsfUNM4UO5Sk1JOmeJfcb5yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770274949; c=relaxed/simple;
-	bh=CVxHcuu4T8HZtXjKX+jdBS7ybmzluxXd8M00RABLQKU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6FpLbkmCIp27LM4uMA6+urshgUh3ch2mJHeisJbgwBBccVXrux176a+X9dvmGvnxL0SieYjG0FYciSNANCpdTXvaVwLZLD3CZELn/V0EWv4KOB6pkCjNINqPzb2USRO1jqjKL5GgrdD6T/VHoae3rBlrMfkNjPXHpWZFbbFMb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IB5yJ9D8; arc=none smtp.client-ip=209.85.210.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770274976; c=relaxed/simple;
+	bh=LP/PTh1RI2vrI9YcFfx8ZmGSu6yPnXt6FvME3CwFFHk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cOPUFPyyCpA4ClaQ/IefFiw5Sdh37lg2eIUYMN6C2gy3DxJCS3AnbVEysXkN04N+q21F+9cgM20tg5K/brbgJ3Tfhd9l17rB1FdHk5PCASIAVr7AoMaBrkdoN28nNJJ5IoCPI8oiu0sg1Awukug+BMIzzRjxhflohElLFpoTf0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LuqoV2C4; arc=none smtp.client-ip=91.218.175.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IB5yJ9D8"
-Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-81f4ba336b4so521844b3a.1
-        for <netdev@vger.kernel.org>; Wed, 04 Feb 2026 23:02:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770274949; x=1770879749; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ID1Rr5u4A781GTWL8cwP+lTOIhWrnwgmB+FcQHGuf5U=;
-        b=IB5yJ9D8cjwJuzWup4Fc7c79KFe3PAfG+p3U3wGBOYfCHqTEQhMjb9W4BX3ZHUbaRk
-         y2VEChUnoJgbkeDJqCrkMFbxEm6utAVEnRx7dSaC2J7QDi/qMBUWN3rL60ypC3Q625aU
-         KMH2hRUHJcFK8iiyy4mKVbWgGRpVoZ/FPrD/iWHcjT0bS+CPegX4x7RERa3vaY/uSZLN
-         Wz6cNH2cqwoU3EcHspEq50NQOwb65Ot1aCrj8/ZTnF3UXZQrMUsonETQ7cYTfi8GMS+a
-         RsHdGMYSzG8exoac9jVPTBZlTmXqYD9W5WE00sd8CcLlVDoKlI6H4dqmuD0q4uBzU+RU
-         kEEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770274949; x=1770879749;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ID1Rr5u4A781GTWL8cwP+lTOIhWrnwgmB+FcQHGuf5U=;
-        b=CAz+H+TYrWot3aQuJGzjPgu23/MJi7qvSVuGgT1r7fc6nW7GDyGaKN++14WYqHbsp+
-         tJmUeIu9zGPbkdjEtKvvB3W2pyUhrAJNnvuncewyQgc/Mg9SEoM2jSRCcQklflt9ArDN
-         TC06lp59+AWcd4woYyjq54+XeyOhzAu/xMci8q3EwGsGtjmnB5Xb6Dbb2Pl6zcLUSzYh
-         FQVs1UCQEp21D0lIVUP8wKqoMvLbHu0bmL3vTSy+y2J2wabrIScbpkGGAI8+EmqKwbHJ
-         csV5ljFKZmlS/cDYbTL9IhWXOkPGTuYQPkAivMBlF/veklUa80QTBPQjDjHrtue5l4vv
-         OUiQ==
-X-Gm-Message-State: AOJu0YwcpLHPSIqh+bxKacEZgeM/WzEXtkDZr5X/7XuUE2ipWbAh6WA5
-	1jwX01MfG2EVVfPkQQ6aNQ3DJORcfUD3zb/PYeLIU8DUbOC3ojL9EC8T
-X-Gm-Gg: AZuq6aJtnqqhOHY1wcEKiO/X1Ca7JNVfg87ggaOSd9Vd0uC2OyMSdVkil13tDOe0R1P
-	1SjjYmjenbfxWyglkoKXcQVgLs5hzMZxaW5uP7991468xOSL+LPW1d51g39mH9bOFyFmGPcVskC
-	sMGazjJjlfApi/Q9sA4J6OK6p6OFOLp55CQQdJI3gUjXVNLHWXm2RrTYohtYbSLSvI6r4ag5V3l
-	sZEPWNnrAhdBY0wXuzBT+Dsfw5FvZ5oDQbWdd2g7Mllcv2c/bb74lkxGsZDVIBzirW3Mi3cc7mY
-	IglMd9Le2pAokosmGYKqR7luvaet28/TPL5qiaW81KQ1LW+SLS1VHfsilFMddg84G5gGf0r7+CO
-	Ksjkt6mpAw4Ge9IkgJB1qAk7uCmc1mBxCMIKS/EFOkbwK89jyXKAtkqp1NIvAVh1Hb5XXJQxzao
-	sp
-X-Received: by 2002:a05:6a00:4104:b0:823:998:95b0 with SMTP id d2e1a72fcca58-8241c5f5db9mr4906578b3a.35.1770274949074;
-        Wed, 04 Feb 2026 23:02:29 -0800 (PST)
-Received: from localhost ([2a03:2880:ff:1::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8241d1c08e8sm4834802b3a.22.2026.02.04.23.02.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Feb 2026 23:02:28 -0800 (PST)
-From: Amery Hung <ameryhung@gmail.com>
-To: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	alexei.starovoitov@gmail.com,
-	andrii@kernel.org,
-	daniel@iogearbox.net,
-	memxor@gmail.com,
-	martin.lau@kernel.org,
-	kpsingh@kernel.org,
-	yonghong.song@linux.dev,
-	song@kernel.org,
-	haoluo@google.com,
-	ameryhung@gmail.com,
-	kernel-team@meta.com
-Subject: [PATCH bpf-next v6 17/17] selftests/bpf: Fix outdated test on storage->smap
-Date: Wed,  4 Feb 2026 23:02:06 -0800
-Message-ID: <20260205070208.186382-18-ameryhung@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260205070208.186382-1-ameryhung@gmail.com>
-References: <20260205070208.186382-1-ameryhung@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LuqoV2C4"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770274964;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=bqLxOvLzcNx9RiZYGWigx6P2BqjV1IJiHhUsW/aMTmo=;
+	b=LuqoV2C4PLsW1po9EhMYnQ/b2Mn6WJAjSlKmALECgzH+S76APpjHi6gnN53gMoI0/s8vr9
+	U1XT3jBN/OZgyfRvGXGL9R1TdyQyfU5w0Ky2ERJXrNeTB40v119r6G31QtWDk8qTSlaggk
+	Q+htXeNtsaC/HfNsHtEghCZPlT8cg+w=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+	syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net v3] xfrm: fix ip_rt_bug race in icmp_route_lookup reverse path
+Date: Thu,  5 Feb 2026 15:02:02 +0800
+Message-ID: <20260205070203.61560-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,67 +48,105 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-bpf_local_storage_free() already does not rely on local_storage->smap
-since switching to kmalloc_nolock(). As local_storage->smap is removed,
-fix the outdated test by dropping the local_storage->smap check. Keep
-the second map in task local storage map test to test that multiple
-elements can be added to the storage similar to sk storage test.
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
+icmp_route_lookup() performs multiple route lookups to find a suitable
+route for sending ICMP error messages, with special handling for XFRM
+(IPsec) policies.
+
+The lookup sequence is:
+1. First, lookup output route for ICMP reply (dst = original src)
+2. Pass through xfrm_lookup() for policy check
+3. If blocked (-EPERM) or dst is not local, enter "reverse path"
+4. In reverse path, call xfrm_decode_session_reverse() to get fl4_dec
+   which reverses the original packet's flow (saddr<->daddr swapped)
+5. If fl4_dec.saddr is local (we are the original destination), use
+   __ip_route_output_key() for output route lookup
+6. If fl4_dec.saddr is NOT local (we are a forwarding node), use
+   ip_route_input() to simulate the reverse packet's input path
+7. Finally, pass rt2 through xfrm_lookup() with XFRM_LOOKUP_ICMP flag
+
+The bug occurs in step 6: ip_route_input() is called with fl4_dec.daddr
+(original packet's source) as destination. If this address becomes local
+between the initial check and ip_route_input() call (e.g., due to
+concurrent "ip addr add"), ip_route_input() returns a LOCAL route with
+dst.output set to ip_rt_bug.
+
+This route is then used for ICMP output, causing dst_output() to call
+ip_rt_bug(), triggering a WARN_ON:
+
+ ------------[ cut here ]------------
+ WARNING: net/ipv4/route.c:1275 at ip_rt_bug+0x21/0x30, CPU#1
+ Call Trace:
+  <TASK>
+  ip_push_pending_frames+0x202/0x240
+  icmp_push_reply+0x30d/0x430
+  __icmp_send+0x1149/0x24f0
+  ip_options_compile+0xa2/0xd0
+  ip_rcv_finish_core+0x829/0x1950
+  ip_rcv+0x2d7/0x420
+  __netif_receive_skb_one_core+0x185/0x1f0
+  netif_receive_skb+0x90/0x450
+  tun_get_user+0x3413/0x3fb0
+  tun_chr_write_iter+0xe4/0x220
+  ...
+
+Fix this by checking rt2->rt_type after ip_route_input(). If it's
+RTN_LOCAL, the route cannot be used for output, so treat it as an error.
+
+The reproducer requires kernel modification to widen the race window,
+making it unsuitable as a selftest. It is available at:
+
+  https://gist.github.com/mrpre/eae853b72ac6a750f5d45d64ddac1e81
+
+Reported-by: syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000b1060905eada8881@google.com/T/
+Closes: https://lore.kernel.org/r/20260128090523.356953-1-jiayuan.chen@linux.dev
+Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+
 ---
- .../selftests/bpf/progs/local_storage.c       | 19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+v1 -> v3:
+    Suggested by Paolo Abeni:
+      - Resend it using net tree and using xfrm prefix
+      - Fix text string over 80 chars limit.
+      - Simplify commit message.
+    v1: https://lore.kernel.org/r/20260128090523.356953-1-jiayuan.chen@linux.dev
+    v2: https://lore.kernel.org/netdev/20260203063449.44737-1-jiayuan.chen@linux.dev/
+---
+ net/ipv4/icmp.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/progs/local_storage.c b/tools/testing/selftests/bpf/progs/local_storage.c
-index 637e75df2e14..d0be77011a84 100644
---- a/tools/testing/selftests/bpf/progs/local_storage.c
-+++ b/tools/testing/selftests/bpf/progs/local_storage.c
-@@ -62,7 +62,6 @@ SEC("lsm/inode_unlink")
- int BPF_PROG(unlink_hook, struct inode *dir, struct dentry *victim)
- {
- 	__u32 pid = bpf_get_current_pid_tgid() >> 32;
--	struct bpf_local_storage *local_storage;
- 	struct local_storage *storage;
- 	struct task_struct *task;
- 	bool is_self_unlink;
-@@ -88,15 +87,10 @@ int BPF_PROG(unlink_hook, struct inode *dir, struct dentry *victim)
- 	if (!storage || storage->value)
- 		return 0;
+diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
+index 4abbec2f47ef..35816ac749bc 100644
+--- a/net/ipv4/icmp.c
++++ b/net/ipv4/icmp.c
+@@ -554,6 +554,22 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
+ 		/* steal dst entry from skb_in, don't drop refcnt */
+ 		skb_dstref_steal(skb_in);
+ 		skb_dstref_restore(skb_in, orefdst);
++
++		/*
++		 * At this point, fl4_dec.daddr should NOT be local (we
++		 * checked fl4_dec.saddr above). However, a race condition
++		 * may occur if the address is added to the interface
++		 * concurrently. In that case, ip_route_input() returns a
++		 * LOCAL route with dst.output=ip_rt_bug, which must not
++		 * be used for output.
++		 */
++		if (!err && rt2 && rt2->rt_type == RTN_LOCAL) {
++			net_warn_ratelimited("detected local route for %pI4 "
++					     "during ICMP sending, src %pI4\n",
++					     &fl4_dec.daddr, &fl4_dec.saddr);
++			dst_release(&rt2->dst);
++			err = -EINVAL;
++		}
+ 	}
  
--	if (bpf_task_storage_delete(&task_storage_map, task))
-+	if (bpf_task_storage_delete(&task_storage_map2, task))
- 		return 0;
- 
--	/* Ensure that the task_storage_map is disconnected from the storage.
--	 * The storage memory should not be freed back to the
--	 * bpf_mem_alloc.
--	 */
--	local_storage = task->bpf_storage;
--	if (!local_storage || local_storage->smap)
-+	if (bpf_task_storage_delete(&task_storage_map, task))
- 		return 0;
- 
- 	task_storage_result = 0;
-@@ -164,18 +158,9 @@ int BPF_PROG(socket_bind, struct socket *sock, struct sockaddr *address,
- 	if (bpf_sk_storage_delete(&sk_storage_map2, sk))
- 		return 0;
- 
--	storage = bpf_sk_storage_get(&sk_storage_map2, sk, 0,
--				     BPF_LOCAL_STORAGE_GET_F_CREATE);
--	if (!storage)
--		return 0;
--
- 	if (bpf_sk_storage_delete(&sk_storage_map, sk))
- 		return 0;
- 
--	/* Ensure that the sk_storage_map is disconnected from the storage. */
--	if (!sk->sk_bpf_storage || sk->sk_bpf_storage->smap)
--		return 0;
--
- 	sk_storage_result = 0;
- 	return 0;
- }
+ 	if (err)
 -- 
-2.47.3
+2.43.0
 
