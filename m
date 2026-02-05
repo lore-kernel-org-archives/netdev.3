@@ -1,46 +1,75 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f68.google.com (mail-oo1-f68.google.com [209.85.161.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3764C3587C2
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 07:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DF6933469C
+	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 07:07:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770274976; cv=none; b=Nq3N12y/sGpnjkLepSAOif2AAgPIZq6bSl3SWa8UIw8pYo8U2aF5pY7NIvKJTgzGlgNsYC3xgYLiRrWuWwgSpd3W7SwUOGUizuB6UmzFqZYber67LILVahFtB6wI7IfmmrBobiKbk20MNHqdFYUgsfUNM4UO5Sk1JOmeJfcb5yU=
+	t=1770275240; cv=none; b=hDl8Elf4iog1eHXbiW+XpGQ72pr5moz8FOFEHwxGunBWmfW0RTD7Os1JXB/ezTJlDeD0yAGsT8myDhxmTeFOGFjS05e9PMlaaqqFu3jl3wsBVWU0qKLAWLN7ljl78wQGLbYVL4aei7wfnO4fssrq4tQLtr8YLB95Xm0//hW7TjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770274976; c=relaxed/simple;
-	bh=LP/PTh1RI2vrI9YcFfx8ZmGSu6yPnXt6FvME3CwFFHk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cOPUFPyyCpA4ClaQ/IefFiw5Sdh37lg2eIUYMN6C2gy3DxJCS3AnbVEysXkN04N+q21F+9cgM20tg5K/brbgJ3Tfhd9l17rB1FdHk5PCASIAVr7AoMaBrkdoN28nNJJ5IoCPI8oiu0sg1Awukug+BMIzzRjxhflohElLFpoTf0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=LuqoV2C4; arc=none smtp.client-ip=91.218.175.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1770275240; c=relaxed/simple;
+	bh=54UTACEIjljOknDSR1Mgr8Jy/qUh0kuCz7srLk5rgkA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E8KAb3xhzmQ2zAunoD2wH9OZ2Fb0w4c3dFX7npxuLJ5/il3lrIPle64Ks31hu0LiqlovfBHh/zX3TEP7quTfjBMflrkVVx11lGOIxu/BXAyUtRq0YgSQOezaV9hDzz+OkYeyojrHGbBabY7t84ulXtPjtzdZhZhF/mil6a/kehc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=an596wB0; arc=none smtp.client-ip=209.85.161.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="LuqoV2C4"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770274964;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=bqLxOvLzcNx9RiZYGWigx6P2BqjV1IJiHhUsW/aMTmo=;
-	b=LuqoV2C4PLsW1po9EhMYnQ/b2Mn6WJAjSlKmALECgzH+S76APpjHi6gnN53gMoI0/s8vr9
-	U1XT3jBN/OZgyfRvGXGL9R1TdyQyfU5w0Ky2ERJXrNeTB40v119r6G31QtWDk8qTSlaggk
-	Q+htXeNtsaC/HfNsHtEghCZPlT8cg+w=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="an596wB0"
+Received: by mail-oo1-f68.google.com with SMTP id 006d021491bc7-66a12c77a2cso356174eaf.3
+        for <netdev@vger.kernel.org>; Wed, 04 Feb 2026 23:07:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770275239; x=1770880039; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ldSsh8AqrwVd7W7U3ShnZ3QwgoeeXWHBddwGz0cGoaY=;
+        b=an596wB0CHSw3PvGAfrlpg9R9nkrPLBue72APzED1n3K2moytYvPLumMZCReofxjaQ
+         a+9cxALjQ23GbdBGh3n9JD2PxN7OeW9IE5D/AKN5mYDEAhPRnXy35c0YB8bfH03xCDuS
+         WVuU2npKioACU0rZ/qB07tnkGiWqeIEQPUFlAY8seWehZ8hHTv1YQFxkiebed+Ypi+gB
+         HhbAJWeJNv25vP0dqHK1WsUPIx0SdUfylGnDuoe5LMuRN1NbF8rkQNitiKcAOAFq79FD
+         Mwtm5CXPScwhOLrq7x/jrs9qQCZyGw4VhWoXajv6rqNqq/LXMqKJjrgQjuu1BX3X0T0Q
+         Z7WQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770275239; x=1770880039;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ldSsh8AqrwVd7W7U3ShnZ3QwgoeeXWHBddwGz0cGoaY=;
+        b=hkzI1IfEEZnoNXJXHAXfx3NLOj7973HrW50bV4BvnyQ7UXWrxHN2LdnCtNA6c7vwbe
+         j1uSn6QneTvmsgksfo+tKXk+U/4Ea7NeEq+cntBOFgoCThu2ViDfoGlmzAtrUtXqftA0
+         2OJJ2XdlftneE0OWYZTcRG5IHMTiRR3EBpU1Imzl6SG0bsrioNc4gwp5Dw8nvX73XU5t
+         EkSS3au5g5QTOJygRYcR6QYOggR/9H50c5HIerHDPt6abdg8+qn5OsGCeP0qYmJHw9sr
+         /KeDAgj29j1nfqo9eL7L+SYbYcG/2xKFz7vmm9x32w7tM4/GJKzsosz4LFauYhXW10Ey
+         DZWA==
+X-Gm-Message-State: AOJu0YzvfnCGiD5bDntxCAcblpXOjnVazHvPgtrWPfJO6JzQkrLGZNI4
+	zJj89CIfuOLrYPx2Gc/lV66etP4YJGpDpbGPto5eSUd1/wGHEVN2zbnoThzr6G0D
+X-Gm-Gg: AZuq6aI6zcVPcwFVHEiI8OjgUahv69AUC1YLVOiQ01oS5d+b4NRGKTX6EqyL1wU5lsj
+	wD8z7XcenwDvuLH+K/RB+9ndIxIj4evhhzLF9q89wtzKo2TFJW2sIieEARtEtNzHiclFoPMzDFK
+	Xt6luZidye5jQ0l9ZY8E8faH6l1P2V96da16eUFaQ5BskR+oQdOcgaBA4QzLJGG00OsgysP9Lxu
+	IkTuBKxm44Qm/jGYYta266cmaOdwzG28CHgBvAwG/dbgAKIsyjH5BKFaee4oLlvMf03BxkVUkXp
+	5RaXCx1k1AGfP69Il9DpK875uMNUHAfJh9cKyr4g0U793wVVpgBNInqww2do+9KDt1ypf2/kdrD
+	ScpeW4xHmopbZidooaCQ3PrQ5V82uutYdlYBBxkySOMw5HQtM/zvaJkj/YTYgiyUdc1AzVRfYbB
+	Cj0nFBd1ob4svi/puuFJaB9UDknWmINizIA0Z04jkhWkrQvny74GbvMJ9DLYclnimN419+2ltsn
+	NGi6RDf7qnAXNzRpJ7nMkKDN6g5cVs9GD5BzXjkn4yG9Un07azinB3aspADkMfGzVswayBRnGgp
+	n29g
+X-Received: by 2002:a05:6820:4987:b0:662:f9f7:153a with SMTP id 006d021491bc7-66a202aa633mr2217140eaf.1.1770275239054;
+        Wed, 04 Feb 2026 23:07:19 -0800 (PST)
+Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-66a354bdd76sm2660002eaf.11.2026.02.04.23.07.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Feb 2026 23:07:18 -0800 (PST)
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 To: netdev@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
-	syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
+Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
-	David Ahern <dsahern@kernel.org>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v3] xfrm: fix ip_rt_bug race in icmp_route_lookup reverse path
-Date: Thu,  5 Feb 2026 15:02:02 +0800
-Message-ID: <20260205070203.61560-1-jiayuan.chen@linux.dev>
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next] net: arcnet: com20020-pci: use module_pci_driver
+Date: Wed,  4 Feb 2026 23:06:31 -0800
+Message-ID: <20260205070632.37516-1-enelsonmoore@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,105 +77,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+The only thing this driver's init/exit functions do is call
+pci_register/unregister_driver, and in the case of the init function,
+print an unnecessary message. Replace them with module_pci_driver to
+simplify the code.
 
-icmp_route_lookup() performs multiple route lookups to find a suitable
-route for sending ICMP error messages, with special handling for XFRM
-(IPsec) policies.
-
-The lookup sequence is:
-1. First, lookup output route for ICMP reply (dst = original src)
-2. Pass through xfrm_lookup() for policy check
-3. If blocked (-EPERM) or dst is not local, enter "reverse path"
-4. In reverse path, call xfrm_decode_session_reverse() to get fl4_dec
-   which reverses the original packet's flow (saddr<->daddr swapped)
-5. If fl4_dec.saddr is local (we are the original destination), use
-   __ip_route_output_key() for output route lookup
-6. If fl4_dec.saddr is NOT local (we are a forwarding node), use
-   ip_route_input() to simulate the reverse packet's input path
-7. Finally, pass rt2 through xfrm_lookup() with XFRM_LOOKUP_ICMP flag
-
-The bug occurs in step 6: ip_route_input() is called with fl4_dec.daddr
-(original packet's source) as destination. If this address becomes local
-between the initial check and ip_route_input() call (e.g., due to
-concurrent "ip addr add"), ip_route_input() returns a LOCAL route with
-dst.output set to ip_rt_bug.
-
-This route is then used for ICMP output, causing dst_output() to call
-ip_rt_bug(), triggering a WARN_ON:
-
- ------------[ cut here ]------------
- WARNING: net/ipv4/route.c:1275 at ip_rt_bug+0x21/0x30, CPU#1
- Call Trace:
-  <TASK>
-  ip_push_pending_frames+0x202/0x240
-  icmp_push_reply+0x30d/0x430
-  __icmp_send+0x1149/0x24f0
-  ip_options_compile+0xa2/0xd0
-  ip_rcv_finish_core+0x829/0x1950
-  ip_rcv+0x2d7/0x420
-  __netif_receive_skb_one_core+0x185/0x1f0
-  netif_receive_skb+0x90/0x450
-  tun_get_user+0x3413/0x3fb0
-  tun_chr_write_iter+0xe4/0x220
-  ...
-
-Fix this by checking rt2->rt_type after ip_route_input(). If it's
-RTN_LOCAL, the route cannot be used for output, so treat it as an error.
-
-The reproducer requires kernel modification to widen the race window,
-making it unsuitable as a selftest. It is available at:
-
-  https://gist.github.com/mrpre/eae853b72ac6a750f5d45d64ddac1e81
-
-Reported-by: syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000b1060905eada8881@google.com/T/
-Closes: https://lore.kernel.org/r/20260128090523.356953-1-jiayuan.chen@linux.dev
-Fixes: 8b7817f3a959 ("[IPSEC]: Add ICMP host relookup support")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 ---
-v1 -> v3:
-    Suggested by Paolo Abeni:
-      - Resend it using net tree and using xfrm prefix
-      - Fix text string over 80 chars limit.
-      - Simplify commit message.
-    v1: https://lore.kernel.org/r/20260128090523.356953-1-jiayuan.chen@linux.dev
-    v2: https://lore.kernel.org/netdev/20260203063449.44737-1-jiayuan.chen@linux.dev/
----
- net/ipv4/icmp.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/net/arcnet/com20020-pci.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
-diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-index 4abbec2f47ef..35816ac749bc 100644
---- a/net/ipv4/icmp.c
-+++ b/net/ipv4/icmp.c
-@@ -554,6 +554,22 @@ static struct rtable *icmp_route_lookup(struct net *net, struct flowi4 *fl4,
- 		/* steal dst entry from skb_in, don't drop refcnt */
- 		skb_dstref_steal(skb_in);
- 		skb_dstref_restore(skb_in, orefdst);
-+
-+		/*
-+		 * At this point, fl4_dec.daddr should NOT be local (we
-+		 * checked fl4_dec.saddr above). However, a race condition
-+		 * may occur if the address is added to the interface
-+		 * concurrently. In that case, ip_route_input() returns a
-+		 * LOCAL route with dst.output=ip_rt_bug, which must not
-+		 * be used for output.
-+		 */
-+		if (!err && rt2 && rt2->rt_type == RTN_LOCAL) {
-+			net_warn_ratelimited("detected local route for %pI4 "
-+					     "during ICMP sending, src %pI4\n",
-+					     &fl4_dec.daddr, &fl4_dec.saddr);
-+			dst_release(&rt2->dst);
-+			err = -EINVAL;
-+		}
- 	}
+diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
+index 0472bcdff130..19e411b2e3a7 100644
+--- a/drivers/net/arcnet/com20020-pci.c
++++ b/drivers/net/arcnet/com20020-pci.c
+@@ -618,17 +618,4 @@ static struct pci_driver com20020pci_driver = {
+ 	.remove		= com20020pci_remove,
+ };
  
- 	if (err)
+-static int __init com20020pci_init(void)
+-{
+-	if (BUGLVL(D_NORMAL))
+-		pr_info("%s\n", "COM20020 PCI support");
+-	return pci_register_driver(&com20020pci_driver);
+-}
+-
+-static void __exit com20020pci_cleanup(void)
+-{
+-	pci_unregister_driver(&com20020pci_driver);
+-}
+-
+-module_init(com20020pci_init)
+-module_exit(com20020pci_cleanup)
++module_pci_driver(com20020pci_driver);
 -- 
 2.43.0
 
