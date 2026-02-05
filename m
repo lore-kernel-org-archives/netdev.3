@@ -1,112 +1,161 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E876E2F362D
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 17:44:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F6D2FD694
+	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 17:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770313477; cv=none; b=Y8f4ZUhLNiCnFHjZPPSPbR8d+3NN8F1+RcvoF+ep3V5Pb5/PRli6bQATTOB4WOsutZsulNN2Uj75bfYw91NpIuZ8Pj8+8owmaF0wkPOaXfi/afoMvXyTH4PgezvWKDecD5Ha9apSOrmjJlcWvC9dYmPmU7JgWE0kJHJb73cG8Mo=
+	t=1770313616; cv=none; b=q+uhJ6RwYziWt1fJErKbRfm0/YfkhS8YCw/fKSonumwVLbnqx9ZnuESXXuLruxbrHbz/VhqN1h7HEQ+fn8UDN9piRXxOvLnhlbxsYJWgGlBDqWI39WShgbV0x5qRpyPNfAXbEPTdbp9Tr491R0vGYXzpljXCqXHRXh8TTSwyLpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770313477; c=relaxed/simple;
-	bh=o0rJ/k5zbcMcfwxnVLNQ13kQ9L6527ZRZ0Mbmz8faLM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c5ks3B4AwBDNWhcRz50RyTg5/rR/v9mvUHGCrpWRC8tUtfbo/o7NDm91NBzuo2GrrA7hK8g0kwrtZA/5vxLoefPcLMJ1JVcCDzl9qWmGN/zkAftBbhA0TiHjwAEfQSTeLOjfYoD5wqpP3slsPgT0Jt1qqHQupxJGvGHXtbLQ/qg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kzbhP5Iz; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1770313616; c=relaxed/simple;
+	bh=wnjtBBK0iqB1VvqUAEVJlOibMNEC4vdMhgnCkZgThn4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dd1KJ8AJlhdUkidT5zMsBQt0a24efj5v2sfxBQzJlA2AfoVtVEgOehYpY25h09hfr0QA9BTQkQhwKXSUvj+fMAre7BQg/t6B0SYAT0Oc5rFx0Uj3dNDQnI3C3tGg8Vo4TJeANSJOpXjQZeO9qN3riIqqYRpxHx8rdDEZto1SVfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k1SWEf6f; arc=none smtp.client-ip=74.125.82.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kzbhP5Iz"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0d52768ccso7805585ad.1
-        for <netdev@vger.kernel.org>; Thu, 05 Feb 2026 09:44:36 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k1SWEf6f"
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-1249b9f5703so1956564c88.0
+        for <netdev@vger.kernel.org>; Thu, 05 Feb 2026 09:46:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770313476; x=1770918276; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Gc0E72oPfM3CH+sOdZznPkkUshYA7l2qkcY6ZqG7/gY=;
-        b=kzbhP5IzpXwVVuffRJgA605sEZIj5PdmG+MdfdriZW+7pD7Q4jxzb5KYuE9g4eR2+C
-         sC9rYsHWwS/vrkJWv++ka14VGAT4rMX/BFFEZxvqNc8QosRLBKqb3KL7oXg/fikD0oMA
-         mWsmadwkC25PbXS3OiW+uNR8gCmlanqAqvkjWMf6wI+wCPhu2cojKKtRh7DXLSDrYVYg
-         xfXn7cZtRe6xLsRjYWYA1+itk8DRq3yCeGSdlP8sEKFV5rlCPNNZ2THI8SSrkLdNhpaY
-         V/kejQAx5T+1kSJ55bwSVTwesCBU052W0PyF+jUfEYYruF7VJYdAaM9/AdORZqQJZ7es
-         gZXA==
+        d=gmail.com; s=20230601; t=1770313615; x=1770918415; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=knM2pU/+KZzHJ5cQexzMehGAL415Q9KWhsuFhvbNK0A=;
+        b=k1SWEf6f+dgqM7ER+/qK/Q/rGo16QQDaicchHm4Ot9ZpSzHbYT+lgLQU3WNScz1bz9
+         toeAlLsh+Gx43O2C6IP3WKuFvubDK7yfr/bVUKu29JPl9Z3GOw1bUlIK/cU4xahNp3yQ
+         f09YivlRorLc5b3Ty/IhHR3OC1aREYGx0FNJABeyuogwhNVYtG8rfREaX7R3TJ/AwsKF
+         rfEQwaexWqKri9N4HKvouNhVrNEo8/2uKqVjajHNNza05ltyn7S5joaLA4zGMO2xLZN/
+         GaH0cfKs2FEWMNJwRs4TX6kEIVEeM8DRAgsRoZbSLKvhCG0Qj0RcDhgfh7mcBwHjT+iG
+         duTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770313476; x=1770918276;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gc0E72oPfM3CH+sOdZznPkkUshYA7l2qkcY6ZqG7/gY=;
-        b=UJmrgvgoLpfRVbUXllfLc7bzYsvwfRoRzUnMbHf3o09rYHS3On+SEjbXf0+L6GPrXu
-         xtTPvBdZ0+Do3m+QPN9//Zq+nyF8GYhbXBItw8TdW20PzQHikWvNH+3LnlBjP5goDemQ
-         4iw9bZ3W59R61M438k/Rf7qMIqJFd4/htrL+o5XtSh8k4zNSulvDHWgZe1y9Pr8C8Qn9
-         3EbybCTs3F1Um8p5cWHT80Qx1NU4VHXO44FQEE87YRXtdkPfR8VBRb0TltsloJ2OGUjx
-         3eu/GaJLw+i++F9uzZTrU93WtLWVUFSEfgW+zrYWQDiU/DaLKsswkZymtr1b5s+8oB9Z
-         Ly3g==
-X-Forwarded-Encrypted: i=1; AJvYcCUtMXuNFitdZk8vaJyn5UvLt6pfhcHb0cdonWExtX7fgSjkHYWccTTHtJ1WHUJk2Hn09NVXrt0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQ28hCIldrWpyX2du2Tnf5Q/qJgq1HF7RRg/7InQz1t0nFY3B6
-	XvolpF27w6MWZlKVGzS6WdW4YoDbyh4wYosrIVV3NWGg8Fdri1Fi4vyw
-X-Gm-Gg: AZuq6aI95Ge8WiMY/TnpehHQgroeSkAegm/SIzg3x8b1LDyi25hu54u2Je683KO7pVu
-	hEsVRpblRGlfrlvpVHaSoyQnpOnAahNCymWQVe0OFr16wIynzpao5hisK+6waV4Ed7HYPbZtHnz
-	QzduYQjDvo+YcYNohEIFbqAy16nWaECebDG4ESaSE176ZqzX1WkjPpXuTi5U9zcZYYZ6m4EWU+V
-	xwqOTAZeEFmmm9GoHa5xj3h3Ui7ps/ecpY4lkHWiKEJYkhWqqr5pfKSPdbfmU7xWkQraCp4AKM+
-	wH5qXyZVdZiqpoFMH82OUgDBzUipbvENJh0mcwepP4Of07oYxDTTJ0JuE3WqILhBbY4GzocVVsV
-	OUXllWOBNHYApvy9HAGktHDIfoCwLQYbCF2GGnmLcJvdpkcVyeb55ANzk9RiOk3OKkjfISSft0V
-	3dZCc+xy+jyxgm
-X-Received: by 2002:a17:902:e5cd:b0:2a9:47d0:12cd with SMTP id d9443c01a7336-2a95164b71emr741655ad.15.1770313476297;
-        Thu, 05 Feb 2026 09:44:36 -0800 (PST)
-Received: from mint.. ([2401:4900:53f5:8722:5847:8ba8:5649:5c92])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a93397e9cesm54372875ad.97.2026.02.05.09.44.33
+        d=1e100.net; s=20230601; t=1770313615; x=1770918415;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=knM2pU/+KZzHJ5cQexzMehGAL415Q9KWhsuFhvbNK0A=;
+        b=CrD90yca7Z/OCdRs0XTx1yDqL9gvadIL0pru/qmY+wU2WA14P6OkKup3uWGXEo8j+g
+         acG428a8RIxqxQdjMB1pFjHbtei4GUEaEu0dqsAsMEBfgesCEtT85RZViNDRws0IaTap
+         7iH/4gX0nhoYur8haiQoR+YrNoAwZWFvwMAn7+LpnK35WHFCEGXCZ8czHYDYQ3dpQahG
+         4ewPeufAaNfCviaesf6jmhrJZCmuSD/qqaW9jIFiNShzmtvkqsKPY3Qi3cFJfH1bYZzu
+         m4T5Un3z/q9eVQjELWvx/Fb3cJlMQB6DmpzIpZQixIwvv1aETNVVA/nfIl3FXDvbghU0
+         cwMA==
+X-Forwarded-Encrypted: i=1; AJvYcCV3BohO4fwgmR1ZQgBIkw2/mZB5PkJeOvcv8HyJbLaOb+XREMbniHBAzGDlvYpSSPaL4gcMH1g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDlCNSquYxwaTazugxx7tE7/EMY0HY0dKzXIN3BCI33gdwRSym
+	qw9MIxZ9ECvc8WNtpSDVeD7OIpf4kK2Magq3hvOYgGyAQLtsBenQSKdV
+X-Gm-Gg: AZuq6aIawFj/ErigcrCneMiZlyf700WU+1X96fb1JP1hS0eYqy8nHRGLLyAd3cgqcbL
+	ScpRxZp2k3oSgsnvjrEtJhZN9fJryP0XdICfHzlRQnCzkc5m9q/GLKNHnRH5TTbBmLAyBhAV1Zn
+	fUTv0N5lWOZUTDfwWQfpFWonhti+4vM0WCSdSaXEayHDwbDhWHlUB0/5dKCMvdyVFPtm0I8yJR6
+	IivWr70iwZcivtfox2YFZh9NF48cDr1B9NZ4aatnQwQJc6jx+8mqUSbgxinu9m7RhVknAmIcyyr
+	+A6iwQwqHezT9hFYZvotOMN1IY5aB0/AdkJg4Kv50bdzBcDGCNMVKE+7tWrKxTv/PFtBHGKOd0o
+	7jGmYRLYBzX4yJkNe3hLjlrovc2i9AkT/rui9otGo1QRJx4bXrAyl1Nkxji696i0PfBUlSXG2/r
+	RL7pY3tyHfX+PHL1CTFg==
+X-Received: by 2002:a05:7022:a86:b0:123:330b:398 with SMTP id a92af1059eb24-12703f51b55mr30556c88.19.1770313615063;
+        Thu, 05 Feb 2026 09:46:55 -0800 (PST)
+Received: from deathstar ([2600:1700:22f5:908f:1457:7499:d258:358f])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-126f4e04467sm4152626c88.2.2026.02.05.09.46.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Feb 2026 09:44:35 -0800 (PST)
-From: Dhyan K Prajapati <dhyan19022009@gmail.com>
-X-Google-Original-From: Dhyan K Prajapati <dhyaan19022009@gmail.com>
-To: Johannes Berg <johannes.berg@intel.com>
-Cc: linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	dhyaan19022009-hue <dhyaan19022009@gmail.com>
-Subject: [PATCH v4 wireless] mac80211: fix NULL pointer dereference in monitor
- mode Crash trace:   RIP: iwlagn_bss_info_changed+0x19d/0x640 [iwldvm]   Code:
- 49 8b 46 10 <8b> 10   RAX: 0000000000000000 (NULL link->conf->bss) wifi:
- mac80211: fix NULL pointer deref regression in link notify Commit
- c57e5b974514 ("wifi: mac80211: fix WARN_ON for monitor mode on some devices")
- reorganized link change notifications. This caused a regression for hardware
- using IEEE80211_HW_WANT_MONITOR_VIF. In monitor mode, link->conf->bss is
- uninitialized, but current logic allows these notifications to reach driver
- callbacks, causing a deterministic NULL dereference in drivers like iwldvm.
- Fix this by validating the BSS context before driver notification. Device:
- Intel Centrino Advanced-n 6205 Fixes: c57e5b974514 ("wifi: mac80211: fix
- WARN_ON for monitor mode on some devices") Cc: stable@vger.kernel.org Cc:
- netdev@vger.kernel.org Cc: linux-wireless@vger.kernel.org Cc: Johannes Berg
- <johannes@sipsolutions.net> Signed-off-by: Dhyan K Prajapati <dhyaan19022009@gmail.com>
-Date: Thu,  5 Feb 2026 23:14:19 +0530
-Message-ID: <20260205174419.4467-1-dhyaan19022009@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        Thu, 05 Feb 2026 09:46:54 -0800 (PST)
+Date: Thu, 5 Feb 2026 09:46:52 -0800
+From: Matthew Wood <thepacketgeek@gmail.com>
+To: Andreas Hindborg <a.hindborg@kernel.org>, 
+	Breno Leitao <leitao@debian.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org, 
+	hch@infradead.org, jlbec@evilplan.org, linux-fsdevel@vger.kernel.org, 
+	netdev@vger.kernel.org, gustavold@gmail.com, asantostc@gmail.com, calvin@wbinvd.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH RFC 0/2] configfs: enable kernel-space item registration
+Message-ID: <aYTWbElo_U_neJZi@deathstar>
+References: <fdieWSRrkaRJDRuUJYwp6EBe1NodHTz3PpVgkS662Ja0JcX3vfDbNo_bs1BM7zIkVsHmxHjeDi6jmq4sPKOCIw==@protonmail.internalid>
+ <20251202-configfs_netcon-v1-0-b4738ead8ee8@debian.org>
+ <878qfgx25r.fsf@t14s.mail-host-address-is-not-set>
+ <-6hh70JX5nq4ruTMbNQPMoUi6wz8vmM2MQxqB3VNK3Zt97c-oxWOo3y0cQ7_h6BSfcp78fR9GmzxcTQb_WB-XA==@protonmail.internalid>
+ <ineirxyguevlbqe7j4qpkcooqstpl5ogvzhg2bqutkic4lxwu5@vgtygbngs242>
+ <875xakwwvz.fsf@t14s.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <875xakwwvz.fsf@t14s.mail-host-address-is-not-set>
 
-From: dhyaan19022009-hue <dhyaan19022009@gmail.com>
+Hi Breno and Andreas,
 
----
- net/mac80211/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+I'm in favor of this RFC as I think the current flow of needing to
+create the cmdline0 dir in the netconsole configfs (when DYNAMIC config
+is enabled) prior to modifying the values is not ideal.
 
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index b05e313c7..190222c26 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -416,6 +416,8 @@ void ieee80211_link_info_change_notify(struct ieee80211_sub_if_data *sdata,
- 	case NL80211_IFTYPE_MONITOR:
- 		if (!ieee80211_hw_check(&local->hw, WANT_MONITOR_VIF))
- 			return;
-+		if (!link->conf->bss)
-+			return;
- 		break;
- 	default:
- 		break;
--- 
-2.43.0
+I think there are good points shared about sysfs vs. configfs being used
+for the cmdline target modification and wanted to add my thoughts.
 
+On Fri, Dec 05, 2025 at 08:29:04PM +0100, Andreas Hindborg wrote:
+> "Breno Leitao" <leitao@debian.org> writes:
+> 
+> > Hello Andreas,
+> >
+> > On Fri, Dec 05, 2025 at 06:35:12PM +0100, Andreas Hindborg wrote:
+> >> "Breno Leitao" <leitao@debian.org> writes:
+> >>
+> >> > This series introduces a new kernel-space item registration API for configfs
+> >> > to enable subsystems to programmatically create configfs items whose lifecycle
+> >> > is controlled by the kernel rather than userspace.
+> >> >
+> >> > Currently, configfs items can only be created via userspace mkdir operations,
+> >> > which limits their utility for kernel-driven configuration scenarios such as
+> >> > boot parameters or hardware auto-detection.
+> >>
+> >> I thought sysfs would handle this kind of scenarios?
+> >
+> > sysfs has gaps as well, to manage user-create items.
+> >
+> > Netconsole has two types of "targets". Those created dynamically
+> > (CONFIG_NETCONSOLE_DYNAMIC), where user can create and remove as many
+> > targets as it needs, and netconsole would send to it. This fits very
+> > well in configfs.
+> >
+> >   mkdir /sys/kernel/config/netconsole/mytarget
+> >   .. manage the target using configfs items/files
+> >   rmdir /sys/kernel/config/netconsole/mytarget
+> >
+> > This is a perfect fit for configfs, and I don't see how it would work
+> > with sysfs.
+> 
+> Right, these go in configfs, we are on the same page about that.
+> 
+> >
+> > On top of that, there are netconsole targets that are coming from
+> > cmdline (basically to cover while userspace is not initialized). These
+> > are coming from cmdline and its life-cycle is managed by the kernel.
+> > I.e, the kernel knows about them, and wants to expose it to the user
+> > (which can even disable them later). This is the problem I this patch
+> > addresses (exposing them easily).
+> 
+> I wonder if these entries could be exposed via sysfs? You could create
+> the same directory structure as you have in configfs for the user
+> created devices, so the only thing user space has to do is to point at a
+> different directory.
+> 
+Although technically feasible, this approach leads to an inconsistent
+and confusing management of the netconsole targets. A configfs path for
+user-space created targets and a sysfs path for the cmdline initiated
+target that can also be modified from userspace (e.g. to update
+remote_ip or userdata fields).
+
+I think Breno's approach sets up for the most intuitive user experience.
+The cmdline config for netconsole is also user-provided, so it seems
+like it should behave as a pre-populated configfs target that happens to
+pass from cmdline through netconsole module init to the current configfs
+interface. The initial values are not determined by the kernel itself.
+
+> 
+> Best regards,
+> Andreas Hindborg
+> 
+> 
+> 
