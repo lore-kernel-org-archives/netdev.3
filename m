@@ -1,116 +1,116 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from mail.crpt.ru (mail.crpt.ru [91.236.205.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3733ACA51
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 11:56:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965D43B52EB;
+	Thu,  5 Feb 2026 11:58:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.236.205.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770292612; cv=none; b=UvaHdjlleTH0b8C0JLLP598uNLc08G6HEnHmPhDCnmJbraUdz0D+WnLcuXKjQ9YKf/dwM7/KDekdufUrTSbV2XA8i6f9RVuV1HvtUxJL1UBpm6Us2+0AQEVoW6nOK+sQmvGwj11/lzIluM/IpNAkp660GeLLgJ8jbXkflU42P/4=
+	t=1770292698; cv=none; b=FbTBVgV9r3ObUB6PKPpEFAsi1AQ73CZw/ibCc8mn8Ftu+GtRqHN3JnUDRlFfnd0Ynd2/nA7goIcg2Dw3bY0LsjW3sfV79ufnNkvUyun46hUkumcUH8UrXGuHxVSCxR25Q1nv4Wi+ZNd+9AgmoP3xL6aTK91e4lQlQBx9sWaftOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770292612; c=relaxed/simple;
-	bh=ybbc+auNCktSq3UPFidjhvKH+YsOZgK6tem0lS+yldA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KNrX+t+/kgQwXWLjwH2yVNF9NRZM3WzUCGmQOivK0WWVO2colqz5NP/VwczHpT7tTa33ZwBxbIDbzZJDqZtJW+aM+NEOhN+sIbLpT0fmb+pJPznbMbtPX8cc2FBdEHSnG8AwGPmaAMt+ZGN6pX2vaeeDD2qSdh/8ehNYyO2aFYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=tWjgK1GY; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1770292698; c=relaxed/simple;
+	bh=Cxwqo1+Ald8SW5wGI3cU9gfdpqeTn5wUlmZNEXeOLFs=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=mYREgW+Q7gTSQ6Bp1SXvVuxtu0x6IeSEu4T1gXJbsbogc4xb5MTRhVG+6eBuYIhEslln/D34GrMdjwfg9JWpQ5oqDFsk9q7RNOzsGfYt+y25ZzsPHVgJ8g2Fdh2mVyjYjpMv06dKZcze8Y6+cC6s+G3GEx8TdSP3drtxjp+9aRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru; spf=pass smtp.mailfrom=crpt.ru; dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b=uZM0d2Q2; arc=none smtp.client-ip=91.236.205.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=crpt.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=crpt.ru
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="tWjgK1GY"
-Message-ID: <6a0f4cbb-e8b3-4f0e-b7f1-7f9ca5cba97d@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770292608;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=YWd1t7s8OVCzkHAhm4N5l/L4ZD0CWDELd1TJlLAt68U=;
-	b=tWjgK1GYjSewCFxQBoXE6X/4NUyrFwcikDUcmUkvHi15VclE2tLCZgaKnKapRe007LcxlF
-	rm4ZcLBv9tiWAxt/q8yJrSc/tXpDJ7+1c6SmxIi2i5CsKS61MjwsAs6V72ZT/x00fGNgWn
-	ep18WFCopxHrV2i7BZD7AffQdCzj9to=
-Date: Thu, 5 Feb 2026 11:56:44 +0000
+	dkim=pass (2048-bit key) header.d=crpt.ru header.i=@crpt.ru header.b="uZM0d2Q2"
+Received: from mail.crpt.ru ([192.168.60.4])
+	by mail.crpt.ru  with ESMTPS id 615BgNgF000324-615BgNgH000324
+	(version=TLSv1.2 cipher=AES256-SHA256 bits=256 verify=OK);
+	Thu, 5 Feb 2026 14:42:23 +0300
+Received: from EX2.crpt.local (192.168.60.4) by ex2.crpt.local (192.168.60.4)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.44; Thu, 5 Feb
+ 2026 14:42:23 +0300
+Received: from EX2.crpt.local ([192.168.60.4]) by EX2.crpt.local
+ ([192.168.60.4]) with mapi id 15.01.2507.044; Thu, 5 Feb 2026 14:42:23 +0300
+From: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>
+To: Saeed Mahameed <saeedm@nvidia.com>
+CC: =?koi8-r?B?98HUz9LP0MnOIOHOxNLFyg==?= <a.vatoropin@crpt.ru>, "Leon
+ Romanovsky" <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, Mark Bloch
+	<mbloch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shay Drory
+	<shayd@nvidia.com>, Gal Pressman <gal@nvidia.com>, Patrisious Haddad
+	<phaddad@nvidia.com>, Gerd Bayer <gbayer@linux.ibm.com>, Mark Zhang
+	<markzhang@nvidia.com>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: [PATCH net] net/mlx5: return error in case of lag device allocation
+ failure
+Thread-Topic: [PATCH net] net/mlx5: return error in case of lag device
+ allocation failure
+Thread-Index: AQHclpR+rj15C/aV2EGrrujnDvpJnQ==
+Date: Thu, 5 Feb 2026 11:42:22 +0000
+Message-ID: <20260205114206.1763509-1-a.vatoropin@crpt.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-kse-serverinfo: EX2.crpt.local, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: Clean, bases: 2/4/2026 10:27:00 PM
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: protection disabled
+Content-Type: text/plain; charset="koi8-r"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [Intel-wired-lan] [PATCH iwl-next v3] igb: Retrieve Tx timestamp
- directly from interrupt for i210
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Kurt Kanzenbach <kurt@linutronix.de>,
- "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
- "Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
- Paul Menzel <pmenzel@molgen.mpg.de>,
- "Gomes, Vinicius" <vinicius.gomes@intel.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- Richard Cochran <richardcochran@gmail.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Eric Dumazet <edumazet@google.com>,
- "intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
- "Keller, Jacob E" <jacob.e.keller@intel.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "David S. Miller" <davem@davemloft.net>
-References: <20260205-igb_irq_ts-v3-1-2efc7bc4b885@linutronix.de>
- <IA3PR11MB898652699383BA265C5747A5E599A@IA3PR11MB8986.namprd11.prod.outlook.com>
- <20260205100347.ssTBDAI_@linutronix.de>
- <IA3PR11MB89865B46DCBEB496BE28703BE599A@IA3PR11MB8986.namprd11.prod.outlook.com>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-In-Reply-To: <IA3PR11MB89865B46DCBEB496BE28703BE599A@IA3PR11MB8986.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+X-FEAS-BEC-Info: WlpIGw0aAQkEARIJHAEHBlJSCRoLAAEeDUhZUEhYSFhIWUhZXkguLVxYWC48UVlRWFhYWVxaSFlRSAlGHgkcBxoHGAEGKAsaGBxGGh1IWUhZX0gbCQ0NDAUoBh4BDAEJRgsHBUhYSFpIWVpIWVFaRlleUEZeWEZcSFBIWEhYSFFIWEhYSFhIWllICQYMGg0fQwYNHAwNHigEHQYGRgsASFhIWVFIDAkeDQUoDAkeDQUEBw4cRgYNHEhYSFlRSA0MHQUJEg0cKA8HBw8EDUYLBwVIWEhZXEgPCQQoBh4BDAEJRgsHBUhYSFpYSA8KCRENGigEAQYdEEYBCgVGCwcFSFhIWV1IAx0KCSgDDRoGDQRGBxoPSFhIWlBIBAEGHRBFAw0aBg0EKB4PDRpGAw0aBg0ERgcaD0hYSFpQSAQeC0UYGgcCDQscKAQBBh0QHA0bHAEGD0YHGg9IWEhZX0gYCQoNBgEoGg0MAAkcRgsHBUhY
+X-FEAS-Client-IP: 192.168.60.4
+X-FE-Policy-ID: 2:4:0:SYSTEM
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; d=crpt.ru; s=crpt.ru; c=relaxed/relaxed;
+ h=from:to:cc:subject:date:message-id:content-type:mime-version;
+ bh=tBD1DIuDM76b6fn+eP1KQnG1xb2lizg00yg48aXcuog=;
+ b=uZM0d2Q2z7WKW5bGntydI2OPkVD/58tNjdPcyrXdhVcppvHH192qFBJcsbE6pYtDgyPa86zUvYnv
+	PF+PAPu6tz1nsVprMduWg3H+kN4Lx/4tszfQVYa8fyFA2fac83VXJnQ3CA1m+Inn8tie8uQpWnr5
+	vZy/XjQKrct8m0mKCGZTh6c8dwlBiV/AH6xDCj/3IuZ6PyY+QsQteB+iIk20W5miO/m1xbFlSMEf
+	bVkhUXi+40YJif8B6gX54SU3g63ZSpCShI5da4/2zaD2QI9+IU/ZECrMKOm5SpZzS/x01/IDVVfJ
+	ovoNFB1MwZLMOn4J5UryKlg25CTyzpeAYl1erg==
 
-On 05/02/2026 10:37, Loktionov, Aleksandr wrote:
-> 
-> 
->> -----Original Message-----
->> From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
->> Sent: Thursday, February 5, 2026 11:04 AM
->> To: Loktionov, Aleksandr <aleksandr.loktionov@intel.com>
->> Cc: Kurt Kanzenbach <kurt@linutronix.de>; Nguyen, Anthony L
->> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
->> <przemyslaw.kitszel@intel.com>; Paul Menzel <pmenzel@molgen.mpg.de>;
->> Vadim Fedorenko <vadim.fedorenko@linux.dev>; Gomes, Vinicius
->> <vinicius.gomes@intel.com>; netdev@vger.kernel.org; Richard Cochran
->> <richardcochran@gmail.com>; linux-kernel@vger.kernel.org; Andrew Lunn
->> <andrew+netdev@lunn.ch>; Eric Dumazet <edumazet@google.com>; intel-
->> wired-lan@lists.osuosl.org; Keller, Jacob E
->> <jacob.e.keller@intel.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
->> Abeni <pabeni@redhat.com>; David S. Miller <davem@davemloft.net>
->> Subject: Re: RE: [Intel-wired-lan] [PATCH iwl-next v3] igb: Retrieve
->> Tx timestamp directly from interrupt for i210
->>
->> On 2026-02-05 09:47:14 [+0000], Loktionov, Aleksandr wrote:
->> …
->>>> --- a/drivers/net/ethernet/intel/igb/igb_ptp.c
->>>> +++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
->>>> @@ -796,6 +796,28 @@ static int igb_ptp_verify_pin(struct
->> …
->>>> +	igb_ptp_tx_hwtstamp(adapter); <-Calls existing function
->> designed for work queue!
->>>
->>> skb_tstamp_tx() can sleep
->>> Smells like sleep-in-atomic isn't it?
->>
->> How or where can it sleep?
->>
->> Sebastian
-> 
-> igb_ptp_tx_hwtstamp() -> https://elixir.bootlin.com/linux/v6.19-rc5/C/ident/skb_tstamp_tx -> https://elixir.bootlin.com/linux/v6.19-rc5/C/ident/__skb_complete_tx_timestamp -> https://elixir.bootlin.com/linux/v6.19-rc5/C/ident/sock_queue_err_skb -> https://elixir.bootlin.com/linux/v6.19-rc5/C/ident/skb_queue_tail -> https://elixir.bootlin.com/linux/v6.19-rc5/source/net/core/skbuff.c#L4075
-> 
-> spin_lock_irqsave(&wq_head->lock, flags);  <- RT mutex can sleep
+From: Andrey Vatoropin <a.vatoropin@crpt.ru>
 
-Hmm... that actually means we have some drivers broken for RT kernels if
-they are processing TX timestamps within a single irq vector:
-- hisilicon/hns3
-- intel/i40e (and ice probably)
-- marvell/mvpp2
+The function __mlx5_lag_dev_add_mdev() attempts to allocate memory for the
+pointer ldev by calling the function mlx5_lag_dev_alloc(). If the memory
+allocation fails, mlx5_lag_dev_alloc() returns NULL and the
+__mlx5_lag_dev_add_mdev() returns 0. Later in the debugfs handlers there is
+an attempt to dereference the ldev pointer.
 
-For igb/igc/i40e it's still OK to process TX timestamps directly in
-MSI-X configuration, as ring processing has separate vector, right?
+Change the return value to "-ENOMEM" to avoid NULL pointer using. When
+"-ENOMEM" is returned __mlx5_lag_dev_add_mdev() will attempt to
+reallocate memory for ldev after a sleep interval.
 
-But in general skb_tstamp_tx should be moved to BH processing (NAPI poll
-callback).
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: cac1eb2cf2e3 ("net/mlx5: Lag, properly lock eswitch if needed")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/ne=
+t/ethernet/mellanox/mlx5/core/lag/lag.c
+index a459a30f36ca..6e914472a2d7 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
+@@ -1392,7 +1392,7 @@ static int __mlx5_lag_dev_add_mdev(struct mlx5_core_d=
+ev *dev)
+ 		ldev =3D mlx5_lag_dev_alloc(dev);
+ 		if (!ldev) {
+ 			mlx5_core_err(dev, "Failed to alloc lag dev\n");
+-			return 0;
++			return -ENOMEM;
+ 		}
+ 		mlx5_ldev_add_mdev(ldev, dev);
+ 		return 0;
+--=20
+2.43.0
