@@ -1,108 +1,77 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFB642314D
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 15:30:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78ABF425CCC;
+	Thu,  5 Feb 2026 15:30:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770305406; cv=none; b=KZpcF55qZctYkzV/0ZcAI3/qytlOa1MZYkXbamrmgv54HxyAZG9mBTaN6Y5PbKGEwD0gwBLVHJFQSBQf/YrgB2VLL7aKhq8U0uLZPRNm1R7dCw0Z6OAXhCrvTKujkZdWXB3+YQfLjTIC6Ubq1fjTKyUQYoNXFhNlRzX0tO/vKjg=
+	t=1770305407; cv=none; b=VWNwtwiYZeiaD36TKmbWK32yDdX02hCdN3XdJJaAPXbNE61C8Ke/ongp62fZe7p0a/xyBqPBgPT7n/cIqWvc0tQL5gYpl7Q09H+Xo3XfITLeGK/kE5eWXHR0RzJeQCmLgXRtF7pWDvl4nqivE5EBfRm0tWXJHczqQmzwkiP43Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770305406; c=relaxed/simple;
-	bh=8ICOAF+Csaod43QLvuGoAGK2P4g7zOrVzra21zr8IhA=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=HrPgBRDjzmmKngWN86e+kTHD+CzIp1BeW04YuwOjDWjiEVNSbSoIJOWJdWvY4tgNNHg9FEmiNXHBpsSHbXU6HpXNLFLM64UB9E4WO+bDzDC4O8Go4qCg6h570g9nz/kMASSBbfB9tHthTvnnAa6BIO264VMR9aCd6lCeK24hs28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Na/jxiNJ; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1770305407; c=relaxed/simple;
+	bh=iiYNzwB9ZgVfBypaZfkHLlNCuzW36uTTaMQAL3MvruY=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=An6rZ908KYPeMujJb/8wOGcrQiQNbrTbUhjLUiOgY8dTIx/nkfht4JXtEMN9KAIJf0t2RA6WRHLfDYew0WHOgK0d3JRy7e+de1x1zwlL1I/e83+cw+5gwATKdppVvItOYwBITON6NOKSmXLuw1UrXJF1thYPSGRxvZ8g3PKPrzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CrwnEq1k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Na/jxiNJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CrwnEq1k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 083C4C4CEF7;
+	Thu,  5 Feb 2026 15:30:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770305407;
+	bh=iiYNzwB9ZgVfBypaZfkHLlNCuzW36uTTaMQAL3MvruY=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=CrwnEq1kKA++x4iwDZQfjL6DSc9GRhQSV6kCskKf4dOg5Fv+Sali+YLUgnBAsZFam
+	 UjH3hqpgQnUUoO0VeEzc3zxiTWp+Ps+bpWLE06TFGykx8ZMg9NRHITcimx9gMsVDwf
+	 2L7A4VrUdwDSsQz5NP2defleHsJb2C8TKbxcQgIEB0vp1hpcAH30qV5WIQtlOyCUN9
+	 l2Icpz3YUBkdc8jZDX+SvgAmMTNkAh5kXkdU6P/7RJBOvh47nrjUXjsLqhIFxIau+8
+	 cNH4ql5d0nlqulHryHGkEV4z/7mmHvTkfFI4PXaF2tsH/Q5qK0ubwTYwfLTaeZrdn/
+	 bhdULkx659/ew==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B04E3808200;
+	Thu,  5 Feb 2026 15:30:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1770305404;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pS4CwfUmLVVYEaGKTrnOmaVQ9A+Wa7bM5Pi55GufFW0=;
-	b=Na/jxiNJtznifXn9ZUXypnXC16SRxV8wRbUzCvUBSUMKxbatRQGxCNjOjFhVKfWKL20nCK
-	nm9ggxyOa7TyXniRaXq30ajaBKlCumyUFOReoRCMFdqTLMRJlFs5onok4QgJAYyaE80Y+9
-	PJ1Fg+huopLWPqmI6BC1/sg8AYGxoIM=
-Date: Thu, 05 Feb 2026 15:29:53 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <3864f233d228b86ea89f224e39ed77b05c298e54@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH net v3] xfrm: fix ip_rt_bug race in icmp_route_lookup
- reverse path
-To: "David Ahern" <dsahern@kernel.org>, netdev@vger.kernel.org
-Cc: "Jiayuan Chen" <jiayuan.chen@shopee.com>,
- syzbot+e738404dcd14b620923c@syzkaller.appspotmail.com, "David S. Miller"
- <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, "Herbert Xu" <herbert@gondor.apana.org.au>,
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] flow_offload: add const qualifiers to function
+ arguments
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177030540483.454346.3120240767343514576.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Feb 2026 15:30:04 +0000
+References: <20260204052839.198602-1-mmyangfl@gmail.com>
+In-Reply-To: <20260204052839.198602-1-mmyangfl@gmail.com>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  linux-kernel@vger.kernel.org
-In-Reply-To: <62b51184-cc76-42cc-beea-91b6e815132f@kernel.org>
-References: <20260205070203.61560-1-jiayuan.chen@linux.dev>
- <62b51184-cc76-42cc-beea-91b6e815132f@kernel.org>
-X-Migadu-Flow: FLOW_OUT
 
-2026/2/5 23:17, "David Ahern" <dsahern@kernel.org mailto:dsahern@kernel.o=
-rg?to=3D%22David%20Ahern%22%20%3Cdsahern%40kernel.org%3E > =E5=86=99=E5=
-=88=B0:
+Hello:
 
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
->=20
->=20On 2/5/26 12:02 AM, Jiayuan Chen wrote:
->=20
->=20>=20
->=20> diff --git a/net/ipv4/icmp.c b/net/ipv4/icmp.c
-> >  index 4abbec2f47ef..35816ac749bc 100644
-> >  --- a/net/ipv4/icmp.c
-> >  +++ b/net/ipv4/icmp.c
-> >  @@ -554,6 +554,22 @@ static struct rtable *icmp_route_lookup(struct =
-net *net, struct flowi4 *fl4,
-> >  /* steal dst entry from skb_in, don't drop refcnt */
-> >  skb_dstref_steal(skb_in);
-> >  skb_dstref_restore(skb_in, orefdst);
-> >  +
-> >  + /*
-> >  + * At this point, fl4_dec.daddr should NOT be local (we
-> >  + * checked fl4_dec.saddr above). However, a race condition
-> >  + * may occur if the address is added to the interface
-> >  + * concurrently. In that case, ip_route_input() returns a
-> >  + * LOCAL route with dst.output=3Dip_rt_bug, which must not
-> >  + * be used for output.
-> >  + */
-> >  + if (!err && rt2 && rt2->rt_type =3D=3D RTN_LOCAL) {
-> >  + net_warn_ratelimited("detected local route for %pI4 "
-> >  + "during ICMP sending, src %pI4\n",
-> >  + &fl4_dec.daddr, &fl4_dec.saddr);
-> >=20
->=20per Paolo comment on the previous revision of this patch, strings sho=
-uld
-> not be split across lines like this. It should be:
->=20
->=20net_warn_ratelimited("detected local route for %pI4 during ICMP sendi=
-ng,
-> src %pI4\n",
+On Wed,  4 Feb 2026 13:28:35 +0800 you wrote:
+> Some functions do not modify the pointed-to data, but lack const
+> qualifiers. Add const qualifiers to the arguments of
+> flow_rule_match_has_control_flags() and flow_cls_offload_flow_rule().
+> 
+> Signed-off-by: David Yang <mmyangfl@gmail.com>
+> ---
+>  include/net/flow_offload.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+
+Here is the summary with links:
+  - [net-next] flow_offload: add const qualifiers to function arguments
+    https://git.kernel.org/netdev/net-next/c/770e112634e7
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-Sorry about that. I totally misunderstood Paolo's comment.
-
-pw-bot: cr
-> >=20
->=20> + dst_release(&rt2->dst);
-> >  + err =3D -EINVAL;
-> >  + }
-> >  }
-> >=20=20
->=20>  if (err)
-> >
->
