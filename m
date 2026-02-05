@@ -1,83 +1,162 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B512C0F91;
-	Thu,  5 Feb 2026 16:16:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770308176; cv=none; b=caVq2G6GB2BDKXeOQt9E4AXWtn5/xfaVRNz+m+xrDc/VkWJqyUEfgsqibuTelIor16hA0BUUl6myVeTTKpiZx8YWh9Dn143J73z0eEy7MLBFG1ZUgppH/D8J6AQ76BkU0OrB6Li+tEO+Rj+piCMmtVpnkjKBoSeuqfFSQyj7nY0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770308176; c=relaxed/simple;
-	bh=PV2Zzmkef21eRrCOQf0Q175nJBjzm+KyKai2dRqEd3E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oPTpPd4PYgAtq591dwL02MohUcOgtUUOREcLCKS6sXjloJzw6prHY+Se+1zBb56mvRu5CRoicPhaHUA51HuyWSRNEIcPvPwu1YI++F9d0rzbbDLe32kW0lzWBMfCwnTomyA3nnyHUb5NPPAvJCij7hbMQtVnWsDn9jX7Le21ZZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XPu012I9; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02C0438FE9
+	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 16:24:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770308687; cv=pass; b=HmgxAOMMQ0edeMR+fCG643xW/S3sqF07YaZeUTEjIEYzYc3e9+krUmZGfnay7KFxzWynqX16Hri74oMb6PR8OL9NpMsBZbiJPsbVezYbgvdEnwYj336ck55kNFAhiDIHCpHuM6Vobmu6qC8pyKUljSytsaALdWtmJXBWKAROgz8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770308687; c=relaxed/simple;
+	bh=odNvXPzdKEvCp0BCtgvbKVCz2w6TVfIMVaJ+RANVd8U=;
+	h=From:References:MIME-Version:In-Reply-To:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rRCqEZZIrSc6lTGe5pGcg0MvJNP3v04upyBQL4fdpf+NF3Itvif/IzfWp4lUwDK3n6LUEJ885U56fc7xJgWVzzlLPd4wRfO1mpXiOOJ8PSXQRdAoNhOlYXxUkPo4sNMeeI104V22jY/v8Tt7uphUcpFV4I5AfKqmpSw/zYsCq7M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=de/LKwFW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LAdcbhx0; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XPu012I9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35156C116D0;
-	Thu,  5 Feb 2026 16:16:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770308175;
-	bh=PV2Zzmkef21eRrCOQf0Q175nJBjzm+KyKai2dRqEd3E=;
-	h=From:To:Cc:Subject:Date:From;
-	b=XPu012I95Da8GFicm+it7uSEyUJWRr9grvbTowU01/ql5Q84ZvtvdEMyfi/aEcn8f
-	 sPH8R+a1EAD1KaWzDCyO1K9HGkt3BftsC7lGcJyXqWc0qk4VdSR3bdm8jA3o4qU0E0
-	 cdd0vMvt/zX2k258Do+FwWpUM3i+CbvBcHtdU6RjKovV7N7Hf9UAz2oqkVmAlZEAfY
-	 VfdlPYBsfCsABiURwQ2sRqXLMtj/aVy6Krnpq3e+02yltKjQpmVew6khzAx5HIEKIH
-	 sCB+gQG/LPTfNUKNtyqENBtlCSuUgDohv+zTvCax5KYynvezSvNLUC80kGfgR0qjVu
-	 9DKwAvY9IjuzA==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Fan Gong <gongfan1@huawei.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Zhu Yikai <zhuyikai1@h-partners.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Xin Guo <guoxin09@huawei.com>,
-	Gur Stavi <gur.stavi@huawei.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] [net-next] hinic3: select CONFIG_DIMLIB
-Date: Thu,  5 Feb 2026 17:13:48 +0100
-Message-Id: <20260205161530.1308504-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="de/LKwFW";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LAdcbhx0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770308686;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Cthf3UpvR7SCVCTwNlvuIv9lekgY0gGhp/EgpN064I0=;
+	b=de/LKwFWMs+DMwXS/EPh2hHQ9tV3tuLSHUJC9g8C4gRhOA7MmcAMa+JXP9pRine08cev+s
+	L8TnWOB6PFmLxecBU6139G/TDR3RNBo6uztPai7VjQ8V7SCBikbem+BjAgYjHOhjHcCWF/
+	MRf95DmbKuu/CvyxY5wmo1D8eIB33Nc=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-632-zH3i3hbPNGyaBuKFVV6tLg-1; Thu, 05 Feb 2026 11:24:45 -0500
+X-MC-Unique: zH3i3hbPNGyaBuKFVV6tLg-1
+X-Mimecast-MFC-AGG-ID: zH3i3hbPNGyaBuKFVV6tLg_1770308685
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-894709fbae5so40049386d6.2
+        for <netdev@vger.kernel.org>; Thu, 05 Feb 2026 08:24:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1770308685; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OMwXXrhDWxozQKRP0n6X8Z/tIQ26lvrJzlA0FXAV1EHq5Flqys9WIFBTBP4gsxjbE/
+         O5Wfg8Nb8+M+94m5FRWuIUlnG/xNdICmI0TBAvfiI8qHtqWF8pk73dG33HOzWtfeEF7R
+         n7bKegwy/Fa0M2S69xAxAEpWjyL0ZfSTm4w8JWZtCcZUpDipR3Wv0Ls9s0KoCaGANxRq
+         lDhjfWSmkHtlrE5oW5+UO0CsBppEcBeUtf8tKYeUZxnRVz7OISUffzWic6oaAjoUqGGR
+         uJib6s2Q2ocSNGn9YLJhzwX1yUrqL96ea5dymcKpE08cuia3dCqtkuhuLztlppJsiqwp
+         y4Sg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:in-reply-to
+         :mime-version:references:from:dkim-signature;
+        bh=Cthf3UpvR7SCVCTwNlvuIv9lekgY0gGhp/EgpN064I0=;
+        fh=xQNrM0bbu3+xrfDdor0ywQTvm3rWHTd2IBXjukRuUqM=;
+        b=EyOAcDhtXgbFmL1SlOtV/TcDI8GnUconi70v7pkSW8tReshTWHW1kIrvppzAb+9x9C
+         CG8xU23TvNAsO1nkAISlvNEwFtIZfoRQEHBudX9Qs157ExegRgIfPHZ8husyb32QeONF
+         zaUAi0d9LJZYFOkhMDqEaagrkbYXOHW/ENVqlnPBTBaqlAbA6OZ0zJt9fsuJhuz0PFhp
+         +4/OscfBRuW8GgqsV06kWIThdWvOntLi/xyUPH9IAkC2eTv7jDm4UEH4UG7H82enHptx
+         OtS7aOSOkL+K663ucj5s+aKpxjLy/ikHc6MbAukhQ4y1M9VwBcuQ+UBwPOSqBpJcpd0S
+         n60w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1770308685; x=1770913485; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:in-reply-to
+         :mime-version:references:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Cthf3UpvR7SCVCTwNlvuIv9lekgY0gGhp/EgpN064I0=;
+        b=LAdcbhx060Aprp5sPiDWtlb8i+WZhnO/8k+cF1UoEXeHc2oi4rxX3H54tcRPyOFYeA
+         Z/36EOdAd7juGBVsGBb5wPMrY7HRYJ6GpQG3Uvqf9Z2ziUl7o1n5b32TgnRaL+benfLM
+         4P6xZqNxOhNtdsauPZfdxXD7/nMrSz0zNO2oww6SnHSdJvtrNJr6dMKtiyBllLCWSPAF
+         2sg5ClSKsnU7+DhG+38Ep5I13kZJD59OeG55ZrlUou8s92N6DE5ualIi/3oYSBJ0UTEP
+         TkeRDczvYDWWVIEsn94fE5+yzzxXiGps8X99mQocC6u0QobtW/eQOeV7NBApyqSXWm4X
+         cWEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770308685; x=1770913485;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:in-reply-to
+         :mime-version:references:from:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Cthf3UpvR7SCVCTwNlvuIv9lekgY0gGhp/EgpN064I0=;
+        b=Y8Kood/q85WsgkY2bGULOJoGvZpACRmE749Yyt3USGjvgX1kU08xCUO0BrOatUEiqD
+         Ck6DQ3M64gDGMV7+pvtvAzZe0AfHzMqbVr4EeDrJ3S3nIYwCEB6NLAlykj/BwovsPygs
+         N4ndsDzonONycpFALDiNdMZyLY0Hs8BUgyNpRadzNdFRroAIKE3ZjZbfQOmguRdq9iHz
+         ee1Y1RRoDMuVAJg87xA+dHwM33Vs6mnkYpgLgGAQPE7G3WaLD8VRTkvYxAjpZX6K8V8H
+         lN3RG5PX9+YYb6/b8iZom+TPiL5ImCqcq4utEtoBdQfHSuzQ8aA7F8fR+Dg7TiSLScgJ
+         32Cg==
+X-Forwarded-Encrypted: i=1; AJvYcCVAd/bd8X5Voxhzc9L6NSiI7Sy1rEqaFrNB9rRew8Hi+u7u1oDDB02YQaHUox/WcOgGiI9edoY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyK3jb169QQppEK/pKFjgDyzakoYfvU32ho4b3Ge/o2HqQIJt33
+	h2qYbPREwrVXCWQ1ReMi0xoYabbMho8sbjx661ICnhIWQt9eM90ItDHVchf2sdxYmypyYEQ5Eaz
+	scvSBos0FyH2a0WhZgiCKkmBykSiWVqEJBysllKS4P6OkVkJ21pvebdMonp7AM8h3/s/5DToFSg
+	ZRTu3RR39vKZpl2ibE51fIrR5LNr6z7b0U
+X-Gm-Gg: AZuq6aIloadSoLFAyqkLoxSDcKwi+wj+7tyNjZ3rpueEQ+rdnff9fohWa8YlyB6b0zO
+	UaTJt3dEK5BT50Bc2zdJc9K57iZAX2Jp8RlF3gyxYd/PYDWY7/wn3Hu4/mvjfMcBZRCx1ICl0KS
+	VuelpmCv3TNC+gR1RIbHwCopS8ZyFvhxqAENUwbpFjZdZKdlENulQSfjD419b/H387C3hA7I7ed
+	9K5MTsKC7DDqhq1KFp9q1x7JQ==
+X-Received: by 2002:a05:6214:29e9:b0:894:7051:2681 with SMTP id 6a1803df08f44-895221b95ccmr104470896d6.51.1770308684585;
+        Thu, 05 Feb 2026 08:24:44 -0800 (PST)
+X-Received: by 2002:a05:6214:29e9:b0:894:7051:2681 with SMTP id
+ 6a1803df08f44-895221b95ccmr104470156d6.51.1770308683860; Thu, 05 Feb 2026
+ 08:24:43 -0800 (PST)
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 5 Feb 2026 11:24:42 -0500
+Received: from 753933720722 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 5 Feb 2026 11:24:42 -0500
+From: Antoine Tenart <atenart@redhat.com>
+References: <177022452988.1827734.5121740962985640333.stgit@firesoul>
+ <20260204190417.110f5498@kernel.org> <2e1eb11c-cd47-4772-baff-45d43d4fa539@kernel.org>
+ <877bsr1l1h.fsf@toke.dk> <CADCXZ1yMkZbRd7ioGw5QQ61OdmYp6misUDoj-s-g7wuoiCHKbg@mail.gmail.com>
+ <87v7gbz1ru.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <87v7gbz1ru.fsf@toke.dk>
+Date: Thu, 5 Feb 2026 11:24:42 -0500
+X-Gm-Features: AZwV_QhdojdkYOVl1RGk_7Zu-0LDXZBDivdkSb9oE5RRssG5O18zc8Kz5q75RuU
+Message-ID: <CADCXZ1z-gg_VsN4kjf325HvWRxL1irhUC76B_erggm5+A7qQ7g@mail.gmail.com>
+Subject: Re: [PATCH net-next RFC v1 0/3] net: sched: refactor qdisc drop
+ reasons into dedicated tracepoint
+To: =?UTF-8?B?VG9rZSBIw7hpbGFuZC1Kw7hyZ2Vuc2Vu?= <toke@redhat.com>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
+	Eric Dumazet <eric.dumazet@gmail.com>, netdev@vger.kernel.org, 
+	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, bpf@vger.kernel.org, 
+	horms@kernel.org, jiri@resnulli.us, edumazet@google.com, 
+	xiyou.wangcong@gmail.com, jhs@mojatatu.com, carges@cloudflare.com, 
+	kernel-team@cloudflare.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Arnd Bergmann <arnd@arndb.de>
+On Thu, Feb 05, 2026 at 03:46:29PM +0100, Toke H=C3=B8iland-J=C3=B8rgensen =
+wrote:
+> Antoine Tenart <atenart@redhat.com> writes:
+>
+> > I'm wondering why not using the drop reason subsys logic to combine the
+> > qdisc specific enum while not conflicting with drop reasons and allowin=
+g
+> > to inject the qdisc reasons into drop reason enabled helpers as well?
+>
+> See this prior discussion for how the proposal came to be:
+>
+> https://lore.kernel.org/all/6be17a08-f8aa-4f91-9bd0-d9e1f0a92d90@kernel.o=
+rg/
+>
+> Basically, figuring out which qdisc a drop came from is not possible
+> with the current drop_reason code.
+>
+> So it's not just new drop reasons, it's a separate tracepoint with more
+> information available (qdisc handle, name, etc). So you'll get two
+> events for qdisc drops with this series (from patch 1):
+>
+> +		trace_qdisc_drop(q, txq, dev, skb, reason);
+> +		kfree_skb_reason(skb, SKB_DROP_REASON_QDISC_DROP);
 
-The driver started using dimlib but fails to select the corresponding
-symbol, which results in a link failure:
+Right and that's fine. Using the drop reason subsys logic you could turn
+the above into:
 
-x86_64-linux-ld: drivers/net/ethernet/huawei/hinic3/hinic3_irq.o: in function `hinic3_poll':
-hinic3_irq.c:(.text+0x179): undefined reference to `net_dim'
-x86_64-linux-ld: drivers/net/ethernet/huawei/hinic3/hinic3_irq.o: in function `hinic3_rx_dim_work':
-hinic3_irq.c:(.text+0x1fb): undefined reference to `net_dim_get_rx_moderation'
+ +		trace_qdisc_drop(q, txq, dev, skb, reason);
+ +		kfree_skb_reason(skb, (u32)reason);
 
-Fixes: b35a6fd37a00 ("hinic3: Add adaptive IRQ coalescing with DIM")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- drivers/net/ethernet/huawei/hinic3/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+You can look at enum skb_drop_reason_subsys and how that is used within
+OvS (net/openvswitch/drop.h) for example.
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/Kconfig b/drivers/net/ethernet/huawei/hinic3/Kconfig
-index ce4331d1387b..02d6f91a7f4a 100644
---- a/drivers/net/ethernet/huawei/hinic3/Kconfig
-+++ b/drivers/net/ethernet/huawei/hinic3/Kconfig
-@@ -11,6 +11,7 @@ config HINIC3
- 	depends on X86 || ARM64 || COMPILE_TEST
- 	depends on PCI_MSI && 64BIT
- 	select AUXILIARY_BUS
-+	select DIMLIB
- 	select PAGE_POOL
- 	help
- 	  This driver supports HiNIC 3rd gen Network Adapter (HINIC3).
--- 
-2.39.5
+Antoine
 
