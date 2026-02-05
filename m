@@ -1,55 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA35F29DB8F;
-	Thu,  5 Feb 2026 05:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C2D29DB8F;
+	Thu,  5 Feb 2026 05:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770268090; cv=none; b=jgjgVf11TzECCzcTsKviukmAfCShDkBKSTForU0+kFiWJxpKHjpP5IZzaWadgKTNPbAkQ7RtnDJo6xqOuuEGBY6oHJBJ5KcLOul3WzIrv3x7rrooiHf5Jszn+p7Ri70unfQBWXGRd+Cqs52WpjYTpriY5C5YBt5hSppQ10nW03E=
+	t=1770268095; cv=none; b=Thwc/xcm++tJga2xCP2t/n9Th4ThwEBswnjXTfNft4wrtLMbuuOUceKNUskJcQ5yaXrO/0qEmY5Hx3k50HgpfLFafR5X2wjEV6rJeS5JBoeY4uomjvB2NrtdFeqzZNE9a+1/XFAZ4pnrcPLV8DjCcjaD1ECWwQh9e5G+QquFvmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770268090; c=relaxed/simple;
-	bh=O+iJ1V2YqJOaU1IvKchZMyjR8w/3OwWdvGA4b2nG988=;
+	s=arc-20240116; t=1770268095; c=relaxed/simple;
+	bh=inmDEKbqFTqXVQ5qF5Tjt+Mij9tKR0GACRGVtbrQBdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OJx/cRVHGLZG/VfFAOHDDUxkY2iQEyo615C2F3rsCG+Oqey5yvoKLWr6c5I+i/yDR5E5u48C6IDQfWOiEHM3pZjFcHTFKu5dGvZcxQS6/V3KA6X37mQolrFxqE+V6km9rBND3phA5yjM+AlkpgSJ+MUHs+7UuttC0O32IOk2yb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EV/pSR8H; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=aX9pvYekojIBfLyTC+ECFFuDqfschVbZ8+/UuYPA1ORYWK2iSR7803P3OK0jgXZCK6bisKnOddpF3BsGJY1ADqQgTSjuVP1ia19CwnZqlk5OsPvfT0s++BbzJmXttH9VF1oEoOUO9gX9pT2nKDNzfeIgxSn4hExeIf7oKKcA9DM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lspoIFcb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EV/pSR8H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32F9C4CEF7;
-	Thu,  5 Feb 2026 05:08:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lspoIFcb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD2EC4CEF7;
+	Thu,  5 Feb 2026 05:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770268090;
-	bh=O+iJ1V2YqJOaU1IvKchZMyjR8w/3OwWdvGA4b2nG988=;
+	s=k20201202; t=1770268095;
+	bh=inmDEKbqFTqXVQ5qF5Tjt+Mij9tKR0GACRGVtbrQBdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EV/pSR8HUKAhrWo3tvbbvVz8Sz9uPla6R4axYd9ImHLQsjQ+alrsj83nThPgCW5zQ
-	 yhX/d6Jn6pGHU+tgoosvQtgNA8hPHLPdDPX+onGYgDo/THqMaOXuYuR7MFquAr9aST
-	 HQFOe2QU1a3mfTWE0/QZCiLcq/EQ95Tb2PEJyq62fiihhA+N+BE45O8LiwaIf4BinZ
-	 FOwBHR847A3ZxdAU/LkRQXMKZE2nHsk2FjWkWqaW8VOW8WxAOQ3ujbx10lqKKUQDtk
-	 EFgef6/KyICMYqOla9ZnTekfh3zbtVGR19hPIkTxp0RIB+4nqDNG6ZX0ShoLsw16Sw
-	 ji5aQ/24tpjVg==
+	b=lspoIFcbaMfG73s4KgKC+4s9KylwRZ97G/LPrBTRgpbM9G5lc67pWQhLQ8NL2WFud
+	 jDpC6x7SQ85hc0a3o/c9DUScEWFlekKHWFdlFMWAy8jxz15E1do3DcfoX40qPmB0fK
+	 D8uUri15zg8Y4QuXoW8af2LMUlQODjqEfIF5plPdsZCfeZY8Bgxx8UYEuXBl+yrbTO
+	 xzee3HS/m1vcv0YeUOyeJlEUjFYZX3ed1OD8RsGYnvJBnn5Lyk3hdodl+/gIfGty2P
+	 qxeLil2WgWzYrt2kI/UPUb2qiVG4p+bCCdZLwWl4z3Z7AnpXGl/l1b22FJ3+ufuMFh
+	 U5dV55176y/+Q==
 From: Jakub Kicinski <kuba@kernel.org>
-To: arnd@kernel.org
+To: mmyangfl@gmail.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
-	jeff@garzik.org,
-	bhelgaas@google.com,
+	olteanv@gmail.com,
 	davem@davemloft.net,
-	tglx@kernel.org,
-	lukas@wunner.de,
+	edumazet@google.com,
 	linux-kernel@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	giovanni.cabiddu@intel.com,
 	netdev@vger.kernel.org,
-	gallatin@myri.com,
-	arnd@arndb.de,
-	brice@myri.com,
-	mingo@kernel.org,
 	pabeni@redhat.com,
-	edumazet@google.com
-Subject: Re: [2/2,v3] myri10ge: avoid uninitialized variable use
-Date: Wed,  4 Feb 2026 20:57:43 -0800
-Message-ID: <20260205045743.2412516-1-kuba@kernel.org>
+	andrew@lunn.ch
+Subject: Re: [net-next,2/3] net: dsa: yt921x: Return early for failed MIB read
+Date: Wed,  4 Feb 2026 21:08:13 -0800
+Message-ID: <20260205050813.2421675-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260203230501.832872-2-arnd@kernel.org>
-References: <20260203230501.832872-2-arnd@kernel.org>
+In-Reply-To: <20260203171305.95085-3-mmyangfl@gmail.com>
+References: <20260203171305.95085-3-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,43 +55,67 @@ email has considered the AI review valid, or at least plausible.
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-myri10ge: avoid uninitialized variable use
+net: dsa: yt921x: Return early for failed MIB read
 
-This patch fixes uninitialized variable warnings found by gcc-10 on s390
-by initializing cmd.data0, cmd.data1, and cmd.data2 before calls to
-myri10ge_send_cmd() across multiple functions.
+This patch refactors error handling in yt921x_read_mib() by checking
+for read failures earlier and returning immediately, before attempting
+to compute statistics from potentially incomplete data.
 
-> diff --git a/drivers/net/ethernet/myricom/myri10ge/myri10ge.c b/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
-> --- a/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
-> +++ b/drivers/net/ethernet/myricom/myri10ge/myri10ge.c
+> net: dsa: yt921x: Return early for failed MIB read
+>
+> This patch does not change anything effectively, but serves as a
+> prerequisite for another patch.
 
-[ ... ]
+The claim "This patch does not change anything effectively" is not
+accurate. The patch changes the behavior when MIB register reads fail.
 
-> @@ -2238,6 +2250,8 @@ static int myri10ge_get_txrx(struct myri10ge_priv *mgp, int slice)
->  	status = 0;
->  	if (slice == 0 || (mgp->dev->real_num_tx_queues > 1)) {
->  		cmd.data0 = slice;
-> +		cmd.data1 = 0;
-> +		cmd.data2 = 0;
->  		status = myri10ge_send_cmd(mgp, MXGEFW_CMD_GET_SEND_OFFSET,
->  					   &cmd, 0);
->  		ss->tx.lanai = (struct mcp_kreq_ether_send __iomem *)
->  			    (mgp->sram + cmd.data0);
+Before the patch: If yt921x_reg_read() fails partway through the loop,
+the function would still compute pp->rx_frames and pp->tx_frames using
+the partially-read MIB values before returning the error code. The frame
+counts would contain a mix of old values (for registers read before the
+error) and new values (for registers read successfully).
+
+After the patch: If yt921x_reg_read() fails, the function returns
+immediately without updating pp->rx_frames and pp->tx_frames, leaving
+them at their previous values from the last successful read.
+
+This affects how five callers behave when reads fail:
+  - yt921x_dsa_get_pause_stats()
+  - yt921x_dsa_get_eth_mac_stats()
+  - yt921x_dsa_get_rmon_stats()
+  - yt921x_dsa_get_eth_ctrl_stats()
+  - yt921x_dsa_get_ethtool_stats()
+
+These functions don't check the return value, so they will now report
+stale data from the last successful read instead of partially-updated
+data from a failed read.
+
+Should the commit message be updated to accurately describe this
+behavior change?
+
+> diff --git a/drivers/net/dsa/yt921x.c b/drivers/net/dsa/yt921x.c
+> --- a/drivers/net/dsa/yt921x.c
+> +++ b/drivers/net/dsa/yt921x.c
+> @@ -714,6 +714,11 @@ static int yt921x_read_mib(struct yt921x_priv *priv, int port)
+>  		WRITE_ONCE(*valp, val);
 >  	}
->  	cmd.data0 = slice;
->  	status |= myri10ge_send_cmd(mgp, MXGEFW_CMD_GET_SMALL_RX_OFFSET,
->  				    &cmd, 0);
-
-The initialization of cmd.data1 and cmd.data2 is inside the conditional
-block. When slice > 0 and real_num_tx_queues <= 1, does the subsequent
-myri10ge_send_cmd() call for MXGEFW_CMD_GET_SMALL_RX_OFFSET use
-uninitialized data1/data2 values?
-
-Simon Horman pointed this out in his review of v2:
-https://lore.kernel.org/all/20250622162715.GA297140@horms.kernel.org/
-
-He provided a diff showing that the second cmd.data0 = slice assignment
-also needs cmd.data1 and cmd.data2 initialization. This feedback does
-not appear to have been addressed in v3.
+>
+> +	if (res) {
+> +		print_port_err(dev, port, res, "read stats for");
+> +		return res;
+> +	}
+> +
+>  	pp->rx_frames = mib->rx_64byte + mib->rx_65_127byte +
+>  			mib->rx_128_255byte + mib->rx_256_511byte +
+>  			mib->rx_512_1023byte + mib->rx_1024_1518byte +
+> @@ -723,9 +728,7 @@
+>  			mib->tx_512_1023byte + mib->tx_1024_1518byte +
+>  			mib->tx_jumbo;
+>
+> -	if (res)
+> -		print_port_err(dev, port, res, "read stats for");
+> -	return res;
+> +	return 0;
+>  }
 -- 
 pw-bot: cr
