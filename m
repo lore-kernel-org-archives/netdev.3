@@ -1,214 +1,111 @@
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-108-mta27.mxroute.com (mail-108-mta27.mxroute.com [136.175.108.27])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C8D23ABA7
-	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 13:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D3622DA1C
+	for <netdev@vger.kernel.org>; Thu,  5 Feb 2026 13:40:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770298815; cv=none; b=ROOq+YtMzhGwPjafVPFJMc2R7ABruhGYAYu6gU7Oy3ScOARuASK6MbATp4frDg4sco70r13tJrmuAmo1t8I7iPYvoxCEVPrxHfNyOgB43rhFWHCtaZAbb93dSSGpc1zUXEeX2n/uSRft7ViSsY/UMqT0A4IdQuwmB+kmz89iBG8=
+	t=1770298844; cv=none; b=bB/TXV4T6JdGqQBqI4EwLvlwoSu1Ti9xIKfixDS0K6lXQazHj+E4sw5UBvw6DijNwzEDOiGCMZiIambIcYUPRUPugR7UYVilXU1L+JP4DV9fRXZhJU3rnYWO0MWGcURXdFf6pVzoBsmqBETld2cbg9Mo6vjfSFo78UGkLbWIyp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770298815; c=relaxed/simple;
-	bh=Q+mIO6qutO9lDAePgVY/e9MmKVCrRCLxB8vzQZ1HuZs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M673/nODKxKqCCfswUZh+7oFWY4jdaDb1cIQ5VODgjGoQ4a26pAnLuooVPk1w548j4x5Vv365rsVGeGR4ic4hnToQXzhJ/+S5M4zf3wxoINnc6Fze+pJ5HIwLQPcaxEdoaC+gzz4n8PRl3tSy06jbL7F1MmZ693JiVRbPneBVUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im; spf=pass smtp.mailfrom=fastmail.im; dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b=BhbgDcMq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JQRCoKJv; arc=none smtp.client-ip=202.12.124.147
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.im
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.im
+	s=arc-20240116; t=1770298844; c=relaxed/simple;
+	bh=yroxCojQdGBi/aKWMoFi35tE5WwZxtA2iHWwNG4lflg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gtEpDF3KuTiSSRdUGlxBCL5zClb/GMP7Fg8WrdVRDGFBrtoVZDzXHOR5F/kr0WkuBV1+UZuYyJzTGJombN/5N1M0m+RcXRGMlSBT6EGckDj2ogJAvXq9pNgnKzrFU240/BO3CpF+7yrFbsQlXiWplzawaIsED+XBNhEWomv+AUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com; spf=pass smtp.mailfrom=mboxify.com; dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b=UaLIrKvp; arc=none smtp.client-ip=136.175.108.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mboxify.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.im header.i=@fastmail.im header.b="BhbgDcMq";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JQRCoKJv"
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfout.stl.internal (Postfix) with ESMTP id 3EA851D0012F;
-	Thu,  5 Feb 2026 08:40:14 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-07.internal (MEProxy); Thu, 05 Feb 2026 08:40:14 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.im; h=
-	cc:cc:content-transfer-encoding:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm3; t=1770298814; x=
-	1770385214; bh=ZH7+XW/eGCQ1cvxstzrnfu5yboqBVPHeMkzTMNxPOVw=; b=B
-	hbgDcMq6PZpjzH5bLm9VR7fEyy/gVaivruIC192WSmRb3Mx0hFiPaPcQUfESktj3
-	DoEDdanZNjHFfAyijG9Fic+BGenTvb2CSG+/0/4GnC7oKDO9PYj5zCulzbKwYUW2
-	zJHI+pqHfvH7hBiquAfEOo9oZCHeFTzFboXI/YfG4ObFAH35sv4WMJiE4/L1mTPy
-	MezjCj1Rf/lbAFjxY0vhckjOfyGH/cwyBzkGsMIlLu0rJcgr0MlacdAyfxLykgEx
-	1DRwkuGgQGUpZZrFIq2Rs8UTRqiQRhg3QRFz1prqR4oKKW4kI70XJEuXRedZ/h4o
-	FMgmoy78A847W2jcR4oeg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1770298814; x=1770385214; bh=Z
-	H7+XW/eGCQ1cvxstzrnfu5yboqBVPHeMkzTMNxPOVw=; b=JQRCoKJvCl3ruxYYl
-	rsdY0PDeY0BZaksMreJc0fkFZxOtOepg9bG8FEfG9mpYKRcjC3toz7uhol8GXNLK
-	2Rq3ivRJOzVZQc52/YRnx7tkCASJxzkkPLH8xqPmpJSfegg9DQhVwwgqfAIiUT8h
-	GeMQDyPT1boimpuPTDUiAjEH0rsWTPnY9t78WRcqmH3mKWaRK3hYr28ZoLWnO4+q
-	DBgV7r9/O6kKBNs8oKMjlwYk1kxHotTm9F0MIi3LfluZfaoU7ZPq6ztTTSucBd64
-	K+DXVDlKa+xFe8FIzaH13XA1uCqK7u1SSs10RQjrWMRh0XQhx81R/2pTESft+Tkb
-	roT2Q==
-X-ME-Sender: <xms:vZ2EaXUGT_yW1v_P3rs1ved95Az3WW-0GMF0HIFnrUq0RYrYAyHkRg>
-    <xme:vZ2EaVj_PlRGIryYwgMGcbqWnEFwyyrZP5JPkutsbElJWBfOa-D4fkXwsqSpvr-xb
-    1EEabtyyLj46GHreZgoPV_eVzgKZhaDd_9QydJTieP1jayRzPxCIaWm>
-X-ME-Received: <xmr:vZ2EaQhoyZJQ67jz7TPipPeEvZj94lzAkmIZ5MGD2PgzSrvMjDSacycRPkgz19rq2i6AFw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddukeehgeegucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhephffvvefufffkofgjfhgggfestdekredtredttdenucfhrhhomheptehlihgtvgcu
-    ofhikhhithihrghnshhkrgcuoegrlhhitggvrdhkvghrnhgvlhesfhgrshhtmhgrihhlrd
-    himheqnecuggftrfgrthhtvghrnhepteffleejfedvhfehieejlefgkeeljeevueeggeev
-    tefhgfeuhfduffegkedvtddtnecuvehluhhsthgvrhfuihiivgepudenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghlihgtvgdrkhgvrhhnvghlsehfrghsthhmrghilhdrihhmpdhn
-    sggprhgtphhtthhopedufedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepuggrnh
-    hivghlsehiohhgvggrrhgsohigrdhnvghtpdhrtghpthhtohepuggrvhgvmhesuggrvhgv
-    mhhlohhfthdrnhgvthdprhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtoh
-    hmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehprggs
-    vghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheplhhutghivghnrdigihhnsehgmh
-    grihhlrdgtohhmpdhrtghpthhtohepfihilhhlvghmuggvsghruhhijhhnrdhkvghrnhgv
-    lhesghhmrghilhdrtghomhdprhgtphhtthhopegushgrhhgvrhhnsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopehrrgiiohhrsegslhgrtghkfigrlhhlrdhorhhg
-X-ME-Proxy: <xmx:vp2EaTGGguMazHJ4-79DnAZ1MUGnTA_aBr9O5uoX903_MaXledW8KQ>
-    <xmx:vp2EadB0-WPns5mEWKeqGmkr-EDj8z2lpMEZslJOmDVQgpXkMXuwig>
-    <xmx:vp2EaZB_1zlOZZpN0b9W8wtDNe1nLEUsvWYiNJLvivwPermw9C2DiA>
-    <xmx:vp2EabOj4lMl2hgJr2H4c1yLM6AE3g9QcCQGo-_owZdEsDPr6XcjvA>
-    <xmx:vp2EaSw59Mcb4YHugnXgk-mWBQBXAkelOXnpedZbc-gj4CJzlFCHiJWT>
-Feedback-ID: i559e4809:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 5 Feb 2026 08:40:13 -0500 (EST)
-From: Alice Mikityanska <alice.kernel@fastmail.im>
-To: Daniel Borkmann <daniel@iogearbox.net>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	David Ahern <dsahern@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Cc: Shuah Khan <shuah@kernel.org>,
-	Stanislav Fomichev <stfomichev@gmail.com>,
-	netdev@vger.kernel.org,
-	Alice Mikityanska <alice@isovalent.com>
-Subject: [PATCH net-next v5 12/12] net/ipv6: Remove HBH helpers
-Date: Thu,  5 Feb 2026 15:39:25 +0200
-Message-ID: <20260205133925.526371-13-alice.kernel@fastmail.im>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260205133925.526371-1-alice.kernel@fastmail.im>
-References: <20260205133925.526371-1-alice.kernel@fastmail.im>
+	dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b="UaLIrKvp"
+Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
+ (Authenticated sender: mN4UYu2MZsgR)
+ by mail-108-mta27.mxroute.com (ZoneMTA) with ESMTPSA id 19c2e03e83a0009140.00d
+ for <netdev@vger.kernel.org>
+ (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+ Thu, 05 Feb 2026 13:35:33 +0000
+X-Zone-Loop: 773210ac25befeb4fc4d540fd2bbc84d9193257abf92
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mboxify.com
+	; s=x; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:
+	Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=WeW8iiZRN8HHaCuf1senWk7tSGOueZmex5nL4o7MqUY=; b=UaLIrKvpsoq0aumI1XVF6fFl2z
+	MhOcf8JihR+TpX17oYuhEcEQVRRNF61E6PIPfNFGguDa7DUBg1LtJ73BD8C0FJ2ug3ZNZN5y/lMd9
+	QpmrU9W5hOcE3KMiZJQZOj/qy9uYo+QwJvmrnrW2sOKlJJXsz39GXvbUVlSllkRl/jiV8Dbm89QK1
+	Z8LydfN8kDIw90qe9oygqdsD12YSGgNw5X2W7pMs2qvV8jgm8uSSBMpxwEHO4FG93WVsLEGhNdwtK
+	M0+zLrFHvL3IpF4OlUkVIgivrYmVrrkvO/SkSwICcnJAapc2LI3BWuyZ9K5u9qwmW02ME9JmneyRB
+	i2sqK5xw==;
+Message-ID: <ba2c3143-0761-4903-ac0e-88ca502b4e50@mboxify.com>
+Date: Thu, 5 Feb 2026 21:35:29 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/1] octeontx2-af: CGX: fix bitmap leaks
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: pabeni@redhat.com, sgoutham@marvell.com, lcherian@marvell.com,
+ gakula@marvell.com, jerinj@marvell.com, hkelam@marvell.com,
+ sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251020143112.357819-1-bo@mboxify.com>
+ <20251020143112.357819-2-bo@mboxify.com> <20251022182226.00967149@kernel.org>
+Content-Language: en-US
+From: Bo Sun <bo@mboxify.com>
+In-Reply-To: <20251022182226.00967149@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Id: bo@mboxify.com
 
-From: Alice Mikityanska <alice@isovalent.com>
+On 10/23/2025 9:22 AM, Jakub Kicinski wrote:
+> On Mon, 20 Oct 2025 22:31:12 +0800 Bo Sun wrote:
+>> The RX/TX flow-control bitmaps (rx_fc_pfvf_bmap and tx_fc_pfvf_bmap)
+>> are allocated by cgx_lmac_init() but never freed in cgx_lmac_exit().
+>> Unbinding and rebinding the driver therefore triggers kmemleak:
+>>
+>>      unreferenced object (size 16):
+>>          backtrace:
+>>            rvu_alloc_bitmap
+>>            cgx_probe
+>>
+>> Free both bitmaps during teardown.
+>>
+>> Fixes: e740003874ed ("octeontx2-af: Flow control resource management")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Bo Sun <bo@mboxify.com>
+> 
+> Looks like rvu_free_bitmap() exists. We should probably use it?
 
-Now that the HBH jumbo helpers are not used by any driver or GSO, remove
-them altogether.
+Apologies for the late reply.
+You're right that rvu_free_bitmap() exists. I stayed with direct kfree()
+for consistency with the existing code in cgx_lmac_exit(), because which
+already uses kfree(lmac->mac_to_index_bmap.bmap).
 
-Signed-off-by: Alice Mikityanska <alice@isovalent.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
----
- include/net/ipv6.h | 77 ----------------------------------------------
- 1 file changed, 77 deletions(-)
+That said, I'm OK with either way:
+1. Keep kfree() to match the existing pattern in this function
+2. Switch all three bitmap frees (including mac_to_index_bmap) to use
+rvu_free_bitmap() for consistency with the alloc/free API pairing
 
-diff --git a/include/net/ipv6.h b/include/net/ipv6.h
-index 1c2d6095b050..cc56e09525d0 100644
---- a/include/net/ipv6.h
-+++ b/include/net/ipv6.h
-@@ -149,17 +149,6 @@ struct frag_hdr {
- 	__be32	identification;
- };
- 
--/*
-- * Jumbo payload option, as described in RFC 2675 2.
-- */
--struct hop_jumbo_hdr {
--	u8	nexthdr;
--	u8	hdrlen;
--	u8	tlv_type;	/* IPV6_TLV_JUMBO, 0xC2 */
--	u8	tlv_len;	/* 4 */
--	__be32	jumbo_payload_len;
--};
--
- #define	IP6_MF		0x0001
- #define	IP6_OFFSET	0xFFF8
- 
-@@ -462,72 +451,6 @@ bool ipv6_opt_accepted(const struct sock *sk, const struct sk_buff *skb,
- struct ipv6_txoptions *ipv6_update_options(struct sock *sk,
- 					   struct ipv6_txoptions *opt);
- 
--/* This helper is specialized for BIG TCP needs.
-- * It assumes the hop_jumbo_hdr will immediately follow the IPV6 header.
-- * It assumes headers are already in skb->head.
-- * Returns: 0, or IPPROTO_TCP if a BIG TCP packet is there.
-- */
--static inline int ipv6_has_hopopt_jumbo(const struct sk_buff *skb)
--{
--	const struct hop_jumbo_hdr *jhdr;
--	const struct ipv6hdr *nhdr;
--
--	if (likely(skb->len <= GRO_LEGACY_MAX_SIZE))
--		return 0;
--
--	if (skb->protocol != htons(ETH_P_IPV6))
--		return 0;
--
--	if (skb_network_offset(skb) +
--	    sizeof(struct ipv6hdr) +
--	    sizeof(struct hop_jumbo_hdr) > skb_headlen(skb))
--		return 0;
--
--	nhdr = ipv6_hdr(skb);
--
--	if (nhdr->nexthdr != NEXTHDR_HOP)
--		return 0;
--
--	jhdr = (const struct hop_jumbo_hdr *) (nhdr + 1);
--	if (jhdr->tlv_type != IPV6_TLV_JUMBO || jhdr->hdrlen != 0 ||
--	    jhdr->nexthdr != IPPROTO_TCP)
--		return 0;
--	return jhdr->nexthdr;
--}
--
--/* Return 0 if HBH header is successfully removed
-- * Or if HBH removal is unnecessary (packet is not big TCP)
-- * Return error to indicate dropping the packet
-- */
--static inline int ipv6_hopopt_jumbo_remove(struct sk_buff *skb)
--{
--	const int hophdr_len = sizeof(struct hop_jumbo_hdr);
--	int nexthdr = ipv6_has_hopopt_jumbo(skb);
--	struct ipv6hdr *h6;
--
--	if (!nexthdr)
--		return 0;
--
--	if (skb_cow_head(skb, 0))
--		return -1;
--
--	/* Remove the HBH header.
--	 * Layout: [Ethernet header][IPv6 header][HBH][L4 Header]
--	 */
--	memmove(skb_mac_header(skb) + hophdr_len, skb_mac_header(skb),
--		skb_network_header(skb) - skb_mac_header(skb) +
--		sizeof(struct ipv6hdr));
--
--	__skb_pull(skb, hophdr_len);
--	skb->network_header += hophdr_len;
--	skb->mac_header += hophdr_len;
--
--	h6 = ipv6_hdr(skb);
--	h6->nexthdr = nexthdr;
--
--	return 0;
--}
--
- static inline bool ipv6_accept_ra(const struct inet6_dev *idev)
- {
- 	s32 accept_ra = READ_ONCE(idev->cnf.accept_ra);
--- 
-2.52.0
+What's your preference?
+
+Thanks,
+Bo
+
+> 
+>> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+>> index ec0e11c77cbf..f56e6782c4de 100644
+>> --- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+>> +++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
+>> @@ -1823,6 +1823,8 @@ static int cgx_lmac_exit(struct cgx *cgx)
+>>   		cgx->mac_ops->mac_pause_frm_config(cgx, lmac->lmac_id, false);
+>>   		cgx_configure_interrupt(cgx, lmac, lmac->lmac_id, true);
+>>   		kfree(lmac->mac_to_index_bmap.bmap);
+>> +		kfree(lmac->rx_fc_pfvf_bmap.bmap);
+>> +		kfree(lmac->tx_fc_pfvf_bmap.bmap);
+>>   		kfree(lmac->name);
+>>   		kfree(lmac);
+>>   	}
 
