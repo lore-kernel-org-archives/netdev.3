@@ -1,297 +1,125 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94143624B1
-	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 10:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 297C835DCE0
+	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 10:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770372306; cv=none; b=Nnidqt273wW85+l9dTa0UwKb/rMAaNqigJX0uwLRQPQSy60Wd9J0DWgDHMT6OaockoPWEn/a4329fZIrD8rm0GuCL5NxVKKd01oknBB66Bm6pbUIjcUdhSdYQIe/GHs+UQbt+3uIqN5Y3qT55d/51q9PieH/mbdSPl8zGBylNRc=
+	t=1770372720; cv=none; b=KuCpTtFHq05t/5DcEKi9VVVMF1nSiu7vz9tg8CG3/frKoNUr4+VoRUxjg4viZvcMrquY72LE1nSfG1Bws85+F/Uu4W9hEk4OMwx+665Xe7ZSzkvsYurwfNjAy+97f6UTK9nCY3/TkL5Axakqd6mVrEQGGXu5DCG0TD+Cq4Qo2Qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770372306; c=relaxed/simple;
-	bh=QnpscugZSb3g4OoShXcjg+X4KJLtnWW/pU8ma4DiWsw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nm2KY5ZUsqPRX08KmA8DCx1tmLUgBHYOGz8ThBfD2UM8KPe6dWq3u2nLwlTMEzX9nN/CDINyhsRjBuGj4DChKX7w0y99xcg1+8HnmWsvvJIDP7HINqODyrhn8FabmAKsc5Xxjm0kii8DISZ2hJpXyKf0rrCDi1mwgX0n3vx+WbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YlX4+ShY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1770372720; c=relaxed/simple;
+	bh=bvwHvjSQ/hfj02XF6jjSZ9zQcgR86MaVlH04g39YvWs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sUhoNY8iQuxuSeYVJSBmijRUbYXrnlgYJzDS/NhFMqPIWD3REDmUrRR4JIpvVt56hrSKZljN2EeAi6J4rOIgCu6Hq19YaAfGZWszsLK1jPtrc8u5+wwhVnR1zuSK2sNgXZzMcjB9yizN8p/Spel55p61sfjxAapLpnZPIRaMSMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GPtAMtyP; arc=none smtp.client-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YlX4+ShY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770372304;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+zwnAVY0VuBSUhQN+0khN7VSvK1uPz7jWje0+uSmfm0=;
-	b=YlX4+ShYTPvuR13KVuP1R+evcrXZ/tH4ig4fmZslrXtPgtkwBzwCoNhZZ2Ftzm75miUnJS
-	doZoMsXjCMJ4lamesvvRkp6/0flB/fMywlZRJLvoyD1cPNwBjvk1DOgLmgs5MB/Aw4ecA0
-	ubAwhTg0llCAp/FuiZaYi8LTsMmkzLE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-678-IPvd61NnMtG-PnLbx20gug-1; Fri,
- 06 Feb 2026 05:05:01 -0500
-X-MC-Unique: IPvd61NnMtG-PnLbx20gug-1
-X-Mimecast-MFC-AGG-ID: IPvd61NnMtG-PnLbx20gug_1770372299
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2697919560B0;
-	Fri,  6 Feb 2026 10:04:59 +0000 (UTC)
-Received: from ShadowPeak.redhat.com (unknown [10.44.34.231])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5C75119560B9;
-	Fri,  6 Feb 2026 10:04:55 +0000 (UTC)
-From: Petr Oros <poros@redhat.com>
-To: jacob.e.keller@intel.com
-Cc: Petr Oros <poros@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GPtAMtyP"
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-1248d27f2b9so2256366c88.0
+        for <netdev@vger.kernel.org>; Fri, 06 Feb 2026 02:12:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770372719; x=1770977519; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YL7l6FUhwLXLtOpb1fFU6EEOhi9oZHPk+5rk25coNs0=;
+        b=GPtAMtyP0e5ayQyAe1cvkxmwTluk1oGFW3YcBMrn93RXTjnQpnz5InzdNR4eC6iLZH
+         8TUqe8tgNJnKSFCjmWDh/ruODOj8cnuqKj0aHMCCwtXLKeQG4ZAsX6glG5AbToNQGafP
+         uyvBy35RfavjwSZvZLJXA+qBYlFvHt70kfv9EyZexRKnQjAc6fG9UE2y27/9YAuDlvOh
+         n6dBgjXx0y9XY2WpkflFUZ1T9Qt3WtXwhxudgZOualGe1Y8AdNxuIlfq60zlnQ1hat6Z
+         OwKlrYunMMz8YLHdHruzfiQEFVvW54mwtzuDqel+lchTMtqKbD+V4Uq9qB0oQrE+Hw06
+         II9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770372719; x=1770977519;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YL7l6FUhwLXLtOpb1fFU6EEOhi9oZHPk+5rk25coNs0=;
+        b=F6JgETDZLx7KzOmFbH/fvnUM2KPyTBvtayTFm0MQ7JEciP1aNAKqPlvaH2nwIAYy5a
+         Ujsa5xPGUqrXn5VTxyyOTDowhZQT+zUiJ4raX8MA3EB+fy9FR67l3S2QcO5cblbPCDEU
+         V+3DNFojcIsmd4Dkva3ImA85x5E47hdEEomoxN95M+L3n2wZS0IbSC1zN7F1Q7AW8GWj
+         Qv6n07CowZQvnTzo/kzAfNIwJmEBeG826XzJanzL9iGXtMEIzLTbXFUU1yLAdtmsvsl/
+         Rgf9isVR/aJjPuFLr4qebBQtA9RLiXl+gWkzqRCuT+4oJGucObCEJyfr7G+otkGVNmEW
+         SRJg==
+X-Gm-Message-State: AOJu0YxJkXoucCy+/aZMJDALo33UvFmk4c42ejQrf+QfGNEokMRCbiIJ
+	rRvsZAaD0Exciwye9/9HR9+YJOVKzuSm62galpY/kg89ZZ/QgLNYnKMB3v9o+Q==
+X-Gm-Gg: AZuq6aKmcXMPeMMgOK27z+cVeARl52UeMgVoOndFxUhwJDp632LCdx7+vGf8UUQpFjn
+	hROxpHYbbf+pNwKfy0F1JT9H5gN1wSRrZklqW2pp0VtiTuRjorkWXIGhjpMjXk/FGwEYknMvfjJ
+	usLHJ5vugiLd1xH15H9Byc7SjFjgecTmyD+ALH3KECftGqf9vGRiW9dSR3GErVtk9btmhxp9Tch
+	dwqWggMysP2xG7dLcBW3yiNAzUnlULPVv2nWdOth2ezmWSElc8+XUYzRjS6szgwdsZNqgc6Ogxv
+	k7DOJEdpH3PbpkY9wf+ILcN8+FlgasbJRDUa9hTfkadz+qlJFl6NFUBx9qtjsVX6COCw7GhFRgF
+	oNoPk9grP23LplJ7nQwvkg9T6mwiYxzwHI7KgoN3hyzFGsizIqUCASN6Mb7C3J/ho1XAsAiVtSK
+	IBp07FzX7M6lwxUHiGGQ==
+X-Received: by 2002:a05:7022:e20:b0:122:1d4:28ff with SMTP id a92af1059eb24-12703ff9ea2mr1099124c88.26.1770372718963;
+        Fri, 06 Feb 2026 02:11:58 -0800 (PST)
+Received: from pek-khao-d3 ([128.224.246.2])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1270434760fsm1650255c88.16.2026.02.06.02.11.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Feb 2026 02:11:58 -0800 (PST)
+Date: Fri, 6 Feb 2026 18:11:52 +0800
+From: Kevin Hao <haokexin@gmail.com>
+To: netdev@vger.kernel.org
+Cc: stable@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net] iavf: fix deadlock in reset handling
-Date: Fri,  6 Feb 2026 11:04:26 +0100
-Message-ID: <20260206100426.106082-1-poros@redhat.com>
-In-Reply-To: <d60cc9fd-70af-40ea-9023-78bbbf91766f@intel.com>
-References: <d60cc9fd-70af-40ea-9023-78bbbf91766f@intel.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Roger Quadros <rogerq@ti.com>,
+	Mohan Reddy Putluru <pmohan@couthit.com>,
+	MD Danish Anwar <danishanwar@ti.com>, Arnd Bergmann <arnd@arndb.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>
+Subject: Re: [PATCH net v2] net: ti: icssg-prueth: Add optional dependency on
+ HSR
+Message-ID: <aYW-aC0GS0GehD7u@pek-khao-d3>
+References: <20260206-icssg-dep-v2-1-9dae19b19e6d@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="YMX5WzSd9G/YDFPi"
+Content-Disposition: inline
+In-Reply-To: <20260206-icssg-dep-v2-1-9dae19b19e6d@gmail.com>
 
-description... 
 
-Fixes: 120f28a6f314 ("iavf: get rid of the crit lock")
-Signed-off-by: Petr Oros <poros@redhat.com>
----
- drivers/net/ethernet/intel/iavf/iavf.h        |  2 +-
- .../net/ethernet/intel/iavf/iavf_ethtool.c    | 21 +++---
- drivers/net/ethernet/intel/iavf/iavf_main.c   | 72 +++++++------------
- 3 files changed, 33 insertions(+), 62 deletions(-)
+--YMX5WzSd9G/YDFPi
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-diff --git a/drivers/net/ethernet/intel/iavf/iavf.h b/drivers/net/ethernet/intel/iavf/iavf.h
-index d552f912e8a947..0c3844b3ff1c86 100644
---- a/drivers/net/ethernet/intel/iavf/iavf.h
-+++ b/drivers/net/ethernet/intel/iavf/iavf.h
-@@ -625,5 +625,5 @@ void iavf_add_adv_rss_cfg(struct iavf_adapter *adapter);
- void iavf_del_adv_rss_cfg(struct iavf_adapter *adapter);
- struct iavf_mac_filter *iavf_add_filter(struct iavf_adapter *adapter,
- 					const u8 *macaddr);
--int iavf_wait_for_reset(struct iavf_adapter *adapter);
-+void iavf_reset_step(struct iavf_adapter *adapter);
- #endif /* _IAVF_H_ */
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-index 2cc21289a70779..9b0f47f9340942 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_ethtool.c
-@@ -492,7 +492,6 @@ static int iavf_set_ringparam(struct net_device *netdev,
- {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
- 	u32 new_rx_count, new_tx_count;
--	int ret = 0;
- 
- 	if ((ring->rx_mini_pending) || (ring->rx_jumbo_pending))
- 		return -EINVAL;
-@@ -537,13 +536,11 @@ static int iavf_set_ringparam(struct net_device *netdev,
- 	}
- 
- 	if (netif_running(netdev)) {
--		iavf_schedule_reset(adapter, IAVF_FLAG_RESET_NEEDED);
--		ret = iavf_wait_for_reset(adapter);
--		if (ret)
--			netdev_warn(netdev, "Changing ring parameters timeout or interrupted waiting for reset");
-+		adapter->flags |= IAVF_FLAG_RESET_NEEDED;
-+		iavf_reset_step(adapter);
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- /**
-@@ -1723,7 +1720,6 @@ static int iavf_set_channels(struct net_device *netdev,
- {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
- 	u32 num_req = ch->combined_count;
--	int ret = 0;
- 
- 	if ((adapter->vf_res->vf_cap_flags & VIRTCHNL_VF_OFFLOAD_ADQ) &&
- 	    adapter->num_tc) {
-@@ -1745,13 +1741,12 @@ static int iavf_set_channels(struct net_device *netdev,
- 
- 	adapter->num_req_queues = num_req;
- 	adapter->flags |= IAVF_FLAG_REINIT_ITR_NEEDED;
--	iavf_schedule_reset(adapter, IAVF_FLAG_RESET_NEEDED);
--
--	ret = iavf_wait_for_reset(adapter);
--	if (ret)
--		netdev_warn(netdev, "Changing channel count timeout or interrupted waiting for reset");
-+	if (netif_running(netdev)) {
-+		adapter->flags |= IAVF_FLAG_RESET_NEEDED;
-+		iavf_reset_step(adapter);
-+	}
- 
--	return ret;
-+	return 0;
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 8aa6e92c16431f..9c8d6125106f5a 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -185,31 +185,6 @@ static bool iavf_is_reset_in_progress(struct iavf_adapter *adapter)
- 	return false;
- }
- 
--/**
-- * iavf_wait_for_reset - Wait for reset to finish.
-- * @adapter: board private structure
-- *
-- * Returns 0 if reset finished successfully, negative on timeout or interrupt.
-- */
--int iavf_wait_for_reset(struct iavf_adapter *adapter)
--{
--	int ret = wait_event_interruptible_timeout(adapter->reset_waitqueue,
--					!iavf_is_reset_in_progress(adapter),
--					msecs_to_jiffies(5000));
--
--	/* If ret < 0 then it means wait was interrupted.
--	 * If ret == 0 then it means we got a timeout while waiting
--	 * for reset to finish.
--	 * If ret > 0 it means reset has finished.
--	 */
--	if (ret > 0)
--		return 0;
--	else if (ret < 0)
--		return -EINTR;
--	else
--		return -EBUSY;
--}
--
- /**
-  * iavf_allocate_dma_mem_d - OS specific memory alloc for shared code
-  * @hw:   pointer to the HW structure
-@@ -3100,18 +3075,16 @@ static void iavf_reconfig_qs_bw(struct iavf_adapter *adapter)
- }
- 
- /**
-- * iavf_reset_task - Call-back task to handle hardware reset
-- * @work: pointer to work_struct
-+ * iavf_reset_step - Perform the VF reset sequence
-+ * @adapter: board private structure
-  *
-- * During reset we need to shut down and reinitialize the admin queue
-- * before we can use it to communicate with the PF again. We also clear
-- * and reinit the rings because that context is lost as well.
-- **/
--static void iavf_reset_task(struct work_struct *work)
-+ * Requests a reset from PF, polls for completion, and reconfigures
-+ * the driver. Caller must hold the netdev instance lock.
-+ *
-+ * This can sleep for several seconds while polling HW registers.
-+ */
-+void iavf_reset_step(struct iavf_adapter *adapter)
- {
--	struct iavf_adapter *adapter = container_of(work,
--						      struct iavf_adapter,
--						      reset_task);
- 	struct virtchnl_vf_resource *vfres = adapter->vf_res;
- 	struct net_device *netdev = adapter->netdev;
- 	struct iavf_hw *hw = &adapter->hw;
-@@ -3122,7 +3095,7 @@ static void iavf_reset_task(struct work_struct *work)
- 	int i = 0, err;
- 	bool running;
- 
--	netdev_lock(netdev);
-+	netdev_assert_locked(netdev);
- 
- 	iavf_misc_irq_disable(adapter);
- 	if (adapter->flags & IAVF_FLAG_RESET_NEEDED) {
-@@ -3167,7 +3140,6 @@ static void iavf_reset_task(struct work_struct *work)
- 		dev_err(&adapter->pdev->dev, "Reset never finished (%x)\n",
- 			reg_val);
- 		iavf_disable_vf(adapter);
--		netdev_unlock(netdev);
- 		return; /* Do not attempt to reinit. It's dead, Jim. */
- 	}
- 
-@@ -3179,7 +3151,6 @@ static void iavf_reset_task(struct work_struct *work)
- 		iavf_startup(adapter);
- 		queue_delayed_work(adapter->wq, &adapter->watchdog_task,
- 				   msecs_to_jiffies(30));
--		netdev_unlock(netdev);
- 		return;
- 	}
- 
-@@ -3321,7 +3292,6 @@ static void iavf_reset_task(struct work_struct *work)
- 	adapter->flags &= ~IAVF_FLAG_REINIT_ITR_NEEDED;
- 
- 	wake_up(&adapter->reset_waitqueue);
--	netdev_unlock(netdev);
- 
- 	return;
- reset_err:
-@@ -3331,10 +3301,21 @@ static void iavf_reset_task(struct work_struct *work)
- 	}
- 	iavf_disable_vf(adapter);
- 
--	netdev_unlock(netdev);
- 	dev_err(&adapter->pdev->dev, "failed to allocate resources during reinit\n");
- }
- 
-+static void iavf_reset_task(struct work_struct *work)
-+{
-+	struct iavf_adapter *adapter = container_of(work,
-+						      struct iavf_adapter,
-+						      reset_task);
-+	struct net_device *netdev = adapter->netdev;
-+
-+	netdev_lock(netdev);
-+	iavf_reset_step(adapter);
-+	netdev_unlock(netdev);
-+}
-+
- /**
-  * iavf_adminq_task - worker thread to clean the admin queue
-  * @work: pointer to work_struct containing our data
-@@ -4600,22 +4581,17 @@ static int iavf_close(struct net_device *netdev)
- static int iavf_change_mtu(struct net_device *netdev, int new_mtu)
- {
- 	struct iavf_adapter *adapter = netdev_priv(netdev);
--	int ret = 0;
- 
- 	netdev_dbg(netdev, "changing MTU from %d to %d\n",
- 		   netdev->mtu, new_mtu);
- 	WRITE_ONCE(netdev->mtu, new_mtu);
- 
- 	if (netif_running(netdev)) {
--		iavf_schedule_reset(adapter, IAVF_FLAG_RESET_NEEDED);
--		ret = iavf_wait_for_reset(adapter);
--		if (ret < 0)
--			netdev_warn(netdev, "MTU change interrupted waiting for reset");
--		else if (ret)
--			netdev_warn(netdev, "MTU change timed out waiting for reset");
-+		adapter->flags |= IAVF_FLAG_RESET_NEEDED;
-+		iavf_reset_step(adapter);
- 	}
- 
--	return ret;
-+	return 0;
- }
- 
- /**
--- 
-2.52.0
+On Fri, Feb 06, 2026 at 11:20:56AM +0800, Kevin Hao wrote:
+> diff --git a/drivers/net/ethernet/ti/Kconfig b/drivers/net/ethernet/ti/Kconfig
+> index fe5b2926d8ab060d83f5a58d91e749a45c6cea18..ade43c921c71daca930df5e890ca00b3ccf600c4 100644
+> --- a/drivers/net/ethernet/ti/Kconfig
+> +++ b/drivers/net/ethernet/ti/Kconfig
+> @@ -192,6 +192,7 @@ config TI_ICSSG_PRUETH
+>  	depends on NET_SWITCHDEV
+>  	depends on ARCH_K3 && OF && TI_K3_UDMA_GLUE_LAYER
+>  	depends on PTP_1588_CLOCK_OPTIONAL
+> +	depends on HSR if HSR
 
+It appears that support for this syntax [1] has not yet been merged into the
+net tree. I will change it to `depends on HSR || !HSR` and retest on the pure
+net tree. Apologies for the noise.
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=76df6815dab76d7890936dc5f6d91cf7e7f88358
+
+Thanks,
+Kevin
+
+--YMX5WzSd9G/YDFPi
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEHc6qFoLCZqgJD98Zk1jtMN6usXEFAmmFvmgACgkQk1jtMN6u
+sXHmpwgAleChG1UY0fiZmLP+SqgtFAroY5ly8gKf/lHcD3RWLyLBj94OmwbYxO5J
+JuxxXGjEynbsNvO2/xURy4mhNGAOkpH/38LERxrQQ9/DxfKRyBagL0ns/BMoWfTd
+NFjOY0QiiqpSwx2ElKUV6Kb40OBXxmJ5GIYntLNmN251eaepohdrUtI7mmrMqiar
+K4mJ/azQ1akAgtupvhXvraYIabJ2Ww16bannP+Gg2hXZRHzFeO7nxy7LnaNW/zCE
+vbrJxF7gHqoPB9D7/Hg8rid/i2/+NxdKLXmQ4yfSo+UfHQ8jURP+gp02yrswSkC3
+mY3BAmDat8aiFLFOdpv8L4eq64be4w==
+=G5Oj
+-----END PGP SIGNATURE-----
+
+--YMX5WzSd9G/YDFPi--
