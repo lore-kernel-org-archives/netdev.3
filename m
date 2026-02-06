@@ -1,49 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E5215A86D;
-	Fri,  6 Feb 2026 00:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B045464F;
+	Fri,  6 Feb 2026 00:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770337069; cv=none; b=i0IfNo7KAI0/Bh/beyzg67mRf2MuCJ/ej9QNKmskOdltfKZUNOouaSC1eldJBV/l2VaORGbalJnqm/p+dIYALQU3S1sZkhGMfGK/J9qrClGTw7EO8Av6MpONzHAjE0Wi0foxSOrTDGxtF9bo4hw7yOWLcy/BZrHdXh7gwnrfvBw=
+	t=1770337245; cv=none; b=LGkc7XBTG/3Zkb87PIwV58kcXb6mZaqmtOBgj7cNGfWSCCYo/uc2ngxFJatZHFzrN2WlRTF6xYMcEbzmegOZ6CULzxfLAMjx2jBGwS0hGm2FTsj8v+6KhE9GhMZSGPSd4gYbVTTgPrywqsM/J35RPylbEcrsPLb3I0hOMrIk6ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770337069; c=relaxed/simple;
-	bh=DQrq5c1J+kiv5UEj7nlCQrtJTusd0d502vuVJr1r7pE=;
+	s=arc-20240116; t=1770337245; c=relaxed/simple;
+	bh=ubKJbnulOAyzDI9B4u1CgFhXfA/SNhowArR6YqnHVIQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Io1r9SIYEgGXX3KlMpXo3ixm1xyuru3Ou5LXVTbOiH3iuYYjeE/KdpnWiy93JmELwfarLxGEhjbDzRrS/Y08KPYXrYerqQzKYbQrrVvCjCHKsxQi6Svxd9/upStEXtac/Ot6vW7Q3IZvgDe1iQNW4bbreagocs4tWa2/ljEhCds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gf9tjtCJ; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=YXyXEYqIijZsF482AXE/faaC3lRgvH0vudLniz29Jk7GxeSjWNB0cuMichGjjSypNnJQa1XxGU23OQnaYQ6n4LkAe06BAKkjCuxbU73zyTNus6V55FY370pKL9o/7SWbjQ6P3bunlyC56L9h2l6QKgI+Ce4MuoXZytnI+NomyYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EWfudXEu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gf9tjtCJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59429C4CEF7;
-	Fri,  6 Feb 2026 00:17:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EWfudXEu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84415C4CEF7;
+	Fri,  6 Feb 2026 00:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770337069;
-	bh=DQrq5c1J+kiv5UEj7nlCQrtJTusd0d502vuVJr1r7pE=;
+	s=k20201202; t=1770337244;
+	bh=ubKJbnulOAyzDI9B4u1CgFhXfA/SNhowArR6YqnHVIQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=gf9tjtCJFiCokVo3TecNVaL7vYEpVzQS+7qD7EkE4j0zwz6pQa8CJzf8yq9jCKQPh
-	 inzUgyrJC/kXCAypadw2sf4WwKVDYiZpLAJ3vJtNXFKbaMABNo/IABgZ78lhjDoy3T
-	 KrRc97EcUTmRJ5KPSZratWTiMDx2crawaWu41OnmHKeRBkPTjPlAqEg7qbQRoCqYQu
-	 wcdjmdRXX/zZctk/GubMb8xTmTrtJiEbmboWrZfXfzGiNRfxIYC/uyEJwhU/T1twax
-	 RhHenQ/IlbuNZ8iCDPEeuLPPZrOhuOmRsGkmzn98SaM2Sio/TXjfFDM9+suE00uxKk
-	 yBIBVmhLjVuog==
-Date: Thu, 5 Feb 2026 16:17:47 -0800
+	b=EWfudXEubGovkjWKLOGSdR1BNcLbO9WiToWG+aMLD+GAJDAAbL6esi2pch82SKqfv
+	 yZ7V047baeR8O4lw7AyIdQfNH1/br6Vz/wpbS6Tz7bPChP01dORhHAeNZcYGXzgWXN
+	 aNcHvB+rZ8H2TkkpbPfemoiUYah8WvBEvq3NnnNsn3dtnGxznBxz2IUVqdaBBsqCMM
+	 BmvEZxy6sS0xFA8cgY4mxqUuP/fuZSWZJRJb1o9tdC/bqSGTSjTUbywrAPP0SloWsn
+	 2L6MO3hMYIhysLCSGsZ+ZnO8PgJabC7omOAz3TBJFwFW+GWFgDBXVPQ79vuIMx4sai
+	 g/0MGcOP9as2g==
+Date: Thu, 5 Feb 2026 16:20:43 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Donald Hunter <donald.hunter@gmail.com>, Jiri Pirko
- <jiri@resnulli.us>, Jonathan Corbet <corbet@lwn.net>, Saeed Mahameed
- <saeedm@nvidia.com>, "Leon Romanovsky" <leon@kernel.org>, Mark Bloch
- <mbloch@nvidia.com>, Shuah Khan <shuah@kernel.org>,
- <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-doc@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
- <linux-kselftest@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Moshe
- Shemesh <moshe@nvidia.com>, Shay Drori <shayd@nvidia.com>, Jiri Pirko
- <jiri@nvidia.com>
-Subject: Re: [PATCH net-next V2 0/7] devlink: add per-port resource support
-Message-ID: <20260205161747.26dd7bc5@kernel.org>
-In-Reply-To: <20260205142833.1727929-1-tariqt@nvidia.com>
-References: <20260205142833.1727929-1-tariqt@nvidia.com>
+To: Dhyan K Prajapati <dhyan19022009@gmail.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Johannes Berg
+ <johannes.berg@intel.com>, linux-wireless@vger.kernel.org,
+ netdev@vger.kernel.org, stable@vger.kernel.org, Dhyan K Prajapati
+ <dhyaan19022009@gmail.com>, Johannes Berg <johannes@sipsolutions.net>
+Subject: Re: [PATCH v6 wireless] mac80211: fix NULL pointer dereference in
+ monitor mode
+Message-ID: <20260205162043.7c4530bf@kernel.org>
+In-Reply-To: <20260205175213.5005-1-dhyaan19022009@gmail.com>
+References: <20260205175213.5005-1-dhyaan19022009@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,18 +47,10 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 5 Feb 2026 16:28:26 +0200 Tariq Toukan wrote:
-> Userspace patches for iproute2:
-> https://github.com/ohartoov/iproute2/tree/port_resource
+On Thu,  5 Feb 2026 23:22:13 +0530 Dhyan K Prajapati wrote:
+> Cc: netdev@vger.kernel.org
 
-I pulled this but the test still doesn't pass:
+If you have to CC netdev on your failed attempts to produce a patch
+please follow our posting guidance:
 
-# TEST: resource test                                                 [ OK ]
-# TEST: port resource test                                            [FAIL]
-# Unexpected resource name test_resource (expected max_sfs)
-# TEST: dev_info test                                                 [ OK ]
-# TEST: empty reporter test                                           [ OK ]
-
-https://netdev-ctrl.bots.linux.dev/logs/vmksft/netdevsim/results/505601/9-devlink-sh/stdout
--- 
-pw-bot: cr
+https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#tl-dr
