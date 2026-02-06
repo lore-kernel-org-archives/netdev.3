@@ -1,138 +1,74 @@
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C4D36CE1D;
-	Fri,  6 Feb 2026 13:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BAE33B8BB2
+	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 14:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770385330; cv=none; b=GP0BjHtdUYvd1jNTIkc8+kn6vlGj1Ki4lFonL6Ga2OXEjkOxSm5h4UriVdUeEhiHOdUVQ3VEta+HWhOl577vX5sI0+yTGg5dL2mSa2QkpSvGZUG7WTLSecGJn9JWEpUzyzoaw4Rqa7yoPPzPIw3fg1kysLBhPYjjLeZ4I20hcE4=
+	t=1770386670; cv=none; b=Nzd0nzJfQH+yuDvjnyq0n2RqIAy/K+uxiCi4YPBbyRpiACS4/EoZueu1aNA1oBGaepTahJa6tXQbfmcfHbTCwxwJz7ltJSPX94TSFQ3rvjgy0QkLiwIYqrRc0pwAuy3nZYSfiMKhIYj6RwhDSRUoEK/vgl+Mlig38YhNJZR37r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770385330; c=relaxed/simple;
-	bh=eNbsApCM+5XJGh5iPWbagu4kXGlHMFEM9VQCVUWUaD4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=CQBebVtT1K5TXkgVi8uQ5ULt22u37Udj44ARdS4G3y3SH8VHPYOd5Y0wsGKz6eUPu8VxA8NOmHmr0Ax2nuvDZadXddwtcS6ISrTih0ObOXhZr64S82s9swQJCBE77a5/NiiIS578s267uCcszm1RIzQlRft6CTJQ7zhfMz/CM4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: UJUHiFlCRAWyRn7hKqi14Q==
-X-CSE-MsgGUID: R8dJq83cTz+Oq/j/s6TwtQ==
-Received: from unknown (HELO relmlir5.idc.renesas.com) ([10.200.68.151])
-  by relmlie6.idc.renesas.com with ESMTP; 06 Feb 2026 22:42:02 +0900
-Received: from [127.0.1.1] (unknown [10.226.78.135])
-	by relmlir5.idc.renesas.com (Postfix) with ESMTP id AB75E4017D86;
-	Fri,  6 Feb 2026 22:41:59 +0900 (JST)
-From: Michael Dege <michael.dege@renesas.com>
-Date: Fri, 06 Feb 2026 14:41:53 +0100
-Subject: [PATCH net v3] net: renesas: rswitch: fix forwarding offload
- statemachine
+	s=arc-20240116; t=1770386670; c=relaxed/simple;
+	bh=z4GNuMRZct0KcMBQZOFElH6rK3k1LgWIOdpyLUXQ8Zw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=APu+3u4fgGSbMWs4gGGgyCvpnI+7g624qcUzDvBFJJTqRmUxADshy/mBaKz52u9tkMUjLW8Mz6qnq/30RzNNs85D7DLjrcCCqyqNd9FXdrE/9TXETjkdEhW6SVTywHvvF/ijNkklVh3vHnHi62Rq+KgmyzlldBVGdO0htB9/dSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fWPksgV5; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fWPksgV5"
+Message-ID: <d3f6c71c-133d-443a-adee-3430936ff8c5@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770386668;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TR+sNHwRto6X97gwyNZ0eglR840iij69ujYUHSFBO8s=;
+	b=fWPksgV5qmy0XKWUaSpnfstNbJxpx4If3eBbfXsWnD2dzDwIehAVQtOz4BSiGSAx6ZCyrr
+	jSPxq7GfX/w6Iwq1f4Ozq2Tc4bH4DIadz3vKSQA74+cQtc9yCuIGtPT6ayVZwN4h8r2ZCd
+	LXqXhU5HbWWJYnwsUYqsQE9kjR8cmPg=
+Date: Fri, 6 Feb 2026 14:04:24 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Subject: Re: [PATCH net] dpll: zl3073x: Fix output pin phase adjustment sign
+To: Ivan Vecera <ivecera@redhat.com>, netdev@vger.kernel.org
+Cc: Prathosh Satish <Prathosh.Satish@microchip.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, linux-kernel@vger.kernel.org
+References: <20260205181055.129768-1-ivecera@redhat.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260205181055.129768-1-ivecera@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260206-fix-offloading-statemachine-v3-1-07bfba07d03e@renesas.com>
-X-B4-Tracking: v=1; b=H4sIAKDvhWkC/5XNQQrCMBCF4auUrI1M0jaIK+8hLsZk0g7YRJISl
- NK7m3bnTpf/Y/hmEZkSUxbnZhGJCmeOoUZ7aIQdMQwk2dUWGrQBDb30/JLR+0dEx2GQecaZJrQ
- jB5LKtaBMCwgnJ6rwTFTPd/16qz1ynmN678+K2tbf3KKkkqYDrTvsW+XgkihQxny0cRKbXPQfm
- q6aR289WEN35b61dV0/zLbn3xYBAAA=
-X-Change-ID: 20260205-fix-offloading-statemachine-1d301630a08d
-To: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Nikita Yushchenko <nikita.yoush@cogentembedded.com>
-Cc: netdev@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Michael Dege <michael.dege@renesas.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1770385319; l=3055;
- i=michael.dege@renesas.com; s=20251023; h=from:subject:message-id;
- bh=eNbsApCM+5XJGh5iPWbagu4kXGlHMFEM9VQCVUWUaD4=;
- b=wuaLrGv/KMfjOQsp1y67ylhFb3LVZ31UDqDcEAXIzcq9IIEqssSDFwAf4Ka3iDX2ZGkwWPa+z
- qtTQTSuIPZQACFacqESUrYC7ESj4fLKbw2YoF7ikjEa3inYybbxGBqO
-X-Developer-Key: i=michael.dege@renesas.com; a=ed25519;
- pk=gu1rwIcCrAxNMv2I8fIfiQvt51xzZwnQy4Ua/DscQt8=
+X-Migadu-Flow: FLOW_OUT
 
-A change of the port state of one port, caused the state of another
-port to change. This behvior was unintended.
+On 05/02/2026 18:10, Ivan Vecera wrote:
+> The output pin phase adjustment functions incorrectly negate the phase
+> compensation value.
+> 
+> Per the ZL3073x datasheet, the output phase compensation register is
+> simply a signed two's complement integer where:
+>   - Positive values move the phase later in time
+>   - Negative values move the phase earlier in time
+> 
+> No negation is required. The erroneous negation caused phase adjustments
+> to be applied in the wrong direction.
+> 
+> Note that input pin phase adjustment correctly uses negation because the
+> hardware has an inverted convention for input references (positive moves
+> phase earlier, negative moves phase later).
 
-Fixes: b7502b1043de ("net: renesas: rswitch: add offloading for L2 switching")
+Is it common for DPLLs to act this way?
 
-Signed-off-by: Michael Dege <michael.dege@renesas.com>
----
-A change of the port state of one port, caused the state of another
-port to change. This behvior was unintended.
+> 
+> Fixes: 6287262f761e ("dpll: zl3073x: Add support to adjust phase")
+> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
 
-Changes in v3:
-- Fix cover letter.
-- Link to v2: https://lore.kernel.org/r/20260205-fix-offloading-statemachine-v2-1-fafcf0c6eb1d@renesas.com
-
-Changes in v2:
-- Implemented suggested improvements to the function.
-- Addded missing condition to an if statement.
-- introduced bool variable, to reduce the the logic in the if
-  statements.
-- Link to v1: https://lore.kernel.org/r/20260205-fix-offloading-statemachine-v1-1-640224a531d0@renesas.com
----
-
----
- drivers/net/ethernet/renesas/rswitch_l2.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/net/ethernet/renesas/rswitch_l2.c b/drivers/net/ethernet/renesas/rswitch_l2.c
-index 4a69ec77d69c..9433cd8adced 100644
---- a/drivers/net/ethernet/renesas/rswitch_l2.c
-+++ b/drivers/net/ethernet/renesas/rswitch_l2.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /* Renesas Ethernet Switch device driver
-  *
-- * Copyright (C) 2025 Renesas Electronics Corporation
-+ * Copyright (C) 2025 - 2026 Renesas Electronics Corporation
-  */
- 
- #include <linux/err.h>
-@@ -60,6 +60,7 @@ static void rswitch_update_l2_hw_learning(struct rswitch_private *priv)
- static void rswitch_update_l2_hw_forwarding(struct rswitch_private *priv)
- {
- 	struct rswitch_device *rdev;
-+	bool new_forwarding_offload;
- 	unsigned int fwd_mask;
- 
- 	/* calculate fwd_mask with zeroes in bits corresponding to ports that
-@@ -73,8 +74,9 @@ static void rswitch_update_l2_hw_forwarding(struct rswitch_private *priv)
- 	}
- 
- 	rswitch_for_all_ports(priv, rdev) {
--		if ((rdev_for_l2_offload(rdev) && rdev->forwarding_requested) ||
--		    rdev->forwarding_offloaded) {
-+		new_forwarding_offload = (rdev_for_l2_offload(rdev) && rdev->forwarding_requested);
-+
-+		if (new_forwarding_offload || rdev->forwarding_offloaded) {
- 			/* Update allowed offload destinations even for ports
- 			 * with L2 offload enabled earlier.
- 			 *
-@@ -84,13 +86,10 @@ static void rswitch_update_l2_hw_forwarding(struct rswitch_private *priv)
- 				  priv->addr + FWPC2(rdev->port));
- 		}
- 
--		if (rdev_for_l2_offload(rdev) &&
--		    rdev->forwarding_requested &&
--		    !rdev->forwarding_offloaded) {
-+		if (new_forwarding_offload && !rdev->forwarding_offloaded)
- 			rswitch_change_l2_hw_offloading(rdev, true, false);
--		} else if (rdev->forwarding_offloaded) {
-+		else if (!new_forwarding_offload && rdev->forwarding_offloaded)
- 			rswitch_change_l2_hw_offloading(rdev, false, false);
--		}
- 	}
- }
- 
-
----
-base-commit: f14faaf3a1fb3b9e4cf2e56269711fb85fba9458
-change-id: 20260205-fix-offloading-statemachine-1d301630a08d
-
-Best regards,
--- 
-Michael Dege <michael.dege@renesas.com>
-
+Anyways, with datasheet info being correctly read, the change LGTM
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
