@@ -1,40 +1,38 @@
-Received: from mail-108-mta59.mxroute.com (mail-108-mta59.mxroute.com [136.175.108.59])
+Received: from mail-108-mta96.mxroute.com (mail-108-mta96.mxroute.com [136.175.108.96])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EFE3D331B
-	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 13:10:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.59
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8842D36C0C1
+	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 13:14:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770383408; cv=none; b=BhFIsxvWU3PggGsRKpC96+JamAzKER0xHJ379UZYY/YEqiPUDeQH3IxswTe7uM4fuV0xkkBTVGyH1z73D81oSb4npJDPwUbKYQChKK51FukAHwNJLKKnm4/+jnzIvMcqTwjPebHeB8ri9hb9JJeuHto7d8snDOdWqR00lC01bxg=
+	t=1770383693; cv=none; b=QbGerVTMLw09Xy9n0y2OZtXvI8qk7zOjnon9SqbIz//D/PkU05T4aQRYoqReSS6YgIbelywoiChH406PCt0Q/KNqajZ29hryMm56IkSNbCxBlpZujnoeD/7dQQL9e7VG2cSRnmeqxuga2+PYBfKYZ870d12b4ZYdNaLvCh4k8Wc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770383408; c=relaxed/simple;
-	bh=gFYsxyC9dgDjeDfBVtcYJzyaGuVUUL/UvNe3j9g5oh8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FRD3iIQLLhfCAjkjQBwVBilfR+gOhNXUtSCBJvcrkBpP9HJE5CdjWfTjbmytAC2CGUyqV59lHdljNV99jsQF+1KQmOT7czl/xi2JoWGLn3GqlqQ68R+8X1LBIv0D372n4F7XvQJIiHeL44zGIEHg/u46XfFpojAUDu3SWMa274c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com; spf=pass smtp.mailfrom=mboxify.com; dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b=XztLg8BH; arc=none smtp.client-ip=136.175.108.59
+	s=arc-20240116; t=1770383693; c=relaxed/simple;
+	bh=t0vYzrvIMcywn2E9XCt62MQKvy2nRCDraKw8g+zPvoE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GNS3nSa35VRfBqc66ei2/tPJedwnq8tFK7raJ+zDo/ObKNLznaM0p7Ga5EayQfJDCh9yfb9MVg72Xs+p92FHASJfPLHfwOq324V0UAjewLdbBrlVJcC3ZU9zbzd1XCSh9AOje3SgtpmkQ03kmqwBgbj3YqMv+MKjVWXaqxr/wPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com; spf=pass smtp.mailfrom=mboxify.com; dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b=O/gIVeAz; arc=none smtp.client-ip=136.175.108.96
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mboxify.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b="XztLg8BH"
+	dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b="O/gIVeAz"
 Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
  (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta59.mxroute.com (ZoneMTA) with ESMTPSA id 19c3312d2440009140.00e
+ by mail-108-mta96.mxroute.com (ZoneMTA) with ESMTPSA id 19c3312a0e20009140.00e
  for <netdev@vger.kernel.org>
  (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Fri, 06 Feb 2026 13:09:57 +0000
-X-Zone-Loop: b4fd4d5327c98dd8f57f42161c88558bc0c503fb09eb
+ Fri, 06 Feb 2026 13:09:44 +0000
+X-Zone-Loop: 99bf7b63838be582d6fb6ee04614f4b45cb38e97bd99
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mboxify.com
-	; s=x; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=xX1GX2YlUSWR6zjeumqZ1M4CyIIwVy3o6ga5DLteJqg=; b=XztLg8BH0PMtZbWfT3Dfhtxf5L
-	KKZk2Qb7M5CA7qaSwXo0XxmJpjjZirQiQVzpJnJsdwT/2Ql6aYpvDTOIz+zqmUSCuVRDf0CoKW2Cw
-	IL5T6kefFpwvqvgJKdUM+q1VTsk2z/qjgqmWp0WB53UEcJgbFqrHnO/XtlU/dbetv6LvnQ4xDpwEG
-	ViKkVm+5YnOYwb3i9qPDqyAIBSZXVJlp1Flr7h+xwj2zmb/jy1B+1tMNyL8DGoCUzi3ULc47U3te3
-	1VE/rxQ+rTG/zfIwe4/FWTY7BzARXESPmxX250vxZ5D0RigMVSqXA7lIgd1Y+b0+xLxEzK9TVduQy
-	F+peWmUw==;
+	; s=x; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:Cc:To
+	:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date
+	:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:
+	References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:List-Post:
+	List-Owner:List-Archive; bh=p80ahRy0ymtITam/dWdoQZcYiEdqSxcp8bSLjrHjHPU=; b=O
+	/gIVeAzzAEqczdw2uIeTWW5yUC7Z0iBRC6/Oq52yrZvkddhqim0k3jvgAvAr939YimHsp1KljFKe+
+	ySaf5uMi14wIsRhv1RuruFWpCW+KfhXEG1o1h+xeMTTuY1Oy4/7a/9ak630T+YnwzdMWxoOIDDzLi
+	PFlVgYx8xZurIhRViM54tVCCFSZRbAU6SW4vW+YzSfTwsiKTSaEkk6zSr8kfEs8CZ7str4j17BHf+
+	r6dLfL591BPZC8wbx0cjSZRIxuDrv50D4WJGPFpFiiBv+svikWPElMzvbA/g9CNXeZbTohFljZPVG
+	ZgIz/WsruLp9iIY7ru6GGP10CDLmShVug==;
 From: Bo Sun <bo@mboxify.com>
 To: kuba@kernel.org,
 	pabeni@redhat.com
@@ -51,11 +49,9 @@ Cc: gakula@marvell.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Bo Sun <bo@mboxify.com>
-Subject: [PATCH net v2 2/2] octeontx2-af: CGX: replace kfree() with rvu_free_bitmap()
-Date: Fri,  6 Feb 2026 21:09:25 +0800
-Message-Id: <20260206130925.1087588-3-bo@mboxify.com>
-In-Reply-To: <20260206130925.1087588-1-bo@mboxify.com>
-References: <20260206130925.1087588-1-bo@mboxify.com>
+Subject: [PATCH net v2 0/2] octeontx2-af: CGX: fix bitmap leaks
+Date: Fri,  6 Feb 2026 21:09:23 +0800
+Message-Id: <20260206130925.1087588-1-bo@mboxify.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,25 +61,21 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Authenticated-Id: bo@mboxify.com
 
-mac_to_index_bmap is allocated with rvu_alloc_bitmap(), so free it
-with rvu_free_bitmap() instead of open-coding kfree(.bmap) to keep
-the alloc/free API pairing consistent.
+Patch 1 fixes the RX/TX flow-control bitmap leaks in cgx_lmac_exit().
+The leak was introduced in commit e740003874ed ("octeontx2-af: Flow
+control resource management").
+Patch 2 converts the existing kfree() for mac_to_index_bmap to
+rvu_free_bitmap() for consistency with the alloc/free API pairing.
 
-Signed-off-by: Bo Sun <bo@mboxify.com>
----
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changes in v2:
+- Update patch 1 to use rvu_free_bitmap() instead of open-coding kfree()
+- Add patch 2 to keep the alloc/free API pairing consistent
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-index fd4792e432bf..29f5def796ba 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -1822,7 +1822,7 @@ static int cgx_lmac_exit(struct cgx *cgx)
- 			continue;
- 		cgx->mac_ops->mac_pause_frm_config(cgx, lmac->lmac_id, false);
- 		cgx_configure_interrupt(cgx, lmac, lmac->lmac_id, true);
--		kfree(lmac->mac_to_index_bmap.bmap);
-+		rvu_free_bitmap(&lmac->mac_to_index_bmap);
- 		rvu_free_bitmap(&lmac->rx_fc_pfvf_bmap);
- 		rvu_free_bitmap(&lmac->tx_fc_pfvf_bmap);
- 		kfree(lmac->name);
+
+Bo Sun (2):
+  octeontx2-af: CGX: fix bitmap leaks
+  octeontx2-af: CGX: replace kfree() with rvu_free_bitmap()
+
+ drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
