@@ -1,63 +1,63 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6CF34676F
-	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 09:21:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC3135B64E
+	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 09:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770369674; cv=none; b=laA9eYEceJ4GSgBwqtisPJ1jy+GVEok8Vr2o6JS/MRQKsFb9oVwtKm6r/FlUsPEOXCX8QN5Vvq+ftlfa4eFo+V76v3RJ0lWNif0A+yCC0VZUman/f1K9f06ZydAH6vx1jQpnTjiHfmgvEGNMR6a+w9qXnE1f4XkMb/kUYI3TxTs=
+	t=1770369857; cv=none; b=leZUlf3MilXOwSgFYKh3RtR+jOjJHk+bmjxv2ExgDIKTw/BYRMskTjwU8LU/4gXiCiYQfKyaQargI1u9NRQPAKiWEid9pnsKDrj+DwYenwHgaEYLUJwyAPogKWwYXUaLXUocPvCO4nepXFC7dFjydJ5tJ+ThAI1S5SaEN1i1MNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770369674; c=relaxed/simple;
-	bh=uYHqopYroroGJu4jPezMwlTHDcRYczudf62+B8v8YAg=;
+	s=arc-20240116; t=1770369857; c=relaxed/simple;
+	bh=P50Q9DHDNQka2qrgw513BMd3JIx3mSPm10k7dGqR+X0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dE8NqqkdmXA629mOEEcjZI5ePa33RLS5fsnHkL1ClfBrf0kALCiN+hg/kUxcEu1kRzACK+wOHD6kdwql5S8VAY43FO8vdQ+0u14Tf3DDIkizZ6HQZwJ4Y8v1XoiP+hW9/R6J7UOVqhyPnwX4FXIsUilMJ3+Hes486u3qND7n9Aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=1SD7lkyc; arc=none smtp.client-ip=209.85.128.46
+	 Content-Type:Content-Disposition:In-Reply-To; b=XxtkKfBJnnmQAQJt2EreLEmA/DiS9dwU7/LiTE9t421wJX2eCnfeiMc+i3sN1tZjwI65ml/CKEbLgDkVaPAdMcsTkt1Syk3YF+TCf+X6U5zYskc3sg9pYa+fP481l4Q5/Ef0zP3x5CoLdbnyhClDhyAbQabNqg1bJ40gm6BAcko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=hA7rGr+v; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="1SD7lkyc"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-480142406b3so15055215e9.1
-        for <netdev@vger.kernel.org>; Fri, 06 Feb 2026 01:21:13 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="hA7rGr+v"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-4362c63531bso238757f8f.0
+        for <netdev@vger.kernel.org>; Fri, 06 Feb 2026 01:24:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1770369672; x=1770974472; darn=vger.kernel.org;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1770369856; x=1770974656; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uYHqopYroroGJu4jPezMwlTHDcRYczudf62+B8v8YAg=;
-        b=1SD7lkychrBCkUtZgs7PjPm5kuQs14E0On+1DH2AAOVRkYXUmDkdt62pIjvCyEtsTB
-         BDOkASCgvFWvIWLPjSmmRq+37Dcl7/RAl3s8OVFyO8BhVQSeIGsKyfIQKkUPPrO8G6EL
-         gcBeQDKJadLj9buu7DIeEcHmiRCSS5NaQ9dV7+BCbYyzAcrMFQCmsTrPxdftsYdikH6e
-         EgLSTygeRc1ju1n97ukBjdnWsThiAiM0yQi1IOjJnypPP6Xo6rVqNrSoKneyC0JHG7X/
-         kNK7I3JQqD1e9wUinelrzX3v50EZTsU/RHiEr3oczDNWqJMeCYsHkOCXAS6U5QeFgMlU
-         KfoA==
+        bh=P50Q9DHDNQka2qrgw513BMd3JIx3mSPm10k7dGqR+X0=;
+        b=hA7rGr+vuf0mvhOas6mZuuAsd6tK6ALSjbAZ/qxozj4H/A7N/1wQ6/FUpAFkUjPxlY
+         KKW2OUSCgEYyyF1rdvsxNIKlQ3ooQHN3cUjA59CLk2tipXiEZ/7LbmR44b/OHmONpI0Z
+         +mI9Hg5iYcJQ3deDEjmj24WoAhS9xaFNdKSr4TuyL/dyeOkn5wI8H2HIrvCpqpQIJgpB
+         pEZoI9Y/tLQDPjP2CwsDuotVOrn/JEJ0OkEk53jvXUOnicnZT/w9/lETYxPpcGNjeu/Q
+         UXZmRNmulTQ2UyTUosRWcioXUHcZPaQaGxtEnGMbh6iZmcmikdpmopjcpwCMeGTJL23y
+         Po6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770369672; x=1770974472;
+        d=1e100.net; s=20230601; t=1770369856; x=1770974656;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uYHqopYroroGJu4jPezMwlTHDcRYczudf62+B8v8YAg=;
-        b=iZssWztFjMs2mAZe3Zs3hAMa+H1K7EUvK+n3w6xLVl1zgyWWZacMdq/el6JMgEukx9
-         WGWb5Asrht+azpPDpOkXHermLBHqS9DJ22QzIw0oA1KHAvFLCePaGAvRGRh78RHP3VWT
-         SzWgqaaSIt2fE1kuhxr8QeVVhAgY6roYrsirEoq0SjoFCD1AAXUYZoTUzXTFxqeihYS0
-         CRNdsgmQ+5DS9ByX3gyhTcf6Esk6j4BHrolTz4BHFTCC7YM4GFoCzslBbJY2LDZXFUO7
-         6YakCKtrexvvnEYrn25GczCIPn9YhqKEUDFNgpyGT7THSTxj7ZPMcD+45JNrFZmpmrRM
-         iKrw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhWJ7G1sNfrLW2mRgRKItRS37iWFin4AblcVsg5y2Z5jTOBAOU5VEswUHcD86VRo3Ig53b5tI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymqznHgxACggcgTRRT/2CnjwbHQH66bB3z+kauBFWeAjPWP1tr
-	KyL0obE2+K6Gq8L6gHQ9F6XMR9KzeagTDbGQPvk0fJRXfVWjfnJrSOGXKPvORiNeLZM=
-X-Gm-Gg: AZuq6aJDdqMY5nlJjqYGJVC/9/9nxmWzVdiXwI1SKWbz2inYSpgZYlO5rW+SaVDT6Sq
-	UZkDm0Mu5MNpLdQzUWz3CAWiQzAQli7SLGLkTOXakDij9heDJKxAUEgjntlApDV03ua0rIbq3Qk
-	GKxT2IVWdcTi/XTVj8WqPKqoOnMgWbnP66Lm8YJL1aYV8bD9p3EBVDMDq534pJJFIk/UUDWsP75
-	Qppp2+7e6BTEnzeoegudAqgXwSMOG3My6VEC9UbPNo9GVqiEmMAx3iqCyf7DbhJL1HteX3pxWwO
-	LKJoppQ7YW7S+z5T1CO0sSOlmvKZEROzWzb409E5PDcHNSK0NmZuP1Z8fwuuzO/r8bDmgh5QSWl
-	xAm2TQYX3uIdzix+UcNzjuPzDa46Wct7DHMxD9FOBLAwBDcOuqFbfil91BdihSpOzs7JKh9dMxa
-	6nXCz2S/2vJb03HjuxtZ9+zjFxP+S5NA==
-X-Received: by 2002:a05:600c:8b57:b0:479:35e7:a0e3 with SMTP id 5b1f17b1804b1-4832021d9b3mr30466725e9.30.1770369671987;
-        Fri, 06 Feb 2026 01:21:11 -0800 (PST)
+        bh=P50Q9DHDNQka2qrgw513BMd3JIx3mSPm10k7dGqR+X0=;
+        b=J9whQCT1H/pLmRClQGJpycosCFf6auo15y7vfnen7nxY0zqA+QgCXgrzrGirO5uOEp
+         eXwTRc9vsKUL08AUGYzOlQ63r41FzQrmuScHOsalDB/oAfyGwEHZ5DHOHyI8uY3uIWXX
+         kzkBRHx+N9HN61IYcmRTtUH/+Gw5f8Hmv4AKA/ehL8b1cTu4e7qSaUKUBBoknZkxSaNU
+         GtBEogAg2wS1wUjDU4dFg1z5ftKj5dFehRnlGyEQasjssQx4HvfDeLh97rp6MN1gR0EJ
+         ZT+vQt4OAEoZUTB7mP+VwtC9BWck1aQuTryp3VF2OTwXWJ9TKLRko7CAXQ6tVN76VSf4
+         NoWA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQ6yLWAwItYa4iVW8iZr4k+uwfYywQ3Q8k/riKnezx278Ls1+TqeypX2U55C4Wx5IJxJkYOBk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7eZ8+Ve0nl28GvxW8rtSIKt4jvrSxgayQjKRAkB8ylssaMG2v
+	eAiyZOogo3lWAJ201FQEnwjnXHuVNtF1shzOgvSjffKfUj3f7EGhw6HzMddyFFrV8pc=
+X-Gm-Gg: AZuq6aIFQkA+3g4639Y9j423fA11e/+aEGlSB5fi9+z4UO4g7bXeuhpzejAfOymdacH
+	9kf+v+V0A2IUok8SMYwtTWIpQo9pGy72pCnjM/ilw6htjCQJZzbtNAAxuz07SlDY27ASOKPvDTj
+	LsFKWh4G6N0MVOmrzF7tMcvjcfCPLjUfo6sZDKaCEUdXjkEBtpY3qM1lacIsXZ8nY0OknmkjLeq
+	wyhJv3QT5ib2TxX8LR644uRFswQSbPNJzBSwxMVmUEsD62HUDpEzHAdFPhahdukmsNj/8Q+fbFw
+	rAMggXZKze91uwJQVTlCLpnpuqedsXIpSMkr5ixcj6vy9tlCTZrj/beaaCCeuLeSAw5JrK0LZYi
+	ko6U0RwPiaMakpC5n4A/QaZgJJtqqgiVnOl3/kfV5HB19Ch9fM0Y+1n/zPNMkOu/AwKgpZxMmuz
+	8KHTtGoU+rY3+pQKKFAvw=
+X-Received: by 2002:a5d:5d13:0:b0:432:851d:35ef with SMTP id ffacd0b85a97d-4362937dd22mr3165723f8f.42.1770369855926;
+        Fri, 06 Feb 2026 01:24:15 -0800 (PST)
 Received: from FV6GYCPJ69 ([85.163.81.98])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48317d8341csm109643915e9.13.2026.02.06.01.21.10
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-436296b25d5sm4583939f8f.2.2026.02.06.01.24.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 01:21:11 -0800 (PST)
-Date: Fri, 6 Feb 2026 10:21:09 +0100
+        Fri, 06 Feb 2026 01:24:15 -0800 (PST)
+Date: Fri, 6 Feb 2026 10:24:13 +0100
 From: Jiri Pirko <jiri@resnulli.us>
 To: Tariq Toukan <tariqt@nvidia.com>
 Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
@@ -67,13 +67,10 @@ Cc: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
 	Leon Romanovsky <leon@kernel.org>, Mark Bloch <mbloch@nvidia.com>, Shuah Khan <shuah@kernel.org>, 
 	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
 	linux-rdma@vger.kernel.org, linux-kselftest@vger.kernel.org, Gal Pressman <gal@nvidia.com>, 
-	Moshe Shemesh <moshe@nvidia.com>, Shay Drori <shayd@nvidia.com>, Jiri Pirko <jiri@nvidia.com>, 
-	Or Har-Toov <ohartoov@nvidia.com>
-Subject: Re: [PATCH net-next V2 2/7] devlink: Add port-level resource
- registration infrastructure
-Message-ID: <oh6xvllidmtqx7wmsbmvghc7zeokvvgwkj2kbt7erwhn6jt7r5@gl4knllsp35u>
+	Moshe Shemesh <moshe@nvidia.com>, Shay Drori <shayd@nvidia.com>, Jiri Pirko <jiri@nvidia.com>
+Subject: Re: [PATCH net-next V2 0/7] devlink: add per-port resource support
+Message-ID: <7rmcwov5zbu4blljlnwfzhobmmjsitih3t7w7vabpmkigat6du@erprfflwyiqx>
 References: <20260205142833.1727929-1-tariqt@nvidia.com>
- <20260205142833.1727929-3-tariqt@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,20 +79,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260205142833.1727929-3-tariqt@nvidia.com>
+In-Reply-To: <20260205142833.1727929-1-tariqt@nvidia.com>
 
-Thu, Feb 05, 2026 at 03:28:28PM +0100, tariqt@nvidia.com wrote:
->From: Or Har-Toov <ohartoov@nvidia.com>
+Thu, Feb 05, 2026 at 03:28:26PM +0100, tariqt@nvidia.com wrote:
+>Hi,
 >
->The current devlink resource infrastructure supports only device-level
->resources. Some hardware resources are associated with specific ports
->rather than the entire device, and today we have no way to show resource
->per-port.
+>This series adds devlink per-port resource support.
+>See detailed description by Or below [1].
 >
->Add support for registering resources at the port level.
+>Regards,
+>Tariq
 >
->Signed-off-by: Or Har-Toov <ohartoov@nvidia.com>
->Reviewed-by: Shay Drori <shayd@nvidia.com>
->Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+>[1]
+>Currently, devlink resources are only available at the device level.
+>However, some resources are inherently per-port, such as the maximum
+>number of subfunctions (SFs) that can be created on a specific PF port.
+>This limitation prevents user space from obtaining accurate per-port
+>capacity information.
+>This series adds infrastructure for per-port resources in devlink core
+>and implements it in the mlx5 driver to expose the max_SFs resource on
+>PF devlink ports.
+>
+>Patch #1 refactors resource functions to be generic
+>Patch #2 adds port-level resource registration functions
+>Patch #3 adds port resource netlink command
+>Patch #4 registers SF resource on PF port representor in mlx5
+>Patch #5 adds port resource registration to netdevsim for testing
+>Patch #6 adds selftest for devlink port resources
+>Patch #7 adds documentation for port-level resources
 
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Could you add dumpit op for the current devlink resource? I think that
+was indented originally. Will help to see the whole code-picture :)
+
+Thanks!
