@@ -1,275 +1,150 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE596331202
-	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 04:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3AF2F5A05;
+	Fri,  6 Feb 2026 04:09:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770350574; cv=none; b=Cj99aaJkAhYAT3JRzNFhcV/JdyFSXfuGLQ9IjyRMHSFxSoWgkkltHi8+/abbDPxM+pU8+GdsS0bPsrvFIef8AOKYKNDcaZZLDHlM7H55nlgeXFZKoRzQmBofQYZVR+h3FBMocbyKNkKToViBmGDGDUgbifgQ4CCIW2dbn+KR9FE=
+	t=1770350988; cv=none; b=UXjcKzGC8Vtpb5S7GxHbw9XUna22j0Qk0RkjXBsrtvyct6oTz6b10t8PEAYBk2u/t2wzKK3AWEljcLEHJAo8i9gs3y0VGfGlDNe75MYJfBNcPU3SdR/AK0t2ONbtE5yQGDvlUSsEL0eHbcIZYgOzggwNd0oECLouqiPPr1K7F3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770350574; c=relaxed/simple;
-	bh=9+KXIch+w7cmyL2QfLkxHmSOG9n2ggsJDqbBM6hWcQ8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZyZ9vpWv80oPJKdLV+WOKkduk+bfppueYPO8setnD8O82Jg+v+FsAZCNaE1ux3aChOWihjeC03PeWcc7HiHLWFbB23X9f/+xi1bXTIy2a+10O+6eNF5uYPhZN97OEgMD0gIqBNgpVdrb41KRdee+Z9O3d92oJXkNsS3lGbZbtAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tY1eF7H6; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1770350988; c=relaxed/simple;
+	bh=J8L/b8TMYhvTEWSBIUFeJXDhGvdbUplKd53H1uafSz8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mT1Z22aeae75Y1JbuUdGqqIyXDsYAwzu5Fb+q3vt9avS/PbfSKvZldBYAq5GiPKTxexX7YsuihPPMHW/ZhsXBlJHuBMnWkMhDoN8iVlbScE/eW/vQtXY3pYhTEjBIM0VUsFMdQIhZ/3Cqq2gNnPJRk9Ij1Oz2/P5BpQgpedNLJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RLrxy8jp; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tY1eF7H6"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c337cde7e40so1048317a12.1
-        for <netdev@vger.kernel.org>; Thu, 05 Feb 2026 20:02:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1770350573; x=1770955373; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=M3SY+Px+LVTcC5Q9HVW9psxTZ/KS5kLE52yVC2XqNPM=;
-        b=tY1eF7H6WzTAuW0gSx3YxXHEwzzTi5uFuLDnDqeYPs+wU1fQpKgLV52egrxckOn/3A
-         Psgi3ZUrnDUPaE96BtVIOM9Qx8jaYr9yfYljaIzLvkePftZQCL5GB7fipzUj7unh4IyM
-         mXcDNYjePCYPEu7YWDe1eZn2D2S3u8gXFp3SujNsEJCr3Dn20/VXb/ftLlbNlFaAgv/B
-         8dmZC6TxxvR4p5I0hlADUKQZpYAj6jjOnxVxCwLtFqKhqMiJBFrwSQlYoWaQxTkoqCZ/
-         oPnfoT1RtQ+XoayC7nuhDIPs4Z4ou2wPp/MWr/NClnEUOnxGmycSr5XU4yrzeCcis+lr
-         OLvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770350573; x=1770955373;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=M3SY+Px+LVTcC5Q9HVW9psxTZ/KS5kLE52yVC2XqNPM=;
-        b=b17APpsIii1VxmSsqtCNtCONpBhxaVrUSbc+Pu+378gmrmf6MAmxNQD4fm7uVfD4t0
-         ZUJp0kaAGKE7L33jQZbulm3Qesp605W0pIOBhi32Qr4j2b4znWHt6q+1bXDVHSxJ3ivX
-         uPwud19h95gO1BxXBEyTHlm/UI8BtkOm3IAoilZzlLdtTE7NTkyhjh/aEUc11r2oeLqg
-         Kz3oZroiWpa/rm9OGBv2iWMqk9YvieqTuJMV2kRIvfE2mb75xJFKpKh5bsjdRjgBVU5J
-         v1t/6ugjAC+LOk35VT3ifsNgxZHRlymYTvSNZGcAvBowe9OUleAfMotiiJOEBHgvh3kD
-         LNXg==
-X-Forwarded-Encrypted: i=1; AJvYcCUigatj9Gtjv2VVEW8J3HGSPkr8+/9czLWCqoDLRUzzuHL7FbODutnPPTLZC17hTXAJ6k8TmKY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz5txmg/Bb9eID/O3tp15IsTN9QMJLuzAI/qdJcT10M7K1W1VKn
-	tGNAakW6daq6clLUfBhocldw5X55cqFnOCv/r7IxuH8NIPQRw9V6x1GjoR7BXICfOUuZpoBHRhg
-	8E1leaA==
-X-Received: from pjbsk11.prod.google.com ([2002:a17:90b:2dcb:b0:34c:2124:a2b0])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1505:b0:35d:d477:a7e9
- with SMTP id adf61e73a8af0-393ad02cd11mr1639125637.35.1770350573237; Thu, 05
- Feb 2026 20:02:53 -0800 (PST)
-Date: Fri,  6 Feb 2026 03:57:54 +0000
-In-Reply-To: <CAA3_Gno0c6uGwuxBcsDgZt2a_VriABPek31-1w-R8c9CdJw5Ow@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RLrxy8jp"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770350988; x=1801886988;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=J8L/b8TMYhvTEWSBIUFeJXDhGvdbUplKd53H1uafSz8=;
+  b=RLrxy8jp2olkKefOvS1HtRexoiuuMF/hOtjEQ+HNfCnybdO8c8GCCHU/
+   hYOTifzUkdM1stHf/Oa6qpaecN5EE8NMXlWpzMFdVk9rvAmpNfnzUuAaE
+   iTCN3HYUneuz5F0F6mcGqcRNoAUx5BnKyCAiDiZtyC7gyUWI7nWUa4DL3
+   I2nnX1g/+lUhhexO/MeUfNRhBlPU7vxwwNmkSLZeHop0XIfKmjKG19sLL
+   qGojlA0ifocpBxw2huosKLRwnXPq0zMT2+8EG5sOi3MqoTLutucHvOHUQ
+   SuBtxQ0RDtCAJqTlPP1SuXlFu8nzus3h07CJtjO5xw5mZE8McLSHuQ5V1
+   A==;
+X-CSE-ConnectionGUID: NrFm1PPLSX+ItaLQygwqcA==
+X-CSE-MsgGUID: XTOPLw/9SmKM3lXwmebk4w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11692"; a="71285592"
+X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
+   d="scan'208";a="71285592"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Feb 2026 20:09:47 -0800
+X-CSE-ConnectionGUID: +BBJ6HEaR8Sosr7FcUegLg==
+X-CSE-MsgGUID: I8eIMSSQTCe51s3RbJRHKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,275,1763452800"; 
+   d="scan'208";a="210061179"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 05 Feb 2026 20:09:43 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1voDA4-00000000kQ4-2o8p;
+	Fri, 06 Feb 2026 04:09:40 +0000
+Date: Fri, 6 Feb 2026 12:09:29 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jesper Dangaard Brouer <hawk@kernel.org>, netdev@vger.kernel.org,
+	Eric Dumazet <eric.dumazet@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@toke.dk>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Jesper Dangaard Brouer <hawk@kernel.org>, bpf@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>, horms@kernel.org,
+	jiri@resnulli.us, edumazet@google.com, xiyou.wangcong@gmail.com,
+	jhs@mojatatu.com, atenart@redhat.com, carges@cloudflare.com,
+	kernel-team@cloudflare.com
+Subject: Re: [PATCH net-next v2 6/6] net: sched: sch_dualpi2: use
+ qdisc_dequeue_drop() for dequeue drops
+Message-ID: <202602061240.CRDtcOeX-lkp@intel.com>
+References: <177032652354.1975497.2269771162710918590.stgit@firesoul>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <CAA3_Gno0c6uGwuxBcsDgZt2a_VriABPek31-1w-R8c9CdJw5Ow@mail.gmail.com>
-X-Mailer: git-send-email 2.53.0.rc2.204.g2597b5adb4-goog
-Message-ID: <20260206040251.292605-1-kuniyu@google.com>
-Subject: Re: [PATCH net 1/2] net: bonding: fix type-confusion in bonding header_ops
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: kota.toda@gmo-cybersecurity.com
-Cc: edumazet@google.com, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, yuki.koike@gmo-cybersecurity.com, kuniyu@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <177032652354.1975497.2269771162710918590.stgit@firesoul>
 
-Hi,
+Hi Jesper,
 
-Looks like patches were copy-and-pasted to email client since
-diff is corrupted (\t is replaced with \s, line is wrapped, etc).
+kernel test robot noticed the following build errors:
 
-You may want to check your email client config or simply use
-git send-email like
+[auto build test ERROR on net-next/main]
 
- $ git send-email --annotate --cover-letter --thread --no-chain-reply-to \
-   --subject-prefix "PATCH v3 net" \
-   --to "NAME <EMAIL@ADDRESS>" \
-   --cc "NAME <EMAIL@ADDRESS>" \
-   --cc netdev@vger.kernel.org \
-   --dry-run HEAD~2
+url:    https://github.com/intel-lab-lkp/linux/commits/Jesper-Dangaard-Brouer/net-sched-introduce-qdisc-specific-drop-reason-tracing/20260206-052816
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/177032652354.1975497.2269771162710918590.stgit%40firesoul
+patch subject: [PATCH net-next v2 6/6] net: sched: sch_dualpi2: use qdisc_dequeue_drop() for dequeue drops
+config: sparc64-randconfig-002-20260206 (https://download.01.org/0day-ci/archive/20260206/202602061240.CRDtcOeX-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260206/202602061240.CRDtcOeX-lkp@intel.com/reproduce)
 
-Then, make sure to CC maintainers listed by ./scripts/get_maintainer.pl
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602061240.CRDtcOeX-lkp@intel.com/
 
-There are a few more rules to follow, so please read these doc
-for next submission.
+All errors (new ones prefixed by >>):
 
-  Documentation/process/submitting-patches.rst
-  Documentation/process/maintainer-netdev.rst
-
-
-From: =E6=88=B8=E7=94=B0=E6=99=83=E5=A4=AA <kota.toda@gmo-cybersecurity.com=
->
-Date: Thu, 5 Feb 2026 19:57:00 +0900
-> Add two members to struct bonding, bond_header_ops and
-> header_slave_dev, to avoid type-confusion while keeping track of the
-> slave's header_ops.
->=20
-> Fixes: 1284cd3a2b740 (bonding: two small fixes for IPoIB support)
-> Signed-off-by: Kota Toda <kota.toda@gmo-cybersecurity.com>
-> Signed-off-by: Yuki Koike <yuki.koike@gmo-cybersecurity.com>
-> Co-developed-by: Yuki Koike <yuki.koike@gmo-cybersecurity.com>
-> Reviewed-by: Paolo Abeni <pabeni@redhat.com>
-> Reported-by: Kota Toda <kota.toda@gmo-cybersecurity.com>
-
-nit: Reported-by is not needed when it's identical with the author.
+>> net/sched/sch_dualpi2.c:600:32: error: use of undeclared identifier 'QDISC_DROP_STEP_DROP'; did you mean 'QDISC_DROP_GENERIC'?
+     600 |                         drop_and_retry(q, skb, sch, QDISC_DROP_STEP_DROP);
+         |                                                     ^~~~~~~~~~~~~~~~~~~~
+         |                                                     QDISC_DROP_GENERIC
+   include/net/dropreason-qdisc.h:48:2: note: 'QDISC_DROP_GENERIC' declared here
+      48 |         QDISC_DROP_GENERIC,
+         |         ^
+   1 error generated.
 
 
-> ---
->  drivers/net/bonding/bond_main.c | 66 ++++++++++++++++++++++++++++++++-
->  include/net/bonding.h           |  5 +++
->  2 files changed, 70 insertions(+), 1 deletion(-)
->=20
-> diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_m=
-ain.c
-> index f17a170d1..5ecc64e38 100644
-> --- a/drivers/net/bonding/bond_main.c
-> +++ b/drivers/net/bonding/bond_main.c
-> @@ -1616,14 +1616,70 @@ static void bond_compute_features(struct bonding =
-*bond)
->      netdev_change_features(bond_dev);
->  }
->=20
-> +static int bond_hard_header(struct sk_buff *skb, struct net_device *dev,
-> +        unsigned short type, const void *daddr,
-> +        const void *saddr, unsigned int len)
-> +{
-> +    struct bonding *bond =3D netdev_priv(dev);
-> +    struct net_device *slave_dev;
-> +
-> +    slave_dev =3D bond->header_slave_dev;
-> +
-> +    return dev_hard_header(skb, slave_dev, type, daddr, saddr, len);
-> +}
-> +
-> +static void bond_header_cache_update(struct hh_cache *hh, const
-> +struct net_device *dev,
-> +        const unsigned char *haddr)
-> +{
-> +    const struct bonding *bond =3D netdev_priv(dev);
-> +    void (*cache_update)(struct hh_cache *hh,
-> +        const struct net_device *dev,
-> +        const unsigned char *haddr);
-> +    struct net_device *slave_dev;
-> +
-> +    slave_dev =3D bond->header_slave_dev;
-> +
-> +    if (!slave_dev->header_ops
+vim +600 net/sched/sch_dualpi2.c
 
-Is slave_dev always non-NULL ?
+   581	
+   582	static struct sk_buff *dualpi2_qdisc_dequeue(struct Qdisc *sch)
+   583	{
+   584		struct dualpi2_sched_data *q = qdisc_priv(sch);
+   585		struct sk_buff *skb;
+   586		int credit_change;
+   587		u64 now;
+   588	
+   589		now = ktime_get_ns();
+   590	
+   591		while ((skb = dequeue_packet(sch, q, &credit_change, now))) {
+   592			if (!q->drop_early && must_drop(sch, q, skb)) {
+   593				drop_and_retry(q, skb, sch,
+   594					       QDISC_DROP_CONGESTED);
+   595				continue;
+   596			}
+   597	
+   598			if (skb_in_l_queue(skb) && do_step_aqm(q, skb, now)) {
+   599				qdisc_qstats_drop(q->l_queue);
+ > 600				drop_and_retry(q, skb, sch, QDISC_DROP_STEP_DROP);
+   601				continue;
+   602			}
+   603	
+   604			q->c_protection_credit += credit_change;
+   605			qdisc_bstats_update(sch, skb);
+   606			break;
+   607		}
+   608	
+   609		if (q->deferred_drops_cnt) {
+   610			qdisc_tree_reduce_backlog(sch, q->deferred_drops_cnt,
+   611						  q->deferred_drops_len);
+   612			q->deferred_drops_cnt = 0;
+   613			q->deferred_drops_len = 0;
+   614		}
+   615		return skb;
+   616	}
+   617	
 
-
-> || !(cache_update =3D
-> READ_ONCE(slave_dev->header_ops->cache_update)))
-
-READ_ONCE() seems necessary for header_ops.
-
-and please run ./scripts/checkpatch.pl, which will
-complain about the coding style setting var in if().
-
-
-> +        return;
-> +
-> +    cache_update(hh, slave_dev, haddr);
-> +}
-> +
-> +
->  static void bond_setup_by_slave(struct net_device *bond_dev,
->                  struct net_device *slave_dev)
->  {
-> +    struct bonding *bond =3D netdev_priv(bond_dev);
->      bool was_up =3D !!(bond_dev->flags & IFF_UP);
->=20
->      dev_close(bond_dev);
->=20
-> -    bond_dev->header_ops        =3D slave_dev->header_ops;
-> +    /* Some functions are given dev as an argument
-> +    * while others not. When dev is not given, we cannot
-> +    * find out what is the slave device through struct bonding
-> +    * (the private data of bond_dev). Therefore, we need a raw
-> +    * header_ops variable instead of its pointer to const header_ops
-> +    * and assign slave's functions directly.
-> +    * For the other case, we set the wrapper functions that pass
-> +    * slave_dev to the wrapped functions.
-> +    */
-> +    bond->bond_header_ops.create =3D bond_hard_header;
-> +    bond->bond_header_ops.cache_update =3D bond_header_cache_update;
-> +    if (slave_dev->header_ops) {
-> +        WRITE_ONCE(bond->bond_header_ops.parse, slave_dev->header_ops->p=
-arse);
-
-Are WRITE_ONCE()s needed ?
-
-RCU readers will see NULL bond_dev->header_ops at this
-point, no ?
-
-If they see non-NULL header_ops, then it will not be changed
-because only bond_release_and_destroy() clears it and
-we wait one RCU grace period after issuing NETDEV_UNREGISTER.
-
-
-> +        WRITE_ONCE(bond->bond_header_ops.cache, slave_dev->header_ops->c=
-ache);
-> +        WRITE_ONCE(bond->bond_header_ops.validate,
-> slave_dev->header_ops->validate);
-> +        WRITE_ONCE(bond->bond_header_ops.parse_protocol,
-> slave_dev->header_ops->parse_protocol);
-> +    } else {
-> +        WRITE_ONCE(bond->bond_header_ops.parse, NULL);
-> +        WRITE_ONCE(bond->bond_header_ops.cache, NULL);
-> +        WRITE_ONCE(bond->bond_header_ops.validate, NULL);
-> +        WRITE_ONCE(bond->bond_header_ops.parse_protocol, NULL);
-> +    }
-> +
-> +    bond->header_slave_dev      =3D slave_dev;
-> +    bond_dev->header_ops        =3D &bond->bond_header_ops;
-
-Rather WRITE_ONCE() seems necessary here.
-
-
->=20
->      bond_dev->type            =3D slave_dev->type;
->      bond_dev->hard_header_len   =3D slave_dev->hard_header_len;
-> @@ -2682,6 +2738,14 @@ static int bond_release_and_destroy(struct
-> net_device *bond_dev,
->      struct bonding *bond =3D netdev_priv(bond_dev);
->      int ret;
->=20
-> +    /* If slave_dev is the earliest registered one, we must clear
-> +    * the variables related to header_ops to avoid dangling pointer.
-> +    */
-> +    if (bond->header_slave_dev =3D=3D slave_dev) {
-> +        bond->header_slave_dev =3D NULL;
-> +        bond_dev->header_ops =3D NULL;
-
-Ditto.
-
-Also, before clearing header_ops, there would be a small (race)
-window where
-
-  bond->header_slave_dev =3D=3D NULL &&
-  bond_dev->header_ops =3D=3D &bond->bond_header_ops
-
-is true and this would trigger null-deref in bond_header_cache_update().
-
-This is Eric's point, I think.
-
-
-> +    }
-> +
->      ret =3D __bond_release_one(bond_dev, slave_dev, false, true);
->      if (ret =3D=3D 0 && !bond_has_slaves(bond) &&
->          bond_dev->reg_state !=3D NETREG_UNREGISTERING) {
-> diff --git a/include/net/bonding.h b/include/net/bonding.h
-> index 95f67b308..c37800e17 100644
-> --- a/include/net/bonding.h
-> +++ b/include/net/bonding.h
-> @@ -215,6 +215,11 @@ struct bond_ipsec {
->   */
->  struct bonding {
->      struct   net_device *dev; /* first - useful for panic debug */
-> +    struct   net_device *header_slave_dev;  /* slave net_device for
-> header_ops */
-> +    /* maintained as a non-const variable
-> +    * because bond's header_ops should change depending on slaves.
-> +    */
-> +    struct   header_ops bond_header_ops;
->      struct   slave __rcu *curr_active_slave;
->      struct   slave __rcu *current_arp_slave;
->      struct   slave __rcu *primary_slave;
-> --
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
