@@ -1,93 +1,110 @@
-Received: from mail-108-mta20.mxroute.com (mail-108-mta20.mxroute.com [136.175.108.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5479E2FDC47
-	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 10:14:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=136.175.108.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9A83624C4;
+	Fri,  6 Feb 2026 10:25:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770372892; cv=none; b=HiMekf8C3QqFwsR6ZH7ZlAq9vRsyhbCYipVLvNcoaSvfcK+QbxA8RYg6wqNj2VdTgg4nT90JT5b5UWwZGaUfMp/4Cn6OBeVACZfE9hJ4f0gHIZt2FyqXbGEBuywVaAzLCsjDAJq7e0npdiUEsDPMGpXpcfyOELmCfpRSGKYhky0=
+	t=1770373509; cv=none; b=G2kCvvVRzFpdF76fIxWk1XHCETy37qU0lUQZsFxBVMs89EnGe/KOlqn/dczmvAqkYx0WAAWuKivl8NE9xRQPc4Ts6palj6ObfzfRLn/I0KR4UOTAPQcfFJL1fqCeiurbwik0MFZ6/lRQsqzi0eJDJbKZfji8wJqsvGZUByTqg7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770372892; c=relaxed/simple;
-	bh=BLVTGc0SxbUogCnTPMH9R2bXRrqgqMWuW0GLBam5NVw=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=VoC9neb3HLZD21uHvkYuX7bRrzSDyGeZiv0MKkcOC5kgDbB85ESA66GuPBx3iyl4L9m4+lCvzC33M8IOhqBA7nxrkeCQqAoiHbRs2QDTA7try1MSqGlx+9QB2cThPIl5xBT31L8ZCkE2ZVYeIhyouz5Vozb9Dsv9SNevgo5MCn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com; spf=pass smtp.mailfrom=mboxify.com; dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b=WWUS3nAU; arc=none smtp.client-ip=136.175.108.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mboxify.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mboxify.com
+	s=arc-20240116; t=1770373509; c=relaxed/simple;
+	bh=/MrCMk1XqmJv4v+raVshn8mmcHW5OWo2dw/7KEjMkUI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TIq4IftngT5K6Adhe4JnKlL2WycORKjQVb0Ed8tjIU+wdGIiAEP+nviG0fu+O/u10hGXfLw6Kfk21M/yaVaaTBXmw8azQ5COey7KjnDDRg/0IabJxLdXa8sMlTd+1KWosJokzY9gBNVnSuohFeZM67ooe+0tCxEDoirOGows8FA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=Q+guTtEN; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mboxify.com header.i=@mboxify.com header.b="WWUS3nAU"
-Received: from filter006.mxroute.com ([136.175.111.3] filter006.mxroute.com)
- (Authenticated sender: mN4UYu2MZsgR)
- by mail-108-mta20.mxroute.com (ZoneMTA) with ESMTPSA id 19c326dc6ad0009140.00d
- for <netdev@vger.kernel.org>
- (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
- Fri, 06 Feb 2026 10:09:41 +0000
-X-Zone-Loop: 71b7e636193ab44d30b1bc003913fd73b4d246532497
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mboxify.com
-	; s=x; h=Content-Transfer-Encoding:Content-Type:Message-ID:References:
-	In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=kJpak91eIUlTOToQNHsWSarIXpdN2cKIEjsn3XsOx/w=; b=WWUS3nAUOyxnZcaBzp9kKdtMLw
-	HtTXlNParmw5+eHgPUmu8DBNKGQ8Q07esKfq8TNOip8WVPsHMOyxEiEuQLd7bBUnhR/VxmquxPULM
-	8fIFqxTcOlpAkB45KBQPpt+Rspp8uwN6+2DnwpQ69OruMty8oZiuMLBXCW0hKD1qom8qi2+lOEbAZ
-	3xqPfb3OaVQR3CMgVRQBQFGsvvmsyut+520ui/JkQqBH4KI+f5pzoDeQRZoPItLH1+11EUsx/QnoV
-	tUalVi0m+MEeRjENvvP8BDdjcY1T8leBwIfcAkbQqGSAr1+pOiwyD5wwb0MC5efgG6tVI6MxDUIe8
-	kT7XULeQ==;
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="Q+guTtEN"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4f6qwK2Bl2z9tp0;
+	Fri,  6 Feb 2026 11:25:05 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1770373505;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MOfHMKbNXy3MxrUvKuYFlc2euBi7oH7iiv3EqWTkTe0=;
+	b=Q+guTtENwgC5TbwQgdx1Frin7BHRBTLNH+jgV8zl/vj7XoqV/IVMLIGrfcA1N7f0zodGNf
+	f1SOpF8U8TqIwqcLPhN7MwDaaV3nLmuYFalA5LwH9nG5QgWkaGr8ibG1uiM49PAJCo1FRc
+	1UebMpyjMe0IkZjc9VhNpLJTyl4VKbpL82p+GkYxXoqUvLBd9Y7sBAxfusunf+U4aJM7ih
+	6imcTswZXvX/En7KJXYxP7bH01uL3d516agiwxtsNvHrNtmZJZmcsdQ7Y34BAwHL8svGUB
+	CHxNTfBJVKnmMQr0txQQe9v5OJCpX5gX88MCrPhurOeHz9X3aNhrRmcLVSYsXA==
+Date: Fri, 6 Feb 2026 11:24:54 +0100
+From: =?UTF-8?B?xYF1a2Fzeg==?= Majewski <lukasz.majewski@mailbox.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, davem@davemloft.net, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+ <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Richard Cochran
+ <richardcochran@gmail.com>, netdev@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, Stefan Wahren
+ <wahrenst@gmx.net>, Simon Horman <horms@kernel.org>, Andrew Lunn
+ <andrew@lunn.ch>
+Subject: Re: [net-next v23 2/7] net: mtip: The L2 switch driver for imx287
+Message-ID: <20260206112454.2e9a686f@wsk>
+In-Reply-To: <20260205182805.196fd832@kernel.org>
+References: <20260204232135.1024665-1-lukasz.majewski@mailbox.org>
+	<20260204232135.1024665-3-lukasz.majewski@mailbox.org>
+	<20260205182805.196fd832@kernel.org>
+Organization: mailbox.org
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 06 Feb 2026 18:09:38 +0800
-From: bo@mboxify.com
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: pabeni@redhat.com, sgoutham@marvell.com, lcherian@marvell.com,
- gakula@marvell.com, jerinj@marvell.com, hkelam@marvell.com,
- sbhatta@marvell.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Subject: Re: [PATCH net 1/1] octeontx2-af: CGX: fix bitmap leaks
-In-Reply-To: <20260205074859.27392792@kernel.org>
-References: <20251020143112.357819-1-bo@mboxify.com>
- <20251020143112.357819-2-bo@mboxify.com>
- <20251022182226.00967149@kernel.org>
- <ba2c3143-0761-4903-ac0e-88ca502b4e50@mboxify.com>
- <20260205074859.27392792@kernel.org>
-Message-ID: <14217efc565a011da5cc8cd724794d81@mboxify.com>
-X-Sender: bo@mboxify.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Id: bo@mboxify.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-MBO-RS-ID: db1cc35f512114a3232
+X-MBO-RS-META: w9x5nk7bybc1tfbnhh3ap1diw3eq7r7n
 
-On 2026-02-05 23:48, Jakub Kicinski wrote:
-> On Thu, 5 Feb 2026 21:35:29 +0800 Bo Sun wrote:
->> >> Fixes: e740003874ed ("octeontx2-af: Flow control resource management")
->> >> Cc: stable@vger.kernel.org
->> >> Signed-off-by: Bo Sun <bo@mboxify.com>
->> >
->> > Looks like rvu_free_bitmap() exists. We should probably use it?
->> 
->> Apologies for the late reply.
->> You're right that rvu_free_bitmap() exists. I stayed with direct 
->> kfree()
->> for consistency with the existing code in cgx_lmac_exit(), because 
->> which
->> already uses kfree(lmac->mac_to_index_bmap.bmap).
->> 
->> That said, I'm OK with either way:
->> 1. Keep kfree() to match the existing pattern in this function
->> 2. Switch all three bitmap frees (including mac_to_index_bmap) to use
->> rvu_free_bitmap() for consistency with the alloc/free API pairing
->> 
->> What's your preference?
-> 
-> 3. do what I implied, just use rvu_free_bitmap() in this single case
-> for the fix. Follow up separately with a patch to remaining sites if
-> any to convert from kfree() to rvu_free_bitmap(). We want the fix
-> itself to be small, the cleanup should be separate.
+Hi Jakub,
 
-Thanks, I'll send v2.
+> On Thu,  5 Feb 2026 00:21:30 +0100 Lukasz Majewski wrote:
+> > This patch series provides support for More Than IP L2 switch
+> > embedded in the imx287 SoC.
+> >=20
+> > This is a two port switch (placed between uDMA[01] and MAC-NET[01]),
+> > which can be used for offloading the network traffic.
+> >=20
+> > It can be used interchangeably with current FEC driver - to be more
+> > specific: one can use either of it, depending on the requirements.
+> >=20
+> > The biggest difference is the usage of DMA - when FEC is used,
+> > separate DMAs are available for each ENET-MAC block.
+> > However, with switch enabled - only the DMA0 is used to
+> > send/receive data to/form switch (and then switch sends them to
+> > respecitive ports).
+> >=20
+> > Signed-off-by: Lukasz Majewski <lukasz.majewski@mailbox.org>
+> > Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
+> > Reviewed-by: Andrew Lunn <andrew@lunn.ch> =20
+>=20
+> Transient build failure here:
+>=20
+> drivers/net/ethernet/freescale/mtipsw/mtipl2sw.c:1072:32: warning:
+> variable =E2=80=98priv=E2=80=99 set but not used [-Wunused-but-set-variab=
+le] 1072 |
+>       struct mtip_ndev_priv *priv; |
+> ^~~~
+>=20
+> I sent out the AI code reviews while at it, without looking at them.
+> So please approach them with caution..
+
+IMHO, issues pointed with AI review have been at discussed and
+(to my best knowledge) addressed.
+
+Shall I prepare next version of this patch set?
+
+--=20
+Best regards,
+
+=C5=81ukasz Majewski
