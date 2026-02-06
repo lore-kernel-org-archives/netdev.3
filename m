@@ -1,211 +1,176 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011010.outbound.protection.outlook.com [52.101.52.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B75F3273D76
-	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 15:02:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770390174; cv=none; b=gP5m7C2LjcYfk//lICakoupngAMQZWKqaQkGbWVDMZqmlbnRg28fV1qXFaLunLdoa9uJqptkemAeTsKsD5r68509pIWQ9KHirqmuCsmnnqrv4K6K30A8aK/pOXZzyopHJZfzO/qs2zss0/XFGzLkOj6hhJmXmqzMkatXi65oy1c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770390174; c=relaxed/simple;
-	bh=r9JDNy3iLGRFG7x4Aha2CU+4aaIo1+oBQFDu2MLALE8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ox49b+jmGDQmwYr9CwscQc18uxuDnd5UoilT+Eo7HjjCZEZL/sIygVRnVu/NxKsV5Y7sbMhSE1hKXeS3EjnALn/iHXgUWlHYQSSujeS7d8OqMV08Nz2v/kFNt2thTXCbWG3hiJ+6eCXsxG12eGfDC2fOhPhpLfZmF0hkFORI6ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MvlHaqNp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jBE47soH; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8A02765F8;
+	Fri,  6 Feb 2026 15:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770390187; cv=fail; b=B7T4jcP8Hn8Cariyqz477xGbVMr9gf8ssh1RxAcXZI9VDySoGiaqp44HrpGZRol3lKuWQQTfsIg/ym/hhxiXPvIa/2+HkHGhQO/XxxP2KVff4+MdfXQ5WiYScwWlwwN5br6esdiODBrNV5UPObZZhigExg8grarRl0wOfE9h59A=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770390187; c=relaxed/simple;
+	bh=q+w8vLxYNyKjX7Es27XNXzenv1dicxTs5STWE8Yi0zE=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=of02+T+HkBL3cUlQNH7QecmRk0X1N/PligbOJKSN+p8Bqk4Gj9hHuE62HL/fvpc8ZcbYFFIuhssfZOY7IAncYt0KlVi0D8wtiLKCHiqCleF7kTjOR5l/TRXkwkW8x/taeSX+U1Rl18RsTxIe7+cRqnxnM/kMxG/jCrm+LR7ckUw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=s6ziI3wI; arc=fail smtp.client-ip=52.101.52.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MvlHaqNp";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jBE47soH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770390172;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PBtTGnoiFZd7hFZAgWuXiiQbJ1BM906Q9PTZBsz7Exk=;
-	b=MvlHaqNp/NnuhcbDQ6z0ogyU3iyVJkGK0I2e3HgC5tX920xGxwrv5+ulk+aF51U8K9E1xS
-	MiDSTEUPyABFOi5Ue/JQMalwS2fEACk402im9UB7BApmCX0jjBNXLu/xe8YDBFA5AlVYX2
-	Mq3BnMhLtMCuLjSEFEZFioVTBptD79o=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-455-OHC7-rWPPMa4s3zbUaqANg-1; Fri, 06 Feb 2026 10:02:51 -0500
-X-MC-Unique: OHC7-rWPPMa4s3zbUaqANg-1
-X-Mimecast-MFC-AGG-ID: OHC7-rWPPMa4s3zbUaqANg_1770390170
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4806cfffca6so29623535e9.2
-        for <netdev@vger.kernel.org>; Fri, 06 Feb 2026 07:02:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1770390170; x=1770994970; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=PBtTGnoiFZd7hFZAgWuXiiQbJ1BM906Q9PTZBsz7Exk=;
-        b=jBE47soHOvYQUjuDKZoCcMLnsQFwAo5Pc2S9hFginwpcgobbz75MExS2cymz1EzfCM
-         +m1IRlQA3MiJOaI3N08RPMiEGrOFQAs9Y4bEUe09+RMnSKTlMwDnms+YmVpVISIQ3itM
-         mCaZ8CT11fxB4vVYqbecm+oP5IQaHQ0dP+U5/Q6lWRUqLSJKO+0ETaB2mDWtgoC28aNv
-         c8dKPBfrymAEPazrjogR5XIxyFD0xZQxmSEjfQ0uE9rbnM0ePb1nl3UtYW+JbZ1Hg4yS
-         clDR747QY9fm2khxB+0Gks68ZjEEl72YS3tsdmEpBKT+ViG+pl/OoqHJ3wRnTsHjIUoG
-         /pAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770390170; x=1770994970;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PBtTGnoiFZd7hFZAgWuXiiQbJ1BM906Q9PTZBsz7Exk=;
-        b=e+3jAgM3V74oTcY6JgkWAGQLW6lZbkpU5hYOUHLZAHQPljpPnB1ciem4005WIUa8Ec
-         25JXYcIuPJqHBlaR1PpXtDlGpOfRsUYXqJZKIC5lkfsVQp0NbUPYM/IuyVs4X3ABuomZ
-         b7/byBoP1kDSXKSEJVScASFVpnaWarpTcAijMA8mwE0oTl+oy2YZSg4k0wOzvNCiWJAP
-         uWXH1du/pAvUEFO97aNeafwxlgMp7XRZXE/0dfRN5uw6Gi4niqXS8RLsjzO3pEbCZ6bs
-         3N19dHXhmpH0sIgF0BI3UJd1uunxPaq2v8nW1eQRnJDbN3dRF1yhYLE9c8dfff9pEhXP
-         buSA==
-X-Gm-Message-State: AOJu0YyTZqarf+Sm/hIVSsOS5qEVAvsGw8hUHHupChjldJXN9SZ9Prge
-	fLvNnyeEs6zWqiv9W5jYrQDinM3Mg180V59EVkDkCq5q+H0B27N4LzHv6b6oH+aHllC38UIGz2B
-	Ub4aYJLaK1jNkl3i2BHIsrGvTgjGpeUDPoWZO3+Um2XZXxU7eFbAbs/Q5sdbFwx2Xag==
-X-Gm-Gg: AZuq6aJ1wi/3DS5Ih5yCzBU9wOkljJ8uYbADNs4LnfQ9DGC0lMg6+eP/xWzDIY7PNPC
-	cH8Ka7JEjRDkqkVS3uz2UJ2tR/zAlVP23uaNiEe6awCqSG295+RPiKIRkvSEYWTahD4D55lI9nE
-	XBAvsSeyM4lKxg3DlCbXs7nYZyuQWmqAPBnoWrmZhzCh9lh1eUmQfrpZVJGKO/SGlArI6sKe07a
-	iAzR0RU9i8H5AOVaks1t/2iApn/wsI8fbn7wLpKpjXwM660wVZc7xxPI8OxjxhJTFWQpLCa3nyJ
-	R2THPllTv5p0PLgvsNXWsfCH4XNVjIgfavN5DfsK1DWX/fMRWl4Edw1m47moi7apoHa6Q0QEaeG
-	Bq+m9E+e+Z0E2jl1234WoDHrL7QKjRuIioQ==
-X-Received: by 2002:a05:600c:474c:b0:482:ef72:5778 with SMTP id 5b1f17b1804b1-483201dc4efmr48039035e9.8.1770390170105;
-        Fri, 06 Feb 2026 07:02:50 -0800 (PST)
-X-Received: by 2002:a05:600c:474c:b0:482:ef72:5778 with SMTP id 5b1f17b1804b1-483201dc4efmr48038395e9.8.1770390169571;
-        Fri, 06 Feb 2026 07:02:49 -0800 (PST)
-Received: from redhat.com (IGLD-80-230-34-155.inter.net.il. [80.230.34.155])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48317d299bfsm122985135e9.2.2026.02.06.07.02.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 07:02:48 -0800 (PST)
-Date: Fri, 6 Feb 2026 10:02:45 -0500
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Srujana Challa <schalla@marvell.com>
-Cc: netdev@vger.kernel.org, virtualization@lists.linux.dev,
-	pabeni@redhat.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com,
-	eperezma@redhat.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, ndabilpuram@marvell.com, kshankar@marvell.com
-Subject: Re: [PATCH v2 net-next] virtio_net: Improve RSS key size validation
- and use NETDEV_RSS_KEY_LEN
-Message-ID: <20260206095859-mutt-send-email-mst@kernel.org>
-References: <20260206120154.2548079-1-schalla@marvell.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="s6ziI3wI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Nb/b3Y/t+6ovB7TOE7kgqBsX3NT2E4R8lPeQdgdQr7zFut0FZsBOZeK68mSar0cqudKGAv7hJEcV+aYJdsC+Q8IuwjDiC6wY4VrpdGpqWvx/fnUO2GXs4EepCoJdLAc2pIB2u+9CmGY7fVoMenh+0oRKQ4M9+JpL3myl/qF74DRqo1SV7r18YdApD6vTY6yEB4Xg2Z8/L+H9BgBFIlShbeqqD1sebVOvr5GkvEweZn5ufOR4PUyZ1QRTnxI1wa2xBkG/G+DXJzqsjmkkXIGUy5kf3HSsIHWyNctn+yrtCnsJ452ajbT/hfWvOeT5tVRpUNiwhazGv4zyhV2oJ6SR7w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xOuSLoQQL7jtMguh6UIM1yGrivZzpBPPULJHXlDBxl8=;
+ b=FEzA1oYvrXdAhka721q0kTodKBCVrMBMOLryhTx6sBxJ8BEkWkJip9y47APJCn14h265HDwkit2fJDGQ4djof9p4bX7HZGw1OUHTV4+dONi/kHngKXkNuUOW7pO89fXFK5YfvAkqCZ8pASrkV1fLdt6MbcTvtUr6gz4bJtUx4gNZDGOpIRiRX2UCo9JvJjL7fltG7VBoB0EYbAmhBnNGTUBmc5gAVlQbDumAea9c7HUTBJ5tAD/iOlwHRP6YhpDKLtYVxE5izigXeBzvqGM1Xjp0WdClvWHPNjFRD2SMWamIEVu1G/Hh64oLrQR/7ODKhqC2pw8cMNWmsl8MMUNjew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xOuSLoQQL7jtMguh6UIM1yGrivZzpBPPULJHXlDBxl8=;
+ b=s6ziI3wIv9q1p4/J3WYpGcX/CTn+SK6UV6fOvJ3WEUifSrBvqCqb5OkhNj/E5HB4alIsW255gwkH22o4TGDKsuu9RwFbJw8KaNEatSwVEKBHSb9/OI4mM8C+5lMchPz0pQ7bRtrtnq7OqTvLYaE1MqkQcBDJJ36n5nZmdyNkiVDq0mt50KLKwE383mJfxP8nXlu1+aq1C5oz/VqNSc3DiymNS+e3CguhtXczcvR6Riv8LuZ3tmcFTAdJHbnF83WOsL1Qf8SkcIH0xV23qSsOlt+5CP8ZwdbLfdzrSST3BS0r5AEcIIgCWTHpCY1OoTfZaAdfy28GjG75NkZiRPq4pg==
+Received: from DS7PR03CA0033.namprd03.prod.outlook.com (2603:10b6:5:3b5::8) by
+ DS0PR12MB999106.namprd12.prod.outlook.com (2603:10b6:8:301::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.13; Fri, 6 Feb
+ 2026 15:03:04 +0000
+Received: from CH3PEPF00000012.namprd21.prod.outlook.com
+ (2603:10b6:5:3b5:cafe::89) by DS7PR03CA0033.outlook.office365.com
+ (2603:10b6:5:3b5::8) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.15 via Frontend Transport; Fri,
+ 6 Feb 2026 15:03:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ CH3PEPF00000012.mail.protection.outlook.com (10.167.244.117) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.0 via Frontend Transport; Fri, 6 Feb 2026 15:03:03 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 6 Feb
+ 2026 07:02:40 -0800
+Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 6 Feb
+ 2026 07:02:34 -0800
+References: <20260205220541.2992807-1-kuba@kernel.org>
+ <20260205220541.2992807-6-kuba@kernel.org>
+User-agent: mu4e 1.8.14; emacs 30.2
+From: Petr Machata <petrm@nvidia.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
+	<shuah@kernel.org>, <willemb@google.com>, <petrm@nvidia.com>,
+	<donald.hunter@gmail.com>, <michael.chan@broadcom.com>,
+	<pavan.chebbi@broadcom.com>, <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH net-next 5/9] selftests: drv-net: give HW stats sync
+ time extra 25% of margin
+Date: Fri, 6 Feb 2026 15:40:30 +0100
+In-Reply-To: <20260205220541.2992807-6-kuba@kernel.org>
+Message-ID: <87cy2h29vj.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260206120154.2548079-1-schalla@marvell.com>
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PEPF00000012:EE_|DS0PR12MB999106:EE_
+X-MS-Office365-Filtering-Correlation-Id: f35a2b9a-fbd5-4f82-9937-08de6590d409
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?C4LFKmYlntpds2FPRcFrwRCi8EgCqL4skAaztYD1/Ip18ne0QC9GUgrevmgJ?=
+ =?us-ascii?Q?B88gZjhsAsbbIHLjzYC9HfrZYFD9p0rg5zi+J8eRFAJX5O94Nd73wya561ev?=
+ =?us-ascii?Q?0eTu2t897BYg+cSH5kGW2WUxORS3MH+34dVbx7zxwabWiiuYe7YMGfr5Ldvb?=
+ =?us-ascii?Q?qCZ0xyXQ6kbpJel9pv8L9XSEscrSIxHQN9vBuSjXw5/QFWpG4QPux9te7IhR?=
+ =?us-ascii?Q?+VOabEgXTMoBanPpb4JDR7bJGPSB8KhCpt3a+C7yOHo6zB4awn9kOyVJgTMT?=
+ =?us-ascii?Q?SqKJB7WBs1kz+DnSLwad5Qzaxg1TWpbSEX27qNw+DNO28cZOIWROKlHX7IA1?=
+ =?us-ascii?Q?B2syTQWJzVSo7pnKj/j7d8ffI9R8LJgh3eXAukd0+x+OX7ynFx6YAfSOMBjT?=
+ =?us-ascii?Q?YWqw069aXHyZ74TobgYi8fzM6vhKMl7wfHFo9mlNdThDH0wDOXkDBN4a9fiV?=
+ =?us-ascii?Q?0h1HogtWsOwBIqChs96TxkE4uiK6+Kk3VPbzUE3G24nbSvZVwVnM+ChdYkz5?=
+ =?us-ascii?Q?83yT9RYJ8KVllBKvX9vSJnFql3x/hsVEqgNPs8NTT6u1H2M4RxVJROyxmswj?=
+ =?us-ascii?Q?9ZQs0E0HH+fo4Vb2BI7VXiPZX7e6HT+m7a8btxf4s3I2GANW/Z4Xc041wAlj?=
+ =?us-ascii?Q?UzMk/17NN7ezj1ZJ3e+co3Ds0PVwNt8gwJ+VDdpz6+49L8O0XEBqQFOJu9I2?=
+ =?us-ascii?Q?Dx410YAtaFXnw5xHRxJhl5iMim+WmKmzG/qroqRBAwQ90MkvdWG3h/ZB/PSG?=
+ =?us-ascii?Q?+j38PsK2umXwNTp9GLJHI4/3QttHu7r7i2lADeBuvriwBTQ2AhIWJsZRCDmA?=
+ =?us-ascii?Q?1FRJQ3uWNr6sWVRXwIJC1A2DegvALUJCDb3KaB/obXfWJ1+VED8ggeJTj3oM?=
+ =?us-ascii?Q?wE0LxKr+gIdkA4Wd0V0B4mjq2rtYdFFxhd53HbwS6/OTLZVqA6gE9y2cO1R/?=
+ =?us-ascii?Q?DJbMY1ItLXCLepEJNcKptvAjSmtZ+B+b1+VS4g2QKIBkCfW/IdHe0bcqCNik?=
+ =?us-ascii?Q?ovNK3rq1F+4AP9WL82kRQj36HYAI16ujQb+IZJzD3TIFa+nTVIC4AZs7E/uF?=
+ =?us-ascii?Q?1eFBL5OcoorQt/EF6KrlLKCf4/FuuunMbvUr5x4w4YNRUE1g3yMULgLn6LeQ?=
+ =?us-ascii?Q?Oa/t71dYXjMklOoKGdGYGG0EZOE2JM4I2yj+1M59+1DX3fPpqlkbbhqf9cI5?=
+ =?us-ascii?Q?DKg+/qNUeENJI7KJhq0oVy/VEOZw9iiHPktN2Kb1zPHy3gYgYwX2/dvw6O0I?=
+ =?us-ascii?Q?uVwMwn+zHQSQzfK23X0RXvmnh/NcLFReKj8WAEyD3sGeTwIgARf77/Q7yGVh?=
+ =?us-ascii?Q?Y5ZYVdQ9gYQ8jeo+svt+LF0cdyxIvF8G8Bcx/c3LHOPmKWwlaHyVVfHB4wqF?=
+ =?us-ascii?Q?tD0HmuluBe38wqQJwpo1C1L4h0i2gPJNICznIJcsqZNiK32EpQJMewIs9GgL?=
+ =?us-ascii?Q?w1GdottaOPEuzUeDgNPg/iOuMS2omcpsNI2yDdiDLPbUIt/B/UySF2hrqfuw?=
+ =?us-ascii?Q?TgN25FYAs9TxBOJaZSNsaJoQWwjI5x3PEqqm4/oL0u+opbz/dEAHOS56Ax+b?=
+ =?us-ascii?Q?+hY/f39dZo87yWjzNkrfoCOcBd281NDFDnxCZNQSoxCU9Q+yCotLhvLDS50Z?=
+ =?us-ascii?Q?XoqpwFkriVH7kmqjjILRvvs=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	WJf/0u5bdfDA8b37UQ43Fq0uvSCtR/M95NqEAqNjoAJMk5TaWF9Or4lU+n3nIcLuTqaxKJKk9joUtwO/XHhq3UE2FQqeo3e1EDxyvj8huAm1iif3pNZ2DvpRKh+6o2SVimf4WUyTBXs5ykEdSHM6pmNrZ3+QMjrMDRSEVJDCyl15jNWdvLJ1kp6IIqsb0nM3v76rHUFDU8P7WR56kuQaxADkcbrI4674skw7k8+yuFNlj4lN3uxXC4dziuxie0/x3JlAIz1FqBqVyG48ynkirmCuB79MZK4DnZkbwzkBbzMgauW657IiiUam2C+Uea15xXpxN2QGMUdqkUVRL7fg49lc8u8n8No9DFpENw2esHFsxXKMFvweC1BuKMBsw7TXhOn1PHvqkm8vSBkaDj4Pxu9HWUEMo5c77BBP0hodCQA0kyPXd7GULMmgNr8mqGIj
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 15:03:03.8637
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: f35a2b9a-fbd5-4f82-9937-08de6590d409
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH3PEPF00000012.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB999106
 
-On Fri, Feb 06, 2026 at 05:31:54PM +0530, Srujana Challa wrote:
-> Replace hardcoded RSS max key size limit with NETDEV_RSS_KEY_LEN to
-> align with kernel's standard RSS key length. Add validation for RSS
-> key size against spec minimum (40 bytes) and driver maximum. When
-> validation fails, gracefully disable RSS features and continue
-> initialization rather than failing completely.
-> 
-> Signed-off-by: Srujana Challa <schalla@marvell.com>
 
-I'd CC stable on this actually. failing when device is more capable
-was a bad idea.
-can you add a Fixes: tag, too? Thanks!
+Jakub Kicinski <kuba@kernel.org> writes:
+
+> There are transient failures for devices which update stats
+> periodically, especially if it's the FW DMA'ing the stats
+> rather than host periodic work querying the FW. Wait 25%
+> longer than strictly necessary.
+>
+> For devices which don't report stats-block-usecs we retain
+> 25 msec as the default wait time.
+
+Right, because now the default is 0.2, and we apply the 1.25 multiplier.
+
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
 
 > ---
->  drivers/net/virtio_net.c | 62 +++++++++++++++++++++++-----------------
->  1 file changed, 36 insertions(+), 26 deletions(-)
-> 
-> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> index db88dcaefb20..1fa4197dffc3 100644
-> --- a/drivers/net/virtio_net.c
-> +++ b/drivers/net/virtio_net.c
-> @@ -381,7 +381,8 @@ struct receive_queue {
->  	struct xdp_buff **xsk_buffs;
->  };
+>  tools/testing/selftests/drivers/net/lib/py/env.py | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
+> index 41cc248ac848..39a98eb2592e 100644
+> --- a/tools/testing/selftests/drivers/net/lib/py/env.py
+> +++ b/tools/testing/selftests/drivers/net/lib/py/env.py
+> @@ -285,7 +285,7 @@ from .remote import Remote
+>                  if "Operation not supported" not in e.cmd.stderr:
+>                      raise
 >  
-> -#define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
-> +#define VIRTIO_NET_RSS_MAX_KEY_SIZE     NETDEV_RSS_KEY_LEN
-> +#define VIRTIO_NET_RSS_MIN_KEY_SIZE     40
+> -            self._stats_settle_time = 0.025 + \
+> -                data.get('stats-block-usecs', 0) / 1000 / 1000
+> +            self._stats_settle_time = \
+> +                1.25 * data.get('stats-block-usecs', 20000) / 1000 / 1000
 >  
->  /* Control VQ buffers: protected by the rtnl lock */
->  struct control_buf {
-> @@ -6823,38 +6824,47 @@ static int virtnet_probe(struct virtio_device *vdev)
->  	if (virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT))
->  		vi->has_rss_hash_report = true;
->  
-> -	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS)) {
-> +	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS))
->  		vi->has_rss = true;
->  
-> -		vi->rss_indir_table_size =
-> -			virtio_cread16(vdev, offsetof(struct virtio_net_config,
-> -				rss_max_indirection_table_length));
-> -	}
-> -	vi->rss_hdr = devm_kzalloc(&vdev->dev, virtnet_rss_hdr_size(vi), GFP_KERNEL);
-> -	if (!vi->rss_hdr) {
-> -		err = -ENOMEM;
-> -		goto free;
-> -	}
-> -
->  	if (vi->has_rss || vi->has_rss_hash_report) {
->  		vi->rss_key_size =
->  			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
-> -		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
-> -			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds the limit %u.\n",
-> -				vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
-> -			err = -EINVAL;
-> -			goto free;
-> -		}
->  
-> -		vi->rss_hash_types_supported =
-> -		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
-> -		vi->rss_hash_types_supported &=
-> -				~(VIRTIO_NET_RSS_HASH_TYPE_IP_EX |
-> -				  VIRTIO_NET_RSS_HASH_TYPE_TCP_EX |
-> -				  VIRTIO_NET_RSS_HASH_TYPE_UDP_EX);
-> +		/* Spec requires at least 40 bytes */
-> +		if (vi->rss_key_size < VIRTIO_NET_RSS_MIN_KEY_SIZE) {
-> +			dev_warn(&vdev->dev,
-> +				 "rss_max_key_size=%u is less than spec minimum %u, disabling RSS\n",
-> +				 vi->rss_key_size, VIRTIO_NET_RSS_MIN_KEY_SIZE);
-> +			vi->has_rss = false;
-> +			vi->has_rss_hash_report = false;
-> +		} else if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
-> +			dev_warn(&vdev->dev,
-> +				 "rss_max_key_size=%u exceeds driver limit %u, disabling RSS\n",
-> +				 vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
-> +			vi->has_rss = false;
-> +			vi->has_rss_hash_report = false;
-> +		} else {
-> +			vi->rss_indir_table_size =
-> +				virtio_cread16(vdev, offsetof(struct virtio_net_config,
-> +							      rss_max_indirection_table_length));
-> +			vi->rss_hash_types_supported =
-> +			    virtio_cread32(vdev, offsetof(struct virtio_net_config,
-> +							  supported_hash_types));
-> +			vi->rss_hash_types_supported &=
-> +					~(VIRTIO_NET_RSS_HASH_TYPE_IP_EX |
-> +					  VIRTIO_NET_RSS_HASH_TYPE_TCP_EX |
-> +					  VIRTIO_NET_RSS_HASH_TYPE_UDP_EX);
-> +
-> +			dev->hw_features |= NETIF_F_RXHASH;
-> +			dev->xdp_metadata_ops = &virtnet_xdp_metadata_ops;
-> +		}
-> +	}
->  
-> -		dev->hw_features |= NETIF_F_RXHASH;
-> -		dev->xdp_metadata_ops = &virtnet_xdp_metadata_ops;
-> +	vi->rss_hdr = devm_kzalloc(&vdev->dev, virtnet_rss_hdr_size(vi), GFP_KERNEL);
-> +	if (!vi->rss_hdr) {
-> +		err = -ENOMEM;
-> +		goto free;
->  	}
-
-I feel these checks belong in virtnet_validate. Then we can disable
-features e.g. by clearing VIRTIO_NET_F_RSS and host will have some
-visibility that RSS can't be used.
-
-
-
->  
->  	if (virtio_has_feature(vdev, VIRTIO_NET_F_GUEST_UDP_TUNNEL_GSO) ||
-> -- 
-> 2.25.1
+>          time.sleep(self._stats_settle_time)
 
