@@ -1,59 +1,45 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out28-98.mail.aliyun.com (out28-98.mail.aliyun.com [115.124.28.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8B3273F9;
-	Fri,  6 Feb 2026 02:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FB661FFE;
+	Fri,  6 Feb 2026 02:23:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770344497; cv=none; b=ZAFYLnjI2anLGhewA+aXF7pUGo7MVeaP9gGx2wdCHdRUvNV6r65CQWS0bNqKl7oVqVFrwfVjOWQsIMP8nDt3X5WFJdadDz8nu/h4iuhATMqOvHcKaVErk/qBeUfiZJy/eFFrF/1VciMInSyn88eTUpFKfdOanZfrA3lZOxDLlLo=
+	t=1770344616; cv=none; b=iEUfYL4Se/5Fsc87v4UcOT2EON+OJlJZAqDYui0waruU9tky8vXlgSP3RrdVfxMfnaBK/5GxY/uYErKEDVu3fZ8Z0d/pkdC9cCEMzQKznBeZ31NXelVtcL3Xh60xPjN4JdUVxl/tfwPM6QY71gYA2y8PJomk6K++lMkQkUMDf2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770344497; c=relaxed/simple;
-	bh=rvqyduOqokC08DWEusOCUed+bZfyYnjh9mnglnbEpMs=;
+	s=arc-20240116; t=1770344616; c=relaxed/simple;
+	bh=29152ZbryzR1SShOgoJmPtUPIzEgN4v4kci6h8dgf3w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AeJ6kAsSycOke/9tD0SOMMGE4TJf6R/FoyJhcO9dsaTUa0JxCC0XGFWQs0FmuRsY8G55ZqfGaioNrdZoM8Jn88SWuJP1crbwj8Zl2BMyk8Z0ZYBfUBKErPyxQXMP75NUKyJN18eKiOPwXpXMWVnxdHTrSN1v3/8xW1GhhgRJg4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WwqTcEMx; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WwqTcEMx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2348C4CEF7;
-	Fri,  6 Feb 2026 02:21:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770344496;
-	bh=rvqyduOqokC08DWEusOCUed+bZfyYnjh9mnglnbEpMs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WwqTcEMxr1dz8BXa8NkluEUYCu0mMX0IcyhmpLf39wgEf6LhDa98u46O6zQPRiEZR
-	 8G1OeftPJoX+iXQ8KPDGvQOxPqV3/iy8FRayEfasp/dYTc0qvOhVdW4VJl72BfDEL7
-	 HEv3AjF6zNZdpgVP3iv7XQwA89Uuq3/GOlJ91mKujvwvN6aohjE4tiBIABdcr9HPWI
-	 c+sW2/ddIGM5pRxDwU2w/hoqSxg2n5jex/1yoD7rn3e2g6BCpa45wzurF/1weaYGM8
-	 MIt+psM+TaTbW4NmmjL12vlzlzv3+Evs2quDo6EC9GZ0TptBbaBjY+5MoGk8bzsv4z
-	 RDfORNJciv4eg==
-From: Jakub Kicinski <kuba@kernel.org>
-To: daniel@makrotopia.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	andrew@lunn.ch,
-	davem@davemloft.net,
-	conor+dt@kernel.org,
-	krzk+dt@kernel.org,
-	chad@monroe.io,
-	devicetree@vger.kernel.org,
-	lxu@maxlinear.com,
-	frankwu@gmx.de,
-	linux@armlinux.org.uk,
-	john@phrozen.org,
-	robh@kernel.org,
-	cezary.wilmanski@adtran.com,
-	hkallweit1@gmail.com,
-	horms@kernel.org,
-	edumazet@google.com,
-	linux-kernel@vger.kernel.org,
+	 MIME-Version; b=YUHBu9wMgtABLaHbxerrv4QF8wKq8+ta/TYwzQQ6xZWxQ+jUJb32/7rq9eEbnKtw1S6/pAP66ZWhia5JJea+Uocv+fmiNsNQlehsUjSX0FUcrDt1i3AIsVCrYTzTgbutKyqbZEknRV8ng0RCEZmRqRvLxQBVcGWg2tJhtmfIVKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.gQHg4cX_1770344290 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 06 Feb 2026 10:18:11 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	linux-doc@vger.kernel.org,
+	lorenzo@kernel.org,
 	pabeni@redhat.com,
-	olteanv@gmail.com
-Subject: Re: [net-next,v13,2/4] net: dsa: add tag format for MxL862xx switches
-Date: Thu,  5 Feb 2026 18:21:34 -0800
-Message-ID: <20260206022134.3185316-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <82706bbd489b5c68699060630ec6577f9aefb849.1770211259.git.daniel@makrotopia.org>
-References: <82706bbd489b5c68699060630ec6577f9aefb849.1770211259.git.daniel@makrotopia.org>
+	horms@kernel.org,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v4 net-next 01/11] net/nebula-matrix: add minimum nbl build framework
+Date: Fri,  6 Feb 2026 10:15:53 +0800
+Message-ID: <20260206021608.85381-2-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260206021608.85381-1-illusion.wang@nebula-matrix.com>
+References: <20260206021608.85381-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,79 +48,390 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+1.Add nbl min build infrastructure for nbl driver.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+2.Implemented the framework of pci device initialization.
+
+Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
 ---
-net: dsa: add tag format for MxL862xx switches
+ .../device_drivers/ethernet/index.rst         |   1 +
+ .../ethernet/nebula-matrix/m18100.rst         |  47 ++++++++
+ MAINTAINERS                                   |  10 ++
+ drivers/net/ethernet/Kconfig                  |   1 +
+ drivers/net/ethernet/Makefile                 |   1 +
+ drivers/net/ethernet/nebula-matrix/Kconfig    |  36 ++++++
+ drivers/net/ethernet/nebula-matrix/Makefile   |   6 +
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |  11 ++
+ .../net/ethernet/nebula-matrix/nbl/nbl_core.h |  27 +++++
+ .../nbl/nbl_include/nbl_include.h             |  23 ++++
+ .../net/ethernet/nebula-matrix/nbl/nbl_main.c | 109 ++++++++++++++++++
+ 11 files changed, 272 insertions(+)
+ create mode 100644 Documentation/networking/device_drivers/ethernet/nebula-matrix/m18100.rst
+ create mode 100644 drivers/net/ethernet/nebula-matrix/Kconfig
+ create mode 100644 drivers/net/ethernet/nebula-matrix/Makefile
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/Makefile
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
 
-This patch adds a DSA tag driver for MaxLinear MxL862xx switches. The
-tag format uses an 8-byte header with an ethertype marker that is shared
-with GSW1xx switches, though the format itself differs.
-
-> diff --git a/net/dsa/Kconfig b/net/dsa/Kconfig
-> --- a/net/dsa/Kconfig
-> +++ b/net/dsa/Kconfig
-> @@ -104,6 +104,13 @@
-
-[ ... ]
-
-> +config NET_DSA_TAG_MXL_862XX
-> +	tristate "Tag driver for MxL862xx switches"
-> +	help
-> +	  Say Y or M if you want to enable support for tagging frames for the
-> +	  Maxlinear MxL86252 and MxL86282 switches using their native 8-byte
-          ^^^^^^^^^
-
-This isn't a bug, but there's inconsistent capitalization here. The help
-text uses "Maxlinear" while the adjacent NET_DSA_TAG_MXL_GSW1XX entry uses
-"MaxLinear" (with capital L). The MODULE_DESCRIPTION in tag_mxl862xx.c also
-uses "MaxLinear".
-
-> +	  tagging protocol.
-
-> diff --git a/net/dsa/tag_mxl862xx.c b/net/dsa/tag_mxl862xx.c
-> --- /dev/null
-> +++ b/net/dsa/tag_mxl862xx.c
-> @@ -0,0 +1,110 @@
-
-[ ... ]
-
-> +static struct sk_buff *mxl862_tag_xmit(struct sk_buff *skb,
-> +				       struct net_device *dev)
-> +{
-> +	struct dsa_port *dp = dsa_user_to_port(dev);
-> +	struct dsa_port *cpu_dp = dp->cpu_dp;
-> +	unsigned int cpu_port, sub_interface;
-> +	__be16 *mxl862_tag;
-> +
-> +	cpu_port = cpu_dp->index;
-> +
-> +	/* target port sub-interface ID relative to the CPU port */
-> +	sub_interface = dp->index + 16 - cpu_port;
-                        ^^^^^^^^^^^^^^^^^^^^^^^^
-
-Can sub_interface overflow the 5-bit MXL862_SUBIF_ID field here? With
-dp->index = 16 and cpu_port = 0, the calculation would yield 32 which
-exceeds the valid range (0-31) for GENMASK(4, 0). FIELD_PREP would silently
-truncate this to 0 via masking. Is there a constraint on port configurations
-that prevents this from occurring?
-
-> +
-> +	/* provide additional space 'MXL862_HEADER_LEN' bytes */
-> +	skb_push(skb, MXL862_HEADER_LEN);
-
-[ ... ]
-
-> +	dsa_alloc_etype_header(skb, MXL862_HEADER_LEN);
-> +
-> +	/* special tag ingress */
-                      ^^^^^^^
-
-This comment says "ingress" but mxl862_tag_xmit() is the TX/egress path.
-Should this say "egress" instead?
-
-> +	mxl862_tag = dsa_etype_header_pos_tx(skb);
+diff --git a/Documentation/networking/device_drivers/ethernet/index.rst b/Documentation/networking/device_drivers/ethernet/index.rst
+index 5e8fc3d6d741..8b049cb0f3bd 100644
+--- a/Documentation/networking/device_drivers/ethernet/index.rst
++++ b/Documentation/networking/device_drivers/ethernet/index.rst
+@@ -48,6 +48,7 @@ Contents:
+    meta/fbnic
+    microsoft/netvsc
+    mucse/rnpgbe
++   nebula-matrix/nbl
+    netronome/nfp
+    pensando/ionic
+    pensando/ionic_rdma
+diff --git a/Documentation/networking/device_drivers/ethernet/nebula-matrix/m18100.rst b/Documentation/networking/device_drivers/ethernet/nebula-matrix/m18100.rst
+new file mode 100644
+index 000000000000..c763042ce3ee
+--- /dev/null
++++ b/Documentation/networking/device_drivers/ethernet/nebula-matrix/m18100.rst
+@@ -0,0 +1,47 @@
++.. SPDX-License-Identifier: GPL-2.0
++
++============================================================
++Linux Base Driver for Nebula-matrix M18100-NIC family
++============================================================
++
++Overview:
++=========
++M18100-NIC is a series of network interface card for the Data Center Area.
++
++The driver supports link-speed 100GbE/25GE/10GE.
++
++M18100-NIC devices support MSI-X interrupt vector for each Tx/Rx queue and
++interrupt moderation.
++
++M18100-NIC devices support also various offload features such as checksum offload,
++Receive-Side Scaling(RSS).
++
++Supported PCI vendor ID/device IDs:
++===================================
++
++1f0f:3403 - M18110 Family PF
++1f0f:3404 - M18110 Lx Family PF
++1f0f:3405 - M18110 Family BASE-T PF
++1f0f:3406 - M18110 Lx Family BASE-T PF
++1f0f:3407 - M18110 Family OCP PF
++1f0f:3408 - M18110 Lx Family OCP PF
++1f0f:3409 - M18110 Family BASE-T OCP PF
++1f0f:340a - M18110 Lx Family BASE-T OCP PF
++1f0f:340b - M18100 Family PF
++1f0f:340c - M18100 Lx Family PF
++1f0f:340d - M18100 Family BASE-T PF
++1f0f:340e - M18100 Lx Family BASE-T PF
++1f0f:340f - M18100 Family OCP PF
++1f0f:3410 - M18100 Lx Family OCP PF
++1f0f:3411 - M18100 Family BASE-T OCP PF
++1f0f:3412 - M18100 Lx Family BASE-T OCP PF
++
++Support
++=======
++
++For more information about M18100-NIC, please visit the following URL:
++https://www.nebula-matrix.com/
++
++If an issue is identified with the released source code on the supported kernel
++with a supported adapter, email the specific information related to the issue to
++open@nebula-matrix.com.
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 98b07da905b0..2c85f70023a9 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18015,6 +18015,16 @@ F:	Documentation/devicetree/bindings/hwmon/nuvoton,nct7363.yaml
+ F:	Documentation/hwmon/nct7363.rst
+ F:	drivers/hwmon/nct7363.c
+ 
++NEBULA-MATRIX ETHERNET DRIVER (nebula-matrix)
++M:	llusion.Wang <illusion.wang@nebula-matrix.com>
++M:	Dimon.Zhao <dimon.zhao@nebula-matrix.com>
++M:	Alvin.Wang <alvin.wang@nebula-matrix.com>
++M:	Sam Chen <sam.chen@nebula-matrix.com>
++L:	netdev@vger.kernel.org
++S:	Maintained
++F:	Documentation/networking/device_drivers/ethernet/nebula-matrix/*
++F:	drivers/net/ethernet/nebula-matrix/
++
+ NETCONSOLE
+ M:	Breno Leitao <leitao@debian.org>
+ S:	Maintained
+diff --git a/drivers/net/ethernet/Kconfig b/drivers/net/ethernet/Kconfig
+index aa7103e7f47f..3aa005adb90e 100644
+--- a/drivers/net/ethernet/Kconfig
++++ b/drivers/net/ethernet/Kconfig
+@@ -131,6 +131,7 @@ config FEALNX
+ 
+ source "drivers/net/ethernet/ni/Kconfig"
+ source "drivers/net/ethernet/natsemi/Kconfig"
++source "drivers/net/ethernet/nebula-matrix/Kconfig"
+ source "drivers/net/ethernet/netronome/Kconfig"
+ source "drivers/net/ethernet/8390/Kconfig"
+ source "drivers/net/ethernet/nvidia/Kconfig"
+diff --git a/drivers/net/ethernet/Makefile b/drivers/net/ethernet/Makefile
+index 6615a67a63d5..024a8e91abed 100644
+--- a/drivers/net/ethernet/Makefile
++++ b/drivers/net/ethernet/Makefile
+@@ -68,6 +68,7 @@ obj-$(CONFIG_NET_VENDOR_MUCSE) += mucse/
+ obj-$(CONFIG_NET_VENDOR_MYRI) += myricom/
+ obj-$(CONFIG_FEALNX) += fealnx.o
+ obj-$(CONFIG_NET_VENDOR_NATSEMI) += natsemi/
++obj-$(CONFIG_NET_VENDOR_NEBULA_MATRIX) += nebula-matrix/
+ obj-$(CONFIG_NET_VENDOR_NETRONOME) += netronome/
+ obj-$(CONFIG_NET_VENDOR_NI) += ni/
+ obj-$(CONFIG_NET_VENDOR_NVIDIA) += nvidia/
+diff --git a/drivers/net/ethernet/nebula-matrix/Kconfig b/drivers/net/ethernet/nebula-matrix/Kconfig
+new file mode 100644
+index 000000000000..9c65803f5447
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/Kconfig
+@@ -0,0 +1,36 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Nebula-matrix network device configuration
++#
++
++config NET_VENDOR_NEBULA_MATRIX
++	bool "Nebula-matrix devices"
++	default y
++	help
++	  If you have a network (Ethernet) card belonging to this class, say Y.
++	  Note that the answer to this question doesn't directly affect the
++	  kernel: saying N will just cause the configurator to skip all
++	  the questions about Nebula-matrix cards. If you say Y, you will be asked
++	  for your specific card in the following questions.
++
++if NET_VENDOR_NEBULA_MATRIX
++
++config NBL_CORE
++	tristate "Nebula-matrix Ethernet Controller m18100 Family support"
++	depends on 64BIT && PCI
++	default m
++	select PAGE_POOL
++	help
++	  This driver supports Nebula-matrix Ethernet Controller m18100 Family of
++	  devices.  For more information about this product, go to the product
++	  description with smart NIC:
++
++	  <http://www.nebula-matrix.com>
++
++	  More specific information on configuring the driver is in
++	  <file:Documentation/networking/device_drivers/ethernet/nebula-matrix/m18100.rst>.
++
++	  To compile this driver as a module, choose M here. The module
++	  will be called nbl_core.
++
++endif # NET_VENDOR_NEBULA_MATRIX
+diff --git a/drivers/net/ethernet/nebula-matrix/Makefile b/drivers/net/ethernet/nebula-matrix/Makefile
+new file mode 100644
+index 000000000000..dc6bf7dcd6bf
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Makefile for the Nebula-matrix network device drivers.
++#
++
++obj-$(CONFIG_NBL_CORE) += nbl/
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+new file mode 100644
+index 000000000000..df16a3436a5c
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+@@ -0,0 +1,11 @@
++# SPDX-License-Identifier: GPL-2.0
++# Copyright (c) 2025 Nebula Matrix Limited.
++# Author:
++
++obj-$(CONFIG_NBL_CORE) := nbl_core.o
++
++nbl_core-objs +=      nbl_main.o
++
++# Provide include files
++ccflags-y += -I$(srctree)/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/
++ccflags-y += -I$(srctree)/drivers/net/ethernet/nebula-matrix/nbl/
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+new file mode 100644
+index 000000000000..51aa4d87146f
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
+@@ -0,0 +1,27 @@
++/* SPDX-License-Identifier: GPL-2.0*/
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ * Author:
++ */
++
++#ifndef _NBL_CORE_H_
++#define _NBL_CORE_H_
++
++#include <linux/pci.h>
++#include "nbl_include.h"
++#define NBL_CAP_TEST_BIT(val, loc) (((val) >> (loc)) & 0x1)
++
++#define NBL_CAP_IS_CTRL(val) NBL_CAP_TEST_BIT(val, NBL_CAP_HAS_CTRL_BIT)
++#define NBL_CAP_IS_NET(val) NBL_CAP_TEST_BIT(val, NBL_CAP_HAS_NET_BIT)
++#define NBL_CAP_IS_NIC(val) NBL_CAP_TEST_BIT(val, NBL_CAP_IS_NIC_BIT)
++#define NBL_CAP_IS_OCP(val) NBL_CAP_TEST_BIT(val, NBL_CAP_IS_OCP_BIT)
++#define NBL_CAP_IS_LEONIS(val) NBL_CAP_TEST_BIT(val, NBL_CAP_IS_LEONIS_BIT)
++
++enum {
++	NBL_CAP_HAS_CTRL_BIT = 0,
++	NBL_CAP_HAS_NET_BIT,
++	NBL_CAP_IS_NIC_BIT,
++	NBL_CAP_IS_LEONIS_BIT,
++	NBL_CAP_IS_OCP_BIT,
++};
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+new file mode 100644
+index 000000000000..f12bf019dfee
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+@@ -0,0 +1,23 @@
++/* SPDX-License-Identifier: GPL-2.0*/
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ * Author:
++ */
++
++#ifndef _NBL_INCLUDE_H_
++#define _NBL_INCLUDE_H_
++
++#include <linux/types.h>
++
++/*  ------  Basic definitions  -------  */
++#define NBL_DRIVER_NAME					"nbl_core"
++
++struct nbl_func_caps {
++	u32 has_ctrl:1;
++	u32 has_net:1;
++	u32 is_nic:1;
++	u32 is_ocp:1;
++	u32 rsv:28;
++};
++
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+new file mode 100644
+index 000000000000..63bba8211654
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+@@ -0,0 +1,109 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ * Author:
++ */
++
++#include <linux/aer.h>
++#include "nbl_core.h"
++
++static int nbl_probe(struct pci_dev *pdev,
++		     const struct pci_device_id __always_unused *id)
++{
++	return 0;
++}
++
++static void nbl_remove(struct pci_dev *pdev)
++{
++}
++
++#define NBL_VENDOR_ID			(0x1F0F)
++
++/*
++ *  Leonis DeviceID
++ * 0x3403-0x340d for snic v3r1 product
++ */
++#define NBL_DEVICE_ID_M18110			(0x3403)
++#define NBL_DEVICE_ID_M18110_LX			(0x3404)
++#define NBL_DEVICE_ID_M18110_BASE_T		(0x3405)
++#define NBL_DEVICE_ID_M18110_LX_BASE_T		(0x3406)
++#define NBL_DEVICE_ID_M18110_OCP		(0x3407)
++#define NBL_DEVICE_ID_M18110_LX_OCP		(0x3408)
++#define NBL_DEVICE_ID_M18110_BASE_T_OCP		(0x3409)
++#define NBL_DEVICE_ID_M18110_LX_BASE_T_OCP	(0x340a)
++#define NBL_DEVICE_ID_M18000			(0x340b)
++#define NBL_DEVICE_ID_M18000_LX			(0x340c)
++#define NBL_DEVICE_ID_M18000_BASE_T		(0x340d)
++#define NBL_DEVICE_ID_M18000_LX_BASE_T		(0x340e)
++#define NBL_DEVICE_ID_M18000_OCP		(0x340f)
++#define NBL_DEVICE_ID_M18000_LX_OCP		(0x3410)
++#define NBL_DEVICE_ID_M18000_BASE_T_OCP		(0x3411)
++#define NBL_DEVICE_ID_M18000_LX_BASE_T_OCP	(0x3412)
++
++static const struct pci_device_id nbl_id_table[] = {
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_BASE_T),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX_BASE_T),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) | BIT(NBL_CAP_IS_OCP_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) | BIT(NBL_CAP_IS_OCP_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_BASE_T_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) | BIT(NBL_CAP_IS_OCP_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18110_LX_BASE_T_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) | BIT(NBL_CAP_IS_OCP_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_BASE_T),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX_BASE_T),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) | BIT(NBL_CAP_IS_OCP_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) | BIT(NBL_CAP_IS_OCP_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_BASE_T_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) | BIT(NBL_CAP_IS_OCP_BIT) },
++	{ PCI_DEVICE(NBL_VENDOR_ID, NBL_DEVICE_ID_M18000_LX_BASE_T_OCP),
++	  .driver_data = BIT(NBL_CAP_HAS_NET_BIT) | BIT(NBL_CAP_IS_NIC_BIT) |
++			 BIT(NBL_CAP_IS_LEONIS_BIT) | BIT(NBL_CAP_IS_OCP_BIT) },
++	/* required as sentinel */
++	{
++		0,
++	}
++};
++MODULE_DEVICE_TABLE(pci, nbl_id_table);
++
++static struct pci_driver nbl_driver = {
++	.name = NBL_DRIVER_NAME,
++	.id_table = nbl_id_table,
++	.probe = nbl_probe,
++	.remove = nbl_remove,
++};
++
++module_pci_driver(nbl_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_DESCRIPTION("Nebula Matrix Network Driver");
 -- 
-pw-bot: cr
+2.47.3
+
