@@ -1,46 +1,55 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3305E1990A7;
-	Fri,  6 Feb 2026 02:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E441F5846;
+	Fri,  6 Feb 2026 02:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770343698; cv=none; b=o/IkIWe9nmjqK/knh3lkCt85o8OESJn7HafiT3X/ePqIQ9MdxJ9yXYBE0R5a71gDq7sZ/8+XZqRS8v+Sv7AFhGvwuXjGrJzqebNOtmAT6nvezrTVESDM6D2qVOADJKYbr000MJ39Zp6jX+1ee3aV6vZo9WZlzcerO3X/e8VrJwk=
+	t=1770343798; cv=none; b=iCNOllwSf0xbj3E82Reav7nr6MYcW/ztbwmwajo2VWlGwSSGiJt3/cSwr4MJLzjwvIsejMARfcpbV7uNX4JOF+v9+kbLAKHwJ3ywW6ajrR6NxCwDuHjKyfDpnBzID32yPZ4IYpiNwMa4n3aGeSzvQF77mrlm8R7ejwNWLU2JnWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770343698; c=relaxed/simple;
-	bh=NNqNSBIEKaMhKPJVnthPKVvyYmlG3Jj11Yy7qbSoS8s=;
+	s=arc-20240116; t=1770343798; c=relaxed/simple;
+	bh=mCEfuVKF5ClXIjAUjvnsjD6UryGkeSvPBNFLTZ+mKck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hhZVX7n5/Ub41hs56+Tx1xMLw8WCvCjeZBwGZR3ZwDJqhO7Oer07pa1CM57QiSbsEe+dkZ8kR9FC8WzoPphWbe18MxH0WkNY7Gh8Li/CEb+BseuX9j717kMyS7N7lSW5QZYQosIHieRSSBaYl+XAcmbKQYooRJrpq+/rpZhfdv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hgbaSie3; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=tje1wcG4wvguR7bjG18/GLqlb5G20/ZeUMQgEuUw9s8Qb+s5X9+bfYPlg5LP3wEDLEud5NBc4X377oM24EDYi5EDdXf9mGydGbXZVWlghCrDf0CVZc0p3DDVVBZEJM8pGmlAEyk9ZxydL6aTDbX+b70IQ8tnetU9HsCgxWa9vMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILh8WY92; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hgbaSie3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A320CC4AF0B;
-	Fri,  6 Feb 2026 02:08:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILh8WY92"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E487C4CEF7;
+	Fri,  6 Feb 2026 02:09:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770343698;
-	bh=NNqNSBIEKaMhKPJVnthPKVvyYmlG3Jj11Yy7qbSoS8s=;
+	s=k20201202; t=1770343798;
+	bh=mCEfuVKF5ClXIjAUjvnsjD6UryGkeSvPBNFLTZ+mKck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hgbaSie38RQZC+cVHJoASO7MDtUEFKqKAwRxFH5bymn+9YMTCkDtonzqGjBOLmCbV
-	 b/7o7ewf8+fc6L66OevFOHoJc13C0VdTyyMGXgjYGbxYo4kOl3UPOq04cy5i8Yvpqg
-	 97Jt/nyIGu0GjwiXyeJ/SYxl3kVupDJnlz1lmEpHgdxCna1OLXMQggJ+ZNhQll/PMb
-	 40hOr0kg9f7gyvVcyUqSszxYh1bl33OMO5u/iaefqVD29VnpB/kW2fizntM6EIsewB
-	 3Ilah4WNYP6O6JN+61a7aqvFdyoJeBF9heu+i4UfJjG/fLl+SfFads5nXBoh8leuHM
-	 bhjeFdBMkaVaw==
+	b=ILh8WY92OWCH8GsvUqlwwhSu6Gc/S/SAUzVFkgtBpxPLEgj7Ta9Dy8KuZkZYCBz+h
+	 6yY4JWkPwc4kXEgoVbe0zAQXc2Ka2D0vG8MoRhIz6WMBklpUZJUf0OL+ozXFtGqT6D
+	 em4cy05ijc2j+VUaUAW2aP2DNX8usOOPriySFNiWs0aCLDHXi1Q/cfytbeACcsCc1H
+	 HvfZ6pHipXCM+oYsVmgfznbQ5U8pLAifDlIfasmE065JaQbfVl7okW+oj4gZmUSI0h
+	 So3YR27zGuqDig29if6KXYdGlY+hNblVG3+zJkZAY50nraCnMEGmei3j7KyhZzayGI
+	 5WbcmpcrEFc3A==
 From: Jakub Kicinski <kuba@kernel.org>
-To: fw@strlen.de
+To: arnd@kernel.org
 Cc: Jakub Kicinski <kuba@kernel.org>,
-	edumazet@google.com,
-	davem@davemloft.net,
-	pablo@netfilter.org,
+	arnd@arndb.de,
+	tariqt@nvidia.com,
+	leon@kernel.org,
+	mbloch@nvidia.com,
+	jianbol@nvidia.com,
+	linux-kernel@vger.kernel.org,
 	pabeni@redhat.com,
-	netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [net-next,10/11] netfilter: nft_set_rbtree: validate open interval overlap
-Date: Thu,  5 Feb 2026 18:08:16 -0800
-Message-ID: <20260206020816.3174524-1-kuba@kernel.org>
+	saeedm@nvidia.com,
+	davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	raeds@nvidia.com,
+	edumazet@google.com,
+	linux-rdma@vger.kernel.org,
+	netdev@vger.kernel.org,
+	cratiu@nvidia.com
+Subject: Re: [net-next] net/mlx5e: fix ip6_dst_lookup link failure
+Date: Thu,  5 Feb 2026 18:09:56 -0800
+Message-ID: <20260206020956.3176617-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260205110905.26629-11-fw@strlen.de>
-References: <20260205110905.26629-11-fw@strlen.de>
+In-Reply-To: <20260204130057.4107804-1-arnd@kernel.org>
+References: <20260204130057.4107804-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,54 +63,16 @@ email has considered the AI review valid, or at least plausible.
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-netfilter: nft_set_rbtree: validate open interval overlap
+net/mlx5e: fix ip6_dst_lookup link failure
 
-This patch adds validation for open interval overlaps in the nft_set_rbtree
-implementation. It introduces a flag field to struct nft_set_elem to track
-when processing the last element in add/delete commands, using this in
-combination with a start element cookie to detect partial overlaps.
+This commit adds a Kconfig dependency to prevent a link failure when IPv6
+is a loadable module but mlx5 ipsec support is built-in.
 
-Fixes: 7c84d41416d8 ("netfilter: nft_set_rbtree: Detect partial overlaps on insertion")
+Fixes: e35d7da8dd9e ("net/mlx5e: Use ip6_dst_lookup instead of ipv6_dst_lookup_flow for MAC init")
 
-> diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
-> --- a/net/netfilter/nft_set_rbtree.c
-> +++ b/net/netfilter/nft_set_rbtree.c
+> Add a Kconfig dependency that removes avoids this configuration.
 
-[ ... ]
-
-> @@ -459,7 +477,26 @@
->  	if (rbe_ge && !nft_rbtree_cmp(set, new, rbe_ge) &&
->  	    nft_rbtree_interval_start(rbe_ge) == nft_rbtree_interval_start(new)) {
->  		*elem_priv = &rbe_ge->priv;
-> -		nft_rbtree_set_start_cookie(priv, rbe_ge);
-> +
-> +		/* - Corner case: new start element of open interval (which
-> +		 *   comes as last element in the batch) overlaps the start of
-> +		 *   an existing interval with an end element: partial overlap.
-> +		 */
-> +		node = rb_first(&priv->root);
-> +		rbe = __nft_rbtree_next_active(node, genmask);
-> +		if (nft_rbtree_interval_end(rbe)) {
-> +			rbe = nft_rbtree_next_active(rbe, genmask);
-> +			if (nft_rbtree_interval_start(rbe) &&
-                            ^^^
-
-Can nft_rbtree_next_active() return NULL here? Looking at the code, if the
-tree contains only a null interval end marker, nft_rbtree_next_active()
-would return NULL when there are no more active elements. The subsequent
-call to nft_rbtree_interval_start(rbe) would then dereference NULL.
-
-Would it be safer to add a NULL check before accessing rbe?
-
-> +			    !nft_rbtree_cmp(set, new, rbe)) {
-> +				if (last)
-> +					return -ENOTEMPTY;
-> +
-> +				/* Maybe open interval? */
-> +				open_interval = NFT_RBTREE_OPEN_INTERVAL;
-> +			}
-> +		}
-> +		nft_rbtree_set_start_cookie_open(priv, rbe_ge, open_interval);
-> +
->  		return -EEXIST;
->  	}
+This isn't a bug, but "removes avoids" appears to be an editing artifact
+where two verbs were left in place of one.
+-- 
+pw-bot: cr
