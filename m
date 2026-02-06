@@ -1,81 +1,125 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE009296BD1;
-	Fri,  6 Feb 2026 02:50:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DC3A2A1AA
+	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 02:57:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770346210; cv=none; b=uLKZvjSo1EnLc9r4Rkd6MTXKKvrWaIs6woFMXffPICZCadSzqMZC8IYTGsXVGphW3V1CNVL9RGfbVSOHx3wKnEpjw+C9+elKO6fxnT9HI4tGsYUIqgIsqlxpiaNOZxAufGjmn2Abs+yXgM94FCGe91HTQuDeIl/ZznRf98WqHBI=
+	t=1770346623; cv=none; b=l7gnZMvjtNiG1OIoCjecu02PUmQ44rlY4sVuZP7+CZnhcKDQxhnJUg+sgi8KULlYI7O3HYhmU4ocjvvIENr3vUfDrTxr7hqUEcHcVGU/PnJZLWoKswlLkAQUyq3oVbbrpEzBKDXC0O22cBqMB9KXja9kJI3SMFpLEPHKcngtcsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770346210; c=relaxed/simple;
-	bh=IKqatH5kV7eJzphFpYS2pLpw0eu1bizRSPviTdXrV9U=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=EtnV8ZNDch3y8cp76Cu9nKlK4Z+eux1DSkLVowQywqBgbb/TmwLsNxu3L/hN95Hqp0khQKloQ1d/IFOHqZ+HyB3DZjwrAdu0xZTdm5z/aucboTzx4hAATnCaAa1TNplz1nkTOTNYUDb2rb1QnUXgYW1ovjIcEXXNPO5zGbvOuMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ham0/mMO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770346623; c=relaxed/simple;
+	bh=btvddpMCo+POrysRwjiHNzityRdAyxgMpjYo/qxXATk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ot7JsSEi/ub7kALZlmdmFghH70kCkqHggGxDE84dYnzshrm37iFDs0hhOTjwJR3TT//R/AGKTSyqnNclmLL01bKWbohZoLS32plquqQUdq3PqsPmBCxnnMv59x7zSw0renywD7Dj+MP8mBQo+Xnt7PVB56JO1OwrWmve5Jrbbn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ARm6MA9w; arc=none smtp.client-ip=74.125.82.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ham0/mMO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B82C19423;
-	Fri,  6 Feb 2026 02:50:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770346210;
-	bh=IKqatH5kV7eJzphFpYS2pLpw0eu1bizRSPviTdXrV9U=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Ham0/mMOyxWGoj1xC6QhxAw92XqPpC7GQGF8wlGHB9XaJ0v0gU1FojKU4BACGIY6X
-	 fr2u3s1PgMuDS4YUaQmh6hVTpT1dJOniQUgvqMuPq0XiY5UAY7nKW6t/3tgqQDqv7L
-	 YsKR3TIHsrDJkz2089TOugAN0oxJZBylc2hFOOP4bI9laKITssVrHqk8AJXjUSBdwC
-	 xDGoiKHS5gslAgFQOrV9M75cxLAwKbyQFM+JO3EOV1wrxKCDN3ZWbrrJp26pO14/SM
-	 heY1F5MBQujBdk6Y9vHshmzS6uyAv4JhOVXLjCut5AIFQIoEtrBLZoIFHoIprGHlBt
-	 AyeaRuKjUiJcg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 480BC3808200;
-	Fri,  6 Feb 2026 02:50:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ARm6MA9w"
+Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2b7da62b487so3104623eec.1
+        for <netdev@vger.kernel.org>; Thu, 05 Feb 2026 18:57:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770346622; x=1770951422; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1TO5bxIMT3fTMREZKwhQ6bquMxzdY7Tp+3iN2NbRfN0=;
+        b=ARm6MA9wQsBHvhsNdm7PR8z3/Kz7nl/sf+dVC0axS1ED0PGZ++ODtOU+zZz05cN+Ym
+         WzVwihSJ93keHtnj0hdO1Za2/BCQ6TJPMkIxObdyNfprQ9t+6UbyG2fase6rWAoseX8l
+         +bPNhWJnPkjLPc87meSWyQh+PTTnp9oEvoik0ZMdE+B+CY7Bpp1Twzzz5vfHt9CZLBUG
+         B7ZQv5l2wwwiFv3YCq3gwEzev5/LSbLyYzc2ytm14DVHFq93SitjJRGzog6f+TdUQg6V
+         0cHb0pVtai0Js6Yi4wS3MLd1JCxTZZyaJB/2K7Szx/ofjUz3sxBBa4g9MdL5gEKe/J/R
+         5TiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770346622; x=1770951422;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1TO5bxIMT3fTMREZKwhQ6bquMxzdY7Tp+3iN2NbRfN0=;
+        b=KxNR9goj5NjHL9lL+Na/CyiExZalWMlt4EJUUHtSlcskFOCldO5Kx8+GzYdWHYY7oz
+         9utp2njvBdv/lawvIf7DhpfwLPP34JoiqEYvdRz7uQL6bX6JwoPLFXa2ZERVMK455WaF
+         uzBZVP0QUwwXKijNh3Ql3FTK7nqahe7MbaUm2P4GyeHxU0Eh4oLEGiKvxgF0NiA6bITe
+         amfcZZYc7mnAd5XEDdxX/yQE7t2EKXdnRCrseMXhodCvNsTOGcgaqUtLfg3TfDvy59VW
+         lDFgvtIFWz6KsYMTGfOkJ63eB2/5KAchdfPpi/64R12qaFLlYr/fh2fhk+M/+AfrfWZz
+         2cfw==
+X-Gm-Message-State: AOJu0YzqZhfzqyqrddvKtbZAiznW4s+fmeHUz6H9yYSJIce68BoJedks
+	RIVOI3A2xsHw8dXH7VRh1ITye9WUwZbYg2tL6hw/WuV5aVgrbf+dR6vy
+X-Gm-Gg: AZuq6aKRb/HfMoPvYcadg6oZittaRMVFyy/7Rrb67iTFaqljnZwaaF/BxHrYeDvU9wK
+	wtAGSQpY7scz9DM6g/7i6F5q2wY6yDKHSWC/Xgyw59u85shXSFHBVpP6qw+JofWPmm1Ar5oKBU4
+	2NHF9JXQd1UpkVue1tkeeMSfM4mouRT4PHip/vFlKkTlSGX4o/HQXBXoexxZ3salffXwi4rWYxa
+	3PmCVVp/Bt+ylll6lKnNmfSrhAQKbsO6zityMIbGS/OJl2X2D7WJftJA3HRTQ4NCOKjD7K626wQ
+	ZSgvHIHYJTOMR1wV9hO1kShpeVpszMhqz14APafKQj9qbSksJJwm6iBPmfpKbjanBLt7sxq+cbB
+	+qjHwiehmMiYnKB1CVpAxQIFZRxIXkT+qruJIlsFxqQoG2N9yOTc/rDaVrc6pEUkU4IAr8UP6yr
+	geDGb0f7Y=
+X-Received: by 2002:a05:7300:230a:b0:2a4:3593:9697 with SMTP id 5a478bee46e88-2b8564cd5famr649623eec.20.1770346621920;
+        Thu, 05 Feb 2026 18:57:01 -0800 (PST)
+Received: from pek-khao-d3 ([128.224.246.2])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b855ad8da2sm981019eec.5.2026.02.05.18.56.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Feb 2026 18:57:01 -0800 (PST)
+Date: Fri, 6 Feb 2026 10:56:54 +0800
+From: Kevin Hao <haokexin@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org,
+	MD Danish Anwar <danishanwar@ti.com>,
+	Roger Quadros <rogerq@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net] net: ti: icssg-prueth: Add dependency on HSR
+Message-ID: <aYVYdqmyzBnTOZAV@pek-khao-d3>
+References: <20260203-icssg-dep-v1-1-bacaf5234fb3@gmail.com>
+ <20260205100315.134766d7@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next V2] net/mlx5e: SHAMPO, Switch to header memcpy
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177034620808.657894.1041994885546152344.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Feb 2026 02:50:08 +0000
-References: <20260204200345.1724098-1-tariqt@nvidia.com>
-In-Reply-To: <20260204200345.1724098-1-tariqt@nvidia.com>
-To: Tariq Toukan <tariqt@nvidia.com>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, saeedm@nvidia.com,
- leon@kernel.org, mbloch@nvidia.com, netdev@vger.kernel.org,
- linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, gal@nvidia.com,
- moshe@nvidia.com, dtatulea@nvidia.com
-
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Wed, 4 Feb 2026 22:03:45 +0200 you wrote:
-> From: Dragos Tatulea <dtatulea@nvidia.com>
-> 
-> Previously the HW-GRO code was using a separate page_pool for the header
-> buffer. The pages of the header buffer were replenished via UMR. This
-> mechanism has some drawbacks:
-> - Reference counting on the page_pool page frags is not cheap.
-> - UMRs have HW overhead for updating and also for access. Especially for
->   the KLM type which was previously used.
-> - UMR code for headers is complex.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,V2] net/mlx5e: SHAMPO, Switch to header memcpy
-    https://git.kernel.org/netdev/net-next/c/24cf78c73831
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="c9cg0aXFcFFRHxpa"
+Content-Disposition: inline
+In-Reply-To: <20260205100315.134766d7@kernel.org>
 
 
+--c9cg0aXFcFFRHxpa
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Feb 05, 2026 at 10:03:15AM -0800, Jakub Kicinski wrote:
+> Looks like there are appropriate static inlines in place to handle
+> HSR=3Dn in the driver the only problematic case is if HSR is m and
+> drivers is y, no?
+>=20
+> 	depends on HSR || HSR=3Dn
+>=20
+> is likely more suitable.
+
+Yes, the icssg-prueth driver can still be built with HSR disabled. Therefor=
+e,
+this should be an optional dependency. I will update it to:
+
+  depends on HSR if HSR
+
+as this is the recommended way to express optional dependencies according to
+kconfig-language.rst.
+
+Thanks,
+Kevin
+
+--c9cg0aXFcFFRHxpa
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCgAdFiEEHc6qFoLCZqgJD98Zk1jtMN6usXEFAmmFWHYACgkQk1jtMN6u
+sXHZkwf/SByWh1vNr3xcUG8JWzd31gxjuA758RZefHCoIca3s+pQw92UbkUzZFdv
+UphvBbiHqnGetSg6JuwOIEVg+GDvYo5WWZQoRkufJ3qz7RHeiHVYnVutf1pthjYn
+nIl5IyE64H4J8iiec7YCVcLs0Fjqy3zkfFSKoQe2uynDsxIMBVFWGW4saWoVznvo
+iIxpD8s6XLGrKBfdIgpWQR7KdHJ0niv5PmUwozH//Tzr2IXqX6q1y3ZPTKF929Bi
+ce05orKnLxvHT1v7CS8K9oKyp8a6dxS4MMRBnnEeLXSAOSb0bw4sZEvTozJgo+3c
+FKdy5mq7L2wdIGn3Day4tvq1YDN2Bw==
+=jZyM
+-----END PGP SIGNATURE-----
+
+--c9cg0aXFcFFRHxpa--
