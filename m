@@ -1,111 +1,133 @@
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B072835FF6E;
-	Fri,  6 Feb 2026 10:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1202A376BE4
+	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 10:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770374922; cv=none; b=e7GcvDYw8Dqf7IEBxAPuxAcKSet3nGwlNTCSmvGkU0NNr4jvj7hJfCpikd9Hpf6MYkGZ5pLfTZhuVgmd/T8zODK5zGHLDjGslxk5Eyt8wotfPBwQU1pDATjgKDZs3dyX6CRQ52HcB78evw7jV8/Idjuq5W8OCjxZvuEk4MwjmUg=
+	t=1770374942; cv=none; b=QeL3q17LPGZCz/mKFubUKOj/kp5+ceevPR8BVWELzpR05Vgh2dBu/viF4Mw6+ufp1oXixd5ACHPLEzHfdJExxTJO9m4yhw4H83BvsurLyZKhl3CaTnF11eDK6PTqYGtwwD3CPXk6+TSwY4L0fXxjkkvVqDTuMbVyOe31jx5q65M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770374922; c=relaxed/simple;
-	bh=2iUOBVUzj88/+VFZESe/CiEzYtzswisIg/X14nNbBRE=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=KHpf1AF0sN9O+e4L47yWqVbUzerRYjgzC1noN32CE7hJ2cXOkkuMkIgsTOEjXD3oUL+Z+4f3OaabWvZVxaxeL3aDy3yhbot5S7UD1JRGDe4KXPbuGuT3laS+YFCmJIhPuYgM/T8pGFexQImkJttlwULYQ4uwaCFeL7hK32dcZbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=rCdA4lMd; arc=none smtp.client-ip=113.46.200.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1770374942; c=relaxed/simple;
+	bh=wocnho69+8xuXH257OKNIA1dWHd6LbmLrLkg1JkFLWA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=rs1Fb+vWTeqCDUWJeSlNyjg/azfnBlBiZyaVF1tteVd7Pbls7g+RCZ0llVqswxpKGX8X1qyMBV1v9Uqi5LdLmdxjpLIqX2ad0YBF+sH2Iersw1Pd6CXk0QuRdKbE7RPvgHm2tAqUBi1K9mA4oDB6CeV9lyy+3BX78u3wuwlFSaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rtZWqmqR; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="rCdA4lMd"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=46F0ccvL8sFOVHSQ8/ZJVkPjEFdbSkDUDEV/XC8yyFM=;
-	b=rCdA4lMdKYkpRHoWx24PeC3iDoDeID9uOHhgSY1797sCcJmc16/YwsVdAz0b+0geDcLoy/KHi
-	iKJJelBT1c4XSNZE0Gmc6JT6HrNhNHlE2mNQj+VkdMay5ABkX0Mkw3titWjyyxtW9zwA7KD6iAs
-	hY+GZIEEtB+rujhAYWj9RH8=
-Received: from mail.maildlp.com (unknown [172.19.163.104])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4f6rL90NFCz1prKJ;
-	Fri,  6 Feb 2026 18:44:01 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id EB3E44056A;
-	Fri,  6 Feb 2026 18:48:38 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Fri, 6 Feb 2026 18:48:38 +0800
-Message-ID: <41559748-63f2-49ea-9d94-433eeb0edb8b@huawei.com>
-Date: Fri, 6 Feb 2026 18:48:38 +0800
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rtZWqmqR"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-48071615686so22671315e9.1
+        for <netdev@vger.kernel.org>; Fri, 06 Feb 2026 02:49:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1770374940; x=1770979740; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2zmOo5omjcqnuztYn9eehOA9zK7mZfLWvH1J22yg9LQ=;
+        b=rtZWqmqRaD68PY071wjROzdd1xDQR7g7FtiVVCGzrLrc4FZ5UsgZ/92JpxbXK368bO
+         fqIwGSwEY2IRZff60pbVxF3x807cPDj1XmfQ5weGgs2loKNM9aQhBfFkRG29WH9kwnXu
+         56GPKpP4MNezr9Aq0761pyoRSY9PqovaMOkYWXX6JHD+DhU3mkyteoTyFhNoiAJFKbTV
+         wlb4P8gqhWBlmTWrlGH4Zjgo9uVhUJrNjvpuGGVBCX6B6Xdl3sEoKxrKBEev6eFbK/3B
+         Rv82Wnp40onelRNCY+B9cBIp8a/IF54dIpGPoaiJtlhKdiwfSj5T8wrZ576tyOErzyZH
+         jMHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770374940; x=1770979740;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2zmOo5omjcqnuztYn9eehOA9zK7mZfLWvH1J22yg9LQ=;
+        b=D3a5K+BEC5SNXD2mFNaF9qBkFqKrg0zSGan7/YtL93vxMHSn3K4NRJ9sOpQERvSqGi
+         ZPHo2n50weBGTazqbHPp/HLwtG7ZGttuelenKAHjQHX26+YeCoDC6lPy31BTnF0pMh9V
+         /l2p6hShVG8ioJxJFEMaUdJyblIE1Ip8yQAXNF1EgbirEAGFI5VlvLWgQJpUR7nrij6e
+         9XJwb5oXLfBZhEjr/bNd84+60u2h5pu3QvJlM/N43//A9tjYsB95pCzquh8vm8UL59kP
+         62nlbH/ueI15J5u450RSfO2v+ZsuqEcpn/Io5BCOI6hIOhG8bEczOjV2EoxHuz5FbMNG
+         RXWA==
+X-Forwarded-Encrypted: i=1; AJvYcCXivpQfP7GEn0lvv76R8hUqu6LLAp8gObSgioM6ng0HZnHVC80YBFD5aVhGIXPYLzeNa/0LjHU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlPcdMLzfLUz97zZ0K0AmDzqSFODvAfmdV+e7l/xSJt9TNiit9
+	LAb0yw1Y+7TYoZELPiZgKLGJGBKr1ByLPxPp/EnpMFCdd9IPbp2bWcmHWxvsQyjDL2Vc87vqQhi
+	q8NGVuj5VPf3bIA==
+X-Received: from wmpg38.prod.google.com ([2002:a05:600c:4ca6:b0:47a:7874:d5d])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:3b23:b0:47f:8c05:786b with SMTP id 5b1f17b1804b1-4832021eae9mr34302145e9.28.1770374940592;
+ Fri, 06 Feb 2026 02:49:00 -0800 (PST)
+Date: Fri, 06 Feb 2026 10:48:59 +0000
+In-Reply-To: <20260206081704.53215-1-liuhangbin@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <linux-atm-general@lists.sourceforge.net>,
-	<linux-kernel@vger.kernel.org>, <3chas3@gmail.com>
-Subject: Re: [PATCH net v2] atm: fore200e: fix use-after-free in tasklets
- during device removal
-To: Duoming Zhou <duoming@zju.edu.cn>, <netdev@vger.kernel.org>
-References: <20260206094811.23431-1-duoming@zju.edu.cn>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20260206094811.23431-1-duoming@zju.edu.cn>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+Mime-Version: 1.0
+References: <20260206081704.53215-1-liuhangbin@gmail.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DG7TJFKZNG1J.19BZF87IWD3UG@google.com>
+Subject: Re: [PATCH selftests] selftests: Use ktap helpers for runner.sh
+From: Brendan Jackman <jackmanb@google.com>
+To: Hangbin Liu <liuhangbin@gmail.com>, <linux-kselftest@vger.kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>, Brendan Jackman <jackmanb@google.com>, <netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-on 2026/2/6 17:48, Duoming Zhou wrote:
-> When the PCA-200E or SBA-200E adapter is being detached, the fore200e
-> is deallocated. However, the tx_tasklet or rx_tasklet may still be running
-> or pending, leading to use-after-free bug when the already freed fore200e
-> is accessed again in fore200e_tx_tasklet() or fore200e_rx_tasklet().
+On Fri Feb 6, 2026 at 8:17 AM UTC, Hangbin Liu wrote:
+> This has been on my todo list for a long time. We should use ktap
+> helpers in runner.sh. I saw Brendan did some work in d9e6269e3303
+> ("selftests/run_kselftest.sh: exit with error if tests fail") to make
+> run_kselftest.sh exit with the correct return value. But we still use a
+> custom solution in runner.sh. Let's convert all the print messages to use
+> formal ktap helpers. Here=E2=80=99s what I changed:
 >
-> One of the race conditions can occur as follows:
+>   1. Move TAP header from runner.sh to run_kselftest.sh, since run_kselft=
+est.sh
+>      is the only caller of run_many().
+>   2. In run_kselftest.sh, call run_many() in main process to count the
+>      pass/fail numbers.
+>   3. In run_kselftest.sh, do not generate kselftest_failures_file; just
+>      use ktap_print_totals to report the result.
+>   4. In runner.sh run_one(), get the return value and use ktap helpers fo=
+r
+>      all pass/fail reporting. This allows counting pass/fail numbers in t=
+he
+>      main process.
+>   5. In runner.sh run_in_netns(), also return the correct rc, so we can
+>      count results during wait.
 >
-> CPU 0 (cleanup)           | CPU 1 (tasklet)
-> fore200e_pca_remove_one() | fore200e_interrupt()
->    fore200e_shutdown()     |   tasklet_schedule()
->      kfree(fore200e)       | fore200e_tx_tasklet()
->                            |   fore200e-> // UAF
+> After the change, the printed result looks like:
 >
-> Fix this by ensuring tx_tasklet or rx_tasklet is properly canceled before
-> the fore200e is released. Add tasklet_kill() in fore200e_shutdown() to
-> synchronize with any pending or running tasklets. Moreover, since
-> fore200e_reset() could prevent further interrupts or data transfers,
-> the tasklet_kill() should be placed after fore200e_reset() to prevent
-> the tasklet from being rescheduled in fore200e_interrupt().
+>   not ok 4 4 selftests: clone3: clone3_cap_checkpoint_restore # exit=3D1
+>   # Totals: pass:3 fail:1 xfail:0 xpass:0 skip:0 error:0
 >
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-> ---
-> Changes in v2:
->    - Move tasklet_kill() after fore200e_reset().
->
->   drivers/atm/fore200e.c | 4 ++++
->   1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/atm/fore200e.c b/drivers/atm/fore200e.c
-> index f62e3857144..de04c407921 100644
-> --- a/drivers/atm/fore200e.c
-> +++ b/drivers/atm/fore200e.c
-> @@ -362,6 +362,10 @@ fore200e_shutdown(struct fore200e* fore200e)
->       if (fore200e->state > FORE200E_STATE_RESET) {
->   	/* first, reset the board to prevent further interrupts or data transfers */
->   	fore200e_reset(fore200e, 0);
-> +#ifdef FORE200E_USE_TASKLET
-> +	tasklet_kill(&fore200e->tx_tasklet);
-> +	tasklet_kill(&fore200e->rx_tasklet);
-> +#endif
->       }
+>   ]# echo $?
+>   1
 
-I'm sorry if I gave you a confusing comment.
+Sorry I'm being a bit lazy by not investigating this myself but the
+current intended behaviour is for runner.sh to output correct KTAP,
+right? Could you describe what behavioural changes this is expected to
+bring - does it fix/change the KTAP output? (Or if it's just a cleanup
+with no intended change then please note that in the commit message).
 
-If (fore200e->state <= FORE200E_STATE_RESET), is there no need to do tasklet_kill()?
+I have not reviewed the code properly yet (I just read enough to check
+that it still does the thing I care about i.e. return an error code when
+something fails). I can do a proper review next week if you add a bit
+more context re the question above though.
 
-Tips: If you need to send v3, please don’t repost your patche within one 24h period:
-   https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
+> -	wait
+> +	# Handle the return values when running in netns.
+> +	for pid in "${pids[@]}"; do
+> +		wait "$pid"
+> +		rc=3D$?
+> +		[ "$rc" -eq "$KSFT_PASS" ] && KTAP_CNT_PASS=3D$((KTAP_CNT_PASS+1))
+> +		[ "$rc" -eq "$KSFT_FAIL" ] && KTAP_CNT_FAIL=3D$((KTAP_CNT_FAIL+1))
+> +		[ "$rc" -eq "$KSFT_SKIP" ] && KTAP_CNT_SKIP=3D$((KTAP_CNT_SKIP+1))
+> +		[ "$rc" -eq "$KSFT_XFAIL" ] && KTAP_CNT_XFAIL=3D$((KTAP_CNT_XFAIL+1))
 
-   Jijie Shao
+These variables don't seeem to have anything to do with KTAP so I think
+they should have a different name prefix. I guess KSFT_*? Or maybe
+RUNNER_* or something.
 
+Also I guess we should initialise them to 0 so they are still set if no
+tests actually get run?
+
+Also I think it's probably time to start documenting the
+interface of runner.sh - sorry I probably should have done this when I
+created kselftest_failures_file. Can you add a comment at the top to
+show that these variables are part of the "API"?
