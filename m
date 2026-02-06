@@ -1,21 +1,21 @@
 Received: from mail.aperture-lab.de (mail.aperture-lab.de [116.203.183.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4408321CFE0;
-	Fri,  6 Feb 2026 03:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BC1B2D0602;
+	Fri,  6 Feb 2026 03:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.183.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770346911; cv=none; b=QIcb56XcX40ctlosYxqqXFQMR2irJRglxqlmhx14wfMKd4BAVg2BlP13niPrb2rSlY8ZiCpiqs3ZIhJfHdezimOYhhgm6bMK9E2WcjIEYenduGgqctNl4E/F36jdah7MEi85Te90sHmBEl9fL6LC5IZiS3Wohdc+7cuKhDRLPtg=
+	t=1770346913; cv=none; b=vBaGRhTDljIjJyNpmas5VPVdDLsZdRChLinfQqkm9DavV2Su155JG6AD4XG4XqDLAmgi/6hDV57dKMsBOUdvh3lhwf0X8Mnu7+WHAC/85IbC3VX21y9JZP5tQeG+5Ump6BYznM1OkbccAPESWWArvpArVv57bZysuwP6lz+C0uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770346911; c=relaxed/simple;
-	bh=e7gYPxwjXSvowlpp+bHbVcMmnV+svvWXurup9/rR6Ro=;
+	s=arc-20240116; t=1770346913; c=relaxed/simple;
+	bh=frhcBkgkTFKwzX3pWSel+U+buO3DsSct1uWmviR1Bsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AZS2tfytnfG5Y7z5VRlLGJzqm/ocQ3ud0LmHRimm8eDS4y8FmaRtJH2gh94YVczYx18JDrVvmryf6QDE6wBcMDFWI0BK70VWi5PYEfur+zuoRhrfruxyoxMnWp8fYtMjmyksBYZf/xcc1AK8QbzVybi79XmKQRV6sGvkOjz9znE=
+	 MIME-Version:Content-Type; b=e/qPDvj7aOJtQ0AColteGhb5crVvfTfV3+O7H5sJG1w+wXPlOvuLR40HE0V9NU9CEDIDshTAOTaQX4h9pr77V0dyhjH6eOmSEud5EZseS3k5EstCy7zf70ReuoAw4OVoDRgdVtgEojY1Deh4Q6ZhdAUO8tX5xEV+wN2tk+FMiBs=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue; spf=pass smtp.mailfrom=c0d3.blue; arc=none smtp.client-ip=116.203.183.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c0d3.blue
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4FBE754CD34;
-	Fri,  6 Feb 2026 04:01:49 +0100 (CET)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9AC6554C9F3;
+	Fri,  6 Feb 2026 04:01:51 +0100 (CET)
 From: =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
 To: bridge@lists.linux.dev
 Cc: netdev@vger.kernel.org,
@@ -32,9 +32,9 @@ Cc: netdev@vger.kernel.org,
 	Stanislav Fomichev <sdf@fomichev.me>,
 	Xiao Liang <shaw.leon@gmail.com>,
 	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
-Subject: [PATCH net-next v2 12/14] net: bridge: mcast: use combined active state in netlink
-Date: Fri,  6 Feb 2026 03:52:18 +0100
-Message-ID: <20260206030123.5430-13-linus.luessing@c0d3.blue>
+Subject: [PATCH net-next v2 14/14] net: bridge: mcast: add inactive state assertions
+Date: Fri,  6 Feb 2026 03:52:20 +0100
+Message-ID: <20260206030123.5430-15-linus.luessing@c0d3.blue>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260206030123.5430-1-linus.luessing@c0d3.blue>
 References: <20260206030123.5430-1-linus.luessing@c0d3.blue>
@@ -48,108 +48,114 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Use the new multicast ip{4,6}_active variables for the netlink output.
-The result for the user should be the same. But this allows us to check
-that from userspace tests, to ensure that ip{4,6}_active behave as intended
-for the upcoming fast/data path changes.
+To avoid packetloss and as it is very hard from a user's perspective to
+debug multicast snooping related issues it is even more crucial to properly
+switch from an active to an inactive multicast snooping state than the
+other way around.
+
+Therefore adding a few kernel warnings if any of our assertions to be in
+an inactive state would fail.
 
 Signed-off-by: Linus Lüssing <linus.luessing@c0d3.blue>
 ---
- net/bridge/br_netlink.c      | 10 ++--------
- net/bridge/br_private.h      |  2 +-
- net/bridge/br_vlan_options.c | 16 +++-------------
- 3 files changed, 6 insertions(+), 22 deletions(-)
+ net/bridge/br_multicast.c | 43 +++++++++++++++++++++++++++++++++++----
+ 1 file changed, 39 insertions(+), 4 deletions(-)
 
-diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
-index 1b5ab1fb4558..e79fddf747f8 100644
---- a/net/bridge/br_netlink.c
-+++ b/net/bridge/br_netlink.c
-@@ -1650,8 +1650,6 @@ static int br_fill_info(struct sk_buff *skb, const struct net_device *brdev)
- 	u32 ageing_time = jiffies_to_clock_t(br->ageing_time);
- 	u32 stp_enabled = br->stp_enabled;
- 	u16 priority = (br->bridge_id.prio[0] << 8) | br->bridge_id.prio[1];
--	struct ethhdr eth6 = { .h_proto = htons(ETH_P_IPV6) };
--	struct ethhdr eth4 = { .h_proto = htons(ETH_P_IP) };
- 	u8 vlan_enabled = br_vlan_enabled(br->dev);
- 	struct br_boolopt_multi bm;
- 	u64 clockval;
-@@ -1724,9 +1722,7 @@ static int br_fill_info(struct sk_buff *skb, const struct net_device *brdev)
- 	    nla_put_u8(skb, IFLA_BR_MCAST_IGMP_VERSION,
- 		       br->multicast_ctx.multicast_igmp_version) ||
- 	    nla_put_u8(skb, IFLA_BR_MCAST_ACTIVE_V4,
--		       netif_running(brdev) && br_opt_get(br, BROPT_MULTICAST_ENABLED) &&
--		       !br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED) &&
--		       br_multicast_querier_exists(&br->multicast_ctx, &eth4, NULL)) ||
-+		       READ_ONCE(br->multicast_ctx.ip4_active)) ||
- 	    br_multicast_dump_querier_state(skb, &br->multicast_ctx,
- 					    IFLA_BR_MCAST_QUERIER_STATE))
- 		return -EMSGSIZE;
-@@ -1734,9 +1730,7 @@ static int br_fill_info(struct sk_buff *skb, const struct net_device *brdev)
- 	if (nla_put_u8(skb, IFLA_BR_MCAST_MLD_VERSION,
- 		       br->multicast_ctx.multicast_mld_version) ||
- 	    nla_put_u8(skb, IFLA_BR_MCAST_ACTIVE_V6,
--		       netif_running(brdev) && br_opt_get(br, BROPT_MULTICAST_ENABLED) &&
--		       !br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED) &&
--		       br_multicast_querier_exists(&br->multicast_ctx, &eth6, NULL)))
-+		       READ_ONCE(br->multicast_ctx.ip6_active)))
- 		return -EMSGSIZE;
- #endif
- 	clockval = jiffies_to_clock_t(br->multicast_ctx.multicast_last_member_interval);
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 4cc59abdb8e1..8150ecc2c919 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -1899,7 +1899,7 @@ int br_vlan_rtm_process_global_options(struct net_device *dev,
- bool br_vlan_global_opts_can_enter_range(const struct net_bridge_vlan *v_curr,
- 					 const struct net_bridge_vlan *r_end);
- bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
--			      struct net_bridge_vlan *v_opts);
-+			      const struct net_bridge_vlan *v_opts);
- 
- /* vlan state manipulation helpers using *_ONCE to annotate lock-free access,
-  * while br_vlan_set_state() may access data protected by multicast_lock.
-diff --git a/net/bridge/br_vlan_options.c b/net/bridge/br_vlan_options.c
-index 6425fa509b95..dcb214b5507d 100644
---- a/net/bridge/br_vlan_options.c
-+++ b/net/bridge/br_vlan_options.c
-@@ -347,10 +347,8 @@ bool br_vlan_global_opts_can_enter_range(const struct net_bridge_vlan *v_curr,
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index 8ad1b8fec3c5..5c6c00776dee 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -1418,10 +1418,29 @@ static struct sk_buff *br_multicast_alloc_query(struct net_bridge_mcast *brmctx,
+ 	return NULL;
  }
  
- bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
--			      struct net_bridge_vlan *v_opts)
-+			      const struct net_bridge_vlan *v_opts)
++static void br_ip4_multicast_assert_inactive(struct net_bridge_mcast *brmctx)
++{
++	WARN_ON(br_multicast_snooping_active(brmctx, htons(ETH_P_IP), NULL));
++}
++
++static void br_ip6_multicast_assert_inactive(struct net_bridge_mcast *brmctx)
++{
++	WARN_ON(br_multicast_snooping_active(brmctx, htons(ETH_P_IPV6), NULL));
++}
++
++static void br_multicast_assert_inactive(struct net_bridge_mcast *brmctx)
++{
++	br_ip4_multicast_assert_inactive(brmctx);
++	br_ip6_multicast_assert_inactive(brmctx);
++}
++
+ static void br_multicast_toggle_enabled(struct net_bridge *br, bool on)
  {
--	struct ethhdr eth6 = { .h_proto = htons(ETH_P_IPV6) };
--	struct ethhdr eth4 = { .h_proto = htons(ETH_P_IP) };
- 	struct nlattr *nest2 __maybe_unused;
- 	u64 clockval __maybe_unused;
- 	struct nlattr *nest;
-@@ -372,11 +370,7 @@ bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
- 	    nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_IGMP_VERSION,
- 		       v_opts->br_mcast_ctx.multicast_igmp_version) ||
- 	    nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V4,
--		       netif_running(v_opts->br->dev) &&
--		       br_opt_get(v_opts->br, BROPT_MULTICAST_ENABLED) &&
--		       br_opt_get(v_opts->br, BROPT_MCAST_VLAN_SNOOPING_ENABLED) &&
--		       !br_multicast_ctx_vlan_global_disabled(&v_opts->br_mcast_ctx) &&
--		       br_multicast_querier_exists(&v_opts->br_mcast_ctx, &eth4, NULL)) ||
-+		       READ_ONCE(v_opts->br_mcast_ctx.ip4_active)) ||
- 	    nla_put_u32(skb, BRIDGE_VLANDB_GOPTS_MCAST_LAST_MEMBER_CNT,
- 			v_opts->br_mcast_ctx.multicast_last_member_count) ||
- 	    nla_put_u32(skb, BRIDGE_VLANDB_GOPTS_MCAST_STARTUP_QUERY_CNT,
-@@ -433,11 +427,7 @@ bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
- 	if (nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_MLD_VERSION,
- 		       v_opts->br_mcast_ctx.multicast_mld_version) ||
- 	    nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V6,
--		       netif_running(v_opts->br->dev) &&
--		       br_opt_get(v_opts->br, BROPT_MULTICAST_ENABLED) &&
--		       br_opt_get(v_opts->br, BROPT_MCAST_VLAN_SNOOPING_ENABLED) &&
--		       !br_multicast_ctx_vlan_global_disabled(&v_opts->br_mcast_ctx) &&
--		       br_multicast_querier_exists(&v_opts->br_mcast_ctx, &eth6, NULL)))
-+		       READ_ONCE(v_opts->br_mcast_ctx.ip6_active)))
- 		goto out_err;
+ 	br_opt_toggle(br, BROPT_MULTICAST_ENABLED, on);
+ 	br_multicast_update_active(&br->multicast_ctx);
++
++	if (!on)
++		br_multicast_assert_inactive(&br->multicast_ctx);
+ }
+ 
+ struct net_bridge_mdb_entry *br_multicast_new_group(struct net_bridge *br,
+@@ -1891,9 +1910,7 @@ static void br_multicast_querier_expired(struct net_bridge_mcast *brmctx,
+ 					 struct bridge_mcast_own_query *query,
+ 					 struct timer_list *timer)
+ {
+-	spin_lock(&brmctx->br->multicast_lock);
+-	if (br_multicast_stopping(brmctx->br, timer) ||
+-	    br_multicast_ctx_vlan_global_disabled(brmctx) ||
++	if (br_multicast_ctx_vlan_global_disabled(brmctx) ||
+ 	    !br_opt_get(brmctx->br, BROPT_MULTICAST_ENABLED))
+ 		goto out;
+ 
+@@ -1904,7 +1921,6 @@ static void br_multicast_querier_expired(struct net_bridge_mcast *brmctx,
+ 	 * if our own querier is disabled, too
+ 	 */
+ 	br_multicast_update_active(brmctx);
+-	spin_unlock(&brmctx->br->multicast_lock);
+ }
+ 
+ static void br_ip4_multicast_querier_expired(struct timer_list *t)
+@@ -1912,7 +1928,16 @@ static void br_ip4_multicast_querier_expired(struct timer_list *t)
+ 	struct net_bridge_mcast *brmctx = timer_container_of(brmctx, t,
+ 							     ip4_other_query.timer);
+ 
++	spin_lock(&brmctx->br->multicast_lock);
++	if (br_multicast_stopping(brmctx->br, t))
++		goto out;
++
+ 	br_multicast_querier_expired(brmctx, &brmctx->ip4_own_query, t);
++
++	if (!brmctx->multicast_querier)
++		br_ip4_multicast_assert_inactive(brmctx);
++out:
++	spin_unlock(&brmctx->br->multicast_lock);
+ }
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
+@@ -1921,7 +1946,16 @@ static void br_ip6_multicast_querier_expired(struct timer_list *t)
+ 	struct net_bridge_mcast *brmctx = timer_container_of(brmctx, t,
+ 							     ip6_other_query.timer);
+ 
++	spin_lock(&brmctx->br->multicast_lock);
++	if (br_multicast_stopping(brmctx->br, t))
++		goto out;
++
+ 	br_multicast_querier_expired(brmctx, &brmctx->ip6_own_query, t);
++
++	if (!brmctx->multicast_querier)
++		br_ip6_multicast_assert_inactive(brmctx);
++out:
++	spin_unlock(&brmctx->br->multicast_lock);
+ }
  #endif
- #endif
+ 
+@@ -4499,6 +4533,7 @@ static void __br_multicast_stop(struct net_bridge_mcast *brmctx)
+ 
+ 	/* bridge interface is down, set multicast state to inactive */
+ 	br_multicast_update_active(brmctx);
++	br_multicast_assert_inactive(brmctx);
+ }
+ 
+ void br_multicast_update_vlan_mcast_ctx(struct net_bridge_vlan *v, u8 state)
 -- 
 2.51.0
 
