@@ -1,176 +1,119 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011010.outbound.protection.outlook.com [52.101.52.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8A02765F8;
-	Fri,  6 Feb 2026 15:03:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770390187; cv=fail; b=B7T4jcP8Hn8Cariyqz477xGbVMr9gf8ssh1RxAcXZI9VDySoGiaqp44HrpGZRol3lKuWQQTfsIg/ym/hhxiXPvIa/2+HkHGhQO/XxxP2KVff4+MdfXQ5WiYScwWlwwN5br6esdiODBrNV5UPObZZhigExg8grarRl0wOfE9h59A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770390187; c=relaxed/simple;
-	bh=q+w8vLxYNyKjX7Es27XNXzenv1dicxTs5STWE8Yi0zE=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=of02+T+HkBL3cUlQNH7QecmRk0X1N/PligbOJKSN+p8Bqk4Gj9hHuE62HL/fvpc8ZcbYFFIuhssfZOY7IAncYt0KlVi0D8wtiLKCHiqCleF7kTjOR5l/TRXkwkW8x/taeSX+U1Rl18RsTxIe7+cRqnxnM/kMxG/jCrm+LR7ckUw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=s6ziI3wI; arc=fail smtp.client-ip=52.101.52.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4122777EA
+	for <netdev@vger.kernel.org>; Fri,  6 Feb 2026 15:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770390188; cv=none; b=SQ35v6m0b6/v6PvLLeGAlhG4ZBowYhCkGNINUsDPXwrMsah2OpFwf1x66drpp+9afnasGInmva8/rR6W/jROxL4Vy3mO8uFrhZ9Sm31jUO3NMsoNYjZG0QuejzigMtqEx14A0kfxiSeog9K7uyFS74Wo3rPjnBu/dYUaA5cw+4s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770390188; c=relaxed/simple;
+	bh=LB7QDEsMXgPCxCjTIXwHVncfd/5iivLKZH1PdJOqVjU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rb91B17SJKcf0D1bgJtwDr05psdZLtBAUzbUW7Qpx8gnrKbUKqwP6hvyfiHkKu3aYA3Z8kPPMB3vDh4HMGDfNrQx/uoKCsDioEr3pRIshpT8J5hBza33I9oxwlHvAlks6E4ExY5384Ki1Yw5g5UNXRh+tR9nj9UGl5av02U1pEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R8dUYBBO; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="s6ziI3wI"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Nb/b3Y/t+6ovB7TOE7kgqBsX3NT2E4R8lPeQdgdQr7zFut0FZsBOZeK68mSar0cqudKGAv7hJEcV+aYJdsC+Q8IuwjDiC6wY4VrpdGpqWvx/fnUO2GXs4EepCoJdLAc2pIB2u+9CmGY7fVoMenh+0oRKQ4M9+JpL3myl/qF74DRqo1SV7r18YdApD6vTY6yEB4Xg2Z8/L+H9BgBFIlShbeqqD1sebVOvr5GkvEweZn5ufOR4PUyZ1QRTnxI1wa2xBkG/G+DXJzqsjmkkXIGUy5kf3HSsIHWyNctn+yrtCnsJ452ajbT/hfWvOeT5tVRpUNiwhazGv4zyhV2oJ6SR7w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xOuSLoQQL7jtMguh6UIM1yGrivZzpBPPULJHXlDBxl8=;
- b=FEzA1oYvrXdAhka721q0kTodKBCVrMBMOLryhTx6sBxJ8BEkWkJip9y47APJCn14h265HDwkit2fJDGQ4djof9p4bX7HZGw1OUHTV4+dONi/kHngKXkNuUOW7pO89fXFK5YfvAkqCZ8pASrkV1fLdt6MbcTvtUr6gz4bJtUx4gNZDGOpIRiRX2UCo9JvJjL7fltG7VBoB0EYbAmhBnNGTUBmc5gAVlQbDumAea9c7HUTBJ5tAD/iOlwHRP6YhpDKLtYVxE5izigXeBzvqGM1Xjp0WdClvWHPNjFRD2SMWamIEVu1G/Hh64oLrQR/7ODKhqC2pw8cMNWmsl8MMUNjew==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xOuSLoQQL7jtMguh6UIM1yGrivZzpBPPULJHXlDBxl8=;
- b=s6ziI3wIv9q1p4/J3WYpGcX/CTn+SK6UV6fOvJ3WEUifSrBvqCqb5OkhNj/E5HB4alIsW255gwkH22o4TGDKsuu9RwFbJw8KaNEatSwVEKBHSb9/OI4mM8C+5lMchPz0pQ7bRtrtnq7OqTvLYaE1MqkQcBDJJ36n5nZmdyNkiVDq0mt50KLKwE383mJfxP8nXlu1+aq1C5oz/VqNSc3DiymNS+e3CguhtXczcvR6Riv8LuZ3tmcFTAdJHbnF83WOsL1Qf8SkcIH0xV23qSsOlt+5CP8ZwdbLfdzrSST3BS0r5AEcIIgCWTHpCY1OoTfZaAdfy28GjG75NkZiRPq4pg==
-Received: from DS7PR03CA0033.namprd03.prod.outlook.com (2603:10b6:5:3b5::8) by
- DS0PR12MB999106.namprd12.prod.outlook.com (2603:10b6:8:301::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.13; Fri, 6 Feb
- 2026 15:03:04 +0000
-Received: from CH3PEPF00000012.namprd21.prod.outlook.com
- (2603:10b6:5:3b5:cafe::89) by DS7PR03CA0033.outlook.office365.com
- (2603:10b6:5:3b5::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.15 via Frontend Transport; Fri,
- 6 Feb 2026 15:03:01 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CH3PEPF00000012.mail.protection.outlook.com (10.167.244.117) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.0 via Frontend Transport; Fri, 6 Feb 2026 15:03:03 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 6 Feb
- 2026 07:02:40 -0800
-Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 6 Feb
- 2026 07:02:34 -0800
-References: <20260205220541.2992807-1-kuba@kernel.org>
- <20260205220541.2992807-6-kuba@kernel.org>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<shuah@kernel.org>, <willemb@google.com>, <petrm@nvidia.com>,
-	<donald.hunter@gmail.com>, <michael.chan@broadcom.com>,
-	<pavan.chebbi@broadcom.com>, <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next 5/9] selftests: drv-net: give HW stats sync
- time extra 25% of margin
-Date: Fri, 6 Feb 2026 15:40:30 +0100
-In-Reply-To: <20260205220541.2992807-6-kuba@kernel.org>
-Message-ID: <87cy2h29vj.fsf@nvidia.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R8dUYBBO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770390187;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1i6cAHTv7DBd9mv/VZP++loTThVeud67POkhWzDkRRM=;
+	b=R8dUYBBOZ5jGrkDYXYIgScKy1bf7IRGRg/lMz5hGwmNoX1NTLoLNd6JTUKT1qzKHgEnun+
+	DgKn5yEYjXBh+kdFHTZZlMpA2tWDhzpX5oQ27VVbL65u7bgG4Pn0WKfzD/qUfKTZX5S72o
+	b6UYPctH7eCjSDGo5xLjYonxDAf8K9M=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-527-jXqXJ1jDNOCmbzcpKl7krA-1; Fri,
+ 06 Feb 2026 10:03:02 -0500
+X-MC-Unique: jXqXJ1jDNOCmbzcpKl7krA-1
+X-Mimecast-MFC-AGG-ID: jXqXJ1jDNOCmbzcpKl7krA_1770390181
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5EB581955F21;
+	Fri,  6 Feb 2026 15:03:01 +0000 (UTC)
+Received: from [10.44.34.88] (unknown [10.44.34.88])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9B12A1800465;
+	Fri,  6 Feb 2026 15:02:59 +0000 (UTC)
+Message-ID: <ae73b2e5-f008-48c9-a960-c147590b6ac4@redhat.com>
+Date: Fri, 6 Feb 2026 16:02:58 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PEPF00000012:EE_|DS0PR12MB999106:EE_
-X-MS-Office365-Filtering-Correlation-Id: f35a2b9a-fbd5-4f82-9937-08de6590d409
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|1800799024|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?C4LFKmYlntpds2FPRcFrwRCi8EgCqL4skAaztYD1/Ip18ne0QC9GUgrevmgJ?=
- =?us-ascii?Q?B88gZjhsAsbbIHLjzYC9HfrZYFD9p0rg5zi+J8eRFAJX5O94Nd73wya561ev?=
- =?us-ascii?Q?0eTu2t897BYg+cSH5kGW2WUxORS3MH+34dVbx7zxwabWiiuYe7YMGfr5Ldvb?=
- =?us-ascii?Q?qCZ0xyXQ6kbpJel9pv8L9XSEscrSIxHQN9vBuSjXw5/QFWpG4QPux9te7IhR?=
- =?us-ascii?Q?+VOabEgXTMoBanPpb4JDR7bJGPSB8KhCpt3a+C7yOHo6zB4awn9kOyVJgTMT?=
- =?us-ascii?Q?SqKJB7WBs1kz+DnSLwad5Qzaxg1TWpbSEX27qNw+DNO28cZOIWROKlHX7IA1?=
- =?us-ascii?Q?B2syTQWJzVSo7pnKj/j7d8ffI9R8LJgh3eXAukd0+x+OX7ynFx6YAfSOMBjT?=
- =?us-ascii?Q?YWqw069aXHyZ74TobgYi8fzM6vhKMl7wfHFo9mlNdThDH0wDOXkDBN4a9fiV?=
- =?us-ascii?Q?0h1HogtWsOwBIqChs96TxkE4uiK6+Kk3VPbzUE3G24nbSvZVwVnM+ChdYkz5?=
- =?us-ascii?Q?83yT9RYJ8KVllBKvX9vSJnFql3x/hsVEqgNPs8NTT6u1H2M4RxVJROyxmswj?=
- =?us-ascii?Q?9ZQs0E0HH+fo4Vb2BI7VXiPZX7e6HT+m7a8btxf4s3I2GANW/Z4Xc041wAlj?=
- =?us-ascii?Q?UzMk/17NN7ezj1ZJ3e+co3Ds0PVwNt8gwJ+VDdpz6+49L8O0XEBqQFOJu9I2?=
- =?us-ascii?Q?Dx410YAtaFXnw5xHRxJhl5iMim+WmKmzG/qroqRBAwQ90MkvdWG3h/ZB/PSG?=
- =?us-ascii?Q?+j38PsK2umXwNTp9GLJHI4/3QttHu7r7i2lADeBuvriwBTQ2AhIWJsZRCDmA?=
- =?us-ascii?Q?1FRJQ3uWNr6sWVRXwIJC1A2DegvALUJCDb3KaB/obXfWJ1+VED8ggeJTj3oM?=
- =?us-ascii?Q?wE0LxKr+gIdkA4Wd0V0B4mjq2rtYdFFxhd53HbwS6/OTLZVqA6gE9y2cO1R/?=
- =?us-ascii?Q?DJbMY1ItLXCLepEJNcKptvAjSmtZ+B+b1+VS4g2QKIBkCfW/IdHe0bcqCNik?=
- =?us-ascii?Q?ovNK3rq1F+4AP9WL82kRQj36HYAI16ujQb+IZJzD3TIFa+nTVIC4AZs7E/uF?=
- =?us-ascii?Q?1eFBL5OcoorQt/EF6KrlLKCf4/FuuunMbvUr5x4w4YNRUE1g3yMULgLn6LeQ?=
- =?us-ascii?Q?Oa/t71dYXjMklOoKGdGYGG0EZOE2JM4I2yj+1M59+1DX3fPpqlkbbhqf9cI5?=
- =?us-ascii?Q?DKg+/qNUeENJI7KJhq0oVy/VEOZw9iiHPktN2Kb1zPHy3gYgYwX2/dvw6O0I?=
- =?us-ascii?Q?uVwMwn+zHQSQzfK23X0RXvmnh/NcLFReKj8WAEyD3sGeTwIgARf77/Q7yGVh?=
- =?us-ascii?Q?Y5ZYVdQ9gYQ8jeo+svt+LF0cdyxIvF8G8Bcx/c3LHOPmKWwlaHyVVfHB4wqF?=
- =?us-ascii?Q?tD0HmuluBe38wqQJwpo1C1L4h0i2gPJNICznIJcsqZNiK32EpQJMewIs9GgL?=
- =?us-ascii?Q?w1GdottaOPEuzUeDgNPg/iOuMS2omcpsNI2yDdiDLPbUIt/B/UySF2hrqfuw?=
- =?us-ascii?Q?TgN25FYAs9TxBOJaZSNsaJoQWwjI5x3PEqqm4/oL0u+opbz/dEAHOS56Ax+b?=
- =?us-ascii?Q?+hY/f39dZo87yWjzNkrfoCOcBd281NDFDnxCZNQSoxCU9Q+yCotLhvLDS50Z?=
- =?us-ascii?Q?XoqpwFkriVH7kmqjjILRvvs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	WJf/0u5bdfDA8b37UQ43Fq0uvSCtR/M95NqEAqNjoAJMk5TaWF9Or4lU+n3nIcLuTqaxKJKk9joUtwO/XHhq3UE2FQqeo3e1EDxyvj8huAm1iif3pNZ2DvpRKh+6o2SVimf4WUyTBXs5ykEdSHM6pmNrZ3+QMjrMDRSEVJDCyl15jNWdvLJ1kp6IIqsb0nM3v76rHUFDU8P7WR56kuQaxADkcbrI4674skw7k8+yuFNlj4lN3uxXC4dziuxie0/x3JlAIz1FqBqVyG48ynkirmCuB79MZK4DnZkbwzkBbzMgauW657IiiUam2C+Uea15xXpxN2QGMUdqkUVRL7fg49lc8u8n8No9DFpENw2esHFsxXKMFvweC1BuKMBsw7TXhOn1PHvqkm8vSBkaDj4Pxu9HWUEMo5c77BBP0hodCQA0kyPXd7GULMmgNr8mqGIj
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Feb 2026 15:03:03.8637
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f35a2b9a-fbd5-4f82-9937-08de6590d409
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH3PEPF00000012.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB999106
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] dpll: zl3073x: Fix output pin phase adjustment sign
+To: Vadim Fedorenko <vadim.fedorenko@linux.dev>, netdev@vger.kernel.org
+Cc: Prathosh Satish <Prathosh.Satish@microchip.com>,
+ Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
+ Jiri Pirko <jiri@resnulli.us>, linux-kernel@vger.kernel.org
+References: <20260205181055.129768-1-ivecera@redhat.com>
+ <d3f6c71c-133d-443a-adee-3430936ff8c5@linux.dev>
+Content-Language: en-US
+From: Ivan Vecera <ivecera@redhat.com>
+In-Reply-To: <d3f6c71c-133d-443a-adee-3430936ff8c5@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
+On 2/6/26 3:04 PM, Vadim Fedorenko wrote:
+> On 05/02/2026 18:10, Ivan Vecera wrote:
+>> The output pin phase adjustment functions incorrectly negate the phase
+>> compensation value.
+>>
+>> Per the ZL3073x datasheet, the output phase compensation register is
+>> simply a signed two's complement integer where:
+>>   - Positive values move the phase later in time
+>>   - Negative values move the phase earlier in time
+>>
+>> No negation is required. The erroneous negation caused phase adjustments
+>> to be applied in the wrong direction.
+>>
+>> Note that input pin phase adjustment correctly uses negation because the
+>> hardware has an inverted convention for input references (positive moves
+>> phase earlier, negative moves phase later).
+> 
+> Is it common for DPLLs to act this way?
 
-Jakub Kicinski <kuba@kernel.org> writes:
+I don't now if this is common for DPLLs but for ZL3073x family chips the
+datasheet says:
 
-> There are transient failures for devices which update stats
-> periodically, especially if it's the FW DMA'ing the stats
-> rather than host periodic work querying the FW. Wait 25%
-> longer than strictly necessary.
->
-> For devices which don't report stats-block-usecs we retain
-> 25 msec as the default wait time.
+<cite>
+ref_phase_offset_compensation:
+==============================
+Phase offset compensation for references. The value is specified as a
+signed two's complement, in units of ps. A positive value moves the
+phase of any DPLL that locks to this reference earlier in time (more to
+the left on a scope). A negative value moves the phase of any DPLL that
+locks to this reference later in time (more to the right on a scope).
 
-Right, because now the default is 0.2, and we apply the 1.25 multiplier.
+output_phase_compensation:
+==========================
+Output phase shift, expressed in 1/2 synth clock cycles. Two-complement
+signed integer.
+A positive value moves the phase of the output later in time (more to
+the right on a scope). A negative value moves the phase earlier in time
+(more to the left on a scope).
+</cite>
 
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-
-> ---
->  tools/testing/selftests/drivers/net/lib/py/env.py | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
-> index 41cc248ac848..39a98eb2592e 100644
-> --- a/tools/testing/selftests/drivers/net/lib/py/env.py
-> +++ b/tools/testing/selftests/drivers/net/lib/py/env.py
-> @@ -285,7 +285,7 @@ from .remote import Remote
->                  if "Operation not supported" not in e.cmd.stderr:
->                      raise
->  
-> -            self._stats_settle_time = 0.025 + \
-> -                data.get('stats-block-usecs', 0) / 1000 / 1000
-> +            self._stats_settle_time = \
-> +                1.25 * data.get('stats-block-usecs', 20000) / 1000 / 1000
->  
->          time.sleep(self._stats_settle_time)
+So for input pins the value must be negated, while for output pins it
+is not.
+>>
+>> Fixes: 6287262f761e ("dpll: zl3073x: Add support to adjust phase")
+>> Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+> 
+> Anyways, with datasheet info being correctly read, the change LGTM
+> Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+> 
+Thanks,
+Ivan
 
