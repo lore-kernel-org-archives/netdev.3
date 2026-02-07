@@ -1,71 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67551224B15;
-	Sat,  7 Feb 2026 02:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E3038FA3
+	for <netdev@vger.kernel.org>; Sat,  7 Feb 2026 02:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770432774; cv=none; b=ZGJ+BBeyfaCnsVWFkaxZIqOdOTGT6QSnuRBLMI9a4fNK8pZqgIDCJDkKgHJFT56xvaMrhjib/AVH8LZ3+SdIVl7HLtMzCjwkOm1a40y6fxgaXv2Hk/2kbxlz0ZwmzZn3PT66H8/iT/RUoVz6T00jBpc0lqtH4cMJs1VnB6PjxeE=
+	t=1770432838; cv=none; b=m1hoa/uKXNqOVOXsudq6J9WE2RvOwTHFYVq7WAA65Bb0+J9C6/bTUH0l1p2NLSffZo5m+WRwuXwwAdsn7JUULNmbe6vuRFuTJiwNSnZo2PmHgBFV53tDB94hBg9o8+JUGFSOIPjByVq5guVrxZ123bAPtgPA9MxJeYfvZ82gDEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770432774; c=relaxed/simple;
-	bh=kxjun1BWNuFXLpEBFc0Ir8jkJxWfvTdKLQC2FCip3h4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BcwHZSULH4UwGLPqIlTVO9+nJHcaAjVZDVGkS6F/zeOXWKqs+pi6darwahrZNdBB+ZdW4g6GQaZJblXidsVcF1ypxNj3uKYnzBGr5kmNSvXWWN2S/ZkS0Z4DZ+OtqV038b+w01qZTk7Gr6CFqlfk/8nIOduHlR7A3fgFj9Of6mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NixxRPmk; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770432838; c=relaxed/simple;
+	bh=qx1Jl8fKbXVfQo+2LlM1C8vtQEmuPtK1SLpDqKvAMRM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FKy84v67S3B4fHQ4/3w6igiDFBdGFN/IXM1z1oETiCW3l0DhI2MP6RhO5vwbXBAFStM8rxje0T9jsM4jxPAczOamAc9xwnulELiXkZ4Qrzan/q51DwODIeNe6A/ex4XpVnQnG6G6lXJLYJ7Hu9uVXNj0bFgHKjKNbHj1kgJYBR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AB/Dz9CY; arc=none smtp.client-ip=209.85.218.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NixxRPmk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E882AC116C6;
-	Sat,  7 Feb 2026 02:52:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770432774;
-	bh=kxjun1BWNuFXLpEBFc0Ir8jkJxWfvTdKLQC2FCip3h4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NixxRPmkCoAnRXXR4/pBuDVY+9/bych7yVCeqk+uvjV1daAhAbaNYcQU+suQjvvIU
-	 RjavF9nZ+KXEqLhkJBO7vgzDj3te+mPvcRydeMemPrvtjyEZm0zsqOoIJAGvgsdCUB
-	 x1b5k/CpOmpjCwBZihpU2P+W2DuHPFEe9+yUz+9tBnvF5B+QiOFDNGdN+JC4QHMXaj
-	 j3usHcsSYHY3gWWYxoJk9tPMvGSUGAENkxj9KrtCW0p4wG1xzmjFUtv31+XhK/HcpO
-	 3qYXkoIjiA1uXyIyIU97krRoovX/aBDzTnzlPBry+P/R0daTyLaeUWvb/W23+iK3lQ
-	 WCHlyTaSnnlqA==
-Date: Fri, 6 Feb 2026 18:52:52 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
- <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>, Russell King
- <linux@armlinux.org.uk>, Simon Horman <horms@kernel.org>,
- netdev@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Frank Wunderlich <frankwu@gmx.de>, Chad
- Monroe <chad@monroe.io>, Cezary Wilmanski <cezary.wilmanski@adtran.com>,
- Liang Xu <lxu@maxlinear.com>, John Crispin <john@phrozen.org>
-Subject: Re: [PATCH net-next v13 4/4] net: dsa: add basic initial driver for
- MxL862xx switches
-Message-ID: <20260206185252.77cb182b@kernel.org>
-In-Reply-To: <aYVckqToPwzR75EO@makrotopia.org>
-References: <cover.1770211259.git.daniel@makrotopia.org>
-	<2da8267175bfe7b8ff92d67ba5aa88755fab1710.1770211259.git.daniel@makrotopia.org>
-	<20260205182117.41618f8d@kernel.org>
-	<aYVckqToPwzR75EO@makrotopia.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AB/Dz9CY"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b8876d1a39bso193576266b.1
+        for <netdev@vger.kernel.org>; Fri, 06 Feb 2026 18:53:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770432837; x=1771037637; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ML3AMg0Eja+zFme5wRXmPhd9dcxAi42x3kc/admjyJc=;
+        b=AB/Dz9CYFXwnM0RtBIOLdmLKa30KH8Y9Xuw+7iBfXoU91LdCPN0vvGKSj9v6Drs/lE
+         AqrkcbSj9mS/Zh7dWfW0ZVSdx6PWXaRq9f4HHl+cQ+7ZGiyK4xbn0z1sAd4XNSpMS48a
+         Up9Ts1rlgBgVpXZmFhPdwTe6cOH+F28k1o0Bq5DVfP8w86ru6o6b3ecsj4xM7F2J0EHR
+         N8rt1xb2hoKLCCM3rB1R3PkUvclAowRUuexdPGOR/cX9ywkjCdeX76Lx+uuR/+rpRulS
+         4zEMWJ646h9SCb7PdOvchrwu2n/axXkvcnXPDkg6pmfhPhlw66OgeioX6Vb4XHgt5mFs
+         5Yxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770432837; x=1771037637;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ML3AMg0Eja+zFme5wRXmPhd9dcxAi42x3kc/admjyJc=;
+        b=sJGFiuyG65yY37EG1JmU9vGbY4bTeD9ZzZe4jBap6Lyc2SHHz7VDjW1PBuphc9yB4k
+         Mcn1hkcuFzvaQjbqkfFivLyII5Qdp8BuBV3phb5Y8g3NzKjIi1WJ3ntmTMUn8IQVFZDb
+         TL3J5R/MOXmJzjHkYaHarGy/E3aB2JHum5ELkZTzQG+UnAB69yvNBOMNtHNnG8FT8zdS
+         JaYVykZyL83yB9H4cYE89YyI1lRTj1JORRbKgp1s7u4c/vg7jjgl9FNyX3AYTOuWwhTa
+         3/3mUSwfV2BCE8pPCOumBcg8qptgj4lkRkz7WIZIEgc6e1t3rjoWybsW1Ia8uUP1V4xx
+         crQQ==
+X-Gm-Message-State: AOJu0YydSCXCj16p239QILaJ8eHR8cI9W8kWCyKKFTUgt2WDq+Cg5gyB
+	2TDoS+1ihtP9J+p36Ogedy7NsDXEBwzCNIblaqHoXMAPtHEpkdKrEJMlmu3IzJnM
+X-Gm-Gg: AZuq6aL/+fNTzo+Csww69p7zLaa0yQz8rZ/19AygrbeD5O6WdgEZzqGiQ5Dq9ZiAwzK
+	ZdAWWUwXZgzPQM5h77Iz1Yyntk3D9EAI/IAV+RxnCU09K75oYI8dCRkHYdvMn4w/OFB+qNCmyIn
+	/IOBiCFk9sRWcT/aTxax+DHVj66CnJ4cCX2xL6Iohz6kccRcXbsXvRecVFOFBWwsSm7kh4gUMx0
+	l0Xfpr41A2IJR6R3BCf1kzdxeEOXvDb6TE/GyrIv4uzBztrd/ieFOaOaVyShesRPGpzkNoLIJ0C
+	fGUCgPb998VI6FRc6+yeG58K7DiE+N6hV0iwJXmgNvV5fS52fdgVN8IEbs7gbTRmEsncMgf76rq
+	Zj04gRjNTiyA9hVGaYIBN9vfozinGWGKsAacAObxzBdZA2PAa362lKkoF21KOJKt+8U1lrSyyq/
+	DgaInpNKo=
+X-Received: by 2002:a05:6000:1788:b0:431:16d:63d7 with SMTP id ffacd0b85a97d-436293bab38mr7154758f8f.47.1770426341018;
+        Fri, 06 Feb 2026 17:05:41 -0800 (PST)
+Received: from localhost ([2a03:2880:31ff:5::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4362972fb81sm10293381f8f.20.2026.02.06.17.05.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 06 Feb 2026 17:05:39 -0800 (PST)
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
+To: netdev@vger.kernel.org
+Cc: alexanderduyck@fb.com,
+	andrew+netdev@lunn.ch,
+	andrew@lunn.ch,
+	davem@davemloft.net,
+	donald.hunter@gmail.com,
+	edumazet@google.com,
+	gal@nvidia.com,
+	horms@kernel.org,
+	idosch@nvidia.com,
+	jacob.e.keller@intel.com,
+	kernel-team@meta.com,
+	kory.maincent@bootlin.com,
+	kuba@kernel.org,
+	lee@trager.us,
+	leon@kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux@armlinux.org.uk,
+	mbloch@nvidia.com,
+	mohsin.bashr@gmail.com,
+	o.rempel@pengutronix.de,
+	pabeni@redhat.com,
+	saeedm@nvidia.com,
+	tariqt@nvidia.com,
+	vadim.fedorenko@linux.dev
+Subject: [PATCH net-next V2 2/5] net: ethtool: Update doc for tunable
+Date: Fri,  6 Feb 2026 17:05:22 -0800
+Message-ID: <20260207010525.3808842-3-mohsin.bashr@gmail.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260207010525.3808842-1-mohsin.bashr@gmail.com>
+References: <20260207010525.3808842-1-mohsin.bashr@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Fri, 6 Feb 2026 03:14:26 +0000 Daniel Golle wrote:
-> Other drivers which operate on similar APIs (many GPU drivers, for
-> example) also use #pragma pack(push, 1) in header files defining
-> external API. Also there all external API definitions are kept in a
-> separate file, away from any of the datastructures used by the driver
-> internally at runtime.
+ETHTOOL_PFC_PREVENTION_TOUT enables the configuration of timeout value
+for PFC storm prevention. This can also be used to configure storm
+detection timeout for global pause settings. In fact some existing
+drivers are already using it for the said purpose.
 
-No pragma pack in networking drivers please. However, well considered
-your application of it is the next guy will sprinkle it randomly
-and argue that it's already used in other places.
+Highlight that the knob can formally be used to configure timeout
+value for pause storm prevention mechanism. The update to the ethtool
+man page will follow afterwards.
 
-GPU folks are special, they'd probably write their code in C++ if they
-could?
+Link: https://lore.kernel.org/aa5f189a-ac62-4633-97b5-ebf939e9c535@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
+---
+ include/uapi/linux/ethtool.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
+index b74b80508553..1cdfb8341df2 100644
+--- a/include/uapi/linux/ethtool.h
++++ b/include/uapi/linux/ethtool.h
+@@ -225,7 +225,7 @@ enum tunable_id {
+ 	ETHTOOL_ID_UNSPEC,
+ 	ETHTOOL_RX_COPYBREAK,
+ 	ETHTOOL_TX_COPYBREAK,
+-	ETHTOOL_PFC_PREVENTION_TOUT, /* timeout in msecs */
++	ETHTOOL_PFC_PREVENTION_TOUT, /* both pause and pfc, see man ethtool */
+ 	ETHTOOL_TX_COPYBREAK_BUF_SIZE,
+ 	/*
+ 	 * Add your fresh new tunable attribute above and remember to update
+-- 
+2.47.3
+
