@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2025633031B;
-	Sat,  7 Feb 2026 02:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DEF30DD2A;
+	Sat,  7 Feb 2026 02:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770431093; cv=none; b=OrxG9/9zMXMlccn84Ht3sb7DpsfzBxqGjQk97DOSqCmg2nnECkQ0nG753MN9iH4JRnz2gv9rlG19vb/c/tnaFgw0GfdPk/pW8fe/WRlvd/WNkScwOoMuT1pyamZEoTyu7wf2FLjpJ5Fj6bvOr9bG3oVuNKU1/XPNp/jB7bibDbw=
+	t=1770431095; cv=none; b=ncRuR2E/RyXhKdit1Ra+CgQ2Wl/IIsr/5QfWkgMkDox1+ntxGFEZySZTqgulz+GL7QlVj4rFUkTlRaqvS/QiUH5FB6P91dIN1L0iHGiVGRMBT0xIERvQSKgpr+Xd+b6o7kbpdaE+9nhfhU2Rv4gFuu8xWG134C8qxwbCZ9stzBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770431093; c=relaxed/simple;
-	bh=jagzDFdG5cn5dqrQ7LKmMSnFuPt4sggBumGGF6Rj2ws=;
+	s=arc-20240116; t=1770431095; c=relaxed/simple;
+	bh=IK1W2W3NT83LjBDjfeXp/DldGqNJvONFIqb7hoWKyWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ye46LMFbzdy2t4iZxtpjfXnz6Li3INOqyGVqwn1jbkiqSW9t5/f1G8TbY0w8eu0aZlP0MZ8KzGRqZwyCu+A1XpHm88VU0mivdrwkm3EQGs0HF8uZ+EZ7s/XLlwuy8YHMxi3A7bBULLsOeE8jGhdHx7eWyu57tB47YYMXXGXYEc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OozKlB5n; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=VQwKSzv5FUv1Mi6ZOrJCR00hfjim/2ZkZ1f5hlH/M4TIFRh/zQ/YH838toW/Eth5nc6QEwSPOzNoqFKG/HhjH7Ht6ijLHAOVFNgufD9upUGTicueHDoyA9dB8cxr4mLteSUtomgk9KN9iIhsR8eR1G+6aox0kh/o1K5X70fZ0pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P1xQ4pFI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OozKlB5n"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A273C116C6;
-	Sat,  7 Feb 2026 02:24:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P1xQ4pFI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C07C19423;
+	Sat,  7 Feb 2026 02:24:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770431093;
-	bh=jagzDFdG5cn5dqrQ7LKmMSnFuPt4sggBumGGF6Rj2ws=;
+	s=k20201202; t=1770431095;
+	bh=IK1W2W3NT83LjBDjfeXp/DldGqNJvONFIqb7hoWKyWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OozKlB5nhtai5sMn1hvIDT7XCfIBkrnN+KXI3xgn40pAaa9CJAfAyd1EbHixfOXKc
-	 02e0+tMtTpf3wd+bJN524t5m8Nz2ZCFzlFOby6mjoGxyPPb+3uTLpHJ5G1nTtq4zij
-	 p4s7/4QUJ9XPfEtXlteRHfi4RnSWLKQMr0sYQQZ4uyRcLomuvuQbwLGUV9kvedcf/X
-	 0LNW14S8fYNF69A5VdISqCv3EWDphIKRmvoqG4tQr19O6kqkD5ef6EPbgOL7OqbrKi
-	 i1L/jNCVH2099EUEMCcXdqQ/KZAcaBvGdbtLJU8spZ/h8tKCIZ6B0KDIh1lwH7D+IT
-	 LKNGtx+y78p+w==
+	b=P1xQ4pFIZdqmfJasp+848pgoIqV7m+jlMvHEnrjE8yNxJC1wDuXJ2d88y6HibOnXu
+	 6WrFXsY+FlhAGnw+Pcz9eh6008yHgkthfnphMGv200M/CrA8br0f1qOjIxrBBMZ/xZ
+	 Wqt/46XXjdKjTj7XiG8Qp8Ji1TQAFyaEIPpQhw7rMR6zhmhSn/w4iuHkkSAf/1yb0J
+	 HEv14E4jrW3Rb5gKvPAYQAxmCqtZB7KfGdHc4fKYhqQfx05HFh5yG9b3ItYLDVSgas
+	 hFkauZmM03zVNRq0JksfRJ92peSSh3GqajewVnYCXE+cXMybow/IO1ApPgu1ndkV1F
+	 hjbwObNZr/RAQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: illusion.wang@nebula-matrix.com
 Cc: Jakub Kicinski <kuba@kernel.org>,
@@ -43,12 +43,12 @@ Cc: Jakub Kicinski <kuba@kernel.org>,
 	pabeni@redhat.com,
 	edumazet@google.com,
 	horms@kernel.org
-Subject: Re: [v4,net-next,03/11] net/nebula-matrix: add chip related definitions
-Date: Fri,  6 Feb 2026 18:24:51 -0800
-Message-ID: <20260207022451.4017791-1-kuba@kernel.org>
+Subject: Re: [v4,net-next,05/11] net/nebula-matrix: add channel layer
+Date: Fri,  6 Feb 2026 18:24:53 -0800
+Message-ID: <20260207022453.4017863-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260206021608.85381-4-illusion.wang@nebula-matrix.com>
-References: <20260206021608.85381-4-illusion.wang@nebula-matrix.com>
+In-Reply-To: <20260206021608.85381-6-illusion.wang@nebula-matrix.com>
+References: <20260206021608.85381-6-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -63,90 +63,109 @@ it says with a grain of salt."
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-net/nebula-matrix: add chip related definitions
+Commit: cd2f89c6d9811cbe52e9e20513431e156bba29be
+Author: illusion.wang <illusion.wang@nebula-matrix.com>
+Subject: net/nebula-matrix: add channel layer
 
-This commit adds hardware register definitions for the Leonis chip,
-including PPE, DP, and interface module base addresses, as well as
-P4 configuration data used during chip initialization.
+This commit adds a channel management layer for communication between PFs
+including message handling framework, queue management, and hardware
+abstraction.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw.h
-> new file mode 100644
-> index 000000000000..f657c1e6a5ad
-> --- /dev/null
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw.h
-> @@ -0,0 +1,128 @@
-> +/* SPDX-License-Identifier: GPL-2.0*/
+================================================================================
+HIGH SEVERITY ISSUES
+================================================================================
 
-This isn't a bug, but the SPDX license identifier is missing a space
-before the closing comment. The kernel standard format is:
+1. Buffer overflow risk in nbl_chan_recv_ack_msg
+   File: drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
+   Function: nbl_chan_recv_ack_msg
 
-    /* SPDX-License-Identifier: GPL-2.0 */
+   The ack_msgid.info.loc field is a 10-bit value with range 0-1023, but
+   it's used directly as an array index into wait[] which only has 256
+   entries (NBL_CHAN_QUEUE_LEN). Can you add bounds checking before using
+   this value as an array index?
 
-[ ... ]
+>	wait_head = &chan_info->wait[ack_msgid.info.loc];
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-> index 240d356f18b0..9000650256ca 100644
-> --- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
+   Consider adding:
+   if (ack_msgid.info.loc >= NBL_CHAN_QUEUE_LEN) {
+       /* handle error */
+       return;
+   }
 
-[ ... ]
 
-> +#define NBL_DP_UL4S_BASE			(0x00204000)
+2. Use-after-free in nbl_chan_delete_msg_handler
+   File: drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
+   Function: nbl_chan_delete_msg_handler
 
-[ ... ]
+   The hash node is freed before calling flush_work(), but the work
+   function (chan_info->clean_task) may still be accessing this memory.
+   Should the flush_work() call be moved before freeing the hash node?
 
-> +#define NBL_DP_DL4S_BASE			(0x00614000)
+>	nbl_common_free_hash_node(chan_mgt->handle_hash_tbl, &msg_type);
+>	[ ... ]
+>	flush_work(chan_info->clean_task);
 
-[ ... ]
+   The work function could be reading from the freed hash node, causing
+   a use-after-free condition.
 
-> +#define NBL_DP_DL4S_BASE			(0x00614000)
-> +#define NBL_DP_UL4S_BASE			(0x00204000)
 
-NBL_DP_DL4S_BASE and NBL_DP_UL4S_BASE are defined twice in this file.
-While the values are identical, would it make sense to remove the
-duplicate definitions?
+================================================================================
+MEDIUM SEVERITY ISSUES
+================================================================================
 
-[ ... ]
+3. Inconsistent error handling in nbl_chan_send_msg
+   File: drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
+   Function: nbl_chan_send_msg
 
-> +/*  ----------  DSCH  ----------  */
-> +/* DSCH vn_host_qid_max */
-> +#define NBL_DSCH_NOTIFY_BITMAP_ARR(i) \
-> +	(NBL_DP_DSCH_BASE + 0x00003000 + (i) * BYTES_PER_DWORD)
-> +#define NBL_DSCH_FLY_BITMAP_ARR(i) \
-> +	(NBL_DP_DSCH_BASE + 0x00004000 + (i) * BYTES_PER_DWORD)
+   In polling mode, when a timeout occurs, the function sets the status
+   to NBL_MBX_STATUS_TIMEOUT, logs an error, but returns 0 (success).
+   This is inconsistent with interrupt mode which returns -EFAULT on
+   timeout. Should polling mode also return an error code?
 
-BYTES_PER_DWORD is not defined in this driver. Will this cause
-compilation errors when these macros are expanded? Consider defining
-BYTES_PER_DWORD or using the already-defined NBL_BYTES_IN_REG.
+>	wait_head->status = NBL_MBX_STATUS_TIMEOUT;
+>	dev_err(dev, "Channel polling ack failed...");
+>	return 0;
 
-> +#define NBL_DSCH_PORT_MAP_REG_ARR(i) \
-> +	(NBL_DP_DSCH_BASE + 0x00005000 + (i) * sizeof(struct nbl_port_map))
+   Consider returning -ETIMEDOUT or -EFAULT instead of 0.
 
-struct nbl_port_map is referenced but not defined anywhere in the
-nebula-matrix driver. Is this type defined elsewhere, or is a definition
-missing?
 
-[ ... ]
+4. Resource leak in nbl_common_alloc_hash_node
+   File: drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
+   Function: nbl_common_alloc_hash_node
 
-> +/* epro epro_kgen_ft table */
-> +#define NBL_EPRO_KGEN_FT_TABLE(i)         \
-> +	(NBL_PPE_EPRO_BASE + 0x00001980 + \
-> +	 (i) * sizeof(struct nbl_epro_kgen_ft_tbl))
+   On error paths, the function uses devm_kzalloc but doesn't free the
+   allocated memory before returning. While devm_kzalloc memory is freed
+   on device removal, this can cause memory to accumulate if this function
+   fails repeatedly. Should the error paths explicitly free the allocated
+   memory?
 
-struct nbl_epro_kgen_ft_tbl is referenced but not defined in this
-driver. Is a definition missing for this type?
+>alloc_data_failed:
+>alloc_key_failed:
+>	return -1;
 
-[ ... ]
+   Consider using devm_kfree() or switching to regular kzalloc/kfree if
+   early cleanup is needed.
 
-> diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.h
-> new file mode 100644
-> index 000000000000..75b7dd783354
-> --- /dev/null
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.h
-> @@ -0,0 +1,12 @@
-> +/* SPDX-License-Identifier: GPL-2.0*/
 
-This isn't a bug, but the SPDX license identifier is missing a space
-before the closing comment. The kernel standard format is:
+================================================================================
+LOW SEVERITY ISSUES
+================================================================================
 
-    /* SPDX-License-Identifier: GPL-2.0 */
+5. Comment inaccuracy in nbl_common_calc_hash_key
+   File: drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
+   Function: nbl_common_calc_hash_key
+
+   The comment states "if bucket size little than 1" but the code checks
+   for equality to 1, not less than 1. Should the comment be updated to
+   match the actual check?
+
+>	/* if bucket size little than 1, the hash value always 0 */
+>	if (bucket_size == NBL_HASH_TBL_LIST_BUCKET_SIZE)
+
+   Perhaps the comment should read "if bucket size equals 1" or the check
+   should be "bucket_size < 1" if that was the intent?
+
+
+================================================================================
+END OF REVIEW
+================================================================================
