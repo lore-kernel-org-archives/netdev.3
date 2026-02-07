@@ -1,142 +1,99 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0AA22A1E1
-	for <netdev@vger.kernel.org>; Sat,  7 Feb 2026 02:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62DB22A1E1;
+	Sat,  7 Feb 2026 02:57:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770433037; cv=none; b=UY2RItyUxJonnrKingI8PNahB30osrwci49iOVCl+6fuCnaVEcuelWkE34GUJ/QEZWiLwQTAz4vjkwjnuRNfA8R82dBH2U1uBEyWKVJE5xlo0LOEep04fNqZ/FuMJj/FtQGgh7+VfgdGGDz/kUKGpX6bwIJSv//Z3C2pKJifh1M=
+	t=1770433058; cv=none; b=W8DyLpVrD5fuowcefVfRP/FIk+VPnnqGcPMqO+a6Tpyot06EYpfUDaMyyenX24V6/F4WrvsXnFibFxNzH8cJUckn2dbF3Ashkvy8/JtW5ue4Et6MQyY01xeOsjupx8eh88OaV2k5mjgJ/Rfg7eMelbc1+0JT32msO/bp55a21Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770433037; c=relaxed/simple;
-	bh=F75+iwxlRTLyIzKuJzJ+ID7DQ02GZVbuxnZkr4FlfjY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mGDZfwGDz/F8UhUSFAqN3bESZptUeyA0UDIN0TtK6X9ea8yDP9OScQp4cXTBVGHP9A6nKsEWmCWJZtwJfOf4dmrJP2eFWFUTDPCiOaceV1Wxh8gt4T7aFfU3ZJYHCTaZKcnZzNJkGI1E/6nvmDhB/bdc2OaLV56nRhHIpmjo98k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OIt6/8SU; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770433058; c=relaxed/simple;
+	bh=fEJXLRawPbdCf3xetPQEnbQsr9d6YyTUk64NobkmyKw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NkvZzwgqOwXQwxeRN+h/WPXcAPq7qiYl8VRzLrcprDMAgxUnZcqh/aCipm82gpPDJSy0GlczRHNVsEJezi2V7H73TvlabycaEkVft4HK01iQy4uvRrI1FPeRYbkFefBHAgx+LIYo3Tth0/cHTOirDonOsAObm81RA42Q64/KBnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPkt7rGC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OIt6/8SU"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43626796202so1858120f8f.3
-        for <netdev@vger.kernel.org>; Fri, 06 Feb 2026 18:57:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770433035; x=1771037835; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nV2/pR09fRCKiwS6HhA3KDDNoxylvhh0vYo9VwjMiO8=;
-        b=OIt6/8SUyXuH58tiM/6XHW8F27w+nWmLv1HVm7n73tqWuT47/1gj+0gufTEVVOSC3q
-         IZubAqZC2e2REphLGPmirJCGfNCg3CTam5T4d4Q5iCMiEnwjpycnu04nFrpSrfB4SEiU
-         nyE7IG377A9P/KdR24Ovb7lps342l6M7MC/FMG/5XW/Xoh4BPgs4wzscuhPxt/7b0D3g
-         AiJzxuthST9NRmZRg5TYxMqjnf22aS0E/lzhgPR2nd4aKmR1jdqCfEW1RLbDbhWohENV
-         yna8EUsF0g72iUpIowAUsxLqEGkOdzxKe+vXwyXq+xr9SihVpwBLzNH14jWMTxVkLQLh
-         ffDA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770433035; x=1771037835;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nV2/pR09fRCKiwS6HhA3KDDNoxylvhh0vYo9VwjMiO8=;
-        b=lfakk+5NL/w0f/Jo89gOkNijTl1PudZfcHrkyogPtxhBBr/UoWz2Jjs0tArTVhqOA2
-         UyBYl4C5ay6R/AH7RDabpY4aarcF99Q9aLQUwfEajqFQcoFAgLNUSGctrw+oZMqvWUrY
-         HCigFMiyjHHLApLDHwQs6jt0y8WsdReIdZbllNZ6KdTvDN6t1DJppmyrs/dtO/fuP9KO
-         tVW8rvWsz5oXGC+7bMG6Qt9cBYecjTNbmSfkv+ZO097dF4V0zdZC+3jvQAPrRMIoht82
-         drOt/2SZkYTRNbFKxU0KfkVRN34ZIYTHgIgKuqxZz8qoq26Obzt/VrhIDJgyb1DUavsD
-         Ox8w==
-X-Gm-Message-State: AOJu0YzaU2ccmRvI0tZ2p4x6jMMbwoTVeIFo0kj81lguXUx6JWgB8U9s
-	Pd37xtT6HLDA5Ij2B+jqQwXxLDKASB49xsJRvZ9UAoLBrLFi9JKR8GUnwZ9JoUfm
-X-Gm-Gg: AZuq6aKr0Z/5+gdt7xk3cPdG7mNdrKTUp9X5EdHfComsCDMgCuz9zWcFdN+wqGueFdv
-	jn3YsAyIzcT3rkNmUCKVSVbkd86xkClRpWuqAdzYlhJwVGpRDYSmJeuSTntvvmdu6fd2MZIezKK
-	xCe059KS8elYw3rfntJxW5YZnFYfjdpMVWltX8JO3oe2LQg20D5t9MwTLAf7AWGiU6HLTFiVWS9
-	FS/1Vpe4hJUkBA1K5wBNUGzzsVBgsPbzWPKoL63BYCE7vRn1qSDhrssblaJpLgEiFPDFltxNddy
-	NnaESeNovvY/sEmE2WC1dhGKvhU7bhF3YTd9/6OsEo2VI+6pCkn5Q0wfM82Z8rWvmfA92mWa3Ks
-	qMqvBiMf2NhWVqRSWzjTdg2grW5/PU6/nuqP/iClF2+DJwAVrN10xRQtqzV3ataCCsSFXItmr30
-	Bz2a6kM3d/
-X-Received: by 2002:a5d:5247:0:b0:436:34e8:e665 with SMTP id ffacd0b85a97d-43634e8ef4amr189103f8f.54.1770426329243;
-        Fri, 06 Feb 2026 17:05:29 -0800 (PST)
-Received: from localhost ([2a03:2880:31ff:46::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-436296bd4a1sm9576013f8f.17.2026.02.06.17.05.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 17:05:28 -0800 (PST)
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-To: netdev@vger.kernel.org
-Cc: alexanderduyck@fb.com,
-	andrew+netdev@lunn.ch,
-	andrew@lunn.ch,
-	davem@davemloft.net,
-	donald.hunter@gmail.com,
-	edumazet@google.com,
-	gal@nvidia.com,
-	horms@kernel.org,
-	idosch@nvidia.com,
-	jacob.e.keller@intel.com,
-	kernel-team@meta.com,
-	kory.maincent@bootlin.com,
-	kuba@kernel.org,
-	lee@trager.us,
-	leon@kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux@armlinux.org.uk,
-	mbloch@nvidia.com,
-	mohsin.bashr@gmail.com,
-	o.rempel@pengutronix.de,
-	pabeni@redhat.com,
-	saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	vadim.fedorenko@linux.dev
-Subject: [PATCH net-next V2 0/5] net: ethtool: Track TX pause storm
-Date: Fri,  6 Feb 2026 17:05:20 -0800
-Message-ID: <20260207010525.3808842-1-mohsin.bashr@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPkt7rGC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B30CAC116C6;
+	Sat,  7 Feb 2026 02:57:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770433058;
+	bh=fEJXLRawPbdCf3xetPQEnbQsr9d6YyTUk64NobkmyKw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=oPkt7rGC0FvsPX3scZHiX4yFkazHdSma2rHcjUNE+XplJnIuJIH+g0x3qT0JrSqP0
+	 e+KSmkhZHKOonSFsWFXjIEHIvSv58IFC1Tpr0o1uCEVxru8ZL6DbGmwhh1uUSSwVXg
+	 l8U1urkkBbTwCEEvcsRgFEkis0kn+wl7Yy33vxPtsQcLb9F7BSPCTrfp6f3UWBfEtt
+	 LOTYxIx8iHCD75aQc344YfRivo7h5oi2ynwyXCJVlE4WaAkJnbCbTaQy66xB5Yz1SK
+	 C+zNBEb/vygekFf+kZ9j2c6PI+3ZP0++LJaOYsxEnBfSIMeqZEviymfulgtLZvpJde
+	 JcW6+CxRddl1Q==
+Date: Fri, 6 Feb 2026 18:57:35 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Larysa Zaremba <larysa.zaremba@intel.com>
+Cc: Vladimir Oltean <vladimir.oltean@nxp.com>, <bpf@vger.kernel.org>,
+ "Claudiu Manoil" <claudiu.manoil@nxp.com>, Wei Fang <wei.fang@nxp.com>,
+ Clark Wang <xiaoning.wang@nxp.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>, Tony Nguyen
+ <anthony.l.nguyen@intel.com>, "Przemek Kitszel"
+ <przemyslaw.kitszel@intel.com>, Alexei Starovoitov <ast@kernel.org>, Daniel
+ Borkmann <daniel@iogearbox.net>, Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>, "Stanislav Fomichev"
+ <sdf@fomichev.me>, Andrii Nakryiko <andrii@kernel.org>, "Martin KaFai Lau"
+ <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP Singh
+ <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, Jiri Olsa
+ <jolsa@kernel.org>, Simon Horman <horms@kernel.org>, Shuah Khan
+ <shuah@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>,
+ "Maciej Fijalkowski" <maciej.fijalkowski@intel.com>, "Bastien Curutchet
+ (eBPF Foundation)" <bastien.curutchet@bootlin.com>, Tushar Vyavahare
+ <tushar.vyavahare@intel.com>, Jason Xing <kernelxing@tencent.com>, "Ricardo
+ B. =?UTF-8?B?TWFybGniiJrCrnJl?=" <rbm@suse.com>, Eelco Chaudron
+ <echaudro@redhat.com>, Lorenzo Bianconi <lorenzo@kernel.org>, "Toke
+ Hoiland-Jorgensen" <toke@redhat.com>, <imx@lists.linux.dev>,
+ <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <intel-wired-lan@lists.osuosl.org>, <linux-kselftest@vger.kernel.org>,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: Re: [PATCH bpf 6/6] net: enetc: use truesize as XDP RxQ info
+ frag_size
+Message-ID: <20260206185735.787fb0e5@kernel.org>
+In-Reply-To: <aYWoBRmt-lcM_JkG@soc-5CG4396X81.clients.intel.com>
+References: <20260203105417.2302672-1-larysa.zaremba@intel.com>
+	<20260203105417.2302672-7-larysa.zaremba@intel.com>
+	<20260205005901.gnju3zmqimtgeu2b@skbuf>
+	<20260204173401.282899d0@kernel.org>
+	<20260205122953.lscemcctayrvszdu@skbuf>
+	<aYSP344FT-JlylwY@soc-5CG4396X81.clients.intel.com>
+	<20260205124638.hxzvjiocephzlrk3@skbuf>
+	<aYSZw4wbd-nvLTuD@soc-5CG4396X81.clients.intel.com>
+	<20260205134046.pggwyosutj7ggi4i@skbuf>
+	<20260205175408.30ab72a1@kernel.org>
+	<aYWoBRmt-lcM_JkG@soc-5CG4396X81.clients.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-With TX pause enabled, if a device cannot deliver received frames to
-the stack (e.g., during a system hang), it may generate excessive pause
-frames causing a pause storm. This series updates the uAPI to track TX
-pause storm events as part of the pause stats (p1), propose to use the
-existing knob (pfc-prevention-tout) to configure storm watchdog (p2),
-adds pause storm protection support for fbnic (p3), and leverages p1
-to provide observability into these events for fbnic (p4) and mlnx5 (p5)
-drivers.
+On Fri, 6 Feb 2026 09:36:21 +0100 Larysa Zaremba wrote:
+> > FWIW my feeling is that instead of nickel and diming leftover space 
+> > in the frags if someone actually cared about growing mbufs we should
+> > have the helper allocate a new page from the PP and append it to the
+> > shinfo. Much simpler, "infinite space", and works regardless of the
+> > driver. I don't mean that to suggest you implement it, purely to point
+> > out that I think nobody really uses positive offsets.. So we can as
+> > well switch more complicated drivers back to xdp_rxq_info_reg().
+> 
+> As Vladimir has mentioned, if the driver does not use header split, frags will 
+> have a tailroom of a size of skb_shared_info, so tail growing does work in 
+> practice.
+> 
+> Allocating a page_pool buffer (given XDP queue has one attached) is certainly an 
+> option, although I am not sure if anyone needs it. Furthermore, growing tail 
+> would still fail for a single-buf case.
 
----
-Changelog:
-V2:
- - Clarify pfc-prevention-tout applies to general pause, not just PFC
-   (P2)
- - Add pause storm watchdog timeout configuration via pfc-prevention-tout
-   (P3)
- - mlx5: Report device stall prevention events (errors) in pause stats
-   (P5)
-
-V1: https://lore.kernel.org/20260122192158.428882-1-mohsin.bashr@gmail.com/
-
-Mohsin Bashir (5):
-  net: ethtool: Track pause storm events
-  net: ethtool: Update doc for tunable
-  eth: fbnic: Add protection against pause storm
-  eth: fbnic: Fetch TX pause storm stats
-  eth: mlx5: Move pause storm errors to pause stats
-
- Documentation/netlink/specs/ethtool.yaml      |  13 +++
- .../ethernet/mellanox/mlx5/core/en_stats.c    |  25 ++++
- drivers/net/ethernet/meta/fbnic/fbnic.h       |   3 +
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |  11 ++
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  46 ++++++++
- .../net/ethernet/meta/fbnic/fbnic_hw_stats.h  |   1 +
- drivers/net/ethernet/meta/fbnic/fbnic_irq.c   |   2 +
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c   | 110 ++++++++++++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |  27 +++++
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |   5 +
- include/linux/ethtool.h                       |   2 +
- include/uapi/linux/ethtool.h                  |   2 +-
- .../uapi/linux/ethtool_netlink_generated.h    |   1 +
- net/ethtool/pause.c                           |   4 +-
- 14 files changed, 250 insertions(+), 2 deletions(-)
-
--- 
-2.47.3
-
+sbuf is a different code path, sbuf has precise frame_sz per frame,
+not a single value in rxq, no? Don't mean to argue, just making sure
+my mental model is correct ;)
