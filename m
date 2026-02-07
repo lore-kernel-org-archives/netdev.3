@@ -1,45 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0561FE47B;
-	Sat,  7 Feb 2026 02:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44185B21A;
+	Sat,  7 Feb 2026 02:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770431819; cv=none; b=ro5JrvTcHcV7Gt7k22vhIYMac5pmWYrKUm1J+V+CeOW+M9qYQfj4WJKUbaUCCiEIRZgBID0MycOAtR+rpnLIOQOhkPDZpEgMVHfa40vofpQvKiQ/LiUVlWXKssQ5ezpPfsQqUvTrk7T2hkzSknwio0nKeNVwhS1tcWD33rQ5nDM=
+	t=1770432297; cv=none; b=iu6E8TPYwgfXw93AEAk5Cil5HecElTLXalOV24YCDwG6kMAQu3pV2W6EA5Wy1uOkd3Q0+dW4idszjeJ7k6kuo5W1v+N2xg0b+rC+kBZUh7nUqLxGj1Tjl6IvdN/Ov1NKAp8K5Fy4TAmG3y1UknoP2ccv8QsEfkZK7aExT2HUvzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770431819; c=relaxed/simple;
-	bh=UYDV/lmqevgx+snE8Jibe2CB1SyjiFB1b1qnGiL1y5M=;
+	s=arc-20240116; t=1770432297; c=relaxed/simple;
+	bh=8n0PeIUOU9EPtDVGJ6Xp3Wu0ihsHM67WoiZUou48kQg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XCwMTbZE3xXdaO8yKUVKYikCFZgOj7SNLqwYbZ0tQYjy4xCnwvbcRoIsI3bzCmiiYeLfK8XMyRXZzPCHHT4FNiKUYmXBdD7v/ykatt43byKRs6opD80syUTZdHZ3pYqsnGYijesoQNX4Yj8IxkCw7poGeSWQXUOzajTeJLEubKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BM0WcXZH; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=OWbRzr9iwu1iGGjADycEYX6Q3HGgRUpZk1+/aXXtUVc26/hogadHMr2A15yy8ebyyLPyokpRlwzEZvbClcVILKsd9xNreH9O5u8yLWLwzSxHraYWakbxASL9knHtQrA8It0dTB4pnFPyAQYUZ8ivSAEkMhho5muf2bsFqYDT9fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GUKJcntz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BM0WcXZH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD984C116C6;
-	Sat,  7 Feb 2026 02:36:58 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUKJcntz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1CCC116C6;
+	Sat,  7 Feb 2026 02:44:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770431819;
-	bh=UYDV/lmqevgx+snE8Jibe2CB1SyjiFB1b1qnGiL1y5M=;
+	s=k20201202; t=1770432297;
+	bh=8n0PeIUOU9EPtDVGJ6Xp3Wu0ihsHM67WoiZUou48kQg=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=BM0WcXZH9FXpTxI9wThUBxr9iSoEXWI+f/7GOT1Cb8v3EklArf3YM5jtCezrEP37+
-	 MIV5FsPqWyaohH9dNUaGo8Y0/GD0PHtKbxG4oksp/sIsGqntg5mlUsIqTK6SokWo4G
-	 mR6JANweI1T8q8KUmQS0bc0AYiR29CUOOgboOMvwIW+/NlSAyrFyGNhnzsfH4tdswh
-	 RnTxsbr8qT/c/900azcS69iDOZB7PAHAdvtELIO1pFFxXiZAwzIt0px9P8++21YHBE
-	 d7Brd5yrB9nQcLzFfd4A3+V32OrCZnfM9zGKE+wf/iBhCVI3W+36bjmf8vEGMjmyq6
-	 jednXGRK73L6w==
-Date: Fri, 6 Feb 2026 18:36:57 -0800
+	b=GUKJcntzevb7KwsE/N58rPyn1ZbfzQK2J0w+llxGYUXtAhpA8CI2YpPQ33mrbewJ2
+	 64LIVODLLzTcDUSL7yF47tH2kXlSpEj4Ymz75MQkfhcpWA+X10dm+/8Ye/eVb8UrXa
+	 Sqk3cgonsLUiungjB4CYjAwjeENV7YQz9Z2XH1F1+bls4HEnn8rX3ua4PliZz2nkJz
+	 LU/loLURej4qiaJPS0wVmbSyzM5BWSh5DZ0zekOVxcYR5CDbYcsKQi/cIWNKnS9Qub
+	 rC/f1MyYpKRWlx1qVgb7m8HFlMmhySPm1zk8qNP54RfBzZ3AmHvd6e4uNk23hASXZc
+	 hrkYCYVSXJXxA==
+Date: Fri, 6 Feb 2026 18:44:56 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Vishnu Santhosh <vishnu.santhosh@oss.qualcomm.com>
-Cc: Manivannan Sadhasivam <mani@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-arm-msm@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bjorn.andersson@oss.qualcomm.com,
- chris.lew@oss.qualcomm.com, Deepak Kumar Singh
- <deepak.singh@oss.qualcomm.com>
-Subject: Re: [PATCH] net: qrtr: Expand control port access to root
-Message-ID: <20260206183657.0477e50a@kernel.org>
-In-Reply-To: <20260205-qrtr-control-port-access-permission-v1-1-e900039e92d5@oss.qualcomm.com>
-References: <20260205-qrtr-control-port-access-permission-v1-1-e900039e92d5@oss.qualcomm.com>
+To: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Cc: patchwork-bot+netdevbpf@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ leon@kernel.org, jgg@ziepe.ca, saeedm@nvidia.com, mbloch@nvidia.com,
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, gal@nvidia.com, moshe@nvidia.com,
+ ychemla@nvidia.com, shshitrit@nvidia.com, Tariq Toukan <tariqt@nvidia.com>
+Subject: Re: [PATCH net-next] net/mlx5: Fix 1600G link mode enum naming
+Message-ID: <20260206184456.01f46d4e@kernel.org>
+In-Reply-To: <68fe9c87-c8e3-43eb-a40b-4b05267fa236@linux.intel.com>
+References: <20260204194324.1723534-1-tariqt@nvidia.com>
+	<177034620683.657894.2565367947070195735.git-patchwork-notify@kernel.org>
+	<68fe9c87-c8e3-43eb-a40b-4b05267fa236@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,28 +50,38 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 05 Feb 2026 13:51:31 +0530 Vishnu Santhosh wrote:
-> When qrtr is loaded as module, qrtr-ns runs from SELinux kmod_t
-> domain. On targets using upstream SELinux policies, this domain
-> does not receive CAP_NET_ADMIN, which prevents it from binding
-> control port even though qrtr-ns is a trusted system component.
+On Fri, 6 Feb 2026 11:48:58 +0100 Dawid Osuchowski wrote:
+> > Here is the summary with links:
+> >    - [net-next] net/mlx5: Fix 1600G link mode enum naming
+> >      https://git.kernel.org/netdev/net-next/c/215b53099b60
+> > 
+> > You are awesome, thank you!  
 > 
-> Granting kmod_t the CAP_NET_ADMIN capability in policy is possible,
-> but not desirable, as kmod_t is not expected to perform networking
-> operations and widening its capability set is discouraged.
+> Hey Kuba,
 > 
-> To address this in a contained way within qrtr, extend the control
-> port permission check to allow binding when either:
+> I noticed that in the commit message on the net-next tree the following 
+> tags are duplicated:
 > 
->   - the process has CAP_NET_ADMIN, or
->   - the process belongs to GLOBAL_ROOT_GID (root-equivalent tasks)
+> Reported-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+> Signed-off-by: Yael Chemla <ychemla@nvidia.com>
 > 
-> This permits qrtr-ns to successfully bind its control port in
-> kmod_t restricted environments without broadening SELinux capability
-> assignments.
+> Is that by design or did the bot break something? This is purely out of 
+> my curiosity.
 
-This really feels like a one-off hack, but it's far from my area
-of expertise.. Could you get an ack or review tag from some kernel
-maintainer working on security, capabilities or permissions?
--- 
-pw-bot: defer
+Oh damn :( This is what patchwork produces:
+
+    Reported-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+    Signed-off-by: Yael Chemla <ychemla@nvidia.com>
+    Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+    Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+    Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+    Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+    Reported-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+    Signed-off-by: Yael Chemla <ychemla@nvidia.com>
+    Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+    Reported-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+    Signed-off-by: Yael Chemla <ychemla@nvidia.com>
+
+I fixed it up manually but clearly not well enough.
+
+Patchwork needs so much work..
