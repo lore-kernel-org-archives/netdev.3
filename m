@@ -1,52 +1,72 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABF417D6
-	for <netdev@vger.kernel.org>; Sat,  7 Feb 2026 10:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447F51F4181
+	for <netdev@vger.kernel.org>; Sat,  7 Feb 2026 10:50:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770460768; cv=none; b=M3m5xii7eAGeHyLdl4a+EbzmyYIR2Fruf483oX1Spx23ofndj+NoSWfYENef/tN5oFAM3C+qsh20Ra4ySk4LJy8h2Sv+JdTWylzd30D3EWOw+1qTfg+7HEtclH7ieriPi/DjXUAJD0bZJLP+hhlmXuk361Yw1K908xfNJ3R2QeE=
+	t=1770461427; cv=none; b=Pcq7oq29kzGcLAha5e7PIDkxJZV9s9Yy/sFhFqV9Q2KJ0Dmoll28FjQdll+6jz5ORrKaqlgMx0NYcWHB00JHDYf3wC+77pi7gFYypLyUpsji/MfALyKn1KVaE4PxzNFkopasQVPXRyZkr0v1EukYIdrryaCbJWZwZNEg0+BR1mU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770460768; c=relaxed/simple;
-	bh=GWJT77GzIXBDylqhuCWi1ijUbwirtIeOU0ugsT1cOdk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a20CleBMHjhqCWp2TEwYjBJRQv3+zLXkQzoU3+c2cIWtSsYDcB7Qslj3xz5V1uGPzU8O+0PQa0C+Wgj6nH0X26N9jbFj9u8vs6k9znbhBLWKTPxuqAvxDje0o0RTZYvlxxZqrnDWLHYcrMHlufZ6MavhuTv1x/iqCqLVGDHS8co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id BF75860345; Sat, 07 Feb 2026 11:39:19 +0100 (CET)
-Date: Sat, 7 Feb 2026 11:39:10 +0100
-From: Florian Westphal <fw@strlen.de>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH net-next] xfrm: reduce struct sec_path size
-Message-ID: <aYcWTvF7SNm1NojP@strlen.de>
-References: <83846bd2e3fa08899bd0162e41bfadfec95e82ef.1770398071.git.pabeni@redhat.com>
+	s=arc-20240116; t=1770461427; c=relaxed/simple;
+	bh=6OZX7EKogGNAZsj0RNloLVy4u0hDyHPuVJ6PiQoyoFM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LkN1MkB8iWExUul2dIRRyCXGiU8b6ZeXkpFidhVEjScGg1IWhldZhuhrYjuorN/NvYW74Uuul4KLNI5Y2Kjr5hyaj7sMpV5RO6vVFhp2itLFupP88ROBE+ZkvZjGM06QtuSVxH6QHuGOcdEUpLOWewIqX5lSogkFW3Fvy5DRBjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T3KOAyK3; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T3KOAyK3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88BF4C116D0;
+	Sat,  7 Feb 2026 10:50:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770461427;
+	bh=6OZX7EKogGNAZsj0RNloLVy4u0hDyHPuVJ6PiQoyoFM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=T3KOAyK3mZst5PAQO0GLwVxw2hHoLOlvJTwpPyVaPh9LEafu24czTJMdXYWSlRtC9
+	 xJkbuO0/CEn3F9R4zrAT+LUh4Ma+OZ+FFd/FtKcXscXoLP+iWkmKuwT7hsV5AzdIbA
+	 nYvJV5dirxKCQ5ORQC+F9tL8x5GD6M6ug9yl69R2b8/+uK3owKXmI3uBvxN6wGXx5C
+	 bqijkUOk1JlwNZW0Z0odJ/1q7iUeApUJ94vFsyb+Xv9Q9AnAUOfPoYzW39aZ+dSjz7
+	 v54TaNYEamaaqZepoTFJmIer+SpmFSiggncj6NPbhKWq83eg4EvcFzMsbrDVxkxvTS
+	 Ac0ZlSFjFy9KA==
+From: Thomas Gleixner <tglx@kernel.org>
+To: intel-wired-lan@lists.osuosl.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+ <przemyslaw.kitszel@intel.com>, netdev@vger.kernel.org
+Subject: i40e: Fix preempt count leak in napi poll tracepoint
+Date: Sat, 07 Feb 2026 11:50:23 +0100
+Message-ID: <87v7g8zv2o.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <83846bd2e3fa08899bd0162e41bfadfec95e82ef.1770398071.git.pabeni@redhat.com>
+Content-Type: text/plain
 
-Paolo Abeni <pabeni@redhat.com> wrote:
-> The mentioned struct has an hole and uses unnecessary wide type to
-> store MAC length and indexes of very small arrays.
-> 
-> It's also embedded into the skb_extensions, and the latter, due
-> to recent CAN changes, may exceeds the 192 bytes mark (3 cachelines
-> on x86_64 arch) on some reasonable configurations.
-> 
-> Reordering and the sec_path fields, shrinking xfrm_offload.orig_mac_len
-> to 16 bits and xfrm_offload.{len,olen,verified_cnt} to u8, we can save
-> 16 bytes and keep skb_extensions size under control.
+Using get_cpu() in the tracepoint assignment causes an obvious preempt
+count leak because nothing invokes put_cpu() to undo it:
 
-Reviewed-by: Florian Westphal <fw@strlen.de>
+  softirq: huh, entered softirq 3 NET_RX with preempt_count 00000100, exited with 00000101?
+
+This clearly has seen a lot of testing in the last 3+ years...
+
+Use smp_processor_id() instead.
+
+Fixes: 6d4d584a7ea8 ("i40e: Add i40e_napi_poll tracepoint")
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org
+---
+ drivers/net/ethernet/intel/i40e/i40e_trace.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/drivers/net/ethernet/intel/i40e/i40e_trace.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_trace.h
+@@ -88,7 +88,7 @@ TRACE_EVENT(i40e_napi_poll,
+ 		__entry->rx_clean_complete = rx_clean_complete;
+ 		__entry->tx_clean_complete = tx_clean_complete;
+ 		__entry->irq_num = q->irq_num;
+-		__entry->curr_cpu = get_cpu();
++		__entry->curr_cpu = smp_processor_id();
+ 		__assign_str(qname);
+ 		__assign_str(dev_name);
+ 		__assign_bitmask(irq_affinity, cpumask_bits(&q->affinity_mask),
