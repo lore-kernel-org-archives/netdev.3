@@ -1,62 +1,60 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E3038FA3
-	for <netdev@vger.kernel.org>; Sat,  7 Feb 2026 02:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0AA22A1E1
+	for <netdev@vger.kernel.org>; Sat,  7 Feb 2026 02:57:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770432838; cv=none; b=m1hoa/uKXNqOVOXsudq6J9WE2RvOwTHFYVq7WAA65Bb0+J9C6/bTUH0l1p2NLSffZo5m+WRwuXwwAdsn7JUULNmbe6vuRFuTJiwNSnZo2PmHgBFV53tDB94hBg9o8+JUGFSOIPjByVq5guVrxZ123bAPtgPA9MxJeYfvZ82gDEw=
+	t=1770433037; cv=none; b=UY2RItyUxJonnrKingI8PNahB30osrwci49iOVCl+6fuCnaVEcuelWkE34GUJ/QEZWiLwQTAz4vjkwjnuRNfA8R82dBH2U1uBEyWKVJE5xlo0LOEep04fNqZ/FuMJj/FtQGgh7+VfgdGGDz/kUKGpX6bwIJSv//Z3C2pKJifh1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770432838; c=relaxed/simple;
-	bh=qx1Jl8fKbXVfQo+2LlM1C8vtQEmuPtK1SLpDqKvAMRM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKy84v67S3B4fHQ4/3w6igiDFBdGFN/IXM1z1oETiCW3l0DhI2MP6RhO5vwbXBAFStM8rxje0T9jsM4jxPAczOamAc9xwnulELiXkZ4Qrzan/q51DwODIeNe6A/ex4XpVnQnG6G6lXJLYJ7Hu9uVXNj0bFgHKjKNbHj1kgJYBR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AB/Dz9CY; arc=none smtp.client-ip=209.85.218.47
+	s=arc-20240116; t=1770433037; c=relaxed/simple;
+	bh=F75+iwxlRTLyIzKuJzJ+ID7DQ02GZVbuxnZkr4FlfjY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mGDZfwGDz/F8UhUSFAqN3bESZptUeyA0UDIN0TtK6X9ea8yDP9OScQp4cXTBVGHP9A6nKsEWmCWJZtwJfOf4dmrJP2eFWFUTDPCiOaceV1Wxh8gt4T7aFfU3ZJYHCTaZKcnZzNJkGI1E/6nvmDhB/bdc2OaLV56nRhHIpmjo98k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OIt6/8SU; arc=none smtp.client-ip=209.85.221.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AB/Dz9CY"
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b8876d1a39bso193576266b.1
-        for <netdev@vger.kernel.org>; Fri, 06 Feb 2026 18:53:58 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OIt6/8SU"
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-43626796202so1858120f8f.3
+        for <netdev@vger.kernel.org>; Fri, 06 Feb 2026 18:57:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770432837; x=1771037637; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ML3AMg0Eja+zFme5wRXmPhd9dcxAi42x3kc/admjyJc=;
-        b=AB/Dz9CYFXwnM0RtBIOLdmLKa30KH8Y9Xuw+7iBfXoU91LdCPN0vvGKSj9v6Drs/lE
-         AqrkcbSj9mS/Zh7dWfW0ZVSdx6PWXaRq9f4HHl+cQ+7ZGiyK4xbn0z1sAd4XNSpMS48a
-         Up9Ts1rlgBgVpXZmFhPdwTe6cOH+F28k1o0Bq5DVfP8w86ru6o6b3ecsj4xM7F2J0EHR
-         N8rt1xb2hoKLCCM3rB1R3PkUvclAowRUuexdPGOR/cX9ywkjCdeX76Lx+uuR/+rpRulS
-         4zEMWJ646h9SCb7PdOvchrwu2n/axXkvcnXPDkg6pmfhPhlw66OgeioX6Vb4XHgt5mFs
-         5Yxg==
+        d=gmail.com; s=20230601; t=1770433035; x=1771037835; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=nV2/pR09fRCKiwS6HhA3KDDNoxylvhh0vYo9VwjMiO8=;
+        b=OIt6/8SUyXuH58tiM/6XHW8F27w+nWmLv1HVm7n73tqWuT47/1gj+0gufTEVVOSC3q
+         IZubAqZC2e2REphLGPmirJCGfNCg3CTam5T4d4Q5iCMiEnwjpycnu04nFrpSrfB4SEiU
+         nyE7IG377A9P/KdR24Ovb7lps342l6M7MC/FMG/5XW/Xoh4BPgs4wzscuhPxt/7b0D3g
+         AiJzxuthST9NRmZRg5TYxMqjnf22aS0E/lzhgPR2nd4aKmR1jdqCfEW1RLbDbhWohENV
+         yna8EUsF0g72iUpIowAUsxLqEGkOdzxKe+vXwyXq+xr9SihVpwBLzNH14jWMTxVkLQLh
+         ffDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770432837; x=1771037637;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ML3AMg0Eja+zFme5wRXmPhd9dcxAi42x3kc/admjyJc=;
-        b=sJGFiuyG65yY37EG1JmU9vGbY4bTeD9ZzZe4jBap6Lyc2SHHz7VDjW1PBuphc9yB4k
-         Mcn1hkcuFzvaQjbqkfFivLyII5Qdp8BuBV3phb5Y8g3NzKjIi1WJ3ntmTMUn8IQVFZDb
-         TL3J5R/MOXmJzjHkYaHarGy/E3aB2JHum5ELkZTzQG+UnAB69yvNBOMNtHNnG8FT8zdS
-         JaYVykZyL83yB9H4cYE89YyI1lRTj1JORRbKgp1s7u4c/vg7jjgl9FNyX3AYTOuWwhTa
-         3/3mUSwfV2BCE8pPCOumBcg8qptgj4lkRkz7WIZIEgc6e1t3rjoWybsW1Ia8uUP1V4xx
-         crQQ==
-X-Gm-Message-State: AOJu0YydSCXCj16p239QILaJ8eHR8cI9W8kWCyKKFTUgt2WDq+Cg5gyB
-	2TDoS+1ihtP9J+p36Ogedy7NsDXEBwzCNIblaqHoXMAPtHEpkdKrEJMlmu3IzJnM
-X-Gm-Gg: AZuq6aL/+fNTzo+Csww69p7zLaa0yQz8rZ/19AygrbeD5O6WdgEZzqGiQ5Dq9ZiAwzK
-	ZdAWWUwXZgzPQM5h77Iz1Yyntk3D9EAI/IAV+RxnCU09K75oYI8dCRkHYdvMn4w/OFB+qNCmyIn
-	/IOBiCFk9sRWcT/aTxax+DHVj66CnJ4cCX2xL6Iohz6kccRcXbsXvRecVFOFBWwsSm7kh4gUMx0
-	l0Xfpr41A2IJR6R3BCf1kzdxeEOXvDb6TE/GyrIv4uzBztrd/ieFOaOaVyShesRPGpzkNoLIJ0C
-	fGUCgPb998VI6FRc6+yeG58K7DiE+N6hV0iwJXmgNvV5fS52fdgVN8IEbs7gbTRmEsncMgf76rq
-	Zj04gRjNTiyA9hVGaYIBN9vfozinGWGKsAacAObxzBdZA2PAa362lKkoF21KOJKt+8U1lrSyyq/
-	DgaInpNKo=
-X-Received: by 2002:a05:6000:1788:b0:431:16d:63d7 with SMTP id ffacd0b85a97d-436293bab38mr7154758f8f.47.1770426341018;
-        Fri, 06 Feb 2026 17:05:41 -0800 (PST)
-Received: from localhost ([2a03:2880:31ff:5::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4362972fb81sm10293381f8f.20.2026.02.06.17.05.37
+        d=1e100.net; s=20230601; t=1770433035; x=1771037835;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nV2/pR09fRCKiwS6HhA3KDDNoxylvhh0vYo9VwjMiO8=;
+        b=lfakk+5NL/w0f/Jo89gOkNijTl1PudZfcHrkyogPtxhBBr/UoWz2Jjs0tArTVhqOA2
+         UyBYl4C5ay6R/AH7RDabpY4aarcF99Q9aLQUwfEajqFQcoFAgLNUSGctrw+oZMqvWUrY
+         HCigFMiyjHHLApLDHwQs6jt0y8WsdReIdZbllNZ6KdTvDN6t1DJppmyrs/dtO/fuP9KO
+         tVW8rvWsz5oXGC+7bMG6Qt9cBYecjTNbmSfkv+ZO097dF4V0zdZC+3jvQAPrRMIoht82
+         drOt/2SZkYTRNbFKxU0KfkVRN34ZIYTHgIgKuqxZz8qoq26Obzt/VrhIDJgyb1DUavsD
+         Ox8w==
+X-Gm-Message-State: AOJu0YzaU2ccmRvI0tZ2p4x6jMMbwoTVeIFo0kj81lguXUx6JWgB8U9s
+	Pd37xtT6HLDA5Ij2B+jqQwXxLDKASB49xsJRvZ9UAoLBrLFi9JKR8GUnwZ9JoUfm
+X-Gm-Gg: AZuq6aKr0Z/5+gdt7xk3cPdG7mNdrKTUp9X5EdHfComsCDMgCuz9zWcFdN+wqGueFdv
+	jn3YsAyIzcT3rkNmUCKVSVbkd86xkClRpWuqAdzYlhJwVGpRDYSmJeuSTntvvmdu6fd2MZIezKK
+	xCe059KS8elYw3rfntJxW5YZnFYfjdpMVWltX8JO3oe2LQg20D5t9MwTLAf7AWGiU6HLTFiVWS9
+	FS/1Vpe4hJUkBA1K5wBNUGzzsVBgsPbzWPKoL63BYCE7vRn1qSDhrssblaJpLgEiFPDFltxNddy
+	NnaESeNovvY/sEmE2WC1dhGKvhU7bhF3YTd9/6OsEo2VI+6pCkn5Q0wfM82Z8rWvmfA92mWa3Ks
+	qMqvBiMf2NhWVqRSWzjTdg2grW5/PU6/nuqP/iClF2+DJwAVrN10xRQtqzV3ataCCsSFXItmr30
+	Bz2a6kM3d/
+X-Received: by 2002:a5d:5247:0:b0:436:34e8:e665 with SMTP id ffacd0b85a97d-43634e8ef4amr189103f8f.54.1770426329243;
+        Fri, 06 Feb 2026 17:05:29 -0800 (PST)
+Received: from localhost ([2a03:2880:31ff:46::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-436296bd4a1sm9576013f8f.17.2026.02.06.17.05.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 17:05:39 -0800 (PST)
+        Fri, 06 Feb 2026 17:05:28 -0800 (PST)
 From: Mohsin Bashir <mohsin.bashr@gmail.com>
 To: netdev@vger.kernel.org
 Cc: alexanderduyck@fb.com,
@@ -83,12 +81,10 @@ Cc: alexanderduyck@fb.com,
 	saeedm@nvidia.com,
 	tariqt@nvidia.com,
 	vadim.fedorenko@linux.dev
-Subject: [PATCH net-next V2 2/5] net: ethtool: Update doc for tunable
-Date: Fri,  6 Feb 2026 17:05:22 -0800
-Message-ID: <20260207010525.3808842-3-mohsin.bashr@gmail.com>
+Subject: [PATCH net-next V2 0/5] net: ethtool: Track TX pause storm
+Date: Fri,  6 Feb 2026 17:05:20 -0800
+Message-ID: <20260207010525.3808842-1-mohsin.bashr@gmail.com>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260207010525.3808842-1-mohsin.bashr@gmail.com>
-References: <20260207010525.3808842-1-mohsin.bashr@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -97,35 +93,50 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-ETHTOOL_PFC_PREVENTION_TOUT enables the configuration of timeout value
-for PFC storm prevention. This can also be used to configure storm
-detection timeout for global pause settings. In fact some existing
-drivers are already using it for the said purpose.
+With TX pause enabled, if a device cannot deliver received frames to
+the stack (e.g., during a system hang), it may generate excessive pause
+frames causing a pause storm. This series updates the uAPI to track TX
+pause storm events as part of the pause stats (p1), propose to use the
+existing knob (pfc-prevention-tout) to configure storm watchdog (p2),
+adds pause storm protection support for fbnic (p3), and leverages p1
+to provide observability into these events for fbnic (p4) and mlnx5 (p5)
+drivers.
 
-Highlight that the knob can formally be used to configure timeout
-value for pause storm prevention mechanism. The update to the ethtool
-man page will follow afterwards.
-
-Link: https://lore.kernel.org/aa5f189a-ac62-4633-97b5-ebf939e9c535@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
 ---
- include/uapi/linux/ethtool.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Changelog:
+V2:
+ - Clarify pfc-prevention-tout applies to general pause, not just PFC
+   (P2)
+ - Add pause storm watchdog timeout configuration via pfc-prevention-tout
+   (P3)
+ - mlx5: Report device stall prevention events (errors) in pause stats
+   (P5)
 
-diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
-index b74b80508553..1cdfb8341df2 100644
---- a/include/uapi/linux/ethtool.h
-+++ b/include/uapi/linux/ethtool.h
-@@ -225,7 +225,7 @@ enum tunable_id {
- 	ETHTOOL_ID_UNSPEC,
- 	ETHTOOL_RX_COPYBREAK,
- 	ETHTOOL_TX_COPYBREAK,
--	ETHTOOL_PFC_PREVENTION_TOUT, /* timeout in msecs */
-+	ETHTOOL_PFC_PREVENTION_TOUT, /* both pause and pfc, see man ethtool */
- 	ETHTOOL_TX_COPYBREAK_BUF_SIZE,
- 	/*
- 	 * Add your fresh new tunable attribute above and remember to update
+V1: https://lore.kernel.org/20260122192158.428882-1-mohsin.bashr@gmail.com/
+
+Mohsin Bashir (5):
+  net: ethtool: Track pause storm events
+  net: ethtool: Update doc for tunable
+  eth: fbnic: Add protection against pause storm
+  eth: fbnic: Fetch TX pause storm stats
+  eth: mlx5: Move pause storm errors to pause stats
+
+ Documentation/netlink/specs/ethtool.yaml      |  13 +++
+ .../ethernet/mellanox/mlx5/core/en_stats.c    |  25 ++++
+ drivers/net/ethernet/meta/fbnic/fbnic.h       |   3 +
+ drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |  11 ++
+ .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  46 ++++++++
+ .../net/ethernet/meta/fbnic/fbnic_hw_stats.h  |   1 +
+ drivers/net/ethernet/meta/fbnic/fbnic_irq.c   |   2 +
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.c   | 110 ++++++++++++++++++
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |  27 +++++
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |   5 +
+ include/linux/ethtool.h                       |   2 +
+ include/uapi/linux/ethtool.h                  |   2 +-
+ .../uapi/linux/ethtool_netlink_generated.h    |   1 +
+ net/ethtool/pause.c                           |   4 +-
+ 14 files changed, 250 insertions(+), 2 deletions(-)
+
 -- 
 2.47.3
 
