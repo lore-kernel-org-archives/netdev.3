@@ -1,143 +1,78 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1F923D2A3
-	for <netdev@vger.kernel.org>; Sat,  7 Feb 2026 03:32:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32DD417A2F0;
+	Sat,  7 Feb 2026 04:18:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770435175; cv=none; b=eqSwFubq3vXTsFP4XDhKE6ZKKlZrrsnCZuHxvYA3KVykyFcwbWvOpQIw6Mi6+PF8KIizQBTyDbMwRaB52sdszjLwP1SkCB7ICqEj+PauW7cw6skCLBaMPZ4UECYPxeSk4M6zgPBNLVCxPqsX3F+lZm5xxbUCdB+9pbxMvTCppi8=
+	t=1770437911; cv=none; b=UfFwV+Iz1nj+xgQAxtzhY5HyxoqslXH0iu58WgsLxTswZsLXxKirOOSV5DwRctdnv9uHVEEhkwAmPEB0Ju0g/bmkjkF0hHGKPnS8OSwyK7BMiGk8/86NTY5UuteR8SFlkI2vxUgeSdq2KwCWgwJGF++2hwzCGS3TsGsbI+v3MVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770435175; c=relaxed/simple;
-	bh=F75+iwxlRTLyIzKuJzJ+ID7DQ02GZVbuxnZkr4FlfjY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zgt9zb+0CMRSudWhXnjAZT8alA2682dxJW102f8OrHjiFEiTjLeZR+2G0p8raglqDruBK806/civ1Ih+w7Knr8vhAL7UZC+iIc7WSNvrzjyIdScyIw7Cj03+/iiMH+8Xk+wpiBvlfyUbZbftJbVE6b/rdeeKrzcs+ATJ0X/JMSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mQddH7Oz; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1770437911; c=relaxed/simple;
+	bh=I/XPaaMl7qmHyAIo/RZRkeko4OP/CUjaw/tpKV60tgo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TbnXo1HuL+F0HP9+euJ0n4mG+MqF+bMSU0Oea8M2nCX0em1R8oLQFSl8mntJtALbYFF2UaIhdd4CreXKBkFa5YMvBWDHTzeA1NdEdc+JCB+nCA6HXT7TVyR+lZ8S8IHCAaZYW3RlgnsXRS7hhvzWRKvZtTIEBgO5x69woevhKmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ee0d4BmY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mQddH7Oz"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48068127f00so25754565e9.3
-        for <netdev@vger.kernel.org>; Fri, 06 Feb 2026 19:32:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770435173; x=1771039973; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nV2/pR09fRCKiwS6HhA3KDDNoxylvhh0vYo9VwjMiO8=;
-        b=mQddH7OzOoYQhkb+oRz8ZMtoCNemJ0nFfYzmzinYhYkIary4u9QNSo3go94zZrAdEa
-         7Egka4BO2/WM+PIIdmIZQSLBE3ELgrsVtpV0fiW49H7ZsDfZbMKOQNUWIZNA6vHL8QAh
-         pvUk6O5HqTF+FjZ6HFQ47Q8HF2n8OUiI+oAuSG9nPjmCumIuE0BLF6PeNLifPIqbPTlR
-         8U+L/gFhol0rgRAAidiDumcVRATibNkHlx1ZrFJL72L+tvpw+5QjP8McN9/qG6SdLrt5
-         K7myOXCE8Q7z4d4Dhj2KuTcgbTFUMBFPU5AO3o2IFgz/MHWKfT+JuuajB8mP32L0eapU
-         RbcA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770435173; x=1771039973;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nV2/pR09fRCKiwS6HhA3KDDNoxylvhh0vYo9VwjMiO8=;
-        b=f7n8Ge8+Jy5UqQi2hbrZBq/EDusb9hA8YyF0uHG9UVbILNCz/fXH3IUW+9iJGKUVQd
-         sJmut3Q9ICtRcrv+0UlYwrKMtAoXIlOQHGuvItlmbwdpHaB51u6fCmaa/Y6UtgqQpee2
-         YWX8rzOsu488N3BJ3kj7z6f0KFHJcDKHUMfVLWHKsuofkWMGKRZifdCVfVhCMGTXFWNN
-         /azM0Dt2Qbni8rWW1MByhhxEp3fIc7mF4hFwKc2KPIfZ7boixNQeT8vtMVxliAw51WrD
-         sC4CkREqVnu+GY8MmwaNpUxXFxbO1jPijaHvT6DkZRLvXl+rFVYUsDW69x13npeT9+ez
-         wESg==
-X-Gm-Message-State: AOJu0YwBnuiAiy2+i2bgPOTS0yOyhOCDTVlWLU3JMK2rC7JqjTqRpS50
-	jFurfgY0QXzCUjHMbUnZAaqWKpwtpvs6Ar1glE3PcMU+zAiUi8XEDi4hfZO2jvcB
-X-Gm-Gg: AZuq6aJ7UuD8+ig5F/27N9XAqFBgRItxLmbgIZsLF5j12tp0R7SP5mbIK+VgPn3FYEO
-	4G6jHTl1DuMg39HwkwTmP4Rcqrj4Vt1Q8q47nqj+PkBhrR1Y3/FZ8FVl86itD8Txhjxs4GEu5/k
-	w+2C+ZDIJAtIpHcHqfNayeeyMsai8wxNuJhDpev6WQpck/AgJKGiMAxEkEdUY3EK5vkZJADCaM6
-	sUDWr8BZNPxwnumPZUJEzUhKRdZAb8TStWR4K7HHHZr11wfPHLjYoluJLbGY1wCnddd2C3cUwMI
-	e4pF8J0NsKHuajq2CrXH7qiDo/XT5rh7EFsfr5nIz3gJcEacwh8zPxYQqHXseZnS6D8a9WAyw6c
-	Bp2THj9+LFs7l2W4w15FyX/CpXS9Bn7oEtHTQtkanWrvJ5gQ6Erajg/Ady2ea5WAZG78UdvrPuC
-	NsQUBRVbk=
-X-Received: by 2002:a05:600c:8b6f:b0:477:7975:30ea with SMTP id 5b1f17b1804b1-48320236963mr61223265e9.29.1770428553506;
-        Fri, 06 Feb 2026 17:42:33 -0800 (PST)
-Received: from localhost ([2a03:2880:31ff:7::])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48320961701sm59340825e9.5.2026.02.06.17.42.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Feb 2026 17:42:33 -0800 (PST)
-From: Mohsin Bashir <mohsin.bashr@gmail.com>
-To: netdev@vger.kernel.org
-Cc: alexanderduyck@fb.com,
-	andrew+netdev@lunn.ch,
-	andrew@lunn.ch,
-	davem@davemloft.net,
-	donald.hunter@gmail.com,
-	edumazet@google.com,
-	gal@nvidia.com,
-	horms@kernel.org,
-	idosch@nvidia.com,
-	jacob.e.keller@intel.com,
-	kernel-team@meta.com,
-	kory.maincent@bootlin.com,
-	kuba@kernel.org,
-	lee@trager.us,
-	leon@kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux@armlinux.org.uk,
-	mbloch@nvidia.com,
-	mohsin.bashr@gmail.com,
-	o.rempel@pengutronix.de,
-	pabeni@redhat.com,
-	saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	vadim.fedorenko@linux.dev
-Subject: [PATCH net-next V2 0/5] net: ethtool: Track TX pause storm
-Date: Fri,  6 Feb 2026 17:42:30 -0800
-Message-ID: <20260207010525.3808842-1-mohsin.bashr@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ee0d4BmY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9C1C116D0;
+	Sat,  7 Feb 2026 04:18:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770437910;
+	bh=I/XPaaMl7qmHyAIo/RZRkeko4OP/CUjaw/tpKV60tgo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ee0d4BmYWWvHV3GWMPuWrxlk6Fv7lKCcva6DL6ccSKmQ0OumJuPry1IQD2N8GsgJt
+	 n3JfVn0hD3Ejno9RqYXG88Itr+1F0W9NzayXXTMBIWRxZAyKTYEmC9Az8zDhXobtvI
+	 5dH3Zv4lcDVn4Av1RrLSrsizD6eKGWpz4eOEt9j2NcdZYXGq3h27liJMzAUprMIamG
+	 ffEqdpHoWfFu57Vttw0L7V78zFtp6NTfA6t68oKObIGDKd6XGX6icWm6zVvRY5cWtc
+	 9qz1SRh1FDdeg3cBhNJhIcUAxv8C+np/7eqVwYUiYurZKO8nlhNHZWGXwYOclbHDVr
+	 C6BlbeWHnwEiQ==
+Date: Fri, 6 Feb 2026 20:18:29 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Daniel Zahka <daniel.zahka@gmail.com>
+Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Donald Hunter
+ <donald.hunter@gmail.com>, Boris Pismenny <borisp@nvidia.com>, Saeed
+ Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>, Tariq
+ Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, Shuah Khan <shuah@kernel.org>,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next 0/9] psp: support rekeying psp protected tcp
+ connections
+Message-ID: <20260206201829.45fd9675@kernel.org>
+In-Reply-To: <f3560398-d6fa-4f05-9496-f0e59a5c0fd2@gmail.com>
+References: <20260204-psp-v1-0-5f034e2dfa36@gmail.com>
+	<willemdebruijn.kernel.37bf21c78aadd@gmail.com>
+	<f3560398-d6fa-4f05-9496-f0e59a5c0fd2@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Message-ID: <20260207014230.EYdp6BG5pEnyMfPzjJ7BXEKC6ac6_XUmrg2KzDzJYUw@z>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-With TX pause enabled, if a device cannot deliver received frames to
-the stack (e.g., during a system hang), it may generate excessive pause
-frames causing a pause storm. This series updates the uAPI to track TX
-pause storm events as part of the pause stats (p1), propose to use the
-existing knob (pfc-prevention-tout) to configure storm watchdog (p2),
-adds pause storm protection support for fbnic (p3), and leverages p1
-to provide observability into these events for fbnic (p4) and mlnx5 (p5)
-drivers.
+On Wed, 4 Feb 2026 16:43:46 -0500 Daniel Zahka wrote:
+> On 2/4/26 3:45 PM, Willem de Bruijn wrote:
+> > Daniel Zahka wrote:  
+> >> In the case of tx rekeying, as soon as we install the new tx key, we
+> >> have no use for the previous one, and it can be disposed of
+> >> immediately.  
+> > So this defines a rekey event as an instant in time. An alternative
+> > choice is to rekey at a specific seqno.
+> >
+> > The difference matters only for retransmits.
+> >
+> > Not sure there is a strong reason for either. But probably good to
+> > state the choice explicitly.  
+> 
+> I suppose if we think about a rekey as occurring at a seqno we could do 
+> away with the deferred key deletion, and instead just wait for data sent 
+> before that seqno to be ack'd before deleting the key. I would say if 
+> nothing else that would be a significant improvement over what I have 
+> right now.
 
----
-Changelog:
-V2:
- - Clarify pfc-prevention-tout applies to general pause, not just PFC
-   (P2)
- - Add pause storm watchdog timeout configuration via pfc-prevention-tout
-   (P3)
- - mlx5: Report device stall prevention events (errors) in pause stats
-   (P5)
-
-V1: https://lore.kernel.org/20260122192158.428882-1-mohsin.bashr@gmail.com/
-
-Mohsin Bashir (5):
-  net: ethtool: Track pause storm events
-  net: ethtool: Update doc for tunable
-  eth: fbnic: Add protection against pause storm
-  eth: fbnic: Fetch TX pause storm stats
-  eth: mlx5: Move pause storm errors to pause stats
-
- Documentation/netlink/specs/ethtool.yaml      |  13 +++
- .../ethernet/mellanox/mlx5/core/en_stats.c    |  25 ++++
- drivers/net/ethernet/meta/fbnic/fbnic.h       |   3 +
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |  11 ++
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  46 ++++++++
- .../net/ethernet/meta/fbnic/fbnic_hw_stats.h  |   1 +
- drivers/net/ethernet/meta/fbnic/fbnic_irq.c   |   2 +
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c   | 110 ++++++++++++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |  27 +++++
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |   5 +
- include/linux/ethtool.h                       |   2 +
- include/uapi/linux/ethtool.h                  |   2 +-
- .../uapi/linux/ethtool_netlink_generated.h    |   1 +
- net/ethtool/pause.c                           |   4 +-
- 14 files changed, 250 insertions(+), 2 deletions(-)
-
--- 
-2.47.3
-
+If you mean the driver xmit problem - not sure this changed much,
+a (spurious) retransmission may theoretically still be queued on 
+the driver ring when data is acked.
