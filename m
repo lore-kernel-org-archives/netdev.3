@@ -1,181 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4820730FC17
-	for <netdev@vger.kernel.org>; Mon,  9 Feb 2026 06:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770619334; cv=pass; b=grdQpaxpIPAHQPnLGEicWO/LiUyQH0/KvWzd28IUCC8061CgmBIfjrCHWv6AHDH+X+EghFvYcS5dfR5OBZBY6k3Rk1eKrQUfMdLUMJlwKTnCnnSnsS7nhSVjHS6RUMHlGoICqa7PL/bCe1e2kZraofm35B6C5JF6U4InmhBBArU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770619334; c=relaxed/simple;
-	bh=O8cJ6Kj90NvIyQjjqT95QHWqU8SDK+V3+SP8mwmcVYc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lux7NHfQjkaXMHHvuONxzrLBqJEUU+/9h77pzwN0s3adwFkfL7eQetay32Q00rb8R64j2cGkPftTZRx8uDx8K+/RkobEjBeH5RQOAFwXTy5oVOTpoLEBYDRdlpTvhldAtW1GZi25rN8A/VLH0IhWHcQ5bXYh88eD6B2Pky0qPIU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AcIp51Zd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SL2/9lAP; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CEDD2FFF97
+	for <netdev@vger.kernel.org>; Mon,  9 Feb 2026 07:09:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770620949; cv=none; b=Pke5TVKJgENNYiJPg5YZVN2eDC/iL+fGKpX7Dd3k6fE/YFJdv/zKb45h5BGAhzHPL8ZRRSZq5lPbPk+5fCDc2kBN24z54NtylR4kp9k+2QlvhZwXE1gzZUze+bzCDqV+IiEnUWdYoc1ok6r9N3Pg/XuL2Ek6xoH0LGjvU6aXBX4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770620949; c=relaxed/simple;
+	bh=I1NGi+ekaGjV0E8Ubikboz6y8tPzpfia4WSzbvIpj90=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ig9z77rrxKsiO7UGBFCX9KLmOcoDGQC0I8k9J366s5Zuya4AIQhq9XWdzjoxtfLyjrA9Qxh8GZPhAruI0HBRmE3S+hH8DXrC68aysw8CSEUjUu8hgZIJUUHv3FyPBl6THyAtLAeqBFuF+M3W3HKVF7dqiKug3sH+3K1oeSJ3k/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=PgGjAHPU; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AcIp51Zd";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SL2/9lAP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1770619333;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+rAEkP/ENKOKGthOaBA1iQpwk+zp5uugkrzm6gZ8wcU=;
-	b=AcIp51ZdvrrSeSz2lLcTJPB35s38Mze4+WmTjAMRhySO8xZ+l4KGYThx8QzW3nQD/5QlcR
-	0lO+Zscqy0VOUAo5xrz7uVji6R8Z4XQr1YaTx1VI6Sc5r6Sq1w3kUzzNq9YMljXZNO4i5u
-	swUIRdua0OsCSywz7wqLDbURzq8OgR8=
-Received: from mail-vs1-f70.google.com (mail-vs1-f70.google.com
- [209.85.217.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-52-V71HAy49M_iTdlZ5Zc-rjw-1; Mon, 09 Feb 2026 01:42:11 -0500
-X-MC-Unique: V71HAy49M_iTdlZ5Zc-rjw-1
-X-Mimecast-MFC-AGG-ID: V71HAy49M_iTdlZ5Zc-rjw_1770619331
-Received: by mail-vs1-f70.google.com with SMTP id ada2fe7eead31-5f55092e3fdso11928508137.0
-        for <netdev@vger.kernel.org>; Sun, 08 Feb 2026 22:42:11 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770619331; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kZfWraAwbDz1mzejfnE5rSFx8YK0jMLc9qaWsLw0t+AGLwZg5hg+HEYEZyEgR9QP46
-         HjlphfGzME0ngd34XFP+3aO85vt5AirPJKDACrwzw+jzMa22ZGZfdcIwv9RoidQ45pI8
-         ZOSDqhTEYTUOc9Xw8ru3Qx/HhvbomstmCczYmwRtyjk4fwp0qK94vwLGmWTlbc9QgMLp
-         xLsWKbUar8tn1Z06fHlciqxA0Smu+N90NzyQTSJVtFF7vgQpFw3OQeo9E7x70v9WPQD5
-         uBB0/p/nAHtTOf5WimXcy12Ygs65iLmeLCVUVEbsm1jzHVf35HRZzQ6wuZ4VO9KcdhWu
-         Z06Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=+rAEkP/ENKOKGthOaBA1iQpwk+zp5uugkrzm6gZ8wcU=;
-        fh=ye92V9tKlnlhMYjj2pYI98Rv8z62w1pvsIsQpr1/TgY=;
-        b=Wa1vKuF+N6r5ARoPF1XS2pdaVoXf0vAv8ZCyUEXHuOYhBuTPISkdkrER9TpUAbxDrE
-         ISRGgcMYGv7AA/xEPg1XyErzgvC9yNayKyZGSFiSGc+Ylj4HhRdlQ9gAJXI6rau4OPtz
-         0NpNQOBF5Kj60L8p1teqgqoUzttqAykrBMDPzRtzEGvaIECnTy4bhMh7y9sFRcU3Npjc
-         2Wg6NNZo3z0OStIlmzpMSspYxvbbm/ji2Tbc7qxFuTWP78iYEg1lFPM4QQGxiK6LKXiu
-         fu4esTE6PUrmM5rBhzJZW1NO5Ru5nPbH3dYXXze99bFwBEbCFR6EvgbRodR54Fz4+dfS
-         Bnpg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="PgGjAHPU"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-4805ef35864so34057955e9.0
+        for <netdev@vger.kernel.org>; Sun, 08 Feb 2026 23:09:09 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1770619331; x=1771224131; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+rAEkP/ENKOKGthOaBA1iQpwk+zp5uugkrzm6gZ8wcU=;
-        b=SL2/9lAPYkmcyzw1pHxouL+AgTG+qAmi6/pDxi4Zp1UqjlVHm23AKzp2D/7IXLe26U
-         +XKwu5uyuqso08OiAoStwDyIN0IVjwBeJA1quEh97fldnKC427Qoy1dwkHph318NaApd
-         BqWbiAkh80AdEAcD6IfGYCRbK2Ka5I9QI2j2wogf2yOfXqPQUAblIyZrXbeL8ZvXWDLa
-         faXEuaZfwe8Ry2eO/Dd9u3DalOYnqFrmKwa0/Y58AdwWBaTjo+4yBd2h8EQyW5lZ50zi
-         1z9MIIQrThBYytgwOREuMaezsKCRGCouLArJciHEZ/LXb8kVMSA78nSdaXw+d9JzOm88
-         celA==
+        d=linaro.org; s=google; t=1770620948; x=1771225748; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=H+wuaBU+jHlT/7T8bfgNNKqmz7w+AC3ayhXibObZLas=;
+        b=PgGjAHPUGNCbWZp8KIEmQS9TfKUSg/z/OuZIVeEZuQCq9MyxCUm1qYj0mZObofCesY
+         VVKc46buzkVTxS6MK7RuqIytyqcIvplBJoixjwnV/rdQJYiNpe2trah1AzNGsX6VMBEE
+         AqTqpsFMWxORuaU4ST6GNw5hndiAGU8OPhkZtJEwQi95HVcBp1JrUF8/gNrbS+GJ3mnO
+         Yay3G33oW/q9eHBpHJiCTi5UEsHWB3yTnbE4mIhh00lODoQ80f8lkUdYwcMHM0fcGMXR
+         vgmUNYzeRVDZMOLaSwC1t8Z96G9n/OtPjf8ysIOqNUncPVTWpdBV6lbI95ezXaagfB93
+         1hLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770619331; x=1771224131;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=+rAEkP/ENKOKGthOaBA1iQpwk+zp5uugkrzm6gZ8wcU=;
-        b=LHG1Mq90IDp6reyizCsvOGWpDgrcucNccSPD4U3SQ+34Ze825j9VTH11i3KDEiYATl
-         69WBlMJXE+3/97yXc3E7bvBQLTamCmFM8Mrq93Sidl4s2B/n3hWFSA5u41IXUPOGRSFx
-         VJs13xgjbqfp1249MEWqYfiFkvIl83zIsNM60s2xa3yp78MXrg8VF+zvO/GQamE4pDzp
-         6sIQrB5y9aWdO+N9zn8dvRyY+1EJS18T/nehL5k+xeeWdo2lzCCAdiHweafCq7sQ2pj3
-         iNIf7bVbmUukUO9kIm88wh0mAj0SZ4EeiwArla9ABbDszUm/3fU5UMnF2pXF8XJ+Dl68
-         mx2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWhsR+rFny7DT2YaqIW5fweqB+GUvD1Udsc936qMhJVOQ0/OkXTZLGWSWVwWSG1JnHV/KJyGxA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxZxkqt5xEG3cOeH1ZrMs+RHLGARNwczxhEwZqVZsTWCLvhs0I5
-	TNqT+zdiPfVYThF/4vAgNpxUxgI8Eg/BMnOnQnvspKt0ll2gsSsuWQtf45gGDUF1gY6rkjkTAoM
-	WrA5PaSHx0PVBDbS7yuRhH1fICbPPzPeO4jnr2Cqq9ZwsTrGgCX6sdZqHWchOfBzPfZxVxk0Ids
-	GD0fbItcR7HJuCYlRVeNoK4R8UMI8vVNtg
-X-Gm-Gg: AZuq6aKQRg9DXENBk48jny5Rv6dWayI3YwL3HNtCaGqSi5EXiZB+XOhGHDYflaxgs4E
-	2kjXtY1if+1yYt0sK8v0MVf/mauv7+EaqnoZEjWrlaFcDPD3Ei3jI0YTkoQsc5ru5oPXnrTa+EP
-	iEFOd3v7hvbLngDIVrhMmGUcbaUynNDXiUzTATONnVKRmKjhP3pEeX8SWvr8vze2mZMsU=
-X-Received: by 2002:a05:6102:5108:b0:5ef:af68:e6bd with SMTP id ada2fe7eead31-5fae76bedd7mr2971618137.2.1770619331278;
-        Sun, 08 Feb 2026 22:42:11 -0800 (PST)
-X-Received: by 2002:a05:6102:5108:b0:5ef:af68:e6bd with SMTP id
- ada2fe7eead31-5fae76bedd7mr2971613137.2.1770619330991; Sun, 08 Feb 2026
- 22:42:10 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770620948; x=1771225748;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H+wuaBU+jHlT/7T8bfgNNKqmz7w+AC3ayhXibObZLas=;
+        b=XRvUGV/MTqlYwga3a7ysiZ13orQ2Lzcj1QiZ3jdWcISHBQ0TuvdtmQqGb0//R1nt7m
+         7wcLoQ/FiBXQxwFVAh27NME9IZBMocs7YLeVSzJrGbPL4exeoA9SiSjQ/bx+rbnsM8ec
+         eECohhww3rU4BmUUaUJJdqTLGRII8SqIpFF/Wf/UhyB0cam48QkPVAoDuclHsvbfqb9+
+         5FH41OUH70ifdf5T7Zy7EYSPBraPvss4Z3B/8Tmz1+OXWUiaXqlZvAkoIJJjLDVgw3zm
+         vtlRvahzY7l2j8JQTdkQ48cMS28XqIjsH3NgKt2VnVuucWd1rcH9vTkIRSB/+rIoEcBg
+         XqXw==
+X-Forwarded-Encrypted: i=1; AJvYcCWm6D7dn7SuBnBJ7AxcbNvddSkDJwRq4B6qq9Viy01EttxlVLr8uUwhWGOgdLOp/7yRwj0E2eE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdtBXdTXZaJzrtPU2zt1XaHDcRVDLyOtGcLxiZDJEQL1qJdcTC
+	VIfS+p9NIe6/eiA9mulyyE6m9QESPOjPmkOGdso6ZXGOTcyurRUF78byr04bE+vhjW0=
+X-Gm-Gg: AZuq6aJon54Y6cq4LMl2vPEMy33MPaYh3nY+cFTitqlK3rt2iP+Vvj7nXR2NN+vRC8Z
+	eqljfS6Z5LIDFojdWuN4Aq8muX+t1SP7iYUxxlPldWlW6O4q5KQ3gU5HcEAKKx5EouetoG9LkAd
+	D4sSk/na2X42uRNcsWbmS/IEHMyQPrsJ/meX1C6jPccpsGFUG0EGhGB5upO2U3eea2/iJ/Bd9Pj
+	OGGP4fPi8IYkMYnzh4fJNthlnhBCQzX9BAkVjhd711bJzrhgvuVjihaVJ+PtxZ9IiDp2HCV+D4e
+	1WdzhnTziaIe77mGGUjaf3qGS5QCwZRuVkfSRJ87+kaRIRgTlVERyLdQ0qnKw8G0DSP8NDqr2Iz
+	2VVa2nKbyHEpx5nNsuk24BIY8f1IhOkxkVkKJqaqmTiYUtOrKdQZw2kgJAd/NjGzPTaYsL6mosg
+	1jlHNUqjwV0cZXpqVI
+X-Received: by 2002:a05:6000:2883:b0:435:a815:dd86 with SMTP id ffacd0b85a97d-436293b28f7mr16672811f8f.62.1770620947533;
+        Sun, 08 Feb 2026 23:09:07 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43629754c62sm22756355f8f.38.2026.02.08.23.09.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 08 Feb 2026 23:09:06 -0800 (PST)
+Date: Mon, 9 Feb 2026 10:09:03 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [bug report] net: ethtool: Introduce per-PHY DUMP operations
+Message-ID: <aYmID1BOGmwb2rUD@stanley.mountain>
+References: <aYXu0esD_wSjGTZm@stanley.mountain>
+ <c9c6378a-14a3-440a-80b7-f48cdb06623b@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260208143441.2177372-1-lulu@redhat.com> <20260208143441.2177372-2-lulu@redhat.com>
- <20260208123029-mutt-send-email-mst@kernel.org>
-In-Reply-To: <20260208123029-mutt-send-email-mst@kernel.org>
-From: Cindy Lu <lulu@redhat.com>
-Date: Mon, 9 Feb 2026 14:41:27 +0800
-X-Gm-Features: AZwV_Qiz8bHINy5XI2QvLVezbxk6iTbCBvt72uLxPgwE6Zaly7hURPFi-VGLC_8
-Message-ID: <CACLfguX6o5Uj4SKsPAsX53wjuNtvCxsCgK5AzfffHpdt1NrZNQ@mail.gmail.com>
-Subject: Re: [RFC 1/3] uapi: vhost: add vhost-net netfilter offload API
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: jasowang@redhat.com, kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c9c6378a-14a3-440a-80b7-f48cdb06623b@bootlin.com>
 
-s
+On Fri, Feb 06, 2026 at 06:04:36PM +0100, Maxime Chevallier wrote:
+> > net/ethtool/netlink.c
+> >     700 static int ethnl_perphy_start(struct netlink_callback *cb)
+> >     701 {
+> >     702         struct ethnl_perphy_dump_ctx *phy_ctx = ethnl_perphy_dump_context(cb);
+> >     703         const struct genl_dumpit_info *info = genl_dumpit_info(cb);
+> >     704         struct ethnl_dump_ctx *ctx = &phy_ctx->ethnl_ctx;
+> >     705         struct ethnl_reply_data *reply_data;
+> >     706         const struct ethnl_request_ops *ops;
+> >     707         struct ethnl_req_info *req_info;
+> >     708         struct genlmsghdr *ghdr;
+> >     709         int ret;
+> >     710 
+> >     711         BUILD_BUG_ON(sizeof(*ctx) > sizeof(cb->ctx));
+> >     712 
+> >     713         ghdr = nlmsg_data(cb->nlh);
+> > --> 714         ops = ethnl_default_requests[ghdr->cmd];
+> > 
+> > Smatch thinks nlmsg_data() is untrusted data, so it could be out of bounds.
+> > It's a u8, but there are only 52 elements in the ethnl_default_requests[]
+> > array.
+> 
+> I see, then we also have the same problem in ethnl_default_start().
+> 
+> I'd expect the genl part to validate cmd (I haven't checked yet), but we
+> do have a WARN_ONCE just below for the case 'cmd' is wrong, so we could
+> definitely add some more sanity checks before accessing
+> ethnl_default_requests[].
 
-On Mon, Feb 9, 2026 at 1:32=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com> =
-wrote:
->
-> On Sun, Feb 08, 2026 at 10:32:22PM +0800, Cindy Lu wrote:
-> > Add VHOST_NET_SET_FILTER ioctl and the filter socket protocol used for
-> > vhost-net filter offload.
-> >
-> > Signed-off-by: Cindy Lu <lulu@redhat.com>
-> > ---
-> >  include/uapi/linux/vhost.h | 20 ++++++++++++++++++++
-> >  1 file changed, 20 insertions(+)
-> >
-> > diff --git a/include/uapi/linux/vhost.h b/include/uapi/linux/vhost.h
-> > index c57674a6aa0d..d9a0ca7a3df0 100644
-> > --- a/include/uapi/linux/vhost.h
-> > +++ b/include/uapi/linux/vhost.h
-> > @@ -131,6 +131,26 @@
-> >   * device.  This can be used to stop the ring (e.g. for migration). */
-> >  #define VHOST_NET_SET_BACKEND _IOW(VHOST_VIRTIO, 0x30, struct vhost_vr=
-ing_file)
-> >
-> > +/* VHOST_NET filter offload (kernel vhost-net dataplane through QEMU n=
-etfilter) */
-> > +struct vhost_net_filter {
-> > +     __s32 fd;
-> > +};
-> > +
-> > +enum {
-> > +     VHOST_NET_FILTER_MSG_REQUEST =3D 1,
-> > +};
-> > +
-> > +#define VHOST_NET_FILTER_DIRECTION_TX 1
-> > +
-> > +struct vhost_net_filter_msg {
-> > +     __u16 type;
-> > +     __u16 direction;
-> > +     __u32 len;
-> > +};
-> > +
-> > +
-> > +#define VHOST_NET_SET_FILTER _IOW(VHOST_VIRTIO, 0x31, struct vhost_net=
-_filter)
-> > +
-> >  /* VHOST_SCSI specific defines */
->
-> can we get some info on what this is supposed to be doing, pls?
-> it belongs here where userspace devs can find it, not hidden
-> in code.
->
-Hi Michael
-We plan to add a new feature to support zero packet loss during live
-migration, so we=E2=80=99re introducing this new UAPI. Thanks, I'll add mor=
-e
-information here.
-Thanks
-Cindy
->
-> >
-> >  #define VHOST_SCSI_SET_ENDPOINT _IOW(VHOST_VIRTIO, 0x40, struct vhost_=
-scsi_target)
-> > --
-> > 2.52.0
->
+The WARN_ONCE() doesn't doesn't work as bounds checking since there is
+no guarantee that the array will be followed by NULL pointers.  I didn't
+see a bounds check for this, but I'm not an expert.
+
+netlink_rcv_skb() <- receives untrusted data nlh = nlmsg_hdr(skb);
+-> nfnetlink_rcv_msg() <- calls nc->call()
+   -> ip_set_dump()
+      -> netlink_dump_start()
+         -> __netlink_dump_start() <- calls control->start(cb);
+            -> genl_start() <- this is where the validation would be
+                               when we call
+                               genl_family_rcv_msg_attrs_parse()
+               -> ethnl_perphy_start()
+
+Also the WARN_ONCE() warns if we try to do a cmd which doesn't have a
+matching operation in ethnl_default_requests[].  Every time we check
+for missing commands it triggers a WARN_ONCE().  There are quite a few
+which don't have a handler so I'm surprised that syzbot doesn't trigger
+the warning and complain.  Here is a list of commands without a
+handler:
+
+ETHTOOL_MSG_USER_NONE, 
+ETHTOOL_MSG_FEATURES_SET,
+ETHTOOL_MSG_CABLE_TEST_ACT,
+ETHTOOL_MSG_CABLE_TEST_TDR_ACT,
+ETHTOOL_MSG_TUNNEL_INFO_GET,
+ETHTOOL_MSG_MODULE_FW_FLASH_ACT,
+ETHTOOL_MSG_RSS_CREATE_ACT,
+ETHTOOL_MSG_RSS_DELETE_ACT,
+
+regards,
+dan carpenter
 
