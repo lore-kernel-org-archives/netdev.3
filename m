@@ -1,67 +1,40 @@
-Received: from BL2PR02CU003.outbound.protection.outlook.com (mail-eastusazon11011047.outbound.protection.outlook.com [52.101.52.47])
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFF8254B03;
-	Mon,  9 Feb 2026 06:36:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.52.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770619010; cv=fail; b=SbJ9PUoGRrYNf5r9VIcRwIF7nDtoKJ9PKC+fU8XrB+rFNSpWIzGHFnBSXZvplAz9cXJalaskEzncWH84JS8iWFhRCx2rkU+b3UEGbUUEx3oU3IWs5Ft51ZL7NPeInHBCzYvKIhaRnO/Vs1CoIb9dFfBqlh5lKDqMcIs3joBNDLc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770619010; c=relaxed/simple;
-	bh=2TsW7YCwA55M1TYSh1Sos0XM+jsX3xPLyv7BxmS4478=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ZTwc39Q4cyFhP5TfUOHVF+i72pTMYRlAe4BWMTMI4pc7+5AMtP6G9eHPaEGRVFjcuWRpnS4Pv3QAEamIGOK/uP1XIOW6ioXR7JFlEpxgnQyqFUPR+t35uL0Nf0bYnEGJWCTKB2ds7TCWSuCoY8/KPTz8RDmJwiWBWwYwpAUZBw0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=PoxUfXnk; arc=fail smtp.client-ip=52.101.52.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF9F2EBBB3;
+	Mon,  9 Feb 2026 06:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770619326; cv=none; b=efer5neQ9q9XYlCLSCkZsByi8wQ4QJj/844f3L8c1xg1QUEx3jSXXrqVQM++7Jtb0HVJZ6ORM3bd8s1RbT+J3cXJxbzgWv6HkzE0sgoNLrcMlWTcBG5PyQm/6NvYktaKtTGzO4KFiY7TSRCBf6o6nCeEG5A+B8yC8nR5eZ9Gocg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770619326; c=relaxed/simple;
+	bh=yTxUTZZ0I5gzEXgCLCY3iGfQeY4CJewx8hkq5B9LfHc=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=mGdR92BBtiCTRebAWLgL+fxz0e2LnT9dCuO8/KJhzOcN2kxzf+2LpSLYnVAXKR169kI89uEH5CtJsmvhLZbIr7cBIxobCl/I6NBdIvxzngF3yh2sUK5Sn+YlysSkEmzytgguUn1O3Vir/KPEuJInWRR4CyBpn0SzY+oNTG9Q3Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=VhQZO4GL; arc=none smtp.client-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="PoxUfXnk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dxbz1YjckVsB3w9+lPnCNnBnPQOQWxjnoOVikgY/AHLRikSLGW7Tmsr6MEcoviie2BSK4ARaq8/OT6EfviLwKWfsgsW3WkmnTCEk4lTHjBoGWS02wR6+lapdaDLzZawEmFHNJMEOV8ffC55k2dydC9dSDQCwqnZU7aPiRaEXxkRL1DYK0+6pKfDFnx/vv+InOa6s81OopBWnO1piuQMfmsyyBOIaqLR2vAwlwLnYS9BlKvbAulOg3Tlz5OPRSZwVNwUAWKzxkcVcjOhB3rPpcvNPF+ybkUrmqoPcsp3rHxlNqOpYMj90Of3yq2r/Pirsy8fYMMUxM9SCOyqZQqH3OA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OjxWTEvPXAzNKxoZypXVGPnjXNFgbhSMt5z5lUtjlko=;
- b=VB7LhwFFXdj/M932Zqa8y3gtzzfiqZAK51zBZwNix1UInQfQNQbZMYmviLMJ5G9jeChfshvY8cbK0L9HgJ8sln8EVHePxJZdCROe7N49atz6sgg3dGmORf5qX++c2hv3DrGg+r8WeBXfOMI/Llx2l0dhjhljIR2mX8G0QyxLTk7M4nI4c1vW0PbMr08Zdnqgb3ojoVmCPCctHbiWXiF1gqv/aF9wo+oL/xeOFFH+8+FUa0iiMZQXoKaWXN57xF2phAVJb4pq49XUzdwwjGQv/WHbs+4G/e+MrGujtuCnl7+Jyfmy0Nx9HUV+iGoFC8lZYlX11K7YTl9vn/0JGMXA9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=crpt.ru smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OjxWTEvPXAzNKxoZypXVGPnjXNFgbhSMt5z5lUtjlko=;
- b=PoxUfXnkC4rcBNEUu0il7O81l4s8wFT+nh4qOAoaO1dShoP5b3IH/3J13TJSsvcuBJDPpvqTfEUH1RUXYwZpDVCpYThv8MEzHn+U1H+wKuNUUSUOSfvpuPxNrOMbbV5ZaAJw3pYHzCgLx/3IoG+o9cLx2FWnFYUiFs614Gth96pLoNwphvQwJg3tD/l2UyI4cHgtbDj7k5CnTIlkVlkD27HbimnkyjKfbfCmW5mztxevJFO255rtbFj4f8staZAxc8v7R5Mu8kkzTWqbJMXPOon4NTB6t+5ZDXr7mxldQFo3ZBWEMs5Zml8avP77BcGbjvQA8X2KjLb34MTSqTcwdA==
-Received: from BN9PR03CA0668.namprd03.prod.outlook.com (2603:10b6:408:10e::13)
- by DS7PR12MB5717.namprd12.prod.outlook.com (2603:10b6:8:70::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.15; Mon, 9 Feb
- 2026 06:36:41 +0000
-Received: from BN1PEPF0000467F.namprd03.prod.outlook.com
- (2603:10b6:408:10e:cafe::eb) by BN9PR03CA0668.outlook.office365.com
- (2603:10b6:408:10e::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9587.19 via Frontend Transport; Mon,
- 9 Feb 2026 06:36:36 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- BN1PEPF0000467F.mail.protection.outlook.com (10.167.243.84) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9587.10 via Frontend Transport; Mon, 9 Feb 2026 06:36:39 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 8 Feb
- 2026 22:36:23 -0800
-Received: from [10.221.208.222] (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Sun, 8 Feb
- 2026 22:36:16 -0800
-Message-ID: <edc2fd39-c8b7-40eb-9148-85e97eb32af4@nvidia.com>
-Date: Mon, 9 Feb 2026 08:36:14 +0200
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="VhQZO4GL"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=GCTUH/1VMyKuNr5ynPnAW+lMNTHrZVMBFcHP1ysd2vo=;
+	b=VhQZO4GLcoZW+CH43oB6Cfi6e+UiBd6O+Or6tZqUDUSR5ia5FNpr5LUGNOwxMeAR0+FTD5OBX
+	KN1ukUBNHBINQxWo1IYP1J3FQqvXnD2X4EhualkwoSBz4NKC3L4yYmY3Dr18jLdGakR83e62TPy
+	P51vyIyoOtPZsXrSVSUrOvY=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4f8Zk66Tz6z1K9CV;
+	Mon,  9 Feb 2026 14:37:18 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9BEF640561;
+	Mon,  9 Feb 2026 14:41:53 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Mon, 9 Feb 2026 14:41:53 +0800
+Message-ID: <39abbfbb-777e-4fe9-a8cf-38ab40863667@huawei.com>
+Date: Mon, 9 Feb 2026 14:41:52 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -69,143 +42,90 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net/mlx5: return error in case of lag device
- allocation failure
-To: =?UTF-8?B?0JLQsNGC0L7RgNC+0L/QuNC9INCQ0L3QtNGA0LXQuQ==?=
-	<a.vatoropin@crpt.ru>, Saeed Mahameed <saeedm@nvidia.com>
-CC: Leon Romanovsky <leon@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, "Mark
- Bloch" <mbloch@nvidia.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Gal Pressman
-	<gal@nvidia.com>, Patrisious Haddad <phaddad@nvidia.com>, Gerd Bayer
-	<gbayer@linux.ibm.com>, "Mark Zhang (Networking SW)" <markzhang@nvidia.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"lvc-project@linuxtesting.org" <lvc-project@linuxtesting.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20260205114206.1763509-1-a.vatoropin@crpt.ru>
-Content-Language: en-US
-From: Shay Drori <shayd@nvidia.com>
-In-Reply-To: <20260205114206.1763509-1-a.vatoropin@crpt.ru>
+CC: <shaojijie@huawei.com>, <netdev@vger.kernel.org>,
+	<linux-atm-general@lists.sourceforge.net>, <linux-kernel@vger.kernel.org>,
+	<3chas3@gmail.com>
+Subject: Re: [PATCH net v2] atm: fore200e: fix use-after-free in tasklets
+ during device removal
+To: <duoming@zju.edu.cn>
+References: <20260206094811.23431-1-duoming@zju.edu.cn>
+ <41559748-63f2-49ea-9d94-433eeb0edb8b@huawei.com>
+ <1ec5e02d.6d52a.19c337418d3.Coremail.duoming@zju.edu.cn>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <1ec5e02d.6d52a.19c337418d3.Coremail.duoming@zju.edu.cn>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN1PEPF0000467F:EE_|DS7PR12MB5717:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2937c53e-f6d5-4e43-cbc5-08de67a594d3
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|36860700013|82310400026|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RFpIMERZNWF4WDYzNktmRDhkeEs1QUNYdGdiZjBVdUd4K1FMRVpkZm9Mc0ZH?=
- =?utf-8?B?dTZrNDRHZ1ZreFBiZElDUmV2eTV2R00rQjMwR0R0V1lJY3MzZEFXdjA1RzlG?=
- =?utf-8?B?QUlPOXg1dkhhQTNFdklKWGdwY2JmYnE2TnlqZ3V1Z1Z0a0JIdmZiTjlSZVJD?=
- =?utf-8?B?MVlJSzhRNlYrYlV4SHA1bjRHYlBocGlNRURPNnNHWDZRRkhSQ1F3czhHOTd5?=
- =?utf-8?B?RlNZZjAvTnZicDdIaWs3SHRUQ0N1YkN6OWZZUU9DZ05aRHZTTXY1a0JnNVBy?=
- =?utf-8?B?ZHJMck1Sd2hybEVjTTVrYlVDcFJqSGJUK25kdVlCQVhIeGVxZnY0TGpoNVM2?=
- =?utf-8?B?ODNwOGtLeFprcndXbng4ck9XRWpiUXk0VzZSU0NLRHU5SVdvRWdzeEV2L2VX?=
- =?utf-8?B?a1REZnFnK2UvOWhMdmczanpQVzZ2enJWYVdDRGQzMEo2YlB2MUk2dEdHT2hl?=
- =?utf-8?B?bUxQbVRCZ3g3TGI1Z3QvT0xLRXVpUWVyRUV2RGdnaTR4dmZrWGpnemtGcnkr?=
- =?utf-8?B?Y0lsMHRYcEVoWmtaWURQU0ZkRlU4U0VHT004T2tIejlGNHhRNWFBZ1JTUFp5?=
- =?utf-8?B?RWd5dy9OZU1UT3pnV0pwRUR2Mm10ZzRmamVPclhYeXJxRVV3YkFpWmpaV3dS?=
- =?utf-8?B?TFIwK1ZkT2RBbmdrVG0zZWhFVStUTmVlRUc3WkNCTGRWZ1dwcStYSlZGMGRI?=
- =?utf-8?B?M2ZzSHZDUnFPQXlyMUs2c2FjMW43U2NPalVzN2h5OExiMWFsdzltWURyTU1u?=
- =?utf-8?B?UUxaK1ljTFV2NDkya1lXalRBK2xKSXBNL2lxL1FvdURhMkNwWUE1U0M4ZWxt?=
- =?utf-8?B?QW9aZFJveHRmRlZ6WFhRdkkvd3IxUDdzNk5CRnlRMEk5ZnFZMWVid05KRUlp?=
- =?utf-8?B?azBuSFhjZjNab2E2bmRqeEFkYWpremRoMjYwNnN4aythRFc1OGdLQVdKdVcr?=
- =?utf-8?B?R2k3cUtvWW1WWmJFdUhsWkpGdndYdmVtUUFSVUpkUmtES2liSmV1NElKTTlL?=
- =?utf-8?B?N1V1S0tjVTMxRG01a0tkdXlERXQ5NDhZSWFFOWlORGRianphWXZsTjBGc29Q?=
- =?utf-8?B?aXQxcjluZGl4dGlzS1B0eGlaZWh1UkY3eXZ5YktDR1krZEJqVWl2dVF2R2Y3?=
- =?utf-8?B?d2MxUWdNYysvQTcvWkRCZExHMUcyc2RwKy9NNHQrdnFTa3ZpOGJ3Nk9Wekgx?=
- =?utf-8?B?VWV0N1YrelRXNWUyQXhRSXZqcW9jTjdBK0RvRnhEVWpNc0RwSVFqWVMrazht?=
- =?utf-8?B?R04vTFBWbkJLRnV6VVVzeTZESGtpa2pqc2xxRWxFQmp5Nm8zNm9SNm5hSm81?=
- =?utf-8?B?TDdKdWdXa3hzVkYrSlo5clpwUzdYaU13QTNuNFowMEwyMGVBcmZvVStwQmFF?=
- =?utf-8?B?Nk5veFR5VVN4TzNxN0NIdlVsQUMycEtXL1VrNmFhNEU4dmRnUTFsMkNMSVdW?=
- =?utf-8?B?QmN3K2h4MW1idURnUkx4VkdJdXJselZkU2xzRFJsb21YK3lUMUk0NUV3TXh2?=
- =?utf-8?B?Z3dIRDlwVjcxd2I1Y0xxN1ZzYU01TWZ5OGpTZkR3Z3F1OEpoV0I4WGhTUWxF?=
- =?utf-8?B?d1JqSStBRTdzbkN2cFVDSGpFdUNtSFNvT0pSbTdLbVdGZVdHTE4rbVRud1Fk?=
- =?utf-8?B?NDNIbjhCdUhJTmh0bFVIVEUrZHBaanhtRDgzSlMwazRBQksraXlYTFBGSUhr?=
- =?utf-8?B?OFZIRmRKY1ZHVCtsZUY3R0k0aWtwLzJqZ3ljYmVrbmZLSVBCRmtwazNxUTJB?=
- =?utf-8?B?c1R5SXp0MlNsdFN2MUdIdUJLaGdGOWI5cEV4YmE4cXplNUJxd2xnN3R3Z0pG?=
- =?utf-8?B?Q2FHbmxucEIzZmFPUUZ4Y2JHQmhHbnJzaE1IR2dXcURSTThnNDJyLzVCU2ZC?=
- =?utf-8?B?K2ZldW04U1FvZy9wN21WVXV4b25OeFlhbkVNbjBnaUY0QU83aEVtQW1sSFlQ?=
- =?utf-8?B?TC93TTdONnZvY1Q5dkQ4YzZFM1BqaG5Ba0djRm9mWnZJZjR1L1NEc0tTSTBJ?=
- =?utf-8?B?MTM2K2lVbWJZZWZKaldXMmJIT3I5UVVNNVNHdDJlc0hhaUxyZXp3ZXM2QjEy?=
- =?utf-8?B?Ymk1Sm9mUEdGbWNQN3ZlUjBubHlES0ZHeFR5eCtYQ2UzNU8xU21VY09VZzhT?=
- =?utf-8?B?N3FvYkNXR09Pc3l6NTFsYlR2aW9UTFNXeElNUEVERGk1UVNma3NibzJSRzVz?=
- =?utf-8?B?Q0ZTMmVBajBjN3ZKUVVSSUdMbHluejkyWGlPTmdOUnk4bUxKcEx5VUh6aER1?=
- =?utf-8?B?dHNVL2Y5aktwZHZBUXVQMFZUcHdnPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(36860700013)(82310400026)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	vAB8U3m/w2UKQ1L3wT0AEABXxlwgZ47+0XIu30obw+cAQs5t926953lrr/Fl9HWJpxaJpyHqbCKaO5OlH0PGnmgUm/xFvRLF9HKNhlTwGF/wyQQFNL+oLKTrC9zd3C6+4NKaVErOmve9YHoYr0+qGpCgt8ur+S63dnW8y+/fppt//CC4e+4eZnX0Uv6gvQSsG7N40GayHjtR/JMwuOu+2eD637s52S9f5Jd60DK+fQD0cHoYygJjTCBjZIjPKV3oU3D2O3pqQwTP5kBUZq+kyA2AyPtlDbwA92+iVA6EVQkOumRcEELQryju2LGxWVe5nUm5gEevN3ei9ZBXlyGszuITxxz46Kx08M7Ku5VQs7Vwuc8gmi2CtjC7moWHi2/mxGx+DIdXMYje8Q5V+S7HA31J181+Pq1W4BAkMCRvVQHwM23f2/EDc+fWfoBVAxfh
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Feb 2026 06:36:39.5520
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2937c53e-f6d5-4e43-cbc5-08de67a594d3
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN1PEPF0000467F.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5717
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
 
-On 05/02/2026 13:42, Ваторопин Андрей wrote:
-> External email: Use caution opening links or attachments
-> 
-> 
-> From: Andrey Vatoropin <a.vatoropin@crpt.ru>
-> 
-> The function __mlx5_lag_dev_add_mdev() attempts to allocate memory for the
-> pointer ldev by calling the function mlx5_lag_dev_alloc(). If the memory
-> allocation fails, mlx5_lag_dev_alloc() returns NULL and the
-> __mlx5_lag_dev_add_mdev() returns 0. Later in the debugfs handlers there is
-> an attempt to dereference the ldev pointer.
-> 
-> Change the return value to "-ENOMEM" to avoid NULL pointer using. When
-> "-ENOMEM" is returned __mlx5_lag_dev_add_mdev() will attempt to
-> reallocate memory for ldev after a sleep interval.
+on 2026/2/6 22:56, duoming@zju.edu.cn wrote:
+> On Fri, 6 Feb 2026 18:48:38 +0800 Jijie Shao wrote:
+>>> When the PCA-200E or SBA-200E adapter is being detached, the fore200e
+>>> is deallocated. However, the tx_tasklet or rx_tasklet may still be running
+>>> or pending, leading to use-after-free bug when the already freed fore200e
+>>> is accessed again in fore200e_tx_tasklet() or fore200e_rx_tasklet().
+>>>
+>>> One of the race conditions can occur as follows:
+>>>
+>>> CPU 0 (cleanup)           | CPU 1 (tasklet)
+>>> fore200e_pca_remove_one() | fore200e_interrupt()
+>>>     fore200e_shutdown()     |   tasklet_schedule()
+>>>       kfree(fore200e)       | fore200e_tx_tasklet()
+>>>                             |   fore200e-> // UAF
+>>>
+>>> Fix this by ensuring tx_tasklet or rx_tasklet is properly canceled before
+>>> the fore200e is released. Add tasklet_kill() in fore200e_shutdown() to
+>>> synchronize with any pending or running tasklets. Moreover, since
+>>> fore200e_reset() could prevent further interrupts or data transfers,
+>>> the tasklet_kill() should be placed after fore200e_reset() to prevent
+>>> the tasklet from being rescheduled in fore200e_interrupt().
+>>>
+>>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+>>> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+>>> ---
+>>> Changes in v2:
+>>>     - Move tasklet_kill() after fore200e_reset().
+>>>
+>>>    drivers/atm/fore200e.c | 4 ++++
+>>>    1 file changed, 4 insertions(+)
+>>>
+>>> diff --git a/drivers/atm/fore200e.c b/drivers/atm/fore200e.c
+>>> index f62e3857144..de04c407921 100644
+>>> --- a/drivers/atm/fore200e.c
+>>> +++ b/drivers/atm/fore200e.c
+>>> @@ -362,6 +362,10 @@ fore200e_shutdown(struct fore200e* fore200e)
+>>>        if (fore200e->state > FORE200E_STATE_RESET) {
+>>>    	/* first, reset the board to prevent further interrupts or data transfers */
+>>>    	fore200e_reset(fore200e, 0);
+>>> +#ifdef FORE200E_USE_TASKLET
+>>> +	tasklet_kill(&fore200e->tx_tasklet);
+>>> +	tasklet_kill(&fore200e->rx_tasklet);
+>>> +#endif
+>>>        }
+>> I'm sorry if I gave you a confusing comment.
+>>
+>> If (fore200e->state <= FORE200E_STATE_RESET), is there no need to do tasklet_kill()?
+> The following four states that are preceding FORE200E_STATE_RESET are only set
+> during device initialization: FORE200E_STATE_BLANK, FORE200E_STATE_REGISTER,
+> FORE200E_STATE_CONFIGURE, and FORE200E_STATE_MAP.
+>
+> If the device is in any of these states, it means the initialization is
+> not complete and interrupts have not been registered. Therefore, tasklet
+> could not be scheduled through fore200e_interrupt().
+>
+> If the device is in FORE200E_STATE_RESET state, the fore200e_reset() has
+> already reset the device, which could prevent further interrupts and
+> tasklet scheduling.
+>
+> So there is no need to do tasklet_kill() if the state of fore200e is
+> less than or equal to FORE200E_STATE_RESET.
 
-first, mlx5 treat LAG failures as non-critical. e.g.: if LAG is failing
-or isn't supported, the driver won't stop loading.
-Second, we have a fix in the pipeline that fixes this by adding
-a check in the debugfs creation function, can you wait for it?
+Yeah, I agree.
+But I reviewed the fore200e_init() again, and it only needs to do tasklet_kill()
+when "fore200e->state >= fFORE200E_STATE_IRQ"(in fore200e_irq_request());
+otherwise, "fore200e->tx_tasklet" has not been initialized.
 
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: cac1eb2cf2e3 ("net/mlx5: Lag, properly lock eswitch if needed")> Cc: stable@vger.kernel.org
-> Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-> ---
->   drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-> index a459a30f36ca..6e914472a2d7 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/lag.c
-> @@ -1392,7 +1392,7 @@ static int __mlx5_lag_dev_add_mdev(struct mlx5_core_dev *dev)
->                  ldev = mlx5_lag_dev_alloc(dev);
->                  if (!ldev) {
->                          mlx5_core_err(dev, "Failed to alloc lag dev\n");
-> -                       return 0;
-> +                       return -ENOMEM;
+Jijie Shao
 
-Also, This change could lead to endless loop in mlx5_lag_add_mdev().
-
->                  }
->                  mlx5_ldev_add_mdev(ldev, dev);
->                  return 0;
-> --
-> 2.43.0
-
-Thanks
-Shay
 
