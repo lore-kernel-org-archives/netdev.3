@@ -1,86 +1,81 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21ACD2040B6;
-	Mon,  9 Feb 2026 13:21:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BC3317715;
+	Mon,  9 Feb 2026 13:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770643310; cv=none; b=pnC7GlORjVxQ9C5GLv2UxQm52V1ySN4GVvYSa/9f/1rzS3Qw2tEVPL3RGunOoe6RgrpEV4rutFBJYw7BgcimJoaWcym1YNpMsbyjAJ8L8hqvoAicvWVWBh5M3eBDerZc60ohcwudcduSpf8yFFZSuODjvfzizDcEWet8C/GlmrY=
+	t=1770643531; cv=none; b=rVT6t+VnNE46didULgNBEKCFa23cPXdbQ46Gmp5IJ5XIKgMQz1RdwxUfI5rzcyAQOqDucS+UVB57f2m7BLlfU0stjs/lYWM5dlGhrbVhJoFRqQhHQkjKyhGfIFOXT92kHNchmI7bRTEyU5wVud8NE5a7MJyQhoGP2caf2zZpFDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770643310; c=relaxed/simple;
-	bh=fsdQ4h2kGKzUTTTJ7upWQ+6ugDvCXOWUIT1OEiSXP+Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JzjfAZjwbCCpCvhy0j66YBiHNomZbH0YxLsR5E+99H8Ql499I4KodEBDzwp4QQ4oDMtfiRuus/jb7H7cOcMomcTbZiGBa4ghGSo+iFIpAWjSA4waWqgCRhl5An4WT/QgiZURpJuCXGUrQ4PfmqCUPc8MvtJJcEBzlbCQCw2cl5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=xFmpSaJe; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1770643531; c=relaxed/simple;
+	bh=x/JFFSSdXz21Xwy0PVHHauItjrrsvw406j0rnGBJUAk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N0RdYETgAn5koOS5EIgq+9dxpCMjDcDzcTllOuTkd4cMrEV0KlaQ3RTzUUkad+lm1q7mUW1NDWZkKa/ZX8BFWyTw5ihP6v1Nycozasls8YW8ulBgNEtSH46DNt7J5NlPLCGDNunoxD/yA4vLxEZkz0x3dZT2g/rcNwoaLXC97M8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=JnbnDVZI; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="xFmpSaJe"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=7c5Iz36nXiOUw2znVHTn8jamtOl0QUFsP43IKfvjzog=; b=xFmpSaJetZJzlzNkKcOMeOkfXO
-	eXy91aPdFUZaE5lcIgjeONKcpRewpATzW8QU4rzHOiAiN75s+BepQBxInCSLBT2onPedGfcJOBrhG
-	NpaSBIM86Jo5MED9Up9RbTEdf+aRkG1atB+NX7RvPMSS5maYvrTa0+n+B3bopD9nkzfM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vpRCn-006iwq-BF; Mon, 09 Feb 2026 14:21:33 +0100
-Date: Mon, 9 Feb 2026 14:21:33 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: lizhi2@eswincomputing.com
-Cc: devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, robh@kernel.org,
-	krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
-	pabeni@redhat.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	ningyu@eswincomputing.com, linmin@eswincomputing.com,
-	pinkesh.vaghela@einfochips.com, weishangjuan@eswincomputing.com
-Subject: Re: [PATCH v2 1/2] dt-bindings: ethernet: eswin: add clock sampling
- control
-Message-ID: <7e593ede-59eb-4316-ab72-949a51c008c6@lunn.ch>
-References: <20260209094628.886-1-lizhi2@eswincomputing.com>
- <20260209094801.909-1-lizhi2@eswincomputing.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="JnbnDVZI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1770643530; x=1802179530;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=x/JFFSSdXz21Xwy0PVHHauItjrrsvw406j0rnGBJUAk=;
+  b=JnbnDVZIHtH/jewkt9aVdKqILMEvGtR+Tx8puWlW3YDjmSk7IvosXqKE
+   wznSHQ0LwBR9QemmlLYitexO9TDEiW4pfVTyknraEc45itrNYBnmXO8K6
+   iahjIvHrR8mQ8vmkrhz1tPtAzmbO0Dh1kdfhe6qUWv+nB/cVbDiCnDAyz
+   bM8r9qCyoXxITBHSQLGaONL5xqDzCcHf7uCFi70RjthobCALRDeHnAHT+
+   8rVNI1aRgos+qkwYi5ghO/jotJZKi0ECoKOZksC2MYfzkINtC8AUp3/kl
+   b8PM0bg2SU81Vc691N8dkqRJpnhu/oGhB/u/vsNW4JULR4SiPomfaOkSk
+   g==;
+X-CSE-ConnectionGUID: oP1LAc5MQFujvwkAhKJHHQ==
+X-CSE-MsgGUID: IBJrM1wyRPKl5KcA381PqA==
+X-IronPort-AV: E=Sophos;i="6.21,282,1763449200"; 
+   d="scan'208";a="60392621"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 09 Feb 2026 06:25:28 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Mon, 9 Feb 2026 06:24:58 -0700
+Received: from DEN-DL-M70577 (10.10.85.11) by chn-vm-ex03.mchp-main.com
+ (10.10.85.151) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
+ Transport; Mon, 9 Feb 2026 06:24:52 -0700
+Date: Mon, 9 Feb 2026 14:24:52 +0100
+From: Daniel Machon <daniel.machon@microchip.com>
+To: Robert Marko <robert.marko@sartura.hr>
+CC: <robh@kernel.org>, <krzk+dt@kernel.org>, <conor+dt@kernel.org>,
+	<nicolas.ferre@microchip.com>, <alexandre.belloni@bootlin.com>,
+	<claudiu.beznea@tuxon.dev>, <herbert@gondor.apana.org.au>,
+	<davem@davemloft.net>, <lee@kernel.org>, <andrew+netdev@lunn.ch>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
+	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>,
+	<linusw@kernel.org>, <olivia@selenic.com>, <richard.genoud@bootlin.com>,
+	<radu_nicolae.pirea@upb.ro>, <gregkh@linuxfoundation.org>,
+	<richardcochran@gmail.com>, <horatiu.vultur@microchip.com>,
+	<Ryan.Wanner@microchip.com>, <tudor.ambarus@linaro.org>,
+	<kavyasree.kotagiri@microchip.com>, <lars.povlsen@microchip.com>,
+	<devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, <linux-crypto@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-gpio@vger.kernel.org>,
+	<linux-spi@vger.kernel.org>, <linux-serial@vger.kernel.org>,
+	<luka.perkov@sartura.hr>
+Subject: Re: [PATCH v5 08/11] arm64: dts: microchip: add LAN969x support
+Message-ID: <20260209132452.avsmiidcyjcqys7j@DEN-DL-M70577>
+References: <20260115114021.111324-1-robert.marko@sartura.hr>
+ <20260115114021.111324-9-robert.marko@sartura.hr>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260209094801.909-1-lizhi2@eswincomputing.com>
+In-Reply-To: <20260115114021.111324-9-robert.marko@sartura.hr>
 
-> The rx-internal-delay-ps and tx-internal-delay-ps properties now use
-> minimum and maximum constraints to reflect the actual hardware delay
-> range (0-2400 ps) applied in 20 ps steps.
+> Add support for Microchip LAN969x switch SoC series by adding the SoC DTSI.
 
-
->    rx-internal-delay-ps:
-> -    enum: [0, 200, 600, 1200, 1600, 1800, 2000, 2200, 2400]
-> +    minimum: 0
-> +    maximum: 2400
-
-       multipleOf: 20
-
-Also, 2400 / 20 = 120. Is the real maximum 127 * 20 = 2540?
-
-> @@ -111,17 +129,44 @@ examples:
->          interrupts = <61>;
->          interrupt-names = "macirq";
->          phy-mode = "rgmii-id";
-> -        phy-handle = <&phy0>;
-> +        phy-handle = <&gmac0_phy0>;
->          resets = <&reset 95>;
->          reset-names = "stmmaceth";
-> +        rx-internal-delay-ps = <20>;
-> +        tx-internal-delay-ps = <100>;
-
-I would not include them in the example. You are going to get
-developers blindly copying this into real DT. A well designed board
-should not need delays.
-
-	Andrew
+Acked-by: Daniel Machon <daniel.machon@microchip.com>
