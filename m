@@ -1,89 +1,208 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983AB2D5C97;
-	Mon,  9 Feb 2026 17:55:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6930125F984
+	for <netdev@vger.kernel.org>; Mon,  9 Feb 2026 17:55:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770659715; cv=none; b=gMa4RP8PUswfGxUX2vVZHRp1lyDSBNGCX7TE2F9SiGzeyXyRCvGTadBHpG8vRr7BfmxX74aIgPp8SSePxcTDjANGoGChYliOtkXnLaTjz2Z59Th/ichy0EuZ5zdxcyGuhdjCciZTcr6/51cTyUY1rnNH8EfMtAhmZwAlRgrJBrc=
+	t=1770659741; cv=none; b=W7SwWbf++ARPxqHH1zuk8YpNKjWTJ6dP1Y1pkri2loo44E3vzHXebguliIKjwuTKto1/ksxebOxGSE0IUe4WKehcfrMrOo848j34cZXrEwZmif/HnL0k3YXT7Qc/c2J+58sgWar3EG3qlZsunj/NFdELcuILP9THmizjNfFWdK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770659715; c=relaxed/simple;
-	bh=EnTNUJHmSxT2WRAs+oWYX8bdwlK9D+48BwdN8Orgt7I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VonZvRZ0yymNHtGWRT1EEYh2RTIdh65qvToLuTJ13pPDGkOAL6K+WLt6C1AZmNWgnrhmwdIgTH8UESSCP31rVx+IvioV4UGpcW9HOkHSwZu1UXs1LRISCTDj5PHBUnB64EZsOanJnLg2FNVrAvUwRXapCOBsAOpztSEIyclMiQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zgj/maFW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770659741; c=relaxed/simple;
+	bh=k6JJU6/Xv5Bve7ALmeRsOaz8DO0O0Gst3Ha4Joxtbys=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=eVWfbhHuLOsFiD5i/S1i3TRolYhZC2P6Wew7sLVjx59ZtN8gafZtCfTIayyi/uhfo2L2yGv0OdFJI/osL+cDq9IjnsvUAln/Vpj0/zjkgU0Hae3o/eKNjOmcvR9IAvO8g0tLda7Ul3Zjt03BlhveD/1Pn+g43TBjBwrhIc0P7/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=lPTF3F6F; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zgj/maFW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02A6FC116C6;
-	Mon,  9 Feb 2026 17:55:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770659715;
-	bh=EnTNUJHmSxT2WRAs+oWYX8bdwlK9D+48BwdN8Orgt7I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Zgj/maFW5QBdpanoskzhhOvikPz/Ns+ctuK+nd23tjE39S637yYBNIdYcQV1xLoEs
-	 MAvtPqQJ96P2MTGMIooSvlQ/HM7RAEIF6Ebj4eVEON3Qcz6FblOPFj9VpqMP6aVRq7
-	 1vHRNgEMLU+ttI8tLmoN9NC0AvbxXOfpWP7QTQtbtZ8SHlt5hcnvvKCGmOwxj/eNeL
-	 dk3FN6gNnj5XhTov798gmAT7dFgVNNx4CmaRUbCAQYA8dZF/zEebnM0aEt6UkXwQX1
-	 Isq8XWO/xVJxHsvlX+nERQP1BkQ8deSp40wNxcUcreLYay7zzYt4yRtGd/VRzOvIDW
-	 gZMmZjvQdNfLg==
-Date: Mon, 9 Feb 2026 11:55:14 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Inochi Amaoto <inochiama@gmail.com>
-Cc: Yanteng Si <siyanteng@cqsoftware.com.cn>, devicetree@vger.kernel.org,
-	Jose Abreu <joabreu@synopsys.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-riscv@lists.infradead.org,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Yao Zi <ziyao@disroot.org>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>, spacemit@lists.linux.dev,
-	Richard Cochran <richardcochran@gmail.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Boon Khai Ng <boon.khai.ng@altera.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Zhi Li <lizhi2@eswincomputing.com>, Alexandre Ghiti <alex@ghiti.fr>,
-	Shangjuan Wei <weishangjuan@eswincomputing.com>,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Longbin Li <looong.bin@gmail.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	linux-kernel@vger.kernel.org, Yixun Lan <dlan@gentoo.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, netdev@vger.kernel.org,
-	Chen-Yu Tsai <wens@kernel.org>, Conor Dooley <conor+dt@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Albert Ou <aou@eecs.berkeley.edu>, Paul Walmsley <pjw@kernel.org>
-Subject: Re: [PATCH net-next v4 1/3] dt-bindings: net: Add support for
- Spacemit K3 dwmac
-Message-ID: <177065971340.1488943.5040519418733629528.robh@kernel.org>
-References: <20260130022705.1059214-1-inochiama@gmail.com>
- <20260130022705.1059214-2-inochiama@gmail.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="lPTF3F6F"
+Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 619HBRoF951840
+	for <netdev@vger.kernel.org>; Mon, 9 Feb 2026 09:55:40 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=+Hrz8y6M1gcSbgUEcxq2AJOX4snqaTvaf+bpG7ruQ0Y=; b=lPTF3F6FAHtN
+	n9m8df3I8z31wV0sf7KA2m6LazgppTTUqROOSpEK9iMN27vSzOzIi1HHPOQ27VaC
+	Mp1EsA3TF0yFqp3qfZWLVXZaRkvrTQT+Adg7uL+3cXJi/cZE14MaXcekRddKuh2v
+	rZrSBHqIhMHmtHd7nroOc1ebTS79/BNV3LP/DpGSQvRulXVMooDfu8CxgeZqozL5
+	1PD8BjEic18YshxzA/5h/sOho8BU/T3zPGAndCeoPBqm9GZYfMPdwWRytU9Udqbz
+	DR3CHUxT0r4w6t/Ozpe4/c/jpTwsUqLCsknL06Yf5Tbe+kNvQGTnHH2TkIIv5SVJ
+	XR4dY93/+Q==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4c7f1wm5be-6
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 09 Feb 2026 09:55:40 -0800 (PST)
+Received: from twshared18017.01.snb2.facebook.com (2620:10d:c085:208::7cb7) by
+ mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Mon, 9 Feb 2026 17:55:36 +0000
+Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
+	id 74677100D0420; Mon,  9 Feb 2026 09:53:19 -0800 (PST)
+From: Zhiping Zhang <zhipingz@meta.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Bjorn
+ Helgaas <bhelgaas@google.com>, <linux-rdma@vger.kernel.org>,
+        <linux-pci@vger.kernel.org>, <netdev@vger.kernel.org>,
+        Keith Busch
+	<kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+        Yishai Hadas
+	<yishaih@nvidia.com>
+CC: Bjorn Helgaas <helgaas@kernel.org>, Zhiping Zhang <zhipingz@meta.com>
+Subject: [RFC 1/2] Vfio: add callback to get tph info for dmabuf
+Date: Mon, 9 Feb 2026 09:53:11 -0800
+Message-ID: <20260209175317.1713406-2-zhipingz@meta.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260209175317.1713406-1-zhipingz@meta.com>
+References: <20260209175317.1713406-1-zhipingz@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260130022705.1059214-2-inochiama@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+X-FB-Internal: Safe
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=OMcqHCaB c=1 sm=1 tr=0 ts=698a1f9c cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VabnemYjAAAA:8 a=66hUaM2K5p8tY_kFZzUA:9
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: f4ARijCfoCE1rJsXxpgPnjJAtxYvY65r
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjA5MDE1MSBTYWx0ZWRfX1+QRoidoAqjS
+ rBVwy2r9+vqyK643JvqpiRkTUpSdB5lX7mbi5f3VBkXQQOAjb8FWnDiCvgTfc4iCPINanLLafnv
+ x6YL0bN4txvtfofFlJcxGoZ+Akye6dlj0pyln/uzLYT4PhH8bqXI1GVvaKRu+0xcRQA8i5DYvcg
+ k5mXEXGZ8oZxPR7lgpByrT7c85UdK+BAAxCsOlNlPXgGK47/fgP2BIX4NPaSZpMw6WIOpzvwrsa
+ zq8qCRRaKAKkzbVG8e+zvXSOOQW8X4czmXsN1+0szk5a+AuovXQlbfm5iot3f1rPEdOS+8Rpb6B
+ zMpbtdOdVopUrTCC5UI1slelPUJ+2IRhPH8U5oycbcOqsDVss+wsOnVSMfUd/4hBdx0X7N4bHDp
+ UdWKblh+98MkWlLcCfel1tc8/WTWfyoIjsYTaNGoCYJazEyG9nXs1UT+vIGEGOc/VX7qbVq/Rvu
+ FqjRQxCu1tpIgUtIoXQ==
+X-Proofpoint-GUID: f4ARijCfoCE1rJsXxpgPnjJAtxYvY65r
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-09_01,2026-02-09_03,2025-10-01_01
 
+This RFC patch adds a callback to get the tph info on DMA buffer exporter=
+s.
+The tph info includes both the steering tag and the process hint (ph).
 
-On Fri, 30 Jan 2026 10:27:02 +0800, Inochi Amaoto wrote:
-> The GMAC IP on Spacemit K3 is almost a standard Synopsys DesignWare
-> MAC (version 5.40a) with some extra clock.
-> 
-> Add necessary compatible string for this device.
-> 
-> Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-> ---
->  .../devicetree/bindings/net/snps,dwmac.yaml   |   2 +
->  .../bindings/net/spacemit,k3-dwmac.yaml       | 103 ++++++++++++++++++
->  2 files changed, 105 insertions(+)
->  create mode 100644 Documentation/devicetree/bindings/net/spacemit,k3-dwmac.yaml
-> 
+Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+---
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 15 ++++++++++++++-
+ include/linux/dma-buf.h            | 30 ++++++++++++++++++++++++++++++
+ include/uapi/linux/vfio.h          |  2 ++
+ 3 files changed, 46 insertions(+), 1 deletion(-)
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_p=
+ci_dmabuf.c
+index d4d0f7d08c53..4da1a6cc306f 100644
+--- a/drivers/vfio/pci/vfio_pci_dmabuf.c
++++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+@@ -17,6 +17,8 @@ struct vfio_pci_dma_buf {
+ 	struct dma_buf_phys_vec *phys_vec;
+ 	struct p2pdma_provider *provider;
+ 	u32 nr_ranges;
++	u16 steering_tag;
++	u8 ph;
+ 	u8 revoked : 1;
+ };
+=20
+@@ -50,6 +52,15 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attach=
+ment,
+ 				       priv->size, dir);
+ }
+=20
++static int vfio_pci_dma_buf_get_tph(struct dma_buf *dmabuf, u16 *steerin=
+g_tag,
++				    u8 *ph)
++{
++	struct vfio_pci_dma_buf *priv =3D dmabuf->priv;
++	*steering_tag =3D priv->steering_tag;
++	*ph =3D priv->ph;
++	return 0;
++}
++
+ static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachment=
+,
+ 				   struct sg_table *sgt,
+ 				   enum dma_data_direction dir)
+@@ -78,6 +89,7 @@ static void vfio_pci_dma_buf_release(struct dma_buf *dm=
+abuf)
+ static const struct dma_buf_ops vfio_pci_dmabuf_ops =3D {
+ 	.attach =3D vfio_pci_dma_buf_attach,
+ 	.map_dma_buf =3D vfio_pci_dma_buf_map,
++	.get_tph =3D vfio_pci_dma_buf_get_tph,
+ 	.unmap_dma_buf =3D vfio_pci_dma_buf_unmap,
+ 	.release =3D vfio_pci_dma_buf_release,
+ };
+@@ -274,7 +286,8 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_cor=
+e_device *vdev, u32 flags,
+ 		ret =3D PTR_ERR(priv->dmabuf);
+ 		goto err_dev_put;
+ 	}
+-
++	priv->steering_tag =3D get_dma_buf.steering_tag;
++	priv->ph =3D get_dma_buf.ph;
+ 	/* dma_buf_put() now frees priv */
+ 	INIT_LIST_HEAD(&priv->dmabufs_elm);
+ 	down_write(&vdev->memory_lock);
+diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+index 0bc492090237..466290c02ebf 100644
+--- a/include/linux/dma-buf.h
++++ b/include/linux/dma-buf.h
+@@ -113,6 +113,36 @@ struct dma_buf_ops {
+ 	 */
+ 	void (*unpin)(struct dma_buf_attachment *attach);
+=20
++	/**
++	 * @get_tph:
++	 *
++	 * Get the TPH (TLP Processing Hints) for this DMA buffer.
++	 *
++	 * This callback allows DMA buffer exporters to provide TPH including
++	 * both the steering tag and the process hints (ph), which can be used
++	 * to optimize peer-to-peer (P2P) memory access. The TPH info is typica=
+lly
++	 * used in scenarios where:
++	 * - A PCIe device (e.g., RDMA NIC) needs to access memory on another
++	 *   PCIe device (e.g., GPU),
++	 * - The system supports TPH and can use steering tags / ph to optimize
++	 *   cache placement and memory access patterns,
++	 * - The memory is exported via DMABUF for cross-device sharing.
++	 *
++	 * @dmabuf: [in] The DMA buffer for which to retrieve TPH
++	 * @steering_tag: [out] Pointer to store the 16-bit TPH steering tag va=
+lue
++	 * @ph: [out] Pointer to store the 8-bit TPH processing-hint value
++	 *
++	 * Returns:
++	 * * 0 - Success, steering tag stored in @tph
++	 * * -EOPNOTSUPP - TPH steering tags not supported for this buffer
++	 * * -EINVAL - Invalid parameters
++	 *
++	 * This callback is optional. If not implemented, the buffer does not
++	 * support TPH.
++	 *
++	 */
++	int (*get_tph)(struct dma_buf *dmabuf, u16 *steering_tag, u8 *ph);
++
+ 	/**
+ 	 * @map_dma_buf:
+ 	 *
+diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+index ac2329f24141..bff2f5f7e38d 100644
+--- a/include/uapi/linux/vfio.h
++++ b/include/uapi/linux/vfio.h
+@@ -1501,6 +1501,8 @@ struct vfio_region_dma_range {
+ struct vfio_device_feature_dma_buf {
+ 	__u32	region_index;
+ 	__u32	open_flags;
++	__u16   steering_tag;
++	__u8    ph;
+ 	__u32   flags;
+ 	__u32   nr_ranges;
+ 	struct vfio_region_dma_range dma_ranges[] __counted_by(nr_ranges);
+--=20
+2.47.3
 
