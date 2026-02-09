@@ -1,202 +1,104 @@
-Received: from smtp-bc0f.mail.infomaniak.ch (smtp-bc0f.mail.infomaniak.ch [45.157.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744C437BE8B
-	for <netdev@vger.kernel.org>; Mon,  9 Feb 2026 18:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2043E38A2BF
+	for <netdev@vger.kernel.org>; Mon,  9 Feb 2026 18:13:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770660121; cv=none; b=k9AG2hYxSWmc4VsEs3AIc6+wSwSTVlCoObz85Go4Ms+Yswx9d/MPR7F6x4W6B/mvOeRsfaRQyBd9QDJ5+kTwpK/VRm91+saoutUVs+ouIt5XX/uRNoOqQ36rqHBq1QpC/tRCjDRmohb9Rr2MPeD7J4ExBSsKi64bxomqGm7EQyc=
+	t=1770660786; cv=none; b=m8Cbvd0+dcD/UWambMmWeM7WEE4wnxud5/HVMjbKsBJAYUxfDOHGDpRuGIsusOfHcKrgae+UQAaR1cXtGPXta50W0b6tDpaOWaZMVtzO1Px9eWJa275i6kiyuLW9MnDC+qqT8+stecVISz7aCDuzPYZVAo14DwPg6H5x2loKAGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770660121; c=relaxed/simple;
-	bh=JYzv9E94IkXmjniou/e10LbOmoZj80DqckJ2LgzhWNE=;
+	s=arc-20240116; t=1770660786; c=relaxed/simple;
+	bh=PeEEdOtlWgGbz3Jd1O6AJXyAdP02Oo5lyj4NDiwFBIQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=p2FxJgx1JZCDtUdYtp0IawY7GQxIlwujm1MeBYMDouIl3AIGo3zrvw30zBtbsqPvNidUxepw/ZvCw+h+YkB9vzD/dRTZK3kM2KEutveTYu+O+OpPBkCrjTLzqk88TJKY1juqPphs1kIm9ubwuOXW63yiUAoHx3UYMKgIFHj3F5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=HCCOQ+uF; arc=none smtp.client-ip=45.157.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=lvab8GBYemnjFsUhEJH3fIs5/b6C0rgb9RzvPmfN9f0HPtWhD8D4D+beueMkr1MCXmqipORZ2rp8rt9QePeJigRT73Nj1X4SrwoaNLoh0ZlMsf+/2KQwHChXJrj64KcTijLjOnS2lbJ4jedfc0n8yuzbcynnk9hLSqa+Nqw2LJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=AbH3+lvh; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="HCCOQ+uF"
-Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
-	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4f8sgy3Wnkz49P;
-	Mon,  9 Feb 2026 18:51:26 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1770659486;
-	bh=BBYhcLwsTs9OhGHaQVQ/SWzdyTzVaDUYDHQ0lCXjoYc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HCCOQ+uFlE3610zU1m1PJMXUXdw16rzusoKTVwbWiqvGpNwmdJPCaEh1V2AUWg4le
-	 WdKt8jIhcysSwSB4DxGbgIL3+yY8rIj4ilqL0/XC2n+bwqiz8unJdQCUZ8f6zNGzR+
-	 qr4qzVEKkVTlMSCBL0FFI+0YodrWTM9+Xdz3w9Pg=
-Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4f8sgx2DlHzZl4;
-	Mon,  9 Feb 2026 18:51:25 +0100 (CET)
-Date: Mon, 9 Feb 2026 18:51:21 +0100
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>
-Cc: John Johansen <john.johansen@canonical.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E . Hallyn" <serge@hallyn.com>, Tingmao Wang <m@maowtm.org>, 
-	Justin Suess <utilityemal77@gmail.com>, linux-security-module@vger.kernel.org, 
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>, Matthieu Buffet <matthieu@buffet.re>, 
-	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>, konstantin.meskhidze@huawei.com, 
-	Demi Marie Obenour <demiobenour@gmail.com>, Alyssa Ross <hi@alyssa.is>, Jann Horn <jannh@google.com>, 
-	Tahera Fahimi <fahimitahera@gmail.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v4 1/6] lsm: Add LSM hook security_unix_find
-Message-ID: <20260209.yeeh3ieDuz9u@digikod.net>
-References: <20260208231017.114343-1-gnoack3000@gmail.com>
- <20260208231017.114343-2-gnoack3000@gmail.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="AbH3+lvh"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8c710439535so2191485a.1
+        for <netdev@vger.kernel.org>; Mon, 09 Feb 2026 10:13:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1770660785; x=1771265585; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gj5UuRmjNHB03u99WDJiaFn+Q1sTfKxV+46xet6mPYw=;
+        b=AbH3+lvhP+aCORsv+XB1KhdCwpglgXrHZjqVkU+at4UulhW31gAR4Awws1C6o1J+mk
+         JDXBHUW/sit5R1Kj5WFCo/oUPlZPyo3Yx4SnpcKMu4ImkFpNYQXh+KcuDQOQejf4l/Qv
+         EJdxMLnr7Ec+N6WGwOXyknd4938ooiOd+8c7r6QvG9695qbM4ooG7Tl+frmQUSEImYEY
+         sRgHqqrgEfwKF1EETl1aReDnQFvMk0vo9/d3MvtU5sMbbiKVIfNGooHYmOdDKnqmXNYU
+         Sgg5JCFvw5n5hpXjHlP9F/udM7pk2R5sQGFLZg/t9I/c8cYX+7xFnJteVmVEd+sC4vDt
+         ckFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770660785; x=1771265585;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gj5UuRmjNHB03u99WDJiaFn+Q1sTfKxV+46xet6mPYw=;
+        b=V3ulG7EFkCAzcwmifuAVTIpXADZ8VeqZ4DzysOVulmHIXZD8Jh2SRpscF1joq4SSnE
+         sBtmW66bD/jFZQ26VHNOHV4atIFr2eIQj29NU2o+Y6GsHaaj02fzGeFtZ5O/x2XckWBe
+         QF8to4WXF4VM0L2gUlmEny0aKVtQw0CQUIiujUAMDOryCuP7GDqpgLiimmAjrsUK0sGW
+         mpMkcFw9rxxbSkl04wpGVF2VJrst65T2x8tXySZT8GQ4+eMCcyEwQJ/UxVnOeqBfOWlp
+         dBzWJnPos+z+I/m41z9uaBPXqnnYsd/ZVdtm3aJ04tpZjXoMAiP10+RuW/PAbkMvGca8
+         3HQA==
+X-Forwarded-Encrypted: i=1; AJvYcCWq64vFu5IQV/A7WuVaIRftCtR+sl99YChJ8MYk6pSj8OuCQjnO0ClBdTHg9CuRtMv/jMZMuRM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1oOyxEKghYT1DML5Gy3UFJANAgR7NOMsbyOMt1h3SBzNIwQFd
+	RIO7TDjXr6bdM7bPMKhzryyYsWmUI6UvLkuqzWSvz+YnhXCxlgsn19mGus2ftsds9hM=
+X-Gm-Gg: AZuq6aLVk8nPwkRXyvdTF7zjSuaakrR0brOJn6Yrf4Kh4ojLg3XwUCyV6wrcW+buAYp
+	5lRy4oHj2iReIE+i6Rf+gKHhYAGa7MVVaeFJxZfhmHHMTdw3AZFgn7MUJfGIYbtAqN4X2HDLdvN
+	f/12RPjSfUXITiFB24VU0XMCDXjhUz73C+tLyT+Jm1stgKUDq0l2x+glDrjWn5ZQaptT6uUYPZ7
+	6UEbh4wES/V4kunYTCknKq5Dp5PuOb+MwupqGf0N7U+B1oojeoulDtTOF3J4YTHPL51syu0lLnA
+	nR6NNPcVHOXQ6Mc+50IXFH+haGZBB5I21azrIkyVEC45LoKtqBqMCLiEWYiVw06jkCYa6Quagr4
+	z+RcmjwLlMTwPXvBWnY6VI3WcmJB8p6BeyOOuq+S7u7kC59hnkk9Ad8clmuQ2w7/XfP4ZR3qqno
+	j7mFOOJ/LT1BtGe42P+nHPutZmRMGba9/aBVHxfU64Ji5limCBYVri7qvMiYrqwy0ja/MonRzXw
+	H33Cw==
+X-Received: by 2002:a05:620a:3909:b0:8ca:358a:d636 with SMTP id af79cd13be357-8caf1acd680mr1662509285a.87.1770660784822;
+        Mon, 09 Feb 2026 10:13:04 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-896f79d34bcsm39740876d6.0.2026.02.09.10.13.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Feb 2026 10:13:04 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vpVkt-0000000EmNV-2zIP;
+	Mon, 09 Feb 2026 14:13:03 -0400
+Date: Mon, 9 Feb 2026 14:13:03 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Zhiping Zhang <zhipingz@meta.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org, Keith Busch <kbusch@kernel.org>,
+	Yochai Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
+	Bjorn Helgaas <helgaas@kernel.org>
+Subject: Re: [RFC 0/2] Retrieve tph from dmabuf for PCIe P2P memory access
+Message-ID: <20260209181303.GB943673@ziepe.ca>
+References: <20260209175317.1713406-1-zhipingz@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260208231017.114343-2-gnoack3000@gmail.com>
-X-Infomaniak-Routing: alpha
+In-Reply-To: <20260209175317.1713406-1-zhipingz@meta.com>
 
-On Mon, Feb 09, 2026 at 12:10:11AM +0100, Günther Noack wrote:
-> From: Justin Suess <utilityemal77@gmail.com>
+On Mon, Feb 09, 2026 at 09:53:10AM -0800, Zhiping Zhang wrote:
+> Currently, the steering tag can be used for a CPU on the motherboard; the
+> ACPI check is in place to query and obtain the supported tph settings. Here
+> we intend to use the tph info to improve RDMA NIC memory access on a vfio-based
+> accelerator device via PCIe peer-to-peer. When an applicantion register a
+> RDMA memory region with DMABUF for the RDMA NIC to access the device memory,
+> the tph associated with the memory region can be retrieved and used to set the
+> steering tag / process hint (ph). The tph contains additional instructions
+> or hints to the GPU or accelerator device for advanced memory operations,
+> such as, read cache selection.
 > 
-> Add a LSM hook security_unix_find.
-> 
-> This hook is called to check the path of a named unix socket before a
-> connection is initiated. The peer socket may be inspected as well.
-> 
-> Why existing hooks are unsuitable:
-> 
-> Existing socket hooks, security_unix_stream_connect(),
-> security_unix_may_send(), and security_socket_connect() don't provide
-> TOCTOU-free / namespace independent access to the paths of sockets.
-> 
-> (1) We cannot resolve the path from the struct sockaddr in existing hooks.
-> This requires another path lookup. A change in the path between the
-> two lookups will cause a TOCTOU bug.
-> 
-> (2) We cannot use the struct path from the listening socket, because it
-> may be bound to a path in a different namespace than the caller,
-> resulting in a path that cannot be referenced at policy creation time.
-> 
-> Cc: Günther Noack <gnoack3000@gmail.com>
-> Cc: Tingmao Wang <m@maowtm.org>
-> Signed-off-by: Justin Suess <utilityemal77@gmail.com>
-> ---
->  include/linux/lsm_hook_defs.h |  5 +++++
->  include/linux/security.h      | 11 +++++++++++
->  net/unix/af_unix.c            |  9 +++++++++
->  security/security.c           | 20 ++++++++++++++++++++
->  4 files changed, 45 insertions(+)
-> 
-> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-> index 8c42b4bde09c..7a0fd3dbfa29 100644
-> --- a/include/linux/lsm_hook_defs.h
-> +++ b/include/linux/lsm_hook_defs.h
-> @@ -317,6 +317,11 @@ LSM_HOOK(int, 0, post_notification, const struct cred *w_cred,
->  LSM_HOOK(int, 0, watch_key, struct key *key)
->  #endif /* CONFIG_SECURITY && CONFIG_KEY_NOTIFICATIONS */
->  
-> +#if defined(CONFIG_SECURITY_NETWORK) && defined(CONFIG_SECURITY_PATH)
-> +LSM_HOOK(int, 0, unix_find, const struct path *path, struct sock *other,
-> +	 int flags)
-> +#endif /* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
-> +
->  #ifdef CONFIG_SECURITY_NETWORK
->  LSM_HOOK(int, 0, unix_stream_connect, struct sock *sock, struct sock *other,
->  	 struct sock *newsk)
-> diff --git a/include/linux/security.h b/include/linux/security.h
-> index 83a646d72f6f..99a33d8eb28d 100644
-> --- a/include/linux/security.h
-> +++ b/include/linux/security.h
-> @@ -1931,6 +1931,17 @@ static inline int security_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
->  }
->  #endif	/* CONFIG_SECURITY_NETWORK */
->  
-> +#if defined(CONFIG_SECURITY_NETWORK) && defined(CONFIG_SECURITY_PATH)
-> +
-> +int security_unix_find(const struct path *path, struct sock *other, int flags);
-> +
-> +#else /* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
-> +static inline int security_unix_find(const struct path *path, struct sock *other, int flags)
-> +{
-> +	return 0;
-> +}
-> +#endif /* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
-> +
->  #ifdef CONFIG_SECURITY_INFINIBAND
->  int security_ib_pkey_access(void *sec, u64 subnet_prefix, u16 pkey);
->  int security_ib_endport_manage_subnet(void *sec, const char *name, u8 port_num);
-> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-> index d0511225799b..db9d279b3883 100644
-> --- a/net/unix/af_unix.c
-> +++ b/net/unix/af_unix.c
-> @@ -1226,10 +1226,19 @@ static struct sock *unix_find_bsd(struct sockaddr_un *sunaddr, int addr_len,
->  	if (!S_ISSOCK(inode->i_mode))
->  		goto path_put;
->  
-> +	err = -ECONNREFUSED;
+> Note this RFC is for the discussion on the direction and is not intended to be
+> a complete implementation. Once the direction is agreed on, we will work on the
+> implementation or a real patch set.
 
-We don't see it in this patch but err is already set to -ECONNREFUSED.
-This line might be confusing, and unrelated to the goal of this patch,
-so we should remove it.
+you didn't cc the DRM people who really need to look at any changes to
+the dmabuf contract.
 
-
->  	sk = unix_find_socket_byinode(inode);
->  	if (!sk)
->  		goto path_put;
->  
-> +	/*
-> +	 * We call the hook because we know that the inode is a socket
-> +	 * and we hold a valid reference to it via the path.
-
-This comment can be alligned with 80 columns.
-
-> +	 */
-> +	err = security_unix_find(&path, sk, flags);
-
-This hook makes sense and is quite generic.
-
-> +	if (err)
-> +		goto sock_put;
-> +
->  	err = -EPROTOTYPE;
->  	if (sk->sk_type == type)
->  		touch_atime(&path);
-> diff --git a/security/security.c b/security/security.c
-> index 31a688650601..9e9515955098 100644
-> --- a/security/security.c
-> +++ b/security/security.c
-> @@ -4731,6 +4731,26 @@ int security_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
->  
->  #endif	/* CONFIG_SECURITY_NETWORK */
->  
-> +#if defined(CONFIG_SECURITY_NETWORK) && defined(CONFIG_SECURITY_PATH)
-> +/*
-
-This should be a docstring like other hooks: /**
-
-> + * security_unix_find() - Check if a named AF_UNIX socket can connect
-> + * @path: path of the socket being connected to
-> + * @other: peer sock
-> + * @flags: flags associated with the socket
-> + *
-> + * This hook is called to check permissions before connecting to a named
-> + * AF_UNIX socket.
-> + *
-> + * Return: Returns 0 if permission is granted.
-> + */
-> +int security_unix_find(const struct path *path, struct sock *other, int flags)
-> +{
-> +	return call_int_hook(unix_find, path, other, flags);
-> +}
-> +EXPORT_SYMBOL(security_unix_find);
-> +
-> +#endif	/* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
-> +
->  #ifdef CONFIG_SECURITY_INFINIBAND
->  /**
->   * security_ib_pkey_access() - Check if access to an IB pkey is allowed
-> -- 
-> 2.52.0
-> 
-> 
+Jason
