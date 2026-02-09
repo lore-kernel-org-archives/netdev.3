@@ -1,164 +1,202 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
+Received: from smtp-bc0f.mail.infomaniak.ch (smtp-bc0f.mail.infomaniak.ch [45.157.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7F938A9B5;
-	Mon,  9 Feb 2026 18:01:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744C437BE8B
+	for <netdev@vger.kernel.org>; Mon,  9 Feb 2026 18:02:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.157.188.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770660095; cv=none; b=bqEgr6l4NydYbwKJVBL0rAgF0S9pRDJCdApJbMAQ46JnQpPCW+p1e0SVdZlpP94yqQxhTNwDvO22zWlkGTgaxELT7BVvtiJkWjg9dcE0OISQSOgAcUG5K0Hdp/fF2R/dVJ564Kb/ZIy8PNJYmy9wh4CAmnryAMXJ4W0nx/2i/WU=
+	t=1770660121; cv=none; b=k9AG2hYxSWmc4VsEs3AIc6+wSwSTVlCoObz85Go4Ms+Yswx9d/MPR7F6x4W6B/mvOeRsfaRQyBd9QDJ5+kTwpK/VRm91+saoutUVs+ouIt5XX/uRNoOqQ36rqHBq1QpC/tRCjDRmohb9Rr2MPeD7J4ExBSsKi64bxomqGm7EQyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770660095; c=relaxed/simple;
-	bh=XATOe9xEYb6CkJdPsMWOqdi6khEYeHiuxEAIR2Ws1/g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=cmH6NwRAUbG/zxfmrf5v8E1x7nooHvIs/ROyEJRv+kSvnB52DjOL7zfSNF0wexqTAdeku30pq+c0xDm56eeNoarKXBrhH7Er12luZwMzHffDDjb3YwQ04GgfBHtDLPW1qvAghd29TsFDBNkYbcpat84ZfmGfZCFJrg6U1qd7St0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=mRT9XcdE; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	s=arc-20240116; t=1770660121; c=relaxed/simple;
+	bh=JYzv9E94IkXmjniou/e10LbOmoZj80DqckJ2LgzhWNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p2FxJgx1JZCDtUdYtp0IawY7GQxIlwujm1MeBYMDouIl3AIGo3zrvw30zBtbsqPvNidUxepw/ZvCw+h+YkB9vzD/dRTZK3kM2KEutveTYu+O+OpPBkCrjTLzqk88TJKY1juqPphs1kIm9ubwuOXW63yiUAoHx3UYMKgIFHj3F5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=HCCOQ+uF; arc=none smtp.client-ip=45.157.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="mRT9XcdE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:Cc:To:Message-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
-	Reply-To:Content-ID:Content-Description:In-Reply-To:References;
-	bh=2ETOBixMU8Lpeo/UH7Fnh2Hlu+r8Ud8L0O3pwVjUz4k=; b=mRT9XcdEqegftUUdOoMp8m3rFo
-	ai6hWrNzUxgiYyi/WtcvrX8WBisnpk9q+bvQ6WrXOKX7vxLJYIiGHX6+iB0icWMU6DMVQ+ANsLi8G
-	xTT9jw0nvJ79LR+LfMBCQivMGFTW6F49yPh2r29LPm68jhRdtMNSDNfIVb8FIFBaMC19/TJ1uauUl
-	H1aOd5ME23RDILAjOLcVeaXZ99XGCXuPa0rmLiaolpRiLhTa/XBaM0X+tXNI1mKTfA6r/ycNtIybx
-	LdiyZlzBCCGTxhEtB01Tc96jqAV9x7iJldAC8L01fWyXPt+lFqjcyMwoeQyCRRY75LmbmkanSfqYZ
-	vGompDRQ==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vpVZf-009f3g-DD; Mon, 09 Feb 2026 18:01:27 +0000
-From: Breno Leitao <leitao@debian.org>
-Date: Mon, 09 Feb 2026 10:01:11 -0800
-Subject: [PATCH net] net/mlx5e: Skip NAPI polling when PCI channel is
- offline
+	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="HCCOQ+uF"
+Received: from smtp-4-0001.mail.infomaniak.ch (smtp-4-0001.mail.infomaniak.ch [10.7.10.108])
+	by smtp-4-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4f8sgy3Wnkz49P;
+	Mon,  9 Feb 2026 18:51:26 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1770659486;
+	bh=BBYhcLwsTs9OhGHaQVQ/SWzdyTzVaDUYDHQ0lCXjoYc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HCCOQ+uFlE3610zU1m1PJMXUXdw16rzusoKTVwbWiqvGpNwmdJPCaEh1V2AUWg4le
+	 WdKt8jIhcysSwSB4DxGbgIL3+yY8rIj4ilqL0/XC2n+bwqiz8unJdQCUZ8f6zNGzR+
+	 qr4qzVEKkVTlMSCBL0FFI+0YodrWTM9+Xdz3w9Pg=
+Received: from unknown by smtp-4-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4f8sgx2DlHzZl4;
+	Mon,  9 Feb 2026 18:51:25 +0100 (CET)
+Date: Mon, 9 Feb 2026 18:51:21 +0100
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>
+Cc: John Johansen <john.johansen@canonical.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E . Hallyn" <serge@hallyn.com>, Tingmao Wang <m@maowtm.org>, 
+	Justin Suess <utilityemal77@gmail.com>, linux-security-module@vger.kernel.org, 
+	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>, Matthieu Buffet <matthieu@buffet.re>, 
+	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>, konstantin.meskhidze@huawei.com, 
+	Demi Marie Obenour <demiobenour@gmail.com>, Alyssa Ross <hi@alyssa.is>, Jann Horn <jannh@google.com>, 
+	Tahera Fahimi <fahimitahera@gmail.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v4 1/6] lsm: Add LSM hook security_unix_find
+Message-ID: <20260209.yeeh3ieDuz9u@digikod.net>
+References: <20260208231017.114343-1-gnoack3000@gmail.com>
+ <20260208231017.114343-2-gnoack3000@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260209-mlx5_iommu-v1-1-b17ae501aeb2@debian.org>
-X-B4-Tracking: v=1; b=H4sIAOcgimkC/yXMQQrCMBAF0KsMf91AEqvUXEVEOnHUEZOWpJVC6
- d1F3b7FW1GlqFQEWlHkrVWHjECuIcRHn+9i9IpA8NYfrLdHk17L/qJDSrOJHftdx47ZtWgIY5G
- bLr/shCwTzn+sMz8lTt8G2/YB2ZXlj3MAAAA=
-X-Change-ID: 20260209-mlx5_iommu-c8b238b1bb14
-To: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, 
- Mark Bloch <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Amir Vadai <amirv@mellanox.com>
-Cc: netdev@vger.kernel.org, linux-rdma@vger.kernel.org, 
- linux-kernel@vger.kernel.org, dcostantino@meta.com, rneu@meta.com, 
- kernel-team@meta.com, Breno Leitao <leitao@debian.org>
-X-Mailer: b4 0.15-dev-f4305
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3491; i=leitao@debian.org;
- h=from:subject:message-id; bh=XATOe9xEYb6CkJdPsMWOqdi6khEYeHiuxEAIR2Ws1/g=;
- b=owEBbQKS/ZANAwAIATWjk5/8eHdtAcsmYgBpiiDxqmgpfRDKLisP5FaTSSPNUQj6Wr/Z8minf
- M92FKJYBDKJAjMEAAEIAB0WIQSshTmm6PRnAspKQ5s1o5Of/Hh3bQUCaYog8QAKCRA1o5Of/Hh3
- beAED/47FwhsjJ9JKRSbjWEUtd0cOedGS6F8H1E0I5s9bSr3fXZ0/dUd/crjQd/HtTrxqtgE/6n
- SZAc1YNt8+dyiksSw9kNxe8WOWewq3BliLkeqrJ/Lj5wOO3xJmJ65HPME4eLCffgDfB1Yyw77aw
- E6PFiE+UIq7CC2h98s423s+TduBhFTVa5cfl8MrtZNwPJrLx8IJPt1lYBOyn3WnXa+o1FEsKPDC
- VJqCFcv2r7Yq/RvdbdAdX47LXYlARtMUKWdT77TX6duPD8NbCDBa2jbOe9b3Dt3O9syAcxB5ibT
- mPf4UIOy+VUjtQ9Dqb25MjLHGwHM/6Yvv92WQ4QObgc4aa0tulGxcYtJg6dUuQMXCDiGW31vxrU
- twuq8Dt9XAQKWCCYfzISCi0gV9L+RjQ7vLL/unl6d2x3nrxUoh8zt4OM399sXgVov5fSzDxHEtL
- xkLeLLYmDZHNoTXpT1E6/B1iiBZnJMnekh6J0WI6TYxWs200F3vuArozbI64CMO5o09Rh7i6zXo
- PNwAxEc4Mh6EOflZoDGIbUysAa7KbR91UtgyvH8dK7vQI3zRMGQT8vrPohjXTsIhMwiZQsrjRmL
- 9gTAB+D3vx2hbMY0ERD8PKvetH3iGS1NUu6dmoMILFVGaXZjF75AJ8f4Gs0aGxR/DB19KBzOwJF
- 1fBA5N9WLeFZ7mQ==
-X-Developer-Key: i=leitao@debian.org; a=openpgp;
- fpr=AC8539A6E8F46702CA4A439B35A3939FFC78776D
-X-Debian-User: leitao
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260208231017.114343-2-gnoack3000@gmail.com>
+X-Infomaniak-Routing: alpha
 
-When a PCI error (e.g. AER error or DPC containment) marks the PCI
-channel as frozen or permanently failed, the IOMMU mappings for the
-device may already be torn down. If mlx5e_napi_poll() continues
-processing CQEs in this state, every call to dma_unmap_page() triggers
-a WARN_ON in iommu_dma_unmap_phys().
+On Mon, Feb 09, 2026 at 12:10:11AM +0100, Günther Noack wrote:
+> From: Justin Suess <utilityemal77@gmail.com>
+> 
+> Add a LSM hook security_unix_find.
+> 
+> This hook is called to check the path of a named unix socket before a
+> connection is initiated. The peer socket may be inspected as well.
+> 
+> Why existing hooks are unsuitable:
+> 
+> Existing socket hooks, security_unix_stream_connect(),
+> security_unix_may_send(), and security_socket_connect() don't provide
+> TOCTOU-free / namespace independent access to the paths of sockets.
+> 
+> (1) We cannot resolve the path from the struct sockaddr in existing hooks.
+> This requires another path lookup. A change in the path between the
+> two lookups will cause a TOCTOU bug.
+> 
+> (2) We cannot use the struct path from the listening socket, because it
+> may be bound to a path in a different namespace than the caller,
+> resulting in a path that cannot be referenced at policy creation time.
+> 
+> Cc: Günther Noack <gnoack3000@gmail.com>
+> Cc: Tingmao Wang <m@maowtm.org>
+> Signed-off-by: Justin Suess <utilityemal77@gmail.com>
+> ---
+>  include/linux/lsm_hook_defs.h |  5 +++++
+>  include/linux/security.h      | 11 +++++++++++
+>  net/unix/af_unix.c            |  9 +++++++++
+>  security/security.c           | 20 ++++++++++++++++++++
+>  4 files changed, 45 insertions(+)
+> 
+> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
+> index 8c42b4bde09c..7a0fd3dbfa29 100644
+> --- a/include/linux/lsm_hook_defs.h
+> +++ b/include/linux/lsm_hook_defs.h
+> @@ -317,6 +317,11 @@ LSM_HOOK(int, 0, post_notification, const struct cred *w_cred,
+>  LSM_HOOK(int, 0, watch_key, struct key *key)
+>  #endif /* CONFIG_SECURITY && CONFIG_KEY_NOTIFICATIONS */
+>  
+> +#if defined(CONFIG_SECURITY_NETWORK) && defined(CONFIG_SECURITY_PATH)
+> +LSM_HOOK(int, 0, unix_find, const struct path *path, struct sock *other,
+> +	 int flags)
+> +#endif /* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
+> +
+>  #ifdef CONFIG_SECURITY_NETWORK
+>  LSM_HOOK(int, 0, unix_stream_connect, struct sock *sock, struct sock *other,
+>  	 struct sock *newsk)
+> diff --git a/include/linux/security.h b/include/linux/security.h
+> index 83a646d72f6f..99a33d8eb28d 100644
+> --- a/include/linux/security.h
+> +++ b/include/linux/security.h
+> @@ -1931,6 +1931,17 @@ static inline int security_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
+>  }
+>  #endif	/* CONFIG_SECURITY_NETWORK */
+>  
+> +#if defined(CONFIG_SECURITY_NETWORK) && defined(CONFIG_SECURITY_PATH)
+> +
+> +int security_unix_find(const struct path *path, struct sock *other, int flags);
+> +
+> +#else /* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
+> +static inline int security_unix_find(const struct path *path, struct sock *other, int flags)
+> +{
+> +	return 0;
+> +}
+> +#endif /* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
+> +
+>  #ifdef CONFIG_SECURITY_INFINIBAND
+>  int security_ib_pkey_access(void *sec, u64 subnet_prefix, u16 pkey);
+>  int security_ib_endport_manage_subnet(void *sec, const char *name, u8 port_num);
+> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
+> index d0511225799b..db9d279b3883 100644
+> --- a/net/unix/af_unix.c
+> +++ b/net/unix/af_unix.c
+> @@ -1226,10 +1226,19 @@ static struct sock *unix_find_bsd(struct sockaddr_un *sunaddr, int addr_len,
+>  	if (!S_ISSOCK(inode->i_mode))
+>  		goto path_put;
+>  
+> +	err = -ECONNREFUSED;
 
-In a real-world crash scenario on an NVIDIA Grace (ARM64) platform,
-a DPC event froze the PCI channel and the mlx5 NAPI poll continued
-processing error CQEs, calling dma_unmap for each pending WQE. Here is
-an example:
+We don't see it in this patch but err is already set to -ECONNREFUSED.
+This line might be confusing, and unrelated to the goal of this patch,
+so we should remove it.
 
-The DPC event on port 0007:00:00.0 fires and eth1 (on 0017:01:00.0) starts
-seeing error CQEs almost immediately:
 
-    pcieport 0007:00:00.0: DPC: containment event, status:0x2009
-    mlx5_core 0017:01:00.0 eth1: Error cqe on cqn 0x54e, ci 0xb06, ...
+>  	sk = unix_find_socket_byinode(inode);
+>  	if (!sk)
+>  		goto path_put;
+>  
+> +	/*
+> +	 * We call the hook because we know that the inode is a socket
+> +	 * and we hold a valid reference to it via the path.
 
-The WARN_ON storm begins ~0.4s later and repeats for every pending WQE:
+This comment can be alligned with 80 columns.
 
-    WARNING: CPU: 32 PID: 0 at drivers/iommu/dma-iommu.c:1237 iommu_dma_unmap_phys
-    Call trace:
-     iommu_dma_unmap_phys+0xd4/0xe0
-     mlx5e_tx_wi_dma_unmap+0xb4/0xf0
-     mlx5e_poll_tx_cq+0x14c/0x438
-     mlx5e_napi_poll+0x6c/0x5e0
-     net_rx_action+0x160/0x5c0
-     handle_softirqs+0xe8/0x320
-     run_ksoftirqd+0x30/0x58
+> +	 */
+> +	err = security_unix_find(&path, sk, flags);
 
-After 23 seconds of WARN_ON() storm, the watchdog fires:
+This hook makes sense and is quite generic.
 
-    watchdog: BUG: soft lockup - CPU#32 stuck for 23s! [ksoftirqd/32:179]
-    Kernel panic - not syncing: softlockup: hung tasks
+> +	if (err)
+> +		goto sock_put;
+> +
+>  	err = -EPROTOTYPE;
+>  	if (sk->sk_type == type)
+>  		touch_atime(&path);
+> diff --git a/security/security.c b/security/security.c
+> index 31a688650601..9e9515955098 100644
+> --- a/security/security.c
+> +++ b/security/security.c
+> @@ -4731,6 +4731,26 @@ int security_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
+>  
+>  #endif	/* CONFIG_SECURITY_NETWORK */
+>  
+> +#if defined(CONFIG_SECURITY_NETWORK) && defined(CONFIG_SECURITY_PATH)
+> +/*
 
-Each unmap hit the WARN_ON in the IOMMU layer, printing a full stack
-trace. With dozens of pending WQEs, this created a storm of WARN_ON
-dumps in softirq context that monopolized the CPU for over 23 seconds,
-triggering a soft lockup panic.
+This should be a docstring like other hooks: /**
 
-Fix this by checking pci_channel_offline() at the top of
-mlx5e_napi_poll() and bailing out immediately when the channel is
-offline. napi_complete_done() is called before returning to clear the
-NAPI_STATE_SCHED bit, ensuring that napi_disable() in the teardown path
-does not spin forever waiting for it. No CQ interrupts are re-armed
-since the explicit mlx5e_cq_arm() calls are skipped, so the NAPI
-instance will not be re-scheduled. The pending DMA buffers are left for
-device removal to clean up.
-
-Fixes: e586b3b0baee ("net/mlx5: Ethernet Datapath files")
-Signed-off-by: Breno Leitao <leitao@debian.org>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-index 76108299ea57d..934ad7fafa801 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-@@ -138,6 +138,19 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
- 	bool xsk_open;
- 	int i;
- 
-+	/*
-+	 * When the PCI channel is offline, IOMMU mappings may already be torn
-+	 * down.  Processing CQEs would call dma_unmap for every pending WQE,
-+	 * each hitting a WARN_ON in the IOMMU layer.  The resulting storm of
-+	 * warnings in softirq context can monopolise the CPU long enough to
-+	 * trigger a soft lockup and prevent any RCU grace period from
-+	 * completing.
-+	 */
-+	if (unlikely(pci_channel_offline(c->mdev->pdev))) {
-+		napi_complete_done(napi, 0);
-+		return 0;
-+	}
-+
- 	rcu_read_lock();
- 
- 	qos_sqs = rcu_dereference(c->qos_sqs);
-
----
-base-commit: a956792a1543c2bf4a2266cb818dc7c4135006f0
-change-id: 20260209-mlx5_iommu-c8b238b1bb14
-
-Best regards,
---  
-Breno Leitao <leitao@debian.org>
-
+> + * security_unix_find() - Check if a named AF_UNIX socket can connect
+> + * @path: path of the socket being connected to
+> + * @other: peer sock
+> + * @flags: flags associated with the socket
+> + *
+> + * This hook is called to check permissions before connecting to a named
+> + * AF_UNIX socket.
+> + *
+> + * Return: Returns 0 if permission is granted.
+> + */
+> +int security_unix_find(const struct path *path, struct sock *other, int flags)
+> +{
+> +	return call_int_hook(unix_find, path, other, flags);
+> +}
+> +EXPORT_SYMBOL(security_unix_find);
+> +
+> +#endif	/* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
+> +
+>  #ifdef CONFIG_SECURITY_INFINIBAND
+>  /**
+>   * security_ib_pkey_access() - Check if access to an IB pkey is allowed
+> -- 
+> 2.52.0
+> 
+> 
