@@ -1,139 +1,115 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6FE1ACEDF
-	for <netdev@vger.kernel.org>; Mon,  9 Feb 2026 05:30:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B26469D
+	for <netdev@vger.kernel.org>; Mon,  9 Feb 2026 06:00:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770615018; cv=none; b=Iksr7YRFWoCtHSQCQYUe5FwN8zZVvZlGyytS7rTAPxpF5NRjmY7VZjp+XkkJRyRMmSWk09jAJ7Zj2guHZ+o/CnEKCOUy1KZttQJuEPnuqqI+hhxXtv+1y/WrNaCa7Kica3Ro+GCozVGibe2qO1iaPr9gpQQSV/cEDZFhYZ+TiOY=
+	t=1770616820; cv=none; b=obVPghncNXkPYBWW3nItYbawl+T5t7MgECnoMv0vSPU3Alh7V+ceemOY+X+u90482FniqH5/4X9/MV31lRQlN+DZN+S0xByWRh+keA6pkon1X1jpp01sJ6mdxy4RMB8BXL8d5D2eNukO4+LuDrw/0XLGR3qvIkNPbgDEhtjcJFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770615018; c=relaxed/simple;
-	bh=90MB2j4CgmVye0Z+2xbcqnupOoDkQTzlkenxahCSWw4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dXLoL5SybZ/4yVebTFZFCamkcn9BaEmft3AKR5boiNM5p+wrph6gv33BWmB2eVMSp58usyMQauMFiq9aAVM6FsCMS/LGjQ3TG/SC5S9s03yVw83MYEHO5OjxcmSJGSK9De/UCxhFpJGhw6Bbx7DNUsPPvrwgJD8ChhX0gWoRbqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu; spf=pass smtp.mailfrom=u.northwestern.edu; dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b=CYllLlqH; arc=none smtp.client-ip=209.85.160.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=u.northwestern.edu
+	s=arc-20240116; t=1770616820; c=relaxed/simple;
+	bh=/BxYc2RqKqnA2HpCNzzO9Ax82fwk7u5IUUIO5pvGGvk=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YdefYDpc2BBGeF9OMgUJ7e9VBw4tRzkImC4FXNunnfmZnN8qDMvjofLCIkGFIUHWvqZZgjji71Txr0n1agc3Q9gaz2iB9Yux4zSuONeiSFzhSloDD8+kPVM+JV0D9n/JwNDq7GszhEGSjk7KKnZ9EeFbVwdWI3h+Qgmy65JK0E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=VtrB3o51; arc=none smtp.client-ip=62.96.220.36
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b="CYllLlqH"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-505e2e4c35fso40969471cf.3
-        for <netdev@vger.kernel.org>; Sun, 08 Feb 2026 21:30:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=u-northwestern-edu.20230601.gappssmtp.com; s=20230601; t=1770615017; x=1771219817; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=N61Q8cV41adr4A+NhJ034xStLnkhNVlJ60mnC0rmS0I=;
-        b=CYllLlqHU0F76Bp5u1HsU9g65VdG0IkzCFGqJ2P9eEFBEiFnC2V0qf7g0R1r0QPEkv
-         9gfDWiEyNhHSLRFgReVkFE2v6smHaqcGRlOv+bsxlGf0IRl49G7gE+cHgZA3iolSBS+3
-         PEgfl4yJNvbrOtlUmWkfm1Vxv9TsGyKtgwktTFU6/gVfMAnZ+QiinbyPEBNC94ohIHve
-         0HCwCHJcRIalShPO3GAB/lBvQxw4HkA0s7YjX+/hyaeH+b72PfH7+C/ySncFF6GR0cJV
-         xxo5FiC60bcfbyVKE3KOZqo4QWM6FjRtz6if317ERdPelFhJZTjBUqLYIcVqzd/C3xHL
-         sDaA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770615017; x=1771219817;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=N61Q8cV41adr4A+NhJ034xStLnkhNVlJ60mnC0rmS0I=;
-        b=ilEo5qJYF7Neao70uJvMDA58Pf6pXcOoeQQGpjSgkdXUc/knMuQ6rKopk96mOxSnlR
-         RvLNPNmSWCx3dNZmT5wTq/nUfDdGcckgIsmy49Z4ErPV/iXR7r7DCywQLIgzr7CeWXH8
-         xV+2IbtIrSOj+z5KMdwa/tPpY1dq09f76Jn+2qRgTb9s9b8HG80xPEo0qUV9H3aWbaiZ
-         cE76u1kAeX9mhi/lAou2wjEFZbWkiNrhvgDtwt7M6J6ZLyW3bZfutuKTH0VNvfr+MAJI
-         CIRcGVcUJzmEzbvxJdy9XiYm48Wm24CFzgDi3YY9RF2h4Qo1F6goFm/aYQaOIAV5Q1jS
-         ITgw==
-X-Forwarded-Encrypted: i=1; AJvYcCUuvmrCSDpUfSeLXTZC1PMeKhfSPktOYfhWD0StnR+XDGle5iyYoLbNXzsz6tb6KlOIF8YfcsI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqXMBcxcm+Pho1VC5CIgefme1qO2z54nt+a6DahgAY/E38fL5r
-	i7orHXol3o0IDfm68p1HUA5LviG7ByOjFSHZYh1fivUlFqbQMK4kOzepBUuvVoTPwoY=
-X-Gm-Gg: AZuq6aL1ZhINXtwCzymj0f/0ODlp+EE6VJAhhMFef+i5hzOecIr1WtxbzUWKjQq8Yyq
-	bguBsrQF37w84kAbZDdKFhiJ8+dFKSi3ewMXAweoTzTV7QX/7YJ0nCHUKv9ElWs/KcaMHqTE/pI
-	0t3m3VUrBTWD0B5P9s6iGsooxq6oXqtV8/3xudu2smh10EMWJJk6+TgCgWl+TXsypT2+4WQGf5d
-	qnpgi8Jxt96D5FrkkwGgCBijYh45Q4i151USwLGgXZSVCK5MpEPZKe3gV6JzAI5pWAUi+sgTGZw
-	0A8ergHsIcKW6Tqj6Mao+vK6mZHeiN7E2G4cPF7S3IhEcGjp6n68Yl1YWSbD156vh4piFPdShrw
-	qSrnLJnIwbTxuQmcxmM/AYpHRiE5rBdpSdS/BiNNsyC+TtWob99kQEn7QaPvXpOuUFAPK2qNH7c
-	+Q4yAB+koy/wGIM2N+R+PEyOaLMJ762nbgmnBU/3m1xmmZVTIzQk46CkwxLxJ87zYdlQIfQLbbU
-	tlbsKFydbjBtY/WePMeCqcz6QuJfvo=
-X-Received: by 2002:a05:622a:13d0:b0:501:498e:5c29 with SMTP id d75a77b69052e-506399f5ed5mr134423481cf.59.1770615017536;
-        Sun, 08 Feb 2026 21:30:17 -0800 (PST)
-Received: from security.cs.northwestern.edu (security.cs.northwestern.edu. [165.124.184.136])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-50639171cd0sm69343471cf.13.2026.02.08.21.30.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 Feb 2026 21:30:17 -0800 (PST)
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ziyi Guo <n7l8m4@u.northwestern.edu>
-Subject: [PATCH] net: usb: kaweth: remove TX queue manipulation in kaweth_set_rx_mode
-Date: Mon,  9 Feb 2026 05:30:13 +0000
-Message-Id: <20260209053013.1701134-1-n7l8m4@u.northwestern.edu>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="VtrB3o51"
+Received: from localhost (localhost [127.0.0.1])
+	by mx1.secunet.com (Postfix) with ESMTP id AA1E6207BE;
+	Mon,  9 Feb 2026 06:55:02 +0100 (CET)
+X-Virus-Scanned: by secunet
+Received: from mx1.secunet.com ([127.0.0.1])
+ by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
+ with ESMTP id 1k781aoepWB0; Mon,  9 Feb 2026 06:55:02 +0100 (CET)
+Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.secunet.com (Postfix) with ESMTPS id 1D9FE20606;
+	Mon,  9 Feb 2026 06:55:02 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 1D9FE20606
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
+	s=202301; t=1770616502;
+	bh=2IjvUfa2nTyXHq68ngqfwfmN012FcUOeA/kwWnvWCPw=;
+	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
+	b=VtrB3o51hEZMvs9bn7MIYfehax8CV6Rrw7NZSlIDS7v65U5LezrTeRgXQukLg5eaa
+	 +n4/Atr92AdtPyx/0bJBqm88R404ADSyNcL79/0F19flM2ROGVCpEUtAKKx6LfWagi
+	 xjrWAc9wVtXS08vTHSSzM0jpuWMdBTYPpZGlh2zavSfTUEufyP0uobMGGNs7XRBCbY
+	 Ya1SkZaZbw7QjKRCxccL8xRwcenfxKbaftgy4HoLb9CAtoEm8SAiH4vDbe2SYCwZny
+	 J2nsrSnQfNFTPIGxFJOVTbhIscLBN1Z7TGx0OyzZHPLA4yUJhoGhNmcNdGcKuWb6Kq
+	 eDIdcD7J7+j/w==
+Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Mon, 9 Feb
+ 2026 06:55:01 +0100
+Received: (nullmailer pid 1247013 invoked by uid 1000);
+	Mon, 09 Feb 2026 05:55:01 -0000
+Date: Mon, 9 Feb 2026 06:55:01 +0100
+From: Steffen Klassert <steffen.klassert@secunet.com>
+To: Paolo Abeni <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Florian Westphal
+	<fw@strlen.de>
+Subject: Re: [PATCH net-next] xfrm: reduce struct sec_path size
+Message-ID: <aYl2tYaNpdYVU8hN@secunet.com>
+References: <83846bd2e3fa08899bd0162e41bfadfec95e82ef.1770398071.git.pabeni@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <83846bd2e3fa08899bd0162e41bfadfec95e82ef.1770398071.git.pabeni@redhat.com>
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
+ (10.32.0.171)
 
-kaweth_set_rx_mode(), the ndo_set_rx_mode callback, calls
-netif_stop_queue() and netif_wake_queue(). These are TX queue flow
-control functions unrelated to RX multicast configuration.
+On Fri, Feb 06, 2026 at 06:14:36PM +0100, Paolo Abeni wrote:
+> The mentioned struct has an hole and uses unnecessary wide type to
+> store MAC length and indexes of very small arrays.
+> 
+> It's also embedded into the skb_extensions, and the latter, due
+> to recent CAN changes, may exceeds the 192 bytes mark (3 cachelines
+> on x86_64 arch) on some reasonable configurations.
+> 
+> Reordering and the sec_path fields, shrinking xfrm_offload.orig_mac_len
+> to 16 bits and xfrm_offload.{len,olen,verified_cnt} to u8, we can save
+> 16 bytes and keep skb_extensions size under control.
+> 
+> Before:
+> 
+> struct sec_path {
+> 	int                        len;
+> 	int                        olen;
+> 	int                        verified_cnt;
+> 
+> 	/* XXX 4 bytes hole, try to pack */$
+> 	struct xfrm_state *        xvec[6];
+> 	struct xfrm_offload ovec[1];
+> 
+> 	/* size: 88, cachelines: 2, members: 5 */
+> 	/* sum members: 84, holes: 1, sum holes: 4 */
+> 	/* last cacheline: 24 bytes */
+> };
+> 
+> After:
+> 
+> struct sec_path {
+> 	struct xfrm_state *        xvec[6];
+> 	struct xfrm_offload        ovec[1];
+> 	/* typedef u8 -> __u8 */ unsigned char              len;
+> 	/* typedef u8 -> __u8 */ unsigned char              olen;
+> 	/* typedef u8 -> __u8 */ unsigned char              verified_cnt;
+> 
+> 	/* size: 72, cachelines: 2, members: 5 */
+> 	/* padding: 1 */
+> 	/* last cacheline: 8 bytes */
+> };
+> 
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-The premature netif_wake_queue() can re-enable TX while tx_urb is still
-in-flight, leading to a double usb_submit_urb() on the same URB:
-
-kaweth_start_xmit() {
-    netif_stop_queue();
-    usb_submit_urb(kaweth->tx_urb);
-}
-
-kaweth_set_rx_mode() {
-    netif_stop_queue();
-    netif_wake_queue();             // wakes TX queue before URB is done
-}
-
-kaweth_start_xmit() {
-    netif_stop_queue();
-    usb_submit_urb(kaweth->tx_urb); // URB submitted while active
-}
-
-This triggers the WARN in usb_submit_urb():
-
-  "URB submitted while active"
-
-This is a similar class of bug fixed in rtl8150 by 
-commit 958baf5eaee3 ("net: usb: Remove disruptive netif_wake_queue in rtl8150_set_multicast")
-
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
----
- drivers/net/usb/kaweth.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/drivers/net/usb/kaweth.c b/drivers/net/usb/kaweth.c
-index c9efb7df892e..406d1bd070fa 100644
---- a/drivers/net/usb/kaweth.c
-+++ b/drivers/net/usb/kaweth.c
-@@ -765,8 +765,6 @@ static void kaweth_set_rx_mode(struct net_device *net)
- 
- 	netdev_dbg(net, "Setting Rx mode to %d\n", packet_filter_bitmap);
- 
--	netif_stop_queue(net);
--
- 	if (net->flags & IFF_PROMISC) {
- 		packet_filter_bitmap |= KAWETH_PACKET_FILTER_PROMISCUOUS;
- 	}
-@@ -775,7 +773,6 @@ static void kaweth_set_rx_mode(struct net_device *net)
- 	}
- 
- 	kaweth->packet_filter_bitmap = packet_filter_bitmap;
--	netif_wake_queue(net);
- }
- 
- /****************************************************************
--- 
-2.34.1
+Reviewed-by: Steffen Klassert <steffen.klassert@secunet.com>
 
