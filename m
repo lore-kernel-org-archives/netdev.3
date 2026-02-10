@@ -1,110 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BB734A786;
-	Tue, 10 Feb 2026 10:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38576352F8B;
+	Tue, 10 Feb 2026 10:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.150.39.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770718229; cv=none; b=gW4ZXj33Iq0gHJ0rGuKDr0ChsAg+SxRxrYN0Q21WJntyh7NTqG0KFJNt/Q3AYEPwtGTPcpY+Vmbq88vgG15WMw5SK2l8aVCZA4duW8YphmOeBF+kBaiCMHJYS26iMWvClHAxhmC73g3gs+YsJrlR3qqKH9nE+4nMWkg9h8tinLo=
+	t=1770718943; cv=none; b=ttV3M4B3L8Hy+Icm2edgaS0HtOky5Vh35pz/vv6ytdx2r7fSr14/TmjTRZG8oyteL7EZfiKEiV/JLcFUqf2L1rZbyenNHvMx7WuNd3Jmpblpjq6p/mxxjo7Bl5WJWrl59bfIpimstW3Mf4Vfn23G2njMoTK3+jroOYBt0RSU8gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770718229; c=relaxed/simple;
-	bh=FMBaXuFQeBrt8fJEzPTuhWQ23fYLV56pEAMm2NMWTtQ=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=UQJSmwmQG3sOB/swwAszxsuZiZfkTtsKHz8Z/DTv8DEYAC64y3QDODd7VZw+3qq2vmkS927H0dUWC7mVbiLqKW9CqX/A8jYxaIWAQhUDf5UNAJZ/eGx26kxqtul5RJqSeNklrnSZDePWZpUS5Kw8FGOLRUObJi/rePZLo5X1UE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A72yDi4o; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A72yDi4o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538BCC116C6;
-	Tue, 10 Feb 2026 10:10:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770718229;
-	bh=FMBaXuFQeBrt8fJEzPTuhWQ23fYLV56pEAMm2NMWTtQ=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=A72yDi4oURF59QiUNMNV3Z8GAHqR3gkQXkmFNvKfqrddYbwrPNFWpRLnnvaEvZ5Lt
-	 C2INGLJbgw9d6fh+eaf6qjLRPMqMuWkGZCTBbInRygDUQi0JBIuLRcDLwy63qaREYi
-	 xEJeijZUg9UB33h0SlOzSANe3FsuwEIIfBMziqY4A2HWQtWhERKJDbKtrnN1wYO98W
-	 RlaqZLFncHyvgjkC89LMBkXs13d4N1ULT3bx0Woi+fcuKP3XjIOwaf+nvF0pi3LasH
-	 Ck9roETDe7R6bST8f5olV4P/9aWO8aIyCwihbMusOWKf7qlkLs6b9g71JjTlNGoHVS
-	 j2ZTF81B1RKWw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B08439B167A;
-	Tue, 10 Feb 2026 10:10:26 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1770718943; c=relaxed/simple;
+	bh=xH0/xyuV2m4IGJF4YQH/yddhchsc4qxVZOZhbxGO42E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=tthMurP6NGA5u0SuI0vP0YXdlzYip8derWB4/PUkHA+KZMShRmesnNZAvLKCOdC23zDwvfbHpgFeSa8qXBM+BGaTJNETzEHNAfxW6Bmn9gN8R+mQl+1w9TQjDCzF8HyTFgEwmVFstktgG/DDakhwrFDBTo6Ec+Xa20wncSZ7DFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=129.150.39.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
+Received: from lizhi2$eswincomputing.com ( [10.11.96.26] ) by
+ ajax-webmail-app1 (Coremail) ; Tue, 10 Feb 2026 18:21:40 +0800 (GMT+08:00)
+Date: Tue, 10 Feb 2026 18:21:40 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	"Andrew Lunn" <andrew@lunn.ch>
+Cc: devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	ningyu@eswincomputing.com, linmin@eswincomputing.com,
+	pinkesh.vaghela@einfochips.com, weishangjuan@eswincomputing.com
+Subject: Re: Re: [PATCH v2 0/2] net: stmmac: eic7700: fix EIC7700 eth1 RX
+ sampling timing
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.2-cmXT6 build
+ 20241203(6b039d88) Copyright (c) 2002-2026 www.mailtech.cn
+ mispb-72143050-eaf5-4703-89e0-86624513b4ce-eswincomputing.com
+In-Reply-To: <aYnvwAK3gpxBs-EF@shell.armlinux.org.uk>
+References: <20260209094628.886-1-lizhi2@eswincomputing.com>
+ <64bf6b40-b947-4ffa-8d48-4d6341931327@lunn.ch>
+ <aYnvwAK3gpxBs-EF@shell.armlinux.org.uk>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v7 net-next 00/15] net: fec: improve XDP copy mode and add
- AF_XDP zero-copy support
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177071822482.3446472.4693550669604123129.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Feb 2026 10:10:24 +0000
-References: <20260205085742.2685134-1-wei.fang@nxp.com>
-In-Reply-To: <20260205085742.2685134-1-wei.fang@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: shenwei.wang@nxp.com, xiaoning.wang@nxp.com, frank.li@nxp.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, ast@kernel.org, daniel@iogearbox.net,
- hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, horms@kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- bpf@vger.kernel.org
+Message-ID: <5dea8ce0.4435.19c471231f5.Coremail.lizhi2@eswincomputing.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:TAJkCgDXMzm0BotpuZEEAA--.2117W
+X-CM-SenderInfo: xol2xx2s6h245lqf0zpsxwx03jof0z/1tbiAgEODGmKDIMekQAAsi
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Thu,  5 Feb 2026 16:57:27 +0800 you wrote:
-> This patch set optimizes the XDP copy mode logic as follows.
-> 
-> 1. Separate the processing of RX XDP frames from fec_enet_rx_queue(),
-> and adds a separate function fec_enet_rx_queue_xdp() for handling XDP
-> frames.
-> 
-> 2. For TX XDP packets, using the batch sending method to avoid frequent
-> MMIO writes.
-> 
-> [...]
-
-Here is the summary with links:
-  - [v7,net-next,01/15] net: fec: add fec_txq_trigger_xmit() helper
-    https://git.kernel.org/netdev/net-next/c/c8d4ad91765c
-  - [v7,net-next,02/15] net: fec: add fec_rx_error_check() to check RX errors
-    https://git.kernel.org/netdev/net-next/c/ff306e9a1963
-  - [v7,net-next,03/15] net: fec: add rx_shift to indicate the extra bytes padded in front of RX frame
-    https://git.kernel.org/netdev/net-next/c/385d19b56761
-  - [v7,net-next,04/15] net: fec: add fec_build_skb() to build a skb
-    https://git.kernel.org/netdev/net-next/c/54a6e86ba4ff
-  - [v7,net-next,05/15] net: fec: improve fec_enet_rx_queue()
-    https://git.kernel.org/netdev/net-next/c/bc609f97b140
-  - [v7,net-next,06/15] net: fec: add fec_enet_rx_queue_xdp() for XDP path
-    https://git.kernel.org/netdev/net-next/c/5ff3d3ddcdbe
-  - [v7,net-next,07/15] net: fec: add tx_qid parameter to fec_enet_xdp_tx_xmit()
-    https://git.kernel.org/netdev/net-next/c/8a3344bb734f
-  - [v7,net-next,08/15] net: fec: transmit XDP frames in bulk
-    https://git.kernel.org/netdev/net-next/c/2ff7a7d3928b
-  - [v7,net-next,09/15] net: fec: remove unnecessary NULL pointer check when clearing TX BD ring
-    https://git.kernel.org/netdev/net-next/c/2dcc93475559
-  - [v7,net-next,10/15] net: fec: use switch statement to check the type of tx_buf
-    https://git.kernel.org/netdev/net-next/c/8492e4f1959c
-  - [v7,net-next,11/15] net: fec: remove the size parameter from fec_enet_create_page_pool()
-    https://git.kernel.org/netdev/net-next/c/6729b24c1c2f
-  - [v7,net-next,12/15] net: fec: move xdp_rxq_info* APIs out of fec_enet_create_page_pool()
-    https://git.kernel.org/netdev/net-next/c/edd393153ef0
-  - [v7,net-next,13/15] net: fec: add fec_alloc_rxq_buffers_pp() to allocate buffers from page pool
-    https://git.kernel.org/netdev/net-next/c/a2ae70c0efe4
-  - [v7,net-next,14/15] net: fec: improve fec_enet_tx_queue()
-    https://git.kernel.org/netdev/net-next/c/fee723a48cbe
-  - [v7,net-next,15/15] net: fec: add AF_XDP zero-copy support
-    https://git.kernel.org/netdev/net-next/c/25eb3058eb70
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+CgoKPiAtLS0tLeWOn+Wni+mCruS7ti0tLS0tCj4g5Y+R5Lu25Lq6OiAiUnVzc2VsbCBLaW5nIChP
+cmFjbGUpIiA8bGludXhAYXJtbGludXgub3JnLnVrPgo+IOWPkemAgeaXtumXtDoyMDI2LTAyLTA5
+IDIyOjMxOjI4ICjmmJ/mnJ/kuIApCj4g5pS25Lu25Lq6OiBsaXpoaTJAZXN3aW5jb21wdXRpbmcu
+Y29tLCAiQW5kcmV3IEx1bm4iIDxhbmRyZXdAbHVubi5jaD4KPiDmioTpgIE6IGRldmljZXRyZWVA
+dmdlci5rZXJuZWwub3JnLCBhbmRyZXcrbmV0ZGV2QGx1bm4uY2gsIGRhdmVtQGRhdmVtbG9mdC5u
+ZXQsIGVkdW1hemV0QGdvb2dsZS5jb20sIGt1YmFAa2VybmVsLm9yZywgcm9iaEBrZXJuZWwub3Jn
+LCBrcnprK2R0QGtlcm5lbC5vcmcsIGNvbm9yK2R0QGtlcm5lbC5vcmcsIG5ldGRldkB2Z2VyLmtl
+cm5lbC5vcmcsIHBhYmVuaUByZWRoYXQuY29tLCBtY29xdWVsaW4uc3RtMzJAZ21haWwuY29tLCBh
+bGV4YW5kcmUudG9yZ3VlQGZvc3Muc3QuY29tLCBsaW51eC1zdG0zMkBzdC1tZC1tYWlsbWFuLnN0
+b3JtcmVwbHkuY29tLCBsaW51eC1hcm0ta2VybmVsQGxpc3RzLmluZnJhZGVhZC5vcmcsIGxpbnV4
+LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmcsIG5pbmd5dUBlc3dpbmNvbXB1dGluZy5jb20sIGxpbm1p
+bkBlc3dpbmNvbXB1dGluZy5jb20sIHBpbmtlc2gudmFnaGVsYUBlaW5mb2NoaXBzLmNvbSwgd2Vp
+c2hhbmdqdWFuQGVzd2luY29tcHV0aW5nLmNvbQo+IOS4u+mimDogUmU6IFtQQVRDSCB2MiAwLzJd
+IG5ldDogc3RtbWFjOiBlaWM3NzAwOiBmaXggRUlDNzcwMCBldGgxIFJYIHNhbXBsaW5nIHRpbWlu
+Zwo+IAo+IE9uIE1vbiwgRmViIDA5LCAyMDI2IGF0IDAyOjM2OjExUE0gKzAxMDAsIEFuZHJldyBM
+dW5uIHdyb3RlOgo+ID4gT24gTW9uLCBGZWIgMDksIDIwMjYgYXQgMDU6NDY6MjhQTSArMDgwMCwg
+bGl6aGkyQGVzd2luY29tcHV0aW5nLmNvbSB3cm90ZToKPiA+ID4gRnJvbTogWmhpIExpIDxsaXpo
+aTJAZXN3aW5jb21wdXRpbmcuY29tPgo+ID4gPiAKPiA+ID4gdjEgLT4gdjI6Cj4gPiAKPiA+IEZv
+ciB2ZXJzaW9uIDMsIHBsZWFzZSBpbmNsdWRlIGEgcGF0Y2ggdG8gdGhlIFNvQyAuZHRzaSBmaWxl
+IGFkZGluZyB0aGUKPiA+IEV0aGVybmV0IG5vZGVzLiBXZSBsaWtlIHRvIHNlZSB1c2VycyBvZiBj
+b2RlIGJlaW5nIGFkZGVkLgo+IAo+IEluIGFkZGl0aW9uIHRvIEFuZHJldydzIGNvbW1lbnRzLCBi
+ZWZvcmUgcG9zdGluZyBhbm90aGVyIHNlcmllcywgcGxlYXNlCj4gcmV2aWV3IGh0dHBzOi8vZG9j
+cy5rZXJuZWwub3JnL3Byb2Nlc3MvbWFpbnRhaW5lci1uZXRkZXYuaHRtbCwKPiBwYXJ0aWN1bGFy
+bHkgc2VjdGlvbnMgMS40IGFuZCAxLjYuMS4KPiAKVGhhbmtzIGZvciB0aGUgY29tbWVudHMuCgpU
+aGUgdjMgcGF0Y2ggd2lsbCB0YXJnZXQgdGhlIG5ldCBnaXQgdHJlZS4KCldlIHdpbGwgYWRkIHRo
+ZSBldGhlcm5ldCBub2RlcyBhbmQgdGhlIGNvcnJlc3BvbmRpbmcgY2xvY2sgbm9kZSB0bwplaWM3
+NzAwLmR0c2kgYW5kIGVpYzc3MDAtaGlmaXZlLXByZW1pZXItcDU1MC5kdHMgaW4gdjMgcGF0Y2gu
+IAoKUGxlYXNlIG5vdGUgdGhhdCB0aGUgRUlDNzcwMCBjbG9jayBjb250cm9sbGVyIGJpbmRpbmcg
+YW5kIGRyaXZlciBhcmUgbm90CnlldCBtZXJnZWQgdXBzdHJlYW0sIHNvIHRoZSBjbG9jayBub2Rl
+cyB3aWxsIG5vdCBiZSBmdW5jdGlvbmFsIHVudGlsIHRoZQpjbG9jayBkcml2ZXIgaXMgYXZhaWxh
+YmxlLiBBcyBhIHJlc3VsdCwgZHRic19jaGVjayB3aWxsIGN1cnJlbnRseSByZXBvcnQKc2NoZW1h
+IHdhcm5pbmdzL2Vycm9ycyByZWxhdGVkIHRvIHRoZSBjbG9jayBub2Rlcy4gVGhpcyBpcyBhIGtu
+b3duIGFuZAp0ZW1wb3JhcnkgbGltaXRhdGlvbiB1bnRpbCB0aGUgY2xvY2sgYmluZGluZyBhbmQg
+ZHJpdmVyIGFyZSBhdmFpbGFibGUKdXBzdHJlYW0uCgpQbGVhc2UgbGV0IHVzIGtub3cgaWYgdGhp
+cyBhcHByb2FjaCBpcyBhY2NlcHRhYmxlLgoKQmVzdCByZWdhcmRzLApaaGkgTGkK
