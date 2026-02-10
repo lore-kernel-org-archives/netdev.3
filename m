@@ -1,166 +1,141 @@
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9213275112;
-	Tue, 10 Feb 2026 02:19:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3ADE2E2DF2
+	for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 02:43:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770689993; cv=none; b=tZ+nO7Q+bzgMOCHR3wL28GBxOqip8rEL24+2nFmNk7hHqf1gTfP6O+kaVEbY78NEC4SjuhGY30SGMJMz6tQY+K0IHYmoD/gWWe3NJUm2X+pKmL+57sRRHU+x4TYgdgC+6l5zFgQbIEcjUhs+BfELQmVTkryV6NzxNs1OC4gG6zs=
+	t=1770691427; cv=none; b=HbNHQZnhERcjjaRCr3KIYKp/+4TLA3gE5d46H1vV+qwe8yfConBFBysDQQdr9hpMNEfIw0UJ+6gI6iCCUafW5ERU+XZzZqP0BaVFdBxCx5lG01sSaLUNZOWGtbpVm5wIBH8JpMUR+V/ZvMs2nD/Qnu2QhK0SsqazWNTHTJIFeT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770689993; c=relaxed/simple;
-	bh=MG8jvzZf/kzglYRZMkv6gbzkxD7FW8wmHIBPZCNHuM4=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=AeVJ32hHfk+uhDMioAtwuZ82LtWXoKs16TZicsQfieNz30Rf7l9jjk5FCcppvpThDJO45q5e7f+i/KtDiYdQOJBhYdJW1S/dtbkWCxkj50ik3z4223KTpMUykthni0OKuRcJ8QsivHZY8rmbSYy8w0U5UEjH0BS6JMqaxIffnto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=S44+kLpJ; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1770691427; c=relaxed/simple;
+	bh=b4xPWImOTlDajhrUG7eXtH2aZH7I0nVFi0jycnY3IPE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s5ckXO8SXgSrYdjD+fP/EoFYs257MQ0bauv4djOzeCis2sMnrgEGl4B0I9k32jf/uV8PMXy47i2DdbM1ILZ21vxEvtN8nrTraw88extXVH4ALk+ZklO3Sg3XXbD4fEDXmo3Wyx6rqfPg5QrzWGKyx8N3haO4E/OpBnAfyg1oadU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu; spf=pass smtp.mailfrom=u.northwestern.edu; dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b=M3H0iwuL; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=u.northwestern.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=u.northwestern.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="S44+kLpJ"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=uecur6houava9Fdo15L338waubBYoJUZ+/hRmaHFZEI=;
-	b=S44+kLpJTpkr731oWQk+wroAkLZwJDiU4j59tMy0cWytiRFKVb299lo83Zp9BrlxDhRV2fkLB
-	cst9J6FK07pNOPtazds3xmNtX9howq8DoFns31ByZk28jrLbqUPGW2GYdTze6qGQ9H+xuEAPuQq
-	LcD4CBgy0Ql5xDM/oosfc3E=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4f94sC1cKBzRhQm;
-	Tue, 10 Feb 2026 10:15:11 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3CD292012A;
-	Tue, 10 Feb 2026 10:19:48 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 10 Feb 2026 10:19:47 +0800
-Message-ID: <49fe0af5-7dcf-42e0-bd73-0bd42c067d26@huawei.com>
-Date: Tue, 10 Feb 2026 10:19:46 +0800
+	dkim=pass (2048-bit key) header.d=u-northwestern-edu.20230601.gappssmtp.com header.i=@u-northwestern-edu.20230601.gappssmtp.com header.b="M3H0iwuL"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-89473dca8aaso51131076d6.0
+        for <netdev@vger.kernel.org>; Mon, 09 Feb 2026 18:43:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=u-northwestern-edu.20230601.gappssmtp.com; s=20230601; t=1770691424; x=1771296224; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=qvKGjQtrDpaNiZmMQcUWKgx5WOmlV0d55tFNLhvEBPw=;
+        b=M3H0iwuL1syI+nG/M3a/AR6NS6HRLuuNbAF4IS61EgIGtMp0IgGqpzlqjR4JTctgl+
+         Uab/E7KhfhAVk32VLZZTlavxezyGdpZbCvGVchQ7w6kyOAmEBiCzXFmcvTsFCNi5+Uf6
+         1ZEulBwbljoUdjWob8AR8NUBX2RWifva3bWo1N8gC9VtA30fz0dSWcDT0NhP1MCL+Xwn
+         8tyEPUQdg2OvpeWlEfxfstAFOD9VdEkXczHaqNIuJPOL+LIO1/dosZFU5w7aXZkIPp56
+         MN1ckPE2H1U8n+TmwBOHUxK1jmUNzp1ehmfiGI+AxZRc00/VHNgezZP6zT+n95vprDS0
+         yuzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770691424; x=1771296224;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qvKGjQtrDpaNiZmMQcUWKgx5WOmlV0d55tFNLhvEBPw=;
+        b=EAP+xTsYTvoSfD4r6SuNeVzaVfVQIZwijwdAfcpV0x+qBKt7E8M9vpB1z6lOuSsbwA
+         hGi6YI559coR0ESd40jWPyR+FY48DzirB2pB1zbUIVJnuBG5ZLAWUASQhNCQ5BviA+qG
+         OrDBAg9WUlkNmZkYWn9U9kQXFXs5eqovdnxCsk1YLvB9rF8BifLEruxkII8NKYYsrvYW
+         71HJxXg8Cf4mIV8KwlFEk6KEydH/3ykrBo+hWLpShKC0dyuMdcCJswRTiaELXx4QxxjS
+         s+nyzG6snYdafJkUkt6hsNu3jpVXPWtz0gucI4B2Q7fMdITjF4SXS3UrOvvw+wbJe9Bb
+         SeZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXZRkI2yGvqfcS0iidIqehOk/iY+XnbGbhYejCq/HDHsHEs2idTGdNpw8T8X9WW25kLMujGIzo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRdBCqR02thHHwYQiz+ODA7QUJMZFICcA4oGEz4AdBKd6M34RT
+	HpVQakTYTc1iVgkSUknVFxXZCouEmjplill4nlo7xMsSsGawc7+AsiyrGlY94QC+O3wJnIN+neV
+	Zqfox
+X-Gm-Gg: AZuq6aL0zOUQhpNdxq5p2Wtom7AvG6iy0aRmZGvswR25t+qxXrBeVKawwdFXypI6/Sh
+	5hdIfFZrDHnp70P2gvJTRFU53/xQpRxhxnQXpebk/HHZvPxvNgS2TCXQq8M1ZXvXQLZzY3TD6Pq
+	qnNeWM9Yk88VwCrt4wwlLpqrk653A82uFDnbjg47TMJqF46GqsTrA1J2rvpxJOZk8CRfZrDaFBM
+	NX59DRNcFdT8S3VzWlKJC0uzqV7FKuaJvz0DJKUbiOFgSAA9HfsWtFg5WDNPYwfvlyY7cqgeY69
+	6qp3zq78dC19lSCAbp/6CMSxdUdRVMkJ0tHNwqfmXfaxY0YWUqBchfDvNaqS+90S9IeHUzDsWbY
+	aiJOmQJusvChzJ9WT1s/HD+pLVvfC3mwGcEuTvBy7ewSRomgZeBtrDXO10YQLJUKnQZECP73cM8
+	Jt/Rpepo846TAXC9VeTd19ECtEemlZSSmraJr74UOamvlHgPEQvzSNqToaeHXREzOTba7c0AWPu
+	wymZgTMhYgxxCk0in0DgCOY1wponAr3iuH5ulGO0+U=
+X-Received: by 2002:a05:6214:518c:b0:895:c06:8cbe with SMTP id 6a1803df08f44-8953cfa19a3mr211943866d6.69.1770691424012;
+        Mon, 09 Feb 2026 18:43:44 -0800 (PST)
+Received: from security.cs.northwestern.edu (security.cs.northwestern.edu. [165.124.184.136])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8953bf5b2ddsm88416486d6.18.2026.02.09.18.43.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Feb 2026 18:43:43 -0800 (PST)
+From: Ziyi Guo <n7l8m4@u.northwestern.edu>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ziyi Guo <n7l8m4@u.northwestern.edu>
+Subject: [PATCH net] net: usb: catc: enable basic endpoint checking
+Date: Tue, 10 Feb 2026 02:43:41 +0000
+Message-Id: <20260210024341.3216007-1-n7l8m4@u.northwestern.edu>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <netdev@vger.kernel.org>,
-	<linux-rdma@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<dcostantino@meta.com>, <rneu@meta.com>, <kernel-team@meta.com>
-Subject: Re: [PATCH net] net/mlx5e: Skip NAPI polling when PCI channel is
- offline
-To: Breno Leitao <leitao@debian.org>, Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>, Leon
- Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Amir Vadai
-	<amirv@mellanox.com>
-References: <20260209-mlx5_iommu-v1-1-b17ae501aeb2@debian.org>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20260209-mlx5_iommu-v1-1-b17ae501aeb2@debian.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+Content-Transfer-Encoding: 8bit
 
+catc_probe() fills three URBs with hardcoded endpoint pipes without
+verifying the endpoint descriptors:
 
-on 2026/2/10 2:01, Breno Leitao wrote:
-> When a PCI error (e.g. AER error or DPC containment) marks the PCI
-> channel as frozen or permanently failed, the IOMMU mappings for the
-> device may already be torn down. If mlx5e_napi_poll() continues
-> processing CQEs in this state, every call to dma_unmap_page() triggers
-> a WARN_ON in iommu_dma_unmap_phys().
+  - usb_sndbulkpipe(usbdev, 1) and usb_rcvbulkpipe(usbdev, 1) for TX/RX
+  - usb_rcvintpipe(usbdev, 2) for interrupt status
 
-Hi:
-   My comment has nothing to do with the changes made in this patch itself.
+A malformed USB device can present these endpoints with transfer types
+that differ from what the driver assumes.
 
+Add usb_check_bulk_endpoints() and usb_check_int_endpoints() calls
+after usb_set_interface() to verify endpoint types before use, rejecting
+devices with mismatched descriptors at probe time.
 
-I am more interested in this error itself.
-1. If there is an issue with dma_unmp, does dma_map in tx have a similar problem?
-2. Can this error be detected by mlx5_pci_err_detected()? If not, does this mean that all PCIe NIC drivers might have similar issues?
-    Do other drivers need to do similar checks?
+Similar to
+- commit 90b7f2961798 ("net: usb: rtl8150: enable basic endpoint checking")
+which fixed the issue in rtl8150.
 
-Thanks,
-Jijie Shao
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
+---
+ drivers/net/usb/catc.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
->
-> In a real-world crash scenario on an NVIDIA Grace (ARM64) platform,
-> a DPC event froze the PCI channel and the mlx5 NAPI poll continued
-> processing error CQEs, calling dma_unmap for each pending WQE. Here is
-> an example:
->
-> The DPC event on port 0007:00:00.0 fires and eth1 (on 0017:01:00.0) starts
-> seeing error CQEs almost immediately:
->
->      pcieport 0007:00:00.0: DPC: containment event, status:0x2009
->      mlx5_core 0017:01:00.0 eth1: Error cqe on cqn 0x54e, ci 0xb06, ...
->
-> The WARN_ON storm begins ~0.4s later and repeats for every pending WQE:
->
->      WARNING: CPU: 32 PID: 0 at drivers/iommu/dma-iommu.c:1237 iommu_dma_unmap_phys
->      Call trace:
->       iommu_dma_unmap_phys+0xd4/0xe0
->       mlx5e_tx_wi_dma_unmap+0xb4/0xf0
->       mlx5e_poll_tx_cq+0x14c/0x438
->       mlx5e_napi_poll+0x6c/0x5e0
->       net_rx_action+0x160/0x5c0
->       handle_softirqs+0xe8/0x320
->       run_ksoftirqd+0x30/0x58
->
-> After 23 seconds of WARN_ON() storm, the watchdog fires:
->
->      watchdog: BUG: soft lockup - CPU#32 stuck for 23s! [ksoftirqd/32:179]
->      Kernel panic - not syncing: softlockup: hung tasks
->
-> Each unmap hit the WARN_ON in the IOMMU layer, printing a full stack
-> trace. With dozens of pending WQEs, this created a storm of WARN_ON
-> dumps in softirq context that monopolized the CPU for over 23 seconds,
-> triggering a soft lockup panic.
->
-> Fix this by checking pci_channel_offline() at the top of
-> mlx5e_napi_poll() and bailing out immediately when the channel is
-> offline. napi_complete_done() is called before returning to clear the
-> NAPI_STATE_SCHED bit, ensuring that napi_disable() in the teardown path
-> does not spin forever waiting for it. No CQ interrupts are re-armed
-> since the explicit mlx5e_cq_arm() calls are skipped, so the NAPI
-> instance will not be re-scheduled. The pending DMA buffers are left for
-> device removal to clean up.
->
-> Fixes: e586b3b0baee ("net/mlx5: Ethernet Datapath files")
-> Signed-off-by: Breno Leitao <leitao@debian.org>
-> ---
->   drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c | 13 +++++++++++++
->   1 file changed, 13 insertions(+)
->
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-> index 76108299ea57d..934ad7fafa801 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_txrx.c
-> @@ -138,6 +138,19 @@ int mlx5e_napi_poll(struct napi_struct *napi, int budget)
->   	bool xsk_open;
->   	int i;
->   
-> +	/*
-> +	 * When the PCI channel is offline, IOMMU mappings may already be torn
-> +	 * down.  Processing CQEs would call dma_unmap for every pending WQE,
-> +	 * each hitting a WARN_ON in the IOMMU layer.  The resulting storm of
-> +	 * warnings in softirq context can monopolise the CPU long enough to
-> +	 * trigger a soft lockup and prevent any RCU grace period from
-> +	 * completing.
-> +	 */
-> +	if (unlikely(pci_channel_offline(c->mdev->pdev))) {
-> +		napi_complete_done(napi, 0);
-> +		return 0;
-> +	}
-> +
->   	rcu_read_lock();
->   
->   	qos_sqs = rcu_dereference(c->qos_sqs);
->
-> ---
-> base-commit: a956792a1543c2bf4a2266cb818dc7c4135006f0
-> change-id: 20260209-mlx5_iommu-c8b238b1bb14
->
-> Best regards,
-> --
-> Breno Leitao <leitao@debian.org>
->
->
+diff --git a/drivers/net/usb/catc.c b/drivers/net/usb/catc.c
+index 6759388692f8..e92773cbf5f9 100644
+--- a/drivers/net/usb/catc.c
++++ b/drivers/net/usb/catc.c
+@@ -770,6 +770,13 @@ static int catc_probe(struct usb_interface *intf, const struct usb_device_id *id
+ 	struct net_device *netdev;
+ 	struct catc *catc;
+ 	u8 broadcast[ETH_ALEN];
++	static const u8 bulk_ep_addr[] = {
++		USB_DIR_OUT | 1,	/* EP 1 OUT (TX) */
++		USB_DIR_IN | 1,		/* EP 1 IN  (RX) */
++		0};
++	static const u8 int_ep_addr[] = {
++		USB_DIR_IN | 2,		/* EP 2 IN  (interrupt) */
++		0};
+ 	u8 *macbuf;
+ 	int pktsz, ret = -ENOMEM;
+ 
+@@ -784,6 +791,14 @@ static int catc_probe(struct usb_interface *intf, const struct usb_device_id *id
+ 		goto fail_mem;
+ 	}
+ 
++	/* Verify that all required endpoints are present */
++	if (!usb_check_bulk_endpoints(intf, bulk_ep_addr) ||
++	    !usb_check_int_endpoints(intf, int_ep_addr)) {
++		dev_err(dev, "Missing or invalid endpoints\n");
++		ret = -ENODEV;
++		goto fail_mem;
++	}
++
+ 	netdev = alloc_etherdev(sizeof(struct catc));
+ 	if (!netdev)
+ 		goto fail_mem;
+-- 
+2.34.1
+
