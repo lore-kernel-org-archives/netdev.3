@@ -1,129 +1,110 @@
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
+Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686AE209F43
-	for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 16:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5754632AAB4
+	for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 17:06:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770741595; cv=none; b=nWXc+fo+LfT9m49QroP6ItZvp8qkP1jI+Y7ItCy4gelqXqO5eMA7FR72p6KdaomVfYJLUbLIxdBRffyrqYCnfhjq8LoXz0FHMtgQALolGEVa/LjeSsFYFgeaQbZaObtpvkHpv0426QdSe7lx5TQn4HLFBxvPObJDgFOX7RCCGxQ=
+	t=1770743169; cv=none; b=ubD891BEOutAfpwiM/S1iv13zQquhBAupdyaCxtLBpBcFJtBeddOC2IUQGRanGjX6IWK5S/t+sNCtGUNQZMLZn4y7nJJh6RA9T6Z9WfX8jmQcQWWk6Dyp3q/lWD+se33mC0Dw/yXkaFgqN6Fzp3tSko0ohJ5VHbZxRG+udRNPSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770741595; c=relaxed/simple;
-	bh=GDePuShHAghlSQB6vfLGP85WO2lRyKMweKzmbcTR+uw=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=s26pfN/eMddQZj0IcmYYcWlNy/sCpoOyW2O4DGENgfJSfY3wygT5QInw5pKMYh7Uunmy8KYNwphd7fFC7CUNoclCq2K3chqSy6+/OZx7vmxIl/Okz+4kmf577R0Uz01ZIiXmLZSR3FOjAuHDFGFNHP5wcrW870WKeoR/4WjcySw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=j+o6onEO; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
+	s=arc-20240116; t=1770743169; c=relaxed/simple;
+	bh=TeOq2WGx36/vhsxEB4LmTPs6NHH2522z9ZrglXR1Ev0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Dcp26vjWxznPEZvr4Iqk5EyI5iv6WwUyBLzdhd/FqRigfiiWPAA9cjY6H2Qr9MgMpDyid/5UfRBbf16lJyPJpVkym2T3FPpk7NfyyGkybMo8d5XedczFJXU6PGnRVBsM0Wp+kraOHwk6nWsPTpJNbKqdFXI5EhqINH+lccbhvpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=uRapuCaq; arc=none smtp.client-ip=49.212.198.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="j+o6onEO"
-Authentication-Results: dilbert.mork.no;
-	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=j+o6onEO;
-	dkim-atps=neutral
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10e2:d900:0:0:0:1])
+	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="uRapuCaq"
+Received: from ms-a2 (227.25.31.150.dy.iij4u.or.jp [150.31.25.227])
 	(authenticated bits=0)
-	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 61AGRPKv076434
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Tue, 10 Feb 2026 16:27:26 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1770740845; bh=4q0qcv4kgrYSGhfN+pNAAhr7ag9zqoz3w6zp+eJR3r0=;
-	h=From:To:Cc:Subject:References:Date:Message-ID:From;
-	b=j+o6onEOCal52W5nlCXV4O2rC5kGlYnQsggNwLj5SxgnWtPa44WvNq9PMCXqYztDx
-	 vHX0VYiDF1AU4ztUT33SxmIQ6Hvk3F/MqrD/DMn5Jdg9zdm2X5SSRUtoQwqL55RWGW
-	 nJcFjLu1ic9a2uaHeYcPmbUekximUrGnSaYSBtxc=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10e2:d90a:6f50:7559:681d:630c])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 61AGRODi238953
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Tue, 10 Feb 2026 17:27:25 +0100
-Received: (nullmailer pid 114151 invoked by uid 1000);
-	Tue, 10 Feb 2026 16:27:24 -0000
-From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To: Oliver Neukum <oneukum@suse.com>
-Cc: netdev@vger.kernel.org, hayeswang@realtek.com, o.rempel@pengutronix.de
-Subject: Re: [RFC net-next 1/3] net: usb: divorce private data and cdc state
- in usbnet
-In-Reply-To: <20260210151416.42254-2-oneukum@suse.com> (Oliver Neukum's
-	message of "Tue, 10 Feb 2026 16:11:12 +0100")
-Organization: m
-References: <20260210151416.42254-1-oneukum@suse.com>
-	<20260210151416.42254-2-oneukum@suse.com>
-Date: Tue, 10 Feb 2026 17:27:24 +0100
-Message-ID: <87ikc4mumr.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 61AH63Pl051026
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 11 Feb 2026 02:06:03 +0900 (JST)
+	(envelope-from kohei@enjuk.jp)
+DKIM-Signature: a=rsa-sha256; bh=YezTYZm45Fc+/sBHnpyG3y/+AmmZnnp675nXVb6MGag=;
+        c=relaxed/relaxed; d=enjuk.jp;
+        h=From:To:Subject:Date:Message-ID;
+        s=rs20251215; t=1770743164; v=1;
+        b=uRapuCaqjzt2tSLkJafgkf45ZonwnV6PnUlsd0owq2EDy+33vnVuPpvt0BGl8hwa
+         615kND/WPvWQi84vSX8vQO8lV5u52HLPfPOojUmj+EEXRb6eUlzkD6KgWhXerg1k
+         eZxNSNDxZYZ7zkSmG2w1pj7/bx8i0dRMgnI37QDwiVpWM2twqUQ8DTWXvK7jFZqN
+         MeaXZJ6HTl/exE2sTlfaphyqbJ7+VxQcR2hQHt8P4EpGeaB1Dx/cgRqhNoDMllEr
+         MfqW3fH744oNl6zM9SF992V3lhT6z6alCGQq/WF8G8O/61j/r2otpovqP+0lgvHm
+         3/phIwHRCaT5VzuerB9LdQ==
+From: Kohei Enju <kohei@enjuk.jp>
+To: aleksander.lobakin@intel.com
+Cc: andrew+netdev@lunn.ch, anthony.l.nguyen@intel.com, davem@davemloft.net,
+        edumazet@google.com, intel-wired-lan@lists.osuosl.org,
+        kohei.enju@gmail.com, kohei@enjuk.jp, kuba@kernel.org,
+        netdev@vger.kernel.org, pabeni@redhat.com,
+        przemyslaw.kitszel@intel.com
+Subject: Re: [PATCH v1 iwl-net] iavf: fix netdev->max_mtu to respect actual
+Date: Tue, 10 Feb 2026 17:05:55 +0000
+Message-ID: <20260210170603.149842-1-kohei@enjuk.jp>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <c48f08ad-b402-4cfe-a362-4cb0c3a7801f@intel.com>
+References: <c48f08ad-b402-4cfe-a362-4cb0c3a7801f@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 1.4.3 at canardo.mork.no
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 8bit
 
-Oliver Neukum <oneukum@suse.com> writes:
+On Tue, 10 Feb 2026 17:37:23 +0100, Alexander Lobakin wrote:
 
-> --- a/include/linux/usb/usbnet.h
-> +++ b/include/linux/usb/usbnet.h
-> @@ -16,6 +16,18 @@
->  #include <linux/usb.h>
->  #include <linux/spinlock.h>
->=20=20
-> +/* Drivers that reuse some of the standard USB CDC infrastructure
-> + * (notably, using multiple interfaces according to the CDC
-> + * union descriptor) get some helper code.
-> + */
-> +struct cdc_state {
-> +        struct usb_cdc_header_desc      *header;
-> +        struct usb_cdc_union_desc       *u;
-> +        struct usb_cdc_ether_desc       *ether;
-> +        struct usb_interface            *control;
-> +        struct usb_interface            *data;
-> +};
-> +
->  /* interface from usbnet core to each USB networking link we handle */
->  struct usbnet {
->  	/* housekeeping */
-> @@ -41,7 +53,7 @@ struct usbnet {
->  	/* protocol/interface state */
->  	struct net_device	*net;
->  	int			msg_enable;
-> -	unsigned long		data[5];
-> +	struct cdc_state	cdc;		/* too common to leave out*/
->  	u32			xid;
->  	u32			hard_mtu;	/* count any extra framing */
->  	size_t			rx_urb_size;	/* size for rx urbs */
-> @@ -84,6 +96,7 @@ struct usbnet {
->   * that must be broken
->   */
->  #		define EVENT_UNPLUG		31
-> +	unsigned long		private[5];
->  };
->=20=20
->  static inline bool usbnet_going_away(struct usbnet *ubn)
+> From: Kohei Enju <kohei@enjuk.jp>
+> Date: Tue, 10 Feb 2026 15:57:14 +0000
+> 
+> > iavf sets LIBIE_MAX_MTU as netdev->max_mtu, ignoring vf_res->max_mtu
+> > from PF [1]. This allows setting an MTU beyond the actual hardware
+> > limit, causing TX queue timeouts [2].
+> > 
+> > Set correct netdev->max_mtu using vf_res->max_mtu from the PF.
+> > 
+> > Note that currently PF drivers such as ice/i40e set the frame size in
+> > vf_res->max_mtu, not MTU. Convert vf_res->max_mtu to MTU before setting
+> > netdev->max_mtu.
+> > 
+> > [1]
+> >  # ip -j -d link show $DEV | jq '.[0].max_mtu'
+> >  16356
+> > 
+> > [2]
+> >  iavf 0000:00:05.0 enp0s5: NETDEV WATCHDOG: CPU: 1: transmit queue 0 timed out 5692 ms
+> >  iavf 0000:00:05.0 enp0s5: NIC Link is Up Speed is 10 Gbps Full Duplex
+> >  iavf 0000:00:05.0 enp0s5: NETDEV WATCHDOG: CPU: 6: transmit queue 3 timed out 5312 ms
+> >  iavf 0000:00:05.0 enp0s5: NIC Link is Up Speed is 10 Gbps Full Duplex
+> >  ...
+> > 
+> > Fixes: 5fa4caff59f2 ("iavf: switch to Page Pool")
+> > Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+> 
+> Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> 
+> Although I'm not sure the 'Fixes:' tag is correct. Was vs_res->max_mtu
+> accounted before switching to Page Pool? If so, then yes, my fault.
+> Otherwise, this issue is older than libie.
 
-I like the idea.  Nice to get rid of those extra allocations for drivers
-needing more than 5 pointers.
+You're right that vf_res->mtu was also not accounted before the commit.
 
-But I don't understand why you make struct cdc_state special.  That's
-just confusing.
+The commit changes:
+-       netdev->max_mtu = IAVF_MAX_RXBUFFER - IAVF_PACKET_HDR_PAD;
++       netdev->max_mtu = LIBIE_MAX_MTU;
+...
+-#define IAVF_MAX_RXBUFFER   9728  /* largest size for single descriptor */
 
-I know I intentionally made the "control" and "data" fields of
-"struct qmi_wwan_state" position and name compatible with
-"struct cdc_state". Maybe not very important.  But adds to the
-confusion if we end up with a double set of those fields.
+and thus netdev->max_mtu was already hardcoded, but just because
+IAVF_MAX_RXBUFFER was valid for VFs there hadn't been any issues, and
+invalid MTU could start to be set after the commit.
 
-Or should the qmi_wwan driver split out the=20
-        struct usb_interface            *control;
-        struct usb_interface            *data;
+> I'm asking as IIRC before I did set max_mtu to the libie definition,
+> there was a hardcoded value already.
 
-part of its private data and put those into "cdc", allowing us to reduce
-"struct qmi_wwan_state" from 5 to 3 longs?  I don't think that's a very
-good idea...
+Yea, as far as I checked the value was hardcoded from the beginning
+(91c527a55664 ("ethernet/intel: use core min/max MTU checking")).
 
-Let's keep this a single private minidriver allocation.  Making it
-flexible is nice.
-
-
-Bj=C3=B8rn
-
+Although I'm not attached to the exact commit as the Fixes: tag, I chose
+that since (coincidently) that commit made this regression.
