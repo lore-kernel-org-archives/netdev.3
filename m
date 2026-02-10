@@ -1,128 +1,108 @@
-Received: from mail.codelabs.ch (mail.codelabs.ch [109.202.192.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEE0360728
-	for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 10:24:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.202.192.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC2E53164A5
+	for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 10:37:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770719066; cv=none; b=clgzlNjh9lXE0oxDzyFzMzR0YwXd7L2PdURJRLonzGh69C9TAQ9EhueqDHlO0R8JAFNgaOEpFztLTrubZA6CAbehA05NAaOy78nLlUh8QKfFXKrAKO4ju7mntJ7hQ12lR9TX3m4vMMbZwFBhRshAQ9EhtdX7a1rOd4fv+Qf9qf8=
+	t=1770719880; cv=none; b=N8gjeqr8UbkpRbcU9xvBoQ2GKUtLnxJnL2GrSUvwK3bdy6lG6BsKboVShH9hiwyQ30//mY2xoMhYZ20RqNxfWpZIcCd2PwWcNBTm2GeaKM54c1drLEEKXXvw2v+bmwDajS1QXsdk3yV8yACBIvvwdNnVBVtvb3pYsEHc2PBQ5Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770719066; c=relaxed/simple;
-	bh=1BPDBfpJqn52thXT5hcnrtRyTMo4PEdPIC7OQizrNwo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LCj1K+NV/27CT5v88lX9a43ErvTSeBvxcxM7r593hew8rN1cHnQe/ZrY+lY2Lr50hZwfqygwNGOm+rJ0hls8gXraDcTHITwK3aJpRhu3oxsQXUhhQWxyQK/bc/qjez2DNiRJ85ozZQ9jBgpMv/Z72ai2ni1jJUcJAo+oLXRTvf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org; spf=pass smtp.mailfrom=strongswan.org; dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b=QzVHC5YQ; arc=none smtp.client-ip=109.202.192.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strongswan.org
+	s=arc-20240116; t=1770719880; c=relaxed/simple;
+	bh=nql3REZHm/889FCSxEmQiDoNigzkKAABGEemj5aNGQU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RXeN8t0D3mL6C9pCI1qTyqIBEsyRGFIqbhrG99Woy5O2e5R/iQsRuIDSP0GFP9gu2zBa5ZHGg+aqjfMZHBj3fcb1GqTGiwZ79cB+dmJ+iDhc6YN/24ePIRVkm42eHkgcdnIu/39eM7RgRsQkZ8IRRqhJ6Z0C++QDMFlbHu9/KHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Xv/gp+D9; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b="QzVHC5YQ"
-Received: from localhost (localhost [127.0.0.1])
-	by mail.codelabs.ch (Postfix) with ESMTP id D252E5A0002;
-	Tue, 10 Feb 2026 11:17:54 +0100 (CET)
-Received: from mail.codelabs.ch ([127.0.0.1])
- by localhost (fenrir.codelabs.ch [127.0.0.1]) (amavis, port 10024) with ESMTP
- id reEIER2o44h0; Tue, 10 Feb 2026 11:17:53 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=strongswan.org;
-	s=default; t=1770718673;
-	bh=1BPDBfpJqn52thXT5hcnrtRyTMo4PEdPIC7OQizrNwo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QzVHC5YQ34+6BQzGG6jdbgDd9oF3/gXpTnE6Pdi/FpYFZUXgLgei4lzYtEOPDd9kk
-	 q9Yw1GCVI1S2GpXJrGF6XvE4HKA9juSGyH+0g9v8tzSF3Nl0isXhGGy5oQIFVeRCzG
-	 CqiYhx2BTkBIST+hfp6f+7165hiTaVOS61JBPFgxsCot/QGenbyp0nH3g1x8gEV5de
-	 N2Q5uXM3GWe8a7Uw94ZJpM6SWDqA5csL7Co30B+osnEkOK8oooq/ckwjKuljK2y71u
-	 3ql81sPECmC3lCujaijQ3sWmDXo2iZICveUwiKpDui9u0EH50pWehqQyLYajztm72X
-	 fNTn60WmzWziA==
-Received: from [IPV6:2a02:16a:6e1a::1f84] (unknown [IPv6:2a02:16a:6e1a::1f84])
-	by mail.codelabs.ch (Postfix) with ESMTPSA id A3CE95A0001;
-	Tue, 10 Feb 2026 11:17:53 +0100 (CET)
-Message-ID: <fcc761de-f677-4fc9-969b-47c2b56f54be@strongswan.org>
-Date: Tue, 10 Feb 2026 11:17:53 +0100
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Xv/gp+D9"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4834826e5a0so7648065e9.2
+        for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 02:37:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1770719877; x=1771324677; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gUsFeNTA29iUzBEZy6/HMLSkX9AmxCg99Net+tWROhE=;
+        b=Xv/gp+D94O2WucC81+3YYOwuDOAAqClR/wV9oqErGH1290pQhBxtJrdBoVh9TCxT5l
+         Pu/I/YevzBIRZvaxWUR28RraznnBARZm7/htHJfRHyiZ8HTYRQ01NhD6hhwP63WSJH4i
+         ZN/F2GxbXUWJNBrA5jOr1lEOCH4tKxIKXYrqxRaXFqw1RD2sYFvdlQq6fR3Wh2FSPqKh
+         SSZA/J0p2Y44zMv/zoY+LQW1sH75c651BNgcCisU9v77gelnhSmr4I9iImLqYjec409z
+         uWgALkr2YmRehnPp3CLBABMsSdnNVT2OxjJjfYY+tz7cZXI1pc3z5wu35+Eo+HKQjlhb
+         ZJTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770719877; x=1771324677;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gUsFeNTA29iUzBEZy6/HMLSkX9AmxCg99Net+tWROhE=;
+        b=q0Q2SSHCILptEFu6+mYjP5poueLCSs9K/klePbaLVBy389WbMpMY6VrsXvnc3wxQ1b
+         MhV8pqtI5HAxAhfIzfsAAHkFVbdvfbHhud7hVpPth33toMwSdXGrWMIuAQvXK3wrS2J0
+         ZGrlnU32vOkopAocnbPIvN9vvyMy0/kOIngTsIS/MxrX+nTwAgCa//nN66124TCTMjFL
+         HqC/tt/2B97O8QXI5NMTeJVRz4AOPSpTnAqb26II1lebpCpXk0M1loMxX6RjvQHjle7q
+         gRdnHMKY9raFucHIKH7zhwEAI16bQ2TJoLTIa269j8SkKqbdlTy45sMxaTsxjWdINpZj
+         XETg==
+X-Forwarded-Encrypted: i=1; AJvYcCX9NvIEwqFJ1SffQ389Uiip7OHW7BmWisqhNh8MqSuls158RRYNEyl7nbM5f1l4LB7vuS18dKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YynGj2ccIFIQg9H5BevqAlGtVK6TcErJ/jICI4z40ZGAtf8l/0M
+	KKm6u7tmTCXKvpNdm6BnQ2H6vOe4NneI848RS+DZmFE9LP/WO+Ts5L5tdEmqyOFXifA=
+X-Gm-Gg: AZuq6aI+jPloKViYvZKed8WEgjlt+dVLabEUHK0BnZnzTRSZHtk1YOUu2OYv3zTQOC+
+	4k500X6UFWiu8XMkNyJzz4iCHNRSlxR4+U6TUjtOUN+7Pm1bAdo1jXkHNre2sBXs3JBCS88DVw3
+	xAleJ51a2mTzQmhS91m0aoDG7OvtXacMTzucZHgToOuC34e03P9CM4bM/tvRVmamHsNp9O31tLX
+	Q2WSmB/63rYlPskiUYs7scmPdkVqEjjqsC/pQFcZtOyoKVT156JRgffSOpVWcgT69v+zYOLOLQt
+	hLFewcgnoeNHlmnmBLCAHisN8+XFX+K4Tm6QbsKinIqn5SSsog1bf1TF955RR/GBJr6VR4+564u
+	rg5G7FRhz8+5ZomJWnM5CdpgtHhcMgCCxylUfY/mz/ouX84avirgenw3tt+Z4TRBGYzSl0SporA
+	NGdPMbeKFlee1auNWhIfOvzH8zE31H
+X-Received: by 2002:a05:600c:674f:b0:471:13dd:bae7 with SMTP id 5b1f17b1804b1-4832022aee5mr185650025e9.30.1770719877231;
+        Tue, 10 Feb 2026 02:37:57 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4834d5e1a5esm52330635e9.4.2026.02.10.02.37.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Feb 2026 02:37:56 -0800 (PST)
+Date: Tue, 10 Feb 2026 13:37:53 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [bug report] net: ethtool: Introduce per-PHY DUMP operations
+Message-ID: <aYsKgV050-wa1i96@stanley.mountain>
+References: <aYXu0esD_wSjGTZm@stanley.mountain>
+ <c9c6378a-14a3-440a-80b7-f48cdb06623b@bootlin.com>
+ <aYmID1BOGmwb2rUD@stanley.mountain>
+ <e5f1688f-cb13-4d43-bf20-644cda6ab494@bootlin.com>
+ <8cd942c4-986b-4c20-bc12-f8fc17f626c3@lunn.ch>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Discussion on "xfrm: Duplicate SPI Handling"
-To: Yan Yan <evitayan@google.com>, antony.antony@secunet.com,
- Steffen Klassert <steffen.klassert@secunet.com>, paul@nohats.ca
-Cc: netdev@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
- horms@kernel.org, saakashkumar@marvell.com, akamluddin@marvell.com,
- Nathan Harold <nharold@google.com>, greg@kroah.com
-References: <CADHa2dChQ=4UVY5X5Ad=jryGRCBPQ37Z_Sw60-6h6h_EcUFG9g@mail.gmail.com>
- <aYC0OvkVPkOnVU-i@moon.secunet.de>
- <CADHa2dBN+_9H-_L19Rg3vfvzC1N5FzG+rzW9Pff8pyM3KL9Ocw@mail.gmail.com>
-From: Tobias Brunner <tobias@strongswan.org>
-Content-Language: de-CH, en-US
-Autocrypt: addr=tobias@strongswan.org; keydata=
- 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
- tvkh7XWO2ycrW1UlzUzM4KV3SDLIhfOU
-In-Reply-To: <CADHa2dBN+_9H-_L19Rg3vfvzC1N5FzG+rzW9Pff8pyM3KL9Ocw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8cd942c4-986b-4c20-bc12-f8fc17f626c3@lunn.ch>
 
-Hi Yan,
-
->> To clarify, how are larval outbound SAs created in Android?
->> Are they created with zero or non-zero SPIs? Multiple zero SPIs (acquire states) are allowed.
+On Mon, Feb 09, 2026 at 02:10:38PM +0100, Andrew Lunn wrote:
+> > > ETHTOOL_MSG_USER_NONE, 
+> > > ETHTOOL_MSG_FEATURES_SET,
+> > > ETHTOOL_MSG_CABLE_TEST_ACT,
+> > > ETHTOOL_MSG_CABLE_TEST_TDR_ACT,
+> > > ETHTOOL_MSG_TUNNEL_INFO_GET,
+> > > ETHTOOL_MSG_MODULE_FW_FLASH_ACT,
+> > > ETHTOOL_MSG_RSS_CREATE_ACT,
+> > > ETHTOOL_MSG_RSS_DELETE_ACT,
+> > 
+> > While these commands don't have ethnl_request_ops handlers, they still
+> > have a genetlink handler, see the ethtool_genl_ops array [1]
 > 
-> In Android, larval outbound SAs are created with non-zero SPIs because
-> Android userspace uses XFRM_MSG_ALLOCSPI to manually reserve a unique
-> value before the SA is fully finalized. These are not kernel-generated
-> "acquire" states.
+> At least for the *_ACT commands, they are not expected in the
+> userspace->kernel space direction. They should only be sent by the
+> kernel to user space, to indicate some action has been performed, or
+> happened. I don't know the netlink code too well, but i assume there
+> is something which will throw out such commands if sent to the kernel,
+> without even looking at the parameters?
 
-Could you clarify what exactly the reasoning is behind this?  Do you use
-this for every outbound SA or just for special use cases?  Do you set
-the same SPI for in- and outbound SA?  (If so, what happens later when
-the SPI of the outbound SA is received from the peer?)  Or do you use
-ALLOCSPI once you already know the peer's SPI?  (And only run into the
-issue if both allocate the same SPI by chance.)  If so, why would you
-use ALLOCSPI and not just install the outbound SA?  Is it to avoid
-differences for in- and outbound SAs (ALLOCSPI+UPDSA vs. NEWSA)?
+Ah.  Got it.  Thanks!
 
-Regards,
-Tobias
+
+regards,
+dan carpenter
 
