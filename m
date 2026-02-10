@@ -1,63 +1,63 @@
-Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com [209.85.167.193])
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335D0330317
-	for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 20:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FCB2331A73
+	for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 20:04:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770753866; cv=none; b=O2ox/ntc0j0PUa4o+BPv/1UBH5N6LZfsAm82qGEB+rinYRMiT1jbQu/fsJVKLQXXUArCL4H2j7x/5867IWFiIq4eyretCo+1C/mfpxMHGqT+2mPRPWqfB+BzFWKHJxPbhbCN90z0GmpD2cJBSuX17wgxUhSekkW4/avnXvtLZco=
+	t=1770753868; cv=none; b=LfDxuCX1Y7IkBkjWDpj5LuC1w4UVA8VKd49B3IQEAvC8ApEDTcpAoqTbwcWDL96q5HlimYaaWNq05u+hvlDN87jwJRzSu97wA6qlNNkDgc7qPdFIJjuu/bggQVG0p6xLKJ1CjHgODA+zsue8hRI0nJ0c8IP8UpBP1aujQw6veWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770753866; c=relaxed/simple;
-	bh=e5SSuykFlipK9PqYjGXDsXgHIaFhGRMaDYeKItICHH8=;
+	s=arc-20240116; t=1770753868; c=relaxed/simple;
+	bh=icHZY2wqQ9jqRK4LJNunuA+NRbPEqtIg1aKitJDaEGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2sQP6IfUHR7z3cHgLZHDRtYoaJ118oH+cvK2r7JjtZ4AQE9QSFQBt7NCY1J8nxCh3u4z/FJ1j9czFVgym+6TXrPfA7zGFXcqdsLs1pJXM3xnsg+VIo705vi69U8zkEyvaHUmqyWOi1eDap8nW4TZVz31Gtu6FbCPHNlW78JbQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=29VJnzi8; arc=none smtp.client-ip=209.85.167.193
+	 MIME-Version; b=kiIM3qSuC6kg0581qi6vpJqhBHC3PNI1cj4D3DUVzGNtTuq41I3VcsbaZfjsX2RW5K8kbkqoKkJJWuQlQNSjUCQYWhAUOEG+vP/q2yM89Wv/bitaUtDLZJxhMk6/vAh3mOtDAtyxGGmFAHSMDcioeRdNfG7NrK8yZYCuNCdzMu0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=mMzlRZFb; arc=none smtp.client-ip=209.85.160.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="29VJnzi8"
-Received: by mail-oi1-f193.google.com with SMTP id 5614622812f47-45f053b7b90so771385b6e.0
-        for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 12:04:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="mMzlRZFb"
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-3f9ebb269c3so2851324fac.3
+        for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 12:04:26 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1770753863; x=1771358663; darn=vger.kernel.org;
+        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1770753865; x=1771358665; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=l4jsi28fUWPw+r9cG+CpQI+hgTFcPE5YO6iQNcoWxmI=;
-        b=29VJnzi8ABsyVClZwq3Ld6v0Uq1o6BVXzVsMaslBO3Gx6qf93LyA3oOhaGHyTh44tC
-         ew4b3KIcwtDteug9nRv9vUBBsKm5ehSkuXAa8c+d9tPcYcgkI0bwzZytSUCFQwuWU+J5
-         FsyRHAGduWKW8Q5O1nMpMJMuMXO4twfP70o2IMJPHnE0oxDyuZw7n6S9C3GWMhTWveC1
-         FKiYmweFqSorlqKLw51Ir0j2kNkZmRi1pJK+E3JUK2v0Znzhj2HJlLahWq43pM5Jm/Ti
-         JIUdyfBefj1YVJ2BfnRLjO5zUos96b6U70CnaNPNrE9olH08U5yhGdF1n+M5aH/ONiu+
-         ZCFg==
+        bh=Pdi5TfqHB20Phx1gxNlcCaQkHXP3aF10Zkb2EJi23sI=;
+        b=mMzlRZFbsua6y5W8VzQolOnvShVDUnbN0pRj/eiRTbQVKYcYFpI6SkC3G/nRPzCydC
+         Rtrv408fNFWKuMExCEYQNKwap5UiKfAYcE/ucjrIj/Z4UwjXjKmKmv47whB9BOaGXeJT
+         sPEl5uTV1UTkOuAMU8JePFIsVLCLph/MAIbQhN2+JO/YLCJ5r/9LcXW4so47QlGSFSDl
+         FKIKZYX8U0AP/TZOy8gQeDRksISxpFBYUAQH0uegJX6J1UD8IBV36jh46auvOfG6W3os
+         9GI/b/uUWEJG6wjtcma3FivZZOTO0CKIUnuHyBUyvKo7Af57CV8Fx45udRMDfaFTakA0
+         EtFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770753863; x=1771358663;
+        d=1e100.net; s=20230601; t=1770753865; x=1771358665;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=l4jsi28fUWPw+r9cG+CpQI+hgTFcPE5YO6iQNcoWxmI=;
-        b=jNiOpFo1I9ZHrFV/bqQ3kLwKKuzu+4pvoke91Rb+LESXzktqi8+Ty7YhEKTg4AlKWZ
-         jSn4WlLtJDoPI9HZy+r2NU7huTp+r5L/G660Gm0iNtumIhjEWXNhi+CRgN73q8hqnTt0
-         GpcytFInN3OyjgLWiJ9z7JAQLldm4skWt/roasxnpCJQ57Mw4CKDs+kzLUYj5XftsXKr
-         SsLRIKyRW39kN5h+ItgNfSRFctCyfeQxghPj2rQa3H57g+tWFkgGD7bbTIT9O2uL4om1
-         0Cc87Tc86nZ/jRdtsSinyO5dvwhNnU3E4/zFJ7EqngSo19wAXeqr96TJstrwLJ68koID
-         dpbw==
-X-Gm-Message-State: AOJu0Yz4IgObptC2GimKDh/LOxyQEVsgHprbAF7KYDkOz/xt+0f9cDzp
-	t4CVCXgVZmRgSLehIDiyHyNs9lVAiPbGsBjhmOqgZSuWOsaorlgSBUd5HsJbbfbVA5gE1fFyy+K
-	B/0K7Nh0=
-X-Gm-Gg: AZuq6aKqlbpNV7E0e6Fb9cb176ozBGH+RWqYUG2eg5kPEO1j4JAaQS0L1SqR5zWgcG6
-	QW1+mnNOiYY4Orj/krOEwRFyw0v9MxJklrHmzxiCI8yAwNLyg7PSTEEKM3VtOQJIddMZkSQb7t/
-	uR76Cj/3y+8WhK5o6W0DDPkxICDCr7AI6F9Iz1aNIl1gcWwOg1G62yjRPuvf5udU9SP52BMw8yD
-	JbRWZGx0UZydzDwx+NdjGH2F1u6UrGdtF8LX2heiBULfsMzqw9CMyK0NC9vlIX+y/tt1oXqiHVV
-	MxrANXyvxmZ4s6Z2RMrBSr6BqrVx+vVv4f1U8EiNmZdQx2cCg0bMkEf4ojuvGlG6okD8uFkvbho
-	KEb/3XnZ4GBUY8ZO9NcJvwpKYGZ8yOsIlyVsA8VZPxXA0vZ2xWYlqFyL6qiLTn/KzJzZGL/KwgC
-	jtOhuNX92sBPfU4Wte/J5lb3dpOjv+qOcCWTqpH60J1A==
-X-Received: by 2002:a05:6808:1a0d:b0:43c:8714:fe3c with SMTP id 5614622812f47-462fcc877f5mr8659929b6e.51.1770753862829;
-        Tue, 10 Feb 2026 12:04:22 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:49::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-462fe9a12d0sm8510823b6e.1.2026.02.10.12.04.22
+        bh=Pdi5TfqHB20Phx1gxNlcCaQkHXP3aF10Zkb2EJi23sI=;
+        b=GsMt9Y0zjtVFk0FttTEswfZHbEc698tmk4g2UfH4blGdtJdC6dLd6DTilqboezu8+J
+         1YF1k8kulL54twI+eRl36Nl5fItU1IrejsYij6ur6i2g7DTxAu4fM6Peev0mZiggglPW
+         Epi3YEEsXew9iamMOgp78W37jksOcu8MGpICSetkOy8CleHsWmnZBZhwvV1/xCgycGbU
+         fGJOW5g3703IblKxJyOSrWpjlvoQ74JJkcL3wtE3zZJ5AedQvIDbS68HYF2AJXN+aJE0
+         4KFf4FR4CDftFXeWhRIABWth4+mw++pns5icptXDWGjpuWfpbEAtm4MIK4TwiirwjMV+
+         PRqw==
+X-Gm-Message-State: AOJu0YzvmUbBgDy5TsGmUOkqkVAcIC3YqH6bs/jUwngXoGOEgcsIdOUp
+	AHZ9BF+FXVgcQlUY+RcW1XoBsXVWKKF/Y5E9TPKZFaJAqIm1sdPl4N+GX8g98WpGiSVhbYR/FUi
+	HffAR
+X-Gm-Gg: AZuq6aJsh5qAAK5VwrsW7O5A7zgLvozJtREnCOSRC8hiFVz/yzJ0XCyIdAVDRcPBDHI
+	lIwytEwAFf1gG/EHxhoZ3+AXy2ernhm3nyvc6cMDc4jUDYjCCQ/4TtJX7VxsHeM8z9Dvley3D9C
+	tDKc0jU76J2+eywz/thd7B/7W0FnaJwOcx+StqPYLkjNBzYiTfaWjqF+AZhkjvYp0Qe+ohfylOe
+	HoJLkSOUwPF6EXhBDlEMboBXljrI38ntxOE+uWU6+Y3JSuvgzYBR2vyJasPOocwAiQxdSpXh0wU
+	+w0FAOnt37Q1pDo1j91I80VjDqgFX2/nG3Xx8IAMUD/qxZ57LzO2xMRnE62ebA/wi6qvg5qBntr
+	ydM8a13D9VpPmnmEeju1ri9Md2kKmQ4rLrTENJVsD09LLrQ0k5Wix5brLELtRx8nsuROjLqNkpF
+	x4SHohu3nFjebK5kK10jbaOX8MlCajmvBma486tDxsjw==
+X-Received: by 2002:a05:6871:2ea1:b0:409:7d3a:bfe1 with SMTP id 586e51a60fabf-40e5149c808mr1775276fac.13.1770753865102;
+        Tue, 10 Feb 2026 12:04:25 -0800 (PST)
+Received: from localhost ([2a03:2880:10ff:4c::])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-40a992edd71sm11008082fac.5.2026.02.10.12.04.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 12:04:22 -0800 (PST)
+        Tue, 10 Feb 2026 12:04:24 -0800 (PST)
 From: David Wei <dw@davidwei.uk>
 To: netdev@vger.kernel.org
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -70,9 +70,9 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Bobby Eshleman <bobbyeshleman@gmail.com>,
 	Stanislav Fomichev <sdf@fomichev.me>,
 	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net-next 2/4] selftests/net: Export Netlink class via lib.py
-Date: Tue, 10 Feb 2026 12:04:17 -0800
-Message-ID: <20260210200419.3555944-3-dw@davidwei.uk>
+Subject: [PATCH net-next 4/4] selftests/net: Add netkit container ping test
+Date: Tue, 10 Feb 2026 12:04:19 -0800
+Message-ID: <20260210200419.3555944-5-dw@davidwei.uk>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260210200419.3555944-1-dw@davidwei.uk>
 References: <20260210200419.3555944-1-dw@davidwei.uk>
@@ -84,78 +84,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Making rtnl newlink calls requires constants defined in Netlink class in
-pyynl. Export it.
+Add a basic ping test using NetDrvContEnv that sets up a netkit pair,
+with one end in a netns. Use LOCAL_PREFIX_V6 and nk_forward BPF program
+to ping from a remote host to the netkit in netns.
 
 Signed-off-by: David Wei <dw@davidwei.uk>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
 ---
- tools/testing/selftests/drivers/net/lib/py/__init__.py | 4 ++--
- tools/testing/selftests/net/lib/py/__init__.py         | 4 ++--
- tools/testing/selftests/net/lib/py/ynl.py              | 4 ++--
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ .../testing/selftests/drivers/net/hw/Makefile |  1 +
+ tools/testing/selftests/drivers/net/hw/config |  3 +++
+ .../selftests/drivers/net/hw/nk_netns.py      | 23 +++++++++++++++++++
+ 3 files changed, 27 insertions(+)
+ create mode 100755 tools/testing/selftests/drivers/net/hw/nk_netns.py
 
-diff --git a/tools/testing/selftests/drivers/net/lib/py/__init__.py b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-index 8b75faa9af6d..a18e21069f7a 100644
---- a/tools/testing/selftests/drivers/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-@@ -19,7 +19,7 @@ try:
-     # Import one by one to avoid pylint false positives
-     from net.lib.py import NetNS, NetNSEnter, NetdevSimDev
-     from net.lib.py import EthtoolFamily, NetdevFamily, NetshaperFamily, \
--        NlError, RtnlFamily, DevlinkFamily, PSPFamily
-+        NlError, RtnlFamily, DevlinkFamily, PSPFamily, Netlink
-     from net.lib.py import CmdExitFailure
-     from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
-         fd_read_timeout, ip, rand_port, wait_port_listen, wait_file
-@@ -31,7 +31,7 @@ try:
- 
-     __all__ = ["NetNS", "NetNSEnter", "NetdevSimDev",
-                "EthtoolFamily", "NetdevFamily", "NetshaperFamily",
--               "NlError", "RtnlFamily", "DevlinkFamily", "PSPFamily",
-+               "NlError", "RtnlFamily", "DevlinkFamily", "PSPFamily", "Netlink",
-                "CmdExitFailure",
-                "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
-                "fd_read_timeout", "ip", "rand_port",
-diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testing/selftests/net/lib/py/__init__.py
-index f528b67639de..fec518c2a0dc 100644
---- a/tools/testing/selftests/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/net/lib/py/__init__.py
-@@ -15,7 +15,7 @@ from .nsim import NetdevSim, NetdevSimDev
- from .utils import CmdExitFailure, fd_read_timeout, cmd, bkg, defer, \
-     bpftool, ip, ethtool, bpftrace, rand_port, wait_port_listen, wait_file, tool
- from .ynl import NlError, YnlFamily, EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily
--from .ynl import NetshaperFamily, DevlinkFamily, PSPFamily
-+from .ynl import NetshaperFamily, DevlinkFamily, PSPFamily, Netlink
- 
- __all__ = ["KSRC",
-            "KsftFailEx", "KsftSkipEx", "KsftXfailEx", "ksft_pr", "ksft_eq",
-@@ -30,4 +30,4 @@ __all__ = ["KSRC",
-            "NetdevSim", "NetdevSimDev",
-            "NetshaperFamily", "DevlinkFamily", "PSPFamily", "NlError",
-            "YnlFamily", "EthtoolFamily", "NetdevFamily", "RtnlFamily",
--           "RtnlAddrFamily"]
-+           "RtnlAddrFamily", "Netlink"]
-diff --git a/tools/testing/selftests/net/lib/py/ynl.py b/tools/testing/selftests/net/lib/py/ynl.py
-index 32c223e93b2c..a52b067f7589 100644
---- a/tools/testing/selftests/net/lib/py/ynl.py
-+++ b/tools/testing/selftests/net/lib/py/ynl.py
-@@ -13,14 +13,14 @@ try:
-         SPEC_PATH = KSFT_DIR / "net/lib/specs"
- 
-         sys.path.append(tools_full_path.as_posix())
--        from net.lib.ynl.pyynl.lib import YnlFamily, NlError
-+        from net.lib.ynl.pyynl.lib import YnlFamily, NlError, Netlink
-     else:
-         # Running in tree
-         tools_full_path = KSRC / "tools"
-         SPEC_PATH = KSRC / "Documentation/netlink/specs"
- 
-         sys.path.append(tools_full_path.as_posix())
--        from net.ynl.pyynl.lib import YnlFamily, NlError
-+        from net.ynl.pyynl.lib import YnlFamily, NlError, Netlink
- except ModuleNotFoundError as e:
-     ksft_pr("Failed importing `ynl` library from kernel sources")
-     ksft_pr(str(e))
+diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
+index a64140333a46..91df028abfc0 100644
+--- a/tools/testing/selftests/drivers/net/hw/Makefile
++++ b/tools/testing/selftests/drivers/net/hw/Makefile
+@@ -32,6 +32,7 @@ TEST_PROGS = \
+ 	irq.py \
+ 	loopback.sh \
+ 	nic_timestamp.py \
++	nk_netns.py \
+ 	pp_alloc_fail.py \
+ 	rss_api.py \
+ 	rss_ctx.py \
+diff --git a/tools/testing/selftests/drivers/net/hw/config b/tools/testing/selftests/drivers/net/hw/config
+index 2307aa001be1..b6524040418e 100644
+--- a/tools/testing/selftests/drivers/net/hw/config
++++ b/tools/testing/selftests/drivers/net/hw/config
+@@ -1,3 +1,4 @@
++CONFIG_BPF_SYSCALL=y
+ CONFIG_FAIL_FUNCTION=y
+ CONFIG_FAULT_INJECTION=y
+ CONFIG_FAULT_INJECTION_DEBUG_FS=y
+@@ -5,6 +6,8 @@ CONFIG_FUNCTION_ERROR_INJECTION=y
+ CONFIG_IO_URING=y
+ CONFIG_IPV6=y
+ CONFIG_IPV6_GRE=y
++CONFIG_NETKIT=y
++CONFIG_NET_CLS_BPF=y
+ CONFIG_NET_IPGRE=y
+ CONFIG_NET_IPGRE_DEMUX=y
+ CONFIG_UDMABUF=y
+diff --git a/tools/testing/selftests/drivers/net/hw/nk_netns.py b/tools/testing/selftests/drivers/net/hw/nk_netns.py
+new file mode 100755
+index 000000000000..afa8638195d8
+--- /dev/null
++++ b/tools/testing/selftests/drivers/net/hw/nk_netns.py
+@@ -0,0 +1,23 @@
++#!/usr/bin/env python3
++# SPDX-License-Identifier: GPL-2.0
++
++from lib.py import ksft_run, ksft_exit
++from lib.py import NetDrvContEnv
++from lib.py import cmd
++
++
++def test_ping(cfg) -> None:
++    cfg.require_ipver("6")
++
++    cmd(f"ping -c 1 -W5 {cfg.nk_guest_ipv6}", host=cfg.remote)
++    cmd(f"ping -c 1 -W5 {cfg.remote_addr_v['6']}", ns=cfg.netns)
++
++
++def main() -> None:
++    with NetDrvContEnv(__file__) as cfg:
++        ksft_run([test_ping], args=(cfg,))
++    ksft_exit()
++
++
++if __name__ == "__main__":
++    main()
 -- 
 2.47.3
 
