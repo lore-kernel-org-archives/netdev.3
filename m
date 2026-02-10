@@ -1,164 +1,148 @@
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFAE3A1C9
-	for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 03:28:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D6528D850
+	for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 03:36:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770694084; cv=none; b=JA8Oq06QfPX3VrOWr9Ii6YPHxebctdWImbRbZbpEz0UWnYvLoCQo20ypeh9ryd7IWP59GJiXOqqNcwIEUQ+pbCuTIR/OgSDxYxHbygbUxIGTA10+OdwOGXu8OW2AqzJay73XdSftGtRY8r9DszUp+RcvwBc5pPU8bWyE1ed/Mtc=
+	t=1770694589; cv=none; b=PRWp9VhGMuI5Zewb+r6ETf3tB+IWvIpTHbyyZZLwt+MYoe/OU1wTfvoUf+5K/79WU5X7jtiqyI0lmcsCg3Rk6+Z5ASraWfoUj+sbifv0RKjTcvJRwrF20UCtWpaOyBJhrcN5AUgasLvQ2ybmX1qkaDSWMJp+f2xPDUWEjswHFI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770694084; c=relaxed/simple;
-	bh=dPO4aBtz4/xd8+hzaGR5My3SJbmyPFjfOPpyUdvS30c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Jq9v6OB4wCRe8Htem3itD10vzdm6dpBw4psxqurtuEy9TPWxH4YLqrSyN5GeyW50jMEuE5w5d5ghHn2FHpOOKqrM6awuvVy7iOtxqZ48PxzQx5Bp/6rdKudKml95cA0tCILJY5IEu1CuKrenLrXM1M0cwVBlsO5N24+3Ugmpo5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Lm7f8SUl; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Lm7f8SUl"
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-823f9f81da5so2752333b3a.1
-        for <netdev@vger.kernel.org>; Mon, 09 Feb 2026 19:28:03 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770694083; x=1771298883; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=MQx792PntSG3k5/exKTLxbUGHMcY8/9ZdhX6r0T38D0=;
-        b=Lm7f8SUl8e7jZFeoBNwHTGalPr6374NDILdwSpPp5OGevIVy29Tq33waXg6YF0fCI0
-         jqSDto8ZUVM5bCJSxS0KulT/yu+fWC6ZtWUACKD8G7QfO2InwdcCePk2iMa2Kq1kMmUt
-         2jHJku7mjXNMG+vM04M22Kx3pdJChZ7NOsWncyJ8IttkytOjOBQR4YdocMalB5F+EQZO
-         nGrbNSaRc/C+dKg1ouPsj67au+DbeYVoa9KuWAlAeEY/gRMrQchxv4R+yJMHRfrXwvbO
-         9rr4oQ2b7GeeQ6XsJ7svASXlUPZp2wMBzp0Wem5KkneI6LG8RauEtUrG0B+kNh34HZgg
-         HYbA==
+	s=arc-20240116; t=1770694589; c=relaxed/simple;
+	bh=n4Ix1TM0ZNgNrlgLXeHzo9bC/QstomgUPsY+9oTMg4w=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=gHzZyTjHq5FggRIUH1RvKovTLi0XZdsGztezYUCSr/N/6LoOSbWI8qxcmiDFBSiRAB5vssUzDSkF5ooUpt4cb5u6EOFDbapf0+wLd2F7CLnvlWZisfecwub/pQxZb0vDr2ak7xQ4DLDAOG7rxZESPu2UDVesrVTcBDOo6upGgbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-66b47c7a795so13534744eaf.2
+        for <netdev@vger.kernel.org>; Mon, 09 Feb 2026 19:36:28 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770694083; x=1771298883;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=MQx792PntSG3k5/exKTLxbUGHMcY8/9ZdhX6r0T38D0=;
-        b=N8IltMwlshRYyCQf7GanrEbEK22/f+GXuFcF+ebUCU94uHxGwuWPuffcxIdB+FNseF
-         yeWSxnqqZCQC1eCVWAQi16uWNX7tcy1DANRSX574+IuSOyxH8zEq6jts+3YdNVtK/Pbm
-         7HQNWxjfJwg78Ksld3QH8+wvFyfHutYN7nsNnYZKsYoEL7PiS1JtBNSwshHzmVgKjY6O
-         XwEtQVA0XQJaGHMmuDz+sw4AArav3B0JqSmhFekiyUsracVjqo8Za5xXr7zAyYCsrT7U
-         pzRzwZ5nTS1syRa4v5zItUqsNqEXfzEvgHD++P/jpjqf+IymQeaDZyq4iXzb7gfnaJDe
-         GMzA==
-X-Gm-Message-State: AOJu0YxbjlaFJNmHdsLd1i4M/QIDZ/x1ZF/t2H64AJf8m3Ntb1+fRxpg
-	G35yx2t9ISB9REjwn5UiJFYmYdLk5zBQi9rIk7mOmmlzdRiFOiAQEt4rFZiJT9pwQbLNoA==
-X-Gm-Gg: AZuq6aL/oCFAFlf6jkOViHLlPefcdFTpsPiXouIzhu1Q5/6d0G1QbekrcwYkH/NYLIA
-	Ojmf2KgEu05Po13HM4fxNe+Y3JFSpqX/ufiDIJPKjfcRuLeUufbkKcbUSQZ8eyzxEoitVC/s4mI
-	FcODI7C3N6PzcjgCur6+UBF8iaVS9M4gstUK1YmhCfvDWsVbNgDGvkeKjoFjBTI0vosg6cX60tY
-	6F2aT9bDQfBn+CfT+hbpzt5qPEhjlftQsKXb1rDFm2AVJb9HgsF/hCS9v7hZLWagw96F2UnOoNK
-	dSRwUGYb+FyP2vejLcrlWKEIzYwlRoLf8rEI1eq2oTe85uijTjKeNY9LUCZjdu8Z0wcGtq+eyXP
-	pYhC4Is7aUheMc/F1HEVLANOGiRgodruhaung1XytJ+OlBpDVNjzM09Iz+XzdtZ4WxvPwf4HiD+
-	wx5aGomyr5pReZoGHSqfrduI4G
-X-Received: by 2002:a05:6a20:918e:b0:393:e16d:516 with SMTP id adf61e73a8af0-39417844f0dmr706328637.9.1770694082830;
-        Mon, 09 Feb 2026 19:28:02 -0800 (PST)
-Received: from localhost.localdomain ([240e:3b5:d06c:3ed0::1001])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35662e8ba1bsm917243a91.9.2026.02.09.19.28.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Feb 2026 19:28:02 -0800 (PST)
-From: Qanux <qjx1298677004@gmail.com>
-To: netdev@vger.kernel.org
-Cc: justin.iurman@uliege.be,
-	kuba@kernel.org,
-	dsahern@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	davem@davemloft.net
-Subject: [PATCH net] ipv6: ioam: fix heap buffer overflow in __ioam6_fill_trace_data()
-Date: Tue, 10 Feb 2026 11:25:50 +0800
-Message-Id: <20260210032550.20219-1-qjx1298677004@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        d=1e100.net; s=20230601; t=1770694587; x=1771299387;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Kv6zYoNwOXJgrs/PCSsWLPPE13Dl39IaBgyYn8cysGs=;
+        b=c3xZhmeM94nl5W5Z27cbom/KUYB4tbl0X9v7HeAV0O9RaxJBCkfYaFt3G3mlh24QNG
+         HQQCzBveKUqGF884RTvZjhGn5AWe7M+k+xIySTA2/OkPNnJAbGG+8fiWET7TnWFr0mLS
+         Cgdbw5vlcHlotSfxtATOB80pqQeNc+F1ARCpq2GH0Fs+Sif52WkBqR1on152JejiL0JI
+         o9oLxp35udgHbbZdAiGDVeWbOksPuoVcDEeiF3pxA9LRDeSz0w9aancaxmzjME9V3XhX
+         tVxLHfocbDKIjEfne4REVfDHjYftqDA0yRWrnFdot3jllyk00rxMcbcxt+iG2p7yDs2/
+         brjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWChGB+vHUiPxpofjNNgX/iGY96XjLP1EdHZKHfJp/mExrYknwpeFyxPsiCGMCIvTUbcwpbaKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy89rlnhHVyxdy+3pzJpaJ9WLM/O4XfO7rTyud1xvkMoTQaz6Be
+	OqXDGmtQoN466HdfkzfcN/pr6pM3XjlDIcsfqlRCi/5OL5nlIDehP5OcjQGHtOUZIG+zSTW8Hja
+	+gXvl1MjnoIuOimkp5gUJS45m6BIQtRKp6gDVcpY+5f0rEhkSoNlX9JDlvS0=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:1612:b0:672:605f:db65 with SMTP id
+ 006d021491bc7-672ff74369bmr319269eaf.81.1770694587659; Mon, 09 Feb 2026
+ 19:36:27 -0800 (PST)
+Date: Mon, 09 Feb 2026 19:36:27 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <698aa7bb.050a0220.3b3015.0086.GAE@google.com>
+Subject: [syzbot] [bridge?] WARNING in br_multicast_del_pg
+From: syzbot <syzbot+d5d1b7343531d17bd3c5@syzkaller.appspotmail.com>
+To: bridge@lists.linux.dev, davem@davemloft.net, edumazet@google.com, 
+	horms@kernel.org, idosch@nvidia.com, kuba@kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	razor@blackwall.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-The IPv6 IOAM Pre-allocated Trace receive path (ipv6_hop_ioam in
-net/ipv6/exthdrs.c) does not validate that the nodelen field in the
-trace header is consistent with the type bitmap.
+Hello,
 
-When a crafted packet arrives with nodelen=0 but with type bits set,
-__ioam6_fill_trace_data() computes the write pointer at the end of
-the trace data buffer and then writes past it, overflowing into
-adjacent memory (skb_shared_info). This corrupts critical SKB metadata,
-leading to a kernel panic when the SKB is freed.
+syzbot found the following issue on:
 
-The send path properly validates the trace header via
-ioam6_validate_trace_hdr() which recomputes nodelen from the type
-bitmap. However, calling that function from the receive path would
-break forward compatibility, as it rejects packets with undefined
-type bits (bit 12-21) that the receive path intentionally accepts.
+HEAD commit:    c89477ad7944 inet: RAW sockets using IPPROTO_RAW MUST drop..
+git tree:       net
+console output: https://syzkaller.appspot.com/x/log.txt?x=15f73a5a580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e3161cabe5a361ff
+dashboard link: https://syzkaller.appspot.com/bug?extid=d5d1b7343531d17bd3c5
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
 
-Fix by recomputing nodelen directly from the type bitmap inside
-ioam6_fill_trace_data() before using it, preserving the receive
-path's forward compatibility while preventing the overflow.
+Unfortunately, I don't have any reproducer for this issue yet.
 
-Fixes: 9ee11f0fff20 ("ipv6: ioam: Data plane support for Pre-allocated Trace")
-Cc: stable@vger.kernel.org
-Signed-off-by: Junxi Qian <qjx1298677004@gmail.com>
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/277c818ebac6/disk-c89477ad.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d4e6f0388a87/vmlinux-c89477ad.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/14eabb9cbd91/bzImage-c89477ad.xz
+
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d5d1b7343531d17bd3c5@syzkaller.appspotmail.com
+
+------------[ cut here ]------------
+n == 0
+WARNING: net/bridge/br_multicast.c:718 at br_multicast_port_ngroups_dec_one net/bridge/br_multicast.c:718 [inline], CPU#0: syz.4.4607/22043
+WARNING: net/bridge/br_multicast.c:718 at br_multicast_port_ngroups_dec net/bridge/br_multicast.c:771 [inline], CPU#0: syz.4.4607/22043
+WARNING: net/bridge/br_multicast.c:718 at br_multicast_del_pg+0x1bbe/0x1e20 net/bridge/br_multicast.c:825, CPU#0: syz.4.4607/22043
+Modules linked in:
+CPU: 0 UID: 0 PID: 22043 Comm: syz.4.4607 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/24/2026
+RIP: 0010:br_multicast_port_ngroups_dec_one net/bridge/br_multicast.c:718 [inline]
+RIP: 0010:br_multicast_port_ngroups_dec net/bridge/br_multicast.c:771 [inline]
+RIP: 0010:br_multicast_del_pg+0x1bbe/0x1e20 net/bridge/br_multicast.c:825
+Code: 41 5f 5d e9 04 7a 48 f7 e8 3f 73 5c f7 90 0f 0b 90 e9 cf fd ff ff e8 31 73 5c f7 90 0f 0b 90 e9 16 fd ff ff e8 23 73 5c f7 90 <0f> 0b 90 e9 60 fd ff ff e8 15 73 5c f7 eb 05 e8 0e 73 5c f7 48 8b
+RSP: 0018:ffffc9000c207220 EFLAGS: 00010293
+RAX: ffffffff8a68042d RBX: ffff88807c6f1800 RCX: ffff888066e90000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000000 R08: ffff888066e90000 R09: 000000000000000c
+R10: 000000000000000c R11: 0000000000000000 R12: ffff8880303ef800
+R13: dffffc0000000000 R14: ffff888050eb11c4 R15: 1ffff1100a1d6238
+FS:  00007fa45921b6c0(0000) GS:ffff8881256f5000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007fa4591f9ff8 CR3: 0000000081df2000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ br_mdb_flush_pgs net/bridge/br_mdb.c:1525 [inline]
+ br_mdb_flush net/bridge/br_mdb.c:1544 [inline]
+ br_mdb_del_bulk+0x5e2/0xb20 net/bridge/br_mdb.c:1561
+ rtnl_mdb_del+0x48a/0x640 net/core/rtnetlink.c:-1
+ rtnetlink_rcv_msg+0x77e/0xbe0 net/core/rtnetlink.c:6967
+ netlink_rcv_skb+0x232/0x4b0 net/netlink/af_netlink.c:2550
+ netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
+ netlink_unicast+0x80f/0x9b0 net/netlink/af_netlink.c:1344
+ netlink_sendmsg+0x813/0xb40 net/netlink/af_netlink.c:1894
+ sock_sendmsg_nosec net/socket.c:727 [inline]
+ __sock_sendmsg net/socket.c:742 [inline]
+ ____sys_sendmsg+0xa68/0xad0 net/socket.c:2592
+ ___sys_sendmsg+0x2a5/0x360 net/socket.c:2646
+ __sys_sendmsg net/socket.c:2678 [inline]
+ __do_sys_sendmsg net/socket.c:2683 [inline]
+ __se_sys_sendmsg net/socket.c:2681 [inline]
+ __x64_sys_sendmsg+0x1bd/0x2a0 net/socket.c:2681
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xe2/0xf80 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fa45839aeb9
+Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 44 00 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 e8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fa45921b028 EFLAGS: 00000246 ORIG_RAX: 000000000000002e
+RAX: ffffffffffffffda RBX: 00007fa458615fa0 RCX: 00007fa45839aeb9
+RDX: 0000000000000000 RSI: 00002000000000c0 RDI: 0000000000000004
+RBP: 00007fa458408c1f R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fa458616038 R14: 00007fa458615fa0 R15: 00007fff0b59fae8
+ </TASK>
+
+
 ---
- include/net/ioam6.h       |  4 ++++
- net/ipv6/ioam6.c          | 10 +++++++++-
- net/ipv6/ioam6_iptunnel.c |  3 ---
- 3 files changed, 13 insertions(+), 4 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/include/net/ioam6.h b/include/net/ioam6.h
-index abfa518cd917..a3f2a1e4fd19 100644
---- a/include/net/ioam6.h
-+++ b/include/net/ioam6.h
-@@ -14,6 +14,10 @@
- #include <linux/ioam6_genl.h>
- #include <linux/rhashtable-types.h>
- 
-+#define IOAM6_MASK_SHORT_FIELDS 0xff100000
-+#define IOAM6_MASK_WIDE_FIELDS  0x00e00000
-+#define IOAM6_MASK_UNDEF_FIELDS 0x000ffc00
-+
- struct ioam6_namespace {
- 	struct rhash_head head;
- 	struct rcu_head rcu;
-diff --git a/net/ipv6/ioam6.c b/net/ipv6/ioam6.c
-index 02aboriginal1..02bfixedcode 100644
---- a/net/ipv6/ioam6.c
-+++ b/net/ipv6/ioam6.c
-@@ -929,12 +929,20 @@ void ioam6_fill_trace_data(struct sk_buff *skb,
- 			    bool is_input)
- {
- 	struct ioam6_schema *sc;
-+	u32 fields;
- 	u8 sclen = 0;
- 
- 	/* Skip if Overflow flag is set
- 	 */
- 	if (trace->overflow)
- 		return;
- 
-+	trace->nodelen = 0;
-+	fields = be32_to_cpu(trace->type_be32);
-+	trace->nodelen += hweight32(fields & IOAM6_MASK_SHORT_FIELDS)
-+				* (sizeof(__be32) / 4);
-+	trace->nodelen += hweight32(fields & IOAM6_MASK_WIDE_FIELDS)
-+				* (sizeof(__be64) / 4);
-+	trace->nodelen += hweight32(fields & IOAM6_MASK_UNDEF_FIELDS)
-+				* (sizeof(__be32) / 4);
- 
- 	/* NodeLen does not include Opaque State Snapshot length. We need to
- 	 * take it into account if the corresponding bit is set (bit 22) and
-diff --git a/net/ipv6/ioam6_iptunnel.c b/net/ipv6/ioam6_iptunnel.c
-index 7abcdef12345..7abcfixedcode 100644
---- a/net/ipv6/ioam6_iptunnel.c
-+++ b/net/ipv6/ioam6_iptunnel.c
-@@ -23,9 +23,6 @@
- #include <net/ip6_route.h>
- #include <net/addrconf.h>
- 
--#define IOAM6_MASK_SHORT_FIELDS 0xff100000
--#define IOAM6_MASK_WIDE_FIELDS  0x00e00000
--
- struct ioam6_lwt_encap {
- 	struct ipv6_hopopt_hdr eh;
- 	u8 pad[2];			/* 2-octet padding for 4n-alignment */
--- 
-2.39.0
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
