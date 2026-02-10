@@ -1,385 +1,379 @@
-Received: from mail-oi1-f169.google.com (mail-oi1-f169.google.com [209.85.167.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF463314AE
-	for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 20:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D7B32A3FF;
+	Tue, 10 Feb 2026 20:27:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770753868; cv=none; b=Og1JtVXqM4PPBDhMJRFBUx+UDp4mpoXu0zPqofRNS22vN9JqC7tNAX2DdNNZzcF0fm6g9pAcuucLBZuH9kepu1pZ+8QFbW7HgDVprmV3m+jKTT5H8nIoW75nIPqTV0MnydwMc/WCqAlEN8Gc5c9uO45M2FZi+DvJp8mG5Yloawk=
+	t=1770755243; cv=none; b=W2UMtYfl0pI4QC+QUpLDc5xYaHpluhOun91oZDKWsjAR6YvNloq2ulFZxXnW3YBEKwtNwpS851NDSxBQW9sJEIdhaMZnBVGgKhvYKx5hkWfw9R5/FQ9u9ug8oIU1+kE26/j8BWAAALPOGXNwukmqpOvpAarHb/7T2kyTQiZOy70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770753868; c=relaxed/simple;
-	bh=KJHmpTFbuQVt2Wxj0KgOgFgBfD8Yxl+IHvx8jo5giJs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eQh05g4HNnGCa0H/4un9y+PHoBzasBjYOv0X6xVq6QXqTzgaIxZd7PdXrX4hoLsd2iH+IzvxOQx3hiFtA4w4cYz+zjL2aIkCgj1c1bxA/8WSOdhgzOGQCu9UnIR3TwFNSRqw2Bj+Qqph5DOm4eiSaHZVtlLfsdCO64EfHPD0GDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=BBUXNKuV; arc=none smtp.client-ip=209.85.167.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
+	s=arc-20240116; t=1770755243; c=relaxed/simple;
+	bh=NIS0BQnienSqp5kwK4dN3CbDaVN0KvBK1JLoLrEFazw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ePN4HLO57pbZKX2DUV52yK7oqG5fe+4YLX/5WehztCZaj5UM95BDQiONrj2+sUuHRvuXktV57kjSz5VVG4JHJlVF8kLRD7M/a1vM+KrGU9PackKlQ9Y1KrtrxjXxxJBImb70ZtrZiRR/FZd5dn/+2+DgKmJx5m+5YYwwYR1bKnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EWNa67YP; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="BBUXNKuV"
-Received: by mail-oi1-f169.google.com with SMTP id 5614622812f47-45f09874c4cso3768303b6e.3
-        for <netdev@vger.kernel.org>; Tue, 10 Feb 2026 12:04:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1770753864; x=1771358664; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UR9nbpLN2Gu54/2NhwwCxGKaB4y/oVq6WVUPqlxtYd8=;
-        b=BBUXNKuVEUUwV/eJcluTaoDidg40JFUh4jatukFiuliF5qvi1N+x0ykl8TuKJ51C9Y
-         EMQbqkihkwjXQc6+S3BKPm438kLpLvuYRD65/ogedI3E7uB2XWzbXToSUUvK6A8iBKVP
-         VAW4HbfIR4FYyyHTmIf4jY/VWBfZ3s3sj0a9GHevcaty9LUtalztZEy6CsdgLpaHY086
-         On1alxHX+dAiAO02TArPWFP13yG/vyas+99f9LfJchPE82GSJO1sbjKI0UqJER0okr7T
-         R5jXpGTl7nCt5PHX2tytDs1ONZ6aAUcD+ES7WjKWueVXDjZVC/X/JF7ZsFHWEsRxtcBf
-         3wtw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770753864; x=1771358664;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=UR9nbpLN2Gu54/2NhwwCxGKaB4y/oVq6WVUPqlxtYd8=;
-        b=LVVIy+DdLtGNV1t+6ef9J5+LeibQ9e6WiUP1fKzO0Xd/oSaY2NyEcpUo18Sx8DjMCH
-         j68q1hN/JSSv9IljbuoMkd12TUhecy4a2DTMWS9HnwW703ts3jpgfiSOqyruki2Git8Z
-         gpraB2qivxpCp4Zoq5IoqeQFEcVBaVeBW2hgejAABQUhKBbTkG+6BajZgnYRMYRivvp3
-         uqSEfw1sBdTgI2Zn9xcHpV6a2Y+TzvOfbinO1LVsKunGN/xnLDw1iO0JkYFU+isZNjCc
-         oPCyYqSTgNqAWIrT0z0F+XQ22Wm4gUE4A2XQdUhDjJLYmzjpbiKoDBSNHMHAX6scHNP5
-         G7xA==
-X-Gm-Message-State: AOJu0YySTq9fkvdDnxAoWbfwewFx/7cOeI2XIDJK4odbcOF21Uv9NkWx
-	b13kjRf55VTxLCgUSX9C31kMsdR82Vfq5g1OPgunVzNJNjsSNZF7ki8V84C0zMq+AF72Mn+YqzD
-	2ATzU
-X-Gm-Gg: AZuq6aL/hME4xhbFP21yaztBib1AbTgKjXm1093u2DHGpVNzEDG1Ui2oNJjR1jbqI6F
-	b/oMh/bWtGVDJIeD5rx9NJIxxigwUdSd6Ixr3XQ+kgLAR18jGaSWlJjKAgljIH/gJExaleGzs7M
-	3Sz3SXi1MUtbKyQuwDVAmhPRJ3XwHHDNzYm+wkEgYxoIpTmJIZ+KvS2qpkqrp6NuUNjVH0whSQ0
-	23hHKJcuv1SMvQCW2LbI4ODs7VamX7Rvbx6joJ8eee9Cx1AmpRo1XXWraWjrQ4LD4EkutRctjrO
-	FYKQQJdFZ1cvIWnNfLrVWTHh374M6DDh42gUHXg40ZTP5G9JbDHSg0LW3vRrNO4jWq6ww+M9KVw
-	c5Ub5ksMuBaNmErZYyWJZKlh6sEwS+oMZVKXTfQZLHSmlopCjaLo63ANZqJVLGY9lvL1X7MlPNi
-	fni3H7htUOKhKlEtMkGq4FOZGxehUFqmYhIPrzvw==
-X-Received: by 2002:a05:6808:1306:b0:45a:55e6:33e with SMTP id 5614622812f47-4635398d889mr1619893b6e.18.1770753864189;
-        Tue, 10 Feb 2026 12:04:24 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff::])
-        by smtp.gmail.com with ESMTPSA id 5614622812f47-462feb5455dsm8665484b6e.17.2026.02.10.12.04.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Feb 2026 12:04:23 -0800 (PST)
-From: David Wei <dw@davidwei.uk>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Joe Damato <joe@dama.to>,
-	Wei Wang <weibunny@meta.com>,
-	Bobby Eshleman <bobbyeshleman@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net-next 3/4] selftests/net: Add env for container based tests
-Date: Tue, 10 Feb 2026 12:04:18 -0800
-Message-ID: <20260210200419.3555944-4-dw@davidwei.uk>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260210200419.3555944-1-dw@davidwei.uk>
-References: <20260210200419.3555944-1-dw@davidwei.uk>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EWNa67YP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770755242; x=1802291242;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NIS0BQnienSqp5kwK4dN3CbDaVN0KvBK1JLoLrEFazw=;
+  b=EWNa67YPCgh5fN5wFydJvtLL68Oc2ls6AUuMjZCut6rqxpipF073J/hK
+   MpaK4evFzfavLd+xblpSZ4FEnaAp2va4e19Ww6L0iwQNngn8HX8YH00ZT
+   VVUcS9+ThvxJ8zmSWH1p2q7NflVhbVNmaU3tSWvNbOiK56Uo7TzA786yA
+   lnLjveMnmUxRaxG69efEmoe+Y0jqSIp9njuJBKIzRknpjwgBrsUhAaiIr
+   HGbfZA/VV0wKFsVyfGv4nF+ri55NrZvnl5E+NerEMUuNo9V8S3mG3anYY
+   gZQVU6lGqYjiqnPAHI8VehNvPglCohhEyEDEg07EQbFnwmwa2RuIQGqpM
+   g==;
+X-CSE-ConnectionGUID: bcy0ykE6SjK2TJa//MQuXQ==
+X-CSE-MsgGUID: t2+SQB54Tyu+6KqNw8XBZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="75740668"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="75740668"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2026 12:27:22 -0800
+X-CSE-ConnectionGUID: l1evAz9pSmCBNBPmfWi6ew==
+X-CSE-MsgGUID: v8rRE28ZS6S64hO6l7NNMA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="211654594"
+Received: from igk-lkp-server01.igk.intel.com (HELO e5404a91d123) ([10.211.93.152])
+  by fmviesa008.fm.intel.com with ESMTP; 10 Feb 2026 12:27:18 -0800
+Received: from kbuild by e5404a91d123 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vpuKK-000000000uP-0nhC;
+	Tue, 10 Feb 2026 20:27:16 +0000
+Date: Tue, 10 Feb 2026 21:26:33 +0100
+From: kernel test robot <lkp@intel.com>
+To: Feng Yang <yangfeng59949@163.com>, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, ast@kernel.org, daniel@iogearbox.net,
+	andrii@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	bpf@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, yangfeng59949@163.com
+Subject: Re: [PATCH v5] bpf: test_run: Fix the null pointer dereference issue
+ in bpf_lwt_xmit_push_encap
+Message-ID: <202602102144.JapMKlzC-lkp@intel.com>
+References: <20260210090657.86977-1-yangfeng59949@163.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260210090657.86977-1-yangfeng59949@163.com>
 
-Add an env NetDrvContEnv for container based selftests. This automates
-the setup of a netns, netkit pair with one inside the netns, and a BPF
-program that forwards skbs from the NETIF host inside the container.
+Hi Feng,
 
-Currently only netkit is used, but other virtual netdevs e.g. veth can
-be used too.
+kernel test robot noticed the following build warnings:
 
-Expect netkit container datapath selftests to have a publicly routable
-IP prefix to assign to netkit in a container, such that packets will
-land on eth0. The BPF skb forward program will then forward such packets
-from the host netns to the container netns.
+[auto build test WARNING on bpf-next/net]
+[also build test WARNING on bpf-next/master bpf/master net-next/main net/main linus/master v6.19 next-20260209]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Signed-off-by: David Wei <dw@davidwei.uk>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
----
- .../testing/selftests/drivers/net/README.rst  |  19 ++
- .../drivers/net/hw/lib/py/__init__.py         |   7 +-
- .../selftests/drivers/net/lib/py/__init__.py  |   7 +-
- .../selftests/drivers/net/lib/py/env.py       | 163 ++++++++++++++++++
- 4 files changed, 190 insertions(+), 6 deletions(-)
+url:    https://github.com/intel-lab-lkp/linux/commits/Feng-Yang/bpf-test_run-Fix-the-null-pointer-dereference-issue-in-bpf_lwt_xmit_push_encap/20260210-171138
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git net
+patch link:    https://lore.kernel.org/r/20260210090657.86977-1-yangfeng59949%40163.com
+patch subject: [PATCH v5] bpf: test_run: Fix the null pointer dereference issue in bpf_lwt_xmit_push_encap
+config: x86_64-kexec (https://download.01.org/0day-ci/archive/20260210/202602102144.JapMKlzC-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260210/202602102144.JapMKlzC-lkp@intel.com/reproduce)
 
-diff --git a/tools/testing/selftests/drivers/net/README.rst b/tools/testing/selftests/drivers/net/README.rst
-index eb838ae94844..39370a83f238 100644
---- a/tools/testing/selftests/drivers/net/README.rst
-+++ b/tools/testing/selftests/drivers/net/README.rst
-@@ -62,6 +62,25 @@ LOCAL_V4, LOCAL_V6, REMOTE_V4, REMOTE_V6
- 
- Local and remote endpoint IP addresses.
- 
-+LOCAL_PREFIX_V4, LOCAL_PREFIX_V6
-+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-+
-+Local IP prefix/subnet which can be used to allocate extra IP addresses (for
-+network name spaces behind macvlan, veth, netkit devices). DUT must be
-+reachable using these addresses from the endpoint.
-+
-+  +-------------+        +----------------------------+
-+  | INIT NS     |        | TEST NS                    |
-+  | +---------+ |        | +------------------------+ |
-+  | | NETIF   | |  bpf   | | Netkit                 | |
-+  | |         |-|--------|>| nk_guest               | |
-+  | +---------+ |        | | {LOCAL_PREFIX_V6}::2:2 | |
-+  | +---------+ |        | +------------------------+ |
-+  | | Netkit  | |        +----------------------------+
-+  | | nk_host | |
-+  | +---------+ |
-+  +-------------+
-+
- REMOTE_TYPE
- ~~~~~~~~~~~
- 
-diff --git a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-index d5d247eca6b7..022008249313 100644
---- a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-@@ -3,6 +3,7 @@
- """
- Driver test environment (hardware-only tests).
- NetDrvEnv and NetDrvEpEnv are the main environment classes.
-+NetDrvContEnv extends NetDrvEpEnv with netkit container support.
- Former is for local host only tests, latter creates / connects
- to a remote endpoint. See NIPA wiki for more information about
- running and writing driver tests.
-@@ -29,7 +30,7 @@ try:
-     from net.lib.py import ksft_eq, ksft_ge, ksft_in, ksft_is, ksft_lt, \
-         ksft_ne, ksft_not_in, ksft_raises, ksft_true, ksft_gt, ksft_not_none
-     from drivers.net.lib.py import GenerateTraffic, Remote, Iperf3Runner
--    from drivers.net.lib.py import NetDrvEnv, NetDrvEpEnv
-+    from drivers.net.lib.py import NetDrvEnv, NetDrvEpEnv, NetDrvContEnv
- 
-     __all__ = ["NetNS", "NetNSEnter", "NetdevSimDev",
-                "EthtoolFamily", "NetdevFamily", "NetshaperFamily",
-@@ -44,8 +45,8 @@ try:
-                "ksft_eq", "ksft_ge", "ksft_in", "ksft_is", "ksft_lt",
-                "ksft_ne", "ksft_not_in", "ksft_raises", "ksft_true", "ksft_gt",
-                "ksft_not_none", "ksft_not_none",
--               "NetDrvEnv", "NetDrvEpEnv", "GenerateTraffic", "Remote",
--               "Iperf3Runner"]
-+               "NetDrvEnv", "NetDrvEpEnv", "NetDrvContEnv", "GenerateTraffic",
-+               "Remote", "Iperf3Runner"]
- except ModuleNotFoundError as e:
-     print("Failed importing `net` library from kernel sources")
-     print(str(e))
-diff --git a/tools/testing/selftests/drivers/net/lib/py/__init__.py b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-index a18e21069f7a..6b55068d5370 100644
---- a/tools/testing/selftests/drivers/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/__init__.py
-@@ -3,6 +3,7 @@
- """
- Driver test environment.
- NetDrvEnv and NetDrvEpEnv are the main environment classes.
-+NetDrvContEnv extends NetDrvEpEnv with netkit container support.
- Former is for local host only tests, latter creates / connects
- to a remote endpoint. See NIPA wiki for more information about
- running and writing driver tests.
-@@ -43,12 +44,12 @@ try:
-                "ksft_ne", "ksft_not_in", "ksft_raises", "ksft_true", "ksft_gt",
-                "ksft_not_none", "ksft_not_none"]
- 
--    from .env import NetDrvEnv, NetDrvEpEnv
-+    from .env import NetDrvEnv, NetDrvEpEnv, NetDrvContEnv
-     from .load import GenerateTraffic, Iperf3Runner
-     from .remote import Remote
- 
--    __all__ += ["NetDrvEnv", "NetDrvEpEnv", "GenerateTraffic", "Remote",
--                "Iperf3Runner"]
-+    __all__ += ["NetDrvEnv", "NetDrvEpEnv", "NetDrvContEnv", "GenerateTraffic",
-+                "Remote", "Iperf3Runner"]
- except ModuleNotFoundError as e:
-     print("Failed importing `net` library from kernel sources")
-     print(str(e))
-diff --git a/tools/testing/selftests/drivers/net/lib/py/env.py b/tools/testing/selftests/drivers/net/lib/py/env.py
-index 41cc248ac848..857ae0f37516 100644
---- a/tools/testing/selftests/drivers/net/lib/py/env.py
-+++ b/tools/testing/selftests/drivers/net/lib/py/env.py
-@@ -1,13 +1,16 @@
- # SPDX-License-Identifier: GPL-2.0
- 
-+import ipaddress
- import os
- import time
-+import json
- from pathlib import Path
- from lib.py import KsftSkipEx, KsftXfailEx
- from lib.py import ksft_setup, wait_file
- from lib.py import cmd, ethtool, ip, CmdExitFailure
- from lib.py import NetNS, NetdevSimDev
- from .remote import Remote
-+from . import bpftool, RtnlFamily, Netlink
- 
- 
- class NetDrvEnvBase:
-@@ -289,3 +292,163 @@ class NetDrvEpEnv(NetDrvEnvBase):
-                 data.get('stats-block-usecs', 0) / 1000 / 1000
- 
-         time.sleep(self._stats_settle_time)
-+
-+
-+class NetDrvContEnv(NetDrvEpEnv):
-+    """
-+    Class for an environment with a netkit pair setup for forwarding traffic
-+    between the physical interface and a network namespace.
-+    +-------------+        +----------------------------+
-+    | INIT NS     |        | TEST NS                    |
-+    | +---------+ |        | +------------------------+ |
-+    | | NETIF   | |  bpf   | | Netkit                 | |
-+    | |         |-|--------|>| nk_guest               | |
-+    | +---------+ |        | | {LOCAL_PREFIX_V6}::2:2 | |
-+    | +---------+ |        | +------------------------+ |
-+    | | Netkit  | |        +----------------------------+
-+    | | nk_host | |
-+    | +---------+ |
-+    +-------------+
-+    """
-+
-+    def __init__(self, src_path, rxqueues=1, **kwargs):
-+        super().__init__(src_path, **kwargs)
-+
-+        self.netns = None
-+        self._nk_host_ifname = None
-+        self._nk_guest_ifname = None
-+        self._tc_clsact_added = False
-+        self._tc_attached = False
-+        self._bpf_prog_pref = None
-+        self._bpf_prog_id = None
-+        self._init_ns_attached = False
-+
-+        self.require_ipver("6")
-+        local_prefix = self.env.get("LOCAL_PREFIX_V6")
-+        if not local_prefix:
-+            raise KsftSkipEx("LOCAL_PREFIX_V6 required")
-+
-+        local_prefix = local_prefix.rstrip("/64").rstrip("::").rstrip(":")
-+        self.ipv6_prefix = f"{local_prefix}::"
-+        self.nk_host_ipv6 = f"{local_prefix}::2:1"
-+        self.nk_guest_ipv6 = f"{local_prefix}::2:2"
-+
-+        rtnl = RtnlFamily()
-+        rtnl.newlink(
-+            {
-+                "linkinfo": {
-+                    "kind": "netkit",
-+                    "data": {
-+                        "mode": "l2",
-+                        "policy": "forward",
-+                        "peer-policy": "forward",
-+                    },
-+                },
-+                "num-rx-queues": rxqueues,
-+            },
-+            flags=[Netlink.NLM_F_CREATE, Netlink.NLM_F_EXCL],
-+        )
-+
-+        all_links = ip("-d link show", json=True)
-+        netkit_links = [link for link in all_links
-+                        if link.get('linkinfo', {}).get('info_kind') == 'netkit'
-+                        and 'UP' not in link.get('flags', [])]
-+
-+        if len(netkit_links) != 2:
-+            raise KsftSkipEx("Failed to create netkit pair")
-+
-+        netkit_links.sort(key=lambda x: x['ifindex'])
-+        self._nk_host_ifname = netkit_links[1]['ifname']
-+        self._nk_guest_ifname = netkit_links[0]['ifname']
-+        self.nk_host_ifindex = netkit_links[1]['ifindex']
-+        self.nk_guest_ifindex = netkit_links[0]['ifindex']
-+
-+        self._setup_ns()
-+        self._attach_bpf()
-+
-+    def __del__(self):
-+        if self._tc_attached:
-+            cmd(f"tc filter del dev {self.ifname} ingress pref {self._bpf_prog_pref}")
-+            self._tc_attached = False
-+
-+        if self._tc_clsact_added:
-+            cmd(f"tc qdisc del dev {self.ifname} clsact")
-+            self._tc_clsact_added = False
-+
-+        if self._nk_host_ifname:
-+            cmd(f"ip link del dev {self._nk_host_ifname}")
-+            self._nk_host_ifname = None
-+            self._nk_guest_ifname = None
-+
-+        if self._init_ns_attached:
-+            cmd("ip netns del init", fail=False)
-+            self._init_ns_attached = False
-+
-+        if self.netns:
-+            del self.netns
-+            self.netns = None
-+
-+        super().__del__()
-+
-+    def _setup_ns(self):
-+        self.netns = NetNS()
-+        cmd("ip netns attach init 1")
-+        self._init_ns_attached = True
-+        ip("netns set init 0", ns=self.netns)
-+        ip(f"link set dev {self._nk_guest_ifname} netns {self.netns.name}")
-+        ip(f"link set dev {self._nk_host_ifname} up")
-+        ip(f"-6 addr add fe80::1/64 dev {self._nk_host_ifname} nodad")
-+        ip(f"-6 route add {self.nk_guest_ipv6}/128 via fe80::2 dev {self._nk_host_ifname}")
-+
-+        ip("link set lo up", ns=self.netns)
-+        ip(f"link set dev {self._nk_guest_ifname} up", ns=self.netns)
-+        ip(f"-6 addr add fe80::2/64 dev {self._nk_guest_ifname}", ns=self.netns)
-+        ip(f"-6 addr add {self.nk_guest_ipv6}/64 dev {self._nk_guest_ifname} nodad", ns=self.netns)
-+        ip(f"-6 route add default via fe80::1 dev {self._nk_guest_ifname}", ns=self.netns)
-+
-+    def _tc_ensure_clsact(self):
-+        qdisc = json.loads(cmd(f"tc -j qdisc show dev {self.ifname}").stdout)
-+        for q in qdisc:
-+            if q['kind'] == 'clsact':
-+                return
-+        cmd(f"tc qdisc add dev {self.ifname} clsact")
-+        self._tc_clsact_added = True
-+
-+    def _get_bpf_prog_ids(self):
-+        filter = json.loads(cmd(f"tc -j filter show dev {self.ifname} ingress").stdout)
-+        for bpf in filter:
-+            if 'options' not in bpf:
-+                continue
-+            if bpf['options']['bpf_name'].startswith('nk_forward.bpf'):
-+                return (bpf['pref'], bpf['options']['prog']['id'])
-+        if self._bpf_prog_pref is None:
-+            raise Exception("Failed to get BPF prog ID")
-+
-+    def _attach_bpf(self):
-+        bpf_obj = self.test_dir / "nk_forward.bpf.o"
-+        if not bpf_obj.exists():
-+            raise KsftSkipEx("BPF prog not found")
-+
-+        self._tc_ensure_clsact()
-+        cmd(f"tc filter add dev {self.ifname} ingress bpf obj {bpf_obj} sec tc/ingress direct-action")
-+        self._tc_attached = True
-+
-+        (self._bpf_prog_pref, self._bpf_prog_id) = self._get_bpf_prog_ids()
-+        prog_info = bpftool(f"prog show id {self._bpf_prog_id}", json=True)
-+        map_ids = prog_info.get("map_ids", [])
-+
-+        bss_map_id = None
-+        for map_id in map_ids:
-+            map_info = bpftool(f"map show id {map_id}", json=True)
-+            if map_info.get("name").endswith("bss"):
-+                bss_map_id = map_id
-+
-+        if bss_map_id is None:
-+            raise Exception("Failed to find .bss map")
-+
-+        ipv6_addr = ipaddress.IPv6Address(self.ipv6_prefix)
-+        ipv6_bytes = ipv6_addr.packed
-+        ifindex_bytes = self.nk_host_ifindex.to_bytes(4, byteorder='little')
-+        value = ipv6_bytes + ifindex_bytes
-+        value_hex = ' '.join(f'{b:02x}' for b in value)
-+        bpftool(f"map update id {bss_map_id} key hex 00 00 00 00 value hex {value_hex}")
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602102144.JapMKlzC-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> net/bpf/test_run.c:1162:17: warning: unused variable 'fl6' [-Wunused-variable]
+    1162 |                 struct flowi6 fl6 = {};
+         |                               ^~~
+   1 warning generated.
+
+
+vim +/fl6 +1162 net/bpf/test_run.c
+
+   984	
+   985	int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
+   986				  union bpf_attr __user *uattr)
+   987	{
+   988		bool is_l2 = false, is_direct_pkt_access = false, is_lwt = false;
+   989		u32 tailroom = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+   990		struct net *net = current->nsproxy->net_ns;
+   991		struct net_device *dev = net->loopback_dev;
+   992		u32 headroom = NET_SKB_PAD + NET_IP_ALIGN;
+   993		u32 linear_sz = kattr->test.data_size_in;
+   994		u32 repeat = kattr->test.repeat;
+   995		struct dst_entry *dst = NULL;
+   996		struct __sk_buff *ctx = NULL;
+   997		struct sk_buff *skb = NULL;
+   998		struct sock *sk = NULL;
+   999		u32 retval, duration;
+  1000		int hh_len = ETH_HLEN;
+  1001		void *data = NULL;
+  1002		int ret;
+  1003	
+  1004		if ((kattr->test.flags & ~BPF_F_TEST_SKB_CHECKSUM_COMPLETE) ||
+  1005		    kattr->test.cpu || kattr->test.batch_size)
+  1006			return -EINVAL;
+  1007	
+  1008		if (kattr->test.data_size_in < ETH_HLEN)
+  1009			return -EINVAL;
+  1010	
+  1011		switch (prog->type) {
+  1012		case BPF_PROG_TYPE_SCHED_CLS:
+  1013		case BPF_PROG_TYPE_SCHED_ACT:
+  1014			is_direct_pkt_access = true;
+  1015			is_l2 = true;
+  1016			break;
+  1017		case BPF_PROG_TYPE_LWT_IN:
+  1018		case BPF_PROG_TYPE_LWT_OUT:
+  1019		case BPF_PROG_TYPE_LWT_XMIT:
+  1020			is_lwt = true;
+  1021			fallthrough;
+  1022		case BPF_PROG_TYPE_CGROUP_SKB:
+  1023			is_direct_pkt_access = true;
+  1024			break;
+  1025		default:
+  1026			break;
+  1027		}
+  1028	
+  1029		ctx = bpf_ctx_init(kattr, sizeof(struct __sk_buff));
+  1030		if (IS_ERR(ctx))
+  1031			return PTR_ERR(ctx);
+  1032	
+  1033		if (ctx) {
+  1034			if (ctx->data_end > kattr->test.data_size_in || ctx->data || ctx->data_meta) {
+  1035				ret = -EINVAL;
+  1036				goto out;
+  1037			}
+  1038			if (ctx->data_end) {
+  1039				/* Non-linear LWT test_run is unsupported for now. */
+  1040				if (is_lwt) {
+  1041					ret = -EINVAL;
+  1042					goto out;
+  1043				}
+  1044				linear_sz = max(ETH_HLEN, ctx->data_end);
+  1045			}
+  1046		}
+  1047	
+  1048		linear_sz = min_t(u32, linear_sz, PAGE_SIZE - headroom - tailroom);
+  1049	
+  1050		data = bpf_test_init(kattr, linear_sz, linear_sz, headroom, tailroom);
+  1051		if (IS_ERR(data)) {
+  1052			ret = PTR_ERR(data);
+  1053			data = NULL;
+  1054			goto out;
+  1055		}
+  1056	
+  1057		sk = sk_alloc(net, AF_UNSPEC, GFP_USER, &bpf_dummy_proto, 1);
+  1058		if (!sk) {
+  1059			ret = -ENOMEM;
+  1060			goto out;
+  1061		}
+  1062		sock_init_data(NULL, sk);
+  1063	
+  1064		skb = slab_build_skb(data);
+  1065		if (!skb) {
+  1066			ret = -ENOMEM;
+  1067			goto out;
+  1068		}
+  1069		skb->sk = sk;
+  1070	
+  1071		data = NULL; /* data released via kfree_skb */
+  1072	
+  1073		skb_reserve(skb, NET_SKB_PAD + NET_IP_ALIGN);
+  1074		__skb_put(skb, linear_sz);
+  1075	
+  1076		if (unlikely(kattr->test.data_size_in > linear_sz)) {
+  1077			void __user *data_in = u64_to_user_ptr(kattr->test.data_in);
+  1078			struct skb_shared_info *sinfo = skb_shinfo(skb);
+  1079			u32 copied = linear_sz;
+  1080	
+  1081			while (copied < kattr->test.data_size_in) {
+  1082				struct page *page;
+  1083				u32 data_len;
+  1084	
+  1085				if (sinfo->nr_frags == MAX_SKB_FRAGS) {
+  1086					ret = -ENOMEM;
+  1087					goto out;
+  1088				}
+  1089	
+  1090				page = alloc_page(GFP_KERNEL);
+  1091				if (!page) {
+  1092					ret = -ENOMEM;
+  1093					goto out;
+  1094				}
+  1095	
+  1096				data_len = min_t(u32, kattr->test.data_size_in - copied,
+  1097						 PAGE_SIZE);
+  1098				skb_fill_page_desc(skb, sinfo->nr_frags, page, 0, data_len);
+  1099	
+  1100				if (copy_from_user(page_address(page), data_in + copied,
+  1101						   data_len)) {
+  1102					ret = -EFAULT;
+  1103					goto out;
+  1104				}
+  1105				skb->data_len += data_len;
+  1106				skb->truesize += PAGE_SIZE;
+  1107				skb->len += data_len;
+  1108				copied += data_len;
+  1109			}
+  1110		}
+  1111	
+  1112		if (ctx && ctx->ifindex > 1) {
+  1113			dev = dev_get_by_index(net, ctx->ifindex);
+  1114			if (!dev) {
+  1115				ret = -ENODEV;
+  1116				goto out;
+  1117			}
+  1118		}
+  1119		skb->protocol = eth_type_trans(skb, dev);
+  1120		skb_reset_network_header(skb);
+  1121	
+  1122		switch (skb->protocol) {
+  1123		case htons(ETH_P_IP):
+  1124			sk->sk_family = AF_INET;
+  1125			if (sizeof(struct iphdr) <= skb_headlen(skb)) {
+  1126				sk->sk_rcv_saddr = ip_hdr(skb)->saddr;
+  1127				sk->sk_daddr = ip_hdr(skb)->daddr;
+  1128			}
+  1129			break;
+  1130	#if IS_ENABLED(CONFIG_IPV6)
+  1131		case htons(ETH_P_IPV6):
+  1132			sk->sk_family = AF_INET6;
+  1133			if (sizeof(struct ipv6hdr) <= skb_headlen(skb)) {
+  1134				sk->sk_v6_rcv_saddr = ipv6_hdr(skb)->saddr;
+  1135				sk->sk_v6_daddr = ipv6_hdr(skb)->daddr;
+  1136			}
+  1137			break;
+  1138	#endif
+  1139		default:
+  1140			break;
+  1141		}
+  1142	
+  1143		if (is_l2)
+  1144			__skb_push(skb, hh_len);
+  1145		if (is_direct_pkt_access)
+  1146			bpf_compute_data_pointers(skb);
+  1147	
+  1148		ret = convert___skb_to_skb(skb, ctx);
+  1149		if (ret)
+  1150			goto out;
+  1151	
+  1152		if (kattr->test.flags & BPF_F_TEST_SKB_CHECKSUM_COMPLETE) {
+  1153			const int off = skb_network_offset(skb);
+  1154			int len = skb->len - off;
+  1155	
+  1156			skb->csum = skb_checksum(skb, off, len, 0);
+  1157			skb->ip_summed = CHECKSUM_COMPLETE;
+  1158		}
+  1159	
+  1160		if (prog->type == BPF_PROG_TYPE_LWT_XMIT && !skb_dst(skb)) {
+  1161			struct flowi4 fl4 = {};
+> 1162			struct flowi6 fl6 = {};
+  1163			struct rtable *rt;
+  1164	
+  1165			switch (skb->protocol) {
+  1166			case htons(ETH_P_IP):
+  1167				if (sizeof(struct iphdr) <= skb_headlen(skb)) {
+  1168					fl4.saddr = ip_hdr(skb)->saddr;
+  1169					fl4.daddr = ip_hdr(skb)->daddr;
+  1170				}
+  1171	
+  1172				rt = ip_route_output_key(net, &fl4);
+  1173				if (IS_ERR(rt)) {
+  1174					ret = PTR_ERR(rt);
+  1175					goto out;
+  1176				}
+  1177				dst = &rt->dst;
+  1178				break;
+  1179	#if IS_ENABLED(CONFIG_IPV6)
+  1180			case htons(ETH_P_IPV6):
+  1181				if (sizeof(struct ipv6hdr) <= skb_headlen(skb)) {
+  1182					fl6.saddr = ipv6_hdr(skb)->saddr;
+  1183					fl6.daddr = ipv6_hdr(skb)->daddr;
+  1184				}
+  1185	
+  1186				dst = ip6_route_output(net, NULL, &fl6);
+  1187				if (IS_ERR(dst)) {
+  1188					ret = PTR_ERR(dst);
+  1189					goto out;
+  1190				}
+  1191				break;
+  1192	#endif
+  1193			default:
+  1194				ret = -EINVAL;
+  1195				goto out;
+  1196			}
+  1197	
+  1198			if (unlikely(dst->error)) {
+  1199				ret = dst->error;
+  1200				dst_release(dst);
+  1201				goto out;
+  1202			}
+  1203			skb_dst_set(skb, dst);
+  1204		}
+  1205		ret = bpf_test_run(prog, skb, repeat, &retval, &duration, false);
+  1206		if (ret)
+  1207			goto out;
+  1208		if (!is_l2) {
+  1209			if (skb_headroom(skb) < hh_len) {
+  1210				int nhead = HH_DATA_ALIGN(hh_len - skb_headroom(skb));
+  1211	
+  1212				if (pskb_expand_head(skb, nhead, 0, GFP_USER)) {
+  1213					ret = -ENOMEM;
+  1214					goto out;
+  1215				}
+  1216			}
+  1217			memset(__skb_push(skb, hh_len), 0, hh_len);
+  1218		}
+  1219	
+  1220		if (kattr->test.flags & BPF_F_TEST_SKB_CHECKSUM_COMPLETE) {
+  1221			const int off = skb_network_offset(skb);
+  1222			int len = skb->len - off;
+  1223			__wsum csum;
+  1224	
+  1225			csum = skb_checksum(skb, off, len, 0);
+  1226	
+  1227			if (csum_fold(skb->csum) != csum_fold(csum)) {
+  1228				ret = -EBADMSG;
+  1229				goto out;
+  1230			}
+  1231		}
+  1232	
+  1233		convert_skb_to___skb(skb, ctx);
+  1234	
+  1235		if (skb_is_nonlinear(skb))
+  1236			/* bpf program can never convert linear skb to non-linear */
+  1237			WARN_ON_ONCE(linear_sz == kattr->test.data_size_in);
+  1238		ret = bpf_test_finish(kattr, uattr, skb->data, skb_shinfo(skb), skb->len,
+  1239				      skb->data_len, retval, duration);
+  1240		if (!ret)
+  1241			ret = bpf_ctx_finish(kattr, uattr, ctx,
+  1242					     sizeof(struct __sk_buff));
+  1243	out:
+  1244		if (dev && dev != net->loopback_dev)
+  1245			dev_put(dev);
+  1246		kfree_skb(skb);
+  1247		kfree(data);
+  1248		if (sk)
+  1249			sk_free(sk);
+  1250		kfree(ctx);
+  1251		return ret;
+  1252	}
+  1253	
+
 -- 
-2.47.3
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
