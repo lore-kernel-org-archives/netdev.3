@@ -1,180 +1,122 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010047.outbound.protection.outlook.com [52.101.193.47])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1514635770C;
-	Wed, 11 Feb 2026 09:42:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770802955; cv=fail; b=jNRXK8WGHsayqyf1tFfA/VmmArCtUDpMsUwwwP19sBJK4yfugqt4nEVhSocGuztT6Wz33IHtGOJ2T4+mzA4qdAgacEkl7NDMNyV8YF0vRGT27mqAKd6Tig7YdJEJLw1oQkw9G6LdpmfAreJ3H4v1jOv5Qv6Ojqtoufv5LliZTj8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770802955; c=relaxed/simple;
-	bh=2A3MRw6idOyZTW8qNsPF0L3ikKXeregXX3vWie1VOYs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Tk71qpwJU+ownsDXqSpTIGzR/zT4Q+2d6gU3XPwlT/o9RRfIPZ3oBuFK3zE/Dq+GHkqvHL/2Alpj2RbvcwZqLPip1JGnUadx8MM7Bv02TRpBTHSB9ti5U9Cji3d1JCF11COMBOpzLuqyUq68YGoFTWBLRbtU1kFEsZP8JFxcBqI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=fail (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Gb7WcbPr reason="signature verification failed"; arc=fail smtp.client-ip=52.101.193.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E0C235B631
+	for <netdev@vger.kernel.org>; Wed, 11 Feb 2026 09:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770803021; cv=none; b=VfYrEnnv8otC0SNQpMwLIO1rNJ1sj+7ddh/vkIzVzg0AH952pTcSoVZ8PFyEv6VKXkt7w7T3f4LzheB5JjHhiFE+b346SK/a0JdPAwH7mL1GmkbHQWia+Ajts55C2ONtvoplijaCJd7dcSXrUkXDQ1fbZO73ofRxmnSYzYjY2WM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770803021; c=relaxed/simple;
+	bh=3R2gvJlYg2fkGJs2L5r+sIWjeFpGyp7Xsc71mVtw76k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=peWld4Wa6oJwuIq7nwhfHnJ7xYpYyNH+PRXL8VhD7glWt2u86X0zy3kqoqKq/g8hRURv2d0QWmbS/VkZxQLq1K8YOzmCCq03BeTmjaV51lqwl1+E1BVtARf87j4Y0jezMEcp8cx2NjoYbwhDAxtblZMFcpdYTmQYQ4iWVCj4Dxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TYudtbpD; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Gb7WcbPr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Vu5GUJnXpKILzW9dW3pZ+7ODWx3QiR93GxCp+BiH3kSGN1YO3NLMIJGH/JsF8M0K1xNP8ACnzcvba3Qvg35VxkqqqHNKjmBOxO0Ova9sT6/6WeXV1eAK+QwtIwzkKX1qi+nG+7t+V57Uw3V8qpNtpAnZj90dc+oMKnEnTeZPOKUYANXgct5CQHjozB0RVmK9z/H/5RN6nYr3Z97ALVG/y8YFhC2170hCMutEJliMRqdU+h7C4g0T3FpFqDgmaWB0Jmsh+jnSedn5C5iHJRcswSfklUbXioQvUeN9qOdEX9rho6fUQwM4eFr7S8ZMYpdcm6wTl5G3kf4O6jmiuFQMFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=YRzxOEBvQsckac+YQaREK5tZYr/oH3XQxjXyMzVSDwA=;
- b=pRQEAA6TmjFegyNLyHOay0enwkPIyEymjJ7hLp3cEeyIkk+hvJTROx8aFK1s3RGH9PVRxD0Rmo7dflxRlXALhnxJ6AzrtQNdf7lWV+xFJui2bIc/1Egxcawt7YMLCV/JLwY/vkNGvEzdJ/bQ6K0TMNltuvmQOqrhYBmkRR1o45S3wPi9FraDdMvfrhk5CcAoohV+Xx1viG2jWuTsnyo9dpjs13RR7erDvFIjNgFuezuXgw/FUMc+NTk+f9s01rOeBmcGoGQpsDq1p1+J3FQWTy6n6MOjy1CPWiMYw2LlbkmOE1RSBkhA4hliPvyqyP0adVk9g6zIqAeMxI+2pT1AHg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=YRzxOEBvQsckac+YQaREK5tZYr/oH3XQxjXyMzVSDwA=;
- b=Gb7WcbPrNYes5+CRcLsc6LBx86+FW38uzgb5W7TQQR2evI0vLueOA/cLqU3hwrVVi7rga1EHKpSPBK/UwaRhms4b8O7Z+QdFqnI7v9fw+hW9Lfb5MWbJ2HVukh+0123jnQUEjfSAJLdseLumVEX2mKuaNE9/EyldcgGDWub0b8xfBy1+CUABC+7VT9PqRxKKObBUUB14vjrlLatXMy0y0MqQNzRVyBDTPpbNYA3zjCP6MEYhuaPoLkTtcr5q9eGmDlCjsbYQosNYQK8cBWioF8Fax2H6sRv9KRpqDXNNGY/rUviNoxj7b7mj4ahwdtnhfNW08Ml7tztmR3hgTC/hUA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com (2603:10b6:806:306::12)
- by CH0PR12MB8486.namprd12.prod.outlook.com (2603:10b6:610:18a::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.16; Wed, 11 Feb
- 2026 09:42:29 +0000
-Received: from SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2]) by SA3PR12MB7901.namprd12.prod.outlook.com
- ([fe80::6f7f:5844:f0f7:acc2%2]) with mapi id 15.20.9587.016; Wed, 11 Feb 2026
- 09:42:29 +0000
-Date: Wed, 11 Feb 2026 11:42:18 +0200
-From: Ido Schimmel <idosch@nvidia.com>
-To: Linus =?iso-8859-1?Q?L=FCssing?= <linus.luessing@c0d3.blue>
-Cc: bridge@lists.linux.dev, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Xiao Liang <shaw.leon@gmail.com>
-Subject: Re: [PATCH net-next v2 02/14] net: bridge: mcast: track active
- state, adding tests
-Message-ID: <20260211094218.GA504514@shredder>
-References: <20260206030123.5430-1-linus.luessing@c0d3.blue>
- <20260206030123.5430-3-linus.luessing@c0d3.blue>
- <20260208160046.GB154003@shredder>
- <aYud8nWZ7c0RxRIx@sellars>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <aYud8nWZ7c0RxRIx@sellars>
-X-ClientProxiedBy: FR4P281CA0085.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cd::10) To SA3PR12MB7901.namprd12.prod.outlook.com
- (2603:10b6:806:306::12)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TYudtbpD"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770803017; x=1802339017;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=3R2gvJlYg2fkGJs2L5r+sIWjeFpGyp7Xsc71mVtw76k=;
+  b=TYudtbpDvYG57mjnnPgpMNN/pEd8/QoN2m8HoHFXxbnMx0aKFp7bEQHA
+   BVT7KvMoTYEHvrpameOpZbz+BKL2NndqP8Lp6w1Vykl4gX9j5S5ntPjVn
+   cPadn35jgamfGMyHhgd5t9nTrDifm/f1cIwxYzlcqWiogEW3L/RHbBv/P
+   bWP4D7EHDq+DchKRTmOCQGXwkmgIvIV37d+zMuASSS/qrdTHV+DbulnyX
+   tEo+8qzwVDauSVUNThmHNe5XJ9tB3qdeztE8UAuVEc3WOQrdBpZdE/Z5u
+   nTs1W2g52aSmmGZPQ61MK8QJ3vdPUaqsU7tyrxDp9AreclZnikeB8GdjD
+   A==;
+X-CSE-ConnectionGUID: G3J43xdiQn6AOq/7fcXXCw==
+X-CSE-MsgGUID: NtdM7XvzQG2IncmkT4IsVA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11697"; a="71848060"
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="71848060"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 01:43:36 -0800
+X-CSE-ConnectionGUID: 1Feq19IFQUuQkHJ/wzguJA==
+X-CSE-MsgGUID: 8D3a+89OQ1SWV7f1wzmaQA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
+   d="scan'208";a="211599160"
+Received: from os-delivery.igk.intel.com ([10.102.21.165])
+  by fmviesa010.fm.intel.com with ESMTP; 11 Feb 2026 01:43:34 -0800
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH iwl-net v1] libie: don't unroll if fwlog isn't supported
+Date: Wed, 11 Feb 2026 10:11:40 +0100
+Message-ID: <20260211091140.236389-1-michal.swiatkowski@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3PR12MB7901:EE_|CH0PR12MB8486:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0a5207fc-58b0-4245-9334-08de6951df13
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?VchLfhbqeAllgWRfOnJsdok6S09JMRKoY2BLVMkzs82CUhmZnfyF03V9OD?=
- =?iso-8859-1?Q?J1r/a72RjmEiJD8wzylA+StcJipWVqfmRkZyIhII0Ee7RZONwXD5G9kH5N?=
- =?iso-8859-1?Q?Ez8gjdzQIGSFoaZKaHzVhFqlD2384qs1tNd9wZldVo7PLC6k/fvl8WRI90?=
- =?iso-8859-1?Q?cnyMy89BydDWCE4F7bQclme1sAvWrfO+Q/fuL/Q60Fc6JaAbJCNvv779DY?=
- =?iso-8859-1?Q?a9FctehfK2exIRm81x/TNYRZAPMMfyrSLyWjyPwAFC+Qn3sw6vRMkbQl50?=
- =?iso-8859-1?Q?c65KhxFTArPGf+7lIcWFBH77Gvgpjb0F3BtlpYRVfzSgK7mO66ZOIRBZJG?=
- =?iso-8859-1?Q?GCz1UFO1W6GcZzmM8rcmRxG5uNIXRjruxNjJKNQfferoNo4IjWJzasyyWj?=
- =?iso-8859-1?Q?UKDcSVx5GtJylhUIuZBOISB7fwIEEuGIEUc4JHAB1/AFLEv+Ug0Jsp9xNn?=
- =?iso-8859-1?Q?VNBHQA7YbByRZrqcNpH0UmfTosNX2fB+lryrmvTAxnoei8ElBgcGyMlQ/U?=
- =?iso-8859-1?Q?D2Zq2KL3+s8pNRsb5IJdufpcaNPqLmQ0lLzhlyplSs4Jo9WEttX7DVrEAQ?=
- =?iso-8859-1?Q?TbsMjvGpNPLvjjQ82RL/kHb82UC/r+kOfBTGdZG/xyjBQiK/vRUmgqlEF4?=
- =?iso-8859-1?Q?HcazAQujYlqhp3JtdwrzcEiQge92OObYPm6KFVqzqplfDM2V2N4XQLcvZR?=
- =?iso-8859-1?Q?zdr3bOIboIcgPGGX2yqp3WKm5xcWEmJfjXwBY4/cJdL/8Ky4Y2KnS4kCzP?=
- =?iso-8859-1?Q?ZU97+D/6qhC4PmyR6cdOmUcgIQZXP4cSFeWrFMgTrVGfefjJWyfI/VGa2O?=
- =?iso-8859-1?Q?1h+8kfG1B/IQ6jXYearYj1VDvl84LKMtGY9OzSZ3Xmt62Mvc+CDzJxcQU9?=
- =?iso-8859-1?Q?W82xXqxD89YOyT2Aq3z4tpVATiH0aIm+yIQuR4Wabju+HiOaO/P5LogJgq?=
- =?iso-8859-1?Q?HdWaozByq5W7ngA6WZnC7ISh7oqjEqvIgO7PQX4GCbOb6ZbCPe2ybW80DM?=
- =?iso-8859-1?Q?VJCefJcK7dNKhrXx/J71pknJONSWsCRwQHCHf2CVAlWuJZlUtmLAbHvess?=
- =?iso-8859-1?Q?+JGV8bpvgQd1iOISFJ7GYXwtGg8Kyg1mEtniyfhS20tSTtJr9Hz5fU2br8?=
- =?iso-8859-1?Q?bYL8da+HIXxXsk/Z2le7oDl/UKdntuMHbRgxhrMSfxxe1Fjnu2XTMfzAxl?=
- =?iso-8859-1?Q?3ybzrTlC/fAEeGI2ONM0S6aldINiJhS1N8FqoFuqhGtUrLWj8yT3llJE75?=
- =?iso-8859-1?Q?jzOMiSpZWfRBA8/0Vpcbc3dAb7NNG2voflEFH1/rezeNaGKD74RZ83xpnv?=
- =?iso-8859-1?Q?zBp56ZL6QJIIosGDRsN/VOyF2NTcANkIIVi4l42zVnhEj1FPgLxzV9KeUy?=
- =?iso-8859-1?Q?CU36RNPaFB7eNYMEksP8K9l+Rp7BIdVFDEv7EwK0Dn92p2/trWRyNl6UtO?=
- =?iso-8859-1?Q?BKq7RrEVKAF7HNbtFiJ6AFDVmZ8Sl8MlRCxOgY8yOwaYlrgsLLl6y4YrgS?=
- =?iso-8859-1?Q?TLJVtmXBl3rkUJ8hD8CVFp7Sr8V/74Hj2wnrmyxVl3ITaJln23HgFCo8Yb?=
- =?iso-8859-1?Q?/BjFC4Ntv3iLuGAqhAxmOSMxJFxBX5HSPec/1b607T1rOP13X+LmMriFPR?=
- =?iso-8859-1?Q?8ltM+DqkkaV44=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3PR12MB7901.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?ym4isidoNTKcF4VGc/xiXrWHlJHRLTw3+gIhgiJN4q1adggNc6qdepwFq2?=
- =?iso-8859-1?Q?XJW8FZ25WEm7OasoSaxJChipxmb9bc2BcTb2s7CANjNmNpjYZXc+0c8Ric?=
- =?iso-8859-1?Q?6aLfe0qJRMEZoidOe6CEquiGpw6yQiGw1b7ZXASvzwn+9fQG09WX29ojQo?=
- =?iso-8859-1?Q?a5meQfxbCygYEiYUMevol6yqzRi8W9AOmJanNGEOVkz/86Mc25rCBi451l?=
- =?iso-8859-1?Q?7NaQ3dDjnO0etMv+VU63rDBo6wCuhxVhVgKeGC483TZZOR8seYxAiEsf8w?=
- =?iso-8859-1?Q?wnsiICxShepx37+YCKBpAyO0mFKJGkFk5wCRMOOgj3LhX70u+BspaiLZmR?=
- =?iso-8859-1?Q?SxujExNQbMASxkbOPF6GWsWclgOwd32WVUTv4QJ9l0Xi4ADvx1Phf0gDCs?=
- =?iso-8859-1?Q?QqmxI3x2VvEOOPjY78KFRg3Fca9dXz8dQkpdH3K4wHdMIdpflbBpQtbByT?=
- =?iso-8859-1?Q?Su4blwnmGO+jTMNvaQ2djMNER4Hmv1dLbx1GWG0vNtVPyg2BxCv+aYivLw?=
- =?iso-8859-1?Q?HZ9/c6+lyeRIDq9V5s28PbMGxVg7nayvblxGLXkhPPluRd56hDbsnCNVwP?=
- =?iso-8859-1?Q?jKfGnz7IJkKkXZ9BLdYpOaK0nsKnifTFi75qGv5D+xhSAgmPB4EkMwhxOa?=
- =?iso-8859-1?Q?cUCTV3AEkv5Smdy6T8j0x+4CcucNPMnwKoFKRqC2CwWdZT08uEnNceGnZL?=
- =?iso-8859-1?Q?5cISlw6NqZqlqM4A0j0xSEURguOkCqv0FCED1u4Xn/jJFTHwEBpK1hxWQT?=
- =?iso-8859-1?Q?wzP+Dp2B1LMqyqkePwcirMzJaFx1DvQbU08POnJj43NwzVht1jey1d4Eg0?=
- =?iso-8859-1?Q?vXzk44BKgx1SPzlDNqKgFWETBSJ2tjwfPvIT7tmG3mUk56/wHcND//C0c7?=
- =?iso-8859-1?Q?dLwkOvyxS4NROqTm47GApIh+nhbMySXIBYLZEvEwK7OqR3iHb3kjE2G+hr?=
- =?iso-8859-1?Q?CLci+HlYOKI/uIEgMgQC8Ld41UVFZEB1BEsVAyoJ51oBmLKAoZdc1NCdTh?=
- =?iso-8859-1?Q?9e0g5x2bjhwzl7ozqsYcIyMKQio4pHXcMkFGBSNEn2iv8g2m+hQFc9QmiH?=
- =?iso-8859-1?Q?KyLuHqT4sPkABQAKAVC1ivXx5ZjZ/QcOlBaVPndrm4qkTzgtsty15orw31?=
- =?iso-8859-1?Q?495NxtWV7fZbZA8LJ2KGQ4gHMbN6CAmplBzob4oE7V8JafwAD5ap+yfyiN?=
- =?iso-8859-1?Q?H6h/tOv3TxCCkRxD1UOQjsQYDHtfgQLKxFT7h/rq8fI9DkdBTncS80MPMJ?=
- =?iso-8859-1?Q?PpGMalIrYJgv8TkrQxVNUfdIU8aKU+W640DacReJXbv/gGerP2vqP6mw7O?=
- =?iso-8859-1?Q?9QBAVyYyeP2HAMKTqDIBVT2328tLPxXG4H6EbuqAji+lUoVZvkeOCfItIn?=
- =?iso-8859-1?Q?Hw+0haMm8lNupB6JGLwkKh+04Vsq6vTnFm+udBCN8QeoPhoJstiIDSWzIU?=
- =?iso-8859-1?Q?ojoCvux2hxn+JS1IV3LIFRz3CV0IztJlfNUajtdRIWS8cSwQp/uPhEONyC?=
- =?iso-8859-1?Q?CvWfta/hfE/SBJcES8cYQa/NdOBwuLeu7e3x79UzRu7Ba/YPH334dHLwil?=
- =?iso-8859-1?Q?eisbJrzzbDx2Uaf6aQORo0HXNJsnuUPKnBVqYdNrVmcGAf+mc9fNxT+y2J?=
- =?iso-8859-1?Q?6Y+daqrLiPcG7yvPKSWEWoqrwDh2kvIuL+XtYRJ1whf7tev1ROauMEKhyK?=
- =?iso-8859-1?Q?PzQICZR7XT4h1SOrRNonHGnK70G3AbNJ0qo6HR4xk/0txlav1y8hzen111?=
- =?iso-8859-1?Q?4uq2jDRcStLQvVKX1xUAX0I2I4wOknhqL+LB3k2e7YRg5N?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0a5207fc-58b0-4245-9334-08de6951df13
-X-MS-Exchange-CrossTenant-AuthSource: SA3PR12MB7901.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2026 09:42:29.1524
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /nCgUxEaPNIM3NUX3GJaWw87c5p1DuuVfp5PPJJ8irmDfgYDr+15vlSghpzwz0HgCn3hBmQN9va42CuLAOSmwg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8486
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 10, 2026 at 10:06:58PM +0100, Linus Lüssing wrote:
-> On Sun, Feb 08, 2026 at 06:00:46PM +0200, Ido Schimmel wrote:
-> [...]
-> > > +test_inactive_other_querier_norespdelay()
-> > > +{
-> > > +	RET=0
-> > > +
-> > > +	test_active_setup_bridge "1" "2" "3" "4" "5" "6"
-> > > +	test_active_setup_config "1" "2" "3" ""
-> > > +	#test_active_setup_wait
-> > 
-> > Why the comment? There are more instances below
-> 
-> The intention was just to highlight what was skipped in comparison
-> to the according test_{vlan,}_active_*_querier() variants.
-> 
-> Do you think I should remove these lines? Or add a brief
-> clarification, something like "# skipped: test_active_setup_wait"?
+The libie_fwlog_deinit() function can be called during driver unload
+even when firmware logging was never properly initialized. This led to call
+trace:
 
-OK, I see. A brief clarification would be good. I initially thought that
-these are leftovers that you forgot to remove before submitting.
+[  148.576156] Oops: Oops: 0000 [#1] SMP NOPTI
+[  148.576167] CPU: 80 UID: 0 PID: 12843 Comm: rmmod Kdump: loaded Not tainted 6.17.0-rc7next-queue-3oct-01915-g06d79d51cf51 #1 PREEMPT(full)
+[  148.576177] Hardware name: HPE ProLiant DL385 Gen10 Plus/ProLiant DL385 Gen10 Plus, BIOS A42 07/18/2020
+[  148.576182] RIP: 0010:__dev_printk+0x16/0x70
+[  148.576196] Code: 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 41 55 41 54 49 89 d4 55 48 89 fd 53 48 85 f6 74 3c <4c> 8b 6e 50 48 89 f3 4d 85 ed 75 03 4c 8b 2e 48 89 df e8 f3 27 98
+[  148.576204] RSP: 0018:ffffd2fd7ea17a48 EFLAGS: 00010202
+[  148.576211] RAX: ffffd2fd7ea17aa0 RBX: ffff8eb288ae2000 RCX: 0000000000000000
+[  148.576217] RDX: ffffd2fd7ea17a70 RSI: 00000000000000c8 RDI: ffffffffb68d3d88
+[  148.576222] RBP: ffffffffb68d3d88 R08: 0000000000000000 R09: 0000000000000000
+[  148.576227] R10: 00000000000000c8 R11: ffff8eb2b1a49400 R12: ffffd2fd7ea17a70
+[  148.576231] R13: ffff8eb3141fb000 R14: ffffffffc1215b48 R15: ffffffffc1215bd8
+[  148.576236] FS:  00007f5666ba6740(0000) GS:ffff8eb2472b9000(0000) knlGS:0000000000000000
+[  148.576242] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  148.576247] CR2: 0000000000000118 CR3: 000000011ad17000 CR4: 0000000000350ef0
+[  148.576252] Call Trace:
+[  148.576258]  <TASK>
+[  148.576269]  _dev_warn+0x7c/0x96
+[  148.576290]  libie_fwlog_deinit+0x112/0x117 [libie_fwlog]
+[  148.576303]  ixgbe_remove+0x63/0x290 [ixgbe]
+[  148.576342]  pci_device_remove+0x42/0xb0
+[  148.576354]  device_release_driver_internal+0x19c/0x200
+[  148.576365]  driver_detach+0x48/0x90
+[  148.576372]  bus_remove_driver+0x6d/0xf0
+[  148.576383]  pci_unregister_driver+0x2e/0xb0
+[  148.576393]  ixgbe_exit_module+0x1c/0xd50 [ixgbe]
+[  148.576430]  __do_sys_delete_module.isra.0+0x1bc/0x2e0
+[  148.576446]  do_syscall_64+0x7f/0x980
+
+It can be reproduced by trying to unload ixgbe driver in recovery mode.
+
+Fix that by checking if fwlog is supported before doing unroll.
+
+Fixes: 641585bc978e ("ixgbe: fwlog support for e610")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+---
+ drivers/net/ethernet/intel/libie/fwlog.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/libie/fwlog.c b/drivers/net/ethernet/intel/libie/fwlog.c
+index f39cc11cb7c5..5d890d9d3c4d 100644
+--- a/drivers/net/ethernet/intel/libie/fwlog.c
++++ b/drivers/net/ethernet/intel/libie/fwlog.c
+@@ -1051,6 +1051,10 @@ void libie_fwlog_deinit(struct libie_fwlog *fwlog)
+ {
+ 	int status;
+ 
++	/* if FW logging isn't supported it means no configuration was done */
++	if (!libie_fwlog_supported(fwlog))
++		return;
++
+ 	/* make sure FW logging is disabled to not put the FW in a weird state
+ 	 * for the next driver load
+ 	 */
+-- 
+2.49.0
+
