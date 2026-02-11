@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F599353EEE;
-	Wed, 11 Feb 2026 11:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6937A23D2B1;
+	Wed, 11 Feb 2026 11:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770808216; cv=none; b=hPFdcuep2q9YhRRWBs7gpEswT5n6EkaP5NGmFw0YHf3vywEShxCFR5E0yXAf2vR3PJbzAyoyNNdpaIUcbytoXA1y0ZETQBZZ0quDIB6ZWVKS33d9cX2ct5aaLJapjSOLOd2oT3/rFENcKK0ix/yOd0dZrSWZ8ybPBbNyeZJs9lA=
+	t=1770808810; cv=none; b=M0k4YfIAct8kuyovVSvPvClHv1GGQenGjPQxdQZEgil0cbWXNKT/KK9DCiuISkxz/79QWl6Yvw7+/GpN4bOw+CvKjF3hRgU52nd5RJ4l1K26aR1ehPMxwaoNpalderwKcRHnagVLmMQfrOP/Ae8HvV8OxQU6TTzgs73U07Q7ZOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770808216; c=relaxed/simple;
-	bh=v0WSedBlAJ9Wb9CX5BiyZ3c+zBc23T73GAjjKjh3R7g=;
+	s=arc-20240116; t=1770808810; c=relaxed/simple;
+	bh=k+LlXw1C3o/u3PJNQjJdZQd9L+G36yIsBL61Zjxh/r0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=JrfRyRU3KHAJgpxpYgx5oYlaQ0Z7JBmCOtvXhqOfJJseCKByfBkV8xD3hJcR9xomdl3ORpwEkUx+u7fRkC7ZHBqqWIloCGc95dfCtyDSdpCZDDmaYNPB/AqM6IekzeolhtQc+17na6blRGXGIL+KVQe1wdBf2+OmKHKed4j9W68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sz7p6kY/; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=t0uiaDAMGDy7jP1Rvtcx7Rv2kszA0+Ao3Nc3nhXCQn96yD7/f3yOnpGYbt1u9a39CCiNQ5cv5u/L6TGpDsqDpazkR9iL5fvx+vWnli3F4hFsmmS66kRExsIghO1XzUW4K9o1OFneqI68dYOWc/hGS9b9uOdCxAeTsbueKAxdnZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qFBY8fMt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sz7p6kY/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93E0C4CEF7;
-	Wed, 11 Feb 2026 11:10:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qFBY8fMt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0DBC19421;
+	Wed, 11 Feb 2026 11:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770808215;
-	bh=v0WSedBlAJ9Wb9CX5BiyZ3c+zBc23T73GAjjKjh3R7g=;
+	s=k20201202; t=1770808809;
+	bh=k+LlXw1C3o/u3PJNQjJdZQd9L+G36yIsBL61Zjxh/r0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=sz7p6kY/hO+SMctxovAJq61NMuw9SRgHPXMLR6DpEgdTrFkqXMFK2hUokZOSkRYZf
-	 fr2jRqhhLbh7rnpPaJNR3it3zT7bbsaNOat88wdGEZ4KKilRpQlfazYVG87EzcpyAX
-	 VmLqDb2eCD5i8BcEB86Bwne2Q7AAOnQdN7hDr5oXNxbvTvgAAyCDu5erMzN+EIn+4T
-	 QyIgm5JdARTJEz5XpKBVrPV5yq7xUuZNFUdDtLyP0vTGr7PLsXqIKTGcEFN9EqAoCU
-	 cuyz3mgtjXqTjstJxzKCc3/WYUvGoeEuiQO49/5OwQjLAapwpbt7FeQzfiIX8n+9lQ
-	 I2jgfiV1FDvQg==
+	b=qFBY8fMtX7nw+as48of6bugZPUqSlE70WtvenkdA1JVP4Id9fabQ/l49wWnO3fOs/
+	 dfgyWwi8Td+zdlf+LHF5Nni/9SQ5wGBTZcCgKp9BbEZ8HaJr2iKtamgSTR9tdMkaeO
+	 kOldR7wAidQ9Uj/kRBwRLJTrtpfa0LXgvLSVhI2BQAjabcfRI8pgomeq1IRnx9lXGO
+	 obAqyO6ZzDNYltPTCR3SColZ5uDFKcmpVb0k64dTwgvwkl/i20NXdUbBP+wHHdAItB
+	 gHtz2KArsp7wFor6pdi5a3tjyqy1uVjp2wIYu42kZ0847tDi6joBH3CmSiCTg8UpQe
+	 hraN8Z6RCUuMA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0AFD639E960E;
-	Wed, 11 Feb 2026 11:10:12 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B19E39E9615;
+	Wed, 11 Feb 2026 11:20:06 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,50 +37,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v14 0/4] net: dsa: initial support for MaxLinear
- MxL862xx switches
+Subject: Re: [PATCH net v3] net: ti: icssg-prueth: Add optional dependency on
+ HSR
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177080821083.129637.546631770343886977.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Feb 2026 11:10:10 +0000
-References: <cover.1770433307.git.daniel@makrotopia.org>
-In-Reply-To: <cover.1770433307.git.daniel@makrotopia.org>
-To: Daniel Golle <daniel@makrotopia.org>
-Cc: andrew@lunn.ch, olteanv@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, robh@kernel.org,
- krzk+dt@kernel.org, conor+dt@kernel.org, hkallweit1@gmail.com,
- linux@armlinux.org.uk, horms@kernel.org, netdev@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, frankwu@gmx.de,
- chad@monroe.io, cezary.wilmanski@adtran.com, lxu@maxlinear.com,
- john@phrozen.org
+ <177080880483.132566.10272956860810169703.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Feb 2026 11:20:04 +0000
+References: <20260207-icssg-dep-v3-1-8c47c1937f81@gmail.com>
+In-Reply-To: <20260207-icssg-dep-v3-1-8c47c1937f81@gmail.com>
+To: Kevin Hao <haokexin@gmail.com>
+Cc: netdev@vger.kernel.org, stable@vger.kernel.org, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ rogerq@ti.com, pmohan@couthit.com, danishanwar@ti.com, arnd@arndb.de,
+ s.hauer@pengutronix.de
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Sat, 7 Feb 2026 03:06:48 +0000 you wrote:
-> This series adds very basic DSA support for the MaxLinear MxL86252
-> (5x 2500Base-T PHYs) and MxL86282 (8x 2500Base-T PHYs) switches.
-> In addition to the 2.5G TP ports both switches also come with two
-> SerDes interfaces which can be used either to connect external PHYs
-> or SFP cages, or as CPU port when using the switch with this DSA driver.
-> 
-> MxL862xx integrates a firmware running on an embedded processor (based on
-> Zephyr RTOS). Host interaction uses a simple netlink-like API transported
-> over MDIO/MMD.
+On Sat, 07 Feb 2026 14:21:46 +0800 you wrote:
+> Commit 95540ad6747c ("net: ti: icssg-prueth: Add support for HSR frame
+> forward offload") introduced support for offloading HSR frame forwarding,
+> which relies on functions such as is_hsr_master() provided by the HSR
+> module. Although HSR provides stubs for configurations with HSR
+> disabled, this driver still requires an optional dependency on HSR.
+> Otherwise, build failures will occur when icssg-prueth is built-in
+> while HSR is configured as a module.
+>   ld.lld: error: undefined symbol: is_hsr_master
+>   >>> referenced by icssg_prueth.c:710 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:710)
+>   >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_del_mcast) in archive vmlinux.a
+>   >>> referenced by icssg_prueth.c:681 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:681)
+>   >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(icssg_prueth_hsr_add_mcast) in archive vmlinux.a
+>   >>> referenced by icssg_prueth.c:1812 (drivers/net/ethernet/ti/icssg/icssg_prueth.c:1812)
+>   >>>               drivers/net/ethernet/ti/icssg/icssg_prueth.o:(prueth_netdevice_event) in archive vmlinux.a
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v14,1/4] dt-bindings: net: dsa: add MaxLinear MxL862xx
-    https://git.kernel.org/netdev/net-next/c/4ccc9851355f
-  - [net-next,v14,2/4] net: dsa: add tag format for MxL862xx switches
-    https://git.kernel.org/netdev/net-next/c/85ee98742902
-  - [net-next,v14,3/4] net: mdio: add unlocked mdiodev C45 bus accessors
-    https://git.kernel.org/netdev/net-next/c/b405b26d8d27
-  - [net-next,v14,4/4] net: dsa: add basic initial driver for MxL862xx switches
-    https://git.kernel.org/netdev/net-next/c/23794bec1cb6
+  - [net,v3] net: ti: icssg-prueth: Add optional dependency on HSR
+    https://git.kernel.org/netdev/net/c/e3998b6e90f8
 
 You are awesome, thank you!
 -- 
