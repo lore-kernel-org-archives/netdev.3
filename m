@@ -1,112 +1,152 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2622C2F39D7
-	for <netdev@vger.kernel.org>; Wed, 11 Feb 2026 09:00:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.171
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770800428; cv=pass; b=dJNXcfU0DsGNl1Tr1r99XKuQgA+uGitNC+stzRQvC+kdHa6qBDLyz3Gq5UlSf75y28pcDE2APWJ10WybSN16a7MXmKO4ax8gfSMjbP0+Y8bpxlf6R3lt4kXhsRia57lRtq9BzmPsM7PHQ0rJz1emSEFz6eoHb+5rEqoaAvtPm50=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770800428; c=relaxed/simple;
-	bh=lLa2/wlxLoEQfBV5d6w4ekHKrq1vIwSZn9GGDMyDWlY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=brjNA4JIUq2rDUGHyWorysOvn1jBnOdYxypJsDsSlor8JQHOBQKO0q2S9HyLDv41dScxUtRQcRalRbxGnwM9Qx6R8bCH/uwJcywIovhfWOBBvY3i1PC4+GInTPDdsBJzFJH92ntBKFfhk6+diEEe3XsO7cP8tW9aq4PSpcjq75o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CBpWPvoL; arc=pass smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4770A3A8F7
+	for <netdev@vger.kernel.org>; Wed, 11 Feb 2026 09:10:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770801053; cv=none; b=IT3Mppt1/R9NVNvpCXdP7+SURJKAsu0nSatBQ9FByaQDKO7kuOxqxqRz+/VRUqnz+tTUCyIy8HiqORgwf8HgfvtyTVWqDAIuaoHyXLnk0Chmp7gfTIuAsMs04GNJx4t3SKm1stKOWv6mxpnSGlpuiCgQfoxSh6FCAelQJor+rK4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770801053; c=relaxed/simple;
+	bh=KacShDOWNOlO5H/VRA3buaVoCqG7ZDsYgx4xGNdyX8Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tWG7fD0rjOTGvc62fyN9WbO1gkrqcwM9sp5kAO1WXX3qJjdQpC4px6AX8q88MuXFL9iYjj/+9FDwkLkvq7a6zl+e5Ps5g1Oww9jaUlerqPXBcbBpy+0Ktcv6kICsBmJDDsm6fU5iZrTgUiLe39iaLIPqJsV4C8BBeUG/MUa/6NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZO6S3d4V; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=I7zpdHyL; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CBpWPvoL"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-79627af6349so20155007b3.0
-        for <netdev@vger.kernel.org>; Wed, 11 Feb 2026 01:00:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770800426; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fratW2iYbfva0lpkrhEX2j45CXgGcV5DNlr2+QH3w/Tl9QcJRhsHsyEf7A5N5BTWpq
-         IzhnMZnVPo73ZK0mUR4hQObrzYmNZpsL/bM23UAkm/UdybzYSMZqTlu7j/TtTcpfuqfC
-         3t1aDvv30ZyOMHaGtUe5JK4bL6GIMUvJb59K+sCZZFppe9agKn6saoyNy8I6DDtfeVIh
-         kODcEj7b/BbpvhRgFLc9VSns45Ty+a0E5VE6WgXgK1hoR/hyxxkbnqiiFM9z1yfrM8Ff
-         fhBVKIN2XYH0BBAQ63AqarbSBlgBQLClZuF4Ktd/MxHSr8wwQZl7QJUw7RVhxn4d8qFn
-         bTiQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5eBY6DLPg6MqjWFqTvLCRNYv08BwjqlfFLmiBYGbecI=;
-        fh=RGx3u+vv9Q9W8JAkh0v6OfdHzyQ5o2pwyENrHh40UHI=;
-        b=amsqkmHnWTqwpOEwfW8LBw8Rn0M1AVJk96812Ts8CAvjcWJzjXgG5SlYQQ24lK2+Kn
-         MiHVFZEBioysd1zfkgwXFf4nRBjq9isVOYAl9BMiQKrf7VYLT38bSQVDsDSlBcPBxRnU
-         WFewIjcvZk3BgEU74cW06C7lhImFcii2ctXsPhINfGeyeqlJmiADC7+zlOrUgozyLCab
-         NlYRpx8dNN8oyCBTj9GKVjBwJqwIDwyPGoVI7TMK9KE/wWFKjAr2Qti1rfC2rnUFCFuL
-         isZLFughbnuaH1hgPW5L5UXX7AeXRjgEquvouU+/FktBHC173uGDvy+H1CmB8FLxsna+
-         PeWw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZO6S3d4V";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="I7zpdHyL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770801051;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=S4wey9chVGopV4Q+iboK1zGvtP+HzRe8m12rmTHLNaI=;
+	b=ZO6S3d4VXAM/ve5QYaBhv1XLcnpWkNJNj53+I+CQet9oJKV9pWVSTT/ODP+ccjeg0UsA+h
+	ZzsqoRUJqR4RbRqvOzTiMabU/Wv2sQMNb8UT2P3+KU3rQkbYRTs+bm19K2UY5RTG5DShT+
+	G1EQI49eb6pJDvs0xg+BBsNyXnnKGMg=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-623-BxK0Q3oCOye_Hplyzccqhg-1; Wed, 11 Feb 2026 04:10:50 -0500
+X-MC-Unique: BxK0Q3oCOye_Hplyzccqhg-1
+X-Mimecast-MFC-AGG-ID: BxK0Q3oCOye_Hplyzccqhg_1770801049
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4362197d1easo1376965f8f.2
+        for <netdev@vger.kernel.org>; Wed, 11 Feb 2026 01:10:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770800426; x=1771405226; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5eBY6DLPg6MqjWFqTvLCRNYv08BwjqlfFLmiBYGbecI=;
-        b=CBpWPvoL3GRLxDDW8sYA+n2vNEgKRq6kQGnTXkTIIeYqTTqeR6iTB0nTok/k6IBIW3
-         2oot0xx5XRreYcMyzW9ZchHRinBfFz7FO+3RMQI/3yPMDik3ZRAYWb5Adk+g0f6Y0MRX
-         dszgtZUIMTpCZ9mDVg4pXeKomNKetT2XClpZPlbEih/AH88rtZoyShDIqf2YRguoUJhx
-         vipS6IAzZLy8lsd9USEYudCioXkUAxBcRD9HfBhsOhSh1mo9DSNz2CYa/kKw22+hD3ym
-         UqKPwB/AS3At/dmaHLCyIcwVuVu6MnIN8oKMYCtVRH3fFPSxTctpnYgOXZYhEI0K7dMR
-         A/uQ==
+        d=redhat.com; s=google; t=1770801049; x=1771405849; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=S4wey9chVGopV4Q+iboK1zGvtP+HzRe8m12rmTHLNaI=;
+        b=I7zpdHyLB1ttY6xQNXvkTw+5i9XTYhhAtvFxbTtTSfGaSku9hFzLA3VwG6Zakcw0E8
+         13HpcNnTSIG9+F2lSaXRTMj7KixEMDQwg3Mc9sTz/aNS+zVAOEmmggh6Q8N0wh8m16Ig
+         3H+FTUACCXeukH5U8bxcpRp8g02uS13qKwCm3xmj5KQEN+STjRdH3Way7b/c/Hb6ERFo
+         6wenZecQPjEGobsWEGKVN3Nq8MzJjVcUB2R94CqwO/bSbKnxa480ejOWkE9mwjXwIfPZ
+         Bc7/QzFrxK+KCxLrbxFyp1UeZ7gmmk2Dw6trFbah2T9NrKUDZbFCsOEsG2hjMN+OM9xO
+         oAHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770800426; x=1771405226;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5eBY6DLPg6MqjWFqTvLCRNYv08BwjqlfFLmiBYGbecI=;
-        b=T+qtJArEjSPnhu5HcApYXXoD4VLN2ZD/M9iwbImRGYel0eqJ7VzucOnU/+6Z1tHp5m
-         vwI3JZN3xtmZOyXLNXXqIM4KS3cQcI5DYl/uS4twoF5c1K9DrhjTFWzHQ7Xltdz49vcJ
-         xGAqmEF7UZsdbepxp/d51OmpxYN3tg8XrAO6vEQx56WYGrdVbyWbon6E3w7GR3vUrjiz
-         6Z8jTVbHLDY6fB/zmV2n9mHD61+S0DrFqR3HW+rnhCUBK1Zzf0WeKEMMskBa6CpMATxO
-         Af/ljkNuOvpAczERizyur4jWI6gB5r+HVur23MhZCs3VtY6Urb4QbviBdL3X5BfGicVi
-         xaXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJT6xL8PdNaqPReIEOErjwjNBubVXsu5wKS83XC1b9qRetH3VpoCjYdkz3i73OeCF8swvC2MA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQN+68OAmnBYb2wsEJNNv1+cXvCr/w9AoUl8RpojZ068DO4L37
-	EuaJKkZBREzxdDPXrG7k0XSZt3FVeS6KKSxkpgoUZmGrMfmP/8tGQXPzA2RLwKuM5JXGYcF0U7F
-	W70qmA/hBC8oQXJTTqcmy25EVrbP16/4=
-X-Gm-Gg: AZuq6aLtz9O+o2N4RD+2cB7J7nZzEruQgw4IQNKmY32v/Dc92gNsBNahDaJV+nb5+Yv
-	m4tW29WDHM68MlPcLum9RiD9+034n996KuqResQ9mP/Eh/LZ2/7BEebqVMdi8JboPRk38RhZV6f
-	N7aQSls9tPioOg7YT9L1XQYfi52Ht1z8WnYCLAPRhoWG8yhGhKMWZ4uGvNQ66JvZ1KH+iMEcNDC
-	uMoJtMcgG34pYN3XelucMRuml7gSaSHHIgpTaC98JlRmqD8Y0+kOsv0I8sMGz8hNReEJ4ChfEsM
-	I/5QkE5V/6dJbxv9miJ74T108xSQEuqUrXri
-X-Received: by 2002:a05:690c:6605:b0:794:ecaf:c4b1 with SMTP id
- 00721157ae682-7952aa925f8mr358513567b3.25.1770800426067; Wed, 11 Feb 2026
- 01:00:26 -0800 (PST)
+        d=1e100.net; s=20230601; t=1770801049; x=1771405849;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=S4wey9chVGopV4Q+iboK1zGvtP+HzRe8m12rmTHLNaI=;
+        b=lHpsarpFWLfYFNif8JL+n8l/4zLwVhAM8FeVq7jtcB7wuxAvXRvsE648h4PbpxAoLB
+         dIHmPJZQjSXrBeLheS3o45Gv9hnZQoxVL+FKMiuCSOaZtG3ghJwKiN0zSV7t1QXzV+TQ
+         nYuCg5IJHqX+ssrydYFcCfAFZvixoHd33815fnrmPhZyu86Tm6pa/oKDGd2LIMWiPaz3
+         8dXV5/G8Z2+pFNR88JuoPPLOhUO2Ued1YfCUjGY7BXhSJ+RsX3N3iluq1ula+hMnOMLW
+         4s2FAKyBrjCqbSkfF954weo2pFdlOr4Wh/TuvfUNibPKRftQeDWPTC0YS+mSIhvyGwJy
+         6zrA==
+X-Gm-Message-State: AOJu0YzmEkNfMa6JQISdGmYzfAWJ+qpD9DMENf7lKnQD1S3eoNQ93suA
+	2TTw3QemL56b+BR1qYhRHtJt9JCbcgW2z4Zh3WUzrEqKe8NiOt/aCXXYqx/skOmqZjlo+ayZb3v
+	0jUCtWDiNHlpNg6vBSUfat/ZENvvk/560PCEGncejIyCV0PCqzMjZ/SaqfQ==
+X-Gm-Gg: AZuq6aJmJI8rxC1AvtkQkBe3X6yE22mYcTdCF9HF9VGoaAqfiAiv062ZTSPA6U+APBy
+	kx7bav1hRG9L2a2JSF66UzwVNiafFpdyKnm02xgjugctujMY8iuIUcK+r6Je7jl0qmrZA/ZfKDZ
+	nKFf3hIvVbPxpEUb0vxstltNQXBkCZo1xE8E8vi148I4UU6OUt/KY9zzLhnPEnjhKmyb1RdkING
+	vcb8omuzpUY9XDLc7AHrXK0O3CEg5PSYRDAn+y2/bBlyVtdV6EYzP/f55xwY07j3x92//Q9mtis
+	HgG5KJHP/ctKSwEUMjt7VpkXaMBNot7SNfjkIaLS+WPJmYXO2Kf/h02PyKRThbq2JeQgD5DSjEJ
+	pqpRdhJuUI9m7B4dRHsZW3Ll/Qw==
+X-Received: by 2002:a05:6000:2890:b0:437:6b73:ffa9 with SMTP id ffacd0b85a97d-4376b74046amr18910056f8f.5.1770801048705;
+        Wed, 11 Feb 2026 01:10:48 -0800 (PST)
+X-Received: by 2002:a05:6000:2890:b0:437:6b73:ffa9 with SMTP id ffacd0b85a97d-4376b74046amr18910004f8f.5.1770801048244;
+        Wed, 11 Feb 2026 01:10:48 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.155.220])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43783dfda66sm3414895f8f.22.2026.02.11.01.10.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Feb 2026 01:10:47 -0800 (PST)
+Message-ID: <76522b83-682b-4cba-bdb4-d4a922a49973@redhat.com>
+Date: Wed, 11 Feb 2026 10:10:46 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260211075547.138904-1-dqfext@gmail.com> <67c6125f-99e9-4a58-ba18-8a2a93e29b54@app.fastmail.com>
-In-Reply-To: <67c6125f-99e9-4a58-ba18-8a2a93e29b54@app.fastmail.com>
-From: Qingfang Deng <dqfext@gmail.com>
-Date: Wed, 11 Feb 2026 17:00:12 +0800
-X-Gm-Features: AZwV_QggEoOmwIp1Hxw3pZYR1SDyWYgIv4kI9eixG9p8dPjtLneWmXqO7XNx6Fw
-Message-ID: <CALW65ja3sumAh3uzD3W=n=3Rk0J7EDtcpbvdaG6+F2y2dFUp2Q@mail.gmail.com>
-Subject: Re: [PATCH RFC net-next] pppoe: remove unused kernel-mode relay support
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-ppp@vger.kernel.org, rp-pppoe@lists.skoll.ca, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	James Chapman <jchapman@katalix.com>, Simon Horman <horms@kernel.org>, Netdev <netdev@vger.kernel.org>, 
-	linux-kernel@vger.kernel.org, Michal Ostrowski <mostrows@gmail.com>, 
-	Dianne Skoll <dianne@skoll.ca>, Paul Mackerras <paulus@ozlabs.org>, Jaco Kroon <jaco@uls.co.za>, 
-	James Carlson <carlsonj@workingcode.com>, Guillaume Nault <gnault@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: ethernet: ti: davinci_emac: remove member
+ phy_id from struct emac_platform_data
+To: Heiner Kallweit <hkallweit1@gmail.com>,
+ Linus Walleij <linus.walleij@linaro.org>, Eric Dumazet
+ <edumazet@google.com>, David Miller <davem@davemloft.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Simon Horman <horms@kernel.org>,
+ Siddharth Vadapalli <s-vadapalli@ti.com>, Roger Quadros <rogerq@kernel.org>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ linux-omap@vger.kernel.org
+References: <5bc19909-0fc7-485c-a573-4819eeea5b5d@gmail.com>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <5bc19909-0fc7-485c-a573-4819eeea5b5d@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 11, 2026 at 4:41=E2=80=AFPM Arnd Bergmann <arnd@arndb.de> wrote=
-:
->
-> This will lose all compat ioctl support, not just the emulation for
-> PPPOEIOCSFWD.
 
-So I should only remove the if condition while keeping the
-.compat_ioctl, is that correct?
 
->
->       Arnd
+On 2/6/26 10:53 PM, Heiner Kallweit wrote:
+> b4aed01de486 ("ARM: davinci: Delete DM646x board files") removed the
+> last user of member phy_id. So let's remove phy_id.
+> 
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> ---
+>  drivers/net/ethernet/ti/davinci_emac.c | 24 ++++++++++--------------
+>  include/linux/davinci_emac.h           |  9 ---------
+>  2 files changed, 10 insertions(+), 23 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ti/davinci_emac.c b/drivers/net/ethernet/ti/davinci_emac.c
+> index ed8116fb05e..df51441a2b8 100644
+> --- a/drivers/net/ethernet/ti/davinci_emac.c
+> +++ b/drivers/net/ethernet/ti/davinci_emac.c
+> @@ -329,7 +329,6 @@ struct emac_priv {
+>  	u32 mac_hash2;
+>  	u32 multicast_hash_cnt[EMAC_NUM_MULTICAST_BITS];
+>  	u32 rx_addr_type;
+> -	const char *phy_id;
+>  	struct device_node *phy_node;
+>  	spinlock_t lock;
+>  	/*platform specific members*/
+> @@ -1418,6 +1417,7 @@ static int emac_dev_open(struct net_device *ndev)
+>  	struct emac_priv *priv = netdev_priv(ndev);
+>  	struct phy_device *phydev = NULL;
+>  	struct device *phy = NULL;
+> +	const char *phy_id = NULL;
+>  
+>  	ret = pm_runtime_resume_and_get(&priv->pdev->dev);
+>  	if (ret < 0) {
+> @@ -1502,8 +1502,8 @@ static int emac_dev_open(struct net_device *ndev)
+>  		}
+>  	}
+>  
+> -	/* use the first phy on the bus if pdata did not give us a phy id */
+> -	if (!phydev && !priv->phy_id) {
+> +	/* use the first phy on the bus */
+> +	if (!phydev) {
+
+AFAICS emac_dev_open() is invoked also on resume, and priv->phy_id could
+be not NULL at that point, the new code could lead to a different
+behavior. I think it's worthy to at least mention it in the commit message.
+
+/P
+
