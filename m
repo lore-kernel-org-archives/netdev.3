@@ -1,80 +1,74 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DE4434321C;
-	Wed, 11 Feb 2026 03:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35AB341678;
+	Wed, 11 Feb 2026 03:48:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770780111; cv=none; b=ISf+h8mShdklzRFHJ8KYnf4vcdzEVQoF3cTAdayE2E3NEIljcqRH2IlwmFYOX3mMuDycqhMxWA192dSVZBQWY7Q3UYeq7gsaA0uirMMDrhnML+QIzX+mTQ8vOYIos48WMu5oCpCJ2ZWUlYSITu/UsPqYItT9sBc3hrvqTn7TkbU=
+	t=1770781696; cv=none; b=umRf81Cm+dVa7qL0nQ41ChIufzjFxqdl0q5A4tjyrFA7ObUPIY9DZtQlznnIj6ltNCGCOquFF6GHEzlJKRo38W+fz3d906wp0sZDnNzfnI5furyveVKebxtuN21/f4eoOFJc6UvQRAIEQX7xeI2yqdHr1ah/JnuoCaKIoaik5xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770780111; c=relaxed/simple;
-	bh=KDv90VEKGJmuczCk0Kd724mp87hKHEAzFbmq/0wKM/Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jsIie4PN2xDrjPHP0qiRT2LxiSFvTxz1F1wLFCy9LaiUJCUJ6X5ROp0jQfny6rUTn0+ZZLXpBC6QM2rMmgzs0G/2lvExeR+X+jI1Fg75aQ9+5tfyc49vV9v7Cj9JCJDJUbLZmU0btL1g1YkPwW5ujixz3WI4RNn+aDEyVIJA+7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost (unknown [124.16.138.129])
-	by APP-05 (Coremail) with SMTP id zQCowAAntwqy9YtpLLUICA--.6299S2;
-	Wed, 11 Feb 2026 11:21:22 +0800 (CST)
-From: Chen Ni <nichen@iscas.ac.cn>
-To: vikas.gupta@broadcom.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Chen Ni <nichen@iscas.ac.cn>
-Subject: [net-next] bng_en: Remove duplicate include
-Date: Wed, 11 Feb 2026 11:20:21 +0800
-Message-Id: <20260211032021.2719742-1-nichen@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1770781696; c=relaxed/simple;
+	bh=dbNN5kGQb367tYcYfOLeutDVyRmccHYT9S6uEBQr86o=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mLuVimOj+xx3JbKRvdGCdDdwKoPevDtKXloXTvZh4q3QyP0jdk4aDKV7nl70yNzoGFfkNlWtnpy34sJDp5bs889BgCNnnKI61i6uCB326c0ll/Q7ARyvzhB7MSfkDO4eLbQ70+Eo6pCQi9eGZrrDCcEagYEmUh9vABhMLIdyr34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kHeybX1r; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kHeybX1r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF2E0C4CEF7;
+	Wed, 11 Feb 2026 03:48:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770781696;
+	bh=dbNN5kGQb367tYcYfOLeutDVyRmccHYT9S6uEBQr86o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kHeybX1rvuQEXLehvcevYrQs8Ybgna1lWJM8ie2c/FaLmJzq7oeFpr63bDUaf7nCE
+	 Emgsvzo5VTXRA0zToQTLgWkWjvor6OuRg8OzvATGl0VO+w42qRmafcYBS69oznPhWq
+	 ymowh1NkFYY08F6gsf8zssrhmKpz6FsaAHq/7hLWO1jXFXILsIKrH6Cf9WrKKx+Hq1
+	 J2X8V6zb6SBgDoner+PnM3d+AgRfTzFDtHog7yswXmRbF6GjQyDRVx95IxZndS7yFl
+	 gz6N9fmyLVyj5JLpPRCVLQfDtDhdcYdpQVF5CkeOLrXfe+ZosqQPxDYjKZF2ptFusY
+	 J34vx+XWiuvIg==
+Date: Tue, 10 Feb 2026 19:48:14 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ shuah@kernel.org, willemb@google.com, petrm@nvidia.com,
+ donald.hunter@gmail.com, michael.chan@broadcom.com,
+ pavan.chebbi@broadcom.com, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next v2 6/9] selftests: drv-net: gro: use SO_TXTIME
+ to schedule packets together
+Message-ID: <20260210194814.21a0c403@kernel.org>
+In-Reply-To: <willemdebruijn.kernel.503ed4ace7bf@gmail.com>
+References: <20260207003509.3927744-1-kuba@kernel.org>
+	<20260207003509.3927744-7-kuba@kernel.org>
+	<willemdebruijn.kernel.743811e01cc@gmail.com>
+	<20260210175638.123782b2@kernel.org>
+	<willemdebruijn.kernel.503ed4ace7bf@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAAntwqy9YtpLLUICA--.6299S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7Xr18uw4DXFW7tw1UCr4kZwb_yoWxKFcE9w
-	1xuryxGa15AFyIyw45A39xA340kryvqryF9F90grZIqFnrAr18Jw4kZF1fJw4xWrW8JFZ8
-	WF17Jay5u3yagjkaLaAFLSUrUUUUbb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbskFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26F4UJV
-	W0owAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
-	I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
-	4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AKxVWU
-	tVW8ZwCY02Avz4vE14v_Gr4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
-	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
-	14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
-	IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
-	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73Uj
-	IFyTuYvjfUn9a9DUUUU
-X-CM-SenderInfo: xqlfxv3q6l2u1dvotugofq/
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Remove duplicate inclusion of <net/netdev_queues.h>.
+On Tue, 10 Feb 2026 22:15:25 -0500 Willem de Bruijn wrote:
+> > It's a bit of an opportunistic optimization.
+> > 
+> > I initially intended it for for the "long sequence of packets"
+> > test. But I failed to get AF_PACKET+FQ to cooperate sufficiently
+> > to queue all of the packets in the same bucket. Otherwise FQ "sorts"
+> > the packets, and breaks what the test is trying to do :(  
+> 
+> I wonder what's going wrong here.
+> 
+> fq_classify should pick the queue based on skb->sk also for packet
+> sockets.
+> 
+> And flow_queue_add should add the packets to the tail of the linear
+> list if the delivery time is identical to that of the tail.
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
----
- drivers/net/ethernet/broadcom/bnge/bnge_netdev.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-index 6ab317f1c16e..b8e258842c61 100644
---- a/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-+++ b/drivers/net/ethernet/broadcom/bnge/bnge_netdev.c
-@@ -16,7 +16,6 @@
- #include <linux/etherdevice.h>
- #include <linux/if.h>
- #include <net/ip.h>
--#include <net/netdev_queues.h>
- #include <linux/skbuff.h>
- #include <net/page_pool/helpers.h>
- 
--- 
-2.25.1
-
+It works but requires that we either modify the qdisc config to set
+a orphan_mask of 1, or somehow set the skb->hash on the AF_PACKET skbs.
+The test sends out multiple flows (src ports) so if we let fq compute
+the real hash we end up in different buckets.
