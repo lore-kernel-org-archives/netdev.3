@@ -1,494 +1,194 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBCF03C0C;
-	Wed, 11 Feb 2026 14:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770820251; cv=fail; b=Wu8r1I75x5Acc+hoRvQ05eEWM9IT8WoYSqy1nZV9ywNLL0yfuI2duRCHrRb3yRYhBO1UfmkKK9V2FDwautQJShnXBFNkI7Yedlo+DqomvfhToLO62JZ1mTU7gG465rOMDQF+7YqDSJ1g3k0eVvolA29U1prxaYkiVe9sIw2Qb5k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770820251; c=relaxed/simple;
-	bh=hPsp4aCEjyOqP1r235m5aFb6r86fglPaDeXaEjfPvUg=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=nq97K3VHupo/HUksPDUZ1i3hyljOeZF1J/THf7NVy38uNWGzKXdBi7mKHTF2sYf8DRNRA8TXrOdLHnpv0dV0O5ZKw0P9nD9wu8K5LxBQxhfG+Oj8y2uf3R3SwDBGTRginkjkCunl4f72v6vqsfaVkAKZgn+CjnvK72pPHC4EE/I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WSrtplzf; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044B421B191
+	for <netdev@vger.kernel.org>; Wed, 11 Feb 2026 15:00:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770822048; cv=none; b=HT8yIKCVRkRdqx6LNEZunOmbsoJlTpNpJarKgLcbblYg1ZTPYy9o5tWQ7Z1dFp2puBYUj6/Iqfkm8nq30600YglgAa6HFz5PFwUUojGhltH7FPq1wWTzZdAt9p8xunLzhgcO2/H8ATxUoX0XF/dm0szHy/e1x7vOhxpoLPZTQME=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770822048; c=relaxed/simple;
+	bh=wYUR00Nza6J+sUIZluFr59NOD6UNQPdTYKj9nWWZfFI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=P89V7ZUFfMiCDffUMoodpMslAI2xNDHv6/C9ak90tq7kASNFacbl5vNiapNhcBNeVrYvXmqvmYbLRY+lJvaT3GVXf8jBjMU5NLM2EsLsWAyQXQhaA3iy8m0nFfpQq8ll6QH4uZgz/gwHbZbXHZC5+qNjK1jf9CNKOw4KNXPrjrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m03h/aqM; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WSrtplzf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770820250; x=1802356250;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=hPsp4aCEjyOqP1r235m5aFb6r86fglPaDeXaEjfPvUg=;
-  b=WSrtplzfoztUrCueiqyu7sy26ho4Z4mVUSYcp897Uo4OV5iyoIMhQ9bF
-   tvMbSuZdgdluCQhxjiC7y9djINq5fRyXGLOli9Npq5SHByc1E5dwKaLVw
-   oZl8dWTVWRIvzR+56zeKJLAmK+hXR26T/Ni0teQAuAsOmNmCwqUXzijZB
-   iji/Iw8xiXJP5X/0LbwH/HDTsM7jC/vj4fw9xKmcVCRehr6P0n4gtih9+
-   QzACRODr1h9XW21n9zHuknVBYuFF7PmTlInIljvsOCF4OX/fmqWd8A1ua
-   Apto5DStr13Ysho20vBkQHH0TWzIb8J6vcezADaR+ccB/dgmgxP4eJO2C
-   g==;
-X-CSE-ConnectionGUID: K/ZTny6kRJOSGkcXy4sqwA==
-X-CSE-MsgGUID: 9wc82d/JQeeXi4ipi8F2DA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="75592105"
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="75592105"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 06:30:41 -0800
-X-CSE-ConnectionGUID: mX0qrWu7TLixZHEHk2Cclw==
-X-CSE-MsgGUID: 9X1X7vCGQcqzMTCvoGcViQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,283,1763452800"; 
-   d="scan'208";a="216768971"
-Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
-  by fmviesa005.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2026 06:30:38 -0800
-Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
- fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Wed, 11 Feb 2026 06:30:37 -0800
-Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
- FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Wed, 11 Feb 2026 06:30:37 -0800
-Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.16)
- by edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Wed, 11 Feb 2026 06:30:37 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AkhmfckByzBDYitU1Cj02K9aslHPspy55UsthWlg4csqr3quzxJbcXR3G+MtL6riqVVBGfxL+2yLu2SewWbHuaKibj39Is3B5Ke/FCvLgbjwNd2bJbsqtkXK/DnoqQpkwdCEWi3OECviPC4cx5XD8jWIdEeeQ4WJsMDSiMlCaxlDUgCBcUDbxs5E62L504/MgL9WI4fdvUCh/X2owjQPQXGcXKXHBT3ks1SwR7k7DOUJerRFs7cC8fmoR1BTMKBkJk5Z6C1dFUEACWG6wAWgOBlpUTmo003p0DnJNUXo1ncJPji3HH8hCpyNudWA9TW18BouaZSeGqO/TF/yBdJMRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fVOAHFGke8aS4/0/wt7Ie1vvhhFH8kthZbQhpQRdNSw=;
- b=KHKWyL3KdvaeHNvC6iwsTiV1zhcDqVqtgcp6L2kmm4OFhh3szIB0vB5chGuSaUb2GhrpnHuStdi8dVflAjWQLMlTyvKwwWQA5uYL3YV3ParcBXfX/SxuH9zoY44b9Qma3EsQM3HEoly9R27WbMs8sCQQLnvIP1IVJfVxNxWrjVm5UlNQ22uZaGu8U3jxJUGX5QNCeyRPlsiFU4mLjRMrEt+ZONezyw9fmmGGd83iPhWFhjOaFw/FpnRx6P+OP3VfrppXBl8ICXZTWDZ/V90o0fL3wTRtGKjX/28L2Gwe6/Iex4XOmghIOU9I/nIWpCqs7PSxxFrgOq3/XyycVPCgCw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BL1PR11MB6051.namprd11.prod.outlook.com (2603:10b6:208:393::12)
- by SA1PR11MB6823.namprd11.prod.outlook.com (2603:10b6:806:2b0::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9587.19; Wed, 11 Feb
- 2026 14:30:31 +0000
-Received: from BL1PR11MB6051.namprd11.prod.outlook.com
- ([fe80::6291:3487:3e68:2af3]) by BL1PR11MB6051.namprd11.prod.outlook.com
- ([fe80::6291:3487:3e68:2af3%7]) with mapi id 15.20.9611.008; Wed, 11 Feb 2026
- 14:30:30 +0000
-Message-ID: <d27218b5-3f15-4763-b7e0-0f387ae7b2cc@intel.com>
-Date: Wed, 11 Feb 2026 16:30:25 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH] igc: Add PCIe link recovery for
- I225/I226
-To: Harshank Matkar <harshankmatkar1304@outlook.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC: "tony.nguyen@intel.com" <tony.nguyen@intel.com>, "davem@davemloft.net"
-	<davem@davemloft.net>, "kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>, "edumazet@google.com"
-	<edumazet@google.com>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, Mika Westerberg
-	<mika.westerberg@linux.intel.com>
-References: <20260210203332.23200-1-harshankmatkar1304@outlook.com>
-Content-Language: en-US
-From: "Ruinskiy, Dima" <dima.ruinskiy@intel.com>
-In-Reply-To: <20260210203332.23200-1-harshankmatkar1304@outlook.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: TL2P290CA0001.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:2::19) To BL1PR11MB6051.namprd11.prod.outlook.com
- (2603:10b6:208:393::12)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m03h/aqM"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-824a16c1d2aso35429b3a.2
+        for <netdev@vger.kernel.org>; Wed, 11 Feb 2026 07:00:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1770822046; x=1771426846; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6UvkuPKINAtCyF/ggWjkLz6su0VX75e5/NucynTwhnE=;
+        b=m03h/aqMa0B8PjCQPNGErXqNTxqvAtFxoJIsOyICivLfobpQIEvraUhEdcdamt1a4L
+         WFFl1E4rBESgVoZtHgRbp5H8MortIrbU7MTChcIQuIFEyaaZTry3SUqdC8nyK1BNdsD4
+         XO9QpPzkktUHob6IoQ4Rc/LEHS5HuKE05XxT5tF6ivSMl/F7hZrkhnactYZ9PdQeKYgv
+         G5pnTWeZWYumPeAgjdGzBUHt9SUtECy+hrf7PiqNL0ZRVLL3zYv/aq8kkyFh0UAUFnrx
+         1PaHgCNbBnNMfjdE/XL/h3K8PgepUFh8aGRTZfjmna9w8rG0HX4ldDOI9xSu9hVQf+DA
+         UcKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770822046; x=1771426846;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6UvkuPKINAtCyF/ggWjkLz6su0VX75e5/NucynTwhnE=;
+        b=gT/9mgFPD6ZGMuf8LlfC0ol7l5+bJ7AdMschoPjFJ0jt8JvB89w+17CSAgmtF0nmci
+         WksoxSnwJvjSr9v5ko79WDNr8Dhatb2Qi7+bGEE65n7ZubQtq8CaTYb9cxEuaqRxrCTH
+         fO/w16w+STakeqn4nVwMpJaYJ0lro5XLJZnhMXTbGZCIgAMKMxyfe585E7OVgylRrhhl
+         OW2pZ1qdo3/5MwCJLYNTZ2Qy87EvUJwLGVa6m+UDjsAN/MxlH7Mm0i+vE6fo2CnSTSkv
+         tRCEjSlgEU5uX8YdK5gThD7btR3TnvVjommI28rN/efbigyggakqyIunsjuW0ctOcTE+
+         dKvA==
+X-Gm-Message-State: AOJu0YxGGYotN597AmVDqzTxPl2thXzznxPcXkqDG87Tiy4YOdJam50M
+	BZ88Qn+mh+E/+dpISadXIXQoK/nbrzTD+XF8zN04guhii6lUTiAD0Duj9iclig==
+X-Gm-Gg: AZuq6aKJ3w4VdStEryEpMIYiUb1PBmxO/i15fWzl+QYH6GrqnKv8gGc+dy50ujShmb9
+	IOLTOWv35aaMTUA/Wvce1EcXCGwkJNrOfZjoqqHHAyWSYQSa380iyPMeai/ryHuOEZ5EYhyT6/B
+	2rPzKcR3196pU1EYsKPSZ5BXeelpg22TMJyZhXMOj4kZjZUf01oKncNu3rsLaByf/Go+ga6XsK8
+	RpRA5kZA7eVfjW9Ed6PN7PTaw5XQfhZgeutoQvdScIbeTrdnnbX36BuPb/iNOyXp3VJNIzoiO+N
+	q9HLhicEgExNyVe56XL2K5418DoZJydCvCmGB77xnxz1L2L39KEsBLHAM6vLma5/2yWjHwL+LzE
+	FO1qTx8byx60ZpchLCIsycMFzjSqXh9F4CgxAoNY5X47ZMX7sBn4mTyjY5TgX8jj7LbyyXjCg/V
+	oiBc14RPrxaM1sjyba6jtFDnZ5EKEXj9uvLcyjkbqFtI1krcMA0+kVkfbK/tv/BIxIQihF9Y0=
+X-Received: by 2002:a05:6a20:4310:b0:389:7889:7b7a with SMTP id adf61e73a8af0-394326087e2mr1751764637.8.1770822045604;
+        Wed, 11 Feb 2026 07:00:45 -0800 (PST)
+Received: from 3ce1e5d2d1b2.cse.ust.hk (191host009.mobilenet.cse.ust.hk. [143.89.191.9])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8249e3bd627sm3164445b3a.25.2026.02.11.07.00.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Feb 2026 07:00:45 -0800 (PST)
+From: Chengfeng Ye <dg573847474@gmail.com>
+To: kernel-team@meta.com,
+	alexander.duyck@gmail.com,
+	lee@trager.us,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	jacob.e.keller@intel.com,
+	horms@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Chengfeng Ye <dg573847474@gmail.com>
+Subject: [PATCH v2] fbnic: close fw_log race between users and teardown
+Date: Wed, 11 Feb 2026 15:00:22 +0000
+Message-Id: <20260211150022.527956-1-dg573847474@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR11MB6051:EE_|SA1PR11MB6823:EE_
-X-MS-Office365-Filtering-Correlation-Id: cbb13281-4e21-46f5-d3cf-08de697a1b98
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7053199007;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?NEVSY3crVE45UzNaVU9wakRQc0F1bTJuczRRVWJBNTZFdE1KYjdxTVJOTDN4?=
- =?utf-8?B?YVdIY2VsYUY2Sk9SYTc5b0QxZVNtSGRnbFJtVEwvMHd1cGpZRjhXdEsveGdF?=
- =?utf-8?B?MUlKMEN5empLY3hLa3VlMjF4MkVOaElTdXUzcHZwVkt0SzEyMGpmU0FvamlT?=
- =?utf-8?B?dWFNRDZQZi9mQ2R3ZEZXSUh1a2orN3dEajRDWE9KbGhKMElUd2FkTGQ1NVRL?=
- =?utf-8?B?UUZ6UTVxbHJ2ekpXTjZ2K2NKRzVDZzExZFZuNlpVYU1PMmlOeHFYWkZzOStk?=
- =?utf-8?B?MlVLZ0RpbG1STWNoUWdHU0U0Tmh5bjV0K1YrUGV0NkwrK1FKTzNyaDN1VjRP?=
- =?utf-8?B?N2lIMkEzRHZ4MFpnZ3c0eTZYTnlrZFJKV1dYVWxyZFJJbk1wTWdYN3ZSbEd6?=
- =?utf-8?B?Qks2SnJ3bzVWZm5qdVh0TDVkcmt1cXZFNkEvamR0ck9Rc3FKenVmWTE5U2VN?=
- =?utf-8?B?SUZ6Nk5Yd3hxV2w1R055SnI3RWxkNDdmTGFSOVZHcVkxeEkyTXlORE42WnBn?=
- =?utf-8?B?N0hYWnhmM2k0Sy9vVHB2bGVxV2ozTjJpVHVOcVJoZFlncjBkdTNtT2lGbXo3?=
- =?utf-8?B?eTk5bW14OVltTC9xTDNlTlp3NTZuM1FkM2ZLTU55Tnp4ejhwUnE0bGlHanQx?=
- =?utf-8?B?b09UZ2FhaEx5c2ZHb3JuNy91c1h5T2huU1JGRW1Zci81aDl0cEM1K0cwT1dL?=
- =?utf-8?B?cjRZajBuUDQrYjVmeStEZllqME8wczV2QWRNMXJKMStmd0dCZGFmS1ZiKzdY?=
- =?utf-8?B?L3RJS2JYNXlkQ3hxdkpmMjd6S3RvUFhQVDRzby9tWDdQTHJZNE9DaFI5L3dn?=
- =?utf-8?B?KzJkckV2ZHhDMjI0Q3AweFJBdDd4T2RlUlVKdTJocklLbVR4dEljVEQ4UFFY?=
- =?utf-8?B?SkttZ1B5SlVLZlhnQ0cweGxnZUhVcEhnajRGa0pWeWVaRmkreUFrcHBLbXgz?=
- =?utf-8?B?ZVhWTEl3VXVoaTFlVjZ6Zmw2aFpBRTYxVURHT3Zqa01ocGxUN25TSmQyTWlC?=
- =?utf-8?B?OEEweGtMQkpzc2dUaUZrQzgyT1QxL2JLL3Q4L1Y4akxHM1h3dHliVHY2VHEw?=
- =?utf-8?B?emtNYk5KS0tjMFpzbHVwSkh4VWtLMDhPcytRemRodjlibk9Wb1p6TjVJODNH?=
- =?utf-8?B?NXNNVnNJWjhDT0p0eWVOZ3E1dkJyZjRVdkRzQ09DZEwyWkM1YVV2SzlLL3VG?=
- =?utf-8?B?Y3lvbnNBc2NkVkRsWWc0UEowK0RTaFFOT2pTRlUwU0JQbnJkLytQR2tycGN1?=
- =?utf-8?B?a2V3VHRzUE0zUWI2MTl1OTFwMzhlMEpQcXV5Vi81M0QxTDUzMmtmNW4zQ0Nu?=
- =?utf-8?B?bEgvR0ZMOFRTVVgvck1QOVdaeFV4ck1TUnhlOUNVS1JUdGg1cEw1d1lWU2Fv?=
- =?utf-8?B?SkFnSTdScGZ0QzgvV2J6bjEwUitjSzhGeGRDOFJGZUtpak5SYnAvVXNTb3RT?=
- =?utf-8?B?czFiQlJkQTNsQUFVVGZLbGxjTy8zTElvK1dPWVUrMWc0VnZSaG1XcUV1a1ZO?=
- =?utf-8?B?WmlQcXhiemhoOXVlTnowRmhTd0NlYTBweExWNGZieENEVmhFaXVSYS8rVUp3?=
- =?utf-8?B?YUMxWU5UWTIvNGZmNldzeDA3cHVXUzg5Nk9xbFlXQUZ0THYzSUZwWWptcjdK?=
- =?utf-8?B?eEJHanZSVUE5SWp5bktOdVp2d3FRY2lUWFhDc055WmxLenhPUUFLS3FwY3FQ?=
- =?utf-8?B?NVJoSDFjUFhldHdhamlSUjgxYUd0OUJJY0g5TEFVanozcUhHZm5DNWFhUXNi?=
- =?utf-8?B?bm84L1ZFSHR0NCtsRlZ2UmtjZ1d3Qm9EVklYNDVhdCtESlNaQVlKVFRMNms4?=
- =?utf-8?B?RDBVOVpmTUNiVC9iZHpQaGQwbW5qQkw0UENQSXhzakMxcjZCWTBEMS9UK1BG?=
- =?utf-8?B?UWJqWGhJUm9VZ2Nhc2Vtc21lTDhJY3R4azIxaitUTGY4K2J4bGVrbnNoejVR?=
- =?utf-8?B?eDN6QWtEUlA2THE0MnBLMUhFT0ZYOGJjeENoRnY1RHhyQ2VMc2Y3a2JZbmF6?=
- =?utf-8?B?a3pTVWZxZW1lS1JTZDI5WUUzcC8ydzVjSVViNTd4ZXJiQ3pTZUFJeWFuYklR?=
- =?utf-8?B?clNVVDE1SS9hS3RNWmF4Z0lMVmwzS2R2VklEclFTS2hHWnk1cnBxU3prMUNy?=
- =?utf-8?Q?eOmc=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR11MB6051.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?Y3pKSmZQbnNndldvSGhDZDZTUEJKN3B5T2NOWDRJR2ZtV2FBZHdnbGdPMUE4?=
- =?utf-8?B?bUNFM3dHRGY5SlBGQXNuWGN3SVhlQUhhY3VKUXp0Q1duVXF1ODloVHdCUDJ4?=
- =?utf-8?B?MTlLZ0lmclFSa2Q2YVJiQk9VQ0ZJZ2lYUkN4VkFVM2tTbmh1TWdpMU9DbmF4?=
- =?utf-8?B?dnJHMmZkVzhQSXJKQ2RodGs5VEVKRWJRb3IwM1BNRUhuOXhDbGVPSFdoOGhh?=
- =?utf-8?B?blg2b2J0SU5kUlM3VHB2bFNPdVBvMURzQ2hvNll4V2NzU0I1cENSVEJPbU4x?=
- =?utf-8?B?Q0YzdGk3bzM4MlFRbDM4bGNCYTRBbDFCaE41SUZ2cGs5SmI2ZGZwS3JRUmxu?=
- =?utf-8?B?SE1XU01SWEp2bnU4S24zWVRFbVJIL2UxYWphZU1ZU200UmRvQStZSFZxRmtN?=
- =?utf-8?B?L2ZMZE9yNWpWbVY3b2o1RThQTXlxV1ptV3pWMUNLOENyVEF4RHROM3Z0VzVo?=
- =?utf-8?B?TUFDWUZaUWRCdzBJZDJTMExSYm80MW0yZzQzTXJMcXhEd2xXbkVFZ3NjSjQ5?=
- =?utf-8?B?dDRUWEJjV2ZRWmhUR2VpM09wOFBjSVpJcXJJaXJ6bjZ6NVRwZXByTW1YSGlQ?=
- =?utf-8?B?ZWNmQ0VpVG5lZU5scXorMmIveUQwWGkrNlVmL2MrdURTMnFqbWljcTA3Q21k?=
- =?utf-8?B?UWZEVzI2d0FjUEZoRzBrcUxySElodDUzK25MT0JQeXR4ekRXcGgyeWpCbHBu?=
- =?utf-8?B?VW9GeEg0R0xaYk5LcTdvNExvNWhLWVR2eUx2M3hkbTVieEx5SWduZjVIajB2?=
- =?utf-8?B?amRQekxVa3BKVXlud3hReXEzWnZjRmlQUUpZWkx3MkpyYU9STGF6eHFvRzlu?=
- =?utf-8?B?U21MVTYxVXNLT0d2SHVlbDA1R1ZCeVRvTzhWVHNXallkNEdHeS8zOWZLUUta?=
- =?utf-8?B?b1JUMElkWGRTQU5pQ1M5OUVUNGwrbDUxK2UzNFV1VjZZbmRWSFF6NGN0Ym92?=
- =?utf-8?B?TXJQbHVZS2k2NWlxVmdUamhaYVVGU09uR3FBV1RYM3pINlpyRnBvR1RLUTEx?=
- =?utf-8?B?SlhGQ3c3K3g3MEVmalVXWlRSd1MyMnFmaVF4MnhiTEdCZzlRRzdEdjVSV2h4?=
- =?utf-8?B?ckZwV2tpL0ZSNnVROEZ1Y0pESFlhZmRTMXY2UDJLemxvWk9ZWXpVSkhkL1hK?=
- =?utf-8?B?TFE5REdMUXkxL1FUMkw1bVBLUGlWV3FobndzZjMzNkx0bmE0cGJwRzZpbTZJ?=
- =?utf-8?B?ZmdaVTNWNzloZjNMM2NvcHFneHJoTGtYZjN3QjlVYkdyNDlJM3pzYnE4K3FN?=
- =?utf-8?B?ZlRQM1llR1NFbVdiRSthMUxjaE4wZU5wVUk1c3hYQWJwcWQ3VUJIWEM4dUZU?=
- =?utf-8?B?cW82SFoxSXdlTEpER2gzMHd0UkpPY2ZrYWE2ZGtsR0NYRGZHUWNiZlRRVnZk?=
- =?utf-8?B?YWV1bXZhTzQ3WWtNUFJvNUpFRlU2aUZxWEw0ZzZLYWJVTE5FbGJaaURCd3FH?=
- =?utf-8?B?QlpSUGtycnJXNUJPT3FGQ05pb0xCVTJ0Q3lSb0dxaUxzVThrS0Q0KytVK2cz?=
- =?utf-8?B?OUNsQ0dDQjdPc0NNT0RIazd4cVpXRXlWM2MvVnpFamd4NGJEcUM1SHdMZGg5?=
- =?utf-8?B?TmZtRTE3Ti9paUZqSHFMMmY0YmJFUDRBQzgzdytheThHMmUxNFV1aW5lQ2lU?=
- =?utf-8?B?N3BFM1FNaE0xMGdpQlY2WWRJaFdiUG5XYTRDT2NEcE0zWThaSkJIeFFvSENL?=
- =?utf-8?B?YjRlUXRZaXJOVWYwcm5EK3dIczY4NmFtb2p5eHRqRXkreWVOcFpWemRZb09q?=
- =?utf-8?B?NUdUL01EYnFteGVjTDFBdDV3dTlvdFJwMVo1TGk1bzJSb3RkcVRzR0lCM3hr?=
- =?utf-8?B?bkNuTDR4MU1vMzFrT0dIZ1lZSzBNRkVETXpvYjl0T0RJYWVjbEJURXNXSkNm?=
- =?utf-8?B?OWF6RUJ6MFVhaDN1YlhORVBka2tPMGR3Mi9EZlVkTmdvUjJ5ME1TbGFnS2or?=
- =?utf-8?B?bHZ4cEdCbXZFYVUvTkt0U1lSTjY2OHRrWXZ0WkViSDN5dEFJMEpKc0t0aFRy?=
- =?utf-8?B?VVhSN01jOWlzWE0vWXhhckttQTFRVUg0WWFVZ2hVUXl3cE1YZENRTEpGbzYr?=
- =?utf-8?B?SlhvdWJLblVKYnc1a0RrUjA5VHpQV29LNE1oWHJ3NHBCK3JPRGRNVi83ekFu?=
- =?utf-8?B?TnhWN21zQ1ZvdmswMUV5Ynk0ZHpFek5xZzFVTTVRSkRYNkFQTG9uNFFvOXhp?=
- =?utf-8?B?bmlzbVEzNm5XMEp3MG9UVjFzb3daNjZLOVdKZjkzR05nMkhlUXVTYmJadk1T?=
- =?utf-8?B?SUFaTnZVSGM5TG5KQ3Zac003SGhlcE5VN2RRWUZTbUI5dERGTncyZkx0cnFR?=
- =?utf-8?B?SkZnUi9UT1BUZG9zZHo0V2l1d2puaTdUVzYvOGt3UGFHZkhJMldWT29yb2pl?=
- =?utf-8?Q?RPRGS8Te+DWG8aA0=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: cbb13281-4e21-46f5-d3cf-08de697a1b98
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR11MB6051.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Feb 2026 14:30:30.8270
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PPT1mr3UOB7MVt0gPAfUDDs5tOWW5ApO28krt2W3dxn/+t7FOeJ58PZRZqOs2LemqpbCGg/ZQ4/ywr4iVBIi0Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6823
-X-OriginatorOrg: intel.com
+Content-Transfer-Encoding: 8bit
 
-On 10/02/2026 22:34, Harshank Matkar wrote:
-> From: Harshank Matkar <harshankmatkar1304@outlook.com>
-> 
-> When ASPM L0s transitions occur on Intel I225/I226 controllers,
-> transient PCIe link instability can cause register read failures
-> (0xFFFFFFFF responses). Implement a multi-layer recovery strategy:
-> 
-> 1. Immediate retries: 3 attempts with 100-200μs delays
-> 2. Link retraining: Trigger PCIe link retraining via capabilities
-> 3. Device detachment: Only as last resort after max attempts
-> 
-> The recovery mechanism includes rate limiting, maximum attempt
-> tracking, and device presence validation to prevent false detaches
-> on transient ASPM glitches while maintaining safety through
-> bounded retry limits.
-> 
-> Signed-off-by: Harshank Matkar <harshankmatkar1304@outlook.com>
-> ---
->   drivers/net/ethernet/intel/igc/igc.h      |   6 +-
->   drivers/net/ethernet/intel/igc/igc_main.c | 155 ++++++++++++++++++++--
->   2 files changed, 149 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-> index a427f05814c1..2ef488b279b9 100644
-> --- a/drivers/net/ethernet/intel/igc/igc.h
-> +++ b/drivers/net/ethernet/intel/igc/igc.h
-> @@ -346,6 +346,10 @@ struct igc_adapter {
->   	struct mutex led_mutex;
->   	struct igc_led_classdev *leds;
->   	bool leds_available;
-> +
-> +	/* PCIe recovery tracking */
-> +	unsigned int pcie_recovery_attempts;
-> +	unsigned long last_recovery_time;
->   };
->   
->   void igc_up(struct igc_adapter *adapter);
-> @@ -422,7 +426,7 @@ enum igc_rss_type_num {
->   	IGC_RSS_TYPE_MAX		= 10,
->   };
->   #define IGC_RSS_TYPE_MAX_TABLE		16
-> -#define IGC_RSS_TYPE_MASK		GENMASK(3,0) /* 4-bits (3:0) = mask 0x0F */
-> +#define IGC_RSS_TYPE_MASK		GENMASK(3, 0) /* 4-bits (3:0) = mask 0x0F */
->   
->   /* igc_rss_type - Rx descriptor RSS type field */
->   static inline u32 igc_rss_type(const union igc_adv_rx_desc *rx_desc)
-> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-> index 89a321a344d2..f0daa3edbb79 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_main.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
-> @@ -1411,9 +1411,8 @@ static int igc_tx_map(struct igc_ring *tx_ring,
->   	/* Make sure there is space in the ring for the next send. */
->   	igc_maybe_stop_tx(tx_ring, DESC_NEEDED);
->   
-> -	if (netif_xmit_stopped(txring_txq(tx_ring)) || !netdev_xmit_more()) {
-> +	if (netif_xmit_stopped(txring_txq(tx_ring)) || !netdev_xmit_more())
->   		writel(i, tx_ring->tail);
-> -	}
->   
->   	return 0;
->   dma_error:
-> @@ -1613,8 +1612,7 @@ static netdev_tx_t igc_xmit_frame_ring(struct sk_buff *skb,
->   	 * otherwise try next time
->   	 */
->   	for (f = 0; f < skb_shinfo(skb)->nr_frags; f++)
-> -		count += TXD_USE_COUNT(skb_frag_size(
-> -						&skb_shinfo(skb)->frags[f]));
-> +		count += TXD_USE_COUNT(skb_frag_size(&skb_shinfo(skb)->frags[f]));
->   
->   	if (igc_maybe_stop_tx(tx_ring, count + 5)) {
->   		/* this is a hard error */
-> @@ -2524,7 +2522,6 @@ static int __igc_xdp_run_prog(struct igc_adapter *adapter,
->   		if (xdp_do_redirect(adapter->netdev, xdp, prog) < 0)
->   			goto out_failure;
->   		return IGC_XDP_REDIRECT;
-> -		break;
->   	default:
->   		bpf_warn_invalid_xdp_action(adapter->netdev, prog, act);
->   		fallthrough;
-> @@ -2791,7 +2788,7 @@ static struct igc_xdp_buff *xsk_buff_to_igc_ctx(struct xdp_buff *xdp)
->   	 * igc_xdp_buff shares its layout with xdp_buff_xsk and private
->   	 * igc_xdp_buff fields fall into xdp_buff_xsk->cb
->   	 */
-> -       return (struct igc_xdp_buff *)xdp;
-> +	return (struct igc_xdp_buff *)xdp;
->   }
->   
->   static int igc_clean_rx_irq_zc(struct igc_q_vector *q_vector, const int budget)
-> @@ -3895,9 +3892,8 @@ static int igc_enable_nfc_rule(struct igc_adapter *adapter,
->   {
->   	int err;
->   
-> -	if (rule->flex) {
-> +	if (rule->flex)
->   		return igc_add_flex_filter(adapter, rule);
-> -	}
->   
->   	if (rule->filter.match_flags & IGC_FILTER_FLAG_ETHER_TYPE) {
->   		err = igc_add_etype_filter(adapter, rule->filter.etype,
-> @@ -6984,11 +6980,112 @@ static const struct net_device_ops igc_netdev_ops = {
->   	.ndo_hwtstamp_set	= igc_ptp_hwtstamp_set,
->   };
->   
-> +#define IGC_REGISTER_READ_RETRIES	3
-> +#define IGC_PCIE_RECOVERY_MAX_ATTEMPTS	10
-> +#define IGC_PCIE_RECOVERY_INTERVAL_MS	1000
-> +
-> +/**
-> + * igc_pcie_link_recover - Attempt PCIe link recovery
-> + * @adapter: board private structure
-> + *
-> + * Attempts to recover a failed PCIe link by triggering a link retrain.
-> + * Rate-limited to 1 attempt per second, maximum 10 attempts.
-> + *
-> + * Returns true if recovery was successful, false otherwise.
-> + */
-> +static bool igc_pcie_link_recover(struct igc_adapter *adapter)
-> +{
-> +	struct pci_dev *pdev = adapter->pdev;
-> +	unsigned long now = jiffies;
-> +	u16 lnksta, lnkctl;
-> +	int ret;
-> +	int i;
-> +
-> +	/* Rate limiting: no more than 1 attempt per second */
-> +	if (time_before(now, adapter->last_recovery_time +
-> +			msecs_to_jiffies(IGC_PCIE_RECOVERY_INTERVAL_MS)))
-> +		return false;
-> +
-> +	/* Maximum attempt limit */
-> +	if (adapter->pcie_recovery_attempts >= IGC_PCIE_RECOVERY_MAX_ATTEMPTS) {
-> +		netdev_err(adapter->netdev,
-> +			   "Exceeded maximum PCIe recovery attempts (%d)\n",
-> +			   IGC_PCIE_RECOVERY_MAX_ATTEMPTS);
-> +		return false;
-> +	}
-> +
-> +	adapter->last_recovery_time = now;
-> +	adapter->pcie_recovery_attempts++;
-> +
-> +	netdev_warn(adapter->netdev,
-> +		    "Attempting PCIe link recovery (attempt %d/%d)\n",
-> +		    adapter->pcie_recovery_attempts,
-> +		    IGC_PCIE_RECOVERY_MAX_ATTEMPTS);
-> +
-> +	/* Check if device is still present on the bus */
-> +	if (!pci_device_is_present(pdev)) {
-> +		netdev_err(adapter->netdev, "Device not present on PCIe bus\n");
-> +		return false;
-> +	}
-> +
-> +	/* Check link status */
-> +	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnksta);
-> +	if (ret) {
-> +		netdev_err(adapter->netdev, "Failed to read link status\n");
-> +		return false;
-> +	}
-> +
-> +	/* Trigger link retrain if link appears down */
-> +	if (!(lnksta & PCI_EXP_LNKSTA_DLLLA)) {
-> +		netdev_info(adapter->netdev,
-> +			    "Link down, attempting retrain\n");
-> +
-> +		/* Read link control register */
-> +		ret = pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &lnkctl);
-> +		if (ret == 0) {
-> +			/* Trigger retrain by setting RL bit */
-> +			pcie_capability_write_word(pdev, PCI_EXP_LNKCTL,
-> +						   lnkctl | PCI_EXP_LNKCTL_RL);
-> +
-> +			/* Wait for retrain to complete (up to 1 second) */
-> +			for (i = 0; i < 100; i++) {
-> +				usleep_range(10000, 20000);
-> +				ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA,
-> +								&lnksta);
-> +				if (ret == 0 && (lnksta & PCI_EXP_LNKSTA_DLLLA) &&
-> +				    !(lnksta & PCI_EXP_LNKSTA_LT)) {
-> +					netdev_info(adapter->netdev,
-> +						    "PCIe link recovery successful\n");
-> +					return true;
-> +				}
-> +			}
-> +		}
-> +	}
-> +
-> +	/* Give the link some additional time to recover on its own */
-> +	msleep(100);
-> +
-> +	/* Check if device is responding now */
-> +	if (pci_device_is_present(pdev)) {
-> +		ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnksta);
-> +		if (ret == 0 && (lnksta & PCI_EXP_LNKSTA_DLLLA)) {
-> +			netdev_info(adapter->netdev,
-> +				    "PCIe link recovered after delay\n");
-> +			return true;
-> +		}
-> +	}
-> +
-> +	netdev_warn(adapter->netdev, "PCIe link recovery failed\n");
-> +	return false;
-> +}
-> +
->   u32 igc_rd32(struct igc_hw *hw, u32 reg)
->   {
->   	struct igc_adapter *igc = container_of(hw, struct igc_adapter, hw);
->   	u8 __iomem *hw_addr = READ_ONCE(hw->hw_addr);
-> +	struct net_device *netdev = igc->netdev;
->   	u32 value = 0;
-> +	int retry;
->   
->   	if (IGC_REMOVED(hw_addr))
->   		return ~value;
-> @@ -6997,13 +7094,49 @@ u32 igc_rd32(struct igc_hw *hw, u32 reg)
->   
->   	/* reads should not return all F's */
->   	if (!(~value) && (!reg || !(~readl(hw_addr)))) {
-> -		struct net_device *netdev = igc->netdev;
-> +		/* Layer 1: Immediate retries with short delays (100-200μs) */
-> +		for (retry = 0; retry < IGC_REGISTER_READ_RETRIES; retry++) {
-> +			usleep_range(100, 200);
-> +			value = readl(&hw_addr[reg]);
-> +
-> +			/* If we got a valid read, return immediately */
-> +			if (~value || (reg && ~readl(hw_addr))) {
-> +				netdev_dbg(netdev,
-> +					   "Register read recovered after %d retries\n",
-> +					   retry + 1);
-> +				return value;
-> +			}
-> +		}
-> +
-> +		/* Layer 2: Attempt full PCIe link recovery */
-> +		netdev_warn(netdev,
-> +			    "All immediate retries failed, attempting PCIe link recovery\n");
-> +
-> +		if (igc_pcie_link_recover(igc)) {
-> +			/* Recovery succeeded, re-read the register */
-> +			hw_addr = READ_ONCE(hw->hw_addr);
-> +			if (hw_addr && !IGC_REMOVED(hw_addr)) {
-> +				value = readl(&hw_addr[reg]);
-> +
-> +				/* Verify the read is valid */
-> +				if (~value || (reg && ~readl(hw_addr))) {
-> +					netdev_info(netdev,
-> +						    "Register read successful after link recovery\n");
-> +					return value;
-> +				}
-> +			}
-> +		}
-> +
-> +		/* Layer 3: All recovery attempts failed, detach device */
-> +		netdev_err(netdev,
-> +			   "PCIe link lost after %d retries and recovery attempts, device now detached\n",
-> +			   IGC_REGISTER_READ_RETRIES);
->   
->   		hw->hw_addr = NULL;
->   		netif_device_detach(netdev);
-> -		netdev_err(netdev, "PCIe link lost, device now detached\n");
-> +
->   		WARN(pci_device_is_present(igc->pdev),
-> -		     "igc: Failed to read reg 0x%x!\n", reg);
-> +		     "igc: Failed to read reg 0x%x after all recovery attempts!\n", reg);
->   	}
->   
->   	return value;
+Fixes a theoretical race on fw_log between the teardown path and fw_log
+write functions.
 
-I see a few issues with this patch:
+fw_log is written inside fbnic_fw_log_write() and can be reached from
+the mailbox handler fbnic_fw_msix_intr(), but fw_log is freed before
+IRQ/MBX teardown during cleanup, resulting in a potential data race of
+dereferencing a freed/null variable.
 
-1. It mixes a few minor formatting changes together with the functional 
-change, this is generally discouraged.
+Possible Interleaving scenario:
+  CPU0: fbnic_fw_log_write()
+          if (fbnic_fw_log_ready())   // true
+          ... preempt ...
+  CPU1: fbnic_fw_log_free()
+          vfree(log->data_start);
+          log->data_start = NULL;
+  CPU0: continues, walks log->entries or writes to log->data_start
 
-2. The use of usleep_range() means you will get a "scheduling while 
-atomic" bug each time a register is read in an atomic context.
+The initialization also has an incorrect order problem, as the fw_log
+is currently allocated after MBX setup during initialization.
+Fix the problems by adjusting the synchronization order to put
+initialization in place before the mailbox is enabled, and not cleared
+until after the mailbox has been disabled.
 
-3. I can understand the read-retry mechanism as a way to cope with 
-transient failures. We've implemented something similar for PHY accesses 
-in the e1000e driver. However, full PCIe link retraining feels like too 
-heavy a tool inside a register read routine. Granted, 99.999% of the 
-time you won't reach that code, but I suspect that if you do reach it, 
-it won't save you. That is, it may help you once, but if this link 
-instability is so bad to cause repeated failures, you will just hit it 
-again shortly after, during the next L0s transition.
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+---
+Changes in v2:
+  - Adjust synchronization instead of using lock protection
+  - Also fix problem in initialization
+--
+ .../net/ethernet/meta/fbnic/fbnic_fw_log.c    |  3 ---
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c   | 19 ++++++++++++-------
+ 2 files changed, 12 insertions(+), 10 deletions(-)
 
-Maybe we should first understand the scope of the problem we're dealing 
-with here - does the issue with L0s transitions on I225/I226 affect 
-specific units/systems? Is it due to some custom changes to the PCIe 
-configuration of the device or the platform? I cannot imagine it being 
-widespread, or we would have been hearing left and right about I225/I226 
-failing reads and become "detached" while idle.
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw_log.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw_log.c
+index 85a883dba385..d8a9a7d7c237 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw_log.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw_log.c
+@@ -51,8 +51,6 @@ int fbnic_fw_log_init(struct fbnic_dev *fbd)
+ 	log->data_start = data;
+ 	log->data_end = data + FBNIC_FW_LOG_SIZE;
+ 
+-	fbnic_fw_log_enable(fbd, true);
+-
+ 	return 0;
+ }
+ 
+@@ -63,7 +61,6 @@ void fbnic_fw_log_free(struct fbnic_dev *fbd)
+ 	if (!fbnic_fw_log_ready(fbd))
+ 		return;
+ 
+-	fbnic_fw_log_disable(fbd);
+ 	INIT_LIST_HEAD(&log->entries);
+ 	log->size = 0;
+ 	vfree(log->data_start);
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+index 9240673c7533..e92187bc1c0f 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_pci.c
+@@ -307,11 +307,17 @@ static int fbnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 		goto free_irqs;
+ 	}
+ 
++	err = fbnic_fw_log_init(fbd);
++	if (err)
++		dev_warn(fbd->dev,
++			 "Unable to initialize firmware log buffer: %d\n",
++			 err);
++
+ 	err = fbnic_fw_request_mbx(fbd);
+ 	if (err) {
+ 		dev_err(&pdev->dev,
+ 			"Firmware mailbox initialization failure\n");
+-		goto free_irqs;
++		goto free_fw_log;
+ 	}
+ 
+ 	/* Send the request to enable the FW logging to host. Note if this
+@@ -319,11 +325,7 @@ static int fbnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	 * possible the FW is just too old to support the logging and needs
+ 	 * to be updated.
+ 	 */
+-	err = fbnic_fw_log_init(fbd);
+-	if (err)
+-		dev_warn(fbd->dev,
+-			 "Unable to initialize firmware log buffer: %d\n",
+-			 err);
++	fbnic_fw_log_enable(fbd, true);
+ 
+ 	fbnic_devlink_register(fbd);
+ 	fbnic_devlink_otp_check(fbd, "error detected during probe");
+@@ -370,6 +372,8 @@ static int fbnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	  * firmware updates for fixes.
+ 	  */
+ 	return 0;
++free_fw_log:
++	fbnic_fw_log_free(fbd);
+ free_irqs:
+ 	fbnic_free_irqs(fbd);
+ err_destroy_health:
+@@ -404,8 +408,9 @@ static void fbnic_remove(struct pci_dev *pdev)
+ 	fbnic_hwmon_unregister(fbd);
+ 	fbnic_dbg_fbd_exit(fbd);
+ 	fbnic_devlink_unregister(fbd);
+-	fbnic_fw_log_free(fbd);
++	fbnic_fw_log_disable(fbd);
+ 	fbnic_fw_free_mbx(fbd);
++	fbnic_fw_log_free(fbd);
+ 	fbnic_free_irqs(fbd);
+ 
+ 	fbnic_devlink_health_destroy(fbd);
+-- 
+2.25.1
 
---Dima
