@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480063EBF2C;
-	Wed, 11 Feb 2026 05:00:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478E830F7E8;
+	Wed, 11 Feb 2026 05:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770786025; cv=none; b=tqxUPHJJ5gNDsnbNVDiPC0KYKd+e3COaDJ/0D3TAZnzrC2AYnNOkvr+ibBTFVdrnERpwuuR8JBSA+R0H0VkYE0pJ/XYHDz2NqvR7pOz5sOMEjL42RRi7XoSNnZGFiIboYtloo+sf5JyGSDUal3DCl162jsuzlrg0MYjqned9MuQ=
+	t=1770786026; cv=none; b=XktLzyEJ7dwmM3jg8JUJywRm0SzedJdrz+91N4JEtyN4JxUS7MpP0gORuozzzhNRRrbAfbs+t/LhcpuhA68aKoU7abHiZ8jZJqUpss8CF2b4Y/sI0U/E5Qv8FyZLIqJjv7NL7GZCzWWRGRjsaNZpGPhEqJShebxgTCuWwfk9yeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770786025; c=relaxed/simple;
-	bh=xictI2KULnt7DCf7A1EHEUU3ErFAdvM3icWLKZoDHc4=;
+	s=arc-20240116; t=1770786026; c=relaxed/simple;
+	bh=vcnXj3vz/pQ/LS/vRt2jiE8deQxJ3ugm6aER1Dd89ic=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=kdzVj0XC3b6mJXWaaTzLRkjak/JVT6Nq/JIoNc5ix7tksjDgmUC3P71LYOgqtie5QMRgk3etjRyy1ZCOtRNklXJwugDcC078ohKGe3TcXzeubVWGZQnMDzMe7eV6SzI9nuvSBivTTEFIukHcksJTawXSVXF34SElJw7gBHAevj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nx8S7zPB; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=E12rlXxzZtri8xPTLWZfSlCuyEfQzzxgkP96Za8ZI1U28DMg+a3XuOgCqooa8lMRSEVX983ywqAgtUV8WMPza6PUMBori1I0h96v3Vl36QWO5he9h8PZSNcV4a4Cw3e6kAOJGLnxVpbkYmydpZ+eP9ouJ291oqwfff6npwBy30s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KnsPAU6o; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nx8S7zPB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BEFC4CEF7;
-	Wed, 11 Feb 2026 05:00:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KnsPAU6o"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAC0C4CEF7;
+	Wed, 11 Feb 2026 05:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770786024;
-	bh=xictI2KULnt7DCf7A1EHEUU3ErFAdvM3icWLKZoDHc4=;
+	s=k20201202; t=1770786026;
+	bh=vcnXj3vz/pQ/LS/vRt2jiE8deQxJ3ugm6aER1Dd89ic=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=nx8S7zPB+yckcllYqexSnF75EMvIZ7FPgjzAG4mYi6FZi5wL9EU8zOu97lrrzreUu
-	 h1q9MoKqCIU1k8XIjSupx849zJDhpmYOJI41UiNpTO0Buv3uizGfYp9GoowQ+S9tIE
-	 /QrBQGi9U/CBxOl1M/9TQPdyPlDWrTbHbPgWeHmTutSWOwyJL2mY+SkVwF4SCLqy6H
-	 ehIoVoo5TaXHEGR91fexHbsqJ7mtscYdCKzs1gvX+zA5STEjAuTVIw02wpbEFtZJm4
-	 K2GjFFnMWV183w3ywI+b0bOi+uP3Jjd2V7OsNEYq21GV9sJq9W4GssDRY6x270IhNq
-	 z9JTUmNdvk0Mw==
+	b=KnsPAU6odC1a4bLLyUedoHUrD7wY3vuDwr6jbK/Vib5ICsvYB+9o9CqV6NyvLeL5a
+	 npaaNTVmfbEWh8uD6uM0VrX1WBt6YA8eYJuIrdv6IQzziFQjJrOQH3ItLNxF9Iv3l8
+	 1axo7iHvhKekVSF3WShVT4LoTuVZOGpiRnrASi1uk69FcqWRaZ6uYl37PSOuI7cCQr
+	 CetX7rgIOL1fAxb3noQ7kdr2GC5YnfcimvqtbSWSqyeaebXaYCGV+F1OVwpc0idAP+
+	 ZD5cE1NQnM04kao4DcBn49Xt51nslGL9ON5G9pBbjT8eg9Eq/I66H16nUr08/eqtY5
+	 JqCbWBczu9JLw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 0B101380AA50;
-	Wed, 11 Feb 2026 05:00:21 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 48431380AA50;
+	Wed, 11 Feb 2026 05:00:22 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,57 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2 net-next 01/11] netfilter: nft_set_rbtree: don't gc
- elements on insert
+Subject: Re: [PATCH net-next] net: stmmac: qcom-ethqos: fix
+ qcom_ethqos_serdes_powerup()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177078601958.5556.12670147258887198547.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Feb 2026 05:00:19 +0000
-References: <20260206153048.17570-2-fw@strlen.de>
-In-Reply-To: <20260206153048.17570-2-fw@strlen.de>
-To: Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, netfilter-devel@vger.kernel.org,
- pablo@netfilter.org
+ <177078602107.5556.17371002547331944869.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Feb 2026 05:00:21 +0000
+References: <E1voPUH-000000083ji-25FH@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1voPUH-000000083ji-25FH@rmk-PC.armlinux.org.uk>
+To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: andrew@lunn.ch, alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+ linux-stm32@st-md-mailman.stormreply.com, mohd.anwar@oss.qualcomm.com,
+ netdev@vger.kernel.org, pabeni@redhat.com, quic_snehshah@quicinc.com,
+ vkoul@kernel.org
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
-by Florian Westphal <fw@strlen.de>:
+This patch was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri,  6 Feb 2026 16:30:38 +0100 you wrote:
-> During insertion we can queue up expired elements for garbage
-> collection.
+On Fri, 06 Feb 2026 17:19:21 +0000 you wrote:
+> Add cleanup for failure paths in qcom_ethqos_serdes_powerup(). This
+> was missing calling phy_exit() and phy_power_off() at appropriate
+> failure points.
 > 
-> In case of later abort, the commit hook will never be called.
-> Packet path and 'get' requests will find free'd elements in the
-> binary search blob:
-> 
-> [...]
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> ---
+>  .../net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c  | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
 
 Here is the summary with links:
-  - [v2,net-next,01/11] netfilter: nft_set_rbtree: don't gc elements on insert
-    https://git.kernel.org/netdev/net-next/c/35f83a75529a
-  - [v2,net-next,02/11] netfilter: nfnetlink_queue: do shared-unconfirmed check before segmentation
-    https://git.kernel.org/netdev/net-next/c/207b3ebacb61
-  - [v2,net-next,03/11] selftests: netfilter: nft_queue.sh: add udp fraglist gro test case
-    https://git.kernel.org/netdev/net-next/c/59ecffa3995e
-  - [v2,net-next,04/11] netfilter: flowtable: dedicated slab for flow entry
-    https://git.kernel.org/netdev/net-next/c/2a441a9aacaa
-  - [v2,net-next,05/11] selftests: netfilter: add IPV6_TUNNEL to config
-    https://git.kernel.org/netdev/net-next/c/1d79ae50e310
-  - [v2,net-next,06/11] netfilter: nft_set_hash: fix get operation on big endian
-    https://git.kernel.org/netdev/net-next/c/2f635adbe264
-  - [v2,net-next,07/11] netfilter: nft_counter: fix reset of counters on 32bit archs
-    https://git.kernel.org/netdev/net-next/c/1e13f27e0675
-  - [v2,net-next,08/11] netfilter: nft_set_rbtree: fix bogus EEXIST with NLM_F_CREATE with null interval
-    https://git.kernel.org/netdev/net-next/c/7f9203f41aae
-  - [v2,net-next,09/11] netfilter: nft_set_rbtree: check for partial overlaps in anonymous sets
-    https://git.kernel.org/netdev/net-next/c/4780ec142cbb
-  - [v2,net-next,10/11] netfilter: nft_set_rbtree: validate element belonging to interval
-    https://git.kernel.org/netdev/net-next/c/782f2688128e
-  - [v2,net-next,11/11] netfilter: nft_set_rbtree: validate open interval overlap
-    https://git.kernel.org/netdev/net-next/c/648946966a08
+  - [net-next] net: stmmac: qcom-ethqos: fix qcom_ethqos_serdes_powerup()
+    https://git.kernel.org/netdev/net-next/c/3a4687366148
 
 You are awesome, thank you!
 -- 
