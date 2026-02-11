@@ -1,63 +1,63 @@
-Received: from mail-dy1-f182.google.com (mail-dy1-f182.google.com [74.125.82.182])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECE8346782
-	for <netdev@vger.kernel.org>; Wed, 11 Feb 2026 17:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625AF314A74
+	for <netdev@vger.kernel.org>; Wed, 11 Feb 2026 17:07:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770829655; cv=none; b=dHu60YQEDm29ZBnnsIj8LkLPABP1/LOyZI+0oDhfSHx3of9lxkXsuRfqiySfruLUM/eMOWvLNYAo0Fbab9VsfGF9bWPGCy9zr3mFM2Vwdhf5DHV26FmtbqgTz3XEc/aN8ajjUpC2hKC1SQ4FiUCVRt7LtFY+RQkaWZOl2fDLoLE=
+	t=1770829659; cv=none; b=ntjdABFw7brCNouGCHEsCWyhxNtKsOjb8UBdE6R7Agc32VR/SRxnHfWykSgcDbuVowZiXhww1YuLFny5sbawt8HskWz2Xb+b3GLZSwYOfpSaoguftjKtm69FuvDgPsIi1oDnCkNOAVOi69htQDiWPC4TYHLacQ1G30gommnUEtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770829655; c=relaxed/simple;
-	bh=j1CkXQAycIuHsNN7eqTbwe1JQLFv9G3viH56doXuSm4=;
+	s=arc-20240116; t=1770829659; c=relaxed/simple;
+	bh=ffIE3P4fa/fPncCz2g86l+R6RpAgqTDBQzGHjiQI8M8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OiTqYifK34lvhPbphn2sUvPwDd3ZPfM1s/tVv+0dB74Dqp9I36UxBLluiLR1/zCZ1860pScZH3QlDC8fCsOGbaC0UUX8aZsNsUg3TIEKdNAAxo11vwZoLFbRoaPK65fF3eZ396qb1UYvJ8rsjXpFQr+oQcMdc2uDn3XTnOZLqPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=E6d1TGcA; arc=none smtp.client-ip=74.125.82.182
+	 MIME-Version; b=CI/85kZkNlg8rTtx/45pr9sa+gmqS3vgsiCuY6ketfJoPJJzNg6R8uGtxaQ9B/b870UMODxOkDcnAdkDthuKxgwJnT6KRY+3gbBVyeaGFv8zr6lw+6GlPsNibwl9+IKDinbLibiIiEqDhMERc2w1K4uKqmpUDocDkFERmDLYZgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=xGG1vaaB; arc=none smtp.client-ip=74.125.82.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="E6d1TGcA"
-Received: by mail-dy1-f182.google.com with SMTP id 5a478bee46e88-2b86ce04c5cso230877eec.1
-        for <netdev@vger.kernel.org>; Wed, 11 Feb 2026 09:07:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="xGG1vaaB"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2b8675d4f93so4015410eec.0
+        for <netdev@vger.kernel.org>; Wed, 11 Feb 2026 09:07:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1770829653; x=1771434453; darn=vger.kernel.org;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1770829657; x=1771434457; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=86Si39HUUpntcAQZvyt7HiYTEw/F0f9tVlrgdGD3dms=;
-        b=E6d1TGcADXZPUVnL+Gr3OvL+hA47WfB4DZ9EyrDuxJ7KFERSKJwIbg2Ff1BrOyxT2b
-         DJouJn/RG26+1P7ISN43QQSHJb/j0vEkBYIhse9WHbAPtZXXVDoCBzCBZA2W0jygbMDE
-         Jta+xWFcKvLfLOfHyy8ka5F+Hv8QBixQDvf3B/HpFVky2VXiSuSnSju0HEuUm/CmhJcT
-         iccfDho7D3bxh4U4OBqjDEAz+SCCOaWZgVQtmH7ujUegdrCF5QMWsyQXZAYr2zVXkVPc
-         lAXC7MjSwiDT+yu7iffor4xiypLv7kuTssg1CVo4rW5qaRwa/IYkhqYKffPZ+dtzJPyW
-         cR1A==
+        bh=ETh91+dN7ZjIX1disw1c0KqDX3nHjAAGAD+RLQJAbVk=;
+        b=xGG1vaaB9ua46JfXBH9vdTGiCgdyLFR5g/9nxmBx7o4Aw54QkAuzDc4/+Pb+I4bdrB
+         CufrEWx5qCVhw2EIb4rYq6AagnIeECgkJzsT56BVRLF8+BQcLc3vdQgfUaVBSTjghIeh
+         XpeXGTFuf65/AdG4yTXU6XXIoJu0lupM5Jybahjn83/72MfRCzneLfyHhLs2G3+lirTK
+         9GqNquf1C7lozgk4iyQlh5E4lar58Bhg7qaOdHilwc+drBgJGmZV2BkjIUuNJSKFnbGL
+         zg8S2SH6+0ScO+Qi1IMHL6CT+UYhEsh/hM0jYdX/RM2PVfqYk4bO9UN5bVzVWYwWqKji
+         ERVQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770829653; x=1771434453;
+        d=1e100.net; s=20230601; t=1770829657; x=1771434457;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=86Si39HUUpntcAQZvyt7HiYTEw/F0f9tVlrgdGD3dms=;
-        b=frAkobpZGttu0o63UIxLrGFAPYg9gzkFmLkTvgK+Gnr6DSNY7eJE753oYB2cZ8qzQw
-         aVkQD08cuxJqql7juuYkD+eFwEWGyw7OMlupdUM00I4vjZp6YwNZ0zs54aIdEExclnha
-         kLeL5G46ndifxw4teXclCLqTobjGuUO5/idOrhpz1RSzxw7COaBK7eWW9ytQQ+3U+SpT
-         Np6fqazeD1BevCD2BSOpZtfS5HQcAIyq2qzyo2M8MJIVqAMYTqI0psRFBJiuzDJm6kQP
-         yjGif9ZNLRBZrG9kUuSHWE8wmSQNzdrehFDkAOTHoXVMNNrd4z/ms87fWLLOROUWGcpD
-         0/6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXuCNQVAlezuAMsqsSm5YADt94tRg5UyEgZQhDsMsgFQVTqXdYeKuKVydw6eZuSqoRXSKlHP+E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyI7FOC9j0eNpr+YVYaXOommhX3Y0q/yunPp/sF02++Eo724Hg1
-	6KUGIWX3BRyXcl37RTninjm+cgbc9MzC2T6a7HdKZi5JeHyPxWFkfFyAt2XHyJNSCw==
-X-Gm-Gg: AZuq6aKxFG7lzX3TFToKcqEXKpoCjsB1yiGWMZwM5OFU/bvsrm18ubZ0pgodnISLCVL
-	5Yi9f3fPpwNvvct/hwuEIGTausmnMbE8CmONsWcqspIE4pPLev/5tEMwR15Xa3OipWNp9sDGVRE
-	xEf0aNUQM6s81rIFJmZsdHFJeEPCVf/Yau9lAWJYKhkWFTS/zU9YDiARsyCkXYcJn0eQDM0oE37
-	n+5D3voyzg7PgkR07UgESbY6rJG1iC2dHh480NNjD7iWY3U3Y+UpIdKnrNV2buP5hBebw8cIwMo
-	63HpHjK0AfC7NX4BMmVdkG8XT6b1JvnPrFEvrXVI+zvUfXdjnyZnZWmUfCrlVsaS1XqYXYFJV/0
-	slXAoRpg15G0mGwueAImgUcvjyE4SiImp0fSUpDSG/J9ltrLeqXSMQTPamdHW+8/613lJwYAnyC
-	0ufKZvuLlE6jm7NZCcHAs/qGpWCkblPA==
-X-Received: by 2002:a05:7301:2e85:b0:2b8:1d16:9736 with SMTP id 5a478bee46e88-2ba8a846647mr2853395eec.23.1770829653049;
-        Wed, 11 Feb 2026 09:07:33 -0800 (PST)
+        bh=ETh91+dN7ZjIX1disw1c0KqDX3nHjAAGAD+RLQJAbVk=;
+        b=cz/EG1cEeWfl4zjNGCrh1+pmQnAwoZgp1uhWO3RodE79fC3x4wBKe7ghVQ0uj0R3Xb
+         faIxd6MKky5QnM0m0yDtyPdR359tIUGRB9mWQSNKnNOD1x8H6SQ9QxZgq2KvmhHoAhQ2
+         TG4Y5eE0M3dqSY3onXnpiAhbFgIAqe/uYrByeAodyt+svJWb1ahHhzjzuzOk4TKf1j2f
+         +TvKxEJAQp2jYT7smgQMGjr1VJvCh/AKXSK7vKr4nZva9AavtT+pZMsYLhx8RPIrOzU+
+         8YggYaB/icX2LqX23Bwk7jxos7pUCs+3XyaMnWydHKyi31YO67Dg8fzYdqqHiL52sHpM
+         25LA==
+X-Forwarded-Encrypted: i=1; AJvYcCXDyc4KrlXFaPzZQsIhBFExLK5tt3Y1ECNJhnpcJ02Cm3oYCdPqPiDE9FzxYkqHId547Jd7iPM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUYA/4xYauQD93VAdVcbIX7OsfXyanKew0pZL5MehbSSxwGIwz
+	qRKZOFikZzYbd+JRKu9Ht9AeH1EkcC6siAWdS4FqjYPTKrGDXbXgOdXtWdTEMU7bHw==
+X-Gm-Gg: AZuq6aLEN13mMuI7m3QPQ/AonUT/jFwmf/GAoNclURGMquEG0AiHp7v8Lo7GgBIIo90
+	VTLOJw90q3dzUnxb7miSg47EOEWe5XrmwvNjrtTNqOANZpNhPfvrfLXN7u8mpcIZov88mJl5d0n
+	hNz1J82gHmyIS+ehzZD6wR4dBvZLoZSpEk57BhuxAmt3KXBAidxFdXcWzv8g6xmTl1KrKEByheR
+	BowNtnok/Ua/SfBJk2hSwCjmam41VUHwdDdWuErAnctv3hD8UlunoksXGDrnY0TAU+/fzHd35lj
+	N2hd4ljkwxynWyMb24fQLfmvch4p8CHElFwf+WXC6AFpf2kOsW2HT3ZKQzLPHya/X20ou4PGU7g
+	Uou40wzR4/t1ofJT2x5VaOYP2K8BSZ5jjenbEu+/4IY6TqPcQLQ7jjlcwbPuuaxOM9Q/tuaF7Uo
+	zKw8m/4eXeIfLj9ku0ONrMdqXKfjk1HtKaabpANOBJ
+X-Received: by 2002:a05:7300:cc12:b0:2b8:711:ae6e with SMTP id 5a478bee46e88-2baa7fae41emr1934eec.1.1770829657494;
+        Wed, 11 Feb 2026 09:07:37 -0800 (PST)
 Received: from exu-caveira.tail33bf8.ts.net ([2804:14d:5c54:4efb::2000])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9dd00ae7sm1649496eec.31.2026.02.11.09.07.31
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9dd00ae7sm1649496eec.31.2026.02.11.09.07.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Feb 2026 09:07:32 -0800 (PST)
+        Wed, 11 Feb 2026 09:07:37 -0800 (PST)
 From: Victor Nogueira <victor@mojatatu.com>
 To: dsahern@kernel.org,
 	stephen@networkplumber.org
@@ -65,9 +65,9 @@ Cc: jhs@mojatatu.com,
 	deren.teo@outlook.com,
 	andrew@lunn.ch,
 	netdev@vger.kernel.org
-Subject: [PATCH iproute2 1/3] tc: Add JSON output support to HFSC
-Date: Wed, 11 Feb 2026 14:07:23 -0300
-Message-ID: <20260211170725.1514427-2-victor@mojatatu.com>
+Subject: [PATCH iproute2 3/3] tc: Add JSON output support to multiq
+Date: Wed, 11 Feb 2026 14:07:25 -0300
+Message-ID: <20260211170725.1514427-4-victor@mojatatu.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260211170725.1514427-1-victor@mojatatu.com>
 References: <20260211170725.1514427-1-victor@mojatatu.com>
@@ -80,73 +80,36 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
 Since qdisc core already assumes all qdiscs are able to output JSON,
-add JSON output support to HFSC.
+add JSON output support to multiq.
 
 Fixes: c91d262f414d ("tc: jsonify qdisc core")
-Reported-by: Deren Teo <deren.teo@outlook.com>
-Closes: https://lore.kernel.org/netdev/SI2PPF4F82E9256898C9826AF17C3AE8AD9F467A@SI2PPF4F82E9256.apcprd04.prod.outlook.com/
 Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 ---
- tc/q_hfsc.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ tc/q_multiq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tc/q_hfsc.c b/tc/q_hfsc.c
-index aed7130c..7340f607 100644
---- a/tc/q_hfsc.c
-+++ b/tc/q_hfsc.c
-@@ -108,7 +108,8 @@ hfsc_print_opt(const struct qdisc_util *qu, FILE *f, struct rtattr *opt)
+diff --git a/tc/q_multiq.c b/tc/q_multiq.c
+index 63fffed4..08a2a3b0 100644
+--- a/tc/q_multiq.c
++++ b/tc/q_multiq.c
+@@ -51,6 +51,7 @@ static int multiq_parse_opt(const struct qdisc_util *qu, int argc, char **argv,
+ static int multiq_print_opt(const struct qdisc_util *qu, FILE *f, struct rtattr *opt)
+ {
+ 	struct tc_multiq_qopt *qopt;
++	SPRINT_BUF(b1);
+ 
+ 	if (opt == NULL)
+ 		return 0;
+@@ -59,7 +60,8 @@ static int multiq_print_opt(const struct qdisc_util *qu, FILE *f, struct rtattr
+ 
  	qopt = RTA_DATA(opt);
  
- 	if (qopt->defcls != 0)
--		fprintf(f, "default %x ", qopt->defcls);
-+		print_0xhex(PRINT_ANY, "default", " default %#llx ",
-+			    qopt->defcls);
+-	fprintf(f, "bands %u/%u ", qopt->bands, qopt->max_bands);
++	snprintf(b1, SPRINT_BSIZE, "%u/%u", qopt->bands, qopt->max_bands);
++	print_string(PRINT_ANY, "bands", "bands %s ", b1);
  
  	return 0;
  }
-@@ -124,13 +125,15 @@ hfsc_print_xstats(const struct qdisc_util *qu, FILE *f, struct rtattr *xstats)
- 		return -1;
- 	st = RTA_DATA(xstats);
- 
--	fprintf(f, " period %u ", st->period);
-+	print_uint(PRINT_ANY, "period", " period %u ", st->period);
- 	if (st->work != 0)
--		fprintf(f, "work %llu bytes ", (unsigned long long) st->work);
-+		print_lluint(PRINT_ANY, "work", "work %llu bytes ",
-+			     (unsigned long long)st->work);
- 	if (st->rtwork != 0)
--		fprintf(f, "rtwork %llu bytes ", (unsigned long long) st->rtwork);
--	fprintf(f, "level %u ", st->level);
--	fprintf(f, "\n");
-+		print_lluint(PRINT_ANY, "rtwork", "rtwork %llu bytes ",
-+			     (unsigned long long)st->rtwork);
-+	print_uint(PRINT_ANY, "level", " level %u ", st->period);
-+	print_string(PRINT_FP, NULL, "%s", _SL_);
- 
- 	return 0;
- }
-@@ -212,11 +215,16 @@ static void
- hfsc_print_sc(FILE *f, char *name, struct tc_service_curve *sc)
- {
- 	SPRINT_BUF(b1);
--
--	fprintf(f, "%s ", name);
--	tc_print_rate(PRINT_FP, NULL, "m1 %s ", sc->m1);
--	fprintf(f, "d %s ", sprint_time(tc_core_ktime2time(sc->d), b1));
--	tc_print_rate(PRINT_FP, NULL, "m2 %s ", sc->m2);
-+	SPRINT_BUF(b2);
-+
-+	print_string(PRINT_FP, NULL, "%s ", name);
-+	sprintf(b1, "%s m1", name);
-+	tc_print_rate(PRINT_ANY, b1, "m1 %s ", sc->m1);
-+	sprintf(b1, "%s d", name);
-+	print_string(PRINT_ANY, b1, "d %s ",
-+		     sprint_time(tc_core_ktime2time(sc->d), b2));
-+	sprintf(b1, "%s m2", name);
-+	tc_print_rate(PRINT_ANY, b1, "m2 %s ", sc->m2);
- }
- 
- static int
 -- 
 2.52.0
 
