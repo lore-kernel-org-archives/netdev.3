@@ -1,252 +1,245 @@
-Received: from mail-pf1-f227.google.com (mail-pf1-f227.google.com [209.85.210.227])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BCC32C11FE
-	for <netdev@vger.kernel.org>; Thu, 12 Feb 2026 08:21:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.227
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770884513; cv=none; b=NJ24NGA5I8dxER8Kmsa4+NpQWuy819aOvQxAJVjJB/Sdl753nA5rhWdHPJsmm2evw4aNFQE57cVezRNWugASZda7DZ7ld991XCdvrw2sjEQY9aPZZeVKpjIkP0+7CtVJt/ETSg2OeJpKLamTS1qCaKoMGTKaBtYQ4wNeY3nsC+E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770884513; c=relaxed/simple;
-	bh=s1z3mIlDAgSyfJsqZjGOF13vW0ZC3bG5GORwMLLbaUc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FpysrFytNS7xGbi8ODE2x3oL34Q9bN8ey64GWTm426LBsMuHp8XbWK4792pJE+LxLa8MaEIBThDi+r94gpmASy5BDIQjVmxowCTxpqFReO+5NVo2LifKSltbJDy6S+U0XmD6GzAfoIiMTqISF4W7KdAe5lJ1U+k/oXgI4NpeFmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=TnLUZ/bz; arc=none smtp.client-ip=209.85.210.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44C701D61BC;
+	Thu, 12 Feb 2026 08:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770884669; cv=fail; b=bj/IcipNxcT7nPiuyR3v/4Vmni+JNXfcb9tCsjD/sWotKA+hOAckVwwftAVF/Tr9YpCRGfUq7GC5nxLrpt3rmjXh7qqDe+iO3SwNFk/HK6dYa69gH8bbFBSs0jG+R3i4mU9sud2ePjaHEXTJAF/hs3gNpRm8pra0vUcYTmeF+N0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770884669; c=relaxed/simple;
+	bh=vVuE8pwkpIKsslU9cUfGLuG3PWE3F/EJMEcJDO7jGg0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=gXq3qz3MYqK76jINHvsbLYdWzGvKahH0GUPZ/xedMxuWnOEMbMhvnkNC0PKJuRlDsHgAIflHgtRHEMiH2ulhay7zr6a9soQ7Rm1ICGeMi3nA8ih7h3rpLr/oAMbnuZn1OGsBIJ1lfPNJ+dh7i63zz5zTS4UIVFUceGESxxaZMys=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T9/HwUMx; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="TnLUZ/bz"
-Received: by mail-pf1-f227.google.com with SMTP id d2e1a72fcca58-824af5e5c81so707329b3a.0
-        for <netdev@vger.kernel.org>; Thu, 12 Feb 2026 00:21:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770884512; x=1771489312;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:dkim-signature:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VWqaOsjQMFpZ4agq7Hu/nDcrO3ihcY3ZePAIP4O4LkI=;
-        b=xIh+B3NA8Y8RaEp5H0ncltNPhivBuR0BjR+o9IymwTdjL7AxBvqldB5qk11AVLGPO9
-         iTC9yffG6L6MxBm5MTJQ5YPdfq/yeuSu/jfKg4+uoddt5vj7P0vNbYOHr/zchQEE6aZ2
-         q6HvRt8VJ1U+i/Io2U3lZmJxjHxblFqgGFcFthfgNvhk3TyQ/H9wMziGhUUDndCb4x+d
-         vE7JLCi6QZUM2RNF9638pGzaVwEy7RnPSrbJ+h5KBnJYT9VK0NvJYn8bZFGXrV/KtCBU
-         9DMgZTxtMSufUEdgT8aJauGVQlJBJZf5G4yJtwArttwWPUQFNAM6d3ECptHVYdA8J41F
-         e58Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW/OE61wQ7NqZNd0wmEv55eB0unPIeEDpo44uk1dw61AUzlyuOrBWZiZ+FqTMjXcX2XTwbXd88=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfoOA20lvDYQN6bh4+khHi/5dxawuaOosLPUqHs8EsVjtMtOyv
-	ac5pw2mk7CdV3P7Q5kcAKBl3vIPOL1TYMJXOSe1KLrnEdf1aSCobKFM0WuQHNqgNcDJRXgK6G3k
-	cm3jn7PSl065ttxVHIaE7spAY6/vPEEdpF5DNaBiWrnS6MGF2OXvCnruUR948xYnIuexNZ6nlp3
-	BtWJ+zA7WziVmvgMRHUjcJXcA9AjLXWWpoRsxrsvzVpoznQiFITlfWBO9W8NdodEl0m1ObpSYuF
-	hgX9rZwpVo=
-X-Gm-Gg: AZuq6aJV9BUZke3BXW8bQyI8Yp16IjEE0teUzCjObr3Ol/b7M0Xw0eK1XdENXOI4FnN
-	cpsLCq8D5z2RzX/jEg0wgHvGOE9uID3pRpMBvoNxQErjWviGY9JKCtNQPBlnth4movWUQJ7Wrg/
-	LhyWduPNhSC/yRh9KMZ0vwMMf1o0rup92sDGhQ79U6O6zlCnU06Q4Q+mZDwgCLFj3c4h3RlrsEr
-	Ye3aFGVwngrgGbRHq9f3uAC3tEJsxJCqnvnAH6CQt1SpkZgRwyzrqHMby8L84X7xNYBTvindUTs
-	oQJ21sW6uuG6QOWDVlxvfrWqIEZD0AtArqFzqLx7pt7n8lAbmP3MsqSAt6xULnWPNonsF5jnvE8
-	AZbb6tHgHQrLQ/FXtG6Gm5qACmk+ZhYjsSsXvgeZGfPgqeuZJO8+SvN6lgGCvXCZCGz3LZbGL1G
-	PM3eNcpMMa9Lf/OoCuVNBVsQPLeixWKv0gwlZdeFnRIfjImstekjOBwA==
-X-Received: by 2002:a05:6a00:ac89:b0:824:3419:25dd with SMTP id d2e1a72fcca58-824b0623561mr1873878b3a.69.1770884511646;
-        Thu, 12 Feb 2026 00:21:51 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-2.dlp.protect.broadcom.com. [144.49.247.2])
-        by smtp-relay.gmail.com with ESMTPS id d2e1a72fcca58-8249e12a6a2sm481164b3a.0.2026.02.12.00.21.51
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 12 Feb 2026 00:21:51 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2aadeb3dee4so141982725ad.2
-        for <netdev@vger.kernel.org>; Thu, 12 Feb 2026 00:21:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1770884510; x=1771489310; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VWqaOsjQMFpZ4agq7Hu/nDcrO3ihcY3ZePAIP4O4LkI=;
-        b=TnLUZ/bzY0l8dTCAvjz7eLJHZPPC8n/QL5QqTyNHEZ7LPqTxkABAZhjricd7M5As4v
-         WZlkLCDcHKdrEqZNitJy6HicDBYIxxopYVFCXNgOZ7UCGefCQTKdl4NFiHJA6054+s/F
-         3yzzbTCib/uEJrRpjN3eZpShtJrREyCh4WN9c=
-X-Forwarded-Encrypted: i=1; AJvYcCVviSKWa7hlef1oEeIaRYDhhb6K1ax9F5Tnzbkw9UsblUAye9nuM1nSZPW2cWUTDn6OTeTEcr8=@vger.kernel.org
-X-Received: by 2002:a17:902:c215:b0:2a3:bf9d:9399 with SMTP id d9443c01a7336-2ab399ec0e2mr15393695ad.35.1770884509801;
-        Thu, 12 Feb 2026 00:21:49 -0800 (PST)
-X-Received: by 2002:a17:902:c215:b0:2a3:bf9d:9399 with SMTP id d9443c01a7336-2ab399ec0e2mr15393585ad.35.1770884509445;
-        Thu, 12 Feb 2026 00:21:49 -0800 (PST)
-Received: from PC-MID-R740.dhcp.broadcom.net ([192.19.234.250])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ab299983d0sm44077615ad.79.2026.02.12.00.21.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 00:21:48 -0800 (PST)
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
-To: kuba@kernel.org
-Cc: andrew+netdev@lunn.ch,
-	andrew.gospodarek@broadcom.com,
-	bobbyeshleman@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	michael.chan@broadcom.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	pavan.chebbi@broadcom.com
-Subject: [PATCH 1/1] Re: [PATCH net v2 4/4] selftests: drv-net: rss_ctx: test RSS contexts persist after ifdown/up
-Date: Thu, 12 Feb 2026 00:12:50 -0800
-Message-Id: <20260212081250.4088970-1-pavan.chebbi@broadcom.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20260211085822.184f85c2@kernel.org>
-References: <20260211085822.184f85c2@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T9/HwUMx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770884668; x=1802420668;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=vVuE8pwkpIKsslU9cUfGLuG3PWE3F/EJMEcJDO7jGg0=;
+  b=T9/HwUMxENxPCqGaxG+VAQZTFBRmLK9uYiy3SkYZytkggSlZ6q+NY3O9
+   imnLUpYpxgEMBkWMYdB3I4J0K3wUvJCsYiOdekt8eoMKNtNRmp9HRTHB+
+   EzJCclSiiIZqTy7XZhYJIl0WHKJaMZH6VybLj3NA27PLb346jlnYjhTB8
+   lRLCygZ0m6plrOlFbhnurap6oJkOx4gpLsxA2Yeu64nX/CNPVN5R7SoZJ
+   FWSFsbDvJNuuo6NJh51FTVeT3gSUTl6GaLb/5BgQ2gWh6MfGUNcq7Cf8P
+   jNnSGI0CSR/HiRdLtltMkC5/r0hXhlUMCGsUkSrUi5oYULDYWv77P2tI1
+   g==;
+X-CSE-ConnectionGUID: TLB01Ur8QUuaU+tRitzF3A==
+X-CSE-MsgGUID: R4nxShCnSgOq4nGIoENvSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="94692430"
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
+   d="scan'208";a="94692430"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 00:24:15 -0800
+X-CSE-ConnectionGUID: ouLJwoZeQ+mnE4V/eKKlnA==
+X-CSE-MsgGUID: orV9WN0HQSOIEE4uC0sUKQ==
+X-ExtLoop1: 1
+Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 00:24:14 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Thu, 12 Feb 2026 00:24:14 -0800
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Thu, 12 Feb 2026 00:24:14 -0800
+Received: from SN4PR2101CU001.outbound.protection.outlook.com (40.93.195.18)
+ by edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Thu, 12 Feb 2026 00:24:14 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zQcebPJ2n8+kU6xKI6wwTxXTcBZ/5XFIsiS+SLpwGzYECwup4nrrD3qIKameGldcTc6X0fOuyQF5M4Qx7te8CDl9wfUYQsPmDXl296vJu+V/WPPHjftUMPMGaCXEbYTAjvEF0cdhPBJCyO/bd3gaJc6b6TIGUpkVtf0RA2IUMVsdpoAij+pTuFYt0rCtAIiDXA4SIKHak1QhFOfWpz4GMeSLwkm6LB8DyKL09q+JULOFV+HlbALhAIRQ0xTpjFaMupkvlVfCtluSFwcAJP+K3/dJod7oQwe4AyzVQOdof12fD0RNXgp2GFEjC54qDC3yuFQryJFEoUtma+cBVgYYKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aA78rVTNueru4FBmSy/EMJcWxNING9spTrfuBie5yhI=;
+ b=njlHrFPvkWN5WVbFQL/XcYA+8eTtmIMRnwOv0mbFMUkoCF/L94RBEi6cdGIxW+yiA0IPcGotiZjJwbaj495BBxvHUzgVgDymTZ1itumB6ow7PtQbmoEo8+NYRmffsj+HEkbbHz3WCmcIEaQnRSy5hqNkCVoxU8oqU/jxCF2YUWI7kt1OeBuBiZUWIdxLu7+dwh00BdQiw22XzGYHoJq8R5Wl4itHhZa4AVaJPyIj3nJSh+ZeZgrt1VvEnul8jYKeWMjtkrHQ6bOjslS2ewVEw6IzrJDJOCtFDrVG4KQMMmEoDDo7kahLvuTzJArKvTmdepJ5ijC6u+O2VKevugSYsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by DS4PPF7CCC4B437.namprd11.prod.outlook.com (2603:10b6:f:fc02::34) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Thu, 12 Feb
+ 2026 08:24:11 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%5]) with mapi id 15.20.9611.008; Thu, 12 Feb 2026
+ 08:24:11 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: "Oros, Petr" <poros@redhat.com>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>
+CC: "Drewek, Wojciech" <wojciech.drewek@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Eric Dumazet <edumazet@google.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
+	Simon Horman <horms@kernel.org>, Michal Swiatkowski
+	<michal.swiatkowski@linux.intel.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, "David S. Miller" <davem@davemloft.net>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-net 1/2] ice: fix inverted ready
+ check for VF representors
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-net 1/2] ice: fix inverted ready
+ check for VF representors
+Thread-Index: AQHcm/S+sql9pW1PZkO5wVEX2ouQRbV+ufYg
+Date: Thu, 12 Feb 2026 08:24:11 +0000
+Message-ID: <IA3PR11MB8986A2B6F275692CDA3A3713E560A@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <cover.1770882260.git.poros@redhat.com>
+ <a76096058dd9b6d0cccaa5c2c699458351d02cec.1770882260.git.poros@redhat.com>
+In-Reply-To: <a76096058dd9b6d0cccaa5c2c699458351d02cec.1770882260.git.poros@redhat.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|DS4PPF7CCC4B437:EE_
+x-ms-office365-filtering-correlation-id: 038a2527-54f8-4e58-732b-08de6a101962
+x-ld-processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?WdFQUjjJpecyok4hm/6LIfzEz5L6Klf8bN8zhUIEoQUFVCpF+4p4g+rXXPVb?=
+ =?us-ascii?Q?c+VnS3MuUAwIvdueweMF+auC3dZD/+XD/V/psKP2r6V8isudtQKOAnnAysn7?=
+ =?us-ascii?Q?JJhYWLEE5goE2Mo8gajI53wcTxqOC5ohBY6nh3fv6r9K9ytKyjpHlY9gjNBH?=
+ =?us-ascii?Q?ThoyvaLoaFg0Iio8Yjei2+cGxn20eJ2450gyklYFele7FLrbtgomDlxsWXwr?=
+ =?us-ascii?Q?KqNxwY7L7U1hGDM+e7t8PPR5IkdtDZW+5F6zSgxr00Px5AVWvJ/gVZbQlj4M?=
+ =?us-ascii?Q?WHsk4Qz3X5JsU8XTAUWrqlKBD1uGICmDVA9mYylDze1Nz6nrsGxSecyLL45r?=
+ =?us-ascii?Q?9FCetzysL11CSHLgMhKwPZUOSVc6RNfyMPIKmc1Rkw+XGe2Ge9q9tijjshvV?=
+ =?us-ascii?Q?1futDkpoB4hLNULuT6S27nPbiMNfKut0l8G4OzxwsIC57iyLmrOUhl/o84iw?=
+ =?us-ascii?Q?/tDtNNoGRkL2rk98ZSQGMARYyUkI6nxHIAnt4SQcH0w11C5+PaZTqdz74yrQ?=
+ =?us-ascii?Q?Z0mvv8Ylcm3yDTsNcHREJPWcaj6yq95ZJFm4lvdgR/9ai3sVDBTbQ2ktM8Tx?=
+ =?us-ascii?Q?Mxxzrz7zW3RQGKfWnv/ZESeQ+G3I94290dYK7qJy7uFum60M+qRltgM9qUDq?=
+ =?us-ascii?Q?IUB3uAbXoU9RQuYIMNOGrePBHOMILCtUorUbyF5gevYHULtQq/sOyxpg2ia/?=
+ =?us-ascii?Q?Hpr2ALU9D41hUbFIrmhwBusiQrWeGSIEQ/IxqaFCq20yTBzxEn4yQ4vG7KNl?=
+ =?us-ascii?Q?mtQBz/yDWbcLOmefoKONpkVyEK6bizJYb/Xncc0CH1r5PmnOzzgHXWmK9Nyq?=
+ =?us-ascii?Q?mSKuPqdkJFE+2wN5vx1w8USO+4IfnOa2rHXLYMEbKm2XlPoiH8kyS+dAYYNS?=
+ =?us-ascii?Q?3XQ6xHjDWjAbQGhgdknfIjhEKVGk+DyOOO+YVOHPEyYNBti2Te381XHzr8z/?=
+ =?us-ascii?Q?aUYBnyVZIT/B+TgtXJ1MZeKTktI3+VJKnC/EnVR4KVwhQnuSxrGan+v6VYIM?=
+ =?us-ascii?Q?k29Jp7UgFO/c7ylX5wVH0RItEwk0K6I5w678T564gNao2+ali6nH2vZQGqmd?=
+ =?us-ascii?Q?IZyHv/Tdv3GKtx+AfqQ63uiJFuIy2nThElMb0Jw4Kxbpsfs5HDMT5y7qasVM?=
+ =?us-ascii?Q?DKn76JZsNSH2auNMocuvVDktc6JOSR7VuqU7KPLg62qpn9rsDefPvmrZUCFT?=
+ =?us-ascii?Q?kq8/eFOHU8QKTldxp8MM3bG8EXxrSj/NN47DDbGtBM+uxOGjHxLavPKUOYso?=
+ =?us-ascii?Q?JZPoNY7pRg4y7IcUPzUomg8tXJcFItJ8029Kbcmw5/yWpVGtwMe1Pv1P8C02?=
+ =?us-ascii?Q?Eyg4YXMqlVHBZQoY/RJEcaINgNdgUVPX9uCzff6nrNWOEjml7rK1HLSaOmmK?=
+ =?us-ascii?Q?vtREkyUT/pm8YE8R+SNqLMS4QxMWFDWzNHiAdmsD7dD3sKMEOU90qeFS4aBg?=
+ =?us-ascii?Q?q4/EeYcZHPvTob7lKUnedWAc2XOeRq3qdkpFkhsaLcONe2ty/AxNC63L7pY4?=
+ =?us-ascii?Q?FYI4gvnLIybLXmzjBmykLTStByd59EOaBuZ0DXnJm0YD8P11yV5a6NW7zRay?=
+ =?us-ascii?Q?hu4YAZ/kAcTSBzGE2fnxBjtwwefdvo0sG6EeOR3B/WpOCv/dVnOilscu8uD1?=
+ =?us-ascii?Q?sxd77WPpqvUj474ecr5DOb8=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?pOa06nbQX/B0bAcoDMLCLU1dBz3aGy5vxTzl521sJhAYrw0Dgh6AL+qEgj+v?=
+ =?us-ascii?Q?QjZXcBrz+i/qaxMLWokoNB9xC5NNzdkQcq2u8rMKquUFOeA6O/CAD8TyPW3r?=
+ =?us-ascii?Q?6JXCOfGrSYi2APTLG/vPa/ugFRwUr0fuPihC5bsY/N3fIJ3WlHzvJKrLmrLz?=
+ =?us-ascii?Q?p0zKsj06YP9y7Yvl3gZek11RmaT3N4jnUwfOvAF7XrymG4rhpLAa2J64MSBy?=
+ =?us-ascii?Q?pw2Qf+TM9HVazu5YwxcAKVc8PcTo1NC7ESrcdcg11BuoP4Wb1W+OgteZ6r8K?=
+ =?us-ascii?Q?9D3CA0d1yw6FPuY+emNdP6tk0yCnJE25nlTEY/lTYgBbqcYJKAki/KjvX/en?=
+ =?us-ascii?Q?mpsZugakonnxsK6m1rHkAzT7/LCe23MGAQu1+G6ixSnAT+LHJ9B25kIEikA7?=
+ =?us-ascii?Q?fq3FYkji0N/yOO7hy+lY7WoyJHdtTl050I7Zz4kOyOSXcQQ8Vi2fYsSJKRK6?=
+ =?us-ascii?Q?ag7ItJGGsE2xqNPL7rAgVEbiUfGYkiTdWqsNPfSJmlMypgdpNyoxk57++Oa/?=
+ =?us-ascii?Q?wkHEoiFllxImTle2NfAGmvVkTg684/4kO3uEkQ886VJdClxT5gb7r7nA2sQU?=
+ =?us-ascii?Q?YU2MxbGAveG8nv3coyGirPI4UlBXj0YaSGrWR5epRPegOXWKoXdtVXHQjAls?=
+ =?us-ascii?Q?cYfx+6MhDFP9Tn5Y5jpX2H+5+eEdJcfqxVEOF1vuszGeDbJVAOORi1WzzVn/?=
+ =?us-ascii?Q?T1xGWvfpO6CcGrXx5i481r6yvwuZI1fTQjnEx0io5c3zg3BDE+hW717f5qJ5?=
+ =?us-ascii?Q?N1e36K08gagukJ3LtJeMNrCJUTyD1sBTo1ES1EaR2lQAxgAZajj3rBbaKKJU?=
+ =?us-ascii?Q?OXTF7oHVqPUpm+0H6zF4i13Qqu7xx4z784UL4MPMSCxZHkli9lfKT3JH08TA?=
+ =?us-ascii?Q?hKqh3dJXEHmdTXQNWm05yaWf9Eehqg5IqVP54lsR/aL5oOiz9pwEb3eigd8c?=
+ =?us-ascii?Q?yZGp8L8Ct6uPc3CLyZSKJL2Hl+R4564I0qP8J3aHbX3oQVhQQhQn385/3acb?=
+ =?us-ascii?Q?ertfjeQ/Vwde06xl+EmGZtA52DIGsIGuVs7cVjMTxeYTSr0oGPnAsg6xRut9?=
+ =?us-ascii?Q?2ViahxZiAe0/3VQsmmW2v0x66x/MTEUKKunsYuK+m6eCYxlVEtJC6NpElHqn?=
+ =?us-ascii?Q?vUrqXbqs+Mbwlqk0gdXHhULM75yxQU0pFBpsJltt37K9KfLOcfIjmGAO1OVK?=
+ =?us-ascii?Q?zg2L22GigR87JZYvK8NjlF4qmrprBjjrVhwjYyEwpHitNDDFfLu7E0HitNAr?=
+ =?us-ascii?Q?QnI56vlag0JKwjWWXy9NVhLkVyQjtBMKr6GQHxN+NY1jAgwQrHkTR56bHCmO?=
+ =?us-ascii?Q?DpkfK1ZEs3OfbYkQsFQ3lF+efDL84/bYBh8QdpiVsL9VhL5A24nqicUrKGD7?=
+ =?us-ascii?Q?Qb/tDxBkRckX9VAlWmapp07kxdd75QF2w0bieHPWayU4ECjAQfgVmihpXa3J?=
+ =?us-ascii?Q?Rw4YVDN8NqqJAbNem01LIh2o4E2MA0m4kywvyMTWr+U9sQ30REGOki+E4pRS?=
+ =?us-ascii?Q?y9bHUW9vxtqfCom9vDJhNlvd1kHlq8FeNCrl9grN/nGNHhLw0Nu8ft6gjgBI?=
+ =?us-ascii?Q?5p84cLwiZ9Lf7+KFbTWyfeYiIbMNq2pZtf20tK/0xzPJaRZRoa7iZkqv/0i8?=
+ =?us-ascii?Q?RAWMJvO9X5B0zVY6zy9ILVHHXzU/JJ2NpvNWcjGdnmSmQ96nlRE+l1IyM7wS?=
+ =?us-ascii?Q?RlA81bow2fICSTh+uUVRjahMOuBvQ1ayX9GeqxeiW3TMzoSNYtehCN954jOy?=
+ =?us-ascii?Q?YOHU9E6DY+oDZ+VFamAgkMRIW0lnWn0=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 038a2527-54f8-4e58-732b-08de6a101962
+X-MS-Exchange-CrossTenant-originalarrivaltime: 12 Feb 2026 08:24:11.0752
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: QvCqV7gCyFH5NN1NYVapjJ6RgitWo8zfOY66od4u3anKIB/3MqqoWkqDiVc68tlOt4AxIx5LTjuB5OVB5ABnI5QlP9b93oIztsgTt4mEYvw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS4PPF7CCC4B437
+X-OriginatorOrg: intel.com
 
-On Wed, Feb 11, 2026 at 10:01 PM Jakub Kicinski <kuba@kernel.org> wrote:
->
-> >
-> > My experiments are pointing to 'self.cancel()' sometimes taking a lot
-> > of time as part of the exec().
-> > I don't know but I feel the new test code itself should be OK. I can
-> > send a v3 and you can run it once too?
->
-> Could you reply to this thread with what the version of the patch where
-> you see defer() takes a long time? We use defer all over the place..
 
-Please find the patch with which I see exec() and defer() often taking a
-lot of time to perform ifup..
----
- .../selftests/drivers/net/hw/rss_ctx.py       | 100 +++++++++++++++++-
- 1 file changed, 98 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/rss_ctx.py b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-index ed7e405682f0..b9b7527c2c6b 100755
---- a/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-+++ b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
-@@ -4,13 +4,15 @@
- import datetime
- import random
- import re
-+import time
- from lib.py import ksft_run, ksft_pr, ksft_exit
- from lib.py import ksft_eq, ksft_ne, ksft_ge, ksft_in, ksft_lt, ksft_true, ksft_raises
- from lib.py import NetDrvEpEnv
- from lib.py import EthtoolFamily, NetdevFamily
- from lib.py import KsftSkipEx, KsftFailEx
-+from lib.py import ksft_disruptive
- from lib.py import rand_port
--from lib.py import ethtool, ip, defer, GenerateTraffic, CmdExitFailure
-+from lib.py import cmd, ethtool, ip, defer, GenerateTraffic, CmdExitFailure, wait_file
- 
- 
- def _rss_key_str(key):
-@@ -809,6 +811,98 @@ def test_rss_default_context_rule(cfg):
-                           'noise' : (0, 1) })
- 
- 
-+@ksft_disruptive
-+def test_rss_context_persist_ifupdown(cfg, pre_down=False):
-+    """
-+    Test that RSS contexts and their associated ntuple filters persist across
-+    an interface down/up cycle.
-+
-+    """
-+
-+    require_ntuple(cfg)
-+
-+    qcnt = len(_get_rx_cnts(cfg))
-+    if qcnt < 6:
-+        try:
-+            ethtool(f"-L {cfg.ifname} combined 6")
-+            defer(ethtool, f"-L {cfg.ifname} combined {qcnt}")
-+        except Exception as exc:
-+            raise KsftSkipEx("Not enough queues for the test") from exc
-+
-+    ethtool(f"-X {cfg.ifname} equal 2")
-+    defer(ethtool, f"-X {cfg.ifname} default")
-+
-+    ifup = defer(ip, f"link set dev {cfg.ifname} up")
-+    if pre_down:
-+        ip(f"link set dev {cfg.ifname} down")
-+
-+    try:
-+        ctx1_id = ethtool_create(cfg, "-X", "context new start 2 equal 2")
-+        defer(ethtool, f"-X {cfg.ifname} context {ctx1_id} delete")
-+    except CmdExitFailure as exc:
-+        raise KsftSkipEx("Create context not supported with interface down") from exc
-+
-+    ctx2_id = ethtool_create(cfg, "-X", "context new start 4 equal 2")
-+    defer(ethtool, f"-X {cfg.ifname} context {ctx2_id} delete")
-+
-+    port_ctx2 = rand_port()
-+    flow = f"flow-type tcp{cfg.addr_ipver} dst-ip {cfg.addr} dst-port {port_ctx2} context {ctx2_id}"
-+    ntuple_id = ethtool_create(cfg, "-N", flow)
-+    defer(ethtool, f"-N {cfg.ifname} delete {ntuple_id}")
-+
-+    if not pre_down:
-+        ip(f"link set dev {cfg.ifname} down")
-+    ifup.exec()
-+
-+    wait_file(f"/sys/class/net/{cfg.ifname}/carrier",
-+        lambda x: x.strip() == "1", deadline=20)
-+
-+    remote_addr = cfg.remote_addr_v[cfg.addr_ipver]
-+    for _ in range(10):
-+        if cmd(f"ping -c 1 -W 1 {remote_addr}", fail=False).ret == 0:
-+            break
-+        time.sleep(1)
-+    else:
-+        raise KsftSkipEx("Cannot reach remote host after interface up")
-+
-+    ctxs = cfg.ethnl.rss_get({'header': {'dev-name': cfg.ifname}}, dump=True)
-+
-+    data1 = [c for c in ctxs if c.get('context') == ctx1_id]
-+    ksft_eq(len(data1), 1, f"Context {ctx1_id} should persist after ifup")
-+
-+    data2 = [c for c in ctxs if c.get('context') == ctx2_id]
-+    ksft_eq(len(data2), 1, f"Context {ctx2_id} should persist after ifup")
-+
-+    _ntuple_rule_check(cfg, ntuple_id, ctx2_id)
-+
-+    cnts = _get_rx_cnts(cfg)
-+    GenerateTraffic(cfg).wait_pkts_and_stop(20000)
-+    cnts = _get_rx_cnts(cfg, prev=cnts)
-+
-+    main_traffic = sum(cnts[0:2])
-+    ksft_ge(main_traffic, 18000, f"Main context traffic distribution: {cnts}")
-+    ksft_lt(sum(cnts[2:6]), 500, f"Other context queues should be mostly empty: {cnts}")
-+
-+    _send_traffic_check(cfg, port_ctx2, f"context {ctx2_id}",
-+                        {'target': (4, 5),
-+                         'noise': (0, 1),
-+                         'empty': (2, 3)})
-+
-+
-+def test_rss_context_persist_create_and_ifdown(cfg):
-+    """
-+    Create RSS contexts then cycle the interface down and up.
-+    """
-+    test_rss_context_persist_ifupdown(cfg, pre_down=False)
-+
-+
-+def test_rss_context_persist_ifdown_and_create(cfg):
-+    """
-+    Bring interface down first, then create RSS contexts and bring up.
-+    """
-+    test_rss_context_persist_ifupdown(cfg, pre_down=True)
-+
-+
- def main() -> None:
-     with NetDrvEpEnv(__file__, nsim_test=False) as cfg:
-         cfg.context_cnt = None
-@@ -823,7 +917,9 @@ def main() -> None:
-                   test_rss_context_out_of_order, test_rss_context4_create_with_cfg,
-                   test_flow_add_context_missing,
-                   test_delete_rss_context_busy, test_rss_ntuple_addition,
--                  test_rss_default_context_rule],
-+                  test_rss_default_context_rule,
-+                  test_rss_context_persist_create_and_ifdown,
-+                  test_rss_context_persist_ifdown_and_create],
-                  args=(cfg, ))
-     ksft_exit()
- 
--- 
-2.47.3
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> Of Petr Oros
+> Sent: Thursday, February 12, 2026 8:53 AM
+> To: netdev@vger.kernel.org
+> Cc: Drewek, Wojciech <wojciech.drewek@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; Eric Dumazet <edumazet@google.com>;
+> linux-kernel@vger.kernel.org; Andrew Lunn <andrew+netdev@lunn.ch>;
+> Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Simon Horman
+> <horms@kernel.org>; Michal Swiatkowski
+> <michal.swiatkowski@linux.intel.com>; Jakub Kicinski
+> <kuba@kernel.org>; Paolo Abeni <pabeni@redhat.com>; David S. Miller
+> <davem@davemloft.net>; intel-wired-lan@lists.osuosl.org
+> Subject: [Intel-wired-lan] [PATCH iwl-net 1/2] ice: fix inverted ready
+> check for VF representors
+>=20
+> Commit 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
+> refactored the VF readiness check into a generic repr->ops.ready()
+> callback but implemented ice_repr_ready_vf() with inverted logic:
+>=20
+>   return !ice_check_vf_ready_for_cfg(repr->vf);
+>=20
+> ice_check_vf_ready_for_cfg() returns 0 on success, so the negation
+> makes ready() return non-zero when the VF is ready. All callers treat
+> non-zero as "not ready, skip", causing ndo_get_stats64, get_drvinfo,
+> get_strings and get_ethtool_stats to always bail out in switchdev
+> mode.
+>=20
+> Remove the erroneous negation. The SF variant ice_repr_ready_sf() is
+> already correct (returns !active, i.e. non-zero when not active).
+>=20
+> Fixes: 0f00a897c9fcbd ("ice: check if SF is ready in ethtool ops")
+> Signed-off-by: Petr Oros <poros@redhat.com>
+> ---
+>  drivers/net/ethernet/intel/ice/ice_repr.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>=20
+> diff --git a/drivers/net/ethernet/intel/ice/ice_repr.c
+> b/drivers/net/ethernet/intel/ice/ice_repr.c
+> index cb08746556a670..2a84f656405828 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_repr.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_repr.c
+> @@ -315,7 +315,7 @@ ice_repr_reg_netdev(struct net_device *netdev,
+> const struct net_device_ops *ops)
+>=20
+>  static int ice_repr_ready_vf(struct ice_repr *repr)  {
+> -	return !ice_check_vf_ready_for_cfg(repr->vf);
+> +	return ice_check_vf_ready_for_cfg(repr->vf);
+>  }
+>=20
+>  static int ice_repr_ready_sf(struct ice_repr *repr)
+> --
+> 2.52.0
 
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
