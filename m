@@ -1,114 +1,251 @@
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA15919B5A7;
-	Thu, 12 Feb 2026 01:20:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.221
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1A71E0B9C
+	for <netdev@vger.kernel.org>; Thu, 12 Feb 2026 02:37:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770859242; cv=none; b=PB++GNdfXJaTdbZjdObhh0uzOFnz3T4jNNA6pEqCFtPlGuIN5qxLlUWWLUHV0Kp03xFkArSCuQFDgcUMj0VEB6I6Lo4bUVQdHaXds84v0z5x0tHO3PFPB55U018ugAjQmGc/W5QNJuHDp2Vu6PHSryMCjQT374+3Go5iXyydis0=
+	t=1770863823; cv=none; b=ghHTgkxrHjTfoJVAlFBqZkuPMF5c4Gp7kXrIhesy2xsJ5HkIzLHCTj1phxKSxs0iH/JhtmvpF+G/l6U4I7pYXyIIe22jPL4ACf5lqrzgPpPltnka8DmP2g++BEKUHjOAbosk4YNbU+8gPUZTgi+CTeNmjc+Fn+05nPTFJkRQxwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770859242; c=relaxed/simple;
-	bh=6rqLxMkniNBazqn99BelJAYnwzNF0Wuf1Mb7ntcTVtA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=qkXB4qFesGN4RTTQ5oHGwF1t2939cS94PqRDOfXG7zZe4NDY/YwMlbciq9OSaITtIm3F9qE7d7zmmwv8b2zaHw70V2Kg4tphwJXnynIqQ90DWyBX5/+tpsCGBzsCwRm99rXpxoh0V8qoqJy7fg6WX/PSDoHZs2S2slLomk2K9zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=B81WG3z6; arc=none smtp.client-ip=113.46.200.221
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1770863823; c=relaxed/simple;
+	bh=NHG1RfBq3USV9RR/GbLkCAj0C63n6d1HzMNzLjp/uoc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=juag02JeoKpKUPpRyxlD275v4cgCz8oyEfzFXiSu6gM4A2hnPXWKK/kdxqmCkBv4Xc/+NREp5P9EEyWV4OfdGD1eGxNlqUAmJJBTyjDf/WiR2l0XUZOB+HmucJAd1zmFJBQ9ii22uqs75CJZF36SSLUEnMtB0S6yaU3dzZNYw9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iBC9K2z/; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="B81WG3z6"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=blwWghHyZP7KBJITugnpbrb/9shthLQW5Bm6sJwJnv4=;
-	b=B81WG3z6bjv8h6pPHYZcNO+8PJJqQWV69xT0SJdO3XTwT0WN5W0f9LlnqsfXwoNdvDFRvaUT6
-	aBM0q8ErOwKQaVlgi2K5gSTWB5g0QH7D4LQBLsPGb3aYhaRYJqDRgi96cAOAtJu+KXBdDnKI0Z/
-	eG58ljeSYWW/TDm83pl0ZcQ=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4fBHRz0FMgzRhRT;
-	Thu, 12 Feb 2026 09:15:59 +0800 (CST)
-Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3AA7440569;
-	Thu, 12 Feb 2026 09:20:37 +0800 (CST)
-Received: from [10.174.179.113] (10.174.179.113) by
- dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 12 Feb 2026 09:20:36 +0800
-Message-ID: <34e17499-e385-4017-801c-332c9c40d484@huawei.com>
-Date: Thu, 12 Feb 2026 09:20:35 +0800
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iBC9K2z/"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770863809;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=H0zxS2+fpaIq5MDTkuYbUhqvkm69abmM5+m94S3DKjA=;
+	b=iBC9K2z/hYuDRI0pTMC0Z0WrEoy4MyO0isfzHBtSRWwZHZcR9CZiTUhZu3Qn73w8CoF3wC
+	BlZqYK0rJGwJy7t2nXoSyatfofLwLGrmc46Bf2qGj4oNQiU0vca5scW97uSkRUuaovkM+X
+	dr+jDQhjImSveXRyAQucRzFt4Q3qgKU=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: xxx@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+	syzbot+2b3391f44313b3983e91@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH bpf v2] bpf: cpumap: fix race in bq_flush_to_queue on PREEMPT_RT
+Date: Thu, 12 Feb 2026 10:36:33 +0800
+Message-ID: <20260212023634.366343-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] selftests: net: lib: Fix jq parsing error
-To: Petr Machata <petrm@nvidia.com>
-CC: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <horms@kernel.org>, <shuah@kernel.org>,
-	<razor@blackwall.org>, <netdev@vger.kernel.org>,
-	<linux-kselftest@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-References: <20260211022146.190948-1-yuehaibing@huawei.com>
- <87qzqr5ktl.fsf@nvidia.com>
-Content-Language: en-US
-From: Yue Haibing <yuehaibing@huawei.com>
-In-Reply-To: <87qzqr5ktl.fsf@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf500002.china.huawei.com (7.185.36.57)
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On 2026/2/12 0:01, Petr Machata wrote:
-> 
-> Yue Haibing <yuehaibing@huawei.com> writes:
-> 
->> The testcase failed as below:
->> $./vlan_bridge_binding.sh
->> ...
->> + adf_ip_link_set_up d1
->> + local name=d1
->> + shift
->> + ip_link_is_up d1
->> + ip_link_has_flag d1 UP
->> + local name=d1
->> + shift
->> + local flag=UP
->> + shift
->> ++ ip -j link show d1
->> ++ jq --arg flag UP 'any(.[].flags.[]; . == $flag)'
->> jq: error: syntax error, unexpected '[', expecting FORMAT or QQSTRING_START
->>  (Unix shell quoting issues?) at <top-level>, line 1:
->> any(.[].flags.[]; . == $flag)
->> jq: 1 compile error
->>
->> Remove the extra dot (.) after flags array to fix this.
->>
->> Fixes: 4baa1d3a5080 ("selftests: net: lib: Add ip_link_has_flag()")
->> Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-> 
-> Interesting, both work for me on 1.7.1. What jq version do you use?
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-I run this on Ubuntu 23.04,
-jq - commandline JSON processor [version 1.6]
-> 
-> Nevertheless, I believe the fix is correct.
-> 
-> Reviewed-by: Petr Machata <petrm@nvidia.com>
-> 
->> ---
->>  tools/testing/selftests/net/lib.sh | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
->> index 0ec131b339bc..b40694573f4c 100644
->> --- a/tools/testing/selftests/net/lib.sh
->> +++ b/tools/testing/selftests/net/lib.sh
->> @@ -577,7 +577,7 @@ ip_link_has_flag()
->>  	local flag=$1; shift
->>  
->>  	local state=$(ip -j link show "$name" |
->> -		      jq --arg flag "$flag" 'any(.[].flags.[]; . == $flag)')
->> +		      jq --arg flag "$flag" 'any(.[].flags[]; . == $flag)')
->>  	[[ $state == true ]]
->>  }
-> 
+On PREEMPT_RT kernels, the per-CPU xdp_bulk_queue (bq) can be accessed
+concurrently by multiple preemptible tasks on the same CPU.
+
+The original code assumes bq_enqueue() and __cpu_map_flush() run
+atomically with respect to each other on the same CPU, relying on
+local_bh_disable() to prevent preemption. However, on PREEMPT_RT,
+local_bh_disable() only calls migrate_disable() and does not disable
+preemption. spin_lock() also becomes a sleeping rt_mutex. Together,
+this allows CFS scheduling to preempt a task during bq_flush_to_queue(),
+enabling another task on the same CPU to enter bq_enqueue() and operate
+on the same per-CPU bq concurrently.
+
+This leads to several races:
+
+1. Double __list_del_clearprev(): after spin_unlock() in
+   bq_flush_to_queue(), a preempting task can call bq_enqueue() ->
+   bq_flush_to_queue() on the same bq when bq->count reaches
+   CPU_MAP_BULK_SIZE. Both tasks then call __list_del_clearprev()
+   on the same bq->flush_node, the second call dereferences the
+   prev pointer that was already set to NULL by the first.
+
+2. bq->count and bq->q[] races: concurrent bq_enqueue() can corrupt
+   the packet queue while bq_flush_to_queue() is processing it.
+
+The race between task A (__cpu_map_flush -> bq_flush_to_queue) and
+task B (bq_enqueue -> bq_flush_to_queue) on the same CPU:
+
+  Task A (xdp_do_flush)          Task B (cpu_map_enqueue)
+  ----------------------         ------------------------
+  bq_flush_to_queue(bq)
+    spin_lock(&q->producer_lock)
+    /* flush bq->q[] to ptr_ring */
+    bq->count = 0
+    spin_unlock(&q->producer_lock)
+                                   bq_enqueue(rcpu, xdpf)
+    <-- CFS preempts Task A -->      bq->q[bq->count++] = xdpf
+                                     /* ... more enqueues until full ... */
+                                     bq_flush_to_queue(bq)
+                                       spin_lock(&q->producer_lock)
+                                       /* flush to ptr_ring */
+                                       spin_unlock(&q->producer_lock)
+                                       __list_del_clearprev(flush_node)
+                                         /* sets flush_node.prev = NULL */
+    <-- Task A resumes -->
+    __list_del_clearprev(flush_node)
+      flush_node.prev->next = ...
+      /* prev is NULL -> kernel oops */
+
+Fix this by adding a local_lock_t to xdp_bulk_queue and acquiring it
+in bq_enqueue() and __cpu_map_flush(). On non-RT kernels, local_lock
+maps to preempt_disable/enable with zero additional overhead. On
+PREEMPT_RT, it provides a per-CPU sleeping lock that serializes
+access to the bq. Use local_lock_nested_bh() since these paths already
+run under local_bh_disable().
+
+An alternative approach of snapshotting bq->count and bq->q[] before
+releasing the producer_lock was considered, but it requires copying
+the entire bq->q[] array on every flush, adding unnecessary overhead.
+
+To reproduce, insert an mdelay(100) between spin_unlock() and
+__list_del_clearprev() in bq_flush_to_queue(), then run reproducer
+provided by syzkaller.
+
+Panic:
+===
+ BUG: kernel NULL pointer dereference, address: 0000000000000000
+ #PF: supervisor write access in kernel mode
+ #PF: error_code(0x0002) - not-present page
+ PGD 0 P4D 0
+ Oops: Oops: 0002 [#1] SMP PTI
+ CPU: 0 UID: 0 PID: 377 Comm: a.out Not tainted 6.19.0+ #21 PREEMPT_RT
+ RIP: 0010:bq_flush_to_queue+0x145/0x200
+ Call Trace:
+  <TASK>
+  __cpu_map_flush+0x2c/0x70
+  xdp_do_flush+0x64/0x1b0
+  xdp_test_run_batch.constprop.0+0x4d4/0x6d0
+  bpf_test_run_xdp_live+0x24b/0x3e0
+  bpf_prog_test_run_xdp+0x4a1/0x6e0
+  __sys_bpf+0x44a/0x2760
+  __x64_sys_bpf+0x1a/0x30
+  x64_sys_call+0x146c/0x26e0
+  do_syscall_64+0xd5/0x5a0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  </TASK>
+
+Fixes: 3253cb49cbad ("softirq: Allow to drop the softirq-BKL lock on PREEMPT_RT")
+Reported-by: syzbot+2b3391f44313b3983e91@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69369331.a70a0220.38f243.009d.GAE@google.com/T/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+v1 -> v2: https://lore.kernel.org/bpf/20260211064417.196401-1-jiayuan.chen@linux.dev/
+- Use local_lock_nested_bh()/local_unlock_nested_bh() instead of
+  local_lock()/local_unlock(), since these paths already run under
+  local_bh_disable(). (Sebastian Andrzej Siewior)
+- Replace "Caller must hold bq->bq_lock" comment with
+  lockdep_assert_held() in bq_flush_to_queue(). (Sebastian Andrzej Siewior)
+- Fix Fixes tag to 3253cb49cbad ("softirq: Allow to drop the
+  softirq-BKL lock on PREEMPT_RT") which is the actual commit that
+  makes the race possible. (Sebastian Andrzej Siewior)
+---
+ kernel/bpf/cpumap.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
+index 04171fbc39cb..32b43cb9061b 100644
+--- a/kernel/bpf/cpumap.c
++++ b/kernel/bpf/cpumap.c
+@@ -29,6 +29,7 @@
+ #include <linux/sched.h>
+ #include <linux/workqueue.h>
+ #include <linux/kthread.h>
++#include <linux/local_lock.h>
+ #include <linux/completion.h>
+ #include <trace/events/xdp.h>
+ #include <linux/btf_ids.h>
+@@ -52,6 +53,7 @@ struct xdp_bulk_queue {
+ 	struct list_head flush_node;
+ 	struct bpf_cpu_map_entry *obj;
+ 	unsigned int count;
++	local_lock_t bq_lock;
+ };
+ 
+ /* Struct for every remote "destination" CPU in map */
+@@ -451,6 +453,7 @@ __cpu_map_entry_alloc(struct bpf_map *map, struct bpf_cpumap_val *value,
+ 	for_each_possible_cpu(i) {
+ 		bq = per_cpu_ptr(rcpu->bulkq, i);
+ 		bq->obj = rcpu;
++		local_lock_init(&bq->bq_lock);
+ 	}
+ 
+ 	/* Alloc queue */
+@@ -722,6 +725,8 @@ static void bq_flush_to_queue(struct xdp_bulk_queue *bq)
+ 	struct ptr_ring *q;
+ 	int i;
+ 
++	lockdep_assert_held(&bq->bq_lock);
++
+ 	if (unlikely(!bq->count))
+ 		return;
+ 
+@@ -749,11 +754,15 @@ static void bq_flush_to_queue(struct xdp_bulk_queue *bq)
+ }
+ 
+ /* Runs under RCU-read-side, plus in softirq under NAPI protection.
+- * Thus, safe percpu variable access.
++ * Thus, safe percpu variable access. PREEMPT_RT relies on
++ * local_lock_nested_bh() to serialise access to the per-CPU bq.
+  */
+ static void bq_enqueue(struct bpf_cpu_map_entry *rcpu, struct xdp_frame *xdpf)
+ {
+-	struct xdp_bulk_queue *bq = this_cpu_ptr(rcpu->bulkq);
++	struct xdp_bulk_queue *bq;
++
++	local_lock_nested_bh(&rcpu->bulkq->bq_lock);
++	bq = this_cpu_ptr(rcpu->bulkq);
+ 
+ 	if (unlikely(bq->count == CPU_MAP_BULK_SIZE))
+ 		bq_flush_to_queue(bq);
+@@ -774,6 +783,8 @@ static void bq_enqueue(struct bpf_cpu_map_entry *rcpu, struct xdp_frame *xdpf)
+ 
+ 		list_add(&bq->flush_node, flush_list);
+ 	}
++
++	local_unlock_nested_bh(&rcpu->bulkq->bq_lock);
+ }
+ 
+ int cpu_map_enqueue(struct bpf_cpu_map_entry *rcpu, struct xdp_frame *xdpf,
+@@ -810,7 +821,9 @@ void __cpu_map_flush(struct list_head *flush_list)
+ 	struct xdp_bulk_queue *bq, *tmp;
+ 
+ 	list_for_each_entry_safe(bq, tmp, flush_list, flush_node) {
++		local_lock_nested_bh(&bq->obj->bulkq->bq_lock);
+ 		bq_flush_to_queue(bq);
++		local_unlock_nested_bh(&bq->obj->bulkq->bq_lock);
+ 
+ 		/* If already running, costs spin_lock_irqsave + smb_mb */
+ 		wake_up_process(bq->obj->kthread);
+-- 
+2.43.0
+
