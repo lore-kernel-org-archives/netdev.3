@@ -1,206 +1,91 @@
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C7B2B9A4;
-	Thu, 12 Feb 2026 09:51:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B95B01C4A24;
+	Thu, 12 Feb 2026 10:24:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770889889; cv=none; b=eMn4hjfbExVOhVTzPaeRHRJ7BV+rQ2wOkRs4KppF2xQKlywJ0Dcjt7p08FkXLEwuyKEe4ZrwO1wGQb2j+M/418FRLZo/W8LpYoESrQZyKnrtRZsrt7PYmFB4JwDWdgXT1FezGxXGP7fGFwVH45fa+Cc1/CEdt4I/VqvB33wzpy0=
+	t=1770891897; cv=none; b=LclHtdnwd3/QR8+XVu2OcyM5mgv40hm+ry7721HbN5WpyKDSaag+qw85e77AjKjJYh4/4LcS1tISooA0rYxjjVW8yMqk43dkI5vTf1kn1d7m9MnLOhOGdlqGFPpAHflNlf8b6ijc4O59Q6V0Qji9WGf0+k9P+LnxhVoxDHna3o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770889889; c=relaxed/simple;
-	bh=B7sBeI2OHeGzGmEM1MDciZvw3RM4fLtNiVKVRT4HeoU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MDO+M2o+xl/1JcF6QcpxSsY8UZznVnC0rN91KfHGKmBnTEfHu51sHEZr9WUhYn9HqQCsaRKsdwn5dQhmcxqKcfc8eqiqwroKU89+W5H1ocug98pKjKTWvLjVis4NcdhP0kffXrRv65Xh1KIQmeBwngJ1MTIXIse/mMSj6kFk1O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=KzsB5jse; arc=none smtp.client-ip=115.124.30.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1770891897; c=relaxed/simple;
+	bh=Q1mgWVleEE0wyf7KXIaG1atYZg87rJLD9jD9rv73Zxc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oQ8zUZMTIKmWuLJ5+Dchm8Hovt0cLTbnmpkH5PPDkAU7Mm3A8hkRBOQ0JYPMlnhKn/YwFLlnFA6ABX1ZlvuUhuB+DBLhmR9UJ8E4+sIZuIOFeNCcbROoCL3dL9qsa0UY7DrVXQYuDplw6NS5SQ93sYWuY0Cc7fONT+gG8KHD3Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TP3HfEze; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="KzsB5jse"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1770889883; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=qpruaUwKwh867x0HVlxV3T2XoeP5v0Ct5QMf35UW6c8=;
-	b=KzsB5jseH9KBJrEiaBxupfDEKfEu0bEOqa6aO3ELO30XhuxMCNY1Uhq+erULMCmoIhnoVVWXBsR2FHDxY8+B28Ig9EwiiGFm3utBQdmjYFNnwy4CWyVyTiYLH8DW08qlnqf+nAAas4TGSLfzqLHEMpKoXAo3x9n8YmEyzVZZaUQ=
-Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0Wz4YnRr_1770888937 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 12 Feb 2026 17:35:37 +0800
-Date: Thu, 12 Feb 2026 17:35:37 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com    >
-To: Dust Li <dust.li@linux.alibaba.com>
-Cc: "D. Wythe" <alibuda@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Mahanta Jambigi <mjambigi@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org, oliver.yang@linux.alibaba.com,
-	pasic@linux.ibm.com
-Subject: Re: [PATCH RFC net-next] net/smc: transition to RDMA core CQ pooling
-Message-ID: <20260212093537.GA27899@j66a10360.sqa.eu95>
-References: <20260202094800.30373-1-alibuda@linux.alibaba.com>
- <aYx7Uh9MmJsPWUu4@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TP3HfEze"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1770891895; x=1802427895;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=Q1mgWVleEE0wyf7KXIaG1atYZg87rJLD9jD9rv73Zxc=;
+  b=TP3HfEzepY88WwL4j6dxlKJfs6JgebjmQDdrfR7K08BOQkUQr9x53P59
+   dxk0PZbKyk6iS6KkxJ90mJmoVXkVQWEqzAQuTRpY/AhN/hYeDE+wXSQiM
+   cfa/3TpHbxshA1mxfEAsaDYCebFqC89XKcUYXdpyEibxUdOV40gMmlDnv
+   EN5W05vVPEnz2a3qQlf4R2zfsgE1jW0LzRismPs/V9FQAhR0Y4NIvWW5u
+   qwqlS9YbIlNgmTLEiBMp2SUf2DS/5KTIGd20jJgALbjegufHUkd6TZgdK
+   2TNiyqVkzkyqpEli7eT386ficB+U3Bgv+YaJQOBiohwYIf1dWGP3VNC6D
+   A==;
+X-CSE-ConnectionGUID: bWryUqVuTAWcoXyHUxcrHg==
+X-CSE-MsgGUID: yDdx/szhQs+h32pDEtaXlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11698"; a="75684952"
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
+   d="scan'208";a="75684952"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 02:24:54 -0800
+X-CSE-ConnectionGUID: w92L+W/iTzySPvh6OtFRUw==
+X-CSE-MsgGUID: f9HdQho0SvCpTUUQIBLK6A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,286,1763452800"; 
+   d="scan'208";a="212664748"
+Received: from b580.bj.intel.com ([10.238.152.74])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 02:24:51 -0800
+From: Junjie Cao <junjie.cao@intel.com>
+To: miriam.rachel.korenblit@intel.com,
+	johannes.berg@intel.com,
+	linux-wireless@vger.kernel.org,
+	richardcochran@gmail.com
+Cc: horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	yedidya.ben.shimol@intel.com,
+	avraham.stern@intel.com,
+	daniel.gabay@intel.com,
+	krishnanand.prabhu@intel.com,
+	luciano.coelho@intel.com,
+	gregory.greenman@intel.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] wifi: iwlwifi: ptp: Fix potential race condition in PTP removal
+Date: Thu, 12 Feb 2026 18:24:02 +0800
+Message-ID: <20260212102402.1283533-1-junjie.cao@intel.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <DM3PPF63A6024A9E1EF4081E342AF4BED81A365A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
+References: <DM3PPF63A6024A9E1EF4081E342AF4BED81A365A@DM3PPF63A6024A9.namprd11.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aYx7Uh9MmJsPWUu4@linux.alibaba.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Transfer-Encoding: 8bit
 
-On Wed, Feb 11, 2026 at 08:51:30PM +0800, Dust Li wrote:
-> On 2026-02-02 17:48:00, D. Wythe wrote:
-> >The current SMC-R implementation relies on global per-device CQs
-> >and manual polling within tasklets, which introduces severe
-> >scalability bottlenecks due to global lock contention and tasklet
-> >scheduling overhead, resulting in poor performance as concurrency
-> >increases.
-> >
-> >Refactor the completion handling to utilize the ib_cqe API and
-> >standard RDMA core CQ pooling. This transition provides several key
-> >advantages:
-> >
-> >1. Multi-CQ: Shift from a single shared per-device CQ to multiple
-> >link-specific CQs via the CQ pool. This allows completion processing
-> >to be parallelized across multiple CPU cores, effectively eliminating
-> >the global CQ bottleneck.
-> >
-> >2. Leverage DIM: Utilizing the standard CQ pool with IB_POLL_SOFTIRQ
-> >enables Dynamic Interrupt Moderation from the RDMA core, optimizing
-> >interrupt frequency and reducing CPU load under high pressure.
-> >
-> >3. O(1) Context Retrieval: Replaces the expensive wr_id based lookup
-> >logic (e.g., smc_wr_tx_find_pending_index) with direct context retrieval
-> >using container_of() on the embedded ib_cqe.
-> >
-> >4. Code Simplification: This refactoring results in a reduction of
-> >~150 lines of code. It removes redundant sequence tracking, complex lookup
-> >helpers, and manual CQ management, significantly improving maintainability.
-> 
-> Excellent !
-> 
-> Some comments below.
-> 
-> >
-> >Performance Test: redis-benchmark with max 32 connections per QP
-> >Data format: Requests Per Second (RPS), Percentage in brackets
-> >represents the gain/loss compared to TCP.
-> >
-> >| Clients | TCP      | SMC (original)      | SMC (cq_pool)       |
-> >|---------|----------|---------------------|---------------------|
-> >| c = 1   | 24449    | 31172  (+27%)       | 34039  (+39%)       |
-> >| c = 2   | 46420    | 53216  (+14%)       | 64391  (+38%)       |
-> >| c = 16  | 159673   | 83668  (-48%)  <--  | 216947 (+36%)       |
-> >| c = 32  | 164956   | 97631  (-41%)  <--  | 249376 (+51%)       |
-> >| c = 64  | 166322   | 118192 (-29%)  <--  | 249488 (+50%)       |
-> >| c = 128 | 167700   | 121497 (-27%)  <--  | 249480 (+48%)       |
-> >| c = 256 | 175021   | 146109 (-16%)  <--  | 240384 (+37%)       |
-> >| c = 512 | 168987   | 101479 (-40%)  <--  | 226634 (+34%)       |
-> >
-> >The results demonstrate that this optimization effectively resolves the
-> >scalability bottleneck, with RPS increasing by over 110% at c=64
-> >compared to the original implementation.
-> >
-> >Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
-> >---
-> > net/smc/smc_core.c |   8 +-
-> > net/smc/smc_core.h |  16 ++-
-> > net/smc/smc_ib.c   | 114 ++++++-------------
-> > net/smc/smc_ib.h   |   5 -
-> > net/smc/smc_tx.c   |   1 -
-> > net/smc/smc_wr.c   | 267 ++++++++++++++++-----------------------------
-> > net/smc/smc_wr.h   |  38 ++-----
-> > 7 files changed, 150 insertions(+), 299 deletions(-)
-> >
-> >diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
-> >index 8aca5dc54be7..9590c8aed3dd 100644
-> >--- a/net/smc/smc_core.c
-> >+++ b/net/smc/smc_core.c
-> >@@ -815,17 +815,11 @@ int smcr_link_init(struct smc_link_group *lgr, struct smc_link *lnk,
-> > 	lnk->lgr = lgr;
-> > 	smc_lgr_hold(lgr); /* lgr_put in smcr_link_clear() */
-> > 	lnk->link_idx = link_idx;
-> >-	lnk->wr_rx_id_compl = 0;
-> > 	smc_ibdev_cnt_inc(lnk);
-> > 	smcr_copy_dev_info_to_link(lnk);
-> > 	atomic_set(&lnk->conn_cnt, 0);
-> 
-> I think this isn't unlikey, we haven't signal the RDMA WRITE wr, so it
-> shouldn't have CQEs when wc->status == 0.
-> If we are here, wc->status should always != 0.
-> 
+Hi Miri,
 
-Nice catch, I mixed this up with the rwwi version.
+You're right -- cancel_delayed_work_sync() handles re-arming by design,
+and the work is scheduled with a 1-hour delay (IWL_PTP_WRAP_TIME =
+3600 * HZ), so it cannot realistically fire again during the
+microsecond-scale teardown window.
 
-> 
-> >+}
-> >+
-> >+static void smc_wr_reg_process_cqe(struct ib_cq *cq, struct ib_wc *wc)
-> >-		       sizeof(*link->wr_tx_v2_pend));
-> Why remove this memset ?
-> 
-> >-		memset(link->lgr->wr_tx_buf_v2, 0,
-> >-		       sizeof(*link->lgr->wr_tx_buf_v2));
-> >+		memset(link->lgr->wr_tx_buf_v2, 0, sizeof(*link->lgr->wr_tx_buf_v2));
-> > 	} else {
-> >-		link->wr_tx_pends[pnd_snd_idx].wc_status = wc->status;
-> >-		if (link->wr_tx_pends[pnd_snd_idx].compl_requested)
-> >+		if (tx_pend->compl_requested)
-> > 			complete(&link->wr_tx_compl[pnd_snd_idx]);
-> >-		memcpy(&pnd_snd, &link->wr_tx_pends[pnd_snd_idx],
-> >-		       sizeof(pnd_snd));
-> >-		/* clear the full struct smc_wr_tx_pend including .priv */
-> >-		memset(&link->wr_tx_pends[pnd_snd_idx], 0,
-> >-		       sizeof(link->wr_tx_pends[pnd_snd_idx]));
-> 
-> ditto
-> 
+The real issue is simply that the delayed work can execute between
+ptp_clock_unregister() and cancel_delayed_work_sync(), observing
+partially cleared PTP state.
 
-Looks like I accidentally deleted this code, I will restore it in the
-next version.
+I'll send a v2 with a corrected commit message, and also split the
+patch into two (one per sub-driver) as Simon suggested.
 
-> >-		memset(&link->wr_tx_bufs[pnd_snd_idx], 0,
-> >-		       sizeof(link->wr_tx_bufs[pnd_snd_idx]));
-> >+		memset(&link->wr_tx_bufs[tx_pend->idx], 0, sizeof(link->wr_tx_bufs[tx_pend->idx]));
-> > 		if (!test_and_clear_bit(pnd_snd_idx, link->wr_tx_mask))
-> > 			return;
-> > 	}
-> > 
-> >-	if (wc->status) {
-> >+	if (unlikely(wc->status)) {
-> > 		if (link->lgr->smc_version == SMC_V2) {
-> > 			memset(link->wr_tx_v2_pend, 0,
-> > 			       sizeof(*link->wr_tx_v2_pend));
-> >@@ -128,44 +117,12 @@ static inline void smc_wr_tx_process_cqe(struct ib_wc *wc)
-> > 		/* terminate link */
-> > 		smcr_link_down_cond_sched(link);
-> > 	}
-> >+		smc_wr_rx_init_cqe(&link->wr_rx_ibs[i].cqe);
-> >+		link->wr_rx_ibs[i].wr.wr_cqe = &link->wr_rx_ibs[i].cqe;
-> >+		link->wr_rx_ibs[i].index = i;
-> >+	}
-> 
-> Can we group all those xxx_init_cqe into a function and move them out of
-> smc_wr_alloc_link_mem() ? All what smc_wr_alloc_link_mem() is all about
-> allocating memory.
-> 
-> Maybe we can define a smc_wr_init_cqes() and call it in
-> smc_wr_create_link() ?
-> 
-> 
+Thanks for the review!
 
-Sounds reasonable, I'll implement this in the next version.
-Additionally, other items like removing redundant fields and renaming
-the index will also be addressed in the same update.
-
-Thanks,
-D. Wythe
-
-> Best regards,
-> Dust
+Junjie
