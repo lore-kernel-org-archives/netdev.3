@@ -1,262 +1,236 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21D5A2F547F;
-	Thu, 12 Feb 2026 12:17:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AA127E7EB
+	for <netdev@vger.kernel.org>; Thu, 12 Feb 2026 12:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770898628; cv=none; b=m+rpso5wSkBlNYeiWsIDC0TfcZ7dm2xkImv9l02oGt9teNphgsRPzWT86mWqZ+5OXywATyDz77mBlGhVMmp0nHaQgNhSz+7jqhqBek9Db2T5tY/5ZvGKts5tPDP6XChGW3BWhvyt3Z8r5epcrYphrTckPW4g1UDyIlgrtT1dqYQ=
+	t=1770898702; cv=none; b=jS/dydZJhBIbvyIAulg4xpc2iKG8OuEJkIwuAT628zFBnjJDQoSI0lGLz3HpggXO0x4HIJlXsML3GttxYJp2aNTG9l08eT3E3YINY7qoA0AyHSGxMbtXFXTMEZeoqiTg4Jif0neLSZvzIK+G7z/iTnysppzg5zEkHsx7MGDnQGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770898628; c=relaxed/simple;
-	bh=PXtE5S3MYeSM4NFbKkSYxMIz8BkAcijvzb9fflOb260=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tO+NZtF7415DikgrXZd3x26WthEa03i1a7/An5RFSdfidzsdfNr55g5PRPm45gjdzdKbcpTzC9lfhGyOrAI8cOcKNH93lD6EJnTdvs34wwWTLskEN+Xb25zm5Ws8NuKwBfAxJ6PBv82rhkVqI/LU4AP5Tn3q4GUzRSUTauflXc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=j6AlECDA; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1770898702; c=relaxed/simple;
+	bh=Fgp+NowPbYwgCMhWMOsiWJrrq1R0CaAAYKvFqsMquo0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cu67TqbSKfCnfuRcEA3iOtWZAk7bmzJR8PGvH3AYr7735N/sDc5hKTkDXXvrrfZ8bGPlvcgZ0U0k2iTwnlKSLVANVAnWz4nZUMkCPVuuAocAcP/GdbvG7bUgwDjKzczVE8tDcJTDKah8oQt0iImNsCvS1WMoURuNel54rrioJaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=hKAu2ljP; arc=none smtp.client-ip=85.9.206.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="j6AlECDA"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61BLNosc1274001;
-	Thu, 12 Feb 2026 04:16:46 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=a
-	eqAETiTNj6uSgD0Ysfv8r5zDeIueL0UnHS5qvcdV2o=; b=j6AlECDAP2JpFPmcL
-	LqnNzNZLf73oHhTj1PGn1HEOClufciitqMnQYnGXp2nwRmCQJt48RhSKvDy2+HOK
-	bpqLINdPs6n8JHluBOfRRHN8Uc4H+ZYvWJAuTiPs1hm/vFvc8/8iklKTFeFMKMmy
-	aAVWQlKhuKLynRKZs3HGkF5uPZBwU0mGf6ECJON52Rb9blH5LaiBUJXXGvbpLVrH
-	LzFDBXW6bRVze7ybu48XPgj3R1Isdb/Qv/vK3ryXNucpH8wvzKg9XUtvSCfqiwb5
-	/SLJ4MCfz7RnKB47UiJHU2v81gVa0dJ/tlnimOF3+Ji7pvAGqVN6cNapYInFJz7a
-	dTWoA==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4c89g1nnu8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 04:16:45 -0800 (PST)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 12 Feb 2026 04:17:02 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 12 Feb 2026 04:17:02 -0800
-Received: from 101hsapphire1.sclab.marvell.com (unknown [10.111.168.47])
-	by maili.marvell.com (Postfix) with ESMTP id 872213F70DA;
-	Thu, 12 Feb 2026 04:16:44 -0800 (PST)
-From: Vimlesh Kumar <vimleshk@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <sedara@marvell.com>, <srasheed@marvell.com>, <hgani@marvell.com>,
-        "Vimlesh Kumar" <vimleshk@marvell.com>,
-        Veerasenareddy Burru
-	<vburru@marvell.com>,
-        Satananda Burla <sburla@marvell.com>,
-        Andrew Lunn
-	<andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni
-	<pabeni@redhat.com>
-Subject: [PATCH RESEND net v1 2/2] octeon_ep_vf: avoid compiler and IQ/OQ reordering
-Date: Thu, 12 Feb 2026 12:16:32 +0000
-Message-ID: <20260212121634.360252-3-vimleshk@marvell.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260212121634.360252-1-vimleshk@marvell.com>
-References: <20260212121634.360252-1-vimleshk@marvell.com>
+	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="hKAu2ljP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
+	s=protonmail2; t=1770898683; x=1771157883;
+	bh=fZ8VB4W/hZRiQ0wYvpHYEcLhoXj9fzTdCw14ccJdOcA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=hKAu2ljPi03hV5sbJzr6xjS5CwhmKp2p8yeI5rCCL7p5jHKDbqni84uFyKrIvlmcL
+	 ga/sJKMMhCsfkNqUh465UfImD3sqF7M9hfXi0UlBPTlbI8qI4GxQPVyKqLmIBXTSG7
+	 dIFpBX5G89LBKVjoXc1B9uXO8/x3u/dfZWQExT5zcxo0ZFxocdlNcr5ibwINwPkMPs
+	 8IGAQoAAceOJ0otb3paKQKsHHfZN86waoV0dV6oZENbNlgdSiMwUewEsoNLGYElxGO
+	 Ff0jxrWS1b6INXSjl27aosdLJl6n2oz9OFjcAcKYc8A5M7BphrCVqam4e1/CJxLiTA
+	 v6R3jTX09RANw==
+Date: Thu, 12 Feb 2026 12:17:59 +0000
+To: Victor Nogueira <victor@mojatatu.com>
+From: Paul Moses <p@1g4.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net v5 1/1] net/sched: act_gate: snapshot parameters with RCU on replace
+Message-ID: <nmLWEyw7BWgMgTdbfbxbYI1QqIF-IPdNFFsdf_T8qY8IBncn1bNnTPDe9Bz1AWfsGVt4pgj8wLzhB1DxZ1-RzuZiW2VZLamsaBS4WpjC8lw=@1g4.org>
+In-Reply-To: <CA+NMeC_v8bQo2tFUYiD1faMJ0Gd9FFbqmPHCvBUD7HW_yoCx0A@mail.gmail.com>
+References: <20260205150958.412278-1-p@1g4.org> <20260205150958.412278-2-p@1g4.org> <CA+NMeC_v8bQo2tFUYiD1faMJ0Gd9FFbqmPHCvBUD7HW_yoCx0A@mail.gmail.com>
+Feedback-ID: 8253658:user:proton
+X-Pm-Message-ID: 641b4b95da5523bcf2bb07a85c371348fcbfce84
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=ELgLElZC c=1 sm=1 tr=0 ts=698dc4ad cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=M5GUcnROAAAA:8 a=zFyd0VMmUU5vBRt5t4UA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDA5MiBTYWx0ZWRfX17xQLGfyr22o
- r5iPbXDlXc390J5i7erndcfw2Q2gNiERjms4kuOhCVjLc66tOCbH48ypk2LV4g1cfkVNEjPCIX5
- wp11yOco7NHDH2npQefyHSWWeMjI7lTgBXHs75y2U6IiHB7l6ovn+GYwR0sTIUbz1EzYuiUUi1o
- uBlJuwzr336ZOlRcyRID+R+f2SWo1NpwMprtchEMvuYsbxwo8+7arTZnf4copJnuyKWB5B+gnhI
- KwQMkvNjxeKFJiXGnqKF97u0mof0ul8fznOIpdSMzRScIm9l0K7W24jYfe6z5C+pOOgcF3LIuON
- LXRLmcwKq23ehTG7+9tdagazK86B0Z4MPV9X98eFJcAZzIK5NouiZ15PvdvnxVwnM8iywQdz/aW
- KScI2vy3PwnPA38V2oonvVY953lvWAZYLlmQbUWFar2f4EgxDn+zyfCxxA2g3qp5LBp1MaLXqou
- Mp0tHiOSQNavfV0oFBg==
-X-Proofpoint-GUID: Se_ZuQ__BQ1ifB8R9xplfaVxgmLl75iP
-X-Proofpoint-ORIG-GUID: Se_ZuQ__BQ1ifB8R9xplfaVxgmLl75iP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-12_03,2026-02-12_01,2025-10-01_01
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Utilize READ_ONCE and WRITE_ONCE APIs for IO queue Tx/Rx
-variable access to prevent compiler optimization and reordering.
-Additionally, ensure IO queue OUT/IN_CNT registers are flushed
-by performing a read-back after writing.
+Proposed changes from v5...v6:
+1. Agreed
+   -Fixed in (net/sched: act_gate: keep gate_setup_timer helper name)
 
-Relocate IQ/OQ IN/OUT_CNTS updates to occur before NAPI completion,
-and replace napi_complete with napi_complete_done.
+2. Agreed
+   -Fixed in (net/sched: act_gate: drop redundant clockid pre-validation)
 
-Fixes: 1cd3b407977c3 ("octeon_ep_vf: add Tx/Rx processing and interrupt support")
-Signed-off-by: Sathesh Edara <sedara@marvell.com>
-Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
-Signed-off-by: Vimlesh Kumar <vimleshk@marvell.com>
----
- .../marvell/octeon_ep_vf/octep_vf_main.c      | 38 ++++++++++++++-----
- .../marvell/octeon_ep_vf/octep_vf_rx.c        | 28 ++++++++++----
- 2 files changed, 48 insertions(+), 18 deletions(-)
+3. I was not able to reproduce it. I tended to keep it since NULL became
+   representable in the conversion and it was not an expensive branch.
+   -Fixed in (net/sched: act_gate: assume params exist on replace path)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-index 420c3f4cf741..27a5fc38bccb 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
-@@ -286,28 +286,45 @@ static void octep_vf_clean_irqs(struct octep_vf_device *oct)
- }
- 
- /**
-- * octep_vf_enable_ioq_irq() - Enable MSI-x interrupt of a Tx/Rx queue.
-+ * octep_vf_update_pkt() - Update IQ/OQ IN/OUT_CNT registers.
-  *
-  * @iq: Octeon Tx queue data structure.
-  * @oq: Octeon Rx queue data structure.
-  */
--static void octep_vf_enable_ioq_irq(struct octep_vf_iq *iq, struct octep_vf_oq *oq)
-+
-+static void octep_vf_update_pkt(struct octep_vf_iq *iq, struct octep_vf_oq *oq)
- {
--	u32 pkts_pend = oq->pkts_pending;
-+	u32 pkts_pend = READ_ONCE(oq->pkts_pending);
-+	u32 last_pkt_count = READ_ONCE(oq->last_pkt_count);
-+	u32 pkts_processed = READ_ONCE(iq->pkts_processed);
-+	u32 pkt_in_done = READ_ONCE(iq->pkt_in_done);
- 
- 	netdev_dbg(iq->netdev, "enabling intr for Q-%u\n", iq->q_no);
--	if (iq->pkts_processed) {
--		writel(iq->pkts_processed, iq->inst_cnt_reg);
--		iq->pkt_in_done -= iq->pkts_processed;
--		iq->pkts_processed = 0;
-+	if (pkts_processed) {
-+		writel(pkts_processed, iq->inst_cnt_reg);
-+		readl(iq->inst_cnt_reg);
-+		WRITE_ONCE(iq->pkt_in_done, (pkt_in_done - pkts_processed));
-+		WRITE_ONCE(iq->pkts_processed, 0);
- 	}
--	if (oq->last_pkt_count - pkts_pend) {
--		writel(oq->last_pkt_count - pkts_pend, oq->pkts_sent_reg);
--		oq->last_pkt_count = pkts_pend;
-+	if (last_pkt_count - pkts_pend) {
-+		writel(last_pkt_count - pkts_pend, oq->pkts_sent_reg);
-+		readl(oq->pkts_sent_reg);
-+		WRITE_ONCE(oq->last_pkt_count, pkts_pend);
- 	}
- 
- 	/* Flush the previous wrties before writing to RESEND bit */
- 	smp_wmb();
-+}
-+
-+/**
-+ * octep_vf_enable_ioq_irq() - Enable MSI-x interrupt of a Tx/Rx queue.
-+ *
-+ * @iq: Octeon Tx queue data structure.
-+ * @oq: Octeon Rx queue data structure.
-+ */
-+static void octep_vf_enable_ioq_irq(struct octep_vf_iq *iq,
-+				    struct octep_vf_oq *oq)
-+{
- 	writeq(1UL << OCTEP_VF_OQ_INTR_RESEND_BIT, oq->pkts_sent_reg);
- 	writeq(1UL << OCTEP_VF_IQ_INTR_RESEND_BIT, iq->inst_cnt_reg);
- }
-@@ -333,6 +350,7 @@ static int octep_vf_napi_poll(struct napi_struct *napi, int budget)
- 	if (tx_pending || rx_done >= budget)
- 		return budget;
- 
-+	octep_vf_update_pkt(ioq_vector->iq, ioq_vector->oq);
- 	if (likely(napi_complete_done(napi, rx_done)))
- 		octep_vf_enable_ioq_irq(ioq_vector->iq, ioq_vector->oq);
- 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-index d70c8be3cfc4..31380962c212 100644
---- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
-@@ -319,9 +319,16 @@ static int octep_vf_oq_check_hw_for_pkts(struct octep_vf_device *oct,
- 					 struct octep_vf_oq *oq)
- {
- 	u32 pkt_count, new_pkts;
-+	u32 last_pkt_count, pkts_pending;
- 
- 	pkt_count = readl(oq->pkts_sent_reg);
--	new_pkts = pkt_count - oq->last_pkt_count;
-+	last_pkt_count = READ_ONCE(oq->last_pkt_count);
-+	new_pkts = pkt_count - last_pkt_count;
-+
-+	if (pkt_count < last_pkt_count) {
-+		dev_err(oq->dev, "OQ-%u pkt_count(%u) < oq->last_pkt_count(%u)\n",
-+			oq->q_no, pkt_count, last_pkt_count);
-+	}
- 
- 	/* Clear the hardware packets counter register if the rx queue is
- 	 * being processed continuously with-in a single interrupt and
-@@ -333,8 +340,9 @@ static int octep_vf_oq_check_hw_for_pkts(struct octep_vf_device *oct,
- 		pkt_count = readl(oq->pkts_sent_reg);
- 		new_pkts += pkt_count;
- 	}
--	oq->last_pkt_count = pkt_count;
--	oq->pkts_pending += new_pkts;
-+	WRITE_ONCE(oq->last_pkt_count, pkt_count);
-+	pkts_pending = READ_ONCE(oq->pkts_pending);
-+	WRITE_ONCE(oq->pkts_pending, (pkts_pending + new_pkts));
- 	return new_pkts;
- }
- 
-@@ -363,7 +371,7 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
- 	struct sk_buff *skb;
- 	u32 read_idx;
- 
--	read_idx = oq->host_read_idx;
-+	read_idx = READ_ONCE(oq->host_read_idx);
- 	rx_bytes = 0;
- 	desc_used = 0;
- 	for (pkt = 0; pkt < pkts_to_process; pkt++) {
-@@ -457,7 +465,7 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
- 		napi_gro_receive(oq->napi, skb);
- 	}
- 
--	oq->host_read_idx = read_idx;
-+	WRITE_ONCE(oq->host_read_idx, read_idx);
- 	oq->refill_count += desc_used;
- 	oq->stats->packets += pkt;
- 	oq->stats->bytes += rx_bytes;
-@@ -480,22 +488,26 @@ int octep_vf_oq_process_rx(struct octep_vf_oq *oq, int budget)
- {
- 	u32 pkts_available, pkts_processed, total_pkts_processed;
- 	struct octep_vf_device *oct = oq->octep_vf_dev;
-+	u32 pkts_pending;
- 
- 	pkts_available = 0;
- 	pkts_processed = 0;
- 	total_pkts_processed = 0;
- 	while (total_pkts_processed < budget) {
- 		 /* update pending count only when current one exhausted */
--		if (oq->pkts_pending == 0)
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
-+		if (pkts_pending == 0)
- 			octep_vf_oq_check_hw_for_pkts(oct, oq);
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
- 		pkts_available = min(budget - total_pkts_processed,
--				     oq->pkts_pending);
-+				     pkts_pending);
- 		if (!pkts_available)
- 			break;
- 
- 		pkts_processed = __octep_vf_oq_process_rx(oct, oq,
- 							  pkts_available);
--		oq->pkts_pending -= pkts_processed;
-+		pkts_pending = READ_ONCE(oq->pkts_pending);
-+		WRITE_ONCE(oq->pkts_pending, (pkts_pending - pkts_processed));
- 		total_pkts_processed += pkts_processed;
- 	}
- 
--- 
-2.47.3
+4. use_old_entries is true only when REPLACE does not provide a usable new =
+entry
+   list (missing or empty) and we copy the previous entries into p to prese=
+rve
+   effective behavior. This block is skipped when new entries are provided,=
+ so
+   old cycletime is not reused in that case. It could be clearer but I didn=
+'t
+   think it was worth the diff increase.
 
+5. Yes
+   -Fixed in (net/sched: act_gate: deduplicate init error cleanup labels)
+
+6. Agreed
+   -Fixed in (net/sched: act_gate: align cleanup dereference with act_vlan)
+
+7. Agreed
+   -Fixed in (net/sched: act_gate: dump params under rcu read-side lock)
+
+Thanks,
+Paul
+
+
+On Friday, February 6th, 2026 at 4:36 AM, Victor Nogueira <victor@mojatatu.=
+com> wrote:
+
+> > The gate action can be replaced while the hrtimer callback or dump path=
+ is
+> > walking the schedule list.
+> >
+> > Convert the parameters to an RCU-protected snapshot and swap updates un=
+der
+> > tcf_lock, freeing the previous snapshot via call_rcu(). When REPLACE om=
+its
+> > the entry list, preserve the existing schedule so the effective state i=
+s
+> > unchanged.
+> > [...]
+> > diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> > index c1f75f2727576..4a1a10bfe3e62 100644
+> > [...]
+> > -static void gate_setup_timer(struct tcf_gate *gact, u64 basetime,
+> > -                            enum tk_offsets tko, s32 clockid,
+> > -                            bool do_init)
+> > [...]
+> > +static void gate_timer_setup(struct tcf_gate *gact, s32 clockid,
+> > +                            enum tk_offsets tko)
+> > [...]
+>=20
+> I don't believe you need to change the function name here.
+>=20
+> > [...]
+> > @@ -323,20 +370,11 @@ static int tcf_gate_init(struct net *net, struct =
+nlattr *nla,
+> >
+> >         if (tb[TCA_GATE_CLOCKID]) {
+> >                 clockid =3D nla_get_s32(tb[TCA_GATE_CLOCKID]);
+> > -               switch (clockid) {
+> > -               case CLOCK_REALTIME:
+> > -                       tk_offset =3D TK_OFFS_REAL;
+> > -                       break;
+> > -               case CLOCK_MONOTONIC:
+> > -                       tk_offset =3D TK_OFFS_MAX;
+> > -                       break;
+> > -               case CLOCK_BOOTTIME:
+> > -                       tk_offset =3D TK_OFFS_BOOT;
+> > -                       break;
+> > -               case CLOCK_TAI:
+> > -                       tk_offset =3D TK_OFFS_TAI;
+> > -                       break;
+> > -               default:
+> > +               clockid_provided =3D true;
+> > +               if (clockid !=3D CLOCK_REALTIME &&
+> > +                   clockid !=3D CLOCK_MONOTONIC &&
+> > +                   clockid !=3D CLOCK_BOOTTIME &&
+> > +                   clockid !=3D CLOCK_TAI) {
+> >                         NL_SET_ERR_MSG(extack, "Invalid 'clockid'");
+> >                         return -EINVAL;
+> >                 }
+>=20
+> This is better than what you had before, however it still
+> is redundant given that you do the switch statement later
+> and perform the same validation again. If there's no reason to
+> keep this code, you probably can also get rid of "clockid_provided".
+>=20
+> > @@ -366,6 +404,37 @@ static int tcf_gate_init(struct net *net, struct n=
+lattr *nla,
+> > [...]
+> > +
+> > +       if (ret !=3D ACT_P_CREATED) {
+> > +               rcu_read_lock();
+> > +               old_p =3D rcu_dereference(gact->param);
+> > +               if (old_p) {
+>=20
+> When do you believe old_p might be NULL here?
+> From what I understand, you can't arrive here while
+> a delete for the same action instance is happening in parallel.
+> Were you able to create such scenario when testing gate?
+>=20
+> > [...]
+> > +       if (use_old_entries) {
+> > +               err =3D tcf_gate_copy_entries(p, old_p, extack);
+> > +               if (err)
+> > +                       goto unlock;
+> > +
+> > +               if (!tb[TCA_GATE_CYCLE_TIME])
+> > +                       cycletime =3D old_p->tcfg_cycletime;
+>=20
+> Why did you keep this one as in v4?
+> You don't want to reuse the old "cycletime" if the user
+> specified new entries?
+> Not saying you are necessarily wrong.
+> Just trying to understand your logic.
+>=20
+> > [...]
+> > -chain_put:
+> > +unlock:
+> >         spin_unlock_bh(&gact->tcf_lock);
+> >
+> >         if (goto_ch)
+> >                 tcf_chain_put_by_act(goto_ch);
+> > +       release_entry_list(&p->entries);
+> > +       kfree(p);
+>=20
+> The 4 lines above look exactly like what you
+> do in err_free. Can't you label them as err_free
+> and remove the lines below?
+>=20
+> > [...]
+> > +err_free:
+> > +       if (goto_ch)
+> > +               tcf_chain_put_by_act(goto_ch);
+> > +       release_entry_list(&p->entries);
+> > +       kfree(p);
+> > +       goto release_idr;
+> > +}
+> > [...]
+> >  static void tcf_gate_cleanup(struct tc_action *a)
+> > @@ -458,9 +594,10 @@ static void tcf_gate_cleanup(struct tc_action *a)
+> >         struct tcf_gate *gact =3D to_gate(a);
+> >         struct tcf_gate_params *p;
+> >
+> > -       p =3D &gact->param;
+> >         hrtimer_cancel(&gact->hitimer);
+> > -       release_entry_list(&p->entries);
+> > +       p =3D rcu_replace_pointer(gact->param, NULL, 1);
+> > +       if (p)
+> > +               call_rcu(&p->rcu, tcf_gate_params_free_rcu);
+> >  }
+>=20
+> Sorry, I think I lacked precision in my last comment.
+> I meant that you should've removed the rtnl requirement
+> (which you did), but also use rcu_dereference_protected as
+> act_vlan does. This relates to my previous comment on "old_p"
+> being NULL. I don't believe you need to set this to NULL
+> unless you were able to reproduce the scenario I described
+> earlier.
+>=20
+> >  static int dumping_entry(struct sk_buff *skb,
+> > @@ -512,7 +649,8 @@ static int tcf_gate_dump(struct sk_buff *skb, struc=
+t tc_action *a,
+> >         spin_lock_bh(&gact->tcf_lock);
+> >         opt.action =3D gact->tcf_action;
+> >
+> > -       p =3D &gact->param;
+> > +       p =3D rcu_dereference_protected(gact->param,
+> > +                                     lockdep_is_held(&gact->tcf_lock))=
+;
+>=20
+> You could've kept the rcu_read_lock approach here.
+> One of the main advantages of making the params rcu
+> is being able to dump without the tcf_lock.
+>=20
+> cheers,
+> Victor
+> 
