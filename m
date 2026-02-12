@@ -1,100 +1,136 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480B727E7EB;
-	Thu, 12 Feb 2026 12:16:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0648E352FA6
+	for <netdev@vger.kernel.org>; Thu, 12 Feb 2026 12:16:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770898607; cv=none; b=Y+/Wjy1ZnFwYlAy/fC+YVsaJzS65bTA5IpuDnIvVj4ajCM5q7ZwZNXz1mcNr3g3SJelqjLHbIjJBoYnzD3PB/iwM7gyvmwlkkJD777HkkWpGFPoBvfP0hBPf7wEOrVcbaYFSIIalgWvT1rC2URl/Wq8Cx7w9g7BHO2zj6tZdfzw=
+	t=1770898611; cv=none; b=og3CG7HG6UE+Z/0KXx/5utB6piFVF9OR1kPxlOwsg8NS10l+3SLMalTUcq0vhhJk0RjNP7rovWQq7+cSUNQUwKq+iOX62pxNzjt0XWXUCcNh2zoG0yAOMC//Pgcb2TYbxqicYujLSuFMIn18cZ+lAcA88LmoldL0D4kjMegzRAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770898607; c=relaxed/simple;
-	bh=0Rh0bLhpJYVjm+sYBU3bZkKCnJyuavvuEeRKrWUs71s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=p1xDYASA2yyJyzOwdKKlJGyuMwW7HCvNgPLDQY0q96n2mSrmjgFFM7xdQmN3iQVyy4zvf0EJg4iEv7rOYXS9ej9mGwEAq/JTGuQWTwYBQx5URWx/zbknHIvMVJtrNER/aLHvd2qyKWcwsh5ubDPPh9SDJVS0upuij2pa0eQfZ+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=NJ/LLdIO; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1770898611; c=relaxed/simple;
+	bh=JWljiblHKdW/kvLi+oANTy8OmaENQH4T3UWSJZWjvFg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=USi4QB73PAKSsqwgK/ZzeLaKkWe+rl2HZImasfOlBfDZOVEb1kT/7+EWUnGbYWvrS6uvsqbeRua4Ds5qZxK3hHwxkhn+oSNGxedBTi2Zvr+4IP5ebGld1JYKBofXKcRvRMmxHnRERhJFkD2J3CHIiLDaWVQFCWXJttknsVmmM08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WWhlEHHY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=acorpGF4; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="NJ/LLdIO"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61C32bms3517710;
-	Thu, 12 Feb 2026 04:16:39 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=RzhaTAObsypcppcWIWEOA3d
-	QXdHn6Ri7c3it64jsnA8=; b=NJ/LLdIOTmwMxMs+ZQLyKtusxDWZKHm88e0RuYg
-	c9kz2v+NSpiElF+UjtzPyl2ZwndlNIX1X90oxfcoDqM5VlgvaoX3pxwQ8HKSIbhJ
-	0BAZBhKAXyMSKdCWd2mKYHjhPgIwwXy339puuH9pL3TCROiA8f/WCxlGQrOFxJIh
-	FoPD4zhmkFf0TIMEvcgMCJYz/o9FArnoHAh9HDouT73QKdN2d9FErtedpI4KmtUb
-	W5o97A0dtzacWj/xagaNapLJnlAKyypOZYbPaIca8wlYiQhnNirMpwLZjHWhvjrY
-	LjoJ4IFbCaGB7K1m10hicTrvJudBLj0GZwjVF4iyf3IbAmw==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4c8udm2xch-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 12 Feb 2026 04:16:39 -0800 (PST)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Thu, 12 Feb 2026 04:16:55 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Thu, 12 Feb 2026 04:16:55 -0800
-Received: from 101hsapphire1.sclab.marvell.com (unknown [10.111.168.47])
-	by maili.marvell.com (Postfix) with ESMTP id D45C83F70DA;
-	Thu, 12 Feb 2026 04:16:37 -0800 (PST)
-From: Vimlesh Kumar <vimleshk@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <sedara@marvell.com>, <srasheed@marvell.com>, <hgani@marvell.com>,
-        "Vimlesh Kumar" <vimleshk@marvell.com>
-Subject: [PATCH RESEND net v1 0/2] avoid compiler and IQ/OQ reordering
-Date: Thu, 12 Feb 2026 12:16:30 +0000
-Message-ID: <20260212121634.360252-1-vimleshk@marvell.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WWhlEHHY";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="acorpGF4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1770898608;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4ASZtwC4Jr2vY7rfr/wbGtVzwGSZEjBKWQrjrryCwDs=;
+	b=WWhlEHHYsQd2uGpaphuso2Uq/TXqlaElEqbTOJiwqSy7JEmPnVSIU5SDWSwBZshcjr6ECg
+	WoWMRiL3s84ViaqxKtdHD37rbpKJYTSZG8inQ6Ej5/TQ2oP893vdNLSOcRgCDp8p9zIJKH
+	YZNCfiC7HBhlH6MZPN36jUr3dUqqsvk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-634-25Cmg7j2MOyckvxNJRa0iQ-1; Thu, 12 Feb 2026 07:16:45 -0500
+X-MC-Unique: 25Cmg7j2MOyckvxNJRa0iQ-1
+X-Mimecast-MFC-AGG-ID: 25Cmg7j2MOyckvxNJRa0iQ_1770898604
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48336b182ebso36496875e9.3
+        for <netdev@vger.kernel.org>; Thu, 12 Feb 2026 04:16:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1770898604; x=1771503404; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4ASZtwC4Jr2vY7rfr/wbGtVzwGSZEjBKWQrjrryCwDs=;
+        b=acorpGF4kFx8o5/6t6OW4yUJji1mF9Tl9Vmid/46M0+rLwid8Ej469iqO3ijuBwdwK
+         I4KdrQyydVq8GvDiKUTj/XYffmtfMj5IgtbtwNLi5+snAprHLtZhaE4loJqrhN9tMN+K
+         Mf/bZT2uZi+RcyNmLR1BrMSqnRuj5OqN3QX5UVE/pe9IW3QMG9UtZX7SIg5t6S7HoQph
+         VGRoaxwJrGRng4hKiJxEkkCpGUAloNRL1d7sY5g428MD3lIXiquXKGFqQP3RjQcO2Xwn
+         AOVR9+xbQj5Nt+XEeqT8PoaWWG1Aric8NtLcOpU3nIFInH5jJ2K87qOPMEp3AabuU/wu
+         LteA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1770898604; x=1771503404;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4ASZtwC4Jr2vY7rfr/wbGtVzwGSZEjBKWQrjrryCwDs=;
+        b=RVur/MeagMB/KSgcWwi7O3TNruu4ULUTm4gGh08AfyxssNg5FWADfwwkZpYUoe2uzO
+         8tWZm4lKUPEFQaLiYmeD9plDzDOezMs5mnAlouxisrNw3t3s+u5aAGZq6GPnTwu6EN3B
+         qek2a69m9t55Mv5D513yAwmWqSy1iDtSDnx2PgyrvcTZEpVeHQr97ce4RLHEZHFpCvsn
+         GDqr/teoZpKLfSIxJZirZUZZyb21nabTmYUm/XnW9Vjp+eGiIT2ffLdK8aqGT8BXNmW/
+         m8U5MeF44no0+OmuFNXudadhy1WcTofryShz4eKHoa9n4MATFGcT1v3coj6jHQ0CmV9E
+         Ei5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXyh3Z2qQGdQ/q9xzeFSqaldgWuwZFUeae1hmH6oLRDMn4SADjxAyppfa4J3wmdgnFglT6wRk8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0a6/8Ci+gcFHdidQi3S3lN5xY6oi77tDoj/tgMuR+mXU6a2ss
+	0XQ1IUzpCe1IZpmCeN4+txGTUhzsQ8nYoJAq92zbJFAMMmJ6I93ynllHUolQyelJw54NSrS4Z1A
+	KBT/8quuPaXKkQComMFqymD4uYvCbpw6xWtVldwHslvOstWemFBug5J2mrQ==
+X-Gm-Gg: AZuq6aLZT6qjz9fbW7NShrR5b76wt2EYxkYXxLl21RlD35pmAPHM72dDJsY7LqG+GNh
+	HLtmNhUibWx9KQwKmA70FxzLLCbXgNkdeuD9q85bg/cOtNWzdDfJSFT+qiPvMWypI8MdagJBkoy
+	h+ehY+bdsRG14MbyuERA4JX/kOMjbbGNaUiS4WcF+j94piWlFVH5VHQkMLtZXO+S0SxqAti7UMG
+	lROoqIJzLTwMEQQrSo2QnqxI/3sLEd4MFjEGyqdLZ7/3mk823tVGz0yUuNOQfVmTZRFuqNls7xk
+	o4sUH8K76BL8cLH2mhxpcZJWK7u54yLKdds6xbUQU1ylcvi/MTe+M1Zl1Ux9VLeTRuFZrZgD7nt
+	7lgdL76D+M2mSlzExdZxlwJ59Tg==
+X-Received: by 2002:a05:600c:3b12:b0:477:98f7:2aec with SMTP id 5b1f17b1804b1-483670fac23mr28141725e9.3.1770898604172;
+        Thu, 12 Feb 2026 04:16:44 -0800 (PST)
+X-Received: by 2002:a05:600c:3b12:b0:477:98f7:2aec with SMTP id 5b1f17b1804b1-483670fac23mr28141325e9.3.1770898603714;
+        Thu, 12 Feb 2026 04:16:43 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.155.220])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4834d82a4afsm365332535e9.11.2026.02.12.04.16.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Feb 2026 04:16:43 -0800 (PST)
+Message-ID: <e52a10e2-b208-460c-a3e3-305b91433531@redhat.com>
+Date: Thu, 12 Feb 2026 13:16:41 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjEyMDA5MCBTYWx0ZWRfX8vCITNG6wMj1
- QMkjcCRKqLI2Zwn7Fm4CXluwLok28lswzKO5krAyKbh4FCtDXj05Sm1wZUvo4yAR2TBqR38yTFM
- KKvIq1YL3FOwDTRG0bqnx0QrqbZ1uyVnv6bn+0Aqrc2U/65IY9DyzDUERHsbMLdubcgsvtLajBl
- xo/OT7HfQsEpLPWUInvzg6lPy90jHXEQt5en9dWqdqf71w904azIO8A2ImYQ3F7S6wPxG56ioms
- KuZvaKyv4rhp1AMVAyG5QOzImQdGlTBVy9BQQYQQMSumrNLWJAtDAap5uFD71fX7p+7SjV9pXgy
- ZIkM//5snFcKqjXen5XXHk4s6j+zc5QbXPKaP7dMbb/9/298+oLNzJbOlFkNUrMJ+2L1zey9t1n
- cwLI/9Lvs9O4S/qY0VUjZc350uOB0P4YKnPo7pQFKpHir7T8zZuMNWONkzJqeGuEdQ1MdN4d6kj
- NTS+1LE25YE+2fLKwGg==
-X-Authority-Analysis: v=2.4 cv=bvZBxUai c=1 sm=1 tr=0 ts=698dc4a7 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=UqCG9HQmAAAA:8
- a=LcfSQsnrkOK16RxlBc8A:9 a=zZCYzV9kfG8A:10
-X-Proofpoint-GUID: ihK8hjrBwqVmQgdHezUm1wFqgUoem9Xx
-X-Proofpoint-ORIG-GUID: ihK8hjrBwqVmQgdHezUm1wFqgUoem9Xx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-12_03,2026-02-12_01,2025-10-01_01
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 0/4] net/rds: RDS-TCP reconnect and fanout
+ improvements
+To: Allison Henderson <achender@kernel.org>, netdev@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org, edumazet@google.com,
+ rds-devel@oss.oracle.com, kuba@kernel.org, horms@kernel.org,
+ linux-rdma@vger.kernel.org, allison.henderson@oracle.com
+References: <20260212053230.1921241-1-achender@kernel.org>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <20260212053230.1921241-1-achender@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Utilize READ_ONCE and WRITE_ONCE APIs to prevent compiler
-optimization and reordering. Ensure IO queue OUT/IN_CNT
-registers are flushed. Relocate IQ/OQ IN/OUT_CNTS updates
-to occur before NAPI completion, and replace napi_complete
-with napi_complete_done.
+On 2/12/26 6:32 AM, Allison Henderson wrote:
+> This is subset 4 of the larger RDS-TCP patch series I posted last
+> Oct.  The greater series aims to correct multiple rds-tcp issues that
+> can cause dropped or out of sequence messages.  I've broken it down into
+> smaller sets to make reviews more manageable.
+> 
+> In this set, we address some reconnect issues occurring during connection
+> teardowns, and also move connection fanout operations to a background
+> worker.
+> 
+> The entire set can be viewed in the rfc here:
+> https://lore.kernel.org/netdev/20251022191715.157755-1-achender@kernel.org/
+> 
+> Questions, comments, flames appreciated!
 
-Resending based on discussion with reviewer.
-https://lore.kernel.org/all/MN6PR18MB54667119674AC692ED7EF978D39FA@MN6PR18MB5466.namprd18.prod.outlook.com/
+I think you could resubmit the first patch for net after that Linus pull
+the currently pending MR.
 
-Vimlesh Kumar (2):
-  octeon_ep: avoid compiler and IQ/OQ reordering
-  octeon_ep_vf: avoid compiler and IQ/OQ reordering
+---
+## Form letter - net-next-closed
 
- .../ethernet/marvell/octeon_ep/octep_main.c   | 40 +++++++++++++------
- .../net/ethernet/marvell/octeon_ep/octep_rx.c | 27 +++++++++----
- .../marvell/octeon_ep_vf/octep_vf_main.c      | 38 +++++++++++++-----
- .../marvell/octeon_ep_vf/octep_vf_rx.c        | 28 +++++++++----
- 4 files changed, 95 insertions(+), 38 deletions(-)
+We have already submitted our pull request with net-next material for v7.0,
+and therefore net-next is closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
 
+Please repost when net-next reopens after Feb 23rd.
+
+RFC patches sent for review only are obviously welcome at any time.
+
+See:
+https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
 -- 
-2.47.3
+pw-bot: defer
 
