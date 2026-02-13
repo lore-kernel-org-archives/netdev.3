@@ -1,58 +1,35 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C190E26299
-	for <netdev@vger.kernel.org>; Fri, 13 Feb 2026 03:09:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66EA11A9F91;
+	Fri, 13 Feb 2026 03:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770952185; cv=none; b=tVn2u8BL2VlQkWY5BHhcC8FTosrueJLaqpqU4mZCSnT7E0NQr63XsEtstBv81v4Ka7ak4SCsw3zKK7QR03lcBYzewcWht5vpeOHjKmsJtEl7Lrg0Q/EwPBDwuSwiaZcyik5leUM9bpqYJJbSC9V2JuemHfkMTcaP626JlXn8n5g=
+	t=1770952216; cv=none; b=g9MDk0d/BDDrjna6hUrWZ+Ws3vehpdyb1okn1Oa6DNsNFS0vX2mPnf3d9vHEdVy3ZPcq2jR3WpX4RI2OI0w7dR2YsfdL2dooarUEFQUqJxbqP1RCVIwVeBuHX1vUkw6ys5RWHBUuZeaQc39ejR3chavPp6pYKzCz987y4/mzEfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770952185; c=relaxed/simple;
-	bh=3Y7Q6Au/X2ZyR/wPpqJXyfm6utcskF47IufYsRLqZL0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a8zoRPLr0MUb4epacc3vyuJ37MqRYykW2R2+sYCRKC3g7ueAy9hxQw+qI8XdRfeUqQrSuVCZJsMs9M762Pe43u0NpyrUVEUXO4POwMVdajOfYlGpbneK95Cu0/QOCEZUGRQR0n/EAmUPpgYpK+CasMWuGdk+zORcUrjngfVEPnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GYeJI21y; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1770952216; c=relaxed/simple;
+	bh=SaYAiSTeda0ott75Qw/mkaQ0eig9Sx4NgiZBMmqTLJ4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=lURsM540Y02OwKM4UAFLdZ7zJnTXuaqY3pvb1rP/i+AYKExo2xkRMHl/DEIw0O+v2uRhFvS0jyU6r9uZp+RQf743CbhHhAfnAEDjTiSLWWeEdkvo78VshG+qk3OZsPEAknA5b7rdazrwtu5RsdY979p0H+MceHuazLI+XlioJqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fQ3ZIBY7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GYeJI21y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1770952184; x=1802488184;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=3Y7Q6Au/X2ZyR/wPpqJXyfm6utcskF47IufYsRLqZL0=;
-  b=GYeJI21yyI7mVsU7YfBzH8Rda3Yk1kPyrizbSwsgmyEzuF6qhs7k7g1s
-   yF1a23BnqcdaXDBAx4qmkkwejLv4nSwd1y4tAjw+unDopT6KpG4ltza7/
-   +bSEf7WBgI79soy4vp4nDW1bTIWXMiy4awkJBujzbvPkQGIitU8v0CnqP
-   sBPM8lbH7UyER1Wm0x0zdNzJiOp31ebnN/enD7VMWYO10gduYAeNgE0K+
-   iqKqtR5yEXCBLImjAcu/MR3WSkJ/9YYT4Add2Go4hFbylFsqOLynRuU2h
-   Q6cB1aNzNgVl3t3Wrw87WSXLmRSDO6ncazTrEk6P0CXyQ2vTY6EZjJ0M3
-   Q==;
-X-CSE-ConnectionGUID: nAoUEX94TZS9GNWzm7kWZQ==
-X-CSE-MsgGUID: CPRYMflwQH+5RRwkUWVQtg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11699"; a="74738759"
-X-IronPort-AV: E=Sophos;i="6.21,287,1763452800"; 
-   d="scan'208";a="74738759"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Feb 2026 19:09:43 -0800
-X-CSE-ConnectionGUID: /j0lBH1YSICoiznS8hw5kw==
-X-CSE-MsgGUID: b+eQ2ka0RQya3RN6mumxyQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,287,1763452800"; 
-   d="scan'208";a="216969781"
-Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by fmviesa004.fm.intel.com with ESMTP; 12 Feb 2026 19:09:41 -0800
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	anthony.l.nguyen@intel.com,
-	aleksandr.loktionov@intel.com
-Cc: netdev@vger.kernel.org,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>
-Subject: [PATCH iwl-next v3] ixgbe: fix unaligned u32 access in ixgbe_update_flash_X550()
-Date: Fri, 13 Feb 2026 04:09:40 +0100
-Message-ID: <20260213030940.1809797-1-aleksandr.loktionov@intel.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fQ3ZIBY7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016B5C4CEF7;
+	Fri, 13 Feb 2026 03:10:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770952216;
+	bh=SaYAiSTeda0ott75Qw/mkaQ0eig9Sx4NgiZBMmqTLJ4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=fQ3ZIBY7kwRlay/f9mzgwK9Itz+fs6pasAFohKdK0zoK805HlYzcZ6No36FGfBYR1
+	 7pDl2Hq93v8isMtMBL1dqg4cMfDoF55jci28YvsoUh0rUuhdPcrQbbRZDamUL1jjAV
+	 tUfuwn0CNyey7KCLoeWt6/oWZseOlzwQcDGZjAcpWAOqAVpvNhYIYTHV1+OewOZBmC
+	 JOKtcg2RfLVyEEjvJqirWnIZWY4hPSgp4CB3lY1/2u5KdzeuDxxh6MreKctcW7gFea
+	 bDZnL/VedniXmQsHRalVGT2dNo/TCF7UzyLItxJlLJRrl6Q+x1Mx6iyAhbzoST2QpC
+	 JLqe5Bjt7GD7g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 481483931093;
+	Fri, 13 Feb 2026 03:10:11 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,56 +37,47 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net] net: sparx5/lan969x: fix DWRR cost max to match
+ hardware register width
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177095220983.1827286.14396517672847717184.git-patchwork-notify@kernel.org>
+Date: Fri, 13 Feb 2026 03:10:09 +0000
+References: 
+ <20260210-sparx5-fix-dwrr-cost-max-v1-1-58fbdbc25652@microchip.com>
+In-Reply-To: 
+ <20260210-sparx5-fix-dwrr-cost-max-v1-1-58fbdbc25652@microchip.com>
+To: Daniel Machon <daniel.machon@microchip.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, Steen.Hegelund@microchip.com,
+ UNGLinuxDriver@microchip.com, netdev@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 
-ixgbe_host_interface_command() treats its buffer as a u32 array. The 
-local buffer we pass in was a union of byte-sized fields, which gives 
-it 1-byte alignment on the stack. On strict-align architectures this 
-can cause unaligned 32-bit accesses.
+Hello:
 
-Add a u32 member to union ixgbe_hic_hdr2 so the object is 4-byte 
-aligned, and pass the u32 member when calling
-ixgbe_host_interface_command().
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-No functional change on x86; prevents unaligned accesses on 
-architectures that enforce natural alignment.
- 
-Fixes: 49425dfc7451 ("ixgbe: Add support for x550em_a 10G MAC type")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
----
-v2 -> v3 commit message line wraps
-v1 -> v2 change title and concentrate on alignement issue
----
- drivers/net/ethernet/intel/ixgbe/ixgbe_type.h | 1 +
- drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c | 2 +-
- 2 files changed, 2 insertions(+), 1 deletion(-)
+On Tue, 10 Feb 2026 14:44:01 +0100 you wrote:
+> DWRR (Deficit Weighted Round Robin) scheduling distributes bandwidth
+> across traffic classes based on per-queue cost values, where lower cost
+> means higher bandwidth share.
+> 
+> The SPX5_DWRR_COST_MAX constant is 63 (6 bits) but the hardware
+> register field HSCH_DWRR_ENTRY_DWRR_COST is GENMASK(24, 20), only
+> 5 bits wide (max 31). This causes sparx5_weight_to_hw_cost() to
+> compute cost values that silently overflow via FIELD_PREP, resulting
+> in incorrect scheduling weights.
+> 
+> [...]
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-index 61f2ef6..eb5bf3b 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_type.h
-@@ -2798,6 +2798,7 @@ struct ixgbe_hic_hdr2_rsp {
- };
- 
- union ixgbe_hic_hdr2 {
-+	u32 buf[1];
- 	struct ixgbe_hic_hdr2_req req;
- 	struct ixgbe_hic_hdr2_rsp rsp;
- };
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-index 76d2fa3..4a0ccbf 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_x550.c
-@@ -1228,7 +1228,7 @@ static int ixgbe_update_flash_X550(struct ixgbe_hw *hw)
- 	buffer.req.buf_lenl = FW_SHADOW_RAM_DUMP_LEN;
- 	buffer.req.checksum = FW_DEFAULT_CHECKSUM;
- 
--	status = ixgbe_host_interface_command(hw, &buffer, sizeof(buffer),
-+	status = ixgbe_host_interface_command(hw, buffer.buf, sizeof(buffer),
- 					      IXGBE_HI_COMMAND_TIMEOUT, false);
- 	return status;
- }
+Here is the summary with links:
+  - [net] net: sparx5/lan969x: fix DWRR cost max to match hardware register width
+    https://git.kernel.org/netdev/net/c/6c28aa8dfdf2
+
+You are awesome, thank you!
 -- 
-2.52.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
