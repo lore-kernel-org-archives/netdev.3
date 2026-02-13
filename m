@@ -1,38 +1,38 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F199534FF41
-	for <netdev@vger.kernel.org>; Fri, 13 Feb 2026 16:58:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695C03624D5
+	for <netdev@vger.kernel.org>; Fri, 13 Feb 2026 16:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771001922; cv=none; b=P952FEYYqtF7rc4KnwR2A6sJZKCVz+Ox/OPWX/VrBQEau61/tajFhrziwAVBk9lRWOj0SOP3ZsckTI3vf60jQEF58sah85PtAIshqLpuoAQQAJ0pMSpXKCBbD0icCaml5QZ9x7+dI/U7q4paxEzokhxVuAqbqzzmiuSOxTCb5V0=
+	t=1771001930; cv=none; b=gCruFPcpMZyblTimGEN5UDVrD+6yyKGdGntWn6Idt3CW8w1GYRoJj5L9ODx85+JlSPFUKXTpAysci+GwYQdroxWwlbrjMDaWAbjh6HWOBXs4i2gS+R8LXtHCPf99xwTmkRv1a/Wf/F2HVvqYxAdsdBEkjtFA1npd8m+r6g48ayc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771001922; c=relaxed/simple;
-	bh=IHv+Js7yQQT3Cb7lwaAKGDjjC8/sgnB8epbGQqfOEkU=;
+	s=arc-20240116; t=1771001930; c=relaxed/simple;
+	bh=0UuiXe5ocDED9FX6bVMTYGQVnw0H4k4iNS53hw2DuyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QogNiHzfFkmXJts3LmmdTf/MLKPOC+gURNyYp2pAIXtCRKGHm7OLxghqbFm9mryXlJfqZYTpt49OfGP2iczPyyBlJPaIy4o+Q4rnF/KJa0+lTDG0ny1XTXPDyIUUTzvgpTjcfrpXvBGCZL1LqaMqbd8XvjddRhL1WifVWwK4u8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=He2bjiYH; arc=none smtp.client-ip=185.246.84.56
+	 MIME-Version:Content-Type; b=r4hhb+XtSsLCNqIMbnzJxv4whP9N1UXGKd3Xb+8oERgfbvkBGP5jn0dkX41I7yvvt2wYg6CIShZQ//9ilk7Q5afyjFrbf2dPNmCuFdTtV7+Ox8X1rxPxZ/6t9NtYZrPlNQ9r61x/2I1Dd2w2oCDLwdSIGYSsqWBAURky2HllYAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=leqn469t; arc=none smtp.client-ip=185.246.85.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="He2bjiYH"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="leqn469t"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id C66BF1A0EC1;
-	Fri, 13 Feb 2026 16:58:39 +0000 (UTC)
+	by smtpout-03.galae.net (Postfix) with ESMTPS id F16C04E40D3D;
+	Fri, 13 Feb 2026 16:58:47 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 9C711606CB;
-	Fri, 13 Feb 2026 16:58:39 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 839F110368EF4;
-	Fri, 13 Feb 2026 17:58:37 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id C76FC606BE;
+	Fri, 13 Feb 2026 16:58:47 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E213110368F17;
+	Fri, 13 Feb 2026 17:58:45 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1771001918; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1771001927; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=TH8bhaw+p833aL4PQQSr7Otnu00e9AzMPg2hZGvfovM=;
-	b=He2bjiYHKumB7SVDRi1o54UnpEpiXQuK4aRANq6rPkbqFtQg6ps6s1ebWnUHM3lOzby+0f
-	O4cRTpkUKsFJoKv6wqjfk5L6UxazIK7YRjchtWRojXRwNQr0N0K+12Ggsbh+JRMz2gtssV
-	nU9844EOOcCBMlsNzQ1UEcLsFfnEOJzdjLqWNZzw1BZD1pNXuMEVSlRB4D+lGk0V819CBX
-	T9aVOi/iUEFi8f00I5fpFQXOvAHpfWlW79acMi3rDMwYdzyTIdozc+CCi813aub0Ttnmfl
-	pYQzVgTQ4wmwjB624llGa6qixkLieESjJ9ZUPySneinXb7ud7Y34VlNYQiTfIw==
+	bh=v7UgD95WyiStMjhsDvEPz2qSedDTSz2QsZrrZYH2CuM=;
+	b=leqn469tFdf4PBVhsBueam0cUrQajely7GvJR3L5fWCaKyC4W3p2bSh7oqbAmGWLBj2gor
+	Q7ydi2T5O7EF6iRw4WBZui5oD7DPughHDCAIolr2yZy63Ykzoulr63m1D/ZN35XRCryaHr
+	NF0W7ecCXNE0K93dV7Non54X9aOiIIfa0vec1DJ8K+ijOmhKWhLWOpPrPuUpWlKvGWlnYF
+	fGoJwxdjUyJqTYXq6JpuwHlQamJOYdW2ivaTDaRLBPEKjPvH1frLG2IXTyTB0gDcDT6Gsb
+	6nQB/7moz7F4qUGxEctmK1UQ10LkRr+avNjxIBBJZxaN19utn05lBQFTkP98tw==
 From: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>
 To: theo.lebrun@bootlin.com
 Cc: andrew+netdev@lunn.ch,
@@ -47,9 +47,9 @@ Cc: andrew+netdev@lunn.ch,
 	pabeni@redhat.com,
 	pvalerio@redhat.com,
 	thomas.petazzoni@bootlin.com
-Subject: [PATCH 4/6] net: macb: account for stats in Rx XDP codepaths
-Date: Fri, 13 Feb 2026 17:57:57 +0100
-Message-ID: <20260213165759.225449-4-theo.lebrun@bootlin.com>
+Subject: [PATCH 6/6] net: macb: rework macb_tx_complete() processing loop
+Date: Fri, 13 Feb 2026 17:57:59 +0100
+Message-ID: <20260213165759.225449-6-theo.lebrun@bootlin.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260213165759.225449-1-theo.lebrun@bootlin.com>
 References: <DG4MBFXG7GGG.3GFLWBUKH087T@bootlin.com>
@@ -64,104 +64,124 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-gem_xdp_run() returns an action. Wrt stats, we land in three different
-cases:
- - Packet is handed to the stack (XDP_PASS), turns into an SKB and gets
-   accounted for below in gem_rx(). No fix here.
- - Packet is dropped (XDP_DROP|ABORTED), we must increment the dropped
-   counter. Missing; add it.
- - Packet is passed along (XDP_TX|REDIRECT), we must increment bytes &
-   packets counters. Missing; add it.
+The SKB case of macb_tx_complete() must iterate over buffers taking into
+account frames might be multi-buffer. Following that, the code for XDP
+got integrated into the same loop. But in XDP cases, frames must be
+single buffer.
 
-Along the way, use local variables to store rx_bytes, rx_packets and
-rx_dropped. Then increase stats only once at the end of gem_rx(). This
-is simpler because all three stats must modified on a per interface and
-per queue basis.
+Knowing that, we reverse operations: first we check the buffer type,
+then we iterate to consume all frame buffers if it is an SKB buffer.
+
+Side-effects:
+
+ - Statistics tx_packets and tx_bytes are now incremented for
+   XDP_TX and XDP_NDO frames as well.
+
+ - Only increment statistics once per macb_tx_complete() call rather
+   than once per frame.
 
 Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 37 +++++++++++++++++-------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 71 +++++++++++-------------
+ 1 file changed, 33 insertions(+), 38 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 05bbbaf260ce..01b4299dc34b 100644
+index 2c7644f2215a..6c33af667405 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1548,6 +1548,7 @@ static u32 gem_xdp_run(struct macb_queue *queue, void *buff_head,
- static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
- 		  int budget)
- {
-+	unsigned int packets = 0, dropped = 0, bytes = 0;
- 	struct skb_shared_info *shinfo;
- 	struct macb *bp = queue->bp;
- 	struct macb_dma_desc *desc;
-@@ -1595,8 +1596,7 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
- 		if (unlikely(!buff_head)) {
- 			netdev_err(bp->dev,
- 				   "inconsistent Rx descriptor chain\n");
--			bp->dev->stats.rx_dropped++;
--			queue->stats.rx_dropped++;
-+			dropped++;
+@@ -1202,11 +1202,10 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 	head = queue->tx_head;
+ 	for (tail = queue->tx_tail; tail != head && packets < budget; tail++) {
+-		void			*data = NULL;
+-		struct macb_tx_buff	*tx_buff;
+-		struct sk_buff		*skb;
+-		struct macb_dma_desc	*desc;
+-		u32			ctrl;
++		struct macb_tx_buff *tx_buff;
++		struct macb_dma_desc *desc;
++		struct sk_buff *skb;
++		u32 ctrl;
+ 
+ 		desc = macb_tx_desc(queue, tail);
+ 
+@@ -1221,48 +1220,44 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 		if (!(ctrl & MACB_BIT(TX_USED)))
  			break;
- 		}
  
-@@ -1613,10 +1613,21 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
+-		/* Process all buffers of the current transmitted frame */
+-		for (;; tail++) {
+-			tx_buff = macb_tx_buff(queue, tail);
++		tx_buff = macb_tx_buff(queue, tail);
  
- 		if (first_frame && last_frame) {
- 			ret = gem_xdp_run(queue, buff_head, data_len, addr);
--			if (ret == XDP_REDIRECT)
--				xdp_flush = true;
- 
--			if (ret != XDP_PASS) {
-+			switch (ret) {
-+			case XDP_PASS:
-+				break; /* fallthrough to SKB handling */
-+			case XDP_ABORTED:
-+			case XDP_DROP:
-+				dropped++;
-+				queue->rx_buff[entry] = NULL;
-+				continue;
-+			case XDP_REDIRECT:
-+				xdp_flush = true;
-+				fallthrough;
-+			case XDP_TX:
-+				packets++;
-+				bytes += data_len;
- 				queue->rx_buff[entry] = NULL;
- 				continue;
+-			if (tx_buff->type != MACB_TYPE_SKB) {
+-				data = tx_buff->ptr;
+-				goto unmap;
++		switch (tx_buff->type) {
++		case MACB_TYPE_SKB:
++			/* Process all buffers of the current transmitted frame */
++			while (!tx_buff->ptr) {
++				macb_tx_unmap(bp, tx_buff, budget);
++				tail++;
++				tx_buff = macb_tx_buff(queue, tail);
  			}
-@@ -1672,10 +1683,8 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
  
- 		/* now everything is ready for receiving packet */
- 		if (last_frame) {
--			bp->dev->stats.rx_packets++;
--			queue->stats.rx_packets++;
--			bp->dev->stats.rx_bytes += queue->skb->len;
--			queue->stats.rx_bytes += queue->skb->len;
-+			packets++;
-+			bytes += queue->skb->len;
+-			/* First, update TX stats if needed */
+-			if (tx_buff->type == MACB_TYPE_SKB && tx_buff->ptr) {
+-				data = tx_buff->ptr;
+-				skb = tx_buff->ptr;
++			skb = tx_buff->ptr;
  
- 			gem_ptp_do_rxstamp(bp, queue->skb, desc);
- #if defined(DEBUG) && defined(VERBOSE_DEBUG)
-@@ -1704,11 +1713,17 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
- 						false);
+-				if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
+-				    !ptp_one_step_sync(skb))
+-					gem_ptp_do_txstamp(bp, skb, desc);
++			if (unlikely(skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
++			    !ptp_one_step_sync(skb))
++				gem_ptp_do_txstamp(bp, skb, desc);
+ 
+-				netdev_vdbg(bp->dev, "skb %u (data %p) TX complete\n",
+-					    macb_tx_ring_wrap(bp, tail),
+-					    skb->data);
+-				bp->dev->stats.tx_packets++;
+-				queue->stats.tx_packets++;
+-				bp->dev->stats.tx_bytes += skb->len;
+-				queue->stats.tx_bytes += skb->len;
+-				packets++;
+-				bytes += skb->len;
+-			}
++			netdev_vdbg(bp->dev, "skb %u (data %p) TX complete\n",
++				    macb_tx_ring_wrap(bp, tail),
++				    skb->data);
++			bytes += skb->len;
++			break;
+ 
+-unmap:
+-			/* Now we can safely release resources */
+-			macb_tx_unmap(bp, tx_buff, budget);
+-
+-			/* skb is set only for the last buffer of the frame.
+-			 * WARNING: at this point skb has been freed by
+-			 * macb_tx_unmap().
+-			 */
+-			if (data)
+-				break;
++		case MACB_TYPE_XDP_TX:
++		case MACB_TYPE_XDP_NDO:
++			bytes += tx_buff->size;
++			break;
  		}
- 
--		bp->dev->stats.rx_dropped++;
--		queue->stats.rx_dropped++;
-+		dropped++;
- 		queue->rx_buff[entry] = NULL;
++
++		packets++;
++		macb_tx_unmap(bp, tx_buff, budget);
  	}
  
-+	bp->dev->stats.rx_packets += packets;
-+	queue->stats.rx_packets += packets;
-+	bp->dev->stats.rx_dropped += dropped;
-+	queue->stats.rx_dropped += dropped;
-+	bp->dev->stats.rx_bytes += bytes;
-+	queue->stats.rx_bytes += bytes;
++	bp->dev->stats.tx_packets += packets;
++	queue->stats.tx_packets += packets;
++	bp->dev->stats.tx_bytes += bytes;
++	queue->stats.tx_bytes += bytes;
 +
- 	if (xdp_flush)
- 		xdp_do_flush();
+ 	netdev_tx_completed_queue(netdev_get_tx_queue(bp->dev, queue_index),
+ 				  packets, bytes);
  
 -- 
 2.53.0
