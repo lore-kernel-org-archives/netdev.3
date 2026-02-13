@@ -1,53 +1,35 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.2])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BBD22ACEB;
-	Fri, 13 Feb 2026 02:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 518B5347C7;
+	Fri, 13 Feb 2026 02:50:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770950785; cv=none; b=M0RiTS8g2JbcNhYzaj0GVuaVxzNzTDAhV2Q9zPsfHK/+RqZwk5yvrmdIcIleaJxArmIIu4tXnFisS0G2BexagE1od/3exvjEx33CFheR4yVgQtpGpS1ZoMe2EDSyd3F7uUojHsR3fo6oH4oBU2vPzJWwxMo9TV7FDSIlXTToCts=
+	t=1770951017; cv=none; b=hScETK+7RXJfwihHFmcyJwk6Dvy+jMdW42TNk/ZK5Hmk5zsBsf5CZHzsEXJRPuO45+usmICBDyQfVEGsQheFXoPHg1Y3WY2oxNr6DSHlqOiRIxljkmsjCo3iKZfgI9H5B0NiHV5RDLl7InkLAk++MJOmK2U8phbc9X3IA078wz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770950785; c=relaxed/simple;
-	bh=LDZ94JtoHMM1UEYU5Q90klCQ7sVAFPEQpBpyLjSIKFY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Yb4si6CSQrvtYiQBOWgBZfOYgplfJXmGEqTQePBDKQ8WtABsZUMNk0I0rGIYM19y39H95WxlSPBy9EsVYZ7nu6OP3cC+KGL2VTdPVqpWEVHHh0D2v3AkGGTZ6vYFyBqqLESeti8gs7n8UpvLqNVOt80CwP/JYWgStq/BQ60L7wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=dE2ZlQ7i; arc=none smtp.client-ip=220.197.31.2
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	s=arc-20240116; t=1770951017; c=relaxed/simple;
+	bh=PSoYpgktMr2kPyyW6kN6DHkVUHcW1oSCm7yoEDrJDQc=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=tBx4s8Ef+KuwwS72/tu6QVNjYYFm0ol2Jq8xnkTFLZ5kKXKobrzRSOz8OncpR1UiD8q017O7B9qUDKy7o4g9MwEOmR81eYnyW6OENjCPiguGlannAf2BbFz4SfGjlA+So5MZDAxmZ9+Qfqv6T99wGpkfwvc2P3J3H7B2TMgZgfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sP5clzyU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="dE2ZlQ7i"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=4e
-	RwFhUgku6857Z68xn0kodvZ/XzFvUeVFNaJo7REB4=; b=dE2ZlQ7i0edP11WknB
-	LWkXHmBBKZyTlM2+OE4VJ83j5hWivqA0fnD2lN5Zy7tO57/UbpPuPrcp/+mTbHVx
-	xhb5/OAITU6aTRW0BDBJyvr1KojB16h1Qcv72f9C4MHMThNDEG/qAEbypwphruii
-	Ey9F4VSGtkmRmLit2W++xibX0=
-Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAnZNoNkI5pvhZSLw--.1343S4;
-	Fri, 13 Feb 2026 10:44:32 +0800 (CST)
-From: Feng Yang <yangfeng59949@163.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	posk@google.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	eddyz87@gmail.com
-Cc: bpf@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	yangfeng59949@163.com
-Subject: [PATCH v6 bpf-next 2/2] selftests/bpf: Add selftests for the invocation of bpf_lwt_xmit_push_encap
-Date: Fri, 13 Feb 2026 10:44:29 +0800
-Message-Id: <20260213024429.39972-3-yangfeng59949@163.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260213024429.39972-1-yangfeng59949@163.com>
-References: <20260213024429.39972-1-yangfeng59949@163.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sP5clzyU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39E0C4CEF7;
+	Fri, 13 Feb 2026 02:50:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770951017;
+	bh=PSoYpgktMr2kPyyW6kN6DHkVUHcW1oSCm7yoEDrJDQc=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=sP5clzyU1WXXXGwWQhOybCJiIMWjSC77JoZZt4LXV2YxCrUw2dVDiXhdDxeVjYwNv
+	 Gma1tr9RVlAM3B5s8ZFMRuSNdzRtES7D/govQNV+QhshwLsMxM+4T4/E7fUmUjb6J8
+	 GH2Lo7fz6jQRlclvc5z2OX+rjpawuudzfxmZwklIuC1xK7uzR+7Sms3bhwh4iJdfgg
+	 VIIQAfyMODaeUmoureXnf0wJ14q2Vp/3kiqJAq4ty/We4eZ80/tBt7qztx/F5RtgxL
+	 TwFiF6pw8RzKPZNtXaCnQR7NggT/T3JYc+XpU12MHFtW3NNFgV26aERlUADi+Tr9pC
+	 zNh6OFrS5GZIw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 482B03931093;
+	Fri, 13 Feb 2026 02:50:12 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,51 +37,49 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAnZNoNkI5pvhZSLw--.1343S4
-X-Coremail-Antispam: 1Uf129KBjvdXoW7XF4kCFWxXF4rArW3Wr48JFb_yoWkWrg_tr
-	sYga4kCrWxGFnIyayjkr1UCryakwsxWr9rJFsrJr1kCw4UX3Z8GFs7Gr1DJas2g3y3Kr9x
-	Aa909F1Iyr42qjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7sRCrWFDUUUUU==
-X-CM-SenderInfo: p1dqww5hqjkmqzuzqiywtou0bp/xtbC8RAmnmmOkBBaUgAA32
+Subject: Re: [PATCH v2] net: intel: fix PCI device ID conflict between i40e
+ and
+ ipw2200
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177095101108.1819996.12996932585198035260.git-patchwork-notify@kernel.org>
+Date: Fri, 13 Feb 2026 02:50:11 +0000
+References: <20260210021235.16315-1-enelsonmoore@gmail.com>
+In-Reply-To: <20260210021235.16315-1-enelsonmoore@gmail.com>
+To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Cc: netdev@vger.kernel.org, linux-wireless@vger.kernel.org,
+ stable@vger.kernel.org, johannes@sipsolutions.net,
+ anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, stas.yakovlev@gmail.com,
+ aleksandr.loktionov@intel.com, alice.michael@intel.com
 
-From: Feng Yang <yangfeng@kylinos.cn>
+Hello:
 
-Calling bpf_lwt_xmit_push_encap will not cause a crash when dst is missing.
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-Signed-off-by: Feng Yang <yangfeng@kylinos.cn>
----
- .../selftests/bpf/progs/verifier_lwt.c        | 20 +++++++++++++++++++
- 1 file changed, 20 insertions(+)
+On Mon,  9 Feb 2026 18:12:34 -0800 you wrote:
+> The ID 8086:104f is matched by both i40e and ipw2200. The same device
+> ID should not be in more than one driver, because in that case, which
+> driver is used is unpredictable. Fix this by taking advantage of the
+> fact that i40e devices use PCI_CLASS_NETWORK_ETHERNET and ipw2200
+> devices use PCI_CLASS_NETWORK_OTHER to differentiate the devices.
+> 
+> Fixes: 2e45d3f4677a ("i40e: Add support for X710 B/P & SFP+ cards")
+> Cc: stable@vger.kernel.org
+> Acked-by: Johannes Berg <johannes@sipsolutions.net>
+> Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+> 
+> [...]
 
-diff --git a/tools/testing/selftests/bpf/progs/verifier_lwt.c b/tools/testing/selftests/bpf/progs/verifier_lwt.c
-index 5ab746307309..9cef07e6eceb 100644
---- a/tools/testing/selftests/bpf/progs/verifier_lwt.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_lwt.c
-@@ -231,4 +231,24 @@ __naked void not_permitted_for_lwt_prog(void)
- 	: __clobber_all);
- }
- 
-+SEC("lwt_xmit")
-+__description("missing dst when calling bpf_lwt_xmit_push_encap")
-+__success __retval(0)
-+__naked void missing_dst_call_bpf_lwt_xmit_push_encap(void)
-+{
-+	asm volatile ("					\
-+	r9 = 69;					\
-+	r3 = r10;					\
-+	r3 += -32;					\
-+	*(u64 *)(r3 + 0) = r9;				\
-+	r2 = 2;						\
-+	r4 = 20;					\
-+	call %[bpf_lwt_push_encap];			\
-+	r0 = 0;						\
-+	exit;						\
-+"	:
-+	: __imm(bpf_lwt_push_encap)
-+	: __clobber_all);
-+}
-+
- char _license[] SEC("license") = "GPL";
+Here is the summary with links:
+  - [v2] net: intel: fix PCI device ID conflict between i40e and ipw2200
+    https://git.kernel.org/netdev/net/c/d03e094473ec
+
+You are awesome, thank you!
 -- 
-2.43.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
