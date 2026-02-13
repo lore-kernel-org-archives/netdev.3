@@ -1,160 +1,154 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82F6361672
-	for <netdev@vger.kernel.org>; Fri, 13 Feb 2026 14:44:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1A62C11CF
+	for <netdev@vger.kernel.org>; Fri, 13 Feb 2026 15:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770993860; cv=none; b=e8yxyS62XnxbIszGdsHXyihozk46YTfKzYr89sDwd/pVKpb7qvYjEtI5J6J5MEyLmIkLle3Px3B0N8R8NXj2Zfs0J/HgAziAD/2niefu07IUJTq4+v/sUatxH2MzB2TaJ5JPSvydE5hqADSNMIo4+tyfuiJD0M7iMFWD+ooqsbE=
+	t=1770995178; cv=none; b=VF2cO/PRvUY2MDK6FNr+h8hOoOecdDjZb3mvJEulLlec1b3XHgQcC76HGXOBKwwy3FP67xgryIVmp2LjpwdyCZVISbka8gkZHvmD6xhu9Dt9F3xwFVV/lIWzIaEOLwh5ftAuvQ1uswxaOW1+vAEa+LZih01mmQoqtJ+iAMRNZp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770993860; c=relaxed/simple;
-	bh=2sI9fBZc+tFyW/laYlQW2CYE9Y/NY/KrtEOkMvCu82o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D+zjXu7nAvlq/XjkYNx1pK/DItyKDDWrHgte1h/De1NcBxjcq1W/7iPM/GSo/fThlDDn5d1M/HL0FuT39o4Jy19b57r+faDhvPXF7s0YvynKx6k0BOVFUUbfmRZsr9TYSPPHN7Izsk+8Gr9dMG88SM2xx3BcNyuis95DkGXJSU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MNS9lrsD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cGug04oy; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=MNS9lrsD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=cGug04oy; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1770995178; c=relaxed/simple;
+	bh=zcMl5ICj6tdjHRVUkCNQNcsPrdeSaI9/cjs1ydke4eQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RIA4kEx6lYX5phHbpcFYePw5PD1pTbWEtZxndgMx5uuhalkLXQQbJ9w6aLSvr4K8PhXgeA0eZ6pOzAc1bO/KBlS/ogTzbm2d3Tq0v/9Bh/dyGkdx5btAsq3E4bp/4egYD/JoI279t05X0Ks/mf28+7d8iaabMqcA9VprJfSnxwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEeTxv6Z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MNS9lrsD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cGug04oy";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="MNS9lrsD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="cGug04oy"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C6E893E74B;
-	Fri, 13 Feb 2026 14:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770993857; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uz+FBcxpG5ZY8OWVakfbYjRzKqtKEUrlE4D/szmw/nw=;
-	b=MNS9lrsDiNBxkFgsgXsPxppSKvqAQWhG9jlNPCnrcoDxMQgkej4aFUAkl4/J/w5afKSzeP
-	keqTqHWLbhqAn+hzMsM1QASdKjv5X4EmLcnBNEIz2rZiwLuF6xvPgGA66bLLWBdzhKiygx
-	jfbG22pWmkSq7LlPfLHTXwWfZWfhdhk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770993857;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uz+FBcxpG5ZY8OWVakfbYjRzKqtKEUrlE4D/szmw/nw=;
-	b=cGug04oyWEy8qPtis22Psg6OQaCRXafKdNjxKsO1UoMXOKKpIhy06NwulB8DxXTFAc3WE3
-	kZmWWTpE80ozEXBQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1770993857; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uz+FBcxpG5ZY8OWVakfbYjRzKqtKEUrlE4D/szmw/nw=;
-	b=MNS9lrsDiNBxkFgsgXsPxppSKvqAQWhG9jlNPCnrcoDxMQgkej4aFUAkl4/J/w5afKSzeP
-	keqTqHWLbhqAn+hzMsM1QASdKjv5X4EmLcnBNEIz2rZiwLuF6xvPgGA66bLLWBdzhKiygx
-	jfbG22pWmkSq7LlPfLHTXwWfZWfhdhk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1770993857;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=uz+FBcxpG5ZY8OWVakfbYjRzKqtKEUrlE4D/szmw/nw=;
-	b=cGug04oyWEy8qPtis22Psg6OQaCRXafKdNjxKsO1UoMXOKKpIhy06NwulB8DxXTFAc3WE3
-	kZmWWTpE80ozEXBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4F6603EA62;
-	Fri, 13 Feb 2026 14:44:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6zY4EME4j2lOZwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Fri, 13 Feb 2026 14:44:17 +0000
-Message-ID: <8c9727bc-a1d5-4ea3-8318-f3fa7e558c85@suse.de>
-Date: Fri, 13 Feb 2026 15:44:09 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEeTxv6Z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4959AC116C6;
+	Fri, 13 Feb 2026 15:06:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1770995178;
+	bh=zcMl5ICj6tdjHRVUkCNQNcsPrdeSaI9/cjs1ydke4eQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QEeTxv6ZuBwOwbN7qo9vYzzusnmQUVrOe6ZG8wSxEdDpcj2IZkGRRuoBBF/6Yvhrm
+	 ishuCbSCgUcjOx5TbAOdMo50GH9TjfF9cb877Ne+8KOHGkqnKbN1ELt5/ZbrbhmetJ
+	 do41jgPrsAjbs8uh9C4FALFk3ggZEXLa5+SwD/TmvYx3noxvco0AF23v3tGJXmLvqi
+	 OWojZqHtEo/uYrlI9Gkc0beGd4n9ffY3EU1rhY2LP1qo4m0J6htYv5492ccL5jvaku
+	 p2dKjgNyzas25SBdcSergQNhHlLakpABdgj6ys+/hGyjM4p3gJpM1BgGXTM4RPUny5
+	 HAXcVA8MoWa3g==
+From: Simon Horman <horms@kernel.org>
+To: aleksandr.loktionov@intel.com
+Cc: Simon Horman <horms@kernel.org>,
+	anthony.l.nguyen@intel.com,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org
+Subject: Re: [iwl-next,v1] ice: implement symmetric RSS hash configuration
+Date: Fri, 13 Feb 2026 15:01:31 +0000
+Message-ID: <20260213150130.2513644-2-horms@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260213034429.1830480-1-aleksandr.loktionov@intel.com>
+References: <20260213034429.1830480-1-aleksandr.loktionov@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] ipv6: addrconf: reduce default temp_valid_lft to 2
- days
-To: Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- Fernando Gont <fgont@si6networks.com>
-Cc: netdev@vger.kernel.org, pabeni@redhat.com, kuba@kernel.org,
- davem@davemloft.net
-References: <20260211202003.4550-1-fmancera@suse.de>
- <aY8uYmy1adhPqqbm@horms.kernel.org>
- <CANn89iL4zCq6gXNj7Yc_gXOrvtUhN+Zcdw5pbrUqZDgYez0ujw@mail.gmail.com>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <CANn89iL4zCq6gXNj7Yc_gXOrvtUhN+Zcdw5pbrUqZDgYez0ujw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
-X-Spam-Flag: NO
 
-On 2/13/26 3:34 PM, Eric Dumazet wrote:
-> On Fri, Feb 13, 2026 at 3:00 PM Simon Horman <horms@kernel.org> wrote:
->>
->> On Wed, Feb 11, 2026 at 09:20:03PM +0100, Fernando Fernandez Mancera wrote:
->>> This is a recommendation from RFC 8981 and it was intended to be changed
->>> by commit 969c54646af0 ("ipv6: Implement draft-ietf-6man-rfc4941bis")
->>> but it only changed the sysctl documentation.
->>>
->>> Fixes: 969c54646af0 ("ipv6: Implement draft-ietf-6man-rfc4941bis")
->>> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
->>
->> Reviewed-by: Simon Horman <horms@kernel.org>
-> 
-> 
-> I would recommend adding a comment, because final RFC states
-> "TEMP_VALID_LIFETIME -- Default value: 1 week. Users should be able
-> to override the default value.
-> 
-> https://datatracker.ietf.org/doc/html/rfc4941#section-5
-> 
-> So... do we still need a different value in linux, and why ?
-> 
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-RFC 8981 obsoletes RFC 4941, the new RFC states
-"TEMP_VALID_LIFETIME -- Default value: 2 days. Users should be able to 
-override the default value."
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+ice: implement symmetric RSS hash configuration
 
-https://datatracker.ietf.org/doc/html/rfc8981#section-3.8
+The driver advertises symmetric RSS support via supported_input_xfrm
+but ice_set_rxfh() ignored the input_xfrm parameter, making it
+impossible to configure symmetric hashing. This patch fixes
+ice_set_rxfh() to check the input_xfrm parameter and configure
+symmetric hashing appropriately, modifies ice_set_rss_vsi_ctx() to use
+vsi->rss_hfunc instead of hardcoding values, and updates
+ice_get_rxfh_fields() to report symmetric field configurations.
 
-I didn't include the reasoning because it was already on the blamed 
-commit which comes from the RFC 8981 too.
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> index c6bc29cfb8e6..6dc37f96b57e 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> @@ -3037,8 +3037,10 @@ ice_get_rxfh_fields(struct net_device *netdev, struct ethtool_rxfh_fields *nfc)
+>
+>  	hash_flds = ice_get_rss_cfg(&pf->hw, vsi->idx, hdrs, &symm);
+>  	if (hash_flds == ICE_HASH_INVALID) {
+> -		dev_dbg(dev, "No hash fields found for the given header type, vsi num = %d\n",
+> +		/* Provide default symmetric hash fields when no config exists */
+> +		dev_dbg(dev, "No RSS config for this flow, using symmetric defaults, vsi num = %d\n",
+>  			vsi->vsi_num);
+> +		nfc->data = RXH_IP_SRC | RXH_IP_DST | RXH_L4_B_0_1 | RXH_L4_B_2_3;
+>  		return 0;
+>  	}
+>
+> @@ -3067,6 +3069,7 @@ ice_get_rxfh_fields(struct net_device *netdev, struct ethtool_rxfh_fields *nfc)
+>  	    hash_flds & ICE_FLOW_HASH_FLD_GTPU_DWN_TEID)
+>  		nfc->data |= (u64)RXH_GTP_TEID;
+>
+> +	nfc->data = RXH_IP_SRC | RXH_IP_DST | RXH_L4_B_0_1 | RXH_L4_B_2_3;
+                  ^^^^^^^
 
-https://datatracker.ietf.org/doc/html/rfc8981#section-4
+Does this unconditional assignment at the end of ice_get_rxfh_fields()
+overwrite the actual hardware configuration that was just computed?
 
-Anyway, I am fine adding a comment or mentioning it on the commit 
-message if needed.
+The hash fields are carefully decoded from the hardware configuration
+returned by ice_get_rss_cfg() and built up in nfc->data through the series
+of bitwise OR operations. Then this line uses assignment (=) rather than
+bitwise OR (|=), replacing all those computed values with a fixed set of
+hash fields.
 
-Thanks,
-Fernando.
+This would make the entire per-field computation from the hardware state
+become dead code. The function would always report the same fixed hash
+fields (RXH_IP_SRC | RXH_IP_DST | RXH_L4_B_0_1 | RXH_L4_B_2_3) regardless
+of what is actually configured in hardware. GTP TEID hash fields would
+never be reported even when configured.
+
+Was this intended to be an additional |= operation, or should this line
+be removed entirely?
+
+> @@ -3667,7 +3670,6 @@ ice_set_rxfh(struct net_device *netdev, struct ethtool_rxfh_param *rxfh,
+>  	     struct netlink_ext_ack *extack)
+>  {
+>  	struct ice_netdev_priv *np = netdev_priv(netdev);
+> -	u8 hfunc = ICE_AQ_VSI_Q_OPT_RSS_HASH_TPLZ;
+>  	struct ice_vsi *vsi = np->vsi;
+>  	struct ice_pf *pf = vsi->back;
+>  	struct device *dev;
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+> index d921269e1fe7..31f2757cf7fa 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_lib.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+> @@ -1155,7 +1155,7 @@ static void ice_set_fd_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
+>   * @ctxt: the VSI context being set
+>   * @vsi: the VSI being configured
+>   */
+> -static void ice_set_rss_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
+> +void ice_set_rss_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
+>  {
+>  	u8 lut_type, hash_type;
+>  	struct device *dev;
+> @@ -1181,7 +1181,9 @@ static void ice_set_rss_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi)
+>  		return;
+>  	}
+>
+> -	hash_type = ICE_AQ_VSI_Q_OPT_RSS_HASH_TPLZ;
+> +        if (!vsi->rss_hfunc)
+> +		vsi->rss_hfunc = ICE_AQ_VSI_Q_OPT_RSS_HASH_TPLZ;
+> +	hash_type = vsi->rss_hfunc;
+>  	vsi->rss_hfunc = hash_type;
+>
+>  	ctxt->info.q_opt_rss =
+
+[ ... ]
+
+> diff --git a/drivers/net/ethernet/intel/ice/ice_lib.h b/drivers/net/ethernet/intel/ice/ice_lib.h
+> index 49454d98dcfe..29ba335dcc54 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_lib.h
+> +++ b/drivers/net/ethernet/intel/ice/ice_lib.h
+> @@ -46,6 +46,7 @@ void ice_vsi_delete(struct ice_vsi *vsi);
+>  int ice_vsi_cfg_tc(struct ice_vsi *vsi, u8 ena_tc);
+>
+>  int ice_vsi_cfg_rss_lut_key(struct ice_vsi *vsi);
+> +void ice_set_rss_vsi_ctx(struct ice_vsi_ctx *ctxt, struct ice_vsi *vsi);
+>
+>  void ice_vsi_cfg_netdev_tc(struct ice_vsi *vsi, u8 ena_tc);
+>
