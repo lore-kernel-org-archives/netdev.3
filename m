@@ -1,111 +1,80 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A9E364055
-	for <netdev@vger.kernel.org>; Fri, 13 Feb 2026 16:58:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA42286A9
+	for <netdev@vger.kernel.org>; Fri, 13 Feb 2026 17:02:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771001936; cv=none; b=Tv14/mslEkzLQ//zvs8CPM7mwPcYTSv9+QcFTlbQCoDr6Nfo60qrhW3OOH1eAq0pfx9JDG545LZeZ75lbRY3VxjM76MPL5wHA+lL/umJ7DUoqB+bAGa7D3YSN/m3FPfQnxH2UComttqEU0lfh2nO87YTE8xA/zXrYSNjFwHvA6E=
+	t=1771002158; cv=none; b=qF7wA0Xk6lSyF212/0IR138gGfeoQoEwin5DHjkD0a5nBYzKLavX11fotNAO+LbQFILxfU6luN4MNqp0eZpZPNTvNKzQuytPXC8ydF50pUF/YM6sFXZLnM2Au0oHh8N4kXbP1QdDFVEU6S6bQJmwvFNF6pIHlJYLlYd2KATeL5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771001936; c=relaxed/simple;
-	bh=HW9OjYS3TDwmbSTFjz+CpXYzkTbusYrZ6ob/Eyrw4KQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pCk55kJ/EO9QW5F9ahR6P0HLr4980aV0J5PEph6RUGMTFcMGL3O8EROkpYfrJOq6ZTFK5ckCxoy8MUaWkfmOLyn89HOgsfBFwG/BS1Dgr+j1ZPPsVr3gghjbgwI+y1koozqPUS4tvv+lIl+QsegluzkbTvG2KqyXjj3VqenFxD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=wWAXz2/0; arc=none smtp.client-ip=185.171.202.116
+	s=arc-20240116; t=1771002158; c=relaxed/simple;
+	bh=0o09gqHf6Kt4/xJ5vSwX+VtvE9XnTacvGWxmm2JpxGo=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=IdbcPTmrk+ae/WPdISRQ+ifQTLBYIl2Ec4rEgdHs6JLjHzdedZ9OochqwjEGhbwFEzv0jeT3cltPe+IusGFDdxFjjyysn2CBADqLeBwqzhAeF5akJwBUJAtV9Y6H8WfI4HUYp8L4IMpwCszPUf4SaECj+SnYIyQ4/Q6amkQ+aQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=oCn7Opcd; arc=none smtp.client-ip=185.246.84.56
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="wWAXz2/0"
-Received: from smtpout-01.galae.net (unknown [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 6C4D4C1E4A2;
-	Fri, 13 Feb 2026 16:58:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="oCn7Opcd"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-02.galae.net (Postfix) with ESMTPS id 88D171A0EC0;
+	Fri, 13 Feb 2026 17:02:35 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id AEEF6606BE;
-	Fri, 13 Feb 2026 16:58:36 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D303310368EB1;
-	Fri, 13 Feb 2026 17:58:34 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 4FC9F606BE;
+	Fri, 13 Feb 2026 17:02:35 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C305010368F15;
+	Fri, 13 Feb 2026 18:02:32 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1771001916; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1771002154; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=JVjUTf4NRhSxI/gJMo3Ok54wjpnF9Jou6i2VhBSwvcc=;
-	b=wWAXz2/0Qx2DhZv+YzLaCb2nMY+ftoQ/T+tD2dtcFCX0O348Bn6Rhh+ZS03Rsg2Fez6fsx
-	N97WKxhbe1N7yaOSgR0LkdF0GwM8dHQ0Seb6X6m8Mp0iAvwnIasKrb63E69d9A73XuGAQl
-	6g3E5wpm8HKGsmRVH77JS+mPSpt7iRuBbiWcT3P1FwQyYVbH9jtZlwztj9RUKJy6yJ/RkC
-	K0GShdsFlIbLSzofjdAvUyCHcnsaRRyaPaHtpO0zRZ2x6kbHGtTIyQZ7WnVaVXtJW130dr
-	aCbR+iNFfWVzO1uOrSHrkkz5dqZN49V6ithGON/LUI0JfKsFljwxHr5L9S3DKw==
-From: =?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>
-To: theo.lebrun@bootlin.com
-Cc: andrew+netdev@lunn.ch,
-	claudiu.beznea@tuxon.dev,
-	davem@davemloft.net,
-	edumazet@google.com,
-	gregory.clement@bootlin.com,
-	kuba@kernel.org,
-	lorenzo@kernel.org,
-	netdev@vger.kernel.org,
-	nicolas.ferre@microchip.com,
-	pabeni@redhat.com,
-	pvalerio@redhat.com,
-	thomas.petazzoni@bootlin.com
-Subject: [PATCH 3/6] net: macb: always use DMA_BIDIRECTIONAL on page pool buffers
-Date: Fri, 13 Feb 2026 17:57:56 +0100
-Message-ID: <20260213165759.225449-3-theo.lebrun@bootlin.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260213165759.225449-1-theo.lebrun@bootlin.com>
-References: <DG4MBFXG7GGG.3GFLWBUKH087T@bootlin.com>
- <20260213165759.225449-1-theo.lebrun@bootlin.com>
+	bh=0o09gqHf6Kt4/xJ5vSwX+VtvE9XnTacvGWxmm2JpxGo=;
+	b=oCn7OpcdH/1DiNbPJn8McJaT1Ju8snGJg4UxUMthUaay9bmBwVx7HKR8dvXBXdl101NheZ
+	NwgO2sydLNb+P9yjF8RSILMoKmnvyHegIfthhVYG6YzotwUukDw3n5IrwIlF83fvTYf1c5
+	w1QeemY9iEZnJVzRl5Paq07Ea0XJPjJxtyLqFJxQy/hifi6+cNmdG4E1oNDPkM/LKX6Gd3
+	CgJoZDnmHRCQtc2GdU2q+cQJS8/2+ZBpizwYxg+3Xf8osmqgopapp3RhuWBaO1iUaYvmKs
+	Q73QEq24pITsH/tCBB/70Et6El0oyxkfQ8ZbViBAbVA5H2Zw3yrbi5deSgGxbw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Date: Fri, 13 Feb 2026 18:02:32 +0100
+Message-Id: <DGDZV94A0UWE.A2JXDGRBZMKK@bootlin.com>
+Subject: Re: [PATCH net-next 0/8] net: macb: Add XDP support and page pool
+ integration
+Cc: "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
+ <claudiu.beznea@tuxon.dev>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
+ "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ "Lorenzo Bianconi" <lorenzo@kernel.org>, =?utf-8?q?Gr=C3=A9gory_Clement?=
+ <gregory.clement@bootlin.com>, "Thomas Petazzoni"
+ <thomas.petazzoni@bootlin.com>
+To: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>, "Paolo Valerio"
+ <pvalerio@redhat.com>, <netdev@vger.kernel.org>
+From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
+X-Mailer: aerc 0.21.0-0-g5549850facc2
+References: <20260115222531.313002-1-pvalerio@redhat.com>
+ <DGDZR8L3E9WI.2MEYVL01KQ2YN@bootlin.com>
+In-Reply-To: <DGDZR8L3E9WI.2MEYVL01KQ2YN@bootlin.com>
 X-Last-TLS-Session-Version: TLSv1.3
 
-Creating a page pool on open requires knowing the DMA direction. We want
-BIDI if an XDP program is loaded (because it might modify and XDP_TX the
-buffer) and only need FROM_DEVICE otherwise.
+On Fri Feb 13, 2026 at 5:57 PM CET, Th=C3=A9o Lebrun wrote:
+> I'll send them as reply to this email.
 
-However, we do not reopen on .ndo_bpf() to load an XDP program. This
-means the DMA direction might be wrong. Options:
- - Reopen on XDP program load if no program was loaded before.
- - Always use BIDI.
+Not using b4, I had to make a mistake.
+Patches have been sent as a reply to the wrong email in this thread.
 
-Option 2 shows no reproducible performance costs on my target. It
-implies an additional dma_sync_single_for_device() when page pool
-buffers are recycled; see __page_pool_put_page().
+https://lore.kernel.org/netdev/20260213165759.225449-1-theo.lebrun@bootlin.=
+com/
 
-Signed-off-by: Théo Lebrun <theo.lebrun@bootlin.com>
----
- drivers/net/ethernet/cadence/macb_main.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Have a nice week-end,
+Thanks,
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 918eee5c8a5b..05bbbaf260ce 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1582,7 +1582,7 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
- 
- 		dma_sync_single_for_cpu(&bp->pdev->dev,
- 					addr, bp->rx_buffer_size,
--					page_pool_get_dma_dir(queue->page_pool));
-+					DMA_BIDIRECTIONAL);
- 		/* Ensure ctrl is at least as up-to-date as rxused */
- 		dma_rmb();
- 
-@@ -2867,9 +2867,7 @@ static int gem_create_page_pool(struct macb_queue *queue, int qid)
- 		.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV,
- 		.pool_size = queue->bp->rx_ring_size,
- 		.nid = NUMA_NO_NODE,
--		.dma_dir = rcu_access_pointer(queue->bp->prog)
--				? DMA_BIDIRECTIONAL
--				: DMA_FROM_DEVICE,
-+		.dma_dir = DMA_BIDIRECTIONAL,
- 		.dev = &queue->bp->pdev->dev,
- 		.napi = &queue->napi_rx,
- 		.max_len = PAGE_SIZE,
--- 
-2.53.0
+--
+Th=C3=A9o Lebrun, Bootlin
+Embedded Linux and Kernel engineering
+https://bootlin.com
 
