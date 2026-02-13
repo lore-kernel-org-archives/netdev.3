@@ -1,84 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3433624B7;
-	Fri, 13 Feb 2026 15:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD101363C7E;
+	Fri, 13 Feb 2026 15:27:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770996419; cv=none; b=R/ezBGtOJ3sLXIpcVdHa5DNlQrveqWFr216Z2233iDw/RWbxDyQEbmIyjaARAnmIbFugIRzO1s5gjlQ+S8gy0F8v7ydLhuF1CD1X1lyGdjQ14OH+0PPbfYGexDifYA24BHMcEzQ1jXXPcv70S65BqNen19/jNHM5KmzHdcql3r4=
+	t=1770996420; cv=none; b=k63nyFqu1DnPiCWlTGszqfG2EBHJpwx74Lg/5NzIQIdudFKadIos6a2aWSN7qKLyWmxJ5atCXDEk4ruYJwqn2m1c282R55Xg7mSnO6/XczzmWl8M2rcJ3/BqUW2St43aWKTScnCf80dbLuYn2UccpPChEzL3rMSMPAhCXFuZvLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770996419; c=relaxed/simple;
-	bh=TjKjfh4AHZJmJ5vSp/9BroQ96QAtgOr9pMqQU9yoiH0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dn5Ut6djW15RH9+7BQzH+7L3GwCf+c9Tqjz5GtnNG2RYAW3tV9vTFm3ZMo8juzh9PGkUF5wHt9yFdRD/xcyXK29CitCPy1YJ9Daj/BFceleHoHdYnH01zzqdjFbReZq+5u3x/pVKWjTRHNN/Kj1EQi4GMGH/5so/GUAsH7DSONU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEI1wUKG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770996420; c=relaxed/simple;
+	bh=/B6JgBhqjAE9R1cCIB7J9fbNRvjvEZDD6CRvNZPox4s=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jBgUumCjwcHoZ470gNVBIn//b3UiNsoljdCEtCDXsT8F7EW1z5/H1VpFBVgfWgffFV/k65pMobsWCGbpCIoSAd+0FO8ULdf99M5kZHI0OW+Nbd4QFCabC6kdo6WuN8heiTYp0bWooKdxgYpmevee8enlOhO+iYPmMWBseVDljtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UB3g8Ndq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEI1wUKG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A36EC116C6;
-	Fri, 13 Feb 2026 15:26:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UB3g8Ndq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4DA6C19425;
+	Fri, 13 Feb 2026 15:26:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770996419;
-	bh=TjKjfh4AHZJmJ5vSp/9BroQ96QAtgOr9pMqQU9yoiH0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CEI1wUKGJjK7Sl3xlVdZJj/Ctg/oXEKIWcZxXCY1nhdSwYQyolQ2ZAJe97ZfhSyge
-	 Ntb8w5fI0zZovkQe2uiT8KnIetp/hhvSr35UZjp2ZQsT/TortYFgUGqwflkRMpU8ds
-	 l7wSDxAy5BM62Qztfv8aHjlhg16+KLo/vS1BPi877V0PJg85G1JaJmdt8alGOFVjV+
-	 xsA73BqfDstqxyHHhtNRfWN0NnrcHY/USi2xnlYlX8hhYeJTTpc12Nh6UkkRzHIk8T
-	 KVX9nk6Z5FYqCdMfyzhsWcb4wck69oDsksS292ZX0ddm4jQY/4yGgwaNkUbfTJaWyQ
-	 FCmX5P9G3THcg==
-Date: Fri, 13 Feb 2026 15:26:54 +0000
-From: Simon Horman <horms@kernel.org>
-To: "zhengping.zhang" <aquapinn@qq.com>
-Cc: lorenzo@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, upstream@airoha.com,
-	zhengping.zhang@airoha.com
-Subject: Re: [PATCH] net: airoha: fix typo in function name
-Message-ID: <aY9Cvud7rSw_aWU1@horms.kernel.org>
-References: <tencent_5F3DFF496EC95F5BC0D71C297D088B06F40A@qq.com>
+	s=k20201202; t=1770996420;
+	bh=/B6JgBhqjAE9R1cCIB7J9fbNRvjvEZDD6CRvNZPox4s=;
+	h=From:Subject:Date:To:Cc:From;
+	b=UB3g8NdqdNaideuG+s8IqIlRFiOwNydc4FJi/QXG6Ltc56VT8nNDZpK9WP8HKoXFN
+	 UQfH7aDRVeJ8bac4XAd+hLrcLGXyOq0b6S3xtgJSveEKOE6Pl5oN/iAklcSUyCzOJ3
+	 WbI4BfMGA8MrgxRIghXSYkhX6CUZzmO62jTwSvTfKL7YtQ+q0JnuVhey/HuYP5Das/
+	 I+JTNW9cuOj0qbwGPBefrvCePe6GxUtZl2tJieQaLhK/FU9H5wiTOM4j5EGoL6gVRL
+	 /LWpgb+Qwvuw7gsoK0r5PWM0N3KgFTnttRi2Q+mKdfPuV/DayBb1cFPNkkCliEz3lO
+	 661LgQ4GITf3g==
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+Subject: [PATCH bpf-next v2 0/5] Add the the capability to load HW RX
+ checsum in eBPF programs
+Date: Fri, 13 Feb 2026 16:26:19 +0100
+Message-Id: <20260213-bpf-xdp-meta-rxcksum-v2-0-a82c4802afbe@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <tencent_5F3DFF496EC95F5BC0D71C297D088B06F40A@qq.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/4XNTQ6CMBCG4auYrh0zrRapK+9hXJR2gAb5SYsNh
+ nB3C4kLF8bl+yXzzMwCeUeBXXYz8xRdcH2XQux3zNS6qwicTc0EColKSCiGEiY7QEujBj+ZJjx
+ bUIhZLkkoVJal08FT6aaNvd1T1y6MvX9tX6JY1z9gFICQFceSVH42pPi1Id/R49D7iq1i5B8lQ
+ 8Hxh8KTQtJKabRGefpWlmV5A5ggbkT/AAAA
+X-Change-ID: 20250925-bpf-xdp-meta-rxcksum-900685e2909d
+To: Donald Hunter <donald.hunter@gmail.com>, 
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+ Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Alexander Lobakin <aleksander.lobakin@intel.com>, 
+ Andrii Nakryiko <andrii@kernel.org>, 
+ Martin KaFai Lau <martin.lau@linux.dev>, 
+ Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+ Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
+ Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
+ Shuah Khan <shuah@kernel.org>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Cc: Jakub Sitnicki <jakub@cloudflare.com>, netdev@vger.kernel.org, 
+ bpf@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
+ linux-kselftest@vger.kernel.org, Lorenzo Bianconi <lorenzo@kernel.org>, 
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+X-Mailer: b4 0.14.2
 
-On Fri, Feb 13, 2026 at 02:57:25PM +0800, zhengping.zhang wrote:
-> Corrected the typo in the function name from `airhoa_is_lan_gdm_port`
-> to `airoha_is_lan_gdm_port`.
-> This change ensures consistency in the API naming convention.
-> 
-> Signed-off-by: zhengping.zhang <aquapinn@qq.com>
+Introduce bpf_xdp_metadata_rx_checksum() kfunc in order to load the HW
+RX cheksum results in the eBPF program binded to the NIC.
+Implement xmo_rx_checksum callback for veth and ice drivers.
 
-Hi,
+If the hardware detects a wrong/failed checksum, it will report
+CHECKSUM_NONE in the packet metadata. Moreover, CHECKSUM_NONE will be
+returned even if the NIC can't parse the packet (e.g. if it does not
+support a specific protocol). A possible use case for
+bpf_xdp_metadata_rx_checksum() would be to implement a XDP DDoS
+application [1] combining the info from bpf_xdp_metadata_rx_checksum()
+and bpf_xdp_metadata_rx_hash() kfuncs in order to filter packets with a
+wrong/failed checksum.
 
-I agree that this change is both correct and complete.
-So please feel free to add:
-
-Reviewed-by: Simon Horman <horms@kernel.org>
-
-This looks like net-next to me material as it isn't a bug fix.
-And it's best to include the target tree in the subject, like this.
-
-Subject: [PATCH net-next] ...
-
-Unfortunately net-next is closed at this time.
+[1] https://blog.cloudflare.com/unimog-cloudflares-edge-load-balancer/
 
 ---
-## Form letter - net-next-closed
+Changes in v2:
+- Remove XDP_CHECKSUM_PARTIAL definition
+- Improve veth_xdp_rx_checksum() callback
+- Fix uninitialized case for cksum_meta in ice_get_rx_csum()
+- Fix sparse warnings in ice driver
+- Fix typos
+- Link to v1: https://lore.kernel.org/r/20260210-bpf-xdp-meta-rxcksum-v1-0-e5d55caa0541@kernel.org
 
-We have already submitted our pull request with net-next material for v7.0,
-and therefore net-next is closed for new drivers, features, code refactoring
-and optimizations. We are currently accepting bug fixes only.
+Changes in v1:
+- Rebase on top of bpf-next
+- Test ice driver using xdp_hw_metadata tool available in the bpf
+  kernel selftest
+- Improve cover letter with an use-case for
+  bpf_xdp_metadata_rx_checksum()
+- Link to RFC v2: https://lore.kernel.org/r/20250925-bpf-xdp-meta-rxcksum-v2-0-6b3fe987ce91@kernel.org
 
-Please repost when net-next reopens after Feb 23rd.
+Changes in RFC v2:
+- Squash patch 1/6 and 2/6
+- Introduce enum xdp_checksum definitions
+- Rework ice support to reuse ice_rx_csum codebase
 
-RFC patches sent for review only are obviously welcome at any time.
-                                                                                See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
---
-pw-bot: defer
+---
+Lorenzo Bianconi (5):
+      netlink: specs: Add XDP RX checksum capability to XDP metadata specs
+      net: veth: Add xmo_rx_checksum callback to veth driver
+      net: ice: Add xmo_rx_checksum callback
+      selftests/bpf: Add selftest support for bpf_xdp_metadata_rx_checksum
+      selftests/bpf: Add bpf_xdp_metadata_rx_checksum support to xdp_hw_metadat prog
+
+ Documentation/netlink/specs/netdev.yaml            |   5 +
+ drivers/net/ethernet/intel/ice/ice_txrx_lib.c      | 118 +++++++++++++--------
+ drivers/net/veth.c                                 |  30 ++++++
+ include/net/xdp.h                                  |  13 +++
+ include/uapi/linux/netdev.h                        |   3 +
+ net/core/xdp.c                                     |  28 +++++
+ tools/include/uapi/linux/netdev.h                  |   3 +
+ .../selftests/bpf/prog_tests/xdp_metadata.c        |   6 ++
+ .../testing/selftests/bpf/progs/xdp_hw_metadata.c  |   8 ++
+ tools/testing/selftests/bpf/progs/xdp_metadata.c   |   3 +
+ tools/testing/selftests/bpf/xdp_hw_metadata.c      |  25 +++++
+ tools/testing/selftests/bpf/xdp_metadata.h         |  12 +++
+ 12 files changed, 212 insertions(+), 42 deletions(-)
+---
+base-commit: 192c0159402e6bfbe13de6f8379546943297783d
+change-id: 20250925-bpf-xdp-meta-rxcksum-900685e2909d
+
+Best regards,
+-- 
+Lorenzo Bianconi <lorenzo@kernel.org>
+
