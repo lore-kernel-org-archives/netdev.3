@@ -1,177 +1,222 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB4B363C4F;
-	Fri, 13 Feb 2026 15:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1701A25A2A4;
+	Fri, 13 Feb 2026 15:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770996433; cv=none; b=qEArIpVx8NT3/EXtW1VV6MCQHEZ6NXNlVsASkkB+OnBD2Ldw5Wh0S9MSEC0rAlQKWxe2zmYOQrjGJo87QhhGE+x4SzXQO13GFN29Hal78IDcXmNofs3i0g1nnnehcKbVCzg0o+9CVv8wnqdgTGd6smCZvIpFlcn3ungUPcVfm6I=
+	t=1770998148; cv=none; b=drpdyx5LrgU6yhG72PTxRdQL75sDM+vLwQ9XIm90lY6tHZZQZi5fMkqAisEgossCFHkO6ZTxTDbhjFnIDRM1hnqDRf/EHM8V55Pq9Pd/W90UhUTv3A41UcuvhzLSuQw/KKmnhVF7ErJhal35NyvXlHdOOQoDa566W7lBlhPIxLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770996433; c=relaxed/simple;
-	bh=acetSvAvAvzBxJaNnQ3tpe8HbAc79uV5aOOQPwduvU8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KFiLBWG0DGU38NFVy8Wznff98wqAOI6cgsGj0imFaYtOQym9t8VNk5twcNTOEPh3Tv1WICaEeupju9xc9oSdLOraSEFwY3efIOp6Z4O6kHLY+bic/oaW0rnJ0bYevHe6rf0uTjKwdMp0CSfieZXrTUmODWZbEkCZjE9YSFVlzPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rhmvs5Hc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770998148; c=relaxed/simple;
+	bh=QvYIB5WqqOrUK4YAhDT9S7D+68jRo1GDzrIhWFZzer4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SiAT1IikbGWa1muozSKp/MmerH2bqaq+odJ+wjkNgAeSb6BeTg5lHueWbf0FQaf5sug6ToSES5Ou4QQ4tljog6YWRKEMcifoYVhspeG1v6wSRq623cFf243cfjDlq7ZhzZHlOFQBgn666zblbVEOTfyAOusnqC0w12RUCr9GfDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMe/JcgX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rhmvs5Hc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D90C116C6;
-	Fri, 13 Feb 2026 15:27:12 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMe/JcgX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512F4C116C6;
+	Fri, 13 Feb 2026 15:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770996433;
-	bh=acetSvAvAvzBxJaNnQ3tpe8HbAc79uV5aOOQPwduvU8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=rhmvs5HcdHRLVvCRXOhvkQzztYVsf1mQ5PV2KmhzNomhd/3o6z+TEALGL5fu668wC
-	 NvHl4r/BwkRZIFTP+BzwD2ueV0xT+rxKYLAuY3K5UzSeHumQ2KSbpRtNW8EbQwgxEE
-	 JXLraf7UJUVbdrdlbQpNrscno0cBIC9/5wDiT5OTbTHc1uwkKon4577hbywiu160sZ
-	 Yfz+5oX1Cnzzwz3ph/8Y/lyF+bpJxk3ZnB77qsMz2iYvgLmibHmwwDvgnP+eBxopDd
-	 JPXS79BfgE8f8RAWJ6WCBIRVAygd8TsGT6OlMKhotVw83hFZhCDOrKPIlI06QvachC
-	 asZLN/ONQXzrQ==
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-Date: Fri, 13 Feb 2026 16:26:24 +0100
-Subject: [PATCH bpf-next v2 5/5] selftests/bpf: Add
- bpf_xdp_metadata_rx_checksum support to xdp_hw_metadat prog
+	s=k20201202; t=1770998148;
+	bh=QvYIB5WqqOrUK4YAhDT9S7D+68jRo1GDzrIhWFZzer4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=lMe/JcgXuZuHIji3Px1biG7atMFTV3yf59CW9HXGIkOIGolK/Y6X7IeU6iinIzsI9
+	 WdHbTixYLzbHyZxTou6x3sBi93qu7fW3nYOQ1B2ulc8P+uD7c9BkrPJOqJi5j9kQew
+	 XkEs+wsZZDqA7wngHrW+VYYx3jweoQDuALoxTFqi0L7u8Rv/EyvtjY1XS78vTSdVs6
+	 aA2gn9qeieOEwOzbcHGCduzsTtEJyyB2EBOS1GUc7CuMWPWzfVP+NfbqMZ0eXvZ1GP
+	 x/vkgmSl5AC0lUxXlO0Ko31YjGanAlvCH6M4kXBXa8ENb+V9kvEK/2aspY81nWP+7i
+	 xQq1TuoWVzqjA==
+From: Simon Horman <horms@kernel.org>
+To: p@1g4.org
+Cc: Simon Horman <horms@kernel.org>,
+	jiri@resnulli.us,
+	pabeni@redhat.com,
+	victor@mojatatu.com,
+	jhs@mojatatu.com,
+	davem@davemloft.net,
+	netdev@vger.kernel.org,
+	stable@vger.kernel.org,
+	edumazet@google.com,
+	linux-kernel@vger.kernel.org,
+	kuba@kernel.org,
+	xiyou.wangcong@gmail.com
+Subject: Re: [net,v6,1/1] net/sched: act_gate: snapshot parameters with RCU on replace
+Date: Fri, 13 Feb 2026 15:55:28 +0000
+Message-ID: <20260213155528.2515066-1-horms@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260213113849.136695-2-p@1g4.org>
+References: <20260213113849.136695-2-p@1g4.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260213-bpf-xdp-meta-rxcksum-v2-5-a82c4802afbe@kernel.org>
-References: <20260213-bpf-xdp-meta-rxcksum-v2-0-a82c4802afbe@kernel.org>
-In-Reply-To: <20260213-bpf-xdp-meta-rxcksum-v2-0-a82c4802afbe@kernel.org>
-To: Donald Hunter <donald.hunter@gmail.com>, 
- Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Alexander Lobakin <aleksander.lobakin@intel.com>, 
- Andrii Nakryiko <andrii@kernel.org>, 
- Martin KaFai Lau <martin.lau@linux.dev>, 
- Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
- Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>, 
- Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>, 
- Shuah Khan <shuah@kernel.org>, 
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Cc: Jakub Sitnicki <jakub@cloudflare.com>, netdev@vger.kernel.org, 
- bpf@vger.kernel.org, intel-wired-lan@lists.osuosl.org, 
- linux-kselftest@vger.kernel.org, Lorenzo Bianconi <lorenzo@kernel.org>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-Introduce the capability to dump HW rx checksum in xdp_hw_metadata
-program via bpf_xdp_metadata_rx_checksum() kfunc.
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
- .../testing/selftests/bpf/progs/xdp_hw_metadata.c  |  8 +++++++
- tools/testing/selftests/bpf/xdp_hw_metadata.c      | 25 ++++++++++++++++++++++
- tools/testing/selftests/bpf/xdp_metadata.h         | 10 ++++++---
- 3 files changed, 40 insertions(+), 3 deletions(-)
+net/sched: act_gate: snapshot parameters with RCU on replace
 
-diff --git a/tools/testing/selftests/bpf/progs/xdp_hw_metadata.c b/tools/testing/selftests/bpf/progs/xdp_hw_metadata.c
-index 330ece2eabdb454da2bb2cbd297d2b2dd6efddc0..9113288fce54bb39dbb6b38e1f6badd0a8ef4cde 100644
---- a/tools/testing/selftests/bpf/progs/xdp_hw_metadata.c
-+++ b/tools/testing/selftests/bpf/progs/xdp_hw_metadata.c
-@@ -110,6 +110,14 @@ int rx(struct xdp_md *ctx)
- 	else
- 		meta->hint_valid |= XDP_META_FIELD_VLAN_TAG;
- 
-+	err = bpf_xdp_metadata_rx_checksum(ctx,
-+			(enum xdp_checksum *)&meta->ip_summed,
-+			&meta->cksum_meta);
-+	if (err)
-+		meta->rx_cksum_err = err;
-+	else
-+		meta->hint_valid |= XDP_META_FIELD_CHECKSUM;
-+
- 	__sync_add_and_fetch(&pkts_redir, 1);
- 	return bpf_redirect_map(&xsk, ctx->rx_queue_index, XDP_PASS);
- }
-diff --git a/tools/testing/selftests/bpf/xdp_hw_metadata.c b/tools/testing/selftests/bpf/xdp_hw_metadata.c
-index 3d8de0d4c96a7afdf5f60b2fdff73c22b876ce54..f1cf8490cc497b5dd75b8d839918fb85c2a0684d 100644
---- a/tools/testing/selftests/bpf/xdp_hw_metadata.c
-+++ b/tools/testing/selftests/bpf/xdp_hw_metadata.c
-@@ -8,6 +8,7 @@
-  * - Metadata verified:
-  *   - rx_timestamp
-  *   - rx_hash
-+ *   - rx_checksum
-  *
-  * TX:
-  * - UDP 9091 packets trigger TX reply
-@@ -219,6 +220,25 @@ static void print_vlan_tci(__u16 tag)
- 	printf("PCP=%u, DEI=%d, VID=0x%X\n", pcp, dei, vlan_id);
- }
- 
-+static void print_rx_cksum(__u8 ip_summed, __u32 cksum_meta)
-+{
-+	const char *cksum = "CHECKSUM_NONE";
-+
-+	switch (ip_summed) {
-+	case XDP_CHECKSUM_UNNECESSARY:
-+		cksum = "CHECKSUM_UNNECESSARY";
-+		break;
-+	case XDP_CHECKSUM_COMPLETE:
-+		cksum = "CHECKSUM_COMPLETE";
-+		break;
-+	case XDP_CHECKSUM_NONE:
-+	default:
-+		break;
-+	}
-+
-+	printf("rx-cksum: %s, csum_meta=0x%x\n", cksum, cksum_meta);
-+}
-+
- static void verify_xdp_metadata(void *data, clockid_t clock_id)
- {
- 	struct xdp_meta *meta;
-@@ -254,6 +274,11 @@ static void verify_xdp_metadata(void *data, clockid_t clock_id)
- 		printf("No rx_vlan_tci or rx_vlan_proto, err=%d\n",
- 		       meta->rx_vlan_tag_err);
- 	}
-+
-+	if (meta->hint_valid & XDP_META_FIELD_CHECKSUM)
-+		print_rx_cksum(meta->ip_summed, meta->cksum_meta);
-+	else
-+		printf("No rx_cksum, err=%d\n", meta->rx_cksum_err);
- }
- 
- static void verify_skb_metadata(int fd)
-diff --git a/tools/testing/selftests/bpf/xdp_metadata.h b/tools/testing/selftests/bpf/xdp_metadata.h
-index 837cd1efe6b5aebd0f62bae4c49d5bfd77db64bc..822e34390582b3d3660a25e725c9a622edbf635c 100644
---- a/tools/testing/selftests/bpf/xdp_metadata.h
-+++ b/tools/testing/selftests/bpf/xdp_metadata.h
-@@ -28,6 +28,7 @@ enum xdp_meta_field {
- 	XDP_META_FIELD_TS	= BIT(0),
- 	XDP_META_FIELD_RSS	= BIT(1),
- 	XDP_META_FIELD_VLAN_TAG	= BIT(2),
-+	XDP_META_FIELD_CHECKSUM = BIT(3),
- };
- 
- #define XDP_CHECKSUM_NONE		0
-@@ -52,9 +53,12 @@ struct xdp_meta {
- 		};
- 		__s32 rx_vlan_tag_err;
- 	};
--	struct {
--		__u8 ip_summed;
--		__u32 cksum_meta;
-+	union {
-+		struct {
-+			__u8 ip_summed;
-+			__u32 cksum_meta;
-+		};
-+		__s32 rx_cksum_err;
- 	};
- 	enum xdp_meta_field hint_valid;
- };
+The gate action can be replaced while the hrtimer callback or dump path is
+walking the schedule list.
 
--- 
-2.53.0
+Convert the parameters to an RCU-protected snapshot and swap updates under
+tcf_lock, freeing the previous snapshot via call_rcu(). When REPLACE omits
+the entry list, preserve the existing schedule so the effective state is
+unchanged.
 
+> diff --git a/include/net/tc_act/tc_gate.h b/include/net/tc_act/tc_gate.h
+> index c1a67149c6b6..5223c00279d5 100644
+> --- a/include/net/tc_act/tc_gate.h
+> +++ b/include/net/tc_act/tc_gate.h
+> @@ -32,6 +32,7 @@ struct tcf_gate_params {
+>  	s32			tcfg_clockid;
+>  	size_t			num_entries;
+>  	struct list_head	entries;
+> +	struct rcu_head		rcu;
+>  };
+>
+>  #define GATE_ACT_GATE_OPEN	BIT(0)
+> @@ -39,7 +40,7 @@ struct tcf_gate_params {
+>
+>  struct tcf_gate {
+>  	struct tc_action	common;
+> -	struct tcf_gate_params	param;
+> +	struct tcf_gate_params __rcu *param;
+>  	u8			current_gate_status;
+>  	ktime_t			current_close_time;
+>  	u32			current_entry_octets;
+> @@ -51,47 +52,65 @@ struct tcf_gate {
+>
+>  #define to_gate(a) ((struct tcf_gate *)a)
+>
+> +static inline struct tcf_gate_params *tcf_gate_params_locked(const struct tc_action *a)
+> +{
+> +	struct tcf_gate *gact = to_gate(a);
+> +
+> +	return rcu_dereference_protected(gact->param,
+> +					 lockdep_is_held(&gact->tcf_lock));
+> +}
+> +
+>  static inline s32 tcf_gate_prio(const struct tc_action *a)
+>  {
+> +	struct tcf_gate_params *p;
+>  	s32 tcfg_prio;
+>
+> -	tcfg_prio = to_gate(a)->param.tcfg_priority;
+> +	p = tcf_gate_params_locked(a);
+> +	tcfg_prio = p->tcfg_priority;
+>
+>  	return tcfg_prio;
+>  }
+
+[ ... ]
+
+> diff --git a/net/sched/act_gate.c b/net/sched/act_gate.c
+> index c1f75f272757..60c80e609ec3 100644
+> --- a/net/sched/act_gate.c
+> +++ b/net/sched/act_gate.c
+
+[ ... ]
+
+> @@ -509,10 +621,9 @@ static int tcf_gate_dump(struct sk_buff *skb, struct tc_action *a,
+>  	struct nlattr *entry_list;
+>  	struct tcf_t t;
+>
+> -	spin_lock_bh(&gact->tcf_lock);
+> -	opt.action = gact->tcf_action;
+> -
+> -	p = &gact->param;
+> +	rcu_read_lock();
+> +	opt.action = READ_ONCE(gact->tcf_action);
+> +	p = rcu_dereference(gact->param);
+>
+>  	if (nla_put(skb, TCA_GATE_PARMS, sizeof(opt), &opt))
+>  		goto nla_put_failure;
+>
+> @@ -552,12 +663,12 @@ static int tcf_gate_dump(struct sk_buff *skb, struct tc_action *a,
+>  	tcf_tm_dump(&t, &gact->tcf_tm);
+>  	if (nla_put_64bit(skb, TCA_GATE_TM, sizeof(t), &t, TCA_GATE_PAD))
+>  		goto nla_put_failure;
+> -	spin_unlock_bh(&gact->tcf_lock);
+> +	rcu_read_unlock();
+>
+>  	return skb->len;
+>
+>  nla_put_failure:
+> -	spin_unlock_bh(&gact->tcf_lock);
+> +	rcu_read_unlock();
+>  	nlmsg_trim(skb, b);
+>  	return -1;
+>  }
+
+Can tcf_gate_dump be called before gact->param is initialized?
+
+After the conversion to RCU pointers, if tcf_gate_dump is called during
+action initialization (between tcf_idr_create_from_flags and
+rcu_replace_pointer in tcf_gate_init), p will be NULL:
+
+net/sched/act_gate.c:tcf_gate_init() {
+    tcf_idr_create_from_flags(...);
+    ...
+    // gact->param still NULL here
+    ...
+    rcu_replace_pointer(gact->param, p, ...);  // line 517
+}
+
+net/sched/act_gate.c:tcf_gate_dump() {
+    rcu_read_lock();
+    p = rcu_dereference(gact->param);  // can be NULL
+
+    if (nla_put_u64_64bit(skb, TCA_GATE_BASE_TIME,
+                          p->tcfg_basetime, TCA_GATE_PAD))  // NULL deref
+}
+
+Before the patch, param was an embedded struct that was zero-initialized,
+so dump would return valid (if meaningless) data. After the patch, this
+becomes a NULL pointer dereference.
+
+While the tc action framework may prevent dumping partially initialized
+actions through external synchronization, should this code include a NULL
+check to make the initialization window safer?
+
+The second issue is in the hardware offload path. Looking at
+net/sched/act_gate.c:tcf_gate_offload_act_setup(), the function calls the
+accessor helpers without holding tcf_lock:
+
+net/sched/act_gate.c:tcf_gate_offload_act_setup() {
+    // no lock held here
+    entry->gate.prio = tcf_gate_prio(act);           // line 723
+    entry->gate.basetime = tcf_gate_basetime(act);
+    entry->gate.cycletime = tcf_gate_cycletime(act);
+    ...
+}
+
+include/net/tc_act/tc_gate.h:tcf_gate_prio() {
+    p = tcf_gate_params_locked(a);  // uses rcu_dereference_protected
+    ...
+}
+
+include/net/tc_act/tc_gate.h:tcf_gate_params_locked() {
+    return rcu_dereference_protected(gact->param,
+                                     lockdep_is_held(&gact->tcf_lock));
+}
+
+Does tcf_gate_offload_act_setup violate the locking requirements?
+
+The accessor functions all use tcf_gate_params_locked(), which requires
+tcf_lock to be held (verified via lockdep_is_held). The offload setup
+function doesn't acquire this lock before calling the accessors.
+
+With lockdep enabled, this will trigger warnings. Without lockdep, there's
+a race where param can be replaced via rcu_replace_pointer while the
+offload function is reading it, potentially causing reads of inconsistent
+state.
+
+The dump path uses the correct pattern with rcu_read_lock() and
+rcu_dereference(). Should the offload path either acquire tcf_lock or use
+a similar RCU-only approach?
