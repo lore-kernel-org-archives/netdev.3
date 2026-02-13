@@ -1,468 +1,217 @@
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628CF17A31E
-	for <netdev@vger.kernel.org>; Fri, 13 Feb 2026 03:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.177
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770953378; cv=pass; b=KTQjMCfr7bufIqEFwV/e6iiyCUxeRJ6/KmbDda7iXQuT3Fj1rlZijrjOWQSGr82hXk8qEs4zJZdUhkeHZGQsEcGPzZ+pwBzvQJwR/WKzwFQxxLP4Fmzmm0JtIYZtgG8XDFLTZjCZ0PpjB5GlnOe/fpp4pNncLRqkMutZ+QQDU04=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770953378; c=relaxed/simple;
-	bh=qwqfZnbx2HsQ5NxxoPtLpyXjqRzfdyqePmV74/IYCu8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FExywnjciKGG7CcDd86VxQ/RJTfJw/y95sGM5XD86SFw8CDslXtnmt+E0XQdlPi+SjBuuwK0P7dSfCb1YG8u/U2fXG/UomuCcgkTjoXkKDgvS9/Wr9ugkF0H8yidu17yiP7q/UuG4vMyEEf8eo7MoYZpklgEQdmUdShipSEtmZs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F1VLsLAM; arc=pass smtp.client-ip=209.85.208.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BF52248B4
+	for <netdev@vger.kernel.org>; Fri, 13 Feb 2026 03:40:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1770954042; cv=none; b=IBV7asrTSR6d/LjXHCBiAQssRb+KKsB22BI/T0UG7EM/fCHiMrCNNPzbZRtarXaRDyngpqPR6NjXeUV7NiyaMeR9sb2ThTFKUrFy86L8Jixb3Q1SkvGeMQsnzfJcLXz8CbW0ttt7KOR92rEoumqKsnz6Yu7waRdrkk8e7/fvIe0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1770954042; c=relaxed/simple;
+	bh=h4tB2FuczzrOeHFXhHQlzKasIsViE2BISHrWjHObg/k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nLoCRuY7GEEH3umL3Q6NA4AHJkGuOEO/zevTQ5SrJvoO6vk14r8XUdy0ZbbCrH5wGLaXvQNY+NExOQ9LkrqlnHFBm4XbG3wIXfy/om9lm0EhX0pPdlqRiqPF3pvOzQnyNLjI1rfKAKdJXUqhBfom+WoGP374Mj3T7+hDx0LXGJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Ay4w3Q0j; arc=none smtp.client-ip=91.218.175.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F1VLsLAM"
-Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-38708180241so3340141fa.1
-        for <netdev@vger.kernel.org>; Thu, 12 Feb 2026 19:29:36 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1770953374; cv=none;
-        d=google.com; s=arc-20240605;
-        b=X7/jUZDvC7X6StfKh2KsuUcd+k7+9C5T3jltcJ706IYv0nCEzj2+VBmVz3DxWrM5wc
-         n0PvIBazsLFh4OUUIFvW3B2qzeKMrKcnZ5vs0hwSTnL+BOhU+xcfGDUUc2HCXl6OWbkX
-         hwmuR4IxHE1PY9FRDrxA9Eae/vn40i39wr5E+Yb6/LOYIsBhs+Uwqml7aI3T1c+0jM/k
-         srFR3WGQS8H9QIK7zEp4LnJHgraa49jGjmYPOxqqVkOrgPdkHO8s7p6/cV1V8yfSqwZP
-         ObSZ0Kkr4akOPZDO2UZ7K0aajRtiyBCFYNvkG5l0ftow049+LGUf8A2CmJOnUQjHzPhY
-         A7SA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=eBQ3lDumaxeXaYi2Bva1rDaT81lqwe2SMa0I53U5MFw=;
-        fh=PjxzESFNH55ofXuB9CrJKKUpKD1hzPIpF7RYjEy0wBU=;
-        b=Q3ekbMRg8VbJcHjSG9fazQjxHmDUdW6/XfzJJ8WepqBx2HtMSTzLkKOdlwnNYOFTAB
-         rXcJNVQ7qI5FSI9fyDXdXoORtUmrANEsHXBWy7RzHF6pKHC5925mP43AdcwMcyGiunhc
-         R4Hc26XySlzJcTCLuLgdXs3O6T4X1B0OaxbLOlvxjFIyz+2IOza/F5ix9nEqptMj7s/w
-         3UkQMLhJA+zcbYOeleoYfTMrDRnvNJVEQTi1Kcxa4hOpqMEZzcIrSFeOoaZ587brQRr/
-         OpmthH4DQ8aDKju1Mar2mFbZKTEAOfKnwrNAeb/+JSdKUI5OpO/jiVdo02jKcznbkmRm
-         5hnw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770953374; x=1771558174; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eBQ3lDumaxeXaYi2Bva1rDaT81lqwe2SMa0I53U5MFw=;
-        b=F1VLsLAMh7i/HU4o7di940Kyfl731qJ4TsXE02yD3b/ZhYK3RFIMbgYNO3fl+9+DAP
-         kgwSU0WBceaXrRnLygTyRsltxyTrJoJlKQALkk15NnGMsQUlyyE8IrBjWokQkstp4gZi
-         wWOqM4KgznQZyjS5V42kGXVvlo0QZopz+Cj2Abmkz7JlN3oDE2E7QThGJIER7cnQ+xHo
-         qx3iGn9CVZL/3tN9I3GT08qEjgH5zK1UBeYNoL/jPNBotJSZVCMvuBPuREn1qPqJ0LC6
-         3i3JHaMk7N4iVON8+pArmRMvmWPcJfMOVNekkgF13pPC3SAKFdM/uQdTO78tsd7pw8MR
-         vYTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770953374; x=1771558174;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=eBQ3lDumaxeXaYi2Bva1rDaT81lqwe2SMa0I53U5MFw=;
-        b=kPKA1tGit7CQ3BrGGqHrmsDMVXqpPWJPoagLp5vUVOH7eIclDJdPNtfh+Qv2wcRbMU
-         ObTFvQsRZYZOUXiCVtmcjE8IcHYzeTINd7GPbMIRVZuYiY5tyg5TyDSxvQtcEZCvIl21
-         NzUUuYLAe0OqpaGK89g6dniU0vtjYInCpTqu//vcY29FL/mRuETmhX5mory3xCX/l90N
-         0CcNVWASLXeP0PmdxqZTM1wCRNYSHwDf4EBhHum8YW6MN1eyG05Gh3EdJfh8DnXob25y
-         g/4j7rCpOWp7g0p/yetJDn0jiEnxVXzDTJ7/nmRFPPVCCdsrod7GmuOq/hpfRbtcC4cF
-         Dmhg==
-X-Gm-Message-State: AOJu0YyZfuW28mOeFgDGbgKp3AuNgUmVoXdjwiw2Kpt5SPM8QnID4JQr
-	f2kRLr42WshgJnIc/6kL9i0S4O1i00yq7kg7G+GYn2VKEzrWRP6lryqsHs5pBdW9tp89X2+3JV9
-	ftguOz3U2vLNJx1oX32NoGp4l1ElAldQ=
-X-Gm-Gg: AZuq6aKB73yO9tjk0htpEECv1fVxqea/O8zVLEAcr3SKPLYijjpZsWJh4NANCGsdP0W
-	s8/e+4sliT1SzOjVegWW5FcW3aRAVgsEC1sa1QQJl3uduz8MdfWjaAzkg2E3lnqKzlyyJHDJATG
-	Cf11nNEOkLH/kzrSvb/oA/rBhJqN25+h/UDyO5IIVDbJz7Or2Z83ZNs7Ih1cV3k6fHPApCOofdz
-	HB3Y57D0I+rBBiUyBTaTE1fF9VJ71BempT7b8woKSfGU2Gcbo0I04xCPYGldMVl4Li4deWTAL6o
-	+PdiAwm/NsYxivUR3XOZ2PMMaV/VUqkAQ3CY8upi
-X-Received: by 2002:a05:651c:2104:b0:386:fd3e:bfe8 with SMTP id
- 38308e7fff4ca-3881050c05emr1382511fa.7.1770953374140; Thu, 12 Feb 2026
- 19:29:34 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Ay4w3Q0j"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1770954038;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UEwHgkofFI3GyTbx0AZpgpNTggFN1Eq6XWcD5g/Mo3Y=;
+	b=Ay4w3Q0jup0TDh7RkX6tZW6s96ELo0xclhA3o1v0+mkVj1FSjPNvvMzWDFJattX7Vm3ja1
+	nEo2kjpmaGSowXspYybIjcuzlPq9eUFXKFvbxLqPsh8vP2hJmlx0oFberFD0OqusKKi0R0
+	+b0FyGmGB5DZ7Nt+J0pIZ+c7pvVUCAY=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: xxx@vger.kernel.org
+Cc: jiayuan.chen@linux.dev,
+	jiayuan.chen@shopee.com,
+	syzbot+2b3391f44313b3983e91@syzkaller.appspotmail.com,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@kernel.org>,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH bpf v3 1/2] bpf: cpumap: fix race in bq_flush_to_queue on PREEMPT_RT
+Date: Fri, 13 Feb 2026 11:40:14 +0800
+Message-ID: <20260213034018.284146-2-jiayuan.chen@linux.dev>
+In-Reply-To: <20260213034018.284146-1-jiayuan.chen@linux.dev>
+References: <20260213034018.284146-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260211184848.731894-1-cnitlrt@gmail.com> <20260211194325.797963-1-cnitlrt@gmail.com>
- <20260212180810.0b06e2b3@kernel.org>
-In-Reply-To: <20260212180810.0b06e2b3@kernel.org>
-From: RUITONG LIU <cnitlrt@gmail.com>
-Date: Thu, 12 Feb 2026 20:29:20 -0700
-X-Gm-Features: AZwV_QgIe--Qm-O7gqIhI9gFSqsATzo0hKlKisE_nb0WoW7_BBVlpX2QlaeVSBw
-Message-ID: <CAK55_s5pR7KTMzNkHySK+XoGtv-WFdVe77PzD3+7uPuytYDNYg@mail.gmail.com>
-Subject: Re: [PATCH v2] net/sched: act_skbedit: fix divide-by-zero in tcf_skbedit_hash()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, jhs@mojatatu.com, xiyou.wangcong@gmail.com, 
-	jiri@resnulli.us, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com, 
-	horms@kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Shuyuan Liu <L0x1c3r@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-With queue_mapping =3D 0 and queue_mapping_max =3D 65535, the existing
-validation passes because it only checks queue_mapping_max <
-queue_mapping, which is false. The code then computes the inclusive
-range size:
-mapping_mod =3D queue_mapping_max - queue_mapping + 1 =3D 65536.
-However, mapping_mod is stored in a u16, so 65536 wraps to 0. This 0
-value is later used as the divisor in a modulo operation (hash %
-mapping_mod), causing a divide-by-zero.
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-This is the poc, and we use agent found this bug
-```c
-#define _GNU_SOURCE
-#include <arpa/inet.h>
-#include <errno.h>
-#include <linux/if_ether.h>
-#include <linux/netlink.h>
-#include <linux/pkt_cls.h>
-#include <linux/pkt_sched.h>
-#include <linux/rtnetlink.h>
-#include <linux/tc_act/tc_skbedit.h>
-#include <net/if.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/socket.h>
-#include <sys/types.h>
-#include <unistd.h>
+On PREEMPT_RT kernels, the per-CPU xdp_bulk_queue (bq) can be accessed
+concurrently by multiple preemptible tasks on the same CPU.
 
-#ifndef SKBEDIT_F_TXQ_SKBHASH
-#define SKBEDIT_F_TXQ_SKBHASH 0x40
-#endif
+The original code assumes bq_enqueue() and __cpu_map_flush() run
+atomically with respect to each other on the same CPU, relying on
+local_bh_disable() to prevent preemption. However, on PREEMPT_RT,
+local_bh_disable() only calls migrate_disable() (when
+PREEMPT_RT_NEEDS_BH_LOCK is not set) and does not disable
+preemption, which allows CFS scheduling to preempt a task during
+bq_flush_to_queue(), enabling another task on the same CPU to enter
+bq_enqueue() and operate on the same per-CPU bq concurrently.
 
-#ifndef TCA_SKBEDIT_QUEUE_MAPPING_MAX
-#define TCA_SKBEDIT_QUEUE_MAPPING_MAX 10
-#endif
+This leads to several races:
 
-#define BUF_SIZE 8192
+1. Double __list_del_clearprev(): after bq->count is reset in
+   bq_flush_to_queue(), a preempting task can call bq_enqueue() ->
+   bq_flush_to_queue() on the same bq when bq->count reaches
+   CPU_MAP_BULK_SIZE. Both tasks then call __list_del_clearprev()
+   on the same bq->flush_node, the second call dereferences the
+   prev pointer that was already set to NULL by the first.
 
-#define NLMSG_TAIL(nmsg) \
-    ((struct nlattr *)(((void *)(nmsg)) + NLMSG_ALIGN((nmsg)->nlmsg_len)))
+2. bq->count and bq->q[] races: concurrent bq_enqueue() can corrupt
+   the packet queue while bq_flush_to_queue() is processing it.
 
-static int addattr_l(struct nlmsghdr *n, size_t maxlen, int type,
-                     const void *data, size_t alen) {
-    size_t len =3D NLA_ALIGN(alen) + NLA_HDRLEN;
-    size_t newlen =3D NLMSG_ALIGN(n->nlmsg_len) + len;
-    if (newlen > maxlen)
-        return -1;
-    struct nlattr *na =3D NLMSG_TAIL(n);
-    na->nla_type =3D type;
-    na->nla_len =3D NLA_HDRLEN + alen;
-    if (alen && data)
-        memcpy((char *)na + NLA_HDRLEN, data, alen);
-    n->nlmsg_len =3D newlen;
-    return 0;
-}
+The race between task A (__cpu_map_flush -> bq_flush_to_queue) and
+task B (bq_enqueue -> bq_flush_to_queue) on the same CPU:
 
-static struct nlattr *addattr_nest(struct nlmsghdr *n, size_t maxlen,
-int type) {
-    struct nlattr *start =3D NLMSG_TAIL(n);
-    if (addattr_l(n, maxlen, type | NLA_F_NESTED, NULL, 0) < 0)
-        return NULL;
-    return start;
-}
+  Task A (xdp_do_flush)          Task B (cpu_map_enqueue)
+  ----------------------         ------------------------
+  bq_flush_to_queue(bq)
+    spin_lock(&q->producer_lock)
+    /* flush bq->q[] to ptr_ring */
+    bq->count = 0
+    spin_unlock(&q->producer_lock)
+                                   bq_enqueue(rcpu, xdpf)
+    <-- CFS preempts Task A -->      bq->q[bq->count++] = xdpf
+                                     /* ... more enqueues until full ... */
+                                     bq_flush_to_queue(bq)
+                                       spin_lock(&q->producer_lock)
+                                       /* flush to ptr_ring */
+                                       spin_unlock(&q->producer_lock)
+                                       __list_del_clearprev(flush_node)
+                                         /* sets flush_node.prev = NULL */
+    <-- Task A resumes -->
+    __list_del_clearprev(flush_node)
+      flush_node.prev->next = ...
+      /* prev is NULL -> kernel oops */
 
-static int addattr_nest_end(struct nlmsghdr *n, struct nlattr *start) {
-    start->nla_len =3D (char *)NLMSG_TAIL(n) - (char *)start;
-    return n->nlmsg_len;
-}
+Fix this by adding a local_lock_t to xdp_bulk_queue and acquiring it
+in bq_enqueue() and __cpu_map_flush(). These paths already run under
+local_bh_disable(), so use local_lock_nested_bh() which on non-RT is
+a pure annotation with no overhead, and on PREEMPT_RT provides a
+per-CPU sleeping lock that serializes access to the bq.
 
-static int nl_talk(int fd, struct nlmsghdr *nlh) {
-    struct sockaddr_nl nladdr =3D {0};
-    nladdr.nl_family =3D AF_NETLINK;
+To reproduce, insert an mdelay(100) between bq->count = 0 and
+__list_del_clearprev() in bq_flush_to_queue(), then run reproducer
+provided by syzkaller.
 
-    struct iovec iov =3D {0};
-    iov.iov_base =3D nlh;
-    iov.iov_len =3D nlh->nlmsg_len;
+Fixes: 3253cb49cbad ("softirq: Allow to drop the softirq-BKL lock on PREEMPT_RT")
+Reported-by: syzbot+2b3391f44313b3983e91@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/69369331.a70a0220.38f243.009d.GAE@google.com/T/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+---
+ kernel/bpf/cpumap.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-    struct msghdr msg =3D {0};
-    msg.msg_name =3D &nladdr;
-    msg.msg_namelen =3D sizeof(nladdr);
-    msg.msg_iov =3D &iov;
-    msg.msg_iovlen =3D 1;
+diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
+index 04171fbc39cb..32b43cb9061b 100644
+--- a/kernel/bpf/cpumap.c
++++ b/kernel/bpf/cpumap.c
+@@ -29,6 +29,7 @@
+ #include <linux/sched.h>
+ #include <linux/workqueue.h>
+ #include <linux/kthread.h>
++#include <linux/local_lock.h>
+ #include <linux/completion.h>
+ #include <trace/events/xdp.h>
+ #include <linux/btf_ids.h>
+@@ -52,6 +53,7 @@ struct xdp_bulk_queue {
+ 	struct list_head flush_node;
+ 	struct bpf_cpu_map_entry *obj;
+ 	unsigned int count;
++	local_lock_t bq_lock;
+ };
+ 
+ /* Struct for every remote "destination" CPU in map */
+@@ -451,6 +453,7 @@ __cpu_map_entry_alloc(struct bpf_map *map, struct bpf_cpumap_val *value,
+ 	for_each_possible_cpu(i) {
+ 		bq = per_cpu_ptr(rcpu->bulkq, i);
+ 		bq->obj = rcpu;
++		local_lock_init(&bq->bq_lock);
+ 	}
+ 
+ 	/* Alloc queue */
+@@ -722,6 +725,8 @@ static void bq_flush_to_queue(struct xdp_bulk_queue *bq)
+ 	struct ptr_ring *q;
+ 	int i;
+ 
++	lockdep_assert_held(&bq->bq_lock);
++
+ 	if (unlikely(!bq->count))
+ 		return;
+ 
+@@ -749,11 +754,15 @@ static void bq_flush_to_queue(struct xdp_bulk_queue *bq)
+ }
+ 
+ /* Runs under RCU-read-side, plus in softirq under NAPI protection.
+- * Thus, safe percpu variable access.
++ * Thus, safe percpu variable access. PREEMPT_RT relies on
++ * local_lock_nested_bh() to serialise access to the per-CPU bq.
+  */
+ static void bq_enqueue(struct bpf_cpu_map_entry *rcpu, struct xdp_frame *xdpf)
+ {
+-	struct xdp_bulk_queue *bq = this_cpu_ptr(rcpu->bulkq);
++	struct xdp_bulk_queue *bq;
++
++	local_lock_nested_bh(&rcpu->bulkq->bq_lock);
++	bq = this_cpu_ptr(rcpu->bulkq);
+ 
+ 	if (unlikely(bq->count == CPU_MAP_BULK_SIZE))
+ 		bq_flush_to_queue(bq);
+@@ -774,6 +783,8 @@ static void bq_enqueue(struct bpf_cpu_map_entry *rcpu, struct xdp_frame *xdpf)
+ 
+ 		list_add(&bq->flush_node, flush_list);
+ 	}
++
++	local_unlock_nested_bh(&rcpu->bulkq->bq_lock);
+ }
+ 
+ int cpu_map_enqueue(struct bpf_cpu_map_entry *rcpu, struct xdp_frame *xdpf,
+@@ -810,7 +821,9 @@ void __cpu_map_flush(struct list_head *flush_list)
+ 	struct xdp_bulk_queue *bq, *tmp;
+ 
+ 	list_for_each_entry_safe(bq, tmp, flush_list, flush_node) {
++		local_lock_nested_bh(&bq->obj->bulkq->bq_lock);
+ 		bq_flush_to_queue(bq);
++		local_unlock_nested_bh(&bq->obj->bulkq->bq_lock);
+ 
+ 		/* If already running, costs spin_lock_irqsave + smb_mb */
+ 		wake_up_process(bq->obj->kthread);
+-- 
+2.43.0
 
-    if (sendmsg(fd, &msg, 0) < 0)
-        return -errno;
-
-    char buf[BUF_SIZE];
-    while (1) {
-        int len =3D recv(fd, buf, sizeof(buf), 0);
-        if (len < 0) {
-            if (errno =3D=3D EINTR)
-                continue;
-            return -errno;
-        }
-        struct nlmsghdr *h;
-        for (h =3D (struct nlmsghdr *)buf; NLMSG_OK(h, len);
-             h =3D NLMSG_NEXT(h, len)) {
-            if (h->nlmsg_type =3D=3D NLMSG_ERROR) {
-                struct nlmsgerr *err =3D (struct nlmsgerr *)NLMSG_DATA(h);
-                if (err->error =3D=3D 0)
-                    return 0;
-                return err->error;
-            }
-        }
-    }
-}
-
-static int add_clsact_qdisc(int fd, int ifindex, int *seq) {
-    struct {
-        struct nlmsghdr n;
-        struct tcmsg t;
-        char buf[256];
-    } req =3D {0};
-
-    req.n.nlmsg_len =3D NLMSG_LENGTH(sizeof(struct tcmsg));
-    req.n.nlmsg_type =3D RTM_NEWQDISC;
-    req.n.nlmsg_flags =3D NLM_F_REQUEST | NLM_F_ACK | NLM_F_CREATE |
-NLM_F_REPLACE;
-    req.n.nlmsg_seq =3D ++(*seq);
-    req.n.nlmsg_pid =3D getpid();
-
-    req.t.tcm_family =3D AF_UNSPEC;
-    req.t.tcm_ifindex =3D ifindex;
-    req.t.tcm_parent =3D TC_H_CLSACT;
-    req.t.tcm_handle =3D TC_H_MAKE(TC_H_INGRESS, 0);
-
-    const char kind[] =3D "clsact";
-    if (addattr_l(&req.n, sizeof(req), TCA_KIND, kind, sizeof(kind)) < 0)
-        return -1;
-
-    return nl_talk(fd, &req.n);
-}
-
-static int add_u32_filter_skbedit(int fd, int ifindex, int *seq) {
-    struct {
-        struct nlmsghdr n;
-        struct tcmsg t;
-        char buf[1024];
-    } req =3D {0};
-
-    req.n.nlmsg_len =3D NLMSG_LENGTH(sizeof(struct tcmsg));
-    req.n.nlmsg_type =3D RTM_NEWTFILTER;
-    req.n.nlmsg_flags =3D NLM_F_REQUEST | NLM_F_ACK | NLM_F_CREATE | NLM_F_=
-EXCL;
-    req.n.nlmsg_seq =3D ++(*seq);
-    req.n.nlmsg_pid =3D getpid();
-
-    req.t.tcm_family =3D AF_UNSPEC;
-    req.t.tcm_ifindex =3D ifindex;
-    req.t.tcm_parent =3D TC_H_MAKE(TC_H_CLSACT, TC_H_MIN_EGRESS);
-    req.t.tcm_handle =3D 0;
-    req.t.tcm_info =3D TC_H_MAKE(1 << 16, htons(ETH_P_ALL));
-
-    const char kind[] =3D "u32";
-    if (addattr_l(&req.n, sizeof(req), TCA_KIND, kind, sizeof(kind)) < 0)
-        return -1;
-
-    struct nlattr *opts =3D addattr_nest(&req.n, sizeof(req), TCA_OPTIONS);
-    if (!opts)
-        return -1;
-
-    /* u32 selector: one key that always matches */
-    char selbuf[sizeof(struct tc_u32_sel) + sizeof(struct tc_u32_key)];
-    memset(selbuf, 0, sizeof(selbuf));
-    struct tc_u32_sel *sel =3D (struct tc_u32_sel *)selbuf;
-    struct tc_u32_key *key =3D (struct tc_u32_key *)(sel->keys);
-
-    sel->flags =3D TC_U32_TERMINAL;
-    sel->offshift =3D 0;
-    sel->nkeys =3D 1;
-    sel->offmask =3D 0;
-    sel->off =3D 0;
-    sel->offoff =3D 0;
-    sel->hoff =3D 0;
-    sel->hmask =3D htonl(0);
-
-    key->mask =3D 0;
-    key->val =3D 0;
-    key->off =3D 0;
-    key->offmask =3D 0;
-
-    if (addattr_l(&req.n, sizeof(req), TCA_U32_SEL, selbuf, sizeof(selbuf))=
- < 0)
-        return -1;
-
-    struct nlattr *act =3D addattr_nest(&req.n, sizeof(req), TCA_U32_ACT);
-    if (!act)
-        return -1;
-
-    struct nlattr *act1 =3D addattr_nest(&req.n, sizeof(req), 1);
-    if (!act1)
-        return -1;
-
-    const char act_kind[] =3D "skbedit";
-    if (addattr_l(&req.n, sizeof(req), TCA_ACT_KIND, act_kind,
-sizeof(act_kind)) < 0)
-        return -1;
-
-    struct nlattr *act_opts =3D addattr_nest(&req.n, sizeof(req),
-TCA_ACT_OPTIONS);
-    if (!act_opts)
-        return -1;
-
-    struct tc_skbedit parm =3D {0};
-    parm.action =3D TC_ACT_OK;
-    parm.index =3D 0;
-
-    if (addattr_l(&req.n, sizeof(req), TCA_SKBEDIT_PARMS, &parm,
-sizeof(parm)) < 0)
-        return -1;
-
-    uint16_t qmap =3D 0;
-    uint16_t qmap_max =3D 0xFFFFu;
-    uint64_t flags =3D SKBEDIT_F_TXQ_SKBHASH;
-
-    if (addattr_l(&req.n, sizeof(req), TCA_SKBEDIT_QUEUE_MAPPING,
-&qmap, sizeof(qmap)) < 0)
-        return -1;
-    if (addattr_l(&req.n, sizeof(req), TCA_SKBEDIT_QUEUE_MAPPING_MAX,
-&qmap_max, sizeof(qmap_max)) < 0)
-        return -1;
-    if (addattr_l(&req.n, sizeof(req), TCA_SKBEDIT_FLAGS, &flags,
-sizeof(flags)) < 0)
-        return -1;
-
-    addattr_nest_end(&req.n, act_opts);
-    addattr_nest_end(&req.n, act1);
-    addattr_nest_end(&req.n, act);
-    addattr_nest_end(&req.n, opts);
-
-    return nl_talk(fd, &req.n);
-}
-
-static int trigger_packet(const char *ifname) {
-    int s =3D socket(AF_INET, SOCK_DGRAM, 0);
-    if (s < 0)
-        return -errno;
-
-    if (ifname) {
-        if (setsockopt(s, SOL_SOCKET, SO_BINDTODEVICE, ifname,
-                       strlen(ifname) + 1) < 0) {
-            int err =3D -errno;
-            close(s);
-            return err;
-        }
-    }
-
-    struct sockaddr_in addr =3D {0};
-    addr.sin_family =3D AF_INET;
-    addr.sin_port =3D htons(12345);
-    addr.sin_addr.s_addr =3D inet_addr("10.0.2.2");
-
-    char buf[64] =3D "trigger";
-    int ret =3D sendto(s, buf, sizeof(buf), 0, (struct sockaddr *)&addr,
-sizeof(addr));
-    if (ret < 0) {
-        int err =3D -errno;
-        close(s);
-        return err;
-    }
-
-    close(s);
-    return 0;
-}
-
-int main(void) {
-    int fd =3D socket(AF_NETLINK, SOCK_RAW, NETLINK_ROUTE);
-    if (fd < 0) {
-        perror("socket(NETLINK_ROUTE)");
-        return 1;
-    }
-
-    struct sockaddr_nl local =3D {0};
-    local.nl_family =3D AF_NETLINK;
-    local.nl_pid =3D getpid();
-    if (bind(fd, (struct sockaddr *)&local, sizeof(local)) < 0) {
-        perror("bind");
-        return 1;
-    }
-
-    const char *ifname =3D "eth0";
-    int ifindex =3D if_nametoindex(ifname);
-    if (!ifindex) {
-        ifname =3D "lo";
-        ifindex =3D if_nametoindex(ifname);
-        if (!ifindex) {
-            perror("if_nametoindex(eth0/lo)");
-            return 1;
-        }
-    }
-
-    int seq =3D 0;
-    int err =3D add_clsact_qdisc(fd, ifindex, &seq);
-    if (err && err !=3D -EEXIST) {
-        fprintf(stderr, "add clsact qdisc failed: %s (%d)\n",
-strerror(-err), err);
-        return 1;
-    }
-
-    err =3D add_u32_filter_skbedit(fd, ifindex, &seq);
-    if (err) {
-        fprintf(stderr, "add u32 skbedit filter failed: %s (%d)\n",
-strerror(-err), err);
-        return 1;
-    }
-
-    err =3D trigger_packet(ifname);
-    if (err) {
-        fprintf(stderr, "trigger_packet failed: %s (%d)\n",
-strerror(-err), err);
-        return 1;
-    }
-
-    printf("skbedit filter installed and packet sent. Check kernel log
-for crash/KASAN.\n");
-    return 0;
-}
-```
-
-Jakub Kicinski <kuba@kernel.org> =E4=BA=8E2026=E5=B9=B42=E6=9C=8812=E6=97=
-=A5=E5=91=A8=E5=9B=9B 19:08=E5=86=99=E9=81=93=EF=BC=9A
->
-> On Thu, 12 Feb 2026 03:43:25 +0800 Ruitong Liu wrote:
-> > Commit 38a6f0865796 ("net: sched: support hash selecting tx queue")
-> > added SKBEDIT_F_TXQ_SKBHASH support. mapping_mod is computed as:
-> >
-> >   mapping_mod =3D queue_mapping_max - queue_mapping + 1;
-> >
-> > mapping_mod is stored as u16, so the calculation can overflow when the
-> > requested range covers 65536 queues (e.g. queue_mapping=3D0 and
-> > queue_mapping_max=3D0xffff). In that case mapping_mod wraps to 0 and
-> > tcf_skbedit_hash() triggers a divide-by-zero:
-> >
-> >   queue_mapping +=3D skb_get_hash(skb) % params->mapping_mod;
-> >
-> > Reject such invalid configuration to prevent mapping_mod from becoming
-> > 0 and avoid the crash.
->
-> How did you find this bug? Do you have a repro to trigger the issue
-> you're describing?
->
-> > @@ -194,6 +194,10 @@ static int tcf_skbedit_init(struct net *net, struc=
-t nlattr *nla,
-> >                       }
-> >
-> >                       mapping_mod =3D *queue_mapping_max - *queue_mappi=
-ng + 1;
-> > +                     if (!mapping_mod) {
-> > +                             NL_SET_ERR_MSG_MOD(extack, "Invalid queue=
-_mapping range: range too large");
-> > +                             return -EINVAL;
-> > +                     }
-> >                       flags |=3D SKBEDIT_F_TXQ_SKBHASH;
-> >               }
-> >               if (*pure_flags & SKBEDIT_F_INHERITDSFIELD)
->
->
-> There is this check right above the lines you're touching:
->
->                         if (*queue_mapping_max < *queue_mapping) {
->                                 NL_SET_ERR_MSG_MOD(extack, "The range of =
-queue_mapping is invalid, max < min.");
->                                 return -EINVAL;
->                         }
->
-> I don't see how mapping_mod can be 0 here.
-> --
-> pw-bot: reject
