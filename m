@@ -1,166 +1,228 @@
-Received: from mail-dy1-f196.google.com (mail-dy1-f196.google.com [74.125.82.196])
+Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F067E0FF
-	for <netdev@vger.kernel.org>; Fri, 13 Feb 2026 04:55:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D143121CC5C
+	for <netdev@vger.kernel.org>; Fri, 13 Feb 2026 05:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770958548; cv=none; b=gkD6mOSGeB2eSrW7TP9TqyTrluuWfIUo4zohjxQiItl1ceNRhWy87Rfk+26xR2fAEaCfJ0HFjCMye8x/IRYrfM2l+N/vgLW+CPBKs4e16N8V6TKgbm/efu6yZMPlgvqAELD7vrg8D80eaO2fkoVb1Tq0esYZPeMEgD4SxtrUc3k=
+	t=1770959943; cv=none; b=l/IGXRJEPaDRJLrkAJr1pegfPdFktS+W1ZOw2x5NZbV5l3KCrJwuLnWVtMa7ADQ456rSAi0sbGLBYGROLT0XitlEySLK64ol/sCChDjbQkGfcS/fpccjJFKjFweDdFzUUgnNfBKuCwMWXa4dlPqiPdW17/DYjNRxbWfsr0s3Dcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770958548; c=relaxed/simple;
-	bh=S3UQ0I6GAAFw2ZrsUNcDfOuA6jQgRQzkcE2bZIN6tC4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bEzrsy2lcSUMCdZzN+lYpJ/wPccWCtCfwQMR9NfvmskB+mfHlA7V+h4FpAxEzIMHp9/CjsFoMrk8wCPxEg6udwqby34HFrAP7tQ6KC3B8iB8N5ZB/BowZpAmJJB2022IuD4zI7ya4ftFAcIxDW2RiuZ0va0Oj8bxoVMPhL9GHf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b0xSIcyk; arc=none smtp.client-ip=74.125.82.196
+	s=arc-20240116; t=1770959943; c=relaxed/simple;
+	bh=C79fQuNmsoe1mDgNmWqWlrk1yFpf0tY09o68U+R5SG8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qP8pZfu272m5opLh/CRQGdyPb52kJHw7kEqGaoGqMGhUwMfX+DqHtAtKKJIs3pgckB1zF3gwGwnSyaAKnKwOAfLgVi/zLz5fKS2PguYHTF3rKdsBj5Bx+bOwaTjrHBz4GQcOxZHuSOJrv1KKnrJs+GrjMY3MtuzMnv6swsTSIMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UrJjT6C1; arc=none smtp.client-ip=74.125.82.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b0xSIcyk"
-Received: by mail-dy1-f196.google.com with SMTP id 5a478bee46e88-2ba64b5a53aso540966eec.0
-        for <netdev@vger.kernel.org>; Thu, 12 Feb 2026 20:55:47 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UrJjT6C1"
+Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2ba94dbf739so653243eec.1
+        for <netdev@vger.kernel.org>; Thu, 12 Feb 2026 21:19:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1770958546; x=1771563346; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=En+pLxpA/9SkcB4JG3FQxxc277chmMll4kOR/JIga7g=;
-        b=b0xSIcyk8H6bz3AohA4TczmD+8bP0JUPSGEWFU2cWUv2D/+Ci0iktzYmC8dR593u2i
-         DsltwxON5k2f6LxOxEh2sZqiIY+6l7RY9+r1FrvwDkTqCCnuZsVcu0dEiGknwjilpVVw
-         8d104roK2G5Wqv+/ek3JgAdcCJQ8uV09ClZ1EtQbTRWtvw9vP4Ok/745wh7eaAS2QZRP
-         rlZxXAoSjicZJ5kG5DZxs4fL3zengxuL9uvHAapYUOtw1HUADtzbuoWBFPDXRu2EcPNJ
-         hoxq4gCJhsUY+YEuFOASMyuMfuvxXHcEzF+BYWCbyvnPwmKs9D7HTrTicnFUSdKzQaNI
-         RPkw==
+        d=gmail.com; s=20230601; t=1770959940; x=1771564740; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JgXT3I4sUDI0oaN+QbxtrFi8HM7j7HM1bT+EMzWKpeQ=;
+        b=UrJjT6C1B3pEiN9bMSkMMOb7eWvdOhOg/cJ0l4qu/fn4PN2OmYw/qNSCXLrBIWUuRu
+         OBOExj9bYJ2GpCtCBRWIVszQulmr3GJfqRLGS6soRjjlqEEBcyvxSpokSSNLblm3W+Tc
+         NIojup5O/8l6xc79IMEkNktyxX04OSpPPIAwFw2905ijz3m8bJHwju+8uPTowZ7aZgkt
+         3ukfODrtj1lmPk00L6Ad6Z/a3HqjqDIoza1GCJusU5w7g2ipzgVtRV87+z9/Own3fJrT
+         EAXSsDS+5hqHxL4pUuErdi+UY4XvDSZYTvlPkino5PW/Z1T9aftjAPI5EwIbuxp7kao/
+         pnDA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1770958546; x=1771563346;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=En+pLxpA/9SkcB4JG3FQxxc277chmMll4kOR/JIga7g=;
-        b=JpAThuX1ap5pVOOxBCjRDVLr8mNMA0LDb6jmNMlvSFI9HGjRDWVSSUj+atQByNb3mR
-         iiHfg8FP0JcJuiVtWmkMIQLDcAtC03eRVfE9POmH2grYaINuQLr9Oz2sSXI+l5lJjfup
-         k67h84M/nPuhNOzJZvDj/FlZUOdhhuGN/wkjSMI2G8c6yxqBTmgCn23JaKrtg/d3BRJT
-         egFUD2RDQCY8gxKVqDTLMOZeQRaTAYOBBWqmlQk/TyzNBoSaOJ0KVDGCXeVyNGAGOWXB
-         WNJXBwmnS82SfKtax6tyA20ew/fwNR4ZrjkOfGhLw3qch3oIAJrvKVLCKxGTXb2AW/e0
-         Ll9w==
-X-Gm-Message-State: AOJu0YzAxU2cUEo0ipc4xpPyglGy+m/ycEoXVQ3n9R5ooNKvGvgM0DqE
-	s6VmGc3Bngx1uF9BWPqC7v6sBhA2XgTraT7jqjjWewH1/K5amC3esB3V836O9SJJ
-X-Gm-Gg: AZuq6aLvd6a0SQyOj7Ifspq++xP4OAVazXGGt1fYzawto3NVgLdgNZaUW9XrA+9GgJD
-	vvYL0Sy5olCcU35M8FXyIIZAR42os4FPjg5QYVkQU7omQnx/9DZ4pM4C3+H31imEIPDFAcUTZfj
-	ZogGa6mf64MUqX738f+oEez+VHVPArt3TOP02nXfX6sdExHF5aPu6tPhNDMJPGn5GF1TI1YGBeX
-	M0BmnCvTyHXWvGLv5YUUueNibjPhMMhPFS4BYx375YchjD+x7ouGq83Vrm49EccrHBUoZl37E2l
-	LEa6vGqdXXIytz2+/ZD4GkK/afk5BX5ZroH3/SCr0gWAMGHe1AuKQaN153WWUsaGSVpBqoeU9N6
-	W3wjikmcN2vXs0IbSQe58REV0VQ7EdTUsDWXxAbW09x8+oD8+r5IzBNdAwqHfQx+O2uUGj2qUt1
-	2IDlTARHPGLgM88jRNGPsJzk2HZRN24gDJcKKl2EPkQm6dqRD1QA9zNszS1ww1rtKZOndbZ4dvf
-	ZsWIos396NA3dc0WvuA6ZyVnTyngWMcdJ8Rv9P59o6SPK7/jM+1K6Ez3SPAWq4DLza/seapd3jI
-	uCz1drbi+BU/PJfbrA==
-X-Received: by 2002:a05:7300:80d6:b0:2ba:14a6:c96f with SMTP id 5a478bee46e88-2babc47c424mr211119eec.36.1770958546131;
-        Thu, 12 Feb 2026 20:55:46 -0800 (PST)
-Received: from ethan-latitude5420.. (host-127-24.cafrjco.fresno.ca.us.clients.pavlovmedia.net. [68.180.127.24])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9dcd03d8sm4846139eec.21.2026.02.12.20.55.45
+        d=1e100.net; s=20230601; t=1770959940; x=1771564740;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JgXT3I4sUDI0oaN+QbxtrFi8HM7j7HM1bT+EMzWKpeQ=;
+        b=QCZ3PypvaOvqcDpyXjzpuBXWRSH6mIqX9zLji41Vfj+68oUrx/1sdaPAx2Vmrh975V
+         C0LsjEaIOvEVe2RKjEw6H2k9VBwSu10wRzcdPS047Ru5Q3t4wpIrinRXxe3mNwwrTv4q
+         CI9eWzsKFDlu2+aEHR0x9dUnhgmipS/p/3qqLTuDvz1Z3mEeMD96vqkH9gSbw0LbQ9A+
+         Vswq8/ChR5q/GmeiOMbVCxO8JZ8en6B4iglzj+qW+b/NL84Y00IQud3/Sf/6vUuhxTkq
+         4uyogJPQmbuzE+0QHyZKppwD0nIw5atQjEXTcWBkSa4NQlTfP/hkguyXivkMYXq0mQ8M
+         zeGg==
+X-Forwarded-Encrypted: i=1; AJvYcCW/A8KtCer81szWdCKJfig94Os6Sfk0OgrH09BbecNV188Zq7toDWZJ/3qkpTuvECKo8rSIc+0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYY4RGxAlsF7W54sTju8K/lwuYUyLlyiSlvZlDrlqxKTLsmgxw
+	F2tIHpVswSmFosSuHw6InD+/DKMlaU4K9FBP0tGbyoWsDF6D71GstF0=
+X-Gm-Gg: AZuq6aI0Hc8Z6HA2MJ/2zQfMHo9bJ99IGTzdGk4lOUCogqdffE0TZCjkY6fHAr+VKR5
+	ysh+OJi3rwP7uwI8zg2Ph36b6VsAt6Ex9PS7cDuXlJIskL98vjVktpsLupQdzQXA4Syn5ELOrrI
+	hcdkhXiR3Y5NjavMutkUbBm6nKG4i17MMm9HBT9bWap0XfklnK/lT+0+paqmdQo7NIF0Ta94DVF
+	tM7eWQzIQ3rcoO4c/HI9wQjwoaZDQSTaz25mVa2MB54HvAFlzrY9p55qKiwDVpEJKNRCBMpTPVN
+	4HW2Lv9psL5gQzdw9K/Yqa15EnmH5s8M3jLA9W2wKw/9XFkBIrPQ3OpL6cvZR2ywOoyTvo2dI+r
+	yexElkrOlJgXi3dDsRQj0W7aCUT/8FO5f1AkBIEUiMkWfwhW1jC7WLb36u6bCUcu+VMqNSIwneM
+	JdspS8cYRMsX4qrog5Lua8zo4PeXieukMnDOA9Cbl8Lt2CgNCBnvquzNzbn1jHkL7AAiLx1giIq
+	S9bU84nxzAoIA5iIg==
+X-Received: by 2002:a05:7301:7214:b0:2b7:ee0e:e9bf with SMTP id 5a478bee46e88-2babc4558femr275595eec.27.1770959939783;
+        Thu, 12 Feb 2026 21:18:59 -0800 (PST)
+Received: from localhost (c-76-102-12-149.hsd1.ca.comcast.net. [76.102.12.149])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2ba9dcd0614sm5463343eec.22.2026.02.12.21.18.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 12 Feb 2026 20:55:45 -0800 (PST)
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	stable@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
+        Thu, 12 Feb 2026 21:18:59 -0800 (PST)
+Date: Thu, 12 Feb 2026 21:18:58 -0800
+From: Stanislav Fomichev <stfomichev@gmail.com>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Donald Hunter <donald.hunter@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Zheyu Ma <zheyuma97@gmail.com>
-Subject: [PATCH v3] net: arcnet: com20020-pci: fix support for 2.5Mbit cards
-Date: Thu, 12 Feb 2026 20:55:09 -0800
-Message-ID: <20260213045510.32368-1-enelsonmoore@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Jakub Sitnicki <jakub@cloudflare.com>, netdev@vger.kernel.org,
+	bpf@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH bpf-next 1/5] netlink: specs: Add XDP RX checksum
+ capability to XDP metadata specs
+Message-ID: <aY60QrE6DpXVecze@mini-arch>
+References: <20260210-bpf-xdp-meta-rxcksum-v1-0-e5d55caa0541@kernel.org>
+ <20260210-bpf-xdp-meta-rxcksum-v1-1-e5d55caa0541@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260210-bpf-xdp-meta-rxcksum-v1-1-e5d55caa0541@kernel.org>
 
-Commit 8c14f9c70327 ("ARCNET: add com20020 PCI IDs with metadata")
-converted the com20020-pci driver to use a card info structure instead
-of a single flag mask in driver_data. However, it failed to take into
-account that in the original code, driver_data of 0 indicates a card
-with no special flags, not a card that should not have any card info
-structure. This introduced a null pointer dereference when cards with
-no flags were probed.
+On 02/10, Lorenzo Bianconi wrote:
+> Introduce XDP RX checksum capability to XDP metadata specs. XDP RX
+> checksum will be use by devices capable of exposing receive checksum
+> result via bpf_xdp_metadata_rx_checksum().
+> Moreover, introduce xmo_rx_checksum netdev callback in order allow the
+> eBPF program bounded to the device to retrieve the RX checksum result
+> computed by the hw NIC.
+> 
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> ---
+>  Documentation/netlink/specs/netdev.yaml |  5 +++++
+>  include/net/xdp.h                       | 14 ++++++++++++++
+>  include/uapi/linux/netdev.h             |  3 +++
+>  net/core/xdp.c                          | 29 +++++++++++++++++++++++++++++
+>  tools/include/uapi/linux/netdev.h       |  3 +++
+>  5 files changed, 54 insertions(+)
+> 
+> diff --git a/Documentation/netlink/specs/netdev.yaml b/Documentation/netlink/specs/netdev.yaml
+> index 596c306ce52b8303b20680ff0cd34d4fd9db0e48..58eda634668a07860447a65d9fc2284839af6244 100644
+> --- a/Documentation/netlink/specs/netdev.yaml
+> +++ b/Documentation/netlink/specs/netdev.yaml
+> @@ -61,6 +61,11 @@ definitions:
+>          doc: |
+>            Device is capable of exposing receive packet VLAN tag via
+>            bpf_xdp_metadata_rx_vlan_tag().
+> +      -
+> +        name: checksum
+> +        doc: |
+> +          Device is capable of exposing receive checksum result via
+> +          bpf_xdp_metadata_rx_checksum().
+>    -
+>      type: flags
+>      name: xsk-flags
+> diff --git a/include/net/xdp.h b/include/net/xdp.h
+> index aa742f413c358575396530879af4570dc3fc18de..9ab9ac10ae2074b70618a9d4f32544d8b9a30b63 100644
+> --- a/include/net/xdp.h
+> +++ b/include/net/xdp.h
+> @@ -586,6 +586,10 @@ void xdp_attachment_setup(struct xdp_attachment_info *info,
+>  			   NETDEV_XDP_RX_METADATA_VLAN_TAG, \
+>  			   bpf_xdp_metadata_rx_vlan_tag, \
+>  			   xmo_rx_vlan_tag) \
+> +	XDP_METADATA_KFUNC(XDP_METADATA_KFUNC_RX_CHECKSUM, \
+> +			   NETDEV_XDP_RX_METADATA_CHECKSUM, \
+> +			   bpf_xdp_metadata_rx_checksum, \
+> +			   xmo_rx_checksum)
+>  
+>  enum xdp_rx_metadata {
+>  #define XDP_METADATA_KFUNC(name, _, __, ___) name,
+> @@ -643,12 +647,22 @@ enum xdp_rss_hash_type {
+>  	XDP_RSS_TYPE_L4_IPV6_SCTP_EX = XDP_RSS_TYPE_L4_IPV6_SCTP | XDP_RSS_L3_DYNHDR,
+>  };
+>  
+> +enum xdp_checksum {
+> +	XDP_CHECKSUM_NONE		= CHECKSUM_NONE,
+> +	XDP_CHECKSUM_UNNECESSARY	= CHECKSUM_UNNECESSARY,
+> +	XDP_CHECKSUM_COMPLETE		= CHECKSUM_COMPLETE,
+> +	XDP_CHECKSUM_PARTIAL		= CHECKSUM_PARTIAL,
+> +};
+> +
+>  struct xdp_metadata_ops {
+>  	int	(*xmo_rx_timestamp)(const struct xdp_md *ctx, u64 *timestamp);
+>  	int	(*xmo_rx_hash)(const struct xdp_md *ctx, u32 *hash,
+>  			       enum xdp_rss_hash_type *rss_type);
+>  	int	(*xmo_rx_vlan_tag)(const struct xdp_md *ctx, __be16 *vlan_proto,
+>  				   u16 *vlan_tci);
+> +	int	(*xmo_rx_checksum)(const struct xdp_md *ctx,
+> +				   enum xdp_checksum *ip_summed,
+> +				   u32 *cksum_meta);
+>  };
+>  
+>  #ifdef CONFIG_NET
+> diff --git a/include/uapi/linux/netdev.h b/include/uapi/linux/netdev.h
+> index e0b579a1df4f2126acec6c44c299e97bbbefe640..d20da430cfd57bc26b5ea2f406c27b48d8a81693 100644
+> --- a/include/uapi/linux/netdev.h
+> +++ b/include/uapi/linux/netdev.h
+> @@ -47,11 +47,14 @@ enum netdev_xdp_act {
+>   *   hash via bpf_xdp_metadata_rx_hash().
+>   * @NETDEV_XDP_RX_METADATA_VLAN_TAG: Device is capable of exposing receive
+>   *   packet VLAN tag via bpf_xdp_metadata_rx_vlan_tag().
+> + * @NETDEV_XDP_RX_METADATA_CHECKSUM: Device is capable of exposing receive
+> + *   checksum result via bpf_xdp_metadata_rx_checksum().
+>   */
+>  enum netdev_xdp_rx_metadata {
+>  	NETDEV_XDP_RX_METADATA_TIMESTAMP = 1,
+>  	NETDEV_XDP_RX_METADATA_HASH = 2,
+>  	NETDEV_XDP_RX_METADATA_VLAN_TAG = 4,
+> +	NETDEV_XDP_RX_METADATA_CHECKSUM = 8,
+>  };
+>  
+>  /**
+> diff --git a/net/core/xdp.c b/net/core/xdp.c
+> index fee6d080ee85fc2d278bfdddfd1365633058ec06..e51346ad3031f28d11c11f8205da6cd954da82de 100644
+> --- a/net/core/xdp.c
+> +++ b/net/core/xdp.c
+> @@ -961,6 +961,35 @@ __bpf_kfunc int bpf_xdp_metadata_rx_vlan_tag(const struct xdp_md *ctx,
+>  	return -EOPNOTSUPP;
+>  }
+>  
+> +/**
+> + * bpf_xdp_metadata_rx_checksum - Read XDP frame RX checksum.
+> + * @ctx: XDP context pointer.
+> + * @ip_summed: Return value pointer indicating checksum result.
+> + * @cksum_meta: Return value pointer indicating checksum result metadata.
+> + *
+> + * In case of success, ``ip_summed`` is set to the RX checksum result. Possible
+> + * values are:
+> + * ``XDP_CHECKSUM_NONE``
+> + * ``XDP_CHECKSUM_UNNECESSARY``
+> + * ``XDP_CHECKSUM_COMPLETE``
+> + * ``XDP_CHECKSUM_PARTIAL``
+> + *
+> + * In case of success, ``cksum_meta`` contains the hw computed checksum value
+> + * for ``XDP_CHECKSUM_COMPLETE`` or the ``csum_level`` for
+> + * ``XDP_CHECKSUM_UNNECESSARY``. It is set to 0 for ``XDP_CHECKSUM_NONE`` and
+> + * ``XDP_CHECKSUM_PARTIAL``.
+> + *
+> + * Return:
+> + * * Returns 0 on success or ``-errno`` on error.
+> + * * ``-EOPNOTSUPP`` : means device driver does not implement kfunc
+> + * * ``-ENODATA``    : means no RX-timestamp available for this frame
+> + */
+> +__bpf_kfunc int bpf_xdp_metadata_rx_checksum(const struct xdp_md *ctx,
+> +					     u8 *ip_summed, u32 *cksum_meta)
+> +{
 
-Commit bd6f1fd5d33d ("net: arcnet: com20020: Fix null-ptr-deref in
-com20020pci_probe()") then papered over this issue by rejecting cards
-with no driver_data instead of resolving the problem at its source.
-
-Fix the original issue by introducing a new card info structure for
-2.5Mbit cards that does not set any flags and using it if no
-driver_data is present.
-
-Fixes: 8c14f9c70327 ("ARCNET: add com20020 PCI IDs with metadata")
-Fixes: bd6f1fd5d33d ("net: arcnet: com20020: Fix null-ptr-deref in com20020pci_probe()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
----
-Changes from v1:
-Rebase on latest mainline instead of net-next
-Add received tag
-Changes from v2:
-Use card_info_2p5mbit if driver_data is NULL (see rationale above)
-Remove modification of driver_data fields for each device because the
-above makes it unnecessary
-Rebase on latest mainline
-
-I know the forward declaration of card_info_2p5mbit is not ideal, but
-the alternative is moving all the card_info struct definitions earlier
-in the file, which is too invasive for a bug fix that will be
-backported to stable versions.
-
- drivers/net/arcnet/com20020-pci.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
-index 19e411b2e3a7..dbadda08dce2 100644
---- a/drivers/net/arcnet/com20020-pci.c
-+++ b/drivers/net/arcnet/com20020-pci.c
-@@ -115,6 +115,8 @@ static const struct attribute_group com20020_state_group = {
- 	.attrs = com20020_state_attrs,
- };
- 
-+static struct com20020_pci_card_info card_info_2p5mbit;
-+
- static void com20020pci_remove(struct pci_dev *pdev);
- 
- static int com20020pci_probe(struct pci_dev *pdev,
-@@ -140,7 +142,7 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 
- 	ci = (struct com20020_pci_card_info *)id->driver_data;
- 	if (!ci)
--		return -EINVAL;
-+		ci = &card_info_2p5mbit;
- 
- 	priv->ci = ci;
- 	mm = &ci->misc_map;
-@@ -347,6 +349,18 @@ static struct com20020_pci_card_info card_info_5mbit = {
- 	.flags = ARC_IS_5MBIT,
- };
- 
-+static struct com20020_pci_card_info card_info_2p5mbit = {
-+	.name = "ARC-PCI",
-+	.devcount = 1,
-+	.chan_map_tbl = {
-+		{
-+			.bar = 2,
-+			.offset = 0x00,
-+			.size = 0x08,
-+		},
-+	},
-+};
-+
- static struct com20020_pci_card_info card_info_sohard = {
- 	.name = "SOHARD SH ARC-PCI",
- 	.devcount = 1,
--- 
-2.43.0
-
+Any reason not to do enum xdp_checksum *ip_summed here as well?
