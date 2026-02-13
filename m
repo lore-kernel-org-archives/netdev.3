@@ -1,185 +1,84 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FE4A3624C2;
-	Fri, 13 Feb 2026 15:22:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB3433624B7;
+	Fri, 13 Feb 2026 15:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770996126; cv=none; b=gjXXn1b/VEvux37RJFxuPaBr/pbovqFCdviwtUKGcld6Zia4tehncEF7+VpcLv6PTfR4LORzWYwVOdhA4tG1FCbPeIU33ziarHotVPXxrQiwg1eWq3DcYCPLnMaZjOWJDyHX8zKBPtS8yF1et4nn8Z8S27hEKBznjYyPd2yWQZ0=
+	t=1770996419; cv=none; b=R/ezBGtOJ3sLXIpcVdHa5DNlQrveqWFr216Z2233iDw/RWbxDyQEbmIyjaARAnmIbFugIRzO1s5gjlQ+S8gy0F8v7ydLhuF1CD1X1lyGdjQ14OH+0PPbfYGexDifYA24BHMcEzQ1jXXPcv70S65BqNen19/jNHM5KmzHdcql3r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770996126; c=relaxed/simple;
-	bh=uiXKGrta5YSlOI9oj98H0JbtZs40BXq+md8wHRRZ+YA=;
+	s=arc-20240116; t=1770996419; c=relaxed/simple;
+	bh=TjKjfh4AHZJmJ5vSp/9BroQ96QAtgOr9pMqQU9yoiH0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cXFMiQHODd+BEacJwGYMjaFkw9bJhlzWIozAhCqdVOij1GGWfVKfO9RahQ8aWJfuJbd5cBZBE6WO6MM6JWwy7WQPLpe/CMRxqBI6v0nKJNoTSbZoKYOxysnhj8GtaCliKSYsgWYuLu78ePcoUo7sFdxvgmwib+Jv7TLlNJWWG2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mGw9ILGu; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dn5Ut6djW15RH9+7BQzH+7L3GwCf+c9Tqjz5GtnNG2RYAW3tV9vTFm3ZMo8juzh9PGkUF5wHt9yFdRD/xcyXK29CitCPy1YJ9Daj/BFceleHoHdYnH01zzqdjFbReZq+5u3x/pVKWjTRHNN/Kj1EQi4GMGH/5so/GUAsH7DSONU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEI1wUKG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mGw9ILGu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D33C2BC86;
-	Fri, 13 Feb 2026 15:22:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEI1wUKG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A36EC116C6;
+	Fri, 13 Feb 2026 15:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770996126;
-	bh=uiXKGrta5YSlOI9oj98H0JbtZs40BXq+md8wHRRZ+YA=;
+	s=k20201202; t=1770996419;
+	bh=TjKjfh4AHZJmJ5vSp/9BroQ96QAtgOr9pMqQU9yoiH0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mGw9ILGuBrof3W4ID1AXaRcRnWS+kvUe3FQSoaOotADVb3P1+lkFpDJx7SZ/rsNLP
-	 lbQwMFYHr2exFPdbAgOzH5VWP0xmXnQzWKbVS+WVH9riUpsC2RnaK4VyhlWYiHeJRE
-	 XeD7rthBaCh+xiTm1VJ6cGvPMlcnwWKjwkwUsnXUmf0gazK3hOApJrYbEkDJyzcNqX
-	 5gUxrcwaI0X9ilHL6V/SODI9T/awsKhEh2niVe4F3mCPpT50kuesxEol/Z5Ck0wf5x
-	 a+kNvDip0saLJHQFWVlr/jY81zF6sc2vP+ZW1+052sC008Vyyf1H8FqdiRmfI4UbIP
-	 ZnZWYmY77zCvQ==
-Date: Fri, 13 Feb 2026 16:22:03 +0100
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>,
-	"Kitszel, Przemyslaw" <przemyslaw.kitszel@intel.com>,
-	"Lobakin, Aleksander" <aleksander.lobakin@intel.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	"Fijalkowski, Maciej" <maciej.fijalkowski@intel.com>,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>
-Subject: Re: [Intel-wired-lan] [PATCH bpf-next 2/5] net: veth: Add
- xmo_rx_checksum callback to veth driver
-Message-ID: <aY9Bm0ewK6lLWpqe@lore-desk>
-References: <20260210-bpf-xdp-meta-rxcksum-v1-0-e5d55caa0541@kernel.org>
- <20260210-bpf-xdp-meta-rxcksum-v1-2-e5d55caa0541@kernel.org>
- <IA3PR11MB8986DFE4F3C0D804F50B0A56E563A@IA3PR11MB8986.namprd11.prod.outlook.com>
+	b=CEI1wUKGJjK7Sl3xlVdZJj/Ctg/oXEKIWcZxXCY1nhdSwYQyolQ2ZAJe97ZfhSyge
+	 Ntb8w5fI0zZovkQe2uiT8KnIetp/hhvSr35UZjp2ZQsT/TortYFgUGqwflkRMpU8ds
+	 l7wSDxAy5BM62Qztfv8aHjlhg16+KLo/vS1BPi877V0PJg85G1JaJmdt8alGOFVjV+
+	 xsA73BqfDstqxyHHhtNRfWN0NnrcHY/USi2xnlYlX8hhYeJTTpc12Nh6UkkRzHIk8T
+	 KVX9nk6Z5FYqCdMfyzhsWcb4wck69oDsksS292ZX0ddm4jQY/4yGgwaNkUbfTJaWyQ
+	 FCmX5P9G3THcg==
+Date: Fri, 13 Feb 2026 15:26:54 +0000
+From: Simon Horman <horms@kernel.org>
+To: "zhengping.zhang" <aquapinn@qq.com>
+Cc: lorenzo@kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, upstream@airoha.com,
+	zhengping.zhang@airoha.com
+Subject: Re: [PATCH] net: airoha: fix typo in function name
+Message-ID: <aY9Cvud7rSw_aWU1@horms.kernel.org>
+References: <tencent_5F3DFF496EC95F5BC0D71C297D088B06F40A@qq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="HFmkBUtLTk0X/kCd"
-Content-Disposition: inline
-In-Reply-To: <IA3PR11MB8986DFE4F3C0D804F50B0A56E563A@IA3PR11MB8986.namprd11.prod.outlook.com>
-
-
---HFmkBUtLTk0X/kCd
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <tencent_5F3DFF496EC95F5BC0D71C297D088B06F40A@qq.com>
 
->=20
->=20
-> > -----Original Message-----
-> > From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
-> > Of Lorenzo Bianconi
-> > Sent: Tuesday, February 10, 2026 6:22 PM
-> > To: Donald Hunter <donald.hunter@gmail.com>; Jakub Kicinski
-> > <kuba@kernel.org>; David S. Miller <davem@davemloft.net>; Eric Dumazet
-> > <edumazet@google.com>; Paolo Abeni <pabeni@redhat.com>; Simon Horman
-> > <horms@kernel.org>; Alexei Starovoitov <ast@kernel.org>; Daniel
-> > Borkmann <daniel@iogearbox.net>; Jesper Dangaard Brouer
-> > <hawk@kernel.org>; John Fastabend <john.fastabend@gmail.com>;
-> > Stanislav Fomichev <sdf@fomichev.me>; Andrew Lunn
-> > <andrew+netdev@lunn.ch>; Nguyen, Anthony L
-> > <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
-> > <przemyslaw.kitszel@intel.com>; Lobakin, Aleksander
-> > <aleksander.lobakin@intel.com>; Andrii Nakryiko <andrii@kernel.org>;
-> > Martin KaFai Lau <martin.lau@linux.dev>; Eduard Zingerman
-> > <eddyz87@gmail.com>; Song Liu <song@kernel.org>; Yonghong Song
-> > <yonghong.song@linux.dev>; KP Singh <kpsingh@kernel.org>; Hao Luo
-> > <haoluo@google.com>; Jiri Olsa <jolsa@kernel.org>; Shuah Khan
-> > <shuah@kernel.org>; Fijalkowski, Maciej <maciej.fijalkowski@intel.com>
-> > Cc: Jakub Sitnicki <jakub@cloudflare.com>; netdev@vger.kernel.org;
-> > bpf@vger.kernel.org; intel-wired-lan@lists.osuosl.org; linux-
-> > kselftest@vger.kernel.org; Lorenzo Bianconi <lorenzo@kernel.org>
-> > Subject: [Intel-wired-lan] [PATCH bpf-next 2/5] net: veth: Add
-> > xmo_rx_checksum callback to veth driver
-> >=20
-> > Implement xmo_rx_checksum callback in veth driver to report RX
-> > checksum result to the eBPF program bounded to the veth device.
-> >=20
-> > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-> > ---
-> >  drivers/net/veth.c | 20 ++++++++++++++++++++
-> >  1 file changed, 20 insertions(+)
-> >=20
-> > diff --git a/drivers/net/veth.c b/drivers/net/veth.c index
-> > 14e6f2a2fb7783334d8f6afd54e658cf9a0e6f3d..38b70ad62db7e92cccc6c6c9ed1f
-> > 5573d8baf48b 100644
-> > --- a/drivers/net/veth.c
-> > +++ b/drivers/net/veth.c
-> > @@ -1693,6 +1693,25 @@ static int veth_xdp_rx_vlan_tag(const struct
-> > xdp_md *ctx, __be16 *vlan_proto,
-> >  	return err;
-> >  }
-> >=20
-> > +static int veth_xdp_rx_checksum(const struct xdp_md *ctx,
-> > +				enum xdp_checksum *ip_summed,
-> > +				u32 *cksum_meta)
-> > +{
-> > +	const struct veth_xdp_buff *_ctx =3D (void *)ctx;
-> > +	const struct sk_buff *skb =3D _ctx->skb;
-> > +
-> > +	if (!skb)
-> > +		return -ENODATA;
-> > +
-> > +	/* For locally generated packets ip_summed is set to
-> > +	 * CHECKSUM_PARTIAL.
-> > +	 */
-> > +	*ip_summed =3D skb->ip_summed;
-> > +	*cksum_meta =3D 0;
-> > +
-> > +	return 0;
-> > +}
-> > +
-> >  static const struct net_device_ops veth_netdev_ops =3D {
-> >  	.ndo_init            =3D veth_dev_init,
-> >  	.ndo_open            =3D veth_open,
-> > @@ -1718,6 +1737,7 @@ static const struct xdp_metadata_ops
-> > veth_xdp_metadata_ops =3D {
-> >  	.xmo_rx_timestamp		=3D veth_xdp_rx_timestamp,
-> >  	.xmo_rx_hash			=3D veth_xdp_rx_hash,
-> >  	.xmo_rx_vlan_tag		=3D veth_xdp_rx_vlan_tag,
-> > +	.xmo_rx_checksum		=3D veth_xdp_rx_checksum,
-> >  };
-> >=20
-> >  #define VETH_FEATURES (NETIF_F_SG | NETIF_F_FRAGLIST |
-> > NETIF_F_HW_CSUM | \
-> >=20
-> > --
-> > 2.53.0
->=20
-> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+On Fri, Feb 13, 2026 at 02:57:25PM +0800, zhengping.zhang wrote:
+> Corrected the typo in the function name from `airhoa_is_lan_gdm_port`
+> to `airoha_is_lan_gdm_port`.
+> This change ensures consistency in the API naming convention.
+> 
+> Signed-off-by: zhengping.zhang <aquapinn@qq.com>
 
-@Aleksandr: veth implementation is quite different in v2 so I will
-remove your Reviewed-by tag.
-Can you please take a look to the new version when you have some free cycle=
-s?
-Thanks in advance.
+Hi,
 
-Regards,
-Lorenzo
+I agree that this change is both correct and complete.
+So please feel free to add:
 
---HFmkBUtLTk0X/kCd
-Content-Type: application/pgp-signature; name=signature.asc
+Reviewed-by: Simon Horman <horms@kernel.org>
 
------BEGIN PGP SIGNATURE-----
+This looks like net-next to me material as it isn't a bug fix.
+And it's best to include the target tree in the subject, like this.
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaY9BmwAKCRA6cBh0uS2t
-rM9GAP9pqasZqU5mkbE9HeZKaEA/3fmJnoxbUinX2RuFECIihQD+MfrvsdLGCvNi
-SmxAUR2eFsKybJxZcgoL96b8QXXhzgQ=
-=09aw
------END PGP SIGNATURE-----
+Subject: [PATCH net-next] ...
 
---HFmkBUtLTk0X/kCd--
+Unfortunately net-next is closed at this time.
+
+---
+## Form letter - net-next-closed
+
+We have already submitted our pull request with net-next material for v7.0,
+and therefore net-next is closed for new drivers, features, code refactoring
+and optimizations. We are currently accepting bug fixes only.
+
+Please repost when net-next reopens after Feb 23rd.
+
+RFC patches sent for review only are obviously welcome at any time.
+                                                                                See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#development-cycle
+--
+pw-bot: defer
