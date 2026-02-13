@@ -1,72 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0C322B8B6;
-	Fri, 13 Feb 2026 02:45:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C65E2206AC;
+	Fri, 13 Feb 2026 02:46:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1770950755; cv=none; b=oASHRcUU3yQ5zUD/3DDaQLlxLwuAr/F9IZOjKGnb9tuI1EY2oK/qcF4ZsJwkORuondKLAFsHQF9dYJ8Ck8E1+yXn/CxURY3Wg/TfXuwshBmGWwosk7lzv6Qxg3aBKxfcn9ZkszeThUD8QwN/iVlPjt1IJ8e6j6Jwy/mRfguPIkE=
+	t=1770950779; cv=none; b=kvSZVpHi+NNE1lG3PobzD7fPsH8IpF9u51M1GiWehGPd2iEF6z/uy6VXsUbLtAJfeXSE2eaCvzgXC3/xgLc/qWM2d+JqgR7dSTI/DNe14lf1jZOhHmH6SyPYuaZi/51jr9NQU2VahG7GAYwCt8AXfN9ydodeKcWqNOZDeJFrl+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1770950755; c=relaxed/simple;
-	bh=9wTWXBieVtbtWKd0bQ+RIS2MegBR8vNVZWpOsI4mr6Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Co45GaqHFEL0Vo2UD+XkuUIyjFTMqdYriHrdZetAniRXbAgBk1/TZd04wLp18ZjcgoH6XKqj65RF63kaxThIgbbySvHiDOdGM/AZHGocd8BOrFyGq7lqIsYWGJxKWgnKp2/PVcf8BPU6r4UlLKxsug6o1qtTw0gHOjuQmW/WC9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z0kICvzj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1770950779; c=relaxed/simple;
+	bh=/rCKtZu4uT+a7bxC/0dAzdSZHaz5X9coZL7XHuDvdb4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fgcBJrlj/4mSm68bCr6KupTcCom9fSnzJVa4pAuZ3xZOTrzTdvjEVejitTrSF0svYXRjaWy8/le2Eg+ql3ZG9k/GgUI9phtDaPD5TUlEJO5nfqH0RTCkuoueHNP3tZkrdo4UVAS6GABE4HrMNtzPLi3p/O+VUq0tGPndy87UH9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=nnxI8R8c; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z0kICvzj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50038C2BC86;
-	Fri, 13 Feb 2026 02:45:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1770950754;
-	bh=9wTWXBieVtbtWKd0bQ+RIS2MegBR8vNVZWpOsI4mr6Y=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Z0kICvzjjVS7/wlsaQhOS/F7Vp6wS3ejidP9IZn5gjQ+546qhfFu6+k175lqt/2g9
-	 0YySo0ok+qnmsH+50OqMjyXeI7GZvee/Ep0YiMIo+iidLGPNKgnF1TLGYj5bPwQqxp
-	 Uzisn6NB5Bzu/wBAh1gWd8dt2t9jIw2FLiC0/5KTPWk6kG1rUUp1w8Jv4ZzngbFS48
-	 iK0fUAU/Dgwo7q4OAvJ9BvASVBN1UHLYQBMoB2A9Nufn2aDKxyf9SZIiQnC675FTnD
-	 pvSsOje/xzMOhXy6B4b2IV/2aRNUtZz2jEJcdtInr3OMO9YwFDVfcPMn0uuZsJvIGv
-	 Ke3QKIuvlcQ6A==
-Date: Thu, 12 Feb 2026 18:45:53 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org, Simon Horman
- <horms@kernel.org>, Michael Grzeschik <m.grzeschik@pengutronix.de>, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Zheyu Ma
- <zheyuma97@gmail.com>
-Subject: Re: [PATCH v2] net: arcnet: com20020-pci: fix support for 2.5Mbit
- cards
-Message-ID: <20260212184553.2dd00e45@kernel.org>
-In-Reply-To: <20260210020012.11819-1-enelsonmoore@gmail.com>
-References: <20260210020012.11819-1-enelsonmoore@gmail.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="nnxI8R8c"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=Gh
+	+bNkrUmdUhkkCUMlDs6LepAgG9fyimpNq3kzowW54=; b=nnxI8R8cPdFdUTi7qt
+	0RIatyw560LGGdNf0MYhXvyj/DWQoB053kxkgWrOce1TLWetAu55EHeW/1wPC/SA
+	00JeMkqHmws0zldDAz+6MQq4Y2PlwILwyrJANddscdJA3LADpZxfJhJM7kCbGg+N
+	bNzUN58o5q0I4gLPNN4r5gE44=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAnZNoNkI5pvhZSLw--.1343S2;
+	Fri, 13 Feb 2026 10:44:30 +0800 (CST)
+From: Feng Yang <yangfeng59949@163.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	posk@google.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	eddyz87@gmail.com
+Cc: bpf@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	yangfeng59949@163.com
+Subject: [PATCH v6 bpf-next 0/2] Fix the null pointer dereference issue in bpf_lwt_xmit_push_encap
+Date: Fri, 13 Feb 2026 10:44:27 +0800
+Message-Id: <20260213024429.39972-1-yangfeng59949@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wAnZNoNkI5pvhZSLw--.1343S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7GF47CF1xCw4fWw4kAw4xZwb_yoW8Jr43pF
+	4UXrZ5Kw1rtw1xJFs3Ga1fZryFga1fJw1Fgwn7Aw1YyF4UZryUJw1Ikw4agFsIvrZruw4U
+	X3WvqF17Ka40ya7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0pRFoGQUUUUU=
+X-CM-SenderInfo: p1dqww5hqjkmqzuzqiywtou0bp/xtbC0A8lnWmOkA8yKwAA3G
 
-On Mon,  9 Feb 2026 18:00:12 -0800 Ethan Nelson-Moore wrote:
-> Commit 8c14f9c70327 ("ARCNET: add com20020 PCI IDs with metadata")
-> converted the com20020-pci driver to use a card info structure instead
-> of a single flag mask in driver_data. However, it failed to take into
-> account that in the original code, driver_data of 0 indicates a card
-> with no special flags, not a card that should not have any card info
-> structure. This introduced a null pointer dereference when cards with
-> no flags were probed.
-> 
-> Commit bd6f1fd5d33d ("net: arcnet: com20020: Fix null-ptr-deref in
-> com20020pci_probe()") then papered over this issue by rejecting cards
-> with no driver_data instead of resolving the problem at its source.
-> 
-> Revert the incorrect fix and fix the original issue by introducing a
-> new card info structure for 2.5Mbit cards that does not set any flags.
+From: Feng Yang <yangfeng@kylinos.cn>
 
-Not sure this is enough, especially that you remove the null check.
-IIUC user may add an ID via sysfs and that one will not have a driver
-data. Why not catch the 0 driver data and assign card_info_2p5mbit as 
-a default?
+Fix the null pointer dereference issue in bpf_lwt_xmit_push_encap
+
+Changes in v6:
+- Modify the bpf_lwt_xmit_push_encap function and add selftests for it.
+  Thanks, Martin KaFai Lau.
+- Link to v5: https://lore.kernel.org/all/20260210090657.86977-1-yangfeng59949@163.com/
+Changes in v5:
+- Refer to the bpf_lwt_xmit_reroute function to configure the dst parameter.
+- Link to v4: https://lore.kernel.org/all/20260209015111.28144-1-yangfeng59949@163.com/
+Changes in v4:
+- add rcu lock
+- Link to v3: https://lore.kernel.org/all/20260206055113.63476-1-yangfeng59949@163.com/
+Changes in v3:
+- use dst_init
+- Link to v2: https://lore.kernel.org/all/20260205092227.126665-1-yangfeng59949@163.com/
+Changes in v2:
+- Link to v1: https://lore.kernel.org/all/20260127084520.13890-1-luyun_611@163.com/ 
+
+Feng Yang (2):
+  bpf: Fix the null pointer dereference issue in bpf_lwt_xmit_push_encap
+  selftests/bpf: Add selftests for the invocation of
+    bpf_lwt_xmit_push_encap
+
+ net/core/lwt_bpf.c                            |  7 +++++--
+ .../selftests/bpf/progs/verifier_lwt.c        | 20 +++++++++++++++++++
+ 2 files changed, 25 insertions(+), 2 deletions(-)
+
 -- 
-pw-bot: cr
+2.43.0
+
