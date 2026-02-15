@@ -1,70 +1,50 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from wilbur.contactoffice.com (wilbur.contactoffice.com [212.3.242.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6CE86331
-	for <netdev@vger.kernel.org>; Sun, 15 Feb 2026 21:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E3B199FB0;
+	Sun, 15 Feb 2026 21:36:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.3.242.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771191278; cv=none; b=FRYjrk5wokGgLd1y7COny0XfdYG4jNiML+tUIeSG+bslKIagu5XE7I19fYM2nVWvgCqb3JGtgHtJaaIwRWv3Awgw5mbI9gQNsRQfasEnFyt6Bxb/pULrN5P7//vyNQQisoyLyEmNhkiIPkhfNERZqz7YWW0tN3Qax8wSjjwN9fI=
+	t=1771191384; cv=none; b=uCHcYJ5RMxC2VpCDs7YTubry3U8sY+9p9fwDAZIpflvEUykRjSYYEtnrMV6OtSQMebD+J13E6t4ydqgc1lkIGTxIBDbSnOfMVCMu2omdnrCVkOulCHBiS9fIVleCwK0ZWy7LDC1ZyPmBq7AUDIRqT9WkBxC3KFd18jXszEIjT0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771191278; c=relaxed/simple;
-	bh=5+A9BM/9j4EZl47CcaalxWpYyqqhceOe5Lgrzliunqk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UYmbO+tTOZb7qCFaFH+AJ1rlSIEE2Ml11/EDaSmw6kdGpsSaYiLwQNC7sbHe/ipS+gMuDO3VZFSft0qxesFcxBTv39bA7GypH2O/RP/cbKd3z92wG0KrMnejesP1Q3HlS2sakS5z6DQRnlUE0G25rsV0LDFcaXu99CzSKB33L+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HWwi8xJd; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771191384; c=relaxed/simple;
+	bh=hSV/toip1yfn/kJ3hZrR41f0oEB1CkLxApZbFsdg+3s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ELXvPzdJLAanV+TWB0/v72GrBxN9YeqsYyPEFUQnJqx/OlwsJL+Q5joYWeWlwaLpfGhg1/3cMDl+fdDPUgniD+zWvtkIwjxcpKQseArjTf8jiChNQ80G3HCMeN3q4Gce6HhHxZF12M+tS5U9jwawUpvon/QQ2a0DC/5qtM//yrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thubble.ca; spf=pass smtp.mailfrom=thubble.ca; dkim=pass (2048-bit key) header.d=thubble.ca header.i=thubble@thubble.ca header.b=jCkwgljg; arc=none smtp.client-ip=212.3.242.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=thubble.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thubble.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HWwi8xJd"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4836f363d0dso21344385e9.3
-        for <netdev@vger.kernel.org>; Sun, 15 Feb 2026 13:34:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771191276; x=1771796076; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=7pUXUjGf8GywcuWoq0eu0G//Qfj2+vuON25+u2VLtCU=;
-        b=HWwi8xJdFwXP11R4GHQj9rYiIXqBHDdnN21ZJMHy+1hTV69Y2bxKi2Cbejd63JjAcQ
-         6aXbWnx1gbBJTe6zE4ICHc+4nrO5laz3AFZBFwZMm+7onCMLTKqhuNx/CeModJezsOMG
-         0yF0UceP8Gi3/walh7Eb5SmXaLH/idXfq8VUawdwSmD3mFmkAQAS26UPtl9A0EQAbeiz
-         MM4ZjWfOVs8sGEhe85HEiHSJNaalr981tufrNOIs6WyoX83JtWMtrsqTPS5KN1T1eutK
-         TBW6bfkpK4oHg/s43E6IbCb5fZp48FxtLmTdx2G9TDMspGfUE2lzRzjd2FYgDrT6RvK5
-         0ucw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771191276; x=1771796076;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7pUXUjGf8GywcuWoq0eu0G//Qfj2+vuON25+u2VLtCU=;
-        b=mBzSEWhetjkSl8M/MUZchhrMggStU3J8mGvXIjb7z6tZZHsZIFORCMYChTADEFSUxY
-         Zea7KvGvZHvvvrZnmLKm9fWcWswAY2yDQHgtTMK2qluU5R55cPsyn5BvB6S+ODKUtOxL
-         4OC/K3oT3E0YA5pyVRvIlZgH6SZXrsPaqh1vWr/JVfMge6DicJLKl5+o63IEC3JG5wES
-         1mf1/QUlPbkBNYAN+yXqrVoxaT+4r4ri/3Zbb2m4wRcRqI4k0Pjp3LbxGvVOj4nG8EzN
-         K/5ZDXaV5n9MtIf6aQ1qweNKpFuDgJUW5iTCQs5qOo8ysF00H/tyTZQSuKC02xdwh9aP
-         P8IQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW8RevPET/WSk/H6PeT+f/sqTx+DC5ZJZwNbDxytJhOF0dYJRirsDk8Iou8s2vuXl2QHNolPMY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw6nFfFLrLF9z7PM7RoZlXq03YSK49WpUAHinWqVetTRlubZRQ0
-	/OdTVZiQWJWO03Nm+nzqDkLo4ePe1qSKftFIqUFGg8rAfwmQugWVWJBg
-X-Gm-Gg: AZuq6aJlV6JSc7LCRLVy1PXxTC630vqdTRsO9LxqAvXnzwmrMlITeTMz93uQV69hA23
-	0uymEzjXJaWEAqZunHkj+TaGsKx3PEWg6XQ5eqNhbAzGUD4gtDZRv1hBRMkCCU0MkPXSU2dWstD
-	Dxkj5isN814zxDeAtE970xyYNNoMCr+9/9Ty88FGydme/7txxhtSlZpRV5PsBloS3WJNofN8UN5
-	kQqhZt/vWG1xdBXMpAiT8Lo0KomHNg5ztNa3S3ipcwJ1BdC+8TnO4R/VV/IOjuKDsSxACc3B822
-	2ArZXhSjoe7naiRwIMNu5+nCu8dv5PuMWLhnu6/aiqBbbg2iHLtqF07Y71L2MCqGe702yS3yFCw
-	jyH83S3WNcwn+cUUGC+k1xpAL6KMsaFf5msxwgUSsigwNyEfBqIZknYnzCPtcj4eX72u2R6nEzm
-	iTkUR7eJ4uzpi+vaQpJsaYx9X7deN+00TCk+cldGXZJ8ISYDjrSEtys+KoOaP5kV58IyqZ4ijvl
-	4E0tyU5F+I96biIYsUBzp06/UEpyw==
-X-Received: by 2002:a05:600c:3106:b0:46e:1a5e:211 with SMTP id 5b1f17b1804b1-48379bfd705mr114445795e9.21.1771191275620;
-        Sun, 15 Feb 2026 13:34:35 -0800 (PST)
-Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4835dd0e327sm378040235e9.14.2026.02.15.13.34.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Feb 2026 13:34:35 -0800 (PST)
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: io-uring@vger.kernel.org
-Cc: asml.silence@gmail.com,
-	axboe@kernel.dk,
-	netdev@vger.kernel.org
-Subject: [PATCH io_uring-7.0] io_uring/query: return support for custom rx page size
-Date: Sun, 15 Feb 2026 21:34:28 +0000
-Message-ID: <2e8280467c93ead0c61ed3d68c036d6a0474bb78.1771188227.git.asml.silence@gmail.com>
+	dkim=pass (2048-bit key) header.d=thubble.ca header.i=thubble@thubble.ca header.b="jCkwgljg"
+Received: from smtpauth1.co-bxl (smtpauth1.co-bxl [10.2.0.15])
+	by wilbur.contactoffice.com (Postfix) with ESMTP id 0148C1793;
+	Sun, 15 Feb 2026 22:30:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771191022;
+	s=20201109-m0tc; d=thubble.ca; i=thubble@thubble.ca;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Transfer-Encoding;
+	bh=9uMZa3sqlioreu1HAzSEGjpkd73LCyouTn9q6QPOLYc=;
+	b=jCkwgljg382ElTrfP9FZU4NznLp0Myt32tbeYyOPbsY+3rso2sdyVOdWbegVp7mL
+	KFy2mDT2uSefcyVYaZhWjz3I2caaLGhrX3qFexkAvLcyRbdpGXS4l3MUA7tdbIIoFuW
+	ofLZrMVdQTacdLgGuGbi+m2TfEcgoff5DD27NBVE+fKXln6wveBz7xHN6HEO1jdHPDN
+	j1/ZS0NQi+TK1VEk3awu8N5Q3Gccp5OMVvT+GhXHKJS1dTS8SAYIyJlWk03dZZ3xtS2
+	G6au4uMCBrm5KxuQyuNE+F/WCQST20BiWpSIr1SLprsFso7enrnVo67jnyvOkQQEbXB
+	z2AdfLu3dw==
+Received: by smtp.mailfence.com with ESMTPSA ; Sun, 15 Feb 2026 22:30:19 +0100 (CET)
+From: Tiernan Hubble <thubble@thubble.ca>
+To: Igor Russkikh <irusskikh@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Tiernan Hubble <thubble@thubble.ca>,
+	Lorenz Brun <lorenz@brun.one>,
+	Simon Horman <horms@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net] net: atlantic: fix reading SFP module info on some AQC100 cards
+Date: Sun, 15 Feb 2026 15:26:08 -0600
+Message-ID: <20260215212609.193815-1-thubble@thubble.ca>
 X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -73,72 +53,263 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-ContactOffice-Account: com:266715177
 
-Add an ability to query if the zcrx rx page size setting is available.
+Commit 853a2944aaf3 ("net: atlantic: support reading SFP module info")
+added support for reading SFP module info on AQC100-based cards. However,
+it only supports reading directly from the controller's hardware
+registers, and this does not seem to be supported on certain cards,
+including my TRENDnet TEG-10GECSFP V3. "ethtool -m" times out when reading
+certain registers, even when I increase the read poll timeout values.
 
-Note, even when the API is supported by io_uring, the registration can
-still get rejected for various reasons, e.g. when the NIC or the driver
-doesn't support it, when the particular specified size is unsupported,
-when the memory area doesn't satisfy all requirements, etc.
+The DPDK "atlantic" driver reads module info via firmware calls instead of
+directly reading the hardware registers, provided that the NIC's firmware
+version supports it.
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+This change adapts the DPDK firmware call code to the kernel driver. It
+preserves the old hardware-based module read code as a fallback when the
+firmware does not support it, to avoid breaking cards that are currently
+working.
+
+Tested on 2 different TRENDnet TEG-10GECSFP V3 cards, both with firmware
+version 3.1.121 (current at the time of this patch). Both cards correctly
+reported module info for a passive DAC cable and 2 different 10G optical
+transceivers.
+
+Fixes: 853a2944aaf3 ("net: atlantic: support reading SFP module info")
+
+Signed-off-by: Tiernan Hubble <thubble@thubble.ca>
 ---
+ .../ethernet/aquantia/atlantic/aq_ethtool.c   | 42 ++++++++--
+ .../net/ethernet/aquantia/atlantic/aq_hw.h    |  3 +
+ .../aquantia/atlantic/hw_atl/hw_atl_utils.h   |  7 ++
+ .../atlantic/hw_atl/hw_atl_utils_fw2x.c       | 82 +++++++++++++++++++
+ 4 files changed, 128 insertions(+), 6 deletions(-)
 
-It's a simple change, would be great to have in 7.0 so it comes in the
-same release with the feature.
-
-
- include/uapi/linux/io_uring.h       | 8 ++++++++
- include/uapi/linux/io_uring/query.h | 3 ++-
- io_uring/query.c                    | 2 +-
- 3 files changed, 11 insertions(+), 2 deletions(-)
-
-diff --git a/include/uapi/linux/io_uring.h b/include/uapi/linux/io_uring.h
-index fc473af6feb4..6750c383a2ab 100644
---- a/include/uapi/linux/io_uring.h
-+++ b/include/uapi/linux/io_uring.h
-@@ -1090,6 +1090,14 @@ enum zcrx_reg_flags {
- 	ZCRX_REG_IMPORT	= 1,
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_ethtool.c b/drivers/net/ethernet/aquantia/atlantic/aq_ethtool.c
+index a6e1826dd5d7..5be9e9ee7e9f 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_ethtool.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_ethtool.c
+@@ -983,6 +983,36 @@ static int aq_ethtool_set_phy_tunable(struct net_device *ndev,
+ 	return err;
+ }
+ 
++static bool aq_ethtool_can_read_module_eeprom(struct aq_nic_s *aq_nic)
++{
++	return aq_nic->aq_fw_ops->read_module_eeprom ||
++		aq_nic->aq_hw_ops->hw_read_module_eeprom;
++}
++
++static int aq_ethtool_read_module_eeprom(struct aq_nic_s *aq_nic, u8 dev_addr,
++					 u8 reg_start_addr, int len, u8 *data)
++{
++	int err = -EOPNOTSUPP;
++
++	if (aq_nic->aq_fw_ops->read_module_eeprom) {
++		err = aq_nic->aq_fw_ops->read_module_eeprom(aq_nic->aq_hw,
++			dev_addr, reg_start_addr, len, data);
++
++		/* If the only error is that the firmware version doesn't
++		 * support reading EEPROM, we can still attempt to read it
++		 * directly from the hardware if supported.
++		 */
++		if (err != -EOPNOTSUPP)
++			return err;
++	}
++
++	if (aq_nic->aq_hw_ops->hw_read_module_eeprom)
++		err = aq_nic->aq_hw_ops->hw_read_module_eeprom(aq_nic->aq_hw,
++			dev_addr, reg_start_addr, len, data);
++
++	return err;
++}
++
+ static int aq_ethtool_get_module_info(struct net_device *ndev,
+ 				      struct ethtool_modinfo *modinfo)
+ {
+@@ -992,15 +1022,15 @@ static int aq_ethtool_get_module_info(struct net_device *ndev,
+ 
+ 	/* Module EEPROM is only supported for controllers with external PHY */
+ 	if (aq_nic->aq_nic_cfg.aq_hw_caps->media_type != AQ_HW_MEDIA_TYPE_FIBRE ||
+-	    !aq_nic->aq_hw_ops->hw_read_module_eeprom)
++	    !aq_ethtool_can_read_module_eeprom(aq_nic))
+ 		return -EOPNOTSUPP;
+ 
+-	err = aq_nic->aq_hw_ops->hw_read_module_eeprom(aq_nic->aq_hw,
++	err = aq_ethtool_read_module_eeprom(aq_nic,
+ 		SFF_8472_ID_ADDR, SFF_8472_COMP_ADDR, 1, &compliance_val);
+ 	if (err)
+ 		return err;
+ 
+-	err = aq_nic->aq_hw_ops->hw_read_module_eeprom(aq_nic->aq_hw,
++	err = aq_ethtool_read_module_eeprom(aq_nic,
+ 		SFF_8472_ID_ADDR, SFF_8472_DOM_TYPE_ADDR, 1, &dom_type);
+ 	if (err)
+ 		return err;
+@@ -1022,7 +1052,7 @@ static int aq_ethtool_get_module_eeprom(struct net_device *ndev,
+ 	unsigned int first, last, len;
+ 	int err;
+ 
+-	if (!aq_nic->aq_hw_ops->hw_read_module_eeprom)
++	if (!aq_ethtool_can_read_module_eeprom(aq_nic))
+ 		return -EOPNOTSUPP;
+ 
+ 	first = ee->offset;
+@@ -1032,7 +1062,7 @@ static int aq_ethtool_get_module_eeprom(struct net_device *ndev,
+ 		len = min(last, ETH_MODULE_SFF_8079_LEN);
+ 		len -= first;
+ 
+-		err = aq_nic->aq_hw_ops->hw_read_module_eeprom(aq_nic->aq_hw,
++		err = aq_ethtool_read_module_eeprom(aq_nic,
+ 			SFF_8472_ID_ADDR, first, len, data);
+ 		if (err)
+ 			return err;
+@@ -1045,7 +1075,7 @@ static int aq_ethtool_get_module_eeprom(struct net_device *ndev,
+ 		len -= first;
+ 		first -= ETH_MODULE_SFF_8079_LEN;
+ 
+-		err = aq_nic->aq_hw_ops->hw_read_module_eeprom(aq_nic->aq_hw,
++		err = aq_ethtool_read_module_eeprom(aq_nic,
+ 			SFF_8472_DIAGNOSTICS_ADDR, first, len, data);
+ 		if (err)
+ 			return err;
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_hw.h b/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
+index 4e66fd9b2ab1..57ea59026a2c 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_hw.h
+@@ -404,6 +404,9 @@ struct aq_fw_ops {
+ 	int (*send_macsec_req)(struct aq_hw_s *self,
+ 			       struct macsec_msg_fw_request *msg,
+ 			       struct macsec_msg_fw_response *resp);
++
++	int (*read_module_eeprom)(struct aq_hw_s *self, u8 dev_addr,
++				  u8 reg_start_addr, int len, u8 *data);
  };
  
-+enum zcrx_features {
-+	/*
-+	 * The user can ask for the desired rx page size by passing the
-+	 * value in struct io_uring_zcrx_ifq_reg::rx_buf_len.
-+	 */
-+	ZCRX_FEATURE_RX_PAGE_SIZE	= 1 << 0,
+ #endif /* AQ_HW_H */
+diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_utils.h b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_utils.h
+index f6b990b7f5b4..404c84adad4a 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_utils.h
++++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_utils.h
+@@ -319,6 +319,13 @@ struct __packed hw_atl_utils_settings {
+ 	u32 media_detect;
+ };
+ 
++struct __packed smbus_request {
++	u32 msg_id;
++	u32 device_id;
++	u32 address;
++	u32 length;
 +};
 +
- /*
-  * Argument for IORING_REGISTER_ZCRX_IFQ
-  */
-diff --git a/include/uapi/linux/io_uring/query.h b/include/uapi/linux/io_uring/query.h
-index 2456e6c5ebb5..0b6248175e26 100644
---- a/include/uapi/linux/io_uring/query.h
-+++ b/include/uapi/linux/io_uring/query.h
-@@ -50,7 +50,8 @@ struct io_uring_query_zcrx {
- 	__u64 area_flags;
- 	/* The number of supported ZCRX_CTRL_* opcodes */
- 	__u32 nr_ctrl_opcodes;
--	__u32 __resv1;
-+	/* Bitmask of ZCRX_FEATURE_* indicating which features are available */
-+	__u32 features;
- 	/* The refill ring header size */
- 	__u32 rq_hdr_size;
- 	/* The alignment for the header */
-diff --git a/io_uring/query.c b/io_uring/query.c
-index abdd6f3e1223..63cc30c9803d 100644
---- a/io_uring/query.c
-+++ b/io_uring/query.c
-@@ -39,7 +39,7 @@ static ssize_t io_query_zcrx(union io_query_data *data)
- 	e->nr_ctrl_opcodes = __ZCRX_CTRL_LAST;
- 	e->rq_hdr_size = sizeof(struct io_uring);
- 	e->rq_hdr_alignment = L1_CACHE_BYTES;
--	e->__resv1 = 0;
-+	e->features = ZCRX_FEATURE_RX_PAGE_SIZE;
- 	e->__resv2 = 0;
- 	return sizeof(*e);
+ enum macsec_msg_type {
+ 	macsec_cfg_msg = 0,
+ 	macsec_add_rx_sc_msg,
+diff --git a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_utils_fw2x.c b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_utils_fw2x.c
+index 4d4cfbc91e19..ab94d01e517c 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_utils_fw2x.c
++++ b/drivers/net/ethernet/aquantia/atlantic/hw_atl/hw_atl_utils_fw2x.c
+@@ -58,6 +58,8 @@
+ 
+ #define HW_ATL_FW2X_CAP_MACSEC           BIT(CAPS_LO_MACSEC)
+ 
++#define HW_ATL_FW2X_CAP_SMBUS_READ       BIT(CAPS_LO_SMBUS_READ)
++
+ #define HAL_ATLANTIC_WOL_FILTERS_COUNT   8
+ #define HAL_ATLANTIC_UTILS_FW2X_MSG_WOL  0x0E
+ 
+@@ -703,6 +705,85 @@ static int aq_fw2x_send_macsec_req(struct aq_hw_s *hw,
+ 	return err;
  }
+ 
++static int aq_fw2x_read_module_eeprom(struct aq_hw_s *self, u8 dev_addr,
++				      u8 reg_start_addr, int len, u8 *data)
++{
++	u32 low_status, orig_low_status, low_req = 0;
++	u32 res_bytes_remain_cnt = len % sizeof(u32);
++	u32 res_dword_cnt = len / sizeof(u32);
++	struct smbus_request request = { 0 };
++	u32 req_dword_cnt;
++	u32 result = 0;
++	u32 caps_lo;
++	u32 offset;
++	int err;
++
++	caps_lo = aq_fw2x_get_link_capabilities(self);
++	if (!(caps_lo & BIT(CAPS_LO_SMBUS_READ)))
++		return -EOPNOTSUPP;
++
++	request.msg_id = 0;
++	request.device_id = dev_addr;
++	request.address = reg_start_addr;
++	request.length = len;
++
++	/* Write SMBUS request to cfg memory */
++	req_dword_cnt = (sizeof(request) + sizeof(u32) - 1) / sizeof(u32);
++	err = hw_atl_write_fwcfg_dwords(self, (void *)&request, req_dword_cnt);
++	if (err < 0)
++		return err;
++
++	/* Toggle 0x368.CAPS_LO_SMBUS_READ bit */
++	low_req = aq_hw_read_reg(self, HW_ATL_FW2X_MPI_CONTROL_ADDR);
++	orig_low_status = low_req & BIT(CAPS_LO_SMBUS_READ);
++	low_req ^= HW_ATL_FW2X_CAP_SMBUS_READ;
++	aq_hw_write_reg(self, HW_ATL_FW2X_MPI_CONTROL_ADDR, low_req);
++
++	/* Wait FW to report back */
++	err = readx_poll_timeout_atomic(aq_fw2x_state_get, self, low_status,
++					orig_low_status != (low_status &
++					BIT(CAPS_LO_SMBUS_READ)),
++					10U, 100000U);
++	if (err)
++		return -EIO;
++
++	/* Read status of read operation */
++	offset = self->rpc_addr + sizeof(u32);
++	err = hw_atl_utils_fw_downld_dwords(self, offset, &result,
++					    sizeof(result) / sizeof(u32));
++	if (err < 0)
++		return err;
++	if (result)
++		return -EIO;
++
++	/* Read response full DWORD data */
++	if (res_dword_cnt) {
++		offset = self->rpc_addr + sizeof(u32) * 2;
++		err = hw_atl_utils_fw_downld_dwords(self, offset, (u32 *)data,
++						    res_dword_cnt);
++		if (err < 0)
++			return err;
++	}
++
++	/* Read response trailing bytes data */
++	if (res_bytes_remain_cnt) {
++		u32 bytes_remain_val = 0;
++
++		offset = self->rpc_addr +
++			 (sizeof(u32) * 2) +
++			 (res_dword_cnt * sizeof(u32));
++		err = hw_atl_utils_fw_downld_dwords(self, offset,
++						    &bytes_remain_val, 1);
++		if (err < 0)
++			return err;
++
++		memcpy(data + len - res_bytes_remain_cnt,
++		       &bytes_remain_val, res_bytes_remain_cnt);
++	}
++
++	return 0;
++}
++
+ const struct aq_fw_ops aq_fw_2x_ops = {
+ 	.init               = aq_fw2x_init,
+ 	.deinit             = aq_fw2x_deinit,
+@@ -729,4 +810,5 @@ const struct aq_fw_ops aq_fw_2x_ops = {
+ 	.adjust_ptp         = aq_fw3x_adjust_ptp,
+ 	.get_link_capabilities = aq_fw2x_get_link_capabilities,
+ 	.send_macsec_req    = aq_fw2x_send_macsec_req,
++	.read_module_eeprom = aq_fw2x_read_module_eeprom,
+ };
 -- 
 2.52.0
 
