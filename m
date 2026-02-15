@@ -1,85 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from r3-22.sinamail.sina.com.cn (r3-22.sinamail.sina.com.cn [202.108.3.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AC68F48;
-	Sun, 15 Feb 2026 07:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495C817C69
+	for <netdev@vger.kernel.org>; Sun, 15 Feb 2026 08:55:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.108.3.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771141304; cv=none; b=gRUTQD+1mZHu3ltt1H3GNG700YgNwRMbGAm95hlzAmGOVw+ymisz2Eh+D2HKxTw19nsgnMCJF/8PkbrHL0l7C4t5uYZK4H/NB1us6x0O1Au1R0MFghXH2oG8GIwT3HJ92eDISYiJoVEpLF+aaNuIMnxxEpQcQ2sP8xwXR62CnGE=
+	t=1771145731; cv=none; b=gRpOeWxmMtcOfUMG14xWrfxfwyezyKOIHiO+5s2AMiiwHKZt/7nIczS3d0m/aa5JJpkyFcJYNoP0tg9p1FLwKmQvzzOjH3WEiJQQVC7VwKuwW7+VVr5DUGd47nW9i8bwZ4zUxwoNhLnqN+2J1FFrcH6ZwI8yWaaW+IvfOcitsgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771141304; c=relaxed/simple;
-	bh=WF5JAtFaQBxTZsull+nejNp501IkpzjIzqxu5mudPps=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KsyTvA0IgnIbFuGT8AM8ijVommrFqZWe0bN5yFIWOreDr0FbfPZRcuIj005wk/dijlmMLJlq7lgoSjyz9Vs4eVrJLo7937H0T7JT7ZEf5aR4e9/vNmss3Lxu/Vr6hTFcYSdsjoG6ukjdqy9+bUV2U7ZLlC6nvsvhkUqBBmFSSsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oqn4X9w4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771145731; c=relaxed/simple;
+	bh=+YKfAsN1shltS4gZF1P/OdcfDpj38qDhhn6RJWOcw4M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=IE6ckmfIHelmZ2puEsC95D2hrBxWTMlP3milW8/o2NXE9cy1JRAGzM8lvow02Hpd7geR5z1MXPSesEzy9ty98sgH+gB0LuD9ocQYmt8X6Bsyoz3Bv2pVOsIW0xTzZvXp8xOKcFmg0puVL/yP6OWu62igkAEfVZyJwjk7E3DZYhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=BUHT7Gkz; arc=none smtp.client-ip=202.108.3.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oqn4X9w4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4417CC4CEF7;
-	Sun, 15 Feb 2026 07:41:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771141303;
-	bh=WF5JAtFaQBxTZsull+nejNp501IkpzjIzqxu5mudPps=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oqn4X9w4yTzocV28ummD8MWO/hu9fnNWtvqV5W+fhC6O7iD/k6cv7A+NIGhiEJppO
-	 BgmPKEDnHZd19PpRRu4qTO771yxSRFVal03nbj7LStzo5zXvmjvRuIhMQMuf0Iq4Mg
-	 RKKwd9xodUyUjf5ZNtAbq+rdwz5sFBQZbtUDz+TqyBRSscIPDiulD0r3V1OGYCZUt9
-	 jJWF+UeabAQbrlCMZafYEIK4AB7mQ/bgcy36SYAuMxA2LIXQ6yk1xmH+loHAGTZ/HY
-	 QejWhSliDT6C7A8Wx6/+m1oLtD0Rb/kP5f+NB9fnK8nzU0r7pJQ8z9Kfdx1HJPSDKO
-	 HHsh0jWCkVPlw==
-Date: Sun, 15 Feb 2026 09:41:39 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: satishkh@cisco.com, Christian Benvenuti <benve@cisco.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH] MAINTAINERS: drop enic maintainer entry for benve
-Message-ID: <20260215074139.GA12989@unreal>
-References: <20260214-enic-maintainers-update-v1-1-5bec573f90ff@cisco.com>
+	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="BUHT7Gkz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1771145728;
+	bh=KBSUM04KzyVvFZil1ohZX3MuQI4AoMuVt2ux4kLo3pY=;
+	h=From:Subject:Date:Message-ID;
+	b=BUHT7GkzaCyBZUTy48F4Fc7rKZ3rSL2lLD/iucKCRk3nY2LQ1L65KHm/NpjFAOMU2
+	 CR2m8DBTvhMsoyQ/1jazSOIxW3q/4jzYwysK/zsha1OglcAgXo8LXX5y0r4w4fLJUC
+	 eESyP2IYfwDV+DTtz0yQjHrs0U4lh8YmpY1cT8DU=
+X-SMAIL-HELO: localhost.localdomain
+Received: from unknown (HELO localhost.localdomain)([114.249.62.144])
+	by sina.com (10.54.253.33) with ESMTP
+	id 699189F6000010F7; Sun, 15 Feb 2026 16:55:19 +0800 (CST)
+X-Sender: hdanton@sina.com
+X-Auth-ID: hdanton@sina.com
+Authentication-Results: sina.com;
+	 spf=none smtp.mailfrom=hdanton@sina.com;
+	 dkim=none header.i=none;
+	 dmarc=none action=none header.from=hdanton@sina.com
+X-SMAIL-MID: 7946796685282
+X-SMAIL-UIID: 8F20B84913E44431A0A159B29BA09261-20260215-165519-1
+From: Hillf Danton <hdanton@sina.com>
+To: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	linux-kernel@vger.kernel.org,
+	Jiayuan Chen <jiayuan.chen@shopee.com>
+Subject: Re: [PATCH net v2 1/1] serial: caif: fix remaining ser->tty UAF in TX path
+Date: Sun, 15 Feb 2026 16:55:08 +0800
+Message-ID: <20260215085510.3081-1-hdanton@sina.com>
+In-Reply-To: <20260215025141.1106576-2-shuangpeng.kernel@gmail.com>
+References: 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260214-enic-maintainers-update-v1-1-5bec573f90ff@cisco.com>
+Content-Transfer-Encoding: 8bit
 
-On Sat, Feb 14, 2026 at 06:26:02AM -0800, Satish Kharat via B4 Relay wrote:
-> From: Satish Kharat <satishkh@cisco.com>
+On Sat, 14 Feb 2026 21:51:41 -0500 Shuangpeng Bai wrote:
+> A reproducer exposes a KASAN use-after-free in caif_serial's TX path
+> (e.g., via tty_write_room() / tty->ops->write()) on top of commit
+> <308e7e4d0a84> ("serial: caif: fix use-after-free in caif_serial
+> ldisc_close()").
 > 
-> Remove Christian Benvenuti from the enic driver maintainer list.
-
-Why?
-I'm asking because Christian is listed as maintainer for
-drivers/infiniband/hw/usnic/ too.
-
-Thanks
-
+> That commit moved tty_kref_put() to ser_release(). There is still a race
+> because the TX path may fetch ser->tty and use it while ser_release()
+> drops the last tty reference:
 > 
-> Signed-off-by: Satish Kharat <satishkh@cisco.com>
-> ---
->  MAINTAINERS | 1 -
->  1 file changed, 1 deletion(-)
+>     CPU 0 (ser_release worker)         CPU 1 (xmit)
+>     -------------------------        ------------
+>                                       caif_xmit()
+>                                       handle_tx()
+>                                         tty = ser->tty
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 04e5fb80c32c..8b122a39dacf 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -6173,7 +6173,6 @@ S:	Supported
->  F:	drivers/scsi/snic/
->  
->  CISCO VIC ETHERNET NIC DRIVER
-> -M:	Christian Benvenuti <benve@cisco.com>
->  M:	Satish Kharat <satishkh@cisco.com>
->  S:	Maintained
->  F:	drivers/net/ethernet/cisco/enic/
+>     ser_release()
+>       tty = ser->tty
+>       dev_close(ser->dev)
+>       unregister_netdevice(ser->dev)
+>       debugfs_deinit(ser)
+>       tty_kref_put(tty)        // may drop the last ref
+>                      <-- race window -->
+>                                         tty->ops->write(tty, ...)  // UAF
 > 
-> ---
-> base-commit: 37a93dd5c49b5fda807fd204edf2547c3493319c
-> change-id: 20260214-enic-maintainers-update-f7968ab3b54f
-> 
-> Best regards,
-> -- 
-> Satish Kharat <satishkh@cisco.com>
-> 
-> 
-> 
+What is unclear is -- why is the xmit callback still active after
+unregister_netdevice().
