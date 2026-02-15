@@ -1,106 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 003681A9B58;
-	Sun, 15 Feb 2026 21:21:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C54F273D75
+	for <netdev@vger.kernel.org>; Sun, 15 Feb 2026 21:29:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771190499; cv=none; b=Y7zWiCEv2euq8ZPL88mTa7hQLtvjwQQ749yw6VU0jA4uaFKr0Ywi2Vz3NVWA0Mz139YdhTDrxNfJ6SrfCEUCWlEuqduS3Pw9qnJ/T8jP7hHwwDP/pdWQj/IoeWjtOgJ3Il8UKCE8UTwAU/dImN8IRAr8Xr0UP+bJJ3xJm/jp9xk=
+	t=1771190960; cv=none; b=dAlMXu10zq1NEXeH/TRTdppfgDVPkFQVKnlqsrpHRmTYc2J25f03EA83jtxdq0nmwdNqGbiVPSZRLaGrmujgX10rSZhVRT0Sz+YXlYeDFOKy8hwhn4h5+qxHt2VrD7zuK92pvR8vsFTpIdcPGmRARqiqR2Ky8H3I24jTqRZkCbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771190499; c=relaxed/simple;
-	bh=EmwHoAZpw5p2D3NrQqqpXCs9FWdPkuuUw4WAr+dS/vo=;
-	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
-	 Subject:From:To:Cc:Date; b=p3w2F+nKFMcPWwIN4fN4IPQo/A+V4K+Watc38+8e4pixNiitmD4wVXuOUfszXGgnAM2CyPG8Dqzc35leSvFGFb/+gVsmlq/QGAU31JE2Hin/pjt5YY02enLAH3uwVvJj+PgTaIlLZGuufFE3IqrYKe1FxQeyPElBNipkQHksyFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uH0ie8xF; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771190960; c=relaxed/simple;
+	bh=8B4rXAz9X0DmROqROTQqwmDddKFeM/oPYgvUCG7iZJM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jVuLbzP+E1s3x6meJF46avFWrvBJa6jkGk6ZocRxWitwl3TFYdoV9FSOl3LoG4uoH9cQIqWYpSWJWEJO0dVAijrHw8KijyYgFGz2OAeqn/DHUXsSDFgAE8XWTrADQwoSIX09hvlzzBtGoG3gv2n/EK+00LvdLBD+zncJ+QLkE90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MGUuqp4v; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uH0ie8xF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D22FC4CEF7;
-	Sun, 15 Feb 2026 21:21:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771190498;
-	bh=EmwHoAZpw5p2D3NrQqqpXCs9FWdPkuuUw4WAr+dS/vo=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=uH0ie8xFLlybX36TLR5sEcmEbqTn2uQ9KZcQNKhHVJBK6D3co/HFCWzMCbNYPPDW9
-	 6nmV3rv/RLEQ+pWppVT1HonbwZ92glmsy4ZbmA/FCInn2Y2z5PDLBRTtSODsEdBIq6
-	 G6QDe8O0RIAHkWfF8Mp5K2T1EFWXxcYGN1SmWxjMAjdMXR1hMiGqkvDC2GVqWsWDY6
-	 8mZHreTARMStfQqCclY3FEUa5PgBQMAN4E9WC0u6uZLChZBkAmPMO7wtZkQWkQxs/c
-	 lCmkTQ9vEtLS/a1U4IBYzU7DfpEG6EDpEHTNEZDx5p2l0hR/PThcyrEUZfixqXo1UH
-	 lbipTinGzcvVA==
-Content-Type: multipart/mixed; boundary="===============8774445385632602111=="
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MGUuqp4v"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-481188b7760so21147145e9.0
+        for <netdev@vger.kernel.org>; Sun, 15 Feb 2026 13:29:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771190958; x=1771795758; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mWyuroIb5nKyvTV5TUC4bt9dw2HBcrZYzowX9Pd+2cg=;
+        b=MGUuqp4vL9PksM3ghlxoGbDa1R8WKusiky56oEWNv72184zLM1/uLg2T3UHVFiXHK/
+         +VTH3wtgtCF1m00R2zGwVG8f6EsGdNkpnaq1bgtuD2EKYsk+a7waBT+x0kT1A2YWQmT1
+         KxR3MydEuNc6QB0l4NyUCiMJbqPkLPFIr2XTeOIoDPsgly+suPxwnaqtMSkpAftXT9AF
+         qk+J/avKtbH+BSTH1orn0CWajoeeJD5cNSN9iE1L9kV6Y0ZZXAWt4zA777aIARh2kuRL
+         XXdMnjKVGKk7awaAfC9GAvVcycObVJaY6hBeXJ6td+FAxZl8C1S5gUbEVwilVfOUAPd0
+         ifDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771190958; x=1771795758;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mWyuroIb5nKyvTV5TUC4bt9dw2HBcrZYzowX9Pd+2cg=;
+        b=UUq8Z2/fqlrGaqr/zMDy+5S7GidMZQJZHcbX/mtscN9v7hHiNPXsyaXGFw81orG8N5
+         qpmgDkmoXq4KCZ10uk4aOQIhCs1ejxqbNWn9qfnLXVP92gx4LD7FXFcIt0eakIKdhUmw
+         bbaTzSiU44/NsZV0ktHkN2jF4YMuvH9XhmuRi38W3cSKY4lBwckZxzVR4wF2butH2Utu
+         ppjJf7uE4Xk1aV8b6vxUDZqcFVbM2OpxVprM9bBKdr82ltmgc8X6B/6nzOGYadSsnRsB
+         CYk2oR1f99pMrTVPjxClJLeFXfnt9f9gurT9ghanhCJUEu0xt64phcnHiHlJEgNlB6BH
+         JtlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVF1l0wpPbWcbyo3CSNC13EPEwQ5ScWAUppZ4TT8sTJs2kV5n7U9JH5V80Z8M2uzfK8ovmngq0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwE5lDS3VPhOJUBAp0WZp/FhMwFeLX6wME/UwyofHvDqF9mjf4R
+	7fGGOBJY4d4+eWA2xAecBae7OJw6OMDSTa6FgBlxC5Z7dvW8bE7hMW9MHxltlg==
+X-Gm-Gg: AZuq6aJEbRpb46Ai9r/Z3OE112J+WXXrTDN96jLgLjIT2x6K5rIO3chfHV39pmFUsI3
+	3xKOClOwfjGgqjpl1bMlNaNZ9GM1fsJR/PwZlIiqGntmVXJgUhaXriu6nlEpBSsSt70yhnUf50M
+	i/a9eTE9gffBU3U+8FwSx3pEx75dCQuN8D5Va/sIeCNl5Wf6Ii3k08AsX/wh8UYIGzHvkwQWRAj
+	ha2krG3tyeAnOww4NIvLCv7K9B/RSR6pHJseHlI3RZZ2y/zoNy/WpUux+9mo7sUAqSwpI48knY8
+	zDusk9vIYzms8/s+srzmiOaLxOVEMzj3hqgNRqpFy5V7UFmXBWjcIS2F/JAVuTtl5HHZQgw5Jeb
+	ncRQFmdjTlVUuzB8YdRW92Rmr9HNe6xbrWrZz4uDBKe77Esk53xnB+p8YyMhhtYbIyB3H7qeh+8
+	I79lxLOlz2GziXy0sELry6BECSNuzVFQcNoqtigGYkRgmhayr2hsYysFXHwQ/hYrOLKC0KLHkyh
+	oULYRAlFuthax8tFtLxGtX65+ifvY8m5erPwQgF
+X-Received: by 2002:a05:600c:a43:b0:477:89d5:fdb2 with SMTP id 5b1f17b1804b1-48373a0808amr131695255e9.14.1771190957421;
+        Sun, 15 Feb 2026 13:29:17 -0800 (PST)
+Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48371a409a5sm66790415e9.26.2026.02.15.13.29.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Feb 2026 13:29:16 -0800 (PST)
+From: Pavel Begunkov <asml.silence@gmail.com>
+To: io-uring@vger.kernel.org
+Cc: asml.silence@gmail.com,
+	axboe@kernel.dk,
+	netdev@vger.kernel.org
+Subject: [PATCH 1/1] io_uring/zcrx: check unsupported flags on import
+Date: Sun, 15 Feb 2026 21:29:12 +0000
+Message-ID: <0e2e7c6211f2b40fb830f69f1084f0a3948bf2ee.1771190842.git.asml.silence@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <4fa31330c83ad1ab8e4498d2c92dbd4e7660d90bf162395c19bc7bfa7e38b70c@mail.kernel.org>
-In-Reply-To: <20260215204353.3645744-3-kuniyu@google.com>
-References: <20260215204353.3645744-3-kuniyu@google.com>
-Subject: Re: [PATCH v1 bpf/net 2/6] sockmap: Annotate sk->sk_write_space() for UDP.
-From: bot+bpf-ci@kernel.org
-To: kuniyu@google.com,john.fastabend@gmail.com,jakub@cloudflare.com
-Cc: willemdebruijn.kernel@gmail.com,cong.wang@bytedance.com,kuniyu@google.com,kuni1840@gmail.com,bpf@vger.kernel.org,netdev@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Sun, 15 Feb 2026 21:21:38 +0000 (UTC)
+Content-Transfer-Encoding: 8bit
 
---===============8774445385632602111==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
+The imoorted zcrx registration path checks for ZCRX_REG_IMPORT, as it
+should, but doesn't reject any unsupported flags. Fix that.
 
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -2690,7 +2690,7 @@ void sock_wfree(struct sk_buff *skb)
->  		 * after sk_write_space() call
->  		 */
->  		WARN_ON(refcount_sub_and_test(len - 1, &sk->sk_wmem_alloc));
-> -		sk->sk_write_space(sk);
-> +		READ_ONCE(sk->sk_write_space)(sk);
->  		len = 1;
->  	}
-
-This annotates the invocation of sk->sk_write_space, but earlier
-in the same function there is another plain read used for the
-fast-path comparison:
-
-net/core/sock.c:sock_wfree() {
-    ...
-    if (sock_flag(sk, SOCK_RCU_FREE) &&
-        sk->sk_write_space == sock_def_write_space) {
-    ...
-}
-
-Should this comparison also use READ_ONCE()?  It reads the same
-field that this commit identifies as locklessly accessed, and a
-plain read here would still be flagged by KCSAN when racing with
-the WRITE_ONCE() added to sk_psock_start_verdict().
-
-Additionally, udp_bpf_update_proto() restores sk->sk_write_space
-on the teardown path without WRITE_ONCE():
-
-net/ipv4/udp_bpf.c:udp_bpf_update_proto() {
-    if (restore) {
-        sk->sk_write_space = psock->saved_write_space;
-        ...
-    }
-}
-
-This write can race with sock_wfree() reading sk->sk_write_space
-for a UDP socket, since sock_wfree() does not hold
-sk->sk_callback_lock.  Should this also use WRITE_ONCE() to
-pair with the READ_ONCE() added here?
-
-
+Cc: stable@vger.kernel.org
+Fixes: 00d91481279fb ("io_uring/zcrx: share an ifq between rings")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
 ---
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+ io_uring/zcrx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/22042899757
+diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
+index 29ca1d897be9..13646d09885c 100644
+--- a/io_uring/zcrx.c
++++ b/io_uring/zcrx.c
+@@ -702,6 +702,8 @@ static int import_zcrx(struct io_ring_ctx *ctx,
+ 		return -EINVAL;
+ 	if (reg->if_rxq || reg->rq_entries || reg->area_ptr || reg->region_ptr)
+ 		return -EINVAL;
++	if (reg->flags & ~ZCRX_REG_IMPORT)
++		return -EINVAL;
+ 
+ 	fd = reg->if_idx;
+ 	CLASS(fd, f)(fd);
+-- 
+2.52.0
 
-AI-authorship-score: low
-AI-authorship-explanation: The commit is a small, focused data race annotation fix consistent with the author's established kernel networking contributions and standard kernel style.
-issues-found: 2
-issue-severity-score: low
-issue-severity-explanation: Incomplete data race annotations leave additional plain accesses to sk->sk_write_space unannotated, which can still trigger KCSAN warnings but are unlikely to cause user-visible failures.
-
---===============8774445385632602111==--
