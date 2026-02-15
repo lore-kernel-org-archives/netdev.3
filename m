@@ -1,113 +1,143 @@
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B8F02F3C3E
-	for <netdev@vger.kernel.org>; Sun, 15 Feb 2026 17:41:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 527B01FD4
+	for <netdev@vger.kernel.org>; Sun, 15 Feb 2026 18:46:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771177291; cv=none; b=M0FMYjJT6Tgw6orQ4uEpjVmHbm8txxG5hiKA2IXDYcn+kqihCFYZN1pkHd/talVOFw9DNpEJFlabFNN09hWjK4AgLn7xJtCnFOEURVEuBOW/nEV/cpiaACQCp33uinV1FdAkkMNCpAKRP6tADyng8sTBI+jCTBc5iITE6HIv1O4=
+	t=1771181179; cv=none; b=PE+wPIgXgZ0Z2FOXV75vCySiBgn9CzJZtuKHfBdqw4br0DhYfbYFHjPBVv/9KmI+gz7MCcHiekd0wn20QxiGWQkQ8m/qe8MF0/bWh1R0pIWjyQQKmTn2EMhCpylOhugFsYFqD5BY5rhEwvWVCVzwN3KaCWov/VLF5hdxCw+wtkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771177291; c=relaxed/simple;
-	bh=+7NJvjwyJ38/qxtTTNOVd3m0prOBmV/S5UkpadTa3fk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=rnmXySZQrrhKvUEUOriOfb9MdPbUL8rp+fw3Skgkyg70K1w2ClHOXznaeDRnU//L9b+8QIf1DuHQ8WXVU3dZunvL1dTLNLmmqId53fHUsm3VAvMg9VlyjiRHpvvVtzUgwguGxhq/4TGMbFXNoNhRNgJr+w31tQaIaG5eHx+Exj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=eLI0f5OG; arc=none smtp.client-ip=185.67.36.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
+	s=arc-20240116; t=1771181179; c=relaxed/simple;
+	bh=SgJldzROvTJKX86D3Tu11W43ZgMqoXPcT8P+T7uzFLw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HHpckzK3FilYaZhH0jbL6b3goeTpVTYvdZ0eCdAqPcFSWRfayrdaxJIZDJCI6AA2MnY0Wz6jkp1zqrfbmnfZx85gxLorLqEe3SnFhrh+3dVUEymBIpcAgRMTgfDMcW6sSqMDPxKGsGAlaASwHWhue91wjrG7FA48uAuw9C0BHWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=aXE4u9k2; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=W3o8rcob; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="eLI0f5OG"
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 81092240027
-	for <netdev@vger.kernel.org>; Sun, 15 Feb 2026 18:41:21 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
-	t=1771177281; bh=ItME07V8SNH8MmxDWZ8PONmIn64cMiqCEnVOlsVSa8k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
-	 From;
-	b=eLI0f5OGT3fTbQhRZ7Cb4w2p5irLOJZWo39zGC7dFLxef/AxorMkOZxGtjNzkNIJU
-	 ooSd+QR79MdOpYq01NA+NgVGioetOUhYI8y3aZnwZilWfk7bA5F76zaOVbg5D6gLYv
-	 OD4wpddJWK0WsQ5X0vh0uOCiEPRlivrjuA+goenXTB7AgwlOXFGAnsh0ACANmor1Dm
-	 VedOx1aSiwNm2FnpKzn9HBlJZybMvnBiRHcM1wYBtb5kHVPUDWpnmpyMcCCemd19gw
-	 84EoJrP3bxtIi6mtaYby5b9q9OW8u6je7VhzS1Auap3eVKT4/zDrLwAI/Q4bIMJebd
-	 V12uIz69FSKjg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4fDY9W0dvGz6tsb;
-	Sun, 15 Feb 2026 18:41:19 +0100 (CET)
-From: Charalampos Mitrodimas <charmitro@posteo.net>
-To: Tabrez Ahmed <tabreztalks@gmail.com>
-Cc: allison.henderson@oracle.com,  davem@davemloft.net,
-  edumazet@google.com,  kuba@kernel.org,  pabeni@redhat.com,
-  horms@kernel.org,  linux-rdma@vger.kernel.org,  netdev@vger.kernel.org,
-  linux-kernel@vger.kernel.org,
-  syzbot+aae646f09192f72a68dc@syzkaller.appspotmail.com
-Subject: Re: [PATCH net] rds: tcp: fix uninit-value in __inet_bind
-In-Reply-To: <20260215070951.213341-1-tabreztalks@gmail.com>
-References: <20260215070951.213341-1-tabreztalks@gmail.com>
-Date: Sun, 15 Feb 2026 17:41:20 +0000
-Message-ID: <877bsdx5tt.fsf@posteo.net>
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="aXE4u9k2";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="W3o8rcob"
+Date: Sun, 15 Feb 2026 19:46:08 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1771181170;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cxVjPQ89IX7QZv/haCBpH54723VQ0Wx6iNbqBas8AK8=;
+	b=aXE4u9k2H9rZhFM1+3uX+vYjfWBHuTZ2nPJmYlX3KEZATCk9vOZ0Bv3W+XIPzR42qddFUV
+	ayD690CBWlqtaNRCINNTfT1cKNUs2DIhFVVEIuojUmGE6rUk9SCaD73DcCC5YXzBS3U+TT
+	dBb43cNI7a/4pbYSNMya+OiCYA/U6gEI56W0Zvj0hWrysBO1F+xAmm1WEqFUpBAPXNOvip
+	13JCWV81SPpXkWuV6Yaf8NsP/Wv5FeJKBKKczGMdT0wS4NbXZYiRzkHfwDkpC04tjxsNHo
+	k1uHoPwydZS0q91sK6pUpDWIyn+X/WvhQuquRz03Y4CpUU7M7LAnGY3I9NCBfg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1771181170;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cxVjPQ89IX7QZv/haCBpH54723VQ0Wx6iNbqBas8AK8=;
+	b=W3o8rcoblkPW9GSaWYB/XETfOENvLuEIS8T6bWKmBxNgBdWjkFk0OU2srsC6KApotDu1+F
+	HmRXnfA8JwgT2yDw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	Willem de Bruijn <willemb@google.com>
+Subject: Re: [PATCH net] net: Drop the lock in skb_may_tx_timestamp()
+Message-ID: <20260215184608.8dk4hemG@linutronix.de>
+References: <20260214232456.A37oV4KQ@linutronix.de>
+ <willemdebruijn.kernel.1682a93525c87@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <willemdebruijn.kernel.1682a93525c87@gmail.com>
 
-Tabrez Ahmed <tabreztalks@gmail.com> writes:
+On 2026-02-14 23:05:27 [-0500], Willem de Bruijn wrote:
+> > --- a/net/core/skbuff.c
+> > +++ b/net/core/skbuff.c
+> > @@ -5555,16 +5555,25 @@ static void __skb_complete_tx_timestamp(struct sk_buff *skb,
+> >  
+> >  static bool skb_may_tx_timestamp(struct sock *sk, bool tsonly)
+> >  {
+> > -	bool ret;
+> > +	struct socket *sock;
+> > +	struct file *file;
+> >  
+> >  	if (likely(tsonly || READ_ONCE(sock_net(sk)->core.sysctl_tstamp_allow_data)))
+> >  		return true;
+> >  
+> > -	read_lock_bh(&sk->sk_callback_lock);
+> > -	ret = sk->sk_socket && sk->sk_socket->file &&
+> > -	      file_ns_capable(sk->sk_socket->file, &init_user_ns, CAP_NET_RAW);
+> > -	read_unlock_bh(&sk->sk_callback_lock);
+> > -	return ret;
+> > +	/* The sk pointer remains valid as long as the skb is. The sk_socket and
+> > +	 * file pointer may become NULL if the socket is closed. Both structures
+> > +	 * (including file->cred) are RCU freed which means they can be accessed
+> > +	 * within a RCU read section.
+> 
+> The fields are not __rcu annotated. Is this common knowledge or is
+> there clear documentation of this behavior? Not disputing it, just not
+> familiar with the rules around these fields.
 
-> KMSAN reported an uninit-value access in __inet_bind() when binding an RDS TCP socket.
-> The uninitialized memory originates from rds_tcp_conn_alloc(), which uses kmem_cache_alloc() to allocate the rds_tcp_connection structure.
->
-> The structure is not zero-initialized, leaving random data in its fields.
-> When the networking stack later tries to bind the socket using these dirty values, KMSAN flags the uninitialized access.
+The pointer is not RCU annotated because normally, within a syscall, the
+file descriptor does not vanish and so the pointer remains valid. The
+interrupt callback is an exception because we don't hold a reference on
+the fd. But since the underlying data structures have a RCU lifetime we
+could use it.
 
-Most fields in rds_tcp_connection are explicitly initialized after
-allocation right? The only field actually read before being written is
-t_client_port_group. Could the description be more specific about which
-field is problematic?
+sock_alloc() allocates a struct socket_alloc which contains the struct
+socket and struct inode (sock_alloc_inode()). This the sk_socket in
+struct sock. Once you close the socket via the close syscall and the
+last reference is gone then you end up in __fput(). The invoked
+->release() callback is sock_close(). Here socket::file gets NULLed and
+proto::release should sock_orphan() the sock where sock::sk_socket gets
+NULLed (I don't see where else and packet_release() does so). The
+"struct sock" remains around because the skb has a reference on.
+Otherwise it would go, too.
 
->
-> Fix this by using kmem_cache_zalloc() instead of kmem_cache_alloc() to ensure the structure is zeroed out upon allocation.
->
-> Reported-by: syzbot+aae646f09192f72a68dc@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=aae646f09192f72a68dc
-> Tested-by: syzbot+aae646f09192f72a68dc@syzkaller.appspotmail.com
-> Fixes: 70041088e3b9 ("RDS: Add TCP transport to RDS")
+Once that is done __fput() does dput() -> __dentry_kill() -> iput() ->
+destroy_inode() which does RCU free the inode.
+That means if we observe the pointer non-NULL we can use it under the
+RCU rules because the inode is released via RCU. 
 
-Not sure about this, the field trigger this bug, t_client_port_group,
-did not exist in 70041088e3b9. It was introduced in
+->file. At the end of __fput() there is file_free() which releases the
+pointer. file goes to filp_cachep which is SLAB_TYPESAFE_BY_RCU. There
+is a put_cred for file::f_cred before that and it does call_rcu() at the
+end, too.
 
-  a20a6992558f ("net/rds: Encode cp_index in TCP source port")
+This is me reading the code on FRI/ SAT and double checking it with
+ptp4l. I might have missed something but so far, it makes sense.
 
-which added both the field and the code in rds_tcp_conn_path_connect()
-that reads it uninitialized:
+> It does seem that updates to sk_socket, in sock_orphan and
+> sock_graft, are protected by sk_callback_lock.
+> > +	 */
+> > +	lockdep_assert_in_rcu_reader();
+> 
+> This function can be called from process context outside an RCU read
+> side section, I think.
+> 
+> Such as a packet socket sending and hitting the __skb_tstamp_tx
+> SCM_TSTAMP_SCHED at the top of __dev_queue_xmit.
 
-     if (++tc->t_client_port_group >= port_groups)
+If that is the case, then we could create a RCU read section here.
 
-Should the Fixes that reference that instead? If I'm correct ofc.
+> > +	sock = READ_ONCE(sk->sk_socket);
+> > +	if (!sock)
+> > +		return false;
+> > +	file = READ_ONCE(sock->file);
+> > +	if (!file)
+> > +		return false;
+> > +	return file_ns_capable(file, &init_user_ns, CAP_NET_RAW);
+> >  }
+> >  
+> >  void skb_complete_tx_timestamp(struct sk_buff *skb,
 
-Also, nit, commit message body should not exceed 75 characters.
-
->
-> Signed-off-by: Tabrez Ahmed <tabreztalks@gmail.com>
-> ---
-> This is my first patch. Any feedback is appreciated!
-
-Best of luck.
-
->
->  net/rds/tcp.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/net/rds/tcp.c b/net/rds/tcp.c
-> index 45484a93d75f..04f310255692 100644
-> --- a/net/rds/tcp.c
-> +++ b/net/rds/tcp.c
-> @@ -373,7 +373,7 @@ static int rds_tcp_conn_alloc(struct rds_connection *conn, gfp_t gfp)
->  	int ret = 0;
->  
->  	for (i = 0; i < RDS_MPATH_WORKERS; i++) {
-> -		tc = kmem_cache_alloc(rds_tcp_conn_slab, gfp);
-> +		tc = kmem_cache_zalloc(rds_tcp_conn_slab, gfp);
->  		if (!tc) {
->  			ret = -ENOMEM;
->  			goto fail;
+Sebastian
