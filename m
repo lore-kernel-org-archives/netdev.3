@@ -1,120 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7241367;
-	Sun, 15 Feb 2026 15:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E1AB2E40B;
+	Sun, 15 Feb 2026 17:23:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771167824; cv=none; b=iYBeXPoWlTXC5XcDYZh57Zjv9rNTBBIqHNwspGIM/vHsPkezJU/M+xJXMp+cbsePBErUbCXI1oTFHTzJlJRzIRfqif5eF9AhC36ep3C1/xPXKqUPP2qUhldbuQyA1mIV/SXM2YtR0UqvpEGCguVWKThtQR+HVa46hs9cTjqFBIk=
+	t=1771176182; cv=none; b=OVTx7Utzzdz79DWg45BqsQo7LGcJOgjbOdZDH7V7g4ULkGJoVkhLUp1apEHvWrOuP9ewneMX6iCTNCxW1gKAY5/7looRe1+rdhf6ZzefJwXokRSrSAWcbY9NREJ+Coif1wGaS7JPj3xr8EV5End734QdhZ00ctI6ZFRRFBhGoF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771167824; c=relaxed/simple;
-	bh=6/fOJZ/cgkSRg2NZ2eWT52wyEMPTPVKBORw2726c6CA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YE1hzwjbMPZ1A5BPSydhs9+9c5cwcOyVH0jl04d5djyglWNhEWWGQween1uprqBmD2BmMBABeQ/P6mf1ikcDSZGUE8WTtERBUQppPanhSF7Ezq6w8xy0VYk1y9NrhVH/HnIYnVTkeJDG4t9M3w7zLsT1/7Bw8X5MN1AJxTcDVyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NpBcA46R; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771176182; c=relaxed/simple;
+	bh=fBqyl90zbGzRXf5U0Q5Zzm+S0Aj6ap8Szx79x0zwe1E=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l5Q9IQqjJVgphCIKJherp18jLn6dXVT7SPSXlefjW+FZM8PSxetdotgMlnysEwOawMrRJeucG6KhCx2/UqDLPeLsQf3hjtVXFyvJH65pLdHoE3GXqLjNDRJndPh1Mxt5Pl9xHin+bz+9laT0KBhw7MLFJo/cd87hk2ueO0qpMno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R07Jgb6n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NpBcA46R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44325C2BC86;
-	Sun, 15 Feb 2026 15:03:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R07Jgb6n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB24C4CEF7;
+	Sun, 15 Feb 2026 17:23:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771167824;
-	bh=6/fOJZ/cgkSRg2NZ2eWT52wyEMPTPVKBORw2726c6CA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NpBcA46R4yaO3SQkkiivOLR7fuU/jO/8H4VR3VzkuOgUtJ4MJ3AcwfG6Dukr6M+5M
-	 aGtrQaGZn/Dlby4FmeGX2O7fH0g5oFcX9TPK4Nhfh2BbYIhJ9MjTNbiMexJBoEyD1p
-	 lvl6jJfQq6R//xZnYnKnPSTdJNrggPKGZdY5HIi5fgYYAvz4VbkaPK5kgMK8C4s2H3
-	 LG/nuWU/xUPXd5glnAFO/yaJstFKnfcksCK0OHwuJ5X6GnThXcLL7BGvucgEeoxlrD
-	 HUksz3cBXENOlFFHzbKAlJuiuaE/J0+rTdgzoc+lhi3klMh/AwvX3i4fYsGbEye5sC
-	 gFybXtHDwSY+A==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Kommula Shiva Shankar <kshankar@marvell.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Sasha Levin <sashal@kernel.org>,
-	kvm@vger.kernel.org,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.19-6.6] vhost: fix caching attributes of MMIO regions by setting them explicitly
-Date: Sun, 15 Feb 2026 10:03:24 -0500
-Message-ID: <20260215150333.2150455-7-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260215150333.2150455-1-sashal@kernel.org>
-References: <20260215150333.2150455-1-sashal@kernel.org>
+	s=k20201202; t=1771176182;
+	bh=fBqyl90zbGzRXf5U0Q5Zzm+S0Aj6ap8Szx79x0zwe1E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=R07Jgb6nIFfH3BtSd9y0ZJ9XieeILI3+eP4A5t0/jW7p5rAEZmUBEvYFna0CHHqwc
+	 zBpNJAqWPAgEUQO4WjJnmofFdXp9gNWfxIW0OCxgdDTr4Wv4rtlpCoxChkFvVfCH+4
+	 drIG/VV9dcS03xj5kU2Lyx4pq+bJlt9PWffSocqpYTn51V/XaoDwK0M6qj70K7dJ16
+	 snKEiitTWoMcf8LoxKsgwCZZfP60E7j6961OS+7eVwf4ConxguCWlAMePNif72iUA9
+	 vD6wdQBCo5x/7I/zYKf4a8P+AF73+b8lkikAHG6o+Kz8XcKDBlMhuDUcmnnqA2M+FF
+	 EcKsODh41uEyg==
+Date: Sun, 15 Feb 2026 09:23:00 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Gal Pressman <gal@nvidia.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
+ <andrew+netdev@lunn.ch>, <netdev@vger.kernel.org>, Simon Horman
+ <horms@kernel.org>, Shuah Khan <shuah@kernel.org>, David Wei
+ <dw@davidwei.uk>, <linux-kselftest@vger.kernel.org>, Nimrod Oren
+ <noren@nvidia.com>
+Subject: Re: [PATCH net] selftests: net: fix timeout passed as positional
+ argument to communicate()
+Message-ID: <20260215092300.48ece07b@kernel.org>
+In-Reply-To: <20260215125149.2106612-1-gal@nvidia.com>
+References: <20260215125149.2106612-1-gal@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.19
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Kommula Shiva Shankar <kshankar@marvell.com>
+On Sun, 15 Feb 2026 14:51:49 +0200 Gal Pressman wrote:
+> The cited commit refactored the hardcoded timeout=5 into a parameter,
+> but dropped the keyword from the communicate() call.
+> Since Popen.communicate()'s first positional argument is 'input' (not
+> 'timeout'), the timeout value is silently treated as stdin input and the
+> call never enforces a timeout.
+> 
+> Pass timeout as a keyword argument to restore the intended behavior.
 
-[ Upstream commit 5145b277309f3818e2db507f525d19ac3b910922 ]
+Makes sense, but looks like
+tools/testing/selftests/drivers/net/netpoll_basic.py
+fails now:
 
-Explicitly set non-cached caching attributes for MMIO regions.
-Default write-back mode can cause CPU to cache device memory,
-causing invalid reads and unpredictable behavior.
+https://netdev-ctrl.bots.linux.dev/logs/vmksft/net-drv/results/519460/3-netpoll-basic-py/stdout
 
-Invalid read and write issues were observed on ARM64 when mapping the
-notification area to userspace via mmap.
-
-Signed-off-by: Kommula Shiva Shankar <kshankar@marvell.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20260102065703.656255-1-kshankar@marvell.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-The mmap functionality has been there since `ddd89d0a059d8` which
-introduced doorbell mapping. This fix would apply to all stable trees
-that have this function.
-
-### Summary
-
-This is a textbook stable kernel fix:
-
-1. **Obviously correct**: MMIO must be mapped non-cacheable; this is a
-   fundamental hardware requirement. Every other MMIO mmap in the kernel
-   uses `pgprot_noncached()` or similar.
-2. **Fixes a real bug**: Invalid reads/writes on ARM64 — this causes
-   device malfunction and potential data corruption.
-3. **Small and contained**: Single line addition, no side effects.
-4. **No new features**: Just corrects existing mmap behavior to follow
-   hardware requirements.
-5. **Low risk**: `pgprot_noncached()` is the standard, well-understood
-   kernel API for this exact purpose.
-6. **High-quality review**: Three expert maintainers
-   reviewed/acked/committed.
-7. **Self-contained**: No dependencies on other commits.
-
-**YES**
-
- drivers/vhost/vdpa.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index 05a481e4c385a..b0179e8567aba 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -1527,6 +1527,7 @@ static int vhost_vdpa_mmap(struct file *file, struct vm_area_struct *vma)
- 	if (vma->vm_end - vma->vm_start != notify.size)
- 		return -ENOTSUPP;
- 
-+	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
- 	vm_flags_set(vma, VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP);
- 	vma->vm_ops = &vhost_vdpa_vm_ops;
- 	return 0;
+I think bpftrace() needs to pass the timeout to cmd().
+Probably something like the timeout param that it's passed + 5 sec?
 -- 
-2.51.0
-
+pw-bot: cr
