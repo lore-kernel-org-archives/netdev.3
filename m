@@ -1,109 +1,79 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD33A2D1F7B;
-	Mon, 16 Feb 2026 17:13:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1597138D
+	for <netdev@vger.kernel.org>; Mon, 16 Feb 2026 17:21:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771262000; cv=none; b=Fq3xSS0I9LL/GsW5Lsv/bckSVVnz2zbgikFgnKnGl/QpUm515yViKutVFyXkJSGZ0UKNrujUOhtIAFdbUV73Yse+8ICM2SMq1MIkOZuL2IEDgIHfBWGnKPfevIHBlIFAMDH+iVE4dswL/bR+C8wLCb2X1PKe0t3cHdobUnCQHP4=
+	t=1771262482; cv=none; b=PgLLtkGn1hFrx77Q5sRHRAQK/8araISLBwnf19bzEu53nDyB7+4w4s/UzZAe7agX+GRIg4fRwrXed/StOss8stZo8Tk5qldLfYXq9rj1+oJev+Db9R5AZ5AjfzKKT/awxb7Ocy8GIj1aSYDMUk+NsneOdoBS8r/cSmhKgQw4v9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771262000; c=relaxed/simple;
-	bh=wwNjpAxLnbWXj2x/gojmm+AaV5qKGG7+RSBh/gjAdOA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=vEdPYrmRR89Fwubfpy6B1LgbcRgJl28LNp+e6RQo4z71wUbJ1KDrW+q2Jxe9JE+esd01m4PJmQorCcen/7DiQADZQMTBdiWNi6YzDv2J2MuFUK3GBCj4tVenXzJOwltpkzUnMepi+gCHwY2emJs/NmFfjH49YgWJs6E+tcw+4eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QHQ3DFdq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771262482; c=relaxed/simple;
+	bh=bT2fiqRkjI9axK4fJtClgUV/TJc6YLz7YhqPHByH0kk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=a0TzS4MPXTmsnMlrmSFQd/lOsKblhMVmWULmxYHwtK4bkNBXJgjwKd44DwiL/2wMJum7YH0yRR4iHDbyuwBNL6TygN9r4qKJZVmyknz1hgHkL8jMh7q8yb+HKkGySc7oEdN0wsVH5xVoaU+JLNxgAkkgXtvuoeR3YCbh5wgTA+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com; spf=pass smtp.mailfrom=cknow-tech.com; dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b=cjOgiwYl; arc=none smtp.client-ip=91.218.175.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cknow-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cknow-tech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QHQ3DFdq"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7E48EC116C6;
-	Mon, 16 Feb 2026 17:13:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771262000;
-	bh=wwNjpAxLnbWXj2x/gojmm+AaV5qKGG7+RSBh/gjAdOA=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=QHQ3DFdqL2DPGRDBjFNQmai8V4mCdE3oBhf1i3UDoiA5EYpbWvu/OcB37Zakonxub
-	 emKz8mKQpJoMPTImApm48tvr6hN8OPsGYzNwLSMR7A4jch6Y7u3C3eKkc7NXDE1PHp
-	 uefi+KTqZcM9cFWiPVUWXrKr3YQWZGBchDKjuwBsKLZhciRw8xpaanwJg1tGEUi0m6
-	 SPbHxvbvPoERdAQjZvY2HPgYx3NWKMu8lknc9S7Mz5mvOHt270Xzi7Avi1yA42ouWY
-	 NnESqfa4o0+0Yyl8jrfsTNZE+L+bR6xERivymPmHSLIlykUgIk59U5P5oa0g6ZsEis
-	 JMjvTsi0tYFEQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6FA38E81A5A;
-	Mon, 16 Feb 2026 17:13:20 +0000 (UTC)
-From: =?utf-8?q?Kry=C5=A1tof_=C4=8Cern=C3=BD_via_B4_Relay?= <devnull+cleverline1mc.gmail.com@kernel.org>
-Date: Mon, 16 Feb 2026 18:11:09 +0100
-Subject: [PATCH] net: phy: realtek: Add support for PHY LEDs on RTL8211F-VD
+	dkim=pass (2048-bit key) header.d=cknow-tech.com header.i=@cknow-tech.com header.b="cjOgiwYl"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20260216-rtl8211fvd-add-leds-v1-1-a2b8617bbf80@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAKxPk2kC/x3MzQpAUBBA4VfRrE2ZKePnVWQhM5gSuldS8u5ul
- t/inAeiBbcIbfZAsMuj71sC5RmMy7DNhq7JwAVLwSQYzrVmoulSHFRxNY1YsZUqItYwQSqPYJP
- f/7Xr3/cDklKhhGUAAAA=
-X-Change-ID: 20260216-rtl8211fvd-add-leds-72e5d666e921
-To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
- Russell King <linux@armlinux.org.uk>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: Miroslav Ondra <ondra@faster.cz>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Kry=C5=A1tof_=C4=8Cern=C3=BD?= <cleverline1mc@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771261999; l=1456;
- i=cleverline1mc@gmail.com; s=20241112; h=from:subject:message-id;
- bh=UcDBB6aqn6VGJO+wrWmfuuDhMbNI+KYuwnnokfwejMY=;
- b=q1iiWNCuapGkYpnUzMCoonZHxYfGwV7ZC8l5ct9AzwknkjTQeTtkfca2avgxpzrlskW2I1AJX
- nCj+z1JNK7pDiX4V65P3N8Mj6sOv/RxpPodcdDwYM/UoPRdy5n6coGV
-X-Developer-Key: i=cleverline1mc@gmail.com; a=ed25519;
- pk=EJoEbw03UiRORQuCiEyNA8gH1Q6fIpEWnn/MyaWOWX0=
-X-Endpoint-Received: by B4 Relay for cleverline1mc@gmail.com/20241112 with
- auth_id=275
-X-Original-From: =?utf-8?q?Kry=C5=A1tof_=C4=8Cern=C3=BD?= <cleverline1mc@gmail.com>
-Reply-To: cleverline1mc@gmail.com
+Mime-Version: 1.0
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cknow-tech.com;
+	s=key1; t=1771262476;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bT2fiqRkjI9axK4fJtClgUV/TJc6YLz7YhqPHByH0kk=;
+	b=cjOgiwYl2zixY+bjimSYCRXIK8VH45q1zpZ1bCPWBn6AL3obFgYyxLF/iACRf63TTAktFJ
+	AEPwW/vgIDKy/zZwcOJ8dAr9pFBaV7VzA5IMFMD02K3WfN2dAHj8VDBdyzAVYBwdwFv896
+	xbeNmH0OqheYp6HHoLu25WAtADiCWSZOj/ajeIZyJt4H85EYm1UzPuGfk6pe+Bl+TcSk/t
+	h1JmbrHDLXfjIeoKWwFmhoJmcf/yF7TtQCAdk4+u5+joiz80eZ1Qnm2FmwfVcVHRpPALy6
+	R06ZFyGXSo09DlUZpFifiVeEfgTcum63vNhsQldwCRxfARIGMEDAncFyEq5m8Q==
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 16 Feb 2026 18:21:13 +0100
+Message-Id: <DGGK56T574F0.TJSLQL9P1SM@cknow-tech.com>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>, "Andrew Lunn"
+ <andrew@lunn.ch>
+Cc: "Yao Zi" <me@ziyao.cc>, "Heiko Stuebner" <heiko@sntech.de>, "Heiner
+ Kallweit" <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, "Rob Herring" <robh@kernel.org>,
+ "Krzysztof Kozlowski" <krzk+dt@kernel.org>, "Conor Dooley"
+ <conor+dt@kernel.org>, <netdev@vger.kernel.org>,
+ <linux-rockchip@lists.infradead.org>,
+ <linux-arm-kernel@lists.infradead.org>, <devicetree@vger.kernel.org>
+Subject: Re: Problematic understanding of phy-mode in Rockchip DWMAC driver
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Diederik de Haas" <diederik@cknow-tech.com>
+References: <aY9s5PXP4zZ7R6fa@pie> <aY9xsslT56D9LGLe@shell.armlinux.org.uk>
+ <f1e047e1-3f1c-4562-ab43-af2fe358fe04@lunn.ch>
+ <aZDGsJNLZIty0242@shell.armlinux.org.uk>
+ <a4aebacc-c273-4e42-97ff-0cdd88d771dd@lunn.ch>
+ <aZMxKdkl2Qa7e1WU@shell.armlinux.org.uk>
+In-Reply-To: <aZMxKdkl2Qa7e1WU@shell.armlinux.org.uk>
+X-Migadu-Flow: FLOW_OUT
 
-From: Kryštof Černý <cleverline1mc@gmail.com>
+On Mon Feb 16, 2026 at 4:00 PM CET, Russell King (Oracle) wrote:
+> On Mon, Feb 16, 2026 at 02:57:48AM +0100, Andrew Lunn wrote:
+>> On Sat, Feb 14, 2026 at 07:02:08PM +0000, Russell King (Oracle) wrote:
+>> > On Sat, Feb 14, 2026 at 05:50:15PM +0100, Andrew Lunn wrote:
+>> > > Rockchip have recently started adding support for a new version, and
+>> > > appear to of listened to what we have been saying. So it could be th=
+e
+>> > > next generation of chips get this correct.
+>> >=20
+>> > Have you seen any proposed code from Rockchip for their new scheme?
+>>=20
+>> There was a patch, including a rather odd formulae to convert register
+>> value to delay. I gave some feedback, but it has been silence
+>> afterwards.
+>
+> Searching lore's netdev archive doesn't seem to bring anything up.
 
-Realtek RTL8211F-VD has the same LED configuration
-and registers as RTL8211F.
-Use the existing LED related functions for this chip,
-so it is possible to also use the netdev trigger.
-
-Tested on ROCK Pi E.
-
-Signed-off-by: Kryštof Černý <cleverline1mc@gmail.com>
----
-I have been trying to match LED behavior of RTL8211F-VD with RTL8211E
-and found out the RTL8211F is supported already,
-which by the look in datasheet matched the RTL8211F-VD.
-So I have reused the functions and tested on ROCK Pi E.
----
- drivers/net/phy/realtek/realtek_main.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/phy/realtek/realtek_main.c b/drivers/net/phy/realtek/realtek_main.c
-index 75565fbdbf6d..530b4e26d16e 100644
---- a/drivers/net/phy/realtek/realtek_main.c
-+++ b/drivers/net/phy/realtek/realtek_main.c
-@@ -2243,6 +2243,9 @@ static struct phy_driver realtek_drvs[] = {
- 		.read_page	= rtl821x_read_page,
- 		.write_page	= rtl821x_write_page,
- 		.flags		= PHY_ALWAYS_CALL_SUSPEND,
-+		.led_hw_is_supported = rtl8211x_led_hw_is_supported,
-+		.led_hw_control_get = rtl8211f_led_hw_control_get,
-+		.led_hw_control_set = rtl8211f_led_hw_control_set,
- 	}, {
- 		.name		= "Generic FE-GE Realtek PHY",
- 		.match_phy_device = rtlgen_match_phy_device,
-
----
-base-commit: 350adaf7fde9fdbd9aeed6d442a9ae90c6a3ab97
-change-id: 20260216-rtl8211fvd-add-leds-72e5d666e921
-
-Best regards,
--- 
-Kryštof Černý <cleverline1mc@gmail.com>
-
-
+https://patch.msgid.link/b25d6eb2-e105-4060-86fa-c1a06396ca92@lunn.ch/
