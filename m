@@ -1,116 +1,195 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9BC30EF71
-	for <netdev@vger.kernel.org>; Mon, 16 Feb 2026 15:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C4131D72D
+	for <netdev@vger.kernel.org>; Mon, 16 Feb 2026 15:17:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771254370; cv=none; b=IMk9PPTwLzlOpSa/21ojz6c2MXFZ7IjrtZiUDOtX7KbzSwFHw2Ef6Uf9/6F3UdKb0YanWgEU+uNRJymQWWYwDVc5NiAkVV08EK2KgCCPkihp0n0qn9bVS7/nstA3EmsrHP1IkzpP/jjB6jPkX/9q0tjJmWQXoF4cVhcwgttbwEg=
+	t=1771255039; cv=none; b=R6zDisFOZPBaOkJiyaq1XGJLUkta2rh0oevp0nUyzgJfo3ztF8uKlCC3DvK707sBR/wOcum+AcDvqJK2GwEgoTtxvAgJWuOP25r/ZGarvuLcwIS5tr0kjTv80ISnnJS6P87o1tGCVHTufGmFf+Pw9spnYuesFhZjnCBf5PcZWgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771254370; c=relaxed/simple;
-	bh=vR+QAy7ow7IUpEgJolTV+0NwGmXjYUXcNxGeHlD4+bY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=uajedk34CDY7PijYVo9kWyzpr72vs6dnJo504H8lexyY55vejB/PkA20YtKj6G7nnLeYgcwKw4JYSvRMiDGKxfyD9kXdqcZaoJMQYK8LbJY8wpu6Lp+4GJv7D0ijL8a0i/8EEC50H4G6HfvoGMKJ1oWcVx59SxhbyV9CuWRFSg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PeYC6NMn; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1771255039; c=relaxed/simple;
+	bh=HVqIbhWqa2dWbzKPrO+eXBu0tIwhzEG5l+aITsm6uoI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KM8QySlFo5T6IuS4GBMtBzfudWHfbZBdh1l5sSO8ezg9KsHfJvAodC/5EkTGPCTkseNRtFL7z5rjTDyFzN943JO4FEkRM0shpqW/vcha09XaKSp5FdTCCmboCUnKvFG3a0esEqaWrZ41kgGLGrEKr077shZ5tqKikiDGCnUKIc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lYzaxfOI; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PeYC6NMn"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c6e1dc5c5edso1415214a12.1
-        for <netdev@vger.kernel.org>; Mon, 16 Feb 2026 07:06:09 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lYzaxfOI"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2a7a9b8ed69so32681445ad.2
+        for <netdev@vger.kernel.org>; Mon, 16 Feb 2026 07:17:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771254369; x=1771859169; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=A6uX9Uhp5KRzO30Ht+YfFjNfPHQX7eMbhvwH7Wme3Gw=;
-        b=PeYC6NMng7hwREe+mXzuhL299CBpZLX72afhw2eZrPHMplOi1C1L7uQUKisFeCSqgE
-         /fmwCVS8H7to3Au2o7vra4IXxorsm1qIMi8aCIY61AkNR7OK69SIm2JYfkX1hs44oTQp
-         i+Ue8trpUPUnjfWvRBQS0KgwJaJuxKiZ2b7SG72MNy1lq7u5lDB1wGMJ2U7/JMVuG0eR
-         GiM2yYISNV9vSTwFkx8x4w29w47D8wmLmQCokdEjnJKZiq13EOD71FenO86T2btlxdGV
-         yFOJJSd1Saq3nad73Vf1LuYOJZE6drkA7SEz0S6cBDi/PUJaaG72R8XaLjavfLtCOGSh
-         s8BQ==
+        d=gmail.com; s=20230601; t=1771255037; x=1771859837; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=dCE3gF12Qsuc0Q0S4BkQq+M+t5dj53pHezYMH10XfpU=;
+        b=lYzaxfOI4Zr8wlkdwGOezn/+ni9zjEQwEoNrtDNJ8r8C9GQw5cNh4LBHKDc6jDfQqj
+         BrITYa/dHg0zitjKuBiTjIy9T22QpLLc+GOHJAlobd67u7AIGFTXA9/B+PIL2/RUkxB6
+         IXQE1TkGxinFNpDBotgx4PcpsgTbTrXpPkGIJrgn4NWt8XqpLZ6/LvNQ16nQoBEjIwF5
+         Zl914immoAN7rAnMfbP8d5e3CK2Vsp6IgEJTz3V4LqMg4qW96w93vTMf5jCPYNv3qY83
+         bnjpOSiUphLRoM+XdnM0zXzaOBjKBPO6teFy7Ft6Co782ThrPInSfQ9iCLX4o5TqJtdj
+         P51Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771254369; x=1771859169;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A6uX9Uhp5KRzO30Ht+YfFjNfPHQX7eMbhvwH7Wme3Gw=;
-        b=ZbiovnMeHka/J/3xf2gj1w6Uqk7g/3LSFwNbgG4aDoD3kmi1CD+IDLULSIunRay2K3
-         LrGBbx1SE03Jnkut9OuSGnat+HPCFrBy1WcP1ZQEtNVZf8aSprOzap3qwpq6UrRrjBz/
-         zgFg2k0RCRnZQ41a9e5sCzlnCuYDXLaDowFBJEvcxMCsP5JTO+VHmahuaTwaJG/mLvX6
-         PZIqo+inOwi32Zcm7sQOKsbg6Vh8yDNxvRa04dhIkBXWPUJvyycEXaCbXQRqfXHg01k0
-         J78LCPz/BWBDPqS51kbcJIkMSAqHVgwDm3VwSjG6favAj05JDxLEUlVpmKr6YypZjg1q
-         zjyA==
-X-Gm-Message-State: AOJu0YzChJ+lkkn8l9xqyNt9fptU2LCq4hhPJoGY/wKe5GosWjekh7a6
-	OfvKJNjgGVK+gPhwtpZHl3kTGSiZFuCG3PjSZ2GdY5SbnqTrSIcNRHcJ
-X-Gm-Gg: AZuq6aKiPHssbUxIF+UNgzP7tayDzZn2hvMNE577GAd7FWmD6fIyix/rrpOKADj8+wT
-	4of5kM73WLRSb3x7D8rETIN+hJSoNLBPgipx+6Qc+Ew35+RcjBp0IH4kHa3gUrAZJfO0sjdIY08
-	d3eB/h+O+dTtpJBB49rE6ZbLEQT4bDhwN2ODHSjEjzH9FYI7aALUP5BaWu0zWQOxqdoWhDP2WRX
-	pOTMnCZ6ptC8vCW+FY5+EwdTuHtYSbn1yUU7GjSlJXugQcRV0Zi+9c28v6XK4Mdnt8b89VFP8mf
-	zjOh/7GNvmF3+DtFDfISxVvrBMvU5E+vaF8J8kEqJ4D2uRGSbP2Rr+7TwZnUMEpm0RBvsT3+Ozq
-	VMQmDIRlcTKZXcEN7FGqknsUeizUXrOGC2MYQhhttbdidoKY55GzSuoYhhZ2yVmQVOmcs9cTO7v
-	gkA8ptnD4s1pdNU60uDEwTBO+WMLl8gUFzjsNWVOFoZCbxRKT5iPeDi2Oa78Why3QMqTwn7crY1
-	T74snhCJ0DdNAR52OY=
-X-Received: by 2002:a05:6a21:600b:b0:35e:fce6:46e7 with SMTP id adf61e73a8af0-3946c6f4be8mr10229646637.5.1771254368847;
-        Mon, 16 Feb 2026 07:06:08 -0800 (PST)
-Received: from localhost.localdomain ([49.207.200.48])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-356a86f7217sm6697952a91.5.2026.02.16.07.06.04
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Mon, 16 Feb 2026 07:06:08 -0800 (PST)
-From: Anand Kumar Shaw <anandkrshawheritage@gmail.com>
-To: bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	sdf@fomichev.me,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	Anand Kumar Shaw <anandkrshawheritage@gmail.com>
-Subject: [PATCH] bpf: cpumap: add missing XDP_ABORTED handling in xdp prog runner
-Date: Mon, 16 Feb 2026 20:36:01 +0530
-Message-Id: <20260216150601.9454-1-anandkrshawheritage@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+        d=1e100.net; s=20230601; t=1771255037; x=1771859837;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dCE3gF12Qsuc0Q0S4BkQq+M+t5dj53pHezYMH10XfpU=;
+        b=cKpoNU4LOdKneGAvylvqkAKJamIOltfizCAI4AqgYxaKJwZtkgEE8w+s0VEYz62osh
+         jBtLAUk9dsR2VTRdmltueZa9RYOSSD+b1x3m5Jp9DcIpgX7g/sxfpD++5M1wdcNRHuf7
+         LjdsEwK/mczYgqmWzClAkCgh9l83ikvCgjhhpooJRdboAUfej/Jlk8Y20+GgTWAwpkCP
+         vZkvQdbYYQWVjTTT/U14hYxuqRp2EpcZFLImrfAzhWzTBl7uQCQAcyO4VQhCEtPCgqbh
+         5AOxWl3XvX6b/vfVz9RvXVkH1tPe6I6p13EaboOm96ufcn5P8nsSr75so3YRYWumGlUY
+         BFjg==
+X-Forwarded-Encrypted: i=1; AJvYcCWZbjEyQcMjCosQN52cxLfvDjxZQjhNcQnuXvnkCEOmLAXsI6t4uiZ2ptvHDWJZJHF1178spfA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywjhiqtwj00S47+tJUQpJ9YtTCztlYfPwrmRYeyXFXYuVG/GgPh
+	c5aGzxO1nUb1WEQHL4bnDLlxZRP7z/dInf77B19Yr8nvOXR2Jgt1wg0B
+X-Gm-Gg: AZuq6aJCa83YOIpfPP0njm7clj0pO3323KuqmFs7KLn6WpvuaYKHJm/lcfMNWaf4z+b
+	IhwLLJd7yyY+yV3h+Xlf1a7GbO5jaWh4u07+ZXDlQve9UBKQk17koCsjQoLT7DBCXZJz7U//env
+	OCtGX/0WVpFzyj2JtKqNcqTQF6JW9HQfmwlO10M2+9NN9rhDHVlQxTfn8DoGEJ0V7Y4vp5K9liq
+	fz8JCuzQxdE1Cn4194r1gCj09LHV19EVTnVr0rNAyQawXp8Hf0E/v54IdQjdGZutkTl2+yjvDac
+	F+GU+IDxlLZ3MOz1FRvOGI+rpyTYKXSrXpf7+zO11fTo+C3ppF09+dzROISOvtCijYc6M047MDD
+	Y4r4JyzDGC90laDmewh3uyX1jyI7wSWL/jmH1P1AVN61u2Z+1lSBB/lIr6hBmn4f5wcqB95J5Hl
+	qjV0e/E/E3+25tQdtxVqWjtEIxSBARQtnZzDI31SUFsjjn5/G75clatMi8nxRoneErjR+uegWv3
+	nSjS6XZzVA=
+X-Received: by 2002:a17:90a:e18b:b0:354:a1b8:24a6 with SMTP id 98e67ed59e1d1-356aad7a8f0mr9075642a91.31.1771255036757;
+        Mon, 16 Feb 2026 07:17:16 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-356a6b17c47sm5781823a91.2.2026.02.16.07.17.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Feb 2026 07:17:16 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <306e79fb-f3ee-434e-a90e-547e97d2a5aa@roeck-us.net>
+Date: Mon, 16 Feb 2026 07:17:14 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: dsa: MxL862xx: don't force-enable MAXLINEAR_GPHY
+To: Daniel Golle <daniel@makrotopia.org>, Arnd Bergmann <arnd@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Arnd Bergmann <arnd@arndb.de>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
+References: <20260216105522.2382373-1-arnd@kernel.org>
+ <aZMKXavVQPelSXcG@makrotopia.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ np3900V20aS7eD9K8GTU0TGC1pyz6IVJwIE=
+In-Reply-To: <aZMKXavVQPelSXcG@makrotopia.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-cpu_map_bpf_prog_run_xdp() does not handle XDP_ABORTED, causing it
-to fall through to the default case which calls
-bpf_warn_invalid_xdp_action(). XDP_ABORTED is a valid action that
-signals an exception in the BPF program — it should fire
-trace_xdp_exception() and drop the frame without a spurious warning.
+On 2/16/26 04:15, Daniel Golle wrote:
+> On Mon, Feb 16, 2026 at 11:55:17AM +0100, Arnd Bergmann wrote:
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>
+>> The newly added dsa driver attempts to enable the corresponding PHY driver,
+>> but that one has additional dependencies that may not be available:
+>>
+>> WARNING: unmet direct dependencies detected for MAXLINEAR_GPHY
+>>    Depends on [m]: NETDEVICES [=y] && PHYLIB [=y] && (HWMON [=m] || HWMON [=m]=n [=n])
+>>    Selected by [y]:
+>>    - NET_DSA_MXL862 [=y] && NETDEVICES [=y] && NET_DSA [=y]
+>> aarch64-linux-ld: drivers/net/phy/mxl-gpy.o: in function `gpy_probe':
+>> mxl-gpy.c:(.text.gpy_probe+0x13c): undefined reference to `devm_hwmon_device_register_with_info'
+>> aarch64-linux-ld: drivers/net/phy/mxl-gpy.o: in function `gpy_hwmon_read':
+>> mxl-gpy.c:(.text.gpy_hwmon_read+0x48): undefined reference to `polynomial_calc'
+> 
+> I assume this happens in case CONFIG_MAXLINEAR_GPHY=y and
+> CONFIG_HWMON=m, right?
+> 
+> None of the PHY drivers seem to adequately prevent such situations,
+> which in my opinion would be worth correcting, ie. by preventing any
+> PHY driver using HWMON from being built-in while CONFIG_HWMON=m.
+> 
 
-The SKB path in the same file (cpu_map_bpf_prog_run_skb) and devmap's
-dev_map_bpf_prog_run() both handle XDP_ABORTED correctly. Add the
-missing case to match.
+Technically, with "select MAXLINEAR_GPHY", NET_DSA_MXL862 should depend
+on "depends on HWMON || HWMON=n". That would prevent NET_DSA_MXL862=y
+and with it MAXLINEAR_GPHY=y.
 
-Signed-off-by: Anand Kumar Shaw <anandkrshawheritage@gmail.com>
----
- kernel/bpf/cpumap.c | 3 +++
- 1 file changed, 3 insertions(+)
+Maybe it is time to implement dummy functions for hwmon API calls
+to avoid all this.
 
-diff --git a/kernel/bpf/cpumap.c b/kernel/bpf/cpumap.c
-index 04171fbc3..b1fe83eeb 100644
---- a/kernel/bpf/cpumap.c
-+++ b/kernel/bpf/cpumap.c
-@@ -223,6 +223,9 @@ static int cpu_map_bpf_prog_run_xdp(struct bpf_cpu_map_entry *rcpu,
- 		default:
- 			bpf_warn_invalid_xdp_action(NULL, rcpu->prog, act);
- 			fallthrough;
-+		case XDP_ABORTED:
-+			trace_xdp_exception(xdpf->dev_rx, rcpu->prog, act);
-+			fallthrough;
- 		case XDP_DROP:
- 			xdp_return_frame(xdpf);
- 			stats->drop++;
--- 
-2.39.5 (Apple Git-154)
+Guenter
+
+>>
+>> There is actually no compile-time dependency, as DSA correctly uses the
+>> PHY abstractions. Remove the 'select' statement to reduce the complexity.
+>>
+>> Fixes: 23794bec1cb6 ("net: dsa: add basic initial driver for MxL862xx switches")
+>> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> 
+> As there is no compile-time dependency, this change is fine.
+> 
+> Reviewed-by: Daniel Golle <daniel@makrotopia.org>
+> 
+>> ---
+>>   drivers/net/dsa/mxl862xx/Kconfig | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/drivers/net/dsa/mxl862xx/Kconfig b/drivers/net/dsa/mxl862xx/Kconfig
+>> index 4db7bab21a71..3e772298cc89 100644
+>> --- a/drivers/net/dsa/mxl862xx/Kconfig
+>> +++ b/drivers/net/dsa/mxl862xx/Kconfig
+>> @@ -2,7 +2,6 @@
+>>   config NET_DSA_MXL862
+>>   	tristate "MaxLinear MxL862xx"
+>>   	depends on NET_DSA
+>> -	select MAXLINEAR_GPHY
+>>   	select NET_DSA_TAG_MXL_862XX
+>>   	help
+>>   	  This enables support for the MaxLinear MxL862xx switch family.
+>> -- 
+>> 2.39.5
+>>
+> 
 
