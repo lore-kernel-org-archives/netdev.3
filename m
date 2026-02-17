@@ -1,35 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44D72D8DB8
-	for <netdev@vger.kernel.org>; Tue, 17 Feb 2026 10:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018463271FD
+	for <netdev@vger.kernel.org>; Tue, 17 Feb 2026 10:59:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771325413; cv=none; b=tM9U1nVcbFeNuxAAtxnv1FEAnXNUXZfJMCblb77QUhNvkQBdnvVIuIFbenIL2fxIYf8sZoouucvucaH5/HLX31XPCrXaoJ14DeXEl2LMRGpk9PNJqTZ25TEQqbHHdTTlBtHUUIT8lSmoPRF5M6KUyIr6bo/JccVAAfDsMNZxFWM=
+	t=1771325943; cv=none; b=I7WiYdS53+mwBqoGfv5GGvqSi69WULLfwgQY6l8E8k9dh271scO2RQO+F7HyFTxxO326NcGKdrA5oM/NeM/SOz3p8ik/QAloUP+yB8qkDagLIcziDaGznQVoBr6WRjnCyBZU0G++BUcB8fY5CznI2wdoR4hz+3pKAHG7u8H8WjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771325413; c=relaxed/simple;
-	bh=PC5p/CDAwIVMjtZM3I/7AqMbPdgPhW+eyEXIKLydqac=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IXzhSxnQ3+Tl2MbcudYFMj2BjoDnR6jK0XpMCO7+KtaMX4OLdNme7dL2NyOyGJP362jq32aBpySNqNCK6zsLkJ4m3jVToymPZLYN0aM7+A6Wk0LlQ55qyc+ixYpMlS/ueDoB1xdr+PbMP2qLv4UQABK4qhU42kQ4CHTeW75UVtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hQhKWL10; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771325943; c=relaxed/simple;
+	bh=dxkUEdW59WpbrdfCocb7yEpG8N+Jc3txoaD3rPLr/hA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=a19OjO+lSo8e0Sesjpk5jHhYRax1oQFiq36mQmg0/dXFyetY8hiz+QNDAgYkTmvgI1gDOWDDYdL/UIyM8hARsNBZo/JvPwinUA4oVqAJb1sA2OcU73igFkWE0VQToWj2B+wgGP8A07CGGugLyUbConX7hmnRYziFvxnBuodJAZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jV0W5xo5; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hQhKWL10"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53633C19423;
-	Tue, 17 Feb 2026 10:50:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771325413;
-	bh=PC5p/CDAwIVMjtZM3I/7AqMbPdgPhW+eyEXIKLydqac=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=hQhKWL10LJc191vpBUntQGiGavg0K7rQJEa+DcuWNVqoeiWAxS2+2SYKbeH8sszaD
-	 9Cm7TYINZJ1y2GtcL2oo+8qiBviR4aVBakmlAiOLj68MuzPujy0j7+1jWpa6sh/zoQ
-	 sV5qrsPf9i5tPLq2R97AekKhL+C1I4Fb/VzjE2ca5NwbNDYpkstJsEas5apklB7uCR
-	 lwiM3c+2rgFVYWiimFyelIyirbO2FXRZqk+a7rExDizohZzrP70TXtq4W1vXSIaXMi
-	 fyF2niRgmwcPbjIzXUCFCZiAgL+BXJc425ecjEcsvQb55O/sPSsimHSpadMp2Zw1Ml
-	 jgaKKprWqReyQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 8539A380AAD0;
-	Tue, 17 Feb 2026 10:50:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jV0W5xo5"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4836f363d0dso34971215e9.3
+        for <netdev@vger.kernel.org>; Tue, 17 Feb 2026 02:59:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771325940; x=1771930740; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pqd/qSNd5cJh+qVEsxJycYcGDG/6Gev0XJ7NgtBdi6w=;
+        b=jV0W5xo5TUjK0Tpfg3f6zkPpqAVfKjj4DwXEaw0xWZGZbjLbkmZcI8RGl7PJPwAZh8
+         6T/4JEOUoNUkaiVEFFW+78daVT20yJFwnBMdDOrbPGKPH/NBngHoVY+66phvQ4Yq7eFh
+         lasXHJYVssAtCEzB3ujqGQkMMFwABrg7PuToSELxE1MlZg2qrGj+ASgUyXk99Gmq1ano
+         p3QkB60yXAMvRiKn3itpjXYPs45Hzk4z6Bekfs+OR5qOlKvwjTt5d12XvJ+0xiEZvj5W
+         MNWtjSBFelLl76gVB+VooDlPwfvUm3H5ig44QgUu3/9x+zTAHYfUjJ6hnPISpGZ2Icnv
+         ZnGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771325940; x=1771930740;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pqd/qSNd5cJh+qVEsxJycYcGDG/6Gev0XJ7NgtBdi6w=;
+        b=NrS284iphUEx1PUSz5gPEVrnQgbLeugAIQNoKJEWMHynbeA1LDOsCvweij3WLaKCTS
+         4x6FLcnPNcPsHabtU3IK9m3HNPMSMTCk2BBZmG6m97Pm6YngfabPXa2w/r4P0fOmogpH
+         YGi+Je+V7W8E48JPfukXQHpAJ4yt7lpscSlljb4nVl4ANPbHG2RE1iEp2y5VKJMnWJHB
+         i9AkGqRO6U+QdWM+NlRqYKzL0awBhyRPaTcWCrV2DwPDvp9GtmAp+dVSsz1C1LPLifQn
+         inaww1mkJV6e9PCfAM1ZAnry2u8yVdwbTIn2L3eCYxL7vnwiU/h0hgYlHQoX+joUkWJ3
+         cIfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUaPnmqrqy67nXiNFqsZJfqdKsBedbHruZUHSP93ie9JW/FEwyCwxMf1jeugWB6188JgvMAjoo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzqg4Aqq6xE4APEhB7tqodnkQHtYXCcYuHiBRGkpc3ry3B37hR0
+	1v3C7Nb87s++JQ0eS1YVoulnk6P3e5tSACN8ME0Vut4r6Q7Yq3ZnIa0f
+X-Gm-Gg: AZuq6aK1Bb2vnZ6OomHQ/XuTNfWkkb9z3S+VyojkAyl1f+LkdfyM5+fp5fauIPA/nAD
+	KwYgirNeLeYGNVNWT4RRBXKV2atJnq1vvybzDWi+xttGWLneqfWBM3H45Ftz+8Xex7l5ZIBG44U
+	Kncs/a4x4nrnaiHRMdgMglG6PsqKYbJrGdU68MQ5gVk4Xc7Jp8WYrK4r195JGv7mm94o1yP7e72
+	T+J164P1ZZv3VfJ1nr8YTIj37hO3NU+Fv//jhL21qlyvDyBYGbFTifNTDhIGUBuekfsQVsMgFNO
+	0n76e7EBQ5Si9Z3Qst2O1Gku6UGVjGbW5f4D81T6tdEbvFLKl3z04+4lRtDZK4LbkkbvnK96L9y
+	vYygppKeuJW7rSxfZfj90hpgmHcZh52widPF9lYoLWRIXUOJ8QZE7IXPHi+o+KRkw4v/SZ4jR6F
+	yJ0nKh+nLkjdLcypxTKSAEU6yfNWR/N43tnfV7BKECfU7vDwvHbrKS4zQOkg1dFQvaoPprpsgWI
+	gBvK/f4XYzmrqACqkJaq0vC0xBdsf7OWjj+k+15
+X-Received: by 2002:a05:600c:609a:b0:483:7020:864 with SMTP id 5b1f17b1804b1-48379c178eamr193526775e9.25.1771325940268;
+        Tue, 17 Feb 2026 02:59:00 -0800 (PST)
+Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48370a78c89sm327759395e9.5.2026.02.17.02.58.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 17 Feb 2026 02:58:59 -0800 (PST)
+From: Pavel Begunkov <asml.silence@gmail.com>
+To: io-uring@vger.kernel.org
+Cc: asml.silence@gmail.com,
+	axboe@kernel.dk,
+	netdev@vger.kernel.org
+Subject: [RFC io_uring review-only 0/4] zcrx mapping cleanups and device-less instances
+Date: Tue, 17 Feb 2026 10:58:51 +0000
+Message-ID: <cover.1771325198.git.asml.silence@gmail.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,41 +73,26 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] ovpn: tcp - don't deref NULL sk_socket member after
- tcp_close()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177132540508.17858.16179352070683627641.git-patchwork-notify@kernel.org>
-Date: Tue, 17 Feb 2026 10:50:05 +0000
-References: <20260212213130.11497-1-antonio@openvpn.net>
-In-Reply-To: <20260212213130.11497-1-antonio@openvpn.net>
-To: Antonio Quartulli <antonio@openvpn.net>
-Cc: netdev@vger.kernel.org, kuba@kernel.org, pabeni@redhat.com,
- sd@queasysnail.net
 
-Hello:
+First two patches move user memory DMA map creation to an earlier point,
+which makes it more uniform among different memory types and easier to
+manage. Patches 3 and 4 introduce device-less zcrx instances
+for testing purposes, which always copy data via the fallback path.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+note, based on two other recently sent patches splitting out a uapi
+file and defining constants in zcrx.h
 
-On Thu, 12 Feb 2026 22:31:19 +0100 you wrote:
-> When deleting a peer in case of keepalive expiration, the peer is
-> removed from the OpenVPN hashtable and is temporary inserted in a
-> "release list" for further processing.
-> 
-> This happens in:
-> ovpn_peer_keepalive_work()
->   unlock_ovpn(release_list)
-> 
-> [...]
+Pavel Begunkov (4):
+  io_uring/zcrx: fully clean area on error in io_import_umem()
+  io_uring/zcrx: always dma map in advance
+  io_uring/zcrx: extract netdev+area init into a helper
+  io_uring/zcrx: implement device-less mode for zcrx
 
-Here is the summary with links:
-  - [net] ovpn: tcp - don't deref NULL sk_socket member after tcp_close()
-    https://git.kernel.org/netdev/net/c/94560267d6c4
+ include/uapi/linux/io_uring/zcrx.h |   9 +-
+ io_uring/zcrx.c                    | 145 ++++++++++++++++-------------
+ io_uring/zcrx.h                    |   2 +-
+ 3 files changed, 90 insertions(+), 66 deletions(-)
 
-You are awesome, thank you!
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.52.0
 
