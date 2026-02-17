@@ -1,79 +1,102 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9991E36D4E1
-	for <netdev@vger.kernel.org>; Tue, 17 Feb 2026 13:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BDE36E466;
+	Tue, 17 Feb 2026 13:54:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771336496; cv=none; b=RBISgjsgiSJoOzpT8niOcBp2bRYnPUTaCBkgMiUX0CgEAk0eUGDRCtLDJUpWvrrXIrAEF6eyw0sBhPz1xo2EisUgfoawj2qcUh/lxZ70TTSqNkgfREZIUwjyRkf0Z35KiFVoHaWrLNT81HQfr8MdEhLvp7FYKP8xYRqzNcymJ0I=
+	t=1771336497; cv=none; b=huXsEVVYsMoadt3mWT1YXDKiIuzzvViTBSV+D4bku2S1BF8nGl4aha00RNUkyxSroZu9mc0PAshvlsZNQJBbmxFG2IvvyuwmK7+TPS7xf8Df6evLBqsqbIjv1DXnNwbMtGyxqB/O2lDSofaYZJAb5ET1HQr0n6KhA2qzHj2wMJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771336496; c=relaxed/simple;
-	bh=tpVz+/9KZhMiHs88YAAeN8j1bHrbz5eQ3HN+VNf5ImU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=UlRsw70Adv78mvxZFSWBlzJhGidK4fOeGpkWYePrqGmhIfRAhwNfsIguAOo9RFrQyGtx9JYrn4qw6Uls8MUisz3D+qjzKToD8XSVKhAddsTSzBCV51l0dgafRwBbIOigOAbjvEPD+Jo4BW3tWuNts+z7kZf8Ec64UVv3SHbNY0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LnA7tQCh; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771336497; c=relaxed/simple;
+	bh=0CKsXmjygWfgTfW6+ScFYR6A19xBLdaV5AkI9EKjkjI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Foaxgwo9PU4/vdrSMmEYwxUrg24+vDmY/nkdkAe/iCRSph4tfUTfo7N6nW3HKPW16MjO81tqKXmn2Q/3ed2XF24X6m8Ed2EJEiE6KhV13wTGF++Zzuoaet1OXr8GCTt2ytosCyiNQdo1MabfJ4GSKqQ4Tq5756DkMyMdHK2Jl3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=I8iCjyu0; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LnA7tQCh"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-482f2599980so46233215e9.0
-        for <netdev@vger.kernel.org>; Tue, 17 Feb 2026 05:54:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771336493; x=1771941293; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9/Db8GHeRwj5/JWbCcVvx6pqqRvI6zmNzmG5BE40n8U=;
-        b=LnA7tQChJjVFuMVz2uv9kN5bp4ZrKtmIO/ltHP6mhlpfgYZ6pB8BgiYSVD40Ym5oBZ
-         oBMLCoIbDsyc/ZOlz8KMq0lwk4+Pk+M2qdgPQ1fuxnpayM5bTz/ugEorif8cSQYFjjM3
-         i+Yjj8bxv+OYNInlZChXTPcpILkb7tie/+1+TwnCn7gCJwb1RRaiV5Is6RCyrs8qgHAK
-         +LhLDRjtsUbe0e2KNtFmA/te3GHSQBLWll3RbC2CjpLASW4owSIToSsPN5HCKLoR/3Dl
-         Aermv9Y2Ys6By+HS0inXPK5Cy1v+mTN4MyrQM9+MWQttQT7tBeyqweSiqfQ6aIiX4X44
-         UxEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771336493; x=1771941293;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9/Db8GHeRwj5/JWbCcVvx6pqqRvI6zmNzmG5BE40n8U=;
-        b=ePaoa/VZt60uflUaYEADVJyHVxcSwIKnnprldoYFUl7BcGTYG/E1a2kWq50DI7aVS2
-         faNa3SXUhJrV6T8S0aI6GfNxqGw0v+GwhpjyuYf12Kg646Ie+HlsuIvQBiTR+9Fg1mp6
-         o+bt5HHsEvThVNPUHAZnwT48ANAudQbxFpX5Y1p+18coBUKfmlIudP1PweABvpikWcDt
-         /20End5kv5SgK/lg/Cc1tCdzFR9PQP62k5S5gLFvFMBwhJIsh6hBvhVOnoKKWOFOp/rC
-         nHuLkjxhW6aV1GWYN6hM0v85qd7QUrSz9fIsAUpX9JH4MmEGPhHhgOPi701sd9tK0SAX
-         wzTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWvjTRHhyJWteaHq2DplqMkLsSjEYm+ohagH17o0cIgVHlGLgWRIFjRVaFLXNoNe4vNZKvt6qc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdYKdPOVjtHvtbsfhnKbJVysqWOasAlkA9J5AMZZ7AXGFQLZLI
-	uqt8bj/jMxaO0856kalQxSxk8Qg6wz7+piPB3avxHEMrMWHAiv1E0Ltq
-X-Gm-Gg: AZuq6aIq+y6VQs8rhbCJ/kRd6PnD25q9qq3N9QFKr9eJggPHSthRj+TQ0xhNksCxb8g
-	l1zP7zlFjz7LUV4FaUIjGy4sVicX1+ERfUH1cos5Xzz8syDeWU+R6W11aw8X/+pcNL+dl+n1Xs9
-	h/fP/x42hEKscFVOrQlu2w3069ckh6pki42op/bX3sE5c/8ttYfwlMtnBwgtxfpRy/Z4/CVlITa
-	F6PglGZqniMiGFGG0v/qBa8UOq6P1OdO+hPCRKG4ycMCD0C97QdMzqdFF7LomJIniEQ7endg1xo
-	HS3SdHwLvgNGmqPU0WFdIl/9N4vIFft5K17bebsrx1f3gu1tvbWGgEl7TasgYNjZ2elBkyIE3MM
-	YfAw/ZCdiLo4Q3Cde0/IWjTZJelYnG3VdfIaZ/FRSF94TPtrStFRSoQn1z6fX8rQSHC+wA3GgGX
-	k87wtdigRPciYHuVfktJImoR/xqgKgQ4I849+pLN8TtFg+0w/DP2efjOYSL8HQ55+3jQ==
-X-Received: by 2002:a05:600c:524d:b0:483:4807:210c with SMTP id 5b1f17b1804b1-48373a5d7a0mr285729075e9.24.1771336492692;
-        Tue, 17 Feb 2026 05:54:52 -0800 (PST)
-Received: from tabrez-VivoBook-ASUSLaptop-X513UA-KM513UA.. ([27.4.206.211])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43796a5b07fsm33993120f8f.2.2026.02.17.05.54.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Feb 2026 05:54:51 -0800 (PST)
-From: Tabrez Ahmed <tabreztalks@gmail.com>
-To: allison.henderson@oracle.com
-Cc: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	gerd.rausch@oracle.com,
-	charmitro@posteo.net,
-	linux-rdma@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="I8iCjyu0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771336497; x=1802872497;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=0CKsXmjygWfgTfW6+ScFYR6A19xBLdaV5AkI9EKjkjI=;
+  b=I8iCjyu0HcRQwSQ2QtjkfThiCqzKAy36x/XozUbD/S2BrVkmC/lPDVZD
+   WuiatTgWrftsSumt4MriZmLW4UA2BzGrjaZ2m83gV9KE+vKBC49+ISgY+
+   lKolFAUVdQv7L/xu0hBDP1QqxsyjHl+zX5LgSj0qxhBL73iufnXWokO1x
+   QWt81RCN95HGGsSg8MxyDepEaJCdwfTRWQgEWrzvPK95Fl+VGbSfwONri
+   x/QVNvdJF/3vVpZbocwfX/w8QKWoW3isaX8EExornfsmkqrk+LQrMLaE0
+   3ZcDUcGPQLkn3qqOXdVA4FVGdRqSAX2eSERYKtRGvFyCv/ovA9w7TdiIo
+   g==;
+X-CSE-ConnectionGUID: XeS2oKx3T/qYcNFxXtWmoQ==
+X-CSE-MsgGUID: 6hZZh12NRCGNGqehpn8tuw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11703"; a="72470502"
+X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
+   d="scan'208";a="72470502"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Feb 2026 05:54:56 -0800
+X-CSE-ConnectionGUID: DcAtXpXOSXCSBXD8zcmS6g==
+X-CSE-MsgGUID: 8QTap2nWTwK2/ES9dO5soA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,296,1763452800"; 
+   d="scan'208";a="213904668"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa008.jf.intel.com with ESMTP; 17 Feb 2026 05:54:48 -0800
+Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id E7C7828791;
+	Tue, 17 Feb 2026 13:54:44 +0000 (GMT)
+From: Larysa Zaremba <larysa.zaremba@intel.com>
+To: bpf@vger.kernel.org
+Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
+	Claudiu Manoil <claudiu.manoil@nxp.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	"Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>,
+	Tushar Vyavahare <tushar.vyavahare@intel.com>,
+	Jason Xing <kernelxing@tencent.com>,
+	=?UTF-8?q?Ricardo=20B=2E=20Marli=C3=A8re?= <rbm@suse.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Toke Hoiland-Jorgensen <toke@redhat.com>,
+	imx@lists.linux.dev,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Tabrez Ahmed <tabreztalks@gmail.com>,
-	syzbot+aae646f09192f72a68dc@syzkaller.appspotmail.com
-Subject: [PATCH net v2] rds: tcp: fix uninit-value in __inet_bind
-Date: Tue, 17 Feb 2026 19:23:49 +0530
-Message-ID: <20260217135350.33641-1-tabreztalks@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	intel-wired-lan@lists.osuosl.org,
+	linux-kselftest@vger.kernel.org,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>
+Subject: [PATCH bpf v3 7/9] libeth, idpf: use truesize as XDP RxQ info frag_size
+Date: Tue, 17 Feb 2026 14:24:45 +0100
+Message-ID: <20260217132450.1936200-8-larysa.zaremba@intel.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260217132450.1936200-1-larysa.zaremba@intel.com>
+References: <20260217132450.1936200-1-larysa.zaremba@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -82,52 +105,93 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-KMSAN reported an uninit-value access in __inet_bind() when binding
-an RDS TCP socket.
+The only user of frag_size field in XDP RxQ info is
+bpf_xdp_frags_increase_tail(). It clearly expects whole buffer size instead
+of DMA write size. Different assumptions in idpf driver configuration lead
+to negative tailroom.
 
-The uninitialized memory originates from rds_tcp_conn_alloc(),
-which uses kmem_cache_alloc() to allocate the rds_tcp_connection structure.
+To make it worse, buffer sizes are not actually uniform in idpf when
+splitq is enabled, as there are several buffer queues, so rxq->rx_buf_size
+is meaningless in this case.
 
-Specifically, the field 't_client_port_group' is incremented in
-rds_tcp_conn_path_connect() without being initialized first:
+Use truesize of the first bufq in AF_XDP ZC, as there is only one. Disable
+growinf tail for regular splitq.
 
-    if (++tc->t_client_port_group >= port_groups)
-
-Since kmem_cache_alloc() does not zero the memory, this field contains
-garbage, leading to the KMSAN report.
-
-Fix this by using kmem_cache_zalloc() to ensure the structure is
-zero-initialized upon allocation.
-
-Reported-by: syzbot+aae646f09192f72a68dc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=aae646f09192f72a68dc
-Tested-by: syzbot+aae646f09192f72a68dc@syzkaller.appspotmail.com
-Fixes: a20a6992558f ("net/rds: Encode cp_index in TCP source port")
-
-Signed-off-by: Tabrez Ahmed <tabreztalks@gmail.com>
+Fixes: ac8a861f632e ("idpf: prepare structures to support XDP")
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
 ---
-v2:
- - Updated Fixes tag to point to commit a20a6992558f as requested by
-   Charalampos Mitrodimas and Allison Henderson.
- - Explicitly mentioned 't_client_port_group' in the commit message.
- - Fixed line wrapping to be under 75 characters. 
+ drivers/net/ethernet/intel/idpf/xdp.c   | 6 +++++-
+ drivers/net/ethernet/intel/idpf/xsk.c   | 1 +
+ drivers/net/ethernet/intel/libeth/xsk.c | 1 +
+ include/net/libeth/xsk.h                | 3 +++
+ 4 files changed, 10 insertions(+), 1 deletion(-)
 
- net/rds/tcp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/rds/tcp.c b/net/rds/tcp.c
-index 45484a93d75f..04f310255692 100644
---- a/net/rds/tcp.c
-+++ b/net/rds/tcp.c
-@@ -373,7 +373,7 @@ static int rds_tcp_conn_alloc(struct rds_connection *conn, gfp_t gfp)
- 	int ret = 0;
+diff --git a/drivers/net/ethernet/intel/idpf/xdp.c b/drivers/net/ethernet/intel/idpf/xdp.c
+index 958d16f87424..7d91f21174de 100644
+--- a/drivers/net/ethernet/intel/idpf/xdp.c
++++ b/drivers/net/ethernet/intel/idpf/xdp.c
+@@ -46,11 +46,15 @@ static int __idpf_xdp_rxq_info_init(struct idpf_rx_queue *rxq, void *arg)
+ {
+ 	const struct idpf_vport *vport = rxq->q_vector->vport;
+ 	bool split = idpf_is_queue_model_split(vport->rxq_model);
++	u32 frag_size = 0;
+ 	int err;
  
- 	for (i = 0; i < RDS_MPATH_WORKERS; i++) {
--		tc = kmem_cache_alloc(rds_tcp_conn_slab, gfp);
-+		tc = kmem_cache_zalloc(rds_tcp_conn_slab, gfp);
- 		if (!tc) {
- 			ret = -ENOMEM;
- 			goto fail;
++	if (idpf_queue_has(XSK, rxq))
++		frag_size = rxq->bufq_sets[0].bufq.truesize;
++
+ 	err = __xdp_rxq_info_reg(&rxq->xdp_rxq, vport->netdev, rxq->idx,
+ 				 rxq->q_vector->napi.napi_id,
+-				 rxq->rx_buf_size);
++				 frag_size);
+ 	if (err)
+ 		return err;
+ 
+diff --git a/drivers/net/ethernet/intel/idpf/xsk.c b/drivers/net/ethernet/intel/idpf/xsk.c
+index fd2cc43ab43c..95a665cb2f33 100644
+--- a/drivers/net/ethernet/intel/idpf/xsk.c
++++ b/drivers/net/ethernet/intel/idpf/xsk.c
+@@ -401,6 +401,7 @@ int idpf_xskfq_init(struct idpf_buf_queue *bufq)
+ 	bufq->pending = fq.pending;
+ 	bufq->thresh = fq.thresh;
+ 	bufq->rx_buf_size = fq.buf_len;
++	bufq->truesize = fq.truesize;
+ 
+ 	if (!idpf_xskfq_refill(bufq))
+ 		netdev_err(bufq->pool->netdev,
+diff --git a/drivers/net/ethernet/intel/libeth/xsk.c b/drivers/net/ethernet/intel/libeth/xsk.c
+index 846e902e31b6..4882951d5c9c 100644
+--- a/drivers/net/ethernet/intel/libeth/xsk.c
++++ b/drivers/net/ethernet/intel/libeth/xsk.c
+@@ -167,6 +167,7 @@ int libeth_xskfq_create(struct libeth_xskfq *fq)
+ 	fq->pending = fq->count;
+ 	fq->thresh = libeth_xdp_queue_threshold(fq->count);
+ 	fq->buf_len = xsk_pool_get_rx_frame_size(fq->pool);
++	fq->truesize = xsk_pool_get_rx_frag_step(fq->pool);
+ 
+ 	return 0;
+ }
+diff --git a/include/net/libeth/xsk.h b/include/net/libeth/xsk.h
+index 481a7b28e6f2..82b5d21aae87 100644
+--- a/include/net/libeth/xsk.h
++++ b/include/net/libeth/xsk.h
+@@ -597,6 +597,7 @@ __libeth_xsk_run_pass(struct libeth_xdp_buff *xdp,
+  * @pending: current number of XSkFQEs to refill
+  * @thresh: threshold below which the queue is refilled
+  * @buf_len: HW-writeable length per each buffer
++ * @truesize: step between consecutive buffers, 0 if none exists
+  * @nid: ID of the closest NUMA node with memory
+  */
+ struct libeth_xskfq {
+@@ -614,6 +615,8 @@ struct libeth_xskfq {
+ 	u32			thresh;
+ 
+ 	u32			buf_len;
++	u32			truesize;
++
+ 	int			nid;
+ };
+ 
 -- 
-2.43.0
+2.52.0
 
