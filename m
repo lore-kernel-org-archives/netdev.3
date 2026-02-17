@@ -1,45 +1,46 @@
-Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012062.outbound.protection.outlook.com [40.107.209.62])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11010067.outbound.protection.outlook.com [52.101.201.67])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C28C837996B
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E21B379998
 	for <netdev@vger.kernel.org>; Tue, 17 Feb 2026 21:11:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.62
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771362663; cv=fail; b=l0DhLM8pONg0PyUBMmCUN6vBHA/8n2DhGeY+PL5WHeKTlmhBTuNPYD9eGZZqlC4xslPd0zO5JTjha1tBgOwpBdQLiOxg246JXAU3VxGhNjvfm18zE55w956Sfy0jmL/pywjKixzlI84BTy+jdwb1Kf6xxCPzwEusea99AL1Of0k=
+	t=1771362663; cv=fail; b=lJV7cskCTqZq/4f0XxAnKbVIGoPXU3s1uQadSkz+slqF/SI6PpNCfnPoavext2qHqoilnhO35nZntJ7Bz158V0/Kz7/jMnwEpdFmhfuyukuhslPfHo0CclrAKoqQZPDy+U8/u4kg8fUL2lbOwkdktyujlDrrVmFA70K1/TeDFSM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771362663; c=relaxed/simple;
-	bh=MlGF1H4LChn/SY/p+zebUdKQnOABXp9Ly5/EA3oNcyM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pqrEpHY/5tF7GXfBV6kYYqjtM2jQVb95AXodjEFgci0kBadkftT7FtIMmeEkC2fQ1umRPFVL2TyG+GYyzImKOXDrTPa7M0rlYz5lqf8VEYTYzguo4TzHBy62IxqUhR4indK7hWrBffnMpQmei/b2Rog3QvwiqrRKXKVIIN3NCJI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=dLho955n; arc=fail smtp.client-ip=40.107.209.62
+	bh=sYkY1Qo1dh8QmSsLBUyqydCNKgP4s0QEJ/PwOVceD0s=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ETg9F1ECNX/yLomVoFpGwJHGwSHKFzOE44fmrGz8SNioLsQp+B4jL2fKECiIr2JDPURG/6TeFtNIN2rtqLVOUhHJ8dj3wFL5fEH1sOmr3pJj0UggXR2CLPMbwRg552ZUoOnq/G17CfWj0vC3IW/HzDESdS4K+GKxlK8IoV6YcAM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=g/FC2feW; arc=fail smtp.client-ip=52.101.201.67
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="dLho955n"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="g/FC2feW"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rC40rFAAlH93f8s3GmWLNxx2hYwCkB5Vgdg7QDGa4GeOAZvYM6aGvzDOV8SZZJ5185OJwkOzeYr3WGztRQcnZ9xutA7+QREXY4ec3LHTDO5Z2JW895Y7bc4ARlO8ypEVLLDd8eV3oaAuSB9BiqiFbwatcGzfsxNe8jtp+khX257wmjA0dOBY1L5Lg6jguZRCT4nwJwpKWL/DiidAkeq2HdBXO8otY1S9BPySfuKLtMGNLkH9YYvA0ivK8Yyr0DhE28kZVrgsE2kVM94R5dGOvPF5ubEP18M+csqAQD6VgFNOTgTLueRfTNHzzXFT3q/NsGJn2VCZ4CVc0Yd/PxB1Ew==
+ b=XR6z7PrVsO43zOQ7UCiS1t2XbtbN4Kbs73ZNMe+wGgUsgz/rjUiTFt15zlKsJxki5ZKoD2sGc1RPFNaFnBz3EWueAMot2jVxDs9yeq/7ozNAaulTEOhpF+JfiE5HLV+Dl/AMS/Wf629OJGoIQpKLpD4jzlkaTZNZnfuXRCmdNYVRC49XeJC1w9pkSznjxrIdrrgW4WmekIIqt1UM2QaXoV0N6LpuKmxM/3h5unjJ7z9bppoapMjCCFSNyzcg9uookud3RLQWALpPotS+wal0Q3HhZLf4xw40xynE7z44bYQJ3N8XMtqB7ZQaG2d9IOU1caxnuXyEHOLe2ZyHunr52Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nLTix1uY5Ejvff6zXhn74Z0SLbGTKJ4cWsGvO+oMfwY=;
- b=tRlastp+ZiSHHDru/5Qh69AvuIJWVCxKBBXWEdwQsRAX/C2zfuUBpZ+7yWf4ByY6WIZtk9ZdMep2LmIUjHHilin9D+QoBXuMsvC1vituf1ErizWKr7ijQ8sXp5Fo5xBiwM10JHsjdI6SwFd/fAd9/2KjbKAbyx2iX+7Hk8JRUTOM6QhL5x3Yr948IGCbuOSKNwq4IU0bZrMafg3D+jFL+p3gmhSYN6rV4SNxyBOnwS2bf6Y+fcgxMnQQdOYLhmR/Rgb7EyL5MdZgMSrOvpaEuVMiBJ2t7N1doS2CGdHRG0iSiiHOHv5dFFeXKgBk+M/Ae6pn4PtAp+QgXQZtIVzM4g==
+ bh=W8jyynSd+OGwU/oIx8ApKq/0K2oBFE7c9d3A8xWYhPM=;
+ b=taZ+T/xucJksj+rtxLoD2tuIKuHld8tjOWOqT+orbZEfbM/jMQQIJsq2CirDI0Ae3qyN6RqCaoG3eZxZc9hPQwbCbBeSRo6FFY+XxK5G4w6/6BUgFAX5/nLpz2J4VvSJV1UdzUYSwiM0Q7GN8Fcn0Lvff083U5C/09Gk86yibdNtFUPIoP73zQgq1oWHP/FnVSWz1TgqFBfArC0kgTvY9LdxKbPEbb0JSsQSn/E/87FP46R0TcQu9215CmLK3PxDPKyPLklTMRHLdqx6Ec4v42hyOesC1Gs3GXZgGPKaoeB7pDk4kK5ivrw5CPlO3flu5vCWmjSFpVwdo3mo/LKt3A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nLTix1uY5Ejvff6zXhn74Z0SLbGTKJ4cWsGvO+oMfwY=;
- b=dLho955nBoLYs29Zmh5zrQ0fu9NXDYl6GYY2R1IabX6lzD8/TVUMJ4Ag3K40CFdNb3NUKwGofWsvjSNZcnagK3mIkvb5ZygYWPnJ+nL6JtDjlFdckzI5VYwvAIfxEXwj4dMB81qM/K8w0remSRGbZ0X5MDJd5Ndpj67ic4nQjSM=
-Received: from PH8PR22CA0012.namprd22.prod.outlook.com (2603:10b6:510:2d1::8)
- by DM4PR12MB8499.namprd12.prod.outlook.com (2603:10b6:8:181::10) with
+ bh=W8jyynSd+OGwU/oIx8ApKq/0K2oBFE7c9d3A8xWYhPM=;
+ b=g/FC2feW2ZkUCBnI30jei/b0pNb2KU2Zev4totSy/r++brLK9+K3XbibhifBrXoPEopsjEzlQchyCNHfSM3+ffShbhhp8AsOGi2LAFXLeqmx4QDov16uUpAQ79Xbce8A/oiZJ96pBS9xJp0RNRxmsFnmtxGeu/Sdogmy4+mLyDQ=
+Received: from PH8PR22CA0022.namprd22.prod.outlook.com (2603:10b6:510:2d1::17)
+ by SA1PR12MB8141.namprd12.prod.outlook.com (2603:10b6:806:339::7) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.13; Tue, 17 Feb
- 2026 21:10:56 +0000
+ 2026 21:10:58 +0000
 Received: from MW1PEPF0001615B.namprd21.prod.outlook.com
- (2603:10b6:510:2d1:cafe::89) by PH8PR22CA0012.outlook.office365.com
- (2603:10b6:510:2d1::8) with Microsoft SMTP Server (version=TLS1_3,
+ (2603:10b6:510:2d1:cafe::d5) by PH8PR22CA0022.outlook.office365.com
+ (2603:10b6:510:2d1::17) with Microsoft SMTP Server (version=TLS1_3,
  cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.13 via Frontend Transport; Tue,
- 17 Feb 2026 21:10:56 +0000
+ 17 Feb 2026 21:10:57 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -49,21 +50,23 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
 Received: from satlexmb07.amd.com (165.204.84.17) by
  MW1PEPF0001615B.mail.protection.outlook.com (10.167.249.86) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.0 via Frontend Transport; Tue, 17 Feb 2026 21:10:55 +0000
+ 15.20.9654.0 via Frontend Transport; Tue, 17 Feb 2026 21:10:58 +0000
 Received: from ubuntu24.e2e.pensando.io (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Tue, 17 Feb
- 2026 15:10:54 -0600
+ 2026 15:10:56 -0600
 From: "Nikhil P. Rao" <nikhil.rao@amd.com>
 To: <netdev@vger.kernel.org>
 CC: <nikhil.rao@amd.com>, <magnus.karlsson@intel.com>,
 	<maciej.fijalkowski@intel.com>, <sdf@fomichev.me>, <davem@davemloft.net>,
 	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>,
 	<horms@kernel.org>, <kerneljasonxing@gmail.com>
-Subject: [PATCH net v4 0/2] xsk: Fixes for AF_XDP fragment handling
-Date: Tue, 17 Feb 2026 21:08:49 +0000
-Message-ID: <20260217211019.48280-1-nikhil.rao@amd.com>
+Subject: [PATCH net v4 2/2] xsk: Fix zero-copy AF_XDP fragment drop
+Date: Tue, 17 Feb 2026 21:08:51 +0000
+Message-ID: <20260217211019.48280-3-nikhil.rao@amd.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260217211019.48280-1-nikhil.rao@amd.com>
+References: <20260217211019.48280-1-nikhil.rao@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,101 +79,118 @@ X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
  (10.181.42.216)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MW1PEPF0001615B:EE_|DM4PR12MB8499:EE_
-X-MS-Office365-Filtering-Correlation-Id: 26088cdc-45bb-40ee-cd80-08de6e690a5b
+X-MS-TrafficTypeDiagnostic: MW1PEPF0001615B:EE_|SA1PR12MB8141:EE_
+X-MS-Office365-Filtering-Correlation-Id: 78170468-5266-4c4c-6436-08de6e690c00
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|7416014|1800799024|82310400026|13003099007;
+	BCL:0;ARA:13230040|1800799024|376014|7416014|36860700013|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?uA/NNq/3BqBiMqqt8tpUGJGJ1iPQqVE2GHOrFhbtMLiX29vwEw8rnwh94tl/?=
- =?us-ascii?Q?3ir98Sma+/SdDVn+DmktgVZYNax/ZJyfX58ia33TXEfqISUstkp+3RjW1w5q?=
- =?us-ascii?Q?D1VnJfvlYpMabbimfGPMZS2vQ4S/k/iw8haxqeczwSlE21iKxtST7FkvhxVQ?=
- =?us-ascii?Q?lHjrViV1J0skrjnaafsVRFOoAfJcxmWHesODu2d6TuYYWJVM6ElPojJW6NUK?=
- =?us-ascii?Q?UTdiV/8ax4VssR2hXT93hFhSEUdOyAHa9nBkRGJMZyYzrps3AZS2hODmW1y0?=
- =?us-ascii?Q?7ZVAr1KBxwY8CkvGWlM0+DdJDgaGSzIHVrCdgNropqfjheEmXNv6vdQvocqt?=
- =?us-ascii?Q?rsgNXpt2G6rP9N/C7kA0Fph7ySHgfDxR78U65UGLvRirVmTwxRiGQTQx/Gnp?=
- =?us-ascii?Q?oL69vCPhgERy938fCdB3HMSEuuKiTe276/HPVUsHpgPFX4qH6DJxDbuvuR3a?=
- =?us-ascii?Q?DcNhEoysWsZx2/6YnhkiKGjbWUsM5P7UuTwEby9BMlsR4NJEUKdIL57uBsXl?=
- =?us-ascii?Q?o1uKgdI6EZGh21lCRDpmhYBnHMMcjKia8j/lKt97QbOBQ3YrlPfgJmC57E1n?=
- =?us-ascii?Q?l8zvkaDk7o3bICAGjRZ0+scltiObp8175H4T0qOGVuyGSJnj6frZz+X4kc4X?=
- =?us-ascii?Q?H3zdW3ouKK9C8TYuRZ16tWIGyrReYWVvcuwAyFOtFQPWoEc91weS8wq5MrJ+?=
- =?us-ascii?Q?SH4V8jWPWqzlBLwDRZgq1hQl1sTzeV2EGQ1AHX3EhziRSFeBHvQ8PRe494K/?=
- =?us-ascii?Q?XT03CJ8HPAMEXMNzLU+I8Pu54pVdDKse5k6pDk/QMvMEd5sDP79W0tifSWVo?=
- =?us-ascii?Q?Nn2+aKjU3nL2ZnaFwLkXL4uVJr09yTNeh6G9gV2z+eYrf8Ry0wOzcsCNTIBI?=
- =?us-ascii?Q?q9rcmMwVg3stA1b/Mn41mbu4m8btil8UMB57QEX1FeJEElJ8T0UXWZmtd3wk?=
- =?us-ascii?Q?YAx7ZRaJ+fw/4qXUz1VUnDTLILaQdd7ZFtgVJml4HV3m/9flHvMxqRnQsEwi?=
- =?us-ascii?Q?+zybTtrQvCLmEsviPrMfaRZfJsap3Rv1CGf24BL0Hru6HtcwcLThi6uR0eFs?=
- =?us-ascii?Q?I11nT1yu+1XswnUtpO0ZakQHshcbcEUOcWQKHuogUjTm9T2r6iYp4Qpi8/f3?=
- =?us-ascii?Q?4HJ0b7QUI80xt2Hd5wlUrupyDuHLVd+Or1llKCLlUFct9qIdMtBXq0w+MD39?=
- =?us-ascii?Q?1muUlRKaJrRZlo+YO8FhtGMT3MkZL7CDrMkDpQ6MWlEnEW42a6joPyf/AFVC?=
- =?us-ascii?Q?DrlSm5KcihbssMHr8o88UTtmvt2BSlzPj4HsmVAFtxF6veIsDvZfeBPXGrRx?=
- =?us-ascii?Q?Yyom+GmnPVOPaX66NpsxeGsB2/sLS1bQTQT0PMJeBWcl5SBDpdCV4Zsx9Xvj?=
- =?us-ascii?Q?d5NtBzMCDM1OeWt+Nr9eQ6Z1j3rPIOiz7/VodlsNFFHXbR05mDo0GydJnWtl?=
- =?us-ascii?Q?ZF1/ju0xvGcYC7cqtzW9XNclHGginYJcl1vrB3J8kNVeHYfWZd/OWYQuYg0W?=
- =?us-ascii?Q?kkxScSjPukgqN/Wmt759PqoyL944e3QjGakVOKShzlpZSYVUlTJBOLvuHlBe?=
- =?us-ascii?Q?9nbflBpfVnC5izxx48q3e7L3cdT8DrdzRkQbsX8QiGubYs07DKy7OZEx7Wfe?=
- =?us-ascii?Q?J55vdb+tcIvk6JxqwjusWkVrIOeBlZD/X2sse7drWWf3SqMGGag3+pN2Qu9q?=
- =?us-ascii?Q?gqNSeWGaAQpi9ipVtLZHiWKPjpY=3D?=
+	=?us-ascii?Q?D5u8LIPBfOnz5meItmAP91WiesWq0txf9+ih5Ai9YqugLw7r6F6TO2myF4sp?=
+ =?us-ascii?Q?0hegKh8Xgjc+dhU18qXimcqkHbo/kuvkKDeTKuYi1nSK+HcMNDJytMj6f7lX?=
+ =?us-ascii?Q?uOfWBLuhkh1YWqzdoTMpBqUJHAR43LJqFa4lFNoO+Z+0PwnCsUTQXD+ftASE?=
+ =?us-ascii?Q?tNEX5G905wHjDEpHwx6JXwJuKWhww/vf9bUbkCzCpH0mxu4JMpBsMdfz3Ish?=
+ =?us-ascii?Q?U+K4nM9T/jO+fAyh1xXw10rSvejvjBv6C9N087uXWW+9Sf8Cx3KKQ94NHjgp?=
+ =?us-ascii?Q?Citwinho80DzLz8wpySzYgcS9Zsz6O1f8cUFx7ff4N4Ha/mga+tHr1r6OXBg?=
+ =?us-ascii?Q?k7t+QgTwp2T6vNosbClZH6WL6HG3KYBIie0uesNdgBsGJZSvT30avOEVSqWT?=
+ =?us-ascii?Q?57CfKZrs4aoQkwiCIjeTur+wstP0fLcix2Qrr90UArau1yPLJd8np2G/2lnO?=
+ =?us-ascii?Q?K89niP6bqlMOodxjxm10QFKF4BtpHM2Z3iICeufp4CmVUFEGO80YHk55CKSm?=
+ =?us-ascii?Q?2Aik7BU6yALvhk1d9kJq5A4kXfpSU76kLUl9ssu2JnqmHv44oTbBxCYnLguX?=
+ =?us-ascii?Q?+/tbGVuv4CV1snt9sRFuk1/JSCgR3Hwxnncief080RP7bZZL+gn6XXaeDsQU?=
+ =?us-ascii?Q?LL6avzxprNmSiht5Ur0B6oT3zCFuJMf78KvJc3+pkbwQRdyV47m+HRlC5ur2?=
+ =?us-ascii?Q?/2Fd4Q57Jwii4GoBTIvfCzecu5p8ImltD6WL2geDfDHHba0NJID2N9QGt2H1?=
+ =?us-ascii?Q?M3d/EMYMw86aq4ielztQEJsDULZUsF4yX3CZr0AMyjt6BKnJLWuehjhHlO3z?=
+ =?us-ascii?Q?bhcBafE++qYLbSEyZBkHd0uJSM0S3GT6fUKicwFNWcLWG3k0f2oPetm4YOSQ?=
+ =?us-ascii?Q?kaZH33vgyC9dO/UsN1cyl9Oyy3YOIHvKT+ou91U6I7SJ2p8uK8QEKS9wapFx?=
+ =?us-ascii?Q?CJ9+Yxg51CJ/PSuAokPOGCL2OpUoeCEeq6uzel5c9wV6STNVNpP1lxeUsOgS?=
+ =?us-ascii?Q?6y/8vYbDXKnMX08pXYA4g7ba+HxbhUnZw/lX0LkxVc9JwFTkOVE/RrPvzjnH?=
+ =?us-ascii?Q?Mq1bmNKdbeZJK0vaesdi1kDhT/xIwjvs6EmQof2FUUwpiLHMUgFl4DQ6KIuT?=
+ =?us-ascii?Q?EC+tL6UCzxjFcVD7DOYZUvgOJOxvS1eb6QPSt9LtfdiatJRg2HVT2kcaTXSx?=
+ =?us-ascii?Q?XTYvltY0B+qS5DcUCMDIbQWfczcX527rJh6i6P9psVm08Ztv8eIRdxwsuU2M?=
+ =?us-ascii?Q?Q6N7VbtplQXO01jSBLZRR4R9QT5PCNbw5fyMCFhdPEqga+Wcetgp2EzkxmA1?=
+ =?us-ascii?Q?W5gcitgfb/FUGSYs6meAof3NHR8PlVBd6kLo+tUu773ja8TG9rbEPd5JPMxk?=
+ =?us-ascii?Q?ZvTfuSQ1pTMe/kJMUgPMSJ6UOvCFxJ+MkaBfev3OZQfwqCXX5I7KlJFrSibK?=
+ =?us-ascii?Q?vtoHJNvCPkYmwqzj02bwcqK21mgvx9nL2YwJK9IQbVOrMzDMRMmUXGXAP7rv?=
+ =?us-ascii?Q?+LQdQEFTnRnKhvhG53TyrO/bgZy4gLm1jX7Kz5WZGWdyf2Ytz/4uY1UW5kRA?=
+ =?us-ascii?Q?3RlrOiKUZS5zEzSqpllU9XAc7Lg7Wp0pM/4z/0WhjLXiN/QccO4Ohbz2Z3Hg?=
+ =?us-ascii?Q?Ux4FhLjYsZGDBwhPK4iv5eRnfoUHNW49lSeZYJiNaenA?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(7416014)(1800799024)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(36860700013)(82310400026);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	m/pGfIFpivdFnkiTloU3RvdfSOtJqkVydAbQybhjLxPkck4xjZ2Ts9wkfmcDonP5ZmuGr6w04XwNydpQLgrXck6CbEwQORDq3DJNKnw63djeO0plvARHtNnQGtw62IepuvdNMFU3WvSgwmnHM/XnO1SGN2qCVwqyeRHCN6peJJ5u7qBMegwBMKL+WwNz1vNfalK839RjFDsvc41NxedFkXicB9Eb38P/prDrQvcgNoM9y7SK9biuyRjf1V4AgcunPQAL/9kvijaKGF0Y1uA60BjgmMy1JjKoGSIzVXqbDP2E3BtVmVLExp/gf6Xw930XRAN0WeBuZF8bJbUPMTbLsK4C7JE5Ab41zDuSFAynV0S3aWM4nzv5vf257pDsqY23tRV8H8ktdoeV4znpV1iNJ+5pUsn97PGoQuAO6U2FcA23CeZX5MnYy5cn1WThV/aa
+	z/zfrEUWmZdpLYbIgTs5VmPmpY3SLX0jVRNi9sZqa9P44F1hJV+/LtRXbX51q7eql4vc20WAr8HqtvN9QEHwdgKdkjvY4ZTQXAnK9nFdrOWERz21B13mpg90NSggMfHW5NRaOnTohN9bKcIH70dEwCI2ZmswUZkdw5w30zfQNnujlIonMoy9H3OJ4ZDMURD6lzn+Ykt6pKFbaox5wC1wez3h2ezoJNTjIXJfgpntXJrUfAW50WEelu/K24JKHf+lwscJn2Evg+1IeqjoOSR7gXYXBFYIUvgvYXWn+kGeEoDqfpele9CY2ykCfnjml70u98KaVoLquTHQkrjwaUGRUt+AJXu48qWz1YG10J+CmxtQ8rqTWwn9G1qtDIkKmt7wySRn5kAKBYydJYU1w3vLqro84K23w+fkHufB1TbY8M3QSsdCduWWwMPve5M7H2nX
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2026 21:10:55.6798
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2026 21:10:58.3806
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 26088cdc-45bb-40ee-cd80-08de6e690a5b
+X-MS-Exchange-CrossTenant-Network-Message-Id: 78170468-5266-4c4c-6436-08de6e690c00
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
 	MW1PEPF0001615B.namprd21.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB8499
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8141
 
-This series fixes two issues in AF_XDP zero-copy fragment handling:
+AF_XDP should ensure that only a complete packet is sent to application.
+In the zero-copy case, if the Rx queue gets full as fragments are being
+enqueued, the remaining fragments are dropped.
 
-Patch 1 fixes a buffer leak caused by incorrect list node handling after
-commit b692bf9a7543. The list_node field is now reused for both the xskb
-pool list and the buffer free list. Using list_del() instead of
-list_del_init() causes list_empty() checks in xp_free() to fail, preventing
-buffers from being added to the free list.
+For the multi-buffer case, add a check to ensure that the Rx queue has
+enough space for all fragments of a packet before starting to enqueue
+them.
 
-Patch 2 fixes partial packet delivery to userspace. In the zero-copy path,
-if the Rx queue fills up while enqueuing fragments, the remaining fragments
-are dropped, causing the application to receive incomplete packets. The fix
-ensures the Rx queue has sufficient space for all fragments before starting
-to enqueue them.
+Fixes: 24ea50127ecf ("xsk: support mbuf on ZC RX")
+Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Nikhil P. Rao <nikhil.rao@amd.com>
+---
+ net/xdp/xsk.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-v4 changes:
- - Patch 1: Carried Acked-by tags from v2 on patch 1
- - Patch 2:
-   * Fix uninitialized err when sufficient space for all
-     all fragments is not available [2]
-
-v3 changes:
- - Patch 1: Carried Acked-by tags from v2 on patch 1
- - Patch 2:
-   * Check for free space only for the multi-buffer case, this preserves
-     single buffer performance (Maciej)
-   * Fix return without freeing buffer when sufficient space for all
-     all fragments is not available
-
-v2 changes:
- - Fix indentation issue reported by kernel test robot [1]
-
-[1] https://lore.kernel.org/oe-kbuild-all/202602051720.YfZO23pZ-lkp@intel.com/
-[2] https://lore.kernel.org/oe-kbuild-all/202602172046.vf9DtpdF-lkp@intel.com/
-
-Nikhil P. Rao (2):
-  xsk: Fix fragment node deletion to prevent buffer leak
-  xsk: Fix zero-copy AF_XDP fragment drop
-
- include/net/xdp_sock_drv.h |  6 +++---
- net/xdp/xsk.c              | 25 ++++++++++++++++---------
- 2 files changed, 19 insertions(+), 12 deletions(-)
-
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index f2ec4f78bbb6..f7f816a5cb80 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -167,25 +167,32 @@ static int xsk_rcv_zc(struct xdp_sock *xs, struct xdp_buff *xdp, u32 len)
+ 	struct xdp_buff_xsk *pos, *tmp;
+ 	struct list_head *xskb_list;
+ 	u32 contd = 0;
++	u32 num_desc;
+ 	int err;
+ 
+-	if (frags)
++	if (frags) {
++		num_desc = xdp_get_shared_info_from_buff(xdp)->nr_frags + 1;
+ 		contd = XDP_PKT_CONTD;
++	} else {
++		err = __xsk_rcv_zc(xs, xskb, len, contd);
++		if (err)
++			goto err;
++		return 0;
++	}
+ 
+-	err = __xsk_rcv_zc(xs, xskb, len, contd);
+-	if (err)
++	if (xskq_prod_nb_free(xs->rx, num_desc) < num_desc) {
++		xs->rx_queue_full++;
++		err = -ENOBUFS;
+ 		goto err;
+-	if (likely(!frags))
+-		return 0;
++	}
+ 
++	__xsk_rcv_zc(xs, xskb, len, contd);
+ 	xskb_list = &xskb->pool->xskb_list;
+ 	list_for_each_entry_safe(pos, tmp, xskb_list, list_node) {
+ 		if (list_is_singular(xskb_list))
+ 			contd = 0;
+ 		len = pos->xdp.data_end - pos->xdp.data;
+-		err = __xsk_rcv_zc(xs, pos, len, contd);
+-		if (err)
+-			goto err;
++		__xsk_rcv_zc(xs, pos, len, contd);
+ 		list_del_init(&pos->list_node);
+ 	}
+ 
 -- 
 2.43.0
 
