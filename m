@@ -1,89 +1,144 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE0C36D4FD;
-	Tue, 17 Feb 2026 20:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A53374178
+	for <netdev@vger.kernel.org>; Tue, 17 Feb 2026 20:40:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771360393; cv=none; b=KEFqBk5wci7vrxVhn79RnPaZCLY/iIPJge7lrlOc4mX/Jk8AF1DlH9ly/EsRu9mOx4IaQhyoLGYuqlihkQqVqQwBzuoOqVf8cK04es66wd3AVpwFklvTzBhjv6QPQT5Eju+IMRbXEbHG8Z6zMwZQbrK1s9FaC8Sl2t/xgdrILjY=
+	t=1771360804; cv=none; b=ItOJUXuxTeVov/6z+08mI0jKpwzVKFngCPrWHzGHeI8XAiOH395xkP/Iba3rFbDJDhkIvDsx3/UfDPZVY7JCjHXouIcdF1Tp2r+Ky9ycvlwsOb9uGBKS66q7PwuWFxlbgNAHvTuvH943nk6ap0/V9HCBaQ5rLA72Fhzl4v1rwxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771360393; c=relaxed/simple;
-	bh=43B6XmtzDGAWF3Xd6saMMFffYNdk83aSU20f6R+Xc/0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d8ssQ5Whj4sBIpoRrzaOzDcVIGAN+aNL1BNDLjtxLxcCCNoP7JYpNFBwerCPKExExENGr8ThIyaBgLFNqQpvUQikEyBOnlPrEQZtMoGi55TWMJSP/Lw/jEeb/zWckU19et2J0kL2KPFYsF7ThEkyZ7cXLF1Ly/C0z9VYhTWesRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=yJ8cJPFD; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1771360804; c=relaxed/simple;
+	bh=L8Y+/soduBvvYE2WlvS3KBp0uuGuCnhVJ/41IrGyD3w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UzjVMTPcrvP/ilTQZRZtSkmm7brT7L9M9UoFLXsONuut1DwPahy3Pjxi0Yzuhjy3S9qvawmtxbrbRC5PwYIt5FjY6TqzqwNDtxi+gvDr1To/AilEGorVD4qBhLEwSfG+WiQPeqoHS76wfXiRFvCkZ2zuhLCQ4Yih19JNjx68L/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qddFoofY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3S2g/CSd; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=qddFoofY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3S2g/CSd; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="yJ8cJPFD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=bJHG+po9PhXw7VdzEGhe39mL295EOkH8AvwSWrIOACM=; b=yJ
-	8cJPFDYgpQMDMAD9Vo1Ep/qF2qtfkzmKDBwNXEXAt0WSom8cnEw0KWc4b3rjN1o5jEvBLbnf/O/WJ
-	b/wiwHB/C5liNarkPE2E8O0XAHMcxZhX6SB4N8LzZ8mtzPkP5hVZbrevIDjIchJc+6uD2fwcNBwYq
-	w3ehYE2NWoQbs5Q=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vsRkl-007gbs-P8; Tue, 17 Feb 2026 21:33:03 +0100
-Date: Tue, 17 Feb 2026 21:33:03 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Sean Chang <seanwascoding@gmail.com>
-Cc: nicolas.ferre@microchip.com, claudiu.beznea@tuxon.dev,
-	trond.myklebust@hammerspace.com, anna@kernel.org,
-	netdev@vger.kernel.org, linux-nfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] net: macb: fix format-truncation warning
-Message-ID: <a7c960af-ad60-4aef-93ef-f79657dbe4e5@lunn.ch>
-References: <20260216174950.455244-1-seanwascoding@gmail.com>
- <20260216174950.455244-3-seanwascoding@gmail.com>
- <f71cdfa7-25f8-487d-b727-39ae962401a4@lunn.ch>
- <CAAb=EJWNSvTHuUX862vLmA2s1uKO0vy_x9OSZ6VXqY9X-+JNsg@mail.gmail.com>
- <00ebdd77-d6ef-48f2-a25d-8d8b3c7dc7a8@lunn.ch>
- <CAAb=EJXQjraL=VEod0N8Pm5tuQ5UE9UbrdxdZQ+ArKVhDUT83w@mail.gmail.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qddFoofY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3S2g/CSd";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="qddFoofY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3S2g/CSd"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 227515BCCB;
+	Tue, 17 Feb 2026 20:40:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771360801; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TYjH/+SOgtc4HRGiWKx69Qb64DZo8YcCzhekmoqYUbo=;
+	b=qddFoofY7+gD2vl8tYV8SD0LjYz2VIVWwb8U5dKHD7EewnObHxVvgmgfkBqD5UEvMFa5Lr
+	wYmQYj6WJzJ+Uv/92k2NtjZSFihT6aXJZZYo29kFlHQ60ppgGvignucyt601WOlDvfv5dV
+	fEETVQJv1VfsetKGZ77/mgAdojKpqr0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771360801;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TYjH/+SOgtc4HRGiWKx69Qb64DZo8YcCzhekmoqYUbo=;
+	b=3S2g/CSdXoP4ZUlCaIBMR/LnFlMvWGs2On+pZis5fgFbwX3ylaQYRu0ahCtLaXi1C//lka
+	ESgXe6m4SYXNNiAA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=qddFoofY;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="3S2g/CSd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771360801; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TYjH/+SOgtc4HRGiWKx69Qb64DZo8YcCzhekmoqYUbo=;
+	b=qddFoofY7+gD2vl8tYV8SD0LjYz2VIVWwb8U5dKHD7EewnObHxVvgmgfkBqD5UEvMFa5Lr
+	wYmQYj6WJzJ+Uv/92k2NtjZSFihT6aXJZZYo29kFlHQ60ppgGvignucyt601WOlDvfv5dV
+	fEETVQJv1VfsetKGZ77/mgAdojKpqr0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771360801;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TYjH/+SOgtc4HRGiWKx69Qb64DZo8YcCzhekmoqYUbo=;
+	b=3S2g/CSdXoP4ZUlCaIBMR/LnFlMvWGs2On+pZis5fgFbwX3ylaQYRu0ahCtLaXi1C//lka
+	ESgXe6m4SYXNNiAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 817F63EA65;
+	Tue, 17 Feb 2026 20:40:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id f/VfHCDSlGnAXgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Tue, 17 Feb 2026 20:40:00 +0000
+Message-ID: <8ae8a497-370b-435b-a22b-3108e14f98a4@suse.de>
+Date: Tue, 17 Feb 2026 21:39:59 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAb=EJXQjraL=VEod0N8Pm5tuQ5UE9UbrdxdZQ+ArKVhDUT83w@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] ipv6: fix a race in ip6_sock_set_v6only()
+To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
+ David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
+ eric.dumazet@gmail.com
+References: <20260216102202.3343588-1-edumazet@google.com>
+Content-Language: en-US
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <20260216102202.3343588-1-edumazet@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[kernel.org,google.com,vger.kernel.org,gmail.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,suse.de:email];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Action: no action
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: 227515BCCB
 
-On Wed, Feb 18, 2026 at 03:14:08AM +0800, Sean Chang wrote:
-> On Wed, Feb 18, 2026 at 1:46 AM Andrew Lunn <andrew@lunn.ch> wrote:
-> >
-> > Given the other patches in there series, i have to wounder, is the
-> > diagnostic analysis correct? Or is the RISC-V toolchain buggy?
-> >
+On 2/16/26 11:22 AM, Eric Dumazet wrote:
+> It is unlikely that this function will be ever called
+> with isk->inet_num being not zero.
 > 
-> I retry the different methods, I found that when I directly compile
-> the macb_main.c, it can trigger the same error, and I already prove
-> the different compiler will reach the same result, so it is not a bug
-> of the compiler.
+> Perform the check on isk->inet_num inside the locked section
+> for complete safety.
 > 
-> I also found that the x86_64 defconfig does not enable CONFIG_MACB
-> because it requires CONFIG_COMMON_CLK (which is also disabled by
-> default on x86), whereas the RISC-V defconfig has both enabled.
+> Fixes: 9b115749acb24 ("ipv6: add ip6_sock_set_v6only")
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-arm and arm64 are much more similar to risc-v than x86. You should
-test with those compilers. However, make allmodconfig will get you the
-common clk code on x86. Most build testing is done with this
-configuration, including the netdev CI.
+Reviewed-by: Fernando Fernandez Mancera <fmancera@suse.de>
 
-> > I do agree ethtool_sprintf() is better. But we want the commit message
-> > to reflect why we are making this change. Is it because
-> > ethtool_sprintf() is better, or are we working around toolchain bugs?
-> >
-> 
-> according to the content I mentioned upon, I think the commit will
-> something like "ethtool_sprintf() is better to prevent data truncation
-> and properly fill the 32-byte ethtool string boundary.'"
-
-O.K.
-
-	Andrew
+Thanks!
