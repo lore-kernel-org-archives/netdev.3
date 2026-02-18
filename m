@@ -1,187 +1,111 @@
-Received: from smtp-8faa.mail.infomaniak.ch (smtp-8faa.mail.infomaniak.ch [83.166.143.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F3A633C1B3
-	for <netdev@vger.kernel.org>; Wed, 18 Feb 2026 09:43:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.166.143.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF96731B814
+	for <netdev@vger.kernel.org>; Wed, 18 Feb 2026 09:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771407790; cv=none; b=B7s/ZYRkZt78oNTstj+Z/DEaU27wg/lrc6wNfKezFIPhZRjcCEHbaP3cAL46cUvyk/5xXdBuiPTfM+Tf/NvF+73ZNjg2e0P7oo6kM6mW18FbzXKp43nH/lw5yGmYW3ExmoSR6d+UexYqcANxye9otxcRGahX9odV7LIr1q3N5I0=
+	t=1771407860; cv=none; b=XaOfYeJ2z/ZygOP845yJap/Q7N5UjlUoCfo2KlST1XfFsysSKRpQaIK92FOFtpJVYKSIiDnOuJ++5chnijkS6oVsxV2C7fp2+U48CG4rO5Fw5vYKoXYdF5gcSYbUlMoGKPJU9zTbr3mn55A7hxe+bDwXTggqpdN6MKLH6qysb+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771407790; c=relaxed/simple;
-	bh=J9Uxe4ZEAWj20zBZzQJyfXD6ju3mDOe3vYTEKgmZwTU=;
+	s=arc-20240116; t=1771407860; c=relaxed/simple;
+	bh=DvBwpAu06e6aj8xMNAmhq7qBsezlWGDqujytLeNzUcY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u8sLDRDP9UWfiXCDOpDHHY110EhpMNIonsES9psFwF7SfxnrljJ84FO3aLAG87Kbhw2rErEY+M8NfMSGCqweCYwZBIJUw1epV4eCs7S8kByZFaJ7xJMOj1zLkStHKLI8eCq5XPfSjbX3FSR3GD9b6HyYp5+ULR3zah9i3CZyulE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net; spf=pass smtp.mailfrom=digikod.net; dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b=2Encfo+X; arc=none smtp.client-ip=83.166.143.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=digikod.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=digikod.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=DHlowH+s9wgh4ZEtV708L24J1qzc5HIZd2LEWB3rHaegVbHTHcgmlaVfurLmpgl8louNFqIkQotNZcr+zsXy6UMrc8yFcpLkDZKz5AOB1MeU0jhUYkM/Msv8+yPjz0lvqA8PpJetNeLkV/0SB9md0Omdo3r0Fh9CFfpE5afwbuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lpJw3aqc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=digikod.net header.i=@digikod.net header.b="2Encfo+X"
-Received: from smtp-3-0001.mail.infomaniak.ch (smtp-3-0001.mail.infomaniak.ch [10.4.36.108])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4fGBH31RQnzqpc;
-	Wed, 18 Feb 2026 10:36:47 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1771407407;
-	bh=ffntIhV2m6xC97D+pEZgKwQ6ddwWIQFpxfoE0JG7tfw=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lpJw3aqc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A73C19421;
+	Wed, 18 Feb 2026 09:44:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771407860;
+	bh=DvBwpAu06e6aj8xMNAmhq7qBsezlWGDqujytLeNzUcY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2Encfo+X/baZ2m1VBAgiRsUSMTGNzMcMAaicEiW0RYddGxHGEbherxuDtrOGldquH
-	 bEYIF1ZKpQ0UAeLfNT0YF0P5a8dU2rubVY2u/xGObzeIPdqJFeU+2auMZAYA/pdp3j
-	 oL/HEqhd7nEV0zHDsX9J4ea0IeUp2CYomld4z02g=
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4fGBH06q50z5rJ;
-	Wed, 18 Feb 2026 10:36:44 +0100 (CET)
-Date: Wed, 18 Feb 2026 10:36:37 +0100
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: =?utf-8?Q?G=C3=BCnther?= Noack <gnoack3000@gmail.com>
-Cc: John Johansen <john.johansen@canonical.com>, 
-	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E . Hallyn" <serge@hallyn.com>, Tingmao Wang <m@maowtm.org>, 
-	Justin Suess <utilityemal77@gmail.com>, linux-security-module@vger.kernel.org, 
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>, Matthieu Buffet <matthieu@buffet.re>, 
-	Mikhail Ivanov <ivanov.mikhail1@huawei-partners.com>, konstantin.meskhidze@huawei.com, 
-	Demi Marie Obenour <demiobenour@gmail.com>, Alyssa Ross <hi@alyssa.is>, Jann Horn <jannh@google.com>, 
-	Tahera Fahimi <fahimitahera@gmail.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v5 1/9] lsm: Add LSM hook security_unix_find
-Message-ID: <20260217.Nei3Aeg8bo6h@digikod.net>
-References: <20260215105158.28132-1-gnoack3000@gmail.com>
- <20260215105158.28132-2-gnoack3000@gmail.com>
+	b=lpJw3aqcxAkE/64jTro2O9TAHqKR0qTIB+mH8brhyHWqFsTW4C98TeGsil2Mb06zL
+	 lz89ACOlYciFPp4g7/rC1ANToDTUC7uvWHBdIO6QwX8qjnKjPd7akZKIHUzXW/wVax
+	 vjiQ4aYA4yI0K6Dk8E565D65Eq/vSLyuZTu/18Sqed/gVCZDNdCtkifv5SNEYABQzn
+	 CFC5PkNTjLDgQMoHWpVQYIDF2V0sl49ADo7BLMdnXaLfjzpfJ9xCUU85Nq9bhtikps
+	 CIyjDZouuUNu2tAlPgYIMGwmr0WJtmqIuxU/lJpmC8ckmtaJ2tzfchPFWAGSuc1GLg
+	 SUaJrqNDW+ncA==
+Date: Wed, 18 Feb 2026 09:44:16 +0000
+From: Simon Horman <horms@kernel.org>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: steffen.klassert@secunet.com, herbert@gondor.apana.org.au,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, netdev@vger.kernel.org,
+	Sabrina Dubroca <sd@queasysnail.net>
+Subject: Re: [PATCH net v2] espintcp: Fix race condition in espintcp_close()
+Message-ID: <aZWJ8KeUttdEIi3v@horms.kernel.org>
+References: <aZSie7rEdh9Nu0eM@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260215105158.28132-2-gnoack3000@gmail.com>
-X-Infomaniak-Routing: alpha
+In-Reply-To: <aZSie7rEdh9Nu0eM@v4bel>
 
-On Sun, Feb 15, 2026 at 11:51:49AM +0100, Günther Noack wrote:
-> From: Justin Suess <utilityemal77@gmail.com>
++ Sabrina
+
+On Wed, Feb 18, 2026 at 02:16:43AM +0900, Hyunwoo Kim wrote:
+> This issue was discovered during a code audit.
 > 
-> Add a LSM hook security_unix_find.
+> After cancel_work_sync() is called from espintcp_close(), 
+> espintcp_tx_work() can still be scheduled from paths such as 
+> the Delayed ACK handler or ksoftirqd.
+> As a result, the espintcp_tx_work() worker may dereference a 
+> freed espintcp ctx or sk.
 > 
-> This hook is called to check the path of a named unix socket before a
-> connection is initiated. The peer socket may be inspected as well.
+> The following is a simple race scenario:
 > 
-> Why existing hooks are unsuitable:
+>            cpu0                             cpu1
 > 
-> Existing socket hooks, security_unix_stream_connect(),
-> security_unix_may_send(), and security_socket_connect() don't provide
-> TOCTOU-free / namespace independent access to the paths of sockets.
+>   espintcp_close()
+>     cancel_work_sync(&ctx->work);
+>                                      espintcp_write_space()
+>                                        schedule_work(&ctx->work);
 > 
-> (1) We cannot resolve the path from the struct sockaddr in existing hooks.
-> This requires another path lookup. A change in the path between the
-> two lookups will cause a TOCTOU bug.
+> To prevent this race condition, cancel_work_sync() is 
+> replaced with disable_work_sync().
 > 
-> (2) We cannot use the struct path from the listening socket, because it
-> may be bound to a path in a different namespace than the caller,
-> resulting in a path that cannot be referenced at policy creation time.
-> 
-> Cc: Günther Noack <gnoack3000@gmail.com>
-> Cc: Tingmao Wang <m@maowtm.org>
-> Signed-off-by: Justin Suess <utilityemal77@gmail.com>
+> Fixes: e27cca96cd68 ("xfrm: add espintcp (RFC 8229)")
+> Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
 > ---
->  include/linux/lsm_hook_defs.h |  5 +++++
->  include/linux/security.h      | 11 +++++++++++
->  net/unix/af_unix.c            |  8 ++++++++
->  security/security.c           | 20 ++++++++++++++++++++
->  4 files changed, 44 insertions(+)
+> Changes in v2:
+> - Shorten the patch subject
+> - Target the net tree
+> - Add the bug discovery background and the race scenario to the commit message
+> - v1: https://lore.kernel.org/all/aZLmvv51f5Iu9G7b@v4bel/
+
+Thanks for taking my review into account [1].
+This version looks good to me.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
+
+It seems that get_maintainer.pl highlights that Sabrina is also a
+maintainer, so I have CCed here and left the full context of the
+patch in place for her convenience.
+
+[1] https://lore.kernel.org/netdev/aZSbSOVuRgkjeezg@v4bel/
+
+> ---
+>  net/xfrm/espintcp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/include/linux/lsm_hook_defs.h b/include/linux/lsm_hook_defs.h
-> index 8c42b4bde09c..7a0fd3dbfa29 100644
-> --- a/include/linux/lsm_hook_defs.h
-> +++ b/include/linux/lsm_hook_defs.h
-> @@ -317,6 +317,11 @@ LSM_HOOK(int, 0, post_notification, const struct cred *w_cred,
->  LSM_HOOK(int, 0, watch_key, struct key *key)
->  #endif /* CONFIG_SECURITY && CONFIG_KEY_NOTIFICATIONS */
+> diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
+> index bf744ac9d5a7..8709df716e98 100644
+> --- a/net/xfrm/espintcp.c
+> +++ b/net/xfrm/espintcp.c
+> @@ -536,7 +536,7 @@ static void espintcp_close(struct sock *sk, long timeout)
+>  	sk->sk_prot = &tcp_prot;
+>  	barrier();
 >  
-> +#if defined(CONFIG_SECURITY_NETWORK) && defined(CONFIG_SECURITY_PATH)
-> +LSM_HOOK(int, 0, unix_find, const struct path *path, struct sock *other,
-> +	 int flags)
-> +#endif /* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
-> +
->  #ifdef CONFIG_SECURITY_NETWORK
->  LSM_HOOK(int, 0, unix_stream_connect, struct sock *sock, struct sock *other,
->  	 struct sock *newsk)
-> diff --git a/include/linux/security.h b/include/linux/security.h
-> index 83a646d72f6f..99a33d8eb28d 100644
-> --- a/include/linux/security.h
-> +++ b/include/linux/security.h
-> @@ -1931,6 +1931,17 @@ static inline int security_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
->  }
->  #endif	/* CONFIG_SECURITY_NETWORK */
+> -	cancel_work_sync(&ctx->work);
+> +	disable_work_sync(&ctx->work);
+>  	strp_done(&ctx->strp);
 >  
-> +#if defined(CONFIG_SECURITY_NETWORK) && defined(CONFIG_SECURITY_PATH)
-> +
-> +int security_unix_find(const struct path *path, struct sock *other, int flags);
-> +
-> +#else /* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
-> +static inline int security_unix_find(const struct path *path, struct sock *other, int flags)
-> +{
-> +	return 0;
-> +}
-> +#endif /* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
-> +
->  #ifdef CONFIG_SECURITY_INFINIBAND
->  int security_ib_pkey_access(void *sec, u64 subnet_prefix, u16 pkey);
->  int security_ib_endport_manage_subnet(void *sec, const char *name, u8 port_num);
-> diff --git a/net/unix/af_unix.c b/net/unix/af_unix.c
-> index d0511225799b..369812b79dd8 100644
-> --- a/net/unix/af_unix.c
-> +++ b/net/unix/af_unix.c
-> @@ -1230,6 +1230,14 @@ static struct sock *unix_find_bsd(struct sockaddr_un *sunaddr, int addr_len,
->  	if (!sk)
->  		goto path_put;
->  
-> +	/*
-> +	 * We call the hook because we know that the inode is a socket and we
-> +	 * hold a valid reference to it via the path.
-> +	 */
-> +	err = security_unix_find(&path, sk, flags);
-> +	if (err)
-> +		goto sock_put;
-> +
->  	err = -EPROTOTYPE;
->  	if (sk->sk_type == type)
-
-I think this hook call should be moved here, just before the
-touch_atime() call for consistency with the socket type check, and to
-avoid doing useless check in the hook.
-
->  		touch_atime(&path);
-> diff --git a/security/security.c b/security/security.c
-> index 67af9228c4e9..c73196b8db4b 100644
-> --- a/security/security.c
-> +++ b/security/security.c
-> @@ -4731,6 +4731,26 @@ int security_mptcp_add_subflow(struct sock *sk, struct sock *ssk)
->  
->  #endif	/* CONFIG_SECURITY_NETWORK */
->  
-> +#if defined(CONFIG_SECURITY_NETWORK) && defined(CONFIG_SECURITY_PATH)
-> +/**
-> + * security_unix_find() - Check if a named AF_UNIX socket can connect
-> + * @path: path of the socket being connected to
-> + * @other: peer sock
-> + * @flags: flags associated with the socket
-> + *
-> + * This hook is called to check permissions before connecting to a named
-> + * AF_UNIX socket.
-> + *
-> + * Return: Returns 0 if permission is granted.
-> + */
-> +int security_unix_find(const struct path *path, struct sock *other, int flags)
-> +{
-> +	return call_int_hook(unix_find, path, other, flags);
-> +}
-> +EXPORT_SYMBOL(security_unix_find);
-> +
-> +#endif	/* CONFIG_SECURITY_NETWORK && CONFIG_SECURITY_PATH */
-> +
->  #ifdef CONFIG_SECURITY_INFINIBAND
->  /**
->   * security_ib_pkey_access() - Check if access to an IB pkey is allowed
+>  	skb_queue_purge(&ctx->out_queue);
 > -- 
-> 2.52.0
-> 
+> 2.43.0
 > 
