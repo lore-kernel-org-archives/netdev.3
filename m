@@ -1,42 +1,33 @@
-Received: from mail.codelabs.ch (mail.codelabs.ch [109.202.192.35])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9616532573A
-	for <netdev@vger.kernel.org>; Wed, 18 Feb 2026 08:49:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=109.202.192.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8FE2741B5;
+	Wed, 18 Feb 2026 08:50:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771404580; cv=none; b=RMhLcSKlUnCX03sNPrwRKh2OA6OvxZH13tHP3s8f2ngbn0kY1UYPGm221YM9f5t/z9uOJcovoP0G1rw5wM6ve2wF/BVkbNBG78QKaCHY8oqDwVFmy9U2xDJTUh1uaJZ//rOhwCcZ/G5HFMt0ZVG83iqkUKxoX94FRbcV9T1Zr2o=
+	t=1771404659; cv=none; b=UrlH9PuWmzdkvgk9/9LUl2jAJe+7FSkjF3PEQLN1ZUITH+tpNDhIVIc83hJUVU+joOBWYstEX7c4vmTiLOes9KeDVgZRMocYRbTG4NjQ3B+mpzFlF8u6HfTQ9itS1yajZh6X1gyraQqMRNAMa0KGY8MdhZ4auK6PhgGekvg4cmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771404580; c=relaxed/simple;
-	bh=NGWeKQDdFOoVXHNlINqzBrYg6MbnlgdVi+2skKjiwHk=;
+	s=arc-20240116; t=1771404659; c=relaxed/simple;
+	bh=uKsWK5ydRKBav2ITuam+ba0bQ6cMn7NeP3qE6qilKyM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Do4PYok7Xv+SEloafJgd68SG1ocbijmvnDzAbWuK/w68mhkR4h7JuSQnMKUYrfEYGSUAMb2OX+yqAMdPKNOTP5y5NQpU44neC+8azxvzS6GcN0S0SShZdhmtj1ZW0wzJZ+xODn8PfZoszjKbvWYvXJXqR+1YFwMmL8oDBT9TLto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org; spf=pass smtp.mailfrom=strongswan.org; dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b=iQtdnRfy; arc=none smtp.client-ip=109.202.192.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=strongswan.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strongswan.org
+	 In-Reply-To:Content-Type; b=VhC+LhNEJi5wn1dFEZg/PRcjkuy1TSUDcV7MCpHKhT4H0DkEeG3XjwgYIkJS93Q1nXwIrBm3qfADr+Dl1Xf/Mw3z5eD0w+OVK6gdh+9tk3IwDNbJvhWvt4h3J/0QmMvb7gmlMgbucK5nQ+twijxgveRr6kFB5TC981xem/Rnfpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aPwTxLJN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=strongswan.org header.i=@strongswan.org header.b="iQtdnRfy"
-Received: from localhost (localhost [127.0.0.1])
-	by mail.codelabs.ch (Postfix) with ESMTP id 931E05A0002;
-	Wed, 18 Feb 2026 09:41:58 +0100 (CET)
-Received: from mail.codelabs.ch ([127.0.0.1])
- by localhost (fenrir.codelabs.ch [127.0.0.1]) (amavis, port 10024) with ESMTP
- id RgB3R4zQU8wH; Wed, 18 Feb 2026 09:41:57 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=strongswan.org;
-	s=default; t=1771404117;
-	bh=NGWeKQDdFOoVXHNlINqzBrYg6MbnlgdVi+2skKjiwHk=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aPwTxLJN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D20C19421;
+	Wed, 18 Feb 2026 08:50:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771404659;
+	bh=uKsWK5ydRKBav2ITuam+ba0bQ6cMn7NeP3qE6qilKyM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=iQtdnRfy5p+0GZTP1hVsi9qhgPtvIEyRG7y4SIWDDrzELdC6X3jTdmkIAZ99dfaJp
-	 QBecTzDAJ2oqXRfkset3fZokV9aS14oer2AHqK9F22diHgwMGzpr3CCTys2voHf225
-	 N/R9cnpkddNG8zowgTEsOpqtHaWLnma6Qg2HiV3loJUMfxKHl5l377gkfdje0LrOsL
-	 PqQiW14dcD5uIuwkqIEf0SYIG625Wya5OlvBgiTlcB9SWld51KAgBGsoyTxI4ZGTFS
-	 ngOLAzbezBw9tTUR4nBrUYIfxj/Th/O26+TTHR3iTOufDvoFWSMUdQCjxXyveocki0
-	 F9WENMU1h/D+g==
-Received: from [IPV6:2a02:16a:6e13::1f84] (unknown [IPv6:2a02:16a:6e13::1f84])
-	by mail.codelabs.ch (Postfix) with ESMTPSA id 5474D5A0001;
-	Wed, 18 Feb 2026 09:41:57 +0100 (CET)
-Message-ID: <7b4667b9-c4f2-4c56-a0ea-6e9bdc8b5241@strongswan.org>
-Date: Wed, 18 Feb 2026 09:41:56 +0100
+	b=aPwTxLJNSF6EMJXOSQcCDhO4T599WEYvjT5Huiw9SIiINYpx83GqLfXkY2eA3Sezk
+	 INbs9O6pTfFn5ZZ+F9z8Byp41m43Lzg/sDEFROEky9q+GpzgudFoJjJTcY2XgtLCt5
+	 j6/Ta1u0KBlsRmIzKLHaBInpKieUOSh1voC9g+Up4isoPEchGVuTyDSWpu8livV7T/
+	 pgJHoTVTLUV96xSidBrovc7tXZl3E8cBVGnpvauz4nTJGspaG9H4fwsilLUgZjMr7G
+	 nZVcMrsU315ml/XPVn/KYHUsY3yTM+d09SorveCTyuQIWGg+uEuV0U63n2+mMkWEMD
+	 Ep12m64Chsi7w==
+Message-ID: <7c66f175-3637-478f-9d0e-e314bff59ddf@kernel.org>
+Date: Wed, 18 Feb 2026 09:50:55 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -44,116 +35,94 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] Discussion on "xfrm: Duplicate SPI Handling"
-To: Yan Yan <evitayan@google.com>
-Cc: antony.antony@secunet.com, Steffen Klassert
- <steffen.klassert@secunet.com>, paul@nohats.ca, netdev@vger.kernel.org,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, pabeni@redhat.com,
- horms@kernel.org, saakashkumar@marvell.com, akamluddin@marvell.com,
- Nathan Harold <nharold@google.com>, greg@kroah.com
-References: <CADHa2dChQ=4UVY5X5Ad=jryGRCBPQ37Z_Sw60-6h6h_EcUFG9g@mail.gmail.com>
- <aYC0OvkVPkOnVU-i@moon.secunet.de>
- <CADHa2dBN+_9H-_L19Rg3vfvzC1N5FzG+rzW9Pff8pyM3KL9Ocw@mail.gmail.com>
- <fcc761de-f677-4fc9-969b-47c2b56f54be@strongswan.org>
- <CADHa2dBzJBF6po_qDcn97C15U05EZOzuY-opGW1uc3WAYTPx_g@mail.gmail.com>
-From: Tobias Brunner <tobias@strongswan.org>
-Content-Language: de-CH, en-US
-Autocrypt: addr=tobias@strongswan.org; keydata=
- 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
- tvkh7XWO2ycrW1UlzUzM4KV3SDLIhfOU
-In-Reply-To: <CADHa2dBzJBF6po_qDcn97C15U05EZOzuY-opGW1uc3WAYTPx_g@mail.gmail.com>
+Subject: Re: [PATCH net v6] net: nfc: nci: Fix parameter validation for packet
+ data
+To: Michael Thalmeier <michael.thalmeier@hale.at>,
+ Deepak Sharma <deepak.sharma.472935@gmail.com>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, Simon Horman
+ <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Jakub Kicinski <kuba@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ "Lukas K ." <kernel@0x83.eu>, Michael Thalmeier <michael@thalmeier.at>,
+ stable@vger.kernel.org
+References: <20260218083000.301354-1-michael.thalmeier@hale.at>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260218083000.301354-1-michael.thalmeier@hale.at>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Hi Yan,
-
-> For every inbound SA, we allocate SPIs before negotiation. For
-> outbound SAs, we allocate SPIs once requested by the peer. We only
-> require the (SPI, destination address) combo to be unique. Thus, we
-> may have an inbound and outbound SA sharing an SPI with different
-> destinations, or multiple outbound SAs to different peers sharing an
-> SPI.
-
-That should still be allowed when using the intended APIs (i.e. ALLOCSPI
-for the inbound and NEWSA for the outbound SA).  ALLOCSPI might enforce
-a unique SPI without considering the address, as that's intended for
-local, inbound SAs, where the kernel has full control (looking at the
-the patch, it's certainly not ideal, as it goes through all installed
-SAs to find a duplicate and it prevents an inbound SPI that matches an
-existing outbound SPI - I guess that could be resolved by using separate
-tables for in- and outbound SAs).  But that must not prevent installing
-outbound SAs with the same SPI to another peer using NEWSA, which still
-uses a hash that includes the destination address (that must always be
-the case because peers are free to allocate whatever SPI they want).
-
->> If so, why would you use ALLOCSPI and not just install the outbound SA? Is it to avoid differences for in- and outbound SAs (ALLOCSPI+UPDSA vs. NEWSA)?"
+On 18/02/2026 09:30, Michael Thalmeier wrote:
+> Since commit 9c328f54741b ("net: nfc: nci: Add parameter validation for
+> packet data") communication with nci nfc chips is not working any more.
 > 
-> Exactly—it is primarily for code symmetry. By using ALLOCSPI + UPDSA
-> for both directions, we maintain a consistent larval lifecycle and
-> make it easier to maintain.
+> The mentioned commit tries to fix access of uninitialized data, but
+> failed to understand that in some cases the data packet is of variable
+> length and can therefore not be compared to the maximum packet length
+> given by the sizeof(struct).
+> 
+> Fixes: 9c328f54741b ("net: nfc: nci: Add parameter validation for packet data")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Michael Thalmeier <michael.thalmeier@hale.at>
 
-In my opinion, you are using the API incorrectly.  ALLOCSPI is intended
-to allocate a free local SPI for an inbound SA.  That is, reserve it
-before and while the details of the SA are negotiated with the peer
-using IKE.  This step isn't necessary for outbound SAs and forcing such
-an allocation, after all the details are known, to the responder's SPI
-(which I assume you do via min/max option) doesn't feel right.  I also
-don't think there are any benefits in that "consistent larval lifecycle"
-(if you found any, please let us know).  And the difference between
-UPDSA and NEWSA is the nlmsg_type (there are some attributes that are
-different for in- and outbound SAs, especially if you set the direction
-in newer kernels, but that's the case regardless of the message type).
+I am trying to get it retested by syzbot for the original issue, to be
+sure the original report is still fixed.
 
-By the way, are you using the min/max option for inbound SAs as well,
-with an SPI generated in userland?  That would seem like a violation of
-the intention of the API as well (i.e. letting the kernel control the
-local SPIs).
+I sent:
+Reported-by: syzbot+740e04c2a93467a0f8c8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=740e04c2a93467a0f8c8
+#syz unfix
 
-As the XFRM API basically mirrors PF_KEYv2 here, you can find more about
-the two ways to install SAs in RFC 2367 (SADB_GETSPI/UPDATE vs. SADB_ADD).
+And then followed by Reported+Closes+:
+#syz test
 
-Regards,
-Tobias
+but syzbot does not want to retest it:
+"This bug is already marked as fixed. No point in testing."
 
+Anyone knows how to re-test this against old report?
+
+Best regards,
+Krzysztof
