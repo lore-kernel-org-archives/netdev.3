@@ -1,152 +1,128 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D04344DAE
-	for <netdev@vger.kernel.org>; Wed, 18 Feb 2026 19:28:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5B6238C29
+	for <netdev@vger.kernel.org>; Wed, 18 Feb 2026 19:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771442932; cv=none; b=VB1fXvIZbx1gPWPvckKy9SpHptA1fyUmzsX8K+MuduUOLKu2elJCcHJjm/3cULgtQ47g5SAsqa/eCdW4oUxXFBwNVm7tKZFm1GvOKPIrRrP9jN8u4lerRI+SUs0varjEIT/2fZLRfczKo6aTqDhvBbhvZ0H+HCKbJ8VYo30lNeY=
+	t=1771444593; cv=none; b=PWZALZfzxXb48aGIny+qM2jYUMGmsh/8eEcyVfZT/CRRnD71zE6cPp89O6qgtgD3H1NfZtO5jsAXQyjW8ctZaCgJE13kz2P3mJdNO8aAdA/aeWAoC3Z8EvJegPB0jUxnAzHc70mcXJ1eZhpm1lXtV2H/9FIWy5l5Cq44f05cwZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771442932; c=relaxed/simple;
-	bh=PO+xH1FUrwVZ2IXPeZh+whPAwJAR6FZJBHPt7QKcVzs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z9yXZTTfugdxcqZlbJeY85SNf2AjqoVZgCWJZFHQm5Z/0p4o5eZ9M+UelXKaCeNv9EZ+lhJj7xIC8Vu8/qUlX/H8qCF6eJoaK0boNMxuGvq/FKMcU88ImB8GVQECt3WCkAoxC3hCnS4kvFPri19KF2JjuZqkO+ZOC4F0CKWHyJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Eh1pKMPM; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1771444593; c=relaxed/simple;
+	bh=vBUAyAbacjfaRDxMQvWcGcFT+qxiW9zxnAxYnB8luFk=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=APmSHVcLnzbhiVkqd2ogmf9gupMYl3Fxy9iDeYNHg4klGImNhyN3jm+kA/HWgNo4Z60rXczAI2h0WHAWQktZpHsiT/kRLfS+/hk/q8lwY4QYo/mb+l3s6etKEop5fuARZQgBzl8Exs5DGIP0xjWv36u8+7x4vf+XgvPYuoFzBlo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KS1UWHRN; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Eh1pKMPM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771442929;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3CK4qaB4zqAyy2rhZi6J+IfjYcvDMgbjjFDmPPOFYBs=;
-	b=Eh1pKMPMVfFlylMoZarXPHey9pWysV3wxNP+UjqxKEezc/7cyzBhSS48zjlbYSrFEzWEXq
-	q5pOd6NapD6SzzA68pUfjsqrrdSMpbY9845DMXm7jcMqVnJ4zy0C+Gj8oImAQyOxrYvz6v
-	/QvBl/53JTQOND1t7Pt5aHnOi4iFwCk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-556-pgEgTDdxN6CJlLq3OzoHRg-1; Wed,
- 18 Feb 2026 14:28:46 -0500
-X-MC-Unique: pgEgTDdxN6CJlLq3OzoHRg-1
-X-Mimecast-MFC-AGG-ID: pgEgTDdxN6CJlLq3OzoHRg_1771442924
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 27FF718005AD;
-	Wed, 18 Feb 2026 19:28:44 +0000 (UTC)
-Received: from thinkpad (unknown [10.44.32.24])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A236C1800349;
-	Wed, 18 Feb 2026 19:28:40 +0000 (UTC)
-Date: Wed, 18 Feb 2026 20:28:36 +0100
-From: Felix Maurer <fmaurer@redhat.com>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Subject: Re: [PATCH RFC net-next 0/2] hsr: Add additional info to send/
- receive skbs
-Message-ID: <aZYSvY8nUKhpLZhv@thinkpad>
-References: <20260204-hsr_ptp-v1-0-b421c69a77da@linutronix.de>
- <aZNBfh81p1zBvbi2@thinkpad>
- <20260217161053.XMFBwFXg@linutronix.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KS1UWHRN"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8c713a6a6f8so27506785a.0
+        for <netdev@vger.kernel.org>; Wed, 18 Feb 2026 11:56:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771444591; x=1772049391; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=wD8Ttwe5Tegj8OFrv2Q7m/YBq2wmzpAVQJC0WJWjYy8=;
+        b=KS1UWHRNb9ZlAhRfC/s9nNN9vTufJ3/PEazrIgBD1cSnx6RlBR0EwANWc8b+ygj5ja
+         Bw/jPsabpbezWAaDwFrzqONTAK9KvEFz0oY6GAOHaN5m06Ef6Z1vVEbS+2TYb+/TJ49G
+         TWn3JP4GgQdlDD26/5rETLevAB03FL6qNAotcZyT3laarXKVMaXDhsLMjssHmpPM0+bb
+         qFjKghutzChmQy7PkwpIO8xC0gHPN/aONYNumtsProyvVGx/MYOjXqEnkTBT3f3ngY+i
+         v1zSnWXt8Ka81MvoDSGl1ot3HiC7pJMjCqv7LQj5LLyI6pwFjeQDve+tsvxErOfv6Pdz
+         TRbQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771444591; x=1772049391;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wD8Ttwe5Tegj8OFrv2Q7m/YBq2wmzpAVQJC0WJWjYy8=;
+        b=K9PzrjiMwHeyB229t20AADOn5LiQ1Xi7/5+TOTyiB9MG+G8x9CF3zQZsnPMNLVJ/Ql
+         3lsUWzGiOvB8LDOffJ6ZQUtAFB1wy5+38joMfQE9YqqM3iZ90K2wAADLNANJ1dn61UJl
+         VK643uGdIyPhtvK3AgNAKGx9vWrKLzX38IkwLVfBxKl01081TX75ks5WIcivqyDcTe8B
+         cqDhr1Ho+8g87SRFlxN7buChWf88T0xJUCrwyNtKiuDudM6bsI9hEjrSx8Y5n5IO1ZX7
+         mEHQFt4c3rXvBCUVDqOEF/yg6R3FdqVeBmKtpyskwo3m3QDib/2SMZAjPaX5EvHrWgv0
+         EhIg==
+X-Forwarded-Encrypted: i=1; AJvYcCUtt/TFLn2IPG87jF4kTW8Rwaccak+qw2Lk0NstiYWjLfhTjn3TxpfzcsWtsQDQkRIfXpkiYik=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIQln4sT+SvGo0bSSPZFqhIgakv2m85TDanS8BP888iGjQi1D9
+	WbpkArRUa0PAA12dnMPq7LPvUPq7J6Lv4nBecGzxt241wNKOusm6UNEHgC4WYQ==
+X-Gm-Gg: AZuq6aKCzGeIJscdh79DK7iX5oLFlxqkuuO5ufpCqhLBLu/6iFMr15Rkwz+7GbicCb9
+	SAwz5OtuJadbI2NIJI1Pdt69fdvfrCCcn2FklH8uz5z/3wJve8CD+7jeQ4b5wHlaCPiEKhTdHEb
+	j2UA52OKx6CpGcMc+FQhUyXT/blk5MWhTjMZrmRkeD0a//T7/eObxvXweyGfx8qUwiXVqcFYIJd
+	vwEf19Ms6hQqU/ExwpWZOpHtH8AdRzNfwXp3JX5580sMQaPQxdku0rI+3rulOfKykutLU2eW0xf
+	flqSQeYNmSa2ofK+LSc4zEyad6kN9PKYWS7wF637r01CtmPGP4WhgYK/ABqKQkvrtbcwnB48AbQ
+	AGOSuZ/sTU6JDi+wEnRUtb6yQr5+8n0loQFxzJm8EpS7afp8TBaA9OpKWkUCKB94xQkizN5Ab+r
+	5JPPywa0y/uaNUgHcREtzaxb/5LQ8QWMNd
+X-Received: by 2002:a53:b118:0:b0:63f:b605:b7f2 with SMTP id 956f58d0204a3-64c557eae43mr2160180d50.10.1771438271298;
+        Wed, 18 Feb 2026 10:11:11 -0800 (PST)
+Received: from localhost ([2a03:2880:25ff:49::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64c22fb1d22sm6051799d50.17.2026.02.18.10.11.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Feb 2026 10:11:11 -0800 (PST)
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+Subject: [PATCH net v2 0/3] vsock: add write-once semantics to
+ child_ns_mode
+Date: Wed, 18 Feb 2026 10:10:35 -0800
+Message-Id: <20260218-vsock-ns-write-once-v2-0-19e4c50d509a@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260217161053.XMFBwFXg@linutronix.de>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAJwAlmkC/33NQQqDMBBA0auEWTsliWKjq96juEjjWIdiIklIW
+ 8S7F3KArj+8f0CiyJRgFAdEKpw4eBiFbgS41fonIc8wCtBS91KrK5YU3At9wnfkTBi8IzSm7eb
+ edCSthkbAHmnhT1Xv4CnD1AhYOeUQv/VUVE1/0aJQoVXLo5WLNoMdbhtle3Fhg+k8zx//dlzIu
+ gAAAA==
+X-Change-ID: 20260217-vsock-ns-write-once-8834d684e0a2
+To: Stefano Garzarella <sgarzare@redhat.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>, Bobby Eshleman <bobbyeshleman@meta.com>, 
+ "Michael S. Tsirkin" <mst@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+ Daan De Meyer <daan.j.demeyer@gmail.com>
+X-Mailer: b4 0.14.3
 
-On Tue, Feb 17, 2026 at 05:10:53PM +0100, Sebastian Andrzej Siewior wrote:
-> On 2026-02-16 17:10:38 [+0100], Felix Maurer wrote:
-> > I agree with Willem that the changes are pretty invasive in core parts
-> > of the stack for a pretty narrow use case. It got me thinking what would
-> > already be supported at the moment without any changes in the kernel or
-> > pretty small changes. For that, I see three parts:
-> >
-> > 1. Userspace needs to get the full HSR+PTP frames including the headers
-> >    and including the rx port information.
-> >      a) Userspace should have a way to _only_ receive HSR+PTP frames
-> >         instead of all traffic on one of the ports.
-> > 2. We should not forward HSR+PTP frames in HSR interface to prevent
-> >    creating inaccurate timing information.
-> > 3. Userspace needs a way to send packets a) over just port A or B of an
-> >    HSR interface, that b) already include an HSR header and should
-> >    therefore go mostly unmodified.
-> >
-> > Is that about a correct summary?
->
-> Yes. Point 3b needs to be extended by
->   " + or does not contain a HSR/PRP header and requires one by the
->   system."
+Two administrator processes may race when setting child_ns_mode: one
+sets it to "local" and creates a namespace, but another changes it to
+"global" in between. The first process ends up with a namespace in the
+wrong mode. Make child_ns_mode write-once so that a namespace manager
+can set it once, check the value, and be guaranteed it won't change
+before creating its namespaces. Writing a different value after the
+first write returns -EBUSY.
 
-Ah, I missed that! Thanks for pointing it out, that seems to be the
-tricky part to me. Just be sure, you refer to the Pdelay_{Req,Resp}
-messages? Or are there any other messages?
+One patch for the implementation, one for docs, and one for tests.
 
-> > If I understand your patch 2 correctly, you will be maintaining two
-> > sockets in userspace (one bound to each of the ports A and B through the
-> > HSR interface using PACKET_HSR_BIND_PORT). Binding through the HSR
-> > interface to port A/B has the very special meaning of making a socket
-> > only receive a very small subset of the packets, that is PTP traffic at
-> > the moment. This seems like a somewhat hidden property of the bound
-> > sockets and should at least be very explicit.
->
-> Technically four sockets (two for A and two for B) but in general yes.
-> What you mean by hidden property/ very explicit? Document
-> PACKET_HSR_BIND_PORT in packet(7) or something else?
+---
+Changes in v2:
+- break docs, tests, and implementation into separate patches
+- clarify commit message
+- only use child_ns_mode, do not add additional child_ns_mode_locked
+  variable
+- add documentation to Documentation/
+- Link to v1: https://lore.kernel.org/r/20260217-vsock-ns-write-once-v1-1-a1fb30f289a9@meta.com
 
-Yes, at least that. Maybe also make it more clear in the name that this
-kind of binding means that you will not receive all packets from this
-port but just some (atm, PTP).
+---
+Bobby Eshleman (3):
+      selftests/vsock: change tests to respect write-once child ns mode
+      vsock: lock down child_ns_mode as write-once
+      vsock: document write-once behavior of the child_ns_mode sysctl
 
-[...]
-> > The other thing that came to my mind: this sounds like XDP with AF_XDP
-> > could be a solution that could be used already today; not so much
-> > because of their speed but because you can program what goes to the
-> > stack and what ends up in userspace. It fulfills 1) + a) directly, 2)
-> > implicitly by not letting these frames enter the stack, and 3) directly.
-> > But I also see that handling AF_XDP sockets in userspace is quite some
-> > work to do if all you really need is to separate out some traffic.
->
-> Not forwarding PTP traffic needs to happen unconditionally and not to
-> wait until the system is up and has the software running.
+ Documentation/admin-guide/sysctl/net.rst | 10 ++++++---
+ include/net/af_vsock.h                   | 20 +++++++++++++++---
+ include/net/netns/vsock.h                |  9 +++++++-
+ net/vmw_vsock/af_vsock.c                 | 15 +++++++++-----
+ tools/testing/selftests/vsock/vmtest.sh  | 35 +++++++++++++++-----------------
+ 5 files changed, 58 insertions(+), 31 deletions(-)
+---
+base-commit: ccd8e87748ad083047d6c8544c5809b7f96cc8df
+change-id: 20260217-vsock-ns-write-once-8834d684e0a2
 
-I agree that we should just do that in the kernel, no matter what else
-we do to support PTP.
-
-> However if we
-> ignore this detail and can receive on interface A and send on interface
-> B over XDP and get timestamps right then we have the same as the packet
-> interface on the two eth devices. What is missing is sending with HSR/
-> PRP header.
-
-You wrote in another reply, and I agree with it, that sending with the
-system HSR header and sequence number must go through the hsr device.
-Frames that already have a header, such as Sync an FollowUp that are
-forwarded, could just directly go through the slave interfaces.
-
-I think the cases should be handled independently: to send a frame with
-a full header (i.e., the forward case), we already have the AF_PACKET
-socket on the slave interfaces as an option. For sending a frame just in
-one direction in the HSR ring through the hsr interface, we have to come
-up with something, but IMHO just for that.
-
-I like the idea of putting the port hint in the ancillary data of the
-message, but I'm not sure where to put in the skb then / how to pass it
-to the hsr interface. Willem's suggestions are worth exploring I think.
-
-Thanks,
-   Felix
+Best regards,
+-- 
+Bobby Eshleman <bobbyeshleman@meta.com>
 
