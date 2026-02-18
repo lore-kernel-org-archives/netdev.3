@@ -1,184 +1,174 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB13B314D1E
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 12:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D69F37EFEE
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 12:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772625864; cv=none; b=bCJUNoLDrrvUtNtsn0jy1917Z+iQ5MjlskRfskcRDY6AChpafiFVS58jTGgmfiU+yiMSw9s73U4zI3drZ0PF6R0t3kIw0Qa6agFJvIjqKu7X4SSnZERU62nbgTanWJp5xQ4v1+8RAlxXlLvpf7LRUraoYmIroKEijOY4Bo2LI3g=
+	t=1772626345; cv=none; b=kS2tW2nu0yQe2x84SSe5V7HdvS0NnmwNZ9F63UymGZgNfFnaQugy76E06C5t4vfb5JrTZTp7uwPUw39lCA9/0XR/hWpAzjcGzCMSYEKEpkBGRlmjIsRoePwnwmyroPRG1nlVtHMt0/7GOG161adcZhomJxiIc4e7RFM9i9WqMIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772625864; c=relaxed/simple;
-	bh=67Xrp0u9d33OgxEmG2g86y+w9UQ+1Shs+NBa0hxWSQc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pg0XEjQdzxjLwrdopRiqDlCXleFZE2aHGiBQK8/qxjhMIwAPJ1NszLsXLkgZDcqqxvHhfsd+p3bVJch5QR3Mq1ngoUftjcuaWM9lG8HIwG7lwkAnay1+f9ZaRbMYjdZWzqdKrzS+6WGBFDIugUWP2PF1/+FqpOYJfxeHj5zbGGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=YScXSqBg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0h2+HkXU; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=YScXSqBg; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=0h2+HkXU; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1772626345; c=relaxed/simple;
+	bh=5PBIpDZUoWmzMLSSr4AMFrJThU2kmJNnnlCij9fJqvY=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-Version:Content-Type; b=pKjbOY9mIVma9gR15fqPKO8fuO0HuTYrB0nEhfCln5wmpLKVvK+bP8wK/I/yVfiyik7qDwQ3YXpKbmlBDSAMJUs2Q1mXQa7/RgCy+AtluqiEvzXIDdijTZcxxor8PUmZQW52d6XSaepi3I6+MOh2cvr42mM1lbvN9Xdv0FvqrTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g1QdB4do; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="YScXSqBg";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0h2+HkXU";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="YScXSqBg";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="0h2+HkXU"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0A8983E7CE;
-	Wed,  4 Mar 2026 12:04:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772625861; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vD1OCYwk5gzbTYTOeNyV94+f10qcqATMVc8osJETivc=;
-	b=YScXSqBg+JA33/Ej9Aw+ZNMlS42def+UOOo3wJm63imHekk82XcDPQTkOWJyB4Q/AmsO3+
-	bXDVz2yC7PGqvg0txM8IKS9g6Gi3Kne7d1yLr/05HdIsIG3TpRQ2fIw7lkaA0nyQZjU8rr
-	6gxbS4P+YA1hy5heXKU7Bm69eTdGOyE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772625861;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vD1OCYwk5gzbTYTOeNyV94+f10qcqATMVc8osJETivc=;
-	b=0h2+HkXU6KD41Ab1gYBwddKswpFwsg3fuhHRJZrsTh6qmNH7+da4n31ZC1OmsuODOeYEEj
-	GKqPFTcmEL0Af+BQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772625861; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vD1OCYwk5gzbTYTOeNyV94+f10qcqATMVc8osJETivc=;
-	b=YScXSqBg+JA33/Ej9Aw+ZNMlS42def+UOOo3wJm63imHekk82XcDPQTkOWJyB4Q/AmsO3+
-	bXDVz2yC7PGqvg0txM8IKS9g6Gi3Kne7d1yLr/05HdIsIG3TpRQ2fIw7lkaA0nyQZjU8rr
-	6gxbS4P+YA1hy5heXKU7Bm69eTdGOyE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772625861;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vD1OCYwk5gzbTYTOeNyV94+f10qcqATMVc8osJETivc=;
-	b=0h2+HkXU6KD41Ab1gYBwddKswpFwsg3fuhHRJZrsTh6qmNH7+da4n31ZC1OmsuODOeYEEj
-	GKqPFTcmEL0Af+BQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 344E73EA69;
-	Wed,  4 Mar 2026 12:04:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sDevCcQfqGkSdQAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Wed, 04 Mar 2026 12:04:20 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: bridge@lists.linux.dev,
-	roopa@cumulusnetworks.com,
-	sdf@fomichev.me,
-	petrm@nvidia.com,
-	horms@kernel.org,
-	idosch@nvidia.com,
-	razor@blackwall.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	davem@davemloft.net,
-	andrew+netdev@lunn.ch,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH 2/2 net v3] net: vxlan: fix nd_tbl NULL dereference when IPv6 is disabled
-Date: Wed,  4 Mar 2026 13:03:57 +0100
-Message-ID: <20260304120357.9778-2-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260304120357.9778-1-fmancera@suse.de>
-References: <20260304120357.9778-1-fmancera@suse.de>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g1QdB4do"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48371bb515eso101553085e9.1
+        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 04:12:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772626343; x=1773231143; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :message-id:date:in-reply-to:subject:cc:to:from:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5PBIpDZUoWmzMLSSr4AMFrJThU2kmJNnnlCij9fJqvY=;
+        b=g1QdB4do0A00IJyh4YOenmWRPZje1sfomIaSWdoO5KTRgO5tXJt+8mlCMh4NOULI3l
+         rajd1URAhDYtIrrmC7Dl/9yuzzy8LzEsml4ruLw7DdnS09rB16NeTdd7e17rNUvZwSC9
+         y+RCBni71L2aJUjNqpgSclEzrHB+j8xSMBMGs5fNrBqZPMsOo146NKaZo6xVXlNICYlb
+         g2AeNcNca+Mrv5i8L09J//xIzssGVbgx2Z2jiMX+JshtHVijnA1IyOo5laJ4LKvYUL5U
+         +z9CSoTGiJuT7cMFN7y0ehzUnNCJf7X2eg30hxprGKPIPBPU+2akv0N/0WUYrIgQfXls
+         jMCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772626343; x=1773231143;
+        h=content-transfer-encoding:mime-version:user-agent:references
+         :message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5PBIpDZUoWmzMLSSr4AMFrJThU2kmJNnnlCij9fJqvY=;
+        b=ZmEBNq8tXCbaUhdQ/6H9z9Ft+YaifpklbnXgCBJclypAndwEAKoBuNi7aBBT9Y5e1U
+         1lj0nY6AV6IdXLy0/yz7bymjuGoz70F9fC2XtszyWga5lDxcoJ6Y7vp/hd/CETT5/jZL
+         o9rHOCzEHZ+qbwyb3olnHJraYBeqGiPAk1+6fDCBUob0O3ts+JxbBi6jzpsYO6vspguq
+         QA71eCQXDxTuhczKTidAfg0lxiDCHwOLizPZkRBB/FYrYl1RUu/3jVUq8c4cJ/4uNoEl
+         nOlrD54OwC1ZAefzm5OTSK39BBtdfin6JwbhPkSDcWS1ZQTP56kB+MeEV7XtRbVBEu1I
+         jJgw==
+X-Forwarded-Encrypted: i=1; AJvYcCXrm2UWN0N85623ZaI9z87q+yH3jPETWwj4RTzDeAcl/rpZMX9fT5xxnmxkjhfoS3zysRWn8mA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZkIoGbdsHaL2Q8B5ttyuiPWWkE6PoCVwmMOeaPPV5yTPzUbKA
+	7Q8qLU95J6Vs5H0Qc+NyAxG8swRpxFfRGRabSdiUT2U9gBmIQTpPEY6n
+X-Gm-Gg: ATEYQzxXtk1lC+s6qb1gqfInDtRgrmnNQv7e6hP6PfBDTS8K6C/wQqRyX0Gjwl+vyvs
+	m/9yrdss3Dnn5AyWl5Ovwp2MYk51KTyKNb5Kr6D0waLMP4WZLwJ239HriJIeUCCHrfJtwyIc//x
+	zzRMnVedKVx4du7WuA8ryLTHHPb5UgOG129wzfc4eoZSzPvr1HpZKf2zhmgPdEeDc0IF3Epx9QE
+	DqOpnvPaS0ECpMp76CTLNp692UrdOlOJBjiCijJ8h1Lx0/Vq4GsqRqQoXx/yk4fq72Fc+w/tS5/
+	53SSNu7pT8rcrqR0K0vqFbykxg4hjEyv5Ed5/KqVAoLN92aWspiJ0sfr1G8t4BbL/oSOhN/X4Mm
+	t9Ve2Q6TezI7S3NpQv/xKb/wCVP7i8WXzL2ULp75VKXOGC202HTKhZQlfSPdZatDMbmVf5WZwRi
+	NWoT5Vh2fqchtaP4YZdiThStAUBA==
+X-Received: by 2002:a05:600c:1f85:b0:47e:e712:aa88 with SMTP id 5b1f17b1804b1-4851989f765mr30694295e9.31.1772626342560;
+        Wed, 04 Mar 2026 04:12:22 -0800 (PST)
+Received: from imac ([88.97.103.74])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485188923c2sm48580075e9.14.2026.03.04.04.12.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2026 04:12:21 -0800 (PST)
+From: Donald Hunter <donald.hunter@gmail.com>
+To: Hristo Venev <hristo@venev.name>
+Cc: Jakub Kicinski <kuba@kernel.org>,  "David S. Miller"
+ <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Paolo Abeni
+ <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,
+  netdev@vger.kernel.org,  Josef Bacik <josef@toxicpanda.com>,  Jens Axboe
+ <axboe@kernel.dk>,  linux-block@vger.kernel.org,  nbd@other.debian.org
+Subject: Re: [PATCH] netlink: specs: add specification for NBD
+In-Reply-To: <6a1339999b091edaaa15e34aceb7961dfc61581b.camel@venev.name>
+Date: Wed, 18 Feb 2026 11:28:44 +0000
+Message-ID: <m2fr6yl28j.fsf@gmail.com>
+References: <20260215180309.2255721-3-hristo@venev.name>
+	<m2o6lnlg2y.fsf@gmail.com>
+	<6a1339999b091edaaa15e34aceb7961dfc61581b.camel@venev.name>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spamd-Result: default: False [-1.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	TAGGED_RCPT(0.00)[netdev];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_DN_SOME(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
-X-Spam-Score: -1.30
-X-Spam-Level: 
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-When booting with the 'ipv6.disable=1' parameter, the nd_tbl is never
-initialized because inet6_init() exits before ndisc_init() is called
-which initializes it. If an IPv6 packet is injected into the interface,
-route_shortcircuit() is called and a NULL pointer dereference happens on
-neigh_lookup().
+Hristo Venev <hristo@venev.name> writes:
 
- BUG: kernel NULL pointer dereference, address: 0000000000000380
- Oops: Oops: 0000 [#1] SMP NOPTI
- [...]
- RIP: 0010:neigh_lookup+0x20/0x270
- [...]
- Call Trace:
-  <TASK>
-  vxlan_xmit+0x638/0x1ef0 [vxlan]
-  dev_hard_start_xmit+0x9e/0x2e0
-  __dev_queue_xmit+0xbee/0x14e0
-  packet_sendmsg+0x116f/0x1930
-  __sys_sendto+0x1f5/0x200
-  __x64_sys_sendto+0x24/0x30
-  do_syscall_64+0x12f/0x1590
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> On Tue, 2026-02-17 at 12:17 +0000, Donald Hunter wrote:
+>> There are yamllint errors:
+>>=20
+>> make -C tools/net/ynl lint
+>> make: Entering directory '/home/donaldh/net-next/tools/net/ynl'
+>> yamllint ../../../Documentation/netlink/specs
+>> ../../../Documentation/netlink/specs/nbd.yaml
+>> =C2=A0 159:81=C2=A0=C2=A0=C2=A0 error=C2=A0=C2=A0=C2=A0 line too long (1=
+04 > 80 characters)=C2=A0 (line-
+>> length)
+>> =C2=A0 169:6=C2=A0=C2=A0=C2=A0=C2=A0 error=C2=A0=C2=A0=C2=A0 syntax erro=
+r: expected <block end>, but found
+>> '<block mapping start>' (syntax)
+>> =C2=A0 170:7=C2=A0=C2=A0=C2=A0=C2=A0 error=C2=A0=C2=A0=C2=A0 wrong inden=
+tation: expected 5 but found 6=C2=A0
+>> (indentation)
+>
+> Thanks, I will fix the lint errors in v2.
+>
+>> > +doc: See :file:`drivers/block/nbd.c`
+>>=20
+>> Prefer to see a meaningful doc string here.
+>
+> I will add more proper documentation in v2. I couldn't find any
+> existing documentation of this netlink interface, so I guess I will
+> write it myself.
+>
+>> > +attribute-sets:
+>> > +=C2=A0 -
+>> > +=C2=A0=C2=A0=C2=A0 name: nbd-attrs
+>> > +=C2=A0=C2=A0=C2=A0 name-prefix: nbd-attr-
+>> > +=C2=A0=C2=A0=C2=A0 doc: Configuration policy attributes, used for CON=
+NECT
+>> > +=C2=A0=C2=A0=C2=A0 attributes:
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 name: unspec
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 value: 0
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 type: unused
+>>=20
+>> No need for unspec in the attribute list, ynl codegen does the right
+>> thing.
+>
+> For me `pyynl.ynl_gen_c --mode uapi --header` no longer generates
+> `NBD_ATTR_UNSPEC` if I remove this. Is there a YNL property to specify
+> the name of the zero value of the attribute set? If not, should I
+> remove it anyway, changing the generated header?
 
-Fix this by adding an early check on route_shortcircuit() when protocol
-is ETH_P_IPV6. Note that ipv6_mod_enabled() cannot be used here because
-VXLAN can be built-in even when IPv6 is built as a module.
+Oh sorry, if your goal is 100% equivalence then I guess you need it. We
+have the same in "fou" for example.
 
-Fixes: e15a00aafa4b ("vxlan: add ipv6 route short circuit support")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
----
-v2: use ipv6_mod_enabled() instead of a NULL check
-v3: go back to nd_tbl NULL check as ipv6_mod_enabled() might not be
-available. Added a comment so it doesn't seem random.
----
- drivers/net/vxlan/vxlan_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+>> > +operations:
+>> > +=C2=A0 enum-model: unified
+>> > +=C2=A0 name-prefix: nbd-cmd-
+>> > +=C2=A0 list:
+>> > +=C2=A0=C2=A0=C2=A0 -
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 name: unspec
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 value: 0
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 doc: NBD_CMD_UNSPEC
+>
+> A similar question applies here. If I remove this, `pyynl.ynl_gen_c
+> --mode uapi --header` no longer generates `NBD_CMD_UNSPEC`. Is there a
+> YNL property to generate it? If not, should I remove it anyway?
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 05558b6afecd..17c941aac32d 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -2130,6 +2130,11 @@ static bool route_shortcircuit(struct net_device *dev, struct sk_buff *skb)
- 	{
- 		struct ipv6hdr *pip6;
- 
-+		/* check if nd_tbl is not initiliazed due to
-+		 * ipv6.disable=1 set during boot
-+		 */
-+		if (!ipv6_stub->nd_tbl)
-+			return false;
- 		if (!pskb_may_pull(skb, sizeof(struct ipv6hdr)))
- 			return false;
- 		pip6 = ipv6_hdr(skb);
--- 
-2.53.0
+You'll need to keep it for equivalence.
 
+>> > +=C2=A0=C2=A0=C2=A0 -
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 name: connect
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 doc: See :file:`drivers/block/nbd.c`,
+>> > :code:`nbd_genl_connect()`
+>>=20
+>> Prefer to see meaningful doc string (same for other ops)
+>
+> I guess I will have to document the four operations in v2 as well.
+>
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 attribute-set: nbd-attrs
+>> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dont-validate: [strict]
+>>
+>> nbd.c has strict & dump, should this be [strict, dump] ? (same for
+>> other ops)
+>
+> The NBD operations don't have `dump`, only `do`, so adding `dump` to
+> `dont-validate` does not change the output of `pyynl.ynl_gen_c --mode
+> kernel --source`. Should I add it anyway?
+
+Ah, so it's redundant in nbd.c.
+
+Thanks,
+Donald.
