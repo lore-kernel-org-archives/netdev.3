@@ -1,218 +1,250 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ED4E346AC2
-	for <netdev@vger.kernel.org>; Wed, 18 Feb 2026 18:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E39D0346774
+	for <netdev@vger.kernel.org>; Wed, 18 Feb 2026 18:11:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771438276; cv=none; b=KJiQAxZ23febr0l1mukjxAKOPKNvidhE816/XdVJeEbLRCIaShgU3txWXAGE68KPNbe9M80oeR3Nc/qH61BWEnoy8m3KntnYLNAUlHHD9uxsKquhwdjPKDC844Yhqemzn/4XG5OIYQAVpgOmRlVh866R9L4woCoAjcagiYzasPs=
+	t=1771438314; cv=none; b=KxyS5Bh8sJQtCJnqEV/yBhLOowzamYUdGlceY0G11CV8BNEmuwDlDXySeShyNBMhxsoP+swNmJIYuPD/SHhjY8d02p4T7Fwdou+aAlfPV7bAPjU8b8PGeRcMqRe2C1SQcKe2JIZXA85QiaCkf2icCwk9q2dBfa+fmGYFmV7/IWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771438276; c=relaxed/simple;
-	bh=nlAlDEhBcV2bHlFAryaUj7ZOcWtIQPl+cHubqkhJz4A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EjWGmfv5/Kxtob4zhQfVhF5iY3tAep19/L2pCjTD5cBr/GfSMHA6Ap3ej93jBCMgRVdN0evUI7KHMKs7o4QKkTa3uk0snfWgYoJQJy/jUS7XCmir0jdLTgWf2YLLv3vtlMHPnLHQX3AcQxXAYt3mEVRbarrbkNko9GeDZQS0dJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hUp7oJdp; arc=none smtp.client-ip=209.85.128.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771438314; c=relaxed/simple;
+	bh=cbGs+EDJvUrqEkGtFcalHSHNJv6biaGOv5JlK9zk6QI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z0yYQbBFc7Nq6ih0ciYoeWzCV60kTwB1WpGEA8y5pf/vTmSFl29LIxlzpnW+K2CjJdDBxfVmEE/NwgNHM9s6O+N3j1RkSeurD4g9eX0Op81NxkOTXn9gfsVVU+/PY7fgwjLhkG70Y1MYYcXfBTr9dYMlN1bu/Iznh/SZl2JB+80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=zc3x9YVy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OTP6aIlW; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hUp7oJdp"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-7948e902fadso933297b3.1
-        for <netdev@vger.kernel.org>; Wed, 18 Feb 2026 10:11:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771438273; x=1772043073; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EYXQVsGZ6QB5W8jT2tab5YPGUexmQcws943nTeNPNNs=;
-        b=hUp7oJdp3Hotae+s6O2fU5aY27/6OUVkspJ/J1FKgfyZnP1J8y3i/tT0h+me+TXuVz
-         LFZnwKmOMEZjCPwT9kZy0MxO3u2adyIArKxflc79iNOk1+meLeqJgvG+UddxMJGU7k95
-         X1yc/DoHlDbA5gSEUF65wXAMXpdXQG9hMpv8Urdy3h0zdinnnEJOH6amloSk26ufsenZ
-         xwYZYGz9d2xwSXYpdtIhwVSha3eSG+QU3dh+zZ9L85SyHX0X6agnkTRV+v2wcV5TKnSH
-         NP6bngIRgVCtAUmOvC9nKQRRMNpFKei1Ze1UpUimKVaE+994K9sCpjnMJLo9ZeOBSuv0
-         HmLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771438273; x=1772043073;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EYXQVsGZ6QB5W8jT2tab5YPGUexmQcws943nTeNPNNs=;
-        b=Gz1VIW+C9WhQXr4O3Ab9f6PaW6VzC8uNpetHD+dOFrcHHzIzT4a1J9bAqLr5Hebv4E
-         U0GMNhBaH//OcYtSQyEFEwvZcQFN9T0fdfE2DZmfjkJVi63zQeonMcbhM33C8LfrwPsb
-         Xm079k0CzbY3Rt14Qg21+bm7YP2s8yS6Yn2UKQMndd2K9Dde+a3rn3VOV5ld0WnGPN19
-         aAB1zA47MiRuDGi13jrzKMIuFZ+LO3IAo2UMspXRTnA8KHwgq1EBqWeCxpZDe7ekiO36
-         K+g+nwyEb618WwB09nIrhLibbYi5ucBA3G3PHQThy13KlWzA1p+AJnNEikQzE2kgIzn6
-         7Nog==
-X-Forwarded-Encrypted: i=1; AJvYcCW0XCYv1cpNAG3mdTHXrvbcIcYxUyFmO2GnmLXN+jfJGTOwnMY0/IlfVBLgCAoXk8cMKuUfG9U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw96vXvefGEBBk2SHbariJzpcAjgT6Xu0ahTHF4Zz9UvYx0PJfK
-	te9wRYKhvCrRYclwhXcVsD53zrevGv1ez9TZ+EUV2tX08irDrzP1Npd/
-X-Gm-Gg: AZuq6aIc0ndtrSsiCAYd+saIC92b6H+Gp75Ls0RYm4vbd8VJ8eTQjX7xXwkgsAVxULC
-	r+H8p0L5omRDOyBcCJDMzLddtgc4r521NuWcDMvs0BYP/4F2C59GZ6RRp/KnLitJnQpWF2uDu5l
-	Oeg3iY509SWmYb+WQamhkHG45qlCL+cBlA4dUimau6TDGJMR20rL9kTe3SxgVo8oNF68DuYvXYx
-	14E+631YUGYv02VJPxAUdQ32ZhmDKRG7RyyRvGI+mRaZlOGqbli7CPlBhZAPVvjkzvFltT2qfXu
-	CHnRO07w7MesY/UOfg2Wz5w3Bc7sK+NUJkUW6e4QHXT9W0c6kWhZqB3H2odbfsc+WNpHwc91+BT
-	LmPWuiaPrOmk6LxikD8aJNKUafo3iZEL2MhtVDvqoqyweQicJ73LEJhg8IgB6MJOmmTpgU9epnI
-	if0zwCcw9or0Nij7Rf6heWSg==
-X-Received: by 2002:a05:690c:d8d:b0:794:7be0:8217 with SMTP id 00721157ae682-79803d031ffmr1521947b3.52.1771438272580;
-        Wed, 18 Feb 2026 10:11:12 -0800 (PST)
-Received: from localhost ([2a03:2880:25ff:5f::])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-7966c254d5asm129169257b3.43.2026.02.18.10.11.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Feb 2026 10:11:12 -0800 (PST)
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-Date: Wed, 18 Feb 2026 10:10:37 -0800
-Subject: [PATCH net v2 2/3] vsock: lock down child_ns_mode as write-once
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="zc3x9YVy";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OTP6aIlW"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id D9EF5EC05AD;
+	Wed, 18 Feb 2026 13:11:49 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Wed, 18 Feb 2026 13:11:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm1;
+	 t=1771438309; x=1771524709; bh=QtQ+8xOqTbSwxU2vvHTk91LQ1jQ12Feo
+	zPFpc2kz5Wg=; b=zc3x9YVygZxTgOLDRggpkIgzM0vwAdiKqky0f+LoaRqcsyAf
+	kIR9Lurfet/GpBr2DShHZFRwPveAcydtVjmRpWQQIYws8lS7WSiOWth4vGjWrI/0
+	LsbRQv22XqwQzKDoq9kxPzLQq4FQTNaOzdRSawkidPm5UixqtVR/ZH6spF5izAhK
+	WFHu7mRqfxCQ7vPqg2hwmYj4Hx1KSoPlyU1I/Rzm6Z1a8ngI9VBrJFdIgj2BpcNj
+	fdlLybFHHMlzSPhoRtRwfws9SCZcLY/p2L4GWRukNqw/Kc2p5bx2xrJHgQDZ6VNX
+	NfslXSK6CkIG166fgx2PjV/z960EEfKPbPMwuQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1771438309; x=
+	1771524709; bh=QtQ+8xOqTbSwxU2vvHTk91LQ1jQ12FeozPFpc2kz5Wg=; b=O
+	TP6aIlWYpud5vTbMt5etvJfs5s7+e593X+hTVKNx9BXMktFcHsepOhKKaPlkEs8I
+	mPh1ijgKxQOZukjeHBbe+z45gi+xu82lOULVkXBDZZWaHftzaDvkzhP/Ts0CINy2
+	OSXl3qtBNJ2qGe4vbqtbMbc3VTNCrA6RqR381BvDZJEf7E68zBTtTaTo+ZsbIQeB
+	1noPxekVIoCLEkjV+DFhY+ctn3FpgznGzS89dW2Wi8cUJqCIZI0f+u502YyFOVdK
+	BgkIp2u7ghQaGEiNNGG1xS6zzeyMQZDVvdatO/QuylwKOzH/GkfDqyjvPDwrBTci
+	WAT9rjhhX3r8xk1Eh2SEg==
+X-ME-Sender: <xms:5QCWadN7jP3E4Yhh5Z-5f3gSIik2GcHyuXzPF6Q_h1Krv_PNfdZqQQ>
+    <xme:5QCWacgxYMSRcgYWkft8RD_8RmN0WNVwWR1vrpTioBhkB3Ki3Fs-x4SRWFS4znXbo
+    rdlymwD0wimPzSc9GeqxsWuRm-env6S9nfOm7zByREI6zkqZYJOIw>
+X-ME-Received: <xmr:5QCWaQsbtdHGlmO-n5SuWs-AtVLaviHfwXrsFY3WShDAwGwBrnfoubPvz0xP>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvvdeffeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtugfgjgesthekre
+    dttddtjeenucfhrhhomhepufgrsghrihhnrgcuffhusghrohgtrgcuoehsugesqhhuvggr
+    shihshhnrghilhdrnhgvtheqnecuggftrfgrthhtvghrnhepgfdvgeeitefffedvgfdutd
+    elgeeihfegueehteevveegveejudelfeffieehledvnecuvehluhhsthgvrhfuihiivgep
+    tdenucfrrghrrghmpehmrghilhhfrhhomhepshgusehquhgvrghshihsnhgrihhlrdhnvg
+    htpdhnsggprhgtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohep
+    ihhmvhegsggvlhesghhmrghilhdrtghomhdprhgtphhtthhopegurghvvghmsegurghvvg
+    hmlhhofhhtrdhnvghtpdhrtghpthhtohepvgguuhhmrgiivghtsehgohhoghhlvgdrtgho
+    mhdprhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrsg
+    gvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehhohhrmhhssehkvghrnhgvlhdr
+    ohhrghdprhgtphhtthhopehnrghtvgdrkhgrrhhsthgvnhhssehgrghrmhhinhdrtghomh
+    dprhgtphhtthhopehlihhnuhigsehtrhgvsghlihhgrdhorhhgpdhrtghpthhtohepjhhu
+    lhhirgdrlhgrfigrlhhlsehinhhrihgrrdhfrh
+X-ME-Proxy: <xmx:5QCWaQhnAakW7qjgBcxUXYg2yP-P-5b1kdIz8h7mVz_JMS4jcLVyRQ>
+    <xmx:5QCWaWbmp3__pvDYNGsgjnVA5Cz1E0fn3B7mQLo_YOGI2YlHo75a8g>
+    <xmx:5QCWafY0h-ZfMESjCKZab-pVyoKhyNSd2minziHeyK2YB-cbSGG-_w>
+    <xmx:5QCWabz5rluk4vX84C4wUvCXYnTJJcbGhTz7hKdOJLHAripC36S-dg>
+    <xmx:5QCWafbkDf76ErniS0o5dH5ISn4fTSVrRsO4U-A4H3r5BqC9LtTKi_wq>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 18 Feb 2026 13:11:48 -0500 (EST)
+Date: Wed, 18 Feb 2026 19:11:47 +0100
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Hyunwoo Kim <imv4bel@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, nate.karstens@garmin.com,
+	linux@treblig.org, Julia.Lawall@inria.fr, netdev@vger.kernel.org
+Subject: Re: [PATCH] strparser: Use worker disable API instead of
+ cancellation in strp_done()
+Message-ID: <aZYA4wrC_HtJdSUq@krikkit>
+References: <aZLn2Faeg1FB7XOf@v4bel>
+ <aZSxxdNWGLGBj1lD@krikkit>
+ <aZTFXZcPiu8GBAY7@v4bel>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260218-vsock-ns-write-once-v2-2-19e4c50d509a@meta.com>
-References: <20260218-vsock-ns-write-once-v2-0-19e4c50d509a@meta.com>
-In-Reply-To: <20260218-vsock-ns-write-once-v2-0-19e4c50d509a@meta.com>
-To: Stefano Garzarella <sgarzare@redhat.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>, 
- Shuah Khan <shuah@kernel.org>, Bobby Eshleman <bobbyeshleman@meta.com>, 
- "Michael S. Tsirkin" <mst@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>
-Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
- Daan De Meyer <daan.j.demeyer@gmail.com>
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aZTFXZcPiu8GBAY7@v4bel>
 
-From: Bobby Eshleman <bobbyeshleman@meta.com>
+2026-02-18, 04:45:33 +0900, Hyunwoo Kim wrote:
+> On Tue, Feb 17, 2026 at 07:21:57PM +0100, Sabrina Dubroca wrote:
+> > 2026-02-16, 18:48:08 +0900, Hyunwoo Kim wrote:
+> > > When strp_stop() and strp_done() are called without holding lock_sock(), 
+> > > they can race with worker-scheduling paths such as the Delayed ACK handler 
+> > > and ksoftirqd.
+> > > Specifically, after cancel_delayed_work_sync() and cancel_work_sync() are 
+> > > invoked from strp_done(), the workers may still be scheduled.
+> > > As a result, the workers may dereference freed objects.
+> > > 
+> > > To prevent these races, the cancellation APIs are replaced with 
+> > > worker-disabling APIs.
+> > > 
+> > > Fixes: 829385f08ae9 ("strparser: Use delayed work instead of timer for msg timeout")
+> > 
+> > That's the correct commit for msg_timer_work, but not for
+> > strp->work. No race was possible when msg timeout was using a timer?
+> 
+> Of course, the race could also occur when the message timeout was 
+> implemented using a timer.
+> 
+> > Your second scenario relies only on strp->work so I would think yes.
+> 
+> Using Fixes: bbb0302 ("strparser: Generalize strparser") should cover 
+> both cases.
 
-Two administrator processes may race when setting child_ns_mode as one
-process sets child_ns_mode to "local" and then creates a namespace, but
-another process changes child_ns_mode to "global" between the write and
-the namespace creation. The first process ends up with a namespace in
-"global" mode instead of "local". While this can be detected after the
-fact by reading ns_mode and retrying, it is fragile and error-prone.
+Ok.
 
-Make child_ns_mode write-once so that a namespace manager can set it
-once and be sure it won't change. Writing a different value after the
-first write returns -EBUSY. This applies to all namespaces, including
-init_net, where an init process can write "local" to lock all future
-namespaces into local mode.
+> > > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+> > > ---
+> > >  net/strparser/strparser.c | 4 ++--
+> > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/net/strparser/strparser.c b/net/strparser/strparser.c
+> > > index fe0e76fdd1f1..15cd9cadbd1a 100644
+> > > --- a/net/strparser/strparser.c
+> > > +++ b/net/strparser/strparser.c
+> > > @@ -503,8 +503,8 @@ void strp_done(struct strparser *strp)
+> > >  {
+> > >  	WARN_ON(!strp->stopped);
+> > >  
+> > > -	cancel_delayed_work_sync(&strp->msg_timer_work);
+> > > -	cancel_work_sync(&strp->work);
+> > > +	disable_delayed_work_sync(&strp->msg_timer_work);
+> > > +	disable_work_sync(&strp->work);
+> > 
+> > The change itself looks reasonable.
+> > 
+> > >  	if (strp->skb_head) {
+> > >  		kfree_skb(strp->skb_head);
+> > > -- 
+> > > 2.43.0
+> > > 
+> > > ---
+> > > Dear,
+> > > 
+> > > The following is a simplified scenario illustrating how each race can occur. Since espintcp_close() does not hold lock_sock(), the race is possible.
+> > > Although cancel_work_sync(&strp->work) does not appear to be easy to trigger in practice here, it still seems better to fix it as well.
+> > 
+> > What about the other users of strp? Only espintcp is racy?
+> 
+> Any subsystem that calls strp_stop() and strp_done() outside of 
+> lock_sock() is racy.
 
-Fixes: eafb64f40ca4 ("vsock: add netns to vsock core")
-Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Suggested-by: Daan De Meyer <daan.j.demeyer@gmail.com>
-Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
----
- include/net/af_vsock.h    | 20 +++++++++++++++++---
- include/net/netns/vsock.h |  9 ++++++++-
- net/vmw_vsock/af_vsock.c  | 15 ++++++++++-----
- 3 files changed, 35 insertions(+), 9 deletions(-)
+strp_done() has to be called outside of lock_sock(), since both
+strp_work() and strp_msg_timeout() need to take lock_sock.
 
-diff --git a/include/net/af_vsock.h b/include/net/af_vsock.h
-index d3ff48a2fbe0..9bd42147626d 100644
---- a/include/net/af_vsock.h
-+++ b/include/net/af_vsock.h
-@@ -276,15 +276,29 @@ static inline bool vsock_net_mode_global(struct vsock_sock *vsk)
- 	return vsock_net_mode(sock_net(sk_vsock(vsk))) == VSOCK_NET_MODE_GLOBAL;
- }
- 
--static inline void vsock_net_set_child_mode(struct net *net,
-+static inline bool vsock_net_set_child_mode(struct net *net,
- 					    enum vsock_net_mode mode)
- {
--	WRITE_ONCE(net->vsock.child_ns_mode, mode);
-+	int locked = mode + VSOCK_NET_MODE_LOCKED;
-+	int cur;
-+
-+	cur = READ_ONCE(net->vsock.child_ns_mode);
-+	if (cur == locked)
-+		return true;
-+	if (cur >= VSOCK_NET_MODE_LOCKED)
-+		return false;
-+
-+	if (try_cmpxchg(&net->vsock.child_ns_mode, &cur, locked))
-+		return true;
-+
-+	return cur == locked;
- }
- 
- static inline enum vsock_net_mode vsock_net_child_mode(struct net *net)
- {
--	return READ_ONCE(net->vsock.child_ns_mode);
-+	int mode = READ_ONCE(net->vsock.child_ns_mode);
-+
-+	return mode & (VSOCK_NET_MODE_LOCKED - 1);
- }
- 
- /* Return true if two namespaces pass the mode rules. Otherwise, return false.
-diff --git a/include/net/netns/vsock.h b/include/net/netns/vsock.h
-index b34d69a22fa8..d20ab6269342 100644
---- a/include/net/netns/vsock.h
-+++ b/include/net/netns/vsock.h
-@@ -7,6 +7,7 @@
- enum vsock_net_mode {
- 	VSOCK_NET_MODE_GLOBAL,
- 	VSOCK_NET_MODE_LOCAL,
-+	VSOCK_NET_MODE_LOCKED,
- };
- 
- struct netns_vsock {
-@@ -16,6 +17,12 @@ struct netns_vsock {
- 	u32 port;
- 
- 	enum vsock_net_mode mode;
--	enum vsock_net_mode child_ns_mode;
-+
-+	/* 0 (GLOBAL)
-+	 * 1 (LOCAL)
-+	 * 2 (GLOBAL + LOCKED)
-+	 * 3 (LOCAL + LOCKED)
-+	 */
-+	int child_ns_mode;
- };
- #endif /* __NET_NET_NAMESPACE_VSOCK_H */
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index 9880756d9eff..50044a838c89 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -90,16 +90,20 @@
-  *
-  *   - /proc/sys/net/vsock/ns_mode (read-only) reports the current namespace's
-  *     mode, which is set at namespace creation and immutable thereafter.
-- *   - /proc/sys/net/vsock/child_ns_mode (writable) controls what mode future
-+ *   - /proc/sys/net/vsock/child_ns_mode (write-once) controls what mode future
-  *     child namespaces will inherit when created. The initial value matches
-  *     the namespace's own ns_mode.
-  *
-  *   Changing child_ns_mode only affects newly created namespaces, not the
-  *   current namespace or existing children. A "local" namespace cannot set
-- *   child_ns_mode to "global". At namespace creation, ns_mode is inherited
-- *   from the parent's child_ns_mode.
-+ *   child_ns_mode to "global". child_ns_mode is write-once, so that it may be
-+ *   configured and locked down by a namespace manager. Writing a different
-+ *   value after the first write returns -EBUSY. At namespace creation, ns_mode
-+ *   is inherited from the parent's child_ns_mode.
-  *
-- *   The init_net mode is "global" and cannot be modified.
-+ *   The init_net mode is "global" and cannot be modified. The init_net
-+ *   child_ns_mode is also write-once, so an init process (e.g. systemd) can
-+ *   set it to "local" to ensure all new namespaces inherit local mode.
-  *
-  *   The modes affect the allocation and accessibility of CIDs as follows:
-  *
-@@ -2853,7 +2857,8 @@ static int vsock_net_child_mode_string(const struct ctl_table *table, int write,
- 		    new_mode == VSOCK_NET_MODE_GLOBAL)
- 			return -EPERM;
- 
--		vsock_net_set_child_mode(net, new_mode);
-+		if (!vsock_net_set_child_mode(net, new_mode))
-+			return -EBUSY;
- 	}
- 
- 	return 0;
+> 
+> > 
+> > If strp_done can run concurrently with __strp_recv, it seems we could
+> > also end up leaking strp->skb_head, if __strp_recv stores a new one
+> > after we've cleared the old?
+> 
+> I am not fully sure about this part yet, so I think it should be 
+> discussed separately in another thread.
+
+Maybe not, if it's the same race condition (same code running
+concurrently), just with different symptoms.
+
+
+> > > ```
+> > >                  cpu0                                cpu1
+> > > 
+> > > espintcp_close()
+> > >                                          espintcp_data_ready()
+> > >                                            if (unlikely(strp->stopped)) return;
+> > >   strp_stop()
+> > >     strp->stopped = 1;
+> > >   strp_done()
+> > >     cancel_delayed_work_sync(&strp->msg_timer_work);
+> > >                                            strp_data_ready()
+> > 
+> > In this order, strp_data_ready will see strp->stopped and return
+> > without doing anything.
+> > 
+> > (I'm confused by the "if (unlikely(strp->stopped))" above though,
+> > maybe you meant espintcp_data_ready -> strp_data_ready -> if (...))
+> 
+> Sorry for the confusion. I accidentally mixed up the call order in the 
+> strp_data_ready() path. 
+> More precisely, the scenario is that espintcp_data_ready() → strp_data_ready() 
+> runs first, passes the if (unlikely(strp->stopped)) check, and only after 
+> that strp->stopped = 1 is set.
+
+Ok, thanks.
+
+> > > ```
+> > >                  cpu0                                cpu1
+> > > 
+> > > espintcp_close()
+> > >                                           sk->sk_data_ready()
+> > >                                             espintcp_data_ready()
+> > >                                               if (unlikely(strp->stopped)) return;
+> > >   strp_stop()
+> > >     strp->stopped = 1;
+> > >   strp_done()
+> > >     cancel_work_sync(&strp->work);
+> > >                                               if (strp_read_sock(strp) == -ENOMEM)
+> > >                                               queue_work()
+> > 
+> > Here the problem would be if we enter do_strp_work after all the
+> > socket data has already been freed? Otherwise again the test on
+> > strp->stopped will make do_strp_work return early. (this would be
+> > unexpected but should be safe)
+> 
+> If the worker is scheduled after the cancel call, then during 
+> espintcp_close() → tcp_close(), the sk will be freed and the ctx 
+> will be freed as well. 
+> As a result, the kworker will access the freed ctx->strp. 
+> This access to the freed ctx happens before the actual worker 
+> handler is called, so the problem occurs regardless of the 
+> condition checks in do_strp_work().
+
+If we're lucky:
+
+cancel_work_sync(strp->work)
+                                        queue_work(strp->work)
+...
+                                        do_strp_work
+                                        strp->stopped
+...
+free(sk)
+
+[anyway, doesn't matter, seems it could indeed happen as you say]
+
+
+I'm thinking that all those races are not very likely to happen in
+real life, since syzbot has not seen them, and it's usually pretty
+good at finding races. (which doesn't mean they're not worth fixing)
 
 -- 
-2.47.3
-
+Sabrina
