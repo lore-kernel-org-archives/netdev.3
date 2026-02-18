@@ -1,172 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CE1319864
-	for <netdev@vger.kernel.org>; Wed, 18 Feb 2026 09:36:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C901F33C509;
+	Wed, 18 Feb 2026 09:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771407374; cv=none; b=Q/UuOV5JUEwaPbX6OzP512BXxThBemMdAsOxu88hlmXxD52pyVW/Z6Yciok1qAbo5zjr6YZdftN1h5ispaX1VGCkG8mNz81V/azxmJXPJRL1l7qd7fAwiQ6stsngHLxVJIjPoDy/nn0UCfd625zYnLxPoxZcRrqDBxIwYtyBK2U=
+	t=1771407426; cv=none; b=QDPol9xTVn5F/OmIc2F9COWSfoz4/S2zTXmwXPXxGkekp6Xb6+2L7VmBAlcXYn3r3zV+6Bgn3e2b1UjatcHg+aZcvmmP5CAF0l+WOzDl62jbay7PK3C8ZMN/0jQwa8As58VKFD/8W0X9f24kcgzOpgaMttB6liNJFjqYKqDyfXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771407374; c=relaxed/simple;
-	bh=gQ6MPdOMsERvQzft4Tv59+KHrFI9aFUHwFWACOmrb4w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rh4s4foacw/3Z/mG8GGLbD/LwB29eM6+LKOJzZwPTPIWaao6vXlsjpvESlvsIDKCEBxBS2AHrdVWLLf0UEOGLkcacLwgXykxDDnOuS7gb71xVw3mzzUCYL4dYKkTZ7aKU8DLjjMpfHozsAKOsNg9oQ7mfPhjcwEfcKMgc5NJjxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MnH8X0+s; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771407426; c=relaxed/simple;
+	bh=LeTgk5sjjw2uwtLBgkbnMzgQke3xyBLh1LISBJPQUi0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LNEumCZA8YIa+shbxmT5r+QM38OVQ7DwsjkKsfRctlGaIzINSwYOwRNkuhh8dVLsWPX5lkxLa5Zcn9SJ1YakyXprouu52oMupYi343WQx+NvrFFhSeyJTgTjNtb63DNUl1qX44bZxhS5HDy+0A736My79uFITYVMVXxG393zcTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=sQUwkXyv; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MnH8X0+s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C59C19421;
-	Wed, 18 Feb 2026 09:36:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771407373;
-	bh=gQ6MPdOMsERvQzft4Tv59+KHrFI9aFUHwFWACOmrb4w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MnH8X0+sOUAV/I0guIN1x+gT+m0cYPyCmdXutoy9CZOrjafGVGFLZ9NcI+KGp0K1s
-	 /4oMOhoVz0oZkIfXJiZvB2gozMm+smiX8V9cZLZg7/h8SyYnQpD5QH6gMV5JfW2ypz
-	 9DI9jVgYlaF56pI3BWwOayP4OKKKP76rxJeZJKnZGmk9iRyVHKI9xTKvK0hS4OM9IH
-	 2SKwwIx0HNsalVLY27hdMBiZjgy4wrsRabr+GEKXwUTzZ7ZBR1cPRe/Yhq5S80r/Tr
-	 xXYnn32LFihtoupGO3/ocgf0+sr6Q/UMgs5hziDFyOK51CsmUtEU3iR3Y7rzRXTgTj
-	 VEFy16s8C2EjQ==
-Date: Wed, 18 Feb 2026 09:36:09 +0000
-From: Simon Horman <horms@kernel.org>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: john.fastabend@gmail.com, kuba@kernel.org, sd@queasysnail.net,
-	davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] net: tls: Use disable_delayed_work_sync() instead of
- cancel_delayed_work_sync() in tls_sw_cancel_work_tx()
-Message-ID: <aZWICa8b0JF4fWq3@horms.kernel.org>
-References: <aZLotq3aZY0b-dI8@v4bel>
- <aZSLHaFj7k8DPmLG@horms.kernel.org>
- <aZSbSOVuRgkjeezg@v4bel>
- <aZWHpBwpMVTUNYTg@horms.kernel.org>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="sQUwkXyv"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 0D9444E40F41;
+	Wed, 18 Feb 2026 09:36:57 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D735460738;
+	Wed, 18 Feb 2026 09:36:56 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 170FF103688BE;
+	Wed, 18 Feb 2026 10:36:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1771407416; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=6F0vMRvW7cQ6/3aoKb6nwm9dFib3trJFBolmyJ9tv4M=;
+	b=sQUwkXyvzbXQKZ+9OG0el51piiUuB2YfzyDDPXgur4s0eUdkULuElxkCrYIjGlLM0tE+89
+	g88NNf7CGmP/3OHIa48PCgmEh5YvFKbdjJpw/Pm2xlAqInonTSA8jZ2+JzrdD8bxl19xRF
+	pWTCwb/vV/O20XAjLwY1I8Nvs9TC8aEYffiZsBl7jv+EhmNDBQBj5X6k2iurkoJ+P8viZY
+	NDVVAUA8v7V2ss2/8ut2G3jL74GuyegWZJzOuwMLUrItfhFxbJzGY6+mbB6xTUa78EuMHx
+	ptsYambdDSbgHa3POC6kQ5AlBmQRNgUQXRu1qRIbKgvKlxSfWCHY8oDaPr+OEw==
+Message-ID: <a69c8c32-c5df-484a-a1c7-a97a8f196f68@bootlin.com>
+Date: Wed, 18 Feb 2026 10:36:53 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZWHpBwpMVTUNYTg@horms.kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v4 5/8] net: dsa: microchip: Add KSZ8463 tail tag
+ handling
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+ Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
+ Simon Horman <horms@kernel.org>, Pascal Eberhard <pascal.eberhard@se.com>,
+ =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20260127-ksz8463-ptp-v4-0-652e021aae86@bootlin.com>
+ <20260127-ksz8463-ptp-v4-5-652e021aae86@bootlin.com>
+ <20260202132947.gepuhzdh4bepk4ot@skbuf>
+Content-Language: en-US
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+In-Reply-To: <20260202132947.gepuhzdh4bepk4ot@skbuf>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Feb 18, 2026 at 09:34:32AM +0000, Simon Horman wrote:
-> On Wed, Feb 18, 2026 at 01:46:00AM +0900, Hyunwoo Kim wrote:
-> > On Tue, Feb 17, 2026 at 03:37:01PM +0000, Simon Horman wrote:
-> > > On Mon, Feb 16, 2026 at 06:51:50PM +0900, Hyunwoo Kim wrote:
-> > > > After cancel_delayed_work_sync() is called from tls_sk_proto_close(), 
-> > > > tx_work_handler() can still be scheduled from paths such as the 
-> > > > Delayed ACK handler or ksoftirqd.
-> > > > As a result, the tx_work_handler() worker may dereference a freed 
-> > > > TLS object.
-> > > > 
-> > > > To prevent this race condition, cancel_delayed_work_sync() is 
-> > > > replaced with disable_delayed_work_sync().
-> > > > 
-> > > > Fixes: f87e62d45e51 ("net/tls: remove close callback sock unlock/lock around TX work flush")
-> > > > Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-> > > 
-> > > Hi Hyunwoo,
-> > > 
-> > > Thanks for your patch(es).
-> > > 
-> > > Some feedback on process from my side.
-> > > You can read more about that at
-> > > https://docs.kernel.org/process/maintainer-netdev.html
-> > > 
-> > > * I think it would be good to mention how this problem was found.
-> > 
-> > Hi Simon,
-> > 
-> > Thank you for the feedback.
-> > 
-> > This issue was found during a manual code audit. I will add this 
-> > information to the commit message.
-> > 
-> > 
-> > > 
-> > > * As a bug fix for code present in the net tree, it should be targeted
-> > >   at that tree like this.
-> > > 
-> > >   Subject: [PATCH net]: ...
-> > > 
-> > > * Looking over git history, it seems that an appropriate prefix
-> > >   for patches for this code is 'tls: '
-> > > 
-> > >   Subject [PATCH net]: tls: ...
-> > > 
-> > > * Also, please try to make the subject a bit more succinct
-> > > 
-> > > > ---
-> > > >  net/tls/tls_sw.c | 2 +-
-> > > >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-> > > > index 9937d4c810f2..b1fa62de9dab 100644
-> > > > --- a/net/tls/tls_sw.c
-> > > > +++ b/net/tls/tls_sw.c
-> > > > @@ -2533,7 +2533,7 @@ void tls_sw_cancel_work_tx(struct tls_context *tls_ctx)
-> > > >  
-> > > >  	set_bit(BIT_TX_CLOSING, &ctx->tx_bitmask);
-> > > >  	set_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask);
-> > > > -	cancel_delayed_work_sync(&ctx->tx_work.work);
-> > > > +	disable_delayed_work_sync(&ctx->tx_work.work);
-> > > >  }
-> > > >  
-> > > >  void tls_sw_release_resources_tx(struct sock *sk)
-> > > > -- 
-> > > > 2.43.0
-> > > > ---
-> > > > 
-> > > > Dear,
-> > > > 
-> > > > The following is a simplified scenario illustrating how each race can occur. Since tls_sw_cancel_work_tx() does not hold lock_sock(), it can race with tls_write_space().
-> > > > ```
-> > > >           cpu0                                             cpu1
-> > > > 
-> > > > tls_sk_proto_close()
-> > > >   tls_sw_cancel_work_tx()
-> > > >                                                     tls_write_space()
-> > > >                                                       tls_sw_write_space()
-> > > >                                                       if (!test_and_set_bit(BIT_TX_SCHEDULED, &tx_ctx->tx_bitmask))
-> > > >     set_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask);
-> > > >     cancel_delayed_work_sync(&ctx->tx_work.work);
-> > > >                                                       schedule_delayed_work(&tx_ctx->tx_work.work, 0);
-> > > > ```
-> > > 
-> > > I think that the text above would be best included in the patch description.
-> > > At least for me it is fundamental to understanding the problem.
-> > 
-> > Understood. I will add the race scenario description to the patch.
-> > 
-> > > 
-> > > > 
-> > > > Best regards,
-> > > > Hyunwoo Kim
-> > > > 
-> > > 
-> > > I see three similar patches on the mailing list.
-> > > The comments above go for them too.
-> > > And It would probably be useful to just handle one at a time,
-> > > to allow for proper feedback. Or bundle them in a patchset.
-> > 
-> > Since the core of this bug pattern is espintcp, I will submit a revised 
-> > espintcp v2 patch shortly. 
-> > I would appreciate it if you could review the espintcp v2 patch. 
-> > Once the espintcp review is done, I will apply the feedback to the 
-> > remaining strparser and tls patches as well.
-> 
-> Thanks.
-> 
-> I have looked over the espintcp patch.
-> 
-> It looks good to me. But I think it would be good to include
-> some sort of race analysis in the commit message: something similar
-> to the cpu0 / cpu1 text above, but perhaps with a different case explained.
-> 
-> Also, I think the other comments above apply to that patch too.
-> 
-> I will respond to that patch pointing to this message.
+Hi Vladimir,
 
-Sorry, I was a bit hasty there.
-The comments above are for v1.
-I'll look over v2 and respond there.
+On 2/2/26 2:29 PM, Vladimir Oltean wrote:
+> On Tue, Jan 27, 2026 at 10:06:47AM +0100, Bastien Curutchet (Schneider Electric) wrote:
+>> @@ -383,6 +384,74 @@ static const struct dsa_device_ops ksz9893_netdev_ops = {
+>>   DSA_TAG_DRIVER(ksz9893_netdev_ops);
+>>   MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ9893, KSZ9893_NAME);
+>>   
+>> +#define KSZ8463_TAIL_TAG_PRIO		GENMASK(4, 3)
+>> +#define KSZ8463_TAIL_TAG_EG_PORT_M	GENMASK(2, 0)
+>> +
+>> +static struct sk_buff *ksz8463_xmit(struct sk_buff *skb,
+>> +				    struct net_device *dev)
+>> +{
+>> +	u16 queue_mapping = skb_get_queue_mapping(skb);
+>> +	u8 prio = netdev_txq_to_tc(dev, queue_mapping);
+>> +	struct dsa_port *dp = dsa_user_to_port(dev);
+>> +	u8 *tag;
+>> +
+>> +	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
+>> +		return NULL;
+>> +
+>> +	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
+>> +
+>> +	*tag = BIT(dp->index);
+> 
+> You're out of sync with mainline which has transitioned all
+> BIT(dp->index) users to dsa_xmit_port_mask(skb, dev).
+> 
+> To avoid this in the future please do not duplicate the ksz9893 xmit
+> implementation, but call a common function and use a "bool do_tstamp"
+> variable which is true when called from ksz9893 and false from ksz8463.
+> 
+
+Ok, I'll do it, thank you.
+
+
+Best regards,
+Bastien
