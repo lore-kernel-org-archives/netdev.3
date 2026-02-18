@@ -1,109 +1,148 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 409FA2F12DA;
-	Wed, 18 Feb 2026 09:22:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42212C11EE;
+	Wed, 18 Feb 2026 09:25:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771406563; cv=none; b=GA+YZ2AQ6kecBXnmgCiVsmlbnT/W7Ec3RdCN3hZGBZ6qF0nxpTDapIABcg/6LriUqAgNkdQr7J9bn7Qcy3XlvVa8f/B62V335fZisn2mV1BFh3DwktrJjFuA910tsfy7obKWrqqmkLBgRyZ9JrNtK4Xy879Xd2xoYYb2hIqcO6Y=
+	t=1771406752; cv=none; b=cM8Rn/z+Oqdy4TYxwyWEonh2vmc9wtMVkeCWyJ4sJlgwEYUof+wGOSCItZvGBMbFBJ6NDONW66w5YumGj3BFvdDtdlHdBKthQpFIBntTjGYNqi03GeW8J5zwc7wuzcPnF/FIx3+Bz+NrcxTkab/obk2UsicIrnWNKLL+UHSeY7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771406563; c=relaxed/simple;
-	bh=QRP7P7HRDTjKaJCK7nZalWkI+8t9AnotE0IPAlsvm+Y=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Iwi0Z/NRxbvtswHBCZb0xDwTmVX2iOWkTMMwPrgFwtsnVZPnHFivrs+aQ2jB0wySp9YzOkexbVakpf0rNBrKDAilmlgROlHe0zM7utw9+dOkRObRjQpYS7wt7SjfOevlxU8q5gAvLzF+d1SSf46dEdBpNwsXVJyUGelYDtoHvOs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=Ws+9EyYY; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1771406752; c=relaxed/simple;
+	bh=7Mi9qac5ReGqC6chwcM+0FI8Kzvlyju/4bHh3m/uhJU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BzkLZiHijh4m9+bbToFMGBfzUOVsKggtUiOaUwk1aRT72nvdxpotX4TZTAzzh/034gBdmXBgmVQI3xeLUAv3MWaTYw1WZrYhN8Bxdns9ef97gRVFSDcK17KnZr2+zJefBYT7FnF7rPaOQ+Ymyva1rzmViH8vHW4oe5zyRA6P3Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hKShtMU2; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="Ws+9EyYY"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 1F5F2206DF;
-	Wed, 18 Feb 2026 10:22:39 +0100 (CET)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 5g7Yrxvle39P; Wed, 18 Feb 2026 10:22:38 +0100 (CET)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 43460201D3;
-	Wed, 18 Feb 2026 10:22:38 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 43460201D3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1771406558;
-	bh=DX/NNPfsIZ+Oe102Ohr9kgE/Q+rSKqtQyPHB3ln9zdE=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=Ws+9EyYYlL1LR4zicdaAQl1zDc6n39Nh0luR0bmbQ1fg+G7BQLIYcsqW/K/Am9i9X
-	 5XTvw+F5X6NDI+OYGxtUjFNhWqdDXi+8+AejjAkAMAOBQ93Zv6eUw+N3cU52mQe+SP
-	 Kk4P15i+iv1TfNUY4JjsrXtUseAuAJTWSMDkudXWJI4gmVlz3LNd2tA9Hu7g85Cade
-	 7OGfW1IGS2z/69PUZ5PJrFR+1ZIy/6BD+RGs5YQxSY4hp9kb9R3DoNFhwiQi2wyuKr
-	 EyNwg6+v7z0iG+zPjDgrzmO6JVA2BgId917gSBsGxERDGBgdh7n2QN7Xby/DlP4YF7
-	 2dVMOlxYskL1A==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 18 Feb
- 2026 10:22:37 +0100
-Received: (nullmailer pid 3178201 invoked by uid 1000);
-	Wed, 18 Feb 2026 09:22:36 -0000
-Date: Wed, 18 Feb 2026 10:22:36 +0100
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-CC: Paul Moore <paul@paul-moore.com>, SELinux <selinux@vger.kernel.org>,
-	linux-security-module <linux-security-module@vger.kernel.org>, Herbert Xu
-	<herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Network Development
-	<netdev@vger.kernel.org>
-Subject: Re: [PATCH] xfrm: kill xfrm_dev_{state,policy}_flush_secctx_check()
-Message-ID: <aZWE3F8ppQgN3Gwe@secunet.com>
-References: <f9b88268-03dc-4356-8b31-0bab73cc9b1e@I-love.SAKURA.ne.jp>
- <CAHC9VhRzRAR+hhn4TFADnHWpzjOxjmh0S_Hg_HktkPkKQ35ycg@mail.gmail.com>
- <74a70504-8ff8-4d97-b35f-774364779889@I-love.SAKURA.ne.jp>
- <7ef21dab-3805-4eae-80d7-9779aeff3f58@I-love.SAKURA.ne.jp>
- <aYmoDwO-YXrc4W1c@secunet.com>
- <85546d35-c7bd-49bf-b0c3-9677bde25859@I-love.SAKURA.ne.jp>
- <aYnDWbxo-jAzR4ca@secunet.com>
- <7c17884d-dbf1-4c2c-9813-0c5369cfdcc9@I-love.SAKURA.ne.jp>
- <aY76t_xYCHmLq6Ur@secunet.com>
- <d20f1b63-714f-48ba-9bee-cd074205404f@I-love.SAKURA.ne.jp>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hKShtMU2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771406751; x=1802942751;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=7Mi9qac5ReGqC6chwcM+0FI8Kzvlyju/4bHh3m/uhJU=;
+  b=hKShtMU2KvSWIwYpXgsQaTqtm5saMnvTy3iFVnUUqkly+7dxQOrA61Mw
+   ELGSasdoFtMoTgfK2PeoyfqdtbfKOpsbDV6G8z7blr+jzP59mUvARmMZj
+   qTxXlJCflb25kDXnrvAR4AGiT6rwCQJ5YHLjxY47sbgMfqj/QxldQd53+
+   ksUXyI4Ic96gPHZv+/1mgu/b7YWRYo6J7xLqtZBdUZTbQN0Imj+Y/5vmk
+   qABe/QMMG0huf/CEzvv6YD6XjN861E2WiOguI0qyadG6g5bDSJ8Myof4v
+   xxYu9uhvvqYgxCRmfWbwjGsTbdF+CfWu8+2xLtii/KC+mSHe24vZG0B+3
+   w==;
+X-CSE-ConnectionGUID: rByOHHPcSvmBjEfvmyaGXQ==
+X-CSE-MsgGUID: Eq50VlS5SOCo31P2xmJx6A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11704"; a="75088896"
+X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
+   d="scan'208";a="75088896"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2026 01:25:50 -0800
+X-CSE-ConnectionGUID: Rh52ltp/RYiXXH6MzyV6iw==
+X-CSE-MsgGUID: wkye9/XKQ3iuGwpAWVPCsg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,297,1763452800"; 
+   d="scan'208";a="214136496"
+Received: from lkp-server01.sh.intel.com (HELO 765f4a05e27f) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 18 Feb 2026 01:25:45 -0800
+Received: from kbuild by 765f4a05e27f with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vsdoT-000000012EC-3hfd;
+	Wed, 18 Feb 2026 09:25:41 +0000
+Date: Wed, 18 Feb 2026 17:25:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: Slava Imameev <slava.imameev@crowdstrike.com>, ast@kernel.org,
+	daniel@iogearbox.net, andrii@kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org,
+	yonghong.song@linux.dev, john.fastabend@gmail.com,
+	kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com,
+	jolsa@kernel.org, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
+	shuah@kernel.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-open-source@crowdstrike.com,
+	Slava Imameev <slava.imameev@crowdstrike.com>
+Subject: Re: [PATCH bpf-next v2 2/2] selftests/bpf: Add trampolines
+ multi-level pointer params test coverage
+Message-ID: <202602181710.tEK6nOl6-lkp@intel.com>
+References: <20260217221357.18215-3-slava.imameev@crowdstrike.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <d20f1b63-714f-48ba-9bee-cd074205404f@I-love.SAKURA.ne.jp>
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
- (10.32.0.171)
+In-Reply-To: <20260217221357.18215-3-slava.imameev@crowdstrike.com>
 
-On Fri, Feb 13, 2026 at 10:59:15PM +0900, Tetsuo Handa wrote:
-> On 2026/02/13 19:19, Steffen Klassert wrote:
-> On 2026/02/13 19:19, Steffen Klassert wrote:
-> >> The NETDEV_UNREGISTER path can be triggered by just doing "unshare -n ip addr show"
-> >> (i.e. implicit cleanup of a network namespace due to termination of init process in
-> >> that namespace). We are not allowed to reject the cleanup_net() route.
-> > 
-> > And here we come to the other problem I mentioned. When a LSM policy
-> > rejects to flush the xfrm states and policies on network namespace
-> > exit, we leak all the xfrm states and policies in that namespace.
-> > Here we have no other option, we must flush the xfrm states and
-> > policies regardless of any LSM policy. This can be fixed with
-> > something like that:
-> 
-> This something is what I explained at
-> https://lkml.kernel.org/r/1bb453af-3ef2-4ab6-a909-0705bd07c136@I-love.SAKURA.ne.jp .
-> The "task_valid" argument does not always reflect whether LSM policy can reject or not.
+Hi Slava,
 
-That was to fix the memleak on network namespace exit.
-The task_valid check should be ok for xfrm_policy_flush()
-and xfrm_state_flush().
+kernel test robot noticed the following build errors:
 
-> 
-> Anyway, the patch to add xfrm_dev_unregister(dev) seems OK if we do like
-> https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit?h=next-20260123&id=fc0f090e41e652d158f946c616cdd82baed3c8f4 ?
+[auto build test ERROR on bpf-next/master]
 
-That would be OK as a first fix. Later we should
-just unlink policies and states from the device,
-as explained in my last mail.
+url:    https://github.com/intel-lab-lkp/linux/commits/Slava-Imameev/bpf-Support-multi-level-pointer-params-via-PTR_TO_MEM-for-trampolines/20260218-062417
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/bpf/bpf-next.git master
+patch link:    https://lore.kernel.org/r/20260217221357.18215-3-slava.imameev%40crowdstrike.com
+patch subject: [PATCH bpf-next v2 2/2] selftests/bpf: Add trampolines multi-level pointer params test coverage
+config: loongarch-defconfig (https://download.01.org/0day-ci/archive/20260218/202602181710.tEK6nOl6-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260218/202602181710.tEK6nOl6-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202602181710.tEK6nOl6-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> net/bpf/test_run.c:737:2: error: call to undeclared function 'flush_tlb_kernel_range'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     737 |         flush_tlb_kernel_range((unsigned long)page_address(page),
+         |         ^
+   net/bpf/test_run.c:760:2: error: call to undeclared function 'flush_tlb_kernel_range'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     760 |         flush_tlb_kernel_range((unsigned long)addr,
+         |         ^
+   2 errors generated.
+
+
+vim +/flush_tlb_kernel_range +737 net/bpf/test_run.c
+
+   709	
+   710	static void *create_bad_kaddr(void)
+   711	{
+   712		/*
+   713		 * Try to get an address that passes kernel range checks but causes
+   714		 * a page fault handler invocation if accessed from a BPF program.
+   715		 */
+   716	#if defined(CONFIG_ARCH_HAS_SET_MEMORY) && defined(CONFIG_X86)
+   717		void *addr = vmalloc(PAGE_SIZE);
+   718	
+   719		if (!addr)
+   720			return NULL;
+   721		/* Make it non-present - any access will fault */
+   722		if (set_memory_np((unsigned long)addr, 1)) {
+   723			vfree(addr);
+   724			return NULL;
+   725		}
+   726		return addr;
+   727	#elif defined(CONFIG_ARCH_HAS_SET_DIRECT_MAP)
+   728		struct page *page = alloc_page(GFP_KERNEL);
+   729	
+   730		if (!page)
+   731			return NULL;
+   732		/* Remove from direct map - any access will fault */
+   733		if (set_direct_map_invalid_noflush(page)) {
+   734			__free_page(page);
+   735			return NULL;
+   736		}
+ > 737		flush_tlb_kernel_range((unsigned long)page_address(page),
+   738				       (unsigned long)page_address(page) + PAGE_SIZE);
+   739		return page_address(page);
+   740	#endif
+   741		return NULL;
+   742	}
+   743	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
