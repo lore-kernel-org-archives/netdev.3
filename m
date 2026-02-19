@@ -1,271 +1,141 @@
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D8033FE11
-	for <netdev@vger.kernel.org>; Thu, 19 Feb 2026 14:32:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771511551; cv=none; b=t/i45FFjsRp1nA/WF0YkO+i5K7z1DSGC/lR8e5gH2Ya3Yctk8HQ6n2CWInnJBp467ZVeHGBWbOMsc4C0kT/BjRzKAO3DfSC34EdxitqregIZjwFIDBkDI2MDR52vIG9/1g5iZwcbl8FfLoIdaGiTKhsIdLqcUZfS7/DzFoIty1g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771511551; c=relaxed/simple;
-	bh=Rwu0/Q5O6sDify4vtHE7EgDx/HdSGFfyoKuhTksF7Ao=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqhQGvMAqMbYasecfzcxTy7Aql+XG8CgCxoGO0RWZZEWXb9W7m64AfHvlDwk3I6Dll4XHPRcKPJH+USrUV0eRYvEdp6xA+sPmN0Qx0EhZVsGdCHI5wBCrkxwrZxOeVSuLzhXUSO1im22NIRYqcO3xCrZnJSGLZuMFAYfxZaj8Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=sr5M0+63; arc=none smtp.client-ip=95.215.58.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875FC1F30A4
+	for <netdev@vger.kernel.org>; Thu, 19 Feb 2026 14:35:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771511719; cv=pass; b=NYL04TH6JnzyqnEDzrMMFeS+IZ7Nwq+/3gHfh263cgD2Jhvy53hM3goGNjKGHIjslhfOrv4SLFRoGb6prvzWU1dGa0WOdOf9wIiR8204sY3jyHbVMN/M9MALnxZzqPrLeSTkrnPRBF6Kpgl9wBeTI24cKvU5EFvnpunkAyfsOKs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771511719; c=relaxed/simple;
+	bh=VS5MpAECM0VVXiBFVjd8qc3AEbApFHruj64/cu2gaHY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=IBStbk1hf0ihRtZGaU0Gy6+HlR7iaUU4I3+7CzHm/ueqfJkqczPpAe7J4mGGEs9QicNsbtf5C31oOzrKBG+nd8A3BsTNMcUO1SI+f/KS+3qXWbvGNzz2x6mpJBG6K5c7QI/tFMGypBCxYwUoe6KCzGUzTeQNQ5SFfve44UpNp2A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZhmKXNwh; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=LiX+ROzB; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="sr5M0+63"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771511547;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZhmKXNwh";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="LiX+ROzB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771511717;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=q2bRCV7yDeBf8GuOUBEvMnX2Y0xlNieUH03bOqMBKOs=;
-	b=sr5M0+63Wsz/ZZW1ycof/LgoMgshho1gsH8aRzB8qzGyjBs7rbmGy5s3WQDYQs8NGiSTHH
-	mq0TRXvTdlSZkV6BWgnSjsF3wTVpux4bX3ZZf61jgHFh7IQrelrkdZ8gq8t86l0TpmxOZm
-	hR78dUiXmERnYMyYvwn87pHpaqddEYo=
-From: Leon Hwang <leon.hwang@linux.dev>
-To: bpf@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Puranjay Mohan <puranjay@kernel.org>,
-	Xu Kuohai <xukuohai@huaweicloud.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Peilin Ye <yepeilin@google.com>,
-	Luis Gerhorst <luis.gerhorst@fau.de>,
-	Viktor Malik <vmalik@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kernel-patches-bot@fb.com
-Subject: [PATCH bpf-next v2 6/6] selftests/bpf: Add JIT disassembly tests for 64-bit bitops kfuncs
-Date: Thu, 19 Feb 2026 22:29:28 +0800
-Message-ID: <20260219142933.13904-7-leon.hwang@linux.dev>
-In-Reply-To: <20260219142933.13904-1-leon.hwang@linux.dev>
-References: <20260219142933.13904-1-leon.hwang@linux.dev>
+	bh=VS5MpAECM0VVXiBFVjd8qc3AEbApFHruj64/cu2gaHY=;
+	b=ZhmKXNwhS1ngFjdKV58F2kIrxQjIrwdqkras8mNLtB75O3kD+fmmA0NVLYS1k/YXFOGnre
+	Az9SQ/G0hP6oJmJxUq0kovKqV1mN484z1hIJNmBTG9HX54XqhDibWljIoCL9OGuZRjwMyl
+	Gio8MM3vlxOdrB88G/2P0r1aUPeUP1k=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-314--t9OcWhvMKGxRfIOcnQCJA-1; Thu, 19 Feb 2026 09:35:16 -0500
+X-MC-Unique: -t9OcWhvMKGxRfIOcnQCJA-1
+X-Mimecast-MFC-AGG-ID: -t9OcWhvMKGxRfIOcnQCJA_1771511715
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-794c39ea759so15970127b3.1
+        for <netdev@vger.kernel.org>; Thu, 19 Feb 2026 06:35:16 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771511715; cv=none;
+        d=google.com; s=arc-20240605;
+        b=BHFw8Bvsvg5J6Q8GKeLhNE59HHs2lqptNMi3nnognd0vvVBQ8SHZSaTbEtJWTnYXrX
+         60uk0qr+GIje/UEDLU97Sh9ZAGq8qDQoNuon1rs+jUdrN+x/BzSPprmC74Fwb1FoztN5
+         fAIMa3XRNmpldbBUjMv0CPKyd7nQJdtoq3Ojy86/7VsuZjbS7HXj9NFkLaUJKOspJiuE
+         uG68uBCAK11cKXy38i2j5Bw4rGY53oEzAcxWkT/Otxz27UVhrcgtvUh6uC0K4FNq9wqR
+         xveNyGlS355gQkvpoNAiFp5JpgM2kDFb8nSwZHYNFEx9S4y2hB+9hI42qJ68airTfL3x
+         D1hA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=VS5MpAECM0VVXiBFVjd8qc3AEbApFHruj64/cu2gaHY=;
+        fh=Wg/vdzmmcv0bdokXDj01rdr1dq0ps0hDdV3G1XSos+U=;
+        b=dDQOCf4UT32DBMivxp5bCTp18vPjP0lJm/TdgMFeQyfY90Uopg518+6vIvBMj8P/YX
+         YqTS2HLeTDIjp5PUYsR0BCkkV9xRn052Fn2ewMrHDsNBJycRtSIJOS04gVz4+JLc7mbx
+         493IdGsNjEIAfPGA+IYny2PaFTkFuEM+UKRWxurlgszcRVSd8IifsbkqZjPigwBiZsdE
+         8I7ymxamHa/K6ifWFRV/l/oo4sPQonjaircnchlaSIh5WjFgk0MzJEJEyWkldJfi73WW
+         frCJObAvZQUIbwPB3DamDkWgnY/r37H6iLLElUSHZ26JM3YRTBttzE4SfF7PqdssOQ2t
+         ydKQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1771511715; x=1772116515; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VS5MpAECM0VVXiBFVjd8qc3AEbApFHruj64/cu2gaHY=;
+        b=LiX+ROzBg8v68XYnnmkKEkgos2FcChDT3BI687HpMANuVWpM2WvCIZoG4X5O3iF+aW
+         bggjw8KIGKXc2PavzBrE0I7aRnVxiU/LCfTbqudbsogPuPXrfpv+kHQcSn3XGjaKpmZk
+         9ArhzZ76cuw4U6mPHgUpMO+b/eRelXOGQgDqqZ3JVyOQmCp1ciFdv7Y/an6YcJc3GBbQ
+         HcYsCCOf+TYVlN+SxlA524CTRybrff7lSYA9Gb8vz5klUwJUbeXASF057D+v8T53jJth
+         Bo6gZKEdj1NbpCnQ3to8iKm/oc9hC9i+uW+BWpZ5cFECJ3I0SY2cX9eEUXi7ikqe66U9
+         Lv9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771511715; x=1772116515;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=VS5MpAECM0VVXiBFVjd8qc3AEbApFHruj64/cu2gaHY=;
+        b=OggTk5SUkhbqZAeJofaCJBGktp/7I2AMXIzrIieFHCoXzTW1/DtBAZXBFRcwEigz6J
+         zvAVPy2sGM7sYzyuRQMTAsRELnSBYE3IFz3UU0FIFMVljkwTEPwDermeQxRmbpbuxlJh
+         JKIqFjD0b6GTFjKXO27m3nX9DyEu4rM6IRx0xLuW5nSN6WYFlpkLcUZHSfVqyXWIPjus
+         22JElzLC2ONwpte5T6KX17FutLKlaCvFzgLa2VS0741jMYQlxjvnZ+hddOjqPok5LPcW
+         UTdQW9MpIT2bgFjCGc3DOuisx71RKs+RinzcAPzgoX3EuVMH3+sqkV68+G/wvskYRVDT
+         E2gQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUnhYQQCVDapx6i6Kv2HrCcvrcc9kBM/gEB47KGm2wMLmZXABf+RJAaBHgVLaO1tqDlD6dJzJU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyu0v8iL92B7CanmhQ8ifss1lknOv8q2AHBj1vxHZVIhtRuP02v
+	y/dTK4Xlj6m/G00d3ywPIYUB4prnd7Kx+K/EuDa/jIjRP0QhPTizITNJS+X7BtEB5em0BzQ/ueJ
+	2+Thkh58u6eMUn3zvmkQmd7iAI6Ap+gNhZ3HSdrdVtGVAY5L54AccHvGkAd0By/MogoLXVLZBZ+
+	un4qp/YFkYkGvPXxjqmIrDQ8n2VGQhGi9B
+X-Gm-Gg: AZuq6aJ6+/HOLnvin0VIb10HZjP8JluUWn4V7e+hruvRwhNhoDIZTR3p5Dj5dTu61Gb
+	hJNk5gbRpunN7IyUmCdL/se/SMmLgGzS5Dp2KG8iheUayXDrvVKwR0gxEi374l/PNeC/xyLs9s8
+	ohPnAbhErQpBcJbGSad7gldWADkEnGloKdQyfF8jVgTsb65DHbO7UouyAbIYgZJrIk3c+mu44vd
+	KJFCFE=
+X-Received: by 2002:a05:690c:6111:b0:798:27f:8839 with SMTP id 00721157ae682-798027f88edmr27293607b3.49.1771511715401;
+        Thu, 19 Feb 2026 06:35:15 -0800 (PST)
+X-Received: by 2002:a05:690c:6111:b0:798:27f:8839 with SMTP id
+ 00721157ae682-798027f88edmr27293087b3.49.1771511714813; Thu, 19 Feb 2026
+ 06:35:14 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+References: <20260216085143.40242-1-chia-yu.chang@nokia-bell-labs.com> <20260216085143.40242-3-chia-yu.chang@nokia-bell-labs.com>
+In-Reply-To: <20260216085143.40242-3-chia-yu.chang@nokia-bell-labs.com>
+From: Paolo Abeni <pabeni@redhat.com>
+Date: Thu, 19 Feb 2026 15:35:03 +0100
+X-Gm-Features: AaiRm51Yk51MtFkLMzzNm9UI6iqJ3T9b_dxDZQ4oQ-vg-XKrl3rs7xeprCakWg8
+Message-ID: <CAF6piCLzyKzGFHF8BNByg-aJD_E6-oOt8RZ9gBO5C3-ANyDx0Q@mail.gmail.com>
+Subject: Re: [PATCH v3 net 2/3] net: mlx5e: fix CWR handling in drivers to
+ preserve ACE signal
+To: chia-yu.chang@nokia-bell-labs.com, linyunsheng@huawei.com, 
+	andrew+netdev@lunn.ch, parav@nvidia.com, jasowang@redhat.com, mst@redhat.com, 
+	shenjian15@huawei.com, salil.mehta@huawei.com, shaojijie@huawei.com, 
+	saeedm@nvidia.com, tariqt@nvidia.com, mbloch@nvidia.com, leonro@nvidia.com, 
+	linux-rdma@vger.kernel.org, netdev@vger.kernel.org, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, horms@kernel.org, ij@kernel.org, 
+	ncardwell@google.com, koen.de_schepper@nokia-bell-labs.com, 
+	g.white@cablelabs.com, ingemar.s.johansson@ericsson.com, 
+	mirja.kuehlewind@ericsson.com, cheshire@apple.com, rs.ietf@gmx.at, 
+	Jason_Livingood@comcast.com, vidhi_goel@apple.com
+Content-Type: text/plain; charset="UTF-8"
 
-Add bitops_jit selftests that verify JITed instruction sequences for
-supported 64-bit bitops kfuncs on x86_64 and arm64, including
-CPU-feature-gated coverage on x86 where required.
+On 2/16/26 9:51 AM, chia-yu.chang@nokia-bell-labs.com wrote:
+> From: Chia-Yu Chang <chia-yu.chang@nokia-bell-labs.com>
+>
+> Currently, mlx5 Rx paths use SKB_GSO_TCP_ECN flag when a TCP segment
+> with the CWR flag set. This is wrong because SKB_GSO_TCP_ECN is only
+> valid for RFC3168 ECN on Tx, and using it on Rx allows RFC3168 ECN
+> offload to clear the CWR flag. As a result, incoming TCP segments
+> may lose their ACE signal integrity required for AccECN (RFC9768),
+> especially when the packet is forwarded and later re-segmented by GSO.
+>
+> Fix this by setting SKB_GSO_TCP_ACCECN for any Rx segment with the CWR
+> flag set. SKB_GSO_TCP_ACCECN ensure that RFC3168 ECN offload will
+> not clear the CWR flag, therefore preserving the ACE signal.
+>
+> Fixes: 92552d3abd329 ("net/mlx5e: HW_GRO cqe handler implementation")
+>
 
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
----
- .../testing/selftests/bpf/prog_tests/bitops.c |   6 +
- .../testing/selftests/bpf/progs/bitops_jit.c  | 153 ++++++++++++++++++
- 2 files changed, 159 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/progs/bitops_jit.c
+No empty line after the fixes tag (both here and in the next patch).
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/bitops.c b/tools/testing/selftests/bpf/prog_tests/bitops.c
-index 9acc3cb1908c..2c203904880d 100644
---- a/tools/testing/selftests/bpf/prog_tests/bitops.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bitops.c
-@@ -2,6 +2,7 @@
- 
- #include <test_progs.h>
- #include "bitops.skel.h"
-+#include "bitops_jit.skel.h"
- 
- struct bitops_case {
- 	__u64 x;
-@@ -180,3 +181,8 @@ void test_bitops(void)
- 	if (test__start_subtest("ror64"))
- 		test_ror64();
- }
-+
-+void test_bitops_jit(void)
-+{
-+	RUN_TESTS(bitops_jit);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/bitops_jit.c b/tools/testing/selftests/bpf/progs/bitops_jit.c
-new file mode 100644
-index 000000000000..9f414e56b1e8
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/bitops_jit.c
-@@ -0,0 +1,153 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <vmlinux.h>
-+#include <bpf/bpf_helpers.h>
-+#include "bpf_experimental.h"
-+#include "bpf_misc.h"
-+
-+SEC("syscall")
-+__description("bitops jit: clz64 uses lzcnt on x86 with abm")
-+__success __retval(63)
-+__arch_x86_64
-+__cpu_feature("abm")
-+__jited("	lzcnt{{.*}}")
-+int bitops_jit_clz64_x86(void *ctx)
-+{
-+	return bpf_clz64(1);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: ctz64 uses tzcnt on x86 with bmi1")
-+__success __retval(4)
-+__arch_x86_64
-+__cpu_feature("bmi1")
-+__jited("	tzcnt{{.*}}")
-+int bitops_jit_ctz64_x86(void *ctx)
-+{
-+	return bpf_ctz64(0x10);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: ffs64 uses tzcnt on x86 with bmi1")
-+__success __retval(5)
-+__arch_x86_64
-+__cpu_feature("bmi1")
-+__jited("	tzcnt{{.*}}")
-+int bitops_jit_ffs64_x86(void *ctx)
-+{
-+	return bpf_ffs64(0x10);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: fls64 uses lzcnt on x86 with abm")
-+__success __retval(5)
-+__arch_x86_64
-+__cpu_feature("abm")
-+__jited("	lzcnt{{.*}}")
-+int bitops_jit_fls64_x86(void *ctx)
-+{
-+	return bpf_fls64(0x10);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: popcnt64 uses popcnt on x86")
-+__success __retval(3)
-+__arch_x86_64
-+__cpu_feature("popcnt")
-+__jited("	popcnt{{.*}}")
-+int bitops_jit_popcnt64_x86(void *ctx)
-+{
-+	return bpf_popcnt64(0x1011);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: rol64 uses rol on x86")
-+__success __retval(6)
-+__arch_x86_64
-+__jited("	rol{{.*}}")
-+int bitops_jit_rol64_x86(void *ctx)
-+{
-+	return bpf_rol64(3, 1);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: ror64 uses ror on x86")
-+__success __retval(3)
-+__arch_x86_64
-+__jited("	ror{{.*}}")
-+int bitops_jit_ror64_x86(void *ctx)
-+{
-+	return bpf_ror64(6, 1);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: clz64 uses clz on arm64")
-+__success __retval(63)
-+__arch_arm64
-+__jited("	clz	{{.*}}")
-+int bitops_jit_clz64_arm64(void *ctx)
-+{
-+	return bpf_clz64(1);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: ctz64 uses ctz or rbit+clz on arm64")
-+__success __retval(4)
-+__arch_arm64
-+__jited("	{{(ctz|rbit)}}	{{.*}}")
-+int bitops_jit_ctz64_arm64(void *ctx)
-+{
-+	return bpf_ctz64(0x10);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: ffs64 uses ctz or rbit+clz on arm64")
-+__success __retval(5)
-+__arch_arm64
-+__jited("	{{(ctz|rbit)}}	{{.*}}")
-+int bitops_jit_ffs64_arm64(void *ctx)
-+{
-+	return bpf_ffs64(0x10);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: fls64 uses clz on arm64")
-+__success __retval(5)
-+__arch_arm64
-+__jited("	clz	{{.*}}")
-+int bitops_jit_fls64_arm64(void *ctx)
-+{
-+	return bpf_fls64(0x10);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: bitrev64 uses rbit on arm64")
-+__success __retval(1)
-+__arch_arm64
-+__jited("	rbit	{{.*}}")
-+int bitops_jit_bitrev64_arm64(void *ctx)
-+{
-+	return bpf_bitrev64(0x8000000000000000ULL);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: rol64 uses rorv on arm64")
-+__success __retval(6)
-+__arch_arm64
-+__jited("	ror	{{.*}}")
-+int bitops_jit_rol64_arm64(void *ctx)
-+{
-+	return bpf_rol64(3, 1);
-+}
-+
-+SEC("syscall")
-+__description("bitops jit: ror64 uses rorv on arm64")
-+__success __retval(3)
-+__arch_arm64
-+__jited("	ror	{{.*}}")
-+int bitops_jit_ror64_arm64(void *ctx)
-+{
-+	return bpf_ror64(6, 1);
-+}
-+
-+char _license[] SEC("license") = "GPL";
--- 
-2.52.0
+/P
 
