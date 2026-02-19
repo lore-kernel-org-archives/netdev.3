@@ -1,67 +1,67 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012006.outbound.protection.outlook.com [40.107.200.6])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012001.outbound.protection.outlook.com [52.101.53.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2412E2D0607;
-	Thu, 19 Feb 2026 05:49:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14102D238A;
+	Thu, 19 Feb 2026 05:50:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.1
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771480202; cv=fail; b=RYVRq9ylsEMnwC1o4t2rpkiYWI5P3E0sSCwxe0ykp3y9efTr6Hlja1joLhUiiMm3Ra2vSuhEqPoDJmHLvpQ5oqbQIXWkKzx3AAGFXIGDEvcLkNwl+gva7x7rgPkv6W9iAOtzPvsGko1lszRW146tLw7XTCthZ8GHvpZsGaaCxdY=
+	t=1771480207; cv=fail; b=E7MgmTq82U/nRAWkGQ9UKW5qM+Zw/SrJu2VDZWH59NpI5HQFXfilF3m80r/BUNE8OwfmfuJCWybU9pUy+xZznJnyphmjKS76vdjRo6uLSoZx5y+s7xlUHOP+MTuyS+vuEvHdNgZs0dk3Ymws10JCtojzS7iqj1USAu5s0O+y7EA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771480202; c=relaxed/simple;
-	bh=JhLBQGPczV1pG8s9IgW2Gfc6aeRNcJecDNFkc1tZzWo=;
+	s=arc-20240116; t=1771480207; c=relaxed/simple;
+	bh=ew2FtNNT6NV/1d0FD55XZ8FF8LO3BQAsdee3axpiVAY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NOQK5d4NqKmOgrmkkTKsGmCSuIgG1NgHU1KNpRGNTFH/CsE+Qles6N9gMcKlxJPE94+R1NZhXfxxJKNHV/oApi2DPKa/HJWgN+TJhcKlLcO/4HuqNhd0UOWw8HV7oDDETkeqv4N3au8HoAfC6zHy5kzrtYeUa2FgAVqiS53zIGA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3kV/h7+O; arc=fail smtp.client-ip=40.107.200.6
+	 MIME-Version:Content-Type; b=m9oRD8gMY1GUglHszuj7Xbe77AZnh6lkWYAfTVJ7IWQLZzOh/vWCeMxOGorngMoIXLcDAHVUm4bNDQcWUqCnYrnY42v35viOB0WlBJQboPfKQBZjgmHfZB+6s0ZvEmVJRbME0Ebf/C7yMI7DmFJpBbwZtEusgx6cJ4N+T0lNr5A=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UH6VFK+r; arc=fail smtp.client-ip=52.101.53.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3kV/h7+O"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UH6VFK+r"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RW7emJRdxVeBpTAJrStdBtWPDce2eCTW+Ch5l1BddTkLrfciCNJ4J1SnXJsWOGbnzBFN4FsH8iS6is5GKOfNLwxUz/B96/H44HdH/ycxH8nKxUF0nKpT5YVBb1D8QhMB5GR6H94+taCE+ycqlmLAuNX/SFlZB4LAPBgrlrjNRRb46YTje+3iJTbwK1kNkDY3wv5z0jGkqOcSe20DEmdvE4cn2c1DLk+KLitODL6GbUZ7Q4yXI/wn1yn4sWei47mt6plo71Qw4IdL6ozx8868Td7WhDN63b0ODL2ebZzTpeCMyVmAxB8s80edmnYh2d/T03G4d7QKiu+NtEtANeAGPA==
+ b=mLyuGEdXwt+BIgR3eZpoj79mXAZ0zg8K2u1TnaKAfEzlaF/w+EbEY7Mo6RAxGzYscFVhvZv7sqTWKq2DDG4xPsIZUPGBbHAtK2woY5t3gww+RCSS32oC1QTuB6uCbXvDQV2r9ILfbwuJbw2zECY20gDyVqPEdRoyGtEXfRNHdffhjd2HmIKOkyL43ShDFqIWqd8+b5qKO1JQdkemvrSetcI2DqvmJmxBOsx236wMNVGOK5FgidFOxfM7ISkRVgRQbX9a4AqSU4+dHmqFBGrHTKFC/WGl5SXqsfrLpDzG5au/8hAGLpA15ee9i5u03R7ud0FSdCmkdgDKANWmof7l9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=px6XeTeIKgMpbqCdjDEg4gksVwvMEi6wtH5XzuKgRoc=;
- b=JVibVpBn3hrfd7TDXTghxc7u86qirLlq3nV15pw0sBik7a0JakYgBBRHHa+XT8tehlcfbzxQsCYRm03+AbKxDnCngjmwlWYtKE2cq7zoQUrgJvfLzMuzB8C8PYQwbS1a5wSDw5kFPSah1v0mQTgYVYg0pMFZYxaMuWM4TTJI3qmkNDzloh8k6rcfSOV+OJorSfBmCB0oH4EY168gOzpAp+phyOuDDGqwZzZQpCvsoZx7ecnWq8MVCsEBK6BZT61uPFxogAhpxyuHdqxAGZYg+o5qEdhDRRDKUGTGeu2klldIp4YAepmYW5maJACgL8+IfdV9vScC9HVSxPg55Uk8Zw==
+ bh=avaLeJBtYoBspywqZm3cVrSmUzpmP23Gb00lJ+TE0NU=;
+ b=ckjKiqjVY67VZ4v+MY9cMHKd3VxhBC/NOt3Jg62VpuJ3fn8Ifuwo36S5xi8TdYGsppCy8SkdqQC7FRyNGcL4mSOapPVhZZl6hsMGylpgFU+UgUQ0LNE3oJr2HwzZKfduTg7ro1TOv9KSrqq/8gIAb8J1dUy2u6xRd65MDFtKMaYe/ZQ8jWGubaQIYQMXLkIIMLaNiAOhMHpPpOwS6AIU9lpYuSk6LDIzmyt8i03i6SX4CGY71yHSNDhSpq/xf7j8u2ZELwMIJt7cuhdUxtNH/H6Z+AjLYjju8jUpIoNKRU/saYE/tFJcLhjb7ejaOAsGV1/seDPt07VNWwqKjt/e9Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lunn.ch smtp.mailfrom=amd.com; dmarc=pass
  (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
  dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=px6XeTeIKgMpbqCdjDEg4gksVwvMEi6wtH5XzuKgRoc=;
- b=3kV/h7+O1bwmlnNBxn/wL8rsrv6dnYFITsrEFsrbbdNJlgFLnh5zaZkAi8aaoQ8vhzuDZIf4VQhClZ9rU1/YClQl4NkZeYH5f4wrqNflzCkyijG8LXfCyx1fUFl8IwoJHoRmyWxoY6DmUIt58LeRnE7ejOGyHa9KYEHx8ufMOMM=
-Received: from SJ0PR13CA0110.namprd13.prod.outlook.com (2603:10b6:a03:2c5::25)
- by LV2PR12MB5944.namprd12.prod.outlook.com (2603:10b6:408:14f::12) with
+ bh=avaLeJBtYoBspywqZm3cVrSmUzpmP23Gb00lJ+TE0NU=;
+ b=UH6VFK+rtllaKcqSPvdtQaJyLXUhglq9IEoOe303fMU/obyBulc1qR0LKxN+slUU8wuD5uYWACMndh9zhrIQ9hfxJ13HvMLZYgnA8sT8cqoiQ9/N94uvC5FeYpl4zWXKTKJ2Mky7FWKsa8chtgKoZGVUxLbQYWHO5c0H88U6zuM=
+Received: from CH5PR03CA0002.namprd03.prod.outlook.com (2603:10b6:610:1f1::14)
+ by BN7PPF62A0C9A68.namprd12.prod.outlook.com (2603:10b6:40f:fc02::6d2) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.14; Thu, 19 Feb
- 2026 05:49:52 +0000
-Received: from SJ5PEPF000001C8.namprd05.prod.outlook.com
- (2603:10b6:a03:2c5:cafe::3c) by SJ0PR13CA0110.outlook.office365.com
- (2603:10b6:a03:2c5::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.15 via Frontend Transport; Thu,
- 19 Feb 2026 05:49:29 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.10; Thu, 19 Feb
+ 2026 05:49:59 +0000
+Received: from DS3PEPF000099DD.namprd04.prod.outlook.com
+ (2603:10b6:610:1f1:cafe::87) by CH5PR03CA0002.outlook.office365.com
+ (2603:10b6:610:1f1::14) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.16 via Frontend Transport; Thu,
+ 19 Feb 2026 05:49:59 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
 Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SJ5PEPF000001C8.mail.protection.outlook.com (10.167.242.36) with Microsoft
+ client-ip=165.204.84.17; helo=satlexmb08.amd.com; pr=C
+Received: from satlexmb08.amd.com (165.204.84.17) by
+ DS3PEPF000099DD.mail.protection.outlook.com (10.167.17.199) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Thu, 19 Feb 2026 05:49:50 +0000
-Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 18 Feb
- 2026 23:49:49 -0600
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb09.amd.com
- (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 18 Feb
- 2026 21:49:48 -0800
+ 15.20.9632.12 via Frontend Transport; Thu, 19 Feb 2026 05:49:59 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by satlexmb08.amd.com
+ (10.181.42.217) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.17; Wed, 18 Feb
+ 2026 23:49:58 -0600
+Received: from satlexmb07.amd.com (10.181.42.216) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 18 Feb
+ 2026 23:49:56 -0600
 Received: from xhdsneeli40.xilinx.com (10.180.168.240) by satlexmb07.amd.com
  (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.17 via Frontend
- Transport; Wed, 18 Feb 2026 23:49:44 -0600
+ Transport; Wed, 18 Feb 2026 23:49:53 -0600
 From: Srinivas Neeli <srinivas.neeli@amd.com>
 To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 	<kuba@kernel.org>, <pabeni@redhat.com>, <michal.simek@amd.com>,
@@ -70,9 +70,9 @@ To: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
 CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
 	<devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<git@amd.com>, <srinivas.neeli@amd.com>
-Subject: [RFC PATCH 5/8] net: xilinx: tsn: Add TSN switch support with port state and frame filter control
-Date: Thu, 19 Feb 2026 11:19:08 +0530
-Message-ID: <20260219054911.2017362-6-srinivas.neeli@amd.com>
+Subject: [RFC PATCH 7/8] net: xilinx: tsn: Add PTP hardware clock (PHC) and timer support
+Date: Thu, 19 Feb 2026 11:19:10 +0530
+Message-ID: <20260219054911.2017362-8-srinivas.neeli@amd.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260219054911.2017362-1-srinivas.neeli@amd.com>
 References: <20260219054911.2017362-1-srinivas.neeli@amd.com>
@@ -84,712 +84,706 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+Received-SPF: None (SATLEXMB04.amd.com: srinivas.neeli@amd.com does not
+ designate permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001C8:EE_|LV2PR12MB5944:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6921346b-bede-498b-94b5-08de6f7ab2d3
+X-MS-TrafficTypeDiagnostic: DS3PEPF000099DD:EE_|BN7PPF62A0C9A68:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4086e6f2-bfd4-4c8c-8fc6-08de6f7ab7b8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|7416014|376014|921020;
+	BCL:0;ARA:13230040|82310400026|7416014|376014|1800799024|36860700013|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8yRwTHU1lixQPDIqDblgJgJee+Rjt9MPcXbOktnwFtBQ+CD5f8THdvokIViG?=
- =?us-ascii?Q?bbjtGO0v/COHrMvpk3LS6gY/tWvqkFk/3sn9+VTR/amVjdZahGtMa2f6nHjS?=
- =?us-ascii?Q?EOKCt8ItLMRfou7FD5/bLiuqVHNfhtRw1coTSfetn+de4TI7gbAB7TzGfrhs?=
- =?us-ascii?Q?fA1Kcz/WLtTNkqUZwy+EAfy5ipH1FBuiqVKR/jKeudKUJsuGMch8xsTs3K1y?=
- =?us-ascii?Q?A4C/NKccX+OizuzVB9ugKyXffChK3Fr8sBpS3bOhRdun2zgXn/96sEwORg0u?=
- =?us-ascii?Q?2olZFDXbzrvB9SonyaXPMolHhDxDB4Grj1MQSxAUGQ2FXeTmA8ZUnFWLhHPF?=
- =?us-ascii?Q?xAKUtga2Nkp7d5cUPHzaGWlxxiHrIYwwk+INYm57sSXhZJyxp/lbc6ksZeUB?=
- =?us-ascii?Q?DVWbNElIO1myYl3u1QPgkvlhswc1XueLtpl1aWZLjUe1TSR1cQgrZGZniNvj?=
- =?us-ascii?Q?uy8dQ3cIprRnB1F7WXe+AkbhVtc/NM5xW7mnjxcZc3zt6pm6DRAFwBNNaOzu?=
- =?us-ascii?Q?b6OU6vdzH/wBYtnM8dmfoHiP4A76pgGskPVIAx6Di72JGMc0tA1JuR/vSJoT?=
- =?us-ascii?Q?TUaxlejPvoVUIVZTwO/qA9i/PipmtisXd28/jPJifKEEF0Xvu7Ztop5YhqPR?=
- =?us-ascii?Q?mLesvVCqHeWztoKylQMhZ/3gi61JtLE3n4CX9vSRdaJjVlhD5t0UXSeD2QeO?=
- =?us-ascii?Q?IGAllGgSUx8MUv+0avy1MYckuwRFsDxhy+8VAQgjRT5w/hqzZzxM/uA+b49g?=
- =?us-ascii?Q?Z+0PEXdSmSh1AFpXhJ9kY3e6ZIT4/bcKie75JUpnb9MxZWW3JK6s3k4iLF8h?=
- =?us-ascii?Q?5h2E/gnx9YWjy6JjCkgW/NPYa6f0c3pCy2RQdmof9uUlRoG5ACcHhUk+angI?=
- =?us-ascii?Q?7vfnp/PQ5/86n4V08yTfJbaDeltUrsbIFnbtObyATP5MVywsJAhWW4N3mJeB?=
- =?us-ascii?Q?Eibv5b+kkI8f6HThUAhX5Y8/cLiqzg6b1VIojO+F2vRsSrqGWrorj32AN1cJ?=
- =?us-ascii?Q?SmqPmBV9huxTs0L4BuI36iskoz12DfFBGfpiqnoKt3XB80oSbGIPvNErJ4Nd?=
- =?us-ascii?Q?UIDpghfqDozcvl9aXBxiqjs7qKrF0UMVWoH6Su0fbIm/Lixl0Y8y00VHOlLa?=
- =?us-ascii?Q?Cl9W9UQQvfC8WNxcgaSGyDvaRKzgSjdcCBwbMhCEMIvJtQupiW6h06ZS3vkI?=
- =?us-ascii?Q?brX++haOSqYcnMaRTjFv7yUh2f9Agpl598HFsJchJehX9Xyx3cT26fYBWrs3?=
- =?us-ascii?Q?iyOc62s3vEX+jhXCboIoKl3nF3M/CL36y+1uXGL+mhyzmjBzvLFWnBtgc5Z2?=
- =?us-ascii?Q?PX61LS+CGiNtaJ23+GD+MUtBf08llmSL3k/dX6kxgQXd3H8dN/jbST09HtUq?=
- =?us-ascii?Q?MFoe6HjJYZyc1r0g3NTlL4aXWhtNuFIWfrFiK8YKYBJ0t9uNXiRzBuJuEe4l?=
- =?us-ascii?Q?JdjzXnxQfM32gI+POEVuq5bOrKLUup7+xGWBfcf7uhYzD+5/mZJHmqDBGDFt?=
- =?us-ascii?Q?ZgHj99TRYmdJHDj52CIp12a20E3GuIOU4TvG2hZFcK1YxCqYIVrJgnhZBNPq?=
- =?us-ascii?Q?yR9L1XxFL7ZjsApdMbsD8ht4T0qDKPiiE4HjCE9aaIunmxqCme0KsbiAmY4q?=
- =?us-ascii?Q?J9xh2sjm72cKGI4SwC1Sy2Op/gCiVT0QQs+P6a94SOnqwSXtxxR4Fa2/5TmR?=
- =?us-ascii?Q?tzPljMTMdhj/1HeXnv25WKCONyU=3D?=
+	=?us-ascii?Q?wDx3nA+os6ZlTKDYHl6p7tqXXQc2BTFdV1agoPOldB223WLL6BBdOCCk7B56?=
+ =?us-ascii?Q?0hqKPs6b3/Eg8ZDdTZE7spY5M/bgBJGtqdQkZibqrS49I/RsJdEP0NGyRjOh?=
+ =?us-ascii?Q?GW7SGRBHn7W1B8VbN5LyMj+lLa9ki4bNbI9ss0h7Jfn4DBs+cmtPX0X3Gcpf?=
+ =?us-ascii?Q?uhLbNyBUefasnauEqw1iWdB8aRSj7Lgf50ZdC4ZCy1h65/ZoBitPt6kxyogs?=
+ =?us-ascii?Q?ZpXeytwIEC8zs9z9nDIyaweCAWFqO8ZC6NRcxR7WZmAHCaxmbh5NoYSjRMK+?=
+ =?us-ascii?Q?OfLBYkndXIooLenRGmfaZ5c1OEYd0MZz9n/p+ZPgdOfe8AfUSYv5XFFx41lS?=
+ =?us-ascii?Q?MOaHjqTZEnJUh1aJgc5eyeJ2T9metGKiE3kK+y5K4Yvs0Gn5aQSFGx883WC/?=
+ =?us-ascii?Q?Mt8TFsrzNe4/MpxAmVnA76nqCBTxbq8Vwo+KFkapc/IG25JArPJRK2ExpHIN?=
+ =?us-ascii?Q?JQ6NZakrz3K+JMBSUbi0h132amXMc5IJ4GRcG5SkLyrUBbf/KbiGZE0yfN6U?=
+ =?us-ascii?Q?haMU6VBR+f1ocBodyahVQ10bWurS4mahc3qelv6MylFifZQdW8iCprkH4op2?=
+ =?us-ascii?Q?IRFNIobVFVPDQ2TH8Xk0YRn11Mu1j4V7O1YekZNyg73/mmpOnSCbiT4GpCMX?=
+ =?us-ascii?Q?PQ3XceKqerGuRSFjA9ieUDX53PZrRPYwDz3KwbZyYwz2n/1Mhf2ELTDSmkR1?=
+ =?us-ascii?Q?xWEIQgEr+QmMQpY/e6sU/TEim/csgnRczhcjohfbdh/RsTju4utsBGzqDCUY?=
+ =?us-ascii?Q?P32sxCZ4Rzf9nJzEYRM6h8XjZZl2lFWwDNygTHtu9IVKnQxV1q+n/ja+S3rl?=
+ =?us-ascii?Q?4TD8sM+i+YsShaW2M+r6U8FOqE5HNUUyYVCI9rr0RPeC11qBTXcYTND4IEAY?=
+ =?us-ascii?Q?pvNp8oUCG8HFj30k/y2tQM10iqusk8lb/oeI2MzfTQxMNVOwVc434tEFaELO?=
+ =?us-ascii?Q?f+MgyTpj/a0SFxZlwh49dAK5+3Giq4KPvYECljdg4tKJFuC5uHbm9L2y7hHM?=
+ =?us-ascii?Q?6d51luJTlXDfijsozoLaTwj7leXteJjSLDImY7woWpRjwOQ0ZVlETmrZvhYg?=
+ =?us-ascii?Q?YYTbUqxNrkITrABd/OYBFjRhmDjiDUA/IHgwTuO9Wnr3RfvqvJ1WEsYyR+iJ?=
+ =?us-ascii?Q?4v5ij3ER5mVWCkuSW29TkaKLuhY/sT5GP/IS/d6TqZA7YG79IllPg054JcFB?=
+ =?us-ascii?Q?MwmgV97YJppWu0EeKBcn/Tr3vPFmJOD9gz2DSK47bJuseMDp2AQsiftodXBQ?=
+ =?us-ascii?Q?xvfgMPUboEJlHszHeLfo2XTSFGV225Dy9I5vLlfi/RAp1RGGl9IUp3p8Njwl?=
+ =?us-ascii?Q?yo8XD+iTIRcoBDWG1d44nskesejXlYv/TQt0wI7TICPlWmRPdERf0gTGjeeD?=
+ =?us-ascii?Q?RRqA3LMx6pzLNI4IwWGnx+bYwUpUyi7CDHGY3hQwbuELFvPfRNxTb0aFgW7j?=
+ =?us-ascii?Q?RqjLzH8fEuagIVCd0qpWiBS+uNwS7Zsc3L7MnUxLG7hsSTGu2/CwqVxEsb4U?=
+ =?us-ascii?Q?uplkwi2vfGnLRVYU7RS8Ca5Ox+eozWjvCqghx3C6t+PjcRX83bdeaTbmphYy?=
+ =?us-ascii?Q?w21HCebfO+XpGbv5JDZqG9jGMmoIfi1owTvI4NBvHFRyI2SBmSY+bjmMVOHH?=
+ =?us-ascii?Q?xlMaob0Kn/AdAP1FM67bpbrxwO20Ss8PHnbRH06LqVny2U304J+3w6pAPvsq?=
+ =?us-ascii?Q?eq4HzA=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(7416014)(376014)(921020);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb08.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(7416014)(376014)(1800799024)(36860700013)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	xB/x+0XZECM3LsnrXLK5BZMz+gBsB1ScD0kejEdytefG3XCdPoHksgf8D7MWLsWKHGS51p4LK/nz+pVbWC5MpGYiYS+JvNd/VW0mV1DMFD58RhZjvvBKiWj9gleRvn5f+e4muy0EWwrwuwXM6/rVjUTrSbSpUhkHLrau2SKNkpY7sVrEMxs/n7QKL/ZBFet7qL+JnQIUFOFDxVQfDyuh3xHSDar6/MlA92xgmras3lOEfq9PNVTq7YRTWG8faCi+9K9aRMHeQueesFd5OxVRK8jhKqa24/hh2WGtLbx8lwW8v+Sn7u7GZ9WS+r2EHaNecAIG03NnCJm82doe6ahlVr8bqIHNlnA4ZZFht6SFuxtXqfzVAdcQgIJEiq9HD7Ook47p7rG3XGbfGLhUki36ce7TK9GfgYpCM8J9Doi3NSAS5zgcMLXNmCBquGxneWSP
+	YUNUJmnznnrAbWdLMSEFnf+Gmtkpd2Szq56IKG5yclahSwYDWWnk6BaGsXAbpFwYxKXdIde77eYL15pdBekkGwlCjA+pnKzVrEn6068ffuCKmmJ0ABdsalJIa38cwzXPAUmBtpv7jZX4nXlnxu+bJzS79IAfRNED0p3jXNXTx6CrWlLdhZWtchcVoDXdyqrj4EVrJ0YN48TABAhkAWEC6BoxYYTiFrLrfFI4pA0GKX2kA2ind5/Sy1Myceb5kkwYTUULznwQ9XnWJaFSWH+k+6ud/IxbQO+QfqnkAtamkMEC7sSgttj//yy6Ys3STSvHUBSfcDaLVJcqBp5Br5K3pFu2NO+8eLRKarwPZDSoxDdGUHInOBblR6JKm3E5VVgxVKV9A1YWCF7l0/8S1YHZV+X2dS9nWGql/+Lh5k/R3ny2yujN9Ft+JELAxtGH9X0R
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2026 05:49:50.8821
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2026 05:49:59.1412
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6921346b-bede-498b-94b5-08de6f7ab2d3
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4086e6f2-bfd4-4c8c-8fc6-08de6f7ab7b8
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb08.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001C8.namprd05.prod.outlook.com
+	DS3PEPF000099DD.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5944
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN7PPF62A0C9A68
 
-Add support for the TSN hardware switch block, introducing port state
-management and frame filter configuration.
+Added PTP Hardware Clock (PHC) support to the Xilinx TSN
+Ethernet driver by integrating the TSN IP's real-time clock (RTC) and
+PTP timer logic.
 
-It provides initialization and cleanup routines, register access
-helpers, and APIs for port state and frame filter configuration.
+A new tsn_ptp_timer abstraction is introduced to manage the PTP timer
+registers, RTC offset/increment handling, timer interrupts, and PPS
+generation. The implementation provides full support for PTP clock
+operations including:
+  - gettime64 / settime64
+  - adjtime
+  - adjfine
+  - PPS enable/disable
+  - PHC registration via ptp_clock_register()
 
-Enables basic activation and controlled management of TSN switch ports,
-allowing traffic forwarding between endpoint and MAC interfaces through
-the switch.
+PTP timer interrupt handling is added to generate PPS output based on
+the TSN RTC pulse counter. The PTP timer is shared globally across the
+MAC instances and is initialized only for TEMAC1.
+
+Support is also added to ethtool -T via get_ts_info to report hardware
+timestamping capabilities and the PHC index.
+
+This enables Linux PTP services such as ptp4l and phc2sys to synchronize
+time using the TSN hardware clock.
 
 Signed-off-by: Srinivas Neeli <srinivas.neeli@amd.com>
 ---
  drivers/net/ethernet/xilinx/tsn/Makefile      |   2 +-
- drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h  |  16 +
- .../net/ethernet/xilinx/tsn/xilinx_tsn_main.c |   7 +
- .../ethernet/xilinx/tsn/xilinx_tsn_switch.c   | 546 ++++++++++++++++++
- 4 files changed, 570 insertions(+), 1 deletion(-)
- create mode 100644 drivers/net/ethernet/xilinx/tsn/xilinx_tsn_switch.c
+ drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h  |  59 +++
+ .../net/ethernet/xilinx/tsn/xilinx_tsn_emac.c |  55 ++-
+ .../xilinx/tsn/xilinx_tsn_ptp_clock.c         | 386 ++++++++++++++++++
+ 4 files changed, 500 insertions(+), 2 deletions(-)
+ create mode 100644 drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ptp_clock.c
 
 diff --git a/drivers/net/ethernet/xilinx/tsn/Makefile b/drivers/net/ethernet/xilinx/tsn/Makefile
-index 5eb6dde67061..fc1c0cda0843 100644
+index fc1c0cda0843..0faa5233221b 100644
 --- a/drivers/net/ethernet/xilinx/tsn/Makefile
 +++ b/drivers/net/ethernet/xilinx/tsn/Makefile
 @@ -1,2 +1,2 @@
  obj-$(CONFIG_XILINX_TSN) :=xilinx_tsn.o
--xilinx_tsn-objs := xilinx_tsn_main.o xilinx_tsn_ep.o xilinx_tsn_emac.o xilinx_tsn_mdio.o
-+xilinx_tsn-objs := xilinx_tsn_main.o xilinx_tsn_ep.o xilinx_tsn_emac.o xilinx_tsn_mdio.o xilinx_tsn_switch.o
+-xilinx_tsn-objs := xilinx_tsn_main.o xilinx_tsn_ep.o xilinx_tsn_emac.o xilinx_tsn_mdio.o xilinx_tsn_switch.o
++xilinx_tsn-objs := xilinx_tsn_main.o xilinx_tsn_ep.o xilinx_tsn_emac.o xilinx_tsn_mdio.o xilinx_tsn_switch.o xilinx_tsn_ptp_clock.o
 diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h
-index c8435c09ed2c..91d01313aada 100644
+index 91d01313aada..0cce916825ea 100644
 --- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h
 +++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn.h
-@@ -138,6 +138,18 @@ struct tsn_emac {
- 	int irq;
- };
+@@ -18,6 +18,7 @@
+ #include <linux/if_ether.h>
+ #include <linux/if_vlan.h>
+ #include <linux/init.h>
++#include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+@@ -25,12 +26,15 @@
+ #include <linux/of.h>
+ #include <linux/of_address.h>
+ #include <linux/of_dma.h>
++#include <linux/of_irq.h>
+ #include <linux/of_mdio.h>
+ #include <linux/of_net.h>
+ #include <linux/of_platform.h>
+ #include <linux/platform_device.h>
++#include <linux/ptp_clock_kernel.h>
+ #include <linux/spinlock.h>
+ #include <linux/u64_stats_sync.h>
++#include <linux/units.h>
+ #include <net/netdev_queues.h>
  
-+/*
-+ * struct tsn_switch - TSN switch configuration structure
-+ * @dev: Device pointer for this switch instance
-+ * @regs: Virtual address mapping of switch register space
-+ * @irq: Interrupt number for switch events
+ #define TSN_NUM_CLOCKS		6
+@@ -107,6 +111,55 @@
+ #define TSN_EMMC_LINKSPEED_1000		BIT(31)    /* 1000 Mbit */
+ 
+ #define TSN_MAX_EMAC_NO			2
++#define TSN_TEMAC1			1
++#define TSN_TEMAC2			2
++
++/* PTP Timer Register Offsets (relative to timer base) */
++#define TSN_TIMER_RTC_OFFSET_NS		0x00000  /* RTC Nanoseconds Offset */
++#define TSN_TIMER_RTC_OFFSET_SEC_L	0x00008  /* RTC Seconds Offset - Low */
++#define TSN_TIMER_RTC_OFFSET_SEC_H	0x0000C  /* RTC Seconds Offset - High */
++#define TSN_TIMER_RTC_INCREMENT		0x00010  /* RTC Increment */
++#define TSN_TIMER_CURRENT_RTC_NS	0x00014  /* Current TOD Nanoseconds - RO */
++#define TSN_TIMER_CURRENT_RTC_SEC_L	0x00018  /* Current TOD Seconds Low - RO */
++#define TSN_TIMER_CURRENT_RTC_SEC_H	0x0001C  /* Current TOD Seconds High - RO */
++#define TSN_TIMER_INTERRUPT		0x00020  /* Interrupt register */
++
++/* PTP Timer bit masks and constants */
++#define TSN_TIMER_MAX_NSEC_SIZE		30
++#define TSN_TIMER_MAX_NSEC_MASK		GENMASK_ULL(TSN_TIMER_MAX_NSEC_SIZE - 1, 0)
++#define TSN_TIMER_MAX_SEC_SIZE		48
++#define TSN_TIMER_MAX_SEC_MASK		GENMASK_ULL(TSN_TIMER_MAX_SEC_SIZE - 1, 0)
++#define TSN_TIMER_INT_SHIFT		0
++#define TSN_TIMER_RTC_NS_SHIFT		20
++#define PULSESIN1PPS			128
++#define TSN_TIMER_GTX_CLK_FREQ		(125 * HZ_PER_MHZ)  /* 125 MHz */
++
++/* PTP Timer Register Base Offset */
++#define TSN_PTP_TIMER_OFFSET		0x12800
++
++/**
++ * struct tsn_ptp_timer - PTP timer private data
++ * @dev: Device pointer
++ * @regs: Base address of PTP timer registers
++ * @ptp_clock: PTP clock instance
++ * @ptp_clock_info: PTP clock information
++ * @reg_lock: Register access spinlock
++ * @irq: PTP timer interrupt number
++ * @pps_enable: PPS output enable flag
++ * @countpulse: Pulse counter for PPS generation
++ * @rtc_value: RTC increment value
 + */
-+struct tsn_switch {
++struct tsn_ptp_timer {
 +	struct device *dev;
 +	void __iomem *regs;
++	struct ptp_clock *ptp_clock;
++	struct ptp_clock_info ptp_clock_info;
++	spinlock_t reg_lock; /* Protect ptp register access */
 +	int irq;
++	int pps_enable;
++	int countpulse;
++	u32 rtc_value;
 +};
-+
+ 
  /*
-  * struct skbuf_dma_descriptor - skb for each dma descriptor
-  * @sgl: Pointer for sglist.
-@@ -193,6 +205,7 @@ struct tsn_endpoint {
-  * @regs: ioremap()'d base pointer
-  * @ep: Pointer to TSN endpoint structure
-  * @emacs: Array of EMAC instances (up to 2)
-+ * @sw: Pointer to TSN switch structure
-  * @clks: Bulk clock data for all required clocks
-  * @tx_lock: Spinlock protecting TX rings and related TX state
-  * @rx_lock: Spinlock protecting RX rings and related RX state
-@@ -214,6 +227,7 @@ struct tsn_priv {
- 	void __iomem *regs;
- 	struct tsn_endpoint *ep;
- 	struct tsn_emac *emacs[TSN_MAX_EMAC_NO];
-+	struct tsn_switch *sw;
- 	struct clk_bulk_data clks[TSN_NUM_CLOCKS];
- 	spinlock_t tx_lock;	/* Protects TX ring buffers */
- 	spinlock_t rx_lock;	/* Protects RX ring buffers */
-@@ -294,4 +308,6 @@ int tsn_emac_init(struct platform_device *pdev);
- void tsn_emac_exit(struct platform_device *pdev);
- int tsn_mdio_setup(struct tsn_emac *emac, struct device_node *mac_np);
+  * struct tsn_emac - TSN Ethernet MAC configuration structure
+@@ -218,6 +271,8 @@ struct tsn_endpoint {
+  * @tx_chans: Array of TX DMA channels
+  * @rx_chans: Array of RX DMA channels
+  * @num_emacs: Number of EMAC instances
++ * @ptp_timer: Global PTP timer shared by both EMACs
++ * @phc_index: PTP Hardware Clock index
+  */
+ struct tsn_priv {
+ 	struct platform_device *pdev;
+@@ -240,6 +295,8 @@ struct tsn_priv {
+ 	struct tsn_dma_chan **tx_chans;
+ 	struct tsn_dma_chan **rx_chans;
+ 	u32 num_emacs;
++	struct tsn_ptp_timer ptp_timer;
++	int phc_index;
+ };
+ 
+ /**
+@@ -310,4 +367,6 @@ int tsn_mdio_setup(struct tsn_emac *emac, struct device_node *mac_np);
  void tsn_mdio_teardown(struct tsn_emac *emac);
-+int tsn_switch_init(struct platform_device *pdev);
-+void tsn_switch_exit(struct platform_device *pdev);
+ int tsn_switch_init(struct platform_device *pdev);
+ void tsn_switch_exit(struct platform_device *pdev);
++int tsn_ptp_timer_init(struct tsn_emac *emac, struct device_node *emac_np);
++void tsn_ptp_timer_exit(struct tsn_emac *emac);
  #endif /* XILINX_TSN_H */
-diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
-index 7cb07e330f57..82c73fbcd83c 100644
---- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
-+++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_main.c
-@@ -739,8 +739,14 @@ static int tsn_ip_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto exit_ep;
+diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_emac.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_emac.c
+index 26a533e313a2..b7d7ba0de717 100644
+--- a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_emac.c
++++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_emac.c
+@@ -147,11 +147,46 @@ static void emac_get_drvinfo(struct net_device *ndev,
+ 	strscpy(ed->version, DRIVER_VERSION, sizeof(ed->version));
+ }
  
-+	ret = tsn_switch_init(pdev);
-+	if (ret)
-+		goto exit_emac;
++/**
++ * emac_get_ts_info - Get timestamping and PTP information
++ * @ndev: Pointer to net_device structure
++ * @info: Pointer to ethtool_ts_info structure
++ *
++ * This function provides hardware timestamping capabilities and
++ * PTP hardware clock index for ethtool -T command.
++ *
++ * Return: 0 on success
++ */
++static int emac_get_ts_info(struct net_device *ndev,
++			    struct kernel_ethtool_ts_info *info)
++{
++	struct tsn_emac *emac = netdev_priv(ndev);
++	struct tsn_priv *common = emac->common;
 +
- 	return 0;
++	info->so_timestamping = SOF_TIMESTAMPING_TX_HARDWARE |
++				SOF_TIMESTAMPING_RX_HARDWARE |
++				SOF_TIMESTAMPING_RAW_HARDWARE;
++
++	info->tx_types = BIT(HWTSTAMP_TX_OFF) |
++			 BIT(HWTSTAMP_TX_ON);
++
++	info->rx_filters = BIT(HWTSTAMP_FILTER_NONE) |
++			   BIT(HWTSTAMP_FILTER_ALL);
++
++	if (common->phc_index >= 0)
++		info->phc_index = common->phc_index;
++	else
++		info->phc_index = -1;
++
++	return 0;
++}
++
+ static const struct ethtool_ops emac_ethtool_ops = {
+ 	.get_drvinfo	= emac_get_drvinfo,
+ 	.get_link	= ethtool_op_get_link,
+ 	.get_link_ksettings	= phy_ethtool_get_link_ksettings,
+ 	.set_link_ksettings	= phy_ethtool_set_link_ksettings,
++	.get_ts_info		= emac_get_ts_info,
+ };
  
-+exit_emac:
-+	tsn_emac_exit(pdev);
- exit_ep:
- 	tsn_ep_exit(pdev);
- exit_dma:
-@@ -758,6 +764,7 @@ static void tsn_ip_remove(struct platform_device *pdev)
- {
- 	struct tsn_priv *common = platform_get_drvdata(pdev);
+ /**
+@@ -235,10 +270,19 @@ int tsn_emac_init(struct platform_device *pdev)
+ 			}
+ 		}
  
-+	tsn_switch_exit(pdev);
- 	tsn_emac_exit(pdev);
- 	/* Tear down DMA channels and endpoint */
- 	if (common->ep)
-diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_switch.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_switch.c
++		/* PTP timer initialization - ONLY for MAC 1 */
++		if (emac->emac_num == TSN_TEMAC1) {
++			ret = tsn_ptp_timer_init(emac, emac_np);
++			if (ret) {
++				dev_err(dev, "Failed to initialize PTP timer for EMAC %d: %d\n",
++					emac->emac_num, ret);
++				goto err_teardown_mdio;
++			}
++		}
+ 		ret = register_netdev(ndev);
+ 		if (ret) {
+ 			dev_err(dev, "Failed to register net device for MAC %d\n", mac_id);
+-			goto err_teardown_mdio;
++			goto err_remove_ptp;
+ 		}
+ 
+ 		common->emacs[array_idx] = emac;
+@@ -246,6 +290,9 @@ int tsn_emac_init(struct platform_device *pdev)
+ 		common->num_emacs = array_idx;
+ 		continue;
+ 
++err_remove_ptp:
++		if (emac->emac_num == TSN_TEMAC1)
++			tsn_ptp_timer_exit(emac);
+ err_teardown_mdio:
+ 		if (emac->phy_node)
+ 			tsn_mdio_teardown(emac);
+@@ -275,6 +322,8 @@ int tsn_emac_init(struct platform_device *pdev)
+ 		dev_info(dev, "Cleaning up MAC %u (array[%d])\n", old->emac_num, array_idx);
+ 
+ 		unregister_netdev(old->ndev);
++		if (old->emac_num == TSN_TEMAC1)
++			tsn_ptp_timer_exit(old);
+ 
+ 		if (old->phy_node) {
+ 			tsn_mdio_teardown(old);
+@@ -314,6 +363,10 @@ void tsn_emac_exit(struct platform_device *pdev)
+ 		dev_info(dev, "Cleaning up MAC %u (array[%d])\n", emac->emac_num, i);
+ 
+ 		unregister_netdev(emac->ndev);
++
++		if (emac->emac_num == TSN_TEMAC1)
++			tsn_ptp_timer_exit(emac);
++
+ 		if (emac->phy_node) {
+ 			tsn_mdio_teardown(emac);
+ 			of_node_put(emac->phy_node);
+diff --git a/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ptp_clock.c b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ptp_clock.c
 new file mode 100644
-index 000000000000..89fbc5bcc16f
+index 000000000000..1f6bc932fc6b
 --- /dev/null
-+++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_switch.c
-@@ -0,0 +1,546 @@
++++ b/drivers/net/ethernet/xilinx/tsn/xilinx_tsn_ptp_clock.c
+@@ -0,0 +1,386 @@
 +// SPDX-License-Identifier: GPL-2.0
-+
 +#include "xilinx_tsn.h"
 +
-+#define TSN_SW_MAX_PORTS		3
-+#define TSN_PORT_STATE_CTRL_OFFSET	0x0004c
-+#define TSN_SW_MAC_LSB_OFFSET		0x0000c
-+#define TSN_SW_MAC_MSB_OFFSET		0x00010
-+
-+#define TSN_SW_MAC_MSB_FF_MASK_SHIFT	16
-+
-+/* EP Port (Port 0) control bits */
-+#define EP_PORT_STATUS_CHG_BIT		BIT(0)
-+#define EP_PORT_STATUS_SHIFT		1
-+#define EP_PORT_STATUS_MASK		GENMASK(3, 1)
-+
-+/* MAC1 Port (Port 1) control bits */
-+#define MAC1_PORT_STATUS_CHG_BIT	BIT(8)
-+#define MAC1_PORT_STATUS_SHIFT		9
-+#define MAC1_PORT_STATUS_MASK		GENMASK(11, 9)
-+
-+/* MAC2 Port (Port 2) control bits */
-+#define MAC2_PORT_STATUS_CHG_BIT	BIT(16)
-+#define MAC2_PORT_STATUS_SHIFT		17
-+#define MAC2_PORT_STATUS_MASK		GENMASK(19, 17)
-+
-+#define DELAY_OF_ONE_MILLISEC		1000
-+#define DELAY_OF_FIVE_MILLISEC		(5 * DELAY_OF_ONE_MILLISEC)
-+
 +/**
-+ * enum tsn_port_state - TSN switch port STP states
-+ * @TSN_PORT_STATE_DISABLED: Port disabled, no traffic forwarding
-+ * @TSN_PORT_STATE_BLOCKING: Port blocking frames
-+ * @TSN_PORT_STATE_LISTENING: Port listening for BPDU frames
-+ * @TSN_PORT_STATE_LEARNING: Port learning MAC addresses
-+ * @TSN_PORT_STATE_FORWARDING: Port forwarding frames normally
-+ */
-+enum tsn_port_state {
-+	TSN_PORT_STATE_DISABLED = 0,
-+	TSN_PORT_STATE_BLOCKING,
-+	TSN_PORT_STATE_LISTENING,
-+	TSN_PORT_STATE_LEARNING,
-+	TSN_PORT_STATE_FORWARDING,
-+};
-+
-+/**
-+ * sw_iow - Memory mapped TSN switch register write
-+ * @sw: Pointer to TSN switch structure
-+ * @off: Address offset from the base address of switch registers
-+ * @val: Value to be written into the switch register
++ * rtc_iow - Write to PTP RTC timer register
++ * @timer:	Pointer to TSN PTP timer structure
++ * @reg:	Register offset
++ * @val:	Value to write
 + *
 + * This function writes the desired value into the corresponding TSN
-+ * switch register.
++ * PTP register.
 + */
-+static inline void sw_iow(struct tsn_switch *sw, off_t off, u32 val)
++static inline void rtc_iow(struct tsn_ptp_timer *timer, u32 reg, u32 val)
 +{
-+	iowrite32(val, sw->regs + off);
++	iowrite32(val, timer->regs + reg);
 +}
 +
 +/**
-+ * sw_ior - Memory mapped TSN switch register read
-+ * @sw: Pointer to TSN switch structure
-+ * @off: Address offset from the base address of switch registers
++ * rtc_ior - Read from PTP RTC timer register
++ * @timer:	Pointer to TSN PTP timer structure
++ * @reg:	Register offset
 + *
-+ * This function reads a value from the corresponding TSN switch
++ * This function reads a value from the corresponding TSN PTP
 + * register.
 + *
-+ * Return: Value read from the switch register
++ * Return:	Register value
 + */
-+static inline u32 sw_ior(struct tsn_switch *sw, u32 off)
++static inline u32 rtc_ior(struct tsn_ptp_timer *timer, u32 reg)
 +{
-+	return ioread32(sw->regs + off);
++	return ioread32(timer->regs + reg);
 +}
 +
 +/**
-+ * enum switch_port - TSN switch port identifiers
-+ * @PORT_EP: Endpoint port (port 1)
-+ * @PORT_MAC1: MAC1 port (port 2)
-+ * @PORT_MAC2: MAC2 port (port 3)
-+ */
-+enum switch_port {
-+	PORT_EP = 1,
-+	PORT_MAC1 = 2,
-+	PORT_MAC2 = 3,
-+};
-+
-+/**
-+ * struct port_status - Port configuration structure
-+ * @port_num: Port number identifier
-+ * @port_status: STP state for the port
-+ */
-+struct port_status {
-+	u8 port_num;
-+	u8 port_status;
-+};
-+
-+/**
-+ * tsn_sw_set_port_mac - Set MAC address for a specific TSN port
-+ * @common: TSN common private structure
-+ * @ndev: Network device to update
-+ * @base_mac: Base MAC address (first 44 bits)
-+ * @port_id: Port identifier (0x01 for EP, 0x02 for EMAC0, 0x03 for EMAC1)
-+ * @port_name: Human-readable port name for logging
++ * tsn_tod_read - Read current time-of-day from RTC timer
++ * @timer:	Pointer to TSN PTP timer structure
++ * @ts:		Pointer to timespec64 to store current time
 + *
-+ * Helper function to assign a MAC address to a port with the specified
-+ * port ID in the lower 4 bits while preserving the upper 44 bits from
-+ * the base MAC address.
++ * Reads the 64-bit seconds (high + low) and nanoseconds from the RTC current
++ * time registers. Values are masked to valid ranges.
 + */
-+static void tsn_sw_set_port_mac(struct tsn_priv *common,
-+				struct net_device *ndev,
-+				const u8 *base_mac, u8 port_id,
-+				const char *port_name)
++static void tsn_tod_read(struct tsn_ptp_timer *timer,
++			 struct timespec64 *ts)
 +{
-+	u8 new_mac[ETH_ALEN];
++	u32 secl, sech, nsec;
 +
-+	memcpy(new_mac, base_mac, ETH_ALEN);
-+	new_mac[5] = (base_mac[5] & 0xF0) | (port_id & 0x0F);
++	nsec = rtc_ior(timer, TSN_TIMER_CURRENT_RTC_NS);
++	secl = rtc_ior(timer, TSN_TIMER_CURRENT_RTC_SEC_L);
++	sech = rtc_ior(timer, TSN_TIMER_CURRENT_RTC_SEC_H);
 +
-+	eth_hw_addr_set(ndev, new_mac);
-+	dev_info(common->dev, "%s MAC: %pM\n", port_name, ndev->dev_addr);
++	ts->tv_sec = (((u64)sech << 32) | secl) & TSN_TIMER_MAX_SEC_MASK;
++	ts->tv_nsec = nsec & TSN_TIMER_MAX_NSEC_MASK;
 +}
 +
 +/**
-+ * tsn_sw_generate_consistent_macs - Generate consistent MAC addresses for all ports
-+ * @common: TSN common private structure
-+ * @base_mac: Base MAC address to use (first 44 bits preserved)
++ * tsn_rtc_offset_write - Write time offset to RTC offset registers
++ * @timer:	Pointer to TSN PTP timer structure
++ * @ts:		Pointer to timespec64 with offset value to write
 + *
-+ * Generates MAC addresses for EP, EMAC0, EMAC1 based on a common prefix.
-+ * The last 4 bits are set to 0x1, 0x2, 0x3 respectively to distinguish ports.
-+ *
-+ * Example output:
-+ *   Base:  32:77:6a:ed:7a:35
-+ *   EP:    32:77:6a:ed:7a:31
-+ *   EMAC0: 32:77:6a:ed:7a:32
-+ *   EMAC1: 32:77:6a:ed:7a:33
 + */
-+static void tsn_sw_generate_consistent_macs(struct tsn_priv *common,
-+					    const u8 *base_mac)
++static void tsn_rtc_offset_write(struct tsn_ptp_timer *timer,
++				 const struct timespec64 *ts)
 +{
-+	struct net_device *emac0_ndev = (common->num_emacs >= 1 && common->emacs[0]) ?
-+					 common->emacs[0]->ndev : NULL;
-+	struct net_device *emac1_ndev = (common->num_emacs >= 2 && common->emacs[1]) ?
-+					 common->emacs[1]->ndev : NULL;
-+	struct net_device *ep_ndev = common->ep ? common->ep->ndev : NULL;
-+
-+	if (ep_ndev)
-+		tsn_sw_set_port_mac(common, ep_ndev, base_mac, 0x01, "EP");
-+
-+	if (emac0_ndev)
-+		tsn_sw_set_port_mac(common, emac0_ndev, base_mac, 0x02, "EMAC0");
-+
-+	if (emac1_ndev)
-+		tsn_sw_set_port_mac(common, emac1_ndev, base_mac, 0x03, "EMAC1");
++	rtc_iow(timer, TSN_TIMER_RTC_OFFSET_SEC_H, upper_32_bits(ts->tv_sec));
++	rtc_iow(timer, TSN_TIMER_RTC_OFFSET_SEC_L, lower_32_bits(ts->tv_sec));
++	rtc_iow(timer, TSN_TIMER_RTC_OFFSET_NS, ts->tv_nsec);
 +}
 +
 +/**
-+ * tsn_sw_is_mac_invalid - Check if MAC address is invalid or zero
-+ * @addr: MAC address to validate
++ * tsn_rtc_offset_read - Read time offset from RTC offset registers
++ * @timer:	Pointer to TSN PTP timer structure
++ * @ts:		Pointer to timespec64 to store offset value
 + *
-+ * Return: true if MAC is invalid/zero, false if valid
++ * Reads the current RTC offset value from the offset registers.
++ * Values are masked to valid ranges.
 + */
-+static inline bool tsn_sw_is_mac_invalid(const u8 *addr)
++static void tsn_rtc_offset_read(struct tsn_ptp_timer *timer,
++				struct timespec64 *ts)
 +{
-+	return !is_valid_ether_addr(addr) || is_zero_ether_addr(addr);
++	u32 secl, sech, nsec;
++
++	secl = rtc_ior(timer, TSN_TIMER_RTC_OFFSET_SEC_L);
++	sech = rtc_ior(timer, TSN_TIMER_RTC_OFFSET_SEC_H);
++	nsec = rtc_ior(timer, TSN_TIMER_RTC_OFFSET_NS);
++
++	ts->tv_sec = (((u64)sech << 32) | secl) & TSN_TIMER_MAX_SEC_MASK;
++	ts->tv_nsec = nsec & TSN_TIMER_MAX_NSEC_MASK;
 +}
 +
 +/**
-+ * tsn_sw_check_mac_consistency - Validate MAC prefix consistency
-+ * @common: TSN common private structure
-+ * @ep_ndev: EP network device
-+ * @emac0_ndev: EMAC0 network device
-+ * @emac1_ndev: EMAC1 network device
-+ * @mac_mask: Mask for comparing first 44 bits
++ * tsn_ptp_adjfine - Adjust PTP clock frequency
++ * @ptp:	Pointer to PTP clock info structure
++ * @scaled_ppm:	Frequency adjustment in scaled parts-per-million
 + *
-+ * Checks if all active ports have matching 44-bit MAC prefixes.
++ * Adjusts the RTC increment value to fine-tune the clock frequency.
++ * Uses adjust_by_scaled_ppm() helper to calculate the new increment value
++ * based on the base RTC value (calculated from 125 MHz GTX clock).
 + *
-+ * Return: true if mismatch found, false if all consistent
++ * Return:	0 on success
 + */
-+static bool tsn_sw_check_mac_consistency(struct tsn_priv *common,
-+					 struct net_device *ep_ndev,
-+					 struct net_device *emac0_ndev,
-+					 struct net_device *emac1_ndev,
-+					 const u8 *mac_mask)
++static int tsn_ptp_adjfine(struct ptp_clock_info *ptp, long scaled_ppm)
 +{
-+	bool mismatch = false;
++	struct tsn_ptp_timer *timer = container_of(ptp,
++						   struct tsn_ptp_timer,
++						   ptp_clock_info);
++	u32 incval;
 +
-+	/* Check EP vs EMAC0 */
-+	if (ep_ndev && emac0_ndev &&
-+	    !ether_addr_equal_masked(ep_ndev->dev_addr,
-+				     emac0_ndev->dev_addr, mac_mask)) {
-+		dev_warn(common->dev,
-+			 "MAC prefix mismatch: EP (%pM) vs EMAC0 (%pM)\n",
-+			 ep_ndev->dev_addr, emac0_ndev->dev_addr);
-+		mismatch = true;
-+	}
-+
-+	/* Check EP vs EMAC1 */
-+	if (ep_ndev && emac1_ndev &&
-+	    !ether_addr_equal_masked(ep_ndev->dev_addr,
-+				     emac1_ndev->dev_addr, mac_mask)) {
-+		dev_warn(common->dev,
-+			 "MAC prefix mismatch: EP (%pM) vs EMAC1 (%pM)\n",
-+			 ep_ndev->dev_addr, emac1_ndev->dev_addr);
-+		mismatch = true;
-+	}
-+
-+	/* Check EMAC0 vs EMAC1 */
-+	if (emac0_ndev && emac1_ndev &&
-+	    !ether_addr_equal_masked(emac0_ndev->dev_addr,
-+				     emac1_ndev->dev_addr, mac_mask)) {
-+		dev_warn(common->dev,
-+			 "MAC prefix mismatch: EMAC0 (%pM) vs EMAC1 (%pM)\n",
-+			 emac0_ndev->dev_addr, emac1_ndev->dev_addr);
-+		mismatch = true;
-+	}
-+
-+	return mismatch;
-+}
-+
-+/**
-+ * tsn_sw_select_base_mac - Select best available MAC as base
-+ * @common: TSN common private structure
-+ * @ep_ndev: EP network device
-+ * @emac0_ndev: EMAC0 network device
-+ * @emac1_ndev: EMAC1 network device
-+ * @base_mac: Output buffer for selected base MAC
-+ *
-+ * Selects the best available MAC address to use as base for generating
-+ * consistent MACs. Priority: EP > EMAC0 > EMAC1 > Random.
-+ */
-+static void tsn_sw_select_base_mac(struct tsn_priv *common,
-+				   struct net_device *ep_ndev,
-+				   struct net_device *emac0_ndev,
-+				   struct net_device *emac1_ndev,
-+				   u8 *base_mac)
-+{
-+	/* Try EP first */
-+	if (ep_ndev && !tsn_sw_is_mac_invalid(ep_ndev->dev_addr)) {
-+		ether_addr_copy(base_mac, ep_ndev->dev_addr);
-+		dev_info(common->dev, "Using EP MAC as base: %pM\n", base_mac);
-+		return;
-+	}
-+
-+	/* Try EMAC0 */
-+	if (emac0_ndev && !tsn_sw_is_mac_invalid(emac0_ndev->dev_addr)) {
-+		ether_addr_copy(base_mac, emac0_ndev->dev_addr);
-+		dev_info(common->dev, "Using EMAC0 MAC as base: %pM\n", base_mac);
-+		return;
-+	}
-+
-+	/* Try EMAC1 */
-+	if (emac1_ndev && !tsn_sw_is_mac_invalid(emac1_ndev->dev_addr)) {
-+		ether_addr_copy(base_mac, emac1_ndev->dev_addr);
-+		dev_info(common->dev, "Using EMAC1 MAC as base: %pM\n", base_mac);
-+		return;
-+	}
-+
-+	/* Generate random locally administered MAC */
-+	eth_random_addr(base_mac);
-+	base_mac[0] = (base_mac[0] & 0xFE) | 0x02;  /* Set local bit, clear multicast */
-+	dev_info(common->dev, "Generated random MAC base: %pM\n", base_mac);
-+}
-+
-+/**
-+ * tsn_sw_frame_filter_config - Configure frame filtering and validate MAC addresses
-+ * @common: TSN common private structure
-+ *
-+ * This function validates that all TSN ports (EP, EMAC0, EMAC1) share the same
-+ * 44-bit MAC address prefix. If any mismatch is detected, it generates a new
-+ * consistent set of MAC addresses with:
-+ *   - Same 44-bit prefix (OUI + 12 bits)
-+ *   - Last 4 bits set to 0x1, 0x2, 0x3 for EP, EMAC0, EMAC1 respectively
-+ *
-+ * This ensures proper frame forwarding in the TSN switch where all ports must
-+ * appear to belong to the same logical bridge.
-+ *
-+ * The function uses ether_addr_equal_masked() with mask FF:FF:FF:FF:FF:F0
-+ * to compare only the first 44 bits of MAC addresses.
-+ */
-+static void tsn_sw_frame_filter_config(struct tsn_priv *common)
-+{
-+	struct net_device *emac0_ndev = (common->num_emacs >= 1 && common->emacs[0]) ?
-+					 common->emacs[0]->ndev : NULL;
-+	struct net_device *emac1_ndev = (common->num_emacs >= 2 && common->emacs[1]) ?
-+					 common->emacs[1]->ndev : NULL;
-+	static const u8 mac_mask[ETH_ALEN] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xF0};
-+	struct net_device *ep_ndev = common->ep ? common->ep->ndev : NULL;
-+	struct tsn_switch *sw = common->sw;
-+	bool need_new_macs = false;
-+	bool mac_mismatch = false;
-+	u8 base_mac[ETH_ALEN];
-+	u32 mac_lsb, mac_msb;
-+	int active_ports;
-+
-+	dev_info(common->dev, "Validating TSN switch MAC address consistency\n");
-+
-+	/* Count active ports */
-+	active_ports = !!ep_ndev + !!emac0_ndev + !!emac1_ndev;
-+	if (active_ports < 2) {
-+		dev_info(common->dev, "Less than 2 ports active, skipping MAC validation\n");
-+		return;
-+	}
-+
-+	/* Check for invalid/zero MAC addresses */
-+	if (ep_ndev && tsn_sw_is_mac_invalid(ep_ndev->dev_addr)) {
-+		dev_info(common->dev, "EP has invalid/zero MAC: %pM\n",
-+			 ep_ndev->dev_addr);
-+		need_new_macs = true;
-+	}
-+
-+	if (emac0_ndev && tsn_sw_is_mac_invalid(emac0_ndev->dev_addr)) {
-+		dev_info(common->dev, "EMAC0 has invalid/zero MAC: %pM\n",
-+			 emac0_ndev->dev_addr);
-+		need_new_macs = true;
-+	}
-+
-+	if (emac1_ndev && tsn_sw_is_mac_invalid(emac1_ndev->dev_addr)) {
-+		dev_info(common->dev, "EMAC1 has invalid/zero MAC: %pM\n",
-+			 emac1_ndev->dev_addr);
-+		need_new_macs = true;
-+	}
-+
-+	/* If all MACs are valid, check consistency */
-+	if (!need_new_macs)
-+		mac_mismatch = tsn_sw_check_mac_consistency(common, ep_ndev,
-+							    emac0_ndev, emac1_ndev,
-+							    mac_mask);
-+
-+	/* Generate consistent MACs if needed */
-+	if (need_new_macs || mac_mismatch) {
-+		dev_info(common->dev, "Generating consistent MAC addresses\n");
-+
-+		tsn_sw_select_base_mac(common, ep_ndev, emac0_ndev,
-+				       emac1_ndev, base_mac);
-+
-+		tsn_sw_generate_consistent_macs(common, base_mac);
-+
-+		dev_info(common->dev, "MAC address synchronization completed\n");
-+	} else {
-+		dev_info(common->dev, "All MAC addresses have consistent 44-bit prefix\n");
-+	}
-+
-+	/* Program switch frame filter registers.
-+	 * Use EMAC0 MAC address as the base for the switch filter.
-+	 * Network port MAC addresses must differ in last LSB nibble only.
-+	 * This is a hardware pre-requisite - we program the MAC per port basis.
-+	 */
-+
-+	ether_addr_copy(base_mac, emac0_ndev->dev_addr);
-+
-+	/* Program lower 32 bits (bytes 2-5) into TSN_MAC_LSB register */
-+	mac_lsb = ((u32)base_mac[2] << 24) | ((u32)base_mac[3] << 16) |
-+		  ((u32)base_mac[4] << 8)  | ((u32)base_mac[5]);
-+	sw_iow(sw, TSN_SW_MAC_LSB_OFFSET, mac_lsb);
-+
-+	/* Program upper 16 bits (bytes 0-1) and 4-bit filter mask (0xF)
-+	 * into TSN_MAC_MSB register
-+	 */
-+	mac_msb = (0xF << TSN_SW_MAC_MSB_FF_MASK_SHIFT) |
-+		  ((u32)base_mac[0] << 8) | ((u32)base_mac[1]);
-+	sw_iow(sw, TSN_SW_MAC_MSB_OFFSET, mac_msb);
-+
-+	dev_info(common->dev, "Switch frame filter programmed with MAC: %pM (LSB=0x%08x, MSB=0x%08x)\n",
-+		 base_mac, mac_lsb, mac_msb);
-+}
-+
-+/**
-+ * tsn_switch_set_state - Set hardware port state for a TSN switch
-+ * @sw: Pointer to TSN switch structure
-+ * @port: Pointer to port status structure containing port number and desired state
-+ *
-+ * This function programs the desired state of a TSN switch port by writing
-+ * to the port state control register. It supports all switch ports
-+ * (endpoint, MAC1, MAC2) and updates the corresponding port state bits.
-+ * After writing, it waits for the hardware to acknowledge the state change.
-+ *
-+ * Return: 0 on success, -ETIMEDOUT if the hardware does not acknowledge
-+ *         the change within the timeout period.
-+ */
-+static int tsn_switch_set_state(struct tsn_switch *sw,
-+				struct port_status *port)
-+{
-+	u32 en_port_sts_chg_bit = 1;
-+	u32 u_value, reg, err;
-+
-+	u_value = sw_ior(sw, TSN_PORT_STATE_CTRL_OFFSET);
-+	switch (port->port_num) {
-+	case PORT_EP:
-+		if (!(u_value & EP_PORT_STATUS_CHG_BIT)) {
-+			u_value &= ~EP_PORT_STATUS_MASK;
-+			u_value |= FIELD_PREP(EP_PORT_STATUS_MASK, port->port_status);
-+			en_port_sts_chg_bit = EP_PORT_STATUS_CHG_BIT;
-+		}
-+		break;
-+	case PORT_MAC1:
-+		if (!(u_value & MAC1_PORT_STATUS_CHG_BIT)) {
-+			u_value &= ~MAC1_PORT_STATUS_MASK;
-+			u_value |= FIELD_PREP(MAC1_PORT_STATUS_MASK, port->port_status);
-+			en_port_sts_chg_bit = MAC1_PORT_STATUS_CHG_BIT;
-+		}
-+		break;
-+	case PORT_MAC2:
-+		if (!(u_value & MAC2_PORT_STATUS_CHG_BIT)) {
-+			u_value &= ~MAC2_PORT_STATUS_MASK;
-+			u_value |= FIELD_PREP(MAC2_PORT_STATUS_MASK, port->port_status);
-+			en_port_sts_chg_bit = MAC2_PORT_STATUS_CHG_BIT;
-+		}
-+		break;
-+	}
-+
-+	u_value |= en_port_sts_chg_bit;
-+	sw_iow(sw, TSN_PORT_STATE_CTRL_OFFSET, u_value);
-+
-+	/* wait for write to complete */
-+	err = readl_poll_timeout(sw->regs + TSN_PORT_STATE_CTRL_OFFSET, reg,
-+				 (!(reg & en_port_sts_chg_bit)), 10,
-+				 DELAY_OF_FIVE_MILLISEC);
-+	if (err) {
-+		pr_err("CAM write timed out\n");
-+		return -ETIMEDOUT;
-+	}
++	incval = adjust_by_scaled_ppm(timer->rtc_value, scaled_ppm);
++	rtc_iow(timer, TSN_TIMER_RTC_INCREMENT, incval);
 +
 +	return 0;
 +}
 +
 +/**
-+ * tsn_sw_configure_forwarding - Initialize switch forwarding behavior
-+ * @sw: TSN switch instance pointer
++ * tsn_ptp_adjtime - Adjust PTP clock time by offset
++ * @ptp:	Pointer to PTP clock info structure
++ * @delta:	Time offset in nanoseconds (positive or negative)
 + *
-+ * Establishes basic packet forwarding configuration across all switch
-+ * ports by setting each port to the forwarding state. This enables
-+ * traffic flow between endpoint and MAC interfaces through the switch
-+ * fabric.
++ * Adjusts the RTC time by adding the specified delta offset.
++ * Reads the current offset, adds the delta to it, and writes back.
++ *
++ * Return:	0 on success
 + */
-+static void tsn_sw_configure_forwarding(struct tsn_switch *sw)
++static int tsn_ptp_adjtime(struct ptp_clock_info *ptp, s64 delta)
 +{
-+	struct port_status port;
++	struct tsn_ptp_timer *timer = container_of(ptp, struct tsn_ptp_timer,
++						   ptp_clock_info);
++	struct timespec64 now, then = ns_to_timespec64(delta);
++
++	guard(spinlock_irqsave)(&timer->reg_lock);
++
++	tsn_rtc_offset_read(timer, &now);
++	now = timespec64_add(now, then);
++	tsn_rtc_offset_write(timer, &now);
++
++	return 0;
++}
++
++/**
++ * tsn_ptp_gettime - Get current PTP clock time
++ * @ptp:	Pointer to PTP clock info structure
++ * @ts:		Pointer to timespec64 to receive current time
++ *
++ * Reads the current time-of-day from the RTC timer.
++ *
++ * Return:	0 on success
++ */
++static int tsn_ptp_gettime(struct ptp_clock_info *ptp,
++			   struct timespec64 *ts)
++{
++	struct tsn_ptp_timer *timer = container_of(ptp, struct tsn_ptp_timer,
++						   ptp_clock_info);
++
++	guard(spinlock_irqsave)(&timer->reg_lock);
++	tsn_tod_read(timer, ts);
++
++	return 0;
++}
++
++/**
++ * tsn_ptp_settime - Set PTP clock time
++ * @ptp:	Pointer to PTP clock info structure
++ * @ts:		Pointer to timespec64 with new time to set
++ *
++ * Return:	0 on success, -EINVAL for invalid timestamp
++ */
++static int tsn_ptp_settime(struct ptp_clock_info *ptp,
++			   const struct timespec64 *ts)
++{
++	struct tsn_ptp_timer *timer = container_of(ptp, struct tsn_ptp_timer,
++						   ptp_clock_info);
++	struct timespec64 delta, tod, offset;
++
++	if (!ts || ts->tv_nsec < 0 || ts->tv_nsec >= NSEC_PER_SEC)
++		return -EINVAL;
++
++	guard(spinlock_irqsave)(&timer->reg_lock);
++
++	/* Zero the offset first */
++	offset.tv_sec = 0;
++	offset.tv_nsec = 0;
++	tsn_rtc_offset_write(timer, &offset);
++
++	/* Get current timer value */
++	tsn_tod_read(timer, &tod);
++
++	/* Calculate delta */
++	delta = timespec64_sub(*ts, tod);
++
++	/* Don't write negative offset */
++	if (delta.tv_sec < 0 || (delta.tv_sec == 0 && delta.tv_nsec < 0)) {
++		delta.tv_sec = 0;
++		delta.tv_nsec = 0;
++	}
++
++	tsn_rtc_offset_write(timer, &delta);
++
++	return 0;
++}
++
++/**
++ * tsn_ptp_enable - Enable or disable PPS output
++ * @ptp:	Pointer to PTP clock info structure
++ * @rq:		Pointer to PTP clock request
++ * @on:		1 to enable, 0 to disable
++ *
++ * Enables or disables the PPS (pulse-per-second) event delivery.
++ * The TSN IP generates 128 pulses per second, and this function controls
++ * whether those pulses are reported to the PTP subsystem via ptp_clock_event().
++ * Only supports PTP_CLK_REQ_PPS request type.
++ *
++ * Return:	0 on success, -EOPNOTSUPP for unsupported request types
++ */
++static int tsn_ptp_enable(struct ptp_clock_info *ptp,
++			  struct ptp_clock_request *rq, int on)
++{
++	struct tsn_ptp_timer *timer = container_of(ptp, struct tsn_ptp_timer,
++						   ptp_clock_info);
++
++	switch (rq->type) {
++	case PTP_CLK_REQ_PPS:
++		timer->pps_enable = on ? 1 : 0;
++		return 0;
++	default:
++		break;
++	}
++
++	return -EOPNOTSUPP;
++}
++
++/**
++ * tsn_ptp_timer_isr - PTP timer interrupt handler
++ * @irq:	Interrupt number
++ * @priv:	Pointer to tsn_ptp_timer structure
++ *
++ * Handles PTP timer interrupts for PPS (pulse-per-second) events.
++ * The TSN IP generates 128 pulses per second. This ISR counts those pulses
++ * and delivers a PTP_CLOCK_PPS event once per second (every 128 pulses) if
++ * PPS is enabled via tsn_ptp_enable().
++ *
++ * Return:	IRQ_HANDLED
++ */
++static irqreturn_t tsn_ptp_timer_isr(int irq, void *priv)
++{
++	struct tsn_ptp_timer *timer = priv;
++	struct ptp_clock_event event;
++
++	event.type = PTP_CLOCK_PPS;
++
++	timer->countpulse++;
++	if (timer->countpulse >= PULSESIN1PPS) {
++		timer->countpulse = 0;
++		if (timer->ptp_clock && timer->pps_enable)
++			ptp_clock_event(timer->ptp_clock, &event);
++	}
++
++	/* Clear interrupt */
++	rtc_iow(timer, TSN_TIMER_INTERRUPT, BIT(TSN_TIMER_INT_SHIFT));
++
++	return IRQ_HANDLED;
++}
++
++/**
++ * tsn_ptp_timer_init - Initialize PTP timer and register PHC
++ * @emac:	Pointer to TSN EMAC structure
++ * @emac_np:	Pointer to EMAC device tree node
++ *
++ * The PTP timer is shared globally - only initialized once for TEMAC1.
++ * TEMAC2 will skip initialization and share the same PHC index.
++ *
++ * Return:	0 on success, negative error code on failure
++ */
++int tsn_ptp_timer_init(struct tsn_emac *emac, struct device_node *emac_np)
++{
++	struct tsn_priv *common = emac->common;
++	struct tsn_ptp_timer *timer = &common->ptp_timer;
++	struct device *dev = common->dev;
++	struct timespec64 ts;
 +	int ret;
 +
-+	pr_info("Configuring TSN switch for basic forwarding\n");
-+
-+	/* Configure PORT_EP to forwarding state */
-+	port.port_num = PORT_EP;
-+	port.port_status = TSN_PORT_STATE_FORWARDING;
-+	ret = tsn_switch_set_state(sw, &port);
-+	if (ret)
-+		pr_err("Failed to set PORT_EP state: %d\n", ret);
-+	else
-+		pr_info("PORT_EP configured for forwarding\n");
-+
-+	/* Configure PORT_MAC1 to forwarding state */
-+	port.port_num = PORT_MAC1;
-+	port.port_status = TSN_PORT_STATE_FORWARDING;
-+	ret = tsn_switch_set_state(sw, &port);
-+	if (ret)
-+		pr_err("Failed to set PORT_MAC1 state: %d\n", ret);
-+	else
-+		pr_info("PORT_MAC1 configured for forwarding\n");
-+
-+	/* Configure PORT_MAC2 to forwarding state */
-+	port.port_num = PORT_MAC2;
-+	port.port_status = TSN_PORT_STATE_FORWARDING;
-+	ret = tsn_switch_set_state(sw, &port);
-+	if (ret)
-+		pr_err("Failed to set PORT_MAC2 state: %d\n", ret);
-+	else
-+		pr_info("PORT_MAC2 configured for forwarding\n");
-+
-+	pr_info("TSN switch forwarding configuration completed\n");
-+}
-+
-+/**
-+ * tsn_switch_init - Initialize TSN switching subsystem
-+ * @pdev: Platform device for the TSN controller
-+ *
-+ * Sets up the TSN switch component by parsing device tree configuration,
-+ * mapping register regions, allocating switch data structures, and
-+ * configuring initial forwarding behavior for all ports.
-+ *
-+ * Return: 0 on successful initialization, negative error code otherwise
-+ */
-+int tsn_switch_init(struct platform_device *pdev)
-+{
-+	struct tsn_priv *common = platform_get_drvdata(pdev);
-+	struct device_node *switch_node;
-+	struct device *dev = &pdev->dev;
-+	struct tsn_switch *sw;
-+	struct resource res;
-+	u32 ret;
-+
-+	switch_node = of_get_child_by_name(dev->of_node, "switch");
-+	if (!switch_node)
-+		return dev_err_probe(dev, -ENODEV, "missing switch node\n");
-+
-+	ret = of_address_to_resource(switch_node, 0, &res);
-+	if (ret) {
-+		of_node_put(switch_node);
-+		return dev_err_probe(dev, ret, "failed to get switch resource\n");
++	if (timer->ptp_clock) {
++		dev_info(dev, "PTP timer already initialized (PHC: %d)\n",
++			 common->phc_index);
++		return 0;
 +	}
 +
-+	sw = devm_kzalloc(&pdev->dev, sizeof(*sw), GFP_KERNEL);
-+	if (!sw)
-+		return -ENOMEM;
++	memset(timer, 0, sizeof(*timer));
++	timer->dev = dev;
++	timer->irq = -1;
 +
-+	sw->dev = &pdev->dev;
-+	sw->regs = common->regs + res.start;
-+	common->sw = sw;
++	timer->regs = emac->regs + TSN_PTP_TIMER_OFFSET;
 +
-+	/* Configure default forwarding */
-+	tsn_sw_configure_forwarding(sw);
++	spin_lock_init(&timer->reg_lock);
 +
-+	tsn_sw_frame_filter_config(common);
++	timer->irq = of_irq_get_byname(emac_np, "interrupt_ptp_timer");
++	if (timer->irq < 0) {
++		timer->irq = platform_get_irq_byname(common->pdev, "interrupt_ptp_timer");
++		if (timer->irq < 0) {
++			dev_err(dev, "Failed to get PTP timer interrupt: %d\n",
++				timer->irq);
++			ret = timer->irq;
++			goto err_cleanup;
++		}
++	}
++
++	ret = devm_request_irq(dev, timer->irq, tsn_ptp_timer_isr, 0,
++			       "tsn_ptp_timer", timer);
++	if (ret) {
++		dev_err(dev, "Failed to request PTP timer IRQ %d: %d\n",
++			timer->irq, ret);
++		goto err_cleanup;
++	}
++
++	/* Setup PTP clock info */
++	timer->ptp_clock_info.owner = THIS_MODULE;
++	snprintf(timer->ptp_clock_info.name,
++		 sizeof(timer->ptp_clock_info.name), "TSN PTP");
++	timer->ptp_clock_info.max_adj = 999999999;
++	timer->ptp_clock_info.n_ext_ts = 0;
++	timer->ptp_clock_info.pps = 1;
++	timer->ptp_clock_info.adjfine = tsn_ptp_adjfine;
++	timer->ptp_clock_info.adjtime = tsn_ptp_adjtime;
++	timer->ptp_clock_info.gettime64 = tsn_ptp_gettime;
++	timer->ptp_clock_info.settime64 = tsn_ptp_settime;
++	timer->ptp_clock_info.enable = tsn_ptp_enable;
++
++	/* Register PTP clock */
++	timer->ptp_clock = ptp_clock_register(&timer->ptp_clock_info, dev);
++	if (IS_ERR(timer->ptp_clock)) {
++		ret = PTR_ERR(timer->ptp_clock);
++		dev_err(dev, "Failed to register PTP clock: %d\n", ret);
++		timer->ptp_clock = NULL;
++		goto err_cleanup;
++	}
++
++	/* In the TSN IP Core, RTC clock is connected to gtx_clk which is
++	 * 125 MHz. This is specified in the TSN PG and is not configurable.
++	 *
++	 * Calculating the RTC Increment Value once and storing it in
++	 * timer->rtc_value to prevent recalculating it each time the PTP
++	 * frequency is adjusted in xlnx_ptp_adjfine()
++	 */
++	timer->rtc_value = (div_u64(NSEC_PER_SEC, TSN_TIMER_GTX_CLK_FREQ) <<
++			    TSN_TIMER_RTC_NS_SHIFT);
++
++	rtc_iow(timer, TSN_TIMER_RTC_INCREMENT, timer->rtc_value);
++
++	ts = ktime_to_timespec64(ktime_get_real());
++	tsn_ptp_settime(&timer->ptp_clock_info, &ts);
++
++	/* Store PHC index */
++	common->phc_index = ptp_clock_index(timer->ptp_clock);
++
++	dev_info(dev, "PTP timer initialized (PHC: %d, IRQ: %d, offset: 0x%x)\n",
++		 common->phc_index, timer->irq, TSN_PTP_TIMER_OFFSET);
 +
 +	return 0;
++
++err_cleanup:
++	timer->irq = -1;
++	common->phc_index = -1;
++	return ret;
 +}
 +
 +/**
-+ * tsn_switch_exit - Cleanup TSN switching subsystem
-+ * @pdev: Platform device for the TSN controller
++ * tsn_ptp_timer_exit - Cleanup PTP timer and unregister PHC
++ * @emac:	Pointer to TSN EMAC structure
 + *
-+ * Performs shutdown sequence for the TSN switch by disabling all port
-+ * forwarding states and cleaning up allocated resources. This ensures
-+ * proper isolation of switch ports during driver removal.
++ * Unregisters the PTP clock from the kernel PTP subsystem and
++ * cleans up the PTP timer state. Sets phc_index back to -1.
++ * The interrupt is automatically freed by devm_request_irq().
 + */
-+void tsn_switch_exit(struct platform_device *pdev)
++void tsn_ptp_timer_exit(struct tsn_emac *emac)
 +{
-+	struct tsn_priv *common = platform_get_drvdata(pdev);
-+	struct tsn_switch *sw = common->sw;
-+	struct port_status port;
++	struct tsn_priv *common = emac->common;
++	struct tsn_ptp_timer *timer = &common->ptp_timer;
 +
-+	if (!sw)
++	if (!timer->ptp_clock)
 +		return;
 +
-+	port.port_status = TSN_PORT_STATE_DISABLED;
++	ptp_clock_unregister(timer->ptp_clock);
++	dev_info(common->dev, "PTP timer unregistered (PHC: %d)\n",
++		 common->phc_index);
 +
-+	port.port_num = PORT_EP;
-+	tsn_switch_set_state(sw, &port);
-+
-+	port.port_num = PORT_MAC1;
-+	tsn_switch_set_state(sw, &port);
-+
-+	port.port_num = PORT_MAC2;
-+	tsn_switch_set_state(sw, &port);
-+
-+	pr_info("TSN switch exited and all ports set to disabled\n");
++	timer->ptp_clock = NULL;
++	common->phc_index = -1;
 +}
 -- 
 2.25.1
