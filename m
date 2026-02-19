@@ -1,101 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2141A223DD6
-	for <netdev@vger.kernel.org>; Thu, 19 Feb 2026 19:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D794FC8E6;
+	Thu, 19 Feb 2026 19:25:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771529104; cv=none; b=CZhEOmA+YMvC2bD2YTSI7GnIMSFTub0Aw+cD4olX1d4Y5+gyieNMiCfsH5nSKlYF39ZxCMhGYe6DgFxm8+3QlAfH0j2nYyKSyrDdv3vg4As88Cr6HEr6fLnGpbL1O28lxNHRrNJQfeWlL32TC3Am9bl/HBV8dfe61eAp8SFjAog=
+	t=1771529122; cv=none; b=c6NSGjvmNlGnNQE31Ay3GBwMTd7ZsQw3cUQ320vvrL2GzCjpC7S6SsV/yYDXdO0GWodZfFbYicjC7IIhvvTAZdUhLAlOQGyZ5QQ3/CPEVYkkfGvNGz7Lr0lx1smKSSG6QZAM37VNt1Y0QzllRLkGzUJMz6087S4RL6CBbPXNFnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771529104; c=relaxed/simple;
-	bh=jPHRIJogqWXKrosNMERaX11GdtFPtXNjePs/VSQr59c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=lIPtuoMmsnZIh+z6Y6rTCd71AlBPuw4z6fTtTxLMACbgNMeDcVkBLvfeGKjaDpAfVm3n89CWHIpysoPClUIHOPmSopbg/4h63dTFMX0gdPTfcg4WKt0cEXMIFPZ5Q1rtSLjbU25VNs7/O8ardkr/Lmha2BrTwi5SobAKT00P94k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F3iowRVv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771529122; c=relaxed/simple;
+	bh=5wXfDNgjYs99AmeEzQZ7yzbacQJewjjR6R0dgn3B7qg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cP+vs4yocGfKcNfsc0XPXW+sNQeeQ7kUi25QocSg3X/aLY59b09krHtN8yDt6P8um4+wOoosvc4Evdk9WVhUVuIMX2qm8aoastLYLK69BYV5ifabmG/ZR9OVz12NuD+z8qt16+Z2A8DsWNSQT4e3dcs+XHh7t3QaGbYl2l5j6aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=o14AFEFW; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F3iowRVv"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E2D84C116D0;
-	Thu, 19 Feb 2026 19:25:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771529104;
-	bh=jPHRIJogqWXKrosNMERaX11GdtFPtXNjePs/VSQr59c=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=F3iowRVvaD3/ylQkz43zsgsA3MBw0A/mf29MweUWcbrlw/5ICf16s4DRnqIoWzIp6
-	 SVmXE9wROLLzBUMCU7gSNYxSttSOxQGdebDk6FGOgfTCaoUUTnf/js79xlWPV6aTZW
-	 rOnaAVRwqf/maqFOH4aYxXIOBdVg26hrpgrvEoKVD1kfZtLnV8jcFMVnUONYTCBFJV
-	 rPpZXnL6zoo6/WkJ3CA9q/XgBWqYlThzdoNMt/SKcV99wKZ1YmVCVVLx7R41uWzXE8
-	 LvACeb2lUEtVwWsJ6lnTnXXouYuRFnz+MUAy9diD4XD19p8vIAsovIlPKS70+cqPvv
-	 GuUWCaKzA6kEg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D5E53E9A054;
-	Thu, 19 Feb 2026 19:25:03 +0000 (UTC)
-From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Date: Thu, 19 Feb 2026 11:24:00 -0800
-Subject: [PATCH] MAINTAINERS: update enic and usnic maintainers
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="o14AFEFW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=dPP/cIarqO1P9h9eWlYa372Rs/GIxWfK5Giq5Q6Jtr8=; b=o14AFEFWgr4pXheJHwdZbvcLVX
+	H7IWEeMLSvtYiqinwiXG68B+CxFS5PshaScxPl5Kc/wg4ZXrMcK+OZsRvuW/O2pNbPNPZLTEZvTe5
+	YL2XTPxup0UUF0P34vmXe3UZkj/ZChdsE+KslfVEM7eS/hb1UNw//4S/P0dpenrlFIvPfR/DZDZBo
+	ceRP++HlA46ZXqXNlGFBfDAq4MMA/Mo5LV3WHNSBPe9n3DE0QRAUAxTTsTx5vFd4r8xAtKEiTHHqv
+	yI1ViidDr/qHM031HgJ4BqBvEUVNNd7LAtsMkce2iVxNSkQMoXFXjWMMtpq8vrEeC10MX+W9ikSKm
+	wisGstpA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:46806)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vt9e9-000000001EC-0CuB;
+	Thu, 19 Feb 2026 19:25:09 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vt9e5-000000003ZS-1kp1;
+	Thu, 19 Feb 2026 19:25:05 +0000
+Date: Thu, 19 Feb 2026 19:25:05 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Linus Walleij <linusw@kernel.org>
+Cc: Christophe Roullier <christophe.roullier@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>, netdev@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] net: stmmac: restore pinctrl when driver remove.
+Message-ID: <aZdjke4eOwF-wTZO@shell.armlinux.org.uk>
+References: <20260218083618.67805-1-christophe.roullier@foss.st.com>
+ <20260218083618.67805-3-christophe.roullier@foss.st.com>
+ <aZV-b6TdLMdI8dm4@shell.armlinux.org.uk>
+ <CAD++jLnF=8MvW4CbXmPZR=w8tAUZiL9M3N73WB++DaYYwhToDQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260219-enic-maintainers-update-v2-v1-1-c58aa11c2ea8@cisco.com>
-X-B4-Tracking: v=1; b=H4sIAE9jl2kC/x3MOwqAMBBF0a3I1A7E+EHdilgE89QpjJJoEMS9G
- yxucZr7UIAXBOqzhzyiBNldQpFnNK3GLWCxyaSVbpQuOoaTiTcj7kzBB74Oa05w1GzRokarqnK
- uKA0Oj1nufz6M7/sBYxncCGwAAAA=
-To: netdev@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>, Satish Kharat <satishkh@cisco.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771529102; l=1100;
- i=satishkh@cisco.com; h=from:subject:message-id;
- bh=7EAm7q54AU0UQ6XPv8J2+vHkr+1SMF1VEQ16JVUETpw=;
- b=YSIdvXPmGz6z8kxnMYyLzYt4Z1lG8y26WJw1hYgR1NWoA45TeRE1AnGgnX1fnI9xxk0zDRTW+
- iHf5ITT0oNbCKmdl57ujzoZxrvbekFkHNEt1UBPWR7ISMce89Vp35m6
-X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
- pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
-X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
- auth_id=639
-X-Original-From: Satish Kharat <satishkh@cisco.com>
-Reply-To: satishkh@cisco.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAD++jLnF=8MvW4CbXmPZR=w8tAUZiL9M3N73WB++DaYYwhToDQ@mail.gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-From: Satish Kharat <satishkh@cisco.com>
+On Thu, Feb 19, 2026 at 08:11:13PM +0100, Linus Walleij wrote:
+> On Wed, Feb 18, 2026 at 9:55 AM Russell King (Oracle)
+> <linux@armlinux.org.uk> wrote:
+> > On Wed, Feb 18, 2026 at 09:36:17AM +0100, Christophe Roullier wrote:
+> > > when system suspend or unbind, need to set pins
+> > > to low power state to save IO power consumption.
+> > >
+> > > Signed-off-by: Christophe Roullier <christophe.roullier@foss.st.com>
+> > > ---
+> > >  drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 3 +++
+> > >  1 file changed, 3 insertions(+)
+> > >
+> > > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > > index 067b17f03cd09..3d4f0e4cb53fb 100644
+> > > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+> > > @@ -8071,6 +8071,9 @@ void stmmac_dvr_remove(struct device *dev)
+> > >       mutex_destroy(&priv->lock);
+> > >       bitmap_free(priv->af_xdp_zc_qps);
+> > >
+> > > +     /* Select sleep pin state */
+> > > +     pinctrl_pm_select_sleep_state(dev);
+> > > +
+> >
+> > I'm not convinced this is correct, there's nothing to match it in the
+> > probe function, except what the driver model core does. However, the
+> > driver model core also doesn't clean up the state if probe fails.
+> 
+> I think it looks right, if this state is indeed for the sleep state of the
+> device pins, and this is what you want to happen at remove().
+> 
+> The non-cleanup of the pin states is a (maybe ugly) feature: there
+> is an "init" and a "default" state. If the "init" state does not exist the
+> "default" state is selected in the dd.c call.
+> 
+> These states are just some values in dev->pins, allocated with
+> devm_kzalloc(), and devm_pinctrl_get() for e.g. dev->pins->p,
+> so IIUC this will befree:ed on driver detach,
+> also if the probe() fails, at least that is what the original devres
+> design document says
+> Documentation/driver-api/driver-model/devres.rst
+> 
+> There is really no other cleanup that can happen: there is no
+> before-default-or-init state we can revert to (that would be the
+> power-on values), so there are just these states in some pointers
+> that could be accessed by e.g. pinctrl_pm_select_sleep_state()
+> that get free:ed up, and muxing and pin config that happened
+> in the pin control hardware just stays around.
 
-Remove Christian Benvenuti from the enic/usnic maintainer lists because he
-is no longer working on the drivers and the email address is no longer valid.
-Keep Satish Kharat as the enic maintainer and the usnic co-maintainer.
+What we seem to end up with is that on probe failure, we set the pins
+to init or default state. However, on remove, it's up to the driver to
+decide whether to put the pins into sleep state or not.
 
-Signed-off-by: Satish Kharat <satishkh@cisco.com>
----
- MAINTAINERS | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+Shouldn't a driver be consistent, and place the pins into the same
+state in both these scenarios?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 04e5fb80c..239a1948c 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6173,14 +6173,13 @@ S:	Supported
- F:	drivers/scsi/snic/
- 
- CISCO VIC ETHERNET NIC DRIVER
--M:	Christian Benvenuti <benve@cisco.com>
- M:	Satish Kharat <satishkh@cisco.com>
- S:	Maintained
- F:	drivers/net/ethernet/cisco/enic/
- 
- CISCO VIC LOW LATENCY NIC DRIVER
--M:	Christian Benvenuti <benve@cisco.com>
- M:	Nelson Escobar <neescoba@cisco.com>
-+M:	Satish Kharat <satishkh@cisco.com>
- S:	Supported
- F:	drivers/infiniband/hw/usnic/
- 
+Conversely, I'm slightly worried that putting pins into sleep state
+when we're not powering down may be bad if they're allowed to then
+float, which could cause the PHY to interfere on the network.
 
----
-base-commit: 37a93dd5c49b5fda807fd204edf2547c3493319c
-change-id: 20260219-enic-maintainers-update-v2-de8e5e8043f4
-
-Best regards,
 -- 
-Satish Kharat <satishkh@cisco.com>
-
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
