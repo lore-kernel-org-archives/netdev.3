@@ -1,34 +1,35 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73730207A38;
-	Thu, 19 Feb 2026 13:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BC82207A38;
+	Thu, 19 Feb 2026 13:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771509021; cv=none; b=ovdHhR6L+eMm/yGJ6DKkhOdNmK87BNEn9TpPPFSZVSd7B6G6dWzV4kc90h3YCpjAuvlC3W9NBRNt1eDzoDkQCabFgrrWRR32GkWUwkTrdCxdM05W7OZqyvv7WiH3zXKIx50CEEox6OQx6Pu1Q8L0/m2NzxbPFonkNVyBcYk9RzI=
+	t=1771509027; cv=none; b=Brwsgdfv3h8ROlnOqH7LAdxks2OCimTQ6kL6We7hWvS6sW7YW6Tjwr/vKGqL2AElassiQznZi6AIf+T4cpwUSeiIZfuTB4vEBheUl/0oafTQx9OpmhUYo/heGecSKpvINySxDS3o3fxXPEiQJMAZocxAYEPt+9mLnR0hVFuXp9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771509021; c=relaxed/simple;
-	bh=bDG5HJATJlSE2M/uMl1Kc0L6vOb6S35ga6tbRrUuGeI=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=bi5G4kLja3r+ailKkcrJ+l18+4Q8/8BNC/oY+u36L7nj72KXpLAsvs5j/pJd+ckx9zkP3iDY7ouzGRHSA63rF/r/wFuruyXW2KCrLcjWfFCeonBYLl9sQc5/8G2qGFgzg4PrMsABQypcHwC6507I9mrXmq5hB7OgnLuVP3jAD60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tp8evlUM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771509027; c=relaxed/simple;
+	bh=9XAB1WkKG/tI/e5hODd4LVsH6dlMu4Pako5uxzY7r4U=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=gW6bWqU1MFjhynYwihmcsAYmz5amc36rszBGq6s6gko4j7k43GLB11EXv8zopN51ckrwWk68Bk49PrDGjktjIyUS69Wx74Hv5crmUgL7pyQ/6OxT7YgXpXK4KNRl7+HpxeRlTI6mBfJSMv8JQXLP83LlwTT8FZQ+m10tA8Rtrnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WGjBa8Ym; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tp8evlUM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CE0CC4CEF7;
-	Thu, 19 Feb 2026 13:50:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WGjBa8Ym"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8206CC116C6;
+	Thu, 19 Feb 2026 13:50:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771509021;
-	bh=bDG5HJATJlSE2M/uMl1Kc0L6vOb6S35ga6tbRrUuGeI=;
-	h=From:Subject:Date:To:Cc:From;
-	b=Tp8evlUMWQQSQh/RUchyMWCQbPQKsaMPkGnTyuSvUhOWO9H/fGjB+rYD1u8fUKaAz
-	 JnnPLm3sDMV4jf6xKDx3RAW1fror/OhfxmNWNs/9Bpnoe0E+a0GiemfUWEA+olxnxE
-	 mWsG1zB4LBj/XzRT2hf94I7yrO5iDCC/Se9J3kRUH7ohdEmT2AN79So2szW1Iv6zMY
-	 7EwqbNPzWmtiWvH8xs6EOrwkSd7uSSVMVhw2U9j8GwcU9FTK9U/iOxcAtBNXe08aFI
-	 D5VJ80oEq9jnrcDV38ShljJPcuYn5Y5xFMmOthVzi9diCbTTtK7XzHpRtLFSNhHrmI
-	 nuTrT019OyFxw==
+	s=k20201202; t=1771509026;
+	bh=9XAB1WkKG/tI/e5hODd4LVsH6dlMu4Pako5uxzY7r4U=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=WGjBa8Ym8qaifVZTCVB4ipQG6VYshVgrPAg6P0SxWFtsQ4FloFd5aNBVkldTkuqT5
+	 J27IcBn/iiNjJEXafEQdlnCQfFMmrr5EvOCEbBaHBL9pg81zqIp9R8Qc2I1SHqycaG
+	 EP7jXnAhYcbiz8UDnUIlcg60Nx8Z+dmDVUmT0WBjSQNY5mkmkn+96HSi0Yt7X3lfba
+	 AwvS79HnRxAbMrtc7TUG8SPWGkaP79pIVXe04mtXK4PiuNSY5Z9GXbtik73qWU2DNW
+	 V+4kaKEAqzI3JOkyNt5aJtrNz1M4qesiP+iS1TKYSKPqQUpOryubuT65zMekWaGaNL
+	 xPOrv5PwbfsdA==
 From: Konrad Dybcio <konradybcio@kernel.org>
-Subject: [net-next PATCH v4 0/3] Grab IPA IMEM slice through DT
-Date: Thu, 19 Feb 2026 14:49:47 +0100
-Message-Id: <20260219-topic-ipa_imem-v4-0-189d91dbee84@oss.qualcomm.com>
+Date: Thu, 19 Feb 2026 14:49:48 +0100
+Subject: [PATCH net-next v4 1/3] dt-bindings: sram: qcom,imem: Allow
+ modem-tables subnode
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,11 +38,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/3XMQQrCMBCF4atI1kaa1KTRlfcQkTQztQPG1ESLI
- r27sSAItZuBf+B9L5YwEia2XbxYxJ4ShUuO9XLBXGsvJ+QEuZkspCqULPktdOQ4dfZIHj0HbLR
- 2zhqDiuVRF7GhxwjuD7lbSrcQn6Pfi893luoFL3itQJVaboSrml1IaXW927ML3q/yYR+xl79KN
- VFkVjQIa2EjarMWM0r5VXQhxVQpswIaDIKAptbVH2UYhjd+v/pbPwEAAA==
-X-Change-ID: 20250523-topic-ipa_imem-def66cca88e5
+Message-Id: <20260219-topic-ipa_imem-v4-1-189d91dbee84@oss.qualcomm.com>
+References: <20260219-topic-ipa_imem-v4-0-189d91dbee84@oss.qualcomm.com>
+In-Reply-To: <20260219-topic-ipa_imem-v4-0-189d91dbee84@oss.qualcomm.com>
 To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Bjorn Andersson <andersson@kernel.org>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -53,63 +52,60 @@ Cc: Marijn Suijten <marijn.suijten@somainline.org>,
  linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
  Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, 
  Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>, 
- Alex Elder <elder@riscstar.com>, 
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
- Simon Horman <horms@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>
+ Alex Elder <elder@riscstar.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771509014; l=1932;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771509014; l=1479;
  i=konrad.dybcio@oss.qualcomm.com; s=20230215; h=from:subject:message-id;
- bh=bDG5HJATJlSE2M/uMl1Kc0L6vOb6S35ga6tbRrUuGeI=;
- b=UqMGpWifDKjhndgjCJBJ+mTlKrehsRK94O+e6wWG5s6WFzL8p4xZueeWlVorSy+soW8/s/wyE
- LpWJTozvpBrBpEU4hH1lNZKlyFxu1zJ0XlkXGUBlFDx5yld/a9pLeKG
+ bh=EkZkFoDGwWgx618F15NSBVvffYCMvU4Fbz6lmWps3uA=;
+ b=1Ond31A9jnhBLKGItxrg0VnS5s41WId3NgCJ93uN96R4nX38qubAlziO+HrM3RMkV+oFOlYrU
+ zemUJEvi+MwDaRgQj4Imnhw2Qn4/eB74pTIpqbfzPtchJlZoDYsPAf6
 X-Developer-Key: i=konrad.dybcio@oss.qualcomm.com; a=ed25519;
  pk=iclgkYvtl2w05SSXO5EjjSYlhFKsJ+5OSZBjOkQuEms=
 
-This adds the necessary driver change to migrate over from
-hardcoded-per-IPA-version-but-varying-per-implementation numbers, while
-unfortunately keeping them in there for backwards compatibility.
+From: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 
-The DT changes will be submitted in a separate series, this one is OK
-to merge independently.
+The IP Accelerator hardware/firmware owns a sizeable region within the
+IMEM, named 'modem-tables', containing various packet processing
+configuration data.
 
+It's not actually accessed by the OS, although we have to IOMMU-map it
+with the IPA device, so that presumably the firmware can act upon it.
+
+Allow it as a subnode of IMEM.
+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Reviewed-by: Alex Elder <elder@riscstar.com>
 Signed-off-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
 ---
-Changes in v4:
-- Fix a memmap() leak
-- Adjust comment style, take Alex's suggestion about very explicit
-  DEPRECATION notices
-- Pick up tags
-- Link to v3: https://lore.kernel.org/r/20260217-topic-ipa_imem-v3-0-d6d8ed1dfb67@oss.qualcomm.com
+ Documentation/devicetree/bindings/sram/qcom,imem.yaml | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-Changes in v3:
-- Pick up tags, rebase (effectively a NOP)
-- Add actual binding constraints for modem-tables, drop Alex's r-b
-- Better describe the purpose of this region, as much as I can anyway
-- Link to v2: https://lore.kernel.org/r/20250527-topic-ipa_imem-v2-0-6d1aad91b841@oss.qualcomm.com
+diff --git a/Documentation/devicetree/bindings/sram/qcom,imem.yaml b/Documentation/devicetree/bindings/sram/qcom,imem.yaml
+index 6a627c57ae2f..c63026904061 100644
+--- a/Documentation/devicetree/bindings/sram/qcom,imem.yaml
++++ b/Documentation/devicetree/bindings/sram/qcom,imem.yaml
+@@ -67,6 +67,20 @@ properties:
+     $ref: /schemas/power/reset/syscon-reboot-mode.yaml#
+ 
+ patternProperties:
++  "^modem-tables@[0-9a-f]+$":
++    type: object
++    description:
++      Region containing packet processing configuration for the IP Accelerator.
++
++    properties:
++      reg:
++        maxItems: 1
++
++    required:
++      - reg
++
++    additionalProperties: false
++
+   "^pil-reloc@[0-9a-f]+$":
+     $ref: /schemas/remoteproc/qcom,pil-info.yaml#
+     description: Peripheral image loader relocation region
 
-Changes in v2:
-- Actually pass the retrieved data to the target function
-- Re-wrap comments to match net/ style
-- Mention next-next in the mail subjects
-- Pick up tags
-- Link to v1: https://lore.kernel.org/r/20250523-topic-ipa_imem-v1-0-b5d536291c7f@oss.qualcomm.com
-
----
-Konrad Dybcio (3):
-      dt-bindings: sram: qcom,imem: Allow modem-tables subnode
-      dt-bindings: net: qcom,ipa: Add sram property for describing IMEM slice
-      net: ipa: Grab IMEM slice base/size from DTS
-
- .../devicetree/bindings/net/qcom,ipa.yaml          |  7 +++++++
- .../devicetree/bindings/sram/qcom,imem.yaml        | 14 ++++++++++++++
- drivers/net/ipa/ipa_data.h                         |  9 +++++++--
- drivers/net/ipa/ipa_mem.c                          | 22 +++++++++++++++++++++-
- 4 files changed, 49 insertions(+), 3 deletions(-)
----
-base-commit: 50f68cc7be0a2cbf54d8f6aaf17df32fb01acc3f
-change-id: 20250523-topic-ipa_imem-def66cca88e5
-
-Best regards,
 -- 
-Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+2.53.0
 
