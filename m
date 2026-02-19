@@ -1,431 +1,386 @@
-Received: from mx0a-00190b01.pphosted.com (mx0a-00190b01.pphosted.com [67.231.149.131])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011009.outbound.protection.outlook.com [40.107.208.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC9A63CB;
-	Thu, 19 Feb 2026 10:48:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.149.131
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771498095; cv=none; b=YTQ8NS/ufNwspLKFl7EAkdo6npsfVIr2L58SbkDVhVF0noq3UdctVfhJ87irbfszhuTkPyjIhHDEP6oUgR9nmGvXGaRPPpHmui3dZZoCp1W4KITNJaDeh4I/91n2B8jmxkm1KscCYi0DoWZG3cCpXI0YoIU3DiPRw//WSWYIfD4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771498095; c=relaxed/simple;
-	bh=1rQ3iDwODxhhWuq9K7ehWpSZnSznUU/eElSYNXYEJB4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DIRTiqvOqQ6YmRwrEYZWPXSQJ4yiAO7NtsfpNIxdeMj4p36Z7l0FUjS+nILrJv6Sfr0t3cftwxVUD//b+RdtRPSlGYrGIAtLvGAfOXhLtV3l//RNwlBkEBcwwvnD3901HiH2PlAGdO0jhQlUKaJMysiW+LonlmMzqFK8fZA4F6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com; spf=pass smtp.mailfrom=akamai.com; dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b=N20y6eB6; arc=none smtp.client-ip=67.231.149.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=akamai.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=akamai.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5DC526D4F9;
+	Thu, 19 Feb 2026 10:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771498141; cv=fail; b=RsH6RBVy96mgo+6CAauKnGbVOLetGV+IIZdmXIjOJ2f3cLLEft9HtuZFNfBsU0Q2O/6byo3WpctgfBPG26vZSyOfrGt8rDSoxTkAeMp7E5grY9XhOnoAO29X3coKVWM1ISq+YrA07aFwuxCFsUHYkSpDkYZGKDSOylKVTyetxsE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771498141; c=relaxed/simple;
+	bh=daAvgZJTdwp9SstO7NASmI7Ae/6fKfGZnZm1S4riiRE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=bEcw+BIFk1TsHDGgB64nXoenUilQkZ/YhXGF0cQr7p2CgTVFGAbNtp6AVX5HA/Zc1p7bYiCRzpY3+Z6gZ/6HCz2ZmDoXC0SogIxMtpC6joxkkdr0YG23VRXioDZrv484iAProh/8t+w0R8WfPRpkOsT24PFyFZutZo6fhKBDIX8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=wzh0IaG/; arc=fail smtp.client-ip=40.107.208.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=akamai.com header.i=@akamai.com header.b="N20y6eB6"
-Received: from pps.filterd (m0122332.ppops.net [127.0.0.1])
-	by mx0a-00190b01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61J3UtC42868091;
-	Thu, 19 Feb 2026 10:47:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=akamai.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=jan2016.eng; bh=XfKg/nB2u
-	uIxTDqUglp98RtSed1x3nFSI8IIkE/DcXc=; b=N20y6eB674AQKU1HehSVSd2f8
-	mMiGCDX+Ypb8GrLwhbpN5MA2QkOpvlINEdpCOdbqkNXL8P4XaepydgcpVtarZPZc
-	rX3IYjlSXS/kDdqLomqg3D/RdzObz+/6/s6EPyO3fWGTi1DilKyIolNnsRA2y3xR
-	2W5mzkoDZkY/QKSBdhjP8Y3w7TtUdMz/5lD+/BxWHjN+kFGJMFX7Lp6DOJ7A3p9I
-	oNMZhturWBdoN7QwOl121tl/zD8x3W6jEjHzMNQxQAPWKXtZvYaRt+9aCzEm0rIl
-	bVNh9NJdFazSrv4PzOQ50CKEh4vXgYdvebBAXxbEIpf8eNIjHYUSvC4jkOKhg==
-Received: from prod-mail-ppoint5 (prod-mail-ppoint5.akamai.com [184.51.33.60])
-	by mx0a-00190b01.pphosted.com (PPS) with ESMTPS id 4cddy4xkhg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Feb 2026 10:47:22 +0000 (GMT)
-Received: from pps.filterd (prod-mail-ppoint5.akamai.com [127.0.0.1])
-	by prod-mail-ppoint5.akamai.com (8.18.1.7/8.18.1.7) with ESMTP id 61JAYIRb007548;
-	Thu, 19 Feb 2026 02:47:21 -0800
-Received: from prod-mail-relay02.akamai.com ([172.27.118.35])
-	by prod-mail-ppoint5.akamai.com (PPS) with ESMTP id 4cdx0vgq9u-1;
-	Thu, 19 Feb 2026 02:47:21 -0800 (PST)
-Received: from muc-lhvdhd.munich.corp.akamai.com (muc-lhvdhd.munich.corp.akamai.com [172.29.0.147])
-	by prod-mail-relay02.akamai.com (Postfix) with ESMTP id AFA8E83;
-	Thu, 19 Feb 2026 10:47:17 +0000 (UTC)
-From: Nick Hudson <nhudson@akamai.com>
-To: 
-Cc: Nick Hudson <nhudson@akamai.com>, Anna Glasgall <aglasgal@akamai.com>,
-        Max Tottenham <mtottenh@akamai.com>, Josh Hunt <johunt@akamai.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Martin KaFai Lau <martin.lau@linux.dev>,
-        Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-        Yonghong Song <yonghong.song@linux.dev>,
-        John Fastabend <john.fastabend@gmail.com>,
-        KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Jason Xing <kerneljasonxing@gmail.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Paul Chaignon <paul.chaignon@gmail.com>,
-        Mykyta Yatsenko <yatsenko@meta.com>, Tao Chen <chen.dylane@linux.dev>,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Anton Protopopov <a.s.protopopov@gmail.com>,
-        Tobias Klauser <tklauser@distanz.ch>, bpf@vger.kernel.org,
-        linux-kernel@vger.kernel.org, netdev@vger.kernel.org
-Subject: [RFC PATCH 1/1] bpf: Add tunnel decapsulation and GSO state updates per new flags
-Date: Thu, 19 Feb 2026 10:47:09 +0000
-Message-Id: <20260219104710.1490304-2-nhudson@akamai.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260219104710.1490304-1-nhudson@akamai.com>
-References: <20260219104710.1490304-1-nhudson@akamai.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="wzh0IaG/"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MOaNE042wjjYQOLlTLPVkV2B8vFV8DyyYaRgt9FbI1YleiKU0alixP9Hg5vfYqXFGtoXPT0f6nmnZPAyTcJuj+b44crjwQAu/uBKRrHrwxKDx5MsxCwONG3jWEI5Jjkc4KGSIRkvTEhz0Y3XCOKLIm/JaKo5mPuRzt6/g/sXpGsR4xGF+bJRRyT8XUo9Op+ADCZeWocRYfXO+WUp9RYYE8plS7RBpVnZSlMe42zAaqUR1UBf/O7RXCiWFhDbb8mpeFsx/Zb5MyII5Gvg12M4cRTmUGofgbnVPipqQXEZgfqd/eHuvPlmAnqvAZFAJ3CsQHFk0Dzw7PcLu1PB7/TBjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KAktBIr5UYFfD9Wbmls2Rmmeqlrg0QEIUDR96AFhg+s=;
+ b=a+Bl8XVGvdLdVEPokCcXe7/bNyOI4HCDqk4kO6xf0Ly4TuXWaqAYHqHqYxFGd+CuNtgHZYruntnDo5b9A0dLjCAqxuUTxIpMjio0ENGr8JKglB0dc/zEilPlYFZSnNiSc2vWKiJhNLCHXuUL1VKj5QE2BjxbMYQ1kNHJxFm12gT359XGuvy98XUMHpKj9qtUk7gulutTqJEiIVjnam1P5tfycEFPf3Hy5bO+cuebd7YwVsGATWXOe22978S3VSSdcFaXtKjMRpNjQdl2vFDWAbQgdzyfWROonCeJeisHr2HCCuJTfJWGfydtwghWme9Fb0U5+2MdsvMJAH0fGxFb9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KAktBIr5UYFfD9Wbmls2Rmmeqlrg0QEIUDR96AFhg+s=;
+ b=wzh0IaG/aQj6cD98y+J5vQVt9r7O962cXoNZixzNJy4o2XiWazXHbVADcJ5QBhQDzB3fTghzdiS+A2J3EhB8/dMAC6kLRNcFEc1g3wmWOWTSIfJu024FmoEN2Grk0qeJtHLB0yUYQ7b+80m5psikoARcc+XT0mFhqUKXo6RSg50=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM6PR12MB4202.namprd12.prod.outlook.com (2603:10b6:5:219::22)
+ by DM4PR12MB6254.namprd12.prod.outlook.com (2603:10b6:8:a5::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.15; Thu, 19 Feb
+ 2026 10:48:57 +0000
+Received: from DM6PR12MB4202.namprd12.prod.outlook.com
+ ([fe80::9e55:f616:6a93:7a3d]) by DM6PR12MB4202.namprd12.prod.outlook.com
+ ([fe80::9e55:f616:6a93:7a3d%4]) with mapi id 15.20.9632.010; Thu, 19 Feb 2026
+ 10:48:57 +0000
+Message-ID: <f1725a2d-8b94-4149-a49f-7ea8b40a5d59@amd.com>
+Date: Thu, 19 Feb 2026 10:48:52 +0000
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v23 19/22] cxl: Allow region creation by type2 drivers
+Content-Language: en-US
+To: "Cheatham, Benjamin" <benjamin.cheatham@amd.com>,
+ alejandro.lucero-palau@amd.com
+Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ linux-cxl@vger.kernel.org, netdev@vger.kernel.org, dan.j.williams@intel.com,
+ edward.cree@amd.com, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@google.com, dave.jiang@intel.com
+References: <20260201155438.2664640-1-alejandro.lucero-palau@amd.com>
+ <20260201155438.2664640-20-alejandro.lucero-palau@amd.com>
+ <c7024d3a-36e4-4e7e-934c-46c7c26b43ba@amd.com>
+From: Alejandro Lucero Palau <alucerop@amd.com>
+In-Reply-To: <c7024d3a-36e4-4e7e-934c-46c7c26b43ba@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO6P265CA0030.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ff::20) To DM6PR12MB4202.namprd12.prod.outlook.com
+ (2603:10b6:5:219::22)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-19_03,2026-02-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 bulkscore=0 mlxlogscore=999
- malwarescore=0 adultscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2602130000 definitions=main-2602190097
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjE5MDA5OSBTYWx0ZWRfX9hSgdNnXi0Qb
- BhSQqc/vUI7PTa1Y1ah5MU3fvCGvvwVvLkGQMbKII35epkqe+y3PBhEUxNIx2QhSZb3Xj2R0dg8
- BWi5j1YTmwNjXAXengQEXxBEVAESX3puo01smzHhv1gK+C3yp6Mxn+hb4xfyJH5VhTus/aPm3qA
- s1AqxSXOSX+Q3SfiNRdXu5KRW9cpc29swzygVBt8O3mlMpu4UWgAUSFPIROR9hzr7actiEP0ijn
- KTKQnvf01IaFgkXKysg6ReqpUAqIzet2n8lBp14TCcYnzI7bOWW4rzz8gRFLtIFP7hYGWo5h+Vx
- cq/2eKfv0qGIIY6jksFGz/i2GryZYgydacNQZUvv1mH0mb4Rob4kVRJ2ri7RuPJiVQ2nUY3mqf3
- ZQ3jZiIV4hTvjwsnfLtXuK4QuewDg83oFINbQjbLaNiGmez2w6NKmj2GuYcTzX6RvEc0Xf0mfps
- bHyQTqfmYHk5kKsCEgg==
-X-Proofpoint-GUID: qhUUFbONJo5D2hD2Sg4kiFYlDfrJaWOH
-X-Authority-Analysis: v=2.4 cv=Jf+xbEKV c=1 sm=1 tr=0 ts=6996ea3a cx=c_pps
- a=NpDlK6FjLPvvy7XAFEyJFw==:117 a=NpDlK6FjLPvvy7XAFEyJFw==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
- a=GgsMoib0sEa3-_RKJdDe:22 a=X7Ea-ya5AAAA:8 a=rooXBoYTHu2ir9VGlUgA:9
-X-Proofpoint-ORIG-GUID: qhUUFbONJo5D2hD2Sg4kiFYlDfrJaWOH
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-19_03,2026-02-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0
- spamscore=0 phishscore=0 suspectscore=0 malwarescore=0 clxscore=1011
- priorityscore=1501 impostorscore=0 bulkscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2601150000 definitions=main-2602190099
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6PR12MB4202:EE_|DM4PR12MB6254:EE_
+X-MS-Office365-Filtering-Correlation-Id: adb57469-50b7-434f-e18f-08de6fa47b3b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UEF3cllVRE52QWViazlyWnhMUTJ2WDNLelF6TUZxeVlHUTcxQjdUdHpDWXJx?=
+ =?utf-8?B?Qm9RUnFlSjVjNFB0UTJCVVpXdkN2Yk5GOWx0Q0U5V3dHdWdrU3JTNEFjYWxQ?=
+ =?utf-8?B?R2YvdnZLRkZrUjRjTEpDdlJPdm43bnRVTXNrSjRuZ2lFVzc3US9RV3c4VTNR?=
+ =?utf-8?B?bjUyRmtHR1EwbkR3MU5pQWliaCtFMEpwY0ZVVWs0eklKNnQxaHlVQlhtYlhJ?=
+ =?utf-8?B?Rk1McXo4M3h4K2NleDk4UTN6THUwQlJYellVOVQ3V295YlZuNDkyTHdUZlVL?=
+ =?utf-8?B?RHRMVGdaRENjQTlINXN0WTY5cDdtRWY5bldXNmFGNTY4a0laUFlVQkFYeUdS?=
+ =?utf-8?B?R2tLVDNpYml6cTdnNVorN3VaNlJTSHZmaHhrU1A5azcyMTd2WTRnejVuTDBS?=
+ =?utf-8?B?Qm9yVkVvYThrdHlDdGVpNmdNOC94QTZPbWMzbEdmNC9yVENxMkR1Z216anJO?=
+ =?utf-8?B?eFh5dS83cElWOWZ5UDFubWZoYWhlcXRMNW80aTIrYXc1REZycVJwemNLWVVH?=
+ =?utf-8?B?aFFVMFA3YmJXVWN5OE9ybDl2V1NRNDVrZjFDUWJIY0FGQ3NRaUF1eWF6UDFz?=
+ =?utf-8?B?alFiWjUycWhPSC9ZME1jM2F0anp1WVdzZFhGbEZFblRWd28vcnFwNzlXMmJo?=
+ =?utf-8?B?MW1xYVQvMW9Xa0x4VnVSN1RQQnVPVENtVWRKVTdkb0hnRCtCWkNXYTlHbDBO?=
+ =?utf-8?B?OExJZ1dHck1sajBWaWdtK2tJTlhuR2xiUWdsOUVSQytRMVYwclVWRWt0bDFX?=
+ =?utf-8?B?NmM1aSsvbGJxMEU1NVptREdZT1A0RXQ5VktkN1VlZVRoSmZsenlkckNheXVa?=
+ =?utf-8?B?ZDFNYTI1RWVuSEZVb3dDcll0UU16MnNxa3pwVWlVNXpWUlY4eTFUaXdibjMz?=
+ =?utf-8?B?Wjg3SUhjRis3bWJLcVk4UHNKT2EwWHA5SktWZ2ozZVNxM0ZyTURuSUVSblpY?=
+ =?utf-8?B?TStxVlRtU1ptclppVnN0Wlc2U3ora1VNUjl1S1RRMFdqcjh2czZRSzBYSVcr?=
+ =?utf-8?B?WDg4c0tSZTczY3czSWtPOFNDNFhUUXpVc1QrTW8xVDhaWnEvam1UY3JKejVu?=
+ =?utf-8?B?UVBnSTdOWXRKT0RmVUhiS25qMFhpeTdSTUdCOWg4Q3hHeElSbnJIL254Vmpx?=
+ =?utf-8?B?UTZGeGY4VE14eGFURHVqaG1ia2ZPVU45NnBxa1YvNUpaSzUvQk1FQXgvTGlX?=
+ =?utf-8?B?SWZjNjFtMVpkQ0p1VXdmS2FZRXVhR00zempLR2lkUkwza3l3aTQybldpL0ZZ?=
+ =?utf-8?B?cTZ0bElaYXorKzFMZ3c3UWdVUzl2QnRQVGQxeWJUb2hjOTZ2bVVCNlVLUnFo?=
+ =?utf-8?B?aC8rOHRDeUlQUlBkMklPcnROMjRJbTllOU5BZUVkbTRhWHFyb05VeFFMbFFh?=
+ =?utf-8?B?NTRua0lBOHZCUndlY2c3QnM2VGZaazA1aTBRRzJMNWd6akhQOHh6dVNpYzlN?=
+ =?utf-8?B?TXYyTnNqREU3RW04WWNzNDJZRjE5QkcxNGkyYW5paWdwVWJvWmROVlJ3bVha?=
+ =?utf-8?B?R2xNUjljUE44Qk94b3pRNndST1pZZnZybURYaW4vQ3ZVSzVPRUZsSis3MFlK?=
+ =?utf-8?B?MHZVTHpqYTJ0TERuMS84eXFJL21SZVQ1UTR0SmZYYVVUZUx6SDZBSlBMQVZ6?=
+ =?utf-8?B?cldJOGZNb3V4b09kYTRlSUFkdW0wRFVEQWk0UTR2cmFwZ3RoOHFqMXpoWE5S?=
+ =?utf-8?B?R2pVTDExN01KSW5OdGlXdGxOZ00xRHdtTSthWSttcW1FMllVeUllQlQ0dkhr?=
+ =?utf-8?B?QUlCT1YzNEI3blFBaHZBcVFpR0R2dGduTDVtMDBERyswbDVhTWYwWVVPbXpB?=
+ =?utf-8?B?ZzQ2UUlSZ05KakptQ2ZzQWFKMDdjb1lxOGROMTV2Y2tPczRGUkdyZDJyQUZk?=
+ =?utf-8?B?UFMrRk0rSi81ZGVtMlQyZUdQeXZoelZHZ3hNb0VyY3Rsa1RnRXZQUVVsZ2JI?=
+ =?utf-8?B?eHp4ZHUwQU41WEdMMUVnckxVR1ZNSTY0bkZnY1I1WmJXOXpoVlh3L2dmRHpy?=
+ =?utf-8?B?ckVrZGNIcUl3aUNEbXE2ZnpOSXNST0xzZ0dpSjhFT3FyTVBWZVJ2c1d4b2xh?=
+ =?utf-8?B?dTBMSXAwS1o0LzJQZzZEd3RIeUkvbDlQRmVrUnZhUllYWlFsdnpqbjFCWDBv?=
+ =?utf-8?Q?uuGM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM6PR12MB4202.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?U1BBUEh5OUFBSnRhcE8rTlJXMnlDTTdoenRkWDBVN25UaitJaWJaYVppR254?=
+ =?utf-8?B?WkRhbERrN3VzajdpTmQraTIzdlRsNHpKS3lUdjByU2V2NTVEbldRSTlMamRB?=
+ =?utf-8?B?NnFkWStQVGhFWjFYMCt4Q0xzM1Y0NHdxR3MyR1oxMGJoYUlvekwwUWJRQkhw?=
+ =?utf-8?B?bDVWSjNQcTBlRW95bWYxYWlaV2g0NkpNSlFDbUNpZFZkOW9zSURZTFgzVFdL?=
+ =?utf-8?B?YWdNMVhUbDdEeHdxU3N6ZnFHb0ZtTGVteDNwa05IMGU2M09OZlJERDlOemxq?=
+ =?utf-8?B?SHF1SWJKbnJGKy9pQUcyeGRwTkZ3REwyUHdYbzBUdXNRNng4VnRLUXRoVW1k?=
+ =?utf-8?B?d2pBVVlTNkhLYXlFZENWa09kN2c1OU5DdFNTcVBjSmpQODVTUm53bHJneVJO?=
+ =?utf-8?B?eUF0WlVMa0EvZjRjeHFOa3JwZFJGTWo2Wk03SmhoNjhaQzF1UjdXQ0o5d3VW?=
+ =?utf-8?B?R3pDbGtYU256dE8vTmhnc3lZLzM5U0FrR1ZTQmh4bk9zOWN5U1ZZVkJvNy9M?=
+ =?utf-8?B?TEhQakFCNTh6QVp0bTNsakhPa010MEJRcDN3K3BwYkdrSm14MDMrUXAvbmUx?=
+ =?utf-8?B?ZzlWOTl4cDZtZllqUkc0SEZSU3piaFdreXNMdVdRaThHbEE4NkJPTGlCbHR6?=
+ =?utf-8?B?QmxKZXl1SzRobzdjMmx5MXoxN1JvbWR4MEIwdDZOMEJQNlhEUUxFSnpPV3Rm?=
+ =?utf-8?B?Z3A0bjAvcDRaSzRiQXJOcDJOcGc1SW1Eb216QjNURFpMUlRpaGJFTlEvWDZT?=
+ =?utf-8?B?VGt3R0tMaDFaN2dwWUs0a3pSQlk0NG5GN0ZtWFhuWThqSG9Dd1VTNUxmU2RW?=
+ =?utf-8?B?YXFoOE4xek9pQjd2UjJVYWhheGgvOFZkN0lpTERwcHlTV0FxNU9XNG5xZUJ1?=
+ =?utf-8?B?WkhjZENmL1N0UEtHZkJGR2ZzU1M4cWVpVEpkdExVUVBtc0V4b1VxVUFXQTlB?=
+ =?utf-8?B?SHMvenBXcU1UWWFsTVJpRmVzRTJTVUlTVTdRNXBqWjJPWFFML01KNlV6bk51?=
+ =?utf-8?B?S0UxM2ZRaTduTFllWVZhS0piYnFMY0E2ZWh5bnJIT3Y5bi9CZFprY1lUaXdt?=
+ =?utf-8?B?NDlNRlpTU2RaVUhUbFo3aThPVktaUE1iR3NZckdaaURLbnpWeERsUkxKSTZy?=
+ =?utf-8?B?U3lXa2JMQ2dmai82MnJ4dTkwbTcwT3BxOVhhN3dyZTBhR2ZTckVYaDdzWmF5?=
+ =?utf-8?B?QUdDY2s4ZGg2eEljMktpK3BNWjlhQ0RuTlhBNXc1eHZGNE1OYTFXcTNJbHlO?=
+ =?utf-8?B?b01rcTl5cU5vZTEzMjhjZUFTaXdNTzJVSEZBRTdBbVlXa0FzYm1CNFVnT1F4?=
+ =?utf-8?B?TTVOVUN5a1JLTS9CMW42WG9sczlrVUxLd0lOTjZvaE1DN0xtdkYwUEVDRENB?=
+ =?utf-8?B?MUVKZDQyNDFSVzlWbExPMG9EZkhXRXErQjBxWEVvcWgvbGhyRWFRR2RmT3J6?=
+ =?utf-8?B?Qk5SOVpYd3ZVNEdpYmpPQXZxb0NCRkw2NHFuVmtPVHc5TXc3bGJYVkhxK05N?=
+ =?utf-8?B?dmY2bjNPRzYvZVBzNFlIREwwQ08zeE1hWVdSWXZ2L3p0WVZXNnNZS2MxSXE4?=
+ =?utf-8?B?WTZEdDZoVndVQzJBTkZwaXZLd2dsaWdRRm5mYWNaQzdRU0I0by9VMTd6bkZk?=
+ =?utf-8?B?UDJpYkhyMzZ6U1R2ekF5NDc4ZEJid2VnYTM0SXlZTWxoV2tUaDRmS3B0a3dI?=
+ =?utf-8?B?U0pDV0lMRmkzbnE0clZyVEt6QU5KdzltSmlKN1hHVGZ2UWhCajYvWUJFU09s?=
+ =?utf-8?B?SVYySnJpdzJjZFhoWTZpRitUN3l3S1hxdjNxT0VaOXpHckpoVlhtMFVKbU1m?=
+ =?utf-8?B?TWRJMm56dHBZdUozSXNWSGtVZGlUb3lYRzlQL3huUmUycVMyNWZKRS9OMm11?=
+ =?utf-8?B?TEFuZGh0eVovUG11dWhyejhiMnZHRGJxZnRMVHAzajZkelZBcFhuRmRLVmd1?=
+ =?utf-8?B?alpmdGZVRk10eTJVNWRZN2R3L1dMWE51MWpadFdrSzM4T0hveUZGaDhEVXY0?=
+ =?utf-8?B?Y3l5N3dIT0ZuRWw4TStZcU9Vdi9iY3lBd3JVaVdjQUlnK2FSK3B4Q3NrNlM0?=
+ =?utf-8?B?S2FDZnpOUDFXTXJ5eW5CVUNrYld5dmpQK0E5YmtFTWQ5Z0JYWjRvVGhsY0d2?=
+ =?utf-8?B?N2lsek9NMlZleC8zODRhV1pGUXY2dytDOGlHbDhTTHR0Ky9uQ3BRTHhKdDhj?=
+ =?utf-8?B?SytXbE1ud3lzQ09TUllhRVJBM2owRUk1cllYOWRCTTFIaStaM2lNVmM2aU1u?=
+ =?utf-8?B?NlNyQmJvU3dHOEdZOW44WnVjRTZFa0RPWmloTU1LSjdoeGJJK0lJNGFZMnNv?=
+ =?utf-8?B?RXZyczNnUFRSaWVoam5xSklvNm1yYWVJK1VZb0ZXc2F6ZkJzVGJYZz09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: adb57469-50b7-434f-e18f-08de6fa47b3b
+X-MS-Exchange-CrossTenant-AuthSource: DM6PR12MB4202.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Feb 2026 10:48:57.0492
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZUoJkZi18+G8apBb47acRu1p4tu6Q9/q3aSxq0H6CfL3ils2ZL85amWOxlxrnX+kEazX3bD82vRP/IGkfjCaeQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6254
 
-Enable BPF programs to properly handle GSO state when decapsulating
-tunneled packets by adding selective GSO flag clearing and a trusted
-mode for GSO handling.
 
-New decapsulation flags:
+On 2/11/26 22:11, Cheatham, Benjamin wrote:
+> On 2/1/2026 9:54 AM, alejandro.lucero-palau@amd.com wrote:
+>> From: Alejandro Lucero <alucerop@amd.com>
+>>
+>> Creating a CXL region requires userspace intervention through the cxl
+>> sysfs files. Type2 support should allow accelerator drivers to create
+>> such cxl region from kernel code.
+>>
+>> Adding that functionality and integrating it with current support for
+>> memory expanders.
+>>
+>> Based on https://lore.kernel.org/linux-cxl/168592159835.1948938.1647215579839222774.stgit@dwillia2-xfh.jf.intel.com/
+>>
+>> Signed-off-by: Alejandro Lucero <alucerop@amd.com>
+>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+>> ---
+>>   drivers/cxl/core/region.c | 131 ++++++++++++++++++++++++++++++++++++--
+>>   include/cxl/cxl.h         |   3 +
+>>   2 files changed, 127 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/drivers/cxl/core/region.c b/drivers/cxl/core/region.c
+>> index 63c2aeb2ee1f..293e63dfef22 100644
+>> --- a/drivers/cxl/core/region.c
+>> +++ b/drivers/cxl/core/region.c
+>> @@ -2944,6 +2944,14 @@ cxl_find_region_by_name(struct cxl_root_decoder *cxlrd, const char *name)
+>>   	return to_cxl_region(region_dev);
+>>   }
+>>   
+>> +static void drop_region(struct cxl_region *cxlr)
+>> +{
+>> +	struct cxl_root_decoder *cxlrd = to_cxl_root_decoder(cxlr->dev.parent);
+>> +	struct cxl_port *port = cxlrd_to_port(cxlrd);
+>> +
+>> +	devm_release_action(port->uport_dev, __unregister_region, cxlr);
+>> +}
+>> +
+>>   static ssize_t delete_region_store(struct device *dev,
+>>   				   struct device_attribute *attr,
+>>   				   const char *buf, size_t len)
+>> @@ -4047,14 +4055,12 @@ static int __construct_region(struct cxl_region *cxlr,
+>>   	return 0;
+>>   }
+>>   
+>> -/* Establish an empty region covering the given HPA range */
+>> -static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
+>> -					   struct cxl_endpoint_decoder *cxled)
+>> +static struct cxl_region *construct_region_begin(struct cxl_root_decoder *cxlrd,
+>> +						 struct cxl_endpoint_decoder *cxled)
+>>   {
+>>   	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled);
+>> -	struct cxl_port *port = cxlrd_to_port(cxlrd);
+>>   	struct cxl_dev_state *cxlds = cxlmd->cxlds;
+>> -	int rc, part = READ_ONCE(cxled->part);
+>> +	int part = READ_ONCE(cxled->part);
+>>   	struct cxl_region *cxlr;
+>>   
+>>   	do {
+>> @@ -4063,13 +4069,26 @@ static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
+>>   				       cxled->cxld.target_type);
+>>   	} while (IS_ERR(cxlr) && PTR_ERR(cxlr) == -EBUSY);
+>>   
+>> -	if (IS_ERR(cxlr)) {
+>> +	if (IS_ERR(cxlr))
+>>   		dev_err(cxlmd->dev.parent,
+>>   			"%s:%s: %s failed assign region: %ld\n",
+>>   			dev_name(&cxlmd->dev), dev_name(&cxled->cxld.dev),
+>>   			__func__, PTR_ERR(cxlr));
+>> +
+>> +	return cxlr;
+>> +}
+>> +
+>> +/* Establish an empty region covering the given HPA range */
+>> +static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
+>> +					   struct cxl_endpoint_decoder *cxled)
+>> +{
+>> +	struct cxl_port *port = cxlrd_to_port(cxlrd);
+>> +	struct cxl_region *cxlr;
+>> +	int rc;
+>> +
+>> +	cxlr = construct_region_begin(cxlrd, cxled);
+>> +	if (IS_ERR(cxlr))
+>>   		return cxlr;
+>> -	}
+>>   
+>>   	rc = __construct_region(cxlr, cxlrd, cxled);
+>>   	if (rc) {
+>> @@ -4080,6 +4099,104 @@ static struct cxl_region *construct_region(struct cxl_root_decoder *cxlrd,
+>>   	return cxlr;
+>>   }
+>>   
+>> +DEFINE_FREE(cxl_region_drop, struct cxl_region *, if (_T) drop_region(_T))
+> This needs to be "if (!IS_ERR_OR_NULL(_T) drop_region(_T)". If construct_region_begin() returns an
+> error pointer, drop_region() will be called with it as of now leading to a garbage pointer deref.
 
-- BPF_F_ADJ_ROOM_DECAP_L4_UDP: Clear UDP tunnel GSO flags
-  (SKB_GSO_UDP_TUNNEL, SKB_GSO_UDP_TUNNEL_CSUM)
-- BPF_F_ADJ_ROOM_DECAP_L4_GRE: Clear GRE tunnel GSO flags
-  (SKB_GSO_GRE, SKB_GSO_GRE_CSUM)
-- BPF_F_ADJ_ROOM_DECAP_IPXIP4: Clear SKB_GSO_IPXIP4 flag for
-  IPv4-in-IPv4 (IPIP) and IPv6-in-IPv4 (SIT) tunnels
-- BPF_F_ADJ_ROOM_DECAP_IPXIP6: Clear SKB_GSO_IPXIP6 flag for
-  IPv6-in-IPv6 and IPv4-in-IPv6 tunnels
-- BPF_F_ADJ_ROOM_NO_DODGY: Preserve gso_segs and don't set
-  SKB_GSO_DODGY when the BPF program is trusted and modifications
-  are known to be valid
 
-The existing anonymous enum for BPF_FUNC_skb_adjust_room flags is
-renamed to enum bpf_adj_room_flags to enable CO-RE (Compile Once -
-Run Everywhere) lookups in BPF programs.
+That's true. I will fix it.
 
-By default, bpf_skb_adjust_room sets SKB_GSO_DODGY and resets
-gso_segs to 0, forcing revalidation. The NO_DODGY flag bypasses this
-for trusted programs that guarantee GSO correctness.
 
-Usage example (decapsulating UDP tunnel with IPv4 inner packet):
-  bpf_skb_adjust_room(skb, -hdr_len, BPF_ADJ_ROOM_NET,
-                      BPF_F_ADJ_ROOM_DECAP_L3_IPV4 |
-                      BPF_F_ADJ_ROOM_DECAP_L4_UDP);
+Thank you!
 
-Co-developed-by: Anna Glasgall <aglasgal@akamai.com>
-Signed-off-by: Anna Glasgall <aglasgal@akamai.com>
-Co-developed-by: Max Tottenham <mtottenh@akamai.com>
-Signed-off-by: Max Tottenham <mtottenh@akamai.com>
-Signed-off-by: Josh Hunt <johunt@akamai.com>
-Signed-off-by: Nick Hudson <nhudson@akamai.com>
----
- include/uapi/linux/bpf.h       | 45 +++++++++++++++++++--
- net/core/filter.c              | 73 ++++++++++++++++++++++++++++------
- tools/include/uapi/linux/bpf.h | 45 +++++++++++++++++++--
- 3 files changed, 145 insertions(+), 18 deletions(-)
 
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index c8d400b7680a..0cb24ab70af7 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -3010,8 +3010,42 @@ union bpf_attr {
-  *
-  *		* **BPF_F_ADJ_ROOM_DECAP_L3_IPV4**,
-  *		  **BPF_F_ADJ_ROOM_DECAP_L3_IPV6**:
-- *		  Indicate the new IP header version after decapsulating the outer
-- *		  IP header. Used when the inner and outer IP versions are different.
-+ *		  Indicate the new IP header version after decapsulating the
-+ *		  outer IP header. Used when the inner and outer IP versions
-+ *		  are different. These flags only trigger a protocol change
-+ *		  without clearing any tunnel-specific GSO flags.
-+ *
-+ *		* **BPF_F_ADJ_ROOM_DECAP_L4_GRE**:
-+ *		  Clear GRE tunnel GSO flags (SKB_GSO_GRE and SKB_GSO_GRE_CSUM)
-+ *		  when decapsulating a GRE tunnel.
-+ *
-+ *		* **BPF_F_ADJ_ROOM_DECAP_L4_UDP**:
-+ *		  Clear UDP tunnel GSO flags (SKB_GSO_UDP_TUNNEL and
-+ *		  SKB_GSO_UDP_TUNNEL_CSUM) when decapsulating a UDP tunnel.
-+ *
-+ *		* **BPF_F_ADJ_ROOM_DECAP_IPXIP4**:
-+ *		  Clear IPIP/SIT tunnel GSO flag (SKB_GSO_IPXIP4) when decapsulating
-+ *		  a tunnel with an outer IPv4 header (IPv4-in-IPv4 or IPv6-in-IPv4).
-+ *
-+ *		* **BPF_F_ADJ_ROOM_DECAP_IPXIP6**:
-+ *		  Clear IPv6 encapsulation tunnel GSO flag (SKB_GSO_IPXIP6) when
-+ *		  decapsulating a tunnel with an outer IPv6 header (IPv6-in-IPv6
-+ *		  or IPv4-in-IPv6).
-+ *
-+ *		When using the decapsulation flags above, the skb->encapsulation
-+ *		flag is automatically cleared if all tunnel-specific GSO flags
-+ *		(SKB_GSO_UDP_TUNNEL, SKB_GSO_UDP_TUNNEL_CSUM, SKB_GSO_GRE,
-+ *		SKB_GSO_GRE_CSUM, SKB_GSO_IPXIP4, SKB_GSO_IPXIP6) have been
-+ *		removed from the packet. This handles cases where all tunnel
-+ *		layers have been decapsulated.
-+ *
-+ *		* **BPF_F_ADJ_ROOM_NO_DODGY**:
-+ *		  Do not mark the packet as dodgy (untrusted) and preserve
-+ *		  the existing gso_segs count. By default, packet modifications
-+ *		  set SKB_GSO_DODGY and reset gso_segs to 0, forcing
-+ *		  revalidation. This flag is useful when decapsulating the
-+ *		  tunnel, the BPF program is trusted, and the modifications
-+ *		  are known to be valid.
-  *
-  * 		A call to this helper is susceptible to change the underlying
-  * 		packet buffer. Therefore, at load time, all checks on pointers
-@@ -6209,7 +6243,7 @@ enum {
- };
- 
- /* BPF_FUNC_skb_adjust_room flags. */
--enum {
-+enum bpf_adj_room_flags {
- 	BPF_F_ADJ_ROOM_FIXED_GSO	= (1ULL << 0),
- 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV4	= (1ULL << 1),
- 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV6	= (1ULL << 2),
-@@ -6219,6 +6253,11 @@ enum {
- 	BPF_F_ADJ_ROOM_ENCAP_L2_ETH	= (1ULL << 6),
- 	BPF_F_ADJ_ROOM_DECAP_L3_IPV4	= (1ULL << 7),
- 	BPF_F_ADJ_ROOM_DECAP_L3_IPV6	= (1ULL << 8),
-+	BPF_F_ADJ_ROOM_DECAP_L4_GRE	= (1ULL << 9),
-+	BPF_F_ADJ_ROOM_DECAP_L4_UDP	= (1ULL << 10),
-+	BPF_F_ADJ_ROOM_DECAP_IPXIP4	= (1ULL << 11),
-+	BPF_F_ADJ_ROOM_DECAP_IPXIP6	= (1ULL << 12),
-+	BPF_F_ADJ_ROOM_NO_DODGY		= (1ULL << 13),
- };
- 
- enum {
-diff --git a/net/core/filter.c b/net/core/filter.c
-index ba019ded773d..681dd53ab841 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -3484,14 +3484,28 @@ static u32 bpf_skb_net_base_len(const struct sk_buff *skb)
- #define BPF_F_ADJ_ROOM_DECAP_L3_MASK	(BPF_F_ADJ_ROOM_DECAP_L3_IPV4 | \
- 					 BPF_F_ADJ_ROOM_DECAP_L3_IPV6)
- 
--#define BPF_F_ADJ_ROOM_MASK		(BPF_F_ADJ_ROOM_FIXED_GSO | \
--					 BPF_F_ADJ_ROOM_ENCAP_L3_MASK | \
-+#define BPF_F_ADJ_ROOM_DECAP_L4_MASK	(BPF_F_ADJ_ROOM_DECAP_L4_UDP | \
-+					 BPF_F_ADJ_ROOM_DECAP_L4_GRE)
-+
-+#define BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK	(BPF_F_ADJ_ROOM_DECAP_IPXIP4 | \
-+					 BPF_F_ADJ_ROOM_DECAP_IPXIP6)
-+
-+#define BPF_F_ADJ_ROOM_ENCAP_MASK	(BPF_F_ADJ_ROOM_ENCAP_L3_MASK | \
- 					 BPF_F_ADJ_ROOM_ENCAP_L4_GRE | \
- 					 BPF_F_ADJ_ROOM_ENCAP_L4_UDP | \
- 					 BPF_F_ADJ_ROOM_ENCAP_L2_ETH | \
- 					 BPF_F_ADJ_ROOM_ENCAP_L2( \
--					  BPF_ADJ_ROOM_ENCAP_L2_MASK) | \
--					 BPF_F_ADJ_ROOM_DECAP_L3_MASK)
-+					  BPF_ADJ_ROOM_ENCAP_L2_MASK))
-+
-+#define BPF_F_ADJ_ROOM_DECAP_MASK	(BPF_F_ADJ_ROOM_DECAP_L3_MASK | \
-+					 BPF_F_ADJ_ROOM_DECAP_L4_MASK | \
-+					 BPF_F_ADJ_ROOM_DECAP_IPXIP_MASK)
-+
-+#define BPF_F_ADJ_ROOM_MASK		(BPF_F_ADJ_ROOM_FIXED_GSO | \
-+					 BPF_F_ADJ_ROOM_ENCAP_MASK | \
-+					 BPF_F_ADJ_ROOM_DECAP_MASK | \
-+					 BPF_F_ADJ_ROOM_NO_CSUM_RESET | \
-+					 BPF_F_ADJ_ROOM_NO_DODGY)
- 
- static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
- 			    u64 flags)
-@@ -3503,6 +3517,10 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
- 	unsigned int gso_type = SKB_GSO_DODGY;
- 	int ret;
- 
-+	if (unlikely(flags & (BPF_F_ADJ_ROOM_DECAP_MASK |
-+			      BPF_F_ADJ_ROOM_NO_DODGY)))
-+		return -EINVAL;
-+
- 	if (skb_is_gso(skb) && !skb_is_gso_tcp(skb)) {
- 		/* udp gso_size delineates datagrams, only allow if fixed */
- 		if (!(skb_shinfo(skb)->gso_type & SKB_GSO_UDP_L4) ||
-@@ -3588,8 +3606,10 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
- 	if (skb_is_gso(skb)) {
- 		struct skb_shared_info *shinfo = skb_shinfo(skb);
- 
--		/* Header must be checked, and gso_segs recomputed. */
-+		/* Add tunnel GSO type flags as appropriate. */
- 		shinfo->gso_type |= gso_type;
-+
-+		/* Header must be checked, and gso_segs recomputed. */
- 		shinfo->gso_segs = 0;
- 
- 		/* Due to header growth, MSS needs to be downgraded.
-@@ -3610,11 +3630,14 @@ static int bpf_skb_net_grow(struct sk_buff *skb, u32 off, u32 len_diff,
- static int bpf_skb_net_shrink(struct sk_buff *skb, u32 off, u32 len_diff,
- 			      u64 flags)
- {
-+	bool no_dodgy = flags & BPF_F_ADJ_ROOM_NO_DODGY;
- 	int ret;
- 
- 	if (unlikely(flags & ~(BPF_F_ADJ_ROOM_FIXED_GSO |
- 			       BPF_F_ADJ_ROOM_DECAP_L3_MASK |
--			       BPF_F_ADJ_ROOM_NO_CSUM_RESET)))
-+			       BPF_F_ADJ_ROOM_DECAP_MASK |
-+			       BPF_F_ADJ_ROOM_NO_CSUM_RESET |
-+			       BPF_F_ADJ_ROOM_NO_DODGY)))
- 		return -EINVAL;
- 
- 	if (skb_is_gso(skb) && !skb_is_gso_tcp(skb)) {
-@@ -3647,9 +3670,36 @@ static int bpf_skb_net_shrink(struct sk_buff *skb, u32 off, u32 len_diff,
- 		if (!(flags & BPF_F_ADJ_ROOM_FIXED_GSO))
- 			skb_increase_gso_size(shinfo, len_diff);
- 
--		/* Header must be checked, and gso_segs recomputed. */
--		shinfo->gso_type |= SKB_GSO_DODGY;
--		shinfo->gso_segs = 0;
-+		/* Selective GSO flag clearing based on decap type.
-+		 * Only clear the flags for the tunnel layer being removed.
-+		 */
-+		if (flags & BPF_F_ADJ_ROOM_DECAP_L4_UDP)
-+			shinfo->gso_type &= ~(SKB_GSO_UDP_TUNNEL |
-+					      SKB_GSO_UDP_TUNNEL_CSUM);
-+		if (flags & BPF_F_ADJ_ROOM_DECAP_L4_GRE)
-+			shinfo->gso_type &= ~(SKB_GSO_GRE |
-+					      SKB_GSO_GRE_CSUM);
-+		if (flags & BPF_F_ADJ_ROOM_DECAP_IPXIP4)
-+			shinfo->gso_type &= ~SKB_GSO_IPXIP4;
-+		if (flags & BPF_F_ADJ_ROOM_DECAP_IPXIP6)
-+			shinfo->gso_type &= ~SKB_GSO_IPXIP6;
-+
-+		/* Clear encapsulation flag only when no tunnel GSO flags remain */
-+		if (flags & BPF_F_ADJ_ROOM_DECAP_MASK) {
-+			if (!(shinfo->gso_type & (SKB_GSO_UDP_TUNNEL |
-+						  SKB_GSO_UDP_TUNNEL_CSUM |
-+						  SKB_GSO_GRE |
-+						  SKB_GSO_GRE_CSUM |
-+						  SKB_GSO_IPXIP4 |
-+						  SKB_GSO_IPXIP6)))
-+				skb->encapsulation = 0;
-+		}
-+
-+		/* NO_DODGY: preserve gso_segs, don't mark as dodgy. */
-+		if (!no_dodgy) {
-+			shinfo->gso_type |= SKB_GSO_DODGY;
-+			shinfo->gso_segs = 0;
-+		}
- 	}
- 
- 	return 0;
-@@ -3709,8 +3759,7 @@ BPF_CALL_4(bpf_skb_adjust_room, struct sk_buff *, skb, s32, len_diff,
- 	u32 off;
- 	int ret;
- 
--	if (unlikely(flags & ~(BPF_F_ADJ_ROOM_MASK |
--			       BPF_F_ADJ_ROOM_NO_CSUM_RESET)))
-+	if (unlikely(flags & ~BPF_F_ADJ_ROOM_MASK))
- 		return -EINVAL;
- 	if (unlikely(len_diff_abs > 0xfffU))
- 		return -EFAULT;
-@@ -3729,7 +3778,7 @@ BPF_CALL_4(bpf_skb_adjust_room, struct sk_buff *, skb, s32, len_diff,
- 		return -ENOTSUPP;
- 	}
- 
--	if (flags & BPF_F_ADJ_ROOM_DECAP_L3_MASK) {
-+	if (flags & BPF_F_ADJ_ROOM_DECAP_MASK) {
- 		if (!shrink)
- 			return -EINVAL;
- 
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 5e38b4887de6..664bc8438186 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -3010,8 +3010,42 @@ union bpf_attr {
-  *
-  *		* **BPF_F_ADJ_ROOM_DECAP_L3_IPV4**,
-  *		  **BPF_F_ADJ_ROOM_DECAP_L3_IPV6**:
-- *		  Indicate the new IP header version after decapsulating the outer
-- *		  IP header. Used when the inner and outer IP versions are different.
-+ *		  Indicate the new IP header version after decapsulating the
-+ *		  outer IP header. Used when the inner and outer IP versions
-+ *		  are different. These flags only trigger a protocol change
-+ *		  without clearing any tunnel-specific GSO flags.
-+ *
-+ *		* **BPF_F_ADJ_ROOM_DECAP_L4_GRE**:
-+ *		  Clear GRE tunnel GSO flags (SKB_GSO_GRE and SKB_GSO_GRE_CSUM)
-+ *		  when decapsulating a GRE tunnel.
-+ *
-+ *		* **BPF_F_ADJ_ROOM_DECAP_L4_UDP**:
-+ *		  Clear UDP tunnel GSO flags (SKB_GSO_UDP_TUNNEL and
-+ *		  SKB_GSO_UDP_TUNNEL_CSUM) when decapsulating a UDP tunnel.
-+ *
-+ *		* **BPF_F_ADJ_ROOM_DECAP_IPXIP4**:
-+ *		  Clear IPIP/SIT tunnel GSO flag (SKB_GSO_IPXIP4) when decapsulating
-+ *		  a tunnel with an outer IPv4 header (IPv4-in-IPv4 or IPv6-in-IPv4).
-+ *
-+ *		* **BPF_F_ADJ_ROOM_DECAP_IPXIP6**:
-+ *		  Clear IPv6 encapsulation tunnel GSO flag (SKB_GSO_IPXIP6) when
-+ *		  decapsulating a tunnel with an outer IPv6 header (IPv6-in-IPv6
-+ *		  or IPv4-in-IPv6).
-+ *
-+ *		When using the decapsulation flags above, the skb->encapsulation
-+ *		flag is automatically cleared if all tunnel-specific GSO flags
-+ *		(SKB_GSO_UDP_TUNNEL, SKB_GSO_UDP_TUNNEL_CSUM, SKB_GSO_GRE,
-+ *		SKB_GSO_GRE_CSUM, SKB_GSO_IPXIP4, SKB_GSO_IPXIP6) have been
-+ *		removed from the packet. This handles cases where all tunnel
-+ *		layers have been decapsulated.
-+ *
-+ *		* **BPF_F_ADJ_ROOM_NO_DODGY**:
-+ *		  Do not mark the packet as dodgy (untrusted) and preserve
-+ *		  the existing gso_segs count. By default, packet modifications
-+ *		  set SKB_GSO_DODGY and reset gso_segs to 0, forcing
-+ *		  revalidation. This flag is useful when decapsulating the
-+ *		  tunnel, the BPF program is trusted, and the modifications
-+ *		  are known to be valid.
-  *
-  * 		A call to this helper is susceptible to change the underlying
-  * 		packet buffer. Therefore, at load time, all checks on pointers
-@@ -6209,7 +6243,7 @@ enum {
- };
- 
- /* BPF_FUNC_skb_adjust_room flags. */
--enum {
-+enum bpf_adj_room_flags {
- 	BPF_F_ADJ_ROOM_FIXED_GSO	= (1ULL << 0),
- 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV4	= (1ULL << 1),
- 	BPF_F_ADJ_ROOM_ENCAP_L3_IPV6	= (1ULL << 2),
-@@ -6219,6 +6253,11 @@ enum {
- 	BPF_F_ADJ_ROOM_ENCAP_L2_ETH	= (1ULL << 6),
- 	BPF_F_ADJ_ROOM_DECAP_L3_IPV4	= (1ULL << 7),
- 	BPF_F_ADJ_ROOM_DECAP_L3_IPV6	= (1ULL << 8),
-+	BPF_F_ADJ_ROOM_DECAP_L4_GRE	= (1ULL << 9),
-+	BPF_F_ADJ_ROOM_DECAP_L4_UDP	= (1ULL << 10),
-+	BPF_F_ADJ_ROOM_DECAP_IPXIP4	= (1ULL << 11),
-+	BPF_F_ADJ_ROOM_DECAP_IPXIP6	= (1ULL << 12),
-+	BPF_F_ADJ_ROOM_NO_DODGY		= (1ULL << 13),
- };
- 
- enum {
--- 
-2.34.1
-
+>> +
+>> +static struct cxl_region *
+>> +__construct_new_region(struct cxl_root_decoder *cxlrd,
+>> +		       struct cxl_endpoint_decoder **cxled, int ways)
+>> +{
+>> +	struct cxl_memdev *cxlmd = cxled_to_memdev(cxled[0]);
+>> +	struct cxl_decoder *cxld = &cxlrd->cxlsd.cxld;
+>> +	struct cxl_region_params *p;
+>> +	resource_size_t size = 0;
+>> +	int rc, i;
+>> +
+>> +	struct cxl_region *cxlr __free(cxl_region_drop) =
+>> +		construct_region_begin(cxlrd, cxled[0]);
+>> +	if (IS_ERR(cxlr))
+>> +		return cxlr;
+>> +
+>> +	guard(rwsem_write)(&cxl_rwsem.region);
+>> +
+>> +	/*
+>> +	 * Sanity check. This should not happen with an accel driver handling
+>> +	 * the region creation.
+>> +	 */
+>> +	p = &cxlr->params;
+>> +	if (p->state >= CXL_CONFIG_INTERLEAVE_ACTIVE) {
+>> +		dev_err(cxlmd->dev.parent,
+>> +			"%s:%s: %s  unexpected region state\n",
+>> +			dev_name(&cxlmd->dev), dev_name(&cxled[0]->cxld.dev),
+>> +			__func__);
+>> +		return ERR_PTR(-EBUSY);
+>> +	}
+>> +
+>> +	rc = set_interleave_ways(cxlr, ways);
+>> +	if (rc)
+>> +		return ERR_PTR(rc);
+>> +
+>> +	rc = set_interleave_granularity(cxlr, cxld->interleave_granularity);
+>> +	if (rc)
+>> +		return ERR_PTR(rc);
+>> +
+>> +	scoped_guard(rwsem_read, &cxl_rwsem.dpa) {
+>> +		for (i = 0; i < ways; i++) {
+>> +			if (!cxled[i]->dpa_res)
+>> +				return ERR_PTR(-EINVAL);
+>> +			size += resource_size(cxled[i]->dpa_res);
+>> +		}
+>> +
+>> +		rc = alloc_hpa(cxlr, size);
+>> +		if (rc)
+>> +			return ERR_PTR(rc);
+>> +
+>> +		for (i = 0; i < ways; i++) {
+>> +			rc = cxl_region_attach(cxlr, cxled[i], 0);
+> Position parameter is hardcoded to 0. It should be set to i, right? This kind of goes back to my
+> issues in patch 12/22; the interleaving functionality is there but it looks unused.
+>
+>> +			if (rc)
+>> +				return ERR_PTR(rc);
+>> +		}
+>> +	}
+>> +
+>> +	rc = cxl_region_decode_commit(cxlr);
+>> +	if (rc)
+>> +		return ERR_PTR(rc);
+>> +
+>> +	p->state = CXL_CONFIG_COMMIT;
+>> +
+>> +	return no_free_ptr(cxlr);
+>> +}
+>> +
+>> +/**
+>> + * cxl_create_region - Establish a region given an endpoint decoder
+>> + * @cxlrd: root decoder to allocate HPA
+>> + * @cxled: endpoint decoders with reserved DPA capacity
+>> + * @ways: interleave ways required
+>> + *
+>> + * Returns a fully formed region in the commit state and attached to the
+>> + * cxl_region driver.
+>> + */
+>> +struct cxl_region *cxl_create_region(struct cxl_root_decoder *cxlrd,
+>> +				     struct cxl_endpoint_decoder **cxled,
+>> +				     int ways)
+>> +{
+>> +	struct cxl_region *cxlr;
+>> +
+>> +	mutex_lock(&cxlrd->range_lock);
+>> +	cxlr = __construct_new_region(cxlrd, cxled, ways);
+>> +	mutex_unlock(&cxlrd->range_lock);
+>> +	if (IS_ERR(cxlr))
+>> +		return cxlr;
+>> +
+>> +	if (device_attach(&cxlr->dev) <= 0) {
+>> +		dev_err(&cxlr->dev, "failed to create region\n");
+>> +		drop_region(cxlr);
+>> +		return ERR_PTR(-ENODEV);
+>> +	}
+>> +
+>> +	return cxlr;
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(cxl_create_region, "CXL");
+>> +
+>>   static struct cxl_region *
+>>   cxl_find_region_by_range(struct cxl_root_decoder *cxlrd, struct range *hpa)
+>>   {
+>> diff --git a/include/cxl/cxl.h b/include/cxl/cxl.h
+>> index 4802371db00e..50acbd13bcf8 100644
+>> --- a/include/cxl/cxl.h
+>> +++ b/include/cxl/cxl.h
+>> @@ -281,4 +281,7 @@ struct cxl_endpoint_decoder *cxl_request_dpa(struct cxl_memdev *cxlmd,
+>>   					     enum cxl_partition_mode mode,
+>>   					     resource_size_t alloc);
+>>   int cxl_dpa_free(struct cxl_endpoint_decoder *cxled);
+>> +struct cxl_region *cxl_create_region(struct cxl_root_decoder *cxlrd,
+>> +				     struct cxl_endpoint_decoder **cxled,
+>> +				     int ways);
+>>   #endif /* __CXL_CXL_H__ */
