@@ -1,238 +1,125 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E50F33F394
-	for <netdev@vger.kernel.org>; Thu, 19 Feb 2026 15:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A205A34A76E;
+	Thu, 19 Feb 2026 15:52:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771515447; cv=none; b=NXoZWThht2b7tNg7KbMgdsYtlQVYoQKJLFD6bbabuCGahB2rKg6QJYBkrD5uV+xx9tbPWHjFq7aiQRhyzph0UE4zuhQPtFFDOuPk+r4UUEABL649C1yimEqJ9yViGezwtDN/yJaJB626MoLkx5N9buGfYRHXwMBL7uCsXJ7fL3U=
+	t=1771516325; cv=none; b=Pop2/HKeQNgbih3vOQepTEyjUqciTXO84Zn264w7RI1j28TUYcNl2+GSYwmLA8+Vh4HlwUAkgAuVOQQTWy7rpnKTt0VovzTassadZJqHYzn1gqcs0qj4kdp0FNQ51IhVQKm5te3+tGd0Gf48doRMtVMVkB1UlIOpDRg4fHdtyzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771515447; c=relaxed/simple;
-	bh=ixhP+oBrva5ygcp2hjhyaCOAT/lLVs3Df/zIr2l4nqY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JsmFaJQwn/hynLxFPJ05fRdzn1iLsoTBidSooSVGVrXTmKZM/H5EXO6DNQ8lLjGTQSAqcnAAM0Rm3wDMuKdeTlfJuXi14Hx6N3v66u6pzmZKCMjQeAxpVkGrt8ItLKPWwH9AoDDDowF9YsrCkUHScck1sHE8azsqvhy9hGRdJ/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=dbRrhdJj; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1771516325; c=relaxed/simple;
+	bh=MwXjeiK98l6Lk89vIKKCcxf5j+pICIFXb5gOe/tK070=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j/dM5lAlIVLxrHSh3a5Fp0QzDE9JhU9LB7cj8TVeVT7UKDBKAoQpDFQ8FuLqi9YihEAj+nz2UlBdfn7urhqbQRMzV+9/yi9L3qVOu2miwUfWYndEVoKn/8qRAnZtXk/VYYgZXUvssaUyEuDFSumELSON2aVnGrhPVA+Rja2AU1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cdwCGy5l; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="dbRrhdJj"
-Message-ID: <10911cdf-d951-41a6-82c1-1c0ecd47c5f5@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771515433;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dar0RQt4M278UggC4OmngN9+vjxlsvXau8VM1wIA7Uc=;
-	b=dbRrhdJj1yu9EW96WbowLTZvrGwoJeZ7bRWKOGHU/itw/cjdE7WOq4Ghc+D/CbDuq+msoC
-	c83WPqh3xLBfArsVfWotrWTNWoRHXy/uOQoj6nTQRkxVU2JEhLwB4JYXtwA4p7lW3W2PKx
-	HWJM5Y+mUQOy0MQlOl7geSIZqE/ws/U=
-Date: Thu, 19 Feb 2026 23:36:51 +0800
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cdwCGy5l"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=oEHgRQgPyNlUzdqBRtYibx7nGlkM1RsG4DFfxyIYCRc=; b=cd
+	wCGy5l0X1ep3TrbPdLRCXt2QlrHfyEBuHZE9P2DlwW1C1YbzfGYsPP4HzABZ+cVJmV6yMTcBZZdgH
+	cKLphqGoz8zbjSO/cb6yjavzWqtynLeKRREewdo1O5P2hyERDLO1OoYKwk0lEQ0ZQeeNGAaRQnoR7
+	akxYosA5GITfFcQ=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vt6Jf-007w7q-JI; Thu, 19 Feb 2026 16:51:47 +0100
+Date: Thu, 19 Feb 2026 16:51:47 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>
+Cc: netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Danielle Ratson <danieller@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [RFC net-next 0/4] ethtool: CMIS module diagnostic loopback
+ support
+Message-ID: <415c4922-cc8d-4e35-bbac-3a532f44d238@lunn.ch>
+References: <20260219130050.2390226-1-bjorn@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf-next v2 3/6] bpf, arm64: Add 64-bit bitops kfuncs
- support
-To: Puranjay Mohan <puranjay@kernel.org>, bpf@vger.kernel.org
-Cc: Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Xu Kuohai <xukuohai@huaweicloud.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H . Peter Anvin" <hpa@zytor.com>,
- Shuah Khan <shuah@kernel.org>, Peilin Ye <yepeilin@google.com>,
- Luis Gerhorst <luis.gerhorst@fau.de>, Viktor Malik <vmalik@redhat.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kernel-patches-bot@fb.com
-References: <20260219142933.13904-1-leon.hwang@linux.dev>
- <20260219142933.13904-4-leon.hwang@linux.dev> <m2342woiw9.fsf@kernel.org>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <m2342woiw9.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260219130050.2390226-1-bjorn@kernel.org>
 
+On Thu, Feb 19, 2026 at 02:00:41PM +0100, Björn Töpel wrote:
+> Hi!
+> 
+> Background
+> ==========
+> 
+> This series adds initial ethtool support for CMIS loopback.
+ 
+> Related work
+> ============
+> 
+> * New loopback modes [1].
+> * PHY loopback [2]
 
+Hi Björn
 
-On 2026/2/19 23:25, Puranjay Mohan wrote:
-> Leon Hwang <leon.hwang@linux.dev> writes:
-> 
->> Implement JIT inlining of the 64-bit bitops kfuncs on arm64.
->>
->> bpf_clz64(), bpf_ffs64(), bpf_fls64(), and bpf_bitrev64() are always
->> inlined using mandatory ARMv8 CLZ/RBIT instructions. bpf_ctz64() is
->> inlined via RBIT + CLZ, or via the native CTZ instruction when
->> FEAT_CSSC is available. bpf_rol64() and bpf_ror64() are always inlined
->> via RORV.
->>
->> bpf_popcnt64() is not inlined as the native population count instruction
->> requires NEON/SIMD registers, which should not be touched from BPF
->> programs. It therefore falls back to a regular function call.
->>
->> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
->> ---
->>  arch/arm64/net/bpf_jit_comp.c | 123 ++++++++++++++++++++++++++++++++++
->>  1 file changed, 123 insertions(+)
->>
->> diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
->> index 7a530ea4f5ae..f03f732063d9 100644
->> --- a/arch/arm64/net/bpf_jit_comp.c
->> +++ b/arch/arm64/net/bpf_jit_comp.c
->> @@ -1192,6 +1192,127 @@ static int add_exception_handler(const struct bpf_insn *insn,
->>  	return 0;
->>  }
->>  
->> +static inline u32 a64_clz64(u8 rd, u8 rn)
->> +{
->> +	/*
->> +	 * Arm Architecture Reference Manual for A-profile architecture
->> +	 * (Document number: ARM DDI 0487)
->> +	 *
->> +	 *   A64 Base Instruction Descriptions
->> +	 *   C6.2 Alphabetical list of A64 base instructions
->> +	 *
->> +	 *   C6.2.91 CLZ
->> +	 *
->> +	 *     Count leading zeros
->> +	 *
->> +	 *     This instruction counts the number of consecutive binary zero bits,
->> +	 *     starting from the most significant bit in the source register,
->> +	 *     and places the count in the destination register.
->> +	 */
->> +	/* CLZ Xd, Xn */
->> +	return 0xdac01000 | (rn << 5) | rd;
->> +}
->> +
->> +static inline u32 a64_ctz64(u8 rd, u8 rn)
->> +{
->> +	/*
->> +	 * Arm Architecture Reference Manual for A-profile architecture
->> +	 * (Document number: ARM DDI 0487)
->> +	 *
->> +	 *   A64 Base Instruction Descriptions
->> +	 *   C6.2 Alphabetical list of A64 base instructions
->> +	 *
->> +	 *   C6.2.144 CTZ
->> +	 *
->> +	 *     Count trailing zeros
->> +	 *
->> +	 *     This instruction counts the number of consecutive binary zero bits,
->> +	 *     starting from the least significant bit in the source register,
->> +	 *     and places the count in the destination register.
->> +	 *
->> +	 *     This instruction requires FEAT_CSSC.
->> +	 */
->> +	/* CTZ Xd, Xn */
->> +	return 0xdac01800 | (rn << 5) | rd;
->> +}
->> +
->> +static inline u32 a64_rbit64(u8 rd, u8 rn)
->> +{
->> +	/*
->> +	 * Arm Architecture Reference Manual for A-profile architecture
->> +	 * (Document number: ARM DDI 0487)
->> +	 *
->> +	 *   A64 Base Instruction Descriptions
->> +	 *   C6.2 Alphabetical list of A64 base instructions
->> +	 *
->> +	 *   C6.2.320 RBIT
->> +	 *
->> +	 *     Reverse bits
->> +	 *
->> +	 *     This instruction reverses the bit order in a register.
->> +	 */
->> +	/* RBIT Xd, Xn */
->> +	return 0xdac00000 | (rn << 5) | rd;
->> +}
-> 
-> I don't think adding the above three functions is the best to JIT these
-> intructions, do it like the other data1 and data2 instructions and add
-> them to the generic framework like the following patch(untested) does:
-> > -- >8 --
-> 
-> diff --git a/arch/arm64/include/asm/insn.h b/arch/arm64/include/asm/insn.h
-> index 18c7811774d3..b2696af0b817 100644
-> --- a/arch/arm64/include/asm/insn.h
-> +++ b/arch/arm64/include/asm/insn.h
-> @@ -221,6 +221,9 @@ enum aarch64_insn_data1_type {
->  	AARCH64_INSN_DATA1_REVERSE_16,
->  	AARCH64_INSN_DATA1_REVERSE_32,
->  	AARCH64_INSN_DATA1_REVERSE_64,
-> +	AARCH64_INSN_DATA1_RBIT,
-> +	AARCH64_INSN_DATA1_CLZ,
-> +	AARCH64_INSN_DATA1_CTZ,
->  };
-> 
->  enum aarch64_insn_data2_type {
-> @@ -389,6 +392,9 @@ __AARCH64_INSN_FUNCS(rorv,	0x7FE0FC00, 0x1AC02C00)
->  __AARCH64_INSN_FUNCS(rev16,	0x7FFFFC00, 0x5AC00400)
->  __AARCH64_INSN_FUNCS(rev32,	0x7FFFFC00, 0x5AC00800)
->  __AARCH64_INSN_FUNCS(rev64,	0x7FFFFC00, 0x5AC00C00)
-> +__AARCH64_INSN_FUNCS(rbit,	0x7FFFFC00, 0x5AC00000)
-> +__AARCH64_INSN_FUNCS(clz,	0x7FFFFC00, 0x5AC01000)
-> +__AARCH64_INSN_FUNCS(ctz,	0x7FFFFC00, 0x5AC01800)
->  __AARCH64_INSN_FUNCS(and,	0x7F200000, 0x0A000000)
->  __AARCH64_INSN_FUNCS(bic,	0x7F200000, 0x0A200000)
->  __AARCH64_INSN_FUNCS(orr,	0x7F200000, 0x2A000000)
-> diff --git a/arch/arm64/lib/insn.c b/arch/arm64/lib/insn.c
-> index 4e298baddc2e..2229ab596cda 100644
-> --- a/arch/arm64/lib/insn.c
-> +++ b/arch/arm64/lib/insn.c
-> @@ -1008,6 +1008,15 @@ u32 aarch64_insn_gen_data1(enum aarch64_insn_register dst,
->  		}
->  		insn = aarch64_insn_get_rev64_value();
->  		break;
-> +	case AARCH64_INSN_DATA1_CLZ:
-> +		insn = aarch64_insn_get_clz_value();
-> +		break;
-> +	case AARCH64_INSN_DATA1_RBIT:
-> +		insn = aarch64_insn_get_rbit_value();
-> +		break;
-> +	case AARCH64_INSN_DATA1_CTZ:
-> +		insn = aarch64_insn_get_ctz_value();
-> +		break;
->  	default:
->  		pr_err("%s: unknown data1 encoding %d\n", __func__, type);
->  		return AARCH64_BREAK_FAULT;
-> diff --git a/arch/arm64/net/bpf_jit.h b/arch/arm64/net/bpf_jit.h
-> index bbea4f36f9f2..af806c39dadb 100644
-> --- a/arch/arm64/net/bpf_jit.h
-> +++ b/arch/arm64/net/bpf_jit.h
-> @@ -248,6 +248,12 @@
->  #define A64_REV16(sf, Rd, Rn) A64_DATA1(sf, Rd, Rn, REVERSE_16)
->  #define A64_REV32(sf, Rd, Rn) A64_DATA1(sf, Rd, Rn, REVERSE_32)
->  #define A64_REV64(Rd, Rn)     A64_DATA1(1, Rd, Rn, REVERSE_64)
-> +/* Rd = RBIT(Rn) */
-> +#define A64_RBIT(sf, Rd, Rn) A64_DATA1(sf, Rd, Rn, RBIT)
-> +/* Rd = CLZ(Rn) */
-> +#define A64_CLZ(sf, Rd, Rn) A64_DATA1(sf, Rd, Rn, CLZ)
-> +/* Rd = CTZ(Rn) */
-> +#define A64_CTZ(sf, Rd, Rn) A64_DATA1(sf, Rd, Rn, CTZ)
-> 
->  /* Data-processing (2 source) */
->  /* Rd = Rn OP Rm */
-> 
-> -- 8< --
-> 
-> Thanks,
-> Puranjay
+Great to see you looked around at the problem space.
 
-Ack.
+> [2] https://lore.kernel.org/netdev/20240911212713.2178943-1-maxime.chevallier@bootlin.com/
 
-I'll do it in the next revision.
+Quoting myself from this thread:
 
-Thanks,
-Leon
+> We might want to take a step back and think about loopback some more.
+>
+> Loopback can be done at a number of points in the device(s). Some
+> Marvell PHYs can do loopback in the PHY PCS layer. Some devices also
+> support loopback in the PHY SERDES layer. I've not seen it for Marvell
+> devices, but maybe some PHYs allow loopback much closer to the line?
+> And i expect some MAC PCS allow loopback.
+> 
+> So when talking about loopback, we might also want to include the
+> concept of where the loopback occurs, and maybe it needs to be a NIC
+> wide concept, not a PHY concept?
 
+I still think this is true. We want a generic kAPI for loopback, not a
+PHY loopback kAPI, and a MAC loopback kAPI, a PCS loopback kAPI, and
+an SFP loopback kAPI, and a CAN bus transceiver loopback kAPI,
+assuming CAN bus supports loopback?
+
+So i think we need one ethtool API for loopback. We probably want an
+API call to enumerate what loopbacks are supported for a netdev. The
+MAC will fill in bits indicating what it can do. If the MAC has a PCS,
+it will ask the PCS what it can do. If there is a PHY, it will ask the
+PHY to fill in the bits indicating what it can do, if there is an SFP,
+it will ask it what it can do, and if there is a CAN bus transceiver,
+it will fill in its bits. And we probably want two values for each
+loopback location, is it looping the media side, or the MAC side?
+
+So the return value lists all the different loopbacks associated to a
+netdev.
+
+And then we need a set operation, to enable/disable a specific
+loopback, and a get operation to return the status of all the
+different loopbacks of a netdev. The MAC will again need to call into
+the PCS, the PHY, the SFP to implement these.
+
+I'm not saying you need to implement all these, you just need to make
+what you do implement generic, and plumb it through the network stack
+so that others can later easily add PHY, PCS, and MAC loopback
+support. And from your background research, you know others are
+interested in this, so you might be able get some help with parts you
+are not particularly interested in.
+
+	Andrew
