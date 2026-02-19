@@ -1,102 +1,120 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AB5324700
-	for <netdev@vger.kernel.org>; Thu, 19 Feb 2026 23:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA6B15539A;
+	Thu, 19 Feb 2026 23:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771544662; cv=none; b=PPJnQ239pMmQL1l5ujZnfy/Uoz71MzGeNQQVoA5DJWN+eKa3KeY+QuRluYjISqsNR1GOVdau7075AGnZu0McQrWVT7WK9YK0HCPqwlRnE5pHhWquyAt3MEOBX+na8ZwQf8UaQhT6UYIDplcDF/O2GIZU4ZQYvrDgyo1Y8DbcIRQ=
+	t=1771545364; cv=none; b=gA6Iv1XRfkVE576gJlbQnwzK+ZpnOaToS+0IREDXKBZL4PNldHH5T8g/tw96sfKfC709ghJnJVusBog0pqNLUQqFudeoOrWMaSF4+axJx6Oossq3nNq0fHmPuqqWZfZc55ZE1VNcAEN0Aud+ZDGZ6Mm8xy+tg4Orey1V3xYCbsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771544662; c=relaxed/simple;
-	bh=yJ+guJ1ZGDFw7M2SDl9coYqoXi18n3pdQNwEMc3vxWc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XXP+kiAnyambrew44rvdTNsoCZkBCsK09daSbRqOt4zPvea8LHIOjE2QS5/Go3JU5c9NimPeTfHpKvBf3E5Ae7iG/6NjBLWBrJOqh7TCq5S2O434wYfA+MHnEWbdQ4HMoR/Wwk+4HJkBqcWt5jvAQeKCW0C4CYKi+jBG8qmnmms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=fhQrXZgH; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1771545364; c=relaxed/simple;
+	bh=W4+lTtQg9XK2AMyVTLl5/C3YX/X14q1QnU9K2rdiGfM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rOTcum6COGlwSyy7ktpcWBYzgHv7t/orYLdVrWxtX4fjJXRen6YCJFD9cy2DBrc8UqESJSwTPBG1r6r/vg8gzdf4DDuPIRmJu9TW2O5nrgj07hSf5wsv/l72HDc8NsNnFuwOqm7u76u4mSPCU/bqzzOK5N3AXSXLrUbBt3Q7Qko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZqZ9+qsJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="fhQrXZgH"
-Date: Thu, 19 Feb 2026 16:43:48 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771544647;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CRO5rWml1QK70tgKl06x/aVYyKWj/aRzqe+fxQOhkKU=;
-	b=fhQrXZgHJkvalaKby2C9z8kNEAxoIH1m4n89qWYP4oV4FrEttt7O/TFwSqck5NetZ+5GDD
-	r85/jEND3KIXN+QZQViJ5D6/7XLpG0063G/hobulPpZrlBoCjyKRIHgQ8/tmHR3cbJhttp
-	PROJqJgnuOXtp4Pi0UJPkEoNJ3l8aaM=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Russ Weight <russ.weight@linux.dev>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: linux-kernel@vger.kernel.org, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	Andrew Morton <akpm@linux-foundation.org>, Antoine Tenart <atenart@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Eric Dumazet <edumazet@google.com>, Geetha sowjanya <gakula@marvell.com>, 
-	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, 
-	James Clark <james.clark@linaro.org>, Jerin Jacob <jerinj@marvell.com>, 
-	Linu Cherian <lcherian@marvell.com>, Lukasz Luba <lukasz.luba@arm.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Mike Leach <mike.leach@linaro.org>, Moritz Fischer <mdf@kernel.org>, 
-	Nicholas Piggin <npiggin@gmail.com>, Paolo Abeni <pabeni@redhat.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Simon Horman <horms@kernel.org>, 
-	Stanislav Fomichev <sdf@fomichev.me>, Subbaraya Sundeep <sbhatta@marvell.com>, 
-	Sunil Goutham <sgoutham@marvell.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Tom Rix <trix@redhat.com>, Xu Yilun <yilun.xu@intel.com>, Yajun Deng <yajun.deng@linux.dev>, 
-	Yury Norov <yury.norov@gmail.com>, Zhang Rui <rui.zhang@intel.com>, hariprasad <hkelam@marvell.com>, 
-	coresight@lists.linaro.org, linux-arm-kernel@lists.infradead.org, linux-fpga@vger.kernel.org, 
-	linux-pm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 09/12] fpga: m10bmc-sec: switch show_canceled_csk() to
- using scnprintf()
-Message-ID: <nsymcnuakoxcuq55csc5dsyevuftlp4vahz7yljziwnbbe7vhr@6n3kddtcuwh7>
-References: <20260219181407.290201-1-ynorov@nvidia.com>
- <20260219181407.290201-10-ynorov@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZqZ9+qsJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A151DC2BC87;
+	Thu, 19 Feb 2026 23:56:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771545364;
+	bh=W4+lTtQg9XK2AMyVTLl5/C3YX/X14q1QnU9K2rdiGfM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=ZqZ9+qsJ7zOUH1OAdo3wIjwSIygpVGra27qCSgAIacM/KVMYYDVxzHQDiAgFrN2E9
+	 XZF2p8e4yUp6VBnTbX2w6RzDVBwBtVS7QDvzoyu2WH5Leajt0/vbW1l415x/2tknQr
+	 iXviLEV4ON/sG5OL1J71wgnDXN94ihihmMO6QYy8ItDsEPooQZ50u/4PWDikVia5m+
+	 r+wsPlSAR1ehtgaSmQMy8ErIVB2K6bsp/xt1mdCimXWOWwFZVA0SfqIbpiAk7GHQT5
+	 XAL+h86iw1fiLdZTuCPp6Q1+Eg/5YMp5zKzFB1+Rvl7jNLX9XQFKOwOt7UbvrPBS8C
+	 XA2LoSXj+EioA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 96478C531F3;
+	Thu, 19 Feb 2026 23:56:04 +0000 (UTC)
+From: Simon Baatz via B4 Relay <devnull+gmbnomis.gmail.com@kernel.org>
+Date: Fri, 20 Feb 2026 00:55:17 +0100
+Subject: [PATCH RFC net-next 4/4] selftests/net: packetdrill: add
+ tcp_rcv_toobig_back_to_back.pkt
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260219181407.290201-10-ynorov@nvidia.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260220-tcp_rfc7323_retract_wnd_rfc-v1-4-904942561479@gmail.com>
+References: <20260220-tcp_rfc7323_retract_wnd_rfc-v1-0-904942561479@gmail.com>
+In-Reply-To: <20260220-tcp_rfc7323_retract_wnd_rfc-v1-0-904942561479@gmail.com>
+To: Eric Dumazet <edumazet@google.com>, 
+ Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ David Ahern <dsahern@kernel.org>, Stefano Brivio <sbrivio@redhat.com>, 
+ Jon Maloy <jmaloy@redhat.com>, Jason Xing <kerneljasonxing@gmail.com>, 
+ mfreemon@cloudflare.com, Shuah Khan <shuah@kernel.org>
+Cc: Christian Ebner <c.ebner@proxmox.com>, netdev@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Simon Baatz <gmbnomis@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771545363; l=1646;
+ i=gmbnomis@gmail.com; s=20260220; h=from:subject:message-id;
+ bh=c1eQDsHINo/iLpDzO11WhQUeLWxzIkGGeSmjjLGkjpQ=;
+ b=tGiZqmdvVs1iMDN93UHdsZnv90evQhVamdSvCoez+vPECABVnnhvp0nW717BsblYUJtRlcHaH
+ oPH4k/Yj/LuCnEItmj3gZHey/IHNif1Hx88V/lBkZm2UFDkSKgvE2qo
+X-Developer-Key: i=gmbnomis@gmail.com; a=ed25519;
+ pk=T/JIz/6F5bf1uQJr69lmyi7czVG+F9TVZ/8x5z9Wtqw=
+X-Endpoint-Received: by B4 Relay for gmbnomis@gmail.com/20260220 with
+ auth_id=641
+X-Original-From: Simon Baatz <gmbnomis@gmail.com>
+Reply-To: gmbnomis@gmail.com
 
-On Thu, Feb 19, 2026 at 01:14:01PM -0500, Yury Norov wrote:
-> Switch show_canceled_csk() to use a more common scnprintf("%*pbl").
-> 
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+From: Simon Baatz <gmbnomis@gmail.com>
 
-Reviewed-by: Russ Weight <russ.weight@linux.dev>
+This test verifies the sequence number checks using the maximum
+advertised window sequence number when we accept a packet going beyond
+any window that was ever advertised (i.e. rcv_nxt advances beyond
+rcv_mwnd_seq).
 
-> ---
->  drivers/fpga/intel-m10-bmc-sec-update.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/fpga/intel-m10-bmc-sec-update.c b/drivers/fpga/intel-m10-bmc-sec-update.c
-> index 10f678b9ed36..5ae76b8ece18 100644
-> --- a/drivers/fpga/intel-m10-bmc-sec-update.c
-> +++ b/drivers/fpga/intel-m10-bmc-sec-update.c
-> @@ -10,6 +10,7 @@
->  #include <linux/firmware.h>
->  #include <linux/mfd/intel-m10-bmc.h>
->  #include <linux/mod_devicetable.h>
-> +#include <linux/mm.h>
->  #include <linux/module.h>
->  #include <linux/platform_device.h>
->  #include <linux/slab.h>
-> @@ -183,7 +184,7 @@ show_canceled_csk(struct device *dev, u32 addr, char *buf)
->  
->  	bitmap_from_arr32(csk_map, csk32, CSK_BIT_LEN);
->  	bitmap_complement(csk_map, csk_map, CSK_BIT_LEN);
-> -	return bitmap_print_to_pagebuf(1, buf, csk_map, CSK_BIT_LEN);
-> +	return scnprintf(buf, rest_of_page(buf), "%*pbl\n", CSK_BIT_LEN, csk_map);
->  }
->  
->  #define DEVICE_ATTR_SEC_CSK_RO(_name)						\
-> -- 
-> 2.43.0
-> 
+Signed-off-by: Simon Baatz <gmbnomis@gmail.com>
+---
+ .../packetdrill/tcp_rcv_toobig_back_to_back.pkt    | 27 ++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
+
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_rcv_toobig_back_to_back.pkt b/tools/testing/selftests/net/packetdrill/tcp_rcv_toobig_back_to_back.pkt
+new file mode 100644
+index 0000000000000000000000000000000000000000..4d4c33d248948d3dfaf9b0c5b243ed27321e9b10
+--- /dev/null
++++ b/tools/testing/selftests/net/packetdrill/tcp_rcv_toobig_back_to_back.pkt
+@@ -0,0 +1,27 @@
++// SPDX-License-Identifier: GPL-2.0
++
++--mss=1000
++
++`./defaults.sh`
++
++// Establish a connection.
++   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++   +0 setsockopt(3, SOL_SOCKET, SO_RCVBUF, [20000], 4) = 0
++   +0 bind(3, ..., ...) = 0
++   +0 listen(3, 1) = 0
++
++   +0 < S 0:0(0) win 32792 <mss 1000,nop,wscale 7>
++   +0 > S. 0:0(0) ack 1 win 18980 <mss 1460,nop,wscale 0>
++  +.1 < . 1:1(0) ack 1 win 257
++
++   +0 accept(3, ..., ...) = 4
++
++// A too big packet is accepted if the receive queue is empty
++   +0 < P. 1:20001(20000) ack 1 win 257
++// Send a RST immediately so that there is no rcv_wup/rcv_mwnd_seq update yet
++   +0 < R. 20001:20001(0) ack 1 win 257
++//    * > .  1:1(0) ack 20001 win 18000
++
++  +.1 %{ assert tcpi_state == TCP_CLOSE, tcpi_state }%
++
+
+-- 
+2.52.0
+
+
