@@ -1,150 +1,157 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D142A2F8BEE;
-	Thu, 19 Feb 2026 23:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272892F4A15;
+	Thu, 19 Feb 2026 23:59:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771545364; cv=none; b=DbXxaJfkZNP5cIlBZY5Qpyu85DO/ppXFYAeEDFBum4Jam32goq1t7jxHHzhsdx17xXMbc5Wj8EWSht3qyxA2N+x7nfBO6YlGV0Nbjms3Bsu4EEbQkeoYf7P+pIPs70ySVBh96zr/P0N7AJ6QTyvWhotTHIIMYDfdY/V8kZUMOnY=
+	t=1771545591; cv=none; b=bP2YXFVTb3v67wT1dQWd3BC5kRmHSEihoAsF6JQiQvdA4Jp46qh1g2wQ8excGaMNHOHdMPmOL4GRYQhvF0NtqVMCUJdRobwtDdLUIS1lH8MtAS8mTxv0n4c0T3iqn3EvupG6QlHJBJpk32cYhso8XTVxjht74e390cH/sR0irZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771545364; c=relaxed/simple;
-	bh=A4B+KQUKfkALABSV4ypfoM7JWCIo0oQ5oJiT+QXtlgM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=mrxmipTmLoCfmXG6MxASrInapV0BHCzevcE+P+tj3gQcJzxGEpGB6wePYAdrn+6LO+tl/HTg8pYCqVYjFMSRELa4JEx2M6sdQMeRh0hCe1klQiptQiDIZmhcvGIU6EYIk1dIFYvF3KEYhVypVWn1yTYQTyYp++uPPVU05dJF/EQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V+0Iifi5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771545591; c=relaxed/simple;
+	bh=ZMzYxL94z8q0TJyvNhpiuIgpQ1hKazr0tfXAbomaJd8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=PGgbC9p3CfsS1sX5SyEx0K6C3iooqDZbhDSUCmtmWv/c0sH3unF2sg6RGGf/IhCzhU2WuFl6f1LiHydjQO1G7gFuV0eJaF6/o8/PdEW8nF3mAdVwqwA+bd7JY1fEpTj0fF5ixA6lz6Eq4LJ6VjN/gk5umMxANjFZVoCVnM2DLa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oU3BrviT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V+0Iifi5"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 4F2F0C4CEF7;
-	Thu, 19 Feb 2026 23:56:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oU3BrviT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3BBC4CEF7;
+	Thu, 19 Feb 2026 23:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771545364;
-	bh=A4B+KQUKfkALABSV4ypfoM7JWCIo0oQ5oJiT+QXtlgM=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=V+0Iifi5+SFjh+Yw/WgiKjgwHjI3opt4dXeXq6KoAbiYr4TQxojGCZMubfHRivQJ+
-	 YGvgCLahfUFOr+UXWEDlgIqRQsOE9iVnbDZ0QrKmV1dzv91pXgd5fWUvK8dXv4rfXv
-	 FRKUAwx8/klPljntVcQ8ZQO1MQU5VbW+w5sgL7VksiE0u/Xjwy/8uXr7bl4mbK4l2M
-	 QnGMahUKy6iY8DIwQ2rGpyXU/HPUwaZc9BwBW6pMtaQW6geqZ3wOIdJZSFsB6Nthvk
-	 W3hmgJEHHHBd8Nv8CC/ncRdHZuQ1hYzmtkEVC5hCiri2fCLOza50nX02rzTw7OW9Ng
-	 dCLW8pYo7fEow==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 41A93C531F0;
-	Thu, 19 Feb 2026 23:56:04 +0000 (UTC)
-From: Simon Baatz via B4 Relay <devnull+gmbnomis.gmail.com@kernel.org>
-Subject: [PATCH RFC net-next 0/4] tcp: RFC 7323-compliant window retraction
- handling
-Date: Fri, 20 Feb 2026 00:55:13 +0100
-Message-Id: <20260220-tcp_rfc7323_retract_wnd_rfc-v1-0-904942561479@gmail.com>
+	s=k20201202; t=1771545590;
+	bh=ZMzYxL94z8q0TJyvNhpiuIgpQ1hKazr0tfXAbomaJd8=;
+	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
+	b=oU3BrviTxQgpucmePP3fA6Qy04sAxAocBTXaGBNbp12HervoLWm+VmBJ5hNq4fzdp
+	 dFTDstOoHfXpG9EcQsOBajZN5jYCs56hg535NMq1Z+l95v9+9v5DzsxKn+13hSpW8R
+	 7H8I/BKIMsOYmm/8TskUgBgsAxKAvetR9Y0rFWli9JXE9tdVsEJuQ56zNauG3qbA/1
+	 TvThSUrlro3U/abDVryk99nkNQZFBvaM918dHud/DPKT/jgcwiDOAJB1NaPpRWVNp4
+	 u9Eri/MFKhkKHYx724FyDD5F3d/KvYwlgPU2E8oQSABPQ/iCkI5q1ZN0vOdIJAjgGb
+	 wrB7Ulm2y9aBg==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x3MwQrCMAyA4VcpOVuoGUzxKvgAXoeULs00lzrSo
- IOxd7fz+P2Hf4XKKlzh4lZQ/kiVd2k4HhzQK5Une8nNgAH7gBi80Rx1olOHXVQ2TWTxW/LePJ0
- TZhwTj5mhHWblSZb/fYD77eoKmy+8GDy27QfkRiVoewAAAA==
-X-Change-ID: 20260220-tcp_rfc7323_retract_wnd_rfc-c8a2d2baebde
-To: Eric Dumazet <edumazet@google.com>, 
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- David Ahern <dsahern@kernel.org>, Stefano Brivio <sbrivio@redhat.com>, 
- Jon Maloy <jmaloy@redhat.com>, Jason Xing <kerneljasonxing@gmail.com>, 
- mfreemon@cloudflare.com, Shuah Khan <shuah@kernel.org>
-Cc: Christian Ebner <c.ebner@proxmox.com>, netdev@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Simon Baatz <gmbnomis@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771545363; l=3411;
- i=gmbnomis@gmail.com; s=20260220; h=from:subject:message-id;
- bh=A4B+KQUKfkALABSV4ypfoM7JWCIo0oQ5oJiT+QXtlgM=;
- b=oNGmNjCqW5WuUBHxUhDcDVp1H6go11aygE11D7Wp0WGZ4sPYxX0QAVXGO6QFSqO1gf443g7kk
- EhnarpSRwfrCr7CdlrCXJ9zQP3PXVeF/8Y8odmcZ1PtJ9Di/MO7qMDy
-X-Developer-Key: i=gmbnomis@gmail.com; a=ed25519;
- pk=T/JIz/6F5bf1uQJr69lmyi7czVG+F9TVZ/8x5z9Wtqw=
-X-Endpoint-Received: by B4 Relay for gmbnomis@gmail.com/20260220 with
- auth_id=641
-X-Original-From: Simon Baatz <gmbnomis@gmail.com>
-Reply-To: gmbnomis@gmail.com
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 20 Feb 2026 00:59:45 +0100
+Message-Id: <DGJCHYS3SKIQ.1TIHQCMEOCRC@kernel.org>
+Subject: Re: [PATCH V2] driver core: auxiliary bus: Fix sysfs creation on
+ bind
+Cc: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, "Saeed Mahameed" <saeedm@nvidia.com>, "Leon
+ Romanovsky" <leon@kernel.org>, "Mark Bloch" <mbloch@nvidia.com>, "Andrew
+ Lunn" <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
+ "Paolo Abeni" <pabeni@redhat.com>, <driver-core@lists.linux.dev>,
+ <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-rdma@vger.kernel.org>, "Gal Pressman" <gal@nvidia.com>, "Moshe
+ Shemesh" <moshe@nvidia.com>, "Amir Tzin" <amirtz@nvidia.com>, "Leon
+ Romanovsky" <leonro@nvidia.com>
+To: "Tariq Toukan" <tariqt@nvidia.com>
+From: "Danilo Krummrich" <dakr@kernel.org>
+References: <20260219210435.1769394-1-tariqt@nvidia.com>
+In-Reply-To: <20260219210435.1769394-1-tariqt@nvidia.com>
 
-Hi,
+On Thu Feb 19, 2026 at 10:04 PM CET, Tariq Toukan wrote:
+> +/**
+> + * auxiliary_device_sysfs_irq_dir_init - initialize the IRQ sysfs direct=
+ory
+> + * @auxdev: auxiliary bus device to initialize the sysfs directory.
+> + *
+> + * This function should be called by drivers to initialize the IRQ direc=
+tory
+> + * before adding any IRQ sysfs entries. The driver is responsible for en=
+suring
+> + * this function is called only once and for handling any concurrency co=
+ntrol
+> + * if needed.
+> + *
+> + * Drivers must call auxiliary_device_sysfs_irq_dir_destroy() to clean u=
+p when
+> + * done.
+> + *
+> + * Return: zero on success or an error code on failure.
+> + */
+> +int auxiliary_device_sysfs_irq_dir_init(struct auxiliary_device *auxdev)
+>  {
+> -	int ret =3D 0;
+> -
+> -	guard(mutex)(&auxdev->sysfs.lock);
+> -	if (auxdev->sysfs.irq_dir_exists)
+> -		return 0;
+> +	int ret;
+> =20
+> -	ret =3D devm_device_add_group(&auxdev->dev, &auxiliary_irqs_group);
+> +	ret =3D sysfs_create_group(&auxdev->dev.kobj, &auxiliary_irqs_group);
+>  	if (ret)
+>  		return ret;
+> =20
+> -	auxdev->sysfs.irq_dir_exists =3D true;
+>  	xa_init(&auxdev->sysfs.irqs);
+>  	return 0;
+>  }
+> +EXPORT_SYMBOL_GPL(auxiliary_device_sysfs_irq_dir_init);
+> +
+> +/**
+> + * auxiliary_device_sysfs_irq_dir_destroy - destroy the IRQ sysfs direct=
+ory
+> + * @auxdev: auxiliary bus device to destroy the sysfs directory.
+> + *
+> + * This function should be called by drivers to clean up the IRQ directo=
+ry
+> + * after all IRQ sysfs entries have been removed. The driver is responsi=
+ble
+> + * for ensuring all IRQs are removed before calling this function.
+> + */
+> +void auxiliary_device_sysfs_irq_dir_destroy(struct auxiliary_device *aux=
+dev)
+> +{
+> +	xa_destroy(&auxdev->sysfs.irqs);
+> +	sysfs_remove_group(&auxdev->dev.kobj, &auxiliary_irqs_group);
+> +}
+> +EXPORT_SYMBOL_GPL(auxiliary_device_sysfs_irq_dir_destroy);
+> =20
+>  /**
+>   * auxiliary_device_sysfs_irq_add - add a sysfs entry for the given IRQ
+> @@ -45,7 +70,8 @@ static int auxiliary_irq_dir_prepare(struct auxiliary_d=
+evice *auxdev)
+>   * @irq: The associated interrupt number.
+>   *
+>   * This function should be called after auxiliary device have successful=
+ly
+> - * received the irq.
+> + * received the irq. The driver must call auxiliary_device_sysfs_irq_dir=
+_init()
+> + * before calling this function for the first time.
 
-this series implements the receiver-side requirements for TCP window
-retraction as specified in RFC 7323 and adds packetdrill tests to
-cover the new behavior.
+I'm not convinced by this approach. This adds two new sources of bugs for
+drivers.
 
-It addresses a regression with somewhat complex causes; see my message
-"Re: [regression] [PATCH net-next 7/8] tcp: stronger sk_rcvbuf checks"
-(https://lkml.kernel.org/netdev/aXaHEk_eRJyhYfyM@gandalf.schnuecks.de/).
+  1. Drivers can now forget to call auxiliary_device_sysfs_irq_dir_init()
+     *before* auxiliary_device_sysfs_irq_add().
 
-Please see the first patch for background and implementation details.
+  2. Drivers can forget to call auxiliary_device_sysfs_irq_dir_destroy().
 
-This is an RFC because a few open questions remain:
+Instead, I suggest to keep the current approach and just replace
+devm_device_add_group() with devm_auxiliary_device_add_group(), which in it=
+s
+devres callback additionally clears auxdev->sysfs.irq_dir_exists.
 
-- Placement of the new rcv_mwnd_seq field in tcp_sock:
+In terms of the auxdev->sysfs.lock, I think this can still be removed, as i=
+t
+wasn't needed in the first place.
 
-  rcv_mwnd_seq is updated together with rcv_wup and rcv_wnd in
-  tcp_select_window. However, rcv_wup is documented as RX read_write
-  only (even though it is updated in tcp_select_window), and rcv_wnd
-  is TX read_write / RX read_mostly.
+auxiliary_device_sysfs_irq_add() must only be called from a scope where the
+auxiliary device is guaranteed to be bound, so there can't be a concurrent
+unbind.
 
-  rcv_mwnd_seq is only updated in tcp_select_window and, as far as I
-  can tell, is not used on the RX fast path.
+There may only be multiple concurrent calls to auxiliary_device_sysfs_irq_a=
+dd()
+itself, and in this case irq_dir_exists can just be an atomic.
 
-  If I understand the placement rules correctly, this means that
-  rcv_mwnd_seq, rcv_wup, and rcv_wnd end up in different cacheline
-  groups, which feels odd. Guidance on where rcv_mwnd_seq should live
-  would be appreciated.
+Yes, we're still stuck with an atomic for irq_dir_exists, but the driver AP=
+I
+remains much simpler and less error prone.
 
-- In tcp_minisocks.c, it is not clear to me whether we should change
-  "tcptw->tw_rcv_wnd = tcp_receive_window(tp)" to
-  "tcptw->tw_rcv_wnd = tcp_max_receive_window(tp)". I could not find a
-  case where this makes a practical difference and have left the
-  existing behavior unchanged.
-
-- Packetdrill tests: Some of these seem rather brittle to me; I
-  included them mostly to document what I have tested. Suggestions
-  for making them more robust are welcome.
-
-- MPTCP seems to modify tp->rcv_wnd of subflows. I haven't looked at
-  this, since I wanted to get feedback on the overall approach first.
-
-- Although this series addresses a regression triggered by commit
-  d2fbaad7cd8 ("tcp: stronger sk_rcvbuf checks") the underlying
-  problem is shrinking the window. Thus I added "Fixes" headers for
-  the commits that introduced window shrinking.
-
-I would appreciate feedback on the overall approach and on these
-questions.
-
-Signed-off-by: Simon Baatz <gmbnomis@gmail.com>
----
-Simon Baatz (4):
-      tcp: implement RFC 7323 window retraction receiver requirements
-      selftests/net: packetdrill: add tcp_rcv_wnd_shrink_nomem.pkt
-      selftests/net: packetdrill: add tcp_rcv_wnd_shrink_allowed.pkt
-      selftests/net: packetdrill: add tcp_rcv_toobig_back_to_back.pkt
-
- .../networking/net_cachelines/tcp_sock.rst         |   1 +
- include/linux/tcp.h                                |   1 +
- include/net/tcp.h                                  |  14 +++
- net/ipv4/tcp_fastopen.c                            |   1 +
- net/ipv4/tcp_input.c                               |   6 +-
- net/ipv4/tcp_minisocks.c                           |   1 +
- net/ipv4/tcp_output.c                              |  12 +++
- .../net/packetdrill/tcp_rcv_big_endseq.pkt         |   2 +-
- .../packetdrill/tcp_rcv_toobig_back_to_back.pkt    |  27 +++++
- .../net/packetdrill/tcp_rcv_wnd_shrink_allowed.pkt |  35 +++++++
- .../net/packetdrill/tcp_rcv_wnd_shrink_nomem.pkt   | 109 +++++++++++++++++++++
- 11 files changed, 206 insertions(+), 3 deletions(-)
----
-base-commit: 8bf22c33e7a172fbc72464f4cc484d23a6b412ba
-change-id: 20260220-tcp_rfc7323_retract_wnd_rfc-c8a2d2baebde
-
-Best regards,
--- 
-Simon Baatz <gmbnomis@gmail.com>
-
-
+- Danilo
