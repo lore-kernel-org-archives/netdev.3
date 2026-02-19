@@ -1,65 +1,67 @@
-Received: from mail-05.mail-europe.com (mail-05.mail-europe.com [85.9.206.169])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA4C272816
-	for <netdev@vger.kernel.org>; Thu, 19 Feb 2026 02:32:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.9.206.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA231EEA49;
+	Thu, 19 Feb 2026 02:41:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771468345; cv=none; b=VnhvOqktUJS7pIce2B2hVqIGI9PrWl7c8zuTzaAWPYf2Ld9AtbbW/9XmZXztMW4A+1mX4PMis3Ns0FdQ+fs6bHcJEpKDr/QIKcuSCNd0+bYMip0+hGzq2KekaiiRKzkZ9DCy9qrho6o/kTJouz+jQOY9jyN8iEDjuXxBON5j4qY=
+	t=1771468875; cv=none; b=LAQMmnYSxree1629MGnnJZSSRXzAfK4ilrw/XkK3VC0xLOHWT+0jHqkNYqhuw+jKq893yoRgKQeHiamqCso/IzKzSDZKF0UaTrnOS1zx634H4GJfn2t4MK9BlVgL7CJ2TPRk8sRzJx+qw8pQzm689lDtPr4/kuMSMgClcZiYFks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771468345; c=relaxed/simple;
-	bh=c7Ok8iXOfSYz4v4jJ7U6j6p+rRUgu075WEHNkvllUf8=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=DXvUh1Pouk9X2F86gDcQYqyo6irUBVVjWFcsfusllU0ky1k7fTxESzTHQTn78mp4yvlflSq1W465Dn0qy7NQvl8nD1RLH8ksbhePcQU7Z0Y2Z7ywIgV1Fj/TbeRIMfMkzbMQojSoRdrEtjVRTVnc73VNmqxQNGApGmkTKTPPgIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org; spf=pass smtp.mailfrom=1g4.org; dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b=oW89b9MV; arc=none smtp.client-ip=85.9.206.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=1g4.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=1g4.org
+	s=arc-20240116; t=1771468875; c=relaxed/simple;
+	bh=4qa8PM3QPfyLTwp+FHLkYksJ0nocHdKpD92Kq/ehAd8=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QaSV+Z49QioGMu5IS44+8kS5RNEm/jN3AYJ1vI1sNDAIPSSD+Ly7ektlFTELDxWutcz5qOW/3xUJM8zQ3HC3648oPwZSR2NvDoOCvaMZOpqXYcSxaSQyuDrmBaw7NY+WaWjx4VAj7AHAVr3SpRdKA7NkF+kWYdiWhuY4fvO6miU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCqf0FfQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=1g4.org header.i=@1g4.org header.b="oW89b9MV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=1g4.org;
-	s=protonmail2; t=1771468327; x=1771727527;
-	bh=1YjamJ6ylCdZhUudRHXFxvvo6UfDwTK/0lEPw8J6C+I=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=oW89b9MVIgvCV+UkzcJmU81WPKRNbuRda5aKQVOuw7DwMcOm2SwTBdNtZdKM0eH1t
-	 oo9U2GRjUaFk0rB3XWdOozUkusjTRgKgX867Xlp2qsHATWS89c88baObKKETrv8Rus
-	 83f5sweBktGuWRXvnNyDB2xk86pVjmC4Z/UzIDrhISijUdfuWDKxH1TH/0NVHbrzKm
-	 Azw2jcq95tGHn0Sy7I8TkJNv8QnTDKxA/plRHejxNVCgJPXzFUNyFowrv7WbyNPi/E
-	 hpdV1YkuO8Yr//11Pjk+jW6c6PVothpmWRkUuueNLDowEEljdL9IM9VhDk3XBTIUGa
-	 G0B61ftW9DI8A==
-Date: Thu, 19 Feb 2026 02:32:02 +0000
-To: Victor Nogueira <victor@mojatatu.com>, Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, Jiri Pirko <jiri@resnulli.us>
-From: Paul Moses <p@1g4.org>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Paul Moses <p@1g4.org>
-Subject: [PATCH net v7 0/1] net/sched: act_gate: snapshot parameters with RCU on replace
-Message-ID: <20260219023151.171753-1-p@1g4.org>
-Feedback-ID: 8253658:user:proton
-X-Pm-Message-ID: 938bcd6b3be7383a87fc839d38cba17fe64b1b7f
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCqf0FfQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00494C116D0;
+	Thu, 19 Feb 2026 02:41:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771468875;
+	bh=4qa8PM3QPfyLTwp+FHLkYksJ0nocHdKpD92Kq/ehAd8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=fCqf0FfQ44kpqiSjDNNB6gl47x+N/OUeGKrD04ZXONxYYyu7JzxYdTcROOKJev87P
+	 Ne2Dz7uKcYJJBerTnnIaZ0Yx/MBVcDG3I1snIDtPPRrNNjiqZuyNIisPq6FUNIl8xa
+	 SVyoNznmYH/8VdyrTl+bnWeZZYdeDeyR5DP2hD9AiMudR4QFcFauJzzuZMIdJx1w40
+	 UcIAavoN56fix+v8Cprtm9vBAYPVOYthjB1vaoU5tVcFBRStAsmYgTAVtbTzpNgOhJ
+	 yQKvbKV/OICQMI1DukGMMqf+ZRaw13qJlAaYOGMr7FzzC4EXWWQKaSZggZQt1LGPuK
+	 2bmBZSc7opVaA==
+Date: Wed, 18 Feb 2026 18:41:14 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Florian Westphal <fw@strlen.de>
+Cc: <netdev@vger.kernel.org>, Paolo Abeni <pabeni@redhat.com>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ <netfilter-devel@vger.kernel.org>, pablo@netfilter.org
+Subject: [TEST] nft_queue / test_udp_gro_ct flakes
+Message-ID: <20260218184114.0b405b72@kernel.org>
+In-Reply-To: <20260206153048.17570-4-fw@strlen.de>
+References: <20260206153048.17570-1-fw@strlen.de>
+	<20260206153048.17570-4-fw@strlen.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This series fixes a schedule lifetime race in `act_gate` between the
-control-plane replace path and the running hrtimer callback
-(`gate_timer_func`).
+On Fri,  6 Feb 2026 16:30:40 +0100 Florian Westphal wrote:
+> Without the preceding patch, this fails with:
+> 
+> FAIL: test_udp_gro_ct: Expected udp conntrack entry
+> FAIL: test_udp_gro_ct: Expected software segmentation to occur, had 10 and 0
 
-Changes since v6:
-- revert gate_start_timer()
-- added explicit chain_put: label before release_idr:
-- kzalloc failure path changed from goto release_idr to goto chain_put
-- formatting only: blankline cleanup for readability, no behavior change
+Hi Florian!
 
-Paul Moses (1):
-  net/sched: act_gate: snapshot parameters with RCU on replace
+This test case is a bit flaky for us on debug kernels:
 
- include/net/tc_act/tc_gate.h |  33 ++++-
- net/sched/act_gate.c         | 265 +++++++++++++++++++++++++----------
- 2 files changed, 215 insertions(+), 83 deletions(-)
+https://netdev.bots.linux.dev/contest.html?pass=0&test=nft-queue-sh
 
---=20
-2.53.0
+It's 3rd flakiest of all netdev selftests at this point.
 
+Example:
+
+# 2026/02/12 10:14:22 socat[20338] W exiting on signal 15
+# 2026/02/12 10:14:22 socat[20383] W exiting on signal 15
+# FAIL: test_udp_gro_ct: Expected software segmentation to occur, had 12 and 10
