@@ -1,98 +1,100 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from sonic307-54.consmr.mail.ir2.yahoo.com (sonic307-54.consmr.mail.ir2.yahoo.com [87.248.110.31])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AEB72FE582
-	for <netdev@vger.kernel.org>; Thu, 19 Feb 2026 19:22:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2321A27F017
+	for <netdev@vger.kernel.org>; Thu, 19 Feb 2026 19:24:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=87.248.110.31
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771528947; cv=none; b=roeg0gxg7M4jprPMkOAwZ/nhjA0fLKkUfmGtKrDw+RXK8/Jv8LkpAQv8zWuQHLzyeWaxsyEA/p+k8NMyiMhAUhrOMwsf7B4y+7gxyC4ezlER6H/IzajLBDVaO0NHDjGdVbpUmOoqmt1bzonzkNaJHk0o+tHz8CP6ANWmtM1gnwA=
+	t=1771529071; cv=none; b=Tf3ZeAc3/7+jVh5xBUHnAx60fWS6NnRvIEzaj7t3MeBDzgqnY/bpA6eaq9sF1T7egpi+MMq4siz191kjLV45i18c6hBontNkHNcjHiyRgkdF+PPHuIJy1H0An2xUkvVAzXrpNqMSoKuSXXptPXjZVIIJdY6LLBwjZRrNYhDBo2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771528947; c=relaxed/simple;
-	bh=zTbHbRlmv3uMqkzamQCDYhHdJCe6F7LjuxqgGFIwYmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Znn/p7gJy46II+a+1N9xjzfr5xvEQpnxQHKQR/Gq3/ca/5tbU3G1scZq/BccX9vui/wY7DH0NYw94qu+Y8s9i48hB8s7n/x8goe0uZwR037oCu/XH0+e1YviCWf3BW1+mYcOm+SO4zkgFKuSJ3MhLKUcBK31TGJpxIYZEIoeCWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org; spf=pass smtp.mailfrom=networkplumber.org; dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b=NPePABpD; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=networkplumber.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=networkplumber.org
+	s=arc-20240116; t=1771529071; c=relaxed/simple;
+	bh=g9aw1h2lbRrKNRmFNy+58raEIbGXeql1NWBasM5x9lQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=ljIQZgLopaVTPKk4wDH2MkbirdLHVThvUBGytlbizNDZIydm3J+7zGd789DwnLU8l/MIb4yjhXAq0/x5Wb1uDxfSHwAxPUU5lOPUNoaowOsRCPUS4qPacRMaNAoU5sK/WFV9vxZg+Wds/hnfEsPa/9uL2cgl0JpQq0ARAdMKlXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=E7loc9fb; arc=none smtp.client-ip=87.248.110.31
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=networkplumber-org.20230601.gappssmtp.com header.i=@networkplumber-org.20230601.gappssmtp.com header.b="NPePABpD"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-506362ac5f7so11441341cf.1
-        for <netdev@vger.kernel.org>; Thu, 19 Feb 2026 11:22:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=networkplumber-org.20230601.gappssmtp.com; s=20230601; t=1771528945; x=1772133745; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qmvs7ltNBb7/j6fAJ8uopBy+GNGTr1X/rFmvGsUIIOQ=;
-        b=NPePABpDkcOrMIC65iE/wbIrxiLQ8xgPHPpMg1yuTMxINow6Z7gqwd95wwvwmyW4fu
-         TIqn6veXKrNa08gzVFdxJjvxqy7Iiio7P5hB1RiAyxJltY+PFlz6wFf9spYK9vK1dR6m
-         ew2ORhvWJ/OLgkrRwcVnjRdLPahoX9EELpiFWpkvLd/gegCVf6HYvUCizjNx3cX5LF3q
-         FrQYFJWkfpMfw0GS9WZRitVA49GMEHbBdTcOeT+0/6ITPIVXzJckEjvMbMrU2GrGgYSN
-         ty5CcVSCpZzsZyZZ+mGq/c4RU9qJRThkFi4jfXwLF5f8LCBqDur7s5mOQQuTjO3glJVb
-         Tjjg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771528945; x=1772133745;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Qmvs7ltNBb7/j6fAJ8uopBy+GNGTr1X/rFmvGsUIIOQ=;
-        b=BvT+m52V/hUdI9khba9aRKzs//OryruEcruiTlgpVfIW382q8qmu9RHCtZT5xwADP6
-         +PBQx0l20XMEF4jWWGL3XPqje/un9zNeIYCQEqR2PP6iMdcT0WrapFmpVPYEPHHsuVRw
-         HOpxqbdNGRpGJv2Qf5RqLLUrZoqcDiRolXMRYc5zjSyALj7g/VIsBsY97PkOxfsIHLqY
-         e2pheJk19lKQL0rGQhgv94rcQ6XcZDKffFpUxBXM7rSHCrtdxVoLBakGlucQhf/cqSA+
-         FROpPJEBJgmlCZ9mbQ0kugIuTYrrkoh/JLDBRSU8GO5vj4fWX0/MWLJgozzGeFM51sDu
-         5TIA==
-X-Forwarded-Encrypted: i=1; AJvYcCWK58M5mE8WZLjtFtdTjF0h8O3meqhPUL3QqubSAVu7fpX2tfBW3rSFBSCYagzv1Y1PzzzO0m4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysbOxHAsIVpt7obH3fb/OBVEmIZrJEJVTBL15CJvGNBczrlj7n
-	VmUDNTuV8pA24nJuu00u3coJDFQ1vuSwirHato8NQHPZvucXT49fVhMovOUZe6Feus0=
-X-Gm-Gg: AZuq6aJ0CPSJwXrAhbnSlcZJr1aDMmiP2aVs0AQFBOdirbA0xP0NSxxREbPiSQ3Exsy
-	aobBS3AKCiCBXEg6mT61RTgugDL1zPFtNZNEcebptpDTF/IOUPyOGjYX41fOrVnZOt+aHRzQX1x
-	A0+rAtfS0/+Xl+wJXM/ZK/zoq5NJO2RNXg3LxH3MkMWYS4oP28UybEKx8K9KPv59oH6eW7QGA53
-	yPFduUBFHk2ba/KJsqNr0WnPQO+RVDpKnkBlY8H1v6TAFdQTePx5dS7wc320HR9c64cbF5va5ij
-	pwSmWLm4mMwq9afT9IKuuqqnRsw8uEmi0C/h6+3b0Jb6UwskdnEaPaLWGkaidPJ4QBCZSBfVyic
-	gCv2qgCbQhXLm/9Y8hmT8m2zr04ZOZytMZRZApS83xHx8tmhb3Ss3wimXtOyFq62DeKgEXZpl/X
-	gbbUbtAavnKeUHHOl4KmqtUHPLNCd5wDVqVzldk3kiidIvoIiSxI9M7gbvLX2myoJi
-X-Received: by 2002:a05:622a:19a0:b0:502:9f6b:a3b3 with SMTP id d75a77b69052e-506b3fc9f96mr263994961cf.37.1771528944668;
-        Thu, 19 Feb 2026 11:22:24 -0800 (PST)
-Received: from phoenix.local (204-195-96-226.wavecable.com. [204.195.96.226])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8971cd8a5ccsm223003766d6.25.2026.02.19.11.22.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Feb 2026 11:22:24 -0800 (PST)
-Date: Thu, 19 Feb 2026 11:22:20 -0800
-From: Stephen Hemminger <stephen@networkplumber.org>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
- mptcp@lists.linux.dev
-Subject: Re: [PATCH iproute2 1/2] mptcp: monitor: also show iface name
-Message-ID: <20260219112220.6576b50d@phoenix.local>
-In-Reply-To: <1f81c7c3-59ee-43ee-93f9-771015a2752c@kernel.org>
-References: <20260211-mptcp-color-v1-0-01832777611d@kernel.org>
-	<20260211-mptcp-color-v1-1-01832777611d@kernel.org>
-	<20260218103155.486d20ee@phoenix.local>
-	<a44c1f27-e9f0-4f33-beda-e5f611197e35@kernel.org>
-	<20260219091101.551377a9@phoenix.local>
-	<1f81c7c3-59ee-43ee-93f9-771015a2752c@kernel.org>
+	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="E7loc9fb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1771529061; bh=3JkcDV5cuTOaDZPGYbCuh82fN1WQ+pJzyXz/Ohmpx4c=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=E7loc9fbNPBi6l3nKK/8mwx1Woar0ZulD8+rK9X7Mj44lltnGKePtg3thoITJS5gzSpLoRT8cAVphDHV8o5ujaeaBlHKDt7vALYWPSbVaR60k5g9sh5iGiO03sAVA8zj06TQtKV3MUCJWTGSQtI1nWV2eT2iKC6+S993/VdmPoyXSo3ip2UOOQ+eK35fJLqcvesX7h6egj/UWEcUbs2DcS1CECgQGS0YptgEX6X/Jk8lajzl+Lr29ijLDKMmWNRGjHc+ZhUaS7gFc+SjFiKLjFUH21pT/pVaV9kYxU5GB6Qo+PWaNg5OmoBI5lwgnwBbXUeRCL1zH6O+M/ha791vQQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1771529061; bh=C6HOYMYxlkLxLJmT8KnPmHXcBGUy7t0R8803S7o3p5k=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=NGNobtKFhttd9oiPVU5SCHL2edLYuyYSu2MH3j8NrfXzfgCU9NfgNjMpH9x480RYMtQg6Yz8N7BDBInUBYxz3QuOQq/fgDKmXg6k2hSKFPyCRMmZ7Y72KT4kUIDLFGRxICHMpWeEGrHJUwpTog/mbJ5sTxc4rfELO6oSQb9F1q6Btp8tl6iJ+Txs6xecgofa4BRm6es3+tXdN8RlgVxV/gVYLnkGsSsnkyO7BObhDj41TGgbbHzTd3x1w2tukPSP6xlGEHYTCYGsSa7cf3rcm9rA21xwiL4eCib+CgnaDenCf8vRr1n1ELRNb5kUm6r35Ig6zwvOhGmdy6Owfcr9UA==
+X-YMail-OSG: 5wabyDAVM1mV0UjXrhKbQE_97SDzUDBMfzXDLTHLqgoo78oXaP4.QFEP85j6fLD
+ jV3B5yDBmGsxmskWWSiggZl3qFB7GYTlYm1WUgYL4TRtN_o19zlLc2IRJrXgWn.CoBj54wC9jJrD
+ qzQSrMeB1YEVbNPuuKfookONGuLpln26oW1SPvEs2hgEpoLeoTlWLiiRokIix0nFiqar24LlwKbF
+ _AfxA65.97gayBAldLqryT7M4Kg6FCrdyedHbL.zhHi9eDlz.h.PX1NdVoMgq9kD_hcmIMEJcK63
+ RsFF82kJuhi2CRYi5nbpcFD.12vWO3s_f3mAmID4itaFTVsuKdrxQ3fAxgu7F8Au7QtB4_D7Mi6G
+ cCzF3F3GyKBNMyd71LrhQp3UN9PnwB2.MPmE6b22Su9pHrY_fC0PgPh9oRbKANWByF1s8ZUDJbkp
+ 7Ao7U7qcnRV8DsR6IQzDW4wViQtcvkqqHzd.5HLwSRtBREAZPrdFx.kJLLmYhzuKDVfZY5RV4C9R
+ jRaBu83ug5iqN7WEATLhCBq43BJnpzoMlSCSJS5zRtimJ6_PjdAM0Va5woqdjAUa9A6J1zhM.M4i
+ YDjrIQR0sWo7o1MNOBr9JaixLBvYl3gYDFwXELhZ_xmMC4N1dNBlr9dOI54pUtQFeD_daBoVLLO5
+ w5K64g_xMEys74R4_mPxO4jiHRcXy8O6k_LP1qwq7VhX4us5Sox2qMGj9d8imSamPOc0n7WUwxJm
+ vm_GRULv_nFFwhe34rbbu1J8hZypfetyG.O2aMnRt8.Fr6SDeCVcfjEt0UIOBnZO87yTeN9gsCST
+ _ZIpPdHpPLDQD22yHkWOVo0Z8Z8dyBniPEF3s9yhjXwUoy2LQsQC_1PVSyTZI2nU077Gc.hRRmWU
+ .VItPP5ILqJnEsH9fl2157rRdjJIvOAzL3i0YRkpsk.9YXWN6mrcINqXDKxyLYo6H_cGxnLu648X
+ y9ufR.bRJOaeeD0QpbaAX1Nh8xIp3hg2gOvxOSz4HKtoV4C7F76b8bNzJL1S8d7yoOeYzUUqqcRK
+ RPiuAimbXAsaPrdcPEfLHYVFsLrb_0A0Un2a5BYoBvA49TsZ_LjWYvMivNOi6bu5I7ITNb1HSxl4
+ 8DgUTGU1b5ssty7ewPFMx34gGGIR57V6fplSD9ejoM4T_W.WowHer.TjoC0vyd9jZtO.ZYXBRzTQ
+ PSD_gMg44QOVRlx35eOgOnab.V0L9c8psKBEOruIy6PomWNBBAZBmWyf72SpP3Gf04shHkSbeKui
+ d0H91SvtXldivxSPf2Urx4dTDtZP3MTV_p76f6HD32HpJIJUocEsetg4jL0SK8rdIISJ6x5wgxTv
+ 4XNUJMusUKQ2JTeZxfCmnRv9krloL7LxAVxPjq52yiSEMSzqqpFuWAG6pvRD05aWsXqNMqQ5z4pS
+ QDtcFqE5Mh5fgvG19RMZp.Om3kwXhTC2L58e1cfVxw6vJoLQR7DRHbxzPy_l6q3wVveFg1SlKfKT
+ AXv5xpDX8Yoi.S81HhvVr7_RxDkyp36lK4nzL7Yfex_fodBLJ5HCLfTX8d8PH45X4hKz9aHflprC
+ dGU2IcCN8uyJWFwSQs2dBO5xCFBbYfYlCumvbJzeIBOPMkJQfZeLl_Bgk.OL.aNup.JjN5PdSwWW
+ 6wQbIDAeb..Zfz3XcxYuH843p6kn2GvxOWtXFgi2YF_IFr4lNwlJL4EZJNJSuLTPxYzs0TgqcG6Q
+ Y2HD4hOEWKpJG.pwdS2_Kg.IBwy2qfJhxmTXUCw9zmFlhdQaBHpQnF_N5MVivFhh3joogx5Ub0SF
+ 0a6Kk5IPTkcabl4vE6Lrr4lzjDurnjL00iFbfQyyM8OQlQ6NWQqzTTGQi8.G1AZjIA1sLoowZU5U
+ _d3U1uNDY071PiPZyRIwIwohFpnLFCwRijh0wiEu.mMChYlYNpeD9L8NroyFLVk0dAgIgKP5vDDq
+ tsBHQ6dWRxmEkC.LirROQ3oWarblL2YtAmmycvoscwKg8zDxAvtTVGh5OZC2ikMZSyzU2VQ3ET0x
+ B2N7RZNVGlQmRxtj64YzIwRA2hLadj635qkuWBm4Mj0tJTYnRJH.O7NinK33yehzVOVNN_ouflM.
+ kdGu1B8zW1w6ZQh4jWcvoihhQf7fVdOPCg25Mkf3PJvuya2H9gketAWLQ6gbN00Pf7d.tzK8LUMn
+ 7XXik.NxMW4a6ZYfbDWjelwj7bx36JchF8gK6dfCiGXK9igpbAu9IEScc_XFqerg5hI6q9YRcrwY
+ K7WkFbQOuxtqrK0wAS_eR9_6KX4_psHtp1sZLeBm0oAMn5VTwMmBFADn7RJQdiSjSCNQac1wT76e
+ uvg--
+X-Sonic-MF: <tomasz.unger@yahoo.pl>
+X-Sonic-ID: c6bf989f-f13b-489f-bd11-c16b5327d594
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic307.consmr.mail.ir2.yahoo.com with HTTP; Thu, 19 Feb 2026 19:24:21 +0000
+Received: by hermes--production-ir2-bbcfb4457-64r94 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 7930e584e2bde0d09a9482761953a5e1;
+          Thu, 19 Feb 2026 19:24:19 +0000 (UTC)
+From: tomasz.unger@yahoo.pl
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Tomasz Unger <tomasz.unger@yahoo.pl>
+Subject: [PATCH] nfc: pn544: i2c: Replace strcpy() with strscpy()
+Date: Thu, 19 Feb 2026 20:24:16 +0100
+Message-ID: <20260219192416.97654-1-tomasz.unger@yahoo.pl>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+References: <20260219192416.97654-1-tomasz.unger.ref@yahoo.pl>
 
-On Thu, 19 Feb 2026 18:38:51 +0100
-Matthieu Baerts <matttbe@kernel.org> wrote:
+From: Tomasz Unger <tomasz.unger@yahoo.pl>
 
-> >>> Please fix the whole function.    
-> >>
-> >> Doing that would likely break scripts parsing 'ip mptcp monitor' output,
-> >> are you sure we should still change this output format?  
-> > 
-> > I doubt scripts are parsing this weird format. That is one more reason for JSON  
-> 
-> Not as weird as 'ss -i' format where there are even more scripts parsing
-> that :)
+strcpy() does not limit the number of bytes copied which can lead to
+buffer overflow. Replace with strscpy() which is safer as it limits
+the copy to the size of the destination buffer.
 
-Agreed ss is a RFM.
-I did take a shot at doing JSON there (with some help from Claude), just haven't gotten back to it.
+Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
+---
+ drivers/nfc/pn544/i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/nfc/pn544/i2c.c b/drivers/nfc/pn544/i2c.c
+index 1ecef0acaa50..b897357732fa 100644
+--- a/drivers/nfc/pn544/i2c.c
++++ b/drivers/nfc/pn544/i2c.c
+@@ -526,7 +526,7 @@ static int pn544_hci_i2c_fw_download(void *phy_id, const char *firmware_name,
+ 
+ 	pr_info("Starting Firmware Download (%s)\n", firmware_name);
+ 
+-	strcpy(phy->firmware_name, firmware_name);
++	strscpy(phy->firmware_name, firmware_name, sizeof(phy->firmware_name));
+ 
+ 	phy->hw_variant = hw_variant;
+ 	phy->fw_work_state = FW_WORK_STATE_START;
+-- 
+2.53.0
+
