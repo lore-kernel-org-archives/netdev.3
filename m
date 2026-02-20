@@ -1,73 +1,119 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CE91E1C11;
-	Fri, 20 Feb 2026 21:36:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225511C84AB
+	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 21:49:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771623363; cv=none; b=ufDZRjwL09I2WWpMPuW0UOFJNT8xnuAft2dUltyZxdyHWh6XXvvjlUi44nGCrsCupyO6ASstiDbO3pSzllC5qCeO5e8ijhKC6aeVkHntoKuUjPX9bxQ0kYHUAiHZhfDVgcUOVoYdumcsE1wirI+k84nJzGon1S14iV0Cb3SjKYs=
+	t=1771624167; cv=none; b=VppWSbq60LFHTnzEDb/ec52qL660MWyNM9+b9fliOfxYeGOGLY72LVcp2R2gJir61REYUuYiF1FjjlmL6+DDERaNRMyaieGg+H2TlN6ggiPMEsJw8Ona/wCJbjScBH7P7zbQzNe6pyX1dCy4s2YwwPTajqUeTaa/RyvR/4RYRUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771623363; c=relaxed/simple;
-	bh=JSfjltoNLCOp9NvLJKkPYMeZvep2UYhMEiGdJ9XxE4k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E0mRZIH/YEskWkhSkZro80vrHXFNCnmDFfK6zivzbASszpU6VO2wg0/WcXwBHPZtTlwVquSaNRVxUXmhVTRKPmxE6tdOJOBwDkVDxoTvJOF7TO3aUzKW5NmUrU9TF66aWgdozj+LVbRyL+ebGmu56VSln91NAgDzhy3iKwNiJes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rwyXi2o2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771624167; c=relaxed/simple;
+	bh=Jg8Yzha08pRaidg9Jkw9kbUT2oM/LXBKW8Oqoz5WC9Q=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=Mt60pxC27kf27XNNGlBx2r2GWdE2CBc5vZ4bVC6qaVLWEHDrjg8udRwt5jFoCUOFphhhHGYD4Jl8RvXESX1g1v4Q10YP5ICT+gr2Ju8tH0E2GGed8TcYiZFvsD4HcR1rrzzcTNulxFFaKD7FgTJl5zomtYqC58uVadw8BRvPhDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cs2Uylpj; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rwyXi2o2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD784C116C6;
-	Fri, 20 Feb 2026 21:36:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771623363;
-	bh=JSfjltoNLCOp9NvLJKkPYMeZvep2UYhMEiGdJ9XxE4k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rwyXi2o20JBZJ9R/UFbCZT45anUW+Y7XnrW8HJiGBlL6nNRgYyyFmnpmQbWbxPqNI
-	 4SKILtWEZGXXJjXZCnOXY46nw74Wx97mNP1jkR76E8M34YRfkft++rrNJ3S9+HGvsz
-	 z1//57q4H+BrZP/KRNnz8t6oBxzy+J3l1JVMDx4PeQhDVySchQofzjpwoQ1ZSCaaVJ
-	 1bdfijJmdincXviVpn4jl646iLMJjOoWEpwTW2ngYy2xj/ilieUx2jkjQZf4ujL6wm
-	 btNDp8+ftsUErqKKUJebYt406xS8wwha2C0ylAnb0iFqVZGRlPQkcSkh8tMd39A0E2
-	 AvYARV84qdhYg==
-Date: Fri, 20 Feb 2026 13:36:01 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Ian Ray <ian.ray@gehealthcare.com>
-Cc: "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Jeremy Cline
- <jeremy@jcline.org>, Ryosuke Yasuoka <ryasuoka@redhat.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] nfc: nci: Fix zero-length proprietary OIDs
-Message-ID: <20260220133601.53b3b7fe@kernel.org>
-In-Reply-To: <20260220112536.100017-1-ian.ray@gehealthcare.com>
-References: <20260220112536.100017-1-ian.ray@gehealthcare.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cs2Uylpj"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-797a52d8c34so24648207b3.2
+        for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 13:49:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771624165; x=1772228965; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s/QDaPHkpXswmwJZmoCkz5JHjOMwGBj+P+wPLhK87M0=;
+        b=Cs2UylpjzewUJJr2MVgC3kLvhJOQp0LUkuRs+u53rDtwlwqyQ2ojgg8onPMWEi7fQ+
+         dhLWarTBJKrbw7ELdXdWaOgoUS+9Ung4QkyYcAX1bMtDlt2xcvyrfNYI34MjJVqxAKpR
+         wlD80V43heEfVOetSmsuaiX9xLDekqE3j22NWvc1aiUJ+4ndCIRQTZ4RGDkHczp3fkI7
+         S9HaDYVZNl1rS1GEIhFvu1Gu/98mDp1jZZL3p6PTlpATfFAi7Jr1qsksghUX5WqF4hOY
+         09Ig/AOGu8XvAJ6IHrWzd7l7qKaM1xai6Wqzm2hhEhqL4QWKrB1dICPLww0VY8TLqvbu
+         +hZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771624165; x=1772228965;
+        h=content-transfer-encoding:mime-version:subject:references
+         :in-reply-to:message-id:cc:to:from:date:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=s/QDaPHkpXswmwJZmoCkz5JHjOMwGBj+P+wPLhK87M0=;
+        b=g7mjDd7HajBgtgBuF80w08o6YAOUnMwsSoGCEE5K7pwNtpAAByWK1BU2e+kIcSTGwW
+         IKrCaSrrOysjXrEVEo+I9eMd54QsSRqsy1vEFYtALJsjUcbsq7gjY2I5H7w+Szm1Fzd0
+         H2XX5lrae8Qr+Ok+5cltM79aEMuPq7hpPM4vJkscJvQdESdA6pcnMgdtww2LPLsjt5q6
+         YO0dodMOSw0tCXZMo+tRh19FonZ6bcJqLjk1P9z0I/uQ4bjrGFuWSzXfBawJqjz3SgH3
+         K6XHZpin/7RASm7V/Dhp2hsu4cHzhf49jE1FrKjSJUwQSS/goZCbsqcYH7OzIAgLFTTU
+         rbtw==
+X-Gm-Message-State: AOJu0YwPxLoVaTA+DN79AovGFhfCqRwOruaTXgY1t09nkaPo5sHaNChl
+	VKFSEhUwjJuq3qr4e9PuDpsDI0v50aXeaaacHoPNu+ZJl8j28/36NaB/
+X-Gm-Gg: AZuq6aKsHfSQdEXvep9ZxZEn99CZQc05shajmJZP3J2FXTiKSE8mz+SzNsYCeDWb89N
+	mCxKNscR23E/+G1KazcCTa14HjdvNNWuPP6oDzcWfGJ7BLppKgJMpbSv1Oznq2RafSOt/koCFGk
+	3kTYInRuxiciZPhGNIQdOZeD8SRr7Tv2vxthnIVTUCw8DvvAxoJrR1YZi+MffO082DRmQbnEnN+
+	bpYDeInSwBLVl0K0kTknoWvZ6K0/Pb/YmqEliy7JPm6jG4THzGTjz3xc+bk8wjw99a6Y6Omo2IY
+	k3fMHxElkzocHdoRnZRnonFgVDJQ6s2EVNd06qugtSVVaC4bgKFWNEvlM5WGlQUZVE4azMHFiUQ
+	8C5HTDXvoW4I3wHBTlp0uUUZ4SAStQ1TeVVRShIoCRE7RxqjZ8bUdel4NxOeopiqTpr8TGiRCS7
+	D1ppgwxnFhLokmRt8byKX47G3wqgUeucZvNAjD4uUsZj/6rOPt1XepQ7NSYd1uAruPUV7W144=
+X-Received: by 2002:a05:690c:92:b0:798:25d:a4b2 with SMTP id 00721157ae682-79828f07424mr14745197b3.19.1771624165098;
+        Fri, 20 Feb 2026 13:49:25 -0800 (PST)
+Received: from gmail.com (15.60.86.34.bc.googleusercontent.com. [34.86.60.15])
+        by smtp.gmail.com with UTF8SMTPSA id 00721157ae682-7982dbdf23dsm1956577b3.21.2026.02.20.13.49.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Feb 2026 13:49:24 -0800 (PST)
+Date: Fri, 20 Feb 2026 16:49:24 -0500
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: netdev@vger.kernel.org, 
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, 
+ Kurt Kanzenbach <kurt@linutronix.de>, 
+ Paolo Abeni <pabeni@redhat.com>, 
+ Simon Horman <horms@kernel.org>, 
+ Willem de Bruijn <willemb@google.com>
+Message-ID: <willemdebruijn.kernel.85c1623c5d65@gmail.com>
+In-Reply-To: <20260220132932.1ed45656@kernel.org>
+References: <20260220183858.N4ERjFW6@linutronix.de>
+ <20260220132932.1ed45656@kernel.org>
+Subject: Re: [PATCH net v2] net: Drop the lock in skb_may_tx_timestamp()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: 7bit
 
-On Fri, 20 Feb 2026 13:25:35 +0200 Ian Ray wrote:
-> Before:
+Jakub Kicinski wrote:
+> On Fri, 20 Feb 2026 19:38:58 +0100 Sebastian Andrzej Siewior wrote:
+> > skb_may_tx_timestamp() may acquire sock::sk_callback_lock. The lock must
+> > not be taken in IRQ context, only softirq is okay. A few drivers receive
+> > the timestamp via a dedicated interrupt and complete the TX timestamp
+> > from that handler. This will lead to a deadlock if the lock is already
+> > write-locked on the same CPU.
 > 
-> -- >8 --  
-> kernel: nci: nci_recv_frame: len 3
-> -- >8 --  
+> Fine by me, the fix is fairly simple. But FWIW I can't stop myself from
+> restating that networking core is not supposed to be called by drivers
+> in hard IRQ context in general. Especially when it comes to anything
+> that may involve user sockets. So my intuition is that fixing the driver
+> to use a tasklet^w work_bh would make the expectations clearer.
 > 
-> After:
-> 
-> -- >8 --  
-> kernel: nci: nci_recv_frame: len 3
-> kernel: nci: nci_ntf_packet: NCI RX: MT=ntf, PBF=0, GID=0x1, OID=0x23, plen=0
-> kernel: nci: nci_ntf_packet: unknown ntf opcode 0x123
-> kernel: nfc nfc0: NFC: RF transmitter couldn't start. Bad power and/or configuration?
-> -- >8 --  
+> Willem, you don't find that argument convincing?
 
-FWIW the last message in "After" still doesn't sound particularly happy
-so it may be worth explaining why this makes the device usable ;)
-If there's more that needs to be fixed for the device in question to
-work it'd be best to have all the necessary fixes in one series.
+This narrow case seems fine to me too.
 
-> [1] drivers/nfc/nxp-nci/core.c
-> [2] NXP_NCI_RF_TXLDO_ERROR_NTF
+But I can understand if that would be a global rule. As it simplifies
+reasoning about correctness of core code quite a bit. In which case
+that would trump this. No preference from me. Clearly other drivers
+are quite capable of making this work without requiring updates from
+hard IRQ.
+ 
+> BTW IIUC the driver in question was igc, and it did not exist for
+> another 3 years after the commit under Fixes, which is another bad
+> smell here.
+
+I was wondering about that too. But Sebastian shared quite a few more
+drivers: https://lore.kernel.org/netdev/20260217132838.kgRAQ87W@linutronix.de/
+I did not bother to check whether all were newer than the introduction
+of the blamed commit.
 
