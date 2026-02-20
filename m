@@ -1,57 +1,60 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C513242AD
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CD13242C0
 	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 09:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771580506; cv=none; b=DJhROgdk1iFxYGOcjcpHOpoFqZVnwc68afDLFkddsMob21OFSqNnzUZ9UtCcJcjiCjpzOMpLqJI8k+uYHshiEQHH82NXCV8BHUDWxa/fcC6KRnmJhBJ63Jnb6UfTGFIkY3DP1pKoPAPibpONQ+FI89DzvxvV1MAm7WpVFPL6pH4=
+	t=1771580508; cv=none; b=XjB88c7y+BYtkSmKZtG7M+egWwqMz3J4yPMOtH0MtnMqIbr0oxAdjR9lq8NbKV8TyU+SRnf+Ca0Wt0mQJ7aPgg0wjwVbiE52DG8SXs1BwnDlEQYFLN0bxJn4+694YZ6vrjEpxmq3Uoan2mQypFG023rO4Fm2/jVOepmwLIEYxII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771580506; c=relaxed/simple;
-	bh=IHDByayVdft/U+O6qZO9l4VpDd0hMzUSLoQwkqc4R0A=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RamDkj5ZyvL97C/APwPKo70QLWVTMvuCOTrS5DvtvIbialt9b7FQav5/pMUfzDVoh/X8TIdty2FCDjYlAFFC6zqgl2BpLnIFLRsxWQA/MpnLnkBZ50obEseSVs2urIp5tkCg/ysanZw8EhUfZyo8i3IFUO3MIyf/i37Me/MVG7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=o1sUkoCQ; arc=none smtp.client-ip=62.96.220.36
+	s=arc-20240116; t=1771580508; c=relaxed/simple;
+	bh=iWQtI9jPCXG5nG08Ym8700WE7s5v763Zt8+sNLtGAXU=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Yz6zT7/bAAsMn0VfjfDRlcirq5jcAn9L0+mLYoR2LmAN5HCLsUfR5ZqxyxPckMhI84HQG9gXbjGbO5T2SkHzlx1onfjf0VR9PQdcgQObAvosrRprIFdmALw1UDk9VHBwsynooizvnl4RX2nlKhNvuL+hT48mm/kJOa8wtVMbnlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=IrDRV1S7; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="o1sUkoCQ"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="IrDRV1S7"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 652BF207D1;
-	Fri, 20 Feb 2026 10:41:42 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id 1B57E207F4;
+	Fri, 20 Feb 2026 10:41:43 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 75wlv_sl4OeT; Fri, 20 Feb 2026 10:41:41 +0100 (CET)
+ with ESMTP id L1SCDkrMt3iT; Fri, 20 Feb 2026 10:41:42 +0100 (CET)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id D4FD8207BE;
-	Fri, 20 Feb 2026 10:41:41 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com D4FD8207BE
+	by mx1.secunet.com (Postfix) with ESMTPS id 75DA1207BE;
+	Fri, 20 Feb 2026 10:41:42 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 75DA1207BE
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1771580501;
-	bh=Aqkc913BnLpccGDHFiFb982eyK/Bw0ULAzt3enQHvEI=;
-	h=From:To:CC:Subject:Date:From;
-	b=o1sUkoCQGBNYGJnv7bsoYjLjvgZrpYoMglwzNAA9Uwofy9MvUdMQvwNnlC1/qrDN2
-	 yg8oAfYq2OteD49jHqMcgQzpgA/VrWz7idzOogJ0g+QIzHP//F7OpZ2kNCZQXOFwxb
-	 Y2ygYYTWNlY4xwXXgkaBCm4WgNOZuyM5Fmgq4dQvhMskBHi75wEml4KhUFpKaV9cG0
-	 tziNrkGvq2f7DtERJz/wMZq6vu9Py2o8Tu3gnYobkMPDFRD/9dwpjs5mpzLNrEHZXT
-	 KBLPlNif5cRoqvxBuXARHvBs65rNZbA5FtbttEkqem3cwCSoeHlTxIigfvHa9F+lDX
-	 SpJNVEe1ZTlgA==
+	s=202301; t=1771580502;
+	bh=oNTQcmbtRswPN3jPHL8YxuhDWC5jPUesAtVSqe2M8Lk=;
+	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
+	b=IrDRV1S7SziBvAnkXqB4RoxUxe0XNXEzpS+hPruW5pUeo/yoqBKrbsIH4+b9K6ekI
+	 /DHF9GVZ1itGwJtinT8q1H66wuyNK/7hng40mVO8S4QOo1g04ArhuSCkBztCxYc4HX
+	 ULzoUSeI809fJ/iv8gyzB9dr8o+z1l131/h5dvqfBVY4z0riVTt9YkmIMgzxstwNyp
+	 zF4PDml6kt3A0ieIXUc6ZFPmD0AC5VpNLzXmRx2pJ/QfridRdTRPmWGYU0l56Jg3wb
+	 YQFLnUoNK31VDnhzcPWD8pNaklgZ01E3yD3FhYo5xFCU+fe9D/WSAUu4rcTBNvXFbZ
+	 sxB2wlWnk1aiQ==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 20 Feb
- 2026 10:41:41 +0100
-Received: (nullmailer pid 16441 invoked by uid 1000);
-	Fri, 20 Feb 2026 09:41:40 -0000
+ 2026 10:41:42 +0100
+Received: (nullmailer pid 16448 invoked by uid 1000);
+	Fri, 20 Feb 2026 09:41:41 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 0/3] pull request (net): ipsec 2026-02-20
-Date: Fri, 20 Feb 2026 10:41:14 +0100
-Message-ID: <20260220094133.14219-1-steffen.klassert@secunet.com>
+Subject: [PATCH 2/3] xfrm: skip templates check for packet offload tunnel mode
+Date: Fri, 20 Feb 2026 10:41:16 +0100
+Message-ID: <20260220094133.14219-3-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260220094133.14219-1-steffen.klassert@secunet.com>
+References: <20260220094133.14219-1-steffen.klassert@secunet.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -60,53 +63,78 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: EXCH-01.secunet.de (10.32.0.171) To EXCH-01.secunet.de
+X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
  (10.32.0.171)
 
-1) Check the value of ipv6_dev_get_saddr() to fix an
-   uninitialized saddr in xfrm6_get_saddr().
-   From Jiayuan Chen.
+From: Leon Romanovsky <leonro@nvidia.com>
 
-2) Skip the templates check for packet offload in tunnel
-   mode. Is was already done by the hardware and causes
-   an unexpected XfrmInTmplMismatch increase.
-   From Leon Romanovsky.
+In packet offload, hardware is responsible to check templates. The
+result of its operation is forwarded through secpath by relevant
+drivers. That secpath is actually removed in __xfrm_policy_check2().
 
-3) Fix a unregister_netdevice stall due to not dropped
-   refcounts by always flushing xfrm state and policy
-   on a NETDEV_UNREGISTER event.
-   From Tetsuo Handa.
+In case packet is forwarded, this secpath is reset in RX, but pushed
+again to TX where policy is rechecked again against dummy secpath
+in xfrm_policy_ok().
 
-Please pull or let me know if there are problems.
+Such situation causes to unexpected XfrmInTmplMismatch increase.
 
-Thanks!
+As a solution, simply skip template mismatch check.
 
-The following changes since commit fdf3f6800be36377e045e2448087f12132b88d2f:
+Fixes: 600258d555f0 ("xfrm: delete intermediate secpath entry in packet offload mode")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+---
+ net/xfrm/xfrm_policy.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-  net: don't touch dev->stats in BPF redirect paths (2026-01-31 12:35:27 -0800)
+diff --git a/net/xfrm/xfrm_policy.c b/net/xfrm/xfrm_policy.c
+index 62486f866975..5428185196a1 100644
+--- a/net/xfrm/xfrm_policy.c
++++ b/net/xfrm/xfrm_policy.c
+@@ -3801,8 +3801,8 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
+ 		struct xfrm_tmpl *tp[XFRM_MAX_DEPTH];
+ 		struct xfrm_tmpl *stp[XFRM_MAX_DEPTH];
+ 		struct xfrm_tmpl **tpp = tp;
++		int i, k = 0;
+ 		int ti = 0;
+-		int i, k;
+ 
+ 		sp = skb_sec_path(skb);
+ 		if (!sp)
+@@ -3828,6 +3828,12 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
+ 			tpp = stp;
+ 		}
+ 
++		if (pol->xdo.type == XFRM_DEV_OFFLOAD_PACKET && sp == &dummy)
++			/* This policy template was already checked by HW
++			 * and secpath was removed in __xfrm_policy_check2.
++			 */
++			goto out;
++
+ 		/* For each tunnel xfrm, find the first matching tmpl.
+ 		 * For each tmpl before that, find corresponding xfrm.
+ 		 * Order is _important_. Later we will implement
+@@ -3837,7 +3843,7 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
+ 		 * verified to allow them to be skipped in future policy
+ 		 * checks (e.g. nested tunnels).
+ 		 */
+-		for (i = xfrm_nr-1, k = 0; i >= 0; i--) {
++		for (i = xfrm_nr - 1; i >= 0; i--) {
+ 			k = xfrm_policy_ok(tpp[i], sp, k, family, if_id);
+ 			if (k < 0) {
+ 				if (k < -1)
+@@ -3853,6 +3859,7 @@ int __xfrm_policy_check(struct sock *sk, int dir, struct sk_buff *skb,
+ 			goto reject;
+ 		}
+ 
++out:
+ 		xfrm_pols_put(pols, npols);
+ 		sp->verified_cnt = k;
+ 
+-- 
+2.43.0
 
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec.git tags/ipsec-2026-02-20
-
-for you to fetch changes up to 4efa91a28576054aae0e6dad9cba8fed8293aef8:
-
-  xfrm: always flush state and policy upon NETDEV_UNREGISTER event (2026-02-09 10:28:05 +0100)
-
-----------------------------------------------------------------
-ipsec-2026-02-20
-
-----------------------------------------------------------------
-Jiayuan Chen (1):
-      xfrm6: fix uninitialized saddr in xfrm6_get_saddr()
-
-Leon Romanovsky (1):
-      xfrm: skip templates check for packet offload tunnel mode
-
-Tetsuo Handa (1):
-      xfrm: always flush state and policy upon NETDEV_UNREGISTER event
-
- net/ipv6/xfrm6_policy.c |  7 +++++--
- net/xfrm/xfrm_device.c  | 12 +++++++++++-
- net/xfrm/xfrm_policy.c  | 11 +++++++++--
- 3 files changed, 25 insertions(+), 5 deletions(-)
