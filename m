@@ -1,111 +1,157 @@
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D66FF1F8AC5
-	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 15:34:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4FE286430
+	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 15:39:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771601694; cv=none; b=dHOJm/5ZUISapMuSM2JfjjdYcm0XInH+kB8X9WDwcHKM7tjJ/2usnO6DlfKg+CLzryysc7qVkgQAmCw0Ce9ZnIOhs0+kfRkokrl2u41/ow7/JchCtrgydXNyZtwYf7HO5IHyRW/eKDPG6ddNv+bcXzjzi5VCP9u46YijkAxjTI4=
+	t=1771601987; cv=none; b=i7FAu5Oh/nzRM/wAROAoV/1Si+719iOEDWspEyII+DpUjheCasTIL+wLjx4G4Ba7lxd9vKE4+3/hVw6mWKTxzp8/etUiEdhQugW28WG8lABA1NjgmojFzKIIL4db8G/6Dw+JXn8HHTvkkyUT0snmrXdfrz8QzmOwP0qEtYly2DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771601694; c=relaxed/simple;
-	bh=pI1O8R9NQmElqnZf7f9jqAr1JKxcuC8TjAmVVLVErWE=;
+	s=arc-20240116; t=1771601987; c=relaxed/simple;
+	bh=uSPR0RY01cqEmRWZxpE46Z1+o4rU6UsigEB9ifrCKL8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Jx6sAL0T0btwGvu7Cnfok8uycgrN0kSVx7avrvt7s+5SGqH2ALJJf3Rh2hHsBLsfAQVTT3s7L2QNBTV7U2Ft4m6HePHff1w15Co1sUvm1p6XAV0QJrNmUkRBwd/gWnkVCa4VravFOrqeRL3L4RLQrqFKZ3L5Dqw6FUCf+QgxU0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=pq1jHNkx; arc=none smtp.client-ip=95.215.58.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 In-Reply-To:Content-Type; b=P0tywuxOrzLdUMREmMz9kEcKKFiw6Y72DSKOqEbKWBNC0m33dZx3jaIGownSIpaS+xH3Sged3waw7Rn0EgGd92ZNaHC6Mky4KzJQPObcaASDTOE/gafO4cEZZmVBY3O50ZTn4NP/zLjlzZzrhqLBgZSAC6UtygRgzo7zvScixRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=uA5N4Kxf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=tFCe3QXj; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=uA5N4Kxf; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=tFCe3QXj; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="pq1jHNkx"
-Message-ID: <e617cdaa-049a-453b-8f52-1966d350f907@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771601679;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="uA5N4Kxf";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="tFCe3QXj";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="uA5N4Kxf";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="tFCe3QXj"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 715655C3E4;
+	Fri, 20 Feb 2026 15:39:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771601984; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Z943trj5fRXyCPYj1ZkF6pjisLAiil83x3fUBjHtWMM=;
-	b=pq1jHNkxADK2dq95ZhyKT83WWsDHhuAU9Tk7GgkqH3T9xhFYuhT/xltBiGx4vnSB6psZG9
-	mIcOrCU5w+8U9+VIJBy/0AT2mJIzS9OqpoZ7YzjSqS+5FgjD7J4hZ7u7S2FD6sYgP4+qEX
-	ir5KmvMrEex2xcOtCALbiOVA35HY59Q=
-Date: Fri, 20 Feb 2026 23:34:22 +0800
+	bh=2dNbgEbZFgxINysFV0FrPgquNnKqGEBxkuMm5EoXSSk=;
+	b=uA5N4KxfhmYLX6+170VsjfQM0PbZ1eQL1lJvtwz9R9GxAkKLH/kBI2D3A+N+25T1l/1XJM
+	aLEpyfAM7ps3UKIoRwCsMY1zr7c0LrINNACxFDnN/7RU9zPLBmZ/KksWbSq/GKW53IMcli
+	2yWtLLNg9bb1Zz7xUGnObT1H5hjF+dE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771601984;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2dNbgEbZFgxINysFV0FrPgquNnKqGEBxkuMm5EoXSSk=;
+	b=tFCe3QXj/aCvhE9zbGTPzbJn1R9tBwDygRkQGT0tNizNW8f9KsOHl2CxnoeCA514UjtY2k
+	9hOreJySYNf5bJDg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=uA5N4Kxf;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=tFCe3QXj
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771601984; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2dNbgEbZFgxINysFV0FrPgquNnKqGEBxkuMm5EoXSSk=;
+	b=uA5N4KxfhmYLX6+170VsjfQM0PbZ1eQL1lJvtwz9R9GxAkKLH/kBI2D3A+N+25T1l/1XJM
+	aLEpyfAM7ps3UKIoRwCsMY1zr7c0LrINNACxFDnN/7RU9zPLBmZ/KksWbSq/GKW53IMcli
+	2yWtLLNg9bb1Zz7xUGnObT1H5hjF+dE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771601984;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2dNbgEbZFgxINysFV0FrPgquNnKqGEBxkuMm5EoXSSk=;
+	b=tFCe3QXj/aCvhE9zbGTPzbJn1R9tBwDygRkQGT0tNizNW8f9KsOHl2CxnoeCA514UjtY2k
+	9hOreJySYNf5bJDg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D7EB13EA65;
+	Fri, 20 Feb 2026 15:39:43 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id PEYvMD+AmGkZbwAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Fri, 20 Feb 2026 15:39:43 +0000
+Message-ID: <b3466d97-cbd2-4288-8da4-9f30df1ae477@suse.de>
+Date: Fri, 20 Feb 2026 16:39:27 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf-next v2 1/6] bpf: Introduce 64-bit bitops kfuncs
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Puranjay Mohan <puranjay@kernel.org>,
- Xu Kuohai <xukuohai@huaweicloud.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- X86 ML <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>,
- Shuah Khan <shuah@kernel.org>, Peilin Ye <yepeilin@google.com>,
- Luis Gerhorst <luis.gerhorst@fau.de>, Viktor Malik <vmalik@redhat.com>,
- linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
- LKML <linux-kernel@vger.kernel.org>,
- Network Development <netdev@vger.kernel.org>,
- "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
- kernel-patches-bot@fb.com
-References: <20260219142933.13904-1-leon.hwang@linux.dev>
- <20260219142933.13904-2-leon.hwang@linux.dev>
- <CAADnVQK=5Gb3w_QG4Vq32EfvpqAK_DPwCHtzzt7DzRkJ5_h6JQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] ipv6: addrconf: reduce default temp_valid_lft to 2
+ days
+To: patchwork-bot+netdevbpf@kernel.org
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, fgont@si6networks.com
+References: <20260214172543.5783-1-fmancera@suse.de>
+ <177137761857.765825.5185653389299397165.git-patchwork-notify@kernel.org>
 Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Leon Hwang <leon.hwang@linux.dev>
-In-Reply-To: <CAADnVQK=5Gb3w_QG4Vq32EfvpqAK_DPwCHtzzt7DzRkJ5_h6JQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+In-Reply-To: <177137761857.765825.5185653389299397165.git-patchwork-notify@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUSPICIOUS_RECIPS(1.50)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TAGGED_RCPT(0.00)[netdevbpf];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:mid,suse.de:email];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Queue-Id: 715655C3E4
+X-Spam-Flag: NO
+X-Spam-Score: -3.01
+X-Spam-Level: 
 
-
-
-On 2026/2/20 01:50, Alexei Starovoitov wrote:
-> On Thu, Feb 19, 2026 at 6:30 AM Leon Hwang <leon.hwang@linux.dev> wrote:
->>
->>
->> +static bool bpf_kfunc_is_fastcall(struct bpf_verifier_env *env, u32 func_id, u32 flags)
->> +{
->> +       if (!(flags & KF_FASTCALL))
->> +               return false;
->> +
->> +       if (!env->prog->jit_requested)
->> +               return true;
->> +
->> +       if (func_id == special_kfunc_list[KF_bpf_clz64])
->> +               return bpf_jit_inlines_kfunc_call(bpf_clz64);
->> +       if (func_id == special_kfunc_list[KF_bpf_ctz64])
->> +               return bpf_jit_inlines_kfunc_call(bpf_ctz64);
->> +       if (func_id == special_kfunc_list[KF_bpf_ffs64])
->> +               return bpf_jit_inlines_kfunc_call(bpf_ffs64);
->> +       if (func_id == special_kfunc_list[KF_bpf_fls64])
->> +               return bpf_jit_inlines_kfunc_call(bpf_fls64);
->> +       if (func_id == special_kfunc_list[KF_bpf_bitrev64])
->> +               return bpf_jit_inlines_kfunc_call(bpf_bitrev64);
->> +       if (func_id == special_kfunc_list[KF_bpf_popcnt64])
->> +               return bpf_jit_inlines_kfunc_call(bpf_popcnt64);
->> +       if (func_id == special_kfunc_list[KF_bpf_rol64])
->> +               return bpf_jit_inlines_kfunc_call(bpf_rol64);
->> +       if (func_id == special_kfunc_list[KF_bpf_ror64])
->> +               return bpf_jit_inlines_kfunc_call(bpf_ror64);
+On 2/18/26 2:20 AM, patchwork-bot+netdevbpf@kernel.org wrote:
+> Hello:
 > 
-> This is too ugly. Find a way to do it differently.
+> This patch was applied to netdev/net.git (main)
+> by Jakub Kicinski <kuba@kernel.org>:
+> 
+> On Sat, 14 Feb 2026 18:25:43 +0100 you wrote:
+>> This is a recommendation from RFC 8981 and it was intended to be changed
+>> by commit 969c54646af0 ("ipv6: Implement draft-ietf-6man-rfc4941bis")
+>> but it only changed the sysctl documentation.
+>>
+>> Fixes: 969c54646af0 ("ipv6: Implement draft-ietf-6man-rfc4941bis")
+>> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+>>
+>> [...]
+> 
+> Here is the summary with links:
+>    - [net,v2] ipv6: addrconf: reduce default temp_valid_lft to 2 days
+>      https://git.kernel.org/netdev/net/c/9e371b0ba7f5
+> 
 
-Agreed.
+FTR; the patch was merged without the fixes tag. I think it would be 
+good to backport this to stable kernels because otherwise the 
+documentation and the real configured value are contradicting each other.
 
-I'd like to introduce a new flag KF_JIT_MAY_INLINE to indicate the kfunc
-will be inlined by JIT backends if possible. As for those kfuncs w/
-KF_FASTCALL w/o KF_JIT_MAY_INLINE, they are fastcall always.
-
-Thanks,
-Leon
+> You are awesome, thank you!
 
