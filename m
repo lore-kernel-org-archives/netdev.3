@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3313191CE;
-	Fri, 20 Feb 2026 15:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F93F86353;
+	Fri, 20 Feb 2026 15:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771600389; cv=none; b=NPb5WLqOMHjWa2mM6YOTYmAKAMiRfOaNJZePB4vh01XgN5pJxawPDCjRktAjFyzVMendFEGAlIdDtKPLU/xRU5pA0HTCw/PdAosKVyRmnB+JAjH39ruO65audm78RUM2hztzQZQRWrZUp4t8OaCD/wBPsv+3HhOkxDcYFDYYOVs=
+	t=1771600665; cv=none; b=JFa3qOtjs1OSz1FjPFmEEQz6mDbTEiRTv7bnomIGxdBnc53lOzqJ/9ICXBos3WEAt8zMYo188eth0vRmk//ZGON0/dx1GeVdlDU1KgEMz84cKy9KVKISZk6whTmnBlH/NiFK/NkOZr+Kt3X66QACtgEH10/JMTf++0r7K/0I5Js=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771600389; c=relaxed/simple;
-	bh=Fa4N8Zt2U/CkIqTaUNoew/2A40MXue604G1Rgpx22/8=;
+	s=arc-20240116; t=1771600665; c=relaxed/simple;
+	bh=S5yqVoSFWzyKV6qIPpnAwdJ1wh4eM9kFJTFyktgoSZ8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t77/rOja9z53HoaMHClkPIIAr2+6hbS5S7Hh2B7BEQQc8YT4oyzBw5/mOLwglgPpSQyIOmlqWJNeo8tX9yn5JLx//vwdvbFBSBONmfZGp1sglbicwkn85ON43G1SzsyUB+Sxkt0Cv8wcnEySlycxdCAXX4CtLnqr+DGAgqTXzfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bu7NjwTu; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=lOjzTvaQ1yUJzu8PiJsI3Enmc8hwSy5gthpPQjfplLuvS2gxAPKfaCE2wgAhIoaNkXZkbPBetkoRGscq/S5BKFVEqDsC7hEq7xH2UzpRul5LeHZ6tgeA5gebWgiCr8XN/R/sdLi5BikQ7v9f05pd+cBPL2ReXaRaefDJ+uCiXwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=NJZqgZ8E; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bu7NjwTu"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="NJZqgZ8E"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=glnVZ1vMZv9aWF2wKZdYdswnC52ACNG6S8Ew13Mey4U=; b=bu7NjwTuqCQKObShYzfB2fAsDD
-	yztfSUs+GKhARZ6yLw1yBpDA9f6HpeGy86k+DZhaaN0LQVSvZQ8/A/wEYuMMANgJGD+Tb04Rq0EbP
-	jIE8Mo7cpxjuW+oxEQ1F6xU4pZwegPqodjR63cWvWT83ne0i0sQS19U1wfrKr6R8822k=;
+	bh=lH4duYsaZSQVbMs3WsjXwb9YxquF/KuGSsr/5eOxwGU=; b=NJZqgZ8Ey8H+Fg/5D1Kp+ZXSIo
+	uZ949lJLGr9R1H8rE/DDug+gFF9PeU38GX7xbRpz2XSNsuzh5Mc9frjeukUiY5wN9v8farbMwU7GB
+	6vt/9+I2XGr4ZZQR7ZhiJZzFGXYoBbWzyUHsA/436hzdgFgbaSCni55/A6NG5jMcQFfc=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1vtSBf-0085Nd-SQ; Fri, 20 Feb 2026 16:12:59 +0100
-Date: Fri, 20 Feb 2026 16:12:59 +0100
+	id 1vtSG9-0085QI-2a; Fri, 20 Feb 2026 16:17:37 +0100
+Date: Fri, 20 Feb 2026 16:17:37 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Srinivas Neeli <srinivas.neeli@amd.com>
 Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
@@ -36,11 +36,10 @@ Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
 	richardcochran@gmail.com, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org, git@amd.com
-Subject: Re: [RFC PATCH 4/8] xilinx: tsn: Add Ethernet MAC (EMAC) and MDIO
- support to the TSN driver
-Message-ID: <39ae9c0f-d832-4771-8177-838995fff4da@lunn.ch>
+Subject: Re: [RFC PATCH 6/8] dt-bindings: net: Add PTP interrupt support
+Message-ID: <c9d50d6d-2a3b-443d-94a7-d6930ff15316@lunn.ch>
 References: <20260219054911.2017362-1-srinivas.neeli@amd.com>
- <20260219054911.2017362-5-srinivas.neeli@amd.com>
+ <20260219054911.2017362-7-srinivas.neeli@amd.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,37 +48,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260219054911.2017362-5-srinivas.neeli@amd.com>
+In-Reply-To: <20260219054911.2017362-7-srinivas.neeli@amd.com>
 
-> +#define TSN_EMMC_LINKSPEED_10		0x0	   /* 10 Mbit */
+> +      interrupts:
+> +        minItems: 1
+> +        maxItems: 4
+> +        description:
+> +          Interrupt specifiers for MAC interrupts. MAC 1 (with PTP support)
+> +          requires 4 interrupts (ptp_rx, ptp_tx, mac_irq, ptp_timer).
+> +          MAC 2 (without PTP support) requires 3 interrupts (ptp_rx, ptp_tx, mac_irq).
 
-If the MAC cannot do 10Mbps, why have this?
+You say 3 or 4 are required, yet have minItems: 1? 3 seems more
+appropriate.
 
-> +static int emac_open(struct net_device *ndev)
-> +{
-> +	struct tsn_emac *emac = netdev_priv(ndev);
-> +	struct phy_device *phydev = NULL;
-> +
-> +	if (emac->phy_node) {
-> +		phydev = of_phy_connect(emac->ndev, emac->phy_node,
-> +					tsn_adjust_link_tsn,
-> +					emac->phy_flags,
-> +					emac->phy_mode);
-> +		if (!phydev)
-> +			dev_err(emac->common->dev, "of_phy_connect() failed\n");
-> +		else
-> +			phy_start(phydev);
-> +	}
+You have restraints later, so i don't know if these are even needed
+here? I will let the DT Maintainers comment about that.
 
-Somewhere around here, i would expect you to tell phylib the MAC
-cannot do 10Mbps. You don't want the PHY offering those speeds for
-autoneg, otherwise it might actually negotiate 10Mbps.
-
-I also think you should be using phylink, not phylib. But we first
-need to finish the discussion about DSA vs pure switchdev. If this
-ends up being a DSA driver, you will be using phylink anywhere. If it
-is a pure switchdev driver, i would still recommend using phylink, you
-are less likely to get things wrong, because the API is better
-designed.
-
-    Andrew
+	Andrew
