@@ -1,133 +1,200 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 441201C84AB;
-	Fri, 20 Feb 2026 21:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793DA308F39
+	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 21:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771624175; cv=none; b=N5jSIvT+kHRWyLMVAnCF1lw6hztt+RN0Xhm/3gye+1W1GQXABwf94EJdbH6b46hvqe7RbSJKUe61oL9BB2N77TCQKhbIutaTHuVKM5QiccI0ZXgPXj1Pzz0rV6fw5YtQMCQSJk0rHOSZKlqM9ohA8rEtDXGp6jPmXo26eYE+IlY=
+	t=1771624415; cv=none; b=rXO0fJnwpBdPfAQ5dtdcu4oWf43iLSYsERLk67PuVGd6xT5DP9LVmun+PCAzl7t7JhPOkkE0soOmA4NSC756Fo7u4BGuQ845vlqKoqFATQW76WVIUiY2qfUZBuiNwgf4VWMOdekQHVw34+tDLnjBl9yu2MNefmF6kvdhTKX/7NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771624175; c=relaxed/simple;
-	bh=V+eoAGRkrsj0z+IjZ2v2Rq4DWFTe8YXVusgyYR/mgU0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Dx0fUjdlpn7luPymD3RCHeFJJiGQSgtfFoUHZRTfnrV1ETQU70oYOfK0btrHNgZ3776J6OA4M8uqy2RbMGwlxSx7L4jUh9LT2vpPQxm45kJq8TAQP7m6dHyYUIMa0NV2GaLiop1BaSgJQrl/yIBmj+5WnM/RvrB99HFOMOpgugw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=GN0jKyAi; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1771624415; c=relaxed/simple;
+	bh=2W8xM0Ob3ienbz8oe2WhVPLywE7WqUXP/3asHzkIZ0E=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=liuoHd4lfY9/q7hMfBdmUjQqtaKA3KUGurQxnwIOTVEVIuTUvPayNqVEUuRw3zmMS+N3e7qc3cwVTEDxybWoQt01N+Jhd2V3s+G5rIxDCeVSCbM+Y1ASN7RfCb4zf+TqNVxHyrwkiNpubd3GyNZGjEa8TwwCXIucL/JkJj9O3u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W2piBnNs; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--joshwash.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="GN0jKyAi"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+VeijS7NlKPnw5vFoa9esSeWRS04KaWltEkWtGqAUTw=; b=GN0jKyAiVAYHDVSEmsgW+djV8T
-	FDuDWtYKIq9Si9p/3Zop90frKssDzGuV9k5ywk/GLmzpVa47mtz0leizbkrQuhlbwQAkYo/8Dir+C
-	FgQ6R6VVJ5jEL5Ma2uWPT0ElNQ+YNtuMIFtENIDaIr7xkmmxv7VHqRBIaB1Wzyndig5dCnkn6vLUw
-	7pf3NQaz27GWki2qlAwaKlh0MiSh8XjRvU5Cq7BSgCg8SMIUu5RRe+nm/RYNWG30kvJdUuetgackM
-	xcrAf0cZkEwT2mR2BB+jId9JfWKFlmba9Rz6BhtOj60d0rRMvjlFlBoTsBTl3UWrwNzNsiJGT1uXW
-	I+euSoEA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:37188)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vtYNI-000000002C0-0l6t;
-	Fri, 20 Feb 2026 21:49:24 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vtYNF-000000004fv-3ca8;
-	Fri, 20 Feb 2026 21:49:22 +0000
-Date: Fri, 20 Feb 2026 21:49:21 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Heiner Kallweit <hkallweit1@gmail.com>
-Cc: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	o.rempel@pengutronix.de,
-	Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2] net: phy: micrel: Add support for lan9645x
- internal phy
-Message-ID: <aZjW4dXiSepPNHQ1@shell.armlinux.org.uk>
-References: <20260130-phy_micrel_add_support_for_lan9645x_internal_phy-v2-1-202ac31cf9c4@microchip.com>
- <92ba22ee64b2670448295b44d663d8ae7e8fe9c4.camel@microchip.com>
- <641d92a2-93fb-4ffe-89d8-77bf10edecf8@gmail.com>
- <1b14f42944d21fff1cb45132fe6dc9e5c18289a1.camel@microchip.com>
- <00f03a3f-fc12-4875-b4b5-7470e7f0452d@gmail.com>
- <aZjN48iisYaJ4xeg@shell.armlinux.org.uk>
- <4674c965-f4d1-4ba9-9e36-9d3bbbb37f64@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W2piBnNs"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2a7a98ba326so39123995ad.1
+        for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 13:53:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771624414; x=1772229214; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zNnXU2rQFrrZwDNDExXkVvTwmDaf1Rl3je1sHwkbBVo=;
+        b=W2piBnNs4xXjKoJ7PPq7PtHE8SRKTGVZaimudBR7dtj0drfTG3jxsykvbGBd+/jF6e
+         kYHnU83VozqSHRw9lF87DvTQTGstucIqsyxRIvlDOb3I1MZCdavRS1grdrQp+E9ZJZnB
+         3DsDXRTb8SOu1EPL3PR/hF8gYBq8fEZttps2YcYLrCEPd7ZM5xkV+acYIW4NTBMclWXg
+         o9UEckqB1ASLxD45m1pX7j3T2wb0iWqqe1NvTSM0IQdmzdFgRCysTnMrTIRZ6ssAErZG
+         1J5pHm6dOqIjNCNTDPjo8XG885CDN9KSX8GR73NAOi+m7xUpptcpEDBm/h1L968mKosA
+         RETg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771624414; x=1772229214;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zNnXU2rQFrrZwDNDExXkVvTwmDaf1Rl3je1sHwkbBVo=;
+        b=i89bMGPcUx89c4lmL3h3hVss2OZoFkvktYXE62fQSa8tvAPVwvfIHbkq+Z0/Z9tLBP
+         7yxAEPtEZM51PRq3bJrRnKwtTS5izmWKVxOg1CCU0gdunR/swNbMd4OYU3K6clX172xs
+         GNzx2ab6bgQKhSXv8iG79MNsFUhlvgKJwhUspA3Svv5ySAlTHCHBixk433ZWh8g6OaXm
+         B+oQuDzRU/8+AVoLl332xWzUj9itwVfgc3ZeScEGS/kZaxcktrnhHzhQNVBd4FGLVgjU
+         a64xcyAw6fVpZABSr3TzeBNPEO3bTfIyR5jTDURHrkCdljTKeCt7Q67OETx06ZJIUb23
+         QAdA==
+X-Gm-Message-State: AOJu0YyPASHkBo3b/P3YGDiaCliXmDX7uepc3TR+0EisO+Sywu38IL2I
+	TY96pWqpuKSTiTv75jThZhpwcsVeP0GfSVV5udRYvxvAEZLUzc/mI6uI5WiwonSgmnuU77d92UQ
+	SFKc7+cf6UR4fjM4wAuxTJDazReYx9M0UzkZSZAa7T/n6WtkONT2kfsiSQXiY91WWLX4AZ86GF8
+	ErdWTNfPjMuUCd08PQp5Wik+0up+eclGQZ2cdRqwxJOkiJuIs=
+X-Received: from pglc4.prod.google.com ([2002:a63:d04:0:b0:c6e:1f6a:ef71])
+ (user=joshwash job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:903:b45:b0:2a0:9934:a3f3 with SMTP id d9443c01a7336-2ad5f7a4e05mr59737705ad.24.1771624413654;
+ Fri, 20 Feb 2026 13:53:33 -0800 (PST)
+Date: Fri, 20 Feb 2026 13:53:24 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4674c965-f4d1-4ba9-9e36-9d3bbbb37f64@gmail.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
+Message-ID: <20260220215324.1631350-1-joshwash@google.com>
+Subject: [PATCH net v2] gve: fix incorrect buffer cleanup in
+ gve_tx_clean_pending_packets for QPL
+From: Joshua Washington <joshwash@google.com>
+To: netdev@vger.kernel.org
+Cc: Joshua Washington <joshwash@google.com>, Harshitha Ramamurthy <hramamurthy@google.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>, 
+	Rushil Gupta <rushilg@google.com>, Bailey Forrest <bcf@google.com>, linux-kernel@vger.kernel.org, 
+	Ankit Garg <nktgrg@google.com>, stable@vger.kernel.org, 
+	Jordan Rhee <jordanrhee@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Feb 20, 2026 at 10:30:36PM +0100, Heiner Kallweit wrote:
-> On 20.02.2026 22:10, Russell King (Oracle) wrote:
-> > On Fri, Feb 20, 2026 at 09:50:44PM +0100, Heiner Kallweit wrote:
-> >> No, BMCR_RESET usually doesn't reset configuration registers. That's why the
-> >> function is called genphy_*soft*_reset. In case your PHY behaves different,
-> >> which configuration registers does it change?
-> > 
-> > I don't think your statement is correct.
-> > 
-> > Looking at AR8035 for example, the WoL interrupt enable is doumented as
-> > being cleared on soft reset. Smart Speed configuration also gets reset.
-> > 
-> > 802.3 22.2.4.1.1 states that setting 0.15 results in the status and
-> > control registers shall be set to their default states.
-> > 
-> > So, we should not assume that setting 0.15 will retain configuration in
-> > the PHY - at least phylib should not assume that a call to
-> > genphy_soft_reset will not clear the configuration registers. If we
-> > have code in phylib that makes that assumption, phylib is buggy to
-> > 802.3.
-> > 
-> 
-> Indeed I was wondering why c22 states "reset control registers"
-> whilst the PHY's I'm dealing with don't do this. At least for the
-> Marvell PHY's I used the spec says "resets PHY state machine".
-> For Realtek the spec statement was "resets BMCR and BMSR".
-> And often config bits are described as "becomes effective after
-> reset". But yes, there may be PHY's implementing exactly the c22
-> behavior, so we shouldn't rely on "soft" in general.
+From: Ankit Garg <nktgrg@google.com>
 
-Looking at LAN8841
-(https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ProductDocuments/DataSheets/LAN8841-Data-Sheet-00004726A.pdf)
-this states:
+In DQ-QPL mode, gve_tx_clean_pending_packets() incorrectly uses the RDA
+buffer cleanup path. It iterates num_bufs times and attempts to unmap
+entries in the dma array.
 
-5.28.1 SOFTWARE RESET
-The Gigabit Ethernet PHY may be reset by software by using the IEEE
-802.3 standard PHY Soft Reset (RESET) bit in the Basic Control
-Register. This resets all the PHY and all its registers to their
-default state, with the following exceptions.
+This leads to two issues:
+1. The dma array shares storage with tx_qpl_buf_ids (union).
+ Interpreting buffer IDs as DMA addresses results in attempting to
+ unmap incorrect memory locations.
+2. num_bufs in QPL mode (counting 2K chunks) can significantly exceed
+ the size of the dma array, causing out-of-bounds access warnings
+(trace below is how we noticed this issue).
 
-(none mention standard 802.3 registers)
+UBSAN: array-index-out-of-bounds in
+drivers/net/ethernet/drivers/net/ethernet/google/gve/gve_tx_dqo.c:178:5 index 18 is out of
+range for type 'dma_addr_t[18]' (aka 'unsigned long long[18]')
+Workqueue: gve gve_service_task [gve]
+Call Trace:
+<TASK>
+dump_stack_lvl+0x33/0xa0
+__ubsan_handle_out_of_bounds+0xdc/0x110
+gve_tx_stop_ring_dqo+0x182/0x200 [gve]
+gve_close+0x1be/0x450 [gve]
+gve_reset+0x99/0x120 [gve]
+gve_service_task+0x61/0x100 [gve]
+process_scheduled_works+0x1e9/0x380
 
-An additional software reset is available by using the bit Software
-Reset bit in the Control Register. This resets all of the PHY except
-for its registers.
+Fix this by properly checking for QPL mode and delegating to
+gve_free_tx_qpl_bufs() to reclaim the buffers.
 
-So, setting 0.15 will be disruptive to the control registers on this
-PHY. Register definitions can be found at:
-https://ww1.microchip.com/downloads/aemDocuments/documents/UNG/ApplicationNotes/ApplicationNotes/AN4783-LAN8841-Register-Definitions-Application-Note-DS00004783A.pdf
+Cc: stable@vger.kernel.org
+Fixes: a6fb8d5a8b69 ("gve: Tx path for DQO-QPL")
+Signed-off-by: Ankit Garg <nktgrg@google.com>
+Reviewed-by: Jordan Rhee <jordanrhee@google.com>
+Reviewed-by: Harshitha Ramamurthy <hramamurthy@google.com>
+Signed-off-by: Joshua Washington <joshwash@google.com>
+---
+Changes in v2:
+* Moved gve_unmap_packet up instead of forward declaration
+  (Jakub Kicinski)
+---
+ drivers/net/ethernet/google/gve/gve_tx_dqo.c | 56 ++++++++++++++++++-----------------------
+ 1 file changed, 25 insertions(+), 31 deletions(-)
 
-Bit 1 of register 31 resets the PHY without clearing the registers.
-
-As one of their PHYs behaves like this, I suspect it'll be common
-amongst their LAN PHYs. The KSZ PHYs seem to either be more like
-Marvell, or maybe the documentation isn't clear enough.
-
+diff --git a/drivers/net/ethernet/google/gve/gve_tx_dqo.c b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+index 40b89b3e..e5e33966 100644
+--- a/drivers/net/ethernet/google/gve/gve_tx_dqo.c
++++ b/drivers/net/ethernet/google/gve/gve_tx_dqo.c
+@@ -167,6 +167,25 @@ gve_free_pending_packet(struct gve_tx_ring *tx,
+ 	}
+ }
+ 
++static void gve_unmap_packet(struct device *dev,
++			     struct gve_tx_pending_packet_dqo *pkt)
++{
++	int i;
++
++	if (!pkt->num_bufs)
++		return;
++
++	/* SKB linear portion is guaranteed to be mapped */
++	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
++			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
++	for (i = 1; i < pkt->num_bufs; i++) {
++		netmem_dma_unmap_page_attrs(dev, dma_unmap_addr(pkt, dma[i]),
++					    dma_unmap_len(pkt, len[i]),
++					    DMA_TO_DEVICE, 0);
++	}
++	pkt->num_bufs = 0;
++}
++
+ /* gve_tx_free_desc - Cleans up all pending tx requests and buffers.
+  */
+ static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
+@@ -176,21 +195,12 @@ static void gve_tx_clean_pending_packets(struct gve_tx_ring *tx)
+ 	for (i = 0; i < tx->dqo.num_pending_packets; i++) {
+ 		struct gve_tx_pending_packet_dqo *cur_state =
+ 			&tx->dqo.pending_packets[i];
+-		int j;
+-
+-		for (j = 0; j < cur_state->num_bufs; j++) {
+-			if (j == 0) {
+-				dma_unmap_single(tx->dev,
+-					dma_unmap_addr(cur_state, dma[j]),
+-					dma_unmap_len(cur_state, len[j]),
+-					DMA_TO_DEVICE);
+-			} else {
+-				dma_unmap_page(tx->dev,
+-					dma_unmap_addr(cur_state, dma[j]),
+-					dma_unmap_len(cur_state, len[j]),
+-					DMA_TO_DEVICE);
+-			}
+-		}
++
++		if (tx->dqo.qpl)
++			gve_free_tx_qpl_bufs(tx, cur_state);
++		else
++			gve_unmap_packet(tx->dev, cur_state);
++
+ 		if (cur_state->skb) {
+ 			dev_consume_skb_any(cur_state->skb);
+ 			cur_state->skb = NULL;
+@@ -1160,22 +1170,6 @@ static void remove_from_list(struct gve_tx_ring *tx,
+ 	}
+ }
+ 
+-static void gve_unmap_packet(struct device *dev,
+-			     struct gve_tx_pending_packet_dqo *pkt)
+-{
+-	int i;
+-
+-	/* SKB linear portion is guaranteed to be mapped */
+-	dma_unmap_single(dev, dma_unmap_addr(pkt, dma[0]),
+-			 dma_unmap_len(pkt, len[0]), DMA_TO_DEVICE);
+-	for (i = 1; i < pkt->num_bufs; i++) {
+-		netmem_dma_unmap_page_attrs(dev, dma_unmap_addr(pkt, dma[i]),
+-					    dma_unmap_len(pkt, len[i]),
+-					    DMA_TO_DEVICE, 0);
+-	}
+-	pkt->num_bufs = 0;
+-}
+-
+ /* Completion types and expected behavior:
+  * No Miss compl + Packet compl = Packet completed normally.
+  * Miss compl + Re-inject compl = Packet completed normally.
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.53.0.335.g19a08e0c02-goog
+
