@@ -1,111 +1,88 @@
-Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60515340A41
-	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 11:10:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25617341ACA;
+	Fri, 20 Feb 2026 11:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771585825; cv=none; b=Hurso0ANps8YNsM7G5VTEKDMd1OXrjtAFHS+tVo9ABKm0+JMqDZ2aZjnbk7YghGtebJloWOqo+HDDw24O/yE247ofo4ksFk672jUbnPloJl2zHVXL6y6Bi5odQGpkYVwS4p5mSJZZt+oNTUTf/2VX2Mz16raRK37KRfcwoHDF70=
+	t=1771586058; cv=none; b=C+jY7N2XxjVXq5LZJFIkouc9jxaGPBILeNM5bATNqN0+9bb/ptTVbHvzrrwW0+gczcOW73iR/xOM0B5srr3UFyqf6VJ/m5zZAwv0lgaSQWUxsiqku08jswh+nxjG4OfocNp3dSuE1ia0hpKoNpMOvQe00tK+HP5S7LjHqLFTdSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771585825; c=relaxed/simple;
-	bh=9Vd/vU2OOT5YdMAIsfa4uj1uXtxEkk9tOj+MqX6QAzQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cE/XYc1UUUJGx1U55blxMVCSv0ULlEYIg0GNZV16A2okOAjKg0OZrJ5e8OWCj3BKYNQz0uVQ3eUGmOBALRqljCcv4QTvLm4Xo8HpV0ObEL2JuSXOxksa8mX9Rr5ud3JnPIsFdU6Ox5fpZfrwtn/Ah+7rg1CmocLyLvt541WOiFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=nwlE0XfE; arc=none smtp.client-ip=49.212.198.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
+	s=arc-20240116; t=1771586058; c=relaxed/simple;
+	bh=OBIwovGiLEgk9sxiCKOM48/c82NKWhf+xBbPy5J21OY=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
+	 References:In-Reply-To; b=S+qJiODOy44CeHtLCD+0DkbjbWBFaWQzZb3jYQtT0xapBmSIquY4sRaAO0dfIQyW0WtZMmxK96/wV0sLcFNVv+ySXNzbACG41TRH6Az5sqGsEvGlvmaUXINH6niWKbWSCSbTtQipYCkb/IjisqZ3F72QeO7bGHieiU6LNHpx5Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gfPun1Jc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="nwlE0XfE"
-Received: from ms-a2 (54.52.30.125.dy.iij4u.or.jp [125.30.52.54])
-	(authenticated bits=0)
-	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 61KB9NnI040209
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Fri, 20 Feb 2026 20:09:25 +0900 (JST)
-	(envelope-from kohei@enjuk.jp)
-DKIM-Signature: a=rsa-sha256; bh=wTepkiaRF/hdxZuhpHfCAhj6kmf4sZflDY7X5BlhPCE=;
-        c=relaxed/relaxed; d=enjuk.jp;
-        h=From:To:Subject:Date:Message-ID;
-        s=rs20251215; t=1771585766; v=1;
-        b=nwlE0XfEmpGymRX1tpzxeqddRsbvAqyLC+cIR4WrUGW4MNbAJPs1ixw/1u3ziYEu
-         UvHsjQBMr+LMKg+XJcFLRg5hsdGM06H4dTGqxC/YipLP8ytQBaeydQQMw1FTEqRg
-         SFs5ntTbkhk1zprf8VPpkk9yMAb6PF5dvz0fYlqaviruHjoKqP1qB1qSIbXIUqxV
-         9nX7rKSHhWilw33mRwm+E0ohvYMV2+wxhjAUlxyyzS24h/h4kRJu/5K2wHWVg47s
-         zBYCTcp1lS0KkmaJ8BexgWtSrqTAtjEmCeklT6tu5AtSFv0zcAkR7vNIsIMo+l2+
-         hPfrZjZ4wCFz7/NJXDFVDQ==
-From: Kohei Enju <kohei@enjuk.jp>
-To: netdev@vger.kernel.org, bpf@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>,
-        Stanislav Fomichev <sdf@fomichev.me>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-        kohei.enju@gmail.com, Kohei Enju <kohei@enjuk.jp>
-Subject: [PATCH v1 bpf-next] net: core: allow netdev_upper_get_next_dev_rcu from bh context
-Date: Fri, 20 Feb 2026 11:09:17 +0000
-Message-ID: <20260220110922.94781-1-kohei@enjuk.jp>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gfPun1Jc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981C6C116C6;
+	Fri, 20 Feb 2026 11:14:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771586058;
+	bh=OBIwovGiLEgk9sxiCKOM48/c82NKWhf+xBbPy5J21OY=;
+	h=Date:To:From:Subject:Cc:References:In-Reply-To:From;
+	b=gfPun1JctNvoNIPU18uGCxIMd5aHiT6dlrmj2bsqLAyavEu8synMj7lWsFKeZXRGe
+	 2Ct9Zau5qkp2RGx60hxrlRnWk2pql8eJaaMg7VDRPkmx9vl7oYB9EiQrfHWiWDClNI
+	 epLqINoePUTxsjEVMnF3aXbzG0cL+ZDDE21nmHe2GjTf5UuKRo3+afXOpGYryxTUiy
+	 3bnMj7tn0ROxyUkCt5R9Q7+7EUQo2EiZ1p8doDxcASopRTcPqmbosOUSng3pwf9F8r
+	 9it9JfwQvqkFvY1m8DW6yYf9trdQEriJWze7GP1c65mUJhsz2kL5OiLm+faDY8Pect
+	 NCXlJg33ToXqw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Fri, 20 Feb 2026 12:14:12 +0100
+Message-Id: <DGJQUDBN8WQ2.BPQRSNNGMH6X@kernel.org>
+To: "Leon Romanovsky" <leon@kernel.org>
+From: "Danilo Krummrich" <dakr@kernel.org>
+Subject: Re: [PATCH V2] driver core: auxiliary bus: Fix sysfs creation on
+ bind
+Cc: "Tariq Toukan" <tariqt@nvidia.com>, "Greg Kroah-Hartman"
+ <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ "Saeed Mahameed" <saeedm@nvidia.com>, "Mark Bloch" <mbloch@nvidia.com>,
+ "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
+ <driver-core@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+ <netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>, "Gal Pressman"
+ <gal@nvidia.com>, "Moshe Shemesh" <moshe@nvidia.com>, "Amir Tzin"
+ <amirtz@nvidia.com>
+References: <20260219210435.1769394-1-tariqt@nvidia.com>
+ <DGJCHYS3SKIQ.1TIHQCMEOCRC@kernel.org> <20260220080413.GB10607@unreal>
+In-Reply-To: <20260220080413.GB10607@unreal>
 
-Since XDP programs are called from a NAPI poll context, the RCU
-reference liveness is ensured by local_bh_disable().
+On Fri Feb 20, 2026 at 9:04 AM CET, Leon Romanovsky wrote:
+> This init->add->remove->destroy pattern follows standard Linux kernel pra=
+ctice.
+> I expect all current review tools to flag any missing function call
+> among these three.
 
-Commit aeea1b86f936 ("bpf, devmap: Exclude XDP broadcast to master
-device") started to call netdev_upper_get_next_dev_rcu() from this
-context, but missed adding rcu_read_lock_bh_held() as a condition to the
-RCU checks.
-While both bh_disabled and rcu_read_lock() provide RCU protection,
-lockdep complains since the check condition is insufficient [1].
+I'm not saying that the flow is not logical, goes against existing patterns=
+,
+etc., I'm saying that it is unnecessary to expose a new API to drivers, sin=
+ce
+this is already handled internally.
 
-Add rcu_read_lock_bh_held() as condition to help lockdep to understand
-the dereference is safe, in the same way as commit 694cea395fde ("bpf:
-Allow RCU-protected lookups to happen from bh context").
+I.e. we can easily fix the bug without increasing the API surface exposing =
+a new
+API to drivers.
 
-[1]
- WARNING: net/core/dev.c:8099 at netdev_upper_get_next_dev_rcu+0x96/0xd0, CPU#0: swapper/0/0
- ...
- RIP: 0010:netdev_upper_get_next_dev_rcu+0x96/0xd0
- ...
-  <IRQ>
-  dev_map_enqueue_multi+0x411/0x970
-  xdp_do_redirect+0xdf2/0x1030
-  __igc_xdp_run_prog+0x6a0/0xc80
-  igc_poll+0x34b0/0x70b0
-  __napi_poll.constprop.0+0x98/0x490
-  net_rx_action+0x8f2/0xfa0
-  handle_softirqs+0x1c7/0x710
-  __irq_exit_rcu+0xb1/0xf0
-  irq_exit_rcu+0x9/0x20
-  common_interrupt+0x7f/0x90
-  </IRQ>
+> It is not, atomic is not a replacement for locking and this hunk is
+> going to be racy as hell:
 
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
----
- net/core/dev.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+No, of course not, but it is sufficient to ensure that something runs only =
+once.
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 096b3ff13f6b..b99d46b682c6 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -8103,7 +8103,8 @@ struct net_device *netdev_upper_get_next_dev_rcu(struct net_device *dev,
- {
- 	struct netdev_adjacent *upper;
- 
--	WARN_ON_ONCE(!rcu_read_lock_held() && !lockdep_rtnl_is_held());
-+	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held() &&
-+		     !lockdep_rtnl_is_held());
- 
- 	upper = list_entry_rcu((*iter)->next, struct netdev_adjacent, list);
- 
--- 
-2.51.0
+However, you are still right, since sysfs_create_group() can still fail, we
+still need the mutex, because we may need to unwind.
 
+> In the proposed patch, locking is handled by the driver, which understand=
+s the
+> flow far better than the driver core.
+
+I don't think so, the driver core (or actually the auxiliary bus code) is
+perfectly aware of the flow, i.e. create the attribute group once actually
+needed by auxiliary_device_sysfs_irq_add(), remove it on driver unbind.
