@@ -1,162 +1,81 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37A434B697
-	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 14:09:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F143346ADC;
+	Fri, 20 Feb 2026 14:18:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771596554; cv=none; b=bwH3ocnwCxzFYcLaybeV8Y1e+2yaplqSeBup9lmvWipebEJZfex+MF/kcp4voAPwPIZkej7WkPPN8YCBos7Z2eEONlVU/0gAp2otcoGBWtT7Iy3UMdHiy7CEe51DumtLeg3HwcFAsYxMm1+ejZuejjoK0wZ9knFtPCwrBEo7bbA=
+	t=1771597136; cv=none; b=XZlCQRqmTH+8bYRh+Zv42hwvNlv6VXvVrc9RvZ9sLF+NvFifqlUDpyiFMW5amGY+GgpaBGBsM/5//8JjbJ3KM5DgOKNNPGwQ3St6U8b0lCXwSmwgceQ2QXKW2MpRko3Pq/qML+AgeDSfG1/S+G/ObvAHUeFdswH/v0ttpfy1ltw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771596554; c=relaxed/simple;
-	bh=2Is8BBPkbUnDVr+QWhtNfhLEsAn7u2IviBcT/OtwIr8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HeubB7kd5Tev9B1K8bh19fjU2y0NgzY50Qpc6WChn1Rlj4WXT3RAduG4XLzXFZLWyuNujBFCBI8GX+RKH7p5yfATQkEkbALDL6GN+m4s0vg5s2flm/ZpC7OYDiE7XHpixY4nZZqY9kiMhImIJ+n2510CUSDB4ot/8Q3oqKWFq7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=DoExOIj/; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1771597136; c=relaxed/simple;
+	bh=DRVNZZfSS1JbuE2p8ZZYT6kLTnF92Vr2AfclnpFdOgg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HF137uzfuVgpZubRYUiWQdCywO72PO9D20kG1oxPay5XDbBnhw7oe2LeoxSVxBQVnkNDpduPLD4WrnKFxZ2TJjlNCDpOa0yemeG07e/1KWEVLF7Bx90t8ok89w5hDWYuGmYypZ6wQoliePtN4w17YEjRzlFq4TDZKQGvjBKSv4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=IEhRrGKz; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="DoExOIj/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771596552;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=u9HFZ3wYiKgrM2IQhKwmMk6ouL5om03wQDjATLkkZss=;
-	b=DoExOIj/dijo5x0H9yYnW74WNC9uvdbJ6dlGWbGnORDl2O8XTYCQ+YpBdes5YUa6scD/Lg
-	m1nhezRS2gUej4yGcWQz7s+9Xz726dxUwTr1vdZaPO9I9vbg4FzCog7+ZT0KcNygleR6Ed
-	SPJPFTIGVwzEXa2aaWTW92pmiVwN5Fc=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-331-zyhEqfHvMeyU4SFqLpwb3A-1; Fri,
- 20 Feb 2026 09:09:08 -0500
-X-MC-Unique: zyhEqfHvMeyU4SFqLpwb3A-1
-X-Mimecast-MFC-AGG-ID: zyhEqfHvMeyU4SFqLpwb3A_1771596546
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6F84119001A4;
-	Fri, 20 Feb 2026 14:08:03 +0000 (UTC)
-Received: from ShadowPeak.redhat.com (unknown [10.44.32.59])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 61B3A1955EA0;
-	Fri, 20 Feb 2026 14:07:43 +0000 (UTC)
-From: Petr Oros <poros@redhat.com>
-To: netdev@vger.kernel.org
-Cc: ivecera@redhat.com,
-	Petr Oros <poros@redhat.com>,
-	kernel test robot <lkp@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="IEhRrGKz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=/C0JYLTvJxU7N0XNis2h4waB8weL5GFpHQnSERQGpgU=; b=IEhRrGKzUjXEktA0X3swtIwAwt
+	mX9BInLnVMT0VfzYLpP0cUUO1zynvIuUjBWYlsBkDctmh1/WSglfbCrmuJfNgblW0R8QERZAMIgk7
+	uE8vurZE62oCAb6XCJWsoOwZlyHbt2CXw+S47Kg8lpdYVc3cQS27wQlzXQQtTn0TC5ko=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vtRL6-0084uy-C2; Fri, 20 Feb 2026 15:18:40 +0100
+Date: Fri, 20 Feb 2026 15:18:40 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	intel-wired-lan@lists.osuosl.org,
-	linux-kernel@vger.kernel.org,
-	piotr.kwapulinski@intel.com
-Subject: [PATCH iwl-net v3] ice: fix missing dpll notification for SW pins
-Date: Fri, 20 Feb 2026 15:07:00 +0100
-Message-ID: <20260220140700.2910174-1-poros@redhat.com>
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Danielle Ratson <danieller@nvidia.com>,
+	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
+Subject: Re: [RFC net-next 0/4] ethtool: CMIS module diagnostic loopback
+ support
+Message-ID: <3b0949fa-0b05-4bce-86c0-2a7a058865a5@lunn.ch>
+References: <20260219130050.2390226-1-bjorn@kernel.org>
+ <415c4922-cc8d-4e35-bbac-3a532f44d238@lunn.ch>
+ <20260219160519.323041bf@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260219160519.323041bf@kernel.org>
 
-ice_dpll_notify_changes() sends dpll_pin_change_ntf() only for the
-direct CGU input pin stored in d->active_input. Software-controlled
-pins (SMA/U.FL) are separate dpll_pin objects that wrap a backing CGU
-input, but they never receive a change notification. As a result,
-userspace consumers such as synce4l that monitor SMA pins via dpll
-netlink never learn when the pin state transitions (e.g. from
-SELECTABLE to CONNECTED), even though 'dpll pin show' reports the
-correct state on demand.
+> Something like:
+> 
+>   struct {
+>      enum type;   // MAC, PHY, SFP
+>      int type_id; // if type=PHY - phy id
+>      int depth;   // counting from CPU, first loopback opportunity is 1
+>                   // second is 2, etc.
+>      bool direction; // towards CPU/host vs towards network
+>      char name[16];  // "pcs", "far", "near", "post-fec", whatever
+>   }
 
-When the active input changes, also send dpll_pin_change_ntf() for any
-registered SMA/U.FL input pin whose backing CGU input matches the old
-or new active input.
+Lets see what comes from the drawing board, but i was more thinking
+about expanding the bitmap this proposal already has, extending it to
+other layers. As use cases are implemented, we define the bits needed
+in the map. The ethtool kAPI has the needed infrastructure to map bits
+to names, it is used for link modes etc, and that can be used here. So
+the ethtool(1) part should be reasonably generic.
 
-Fixes: 2dd5d03c77e2 ("ice: redesign dpll sma/u.fl pins control")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202602200046.SGwK2tWh-lkp@intel.com/
-Signed-off-by: Petr Oros <poros@redhat.com>
----
-v3:
-- Add kdoc for the helper.
-v2:
-- Extract ice_dpll_sw_pin_needs_notify() helper for readability,
-- Move loop variable into for() scope.
-
-drivers/net/ethernet/intel/ice/ice_dpll.c | 29 +++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
-index c2ad39bfe177db..a9db85a1026388 100644
---- a/drivers/net/ethernet/intel/ice/ice_dpll.c
-+++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
-@@ -2462,6 +2462,24 @@ static u64 ice_generate_clock_id(struct ice_pf *pf)
- 	return pci_get_dsn(pf->pdev);
- }
- 
-+/**
-+ * ice_dpll_sw_pin_needs_notify - check if SW pin needs change notification
-+ * @p: pointer to SW pin (SMA or U.FL)
-+ * @active: currently active input pin (or NULL)
-+ * @old: previously active input pin (or NULL)
-+ *
-+ * Return: true if the SW pin is an input whose backing CGU pin matches either
-+ * the old or new active input, meaning its state has changed.
-+ */
-+static bool
-+ice_dpll_sw_pin_needs_notify(struct ice_dpll_pin *p,
-+			     struct dpll_pin *active, struct dpll_pin *old)
-+{
-+	return p->pin &&
-+	       p->direction == DPLL_PIN_DIRECTION_INPUT &&
-+	       (p->input->pin == active || p->input->pin == old);
-+}
-+
- /**
-  * ice_dpll_notify_changes - notify dpll subsystem about changes
-  * @d: pointer do dpll
-@@ -2470,6 +2488,7 @@ static u64 ice_generate_clock_id(struct ice_pf *pf)
-  */
- static void ice_dpll_notify_changes(struct ice_dpll *d)
- {
-+	struct ice_dplls *dplls = &d->pf->dplls;
- 	bool pin_notified = false;
- 
- 	if (d->prev_dpll_state != d->dpll_state) {
-@@ -2477,6 +2496,8 @@ static void ice_dpll_notify_changes(struct ice_dpll *d)
- 		dpll_device_change_ntf(d->dpll);
- 	}
- 	if (d->prev_input != d->active_input) {
-+		struct dpll_pin *old = d->prev_input;
-+
- 		if (d->prev_input)
- 			dpll_pin_change_ntf(d->prev_input);
- 		d->prev_input = d->active_input;
-@@ -2484,6 +2505,14 @@ static void ice_dpll_notify_changes(struct ice_dpll *d)
- 			dpll_pin_change_ntf(d->active_input);
- 			pin_notified = true;
- 		}
-+		for (int i = 0; i < ICE_DPLL_PIN_SW_NUM; i++) {
-+			if (ice_dpll_sw_pin_needs_notify(&dplls->sma[i],
-+							 d->active_input, old))
-+				dpll_pin_change_ntf(dplls->sma[i].pin);
-+			if (ice_dpll_sw_pin_needs_notify(&dplls->ufl[i],
-+							 d->active_input, old))
-+				dpll_pin_change_ntf(dplls->ufl[i].pin);
-+		}
- 	}
- 	if (d->prev_phase_offset != d->phase_offset) {
- 		d->prev_phase_offset = d->phase_offset;
--- 
-2.52.0
+    Andrew
 
