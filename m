@@ -1,158 +1,102 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AC22E7BC2
-	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 21:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E80B24DCE5;
+	Fri, 20 Feb 2026 22:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771624525; cv=none; b=QCsEpz+LRXvTMmk4/ynAsL8cNW49g5LwQ6+K9+d3wC0Qxqranu4NYqG23yiuBp9OilDzaXirlUv9ga6YC83IUrIiOunvw8skucAtRb2yTUShOl0C7hbT0UKbrPiTNxM1XzQY+Fj8ujQKya+eFYWrmwciUSUCyVfpTmyYhbfbA2Y=
+	t=1771624849; cv=none; b=F2a/YzdWTMqldfKSKID6AbVsb8Tjjl6WAIxfImgdlvNwgs+1KA5aLmUgkzK9Q3kteJw0K2jwNv95+9CqktmWdGeN1UK4EwDJA2uoLn1tsiI2/zWbIEQRFZTQUpR8tF6CF4WYtCxV2UtOS8rDWXt4FbVC7mmVLA0vyLVe3Sibii4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771624525; c=relaxed/simple;
-	bh=vlRi7s7jtzkqZNRoowOK4CI8RGB7OGnbkDE+E2fOMEo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lVDjfh4uIHwhgVny61CSWggROJBK3eOICrog7BjAey8cRgv33+RL1w3Af0AK2yeWsWBB08tsIqSnR+IJfk0+F1kuMfOVs8Cc0UVDW7z27xsVqJqW47fhAzeO/urLEsu0sb98HUcQIZw2/vInikPKMK5Q/Qdhn72hAVxQnl7QoOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gRKyamcw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771624849; c=relaxed/simple;
+	bh=j8ewDZamzs1TUqrD98btJHbb2prX1tgCIDCSHXyKP0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BSEvoAK0deYT9/2IFcnUAErFV55ewvXxNNeqwgN/0aVOw6CJYdfn6TDxf/CgS/b+rmMMiVLcm+EJvnwv4dCG1nGzA7iq+OKO1nwYqjzV1AgfdFlCRoIhkxSsgEiCxOntyk+ZSbcc1PMwG3oAP//9XguWYRGgRxQCVDjOvqUFMOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=svX6zwOa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gRKyamcw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEE1C116C6;
-	Fri, 20 Feb 2026 21:55:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="svX6zwOa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05829C116C6;
+	Fri, 20 Feb 2026 22:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771624525;
-	bh=vlRi7s7jtzkqZNRoowOK4CI8RGB7OGnbkDE+E2fOMEo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gRKyamcwgotM7ANLPmv5TX9rm/TD9qt2eDvJdZYu9+HW5jdXfNIqR5Ha2qnh6fFs0
-	 xjkLR1d34iYwgUePC91U6QP74gVlnlZPagud46VWlnwqxoInQLtJOMR256h2tFH/9E
-	 qxCRwYoMiG8l4+GvqvDxRht6Wf/1v20mLvf2klfH9bUPEiGeBvORCWnejNReq3Idw1
-	 T80Y9Ue4TioGDbkmcHi5/Q33iCwKSFIehtQrl4V83P4c0jbJIT2QLlCTiiZfFyA4ao
-	 HvsItnPbUTX7RvNc+EEu8BKdPrRbcFM0JP8ytp9vrO8E2uzH+wERu0QwrK9csvOeGc
-	 +tpbX4GtYPzvw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: edumazet@google.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	willemb@google.com,
-	netdev@vger.kernel.org,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	krikku@gmail.com,
-	horms@kernel.org,
-	kuniyu@google.com,
-	eric.dumazet@gmail.com
-Subject: Re: [net] net: fix potential out-of-bound access in set_rps_cpu()
-Date: Fri, 20 Feb 2026 13:52:10 -0800
-Message-ID: <20260220215209.3209259-2-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260220144344.2548121-1-edumazet@google.com>
-References: <20260220144344.2548121-1-edumazet@google.com>
+	s=k20201202; t=1771624849;
+	bh=j8ewDZamzs1TUqrD98btJHbb2prX1tgCIDCSHXyKP0I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=svX6zwOaYzJn1xmxcW4F3TCS53OmLgF9S4IfY5MLZ9Awz2faOYHVqXgrtO5KzI/aN
+	 tMO1jyfo9oo2ArMO0nOZ9IWZsUBZrpEaeE/lx+nFVBrMlM0Dtdmca2wE9iT4Bs27Qr
+	 FWM0tICDnXU7z8Tta2YyudsmnXCi1bg7HipnwVpRRqp7bUBkdbqXPCBmCH1y01RDLa
+	 nFSUhGIfqgph98KbTIDHblrfmwAZFkMKoe/IPCGv+AoKTzW6NSZN9u0R0YhwqxUtNQ
+	 pjcq0RPyQJuuv+jQj/AvZ9H6kg0gRM1fnS3Q7q2x/OMr142BnQH/suq6Mb5e2oxSyl
+	 ZdRne+uuPFfqw==
+Date: Fri, 20 Feb 2026 22:00:42 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Max Hsu <max.hsu@sifive.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+	Paul Walmsley <paul.walmsley@sifive.com>
+Subject: Re: [PATCH 3/5] net: macb: Add support for SiFive FU740-C000
+Message-ID: <20260220-backtrack-saturday-b85344cd5eb6@spud>
+References: <20260220-fu740-v1-0-c8af54130c58@sifive.com>
+ <20260220-fu740-v1-3-c8af54130c58@sifive.com>
+ <45821cd4-214c-43c0-ab2d-bbf34d9ec911@lunn.ch>
+ <CAHibDyzQAWgGP9sktLtnpND-Qr6FRrTA=HEiweyDD6rWm=8=5g@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="owSUAfZltS+zhmwj"
+Content-Disposition: inline
+In-Reply-To: <CAHibDyzQAWgGP9sktLtnpND-Qr6FRrTA=HEiweyDD6rWm=8=5g@mail.gmail.com>
 
-Hi Eric!
 
-I'm attaching the AI review. It's a bit long, I stopped reading
-half way thru. But looking at the code I think AI is onto something.
-We have fetched the flow_table in get_rps_cpu() based on
-skb_get_rx_queue(skb), but in set_rps_cpu() we are fetching the table
-for the target / next_cpu, which we make sure is _not_ the same:
+--owSUAfZltS+zhmwj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-    if (rxq_index == skb_get_rx_queue(skb))
+On Sat, Feb 21, 2026 at 02:35:03AM +0800, Max Hsu wrote:
+> Thanks for the review, Andrew!
+>=20
+> Based on Conor's feedback on patch 1, I'll be dropping this patch entirely
+> in v2. Instead, I'll use a fallback compatible string pattern
+> ("sifive,fu740-c000-gem", "sifive,fu540-c000-gem") in the device tree,
+> which makes this driver change redundant.
+>=20
+> Since there will be no net subsystem changes in v2, the series will go
+> through the devicetree and RISC-V trees instead.
 
----
-net: fix potential out-of-bound access in set_rps_cpu()
+Nope, you still have one patch for net - the dt-binding for the macb
+goes via net. Nothing in this series goes via devicetree or RISC-V trees
+either.
+Generally, bindings go through driver trees and dts patches go through
+the soc tree.
 
-This commit addresses an out-of-bound access issue introduced when
-set_rps_cpu() was reloading rxqueue->rps_flow_table. The fix passes the
-flow_table pointer from get_rps_cpu() to set_rps_cpu() to follow RCU rules.
+Cheers,
+Conor.
 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index 096b3ff13f6b..7c5e69c771ca 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -4993,13 +4993,11 @@ static bool rps_flow_is_active(struct rps_dev_flow *rflow,
->  static struct rps_dev_flow *
->  set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
->  	    struct rps_dev_flow *rflow, u16 next_cpu, u32 hash,
-> -	    u32 flow_id)
-> +	    u32 flow_id, struct rps_dev_flow_table *flow_table)
->  {
->  	if (next_cpu < nr_cpu_ids) {
->  		u32 head;
->  #ifdef CONFIG_RFS_ACCEL
-> -		struct netdev_rx_queue *rxqueue;
-> -		struct rps_dev_flow_table *flow_table;
->  		struct rps_dev_flow *old_rflow;
->  		struct rps_dev_flow *tmp_rflow;
->  		unsigned int tmp_cpu;
-> @@ -5014,11 +5012,6 @@ set_rps_cpu(struct net_device *dev, struct sk_buff *skb,
->  		if (rxq_index == skb_get_rx_queue(skb))
->  			goto out;
->
-> -		rxqueue = dev->_rx + rxq_index;
-> -		flow_table = rcu_dereference(rxqueue->rps_flow_table);
-> -		if (!flow_table)
-> -			goto out;
-> -
->  		tmp_rflow = &flow_table->flows[flow_id];
->  		tmp_cpu = READ_ONCE(tmp_rflow->cpu);
->
+--owSUAfZltS+zhmwj
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Does this change introduce an aliasing issue in the CONFIG_RFS_ACCEL path?
+-----BEGIN PGP SIGNATURE-----
 
-In get_rps_cpu(), the flow_table parameter is obtained from the receiving
-queue (dev->_rx[skb_get_rx_queue(skb)]) and rflow points to
-&flow_table->flows[flow_id].
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaZjZigAKCRB4tDGHoIJi
+0ppkAQDELcLSGsd9+CZKBIRTpROITc+zabzoqZ2zjM8e+CEGYAEAuTFkDeKn4vsG
+nyHlHlHuc1eRatDuaFWmAN81FiAvBAg=
+=gWwp
+-----END PGP SIGNATURE-----
 
-When this rflow is passed into set_rps_cpu() with the same flow_table and
-flow_id, tmp_rflow is computed as &flow_table->flows[flow_id]:
-
-net/core/dev.c:set_rps_cpu() {
-	tmp_rflow = &flow_table->flows[flow_id];
-	tmp_cpu = READ_ONCE(tmp_rflow->cpu);
-	rc = cpu_rmap_lookup_index(dev->rx_cpu_rmap, next_cpu);
-	if (rc >= 0)
-		next_cpu = rc;
-
-	old_rflow = rflow;
-	rflow = tmp_rflow;
-	WRITE_ONCE(rflow->filter, rc);
-	WRITE_ONCE(rflow->hash, hash);
-
-	if (old_rflow->filter == rc)
-		WRITE_ONCE(old_rflow->filter, RPS_NO_FILTER);
-}
-
-Since rflow and tmp_rflow are derived from the same flow_table and flow_id,
-they point to the same memory location. After the assignments old_rflow =
-rflow and rflow = tmp_rflow, all three pointers alias the same object.
-
-The code stores rc into rflow->filter with WRITE_ONCE(rflow->filter, rc),
-then checks if (old_rflow->filter == rc). Because old_rflow is rflow (which
-is tmp_rflow), this condition is always true, causing WRITE_ONCE(old_rflow->
-filter, RPS_NO_FILTER) to immediately clear the filter ID that was just set.
-
-This means the hardware filter ID is never retained in the rps_dev_flow
-entry. On subsequent packets for the same flow, the stale-flow check:
-
-	if (READ_ONCE(tmp_rflow->filter) != RPS_NO_FILTER)
-
-will always find RPS_NO_FILTER, causing ndo_rx_flow_steer() to be called
-redundantly for every packet even when the flow is already steered.
-
-Was the intent to use different flow tables for the receiving and target
-queues so that the filter deduplication logic could work properly?
-
-> @@ -5134,7 +5127,7 @@ static int get_rps_cpu(struct net_device *dev, struct sk_buff *skb,
->  		      rflow->last_qtail)) >= 0)) {
->  			tcpu = next_cpu;
->  			rflow = set_rps_cpu(dev, skb, rflow, next_cpu, hash,
-> -					    flow_id);
-> +					    flow_id, flow_table);
->  		}
->
->  		if (tcpu < nr_cpu_ids && cpu_online(tcpu)) {
--- 
-pw-bot: cr
+--owSUAfZltS+zhmwj--
