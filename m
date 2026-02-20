@@ -1,157 +1,347 @@
-Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74C4C2D7DEF
-	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 20:45:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B828632B
+	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 20:50:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771620331; cv=none; b=ZLuHIDD8jHSNLoLsl0xSwQmWSqaALQs/hsk3V40C14/IwH3pngimn6q2FfDFjugHLu/ObOwKIQv1cpGStMWVyzEzAr0A2kcz1fg1IH2fFUG2oo7XtvBJ1QEatfJyxwCx/pe7Fqv/nFFuVYn9o21CfPrTzroOXQBEQtAuoUJJXiw=
+	t=1771620650; cv=none; b=Z6qGPbUG1PPo0gLHRm+i+0qHe46rqIzvov7dZDmoHQD8NE2teaXbxxSP2hzYsEXTnF7CGx4QPCVV9p9pDXK3DzlHPpb1tDFKPv9C8bzPNyivZ8fYiMX7gkiTjA+ErfBhcOsvtWq5DTKu45LW76693GNnNUj8oKxXlx3Sg512mKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771620331; c=relaxed/simple;
-	bh=+MpAdX04z71/DriT7F3atRs8SgTe+Kc43ytE6V82v5Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QIZXCI3ok0gSuaASeA+UwwzCDvG/DsMSn+97855bj5IetsiO7cZZkHmByUkGmBLY5U4TZNJfRQX/QhcCesjl9hNkvh5ULSUEL1VmCuDLROYtN2l4E9q4CuYdueMlXsOLpTnAnm8JF/HZjqE32B26yDSF5zWyII+IUGx0+4HBPyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=Y8Bku9BM; arc=none smtp.client-ip=49.212.198.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
+	s=arc-20240116; t=1771620650; c=relaxed/simple;
+	bh=Qz3V2IoOIRQGYOCuIJKBybb0Yzb361Hkv/tfZHQrQa4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=E3NJMDUHHg42Tck9N4rnviDiBXfd3ry2tmD8XQWBUsz+1pD8yCykLBydfqgIxrZ8VklbpO0rK0CyO+bB1eJ9QH6nRByCvQju6Z8B0RwvjyhTJbOphZz3Vug1wId2ml5jOhK/8oMPJCpgKNpBgDDFakAPwM0U15gp0A0/ILIM4Bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TjYVn/dM; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="Y8Bku9BM"
-Received: from ms-a2 (54.52.30.125.dy.iij4u.or.jp [125.30.52.54])
-	(authenticated bits=0)
-	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 61KKjR4u048125
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sat, 21 Feb 2026 05:45:27 +0900 (JST)
-	(envelope-from kohei@enjuk.jp)
-DKIM-Signature: a=rsa-sha256; bh=g4QW/rxYMrWC1qtUxlhgMr6Uho9KgR9xRA8MZbs0IJ8=;
-        c=relaxed/relaxed; d=enjuk.jp;
-        h=From:To:Subject:Date:Message-ID;
-        s=rs20251215; t=1771620327; v=1;
-        b=Y8Bku9BMzVuXdD6cj9XlchnAU0Q0reYEjpYi2tb054JZVWQzUbA54mqUDtSonRox
-         8irIg6zH2TpqEBu2JFG4QZn68dh5GFYK/Ck4Qbbvvtu7QmPuJVkJ7cGaE3s5Iuun
-         g5bYiGUw+pcJsxkuQMEj6Q7cnBtoivB4FCDoZGiKvBDj7p+4JloN/nNN8zEQGkus
-         qaN0RoZ1+3j0q8ZyaE5QSxNUSAcoLgAYoc5zS2bRMH/XGZemmmJxLarQ+XANNKg9
-         eggkjT1PHcHotuLu9ZDIufnYF+zSKPBZZYfmgZU85d4WWgitJW1Zeiscgon6hUGa
-         HoMRorv0srS0LpUjEqoCjQ==
-From: Kohei Enju <kohei@enjuk.jp>
-To: aleksandr.loktionov@intel.com
-Cc: alice.michael@intel.com, andrew+netdev@lunn.ch, anthony.l.nguyen@intel.com,
-        davem@davemloft.net, edumazet@google.com,
-        intel-wired-lan@lists.osuosl.org, kohei.enju@gmail.com, kohei@enjuk.jp,
-        kuba@kernel.org, maciej.fijalkowski@intel.com, netdev@vger.kernel.org,
-        pabeni@redhat.com, paul.greenwalt@intel.com,
-        przemyslaw.kitszel@intel.com
-Subject: Re: [Intel-wired-lan] [PATCH v1 iwl-net] ice: fix potential NULL pointer deref in error path of ice_set_ringparam()
-Date: Fri, 20 Feb 2026 20:44:14 +0000
-Message-ID: <20260220204526.7514-1-kohei@enjuk.jp>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <IA3PR11MB89864DB144A3D8990E6512D5E568A@IA3PR11MB8986.namprd11.prod.outlook.com>
-References: <IA3PR11MB89864DB144A3D8990E6512D5E568A@IA3PR11MB8986.namprd11.prod.outlook.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TjYVn/dM"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-483770e0b25so25388095e9.0
+        for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 12:50:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771620647; x=1772225447; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ddw9qpOfE4B3Gf/mI+KPYnbBAM5RibhFMT7KjaKIP6E=;
+        b=TjYVn/dM0MHzVZnSwgdRlvEXXJEE0qZuvxWpX4KtuzJhCTz4OtzFjnagsL99lf4otF
+         VIj57ek7rFxUrHPVu4jVz2cePXyxv7p+JxdTx/HyPTFCNGRWaK7lwq5UgngLwFgckiZj
+         7AV6lpRrqwmqeZkI4HBWxAiYnBGjSMfVe+3B7b9O9jCE7+De5Agfie3plg+LTVIrpVv5
+         VArQQounCYJZwaGxwH054Wbgq6COJnpVUvOSJ2genlbEzVPohN6LUf55JufTy7+YOvZY
+         r0SY3OnCGDVrCnp2Iozy1hBzA4sR7P1zsKzzvq7Y2X12ceyeX8AlUHf7lTYpQqDnn0O8
+         95GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771620647; x=1772225447;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ddw9qpOfE4B3Gf/mI+KPYnbBAM5RibhFMT7KjaKIP6E=;
+        b=neV8ywdurgLSDGcWq2EXlqhYN0iRcoFFEb8AJ7e3oqYXw2zvHgeA2nzREZA6v6KSOG
+         CsZpfvaDCH8di4JIGNj/p+CF1wG3YsN5g7KrcUeJ0ISW+27Q9KASEPv7rQ/myETjHz++
+         23vVvpv9aKMMGH3kiazfGmVFMWaIlP1k6gSCMxZA2engbVluq3NuISo2VxME1aFlgqRv
+         qAnBxPCnzrwyoXZ+Hyic70OnuKZF0Z1SPym+YJwtvUuiDvThQzCMEEjk14T4cEE/yNkk
+         e5UT2YDD4L+72g1MppfaCQ162RCD0oXNKILVFUgEU3uIQo5jbeyDzFU8c7me7ANeoc62
+         qJLA==
+X-Gm-Message-State: AOJu0YzCfM0l+dNcAM47T/1lM818coyu6JvI+IXeagg02Dyy0Ta7NBk0
+	WGwNu1HvDFt3rRUHZvWAsAvw0poQcXSc8AwmtVPCTm8DR8IlFtfdwoc0
+X-Gm-Gg: AZuq6aKVfN29dqSEXpnvJGw8Dv1eLaluf6FcU9YnDfozMf95DLLBXg1yOYyEkvQpnNZ
+	QluGC5LWcjfKLerFuf9hz9e/5oKn6w/7eu346ejOmrkgvc1dziaEIACnix3iOmLoqvE6Q4ln+Kg
+	qfwOayFFkF6ZCUn/ihK5NeSeUK5A9sSDW61LgpdPr56XeWjpl2Y2y+9O18l/TC0xP/8CS6EIUHM
+	JCqHoM0nitnvyUt2vRqIOyqunFE6YhJEApvmGlsIyO3pw7NhQIOvxn0GgN+VuTrcCFRjLaYikND
+	ZeXq1tQ0BtI1XBmRCZzaloqKCO55q9cJJv0c7XDd5L63fMfNqwJ5ZRKFGwciKaQEs4Tt/zcxBC5
+	wjxnCnkhIQi9Gg/lf5x6hzYVM+YYZDUKcjJGpmBzW5AUYFAqk8eQPmPOZn8fYRBfJvz9+r4cJXr
+	x41ozXa2OuKuDHKTPYaEinFP4LwQubiDV/8z5SKSLxPy96W7fuiPdVCsUCv4v6I+mDWtuv8l99J
+	biDKW8hzb79JoE9qUWd8+j8VCc4Zjb10/IdriFwt/Kaf3kxr3AD56MZKs3T4dofQA==
+X-Received: by 2002:a05:600c:450c:b0:480:4be7:4f53 with SMTP id 5b1f17b1804b1-483a963d656mr14781925e9.31.1771620646777;
+        Fri, 20 Feb 2026 12:50:46 -0800 (PST)
+Received: from ?IPV6:2003:ea:8f1e:3800:1889:225f:1b5b:4b37? (p200300ea8f1e38001889225f1b5b4b37.dip0.t-ipconnect.de. [2003:ea:8f1e:3800:1889:225f:1b5b:4b37])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483a31c56d8sm147158935e9.8.2026.02.20.12.50.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 20 Feb 2026 12:50:46 -0800 (PST)
+Message-ID: <00f03a3f-fc12-4875-b4b5-7470e7f0452d@gmail.com>
+Date: Fri, 20 Feb 2026 21:50:44 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2] net: phy: micrel: Add support for lan9645x
+ internal phy
+To: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>,
+ Andrew Lunn <andrew@lunn.ch>, Russell King <linux@armlinux.org.uk>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Horatiu Vultur <horatiu.vultur@microchip.com>, o.rempel@pengutronix.de,
+ Steen Hegelund <Steen.Hegelund@microchip.com>,
+ Daniel Machon <daniel.machon@microchip.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260130-phy_micrel_add_support_for_lan9645x_internal_phy-v2-1-202ac31cf9c4@microchip.com>
+ <92ba22ee64b2670448295b44d663d8ae7e8fe9c4.camel@microchip.com>
+ <641d92a2-93fb-4ffe-89d8-77bf10edecf8@gmail.com>
+ <1b14f42944d21fff1cb45132fe6dc9e5c18289a1.camel@microchip.com>
+Content-Language: en-US
+From: Heiner Kallweit <hkallweit1@gmail.com>
+In-Reply-To: <1b14f42944d21fff1cb45132fe6dc9e5c18289a1.camel@microchip.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On Fri, 20 Feb 2026 20:04:52 +0000, "Loktionov, Aleksandr" wrote:
-
-> > -----Original Message-----
-> > From: Kohei Enju <kohei@enjuk.jp>
-> > Sent: Friday, February 20, 2026 7:40 PM
-> > To: intel-wired-lan@lists.osuosl.org; netdev@vger.kernel.org
-> > Cc: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel,
-> > Przemyslaw <przemyslaw.kitszel@intel.com>; Andrew Lunn
-> > <andrew+netdev@lunn.ch>; David S. Miller <davem@davemloft.net>; Eric
-> > Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo
-> > Abeni <pabeni@redhat.com>; Loktionov, Aleksandr
-> > <aleksandr.loktionov@intel.com>; Alice Michael
-> > <alice.michael@intel.com>; Greenwalt, Paul <paul.greenwalt@intel.com>;
-> > Fijalkowski, Maciej <maciej.fijalkowski@intel.com>;
-> > kohei.enju@gmail.com; Kohei Enju <kohei@enjuk.jp>
-> > Subject: [PATCH v1 iwl-net] ice: fix potential NULL pointer deref in
-> > error path of ice_set_ringparam()
-> >=20
-> > ice_set_ringparam nullifies tstamp_ring of temporary tx_rings, without
-> > clearing ICE_TX_RING_FLAGS_TXTIME bit.
-> > When ICE_TX_RING_FLAGS_TXTIME is set and the subsequent
-> > ice_setup_tx_ring() call fails, a NULL pointer dereference could
-> > happen in the unwinding sequence:
-> >=20
-> > ice_clean_tx_ring()
-> > -> ice_is_txtime_cfg() =3D=3D true (ICE_TX_RING_FLAGS_TXTIME is set)
-> > -> ice_free_tx_tstamp_ring()
-> >   -> ice_free_tstamp_ring()
-> >     -> tstamp_ring->desc (NULL deref)
-> >=20
-> > Clear ICE_TX_RING_FLAGS_TXTIME bit to avoid the potential issue.
-> >=20
-> > Note that this potential issue is found by manual code review.
-> > Compile test only since unfortunately I don't have E830 devices.
-> >=20
-> > Fixes: ccde82e90946 ("ice: add E830 Earliest TxTime First Offload
-> > support")
-> If it's a fix, shouldn't it go to net?
-
-This fix relies on a commit 8a4e78094945 ("ice: fix race condition in TX
-timestamp ring cleanup"), which changed type of flags from u8 to
-BITMAP, as you advised in [1].
-Since the commit only exists in Tony's tree, I chose iwl-net, not net.
-
-[1] https://lore.kernel.org/intel-wired-lan/IA3PR11MB8986EB459D2FD1697644CF98E598A@IA3PR11MB8986.namprd11.prod.outlook.com/
+On 20.02.2026 21:38, Jens Emil Schulz Ostergaard wrote:
+> Hi Heiner,
+> 
+> On Sat, 2026-01-31 at 11:00 +0100, Heiner Kallweit wrote:
+>>
+>> On 1/31/2026 7:29 AM, Jens Emil Schulz Ostergaard wrote:
+>>> Hi,
+>>>
+>>> On Fri, 2026-01-30 at 10:12 +0100, Jens Emil Schulz Østergaard wrote:
+>>>> LAN9645X is a family of switch chips with 5 internal copper phys. The
+>>>> internal PHY is based on parts of LAN8832. This is a low-power, single
+>>>> port triple-speed (10BASE-T/100BASE-TX/1000BASE-T) ethernet physical
+>>>> layer transceiver (PHY) that supports transmission and reception of data
+>>>> on standard CAT-5, as well as CAT-5e and CAT-6 Unshielded Twisted
+>>>> Pair (UTP) cables.
+>>>>
+>>>> Add support for the internal PHY of the lan9645x chip family.
+>>>>
+>>>> Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
+>>>> Reviewed-by: Daniel Machon <daniel.machon@microchip.com>
+>>>> Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
+>>>> ---
+>>>> Changes in v2:
+>>>> - Check write errors in lan9645x_config_intr.
+>>>> - Added more comments for the erratas which are not yet documented in
+>>>>   the datasheet.
+>>>> - Change workaround in lan9645x_suspend from ANEG restart and sleep to
+>>>>   asserting Software Soft Reset and poll for self-clear.
+>>>> - Return IRQ_NONE when IRQ is not handled in lan9645x_handle_interrupt.
+>>>> - Link to v1: https://lore.kernel.org/r/20260123-phy_micrel_add_support_for_lan9645x_internal_phy-v1-1-8484b1a5a7fd@microchip.com
+>>>> ---
+>>>>  drivers/net/phy/micrel.c   | 152 +++++++++++++++++++++++++++++++++++++++++++++
+>>>>  include/linux/micrel_phy.h |   1 +
+>>>>  2 files changed, 153 insertions(+)
+>>>>
+>>>> diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+>>>> index 225d4adf28be..fe77ad899f10 100644
+>>>> --- a/drivers/net/phy/micrel.c
+>>>> +++ b/drivers/net/phy/micrel.c
+>>>> @@ -6502,6 +6502,142 @@ static void lan8842_get_phy_stats(struct phy_device *phydev,
+>>>>      stats->tx_errors = priv->phy_stats.tx_errors;
+>>>>  }
+>>>>
+>>>> +#define LAN9645X_CONTROL_REGISTER           0x1f
+>>>> +#define LAN9645X_CONTROL_REGISTER_SOFT_RESET        BIT(1)
+>>>> +
+>>>> +#define LAN9645X_DAC_ICAS_AMP_POWER_DOWN    0x47
+>>>> +#define LAN9645X_BTRX_QBIAS_POWER_DOWN              0x46
+>>>> +#define LAN9645X_TX_LOW_I_CH_CD_POWER_MGMT  0x45
+>>>> +#define LAN9645X_TX_LOW_I_CH_B_POWER_MGMT   0x44
+>>>> +#define LAN9645X_TX_LOW_I_CH_A_POWER_MGMT   0x43
+>>>> +
+>>>> +static const struct lanphy_reg_data force_dac_tx_errata[] = {
+>>>> +    /* Force channel A/B/C/D TX on */
+>>>> +    { LAN8814_PAGE_POWER_REGS,
+>>>> +      LAN9645X_DAC_ICAS_AMP_POWER_DOWN,
+>>>> +      0 },
+>>>> +    /* Force channel A/B/C/D QBias on */
+>>>> +    { LAN8814_PAGE_POWER_REGS,
+>>>> +      LAN9645X_BTRX_QBIAS_POWER_DOWN,
+>>>> +      0xaa },
+>>>> +    /* Tx low I on channel C/D overwrite */
+>>>> +    { LAN8814_PAGE_POWER_REGS,
+>>>> +      LAN9645X_TX_LOW_I_CH_CD_POWER_MGMT,
+>>>> +      0xbfff },
+>>>> +    /* Channel B low I overwrite */
+>>>> +    { LAN8814_PAGE_POWER_REGS,
+>>>> +      LAN9645X_TX_LOW_I_CH_B_POWER_MGMT,
+>>>> +      0xabbf },
+>>>> +    /* Channel A low I overwrite */
+>>>> +    { LAN8814_PAGE_POWER_REGS,
+>>>> +      LAN9645X_TX_LOW_I_CH_A_POWER_MGMT,
+>>>> +      0xbd3f },
+>>>> +};
+>>>> +
+>>>> +static int lan9645x_config_init(struct phy_device *phydev)
+>>>> +{
+>>>> +    int ret;
+>>>> +
+>>>> +    /* Apply erratas from previous generations.  */
+>>>> +    ret = lan8842_erratas(phydev);
+>>>> +    if (ret < 0)
+>>>> +            return ret;
+>>>> +
+>>>> +    /* Apply errata for an issue where bringing a port down, can cause a few
+>>>> +     * CRC errors for traffic flowing through adjacent ports.
+>>>> +     */
+>>>> +    return lanphy_write_reg_data(phydev, force_dac_tx_errata,
+>>>> +                                 ARRAY_SIZE(force_dac_tx_errata));
+>>>> +}
+>>>> +
+>>>> +static int lan9645x_suspend(struct phy_device *phydev)
+>>>> +{
+>>>> +    int ret, val;
+>>>> +
+>>>> +    /* Force link down before software power down (SPD), by doing software
+>>>> +     * soft reset. This resets the PHY, but keeps all register configuration
+>>>> +     * intact. The bit self clears.
+>>>> +     *
+>>>> +     * This is needed as a workaround for an issue where performing SPD on a
+>>>> +     * port can bring adjacent ports down, when there is traffic flowing
+>>>> +     * through the ports.
+>>>> +     */
+>>>> +    ret = phy_modify(phydev, LAN9645X_CONTROL_REGISTER,
+>>>> +                     LAN9645X_CONTROL_REGISTER_SOFT_RESET, 1);
+>>
+>> Any specific reason why you use a vendor-specific register here instead of BMCR
+>> via genphy_soft_reset()?
+>>
+>>
+> 
+> Sorry I missed your mail. genphy_soft_reset() will do a software (hard) reset via
+> bit 15 (BMCR_RESET). In particular it will reset the registers. We want to do
+> a software soft reset, which resets the PHY without changing register values.
+> 
+No, BMCR_RESET usually doesn't reset configuration registers. That's why the
+function is called genphy_*soft*_reset. In case your PHY behaves different,
+which configuration registers does it change?
 
 > 
-> > Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-> > ---
-> >  drivers/net/ethernet/intel/ice/ice_ethtool.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >=20
-> > diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> > b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> > index 7f769a90dde1..5ed86648d0d6 100644
-> > --- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> > +++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-> > @@ -3290,6 +3290,7 @@ ice_set_ringparam(struct net_device *netdev,
-> > struct ethtool_ringparam *ring,
-> >  		tx_rings[i].desc =3D NULL;
-> >  		tx_rings[i].tx_buf =3D NULL;
-> >  		tx_rings[i].tstamp_ring =3D NULL;
-> > +		clear_bit(ICE_TX_RING_FLAGS_TXTIME, tx_rings[i].flags);
-> >  		tx_rings[i].tx_tstamps =3D &pf->ptp.port.tx;
-> >  		err =3D ice_setup_tx_ring(&tx_rings[i]);
-> If ice_setup_tx_ring() internally reads ICE_TX_RING_FLAGS_TXTIME to decide =
-> whether to allocate the tstamp_ring, then clearing the bit first means ice_=
-> setup_tx_ring() skips TxTime setup even on success - leaving TxTime silentl=
-> y broken after ice_set_ringparam() completes normally. The crash is fixed o=
-> n the error path, but I'm afraid a functional regression is introduced on t=
-> he success path.
-> Please correct me if I'm wrong.
-
-I believe, in the successful path, tx_tstamps and the flag
-ICE_TX_RING_FLAGS_TXTIME are restored in ice_up().
-
-ice_up()
- ice_vsi_cfg_lan()
-  ice_vsi_cfg_lan_txqs()
-   ice_vsi_cfg_txqs()
-    ice_vsi_cfg_txq()
-     ice_is_txtime_ena() ( == test_bit(ring->q_index,  pf->txtime_txqs))
-     ice_alloc_setup_tstamp_ring()
-      ice_alloc_tstamp_ring()
-       - allocate tx_tstamps
-       - set_bit(ICE_TX_RING_FLAGS_TXTIME, tx_ring->flags);
-
-Enablement of TxTime feature is managed by pf->txtime_txqs, and
-ring->flags represents only a 'result' of the enablement.
-
-Therefore I think it's not a problem, but please let me know if my
-understanding is wrong.
-Thank you for reviewing, Alex!
-
+>>>> +    if (ret)
+>>>> +            return ret;
+>>>> +
+>>>
+>>> AI review pointed out an error here. I will fix in the next version.
+>>>
+>>>> +    ret = phy_read_poll_timeout(phydev, LAN9645X_CONTROL_REGISTER, val,
+>>>> +                                !(val & LAN9645X_CONTROL_REGISTER_SOFT_RESET),
+>>>> +                                3000, 100000, true);
+>>>> +    if (ret)
+>>>> +            return ret;
+>>>> +
+>>>> +    return genphy_suspend(phydev);
+>>>> +}
+>>>> +
+>>>> +static int lan9645x_config_intr(struct phy_device *phydev)
+>>>> +{
+>>>> +    int err;
+>>>> +
+>>>> +    /* enable / disable interrupts */
+>>>> +    if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
+>>>> +            /* This is an internal PHY of lan9645x and is not possible to
+>>>> +             * change the polarity of irq sources in the OIC (CPU_INTR)
+>>>> +             * found in lan9645x. Therefore change the polarity of the
+>>>> +             * interrupt in the PHY from being active low instead of active
+>>>> +             * high.
+>>>> +             */
+>>>> +            err = phy_write(phydev, LAN8804_CONTROL,
+>>>> +                            LAN8804_CONTROL_INTR_POLARITY);
+>>>> +            if (err)
+>>>> +                    return err;
+>>>> +
+>>>> +            /* By default interrupt buffer is open-drain in which case the
+>>>> +             * interrupt can be active only low. Therefore change the
+>>>> +             * interrupt buffer to be push-pull to be able to change
+>>>> +             * interrupt polarity.
+>>>> +             */
+>>>> +            err = phy_write(phydev, LAN8804_OUTPUT_CONTROL,
+>>>> +                            LAN8804_OUTPUT_CONTROL_INTR_BUFFER);
+>>>> +            if (err)
+>>>> +                    return err;
+>>>> +
+>>>> +            err = lan8814_ack_interrupt(phydev);
+>>>> +            if (err)
+>>>> +                    return err;
+>>>> +
+>>>> +            err = phy_write(phydev, LAN8814_INTC,
+>>>> +                            LAN8814_INT_LINK | LAN8814_INT_FLF);
+>>>> +    } else {
+>>>> +            err = phy_write(phydev, LAN8814_INTC, 0);
+>>>> +            if (err)
+>>>> +                    return err;
+>>>> +
+>>>> +            err = lan8814_ack_interrupt(phydev);
+>>>> +    }
+>>>> +
+>>>> +    return err;
+>>>> +}
+>>>> +
+>>>> +static irqreturn_t lan9645x_handle_interrupt(struct phy_device *phydev)
+>>>> +{
+>>>> +    int status;
+>>>> +
+>>>> +    status = phy_read(phydev, LAN8814_INTS);
+>>>> +    if (status < 0) {
+>>>> +            phy_error(phydev);
+>>>> +            return IRQ_NONE;
+>>>> +    }
+>>>> +
+>>>> +    if (status & (LAN8814_INT_LINK | LAN8814_INT_FLF)) {
+>>>> +            phy_trigger_machine(phydev);
+>>>> +            return IRQ_HANDLED;
+>>>> +    }
+>>>> +
+>>>> +    return IRQ_NONE;
+>>>> +}
+>>>> +
+>>>>  static struct phy_driver ksphy_driver[] = {
+>>>>  {
+>>>>      PHY_ID_MATCH_MODEL(PHY_ID_KS8737),
+>>>> @@ -6740,6 +6876,21 @@ static struct phy_driver ksphy_driver[] = {
+>>>>      .set_tunable    = lan8842_set_tunable,
+>>>>      .cable_test_start       = lan8814_cable_test_start,
+>>>>      .cable_test_get_status  = ksz886x_cable_test_get_status,
+>>>> +}, {
+>>>> +    PHY_ID_MATCH_MODEL(PHY_ID_LAN9645X),
+>>>> +    .name           = "Microchip LAN9645X Gigabit PHY",
+>>>> +    .config_init    = lan9645x_config_init,
+>>>> +    .driver_data    = &ksz9021_type,
+>>>> +    .probe          = kszphy_probe,
+>>>> +    .soft_reset     = genphy_soft_reset,
+>>>> +    .suspend        = lan9645x_suspend,
+>>>> +    .resume         = genphy_resume,
+>>>> +    .config_intr    = lan9645x_config_intr,
+>>>> +    .handle_interrupt = lan9645x_handle_interrupt,
+>>>> +    .get_tunable    = lan8842_get_tunable,
+>>>> +    .set_tunable    = lan8842_set_tunable,
+>>>> +    .get_phy_stats  = lan8842_get_phy_stats,
+>>>> +    .update_stats   = lan8842_update_stats,
+>>>>  }, {
+>>>>      PHY_ID_MATCH_MODEL(PHY_ID_KSZ9131),
+>>>>      .name           = "Microchip KSZ9131 Gigabit PHY",
+>>>> @@ -6838,6 +6989,7 @@ static const struct mdio_device_id __maybe_unused micrel_tbl[] = {
+>>>>      { PHY_ID_MATCH_MODEL(PHY_ID_LAN8804) },
+>>>>      { PHY_ID_MATCH_MODEL(PHY_ID_LAN8841) },
+>>>>      { PHY_ID_MATCH_MODEL(PHY_ID_LAN8842) },
+>>>> +    { PHY_ID_MATCH_MODEL(PHY_ID_LAN9645X) },
+>>>>      { }
+>>>>  };
+>>>>
+>>>> diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
+>>>> index ca691641788b..9c6f9817383f 100644
+>>>> --- a/include/linux/micrel_phy.h
+>>>> +++ b/include/linux/micrel_phy.h
+>>>> @@ -33,6 +33,7 @@
+>>>>  #define PHY_ID_LAN8804              0x00221670
+>>>>  #define PHY_ID_LAN8841              0x00221650
+>>>>  #define PHY_ID_LAN8842              0x002216C0
+>>>> +#define PHY_ID_LAN9645X             0x002216D0
+>>>>
+>>>>  #define PHY_ID_KSZ886X              0x00221430
+>>>>  #define PHY_ID_KSZ8863              0x00221435
+>>>>
+>>>> ---
+>>>> base-commit: cbe8e6bef6a3b4b895b47ea56f5952f1936aacb6
+>>>> change-id: 20260114-phy_micrel_add_support_for_lan9645x_internal_phy-6ef9a782cb8b
+>>>>
+>>>> Best regards,
+>>>
+>>> Thanks,
+>>>
+>>> Emil
+>>>
+>>
+>>
 > 
-> Thank you
-> Alex
-> 
-> >  		if (err) {
-> > --
-> > 2.51.0
+
