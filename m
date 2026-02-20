@@ -1,81 +1,98 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 867663469F5;
-	Fri, 20 Feb 2026 13:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690151CD1E4
+	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 13:17:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.67.36.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771593227; cv=none; b=oBa/pnobhcEoN9V8rdwkKcb0wuxzl9bjWm6dceT2LHMPj63XL4BFBo43tpnUR/KBQLeje4zb97CgHbLMXK7D1MqGtt33Zc9ptCvLhAT1JJ/QnvexMnR07rDhfaKby9RaTd0n/ZfceElDm0PNT3XGD01TqBMaknPJn8k4LUt5rfE=
+	t=1771593426; cv=none; b=H87GJuHkcnBB1ldk8AxK8rukiLf+WeYkZN0/18FiwEYH/ugSi0MsGktXNxkXogApQXRzSF0a3UXcQYW8AS2qUPyOgyU5E6hupcSq4JWe7xl5q9aPlPGEHPV11OGmsBNzH8a0LaGk943IyhCopIL+Ux2IqIAhedSOjJJr6o63XZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771593227; c=relaxed/simple;
-	bh=yJXCHZVeM+0E7vosFIV4IAwQF0MV0rsZqJp0HABhWu8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HD7XRNDcajRWW3obFutl26OHmH4wao7IIoxYpdCCK8b58d0mi3nhDba/GwOnviOK9nqQiKaV/v3uelYAtsHa9acQnGjXNMXJ02wNkhZwNJkm1J8/vTXSgGfd1CsoQBu1R8CeS0pM6zkRodcgH26etmDNvJHj1sxnDsVGk5AMGiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=0CuWvvNp; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1771593426; c=relaxed/simple;
+	bh=q9gM4WcCB+3YQq34MqtXMaVgKKPtqg0dElkkwl6GeiE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=XrCEqhAmKI6z/s2YFPIKvE9CkLrifkl/e95NFsjkthPqB8meEeLcKyC40O2VG5A5dS7DC7r3LhJGg6hdePBKu7TwVUOzDyvwgJkWvQpV52vwWP5b6dOlmK97cp2jJnYxVHaV5OVq3GI+5HsD0dZoOnaxJ6zn3yfe058HBhLZvhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net; spf=pass smtp.mailfrom=posteo.net; dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b=A/selhji; arc=none smtp.client-ip=185.67.36.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=posteo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="0CuWvvNp"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=63PZ5ikUAAIUS3H+LncoEFZzYKIrjKtt3if4XIt6msc=; b=0CuWvvNpbCYIP7ytGRFlaGjNy9
-	7Li+Do5DI9p9LJ1rh9vWN7+ON6VDwnZ8sV6WUOk2CQ1jgRULJlNFRmLgtQxcJVHUXY0LGqU9+u3oo
-	/0tEbSMWJ+xOaBkGWDBhHukhLN2/awYRgH+eDEl6t8hYK5DjyOiBqBcpClVQQYEZkp9Q=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vtQK5-0084O8-IN; Fri, 20 Feb 2026 14:13:33 +0100
-Date: Fri, 20 Feb 2026 14:13:33 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Max Hsu <max.hsu@sifive.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, Paul Walmsley <pjw@kernel.org>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Conor Dooley <conor@kernel.org>, Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	Paul Walmsley <paul.walmsley@sifive.com>
-Subject: Re: [PATCH 3/5] net: macb: Add support for SiFive FU740-C000
-Message-ID: <45821cd4-214c-43c0-ab2d-bbf34d9ec911@lunn.ch>
-References: <20260220-fu740-v1-0-c8af54130c58@sifive.com>
- <20260220-fu740-v1-3-c8af54130c58@sifive.com>
+	dkim=pass (2048-bit key) header.d=posteo.net header.i=@posteo.net header.b="A/selhji"
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 15949240028
+	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 14:16:56 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=posteo.net; s=2017;
+	t=1771593417; bh=lKGbTAK+8Ycx+lfEIrFGLvCjSvLBMGu3yMZUrY+M6Xw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type:
+	 From;
+	b=A/selhji/JpxAz0OneLMCzvLoQ6zDi2bnVm7IHwAVtrmog/dgxyjx/Ah5w3Y4tdrc
+	 2e920XCyMmhF9pDDMijWDMEetYg7wMcL25DFubNYBN9ewebJ/JN0PhoU2HGK32xwYY
+	 lW68aNg/XPbI39moeCAXnrf4zJhUjpfaTce49BhnFMyaVc0VWX8oneJBAKR8LYHez+
+	 OzunoYof3Fok0cars8b7KeqyIbim+baBFcuW7DH2hqq6fLib1ITvNVZLVnHefjGFlO
+	 fdc+YAxd340bsky9YVWC3EwBik6fgE1eTH9Wkop8xCfpD/MtDjkd35Zb1Tw6UaBkBU
+	 QR6PuEtx4YKeQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4fHW480krLz6txm;
+	Fri, 20 Feb 2026 14:16:56 +0100 (CET)
+From: Charalampos Mitrodimas <charmitro@posteo.net>
+To: Ian Ray <ian.ray@gehealthcare.com>
+Cc: netdev@vger.kernel.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] nfc: nxp-nci: allow GPIOs to sleep
+In-Reply-To: <20260220115906.102470-1-ian.ray@gehealthcare.com>
+References: <20260220115906.102470-1-ian.ray@gehealthcare.com>
+Date: Fri, 20 Feb 2026 13:16:56 +0000
+Message-ID: <875x7rblmg.fsf@posteo.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260220-fu740-v1-3-c8af54130c58@sifive.com>
+Content-Type: text/plain
 
-On Fri, Feb 20, 2026 at 04:27:07PM +0800, Max Hsu wrote:
-> Add a distinct configuration for the SiFive FU740-C000 ethernet
-> controller to comply with the SiFive IP versioning guidelines.
+Ian Ray <ian.ray@gehealthcare.com> writes:
 
-We are in the merge window at the moment, so net-next is closed.
+> Allow the firmware and enable GPIOs to sleep.
+>
+> This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
+> connected to I2C GPIO expanders.
+>
+> -- >8 --
+> kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
+> -- >8 --
+>
+> Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+> ---
+>  drivers/nfc/nxp-nci/i2c.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
+> index 6a5ce8ff91f0..b3d34433bd14 100644
+> --- a/drivers/nfc/nxp-nci/i2c.c
+> +++ b/drivers/nfc/nxp-nci/i2c.c
+> @@ -47,8 +47,8 @@ static int nxp_nci_i2c_set_mode(void *phy_id,
+>  {
+>  	struct nxp_nci_i2c_phy *phy = (struct nxp_nci_i2c_phy *) phy_id;
+>  
+> -	gpiod_set_value(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
+> -	gpiod_set_value(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
+> +	gpiod_set_value_cansleep(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
+> +	gpiod_set_value_cansleep(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
 
-As requested, please reword the commit messages to replace the SiFive
-guidelines with the generic DT guidelines. And repost when net-next
-reopens.
+Do we need a Fixes tag here?
 
-https://www.kernel.org/doc/html/latest/process/maintainer-netdev.html
+AFAICT this was introduced in
 
-The Subject line also needs to indicate which tree this is for.
+  6be88670fc59 ("NFC: nxp-nci_i2c: Add I2C support to NXP NCI driver")
 
-    Andrew
+which used gpio_set_value() instead of gpio_set_value_cansleep() from
+the beginning (that is before transitioning to gpiod_* calls in
+43201767b44c ("NFC: nxp-nci: Convert to use GPIO descriptor").
 
----
-pw-bot: cr
+This piece of code is present on active stable trees. So you also need
+to Cc stable?
+  
+Cheers,
+C. Mitrodimas
+
+>  	usleep_range(10000, 15000);
+>  
+>  	if (mode == NXP_NCI_MODE_COLD)
