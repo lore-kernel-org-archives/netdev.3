@@ -1,57 +1,57 @@
 Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F1DA32142E
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E2932470D
 	for <netdev@vger.kernel.org>; Fri, 20 Feb 2026 09:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771580508; cv=none; b=JMH9u8KSxhh0Cj4HUE5WM/o8Ktufu7MaW9MmJ+ZHGb47Fj913/3BK/bn3xO3I32SK1idEK6dPqZVMAeTucuhQDUNPe12yPnv/qhgZtLANa42ipl2OGqJ5Fgw0IyY3LQK5YYtkRKiYhLeM3a+cNMuho/KP2uhVVkPsaHJi1A1WRA=
+	t=1771580508; cv=none; b=nDlzTz6XwrV21DqDgaiJhfvPctORlvgmhbG0zzzo9OnggoqMR+y+tn2+OgslulPEXLguk5Rio4fBIasOhVnsD7GNS0b0i210cOF3xuazo7zsIFzI1/RncAf3TlHklnYuywAcIPiVXEoPGKTWYfPhNUwIiq98O3E6sJGDAS5Y76g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1771580508; c=relaxed/simple;
-	bh=HFzWxmlbNhIBhVI1cnJoHUIR+dDeir+GWvHzK4QG8b8=;
+	bh=zHsdc08qlTOz3ekq2MAtX1SSobflabv45ilvnE7IHvw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=No3gcHhcIpeGfGpVLnG3s6b8rbBJkZtioLp76KwLxi3zHFsWyJUYn9mm6LfRaf3jFsB/hKljUgHTpozu6GLTRsyQyiK8nlFRWag9DjgYBaeFSAa3l5ljK6cgswY2Nd0uldEJ4w1JmwZAvea3iAO5ZwOf2z+/19m906ZxCzUU9+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=qEkTPPsO; arc=none smtp.client-ip=62.96.220.36
+	 MIME-Version:Content-Type; b=Y+oC6FujpBUVliaeDvJWlckGVX0r9bBzynph084k+TIfvBcPZQcqt9iDTLeEGznWTAjbTdt+xEpTFdMeBhPm2+sW6upc9B2WnHIlzoFgyP1/iH4SE3O5bVDtQftkHkqQQIrSAJeIpEllsFK644mSJkbK4KopQnYiEXEva6JO+Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=VBxrf+1j; arc=none smtp.client-ip=62.96.220.36
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="qEkTPPsO"
+	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="VBxrf+1j"
 Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id EDA192083B;
-	Fri, 20 Feb 2026 10:41:44 +0100 (CET)
+	by mx1.secunet.com (Postfix) with ESMTP id 59A3A2083E;
+	Fri, 20 Feb 2026 10:41:45 +0100 (CET)
 X-Virus-Scanned: by secunet
 Received: from mx1.secunet.com ([127.0.0.1])
  by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id ftHsRzEGqFr5; Fri, 20 Feb 2026 10:41:43 +0100 (CET)
+ with ESMTP id SjERtMZovip1; Fri, 20 Feb 2026 10:41:44 +0100 (CET)
 Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 40B53207BE;
-	Fri, 20 Feb 2026 10:41:43 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 40B53207BE
+	by mx1.secunet.com (Postfix) with ESMTPS id 22CB22082E;
+	Fri, 20 Feb 2026 10:41:44 +0100 (CET)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 22CB22082E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1771580503;
-	bh=VPMsX6F5NJ655qnrq6CDtiXbKVq1dxmrpuOrXRjS3Ds=;
+	s=202301; t=1771580504;
+	bh=/N0Nbtkhxm+Pn6ttKIXqVUF5Me7PCRm8co6Wqhuig4M=;
 	h=From:To:CC:Subject:Date:In-Reply-To:References:From;
-	b=qEkTPPsOc5E2qM4MSIvcYCXVCjb+cDt4qPLfYfbiniqR9RsUvzoA2pMY/c+2RF8Y2
-	 bU7eRqccowTPREU5EnA7slq4A9PKMSIfT8WcASukTcmgdF7bGoJG5d6cam1wPRIRAg
-	 p4Oc3YndUYHzsDxFy74kX7+lb7NuOtFamVzVdyJPFtFVig5ZWvgR6h1f0Uq5huCdrp
-	 /0+LI8WN7YgiDvIzHl1iIElUALAaA77Qe9suXVRHl/hFl2ps4CB0mK/nBHDZ/F4Rqb
-	 HUTGuue/1XfBVBqy7ZaICXtWd4nG+Oo6j8ujX6zvEJxmZ16MEnZjSbrvKx+Ag7WmEm
-	 S6XpZU8lSVtZw==
+	b=VBxrf+1jEw86bjm7zwUm6it5K2ipMfi9tViiTeWv4tpUDgbXLileGbOTwIt2xnEUj
+	 9SMV6H/fZN4sH45YW4jXvKjaT5/PAdL8x25yA5wcfRaGszN9qMqwc/GUe7ii4OscU2
+	 XJOyBmzl6aXO7EKdAgHxsz7WALFEx1LCJRPJeS9GvaYiHk7BfItt+QNZaHDQMviPUe
+	 Xq5A7GFaa5Nuxz6CX2DGDt7aEeZDgs+lMbVRAYdK2OddG6Mg63ZFbqkYholfXH8gl4
+	 mF3S8+VaMeN9AFgyIsfvDYKT48MMSMpQdLVMh3wMUCn1u/ejE9sWQluLS7ZKu7Jylz
+	 b5lPVh2DJ53Ew==
 Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
  with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 20 Feb
- 2026 10:41:42 +0100
-Received: (nullmailer pid 16451 invoked by uid 1000);
-	Fri, 20 Feb 2026 09:41:41 -0000
+ 2026 10:41:43 +0100
+Received: (nullmailer pid 16445 invoked by uid 1000);
+	Fri, 20 Feb 2026 09:41:40 -0000
 From: Steffen Klassert <steffen.klassert@secunet.com>
 To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>
 CC: Herbert Xu <herbert@gondor.apana.org.au>, Steffen Klassert
 	<steffen.klassert@secunet.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 3/3] xfrm: always flush state and policy upon NETDEV_UNREGISTER event
-Date: Fri, 20 Feb 2026 10:41:17 +0100
-Message-ID: <20260220094133.14219-4-steffen.klassert@secunet.com>
+Subject: [PATCH 1/3] xfrm6: fix uninitialized saddr in xfrm6_get_saddr()
+Date: Fri, 20 Feb 2026 10:41:15 +0100
+Message-ID: <20260220094133.14219-2-steffen.klassert@secunet.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260220094133.14219-1-steffen.klassert@secunet.com>
 References: <20260220094133.14219-1-steffen.klassert@secunet.com>
@@ -66,106 +66,77 @@ Content-Type: text/plain
 X-ClientProxiedBy: EXCH-02.secunet.de (10.32.0.172) To EXCH-01.secunet.de
  (10.32.0.171)
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-syzbot is reporting that "struct xfrm_state" refcount is leaking.
+xfrm6_get_saddr() does not check the return value of
+ipv6_dev_get_saddr(). When ipv6_dev_get_saddr() fails to find a suitable
+source address (returns -EADDRNOTAVAIL), saddr->in6 is left
+uninitialized, but xfrm6_get_saddr() still returns 0 (success).
 
-  unregister_netdevice: waiting for netdevsim0 to become free. Usage count = 2
-  ref_tracker: netdev@ffff888052f24618 has 1/1 users at
-       __netdev_tracker_alloc include/linux/netdevice.h:4400 [inline]
-       netdev_tracker_alloc include/linux/netdevice.h:4412 [inline]
-       xfrm_dev_state_add+0x3a5/0x1080 net/xfrm/xfrm_device.c:316
-       xfrm_state_construct net/xfrm/xfrm_user.c:986 [inline]
-       xfrm_add_sa+0x34ff/0x5fa0 net/xfrm/xfrm_user.c:1022
-       xfrm_user_rcv_msg+0x58e/0xc00 net/xfrm/xfrm_user.c:3507
-       netlink_rcv_skb+0x158/0x420 net/netlink/af_netlink.c:2550
-       xfrm_netlink_rcv+0x71/0x90 net/xfrm/xfrm_user.c:3529
-       netlink_unicast_kernel net/netlink/af_netlink.c:1318 [inline]
-       netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1344
-       netlink_sendmsg+0x8c8/0xdd0 net/netlink/af_netlink.c:1894
-       sock_sendmsg_nosec net/socket.c:727 [inline]
-       __sock_sendmsg net/socket.c:742 [inline]
-       ____sys_sendmsg+0xa5d/0xc30 net/socket.c:2592
-       ___sys_sendmsg+0x134/0x1d0 net/socket.c:2646
-       __sys_sendmsg+0x16d/0x220 net/socket.c:2678
-       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-       do_syscall_64+0xcd/0xf80 arch/x86/entry/syscall_64.c:94
-       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+This causes the caller xfrm_tmpl_resolve_one() to use the uninitialized
+address in xfrm_state_find(), triggering KMSAN warning:
 
-This is because commit d77e38e612a0 ("xfrm: Add an IPsec hardware
-offloading API") implemented xfrm_dev_unregister() as no-op despite
-xfrm_dev_state_add() from xfrm_state_construct() acquires a reference
-to "struct net_device".
-I guess that that commit expected that NETDEV_DOWN event is fired before
-NETDEV_UNREGISTER event fires, and also assumed that xfrm_dev_state_add()
-is called only if (dev->features & NETIF_F_HW_ESP) != 0.
+=====================================================
+BUG: KMSAN: uninit-value in xfrm_state_find+0x2424/0xa940
+ xfrm_state_find+0x2424/0xa940
+ xfrm_resolve_and_create_bundle+0x906/0x5a20
+ xfrm_lookup_with_ifid+0xcc0/0x3770
+ xfrm_lookup_route+0x63/0x2b0
+ ip_route_output_flow+0x1ce/0x270
+ udp_sendmsg+0x2ce1/0x3400
+ inet_sendmsg+0x1ef/0x2a0
+ __sock_sendmsg+0x278/0x3d0
+ __sys_sendto+0x593/0x720
+ __x64_sys_sendto+0x130/0x200
+ x64_sys_call+0x332b/0x3e70
+ do_syscall_64+0xd3/0xf80
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Sabrina Dubroca identified steps to reproduce the same symptoms as below.
+Local variable tmp.i.i created at:
+ xfrm_resolve_and_create_bundle+0x3e3/0x5a20
+ xfrm_lookup_with_ifid+0xcc0/0x3770
+=====================================================
 
-  echo 0 > /sys/bus/netdevsim/new_device
-  dev=$(ls -1 /sys/bus/netdevsim/devices/netdevsim0/net/)
-  ip xfrm state add src 192.168.13.1 dst 192.168.13.2 proto esp \
-     spi 0x1000 mode tunnel aead 'rfc4106(gcm(aes))' $key 128   \
-     offload crypto dev $dev dir out
-  ethtool -K $dev esp-hw-offload off
-  echo 0 > /sys/bus/netdevsim/del_device
+Fix by checking the return value of ipv6_dev_get_saddr() and propagating
+the error.
 
-Like these steps indicate, the NETIF_F_HW_ESP bit can be cleared after
-xfrm_dev_state_add() acquired a reference to "struct net_device".
-Also, xfrm_dev_state_add() does not check for the NETIF_F_HW_ESP bit
-when acquiring a reference to "struct net_device".
-
-Commit 03891f820c21 ("xfrm: handle NETDEV_UNREGISTER for xfrm device")
-re-introduced the NETDEV_UNREGISTER event to xfrm_dev_event(), but that
-commit for unknown reason chose to share xfrm_dev_down() between the
-NETDEV_DOWN event and the NETDEV_UNREGISTER event.
-I guess that that commit missed the behavior in the previous paragraph.
-
-Therefore, we need to re-introduce xfrm_dev_unregister() in order to
-release the reference to "struct net_device" by unconditionally flushing
-state and policy.
-
-Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
-Fixes: d77e38e612a0 ("xfrm: Add an IPsec hardware offloading API")
-Cc: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Fixes: a1e59abf8249 ("[XFRM]: Fix wildcard as tunnel source")
+Reported-by: syzbot+e136d86d34b42399a8b1@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68bf1024.a70a0220.7a912.02c2.GAE@google.com/T/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 ---
- net/xfrm/xfrm_device.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ net/ipv6/xfrm6_policy.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_device.c b/net/xfrm/xfrm_device.c
-index 52ae0e034d29..550457e4c4f0 100644
---- a/net/xfrm/xfrm_device.c
-+++ b/net/xfrm/xfrm_device.c
-@@ -544,6 +544,14 @@ static int xfrm_dev_down(struct net_device *dev)
- 	return NOTIFY_DONE;
- }
+diff --git a/net/ipv6/xfrm6_policy.c b/net/ipv6/xfrm6_policy.c
+index 1f19b6f14484..125ea9a5b8a0 100644
+--- a/net/ipv6/xfrm6_policy.c
++++ b/net/ipv6/xfrm6_policy.c
+@@ -57,6 +57,7 @@ static int xfrm6_get_saddr(xfrm_address_t *saddr,
+ 	struct dst_entry *dst;
+ 	struct net_device *dev;
+ 	struct inet6_dev *idev;
++	int err;
  
-+static int xfrm_dev_unregister(struct net_device *dev)
-+{
-+	xfrm_dev_state_flush(dev_net(dev), dev, true);
-+	xfrm_dev_policy_flush(dev_net(dev), dev, true);
-+
-+	return NOTIFY_DONE;
-+}
-+
- static int xfrm_dev_event(struct notifier_block *this, unsigned long event, void *ptr)
- {
- 	struct net_device *dev = netdev_notifier_info_to_dev(ptr);
-@@ -556,8 +564,10 @@ static int xfrm_dev_event(struct notifier_block *this, unsigned long event, void
- 		return xfrm_api_check(dev);
- 
- 	case NETDEV_DOWN:
--	case NETDEV_UNREGISTER:
- 		return xfrm_dev_down(dev);
-+
-+	case NETDEV_UNREGISTER:
-+		return xfrm_dev_unregister(dev);
+ 	dst = xfrm6_dst_lookup(params);
+ 	if (IS_ERR(dst))
+@@ -68,9 +69,11 @@ static int xfrm6_get_saddr(xfrm_address_t *saddr,
+ 		return -EHOSTUNREACH;
  	}
- 	return NOTIFY_DONE;
+ 	dev = idev->dev;
+-	ipv6_dev_get_saddr(dev_net(dev), dev, &params->daddr->in6, 0,
+-			   &saddr->in6);
++	err = ipv6_dev_get_saddr(dev_net(dev), dev, &params->daddr->in6, 0,
++				 &saddr->in6);
+ 	dst_release(dst);
++	if (err)
++		return -EHOSTUNREACH;
+ 	return 0;
  }
+ 
 -- 
 2.43.0
 
