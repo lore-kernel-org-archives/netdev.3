@@ -1,169 +1,91 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012026.outbound.protection.outlook.com [52.101.43.26])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF8120B22;
-	Mon, 23 Feb 2026 07:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.26
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771830370; cv=fail; b=ABAB9ObkNv3viFaAtZfLMCWVZNFSr9EydV7CnQRhpMonAttASMg7tSOLtL0JrIaTucaNwDraKTVqHYu3WUkMV3g3w0VMqGGlEDawKEY2DyQkyYz0LEeZ0HU2nIHBFNLAOmJxhgIvd5t4FKlpNFnpoCvVJhEUs6v7AygfLvf1ExE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771830370; c=relaxed/simple;
-	bh=hSSS0C7TWpKmkPlqmMB1gTSQLac51WZlC09b52c+oWE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=roSHwrQjxJXYqTH/7eYwPEZPvCNJlK7QZtj9WjnLS900XKh/85fzOcMLeX/nOi9qzQxi+H12e0dQdK+CXm6dwSrpf9MDck6f1nf9lLdwi7ZtXPdbD++j6X7w6vREk7LCS2kY9c9qa9x+E7F9wvXxfIRCwcUnq3QAbPuMQYxBzUQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com; spf=pass smtp.mailfrom=gehealthcare.com; dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b=ZEDqpt2P; arc=fail smtp.client-ip=52.101.43.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gehealthcare.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gehealthcare.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0883B34A796;
+	Mon, 23 Feb 2026 07:17:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771831030; cv=none; b=CX1irhgdpoWGytZ5hKoQs3EIS0uVbvGqpkKrRI/A5tLoiCxkhJ7I+ynq/I/woJnSn6LmjUcTuA39uSCMAny0Img239+x0yLH0TDGN9G5Q4J7JYIqq2Gy+Z9gokgkpIO0k10EzKmCCtK9nK/5n3R930fhC/V+hEmYqWQ5NuH7ozE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771831030; c=relaxed/simple;
+	bh=f8l2/4noAcJnq+ttTInXUmnEOp8ump43LAOqmtY5gJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NWRcqRUmc6UjLjaemoaLIyrtj0zfOlrmUkmfv1dbgzUCExh1QUklKdQt2qqlQUJvPWaOVf/AsoqwEAdWwV8/srHdJKlF06OpqOW+yXjKGz64m+slIqPJFO0BHF8oHIepshtVBr/9yJkiImR4DjfCqJrYXl9lJn7ILSFoBDcy3Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YtlQerpo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gehealthcare.com header.i=@gehealthcare.com header.b="ZEDqpt2P"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bjp4UdX/yCSe6GOBNyRBFp/AZsI0HJ3xWZuOinXdEw+bOrPD2DBAZu7EAT5CsoihuHLF90KuVNkYak0G2xRYRjExtQV9lPyHyI14Gb6KTxyGWQ3SEPidTKvh8XVTqRZ+UwAPLOVYyQKMwZgCQMOT0DN9ZRsY/LwOP8OJuoKKJ69n0seOmOI5I5tlnuWdbNKZ3ZRHu3QllmdBh+PgiLsrWX5jjs5I9k2KEHUHscWwEe07Ep7AVRNeW6eoVGGIaVKkj1ZgyCSMi+6z1DUanUels8ab2XOC8ay9fJRoEWm7WH5gls9r0GGKtCZGSyGQM3RZNZCTewW4lf89LIS5/1maDQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wumT2EugyCVjTXuG6hunuDcPHG6F1xmYs1tgjSgoyXk=;
- b=JWSCVtsq3qay8C0bqJsX75XOU9YIe789O3FfmmbEKhOkG4NyZWkcIBfRL+u4YsnrkKHfEmlH3/vfRnmeovRkuu7KpJLASZ9Ohx6Y71yXQi1qaMPn/VouvBCRYXqKHSGPcyaGipMoYxWajCDG7cfLjcpt0bOhEBe/s+xQEVuKEX/QApac6CogT59caZw9X3FXqGUE0Z2vWcoKe30wjCJoNdR1RggFldl1po71h8C1G6F+pnwUAm1Orc3C+wy0zpR6qMwg/p1nryOhYNgbJs9QMQ/M/rmiEhKEK7MsmFj0vs8obsFKS1uJbmBz87rxT60NHPKpcika+JknTJoRBtJO9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 165.85.157.49) smtp.rcpttodomain=vger.kernel.org
- smtp.mailfrom=gehealthcare.com; dmarc=fail (p=quarantine sp=quarantine
- pct=100) action=quarantine header.from=gehealthcare.com; dkim=none (message
- not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gehealthcare.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wumT2EugyCVjTXuG6hunuDcPHG6F1xmYs1tgjSgoyXk=;
- b=ZEDqpt2PQ2JHyubHs0rxeQkkTU25e9YG2Vw7v81LS81vh93+l/8XsztnxliDVHVbRp5NwJlsQOsMedGfezZRtmBvIo9lJ9d/aXDwGTvlsyEXW19CyRoTn3lS2S6zLa7fOeG9wsXnfby89ZvhOQaggiLDzhlF0H6/ZhgBaXdkAx/Qya1Yv4cO9ogkefTI3SjOwT9aw9mDn1CqrPs8Z8pngr0Pmmz7MXJL0EvXCOhtGWtLJn/7/6HOD36rv13lufVoR036K/EXpRHzc/FbrCFmpWC+/N1DSR+6e2Zd+1UDHDdNC/V1QJQC7W8dE7rOB2px+vsGChwqXvtYQZiqN4RHKg==
-Received: from BL1PR13CA0402.namprd13.prod.outlook.com (2603:10b6:208:2c2::17)
- by PH3PPF7ADB2685F.namprd22.prod.outlook.com (2603:10b6:518:1::6b4) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9611.16; Mon, 23 Feb
- 2026 07:06:06 +0000
-Received: from BL02EPF00021F6C.namprd02.prod.outlook.com
- (2603:10b6:208:2c2:cafe::6b) by BL1PR13CA0402.outlook.office365.com
- (2603:10b6:208:2c2::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.21 via Frontend Transport; Mon,
- 23 Feb 2026 07:06:05 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 165.85.157.49)
- smtp.mailfrom=gehealthcare.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=quarantine header.from=gehealthcare.com;
-Received-SPF: Fail (protection.outlook.com: domain of gehealthcare.com does
- not designate 165.85.157.49 as permitted sender)
- receiver=protection.outlook.com; client-ip=165.85.157.49;
- helo=atlrelay1.compute.ge-healthcare.net;
-Received: from atlrelay1.compute.ge-healthcare.net (165.85.157.49) by
- BL02EPF00021F6C.mail.protection.outlook.com (10.167.249.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Mon, 23 Feb 2026 07:06:05 +0000
-Received: from zeus.fihel.lab.ge-healthcare.net (zoo13.fihel.lab.ge-healthcare.net [10.168.174.111])
-	by builder1.fihel.lab.ge-healthcare.net (Postfix) with ESMTP id A2102FB3EB;
-	Mon, 23 Feb 2026 09:06:03 +0200 (EET)
-From: Ian Ray <ian.ray@gehealthcare.com>
-To: Samuel Ortiz <sameo@linux.intel.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20Perrochaud?= <clement.perrochaud@nxp.com>
-Cc: Ian Ray <ian.ray@gehealthcare.com>,
-	stable@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V2] nfc: nxp-nci: allow GPIOs to sleep
-Date: Mon, 23 Feb 2026 09:05:32 +0200
-Message-ID: <20260223070533.106625-1-ian.ray@gehealthcare.com>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YtlQerpo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 016C0C116C6;
+	Mon, 23 Feb 2026 07:17:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771831029;
+	bh=f8l2/4noAcJnq+ttTInXUmnEOp8ump43LAOqmtY5gJo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YtlQerpoNYKVfHcLgBb2S2Rn5O8l5/2+anNviDJpHQ+u1MSlnjkwd05i9Jon/WhZf
+	 7Tpbo+BvCXkeLbWlGJrZMiNMqG2EkWME7OAx8Nb2ZODwuobR5ww2MXmPrg0m6Uf+oa
+	 G1Kl8Zid2rC8JWJcYxKGlPIVSER+DH6DThSVLwLJH/RkXVSdXr16vp6RIVkoW7UHr0
+	 t5AuN2FqKi7ahrG36Z7iz/TGmAZ/159LUq+xOT6CAJn+ZfsOCH/IVn8XuPzlhKBytm
+	 24a/F+FqxR3XHXg/5ta73UZdykp/r6L3B2rUuq8NqT0c1LWvgJmTov74Elctpr6X1e
+	 jdGn29aU9IfEg==
+Date: Fri, 20 Feb 2026 16:11:56 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Tariq Toukan <tariqt@nvidia.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Saeed Mahameed <saeedm@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	driver-core@lists.linux.dev, linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org, linux-rdma@vger.kernel.org,
+	Gal Pressman <gal@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>,
+	Amir Tzin <amirtz@nvidia.com>
+Subject: Re: [PATCH V2] driver core: auxiliary bus: Fix sysfs creation on bind
+Message-ID: <20260220141156.GE10607@unreal>
+References: <20260219210435.1769394-1-tariqt@nvidia.com>
+ <DGJCHYS3SKIQ.1TIHQCMEOCRC@kernel.org>
+ <20260220080413.GB10607@unreal>
+ <DGJQUDBN8WQ2.BPQRSNNGMH6X@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF00021F6C:EE_|PH3PPF7ADB2685F:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: cfd1ab45-a420-4a43-07fa-08de72aa0352
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|1800799024|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kToz3j5DYNKteXVPM7w6/xes1AqinfwcoPIQJ+azZiEoN050yfWR+WoUxwTU?=
- =?us-ascii?Q?hWbRigyVL2OLVvg578q839vLEHK7EFkM5Mc2/2VrYBPsHXW3fj3I2O+8rXRb?=
- =?us-ascii?Q?hh/mik0+wE1MzFkgBFCRnu1kS9ZLiMxLCj6s0jatHmCR5/HtjdzXhip6xYI5?=
- =?us-ascii?Q?+g9V3dy8ObOeAdzHwxCqQspxuSpG0g3rHMxCxrtNUbOA5ao4F5UT0peuDMGy?=
- =?us-ascii?Q?80unzN6c88xMsOt7T3gWS9cNsgdQgtVexb8q0o9H2BTM2TkIBVauKjxN1ZFR?=
- =?us-ascii?Q?tgbrvBQAaeylwdhYO1jJDUdkOAUADgo2F0ZfMF2VIkTJT30rYnrp85HKVQ3K?=
- =?us-ascii?Q?aGSr9aRBBZXXWogMqUbXvpR1OyVgUA2J0J03RJUWuM+nwsdLZijfdv9yQ/qT?=
- =?us-ascii?Q?/qI+vn2sZ34RKMIPaLXaNA2/6tt+UVPM9ruKO5DVvpRKRfkMpB+5OAxv2Ny1?=
- =?us-ascii?Q?e42AMmEbreUroKce9OXaRsAUuH8xRHWjV+nKK7AlsGl50iJeJC9GNMgHyOlt?=
- =?us-ascii?Q?GGDy6vha+lOjXqI23CNtQkohuOXbCo+kfGOCMQT8/mobBkIJnB/7FGsUJAr6?=
- =?us-ascii?Q?pWrLXk+qMLMJ6dDmYD+TeXvlDOY44wAqpqkf1ZvHuTbY+uAE3oRS2c6DxXKD?=
- =?us-ascii?Q?ektWkl34U/4krJcFBkfJEzhSCcVLJx1Xv3+b/WHrgy5AGx5h/4b+je+VkcEs?=
- =?us-ascii?Q?rKdYbmdnyGWIjcaKVX4mWmShz8NpEkbICFACuzjpFuUA6tSlA+QraMV0M75F?=
- =?us-ascii?Q?X/MIBltpaqMQpiU+mL95EivgBRATyztxNIUARkl5BSl+PGphdbYrZMFEKtjf?=
- =?us-ascii?Q?khqcBOCuuGS5XOT4vcjuSLy78yy6DM/dnD6DMSO9kIbmaQ3Np16iRlGj+XXf?=
- =?us-ascii?Q?Q+T3bxUMrto9axz+ariBIFjXVdoF1P+SEMVeHcIaRmhFU6Ds0FT1jpUVx2xR?=
- =?us-ascii?Q?Lqa2K28sP/4X2WUMP3+8zxLgTBbGv4WSa6oM0P1wINWzeHQqK6ebZ6sVJ4Oc?=
- =?us-ascii?Q?ecr1WAtjtUVZQ5d62V3lwf/NjjxJ/zF6jK8RWFX07lSfJWj0alXvC65hUuvr?=
- =?us-ascii?Q?o056pE+NXZ6TKBqDjboLSsF1WHmJVSwgoPYC0iVsfTBTQikBBh8W5k4vilxz?=
- =?us-ascii?Q?EXm4Rf3fL8WeeoNlXLUcINLGl0gLAqdh/BqDjY4bg9clkfugORPSM3BbwzjC?=
- =?us-ascii?Q?zZ8JlxIQhQf6TtbHtKd33Mx/ouoPKqSJaJFSV++VK5SHh+HWmWW+bXf5AVoK?=
- =?us-ascii?Q?HuoSDsD6+JVXISSMCP/UBOnIqSOaFdqQSiBw9fmIpz3nQwnKpBvyoeagjs7m?=
- =?us-ascii?Q?IDYa7gyOUi3tlRxXEX8CC6jHXl27r9Fp/V9/0W6Xz4Kb4ij43T/52CZU+gwY?=
- =?us-ascii?Q?5qu8WZwupkkSvdqqVWdHi3zArObUwQv7GKSnrcHuLic34HnG7dyh+BGDiQ3V?=
- =?us-ascii?Q?yrZh/vz2yyYMtZzBikov9ohj6HiRoX09BLp+63deofTjLqyb0qLg9As7z5Pl?=
- =?us-ascii?Q?xcNPlcpNGpBUJO/h1h1U2+yWVXi/n1J127H1CxBIDXsj+RiIdKNqAJ0u0Ge7?=
- =?us-ascii?Q?R1wdZMx//4L0a91Wuv9XRxOvVLsNyS2oSrldrer9qaoA2fXiBHcE5SAwDVdx?=
- =?us-ascii?Q?AxNtBnOg6+Y2ZCrAPDbndGpfAf/99FhyA2i6vWe3G+AL8ozLOLDsW0oAOtnK?=
- =?us-ascii?Q?P1kbOQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.85.157.49;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:atlrelay1.compute.ge-healthcare.net;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	L42WRQaEPoVnzvV8BQht1/+3qwmNKP/2vzX6XkCisKp2zToLUB3Vb9bKnLienFdGV5MCX88XtN4MuZSHZVhVjuZ02+lzZrU4EWxPxysSt+qaO24E0xxPtvVuFfR5lOciYEYCdNP1Tv3xC7jnHsAlnjtqtpU5JxuOhVuc3Gx7bR76NSJ+GUv0Ei3daWhK46b0bGHYZB5eM3LRb/2zjJfqPNoofKH1bNDDLSwTCNmB4tp9BGfy1flR6thEcZYlcrf+kqOwOtc9+0w1PpK9dyZ1DcyXqkl/O9DZyGeHGG62I9op0ugaailb/0hvT3ogndwalyxbOoMH5aVJHkswdL8lzAWCBZ0OGaxIWP1m6yjhGASrxgSCzO59BJd27WxDTIa+D/KAxjCea98Ci7af7qxbKXt31+mYpTYXl22ES3QS74G8ptNh+Unxm+Q7vvDctlyw
-X-OriginatorOrg: gehealthcare.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Feb 2026 07:06:05.6403
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cfd1ab45-a420-4a43-07fa-08de72aa0352
-X-MS-Exchange-CrossTenant-Id: 9a309606-d6ec-4188-a28a-298812b4bbbf
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=9a309606-d6ec-4188-a28a-298812b4bbbf;Ip=[165.85.157.49];Helo=[atlrelay1.compute.ge-healthcare.net]
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: TreatMessagesAsInternal-BL02EPF00021F6C.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF7ADB2685F
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DGJQUDBN8WQ2.BPQRSNNGMH6X@kernel.org>
 
-Allow the firmware and enable GPIOs to sleep.
+On Fri, Feb 20, 2026 at 12:14:12PM +0100, Danilo Krummrich wrote:
+> On Fri Feb 20, 2026 at 9:04 AM CET, Leon Romanovsky wrote:
+> > This init->add->remove->destroy pattern follows standard Linux kernel practice.
+> > I expect all current review tools to flag any missing function call
+> > among these three.
+> 
+> I'm not saying that the flow is not logical, goes against existing patterns,
+> etc., I'm saying that it is unnecessary to expose a new API to drivers, since
+> this is already handled internally.
+> 
+> I.e. we can easily fix the bug without increasing the API surface exposing a new
+> API to drivers.
+> 
+> > It is not, atomic is not a replacement for locking and this hunk is
+> > going to be racy as hell:
+> 
+> No, of course not, but it is sufficient to ensure that something runs only once.
 
-This fixes a `WARN_ON' and allows the driver to operate GPIOs which are
-connected to I2C GPIO expanders.
+No, atomic doesn't ensure that. Atomic makes sure that write/read
+variable isn't "interrupted" in the middle.
 
--- >8 --
-kernel: WARNING: CPU: 3 PID: 2636 at drivers/gpio/gpiolib.c:3880 gpiod_set_value+0x88/0x98
--- >8 --
+Multiple simultaneous calls to auxiliary_irq_dir_prepare() without lock can return
+that sysfs.irq_dir_exists isn't set yet, will try to call to devm_device_add_group()
+which will fail.
 
-Fixes: 6be88670fc59 ("NFC: nxp-nci_i2c: Add I2C support to NXP NCI driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
----
-Changes since v1:
- - Add fixes tag (thanks to Charalampos Mitrodimas)
- - Cc stable since there are a few in-tree boards using compatible "nxp,nxp-nci-i2c".
----
- drivers/nfc/nxp-nci/i2c.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> However, you are still right, since sysfs_create_group() can still fail, we
+> still need the mutex, because we may need to unwind.
 
-diff --git a/drivers/nfc/nxp-nci/i2c.c b/drivers/nfc/nxp-nci/i2c.c
-index 6a5ce8ff91f0..b3d34433bd14 100644
---- a/drivers/nfc/nxp-nci/i2c.c
-+++ b/drivers/nfc/nxp-nci/i2c.c
-@@ -47,8 +47,8 @@ static int nxp_nci_i2c_set_mode(void *phy_id,
- {
- 	struct nxp_nci_i2c_phy *phy = (struct nxp_nci_i2c_phy *) phy_id;
- 
--	gpiod_set_value(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
--	gpiod_set_value(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_fw, (mode == NXP_NCI_MODE_FW) ? 1 : 0);
-+	gpiod_set_value_cansleep(phy->gpiod_en, (mode != NXP_NCI_MODE_COLD) ? 1 : 0);
- 	usleep_range(10000, 15000);
- 
- 	if (mode == NXP_NCI_MODE_COLD)
--- 
-2.49.0
+If you decide to keep lock, you won't need atomic_t for irq_dir_exists.
 
+Thanks
