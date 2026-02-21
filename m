@@ -1,129 +1,103 @@
-Received: from fhigh-a2-smtp.messagingengine.com (fhigh-a2-smtp.messagingengine.com [103.168.172.153])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C51156F20;
-	Sat, 21 Feb 2026 14:25:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD173EBF31
+	for <netdev@vger.kernel.org>; Sat, 21 Feb 2026 15:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771683935; cv=none; b=dVWawapUHDWFb0vV+S6gdePCjo2nykBh5ez8KbRWVKqectEcMkgL4Ig/nOhq8YOQWxAhrDddvoHSKasHhwfWz10HJ5DE5OCft/mtRtQ52jK8W+4BphyWyBEOzvoSp9Ljxm3YJ8aB9Wcvbhtke9P9xLq+GsdDMVdzwzDKqOrlZ+w=
+	t=1771686349; cv=none; b=k/+wHGah1XHv/fg3inS6SLnUwi8gXnI9eKnB9HcRqnwWSXVy/o/GdXGmtxbkaeqBI/hI1lPJ3TCPEZoBpv8LiVU3hdZhEqEW98jvLcjCNPrrU8Y6tXKTQ+S4GFmX8Gbh23hJ2KU33HSPQDySZudS58PKCoi5AbErF69Jhdf1lfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771683935; c=relaxed/simple;
-	bh=otMyq/aQ3qug49eFV1PgpQjmdBBXQNS8WTZj5UYz3/8=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=gxw7wZCVPrccLD9S5fR1BPnMmXq18YEaq99IpAK8oZmss0l25wfUMiL/Kt3fK5PsdyzWA5uOH3cPVc5ojT5XiItQqPeMjEzhgBcdCLO1xrOK8gXEAjpvIKyP4loNHEWGOhH/gDpWnjfFmlxCCVjSDOTbosbmqJCjyuxMJDr6hBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=Cc7wubvG; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TXwF0A3f; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1771686349; c=relaxed/simple;
+	bh=1SoG0KFED/ZRemdzvZfEt59idgMoFs+ppiHQOWwuSWM=;
+	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=LgLTx951OPcVyX+UuXpVo2TBDro5AsKrFvO1Sh99sEAEwH+R/O7rbk/8f2Dt2nXcXjR9zk1L/HRwvxutdZXdKIyAIA34Wjr+A9SASxpRbsOP2RW32BEcYZTB94Tn8RKndmEIhOh0nUzezY2OMH1MhsRz4mXTX83HMOpXayteU+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=1Un026cT; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="Cc7wubvG";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TXwF0A3f"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 8D9B114000AF;
-	Sat, 21 Feb 2026 09:25:32 -0500 (EST)
-Received: from phl-imap-02 ([10.202.2.81])
-  by phl-compute-04.internal (MEProxy); Sat, 21 Feb 2026 09:25:32 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1771683932;
-	 x=1771770332; bh=GFuuMBED/UJaIkcfl/purSOfaX3aDg7So0nftdQcupg=; b=
-	Cc7wubvGSlVCzIGR4PFcGRLjg2jbz0QNqUNGQCkKC8WxAK3FH0mRmvgWizTkEAdz
-	Zp6wvxCnfFVGHnTpEpm1YwNt3polZYWMky4g8jMaCmXTkOPslCwxY33A17nCzrb2
-	16zyofTpKb2jbJx2Bi5Ir65B9LDPzHM7+uX8xDvBoUWayfZDrJIpd6eFsiuDDxua
-	zHosKu9mHbtuxGBmdZPXhIX+PsbnZGZjMyx1rNgfrRykNBz4nLAw+kjmQa326Sar
-	5rE9HzpwU2G28EADonHnlqQl38wYau3P4atRGoddTTiH3HavaHmwOHy7I7A3Wf+f
-	+JYCmCzl4pJSvOBYmpojsA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1771683932; x=
-	1771770332; bh=GFuuMBED/UJaIkcfl/purSOfaX3aDg7So0nftdQcupg=; b=T
-	XwF0A3fSWkILfVh8WoG70+zGpGTm0kSKrMh2KOla/rb07ZRFLoK335pvqL9d/IPY
-	9YHh8visIVsQHr6y4IXVgduOyyMONeYNKQ+sZrcyscNGN9McMmUIEXZQO//uFMGw
-	DoZRvfO+kLkNpbig+KElLU6+ZtvmUsfvOeCxbeY+HbPq5vO9MNUcIWv07NPuXoEH
-	yP/HRJyKeHcaU4fKvWDjAsiszodjbfZEF7SBCGQuZgXKZ9uL89Z/JjzDyz8Bcdy7
-	v3hdabEqMTXPCIY1yfWQhcTDfquZtotTKpb52FLnnx1/932brIzdrUx6dlyqJRy4
-	9edPA1/uUxFf77ZzB8yow==
-X-ME-Sender: <xms:W8CZadez4PC9mSPnfZ98qm2--th0e6uljFFDjREMi_IddhZFrvgVfg>
-    <xme:W8CZaWCQAol7kIkiPydT4f5zeW5UNZ6uMSyAfXF8fPoJlbAyqanYBPDkJYGMZJiBC
-    aFhxU9FDSJ-wFJDZN8l4KwRhheLqwM5YbDfPaVrGSkQLpCPilWlqfY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeduiedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
-    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
-    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
-    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhu
-    thdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoh
-    epohhlthgvrghnvhesghhmrghilhdrtghomhdprhgtphhtthhopegvughumhgriigvthes
-    ghhoohhglhgvrdgtohhmpdhrtghpthhtoheprghrnhgusehkvghrnhgvlhdrohhrghdprh
-    gtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvgif
-    sehluhhnnhdrtghhpdhrtghpthhtohepuggrnhhivghlsehmrghkrhhothhophhirgdroh
-    hrghdprhgtphhtthhopehprggsvghnihesrhgvughhrghtrdgtohhmpdhrtghpthhtohep
-    lhhinhhugiesrhhovggtkhdquhhsrdhnvght
-X-ME-Proxy: <xmx:W8CZadY3GJ5GAkuESU9NxIfDG1aHqfh_p8GICEugtLki4_ZA_sBN8w>
-    <xmx:W8CZaayILHKj1rV30vE-eddt6J3Zda1tJh1-I6n--JO-UAf969JIpQ>
-    <xmx:W8CZacPaQEM5dmvyfubcJR9p7LITw2oNxou2nbHBjnsMF2ltfKYNPQ>
-    <xmx:W8CZaZf2WRLHfOamQj3U73JbfhpYx5XCo0lpmMC4A20b1OTs_WhBIw>
-    <xmx:XMCZaQ38u20kVn5RQMlbt38Cmi5PDgI-fmGfNd5oTIXo90RYtTydTrx3>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id DA248700065; Sat, 21 Feb 2026 09:25:31 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="1Un026cT"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:To:From:Date:Reply-To:Cc:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=4Zxa70BsPBpyeKBArzZz+QYGD7sAD7nz2aOkeOx+vHw=; b=1Un026cTp3Z3wmcnuxdMV6H9iY
+	U+uZJ7CSk/DbOWHuZ5DI6Xvf8Uy1i6OcR/THZWtjx80Ty4HCW2NDXz74fp6K1DrP9ST+dN+63E8Nh
+	/oNmaXZ7dsgVKNqxMTFjUttqVhX8Ui7s0CYu8c5B8o/a/kaOmYp4F0OJspzBtzsgxLkdlccC351OY
+	zBd58xJ4DdxVjfgkYDi2fzgLlMS24JdpYS15hCb88AeFSzFUYNnY/837H3chhGQba3VTEg/M/I+7N
+	TKF1MogmgkcZbLXdQdRfaQdSKjbN0Ll5N+DV+g52ZovoUwwjPAQul7BRZSxFLD1AvAPH8VJWDcNnM
+	wlhlTi4w==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:38186)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vtoYD-000000002bV-0iuu
+	for netdev@vger.kernel.org;
+	Sat, 21 Feb 2026 15:05:45 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vtoYC-000000005Ps-0BTq
+	for netdev@vger.kernel.org;
+	Sat, 21 Feb 2026 15:05:44 +0000
+Date: Sat, 21 Feb 2026 15:05:43 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: netdev@vger.kernel.org
+Subject: Question: stmmac xmit: GSO vs TAPRIO max-sdu
+Message-ID: <aZnJx4Mea7Ns-tsU@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: ABuPgj6G8jlB
-Date: Sat, 21 Feb 2026 15:24:44 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Guenter Roeck" <linux@roeck-us.net>,
- "Daniel Golle" <daniel@makrotopia.org>
-Cc: "Arnd Bergmann" <arnd@kernel.org>, "Andrew Lunn" <andrew@lunn.ch>,
- "Vladimir Oltean" <olteanv@gmail.com>,
- "David S . Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, Netdev <netdev@vger.kernel.org>,
- linux-kernel@vger.kernel.org, linux-hwmon@vger.kernel.org
-Message-Id: <3deb6138-e331-4e35-bc56-653a0a741a46@app.fastmail.com>
-In-Reply-To: <9d7aee5a-ac46-47d9-ac26-0f3a63b6a8ab@roeck-us.net>
-References: <20260216105522.2382373-1-arnd@kernel.org>
- <aZMKXavVQPelSXcG@makrotopia.org>
- <306e79fb-f3ee-434e-a90e-547e97d2a5aa@roeck-us.net>
- <c881a13a-0687-4e4d-b70b-900f91acd212@app.fastmail.com>
- <70a195ab-3b61-47fb-a361-17b53cf7bdda@roeck-us.net>
- <aZNEKS-fefEgqhTs@makrotopia.org>
- <316a6ee6-9e5e-4518-8dc4-2f39805934a9@app.fastmail.com>
- <9d7aee5a-ac46-47d9-ac26-0f3a63b6a8ab@roeck-us.net>
-Subject: Re: [PATCH] net: dsa: MxL862xx: don't force-enable MAXLINEAR_GPHY
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Sat, Feb 21, 2026, at 02:25, Guenter Roeck wrote:
-> On 2/16/26 08:27, Arnd Bergmann wrote:
->> On Mon, Feb 16, 2026, at 17:22, Daniel Golle wrote:
->>> On Mon, Feb 16, 2026 at 08:20:41AM -0800, Guenter Roeck wrote:
->> 
->> What I meant above is that I had considered and rejected the extra
->> dependencies in the ethernet driver. I don't think there is a good
->> way to add inline helpers. Technically, one could use IS_REACHABLE()
->> here, to stub out the functions when the caller is built-in, but
->> I find that even worse because it replaces a trivial build-time
->> failure with very subtle runtime bug.
->> 
->
-> Lots of kernel APIs have dummy implementations. hwmon isn't really that
-> different to those. Also, arguably, that would not be a subtle runtime
-> bug but a feature.
+Hi,
 
-I would argue that all of them are wrong. I currently count 33 uses
-of IS_REACHABLE() in header files, which is not a lot, but I would
-prefer replacing these with proper Kconfig dependencies than to
-add more for cases we already handle correctly.
+I've recently been looking at stmmac's descriptor code (and finding a
+few bugs along the way...) I think I've found another bug.
 
-     Arnd
+stmmac implements various TC offloading, including some TAPRIO support.
+This supports max_sdu, but it seems it is only implemented for the
+non-GSO path:
+
+        if (skb_is_gso(skb) &&
+            skb_shinfo(skb)->gso_type & priv->gso_enabled_types)
+                return stmmac_tso_xmit(skb, dev);
+
+        if (priv->est && priv->est->enable &&
+            priv->est->max_sdu[queue]) {
+                sdu_len = skb->len;
+                /* Add VLAN tag length if VLAN tag insertion offload is requeste+d */
+                if (priv->dma_cap.vlins && skb_vlan_tag_present(skb))
+                        sdu_len += VLAN_HLEN;
+                if (sdu_len > priv->est->max_sdu[queue]) {
+                        priv->xstats.max_sdu_txq_drop[queue]++;
+                        goto max_sdu_err;
+                }
+        }
+
+stmmac_tso_xmit() doesn't do any max_sdu checks. Is this correct, or
+should the order of the above two if() statements be reversed so the
+max_sdu check is also done for TSO?
+
+(The TSO check in the above code will look different form what's
+currently in net-next, as I already have a large pile of cleanups in
+this area. However, it is functionally identical.)
+
+Another question arises: gso_enabled_types is modified in
+stmmac_set_features(). Is it possible that there are GSO packets
+in the higher level networking queues while the netdev features are
+changed, which could result in GSO packets being passed into the
+netdev after e.g. GSO has been disabled, or are we guaranteed that
+after .ndo_set_features() has been called, we won't be passed any
+GSO packets?
+
+Thanks.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
