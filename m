@@ -1,200 +1,209 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C6F3093C3
-	for <netdev@vger.kernel.org>; Sat, 21 Feb 2026 23:32:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9CE246BC5
+	for <netdev@vger.kernel.org>; Sat, 21 Feb 2026 23:46:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771716769; cv=none; b=J89snzG4WFxstL3doP/jR6SsXVXG+bvHCtmyQIJxuBHxJLiJxYTRYw4MHRyWeQmsZH7bYAM8stScSh4oAMWsxD5Kv17pVS6jpWmYln/n++qe+dwZMoZaBZJA9yK0QFH6I63b35AnDtWe/xdGF8yUv4BJ6XhCWYnY9ZTM/L7H2W0=
+	t=1771717619; cv=none; b=RQsJ+cIhrY0DJH6iicZmY0zfqtlxUSi9KNUmlQ03uyxFYxkDHJ7PXWT+hAmChjQaA+N68aq+6UsAOpIm3fE3ljby7JN38J8Qmq7mAcKz6oP+DRh0RuYgDzcUsZpGYCcB15rkSVKb3vsDioM8AqDmkchS53Q0S2u13wTCJ9IjVVs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771716769; c=relaxed/simple;
-	bh=5qIeLn0udmUQ0lAH7ymvh4bwzedo3+XdQggsGBEBQeQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=WqRu8km+oX43hoYlyhtH/1G0aHB8Qf7IRVnHTeGGR/QG/+T836LUxnTFdiM7BfagRHCvxp5doNfU9uyFwJPNzepwJ2P3tJyiebw27PfEIXabnvZl+6zf+4b2lK5G/ntid1Ak2BHJ84g4rC2D79Tzpn3bleEj/mb1e14n4CfVQso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NdyrYand; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
+	s=arc-20240116; t=1771717619; c=relaxed/simple;
+	bh=CI6Ld/360tcKW0f2CDu5G0ZhUB63qMbtjaTz06jRPkU=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=BB4Ivof41uA2dIpjduXNhAKXFP1IXZZlxVM6trzYSit0a529Zx4VflX4YBILoz1gVppP7hcnxSBRqmOs52ElLKIAiNrdio6scTetsPiod3RwUK92pUTZXbenrMWxSsCV8o+raSJrk4HJ7/puuo8MxnsV7KFTyoSv1rFUO/4XxsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T4dZAZLA; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NdyrYand"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-35621cea097so2017418a91.1
-        for <netdev@vger.kernel.org>; Sat, 21 Feb 2026 15:32:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T4dZAZLA"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4838c15e3cbso27053385e9.3
+        for <netdev@vger.kernel.org>; Sat, 21 Feb 2026 15:46:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771716766; x=1772321566; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SRZJLtlywpr8r14Jsy3Lpf4GPuEEfot66fEIP/mfghw=;
-        b=NdyrYandaoDBcBdreAM+tl+s+0egVZ+FNp7LW3OF6u0Y2cQBsLBgdjyaPIU+4YLBOw
-         SW5t+11osgGcopFPuB8YsPZe0e8JCVO08Fen8AMTPtciLtw4YWwqC/qcFyhJQyzBUDFq
-         Gz5/6aQtdSwwEutPF/HUpWwggJCyVWq/V5UT6yuEgkG679BvLahUFPQ9H7vxzthTMCZG
-         fBOe7W8oT43RFjTXBzfyadxPtD+2QWh9fld2+OmMkTrgkFc1yoiCBetqJI+YL214IIEr
-         hlGjum+yHQKJG91mti6Kg1cF3M11ESliI8Tlx8hHgZnkzR+ZR+yqjSMM7qV+diBE1u2v
-         cB0Q==
+        d=gmail.com; s=20230601; t=1771717616; x=1772322416; darn=vger.kernel.org;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VsFpBim+U9AJYeIWZrEcXBta4FenG5ZBWPSwsN8cexA=;
+        b=T4dZAZLAnRoKX0EKSzvemPRhGLHwhIYVpdtMbJCr6a/+jtY0hDNIlsXIFK9wnDP4Lw
+         WJk0GH+o6zwoZMV0LHIhm+IaQ2aczYqn5vfa7r1RR+gF3ABtSx4pfzistVOBuyfQIUGA
+         vDo3b+hApkmc71FFJdCnxrY4PCRllxQzMCqYzA6pzcKGH0nXDMa02gPRUugQqJlwkAZn
+         ro7k5xHRF3DAFI4LUNfUAiwvWY1gqhyn4k25owCdEu62sb0xtPPkk4pGLapmxYnaB524
+         SMmgcAwP0QPAae3B4mGmQkRupTDHkwT9B9ZvieCyyyR+ypusQe+3OskKRf6f7bLHfiyE
+         3DFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771716766; x=1772321566;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SRZJLtlywpr8r14Jsy3Lpf4GPuEEfot66fEIP/mfghw=;
-        b=Fz7avI7J8m4tAJ7QzabCSsNXmbdoPUsiPDH/8hDKO8DNLk01PCwgSzH5OzceAVNSxy
-         94Gt2Qj5Qa53oOtoGvCX3fH6KExE5ZDe9ZzJlnIB44OCpYHmYnUHfkAKanB+5c/0DEof
-         QECMmkBSlgJpb17q0U5dyv2X6NP6Ln4bu+Pv6P9vBt3HaK4W4rVpeNhoU1WE1MoMdJTJ
-         HiIEjsHrgmlZ5AgIYSVxsKRBZGwDMeOeZvGo62CZUEmfWhbgUuI0NFbmanipkBjs7o9v
-         cKKleJEgNi/X2OaQ3VrYvKW0X5bZ+4gH02NS4jlfydREKB9J7fzMImaxSk2BFlp8qxUU
-         1/xQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVs4ASldsbtDuWF5pAqHZ1VfF5rL8SC/nF+klx7TRkYjUdPlODIig1xt0FnzC5taoY/ohlMtuo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVoeN4jHDIJtAoEo5DC6rU0ANTZb6O3oSuEfU/CBaJmo+n7eEU
-	x29IADBkbmGh1FaIv9RkgNv8qAf2rchc5fZ6XHK3MyN7g3tkBOebskRci6NGqsJ99YQm74+yx5Y
-	fYXDZhg==
-X-Received: from pjm13.prod.google.com ([2002:a17:90b:2fcd:b0:354:bde2:b529])
- (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5112:b0:356:2eac:b649
- with SMTP id 98e67ed59e1d1-358ae7bc5efmr3691684a91.7.1771716765435; Sat, 21
- Feb 2026 15:32:45 -0800 (PST)
-Date: Sat, 21 Feb 2026 23:30:52 +0000
-In-Reply-To: <20260221233234.3814768-1-kuniyu@google.com>
+        d=1e100.net; s=20230601; t=1771717616; x=1772322416;
+        h=content-transfer-encoding:subject:from:cc:to:content-language
+         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VsFpBim+U9AJYeIWZrEcXBta4FenG5ZBWPSwsN8cexA=;
+        b=S4SW6QB5OwlkLOuUXcn077xzEBjIyYpTVucUV2Rm4l52+5Sst24ZaIsVGrAjvVmmf7
+         x5Q1bpufQWNInf8sZMNm8qneAfm96PXRQM697c9xDXS8XC5QoDQ4Oh402A/nxlE9a87A
+         T+A34dhx+DHPoJgh+S2LaVkppKjyNMyyodJWyUM+fXVpglllQkzW+VtI666UbyXJDEv+
+         lKs4l+Jb2+8XIMNXBuZlQhFFq77eOjBdYd5p3ghzOuAgqltK8Agt3wdFJXXEppxYnjZj
+         xm/a0aVawMo17l9WMLv6MqiiYjlefEiVGPN8LqbII/jIgnj9pym9k/5Go/POMjaPzMyj
+         KV1A==
+X-Forwarded-Encrypted: i=1; AJvYcCXaO1sorMCpK2jO0bcKfehz06nxXbPNJ/VoZ0wJNRU3oq2QPDmw5vcb8YNhiXHF4mTrfvxDkAI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzYUyPmlAtYere/CehXbpYBjr8ZWgwVQSNFTYfTXPq3lHCyorwu
+	2HQKIJyB9JVdJ6FlyUsFPtHT/U6ozcg3KDjNuDaGgz3qFbKcr1klkk8t
+X-Gm-Gg: AZuq6aJNkmv6u8u2Z4hFYUXQxvDXY3y2nZ1TilGAQUDHVcKS8ZxqVq+Pae6793IEd3L
+	OYJLKmLXDxo3YsaEyONYAhDni8/ZxU+9km2R8w46TSsZYrC6T+Paxt4M0U57E6s6OxOaR4n9PE0
+	6w8jLFkmZtTOdw9XOTZnaMd4aq9pgiio2iv/PWdxC6R8t18yrNro2nxOZ8Ibl5ljAV/KSevG/kx
+	iTAYIbio02xDCNWlmRjCNr1qnMGNz5n16Fs2RBo7G9vmvf/w0LI4sFkLzJfIg4SpU4RPQ7zjsMJ
+	tt4FQGUgqTImNPhG1yFzZc3GjRHvhRNMzSRCv6IL9NDYmfRpXmWizgn4ojrEHDGhvJzsM9+UvTs
+	HNPFuaBVaFFsC7n2IgDij78TwGuS+284GGNGrL2ysxz3P8QhQvzjJIAGPwNXB8jPH6idaL8u/Ys
+	kirH5qPt74WD9lZ5L7LwGQeOMwc+5Ef7jNstNrAPLwH0PaWdAGDlUYqJZ1+yFdHEz/8y0Nbg6ii
+	TVI
+X-Received: by 2002:a05:600c:4e12:b0:480:39ad:3b7c with SMTP id 5b1f17b1804b1-483a962e465mr80910425e9.16.1771717616137;
+        Sat, 21 Feb 2026 15:46:56 -0800 (PST)
+Received: from [10.0.0.98] (snat-2.cgn.sat-an.net. [176.222.226.2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970bf9feasm8271637f8f.6.2026.02.21.15.46.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 21 Feb 2026 15:46:54 -0800 (PST)
+Message-ID: <d3bb9c36-5a0e-4339-901d-2dd21bdba395@gmail.com>
+Date: Sun, 22 Feb 2026 00:46:53 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260221233234.3814768-1-kuniyu@google.com>
-X-Mailer: git-send-email 2.53.0.371.g1d285c8824-goog
-Message-ID: <20260221233234.3814768-6-kuniyu@google.com>
-Subject: [PATCH v4 bpf/net 5/6] sockmap: Consolidate sk_psock_skb_ingress_self().
-From: Kuniyuki Iwashima <kuniyu@google.com>
-To: John Fastabend <john.fastabend@gmail.com>, Jakub Sitnicki <jakub@cloudflare.com>
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
-	Kuniyuki Iwashima <kuni1840@gmail.com>, bpf@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Frank <Frank.Sae@motor-comm.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Sai Krishna <saikrishnag@marvell.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxtardis@gmail.com
+From: =?UTF-8?Q?Jakub_Van=C4=9Bk?= <linuxtardis@gmail.com>
+Subject: [PATCH net v1] net: phy: motorcomm: yt8821: disable MDIO broadcast
+ address 0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-SOCKMAP memory accounting for UDP is broken, and
-sk_psock_skb_ingress_self() should not be used for UDP.
+The YT8821 PHY responds on two MDIO addresses by default: the address
+selected by its strapping pins and the broadcast address 0.
 
-Let's consolidate sk_psock_skb_ingress_self() to
-sk_psock_skb_ingress() so we can centralise the fix.
+On platforms where another PHY is hardwired to respond only on address 0
+(e.g. the internal Gigabit PHY in the MediaTek MT7981B SoC), this can lead
+to MDIO bus conflicts. The YT8821 may incorrectly respond to transactions
+intended for the other PHY, leaving it in an inconsistent state. The
+following issues were observed on a Cudy M3000 router:
 
-Note that now sk_psock_skb_ingress() always use GFP_KERNEL
-if called from sk_psock_backlog().
+- Achieving just 100 Mbps speeds on gigabit links. Dmesg would show
+  messages like
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+    [ 133.997177] YT8821 2.5Gbps PHY mdio-bus:01: Downshift occurred from negotiated speed 1Gbps to actual speed 100Mbps, check cabling!
+    [ 134.009400] mtk_soc_eth 15100000.ethernet eth0: Link is Up - 100Mbps/Full - flow control off
+
+- Having the PHY report that the link is up, yet no data would flow.
+- The YT8821 would be affected by an "ip link set dev eth1 down"
+  command aimed at the other PHY.
+
+Avoid this conflict by disabling the broadcast address 0 early in
+the PHY configuration process. The .probe callback is called early
+enough to stop the issues from occurring. The .config_init callback
+re-establishes the workaround after the PHY undergoes a hardware
+reset.
+
+This change makes the YT8821 work reliably on the Cudy M3000 router
+when running the current OpenWrt main branch with a small device tree
+patch.
+
+Link: https://github.com/openwrt/openwrt/pull/21584
+Fixes: b671105b88c3 ("net: phy: Add driver for Motorcomm yt8821 2.5G ethernet phy")
+Signed-off-by: Jakub Vaněk <linuxtardis@gmail.com>
 ---
-v4: Fix memory accounting condition from (skb->sk != sk) to
-    (skb->sk != sk && take_ref), the cause of selftest failure
-v2: Keep msg->sk assignment
----
- net/core/skmsg.c | 62 +++++++++++++-----------------------------------
- 1 file changed, 17 insertions(+), 45 deletions(-)
+ drivers/net/phy/motorcomm.c | 48 +++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 6b1fef6ef85b..96f43e0dbb17 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -572,32 +572,30 @@ static int sk_psock_skb_ingress_enqueue(struct sk_buff *skb,
- 	return copied;
+diff --git a/drivers/net/phy/motorcomm.c b/drivers/net/phy/motorcomm.c
+index 42d46b5758fc..bcb60d0bcab5 100644
+--- a/drivers/net/phy/motorcomm.c
++++ b/drivers/net/phy/motorcomm.c
+@@ -227,6 +227,9 @@
+ #define YT8521_LED_100_ON_EN			BIT(5)
+ #define YT8521_LED_10_ON_EN			BIT(4)
+ 
++#define YTPHY_MDIO_ADDRESS_CONTROL_REG		0xA005
++#define YTPHY_MACR_EN_PHY_ADDR_0		BIT(6)
++
+ #define YTPHY_MISC_CONFIG_REG			0xA006
+ #define YTPHY_MCR_FIBER_SPEED_MASK		BIT(0)
+ #define YTPHY_MCR_FIBER_1000BX			(0x1 << 0)
+@@ -2760,6 +2763,30 @@ static int yt8821_soft_reset(struct phy_device *phydev)
+ 					  YT8521_CCR_SW_RST, 0);
  }
  
--static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
--				     u32 off, u32 len, bool take_ref);
--
- static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
--				u32 off, u32 len)
-+				u32 off, u32 len, bool take_ref)
- {
- 	struct sock *sk = psock->sk;
- 	struct sk_msg *msg;
- 	int err = -EAGAIN;
- 
--	/* If we are receiving on the same sock skb->sk is already assigned,
--	 * skip memory accounting and owner transition seeing it already set
--	 * correctly.
--	 */
--	if (unlikely(skb->sk == sk))
--		return sk_psock_skb_ingress_self(psock, skb, off, len, true);
--
--	msg = alloc_sk_msg(GFP_KERNEL);
-+	msg = alloc_sk_msg(take_ref ? GFP_KERNEL : GFP_ATOMIC);
- 	if (!msg)
- 		goto out;
- 
--	if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
--		goto free;
-+	if (skb->sk != sk && take_ref) {
-+		if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
-+			goto free;
- 
--	if (!sk_rmem_schedule(sk, skb, skb->truesize))
--		goto free;
-+		if (!sk_rmem_schedule(sk, skb, skb->truesize))
-+			goto free;
-+	} else {
-+		/* This is used in tcp_bpf_recvmsg_parser() to determine whether the
-+		 * data originates from the socket's own protocol stack. No need to
-+		 * refcount sk because msg's lifetime is bound to sk via the ingress_msg.
-+		 */
-+		msg->sk = sk;
-+	}
- 
- 	/* This will transition ownership of the data from the socket where
- 	 * the BPF program was run initiating the redirect to the socket
-@@ -606,7 +604,7 @@ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
- 	 * into user buffers.
- 	 */
- 	skb_set_owner_r(skb, sk);
--	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, true);
-+	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, take_ref);
- 	if (err < 0)
- 		goto free;
- out:
-@@ -616,32 +614,6 @@ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
- 	goto out;
- }
- 
--/* Puts an skb on the ingress queue of the socket already assigned to the
-- * skb. In this case we do not need to check memory limits or skb_set_owner_r
-- * because the skb is already accounted for here.
-- */
--static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
--				     u32 off, u32 len, bool take_ref)
--{
--	struct sk_msg *msg = alloc_sk_msg(GFP_ATOMIC);
--	struct sock *sk = psock->sk;
--	int err;
--
--	if (unlikely(!msg))
--		return -EAGAIN;
--	skb_set_owner_r(skb, sk);
--
--	/* This is used in tcp_bpf_recvmsg_parser() to determine whether the
--	 * data originates from the socket's own protocol stack. No need to
--	 * refcount sk because msg's lifetime is bound to sk via the ingress_msg.
--	 */
--	msg->sk = sk;
--	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, take_ref);
--	if (err < 0)
--		kfree(msg);
--	return err;
--}
--
- static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
- 			       u32 off, u32 len, bool ingress)
- {
-@@ -651,7 +623,7 @@ static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
- 		return skb_send_sock(psock->sk, skb, off, len);
++/**
++ * yt8821_disable_mdio_address_zero() - disable MDIO broadcast address 0
++ * @phydev: a pointer to a &struct phy_device
++ *
++ * The YT8821 responds on two MDIO addresses by default:
++ *  - the address selected by its strapping pins
++ *  - the broadcast address 0
++ *
++ * Some other PHYs (e.g. the MT7981B internal Gigabit PHY) are hardwired to
++ * respond only on MDIO address 0. If the YT8821 also listens on address 0,
++ * it may incorrectly react to transactions intended for those PHYs.
++ *
++ * Disabling address 0 on the YT8821 early avoids such MDIO bus conflicts.
++ *
++ * Returns: 0 or negative errno code
++ */
++static int yt8821_disable_mdio_address_zero(struct phy_device *phydev)
++{
++	return ytphy_modify_ext(phydev,
++				YTPHY_MDIO_ADDRESS_CONTROL_REG,
++				YTPHY_MACR_EN_PHY_ADDR_0,
++				0);
++}
++
+ /**
+  * yt8821_config_init() - phy initializatioin
+  * @phydev: a pointer to a &struct phy_device
+@@ -2795,6 +2822,10 @@ static int yt8821_config_init(struct phy_device *phydev)
+ 		phydev->rate_matching = RATE_MATCH_PAUSE;
  	}
  
--	return sk_psock_skb_ingress(psock, skb, off, len);
-+	return sk_psock_skb_ingress(psock, skb, off, len, true);
++	ret = yt8821_disable_mdio_address_zero(phydev);
++	if (ret < 0)
++		return ret;
++
+ 	ret = yt8821_serdes_init(phydev);
+ 	if (ret < 0)
+ 		return ret;
+@@ -2812,6 +2843,22 @@ static int yt8821_config_init(struct phy_device *phydev)
+ 	return yt8821_soft_reset(phydev);
  }
  
- static void sk_psock_skb_state(struct sk_psock *psock,
-@@ -1058,7 +1030,7 @@ static int sk_psock_verdict_apply(struct sk_psock *psock, struct sk_buff *skb,
- 				off = stm->offset;
- 				len = stm->full_len;
- 			}
--			err = sk_psock_skb_ingress_self(psock, skb, off, len, false);
-+			err = sk_psock_skb_ingress(psock, skb, off, len, false);
- 		}
- 		if (err < 0) {
- 			spin_lock_bh(&psock->ingress_lock);
++/**
++ * yt8821_probe() - early PHY initialization
++ * @phydev: a pointer to a &struct phy_device
++ *
++ * Returns: 0 or negative errno code
++ */
++static int yt8821_probe(struct phy_device *phydev)
++{
++	/*
++	 * Disable the MDIO broadcast address (0) as early as possible.
++	 * This prevents the YT8821 from responding to transactions
++	 * intended for a different PHY that is fixed at address 0.
++	 */
++	return yt8821_disable_mdio_address_zero(phydev);
++}
++
+ /**
+  * yt8821_adjust_status() - update speed and duplex to phydev
+  * @phydev: a pointer to a &struct phy_device
+@@ -3073,6 +3120,7 @@ static struct phy_driver motorcomm_phy_drvs[] = {
+ 		PHY_ID_MATCH_EXACT(PHY_ID_YT8821),
+ 		.name			= "YT8821 2.5Gbps PHY",
+ 		.get_features		= yt8821_get_features,
++		.probe			= yt8821_probe,
+ 		.read_page		= yt8521_read_page,
+ 		.write_page		= yt8521_write_page,
+ 		.get_wol		= ytphy_get_wol,
 -- 
-2.53.0.371.g1d285c8824-goog
+2.43.0
 
