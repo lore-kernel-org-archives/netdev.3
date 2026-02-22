@@ -1,39 +1,63 @@
-Received: from mail-106109.protonmail.ch (mail-106109.protonmail.ch [79.135.106.109])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5A7125A0
-	for <netdev@vger.kernel.org>; Sun, 22 Feb 2026 07:31:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=79.135.106.109
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835C110785;
+	Sun, 22 Feb 2026 08:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771745477; cv=none; b=E/+v1/PL8wUIc4/XO5joaqy8l6ybUSCEE5cLWmhxtWgSuuTudQdovXpH2CLQzzppFHgLaVpAvRlGEX58XR0xjI9pVQPdY3gMrRQeZHM5sn0bS6oyNDXrgYLwzCSo5BQkAyTd3qgTTJFuHj2hoiE2tMtV4ReFMmZJKRYGTb8y/qI=
+	t=1771748967; cv=none; b=Bsx9lMOezxLmuUQunVVvZ2X3KNlAwHF03l/tM/Ye6qu9P6CQmOHX1tVhNkERu/0UxYMt+mcePxMQ9gz0H13pVnj4H28u9haR0K5URVjgIV1vPEXiY57M+c1yaQSA5u2cpnmIQ3+RPB8UTNtPbsN8CJLcDhkjacvsj0NrQT+6O/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771745477; c=relaxed/simple;
-	bh=GVeFrkGHd+zJB2J+eJLlpvF6zIS8Ee40GUUMdEit+MM=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=cZEFBqYAxBthbaxDy8Pz+U5ls+W0671bxmhyqbwFs1rrFVLaI1Vees3tMKvRGFcJDUbJ00JwRZZ0/Cn7MDmdcd6ZKFsDY8QoD8skobA4/SKz1ia1QtHzYQEA+tiLC52dh9AfpYiHHfzVaqmL9DPib6jw/aHgFmbmjGnOlswxjjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=HT6A3GUE; arc=none smtp.client-ip=79.135.106.109
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1771748967; c=relaxed/simple;
+	bh=YnDIMYG5V/vUSs3jD3RsUaeAWHeGB24pDFfJMtMaZVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KHKQnno7hzLse3+NqIa1j4sQdx6DNGR1LTej+HY5lD9zZrgnNo3heFQU/bHoc2QKBIwdcV4B2ges8FORQulhGeh8EeXaTHD1M2TakcRNUUE5Usufdje9skRcf8TGq2Av9FGYi+u+QwaPsBCK2aaPpNhyShEDiciWaiPvMWk6vAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=OLeDGBco; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="HT6A3GUE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1771745083; x=1772004283;
-	bh=GVeFrkGHd+zJB2J+eJLlpvF6zIS8Ee40GUUMdEit+MM=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=HT6A3GUEdkgaLJGiffeeMLiag+fuXSaOpFWgVBxOrZNQiYi4DuWSUqiabW2MTf20/
-	 BrvT9IqJFDeU8K3/x9kGLj4QZhrTJt/CdSdhPSdBkzoolHYgkIUQH97duHFfOZakwN
-	 sEOSenjnEAIBSPBDgkNpSRynfq7X19kbsIvG9UG+fQgRXE0ouYB/KuEvpOaStap0Lu
-	 TXpA70pWqUNhFGcbK++0kAQdpKYo1x1yETcM+q55rx4BWFFheaYuD68HOobDdEmCvm
-	 jxOP1IaPsPUp0HPRAgIgWOnDMcx4kPDCOxDR7Sg1ljlxRIExrQRXhGkG/aTLKt2R6K
-	 gb6ipnYbcV7Jw==
-Date: Sun, 22 Feb 2026 07:24:39 +0000
-To: Linux Networking <netdev@vger.kernel.org>
-From: Turritopsis Dohrnii Teo En Ming <teo.en.ming@protonmail.com>
-Cc: "ceo@teo-en-ming-corp.com" <ceo@teo-en-ming-corp.com>
-Subject: Amazon: AI-assisted hacker breached 600 Fortinet Fortigate firewalls in 5 weeks
-Message-ID: <-3q0eXE17223SaU-QV1MZw-y7iuKwRWlAEDY59A_b3dTEOt2tAUFIzm7fStrtegUi2ltMFj3wsEY7WbcilJwlX9K86JsWQLmmlRktcRaKRM=@protonmail.com>
-Feedback-ID: 39510961:user:proton
-X-Pm-Message-ID: 156dc498a4f6fce3f4934976d951f66845ce1cf6
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="OLeDGBco"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=4OF8ORZxH77Xfd8xtjYllgKL8q52R28O7UOHUtNU2mQ=; b=OLeDGBcoozafzGNMsdeAdsg88u
+	sFF64z9qnAmnGOLsezAUF67n/j+bYsxrT5Is8PLkIjvp5L6rHiJUDjejWZkO+DuI50Dtg+5XxbzQf
+	2LLCEKtrMz57gQZ9XGTy1miYBr3W+ELvxxH2KRpX5YJOzxv2Ess3wkRnWDHd7F0/LWEVL7v/S7KbH
+	8EY9bu5mHqGtoaIRsBFXIktJlTczTTnyTRcOIPU5E2ENmu+EBKI6kYP2scJDuDvZ+eNk+adUWrqjd
+	Yo/0gSfmDKBPuowqu++yskbw/1zjDbx8wSsK6yf8yxVsWfUVilALxJ+onnRZ9ZzakQtTdlPOBnKQn
+	pDWH1Ofw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43756)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vu4pu-0000000032v-40xA;
+	Sun, 22 Feb 2026 08:29:07 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vu4pl-000000006B1-43MY;
+	Sun, 22 Feb 2026 08:28:57 +0000
+Date: Sun, 22 Feb 2026 08:28:57 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jakub =?utf-8?B?VmFuxJtr?= <linuxtardis@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Daniel Golle <daniel@makrotopia.org>,
+	Qingfang Deng <dqfext@gmail.com>,
+	SkyLake Huang <SkyLake.Huang@mediatek.com>,
+	Frank <Frank.Sae@motor-comm.com>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Sai Krishna <saikrishnag@marvell.com>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v1] net: phy: motorcomm: yt8821: disable MDIO
+ broadcast address 0
+Message-ID: <aZq-SbHC0eU9OenG@shell.armlinux.org.uk>
+References: <d3bb9c36-5a0e-4339-901d-2dd21bdba395@gmail.com>
+ <0308e736-c3e7-45d2-86f7-e729af9cb487@gmail.com>
+ <3e64d8d1-87c1-45e0-9556-0ca844a90f73@lunn.ch>
+ <740e8351-d8a5-4f4c-91e4-c278e4b7d248@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,30 +65,26 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <740e8351-d8a5-4f4c-91e4-c278e4b7d248@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-Subject: Amazon: AI-assisted hacker breached 600 Fortinet Fortigate firewal=
-ls in 5 weeks
+On Sun, Feb 22, 2026 at 05:22:55AM +0100, Jakub Vaněk wrote:
+> I had hoped this would not happen on the Cudy router. The MediaTek
+> Ethernet subsystem driver uses of_mdiobus_register(), so PHY address 0
+> should not be probed unless it is explicitly described in the device
+> tree. That said, I agree that with mdiobus_register() this would still
+> be an issue.
+> 
+> I was also hoping that moving the internal PHY would provide more
+> flexibility in the device tree description of the YT8821. If the
+> workaround were implemented in U-Boot by writing YT8821 MDIO registers
+> at boot time, Linux would not be able to assert the YT8821 reset pin
+> without losing that workaround.
 
-Good day from Singapore,
+Why would you want to assert the reset pin?
 
-Here is a news article which I would like to share.
-
-Article: Amazon: AI-assisted hacker breached 600 Fortinet Fortigate firewal=
-ls in 5 weeks
-Link: https://www.bleepingcomputer.com/news/security/amazon-ai-assisted-hac=
-ker-breached-600-fortigate-firewalls-in-5-weeks/
-Date of article: 21 Feb 2026
-
-Thank you.
-
-Regards,
-
-Mr. Turritopsis Dohrnii Teo En Ming
-Extremely Democratic People's Republic of Singapore
-22 Feb 2026 Sunday 3.24 pm Singapore Time
-
-
-
-
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
