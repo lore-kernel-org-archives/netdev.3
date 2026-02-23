@@ -1,99 +1,149 @@
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB11E1C2324;
-	Mon, 23 Feb 2026 13:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D548218CBE1;
+	Mon, 23 Feb 2026 13:58:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771854874; cv=none; b=UpfeiHiKJqO56EB7q3uMnaVi5vkTJNHNNqfN8amYTb5v0NAW3hktd0V/HJVqRqfHm8+bi8+jd+jnSzfzypjADT0lgKhGZNywyoxw1fMOk0SkTyyAn4vvlSJCO6LE/2pLiXBy0JNUsJh7cP1973YDw6V/+lVcNJBpUqHpHWWSXJQ=
+	t=1771855094; cv=none; b=VVA1E/Wz2QNGqx7/hBQWUUD+LreTt/EGaNkWhVrLREYVNAvNUu6DD5abMJQ8D7pwFs6QEgezNM957EomLkz5XqJydUy4cx1+D8GFILvu1akZwYRJqPvtmTsOTVwnJdU/v5mlf7WB77c7uYhsf7YN2u00WNWqNLyglGk+Yfrj5SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771854874; c=relaxed/simple;
-	bh=wsxrGT9iiPD6ZitFu90+kuRPo6NfbN5RrwpeDZ7GNQY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HMw0QEk23ibXmJtBEmMTmWylm6NqI6Yg4tmBZW2k/Tc0OAIiAHz+9eZwaT7+eTc5xtMP9k69yxFAX2/1yQf5ssIPx67eZPBOSq8UNjun/OU8fWvSzUfS7wBoQw6/5zqC225aUU0VlJynixktbLmTrbbcsZBJsucUNSNnfT9ixPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=AlMRZCcN; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1771855094; c=relaxed/simple;
+	bh=DjznovYY9GnY3ffzu+BYF+CpnJqumh0Ejt8gP/xAFC0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=FdtSiknDBYpD2SMC+2OdgyPq6URtIXQ+YMqxHkb0z5w5wrJRFhFtJXDEQt5b8DlL+r2/iVJ9PSlOpZtgBtCTXmHLM3E9LoZyaAXj2DeZ0KrmJ9poOukEsYue4vgv/cG0QZ6odOvr0m9iGCKygEifUjeqEHgYNxyju/+Bw8ndUUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r+baHfSw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="AlMRZCcN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1771854871;
-	bh=wsxrGT9iiPD6ZitFu90+kuRPo6NfbN5RrwpeDZ7GNQY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=AlMRZCcNRh1z6NRy2/I17Dm2/sYYtXapstkwgNAT5JC829doMkVfCZu6bzBply4mX
-	 Z5V6k4Fugil9Pbk1jTOoN/oVEeqCfAKqRT6IFKDIziyaucxhMAd41jYXXqW7jof677
-	 m0mMfBerf0M5K1EAeqrIdfXRJS/x3Bi5RLQslWTpMP/myCyMmu2Sx78PopsHOkRg5o
-	 H/O52ahKyojFXDNplvjDFYJUmk8ft5TTBoJujoIoALlB0oZxnqE3hsUdIzuhOftNBq
-	 DfnF/yKg27joBLxmlkAJl7pPQ1DW9pvBgJOzHRgZOaVPAldn1YCSM7vOX8Bt/2/G1z
-	 L2GiCzzldb9Dw==
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits))
-	(No client certificate requested)
-	(Authenticated sender: kholk11)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 559BF17E043F;
-	Mon, 23 Feb 2026 14:54:30 +0100 (CET)
-Message-ID: <8030ee40-5972-499b-b693-b26fb7ffe7e2@collabora.com>
-Date: Mon, 23 Feb 2026 14:54:29 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r+baHfSw"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B346FC19424;
+	Mon, 23 Feb 2026 13:58:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771855094;
+	bh=DjznovYY9GnY3ffzu+BYF+CpnJqumh0Ejt8gP/xAFC0=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=r+baHfSwrqu2f3L9q4d2MJkk0sUKotG9SpSFBWFkovWBXoIlJLT98Q6AssTrNaWWj
+	 UnjwEqd2HK8+hwpqvH0/H37/gNc3QVvw0KjroHhOsBoIIQq/7qRtIBacGmRtKs9zd1
+	 J8abbEXpn9o+V8Pm3H8SoFNS1Hye/PLbjib9BT1GOvAquuqN3MxG7FLUEwr8C95waF
+	 f6DXUHoNODcSPpdrVknNPjceepy4/zBPtuAq5JW7mJzsuK4WGndoMl51//j+737zmQ
+	 0mZo2wpjWyK+haq0FyOJlsD74FyxKrYuzSR55oA1c4QeYQ2gBT6t+c028obEh0mP3Y
+	 qphqq3NHQZAqg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A4956EA4FC2;
+	Mon, 23 Feb 2026 13:58:14 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Mon, 23 Feb 2026 14:58:04 +0100
+Subject: [PATCH v5 1/4] net: stmmac: platform: read channels irq
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 05/18] clk: mediatek: Add MT8189 vlpckgen clock support
-To: David Lechner <dlechner@baylibre.com>,
- "irving.ch.lin" <irving-ch.lin@mediatek.com>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Matthias Brugger <matthias.bgg@gmail.com>,
- Richard Cochran <richardcochran@gmail.com>,
- Bartosz Golaszewski <brgl@kernel.org>, Chen-Yu Tsai <wenst@chromium.org>,
- Miles Chen <miles.chen@mediatek.com>
-Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
- Project_Global_Chrome_Upstream_Group@mediatek.com,
- Qiqi Wang <qiqi.wang@mediatek.com>, sirius.wang@mediatek.com,
- vince-wl.liu@mediatek.com, jh.hsu@mediatek.com
-References: <20260202062840.342707-1-irving-ch.lin@mediatek.com>
- <20260202062840.342707-6-irving-ch.lin@mediatek.com>
- <4b22e998-b38e-4452-82ce-1389d7086a04@baylibre.com>
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Content-Language: en-US
-In-Reply-To: <4b22e998-b38e-4452-82ce-1389d7086a04@baylibre.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260223-dwmac_multi_irq-v5-1-8fc699a5fac4@oss.nxp.com>
+References: <20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com>
+In-Reply-To: <20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1771855093; l=2333;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=P2zfXa4c18tSAED8W/f714pESbYNY0ZOt8TdNWG7VK0=;
+ b=hiXarSrsA/JbiyKr+PsMd6bbjrGyHXX8vk7ry0gBoLO10unCvRxYzZb5C9C9xTtP2sfCSNG6y
+ lDgDWZJqVCYDGYHr4WLUBkolMSdTx7eXCG92CyX+8rPkB9U869DQROt
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-Il 19/02/26 21:49, David Lechner ha scritto:
-> On 2/2/26 12:28 AM, irving.ch.lin wrote:
->> From: Irving-CH Lin <irving-ch.lin@mediatek.com>
->>
->> Add support for the MT8189 vlpckgen clock controller, which provides
->> muxes and dividers for clock selection in vlp domain for other IP blocks.
->>
->> Signed-off-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
->> ---
-> 
-> ...
-> 
->> +static const struct mtk_gate vlp_ck_clks[] = {
->> +	GATE_VLP_CK(CLK_VLP_CK_VADSYS_VLP_26M_EN, "vlp_vadsys_vlp_26m", "clk26m", 1),
->> +	GATE_VLP_CK_FLAGS(CLK_VLP_CK_FMIPI_CSI_UP26M_CK_EN, "VLP_fmipi_csi_up26m",
-> 
-> Should "VLP_fmipi_csi_up26m" be all lower-case to match the style of all of
-> the other clock names? i.e. "vlp_fmipi_csi_up26m"
-> 
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-It *must*. Yes.
+Read IRQ resources for all rx/tx channels, to allow Multi-IRQ mode
+for platform glue drivers.
 
-Regards,
-Angelo
+Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
+---
+ .../net/ethernet/stmicro/stmmac/stmmac_platform.c  | 40 +++++++++++++++++++++-
+ 1 file changed, 39 insertions(+), 1 deletion(-)
 
->> +			  "osc_d10", 11, CLK_IS_CRITICAL),
->> +};
->> +
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+index 5c9fd91a1db9..6166a9b0c0bb 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
+@@ -700,6 +700,9 @@ EXPORT_SYMBOL_GPL(stmmac_pltfr_find_clk);
+ int stmmac_get_platform_resources(struct platform_device *pdev,
+ 				  struct stmmac_resources *stmmac_res)
+ {
++	char name[16];
++	int i;
++
+ 	memset(stmmac_res, 0, sizeof(*stmmac_res));
+ 
+ 	/* Get IRQ information early to have an ability to ask for deferred
+@@ -735,7 +738,42 @@ int stmmac_get_platform_resources(struct platform_device *pdev,
+ 
+ 	stmmac_res->addr = devm_platform_ioremap_resource(pdev, 0);
+ 
+-	return PTR_ERR_OR_ZERO(stmmac_res->addr);
++	if (IS_ERR(stmmac_res->addr))
++		return PTR_ERR(stmmac_res->addr);
++
++	/* RX channels irq */
++	for (i = 0; i < MTL_MAX_RX_QUEUES; i++) {
++		scnprintf(name, sizeof(name), "rx-queue-%d", i);
++		stmmac_res->rx_irq[i] = platform_get_irq_byname_optional(pdev,
++									 name);
++		if (stmmac_res->rx_irq[i] <= 0) {
++			if (stmmac_res->rx_irq[i] == -EPROBE_DEFER)
++				return -EPROBE_DEFER;
++			dev_dbg(&pdev->dev, "IRQ rx-queue-%d not found\n", i);
++
++			/* Stop on first unset rx-queue-%i property member */
++			stmmac_res->rx_irq[i] = 0;
++			break;
++		}
++	}
++
++	/* TX channels irq */
++	for (i = 0; i < MTL_MAX_TX_QUEUES; i++) {
++		scnprintf(name, sizeof(name), "tx-queue-%d", i);
++		stmmac_res->tx_irq[i] = platform_get_irq_byname_optional(pdev,
++									 name);
++		if (stmmac_res->tx_irq[i] <= 0) {
++			if (stmmac_res->tx_irq[i] == -EPROBE_DEFER)
++				return -EPROBE_DEFER;
++			dev_dbg(&pdev->dev, "IRQ tx-queue-%d not found\n", i);
++
++			/* Stop on first unset tx-queue-%i property member */
++			stmmac_res->tx_irq[i] = 0;
++			break;
++		}
++	}
++
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(stmmac_get_platform_resources);
+ 
+
+-- 
+2.47.0
 
 
