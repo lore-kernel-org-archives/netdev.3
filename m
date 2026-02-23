@@ -1,183 +1,178 @@
-Received: from sender4-of-o55.zoho.com (sender4-of-o55.zoho.com [136.143.188.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97181D5170
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 12:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771850137; cv=pass; b=r1GiQdl4hYKK/c/C2kHWSZJsf8aJWnx6VNy1CMBW9B6SDW89hMctZvzC2UWpX/azc/hide5X84Exuh30eufxxr3QjYfStMuMcBDZgX5lUgMhFI9fsCvuNuV0PS47LDWBl25cUlsLionQsCgwQHXyPqNKJlLfLYxfEPacGE5aI44=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771850137; c=relaxed/simple;
-	bh=KHcFVrPdUh0yBFFsnP1uV3ZVuZDr2OxfyEAVkDB6y/k=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WIgWosJgwxT8h/RiUGxPZoSSOWX4HkugNS0e5xgHPjUQklJ/4sidB4GAwGZzJwgPn7wEjNgxfyJk6SDUTVlQ9dd1Rceruj8ZFmsiLSoqYjsY/gMZ2lgd1F04YqnQi9Y/SCljkC/LQdNGWqkgee++CKaMKcYzBQLUr/BL0BYIAtk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net; spf=pass smtp.mailfrom=machnikowski.net; dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b=Wlc8h9M2; arc=pass smtp.client-ip=136.143.188.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machnikowski.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A23A36604D
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 12:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771850407; cv=none; b=H82mElcDH4MbriYLJXEc/Zl49eopbjprApSnK7I7svHt9ByrAjmM//OODiq7IsiXsI2+FqnqvSmIQ42AfagfchgL3vMdKtu/zcd4jkTnSYVWNvvSLpF/42mk1ujOOhsKY7+VKZNTIqDfo4U875ARENcQ0H3lUgIabIhP1GrgOo0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771850407; c=relaxed/simple;
+	bh=zLP9DBt5ACqyKp8zyP1I6et5L1V4brYDFyjTSlJe5AE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=G4jNy6Rire2qPUQR3jWt+R7d2rmyaoPK6OGjxYpcITnzthnDaNwDrIjYW43VTPKu9JFFj7Nw5PlnnjaeSMDe87tu2vdHS3M+YAeb/gwLyB68OSZ+L87RnYKybdwuH3UwoiBwotHCX40UwEiXR0So4UAoIyoCdcYdY2YmZCSl5ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MhhFQ5n+; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jackmanb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b="Wlc8h9M2"
-ARC-Seal: i=1; a=rsa-sha256; t=1771850083; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=MDwmLhPnV2NCb554RK1+QY9nYI+P0xYNMwWOh3rjVNIrIpB2wtx8Tr52gP7g5abMJTQ94HXaRla0N2aGmHj/YYb9Ct6IC3BSn55X4J5hFdKuE/xt19NfW0xPz5yaBNag5QjfGDcIX051wu/dFwYvMCHpmuGFuBrOsrSAXI+y2rY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1771850083; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=trkTZqOxlPzl7mbWG9PT8ZcCPYzjDw5wBy0DTK8r9mc=; 
-	b=cn2J3uaJSmxFzWe02N+C/c3iTtG42Pb3vz5uKaAZ0C1lwHTvIK+mnaE/2uclaUW580xNyv7rXPwywZ5SvL8XFp+RIm77Nr4vdwc9BlIY5PTXPB5edT84Mdm3ZT4mPcy9ULvv+iUh42qgzIq/o4C1mTN61K5OvlQoDC80ZSOaY2w=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=machnikowski.net;
-	spf=pass  smtp.mailfrom=maciek@machnikowski.net;
-	dmarc=pass header.from=<maciek@machnikowski.net>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1771850083;
-	s=zoho; d=machnikowski.net; i=maciek@machnikowski.net;
-	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=trkTZqOxlPzl7mbWG9PT8ZcCPYzjDw5wBy0DTK8r9mc=;
-	b=Wlc8h9M239b8/TtYs4ESPydu/wpHo8OZrWAQC3zmjqDC+Zh0d+YDGNHkzPSTzISE
-	Qbw+aJ6qfBvO5jTdfu5ki38I62w8SW90T0VA/yyuEKOrhDj0BjSDyvCJY5auLemfd0I
-	7RPKmrDFBOYB99GmoBb7jsPF48lMVwiP16Iy20yYQOg2m5wndJYQpkHZL5FmEMQBjIK
-	BLsYaxUhVuuCCpo9yimhtimL5nFJHNuAxMBPZkw9QKPiAgmn8lR40Mvcs2RxM9XLJX8
-	lJS4MxF2+Y+B9t4UeXVWomyQQKq4LDqBmawexJI5D7B3nPH32FtC+bvJP1sHVBoZ36U
-	hDFTdJ6PQQ==
-Received: by mx.zohomail.com with SMTPS id 1771850081699529.0701457010954;
-	Mon, 23 Feb 2026 04:34:41 -0800 (PST)
-From: Maciek Machnikowski <maciek@machnikowski.net>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	maciek@machnikowski.net,
-	richardcochran@gmail.com,
-	milena.olech@intel.com,
-	willemdebruijn.kernel@gmail.com,
-	andrew@lunn.ch,
-	vadim.fedorenko@linux.dev
-Subject: [PATCH v2 net-next 3/3] selftests:net: Implement ptp4l sync test using netdevsim
-Date: Sun, 22 Feb 2026 10:41:10 +0100
-Message-ID: <20260222094110.127927-4-maciek@machnikowski.net>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260222094110.127927-1-maciek@machnikowski.net>
-References: <20260222094110.127927-1-maciek@machnikowski.net>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MhhFQ5n+"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48378df3469so31810935e9.1
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 04:40:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771850404; x=1772455204; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=H9UVo+Ch5cqNfZ/7JsfHkoD1JYgkJQPxukS4MObThec=;
+        b=MhhFQ5n+PzDSPKzBRtwe18lbIdpDDdJ8T2UM7Z68MUfaA8vva/U/vYQGy371uSH/xK
+         HURYzbBhCJrQsMfIXdbTz5VEHPeBUomjVKvWNTU5g9shcFqZSVcebFhGYPUOihJczlQO
+         d9h68IRBguf9E0KRTLjFQ5g/UnBioix9RwFJm9+3Hvsegxp6zNuYN0ostrxzkRVhYoyj
+         p+LezSlbU3wuwv/Y6HA90R/ynwaSYcCeNAaGHvsNsbZj+yo22lp5JnoSPRC5emNU9J/j
+         23ydVbt9Hj+ZM3D2q04tmC/DtE/NEzD1CZU3nWNQX1YcIp+AcojKNCL2SKRB/Y78wS6W
+         O+9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771850404; x=1772455204;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=H9UVo+Ch5cqNfZ/7JsfHkoD1JYgkJQPxukS4MObThec=;
+        b=vFJWJ2YKuEfN72ADjNvnX8BbMsYKBl3iJXziFj1pkRBjh1FfLOh1KLRJALi9AqlBID
+         7lznd6bOeVedghJXnTm9HeOW9MheXRjNWZZ7sl5qFbTyuU4BpS36Rk1Vjs11EK/kcA0P
+         EjvRDx16A18YEOEwK9fdSqTxxVf4PUfd9wSHectoA4AuEkI2KM8D0xobPEfMrHyA74X3
+         enl18vOXD34euQUaiqchJhbGBLtQOWqLm/mnqlmJOG9njTkQ7mw18clvNpcyeBwFzdJk
+         AtRlROns4Zyx/MArf5TpVLpOd0NtiISPii8qqKHC7O2eY68rAFchA46tYwOosmqAK74G
+         qEGg==
+X-Forwarded-Encrypted: i=1; AJvYcCVK6ANQ6CPo5Pj3DQsieorD1UxC10UQMe4AN+XAwMH6pCqYcp13LoaWHEgZE/jST4QXGmQFCOw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMZI6IGcre57nT3IFJWMqy6hMEwsm7LnlfsPZcR4m0bVdNLuYo
+	wuFcXQnpoz2M2lxFpIKaoCctJWC85CBiI96dLsXBb5ldhN2bmJC5Dzh7qtj5BB4sUUT6cdc8j5V
+	5d/r9bQARej198A==
+X-Received: from wmnv12.prod.google.com ([2002:a05:600c:444c:b0:477:a181:1919])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:a204:b0:483:fbe:23dd with SMTP id 5b1f17b1804b1-483a00a52bdmr187554465e9.12.1771850403661;
+ Mon, 23 Feb 2026 04:40:03 -0800 (PST)
+Date: Mon, 23 Feb 2026 12:40:03 +0000
+In-Reply-To: <aYX8dot4fTh3FJFI@fedora>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-ZohoMailClient: External
+Mime-Version: 1.0
+References: <20260206081704.53215-1-liuhangbin@gmail.com> <DG7TJFKZNG1J.19BZF87IWD3UG@google.com>
+ <aYX8dot4fTh3FJFI@fedora>
+X-Mailer: aerc 0.21.0
+Message-ID: <DGMCJQ2TKZ1O.Q2C502GV1GSL@google.com>
+Subject: Re: [PATCH selftests] selftests: Use ktap helpers for runner.sh
+From: Brendan Jackman <jackmanb@google.com>
+To: Hangbin Liu <liuhangbin@gmail.com>, Brendan Jackman <jackmanb@google.com>
+Cc: <linux-kselftest@vger.kernel.org>, Shuah Khan <shuah@kernel.org>, 
+	<netdev@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Add PTP synchronization test using ptp4l and netdevsim.
+On Fri Feb 6, 2026 at 2:36 PM UTC, Hangbin Liu wrote:
+> Hi Brendan,
+> On Fri, Feb 06, 2026 at 10:48:59AM +0000, Brendan Jackman wrote:
+>> On Fri Feb 6, 2026 at 8:17 AM UTC, Hangbin Liu wrote:
+>> > This has been on my todo list for a long time. We should use ktap
+>> > helpers in runner.sh. I saw Brendan did some work in d9e6269e3303
+>> > ("selftests/run_kselftest.sh: exit with error if tests fail") to make
+>> > run_kselftest.sh exit with the correct return value. But we still use =
+a
+>> > custom solution in runner.sh. Let's convert all the print messages to =
+use
+>> > formal ktap helpers. Here=E2=80=99s what I changed:
+>> >
+>> >   1. Move TAP header from runner.sh to run_kselftest.sh, since run_kse=
+lftest.sh
+>> >      is the only caller of run_many().
+>> >   2. In run_kselftest.sh, call run_many() in main process to count the
+>> >      pass/fail numbers.
+>> >   3. In run_kselftest.sh, do not generate kselftest_failures_file; jus=
+t
+>> >      use ktap_print_totals to report the result.
+>> >   4. In runner.sh run_one(), get the return value and use ktap helpers=
+ for
+>> >      all pass/fail reporting. This allows counting pass/fail numbers i=
+n the
+>> >      main process.
+>> >   5. In runner.sh run_in_netns(), also return the correct rc, so we ca=
+n
+>> >      count results during wait.
+>> >
+>> > After the change, the printed result looks like:
+>> >
+>> >   not ok 4 4 selftests: clone3: clone3_cap_checkpoint_restore # exit=
+=3D1
+>> >   # Totals: pass:3 fail:1 xfail:0 xpass:0 skip:0 error:0
+>> >
+>> >   ]# echo $?
+>> >   1
+>>=20
+>> Sorry I'm being a bit lazy by not investigating this myself but the
+>> current intended behaviour is for runner.sh to output correct KTAP,
+>> right? Could you describe what behavioural changes this is expected to
+>
+> For runner.sh, I just want to make it using the formal helper in
+> ktap_helpers.sh other than manually echo.
+>
+>> bring - does it fix/change the KTAP output? (Or if it's just a cleanup
+>> with no intended change then please note that in the commit message).
+>
+> It changes the run_kselftest.sh's output, with a total result. e.g.
+>
+> # Totals: pass:3 fail:1 xfail:0 xpass:0 skip:0 error:0
 
-The test creates two netdevsim adapters, links them together
-and runs the ptp4l leader and ptp4l follower on two ends
-of the netdevsim link and waits for the follower to report the
-synchronized state (s2) in its output log.
+Cool thanks, then please just clarify the commit message to say this.
 
-This implementation runs the test runs over IPv4 link.
+>> I have not reviewed the code properly yet (I just read enough to check
+>> that it still does the thing I care about i.e. return an error code when
+>> something fails). I can do a proper review next week if you add a bit
+>> more context re the question above though.
+>
+> Yes, I also care about the return code. This patch doesn't break it.
+>
+>>=20
+>> > -	wait
+>> > +	# Handle the return values when running in netns.
+>> > +	for pid in "${pids[@]}"; do
+>> > +		wait "$pid"
+>> > +		rc=3D$?
+>> > +		[ "$rc" -eq "$KSFT_PASS" ] && KTAP_CNT_PASS=3D$((KTAP_CNT_PASS+1))
+>> > +		[ "$rc" -eq "$KSFT_FAIL" ] && KTAP_CNT_FAIL=3D$((KTAP_CNT_FAIL+1))
+>> > +		[ "$rc" -eq "$KSFT_SKIP" ] && KTAP_CNT_SKIP=3D$((KTAP_CNT_SKIP+1))
+>> > +		[ "$rc" -eq "$KSFT_XFAIL" ] && KTAP_CNT_XFAIL=3D$((KTAP_CNT_XFAIL+1=
+))
+>>=20
+>> These variables don't seeem to have anything to do with KTAP so I think
+>> they should have a different name prefix. I guess KSFT_*? Or maybe
+>> RUNNER_* or something.
+>>=20
+>> Also I guess we should initialise them to 0 so they are still set if no
+>> tests actually get run?
+>>=20
+>> Also I think it's probably time to start documenting the
+>> interface of runner.sh - sorry I probably should have done this when I
+>> created kselftest_failures_file. Can you add a comment at the top to
+>> show that these variables are part of the "API"?
+>
+> These variables are defined in ktap_helpers.sh and used by the ktap helpe=
+rs.
 
-Signed-off-by: Maciek Machnikowski <maciek@machnikowski.net>
----
- tools/testing/selftests/net/ptp.sh | 93 ++++++++++++++++++++++++++++++
- 1 file changed, 93 insertions(+)
- create mode 100755 tools/testing/selftests/net/ptp.sh
+Hm, I see. Then it seems pretty hacky to mutate them directly here, and
+is it correct to always increment them by 1?
 
-diff --git a/tools/testing/selftests/net/ptp.sh b/tools/testing/selftests/net/ptp.sh
-new file mode 100755
-index 000000000..8b1604b96
---- /dev/null
-+++ b/tools/testing/selftests/net/ptp.sh
-@@ -0,0 +1,93 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0-only
-+source lib.sh
-+
-+NSIM_DEV_1_ID=$((256 + RANDOM % 256))
-+NSIM_DEV_2_ID=$((512 + RANDOM % 256))
-+
-+NSIM_DEV_SYS_LINK=/sys/bus/netdevsim/link_device
-+NSIM_DEV_SYS_UNLINK=/sys/bus/netdevsim/unlink_device
-+PTP4L_SYNC_TIMEOUT=20
-+
-+setup_netdevsim()
-+{
-+	set -e
-+	ip netns add nssv
-+	ip netns add nscl
-+
-+	NSIM_DEV_1_NAME=$(create_netdevsim $NSIM_DEV_1_ID nssv)
-+	NSIM_DEV_2_NAME=$(create_netdevsim $NSIM_DEV_2_ID nscl)
-+
-+	ip netns exec nssv ip addr add '192.168.1.1/24' dev $NSIM_DEV_1_NAME
-+	ip netns exec nscl ip addr add '192.168.1.2/24' dev $NSIM_DEV_2_NAME
-+
-+	set +e
-+}
-+
-+cleanup()
-+{
-+	[ -n "${PTP4L_LEADER_PID-}" ] && {
-+		kill $PTP4L_LEADER_PID $PTP4L_FOLLOWER_PID 2>/dev/null
-+		wait $PTP4L_LEADER_PID $PTP4L_FOLLOWER_PID 2>/dev/null
-+		rm -f "$PTP4L_LEADER_LOG" "$PTP4L_FOLLOWER_LOG"
-+	}
-+
-+	[ -n "${NSIM_DEV_1_FD-}" ] && [ -n "${NSIM_DEV_1_IFIDX-}" ] && \
-+		echo "$NSIM_DEV_1_FD:$NSIM_DEV_1_IFIDX" > "$NSIM_DEV_SYS_UNLINK" 2>/dev/null
-+	cleanup_netdevsim "${NSIM_DEV_2_ID-}" 2>/dev/null
-+	cleanup_netdevsim "${NSIM_DEV_1_ID-}" 2>/dev/null
-+
-+	ip netns del nscl 2>/dev/null
-+	ip netns del nssv 2>/dev/null
-+
-+	modprobe -r netdevsim 2>/dev/null
-+}
-+
-+###
-+### Code start
-+###
-+if [ ! -x "$(command -v ptp4l)" ]; then
-+	echo "ptp4l command not found. Skipping PTP sync test"
-+	exit 4
-+fi
-+
-+trap cleanup EXIT
-+
-+setup_netdevsim
-+
-+# Link netdevsim1 with netdevsim2
-+NSIM_DEV_1_FD=$((256 + RANDOM % 256))
-+exec {NSIM_DEV_1_FD}</var/run/netns/nssv
-+NSIM_DEV_1_IFIDX=$(ip netns exec nssv cat /sys/class/net/$NSIM_DEV_1_NAME/ifindex)
-+
-+NSIM_DEV_2_FD=$((512 + RANDOM % 256))
-+exec {NSIM_DEV_2_FD}</var/run/netns/nscl
-+NSIM_DEV_2_IFIDX=$(ip netns exec nscl cat /sys/class/net/$NSIM_DEV_2_NAME/ifindex)
-+
-+if ! echo "$NSIM_DEV_1_FD:$NSIM_DEV_1_IFIDX $NSIM_DEV_2_FD:$NSIM_DEV_2_IFIDX" > "$NSIM_DEV_SYS_LINK"; then
-+	echo "linking netdevsim1 with netdevsim2 failed"
-+	exit 1
-+fi
-+
-+# PTP synchronization test: run ptp4l leader in nssv and follower in nscl,
-+# then parse follower output to verify they synchronized (servo state s2 = locked).
-+PTP4L_LEADER_LOG=$(mktemp)
-+PTP4L_FOLLOWER_LOG=$(mktemp)
-+ip netns exec nssv ptp4l -i "$NSIM_DEV_1_NAME" -m -4 -P \
-+	> "$PTP4L_LEADER_LOG" 2>&1 &
-+PTP4L_LEADER_PID=$!
-+
-+ip netns exec nscl ptp4l -i "$NSIM_DEV_2_NAME" -s -m -4 -P \
-+	> "$PTP4L_FOLLOWER_LOG" 2>&1 &
-+PTP4L_FOLLOWER_PID=$!
-+
-+
-+for _ in $(seq 1 $PTP4L_SYNC_TIMEOUT); do
-+	if grep -q ' s2 ' "$PTP4L_FOLLOWER_LOG" 2>/dev/null; then
-+		exit 0
-+	fi
-+	sleep 1
-+done
-+
-+echo "ptp4l follower did not reach locked state (s2) within ${PTP4L_SYNC_TIMEOUT}s"
-+exit 1
-\ No newline at end of file
--- 
-2.53.0
+I think the "correct" thing to do here is to parse the KTAP from the
+child process's stdout, but I assume that's not actually practical with
+the current tools we have available. (I could be wrong though, let me
+know if that's the case).
 
+Or maybe we can dump the values of the variables at the end of the child
+and then add them into the parent process' values...=20
+
+Or, if we just keep the current approach I think just having some
+commentary to explain why we are doing this would help. I.e. "these
+variables are outputs of ktap_helpers.sh but since we've run the test in
+a subprocess we need to update them manually" (the current comment talks
+about the netns which I think is confusing, I don't think the netns is
+relevant at all).
