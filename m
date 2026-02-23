@@ -1,85 +1,106 @@
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+Received: from lounge.grep.be (lounge.grep.be [144.76.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D8134DB59;
-	Mon, 23 Feb 2026 09:54:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED5B34A785;
+	Mon, 23 Feb 2026 09:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771840488; cv=none; b=kJe/efoLxUtD7dE1k0CbWsCSIk4gVapTPU+L4lcqYajSiZinJ/ZK7tQZBmLa9N4X7TEF/x66jeWnoE3Cm6aDyunTql+1xp059q6R44qkXLQm384HbWOEo8/RJs7+DAbBsaNXghYg7hUNiFfhRnODE/y+OgyLTIjqp5hBltfxC+g=
+	t=1771840704; cv=none; b=phG1QddaaHWpTBpckMc9qL2K5VhXsRvdEh/NMVCqTE/2kEs4xUIYqT4UXInBDSptEX6+OOCDWG2okzddwwZnOraBdbnwHJ67R9DEY+119rqWog0mo8K9F6lCiGKBUEPgPYrmUE+UcUwPq4V2Ocw2aSjGvijtALF7yh2Ps/FlIRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771840488; c=relaxed/simple;
-	bh=nNTeQyC3JCJ4lTlpuCPtdMUYRBv478ziaQfoSfmX8Z0=;
+	s=arc-20240116; t=1771840704; c=relaxed/simple;
+	bh=Iw0Gt16U9GaQulC5u4A0rgAlC9ecuwz937bM6cVUjmI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EzgBnpiLzvOqwdnFpjcbAF6pgn/d2V+tQXe9TAVvgrf7HuNmgndgekKoRxxtUe6oBKx4x6MtYBtKIPXGyvhdiAJ5QmQmBDniVvS/EMbubVv/wmIceX6xXCo7SkXOBdyAsBmhRoKf0ja0PJxg8aBT9x0LpAErPPaPu4Pb2skAt9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id C672D47E96;
-	Mon, 23 Feb 2026 10:54:37 +0100 (CET)
-Date: Mon, 23 Feb 2026 10:54:37 +0100
-From: Gabriel Goller <g.goller@proxmox.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] docs: net: document neigh gc_interval and
- gc_stale_time sysctls
-Message-ID: <sesyijabmxi5muc2rn432wrk4pxy24jri4i3y7fulrttv735wu@spf2houzg3sb>
-Mail-Followup-To: Jakub Kicinski <kuba@kernel.org>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, netdev@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260219162200.510325-1-g.goller@proxmox.com>
- <20260220164344.68ab2a6a@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=oGTlkKEqC5JVEnDwmr71AaTbB8RkHH5oFRwYHm7fldq5u7fcMqQK+mfpvxpTk6uXjZBjtV/9G4G+Aj0c4scZOPLg8TpRayKB4hkm35JuxbwhWXx+NBYllfx2Ul/C4phy5031g4LGAZk5O0uaJf6gSFRWTthqGb+7mQOCGiLT8nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uter.be; spf=pass smtp.mailfrom=uter.be; dkim=pass (2048-bit key) header.d=uter.be header.i=@uter.be header.b=gqxjkDRM; arc=none smtp.client-ip=144.76.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uter.be
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uter.be
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=uter.be header.i=@uter.be header.b="gqxjkDRM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=uter.be;
+	s=2021.lounge; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=l7ur/xMoIwQ2QmfUHV3rfzePMQaZM3DKESy7NxWDgx8=; b=gqxjkDRMi7UMD8moDQ7aD/9Mxa
+	rsXMoJy5UeyWwvNNBxUgyP4vQXsGZpxY/B0qa/2FR7ThWKP7mrhZHFoLstJljE9hWt3UC05uCJGkW
+	kJqb0IIMN83A25VYXzzIbfDFEXBh09pNqJSHlZzbPCTo9gvWcQvp1+pE3VhWa7XWnJYYIDf3MXL2r
+	q9Vww+gEZs/lMrOHEH/4+TYXHcyUh/N/X3qsmSMOlcqMN8YkoXuk2TJcFHwi5PZ9j3H/udfXw1NH2
+	sB+qvScv+YCHGgX96t1wM4KM2gvgWn44NXzeEqDpu8gHz7QK3iw4Q6uKthh/2cz9Vx8dalwiVbBRP
+	t4rdB6QQ==;
+Received: from [102.39.233.88] (helo=pc220518)
+	by lounge.grep.be with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <w@uter.be>)
+	id 1vuSQg-0000000F0gb-2Jmf;
+	Mon, 23 Feb 2026 10:40:38 +0100
+Received: from wouter by pc220518 with local (Exim 4.99.1)
+	(envelope-from <w@uter.be>)
+	id 1vuSQU-00000000uTV-3zJQ;
+	Mon, 23 Feb 2026 11:40:26 +0200
+Date: Mon, 23 Feb 2026 11:40:26 +0200
+From: Wouter Verhelst <w@uter.be>
+To: Hristo Venev <hristo@venev.name>
+Cc: Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>,
+	linux-block@vger.kernel.org, nbd@other.debian.org
+Subject: Re: [PATCH] netlink: specs: add specification for NBD
+Message-ID: <aZwgiv0vPWPybUF-@pc220518.home.grep.be>
+References: <20260215180309.2255721-3-hristo@venev.name>
+ <m2o6lnlg2y.fsf@gmail.com>
+ <6a1339999b091edaaa15e34aceb7961dfc61581b.camel@venev.name>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260220164344.68ab2a6a@kernel.org>
-User-Agent: NeoMutt/20241002-35-39f9a6
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1771840463196
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <6a1339999b091edaaa15e34aceb7961dfc61581b.camel@venev.name>
+X-Speed: Gates' Law: Every 18 months, the speed of software halves.
+Organization: none
 
-On 20.02.2026 16:43, Jakub Kicinski wrote:
-> On Thu, 19 Feb 2026 17:21:58 +0100 Gabriel Goller wrote:
-> > +neigh/default/gc_interval - INTEGER
-> > +	How often the garbage collector for neighbor entries should run. This
-> > +	value applies to the entire table, not individual entries.
-> > +
-> > +	Default: 30 seconds
+On Tue, Feb 17, 2026 at 07:40:33PM +0200, Hristo Venev wrote:
+> On Tue, 2026-02-17 at 12:17 +0000, Donald Hunter wrote:
+> > There are yamllint errors:
+> > 
+> > make -C tools/net/ynl lint
+> > make: Entering directory '/home/donaldh/net-next/tools/net/ynl'
+> > yamllint ../../../Documentation/netlink/specs
+> > ../../../Documentation/netlink/specs/nbd.yaml
+> >   159:81    error    line too long (104 > 80 characters)  (line-
+> > length)
+> >   169:6     error    syntax error: expected <block end>, but found
+> > '<block mapping start>' (syntax)
+> >   170:7     error    wrong indentation: expected 5 but found 6 
+> > (indentation)
 > 
-> AI suggests that this value is not actually currently used
-> in our implementation. I can't find any use either, TBH.
-> It's read and can be written but it's seemingly not used for anything.
-
-You're right, I'll remove this section.
-
-> > +neigh/default/gc_stale_time - INTEGER
-> > +	Determines how long a neighbor entry can remain unused before it is
-> > +	considered stale and eligible for garbage collection. Entries that have
-> > +	not been used for longer than this time will be removed by the garbage
-> > +	collector, unless they have active references, are marked as PERMANENT,
-> > +	or carry the NTF_EXT_LEARNED or NTF_EXT_VALIDATED flag.
-> > +
-> > +	Default: 60 seconds
+> Thanks, I will fix the lint errors in v2.
 > 
-> AI adds:
+> > > +doc: See :file:`drivers/block/nbd.c`
+> > 
+> > Prefer to see a meaningful doc string here.
 > 
->   Important caveat: This check is only reached when total_entries >= gc_thresh1
->   (line 1000-1001). Below that threshold, the periodic GC skips the scan
->   entirely.
-> 
-> If true I think we should mention that ?
+> I will add more proper documentation in v2. I couldn't find any
+> existing documentation of this netlink interface, so I guess I will
+> write it myself.
 
-Yes this is true -- I'll mention this in the description.
+As luck would have it, before I saw this message, I had been wanting to
+work on some of the messages that nbd-client still needed, and so I
+asked an LLM to analyze the code and generate some docs for me.
 
-Thanks for the review!
+Heed the "LLM" part. It's probably not perfect. But it could be a good
+starting point. Or not. At any rate, you can find it here:
 
+https://github.com/NetworkBlockDevice/nbd/blob/master/doc/netlink-proto.md
 
+-- 
+"I never had a C in history!"
+"Yeah, but there was so much less of it when you were my age!"
+ -- Joe Brockmeier recounting a conversation with his father, cfgmgmtcamp 2026, Ghent
