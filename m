@@ -1,175 +1,299 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m1973176.qiye.163.com (mail-m1973176.qiye.163.com [220.197.31.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB24F1C01
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 03:52:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771905181; cv=pass; b=P0xK/hDbv+N2oWcbTS3CeBd16AFIN4Vv1YowCPn6FpQr9xgyfTgptb8kor/eZvr6PKDsV2RJY7IUiGeS+n3B4n59ZpOK7ssO5wkS34JnP3c3iRMFyFg52Q2jWNpGJOxkAgZLOUrQDEwvnv0VjfK9hfI3ORmENhlSFh8WBVKxePI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771905181; c=relaxed/simple;
-	bh=cvIjcAGifOKZ1KPkeA03JAlum4LG7BQNB9KJy/HA8EY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ADE8qq87Ds+3joQ7TF8L8ACQnGJNiSS9yVz0e3/xq+nteOLKmFJ/I411ZaxUk//gqNaNMjGG9O9Jaqhval4dAyzrWonqSBPJn2onTyys+NcK+/8r/Un0Uzo8OpdAF2QvRRhqBc7H+va5trZR3QphWeI634e7O5XaTWW5YOqdA3k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mi+AgkAr; arc=pass smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADB619E97F;
+	Tue, 24 Feb 2026 03:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.76
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771905364; cv=none; b=OCKVPLunGXdApGoqxMBCsyiWW85UfYrQmmRUpFhgAbNMYCKFjEGZqqBF4i8eDMs6s2Ym2kpCCHu/MXIRG88I+pKAmbMmK6akpf1TQRlfpFHWG4sGPXFCVrRWzRS94pDgKewgGJXoGLQ9AmwGlcVVOYPHYw0dOdJxnEAqXEt1lU8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771905364; c=relaxed/simple;
+	bh=KoW38T6cNEmKidxotZXPZubVy4KOQgupYxDAJ1370F0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Y5XubMPPbLGeHX8Fh2KZBVr3SxsA4/y5kqFIPvxtjD4X15XdyT4B0OWriZv2zm+E9bCaqByqmDMQY3u6N9M3p3w9TgwvdEOZgdlgPAqu8ka8a9cr3Dx7TDNNkLZvlaJL+THNv3ge+6Fih+5pvABqlZMaTf8aX7L0eqRQgZefC14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=jy81/F5N; arc=none smtp.client-ip=220.197.31.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mi+AgkAr"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-59e64657f0cso5443852e87.2
-        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 19:52:59 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771905178; cv=none;
-        d=google.com; s=arc-20240605;
-        b=dtbpOT1zeebtwGS92rQl3Se5fSv7eP8YBz+keca7EayIMHhkS22a50Pzx26Oz4NWB4
-         UxrtCuHIfuddv/KIzyuezs7Oww4uI09JVNmd+PcwMuZLTHM6pYV6IFlFyhNFEwBkjFd7
-         eUdc7cSfBFh/IczDJHmRieVWBgBzicmYXwhNUXchyM+y73pa0szTuXImK0BSFXlUo7St
-         TLoHsivWd1avoZkO79fzPAtuQGxhvEvsqHcvv8AL7KP89cYVWe6SuNA77RIOxQKOgBqe
-         Tfm90AJkYvOWepDhdKIZpQ6fRJuHEO+KOjX1UcDNrk+wshZPJZcNf2W39MeUdNjNjzHr
-         GOuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=Rkv3FCccFOdEwJg9FjVL53Y2/y6gY6xgZY6SWC3pFBc=;
-        fh=JMB8IKbAFaonXyxNJj4R1l6G9j8SsDOe4nbhhObNHGk=;
-        b=i+RmzlrbiNpq9ckQsYznaf6IF4Slxc4AoXqn8Xxga3TsMolOl4GzTLxOphJiQ5j1Cu
-         /dCvIu94T+iuufTzVUFfD1oyZ0eAr50GE9vvcztXHVu/gGM+WTC467smLPblwpj7jmCg
-         FznvX3MKEjpo/V4ldMvByWKaT0dyQWTVdn0M0mhc+ZiTGJoQxMrPoYIUET8vs/xHXsPA
-         MHvZTz/AsHWGdwVNMpsr6y2nwR6ULtoEe+ts2VPT6oDbsjSDJbJaA2irfauB+KVC9XaQ
-         +1J8PrMp9bIm8fHKVlpSE4W++cfebH3+EfsYo+UT1DzMFy93sfxiV8lnM+WspOFvZJGX
-         CPZQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771905178; x=1772509978; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Rkv3FCccFOdEwJg9FjVL53Y2/y6gY6xgZY6SWC3pFBc=;
-        b=mi+AgkArcvcjbHXBGqVXtya281tJwqClSjxm9wBhnE6ODKeMoLn/hjkSDgaSHIl0w3
-         PAmLpjhjri9gT7gKiSQUsZ8sPzP9ogtjj/7uyIP3aoo3pKWLIEflLIXefnZZKAqomCZJ
-         HzHVq4VaXkBLJI52zyfFddipD0Mrb9O777sshQhG4oen15FVJci0eW5ZSb/mKp4na1dc
-         fd250weqXgQa2jtrmA/W1p/XkkAGXqYpucFulXQTwOR0TjBYZpG4rZeUrlbFZAQ3NOyF
-         WOuwXkhkhBP5zjvUyLg3CvRkjwVSgv9sq+6Lk8bGdQ/iThAPSU2flyV8DgWb1TKAdmt5
-         sWyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771905178; x=1772509978;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Rkv3FCccFOdEwJg9FjVL53Y2/y6gY6xgZY6SWC3pFBc=;
-        b=vTNAwtP0SDCk06IcVbj7zuG8TWtV0vgT/N4aK9t9GuxuKabpsHr6cwi7k8ZqIiomKW
-         H9TKnV9D0hk8brl9FKqoaalBqynIIOibJDH+5x6Jzv5GSkKpo3BJ9qudISXjsRvkbQI6
-         g+VzuCGYLcerdEJc61vTJxhCYE4Ds2TTWxuqzKTXNxYLv/N5UjWEl5k8DpBhKXQZ5iiE
-         CcGEHYOrof0G4VRnawDR5lMaA1RsO6ntr3G+Y6hOiXYqJaqC6TWhnr5CC4gdINKoX284
-         5niK156M8WoQY3GU7shXqiKqYQv5iOr9LBaKYxxVKeWdRtG4Tp5wULt+ycGiWzhPJj07
-         4TkA==
-X-Gm-Message-State: AOJu0YyUGq41opBUYwbZUcXjmNP8Q+y+8OLy0cdg67cIk5G6wYhzoyt/
-	XcJZv8cD8Ghgav61cpTVXHWMSt4jpHlexCzMhot6tYznybKtDi756zafo3TvuKIDUMqGpkJNio3
-	kTsjGH/eWopRWnQa+8PG7NGzh5s0YSNM=
-X-Gm-Gg: ATEYQzztYYOjFF93KVXT/ljoY9kvnx4EClCvAG9rxIMQknYISV1/3k9uxwEHznunjIG
-	nTTZEGIRNY9JPrk6RTcF+JjBrznfSwolBgepHtcCL0aVyVCV4RgJNwrY8jYmCLtUTvX4YGYLWnF
-	qIlPAwR1hyDBIR5TSnEXwTL+w68AMQzJFRxryUTOgHGR+TaCd/2u1cI2Ih3vnk7V6j/XO319vaO
-	i2A6DHPLMabN38r4NVO/CJRMeCu1Xk43IJaKlJ/OiCfPKLlEYu+oatMhoxK44sGMRklgXsDPuLB
-	isJ+Bx94
-X-Received: by 2002:a05:6512:239a:b0:59e:64d4:12b8 with SMTP id
- 2adb3069b0e04-5a0ed99c7cemr3006164e87.30.1771905177558; Mon, 23 Feb 2026
- 19:52:57 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="jy81/F5N"
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 34b37f769;
+	Mon, 23 Feb 2026 23:31:09 +0800 (GMT+08:00)
+From: Shawn Lin <shawn.lin@rock-chips.com>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	"Vaibhaav Ram T . L" <vaibhaavram.tl@microchip.com>,
+	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
+	Even Xu <even.xu@intel.com>,
+	Xinpeng Sun <xinpeng.sun@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Zhou Wang <wangzhou1@hisilicon.com>,
+	Longfang Liu <liulongfang@huawei.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Jian Shen <shenjian15@huawei.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Min Ma <mamin506@gmail.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Andreas Noever <andreas.noever@gmail.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Tomasz Jeznach <tjeznach@rivosinc.com>,
+	Will Deacon <will@kernel.org>,
+	Xinliang Liu <xinliang.liu@linaro.org>,
+	Tian Tao <tiantao6@hisilicon.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Srujana Challa <schalla@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Raag Jadav <raag.jadav@intel.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Robert Richter <rric@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Nirmal Patel <nirmal.patel@linux.intel.com>,
+	Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	linux-input@vger.kernel.org,
+	linux-i3c@lists.infradead.org,
+	dmaengine@vger.kernel.org,
+	Philipp Stanner <phasta@kernel.org>,
+	netdev@vger.kernel.org,
+	nic_swsd@realtek.com,
+	linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-usb@vger.kernel.org,
+	iommu@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	linux-cxl@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	mhi@lists.linux.dev,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jan Dabros <jsd@semihalf.com>,
+	linux-i2c@vger.kernel.org,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	linux-spi@vger.kernel.org,
+	Jonathan Derrick <jonathan.derrick@linux.dev>,
+	linux-pci@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH 0/37] PCI/MSI: Enforce explicit IRQ vector management by removing devres auto-free
+Date: Mon, 23 Feb 2026 23:29:39 +0800
+Message-Id: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 2.7.4
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <e8355c0d7fd48981ba505e455387971f91210fa8.1771734206.git.tonghao@bamaicloud.com>
- <CAL+tcoDR2-WTmhBakWcvEuLCwAU7RGRA8syfor-+RJJq7_ZOKw@mail.gmail.com> <65307E32-7AFF-44EF-B2BB-89AA15F3D0D1@bamaicloud.com>
-In-Reply-To: <65307E32-7AFF-44EF-B2BB-89AA15F3D0D1@bamaicloud.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Tue, 24 Feb 2026 11:52:20 +0800
-X-Gm-Features: AaiRm53AeQuRnGCQqDZpWy61v0RkWJkdXt5gJhVUWQNxHqr3pOkpkRpi0i99yh4
-Message-ID: <CAL+tcoB0uV0E9cDCfw58kAuzNcanstx_OT3h=dkQVOW1b-nN+A@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: core: introduce the netdev_fetch_core_stats()
-To: Tonghao Zhang <tonghao@bamaicloud.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Samiullah Khawaja <skhawaja@google.com>, 
-	Ahmed Zaki <ahmed.zaki@intel.com>, Alexander Lobakin <aleksander.lobakin@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-HM-Tid: 0a9c8b20307709cckunm6946b3c79862a6
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ0oaHlZPHx5OTE0YQkJPHxlWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSUJDQ0
+	xVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=jy81/F5Ni9q9/bSyZWlJabD1XxAXELPL9UhibFZyMz9WyzEiB5iEDVH0Ye8gCgDrz+TXTgJ8mWQ6QgQDO5+xpeOsxh+rOYDNTZc0JKdQU/fj9M+S4Jnb31IUAfPQnG6b/8K1G5LiNjlbXGROoXvc1DCKurZLBq/IoT1lOI+FLR8=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=BcUR/HoijHqinvoMXUQVA7vidPdOPQAH0voVT1QIHOY=;
+	h=date:mime-version:subject:message-id:from;
 
-On Tue, Feb 24, 2026 at 11:22=E2=80=AFAM Tonghao Zhang <tonghao@bamaicloud.=
-com> wrote:
->
->
->
-> > On Feb 23, 2026, at 08:20, Jason Xing <kerneljasonxing@gmail.com> wrote=
-:
-> >
-> > On Sun, Feb 22, 2026 at 12:38=E2=80=AFPM Tonghao Zhang <tonghao@bamaicl=
-oud.com> wrote:
-> >>
-> >> Network device statistics retrieved via procfs, sysfs, and netlink
-> >> represent the combined total of core_stats + driver, hardware statisti=
-cs.
-> >>
-> >> However, in some scenarios, when monitoring netdev metrics, it is valu=
-able
-> >> to clearly distinguish whether the values originate from the networkin=
-g
-> >> stack's core statistics or from the driver, hardware layer. This helps
-> >> improve debugging and addressing issues.
-> >>
-> >> Approaches were considered:
-> >> - commit 5247dbf16cee ("net/core: Introduce netdev_core_stats_inc()").
-> >>  This allows tracking increments to core_stats and helps identify spec=
-ific
-> >>  causes of changes, but not provide the total counters.
-> >> - extending rtnl_link_stats64 with new core_xxx fields.
-> >>  This would likely confuse or break existing userspace applications re=
-lying
-> >>  on this struct.
-> >> - adding a tracepoint inside dev_get_stats().
-> >>  This implementation is not simple or straightforward enough.
-> >>
-> >> The solution in this patch is therefore to introduce a new dedicated f=
-unction
-> >> for collecting core statistics and mark it noinline. This approach is =
-simple,
-> >> clean, and maintainable to obtain driver, hardware statistics separate=
-ly when needed.
-> >>
-> >> Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
-> >> Cc: "David S. Miller" <davem@davemloft.net>
-> >> Cc: Eric Dumazet <edumazet@google.com>
-> >> Cc: Jakub Kicinski <kuba@kernel.org>
-> >> Cc: Paolo Abeni <pabeni@redhat.com>
-> >> Cc: Simon Horman <horms@kernel.org>
-> >> Cc: Stanislav Fomichev <sdf@fomichev.me>
-> >> Cc: Kuniyuki Iwashima <kuniyu@google.com>
-> >> Cc: Samiullah Khawaja <skhawaja@google.com>
-> >> Cc: Ahmed Zaki <ahmed.zaki@intel.com>
-> >> Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
-> >
-> > It's a simple refactor patch that only moves that logic to a new
-> > helper. I don't see any new possible callers right now so could you
-> > provide more straightward/clear use cases and intentions behind this
-> > patch? For example, give us what kind of dumping stats you want to
-> > tweak and your next movements.
-> Thanks, Jason
-> This patch tries to add one helper function which marked as noinline for =
-bpf tracing (this commit 5247dbf16cee also use the noinline for tracing). T=
-his helper is not used other place in kernel.
->
-> For example,
-> sudo bpftrace -e '
->   kprobe:netdev_core_stats_fetch {printf("%d\n", ((struct rtnl_link_stats=
-64 *)arg1)->rx_dropped);}
->   kretprobe:netdev_core_stats_fetch {printf("%d\n", ((struct rtnl_link_st=
-ats64 *)retval)->rx_dropped);}
-> '
+This patch series addresses a long-standing design issue in the PCI/MSI
+subsystem where the implicit, automatic management of IRQ vectors by
+the devres framework conflicts with explicit driver cleanup, creating
+ambiguity and potential resource management bugs.
 
-Can't we use the global symbol dev_get_stats() instead? It should be the sa=
-me.
+==== The Problem: Implicit vs. Explicit Management ====
+Historically, `pcim_enable_device()` not only manages standard PCI resources
+(BARs) via devres but also implicitly triggers automatic IRQ vector management
+by setting a flag that registers `pcim_msi_release()` as a cleanup action.
 
-Thanks,
-Jason
+This creates an ambiguous ownership model. Many drivers follow a pattern of:
+1. Calling `pci_alloc_irq_vectors()` to allocate interrupts.
+2. Also calling `pci_free_irq_vectors()` in their error paths or remove routines.
+
+When such a driver also uses `pcim_enable_device()`, the devres framework may
+attempt to free the IRQ vectors a second time upon device release, leading to
+a double-free. Analysis of the tree shows this hazardous pattern exists widely,
+while 35 other drivers correctly rely solely on the implicit cleanup.
+
+==== The Solution: Making Management Explicit ====
+This series enforces a clear, predictable model:
+1.  New Managed API (Patch 1/37): Introduces pcim_alloc_irq_vectors() and
+    pcim_alloc_irq_vectors_affinity(). Drivers that desire devres-managed IRQ
+    vectors should use these functions, which set the is_msi_managed flag and
+    ensure automatic cleanup.
+2.  Patches 2 through 36 convert each driver that uses pcim_enable_device() alongside
+    pci_alloc_irq_vectors() and relies on devres for IRQ vector cleanup to instead
+    make an explicit call to pcim_alloc_irq_vectors().
+3.  Core Change (Patch 37/37): With the former cleanup, now modifies pcim_setup_msi_release()
+    to check only the is_msi_managed flag. This decouples automatic IRQ cleanup from
+    pcim_enable_device(). IRQ vectors allocated via pci_alloc_irq_vectors*()
+    are now solely the driver's responsibility to free with pci_free_irq_vectors().
+
+With these changes, we clear ownership model: Explicit resource management eliminates
+ambiguity and follows the "principle of least surprise." New drivers choose one model and
+be consistent.
+- Use `pci_alloc_irq_vectors()` + `pci_free_irq_vectors()` for explicit control.
+- Use `pcim_alloc_irq_vectors()` for devres-managed, automatic cleanup.
+
+==== Testing And Review ====
+1. This series is only compiled test with allmodconfig.
+2. Given the substantial size of this patch series, I have structured the mailing
+   to facilitate efficient review. The cover letter, the first patch and the last one will be sent
+   to all relevant mailing lists and key maintainers to ensure broad visibility and
+   initial feedback on the overall approach. The remaining subsystem-specific patches
+   will be sent only to the respective subsystem maintainers and their associated
+   mailing lists, reducing noise.
+
+Please help review it, much thanks!
+
+
+
+Shawn Lin (37):
+  PCI/MSI: Add Devres managed IRQ vectors allocation
+  mmc: cavium: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  media: ipu6: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  gpio: merrifield: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  PCI: switchtec: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  PCI: vmd: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  spi: spi-pci1xxxx: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  spi: pxa2xx: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  i2c: amd-mp2: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  i2c: mchp-pci1xxxx: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  i2c: thunderx: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  i2c: designware: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  bus: mhi: host: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  serial: 8250_mid: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  serial: 8250_exar: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  platform/x86/intel: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  crypto: safexcel: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  crypto: octeontx2: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  cxl/pci: Replace pci_alloc_irq_vectors() with pcim_alloc_irq_vectors()
+  drm/hisilicon/hibmc: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  iommu/riscv: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  thunderbolt: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  accel/amdxdna: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  accel/ivpu: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  accel/qaic: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  net: stmmac: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  r8169: Replace pci_alloc_irq_vectors() with pcim_alloc_irq_vectors()
+  net: thunder_bgx: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  net: hibmcge: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  mfd: intel-lpss: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  dmaengine: hsu: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  dmaengine: hisilicon: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  i3c: mipi-i3c-hci-pci: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  HID: intel-ish-ipc: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  HID: Intel-thc-hid: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  misc: microchip: pci1xxxx: Replace pci_alloc_irq_vectors() with
+    pcim_alloc_irq_vectors()
+  PCI/MSI: Only check is_msi_managed in pcim_setup_msi_release()
+
+ drivers/accel/amdxdna/aie2_pci.c                   |  2 +-
+ drivers/accel/ivpu/ivpu_drv.c                      |  2 +-
+ drivers/accel/qaic/qaic_drv.c                      |  4 ++--
+ drivers/bus/mhi/host/pci_generic.c                 |  3 ++-
+ drivers/crypto/inside-secure/safexcel.c            |  8 +++----
+ drivers/crypto/marvell/octeontx2/otx2_cptpf_main.c |  2 +-
+ drivers/crypto/marvell/octeontx2/otx2_cptvf_main.c |  4 ++--
+ drivers/cxl/pci.c                                  |  8 ++-----
+ drivers/dma/hisi_dma.c                             |  3 +--
+ drivers/dma/hsu/pci.c                              |  2 +-
+ drivers/gpio/gpio-merrifield.c                     |  2 +-
+ drivers/gpu/drm/hisilicon/hibmc/hibmc_drm_drv.c    |  4 ++--
+ drivers/hid/intel-ish-hid/ipc/pci-ish.c            |  2 +-
+ .../intel-thc-hid/intel-quicki2c/pci-quicki2c.c    |  2 +-
+ drivers/i2c/busses/i2c-amd-mp2-pci.c               |  2 +-
+ drivers/i2c/busses/i2c-designware-pcidrv.c         |  2 +-
+ drivers/i2c/busses/i2c-mchp-pci1xxxx.c             |  2 +-
+ drivers/i2c/busses/i2c-thunderx-pcidrv.c           |  2 +-
+ drivers/i3c/master/mipi-i3c-hci/mipi-i3c-hci-pci.c |  2 +-
+ drivers/iommu/riscv/iommu-pci.c                    |  4 ++--
+ drivers/media/pci/intel/ipu6/ipu6.c                |  2 +-
+ drivers/mfd/intel-lpss-pci.c                       |  2 +-
+ drivers/misc/mchp_pci1xxxx/mchp_pci1xxxx_gp.c      |  2 +-
+ drivers/mmc/host/cavium-thunderx.c                 |  2 +-
+ drivers/net/ethernet/cavium/thunder/thunder_bgx.c  |  4 ++--
+ drivers/net/ethernet/hisilicon/hibmcge/hbg_irq.c   |  4 ++--
+ drivers/net/ethernet/realtek/r8169_main.c          |  2 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c  |  6 ++---
+ drivers/pci/controller/vmd.c                       |  4 ++--
+ drivers/pci/msi/api.c                              | 26 ++++++++++++++++++++++
+ drivers/pci/msi/msi.c                              |  4 +---
+ drivers/pci/switch/switchtec.c                     |  6 ++---
+ drivers/platform/x86/intel/ehl_pse_io.c            |  2 +-
+ drivers/spi/spi-pci1xxxx.c                         |  4 ++--
+ drivers/spi/spi-pxa2xx-pci.c                       |  2 +-
+ drivers/thunderbolt/nhi.c                          |  6 ++---
+ drivers/tty/serial/8250/8250_exar.c                |  2 +-
+ drivers/tty/serial/8250/8250_mid.c                 |  2 +-
+ include/linux/pci.h                                | 22 ++++++++++++++++++
+ 39 files changed, 104 insertions(+), 62 deletions(-)
+
+-- 
+2.7.4
+
