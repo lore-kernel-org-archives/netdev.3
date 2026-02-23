@@ -1,46 +1,45 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D5D3644AF
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 11:42:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83E6365A05
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 12:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771846922; cv=none; b=L1YQBcBZS6l6p4gJqezPVu2JS7CxOi8IfXXtHX5NY6OZ/LePQW/3asqadKJf9Wmat6EvJaR6lQBx0eqcggziFC5HDvp224SfZXped8SVCG7clb1ndqBkAoTyQkvtD7Mj6+WLh5ffv7CFsiOmPwIS4ps3I+B5saAVlumzLvM8ySg=
+	t=1771848145; cv=none; b=DWgPQppCEVWPhcB5ooHi27KMBIHV7lNz2Wb5sspa5sysJc7RNt+eAG4cG8dYZ3oZ+5U3QeSIn/8bBoYzfSGx84g1MGr6tPeRLvP3ztiYg1KVOpiO/DYtE2yVeBcy4I4tE/R8BW/o/MQnaww3TNrnZsJp4taDzJqM92IU+YjaBHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771846922; c=relaxed/simple;
-	bh=AHCsNEhqveb2kuYOOzSvCuKTTIt3uG4Llr3NsGpLIyI=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=uQcQqCJrX4DoHGqlY3ZV8CUb1V0dAxR3eGPr7GFPQ5gN6hGxUzi3D/IaAUzhjtFSx6JhW9J85paRSZY0ap6kkQM0aNngRpaCWHYhJA6Vu/thuea/fslHTB0rKr8LfXNnHYJ2wBvGwR/qvXtbYr6jP2iHCVbpPfI3fgc6VCFK4+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=SH+SziQr; arc=none smtp.client-ip=78.32.30.218
+	s=arc-20240116; t=1771848145; c=relaxed/simple;
+	bh=Blh1NBTkxgRNMKBaHXCO+dq7e3iDsyx+md/K/l4a6pY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cOgi3JMiu/+3VvoxlHPSB+0jb2mnaYhyAQQPFpwjOZoDRwryGJ7XXp8jc2xeV36Ns22/GOpDWXFB/9JgVDV5gWPmpXxrJ4IIbHFWSkdqML+QdtC8iEbs80bgC1Sy/3pf5+Cv0StJHnBZCzLeInby2T/ckQxCcqX5Em+JAtlp/Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Gxs6x5Q2; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="SH+SziQr"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Gxs6x5Q2"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=OujM+5YOGBG7Jz4/7Ztk/MF5TTjI8tB7z3D1VsAINX4=; b=SH+SziQryOR3JDUMp/37fhcp0X
-	rJtg+4yYW9ihIMqrach944yT4WHO5ONxDps4Hhpahx1skVGB2E0jLnjmXJKQ7P38B/Em9AfLA1ytz
-	UQot/ab2B0W8fJnqm+3ZSY1B5In9Pfbj7xTiBmausLbxJROg34TjPSe3KGzTkqJUPbyX638nypcxW
-	e8Xb7tavhg2EuTVc9M+euDc4hS++z7CXHgfbbmd807WRQS43CrrZZ5D9Z67WwILAqMG4vArcmdkH0
-	6YHvRskuOtVxNHRbDGdj9GW01vh3y5cPYgx39tUF6WgYVRHeyPD2gdn1jkEeioRfoUATKU6/r5xRL
-	xXGyYrLQ==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:54558 helo=rmk-PC.armlinux.org.uk)
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=FZeUGH/lmPkQ+aeDfJvyUvyarahPQUbQ9ViirgESqgY=; b=Gxs6x5Q2sBIHtbQll5mAdrsGBm
+	J4P9x9KB/tX37XqPK4lBQryeVq6NUEhPoDX4QwdXf6U/EFspdkh16tAzSkumSHp+0Rxj1sqjixwD3
+	KpukrfPP9FYZAIJx/o02MWXvn15FLyXeoi1h5oXsZI+w/ORFLDdoY7EYuuLo8lXGaWeAPDvASB7P1
+	T4u505EgKjPIvR8SUF7UhwVgQIH5ixMUafdhKPaPHnO5DUm21gqRA6A/8yTBMKxq2UySOaA140mU1
+	IopUAWJBYAMwHMrkkwztI87Af7gsy6mjhs6f+NVcEH44BydI8LTFPQxNGJ3SmFjMah649oL1K7R9D
+	xh4B3CUA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:43120)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vuUK0-000000003zg-2igo;
-	Mon, 23 Feb 2026 11:41:52 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vuUJz-0000000AfEU-3KIy;
-	Mon, 23 Feb 2026 11:41:51 +0000
-In-Reply-To: <aZw86hpjQ-3w3xqJ@shell.armlinux.org.uk>
-References: <aZw86hpjQ-3w3xqJ@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vuUdl-0000000041f-1xCY;
+	Mon, 23 Feb 2026 12:02:17 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vuUdj-000000007LS-0fmz;
+	Mon, 23 Feb 2026 12:02:15 +0000
+Date: Mon, 23 Feb 2026 12:02:14 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
 To: Andrew Lunn <andrew@lunn.ch>
 Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
@@ -48,74 +47,37 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 2/2] net: stmmac: fix transmit interrupt coalescing
+Subject: Re: [PATCH net-next 1/2] net: stmmac: use circ_buf helpers for
+ descriptors
+Message-ID: <aZxBxoq8_QUzUcud@shell.armlinux.org.uk>
+References: <aZw86hpjQ-3w3xqJ@shell.armlinux.org.uk>
+ <E1vuUJu-0000000AfEO-2kPP@rmk-PC.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vuUJz-0000000AfEU-3KIy@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 23 Feb 2026 11:41:51 +0000
+In-Reply-To: <E1vuUJu-0000000AfEO-2kPP@rmk-PC.armlinux.org.uk>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-The accounting for transmit frames does not count the descriptors
-correctly. It uses:
+On Mon, Feb 23, 2026 at 11:41:46AM +0000, Russell King (Oracle) wrote:
+> @@ -4571,8 +4562,8 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	/* If we only have one entry used, then the first entry is the last
+>  	 * segment.
+>  	 */
+> -	is_last_segment = ((tx_q->cur_tx - first_entry) &
+> -			   (priv->dma_conf.dma_tx_size - 1)) == 1;
+> +	is_last_segment = CIRC_CNT(tx_q->cur_tx, first_entry,,
+> +				   priv->dma_conf.dma_tx_size) == 1;
 
-	tx_packets = (tx_q->cur_tx + 1) - first_tx;
+Bah, I thought I fixed that, but it seems I merged the fix patch into
+the second patch not this patch. :/
 
-however, these are indexes into a circular buffer, so cur_tx can be
-less than first_tx, and when that happens, tx_packets becomes a very
-large unsigned integer. When this is added to tx_q->tx_count_frames,
-it has the effect of reducing the count of frames, possibly causing
-it to also wrap to a very large unsigned integer.
-
-Fix this by using CIRC_CNT() to calculate the number of descriptors
-used.
-
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 3277aecc5454..baf2ff577f45 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4503,7 +4503,8 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
- 
- 	/* Manage tx mitigation */
--	tx_packets = (tx_q->cur_tx + 1) - first_tx;
-+	tx_packets = CIRC_CNT(tx_q->cur_tx + 1, first_tx,
-+			      priv->dma_conf.dma_tx_size);
- 	tx_q->tx_count_frames += tx_packets;
- 
- 	if ((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) && priv->hwts_tx_en)
-@@ -4562,7 +4563,7 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	/* If we only have one entry used, then the first entry is the last
- 	 * segment.
- 	 */
--	is_last_segment = CIRC_CNT(tx_q->cur_tx, first_entry,,
-+	is_last_segment = CIRC_CNT(tx_q->cur_tx, first_entry,
- 				   priv->dma_conf.dma_tx_size) == 1;
- 
- 	/* Complete the first descriptor before granting the DMA */
-@@ -4781,7 +4782,7 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 	 * This approach takes care about the fragments: desc is the first
- 	 * element in case of no SG.
- 	 */
--	tx_packets = (entry + 1) - first_tx;
-+	tx_packets = CIRC_CNT(entry + 1, first_tx, priv->dma_conf.dma_tx_size);
- 	tx_q->tx_count_frames += tx_packets;
- 
- 	if ((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) && priv->hwts_tx_en)
 -- 
-2.47.3
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
