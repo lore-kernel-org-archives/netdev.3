@@ -1,193 +1,172 @@
-Received: from bkemail.birger-koblitz.de (bkemail.birger-koblitz.de [23.88.97.239])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10DC81E834B;
-	Mon, 23 Feb 2026 19:29:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=23.88.97.239
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD8A2853F8
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 19:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771874956; cv=none; b=ewIXmRigtN2e+ltxdczGdxfrNajWD1rQh8xHP5cRTMqvRHmzYfOQQf7Z9QEDYhzqnU1pTYML45xIU7iY1AV99HoTSj5srWSsRE5ST4j5Got25s+HtbgxqshbjkHky8hoGthTXsA9BPf59JVa9JamUdPtG1KDRy1rh9I7M7qYMt8=
+	t=1771875084; cv=none; b=Zzz4xbvcQhHlhwF0OFtdU0phqozg1w58E4SzethyTkfLF97TqbIDeaoBrIdJzDukV2sAWmh7/9KwY59kTwFvvkrSEDLOgqqWknLa3irdqQ/ALulojd5FqlENUaOMWt/xeh+3QwJGdGbxB0s2DvxkWrHOwrelkxTnYjO/+K5QWl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771874956; c=relaxed/simple;
-	bh=3MA3bbhwetR2X3uYjy4BFrqzdWakVvc4DI2/YXAy/vY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=g9BAxLXjWdN93ybhWrLnySLW73xV3XLweAg3f7sWlgWwEujLXpZxoXnTVWNRbNLIlCecOp29o6eTdUKOOXZyz5Kp2fqVgcmXb8RFNvSW4ivPX+CwmPaBVfJFYjL3S+F7LJNz126hiw4klnbYclGLjfuXJ79zk/DrxxyFrIvD9jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de; spf=pass smtp.mailfrom=birger-koblitz.de; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=TA46UPa0; dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b=RJyeDbDW; arc=none smtp.client-ip=23.88.97.239
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=birger-koblitz.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=birger-koblitz.de
+	s=arc-20240116; t=1771875084; c=relaxed/simple;
+	bh=aBVe1v2zocRrMHCYVLiLkykG1Xp5AP9GVnTPhpkM3uc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HwDYuz6jnZEFKCqxBmohR0VeY8HfiV0VvzWh4PaIxQTRtjGzqIRrgcJqtAYaReas1WXETxXZSB/13W+M6Y7Qlr2BBbxs6hmGKUP7qHMl67//Mg71qVJyviLdDstZHj6PaZ5X/+s8dinhjIbZUUNkefk0Fxv6DY/ntvZA/aIW/xs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d8xvZJG4; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="TA46UPa0";
-	dkim=pass (2048-bit key) header.d=birger-koblitz.de header.i=@birger-koblitz.de header.b="RJyeDbDW"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1771874456;
-	bh=3MA3bbhwetR2X3uYjy4BFrqzdWakVvc4DI2/YXAy/vY=;
-	h=From:Date:Subject:To:Cc:From;
-	b=TA46UPa072snvW/IGatzC/1Ek/C72zSOcu5lXp8eMubpmAkpeN9WbAzvS2VqJjOJd
-	 +7aa9lSDKjrdJgNAlGGEkU4vRBpMFsO167Q+Lp5tIDuScePEGnnEcAOe8ezZ2lzfGj
-	 jmmpbxwDkonEnMXAmTiXA0P+49085EtXBj7Cpw/uQLBnFIQEKkpZsIxtAG5UzTuXTh
-	 pR7AvA9gL7JwsF9WWzonee8tYHXGuAifaWGBvnRjjf1sv1CZtXK9MYmsAoVhPDdSCV
-	 eFGVj/i/BqhGFxJVI2k0IvQdyAJk7qhp+t5BqZFxEATGAu0y9mbfxKHNEDHD+kwMVL
-	 D0HH5PCBib+Mg==
-Received: by bkemail.birger-koblitz.de (Postfix, from userid 109)
-	id D611F3F760; Mon, 23 Feb 2026 19:20:56 +0000 (UTC)
-X-Spam-Level: 
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=birger-koblitz.de;
-	s=default; t=1771874455;
-	bh=3MA3bbhwetR2X3uYjy4BFrqzdWakVvc4DI2/YXAy/vY=;
-	h=From:Date:Subject:To:Cc:From;
-	b=RJyeDbDWgPFRNRBhckqw1ARiSW01+P9l1a1iPdwB9R+PNj9/QHFZsa/tLhfKUkeqI
-	 0X6wAhsD1CSPmIwyIa2AfbBYbKVjru6NRPWxGnrAC883HNhYEUt+rtZlxQ0Up+1/s8
-	 meLCFSYTmTVLrm7zpSd3y8fdp0/+KPyjJfnJrCDZZkJZ8srAICiWOAt1XESo6bTEVF
-	 6EmT9UUNsl7nWTm2hT4BU7X5A5+E5sMolvzIStvoNqPmQRBp69DXRuiuB1saaBz8W9
-	 frmTELfPgyxGGdjpsJo9JO9Ir19/aPedge9eaz+/o3aHUDuqPqMWn6Tqn6oOtXGR7Q
-	 iI+ORJQtFXKXw==
-Received: from AMDDesktop.lan (unknown [IPv6:2a00:6020:47a3:e800:94d3:d213:724a:4e07])
-	by bkemail.birger-koblitz.de (Postfix) with ESMTPSA id B31803F757;
-	Mon, 23 Feb 2026 19:20:55 +0000 (UTC)
-From: Birger Koblitz <mail@birger-koblitz.de>
-Date: Mon, 23 Feb 2026 20:20:35 +0100
-Subject: [PATCH net-next] r8152: Add 2500baseT EEE status/configuration
- support
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d8xvZJG4"
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-59e60b3ccdfso6186206e87.0
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 11:31:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771875081; x=1772479881; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4pPKKuwWl8LDWT5PkX05EPu4mdiDlnGWXA550J/Mnwo=;
+        b=d8xvZJG4gqG56Z++dQ5/MJnpUHxk2rYCKrTiKq4oLKHMkke5siQz4sxVxcAhGKeYUD
+         gRbQglOH7wkOuSqlN9m4aDaOnScwE1FNj/YrvBF2IR4R+BUliZLGUOaypZo/x/vOEAyU
+         Xeh4i4f6dIMC576RkFQ8JZhrmZkxrtt7ijMy9Ia+Vtn7qJAKMRBOXBpnPVpQXNfG+qnd
+         aX/hNN5FZ753Wa/efqZ4lHhL+gyx+A7z/52BebAXWFd0Y/tYcwL1kMpthBxCZW4Cbhfn
+         kbMTTG7th6eu/V34zcCsJ89irdTy4/NKerJjUwqRFrObOgLQgdIEv0J0dpI+I2z4ndhK
+         aSQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771875081; x=1772479881;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4pPKKuwWl8LDWT5PkX05EPu4mdiDlnGWXA550J/Mnwo=;
+        b=kWb2rvTXYZSm9bg7lqCWQXzN3evrHI4kQpaClrZFILzCwiEx8FbV6T3YsdUQTKaz+t
+         Ru9tnJg8rBrGhAiYOuq/njss44YXUnVEeQC6IFp03MHrhUFrN0Q8uQpc3qKFdN+Jd1cg
+         xEt8Fo1/NlR8RoTQQbUV8l28vk6gJ8XorTaTZyDg+PjioQaSK9O6qWwh0U9gJw/lOAtA
+         TJl+8rT5LuilHb5LLFvTgapDwQNxRejmK+RUhMXQVsXicT0oMoZ9lceb3jUdilqdWxSI
+         NlZ282LhiAU0BfmnIZOYCsbvcfcWvYsP4NAx4rp+QJTFneDavThno53djLze5Fkf6Lmd
+         Gh/g==
+X-Gm-Message-State: AOJu0YzPsBAMCyd78ltInZH8L5yyRC1UEDnAcqyBl6j2ZlcJ3BMZ63Fg
+	kkiloiciUR++w28Vcmi7N1g0DGZ4kFuIZRJe7TH10qZznUtYeaiR747RKSSHB1Su
+X-Gm-Gg: ATEYQzxXUiKkromIkg6LJBNtzZ2QSdKrP1JsLcrAl9cFg2cP5vQGFlFA3igKx5ixqxP
+	k4PQl6gpV/hh7SRCyULPRNyq5XmXDjcxI+FZsm3QqouPAf0qOl/CNWIIAP70mVYG1WLiQ0LS6d6
+	ibnVDcNXGusJxpIwFBUEUnzt8pKJgm8XJMj+rQcdM5cTAdrACf1hjelZA0v9UR5UvnobmwQe6QM
+	Mr7mTlFIblLEubl2DegqvVJhCBrqQwg4ahBs/OgcTIen1+A3PHjFPTLqVpdDSqLZS9f/+K52/pg
+	jLuOvFX/WkB0HNy2h90mHBxc0bkGxgZjbkeWf2J5BR4NRCMMFccq1pIvpd8NEUADTRTwl03EEHw
+	57UC352FT0bspyqhMesTnt04gc591yzLXC53QMINZzi+Ek+KsizT75wmiMH1DSxf/QQeILVcS9R
+	pIzlaXE4WX4peU0L89e1ry
+X-Received: by 2002:a05:6000:4013:b0:436:15c3:9163 with SMTP id ffacd0b85a97d-4396f18abbcmr14931725f8f.57.1771868956773;
+        Mon, 23 Feb 2026 09:49:16 -0800 (PST)
+Received: from localhost ([2a03:2880:31ff:52::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d4c96csm22685347f8f.30.2026.02.23.09.49.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 09:49:16 -0800 (PST)
+From: Mohsin Bashir <mohsin.bashr@gmail.com>
+To: netdev@vger.kernel.org
+Cc: alexanderduyck@fb.com,
+	alok.a.tiwari@oracle.com,
+	andrew+netdev@lunn.ch,
+	andrew@lunn.ch,
+	davem@davemloft.net,
+	dg573847474@gmail.com,
+	donald.hunter@gmail.com,
+	edumazet@google.com,
+	gal@nvidia.com,
+	horms@kernel.org,
+	idosch@nvidia.com,
+	jacob.e.keller@intel.com,
+	kernel-team@meta.com,
+	kory.maincent@bootlin.com,
+	kuba@kernel.org,
+	lee@trager.us,
+	leon@kernel.org,
+	mbloch@nvidia.com,
+	mike.marciniszyn@gmail.com,
+	mohsin.bashr@gmail.com,
+	o.rempel@pengutronix.de,
+	pabeni@redhat.com,
+	saeedm@nvidia.com,
+	tariqt@nvidia.com,
+	vadim.fedorenko@linux.dev
+Subject: [RFC net-next V3 0/5] net: ethtool: Track TX pause storm
+Date: Mon, 23 Feb 2026 09:49:09 -0800
+Message-ID: <20260223174914.74461-1-mohsin.bashr@gmail.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260223-b4-eee2g5-v1-1-7006b537b144@birger-koblitz.de>
-X-B4-Tracking: v=1; b=H4sIAIKonGkC/x3MSwqAMAxF0a1IxgZq/OJWxIHap2ZSpRUpiHu3O
- DxwuQ8FeEWgPnvI49agh0so8oyWfXIbWG0yiZHGiJQ8VwxAtprF2HZpVltNXUepPz1Wjf9rIIe
- LHeJF4/t+o9+l5WUAAAA=
-X-Change-ID: 20260223-b4-eee2g5-20d7c6fd4a88
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: linux-usb@vger.kernel.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?Ren=C3=A9_van_Dorst?= <opensource@vdorst.com>, 
- Birger Koblitz <mail@birger-koblitz.de>
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
 
-The r8152 driver supports the RTL8156, which is a 2.5Gbit Ethernet controller for
-USB 3.0, for which support is added for configuring and displaying the EEE
-advertisement status for 2.5GBit connections.
+With TX pause enabled, if a device cannot deliver received frames to
+the stack (e.g., during a system hang), it may generate excessive pause
+frames causing a pause storm. This series updates the uAPI to track TX
+pause storm events as part of the pause stats (p1), proposes using the
+existing pfc-prevention-tout knob to configure the storm watchdog (p2),
+adds pause storm protection support for fbnic (p3), and leverages p1
+to provide observability into these events for the fbnic (p4) and mlx5
+(p5) drivers.
 
-The patch also corrects the determination of whether EEE is active to include
-the 2.5GBit connection status and make the determination dependent not on the
-desired speed configuration (tp->speed), but on the actual speed used by
-the controller. For consistency, this is corrected also for the RTL8152/3.
+Patches 1-4 are ready for review. The series is marked RFC due to
+patch 5, which has a few open design questions:
 
-This was tested on an Edimax EU-4307 V1.0 USB-Ethernet adapter with RTL8156,
-and a SECOMP Value 12.99.1115 USB-C 3.1 Ethernet converter with RTL8153.
+The mlx5 tracks device_stall_critical_watermark_cnt per priority class
+(8 priorities) in the PPCNT register's per-priority counter group. The
+ethtool_pause_stats struct exposes tx_pause_storm_events as a single
+value. Patch 5 currently aggregates across all 8 priorities. This raises
+the following questions:
 
-Signed-off-by: Birger Koblitz <mail@birger-koblitz.de>
----
- drivers/net/usb/r8152.c | 42 +++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 37 insertions(+), 5 deletions(-)
+  1) Should the driver report the aggregate across all priorities, or
+     only report prio 0? Looks like the current reporting via ethtool -S
+     (tx_pause_storm_warning_events / tx_pause_storm_error_events)
+     read from per_prio_counters[0] only, if my reading is correct,
+     reporting the aggregate in the new pause stats path would create an
+     inconsistency between the two interfaces for the same underlying
+     counter.
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 49433301e7b1d5c98fc32c72f821e31335bc3527..0bc3b1b93017c80e1761b00767904ff1c2e6ac87 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -213,6 +213,7 @@
- #define OCP_EEE_LPABLE		0xa5d2
- #define OCP_10GBT_CTRL		0xa5d4
- #define OCP_10GBT_STAT		0xa5d6
-+#define OCP_EEE_LPABLE2		0xa6d0
- #define OCP_EEE_ADV2		0xa6d4
- #define OCP_PHY_STATE		0xa708		/* nway state for 8153 */
- #define OCP_PHY_PATCH_STAT	0xb800
-@@ -954,6 +955,7 @@ struct r8152 {
- 	u16 ocp_base;
- 	u16 speed;
- 	u16 eee_adv;
-+	u16 eee_adv2;
- 	u8 *intr_buff;
- 	u8 version;
- 	u8 duplex;
-@@ -8929,6 +8931,7 @@ static int r8152_get_eee(struct r8152 *tp, struct ethtool_keee *eee)
- {
- 	__ETHTOOL_DECLARE_LINK_MODE_MASK(common);
- 	u16 val;
-+	u16 speed = rtl8152_get_speed(tp);
- 
- 	val = r8152_mmd_read(tp, MDIO_MMD_PCS, MDIO_PCS_EEE_ABLE);
- 	mii_eee_cap1_mod_linkmode_t(eee->supported, val);
-@@ -8941,8 +8944,14 @@ static int r8152_get_eee(struct r8152 *tp, struct ethtool_keee *eee)
- 
- 	eee->eee_enabled = tp->eee_en;
- 
--	linkmode_and(common, eee->advertised, eee->lp_advertised);
--	eee->eee_active = phy_check_valid(tp->speed, tp->duplex, common);
-+	if (speed & _1000bps)
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, common);
-+	if (speed & _100bps)
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT, common);
-+
-+	linkmode_and(common, common, eee->advertised);
-+	linkmode_and(common, common, eee->lp_advertised);
-+	eee->eee_active = !linkmode_empty(common);
- 
- 	return 0;
- }
-@@ -8953,7 +8962,10 @@ static int r8152_set_eee(struct r8152 *tp, struct ethtool_keee *eee)
- 
- 	tp->eee_en = eee->eee_enabled;
- 	tp->eee_adv = val;
--
-+	if (tp->support_2500full) {
-+		val = linkmode_to_mii_eee_cap2_t(eee->advertised);
-+		tp->eee_adv2 = val;
-+	}
- 	rtl_eee_enable(tp, tp->eee_en);
- 
- 	return 0;
-@@ -8963,6 +8975,7 @@ static int r8153_get_eee(struct r8152 *tp, struct ethtool_keee *eee)
- {
- 	__ETHTOOL_DECLARE_LINK_MODE_MASK(common);
- 	u16 val;
-+	u16 speed = rtl8152_get_speed(tp);
- 
- 	val = ocp_reg_read(tp, OCP_EEE_ABLE);
- 	mii_eee_cap1_mod_linkmode_t(eee->supported, val);
-@@ -8973,10 +8986,29 @@ static int r8153_get_eee(struct r8152 *tp, struct ethtool_keee *eee)
- 	val = ocp_reg_read(tp, OCP_EEE_LPABLE);
- 	mii_eee_cap1_mod_linkmode_t(eee->lp_advertised, val);
- 
-+	if (tp->support_2500full) {
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, eee->supported);
-+
-+		val = ocp_reg_read(tp, OCP_EEE_ADV2);
-+		mii_eee_cap2_mod_linkmode_adv_t(eee->advertised, val);
-+
-+		val = ocp_reg_read(tp, OCP_EEE_LPABLE2);
-+		mii_eee_cap2_mod_linkmode_adv_t(eee->lp_advertised, val);
-+
-+		if (speed & _2500bps)
-+			linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, common);
-+	}
-+
- 	eee->eee_enabled = tp->eee_en;
- 
--	linkmode_and(common, eee->advertised, eee->lp_advertised);
--	eee->eee_active = phy_check_valid(tp->speed, tp->duplex, common);
-+	if (speed & _1000bps)
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, common);
-+	if (speed & _100bps)
-+		linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT, common);
-+
-+	linkmode_and(common, common, eee->advertised);
-+	linkmode_and(common, common, eee->lp_advertised);
-+	eee->eee_active = !linkmode_empty(common);
- 
- 	return 0;
- }
+  2) If aggregating is the preferred approach, there should be a fix for
+     existing ethtool -S reporting to aggregate across all priorities,
+     so both interfaces stay in sync?
 
----
-base-commit: 89ed47f863c259e0c639d3b8c62cde2c30485c6b
-change-id: 20260223-b4-eee2g5-20d7c6fd4a88
+  3) The per-priority data is already cached in per_prio_counters[]
+     by the periodic stats update (DECLARE_STATS_GRP_OP_UPDATE_STATS).
+     Should the pause stats path read from this cache (zero additional
+     firmware trips at the cost of slightly stale data), or issue fresh
+     reads via mlx5_core_access_reg() as done in p5?
 
-Best regards,
+Feedback on the above would be appreciated.
+
+Changelog:
+V3:
+ - (P3): Fix checkpatch complaint about line length in
+   fbnic_mac_ps_protect_handler()
+ - (P5):
+    * Aggregate pause stall stats across all priority classes
+    * Update commit message
+V2:
+https://lore.kernel.org/20260207010525.3808842-1-mohsin.bashr@gmail.com/
+
+V1: https://lore.kernel.org/20260122192158.428882-1-mohsin.bashr@gmail.com/
+
+Mohsin Bashir (5):
+  net: ethtool: Track pause storm events
+  net: ethtool: Update doc for tunable
+  eth: fbnic: Add protection against pause storm
+  eth: fbnic: Fetch TX pause storm stats
+  eth: mlx5: Move pause storm errors to pause stats
+
+ Documentation/netlink/specs/ethtool.yaml      |  13 ++
+ .../ethernet/mellanox/mlx5/core/en_stats.c    |  30 +++++
+ drivers/net/ethernet/meta/fbnic/fbnic.h       |   3 +
+ drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |  11 ++
+ .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  46 ++++++++
+ .../net/ethernet/meta/fbnic/fbnic_hw_stats.h  |   1 +
+ drivers/net/ethernet/meta/fbnic/fbnic_irq.c   |   2 +
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.c   | 111 ++++++++++++++++++
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |  27 +++++
+ drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |   5 +
+ include/linux/ethtool.h                       |   2 +
+ include/uapi/linux/ethtool.h                  |   2 +-
+ .../uapi/linux/ethtool_netlink_generated.h    |   1 +
+ net/ethtool/pause.c                           |   4 +-
+ 14 files changed, 256 insertions(+), 2 deletions(-)
+
 -- 
-Birger Koblitz <mail@birger-koblitz.de>
+2.47.3
 
