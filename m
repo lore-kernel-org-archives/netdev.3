@@ -1,173 +1,93 @@
-Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F136A2E7635
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 15:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A08A7191;
+	Mon, 23 Feb 2026 15:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771860651; cv=none; b=KHmnW/+7Lq4k0CNG5x2U/9eVje35c/nLoLN4JqBWSeWqwLQVWdzC8492YEPDZCWhEq3qtEPprJKwoi64YqUlNYWCOo7RlKjH32pe00QQPU/A3FNpzFH3ORFLmzkqayI4hzKOkZid+eXyPbkh6cFHXi1Wtuq/KbNBYQWCL23Udic=
+	t=1771860681; cv=none; b=tDpoLzBzarAdA5/0+0ZBVCRtVToTVb+0lzc+GebTwSTm2HEJrPt5BiCaC8c3fCo0wNnHgqp5muq2KSKpj96507hQ1P+/lSYQ19KnfZ6cIrimccjlWS34xVoyZkSuMBqD9SkmJPtTHu7t9TnHRPmAltmIGXKX3vwkzkpjvhimKLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771860651; c=relaxed/simple;
-	bh=hEv4Ae+QEC6lKjEUUGAvjSgbTkL2q4XylaJ+Qi9wZHQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qv8DxGADWcCgA8s+ROojJpo4cFIhYQHe2g8C0K3DEourIQYD8GENhHHTT6PuYzpbUVxw6i0q3F8JYDGwgqL9cLzx246Z1etAUBDqO1mRbdrVTvdO8sPzXO0GKgV2dybgRc04wlxqn8oVspz05y78BStSZ6IOcUGrkm+RTxRSwRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qe6fAumi; arc=none smtp.client-ip=209.85.222.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1771860681; c=relaxed/simple;
+	bh=ctP1UU27tLiOW211tKcjYzIW7T9UCOnyQ+3z045jeUs=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=hhqZfk3D9hHsd3iHzW8drrDRgn8m7BTBQ3QYmp5CrgeN1OgNa1ZFORUwRym/x6IAgnQ0/roB3VTWrzW/1RXKdibVXHmXZpuR+xdMxW2hYcRHYZHRgfxmJRW7l2Mg4GLjyNyfs4FxS54o1QUw7//CeQ+nTgkGuBlr5xnCxnTFLvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Locr35s6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qe6fAumi"
-Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8c70ef98116so4844295385a.1
-        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 07:30:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771860649; x=1772465449; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zvWeIEq2VU3ENK2aRvqCap/GrjJulMo8uDTfHsPk6iw=;
-        b=qe6fAumiTJgSnBy6U7unkaBxYYH6GpmcDVUU4s7qDbRGra36cB0iFFnkQMpCiud8la
-         w/iKAEa+qEr0YxyCnyJTb3NYRAQBqbZQoEJKwfpWqDLm2m3G1o+wAiYUOldIxvg5gX2q
-         Izc/eZzhgYtgLiNIarIHZUlG/FD8hp0Yr6XQL7hO6aI7+ivhqvo5Zaq9t4m/nsKL+Dkb
-         WCZEbiXVsA8Su80IwIl2jIGwr0xr9IjBAcfcSzFYcoPkTAL6sQn5WQ+kvX2RNFeNZsMi
-         +GGNerJJ/0PENOpuCfQuTNK01lDvmnd8FF2VdQmg/j80ci1e+/g57ZN+ZysnRnpNFfSi
-         YIKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771860649; x=1772465449;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=zvWeIEq2VU3ENK2aRvqCap/GrjJulMo8uDTfHsPk6iw=;
-        b=S/F0fkJ0mYL210/ixQ7O8hfCFlT9Vs5JkrqWtrjGVmpTaOZO1rzWU/zUVnvUHRv0fq
-         YGXRvhKFbKYfa4sI4we59OgbYUErguSrQi2wIJKWwdPAftBEuLDcZ0+0P6DULKgdvaUO
-         TcpN1r5DLi3NpW2BuXHvCLYuIKV60Jht8FX7nbyo5h5zJj7meXce1jgPyFWs4ZOBYKvh
-         uuwW/iVjv1m6cn3iFK+tw6zAR8wYAdhfb9Qe1NzU3NmTMUF7k7tCxzE7oi97s9VjaglI
-         OR9vqDGdvkuB4Iup7t+3V1I4rFr2X1Cv9sv9pv6GXECQt6usWAuq0s+PEpcAs+e/clAC
-         KYJA==
-X-Forwarded-Encrypted: i=1; AJvYcCWE3N9VzyRrbjsH1O7jrewgvpgzTzqRKmXyHxf/R7ilEkX25Cx68A1MGKufiwAIBz/Ux5payxY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHEcRKUtvXAW8sHnc5KLyA9GLIVUVXiLgug60qy3tSsFS/+4SN
-	V6qOh+LSnqj7LXz84BMcCff0dDLEVD/2zkPjYtE/GykuGr8i3FDyGX5iPS4GErINMv2IfkfGNws
-	LK4JC+3ozNhSg9Q==
-X-Received: from qkbbq41.prod.google.com ([2002:a05:620a:46a9:b0:8c7:cb6:2f03])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:25ce:b0:8c6:a034:9224 with SMTP id af79cd13be357-8cb8ca72248mr1016764685a.47.1771860648450;
- Mon, 23 Feb 2026 07:30:48 -0800 (PST)
-Date: Mon, 23 Feb 2026 15:30:47 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Locr35s6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A6DC116C6;
+	Mon, 23 Feb 2026 15:31:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771860681;
+	bh=ctP1UU27tLiOW211tKcjYzIW7T9UCOnyQ+3z045jeUs=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Locr35s63cRteDBT9nn+5mbBlHIoMU30aMUM9UiLDZiVKM2L1WQaqlea440Q9D/1s
+	 PIPFsU3GCN+LkOMgz3oiotDAUTpdBxSHjHPMlh3/O3EmPjk2VRybKxogElIxdnGdPW
+	 lsWO/Fy78o0rt2l4kGc3aSoKSDV+bUAGzjHqGzkXsaV7Hih9DDV/YpfIruMT4tMwjO
+	 WXxuz9RlS+4EJgjx4cLk6uFhZXHb/14s1FRrbMCER+RPLLhp4cgI5AsqDGdJdF2NXZ
+	 xfh4XVXxJ73K8gJ+RBszVv8oxYEmWw7H+M3v5ebwX0oH3nTnejeLKIieidQARd1kVx
+	 RkjspPRYU/Bww==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH iproute2-next v2 0/3] ip mptcp monitor: add JSON support
+Date: Mon, 23 Feb 2026 16:28:37 +0100
+Message-Id: <20260223-ipr-monitor-json-v2-0-f91fccccf917@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
-Message-ID: <20260223153047.886683-1-edumazet@google.com>
-Subject: [PATCH net-next] tcp: move inet6_csk_update_pmtu() to tcp_ipv6.c
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACVynGkC/3WNzQ6CMBCEX4Xs2TXtAmI8+R6Gg8AC609Ltkgwp
+ O9uw93jl5n5ZoPAKhzgkm2gvEgQ7xLQIYN2vLuBUbrEQIZOhsigTIpv72T2io/gHdqyyvPKllS
+ 0FtJsUu5l3ZU3SG3/mZnQ8TpDneJRQpp+98PF7qX/7sWiQW6KxnRlX53JXJ+sjl9HrwPUMcYfN
+ sjHA8AAAAA=
+X-Change-ID: 20260220-ipr-monitor-json-1573371524c1
+To: Stephen Hemminger <stephen@networkplumber.org>, 
+ David Ahern <dsahern@kernel.org>
+Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1090; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=ctP1UU27tLiOW211tKcjYzIW7T9UCOnyQ+3z045jeUs=;
+ b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDLnFB2zYDex9jS9tTnyjnTcVYbKKeUTGh8e8A64Ll+47
+ 4fnI97CjlIWBjEuBlkxRRbptsj8mc+reEu8/Cxg5rAygQxh4OIUgIncF2VkuN67c8YVs95583pv
+ 5JR2B2+d67xsz8sEsW1afExfWkMe+TP84fvOJjpFM7nw/5tLfSZTU7wvWZurfgqt4bq7KdP1b3w
+ aIwA=
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-This function is only called from tcp_v6_mtu_reduced() and can be
-(auto)inlined by the compiler.
+With this series, the command 'ip [-t[s]] mptcp monitor' produces an
+output with the JSON format.
 
-Note that inet6_csk_route_socket() is no longer (auto)inlined,
-which is a good thing as it is slow path.
+- Patch 1: a small refactoring to uniform the code.
 
-$ scripts/bloat-o-meter -t vmlinux.0 vmlinux.1
+- Patch 2: add JSON support in print_timestamp() helper.
 
-add/remove: 0/2 grow/shrink: 2/0 up/down: 93/-129 (-36)
-Function                                     old     new   delta
-tcp_v6_mtu_reduced                           139     228     +89
-inet6_csk_route_socket                       486     490      +4
-__pfx_inet6_csk_update_pmtu                   16       -     -16
-inet6_csk_update_pmtu                        113       -    -113
-Total: Before=25076512, After=25076476, chg -0.00%
+- Patch 3: add JSON support to 'ip mptcp monitor' as requested by
+  Stephen.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- include/net/inet6_connection_sock.h |  4 +++-
- net/ipv6/inet6_connection_sock.c    | 19 ++-----------------
- net/ipv6/tcp_ipv6.c                 | 15 +++++++++++++++
- 3 files changed, 20 insertions(+), 18 deletions(-)
+Changes in v2:
+- Patch 1: clearly mention the "fix".
+- Patch 2: ignore argument.
+- Patch 3: print token with 0xhex, use atexit().
+- Link to v1: https://patch.msgid.link/20260220-ipr-monitor-json-v1-0-eb4b0d5f7820@kernel.org
 
-diff --git a/include/net/inet6_connection_sock.h b/include/net/inet6_connection_sock.h
-index ece8dabd209a5b2fb42ec88b9acbc81c01b4174e..b814e1acc512186108f500702836d98647cbd165 100644
---- a/include/net/inet6_connection_sock.h
-+++ b/include/net/inet6_connection_sock.h
-@@ -18,6 +18,9 @@ struct sk_buff;
- struct sock;
- struct sockaddr;
- 
-+struct dst_entry *inet6_csk_route_socket(struct sock *sk,
-+					 struct flowi6 *fl6);
-+
- struct dst_entry *inet6_csk_route_req(const struct sock *sk,
- 				      struct dst_entry *dst,
- 				      struct flowi6 *fl6,
-@@ -25,5 +28,4 @@ struct dst_entry *inet6_csk_route_req(const struct sock *sk,
- 
- int inet6_csk_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl);
- 
--struct dst_entry *inet6_csk_update_pmtu(struct sock *sk, u32 mtu);
- #endif /* _INET6_CONNECTION_SOCK_H */
-diff --git a/net/ipv6/inet6_connection_sock.c b/net/ipv6/inet6_connection_sock.c
-index 11fc2f7de2fe981ddb48dc008bf7fd4ae1e4e2f6..37534e1168992c44e1400dacab87e79d04c64a41 100644
---- a/net/ipv6/inet6_connection_sock.c
-+++ b/net/ipv6/inet6_connection_sock.c
-@@ -56,8 +56,8 @@ struct dst_entry *inet6_csk_route_req(const struct sock *sk,
- 	return dst;
- }
- 
--static struct dst_entry *inet6_csk_route_socket(struct sock *sk,
--						struct flowi6 *fl6)
-+struct dst_entry *inet6_csk_route_socket(struct sock *sk,
-+					 struct flowi6 *fl6)
- {
- 	struct inet_sock *inet = inet_sk(sk);
- 	struct ipv6_pinfo *np = inet6_sk(sk);
-@@ -118,18 +118,3 @@ int inet6_csk_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl_unused
- 	return res;
- }
- EXPORT_SYMBOL_GPL(inet6_csk_xmit);
--
--struct dst_entry *inet6_csk_update_pmtu(struct sock *sk, u32 mtu)
--{
--	struct flowi6 *fl6 = &inet_sk(sk)->cork.fl.u.ip6;
--	struct dst_entry *dst;
--
--	dst = inet6_csk_route_socket(sk, fl6);
--
--	if (IS_ERR(dst))
--		return NULL;
--	dst->ops->update_pmtu(dst, sk, NULL, mtu, true);
--
--	dst = inet6_csk_route_socket(sk, fl6);
--	return IS_ERR(dst) ? NULL : dst;
--}
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index d10487b4e5bff87d4ff2a7b912a826964101a163..010f3aa72499358a96327fcf096e7542bbb5cc81 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -349,6 +349,21 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
- 	return err;
- }
- 
-+static struct dst_entry *inet6_csk_update_pmtu(struct sock *sk, u32 mtu)
-+{
-+	struct flowi6 *fl6 = &inet_sk(sk)->cork.fl.u.ip6;
-+	struct dst_entry *dst;
-+
-+	dst = inet6_csk_route_socket(sk, fl6);
-+
-+	if (IS_ERR(dst))
-+		return NULL;
-+	dst->ops->update_pmtu(dst, sk, NULL, mtu, true);
-+
-+	dst = inet6_csk_route_socket(sk, fl6);
-+	return IS_ERR(dst) ? NULL : dst;
-+}
-+
- static void tcp_v6_mtu_reduced(struct sock *sk)
- {
- 	struct dst_entry *dst;
+---
+Matthieu Baerts (NGI0) (3):
+      mptcp: uniform stream closure
+      utils: timestamp: add JSON support
+      mptcp: monitor: add JSON support
+
+ ip/ipmptcp.c | 94 +++++++++++++++++++++++++++++++++++++++++-------------------
+ lib/utils.c  | 12 ++++----
+ 2 files changed, 71 insertions(+), 35 deletions(-)
+---
+base-commit: f120cdb35da76ca99932d0428a0917bd01a843da
+change-id: 20260220-ipr-monitor-json-1573371524c1
+
+Best regards,
 -- 
-2.53.0.345.g96ddfc5eaa-goog
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
