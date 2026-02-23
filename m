@@ -1,124 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC34635C1A6
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 10:28:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771842485; cv=none; b=D81uYIEzLyv/WmrSJhW/vIObr0Ce5/uGfBHU6Bh/bVeGDlRtoeqDloB9ppOpvFQYbpAhBDR9tfvBxVZlwHOfvp2gHakZqcxXNUUSh6K7X+Ce66PaLieipPVFNXhv33HJco1EhJ5X3R36/P6GVHSbkijXetERdfIj8xFI61opBk0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771842485; c=relaxed/simple;
-	bh=BhJ48uuWboluACMnIhJ5XbzlO5XIOLObwV7qKhTfYmQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=P54m2gqHjtap2lYfzRgqWCEQiHgsWQj18MenJ9oqSxJlykbzESANwQtsESoMWUddrQEuWgfyp39KP4NndoGWKW/Kaw/49lkj7ZOrMuBcUL8xrTclALKrzSAUggLSzAZkXTAmZlKArpyDFv3pBQQynUgv4ER+jfQzYNq3EEhdR8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C6OeqFXW; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2553A2BEC43
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 10:48:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771843686; cv=pass; b=cFRWjaweETChmlb6QOIwF0WT7m9XPiK0gEns+jxMxdx/un2yiebCgqnIund8OOkYY+/CWeK4zc7WwmITe7POpYHlukfX/jdmfdbkhzdAAEklYoP3RBwimgRnT0NwrGbDog8vY2Yp2mtQUsey5h4ABCfOBqKJrWvqFPfa8InzmHk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771843686; c=relaxed/simple;
+	bh=QeOEsVeZ9klcyMYyvytk/qdh3OHqWAZ7aYcxi8/K3XE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bOCilfWLO6qKF05Z5WnvyoS3kaxhkKK5mWoenGNzhcgcTj/rBPPo2qf0hwjkgC+YwleXMUrMiderJbGZxC9xXP2auFEyjNhqZBwKulqyUvP0P3YRp1GxZ8FfC2Z26UElBuftVxIccXxwr7SbwAuC5nRgsT+OdPFSk8Xty7dbcIA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=uEYmNzuJ; arc=pass smtp.client-ip=74.125.224.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C6OeqFXW"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 49C3EC19424;
-	Mon, 23 Feb 2026 10:28:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771842485;
-	bh=BhJ48uuWboluACMnIhJ5XbzlO5XIOLObwV7qKhTfYmQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=C6OeqFXWHEcvRUBGHGBk5+6N+I5eon9ptcWUELamVJ/KMqJhdR8yH+s9Nmrmm2WSr
-	 QUp4LHGK6aU7U2mPI16FP9k8nCyv1OE+J3gcoMfJ6lMQ/ZPXpXoVovrhz/eZ07q4fH
-	 RSaiCab1qxejpUGtrC4UCl9+mVLqPZCEoVtRPooy0bcx1q8K1UI/Ap5gf+jjTh0D5S
-	 1okv3j2cNjRKN9dEpH+BEfLGnxViZDDLmYqbLmvYbYqc+0H0Bmf8SyBG3v7QjUnkym
-	 BhdlBtVN+1c6Kkq2k7Pnr757bXU7kBrbvQs0R+xm3fxU3ZQ/nhl9zuZzgdLxQycDeX
-	 VJoOptfSJcg/g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3996DE98E1C;
-	Mon, 23 Feb 2026 10:28:05 +0000 (UTC)
-From: Satish Kharat via B4 Relay <devnull+satishkh.cisco.com@kernel.org>
-Date: Mon, 23 Feb 2026 02:27:20 -0800
-Subject: [PATCH v2 1/2] net:ethernet:enic: add VIC subsystem ids
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="uEYmNzuJ"
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-649b1ca87ddso3589463d50.3
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 02:48:04 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771843684; cv=none;
+        d=google.com; s=arc-20240605;
+        b=N3OiPYY1nfDBnTzqJyqdw24fhLiLdaQM+NFXdFnjU7Ov1mGjR9bcigrwEUi7cuVqfM
+         E8G6ulh/IjDNVvN+UrvJSvdwwEM9oX3y/tPg2dIPE+vvxs6Swtb1iBYYCD959X+ysesY
+         7v7L14bkt6sOqnV+E04jgrXYCjd/c50cg7T6FfAWhpFGhn7LNaYWpXx8NSrEiJf0Q8v8
+         Rfw99fCOalkfWcIlEr4+2e/z4rKlI9HzMg19vAT0bfKXjjCGupRVDDe0VsCyTUnzG0gD
+         Z21de+K/n6DOgJTCdxOG6T9LLWRg9lIKautE9oLj4Zk5hYGjIB4FcjCxfHe7QSPQuPni
+         RhIg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=QeOEsVeZ9klcyMYyvytk/qdh3OHqWAZ7aYcxi8/K3XE=;
+        fh=CkhlC/wlTyrD0HT9xJALK+obuDNxJPpf1mC5ZudDDnE=;
+        b=CU//NiEoquzvCDZC/LBn+QnBVAIEJ0KJSZgy0MmQAiyqQPfb86whzl5iCfKpH9M8iE
+         QETicgxR7uYgT83hU/k2qCV5wLvFPI1+Henti7s8FM9PPsO8X+ysMjQIiXVjgJJU+9p1
+         jifNQ00dCrX4X2gwJPddsYKy0X2TfqurvRk8EqsUk1cjztui+LPI0I1j8MfEVIE+XfNF
+         hUjzXyEOv7S6ri0LmWWpFRIIG7mVOOcbgKroCFya0kVgk6diES3JlrHMzzX2cFdR3Rxt
+         2A/CjjRUkgxlsOJ40FPeWzcjJbDdRtBxDWnMcdKa2jBvyvCKqWzUhmXkMpoF76xU9R5l
+         JIpw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1771843684; x=1772448484; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QeOEsVeZ9klcyMYyvytk/qdh3OHqWAZ7aYcxi8/K3XE=;
+        b=uEYmNzuJY4E+XG0xNDwub7CZrdrz5mdQdGFj34mvZciM20yomwImwvSEvREaXl/dvF
+         MV539F98fR12mVfG9nAUq0i3SdziKJ3sXYX/pNCuXgruLrP7lDMInwpDcXSLtdb/KkNj
+         o1l90GPlEoc+ixPNF9BYHiR/ZvFCXqIVcG72MjAwqHLKPpHOAsl6Umsn1hlBMBwGp2PW
+         GcgkmS0DgycEUZARJ3WZCczfDvWNMcMIgL56Lkln5avhdmJ0ALJg6Xa5jcVOBPZ2X3tY
+         7sKFpJMc1XhOqn30q3mUE0YL3TAMzpw6aNmRWypNR1KXo7Ds4guYJJm98Ar/hmB5TmVx
+         57yQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771843684; x=1772448484;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QeOEsVeZ9klcyMYyvytk/qdh3OHqWAZ7aYcxi8/K3XE=;
+        b=mxeddz3sDsBMPrl8lz9qgEMqG77bGFhZQ+v/rCOhtY0+oK6QJF1nF9+JRlUEN+c9i1
+         84U1wXKPVQ8/k2kSwClXlkNeTOaCPL+ddo2XZ4ZwN0YREcsWkt66m4ziSnqmbbzRhqqB
+         uBNPZmMcNnjWR05B9EXpvgt+38QdopnLqrFIG0yPahtM9hh6lC6lnvuAwWl5K/FRSPFP
+         pZUtji08NycnE80xsytK61eG1NtnzgBSHctVux9CniQYm4Yt9+sKHNICoIhFIP1HaW1f
+         QZ1j1Ic4c5tQ4usDejAILR6mwrp7fL1W2dHdhEhUppz7dTanGrDLedUOXdXXQf1AKFD4
+         00pg==
+X-Forwarded-Encrypted: i=1; AJvYcCXt/hNgLvivX5xB/rnjxUynxFmG3hp3F+3rjIC3vBrub8WBCR7dP0iViRb7Rrk1O+eBfVmTBKo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVq0tbzXOnBsTDdzxSSolufGyiuyxDfMKBYhv5GLn5F6scWk/4
+	bjP1wqQrVyY2c89wsnK4VLVdzTiEqkkALtzvckp0dC3jN3Gac6xCFSohWpqDsMztGxF5LlISOUg
+	NB7js7l0NtGvX439x5h4+2POYeWOqmr5e1uJg6pHN
+X-Gm-Gg: ATEYQzyOZTk5V0YEW/keKap/279DYSvu7gYHotpSWvDIW7xvkkenCP/Q7hs1NTRR36W
+	hIANRQfhIaQ4LQqFIQyXMXWzymXRfy+c4WFFaI1pTO7Ye1W7ES4qpLYl9xrXtAvnV4zrHTnhTE5
+	YLZJdkKaINcazCZfG9JmyzGNhMfTtk9hS80RwWzPyTWYMgKpqkmkDD92hWEpLMQHGCEbFvVfVw6
+	ffVW4O0+o83nVloLSyRv01+YHx/ubYYbY4QCHoKa1AMBrs9+aVqKMAd+fFeKi8lCsulCHffRj7s
+	Iu3ShQELdN3sodVJaIkh0Q==
+X-Received: by 2002:a05:690e:1384:b0:64a:e89b:d7de with SMTP id
+ 956f58d0204a3-64c78e58eaemr6997011d50.81.1771843684150; Mon, 23 Feb 2026
+ 02:48:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260223-enic-cscwi36355-v2-1-63488194a974@cisco.com>
-References: <20260223-enic-cscwi36355-v2-0-63488194a974@cisco.com>
-In-Reply-To: <20260223-enic-cscwi36355-v2-0-63488194a974@cisco.com>
-To: netdev@vger.kernel.org
-Cc: Satish Kharat <satishkh@cisco.com>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771842484; l=2264;
- i=satishkh@cisco.com; h=from:subject:message-id;
- bh=dmiiJ3fxTUP7u8ZrF0g2EZDSbfEDLnZtm8vLm5JCiQk=;
- b=pyfckAyhVR58o2HdR9UbUSXu2Poucs1lIYmPJxUdS2/KDEN1mey9nSbTSRF+1uPrALcUolE6/
- H//Km4jNUqvC+8I6HqBKpXElqmsFXsv+ZrXcg7xpr7sTuPTejWwx6nZ
-X-Developer-Key: i=satishkh@cisco.com; a=ed25519;
- pk=4BxbLoCGvHeIMH/PbpiNVx8/2IcTjFvqcr0AD8K6WLY=
-X-Endpoint-Received: by B4 Relay for satishkh@cisco.com/default with
- auth_id=639
-X-Original-From: Satish Kharat <satishkh@cisco.com>
-Reply-To: satishkh@cisco.com
+References: <20260219023151.171753-1-p@1g4.org> <20260219023151.171753-2-p@1g4.org>
+ <CA+NMeC-WmxL48X5dSqGx5+2T_dR8B_g5C2BL2Hre_HG1-UkXDg@mail.gmail.com> <TtHh0X2fAHdo4Gs6voxOjI5iFT3kt9qJkutxcHLc3nSpal0RiOTy6cXeZ4FSJMRcD2qVJy__ER-pvJhgBhbj9qucVu5yNecJfCeD44HmtBE=@1g4.org>
+In-Reply-To: <TtHh0X2fAHdo4Gs6voxOjI5iFT3kt9qJkutxcHLc3nSpal0RiOTy6cXeZ4FSJMRcD2qVJy__ER-pvJhgBhbj9qucVu5yNecJfCeD44HmtBE=@1g4.org>
+From: Victor Nogueira <victor@mojatatu.com>
+Date: Mon, 23 Feb 2026 07:47:53 -0300
+X-Gm-Features: AaiRm51lJFg7e79JKgjG7OsGqAzPtwaoRLqJDtGC59XuuJVeJI19kMnYrJ4iZt8
+Message-ID: <CA+NMeC9mYweb=uPTugHhmjK26zSgA8qmKM0OJ22jsJZHak8SwA@mail.gmail.com>
+Subject: Re: [PATCH net v7 1/1] net/sched: act_gate: snapshot parameters with
+ RCU on replace
+To: Paul Moses <p@1g4.org>
+Cc: Jamal Hadi Salim <jhs@mojatatu.com>, Cong Wang <xiyou.wangcong@gmail.com>, 
+	Jiri Pirko <jiri@resnulli.us>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Satish Kharat <satishkh@cisco.com>
+On Sun, Feb 22, 2026 at 11:13=E2=80=AFAM Paul Moses <p@1g4.org> wrote:
+>
+> Yes, I only see it as unreachable code cleanup.
+>
+> While looking at cycletime, should I move that block before
+> spin_lock_bh()?
 
-Add VIC subsystem id for 12xx, 13xx, 14xx and 15xxx series
+I think it would be best to leave it as is and just do the
+unreachable code cleanup.
 
-Signed-off-by: Satish Kharat <satishkh@cisco.com>
----
- drivers/net/ethernet/cisco/enic/enic.h | 39 ++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
-
-diff --git a/drivers/net/ethernet/cisco/enic/enic.h b/drivers/net/ethernet/cisco/enic/enic.h
-index 301b3f311..6959e85ab 100644
---- a/drivers/net/ethernet/cisco/enic/enic.h
-+++ b/drivers/net/ethernet/cisco/enic/enic.h
-@@ -22,6 +22,45 @@
- #define DRV_NAME		"enic"
- #define DRV_DESCRIPTION		"Cisco VIC Ethernet NIC Driver"
- 
-+#define PCI_SUBDEV_ID_CISCO_VIC_1225	0x085
-+#define PCI_SUBDEV_ID_CISCO_VIC_1225T	0x0CE
-+#define PCI_SUBDEV_ID_CISCO_VIC_1227	0x12E
-+#define PCI_SUBDEV_ID_CISCO_VIC_1227T	0x139
-+#define PCI_SUBDEV_ID_CISCO_VIC_1240	0x084
-+#define PCI_SUBDEV_ID_CISCO_VIC_1280	0x04F
-+#define PCI_SUBDEV_ID_CISCO_VIC_1285	0x0CD
-+
-+#define PCI_SUBDEV_ID_CISCO_VIC_1340	0x12C
-+#define PCI_SUBDEV_ID_CISCO_VIC_1380	0x137
-+#define PCI_SUBDEV_ID_CISCO_VIC_1385	0x14D
-+#define PCI_SUBDEV_ID_CISCO_VIC_1387	0x15D
-+
-+#define PCI_SUBDEV_ID_CISCO_VIC_1440	0x0215
-+#define PCI_SUBDEV_ID_CISCO_VIC_1455	0x0217
-+#define PCI_SUBDEV_ID_CISCO_VIC_1457	0x0218
-+#define PCI_SUBDEV_ID_CISCO_VIC_1467	0x02AF
-+#define PCI_SUBDEV_ID_CISCO_VIC_1477	0x2B0
-+#define PCI_SUBDEV_ID_CISCO_VIC_1480	0x0216
-+#define PCI_SUBDEV_ID_CISCO_VIC_1485	0x0219
-+#define PCI_SUBDEV_ID_CISCO_VIC_1487	0x021A
-+#define PCI_SUBDEV_ID_CISCO_VIC_1495	0x024A
-+#define PCI_SUBDEV_ID_CISCO_VIC_1497	0x024B
-+#define PCI_SUBDEV_ID_CISCO_VIC_14425	0x02CF
-+#define PCI_SUBDEV_ID_CISCO_VIC_14825	0x02D0
-+
-+#define PCI_SUBDEV_ID_CISCO_VIC_15230	0x02DF
-+#define PCI_SUBDEV_ID_CISCO_VIC_15231	0x02DB
-+#define PCI_SUBDEV_ID_CISCO_VIC_15235	0x02E4
-+#define PCI_SUBDEV_ID_CISCO_VIC_15237	0x02F3
-+#define PCI_SUBDEV_ID_CISCO_VIC_15238	0x02E8
-+#define PCI_SUBDEV_ID_CISCO_VIC_15411	0x02DC
-+#define PCI_SUBDEV_ID_CISCO_VIC_15412	0x02E2
-+#define PCI_SUBDEV_ID_CISCO_VIC_15420	0x02DE
-+#define PCI_SUBDEV_ID_CISCO_VIC_15422	0x02E1
-+#define PCI_SUBDEV_ID_CISCO_VIC_15425	0x02F2
-+#define PCI_SUBDEV_ID_CISCO_VIC_15427	0x02E0
-+#define PCI_SUBDEV_ID_CISCO_VIC_15428	0x02DD
-+
- #define ENIC_BARS_MAX		6
- 
- #define ENIC_WQ_MAX		256
-
--- 
-2.43.0
-
-
+cheers,
+Victor
