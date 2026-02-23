@@ -1,122 +1,270 @@
-Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E2223817E;
-	Mon, 23 Feb 2026 13:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2A73202C5C
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 13:46:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771854125; cv=none; b=Un5qLfXrXso19gHmVwLpilrgG15U9j+5jYhPjqBJrYQwrP5+oXCAuJIennzeXX/Q5oRAi2LOuZuyUs8hlcmhLiEZdtdNXGFR0DZd1NqbR0DuPO52t1TnddOYj46QXqkfJwTgHz8iIDZHwSEk/6R9AKu4HUJlCkuppYtrYFp4dpg=
+	t=1771854378; cv=none; b=tjEJuI1FYlPx6J1Q0fAMPiSg1rdSnkF7UBaAvc2zsA+ATRu3TmzMdjEnrtASpRolmmg+D7rxStgqZ0Iynq4/thS/ysKLXu1MKDyzt8N2klIfJICzkxhwszf4NI4PtqxJQNmLcjdalwjOg0+fnSSvAPB4y2roZDGG9/gQHWeUCFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771854125; c=relaxed/simple;
-	bh=/oLs1LUwNF2tP7k8TlrR8i3D3zYwfYQop3ycAKL2MfY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NTpYCs9yQQTP3I7onqP7B396T6cEZ0Si2bXm7x7ttuoRgSodi45xZw6HVg5rC6QSIgfj2pbZSnfnc3/zZUJ1SAKM+lyZbImCDUeKmse2u+nLCHQuR9BYOMWic8WNJxz49vFRfUFYy3rpoDrHPIEVKGxh9GC0UHSUkgCuIXVo2ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
-Received: from inva021.nxp.com (localhost [127.0.0.1])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id C9EDD2015FB;
-	Mon, 23 Feb 2026 14:32:47 +0100 (CET)
-Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
-	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id AF756201FB9;
-	Mon, 23 Feb 2026 14:32:47 +0100 (CET)
-Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
-	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id 0B4F7202AE;
-	Mon, 23 Feb 2026 14:32:47 +0100 (CET)
-Date: Mon, 23 Feb 2026 14:32:47 +0100
-From: Jan Petrous <jan.petrous@oss.nxp.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: edumazet@google.com, shawnguo@kernel.org, kernel@pengutronix.de,
-	krzk+dt@kernel.org, robh@kernel.org, andrew+netdev@lunn.ch,
-	mbrugger@suse.com, davem@davemloft.net, pabeni@redhat.com,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org, s32@nxp.com, imx@lists.linux.dev,
-	linux-stm32@st-md-mailman.stormreply.com, s.hauer@pengutronix.de,
-	conor+dt@kernel.org, chester62515@gmail.com, festevam@gmail.com,
-	mcoquelin.stm32@gmail.com, ghennadi.procopciuc@oss.nxp.com,
-	devicetree@vger.kernel.org, alexandre.torgue@foss.st.com
-Subject: Re: [v4,1/4] net: stmmac: platform: read channels irq
-Message-ID: <aZxW/5dBz3XPTxhB@lsv051416.swis.nl-cdc01.nxp.com>
-References: <20260128-dwmac_multi_irq-v4-1-82fa34fcf2f2@oss.nxp.com>
- <20260129050959.375635-1-kuba@kernel.org>
+	s=arc-20240116; t=1771854378; c=relaxed/simple;
+	bh=moj3QcCqGLm4CLDFDzhqpwOR0+qc8ZVyonKyqdrXhMs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sDnyrxuVim9XmfioBK2+zCpe2C6c/1JyuWNPoeK/67/+KHu1OWFRZtwjJ0CU7P4S4aP7ZO2dBX4lawLp59j1Fw9IMHGGBfa/8al4Bnv32zpV0KAhcGoqJd8aJ8u6677vhz511/ur1oTdUsIw0UcrL6MY/XHqBRq4hD3G+BwoUXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PhezQN2L; arc=none smtp.client-ip=209.85.221.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PhezQN2L"
+Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-4362507f0bcso3086463f8f.0
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 05:46:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771854375; x=1772459175; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nQQ7lnppDq+V0zgDgWba+T0g0+pMzVEGyZ983+O+pHg=;
+        b=PhezQN2LypfTN99J0BsO/WMhkHLSXCBM9MIncUdh37qhlM1/hN7eLdd9/4BEevLliJ
+         f+k3NBQBxSYlIii0PxfJk6NTYXJNxGcs2aZMS5EGVuTeV2hef3LW84CioV2iYGxrOLlw
+         nLVHeM/dkzQdtqMMbgSz+TOHnJJidbgr/9UMRHS5lEMSCO2/12I9g+TYCZcKvRI6jSw1
+         Q0/zQUxjNjtP8MBl8UQigKuowZBibCxsGCPIfnXexTtCPlAtLet7yvhgH1NYwjusj1Bb
+         vOv1ln8UtEbK6w7EJp/Gq1TWGjSPvAqq+I4NF7Hpv7q9mS2BQPMxx39DxDLTUCXlVCKd
+         UE+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771854375; x=1772459175;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=nQQ7lnppDq+V0zgDgWba+T0g0+pMzVEGyZ983+O+pHg=;
+        b=f/UcW7bCRLilIQdQHaXXgbrSUweQx2W6irya4PWZnxMU9i7sllWbuulJ0XoKoG/AkA
+         IAD3cKwAeceRrptZFY86j4bvZY3YjAkVjvaxKce+J2wodQCWNURu4/+UeKKoMaPbIItz
+         W64OXQyfqn4SwIH0IghWDrwK7NC6SuMoB8/RGDJpGUFAFghhJURJ3yu5W37+2o80LUyO
+         EiP1O2O9aD/l8jSsNDXFj7i8mJQvbTUI3425LfDNTrCeaDuXsNaS0GXrZx1DzedBzFoj
+         mfXugdhNpUWA2X894S/Co+FUSLk9ddRzs67HF2IK3DnxlK+5cVW1wLGfmTIKi3uPkyRN
+         0AyA==
+X-Forwarded-Encrypted: i=1; AJvYcCXsu6tOQ8mk+2cnuj9yMsaEsQm4mabZvydNcCXY/9L8pZxby6IgY1E5dVvIbE3ZTWO/GqzcTYQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyix5vfPbSWdpjmPD8vd1LSEvcXBs/JEpqEDzBfsrUWuf6iYqS3
+	hf0JTudz2sHqbSlhPkNM/oq5iiORSxp9LwFSmzXp0BobYevZv4IDs1NpjcWsYk7S
+X-Gm-Gg: ATEYQzx5U3vvHNkuRt4aynDJ5ZXX9LgAZvk5wGUQ/U32wu0SjPScHLyJFCPMS+3ryFC
+	MBXqxjssoKklagi1CuG7GIZgh63IShR3Q/U6mXAeLVs1WG5MyU4wQqgP1lCp+t8dr5mPmxrB+DU
+	C/IFgEbeRM12iWMqfgar5jtBr5LMtUlr5T8rIJqlz2SDjsgmz7SM+ibNigQ+pK0/JAeKpbwkeAn
+	r2FI7h+HIpgXrUa26I+OgWZCAticXSupYIybvrnxrO0KQ0XxvPLJLEL8MYpONrnDeZrSSoeyJLz
+	uew4vGyH2p0YAe9Mm2gZP8FcCQozJgiQP1q8VygmQ6YR5IjZqBq/Qp70YcqswwZPntpAr+Vq8NK
+	Y68RsS8BQ+93lfMzX9gSwx7zesIU13qddaCiASEimKsUvzYtWkcL67DmgdkbH1tPh/tLnbalcbt
+	rrfLhJH7GIWLhqBDxJ5ZRJvPpiJxtx9H2dh4PScFklmsw=
+X-Received: by 2002:a05:6000:2282:b0:435:932e:f924 with SMTP id ffacd0b85a97d-4396fd9b8f6mr15083047f8f.2.1771854374934;
+        Mon, 23 Feb 2026 05:46:14 -0800 (PST)
+Received: from [10.158.36.109] ([72.25.96.17])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d3fc12sm17069302f8f.24.2026.02.23.05.46.12
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Feb 2026 05:46:14 -0800 (PST)
+Message-ID: <e24b4a4f-b7e7-4e9e-ade0-cdda06f5765a@gmail.com>
+Date: Mon, 23 Feb 2026 15:46:14 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260129050959.375635-1-kuba@kernel.org>
-X-Virus-Scanned: ClamAV using ClamSMTP
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net/mlx5e: Precompute xdpsq assignments for
+ mlx5e_xdp_xmit()
+To: Finn Dayton <Finnius.Dayton@spacex.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Cc: "Alexei Starovoitov ," <ast@kernel.org>,
+ "Daniel Borkmann ," <daniel@iogearbox.net>,
+ "David S. Miller ," <davem@davemloft.net>, "Jakub Kicinski ,"
+ <kuba@kernel.org>, "Jesper Dangaard Brouer ," <hawk@kernel.org>,
+ "John Fastabend ," <john.fastabend@gmail.com>,
+ "Stanislav Fomichev ," <sdf@fomichev.me>,
+ "Saeed Mahameed ," <saeedm@nvidia.com>, "Leon Romanovsky ,"
+ <leon@kernel.org>, "Tariq Toukan ," <tariqt@nvidia.com>,
+ "Mark Bloch ," <mbloch@nvidia.com>, "Andrew Lunn ," <andrew+netdev@lunn.ch>,
+ "Eric Dumazet ," <edumazet@google.com>, "Paolo Abeni ," <pabeni@redhat.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <610D8F9E-0038-46D9-AD8A-1D596236B1EF@spacex.com>
+Content-Language: en-US
+From: Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <610D8F9E-0038-46D9-AD8A-1D596236B1EF@spacex.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Wed, Jan 28, 2026 at 09:09:59PM -0800, Jakub Kicinski wrote:
-> This is an AI-generated review of your patch. The human sending this
-> email has considered the AI review valid, or at least plausible.
+
+
+On 23/02/2026 2:05, Finn Dayton wrote:
+> mlx5e_xdp_xmit() selects an XDP SQ (Send Queue) using smp_processor_id()
+> (CPU ID). When doing XDP_REDIRECT from a CPU whose ID is
+>> = priv->channels.num, mlx5e_xdp_xmit() returns -ENXIO and the
+> redirect fails.
 > 
-> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> Previous discussion proposed using modulo in mlx5e_xdp_xmit() to map
+> CPU IDs into the channel range, but modulo/division is too costly in
+> the hot path.
+> 
+
+That discussion reached to an agreement of using a while loop with 
+subtraction. It's expected to be fast, and optimizes the common case.
+
+> Instead, this solution precomputes per-cpu priv->xdpsq assignments when
+> channels are (re)configured and does a single lookup in  mlx5e_xdp_xmit().
+> 
+> Because multiple CPUs map to the same xdpsq when CPU count exceeds
+> channel count, serialize xdp_xmit on the ring with xdp_tx_lock.
+> 
+
+What's the advantage of this solution over the one we already agreed to?
+
+> Fixes: 58b99ee3e3eb ("net/mlx5e: Add support for XDP_REDIRECT in device-out side")
+> Link: https://lore.kernel.org/netdev/20251031231038.1092673-1-zijianzhang@bytedance.com/
+> Link: https://lore.kernel.org/netdev/44f69955-b566-4fb1-904d-f551046ff2d4@gmail.com
+> Cc: stable@vger.kernel.org # 6.12+
+> Signed-off-by: Finn Dayton <finnius.dayton@spacex.com>
 > ---
-> net: stmmac: platform: read channels irq
+> Testing:
+>   - XDP forwarding / XDP_REDIRECT verified with both low CPU ids and
+>     CPU ids > than number of send queues.
+>   - No -ENXIO observed, successful forwarding.
 > 
-> This patch reads IRQ resources for all rx/tx channels to allow Multi-IRQ
-> mode for platform glue drivers.
+>   drivers/net/ethernet/mellanox/mlx5/core/en.h  |  4 +++
+>   .../net/ethernet/mellanox/mlx5/core/en/xdp.c  | 16 +++++++----
+>   .../net/ethernet/mellanox/mlx5/core/en_main.c | 28 +++++++++++++++++++
+>   3 files changed, 43 insertions(+), 5 deletions(-)
 > 
-> > diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> > index 8979a50b5507..94854bfb6e0d 100644
-> > --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> > +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> 
-> [ ... ]
-> 
-> > +	/* RX channels irq */
-> > +	for (i = 0; i < MTL_MAX_RX_QUEUES; i++) {
-> > +		scnprintf(name, sizeof(name), "rx-queue-%d", i);
-> > +		stmmac_res->rx_irq[i] = platform_get_irq_byname_optional(pdev,
-> > +									 name);
-> > +		if (stmmac_res->rx_irq[i] <= 0) {
-> > +			if (stmmac_res->rx_irq[i] == -EPROBE_DEFER)
-> > +				return -EPROBE_DEFER;
-> > +			dev_dbg(&pdev->dev, "IRQ rx-queue-%d not found\n", i);
-> > +
-> > +			/* Stop on first unset rx-queue-%i property member */
-> > +			break;
-> > +		}
-> > +	}
-> 
-> When platform_get_irq_byname_optional() returns a negative error like
-> -ENXIO, that value is stored in stmmac_res->rx_irq[i] before the break.
-> 
-> In stmmac_request_irq_multi_msi(), the check is:
-> 
->     if (priv->rx_irq[i] == 0)
->         continue;
->     ret = request_irq(priv->rx_irq[i], ...);
-> 
-> Should the negative value be cleared before the break? Otherwise if
-> rx_queues_to_use exceeds the number of defined IRQs, the negative error
-> code could be passed to request_irq().
-> 
-> > +
-> > +	/* TX channels irq */
-> > +	for (i = 0; i < MTL_MAX_TX_QUEUES; i++) {
-> > +		scnprintf(name, sizeof(name), "tx-queue-%d", i);
-> > +		stmmac_res->tx_irq[i] = platform_get_irq_byname_optional(pdev,
-> > +									 name);
-> > +		if (stmmac_res->tx_irq[i] <= 0) {
-> > +			if (stmmac_res->tx_irq[i] == -EPROBE_DEFER)
-> > +				return -EPROBE_DEFER;
-> > +			dev_dbg(&pdev->dev, "IRQ tx-queue-%d not found\n", i);
-> > +
-> > +			/* Stop on first unset tx-queue-%i property member */
-> > +			break;
-> > +		}
-> > +	}
-> 
-> Same question here for tx_irq[i].
-> -- 
-> pw-bot: cr
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en.h b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> index ea2cd1f5d1d0..387954201640 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+> @@ -519,6 +519,8 @@ struct mlx5e_xdpsq {
+>   	/* control path */
+>   	struct mlx5_wq_ctrl        wq_ctrl;
+>   	struct mlx5e_channel      *channel;
+> +	/* serialize writes by multiple CPUs to this send queue */
+> +	spinlock_t xdp_tx_lock;
+>   } ____cacheline_aligned_in_smp;
+>   
+>   struct mlx5e_xdp_buff {
+> @@ -909,6 +911,8 @@ struct mlx5e_priv {
+>   	struct mlx5e_rq            drop_rq;
+>   
+>   	struct mlx5e_channels      channels;
+> +	/* selects the xdpsq during mlx5e_xdp_xmit() */
+> +	int __percpu              *send_queue_idx_ptr;
+>   	struct mlx5e_rx_res       *rx_res;
+>   	u32                       *tx_rates;
+>   
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> index 80f9fc10877a..2dd44ad873a1 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+> @@ -845,7 +845,7 @@ int mlx5e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
+>   	struct mlx5e_priv *priv = netdev_priv(dev);
+>   	struct mlx5e_xdpsq *sq;
+>   	int nxmit = 0;
+> -	int sq_num;
+> +	int send_queue_idx = 0;
+>   	int i;
+>   
+>   	/* this flag is sufficient, no need to test internal sq state */
+> @@ -855,13 +855,19 @@ int mlx5e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
+>   	if (unlikely(flags & ~XDP_XMIT_FLAGS_MASK))
+>   		return -EINVAL;
+>   
+> -	sq_num = smp_processor_id();
+>   
+> -	if (unlikely(sq_num >= priv->channels.num))
+> +	if (unlikely(!priv->send_queue_idx_ptr))
+>   		return -ENXIO;
+>   
+> -	sq = priv->channels.c[sq_num]->xdpsq;
+> +	send_queue_idx = *this_cpu_ptr(priv->send_queue_idx_ptr);
+> +	if (unlikely(send_queue_idx >= priv->channels.num || send_queue_idx < 0))
+> +		return -ENXIO;
+>   
+> +	sq = priv->channels.c[send_queue_idx]->xdpsq;
+> +	/* The number of queues configured on a netdev may be smaller than the
+> +	 * CPU pool, so two CPUs might map to this queue. We must serialize writes.
+> +	 */
+> +	spin_lock(&sq->xdp_tx_lock);
+>   	for (i = 0; i < n; i++) {
+>   		struct mlx5e_xmit_data_frags xdptxdf = {};
+>   		struct xdp_frame *xdpf = frames[i];
+> @@ -941,7 +947,7 @@ int mlx5e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
+>   
+>   	if (flags & XDP_XMIT_FLUSH)
+>   		mlx5e_xmit_xdp_doorbell(sq);
+> -
+> +	spin_unlock(&sq->xdp_tx_lock);
+>   	return nxmit;
+>   }
+>   
+> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> index 7eb691c2a1bd..adef35d06b89 100644
+> --- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+> @@ -1492,6 +1492,7 @@ static int mlx5e_alloc_xdpsq(struct mlx5e_channel *c,
+>   	sq->pdev      = c->pdev;
+>   	sq->mkey_be   = c->mkey_be;
+>   	sq->channel   = c;
+> +	spin_lock_init(&sq->xdp_tx_lock);
+>   	sq->uar_map   = c->bfreg->map;
+>   	sq->min_inline_mode = params->tx_min_inline_mode;
+>   	sq->hw_mtu    = MLX5E_SW2HW_MTU(params, params->sw_mtu) - ETH_FCS_LEN;
+> @@ -3283,10 +3284,30 @@ static void mlx5e_build_txq_maps(struct mlx5e_priv *priv)
+>   	smp_wmb();
+>   }
+>   
+> +static void build_priv_to_xdpsq_associations(struct mlx5e_priv *priv)
+> +{
+> +	/*
+> +	 * Build the mapping from CPU to XDP send queue index for priv.
+> +	 * This is used by mlx5e_xdp_xmit() to determine which xdpsq (send queue)
+> +	 * should handle the xdptx data, based on the CPU running mlx5e_xdp_xmit()
+> +	 * and the target priv (netdev).
+> +	 */
+> +	int send_queue_idx, cpu;
+> +
+> +	if (unlikely(priv->channels.num == 0))
+> +		return;
+> +
+> +	for_each_possible_cpu(cpu) {
+> +		send_queue_idx = cpu % priv->channels.num;
+> +		*per_cpu_ptr(priv->send_queue_idx_ptr, cpu) = send_queue_idx;
+> +	}
+> +}
+> +
+>   void mlx5e_activate_priv_channels(struct mlx5e_priv *priv)
+>   {
+>   	mlx5e_build_txq_maps(priv);
+>   	mlx5e_activate_channels(priv, &priv->channels);
+> +	build_priv_to_xdpsq_associations(priv);
+>   	mlx5e_xdp_tx_enable(priv);
+>   
+>   	/* dev_watchdog() wants all TX queues to be started when the carrier is
+> @@ -6263,8 +6284,14 @@ int mlx5e_priv_init(struct mlx5e_priv *priv,
+>   	if (!priv->fec_ranges)
+>   		goto err_free_channel_stats;
+>   
+> +	priv->send_queue_idx_ptr = alloc_percpu(int);
+> +	if (!priv->send_queue_idx_ptr)
+> +		goto err_free_fec_ranges;
+> +
+>   	return 0;
+>   
+> +err_free_fec_ranges:
+> +	kfree(priv->fec_ranges);
+>   err_free_channel_stats:
+>   	kfree(priv->channel_stats);
+>   err_free_tx_rates:
+> @@ -6295,6 +6322,7 @@ void mlx5e_priv_cleanup(struct mlx5e_priv *priv)
+>   	for (i = 0; i < priv->stats_nch; i++)
+>   		kvfree(priv->channel_stats[i]);
+>   	kfree(priv->channel_stats);
+> +	free_percpu(priv->send_queue_idx_ptr);
+>   	kfree(priv->tx_rates);
+>   	kfree(priv->txq2sq_stats);
+>   	kfree(priv->txq2sq);
 
-Bot is right. I will address it in v5.
-
-Thanks.
-/Jan
