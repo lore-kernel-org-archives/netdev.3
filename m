@@ -1,32 +1,32 @@
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D593037998C;
-	Mon, 23 Feb 2026 22:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F044437999C
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 22:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771884163; cv=none; b=shrM6AOTL9TxZqHFZY/u6CMQ8Cl99/tOwuFe1ayq1a0DZeVIuQXiiJ5ipqEo5MBJ8J+eZkQhFWOnrAEh0UP8mz9NyW4cRtrPvzHNyUQx4rc22o2luTJAvOQb3Shdad82us7Q/Q8+DtL9GQQ0uIU6LnFAUdDwqGZ5Z9wgMGdmnbo=
+	t=1771884168; cv=none; b=sRAByWMZAxrq5MnHxFId0GmPGu8Iq/X6Iv+c2bwMPOHTaSulA/paNb9orCTHO0S5g2Hn4axv0xf9Kk47aHmsasrbaishWqNbXWS2xsWv0lCyJrsnI8Hv4sdac2MoTAjNDw7DiR2xNBj/D3o1f7OA0i7JrTUK8hkYfl4lairWeBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771884163; c=relaxed/simple;
-	bh=zBb6mY6LVBQZG53/Ne4qfrtb7F1pvMFODtdvM36L/Bw=;
+	s=arc-20240116; t=1771884168; c=relaxed/simple;
+	bh=92d+FOudvrddyxkwql9KxUWV0hCmDy7gNGeatzFdS/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UIbDqJ3vn4CLO+ulDFAFnXtEnrsoS+8REZ93J7fiVcdV+UTSO6f5yTofdSCKr35fKuvnQeiT+IB5SxMDKb1scoliVgj1iezPvCB3TWjjtDoESSybsLJjum5+KB0vLv5J0pJHQJj7HuFmtvaR7Ok1EI77IFisWcPTS7xG7xbkCWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=RgHLochO; arc=none smtp.client-ip=91.218.175.173
+	 MIME-Version; b=LoWLaEAJ32Wjo5J4uesfaveH575ehxjsalaOGv7SWfYUyUMtJpDKzhVbtCY46bQrbhlvfGEcybMXdUWX5vBnR5EytYkH+XVeJNDEhkR3WROR/P64vN3ru3jHiTLw9zY8Jm11MxvyAnjaIiXE7H7N1RNpL9ep4LWzqxJOdg5Btis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hHwoUBnM; arc=none smtp.client-ip=91.218.175.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="RgHLochO"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hHwoUBnM"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771884160;
+	t=1771884164;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=U47yNyBfWkqKR3Rj7UJ6cJggyqzDOHOKMwq4b4Z42/4=;
-	b=RgHLochOGv835K53uzth1qNblnbD78R2/BtdgcA4A0ldbJb22XLXL5OF+0LPSBqAShinKH
-	eOUbNMcsUzG42SbcLBnirIVdHQ+3mDzrM2GSB4fRtknvK04MA2kEf5KBgpO3swnWgAIjgZ
-	m/UMcn3L23bU3PWYakcRzKNsYeMVuQc=
+	bh=6lP5X6VaaBiaAV+H2+8twFzXZhF3w92H0A40Cwd0W1o=;
+	b=hHwoUBnMU7hdnMXA+/igub6kiCjMOulEoO922VjxIxx0hdhh2y6v5OGVe4J4OWfj0n6PMq
+	Dg8xcvsHqo2xW3Uq/7UI5Ni4vP7q3yTqsUvn+5WCccxfOXUajoA9vRPkmL8JpCOhulqDzG
+	K2h3GqB+AtMFja2iLNxS+A7JoKkL1+E=
 From: Bart Van Assche <bart.vanassche@linux.dev>
 To: Peter Zijlstra <peterz@infradead.org>
 Cc: Ingo Molnar <mingo@redhat.com>,
@@ -42,14 +42,14 @@ Cc: Ingo Molnar <mingo@redhat.com>,
 	Kees Cook <kees@kernel.org>,
 	Jann Horn <jannh@google.com>,
 	Bart Van Assche <bvanassche@acm.org>,
-	Leo Yang <Leo-Yang@quantatw.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Matt Johnston <matt@codeconstruct.com.au>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Xu Liang <lxu@maxlinear.com>,
 	netdev@vger.kernel.org
-Subject: [PATCH 22/62] mctp i3c: Fix locking in error paths
-Date: Mon, 23 Feb 2026 14:00:22 -0800
-Message-ID: <20260223220102.2158611-23-bart.vanassche@linux.dev>
+Subject: [PATCH 23/62] net: phy: mxl-86110: Fix locking in an error path
+Date: Mon, 23 Feb 2026 14:00:23 -0800
+Message-ID: <20260223220102.2158611-24-bart.vanassche@linux.dev>
 In-Reply-To: <20260223220102.2158611-1-bart.vanassche@linux.dev>
 References: <20260223220102.2158611-1-bart.vanassche@linux.dev>
 Precedence: bulk
@@ -63,42 +63,30 @@ X-Migadu-Flow: FLOW_OUT
 
 From: Bart Van Assche <bvanassche@acm.org>
 
-Only unlock mi->lock if it has been locked. This bug has been detected by
-the Clang thread-safety analyzer.
+Only call phy_unlock_mdio_bus() if phy_lock_mdio_bus() has been called
+first. This has been detected by the Clang thread-safety analyzer.
 
-Cc: Leo Yang <Leo-Yang@quantatw.com>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Jeremy Kerr <jk@codeconstruct.com.au>
-Cc: Matt Johnston <matt@codeconstruct.com.au>
+Cc: Daniel Golle <daniel@makrotopia.org>
+Cc: Andrew Lunn <andrew@lunn.ch>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Xu Liang <lxu@maxlinear.com>
 Cc: netdev@vger.kernel.org
-Fixes: 2d2d4f60ed26 ("mctp i3c: fix MCTP I3C driver multi-thread issue")
+Fixes: 3d1b3f4ffc0a ("net: phy: mxl-86110: add basic support for MxL86111 PHY")
 Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 ---
- drivers/net/mctp/mctp-i3c.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/phy/mxl-86110.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/mctp/mctp-i3c.c b/drivers/net/mctp/mctp-i3c.c
-index 6d2bbae7477b..d4a29912c7e1 100644
---- a/drivers/net/mctp/mctp-i3c.c
-+++ b/drivers/net/mctp/mctp-i3c.c
-@@ -112,7 +112,7 @@ static int mctp_i3c_read(struct mctp_i3c_device *mi)
- 	if (!skb) {
- 		stats->rx_dropped++;
- 		rc = -ENOMEM;
--		goto err;
-+		goto free_skb;
- 	}
+diff --git a/drivers/net/phy/mxl-86110.c b/drivers/net/phy/mxl-86110.c
+index 42a5fe3f115f..d010b023f7b9 100644
+--- a/drivers/net/phy/mxl-86110.c
++++ b/drivers/net/phy/mxl-86110.c
+@@ -891,7 +891,7 @@ static int mxl86111_config_inband(struct phy_device *phydev, unsigned int modes)
+ 			       MII_BMCR, BMCR_ANENABLE,
+ 			       (modes == LINK_INBAND_DISABLE) ? 0 : BMCR_ANENABLE);
+ 	if (ret < 0)
+-		goto out;
++		return ret;
  
- 	skb->protocol = htons(ETH_P_MCTP);
-@@ -170,8 +170,11 @@ static int mctp_i3c_read(struct mctp_i3c_device *mi)
+ 	phy_lock_mdio_bus(phydev);
  
- 	mutex_unlock(&mi->lock);
- 	return 0;
-+
- err:
- 	mutex_unlock(&mi->lock);
-+
-+free_skb:
- 	kfree_skb(skb);
- 	return rc;
- }
