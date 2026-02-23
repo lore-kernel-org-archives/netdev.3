@@ -1,160 +1,379 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9711E51E0;
-	Mon, 23 Feb 2026 14:31:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9D935BDAF
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 14:34:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771857063; cv=none; b=YO4hxvXVHlEIe+6UWU0yQMxbqSuw3Yqm3THmjaFJxZGgAK5ZAKNy0X2M36FKBqCQF+L53aNybToyUak6L9dPpiIFe5daOSLqy89M2HVi5sTSvoJWKGhCzFDYjPOH0qgAUq1VX0gzc9JnATQc1R00coiUBjnAZkaZQweLiBaM66Y=
+	t=1771857248; cv=none; b=B6fsTSo5HPt1q9ftT514BtuKfCWiEK30sWhXpPyq97wqpaK72BXs4YgbifdaacSKz+5XEZYlIEqK+w7r5gqTZ/XOek0tTVOSWgq12vC5KnFohePykvtJPfo4gpCGaXYcgy1Sgh5ZavOg4MpfUakOjqFOmEMI6+UXr48r4f05aB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771857063; c=relaxed/simple;
-	bh=VLy7TFD8x+kVjQ8t/75GMC+XCfY9RhPBY9H5xGVc+PY=;
+	s=arc-20240116; t=1771857248; c=relaxed/simple;
+	bh=EI8qD/04qtfV/DgguhG2MakSzKU5c8+mEgksh5JOpZw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jm5yDF4wDa3XCw/gwFzBZopZCe+d+Pvrehl93iUDOjBEr4lK0aJTaGlW4UxevDVl1YOiohzHKzRnbjBOXTgTOGfAt2iWh3/w0bvJjCM5WTTv3PlcR+RIFWU9l5A7OjHB4l9zAO04tq0S6AQjPPMNkuEWmB+js46GTxwv3ap69Xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3U3onoif; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=hd2JAz7mw8vmHY6+BXbvGM8TliJTPyB1FC3BOTl25jebGZRr6FLVf7+m6AvE+3dtOTBZ+5y2Xy9m2lfl/xgU8zJbZ2zgig4uTxBcg0QfEONXBDGm5ncKnhmibHqr8GVkGDDKt281xC9eO6MKRrAEjyR7c8xJj5z/eGsUjYs8sPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net; spf=pass smtp.mailfrom=queasysnail.net; dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b=aptyBQpy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jnv7RBJd; arc=none smtp.client-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=queasysnail.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=queasysnail.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3U3onoif"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=DsdjXdYOs4MYnI7eToMLE3q95higvKJA+OmON/SLWh8=; b=3U3onoifXy+eUTppbOL1FHeGcM
-	1axoztlqOK0CBXmcQ00DcoBmUe6wHx4/WVT9ppP6WvlQAT8MwFS655uO2grMp9T+WvHtI2PeNetgo
-	uUiPi4IlT7HlbH3UcI2zDo3Fvke4v1qZqmbZh+Zl3puYg9DuuXx2Sct2uxAmhi08hcOg=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vuWxV-008TB1-NX; Mon, 23 Feb 2026 15:30:49 +0100
-Date: Mon, 23 Feb 2026 15:30:49 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: =?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org,
-	Donald Hunter <donald.hunter@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Danielle Ratson <danieller@nvidia.com>,
-	linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
-Subject: Re: [RFC net-next 0/4] ethtool: CMIS module diagnostic loopback
- support
-Message-ID: <74ff32e0-f883-40d4-be89-3276dc26cf0d@lunn.ch>
-References: <20260219130050.2390226-1-bjorn@kernel.org>
- <415c4922-cc8d-4e35-bbac-3a532f44d238@lunn.ch>
- <20260219160519.323041bf@kernel.org>
- <3b0949fa-0b05-4bce-86c0-2a7a058865a5@lunn.ch>
- <20260220131254.03874c4c@kernel.org>
- <CAJ+HfNgXqpqDYsmAa-mpHnO82aDgC7XbyVw3TmXk-ySFmGA-JQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=queasysnail.net header.i=@queasysnail.net header.b="aptyBQpy";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jnv7RBJd"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 2BF6814001F5;
+	Mon, 23 Feb 2026 09:34:04 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Mon, 23 Feb 2026 09:34:04 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=queasysnail.net;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1771857244; x=
+	1771943644; bh=ao0UszTQjfFn9H52On1n2U6NTSqRSLMQyEUhNgfc8LI=; b=a
+	ptyBQpyiRUIgsVyll071JtMwNdl19P9P9e7NiM26c6PvqabW/rt0SL3doXHsZ+sO
+	3q6pcTnqmBEhFONOyR5p3t4oP+Kxc/1gPZ4RibazSRs0PUKWM1Pf/ZAI5BTATN+g
+	ND/Q0W3joF1XT5EK9jA3kia1LbX4U60xpvXsLF0mS5z7D0nRxSXD5aiHb9WoHgtQ
+	7DgJYAn7xrfJv0snPGFVe+u9y5jrDsWyWXrUs/sD8219SKr3KRa82kkqbsJdLY1L
+	gtlvNn5BSNUWBDhff6uasLSE8KUW3B5jFQT+9amg3lh47pWzazowYYHnoeerjbzC
+	bmX5tkTGkSZwav//o8AXQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1771857244; x=1771943644; bh=ao0UszTQjfFn9H52On1n2U6NTSqRSLMQyEU
+	hNgfc8LI=; b=jnv7RBJdP2ZPBiEXtimMh1qhogr0GN8cd+R4j1WDJa+Y7ZciIP2
+	7tO6ZsqMBBEriamgkLA6FpqPD7mOTvGi5KLln2qj0NjKdmVkhYvs0tjJG/N2BxKx
+	VYFEFDen5ePYIuXdjat+r8cn2bAzMFOSmjaAmoblsq2uNvZnFOs0jDDU7Qzy80hS
+	3mbWpx32DCZMZqaK06on3BrzTWmzVQC0YQKp0/t8p50WCQTDtZORlOX/G1bMslMW
+	5s+82MviqNahscgONyQsU2HYV+f8/Y1nUKuiRqkJmAMo55jH2oQ+0zQmeTuO7wZ0
+	rG5dTfxAPo1Tkv2YnE6bjlZQI7IJSYK63Qg==
+X-ME-Sender: <xms:W2WcadacKkUSjFKRhIuaSEUVAyquKkdm4ncFdRkgHtf45f-9LlELRQ>
+    <xme:W2WcaQN2hqKfYt7NoE7GLUe8tLie_BWt-ACxm16HY8j4FpOWQT19-MWIFgBV6vmTa
+    LJ1d3jAZJWRw-y6m_Faf5XoJUvZGFX04LumyXEyB4MCUESTqkeAGA>
+X-ME-Received: <xmr:W2WcabUqXC7mO0csipJzIc0VDzs66cIuqyxDSYH2WwqLeW0qjr_uTZ-GVIGh>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvfeejgeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomhepufgrsghrihhn
+    rgcuffhusghrohgtrgcuoehsugesqhhuvggrshihshhnrghilhdrnhgvtheqnecuggftrf
+    grthhtvghrnhepgefhffdtvedugfekffejvdeiieelhfetffeffefghedvvefhjeejvdek
+    feelgefgnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehsugesqhhuvggrshihshhnrghilhdr
+    nhgvthdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtth
+    hopehrjhgvthhhfigrnhhisehpuhhrvghsthhorhgrghgvrdgtohhmpdhrtghpthhtohep
+    nhgvthguvghvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgrvggvug
+    hmsehnvhhiughirgdrtghomhdprhgtphhtthhopehtrghrihhqthesnhhvihguihgrrdgt
+    ohhmpdhrtghpthhtohepmhgslhhotghhsehnvhhiughirgdrtghomhdprhgtphhtthhope
+    gsohhrihhsphesnhhvihguihgrrdgtohhmpdhrtghpthhtohepjhhohhhnrdhfrghsthgr
+    sggvnhgusehgmhgrihhlrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvght
+X-ME-Proxy: <xmx:W2WcaVIKJxPdBi9nw0PhiOnAEnU8WIW1c-SrLhxv_lZGH7GJJV887g>
+    <xmx:W2WcaWqnByHcAOL0umHEMTY4CZckHdYXFTk7AL7dlE_aZ71pi78-7w>
+    <xmx:W2WcacxVYl1X1U1SrVQtKawyOg1qQBEsSicvg5nL1f7Wb8HuV3eAEA>
+    <xmx:W2WcaavdnOW1mRcxlLorTwLn6oIPwtAdbOSb6GmXebLe8HTREt6AYA>
+    <xmx:XGWcabM16PCkDtLBYR1cuK4b8AWLAlLEOyZxkz-Yd_TFNL8JYeX2fHeG>
+Feedback-ID: i934648bf:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 23 Feb 2026 09:34:02 -0500 (EST)
+Date: Mon, 23 Feb 2026 15:34:00 +0100
+From: Sabrina Dubroca <sd@queasysnail.net>
+To: Rishikesh Jethwani <rjethwani@purestorage.com>
+Cc: netdev@vger.kernel.org, saeedm@nvidia.com, tariqt@nvidia.com,
+	mbloch@nvidia.com, borisp@nvidia.com, john.fastabend@gmail.com,
+	kuba@kernel.org, davem@davemloft.net, pabeni@redhat.com,
+	edumazet@google.com, leon@kernel.org
+Subject: Re: [RFC PATCH v7 1/4] tls: add TLS 1.3 hardware offload support
+Message-ID: <aZxlWCVi4RZhRWB4@krikkit>
+References: <20260205231558.139818-1-rjethwani@purestorage.com>
+ <20260205231558.139818-2-rjethwani@purestorage.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAJ+HfNgXqpqDYsmAa-mpHnO82aDgC7XbyVw3TmXk-ySFmGA-JQ@mail.gmail.com>
+In-Reply-To: <20260205231558.139818-2-rjethwani@purestorage.com>
 
-> /* Loopback Direction (XXX is local/remote easier to understand?) */
-> enum ethtool_loopback_dir {
->     ETHTOOL_LB_DIR_NEAR_END = 0,    /* Host -> Loop -> Host  */
->     ETHTOOL_LB_DIR_FAR_END,        /* Line -> Loop -> Line  */
-> };
+The subject prefix needs to contain "PATCH net-next" to tell which
+tree this applies to (net-next since it's a new feature).
 
-I like host->loop->host, it is much clearer than NEAR_END or
-FAR_END. Where there is space, would use this description, even if it
-is a bit verbose.
+See https://docs.kernel.org/process/maintainer-netdev.html
 
-> struct ethtool_loopback_layer_cfg {
->     enum ethtool_loopback_layer layer;    /* ETHTOOL_LB_L_MAC, etc. */
->     enum ethtool_loopback_dir direction;  /* NEAR or FAR */
->     u32 lane_mask;                        /* Specific lanes */
->     u32  flags;                           /* patterns? reserved... */
->     bool enabled;
->     char name[16];
 
-What would name be used for. I don't see it in your example. The nice
-thing about netlink messages is that they are extendable, unlike
-system calls. If there is no current use for a field, don't add it. It
-can be added later when actually needed. So i would drop flags and
-name.
-
-Does CMIS, when used with a splitter cable, allow you to set loopback
-on lanes? What is your use case for lane_mask?
-
-> };
+2026-02-05, 16:15:55 -0700, Rishikesh Jethwani wrote:
+> Add TLS 1.3 support to the kernel TLS hardware offload infrastructure,
+> enabling hardware acceleration for TLS 1.3 connections on capable NICs.
 > 
-> struct ethtool_loopback_cfg {
->     struct ethtool_loopback_layer_cfg *entries;
->     u32 num_layers;
+> TLS 1.3 differs from TLS 1.2 in several key ways that affect hardware
+> offload:
+> 
+> 1. Content type handling: TLS 1.3 encrypts the content type as part of
+>    the ciphertext (inner content type), with the outer header always
+>    showing application_data. Added content type byte appending in
+>    tls_device_record_close() before the authentication tag.
+> 
+> 2. Version validation: Extended tls_set_device_offload() and
+>    tls_set_device_offload_rx() to accept TLS_1_3_VERSION in addition
+>    to TLS_1_2_VERSION.
+> 
+> 3. Software fallback: Updated tls_device_fallback.c to handle TLS 1.3
+>    IV construction (XOR with sequence number instead of explicit IV)
+>    and version-specific AAD sizes (5 bytes for TLS 1.3 vs 13 bytes for
+>    TLS 1.2).
+> 
+> 4. Reencrypt path: Modified tls_device_reencrypt() to use
+>    prot->prepend_size and prot->tag_size instead of hardcoded
+>    TLS 1.2 values.
+> 
+> 5. Memory fallback: Pre-populate dummy_page with identity mapping for
+>    all 256 byte values, enabling safe fallback when memory allocation
+>    fails during TLS 1.3 content type appending.
+> 
+> 6. Rekey handling: HW offload key update (rekey) is not yet supported.
+>    Added upfront checks to reject rekey on HW offload connections with
+>    -EOPNOTSUPP. For SW connections, rekey skips device offload attempts
+>    and goes directly to software path.
 
-What is num_layers used for?
+Really not a fan of the LLM output. I don't think most of this needs
+to be in the commit message, or at least it should be much less
+verbose.
 
-> };
-> 
-> struct ethtool_ops {
->     /* ... */
-> 
->     /* Query which layers/lane-combos are physically possible */
->     int (*get_loopback_caps)(struct net_device *dev,
->                              struct ethtool_loopback_cfg *caps);
-> 
->     /* Get current active status for all layers */
->     int (*get_loopback_state)(struct net_device *dev,
->                               struct ethtool_loopback_cfg *state);
-> 
->     /* Set one or more layer/lane configurations atomically */
->     int (*set_loopback)(struct net_device *dev,
->                         const struct ethtool_loopback_cfg *cfg,
->                         struct netlink_ext_ack *extack);
-> };
-> 
-> As for layers; EXT vs PMD? EXT could be a loopback plug, whereas PMD
-> would be CMIS, or whatever the driver detects.
-> 
-> Userland would be something like:
-> 
-> # ethtool --show-loopback eth0
-> Loopback Status for eth0:
->   Layer: SW  | State: OFF
->   Layer: MAC   | State: OFF
->   Layer: PMA   | State: ON  | Lanes: 0x1 (Lane 0) | Direction: Near-End (Local)
->   Layer: PMD   | State: ON  | Lanes: 0xF (All)    | Direction: Far-End (Remote)
+Most of the comments in this series are also LLM verbosity, and
+entirely unnecessary.
 
-ETHTOOL_LINK_MODE_800000baseKR8_Full_BIT has 8 lanes, so 0xff would be
-All in this case. Lanes adds quite a bit of complexity. Do we have a
-real use case for it?
 
->   Layer: EXT   | State: ON  | Detected: External Loopback Plug
+> Tested on Mellanox ConnectX-6 Dx (Crypto Enabled) with TLS 1.3 AES-GCM-128
+> and AES-GCM-256 cipher suites.
 > 
-> # ethtool --set-loopback <dev> [layer[:lanes][:direction]] ... [off]
+> Signed-off-by: Rishikesh Jethwani <rjethwani@purestorage.com>
+> ---
+>  net/tls/tls_device.c          | 57 ++++++++++++++++++----
+>  net/tls/tls_device_fallback.c | 36 ++++++++++----
+>  net/tls/tls_main.c            | 89 +++++++++++++++++++++--------------
+>  3 files changed, 129 insertions(+), 53 deletions(-)
 > 
-> # # Simple MAC loopback:
-> # ethtool --set-loopback eth0 mac (Defaults: lanes=all, dir=near)
-> # # Specific SerDes (PMA) lane:
-> # ethtool --set-loopback eth0 pma:lane0
-> # # Complex multi-layer (PMA Near + PMD Far):
-> # ethtool --set-loopback eth0 pma:0x1:near pmd:all:far
+> diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
+> index 82ea407e520a..459963c254f4 100644
+> --- a/net/tls/tls_device.c
+> +++ b/net/tls/tls_device.c
+> @@ -319,6 +319,33 @@ static void tls_device_record_close(struct sock *sk,
+>  	struct tls_prot_info *prot = &ctx->prot_info;
+>  	struct page_frag dummy_tag_frag;
+>  
+> +	/* TLS 1.3: append content type byte before tag.
+> +	 * Record structure: [Header (5)] + [Ciphertext + ContentType (1)]
+> +	 * + [Tag (16)]
+> +	 * The content type is encrypted with the ciphertext for authentication.
+> +	 */
+> +	if (prot->version == TLS_1_3_VERSION) {
+> +		struct page_frag dummy_content_type_frag;
+> +		struct page_frag *content_type_pfrag = pfrag;
+> +
+> +		if (unlikely(pfrag->size - pfrag->offset < prot->tail_size) &&
+> +		    !skb_page_frag_refill(prot->tail_size, pfrag,
+> +					  sk->sk_allocation)) {
+> +			/* Out of memory: use pre-populated dummy_page */
 
-Is this something we actually want? Again it adds complexity,
-especially in the error handling, when pma:0x1:near works, but
-pmd:all:far fails, and you need to unwind the pma:0x1:near. Is there a
-use case for atomically setting two loopbacks, rather than having the
-user make two different calls?
+nit: unnecessary comment
 
-> # # Disable all loopbacks:
-> ethtool --set-loopback eth0 off
-> 
-> Thoughts? Is this somewhat close to what you had in mind, Andrew?
+Maybe a silly question but if we have this fallback to the dummy_page,
+why even bother trying to allocate?
 
-I'm happy with the basic shape of this. I just needs the details
-nailing down.
+> +			dummy_content_type_frag.page = dummy_page;
+> +			dummy_content_type_frag.offset = record_type;
+> +			content_type_pfrag = &dummy_content_type_frag;
+> +		} else {
+> +			/* Write content type to current pfrag */
 
-    Andrew
+nit: unnecessary comment
+
+> +			unsigned char *content_type_addr;
+> +
+> +			content_type_addr = page_address(pfrag->page) +
+> +					    pfrag->offset;
+> +			*content_type_addr = record_type;
+> +		}
+> +		tls_append_frag(record, content_type_pfrag, prot->tail_size);
+> +	}
+> +
+>  	/* append tag
+>  	 * device will fill in the tag, we just need to append a placeholder
+>  	 * use socket memory to improve coalescing (re-using a single buffer
+> @@ -335,7 +362,7 @@ static void tls_device_record_close(struct sock *sk,
+>  
+>  	/* fill prepend */
+>  	tls_fill_prepend(ctx, skb_frag_address(&record->frags[0]),
+> -			 record->len - prot->overhead_size,
+> +			 (record->len - prot->overhead_size) + prot->tail_size,
+
+nit: why the parens?
+
+>  			 record_type);
+>  }
+>  
+> @@ -883,6 +910,7 @@ static int
+>  tls_device_reencrypt(struct sock *sk, struct tls_context *tls_ctx)
+>  {
+>  	struct tls_sw_context_rx *sw_ctx = tls_sw_ctx_rx(tls_ctx);
+> +	struct tls_prot_info *prot = &tls_ctx->prot_info;
+>  	const struct tls_cipher_desc *cipher_desc;
+>  	int err, offset, copy, data_len, pos;
+>  	struct sk_buff *skb, *skb_iter;
+> @@ -894,7 +922,7 @@ tls_device_reencrypt(struct sock *sk, struct tls_context *tls_ctx)
+>  	DEBUG_NET_WARN_ON_ONCE(!cipher_desc || !cipher_desc->offloadable);
+>  
+>  	rxm = strp_msg(tls_strp_msg(sw_ctx));
+> -	orig_buf = kmalloc(rxm->full_len + TLS_HEADER_SIZE + cipher_desc->iv,
+> +	orig_buf = kmalloc(rxm->full_len + prot->prepend_size,
+>  			   sk->sk_allocation);
+>  	if (!orig_buf)
+>  		return -ENOMEM;
+> @@ -909,9 +937,8 @@ tls_device_reencrypt(struct sock *sk, struct tls_context *tls_ctx)
+>  	offset = rxm->offset;
+>  
+>  	sg_init_table(sg, 1);
+> -	sg_set_buf(&sg[0], buf,
+> -		   rxm->full_len + TLS_HEADER_SIZE + cipher_desc->iv);
+> -	err = skb_copy_bits(skb, offset, buf, TLS_HEADER_SIZE + cipher_desc->iv);
+> +	sg_set_buf(&sg[0], buf, rxm->full_len + prot->prepend_size);
+> +	err = skb_copy_bits(skb, offset, buf, prot->prepend_size);
+>  	if (err)
+>  		goto free_buf;
+>  
+> @@ -922,7 +949,7 @@ tls_device_reencrypt(struct sock *sk, struct tls_context *tls_ctx)
+>  	else
+>  		err = 0;
+>  
+> -	data_len = rxm->full_len - cipher_desc->tag;
+> +	data_len = rxm->full_len - prot->tag_size;
+
+Does this actually need to be changed? prot->tag_size doesn't vary
+based on TLS version.
+
+>  
+>  	if (skb_pagelen(skb) > offset) {
+>  		copy = min_t(int, skb_pagelen(skb) - offset, data_len);
+> @@ -1089,7 +1116,8 @@ int tls_set_device_offload(struct sock *sk)
+>  	}
+>  
+>  	crypto_info = &ctx->crypto_send.info;
+> -	if (crypto_info->version != TLS_1_2_VERSION) {
+> +	if (crypto_info->version != TLS_1_2_VERSION &&
+> +	    crypto_info->version != TLS_1_3_VERSION) {
+
+You can get rid of this whole version check, it was only needed
+because HW offload supported less than SW. tls_main already ensures
+that the version is 1.2 or 1.3.
+
+>  		rc = -EOPNOTSUPP;
+>  		goto release_netdev;
+>  	}
+> @@ -1196,7 +1224,8 @@ int tls_set_device_offload_rx(struct sock *sk, struct tls_context *ctx)
+>  	struct net_device *netdev;
+>  	int rc = 0;
+>  
+> -	if (ctx->crypto_recv.info.version != TLS_1_2_VERSION)
+> +	if (ctx->crypto_recv.info.version != TLS_1_2_VERSION &&
+> +	    ctx->crypto_recv.info.version != TLS_1_3_VERSION)
+
+And same here.
+
+But on the topic of version checks, Jakub asked you previously [1] to
+make sure all drivers reject 1.3, and your reply only mentioned 3
+drivers. We have 5 in tree (and the 2 your reply didn't mention don't
+seem to have a version check, based on a quick look).
+
+[1] https://lore.kernel.org/netdev/20260105172745.5cc67e79@kernel.org/
+
+
+[...]
+> diff --git a/net/tls/tls_device_fallback.c b/net/tls/tls_device_fallback.c
+> index 03d508a45aae..c8d18cce80ed 100644
+> --- a/net/tls/tls_device_fallback.c
+> +++ b/net/tls/tls_device_fallback.c
+> @@ -55,7 +55,7 @@ static int tls_enc_record(struct aead_request *aead_req,
+>  	cipher_desc = get_cipher_desc(prot->cipher_type);
+>  	DEBUG_NET_WARN_ON_ONCE(!cipher_desc || !cipher_desc->offloadable);
+>  
+> -	buf_size = TLS_HEADER_SIZE + cipher_desc->iv;
+> +	buf_size = prot->prepend_size;
+>  	len = min_t(int, *in_len, buf_size);
+>  
+>  	memcpy_from_scatterwalk(buf, in, len);
+> @@ -66,16 +66,24 @@ static int tls_enc_record(struct aead_request *aead_req,
+>  		return 0;
+>  
+>  	len = buf[4] | (buf[3] << 8);
+> -	len -= cipher_desc->iv;
+> +	if (prot->version != TLS_1_3_VERSION)
+> +		len -= cipher_desc->iv;
+>  
+>  	tls_make_aad(aad, len - cipher_desc->tag, (char *)&rcd_sn, buf[0], prot);
+>  
+> -	memcpy(iv + cipher_desc->salt, buf + TLS_HEADER_SIZE, cipher_desc->iv);
+> +	/* For TLS 1.2, copy explicit IV from record header.
+> +	 * For TLS 1.3, IV was already set up and we XOR with sequence number.
+> +	 */
+> +	if (prot->version == TLS_1_3_VERSION)
+> +		tls_xor_iv_with_seq(prot, iv, (char *)&rcd_sn);
+
+tls_sw calls this unconditionally. I think it would make sense to be
+consistent for the whole iv generation.
+
+> +	else
+> +		memcpy(iv + cipher_desc->salt, buf + TLS_HEADER_SIZE,
+> +		       cipher_desc->iv);
+>  
+>  	sg_init_table(sg_in, ARRAY_SIZE(sg_in));
+>  	sg_init_table(sg_out, ARRAY_SIZE(sg_out));
+> -	sg_set_buf(sg_in, aad, TLS_AAD_SPACE_SIZE);
+> -	sg_set_buf(sg_out, aad, TLS_AAD_SPACE_SIZE);
+> +	sg_set_buf(sg_in, aad, prot->aad_size);
+> +	sg_set_buf(sg_out, aad, prot->aad_size);
+>  	scatterwalk_get_sglist(in, sg_in + 1);
+>  	scatterwalk_get_sglist(out, sg_out + 1);
+>  
+> @@ -112,7 +120,6 @@ static void tls_init_aead_request(struct aead_request *aead_req,
+>  				  struct crypto_aead *aead)
+>  {
+>  	aead_request_set_tfm(aead_req, aead);
+> -	aead_request_set_ad(aead_req, TLS_AAD_SPACE_SIZE);
+
+Then please get rid of this function entirely. We don't need a wrapper
+for a single call to the crypto API.
+
+>  }
+>  
+>  static struct aead_request *tls_alloc_aead_request(struct crypto_aead *aead,
+> @@ -303,9 +310,9 @@ static struct sk_buff *tls_enc_skb(struct tls_context *tls_ctx,
+>  {
+>  	struct tls_offload_context_tx *ctx = tls_offload_ctx_tx(tls_ctx);
+>  	int tcp_payload_offset = skb_tcp_all_headers(skb);
+> +	void *buf, *iv, *aad, *dummy_buf, *salt, *iv_src;
+>  	int payload_len = skb->len - tcp_payload_offset;
+>  	const struct tls_cipher_desc *cipher_desc;
+> -	void *buf, *iv, *aad, *dummy_buf, *salt;
+>  	struct aead_request *aead_req;
+>  	struct sk_buff *nskb = NULL;
+>  	int buf_len;
+> @@ -317,7 +324,11 @@ static struct sk_buff *tls_enc_skb(struct tls_context *tls_ctx,
+>  	cipher_desc = get_cipher_desc(tls_ctx->crypto_send.info.cipher_type);
+>  	DEBUG_NET_WARN_ON_ONCE(!cipher_desc || !cipher_desc->offloadable);
+>  
+> -	buf_len = cipher_desc->salt + cipher_desc->iv + TLS_AAD_SPACE_SIZE +
+> +	/* Set AAD size based on TLS version */
+
+another unnecessary comment.
+
+[...]
+> +		/* HW rekey not yet supported */
+
+(here too)
+
+[...]
+> +		/* Only try HW offload on initial setup, not rekey */
+
+(here too)
+
+-- 
+Sabrina
