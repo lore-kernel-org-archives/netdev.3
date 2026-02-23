@@ -1,129 +1,86 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from mail-m49231.qiye.163.com (mail-m49231.qiye.163.com [45.254.49.231])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B86630C606;
-	Mon, 23 Feb 2026 16:01:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7436F303A26;
+	Mon, 23 Feb 2026 16:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.254.49.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771862483; cv=none; b=So9Zn2qJIiqv3OogA3VOIdUkbTUYd5YmDRJpA4BsV9Z/TECRIWC8zoK5U9r8/3bWjOviCccju+uW5qIntLMcZ1Z/JopizaL9W1myBYmixKyCjpPKSUncw3msQk3A0zKHSOivIxx4Tpkj3G9nQ7iuMsX1J5XZ1xvd42Zb2az+iUg=
+	t=1771862531; cv=none; b=GKzsC9Bmo5vbYyq8q/XrT80DVL9Mz0IYKKFEVG3P+Gd0/FsGemLlkduhWRPeX64boM035HTE59rQOzzgHHeW3k0Lng+LrrrMV6gepUkAS3oxsbiklEWmXZuCy6byCMGzFD9cJ9x8z1Bz9K+QDJ1ssTCEvA/YATTrNXy9HuT7dIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771862483; c=relaxed/simple;
-	bh=wu2jEMSeASBK/6J7P4JboN7dhpfcXah/GbCIlIXFqt8=;
-	h=Date:From:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HhXQDVoQehtjf21EaQD7KyoSa+xXzXtNYXEB92cjQ6oqQMY+hHedYvTxCDS2mdr3T0mKVUNBMHp4KCXxX0g7mGgUai4d4uppF9y5G899ioAfqF/WXnbD8cPQXWoTFEQaBKeG+hFTVnGY3BNoLTdmydLBPNuD52Ty239Er1hhdTo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id 507286033B; Mon, 23 Feb 2026 17:01:15 +0100 (CET)
-Date: Mon, 23 Feb 2026 17:01:15 +0100
-From: Florian Westphal <fw@strlen.de>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>, netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org, bridge@lists.linux.dev
-Subject: Re: [PATCH v18 nf-next 4/4] netfilter: nft_chain_filter: Add bridge
- double vlan and pppoe
-Message-ID: <aZx5y6c6gIzELiHq@strlen.de>
-References: <20260222195845.77880-1-ericwouds@gmail.com>
- <20260222195845.77880-5-ericwouds@gmail.com>
+	s=arc-20240116; t=1771862531; c=relaxed/simple;
+	bh=ghcauBkoo/jQ0qHNXUYp82lwJ47JwCuqh/RwAg7/o9U=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=qNQAIJ9Udd0j3r2PqPCoeZANH1kBESJszn1GXF+8/+SxPIyvpLrJilAUhpJnuMBc1r6qfm7wKaqmwMfS44il9tTWb/8ZB86dPYLeu6yLQq+IW7FfPng+6vTTxSbAvJQKvrnaePmOKHi02HrKMeuc/xpCQQTkEfhEQ8DWfKUISf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=eUEk7obF; arc=none smtp.client-ip=45.254.49.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="eUEk7obF"
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 34b404611;
+	Mon, 23 Feb 2026 23:56:55 +0800 (GMT+08:00)
+From: Shawn Lin <shawn.lin@rock-chips.com>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: nic_swsd@realtek.com,
+	netdev@vger.kernel.org,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	davem@davemloft.net,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	linux-pci@vger.kernel.org,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH 27/37] r8169: Replace pci_alloc_irq_vectors() with pcim_alloc_irq_vectors()
+Date: Mon, 23 Feb 2026 23:56:52 +0800
+Message-Id: <1771862212-89945-1-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+X-HM-Tid: 0a9c8b37cb1809cckunmb80f2457987f88
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGR1DHVZKS0wZGE9KT0hIQ05WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=eUEk7obF35KX3vz8VQlKv7vucQqWkLIn3vs+Somj/Gor67P4F2kKVjZX5S1k014qpr5Ze26ECoTJQeAv4pjJdVM+m/aHCKvtF/ogzRaFwvDcfN//SDHozU4fNVq6gqKRZdH36by5PGA9MUttKfykIqnIXF61lr8iLTjju6ZiOe4=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=Jty+Oys8Xh4YOyfLyh3sXEOFZn/MSFkx47AtlS+dRik=;
+	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260222195845.77880-5-ericwouds@gmail.com>
 
-Eric Woudstra <ericwouds@gmail.com> wrote:
+pcim_enable_device() no longer automatically manages IRQ vectors via devres.
+Drivers must now manually call pci_free_irq_vectors() for cleanup. Alternatively,
+pcim_alloc_irq_vectors() should be used.
 
-This an AI-generated review, with no edits.
-I added my own 2 cents at the end.
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: nic_swsd@realtek.com
+Cc: netdev@vger.kernel.org
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: davem@davemloft.net
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Philipp Stanner <phasta@kernel.org>
+Cc: linux-pci@vger.kernel.org
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+---
 
-> diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_chain_filter.c
-> index d4d5eadaba9c..66ef30c60e56 100644
-> --- a/net/netfilter/nft_chain_filter.c
-> +++ b/net/netfilter/nft_chain_filter.c
-> @@ -227,21 +227,68 @@ static inline void nft_chain_filter_inet_fini(void) {}
->  #endif /* CONFIG_NF_TABLES_IPV6 */
->
->  #if IS_ENABLED(CONFIG_NF_TABLES_BRIDGE)
-> +static int nft_set_bridge_pktinfo(struct nft_pktinfo *pkt, struct sk_buff *skb,
-> +				  const struct nf_hook_state *state,
-> +				  __be16 *proto)
-> +{
-> +	nft_set_pktinfo(pkt, skb, state);
-> +
-> +	switch (*proto) {
-> +	case htons(ETH_P_PPP_SES): {
+ drivers/net/ethernet/realtek/r8169_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-[ ... ]
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 2f7d980..e8dd1ef 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -5337,7 +5337,7 @@ static int rtl_alloc_irq(struct rtl8169_private *tp)
+ 		break;
+ 	}
+ 
+-	return pci_alloc_irq_vectors(tp->pci_dev, 1, 1, flags);
++	return pcim_alloc_irq_vectors(tp->pci_dev, 1, 1, flags);
+ }
+ 
+ static void rtl_read_mac_address(struct rtl8169_private *tp,
+-- 
+2.7.4
 
-> +	}
-> +	case htons(ETH_P_8021Q): {
-> +		struct vlan_hdr *vhdr, _vhdr;
-> +
-> +		vhdr = skb_header_pointer(skb, 0, sizeof(_vhdr), &_vhdr);
-> +		if (!vhdr) {
-> +			*proto = 0;
-> +			return -1;
-> +		}
-> +		*proto = vhdr->h_vlan_encapsulated_proto;
-> +		return VLAN_HLEN;
-> +	}
-> +	}
-> +	return 0;
-> +}
-
-The commit message states support for "inner 802.1q, combined with an
-outer 802.1ad or 802.1q encapsulation", but the code only handles
-ETH_P_8021Q (0x8100). Should there be a case for ETH_P_8021AD (0x88A8)?
-
-When a packet has an 802.1ad outer VLAN tag, proto will be ETH_P_8021AD
-but won't match any case in the switch statement. The function returns 0
-with proto unchanged, then nft_do_chain_bridge() calls
-nft_set_pktinfo_unspec(), setting thoff to 0.
-
-Other netfilter code handles both protocols, for example:
-
-net/netfilter/nf_flow_table_ip.c:
-    switch (tuple->encap[i].proto) {
-    case htons(ETH_P_8021Q):
-    case htons(ETH_P_8021AD):
-        if (skb_vlan_push(...))
-
-For double VLAN scenarios like outer 802.1q + inner 802.1q, the function
-strips the outer tag and sets proto to ETH_P_8021Q (from the inner VLAN).
-When nft_do_chain_bridge() switches on this proto value, it doesn't match
-ETH_P_IP or ETH_P_IPV6, so it falls through to the default case and calls
-nft_set_pktinfo_unspec().
-
-This means for a packet with two 802.1q tags followed by IPv4, the offset
-returned is 4 (one VLAN header), but nft_set_pktinfo_unspec() is called
-and thoff becomes 0 instead of 8.
-
-Should nft_set_bridge_pktinfo() handle nested encapsulations recursively,
-or should nft_do_chain_bridge() check if the updated proto is still a
-VLAN type and call nft_set_bridge_pktinfo() again?
-
-[ fw: I oppose auto-following nested headers an would prefer to add
-  any vlan-vlan-vlan-vlan-vlan-pppoe or whatever incrementally after
-  someone explains why thats sane.
-
-Wrt. the rest, I suspect the LLM gets confused due to vlan offloading,
-the code is fine if vlan offloading is on, we have outer vlan tag in
-the skb and eth_hdr(skb)->h_proto will be ETH_P_8021Q.
-
-Neverthelss: should this support configurations where vlan tag offload
-is off?  If it should, then ETH_P_8021AD / ETH_P_8021Q combo has to be
-handled.  That could be done in a followup change, of course.
-
-So, *I* don't see a need to send another iteration of the patch.
-
-Eric, whats your take?  Supersede?  Ignore LLM?  Follwup patch?
