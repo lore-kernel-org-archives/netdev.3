@@ -1,103 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D1A1EE7D5
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 14:17:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CDF1E51E0
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 14:30:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771856277; cv=none; b=YB80/w91entQDC/fXnNvpU+Sqhc1LbYRCSVKX4CMWaMkYMUXLaPDFXzVxqrW7brUnQ1tbl5susZJtSJG5WN7OQcylSk+APR9uM5GERRqe47KKXr8ptS7I0KiaUs/Of6Qr/kJRuR6zNUuHQjR6vC1MLHfcJi0zShyEOKokiIIYQw=
+	t=1771857054; cv=none; b=mpu5Dp81hm4+M1UimRTy6ASPyeSTji8VmGj5Oidjsy/UnuOuyeF+KOW4vKW3bqghFbfrPWvcOsDBcPFLLkwVS61WXMGEXSh+oxNvqvt8ee8cQ9r3pgnp4ym4/pH+YqKcHENIOboAj4w8xlcN2ZP6N6Xnq2EY/QvWvTkgpxMLk1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771856277; c=relaxed/simple;
-	bh=JWsui+EWFnQrBmHYf1mqBxCA3Tuwor+dau8D8mdOYVA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rKJbFmraMAiX12ThzBjUdOox4f71Ua/zcM8sEl/82ZrCfg4U94606z7Fw21Qsp1VOE2/D5lsMEGgJeSywo77ah+TMXckHLYGfzYWOsC0JF79yjrSTZgP5pDQaqJWucH/hQwWWDQyVcDF6t1ZAqhS7DO4Hah3uj2YLmwIZSWJ9nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A1zphGZg; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1771857054; c=relaxed/simple;
+	bh=OJi9lpGzM89oH9Z8nNCPiZuO5Ihla7QNdmtPLvDfI14=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JyKgoWJBOtsddFIP8b136IDBKAKdJv8u4Ju1bGwhc1ga9UvQzyjAd+Tp1+fzTA6tjA/sZ6Wsppqo9wgllDP6d+2klif8Dbk09gu3O/fipIpWHOd0OTfSMWrjyjrlPafTqXlsYkMPT9s4ye4oxJDwD8n+zNIQe3HyKqFXcCBwoPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LjeAF3L3; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A1zphGZg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771856275;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9nFQ8yLvXH/beCpBhgLReW9OM7l5WZuY8fuKFKXKbMY=;
-	b=A1zphGZgaoQJ17rbBkxrm8X2j/Yibxh/L/iA8CyXt+ctvxRBAwfenyt1RyTZcuQosMrkbq
-	xxgqFN8cQxkO666lwWM5415AVO53xOSHdZ/YRgHhfpqnbTlo+ddOBFVMqCXCn0tDgrYi3l
-	B51ugaX0wm0pXOf26cw6mxF65WLDwmI=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-553-VBDO78dHNviaeI-HvsoW1Q-1; Mon,
- 23 Feb 2026 09:17:51 -0500
-X-MC-Unique: VBDO78dHNviaeI-HvsoW1Q-1
-X-Mimecast-MFC-AGG-ID: VBDO78dHNviaeI-HvsoW1Q_1771856270
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 32CD1195605A;
-	Mon, 23 Feb 2026 14:17:50 +0000 (UTC)
-Received: from [10.44.32.92] (unknown [10.44.32.92])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 956213000C26;
-	Mon, 23 Feb 2026 14:17:47 +0000 (UTC)
-Message-ID: <d0a3a425-689a-4d97-8940-05bf83b7b513@redhat.com>
-Date: Mon, 23 Feb 2026 15:17:46 +0100
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LjeAF3L3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771857053; x=1803393053;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=OJi9lpGzM89oH9Z8nNCPiZuO5Ihla7QNdmtPLvDfI14=;
+  b=LjeAF3L3tamTIqmoZ1yBhexEQp/t6OcU7WCtuhFxR4CfdAw2hq7sBsoc
+   +6pMAbCiaAxIdZKMQe8lWTbxr5zkG2KXMug1tKt8Ldxnv9/NHjahlB2lA
+   MHQepLcAkHeB7a7uPuucs0UGYl3QBIiotqdsvCX0wS6mPaON3coVC8f3q
+   jGUHB8GodxBS4+NBJ6bhKwSXaYelxhm11v/M1EMx4CkopJID9rP/qaah5
+   TcTPZhciCFWfaVXmkPJa7v0UjrHUImcMWNnAUYkh1NPCgXWYxB8qEAgv1
+   ILfy18Yy9smqxgQFeGxpxqSVI2uUXtXZA5uxpPzG841mPUKXVbIBzJrXw
+   g==;
+X-CSE-ConnectionGUID: w2SGjv+eTwG1Y2dfFnguLg==
+X-CSE-MsgGUID: TBkguPj3QNuYqnff9uSrEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="72061138"
+X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; 
+   d="scan'208";a="72061138"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 06:30:52 -0800
+X-CSE-ConnectionGUID: 5L0wxdfrRy+XNyQYOtxE8g==
+X-CSE-MsgGUID: vvogyipbQ1S3Nu6ppaGaRA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; 
+   d="scan'208";a="220574764"
+Received: from pae-d-dell-r7525-263.igk.intel.com ([172.28.191.240])
+  by orviesa005.jf.intel.com with ESMTP; 23 Feb 2026 06:30:50 -0800
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	Przemyslaw Korba <przemyslaw.korba@intel.com>
+Subject: [PATCH iwl-net v2] ice: dpll: Fix compilation warning
+Date: Mon, 23 Feb 2026 15:31:55 +0100
+Message-ID: <20260223143214.241797-1-przemyslaw.korba@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dpll: zl3073x: Remove redundant cleanup in
- devm_dpll_init()
-To: Felix Gu <ustc.gu@gmail.com>,
- Prathosh Satish <Prathosh.Satish@microchip.com>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
- Jiri Pirko <jiri@resnulli.us>, Jakub Kicinski <kuba@kernel.org>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260223-dpll-v1-1-d99f18c12bae@gmail.com>
-Content-Language: en-US
-From: Ivan Vecera <ivecera@redhat.com>
-In-Reply-To: <20260223-dpll-v1-1-d99f18c12bae@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 2/23/26 2:20 PM, Felix Gu wrote:
-> The devm_add_action_or_reset() function already executes the cleanup
-> action on failure before returning an error, so the explicit goto error
-> and subsequent zl3073x_dev_dpll_fini() call causes double cleanup.
-> 
-> Fixes: ebb1031c5137 ("dpll: zl3073x: Refactor DPLL initialization")
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
-> ---
->   drivers/dpll/zl3073x/core.c | 4 +---
->   1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/dpll/zl3073x/core.c b/drivers/dpll/zl3073x/core.c
-> index 63bd97181b9e..4ad21caec0e8 100644
-> --- a/drivers/dpll/zl3073x/core.c
-> +++ b/drivers/dpll/zl3073x/core.c
-> @@ -982,10 +982,8 @@ zl3073x_devm_dpll_init(struct zl3073x_dev *zldev, u8 num_dplls)
->   
->   	/* Add devres action to release DPLL related resources */
->   	rc = devm_add_action_or_reset(zldev->dev, zl3073x_dev_dpll_fini, zldev);
-> -	if (rc)
-> -		goto error;
->   
-> -	return 0;
-> +	return rc;
+ice_dpll.c: In function ‘ice_dpll_init’:
+ice_dpll.c:3588:59: error: ‘%u’ directive output may be truncated
+writing between 1 and 10 bytes into a region of size 4
+[-Werror=format-truncation=] snprintf(pin_name, sizeof(pin_name),
+"rclk%u", i);
 
-Please use:
+Fixes: ad1df4f2d591 ("ice: dpll: Support E825-C SyncE and dynamic pin discovery")
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_dpll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-return devm_add_action_or_reset(...);
+diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+index 73a4e28ed75f..f101fdb3e9cf 100644
+--- a/drivers/net/ethernet/intel/ice/ice_dpll.c
++++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+@@ -3532,7 +3532,7 @@ static int
+ ice_dpll_init_fwnode_pins(struct ice_pf *pf, struct ice_dpll_pin *pins,
+ 			  int start_idx)
+ {
+-	char pin_name[8];
++	char pin_name[16];
+ 	int i, ret;
+ 
+ 	pf->dplls.wq = create_singlethread_workqueue("ice_dpll_wq");
 
-Otherwise, LGTM. With this change:
-
-Reviewed-by: Ivan Vecera <ivecera@redhat.com>
+base-commit: af960c69349a922fac3b4fbdb42e118a35c8700f
+-- 
+2.43.0
 
