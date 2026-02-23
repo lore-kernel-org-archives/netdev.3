@@ -1,155 +1,173 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499F128505E
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 15:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F136A2E7635
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 15:30:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771859971; cv=none; b=E5BYYtZEKhCriRnjBctcHFBFv9klINcvmzbZ3VVTBvABjlbQ2pDjiwat2AyEpmkCeE95e7sgKknVTM4+6HsPUOCZXevQbJguz6NMGpQHqnJoKQgbyGgn2RU9LXyQapY5EiqXTc0koxzntr08fi3bZ4nACa9BRVOgwg5n2T40UHg=
+	t=1771860651; cv=none; b=KHmnW/+7Lq4k0CNG5x2U/9eVje35c/nLoLN4JqBWSeWqwLQVWdzC8492YEPDZCWhEq3qtEPprJKwoi64YqUlNYWCOo7RlKjH32pe00QQPU/A3FNpzFH3ORFLmzkqayI4hzKOkZid+eXyPbkh6cFHXi1Wtuq/KbNBYQWCL23Udic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771859971; c=relaxed/simple;
-	bh=0O3RvJy5wMszVpqd7072pywBFbMARv2HhD0Qr8fHSJ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lr7HTUn2WqI6QSl+pzmYERrWhc/Wsf9Fe6+TlefjFvwW5n7396qdM1cbU2X/XouaFbh9CGCpLm0D5B+HmgDiaY8dHI49/iJ3XNJdi22gvt45CajlAhn81Cq8rqj2NG3NKfzRxVOnFPhksZRM/tQNZ5KMVZqYSi70hMLl0ZEPWfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=L0HByolD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3eUmRSDd; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=L0HByolD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3eUmRSDd; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1771860651; c=relaxed/simple;
+	bh=hEv4Ae+QEC6lKjEUUGAvjSgbTkL2q4XylaJ+Qi9wZHQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qv8DxGADWcCgA8s+ROojJpo4cFIhYQHe2g8C0K3DEourIQYD8GENhHHTT6PuYzpbUVxw6i0q3F8JYDGwgqL9cLzx246Z1etAUBDqO1mRbdrVTvdO8sPzXO0GKgV2dybgRc04wlxqn8oVspz05y78BStSZ6IOcUGrkm+RTxRSwRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qe6fAumi; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="L0HByolD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3eUmRSDd";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="L0HByolD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3eUmRSDd"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 409323ED75;
-	Mon, 23 Feb 2026 15:19:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771859968; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=i3eJX+/Hm/8RuHBx6XH/gu7RzCdwaePCRMFOhHNaKD8=;
-	b=L0HByolDVRfyM01drZUEECGagzGV5s6SWkJjohtEthBkg7sJRUufWFphhvvroOyQ3c5xVd
-	zL2wcxTWdXcnkuF71DQQjanTOW3QAvKbP9lprFbCNY6txADtM4CU6LKYiup3Hb/o4npRNz
-	QM+02eL730I8vv6S7fkBSgvL3mUnaww=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771859968;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=i3eJX+/Hm/8RuHBx6XH/gu7RzCdwaePCRMFOhHNaKD8=;
-	b=3eUmRSDdrxphum6bcXgQsXjZG1mi3jxmMQEwcNlI3fgXnGhloea2dS+FDVXybg9nMWk93f
-	sVb9C2pOzefDzEAg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=L0HByolD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3eUmRSDd
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1771859968; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=i3eJX+/Hm/8RuHBx6XH/gu7RzCdwaePCRMFOhHNaKD8=;
-	b=L0HByolDVRfyM01drZUEECGagzGV5s6SWkJjohtEthBkg7sJRUufWFphhvvroOyQ3c5xVd
-	zL2wcxTWdXcnkuF71DQQjanTOW3QAvKbP9lprFbCNY6txADtM4CU6LKYiup3Hb/o4npRNz
-	QM+02eL730I8vv6S7fkBSgvL3mUnaww=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1771859968;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=i3eJX+/Hm/8RuHBx6XH/gu7RzCdwaePCRMFOhHNaKD8=;
-	b=3eUmRSDdrxphum6bcXgQsXjZG1mi3jxmMQEwcNlI3fgXnGhloea2dS+FDVXybg9nMWk93f
-	sVb9C2pOzefDzEAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9E06C3EA68;
-	Mon, 23 Feb 2026 15:19:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 4qFSI/9vnGlRKQAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Mon, 23 Feb 2026 15:19:27 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
-	edumazet@google.com,
-	dsahern@kernel.org,
-	davem@davemloft.net,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH net-next] ipv6: discard fragment queue if middle fragment is not 8 bytes aligned
-Date: Mon, 23 Feb 2026 16:19:18 +0100
-Message-ID: <20260223151918.31965-1-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qe6fAumi"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8c70ef98116so4844295385a.1
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 07:30:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771860649; x=1772465449; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=zvWeIEq2VU3ENK2aRvqCap/GrjJulMo8uDTfHsPk6iw=;
+        b=qe6fAumiTJgSnBy6U7unkaBxYYH6GpmcDVUU4s7qDbRGra36cB0iFFnkQMpCiud8la
+         w/iKAEa+qEr0YxyCnyJTb3NYRAQBqbZQoEJKwfpWqDLm2m3G1o+wAiYUOldIxvg5gX2q
+         Izc/eZzhgYtgLiNIarIHZUlG/FD8hp0Yr6XQL7hO6aI7+ivhqvo5Zaq9t4m/nsKL+Dkb
+         WCZEbiXVsA8Su80IwIl2jIGwr0xr9IjBAcfcSzFYcoPkTAL6sQn5WQ+kvX2RNFeNZsMi
+         +GGNerJJ/0PENOpuCfQuTNK01lDvmnd8FF2VdQmg/j80ci1e+/g57ZN+ZysnRnpNFfSi
+         YIKg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771860649; x=1772465449;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zvWeIEq2VU3ENK2aRvqCap/GrjJulMo8uDTfHsPk6iw=;
+        b=S/F0fkJ0mYL210/ixQ7O8hfCFlT9Vs5JkrqWtrjGVmpTaOZO1rzWU/zUVnvUHRv0fq
+         YGXRvhKFbKYfa4sI4we59OgbYUErguSrQi2wIJKWwdPAftBEuLDcZ0+0P6DULKgdvaUO
+         TcpN1r5DLi3NpW2BuXHvCLYuIKV60Jht8FX7nbyo5h5zJj7meXce1jgPyFWs4ZOBYKvh
+         uuwW/iVjv1m6cn3iFK+tw6zAR8wYAdhfb9Qe1NzU3NmTMUF7k7tCxzE7oi97s9VjaglI
+         OR9vqDGdvkuB4Iup7t+3V1I4rFr2X1Cv9sv9pv6GXECQt6usWAuq0s+PEpcAs+e/clAC
+         KYJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWE3N9VzyRrbjsH1O7jrewgvpgzTzqRKmXyHxf/R7ilEkX25Cx68A1MGKufiwAIBz/Ux5payxY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHEcRKUtvXAW8sHnc5KLyA9GLIVUVXiLgug60qy3tSsFS/+4SN
+	V6qOh+LSnqj7LXz84BMcCff0dDLEVD/2zkPjYtE/GykuGr8i3FDyGX5iPS4GErINMv2IfkfGNws
+	LK4JC+3ozNhSg9Q==
+X-Received: from qkbbq41.prod.google.com ([2002:a05:620a:46a9:b0:8c7:cb6:2f03])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:25ce:b0:8c6:a034:9224 with SMTP id af79cd13be357-8cb8ca72248mr1016764685a.47.1771860648450;
+ Mon, 23 Feb 2026 07:30:48 -0800 (PST)
+Date: Mon, 23 Feb 2026 15:30:47 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_SOME(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:dkim,suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Rspamd-Queue-Id: 409323ED75
-X-Spam-Flag: NO
-X-Spam-Score: -3.01
-X-Spam-Level: 
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
+Message-ID: <20260223153047.886683-1-edumazet@google.com>
+Subject: [PATCH net-next] tcp: move inet6_csk_update_pmtu() to tcp_ipv6.c
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Currently the kernel IPv6 implementation is not dicarding the fragment
-queue upon receiving a IPv6 fragment that is not 8 bytes aligned. It
-relies on queue expiration to free the queue.
+This function is only called from tcp_v6_mtu_reduced() and can be
+(auto)inlined by the compiler.
 
-While RFC 8200 section 4.5 does not explicitly mention that the rest of
-fragments must be discarded, it does not make sense to keep them. The
-parameter problem message is sent regardless that. In addition, if the
-sender is able to re-compose the datagram so it is 8 bytes aligned it
-would qualify as a new whole datagram not fitting into the same fragment
-queue.
+Note that inet6_csk_route_socket() is no longer (auto)inlined,
+which is a good thing as it is slow path.
 
-The sooner we can free resources during reassembly, the better.
+$ scripts/bloat-o-meter -t vmlinux.0 vmlinux.1
 
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+add/remove: 0/2 grow/shrink: 2/0 up/down: 93/-129 (-36)
+Function                                     old     new   delta
+tcp_v6_mtu_reduced                           139     228     +89
+inet6_csk_route_socket                       486     490      +4
+__pfx_inet6_csk_update_pmtu                   16       -     -16
+inet6_csk_update_pmtu                        113       -    -113
+Total: Before=25076512, After=25076476, chg -0.00%
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv6/reassembly.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/net/inet6_connection_sock.h |  4 +++-
+ net/ipv6/inet6_connection_sock.c    | 19 ++-----------------
+ net/ipv6/tcp_ipv6.c                 | 15 +++++++++++++++
+ 3 files changed, 20 insertions(+), 18 deletions(-)
 
-diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
-index 25ec8001898d..8b0bc0ba56f4 100644
---- a/net/ipv6/reassembly.c
-+++ b/net/ipv6/reassembly.c
-@@ -163,6 +163,9 @@ static int ip6_frag_queue(struct net *net,
- 			 * this case. -DaveM
- 			 */
- 			*prob_offset = offsetof(struct ipv6hdr, payload_len);
-+			inet_frag_kill(&fq->q, refs);
-+			__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)),
-+					IPSTATS_MIB_REASMFAILS);
- 			return -1;
- 		}
- 		if (end > fq->q.len) {
+diff --git a/include/net/inet6_connection_sock.h b/include/net/inet6_connection_sock.h
+index ece8dabd209a5b2fb42ec88b9acbc81c01b4174e..b814e1acc512186108f500702836d98647cbd165 100644
+--- a/include/net/inet6_connection_sock.h
++++ b/include/net/inet6_connection_sock.h
+@@ -18,6 +18,9 @@ struct sk_buff;
+ struct sock;
+ struct sockaddr;
+ 
++struct dst_entry *inet6_csk_route_socket(struct sock *sk,
++					 struct flowi6 *fl6);
++
+ struct dst_entry *inet6_csk_route_req(const struct sock *sk,
+ 				      struct dst_entry *dst,
+ 				      struct flowi6 *fl6,
+@@ -25,5 +28,4 @@ struct dst_entry *inet6_csk_route_req(const struct sock *sk,
+ 
+ int inet6_csk_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl);
+ 
+-struct dst_entry *inet6_csk_update_pmtu(struct sock *sk, u32 mtu);
+ #endif /* _INET6_CONNECTION_SOCK_H */
+diff --git a/net/ipv6/inet6_connection_sock.c b/net/ipv6/inet6_connection_sock.c
+index 11fc2f7de2fe981ddb48dc008bf7fd4ae1e4e2f6..37534e1168992c44e1400dacab87e79d04c64a41 100644
+--- a/net/ipv6/inet6_connection_sock.c
++++ b/net/ipv6/inet6_connection_sock.c
+@@ -56,8 +56,8 @@ struct dst_entry *inet6_csk_route_req(const struct sock *sk,
+ 	return dst;
+ }
+ 
+-static struct dst_entry *inet6_csk_route_socket(struct sock *sk,
+-						struct flowi6 *fl6)
++struct dst_entry *inet6_csk_route_socket(struct sock *sk,
++					 struct flowi6 *fl6)
+ {
+ 	struct inet_sock *inet = inet_sk(sk);
+ 	struct ipv6_pinfo *np = inet6_sk(sk);
+@@ -118,18 +118,3 @@ int inet6_csk_xmit(struct sock *sk, struct sk_buff *skb, struct flowi *fl_unused
+ 	return res;
+ }
+ EXPORT_SYMBOL_GPL(inet6_csk_xmit);
+-
+-struct dst_entry *inet6_csk_update_pmtu(struct sock *sk, u32 mtu)
+-{
+-	struct flowi6 *fl6 = &inet_sk(sk)->cork.fl.u.ip6;
+-	struct dst_entry *dst;
+-
+-	dst = inet6_csk_route_socket(sk, fl6);
+-
+-	if (IS_ERR(dst))
+-		return NULL;
+-	dst->ops->update_pmtu(dst, sk, NULL, mtu, true);
+-
+-	dst = inet6_csk_route_socket(sk, fl6);
+-	return IS_ERR(dst) ? NULL : dst;
+-}
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index d10487b4e5bff87d4ff2a7b912a826964101a163..010f3aa72499358a96327fcf096e7542bbb5cc81 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -349,6 +349,21 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+ 	return err;
+ }
+ 
++static struct dst_entry *inet6_csk_update_pmtu(struct sock *sk, u32 mtu)
++{
++	struct flowi6 *fl6 = &inet_sk(sk)->cork.fl.u.ip6;
++	struct dst_entry *dst;
++
++	dst = inet6_csk_route_socket(sk, fl6);
++
++	if (IS_ERR(dst))
++		return NULL;
++	dst->ops->update_pmtu(dst, sk, NULL, mtu, true);
++
++	dst = inet6_csk_route_socket(sk, fl6);
++	return IS_ERR(dst) ? NULL : dst;
++}
++
+ static void tcp_v6_mtu_reduced(struct sock *sk)
+ {
+ 	struct dst_entry *dst;
 -- 
-2.53.0
+2.53.0.345.g96ddfc5eaa-goog
 
