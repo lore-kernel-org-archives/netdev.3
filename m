@@ -1,188 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B182701BB;
-	Mon, 23 Feb 2026 13:58:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF03426A0B9;
+	Mon, 23 Feb 2026 14:01:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771855095; cv=none; b=DcbCGlT368MLxufATVnGY2kn9mI6dsF9RpijujOmNDyfBgqKCt9F8mkIhwuce9fecyg48TPbPSb6rCKKVo+BEBGFu5QCEMb218IgN1EYnfaVuRQIt8EtpE+1wHkG0pYEuXf9h5KGT9Kc31rhGe3dSVBrpKv2awe7NZQrNjjNm5A=
+	t=1771855289; cv=none; b=IU+f5FlcA4/gRm0JSxQwVc3goGoV7OLdRKH3FEVSsDotNfo7weIoH0UbtLogZyff46WBpeq9k87ZqSjXeZSQ77yLlSyJjymgVcfzhVfc4+pZ6j3Tl2Z1M/+TJ1DPCumAhdJ64PxAv3LWWiPTj+B6B3os6daClcri3yNqQfUEf08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771855095; c=relaxed/simple;
-	bh=t5KwaNb/RUlMNvnjAQljSY30lTI+e060jlUtQ9txKe8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EzqRH1nojGhsP2x41SXhpEqv77cBI8fQmQjifURc53zOd/E4ye6zevlJ8n5dSvZ5CijSUO+MeLvG84cElrsLrVBdi9Oq/7uf0A61NdJs1ZthCzELJl6KbArS1Lre6hypg8m2Yq/kocE9pIjXQXsiYg0PUGF73K77L90GX4kod1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CB0i1sYa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771855289; c=relaxed/simple;
+	bh=XUY21FuMSKmjH9no37t97xDUClgPkt8GSLIbeRnj1AI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Oe+OrSnLJ26srT3o55E/kgyeXhCCBd/Vtr4toBOI2vEddNfMxueJ3DthUuPpx++GvwWqujJ+hSngDetonPnDPijVIbHRGvD0SNLkhP1crqmR4K94fcK94nO/k7z53N6Pzfa/ghh9JZGthohgZxOJs19zp/kQQjBWKob0zUAzrDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=dR1kWave; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CB0i1sYa"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D5178C2BC87;
-	Mon, 23 Feb 2026 13:58:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771855094;
-	bh=t5KwaNb/RUlMNvnjAQljSY30lTI+e060jlUtQ9txKe8=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=CB0i1sYaGvAKnvJDXjpHisBs89VSjY27mSJhKAj0XGlOraz8vvxd2/WyynOn4xUJj
-	 b2hg9udlqGeeiJIN1vL1iTYASn+XRKntSYGERBlxiVDMXx4bL1Bg4I1dZM6nlRXvQJ
-	 koDoawYnCB6tVDFudFvVOV4BqtgZGRQohybGp28nESZEmUGoNw/Gv3jRTUDSaoYd1A
-	 vRHlQxPfM4FWrUWSW1z/WZknkWf59fkv4eKF8z2RGKZfvUJjbkIrVKNoGQ5HlVmd13
-	 ETu9twtV70eXq/Tn3suvMZacDyPHnifgdHOhURSbT/DyT70tg1GPHGbsfW0LmZEMj9
-	 GFaxrGk0Ak98g==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CB717EA4FC1;
-	Mon, 23 Feb 2026 13:58:14 +0000 (UTC)
-From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Mon, 23 Feb 2026 14:58:06 +0100
-Subject: [PATCH v5 3/4] arm64: dts: s32: set Ethernet channel irqs
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="dR1kWave"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=KcaaE3LpE+ovUHUhrkXgidu+ShMuBdBbTFEmpE5F3Z8=; b=dR1kWaveG/58vzDduCUVL6/iRy
+	IMCNsb8X2jaHAdR6CcU+flvXE4K/b3S90+mAmrdSqJWc1P15idRYoeGv8kIZjQ9QJx9EA2hT7nn3r
+	n1AiAGs722yvTlCIsRaupH2TBbtm2aiikwS4nzAhnHSylbe2usBVrPJPJKVxo9QJLnqU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vuWUY-008Sz2-HQ; Mon, 23 Feb 2026 15:00:54 +0100
+Date: Mon, 23 Feb 2026 15:00:54 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Haiyang Zhang <haiyangz@linux.microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Kory Maincent (Dent Project)" <kory.maincent@bootlin.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	haiyangz@microsoft.com, paulros@microsoft.com
+Subject: Re: [PATCH net-next] net: ethtool: add COALESCE_RX_CQE_FRAMES/NSECS
+ parameters
+Message-ID: <6bf21536-569b-49b4-9541-c22a152570fd@lunn.ch>
+References: <20260222212328.736628-1-haiyangz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260223-dwmac_multi_irq-v5-3-8fc699a5fac4@oss.nxp.com>
-References: <20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com>
-In-Reply-To: <20260223-dwmac_multi_irq-v5-0-8fc699a5fac4@oss.nxp.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
- Alexandre Torgue <alexandre.torgue@foss.st.com>, 
- Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
- Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
- NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
-Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, devicetree@vger.kernel.org, 
- "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771855093; l=4163;
- i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=GJtLVXXJ6B4rcW9eI+Zdnzjbg44iN/frnopr12Ti4EU=;
- b=TmoJDDNlTmMgV+Qqkl8ZoPkRk6WcQvMR/GbsNwsLdbJ2rG5Dyepdv0jdKiQzldQ7FqOj9HWgF
- u+Wyy0NwaVWAFSohZpnwMJYVrnBYfIp5UIx3X0ji+TpnxElk+AyTYo+
-X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
- pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
-X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
- auth_id=217
-X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
-Reply-To: jan.petrous@oss.nxp.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260222212328.736628-1-haiyangz@linux.microsoft.com>
 
-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+On Sun, Feb 22, 2026 at 01:23:17PM -0800, Haiyang Zhang wrote:
+> From: Haiyang Zhang <haiyangz@microsoft.com>
+> 
+> Add two parameters for drivers supporting Rx CQE Coalescing.
+> 
+> ETHTOOL_A_COALESCE_RX_CQE_FRAMES:
+> Maximum number of frames that can be coalesced into a CQE.
+> 
+> ETHTOOL_A_COALESCE_RX_CQE_NSECS:
+> Time out value in nanoseconds after the first packet arrival in a
+> coalesced CQE to be sent.
 
-The GMAC Ethernet controller found on S32G2/S32G3 and S32R45
-contains up to 5 RX and 5 TX channels.
-It can operate in two interrupt modes:
+A new API needs a user. A kAPI especially needs a user. Please add
+support to at least one driver.
 
-  1) Sharing IRQ mode: only MAC IRQ line is used
-     for all channels.
+    Andrew
 
-  2) Multiple IRQ mode: every channel uses two IRQ lines,
-     one for RX and second for TX.
-
-Specify all IRQ twins for all channels.
-
-Reviewed-by: Matthias Brugger <mbrugger@suse.com>
-Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- arch/arm64/boot/dts/freescale/s32g2.dtsi | 26 +++++++++++++++++++++++---
- arch/arm64/boot/dts/freescale/s32g3.dtsi | 26 +++++++++++++++++++++++---
- 2 files changed, 46 insertions(+), 6 deletions(-)
-
-diff --git a/arch/arm64/boot/dts/freescale/s32g2.dtsi b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-index 51d00dac12de..5a553d503137 100644
---- a/arch/arm64/boot/dts/freescale/s32g2.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g2.dtsi
-@@ -3,7 +3,7 @@
-  * NXP S32G2 SoC family
-  *
-  * Copyright (c) 2021 SUSE LLC
-- * Copyright 2017-2021, 2024-2025 NXP
-+ * Copyright 2017-2021, 2024-2026 NXP
-  */
- 
- #include <dt-bindings/interrupt-controller/arm-gic.h>
-@@ -732,8 +732,28 @@ gmac0: ethernet@4033c000 {
- 			reg = <0x4033c000 0x2000>, /* gmac IP */
- 			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
- 			interrupt-parent = <&gic>;
--			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
--			interrupt-names = "macirq";
-+			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 0: tx, rx */
-+				     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 1: tx, rx */
-+				     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 2: tx, rx */
-+				     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 3: tx, rx */
-+				     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 4: tx, rx */
-+				     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "macirq",
-+					  "tx-queue-0", "rx-queue-0",
-+					  "tx-queue-1", "rx-queue-1",
-+					  "tx-queue-2", "rx-queue-2",
-+					  "tx-queue-3", "rx-queue-3",
-+					  "tx-queue-4", "rx-queue-4";
- 			snps,mtl-rx-config = <&mtl_rx_setup>;
- 			snps,mtl-tx-config = <&mtl_tx_setup>;
- 			status = "disabled";
-diff --git a/arch/arm64/boot/dts/freescale/s32g3.dtsi b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-index e314f3c7d61d..b43e6f001f4d 100644
---- a/arch/arm64/boot/dts/freescale/s32g3.dtsi
-+++ b/arch/arm64/boot/dts/freescale/s32g3.dtsi
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
- /*
-- * Copyright 2021-2025 NXP
-+ * Copyright 2021-2026 NXP
-  *
-  * Authors: Ghennadi Procopciuc <ghennadi.procopciuc@nxp.com>
-  *          Ciprian Costea <ciprianmarian.costea@nxp.com>
-@@ -809,8 +809,28 @@ gmac0: ethernet@4033c000 {
- 			reg = <0x4033c000 0x2000>, /* gmac IP */
- 			      <0x4007c004 0x4>;    /* GMAC_0_CTRL_STS */
- 			interrupt-parent = <&gic>;
--			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
--			interrupt-names = "macirq";
-+			interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 0: tx, rx */
-+				     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 1: tx, rx */
-+				     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 2: tx, rx */
-+				     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 3: tx, rx */
-+				     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
-+				     /* CHN 4: tx, rx */
-+				     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
-+				     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
-+			interrupt-names = "macirq",
-+					  "tx-queue-0", "rx-queue-0",
-+					  "tx-queue-1", "rx-queue-1",
-+					  "tx-queue-2", "rx-queue-2",
-+					  "tx-queue-3", "rx-queue-3",
-+					  "tx-queue-4", "rx-queue-4";
- 			snps,mtl-rx-config = <&mtl_rx_setup>;
- 			snps,mtl-tx-config = <&mtl_tx_setup>;
- 			status = "disabled";
-
--- 
-2.47.0
-
-
+pw-bot: cr
