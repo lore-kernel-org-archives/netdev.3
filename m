@@ -1,224 +1,101 @@
-Received: from relmlie6.idc.renesas.com (relmlor2.renesas.com [210.160.252.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B9C366044;
-	Mon, 23 Feb 2026 12:41:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.160.252.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF753644D3;
+	Mon, 23 Feb 2026 12:59:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771850502; cv=none; b=eC6AspBmMsMB/lWsyoAvY3E71LYNHY62dRvVrUEbqNP4Y+KfHXY56fh8T+PD4U9RDu19fxTE5bkIRmBNqTSNYUUZ5fu7tHokMij9oFi4OdkLsDZDGduiwi0ofv/hsBHzmoaarrVznD5zGcK+0VWymeTyY+3DznvlEOTFPLEEaaA=
+	t=1771851552; cv=none; b=M4vvh2gL07hXu+XhVWkTBwVQHSD/7N/w9M4FczTZif7AsvCkWBm2T/uoZtNHA+ES33qC1+Zm1YB+AQh2XzOVaoXlbRN5KVFclkCNtUAs5ade1eFqMhlxaQteG0UJu9uEO5Dgg2cxVGapgNI87R6Pf1jbb++6yeQ4sHvlUGo0qXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771850502; c=relaxed/simple;
-	bh=my3ie864iTaDCoQbedVs3qsRAL84M9L7UnzCUL3bZ9s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPvE0w8zNOtLAqvVptXaQrr5hXS74ys0LSZEeYqBGpeWM4viCdqPjFfYhnAeULGwr/N+U6XRnTYWBMQ0MHqC1JLgHbEejwcuJmqjFATBn4iXszGYsXOmkpeypDpmPHxLUsDoq5LfFQTNNhapw24adhVW9VdQDQYDNopFSLOaaDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; arc=none smtp.client-ip=210.160.252.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
-X-CSE-ConnectionGUID: RATekyJ1R5yKNNf7lStgUQ==
-X-CSE-MsgGUID: y0YMchb9Q8eDUObnCEjfig==
-Received: from unknown (HELO relmlir6.idc.renesas.com) ([10.200.68.152])
-  by relmlie6.idc.renesas.com with ESMTP; 23 Feb 2026 21:41:40 +0900
-Received: from vm01.adwin.renesas.com (unknown [10.226.92.12])
-	by relmlir6.idc.renesas.com (Postfix) with ESMTP id DEB7641AB637;
-	Mon, 23 Feb 2026 21:41:33 +0900 (JST)
-From: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	linux@armlinux.org.uk,
-	rmk+kernel@armlinux.org.uk,
-	maxime.chevallier@bootlin.com,
-	boon.khai.ng@altera.com,
-	rohan.g.thomas@altera.com,
-	vladimir.oltean@nxp.com,
-	hayashi.kunihiko@socionext.com,
-	matthew.gerlach@altera.com,
-	vee.khee.wong@intel.com,
-	boon.leong.ong@intel.com,
-	kim.tatt.chuah@intel.com
-Cc: netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 4/4] net: stmmac: Defer VLAN HW configuration when interface is down
-Date: Mon, 23 Feb 2026 12:41:02 +0000
-Message-ID: <20260223124102.120432-5-ovidiu.panait.rb@renesas.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260223124102.120432-1-ovidiu.panait.rb@renesas.com>
-References: <20260223124102.120432-1-ovidiu.panait.rb@renesas.com>
+	s=arc-20240116; t=1771851552; c=relaxed/simple;
+	bh=Par3+OJsZbAIJien6Jci74rK3rk6O9eJHfJ9GFnuujs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XY0YItJ08c8sJLLXwBM/zHekrbd9OuXvAENS2G83+xpUZitd5Rjtk2Usl0GySKDej2aAB+8mjO1dNQs94/3wCQ6wwi4AmcY1cyenzBx9+6JhYySoIB8CWE8Vktwc5C6K2PnAHqUWjMkVdQaOZQ/aRtnkKBuzjsYO6IDKoV4M2NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t3SQS1/P; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t3SQS1/P"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C63C116D0;
+	Mon, 23 Feb 2026 12:59:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1771851552;
+	bh=Par3+OJsZbAIJien6Jci74rK3rk6O9eJHfJ9GFnuujs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=t3SQS1/PeorMhVTyDNdC7MKXQ1qsupnKz0nFIVbkDiZ0d7PO5i7L/PNM7GygyNdpP
+	 jJA/OtZ/H00YOM/VOMfFrcX6IsB3tPAbX8+w9vAdRMZweIMDT2cT2VvyU3/FhcOnHf
+	 rkT+ZIMQ8rFf7NBgSa3HDucTpBQzf/i5bKAp2pC4=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: netdev@vger.kernel.org
+Cc: linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Petko Manolov <petkan@nucleusys.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH net] net: usb: pegasus: validate USB endpoints
+Date: Mon, 23 Feb 2026 13:58:48 +0100
+Message-ID: <2026022347-legibly-attest-cc5c@gregkh>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1727; i=gregkh@linuxfoundation.org; h=from:subject:message-id; bh=Par3+OJsZbAIJien6Jci74rK3rk6O9eJHfJ9GFnuujs=; b=owGbwMvMwCRo6H6F97bub03G02pJDJlz/NnbD33OaP+22aLmT+XP6pRdvpEntC+Hrn6xekv1z 2SxnyWRHbEsDIJMDLJiiixftvEc3V9xSNHL0PY0zBxWJpAhDFycAjCRjakMC3rZwnOP/ZZ8ulFj /ryzIkK8uYVHpBgWdFUmCL2UOPsgpbp55r0kmTmzfn+7DAA=
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
 Content-Transfer-Encoding: 8bit
 
-VLAN register accesses on the MAC side require the PHY RX clock to be
-active. When the network interface is down, the PHY is suspended and
-the RX clock is unavailable, causing VLAN operations to fail with
-timeouts.
+The pegasus driver should validate that the device it is probing has the
+proper number and types of USB endpoints it is expecting before it binds
+to it.  If a malicious device were to not have the same urbs the driver
+will crash later on when it blindly accesses these endpoints.
 
-The VLAN core automatically removes VID 0 after the interface goes down
-and re-adds it when it comes back up, so these timeouts happen during
-normal interface down/up:
-
-    # ip link set end1 down
-    renesas-gbeth 15c40000.ethernet end1: Timeout accessing MAC_VLAN_Tag_Filter
-    renesas-gbeth 15c40000.ethernet end1: failed to kill vid 0081/0
-
-Adding VLANs while the interface is down also fails:
-
-    # ip link add link end1 name end1.10 type vlan id 10
-    renesas-gbeth 15c40000.ethernet end1: Timeout accessing MAC_VLAN_Tag_Filter
-    RTNETLINK answers: Device or resource busy
-
-Use the write_hw parameter introduced in the previous commit to skip
-hardware register writes when the interface is down. The software state
-is always kept up to date regardless of interface state.
-
-When the interface is brought up, stmmac_vlan_configure() is called
-to write the VLAN state to hardware.
-
-Signed-off-by: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
+Cc: Petko Manolov <petkan@nucleusys.com>
+Cc: stable <stable@kernel.org>
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 33 +++++++++++++++----
- .../net/ethernet/stmicro/stmmac/stmmac_vlan.c |  9 ++---
- 2 files changed, 29 insertions(+), 13 deletions(-)
+ drivers/net/usb/pegasus.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 536668a0d6dd..d0aede23ae0d 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -156,6 +156,7 @@ static void stmmac_tx_timer_arm(struct stmmac_priv *priv, u32 queue);
- static void stmmac_flush_tx_descriptors(struct stmmac_priv *priv, int queue);
- static void stmmac_set_dma_operation_mode(struct stmmac_priv *priv, u32 txmode,
- 					  u32 rxmode, u32 chan);
-+static int stmmac_vlan_configure(struct stmmac_priv *priv);
+diff --git a/drivers/net/usb/pegasus.c b/drivers/net/usb/pegasus.c
+index 4f539b5d509a..94c17fed0bd4 100644
+--- a/drivers/net/usb/pegasus.c
++++ b/drivers/net/usb/pegasus.c
+@@ -801,8 +801,19 @@ static void unlink_all_urbs(pegasus_t *pegasus)
  
- #ifdef CONFIG_DEBUG_FS
- static const struct net_device_ops stmmac_netdev_ops;
-@@ -4111,6 +4112,14 @@ static int __stmmac_open(struct net_device *dev,
- 
- 	phylink_start(priv->phylink);
- 
-+	if (dev->features & NETIF_F_VLAN_FEATURES) {
-+		phylink_rx_clk_stop_block(priv->phylink);
-+		ret = stmmac_vlan_configure(priv);
-+		phylink_rx_clk_stop_unblock(priv->phylink);
-+		if (ret)
-+			netdev_err(dev, "Failed to configure VLANs\n");
-+	}
-+
- 	ret = stmmac_request_irq(dev);
- 	if (ret)
- 		goto irq_error;
-@@ -6784,6 +6793,7 @@ static int stmmac_vlan_update(struct stmmac_priv *priv, bool is_double,
- static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid)
+ static int alloc_urbs(pegasus_t *pegasus)
  {
- 	struct stmmac_priv *priv = netdev_priv(ndev);
-+	bool write_hw = netif_running(ndev);
- 	unsigned int num_double_vlans;
- 	bool is_double = false;
- 	int ret;
-@@ -6797,7 +6807,7 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
++	static const u8 bulk_ep_addr[] = {
++		1 | USB_DIR_IN,
++		2 | USB_DIR_OUT,
++		0};
++	static const u8 int_ep_addr[] = {
++		3 | USB_DIR_IN,
++		0};
+ 	int res = -ENOMEM;
  
- 	set_bit(vid, priv->active_vlans);
- 	num_double_vlans = priv->num_double_vlans + is_double;
--	ret = stmmac_vlan_update(priv, num_double_vlans, true);
-+	ret = stmmac_vlan_update(priv, num_double_vlans, write_hw);
- 	if (ret) {
- 		clear_bit(vid, priv->active_vlans);
- 		goto err_pm_put;
-@@ -6805,10 +6815,11 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
- 
- 	if (priv->hw->num_vlan) {
- 		ret = stmmac_add_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto,
--						 vid, true);
-+						 vid, write_hw);
- 		if (ret) {
- 			clear_bit(vid, priv->active_vlans);
--			stmmac_vlan_update(priv, priv->num_double_vlans, true);
-+			stmmac_vlan_update(priv, priv->num_double_vlans,
-+					   write_hw);
- 			goto err_pm_put;
- 		}
- 	}
-@@ -6827,6 +6838,7 @@ static int stmmac_vlan_rx_add_vid(struct net_device *ndev, __be16 proto, u16 vid
- static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vid)
- {
- 	struct stmmac_priv *priv = netdev_priv(ndev);
-+	bool write_hw = netif_running(ndev);
- 	unsigned int num_double_vlans;
- 	bool is_double = false;
- 	int ret;
-@@ -6840,7 +6852,7 @@ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vi
- 
- 	clear_bit(vid, priv->active_vlans);
- 	num_double_vlans = priv->num_double_vlans - is_double;
--	ret = stmmac_vlan_update(priv, num_double_vlans, true);
-+	ret = stmmac_vlan_update(priv, num_double_vlans, write_hw);
- 	if (ret) {
- 		set_bit(vid, priv->active_vlans);
- 		goto del_vlan_error;
-@@ -6848,10 +6860,11 @@ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vi
- 
- 	if (priv->hw->num_vlan) {
- 		ret = stmmac_del_hw_vlan_rx_fltr(priv, ndev, priv->hw, proto,
--						 vid, true);
-+						 vid, write_hw);
- 		if (ret) {
- 			set_bit(vid, priv->active_vlans);
--			stmmac_vlan_update(priv, priv->num_double_vlans, true);
-+			stmmac_vlan_update(priv, priv->num_double_vlans,
-+					   write_hw);
- 			goto del_vlan_error;
- 		}
- 	}
-@@ -6864,6 +6877,14 @@ static int stmmac_vlan_rx_kill_vid(struct net_device *ndev, __be16 proto, u16 vi
- 	return ret;
- }
- 
-+static int stmmac_vlan_configure(struct stmmac_priv *priv)
-+{
-+	if (priv->hw->num_vlan)
-+		stmmac_restore_hw_vlan_rx_fltr(priv, priv->dev, priv->hw);
++	if (!usb_check_bulk_endpoints(pegasus->intf, bulk_ep_addr) ||
++	    !usb_check_int_endpoints(pegasus->intf, int_ep_addr))
++		return -ENODEV;
 +
-+	return stmmac_vlan_update(priv, priv->num_double_vlans, true);
-+}
-+
- static int stmmac_bpf(struct net_device *dev, struct netdev_bpf *bpf)
- {
- 	struct stmmac_priv *priv = netdev_priv(dev);
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-index b74c173da1b5..070c11870c02 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_vlan.c
-@@ -150,7 +150,6 @@ static void vlan_restore_hw_rx_fltr(struct net_device *dev,
- 	void __iomem *ioaddr = hw->pcsr;
- 	u32 value;
- 	u32 hash;
--	u32 val;
- 	int i;
+ 	pegasus->rx_urb = usb_alloc_urb(0, GFP_KERNEL);
+ 	if (!pegasus->rx_urb) {
+ 		return res;
+@@ -1143,6 +1154,7 @@ static int pegasus_probe(struct usb_interface *intf,
  
- 	/* Single Rx VLAN Filter */
-@@ -160,12 +159,8 @@ static void vlan_restore_hw_rx_fltr(struct net_device *dev,
- 	}
+ 	pegasus = netdev_priv(net);
+ 	pegasus->dev_index = dev_index;
++	pegasus->intf = intf;
  
- 	/* Extended Rx VLAN Filter Enable */
--	for (i = 0; i < hw->num_vlan; i++) {
--		if (hw->vlan_filter[i] & VLAN_TAG_DATA_VEN) {
--			val = hw->vlan_filter[i];
--			vlan_write_filter(dev, hw, i, val);
--		}
--	}
-+	for (i = 0; i < hw->num_vlan; i++)
-+		vlan_write_filter(dev, hw, i, hw->vlan_filter[i]);
+ 	res = alloc_urbs(pegasus);
+ 	if (res < 0) {
+@@ -1154,7 +1166,6 @@ static int pegasus_probe(struct usb_interface *intf,
  
- 	hash = readl(ioaddr + VLAN_HASH_TABLE);
- 	if (hash & VLAN_VLHT) {
+ 	INIT_DELAYED_WORK(&pegasus->carrier_check, check_carrier);
+ 
+-	pegasus->intf = intf;
+ 	pegasus->usb = dev;
+ 	pegasus->net = net;
+ 
 -- 
-2.34.1
+2.53.0
 
