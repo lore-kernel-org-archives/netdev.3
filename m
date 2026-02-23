@@ -1,130 +1,151 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B83628C869
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 15:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6589B2EBDFA
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 15:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771860709; cv=none; b=olFY41LWk5ZtHrjqYk06VDKLFkj8iYUa4ufYdXApyVbPcek81P9pMm/qNZOpx6s5bwIVsmyulEbNINnM/dREKqtpEtLrYyBgHDr9ZqBbYLCIgtK1hRR7rBBkB0Gq8hfcckqjxTxACwK2lQRSAAQXDfzEYcPD53GlHXfu+7eDB5Y=
+	t=1771860828; cv=none; b=I+aeko2RSpU+4kWXBcMmGLJ0CjJrDwsbFJ8z2lrqkPh9OYdEq/80XbZcHrviwoogOHTMT6D4uEc91XIgDkyLRANZ2NOKK/AD1jJnEZ4jzEIW9EtRbHwCHaYGsu6r7x1vB067qqMS9rFGgUnjcRB3+zeBl4swwcRXcrmmxjd94oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771860709; c=relaxed/simple;
-	bh=o1oLg0nB+YiY80Uun+MNDhJ52gcIHXMtNOATqmaeKOM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TCmZlMhQUOb/7oaam7vOqQ+Kug5NNnXb7bn59e7A22t3L/Ny3QnwMeFdn8nMVC96vCD0aVBSfpDypIb7TUnBoggoVQzxeWQzzb/P9keMBBxma3ALmEnOg5mLUnn2XPLnYF5bRX0HsF889r8RLMMAoKhtQePmf9nb5G7vbRQxpxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id E7AEE5BE60;
-	Mon, 23 Feb 2026 15:31:46 +0000 (UTC)
-Authentication-Results: smtp-out2.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 459F73EA68;
-	Mon, 23 Feb 2026 15:31:46 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eEuxDeJynGkINgAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Mon, 23 Feb 2026 15:31:46 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	tgraf@infradead.org,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH 2/2 net-next] ipv4: bump rt_genid when a relevant devconf value changes through netlink
-Date: Mon, 23 Feb 2026 16:30:45 +0100
-Message-ID: <20260223153045.32044-2-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260223153045.32044-1-fmancera@suse.de>
-References: <20260223153045.32044-1-fmancera@suse.de>
+	s=arc-20240116; t=1771860828; c=relaxed/simple;
+	bh=Sc0XsRa+h7CvkAcGaDuEVcGGe//df3h1SOHqA+KmVao=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=j+dYRf73aRwH5QIfxk1TrWgE4vBIvbueItc2F21PXELinVwcptEK8y/Kb1x0Q+JHRCQNN90soqZD6i4EGp3YqELz65NcqRzNdVhWjd/ugoPpIPnB/V2jkx3SUsjMU/qAlxr3xltVNWA4/0dPZ6bliujthXAwDAVcCbFs/+eWk+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NtlH1UpX; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NtlH1UpX"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8cb42f56c4aso4614803185a.3
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 07:33:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771860826; x=1772465626; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=reEsQNCsHhMMYdE402juGxmSaDkIn8JuSJVax7fdHQw=;
+        b=NtlH1UpX5LTkaa/bhCK38yDSP0n5IHzdrIpJcjbKYs/dE27HalCq5/FcHOqLrKHZo3
+         kZLzH+/Xvt450R8v1WaDeIj6V0iXuXitN5OqDPkv5C0LllnYDKH/f9uAyf+Tc0EOMnAK
+         j8IPm1ZUWv2vHTtC02a+MPvDSr2jMh5TGoAle/qF/Fs/s+uXant6GBxmYXeCeMnYN06K
+         aEFGLQsh6pBnuWqKWGH/37WRqBqX05O99PEsi6VRqjO2KObxEfCOcTWvPedtEqCeSKIP
+         Ml2K/YQLlggClmhT9M2YWikErp+ZmwzFH2dGlLctHAiqWkJt1M/dxfYtZHwQCKb2m06t
+         Wb+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771860826; x=1772465626;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=reEsQNCsHhMMYdE402juGxmSaDkIn8JuSJVax7fdHQw=;
+        b=DmiMxCgDsHismyy9jyjxqS9d+tQraLmqCVuY5NzsMgpbyZWmag8W6edlt+nB03buwW
+         pcdOfjQpBE2EGfUULPFEnzUOP53a+uAZuQnyN6z2ApOggbmliv+3xL/er5og6xlKan6f
+         2pm8UginPZ6IztI9JH462kKXSPcV6jz2gVYoz88Iie6L1cUmfEK6QJ4KfQ2cH8Zw1Wl6
+         4IBUy6Zc4VwS3oWUBIVZbEqKRIT7ocsoiAay/IIqOAeyIppMFo6xFd6uWYyG4nhKXvlV
+         GLW4bYlFIxx9tPRq+jqbha0s5kQIp5PbCqckx6vFFXR36pMpTcE7MvNVMcNvgnjmV0dT
+         ab1w==
+X-Forwarded-Encrypted: i=1; AJvYcCWwlxKXBNv7RblhLArflIJGPmHBRVsV/KdQb3VXO8LXrX6ito56V6jQGHjbZly3XfLxsfcfMvE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8cVa8rfz00O4Prvh0U4wtxxTK32bSuPPoWHtkQKa917RNMmaP
+	vS6QjGhzh9hMxIg1sAVGZy1PDpItuyotAiGtdCDN2YJ+pkQmVu6H45mRkXcWPqIo2CuVVzi7Jm9
+	nWV101h6DlsLpkA==
+X-Received: from qkof22.prod.google.com ([2002:a05:620a:4096:b0:8cb:3af6:4fe2])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:1a25:b0:8ca:2baa:6658 with SMTP id af79cd13be357-8cb8ca88767mr1179936785a.70.1771860826034;
+ Mon, 23 Feb 2026 07:33:46 -0800 (PST)
+Date: Mon, 23 Feb 2026 15:33:42 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Queue-Id: E7AEE5BE60
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
+Message-ID: <20260223153342.892477-1-edumazet@google.com>
+Subject: [PATCH net-next] ipv6: move ip6_dst_hoplimit() to net/ipv6/ip6_output.c
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-When modifying IPv4 devconf values using netlink for some relevant
-fields the rt_cache_flush() call was missing. In addition, if forwarding
-is enabled on the interface then disable LRO.
+Move ip6_dst_hoplimit() to net/ipv6/ip6_output.c so that compiler
+can (auto)inline it from ip6_xmit().
 
-This is needed to avoid possible connectivity issues and ease the
-responsabilities of user space tools.
+$ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
+add/remove: 0/0 grow/shrink: 1/0 up/down: 47/0 (47)
+Function                                     old     new   delta
+ip6_xmit                                    1481    1528     +47
+Total: Before=25076476, After=25076523, chg +0.00%
 
-Fixes: 9f0f7272ac95 ("ipv4: AF_INET link address family")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- net/ipv4/devinet.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ net/ipv6/ip6_output.c  | 21 +++++++++++++++++++++
+ net/ipv6/output_core.c | 23 -----------------------
+ 2 files changed, 21 insertions(+), 23 deletions(-)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index 590c68e979f5..9f55c13a9c1f 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -2159,6 +2159,8 @@ static int inet_set_link_af(struct net_device *dev, const struct nlattr *nla,
- {
- 	struct in_device *in_dev = __in_dev_get_rtnl(dev);
- 	struct nlattr *a, *tb[IFLA_INET_MAX+1];
-+	struct net *net = dev_net(in_dev->dev);
-+	bool flush_cache = false;
- 	int rem;
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 769c39fed1f38dd507d907a43ca21a2023245999..b5f2a3881a3fcd1d680f8914725ba2a6ca9e2b26 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -259,6 +259,27 @@ bool ip6_autoflowlabel(struct net *net, const struct sock *sk)
+ 	return inet6_test_bit(AUTOFLOWLABEL, sk);
+ }
  
- 	if (!in_dev)
-@@ -2168,8 +2170,27 @@ static int inet_set_link_af(struct net_device *dev, const struct nlattr *nla,
- 		return -EINVAL;
- 
- 	if (tb[IFLA_INET_CONF]) {
--		nla_for_each_nested(a, tb[IFLA_INET_CONF], rem)
-+		nla_for_each_nested(a, tb[IFLA_INET_CONF], rem) {
- 			ipv4_devconf_set(in_dev, nla_type(a), nla_get_u32(a));
++int ip6_dst_hoplimit(struct dst_entry *dst)
++{
++	int hoplimit = dst_metric_raw(dst, RTAX_HOPLIMIT);
 +
-+			switch (nla_type(a)) {
-+			case IPV4_DEVCONF_FORWARDING:
-+				if (nla_get_u32(a))
-+					dev_disable_lro(in_dev->dev);
-+				fallthrough;
-+			case IPV4_DEVCONF_NOXFRM:
-+			case IPV4_DEVCONF_NOPOLICY:
-+			case IPV4_DEVCONF_PROMOTE_SECONDARIES:
-+			case IPV4_DEVCONF_ROUTE_LOCALNET:
-+			case IPV4_DEVCONF_DROP_UNICAST_IN_L2_MULTICAST:
-+				flush_cache = true;
-+				break;
-+			default:
-+				break;
-+			}
-+		}
-+		if (flush_cache)
-+			rt_cache_flush(net);
- 	}
++	rcu_read_lock();
++	if (hoplimit == 0) {
++		struct net_device *dev = dst_dev_rcu(dst);
++		struct inet6_dev *idev;
++
++		idev = __in6_dev_get(dev);
++		if (idev)
++			hoplimit = READ_ONCE(idev->cnf.hop_limit);
++		else
++			hoplimit = READ_ONCE(dev_net(dev)->ipv6.devconf_all->hop_limit);
++	}
++	rcu_read_unlock();
++
++	return hoplimit;
++}
++EXPORT_SYMBOL(ip6_dst_hoplimit);
++
+ /*
+  * xmit an sk_buff (used by TCP and SCTP)
+  * Note : socket lock is not held for SYNACK packets, but might be modified
+diff --git a/net/ipv6/output_core.c b/net/ipv6/output_core.c
+index cba1684a3f30ff98517d873ddb8e97f32adc9791..64b1eeb79b572b8b412c60f832c4a7984ac8276f 100644
+--- a/net/ipv6/output_core.c
++++ b/net/ipv6/output_core.c
+@@ -100,29 +100,6 @@ int ip6_find_1stfragopt(struct sk_buff *skb, u8 **nexthdr)
+ }
+ EXPORT_SYMBOL(ip6_find_1stfragopt);
  
- 	return 0;
+-#if IS_ENABLED(CONFIG_IPV6)
+-int ip6_dst_hoplimit(struct dst_entry *dst)
+-{
+-	int hoplimit = dst_metric_raw(dst, RTAX_HOPLIMIT);
+-
+-	rcu_read_lock();
+-	if (hoplimit == 0) {
+-		struct net_device *dev = dst_dev_rcu(dst);
+-		struct inet6_dev *idev;
+-
+-		idev = __in6_dev_get(dev);
+-		if (idev)
+-			hoplimit = READ_ONCE(idev->cnf.hop_limit);
+-		else
+-			hoplimit = READ_ONCE(dev_net(dev)->ipv6.devconf_all->hop_limit);
+-	}
+-	rcu_read_unlock();
+-
+-	return hoplimit;
+-}
+-EXPORT_SYMBOL(ip6_dst_hoplimit);
+-#endif
+-
+ int __ip6_local_out(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+ 	ipv6_set_payload_len(ipv6_hdr(skb), skb->len - sizeof(struct ipv6hdr));
 -- 
-2.53.0
+2.53.0.345.g96ddfc5eaa-goog
 
