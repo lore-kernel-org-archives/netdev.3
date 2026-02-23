@@ -1,139 +1,237 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA012E7635;
-	Mon, 23 Feb 2026 15:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6C41D54FA
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 15:31:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771860697; cv=none; b=Svtipps/gNtHXuVfTaCvFcWc6MDM4+9+U0Pdb3HLItkYfMzhMCQ7nnYGHzSScLxUYfMPI5JDnpALz8ulDTdADckclEk3lJQ75Mi2E0rUQv5Cv5qF5Tua45QbFVrRW49o2LqJfQo4JL5ewtpSp4S2CfLuDKktbIrU3phhhcslvl8=
+	t=1771860706; cv=none; b=l86o9CpgLGTlH12RrVBBpPuhBpVB9Owfsbck4Y8bz1c/+/cEsw0mCNrT/1EmEU8MD7Sgc/0AzTgCnBBLkX/cqXiQtRmlTslxOFT0dNbnRs5mPmPLi+Sx3U5dAPbfFallum45h9KsmyEcl0Hcn91f23yVVe+554y9MD++JpqtBaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771860697; c=relaxed/simple;
-	bh=hMz6eL99P2CVGsJzD+zo6hqmd4ANA39QPFMTWKAp8uA=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=KzS/6NzPc8siOm5Z+F4gXjFfr7IN9vMWhssas82/QTgdSJnL8waaDBzyrEerdlUjTZqt9HASsrbpRe9k48kgyPVpLJcKBnkXvXAn+9MG4OR9Oz5MhRiR+W1FBLx4ndu08I86xZScZLSiL4E3Za5CelSNdCWXCL6p549U0VeFQz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJgC6976; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771860706; c=relaxed/simple;
+	bh=IttrSLTEnForiVMueAZRFYUuEuajxYVz00JQ6J8Lgmk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nJhDE8IZmBFICyEEKk5/NhmLEPDhq3yWvqvDyINKNP/9Mn3qqDtZQVxsGNJkP8PU6sySIIJdx0G/D6Rc169dX9sxzLHeBwskELsmcxhNu0XVwSHqtFSNvhJGFR/xSwdZcmSNXuU1qUJw/lHhj11SBfl7W5nTtdSikHx2FdIPjRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=pSek7Csy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZpB6NE7P; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=pSek7Csy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=ZpB6NE7P; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJgC6976"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E9EC116C6;
-	Mon, 23 Feb 2026 15:31:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771860697;
-	bh=hMz6eL99P2CVGsJzD+zo6hqmd4ANA39QPFMTWKAp8uA=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To:From;
-	b=nJgC6976tIWIUbAmB1qtUtZ2E4o0N8k6Qz2ZqXG27r2FJC7WzjhTOEXgtYA/qK0AJ
-	 37NhtgV6+Bvjjvd9jLHJJqeu+uZ83b0GAGAutLrG29Qbe8O9gB3p6ZoDRP6caBjgMa
-	 qpUFCvdfNxNomOAZg8/Z3S2boCa5Si40LMu3elMOOVeVi2FqzL6PAwx5xu7HhSlVOD
-	 CB6uDoo2Ssj951z1g+jbZyt+0r1QSDi/TStf2dDPy7ITh3gseMrgQGDQ+ifUwQp84K
-	 muWPA9sjrqH2bCDZF7LAoREfR7q1EQ5Vl9HQBCTyPSYJFZNMsGnKb3yLDo6l/rtjg+
-	 iMGszK8DzPUaA==
-Message-ID: <9c6d3ee0-1394-4cb7-92f2-ea50d5a02bbe@kernel.org>
-Date: Mon, 23 Feb 2026 16:31:33 +0100
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="pSek7Csy";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZpB6NE7P";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="pSek7Csy";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="ZpB6NE7P"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 543183ED34;
+	Mon, 23 Feb 2026 15:31:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771860703; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=O4DCiC1wrroA+cOGEhHkFXQh+ZENjK9/egFLAmUcb1E=;
+	b=pSek7CsymXLlkuv2EkvccFxZwaR8fAOpZ8NbRf2tQUa1YGOKzf5zq2zLmGyhN3lRAiYAm4
+	2xrfg4dSLLO/Or0XotAZbhu06+f3UZRE39erOZouj9mJ41c2POQDwYHH+sM0cxdwD4a/7x
+	AsNxxcdtnJ3OKWud/XBQqGLNeMP4+6g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771860703;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=O4DCiC1wrroA+cOGEhHkFXQh+ZENjK9/egFLAmUcb1E=;
+	b=ZpB6NE7PffO0M0SCDv/nuDEYU/RNO3tn+9EcCkZeFElotsdjc2O2XKdiGjngiFbxGNvmq6
+	62HiwYtQGZGu+lDw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1771860703; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=O4DCiC1wrroA+cOGEhHkFXQh+ZENjK9/egFLAmUcb1E=;
+	b=pSek7CsymXLlkuv2EkvccFxZwaR8fAOpZ8NbRf2tQUa1YGOKzf5zq2zLmGyhN3lRAiYAm4
+	2xrfg4dSLLO/Or0XotAZbhu06+f3UZRE39erOZouj9mJ41c2POQDwYHH+sM0cxdwD4a/7x
+	AsNxxcdtnJ3OKWud/XBQqGLNeMP4+6g=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1771860703;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=O4DCiC1wrroA+cOGEhHkFXQh+ZENjK9/egFLAmUcb1E=;
+	b=ZpB6NE7PffO0M0SCDv/nuDEYU/RNO3tn+9EcCkZeFElotsdjc2O2XKdiGjngiFbxGNvmq6
+	62HiwYtQGZGu+lDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9B5D53EA68;
+	Mon, 23 Feb 2026 15:31:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id MtOjIt5ynGkINgAAD6G6ig
+	(envelope-from <fmancera@suse.de>); Mon, 23 Feb 2026 15:31:42 +0000
+From: Fernando Fernandez Mancera <fmancera@suse.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	dsahern@kernel.org,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	tgraf@infradead.org,
+	Fernando Fernandez Mancera <fmancera@suse.de>
+Subject: [PATCH 1/2 net-next] ipv4: validate IPV4_DEVCONF attributes properly
+Date: Mon, 23 Feb 2026 16:30:44 +0100
+Message-ID: <20260223153045.32044-1-fmancera@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird Beta
-Subject: Re: [PATCH iproute2-next 2/3] utils: timestamp: add JSON support
-Content-Language: en-GB, fr-BE
-From: Matthieu Baerts <matttbe@kernel.org>
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: David Ahern <dsahern@kernel.org>, netdev@vger.kernel.org,
- mptcp@lists.linux.dev
-References: <20260220-ipr-monitor-json-v1-0-eb4b0d5f7820@kernel.org>
- <20260220-ipr-monitor-json-v1-2-eb4b0d5f7820@kernel.org>
- <20260220213900.76198834@phoenix.local>
- <1bdb2c3d-a1b8-432c-8933-d7df3fc10ce5@kernel.org>
-Autocrypt: addr=matttbe@kernel.org; keydata=
- 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
- lzVbFe7fduHbABmYz9cefQpO7wDE/Q==
-Organization: NGI0 Core
-In-Reply-To: <1bdb2c3d-a1b8-432c-8933-d7df3fc10ce5@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.79
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.79 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.19)[-0.962];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Flag: NO
 
-Hi Stephen,
+As the IPV4_DEVCONF netlink attributes are not being validated, it is
+possible to use netlink to set read-only values like mc_forwarding. In
+addition, valid ranges are not being validated neither but that is less
+relevant as they aren't in sysctl.
 
-On 23/02/2026 14:20, Matthieu Baerts wrote:
-> Hi Stephen,
-> 
-> On 21/02/2026 06:39, Stephen Hemminger wrote:
->> On Fri, 20 Feb 2026 19:54:02 +0100
->> "Matthieu Baerts (NGI0)" <matttbe@kernel.org> wrote:
->>
->>> Only if the output stream is 'stdout', because all JSON helpers like
->>> print_string() only write on 'stdout'.
->>>
->>> Supporting JSON is easy with the helpers. The biggest modification is to
->>> extract the end value.
->>>
->>> No behavioural changes intended for the moment, this is a preparation for a
->>> future usage of print_timestamp() within a JSON context.
->>>
->>> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
->>
->> I would go farther, fp is always stdout. Drop the argument to the function.
-> 
-> Good idea!
-> 
-> To be coherent with the rest, I started to look at removing the same
-> argument from the caller functions, and similar ones. I did a very quick
-> draft with a few sed, etc. but I'm not sure whether I should take this
-> direction:
-> 
->   https://github.com/matttbe/iproute2/commit/585b0109
-> 
-> WDYT? Or should I only drop fp from print_timestamp()? Or simply not use
-> it like it is done in many other helpers supporting JSON?
+To avoid similar situations in the future, define a NLA policy for
+IPV4_DEVCONF attributes which are nested in IFLA_INET_CONF.
 
-I just sent a v2 with the minimal modifications around print_timestamp:
-the argument is now simply ignored like it is the case in other helpers
-supporting JSON. If there is a need to continue the cleanup, probably
-better to do that in a different series I guess.
+Please note that MEDIUM_ID is defined as NLA_U32 too because currently
+its usage through netlink is broken for its valid value -1. Modifying
+the type to NLA_S32 would break existing users of set/get netlink
+operation.
 
-Cheers,
-Matt
+Fixes: 9f0f7272ac95 ("ipv4: AF_INET link address family")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+---
+ net/ipv4/devinet.c | 81 ++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 71 insertions(+), 10 deletions(-)
+
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index 942a887bf089..590c68e979f5 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -2063,12 +2063,76 @@ static const struct nla_policy inet_af_policy[IFLA_INET_MAX+1] = {
+ 	[IFLA_INET_CONF]	= { .type = NLA_NESTED },
+ };
+ 
++static const struct nla_policy inet_devconf_policy[IPV4_DEVCONF_MAX + 1] = {
++	[IPV4_DEVCONF_FORWARDING]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_MC_FORWARDING]			  = { .type = NLA_REJECT },
++	[IPV4_DEVCONF_PROXY_ARP]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_ACCEPT_REDIRECTS]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_SECURE_REDIRECTS]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_SEND_REDIRECTS]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_SHARED_MEDIA]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_RP_FILTER]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 2),
++	[IPV4_DEVCONF_ACCEPT_SOURCE_ROUTE]		  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_BOOTP_RELAY]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_LOG_MARTIANS]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_TAG]				  = { .type = NLA_U32 },
++	[IPV4_DEVCONF_ARPFILTER]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_MEDIUM_ID]			  = { .type = NLA_U32 },
++	[IPV4_DEVCONF_NOXFRM]				  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_NOPOLICY]				  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_FORCE_IGMP_VERSION]		  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 3),
++	[IPV4_DEVCONF_ARP_ANNOUNCE]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 2),
++	[IPV4_DEVCONF_ARP_IGNORE]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 8),
++	[IPV4_DEVCONF_PROMOTE_SECONDARIES]		  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_ARP_ACCEPT]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_ARP_NOTIFY]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_ACCEPT_LOCAL]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_SRC_VMARK]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_PROXY_ARP_PVLAN]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_ROUTE_LOCALNET]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_IGMPV2_UNSOLICITED_REPORT_INTERVAL] = { .type = NLA_U32 },
++	[IPV4_DEVCONF_IGMPV3_UNSOLICITED_REPORT_INTERVAL] = { .type = NLA_U32 },
++	[IPV4_DEVCONF_IGNORE_ROUTES_WITH_LINKDOWN]	  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_DROP_UNICAST_IN_L2_MULTICAST]	  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_DROP_GRATUITOUS_ARP]		  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_BC_FORWARDING]			  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++	[IPV4_DEVCONF_ARP_EVICT_NOCARRIER]		  = NLA_POLICY_RANGE(NLA_U32,
++									     0, 1),
++};
++
+ static int inet_validate_link_af(const struct net_device *dev,
+ 				 const struct nlattr *nla,
+ 				 struct netlink_ext_ack *extack)
+ {
+-	struct nlattr *a, *tb[IFLA_INET_MAX+1];
+-	int err, rem;
++	struct nlattr *tb[IFLA_INET_MAX + 1], *nested_tb[IPV4_DEVCONF_MAX + 1];
++	int err;
+ 
+ 	if (dev && !__in_dev_get_rtnl(dev))
+ 		return -EAFNOSUPPORT;
+@@ -2079,15 +2143,12 @@ static int inet_validate_link_af(const struct net_device *dev,
+ 		return err;
+ 
+ 	if (tb[IFLA_INET_CONF]) {
+-		nla_for_each_nested(a, tb[IFLA_INET_CONF], rem) {
+-			int cfgid = nla_type(a);
++		err = nla_parse_nested(nested_tb, IPV4_DEVCONF_MAX,
++				       tb[IFLA_INET_CONF], inet_devconf_policy,
++				       extack);
+ 
+-			if (nla_len(a) < 4)
+-				return -EINVAL;
+-
+-			if (cfgid <= 0 || cfgid > IPV4_DEVCONF_MAX)
+-				return -EINVAL;
+-		}
++		if (err < 0)
++			return err;
+ 	}
+ 
+ 	return 0;
 -- 
-Sponsored by the NGI0 Core fund.
+2.53.0
 
