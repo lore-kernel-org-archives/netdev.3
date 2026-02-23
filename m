@@ -1,142 +1,221 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131AB34E75E;
-	Mon, 23 Feb 2026 09:34:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA84834E75E
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 09:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771839286; cv=none; b=Q/2BRZYLjwQ+dMk/R21kWhwIC2WbxFvWiOznbV1syrNQSPmKdlfJChUllHaJ39FA9MX8PFPKs87P4YVcCBTtOdjAvf7BoaxQWxkWUfXWhV3Fmv81OvSO/voY5tiWJohSlP+tDote2bGwsxn03TIfQh5/n7bBhOHjBukd74nmXAA=
+	t=1771839289; cv=none; b=Ml9xXRU0MN4z3O6an7HssA/bvSYy93QCGoKo3HnCRjBJcwi95RlWTdPu8TJc0ujrNb9hOkwAfGvdkI5c0MX1EEs9U0MhHGml7JY6OrEls8okLHUaqsepAFii/d2VoMIYUewImqDcbOTjk7DAY5mnD3+4QnQ6XUFvbsg50bIgspI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771839286; c=relaxed/simple;
-	bh=A0DQa2yit7BilB2edxZew1BCO4LPXoY8VmW6sypuAU4=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=NVAKdpc2gDA1+bWRbcsSKltV39ZYitd7BiDsJIyQX2PsgqgIqtaWPhEz1PBHNX73UIvJrZKYJNQwLIyXwLq5csUVt4uNkESAwkTMH0cZrlfYF34x3/m1TjU42NbXOMvXkiF1l8XFTH8qqthJ53j3LjHZrJonSCBH8TwabD6nuFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=pi/OTBkE; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1771839289; c=relaxed/simple;
+	bh=ILkfiBqKI02H1HCrvmquYghyw7WwGpjItReju/8tqIc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Gg2RLGG1VXV+NHoifFa27ZoiBV6eBiZAF9lDKcNl26Ac+Tb0ZaKEuGiSIM9MKI0F70BAw+DGJNBrusqEqKfTEaqgX6cXu9zCghiqDkAB1JzmAEcSiwtsQi6vQFWkwOB8vtQR89eMNljdQCVIQtV2NF9vLOgbf6krI1QarIqGlPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3CckNfar; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="pi/OTBkE"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=/kike56d5i4O56Y5NlWtI02l8CGnSYFWZr81uQ1joGo=; b=pi/OTBkEOT4oGyyTr+mRIeg8qC
-	KBA1AtP5j7VMP5seIdKi/5QstLo4ROiuyWgUo1AYnTEZ4XuBYuMFH7opOTqh8UfBU/Tv5nWhWASNa
-	mwH9PXJVYbAdDrmyTOpXALzMQ01WNdYtlEkls4nnYN9/ydBPQCl+5cQ9T0jAvTeG0H2Xi7HeKqWgz
-	m/VchVkTo+VKz3FNFXd5dX8jF0wsfB3+YTmouh2e9Nod853oiTAZiNz/VACOicbnYNeNLWc39KTu+
-	fNxzat4vOShIr7pbG/9YFGwYIRqPtANXEelohvY4OrwTlzkgf9NZEYOE2gtXcHZEO3r+OOo8oCtWx
-	7uar1Dmg==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:46384 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vuSKh-000000003mb-3ecm;
-	Mon, 23 Feb 2026 09:34:27 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vuSKg-0000000ASbv-0iWL;
-	Mon, 23 Feb 2026 09:34:26 +0000
-In-Reply-To: <aZwfAFJQcp9f0niI@shell.armlinux.org.uk>
-References: <aZwfAFJQcp9f0niI@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	imx@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH net-next 03/10] net: stmmac: qcom-ethqos: change
- ethqos_configure*() to return void
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3CckNfar"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8c70fadd9a3so2285651685a.0
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 01:34:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771839287; x=1772444087; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ScdjLvvAtmPvua+J0Czj/GB2aktA/DnullMYkfu4zM4=;
+        b=3CckNfarssHEkcR4UIuEf2puadRr6/FgnxavslE/FZrUsMRfGkuMMZq7hM9UoXSh6L
+         PicQkSOPg3EwWIr+YIXhH1wPZkmWMquti5iNrDvnAQb9MoItpULgbU2jiLVTDkvY+gIN
+         /cWQaJR0XYpkNIThQ+dNJtA3ut/00oiuhzWjApGe4IZlJXI/gxTtfM2fSVaL5bBC1zY8
+         Os6eRF0uLaE6B6gr7qH4vxuoGVOh0gBca93klsmCxg9tj7IA/8suUk4c2BxhrB1Jh4J9
+         PvOF6mQ0N/IEdL+WQS1hojsNx9qI+lbBjWCXkGedUJHXry9KOP3yFsThNe8PVb5M97Ui
+         xiIg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771839287; x=1772444087;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ScdjLvvAtmPvua+J0Czj/GB2aktA/DnullMYkfu4zM4=;
+        b=iPfG/J5KTASMPGJ9HskDKUaeNDbbx639x2TlDYp+Q/8nD447fq3bt30U51zq5EK3q2
+         S0oG0J7BEmaXOPvW+ot0VM3M09YwYUnjpPLjeijAlKKzAve3CpVLyWoZPr783GW2YViW
+         JQhyjQtpQZAEsx8zpZBRP4ZQL2aPZIvCtCGEujDp8Pw6y7U+kIkxr4+XhYT1jrLFYxoY
+         R/KCqGiytYh5YOtynTjbmQZLzi7ragLTqaMFC+VwFxDrBRYecRgbBCz8cldKgztZ/HoV
+         q0UVwHhXTvOvtZNH6DyMzKay6p8qWC13dVspGo/ZcAIDNDFoscxTX+k4I0cA6FfLNSLP
+         TV1A==
+X-Forwarded-Encrypted: i=1; AJvYcCUh8a10lWnELDQvceyGAd3u+Q/rcLWpiq38hXnFX0j9nHvvxNSWfDRt4IO2W4HyS0VHw2tK07s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7klMi1quyQFv+Z6D3nIKmxtzIay02l98T1R7jZ9qrsoFaXVQQ
+	h7w8W17XJlWmD77HuyaAgZOSnKwvBYeb3XIobLGGtpALdTHG5Gt8cUyhabrEUSiNaHpV6+gMDJC
+	gGNsvp7mOQh2w5A==
+X-Received: from qkka3.prod.google.com ([2002:a05:620a:1023:b0:8cb:4a66:621a])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:4444:b0:8c8:8126:7770 with SMTP id af79cd13be357-8cb8ca8bf9bmr898254885a.67.1771839286670;
+ Mon, 23 Feb 2026 01:34:46 -0800 (PST)
+Date: Mon, 23 Feb 2026 09:34:45 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vuSKg-0000000ASbv-0iWL@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 23 Feb 2026 09:34:26 +0000
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
+Message-ID: <20260223093445.3696368-1-edumazet@google.com>
+Subject: [PATCH net-next] udp: move udp6_csum_init() back to net/ipv6/udp.c
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Willem de Bruijn <willemb@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-The ethqos_configure*() family of functions always return zero, and the
-return value is never checked. Change the int return type to void.
+This function has a single caller in net/ipv6/udp.c.
 
-Reviewed-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Tested-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Move it there so that the compiler can decide to (auto)inline
+it if he prefers to. IBT glue is removed anyway.
+
+With clang, we can see it was able to inline it and also
+inlined one other helper at the same time.
+
+UDPLITE removal will also help.
+
+$ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
+add/remove: 0/2 grow/shrink: 1/0 up/down: 840/-785 (55)
+Function                                     old     new   delta
+__udp6_lib_rcv                              1247    2087    +840
+__pfx_udp6_csum_init                          16       -     -16
+udp6_csum_init                               769       -    -769
+Total: Before=25074399, After=25074454, chg +0.00%
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
- .../net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c  | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ include/net/ip6_checksum.h |  2 --
+ net/ipv6/ip6_checksum.c    | 47 --------------------------------------
+ net/ipv6/udp.c             | 46 +++++++++++++++++++++++++++++++++++++
+ 3 files changed, 46 insertions(+), 49 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index 50b95fd19f9d..168f0fed68c0 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -100,7 +100,7 @@ struct ethqos_emac_driver_data {
- struct qcom_ethqos {
- 	struct platform_device *pdev;
- 	void __iomem *rgmii_base;
--	int (*configure_func)(struct qcom_ethqos *ethqos, int speed);
-+	void (*configure_func)(struct qcom_ethqos *ethqos, int speed);
+diff --git a/include/net/ip6_checksum.h b/include/net/ip6_checksum.h
+index c8a96b8882772b66b902a2f5ad654f2dc8b62180..6677b3cc397261875661dd7521e75908a89cc6d9 100644
+--- a/include/net/ip6_checksum.h
++++ b/include/net/ip6_checksum.h
+@@ -82,6 +82,4 @@ static inline __sum16 udp_v6_check(int len,
+ void udp6_set_csum(bool nocheck, struct sk_buff *skb,
+ 		   const struct in6_addr *saddr,
+ 		   const struct in6_addr *daddr, int len);
+-
+-int udp6_csum_init(struct sk_buff *skb, struct udphdr *uh, int proto);
+ #endif
+diff --git a/net/ipv6/ip6_checksum.c b/net/ipv6/ip6_checksum.c
+index 377717045f8f55fa1a5c8a87de829190b807dc06..8bb68a0cdfd681a7fb51959fa7cbce96a6dc271a 100644
+--- a/net/ipv6/ip6_checksum.c
++++ b/net/ipv6/ip6_checksum.c
+@@ -62,53 +62,6 @@ __sum16 csum_ipv6_magic(const struct in6_addr *saddr,
+ EXPORT_SYMBOL(csum_ipv6_magic);
+ #endif
  
- 	unsigned int link_clk_rate;
- 	struct clk *link_clk;
-@@ -522,7 +522,7 @@ static int ethqos_rgmii_macro_init(struct qcom_ethqos *ethqos, int speed)
+-int udp6_csum_init(struct sk_buff *skb, struct udphdr *uh, int proto)
+-{
+-	int err;
+-
+-	UDP_SKB_CB(skb)->partial_cov = 0;
+-	UDP_SKB_CB(skb)->cscov = skb->len;
+-
+-	if (proto == IPPROTO_UDPLITE) {
+-		err = udplite_checksum_init(skb, uh);
+-		if (err)
+-			return err;
+-
+-		if (UDP_SKB_CB(skb)->partial_cov) {
+-			skb->csum = ip6_compute_pseudo(skb, proto);
+-			return 0;
+-		}
+-	}
+-
+-	/* To support RFC 6936 (allow zero checksum in UDP/IPV6 for tunnels)
+-	 * we accept a checksum of zero here. When we find the socket
+-	 * for the UDP packet we'll check if that socket allows zero checksum
+-	 * for IPv6 (set by socket option).
+-	 *
+-	 * Note, we are only interested in != 0 or == 0, thus the
+-	 * force to int.
+-	 */
+-	err = (__force int)skb_checksum_init_zero_check(skb, proto, uh->check,
+-							ip6_compute_pseudo);
+-	if (err)
+-		return err;
+-
+-	if (skb->ip_summed == CHECKSUM_COMPLETE && !skb->csum_valid) {
+-		/* If SW calculated the value, we know it's bad */
+-		if (skb->csum_complete_sw)
+-			return 1;
+-
+-		/* HW says the value is bad. Let's validate that.
+-		 * skb->csum is no longer the full packet checksum,
+-		 * so don't treat is as such.
+-		 */
+-		skb_checksum_complete_unset(skb);
+-	}
+-
+-	return 0;
+-}
+-EXPORT_SYMBOL(udp6_csum_init);
+-
+ /* Function to set UDP checksum for an IPv6 UDP packet. This is intended
+  * for the simple case like when setting the checksum for a UDP tunnel.
+  */
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 010b909275dd01583fa5825eaba49a1013dbf974..48f73401adf41effe280f62e146edbf9e54b1429 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -1069,6 +1069,52 @@ static int udp6_unicast_rcv_skb(struct sock *sk, struct sk_buff *skb,
  	return 0;
  }
  
--static int ethqos_configure_rgmii(struct qcom_ethqos *ethqos, int speed)
-+static void ethqos_configure_rgmii(struct qcom_ethqos *ethqos, int speed)
++static int udp6_csum_init(struct sk_buff *skb, struct udphdr *uh, int proto)
++{
++	int err;
++
++	UDP_SKB_CB(skb)->partial_cov = 0;
++	UDP_SKB_CB(skb)->cscov = skb->len;
++
++	if (proto == IPPROTO_UDPLITE) {
++		err = udplite_checksum_init(skb, uh);
++		if (err)
++			return err;
++
++		if (UDP_SKB_CB(skb)->partial_cov) {
++			skb->csum = ip6_compute_pseudo(skb, proto);
++			return 0;
++		}
++	}
++
++	/* To support RFC 6936 (allow zero checksum in UDP/IPV6 for tunnels)
++	 * we accept a checksum of zero here. When we find the socket
++	 * for the UDP packet we'll check if that socket allows zero checksum
++	 * for IPv6 (set by socket option).
++	 *
++	 * Note, we are only interested in != 0 or == 0, thus the
++	 * force to int.
++	 */
++	err = (__force int)skb_checksum_init_zero_check(skb, proto, uh->check,
++							ip6_compute_pseudo);
++	if (err)
++		return err;
++
++	if (skb->ip_summed == CHECKSUM_COMPLETE && !skb->csum_valid) {
++		/* If SW calculated the value, we know it's bad */
++		if (skb->csum_complete_sw)
++			return 1;
++
++		/* HW says the value is bad. Let's validate that.
++		 * skb->csum is no longer the full packet checksum,
++		 * so don't treat is as such.
++		 */
++		skb_checksum_complete_unset(skb);
++	}
++
++	return 0;
++}
++
+ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
+ 		   int proto)
  {
- 	struct device *dev = &ethqos->pdev->dev;
- 	unsigned int i;
-@@ -587,8 +587,6 @@ static int ethqos_configure_rgmii(struct qcom_ethqos *ethqos, int speed)
- 		ethqos_dll_configure(ethqos);
- 
- 	ethqos_rgmii_macro_init(ethqos, speed);
--
--	return 0;
- }
- 
- static void ethqos_set_serdes_speed(struct qcom_ethqos *ethqos, int speed)
-@@ -607,7 +605,7 @@ static void ethqos_pcs_set_inband(struct stmmac_priv *priv, bool enable)
- /* On interface toggle MAC registers gets reset.
-  * Configure MAC block for SGMII on ethernet phy link up
-  */
--static int ethqos_configure_sgmii(struct qcom_ethqos *ethqos, int speed)
-+static void ethqos_configure_sgmii(struct qcom_ethqos *ethqos, int speed)
- {
- 	struct net_device *dev = platform_get_drvdata(ethqos->pdev);
- 	struct stmmac_priv *priv = netdev_priv(dev);
-@@ -638,11 +636,9 @@ static int ethqos_configure_sgmii(struct qcom_ethqos *ethqos, int speed)
- 		ethqos_pcs_set_inband(priv, true);
- 		break;
- 	}
--
--	return 0;
- }
- 
--static int ethqos_configure(struct qcom_ethqos *ethqos, int speed)
-+static void ethqos_configure(struct qcom_ethqos *ethqos, int speed)
- {
- 	return ethqos->configure_func(ethqos, speed);
- }
 -- 
-2.47.3
+2.53.0.345.g96ddfc5eaa-goog
 
