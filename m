@@ -1,168 +1,94 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE0124BBF4
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 14:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6443A23E229
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 14:54:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771857679; cv=none; b=fnF3Ci3QtUASwdu10YMupWzHwCZOkzANAxZ6VM6NJGgX9SYVenNxBfCW5Gt6YXnIFKQbEi06ywtAw9YUJQiQjsigWfzDMf1OVdonzgslEp/y9EsLtd/kCGGF0gW3O0yjRxX5LbR/FHuonQTkaVwqtS/AbEaYGsPdwBSvBeOl3Ro=
+	t=1771858481; cv=none; b=CwDDwvUc8ZPyLTSnJeyZsmYQ5Y7YvxAwZzA3YNK5bfQD4HKbgDSxlKU7dJQGU2eGZhKZ9gW3Ai8YvtS5q9LN0qXvswr9w7PTYWDfA4q/LUY03AeKiNLHsF7yV9I+TQW8l24VoBkjOPHGqAE56Vf13kFFkETg8Uch0OJlLsMsuds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771857679; c=relaxed/simple;
-	bh=KzXTOKG5ACoTpsXhTjn3lMl935inBBInfsItxqDcShE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CHGEXBjRLjJNUZvkW7FjwrpkIvldwgAL3yp1uclmfK8DDW5yhsDDX7Xs8izn1O9l7a+TS8HYb1VihUKmUvv9m1iMJmU1Q90PtOKXYl0ertMVum0sOjfO9EFhGUKy60ibjVk9Clr0IA3eb6rR0FPW/PxOOsg9IBb/WD3wMOO6JkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3JdwXrB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771858481; c=relaxed/simple;
+	bh=hanRw6neqo1V+xkrPiN7EJ0NS7fHSnweQt1XIxZc9no=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=A4wMpGDzlzPmDLTdBWdLsLhIGhdbbmQNupevtyCY/Uz1Pc0t45FjbeqEoCY3xml5RxEnR10Q10utFPD/Mo7pMf5bgewgOqKAridrXX82TkkfYslzZTc8ysWkA3Z1rvmGuh4/hhwDzOXVkx1M/e1AgAjqlkQ2caDz+7smm8mfENg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=254YfcH4; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3JdwXrB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DE8C2BC9E
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 14:41:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771857679;
-	bh=KzXTOKG5ACoTpsXhTjn3lMl935inBBInfsItxqDcShE=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=l3JdwXrBCQ9jKZFKuXyVshHVEOEQ5QiSZXmOGtkdk4ZmRk833si6B4NvcPemEK0k/
-	 TebypsCwq3y/ymVc04gFIcYCVB1QNNNXV93KSvl8GrqLe9bUrekOK8b9TQwwFd0vCu
-	 sdw0w9uqXbLiF018nzvvhfFSDH6j30P6m6Ky+IXSxpeZQaHW4coSbSpdLET+BkOBC/
-	 92TAd/Yi4onVWoqGiRWbjlcL5R8EJH/FizZVauWiNVpgo8ejftLv64CEYf0OOhtBJ1
-	 Zgw0azaqHdRfpvIqoR1UmjEfo0SuhLhcbKQTJgRYURazoYdCslT2kTQjRzMhdnD2ZR
-	 NYXHH/7nLTIvg==
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-506a7bbe9d0so36431661cf.0
-        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 06:41:19 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVj1pEwUv9zxDEgc67AnTFBMdTUNHxjBpC08k43dOPfpq8vi3bQD5V2Pw0PKEyrxYpTGnExtfM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+eWFG8STF5IKP0RqMIY4YC9v+OOEwldFqGqc38Ogw+2OHH2TS
-	Jcv0aw+3EoX6zpmRSlgeDtL5ez1RJ2ZevqaHA13CFVPap5vGCX/OTT+vBr/VNA94oqkZuMS+4xP
-	EIRc7uA/ObGxqCG11CDDuOSfYglKlUNs=
-X-Received: by 2002:ac8:7d45:0:b0:505:ec73:822f with SMTP id
- d75a77b69052e-5070bcc1f88mr113885681cf.70.1771857678619; Mon, 23 Feb 2026
- 06:41:18 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="254YfcH4"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D9304A0387;
+	Mon, 23 Feb 2026 15:54:31 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1771858475; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=R/OB9yjVomqfrNS8o4uEl0JRvNoCayKvxpqSMhtr2tU=;
+	b=254YfcH4fPrCGlNpJqA1Qc2gfoMXOWnywYPSI5GcVsr13PHZSlH34+KYIwAhs5qbCM2929
+	gOmleCoW7Tn2nOGjge5g6GbI8xBw4XL3OKDVAT/dzrhp314LqfsuOOEkInNfLnBGLnPJdG
+	LMKCRBqkKUZipc8WOhQXcEOeUtDp0lo5wmlkX2GeOXP//E3ouSa227hj+Yv3oqKnmzKyw1
+	/OpwU4mc9diRgU8TC2vO9VgXhknf9I3BnJy8Itvi2quUTvMRLxcKzMQ4l1FGuSTnK/XUMS
+	FAo/Wbx3zfXXpABNHJgZFBPXTByiNZwvXpJ4IJQIXIbdyDuCEdYVF14q4d4CWw==
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260219130050.2390226-1-bjorn@kernel.org> <415c4922-cc8d-4e35-bbac-3a532f44d238@lunn.ch>
- <20260219160519.323041bf@kernel.org> <3b0949fa-0b05-4bce-86c0-2a7a058865a5@lunn.ch>
- <20260220131254.03874c4c@kernel.org> <CAJ+HfNgXqpqDYsmAa-mpHnO82aDgC7XbyVw3TmXk-ySFmGA-JQ@mail.gmail.com>
- <74ff32e0-f883-40d4-be89-3276dc26cf0d@lunn.ch>
-In-Reply-To: <74ff32e0-f883-40d4-be89-3276dc26cf0d@lunn.ch>
-From: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Date: Mon, 23 Feb 2026 15:41:07 +0100
-X-Gmail-Original-Message-ID: <CAJ+HfNisjk-QjXn8Yget6o2Yk9c6JFgQtvw7YQ7ESDyvk=fnsA@mail.gmail.com>
-X-Gm-Features: AaiRm529dl4cAV_MW-c9Bqsm6rrWpJ1MRX0EqaZRkAgPxDRZY5wvZRhI3gHImDM
-Message-ID: <CAJ+HfNisjk-QjXn8Yget6o2Yk9c6JFgQtvw7YQ7ESDyvk=fnsA@mail.gmail.com>
-Subject: Re: [RFC net-next 0/4] ethtool: CMIS module diagnostic loopback support
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org, 
-	Donald Hunter <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, Maxime Chevallier <maxime.chevallier@bootlin.com>, 
-	Michael Chan <michael.chan@broadcom.com>, Hariprasad Kelam <hkelam@marvell.com>, 
-	Ido Schimmel <idosch@nvidia.com>, Danielle Ratson <danieller@nvidia.com>, linux-kernel@vger.kernel.org, 
-	linux-rdma@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Mon, 23 Feb 2026 15:54:31 +0100
+From: nb@tipi-net.de
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, claudiu.beznea@tuxon.dev,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ nicolas.ferre@microchip.com, pabeni@redhat.com
+Subject: Re: [PATCH net-next 3/5] net: cadence: macb: implement EEE TX LPI
+ support
+In-Reply-To: <aZwm9u_xCbuXCkDX@shell.armlinux.org.uk>
+References: <20260223090412.44070-1-nb@tipi-net.de>
+ <20260223090412.44070-4-nb@tipi-net.de>
+ <aZwm9u_xCbuXCkDX@shell.armlinux.org.uk>
+Message-ID: <cdf89583f91ce548f1108c8105632102@tipi-net.de>
+X-Sender: nb@tipi-net.de
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Hey!
+On 23.2.2026 11:07, Russell King (Oracle) wrote:
+> On Mon, Feb 23, 2026 at 10:04:10AM +0100, Nicolai Buchwitz wrote:
+>> Implement software-managed TX Low Power Idle (LPI) for the Cadence GEM
+>> MAC as part of IEEE 802.3az Energy Efficient Ethernet support.
+>> 
+>> The GEM MAC has no built-in idle timer - the TXLPIEN bit (NCR bit 19)
+>> immediately asserts LPI and blocks all TX while set. The MAC does not
+>> auto-wake for transmit. Per Microchip GMAC documentation (section
+>> 40.6.19): "It is best to use firmware to control LPI."
+>> 
+>> This patch implements a software idle timer using delayed_work:
+>> - On TX completion with an empty ring, schedule LPI entry after a
+>>   configurable idle timeout (default 250ms). The work function
+>>   verifies all TX queues are truly idle before entering LPI to
+>>   prevent entering LPI while traffic is still active.
+>> - On TX start, wake from LPI by clearing TXLPIEN, cancelling any
+>>   pending re-entry, and waiting 50us for the PHY to exit LPI
+>>   (conservative vs IEEE 802.3az Tw_sys of ~17us/~30us)
+>> - On link up, check EEE negotiation via phy_init_eee() and defer
+>>   first LPI entry by 1 second per IEEE 802.3az requirements
+>> - On link down, immediately cancel pending work and clear TXLPIEN
+>> 
+>> The timer value is configurable at runtime via ethtool --set-eee
+>> tx-timer.
+>> 
+>> The implementation is gated on MACB_CAPS_EEE so platforms must
+>> explicitly opt in via their macb_config.
+> 
+> In addition to my comments, please check the nipabot status for this
+> patch which can be found at:
+> 
+> https://patchwork.kernel.org/project/netdevbpf/patch/20260223090412.44070-4-nb@tipi-net.de/
+> 
 
-On Mon, 23 Feb 2026 at 15:30, Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > /* Loopback Direction (XXX is local/remote easier to understand?) */
-> > enum ethtool_loopback_dir {
-> >     ETHTOOL_LB_DIR_NEAR_END =3D 0,    /* Host -> Loop -> Host  */
-> >     ETHTOOL_LB_DIR_FAR_END,        /* Line -> Loop -> Line  */
-> > };
->
-> I like host->loop->host, it is much clearer than NEAR_END or
-> FAR_END. Where there is space, would use this description, even if it
-> is a bit verbose.
+Thanks. I will have a look at the mentioned patches + feedback from the 
+pipeline and prepare a v2 of this series.
 
-Ok!
+> Thanks.
 
-> > struct ethtool_loopback_layer_cfg {
-> >     enum ethtool_loopback_layer layer;    /* ETHTOOL_LB_L_MAC, etc. */
-> >     enum ethtool_loopback_dir direction;  /* NEAR or FAR */
-> >     u32 lane_mask;                        /* Specific lanes */
-> >     u32  flags;                           /* patterns? reserved... */
-> >     bool enabled;
-> >     char name[16];
->
-> What would name be used for. I don't see it in your example. The nice
-> thing about netlink messages is that they are extendable, unlike
-> system calls. If there is no current use for a field, don't add it. It
-> can be added later when actually needed. So i would drop flags and
-> name.
-
-Yeah, good call (I dropped flags on my local hack), name *and*
-lane_mask. More on that below.
-
-> Does CMIS, when used with a splitter cable, allow you to set loopback
-> on lanes? What is your use case for lane_mask?
-
-At least the spec exposed that it could be supported. Thinking more
-about it, I think it can be added later if someone cares about it.
-IOW, flags, name, and lane_mask shouldn't be part of the initial
-patches.
-
-> > };
-> >
-> > struct ethtool_loopback_cfg {
-> >     struct ethtool_loopback_layer_cfg *entries;
-> >     u32 num_layers;
->
-> What is num_layers used for?
-
-I'll change the _cfg to have a proper array instead. The idea is that
-_cfg is a set of layers (MAC, PMA, etc.). The num_layers is the number
-of entries. I'll make sure this is more obvious.
-
-...
-
-> > # ethtool --show-loopback eth0
-> > Loopback Status for eth0:
-> >   Layer: SW  | State: OFF
-> >   Layer: MAC   | State: OFF
-> >   Layer: PMA   | State: ON  | Lanes: 0x1 (Lane 0) | Direction: Near-End=
- (Local)
-> >   Layer: PMD   | State: ON  | Lanes: 0xF (All)    | Direction: Far-End =
-(Remote)
->
-> ETHTOOL_LINK_MODE_800000baseKR8_Full_BIT has 8 lanes, so 0xff would be
-> All in this case. Lanes adds quite a bit of complexity. Do we have a
-> real use case for it?
-
-I don't. As outlined above -- let's leave it out for now. If somebody
-needs it in the future, we can have the discussion then.
-
-> >   Layer: EXT   | State: ON  | Detected: External Loopback Plug
-> >
-> > # ethtool --set-loopback <dev> [layer[:lanes][:direction]] ... [off]
-> >
-> > # # Simple MAC loopback:
-> > # ethtool --set-loopback eth0 mac (Defaults: lanes=3Dall, dir=3Dnear)
-> > # # Specific SerDes (PMA) lane:
-> > # ethtool --set-loopback eth0 pma:lane0
-> > # # Complex multi-layer (PMA Near + PMD Far):
-> > # ethtool --set-loopback eth0 pma:0x1:near pmd:all:far
->
-> Is this something we actually want? Again it adds complexity,
-> especially in the error handling, when pma:0x1:near works, but
-> pmd:all:far fails, and you need to unwind the pma:0x1:near. Is there a
-> use case for atomically setting two loopbacks, rather than having the
-> user make two different calls?
-
-Good point! Simpler is better.
-
-> > # # Disable all loopbacks:
-> > ethtool --set-loopback eth0 off
-> >
-> > Thoughts? Is this somewhat close to what you had in mind, Andrew?
->
-> I'm happy with the basic shape of this. I just needs the details
-> nailing down.
-
-Ok! I'll roll something we can discuss more. Thanks for all input!
-
-
-Bj=C3=B6rn
+Nicolai
