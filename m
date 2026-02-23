@@ -1,90 +1,154 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5BC42459C5;
-	Mon, 23 Feb 2026 09:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FEA18FDBD
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 09:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771838748; cv=none; b=gjwijIDgWCU0c1qwqzmbJeKb1KfAzTH5BmK1foBWOqXR8+reyVcqlpoUvztyya8pabsNDdjld9DpBU6eAKVoCxseHH/TkXiUgp76zlXNFQLccUlftTIUR9HQJcRCjnuw1Y4ztABiEqPLOOik5oR2E+3wOE2ESy8Gbw8s8T3ptQw=
+	t=1771838839; cv=none; b=typuCwvyAyzchSb2tFQ/LJyKEM/CCP0fpJ6V5i6iDXsFK+QkgFhxRrikicZKrMksUE9WC/iH4avcqzjYupd/7yM3uusA86NkhwsVsjMjfEeYSl0dhLYjPV2sTMb6C5N10kXhfFnnAn/CWiDpZ/5MClzW13ayBnzle/QO/Yc2C2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771838748; c=relaxed/simple;
-	bh=5QIF4M53izuNtsmGswVWqyvCsRe0tA47V+jCPS605bs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SZ7+WGNF4aaWm2mD26b1OHTmnAPTNQ53QLZjO6OojQ9FiFRDHVB9xEhzm4lyM4DnwyT72HgENsyl7+1u7mE0SC5ANNGuIfYbP+9zhFcLkKi/+tdxqg/Pl+1tjqNotZGk3u5FING+Fk7rdfh1NSh5dB5EGLV5B17Pt1xS2w+kvTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=AcRaMYXo; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1771838839; c=relaxed/simple;
+	bh=yku+G3kt/JHAGiQJKEgDB9VRXFKphLGwCwHs6Ajj72A=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=mMnaaQcGUYGIdJT8Tx7BNZW/k2gAif1wICMLL7e6CSkz8kbldQHr7rYPEdtZIiQGmzVTeubcvOG1/p9FnMfknmFkPGOaFS1N2aWivqDK1QFro74MnaD+2kKxQVDpzMZncF60OqvNeWMUl78VUk+KJ/rU7fYZ4mySOPcDnb5TYgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QGmIoGXg; arc=none smtp.client-ip=209.85.222.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="AcRaMYXo"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 35894C143C1;
-	Mon, 23 Feb 2026 09:25:58 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 190EA5FD43;
-	Mon, 23 Feb 2026 09:25:44 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 19415103686FA;
-	Mon, 23 Feb 2026 10:25:36 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1771838743; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=5QIF4M53izuNtsmGswVWqyvCsRe0tA47V+jCPS605bs=;
-	b=AcRaMYXo+S1r7u+Fc8nNxzkEuvY3eLKn0agBAwXR+fTOMpzu/hYsmspVCGsHBAFuymFuWb
-	pz6wCq7c/Pa8IWxpk/qIa+cxYOZpFQDHR6GS9hL7Kb7hK0uYd5U/Dh5BrjN0ov1GRUiMxn
-	3ejzl81Bq1B8DLsKawpqFDhCU0S76e1ezBlCpK+CO6A1xbNk6Tux0of/1OQSLn8QG/SMfI
-	ngvFVTKNq8NtZk0+uaxqD9ivVV8+kE4mfD2qsdVaWAskZd5Ff1SrDDO058xNoq6oywRGRk
-	W81YqS/s9PtzTEMTGaYz91HfsudQLb12JcbaphXPwsV6afQy2xrIbje+RmTjhw==
-Date: Mon, 23 Feb 2026 10:25:34 +0100
-From: Kory Maincent <kory.maincent@bootlin.com>
-To: Haiyang Zhang <haiyangz@linux.microsoft.com>
-Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org, Andrew Lunn
- <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>, Donald Hunter
- <donald.hunter@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>, Gal Pressman <gal@nvidia.com>, Oleksij Rempel
- <o.rempel@pengutronix.de>, Vadim Fedorenko <vadim.fedorenko@linux.dev>,
- linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- haiyangz@microsoft.com, paulros@microsoft.com
-Subject: Re: [PATCH net-next] net: ethtool: add COALESCE_RX_CQE_FRAMES/NSECS
- parameters
-Message-ID: <20260223102534.0a87ed4c@kmaincent-XPS-13-7390>
-In-Reply-To: <20260222212328.736628-1-haiyangz@linux.microsoft.com>
-References: <20260222212328.736628-1-haiyangz@linux.microsoft.com>
-Organization: bootlin
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QGmIoGXg"
+Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-8c70e610242so4144859585a.2
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 01:27:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771838837; x=1772443637; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=75tlsOUcfVxhv7eEx3nQAr7K2PqBN9t7hv5MNG8BuEY=;
+        b=QGmIoGXgcibpllU6/V53zAaTCQXB6ogL00i9bhaO7FpGUtO9SIzE3G6WrQAIjtRZir
+         wpGx/+d14Myfpvzg62aNBxg8n5h/mLc+/+VFvPnQ1igljFag3L76rixtTnbk0IjhuPTr
+         j8nXxXTPaieI9oory1t/235IHxHBnYo/4M0Po2vS/L4zKpbKra2FqPuEeCSesgTlX+rc
+         7qbTtjQ26GrC9iqME/uoJjaovYnqzeBntWfGmcQ2G+TqHQMJEdJ1JBSJHpg3mL7Nn9fu
+         NBn6dJ78W0uzyvQ1LHNJLn/cqYQCLzMLMDUntm1DcRh6v40m6Rxg9eoaQ7xWBadBnWcC
+         H35g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771838837; x=1772443637;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=75tlsOUcfVxhv7eEx3nQAr7K2PqBN9t7hv5MNG8BuEY=;
+        b=co+rb/+L75X0lD5clOkzyFGcMjT03CJA0FbQ2/QTw9ovWxuBdq8SsdnXqyjJO2BN9E
+         +dNPir7RXqSD+7qcQR8d5O+fYmc8/S/ub/PSo37wEWL1U4+sHxjCa5lfo3BLSw55513i
+         C7frLKL+VleaFJIzUPNSZnlievcy84WxbjKWcyVGELuDINQDtxyNFWOam5sU0HlIxGgh
+         zbSIM3V3dYknO/FKMYL/+Eo5JUAaQtNQUtgEJCflfbBA7kX0Mql120hbSKuuxzMNrkRw
+         qoZpmkzLa45ksHd9dNg3FWaeSM2O1eYIgLNybMnhBg3orAoGZh/ZjaYGHlS2i6UdDqIC
+         SpDw==
+X-Forwarded-Encrypted: i=1; AJvYcCV4DG7Jt3LqdNmBoNTg/R4neTAnkPcL1LxStoa/0RqDdwtGlaYCtBywvvfIHmi0gYVg1BZaKkY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZdzsPY+UD6MSFzKEQxrFr7v5bhdnCxPxVzeSU/e0eESaGmYqm
+	yTLf8Hn8hKwAoOdYOaqccBt65jlSu5D0ZujFKomHmPyl/hG6qV3GoT7k0nLE/h1kHG2RLKWutZi
+	H7uK2J3rOGj//Pw==
+X-Received: from qknwd20.prod.google.com ([2002:a05:620a:7294:b0:8c6:5c81:fec1])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:269a:b0:8b2:e6b1:a9a6 with SMTP id af79cd13be357-8cb8c9cc15emr946327485a.17.1771838837123;
+ Mon, 23 Feb 2026 01:27:17 -0800 (PST)
+Date: Mon, 23 Feb 2026 09:27:15 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: TLSv1.3
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
+Message-ID: <20260223092716.3673939-1-edumazet@google.com>
+Subject: [PATCH net-next] net: __lock_sock() can be static
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sun, 22 Feb 2026 13:23:17 -0800
-Haiyang Zhang <haiyangz@linux.microsoft.com> wrote:
+After commit 6511882cdd82 ("mptcp: allocate fwd memory separately
+on the rx and tx path") __lock_sock() can be static again.
 
-> From: Haiyang Zhang <haiyangz@microsoft.com>
->=20
-> Add two parameters for drivers supporting Rx CQE Coalescing.
->=20
-> ETHTOOL_A_COALESCE_RX_CQE_FRAMES:
-> Maximum number of frames that can be coalesced into a CQE.
->=20
-> ETHTOOL_A_COALESCE_RX_CQE_NSECS:
-> Time out value in nanoseconds after the first packet arrival in a
-> coalesced CQE to be sent.
->=20
-> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Make sure __lock_sock() is not inlined, so that lock_sock_nested()
+no longer needs a stack canary.
 
-You send this patch one day before the official reopening of net-next.
-Not sure if this will be taken into account by patchwork.
-Else:
-Reviewed-by: Kory Maincent <kory.maincent@bootlin.com>
+Add a noinline attribute on lock_sock_nested() so that calls
+to lock_sock() from net/core/sock.c are not inlined,
+none of them are fast path to deserve that:
 
-Thank you!
---=20
-K=C3=B6ry Maincent, Bootlin
-Embedded Linux and kernel engineering
-https://bootlin.com
+ - sockopt_lock_sock()
+ - sock_set_reuseport()
+ - sock_set_reuseaddr()
+ - sock_set_mark()
+ - sock_set_keepalive()
+ - sock_no_linger()
+ - sock_bindtoindex()
+ - sk_wait_data()
+ - sock_set_rcvbuf()
+
+$ scripts/bloat-o-meter -t vmlinux.old vmlinux
+add/remove: 0/0 grow/shrink: 0/3 up/down: 0/-312 (-312)
+Function                                     old     new   delta
+__lock_sock                                  192     188      -4
+__lock_sock_fast                             239      86    -153
+lock_sock_nested                             227      72    -155
+Total: Before=24888707, After=24888395, chg -0.00%
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+---
+ include/net/sock.h | 1 -
+ net/core/sock.c    | 8 ++++----
+ 2 files changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 66b56288c1d3850439b2a0bed00be801d5770efa..55b61e4b0d8318887d527e919fc1103d78ac6d14 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1709,7 +1709,6 @@ static inline void lock_sock(struct sock *sk)
+ 	lock_sock_nested(sk, 0);
+ }
+ 
+-void __lock_sock(struct sock *sk);
+ void __release_sock(struct sock *sk);
+ void release_sock(struct sock *sk);
+ 
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 693e6d80f501ef552aa58928f28b78a578169536..cfb2a6209946089669882cdbd5d1b36c53838989 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3175,7 +3175,7 @@ bool sk_page_frag_refill(struct sock *sk, struct page_frag *pfrag)
+ }
+ EXPORT_SYMBOL(sk_page_frag_refill);
+ 
+-void __lock_sock(struct sock *sk)
++static void __lock_sock(struct sock *sk)
+ 	__releases(&sk->sk_lock.slock)
+ 	__acquires(&sk->sk_lock.slock)
+ {
+@@ -3774,14 +3774,14 @@ void sock_init_data(struct socket *sock, struct sock *sk)
+ }
+ EXPORT_SYMBOL(sock_init_data);
+ 
+-void lock_sock_nested(struct sock *sk, int subclass)
++void noinline lock_sock_nested(struct sock *sk, int subclass)
+ {
+ 	/* The sk_lock has mutex_lock() semantics here. */
+ 	mutex_acquire(&sk->sk_lock.dep_map, subclass, 0, _RET_IP_);
+ 
+ 	might_sleep();
+ 	spin_lock_bh(&sk->sk_lock.slock);
+-	if (sock_owned_by_user_nocheck(sk))
++	if (unlikely(sock_owned_by_user_nocheck(sk)))
+ 		__lock_sock(sk);
+ 	sk->sk_lock.owned = 1;
+ 	spin_unlock_bh(&sk->sk_lock.slock);
+@@ -3810,7 +3810,7 @@ bool __lock_sock_fast(struct sock *sk) __acquires(&sk->sk_lock.slock)
+ 	might_sleep();
+ 	spin_lock_bh(&sk->sk_lock.slock);
+ 
+-	if (!sock_owned_by_user_nocheck(sk)) {
++	if (likely(!sock_owned_by_user_nocheck(sk))) {
+ 		/*
+ 		 * Fast path return with bottom halves disabled and
+ 		 * sock::sk_lock.slock held.
+-- 
+2.53.0.345.g96ddfc5eaa-goog
+
