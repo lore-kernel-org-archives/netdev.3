@@ -1,102 +1,74 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9C534D919
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 09:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D90B34BA42;
+	Mon, 23 Feb 2026 09:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771838068; cv=none; b=b7j9Ivo1DDJ1EltWSJICE3o8vXOE0NvNpHaf5vrnDwdaFFbAZXEWCforOIA2CUENJMuD/fgepCqCgWeGQ5gtjkITfd5nXjkEIlFWEeOus8Va0fYEKUUxd3jEfoocdcrtTZ4PjTJIOBB9boi4JaBg1UxmkWJ9g/jbPtQYzG936wg=
+	t=1771838115; cv=none; b=hMwSpofN3bi4JV/IpcwXR/YHrIQ0OgMmXDWQQJyJPY0s+aAUarimaoqEFuFU9cBILh7NXH2TPVNLw8nl1LQTh1j+KwGgbs5GnrsVjlGnVIlX/SipDMvC3GvdafDY7cP0b3ajG+2tI9r2vvbleG5W6T3C5jogO1Y6U3+x356SQRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771838068; c=relaxed/simple;
-	bh=X4oC/vhWn+CfSPjgxuXE7sRzHTIhY/EkcgL2Pdybg4c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WU23Y6Lj4QyjMZ2N4LBe7iFrwfyxVnrnlxBaWwmtYu30NgTZv2Z8dpSPYyf86jmgq4jJA52aOamLeLKW+qLOiH3clN4MeMzmGUqKNVr6zdQvpHCLy5Mz2dlne4MXILcla724c33R4nwoq2x/S2/tJa8HKZrpbgJteOr8AaNTe68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=KiksxFC9; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1771838115; c=relaxed/simple;
+	bh=h2BiBz+DfieSHe3tI/Njgc7TA1kWLssBIRP/12PL2iM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CDvBr2PVCKmMSlaiUBRYVnXKoOag0a+pT4gkX55geCm0eLfW2q3BhgQeVK6UTPfUfc6DbCWnRzFzawYt5Y4cI9U6hCH2MFOboB31SF77UTAG9RdKspVn8weCzShfkRbtIJaAz6xPUSBYBrMT+vhYlb/LFynIOrcovSzwhgKP+ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=v+uIPekc; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="KiksxFC9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=e38xBZDKODM4kDYNok/7rea/GBA9QahZITvH7lZ/BSM=; b=KiksxFC9hojmtbLCVN1c6Dewq9
-	84zgWOTvB+LiembkBMGG7H2XgRTvT9CgIe3PCwUCak1ewjrAe86LAJNWpidwyUFp399ubHJdwSqwD
-	x7st+0OUEG3OKVrUUfwrSEl4IVmz7FwQZYF59tcSIEejndnHKM+Uy8RRnCQiacTkG9rxzxe/R+/i2
-	lKy2mslsEAmGHGsY2/AqBVJOtdm0lwOgbd5llEyukhrOtDlmgKhGIjQqMvgx+qUv3pdVc8/WgnEKq
-	4nsvlRonDthBkiHRyBMDf3OYag9/fS/oGMfI0FNjbE+tq0lQFPVYlVw/PbvHXuaLGNHFBd781kTdP
-	tIoGkepw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35582)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vuS18-000000003kf-1VMq;
-	Mon, 23 Feb 2026 09:14:14 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vuS13-000000007Fa-25Ca;
-	Mon, 23 Feb 2026 09:14:09 +0000
-Date: Mon, 23 Feb 2026 09:14:09 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, claudiu.beznea@tuxon.dev,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	nicolas.ferre@microchip.com, pabeni@redhat.com
-Subject: Re: [PATCH net-next 0/5] net: cadence: macb: add IEEE 802.3az EEE
- support
-Message-ID: <aZwaYXg_LBn4YiXN@shell.armlinux.org.uk>
-References: <20260223090412.44070-1-nb@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="v+uIPekc"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id CD129A3DC0;
+	Mon, 23 Feb 2026 10:15:10 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1771838112; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=pR6GVLXGqByomxqwQ5CVsKqzX3AIx0j3FQbyTqkfcRc=;
+	b=v+uIPekcO4IDDmMyIVj4nP/fXtqsrQI+v9x2MuFLqco7Tmb3otAxVkBSTbA3bzCg6uG0Mk
+	GKKPWj9byTFECYtNQkSY66eURMfkeL0xMp4QXRdx5JrhdRKwmlMN9UbKBFfYtxC03mza3/
+	WqsLZiZ0QE3JOBbIVOuMpMvWADzkoou/zTGQxWm6TMuk9lJYbhCOCZozPB12xlI1c0Tr04
+	191dR6Iw5djiQTUVeVQ+qubhydkgiYWqs+ng/Rnyg74aosPhaNQzAnDFMW+OnuZwhh/NTe
+	gvmP2gN8yXw9DQURylplBZ7QLpZXe7Xqjmg2PdYweBzDq+KcbyfBwZkhUvE29g==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev@vger.kernel.org
+Cc: Nicolai Buchwitz <nb@tipi-net.de>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next] net: cadence: macb: add ethtool nway_reset support
+Date: Mon, 23 Feb 2026 10:14:54 +0100
+Message-Id: <20260223091454.44153-1-nb@tipi-net.de>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260223090412.44070-1-nb@tipi-net.de>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Feb 23, 2026 at 10:04:07AM +0100, Nicolai Buchwitz wrote:
-> Add Energy Efficient Ethernet (IEEE 802.3az) support to the Cadence GEM
-> (macb) driver. The GEM MAC has hardware LPI registers but no built-in
-> idle timer, so the driver implements software-managed TX LPI using a
-> delayed_work timer, as recommended by Microchip's GMAC documentation.
-> 
-> The series is structured as follows:
-> 
->   1. Register definitions: LPI counter offsets (0x270-0x27c), TXLPIEN
->      bitfield (NCR bit 19), and a MACB_CAPS_EEE capability flag.
-> 
->   2. LPI statistics: Expose the four hardware EEE counters (RX/TX LPI
->      transitions and time) through ethtool -S, accumulated in software
->      since they are clear-on-read.
-> 
->   3. TX LPI engine: A delayed_work-based idle timer that enters LPI
->      after 250ms of TX inactivity and wakes before transmit with a
->      conservative 50us PHY wake delay. LPI entry is deferred 1 second
->      after link-up per IEEE 802.3az.
-> 
->   4. ethtool EEE ops: get_eee/set_eee delegating to phylink for PHY
->      negotiation; the MAC-level TXLPIEN is controlled only from the
->      phylink mac_link_up/mac_link_down callbacks.
+Wire phy_ethtool_nway_reset() as the .nway_reset ethtool operation,
+allowing userspace to restart PHY autonegotiation via 'ethtool -r'.
 
-This needs a rewrite - phylink has EEE support now, with new callbacks
-and configuration. There is no need to use the obsolete (and incorrect)
-phy_init_eee() anymore.
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Please see:
-
-e9f03a6a879b net: phylink: add support for notifying PCS about EEE
-
-and
-
-03abf2a7c654 net: phylink: add EEE management
-
-Thanks.
-
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 43cd013bb70e..47fd85cd9613 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -3945,6 +3945,7 @@ static const struct ethtool_ops gem_ethtool_ops = {
+ 	.get_rxnfc			= gem_get_rxnfc,
+ 	.set_rxnfc			= gem_set_rxnfc,
+ 	.get_rx_ring_count		= gem_get_rx_ring_count,
++	.nway_reset		= phy_ethtool_nway_reset,
+ };
+ 
+ static int macb_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.39.5
+
