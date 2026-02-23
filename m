@@ -1,85 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7F136C0DB;
-	Mon, 23 Feb 2026 21:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59223793C7;
+	Mon, 23 Feb 2026 21:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771883913; cv=none; b=tbX4w183YrD3NFc2IOByuX7a/l6NSavzFEHLXpdHINw5xxHaEBIGU7rTZwDA7uAfbv1udcC77UZnMb4B/ZhHdvFNR9c6ye2/7YZqY7X3fqffivei4OX1xQlwbb/hYGmt+lPmUX5EUx66+f4PiGvTF7SzoXl4KW/L2+BbRGgrhII=
+	t=1771883935; cv=none; b=aJNUlYa/po390VGmYVMUW0HDGEu6y8nO+rVvbYNJDyUXC7sZrhp5OplvbVFK3Le6kdozJ/+E0rMWezRy6gm3KITiLoJV4rI3zcLthnDlZ6kG9DaPuoqD5wawbr4OSZbh5xqv6xCmkOrixclv+/S9iIknjA2L95eaOemNsuHH/g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771883913; c=relaxed/simple;
-	bh=LH7t0a1QDpqWxeBEQhpvu6CX5dJnL5YjXXl1tp6SK1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UY3aF4AzJq5xlnoNaGNR9/3Q37wMh/L5MGCsPX19yT4RoRQEY7Lap9oyyrDfmxDEgxfrVVgHUFB1OlJPFzcV/IXcmNW4UHMU6R7xBIfmJcs50fPlCobjozZ9dRzeX4mUg3WEs+VBr7ch3G8XBJnZCqywMRfqXXEuG5FcOQwQVyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CluqzD6r; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771883935; c=relaxed/simple;
+	bh=wfPv1Dn+5ayb8lV9aVLjZI48FWCKzwmw+b5CEoCWtfY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=q+Vyo7Q31FwYfTylonFKzfAOrlk+LQzUt2+kcgaIhz7assa/IYy0892oUFYcqxQElGmfLPvPKR14+0u7OXIpgVaFeVaAltnAmf1B59Q7ZQ6pvfad/UUslGtKECmXPNTiNL+4TaUDOceBKJ5Kb8As0kMeQcvg7KeXqP5qw1W05jE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=qV+GVt7p; arc=none smtp.client-ip=45.79.88.28
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CluqzD6r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F62CC116C6;
-	Mon, 23 Feb 2026 21:58:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771883912;
-	bh=LH7t0a1QDpqWxeBEQhpvu6CX5dJnL5YjXXl1tp6SK1E=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CluqzD6rIM4sdXWBLXxfLQYyff18qgV2UCtH2AOyPZluIzccw1gV9+iHGfc65oxPW
-	 43ByX74Y8sG5h3RwoBRC+IPnD6VtwwrCxrxdz/DED/mcVExadcl8Xvr7R9nbtMTYuV
-	 xbRfjZ0/QeIdYMdvVPR6Y728ZmsHxFPQJP8oWJs4MCJXf2iRP3ILhsfRfYLPN0q1fW
-	 hE/LYes1mAUTtO2V09TNivE+5n638QA1sk73S8Y4AxPKRLixJ7xU5akQ70wOJIhR0e
-	 OC+4/nyGLz1MX8ENHMEsyPB7zCKPhJ3C8iyxMdIQ7V85DWT/F4EPNpbzZsks7JJ+gj
-	 BegTntTrjSJ8g==
-Date: Mon, 23 Feb 2026 13:58:31 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Kiran Kella <kiran.kella@broadcom.com>
-Cc: davem@davemloft.net, edumazet@google.com, daniel.zahka@gmail.com,
- willemb@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
- horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- jayakrishnan.udayavarma@broadcom.com, ajit.khaparde@broadcom.com,
- akhilesh.samineni@broadcom.com
-Subject: Re: [net-next, v2 2/2] selftests: drv-net: psp: add test for VLAN
- sub-interface
-Message-ID: <20260223135831.102f73a4@kernel.org>
-In-Reply-To: <20260223191154.2800616-3-kiran.kella@broadcom.com>
-References: <20260223191154.2800616-1-kiran.kella@broadcom.com>
-	<20260223191154.2800616-3-kiran.kella@broadcom.com>
+	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="qV+GVt7p"
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net EAB1C40423
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1771883934; bh=rVO0cWY5YQPss4mxRPqlFNx3v8FT5KAjLgK+RHGEKFA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=qV+GVt7p2nYnN1+NX2I9tzAiI/gfQQzdkQ5MNfOJF29j/ytt6j6GfVJyQcDGu1V9F
+	 YzM+E746lUijkUKpKBr/KYbV1rzWjfVocyBhqMP3djNh9+BT6yc51cpcDy+26+iFjy
+	 ytNBD5vsgO4PJMlVr/fP3rzSWkp5g0tcqX7zfyzuS2j84CXLoENSSFFDfAUlQFpgbS
+	 Q16b5X9YhSeh57ro64FMLtPeMpYXQwX960eUJ9tbOr5UG3jP/phyYJXfSG9qMUjMVK
+	 v2l9/1oNHjVcEx7Gi/XiGY2JJ45V06G7bwVdYIGfeMKQ8WygYhYF7R14R+pULAyLSL
+	 m0Cm5wLPQCcMA==
+Received: from localhost (c-71-229-227-126.hsd1.co.comcast.net [71.229.227.126])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id EAB1C40423;
+	Mon, 23 Feb 2026 21:58:53 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, Alexander Lobakin
+ <aleksander.lobakin@intel.com>, Kees Cook <kees@kernel.org>, Mauro
+ Carvalho Chehab <mchehab@kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+ intel-wired-lan@lists.osuosl.org, linux-doc@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Randy Dunlap
+ <rdunlap@infradead.org>, Shuah Khan <skhan@linuxfoundation.org>
+Subject: Re: [PATCH 00/38] docs: several improvements to kernel-doc
+In-Reply-To: <cover.1771408406.git.mchehab+huawei@kernel.org>
+References: <cover.1771408406.git.mchehab+huawei@kernel.org>
+Date: Mon, 23 Feb 2026 14:58:53 -0700
+Message-ID: <87sear2kbm.fsf@trenco.lwn.net>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On Mon, 23 Feb 2026 11:11:54 -0800 Kiran Kella wrote:
-> Add test to validate that the psp device information is propagated
-> properly from the lower device to the upper devices so that
-> the PSP transmit validation passes.
-> 
-> Signed-off-by: Kiran Kella <kiran.kella@broadcom.com>
-> Reviewed-by: Akhilesh Samineni <akhilesh.samineni@broadcom.com>
+Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
 
-Looks like you need to enable VLAN in the respective config file in
-ksft:
+> Hi Jon,
+>
+> This series contain several improvements for kernel-doc.
+>
+> Most of the patches came from v4 of this series:
+> 	https://lore.kernel.org/linux-doc/cover.1769867953.git.mchehab+huawei@kernel.org/
 
-# ok 28 psp.removal_device_bi
-# # Exception| Traceback (most recent call last):
-# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/net/lib/py/ksft.py", line 338, in ksft_run
-# # Exception|     func(*args)
-# # Exception|     ~~~~^^^^^^^
-# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/drivers/net/./psp.py", line 597, in vlan_basic_send
-# # Exception|     ip(f"link add link {cfg.ifname} name {local_vlan_ifname} type vlan id {vlan_id}")
-# # Exception|     ~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/net/lib/py/utils.py", line 238, in ip
-# # Exception|     return tool('ip', args, json=json, host=host)
-# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/net/lib/py/utils.py", line 225, in tool
-# # Exception|     cmd_obj = cmd(cmd_str, ns=ns, host=host)
-# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/net/lib/py/utils.py", line 91, in __init__
-# # Exception|     self.process(terminate=False, fail=fail, timeout=timeout)
-# # Exception|     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/net/lib/py/utils.py", line 117, in process
-# # Exception|     raise CmdExitFailure("Command failed", self)
-# # Exception| net.lib.py.utils.CmdExitFailure: Command failed
-# # Exception| CMD: ip link add link eni1972np1 name eni1972np1.100 type vlan id 100
-# # Exception|   EXIT: 2
-# # Exception|   STDERR: Error: Unknown device type.
--- 
-pw-bot: cr
+So I will freely confess to having lost the plot with this stuff; I'm
+now trying to get back up to speed.  But, before I dig into this big
+series, can you say whether you think it's ready, or whether there's
+another one on the horizon that I should wait for?
+
+Thanks,
+
+jon
