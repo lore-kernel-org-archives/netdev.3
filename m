@@ -1,147 +1,99 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED646246BC0;
-	Mon, 23 Feb 2026 13:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1090324DFF3
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 13:47:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771854441; cv=none; b=YU22D8zW1+jJN4UwPoDwMiluSdLv7lTh0Vv3wwoZZEFI68Pi6WUZ4lp0P+fgxFyo6nQrubHTDMPIN+aArHkc4dnSw418BLSrabXxPvjqynjZvFIMA94ycS+g7TgLV8zZ5qNunLodRGnqEtN97qVzi5u4L8ln90QvqyWiaNQRDrk=
+	t=1771854442; cv=none; b=tXCXnv7o+hFL0xjVw3XV7CaZAb2kLlXuukRjqYCZMMvSjJHSVJ5G95LC02vT73f+uNOK80psUsryx6olG+00TraryXhnqwNnOK77VggOtkC8zVcl9g5C4w2xH5Mu+gVYA0lPEF0hC7a81S7tuiv6nLj91Z5KAHNir9IDleqhcCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771854441; c=relaxed/simple;
-	bh=7oBM+VgLvhixHqlmsvTeeBj2Zzny06GOUYBa8qLzvPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dby0xX66mr1lMO623ZtUVcCG/k4juruw4ddsEZrRdM1uKQ1Maq8vH6IIiILnO91GT6QjPltuPOpF64XwZNgcALoBmuI8kP7ttKeCNBT1/0fzPuiswaMEetPIZ2+mgBj5qhvZyvU2OaL80uTSeSy1nmLXMmuuWf9aRSf6sIN2Gtk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=YKXr/1uL; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1771854442; c=relaxed/simple;
+	bh=9w+SjGw6n4t29t08fv4rkwYt66K61EqhDXjmeXFpd/g=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=CGFr2oZX4CfXJZ1bR7b1zqolYU6irX0nGdxh0KfUE545EQTnFp6EwSqJ5W2ngojGmgpe03rcTK15ypJ6OOTkTSh2mzCeN9uZ8bMWi6nvnHfAaE88NIjEXYBkpeEJs2PTS5qzR7Lk/xdsfZN5W6RIi4QF+AGbMvK4OKYTpyDHxPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=Ej9nTyvM; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="YKXr/1uL"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=tGF/G9VZgwv5uDw1cDEKac6MbcUJTCMmbChRNc3rhyU=; b=YKXr/1uLiFlLjtTWx/94BTDEY4
-	PWsXqFPZ7hzVbsvDV7OwZxL5gRAoeagWEG42AaxNXU+5yidUIQn9+u+/bgcF6yQq1kYNDR/Cx7Ak5
-	HYmm2mo41VFEAdLt4bROjOQiy5gBryfzrOjk4Zl37LTPBCIc1QdUq3GF5fdFCbFVFL49d/vDJ2D/4
-	Tfh+JXbDsNAEstdP2O1B1W6Q1Zxz8Mrevd3ESMmND+XeZbUD0ktAOSdGYpvZXiij7w+UzmxmtxlTS
-	Buk39hdi/nTKDPZiRXqlj279EVslGoFr2NqsJdatWYOe1FtjvB0Hl+FfT+uiRyYaDbML6lisqL/TR
-	vAvBIC4g==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:50878)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vuWH2-0000000049Y-3Ilb;
-	Mon, 23 Feb 2026 13:46:56 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vuWGw-000000007QI-0wgd;
-	Mon, 23 Feb 2026 13:46:50 +0000
-Date: Mon, 23 Feb 2026 13:46:50 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com, maxime.chevallier@bootlin.com,
-	boon.khai.ng@altera.com, rohan.g.thomas@altera.com,
-	vladimir.oltean@nxp.com, hayashi.kunihiko@socionext.com,
-	matthew.gerlach@altera.com, vee.khee.wong@intel.com,
-	boon.leong.ong@intel.com, kim.tatt.chuah@intel.com,
-	netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/4] net: stmmac: Fix VLAN handling when
- interface is down
-Message-ID: <aZxaSq1mrfInWClI@shell.armlinux.org.uk>
-References: <20260223124102.120432-1-ovidiu.panait.rb@renesas.com>
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="Ej9nTyvM"
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7d4be7c4ebeso2611995a34.1
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 05:47:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1771854440; x=1772459240; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xU3SfDvX7n0CH4qpAqG10f1VSdcLt50DI5AjNEC7anw=;
+        b=Ej9nTyvMtoArdk+0MMfxny1wod6hSIAs1DvvQtTp2OlV+FmrH9nPVCWu2jDCQXdbLA
+         OLoxNCwU6PCDDDQdPO3XRdFabXfZB0QP3ryXLPoDtTjXHVlX38Xk7qAqz52Xy/2NUHxM
+         8D+5sVTrZqmZcSa+PSjiACCPLW/ZhMU8XZfjM5c+aj58kx+YBMh2+vnm3EcM7gfzuhDQ
+         cN0OGH2zJi6ZpspkxKFfGyK/gAaSTz+KAvNABFrj5TKD0S7CJD26MBjB9ObXqxahHwIm
+         4wSW324kNRMOm9h9dkwmlgc4ifDk/vIxwbQQGtbpAuy36cIL42WZGLgcTd2GNoRKFgV3
+         0D/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771854440; x=1772459240;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xU3SfDvX7n0CH4qpAqG10f1VSdcLt50DI5AjNEC7anw=;
+        b=oAmLKS8IdCpSU1EDh5m7/agUjK5fFW1kSh84GVzn9ANafyG+UulZ2xpMi+gu+cF3Qj
+         cr1dnkkY10rQo85CTSL8FyPlg8mxIqd6yCzLD4gmXsJLKQ1VmxJp2RdrqbnMtJctkY/P
+         weqTEAtKuj6Fyvz06emy4n5t0qui11ez+sHVNo9DZN2PzPjnu8b/7AQyclmFOnlr3fnf
+         mCFtm9qNIp0F7oIePhiiAuUhbLFBL1cDW3zu4CSrG1NirNa8RVl21HH7WUffh5cnOLQ/
+         wS1+GASWF6Z6NrGh0/n7uz1ThJkWJ2TFlM5DP99zHQUGCyuMFFLA7O1gZzatdhpOl0Ns
+         hMiw==
+X-Gm-Message-State: AOJu0Yy6DIMH+HDiTLNrPtlsLTQ0vXvMa0PzyElscDw5C5u6A3CIDrnk
+	eb6XqcDCFAWp7eZYIQBWpkV/602/hgkeRPT/7uUYFOtTBKqaz2pxTa60clf5AqHAgzUugEwpVyX
+	4ueNrswaRWA==
+X-Gm-Gg: AZuq6aIhBWLMkz0s7m1vr7B2sbgi0glgSjqYsGXK54Jj8dXQ86q1n27Zzot0sgquwTn
+	DbEqr7lqCqmVnTrOr0shCrScPBKEc6izzX2AMH2oFzwASA7+WFiJonw05uCOvQmB+SAWwXB4Dsb
+	MhC/M403+Q+rqvAyr5ne6mjFsOOHlKdPHzVf7HaOsWk6fpjsbMPw4VeM/Lfq9iqflvyj7NRpyYa
+	PRhd3bWlDTNcGY784FwHvH9cJqXK5SRYOybUT/1cIDHEcg7L8fcfKisjFrSULfabcOBucSHpSvQ
+	IZrTzfDp7F8h8DQrzz+CGOgBsQsztnn4e5f2K4mn6hGmv6Fp7/oxMGv9ktpK9sO8f4OLxwCVRt0
+	pDPTP+xeWJXH6bj48yFM2Rysi3gvtc4b4PyJxdQHKVgnzdsBsU52qTkjlkGnWoqKiLgcV/FuIVh
+	kAbT7s+lqKBCvj6dFe7JA7Hy6Wtizlh6uN4+AUId4ccTqe95t9T/UhIeupBMQo9ZAveH0J7VIoB
+	0vv
+X-Received: by 2002:a05:6830:61c3:b0:7cf:d201:c32d with SMTP id 46e09a7af769-7d52bdf76b3mr4727680a34.3.1771854439829;
+        Mon, 23 Feb 2026 05:47:19 -0800 (PST)
+Received: from [127.0.0.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d52d04dadesm7246370a34.23.2026.02.23.05.47.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 05:47:19 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: io-uring@vger.kernel.org, Pavel Begunkov <asml.silence@gmail.com>
+Cc: netdev@vger.kernel.org
+In-Reply-To: <b68ff77af39422191154413f262717a08dfc9e04.1771197486.git.asml.silence@gmail.com>
+References: <b68ff77af39422191154413f262717a08dfc9e04.1771197486.git.asml.silence@gmail.com>
+Subject: Re: [PATCH 1/1] io_uring/zcrx: declare some constants for query
+Message-Id: <177185443873.636584.937001806515054998.b4-ty@kernel.dk>
+Date: Mon, 23 Feb 2026 06:47:18 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260223124102.120432-1-ovidiu.panait.rb@renesas.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
-On Mon, Feb 23, 2026 at 12:40:58PM +0000, Ovidiu Panait wrote:
-> VLAN register accesses on the MAC side require the PHY RX clock to be
-> active. When the network interface is down, the PHY is suspended and
-> the RX clock is unavailable, causing VLAN operations to fail with
-> timeouts.
+
+On Sun, 15 Feb 2026 23:29:39 +0000, Pavel Begunkov wrote:
+> Add constants for zcrx features and supported registration flags that
+> can be reused by the query code. I was going to add another registration
+> flag, and this patch helps to avoid duplication and keeps changes
+> specific to zcrx files.
 > 
-> The VLAN core automatically removes VID 0 after the interface goes down
-> and re-adds it when it comes back up, so these timeouts happen during
-> normal interface down/up:
 > 
->     # ip link set end1 down
->     renesas-gbeth 15c40000.ethernet end1: Timeout accessing MAC_VLAN_Tag_Filter
->     renesas-gbeth 15c40000.ethernet end1: failed to kill vid 0081/0
-> 
-> Adding VLANs while the interface is down also fails:
-> 
->     # ip link add link end1 name end1.10 type vlan id 10
->     renesas-gbeth 15c40000.ethernet end1: Timeout accessing MAC_VLAN_Tag_Filter
->     RTNETLINK answers: Device or resource busy
-> 
-> Patches 3-4 address this by deferring hardware writes when the
-> interface is down and reconfiguring the VLAN state on interface up.
-> 
-> Patches 1-2 fix some issues in the existing VLAN implementation.
 
-First point to make is that when the netdev supports
-NETIF_F_VLAN_FEATURES, receive clock stop is disabled. In stmmac:
+Applied, thanks!
 
-        /* Disable EEE RX clock stop to ensure VLAN register access works
-         * correctly.
-         */
-        if (!(priv->plat->flags & STMMAC_FLAG_RX_CLK_RUNS_IN_LPI) &&
-            !(priv->dev->features & NETIF_F_VLAN_FEATURES))
-                config->eee_rx_clk_stop_enable = true;
+[1/1] io_uring/zcrx: declare some constants for query
+      commit: d4d8bf4122f291571f576da7bae158d1150e5c9d
 
-in phylink:
-
-        if (pl->mac_supports_eee_ops) {
-                /* Explicitly configure whether the PHY is allowed to stop it's
-                 * receive clock.
-                 */
-                ret = phy_eee_rx_clock_stop(phy,
-                                            pl->config->eee_rx_clk_stop_enable);
-
-and also in phylink's phylink_rx_clk_stop_block():
-
-        /* Disable PHY receive clock stop if this is the first time this
-         * function has been called and clock-stop was previously enabled.
-         */
-        if (pl->mac_rx_clk_stop_blocked++ == 0 &&
-            pl->mac_supports_eee_ops && pl->phydev &&
-            pl->config->eee_rx_clk_stop_enable)
-                phy_eee_rx_clock_stop(pl->phydev, false);
-
-So, given that when stmmac supports VLAN, eee_rx_clk_stop_enable will be
-false, so phylink_rx_clk_stop_block() does nothing useful and receive
-clock stop at the PHY will be disabled.
-
-
-So a few questions:
-
-1) when the network interface is opened or resumed, a DMA reset is
-performed which resets all hardware state, including VLAN state. On
-resume, we call stmmac_restore_hw_vlan_rx_fltr(), but to me it looks
-like that is incomplete, and bits of the VLAN configuration don't get
-restored on resume. Please can you look at this and confirm whether
-this is indeed the problem.
-
-2) If we can fully restore the VLAN configuration on resume, I suspect
-the driver will be doing the same work at resume as at open time, so
-this code should be shared.
-
-Please can you look at both of these points.
-
-Thanks.
-
+Best regards,
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Jens Axboe
+
+
+
