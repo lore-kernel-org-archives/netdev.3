@@ -1,226 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m93191.xmail.ntesmail.com (mail-m93191.xmail.ntesmail.com [103.126.93.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB05E33D4F3;
-	Mon, 23 Feb 2026 22:19:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD183EBF10;
+	Mon, 23 Feb 2026 22:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.126.93.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771885161; cv=none; b=uIoiRXyZzjkuN6jcmKEo6VYKf9k1vi0OplAUHkRcelst7TwGDRpjNq93q/V9SQMAp4/DxrdMux2p06LJeRui5idJ7VxKRsEf/98S/XrilKIH2Uw48e0F2SIOTbSUPWcqQ6GO5a2olzjVqSxIpwyEO55vib5HYVywE1cULm5K7vY=
+	t=1771885366; cv=none; b=ndeyUiXWPVUaCxED0IuZOUAMnThCbYaIqRZTfBf+wgUeOlJ33vlYrJCtH6KWnkuQhm3Iksaxe+bRe4INalNmT/6yXNqypst6s0yj76xa5o+eTML8uA3AFRNPCZ2z16dNen/50OMwJo2FZ4fuR8N7VCFFgKHrTyUtZ5q4Wz++5jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771885161; c=relaxed/simple;
-	bh=2al+8jfWXYHaAOSVIy66zZPIKMTM5oGZFCcokI+Ocuw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BvC7eVyY9nuxEsqBgGu+koIJg12ADutqVPBs954VBH+1kmHBcrYU/EQbDo7b/KL1zVyRggFLqonvR9qWD2AB+SBG2O8I4zl7goG7wrf22GOKETVq5sOTIY6+iqZQ9xMvkqMbWXEHeNv4D9yyuHfiaw1tuxLY9feC0LheIFnlYM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cm0Ycu3r; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771885366; c=relaxed/simple;
+	bh=pEHlMOLcrVLHxBcPS3mtO3QtuhosaoNFXUoSgyCErug=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=JGx7pqFucmfttBbDUpLUj6WUCmA/rAwj7UHXRxbaN9kDcY/qlcb/l02+OfGTe8yay9kM/av+KedM53QB7/w38IigeLzGcQTAk04zDHUz4/xUIVgQ2feW3kyIu9xYggnqIb9El2m5xRyfNG4VBduMRmk0qPc70gtADCqaK1ZzAks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=J1HZWCee; arc=none smtp.client-ip=103.126.93.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cm0Ycu3r"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBAAC2BC86;
-	Mon, 23 Feb 2026 22:19:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771885161;
-	bh=2al+8jfWXYHaAOSVIy66zZPIKMTM5oGZFCcokI+Ocuw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cm0Ycu3rQzLmhm+J7Tg/Al2CkS4+IZHh0s6lctXxsdpGQoog+ByAfnN1PwYpR+8zO
-	 /DqobrNTkUH6yCwT7z1mvyG+e6m/rJMXdxbZ3AL0I1WwDj+drD8dNnnOfTFeW0LLMg
-	 eMb8mTMXjDgDzQ6xo/ImZ+CEsYfPRvlj6a0j15yUjSmMWUUgHIaw9MgIE46/2iOhXJ
-	 ISwaXnKIFuFID5HvYIjfRcGP8sNyeXpEJ3+UEC1DstLMaW9bCXfpTPJ24RjDY3YgSj
-	 oRpjX1FsPA7B/Vzy4FdEJecLEAIK+5xdeIN4LdkRHgpWhMeMmypGbkir+TEAqkHzlt
-	 dwrzuREPPJrZA==
-From: Allison Henderson <achender@kernel.org>
-To: netdev@vger.kernel.org
-Cc: linux-kselftest@vger.kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	rds-devel@oss.oracle.com,
-	kuba@kernel.org,
-	horms@kernel.org,
-	linux-rdma@vger.kernel.org,
-	allison.henderson@oracle.com
-Subject: [PATCH net-next v5 2/2] net/rds: Delegate fan-out to a background worker
-Date: Mon, 23 Feb 2026 15:19:18 -0700
-Message-ID: <20260223221918.2750209-3-achender@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260223221918.2750209-1-achender@kernel.org>
-References: <20260223221918.2750209-1-achender@kernel.org>
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="J1HZWCee"
+Received: from localhost.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 34b37f78d;
+	Mon, 23 Feb 2026 23:32:12 +0800 (GMT+08:00)
+From: Shawn Lin <shawn.lin@rock-chips.com>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	"Vaibhaav Ram T . L" <vaibhaavram.tl@microchip.com>,
+	Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
+	Even Xu <even.xu@intel.com>,
+	Xinpeng Sun <xinpeng.sun@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Zhou Wang <wangzhou1@hisilicon.com>,
+	Longfang Liu <liulongfang@huawei.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Jian Shen <shenjian15@huawei.com>,
+	Sunil Goutham <sgoutham@marvell.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Karol Wachowski <karol.wachowski@linux.intel.com>,
+	Min Ma <mamin506@gmail.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Andreas Noever <andreas.noever@gmail.com>,
+	Mika Westerberg <westeri@kernel.org>,
+	Tomasz Jeznach <tjeznach@rivosinc.com>,
+	Will Deacon <will@kernel.org>,
+	Xinliang Liu <xinliang.liu@linaro.org>,
+	Tian Tao <tiantao6@hisilicon.com>,
+	Davidlohr Bueso <dave@stgolabs.net>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Srujana Challa <schalla@marvell.com>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Antoine Tenart <atenart@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Raag Jadav <raag.jadav@intel.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Jiri Slaby <jirislaby@kernel.org>,
+	Andy Shevchenko <andy@kernel.org>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Robert Richter <rric@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Nirmal Patel <nirmal.patel@linux.intel.com>,
+	Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <brgl@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Bingbu Cao <bingbu.cao@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	linux-input@vger.kernel.org,
+	linux-i3c@lists.infradead.org,
+	dmaengine@vger.kernel.org,
+	Philipp Stanner <phasta@kernel.org>,
+	netdev@vger.kernel.org,
+	nic_swsd@realtek.com,
+	linux-arm-msm@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-usb@vger.kernel.org,
+	iommu@lists.linux.dev,
+	linux-riscv@lists.infradead.org,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	linux-cxl@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	platform-driver-x86@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	mhi@lists.linux.dev,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jan Dabros <jsd@semihalf.com>,
+	linux-i2c@vger.kernel.org,
+	Daniel Mack <daniel@zonque.org>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	linux-spi@vger.kernel.org,
+	Jonathan Derrick <jonathan.derrick@linux.dev>,
+	linux-pci@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	linux-media@vger.kernel.org,
+	linux-mmc@vger.kernel.org,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH 37/37] PCI/MSI: Only check is_msi_managed in pcim_setup_msi_release()
+Date: Mon, 23 Feb 2026 23:29:41 +0800
+Message-Id: <1771860581-82092-3-git-send-email-shawn.lin@rock-chips.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+X-HM-Tid: 0a9c8b212c0009cckunm6946b3c79863ba
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUtXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQhgZH1ZOH09CTx0eHktKTkpWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZS1VLVUtVS1kG
+DKIM-Signature: a=rsa-sha256;
+	b=J1HZWCeeOmW/gPw++byO+If0KMsTHKVVYVc+2zdeVL1H5nIla64EyAzpDmlGGJ/eIDuENwuD2fBNa7HfxIU6b+XJAPDHnUDppaUZRyCFQ58kMzK1cryURHmQKr6oTWiT4pmL+kQoThKmImm/C2O+XaXoGL4RlgFyNJGe+/RTrvE=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=RhsG8KOx2Km4SCjZjnMyUXQspsA9GMfP8flaFf9OQp4=;
+	h=date:mime-version:subject:message-id:from;
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: Gerd Rausch <gerd.rausch@oracle.com>
+The function pcim_enable_device() sets the is_managed flag, which
+causes the device's IRQ vectors to be automatically managed and released
+by the devres framework. If a driver subsequently calls
+pci_free_irq_vectors() manually, it can lead to a double-free of the
+interrupt resources.
 
-Delegate fan-out to a background worker in order to allow
-kernel_getpeername() to acquire a lock on the socket.
+Analysis reveals most PCI drivers call pci_free_irq_vectors()
+while also using pcim_enable_device(), making them susceptible to this
+double-free issue. In contrast, 35 drivers follow the pattern of
+relying on devres to handle the cleanup.
 
-This has become necessary since the introduction of
-commit "9dfc685e0262d ("inet: remove races in inet{6}_getname()")
+To address this inconsistency and enforce explicit, driver-managed
+control of IRQ vectors, this patch removes the pci_is_managed() check
+from pcim_setup_msi_release() and let devres help cleanup if is_msi_managed
+is true. This change ensures that interrupt vectors are not automatically
+freed by the devres machinery when pcim_enable_device() is used, placing
+the responsibility for their release squarely on the driver logic via
+pci_free_irq_vectors(). If the driver need devres to help cleanup, newly added
+pcim_alloc_irq_vectors() and pcim_alloc_irq_vectors_affinity() helpers could be used.
 
-The socket is already locked in the context that
-"kernel_getpeername" used to get called by either
-rds_tcp_recv_path" or "tcp_v{4,6}_rcv",
-and therefore causing a deadlock.
+Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
 
-Luckily, the fan-out need not happen in-context nor fast,
-so we can easily just do the same in a background worker.
-
-Also, while we're doing this, we get rid of the unused
-struct members "t_conn_w", "t_send_w", "t_down_w" & "t_recv_w".
-
-The fan-out work and the shutdown worker (cp_down_w) are both
-queued on the same ordered workqueue (cp0->cp_wq), so they
-cannot execute concurrently.  We only need cancel_work_sync()
-in rds_tcp_conn_free() and rds_tcp_conn_path_connect() because
-those run from outside the ordered workqueue.
-
-Signed-off-by: Gerd Rausch <gerd.rausch@oracle.com>
-Signed-off-by: Allison Henderson <achender@kernel.org>
 ---
- net/rds/tcp.c         |  3 +++
- net/rds/tcp.h         |  7 ++----
- net/rds/tcp_connect.c |  2 ++
- net/rds/tcp_listen.c  | 54 +++++++++++++++++++++++++++++++------------
- 4 files changed, 46 insertions(+), 20 deletions(-)
 
-diff --git a/net/rds/tcp.c b/net/rds/tcp.c
-index 45484a93d75f..02f8f928c20b 100644
---- a/net/rds/tcp.c
-+++ b/net/rds/tcp.c
-@@ -358,6 +358,8 @@ static void rds_tcp_conn_free(void *arg)
+ drivers/pci/msi/msi.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/pci/msi/msi.c b/drivers/pci/msi/msi.c
+index 81d24a2..0727a0a 100644
+--- a/drivers/pci/msi/msi.c
++++ b/drivers/pci/msi/msi.c
+@@ -70,7 +70,6 @@ static void pcim_msi_release(void *pcidev)
+ {
+ 	struct pci_dev *dev = pcidev;
  
- 	rdsdebug("freeing tc %p\n", tc);
- 
-+	cancel_work_sync(&tc->t_fan_out_w);
-+
- 	spin_lock_irqsave(&rds_tcp_conn_lock, flags);
- 	if (!tc->t_tcp_node_detached)
- 		list_del(&tc->t_tcp_node);
-@@ -384,6 +386,7 @@ static int rds_tcp_conn_alloc(struct rds_connection *conn, gfp_t gfp)
- 		tc->t_tinc = NULL;
- 		tc->t_tinc_hdr_rem = sizeof(struct rds_header);
- 		tc->t_tinc_data_rem = 0;
-+		INIT_WORK(&tc->t_fan_out_w, rds_tcp_fan_out_w);
- 		init_waitqueue_head(&tc->t_recv_done_waitq);
- 
- 		conn->c_path[i].cp_transport_data = tc;
-diff --git a/net/rds/tcp.h b/net/rds/tcp.h
-index 39c86347188c..9ecb0b6b658a 100644
---- a/net/rds/tcp.h
-+++ b/net/rds/tcp.h
-@@ -44,11 +44,7 @@ struct rds_tcp_connection {
- 	size_t			t_tinc_hdr_rem;
- 	size_t			t_tinc_data_rem;
- 
--	/* XXX error report? */
--	struct work_struct	t_conn_w;
--	struct work_struct	t_send_w;
--	struct work_struct	t_down_w;
--	struct work_struct	t_recv_w;
-+	struct work_struct	t_fan_out_w;
- 
- 	/* for info exporting only */
- 	struct list_head	t_list_item;
-@@ -90,6 +86,7 @@ void rds_tcp_state_change(struct sock *sk);
- struct socket *rds_tcp_listen_init(struct net *net, bool isv6);
- void rds_tcp_listen_stop(struct socket *sock, struct work_struct *acceptor);
- void rds_tcp_listen_data_ready(struct sock *sk);
-+void rds_tcp_fan_out_w(struct work_struct *work);
- void rds_tcp_conn_slots_available(struct rds_connection *conn, bool fan_out);
- int rds_tcp_accept_one(struct rds_tcp_net *rtn);
- void rds_tcp_keepalive(struct socket *sock);
-diff --git a/net/rds/tcp_connect.c b/net/rds/tcp_connect.c
-index b77c88ffb199..6954b8c479f1 100644
---- a/net/rds/tcp_connect.c
-+++ b/net/rds/tcp_connect.c
-@@ -115,6 +115,8 @@ int rds_tcp_conn_path_connect(struct rds_conn_path *cp)
- 	if (cp->cp_index > 0 && cp->cp_conn->c_npaths < 2)
- 		return -EAGAIN;
- 
-+	cancel_work_sync(&tc->t_fan_out_w);
-+
- 	mutex_lock(&tc->t_conn_path_lock);
- 
- 	if (rds_conn_path_up(cp)) {
-diff --git a/net/rds/tcp_listen.c b/net/rds/tcp_listen.c
-index 6fb5c928b8fd..8fb8f7d26683 100644
---- a/net/rds/tcp_listen.c
-+++ b/net/rds/tcp_listen.c
-@@ -123,27 +123,20 @@ rds_tcp_accept_one_path(struct rds_connection *conn, struct socket *sock)
- 	return NULL;
+-	dev->is_msi_managed = false;
+ 	pci_free_irq_vectors(dev);
  }
  
--void rds_tcp_conn_slots_available(struct rds_connection *conn, bool fan_out)
-+void rds_tcp_fan_out_w(struct work_struct *work)
+@@ -92,14 +91,13 @@ static int pcim_setup_msi_release(struct pci_dev *dev)
  {
--	struct rds_tcp_connection *tc;
--	struct rds_tcp_net *rtn;
--	struct socket *sock;
-+	struct rds_tcp_connection *tc = container_of(work,
-+						     struct rds_tcp_connection,
-+						     t_fan_out_w);
-+	struct rds_connection *conn = tc->t_cpath->cp_conn;
-+	struct rds_tcp_net *rtn = tc->t_rtn;
-+	struct socket *sock = tc->t_sock;
- 	int sport, npaths;
+ 	int ret;
  
--	if (rds_destroy_pending(conn))
--		return;
--
--	tc = conn->c_path->cp_transport_data;
--	rtn = tc->t_rtn;
--	if (!rtn)
--		return;
--
--	sock = tc->t_sock;
--
- 	/* During fan-out, check that the connection we already
- 	 * accepted in slot#0 carried the proper source port modulo.
- 	 */
--	if (fan_out && conn->c_with_sport_idx && sock &&
-+	if (conn->c_with_sport_idx && sock &&
- 	    rds_addr_cmp(&conn->c_laddr, &conn->c_faddr) > 0) {
- 		/* cp->cp_index is encoded in lowest bits of source-port */
- 		sport = rds_tcp_get_peer_sport(sock);
-@@ -167,6 +160,37 @@ void rds_tcp_conn_slots_available(struct rds_connection *conn, bool fan_out)
- 	rds_tcp_accept_work(rtn);
+-	if (!pci_is_managed(dev) || dev->is_msi_managed)
++	if (!dev->is_msi_managed)
+ 		return 0;
+ 
+ 	ret = devm_add_action(&dev->dev, pcim_msi_release, dev);
+ 	if (ret)
+ 		return ret;
+ 
+-	dev->is_msi_managed = true;
+ 	return 0;
  }
  
-+void rds_tcp_conn_slots_available(struct rds_connection *conn, bool fan_out)
-+{
-+	struct rds_conn_path *cp0;
-+	struct rds_tcp_connection *tc;
-+	struct rds_tcp_net *rtn;
-+
-+	if (rds_destroy_pending(conn))
-+		return;
-+
-+	cp0 = conn->c_path;
-+	tc = cp0->cp_transport_data;
-+	rtn = tc->t_rtn;
-+	if (!rtn)
-+		return;
-+
-+	if (fan_out)
-+		/* Delegate fan-out to a background worker in order
-+		 * to allow "kernel_getpeername" to acquire a lock
-+		 * on the socket.
-+		 * The socket is already locked in this context
-+		 * by either "rds_tcp_recv_path" or "tcp_v{4,6}_rcv",
-+		 * depending on the origin of the dequeue-request.
-+		 */
-+		queue_work(cp0->cp_wq, &tc->t_fan_out_w);
-+	else
-+		/* Fan-out either already happened or is unnecessary.
-+		 * Just go ahead and attempt to accept more connections
-+		 */
-+		rds_tcp_accept_work(rtn);
-+}
-+
- int rds_tcp_accept_one(struct rds_tcp_net *rtn)
- {
- 	struct socket *listen_sock = rtn->rds_tcp_listen_sock;
 -- 
-2.43.0
+2.7.4
 
