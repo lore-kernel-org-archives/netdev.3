@@ -1,175 +1,136 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC16A2EB0F
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 13:25:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25B0B3A1D2
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 13:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771853138; cv=none; b=ncrW5FoFX6CvO1Cgi/mxQ5SifWEoF7r3DN3Hh+7M5cDnkIwYxLVYh72ObvZ9KJmshZEd8006nxN8TPl58GchlAWfq7c0QNYA6Rfsb863Hx2ka1lsvnjHmBlZ1lL3JtDgmy7jsGj6YR9Fx2R0WXV35jCHz6G6GJszPOyaakGNEww=
+	t=1771853634; cv=none; b=Eju2UZMc+XytqZ1qvjL62xXzs9QGVYt9lC5ciMhFrTLCWf8OWqwR9KEMkUMVNtFFBhYO478IT5aLHDsJYTWbMJmZYMelMFdRGrxEytlE1kSoBR8JH9P9pemtsoS/ZAdV7RhQsTjoZIM/IIPJdF7IbTm4F6OS4mRjUxsZqRbJMQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771853138; c=relaxed/simple;
-	bh=8GljxCdIML4JwqSHoSvnhyZ8D7LTSTtgjk4jLabrviM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n9P+zOpRYszVAwMwMlAkKI26c2uAaKKkcPLjTw+UJX5vvmPOSS3Dia8jPEAa3cMa7q00t4Z+4KGdgomzsyusMbEHntVSMQtK5k4t2TJeOzinDeVGB7GdMIuHMUkqHPCHODRFySBNXFq6hfTZnk2UyGKWTvWrLunHZYeiJap82EA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kA80m0ek; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1771853634; c=relaxed/simple;
+	bh=vwDHGZkNKcZgrDUmXykErc1y/rSOex9+J/bjnc8RUYs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ekXgnlCmuKXmNEbn2eUd6v+9pK940U/gOrVdwcJgEl/JwYE8lXoR9O6a7of99lXi8oDwMMAuD0EzDFPRx1Me/p491vNu7G5W1WpBVdFKlxxTkximXtYbg75tVTp4SCfiQ4oeWcbHnkR4Z9gd2ZP2pfSHl/X4hp4v+Xg9oJt7jeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=meD5mbcz; arc=none smtp.client-ip=49.212.198.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kA80m0ek"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771853136; x=1803389136;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=8GljxCdIML4JwqSHoSvnhyZ8D7LTSTtgjk4jLabrviM=;
-  b=kA80m0ekNjp5c9hODYl7qvqS3JITzIzxJ13GwJmHTFQIy5y+2CKndDUk
-   SUIeTyhTSB1gfqy2Re0+9YUlSQoasHfPyodV8JX1q/JbmwIYVNPui7Ko7
-   E5HDeUkH6hUtardu/j6p+YndxnOco1FT5q14e24sA5vGm2+Ar7IlvSK1P
-   PHn4kIeyzcQQEERB9xTQX8w1VJn7tpSL6oIL5xyZinM9M6gYV8cCY0idi
-   HOQMhB7a428DXIQcfV+mYgR3/UGgVdFVClvSySqwAs2xL60nsef1OpvOt
-   SbdWldB0+hN4NBFY9JL8e4XBITRt2RuB6eWs2lxbkC7SyGdrGyQKERd50
-   w==;
-X-CSE-ConnectionGUID: KPM3A3POSYioSKMZzS5G4A==
-X-CSE-MsgGUID: VjHyW37PRCm54c+d2Y8K+A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11709"; a="60421080"
-X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; 
-   d="scan'208";a="60421080"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 05:25:35 -0800
-X-CSE-ConnectionGUID: qhMCWJpHSnazyPqUZFC/mQ==
-X-CSE-MsgGUID: iBZk0vBrQy2MbjUHGKSngg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,306,1763452800"; 
-   d="scan'208";a="253283464"
-Received: from os-delivery.igk.intel.com ([10.102.21.165])
-  by orviesa001.jf.intel.com with ESMTP; 23 Feb 2026 05:25:31 -0800
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH iwl-net v1] ice: set max queues in alloc_etherdev_mqs()
-Date: Mon, 23 Feb 2026 13:51:57 +0100
-Message-ID: <20260223125157.819135-1-michal.swiatkowski@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
+	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="meD5mbcz"
+Received: from x1 (99.223.13.160.dy.iij4u.or.jp [160.13.223.99])
+	(authenticated bits=0)
+	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 61NDWcbh055624
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Mon, 23 Feb 2026 22:32:40 +0900 (JST)
+	(envelope-from kohei@enjuk.jp)
+DKIM-Signature: a=rsa-sha256; bh=MU4uqkPCUo1YSM7ORV3XeMLzQiNwxn5T39Jw0803mss=;
+        c=relaxed/relaxed; d=enjuk.jp;
+        h=Date:From:To:Subject:Message-ID;
+        s=rs20251215; t=1771853562; v=1;
+        b=meD5mbczMUBA9iqvN7VIexPFQB9dAqCNgFbF9AbUC6KD43CJqE8IzSY/162US5k6
+         d+qoClRbskcdvG6MrTes0dk0VDvIzlVxtbWG8lTdX3+gUU76GWmW28IVReC2e+v8
+         T+PPrD1WWE3EMslcCi/mRoQcYqB+CIgvGDCnaDZqn7c1EHz5nT3Rg6RKlzJZpOUq
+         /EFMNM97NxBzVdqwraFhm+BxLR35C0FWi4Z5jfLnMmyFBqGaxuCfyDogGKWp+H7K
+         NY5u+/xbmLSGwidcXAhjL0VVJ6hRqydACi5ryCbSxMOe/GiEMGuJ5PV9IHvVt2cB
+         pNpR4f+q2PsKoxLnSTz+yA==
+Date: Mon, 23 Feb 2026 22:32:38 +0900
+From: Kohei Enju <kohei@enjuk.jp>
+To: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+        Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Jussi Maki <joamaki@gmail.com>, kohei.enju@gmail.com,
+        syzbot+10cc7f13760b31bd2e61@syzkaller.appspotmail.com
+Subject: Re: [PATCH v2 bpf] bpf: devmap: fix stack-out-of-bounds write in
+ get_upper_ifindexes()
+Message-ID: <aZxVELsXHvrpkicA@x1>
+References: <20260220193039.7129-1-kohei@enjuk.jp>
+ <87ikbnofug.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <87ikbnofug.fsf@toke.dk>
 
-When allocating netdevice using alloc_etherdev_mqs() the maximum
-supported queues number should be passed. The vsi->alloc_txq/rxq is
-storing current number of queues, not the maximum ones.
+On 02/23 12:32, Toke Høiland-Jørgensen wrote:
+> Kohei Enju <kohei@enjuk.jp> writes:
+> 
+> > get_upper_ifindexes() iterates over all upper devices and writes their
+> > indices into an array without checking bounds.
+> >
+> > Also the callers assume that the max number of upper devices is
+> > MAX_NEST_DEV and allocate excluded_devices[1+MAX_NEST_DEV] on the stack,
+> > but that assumption is not correct and the number of upper devices could
+> > be larger than MAX_NEST_DEV (e.g., many macvlans), causing a
+> > stack-out-of-bounds write.
+> >
+> > Add a max parameter to get_upper_ifindexes() to avoid the issue.
+> >
+> > To reproduce, create more than MAX_NEST_DEV(8) macvlans on a device with
+> > an XDP program attached using BPF_F_BROADCAST | BPF_F_EXCLUDE_INGRESS.
+> > Then send a packet to the device to trigger the XDP redirect path.
+> >
+> > Reported-by: syzbot+10cc7f13760b31bd2e61@syzkaller.appspotmail.com
+> > Closes: https://lore.kernel.org/all/698c4ce3.050a0220.340abe.000b.GAE@google.com/T/
+> > Fixes: aeea1b86f936 ("bpf, devmap: Exclude XDP broadcast to master device")
+> > Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+> > ---
+> > Changes:
+> >   v2:
+> >     - fix formatting, accounting that max-line-length is 100
+> >   v1: https://lore.kernel.org/bpf/20260216201428.65641-1-kohei@enjuk.jp/
+> > ---
+> >  kernel/bpf/devmap.c | 12 ++++++++----
+> >  1 file changed, 8 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+> > index 2625601de76e..c8c49d86a403 100644
+> > --- a/kernel/bpf/devmap.c
+> > +++ b/kernel/bpf/devmap.c
+> > @@ -588,16 +588,18 @@ static inline bool is_ifindex_excluded(int *excluded, int num_excluded, int ifin
+> >  }
+> >  
+> >  /* Get ifindex of each upper device. 'indexes' must be able to hold at
+> > - * least MAX_NEST_DEV elements.
+> > + * least 'max' elements.
+> >   * Returns the number of ifindexes added.
+> >   */
+> > -static int get_upper_ifindexes(struct net_device *dev, int *indexes)
 
-Use the same function for getting max Tx and Rx queues which is used
-during ethtool -l call to set maximum number of queues during netdev
-allocation.
+> > +static int get_upper_ifindexes(struct net_device *dev, int *indexes, int max)
+> >  {
+> >  	struct net_device *upper;
+> >  	struct list_head *iter;
+> >  	int n = 0;
+> >  
+> >  	netdev_for_each_upper_dev_rcu(dev, upper, iter) {
+> > +		if (n >= max)
+> > +			break;
+> 
+> Hmm, how about returning an error here, and aborting the redirect
+> entirely? This silent truncation to an arbitrary number seems a bit
+> surprising, and very hard to debug. With an error, there will at least
+> be an error tracepoint to catch the failure.
+> 
+> -Toke
 
-Reproduction steps:
-$ethtool -l $pf # says current 16, max 64
-$ethtool -S $pf # fine
-$ethtool -L $pf combined 40 # crash
+Hi, Toke. 
 
-[491187.472594] Call Trace:
-[491187.472829]  <TASK>
-[491187.473067]  netif_set_xps_queue+0x26/0x40
-[491187.473305]  ice_vsi_cfg_txq+0x265/0x3d0 [ice]
-[491187.473619]  ice_vsi_cfg_lan_txqs+0x68/0xa0 [ice]
-[491187.473918]  ice_vsi_cfg_lan+0x2b/0xa0 [ice]
-[491187.474202]  ice_vsi_open+0x71/0x170 [ice]
-[491187.474484]  ice_vsi_recfg_qs+0x17f/0x230 [ice]
-[491187.474759]  ? dev_get_min_mp_channel_count+0xab/0xd0
-[491187.474987]  ice_set_channels+0x185/0x3d0 [ice]
-[491187.475278]  ethnl_set_channels+0x26f/0x340
-
-Fixes: ee13aa1a2c5a ("ice: use netif_get_num_default_rss_queues()")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
----
- drivers/net/ethernet/intel/ice/ice.h         | 22 ++++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 18 ----------------
- drivers/net/ethernet/intel/ice/ice_main.c    |  4 ++--
- 3 files changed, 24 insertions(+), 20 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/ice/ice.h b/drivers/net/ethernet/intel/ice/ice.h
-index f6a56a864459..725b130dd3a2 100644
---- a/drivers/net/ethernet/intel/ice/ice.h
-+++ b/drivers/net/ethernet/intel/ice/ice.h
-@@ -839,6 +839,28 @@ static inline void ice_tx_xsk_pool(struct ice_vsi *vsi, u16 qid)
- 	WRITE_ONCE(ring->xsk_pool, ice_get_xp_from_qid(vsi, qid));
- }
- 
-+/**
-+ * ice_get_max_txq - return the maximum number of Tx queues for in a PF
-+ * @pf: PF structure
-+ *
-+ * Return: maximum number of Tx queues
-+ */
-+static inline int ice_get_max_txq(struct ice_pf *pf)
-+{
-+	return min(num_online_cpus(), pf->hw.func_caps.common_cap.num_txq);
-+}
-+
-+/**
-+ * ice_get_max_rxq - return the maximum number of Rx queues for in a PF
-+ * @pf: PF structure
-+ *
-+ * Return: maximum number of Rx queues
-+ */
-+static inline int ice_get_max_rxq(struct ice_pf *pf)
-+{
-+	return min(num_online_cpus(), pf->hw.func_caps.common_cap.num_rxq);
-+}
-+
- /**
-  * ice_get_main_vsi - Get the PF VSI
-  * @pf: PF instance
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index a897a6b22495..a0b0416f5aea 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3780,24 +3780,6 @@ ice_get_ts_info(struct net_device *dev, struct kernel_ethtool_ts_info *info)
- 	return 0;
- }
- 
--/**
-- * ice_get_max_txq - return the maximum number of Tx queues for in a PF
-- * @pf: PF structure
-- */
--static int ice_get_max_txq(struct ice_pf *pf)
--{
--	return min(num_online_cpus(), pf->hw.func_caps.common_cap.num_txq);
--}
--
--/**
-- * ice_get_max_rxq - return the maximum number of Rx queues for in a PF
-- * @pf: PF structure
-- */
--static int ice_get_max_rxq(struct ice_pf *pf)
--{
--	return min(num_online_cpus(), pf->hw.func_caps.common_cap.num_rxq);
--}
--
- /**
-  * ice_get_combined_cnt - return the current number of combined channels
-  * @vsi: PF VSI pointer
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index fa4095037be5..863ac81eebce 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -4699,8 +4699,8 @@ static int ice_cfg_netdev(struct ice_vsi *vsi)
- 	struct net_device *netdev;
- 	u8 mac_addr[ETH_ALEN];
- 
--	netdev = alloc_etherdev_mqs(sizeof(*np), vsi->alloc_txq,
--				    vsi->alloc_rxq);
-+	netdev = alloc_etherdev_mqs(sizeof(*np), ice_get_max_txq(vsi->back),
-+				    ice_get_max_rxq(vsi->back));
- 	if (!netdev)
- 		return -ENOMEM;
- 
--- 
-2.49.0
-
+Thanks for the review.
+Indeed I agree that silent truncation is surprising and hard to debug.
+I'll send a v3 that returns -EOVERFLOW and aborts the redirect when
+there are too many upper devices.
