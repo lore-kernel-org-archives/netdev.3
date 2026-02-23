@@ -1,60 +1,62 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD8A2853F8
-	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 19:31:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034BD3358BE
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 19:32:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771875084; cv=none; b=Zzz4xbvcQhHlhwF0OFtdU0phqozg1w58E4SzethyTkfLF97TqbIDeaoBrIdJzDukV2sAWmh7/9KwY59kTwFvvkrSEDLOgqqWknLa3irdqQ/ALulojd5FqlENUaOMWt/xeh+3QwJGdGbxB0s2DvxkWrHOwrelkxTnYjO/+K5QWl8=
+	t=1771875146; cv=none; b=fVU6v2rJIhhuYcTR1R01ZEwG0b98HaCI1HADM72v/sltft933hQjJOs2QiJ+yeT8eNt75EeEFf2K0ba3U++Wkyhi9GJbzcsvlcuLDVJKKwTfKWxG3hzfxhlKC23Kb7y7N9M1JcTHD17k5A9PEJxLJ6IUq+Kh9gt0nn9QbLX4W1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771875084; c=relaxed/simple;
-	bh=aBVe1v2zocRrMHCYVLiLkykG1Xp5AP9GVnTPhpkM3uc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HwDYuz6jnZEFKCqxBmohR0VeY8HfiV0VvzWh4PaIxQTRtjGzqIRrgcJqtAYaReas1WXETxXZSB/13W+M6Y7Qlr2BBbxs6hmGKUP7qHMl67//Mg71qVJyviLdDstZHj6PaZ5X/+s8dinhjIbZUUNkefk0Fxv6DY/ntvZA/aIW/xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d8xvZJG4; arc=none smtp.client-ip=209.85.167.53
+	s=arc-20240116; t=1771875146; c=relaxed/simple;
+	bh=oRY5mYJ0Vq2mYX+WoQCCUBRZpEcYR7BHeCUiCMyj2o8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=cqEFf69A7QnfiYgPOvMjmdP7qQlUmwOcc3ZD2KZ5wbO0+lwBz2uFQgAPKcvsfTL2EtxOZJ5lMG/IeZFSKjdlnjbryuVZS4g2FQYkCk40433xDa7mNNY9BLKLVEjlwEQGd7Yo99QTLtz24SSbtJAaZxeA4l+GmX+CF+esr3fNqk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=idLI2owS; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d8xvZJG4"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-59e60b3ccdfso6186206e87.0
-        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 11:31:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="idLI2owS"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59e6b7b11ebso5490448e87.3
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 11:32:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771875081; x=1772479881; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=4pPKKuwWl8LDWT5PkX05EPu4mdiDlnGWXA550J/Mnwo=;
-        b=d8xvZJG4gqG56Z++dQ5/MJnpUHxk2rYCKrTiKq4oLKHMkke5siQz4sxVxcAhGKeYUD
-         gRbQglOH7wkOuSqlN9m4aDaOnScwE1FNj/YrvBF2IR4R+BUliZLGUOaypZo/x/vOEAyU
-         Xeh4i4f6dIMC576RkFQ8JZhrmZkxrtt7ijMy9Ia+Vtn7qJAKMRBOXBpnPVpQXNfG+qnd
-         aX/hNN5FZ753Wa/efqZ4lHhL+gyx+A7z/52BebAXWFd0Y/tYcwL1kMpthBxCZW4Cbhfn
-         kbMTTG7th6eu/V34zcCsJ89irdTy4/NKerJjUwqRFrObOgLQgdIEv0J0dpI+I2z4ndhK
-         aSQA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771875081; x=1772479881;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1771875143; x=1772479943; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4pPKKuwWl8LDWT5PkX05EPu4mdiDlnGWXA550J/Mnwo=;
-        b=kWb2rvTXYZSm9bg7lqCWQXzN3evrHI4kQpaClrZFILzCwiEx8FbV6T3YsdUQTKaz+t
-         Ru9tnJg8rBrGhAiYOuq/njss44YXUnVEeQC6IFp03MHrhUFrN0Q8uQpc3qKFdN+Jd1cg
-         xEt8Fo1/NlR8RoTQQbUV8l28vk6gJ8XorTaTZyDg+PjioQaSK9O6qWwh0U9gJw/lOAtA
-         TJl+8rT5LuilHb5LLFvTgapDwQNxRejmK+RUhMXQVsXicT0oMoZ9lceb3jUdilqdWxSI
-         NlZ282LhiAU0BfmnIZOYCsbvcfcWvYsP4NAx4rp+QJTFneDavThno53djLze5Fkf6Lmd
-         Gh/g==
-X-Gm-Message-State: AOJu0YzPsBAMCyd78ltInZH8L5yyRC1UEDnAcqyBl6j2ZlcJ3BMZ63Fg
-	kkiloiciUR++w28Vcmi7N1g0DGZ4kFuIZRJe7TH10qZznUtYeaiR747RKSSHB1Su
-X-Gm-Gg: ATEYQzxXUiKkromIkg6LJBNtzZ2QSdKrP1JsLcrAl9cFg2cP5vQGFlFA3igKx5ixqxP
-	k4PQl6gpV/hh7SRCyULPRNyq5XmXDjcxI+FZsm3QqouPAf0qOl/CNWIIAP70mVYG1WLiQ0LS6d6
-	ibnVDcNXGusJxpIwFBUEUnzt8pKJgm8XJMj+rQcdM5cTAdrACf1hjelZA0v9UR5UvnobmwQe6QM
-	Mr7mTlFIblLEubl2DegqvVJhCBrqQwg4ahBs/OgcTIen1+A3PHjFPTLqVpdDSqLZS9f/+K52/pg
-	jLuOvFX/WkB0HNy2h90mHBxc0bkGxgZjbkeWf2J5BR4NRCMMFccq1pIvpd8NEUADTRTwl03EEHw
-	57UC352FT0bspyqhMesTnt04gc591yzLXC53QMINZzi+Ek+KsizT75wmiMH1DSxf/QQeILVcS9R
-	pIzlaXE4WX4peU0L89e1ry
-X-Received: by 2002:a05:6000:4013:b0:436:15c3:9163 with SMTP id ffacd0b85a97d-4396f18abbcmr14931725f8f.57.1771868956773;
-        Mon, 23 Feb 2026 09:49:16 -0800 (PST)
-Received: from localhost ([2a03:2880:31ff:52::])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d4c96csm22685347f8f.30.2026.02.23.09.49.15
+        bh=yiVEvW+ooFPtf+vnLc8gcI/mJyzTncbCHQKWmZG3W3I=;
+        b=idLI2owS2nNkknnfnvGUs04nKjuYkvHz6FJ7vBbUZ5D20R38YzwkDhH38pOx/u3Ei3
+         oqvdPXrLteYCoES/jKu7ryhNaMWqC9fM5IxH2J+yvb/TXetOg8o11CbCfFbCF6kJYgrH
+         SSfmfA+Eob8wixAWnV8IoOk2+xn/ueqUj8Trx5ikmZABbQFkfZgt/Pa7LSrIMS9IUbFM
+         BjNNsPON7CWTAI3qU8jcBdRHbo+9LaMcJgkjoia7ppliiBG6TgzNKMpUz+xJq8NC8T96
+         gLq2QbgqxmywdtW88CDlzEruQTyZVJHp3hw7obnzFjmDAW3bwnKI7GcynJqHuav/1L7V
+         WEuQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771875143; x=1772479943;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=yiVEvW+ooFPtf+vnLc8gcI/mJyzTncbCHQKWmZG3W3I=;
+        b=It92w+e4jLm0D+2Su7RkJDFxkadyKm2ShC3B7EiflAt26pyWptgfaL5eyoMIkYfRAL
+         OUtbDKTJgapDY7yf0HMZ1uolBQ4d3sZQT9UK/wvfA7EpFyqwdmUkSsovx6ouXcWH0cSb
+         0UMHlVv8CgdQj1s+mKnGqglwbuKJ5QBpnjR48v6VWuEHM+ar7t5EDLK0Nj1m141WdHXJ
+         Ip1Bjcv7q3vZawD2yLetPr2/UaDFD2uKSk3wk2hrcdyG2usNBijJldWj53JlXXZu7IVU
+         jOoHpo0cB/o6movBYZJGBcKlPsxFn4BNH1wYgwP7Oh6XK7epYHIP0zECjHfI7QsfQtHl
+         s2ug==
+X-Gm-Message-State: AOJu0Yygp7UFiNRA1VSNFJ2O6EuC9l8qy+vWZuZoCfU+uCjCx3QOU4pN
+	WZxJqgCR7JT+rjukK6VnPHzSjZthnSDRak9J3zfEUUN68eEHlkBekNeGZvmaen/a
+X-Gm-Gg: ATEYQzxFCjinY1+2bNTN8i1SrPHHRJyKGw2AdgCjPII4dKfQcClnfe2GV2OWSsGD/pp
+	vTDTyx6HKDpPQYqgnazwLdjARbRMJt51I3jjAUDZ3VS3QGq42ZSkAICMZ0yrvYF218bug4zHu9j
+	2rxpZhNczdeBgNg7KxTqReLxLiFNCgIAtfeXdynicc65pDwa98n+DPTo3BUQSqeiRBZM+E+7PmN
+	cNeodMy3qoGjnWtkQSTOqwEw93B/CyP3Js0K2CKpHajG6iG7RLS+lptRVMP118V+fxuHdUx6/iv
+	OgT4Q0/o+M2KCFJGsSa7IZvR3pMq2t9s+uZCFDXQLXxpQWuOIT0LnWsab6MscckBk5eE7P3DmPk
+	5uHmVa8fcKvYFSSzLXIQWBoTQGH05psAPBRVDYoKejp/KztCmMKUybswOh0/xueQaBfUrhKQ32e
+	HWtZpFkgE8a7DCVlDdFOPz
+X-Received: by 2002:a05:600c:8b25:b0:482:dbd7:a1c1 with SMTP id 5b1f17b1804b1-483a963bd2bmr157155845e9.34.1771868962847;
+        Mon, 23 Feb 2026 09:49:22 -0800 (PST)
+Received: from localhost ([2a03:2880:31ff:20::])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970bf9fb2sm21626774f8f.1.2026.02.23.09.49.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 09:49:16 -0800 (PST)
+        Mon, 23 Feb 2026 09:49:22 -0800 (PST)
 From: Mohsin Bashir <mohsin.bashr@gmail.com>
 To: netdev@vger.kernel.org
 Cc: alexanderduyck@fb.com,
@@ -82,10 +84,12 @@ Cc: alexanderduyck@fb.com,
 	saeedm@nvidia.com,
 	tariqt@nvidia.com,
 	vadim.fedorenko@linux.dev
-Subject: [RFC net-next V3 0/5] net: ethtool: Track TX pause storm
-Date: Mon, 23 Feb 2026 09:49:09 -0800
-Message-ID: <20260223174914.74461-1-mohsin.bashr@gmail.com>
+Subject: [RFC net-next V3 2/5] net: ethtool: Update doc for tunable
+Date: Mon, 23 Feb 2026 09:49:11 -0800
+Message-ID: <20260223174914.74461-3-mohsin.bashr@gmail.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260223174914.74461-1-mohsin.bashr@gmail.com>
+References: <20260223174914.74461-1-mohsin.bashr@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -94,79 +98,34 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-With TX pause enabled, if a device cannot deliver received frames to
-the stack (e.g., during a system hang), it may generate excessive pause
-frames causing a pause storm. This series updates the uAPI to track TX
-pause storm events as part of the pause stats (p1), proposes using the
-existing pfc-prevention-tout knob to configure the storm watchdog (p2),
-adds pause storm protection support for fbnic (p3), and leverages p1
-to provide observability into these events for the fbnic (p4) and mlx5
-(p5) drivers.
+ETHTOOL_PFC_PREVENTION_TOUT enables the configuration of timeout value
+for PFC storm prevention. This can also be used to configure storm
+detection timeout for global pause settings. In fact some existing
+drivers are already using it for the said purpose.
 
-Patches 1-4 are ready for review. The series is marked RFC due to
-patch 5, which has a few open design questions:
+Highlight that the knob can formally be used to configure timeout
+value for pause storm prevention mechanism. The update to the ethtool
+man page will follow afterwards.
 
-The mlx5 tracks device_stall_critical_watermark_cnt per priority class
-(8 priorities) in the PPCNT register's per-priority counter group. The
-ethtool_pause_stats struct exposes tx_pause_storm_events as a single
-value. Patch 5 currently aggregates across all 8 priorities. This raises
-the following questions:
+Link: https://lore.kernel.org/aa5f189a-ac62-4633-97b5-ebf939e9c535@nvidia.com
+Signed-off-by: Mohsin Bashir <mohsin.bashr@gmail.com>
+---
+ include/uapi/linux/ethtool.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-  1) Should the driver report the aggregate across all priorities, or
-     only report prio 0? Looks like the current reporting via ethtool -S
-     (tx_pause_storm_warning_events / tx_pause_storm_error_events)
-     read from per_prio_counters[0] only, if my reading is correct,
-     reporting the aggregate in the new pause stats path would create an
-     inconsistency between the two interfaces for the same underlying
-     counter.
-
-  2) If aggregating is the preferred approach, there should be a fix for
-     existing ethtool -S reporting to aggregate across all priorities,
-     so both interfaces stay in sync?
-
-  3) The per-priority data is already cached in per_prio_counters[]
-     by the periodic stats update (DECLARE_STATS_GRP_OP_UPDATE_STATS).
-     Should the pause stats path read from this cache (zero additional
-     firmware trips at the cost of slightly stale data), or issue fresh
-     reads via mlx5_core_access_reg() as done in p5?
-
-Feedback on the above would be appreciated.
-
-Changelog:
-V3:
- - (P3): Fix checkpatch complaint about line length in
-   fbnic_mac_ps_protect_handler()
- - (P5):
-    * Aggregate pause stall stats across all priority classes
-    * Update commit message
-V2:
-https://lore.kernel.org/20260207010525.3808842-1-mohsin.bashr@gmail.com/
-
-V1: https://lore.kernel.org/20260122192158.428882-1-mohsin.bashr@gmail.com/
-
-Mohsin Bashir (5):
-  net: ethtool: Track pause storm events
-  net: ethtool: Update doc for tunable
-  eth: fbnic: Add protection against pause storm
-  eth: fbnic: Fetch TX pause storm stats
-  eth: mlx5: Move pause storm errors to pause stats
-
- Documentation/netlink/specs/ethtool.yaml      |  13 ++
- .../ethernet/mellanox/mlx5/core/en_stats.c    |  30 +++++
- drivers/net/ethernet/meta/fbnic/fbnic.h       |   3 +
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |  11 ++
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  46 ++++++++
- .../net/ethernet/meta/fbnic/fbnic_hw_stats.h  |   1 +
- drivers/net/ethernet/meta/fbnic/fbnic_irq.c   |   2 +
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c   | 111 ++++++++++++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_mac.h   |  27 +++++
- drivers/net/ethernet/meta/fbnic/fbnic_pci.c   |   5 +
- include/linux/ethtool.h                       |   2 +
- include/uapi/linux/ethtool.h                  |   2 +-
- .../uapi/linux/ethtool_netlink_generated.h    |   1 +
- net/ethtool/pause.c                           |   4 +-
- 14 files changed, 256 insertions(+), 2 deletions(-)
-
+diff --git a/include/uapi/linux/ethtool.h b/include/uapi/linux/ethtool.h
+index b74b80508553..1cdfb8341df2 100644
+--- a/include/uapi/linux/ethtool.h
++++ b/include/uapi/linux/ethtool.h
+@@ -225,7 +225,7 @@ enum tunable_id {
+ 	ETHTOOL_ID_UNSPEC,
+ 	ETHTOOL_RX_COPYBREAK,
+ 	ETHTOOL_TX_COPYBREAK,
+-	ETHTOOL_PFC_PREVENTION_TOUT, /* timeout in msecs */
++	ETHTOOL_PFC_PREVENTION_TOUT, /* both pause and pfc, see man ethtool */
+ 	ETHTOOL_TX_COPYBREAK_BUF_SIZE,
+ 	/*
+ 	 * Add your fresh new tunable attribute above and remember to update
 -- 
 2.47.3
 
