@@ -1,106 +1,85 @@
-Received: from 013.lax.mailroute.net (013.lax.mailroute.net [199.89.1.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2530037BE92;
-	Mon, 23 Feb 2026 21:53:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7F136C0DB;
+	Mon, 23 Feb 2026 21:58:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771883584; cv=none; b=ncYnpGQc8cuYbYp7QJWGDWmqwzH5/l+bUPGk0e83ri+nP8kq51j6CPe5ojfjxOGHp+CZxwhdflDNRrobMyxYbY0Z5FbBiUtxc75kfaoIb07kA4G8pjbIcp7lUDL0GBIXjZqtSrlFEFnUCmIBtyJzk2EfkwD+yth6jHDRjNdQHW4=
+	t=1771883913; cv=none; b=tbX4w183YrD3NFc2IOByuX7a/l6NSavzFEHLXpdHINw5xxHaEBIGU7rTZwDA7uAfbv1udcC77UZnMb4B/ZhHdvFNR9c6ye2/7YZqY7X3fqffivei4OX1xQlwbb/hYGmt+lPmUX5EUx66+f4PiGvTF7SzoXl4KW/L2+BbRGgrhII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771883584; c=relaxed/simple;
-	bh=urs7LFEFzoIA8YPfdWzwjXPvYvVkNZEMfiFNbQSTi58=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWtXUO7d2erbqLFYJOoDpCAJnFYoy9cBU03P0xw6mbnVpHaprNIBrSwVaLM1Y5VoBHP9nF3MqqRAwKkVlJ7Xh4z0/r3rtu8z9MTDSL6yAuVcuYJjpdwPdJwYrRjUWrK3rSO6NsfVA8vc9qSJp5CkFFesNdh/cmKR/PEaStL0YUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=d6AhoEDM; arc=none smtp.client-ip=199.89.1.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	s=arc-20240116; t=1771883913; c=relaxed/simple;
+	bh=LH7t0a1QDpqWxeBEQhpvu6CX5dJnL5YjXXl1tp6SK1E=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UY3aF4AzJq5xlnoNaGNR9/3Q37wMh/L5MGCsPX19yT4RoRQEY7Lap9oyyrDfmxDEgxfrVVgHUFB1OlJPFzcV/IXcmNW4UHMU6R7xBIfmJcs50fPlCobjozZ9dRzeX4mUg3WEs+VBr7ch3G8XBJnZCqywMRfqXXEuG5FcOQwQVyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CluqzD6r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="d6AhoEDM"
-Received: from localhost (localhost [127.0.0.1])
-	by 013.lax.mailroute.net (Postfix) with ESMTP id 4fKZNG6fqgzlh2fQ;
-	Mon, 23 Feb 2026 21:53:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:mime-version:references:in-reply-to
-	:x-mailer:message-id:date:date:subject:subject:from:from
-	:received:received; s=mr01; t=1771883579; x=1774475580; bh=nnFa9
-	8OY9ljH31aKjq4xyU/FDPBwt+RV3CAa4GqfTp4=; b=d6AhoEDMnAXvDHVZhnhln
-	QFik8kfKHW6bLWUrpqG2ed5ABXpF9d8QvVk2efW/SnidyNmq/D9fDVIHMKeN7y1J
-	yVSA369NwJRus52NTDTEMASQ72mwQ28BQJjQ5XQ2kYUV3NfrmyaisbIRx5b3zlFe
-	XsILCP/r1A0uC2u2kNPGfz0wp/PxKU38hZtbNz0GhU/3KYXYptnFuUXBUqpvf7hA
-	HjmwDLzSBF9GJ6UjY5L+x/FbnDTd5UHZ/aryHRJod6VOrrgw8x85Xr3w2hp+t0uo
-	+OjmJu1ab3n9cbEtKUEJ76TPGeEdN83gn5QI111FDfCLNiRCS3XaPtl3tHPnosA3
-	g==
-X-Virus-Scanned: by MailRoute
-Received: from 013.lax.mailroute.net ([127.0.0.1])
- by localhost (013.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id ikK2jfedaS9S; Mon, 23 Feb 2026 21:52:59 +0000 (UTC)
-Received: from bvanassche.mtv.corp.google.com (unknown [104.135.180.219])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 013.lax.mailroute.net (Postfix) with ESMTPSA id 4fKZN673nWzlh2fJ;
-	Mon, 23 Feb 2026 21:52:54 +0000 (UTC)
-From: Bart Van Assche <bvanassche@acm.org>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Marco Elver <elver@google.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Jann Horn <jannh@google.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Shantiprasad Shettar <shantiprasad.shettar@broadcom.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	netdev@vger.kernel.org
-Subject: [PATCH 18/62] bnxt_en: Fix bnxt_dl_reload_up()
-Date: Mon, 23 Feb 2026 13:50:33 -0800
-Message-ID: <20260223215118.2154194-19-bvanassche@acm.org>
-X-Mailer: git-send-email 2.53.0.371.g1d285c8824-goog
-In-Reply-To: <20260223215118.2154194-1-bvanassche@acm.org>
-References: <20260223215118.2154194-1-bvanassche@acm.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CluqzD6r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F62CC116C6;
+	Mon, 23 Feb 2026 21:58:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771883912;
+	bh=LH7t0a1QDpqWxeBEQhpvu6CX5dJnL5YjXXl1tp6SK1E=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=CluqzD6rIM4sdXWBLXxfLQYyff18qgV2UCtH2AOyPZluIzccw1gV9+iHGfc65oxPW
+	 43ByX74Y8sG5h3RwoBRC+IPnD6VtwwrCxrxdz/DED/mcVExadcl8Xvr7R9nbtMTYuV
+	 xbRfjZ0/QeIdYMdvVPR6Y728ZmsHxFPQJP8oWJs4MCJXf2iRP3ILhsfRfYLPN0q1fW
+	 hE/LYes1mAUTtO2V09TNivE+5n638QA1sk73S8Y4AxPKRLixJ7xU5akQ70wOJIhR0e
+	 OC+4/nyGLz1MX8ENHMEsyPB7zCKPhJ3C8iyxMdIQ7V85DWT/F4EPNpbzZsks7JJ+gj
+	 BegTntTrjSJ8g==
+Date: Mon, 23 Feb 2026 13:58:31 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Kiran Kella <kiran.kella@broadcom.com>
+Cc: davem@davemloft.net, edumazet@google.com, daniel.zahka@gmail.com,
+ willemb@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ jayakrishnan.udayavarma@broadcom.com, ajit.khaparde@broadcom.com,
+ akhilesh.samineni@broadcom.com
+Subject: Re: [net-next, v2 2/2] selftests: drv-net: psp: add test for VLAN
+ sub-interface
+Message-ID: <20260223135831.102f73a4@kernel.org>
+In-Reply-To: <20260223191154.2800616-3-kiran.kella@broadcom.com>
+References: <20260223191154.2800616-1-kiran.kella@broadcom.com>
+	<20260223191154.2800616-3-kiran.kella@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-bnxt_dl_reload_down() calls rtnl_lock() and netdev_lock() if it returns
-0. Hence, bnxt_dl_reload_up() should invoke the corresponding unlock
-calls. This issue has been detected by the clang thread-sanitizer.
-Compile-tested only.
+On Mon, 23 Feb 2026 11:11:54 -0800 Kiran Kella wrote:
+> Add test to validate that the psp device information is propagated
+> properly from the lower device to the upper devices so that
+> the PSP transmit validation passes.
+> 
+> Signed-off-by: Kiran Kella <kiran.kella@broadcom.com>
+> Reviewed-by: Akhilesh Samineni <akhilesh.samineni@broadcom.com>
 
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: Shantiprasad Shettar <shantiprasad.shettar@broadcom.com>
-Cc: Stanislav Fomichev <sdf@fomichev.me>
-Cc: netdev@vger.kernel.org
-Fixes: 004b5008016a ("eth: bnxt: remove most dependencies on RTNL")
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c | 2 ++
- 1 file changed, 2 insertions(+)
+Looks like you need to enable VLAN in the respective config file in
+ksft:
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c b/drivers/=
-net/ethernet/broadcom/bnxt/bnxt_devlink.c
-index 15de802bbac4..1e9a3454bb29 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_devlink.c
-@@ -562,6 +562,8 @@ static int bnxt_dl_reload_up(struct devlink *dl, enum=
- devlink_reload_action acti
- 		break;
- 	}
- 	default:
-+		netdev_unlock(bp->dev);
-+		rtnl_unlock();
- 		return -EOPNOTSUPP;
- 	}
-=20
+# ok 28 psp.removal_device_bi
+# # Exception| Traceback (most recent call last):
+# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/net/lib/py/ksft.py", line 338, in ksft_run
+# # Exception|     func(*args)
+# # Exception|     ~~~~^^^^^^^
+# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/drivers/net/./psp.py", line 597, in vlan_basic_send
+# # Exception|     ip(f"link add link {cfg.ifname} name {local_vlan_ifname} type vlan id {vlan_id}")
+# # Exception|     ~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/net/lib/py/utils.py", line 238, in ip
+# # Exception|     return tool('ip', args, json=json, host=host)
+# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/net/lib/py/utils.py", line 225, in tool
+# # Exception|     cmd_obj = cmd(cmd_str, ns=ns, host=host)
+# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/net/lib/py/utils.py", line 91, in __init__
+# # Exception|     self.process(terminate=False, fail=fail, timeout=timeout)
+# # Exception|     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# # Exception|   File "/srv/vmksft/testing/wt-17/tools/testing/selftests/net/lib/py/utils.py", line 117, in process
+# # Exception|     raise CmdExitFailure("Command failed", self)
+# # Exception| net.lib.py.utils.CmdExitFailure: Command failed
+# # Exception| CMD: ip link add link eni1972np1 name eni1972np1.100 type vlan id 100
+# # Exception|   EXIT: 2
+# # Exception|   STDERR: Error: Unknown device type.
+-- 
+pw-bot: cr
