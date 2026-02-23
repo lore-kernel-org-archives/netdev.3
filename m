@@ -1,106 +1,105 @@
-Received: from lounge.grep.be (lounge.grep.be [144.76.219.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BED5B34A785;
-	Mon, 23 Feb 2026 09:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.76.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE8F35B621
+	for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 10:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771840704; cv=none; b=phG1QddaaHWpTBpckMc9qL2K5VhXsRvdEh/NMVCqTE/2kEs4xUIYqT4UXInBDSptEX6+OOCDWG2okzddwwZnOraBdbnwHJ67R9DEY+119rqWog0mo8K9F6lCiGKBUEPgPYrmUE+UcUwPq4V2Ocw2aSjGvijtALF7yh2Ps/FlIRA=
+	t=1771841253; cv=none; b=glPbygdWR0PQpNnddlbHK3yn4cr5HUuHeCJ1Z+ObI3kXZuym1IBlifMR8Auj/KPeOVVMGA6pshska24NPKDQqfWqzVzL1K8+v2J7jYC2Wq2N2qH06sb6FSOjNKeAz51xJUS2WY8s/6mfYiwvEXHuP9MvCGwbFa4SuMrncsSDxsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771840704; c=relaxed/simple;
-	bh=Iw0Gt16U9GaQulC5u4A0rgAlC9ecuwz937bM6cVUjmI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oGTlkKEqC5JVEnDwmr71AaTbB8RkHH5oFRwYHm7fldq5u7fcMqQK+mfpvxpTk6uXjZBjtV/9G4G+Aj0c4scZOPLg8TpRayKB4hkm35JuxbwhWXx+NBYllfx2Ul/C4phy5031g4LGAZk5O0uaJf6gSFRWTthqGb+7mQOCGiLT8nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uter.be; spf=pass smtp.mailfrom=uter.be; dkim=pass (2048-bit key) header.d=uter.be header.i=@uter.be header.b=gqxjkDRM; arc=none smtp.client-ip=144.76.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uter.be
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uter.be
+	s=arc-20240116; t=1771841253; c=relaxed/simple;
+	bh=jwKW6cpV+ZyjPX/kkkxunfYIo6KP0rwMPTEhPfRlorQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=CdGTuMrwRLiq3nC1QI3rg/Bblehlwj5e6PVTkGejYDxzrpCNbxKDN7Y1vkiv+i+554yr8DZV/gMhSXlRP/ZPFuY968Sx6piPgKNpAwmzGOvLBwDgvQ6DMoE6zET180Y9XLRvN0tB4xD25YUCbxlOUVAeazR0/CeY4Lu6iyiFaUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Hj+5Zb1/; arc=none smtp.client-ip=209.85.222.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=uter.be header.i=@uter.be header.b="gqxjkDRM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=uter.be;
-	s=2021.lounge; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=l7ur/xMoIwQ2QmfUHV3rfzePMQaZM3DKESy7NxWDgx8=; b=gqxjkDRMi7UMD8moDQ7aD/9Mxa
-	rsXMoJy5UeyWwvNNBxUgyP4vQXsGZpxY/B0qa/2FR7ThWKP7mrhZHFoLstJljE9hWt3UC05uCJGkW
-	kJqb0IIMN83A25VYXzzIbfDFEXBh09pNqJSHlZzbPCTo9gvWcQvp1+pE3VhWa7XWnJYYIDf3MXL2r
-	q9Vww+gEZs/lMrOHEH/4+TYXHcyUh/N/X3qsmSMOlcqMN8YkoXuk2TJcFHwi5PZ9j3H/udfXw1NH2
-	sB+qvScv+YCHGgX96t1wM4KM2gvgWn44NXzeEqDpu8gHz7QK3iw4Q6uKthh/2cz9Vx8dalwiVbBRP
-	t4rdB6QQ==;
-Received: from [102.39.233.88] (helo=pc220518)
-	by lounge.grep.be with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <w@uter.be>)
-	id 1vuSQg-0000000F0gb-2Jmf;
-	Mon, 23 Feb 2026 10:40:38 +0100
-Received: from wouter by pc220518 with local (Exim 4.99.1)
-	(envelope-from <w@uter.be>)
-	id 1vuSQU-00000000uTV-3zJQ;
-	Mon, 23 Feb 2026 11:40:26 +0200
-Date: Mon, 23 Feb 2026 11:40:26 +0200
-From: Wouter Verhelst <w@uter.be>
-To: Hristo Venev <hristo@venev.name>
-Cc: Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	Josef Bacik <josef@toxicpanda.com>, Jens Axboe <axboe@kernel.dk>,
-	linux-block@vger.kernel.org, nbd@other.debian.org
-Subject: Re: [PATCH] netlink: specs: add specification for NBD
-Message-ID: <aZwgiv0vPWPybUF-@pc220518.home.grep.be>
-References: <20260215180309.2255721-3-hristo@venev.name>
- <m2o6lnlg2y.fsf@gmail.com>
- <6a1339999b091edaaa15e34aceb7961dfc61581b.camel@venev.name>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Hj+5Zb1/"
+Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-8c882774f0dso3962307885a.2
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 02:07:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771841251; x=1772446051; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=RmqC5c86SylRIJcAfVHLpoJ8mbTU9gLKG22Bip9Olxk=;
+        b=Hj+5Zb1/uu7j2r5bn3LQpsmW5p7+lGmDUuaqkYyZoco68canwhDeXJz5zHU/z7dVBK
+         TEWFtzEnatXpX5Z8vyVCvxHROo0uYOuVgEC91GayrMn02Hi2VtUMvVsZJ0EmNcmQSotL
+         ocwWtMMmvDwgnP/DvOQtszMjbU8qIye/5cy1c1e1NlpsH/EiK4+3TmVGMSNANwYeWasN
+         LlnuHHNLXYTA1/SeeCAFsYoVZlkm8vwT2mm4GiXkb85j6lioO3qQ7xaBbQJPXPLzTgzb
+         G5Rcp//DRLh5kILBiqliYIbk6Yhf1iX9FFYENpkrvRNv2xG5HbixeikaR07bjWHQu+c6
+         IsQA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771841251; x=1772446051;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RmqC5c86SylRIJcAfVHLpoJ8mbTU9gLKG22Bip9Olxk=;
+        b=uiXYxvGN/ZQ4kXHPdm83pIs8uxCvAf67z9sCDO1qDDBAr3Socgxga2UoHalfQSxZtZ
+         UZ8OPR1QWm5LmgMN7UZiLTS7CQJHjkF6YLiTQOamVicdALCV89vDGA46VPQDp8C1t65G
+         352htTWx114Uywp2SqasMuX4Pqxzp7FT5CBPBrv7CIoAwh0ouYctMYKilwOrMCE5YRAm
+         dtbvFA0VPWVarrLco7dLJVZe/I/rrcLCRb0JfPP+jQ6Oi4am5muSsk/g+LsImLKZEuop
+         fU+cEIyjiRgw8pxKirxuGnf/p+K6eYIekHLrUbbD389o68EpIKhUZlJjC5tiWRLK8hlb
+         vCgw==
+X-Forwarded-Encrypted: i=1; AJvYcCU2yIzWo7NGI72i5i4c7mKNgBpUeIxg8cCsONkhrfvlFn5X/S472mfsPNOJSYCNqjzovrCtTyg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEvioZY5bg8mpmM2pSV/LerW5yGHCW2ydW75kjgNMJ9Efrnzlv
+	a858cNQs6AVV0QgpOP5t+5Aj1bnMX8OTV2TAoo4jDzVQQ698w5iOXaSRDp9oEVReRH+sc0RvXok
+	zvAUEToa7bok0jw==
+X-Received: from qknpi2.prod.google.com ([2002:a05:620a:3782:b0:8cb:48d2:657b])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:620a:40c1:b0:8ca:d5cb:6835 with SMTP id af79cd13be357-8cb8ca71ce2mr940267985a.48.1771841250737;
+ Mon, 23 Feb 2026 02:07:30 -0800 (PST)
+Date: Mon, 23 Feb 2026 10:07:26 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <6a1339999b091edaaa15e34aceb7961dfc61581b.camel@venev.name>
-X-Speed: Gates' Law: Every 18 months, the speed of software halves.
-Organization: none
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.345.g96ddfc5eaa-goog
+Message-ID: <20260223100729.3761597-1-edumazet@google.com>
+Subject: [PATCH v2 net-next 0/3] tcp: rework tcp_v{4,6}_send_check()
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Neal Cardwell <ncardwell@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Feb 17, 2026 at 07:40:33PM +0200, Hristo Venev wrote:
-> On Tue, 2026-02-17 at 12:17 +0000, Donald Hunter wrote:
-> > There are yamllint errors:
-> > 
-> > make -C tools/net/ynl lint
-> > make: Entering directory '/home/donaldh/net-next/tools/net/ynl'
-> > yamllint ../../../Documentation/netlink/specs
-> > ../../../Documentation/netlink/specs/nbd.yaml
-> >   159:81    error    line too long (104 > 80 characters)  (line-
-> > length)
-> >   169:6     error    syntax error: expected <block end>, but found
-> > '<block mapping start>' (syntax)
-> >   170:7     error    wrong indentation: expected 5 but found 6 
-> > (indentation)
-> 
-> Thanks, I will fix the lint errors in v2.
-> 
-> > > +doc: See :file:`drivers/block/nbd.c`
-> > 
-> > Prefer to see a meaningful doc string here.
-> 
-> I will add more proper documentation in v2. I couldn't find any
-> existing documentation of this netlink interface, so I guess I will
-> write it myself.
+tcp_v{4,6}_send_check() are only called from __tcp_transmit_skb()
 
-As luck would have it, before I saw this message, I had been wanting to
-work on some of the messages that nbd-client still needed, and so I
-asked an LLM to analyze the code and generate some docs for me.
+They currently are in different files (tcp_ipv4.c and tcp_ipv6.c)
+thus out of line.
 
-Heed the "LLM" part. It's probably not perfect. But it could be a good
-starting point. Or not. At any rate, you can find it here:
+This series move them close to their caller so that compiler
+can inline them.
 
-https://github.com/NetworkBlockDevice/nbd/blob/master/doc/netlink-proto.md
+For all patches in the series:
+
+$ scripts/bloat-o-meter -t vmlinux.0 vmlinux.3
+add/remove: 0/2 grow/shrink: 1/3 up/down: 102/-178 (-76)
+Function                                     old     new   delta
+__tcp_transmit_skb                          3321    3423    +102
+tcp_v4_send_check                            136     132      -4
+__tcp_v4_send_check                          130     121      -9
+mptcp_subflow_init                           777     763     -14
+__pfx_tcp_v6_send_check                       16       -     -16
+tcp_v6_send_check                            135       -    -135
+Total: Before=25143100, After=25143024, chg -0.00%
+
+Eric Dumazet (3):
+  tcp: inline __tcp_v4_send_check()
+  tcp: move tcp_v6_send_check() to tcp_output.c
+  tcp: make tcp_v{4,6}_send_check() static
+
+ include/net/inet_connection_sock.h |  3 +--
+ include/net/tcp.h                  | 12 +++++++++---
+ net/ipv4/tcp_ipv4.c                | 19 -------------------
+ net/ipv4/tcp_output.c              | 27 +++++++++++++++++++++++----
+ net/ipv6/tcp_ipv6.c                |  7 -------
+ net/mptcp/subflow.c                |  1 -
+ net/tls/tls_device_fallback.c      |  3 ---
+ 7 files changed, 33 insertions(+), 39 deletions(-)
 
 -- 
-"I never had a C in history!"
-"Yeah, but there was so much less of it when you were my age!"
- -- Joe Brockmeier recounting a conversation with his father, cfgmgmtcamp 2026, Ghent
+2.53.0.345.g96ddfc5eaa-goog
+
