@@ -1,113 +1,131 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3811369988
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 09:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC60369988;
+	Tue, 24 Feb 2026 09:03:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771923724; cv=none; b=l51ZVzu6uFd/jpQ3qJF5SffpJx6DfH5SYf9N5thVydw29vEtM73FLB2Dvyg4uxwVYb/WnFpgDUpz1rgXNF6TQ/QklUsMppzcpX05M4InQylJXlGvE0LwKJs06CqYWmjFRYEGyG7NzuSpeypCZTB7SdMpUUd3J92M2YCiEbZ0lHo=
+	t=1771923781; cv=none; b=XiOjHxtkOs/rMRY8ov3beoASnwvZzk4BwW9IaEz3UuVG506E4pkbyT7QCiPrQ6l6B6z1OX/VDqHKewfk5wKDDpvja3+gyZI8HKwGkmZAzRnsbtTual8b2nasPBChYzJrXJUGW2+tjTjtOtmQNWVOAwSXJm9NfJ4PfPfYV+rV4EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771923724; c=relaxed/simple;
-	bh=ci6K+P9Z1zNijD/nyDK4mq3ABwcFD/1pLpd/sO7WEA4=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=g063G6ImzN/REnL036dv+sxQ9o8OQde2QMOoKlHMd1jnd3DZDjTxsQdDAETIJfY+qjWi2QU3rqci+mgec//JvbCtlnLSBN6RrpYf2VJgZtqMe/GHWntkLv8jOlsxS3IlH4BP8XJvUK5f6w+imR09niJjCsSiI5ni0y6++T6CQY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=mw2ib0Hu; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1771923781; c=relaxed/simple;
+	bh=zjABH1ckk5UotRBeSwprouItHny2+6mfl/LIVpNVRKQ=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=IjahqkvYa5t6SUkAXtOm2Hkvu49aQMtRPI74nN19ybwaToXpEbHbqCTs5P2Fu70j/n2t4I3jU+s6EbYgiDgqp2DI7W02nrgr9F2Dy8v7gARuXfHqUbUFgKVSn8A0zbmI9DlHW2cI1dEGdQKS/ZOMpAW5JTomqz8H6EixeT0uCIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=sRC5H0LG; arc=none smtp.client-ip=113.46.200.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="mw2ib0Hu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=wrYNaMOH0TzghKNkY2gl5+fHgiHnouoR8L4MzPIrLQs=; b=mw2ib0HuC9E0Zqjnf7ey4YyaQ0
-	PbfUPNlapr6uP9hLfkxAQ/qPrEd4gLN+1dWbLlDINtrha5GqZTMrC2lGIuDzkWyt6KUpCHeqloYuj
-	4zWcsBsUhnsDovNGy1CNfpGRpK/+2FcNjcgGruVjnHYr06idMjGpATU9vyzUX4q9E1QqBm/3ihHO3
-	OPcYErNmn6kNVALpk4Yn22tf8bFSmXTD/QjWIJlDtKZV4Uh+wDMxN9Oo2i230Z8tQHNEnzaDfWNkg
-	/x2f4c33cDvdOYAXziQwelaCp6p4Tpx3wjHaf8eE0Y9UrkWMylONrKxXzvebRF99o0SQ5UZzXyPJv
-	8tmWV0CA==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:41980 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vuoIl-000000004yS-3zCH;
-	Tue, 24 Feb 2026 09:01:56 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vuoIl-0000000Aouz-0ttb;
-	Tue, 24 Feb 2026 09:01:55 +0000
-In-Reply-To: <aZ1o2dmfpeiubCik@shell.armlinux.org.uk>
-References: <aZ1o2dmfpeiubCik@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next v2 2/2] net: stmmac: fix transmit interrupt
- coalescing
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="sRC5H0LG"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=uR/K6DkGMPMKDk7dAD5TcQSdvUxeahKqFkeUtPw8HHU=;
+	b=sRC5H0LGs3hd9eYdOOHLeVARyp4gL0PpqjKTQnfiwXMPaXCPOv1rGaKrgeDZsWMdEiJH63kz1
+	n7YvrFWAegCibXff6jCv+2YosrUmMyO2T06ggvnTqpTE9KLv73TIu9xfdoIW7kI2NwhxPN4OMMV
+	A7ytFpws8LCLpRSoRRKHWoU=
+Received: from mail.maildlp.com (unknown [172.19.162.197])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4fKs7h3snyz1prKq;
+	Tue, 24 Feb 2026 16:58:08 +0800 (CST)
+Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
+	by mail.maildlp.com (Postfix) with ESMTPS id 2247C40569;
+	Tue, 24 Feb 2026 17:02:57 +0800 (CST)
+Received: from [10.67.120.192] (10.67.120.192) by
+ kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Tue, 24 Feb 2026 17:02:56 +0800
+Message-ID: <58a37819-78ef-44c0-8e85-fce42ac569af@huawei.com>
+Date: Tue, 24 Feb 2026 17:02:55 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vuoIl-0000000Aouz-0ttb@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Tue, 24 Feb 2026 09:01:55 +0000
+User-Agent: Mozilla Thunderbird
+CC: <shaojijie@huawei.com>, <bcm-kernel-feedback-list@broadcom.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<da.anzani@gmail.com>, <sean@ashe.io>, <mproche@gmail.com>
+Subject: Re: [PATCH] vmxnet3: Suppress page allocation warning for massive Rx
+ Data ring
+To: Aaron Tomlin <atomlin@atomlin.com>, <ronak.doshi@broadcom.com>,
+	<andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<kuba@kernel.org>, <pabeni@redhat.com>
+References: <20260223145604.4042568-1-atomlin@atomlin.com>
+From: Jijie Shao <shaojijie@huawei.com>
+In-Reply-To: <20260223145604.4042568-1-atomlin@atomlin.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ kwepemk100013.china.huawei.com (7.202.194.61)
 
-The accounting for transmit frames does not count the descriptors
-correctly. It uses:
 
-	tx_packets = (tx_q->cur_tx + 1) - first_tx;
+on 2026/2/23 22:56, Aaron Tomlin wrote:
+> The vmxnet3 driver supports an Rx Data ring (rx-mini) to optimise the
+> processing of small packets. The size of this ring's DMA-coherent memory
+> allocation is determined by the product of the primary Rx ring size and
+> the data ring descriptor size:
+>
+>      sz = rq->rx_ring[0].size * rq->data_ring.desc_size;
+>
+> When a user configures the maximum supported parameters via ethtool
+> (rx_ring[0].size = 4096, data_ring.desc_size = 2048), the required
+> contiguous memory allocation reaches 8 MB (8,388,608 bytes).
+>
+> In environments lacking Contiguous Memory Allocator (CMA),
+> dma_alloc_coherent() falls back to the standard zone buddy allocator. An
+> 8 MB allocation translates to a page order of 11, which strictly exceeds
+> the default MAX_PAGE_ORDER (10) on most architectures.
+>
+> Consequently, __alloc_pages_noprof() catches the oversize request and
+> triggers a loud kernel warning stack trace:
+>
+>      WARN_ON_ONCE_GFP(order > MAX_PAGE_ORDER, gfp)
+>
+> This warning is unnecessary and alarming to system administrators because
+> the vmxnet3 driver already handles this allocation failure gracefully.
+> If dma_alloc_coherent() returns NULL, the driver safely disables the
+> Rx Data ring (adapter->rxdataring_enabled = false) and falls back to
+> standard, streaming DMA packet processing.
+>
+> To resolve this, append the __GFP_NOWARN flag to the dma_alloc_coherent()
+> gfp_mask. This instructs the page allocator to silently fail the
+> allocation if it exceeds order limits or memory is too fragmented,
+> preventing the spurious warning stack trace.
 
-however, these are indexes into a circular buffer, so cur_tx can be
-less than first_tx, and when that happens, tx_packets becomes a very
-large unsigned integer. When this is added to tx_q->tx_count_frames,
-it has the effect of reducing the count of frames, possibly causing
-it to also wrap to a very large unsigned integer.
+This seems to be a suitable solution.
+I see many drivers appending the __GFP_NOWARN flag to the dma_alloc_coherent() gfp_mask.
 
-Fix this by using CIRC_CNT() to calculate the number of descriptors
-used.
+Reviewed-by: Jijie Shao <shaojijie@huawei.com>
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> Furthermore, enhance the subsequent netdev_err() fallback message to
+> include the requested allocation size. This provides critical debugging
+> context to the administrator (e.g., revealing that an 8 MB allocation
+> was attempted and failed) without making hardcoded assumptions about
+> the state of the system's configurations.
+>
+> Signed-off-by: Aaron Tomlin <atomlin@atomlin.com>
+> ---
+>   drivers/net/vmxnet3/vmxnet3_drv.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+> index 0572f6a9bdb6..0d43210de625 100644
+> --- a/drivers/net/vmxnet3/vmxnet3_drv.c
+> +++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+> @@ -2268,10 +2268,10 @@ vmxnet3_rq_create(struct vmxnet3_rx_queue *rq, struct vmxnet3_adapter *adapter)
+>   		rq->data_ring.base =
+>   			dma_alloc_coherent(&adapter->pdev->dev, sz,
+>   					   &rq->data_ring.basePA,
+> -					   GFP_KERNEL);
+> +					   GFP_KERNEL | __GFP_NOWARN);
+>   		if (!rq->data_ring.base) {
+>   			netdev_err(adapter->netdev,
+> -				   "rx data ring will be disabled\n");
+> +				   "Failed to allocate %zu bytes, rx data ring will be disabled\n", sz);
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 2d74fe98ad61..baf2ff577f45 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4503,7 +4503,8 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	tx_q->tx_skbuff_dma[tx_q->cur_tx].buf_type = STMMAC_TXBUF_T_SKB;
- 
- 	/* Manage tx mitigation */
--	tx_packets = (tx_q->cur_tx + 1) - first_tx;
-+	tx_packets = CIRC_CNT(tx_q->cur_tx + 1, first_tx,
-+			      priv->dma_conf.dma_tx_size);
- 	tx_q->tx_count_frames += tx_packets;
- 
- 	if ((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) && priv->hwts_tx_en)
-@@ -4781,7 +4782,7 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 	 * This approach takes care about the fragments: desc is the first
- 	 * element in case of no SG.
- 	 */
--	tx_packets = (entry + 1) - first_tx;
-+	tx_packets = CIRC_CNT(entry + 1, first_tx, priv->dma_conf.dma_tx_size);
- 	tx_q->tx_count_frames += tx_packets;
- 
- 	if ((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) && priv->hwts_tx_en)
--- 
-2.47.3
+Here, it seems more appropriate to use "failed to".
 
+>   			adapter->rxdataring_enabled = false;
+>   		}
+>   	} else {
