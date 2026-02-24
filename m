@@ -1,166 +1,127 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D72D37757D
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 10:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771928243; cv=none; b=NHajrpbmGC+7Wb2Qon5tA+ijMIYSx8Ud1V4VSOmiq9EAR44OEnVVPVrVOMN6V9UP5TJ3j9ztI3s2GUn84nODN1LzQafA3XXfIboh6Lnvcx+c8OC5Jnx8DR4P1MLY5tIhiBraAcD+xbeTOg1DRStulX2+cDPpeXh9A5ueDsXPwdk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771928243; c=relaxed/simple;
-	bh=rFF4K8Zgf1BYVWvYDIyd09wkETxX/B9s2eyJGQxFkWw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t6BhcBtzGK5DnMG+4QT2d3CcdrmsfODyMsTjwKuqyo37bd9U0rWHy6XlI5tJ3/9S6iuyxRSWh/bZps/WMT/1RISC6BE8FdgQEPyRBBPfhpS3XH7pR4TmcIM8T3GyogZy+ANXyYed5g5bkMEWyhuQ1LSR+UMY2SRsI/r+arJ5+v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=b48dGVhM; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647BF3783AB
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 10:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771928540; cv=pass; b=TPvu/gGQGQT8p58g2fCil3dq1b5yPMiHXQUj+mV7Gb9rApOXYbICFJ1Tcx3K9PVTJbYgWba5kaLhuOKSELM3nZjMDFm/rZn3l0ds5OuzUncLtwyncy+cGBTJJNHrFNxM/4dlSH9s5+tsXJOni5jieZgT4Xm9NtE7LIxXYwi9A+0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771928540; c=relaxed/simple;
+	bh=LoA0gd3Q7D0WIQQHGz6q931aQElRYL18j9ESlnOGh2I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RrjAZc83iSFQETkTK394fYb0Fg6cx53gorGQxGOoe9gph1zd7qQVQ4RZjvs1MkQLo9L0bwESptR1J3w9XRsf8Sc8OyG/kQLieWputR4vMfJDUvEomSseK9Vd9eRcwpXco2yyikPw8ZURPpCsLgDd3BKXyXdrGmChOMaOkKnR9ps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Risea3hd; arc=pass smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="b48dGVhM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=4YULu+uW6OF//44jjpCFpruF8dDEiT3NVbgUKXDQoeo=; b=b48dGVhMPjMoM08ZEEUU/QM7fE
-	C8DARAtpoZNoXE/PzyN0mcJUmKJipxT2Gmo6ObVnTUmby8DwSObRPAZVcFN4w/9bAWjKeTmnwA5st
-	AUc7/QUNaf9FUtVYlvkcSr5mJbtR6pLRRZ2UadZWkn+qhy7ymyEaZzMHK+KDqBHdRiC97YAn5KcWW
-	YOdQ5IU13i85wdF07/d6skemAdQbJwzJuqoyEB8lmqKq8ZJx9NZAO2snSHrh3dDA3xmZt2+QUio0N
-	4dedSkl20KMRCguCC287I2r21si+Z3sppmdq4vvUHTFtXc0Bmtczn5o8BEuGOYMynEm12xW5I81mm
-	qd+GeF9Q==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:55642)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vupTh-0000000055S-0ACt;
-	Tue, 24 Feb 2026 10:17:17 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vupTe-000000008I5-3sCB;
-	Tue, 24 Feb 2026 10:17:14 +0000
-Date: Tue, 24 Feb 2026 10:17:14 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Nicolai Buchwitz <nb@tipi-net.de>
-Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, claudiu.beznea@tuxon.dev,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	nicolas.ferre@microchip.com, pabeni@redhat.com,
-	phil@raspberrypi.com
-Subject: Re: [PATCH net-next v2 3/5] net: cadence: macb: implement EEE TX LPI
- support
-Message-ID: <aZ16qgIsRxkUuoW1@shell.armlinux.org.uk>
-References: <20260224091821.47671-1-nb@tipi-net.de>
- <20260224091821.47671-4-nb@tipi-net.de>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Risea3hd"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-502a789834fso47564621cf.2
+        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 02:22:19 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771928538; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jF3lC8fFvHKRbRxtpYabFGIcoWLzxzeub5VirQEWqqhVC9P87FjbK7lImvaPBLcxUO
+         Utytac1XgfGLsL2Gti9wChq8m9a4+xfH+MED1oDLLXTCuHCp7aixzfa3usx6ZjJqlXfd
+         ytuNTyhR1r2Gag+jUpSjyFKLCXHkJyYuWdzyYsSiN+ehTJARlvOYzF+O3laxhzm5T1Eo
+         GdGEoDi8IrO852pwMeF/p2uwvVqwmdKrHsKhVBOxd9vCPyXyE+hIAAVSqg/6z0eCOQv8
+         617l5Et7qlC/NjEenyihFIHQNioL3lmAk+HOhKEKhxDUr6Rb2S8Td4Ytdh9La+UT0zfo
+         E+mQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=LoA0gd3Q7D0WIQQHGz6q931aQElRYL18j9ESlnOGh2I=;
+        fh=aj4AYIXqGkVVJ+jM+lKIPVbh6vJbMg97a7VNSlUKOg8=;
+        b=Rw3PV2NcjU884vRYvgTYPRK3zXZf6mpNvS3VVnBlzP6mXoxlwtf1lbDgOhdZu+Nflw
+         RQJ67/kqXyOfvp9iJiSAcUzyfxL7ejWkybapv8Xg7qKT6Ix4IiHphqM4aPlvrPLNULkD
+         BvqKCffTtHpu2QLsra1mZC19aJw4WM7LkufOHVf4xpqlf0peNnZFnl7MijhSFhRBRx8O
+         4GXZeQ2HLv/ZHOsQidaLQk97t6Rn7TGDXxCCDTTIV6eLdspUUi4+62mPHFjuYZiPQ9ro
+         hJhfTjE+Ad8SsY4RjhDnprDYDj6EEGzS/LbQfzFRTIdEdhzQ73rHjHpH9X8DpTgmM6K6
+         SLlw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771928538; x=1772533338; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LoA0gd3Q7D0WIQQHGz6q931aQElRYL18j9ESlnOGh2I=;
+        b=Risea3hdvRndcNXUmwoxm966SVXACAgPOQemk9FtkrPmc5FVfoORNDS30x5rB231nZ
+         Zcx8rTDLAfvvOtqZh19qErQvtRnGAZCcoexgo9fcG2GNzjxGGplW0Eq/+0OjaU9M/Dxt
+         8ErkvjkPwUSy8jq4ynAjEbqosHzc0I/WFSB8+ONll0pF7H6Y4wZyuCskTy3f/E612NYX
+         mdYJv6zd4xienQXHqCQLOd84vZ9UABR4jlNvB0/K+ZWguZN/AnWoeoVNWL9SMxoNjiJZ
+         +NyUygWS6DUe3CpuWskZ7qr92bV7j/IaPS11HKU/6naL0vMrbo4WRmOKV9NoWzkeHEdn
+         O+7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771928538; x=1772533338;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LoA0gd3Q7D0WIQQHGz6q931aQElRYL18j9ESlnOGh2I=;
+        b=aUc2DYC9rdvTdn9K4hGpg8fTyvTAMHW0gQwB2OUI49pEcZ5PLHnWrPx0zIQyt+T/tl
+         rA7nDPF+6jNgmwiKo8hX/Fuo3nOQ9X0bvgNX9c2FormzQqJn8rhjuYQlpPRklAi6YgAK
+         130j6DU0s7fZlZb5RO60Uj/Oeu0XMB767g10QHZI41GOyuQar6t+Ov4cA72AtRopdJe+
+         XWdGtSFX+jCdiGno4bf+r6X9wpby5tpuwd2MwCwE0FezM0yWNhhbR3UC3/zU4/kP/ysu
+         G2SJr4XJr7zR/EAIuJKahMbUMmZN9HzBM2ekWf9w0owFdPOY1+1Axmi456Kk/ugMSR87
+         3Azg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQgTsGrpr+GHjc6iNLeOxL9EzS0AocdZ5fzo45xHq8AJanOTmoa+qcGdP40i4ZAZ9t7kYNi0Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwQ02PWmpQ3CqmDFEAMijXKf43bvOFtmebg4Uhoq0S7YcO5a8Q8
+	YOawNOy7ynH3xnfYoas0a171//ovDyrsN8Z1hu4Om+hTbY6/5KC8uGQXxeb19DzEnUtbvXf/w0L
+	uvfm6hRFe/Mxbc0q9Y2ARY/6vVHBX4PNhnYXaTKcH
+X-Gm-Gg: AZuq6aIBAukk+SAl9MRH9/5nJeqrRcBKHTSKgQ1SUkKRchnjlYheg36JpAVOsb+BEvX
+	QZlbelWXevQoT504bhd8GpFIhpWoySxBpuG82v3cHgSzfzIF/AM9C2PaItJRWxzbsH9wgC2RTyc
+	2Yig32oNeWPMrFTv11pVC25BZthS+hxbzSAtTJCVq66FGTvS+AdKW1zZ11YX5DxP3yj+3JCPB7p
+	/3Aaod0LPMFmzED7koMCmHyhNw4boTVTNVRtp67gCObU09LO/go3WO++E4E+cYBcdwc+6iWDd6v
+	o1O9NN5EGy+lIvr+yFFugOfDw7bI/Eeewefryv/H0b7lkIzBSpir
+X-Received: by 2002:a05:622a:2d4:b0:506:b77e:5431 with SMTP id
+ d75a77b69052e-5070bcb52c8mr160299231cf.55.1771928537721; Tue, 24 Feb 2026
+ 02:22:17 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260224091821.47671-4-nb@tipi-net.de>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+References: <20260224-fix_zero_wnd_fin-v2-0-a16677ea7cea@gmail.com> <20260224-fix_zero_wnd_fin-v2-1-a16677ea7cea@gmail.com>
+In-Reply-To: <20260224-fix_zero_wnd_fin-v2-1-a16677ea7cea@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 24 Feb 2026 11:22:06 +0100
+X-Gm-Features: AaiRm51TafJQC2hYO4iQ2Oifkc5ftCbKvt2gFRRO9OSQG8DdaeCe6QkzNpscBHg
+Message-ID: <CANn89i+iqQWy2QcKi_wFS2nRKcygwBUPWmSTtr2dp9Ey+jORHQ@mail.gmail.com>
+Subject: Re: [PATCH net v2 1/2] tcp: re-enable acceptance of FIN packets when
+ RWIN is 0
+To: gmbnomis@gmail.com
+Cc: Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 24, 2026 at 10:18:19AM +0100, Nicolai Buchwitz wrote:
-> Implement Energy Efficient Ethernet TX Low Power Idle using phylink's
-> managed EEE framework. The Cadence GEM MAC has no built-in idle timer
-> - TXLPIEN (NCR bit 19) immediately blocks all TX when set and the MAC
-> does NOT auto-wake - so the driver uses a software delayed_work timer
-> for idle detection.
-> 
-> The TX LPI lifecycle:
->   - phylink calls mac_enable_tx_lpi() after link-up with the negotiated
->     timer value. The driver defers the first LPI entry by 1 second per
->     IEEE 802.3az section 22.7a.
->   - macb_tx_complete() reschedules the idle timer after each TX drain.
->   - macb_start_xmit() wakes from LPI by clearing TXLPIEN, cancelling
->     the pending work, and waiting 50us (conservative Tw_sys) before
->     initiating the transmit.
->   - phylink calls mac_disable_tx_lpi() before link-down, which cancels
->     the work and clears TXLPIEN.
-> 
-> The phylink_config is populated with LPI capabilities (MII, GMII, RGMII
-> modes; 100FD and 1000FD speeds) and a 250ms default idle timer, gated
-> on MACB_CAPS_EEE.
+On Tue, Feb 24, 2026 at 9:20=E2=80=AFAM Simon Baatz via B4 Relay
+<devnull+gmbnomis.gmail.com@kernel.org> wrote:
+>
+> From: Simon Baatz <gmbnomis@gmail.com>
+>
+> Commit 2bd99aef1b19 ("tcp: accept bare FIN packets under memory
+> pressure") allowed accepting FIN packets in tcp_data_queue() even when
+> the receive window was closed, to prevent ACK/FIN loops with broken
+> clients.
+>
+> Such a FIN packet is in sequence, but because the FIN consumes a
+> sequence number, it extends beyond the window. Before commit
+> 9ca48d616ed7 ("tcp: do not accept packets beyond window"),
+> tcp_sequence() only required the seq to be within the window. After
+> that change, the entire packet (including the FIN) must fit within the
+> window. As a result, such FIN packets are now dropped and the handling
+> path is no longer reached.
+>
+> Be more lenient by not counting the sequence number consumed by the
+> FIN when calling tcp_sequence(), restoring the previous behavior for
+> cases where only the FIN extends beyond the window.
+>
+> Fixes: 9ca48d616ed7 ("tcp: do not accept packets beyond window")
+> Signed-off-by: Simon Baatz <gmbnomis@gmail.com>
+> ---
 
-Much better, thanks. One suggestion:
-
-> +static void macb_tx_lpi_set(struct macb *bp, bool enable)
-
-bool return type.
-
-> +{
-> +	unsigned long flags;
-> +	u32 ncr;
-
-	u32 old, ncr;
-
-> +
-> +	spin_lock_irqsave(&bp->lock, flags);
-> +	ncr = macb_readl(bp, NCR);
-
-	old = ncr;
-
-> +	if (enable)
-> +		ncr |= GEM_BIT(TXLPIEN);
-> +	else
-> +		ncr &= ~GEM_BIT(TXLPIEN);
-
-	if (old != ncr)
-> +	macb_writel(bp, NCR, ncr);
-> +	bp->tx_lpi_enabled = enable;
-
-No need for tx_lpi_enabled
-
-> +	spin_unlock_irqrestore(&bp->lock, flags);
-
-	return old != ncr;
-
-> +}
-
-...
-
-> +/* Wake from LPI before transmitting. The MAC must deassert TXLPIEN
-> + * and wait for the PHY to exit LPI before any frame can be sent.
-> + * IEEE 802.3az Tw_sys is ~17us for 1000BASE-T, ~30us for 100BASE-TX;
-> + * we use a conservative 50us.
-> + */
-> +static void macb_tx_lpi_wake(struct macb *bp)
-> +{
-> +	if (!bp->tx_lpi_enabled)
-> +		return;
-
-No need for this if().
-
-> +
-> +	macb_tx_lpi_set(bp, false);
-
-instead:
-	if (!macb_tx_lpi_set(bp, false))
-		return;
-
-The presence of the spinlock in macb_tx_lpi_set() suggests that there
-could be races, so keeping the state completely inside the spinlock
-region would be sensible.
-
-> +	cancel_delayed_work(&bp->tx_lpi_work);
-
-I wonder whether this is reliable on its own. cancel_delayed_work()
-documentation says:
-
- * Note:
- * The work callback function may still be running on return, unless
- * it returns %true and the work doesn't re-arm itself.  Explicitly flush or
- * use cancel_delayed_work_sync() to wait on it.
-
-That means macb_tx_lpi_work_fn() could have just been entered at the
-point that cancel_delayed_work() has been called. Would that cause a
-problem, e.g. setting LPI mode again, or would we be guaranteed that
-macb_tx_all_queues_idle() returns false preventing LPI mode being set
-again?
-
-Thanks.
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Reviewed-by: Eric Dumazet <edumazet@google.com>
