@@ -1,179 +1,165 @@
-Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [80.241.56.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D55313543;
-	Tue, 24 Feb 2026 08:30:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504021DFDB8;
+	Tue, 24 Feb 2026 08:33:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771921806; cv=none; b=TRZqgls2T+Ot9LgkZGsg9cC1UITqVjksn6YCGeHWaI9ofNNTadkXCpzCAtbbbBGkhbbwO/dOtED/WSInkEM9SvisnEFqyt8FzOPVdHb7aRKyuC6uCeXUaeIHkQmgWHZnGO+FSOO1JHHdRcTG7Tk78Pxh5tq175y2xCCwiUgQGp8=
+	t=1771922004; cv=none; b=nbQ2/uCUgp9QZBVSrJptxHleqA8dFTbM7/FYKEvb6PPxZUnN0D1BhwRzOY2U4ZFuQH9T3i0sDDDWPEjXT+IqGBuEeCZ8xrATCcmSLBM79mLOoJ//pyfI8vdfDJr6U0g3XjJSj5sXeOoYyc6oYTA1Qas0nlgz40bj7DfP2pVfdxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771921806; c=relaxed/simple;
-	bh=ewIPAQX6sAszYh2BuSmqO4oiBjg87c9nS2a8K1A9wLs=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=DvG97h6RuSu9VoPCsxq4Ybm6aEEP5yi7JBq+TiZzJSLOpg0z/9QwEa52sA7eK6WPsGUePRcOM9s16S2AKBBXWkwYCbZ/lY2IQhrp1KI0Jcqk8my9hawqWUqUOsubZ2XuAcL31FhjHSQ0glI4W6IBcJ2b2lVDOMh4kOgmF7t124o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=qTcBrvGs; arc=none smtp.client-ip=162.240.164.96
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
+	s=arc-20240116; t=1771922004; c=relaxed/simple;
+	bh=jbJfsDf/AFVBkWOy7rSA4AaZdHLzv8lJvtIZjuKCFtE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=EVf9aGxuXIcgilZMvncrDKL8sy8rQMUpPk83/EANmYRE+zOBqUqjNk38gUY1tx6dnuiF5c0LRCjZprClLlgD9Wl36Tnhy+ZBQagmEtPjrrYfC2NjaivYsrUhc9FT61FJ1OpQ6eD2Ezl4gWHK3InAKL9ZbHKFdyRfTiYE0KlqhzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=ed6RPlZl; arc=none smtp.client-ip=80.241.56.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="qTcBrvGs"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
-	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=ewIPAQX6sAszYh2BuSmqO4oiBjg87c9nS2a8K1A9wLs=; b=qTcBrvGso3jmt65eAy6f6zTn/2
-	senO/mPHbPEgWadhTZQRyHO4zk8sfyAUNZiW7Bf7CkC85eMCnxYDD1J06R4/FsputlZCWGR9QBUCo
-	ia52SuDzs+gccpCbhGjVyEbIsHgPpfMcnKYLOAyhgi8aSObDWL1BxwtYf7fdgH4OtdKhOQzbo9T+E
-	ofdGhNJAi53RcPTUbCQN00gmxiNjswkPGxVqhWMirs0XUdRbiNNStu+dJgQs7sEExhKZBGUvF+1G4
-	k1qkrdsTrcnM4I63G1bSQkEAT7rmb7/OkaM2VW9NnjBac6as4VLdXjh7kAWiriWxzU1GyXNmgYHUb
-	ITJFDrHQ==;
-Received: from [122.175.9.182] (port=60068 helo=zimbra.couthit.local)
-	by server.couthit.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.98.1)
-	(envelope-from <parvathi@couthit.com>)
-	id 1vunUS-00000007Vdz-2Uxl;
-	Tue, 24 Feb 2026 03:09:56 -0500
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 43A4F1B490F3;
-	Tue, 24 Feb 2026 13:39:49 +0530 (IST)
-Received: from zimbra.couthit.local ([127.0.0.1])
- by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10032)
- with ESMTP id XoGCLww6HRli; Tue, 24 Feb 2026 13:39:45 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id DC5BF1B4909D;
-	Tue, 24 Feb 2026 13:39:45 +0530 (IST)
-X-Virus-Scanned: amavis at couthit.local
-Received: from zimbra.couthit.local ([127.0.0.1])
- by localhost (zimbra.couthit.local [127.0.0.1]) (amavis, port 10026)
- with ESMTP id P2RgEwv89MYe; Tue, 24 Feb 2026 13:39:45 +0530 (IST)
-Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id B23451B490F3;
-	Tue, 24 Feb 2026 13:39:45 +0530 (IST)
-Date: Tue, 24 Feb 2026 13:39:45 +0530 (IST)
-From: Parvathi Pudi <parvathi@couthit.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Andrew Davis <afd@ti.com>, nm <nm@ti.com>, 
-	Vignesh Raghavendra <vigneshr@ti.com>, 
-	Kevin Hilman <khilman@baylibre.com>, rogerq <rogerq@kernel.org>, 
-	tony <tony@atomide.com>, robh <robh@kernel.org>, 
-	krzk+dt <krzk+dt@kernel.org>, conor+dt <conor+dt@kernel.org>, 
-	richardcochran <richardcochran@gmail.com>, 
-	aaro koskinen <aaro.koskinen@iki.fi>, andreas <andreas@kemnade.info>, 
-	linux-omap <linux-omap@vger.kernel.org>, 
-	devicetree <devicetree@vger.kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, 
-	netdev <netdev@vger.kernel.org>, danishanwar <danishanwar@ti.com>, 
-	pratheesh <pratheesh@ti.com>, j-rameshbabu <j-rameshbabu@ti.com>, 
-	praneeth <praneeth@ti.com>, srk <srk@ti.com>, rogerq <rogerq@ti.com>, 
-	krishna <krishna@couthit.com>, mohan <mohan@couthit.com>, 
-	pmohan <pmohan@couthit.com>, basharath <basharath@couthit.com>, 
-	Murali Karicheri <m-karicheri2@ti.com>, 
-	Parvathi Pudi <parvathi@couthit.com>
-Message-ID: <760333566.501717.1771920585648.JavaMail.zimbra@couthit.local>
-In-Reply-To: <2a977fd4-910a-4838-9ed6-97224d6ab775@lunn.ch>
-References: <20260105162546.1809714-1-parvathi@couthit.com> <20260105162546.1809714-3-parvathi@couthit.com> <84b08398-5622-45c9-a8fa-54639c1cf0b3@ti.com> <2110802326.88645.1767873743162.JavaMail.zimbra@couthit.local> <180076068.145887.1768567659299.JavaMail.zimbra@couthit.local> <2a977fd4-910a-4838-9ed6-97224d6ab775@lunn.ch>
-Subject: Re: [PATCH v4 2/2] arm: dts: ti: Adds support for AM335x and AM437x
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="ed6RPlZl"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4fKrZw3WpFz9vHN;
+	Tue, 24 Feb 2026 09:33:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1771921992; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=BYg4q6UpxC9QuXXiNNDVGkJ25zHrTtqhRQuiGoCwbvc=;
+	b=ed6RPlZlOUibWHwOocSfYTbtNmFVbXwAr31lgxNkh51bR+5xZFRh30ChM/VGa7gukLud7Z
+	gjTbJ0LWe52KAN52GeHh8bJ/s/WoNKVXWlvSRa1yRizbR3EpzoiYW3Wbfme/2w9YFsXFEw
+	1Sfja1+XOBY3ofP3UjIRgt036+qwuwuFFrM+HEUlokbyx8ydCENU7J4uyTEkj1BUrJue4J
+	99L7hKKIyf8MBC9C72PvXh5nuwMG3ygnRsPehMi1rXkCt72nSQ/Sw/iY4BR8htDmahaWW7
+	ev+dgehPQrgSupmjoTGs4VKws0G0Lm/uzKdxtzYsBciIbPjnvhapWs+EIlsL6g==
+Message-ID: <3014988f8a26dbac18a32ec22e0da3f5a383fd97.camel@mailbox.org>
+Subject: Re: [PATCH 01/37] PCI/MSI: Add Devres managed IRQ vectors allocation
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Shawn Lin <shawn.lin@rock-chips.com>, phasta@kernel.org
+Cc: Bjorn Helgaas <bhelgaas@google.com>, "Vaibhaav Ram T . L"
+ <vaibhaavram.tl@microchip.com>, Kumaravel Thiagarajan
+ <kumaravel.thiagarajan@microchip.com>, Even Xu <even.xu@intel.com>, Xinpeng
+ Sun <xinpeng.sun@intel.com>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>, Jiri Kosina <jikos@kernel.org>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, Zhou Wang
+ <wangzhou1@hisilicon.com>, Longfang Liu <liulongfang@huawei.com>, Vinod
+ Koul <vkoul@kernel.org>, Lee Jones <lee@kernel.org>, Jijie Shao
+ <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, Sunil Goutham
+ <sgoutham@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Heiner
+ Kallweit <hkallweit1@gmail.com>, "David S . Miller" <davem@davemloft.net>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Oded Gabbay <ogabbay@kernel.org>,
+ Maciej Falkowski <maciej.falkowski@linux.intel.com>,  Karol Wachowski
+ <karol.wachowski@linux.intel.com>, Min Ma <mamin506@gmail.com>, Lizhi Hou
+ <lizhi.hou@amd.com>,  Andreas Noever <andreas.noever@gmail.com>, Mika
+ Westerberg <westeri@kernel.org>, Tomasz Jeznach <tjeznach@rivosinc.com>,
+ Will Deacon <will@kernel.org>, Xinliang Liu <xinliang.liu@linaro.org>, Tian
+ Tao <tiantao6@hisilicon.com>, Davidlohr Bueso <dave@stgolabs.net>, Jonathan
+ Cameron <jonathan.cameron@huawei.com>, Srujana Challa
+ <schalla@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, Antoine
+ Tenart <atenart@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Raag
+ Jadav <raag.jadav@intel.com>, Hans de Goede <hansg@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
+ <jirislaby@kernel.org>, Andy Shevchenko <andy@kernel.org>, Manivannan
+ Sadhasivam <mani@kernel.org>, Mika Westerberg
+ <mika.westerberg@linux.intel.com>, Andi Shyti <andi.shyti@kernel.org>, 
+ Robert Richter <rric@kernel.org>, Mark Brown <broonie@kernel.org>, Nirmal
+ Patel <nirmal.patel@linux.intel.com>, Kurt Schwemmer
+ <kurt.schwemmer@microsemi.com>,  Logan Gunthorpe <logang@deltatee.com>,
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Bingbu Cao
+ <bingbu.cao@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>, Arnd Bergmann
+ <arnd@arndb.de>, Benjamin Tissoires <bentiss@kernel.org>,
+ linux-input@vger.kernel.org,  linux-i3c@lists.infradead.org,
+ dmaengine@vger.kernel.org, netdev@vger.kernel.org,  nic_swsd@realtek.com,
+ linux-arm-msm@vger.kernel.org,  dri-devel@lists.freedesktop.org,
+ linux-usb@vger.kernel.org,  iommu@lists.linux.dev,
+ linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>, linux-cxl@vger.kernel.org, 
+ linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
+ linux-serial@vger.kernel.org, mhi@lists.linux.dev, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Jan Dabros <jsd@semihalf.com>, 
+ linux-i2c@vger.kernel.org, Daniel Mack <daniel@zonque.org>, Haojian Zhuang
+ <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org, Jonathan Derrick
+ <jonathan.derrick@linux.dev>, linux-pci@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ linux-media@vger.kernel.org, linux-mmc@vger.kernel.org, Jakub Kicinski
+ <kuba@kernel.org>
+Date: Tue, 24 Feb 2026 09:32:39 +0100
+In-Reply-To: <d601ec05-ef38-5e8e-c643-c05010717ebe@rock-chips.com>
+References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+	 <1771860581-82092-2-git-send-email-shawn.lin@rock-chips.com>
+	 <20260223160402.3ad8f079@kernel.org>
+	 <ec226aa1-5cc8-855f-8f90-1d7f89efe766@rock-chips.com>
+	 <07fc896007d86b731cbfb3cf6bbdf4e5315d7a77.camel@mailbox.org>
+	 <d601ec05-ef38-5e8e-c643-c05010717ebe@rock-chips.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Zimbra 9.0.0_ZEXTRAS_20240927 (ZimbraWebClient - GC138 (Linux)/9.0.0_ZEXTRAS_20240927)
-Thread-Topic: Adds support for AM335x and AM437x
-Thread-Index: ORYIHTaQ3Y3lblXZoUQVThEHXtOteQ==
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.couthit.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: smtp@couthit.com
-X-Authenticated-Sender: server.couthit.com: smtp@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
+X-MBO-RS-META: 9xmyhhcgdmozckmn6yfrqrcxte8ryx4p
+X-MBO-RS-ID: 6c93f1b6d9c4844e3a5
 
-Hi,
-
->> On the AM335x board, the CPSW MDIO and PRUSS MDIO signals are routed to =
-the same
->> physical
->> pins (as shown in the schematic, see page 10 =E2=80=9CMII_MUX=E2=80=9D i=
-n
->> tmdxice3359_sch_3h0013_v2_1a.pdf
->> from https://www.ti.com/lit/zip/TIDR336 ). Because of this shared routin=
-g, the
->> pinmux
->> configuration applied by U-Boot for CPSW MDIO remains active even if the=
- CPSW
->> MDIO node is
->> later disabled in Linux, and Linux does not automatically revert the pin=
-s to
->> their reset state.
+On Tue, 2026-02-24 at 16:21 +0800, Shawn Lin wrote:
+> =E5=9C=A8 2026/02/24 =E6=98=9F=E6=9C=9F=E4=BA=8C 15:47, Philipp Stanner =
+=E5=86=99=E9=81=93:
+> > On Tue, 2026-02-24 at 10:08 +0800, Shawn Lin wrote:
+> > > =E5=9C=A8 2026/02/24 =E6=98=9F=E6=9C=9F=E4=BA=8C 8:04, Jakub Kicinski=
+ =E5=86=99=E9=81=93:
+> > > > On Mon, 23 Feb 2026 23:29:40 +0800 Shawn Lin wrote:
+> > > > > pcim_alloc_irq_vectors() and pcim_alloc_irq_vectors_affinity() ar=
+e created for
+> > > > > pci device drivers which rely on the devres machinery to help cle=
+anup the IRQ
+> > > > > vectors.
+> > > >=20
+> > > > If you can please add this API with just a few users, and then conv=
+ert
+> > > > remaining users via the subsystem trees in the next cycle.
+> > > > There's no need to risk wasting maintainer time on conflicts with
+> > > > conversions like this.
+> > >=20
+> > > Thanks for the suggestion, Jakub. I have little experience with
+> > > cross-subsystem cleanups like this, so your suggestion is very helpfu=
+l.
+> >=20
+> >=20
+> > When I removed the hybrid nature of pci_request_region() et al., I
+> > concluded that there were so few users that doing them all in one run
+> > was sufficient.
+> >=20
+> > For larger reworks, like removing pcim_iomap_table(), a slower step-by-
+> > step strategy is necessary for the reasons that Jakub details.
+> >=20
+> > It is then smart to omit an easy to port subsystem / driver for the
+> > ultimate patch series where one then removes the hybrid behavior from
+> > PCI itself, after porting the last driver.
+> >=20
+> > In general,=C2=A0 as Jakub details, those step-by-step cleanups are a b=
+it
+> > safer, since you can proof valid behavior early on and in case of an
+> > explosion they are very easy to revert.
+> >=20
 >=20
-> It is generally a bad idea to rely on the bootloader. I would make the
-> CPSW MDIO configure the pins how it needs it. The PRUSS MDIO should
-> also configure the pins how it needs them. However, it is not as
-> simple as that...
->=20
+> Thank you, Philipp. I wish I had attended your talk at FOSDEM 2025 on
+> removing pcim_iomap_table earlier. This first version was perhaps a bit=
+=20
+> too aggressive.
 
-On AM335x, the MDIO interface is selected by a hardware jumper before the
-bootloader runs. The selection is latched in hardware, so only one MDIO
-controller (CPSW or PRUSS) is active at a time.
+No worries at all, it's very cool that you pick this work up!
 
-Since the hardware choice is fixed prior to Linux boot, we decided to ensur=
-e
-in U-Boot that the pins are configured according to the selected hardware l=
-atch.
-Linux still configures the active MDIO controller as required via its DT an=
-d
-pinctrl settings. The U=E2=80=91Boot change ensures a clean initial state t=
-hat matches
-the hardware latched configuration, and we have this prepared as a patch th=
-at
-will be submitted to mainline U=E2=80=91Boot shortly.
+>  For v2, I think the plan should start with addressing
+> the switchtec and vmd drivers, since both of those, along with the new=
+=20
+> API additions, can be handled entirely within the PCI subsystem scope.
 
-> Looking at the schematic, what you have is ugly. You literally wire
-> the outputs together, without a hardware mux. For MDC you assume one
-> is Hi-Z, while the other drives the line. For MDIO it does not matter,
-> both are inputs. so Hi-Z.
->=20
+Sounds reasonable to me.
 
-Although the schematic shows the signals tied together without an explicit =
-mux,
-the hardware jumper selects RMII (CPSW) or MII (PRUSS) before boot. Only th=
-e
-selected block is enabled, and the other remains inactive, so the lines are=
- never
-driven concurrently.
-
-> I actually think you might need to represent this in Linux, with
-> something i would call a pinmux-mux. You give it two sets of pinmux
-> configurations. The active device claims the mux and gets it to set
-> the two sets of pinmux as needed. Also, just setting the pinmux to
-> GPIO is not sufficient, you also need to ensure the GPIO is configured
-> for input, so the lines go Hi-Z. Often pinmux and GPIO controllers are
-> interconnected, so the pinmux subsystem might be able to do that for
-> you.
->=20
-> I don't know if a pinmux-mux already exists in Linux. You probably
-> want to ask on the pinmux mailing list, or they might have a different
-> idea how to cleanly do this.
->=20
->=09Andrew
-
-In this case, the selection is static and determined by hardware via a jump=
-er,
-not switchable at runtime. Linux reflects this by choosing the Device Tree
-configuration corresponding to the latched jumper, it enables the selected
-MDIO controller and sets up its pinmux, while the other MDIO controller
-remains disabled.
-
-We will update the patches by removing the CPSW pin reset configuration in
-ICSS context and post the next version shortly.
-
-Thanks and Regards,
-Parvathi
+Regards
+Philipp
