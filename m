@@ -1,124 +1,101 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07AD23793D4
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 11:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8196737C103
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 11:25:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771932291; cv=none; b=Z6Aexf/3b+JtVUepCyR0uOjsGJWNOzvK1qi6BJYzNVSFCBdjTNtVwg3ltCsMuFwG4z5QZvc8xXqveCndAqHoGLBu1sPDLkL0vqtCBQB0cBeCepZzJVTBMMzl93X9iPYYhTpUgxI77vBJi6lpcpfHyE6MxG12r88j1uoghF43MjI=
+	t=1771932307; cv=none; b=Y2QpHZglpajCFQooZkGVg4onyax2csHfHmXTXLt2EtGiFDRXSz8a1lviwUnebaL19MYvb7NJczMOxi+Euufc7frU0c4OLJKPq4q0VfIXLl8pnx+SoZTae9l2z+KhNenzd5nO1o7EDSNzMUN6FG8OCcayFKT6WIsMldY7GHReHko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771932291; c=relaxed/simple;
-	bh=y03Xr9m4xwtwaUB084R1d8d59eQ4iw+fLjrA3S7CdG8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m2lsFLM6OrE0CiTc5N7y2sCt8huhV8byG4tKYGEg2+ibJWC/CrRqzT5YkurHZJmtgxzlcjhAugflP/cEWlpLZbHEF8/QC4+fgdQrYjhwdfC/lSKuuU2+kWmsuU6CeIslLcPSEXM1Uc4QBM/BFPafY0srSq1vsDqUDrycaYFrRf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=BFjlqVSj; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=mFBQfMmi; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1771932307; c=relaxed/simple;
+	bh=7bdhHPhySj/AVG4aVLAyHnBvfKOWB83ahb3JGfgq+Zo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=F79cNqCkp6wS1PDNLjECUQN8H0ZBpiKgww14G8w1xfHuZ3YBIYyO6Kt4IRONBBLYxyyrbGyETnYlY1jr7Ls5FFmllRQpHj+gUU6rDx7dztBOOVLj9T08UVxttmsa/Oxgq4ThXCUaac+twKVjDhGV2VueB2gX24R28dx5dQWACck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hhfyw7Mz; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="BFjlqVSj";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="mFBQfMmi"
-Date: Tue, 24 Feb 2026 12:24:47 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1771932288;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6CMW/IVJbm+IOUBlrd6j7F232TvXrMWDIUSbwu7I8jE=;
-	b=BFjlqVSj7vExmfRwLeo/VkdmKRf8jqurw3He2405X5G0fc1aVnLeuxSrGyB7v2wD8MX3tM
-	wCqtY5uVV7Zxio4xMVTDE/kHX/ZPZqQSoaEKBfu+DwusCPLUs31+cfWc257zUayiTl7A70
-	r7A+dM+DGCzosZuX8cKnLfw0Gw7oAmx7FCADWViF2FffE6dtD147g3eS1IHlTwP0bAmt4Y
-	BCtfNAKPlG3O/RAk+Qg4TXypmDx9FHJohTccxUksYVq8FzQqLgsFbM3UoDW9nAFK0AXSkk
-	ZhoniUD4WN37fwD9NyG2a9jrC0Z25g7k1Z0BWZOSxQh+Ydj5j0i4Y0WDW1rJlg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1771932288;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6CMW/IVJbm+IOUBlrd6j7F232TvXrMWDIUSbwu7I8jE=;
-	b=mFBQfMmipfl3DzUzcIWdia5qxWsZeRl10FYqoNt06k01dTzIS+ORy+EQCmOC6p9Vs9GsfQ
-	SRYpcXiPbuRng2CQ==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Felix Maurer <fmaurer@redhat.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hhfyw7Mz"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8230c839409so4453225b3a.3
+        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 03:25:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771932306; x=1772537106; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xS+1ANy78PygoLDhQXmSx08yr6dtxSTbNApKDUoI13s=;
+        b=Hhfyw7Mzr4QUbM4UEeq7TBiboYasP0gG33lSMA26aTgK8EVlS7ztYBWbDEaTmJY625
+         c03KMIga0AzwhRvc/BP6MWz5a6ybqj7RXzQFjG9PZmuTH+jAc22a7fk7MOIwWrzHK+hl
+         NpoTHue/1ubfPp+9BuGZw5gUl7bSxPV4WA0q3hrnmO15CpgI3lVSsZtY4XU3s21/HwFL
+         dIyELfkV8KtS71bbylZXAOkBaAd153yzz/COobokNklqsy/2oPAZiI0NfsJ94skJGeDQ
+         SxrIT34KSjPCD7XvjS4N3zP9oAFZzs/5gQfp7hkO2CXOaoLa2Ddp9PtC7uWUSLORmtZq
+         Kvyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771932306; x=1772537106;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xS+1ANy78PygoLDhQXmSx08yr6dtxSTbNApKDUoI13s=;
+        b=tpNRCcgQgPsy0PYnvgxzHsRIyFZ672HMIQy4LKdO0plj0kgCe12tKl54DTO0dABmB2
+         oFhWlkYXKGl1fo33DXmKPwGnk1TiHyUtp0u+Ey3k/B7eEE3vxJ35U3KSbiZAnNjkcSU7
+         douHMtqJwUxf/zZZBDgpFZN5ryj4dv2Eq3N6HTdYQTS1f06m01srYqNuzjEomxNOFi+h
+         U2PogqM1mZeqYkJqSNC67ZBOxL8J3ssrLBDktYnhBldAcZ4ePkAaM1y2+sNEly0GpCRm
+         dg2o2ifoQtWua3tG3Du7VKjCwoTL2dgQL0vyYt9FPf3p/4xlLzUClQxVke471ixMMfEw
+         AtMQ==
+X-Gm-Message-State: AOJu0YzUWQRzJviPRF4T3mRz5aLYXHu8P+AuKbUGUD5E1nTo+/aRIuyn
+	eHdKTg473oARiYyg3GYzFHRGL1O/UCi8/oKPbvzAzTo3Q82lywqOp8zu4ccqcp7Q
+X-Gm-Gg: AZuq6aKO77k1rXtwkOFtT1B3KfgBj1oulDqDljDMXwbu8efzLlpJTM1UBsvMsdFS9U5
+	b0Bxtb0sVqV7CnRyoUXoSF6zDMeu1aFHcbSHf0AYtVcQbeGGI5Hfc1D8gogv6CJMNrME4OPBbEU
+	HL1WYUVhiqVRCqDVqk+uwGR3Xkr4jlD2JOHkCj17ctd4Eq7oii1NCLH6vAl0z1JYv0O/khefT4l
+	/1jc9fG4BByWNay0zGb+W48hEwhPudHdfWbWp76VxHc5NUjuzoSUt9LM6s+zMj7qKPAZZkmI7Qu
+	rRjUpwcJdxe+JOHFPmgZZ/zVj/zxOW/d0MVSitqsGh3Nkxt5MkHLeO9WDReVsBpcKW9KTNwx8d9
+	12EL0O2V0qCBSaF6f4PDl8WLxMQXwxmVQJqzl956Bq6ibT/7ijAZieDIPsIs5sS+GXXW672WOUI
+	Kd+xoe6/hpL4wLu2cHKCtgPwQamuWDd/QZfqQ7/Xq0FWVG
+X-Received: by 2002:aa7:930a:0:b0:81f:5f49:6913 with SMTP id d2e1a72fcca58-826da9ee839mr10464994b3a.30.1771932305814;
+        Tue, 24 Feb 2026 03:25:05 -0800 (PST)
+Received: from d.home.yangfl.dn42 ([2603:c020:800b:d7ff::38])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd694eecsm10262316b3a.25.2026.02.24.03.25.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Feb 2026 03:25:05 -0800 (PST)
+From: David Yang <mmyangfl@gmail.com>
+To: netdev@vger.kernel.org
+Cc: David Yang <mmyangfl@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Subject: Re: [PATCH RFC net-next 0/2] hsr: Add additional info to send/
- receive skbs
-Message-ID: <20260224112447.ppskFxhW@linutronix.de>
-References: <20260204-hsr_ptp-v1-0-b421c69a77da@linutronix.de>
- <aZNBfh81p1zBvbi2@thinkpad>
- <20260217161053.XMFBwFXg@linutronix.de>
- <aZYSvY8nUKhpLZhv@thinkpad>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH net-next v2 0/3] net: dsa: yt921x: Use u64_stats_t for MIB stats
+Date: Tue, 24 Feb 2026 19:24:04 +0800
+Message-ID: <20260224112411.1561917-1-mmyangfl@gmail.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <aZYSvY8nUKhpLZhv@thinkpad>
+Content-Transfer-Encoding: 8bit
 
-On 2026-02-18 20:28:36 [+0100], Felix Maurer wrote:
-> > Yes. Point 3b needs to be extended by
-> >   " + or does not contain a HSR/PRP header and requires one by the
-> >   system."
-> 
-> Ah, I missed that! Thanks for pointing it out, that seems to be the
-> tricky part to me. Just be sure, you refer to the Pdelay_{Req,Resp}
-> messages? Or are there any other messages?
+Avoid load/store tearing of 64-bit values on 32-bit architectures.
 
-These and the SYNC+FOLLOW_UP if the node is master.
+v1: https://lore.kernel.org/r/20260203171305.95085-1-mmyangfl@gmail.com
+  - use functions instead of macros
+  - rework commit message
+  - hold lock for stats when possible
+v0:
+  - Sending remaining part of
+    https://lore.kernel.org/r/20260118013019.1078847-1-mmyangfl@gmail.com
 
-> > > If I understand your patch 2 correctly, you will be maintaining two
-> > > sockets in userspace (one bound to each of the ports A and B through the
-> > > HSR interface using PACKET_HSR_BIND_PORT). Binding through the HSR
-> > > interface to port A/B has the very special meaning of making a socket
-> > > only receive a very small subset of the packets, that is PTP traffic at
-> > > the moment. This seems like a somewhat hidden property of the bound
-> > > sockets and should at least be very explicit.
-> >
-> > Technically four sockets (two for A and two for B) but in general yes.
-> > What you mean by hidden property/ very explicit? Document
-> > PACKET_HSR_BIND_PORT in packet(7) or something else?
-> 
-> Yes, at least that. Maybe also make it more clear in the name that this
-> kind of binding means that you will not receive all packets from this
-> port but just some (atm, PTP).
+David Yang (3):
+  net: dsa: yt921x: Refactor port error message
+  net: dsa: yt921x: Return early for failed MIB read
+  net: dsa: yt921x: Use u64_stats_t for MIB stats
 
-Right. That happens implicit because they are not tagged. Extending the
-present documentation would be something I consider once we do align on
-something.
+ drivers/net/dsa/yt921x.c | 235 ++++++++++++++++++++++-----------------
+ drivers/net/dsa/yt921x.h | 114 ++++++++++---------
+ 2 files changed, 198 insertions(+), 151 deletions(-)
 
-> > However if we
-> > ignore this detail and can receive on interface A and send on interface
-> > B over XDP and get timestamps right then we have the same as the packet
-> > interface on the two eth devices. What is missing is sending with HSR/
-> > PRP header.
-> 
-> You wrote in another reply, and I agree with it, that sending with the
-> system HSR header and sequence number must go through the hsr device.
-> Frames that already have a header, such as Sync an FollowUp that are
-> forwarded, could just directly go through the slave interfaces.
-> 
-> I think the cases should be handled independently: to send a frame with
-> a full header (i.e., the forward case), we already have the AF_PACKET
-> socket on the slave interfaces as an option. For sending a frame just in
-> one direction in the HSR ring through the hsr interface, we have to come
-> up with something, but IMHO just for that.
-> 
-> I like the idea of putting the port hint in the ancillary data of the
-> message, but I'm not sure where to put in the skb then / how to pass it
-> to the hsr interface. Willem's suggestions are worth exploring I think.
+-- 
+2.51.0
 
-Good. I will try to come up with something. Willem had something, I will
-look into this.
-
-> Thanks,
->    Felix
-
-Sebastian
