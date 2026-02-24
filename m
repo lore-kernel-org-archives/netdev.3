@@ -1,140 +1,104 @@
-Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic302-19.consmr.mail.ir2.yahoo.com (sonic302-19.consmr.mail.ir2.yahoo.com [87.248.110.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B7526ADC;
-	Tue, 24 Feb 2026 07:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098562C21D9
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 07:43:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=87.248.110.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771918830; cv=none; b=ZAf6DoS0p87tadAqumqKwQy8C9lHnlXjTgfcbuICRsOIXOZaoWtCfjMhtlKmoQ5ENGdWs+QAFbTzIJqvEzSGvPiXcVUaUzGY3XKHk2MKK59l0SN5PrWMgZrSn2gYiybcjg80Kon1jdStZAdRvX2AmvCG6b1+9J104oHodYF0C4I=
+	t=1771918987; cv=none; b=QYlRL3hltebZzpgSdqA5EpmerPvpHp7z96lFVhv+GbVBXiioOzYXhwB3wRQ+eN6mLZeY+DSDedR+lrA4Jk3iGqmRgPMHqsGCGQJEVvhUNy5+jYlBHR21kRBXWxdfV+GS6FXwBFsqWXUANcTHpy0ELbtcIRwTTmTcuoTkTY9ZDwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771918830; c=relaxed/simple;
-	bh=nO29udC/TvyKqbOOxAxOz7i5aFfdank76tWIHV3k8yo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Id41uLY/PCsfYRV6s33Rs/wEFPM0sOR34I08YnMJrihV6b/vgcBB5JwXgZwlgEshsOJ+uRRk52SuAIP8Be98J3N8UI6NbrCQqywnanM4FjNOUuNWAKHJ3Kvazf7voGf8vSdIU/XcuVKuHay+JMfB55hxfjdrHqJ4EHcLXd1Jayc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=FKEAxwg8; arc=none smtp.client-ip=80.241.56.161
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
+	s=arc-20240116; t=1771918987; c=relaxed/simple;
+	bh=bm2qPIWy/hHE4P+dDtjgplvlkXWZzasPiAQIXgfmf8c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=Okqb56fPQeZodmyy3UOv5jAStZdrPECe9DTew0VkomtIzJzOi0tBeeIAEBTu2chokPJ0NHYSpZO/8ztHsMi/Lu9TWZrFMBCZ8Rau4ZLEoLbHQEIhu+Wh2MQx5xEMpnObqcvxZqhxbjODHF2AqH+O7tOqYgfyf4zaoEOBcnVoqYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=HrRgrp+D; arc=none smtp.client-ip=87.248.110.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="FKEAxwg8"
-Received: from smtp1.mailbox.org (smtp1.mailbox.org [10.196.197.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4fKqQ11RwVz9v7N;
-	Tue, 24 Feb 2026 08:40:25 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1771918825; h=from:from:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nO29udC/TvyKqbOOxAxOz7i5aFfdank76tWIHV3k8yo=;
-	b=FKEAxwg8/2TVXMyYr/OiVCz5K1q4W+C/xn+JVXi//EMazudZywyjLwZrwzHNLYzROrIGjJ
-	WiOn32rHS7oEwHLLm6QL2yCRYinpfVLqqwTh7sT6RAQNG0u4EURZ5HxR4OK58Z3/n7gZZV
-	8caQG4lw5WqV9qVnTFk84Cn+SoVQbSZKgx07St5+8pxpkc99ybs0qQSpkSnjhqX/fK2fVh
-	R1e9tX2O0SBa7kFE1+a+xKqHOjB9jmAde03Ko6m7uo3zhkzAiDlzUONdZOidXL54Qs7PfF
-	bCIWc/77Lvrh1BnmhbO6+/6V4uapf65BSL0fwPQx8DWsFH0Szy8rGeRiOsWY+A==
-Message-ID: <7ca512d133f7a3bcfe00e9b0b2af5fe5f147ad77.camel@mailbox.org>
-Subject: Re: [PATCH 0/37] PCI/MSI: Enforce explicit IRQ vector management by
- removing devres auto-free
-From: Philipp Stanner <phasta@mailbox.org>
-Reply-To: phasta@kernel.org
-To: Simon Richter <Simon.Richter@hogyros.de>, Shawn Lin
- <shawn.lin@rock-chips.com>, Bjorn Helgaas <bhelgaas@google.com>, "Vaibhaav
- Ram T . L" <vaibhaavram.tl@microchip.com>, Kumaravel Thiagarajan
- <kumaravel.thiagarajan@microchip.com>,  Even Xu <even.xu@intel.com>,
- Xinpeng Sun <xinpeng.sun@intel.com>, Srinivas Pandruvada
- <srinivas.pandruvada@linux.intel.com>, Jiri Kosina <jikos@kernel.org>, 
- Alexandre Belloni <alexandre.belloni@bootlin.com>, Zhou Wang
- <wangzhou1@hisilicon.com>, Longfang Liu <liulongfang@huawei.com>, Vinod
- Koul <vkoul@kernel.org>, Lee Jones <lee@kernel.org>, Jijie Shao
- <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, Sunil Goutham
- <sgoutham@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Heiner
- Kallweit <hkallweit1@gmail.com>, "David S . Miller" <davem@davemloft.net>,
- Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Oded Gabbay <ogabbay@kernel.org>,
- Maciej Falkowski <maciej.falkowski@linux.intel.com>,  Karol Wachowski
- <karol.wachowski@linux.intel.com>, Min Ma <mamin506@gmail.com>, Lizhi Hou
- <lizhi.hou@amd.com>,  Andreas Noever <andreas.noever@gmail.com>, Mika
- Westerberg <westeri@kernel.org>, Tomasz Jeznach <tjeznach@rivosinc.com>,
- Will Deacon <will@kernel.org>, Xinliang Liu <xinliang.liu@linaro.org>, Tian
- Tao <tiantao6@hisilicon.com>, Davidlohr Bueso <dave@stgolabs.net>, Jonathan
- Cameron <jonathan.cameron@huawei.com>, Srujana Challa
- <schalla@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, Antoine
- Tenart <atenart@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Raag
- Jadav <raag.jadav@intel.com>, Hans de Goede <hansg@kernel.org>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
- <jirislaby@kernel.org>, Andy Shevchenko <andy@kernel.org>, Manivannan
- Sadhasivam <mani@kernel.org>, Mika Westerberg
- <mika.westerberg@linux.intel.com>, Andi Shyti <andi.shyti@kernel.org>, 
- Robert Richter <rric@kernel.org>, Mark Brown <broonie@kernel.org>, Nirmal
- Patel <nirmal.patel@linux.intel.com>, Kurt Schwemmer
- <kurt.schwemmer@microsemi.com>,  Logan Gunthorpe <logang@deltatee.com>,
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, Bingbu Cao
- <bingbu.cao@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>
-Cc: Arnd Bergmann <arnd@arndb.de>, Benjamin Tissoires <bentiss@kernel.org>, 
- linux-input@vger.kernel.org, linux-i3c@lists.infradead.org, 
- dmaengine@vger.kernel.org, Philipp Stanner <phasta@kernel.org>, 
- netdev@vger.kernel.org, nic_swsd@realtek.com,
- linux-arm-msm@vger.kernel.org,  dri-devel@lists.freedesktop.org,
- linux-usb@vger.kernel.org,  iommu@lists.linux.dev,
- linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Simona
- Vetter <simona@ffwll.ch>, linux-cxl@vger.kernel.org, 
- linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org, 
- linux-serial@vger.kernel.org, mhi@lists.linux.dev, Andy Shevchenko
- <andriy.shevchenko@linux.intel.com>, Jan Dabros <jsd@semihalf.com>, 
- linux-i2c@vger.kernel.org, Daniel Mack <daniel@zonque.org>, Haojian Zhuang
- <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org, Jonathan Derrick
- <jonathan.derrick@linux.dev>, linux-pci@vger.kernel.org, 
- linux-gpio@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, 
- linux-media@vger.kernel.org, linux-mmc@vger.kernel.org
-Date: Tue, 24 Feb 2026 08:39:43 +0100
-In-Reply-To: <6223f3cb-693f-42e7-9147-30f659f08563@hogyros.de>
-References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
-	 <6223f3cb-693f-42e7-9147-30f659f08563@hogyros.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="HrRgrp+D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1771918983; bh=h5Gfv++c0AF2QSz5oCZrZRGlwBlnJtyXzPvoPPd93MU=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=HrRgrp+Dbz6E+vN0PF8MPTfPiKrlnVEQrZO5Z76Cuh5QrD2mNHZJHf/Iy3EAzJRUoydXov1H+OM8sDO2lqqTYB6H+KYGZVwHebo9nmfqlClvneMdZkMifpCiJLxDLRroeYqgm6ZWDi2Oi+Tq4mSV/ozxplz4JZEgQa+4ZzrO+gsWQOK+fnvwRtn2i8cjCPfIZYRU7XSvpfjHn3dspU56f7JaG7cVqHDo3RBF9qUO0ozQDXBzpkNe635Pcr2Xc2LW3GabcX3Ad3/znSt+mZvScNr3m5UVr9y4asXNnXbmZOsmAH8t/uKWlZ4aufc/ADm34sCpAp4DhXer9nqWsK0ELA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1771918983; bh=vpumSg46nVMiI4Iv8TCdU3jlQZm9ZcyIAJ18gR8o3MA=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=Hk7j6xKDqJUsaOa7NKUts4LauqKKpbbkXMwSVfOfdjLy8+yS0dpARJAfh04AO4yODIRI+Vsdhd+BK2Px+3Cf3QUr2//nc2ejzgNKLYjGUMKyHblDPWvrG1nZpHkc8FSlrWNkM3bJB1ZUQvIFGuPSeq1oVjp51ae5BasJklPHt3odNeM6vNqKJqdmPLEx3kh2/Fpd8wrC4j9P2Dn9axfO1E5/wUqs91vZIdynLqrD1dYDA8aQ2ksE7AxVdc5jjqctdlsgoPOM6IoT0KzwKWtfPvvJzGv9BFGqZNLVJZ+TsmAh62054udTRJIvT8Sjf2H8Q1YqFF5M39pcJelo9iSrMA==
+X-YMail-OSG: J9zn06cVM1mvTf.BbIiQqZI.EgQCrz5D.BKh.2g.zNYLV74y3u7JuzNwbpoMv3d
+ oYjx1HutQdW3T_qSbfBCIGtTYAOX.ExE1SkIaAnOFEOgkV_R8NVOWua0nrG.YoGVaXFXw..tzKkw
+ rhOX7kyQglMeFtBQpBDhuytJDfMBSvkrxFyKOGeg3P1howhagfZRxma.QWP_KXSQO8CZkWf9WhsO
+ _pSqAUIKcyWSwwGqbAabhzF.hlIwZO.iHcNrr.O84K_U4ZDxOj0nX0mUDh5TBCRCmySYRj.LMs4_
+ Z94vPg4rxphxECYKahtMUov6OxRAvD92PL0efO41d7zNuzNhjtZ.8uito_pDo1Rl2FY6NydAICl0
+ _hvG83RkNi.eoslzsJMBOpmqOGoNysCl4mXErRi7THANagPET2M1ZD4jQQ64xSz6ccpby4Sdc0pq
+ wDGz91d4OsXqYvk2PoPtjVUQRY6UiFLREmj8gcjeNNECQfpkOe2PNwOCj2wB7wsG7jtHJaN1bnws
+ tmsdFayrtMxXnp4eC4JuXL2nagGrh4HZFO88xIXaGGQBDcSMbKJGld0B4kbB11tN95kbsUSd3s7a
+ 1fEt9KTkJajyqxPJNDBieFrpy1CAVXYa0XoVyS.JmRJnarGuAc2VLMATi8uOBoi9u8ytJ9jF76H.
+ iCaJ1P07nkmD8l.YDijW3ncFP1dMPWMVn7SBgwIKy8oZ07MUgBVDEZaXF7D2Cq.dSGhUV9ffuOOM
+ WYbleQFGvkdgGkTJXl8kaaXx5F8qDH4ukSTtsHcdLS9vYmM4LptcxRTgolaFgKZuxPphAFeLH55S
+ zuBqs0GM_thNBKIE4g.S8rkBTC1HNe2JRFqNvrcltWMSQotOd7SweVcFnrz1.HodXTtFvx3hyXuz
+ H6N7h2anhmw8nel12kxPWZOLyIpwYHB2TwDPIVf6OtinZjXnTfqTLnTrjcPxHOD77WITo31kVvmZ
+ JzcTghDT72Y6AU_8EGLD9Idx9JRhqegKtn60iTEEfTYf1WRj8NDPE_N90Sjmde3f4pA.AlG8NY2I
+ beHVqn8Em9P7dJzhJCMcpTBCma8yEGWwT51m_Z5OPQNUBqRTtqVWG0tZ1kmFERVsNUYHZyXvSoSa
+ AtPzJvkjHfU2Loxc0HZ1gJqZ8QMLPvySKF6yxYbnVYVSmHLKrD_IId7cAH0qtjeAsh69ZgsWh39c
+ Jl.fJ2SPdOb10W7N_5apZYcqmtx2K9SXkGtm4Js9TZyVtnv5ZkXYKR3BWc2jLwmEmCR0StK0Usgz
+ OdEN48oDcYw10CjJ.stsI9ACm4oF.jNXAPZ47MSe4ziuwWO4iX.OcF1beZSZr872aRV9P9TIAuCT
+ svQL_Fv1oQVRHy5i4bFpUPDRvKNHfSrwwACvi0LigwHnL9IoGN6mjDSnuzMBaRm.eMRABZGQNdhu
+ kemK4OsRg1ZyshZUo39_8JHodqDx.P3A_pPnI0e8DHhChQ7MafOpqquvqptg4QRvjIRwCDDnTfqT
+ c3lVZD4W9fQ7MWQVwd0uUyw.HxW0GXW4pvoJhp4j36dtURY17OM5JCANQXONuxoOrqPSi7VOKN.l
+ CVus8.Cc0ehGdsoYV1QJ2W3dzb2RriMLwqFmpBuhQZFev4dkW7exV26NwplNRngNuKq1jiJlFnHw
+ S2LbvoX3xsdZesXuqg.VHqxK4uTU.rKBorDjhqXTxWR.oOAROp2A3JClU6bui_.ORiGxwZ7fZoMW
+ 3eOmLAkPMbe5NyMQ5Z_fN72uyWGVCEuCXqeNZswbliAptPpiTnXsdNkh5h_guBou5D8eIznsUEen
+ ifq_LUOXy4sozdFHmHpfXOyRdcQgtpqMQDITXbYSCvOARbfXi8vw04_iUGOHP_8Ew8C_LSp6QGr2
+ eNwbwU48ut07hYQ03FzDCLLHsFdWUhwQ4jpR90BCqu4x0xol.UJHnfPCWZBUoTK_9b.OWVUgE17_
+ uyHHCOapiQR1.pYg2GQZtF7_wKoJSVqYGgJ7AGN.QrKIk78rp550T.YQPn2W3x03OMYBpxjuF1rS
+ PCVJ41Jofd_DY7c3adaU_c_icRzZOTzxNPHeCNjYTizJgriGQz.53GwcM9ZTSNhpv0JIjxh4a2Vj
+ RiZLIsKRi5na2BymBK86Sa38iusRQ1KWBXQ1YyrXLsbWltzIMiO1Dy_Ix6blP.ovuZS1MOESFQL6
+ l_Qi78_Wa8B_0nKh29iXAeFzHZN5ZST4c9D1utv_LeBIxaAEYbZBR73fCGJXDt6jlmm3auyhfJmg
+ GNXTD2FeLTPXa4JKvbrZKqA03VuKLfgbS.HQbCmD7NmqrWGBv69gOzoakZetM.l0Vq8cwRp31Skr
+ Mvg--
+X-Sonic-MF: <tomasz.unger@yahoo.pl>
+X-Sonic-ID: c81e2d46-f724-4656-8860-554ff225cc64
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ir2.yahoo.com with HTTP; Tue, 24 Feb 2026 07:43:03 +0000
+Received: by hermes--production-ir2-bbcfb4457-9k578 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 1044f27e29dc4477327e90f76ba8df04;
+          Tue, 24 Feb 2026 07:22:45 +0000 (UTC)
+From: tomasz.unger@yahoo.pl
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Tomasz Unger <tomasz.unger@yahoo.pl>
+Subject: [PATCH] nfc: pn544: i2c: Replace strcpy() with strscpy()
+Date: Tue, 24 Feb 2026 08:22:42 +0100
+Message-ID: <20260224072242.32551-1-tomasz.unger@yahoo.pl>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MBO-RS-META: nd43b1cq9px89dfwjyyj71p3i7rr7fs9
-X-MBO-RS-ID: 9e24931f76f65785344
+Content-Transfer-Encoding: 8bit
+References: <20260224072242.32551-1-tomasz.unger.ref@yahoo.pl>
 
-On Tue, 2026-02-24 at 13:14 +0900, Simon Richter wrote:
-> Hi,
->=20
-> On 2/24/26 12:29 AM, Shawn Lin wrote:
->=20
-> > When such a driver also uses `pcim_enable_device()`, the devres framewo=
-rk may
-> > attempt to free the IRQ vectors a second time upon device release, lead=
-ing to
-> > a double-free. Analysis of the tree shows this hazardous pattern exists=
- widely,
-> > while 35 other drivers correctly rely solely on the implicit cleanup.
->=20
-> Would it make sense to have a function pcim_free_irq_vectors(), to allow=
-=20
-> explicit freeing even if the device is otherwise managed, analogous to=
-=20
-> pcim_iounmap()?
+From: Tomasz Unger <tomasz.unger@yahoo.pl>
 
-We used to add those. In part because it is easier to port old users.
+strcpy() does not limit the number of bytes copied which can lead to
+buffer overflow. Replace with strscpy() which is safer as it limits
+the copy to the size of the destination buffer.
 
-Nowadays I tend to think that those APIs were more on the too-complex
-than too-simple side for a long time. As an expert or as the API
-designer you wouldn't expect it, but there are actually far too many
-users who came to believe they always have to use pcim_iounmap() and
-counter parts.
+Compilation testing:
+- checkpatch.pl: 0 errors, 0 warnings
+- make drivers/nfc/pn544/i2c.o: compiled successfully
 
-If I could design it from scratch I would probably try to tell users to
-use the unmanaged versions instead of revoking the devres consequence.
+Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
+---
+ drivers/nfc/pn544/i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Devres is actually about your consequence always happening whenever the
-driver unloads, for whatever reason.
+diff --git a/drivers/nfc/pn544/i2c.c b/drivers/nfc/pn544/i2c.c
+index a0dfb3f98d5a..7261e12aa6b5 100644
+--- a/drivers/nfc/pn544/i2c.c
++++ b/drivers/nfc/pn544/i2c.c
+@@ -526,7 +526,7 @@ static int pn544_hci_i2c_fw_download(void *phy_id, const char *firmware_name,
+ 
+ 	pr_info("Starting Firmware Download (%s)\n", firmware_name);
+ 
+-	strcpy(phy->firmware_name, firmware_name);
++	strscpy(phy->firmware_name, firmware_name, sizeof(phy->firmware_name));
+ 
+ 	phy->hw_variant = hw_variant;
+ 	phy->fw_work_state = FW_WORK_STATE_START;
+-- 
+2.53.0
 
-
-P.
