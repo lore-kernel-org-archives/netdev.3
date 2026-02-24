@@ -1,99 +1,154 @@
-Received: from mail-m19731102.qiye.163.com (mail-m19731102.qiye.163.com [220.197.31.102])
+Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD821287257;
-	Tue, 24 Feb 2026 03:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.102
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2EE189B84
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 03:17:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771902797; cv=none; b=ey3Zgc/PdUS0Uwy/ZUT7adqxeEPUoj5RhiH8GNzB0VeoMDhG5TJU9P81NxPQeaRKyg1lfIxIh0aXoy39Hy4/7tgxEgFkPbtCd2COUthjCwm59Tpw/aS2uyU1BRCHnxRD8fkYQEGVBjhktQK9QMmAIoeNRu9DtOKrunDbb8OPa+g=
+	t=1771903032; cv=none; b=fkIYvHCD7JxoxW5DUvtv8+WMA9PszTP5VrURp+I5isZAOBASfldFvLs+oHGOo9jS6/1U4TIDuQc9txtBpEO+WR+4TUwxchnjRUh7cCSay9u7pplvsqva+sEaop60fXwDmKNJfAPZZCwDGmFsZEHqFlhVnovCkYlxZrIev4iDvO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771902797; c=relaxed/simple;
-	bh=M4UJ9qoqEgnDJwKAFDyiKjKl2Ar99+wjN7D6njiVANM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=sVmWD0dIEHZm6qYs+RhDQpRQ+bTh3esbjNNlWldzUVSEWmGyrjXoxBMcKv7MIjBMBeqNpn1MI55vrIl86iJ5ly1qRhiSc+q5dRgFcivfL90fwHbEbUP1wACRDBnEgTwR5AlUdgLLQfTSIb3FfnHbtnRVSNnwN+ultaf9oYDmuts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=IV0ghmG4; arc=none smtp.client-ip=220.197.31.102
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1771903032; c=relaxed/simple;
+	bh=aVxx/dAl9N6K1fGMuhwduxugmraw8DCjFlLI39ECSQI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CDSSxWzUQmG+w+HyMgUniJuZR8aDdotNTi3triQYC3d7+fug/42zEzjWN1CPynwj8lGtBDrPFn57YKQpHp50Q32nGhFYWi+xd2uR7kGlOarwMamkCWZpxqLArs6ZJDho876rZIYTBs3TPlR6+uFqmWkpmGM0PiJG5kxke2bWq0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=utA36q1E; arc=none smtp.client-ip=49.212.198.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="IV0ghmG4"
-Received: from localhost.localdomain (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 34b404601;
-	Mon, 23 Feb 2026 23:56:23 +0800 (GMT+08:00)
-From: Shawn Lin <shawn.lin@rock-chips.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	davem@davemloft.net,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	linux-pci@vger.kernel.org,
-	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH 26/37] net: stmmac: Replace pci_alloc_irq_vectors() with pcim_alloc_irq_vectors()
-Date: Mon, 23 Feb 2026 23:56:18 +0800
-Message-Id: <1771862178-89833-1-git-send-email-shawn.lin@rock-chips.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
-References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
-X-HM-Tid: 0a9c8b374b1309cckunmb3d17b81987efd
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGU9KGFZCGUNLGBhDSU1LTExWFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=IV0ghmG4sGtSy4po62kvJscgyoHY0vUatk9nnrbg2GsGW8ZZOpAhbpgANzi/Q0+3XnavqqlejSiMfPirpEG1pA2RxBIr08516remo9ORZ2pd6NZojcMa4XewN9s5mih13H+u3UKB1nc3K4LFDXw5D+MUxkkyyA47HTePkC+Mn50=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=Vs3w1gqIcLFWsADUFrf0uniaLeLE8Vx6Fum5/MP1TYc=;
-	h=date:mime-version:subject:message-id:from;
+	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="utA36q1E"
+Received: from ms-a2 (99.223.13.160.dy.iij4u.or.jp [160.13.223.99])
+	(authenticated bits=0)
+	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 61O3Fxws082566
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Tue, 24 Feb 2026 12:16:00 +0900 (JST)
+	(envelope-from kohei@enjuk.jp)
+DKIM-Signature: a=rsa-sha256; bh=o9TCtDnPs0UhX9rEgkhCpMtnSuAWHpA6U1kvGCV5OAA=;
+        c=relaxed/relaxed; d=enjuk.jp;
+        h=From:To:Subject:Date:Message-ID;
+        s=rs20251215; t=1771902960; v=1;
+        b=utA36q1EgWn648+1eGjNMxbzfCmx3YwvlO8xSVbqiY8pZiBFd5CY5cLiFuyF7tcn
+         t9csJn6J4KcXni3loTI6LB/C0uqmKgc/K36Oks/MR8vjSPkQDoFWioUhcufxgVSQ
+         YhPc71LGeJQBbCHkUFm7860nXDQT2MF1FsEYHq+z5BGr6JCvscZAXD1qLaOqZX6P
+         rE3LA+RZcSjI739GFw9kBhe7HUDmUXiW9gwu8z1JO6jWjwjEkoyHXDsbBhQ+9A9a
+         f1MTlqYgiarEIQIvAee2PohOjCy69ALZ9qi6ny5YpSLjqf6ZaXkJs4jtzGO1Zg/r
+         mjKWdEds1X38n57HdZkePg==
+From: Kohei Enju <kohei@enjuk.jp>
+To: netdev@vger.kernel.org, bpf@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jesper Dangaard Brouer <hawk@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        Stanislav Fomichev <sdf@fomichev.me>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+        Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        Jussi Maki <joamaki@gmail.com>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+        kohei.enju@gmail.com, Kohei Enju <kohei@enjuk.jp>,
+        syzbot+10cc7f13760b31bd2e61@syzkaller.appspotmail.com
+Subject: [PATCH v3 bpf] bpf: devmap: fix stack-out-of-bounds write in get_upper_ifindexes()
+Date: Tue, 24 Feb 2026 03:15:37 +0000
+Message-ID: <20260224031556.38398-1-kohei@enjuk.jp>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-pcim_enable_device() no longer automatically manages IRQ vectors via devres.
-Drivers must now manually call pci_free_irq_vectors() for cleanup. Alternatively,
-pcim_alloc_irq_vectors() should be used.
+get_upper_ifindexes() iterates over all upper devices and writes their
+indices into an array without checking bounds.
 
-To: Andrew Lunn <andrew+netdev@lunn.ch>
-To: davem@davemloft.net
-To: Eric Dumazet <edumazet@google.com>
-To: Jakub Kicinski <kuba@kernel.org>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Philipp Stanner <phasta@kernel.org>
-Cc: linux-pci@vger.kernel.org
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
+Also the callers assume that the max number of upper devices is
+MAX_NEST_DEV and allocate excluded_devices[1+MAX_NEST_DEV] on the stack,
+but that assumption is not correct and the number of upper devices could
+be larger than MAX_NEST_DEV (e.g., many macvlans), causing a
+stack-out-of-bounds write.
+
+Add a max parameter to get_upper_ifindexes() to avoid the issue.
+When there are too many upper devices, return -EOVERFLOW and abort the
+redirect.
+
+To reproduce, create more than MAX_NEST_DEV(8) macvlans on a device with
+an XDP program attached using BPF_F_BROADCAST | BPF_F_EXCLUDE_INGRESS.
+Then send a packet to the device to trigger the XDP redirect path.
+
+Reported-by: syzbot+10cc7f13760b31bd2e61@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/698c4ce3.050a0220.340abe.000b.GAE@google.com/T/
+Fixes: aeea1b86f936 ("bpf, devmap: Exclude XDP broadcast to master device")
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
 ---
+Changes:
+  v3:
+    - return -EOVERFLOW when there are too many upper devices
+  v2: https://lore.kernel.org/bpf/20260220193039.7129-1-kohei@enjuk.jp/
+    - fix formatting, accounting that max-line-length is 100
+  v1: https://lore.kernel.org/bpf/20260216201428.65641-1-kohei@enjuk.jp/
+---
+ kernel/bpf/devmap.c | 22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
 
- drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-index 92d77b0..e35c138a 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-@@ -1122,7 +1122,7 @@ static int stmmac_config_single_msi(struct pci_dev *pdev,
- {
- 	int ret;
+diff --git a/kernel/bpf/devmap.c b/kernel/bpf/devmap.c
+index 2625601de76e..d8e926a2d0da 100644
+--- a/kernel/bpf/devmap.c
++++ b/kernel/bpf/devmap.c
+@@ -588,18 +588,22 @@ static inline bool is_ifindex_excluded(int *excluded, int num_excluded, int ifin
+ }
  
--	ret = pci_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
-+	ret = pcim_alloc_irq_vectors(pdev, 1, 1, PCI_IRQ_ALL_TYPES);
- 	if (ret < 0) {
- 		dev_info(&pdev->dev, "%s: Single IRQ enablement failed\n",
- 			 __func__);
-@@ -1152,8 +1152,8 @@ static int stmmac_config_multi_msi(struct pci_dev *pdev,
- 		return -1;
+ /* Get ifindex of each upper device. 'indexes' must be able to hold at
+- * least MAX_NEST_DEV elements.
+- * Returns the number of ifindexes added.
++ * least 'max' elements.
++ * Returns the number of ifindexes added, or -EOVERFLOW if there are too 
++ * many upper devices.
+  */
+-static int get_upper_ifindexes(struct net_device *dev, int *indexes)
++static int get_upper_ifindexes(struct net_device *dev, int *indexes, int max)
+ {
+ 	struct net_device *upper;
+ 	struct list_head *iter;
+ 	int n = 0;
+ 
+ 	netdev_for_each_upper_dev_rcu(dev, upper, iter) {
++		if (n >= max)
++			return -EOVERFLOW;
+ 		indexes[n++] = upper->ifindex;
+ 	}
++
+ 	return n;
+ }
+ 
+@@ -615,7 +619,11 @@ int dev_map_enqueue_multi(struct xdp_frame *xdpf, struct net_device *dev_rx,
+ 	int err;
+ 
+ 	if (exclude_ingress) {
+-		num_excluded = get_upper_ifindexes(dev_rx, excluded_devices);
++		num_excluded = get_upper_ifindexes(dev_rx, excluded_devices,
++						   ARRAY_SIZE(excluded_devices) - 1);
++		if (num_excluded < 0)
++			return num_excluded;
++
+ 		excluded_devices[num_excluded++] = dev_rx->ifindex;
  	}
  
--	ret = pci_alloc_irq_vectors(pdev, 2, STMMAC_MSI_VEC_MAX,
--				    PCI_IRQ_MSI | PCI_IRQ_MSIX);
-+	ret = pcim_alloc_irq_vectors(pdev, 2, STMMAC_MSI_VEC_MAX,
-+				     PCI_IRQ_MSI | PCI_IRQ_MSIX);
- 	if (ret < 0) {
- 		dev_info(&pdev->dev, "%s: multi MSI enablement failed\n",
- 			 __func__);
+@@ -733,7 +741,11 @@ int dev_map_redirect_multi(struct net_device *dev, struct sk_buff *skb,
+ 	int err;
+ 
+ 	if (exclude_ingress) {
+-		num_excluded = get_upper_ifindexes(dev, excluded_devices);
++		num_excluded = get_upper_ifindexes(dev, excluded_devices,
++						   ARRAY_SIZE(excluded_devices) - 1);
++		if (num_excluded < 0)
++			return num_excluded;
++
+ 		excluded_devices[num_excluded++] = dev->ifindex;
+ 	}
+ 
 -- 
-2.7.4
+2.51.0
 
