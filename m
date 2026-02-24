@@ -1,84 +1,66 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FAE23803DA
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 12:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4030127EFEE
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 12:12:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771934801; cv=none; b=QrwtDXItx64n40akDEYa3qrSjd3uXUZ3yIpllnS2UZoDQxlks+jNhe4WQffhZQh49Xhn/E79MKxHBCAAEj121mgcIuAtgECV2pFIfw4YZCLL5YpahbFZdGNpOtTtm47Bftws2ash0Y8L5eLCJJu1k/B85BKyw56/Uj6erABfaZU=
+	t=1771935175; cv=none; b=UuG1M54AoOXjnMRfHGlMXWO5iiWJOjRwxBYh5EQW+uXr6hwTlzRz6A3d3EmgpjU3d2VIA+TniWh8q/LrxAlzVzge+l1HI2wVOuJoR7C075sMqpAaIrXMTxbNA+bgRLQaIo7Qn6fSSWFv6C/lXx1+jC3BQwkZt3I8ctbMIA2B08M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771934801; c=relaxed/simple;
-	bh=kBZj9miGFSQFJ0YH3FJIUfJJvnx8d1aKL1JDNWIViwI=;
+	s=arc-20240116; t=1771935175; c=relaxed/simple;
+	bh=qVcOp5MnvlONbLG06msjRU6TJXzRsaX/t8tfbP70eys=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DiiqHqNv4PwEC/IzdUDJssQvSy55fJ1jgpXvN85ecplthNEa+ZJlpXaC5TQ9UFIaxT8XBjaC9pxe+n9/KtYgsTrBIGh3PGMo+8KOtgGFxEJIYc4u3+e2gm8MutZageAeASAX0gsRW5Ax33qAIlYVNeaW0pniJguWJ0FmZUr6FgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dIH+TXfg; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HEbDeJHh; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=WltJpZ9IdmVaORNSFkTts4kyy888fXoweZaWCOEgCrKtYt69kCepAIjpargDjr+MPVU05k2Kv4OYeLNGVqZFUGGmQoLygViRS6MeVRzv+vImyC8MWKpiS8VZZGFvUJN6oNHf+wgvVhoFjUmdNIrs6ErJdFcOTBwXjOnZN5ef7nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XmLN5e/l; arc=none smtp.client-ip=209.85.218.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dIH+TXfg";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HEbDeJHh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771934799;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mYMqK1cVj3HuIDLVMmhgwBdTK896O5r5K8TYOirOOgE=;
-	b=dIH+TXfgBX7fQSOS+M8GdDFkt1FRPDfWyKTadAqxhNhGBVYvCnSgImwP5787TFhuZpZ5ta
-	zd7dlS5pKE2SZVL+QUXAI0FV9LdNNKTmbrl3DcAi4mpDCk6Fa7cPF+frjkITy5a48gStLX
-	3ByHnyTAyXMOW63HRXQRs1vl73YcGJ0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-jlbiUPEZN66a-Fo3AaNEEQ-1; Tue, 24 Feb 2026 07:06:37 -0500
-X-MC-Unique: jlbiUPEZN66a-Fo3AaNEEQ-1
-X-Mimecast-MFC-AGG-ID: jlbiUPEZN66a-Fo3AaNEEQ_1771934796
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4836abfc742so36946135e9.0
-        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 04:06:37 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XmLN5e/l"
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b885e8c6727so952966766b.1
+        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 04:12:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1771934796; x=1772539596; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771935173; x=1772539973; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=mYMqK1cVj3HuIDLVMmhgwBdTK896O5r5K8TYOirOOgE=;
-        b=HEbDeJHh1GChwNUcjwZhabI0gZATiVcCydWRyXtq8pySIAAnEdJQrruUZU2auaJ4Zu
-         w6n4yxsUQa4U2r9YnxIqnuD1a6y5Jhek4HVboqYze1EuvUICRYW+ajlG4zA3wtddtowp
-         i/Z9xiJXib4tLMWUT2HxZakM/d1CwWPpOdXEoVbZZwheWh2dp3m//QhSdgduRVZKTFtV
-         xvqX09uixQ/EFE3FxTsxehH17V2LPuDw+MSg8pbLIblhVqnBl/R3SSPi4rtXsKdFMZow
-         ho/m1IZKh8z6YRI0KXWVhuhxQv8sJSFbwLFJxANZCiQ3SjtXwBoj8FWCwOW2Jn54hsOZ
-         n5DA==
+        bh=bZ4fv5w72iR4alZnfS3RK7xFl8sWnyZEZWYM2yXruBI=;
+        b=XmLN5e/lEcQ09/Kk0A987tVGFLAIQVbpWBmyZjc2eyA4CgSEjZCU6bBP6Z2PeJ8sJm
+         HWZtWwlLH+u38ruHlM9fkBZrlYyV2IWOBdgqhvr/nK9QrByKwo/zR0DkrwtwS756WiWl
+         bY0CKTiJMuR18WOMAuOuea99GFW8+Bd7VBitrpZdNMFXychP4v/4zoZVDX6JH86da4aE
+         tjsAGrc07nb4rsNt8SGaE3c+ZYiA94q18omEjiMO7MH7187wLRKRItbyPYbqFsFXW2T0
+         AHoWiuMgG/23O/ltzGAh/BhCc2c0mDG2r5PnVRi41E2Am1YNUT+iv/hoLzAFgPZyRG7W
+         99GQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771934796; x=1772539596;
+        d=1e100.net; s=20230601; t=1771935173; x=1772539973;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=mYMqK1cVj3HuIDLVMmhgwBdTK896O5r5K8TYOirOOgE=;
-        b=kEwAx2TwLeXDkdyR1HB6FA3gr34wRiXMQIm4g3img3C1k3ZAWjdNMa1HGxZ68HNxYn
-         gM0lg7OWDtmXNsSbD56UR2EPscrTYHl9lTj/4a0vdKjsv4Q5HdDB81ZUe2mcWCif5ZYK
-         i3vubwT8QtKKOQ+hzFVRwiJLpRqwLAAQiooHv2DSBF71BLaBaHnL2i4uE8vUzQJkZITB
-         G/MWeQawvvPNoMhicVgjAymJr1lf/abuJNPNdgFdH4ZGn2cKqi0ZgVqSxKhDsPwDnx/w
-         rLiskySlQblvSLbMCEPLGnPZPbjQepYo/VcVc9xQ3D0jE3+AqcYnCnnudNWNWnoEXmh0
-         ihww==
-X-Gm-Message-State: AOJu0Yxl3O9C7D3MN60cmh1jfcmSk1wAVTzS9KY1PnspUekI4m7P1cta
-	yfGQKNklXfTvtR2J6QHhviRVdAyK7trtnpfcAMKfC5Cy1Ed54UW3Toi709d6G+uw4OUq7iOPgR9
-	CuMmEC7COA2SOifxeIbBUlljWqi7/vcqUpwoVnT0cH9C4yL7+I4sWeyQ+kA==
-X-Gm-Gg: AZuq6aIwMWzLJHn2NFwtbauzWFBy5HCdEX2VyImze3R/64/kEXMJLN9zDMhrtjmElT9
-	wDxmg8+xDGJ6uTueslJHD+smmKQEKskWhsZA3ezqeCmKWn8DQI0i+IyAAhKXFR9cpCbUKEHatP+
-	NR78OfUTcXf0LP93+kI7/g0Ve8UC4pcV/hZfciz2YSTeIdl920c7KVL7/pjx8GeG91qKmooipAR
-	cqQvFfXZYSn3QOs5ssetLMcSxn2z8Tc2niGMwHiUAHnaF0muueOkicC18K1ZYfmaanObo0PkE2W
-	dkP7EVDW01o5X1ds6bdRGrJ66idQGxSYzD/9ESFZgQgVeKwNpbo7TNECnSTTSkyku+ohiI2RzAX
-	xDitNbBJwmfr71B4dr1Sg
-X-Received: by 2002:a05:600c:3b08:b0:480:1c69:9d36 with SMTP id 5b1f17b1804b1-483a95eacf7mr181851145e9.17.1771934796402;
-        Tue, 24 Feb 2026 04:06:36 -0800 (PST)
-X-Received: by 2002:a05:600c:3b08:b0:480:1c69:9d36 with SMTP id 5b1f17b1804b1-483a95eacf7mr181850485e9.17.1771934795769;
-        Tue, 24 Feb 2026 04:06:35 -0800 (PST)
-Received: from [192.168.88.32] ([216.128.9.5])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970c00d0csm26850618f8f.11.2026.02.24.04.06.34
+        bh=bZ4fv5w72iR4alZnfS3RK7xFl8sWnyZEZWYM2yXruBI=;
+        b=Gc9+cnsUN6NmBoFLR1C/0Zmuw4DHWDWgE21ktXWQYb4yq2rHbIIkB+WNIqQRa3iJd4
+         JM1Jsj5f4Vxotgi7to58knzOY7gUJyCNLuCn894IIwrHFHaLdmiE4LIfajkHISp4OY72
+         YnbzVRVwRK+QrwZ4NaGhEyCXTv6+Ccfgn/Qo3Hg9oBZHi3L1TbqbN7WlePjMXEV9l3Lo
+         mZLRilVjW8pPCKSZOTtbRLgH5QUxqDaUG+tURr4sV2JTTKfQXwzNdfZeiYPIlb3LFN0g
+         iXcOY1iVXkNm9WK2Sw1iaqa1XvBUHxz+L/kB4Ey+P8Dh4N2e8vUhEav0RXl571K+reGr
+         E/qg==
+X-Forwarded-Encrypted: i=1; AJvYcCV+P6n6bqPLIWrwRXznhBqNv0iEjmhToUujcZ/4ydbUgqAzNcC6OHDnY5kprQhAFI0pvRKYfoI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzUr+OCxMtTj8ZDGCJizglJ7VNFsZxRJ11YPnRtSQIKYtxQWj68
+	74Hs0Ms+sWazANoq2rz8bsmXaVGy88sZAQdnqwORtkn40aL8+mSZ4JES
+X-Gm-Gg: ATEYQzwCYbx+RPZs+ejbVRnVQazAyk1pPN5d26pwSe3A5kiVfl76jCK4Q8MLaV4439N
+	9bMZ+fjJ0eQGI8D01PqDua2J6lT8jXAucTl/vQpDn5x9r42bQDZ+Lq7NBIh3JEQ95DjXOSPMJGJ
+	4xODfgzGiRW87hCb6FK09dyZKMyKyVdDh/7CED41UFgIDGmRyJdGVYepdrZrvq+7VmmIX4AnBmR
+	ZNh6ZBJRykqkQ6K/jf7k0UuiCCfshcNCPIytQN2iULXiIwSJR7HwPlwmj7caGz0vrzlJ78mEl8x
+	Vucsiaiu2kiGk93wKNZQskUewVWhsux0p4RCf1HzVM4juN+SSDSIWVto8jrRxv1vefAvNI68gO9
+	fElOIgg4ed2K+TKFE5KGwxwppQpxpCk2fKfkg9VkYnITNoRG65E41fblmnmzDb2cGqbCH7Bh4Yw
+	vgYEnK8WCNaa0N7crv2zyOxxf3TDmx95GkKOHrGnruVEjbq0OxLwTcKk09wg==
+X-Received: by 2002:adf:e3c3:0:b0:439:8bb9:db03 with SMTP id ffacd0b85a97d-4398bb9dedemr632589f8f.3.1771928510821;
+        Tue, 24 Feb 2026 02:21:50 -0800 (PST)
+Received: from [10.221.199.249] ([165.85.126.46])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970c09897sm26186806f8f.17.2026.02.24.02.21.48
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Feb 2026 04:06:35 -0800 (PST)
-Message-ID: <d3831e27-9d4b-4790-a7b4-74c3e87b5392@redhat.com>
-Date: Tue, 24 Feb 2026 13:06:33 +0100
+        Tue, 24 Feb 2026 02:21:49 -0800 (PST)
+Message-ID: <9ed3ade5-717d-4f03-ac13-40614a0f093c@gmail.com>
+Date: Tue, 24 Feb 2026 12:21:47 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -86,40 +68,205 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3] net: atlantic: fix reading SFP module info on
- some AQC100 cards
-To: Tiernan Hubble <thubble@thubble.ca>, Igor Russkikh
- <irusskikh@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+Subject: Re: [PATCH net-next] net: ethtool: add COALESCE_RX_CQE_FRAMES/NSECS
+ parameters
+To: Haiyang Zhang <haiyangz@linux.microsoft.com>,
+ linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ Donald Hunter <donald.hunter@gmail.com>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260223004139.1444811-1-thubble@thubble.ca>
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ "Kory Maincent (Dent Project)" <kory.maincent@bootlin.com>,
+ Gal Pressman <gal@nvidia.com>, Oleksij Rempel <o.rempel@pengutronix.de>,
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org,
+ linux-doc@vger.kernel.org
+Cc: haiyangz@microsoft.com, paulros@microsoft.com
+References: <20260222212328.736628-1-haiyangz@linux.microsoft.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260223004139.1444811-1-thubble@thubble.ca>
-Content-Type: text/plain; charset=UTF-8
+From: Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <20260222212328.736628-1-haiyangz@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 2/23/26 1:41 AM, Tiernan Hubble wrote:
-> @@ -992,15 +1024,15 @@ static int aq_ethtool_get_module_info(struct net_device *ndev,
->  
->  	/* Module EEPROM is only supported for controllers with external PHY */
->  	if (aq_nic->aq_nic_cfg.aq_hw_caps->media_type != AQ_HW_MEDIA_TYPE_FIBRE ||
-> -	    !aq_nic->aq_hw_ops->hw_read_module_eeprom)
-> +	    !aq_ethtool_can_read_module_eeprom(aq_nic))
->  		return -EOPNOTSUPP;
->  
-> -	err = aq_nic->aq_hw_ops->hw_read_module_eeprom(aq_nic->aq_hw,
-> +	err = aq_ethtool_read_module_eeprom(aq_nic,
->  		SFF_8472_ID_ADDR, SFF_8472_COMP_ADDR, 1, &compliance_val);
 
-I'm sorry for nit picking, but here and later this leads a quite bad
-indentation. You should reformat the whole argument list according to
-the kernel coding style, i.e.
-	
-	err = aq_ethtool_read_module_eeprom(aq_nic, SFF_8472_ID_ADDR,
-				            SFF_8472_COMP_ADDR, 1,
-					    &compliance_val);
 
-/P
+On 22/02/2026 23:23, Haiyang Zhang wrote:
+> From: Haiyang Zhang <haiyangz@microsoft.com>
+> 
+> Add two parameters for drivers supporting Rx CQE Coalescing.
+> 
+> ETHTOOL_A_COALESCE_RX_CQE_FRAMES:
+> Maximum number of frames that can be coalesced into a CQE.
+> 
+> ETHTOOL_A_COALESCE_RX_CQE_NSECS:
+> Time out value in nanoseconds after the first packet arrival in a
+> coalesced CQE to be sent.
+> 
+> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+> ---
+>   Documentation/netlink/specs/ethtool.yaml       |  8 ++++++++
+>   Documentation/networking/ethtool-netlink.rst   | 10 ++++++++++
+>   include/linux/ethtool.h                        |  6 +++++-
+>   include/uapi/linux/ethtool_netlink_generated.h |  2 ++
+>   net/ethtool/coalesce.c                         | 14 +++++++++++++-
+>   5 files changed, 38 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
+> index 0a2d2343f79a..951d98f6bb12 100644
+> --- a/Documentation/netlink/specs/ethtool.yaml
+> +++ b/Documentation/netlink/specs/ethtool.yaml
+> @@ -861,6 +861,12 @@ attribute-sets:
+>           name: tx-profile
+>           type: nest
+>           nested-attributes: profile
+> +      -
+> +        name: rx-cqe-frames
+> +        type: u32
+> +      -
+> +        name: rx-cqe-nsecs
+> +        type: u32
+>   
+>     -
+>       name: pause-stat
+> @@ -2244,6 +2250,8 @@ operations:
+>               - tx-aggr-time-usecs
+>               - rx-profile
+>               - tx-profile
+> +            - rx-cqe-frames
+> +            - rx-cqe-nsecs
+>         dump: *coalesce-get-op
+>       -
+>         name: coalesce-set
+> diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
+> index af56c304cef4..a3e78b69fd07 100644
+> --- a/Documentation/networking/ethtool-netlink.rst
+> +++ b/Documentation/networking/ethtool-netlink.rst
+> @@ -1072,6 +1072,8 @@ Kernel response contents:
+>     ``ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS``    u32     time (us), aggr, Tx
+>     ``ETHTOOL_A_COALESCE_RX_PROFILE``            nested  profile of DIM, Rx
+>     ``ETHTOOL_A_COALESCE_TX_PROFILE``            nested  profile of DIM, Tx
+> +  ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES``         u32     max packets, Rx CQE
+> +  ``ETHTOOL_A_COALESCE_RX_CQE_NSECS``          u32     delay (ns), Rx CQE
+>     ===========================================  ======  =======================
+>   
+>   Attributes are only included in reply if their value is not zero or the
+> @@ -1105,6 +1107,12 @@ well with frequent small-sized URBs transmissions.
+>   to DIM parameters, see `Generic Network Dynamic Interrupt Moderation (Net DIM)
+>   <https://www.kernel.org/doc/Documentation/networking/net_dim.rst>`_.
+>   
+> +Rx CQE coalescing allows multiple received packets to be coalesced into a single
+> +Completion Queue Entry (CQE). ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES`` describes the
+> +maximum number of frames that can be coalesced into a CQE.
+> +``ETHTOOL_A_COALESCE_RX_CQE_NSECS`` describes max time in nanoseconds after the
+> +first packet arrival in a coalesced CQE to be sent.
+> +
+
+I am trying to understand how generic this feature/API is.
+Can you please elaborate on the feature you want to configure here?
+
+A single CQE to describe several packets?
+What is the price? What per-packet information/hw offloads do you lose 
+in the process?
+
+For comparison, in mlx5 we have RX CQE compression, which can be applied 
+on multiple near-identical completions that share/match several fields. 
+Still, there is a per-packet mini-cqe with distinctive per-packet fields 
+like csum.
+
+>   COALESCE_SET
+>   ============
+>   
+> @@ -1143,6 +1151,8 @@ Request contents:
+>     ``ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS``    u32     time (us), aggr, Tx
+>     ``ETHTOOL_A_COALESCE_RX_PROFILE``            nested  profile of DIM, Rx
+>     ``ETHTOOL_A_COALESCE_TX_PROFILE``            nested  profile of DIM, Tx
+> +  ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES``         u32     max packets, Rx CQE
+> +  ``ETHTOOL_A_COALESCE_RX_CQE_NSECS``          u32     delay (ns), Rx CQE
+>     ===========================================  ======  =======================
+>   
+>   Request is rejected if it attributes declared as unsupported by driver (i.e.
+> diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+> index 798abec67a1b..25ccd2d5d4dc 100644
+> --- a/include/linux/ethtool.h
+> +++ b/include/linux/ethtool.h
+> @@ -332,6 +332,8 @@ struct kernel_ethtool_coalesce {
+>   	u32 tx_aggr_max_bytes;
+>   	u32 tx_aggr_max_frames;
+>   	u32 tx_aggr_time_usecs;
+> +	u32 rx_cqe_frames;
+> +	u32 rx_cqe_nsecs;
+>   };
+>   
+>   /**
+> @@ -380,7 +382,9 @@ bool ethtool_convert_link_mode_to_legacy_u32(u32 *legacy_u32,
+>   #define ETHTOOL_COALESCE_TX_AGGR_TIME_USECS	BIT(26)
+>   #define ETHTOOL_COALESCE_RX_PROFILE		BIT(27)
+>   #define ETHTOOL_COALESCE_TX_PROFILE		BIT(28)
+> -#define ETHTOOL_COALESCE_ALL_PARAMS		GENMASK(28, 0)
+> +#define ETHTOOL_COALESCE_RX_CQE_FRAMES		BIT(29)
+> +#define ETHTOOL_COALESCE_RX_CQE_NSECS		BIT(30)
+> +#define ETHTOOL_COALESCE_ALL_PARAMS		GENMASK(30, 0)
+>   
+>   #define ETHTOOL_COALESCE_USECS						\
+>   	(ETHTOOL_COALESCE_RX_USECS | ETHTOOL_COALESCE_TX_USECS)
+> diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/linux/ethtool_netlink_generated.h
+> index 556a0c834df5..efc6e4ade77b 100644
+> --- a/include/uapi/linux/ethtool_netlink_generated.h
+> +++ b/include/uapi/linux/ethtool_netlink_generated.h
+> @@ -371,6 +371,8 @@ enum {
+>   	ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS,
+>   	ETHTOOL_A_COALESCE_RX_PROFILE,
+>   	ETHTOOL_A_COALESCE_TX_PROFILE,
+> +	ETHTOOL_A_COALESCE_RX_CQE_FRAMES,
+> +	ETHTOOL_A_COALESCE_RX_CQE_NSECS,
+>   
+>   	__ETHTOOL_A_COALESCE_CNT,
+>   	ETHTOOL_A_COALESCE_MAX = (__ETHTOOL_A_COALESCE_CNT - 1)
+> diff --git a/net/ethtool/coalesce.c b/net/ethtool/coalesce.c
+> index 3e18ca1ccc5e..349bb02c517a 100644
+> --- a/net/ethtool/coalesce.c
+> +++ b/net/ethtool/coalesce.c
+> @@ -118,6 +118,8 @@ static int coalesce_reply_size(const struct ethnl_req_info *req_base,
+>   	       nla_total_size(sizeof(u32)) +	/* _TX_AGGR_MAX_BYTES */
+>   	       nla_total_size(sizeof(u32)) +	/* _TX_AGGR_MAX_FRAMES */
+>   	       nla_total_size(sizeof(u32)) +	/* _TX_AGGR_TIME_USECS */
+> +	       nla_total_size(sizeof(u32)) +	/* _RX_CQE_FRAMES */
+> +	       nla_total_size(sizeof(u32)) +	/* _RX_CQE_NSECS */
+>   	       total_modersz * 2;		/* _{R,T}X_PROFILE */
+>   }
+>   
+> @@ -269,7 +271,11 @@ static int coalesce_fill_reply(struct sk_buff *skb,
+>   	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_TX_AGGR_MAX_FRAMES,
+>   			     kcoal->tx_aggr_max_frames, supported) ||
+>   	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS,
+> -			     kcoal->tx_aggr_time_usecs, supported))
+> +			     kcoal->tx_aggr_time_usecs, supported) ||
+> +	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_RX_CQE_FRAMES,
+> +			     kcoal->rx_cqe_frames, supported) ||
+> +	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_RX_CQE_NSECS,
+> +			     kcoal->rx_cqe_nsecs, supported))
+>   		return -EMSGSIZE;
+>   
+>   	if (!req_base->dev || !req_base->dev->irq_moder)
+> @@ -338,6 +344,8 @@ const struct nla_policy ethnl_coalesce_set_policy[] = {
+>   	[ETHTOOL_A_COALESCE_TX_AGGR_MAX_BYTES] = { .type = NLA_U32 },
+>   	[ETHTOOL_A_COALESCE_TX_AGGR_MAX_FRAMES] = { .type = NLA_U32 },
+>   	[ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS] = { .type = NLA_U32 },
+> +	[ETHTOOL_A_COALESCE_RX_CQE_FRAMES] = { .type = NLA_U32 },
+> +	[ETHTOOL_A_COALESCE_RX_CQE_NSECS] = { .type = NLA_U32 },
+>   	[ETHTOOL_A_COALESCE_RX_PROFILE] =
+>   		NLA_POLICY_NESTED(coalesce_profile_policy),
+>   	[ETHTOOL_A_COALESCE_TX_PROFILE] =
+> @@ -570,6 +578,10 @@ __ethnl_set_coalesce(struct ethnl_req_info *req_info, struct genl_info *info,
+>   			 tb[ETHTOOL_A_COALESCE_TX_AGGR_MAX_FRAMES], &mod);
+>   	ethnl_update_u32(&kernel_coalesce.tx_aggr_time_usecs,
+>   			 tb[ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS], &mod);
+> +	ethnl_update_u32(&kernel_coalesce.rx_cqe_frames,
+> +			 tb[ETHTOOL_A_COALESCE_RX_CQE_FRAMES], &mod);
+> +	ethnl_update_u32(&kernel_coalesce.rx_cqe_nsecs,
+> +			 tb[ETHTOOL_A_COALESCE_RX_CQE_NSECS], &mod);
+>   
+>   	if (dev->irq_moder && dev->irq_moder->profile_flags & DIM_PROFILE_RX) {
+>   		ret = ethnl_update_profile(dev, &dev->irq_moder->rx_profile,
 
