@@ -1,64 +1,65 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49479292936
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 04:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343F429D273
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 04:32:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771907537; cv=none; b=QUR0QgVXiqa4Om/n0u439ILR/bjmrY9prj89AUBh98ChSiv8ucECcT1Nc2r6g4RTgSxW80rN9/kWkYKW6JgPsyUYjD4RmfJqyFwD3ZpHYa/ktpBFySC/N9FeCIy1tWVwo/vQNe/J9bbE7/lkczhdvFHYD5CXgv8qPwU7b7dOwEg=
+	t=1771907539; cv=none; b=qfXVnwDOF/4vo+JuQEQcgoE32+LTZb/E1lji6PWihqfTFHhO3rz/8/B1AY6q9VwdcZpq3N+xrPy24mKUx8npRv7GFST9zDpEAMMslzapn3h6oHqJjEnrDx7/albz/lDpaZ0RmWvkqOcTTLu/iBmpNiFrHDz5RNvu7mJKaGXTGWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771907537; c=relaxed/simple;
-	bh=UEnQcp4MGlJixya53SMjZLpT9RLhpMLIX7hTK536NMQ=;
+	s=arc-20240116; t=1771907539; c=relaxed/simple;
+	bh=N7MWqqsHu380Gb5Rc2gHv1QWehPH/HCcbhJPVIYlH10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUXMnCDjePRtrwcVvO3H8YKDJ4vSzO5IMLXiVP9QUueGkdViyOJtXgpUXfcnnF1/k7D4msY8p/s4Man5gpr5xfw0dShpi0sdHipPZaeMFf+DpqWMK0SyUZZtBncChHCnuUZuUh0gAfFAuwgHl/j8feDH1qeSPlLpC6JgF9vWm5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LZXfwg/4; arc=none smtp.client-ip=209.85.218.45
+	 MIME-Version; b=hIzuEV0/9v0nPobv4b/2VjGjcI8e6aRwBaMtbvqhlOJBXW1xwJfqguH0HGmnUN8FGcuNueqOEFZTBS+lP9klCBq+li32cnhPfGKkaNdmPdJM6yD2rHseN5+h/Ka0/PogwYtuIxUWK5lkkWhNipor5gn3FZ/QVa0gnBuj+URFQiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bs/RvXXG; arc=none smtp.client-ip=209.85.208.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LZXfwg/4"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b90bb0e8376so179511166b.0
-        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 20:32:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bs/RvXXG"
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-65c20dc9577so9435678a12.2
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 20:32:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771907534; x=1772512334; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771907535; x=1772512335; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=q2TVn9WTr30egH9VBmZciSNVmo3+g7N5E2PAqbC/nLw=;
-        b=LZXfwg/4tZ6HhrT9jl4EPeGkI3uDTT+znbzZuqrGm3vqHETOCp7DPPE4I3BJrlY4Ss
-         gIM0R+yR0HQZ0LzBT26e1/i7HupkrLuAq+TathWp8I10RzEs8qkmUtzdkXGkQ5+avt/H
-         G6Dyz1UOpDSv+woBt1K9ajTq7ncVzzwaXL8a7jty3Ww3nzipSa+BNaql3n9Dgx9JNZ6m
-         aTMaK6pRB0Kpwnmwb6Tkc9K11m4ai/BG3huTEC/C0FYS03x1NonMLYM5d33e8darWG8M
-         Wi39KgQVgU4MeZlc2Thf+hwyBZtPwjxRmc4RRhTj/JKoQBLccVXVliowTnGN3CHccqQ9
-         lTfw==
+        bh=cuF+2ZeNg9MZpifVmvjXA4TLhrwpvQWcio7F8T9WLuI=;
+        b=Bs/RvXXGz9U82DjHrLFLC15NX/WSXX0MnohT3EfibFpWWrHFP33WcEdZy1q8CAFiX/
+         RpzMweMIyxHVag81blg0rAWaA9DNsnHqkxBPKI7P/1WblNEtr1nQj/ykF49digucILxD
+         eWKYSjidUO/KLx8FtNGjodipQAWBkLwK4aDjXudCxgmoJ6NAQHzJxXticcOixFtS3g4C
+         D+ZGz5HdCOMI6DOV2XCbHuEA6GhqxCqAfcnC31lWo4clwSxF9vpB1cr5dgSyxJuVe/x6
+         j9n343T9RI/oMm02UPE/OqzNV6lNtklWQ+xd9+Y2YaRIRYzsG6H6MG9v96nKUV9AtfV/
+         0SbQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771907534; x=1772512334;
+        d=1e100.net; s=20230601; t=1771907535; x=1772512335;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=q2TVn9WTr30egH9VBmZciSNVmo3+g7N5E2PAqbC/nLw=;
-        b=LkZV41P18TOiY+T5coy7IrEe4iIjhxtvEpMUEktRx5JqhMP2bOuN5e3PTAwrZPLPQT
-         UU+cbLWHpibmZBy8mvlSHXayhQr0FrWedZhxSWj47dQjQa56wAPiAKEr9rvWArGqbQoG
-         Ngdb5KOgTBGmQXMrT5MeDfMMG83W/OiRF/rSW5N4iv4PnH5bSEviWbhKl+DMNzhQ+Iuu
-         PqSthWlJh2q6tNUbhwTxKKrJ+aZ/QVk6Sr6BcA6J4+MMMWiIEh7FQ0S85K3YAX39BlHa
-         rvb1FC1Z0roJaIPQ+cb+z/QjhhPmv7VJ0xj1V1Rat6oIVdeSzcmtD7c1YDJOF+fNIZIQ
-         atfw==
-X-Forwarded-Encrypted: i=1; AJvYcCU+8T5X4wF8psNLS9K4/W1JllpGaJC/bieN73GQosaMfWWM9IaCqgtb+ugy0aqlwlNZUuCUw4I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNANYqYq2jV/lJoGaG9GhojGRja64ynI0SrhRD1eAUzASI66I0
-	7nIR0KvK2lIyA879Zt0EfOKg0ui3CYVQ/1xg9kK5C6QuPP8J94sj+ZmM
-X-Gm-Gg: AZuq6aIDBUjph1/AKvJ70HzgIbMhXYQdBRjUHPljEAf6zUBWaJtVCNB3kgLbKOu+dKl
-	G3HsLXYbeGUGRgeIeHNsbWVAJ6cyzX9GY5ZAVszhl40xp7GoWzg2KoghchWq9V8orLcxGMYNAVg
-	nzer++wPOdk8gy9d3uHUVIci0Ucmx32WI2vgndtCeSfsGcHJgzvn4mn+Wmd8nAN+BW8DaUp7fs1
-	ggE26oRF+5MvsVYpIjQGvufV7JdFS3PtiWeo3eWmwuX9BOfdl+faXtNilBCLYy2GL6tAFLezur/
-	CBXsw2NaXq+ZqIyvJfINWNGm/9dO0CC104Zce8tN8N0viS9WguAPJd+mDmT4w53Lw2uWpwdTuiB
-	cRhJALAHWn11unVT0E3AcT3RnfvL0KoR5a2df8ULuvwiMJ3QG7D2lb/s4diDYP2SdWGbWIkvBaF
-	5X7tI7A1ynOyj9K9dlTvgGajpp0GgFqaIngOvK7+Y/1u2fkZwdSLwUxjAVbGkm5EHhJ2CWAtjzX
-	xglunpUqtAWR5h2FQX89bM67K/29l2zZ0FA1APS2EwNo0mRx3CoryUQdcUQX7KFEd3zRS33aQ==
-X-Received: by 2002:a17:907:6e8c:b0:b87:19ae:eb36 with SMTP id a640c23a62f3a-b90541616bdmr926260366b.7.1771907533547;
-        Mon, 23 Feb 2026 20:32:13 -0800 (PST)
+        bh=cuF+2ZeNg9MZpifVmvjXA4TLhrwpvQWcio7F8T9WLuI=;
+        b=VB5KfK/IYQDMw43ueaDuQzE5sxqkTTuff8lWMCvOUB9IoNQ/ENTblfkSjyqONdyUx6
+         SCBuwApd053vOhl5O0qTWZhR5MVpsLJ/EP8b6uuq3bJxYFrU2mwYr863C68BrGNaXDvk
+         z5aAanmkwGFRxq+HQ6ubB1HxsU67PX2T6y8zjbbKhrvR1+7SFKGzqRLE+ptbGOHeJdsz
+         eWMqHFUTGtUSr9kmuFR0PD+C8fTART2d9XWapd2laGHaBlyTXlA7N60IyrV/EfLbUcMB
+         apdN9jj+z+Od9TqLbPI3BQDaMMaU1RbVJtEOfjhe9UM7MoEKCeTKk2zs5ZPjz1aRhFS/
+         zktg==
+X-Forwarded-Encrypted: i=1; AJvYcCUA0b0zTKPcIUXfuNdJGzPWz6Py1Ivp6u2/wYVWpw+oFwj1ICW2yagoaNegObD3CJBwdlKCXN0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXEqIJ6kY/0qOXhx4YeLdqiZs7Es6zG4WV3YTDHjf4xB//v47Y
+	GvklLhqMx2xfb06EsHp2t2ZKTAsKV8Q9R6qDLz3ZUtqoEpTR7XpNBKoi
+X-Gm-Gg: AZuq6aLLbxEirAMr7jHtZYXkYoEK3QCVNECjTUCdgkS79LTlZzrFNatInR+ET7YxU3I
+	REcuk0lxI1zd4ivSi+3mYEajQZboFvO6JuSq2FgqDI2POoTFacPt3pWeRI9qFkpwyQXLHPo2bN8
+	Ne//6orWQZflR645MAy5dkETT+NBPcG4KhDKvGTHW1hvKFCH8BA1WGGXOHMTI+kZ2xBZcCbEBiV
+	kfgCD+gVG6TvnYzzBgk6mWzAPTDOX1blpJTzw2PgIEXbPxpgcgKKtP9X6M/zjIN7lfOB+Aj3BsK
+	vQrQu86Qlf5ZBuay1AVPhIEzrr0eVx46Afrt+U7AeQbHWzfQLigjLfU2l21G35mxnDg5+g7iwNL
+	AUUovEWcCSPZrvuAuzFw7KZy86agI4YqjljXCE5UIvTFoUE8mCHgWjxnWJj6H70r1r3huLWlZgE
+	5tf6Ezko56nIMlraV+2pTjFc6ZkuqIuWwGpBuepJIdftYZQ3vkBYd6CRXWdFXkPFprjkiFY238t
+	9795F9H86rKYgbtDJisgnkOdbpeLQMOkvFfg83Tp1NjV8OXk8RSiUW0z1r1yDi7Jv973IAkBT+W
+	kp0uTW52
+X-Received: by 2002:a17:907:fdcb:b0:b8f:a03c:ac22 with SMTP id a640c23a62f3a-b9081b77ae4mr722929966b.42.1771907535344;
+        Mon, 23 Feb 2026 20:32:15 -0800 (PST)
 Received: from cs-874966990260-default.europe-west4-b.c.i2f7e30109524dc12-tp.internal (206.242.32.34.bc.googleusercontent.com. [34.32.242.206])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9088c8fc30sm371284466b.63.2026.02.23.20.32.12
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b9088c8fc30sm371284466b.63.2026.02.23.20.32.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Feb 2026 20:32:13 -0800 (PST)
+        Mon, 23 Feb 2026 20:32:14 -0800 (PST)
 From: Artem Lytkin <iprintercanon@gmail.com>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -74,9 +75,9 @@ Cc: Trevor Gross <tmgross@umich.edu>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Artem Lytkin <iprintercanon@gmail.com>
-Subject: [PATCH net-next v2 1/3] rust: net: phy: add speed() getter to Device
-Date: Tue, 24 Feb 2026 04:32:09 +0000
-Message-ID: <20260224043211.1747-2-iprintercanon@gmail.com>
+Subject: [PATCH net-next v2 3/3] net: phy: add Rust reference driver for ET1011C
+Date: Tue, 24 Feb 2026 04:32:11 +0000
+Message-ID: <20260224043211.1747-4-iprintercanon@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260224043211.1747-1-iprintercanon@gmail.com>
 References: <20260223220504.2102-1-iprintercanon@gmail.com>
@@ -89,35 +90,144 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add a speed() method to phy::Device as a getter counterpart to the
-existing set_speed(). This is needed by PHY drivers that need to
-detect speed changes, such as drivers that must reconfigure hardware
-registers when the link speed changes.
+Add a Rust implementation of the LSI ET1011C PHY driver, equivalent
+to the existing C driver in drivers/net/phy/et1011c.c. The driver
+implements config_aneg and read_status callbacks using the Rust PHY
+abstraction.
+
+The Rust driver uses the new speed() getter to detect speed changes,
+only reconfiguring the TX FIFO depth and GMII interface when the
+negotiated speed actually changes. This matches the C driver behavior.
+
+The Rust driver can be selected via the ET1011C_RUST_PHY Kconfig
+option, following the same pattern as AX88796B_RUST_PHY.
 
 Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
 ---
- rust/kernel/net/phy.rs | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/phy/Kconfig         |  9 ++++
+ drivers/net/phy/Makefile        |  6 ++-
+ drivers/net/phy/et1011c_rust.rs | 75 +++++++++++++++++++++++++++++++++
+ 3 files changed, 89 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/net/phy/et1011c_rust.rs
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 3ca99db5cccf..b86939b163e3 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -158,6 +158,14 @@ pub fn is_autoneg_completed(&self) -> bool {
-         bit_field.get(15, 1) == AUTONEG_COMPLETED
-     }
+diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+index 7b73332a13d9..5271898a38f7 100644
+--- a/drivers/net/phy/Kconfig
++++ b/drivers/net/phy/Kconfig
+@@ -254,6 +254,15 @@ config LSI_ET1011C_PHY
+ 	help
+ 	  Supports the LSI ET1011C PHY.
  
-+    /// Gets the negotiated speed of the PHY.
-+    pub fn speed(&self) -> i32 {
-+        let phydev = self.0.get();
-+        // SAFETY: The struct invariant ensures that we may access
-+        // this field without additional synchronization.
-+        unsafe { (*phydev).speed }
++config ET1011C_RUST_PHY
++	bool "Rust reference driver for LSI ET1011C PHY"
++	depends on RUST_PHYLIB_ABSTRACTIONS && LSI_ET1011C_PHY
++	help
++	  Uses the Rust reference driver for LSI ET1011C PHY
++	  (et1011c_rust.ko). The features and behavior are
++	  equivalent to the C driver. Selecting this option builds
++	  the Rust version instead of the C version.
++
+ config MARVELL_PHY
+ 	tristate "Marvell Alaska PHYs"
+ 	help
+diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+index 3a34917adea7..491469457a67 100644
+--- a/drivers/net/phy/Makefile
++++ b/drivers/net/phy/Makefile
+@@ -62,7 +62,11 @@ obj-$(CONFIG_DP83TG720_PHY)	+= dp83tg720.o
+ obj-$(CONFIG_FIXED_PHY)		+= fixed_phy.o
+ obj-$(CONFIG_ICPLUS_PHY)	+= icplus.o
+ obj-$(CONFIG_INTEL_XWAY_PHY)	+= intel-xway.o
+-obj-$(CONFIG_LSI_ET1011C_PHY)	+= et1011c.o
++ifdef CONFIG_ET1011C_RUST_PHY
++  obj-$(CONFIG_LSI_ET1011C_PHY)	+= et1011c_rust.o
++else
++  obj-$(CONFIG_LSI_ET1011C_PHY)	+= et1011c.o
++endif
+ obj-$(CONFIG_LXT_PHY)		+= lxt.o
+ obj-$(CONFIG_MARVELL_10G_PHY)	+= marvell10g.o
+ obj-$(CONFIG_MARVELL_PHY)	+= marvell.o
+diff --git a/drivers/net/phy/et1011c_rust.rs b/drivers/net/phy/et1011c_rust.rs
+new file mode 100644
+index 000000000000..7b8ae3bf492c
+--- /dev/null
++++ b/drivers/net/phy/et1011c_rust.rs
+@@ -0,0 +1,75 @@
++// SPDX-License-Identifier: GPL-2.0+
++// Copyright (C) 2026 Artem Lytkin <iprintercanon@gmail.com>
++
++//! Rust LSI ET1011C PHY driver
++//!
++//! C version of this driver: [`drivers/net/phy/et1011c.c`](./et1011c.c)
++
++use kernel::{
++    net::phy::{self, reg::C22, DeviceId, Driver},
++    prelude::*,
++    uapi,
++};
++
++kernel::module_phy_driver! {
++    drivers: [PhyET1011C],
++    device_table: [
++        DeviceId::new_with_driver::<PhyET1011C>()
++    ],
++    name: "rust_et1011c_phy",
++    authors: ["Artem Lytkin <iprintercanon@gmail.com>"],
++    description: "Rust LSI ET1011C PHY driver",
++    license: "GPL",
++}
++
++const ET1011C_STATUS_REG: C22 = C22::vendor_specific::<0x1A>();
++const ET1011C_CONFIG_REG: C22 = C22::vendor_specific::<0x16>();
++
++const ET1011C_SPEED_MASK: u16 = 0x0300;
++const ET1011C_GIGABIT_SPEED: u16 = 0x0200;
++const ET1011C_TX_FIFO_MASK: u16 = 0x3000;
++const ET1011C_TX_FIFO_DEPTH_16: u16 = 0x1000;
++const ET1011C_GMII_INTERFACE: u16 = 0x0002;
++const ET1011C_SYS_CLK_EN: u16 = 0x0010;
++
++const BMCR_FULLDPLX: u16 = uapi::BMCR_FULLDPLX as u16;
++const BMCR_SPEED100: u16 = uapi::BMCR_SPEED100 as u16;
++const BMCR_SPEED1000: u16 = uapi::BMCR_SPEED1000 as u16;
++const BMCR_ANENABLE: u16 = uapi::BMCR_ANENABLE as u16;
++const BMCR_RESET: u16 = uapi::BMCR_RESET as u16;
++
++struct PhyET1011C;
++
++#[vtable]
++impl Driver for PhyET1011C {
++    const NAME: &'static CStr = c"ET1011C";
++    const PHY_DEVICE_ID: DeviceId = DeviceId::new_with_model_mask(0x0282f014);
++
++    fn config_aneg(dev: &mut phy::Device) -> Result {
++        let ctl = dev.read(C22::BMCR)?;
++        let ctl = ctl & !(BMCR_FULLDPLX | BMCR_SPEED100 | BMCR_SPEED1000 | BMCR_ANENABLE);
++        dev.write(C22::BMCR, ctl | BMCR_RESET)?;
++        dev.genphy_config_aneg()
 +    }
 +
-     /// Sets the speed of the PHY.
-     pub fn set_speed(&mut self, speed: u32) {
-         let phydev = self.0.get();
++    fn read_status(dev: &mut phy::Device) -> Result<u16> {
++        let old_speed = dev.speed();
++        dev.genphy_read_status::<C22>()?;
++
++        if old_speed != dev.speed() {
++            let val = dev.read(ET1011C_STATUS_REG)?;
++            if (val & ET1011C_SPEED_MASK) == ET1011C_GIGABIT_SPEED {
++                let cfg = dev.read(ET1011C_CONFIG_REG)?;
++                let cfg = cfg & !ET1011C_TX_FIFO_MASK;
++                dev.write(
++                    ET1011C_CONFIG_REG,
++                    cfg | ET1011C_GMII_INTERFACE
++                        | ET1011C_SYS_CLK_EN
++                        | ET1011C_TX_FIFO_DEPTH_16,
++                )?;
++            }
++        }
++
++        Ok(0)
++    }
++}
 -- 
 2.43.0
 
