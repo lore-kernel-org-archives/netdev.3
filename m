@@ -1,170 +1,411 @@
-Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293E81607A4;
-	Tue, 24 Feb 2026 05:13:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C511607A4;
+	Tue, 24 Feb 2026 05:14:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771910017; cv=none; b=dhIIetL9hL47COdjVCoo03vF+B5qkImYM3VrMjsnoRj5+sxXxxiIWCU6Y4wC2e3ERs1bRnbc94eAyvjcmYK7Sx1dYE9c+PblaQHhpwngvexlI6tWzn63H92nP8VpzvjRrRod2j/XwR5L1yUv1Oqp2zE6VLKyRqSO+qD4+FOuxk4=
+	t=1771910057; cv=none; b=JZ1zdzIOXsRjaA79IwJn2+q4ZYXCqY9v2rfLXZQM8ke341deyMlFja4XpXUtILAQtB8LOXeBT/K28zi40EHf7LgQUhmW/jeKDXNs1yP0TnvjpldNgb95FGSP1HZs0pMb3jD4PuWnNocpLl9UrFtPjmFl8EmyBaYtMIN4KIq9m3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771910017; c=relaxed/simple;
-	bh=J3Z45TFc8/iUFPhe7JBqb6mewr1IvDu0lwyrWmiCk24=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MzfNCvDVP4Aut8n9p4Vdn06H07qI2eViGGyzv62W3UrARdZSwoIlgCWdUxpIbVYdw+sJXcyyD452UanG2lOM0ed4XIox25GWtFx5MJycehsP1QCm/sga3AShPaKmd23q8PqmsnoDJUTRUpNXy5f1UoeAHpHD50vxiAGNHW5tSYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=HZfxlm7h; arc=none smtp.client-ip=67.231.148.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="HZfxlm7h"
-Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61NEpT8m1503389;
-	Mon, 23 Feb 2026 20:52:55 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pfpt0220; bh=kEKfqNeAM2sDPck+EYSB9j5
-	92HYqcFpZpunmGD4OmR8=; b=HZfxlm7huhTpMce6I7xxTiicNi+YeIWfUFX9++b
-	NEUSv43SmWuN4knHhsnkL4uneE884Sqp0sO5D4SCnikFYWFX3QqeAHHXTU5FFhJB
-	5GCh922/APuWm0K3eFyiZgp7tsZnMf19Rl9awgoi+qwwGfC7qVPS1N/0T6AENNrl
-	DpL14OwmNvhV7cxB4rIKR8LyOgRD+IhHnpXGUalYIXROZ8bUfgOl4L0jo4hQt0aU
-	7ZiRzXTawExPJT4ZNX1OmiYfCxw9g6JPHDnpjTZJxCmoKnsrlhhwHNCQix3gOCUE
-	fDNzb/BPlMMJebQwmoWRzO5nZB8AW5MOu5bQJB4Ey0clLyg==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4cg1ubbtk6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Feb 2026 20:52:55 -0800 (PST)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 23 Feb 2026 20:52:53 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Mon, 23 Feb 2026 20:52:53 -0800
-Received: from localhost.localdomain (unknown [10.28.36.175])
-	by maili.marvell.com (Postfix) with ESMTP id 3E0273F70C4;
-	Mon, 23 Feb 2026 20:52:50 -0800 (PST)
-From: Srujana Challa <schalla@marvell.com>
-To: <netdev@vger.kernel.org>, <virtualization@lists.linux.dev>
-CC: <pabeni@redhat.com>, <mst@redhat.com>, <jasowang@redhat.com>,
-        <xuanzhuo@linux.alibaba.com>, <eperezma@redhat.com>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <ndabilpuram@marvell.com>, <kshankar@marvell.com>,
-        <schalla@marvell.com>, <stable@vger.kernel.org>
-Subject: [PATCH net,v4,1/2] virtio_net: Improve RSS key size validation and use NETDEV_RSS_KEY_LEN
-Date: Tue, 24 Feb 2026 10:22:48 +0530
-Message-ID: <20260224045249.933178-1-schalla@marvell.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1771910057; c=relaxed/simple;
+	bh=qdfjXsgniKxwDH9jw9QV4KZNp1Vb6+UDU/qmPnmvIiw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=AMPZMK2KGoi2dHRAMdAUak2Uj7uXURnzSTSiACypdmwDR2vcPo57oiNJtYsCzN4Bb/vyrubr3Duob6tJ8nuoiDNnwp8+rH+/g6kLGwqXALIsEa3CottzemYkFezOt8kiCNJ9SqebM4DS7UR1fjMKOZojzsOSH+KjuvMNrIliZZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-c2dff70000001609-77-699d3398a6b8
+From: Byungchul Park <byungchul@sk.com>
+To: linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	kernel_team@skhynix.com,
+	harry.yoo@oracle.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com,
+	vbabka@suse.cz,
+	rppt@kernel.org,
+	surenb@google.com,
+	mhocko@suse.com,
+	horms@kernel.org,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	ilias.apalodimas@linaro.org,
+	willy@infradead.org,
+	brauner@kernel.org,
+	kas@kernel.org,
+	yuzhao@google.com,
+	usamaarif642@gmail.com,
+	baolin.wang@linux.alibaba.com,
+	almasrymina@google.com,
+	toke@redhat.com,
+	asml.silence@gmail.com,
+	bpf@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au,
+	dw@davidwei.uk,
+	ap420073@gmail.com,
+	dtatulea@nvidia.com
+Subject: [PATCH v4] mm: introduce a new page type for page pool in page type
+Date: Tue, 24 Feb 2026 14:13:47 +0900
+Message-Id: <20260224051347.19621-1-byungchul@sk.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=P7Y3RyAu c=1 sm=1 tr=0 ts=699d2ea7 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=TtqV-g6YmW1Jfm2GSLaY:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
- a=WvS6aQ_piSL3sVsHHQ4A:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: zri5ZNkkPnbjVj6E_0jTIhWJb2r3Is--
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDAzOCBTYWx0ZWRfXypwqFyEcXtCI
- qImKS2tuOS1rMV/GbP7RiaDrjHuuNaxp9T0UvPBNaP2OVtlpk9KexK4A3J01pgikdLPRBJqNL6P
- xJFUkLOXHtyR5OcJt5aZjWTuVCvCHbE7vX8/iMOo5Ewc8a+kFvQu5TD2X0Z4DeYKjzYqwJ1BUbl
- KHCKUL6j8DoYRULfAoTCbP12xHawdjCLkkYMFzxHYDSR44bYGjmLPArTcWNj8+ACdUiumQh8zOx
- KY/7KE2cog5oowZM+TgG2xPNuQ5wZoFlXl/7R9B5KY+ehbo3/i8ohXy3tWIgx5VZKsguNg/QaCN
- EjYef43KKHXWaZeWT6PKyqrxRp008apMTfd3/FlUZDYT1HnYFKRbygPArOvvRbbdytwpxXOvkto
- 6UquCvq4rQPWTyn6DSwRoeV/zBOCSA3YwKtu9x9MW84m1hJ0gywRc9Zyk7/JaMk00YVeBTuNnAJ
- XY+8yWUcBCAhQH/9Rng==
-X-Proofpoint-GUID: zri5ZNkkPnbjVj6E_0jTIhWJb2r3Is--
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-23_06,2026-02-23_03,2025-10-01_01
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTYRjG+XbOvnMcLk7L8mRQNIrIyrQsXiGiC8EXJRhRgRU58pCHnMUs
+	00LQsouWppXg5hQz0nkpa142TTOneanosszWxdssBatZZk5dUdOQ+u/heZ/f76+XpRRGqQ8r
+	Rh0TNFGqSCWW0bIvnvkrtKtzRH+7wQf0ZaUYSsZiobDHLIXx0gEJ6IurEIyMv2Pgd10zgu9N
+	LRg+NQ4juHF9lAL9syQafpRNUFBdM4BgMOsWho/NdgZKjMHQXdBPQ+15EwX2y60YUpNcFNSN
+	Oxg4bTa4xeUJDDyvSpPCtYmbFJgSehh4WaPH0FX6Wwr9llQa2nRFNHzNbKKgO20DNOfNgdHH
+	nxE0lZkkMHopB8MrbY0EKuteMXDVmoehL6kbgbXRTkPmzwsYshPTELjG3EpH+ogUsh92MRv8
+	SKLNhknj5yGKVBS9kZCOrAya2O4/kpBqXSdD8ozHSbnBl6TYrBQxFidjYhy+wpD3HbWYtGa5
+	aFLdG0Sqzd8lJPWMA4fMDpWtCxcixRhBs3J9mCzidprX0aHQ2Ir8RpyA7FtTkAfLc4F8a2Y9
+	NZ3vJ1royYy5JbzNNj7Ve3HB/O2qdpSCZCzFORi+tt6JJw+zuO382JeOKYDmFvMNjgdTgJxb
+	w7+1djF/pQv4kjvT/Uy+TfvBvWfdoiV8Wa5isqbckzOV2dSkn+faWf5J4gj+y87lGww2Oh3N
+	0P2H6/7huv/wPEQVI4UYFaNWiZGBfhFxUWKs38EjaiNyf1JB/M+9ZjT8fKcFcSxSesrD9utF
+	hVQVEx2ntiCepZRecpdLJyrk4aq4k4LmyAHN8Ugh2oLmsbTSW75q9ES4gjukOiYcFoSjgmb6
+	KmE9fBLQSm282f76co82daFr8JrnuiHz2RTn7me95ecC/DPyzx3wN29clLs4qEhn+mVKJ23J
+	yVnO9TWWLW13M5Y7rd/WvP3Uvcm5ozfsRV3nhT71xYrAbUWbX0+cunrjqW9MvKeisDJk59PQ
+	rfWiR/m9ff17vAfNPf27JC2Ghvlrly4LUj8eIEo6OkIV4EtpolV/AKMgQPhFAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTcRjG+Z9zds5xOjgtqZNG0SgUJS1s9XYliPJfZAR9KLLIkQc9NLW2
+	FA2KmVYmurQUdM7SLmZeY6Zu81abmdaHxErWTc1KqWxFmjlX2DQkvz087+/5fXpZUp4n8WPF
+	+JOCJl6lVtBSSrpnY9rKgrBicZW5UwnG2ioaKieS4faAWQKuqmECjBUNCMZcrxmYaulAMNr+
+	iIYv9h8IbpSOk2B8mk7Bz9pJEizWYQSfC6pp+NgxyEClKQL6y4YoaL7QSMLgpU4astPdJLS4
+	nAycNZd7xHU6BuzFXRLobtBLIG/yFgmNugEGnlmNNPRVTUlgyJZNQZfhDgXf89tJ6NdvhY6S
+	BTD+ZARBe20jAeNZxTS8KLQSUN/ygoErPSU0vE/vR9BjH6Qg/3cGDUWpegTuCY/SmTMmgaKH
+	fczWUJzqcNDYPvKNxPfuvCRwb0EuhR2tjwlsMbxlcIkpEdeVB+FMRw+JTRUXaWz6cZnBb3qb
+	adxZ4Kaw5d16bDGPEjg7zUnvXXBQuilaUItJgiZ0S5Q0tkbve/zbweR71+20Dg3uzEReLM+t
+	4VtTbdR0prkA3uFwkdPZl4vgaxqeo0wkZUnOyfDNbb/o6cN8bjc/8bV3ZkBxK/gHzvszAxmn
+	5F/19DH/pEv5yruz/Ty+q/CDh2c9ogC+9qp8uiY9SFp9EZmDvA1zKMN/yjCHKkFkBfIV45Pi
+	VKJaGaI9FpsSLyaHHE2IMyHPr5Sd/p1rRmPPwm2IY5HCRxZ12CjKJaokbUqcDfEsqfCVud0G
+	US6LVqWcEjQJRzSJakFrQ/4spVgo27VfiJJzMaqTwjFBOC5oZq8E6+WnQ4skN61BpZe83254
+	vc10vs07cDiL5ZTLI9MiX0UvPmOPEy9uRsZqrDhUduD7olCnaJEnlrYF123f8YerO0d0LBsI
+	X1eVVSPfoE4IlAbrwsxN2vF9n5m1zdeeHzqxpF3p8mODh7t9yhMVPwn/Jv166yd7yGjfEC+N
+	8YpyphdlNCgobaxqdRCp0ar+Atxkpu0nAwAA
+X-CFilter-Loop: Reflected
 
-Replace hardcoded RSS max key size limit with NETDEV_RSS_KEY_LEN to
-align with kernel's standard RSS key length. Add validation for RSS
-key size against spec minimum (40 bytes) and driver maximum. When
-validation fails, gracefully disable RSS features and continue
-initialization rather than failing completely.
+Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
+determine if a page belongs to a page pool.  However, with the planned
+removal of @pp_magic, we should instead leverage the page_type in struct
+page, such as PGTY_netpp, for this purpose.
 
-Cc: stable@vger.kernel.org
-Fixes: 3f7d9c1964fc ("virtio_net: Add hash_key_length check")
-Signed-off-by: Srujana Challa <schalla@marvell.com>
+Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+and __ClearPageNetpp() instead, and remove the existing APIs accessing
+@pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+netmem_clear_pp_magic().
 
-v3:
-- Moved RSS key validation checks to virtnet_validate.
-- Add fixes: tag and CC -stable
-v4:
-- Use NETDEV_RSS_KEY_LEN instead of type_max for the maximum rss key size.
+Plus, add @page_type to struct net_iov at the same offset as struct page
+so as to use the page_type APIs for struct net_iov as well.  While at it,
+reorder @type and @owner in struct net_iov to avoid a hole and
+increasing the struct size.
 
+This work was inspired by the following link:
+
+  https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+
+While at it, move the sanity check for page pool to on the free path.
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
 ---
- drivers/net/virtio_net.c | 34 ++++++++++++++++++++++++----------
- 1 file changed, 24 insertions(+), 10 deletions(-)
+The following 'Acked-by's were given only for mm part:
 
-diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-index db88dcaefb20..eeefe8abc122 100644
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -381,8 +381,6 @@ struct receive_queue {
- 	struct xdp_buff **xsk_buffs;
- };
+  Acked-by: David Hildenbrand <david@redhat.com>
+  Acked-by: Zi Yan <ziy@nvidia.com>
+  Acked-by: Vlastimil Babka <vbabka@suse.cz>
+
+This patch changes both mm and page-pool, but I'm currently targetting
+mm tree because Jakub asked and I also think it's more about mm change.
+See the following link:
+
+  https://lore.kernel.org/all/20250813075212.051b5178@kernel.org/
+
+Changes from v3:
+	1. Rebase on mm-new as of Feb 24, 2026.
+	2. Fix an issue reported by kernel test robot due to incorrect
+	   type.
+	3. Add 'Acked-by: Vlastimil Babka <vbabka@suse.cz>'.  Thanks.
+
+Changes from v2:
+	1. Fix an issue reported by kernel test robot due to incorrect
+	   type in argument of __netmem_to_page().
+
+Changes from v1:
+	1. Drop the finalizing patch removing the pp fields of struct
+	   page since I found that there is still code accessing a pp
+	   field via struct page.  I will retry the finalizing patch
+	   after resolving the issue.
+---
+ .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
+ include/linux/mm.h                            | 27 +++----------------
+ include/linux/page-flags.h                    |  6 +++++
+ include/net/netmem.h                          | 15 +++++++++--
+ mm/page_alloc.c                               | 11 +++++---
+ net/core/netmem_priv.h                        | 23 +++++++---------
+ net/core/page_pool.c                          | 24 +++++++++++++++--
+ 7 files changed, 62 insertions(+), 46 deletions(-)
+
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+index 80f9fc10877ad..7d90d2485c787 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
+ 				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
+ 				page = xdpi.page.page;
  
--#define VIRTIO_NET_RSS_MAX_KEY_SIZE     40
+-				/* No need to check page_pool_page_is_pp() as we
++				/* No need to check PageNetpp() as we
+ 				 * know this is a page_pool page.
+ 				 */
+ 				page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 13336340612e2..0db764b3d6b84 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -4824,10 +4824,9 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+  * DMA mapping IDs for page_pool
+  *
+  * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
+- * stashes it in the upper bits of page->pp_magic. We always want to be able to
+- * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
+- * pages can have arbitrary kernel pointers stored in the same field as pp_magic
+- * (since it overlaps with page->lru.next), so we must ensure that we cannot
++ * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
++ * arbitrary kernel pointers stored in the same field as pp_magic (since
++ * it overlaps with page->lru.next), so we must ensure that we cannot
+  * mistake a valid kernel pointer with any of the values we write into this
+  * field.
+  *
+@@ -4862,26 +4861,6 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
+ #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
+ 				  PP_DMA_INDEX_SHIFT)
+ 
+-/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
+- * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
+- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
+- * bits used for the DMA index. page_is_pfmemalloc() is checked in
+- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
+- */
+-#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
 -
- /* Control VQ buffers: protected by the rtnl lock */
- struct control_buf {
- 	struct virtio_net_ctrl_hdr hdr;
-@@ -486,7 +484,7 @@ struct virtnet_info {
+-#ifdef CONFIG_PAGE_POOL
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
+-}
+-#else
+-static inline bool page_pool_page_is_pp(const struct page *page)
+-{
+-	return false;
+-}
+-#endif
+-
+ #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
+ #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
+ #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index 0426cac91c0bb..30c4eb24e4edf 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -939,6 +939,7 @@ enum pagetype {
+ 	PGTY_zsmalloc		= 0xf6,
+ 	PGTY_unaccepted		= 0xf7,
+ 	PGTY_large_kmalloc	= 0xf8,
++	PGTY_netpp		= 0xf9,
  
- 	/* Must be last as it ends in a flexible-array member. */
- 	TRAILING_OVERLAP(struct virtio_net_rss_config_trailer, rss_trailer, hash_key_data,
--		u8 rss_hash_key_data[VIRTIO_NET_RSS_MAX_KEY_SIZE];
-+		u8 rss_hash_key_data[NETDEV_RSS_KEY_LEN];
- 	);
+ 	PGTY_mapcount_underflow = 0xff
  };
- static_assert(offsetof(struct virtnet_info, rss_trailer.hash_key_data) ==
-@@ -6627,6 +6625,29 @@ static int virtnet_validate(struct virtio_device *vdev)
- 		__virtio_clear_bit(vdev, VIRTIO_NET_F_STANDBY);
- 	}
+@@ -1071,6 +1072,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
+ PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
+ PAGE_TYPE_OPS(LargeKmalloc, large_kmalloc, large_kmalloc)
  
-+	if (virtio_has_feature(vdev, VIRTIO_NET_F_RSS) ||
-+	    virtio_has_feature(vdev, VIRTIO_NET_F_HASH_REPORT)) {
-+		u8 key_sz = virtio_cread8(vdev,
-+					  offsetof(struct virtio_net_config,
-+						   rss_max_key_size));
-+		/* Spec requires at least 40 bytes */
-+#define VIRTIO_NET_RSS_MIN_KEY_SIZE 40
-+		if (key_sz < VIRTIO_NET_RSS_MIN_KEY_SIZE) {
-+			dev_warn(&vdev->dev,
-+				 "rss_max_key_size=%u is less than spec minimum %u, disabling RSS\n",
-+				 key_sz, VIRTIO_NET_RSS_MIN_KEY_SIZE);
-+			__virtio_clear_bit(vdev, VIRTIO_NET_F_RSS);
-+			__virtio_clear_bit(vdev, VIRTIO_NET_F_HASH_REPORT);
-+		}
-+		if (key_sz > NETDEV_RSS_KEY_LEN) {
-+			dev_warn(&vdev->dev,
-+				 "rss_max_key_size=%u exceeds driver limit %u, disabling RSS\n",
-+				 key_sz, NETDEV_RSS_KEY_LEN);
-+			__virtio_clear_bit(vdev, VIRTIO_NET_F_RSS);
-+			__virtio_clear_bit(vdev, VIRTIO_NET_F_HASH_REPORT);
-+		}
-+	}
++/*
++ * Marks page_pool allocated pages.
++ */
++PAGE_TYPE_OPS(Netpp, netpp, netpp)
 +
- 	return 0;
+ /**
+  * PageHuge - Determine if the page belongs to hugetlbfs
+  * @page: The page to test.
+diff --git a/include/net/netmem.h b/include/net/netmem.h
+index a96b3e5e5574c..85e3b26ec547f 100644
+--- a/include/net/netmem.h
++++ b/include/net/netmem.h
+@@ -110,10 +110,21 @@ struct net_iov {
+ 			atomic_long_t pp_ref_count;
+ 		};
+ 	};
+-	struct net_iov_area *owner;
++
++	unsigned int page_type;
+ 	enum net_iov_type type;
++	struct net_iov_area *owner;
+ };
+ 
++/* Make sure 'the offset of page_type in struct page == the offset of
++ * type in struct net_iov'.
++ */
++#define NET_IOV_ASSERT_OFFSET(pg, iov)			\
++	static_assert(offsetof(struct page, pg) ==	\
++		      offsetof(struct net_iov, iov))
++NET_IOV_ASSERT_OFFSET(page_type, page_type);
++#undef NET_IOV_ASSERT_OFFSET
++
+ struct net_iov_area {
+ 	/* Array of net_iovs for this area. */
+ 	struct net_iov *niovs;
+@@ -256,7 +267,7 @@ static inline unsigned long netmem_pfn_trace(netmem_ref netmem)
+  */
+ #define pp_page_to_nmdesc(p)						\
+ ({									\
+-	DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));		\
++	DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));				\
+ 	__pp_page_to_nmdesc(p);						\
+ })
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index d88c8c67ac0b7..cae9f93271469 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -1079,7 +1079,6 @@ static inline bool page_expected_state(struct page *page,
+ #ifdef CONFIG_MEMCG
+ 			page->memcg_data |
+ #endif
+-			page_pool_page_is_pp(page) |
+ 			(page->flags.f & check_flags)))
+ 		return false;
+ 
+@@ -1106,8 +1105,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
+ 	if (unlikely(page->memcg_data))
+ 		bad_reason = "page still charged to cgroup";
+ #endif
+-	if (unlikely(page_pool_page_is_pp(page)))
+-		bad_reason = "page_pool leak";
+ 	return bad_reason;
  }
  
-@@ -6839,13 +6860,6 @@ static int virtnet_probe(struct virtio_device *vdev)
- 	if (vi->has_rss || vi->has_rss_hash_report) {
- 		vi->rss_key_size =
- 			virtio_cread8(vdev, offsetof(struct virtio_net_config, rss_max_key_size));
--		if (vi->rss_key_size > VIRTIO_NET_RSS_MAX_KEY_SIZE) {
--			dev_err(&vdev->dev, "rss_max_key_size=%u exceeds the limit %u.\n",
--				vi->rss_key_size, VIRTIO_NET_RSS_MAX_KEY_SIZE);
--			err = -EINVAL;
--			goto free;
--		}
+@@ -1416,9 +1413,15 @@ __always_inline bool __free_pages_prepare(struct page *page,
+ 		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
+ 		folio->mapping = NULL;
+ 	}
+-	if (unlikely(page_has_type(page)))
++	if (unlikely(page_has_type(page))) {
++		/* networking expects to clear its page type before releasing */
++		if (unlikely(PageNetpp(page))) {
++			bad_page(page, "page_pool leak");
++			return false;
++		}
+ 		/* Reset the page_type (which overlays _mapcount) */
+ 		page->page_type = UINT_MAX;
++	}
+ 
+ 	if (is_check_pages_enabled()) {
+ 		if (free_page_is_bad(page))
+diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+index 23175cb2bd866..3e6fde8f1726f 100644
+--- a/net/core/netmem_priv.h
++++ b/net/core/netmem_priv.h
+@@ -8,21 +8,18 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
+ 	return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
+ }
+ 
+-static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
+-{
+-	netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
+-}
 -
- 		vi->rss_hash_types_supported =
- 		    virtio_cread32(vdev, offsetof(struct virtio_net_config, supported_hash_types));
- 		vi->rss_hash_types_supported &=
+-static inline void netmem_clear_pp_magic(netmem_ref netmem)
+-{
+-	WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
+-
+-	netmem_to_nmdesc(netmem)->pp_magic = 0;
+-}
+-
+ static inline bool netmem_is_pp(netmem_ref netmem)
+ {
+-	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
++	struct page *page;
++
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
++	return PageNetpp(page);
+ }
+ 
+ static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 265a729431bb7..877bbf7a19389 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -702,8 +702,18 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
+ 
+ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ {
++	struct page *page;
++
+ 	netmem_set_pp(netmem, pool);
+-	netmem_or_pp_magic(netmem, PP_SIGNATURE);
++
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
++	__SetPageNetpp(page);
+ 
+ 	/* Ensuring all pages have been split into one fragment initially:
+ 	 * page_pool_set_pp_info() is only called once for every page when it
+@@ -718,7 +728,17 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ 
+ void page_pool_clear_pp_info(netmem_ref netmem)
+ {
+-	netmem_clear_pp_magic(netmem);
++	struct page *page;
++
++	/* XXX: Now that the offset of page_type is shared between
++	 * struct page and net_iov, just cast the netmem to struct page
++	 * unconditionally by clearing NET_IOV if any, no matter whether
++	 * it comes from struct net_iov or struct page.  This should be
++	 * adjusted once the offset is no longer shared.
++	 */
++	page = (struct page *)((__force unsigned long)netmem & ~NET_IOV);
++	__ClearPageNetpp(page);
++
+ 	netmem_set_pp(netmem, NULL);
+ }
+ 
 -- 
-2.25.1
+2.17.1
 
