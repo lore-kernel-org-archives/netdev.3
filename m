@@ -1,46 +1,61 @@
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCCA2B2D7
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 04:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39D813C918
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 04:53:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771908423; cv=none; b=FFdoEGpYUBsGBacR+2ozxTNzxclVhrqFf0GucOCWdjWxiqdgMcBcmvtgs4arzUCKlmCNPLgGaWRuGcXwXQs1cXKEQH2G/pH99IxnTWBnNn2JWjGq0POqQTe+OrEMRGtQWVNd0qf+fg3RSWrLaA0xG2avNCScsPKxkTvhavqVhfI=
+	t=1771908806; cv=none; b=qgdtlZXYPK1HZ7nx44oQNG2ODEOnI7cGLnwVtLDysfjZyIPspSE+6WLzJcSRzmldNQR/cOtbt8PJQtoRRCJO4DZy8qutIN/F17Mak6GgU9yp+uJ3rLgUyPRGC7QFnnrsECpEswk4WoRekdtyvL5UybhJzxXv1sdF4JmzmEo61ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771908423; c=relaxed/simple;
-	bh=XW4RD6vzWMcKLqHd7wq/YGz09SAkSgXlfU/FMWCkO38=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=olLvlvVQ/ingWhADf4YMlGPaKQMvXv6MbniMPjmTfTJ5emCLg+EsBCV8OB2Ayn2ITfrpvVhG+wpr+IU9jsxXHhOoFOY0XqAwXVoZL+lUvYrADSF1P8iB0+KfLfLrCxkdWkjMwYogGFIFJeq/up5IwtvPWfrJtR8c0V1m95ZUXf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=frUwGZ+k; arc=none smtp.client-ip=95.215.58.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1771908806; c=relaxed/simple;
+	bh=QHFf1OU6ES7xnOCXlMFAgJ/dg74jYKJ37lAfBLRVn98=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xtq9kjskFO/zz7wAXj2En37hirM5XQ1ETQ5AWLBqxr8kQRQcUmH5GDgdpeZw6LUZPGKh77GTFlca/kvgPoak6op2mejaxddvC2ZN3wwQcIPZToL4PGV8looGSMXI7rIxM6pbs/m1B3MaW8nnnSZA2Q/tFTf56pLQO5w/vBu+Ie0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=UYPFOMxr; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="frUwGZ+k"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1771908419;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ly3Y7DNzQZPjtRKKbAc/5HFD0QRbUkZKgKud6Tgpm3c=;
-	b=frUwGZ+kf0V1WhJ3lpxxXr4xGIjn1pYfOyv95CHUAkLWp2dD1j9R3HfkasumjSfFalHwGB
-	xSWon3cxT27IOqgrpOVgrlqU5FLfSJTwaScH6WoxiNtdKFN7I09saqkSKsQyhCXwiSVU44
-	yGorW9mkyKj301rnsczA22Ke2BaspJw=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: netdev@vger.kernel.org
-Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
-	syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v1] atm: lec: fix null-ptr-deref in lec_arp_clear_vccs
-Date: Tue, 24 Feb 2026 12:46:38 +0800
-Message-ID: <20260224044648.243578-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="UYPFOMxr"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61NHAEf92086643;
+	Mon, 23 Feb 2026 20:52:59 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=t
+	P+0XX82xmHWBkwIZfYhvrX4L2scW1Js6Fybb7XMtuc=; b=UYPFOMxrHK3ZBlFeE
+	yZxJiXVGLmkqjCPxr/XQHi2oU0YnpmWBNe1XmYYljvUlBNTQ7+NzSRYfQeO2tEvz
+	MqzVC7dpHnoHbrwxZk3h2U1EMmPYaRSUEyrfF4nzODtCd2Upwt1Ear88+BMASrjU
+	KWDR6i2zNJU5yg6CYtUCU0uMIKIPWkoiGBT7RGOUQYK6gLvv469mWG/fE8CmD39h
+	wLGlJJlz0AwLxfV+pI1lQNYMN/MCUv2dScGiz/PrvanRDMET872lrsPD2Aa4U0DS
+	qzKMyiTv3tXyENvaK4Why8l4dmIWtKpC4JlxySGo+8vb1EGGyixtVrRKglPuFlq9
+	seAPg==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4cfd3gvyaj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 23 Feb 2026 20:52:59 -0800 (PST)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Mon, 23 Feb 2026 20:52:57 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Mon, 23 Feb 2026 20:52:57 -0800
+Received: from localhost.localdomain (unknown [10.28.36.175])
+	by maili.marvell.com (Postfix) with ESMTP id 913163F70CF;
+	Mon, 23 Feb 2026 20:52:54 -0800 (PST)
+From: Srujana Challa <schalla@marvell.com>
+To: <netdev@vger.kernel.org>, <virtualization@lists.linux.dev>
+CC: <pabeni@redhat.com>, <mst@redhat.com>, <jasowang@redhat.com>,
+        <xuanzhuo@linux.alibaba.com>, <eperezma@redhat.com>,
+        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
+        <ndabilpuram@marvell.com>, <kshankar@marvell.com>,
+        <schalla@marvell.com>
+Subject: [PATCH net-next,2/2] virtio_net: replace RSS key size max check with BUILD_BUG_ON
+Date: Tue, 24 Feb 2026 10:22:49 +0530
+Message-ID: <20260224045249.933178-2-schalla@marvell.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20260224045249.933178-1-schalla@marvell.com>
+References: <20260224045249.933178-1-schalla@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,88 +63,54 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: JX3T82BzDMseqW1046oOTANVoAhCDXwS
+X-Proofpoint-GUID: JX3T82BzDMseqW1046oOTANVoAhCDXwS
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI0MDAzOCBTYWx0ZWRfX2oyqKzfDXfZO
+ Q3h5HzrpnxGj+MYfziexYoLwmahKyHcl38WNN89Gozg+Ap+GXb8DpTRDusfMz/IAN4gMIm75s10
+ rdMa0U5JXNaYP3upnE+JVfYCSyXKVbf3Zp0W5Wwfs+HmV27i6Tmge3ZKqBm5Uwf8AxniIYM/PyH
+ ibotz97y7wVPyn8bqc4bW4WWJmOjojAxGDPQMxa/qhWXMwUxQ10nfoR1rsT5GzALjS8aN4AKv4B
+ YoKGLAMsb+UUDjbnmSENX6QpDUIHXo82UgVBcPuVUO/3Jo4duQCZjDsY7xDk6uuBcdJnTE2mKk7
+ irLpFMjAkxb7+WLvV4mgc67Xib2SUvOPvcmKrIopUkUyvYYifJQt0lujCJWV6kqniM48dapFzLW
+ nX9uNYv0TigFla4Mxk0Ft63QvSpfo5nZ5Jj/+NRL8ecl1lx/TZQtfOjLslwm2QOyED8pvTUEpkH
+ 84AQFBc+ZRYcGq1akIw==
+X-Authority-Analysis: v=2.4 cv=H5XWAuYi c=1 sm=1 tr=0 ts=699d2eab cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
+ a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=BwTn4DStoJ9Fkl0ccMAA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-23_06,2026-02-23_03,2025-10-01_01
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+Since NETDEV_RSS_KEY_LEN was increased to 256 in net-next, use
+BUILD_BUG_ON to enforce the limit at compile time and remove the
+redundant runtime max check.
 
-syzkaller reported a null-ptr-deref in lec_arp_clear_vccs().
-This issue can be easily reproduced using the syzkaller reproducer.
-
-In the ATM LANE (LAN Emulation) module, the same atm_vcc can be shared by
-multiple lec_arp_table entries (e.g., via entry->vcc or entry->recv_vcc).
-When the underlying VCC is closed, lec_vcc_close() iterates over all
-ARP entries and calls lec_arp_clear_vccs() for each matched entry.
-
-For example, when lec_vcc_close() iterates through the hlists in
-priv->lec_arp_empty_ones or other ARP tables:
-
-1. In the first iteration, for the first matched ARP entry sharing the VCC,
-lec_arp_clear_vccs() frees the associated vpriv (which is vcc->user_back)
-and sets vcc->user_back to NULL.
-2. In the second iteration, for the next matched ARP entry sharing the same
-VCC, lec_arp_clear_vccs() is called again. It obtains a NULL vpriv from
-vcc->user_back (via LEC_VCC_PRIV(vcc)) and then attempts to dereference it
-via `vcc->pop = vpriv->old_pop`, leading to a null-ptr-deref crash.
-
-Fix this by adding a null check for vpriv before dereferencing it. If
-vpriv is already NULL, it means the VCC has been cleared by a previous
-call, so we can safely skip the cleanup and just clear the entry's
-vcc/recv_vcc pointers. Note that the added check is intentional and
-necessary to avoid calling vcc_release_async() multiple times on the
-same vcc/recv_vcc, not just protecting the kfree().
-
-Reported-by: syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68c95a83.050a0220.3c6139.0e5c.GAE@google.com/T/
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+Signed-off-by: Srujana Challa <schalla@marvell.com>
 ---
- net/atm/lec.c | 27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/net/virtio_net.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index afb8d3eb2185..a5b80d6df603 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -1260,24 +1260,27 @@ static void lec_arp_clear_vccs(struct lec_arp_table *entry)
- 		struct lec_vcc_priv *vpriv = LEC_VCC_PRIV(vcc);
- 		struct net_device *dev = (struct net_device *)vcc->proto_data;
- 
--		vcc->pop = vpriv->old_pop;
--		if (vpriv->xoff)
--			netif_wake_queue(dev);
--		kfree(vpriv);
--		vcc->user_back = NULL;
--		vcc->push = entry->old_push;
--		vcc_release_async(vcc, -EPIPE);
-+		if (vpriv) {
-+			vcc->pop = vpriv->old_pop;
-+			if (vpriv->xoff)
-+				netif_wake_queue(dev);
-+			kfree(vpriv);
-+			vcc->user_back = NULL;
-+			vcc->push = entry->old_push;
-+			vcc_release_async(vcc, -EPIPE);
-+		}
- 		entry->vcc = NULL;
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index eeefe8abc122..3092d5d9d3e4 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -6639,13 +6639,7 @@ static int virtnet_validate(struct virtio_device *vdev)
+ 			__virtio_clear_bit(vdev, VIRTIO_NET_F_RSS);
+ 			__virtio_clear_bit(vdev, VIRTIO_NET_F_HASH_REPORT);
+ 		}
+-		if (key_sz > NETDEV_RSS_KEY_LEN) {
+-			dev_warn(&vdev->dev,
+-				 "rss_max_key_size=%u exceeds driver limit %u, disabling RSS\n",
+-				 key_sz, NETDEV_RSS_KEY_LEN);
+-			__virtio_clear_bit(vdev, VIRTIO_NET_F_RSS);
+-			__virtio_clear_bit(vdev, VIRTIO_NET_F_HASH_REPORT);
+-		}
++		BUILD_BUG_ON(type_max(vi->rss_key_size) >= NETDEV_RSS_KEY_LEN);
  	}
- 	if (entry->recv_vcc) {
- 		struct atm_vcc *vcc = entry->recv_vcc;
- 		struct lec_vcc_priv *vpriv = LEC_VCC_PRIV(vcc);
  
--		kfree(vpriv);
--		vcc->user_back = NULL;
--
--		entry->recv_vcc->push = entry->old_recv_push;
--		vcc_release_async(entry->recv_vcc, -EPIPE);
-+		if (vpriv) {
-+			kfree(vpriv);
-+			vcc->user_back = NULL;
-+			vcc->push = entry->old_recv_push;
-+			vcc_release_async(vcc, -EPIPE);
-+		}
- 		entry->recv_vcc = NULL;
- 	}
- }
+ 	return 0;
 -- 
-2.43.0
+2.25.1
 
