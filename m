@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1167E3EBF08;
-	Tue, 24 Feb 2026 00:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0652135AD;
+	Tue, 24 Feb 2026 00:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771892730; cv=none; b=If06dJD45ZEsVCJL691nl+63po3ZOqt5QKT+st8mqgd9pe28pQZWwXz123tsTWAgsOpkEa8FxCCCWW+w5E0nD2lhho/1++/HfbvqE7PMML4TLDHoWs2kIfaoi7WVNE9UXiKeyDnlEkcTS78KohxNQMlNjLHPoHtVu95Ml+3Ff7s=
+	t=1771893447; cv=none; b=FJjUUw840aCQlx0qTrj+976vpVw66C3X/ztTp1jiPIUcjTK1wSgZMUVsK10tIGG7Y4KTtbvUZv/DgUQeuNa7KrHOH/t2zalOLXbpcXZ3BgKhrfWHSKljxFRJaqLl2LybJJhjXFeS37whJz/zkWSjK8AxmIiM+ozeH2Rqajt60e0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771892730; c=relaxed/simple;
-	bh=7Hn1LL/P0+aqiVoYtGkNW5sN75m37hbO8D97TAL8QZI=;
+	s=arc-20240116; t=1771893447; c=relaxed/simple;
+	bh=0J3oZjSMzV17bOLwFSb5Kj13pyoUUrsptIWZn1bnA2Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N1NZ02OkTitceYcf/1bfNEcw16Vo1YDIM/CEtNiX7z9wOj+vdnq/bnw4D4dAGyL8389UZf1YK17SGc2e4Mbu3XZYAcs1RlsNpYkINoysyVsH+LsjBcy0vFC+bwcO6FA8WA9XksevbyKyxL1gjAx/IuWWI8tqd+8gwF6fExn7Pnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=2tQOFWaH; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=qwSFyBbY9w6gWLK3xURAJcsO1NxOz5VlS2cFPkKqDuDnMNGhzTr/zRm42XXqmNbarGtLJTG1vIOFkETF9na1rTJT58RRbdJneZvqXSWdcrgPC2w3QehDLGiwTlte36x6+8ZVtrx76g5qe4DN9N/y4ONZmDddpKLzHus8oZPzZwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eLNyRxYP; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="2tQOFWaH"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eLNyRxYP"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=9wNbfljbdrFJ4n2mZFkerLZ8iaTZAp5bP82EU+2TLyg=; b=2tQOFWaHgdJXv3mVmyFe//Zsgf
-	OrGcmZyuuWjtmVmZFttTohmxtToez41TqAz7m0rpqWhIxDTW6kzPlTBvqOnEmO3JcaQZ8FzHj742Z
-	jje/868dk3eAHYAWpw9r6naV2UJCRvi6D3N8PDWkZ8WSdmMnpxjKs+5P6vRwAGa4n0+k=;
+	bh=2Oxv0iuz2GOOH71uHwL+u1JOZWx+ihKepwCH6y8hknI=; b=eLNyRxYPjL7ApoDqQGaYpppZyE
+	g15M0/BWceLm6pwiM+9dc8yZuAFpWYZXp2i+8XPzM+gjvqdas8GszMVpHA42kvK85LLHkhrf+rqG+
+	au95McT7yqsPVRJZuEXdEI8DYDiPTdopuKrfmhKZxHarmV+UYW/qMMtMAL8e+XyIDcL4=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1vugEk-008Wyl-A0; Tue, 24 Feb 2026 01:25:14 +0100
-Date: Tue, 24 Feb 2026 01:25:14 +0100
+	id 1vugQM-008X4k-78; Tue, 24 Feb 2026 01:37:14 +0100
+Date: Tue, 24 Feb 2026 01:37:14 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: Artem Lytkin <iprintercanon@gmail.com>
 Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
@@ -39,11 +39,11 @@ Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] staging: most: dim2: replace IS_ERR_OR_NULL with
- IS_ERR for devm_clk_get
-Message-ID: <796e602c-12c3-4288-8ed2-b41bfd64b2d1@lunn.ch>
+Subject: Re: [PATCH net-next 2/2] net: phy: add Rust reference driver for
+ ET1011C
+Message-ID: <389ccb15-aef9-422b-8717-cf3a26e0858b@lunn.ch>
 References: <20260223220504.2102-1-iprintercanon@gmail.com>
- <20260223220504.2102-3-iprintercanon@gmail.com>
+ <20260223220504.2102-4-iprintercanon@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -52,17 +52,24 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260223220504.2102-3-iprintercanon@gmail.com>
+In-Reply-To: <20260223220504.2102-4-iprintercanon@gmail.com>
 
-On Mon, Feb 23, 2026 at 10:05:01PM +0000, Artem Lytkin wrote:
-> devm_clk_get() never returns NULL, so IS_ERR_OR_NULL() checks are
-> unnecessary. Replace them with IS_ERR() for both the "mlb" and
-> "pll8_mlb" clock lookups in fsl_mx6_enable().
+> +    fn read_status(dev: &mut phy::Device) -> Result<u16> {
+> +        dev.genphy_read_status::<C22>()?;
+> +
+> +        let val = dev.read(ET1011C_STATUS_REG)?;
+> +        if (val & ET1011C_SPEED_MASK) == ET1011C_GIGABIT_SPEED {
+> +            let cfg = dev.read(ET1011C_CONFIG_REG)?;
+> +            let cfg = cfg & !ET1011C_TX_FIFO_MASK;
+> +            dev.write(
+> +                ET1011C_CONFIG_REG,
+> +                cfg | ET1011C_GMII_INTERFACE | ET1011C_SYS_CLK_EN | ET1011C_TX_FIFO_DEPTH_16,
+> +            )?;
+> +        }
 
-Looks like you have some other patches mixed in here.
+This is not the same as the C code. read_status() will be called once
+per second. The C code only does the read/modify/write when the speed
+reported by genphy_read_status() is different to the previous
+value. This code appears to do it every second.
 
-
-    Andrew
-
----
-pw-bot: cr
+       Andrew
