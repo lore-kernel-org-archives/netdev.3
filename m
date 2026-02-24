@@ -1,60 +1,32 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD48A26A0C7
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 20:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146D02DCF74;
+	Tue, 24 Feb 2026 20:50:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771965031; cv=none; b=p7+QanveuI1vdd6SqqZI+VlOazfa7AEtngGPH1nm5gp9fE+kSfj/AcjbdLfurcUqaDyGeGBm+A7DducIs5IGwZurR0yansJkfqrYeW0zol3DcOmlUUHWfIgvjgzGqLQAjv8yDU3gaWnBP/3fHYiukknXAn2c5KbMfC7oZwHWU+c=
+	t=1771966256; cv=none; b=jqIfC1+Fe1qwzpmGoFNT30vcL7X9qQXbp4Ypfxo+TnUahT4pkmZcPNp1m/vCEGFIDwFRWiWWzUE2dJYPqQTmn22O43xeYczOGyH7QHU9Z480naGGG8Ll9UoXkaVViTKwrB0Ul92l4nNTR2Odz6pFaKz4rsXXzFuCFQ7/z9kkgEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771965031; c=relaxed/simple;
-	bh=YQA1mkKna0FlMuY/MmJNczhr1bRcCeOleL24M5PFzXY=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=ttJ3/J9NWi+9LDqCxMFNhXZyBz2hj0thD0y09WMWzZMt68NI0nPLTc5WMndDTCp9MH6I0VRr2AU0gQKq1TGnCciL3715h/3lefhpMV5idDIZ666B/lmGNgRTrVe5bj5BRDtNclVecRu5CfRuwBLosn4K425+GHlJ42t8PBJVMSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dyrLqxwI; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dyrLqxwI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1771965028;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Uu8uZj36aSMeKYdaF+VZ7z9MFqA8Pc5joGqJIks22DM=;
-	b=dyrLqxwIl2Wqrrb+iMNg1CuIXhOqjGx6hThV/Oh5bz0jtBlRBo5tkDL3Td33/5wBCpdoA3
-	XoZqFuWOd5DVCG9NMo7SoLxoVzR0R3o0JUjLHHOK6+jFGcT4UAkXu+TXGIg9pKoMW+5lQM
-	jT08u/dhB0cBvM3qX8prCUywTB7M66Q=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-R8PpMFbwNdirup-ienxzAg-1; Tue,
- 24 Feb 2026 15:30:25 -0500
-X-MC-Unique: R8PpMFbwNdirup-ienxzAg-1
-X-Mimecast-MFC-AGG-ID: R8PpMFbwNdirup-ienxzAg_1771965023
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 733F21956096;
-	Tue, 24 Feb 2026 20:30:23 +0000 (UTC)
-Received: from dcaratti.users.ipa.redhat.com (unknown [10.44.33.179])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B6F9F1955F43;
-	Tue, 24 Feb 2026 20:30:19 +0000 (UTC)
-From: Davide Caratti <dcaratti@redhat.com>
-To: Jamal Hadi Salim <jhs@mojatatu.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jiri Pirko <jiri@resnulli.us>,
+	s=arc-20240116; t=1771966256; c=relaxed/simple;
+	bh=qvBNLGYNtqRgL4hDWAOErASAdX4jrQd28+zbJPnh5Sw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XQHFbR9pvjmvi4+Nw5F0IMCVhhtU2ZyshJRDSaNJwbC0XCN9+e+L18c9VcXE6TMlTXpNy3p9oy9OILPO0rqaN7dLxK1MMXYgSfG3wPnRr7CzFlOXbdCK0i4uYrdRjvY6120RtWf7IdaaEx8qk1mKLIZn7UQbNWdVKu2z3A61Cvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id D886160516; Tue, 24 Feb 2026 21:50:52 +0100 (CET)
+From: Florian Westphal <fw@strlen.de>
+To: <netdev@vger.kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Petr Machata <petrm@mellanox.com>,
-	Ido Schimmel <idosch@mellanox.com>,
-	netdev@vger.kernel.org
-Subject: [PATCH net] net/sched: ets: fix divide by zero in the offload path
-Date: Tue, 24 Feb 2026 21:28:32 +0100
-Message-ID: <28504887df314588c7255e9911769c36f751edee.1771964872.git.dcaratti@redhat.com>
+	<netfilter-devel@vger.kernel.org>,
+	pablo@netfilter.org
+Subject: [PATCH net-next 0/9] netfilter: updates for net-next
+Date: Tue, 24 Feb 2026 21:50:39 +0100
+Message-ID: <20260224205048.4718-1-fw@strlen.de>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -62,111 +34,125 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Offloading ETS requires computing each class' WRR weight: this is done by
-averaging over the sums of quanta as 'q_sum' and 'q_psum'. Using unsigned
-int, the same integer size as the individual DRR quanta, can overflow and
-even cause division by zero, like it happened in the following splat:
+Hi,
 
- Oops: divide error: 0000 [#1] SMP PTI
- CPU: 13 UID: 0 PID: 487 Comm: tc Tainted: G            E       6.19.0-virtme #45 PREEMPT(full)
- Tainted: [E]=UNSIGNED_MODULE
- Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
- RIP: 0010:ets_offload_change+0x11f/0x290 [sch_ets]
- Code: e4 45 31 ff eb 03 41 89 c7 41 89 cb 89 ce 83 f9 0f 0f 87 b7 00 00 00 45 8b 08 31 c0 45 01 cc 45 85 c9 74 09 41 6b c4 64 31 d2 <41> f7 f2 89 c2 44 29 fa 45 89 df 41 83 fb 0f 0f 87 c7 00 00 00 44
- RSP: 0018:ffffd0a180d77588 EFLAGS: 00010246
- RAX: 00000000ffffff38 RBX: ffff8d3d482ca000 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffd0a180d77660
- RBP: ffffd0a180d77690 R08: ffff8d3d482ca2d8 R09: 00000000fffffffe
- R10: 0000000000000000 R11: 0000000000000000 R12: 00000000fffffffe
- R13: ffff8d3d472f2000 R14: 0000000000000003 R15: 0000000000000000
- FS:  00007f440b6c2740(0000) GS:ffff8d3dc9803000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000000003cdd2000 CR3: 0000000007b58002 CR4: 0000000000172ef0
- Call Trace:
-  <TASK>
-  ets_qdisc_change+0x870/0xf40 [sch_ets]
-  qdisc_create+0x12b/0x540
-  tc_modify_qdisc+0x6d7/0xbd0
-  rtnetlink_rcv_msg+0x168/0x6b0
-  netlink_rcv_skb+0x5c/0x110
-  netlink_unicast+0x1d6/0x2b0
-  netlink_sendmsg+0x22e/0x470
-  ____sys_sendmsg+0x38a/0x3c0
-  ___sys_sendmsg+0x99/0xe0
-  __sys_sendmsg+0x8a/0xf0
-  do_syscall_64+0x111/0xf80
-  entry_SYSCALL_64_after_hwframe+0x77/0x7f
- RIP: 0033:0x7f440b81c77e
- Code: 4d 89 d8 e8 d4 bc 00 00 4c 8b 5d f8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 11 c9 c3 0f 1f 80 00 00 00 00 48 8b 45 10 0f 05 <c9> c3 83 e2 39 83 fa 08 75 e7 e8 13 ff ff ff 0f 1f 00 f3 0f 1e fa
- RSP: 002b:00007fff951e4c10 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
- RAX: ffffffffffffffda RBX: 0000000000481820 RCX: 00007f440b81c77e
- RDX: 0000000000000000 RSI: 00007fff951e4cd0 RDI: 0000000000000003
- RBP: 00007fff951e4c20 R08: 0000000000000000 R09: 0000000000000000
- R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff951f4fa8
- R13: 00000000699ddede R14: 00007f440bb01000 R15: 0000000000486980
-  </TASK>
- Modules linked in: sch_ets(E) netdevsim(E)
- ---[ end trace 0000000000000000 ]---
- RIP: 0010:ets_offload_change+0x11f/0x290 [sch_ets]
- Code: e4 45 31 ff eb 03 41 89 c7 41 89 cb 89 ce 83 f9 0f 0f 87 b7 00 00 00 45 8b 08 31 c0 45 01 cc 45 85 c9 74 09 41 6b c4 64 31 d2 <41> f7 f2 89 c2 44 29 fa 45 89 df 41 83 fb 0f 0f 87 c7 00 00 00 44
- RSP: 0018:ffffd0a180d77588 EFLAGS: 00010246
- RAX: 00000000ffffff38 RBX: ffff8d3d482ca000 RCX: 0000000000000000
- RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffd0a180d77660
- RBP: ffffd0a180d77690 R08: ffff8d3d482ca2d8 R09: 00000000fffffffe
- R10: 0000000000000000 R11: 0000000000000000 R12: 00000000fffffffe
- R13: ffff8d3d472f2000 R14: 0000000000000003 R15: 0000000000000000
- FS:  00007f440b6c2740(0000) GS:ffff8d3dc9803000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000000003cdd2000 CR3: 0000000007b58002 CR4: 0000000000172ef0
- Kernel panic - not syncing: Fatal exception
- Kernel Offset: 0x30000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
- ---[ end Kernel panic - not syncing: Fatal exception ]---
+The following patchset contains Netfilter fixes for *net-next*,
+including IPVS updates from and via Julian Anastasov.
 
-Fix this using 64-bit integers for 'q_sum' and 'q_psum'.
+First updates for IPVS. From Julians cover-letter:
 
-Cc: stable@vger.kernel.org
-Fixes: d35eb52bd2ac ("net: sch_ets: Make the ETS qdisc offloadable")
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
----
- net/sched/sch_ets.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+* Convert the global __ip_vs_mutex to per-net service_mutex and
+  switch the service tables to be per-net, cowork by Jiejian Wu and
+  Dust Li
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 306e046276d4..a4b07b661b77 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -115,12 +115,12 @@ static void ets_offload_change(struct Qdisc *sch)
- 	struct ets_sched *q = qdisc_priv(sch);
- 	struct tc_ets_qopt_offload qopt;
- 	unsigned int w_psum_prev = 0;
--	unsigned int q_psum = 0;
--	unsigned int q_sum = 0;
- 	unsigned int quantum;
- 	unsigned int w_psum;
- 	unsigned int weight;
- 	unsigned int i;
-+	u64 q_psum = 0;
-+	u64 q_sum = 0;
- 
- 	if (!tc_can_offload(dev) || !dev->netdev_ops->ndo_setup_tc)
- 		return;
-@@ -138,8 +138,12 @@ static void ets_offload_change(struct Qdisc *sch)
- 
- 	for (i = 0; i < q->nbands; i++) {
- 		quantum = q->classes[i].quantum;
--		q_psum += quantum;
--		w_psum = quantum ? q_psum * 100 / q_sum : 0;
-+		if (quantum) {
-+			q_psum += quantum;
-+			w_psum = div64_u64(q_psum * 100, q_sum);
-+		} else {
-+			w_psum = 0;
-+		}
- 		weight = w_psum - w_psum_prev;
- 		w_psum_prev = w_psum;
- 
+* Convert some code that walks the service lists to use RCU instead of
+  the service_mutex
+
+* We used two tables for services (non-fwmark and fwmark), merge them
+  into single svc_table
+
+* The list for unavailable destinations (dest_trash) holds dsts and
+  thus dev references causing extra work for the ip_vs_dst_event() dev
+  notifier handler. Change this by dropping the reference when dest
+  is removed and saved into dest_trash. The dest_trash will need more
+  changes to make it light for lookups. TODO.
+
+* On new connection we can do multiple lookups for services by trying
+  different fallback options. Add more counters for service types, so
+  that we can avoid unneeded lookups for services.
+
+* The no_cport and dropentry counters can be per-net and also we can
+  avoid extra conn lookups
+
+Then, a few cleanups for nf_tables:
+
+* keep BH enabled during nft_set_rbtree inserts, this is possible because the
+  root lock is now only taken from control plane.
+* toss a few EXPORT_SYMBOLs from nf_tables; these were historic
+  leftovers from back in the day when e.g. set backends were still
+  residing in their own modules.
+* remove the register tracking infra from nftables.  It was disabled
+  years ago in 5.18 and there are no plans to salvage this work; the
+  idea was good (remove redundant register stores), but there is just
+  one too many pitfalls, and better rule structuring (verdict maps)
+  largely avoids the scenarios where this would have helped.
+
+Florian Westphal (3):
+  netfilter: nft_set_rbtree: don't disable bh when acquiring tree lock
+  netfilter: nf_tables: drop obsolete EXPORT_SYMBOLs
+  netfilter: nf_tables: remove register tracking infrastructure
+
+Jiejian Wu (1):
+  ipvs: make ip_vs_svc_table and ip_vs_svc_fwm_table per netns
+
+Julian Anastasov (5):
+  ipvs: some service readers can use RCU
+  ipvs: use single svc table
+  ipvs: do not keep dest_dst after dest is removed
+  ipvs: use more counters to avoid service lookups
+  ipvs: no_cport and dropentry counters can be per-net
+
+ include/net/ip_vs.h                      |  39 ++-
+ include/net/netfilter/nf_tables.h        |  32 --
+ include/net/netfilter/nft_fib.h          |   2 -
+ include/net/netfilter/nft_meta.h         |   3 -
+ net/bridge/netfilter/nft_meta_bridge.c   |  20 --
+ net/bridge/netfilter/nft_reject_bridge.c |   1 -
+ net/ipv4/netfilter/nft_dup_ipv4.c        |   1 -
+ net/ipv4/netfilter/nft_fib_ipv4.c        |   2 -
+ net/ipv4/netfilter/nft_reject_ipv4.c     |   1 -
+ net/ipv6/netfilter/nft_dup_ipv6.c        |   1 -
+ net/ipv6/netfilter/nft_fib_ipv6.c        |   2 -
+ net/ipv6/netfilter/nft_reject_ipv6.c     |   1 -
+ net/netfilter/ipvs/ip_vs_conn.c          |  64 ++--
+ net/netfilter/ipvs/ip_vs_core.c          |   2 +-
+ net/netfilter/ipvs/ip_vs_ctl.c           | 368 ++++++++---------------
+ net/netfilter/ipvs/ip_vs_est.c           |  18 +-
+ net/netfilter/ipvs/ip_vs_xmit.c          |  12 +-
+ net/netfilter/nf_tables_api.c            |  78 -----
+ net/netfilter/nft_bitwise.c              | 104 -------
+ net/netfilter/nft_byteorder.c            |  11 -
+ net/netfilter/nft_cmp.c                  |   3 -
+ net/netfilter/nft_compat.c               |  10 -
+ net/netfilter/nft_connlimit.c            |   1 -
+ net/netfilter/nft_counter.c              |   1 -
+ net/netfilter/nft_ct.c                   |  46 ---
+ net/netfilter/nft_dup_netdev.c           |   1 -
+ net/netfilter/nft_dynset.c               |   1 -
+ net/netfilter/nft_exthdr.c               |  34 ---
+ net/netfilter/nft_fib.c                  |  42 ---
+ net/netfilter/nft_fib_inet.c             |   1 -
+ net/netfilter/nft_fib_netdev.c           |   1 -
+ net/netfilter/nft_flow_offload.c         |   1 -
+ net/netfilter/nft_fwd_netdev.c           |   2 -
+ net/netfilter/nft_hash.c                 |  36 ---
+ net/netfilter/nft_immediate.c            |  12 -
+ net/netfilter/nft_last.c                 |   1 -
+ net/netfilter/nft_limit.c                |   2 -
+ net/netfilter/nft_log.c                  |   1 -
+ net/netfilter/nft_lookup.c               |  12 -
+ net/netfilter/nft_masq.c                 |   3 -
+ net/netfilter/nft_meta.c                 |  45 ---
+ net/netfilter/nft_nat.c                  |   2 -
+ net/netfilter/nft_numgen.c               |  22 --
+ net/netfilter/nft_objref.c               |   2 -
+ net/netfilter/nft_osf.c                  |  25 --
+ net/netfilter/nft_payload.c              |  47 ---
+ net/netfilter/nft_queue.c                |   2 -
+ net/netfilter/nft_quota.c                |   1 -
+ net/netfilter/nft_range.c                |   1 -
+ net/netfilter/nft_redir.c                |   3 -
+ net/netfilter/nft_reject_inet.c          |   1 -
+ net/netfilter/nft_reject_netdev.c        |   1 -
+ net/netfilter/nft_rt.c                   |   1 -
+ net/netfilter/nft_set_rbtree.c           |  23 +-
+ net/netfilter/nft_socket.c               |  26 --
+ net/netfilter/nft_synproxy.c             |   1 -
+ net/netfilter/nft_tproxy.c               |   1 -
+ net/netfilter/nft_tunnel.c               |  26 --
+ net/netfilter/nft_xfrm.c                 |  27 --
+ 59 files changed, 221 insertions(+), 1009 deletions(-)
+
 -- 
 2.52.0
-
