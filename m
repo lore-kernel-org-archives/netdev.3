@@ -1,202 +1,242 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A199366DA1;
-	Tue, 24 Feb 2026 08:35:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771922111; cv=none; b=B8v40htL4j1DGhA+buZFbBAMSMgpu7Qv/wIWtiPifnBEjxPpy3V7jxRhgRkYVfzRNBl6t+wG/lqUZIjn5peFdN8d5IZRInC/5zFhbI6EHzGoPrxkspDbHKXKQTxcVnLid6dRUohBo5nGnbrSEyMxx1JDMbjIHXis7HyoG/j/K5M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771922111; c=relaxed/simple;
-	bh=43m26sbpVD4yg8OL79u3M2NiOM3BzPRPCgbYPX+O1+k=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=EBw0ZsPRdGsAHofTGkTNcK3ih7OUYM0FK8ZnrrcPXXN3wG6qHAKkplMKjycnogwsJ346scJ3Pub/QFEVOfFJaaMoRsT6h3HVQmAInrPeVaX/0a6U1kHX57OKAS+f2LgZz+/J210MGfkvLEVB0HqokYkZOiAEonO616cYi+zgRQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=RW5z6UsP; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F25303A07
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 08:57:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.9
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771923441; cv=fail; b=cl6I3hjUpY6F7Bimw+b4ENwomyx1fEqipF5TWPJzrG6eS/QR/fQlFgHI0jBv0kt7RBdaMv/BV/OurGtYKO360N8HSSvyoyboWD3UrkFhRvUF7a8vlRiMhonno15j893gdGCh1ncofoSpdAKwRVjwWoSh67uuy8Sw3ACXg6v5ofE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771923441; c=relaxed/simple;
+	bh=8CcOXLmq4/iouvhmrH8pBE9Xajkh/OTP9Cu1Ax/dELk=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=BOOi4HaxvX42j/DuARVKM7YSJAa7iIVq3Pw3dMAk5Kj/HhxAs96NZRIxYX+Yd9fdaYNMsgd4mwpQ3jDPFbHeYqX9jfYpwLxgkaxrpe9pvcQI96sUPG1cEK0EIYyvzVWu2p84Xwoukz3mIOHr3hUiH3w0BUe1+cj0Y6dCrOVnocQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B17KjHLL; arc=fail smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="RW5z6UsP"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=DVsICJgyDOq5n55e+N9YMtGRTcnXzdB9j4fTbzYgE7M=;
-	b=RW5z6UsPyv0yDN2hfUkcM0Be2o+cmUXCeU4zyB6PT+ZPk2qcRPWPcN7WS4qeMdNZ0sBbBw4wp
-	ec3yYhAY7sMhhhsYiUX+aR4cJXmnEyKginoJT98OmTUPm0lkPa8ug8St1N9ADvpN4/tDeHlog+/
-	C55ZK36q7Nc7NsT3AFWyOH4=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4fKrWR1bPczLlSJ;
-	Tue, 24 Feb 2026 16:30:11 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4981B4055B;
-	Tue, 24 Feb 2026 16:34:57 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B17KjHLL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1771923440; x=1803459440;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=8CcOXLmq4/iouvhmrH8pBE9Xajkh/OTP9Cu1Ax/dELk=;
+  b=B17KjHLLCeaT1IMYvady8XjVknCEb8jYbHH2Q7+HkVoOZCWUkkT2yQYt
+   BzwyNun1/4Tyd8LKSdKNf3ea6t6R2K559L2NKuhu7jNIU8slDv9brVFQo
+   7fMUB23gehp4N2GAPZVMK/Hq8F1oOATZ/xWCE+74JIDT5xo06YKj2edAD
+   LYcsdJNGmMCg6260OsbcqoPerwfvlkuTtfIE/zQqs9I+zTK23ry0w0b4L
+   j//2IlTj1bbGFjclN+MS1H6QtZPD3FyfeMFBNujHfNyh2xz9oWDYLNSsn
+   UyQqzK3ucnhWgMgr2wLNSD5dqiL6l6JYCn/JPl8nBZbOaVsTc8gmQN/Vv
+   g==;
+X-CSE-ConnectionGUID: cVKBQ6ZnTSSvzftcEVq7pA==
+X-CSE-MsgGUID: e7muhWOLQKKQkWyQw39ooA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="95547146"
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
+   d="scan'208";a="95547146"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 00:57:19 -0800
+X-CSE-ConnectionGUID: VVa2XwwESi6WSMWkpq035A==
+X-CSE-MsgGUID: BPF64cU8QXq8rp8VOjGvIw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
+   d="scan'208";a="246420347"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 00:57:20 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 24 Feb 2026 16:34:56 +0800
-Message-ID: <a5914383-06fc-45e8-9a6c-9760617383be@huawei.com>
-Date: Tue, 24 Feb 2026 16:34:56 +0800
+ 15.2.2562.35; Tue, 24 Feb 2026 00:57:19 -0800
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Tue, 24 Feb 2026 00:57:19 -0800
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.54)
+ by edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 24 Feb 2026 00:57:19 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rW+AK/ohDBN3ZyWp98q6II6LCMiPSZEhvhwSLtIi8kzbSTivpsKIjSMdKqiTqbKc5M8TGHuD0EmURiNadJY3bW1sl/lFFiHjGL5RVyZ4Z6tiHzei0+s081n5eFO/OOc8M7Gz6B8PpDQ/Fs6XEzEpa2g5lpIF+2Q2FKtNuiOlsb0i+1q8ZlOQofVdO6E8AbM9UFjuVTFFXEQ/kGMgOEXy/OHI7XVOQ7WPKoL/BFNsAOrbeNbHefYPhwn8FixhtGZ1RGy3UsyRA0ZEAKNu6xykgEtOvqpbwtstfhQqnHZRxx3509eQg80Tl80x6pXdpkeQmndsFlpX+0RYjuxvsS3Qiw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=P2Qb9IhVktwM5uZy9ZznXLoVjUpkGpDb9qcG9AQ1Tyw=;
+ b=J48I/wQvudc1qughk/JrDPN/uQ0SJ+xTQ2D4TT7etNd0m1QVHyyMc/XhiwLELZEiwo1x7eec9/Cu7OXukvusN4FDUIQrppEW5Z4leIMZ87MyhX6TA0uSov8B3we+mTjpRq3agcwpKxp8uH3rcV/jkZW/Xko3zeS2MXpXHVvrmrr+kH8lgjk57DvSTif/c+cb7qIssU4MHwdvJfHKCz+1lEHXMcqc/TTzszzTEOmFXfLML2/87ng8WqzP4R0YwOlzJ4Ss6mB4w9zFvPmwc+S4iqhsg7TJ6qCIgZYmP4hkyKOys23VBSTVMBlJaYoAZTmWUZpuks8v8F9eefzxSPz48A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com (2603:10b6:208:46d::9)
+ by SA1PR11MB6870.namprd11.prod.outlook.com (2603:10b6:806:2b4::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.16; Tue, 24 Feb
+ 2026 08:57:11 +0000
+Received: from MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::8d98:e538:8d7:6311]) by MN6PR11MB8102.namprd11.prod.outlook.com
+ ([fe80::8d98:e538:8d7:6311%5]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
+ 08:57:11 +0000
+Message-ID: <9e9c69b6-643b-40c4-afe5-fdbcb185755d@intel.com>
+Date: Tue, 24 Feb 2026 09:57:06 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-net v2] ice: dpll: Fix compilation
+ warning
+To: Przemyslaw Korba <przemyslaw.korba@intel.com>
+CC: <netdev@vger.kernel.org>, <anthony.l.nguyen@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>
+References: <20260223143214.241797-1-przemyslaw.korba@intel.com>
+Content-Language: en-US
+From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+In-Reply-To: <20260223143214.241797-1-przemyslaw.korba@intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DU2PR04CA0043.eurprd04.prod.outlook.com
+ (2603:10a6:10:234::18) To MN6PR11MB8102.namprd11.prod.outlook.com
+ (2603:10b6:208:46d::9)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, <linux-kernel@vger.kernel.org>,
-	<kevin.curtis@farsite.co.uk>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
-	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
-Subject: Re: [PATCH net] net: wan: farsync: Fix use-after-free bugs caused by
- unfinished tasklets
-To: Duoming Zhou <duoming@zju.edu.cn>, <netdev@vger.kernel.org>
-References: <20260219124637.72578-1-duoming@zju.edu.cn>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20260219124637.72578-1-duoming@zju.edu.cn>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MN6PR11MB8102:EE_|SA1PR11MB6870:EE_
+X-MS-Office365-Filtering-Correlation-Id: a2747d98-5c03-448d-e00b-08de7382b248
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?Yjh6V2VqT21HeWFjVkZWSmFOOHIxZTgvU1gzazF2eDNWQmI4Q2N1N1A3aGxV?=
+ =?utf-8?B?WGV4VTZTNWRPWEJxVlhWc3VBd3hwWklZaVB5dHhsVFVJQmw0TWNxTllTeEVS?=
+ =?utf-8?B?SlZCc0o1NG1HRXEyTm9DUzJsTXZ4d3JJekxycHB3V1dyNE9mNDFYU252R014?=
+ =?utf-8?B?YlpPaWFFVnhFbEs4OTFjY1FqSGF0cXQ1NHVHbzBILzFrWWFOTi9BREhzcUtB?=
+ =?utf-8?B?NXFDTitaSTdLOHZLbWE4T2hBQnkxZ0lkOElEUDJ3U3AxZ1hqR0EyWW1CYXZO?=
+ =?utf-8?B?OEFuSnVSK1ZwYWpERlZpQkQ0OEhKNTgrT1Q3SHUzQzFBWGRMeTBsd3JvRkF1?=
+ =?utf-8?B?M2dXZFdWMEl4WnY0RXBtYUlnUkpLbTZuKzBOOWdBTzdybWJRUjU3Yk5oZDZu?=
+ =?utf-8?B?MUsvQmovSzIzcTF6NFpDUmNaZ3RaVFowQUs3M01aUnlJRTcvSjJSbTdhZnlo?=
+ =?utf-8?B?RE5MRDc1enlXZ2IrdmlySUhON0JtS01qWDMrYmNCRDBxUWkvbnpZYzIrTjVy?=
+ =?utf-8?B?c3VBSmVLZWNCV0NNU3JKblFjRjN4TUlqOWFyNXpnWDRGYWhWNWppRWdaVkhX?=
+ =?utf-8?B?VUtkVExVeWp5VzlwK0xKeXB6bERWUzc3WXJFYnRuMEc0ZFlPb2l3Vi8yMHdY?=
+ =?utf-8?B?bGY4TUlmTE5QeGNQcVhFSU9wTXROdWVwWC9lVjF4NEJLSkdrZUhqcXZ6d2Z6?=
+ =?utf-8?B?STVURVFWN3NURkMxekZWMFV0MDdMS1VPMVFWVy9uWngwWW1CMWZRUFdKR1Fk?=
+ =?utf-8?B?dWZ2RFdTVFJmMXpUT0tvNC9jTjZCbUxqNzlyaythZWRLMHB0cllmczJOUEZR?=
+ =?utf-8?B?WUMvTlBSc0RpcHRRQllYYWJQUHBUZGVsR2QvNm04dTNZbFlJMS80SVJ2NWxK?=
+ =?utf-8?B?R2dlODJDa3FZQy8xRm45aTlvUnZoMnJWcTRiN1VWWTJ1U3FzMHJXWjl0cm9o?=
+ =?utf-8?B?VEtVUDdabkJkcUMrdnZTdFBVd3Y5ME1GREdIaHQ0bHUyYXBRbnpNK1dJeDFu?=
+ =?utf-8?B?YjJaNXdDY3N6SHFPcmhFaC8yY3RmbTdSdmxTaDd6dHZnUmtBM3d5dmwxTUVl?=
+ =?utf-8?B?OVVxNndHai9xUysrNzlqTVlCaWVVVHFtMFByOW9kc1RleVJRcVIzUjJZYk9G?=
+ =?utf-8?B?QSt5WUhDbWdIaXNDUWFxNWZyUThUTXJqUjN0bFVtaW9lcGlxTXYxbjF3Y05w?=
+ =?utf-8?B?WXdhMjBZanJMVldTakhwY2RJSTRwWnB1UGFjN3BmbWUrWHpHeDVrcFVHb2tY?=
+ =?utf-8?B?WS9xN1pWank1anNVVXlYbGZId2VCaWV3N0tBLzdnT0UzZFhxMFp5R0lwTEFO?=
+ =?utf-8?B?ZUNVZGk0T21Fb25wU0VJdUllL0Y2MHpsdDh4UkxkcmRLc3lQS2M1YXJpVm1O?=
+ =?utf-8?B?LzUrc1RnNkRLbHNtT1RRS1RuZkhMY1JxSlBtZU9WVVdKbHc3a0ZQZEtBK3V4?=
+ =?utf-8?B?V05wdWpqZUpvamxENU1GVVZYeWtRa3dBSXlBZFAydWorajhBSzdjSjdKaEI4?=
+ =?utf-8?B?NjhGR0tlSkNkUnQ0MUozTElIOWMyUjYwNytuVmduYUJCcFJjWS91SlVINXpX?=
+ =?utf-8?B?aVp5REdoNmg0NjRxcHJ6aEZsVkIzbDVhbFQ4NFN1ei9XVjNQcmpyQVdKbGVD?=
+ =?utf-8?B?M2pRMWhjODBzUGRiUTB4WHZnTElMODJVck9yaHB3OEdRT1JJd3JyNndKVkxa?=
+ =?utf-8?B?cUt3aUlqRW54ajZLcUhXVjFHMG5TUHRzQzJyb2pVTmNMOWtYRCtHcHNJYUJR?=
+ =?utf-8?B?cjFPZkxSN05FREpqWjZ0STlQL2hPRTZ6UEMzNDA2c3M2UGNCSSs3amcvSWNV?=
+ =?utf-8?B?NVJqVkM5cmVBTm9ZU1U0N2tvK1FWTXlMYmJrbkN0QS9UaGVncXBJVEpzek9K?=
+ =?utf-8?B?eU5Wc2EwSTN0c2pZc2liMXZJRDVHaVEyd0xwOURUVTBqclZnVE54Q2Jycnp4?=
+ =?utf-8?B?bThPQ2pab2pqZVVtNUJDdzVSRE1TZVdReDhaZUZJc0J1RkwvL01ESEw1aHBp?=
+ =?utf-8?B?NitVNk5WbHdZRE9ocVVCU0d0OElkTDZ1WCs3anN6Q3hERFM0aENUNm5GSlp6?=
+ =?utf-8?B?Ri9Rc3NhUitJclpERlp3YWxTcHg1ZjBOTHdMMG5PN2s1eG5ObmNvYjhjRXpj?=
+ =?utf-8?Q?k+4s=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN6PR11MB8102.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?T0U2NUJsNGtNMUoxNkdQb3RqdVdaWjZlRDFlNm5RdkRIZE4ycmpIWEhseEFO?=
+ =?utf-8?B?WHhtbm11ZW1pUy8wN0NFaHpWSXlxR0toWWNyamNCVlUxKzNJczU4VWswV1M5?=
+ =?utf-8?B?SXVxMm14bGVzMnFRNUhnNkdUcDkvcSswNlRpbHM2R0FsVmdPbkFjYTlqMEZ6?=
+ =?utf-8?B?TlVDbzRZUE1PdGdZQUpKdlBtZXVCakFmK20yMTJORXZ4ZTRNTkZnSm5KbjNU?=
+ =?utf-8?B?SmNWNHgvQytlWWxkTlJ0MDl2K2VYOWp5QjlDaDZVNmUzMUFuY0dmY1RkbGV4?=
+ =?utf-8?B?T1hoQ1AwZUVnWlEyVEp4NjB6WWdXTExRY2Mrd0JmaTAzV1huN2lyQjlWWWt3?=
+ =?utf-8?B?RC90c05JN05ZMXFnUmVLa0JHZnJROEVycnVoS3pLZ2Y1Z0pFVUNGR3p5d28y?=
+ =?utf-8?B?WnNDNDRCY05ZT2ZkTG9pVVZCbGxlWUFjRE5FRHJNS0U2d3hJakRPa2RXOVhL?=
+ =?utf-8?B?RHd2L240cit3SGw5ZnA2NnpHREdST0N2T0dLcW5SMFNTMVBDbStCbVMxV2lZ?=
+ =?utf-8?B?UUZpeS9Oamd4QTduZXA0VGhVRlZaSm1FMG5ZU25WWHpYckNuTFhET3lYc1Bt?=
+ =?utf-8?B?MmEwbWVtT295SGVucXFsUFJrV1ovVjdKTEJsVkJHb2w3VkV6VUcxN2RIYjhu?=
+ =?utf-8?B?V1NVZEVhc3h0ZGZYZkNnRGRNVFA3SlEyM295N2hhZ2Jya0RLT2UvK0ttSDVK?=
+ =?utf-8?B?NDNXS3JiTE9iV1FHWUZOdnVKT0RJSGltcjljUmd3bHVRaHp0Q2dvWVhJbUxS?=
+ =?utf-8?B?UFJudUZOZ1BWVFhJaUwvMThicnV4OHcvVDkzY21nejF2c0hBWGQwN1JXU3VP?=
+ =?utf-8?B?c3ltL2Z2ay9aTkFXNXYzZDBRK0ZRR1ZHQUwvT3krZ2Uxa3Q4UVBFZVNPVjM3?=
+ =?utf-8?B?ZzVuVWJncXVLa1IrSkpGOExId1BCSThLVEtaSnFHM2liaEdFb2Z4OGZMbCsw?=
+ =?utf-8?B?RTRQamVOeXhrdDRRMi9Jc3U3VlBTWU9oZFdweFFjczlJRHQ0TTRHcVZHV3pW?=
+ =?utf-8?B?alpyc05abmphVjJmZ1pHT2owc3l1aDBCK2RQMTF3ZDlJK1FjeWRIU0hlbGJk?=
+ =?utf-8?B?a0lKT2hHY3dOUmw2WElyWWZtajRiOEtYZDdtV1dXOFFnU3g1bUJQN3dFSmhG?=
+ =?utf-8?B?VVFqSzQ0eUVteDVPT2MxalExRnRwVEtnelJoNHk3V1V1bGZ1RnRQeEV0aUFW?=
+ =?utf-8?B?ZnZCL2taUUNwOWRRc0tpU2xnVjFpajMvZ2x6elJQdzVtZjB2cTdIVXEzNUNZ?=
+ =?utf-8?B?enRaODRuckZDQjZyWGJ4eHptR0VPR3VnZVloUk9UQjA5bEU5SG56WmY1SkVU?=
+ =?utf-8?B?b25VWHQyb3hMQkkzSEdtZnduTVlvdzZwa3BmVVpNak9GQVNHbElqVFBYTkhJ?=
+ =?utf-8?B?SzNTQWZwNWpjdlQ3ait5RTV3MUdWL3JGbkJzeVhaSG55ZERPWWw4L3k0MXpY?=
+ =?utf-8?B?SEp4UFZEMDRiTEpKdTVBei8vKzdIejdrRnhxZWVEYnVPSmZvZEtTTkgvT1Y0?=
+ =?utf-8?B?Ukg4M3J6cTJMNEU1aGtnaXRhU3l0VUVmNlFQWFpIN0E3c0pxRS84dUdJTzF2?=
+ =?utf-8?B?ZklhVWc1VXNMYTY3eE55NnR1NzREckx5R3UvbVd2VTM2RXNXRHRESi9GN2J3?=
+ =?utf-8?B?eU1SQUpyV1ZGSlV0aWgyQy9tL2dTcGVYblBCeVJkWDM4YlVUdmx5blhkZDUy?=
+ =?utf-8?B?VjFzZlIyQUpicUNHQmRVUVFWVFcwRnFFbEg4d1hKa1N5NlRRdmdGd1AxZnFo?=
+ =?utf-8?B?eHdnR2ZpdkdxT3EzUGt4RXJVSjNCb1VsTW9qODg2cVhsYTBlUG0rQUtDeUFH?=
+ =?utf-8?B?M2NnTk5Tb3ZrejVpK3Ric2F3VGRmakdyTjBNSDNYOWdkaWdoTjQ1UHZTTWxt?=
+ =?utf-8?B?OVZCSE82b2NMY3U4dlh6NWE1aXQ3UGtkakNUUExJSXlrRm5HajZka2VaS1Mv?=
+ =?utf-8?B?WjZPWjVHVmRXZHNocGRmSXd2d1BNTURRTFhxN0w5UWxEU0tCbTJLL2I5MXVo?=
+ =?utf-8?B?Y3pUMUY1cHMvVndPRVRrdm93dkVSQlJDbGNqdXVoWFhXL0Q0Um8vY25vT2lK?=
+ =?utf-8?B?Ny9GMG1tU25hU3E2eVkvMkd4dXVhMGM3ZTlrR2c2WjcyODB5WWRLZzJ4ZVBV?=
+ =?utf-8?B?RkZ3YmUyQjc5Z28yc0JCTVBmK09JT1JmRXhYN1AvUTJEZE9VOWJuQURCMnlj?=
+ =?utf-8?B?S0F1VUJGbmpTVEpCNHVRZU85aEJkbm9HZVgyUUFZcTk0cmJYcElZUldxby9Q?=
+ =?utf-8?B?V0p0WHhPYTd3eDlOMi9OcTBBaUJUMHRBSFFUV2k1NWZBUTZ6VWxJR0YvWDI1?=
+ =?utf-8?B?WFM3ZnFNNVV1TGpIOVZjb0FLb1dYL0ZoZDNTU3JCY1BkYTBURlpjbXkyWmNC?=
+ =?utf-8?Q?ZLy6C6lYRHKN5jmE=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: a2747d98-5c03-448d-e00b-08de7382b248
+X-MS-Exchange-CrossTenant-AuthSource: MN6PR11MB8102.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 08:57:10.9552
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: UCI+L2bQZMxMUk+1ZiKmt4BUaBqm5knMTRZRrRtXHRUoig20w9qyiTrVewr+dL4XCGQ8PUrHu3oKYkGbALlspAc4XH5AWnn6gtu3RtWW+dM=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR11MB6870
+X-OriginatorOrg: intel.com
 
+On 2/23/26 15:31, Przemyslaw Korba wrote:
+> ice_dpll.c: In function ‘ice_dpll_init’:
+> ice_dpll.c:3588:59: error: ‘%u’ directive output may be truncated
+> writing between 1 and 10 bytes into a region of size 4
+> [-Werror=format-truncation=] snprintf(pin_name, sizeof(pin_name),
+> "rclk%u", i);
+> 
+> Fixes: ad1df4f2d591 ("ice: dpll: Support E825-C SyncE and dynamic pin discovery")
 
-on 2026/2/19 20:46, Duoming Zhou wrote:
-> When the FarSync T-series card is being detached, the fst_card_info is
-> deallocated in fst_remove_one(). However, the fst_tx_task or fst_int_task
-> may still be running or pending, leading to use-after-free bugs when the
-> already freed fst_card_info is accessed in fst_process_tx_work_q() or
-> fst_process_int_work_q().
->
-> A typical race condition is depicted below:
->
-> CPU 0 (cleanup)           | CPU 1 (tasklet)
->                            | fst_start_xmit()
-> fst_remove_one()          |   tasklet_schedule()
->    unregister_hdlc_device()|
->                            | fst_process_tx_work_q() //handler
->    kfree(card) //free      |   do_bottom_half_tx()
->                            |     card-> //use
->
-> The following KASAN trace was captured:
->
-> ==================================================================
->   BUG: KASAN: slab-use-after-free in do_bottom_half_tx+0xb88/0xd00
->   Read of size 4 at addr ffff88800aad101c by task ksoftirqd/3/32
->   ...
->   Call Trace:
->    <IRQ>
->    dump_stack_lvl+0x55/0x70
->    print_report+0xcb/0x5d0
->    ? do_bottom_half_tx+0xb88/0xd00
->    kasan_report+0xb8/0xf0
->    ? do_bottom_half_tx+0xb88/0xd00
->    do_bottom_half_tx+0xb88/0xd00
->    ? _raw_spin_lock_irqsave+0x85/0xe0
->    ? __pfx__raw_spin_lock_irqsave+0x10/0x10
->    ? __pfx___hrtimer_run_queues+0x10/0x10
->    fst_process_tx_work_q+0x67/0x90
->    tasklet_action_common+0x1fa/0x720
->    ? hrtimer_interrupt+0x31f/0x780
->    handle_softirqs+0x176/0x530
->    __irq_exit_rcu+0xab/0xe0
->    sysvec_apic_timer_interrupt+0x70/0x80
->   ...
->
->   Allocated by task 41 on cpu 3 at 72.330843s:
->    kasan_save_stack+0x24/0x50
->    kasan_save_track+0x17/0x60
->    __kasan_kmalloc+0x7f/0x90
->    fst_add_one+0x1a5/0x1cd0
->    local_pci_probe+0xdd/0x190
->    pci_device_probe+0x341/0x480
->    really_probe+0x1c6/0x6a0
->    __driver_probe_device+0x248/0x310
->    driver_probe_device+0x48/0x210
->    __device_attach_driver+0x160/0x320
->    bus_for_each_drv+0x101/0x190
->    __device_attach+0x198/0x3a0
->    device_initial_probe+0x78/0xa0
->    pci_bus_add_device+0x81/0xc0
->    pci_bus_add_devices+0x7e/0x190
->    enable_slot+0x9b9/0x1130
->    acpiphp_check_bridge.part.0+0x2e1/0x460
->    acpiphp_hotplug_notify+0x36c/0x3c0
->    acpi_device_hotplug+0x203/0xb10
->    acpi_hotplug_work_fn+0x59/0x80
->   ...
->
->   Freed by task 41 on cpu 1 at 75.138639s:
->    kasan_save_stack+0x24/0x50
->    kasan_save_track+0x17/0x60
->    kasan_save_free_info+0x3b/0x60
->    __kasan_slab_free+0x43/0x70
->    kfree+0x135/0x410
->    fst_remove_one+0x2ca/0x540
->    pci_device_remove+0xa6/0x1d0
->    device_release_driver_internal+0x364/0x530
->    pci_stop_bus_device+0x105/0x150
->    pci_stop_and_remove_bus_device+0xd/0x20
->    disable_slot+0x116/0x260
->    acpiphp_disable_and_eject_slot+0x4b/0x190
->    acpiphp_hotplug_notify+0x230/0x3c0
->    acpi_device_hotplug+0x203/0xb10
->    acpi_hotplug_work_fn+0x59/0x80
->   ...
->
->   The buggy address belongs to the object at ffff88800aad1000
->    which belongs to the cache kmalloc-1k of size 1024
->   The buggy address is located 28 bytes inside of
->    freed 1024-byte region
->   The buggy address belongs to the physical page:
->   page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0xaad0
->   head: order:3 mapcount:0 entire_mapcount:0 nr_pages_mapped:0 pincount:0
->   flags: 0x100000000000040(head|node=0|zone=1)
->   page_type: f5(slab)
->   raw: 0100000000000040 ffff888007042dc0 dead000000000122 0000000000000000
->   raw: 0000000000000000 0000000080100010 00000000f5000000 0000000000000000
->   head: 0100000000000040 ffff888007042dc0 dead000000000122 0000000000000000
->   head: 0000000000000000 0000000080100010 00000000f5000000 0000000000000000
->   head: 0100000000000003 ffffea00002ab401 00000000ffffffff 00000000ffffffff
->   head: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
->   page dumped because: kasan: bad access detected
->
->   Memory state around the buggy address:
->    ffff88800aad0f00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->    ffff88800aad0f80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->   >ffff88800aad1000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->                               ^
->    ffff88800aad1080: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->    ffff88800aad1100: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
->   ==================================================================
->
-> Fix this by ensuring that both fst_tx_task and fst_int_task are properly
-> canceled before the fst_card_info is released. Add tasklet_kill() in
-> fst_remove_one() to synchronize with any pending or running tasklets.
-> Since unregister_hdlc_device() stops data transmission and reception,
-> and fst_disable_intr() prevents further interrupts, it is appropriate
-> to place tasklet_kill() after these calls.
->
-> The bugs were identified through static analysis. To reproduce the issue
-> and validate the fix, a FarSync T-series card was simulated in QEMU and
-> delays(e.g., mdelay()) were introduced within the tasklet handler to
-> increase the likelihood of triggering the race condition.
->
-> Fixes: 2f623aaf9f31 ("net: farsync: Fix kmemleak when rmmods farsync")
-> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+thank you for the fix
+this is a correct tag, and a correct target
 
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-
+> Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
 > ---
->   drivers/net/wan/farsync.c | 2 ++
->   1 file changed, 2 insertions(+)
->
-> diff --git a/drivers/net/wan/farsync.c b/drivers/net/wan/farsync.c
-> index 5b01642ca44..6b2d1e63855 100644
-> --- a/drivers/net/wan/farsync.c
-> +++ b/drivers/net/wan/farsync.c
-> @@ -2550,6 +2550,8 @@ fst_remove_one(struct pci_dev *pdev)
+>   drivers/net/ethernet/intel/ice/ice_dpll.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+> index 73a4e28ed75f..f101fdb3e9cf 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+> @@ -3532,7 +3532,7 @@ static int
+>   ice_dpll_init_fwnode_pins(struct ice_pf *pf, struct ice_dpll_pin *pins,
+>   			  int start_idx)
+>   {
+> -	char pin_name[8];
+> +	char pin_name[16];
+>   	int i, ret;
 >   
->   	fst_disable_intr(card);
->   	free_irq(card->irq, card);
-> +	tasklet_kill(&fst_tx_task);
-> +	tasklet_kill(&fst_int_task);
->   
->   	iounmap(card->ctlmem);
->   	iounmap(card->mem);
+>   	pf->dplls.wq = create_singlethread_workqueue("ice_dpll_wq");
+
+3537│         for (i = 0; i < pf->dplls.rclk.num_parents; i++) {
+
+upper bound of the loop is u8 (ok), but we assign it as an int (good)
+
+3538│                 pins[start_idx + i].pf = pf;
+3539│                 snprintf(pin_name, sizeof(pin_name), "rclk%u", i);
+
+compiler tries to be too smart here
+
+
+anyway, it's better to have that warning gone instead of waiting for
+a fix in the compiler
+
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
