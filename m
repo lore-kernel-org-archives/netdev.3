@@ -1,95 +1,105 @@
-Received: from mail-m32108.qiye.163.com (mail-m32108.qiye.163.com [220.197.32.108])
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDA2319E97F;
-	Tue, 24 Feb 2026 02:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 185FA2566F7
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 02:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771898904; cv=none; b=LuYjaFNwpiGhgQXS2pC7RvVnEvRiXwMXMXbX0nEhkYT8VREi7nxwHkbW9RocHmPp2IlpIz3wPhucqBtElNWnY2cRd7oC+xHOIUZ6YQ2aPR2oigy+mJJIEPFti72ZFpEHKvkyY7/3y8XPJa3L1pSMLGLAql8xS2x+Zg/Dc2juoxw=
+	t=1771899146; cv=none; b=jjCRvlHuEyu5gk6Pc36uNdJK1OD/Ru1s56k7FQiWd84qT7W+WYsfCrfhXo2zzRxtTZINzE0gf4u+rxA5aSGTslCvEaZ9a1uw/nRF7XxNR1vJzh3hyY56akasa9le3vDMQd5ciDWNbJbKDtXUfW9SfherMkOYLryUixmZzEmHDIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771898904; c=relaxed/simple;
-	bh=JQzQNaW8wVS2tK/GeYgPpo5RHMXOBYjCt3d20K4coM0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jwZMI2y8UeNyLrO4AlRzBLBdU4MWcySgSk719Pjioa0jROKrwnmMZdUe/6SXK2EpB4omfOXM7OcBaYHGSYFT24kHCzOtP0Q09ThbERIvQOtNr6NtyuL5VBPbr+klI0HE25lcm1R1WGalYea9JbsZ4gc6o+71ieXNga1Mu1WzRIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=YLGrRVTY; arc=none smtp.client-ip=220.197.32.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	s=arc-20240116; t=1771899146; c=relaxed/simple;
+	bh=jJj+kZdKOioMMsotcdIqtD9nb5qMlyuxTh6ZsA1H8Aw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=b6mpxKU1aD0vZccCYtZqBaMvK5hjeOcs21L5cYYY5NqJCzeKjaJWdbvVa4o2PmeABkBqqxm6t4UUE74YSdUJjrzWyp8BsRIbo42AS5Dkk7uekr19sEO/EXVV+dhShIZYNBH5MbdooZc0zlNNgfo0Yr73QxZ/jSAmVLV3D24fQuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn; spf=pass smtp.mailfrom=smail.nju.edu.cn; dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b=j7cEmt7D; arc=none smtp.client-ip=54.243.244.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=smail.nju.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=smail.nju.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="YLGrRVTY"
-Received: from [127.0.0.1] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 34bd766c9;
-	Tue, 24 Feb 2026 10:08:16 +0800 (GMT+08:00)
-Message-ID: <e0c180ae-22b7-4151-a655-74f83161deb8@rock-chips.com>
-Date: Tue, 24 Feb 2026 10:08:00 +0800
+	dkim=pass (1024-bit key) header.d=smail.nju.edu.cn header.i=@smail.nju.edu.cn header.b="j7cEmt7D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=smail.nju.edu.cn;
+	s=iohv2404; t=1771899132;
+	bh=5PbTEBULsmHXd7ZdpVwy62fGH3NKvHQD6unAhfnTd6g=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=j7cEmt7DVV5DYDLDLnSKIcj6tUNlilEf+JwPF58ho6oPH8gMMqc3LLaHswaM3OocH
+	 G2HgOC/Gme4NCqOcPcJkFmhMMUZvE7jB1VFpb4n65OeUDrE4w7aFUQsn3znfsbkd5G
+	 kTejtlZkG5fUZCTzULCZg7VWn+lMK4vsYQ1oGq38=
+X-QQ-mid: zesmtpgz6t1771899130t7e41b763
+X-QQ-Originating-IP: k4TqKpmoPp0ztLHq6Z5lq/TRzvM1gvyT58ET3/Q/5xs=
+Received: from localhost.localdomain ( [116.172.93.199])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 24 Feb 2026 10:12:08 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 5836410843024043249
+EX-QQ-RecipientCnt: 12
+From: kexinsun <kexinsun@smail.nju.edu.cn>
+To: davem@davemloft.net
+Cc: edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	julia.lawall@inria.fr,
+	xutong.ma@inria.fr,
+	yunbolyu@smu.edu.sg,
+	ratnadiraw@smu.edu.sg,
+	kexinsun@smail.nju.edu.cn
+Subject: [PATCH] net/hsr: update outdated comment
+Date: Tue, 24 Feb 2026 10:12:05 +0800
+Message-Id: <20260224021205.1285-1-kexinsun@smail.nju.edu.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Problematic understanding of phy-mode in Rockchip DWMAC driver
-To: Diederik de Haas <diederik@cknow-tech.com>,
- "Russell King (Oracle)" <linux@armlinux.org.uk>, Andrew Lunn <andrew@lunn.ch>
-Cc: Yao Zi <me@ziyao.cc>, Heiko Stuebner <heiko@sntech.de>,
- Heiner Kallweit <hkallweit1@gmail.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>, netdev@vger.kernel.org,
- linux-rockchip@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
- devicetree@vger.kernel.org
-References: <aY9s5PXP4zZ7R6fa@pie> <aY9xsslT56D9LGLe@shell.armlinux.org.uk>
- <f1e047e1-3f1c-4562-ab43-af2fe358fe04@lunn.ch>
- <aZDGsJNLZIty0242@shell.armlinux.org.uk>
- <a4aebacc-c273-4e42-97ff-0cdd88d771dd@lunn.ch>
- <aZMxKdkl2Qa7e1WU@shell.armlinux.org.uk>
- <DGGK56T574F0.TJSLQL9P1SM@cknow-tech.com>
-Content-Language: en-US
-From: Chaoyi Chen <chaoyi.chen@rock-chips.com>
-In-Reply-To: <DGGK56T574F0.TJSLQL9P1SM@cknow-tech.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-HM-Tid: 0a9c8d677e7303abkunm282acd41e78e52
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQhpDT1ZCQh1LQxlLGkkaQ05WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
-	hVSktLVUpCS0tZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=YLGrRVTYXYwJ78iiZ/DQI2fHLRiYr025TGHy3A3AHdE80kecqRFIsnllhhGoByhzUL5aPHOlAcb34VOOcpOOk4xagSKOFFoHtm5VN9dMan8jLwXRHM9lMM64M1RQFiG5po0AiS8Z7/N/zQZ4T0iovsY4S6BMJwQHXcrVVmbcPP4=; c=relaxed/relaxed; s=default; d=rock-chips.com; v=1;
-	bh=7X1iUhAUWuFURylZjRz/UYuilzjOVBho6gFijhNRoZI=;
-	h=date:mime-version:subject:message-id:from;
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpgz:smail.nju.edu.cn:qybglogicsvrgz:qybglogicsvrgz5b-0
+X-QQ-XMAILINFO: MiCmIIZEBTbfNRt8ZY/V5jeq8Umm5FMGXVcU3bJCcD91e1izjdpFy7pi
+	k/sLZ/cxr9YtVWOZpc23nNsyOboBPlGrXcmH4FOfs4cKG4C3CT5f40I+2ZzKDTcc04YPKhm
+	rwJblhGan7UG/4S49IpCvNSpokhCXsFWyiK7JeyOlUQl/gvG5PJL4arCivaG+nyGXEme1DZ
+	4XciUwcp1aVqzVsVgrWMxZeqcWA6hwwLlqB9k2GLLQuHX5+PqkcKGkfNDl8AfAI0CXQAno7
+	owH16ZILfyAHRNdOeIzwHC3753vLAMLhMgTFbhE4irQzY0fnYpB2JK9LowTry7KQ+8FVOdr
+	uY8zzj4xV4h09kw9tz5kVNFuiemgpCIvK9KUnlUrxckmPXTnAEzTtwYDD1xZtnUYvrv5nvV
+	R1SeNSRPmlwdBXUWfP+S4tj7ii+fF4wsr1LHA+Fmc6utGU8u7eo9aap18dzxzCRtTJP9fPz
+	KFuZlHyR/R9bBlCWUH359nxWESeScRDXveezkh3My8fTnjCi2LmEFph3RYDyECkXL2TdW8/
+	QmWTpTJFmcYPsVG1C67xkplB1D3uR2Kr0c8IMtR+5EpTNhcpZ8mKMV0h8R//hT0MOAecs4O
+	J+BSMttUTwOvaK4j6gzyYrVOcNME/B7s6s/ReB3ct84sVnPRjOdbuEkxbFL3mziDxnV4nQ4
+	QmYLOoTHuLX65U4MMkekRz8ZE9Elcd31I5zpAqYvwl/LTYlLkK1lEbqaPbPswjkBMRZtpXo
+	Kx4nvP/+0VT/6EgB/h8/Cv4feoxDu3GbJ8oPKgppaMUj03lbrk3AWjrbtJmIhv7h0Bku/4y
+	kF7aUlycesn8Wyh1Gie6BzTGnfFqUmcjCxJLqzmxpmSJExAKFF1jESsahjwwUAPJvkcUQmK
+	ZUCfhQGSqu2QjO4hBKXV/93YZlGxMd/WJcUbka2nv5VWH01m4jrjR5e/RZEW5yfd/aC8Tr+
+	4rzYVjpeooq5YlpiJkzO+6TZ/7WWuDgZO7xoGXT7so0dqzvfusdhjvuRC8DxJi5sN1eLBaj
+	p0UzppQE14mDtZU+E6TbECgNI5D+Sptch4tEkejT/mifqzVizpJML+SxlXGcVLdlPAl+D0l
+	dfQ+6uWfU6xUuOzYSgizeU=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
+X-QQ-RECHKSPAM: 0
 
-Hi all,
+The function hsr_rcv() was renamed hsr_handle_frame() and moved to
+net/hsr/hsr_slave.c by commit 81ba6afd6e64 ("net/hsr: Switch from
+dev_add_pack() to netdev_rx_handler_register()"). Update the comment
+accordingly.
 
-On 2/17/2026 1:21 AM, Diederik de Haas wrote:
-> On Mon Feb 16, 2026 at 4:00 PM CET, Russell King (Oracle) wrote:
->> On Mon, Feb 16, 2026 at 02:57:48AM +0100, Andrew Lunn wrote:
->>> On Sat, Feb 14, 2026 at 07:02:08PM +0000, Russell King (Oracle) wrote:
->>>> On Sat, Feb 14, 2026 at 05:50:15PM +0100, Andrew Lunn wrote:
->>>>> Rockchip have recently started adding support for a new version, and
->>>>> appear to of listened to what we have been saying. So it could be the
->>>>> next generation of chips get this correct.
->>>>
->>>> Have you seen any proposed code from Rockchip for their new scheme?
->>>
->>> There was a patch, including a rather odd formulae to convert register
->>> value to delay. I gave some feedback, but it has been silence
->>> afterwards.
->>
->> Searching lore's netdev archive doesn't seem to bring anything up.
-> 
-> https://patch.msgid.link/b25d6eb2-e105-4060-86fa-c1a06396ca92@lunn.ch/
-> 
+Signed-off-by: kexinsun <kexinsun@smail.nju.edu.cn>
+---
+ net/hsr/hsr_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I am the author of this patch series. My understanding is that
-"rgmii-id" should be adopted first, and for any delays that may
-need to be introduced, they should be implemented in the PHY rather
-than in the GMAC, although I did try to do so. 
-
-Did I miss something?
-
+diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
+index d1bfc49b5f01..5c3eca2235ce 100644
+--- a/net/hsr/hsr_device.c
++++ b/net/hsr/hsr_device.c
+@@ -742,7 +742,7 @@ int hsr_dev_finalize(struct net_device *hsr_dev, struct net_device *slave[2],
+ 		hsr->proto_ops = &hsr_ops;
+ 	}
+ 
+-	/* Make sure we recognize frames from ourselves in hsr_rcv() */
++	/* Make sure we recognize frames from ourselves in hsr_handle_frame() */
+ 	res = hsr_create_self_node(hsr, hsr_dev->dev_addr,
+ 				   slave[1]->dev_addr);
+ 	if (res < 0)
 -- 
-Best, 
-Chaoyi
+2.25.1
+
