@@ -1,272 +1,88 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4030127EFEE
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 12:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA59B25A2C9;
+	Tue, 24 Feb 2026 12:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771935175; cv=none; b=UuG1M54AoOXjnMRfHGlMXWO5iiWJOjRwxBYh5EQW+uXr6hwTlzRz6A3d3EmgpjU3d2VIA+TniWh8q/LrxAlzVzge+l1HI2wVOuJoR7C075sMqpAaIrXMTxbNA+bgRLQaIo7Qn6fSSWFv6C/lXx1+jC3BQwkZt3I8ctbMIA2B08M=
+	t=1771935572; cv=none; b=Amak41/zjzjiYJ719wuNSiuFd6A/Z/cup6bp9r+2/zN1XONnkoDXg9MvVPv9ddWZLB7QmbEw2e+iwSo21OIsF9OU0geR56Gm9azWMJA0RuZ5jUw9/Jz7xtK/H6Id4jhIH3tE6KShkoLPuBHSsauXLea7hDzsjhLVVlcMNWvaSOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771935175; c=relaxed/simple;
-	bh=qVcOp5MnvlONbLG06msjRU6TJXzRsaX/t8tfbP70eys=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WltJpZ9IdmVaORNSFkTts4kyy888fXoweZaWCOEgCrKtYt69kCepAIjpargDjr+MPVU05k2Kv4OYeLNGVqZFUGGmQoLygViRS6MeVRzv+vImyC8MWKpiS8VZZGFvUJN6oNHf+wgvVhoFjUmdNIrs6ErJdFcOTBwXjOnZN5ef7nU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XmLN5e/l; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771935572; c=relaxed/simple;
+	bh=PcJ8nkbO1UGzuf5J5H47QPdDNyslM/4MgHQeOSVKCEA=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=nnOp0ykvtG4ttEBJnA6HPiNjwLRW690ExBZJmStLVdmMGv4udqFcxIPjzwSQOOwxldGAFaLdZtB//0Wfdzry9YmFzvRFnqqoNGH+u5dnBZu9JTzEix6d9f035aL+6GdKeT9heZcvnMt+ioC4ugTpLiPRepL6//0R5hKS82fULeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qJPMNiah; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XmLN5e/l"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b885e8c6727so952966766b.1
-        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 04:12:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771935173; x=1772539973; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=bZ4fv5w72iR4alZnfS3RK7xFl8sWnyZEZWYM2yXruBI=;
-        b=XmLN5e/lEcQ09/Kk0A987tVGFLAIQVbpWBmyZjc2eyA4CgSEjZCU6bBP6Z2PeJ8sJm
-         HWZtWwlLH+u38ruHlM9fkBZrlYyV2IWOBdgqhvr/nK9QrByKwo/zR0DkrwtwS756WiWl
-         bY0CKTiJMuR18WOMAuOuea99GFW8+Bd7VBitrpZdNMFXychP4v/4zoZVDX6JH86da4aE
-         tjsAGrc07nb4rsNt8SGaE3c+ZYiA94q18omEjiMO7MH7187wLRKRItbyPYbqFsFXW2T0
-         AHoWiuMgG/23O/ltzGAh/BhCc2c0mDG2r5PnVRi41E2Am1YNUT+iv/hoLzAFgPZyRG7W
-         99GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771935173; x=1772539973;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bZ4fv5w72iR4alZnfS3RK7xFl8sWnyZEZWYM2yXruBI=;
-        b=Gc9+cnsUN6NmBoFLR1C/0Zmuw4DHWDWgE21ktXWQYb4yq2rHbIIkB+WNIqQRa3iJd4
-         JM1Jsj5f4Vxotgi7to58knzOY7gUJyCNLuCn894IIwrHFHaLdmiE4LIfajkHISp4OY72
-         YnbzVRVwRK+QrwZ4NaGhEyCXTv6+Ccfgn/Qo3Hg9oBZHi3L1TbqbN7WlePjMXEV9l3Lo
-         mZLRilVjW8pPCKSZOTtbRLgH5QUxqDaUG+tURr4sV2JTTKfQXwzNdfZeiYPIlb3LFN0g
-         iXcOY1iVXkNm9WK2Sw1iaqa1XvBUHxz+L/kB4Ey+P8Dh4N2e8vUhEav0RXl571K+reGr
-         E/qg==
-X-Forwarded-Encrypted: i=1; AJvYcCV+P6n6bqPLIWrwRXznhBqNv0iEjmhToUujcZ/4ydbUgqAzNcC6OHDnY5kprQhAFI0pvRKYfoI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUr+OCxMtTj8ZDGCJizglJ7VNFsZxRJ11YPnRtSQIKYtxQWj68
-	74Hs0Ms+sWazANoq2rz8bsmXaVGy88sZAQdnqwORtkn40aL8+mSZ4JES
-X-Gm-Gg: ATEYQzwCYbx+RPZs+ejbVRnVQazAyk1pPN5d26pwSe3A5kiVfl76jCK4Q8MLaV4439N
-	9bMZ+fjJ0eQGI8D01PqDua2J6lT8jXAucTl/vQpDn5x9r42bQDZ+Lq7NBIh3JEQ95DjXOSPMJGJ
-	4xODfgzGiRW87hCb6FK09dyZKMyKyVdDh/7CED41UFgIDGmRyJdGVYepdrZrvq+7VmmIX4AnBmR
-	ZNh6ZBJRykqkQ6K/jf7k0UuiCCfshcNCPIytQN2iULXiIwSJR7HwPlwmj7caGz0vrzlJ78mEl8x
-	Vucsiaiu2kiGk93wKNZQskUewVWhsux0p4RCf1HzVM4juN+SSDSIWVto8jrRxv1vefAvNI68gO9
-	fElOIgg4ed2K+TKFE5KGwxwppQpxpCk2fKfkg9VkYnITNoRG65E41fblmnmzDb2cGqbCH7Bh4Yw
-	vgYEnK8WCNaa0N7crv2zyOxxf3TDmx95GkKOHrGnruVEjbq0OxLwTcKk09wg==
-X-Received: by 2002:adf:e3c3:0:b0:439:8bb9:db03 with SMTP id ffacd0b85a97d-4398bb9dedemr632589f8f.3.1771928510821;
-        Tue, 24 Feb 2026 02:21:50 -0800 (PST)
-Received: from [10.221.199.249] ([165.85.126.46])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970c09897sm26186806f8f.17.2026.02.24.02.21.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Feb 2026 02:21:49 -0800 (PST)
-Message-ID: <9ed3ade5-717d-4f03-ac13-40614a0f093c@gmail.com>
-Date: Tue, 24 Feb 2026 12:21:47 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qJPMNiah"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC64C116D0;
+	Tue, 24 Feb 2026 12:19:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771935571;
+	bh=PcJ8nkbO1UGzuf5J5H47QPdDNyslM/4MgHQeOSVKCEA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=qJPMNiahLN+ZuWftld898lLuYjdTF+OH21dVf3i3om/49ZnNkAO02xjUpomDpoRbW
+	 mawNBYJNCdqU76I2x2W3zLbq1lqJ6i8caHPSGeN0M+JzYeQIFMO2KeO0SOROUE9wan
+	 lwXSiqqqBQg9Eusc9QRdKXITmVfBM2K/mnFFLaGyxUFtOOT/qk2lFBvTwBltV2LrBc
+	 VAEekm4G4hHgIHd7apK6PnfxTYOKDXacrTe0gHZ/Z+q144rQixJwNjkZHh2IQmi6Bb
+	 0LZEiCFvqq9AQcG4V3XbOgbTfJ2EumYsRWYjrzKcElmJbniKb6bcrSpfuq5d75omgT
+	 FP5vz8Euwkb/g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D0853808200;
+	Tue, 24 Feb 2026 12:19:38 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: ethtool: add COALESCE_RX_CQE_FRAMES/NSECS
- parameters
-To: Haiyang Zhang <haiyangz@linux.microsoft.com>,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- Donald Hunter <donald.hunter@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- "Kory Maincent (Dent Project)" <kory.maincent@bootlin.com>,
- Gal Pressman <gal@nvidia.com>, Oleksij Rempel <o.rempel@pengutronix.de>,
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org
-Cc: haiyangz@microsoft.com, paulros@microsoft.com
-References: <20260222212328.736628-1-haiyangz@linux.microsoft.com>
-Content-Language: en-US
-From: Tariq Toukan <ttoukan.linux@gmail.com>
-In-Reply-To: <20260222212328.736628-1-haiyangz@linux.microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [patch net] net: phy: register phy led_triggers during probe to
+ avoid
+ AB-BA deadlock
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177193557703.3453706.12559659267751211027.git-patchwork-notify@kernel.org>
+Date: Tue, 24 Feb 2026 12:19:37 +0000
+References: <20260222152601.1978655-1-andrew@lunn.ch>
+In-Reply-To: <20260222152601.1978655-1-andrew@lunn.ch>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ davem@davemloft.net, netdev@vger.kernel.org, rmk+kernel@armlinux.org.uk,
+ hkallweit1@gmail.com, pavel@ucw.cz, jacek.anaszewski@gmail.com,
+ ben.whitten@gmail.com, yangshiji66@outlook.com, stable@vger.kernel.org
 
+Hello:
 
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-On 22/02/2026 23:23, Haiyang Zhang wrote:
-> From: Haiyang Zhang <haiyangz@microsoft.com>
+On Sun, 22 Feb 2026 16:26:01 +0100 you wrote:
+> There is an AB-BA deadlock when both LEDS_TRIGGER_NETDEV and
+> LED_TRIGGER_PHY are enabled:
 > 
-> Add two parameters for drivers supporting Rx CQE Coalescing.
+> [ 1362.049207] [<8054e4b8>] led_trigger_register+0x5c/0x1fc             <-- Trying to get lock "triggers_list_lock" via down_write(&triggers_list_lock);
+> [ 1362.054536] [<80662830>] phy_led_triggers_register+0xd0/0x234
+> [ 1362.060329] [<8065e200>] phy_attach_direct+0x33c/0x40c
+> [ 1362.065489] [<80651fc4>] phylink_fwnode_phy_connect+0x15c/0x23c
+> [ 1362.071480] [<8066ee18>] mtk_open+0x7c/0xba0
+> [ 1362.075849] [<806d714c>] __dev_open+0x280/0x2b0
+> [ 1362.080384] [<806d7668>] __dev_change_flags+0x244/0x24c
+> [ 1362.085598] [<806d7698>] dev_change_flags+0x28/0x78
+> [ 1362.090528] [<807150e4>] dev_ioctl+0x4c0/0x654                       <-- Hold lock "rtnl_mutex" by calling rtnl_lock();
+> [ 1362.094985] [<80694360>] sock_ioctl+0x2f4/0x4e0
+> [ 1362.099567] [<802e9c4c>] sys_ioctl+0x32c/0xd8c
+> [ 1362.104022] [<80014504>] syscall_common+0x34/0x58
 > 
-> ETHTOOL_A_COALESCE_RX_CQE_FRAMES:
-> Maximum number of frames that can be coalesced into a CQE.
-> 
-> ETHTOOL_A_COALESCE_RX_CQE_NSECS:
-> Time out value in nanoseconds after the first packet arrival in a
-> coalesced CQE to be sent.
-> 
-> Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-> ---
->   Documentation/netlink/specs/ethtool.yaml       |  8 ++++++++
->   Documentation/networking/ethtool-netlink.rst   | 10 ++++++++++
->   include/linux/ethtool.h                        |  6 +++++-
->   include/uapi/linux/ethtool_netlink_generated.h |  2 ++
->   net/ethtool/coalesce.c                         | 14 +++++++++++++-
->   5 files changed, 38 insertions(+), 2 deletions(-)
-> 
-> diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
-> index 0a2d2343f79a..951d98f6bb12 100644
-> --- a/Documentation/netlink/specs/ethtool.yaml
-> +++ b/Documentation/netlink/specs/ethtool.yaml
-> @@ -861,6 +861,12 @@ attribute-sets:
->           name: tx-profile
->           type: nest
->           nested-attributes: profile
-> +      -
-> +        name: rx-cqe-frames
-> +        type: u32
-> +      -
-> +        name: rx-cqe-nsecs
-> +        type: u32
->   
->     -
->       name: pause-stat
-> @@ -2244,6 +2250,8 @@ operations:
->               - tx-aggr-time-usecs
->               - rx-profile
->               - tx-profile
-> +            - rx-cqe-frames
-> +            - rx-cqe-nsecs
->         dump: *coalesce-get-op
->       -
->         name: coalesce-set
-> diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
-> index af56c304cef4..a3e78b69fd07 100644
-> --- a/Documentation/networking/ethtool-netlink.rst
-> +++ b/Documentation/networking/ethtool-netlink.rst
-> @@ -1072,6 +1072,8 @@ Kernel response contents:
->     ``ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS``    u32     time (us), aggr, Tx
->     ``ETHTOOL_A_COALESCE_RX_PROFILE``            nested  profile of DIM, Rx
->     ``ETHTOOL_A_COALESCE_TX_PROFILE``            nested  profile of DIM, Tx
-> +  ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES``         u32     max packets, Rx CQE
-> +  ``ETHTOOL_A_COALESCE_RX_CQE_NSECS``          u32     delay (ns), Rx CQE
->     ===========================================  ======  =======================
->   
->   Attributes are only included in reply if their value is not zero or the
-> @@ -1105,6 +1107,12 @@ well with frequent small-sized URBs transmissions.
->   to DIM parameters, see `Generic Network Dynamic Interrupt Moderation (Net DIM)
->   <https://www.kernel.org/doc/Documentation/networking/net_dim.rst>`_.
->   
-> +Rx CQE coalescing allows multiple received packets to be coalesced into a single
-> +Completion Queue Entry (CQE). ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES`` describes the
-> +maximum number of frames that can be coalesced into a CQE.
-> +``ETHTOOL_A_COALESCE_RX_CQE_NSECS`` describes max time in nanoseconds after the
-> +first packet arrival in a coalesced CQE to be sent.
-> +
+> [...]
 
-I am trying to understand how generic this feature/API is.
-Can you please elaborate on the feature you want to configure here?
+Here is the summary with links:
+  - [net] net: phy: register phy led_triggers during probe to avoid AB-BA deadlock
+    https://git.kernel.org/netdev/net/c/c8dbdc6e380e
 
-A single CQE to describe several packets?
-What is the price? What per-packet information/hw offloads do you lose 
-in the process?
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-For comparison, in mlx5 we have RX CQE compression, which can be applied 
-on multiple near-identical completions that share/match several fields. 
-Still, there is a per-packet mini-cqe with distinctive per-packet fields 
-like csum.
-
->   COALESCE_SET
->   ============
->   
-> @@ -1143,6 +1151,8 @@ Request contents:
->     ``ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS``    u32     time (us), aggr, Tx
->     ``ETHTOOL_A_COALESCE_RX_PROFILE``            nested  profile of DIM, Rx
->     ``ETHTOOL_A_COALESCE_TX_PROFILE``            nested  profile of DIM, Tx
-> +  ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES``         u32     max packets, Rx CQE
-> +  ``ETHTOOL_A_COALESCE_RX_CQE_NSECS``          u32     delay (ns), Rx CQE
->     ===========================================  ======  =======================
->   
->   Request is rejected if it attributes declared as unsupported by driver (i.e.
-> diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
-> index 798abec67a1b..25ccd2d5d4dc 100644
-> --- a/include/linux/ethtool.h
-> +++ b/include/linux/ethtool.h
-> @@ -332,6 +332,8 @@ struct kernel_ethtool_coalesce {
->   	u32 tx_aggr_max_bytes;
->   	u32 tx_aggr_max_frames;
->   	u32 tx_aggr_time_usecs;
-> +	u32 rx_cqe_frames;
-> +	u32 rx_cqe_nsecs;
->   };
->   
->   /**
-> @@ -380,7 +382,9 @@ bool ethtool_convert_link_mode_to_legacy_u32(u32 *legacy_u32,
->   #define ETHTOOL_COALESCE_TX_AGGR_TIME_USECS	BIT(26)
->   #define ETHTOOL_COALESCE_RX_PROFILE		BIT(27)
->   #define ETHTOOL_COALESCE_TX_PROFILE		BIT(28)
-> -#define ETHTOOL_COALESCE_ALL_PARAMS		GENMASK(28, 0)
-> +#define ETHTOOL_COALESCE_RX_CQE_FRAMES		BIT(29)
-> +#define ETHTOOL_COALESCE_RX_CQE_NSECS		BIT(30)
-> +#define ETHTOOL_COALESCE_ALL_PARAMS		GENMASK(30, 0)
->   
->   #define ETHTOOL_COALESCE_USECS						\
->   	(ETHTOOL_COALESCE_RX_USECS | ETHTOOL_COALESCE_TX_USECS)
-> diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/linux/ethtool_netlink_generated.h
-> index 556a0c834df5..efc6e4ade77b 100644
-> --- a/include/uapi/linux/ethtool_netlink_generated.h
-> +++ b/include/uapi/linux/ethtool_netlink_generated.h
-> @@ -371,6 +371,8 @@ enum {
->   	ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS,
->   	ETHTOOL_A_COALESCE_RX_PROFILE,
->   	ETHTOOL_A_COALESCE_TX_PROFILE,
-> +	ETHTOOL_A_COALESCE_RX_CQE_FRAMES,
-> +	ETHTOOL_A_COALESCE_RX_CQE_NSECS,
->   
->   	__ETHTOOL_A_COALESCE_CNT,
->   	ETHTOOL_A_COALESCE_MAX = (__ETHTOOL_A_COALESCE_CNT - 1)
-> diff --git a/net/ethtool/coalesce.c b/net/ethtool/coalesce.c
-> index 3e18ca1ccc5e..349bb02c517a 100644
-> --- a/net/ethtool/coalesce.c
-> +++ b/net/ethtool/coalesce.c
-> @@ -118,6 +118,8 @@ static int coalesce_reply_size(const struct ethnl_req_info *req_base,
->   	       nla_total_size(sizeof(u32)) +	/* _TX_AGGR_MAX_BYTES */
->   	       nla_total_size(sizeof(u32)) +	/* _TX_AGGR_MAX_FRAMES */
->   	       nla_total_size(sizeof(u32)) +	/* _TX_AGGR_TIME_USECS */
-> +	       nla_total_size(sizeof(u32)) +	/* _RX_CQE_FRAMES */
-> +	       nla_total_size(sizeof(u32)) +	/* _RX_CQE_NSECS */
->   	       total_modersz * 2;		/* _{R,T}X_PROFILE */
->   }
->   
-> @@ -269,7 +271,11 @@ static int coalesce_fill_reply(struct sk_buff *skb,
->   	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_TX_AGGR_MAX_FRAMES,
->   			     kcoal->tx_aggr_max_frames, supported) ||
->   	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS,
-> -			     kcoal->tx_aggr_time_usecs, supported))
-> +			     kcoal->tx_aggr_time_usecs, supported) ||
-> +	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_RX_CQE_FRAMES,
-> +			     kcoal->rx_cqe_frames, supported) ||
-> +	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_RX_CQE_NSECS,
-> +			     kcoal->rx_cqe_nsecs, supported))
->   		return -EMSGSIZE;
->   
->   	if (!req_base->dev || !req_base->dev->irq_moder)
-> @@ -338,6 +344,8 @@ const struct nla_policy ethnl_coalesce_set_policy[] = {
->   	[ETHTOOL_A_COALESCE_TX_AGGR_MAX_BYTES] = { .type = NLA_U32 },
->   	[ETHTOOL_A_COALESCE_TX_AGGR_MAX_FRAMES] = { .type = NLA_U32 },
->   	[ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS] = { .type = NLA_U32 },
-> +	[ETHTOOL_A_COALESCE_RX_CQE_FRAMES] = { .type = NLA_U32 },
-> +	[ETHTOOL_A_COALESCE_RX_CQE_NSECS] = { .type = NLA_U32 },
->   	[ETHTOOL_A_COALESCE_RX_PROFILE] =
->   		NLA_POLICY_NESTED(coalesce_profile_policy),
->   	[ETHTOOL_A_COALESCE_TX_PROFILE] =
-> @@ -570,6 +578,10 @@ __ethnl_set_coalesce(struct ethnl_req_info *req_info, struct genl_info *info,
->   			 tb[ETHTOOL_A_COALESCE_TX_AGGR_MAX_FRAMES], &mod);
->   	ethnl_update_u32(&kernel_coalesce.tx_aggr_time_usecs,
->   			 tb[ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS], &mod);
-> +	ethnl_update_u32(&kernel_coalesce.rx_cqe_frames,
-> +			 tb[ETHTOOL_A_COALESCE_RX_CQE_FRAMES], &mod);
-> +	ethnl_update_u32(&kernel_coalesce.rx_cqe_nsecs,
-> +			 tb[ETHTOOL_A_COALESCE_RX_CQE_NSECS], &mod);
->   
->   	if (dev->irq_moder && dev->irq_moder->profile_flags & DIM_PROFILE_RX) {
->   		ret = ethnl_update_profile(dev, &dev->irq_moder->rx_profile,
 
