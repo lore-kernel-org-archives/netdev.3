@@ -1,162 +1,412 @@
-Received: from CH5PR02CU005.outbound.protection.outlook.com (mail-northcentralusazon11012061.outbound.protection.outlook.com [40.107.200.61])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9360D39C634;
-	Tue, 24 Feb 2026 13:15:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.200.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771938958; cv=fail; b=EDIGJRgS90QU4MF0z/wTsEmNp7ikhdasLpgKKDZchDjiqj2wEH+FDgM0EjYHh7Qh4q2E782fxPCyJ1jp3WoMW+BFub/lJwwXRumLzR4K/vre6PBWZa+q01q0VYQA4PtVuWVTtbR854KE8KOXDPzBLqUIZVOHHlYEhnKVN0pOOGU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771938958; c=relaxed/simple;
-	bh=v/beRU/0BYjF4uw/S9mnVk1imN/F3nbsRPc1w5hjUKA=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Pucte3SI3dh/kJGY44/glnfyg5hlR6KulGzz9kl0y8AkiVKZlyqR4+Labisb9Vu7hfL6fyvQJIqYjuifpWPoI2lZZLa83ZTY/D3Px/hOMO84QqZk6lDoki46CPJ2ybfJFoR5FHis/hPYD4SPeiW3RHLWxgixfbdfCXNS0LD/jxE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=m9oXuu9W; arc=fail smtp.client-ip=40.107.200.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDC239C639;
+	Tue, 24 Feb 2026 13:16:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771938972; cv=none; b=PmZUv5br8NCM7ewEMef6td6mV5pOQtPmmQn+1TJ+rGC0JnJfx6zmmySqBo0Lfl4b+B1iixlIm4twxgYFieJOdGEwG9xsXMMOdmGbNjyCkQ5oMmWFX6fjCUdEAp3QAnH5RGsI2yolZXOP3Q/u+3e938uPDhj5Ni2mYkSB0aGn0Ds=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771938972; c=relaxed/simple;
+	bh=DNNsj4h8iSHXDowtO7siaDjckAZ+yivZns1553XB9nQ=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oNG2EWb4syOVqYhTeAyTblasPa8UBJqnkVu+0dOiP9jKJvF4+18tnyOKWGj45gDE1Ev2zGcl5akMNUQgc1yAZvbFJgYjLcnka+sRlizdmNIAG4fd+Y9QKu8fCfjbl6iZPfNWdHbzhH8FajitlSItfhirK84Ks/+isxyZIfI/geE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=4Vir9xgD; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="m9oXuu9W"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Mt/RQ5e9a+ZF4+ZhozIWXCK7xrP+Pzfye8lBDxuP177bIjNb2gUn9RN6EBwV69O3S8o3ppB6SZWDR7IbGOnWe3nTjaLtOTchD3l6LPQTPf6/N5wfZ0UjqCxb4QoolKA/YV1JATK1mCWXjZf0h7CvNC8cxyiBRyGRru6OsaKILUaXoNJ2oE8akZPhNkjCE2n6DJ1gODtgYcxI+JqjECyskKJiSTWWOSUlGZqoXHIv56qrg/96Xm4QAVNN/anjGTVd+yPRch4MoldaUsNg4v9/ewg5frTA/wb5KJTTpmW0DUWj6yy0LVnyL4foaJVbZfPSdVifBhZFS8yN5W6GyTWG6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GMSaYfthfLzTltjbH7KeKdSmafJhZs0YJxyWMYcx39w=;
- b=EVrWoDwbPCBH4biMkdutObGkSnKgRP5iSzaJOAWY7OdS5R4lmBibp7QRzdgJPRqskgLGKM7Z6jPuPUTi6TL5oQikK3JyOyqPf5PvyXC5OI1wLIDktVi0oljScfsG4CdmZf9axZNBnZBzzOqYXBpzDvswWBExvHfTt3+LEM+kemn6V7o5Ge8bGvYK4fDe1AOvSTxK6QG5TAOYeiF52isY1Rzf5ONMlQnht/bXVHGGDCtNM1XU+fVc6A9tRcSdLzFlhaTxjplBCq7GzAcblTedRzBOO/7jVBVijIS7Hh1vu7ka6QZjkc98E8b7uwVfv2YCpdR3eBcxco1NNQx6e7YP/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GMSaYfthfLzTltjbH7KeKdSmafJhZs0YJxyWMYcx39w=;
- b=m9oXuu9WK3LZQSP5oQCF2jISljb5Hk++wctJVdKKbzHEBeO4csU0KKOGVwp4BTTl4mqABwsP+LTKj0dnCwmEaGT7NgyvLWlUjQZykpcgiY18MEYxdhGGqFrykhGpvK/BEH4fXPPH75eh8v9cXO6FEYGPgOtQQ1JNPkuvGU43XF+KpNtQqI+kKKN/IVPlAAl/XWMDwXhomLVctNxp2h+YNWpFWNUSDsix+TFrkNuB4FcC4hzi62SaN2ZYbEfectErACVudtaiKie4kFjwYCJvxqrGnN6LOy6QZJxjxgzQIgNgHfnKnV4JhzzsM+BFDxXBYHzGthv3EbJEIjCt0i1bhg==
-Received: from MW4PR04CA0260.namprd04.prod.outlook.com (2603:10b6:303:88::25)
- by DM4PR12MB7502.namprd12.prod.outlook.com (2603:10b6:8:112::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Tue, 24 Feb
- 2026 13:15:53 +0000
-Received: from CO1PEPF00012E62.namprd05.prod.outlook.com
- (2603:10b6:303:88:cafe::4e) by MW4PR04CA0260.outlook.office365.com
- (2603:10b6:303:88::25) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.22 via Frontend Transport; Tue,
- 24 Feb 2026 13:15:46 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- CO1PEPF00012E62.mail.protection.outlook.com (10.167.249.71) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9632.12 via Frontend Transport; Tue, 24 Feb 2026 13:15:52 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 24 Feb
- 2026 05:15:30 -0800
-Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 24 Feb
- 2026 05:15:25 -0800
-References: <20260223202633.4126087-1-kuba@kernel.org>
- <20260223202633.4126087-4-kuba@kernel.org>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: <davem@davemloft.net>, <netdev@vger.kernel.org>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <andrew+netdev@lunn.ch>, <horms@kernel.org>,
-	<shuah@kernel.org>, <petrm@nvidia.com>, <gal@nvidia.com>,
-	<leitao@debian.org>, <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next 3/3] selftests: net: py: add cmd info for
- ksft_wait failure
-Date: Tue, 24 Feb 2026 14:05:04 +0100
-In-Reply-To: <20260223202633.4126087-4-kuba@kernel.org>
-Message-ID: <87bjhegu51.fsf@nvidia.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="4Vir9xgD"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=rk8G/nJP/MbOl67IiITZ+A0965i7v1i3XlRY7V0eltU=;
+	b=4Vir9xgDNssr6uDZmH4Q8J96a4HH4rX4VyyiWvv4gF/+7NFYIjE5yplI14jtOtQmGAtYTd/1X
+	riHTwCcjPO5H2I6QsPiKv8X+j63anHTatNizo8jHdYmS1xGbxTY8OUL+jqPxDu3lDfeyGwrXp0x
+	oTOIbfGDLgv8wHj6zOkgp/w=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4fKylq3Qlsz1cyPh;
+	Tue, 24 Feb 2026 21:11:19 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id 87EF04055B;
+	Tue, 24 Feb 2026 21:16:05 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Tue, 24 Feb 2026 21:16:04 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>,
+	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>
+CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
+	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
+	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
+	<shijing34@huawei.com>
+Subject: [PATCH net-next v01 01/15] hinic3: Add command queue detailed-respone interfaces
+Date: Tue, 24 Feb 2026 21:15:38 +0800
+Message-ID: <6bc8e54b0af927048e58555e73219e176fb7b860.1771916043.git.zhuyikai1@h-partners.com>
+X-Mailer: git-send-email 2.51.0.windows.1
+In-Reply-To: <cover.1771916043.git.zhuyikai1@h-partners.com>
+References: <cover.1771916043.git.zhuyikai1@h-partners.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail201.nvidia.com (10.129.68.8) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF00012E62:EE_|DM4PR12MB7502:EE_
-X-MS-Office365-Filtering-Correlation-Id: 18d0f807-0f64-43d2-b6bc-08de73a6d63e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|7416014|376014|82310400026|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8Yrw1JXiQB0MzHXot3cFwh8TzOLui+rs533HjI0297fIdX1m1pUCJzw5flwd?=
- =?us-ascii?Q?tPZhc+4QisvUo+nbUe+AWD36EcKpx3Xx8ZzJ3pFALKjByiSsLUpGnpwUzGks?=
- =?us-ascii?Q?dJSA+LbVAPdHoQJ7+md6UwwTJXidu/hPoxZqBAlYBn8T0aIw9hRiNeC51yKT?=
- =?us-ascii?Q?dYOQRvv7OeDq1rp6fGDm13ueXTM8yORaEPNrQoJ7No26OI8p3HNXTNUVF62T?=
- =?us-ascii?Q?gJKZCQNxIp8zqlLS0yO/dejC3P3dK0TVpvDczqjWCQgcdpSkV3h3sGWV4Kel?=
- =?us-ascii?Q?qbRDXiu2YrH7l4+7JjCtJ3jTts6NxTe19WMlI9OWPZQzQf5r81MIJrnHNtnd?=
- =?us-ascii?Q?gt0iiTZUJswaM/koBE9YajoBPMidmPEm8pjzLXu6ZFIR/G7cC/VcLtemweS1?=
- =?us-ascii?Q?wdGHTkgSvvWfA3VbLcxDV15427ICTpMhR4/GaiqXgtZHk6QOUFMJ8fpJ/CsX?=
- =?us-ascii?Q?i4ppeUwBkw3E7xemT2I2OozI6+qCADszLpM9s5hNWEi9yhMv8Q4mdlfb0bWV?=
- =?us-ascii?Q?MtXkPx7u+wWxiuMttcjdl5EgZAqdsjMl0P2NdL3a1984LGGJs3QcoaDiKF3s?=
- =?us-ascii?Q?NZoE3OX7zUK0XW/URDTFhOroDRPMpDaCrBDWCYv9D2xJzEZEHMUVpuAvzKgg?=
- =?us-ascii?Q?c+Np/yR7F7VNCtv1svkIdKcAwF1Vq2EtbkC84fhIZ1xa6/dvrGEs3HUKFtkC?=
- =?us-ascii?Q?QsUyekwoHivZZRyGDMeu/ZEss5oKqtt3m1+aNBQ5ZI4Q3xoTxSSjLne2a7pt?=
- =?us-ascii?Q?A5aU/a1IYhO8965/0pVNiV+Y1HZJP+TNNUQWIgFu4e+Y5Be/luhYG9V9ZAIZ?=
- =?us-ascii?Q?qCzhmDXNBEiYvq/d2xpVg+kbWRfBo0igVwcLEK2xws4/sozZsSg8nI14ps0T?=
- =?us-ascii?Q?jjq4kjLDH5AkXgGA39qzPvz5UZ4yXSIsdJ9/OXepR/xisLTKJE9dULt+N+Sk?=
- =?us-ascii?Q?ASoN+XGqqWBIQIJqsiU7naLeR2OgbJzm/8DNAwClZGakwCPXyJoTPQdf+5Vz?=
- =?us-ascii?Q?YsRzUOLKl4DB7yS4VxfO8AxVVPLhiwo8trF3J/x+XgYU4ulj8zGGQ19pR2Fy?=
- =?us-ascii?Q?VQOWrAXUBJ58C4UgppXmt3LQ+4UgCLhcKiL0x3932ur9B+8uSQokmMo+P8K+?=
- =?us-ascii?Q?p4NioMyaSwA50T15Odjo4aM/PhZ0gPdqaxaT8ggA+J50ky7Uk/OS3w6rOu2e?=
- =?us-ascii?Q?QSw6yX+7TRx2jAOPzt6yWxFWKwtDv4m7HALsL9thDCoAS3q301sfMzMQjsB1?=
- =?us-ascii?Q?kx5XXXfWmtmauKiogY3DS2dSi/JQD6EgqJurwkMgo8qR/3zB2hPzd4WcKWso?=
- =?us-ascii?Q?inG46lfCyMU3XfRqRfqkzodAhAzL6GHQ86Ar3GJMS3e70TQ7mBSKVJjdkaG4?=
- =?us-ascii?Q?rAiZuPcmq3SOPrAthLfDxe/ilZQZxTYLKxcdGFm1zOfG6PY2CIIsDmdUGgbo?=
- =?us-ascii?Q?uOABrcOBz6fop1Sy3VVOzEmsxSJ560SmCAzUWiUe+HeW52Yna2P8hStoCs8z?=
- =?us-ascii?Q?RwV9FkuFEsHttx1AUcv5CaOcqvuphxsAYVRLd0S59xyNMiW+NCTz5sKblycw?=
- =?us-ascii?Q?7uxx4J3McotZHzehZkstt/8BkEBk/J0Nb8qqLQUUvuoaF9CuSvpThZ2TfEiV?=
- =?us-ascii?Q?TOnRDdD96jGkDXOWLKSLSjICNEKWP45Yu9E1uqUcPjNbxdkLHWTRgFj/qzsa?=
- =?us-ascii?Q?vHZVDQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(7416014)(376014)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	yiSsmCrTz2tPNnHQbsOmpjuTZImpDSRhbXf2/SLb9G5pG69BK5JyZsvncvzOhp28ssrr6SIgE+K5EkAgbb3Kz3gq05o5DBXMlitBTPKHsAelalZgz5FEj9+v/4OinAB3zjaZmHzWYjA8TbxAXOctFs3KS46WhLka7dXX+Uv0xH4YoVDf6tAox7eukLp7TMawR95b1FILNnzqQY/19sShf4zK7Tpo/uIN+/5+IepW7ugrp2HpIB2Cp4dKSI1hHLL+QS0uUV5KwDW9TMkY4pA+IIRkkgj21oPQcZjs9026Jy1vRXOGKfALk2MrCZOzLKxF1/XQELRiaXWSnFAxfcIay+Mpife0Jsl5poR2AIbdWz2qi5kZtt67Nb7avihXag5/+kF03uqh4nAGdom2qqvge3eIIW57ChO3FVr7hFc5HAWcpvX5OWEJ/72dEhFqw9vk
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 13:15:52.8374
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 18d0f807-0f64-43d2-b6bc-08de73a6d63e
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF00012E62.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7502
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
 
+Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
+---
+ .../net/ethernet/huawei/hinic3/hinic3_cmdq.c  | 196 +++++++++++++++++-
+ .../net/ethernet/huawei/hinic3/hinic3_cmdq.h  |  15 ++
+ 2 files changed, 209 insertions(+), 2 deletions(-)
 
-Jakub Kicinski <kuba@kernel.org> writes:
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c
+index 86720bb119e9..15c9aa247bae 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c
+@@ -61,6 +61,10 @@
+ #define CMDQ_DB_HEAD_SET(val, member)  \
+ 	FIELD_PREP(CMDQ_DB_HEAD_##member##_MASK, val)
+ 
++#define SAVED_DATA_ARM_MASK          BIT(31)
++#define SAVED_DATA_SET(val, member)  \
++	FIELD_PREP(SAVED_DATA_##member##_MASK, val)
++
+ #define CMDQ_CEQE_TYPE_MASK            GENMASK(2, 0)
+ #define CMDQ_CEQE_GET(val, member)  \
+ 	FIELD_GET(CMDQ_CEQE_##member##_MASK, le32_to_cpu(val))
+@@ -84,6 +88,10 @@ enum cmdq_data_format {
+ 	CMDQ_DATA_DIRECT = 1,
+ };
+ 
++enum cmdq_scmd_type {
++	CMDQ_SET_ARM_CMD = 2,
++};
++
+ enum cmdq_ctrl_sect_len {
+ 	CMDQ_CTRL_SECT_LEN        = 1,
+ 	CMDQ_CTRL_DIRECT_SECT_LEN = 2,
+@@ -166,6 +174,11 @@ static void cmdq_clear_cmd_buf(struct hinic3_cmdq_cmd_info *cmd_info,
+ 		hinic3_free_cmd_buf(hwdev, cmd_info->buf_in);
+ 		cmd_info->buf_in = NULL;
+ 	}
++
++	if (cmd_info->buf_out) {
++		hinic3_free_cmd_buf(hwdev, cmd_info->buf_out);
++		cmd_info->buf_out = NULL;
++	}
+ }
+ 
+ static void clear_wqe_complete_bit(struct hinic3_cmdq *cmdq,
+@@ -189,6 +202,20 @@ static void clear_wqe_complete_bit(struct hinic3_cmdq *cmdq,
+ 	hinic3_wq_put_wqebbs(&cmdq->wq, CMDQ_WQE_NUM_WQEBBS);
+ }
+ 
++static int cmdq_arm_ceq_handler(struct hinic3_cmdq *cmdq,
++				struct cmdq_wqe *wqe, u16 ci)
++{
++	struct cmdq_ctrl *ctrl = &wqe->wqe_scmd.ctrl;
++	__le32 ctrl_info = ctrl->ctrl_info;
++
++	if (!CMDQ_WQE_COMPLETED(ctrl_info))
++		return -EBUSY;
++
++	clear_wqe_complete_bit(cmdq, wqe, ci);
++
++	return 0;
++}
++
+ static void cmdq_update_cmd_status(struct hinic3_cmdq *cmdq, u16 prod_idx,
+ 				   struct cmdq_wqe *wqe)
+ {
+@@ -257,6 +284,11 @@ void hinic3_cmdq_ceq_handler(struct hinic3_hwdev *hwdev, __le32 ceqe_data)
+ 			cmdq_clear_cmd_buf(cmd_info, hwdev);
+ 			clear_wqe_complete_bit(cmdq, wqe, ci);
+ 			break;
++		case HINIC3_CMD_TYPE_SET_ARM:
++			/* arm_bit was set until here */
++			if (cmdq_arm_ceq_handler(cmdq, wqe, ci))
++				return;
++			break;
+ 		default:
+ 			/* only arm bit is using scmd wqe,
+ 			 * the other wqe is lcmd
+@@ -283,6 +315,18 @@ void hinic3_cmdq_ceq_handler(struct hinic3_hwdev *hwdev, __le32 ceqe_data)
+ 	}
+ }
+ 
++static int cmdq_params_valid(const struct hinic3_hwdev *hwdev,
++			     const struct hinic3_cmd_buf *buf_in)
++{
++	if (le16_to_cpu(buf_in->size) > CMDQ_BUF_SIZE) {
++		dev_err(hwdev->dev, "Invalid CMDQ buffer size: 0x%x\n",
++			buf_in->size);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int wait_cmdqs_enable(struct hinic3_cmdqs *cmdqs)
+ {
+ 	unsigned long end;
+@@ -356,6 +400,7 @@ static void cmdq_prepare_wqe_ctrl(struct cmdq_wqe *wqe, u8 wrapped,
+ 				  enum cmdq_bufdesc_len buf_len)
+ {
+ 	struct cmdq_header *hdr = CMDQ_WQE_HEADER(wqe);
++	__le32 saved_data = hdr->saved_data;
+ 	enum cmdq_ctrl_sect_len ctrl_len;
+ 	struct cmdq_wqe_lcmd *wqe_lcmd;
+ 	struct cmdq_wqe_scmd *wqe_scmd;
+@@ -386,6 +431,11 @@ static void cmdq_prepare_wqe_ctrl(struct cmdq_wqe *wqe, u8 wrapped,
+ 			    CMDQ_WQE_HDR_SET(3, COMPLETE_SECT_LEN) |
+ 			    CMDQ_WQE_HDR_SET(ctrl_len, CTRL_LEN) |
+ 			    CMDQ_WQE_HDR_SET(wrapped, HW_BUSY_BIT));
++
++	saved_data &= ~cpu_to_le32(SAVED_DATA_ARM_MASK);
++	if (cmd == CMDQ_SET_ARM_CMD && mod == MGMT_MOD_COMM)
++		saved_data |= cpu_to_le32(SAVED_DATA_SET(1, ARM));
++	hdr->saved_data = saved_data;
+ }
+ 
+ static void cmdq_set_lcmd_wqe(struct cmdq_wqe *wqe,
+@@ -557,11 +607,118 @@ static int cmdq_sync_cmd_direct_resp(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
+ 	return err ? err : errcode;
+ }
+ 
++static int cmdq_sync_cmd_detail_resp(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
++				     struct hinic3_cmd_buf *buf_in,
++				     struct hinic3_cmd_buf *buf_out,
++				     __le64 *out_param)
++{
++	struct hinic3_cmdq_cmd_info *cmd_info, saved_cmd_info;
++	struct cmdq_wqe *curr_wqe, wqe = {};
++	int cmpt_code = CMDQ_SEND_CMPT_CODE;
++	struct hinic3_wq *wq = &cmdq->wq;
++	u16 curr_prod_idx, next_prod_idx;
++	struct completion done;
++	u64 curr_msg_id;
++	int errcode;
++	u8 wrapped;
++	int err;
++
++	spin_lock_bh(&cmdq->cmdq_lock);
++	curr_wqe = cmdq_get_wqe(wq, &curr_prod_idx);
++	if (!curr_wqe) {
++		spin_unlock_bh(&cmdq->cmdq_lock);
++		return -EBUSY;
++	}
++
++	wrapped = cmdq->wrapped;
++
++	next_prod_idx = curr_prod_idx + CMDQ_WQE_NUM_WQEBBS;
++	if (next_prod_idx >= wq->q_depth) {
++		cmdq->wrapped ^= 1;
++		next_prod_idx -= wq->q_depth;
++	}
++
++	cmd_info = &cmdq->cmd_infos[curr_prod_idx];
++
++	init_completion(&done);
++	refcount_inc(&buf_in->ref_cnt);
++	refcount_inc(&buf_out->ref_cnt);
++	cmd_info->cmd_type = HINIC3_CMD_TYPE_SGE_RESP;
++	cmd_info->done = &done;
++	cmd_info->errcode = &errcode;
++	cmd_info->direct_resp = out_param;
++	cmd_info->cmpt_code = &cmpt_code;
++	cmd_info->buf_in = buf_in;
++	cmd_info->buf_out = buf_out;
++
++	saved_cmd_info = *cmd_info;
++	cmdq_set_lcmd_wqe(&wqe, CMDQ_CMD_SGE_RESP, buf_in, buf_out,
++			  wrapped, mod, cmd, curr_prod_idx);
++	cmdq_wqe_fill(curr_wqe, &wqe);
++	cmd_info->cmdq_msg_id++;
++	curr_msg_id = cmd_info->cmdq_msg_id;
++
++	cmdq_set_db(cmdq, cmdq->cmdq_type, next_prod_idx);
++	spin_unlock_bh(&cmdq->cmdq_lock);
++
++	err = wait_cmdq_sync_cmd_completion(cmdq, cmd_info, &saved_cmd_info,
++					    curr_msg_id, curr_prod_idx,
++					    curr_wqe, CMDQ_CMD_TIMEOUT);
++	if (err) {
++		dev_err(cmdq->hwdev->dev,
++			"Cmdq sync command timeout, mod: %u, cmd: %u, prod idx: 0x%x\n",
++			mod, cmd, curr_prod_idx);
++		err = -ETIMEDOUT;
++	}
++
++	if (cmpt_code == CMDQ_FORCE_STOP_CMPT_CODE) {
++		dev_dbg(cmdq->hwdev->dev,
++			"Force stop cmdq cmd, mod: %u, cmd: %u\n",
++			mod, cmd);
++		err = -EAGAIN;
++	}
++
++	smp_rmb(); /* read error code after completion */
++
++	return err ? err : errcode;
++}
++
++int hinic3_cmd_buf_pair_init(struct hinic3_hwdev *hwdev,
++			     struct hinic3_cmd_buf_pair *pair)
++{
++	pair->in = hinic3_alloc_cmd_buf(hwdev);
++	if (!pair->in)
++		goto err_out;
++
++	pair->out = hinic3_alloc_cmd_buf(hwdev);
++	if (!pair->out)
++		goto err_free_cmd_buf_in;
++
++	return 0;
++
++err_free_cmd_buf_in:
++	hinic3_free_cmd_buf(hwdev, pair->in);
++err_out:
++	return -ENOMEM;
++}
++
++void hinic3_cmd_buf_pair_uninit(struct hinic3_hwdev *hwdev,
++				struct hinic3_cmd_buf_pair *pair)
++{
++	hinic3_free_cmd_buf(hwdev, pair->in);
++	hinic3_free_cmd_buf(hwdev, pair->out);
++}
++
+ int hinic3_cmdq_direct_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
+ 			    struct hinic3_cmd_buf *buf_in, __le64 *out_param)
+ {
+ 	struct hinic3_cmdqs *cmdqs;
+ 	int err;
++	err = cmdq_params_valid(hwdev, buf_in);
++	if (err) {
++		dev_err(hwdev->dev, "Invalid CMDQ parameters\n");
++		goto err_out;
++	}
+ 
+ 	cmdqs = hwdev->cmdqs;
+ 	err = wait_cmdqs_enable(cmdqs);
+@@ -573,6 +730,39 @@ int hinic3_cmdq_direct_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
+ 	err = cmdq_sync_cmd_direct_resp(&cmdqs->cmdq[HINIC3_CMDQ_SYNC],
+ 					mod, cmd, buf_in, out_param);
+ 
++	return 0;
++
++err_out:
++	return err;
++}
++
++int hinic3_cmdq_detail_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
++			    struct hinic3_cmd_buf *buf_in,
++			    struct hinic3_cmd_buf *buf_out, __le64 *out_param)
++{
++	struct hinic3_cmdqs *cmdqs;
++	int err;
++
++	err = cmdq_params_valid(hwdev, buf_in);
++	if (err)
++		goto err_out;
++
++	cmdqs = hwdev->cmdqs;
++
++	err = wait_cmdqs_enable(cmdqs);
++	if (err) {
++		dev_err(hwdev->dev, "Cmdq is disabled\n");
++		goto err_out;
++	}
++
++	err = cmdq_sync_cmd_detail_resp(&cmdqs->cmdq[HINIC3_CMDQ_SYNC],
++					mod, cmd, buf_in, buf_out, out_param);
++	if (err)
++		goto err_out;
++
++	return 0;
++
++err_out:
+ 	return err;
+ }
+ 
+@@ -759,7 +949,8 @@ static int init_cmdqs(struct hinic3_hwdev *hwdev)
+ 
+ static void cmdq_flush_sync_cmd(struct hinic3_cmdq_cmd_info *cmd_info)
+ {
+-	if (cmd_info->cmd_type != HINIC3_CMD_TYPE_DIRECT_RESP)
++	if (cmd_info->cmd_type != HINIC3_CMD_TYPE_DIRECT_RESP &&
++	    cmd_info->cmd_type != HINIC3_CMD_TYPE_SGE_RESP)
+ 		return;
+ 
+ 	cmd_info->cmd_type = HINIC3_CMD_TYPE_FORCE_STOP;
+@@ -786,7 +977,8 @@ static void hinic3_cmdq_flush_cmd(struct hinic3_cmdq *cmdq)
+ 	while (cmdq_read_wqe(&cmdq->wq, &ci)) {
+ 		hinic3_wq_put_wqebbs(&cmdq->wq, CMDQ_WQE_NUM_WQEBBS);
+ 		cmd_info = &cmdq->cmd_infos[ci];
+-		if (cmd_info->cmd_type == HINIC3_CMD_TYPE_DIRECT_RESP)
++		if (cmd_info->cmd_type == HINIC3_CMD_TYPE_DIRECT_RESP ||
++		    cmd_info->cmd_type == HINIC3_CMD_TYPE_SGE_RESP)
+ 			cmdq_flush_sync_cmd(cmd_info);
+ 	}
+ 	spin_unlock_bh(&cmdq->cmdq_lock);
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h
+index f99c386a2780..29bad2fae7ba 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h
+@@ -85,7 +85,9 @@ enum hinic3_cmdq_status {
+ 
+ enum hinic3_cmdq_cmd_type {
+ 	HINIC3_CMD_TYPE_NONE,
++	HINIC3_CMD_TYPE_SET_ARM,
+ 	HINIC3_CMD_TYPE_DIRECT_RESP,
++	HINIC3_CMD_TYPE_SGE_RESP,
+ 	HINIC3_CMD_TYPE_FAKE_TIMEOUT,
+ 	HINIC3_CMD_TYPE_TIMEOUT,
+ 	HINIC3_CMD_TYPE_FORCE_STOP,
+@@ -98,6 +100,11 @@ struct hinic3_cmd_buf {
+ 	refcount_t ref_cnt;
+ };
+ 
++struct hinic3_cmd_buf_pair {
++	struct hinic3_cmd_buf *in;
++	struct hinic3_cmd_buf *out;
++};
++
+ struct hinic3_cmdq_cmd_info {
+ 	enum hinic3_cmdq_cmd_type cmd_type;
+ 	struct completion         *done;
+@@ -107,6 +114,7 @@ struct hinic3_cmdq_cmd_info {
+ 	__le64                    *direct_resp;
+ 	u64                       cmdq_msg_id;
+ 	struct hinic3_cmd_buf     *buf_in;
++	struct hinic3_cmd_buf     *buf_out;
+ };
+ 
+ struct hinic3_cmdq {
+@@ -146,8 +154,15 @@ void hinic3_free_cmd_buf(struct hinic3_hwdev *hwdev,
+ 			 struct hinic3_cmd_buf *cmd_buf);
+ void hinic3_cmdq_ceq_handler(struct hinic3_hwdev *hwdev, __le32 ceqe_data);
+ 
++int hinic3_cmd_buf_pair_init(struct hinic3_hwdev *hwdev,
++			     struct hinic3_cmd_buf_pair *pair);
++void hinic3_cmd_buf_pair_uninit(struct hinic3_hwdev *hwdev,
++				struct hinic3_cmd_buf_pair *pair);
+ int hinic3_cmdq_direct_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
+ 			    struct hinic3_cmd_buf *buf_in, __le64 *out_param);
++int hinic3_cmdq_detail_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
++			    struct hinic3_cmd_buf *buf_in,
++			    struct hinic3_cmd_buf *buf_out, __le64 *out_param);
+ 
+ void hinic3_cmdq_flush_sync_cmd(struct hinic3_hwdev *hwdev);
+ int hinic3_reinit_cmdq_ctxts(struct hinic3_hwdev *hwdev);
+-- 
+2.43.0
 
-> Gal recently complained:
->
->   When [ksft_wait failure] happens, the test fails with a cryptic
->   message:
->     # Exception| Exception: Did not receive ready message
->
-> Let's try to include the stdout/stderr of the command we tried
-> to start. E.g. for cmd("false", ksft_wait=True):
->
->     # Exception| lib.py.utils.CmdInitFailure: Did not receive ready message
->     # Exception| CMD: false
->     # Exception|   EXIT: 1
->
-> We need to factor out _process_terminate() otherwise the exit
-> path may try to write to already disconnected self.ksft_term_fd.
->
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
