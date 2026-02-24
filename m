@@ -1,61 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1515F366556;
-	Tue, 24 Feb 2026 08:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A8EA46B5
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 08:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771921098; cv=none; b=n9LSAfj2eEsL0dHRYvSpJKbsOuW4aQNYwSTuzfBaCByIILq7DkfbL9P9BL8Rdgam4dpI8Y1VaMponXcaeWREriV2e5GXwrchW1zHc/BeCLsisxgM9YO69Ai/tTrGu4irD5YiKQT7jXrVgl6M73oxki6QmMvaQO6+KbCvTvQVHfI=
+	t=1771921223; cv=none; b=eRbOI7GutqIP9RNi3U1Qb/qmz3lQQed6CqgR0EKCxUfD/rcAOUmqXYfGXcP0oroRr0Oj0L9dnjdzHIgcwc7P7s26HJnLOzQup+SAR5gq3xWPHNRtiRcgIEIxVW44HAAKJePJ+K42g0eKvXT5PudX67OBfd6RKFHGOaKyIRqpoLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771921098; c=relaxed/simple;
-	bh=hSehRNge/1BxHaGLG3R3Qpdy/EUJPhe/dcHH0SQxtBg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sFaX/1usRpbjmsBdz9yYtCMXEnjw94qoC6CZn49N25K8B5tXm9u0hdjb5otzoBvxIM8vwd8JkSkekQGQ0OOQDadKq43QaZ6xgY4EOZiEAsP/5RIsWWx3J2mov66IvuDfvftlirGqbBNDc4M8hFAbSOF3vy/8YJbVEnDIA4m0++0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LW/cGA/S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771921223; c=relaxed/simple;
+	bh=vc2/Zx/lrYf4qKoRckwGCOkcVJNGdfTsDsZn7VP7Vw0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=agLxCjkiYW9DOSclOfcH0TlUJyTqbSH7fN+OYuSp4fg2QiH+qtnxghojtd0nmDqKVCW7p/JNt50aeK9vPPA3IWl5XRTO17HVS4cg1/Z2512tXJQqKNco4v/aX6WABQ4EfTo37f2La7pb1omgO9UQpY7LHjXvRcz3Uoy0E0CipjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=df4+jp0l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LW/cGA/S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103A5C116D0;
-	Tue, 24 Feb 2026 08:18:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="df4+jp0l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD91C116D0;
+	Tue, 24 Feb 2026 08:20:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771921097;
-	bh=hSehRNge/1BxHaGLG3R3Qpdy/EUJPhe/dcHH0SQxtBg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LW/cGA/SWGT9JSk7kynloUV8dZHjPa1SQdJRNb2PIto6oMNQUn/EESKHJIvvs3vEa
-	 UPKYMbh+9u9v1LAkqlRe2sUjvIzmUpa179ESzZNqGDuPMqNIW/F8qPHgLcN4EU1W9y
-	 Wu56Aq8wp4QgR/zhHnZDBGFUy2q7M3r15PxPEgrO4RyQC6xzGVB5V3nB1gN6S/WfPk
-	 Q2N0aU70Tb8Vu673ApVAhQVLhItr1D14gNvyN/0Zov/mCyndQ4u6bLs65J0dJG2w1Z
-	 nJWo8owtkQyOLYCoxnM7NCvOeBZ+EvW/tdrLkrrGuymJ5FryrDydXZ8brtHc5TZsON
-	 40OvfraAM5mpw==
-Date: Tue, 24 Feb 2026 08:18:13 +0000
-From: Simon Horman <horms@kernel.org>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: "David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next] net: l2tp_eth: Replace deprecated strcpy with
- strscpy in l2tp_eth_create
-Message-ID: <aZ1exV5fL88Kdft2@horms.kernel.org>
-References: <20260223074137.321862-1-thorsten.blum@linux.dev>
+	s=k20201202; t=1771921222;
+	bh=vc2/Zx/lrYf4qKoRckwGCOkcVJNGdfTsDsZn7VP7Vw0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=df4+jp0lbuV+uVB6SMq9uAlLGgEQAi9EeMQ/WDw/1ykVq809q6vmNxTYGkxUtg0Jd
+	 iH0ARwSDPs7nhOBLM83idVaNh5MRqrGwz06iIYApeO2XZGOa4A/7Ch4Es02QIIQFRI
+	 FBs6ezcj54MLXA25Wcp2FBYGymQWrl32tzMIqOnKmkDv2f2mlumvTkYo61x0F1oqp8
+	 YH8ZaxdoZ830o5X86wgXTmpeDaNXErrBCM+KYVN6/2BGtb9Ff4PbaGosZ3c2lP0Snw
+	 UEFK539iZNjiBfNaXQugpzCwWCQvzRwjhPdGIPoC3YxDWPIZpcbhCnAlTMoy8M2qVM
+	 zKk73wxa0Hzrw==
+Message-ID: <027d191f-f04e-4ead-a9b8-a6626e0828c1@kernel.org>
+Date: Tue, 24 Feb 2026 09:20:16 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260223074137.321862-1-thorsten.blum@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] net: fs_enet: add missing kfree in _remove
+To: Rosen Penev <rosenp@gmail.com>, netdev@vger.kernel.org
+Cc: Pantelis Antoniou <pantelis.antoniou@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Russell King <linux@armlinux.org.uk>
+References: <20260224015517.354145-1-rosenp@gmail.com>
+Content-Language: fr-FR
+From: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
+In-Reply-To: <20260224015517.354145-1-rosenp@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, Feb 23, 2026 at 08:41:34AM +0100, Thorsten Blum wrote:
-> strcpy() has been deprecated [1] because it performs no bounds checking
-> on the destination buffer, which can lead to buffer overflows. Replace
-> it with the safer strscpy().  Use the two-argument version of strscpy()
-> to copy 'cfg->ifname'.
+
+
+Le 24/02/2026 à 02:55, Rosen Penev a écrit :
+> The kfree is present in _probe on failure but not in remove.
+
+Which kfree ? Which structure ?
+
+Provide more details in the commit message.
+
 > 
-> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>   drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+> index d3c772ed5fc9..ee2b7e8866ee 100644
+> --- a/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+> +++ b/drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c
+> @@ -1008,6 +1008,7 @@ static void fs_enet_remove(struct platform_device *ofdev)
+>   	dev_set_drvdata(fep->dev, NULL);
+>   	phylink_destroy(fep->phylink);
+>   	free_netdev(ndev);
+> +	kfree(fep);
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+This is not correct I think. fep is allocated by alloc_etherdev() and 
+released by free_netdev()
+
+>   }
+> 
+>   static const struct of_device_id fs_enet_match[] = {
+> --
+> 2.53.0
+> 
+> 
 
