@@ -1,104 +1,142 @@
-Received: from sonic302-19.consmr.mail.ir2.yahoo.com (sonic302-19.consmr.mail.ir2.yahoo.com [87.248.110.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098562C21D9
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 07:43:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=87.248.110.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0CD01F30A9;
+	Tue, 24 Feb 2026 07:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771918987; cv=none; b=QYlRL3hltebZzpgSdqA5EpmerPvpHp7z96lFVhv+GbVBXiioOzYXhwB3wRQ+eN6mLZeY+DSDedR+lrA4Jk3iGqmRgPMHqsGCGQJEVvhUNy5+jYlBHR21kRBXWxdfV+GS6FXwBFsqWXUANcTHpy0ELbtcIRwTTmTcuoTkTY9ZDwc=
+	t=1771919278; cv=none; b=i/4pPouWo2soaLs0W/QfuACS9Hupqu4zFOkX3kkP3Tuzubct7tv5LgAq+U4k8T6RToeorjT0kMv4lP/28Rz85DtYEFBUlzugwStsQFRkOWoiSSr4wErgN/Xovn+QKPKHV0rdMhWyqGtjSjeoMPL6BHT88d/XamQAePULZ0jrbUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771918987; c=relaxed/simple;
-	bh=bm2qPIWy/hHE4P+dDtjgplvlkXWZzasPiAQIXgfmf8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=Okqb56fPQeZodmyy3UOv5jAStZdrPECe9DTew0VkomtIzJzOi0tBeeIAEBTu2chokPJ0NHYSpZO/8ztHsMi/Lu9TWZrFMBCZ8Rau4ZLEoLbHQEIhu+Wh2MQx5xEMpnObqcvxZqhxbjODHF2AqH+O7tOqYgfyf4zaoEOBcnVoqYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=HrRgrp+D; arc=none smtp.client-ip=87.248.110.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
+	s=arc-20240116; t=1771919278; c=relaxed/simple;
+	bh=koOgKiE+v7OPLi9LKEtxHOf7GhOtRTctPuVlHDgVeRI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=PqmP0Y9dxuV5Lr8RtLlQLvTftOa4Fwx19gfjN2jonzSC50Mf/G9iROw5aoNZZReWFAsrDRm+zvV//cBM1G0NmznJ7YH5//Sgi1x/JNJFZgXY88HIjJW7G6OEH7cv7b5a3tULIyGdqtGuqfx8OAy/gj+DFbvrHY+PU79kDBD9Jow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=LlmbFV5R; arc=none smtp.client-ip=80.241.56.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="HrRgrp+D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1771918983; bh=h5Gfv++c0AF2QSz5oCZrZRGlwBlnJtyXzPvoPPd93MU=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=HrRgrp+Dbz6E+vN0PF8MPTfPiKrlnVEQrZO5Z76Cuh5QrD2mNHZJHf/Iy3EAzJRUoydXov1H+OM8sDO2lqqTYB6H+KYGZVwHebo9nmfqlClvneMdZkMifpCiJLxDLRroeYqgm6ZWDi2Oi+Tq4mSV/ozxplz4JZEgQa+4ZzrO+gsWQOK+fnvwRtn2i8cjCPfIZYRU7XSvpfjHn3dspU56f7JaG7cVqHDo3RBF9qUO0ozQDXBzpkNe635Pcr2Xc2LW3GabcX3Ad3/znSt+mZvScNr3m5UVr9y4asXNnXbmZOsmAH8t/uKWlZ4aufc/ADm34sCpAp4DhXer9nqWsK0ELA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1771918983; bh=vpumSg46nVMiI4Iv8TCdU3jlQZm9ZcyIAJ18gR8o3MA=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=Hk7j6xKDqJUsaOa7NKUts4LauqKKpbbkXMwSVfOfdjLy8+yS0dpARJAfh04AO4yODIRI+Vsdhd+BK2Px+3Cf3QUr2//nc2ejzgNKLYjGUMKyHblDPWvrG1nZpHkc8FSlrWNkM3bJB1ZUQvIFGuPSeq1oVjp51ae5BasJklPHt3odNeM6vNqKJqdmPLEx3kh2/Fpd8wrC4j9P2Dn9axfO1E5/wUqs91vZIdynLqrD1dYDA8aQ2ksE7AxVdc5jjqctdlsgoPOM6IoT0KzwKWtfPvvJzGv9BFGqZNLVJZ+TsmAh62054udTRJIvT8Sjf2H8Q1YqFF5M39pcJelo9iSrMA==
-X-YMail-OSG: J9zn06cVM1mvTf.BbIiQqZI.EgQCrz5D.BKh.2g.zNYLV74y3u7JuzNwbpoMv3d
- oYjx1HutQdW3T_qSbfBCIGtTYAOX.ExE1SkIaAnOFEOgkV_R8NVOWua0nrG.YoGVaXFXw..tzKkw
- rhOX7kyQglMeFtBQpBDhuytJDfMBSvkrxFyKOGeg3P1howhagfZRxma.QWP_KXSQO8CZkWf9WhsO
- _pSqAUIKcyWSwwGqbAabhzF.hlIwZO.iHcNrr.O84K_U4ZDxOj0nX0mUDh5TBCRCmySYRj.LMs4_
- Z94vPg4rxphxECYKahtMUov6OxRAvD92PL0efO41d7zNuzNhjtZ.8uito_pDo1Rl2FY6NydAICl0
- _hvG83RkNi.eoslzsJMBOpmqOGoNysCl4mXErRi7THANagPET2M1ZD4jQQ64xSz6ccpby4Sdc0pq
- wDGz91d4OsXqYvk2PoPtjVUQRY6UiFLREmj8gcjeNNECQfpkOe2PNwOCj2wB7wsG7jtHJaN1bnws
- tmsdFayrtMxXnp4eC4JuXL2nagGrh4HZFO88xIXaGGQBDcSMbKJGld0B4kbB11tN95kbsUSd3s7a
- 1fEt9KTkJajyqxPJNDBieFrpy1CAVXYa0XoVyS.JmRJnarGuAc2VLMATi8uOBoi9u8ytJ9jF76H.
- iCaJ1P07nkmD8l.YDijW3ncFP1dMPWMVn7SBgwIKy8oZ07MUgBVDEZaXF7D2Cq.dSGhUV9ffuOOM
- WYbleQFGvkdgGkTJXl8kaaXx5F8qDH4ukSTtsHcdLS9vYmM4LptcxRTgolaFgKZuxPphAFeLH55S
- zuBqs0GM_thNBKIE4g.S8rkBTC1HNe2JRFqNvrcltWMSQotOd7SweVcFnrz1.HodXTtFvx3hyXuz
- H6N7h2anhmw8nel12kxPWZOLyIpwYHB2TwDPIVf6OtinZjXnTfqTLnTrjcPxHOD77WITo31kVvmZ
- JzcTghDT72Y6AU_8EGLD9Idx9JRhqegKtn60iTEEfTYf1WRj8NDPE_N90Sjmde3f4pA.AlG8NY2I
- beHVqn8Em9P7dJzhJCMcpTBCma8yEGWwT51m_Z5OPQNUBqRTtqVWG0tZ1kmFERVsNUYHZyXvSoSa
- AtPzJvkjHfU2Loxc0HZ1gJqZ8QMLPvySKF6yxYbnVYVSmHLKrD_IId7cAH0qtjeAsh69ZgsWh39c
- Jl.fJ2SPdOb10W7N_5apZYcqmtx2K9SXkGtm4Js9TZyVtnv5ZkXYKR3BWc2jLwmEmCR0StK0Usgz
- OdEN48oDcYw10CjJ.stsI9ACm4oF.jNXAPZ47MSe4ziuwWO4iX.OcF1beZSZr872aRV9P9TIAuCT
- svQL_Fv1oQVRHy5i4bFpUPDRvKNHfSrwwACvi0LigwHnL9IoGN6mjDSnuzMBaRm.eMRABZGQNdhu
- kemK4OsRg1ZyshZUo39_8JHodqDx.P3A_pPnI0e8DHhChQ7MafOpqquvqptg4QRvjIRwCDDnTfqT
- c3lVZD4W9fQ7MWQVwd0uUyw.HxW0GXW4pvoJhp4j36dtURY17OM5JCANQXONuxoOrqPSi7VOKN.l
- CVus8.Cc0ehGdsoYV1QJ2W3dzb2RriMLwqFmpBuhQZFev4dkW7exV26NwplNRngNuKq1jiJlFnHw
- S2LbvoX3xsdZesXuqg.VHqxK4uTU.rKBorDjhqXTxWR.oOAROp2A3JClU6bui_.ORiGxwZ7fZoMW
- 3eOmLAkPMbe5NyMQ5Z_fN72uyWGVCEuCXqeNZswbliAptPpiTnXsdNkh5h_guBou5D8eIznsUEen
- ifq_LUOXy4sozdFHmHpfXOyRdcQgtpqMQDITXbYSCvOARbfXi8vw04_iUGOHP_8Ew8C_LSp6QGr2
- eNwbwU48ut07hYQ03FzDCLLHsFdWUhwQ4jpR90BCqu4x0xol.UJHnfPCWZBUoTK_9b.OWVUgE17_
- uyHHCOapiQR1.pYg2GQZtF7_wKoJSVqYGgJ7AGN.QrKIk78rp550T.YQPn2W3x03OMYBpxjuF1rS
- PCVJ41Jofd_DY7c3adaU_c_icRzZOTzxNPHeCNjYTizJgriGQz.53GwcM9ZTSNhpv0JIjxh4a2Vj
- RiZLIsKRi5na2BymBK86Sa38iusRQ1KWBXQ1YyrXLsbWltzIMiO1Dy_Ix6blP.ovuZS1MOESFQL6
- l_Qi78_Wa8B_0nKh29iXAeFzHZN5ZST4c9D1utv_LeBIxaAEYbZBR73fCGJXDt6jlmm3auyhfJmg
- GNXTD2FeLTPXa4JKvbrZKqA03VuKLfgbS.HQbCmD7NmqrWGBv69gOzoakZetM.l0Vq8cwRp31Skr
- Mvg--
-X-Sonic-MF: <tomasz.unger@yahoo.pl>
-X-Sonic-ID: c81e2d46-f724-4656-8860-554ff225cc64
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic302.consmr.mail.ir2.yahoo.com with HTTP; Tue, 24 Feb 2026 07:43:03 +0000
-Received: by hermes--production-ir2-bbcfb4457-9k578 (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 1044f27e29dc4477327e90f76ba8df04;
-          Tue, 24 Feb 2026 07:22:45 +0000 (UTC)
-From: tomasz.unger@yahoo.pl
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Tomasz Unger <tomasz.unger@yahoo.pl>
-Subject: [PATCH] nfc: pn544: i2c: Replace strcpy() with strscpy()
-Date: Tue, 24 Feb 2026 08:22:42 +0100
-Message-ID: <20260224072242.32551-1-tomasz.unger@yahoo.pl>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="LlmbFV5R"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:b231:465::2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4fKqZd0j7Gz9vf0;
+	Tue, 24 Feb 2026 08:47:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1771919273; h=from:from:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=YiLc2etffytjGPdDT50TNZbMLgAeU88xmrhfRIsoAkA=;
+	b=LlmbFV5RBp7xLppev4EyLfGR9yk3NSgp4k97/ZE38v/+7SN+fag4e2NPTVd6MywwYB3JoR
+	aECvO9Fv8AwXWQahEcQFmBMMy4oTTqbdSF7jsj3F9M1UASa8aCOGylBQ8PbGmnx3sEXV/X
+	xDlA0T3Yg9VbnOrGzG3Cu09qiMv5luZknnr33IhnpKKS7SEYP5J27eOqGJ+BMoxD7b2D7e
+	Wt4vHbFXLlArdA5ZAkztt7B6Zdjf3OctDzSWL+lDFIhoAe+dqsoo1LXHEJMGvF4BGO1wuN
+	FQvXuKvtRw6f680NUsqMBFFFC2kPPw/EMsvBpkdP95ooRBk0Xv0qmfZ7x7GZHA==
+Message-ID: <07fc896007d86b731cbfb3cf6bbdf4e5315d7a77.camel@mailbox.org>
+Subject: Re: [PATCH 01/37] PCI/MSI: Add Devres managed IRQ vectors allocation
+From: Philipp Stanner <phasta@mailbox.org>
+Reply-To: phasta@kernel.org
+To: Shawn Lin <shawn.lin@rock-chips.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, "Vaibhaav Ram T . L"
+ <vaibhaavram.tl@microchip.com>, Kumaravel Thiagarajan
+ <kumaravel.thiagarajan@microchip.com>, Even Xu <even.xu@intel.com>, Xinpeng
+ Sun <xinpeng.sun@intel.com>, Srinivas Pandruvada
+ <srinivas.pandruvada@linux.intel.com>, Jiri Kosina <jikos@kernel.org>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, Zhou Wang
+ <wangzhou1@hisilicon.com>, Longfang Liu <liulongfang@huawei.com>, Vinod
+ Koul <vkoul@kernel.org>, Lee Jones <lee@kernel.org>, Jijie Shao
+ <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>, Sunil Goutham
+ <sgoutham@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>, Heiner
+ Kallweit <hkallweit1@gmail.com>, "David S . Miller" <davem@davemloft.net>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Oded Gabbay <ogabbay@kernel.org>,
+ Maciej Falkowski <maciej.falkowski@linux.intel.com>,  Karol Wachowski
+ <karol.wachowski@linux.intel.com>, Min Ma <mamin506@gmail.com>, Lizhi Hou
+ <lizhi.hou@amd.com>,  Andreas Noever <andreas.noever@gmail.com>, Mika
+ Westerberg <westeri@kernel.org>, Tomasz Jeznach <tjeznach@rivosinc.com>,
+ Will Deacon <will@kernel.org>, Xinliang Liu <xinliang.liu@linaro.org>, Tian
+ Tao <tiantao6@hisilicon.com>, Davidlohr Bueso <dave@stgolabs.net>, Jonathan
+ Cameron <jonathan.cameron@huawei.com>, Srujana Challa
+ <schalla@marvell.com>, Bharat Bhushan <bbhushan2@marvell.com>, Antoine
+ Tenart <atenart@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, Raag
+ Jadav <raag.jadav@intel.com>, Hans de Goede <hansg@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
+ <jirislaby@kernel.org>, Andy Shevchenko <andy@kernel.org>, Manivannan
+ Sadhasivam <mani@kernel.org>, Mika Westerberg
+ <mika.westerberg@linux.intel.com>, Andi Shyti <andi.shyti@kernel.org>, 
+ Robert Richter <rric@kernel.org>, Mark Brown <broonie@kernel.org>, Nirmal
+ Patel <nirmal.patel@linux.intel.com>, Kurt Schwemmer
+ <kurt.schwemmer@microsemi.com>,  Logan Gunthorpe <logang@deltatee.com>,
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>, 
+ Sakari Ailus <sakari.ailus@linux.intel.com>, Bingbu Cao
+ <bingbu.cao@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>, Arnd Bergmann
+ <arnd@arndb.de>, Benjamin Tissoires <bentiss@kernel.org>,
+ linux-input@vger.kernel.org,  linux-i3c@lists.infradead.org,
+ dmaengine@vger.kernel.org, Philipp Stanner <phasta@kernel.org>,
+ netdev@vger.kernel.org, nic_swsd@realtek.com, 
+ linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-usb@vger.kernel.org, iommu@lists.linux.dev, 
+ linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>, Simona
+ Vetter <simona@ffwll.ch>, linux-cxl@vger.kernel.org,
+ linux-crypto@vger.kernel.org,  platform-driver-x86@vger.kernel.org,
+ linux-serial@vger.kernel.org,  mhi@lists.linux.dev, Andy Shevchenko
+ <andriy.shevchenko@linux.intel.com>, Jan Dabros <jsd@semihalf.com>,
+ linux-i2c@vger.kernel.org, Daniel Mack <daniel@zonque.org>, Haojian Zhuang
+ <haojian.zhuang@gmail.com>, linux-spi@vger.kernel.org, Jonathan Derrick
+ <jonathan.derrick@linux.dev>, linux-pci@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ linux-media@vger.kernel.org, linux-mmc@vger.kernel.org
+Date: Tue, 24 Feb 2026 08:47:28 +0100
+In-Reply-To: <ec226aa1-5cc8-855f-8f90-1d7f89efe766@rock-chips.com>
+References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+	 <1771860581-82092-2-git-send-email-shawn.lin@rock-chips.com>
+	 <20260223160402.3ad8f079@kernel.org>
+	 <ec226aa1-5cc8-855f-8f90-1d7f89efe766@rock-chips.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-References: <20260224072242.32551-1-tomasz.unger.ref@yahoo.pl>
+X-MBO-RS-ID: e66ae4685546ea4d94e
+X-MBO-RS-META: 6frywx3ts6ez4nj3bodhgna5o111q4gn
 
-From: Tomasz Unger <tomasz.unger@yahoo.pl>
+On Tue, 2026-02-24 at 10:08 +0800, Shawn Lin wrote:
+> =E5=9C=A8 2026/02/24 =E6=98=9F=E6=9C=9F=E4=BA=8C 8:04, Jakub Kicinski =E5=
+=86=99=E9=81=93:
+> > On Mon, 23 Feb 2026 23:29:40 +0800 Shawn Lin wrote:
+> > > pcim_alloc_irq_vectors() and pcim_alloc_irq_vectors_affinity() are cr=
+eated for
+> > > pci device drivers which rely on the devres machinery to help cleanup=
+ the IRQ
+> > > vectors.
+> >=20
+> > If you can please add this API with just a few users, and then convert
+> > remaining users via the subsystem trees in the next cycle.
+> > There's no need to risk wasting maintainer time on conflicts with
+> > conversions like this.
+>=20
+> Thanks for the suggestion, Jakub. I have little experience with=20
+> cross-subsystem cleanups like this, so your suggestion is very helpful.
 
-strcpy() does not limit the number of bytes copied which can lead to
-buffer overflow. Replace with strscpy() which is safer as it limits
-the copy to the size of the destination buffer.
 
-Compilation testing:
-- checkpatch.pl: 0 errors, 0 warnings
-- make drivers/nfc/pn544/i2c.o: compiled successfully
+When I removed the hybrid nature of pci_request_region() et al., I
+concluded that there were so few users that doing them all in one run
+was sufficient.
 
-Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
----
- drivers/nfc/pn544/i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+For larger reworks, like removing pcim_iomap_table(), a slower step-by-
+step strategy is necessary for the reasons that Jakub details.
 
-diff --git a/drivers/nfc/pn544/i2c.c b/drivers/nfc/pn544/i2c.c
-index a0dfb3f98d5a..7261e12aa6b5 100644
---- a/drivers/nfc/pn544/i2c.c
-+++ b/drivers/nfc/pn544/i2c.c
-@@ -526,7 +526,7 @@ static int pn544_hci_i2c_fw_download(void *phy_id, const char *firmware_name,
- 
- 	pr_info("Starting Firmware Download (%s)\n", firmware_name);
- 
--	strcpy(phy->firmware_name, firmware_name);
-+	strscpy(phy->firmware_name, firmware_name, sizeof(phy->firmware_name));
- 
- 	phy->hw_variant = hw_variant;
- 	phy->fw_work_state = FW_WORK_STATE_START;
--- 
-2.53.0
+It is then smart to omit an easy to port subsystem / driver for the
+ultimate patch series where one then removes the hybrid behavior from
+PCI itself, after porting the last driver.
 
+In general,  as Jakub details, those step-by-step cleanups are a bit
+safer, since you can proof valid behavior early on and in case of an
+explosion they are very easy to revert.
+
+
+P.
