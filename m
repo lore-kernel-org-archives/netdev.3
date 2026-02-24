@@ -1,118 +1,61 @@
-Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E418B33A703
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 08:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771920336; cv=pass; b=NEswkdmcUM4VflIyau7kjIvT7ewcy4vpcDSZHMR4W5a+fL6qR5JKZgG93cEb/LZV7gF6K3j+lgCPh49pg21Kq7gC4CuxQolqOFcsng2/VGSYNZeKleRWS3OItvjALFeRcDAGrtdvoyQz4XGeeJjVOYKvz/yIb3ZzWJqwo9PKZk8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771920336; c=relaxed/simple;
-	bh=RiLvPWVE0XGnkXkU6LVU6jQZopUhaTIiyl6ToVdk6m0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fqMpVipG/Y5AGJlc6vh3It4iNYMPSZKQ/1BVjX3vjaYeq68HIYxWOZInkZpX2mM0QeGYakcUN+alOBarJ2E8as6RV38u2kgQ0TBce8x62q+9Yxdnf+Ml+PE16nkmN3VyCv5wE6PX1woM2VGPTxlDA6H076yFMbRpuBWhycJl3ZA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HUdFB2nP; arc=pass smtp.client-ip=74.125.224.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1515F366556;
+	Tue, 24 Feb 2026 08:18:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771921098; cv=none; b=n9LSAfj2eEsL0dHRYvSpJKbsOuW4aQNYwSTuzfBaCByIILq7DkfbL9P9BL8Rdgam4dpI8Y1VaMponXcaeWREriV2e5GXwrchW1zHc/BeCLsisxgM9YO69Ai/tTrGu4irD5YiKQT7jXrVgl6M73oxki6QmMvaQO6+KbCvTvQVHfI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771921098; c=relaxed/simple;
+	bh=hSehRNge/1BxHaGLG3R3Qpdy/EUJPhe/dcHH0SQxtBg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sFaX/1usRpbjmsBdz9yYtCMXEnjw94qoC6CZn49N25K8B5tXm9u0hdjb5otzoBvxIM8vwd8JkSkekQGQ0OOQDadKq43QaZ6xgY4EOZiEAsP/5RIsWWx3J2mov66IvuDfvftlirGqbBNDc4M8hFAbSOF3vy/8YJbVEnDIA4m0++0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LW/cGA/S; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HUdFB2nP"
-Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-64ad79dfb7cso4942615d50.2
-        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 00:05:34 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771920334; cv=none;
-        d=google.com; s=arc-20240605;
-        b=h2grH6WkuKuGRWRWr7fS1wz5pEgLn601Q7zkEXUY1JvQ5BsmDqM4tjR1+mqoQVNDln
-         w9nWSTn19OK2wO9LTMpL9pJSOMHdAaxeMkXlqyjrkExpyLUGrOscUmH7/Dg0oYhvQ3St
-         qQMvZygR8lsTYDKJbW0xo/lbElFPYT54JnM2fRe0+FG4o1ydRBkevr1LzmFppsAwATSn
-         tiuo1pMXWaTGXvp+t5b0C7xOLdWkTa5CXkNghNeqQAmUCJ4dwf4KWuAzkpKD1qB6JGvv
-         CeRwaGQNweJZ55XDMsNxRbke92d4yxz86qF31grbfqzq1yf2f+BEc/XaA9TSce0nxzoy
-         YSkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=RiLvPWVE0XGnkXkU6LVU6jQZopUhaTIiyl6ToVdk6m0=;
-        fh=gHiFTUQDEWbeiYUbppHl3RW0cKUGWtzPdRhs8sdbaHk=;
-        b=ej27vEPgrmz85sd8g92gfYIzg/atZWdzyCsNCuQiWatna+4FOXgoJLCYTwCg4JG00T
-         VmveszrQlcaQnQGW4xSA8Pu8LvydU1s1nmyV4CaYSebFf0Z9ZG9QkYKsbfln9Jp0zc95
-         kEooqDK4lF1GcZpobFOkAokx6owUGALQbk4BK24vvJe27uegXGyqegPWyjCY/OGSCDch
-         giDUsYetWlyehF/JabXCPgaHhljUNXoxBUFJIXqTtI6hhe8D9daJifXKxdOZ2roxwGSq
-         /weKnlTAAeTgZBXUNo431Dc9+HK4+x+0QVR0F7omxpjf/nGRYOsnqlsm3x3fl5ZuI8In
-         iuLw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771920334; x=1772525134; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=RiLvPWVE0XGnkXkU6LVU6jQZopUhaTIiyl6ToVdk6m0=;
-        b=HUdFB2nPPiCS4Q4c2ztYcqHxSvL3NzRiBC0i41G1m1e80eWO58uobcDzNRF23RYpMo
-         DypDxIIIdTHJEUahGhoDC99e0Tj619n2Oq4Tr7zwNCk4LTdKUoRVmm9dBPL4Ni6suAen
-         OEX/LUFTCRdvEniu0+zsji3yvyrgryYEA3Z1wF9mFDBLhBtUJwDTwP3UzuAa4AP6Dheq
-         8YiQbS7C7/bQKBJglxbjEKnCMp1Mt4zKlwSalFZHXW1Amlaxh0ZSCx8oPi9ANO29E3dc
-         1vNDIGMDXZ4bEDLKDPviAs6P2Acpd6SK70HKV2+qyVyLgTX0IOQCIxjBBq51ttGssMqP
-         gDBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771920334; x=1772525134;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RiLvPWVE0XGnkXkU6LVU6jQZopUhaTIiyl6ToVdk6m0=;
-        b=flK0BjKqXZXfS5iHq2fIhAZESSHuc2ie2/s0jMk5rxDuEa47qhZ12+XU9ONd/IK4TW
-         DAbLLlyDqTfXv/ATVvsznUgvyz6BUM5IeRoRvmDEtYoyRXIuV0gCBpVwfdhBkvSvTx2B
-         dC2MDaq/IFUABCc9/g4Jasaw0qzBrMq7Oh6YJmYEewsUZCTt6Cti5KBUiGLeCNtGrOIV
-         gNAyUv7QJ4dpWbwfnZMCokGqoKa3LvDA3WbZMUQtMzYSXwXgAluDgVx7Ig5s08ylHE3D
-         urVkhaEotBYJHmPJBHbH0KCh3U0+fS2eu+PBSAxvPaLMcbqj0SJ+GVpx/EII7mGgGN1k
-         HMhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFK4RaEr/m6z+4su2HIhTeRVoWIPOJckuQ6qsrutqnHbmiKJ2KJTPAr6sx+HdYcZh1fCGb7z8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYBzNuk4io4lQ3vQI+VZaiq4HZESiufsMrqPkgRoS+eYX/6+gS
-	uCfdMeRKi9h0XYM1I9qYQIBPuyBL/lj/iWiy8LgyldBqalP5eDi66XqaArJbLHAcR1QxbAhJsW8
-	0DtMvTTkLxtxu3x7R+DttzgiO/jCDHQY=
-X-Gm-Gg: ATEYQzyM/fWZgXN8D5ijk8vPQBSBBWQndgErM3UYE7u9vvDn/jvJaTN29zJfymMwLL3
-	pgmORV0z166tr1zqpQeu6MYPkQRBxZ16o2mB4MC2x2t6XLdaZ/ZKg8aGueglmXTxPwm6IE0R7I8
-	hHMY+MeJFnRWME3uGnZ7tJZGDU7t4MSdT7YWMJlZMxkOAxFDlfHQQu7c/YYwQaze3krkJrWPGz4
-	s0obcARNg9+Q9qraKAyLt6EmdlJCMfSICLuX7oAYyYAO+Pjk8atTv9DgtpPOTyLX8yExBCbJD5u
-	qObRmDizHd1crlE=
-X-Received: by 2002:a05:690e:c49:b0:64a:e61f:a6f4 with SMTP id
- 956f58d0204a3-64c78acccd2mr9210920d50.19.1771920333731; Tue, 24 Feb 2026
- 00:05:33 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LW/cGA/S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103A5C116D0;
+	Tue, 24 Feb 2026 08:18:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771921097;
+	bh=hSehRNge/1BxHaGLG3R3Qpdy/EUJPhe/dcHH0SQxtBg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LW/cGA/SWGT9JSk7kynloUV8dZHjPa1SQdJRNb2PIto6oMNQUn/EESKHJIvvs3vEa
+	 UPKYMbh+9u9v1LAkqlRe2sUjvIzmUpa179ESzZNqGDuPMqNIW/F8qPHgLcN4EU1W9y
+	 Wu56Aq8wp4QgR/zhHnZDBGFUy2q7M3r15PxPEgrO4RyQC6xzGVB5V3nB1gN6S/WfPk
+	 Q2N0aU70Tb8Vu673ApVAhQVLhItr1D14gNvyN/0Zov/mCyndQ4u6bLs65J0dJG2w1Z
+	 nJWo8owtkQyOLYCoxnM7NCvOeBZ+EvW/tdrLkrrGuymJ5FryrDydXZ8brtHc5TZsON
+	 40OvfraAM5mpw==
+Date: Tue, 24 Feb 2026 08:18:13 +0000
+From: Simon Horman <horms@kernel.org>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next] net: l2tp_eth: Replace deprecated strcpy with
+ strscpy in l2tp_eth_create
+Message-ID: <aZ1exV5fL88Kdft2@horms.kernel.org>
+References: <20260223074137.321862-1-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260222111847.692325-1-sun.jian.kdev@gmail.com>
- <20260223172214.5d8ddaa1@kernel.org> <CABFUUZEuMCYYfi-SapTLT1BhYOWBk1e-OYh+h9fOZcfoSP06fg@mail.gmail.com>
- <20260223185321.0f0581e6@kernel.org> <CABFUUZHb2R_SiiE_K-ixhjPVkvG4WWTjcOygAM-YBGtZ6Cnq_Q@mail.gmail.com>
-In-Reply-To: <CABFUUZHb2R_SiiE_K-ixhjPVkvG4WWTjcOygAM-YBGtZ6Cnq_Q@mail.gmail.com>
-From: sun jian <sun.jian.kdev@gmail.com>
-Date: Tue, 24 Feb 2026 16:05:22 +0800
-X-Gm-Features: AaiRm518d9zdfiuzmBcE_5_BGm-KYKoZRLq-k7VGJtmRRuohi9TP0r8z4vJYsc0
-Message-ID: <CABFUUZGj5=DNsiv__8Tp8WFS8sZ7fTva_bxZ14RrTndsjuQFQg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] selftests/harness: fix XFAIL_ADD matching when test
- metadata is not initialized
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: shuah@kernel.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
-	pabeni@redhat.com, edumazet@google.com, horms@kernel.org, kees@kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260223074137.321862-1-thorsten.blum@linux.dev>
 
-On Tue, 24 Feb 2026 10:43:15 +0800 Jakub Kicinski wrote:
-> I thought constructor priorities were specifically created to avoid the
-> problem you are seeing. What it is the point of constructor priorities
-> if not to order constructors??
+On Mon, Feb 23, 2026 at 08:41:34AM +0100, Thorsten Blum wrote:
+> strcpy() has been deprecated [1] because it performs no bounds checking
+> on the destination buffer, which can lead to buffer overflows. Replace
+> it with the safer strscpy().  Use the two-argument version of strscpy()
+> to copy 'cfg->ifname'.
+> 
+> Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strcpy [1]
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 
-Hi Jakub,
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-You're right. Looking closer at the harness ctor ordering, the NULL comes
-from TEST_F() setting _##fixture##_##test##_object inside its constructor
-(after the mmap() allocation), while XFAIL_ADD() reads that pointer in its
-constructor. If XFAIL_ADD runs first, xfail->test can be NULL.
-
-Using constructor priorities should fix this cleanly by ordering the TEST_F
-registration ctor before XFAIL_ADD, without adding new fields or runtime
-lookups.
-
-I'll respin a v2 along those lines and drop the fallback approach.
-
-Thanks,
-sun jian
