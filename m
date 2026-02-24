@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA59B25A2C9;
-	Tue, 24 Feb 2026 12:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1417D37D113;
+	Tue, 24 Feb 2026 12:19:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771935572; cv=none; b=Amak41/zjzjiYJ719wuNSiuFd6A/Z/cup6bp9r+2/zN1XONnkoDXg9MvVPv9ddWZLB7QmbEw2e+iwSo21OIsF9OU0geR56Gm9azWMJA0RuZ5jUw9/Jz7xtK/H6Id4jhIH3tE6KShkoLPuBHSsauXLea7hDzsjhLVVlcMNWvaSOw=
+	t=1771935576; cv=none; b=TyD68nNCI5W4q6vhTPriJRO7ubjIPFkf3Vbmp3hFXY1suA+ltXQBCKjJtckS28/Rb5amUds7OHCBhqz85j/a1NXxDIshe4lsrFkhB/pTaY7IloZaHqjqyFaL6sq2QxmyuXVpIklEUJYg/AOfmfX9hT435litnwaDcCEZaBVGPho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771935572; c=relaxed/simple;
-	bh=PcJ8nkbO1UGzuf5J5H47QPdDNyslM/4MgHQeOSVKCEA=;
+	s=arc-20240116; t=1771935576; c=relaxed/simple;
+	bh=rO2ijZUEWBIWFL42tkWnORwqkF7SBT9UzUk4XDvOKEY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=nnOp0ykvtG4ttEBJnA6HPiNjwLRW690ExBZJmStLVdmMGv4udqFcxIPjzwSQOOwxldGAFaLdZtB//0Wfdzry9YmFzvRFnqqoNGH+u5dnBZu9JTzEix6d9f035aL+6GdKeT9heZcvnMt+ioC4ugTpLiPRepL6//0R5hKS82fULeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qJPMNiah; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=XVYgYqTPEA0VuRN/tut4dYHxg11zPjWLcWr1Pe873ATVaeiN0AGy6g+5V68pWJHQQgW6KgDfczEpzHwwyjjNZHLGYknO9Uj9AoPjckr8FSafv8ju+qPD2vHh5JuPpw3llt9okt3h6NnOC4mJtti9kAd73A4/dHslM5n/r82DCLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jrkk4E3z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qJPMNiah"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC64C116D0;
-	Tue, 24 Feb 2026 12:19:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jrkk4E3z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F1EC116D0;
+	Tue, 24 Feb 2026 12:19:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771935571;
-	bh=PcJ8nkbO1UGzuf5J5H47QPdDNyslM/4MgHQeOSVKCEA=;
+	s=k20201202; t=1771935575;
+	bh=rO2ijZUEWBIWFL42tkWnORwqkF7SBT9UzUk4XDvOKEY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=qJPMNiahLN+ZuWftld898lLuYjdTF+OH21dVf3i3om/49ZnNkAO02xjUpomDpoRbW
-	 mawNBYJNCdqU76I2x2W3zLbq1lqJ6i8caHPSGeN0M+JzYeQIFMO2KeO0SOROUE9wan
-	 lwXSiqqqBQg9Eusc9QRdKXITmVfBM2K/mnFFLaGyxUFtOOT/qk2lFBvTwBltV2LrBc
-	 VAEekm4G4hHgIHd7apK6PnfxTYOKDXacrTe0gHZ/Z+q144rQixJwNjkZHh2IQmi6Bb
-	 0LZEiCFvqq9AQcG4V3XbOgbTfJ2EumYsRWYjrzKcElmJbniKb6bcrSpfuq5d75omgT
-	 FP5vz8Euwkb/g==
+	b=Jrkk4E3z/9ZAB8gL3Z1ySVzEktT2BZEjhA9ctGSaMGO70W5eEXaK3l50wX+gf0UiM
+	 KUZgDvyjF9oRK/rFjFTCBKFWoeMeiGeLU3tGzuv38EETPzqL3W6nwxQesbAW8nUvoe
+	 pwu1I0On4JlXoCnJo3BoH8HKmdm/vZgMocoOeKJlyNpffI7eYlnyK2CV9nwdqoKrry
+	 s11fZaXEejjcYgBrl2U55syzQb1Lh/dK9pmuGY6Tt2rfAhhmkpImZI0yyob1+/zONO
+	 drP1SswlNym1toH3kTAzqBdTQPmKMrkYf8CGQ72ZWk/pDP2NFs3+jkOsg5WtqNOdlk
+	 jLtonnjMjSrYA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D0853808200;
-	Tue, 24 Feb 2026 12:19:38 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA03C3808200;
+	Tue, 24 Feb 2026 12:19:42 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,48 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [patch net] net: phy: register phy led_triggers during probe to
- avoid
- AB-BA deadlock
+Subject: Re: [PATCH] selftests: tc-testing: preserve list order when removing
+ duplicates
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177193557703.3453706.12559659267751211027.git-patchwork-notify@kernel.org>
-Date: Tue, 24 Feb 2026 12:19:37 +0000
-References: <20260222152601.1978655-1-andrew@lunn.ch>
-In-Reply-To: <20260222152601.1978655-1-andrew@lunn.ch>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- davem@davemloft.net, netdev@vger.kernel.org, rmk+kernel@armlinux.org.uk,
- hkallweit1@gmail.com, pavel@ucw.cz, jacek.anaszewski@gmail.com,
- ben.whitten@gmail.com, yangshiji66@outlook.com, stable@vger.kernel.org
+ <177193558128.3453706.14204419588651644730.git-patchwork-notify@kernel.org>
+Date: Tue, 24 Feb 2026 12:19:41 +0000
+References: <20260222095536.17371-1-mr.navi8680@gmail.com>
+In-Reply-To: <20260222095536.17371-1-mr.navi8680@gmail.com>
+To: None <mr.navi8680@gmail.com>
+Cc: jhs@mojatatu.com, jiri@resnulli.us, shuah@kernel.org,
+ netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Sun, 22 Feb 2026 16:26:01 +0100 you wrote:
-> There is an AB-BA deadlock when both LEDS_TRIGGER_NETDEV and
-> LED_TRIGGER_PHY are enabled:
+On Sun, 22 Feb 2026 15:25:36 +0530 you wrote:
+> From: Naveen Anandhan <mr.navi8680@gmail.com>
 > 
-> [ 1362.049207] [<8054e4b8>] led_trigger_register+0x5c/0x1fc             <-- Trying to get lock "triggers_list_lock" via down_write(&triggers_list_lock);
-> [ 1362.054536] [<80662830>] phy_led_triggers_register+0xd0/0x234
-> [ 1362.060329] [<8065e200>] phy_attach_direct+0x33c/0x40c
-> [ 1362.065489] [<80651fc4>] phylink_fwnode_phy_connect+0x15c/0x23c
-> [ 1362.071480] [<8066ee18>] mtk_open+0x7c/0xba0
-> [ 1362.075849] [<806d714c>] __dev_open+0x280/0x2b0
-> [ 1362.080384] [<806d7668>] __dev_change_flags+0x244/0x24c
-> [ 1362.085598] [<806d7698>] dev_change_flags+0x28/0x78
-> [ 1362.090528] [<807150e4>] dev_ioctl+0x4c0/0x654                       <-- Hold lock "rtnl_mutex" by calling rtnl_lock();
-> [ 1362.094985] [<80694360>] sock_ioctl+0x2f4/0x4e0
-> [ 1362.099567] [<802e9c4c>] sys_ioctl+0x32c/0xd8c
-> [ 1362.104022] [<80014504>] syscall_common+0x34/0x58
+> Using set() removes duplicates but breaks ordering.
+> Test output should be deterministic, so replace with dict.fromkeys().
+> 
+> Signed-off-by: Naveen Anandhan <mr.navi8680@gmail.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: phy: register phy led_triggers during probe to avoid AB-BA deadlock
-    https://git.kernel.org/netdev/net/c/c8dbdc6e380e
+  - selftests: tc-testing: preserve list order when removing duplicates
+    https://git.kernel.org/netdev/net-next/c/8ac768bb198c
 
 You are awesome, thank you!
 -- 
