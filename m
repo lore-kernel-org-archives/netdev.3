@@ -1,50 +1,84 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC97E204F93;
-	Tue, 24 Feb 2026 00:19:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365E51DA0E1
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 00:24:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771892399; cv=none; b=PT4cxDU0Wk1WlXdC4ZOlFX9eGhzdw7BECZuLHk3CJfhlnCSrqVcjpqS4ErROC3Zh2qyQ1VhE0O+mFhTIePxkKDnrRERkpITbQ+d7h/bbaop8P6lozSOUlzpn2a/x742YmuKFsqSiBUC+Eu5Ulb+nxmOjlOwHS5hqUz9P+kfViBg=
+	t=1771892652; cv=none; b=kYHTMDGN13cVbqOcSROAsxYOCprIEL07KYo2bfqiJZoYUwd+oIXHDtfuzedUstAOLhL9IPDZF+JEm4VjSjh3lC9YZv6na53ITFckMbDdpa28rCJe9yUsjoMYHEjyS6INX/hxMX8JyT69jBPE0lqw5j/9ExJG594u7qxVAOqDs3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771892399; c=relaxed/simple;
-	bh=dciRGoN7WFLoFqpHkJ0YEkum8LTzaOwjLNnQ7VOOkfU=;
+	s=arc-20240116; t=1771892652; c=relaxed/simple;
+	bh=jKHWyDAu0xJvzI3WO6+meQgDEHUikzp88qy14INmcPk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=onPkQNc97GR2wfx5RGXpjQRuuqXh4BTV0W7soGTOKAPPqXEhE3CfztH3B4gnwNf9uJoYKyH1S/fwX0z0aE2yaCfiyknksCEI4zNM60LlQ6UxM8gFug3I72etUPovCulcsqQD1meOy1JndB8ULUgAvPgtf4UHYFzD7to8pmjJAHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=j2D3bokk; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=AELyE3R25UET3xLveCEFaZausIZQ2wNjsRXPty+gm9DIcUOet5n/a2j1oP1KYxHvlDCx8TNHF07biMZZpdUWqFCM/dDl8mZ3kRqE3onm8VV5/6UzZQ4w+VBdJUBZ9aw0Y8OFVaw3LxzbkUMPpyVsUKvbuoQPxatVyW6aHlM4VE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GpogB9XA; arc=none smtp.client-ip=74.125.224.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="j2D3bokk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GHaSrimv6EXgmCgAuKFl87ZenTVFS/f/vOi6bxFR7ZE=; b=j2D3bokk5i9uu70gM1qaSvgjQf
-	PwdUFU4jYX3ZRyGT0KV3T15FoSy+02Gj3pSMUHbawLY047VRD4lbY50wXw+FXywXZIENQ9/92PlqF
-	PJDLkYVcHlDsEnB4dYWTI2hzcSbrNxvXD8cpd08Hxl2k1hA0X8RUtTgw0P3DXC9WspUs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vug8z-008WuR-Om; Tue, 24 Feb 2026 01:19:17 +0100
-Date: Tue, 24 Feb 2026 01:19:17 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Bart Van Assche <bart.vanassche@linux.dev>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>, Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>, linux-kernel@vger.kernel.org,
-	Marco Elver <elver@google.com>, Christoph Hellwig <hch@lst.de>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
-	Jann Horn <jannh@google.com>, Bart Van Assche <bvanassche@acm.org>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Jakub Kicinski <kuba@kernel.org>, Xu Liang <lxu@maxlinear.com>,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 23/62] net: phy: mxl-86110: Fix locking in an error path
-Message-ID: <98a65068-a1c2-4292-bde9-61efcee53df4@lunn.ch>
-References: <20260223220102.2158611-1-bart.vanassche@linux.dev>
- <20260223220102.2158611-24-bart.vanassche@linux.dev>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GpogB9XA"
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-64ad8435f46so4429171d50.1
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 16:24:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771892650; x=1772497450; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=u1akxnV01TuuqkqVdn8oJReBwARp0bMrNePNSdt98A4=;
+        b=GpogB9XAYZVLqYAmNIO3FrVFQhmoujs+FpP+4b4mJiQxMSpUhpo8OwTsalI1EAz5ur
+         FDKD6SSIPbopYVEceVSXKj3gzfrTiKdP0+3Ub6uiMB1ddrs1Fu+cK0zFxTWqfA1p8xWC
+         txJfEn33rZ6JzxMxxuA6/QrDQqfcZRaNXpgcgCSmInhIkhcmYhgtfgA8Gid0msMlNcXz
+         JKBczHy9aVSGRKZKrxwgLCBLNbVUrbZHlQHqRTPyxUdV3UJi+dkZe8fwFoAsw3Jk/4Oz
+         UTt8OAJtk/+0IWTu2oGeGp+fgfSqocrq5h519eM/4FaHGro3RfgStDuRzcEsOwR0S3oc
+         hl+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771892650; x=1772497450;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=u1akxnV01TuuqkqVdn8oJReBwARp0bMrNePNSdt98A4=;
+        b=BMtBPl3Q9/7Ikf/2be9xmyJQcMK9lVAAyyhBqSy+NHwm9F44mq3+h6LP7Ww2JqaoCd
+         3jwct2+vm29kGCF8GMhmnYBb0cmhomCu9E/HvgdaAduJdqzx7HGFzKPNjnCHi3pnewbf
+         j870UfTz6wUF5gtwf7JjpCYr/pqgb81svqPToFwkZGqn0gMKL6bIpGHNSnLlx/YncEB4
+         2rYiOC8chhB6fgQ391FKxhdScZGyhPaz2CMDGjXZ3WTUS3M/D2a0nyUm/FvuuBXwztjq
+         3WbkkL5FK1puXfv1Ee02Ixl5b+gG/lw+oJPH/Bma1YHpg3u5WPGI6/g2cLT9rrbtNoZN
+         lbxg==
+X-Forwarded-Encrypted: i=1; AJvYcCVyIKOHqXq+hP4eJ+YsECsSQ61TL2MX2ssA5G+kWZyH+Dnz0rnUeW5EkVQuJhjGdb2BrVjPmKg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSPpDruZpbC5Xzo+wa5OS7o6k0l5GvZB69lYn6i4YcH4y0JXvy
+	M0Muu+gMCaVsdAtlPOR2+Jp7X1WteOyb2ggom5//he2inIXJ5X1iPY1V
+X-Gm-Gg: ATEYQzwZ0lDdWQTgFnbnUp+JiYKvFe1Mdr8WR7O+iOsKlje9bc4+wDe7648GeFwI9E7
+	jOFZOOlVoE7OZ/0A8qmtCvc9y7oJhULYnZPg2VsqygGz9E9HJmJgUNtehgipSP1fCla9gEmrRPx
+	Q9RqS5dyQogqSE1Xw6Jj+GLEVvH0RBvH6b1FiyO5pOlCZj1ylK5OziiVmM4D7R4POjfvZ2mBXle
+	bFkfCpKcSjn7IV55611JlVvi67gGbkc5cTD8zdgO/QsMnItDzC9MVshPaWRYoKm6YSMNStzXfSo
+	Pvh2LtSyQ7/y3qtWDvWvoisdb3+lcKdhbSM+JaRPFjaC7iHhjkq3FLdzuMkGT95UfNpUMUHOMok
+	Er4bscGlYzw+UaAhKMkB7Zk12qbr2nL1iGEuIdkJ1w1UAnfCIcW3VCHNUUDennXWfW8HXdFZS4r
+	Fq2ZlvuwzGnqMxJX9u4I0BToiJLHAhPdLIEIWpGamptr5N9UY=
+X-Received: by 2002:a05:690e:4149:b0:649:4906:770a with SMTP id 956f58d0204a3-64c788d2821mr7812527d50.8.1771892650119;
+        Mon, 23 Feb 2026 16:24:10 -0800 (PST)
+Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:41::])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-64c7a35d839sm3891935d50.13.2026.02.23.16.24.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Feb 2026 16:24:09 -0800 (PST)
+Date: Mon, 23 Feb 2026 16:24:07 -0800
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Cc: virtualization@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org,
+	kuniyu@google.com, ncardwell@google.com,
+	Daan De Meyer <daan.j.demeyer@gmail.com>
+Subject: Re: [PATCH net v3 2/3] vsock: lock down child_ns_mode as write-once
+Message-ID: <aZzvp52L4smGF7cM@devvm11784.nha0.facebook.com>
+References: <20260223-vsock-ns-write-once-v3-0-c0cde6959923@meta.com>
+ <20260223-vsock-ns-write-once-v3-2-c0cde6959923@meta.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -53,22 +87,33 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260223220102.2158611-24-bart.vanassche@linux.dev>
+In-Reply-To: <20260223-vsock-ns-write-once-v3-2-c0cde6959923@meta.com>
 
-On Mon, Feb 23, 2026 at 02:00:23PM -0800, Bart Van Assche wrote:
-> From: Bart Van Assche <bvanassche@acm.org>
+On Mon, Feb 23, 2026 at 02:38:33PM -0800, Bobby Eshleman wrote:
+> From: Bobby Eshleman <bobbyeshleman@meta.com>
 > 
-> Only call phy_unlock_mdio_bus() if phy_lock_mdio_bus() has been called
-> first. This has been detected by the Clang thread-safety analyzer.
+> Two administrator processes may race when setting child_ns_mode as one
+> process sets child_ns_mode to "local" and then creates a namespace, but
+> another process changes child_ns_mode to "global" between the write and
+> the namespace creation. The first process ends up with a namespace in
+> "global" mode instead of "local". While this can be detected after the
+> fact by reading ns_mode and retrying, it is fragile and error-prone.
 > 
-> Cc: Daniel Golle <daniel@makrotopia.org>
-> Cc: Andrew Lunn <andrew@lunn.ch>
-> Cc: Jakub Kicinski <kuba@kernel.org>
-> Cc: Xu Liang <lxu@maxlinear.com>
-> Cc: netdev@vger.kernel.org
-> Fixes: 3d1b3f4ffc0a ("net: phy: mxl-86110: add basic support for MxL86111 PHY")
-> Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+> Make child_ns_mode write-once so that a namespace manager can set it
+> once and be sure it won't change. Writing a different value after the
+> first write returns -EBUSY. This applies to all namespaces, including
+> init_net, where an init process can write "local" to lock all future
+> namespaces into local mode.
+> 
+> Fixes: eafb64f40ca4 ("vsock: add netns to vsock core")
+> Suggested-by: Daan De Meyer <daan.j.demeyer@gmail.com>
+> Suggested-by: Stefano Garzarella <sgarzare@redhat.com>
+> Co-developed-by: Stefano Garzarella <sgarzare@redhat.com>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Stefano, I wasn't sure if you wanted the Co-developed-by and S-o-b on
+this iteration, but I added it just in case. Please let me know, if that
+wasn't what you intended.
 
-    Andrew
+Best,
+Bobby
