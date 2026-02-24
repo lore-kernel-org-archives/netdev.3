@@ -1,512 +1,251 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAA63A7F5F;
-	Tue, 24 Feb 2026 17:49:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771955368; cv=none; b=j5LfrdBp7G0IEp4IhbFXOdCWk4LBijh+fvHtpXnsH/7Do6YOJTcVWFfz6V1CS5Z468hmYjFIOfcyhufVCJXGXFhq6X+vbXNfD9z7stvnIwD7CCJlCFVgZUl1aWHdPD+EDxd71h0KNLhn+m3J8I70WsmKC5VlQYG+/ho5fSrbHo8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771955368; c=relaxed/simple;
-	bh=PxobCKd/x49YKEQDHqr6byiJmTxwt5IjLLEzW59T2ok=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sxe5UUoL6lXeAE9/OIOcqa+w8RPUbmZv1TRnh7ZaGZXdHWiE/CCtEBrGoj+adsOCk4khruwQzhgSVuKFKmFFX6CJMr4LmIC5m2sX7iKprthhMFiP8duVsSim9201TL/jmxKXvoxYGnrVcLaSuBQrU9cKfBI+FUpakioRoOhrinA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dzkb3iuX; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7366234CDD;
+	Tue, 24 Feb 2026 17:49:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771955381; cv=fail; b=TvMlPVkW+I9t57PQ6dkEaWiOLHbdSufNc4lAnXNl3dXMiA40EdWAFPANZyzo+VEgld0YRUb3rGRBVeHLSjbIJONo9GpIjaN2BE6038Ud0ovMmFPeyJNUPVe+djvfXVPuApeG7nDSNqpsUAsLn0EYpct1NEiVml8OKD2X3+yQ8YY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771955381; c=relaxed/simple;
+	bh=3U7Rjoa17vLFD4dxJ3H4HvOxaJVmqMRfkQGJu0+19UI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=aQyvFjsBiBNkJsLqy/KvJCcAXfWsBcNZg0SX8hI+aRlK6fkNBwDWxnpEr2ZTv5SE6uBxywf+4BrIyJQv8wEvkM/FvS03AEUZfrwHOzLclLEzI5zKUOUPpw6ky5SlaBcmkOwcj9D/AgESKF1C8nDTyfPCxayEbyLifCmY7agquQw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W7cmqWQn; arc=fail smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dzkb3iuX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W7cmqWQn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771955362; x=1803491362;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PxobCKd/x49YKEQDHqr6byiJmTxwt5IjLLEzW59T2ok=;
-  b=Dzkb3iuXD1OprkxlFrFUlDKsvevpgaQ6wZOeLLcS3Gkxz59zIx3JDesf
-   ld5981t/K8iO2fbKBLk7phy2Ru8CjPlKumTkNRm0LBOuOYXk6EwCCg0/T
-   90B3Stlb0DyfcwymMoKOIzQGuDoGUNI/rvSBea9XeB9WSqK6lvTFNjBzj
-   Z+PFG7bml/HUoLDSw9GLk1CMEqSiNF7IjtZsLINk7lQIFiTkPGM/tKJAX
-   IqdWh55memnn4z+No1taTepRc+UkJjEAsd0b5D9PGx71Nzh97xihsBGbC
-   7oXyjMPqd9kPWFbmBvpS8vuD8bKp9GKnqOmkQqvn0tAxtUO2h6DFjXoFR
-   Q==;
-X-CSE-ConnectionGUID: uYiJ49FRR6iibt7EEkpjww==
-X-CSE-MsgGUID: +YDmNN67QA27ab5UfFI9BA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="98444571"
+  t=1771955380; x=1803491380;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=3U7Rjoa17vLFD4dxJ3H4HvOxaJVmqMRfkQGJu0+19UI=;
+  b=W7cmqWQn0OyRduNZTfUNeJe9zfwAPEL845M4fUzU73T7UHCGZEd4+s72
+   Bk8lmaG7jJlMN/FnzPrwcXhPPtNSycVMjK7CMYztKZxB2LEQLD/8ALuw4
+   gACDo7xAVQSMHh4aDYp7fei9cr28LI+UYyxj4Qr+DaD/1zKcj1lNZkDwE
+   iRKay8XoKH7I+N2sdVZg/2ozXf3t4SXnbaaEr36nR5yQ+E+13F3Jf2jU/
+   nG4OrPycT0mtFN1P3K3IrAjNMpv/D9s+d4IrFs53f0KXQBEMJL2Xnp9QG
+   NmVcKt1WaNep/93he9Ybq/NjTtgdOAZoCbtFiDE+uALKR6eCeDmL6ZELG
+   A==;
+X-CSE-ConnectionGUID: 3SNRY4c+RsCUpOV2SAJGJw==
+X-CSE-MsgGUID: I/Hyqz2ES5CmS261UMsVlg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="72883454"
 X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
-   d="scan'208";a="98444571"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 09:49:22 -0800
-X-CSE-ConnectionGUID: ffhgAYBFT2Krq7yNTvrKGw==
-X-CSE-MsgGUID: +8BQuztZS0KJzVOqwyOagg==
+   d="scan'208";a="72883454"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 09:49:40 -0800
+X-CSE-ConnectionGUID: szUqkOP7TnaBL/spUxFxHA==
+X-CSE-MsgGUID: KMfHl3dzTBuHVmiDWGa/Zw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,309,1763452800"; 
-   d="scan'208";a="220088546"
-Received: from newjersey.igk.intel.com ([10.102.20.203])
-  by orviesa003.jf.intel.com with ESMTP; 24 Feb 2026 09:49:18 -0800
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Kohei Enju <kohei@enjuk.jp>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	nxne.cnse.osdt.itp.upstreaming@intel.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH iwl-next v3 4/5] ice: implement Rx queue management ops
-Date: Tue, 24 Feb 2026 18:46:17 +0100
-Message-ID: <20260224174618.2780516-5-aleksander.lobakin@intel.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260224174618.2780516-1-aleksander.lobakin@intel.com>
-References: <20260224174618.2780516-1-aleksander.lobakin@intel.com>
+   d="scan'208";a="243892141"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 09:49:39 -0800
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 24 Feb 2026 09:49:39 -0800
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35 via Frontend Transport; Tue, 24 Feb 2026 09:49:39 -0800
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (40.93.194.37)
+ by edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.35; Tue, 24 Feb 2026 09:49:38 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lzGyVJhX8epfQgAVsuHtKPe35NYUp5v/0Yc/21tMZ5rtA9Cf9I6+7n7Ic58sujxwVzF0uA6RYW1I5VImOEe15OIqPeZvqWpiKrmGzDpvrrrvI/PU1tuCdQlyRKlFz/wBipMJFlehQ4EGUe1CE6nN/9UnbzG6Av50/aKnE1W+eVdaaJX0tQ7X2ZpZudvsnd2Zd++AnKiJHDDDHuUil7T+ZHEHUgl6Rbpm3rsZMIVNx+XHROY687KXW2YVvw4n39D9FXegJZth7tUFosgkO4EXSMlOYXigpDLW1T8akJqlq1NfjsaBuibsPTH1cx0J+jfeRiMRjhJgfiM2096KIvS2Dw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3U7Rjoa17vLFD4dxJ3H4HvOxaJVmqMRfkQGJu0+19UI=;
+ b=gGHQsaFRIQiwHHkbSVBuOtEUlTfeACol/YFc8PHtHe20wXZXcrybc14wTeo2LEKBYuhCUybqFlaL0SmGuhJEkJuwkl2krMpvQt322kRg+Wc2vep3ZV6n+47ayscUA2yKbXXrtilwfRVoXHFwjZqfD6c+thIaThF2GCg833QfodZEiDnEtFrMoDZQrz3Hy30rpf4/ohdxLNYFbahfN5N1zNx6LCBIyd8Lnxdk+zJd1YhHBSyqI9f89+e7RSRa15tfOcCujdgxh9QRyARm7Jn3XRt/aaoh6qP5LZ4Pme1qwm0R3EpApnBz19oAJvaS+m4lC7d0Z1yghvv33Wt8gTkR8g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from SJ1PR11MB6297.namprd11.prod.outlook.com (2603:10b6:a03:458::8)
+ by PH8PR11MB6729.namprd11.prod.outlook.com (2603:10b6:510:1c5::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.21; Tue, 24 Feb
+ 2026 17:49:30 +0000
+Received: from SJ1PR11MB6297.namprd11.prod.outlook.com
+ ([fe80::6f05:5b37:2440:556e]) by SJ1PR11MB6297.namprd11.prod.outlook.com
+ ([fe80::6f05:5b37:2440:556e%6]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
+ 17:49:30 +0000
+From: "Salin, Samuel" <samuel.salin@intel.com>
+To: "Zaremba, Larysa" <larysa.zaremba@intel.com>,
+	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
+	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
+CC: "Lobakin, Aleksander" <aleksander.lobakin@intel.com>, "Samudrala, Sridhar"
+	<sridhar.samudrala@intel.com>, "Singhai, Anjali" <anjali.singhai@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>, "Zaremba, Larysa"
+	<larysa.zaremba@intel.com>, "Fijalkowski, Maciej"
+	<maciej.fijalkowski@intel.com>, "Tantilov, Emil S"
+	<emil.s.tantilov@intel.com>, "Chittim, Madhu" <madhu.chittim@intel.com>,
+	"Hay, Joshua A" <joshua.a.hay@intel.com>, "Keller, Jacob E"
+	<jacob.e.keller@intel.com>, "Shanmugam, Jayaprakash"
+	<jayaprakash.shanmugam@intel.com>, "Wochtman, Natalia"
+	<natalia.wochtman@intel.com>, Jiri Pirko <jiri@resnulli.us>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Richard Cochran
+	<richardcochran@gmail.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Czurylo,
+ Krzysztof" <krzysztof.czurylo@intel.com>
+Subject: RE: [Intel-wired-lan] [PATCH iwl-next v5 01/15] virtchnl: create
+ 'include/linux/intel' and move necessary header files
+Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v5 01/15] virtchnl: create
+ 'include/linux/intel' and move necessary header files
+Thread-Index: AQHcV8kGWRlKP/yRUU6aQZTp2FpGa7WSs5qg
+Date: Tue, 24 Feb 2026 17:49:30 +0000
+Message-ID: <SJ1PR11MB629759DE8E81FA48568ED7269B74A@SJ1PR11MB6297.namprd11.prod.outlook.com>
+References: <20251117134912.18566-1-larysa.zaremba@intel.com>
+ <20251117134912.18566-2-larysa.zaremba@intel.com>
+In-Reply-To: <20251117134912.18566-2-larysa.zaremba@intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SJ1PR11MB6297:EE_|PH8PR11MB6729:EE_
+x-ms-office365-filtering-correlation-id: 3e97db68-e5de-4641-aeff-08de73cd0fc7
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016|7053199007|38070700021;
+x-microsoft-antispam-message-info: =?us-ascii?Q?4E+RIJ3qPaImuHEgWHVNvjJtPT/pfb9eqUPs1z17YcmXVmq7090sNndNJYUX?=
+ =?us-ascii?Q?xZGmhtbW99CGxx9Jk4UoVGvFbiu3r1hos/1/xJ1NlAy/BSg5Rso58Aq2clDk?=
+ =?us-ascii?Q?xjvplWA4BP0b9GMu++SOR49djVxQoKVKSLUMVO8bhk8mBFu7ROHRIhULWNtQ?=
+ =?us-ascii?Q?cIs/ar3dKufso/6LqSvbXAKPMCVHm3ic+Bi8sZEc2DcqX0Ge/UZp5JEtPsL2?=
+ =?us-ascii?Q?usuT9nPN8ufVEtJ6586eeLWkd1A1J+sLUXWxURSww+FnyFlhVfUCAtJOwwEU?=
+ =?us-ascii?Q?ysLpSjeh5YyGb18O/nKgD6Cud9yf79KiVdNTXRd472+OwOUrT4qtIrqec/w9?=
+ =?us-ascii?Q?ax3dT2SGE2mpQUv6O2wP7NRt4NrnZgMvQurUwm+nHuR8e71677WcXbP2GbLz?=
+ =?us-ascii?Q?mS0ms2+9wlpArA6fwx7f4hPvkd6DVEdu+Rr9Dm6vsswtmfs2uj8k7slG/RC3?=
+ =?us-ascii?Q?olKYarGauDSTEx9CgiXjYzs1HGoFQNBFx09tk+UFlR1sfMN85lVLSlfnB1fU?=
+ =?us-ascii?Q?gG4HXttG4wWkCmG8MMzfsNY9pU8LBieSBD0dHLBO4InleStBwhV/JKuYaD9c?=
+ =?us-ascii?Q?X7rCq/2K5LUBxIGm/R6n5HkNODcyA6KwKrDcpTjguC3lWeZJ8HlUU+zAUteU?=
+ =?us-ascii?Q?6ePQz0FLcsW1fidMdOnRomJIk++44epyVLssq6i2On16QXoJxQq/iTeE2gES?=
+ =?us-ascii?Q?XKXmBfTZCjA0vfmALfbJYHn0Ew0jAnth1rudJFcYyGnsvGpPB+S5f8vNVdtW?=
+ =?us-ascii?Q?bxiDNqo1DLXMDg8SuGpreN/8uHHW+qo9YVse+YivC7y+++tulAmc5QR4y7zN?=
+ =?us-ascii?Q?1WxUCtiRkb8GBT8Zet0UINLx5+MTdicKujqVZXasHvlL3mxTH41ykSvGe1j/?=
+ =?us-ascii?Q?NdTJVLtymFHqv8C7QZpLhiIwibMTkkr+lPLuRmgNWvTgmoSd0xEt94fEeAW5?=
+ =?us-ascii?Q?YsS55sRDcU7xWtGWLUfyFyy1NI71EvqYfhcqLwKzrHUY4rKUubFM7SQHlgda?=
+ =?us-ascii?Q?N6xRt4PWMFxZsAkYYdDQV8U+bZQ5x0/DdRuU6wsBtRSWr3+ihR4KEcXIjmIQ?=
+ =?us-ascii?Q?ILB4k3gUVkIu0tdIIlDLgtq1KJDcmVl52yGWNnkiACgmiIRdKHpd6JjDSGLl?=
+ =?us-ascii?Q?jAknWnBIPGeNhsypEugftawWC6JO0LbDxLhasLQqJ4QWXQknyCqrOS/E1w6p?=
+ =?us-ascii?Q?v8hHoAw1AOiIdz+PYgmLnml7CS5Orfeki3Y5aqM0nBzJnAUK2BHcAIjRVmNq?=
+ =?us-ascii?Q?MuG+FbIcD3OhKA5Y1YBLWxGh5wBGdN2KkeojbBPrt3i79lGQDiEkORnOcB3o?=
+ =?us-ascii?Q?8j+HgZZKARnDpAMA4yBHppgvpOHhnweN8e42gV2P3fjXCjfOvBKfjwahvGmE?=
+ =?us-ascii?Q?AfMFvvFZy/0VE26M979pj2BDaDWeaTkKQaufXcQI/Jf2oc0OYJ+ZjBdEC5D9?=
+ =?us-ascii?Q?LgiUBprb8NBzf8SanQhPcpsnaSkHSMIK5iuMtLvusXWpvX2PkjxVXVNDsWvm?=
+ =?us-ascii?Q?lLWUzn12JA6Ay88wMncpq5hUNuBsCbCjW4+8Mw1GYFBOxKL1qOQe8AucOZQZ?=
+ =?us-ascii?Q?G3/X9NZ5jOyA3XF8SzY7xcS7q/KzdhH9QYnvRcGuYi2dqwBIazYOyKw10a1w?=
+ =?us-ascii?Q?KYu9dG97aKJ4b/OBm5EhyN0=3D?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6297.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016)(7053199007)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?Uk9OEsXYAk6H7o0SQKAmv6rdeuo85JnOsisr42MqRCY8biChmWVJKzLmtL3v?=
+ =?us-ascii?Q?ke4CWq5H1mbA7qfusCcW//j493KYXczEWUxquN7Sqf9skBaylSFBjY+QQ/yA?=
+ =?us-ascii?Q?u+ah82GYUT0GEic8XkhHMAZOnIEjqngQD6+k0ZSSE3ImPFC2XLGw9ZtsRfWQ?=
+ =?us-ascii?Q?HLLN0KdYP6NEmSJU3oQ7zTJJjEOSATFQl/J0FN6kW/o9ghwtweky1qJCTzfO?=
+ =?us-ascii?Q?7WAFhGyD7L+X4WYrAD3VGM1iJUotPyS0t48mdtVNl2RZfmM7bEATnYz7TwC0?=
+ =?us-ascii?Q?FBGq1l+/BLJL/9d8l1FWXmK49blFgzJdeK+9bsdQwFbaYycAKAetV9S4c5eN?=
+ =?us-ascii?Q?vLwoebHzVMM/XlHI9qqBcimDS80ZnsuTMEvTxDG4RY29W3vFepO0enYbFxj5?=
+ =?us-ascii?Q?fCgKqWB9ViuO31qy2csRm2BFW3K4q0vgNALCR3ug/w6pT/oF6+RpVN96To5B?=
+ =?us-ascii?Q?Wl8ZR3XVns49EcMDmdccu9q2WG8CQhDQnrBXi0a2we4eZl4qoFLgLNDV5Wix?=
+ =?us-ascii?Q?0Gg6hFBzCdaZ9/ETB87l5TsxCHkgGQObENGoVKaF4JikD1uRZJ7v0sG/youn?=
+ =?us-ascii?Q?1N/ZSyzFXiNeQQbZGZnjqUxrmsUK3+IQx/W+8vpiu0hldLlLQWjyH5RL/RlV?=
+ =?us-ascii?Q?8aMe1R1XW3eHJ7yqq4T6bIwAty6BzclPuEV07ILP9conW/k0R+F9drUBVKmw?=
+ =?us-ascii?Q?jcFnIIiy3/Er1OG3f9Q69KabI85jLJUSMsM6exbFMyIQL+HoEwIvGuBJrVti?=
+ =?us-ascii?Q?W0fmb7KbfhVtsqGJfcaP9ZdVzmWAYL4uXws9+OHLqZ8TpaIPAZ0bdh6I8XIS?=
+ =?us-ascii?Q?VSEp8VlRe1InLWgAAMRT8hYzX7oZXh4Xtf54g5byBxpTNlWYX4QKwtK0jwSc?=
+ =?us-ascii?Q?SMMEg00isj9S14oEAu0N3eBul/K4aaOYZn+w5y85VovDdTsZVE3p7spl+5np?=
+ =?us-ascii?Q?jOBcyYrANpHuXE5Wopaeb/wnauTVzLBbliogn3SbH8kA+IxEYJYCGzHC7ZJi?=
+ =?us-ascii?Q?okErYLcTj+EefRmApmI4PnwkwbqkX9c0Sbjq83NqnAbNlV67/GRCad5PIWZy?=
+ =?us-ascii?Q?mXSC06BQzL6O9eSTULvWtIk7ZXb6cRdjBdebQmSJe2RYYNgpxktdY5Vu1J+n?=
+ =?us-ascii?Q?kqLdy2pZAaOqP+hrnBi6OL+UIWKdP5YffK7o4uO/OyGkU3W5a6GDEU2U7jEN?=
+ =?us-ascii?Q?uiQmek/7FVQBvOWGJv2cLi2Pskf/zLuQ//6V8YuA1zBkU3Lk/4qSkY2e+dfs?=
+ =?us-ascii?Q?M+zHAR6+ifVMYxRLi5U401EleRJOxQZM4Yeq9dkagUz74w4sznlsiWdT9pQD?=
+ =?us-ascii?Q?Zg5GSg62wdf9Mr/zOyKSDqnaSNX4EBzYQRvUfq5uKN70fUV5hOpTad19a2jx?=
+ =?us-ascii?Q?SIjy2rQntQ0W5hueFuLRvWY4entgt5DuoLmh77CVha9RWzDT1E6taKr55ASQ?=
+ =?us-ascii?Q?41RfruoWfLTA+4/o1YSHNvDj/qhiR4tGdw1FHDdSUPC6/sPlLf752EYezkqk?=
+ =?us-ascii?Q?MlCJ3FpDxsNJ4x2FZKMKnFoHYW/c/tuBX9RcMfnFyB3g6lkBQ6Vvc9oJOl5b?=
+ =?us-ascii?Q?4uOBFx4BJfkM8Y2es6yV9UqjqbW5QUxoMXFB93ery0pc7SWKImVWviS4Iaqr?=
+ =?us-ascii?Q?RkpmsfS/vRzEArJCGvQQda24xDBuFshpyLPNrAtuYC4eDXnycGV5cNvscOsj?=
+ =?us-ascii?Q?s8/yYD/Fylws2MYvyV/IO8BuVkM78U9e4L6bVJpJHqDjREveun1eM73w2g9n?=
+ =?us-ascii?Q?SjZEb4Ge8w=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6297.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3e97db68-e5de-4641-aeff-08de73cd0fc7
+X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2026 17:49:30.3394
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: /v+CuGxjzcvt6+v6KsJQLIf1ColfEFnp3rSIXTYeH6NbuMX9Ny3Bw7+jeOSuXmNMghQnvv3Hao5ojlJDYQ/rWg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6729
+X-OriginatorOrg: intel.com
 
-Now ice is ready to get queue_mgmt_ops support. It already has API
-to disable/reconfig/enable one particular queue (for XSk). Reuse as
-much of its code as possible to implement Rx queue management
-callbacks and vice versa -- ice_queue_mem_{alloc,free}() can be
-reused during ifup/ifdown to elide code duplication.
-With this, ice passes the io_uring zcrx selftests, meaning the Rx
-part of netmem/MP support is done.
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Co-developed-by: Kohei Enju <kohei@enjuk.jp> # ice_set_ringparam()
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
----
- drivers/net/ethernet/intel/ice/ice_lib.h     |   5 +
- drivers/net/ethernet/intel/ice/ice_txrx.h    |   2 +
- drivers/net/ethernet/intel/ice/ice_base.c    | 194 +++++++++++++------
- drivers/net/ethernet/intel/ice/ice_ethtool.c |   1 +
- drivers/net/ethernet/intel/ice/ice_main.c    |   2 +-
- drivers/net/ethernet/intel/ice/ice_sf_eth.c  |   2 +-
- drivers/net/ethernet/intel/ice/ice_txrx.c    |  26 ++-
- 7 files changed, 166 insertions(+), 66 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.h b/drivers/net/ethernet/intel/ice/ice_lib.h
-index 0565374b58a5..f27415b50d8c 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.h
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.h
-@@ -4,6 +4,8 @@
- #ifndef _ICE_LIB_H_
- #define _ICE_LIB_H_
- 
-+#include <net/netdev_queues.h>
-+
- #include "ice.h"
- #include "ice_vlan.h"
- 
-@@ -134,4 +136,7 @@ void ice_clear_feature_support(struct ice_pf *pf, enum ice_feature f);
- void ice_init_feature_support(struct ice_pf *pf);
- bool ice_vsi_is_rx_queue_active(struct ice_vsi *vsi);
- void ice_vsi_update_l2tsel(struct ice_vsi *vsi, enum ice_l2tsel l2tsel);
-+
-+extern const struct netdev_queue_mgmt_ops ice_queue_mgmt_ops;
-+
- #endif /* !_ICE_LIB_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
-index b6547e1b7c42..557b5e656bb0 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
-@@ -458,6 +458,8 @@ u16
- ice_select_queue(struct net_device *dev, struct sk_buff *skb,
- 		 struct net_device *sb_dev);
- void ice_clean_tx_ring(struct ice_tx_ring *tx_ring);
-+void ice_queue_mem_free(struct net_device *dev, void *per_queue_mem);
-+void ice_zero_rx_ring(struct ice_rx_ring *rx_ring);
- void ice_clean_rx_ring(struct ice_rx_ring *rx_ring);
- int ice_setup_tx_ring(struct ice_tx_ring *tx_ring);
- int ice_setup_rx_ring(struct ice_rx_ring *rx_ring);
-diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
-index f084b1c48e5d..052a6fae50fb 100644
---- a/drivers/net/ethernet/intel/ice/ice_base.c
-+++ b/drivers/net/ethernet/intel/ice/ice_base.c
-@@ -651,6 +651,43 @@ static int ice_rxq_pp_create(struct ice_rx_ring *rq)
- 	return err;
- }
- 
-+static int ice_queue_mem_alloc(struct net_device *dev,
-+			       struct netdev_queue_config *qcfg,
-+			       void *per_queue_mem, int idx)
-+{
-+	const struct ice_netdev_priv *priv = netdev_priv(dev);
-+	const struct ice_rx_ring *real = priv->vsi->rx_rings[idx];
-+	struct ice_rx_ring *new = per_queue_mem;
-+	int ret;
-+
-+	new->count = real->count;
-+	new->netdev = real->netdev;
-+	new->q_index = real->q_index;
-+	new->q_vector = real->q_vector;
-+	new->vsi = real->vsi;
-+
-+	ret = ice_rxq_pp_create(new);
-+	if (ret)
-+		return ret;
-+
-+	if (!netif_running(dev))
-+		return 0;
-+
-+	ret = __xdp_rxq_info_reg(&new->xdp_rxq, new->netdev, new->q_index,
-+				 new->q_vector->napi.napi_id, new->rx_buf_len);
-+	if (ret)
-+		goto err_destroy_fq;
-+
-+	xdp_rxq_info_attach_page_pool(&new->xdp_rxq, new->pp);
-+
-+	return 0;
-+
-+err_destroy_fq:
-+	ice_rxq_pp_destroy(new);
-+
-+	return ret;
-+}
-+
- /**
-  * ice_vsi_cfg_rxq - Configure an Rx queue
-  * @ring: the ring being configured
-@@ -665,23 +702,12 @@ static int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
- 	int err;
- 
- 	if (ring->vsi->type == ICE_VSI_PF || ring->vsi->type == ICE_VSI_SF) {
--		if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
--			err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
--						 ring->q_index,
--						 ring->q_vector->napi.napi_id,
--						 ring->rx_buf_len);
--			if (err)
--				return err;
--		}
--
- 		ice_rx_xsk_pool(ring);
- 		err = ice_realloc_rx_xdp_bufs(ring, ring->xsk_pool);
- 		if (err)
- 			return err;
- 
- 		if (ring->xsk_pool) {
--			xdp_rxq_info_unreg(&ring->xdp_rxq);
--
- 			rx_buf_len =
- 				xsk_pool_get_rx_frame_size(ring->xsk_pool);
- 			err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
-@@ -700,20 +726,10 @@ static int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
- 			dev_info(dev, "Registered XDP mem model MEM_TYPE_XSK_BUFF_POOL on Rx ring %d\n",
- 				 ring->q_index);
- 		} else {
--			err = ice_rxq_pp_create(ring);
-+			err = ice_queue_mem_alloc(ring->netdev, NULL, ring,
-+						  ring->q_index);
- 			if (err)
- 				return err;
--
--			if (!xdp_rxq_info_is_reg(&ring->xdp_rxq)) {
--				err = __xdp_rxq_info_reg(&ring->xdp_rxq, ring->netdev,
--							 ring->q_index,
--							 ring->q_vector->napi.napi_id,
--							 ring->rx_buf_len);
--				if (err)
--					goto err_destroy_fq;
--			}
--			xdp_rxq_info_attach_page_pool(&ring->xdp_rxq,
--						      ring->pp);
- 		}
- 	}
- 
-@@ -722,7 +738,7 @@ static int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
- 	if (err) {
- 		dev_err(dev, "ice_setup_rx_ctx failed for RxQ %d, err %d\n",
- 			ring->q_index, err);
--		goto err_destroy_fq;
-+		goto err_clean_rq;
- 	}
- 
- 	if (ring->xsk_pool) {
-@@ -753,12 +769,12 @@ static int ice_vsi_cfg_rxq(struct ice_rx_ring *ring)
- 		err = ice_alloc_rx_bufs(ring, num_bufs);
- 
- 	if (err)
--		goto err_destroy_fq;
-+		goto err_clean_rq;
- 
- 	return 0;
- 
--err_destroy_fq:
--	ice_rxq_pp_destroy(ring);
-+err_clean_rq:
-+	ice_clean_rx_ring(ring);
- 
- 	return err;
- }
-@@ -1470,27 +1486,7 @@ static void ice_qp_reset_stats(struct ice_vsi *vsi, u16 q_idx)
- 		       sizeof(vsi->xdp_rings[q_idx]->ring_stats->stats));
- }
- 
--/**
-- * ice_qp_clean_rings - Cleans all the rings of a given index
-- * @vsi: VSI that contains rings of interest
-- * @q_idx: ring index in array
-- */
--static void ice_qp_clean_rings(struct ice_vsi *vsi, u16 q_idx)
--{
--	ice_clean_tx_ring(vsi->tx_rings[q_idx]);
--	if (vsi->xdp_rings)
--		ice_clean_tx_ring(vsi->xdp_rings[q_idx]);
--	ice_clean_rx_ring(vsi->rx_rings[q_idx]);
--}
--
--/**
-- * ice_qp_dis - Disables a queue pair
-- * @vsi: VSI of interest
-- * @q_idx: ring index in array
-- *
-- * Returns 0 on success, negative on failure.
-- */
--int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
-+static int __ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
- {
- 	struct ice_txq_meta txq_meta = { };
- 	struct ice_q_vector *q_vector;
-@@ -1529,23 +1525,35 @@ int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
- 	}
- 
- 	ice_vsi_ctrl_one_rx_ring(vsi, false, q_idx, false);
--	ice_qp_clean_rings(vsi, q_idx);
- 	ice_qp_reset_stats(vsi, q_idx);
- 
-+	ice_clean_tx_ring(vsi->tx_rings[q_idx]);
-+	if (vsi->xdp_rings)
-+		ice_clean_tx_ring(vsi->xdp_rings[q_idx]);
-+
- 	return fail;
- }
- 
- /**
-- * ice_qp_ena - Enables a queue pair
-+ * ice_qp_dis - Disables a queue pair
-  * @vsi: VSI of interest
-  * @q_idx: ring index in array
-  *
-  * Returns 0 on success, negative on failure.
-  */
--int ice_qp_ena(struct ice_vsi *vsi, u16 q_idx)
-+int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
-+{
-+	int ret;
-+
-+	ret = __ice_qp_dis(vsi, q_idx);
-+	ice_clean_rx_ring(vsi->rx_rings[q_idx]);
-+
-+	return ret;
-+}
-+
-+static int __ice_qp_ena(struct ice_vsi *vsi, u16 q_idx, int fail)
- {
- 	struct ice_q_vector *q_vector;
--	int fail = 0;
- 	bool link_up;
- 	int err;
- 
-@@ -1563,10 +1571,6 @@ int ice_qp_ena(struct ice_vsi *vsi, u16 q_idx)
- 		ice_tx_xsk_pool(vsi, q_idx);
- 	}
- 
--	err = ice_vsi_cfg_single_rxq(vsi, q_idx);
--	if (!fail)
--		fail = err;
--
- 	q_vector = vsi->rx_rings[q_idx]->q_vector;
- 	ice_qvec_cfg_msix(vsi, q_vector, q_idx);
- 
-@@ -1587,3 +1591,81 @@ int ice_qp_ena(struct ice_vsi *vsi, u16 q_idx)
- 
- 	return fail;
- }
-+
-+/**
-+ * ice_qp_ena - Enables a queue pair
-+ * @vsi: VSI of interest
-+ * @q_idx: ring index in array
-+ *
-+ * Returns 0 on success, negative on failure.
-+ */
-+int ice_qp_ena(struct ice_vsi *vsi, u16 q_idx)
-+{
-+	return __ice_qp_ena(vsi, q_idx, ice_vsi_cfg_single_rxq(vsi, q_idx));
-+}
-+
-+static int ice_queue_start(struct net_device *dev,
-+			   struct netdev_queue_config *qcfg,
-+			   void *per_queue_mem, int idx)
-+{
-+	const struct ice_netdev_priv *priv = netdev_priv(dev);
-+	struct ice_rx_ring *real = priv->vsi->rx_rings[idx];
-+	struct ice_rx_ring *new = per_queue_mem;
-+	struct napi_struct *napi;
-+	int ret;
-+
-+	real->pp = new->pp;
-+	real->rx_fqes = new->rx_fqes;
-+	real->hdr_fqes = new->hdr_fqes;
-+	real->hdr_pp = new->hdr_pp;
-+
-+	real->hdr_truesize = new->hdr_truesize;
-+	real->truesize = new->truesize;
-+	real->rx_hdr_len = new->rx_hdr_len;
-+	real->rx_buf_len = new->rx_buf_len;
-+
-+	memcpy(&real->xdp_rxq, &new->xdp_rxq, sizeof(new->xdp_rxq));
-+
-+	ret = ice_setup_rx_ctx(real);
-+	if (ret)
-+		return ret;
-+
-+	napi = &real->q_vector->napi;
-+
-+	page_pool_enable_direct_recycling(real->pp, napi);
-+	if (real->hdr_pp)
-+		page_pool_enable_direct_recycling(real->hdr_pp, napi);
-+
-+	ret = ice_alloc_rx_bufs(real, ICE_DESC_UNUSED(real));
-+
-+	return __ice_qp_ena(priv->vsi, idx, ret);
-+}
-+
-+static int ice_queue_stop(struct net_device *dev, void *per_queue_mem,
-+			  int idx)
-+{
-+	const struct ice_netdev_priv *priv = netdev_priv(dev);
-+	struct ice_rx_ring *real = priv->vsi->rx_rings[idx];
-+	int ret;
-+
-+	ret = __ice_qp_dis(priv->vsi, idx);
-+	if (ret)
-+		return ret;
-+
-+	page_pool_disable_direct_recycling(real->pp);
-+	if (real->hdr_pp)
-+		page_pool_disable_direct_recycling(real->hdr_pp);
-+
-+	ice_zero_rx_ring(real);
-+	memcpy(per_queue_mem, real, sizeof(*real));
-+
-+	return 0;
-+}
-+
-+const struct netdev_queue_mgmt_ops ice_queue_mgmt_ops = {
-+	.ndo_queue_mem_alloc	= ice_queue_mem_alloc,
-+	.ndo_queue_mem_free	= ice_queue_mem_free,
-+	.ndo_queue_mem_size	= sizeof(struct ice_rx_ring),
-+	.ndo_queue_start	= ice_queue_start,
-+	.ndo_queue_stop		= ice_queue_stop,
-+};
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index c6bc29cfb8e6..8df07e92187f 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3338,6 +3338,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
- 		rx_rings[i].cached_phctime = pf->ptp.cached_phc_time;
- 		rx_rings[i].desc = NULL;
- 		rx_rings[i].xdp_buf = NULL;
-+		memset(&rx_rings[i].xdp_rxq, 0, sizeof(rx_rings[i].xdp_rxq));
- 
- 		/* this is to allow wr32 to have something to write to
- 		 * during early allocation of Rx buffers
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index ae7e9b332d72..d16a7013470d 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3524,7 +3524,7 @@ static void ice_set_ops(struct ice_vsi *vsi)
- 	}
- 
- 	netdev->netdev_ops = &ice_netdev_ops;
--	netdev->request_ops_lock = true;
-+	netdev->queue_mgmt_ops = &ice_queue_mgmt_ops;
- 	netdev->udp_tunnel_nic_info = &pf->hw.udp_tunnel_nic;
- 	netdev->xdp_metadata_ops = &ice_xdp_md_ops;
- 	ice_set_ethtool_ops(netdev);
-diff --git a/drivers/net/ethernet/intel/ice/ice_sf_eth.c b/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-index 4f11b008fea5..b1f3783a8fad 100644
---- a/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sf_eth.c
-@@ -58,7 +58,7 @@ static int ice_sf_cfg_netdev(struct ice_dynamic_port *dyn_port,
- 	eth_hw_addr_set(netdev, dyn_port->hw_addr);
- 	ether_addr_copy(netdev->perm_addr, dyn_port->hw_addr);
- 	netdev->netdev_ops = &ice_sf_netdev_ops;
--	netdev->request_ops_lock = true;
-+	netdev->queue_mgmt_ops = &ice_queue_mgmt_ops;
- 	SET_NETDEV_DEVLINK_PORT(netdev, devlink_port);
- 
- 	err = register_netdev(netdev);
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 6fa201a14f51..8e2cbddb146d 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -530,17 +530,13 @@ void ice_rxq_pp_destroy(struct ice_rx_ring *rq)
- 	rq->hdr_pp = NULL;
- }
- 
--/**
-- * ice_clean_rx_ring - Free Rx buffers
-- * @rx_ring: ring to be cleaned
-- */
--void ice_clean_rx_ring(struct ice_rx_ring *rx_ring)
-+void ice_queue_mem_free(struct net_device *dev, void *per_queue_mem)
- {
--	u32 size;
-+	struct ice_rx_ring *rx_ring = per_queue_mem;
- 
- 	if (rx_ring->xsk_pool) {
- 		ice_xsk_clean_rx_ring(rx_ring);
--		goto rx_skip_free;
-+		return;
- 	}
- 
- 	/* ring already cleared, nothing to do */
-@@ -567,8 +563,12 @@ void ice_clean_rx_ring(struct ice_rx_ring *rx_ring)
- 	}
- 
- 	ice_rxq_pp_destroy(rx_ring);
-+}
-+
-+void ice_zero_rx_ring(struct ice_rx_ring *rx_ring)
-+{
-+	size_t size;
- 
--rx_skip_free:
- 	/* Zero out the descriptor ring */
- 	size = ALIGN(rx_ring->count * sizeof(union ice_32byte_rx_desc),
- 		     PAGE_SIZE);
-@@ -578,6 +578,16 @@ void ice_clean_rx_ring(struct ice_rx_ring *rx_ring)
- 	rx_ring->next_to_use = 0;
- }
- 
-+/**
-+ * ice_clean_rx_ring - Free Rx buffers
-+ * @rx_ring: ring to be cleaned
-+ */
-+void ice_clean_rx_ring(struct ice_rx_ring *rx_ring)
-+{
-+	ice_queue_mem_free(rx_ring->netdev, rx_ring);
-+	ice_zero_rx_ring(rx_ring);
-+}
-+
- /**
-  * ice_free_rx_ring - Free Rx resources
-  * @rx_ring: ring to clean the resources from
--- 
-2.53.0
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
+> Larysa Zaremba
+> Sent: Monday, November 17, 2025 5:49 AM
+> To: intel-wired-lan@lists.osuosl.org; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>
+> Cc: Lobakin, Aleksander <aleksander.lobakin@intel.com>; Samudrala, Sridha=
+r
+> <sridhar.samudrala@intel.com>; Singhai, Anjali <anjali.singhai@intel.com>=
+;
+> Michal Swiatkowski <michal.swiatkowski@linux.intel.com>; Zaremba, Larysa
+> <larysa.zaremba@intel.com>; Fijalkowski, Maciej
+> <maciej.fijalkowski@intel.com>; Tantilov, Emil S <emil.s.tantilov@intel.c=
+om>;
+> Chittim, Madhu <madhu.chittim@intel.com>; Hay, Joshua A
+> <joshua.a.hay@intel.com>; Keller, Jacob E <jacob.e.keller@intel.com>;
+> Shanmugam, Jayaprakash <jayaprakash.shanmugam@intel.com>;
+> Wochtman, Natalia <natalia.wochtman@intel.com>; Jiri Pirko
+> <jiri@resnulli.us>; David S. Miller <davem@davemloft.net>; Eric Dumazet
+> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
+> <pabeni@redhat.com>; Simon Horman <horms@kernel.org>; Jonathan
+> Corbet <corbet@lwn.net>; Richard Cochran <richardcochran@gmail.com>;
+> Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Andrew Lunn
+> <andrew+netdev@lunn.ch>; netdev@vger.kernel.org; linux-
+> doc@vger.kernel.org; linux-kernel@vger.kernel.org; Czurylo, Krzysztof
+> <krzysztof.czurylo@intel.com>
+> Subject: [Intel-wired-lan] [PATCH iwl-next v5 01/15] virtchnl: create
+> 'include/linux/intel' and move necessary header files
+>=20
+> From: Victor Raj <victor.raj@intel.com>
+>=20
+> include/linux/net houses a single folder "intel", meanwhile include/linux=
+/intel
+> is vacant. On top of that, it would be useful to place all iavf headers t=
+ogether
+> with other intel networking headers.
+>=20
+> Move abovementioned intel header files into new folder include/linux/inte=
+l.
+> Also, assign new folder to both intel and general networking maintainers.
+>=20
+> Suggested-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+> Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+> Signed-off-by: Victor Raj <victor.raj@intel.com>
+> Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+> ---
 
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
