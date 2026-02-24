@@ -1,75 +1,146 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from TY3P286CU002.outbound.protection.outlook.com (mail-japaneastazolkn19010021.outbound.protection.outlook.com [52.103.43.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0652135AD;
-	Tue, 24 Feb 2026 00:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771893447; cv=none; b=FJjUUw840aCQlx0qTrj+976vpVw66C3X/ztTp1jiPIUcjTK1wSgZMUVsK10tIGG7Y4KTtbvUZv/DgUQeuNa7KrHOH/t2zalOLXbpcXZ3BgKhrfWHSKljxFRJaqLl2LybJJhjXFeS37whJz/zkWSjK8AxmIiM+ozeH2Rqajt60e0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771893447; c=relaxed/simple;
-	bh=0J3oZjSMzV17bOLwFSb5Kj13pyoUUrsptIWZn1bnA2Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qwSFyBbY9w6gWLK3xURAJcsO1NxOz5VlS2cFPkKqDuDnMNGhzTr/zRm42XXqmNbarGtLJTG1vIOFkETF9na1rTJT58RRbdJneZvqXSWdcrgPC2w3QehDLGiwTlte36x6+8ZVtrx76g5qe4DN9N/y4ONZmDddpKLzHus8oZPzZwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=eLNyRxYP; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC601C5D59;
+	Tue, 24 Feb 2026 01:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.43.21
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771894996; cv=fail; b=YfIoL+U+Xmg+VlxyhcLMnE8VWuIMxP6FhfNbK22fuKdG/liXpHaTXfWjpVWjjB24EXKsD8QsMh3TsFtFQ4p4MikJtqeRcjUUU3CM4EYXs9K3msqKqBNetgWhNh3bvinvrXQFxkbtesZ/ucUF0aeL1ZBlNiNeezzkelkTRjtz8DM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771894996; c=relaxed/simple;
+	bh=PIKSYEffwn7orCLwQyqJv/cVlTzxSXsTwBQnL2JyT1w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Hm1Zjwv0ghquXLp8AZNLyUdnRBmddcOGAOlhlPYfQ5gEyiDDkMGg2TAo1xFGTIro35oy8Ms5JqFVya0UYaRSiSzG6WfJj8j3yTIphYyC4Bc+30FSrEKDkrcn2UbvpdVvNVnGxg4ugGMsDvDlQ1mnwVYvqW/WqQmfIN3yvDY1VvI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=XasyQ/Q3; arc=fail smtp.client-ip=52.103.43.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="eLNyRxYP"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=2Oxv0iuz2GOOH71uHwL+u1JOZWx+ihKepwCH6y8hknI=; b=eLNyRxYPjL7ApoDqQGaYpppZyE
-	g15M0/BWceLm6pwiM+9dc8yZuAFpWYZXp2i+8XPzM+gjvqdas8GszMVpHA42kvK85LLHkhrf+rqG+
-	au95McT7yqsPVRJZuEXdEI8DYDiPTdopuKrfmhKZxHarmV+UYW/qMMtMAL8e+XyIDcL4=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vugQM-008X4k-78; Tue, 24 Feb 2026 01:37:14 +0100
-Date: Tue, 24 Feb 2026 01:37:14 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Artem Lytkin <iprintercanon@gmail.com>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Russell King <linux@armlinux.org.uk>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] net: phy: add Rust reference driver for
- ET1011C
-Message-ID: <389ccb15-aef9-422b-8717-cf3a26e0858b@lunn.ch>
-References: <20260223220504.2102-1-iprintercanon@gmail.com>
- <20260223220504.2102-4-iprintercanon@gmail.com>
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="XasyQ/Q3"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ISOG55QDhYgbtQrnFFuGqXZPe3XH3oNKqkDA1ntbFa0EEwQ3he5SkMUc8vZYCbnzuKIuuOJfPutqJshYNKECChBgTp7Y4dW6D5eW0mM2X64CVoIs/ZT5NuGBAEeuw5v7AaUXI4QESgZzi6aSwNlWnwdF5jNJKhlFZbJAJQLMlZzFIMZ9TcSKtG6g6u0mqW1oszc5hez06MqRxAcGALGaobhIZKkVKemjOHTcQDt+47seOBpUUaY4xqog8yQmh9bcKix3U6CzzIWywuEXevdvsqf3Lg228GVOQyPmQApHAlzgBFsH7hnAULUKqOvwtvqDandQ7m/8tHZvLbRoPQXnYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PIKSYEffwn7orCLwQyqJv/cVlTzxSXsTwBQnL2JyT1w=;
+ b=Kda6LGtfZTw8W4WwmSQhLNyACn85ec8RRQ1/Dw73X/mrOj9bjphEKT4ZZbRpyYpkFfXSI1IjGGXPbh6ILZy0tJwKXur+/kT/r8lSwLAIiRZ2NzsMJm36SHVsykalymBtaNFHcZ0dhJXBMeYzLwnwGalYJOhe5hlc0HUeRBMgK1Pp1lmfpXYK1uNLOdXyClSSJtLvMhLoVLPC8S9GU0lPbkhPv2NiD9rMMBruY5kA3srNKdJZSZwkUFNHoP7Y7AI6qG7kv3rB00NrdH0a1BfvJfSJqVU7wMogWRkZOiMdmZD4FROuNzAnU5crD3yK1Azsvb6RutXY7+HA4zt241vWsw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PIKSYEffwn7orCLwQyqJv/cVlTzxSXsTwBQnL2JyT1w=;
+ b=XasyQ/Q3RiypsaWRI2Y6wr3j0ajysJ/Ben2cIV6iINcd8IoDVk1YoaoeL0895d6F6TMWwIUlpKzi5vs6KbklAkeYtPP6WXjN1KZBuA5X+9oJVliktGtgmowz/vbASv2YIESrDd5VHXYFWVasyB7SvlH3QDnoajejFpG55C2rVj/qE3dw6CGiumfbIStFZo/d6cmzCfPcwty8tl6xLSEl413s0UM8zQXmAWcRTD/sc/OKU4QM+LsJ5p6pyc3Hj0496swUxXTzPRMLMzrbBTiqWTsbh/RhV5PHxAPO5j5h7vkOv48hxJhZc44+zq8wxFqL/12s84/RgHTZEP5F42D1XA==
+Received: from OS7PR01MB13602.jpnprd01.prod.outlook.com (2603:1096:604:359::9)
+ by TY4PR01MB15003.jpnprd01.prod.outlook.com (2603:1096:405:25a::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Tue, 24 Feb
+ 2026 01:03:11 +0000
+Received: from OS7PR01MB13602.jpnprd01.prod.outlook.com
+ ([fe80::7a94:8782:9191:8d50]) by OS7PR01MB13602.jpnprd01.prod.outlook.com
+ ([fe80::7a94:8782:9191:8d50%6]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
+ 01:03:10 +0000
+From: Shiji Yang <yangshiji66@outlook.com>
+To: andrew@lunn.ch
+Cc: ben.whitten@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	hkallweit1@gmail.com,
+	jacek.anaszewski@gmail.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	pabeni@redhat.com,
+	pavel@ucw.cz,
+	rmk+kernel@armlinux.org.uk,
+	stable@vger.kernel.org
+Subject: Re: [patch net] net: phy: register phy led_triggers during probe to avoid AB-BA deadlock
+Date: Tue, 24 Feb 2026 09:02:49 +0800
+Message-ID:
+ <OS7PR01MB1360256D2CDB85F5042A4CBACBC74A@OS7PR01MB13602.jpnprd01.prod.outlook.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260222152601.1978655-1-andrew@lunn.ch>
+References: <20260222152601.1978655-1-andrew@lunn.ch>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR06CA0003.apcprd06.prod.outlook.com
+ (2603:1096:4:186::14) To OS7PR01MB13602.jpnprd01.prod.outlook.com
+ (2603:1096:604:359::9)
+X-Microsoft-Original-Message-ID:
+ <20260224010249.1090-1-yangshiji66@outlook.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260223220504.2102-4-iprintercanon@gmail.com>
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: OS7PR01MB13602:EE_|TY4PR01MB15003:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8d9eb812-e42b-48b1-0990-08de73407a37
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|5072599009|461199028|19110799012|8060799015|15080799012|23021999003|3412199025|440099028|40105399003|52005399003;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Zbnr9rQI0/kt6TpZSdXlDmKGsqSPj7fTmd5+gp1qUjKFTNRI3lZMsbeTa1wl?=
+ =?us-ascii?Q?yjyfy4C5k/s1hWvaLLWLk+1AwT0uu8lhsyPaBGzl5TcVhxV2ms/+RmeJmisY?=
+ =?us-ascii?Q?A18anB7WsDRuQm2Bxc4s6sQbcY4v6VjTKVLCAj7ND1UBioY3l93DuNzLQTR7?=
+ =?us-ascii?Q?Ji29m8F43eu6DJeetb0YGxWwOx1ESipVUIgAAfNSu0a4x5f6NEncAP9g4XLi?=
+ =?us-ascii?Q?5fm4tgpEx+u2huQpoivamz4l1/W099vqr4dI0Ja3HVKoobQwNgabC6MCNHJ+?=
+ =?us-ascii?Q?w3fYcRKHuEer8XSJ/NObf1iWURtCFKY3PmnbnfQNUrlh69HkxjS3vHnJkg7e?=
+ =?us-ascii?Q?Xfacn+30ox2hgMJQGgNzSI6nm4eYfV3JIAtgVCQ+SdCEpdJjkMQryhtpbPzv?=
+ =?us-ascii?Q?mb2aJjXnoNsxRTWWqucYcCvEwD96KGHu6sPb75ZMKYHNM41WUc4sDzrO+DH3?=
+ =?us-ascii?Q?qrKf+7eN90JuXgKbTioofqWgKBPa57usnX0npt+OJSvM+9ABhGjYej5vIEbI?=
+ =?us-ascii?Q?hfc+SYFS4UQfswZowKy+dSSwsJH6ZO7ZXsdlIG9HzAmHJHaFx1q9Hz9VB6kd?=
+ =?us-ascii?Q?bjK1ZtsX7luTUfPVlNA7CG8x8VVfR0DoOsfkYWWxCAKkfKmSYrlvkYijCJpD?=
+ =?us-ascii?Q?6atq4gSf4iDKR2fGK4/wu4Vq0gDIDLCTXn1m6GImNbSFrddiTJ/cWJ19nQH4?=
+ =?us-ascii?Q?DqDRuwO4jOd2AUcUUSO5ETk+TA+af/uGSuiFXSoV/9IU/P9r39/t2d/ol3EF?=
+ =?us-ascii?Q?1i18zTFeNjO7sdtfuyaVFhjUFX+8Z8YnM3pkn9w/eQYnJztKEABTqWL0rwUj?=
+ =?us-ascii?Q?jU/hIaYQhv7OsIGS0j2oN56TmnV932qXKyZT4TzvEXYDoV8Qm9u88lqE5rqc?=
+ =?us-ascii?Q?/KwA4P9Bty84jR+TvqWtLzQhG/JMTDGM7ExKQnJVmJkFi1/A/LG+0wAOGFy7?=
+ =?us-ascii?Q?MPF/YRn9h8blbxpo0/zAoqhvtk8mdI5AO5EAt20QGRkKncxGES2r5nwKlrxx?=
+ =?us-ascii?Q?hMvlr1CMir/egyKY4pn+cvt8ccHpXW2WbZnHoEnqKfdmA5neYYKeQlq+5Kv2?=
+ =?us-ascii?Q?IhJxsG+FXG8CHXvTTNAvHLMwJ1jPoFjBQibPRYjzVcJGM84SOxKSmSP5g7DG?=
+ =?us-ascii?Q?XYuSMNiXGfOIgoeISULKgZsVwJpMavp3Xa3zSAe5EN1nCcE/vDKsQAAFqh5O?=
+ =?us-ascii?Q?9kNYtCQ5uS7SAEEI?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Jghrfol8xIlijoY8nA1Tvk0slufjHrpBxFvYhFMLmJt7+Nrlzd4TbMMQCOsi?=
+ =?us-ascii?Q?jUMu+Dd9r4WUghbep0jVhm4P6LNVaJDVCfiO6HFFVMXDNMdhPUqHvbRa7U6x?=
+ =?us-ascii?Q?fJwU5KIHEh1E/M7EVCZyfu0kLbu0WKFrbW/FnhfFrO8/LXY6zTHpg1IH7B8I?=
+ =?us-ascii?Q?5QDtJVx4XVL/mGOgB13AUx9167znYbYXtSCJagfeUg0c9wVch1tbllAvU892?=
+ =?us-ascii?Q?kBqvQYMu6wUAK+TyL5vOD4P2sIW5ijHqAk3hwCqi4P16/JcUayfs6SgziQer?=
+ =?us-ascii?Q?xb9cIkvrK93g6deEoXoSPeNl3IwAhh5hzlF8u65LVm94zgNnSrRVbG9334yi?=
+ =?us-ascii?Q?eBIUdChwcS0aS5cv92bqltSRNynrE8IdZQ8dmS+nOb8d4YX5tf4FVTAIchkS?=
+ =?us-ascii?Q?RQSKdsr9XnXLDQvBYxKr6vFK5JfO+3mCn/m6IZ7DRGTfaZ60uHGOAm3ZCyvG?=
+ =?us-ascii?Q?emNyjFvVAY0AIdA3c7OkyAIM3BIDvPqcIbPm0vskb5MfbZA+pE89qMBtEok+?=
+ =?us-ascii?Q?dxFvN9s8nRMtwE6RN5ZhQnBcSg0OZRl69RMxJ1tcRVGsLrQteH6DGFu5NCUX?=
+ =?us-ascii?Q?nqyP+Fi+tiUmyfwR9HHmgw8sz/7IFPldRaZAhkn+34/VgPMtiE0Y7IFs4828?=
+ =?us-ascii?Q?l5/PBpaUBJZTddtey71ZhjKcyWlpgKKkcRIheNjib6/Jm+jdBAqJPO+k+t7o?=
+ =?us-ascii?Q?xJYm028nbuMo2XCzyDFbc9YSc6gKKOzDo3Lcv6i/JddRR8EWpYW5h9W9yFDR?=
+ =?us-ascii?Q?WFZZvTsP5dnEWEzcqI6RiHM9+Yp6c+pmYuUnthyST8wYR0Z62g/DhJKSdBRk?=
+ =?us-ascii?Q?3yra/EArzsiJBhBLb+skokLVHl8HLwAAnGHfrfGNgt1mM+5X7E1xzf1Qzgyu?=
+ =?us-ascii?Q?hCwX7OiOsJE2BSIrpyeppoVtR2knRxMsJYMKdrXzy+vvdjwyB00cmZEsBDO2?=
+ =?us-ascii?Q?qkLF+P9hhocw4ZlZrPVd7sngsqy9S5QrpVdR0pKuH0etjLD8RDxxU4j6qz60?=
+ =?us-ascii?Q?mp6fBSWAC383VAqjSG98fjmkNJ4dm/GIeKfKUTlKgt7N1GT97ydMawyggmwg?=
+ =?us-ascii?Q?VKgdHTXZQ5sF8HU91f9AeR6mZUDnerCfUPlWzr2SbB4zwHlMJuydV2ZuIQ2U?=
+ =?us-ascii?Q?egsWRlL6eo6BAL00XqrKlVp0Kf8u3zDfTnxzj5oHEh3uIGENQrtdbA+FQpRI?=
+ =?us-ascii?Q?e/NBzV6zaKkrkQ0ML5Ja5/UhWxKQTrYAZuSa3pdN1YnG6JOcFS6PjR9Pc4si?=
+ =?us-ascii?Q?HWh/8sgZSsVMJNgkU1YTZ9wDwIhDeKFHTyJEQALyE2Yw/+40qSt/r3PtZKJ8?=
+ =?us-ascii?Q?UwgXcTHD9KuRAAFWORu+/2prgjujOpF6+bGeAzjRncBYJ695rTOGUabTOrVd?=
+ =?us-ascii?Q?2mMcFtJl8Kcx6luuqN5RIhDyDvt6?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d9eb812-e42b-48b1-0990-08de73407a37
+X-MS-Exchange-CrossTenant-AuthSource: OS7PR01MB13602.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Feb 2026 01:03:10.7554
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY4PR01MB15003
 
-> +    fn read_status(dev: &mut phy::Device) -> Result<u16> {
-> +        dev.genphy_read_status::<C22>()?;
-> +
-> +        let val = dev.read(ET1011C_STATUS_REG)?;
-> +        if (val & ET1011C_SPEED_MASK) == ET1011C_GIGABIT_SPEED {
-> +            let cfg = dev.read(ET1011C_CONFIG_REG)?;
-> +            let cfg = cfg & !ET1011C_TX_FIFO_MASK;
-> +            dev.write(
-> +                ET1011C_CONFIG_REG,
-> +                cfg | ET1011C_GMII_INTERFACE | ET1011C_SYS_CLK_EN | ET1011C_TX_FIFO_DEPTH_16,
-> +            )?;
-> +        }
+This patch fixes the issue for me.
 
-This is not the same as the C code. read_status() will be called once
-per second. The C code only does the read/modify/write when the speed
-reported by genphy_read_status() is different to the previous
-value. This code appears to do it every second.
+Tested-by: Shiji Yang <yangshiji66@outlook.com>
 
-       Andrew
+Regards,
+Shiji Yang
