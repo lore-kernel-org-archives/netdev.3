@@ -1,158 +1,267 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE1AD3A9610
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 16:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFC8E3A8FF1
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 17:04:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771952271; cv=pass; b=ZCfkOPejMWmlGHtbUN9pcO84WG+IkPGm/Nn9LoxG4fl7XkUGv4wmKsYohuadJkwhjrInbU37D7+zBYo23m4tDycFUCuQ6mD77Z/Nnd/xTBUXsfK0ByfQJfCoaFzyOs/bA9vMF3Lr5LfApvbPEkq+hPyzPyaJNJb6hwnFsb+uVF0=
+	t=1771952660; cv=pass; b=Ae1pwuUZ5/K46icYjTQPidfNNeBTUlLodRp41VZDvNyivlTpgFY9OJEwu49ccObdGLJqiNzEgp/Sv24ymQN4HFWtIcQPvvwN5ETWoAZLr8H1BRyUHWsdW/JVrY6GFJFYjuxRwkc5uP5MXZ/nzJrHJ0pOIePcuwgDhqRDi7ofRt8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771952271; c=relaxed/simple;
-	bh=LFeQAmfI2jWzGO6ITz55S3PHrzjDrm/EzGFx3B4VgN8=;
+	s=arc-20240116; t=1771952660; c=relaxed/simple;
+	bh=KaRt8KgrftJAnkNht8SKjxZ/dD3hgpm8gT4VHlaOOFs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Tb1P1l8z3rqDL+I7sVSSPirmEKILSvmr8CRJM4PQOOkcKy08nac2hlx8gne2HPWL1D8OiWNE6+KCBoCe/93daM5hkuluNwQu3YHQIOj7OWHxdpWYt18p5ewIPePD9RbUTMLDYLY7jDxG7bs9rhGMnefkuiSC6I+zJwA9c71D9OU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eFWQhHH0; arc=pass smtp.client-ip=209.85.221.47
+	 To:Cc:Content-Type; b=iZojNm1/lwHYuJHDKVYxrmj7Lb7OA8kThltDPbFVObEiZHIl5ASpv11oiaRvUV+eqLnTfUxKPekWr2PcfzkILN+1S/bmET+WvvOK1MALc7xB052T2Ljt0H5SydvWKNQ7Unq5z9cj/+tnOMlOZDFDPjUwjMBfWRdYAhFwdhUOuUY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Xg7l8Lsg; arc=pass smtp.client-ip=209.85.218.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eFWQhHH0"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-4359a16a400so5082074f8f.1
-        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 08:57:49 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771952268; cv=none;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Xg7l8Lsg"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b9047e72201so853898866b.2
+        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 09:04:18 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771952657; cv=none;
         d=google.com; s=arc-20240605;
-        b=iFF8xb3C8w+hzV57ZXvHIUAxjoya00O9BnUJ7tV1zYz5mFQtwPp+IuDfjIZWEZR79d
-         1OHf7u9RV8tlMsM5mhvMuecTfkD+sB/QZpkRaBZk2zfyT72o3t/X2awucrjXwJjlqorX
-         5Tp2dnGp22U0gZZOoQ8B+VBFthUl4zoE73A+3lDMTEI+pJ+W8PzUs5LMFzKQ0/rct1QS
-         S8gUbLaQ1+xZiJ3CmjpYZWmYkhM2WntyDmLLeD4IIjqBlQP8+vn/igstJXgneBxL6AWT
-         nlsnA/F8ddX60Hy/uFJw4ew2zjs7OP18vCVhLSaPUfTJmd3Sy/zxhPs0BQSS5HTMYeDI
-         2Zjw==
+        b=X+rcSUkJrobF5ePki43R6NK9LorfSiAOu/97whZi6aq7zZwgzTKqO6s04B0jtexURP
+         w/drehRuY1tUznXZB6xquj7tlTPFLfL5AAYXadgLdGg92iYxATGx+L47hAnBox9pQopz
+         SEuwpWCoyArqEeqfoACUQwhvE5hxWcU5sJTGemx9+y30/JSRVRTAH7BOTNYHa3wW1flq
+         hAXTrJkBqo/KslnEh5sxMe+Be/4gtGXzKxenyCZqInZL7KknwDikSYztQBV84ApI7MSK
+         KwBT5XF5iRVL/EsSzvNVLbfxFl9tCgyqTjHjzY7RGAOHUpQhIoffCNeUI+Resu0P/gwa
+         iTGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=Q/LZ5/ET/z0VwePFl8rmo2+n6v10vbg5EI+OLa8kbxI=;
-        fh=IT+EplJ8lme9JNDpuihppNQcHiw3EviUV69F/hQBl3U=;
-        b=NbyUAWZq5r6n2lEiJVFAuY8JdvcIC0H58MmyjzsnBhrjX7C+hlV3YaB6AzkfgbiR6T
-         oVyh5uxRfbfjSSVC6roz3GMH3INPpksQFVdXNp07MUZFvOEtL+Wf2y8+if+mAkAzhSh9
-         hSLkVJk6i1vnCaNoBUIlfN+qKK9CIDqfWah6CCKUKvlKNREMVFq/8+W73hTLJo6L61Wq
-         4meobjSs04FUwGTPQHi7VhfcHdpswe2AoQzKzCXCQButUqCEEuhturdq6V5h+m9i3QTp
-         3g9mqp/VeHe5Uyw/oehGAJ9J9BHeUaGcUkFV/y1drd1Azl2AeWhdPgYoQmsFndl9C+aO
-         3IdA==;
+        bh=1jGcR7apESw+qILwmI4/8KyBw9L2R3qguS/ZJggtyY4=;
+        fh=riwDQFwTyrkBs+GmPxpOdCrGvoGH3Rnl+AXvGKbxMzE=;
+        b=Fm528iZSKNzn2ZVbzifl9sihF1vu3KkRyqZ5D+I2S+h8DJnhyHYbyuIHwWX49mbMeH
+         jhW59a/ZUixdfYFdSxx7mkTkkYO/U+ATkTQADApHNLEN9sNwgANju0nT5UnvVSfGbwnv
+         4Z0W3niQpMDPqACJxJhCiJlRJ2nBDl8JiAFieXK9qb5XX4o0cXUngyUAvU+n5bSw4Yw6
+         Pf41d5fqVrh873rMrVlEwysa6imMVG0zja19Nz4S2WuOTRHI4D+KE4LYsu3MimDLS0ng
+         ZpztfBj4kotzwAXaoULnzZYofEtTLn0mzWobhGxnHmb6VBIiuPqsoQr3yoJZTZ17aM29
+         juww==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771952268; x=1772557068; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1771952657; x=1772557457; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Q/LZ5/ET/z0VwePFl8rmo2+n6v10vbg5EI+OLa8kbxI=;
-        b=eFWQhHH0tXrcLKY/l/h63HjEN4E5cgnjyg/bZkhOlXYfKPyjIZkb78Oh+FyxIfkTFi
-         7fCWJ9wUePTGSYEymzuljKO+kK4YZV2/G6TGaCAeribNY/zxMIMsRqnUq2830SDTHe1V
-         BVw8721IvYqBpvRvCRyAENNID9X9SECoy2QUBZLvjMt3s802aD6WlAe+RAEjXlyPJyX9
-         3sFlpWc177VtO6PEqk+BEXjirVByVhRu55obFAvNPJaZmchRmZ3E2MbLoPHTq5Y9TYg1
-         6S8Zp7Jg5AteW2VqXdkcnkJmWLxRuHT3pxOv111WI+15N1T2GvoFUK5XUe/6G5ogzmTI
-         Wu/Q==
+        bh=1jGcR7apESw+qILwmI4/8KyBw9L2R3qguS/ZJggtyY4=;
+        b=Xg7l8LsgwJXaTovKamCRJRQ7Bt9+9+4Mjbb5AUkgmK1pCDBtOO/fxxW9bt9oJisBSo
+         6J54Y1Vct6GCf531hgNFik8O9qjDZ/XXlPu0S64L3mDaQqTRiTJ+2/WGvH74Qj2lKcGi
+         u9euqjqSgCyhANPCIHKko5rXGdbbFDLJiadO6dglVX0qZEKl3izYagk8dIx3NWNDmfno
+         Efc5vI4kGnfxitGu1+HUbNCin5LrXAD4GMaKrhI21TnqWgzWCp+6Bc90aGmr4p6M2zP0
+         euZ1hlXiyoEYW2T3zJZpfJFd2ber+B2EZLzpDx3IbFtMc3dHPmDTmW9h4WD/b2vrBXdG
+         Rr7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771952268; x=1772557068;
+        d=1e100.net; s=20230601; t=1771952657; x=1772557457;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Q/LZ5/ET/z0VwePFl8rmo2+n6v10vbg5EI+OLa8kbxI=;
-        b=kr5JdQDlUPED08d4xL0RNE1W862QIuc6B0KdGOHmUuxM0U9Fu6P56xQxa/WHXzw2qa
-         XHS4hJ1wOFWAqQZxBLidiNCvdnHX0zXv92bWZRhBX8TIQX31XE96F8FUdCp7bwjLU19R
-         gjxqGWvoTcCnJ7W0v1t5wFki0MzxwSMUwK0kjSqJQgl0ZuOBkDAgaueHMm7ThiKR4ZpI
-         Wzy7zc53NTjklbvtDBMnS7IJkpGscozt/HInZAackaZWm/VLRFOPO5QWKuy3VNfHX1EV
-         Ca3Skq7aD32ynhBhkl+tdeg/0cMhWlkUTMHgsIxC6nf7zF0VRreReCd9hobpDQ/paSfx
-         BNDg==
-X-Forwarded-Encrypted: i=1; AJvYcCXuo7+Qr3W5ol/Eqc3uBXx0OOounVyVWPgLmbg3HKyWJYx7QTYvRabnrNg38EjyCp6sXm9G7CA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhSsMnPMX581UKF0wg0LUBqW5y3rCdMkXksDejOMMXN8Ymh7EI
-	/yfYJNK4jmc5nIysrtioYtJADQJToTbXd80jMnlprWLn0NGs/Y9zHAZSsbeWOIVDW0Lt8/Rc9KQ
-	YM4b85kDwyETgk+aajWDwrwyhjbEzUUk=
-X-Gm-Gg: ATEYQzy4eiYGa9i3dPn7no2sy4JSxVzWbX0JwmAa3sN8F353e8/8NtY2xjqfmTuerN2
-	afzQma1VqQQxRRGthuXkLyy7AsgczaxJLgWJMDtEa4K+zBNiVI+DQxfiIrnH001nN1UdrnlJHCO
-	IWbwsJoCLcTFcTINeSe6L1sKfhGqoGQ8IxqVhZSAmMa/50dmtta3isdVAGwI4JP3mhXkpnfdi8w
-	+c440445lTCN41BoJ+rrtvoa4mZGrd7hCuCpbPvEnNqZkTDHPM2rN+SsdkBBYREv/+0gqnnYT0k
-	5pJDiiBlDzSigDl2QiDaYD/phDg09ytaqCwKGg6DHKwEx0OA7YTNCWIKou7+69l0o2bOIFAwyx/
-	oZslVOlNC
-X-Received: by 2002:a05:6000:2407:b0:435:bd00:cb4 with SMTP id
- ffacd0b85a97d-4396f15b2a4mr21141471f8f.23.1771952267940; Tue, 24 Feb 2026
- 08:57:47 -0800 (PST)
+        bh=1jGcR7apESw+qILwmI4/8KyBw9L2R3qguS/ZJggtyY4=;
+        b=tQ2cP0yewDJ0KqPbcVfph3UYYvg4D2IE0OdH40QA+focKD6SZg9nyun0uQocKHO7is
+         PtKHbxqcUQfcgO746wEtGNq7qkjYIfJGVlVD7456h5nxzPit8Tm7H+bFi62PukP7JZfJ
+         higPR++8zrzECVV/7v5CQeFY2YV2Apj1AwvajN+oangZ4A9aUgQnlMmLRG4JLKgwCzE5
+         8P2r1jCa4AaSPU5mJS1tje0dHFoTxCTBuaHxK1xcGgEhpJqRWMaZ2MmeihRTfS4ZBKe9
+         5Or0DiUd/G4grcej54eEgFObQTwBYa8zrjSTKr+5M1aD0ulsSPQn9mGwrh3F9+GCLHQc
+         ming==
+X-Forwarded-Encrypted: i=1; AJvYcCXwfUtdryhBsuINwIxN8hP9JSFVuuIpkrN7m57Xrmc2CvcYAMtIIiR8Qp4mNiQXIRQQCQBFpjQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7iN/ty0GJi85/ZIfhoDZnz7eXqpwq0NAXPCYUGgw4Cb/kpTH4
+	O1xNVV9l5t3IaSmaURLRmc5HNcaFYWSka4wlEDtgS5p6yWRDYUT899Ck3mGpjEPdgxyztDctmye
+	1V7tMH/gH8DXZXfW1MwtHkr//zWv9oQc=
+X-Gm-Gg: ATEYQzxHSyMgv3tinVmDwTMrCp1MZnBmhMcZOY0BIfKacigYWhSD9I3nqHMg8e2iXij
+	DLNtBMUlaxoJBBOhw+eUrf7fzhsg7Xoh3ow58xH9pLWkR2m2DgqZdJHOPvKXRct82t26eYbL3CU
+	RzIkZ9ezZIkBa9urS8saLHeZzC5mPn5btsFUDEhCSEKndOzz/56eeYDmfiEumGV1eLXNKhitcl9
+	tiaBa1efAGZ949j0H6O2mwq/Kka4TfqpeFCl0if1xtD4G01rcIJlPCXM++g3V8yYfrCfQ/gm9FV
+	HEyaHx4=
+X-Received: by 2002:a17:907:2d87:b0:b8f:a520:2d78 with SMTP id
+ a640c23a62f3a-b9081973f5dmr780090666b.16.1771952656741; Tue, 24 Feb 2026
+ 09:04:16 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260224154024.12504-1-leon.hwang@linux.dev> <20260224154024.12504-3-leon.hwang@linux.dev>
-In-Reply-To: <20260224154024.12504-3-leon.hwang@linux.dev>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 24 Feb 2026 08:57:37 -0800
-X-Gm-Features: AaiRm53rqopHuRGSK2_nQdOAXTbOuxaGhPPN68Nah4CqapKdrc7UpjUZrDEx1NA
-Message-ID: <CAADnVQ+-V0-1i8_+CYpK7G0CnV-2n8e9Szv43yM3Az197eL_0A@mail.gmail.com>
-Subject: Re: [PATCH bpf-next 2/8] bpf: Disallow !kprobe_write_ctx progs
- tail-calling kprobe_write_ctx progs
-To: Leon Hwang <leon.hwang@linux.dev>
-Cc: bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>, Feng Yang <yangfeng@kylinos.cn>, 
-	Menglong Dong <menglong8.dong@gmail.com>, Puranjay Mohan <puranjay@kernel.org>, 
-	=?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>, 
-	Pu Lehui <pulehui@huawei.com>, LKML <linux-kernel@vger.kernel.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, 
-	Network Development <netdev@vger.kernel.org>, kernel-patches-bot@fb.com
+References: <20260224043211.1747-1-iprintercanon@gmail.com>
+ <20260224164926.1760-1-iprintercanon@gmail.com> <20260224164926.1760-3-iprintercanon@gmail.com>
+In-Reply-To: <20260224164926.1760-3-iprintercanon@gmail.com>
+From: =?UTF-8?B?0J/RgNC40L3RgtC10YAg0J/RgNC40L3RgtC10YDQvtCy?= <iprintercanon@gmail.com>
+Date: Tue, 24 Feb 2026 20:04:04 +0300
+X-Gm-Features: AaiRm52bgHU7ln0jQiLtDpYj8_uZtv7lFXrJptvKiW7giJwScKcyj7tzOX_uwVo
+Message-ID: <CAC62b0xq8vg4njbcvR9JLvW+o--UnNHEGNVz-+Uxa90d16j80A@mail.gmail.com>
+Subject: Re: [PATCH net-next v3 2/2] net: phy: add Rust reference driver for ET1011C
+To: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Trevor Gross <tmgross@umich.edu>
+Cc: "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 24, 2026 at 7:41=E2=80=AFAM Leon Hwang <leon.hwang@linux.dev> w=
-rote:
+Re: [PATCH net-next v3 0/2] net: phy: add Rust reference driver for ET1011C
+  On Mon, Feb 24, 2026 at ... Miguel Ojeda <ojeda@kernel.org> wrote:
+  > Since there is already a PHY one, is this meant to bootstrap the two
+  > new APIs? Or something else?
+
+Thank you for the feedback, Miguel. You raise a fair point.
+
+  Honestly, the new abstraction here (speed() getter) is quite minor --
+  it just reads a struct field. The driver itself doesn't bootstrap
+  anything significant beyond what ax88796b_rust already covers.
+
+  I'm looking to contribute to Rust in the kernel and started with PHY
+  drivers because the abstraction is well established. But I understand
+  now that duplicating C drivers isn't the goal.
+
+  Could you point me toward areas where Rust work would be most
+  valuable? I'm happy to work on new abstractions or drivers that
+  actually need bootstrapping, rather than adding another reference
+  driver to an area that's already covered.
+
+  Thanks,
+  Artem
+
+
+=D0=B2=D1=82, 24 =D1=84=D0=B5=D0=B2=D1=80. 2026=E2=80=AF=D0=B3. =D0=B2 19:4=
+9, Artem Lytkin <iprintercanon@gmail.com>:
 >
-> uprobe programs that can modify pt_regs require different runtime
-> assumptions than pt_regs-read-only uprobe programs. Mixing both in
-> one prog_array can make owner expectations diverge from callee behavior.
+> Add a Rust reference driver for the LSI ET1011C PHY, following the
+> pattern established by the existing Rust Asix PHY driver
+> (ax88796b_rust.rs).
 >
-> Reject the combination of !kprobe_write_ctx progs with kprobe_write_ctx
-> progs in __bpf_prog_map_compatible() to address the issue.
+> Unlike the C driver which uses a custom config_aneg that manually
+> clears BMCR bits and writes BMCR_RESET without polling, this driver
+> uses the soft_reset callback with genphy_soft_reset(). This properly
+> polls the self-clearing BMCR_RESET bit and handles both autoneg and
+> forced mode, following current best practices.
 >
-> Fixes: 7384893d970e ("bpf: Allow uprobe program to change context registe=
-rs")
-> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+> The read_status callback detects speed changes and reconfigures the
+> GMII interface and TX FIFO when switching to gigabit, matching the C
+> driver's functionality.
+>
+> Signed-off-by: Artem Lytkin <iprintercanon@gmail.com>
 > ---
->  include/linux/bpf.h | 7 ++++---
->  kernel/bpf/core.c   | 3 +++
->  2 files changed, 7 insertions(+), 3 deletions(-)
+>  drivers/net/phy/Kconfig         |  9 +++++
+>  drivers/net/phy/Makefile        |  6 ++-
+>  drivers/net/phy/et1011c_rust.rs | 69 +++++++++++++++++++++++++++++++++
+>  3 files changed, 83 insertions(+), 1 deletion(-)
+>  create mode 100644 drivers/net/phy/et1011c_rust.rs
 >
-> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-> index b78b53198a2e..2a2f6448a5fb 100644
-> --- a/include/linux/bpf.h
-> +++ b/include/linux/bpf.h
-> @@ -285,9 +285,10 @@ struct bpf_list_node_kern {
->   */
->  struct bpf_map_owner {
->         enum bpf_prog_type type;
-> -       bool jited;
-> -       bool xdp_has_frags;
-> -       bool sleepable;
-> +       u32 jited:1,
-> +           xdp_has_frags:1,
-> +           sleepable:1,
-> +           kprobe_write_ctx:1;
-
-Don't you see how much churn you're adding this way?
-Every patch has to touch two lines instead of one.
-Use
-u32 jited:1;
-u32 xdp_has_frags:1;
-
-also the bot is correct on patch 2 and 3.
-Don't be fancy. Require strict conformance both ways in *all* patches.
-
-And your codex selftests are garbage. I don't have other words
-to describe it. They are not testing the actual bug that
-your patches are fixing. Think of what you're doing.
-Asking LLM to write a test for your other patch is not what you
-should be asking it to do. The selftest should be such that
-it proves the unsafety/crash before the fix.
-
-pw-bot: cr
+> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+> index 7b73332a13d9..41abf13662e6 100644
+> --- a/drivers/net/phy/Kconfig
+> +++ b/drivers/net/phy/Kconfig
+> @@ -254,6 +254,15 @@ config LSI_ET1011C_PHY
+>         help
+>           Supports the LSI ET1011C PHY.
+>
+> +config ET1011C_RUST_PHY
+> +       bool "Rust reference driver for LSI ET1011C PHY"
+> +       depends on RUST_PHYLIB_ABSTRACTIONS && LSI_ET1011C_PHY
+> +       help
+> +         Uses the Rust reference driver for LSI ET1011C PHY
+> +         (et1011c_rust.ko). The features are equivalent.
+> +         It supports the LSI ET1011C PHY. If unsure,
+> +         say N.
+> +
+>  config MARVELL_PHY
+>         tristate "Marvell Alaska PHYs"
+>         help
+> diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+> index 3a34917adea7..491469457a67 100644
+> --- a/drivers/net/phy/Makefile
+> +++ b/drivers/net/phy/Makefile
+> @@ -62,7 +62,11 @@ obj-$(CONFIG_DP83TG720_PHY)  +=3D dp83tg720.o
+>  obj-$(CONFIG_FIXED_PHY)                +=3D fixed_phy.o
+>  obj-$(CONFIG_ICPLUS_PHY)       +=3D icplus.o
+>  obj-$(CONFIG_INTEL_XWAY_PHY)   +=3D intel-xway.o
+> -obj-$(CONFIG_LSI_ET1011C_PHY)  +=3D et1011c.o
+> +ifdef CONFIG_ET1011C_RUST_PHY
+> +  obj-$(CONFIG_LSI_ET1011C_PHY)        +=3D et1011c_rust.o
+> +else
+> +  obj-$(CONFIG_LSI_ET1011C_PHY)        +=3D et1011c.o
+> +endif
+>  obj-$(CONFIG_LXT_PHY)          +=3D lxt.o
+>  obj-$(CONFIG_MARVELL_10G_PHY)  +=3D marvell10g.o
+>  obj-$(CONFIG_MARVELL_PHY)      +=3D marvell.o
+> diff --git a/drivers/net/phy/et1011c_rust.rs b/drivers/net/phy/et1011c_ru=
+st.rs
+> new file mode 100644
+> index 000000000000..93dbf9586da3
+> --- /dev/null
+> +++ b/drivers/net/phy/et1011c_rust.rs
+> @@ -0,0 +1,69 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +// Copyright (C) 2026 Artem Lytkin <iprintercanon@gmail.com>
+> +
+> +//! Rust LSI ET1011C PHY driver
+> +//!
+> +//! C version of this driver: [`drivers/net/phy/et1011c.c`](./et1011c.c)
+> +
+> +use kernel::{
+> +    net::phy::{self, reg::C22, DeviceId, Driver},
+> +    prelude::*,
+> +};
+> +
+> +kernel::module_phy_driver! {
+> +    drivers: [PhyET1011C],
+> +    device_table: [
+> +        DeviceId::new_with_driver::<PhyET1011C>()
+> +    ],
+> +    name: "rust_et1011c_phy",
+> +    authors: ["Artem Lytkin <iprintercanon@gmail.com>"],
+> +    description: "Rust LSI ET1011C PHY driver",
+> +    license: "GPL",
+> +}
+> +
+> +// Vendor-specific registers
+> +const ET1011C_STATUS_REG: C22 =3D C22::vendor_specific::<0x1A>();
+> +const ET1011C_CONFIG_REG: C22 =3D C22::vendor_specific::<0x16>();
+> +
+> +// ET1011C status register fields
+> +const ET1011C_SPEED_MASK: u16 =3D 0x0300;
+> +const ET1011C_GIGABIT_SPEED: u16 =3D 0x0200;
+> +
+> +// ET1011C config register fields
+> +const ET1011C_TX_FIFO_MASK: u16 =3D 0x3000;
+> +const ET1011C_TX_FIFO_DEPTH_16: u16 =3D 0x1000;
+> +const ET1011C_GMII_INTERFACE: u16 =3D 0x0002;
+> +const ET1011C_SYS_CLK_EN: u16 =3D 0x0010;
+> +
+> +struct PhyET1011C;
+> +
+> +#[vtable]
+> +impl Driver for PhyET1011C {
+> +    const NAME: &'static CStr =3D c"ET1011C";
+> +    const PHY_DEVICE_ID: DeviceId =3D DeviceId::new_with_model_mask(0x02=
+82f014);
+> +
+> +    fn soft_reset(dev: &mut phy::Device) -> Result {
+> +        dev.genphy_soft_reset()
+> +    }
+> +
+> +    fn read_status(dev: &mut phy::Device) -> Result<u16> {
+> +        let old_speed =3D dev.speed();
+> +        dev.genphy_read_status::<C22>()?;
+> +
+> +        if old_speed !=3D dev.speed() {
+> +            let val =3D dev.read(ET1011C_STATUS_REG)?;
+> +            if (val & ET1011C_SPEED_MASK) =3D=3D ET1011C_GIGABIT_SPEED {
+> +                let cfg =3D dev.read(ET1011C_CONFIG_REG)?;
+> +                let cfg =3D cfg & !ET1011C_TX_FIFO_MASK;
+> +                dev.write(
+> +                    ET1011C_CONFIG_REG,
+> +                    cfg | ET1011C_GMII_INTERFACE
+> +                        | ET1011C_SYS_CLK_EN
+> +                        | ET1011C_TX_FIFO_DEPTH_16,
+> +                )?;
+> +            }
+> +        }
+> +
+> +        Ok(0)
+> +    }
+> +}
+> --
+> 2.43.0
+>
