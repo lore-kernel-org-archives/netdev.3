@@ -1,120 +1,143 @@
-Received: from mail-m1973185.qiye.163.com (mail-m1973185.qiye.163.com [220.197.31.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B491A9FBC;
-	Tue, 24 Feb 2026 02:24:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.85
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771899876; cv=none; b=i0G+WlUN05LrDEyhg86ed61NX2390HjVK1Nw168H8D9oYAqWqCJ8Kc1DhlksYxQ40vDIaBXAby4GqiieOEoMPo4ZjEMvTqAV0bJMspa2LWsQTnSVY9u2GaNzxABoT6jr2fJa6JcaJDZyv80frqEgimnv6IvHjPibpobnLvDRijA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771899876; c=relaxed/simple;
-	bh=VFI84jsJoxKxbbl2Av3iihOwmdaUZt/3qxvYrHVfk1A=;
-	h=Cc:Subject:To:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=VBPYwiL4yLQsyXsqVnEg6E1nWzE0tL7EPnj76s3zTnS0GpxARrzBahESAw79vNYluJ3W/EIcPb2Vq5xCiGAYTj/MTxF0UvZ24dC0kpmcS9PiFPhx0V/AuLtxcCh3Qr9XopNzLG+wuDoLJW1449mAJVoqgpN0+f5Y4/ljj9srBeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=I2JxoTtV; arc=none smtp.client-ip=220.197.31.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 568AD23EAA0
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 02:43:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.175
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771901007; cv=pass; b=au9M2qWdfNK7D4YljrxLNn3CjT28cRUQ/mrkzI1FANWc21ZhFNBa/64K6RbWCrMqtvYEQ5UgBg28N9GRZK3whprQ5aThw13lq4dlzwJ5VUpj1xCdhZkHwATq0jN9vH4TSW96Me7GCwTMu/5hQcrub0mqQ0JzzcTAtAUswyfsmG0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771901007; c=relaxed/simple;
+	bh=nXBvGOfNSt1H2LHuERmtCnhuO3EyKWr3OKWW1rux2EY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cA52imc0cBbouql3CtsdmJONTCEQxoFjYVHxPrgaobU+Kf1eEsEwLg7q9XOk1B+v3hCypE5FCZXO++5uzE0K8RPJ/WzSHmn+YZsIzUZ35jTtvOMZbeOFM1mFxPgKhEZyN+Rf/vIjyq1/ecilKFvjG0NpOBHsYJQo05TPWWEWisg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lvMVMf+i; arc=pass smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="I2JxoTtV"
-Received: from [172.16.12.14] (unknown [58.22.7.114])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 34bd86f1b;
-	Tue, 24 Feb 2026 10:08:59 +0800 (GMT+08:00)
-Cc: shawn.lin@rock-chips.com, Bjorn Helgaas <bhelgaas@google.com>,
- "Vaibhaav Ram T . L" <vaibhaavram.tl@microchip.com>,
- Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
- Even Xu <even.xu@intel.com>, Xinpeng Sun <xinpeng.sun@intel.com>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
- Jiri Kosina <jikos@kernel.org>,
- Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Zhou Wang <wangzhou1@hisilicon.com>, Longfang Liu <liulongfang@huawei.com>,
- Vinod Koul <vkoul@kernel.org>, Lee Jones <lee@kernel.org>,
- Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>,
- Sunil Goutham <sgoutham@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Heiner Kallweit <hkallweit1@gmail.com>,
- "David S . Miller" <davem@davemloft.net>,
- Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Oded Gabbay <ogabbay@kernel.org>,
- Maciej Falkowski <maciej.falkowski@linux.intel.com>,
- Karol Wachowski <karol.wachowski@linux.intel.com>,
- Min Ma <mamin506@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>,
- Andreas Noever <andreas.noever@gmail.com>,
- Mika Westerberg <westeri@kernel.org>, Tomasz Jeznach
- <tjeznach@rivosinc.com>, Will Deacon <will@kernel.org>,
- Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>,
- Davidlohr Bueso <dave@stgolabs.net>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Srujana Challa <schalla@marvell.com>, Bharat Bhushan
- <bbhushan2@marvell.com>, Antoine Tenart <atenart@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>, Raag Jadav <raag.jadav@intel.com>,
- Hans de Goede <hansg@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Jiri Slaby <jirislaby@kernel.org>, Andy Shevchenko <andy@kernel.org>,
- Manivannan Sadhasivam <mani@kernel.org>,
- Mika Westerberg <mika.westerberg@linux.intel.com>,
- Andi Shyti <andi.shyti@kernel.org>, Robert Richter <rric@kernel.org>,
- Mark Brown <broonie@kernel.org>, Nirmal Patel
- <nirmal.patel@linux.intel.com>, Kurt Schwemmer
- <kurt.schwemmer@microsemi.com>, Logan Gunthorpe <logang@deltatee.com>,
- Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
- Sakari Ailus <sakari.ailus@linux.intel.com>,
- Bingbu Cao <bingbu.cao@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>,
- Arnd Bergmann <arnd@arndb.de>, Benjamin Tissoires <bentiss@kernel.org>,
- linux-input@vger.kernel.org, linux-i3c@lists.infradead.org,
- dmaengine@vger.kernel.org, Philipp Stanner <phasta@kernel.org>,
- netdev@vger.kernel.org, nic_swsd@realtek.com, linux-arm-msm@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org,
- iommu@lists.linux.dev, linux-riscv@lists.infradead.org,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- linux-cxl@vger.kernel.org, linux-crypto@vger.kernel.org,
- platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
- mhi@lists.linux.dev, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Jan Dabros <jsd@semihalf.com>, linux-i2c@vger.kernel.org,
- Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
- linux-spi@vger.kernel.org, Jonathan Derrick <jonathan.derrick@linux.dev>,
- linux-pci@vger.kernel.org, linux-gpio@vger.kernel.org,
- Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
- linux-mmc@vger.kernel.org
-Subject: Re: [PATCH 01/37] PCI/MSI: Add Devres managed IRQ vectors allocation
-To: Jakub Kicinski <kuba@kernel.org>
-References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
- <1771860581-82092-2-git-send-email-shawn.lin@rock-chips.com>
- <20260223160402.3ad8f079@kernel.org>
-From: Shawn Lin <shawn.lin@rock-chips.com>
-Message-ID: <ec226aa1-5cc8-855f-8f90-1d7f89efe766@rock-chips.com>
-Date: Tue, 24 Feb 2026 10:08:58 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lvMVMf+i"
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-797d509a2f5so52791867b3.2
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 18:43:26 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771901005; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GMG2cukttIobsxFhMGIg7FhSpj7w9yan62CWQhtbv5GuhlUq3qOYS1a7+BfQL8ehyy
+         FRZz5DRWhsjtEYeZnrN/DVWi1cv4c4iHD1PpeSjFKHt6+HAuw3lJwNh3CVZOVJVUyOg+
+         DTLwOIP/Q2roxHmNWYALIGqvbyutiwqPLWH288QVS3JVUZ974ad4MKQXS6Q95IIbvXYC
+         vBoQlLPGPypdtYnliDztJiZ+w3NR73SExT7akzLHvUlyNoNwTRCz/lhHrPTHl6XzZRXP
+         RfP01mS7jLdXWUNXwo/I2zvtSHpYKGJji8mwXgFkwdUvhwzo+pIBrAFxU6LgD2lwyH8i
+         iUkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=nXBvGOfNSt1H2LHuERmtCnhuO3EyKWr3OKWW1rux2EY=;
+        fh=PvJVxCNbFFRYpNQsur12BVPmc71DUI2s4fs2whmQKDk=;
+        b=BKWK8HRpBEjK9IrbLXgbWXPqTZZzk5Rsbboxh4CPlbg+b6mSjxEuKiDH+NntDJ3KtH
+         it+ztCuE6ivFtb7tJvygQEDNn4IFSlD97b0RRFYIxyoL3pb9JeWSkSPrENtVJR4aTWCg
+         Q7gi3teWt2x21hQ7zVVRbTJ9irAqhZB9X+kpttt3UCRBVHG//kZzKGDFT519g7pKSb/x
+         SDys+q/3dTgLEZNWGFS1iBZvCK9JQC7GVol2r5zKTJD/DnGJTKxp0xFVmJIoETKYvOYR
+         XBUFapql32i+NqZl9wjbjNmr6ONhHJHA7/GratbuPXAp8xaxGivGLbeS5Wpf4Ucn18nB
+         sjAg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771901005; x=1772505805; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nXBvGOfNSt1H2LHuERmtCnhuO3EyKWr3OKWW1rux2EY=;
+        b=lvMVMf+iOXn9Q0RB7clQPgRQy/xh10/PgI+6doPAIC2wfeAcWDrsxLNgNgIWdWIt0w
+         YZ6aYiNPW5SHO2wrcPTW+NjFMisg24T8jXn7VUSTwSxulcKIV6e6t2V+rLOccQvupTJd
+         yX1T22iBL7r8hYJuE+w89KkyJBeRzcuWNjpgKoZHqByxNPLRPeACIFmEStjloaG/HI2S
+         rZvVeV5XIrgKWPOb5fhsaB75JCbzl5xbXkbImQKv+0JHNceg6T+6ay+5yIr6MxfHe3CT
+         UP86CR3VXrFYZGabmhCPAkHumN79esDQPFQ2zvlITUE68Z/q1bPzgsR8aQD9ueDfTK9b
+         HjpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771901005; x=1772505805;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=nXBvGOfNSt1H2LHuERmtCnhuO3EyKWr3OKWW1rux2EY=;
+        b=wb3vORAxtNuHCyXYiYGqdBlgAzHchEb3DyTRl2igX+4YqqDiaZSPk5N9oQiZOpTMfK
+         NTaW/ASm4r0tZWytrV/6OCBjkWS5mjPQ8ydwyayOIXZ58GPWRYR4sRe0+l6xsSJUCUjr
+         0JLTrP+MgVoQVgpZZ2LCm2FtizhupAJ1H9zxL7JZx1KAZZ9fJ+fWT6Ks/yQjRI8UnbAG
+         E6IgGAl6g51Q4YV2uvVJWCF6Oyh9ktIWH1zgXbfveZyXUowBtRdOWfiw9a1qkj7Sz4k0
+         eSrxuZaJuWapm1TP76FjV+emqYB4WghgCAcvuVepQzp/PS0vbBF2LQOkD7+MuAkLSFEe
+         B5mA==
+X-Forwarded-Encrypted: i=1; AJvYcCWF3R4DifP2FcOsAQ289gK292dVOERdmx23zDrR3JawsdNNqijT55DM2XpD7h29rc62pk8tbQ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdMjcAggGaZypW++kWCANdgTO/9NQ1QsZKmtQtf6pPOts28o30
+	Yj0SJz+PXsSD/DgEULNnPHF1trrii8n7sbNEuNvPEIyip0ZeKZJTTHpO6UxpnLLIX/HI2FWlM7Y
+	fVPeSabikKzDAW4YqUy1x531Cz3z3QmM=
+X-Gm-Gg: ATEYQzxtUPKUVxsXPF8tJC1OCWNDxUCIHqleWntd8A7CfEExC4C6m0fNQa5mjRQ732W
+	7J1qVuFTviIg/t4XT5fGVYtnmVBDjWC4k0ODa+AR9137DZJ9aqDhqVPLX4aMll/gJQ4323UK+fW
+	GFv5o8BKJJKsObUQvZxOUIoLti1rhlYf7FWiRApIB/uN70TrB11r0BLsGDpKcgnGuIaNzbDK38Y
+	Ru7+5Zswnc0mo/MHeV1P3Uc9XXGccJRz+GEJzP7EHBUQQoAgr7q1brdFb0O7R29PLGtVnqe3uTa
+	g8rIcSB1mIMreLk=
+X-Received: by 2002:a05:690c:48c2:b0:794:6fa2:a037 with SMTP id
+ 00721157ae682-79828cdf910mr84748807b3.8.1771901005394; Mon, 23 Feb 2026
+ 18:43:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260223160402.3ad8f079@kernel.org>
-Content-Type: text/plain; charset=gbk; format=flowed
-Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9c8d68279109cckunm6766673b9bec2a
-X-HM-MType: 1
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ09CQ1YYTU4fGk8fHk9CSE1WFRQJFh
-	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEtKTE
-	tVSktLVUtZBg++
-DKIM-Signature: a=rsa-sha256;
-	b=I2JxoTtVS0Yy5g50bgv4Wil//q2f9q9dCHuXovK/5LdNvBScPX9QRZNqNln/2pGvmbHOVQSNiAizH26Ay9wuN1CW4yf959RsxwxZnY1zkzGm1f2heNBE5Aht1ygGExZDhYnxUaCH2lYQFIRzQh1Ji7cYGdQWjF/HKhpMW2zjyIY=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
-	bh=VXxBr7dg17LQLBnY9v36F+7EuLqaMgXXNtGWjPOgYcA=;
-	h=date:mime-version:subject:message-id:from;
+References: <20260222111847.692325-1-sun.jian.kdev@gmail.com> <20260223172214.5d8ddaa1@kernel.org>
+In-Reply-To: <20260223172214.5d8ddaa1@kernel.org>
+From: sun jian <sun.jian.kdev@gmail.com>
+Date: Tue, 24 Feb 2026 10:43:15 +0800
+X-Gm-Features: AaiRm518ATEfeBlaofi-GL5g91T6-ZWo8gkDvecCreb5EzR1QmwNkdtp0H9CXXw
+Message-ID: <CABFUUZEuMCYYfi-SapTLT1BhYOWBk1e-OYh+h9fOZcfoSP06fg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] selftests/harness: fix XFAIL_ADD matching when test
+ metadata is not initialized
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: shuah@kernel.org, linux-kselftest@vger.kernel.org, netdev@vger.kernel.org, 
+	pabeni@redhat.com, edumazet@google.com, horms@kernel.org, kees@kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-在 2026/02/24 星期二 8:04, Jakub Kicinski 写道:
-> On Mon, 23 Feb 2026 23:29:40 +0800 Shawn Lin wrote:
->> pcim_alloc_irq_vectors() and pcim_alloc_irq_vectors_affinity() are created for
->> pci device drivers which rely on the devres machinery to help cleanup the IRQ
->> vectors.
-> 
-> If you can please add this API with just a few users, and then convert
-> remaining users via the subsystem trees in the next cycle.
-> There's no need to risk wasting maintainer time on conflicts with
-> conversions like this.
+On Tue, Feb 24, 2026 at 9:22=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
+ote:
+>
+> On Sun, 22 Feb 2026 19:18:46 +0800 Sun Jian wrote:
+> > XFAIL_ADD() registers expected failures using constructor order, but th=
+e
+> > associated struct __test_metadata pointer may not be initialized yet.
+> > As a result, xfail entries can end up with a NULL test pointer and neve=
+r
+> > match at runtime, causing expected failures to be reported as FAIL.
+> >
+> > Store the test case name in the xfail entry and fall back to name-based
+> > matching when the test pointer is unavailable, while keeping the origin=
+al
+> > pointer-based matching for compatibility.
+>
+> This looks a bit inelegant, what compiler is this failing on for you?
 
-Thanks for the suggestion, Jakub. I have little experience with 
-cross-subsystem cleanups like this, so your suggestion is very helpful.
+Hi Jakub,
 
-> 
+I hit this with clang + lld (LLVM=3D1) in a virtme-ng based net selftests r=
+un.
+In that setup the XFAIL_ADD() constructor runs before the corresponding
+_*_test_object is initialized, so xfail->test ends up NULL and we never
+classify XFAIL/XPASS.
+
+> Constructors seem to have a concept of priority so if we have to,
+> we should probably used those for the fix.
+
+I considered constructor priorities, but I'd prefer to avoid relying on
+toolchain/linker specific init ordering here. (The harness is userspace
+and we already see different behavior with clang/lld.)
+
+If you prefer a cleaner approach, I can rework this to avoid adding any
+new field and avoid priorities: keep xfail->test as a cached pointer, but
+populate it lazily at runtime on first use by looking up the test metadata
+by name within the fixture=E2=80=99s test list, then do the original pointe=
+r match.
+That removes the dependency on constructor ordering and keeps the matching
+semantics pointer-based after the first lookup.
+
+Let me know if that direction sounds better and I'll send a v2.
+
+Thanks,
+sun jian
