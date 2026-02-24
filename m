@@ -1,97 +1,149 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m21471.qiye.163.com (mail-m21471.qiye.163.com [117.135.214.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D94366809;
-	Tue, 24 Feb 2026 08:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF21366806;
+	Tue, 24 Feb 2026 08:21:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.214.71
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771921225; cv=none; b=KkEtf/3lOnMkII3qL7qMQS2ZxKXDbgheBlwi0DRwvaHt3XYLLLYTQYQIZ7w3tTCME+QiiXZa3DBfYfKHbohw3n4BvgtJ8qX49Swc4gJT0GJMo0DBbJh38cFj21Rcpq2pZq7OUve0COc2DVnE/itFcrpTXWtkX+b7D4VhfXuAaQo=
+	t=1771921292; cv=none; b=c7wSE4hYou+7htxkKBpX3x3ocowippH+kD0AHV630QVegc3x/ERtAn8OA3Oel0DJtvfMIC0vYCKEJEMDvzzd9AKvH2xPCpXeFUhSCQlCD6CgXjPeyqlEYsHFpG9Z1r+MtvZBmXzHdQWfvm8J416A8wJavRiTV4od5pcnmpD4CIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771921225; c=relaxed/simple;
-	bh=iQjPg2LXKrMXc3WCOF+ndy+MkCA4NlMl9SonN6terl0=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Z8TiuNiCVqOss7rODjxBJRzPzP19Q/pwtzOrb7egc5yXNJSBwm6FHe6u40HQM8avUziQK/CEb9Jevh5nQM+NO3IiADBKR1WJ0Fo2bI3nnr+TwuvjI+du8PlK85asWUScpc/uhClVPCu+NVLkuUEeD4QxDVuv+ieCLOQbBCSdwXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K579pUTO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771921292; c=relaxed/simple;
+	bh=jGNKoKMtgp1RUDE0JUj9nl9DZtqZbHM10+ockHI/Lug=;
+	h=Cc:Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=P/KLlkIQh9Dl90OQ+njg4dzOQ/zbf6CwFmP9It6h0RhyWjK/3EXYe9AekiMM0lxaRmdjynzjbFU5jYbWCcidYa2PE4pu52hu0aHvhB6SjVYfsmaV+Xr6aKQ54mGMD/gmQNFz+kHJf6eoRokSfL5o6sVlnBBq/TV3sXJUrkplKUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=OtokF0pM; arc=none smtp.client-ip=117.135.214.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K579pUTO"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 80E1BC19423;
-	Tue, 24 Feb 2026 08:20:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771921225;
-	bh=iQjPg2LXKrMXc3WCOF+ndy+MkCA4NlMl9SonN6terl0=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=K579pUTO4w95yrmEg1Y/mCmdrwgdRzLg0Z5FeR+eRydrHGmR7AjnFQ2J0z6ya5xjg
-	 nPQmWwiSafwQ9mdntWPpxy+9QG6iHTZGr6aWi+myYYWx3iLEIOrm8OP+3bvecd4d7+
-	 Yn4zYcPMlzuioIbsoUsyT36qr/rkJqcJL86vrKgpVXNEQP0RI4k4tTJzmpNNYxH1uU
-	 7S8dPNd948Snq5szoyrmnC/kPxgG/2OGN7PAIh9FPSBiGf9UE13YV958PGQWst9emk
-	 1Klcs0gABDPLR22znBKy7vBF1MTJ1QrAl700JsifUfVuQ06UcKzIIk0U1SxHOzzjKj
-	 sSRoT//051Nkw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 6F5FDEFB801;
-	Tue, 24 Feb 2026 08:20:25 +0000 (UTC)
-From: Simon Baatz via B4 Relay <devnull+gmbnomis.gmail.com@kernel.org>
-Subject: [PATCH net v2 0/2] tcp: re-enable acceptance of FIN packets when
- RWIN is 0
-Date: Tue, 24 Feb 2026 09:20:11 +0100
-Message-Id: <20260224-fix_zero_wnd_fin-v2-0-a16677ea7cea@gmail.com>
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="OtokF0pM"
+Received: from [172.16.12.14] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 34c7e7f42;
+	Tue, 24 Feb 2026 16:21:13 +0800 (GMT+08:00)
+Cc: shawn.lin@rock-chips.com, Bjorn Helgaas <bhelgaas@google.com>,
+ "Vaibhaav Ram T . L" <vaibhaavram.tl@microchip.com>,
+ Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
+ Even Xu <even.xu@intel.com>, Xinpeng Sun <xinpeng.sun@intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Jiri Kosina <jikos@kernel.org>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Zhou Wang <wangzhou1@hisilicon.com>, Longfang Liu <liulongfang@huawei.com>,
+ Vinod Koul <vkoul@kernel.org>, Lee Jones <lee@kernel.org>,
+ Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>,
+ Sunil Goutham <sgoutham@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ "David S . Miller" <davem@davemloft.net>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Oded Gabbay <ogabbay@kernel.org>,
+ Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+ Karol Wachowski <karol.wachowski@linux.intel.com>,
+ Min Ma <mamin506@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>,
+ Andreas Noever <andreas.noever@gmail.com>,
+ Mika Westerberg <westeri@kernel.org>, Tomasz Jeznach
+ <tjeznach@rivosinc.com>, Will Deacon <will@kernel.org>,
+ Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Srujana Challa <schalla@marvell.com>, Bharat Bhushan
+ <bbhushan2@marvell.com>, Antoine Tenart <atenart@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Raag Jadav <raag.jadav@intel.com>,
+ Hans de Goede <hansg@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Andi Shyti <andi.shyti@kernel.org>, Robert Richter <rric@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Nirmal Patel
+ <nirmal.patel@linux.intel.com>, Kurt Schwemmer
+ <kurt.schwemmer@microsemi.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Bingbu Cao <bingbu.cao@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Arnd Bergmann <arnd@arndb.de>, Benjamin Tissoires <bentiss@kernel.org>,
+ linux-input@vger.kernel.org, linux-i3c@lists.infradead.org,
+ dmaengine@vger.kernel.org, netdev@vger.kernel.org, nic_swsd@realtek.com,
+ linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-usb@vger.kernel.org, iommu@lists.linux.dev,
+ linux-riscv@lists.infradead.org, David Airlie <airlied@gmail.com>,
+ Simona Vetter <simona@ffwll.ch>, linux-cxl@vger.kernel.org,
+ linux-crypto@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+ linux-serial@vger.kernel.org, mhi@lists.linux.dev,
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jan Dabros <jsd@semihalf.com>, linux-i2c@vger.kernel.org,
+ Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ linux-spi@vger.kernel.org, Jonathan Derrick <jonathan.derrick@linux.dev>,
+ linux-pci@vger.kernel.org, linux-gpio@vger.kernel.org,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
+ linux-mmc@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH 01/37] PCI/MSI: Add Devres managed IRQ vectors allocation
+To: phasta@kernel.org
+References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+ <1771860581-82092-2-git-send-email-shawn.lin@rock-chips.com>
+ <20260223160402.3ad8f079@kernel.org>
+ <ec226aa1-5cc8-855f-8f90-1d7f89efe766@rock-chips.com>
+ <07fc896007d86b731cbfb3cf6bbdf4e5315d7a77.camel@mailbox.org>
+From: Shawn Lin <shawn.lin@rock-chips.com>
+Message-ID: <d601ec05-ef38-5e8e-c643-c05010717ebe@rock-chips.com>
+Date: Tue, 24 Feb 2026 16:21:11 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+In-Reply-To: <07fc896007d86b731cbfb3cf6bbdf4e5315d7a77.camel@mailbox.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/2WNyw6CMBBFf4XM2pp2AI2u/A9DCLRTmERa0hJ8k
- P67DXHn8r7O3SBSYIpwLTYItHJk77LAQwF67NxAgk3WgBJPElEJy6/2Q8G3T2day04Y1XdKaVP
- 28gx5NgfKnR15B0cLNNkcOS4+vPebVe3Rj4j/xFUJKWpbybK61GhLfRumjh9H7SdoUkpfUlVIX
- rUAAAA=
-X-Change-ID: 20260221-fix_zero_wnd_fin-d1ba11cd3b07
-To: Eric Dumazet <edumazet@google.com>, 
- Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Simon Baatz <gmbnomis@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1771921224; l=983;
- i=gmbnomis@gmail.com; s=20260220; h=from:subject:message-id;
- bh=iQjPg2LXKrMXc3WCOF+ndy+MkCA4NlMl9SonN6terl0=;
- b=d2tKmYZIkxzmfzTEaX20IA/Rl77jjUafMxejHMQM6gR1Cu7IFRtm4uyA+V5hpawd/43oiOUzg
- ZpYRClF6pTqC/734SUwhOJg+HzaIhMepKGrD+7M4LKP5ypxCmFY/ctB
-X-Developer-Key: i=gmbnomis@gmail.com; a=ed25519;
- pk=T/JIz/6F5bf1uQJr69lmyi7czVG+F9TVZ/8x5z9Wtqw=
-X-Endpoint-Received: by B4 Relay for gmbnomis@gmail.com/20260220 with
- auth_id=641
-X-Original-From: Simon Baatz <gmbnomis@gmail.com>
-Reply-To: gmbnomis@gmail.com
+X-HM-Tid: 0a9c8ebcf01809cckunma66e3c5da3898b
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGkwYT1ZIQ05NT00aQhpOTEpWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEtKTE
+	tVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=OtokF0pM0Rdmb7CoOmlCq/zfLcm40+tPTFk2ZLwxQS10TLzJue4pNlrDVsSPzZGK7GjnZ03zAIHAn5VDRN2uAWAEjdInG9Pdls9n5NtKIAxCt/aoY8MRgy7icqkMUtp0jEjJ+naa5XLLsJTKYxzikINqVGIROqqbjer5tDm2ofg=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=NX1TqWCCjq6xu1hXTAQXpYiiKKus6llHeXoiHdmvBy4=;
+	h=date:mime-version:subject:message-id:from;
 
-Hi,
+在 2026/02/24 星期二 15:47, Philipp Stanner 写道:
+> On Tue, 2026-02-24 at 10:08 +0800, Shawn Lin wrote:
+>> 在 2026/02/24 星期二 8:04, Jakub Kicinski 写道:
+>>> On Mon, 23 Feb 2026 23:29:40 +0800 Shawn Lin wrote:
+>>>> pcim_alloc_irq_vectors() and pcim_alloc_irq_vectors_affinity() are created for
+>>>> pci device drivers which rely on the devres machinery to help cleanup the IRQ
+>>>> vectors.
+>>>
+>>> If you can please add this API with just a few users, and then convert
+>>> remaining users via the subsystem trees in the next cycle.
+>>> There's no need to risk wasting maintainer time on conflicts with
+>>> conversions like this.
+>>
+>> Thanks for the suggestion, Jakub. I have little experience with
+>> cross-subsystem cleanups like this, so your suggestion is very helpful.
+> 
+> 
+> When I removed the hybrid nature of pci_request_region() et al., I
+> concluded that there were so few users that doing them all in one run
+> was sufficient.
+> 
+> For larger reworks, like removing pcim_iomap_table(), a slower step-by-
+> step strategy is necessary for the reasons that Jakub details.
+> 
+> It is then smart to omit an easy to port subsystem / driver for the
+> ultimate patch series where one then removes the hybrid behavior from
+> PCI itself, after porting the last driver.
+> 
+> In general,  as Jakub details, those step-by-step cleanups are a bit
+> safer, since you can proof valid behavior early on and in case of an
+> explosion they are very easy to revert.
+> 
 
-this series restores the ability to accept in‑sequence FIN packets 
-even when the advertised receive window is zero, and adds a 
-packetdrill test to guard the behavior.
+Thank you, Philipp. I wish I had attended your talk at FOSDEM 2025 on
+removing pcim_iomap_table earlier. This first version was perhaps a bit 
+too aggressive. For v2, I think the plan should start with addressing 
+the switchtec and vmd drivers, since both of those, along with the new 
+API additions, can be handled entirely within the PCI subsystem scope.
 
-Signed-off-by: Simon Baatz <gmbnomis@gmail.com>
----
-Changes in v2:
-- Move the FIN handling out of the default execution path as suggested by Eric Dumazet
-- Link to v1: https://lore.kernel.org/r/20260222-fix_zero_wnd_fin-v1-0-5f4034952f3c@gmail.com
-
----
-Simon Baatz (2):
-      tcp: re-enable acceptance of FIN packets when RWIN is 0
-      selftests/net: packetdrill: Verify acceptance of FIN packets when RWIN is 0
-
- net/ipv4/tcp_input.c                               | 18 +++++++++++----
- .../net/packetdrill/tcp_rcv_zero_wnd_fin.pkt       | 27 ++++++++++++++++++++++
- 2 files changed, 41 insertions(+), 4 deletions(-)
----
-base-commit: d4f687fbbce45b5e88438e89b5e26c0c15847992
-change-id: 20260221-fix_zero_wnd_fin-d1ba11cd3b07
-
-Best regards,
--- 
-Simon Baatz <gmbnomis@gmail.com>
-
-
+> 
+> P.
+> 
