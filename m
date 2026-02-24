@@ -1,63 +1,60 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F199826A0C7;
-	Tue, 24 Feb 2026 20:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD48A26A0C7
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 20:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771965011; cv=none; b=AWoJZhEvDj3yqeyGUNSL6lOmCWbSuFuYMooQavCnau1CzUaLwxsRbZw676Cde9+geBPze/MaB8WixjC0XrImfsTkU8Nk6Z/oGrs0YMKPX0xQrGBkCcZhto3aOJvyWAWDyEd+UVltzG1Lq+vG5ce7PfvRGGvpCG8kF7pL9CzFtW4=
+	t=1771965031; cv=none; b=p7+QanveuI1vdd6SqqZI+VlOazfa7AEtngGPH1nm5gp9fE+kSfj/AcjbdLfurcUqaDyGeGBm+A7DducIs5IGwZurR0yansJkfqrYeW0zol3DcOmlUUHWfIgvjgzGqLQAjv8yDU3gaWnBP/3fHYiukknXAn2c5KbMfC7oZwHWU+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771965011; c=relaxed/simple;
-	bh=TARXgZXOLNs/wKtKFtya9KuH14skr0xMIwnTFQdfIYc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WQhBb6BzpBIWBVrTmcsIWhLJCj2U7vNMIXTccFZKki3vo7I+EZIuyvEm4tzxdhfZftznaRHDy4+rt53SChYUJLQhFajdwmMlSD1egmoAyp22yvF5Idb56zgDbU2lQ9egfHRYgBz13jr0+YGD+sGe8oLoMdxTFOozn8KOoqSFG28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=2pTsFz/w; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1771965031; c=relaxed/simple;
+	bh=YQA1mkKna0FlMuY/MmJNczhr1bRcCeOleL24M5PFzXY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=ttJ3/J9NWi+9LDqCxMFNhXZyBz2hj0thD0y09WMWzZMt68NI0nPLTc5WMndDTCp9MH6I0VRr2AU0gQKq1TGnCciL3715h/3lefhpMV5idDIZ666B/lmGNgRTrVe5bj5BRDtNclVecRu5CfRuwBLosn4K425+GHlJ42t8PBJVMSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dyrLqxwI; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="2pTsFz/w"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1771965008; x=1803501008;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=TARXgZXOLNs/wKtKFtya9KuH14skr0xMIwnTFQdfIYc=;
-  b=2pTsFz/wTVTQksCjplYr5CYqiez76CHCEeCCCUwI8DgPBkGDVQWW7AjO
-   q+JnMis814AHjTVGYfP9v4MhbClGJKT2foXoaLjkn6qNdqJx0M9+FwMRV
-   yl967veNEyVKuWOAFsa1/mr+I7SoywjuJX+VIuOjPLp4lUZ0fGUdgcAyi
-   KAzDP0pjJcJjqOsCaxriXeSl4vcIE0e6BsQPhfqPDchZLi4homi8rMjBh
-   Dnzw4sYTVLFSSROB7mmGqDWX2uEvZ68MoLKv3MzrgWU1rTiUB1FnIP7LX
-   x37t4tPXItsq/xwSWER03oQKIllSR2oPT9tx/rAcqzfbXoRD9bchPjmmj
-   w==;
-X-CSE-ConnectionGUID: nyoYymsUQturxNWE5RLEfQ==
-X-CSE-MsgGUID: bW+eUffBSIWUhODcyvYB9g==
-X-IronPort-AV: E=Sophos;i="6.21,309,1763449200"; 
-   d="scan'208";a="53070978"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2026 13:30:07 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
- chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Tue, 24 Feb 2026 13:29:38 -0700
-Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 24 Feb 2026 13:29:37 -0700
-From: Charles Perry <charles.perry@microchip.com>
-To: <netdev@vger.kernel.org>
-CC: Charles Perry <charles.perry@microchip.com>, Sean Anderson
-	<sean.anderson@linux.dev>, Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Russell King <linux@armlinux.org.uk>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next v2 3/3] net: macb: add the .pcs_inband_caps() callback for SGMII
-Date: Tue, 24 Feb 2026 12:28:54 -0800
-Message-ID: <20260224202854.112813-4-charles.perry@microchip.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260224202854.112813-1-charles.perry@microchip.com>
-References: <20260224202854.112813-1-charles.perry@microchip.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dyrLqxwI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1771965028;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Uu8uZj36aSMeKYdaF+VZ7z9MFqA8Pc5joGqJIks22DM=;
+	b=dyrLqxwIl2Wqrrb+iMNg1CuIXhOqjGx6hThV/Oh5bz0jtBlRBo5tkDL3Td33/5wBCpdoA3
+	XoZqFuWOd5DVCG9NMo7SoLxoVzR0R3o0JUjLHHOK6+jFGcT4UAkXu+TXGIg9pKoMW+5lQM
+	jT08u/dhB0cBvM3qX8prCUywTB7M66Q=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-659-R8PpMFbwNdirup-ienxzAg-1; Tue,
+ 24 Feb 2026 15:30:25 -0500
+X-MC-Unique: R8PpMFbwNdirup-ienxzAg-1
+X-Mimecast-MFC-AGG-ID: R8PpMFbwNdirup-ienxzAg_1771965023
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 733F21956096;
+	Tue, 24 Feb 2026 20:30:23 +0000 (UTC)
+Received: from dcaratti.users.ipa.redhat.com (unknown [10.44.33.179])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B6F9F1955F43;
+	Tue, 24 Feb 2026 20:30:19 +0000 (UTC)
+From: Davide Caratti <dcaratti@redhat.com>
+To: Jamal Hadi Salim <jhs@mojatatu.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Petr Machata <petrm@mellanox.com>,
+	Ido Schimmel <idosch@mellanox.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH net] net/sched: ets: fix divide by zero in the offload path
+Date: Tue, 24 Feb 2026 21:28:32 +0100
+Message-ID: <28504887df314588c7255e9911769c36f751edee.1771964872.git.dcaratti@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,46 +62,111 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-In SGMII mode, GEM can work with or without inband
-autonegotiation.
+Offloading ETS requires computing each class' WRR weight: this is done by
+averaging over the sums of quanta as 'q_sum' and 'q_psum'. Using unsigned
+int, the same integer size as the individual DRR quanta, can overflow and
+even cause division by zero, like it happened in the following splat:
 
-Signed-off-by: Charles Perry <charles.perry@microchip.com>
+ Oops: divide error: 0000 [#1] SMP PTI
+ CPU: 13 UID: 0 PID: 487 Comm: tc Tainted: G            E       6.19.0-virtme #45 PREEMPT(full)
+ Tainted: [E]=UNSIGNED_MODULE
+ Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
+ RIP: 0010:ets_offload_change+0x11f/0x290 [sch_ets]
+ Code: e4 45 31 ff eb 03 41 89 c7 41 89 cb 89 ce 83 f9 0f 0f 87 b7 00 00 00 45 8b 08 31 c0 45 01 cc 45 85 c9 74 09 41 6b c4 64 31 d2 <41> f7 f2 89 c2 44 29 fa 45 89 df 41 83 fb 0f 0f 87 c7 00 00 00 44
+ RSP: 0018:ffffd0a180d77588 EFLAGS: 00010246
+ RAX: 00000000ffffff38 RBX: ffff8d3d482ca000 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffd0a180d77660
+ RBP: ffffd0a180d77690 R08: ffff8d3d482ca2d8 R09: 00000000fffffffe
+ R10: 0000000000000000 R11: 0000000000000000 R12: 00000000fffffffe
+ R13: ffff8d3d472f2000 R14: 0000000000000003 R15: 0000000000000000
+ FS:  00007f440b6c2740(0000) GS:ffff8d3dc9803000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000003cdd2000 CR3: 0000000007b58002 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  ets_qdisc_change+0x870/0xf40 [sch_ets]
+  qdisc_create+0x12b/0x540
+  tc_modify_qdisc+0x6d7/0xbd0
+  rtnetlink_rcv_msg+0x168/0x6b0
+  netlink_rcv_skb+0x5c/0x110
+  netlink_unicast+0x1d6/0x2b0
+  netlink_sendmsg+0x22e/0x470
+  ____sys_sendmsg+0x38a/0x3c0
+  ___sys_sendmsg+0x99/0xe0
+  __sys_sendmsg+0x8a/0xf0
+  do_syscall_64+0x111/0xf80
+  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ RIP: 0033:0x7f440b81c77e
+ Code: 4d 89 d8 e8 d4 bc 00 00 4c 8b 5d f8 41 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 11 c9 c3 0f 1f 80 00 00 00 00 48 8b 45 10 0f 05 <c9> c3 83 e2 39 83 fa 08 75 e7 e8 13 ff ff ff 0f 1f 00 f3 0f 1e fa
+ RSP: 002b:00007fff951e4c10 EFLAGS: 00000202 ORIG_RAX: 000000000000002e
+ RAX: ffffffffffffffda RBX: 0000000000481820 RCX: 00007f440b81c77e
+ RDX: 0000000000000000 RSI: 00007fff951e4cd0 RDI: 0000000000000003
+ RBP: 00007fff951e4c20 R08: 0000000000000000 R09: 0000000000000000
+ R10: 0000000000000000 R11: 0000000000000202 R12: 00007fff951f4fa8
+ R13: 00000000699ddede R14: 00007f440bb01000 R15: 0000000000486980
+  </TASK>
+ Modules linked in: sch_ets(E) netdevsim(E)
+ ---[ end trace 0000000000000000 ]---
+ RIP: 0010:ets_offload_change+0x11f/0x290 [sch_ets]
+ Code: e4 45 31 ff eb 03 41 89 c7 41 89 cb 89 ce 83 f9 0f 0f 87 b7 00 00 00 45 8b 08 31 c0 45 01 cc 45 85 c9 74 09 41 6b c4 64 31 d2 <41> f7 f2 89 c2 44 29 fa 45 89 df 41 83 fb 0f 0f 87 c7 00 00 00 44
+ RSP: 0018:ffffd0a180d77588 EFLAGS: 00010246
+ RAX: 00000000ffffff38 RBX: ffff8d3d482ca000 RCX: 0000000000000000
+ RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffd0a180d77660
+ RBP: ffffd0a180d77690 R08: ffff8d3d482ca2d8 R09: 00000000fffffffe
+ R10: 0000000000000000 R11: 0000000000000000 R12: 00000000fffffffe
+ R13: ffff8d3d472f2000 R14: 0000000000000003 R15: 0000000000000000
+ FS:  00007f440b6c2740(0000) GS:ffff8d3dc9803000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000000003cdd2000 CR3: 0000000007b58002 CR4: 0000000000172ef0
+ Kernel panic - not syncing: Fatal exception
+ Kernel Offset: 0x30000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+ ---[ end Kernel panic - not syncing: Fatal exception ]---
+
+Fix this using 64-bit integers for 'q_sum' and 'q_psum'.
+
+Cc: stable@vger.kernel.org
+Fixes: d35eb52bd2ac ("net: sch_ets: Make the ETS qdisc offloadable")
+Signed-off-by: Davide Caratti <dcaratti@redhat.com>
 ---
+ net/sched/sch_ets.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-Notes:
-    Changes in v2:
-      * Added this patch
-
- drivers/net/ethernet/cadence/macb_main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
-
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index f6efc1bb88b6..4b1fe3beaa17 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -557,6 +557,12 @@ static int macb_usx_pcs_config(struct phylink_pcs *pcs,
- 	return 0;
- }
+diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+index 306e046276d4..a4b07b661b77 100644
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -115,12 +115,12 @@ static void ets_offload_change(struct Qdisc *sch)
+ 	struct ets_sched *q = qdisc_priv(sch);
+ 	struct tc_ets_qopt_offload qopt;
+ 	unsigned int w_psum_prev = 0;
+-	unsigned int q_psum = 0;
+-	unsigned int q_sum = 0;
+ 	unsigned int quantum;
+ 	unsigned int w_psum;
+ 	unsigned int weight;
+ 	unsigned int i;
++	u64 q_psum = 0;
++	u64 q_sum = 0;
  
-+static unsigned int macb_pcs_inband_caps(struct phylink_pcs *pcs,
-+					 phy_interface_t interface)
-+{
-+	return LINK_INBAND_DISABLE | LINK_INBAND_ENABLE;
-+}
-+
- static void macb_pcs_get_state(struct phylink_pcs *pcs, unsigned int neg_mode,
- 			       struct phylink_link_state *state)
- {
-@@ -609,6 +615,7 @@ static const struct phylink_pcs_ops macb_phylink_usx_pcs_ops = {
- };
+ 	if (!tc_can_offload(dev) || !dev->netdev_ops->ndo_setup_tc)
+ 		return;
+@@ -138,8 +138,12 @@ static void ets_offload_change(struct Qdisc *sch)
  
- static const struct phylink_pcs_ops macb_phylink_pcs_ops = {
-+	.pcs_inband_caps = macb_pcs_inband_caps,
- 	.pcs_get_state = macb_pcs_get_state,
- 	.pcs_an_restart = macb_pcs_an_restart,
- 	.pcs_config = macb_pcs_config,
+ 	for (i = 0; i < q->nbands; i++) {
+ 		quantum = q->classes[i].quantum;
+-		q_psum += quantum;
+-		w_psum = quantum ? q_psum * 100 / q_sum : 0;
++		if (quantum) {
++			q_psum += quantum;
++			w_psum = div64_u64(q_psum * 100, q_sum);
++		} else {
++			w_psum = 0;
++		}
+ 		weight = w_psum - w_psum_prev;
+ 		w_psum_prev = w_psum;
+ 
 -- 
-2.47.3
+2.52.0
 
