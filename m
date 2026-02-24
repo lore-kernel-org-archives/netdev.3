@@ -1,257 +1,238 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCFE336EF5;
-	Tue, 24 Feb 2026 07:20:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A393644BA
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 07:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.167.48
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771917630; cv=fail; b=UA7Rvne0DRAE3cBTzLR7sumyBIvGC357lmkS9WksXndpF8MszS27R/ijYVjW0AHzTrFIyc5M0HOCaIJYI0wo7khsWHdjQcEOpsLkayIn8y0V5aGuUwgzfvws24HLLZ8EYpVWLk1zK8UD/QiKHylNRju51zj7/mAY0RtWrwKqcwQ=
+	t=1771917849; cv=pass; b=p5JnmFCRtFmHcI+QgZ0zi+sPTA+uaJ8aYbY7o7Rxy4rkI9ws3khWEZgltx0VQzLoxe5RsDKRrkSRto4SO6+/ABbYurXoYqeOy93f2m4GwzA0x2U3O+WPrq8XltDq1ul7tddhk72MXx9R+DhwO+SIQH9BaxRvFJwNAYjYfA3+3JM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771917630; c=relaxed/simple;
-	bh=jrcxYW/Odg5C88AzFxl6T+rivIkFJosfTtsUMrvZglg=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=F6FUMrFPDs0HGr1TFF7fK7qvH7t+ROQMklj3/RAb2RpnkzcjqCI9lXSABVn3eZsfqZILIkj2uUbsM1N+4ayyHtC2+WfxmFFButfILJYMiuSb9Xj/ZRWKoi2MnKDt+L+PZk8LHHymUMeQdGE9zHS7hiyK4d0SxOXyX+6DlNjRYTQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OMFfiBYx; arc=fail smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1771917849; c=relaxed/simple;
+	bh=ULd+oRTA8UiwXl4Lb5nizVLXiKCKx7ppXxndo2HO3Aw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oLALH53hr9zgzOVUKTVtt664XTg77CMnUP2FH4qP+PELGMf/aFA6DUON4f61CL+5VKPmVi5z+h8/F40VAN3Vwan6j3BMN4mgXmg+brK0XIUGo8Jl4GOyaxY7lVHcKyVfukn2uRikcsy7pcfMJEXTMYuyvbefbtXULtImvCGwgiU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BoaXEMy2; arc=pass smtp.client-ip=209.85.167.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OMFfiBYx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1771917628; x=1803453628;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=jrcxYW/Odg5C88AzFxl6T+rivIkFJosfTtsUMrvZglg=;
-  b=OMFfiBYxSeqTmHcFOcaYT6h9gfhQArB7qYS/pEU4sb5UvfJ0/5hXJ/jZ
-   wzMVhKT52XYdB0kZD2h2d7qFFKp+CHBIonrKWou0/0O91a5yISRpl+eAU
-   Fx5ioIsNzxrZDwK5dw0cNFsq2FnZieviOk8ndLXYRJ6RF8XRRjMkXLhg4
-   jFlNrKAdO2kjvYIHzaMdcgo8/hjMh4dvU0iEhvec5rD73AyeykwFF+502
-   zRx9kEYqhRNns5mGKIY7g31pPJQTQXOgRzdIUHRhJtvXjEw4zaO3YSWKK
-   zYxb1fjD/yUBPdBCnGufQI7EaPM7+qMTWrIoyNvMBQPu9tLMd3XOROszm
-   g==;
-X-CSE-ConnectionGUID: NRSdejlgT46gl8fCTucU2w==
-X-CSE-MsgGUID: pcJEcDZwTaGbeFU7LDoPKA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11710"; a="60502336"
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
-   d="scan'208";a="60502336"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 23:20:24 -0800
-X-CSE-ConnectionGUID: oisUgcNGRmSauL2khhBvJQ==
-X-CSE-MsgGUID: zY/yOUzFQ0K3n58SAH5Bgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,308,1763452800"; 
-   d="scan'208";a="253543178"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Feb 2026 23:20:22 -0800
-Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 23 Feb 2026 23:20:21 -0800
-Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
- FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35 via Frontend Transport; Mon, 23 Feb 2026 23:20:21 -0800
-Received: from PH7PR06CU001.outbound.protection.outlook.com (52.101.201.28) by
- edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.35; Mon, 23 Feb 2026 23:20:21 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MjVaOHvWQwpiUYfBSaoMwrV19/xbR2EevuwTFzdnHZK5TGshRGiWcTWYRDP6IpXMLq4bk7iSOBKZvi9mAEC+xGq8SMW08W4or9lxeZnx/3LxK/nmEFDTbQttYNNOBBj+lCKW/Na6U4yTF3cEVkezPyIuyAlJjIxy/Vf4AZlafbQNUosyA36BJUd9nTrthlBD9+8Zpj8C43x2iv8Ud7+4TqUQOSRqLrhH1EWGvTM2XSrWlPoTMqt9PFWvPqT5xW7JEmG17iFfKfbbtgsS600otDF57NgoyoqzM82v8v7mLP1x0wlNthHejQZfxsToKAMmcAnvwupTA82SLIkllmTR8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=V2CmehDXB23H/dZhcsSswM5mBVdbWvIbYII5UcQEQoY=;
- b=p0NpmeAGbgjQ3AA4WobxMXQH/FrC4lPmVswL9oFtFPAhMf0ndfnDn+UMoyuOqUpQxaQ1VczUX9OYwqhoig9SoiNVZv+KANerk6TQour1oO+OsC4UqBSI/yneEwzMEOyvk8me+KV673cgE+MKtaNrFAzKcltbnciwXSp0wQObbcW6XVfhP0I8fF4ALBCQdwQ7byUmw/qwSt+AXGNXnr/7Je002PpkpqMvoAPYFDSJ5J0hFivCYZCN86HKnK13zadZu/FsnI4VLchqIhohGLKLpmLvprf3uXM3do98zz39+mYg2/a6o+dSuW6pXV91eQAoHLwQlCQfgwa+rRRKMcVbCg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from PH8PR11MB7965.namprd11.prod.outlook.com (2603:10b6:510:25c::13)
- by PH7PR11MB6954.namprd11.prod.outlook.com (2603:10b6:510:205::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Tue, 24 Feb
- 2026 07:20:19 +0000
-Received: from PH8PR11MB7965.namprd11.prod.outlook.com
- ([fe80::b351:6cda:caf7:64a]) by PH8PR11MB7965.namprd11.prod.outlook.com
- ([fe80::b351:6cda:caf7:64a%4]) with mapi id 15.20.9632.017; Tue, 24 Feb 2026
- 07:20:19 +0000
-From: "R, Bharath" <bharath.r@intel.com>
-To: "Zaremba, Larysa" <larysa.zaremba@intel.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"Nguyen, Anthony L" <anthony.l.nguyen@intel.com>
-CC: "Lobakin, Aleksander" <aleksander.lobakin@intel.com>, "Samudrala, Sridhar"
-	<sridhar.samudrala@intel.com>, "Singhai, Anjali" <anjali.singhai@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>, "Zaremba, Larysa"
-	<larysa.zaremba@intel.com>, "Fijalkowski, Maciej"
-	<maciej.fijalkowski@intel.com>, "Tantilov, Emil S"
-	<emil.s.tantilov@intel.com>, "Chittim, Madhu" <madhu.chittim@intel.com>,
-	"Hay, Joshua A" <joshua.a.hay@intel.com>, "Keller, Jacob E"
-	<jacob.e.keller@intel.com>, "Shanmugam, Jayaprakash"
-	<jayaprakash.shanmugam@intel.com>, "Wochtman, Natalia"
-	<natalia.wochtman@intel.com>, Jiri Pirko <jiri@resnulli.us>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Richard Cochran
-	<richardcochran@gmail.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Burra, Phani
- R" <phani.r.burra@intel.com>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next v5 03/15] libie: add PCI device
- initialization helpers to libie
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v5 03/15] libie: add PCI
- device initialization helpers to libie
-Thread-Index: AQHcV8kQlXynRrXR6kCyOaoCkwiF5LWSC/SQ
-Date: Tue, 24 Feb 2026 07:20:18 +0000
-Message-ID: <PH8PR11MB796566CC0EA1F0684330D234F774A@PH8PR11MB7965.namprd11.prod.outlook.com>
-References: <20251117134912.18566-1-larysa.zaremba@intel.com>
- <20251117134912.18566-4-larysa.zaremba@intel.com>
-In-Reply-To: <20251117134912.18566-4-larysa.zaremba@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH8PR11MB7965:EE_|PH7PR11MB6954:EE_
-x-ms-office365-filtering-correlation-id: be6af487-81d4-484f-be5e-08de73752a41
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007|38070700021;
-x-microsoft-antispam-message-info: =?us-ascii?Q?zSgm/TXg+SeErhnYto1xKH/V8YLU+GoFTGRmi/h8q4LiYDn9UFbG8lKDWe9K?=
- =?us-ascii?Q?2vsQ1bSUU6UM2YQ4XbNpQP1Yi1Z/oOAjNdmnHNM4ioHFg35OB0TKq0wcURSa?=
- =?us-ascii?Q?cNlaoulz0UpXJH6v2AH0JyJLUgQHB9+7TSWFavJy/Rx2U7b/dbUbbFHv4BYd?=
- =?us-ascii?Q?j8rD2G9KiIj/Cqw3QthrCg2dqd3tvVsQlyKTEvr3fR0KlypDaz1vfnKItpN1?=
- =?us-ascii?Q?QnCo6x5grZQgt8Z/gvtoFv0241l+7yVOMtx9AjTs6lOaF1A2SXi/AcBWm03t?=
- =?us-ascii?Q?U4yim8d0ddbd32ozQnUr7TNNVbvzuFV+877Uag7HX5OMWa8EKFsgmBk60rrb?=
- =?us-ascii?Q?bTZFQ8KmJivrkIc6VMuuBhqNC7H2Epnt1YvzTyi2p9voiZD0ZSVj14NTEcIw?=
- =?us-ascii?Q?71lasH25U9f6jb27L/qfFwm04RRdxcvE+MG4agzozgX1PQOnHArd3ePM5X1h?=
- =?us-ascii?Q?1nvZkoLj9NEkSIf6zky0tmhCuwbb1HSPKYrHxAffAtE+xoNRagpGFxs+vyQG?=
- =?us-ascii?Q?icJOIzgn3YEBqaE+laoREsF1mbhpaZMMIndWGyzteUEtvK5MbQu/5mmTFrCd?=
- =?us-ascii?Q?pWQutsDWaHg4uSJReqcWi5UfMEM5X+q5nhI3ATXXWljH3dnmBvmUL1PwKjx8?=
- =?us-ascii?Q?1nbvdH2GlAWiq4HNc/fZo544d8Ihg/F6unJNm4uVWPmxYd5LunAiXwkpWwQI?=
- =?us-ascii?Q?3h3qA6Tv9laod0X9Fk0uHH5h4onFJ7uSrrZ/dV3Yb4GTbY1c9cJ4QB4TEBJx?=
- =?us-ascii?Q?JsP7qP7Oa6uVkVWbhLBKYM1/yJbN2A1fOhfkxXs6q/MwmFuYhCUQoPURiumd?=
- =?us-ascii?Q?HIq6h8Uom9X72jmmZCp/OdBafkx2m7KqfHJu5YSp17fJlKjIChpo1r4D8Nx/?=
- =?us-ascii?Q?0x8VUgngYJZT0QPbcox9EG52Yjo7ZEvP3DTy9s2NX0LLDNs5HAEy0yv42AJv?=
- =?us-ascii?Q?hDBygFuFliJ2sC+JRv983oTlxNepfZb3l7jiEdeE9ZHQlqh9rCu/UH8F3Ngh?=
- =?us-ascii?Q?8jUB5yl1ND+CWJOi85etA47lUzLvbHiDzalPXiuo+GryDef/CuHhxzsrVq46?=
- =?us-ascii?Q?WVvIHglySR0gbN+uw7O2rnG170gquvW93BUZzl7xYJo0ObUH0P4F81DCC2MY?=
- =?us-ascii?Q?nmKwZobJR/qdxnzI7Zrwz4WjAn3H1sashvMgIJsgjDBw0JpkBAK1RJ3a9TsA?=
- =?us-ascii?Q?mvixNbecHKZXmF5sxUXZCLzda8XMf+Mua3x/VU7OcE8swIuVbF3wxFteowGG?=
- =?us-ascii?Q?7fUdEPVtJMgeRWK/z+XgVROU/cvK5guizJGKvY9/rmJgjoIxdw3JRFRhlmoy?=
- =?us-ascii?Q?CZx/WVm3idf+G/GUs3Y1h3D4AcksjIvGqrJ6cP1K/6O+69e99qc9eL3RSvpo?=
- =?us-ascii?Q?Di1tTCZD9E+Yxz1sXgtrgbKHR03sqLvoB0jkCQ7d1n3Wvt24Nt58PHm1T1Lh?=
- =?us-ascii?Q?MvQBF1XBciYf1wDcwouuNBjYxEgLl9P90/2aMJDM559AJlWWK9NettJD2Fbq?=
- =?us-ascii?Q?Y5ubgw70LfX/gtCXzdNx/pBIepNAU2J9FqTLNwFnPIPbIrgq5gJLfIPKNmNo?=
- =?us-ascii?Q?6Ve/9AIDEF7PVRHQ0PRWh3VcBPq9k/1UrzhUUtJuyjC54bbAf0pcYoPebsoD?=
- =?us-ascii?Q?04+W7wowGIlmGZ8czvU2AHo=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB7965.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?3hZ/228PuW0Q+88PdJ4xPoGBs9nLrZqSG569LhAFuHuuA1Yy+VG5GurUT0L4?=
- =?us-ascii?Q?RN3pirWLw2ceHGsyfaGlYNf9p2CpdoUmEb6booevt4Y+h7xmG7wre3j13F8d?=
- =?us-ascii?Q?MfTdJsv7BWIaBBYoXC3ACIJW3k2zXgKxvCgrPq1N4eb3WPJJ7o3l9OgdVW/+?=
- =?us-ascii?Q?XB9MtT9Ht045/QcvcxpldaCLxY78whMQtA6TgOhMYiFZCCK6cE0cBVErYgBL?=
- =?us-ascii?Q?0bObjjxAIVEbAVM2s/3rfcev2IJ9itDlGlSrsD11R7IH7maVcKlGAFF4Q7jt?=
- =?us-ascii?Q?R4zoa4NMiMsWwj+Mg23DxWawiZnYlMwvERjVVVK6HDmZ5C5DMkonrF6uaI1s?=
- =?us-ascii?Q?OviPZ7CoSVGuminKuT5dM+XeUFI92GgnraXraQaqQvD3JRTxAWjKbrf4ge7N?=
- =?us-ascii?Q?rtC8mxZ2Eaq4k4JBKwLEb44TI8nsu/Ce22+1imqR1mMHbiMBICf8Uam0/XYn?=
- =?us-ascii?Q?nXHAoFmhAIRIcXfGmgRE6X8CYmdWONGUReT1CNBz7ddNc+mLhYsek7u0kw6H?=
- =?us-ascii?Q?npFjHOruNA7rTzq6bG4Wq0UkfMEPSCZzRCHn2LkzcxF2XdA+4xAwo2XQi6xs?=
- =?us-ascii?Q?H1I/pP/8C8yBor5AhVCuX1P1MxQTkpw2Xc2wx+KOfW8vm3OpSDplagNAv5Ym?=
- =?us-ascii?Q?nASc5eAk1zUHZrA+EdQJIuzP2ZALK8BZ6DWWqR//n6JX2AiQ83cW4BKdS+yD?=
- =?us-ascii?Q?GdPu9b6BDVDfKH/6T8aLg4H4KTy5buJN5YRlFeoNDuTkMTSwCtWniM0UwNhj?=
- =?us-ascii?Q?WttfA3WhcgrWmoB3OfNhw1b0YxdAkJZK17+AE1UdOw3TyI7x0bTlmqcEyOKe?=
- =?us-ascii?Q?bFfVYAH5Y3iD6FLe3+BGZSbheiRSa5sfrLdh5k8ovw077L+3CeU+rl1tuwfz?=
- =?us-ascii?Q?VLa9HV/D+1FISR+jrQfTwT6X5XLQg0iQr2uzYsgmjfkqwKHnHGAep61USi+F?=
- =?us-ascii?Q?IsXksJs9eShl6W6OFFCH0BJEsZujlwGKX6y5KHte620WTWaPfxib/SZ2MUCx?=
- =?us-ascii?Q?h6XcA8kw7qNeiIOaM1cqWEBPEYHSLRWryhR2vNrr30cNiRXshOSU68+p45a5?=
- =?us-ascii?Q?C1Ej+FQPw9YDKqkLStT5GmZZFOOGT3OdMZ80XcdpI9iymddtRzXIbPvHiBFK?=
- =?us-ascii?Q?QDuUEp3QG+iuhiJV5OyjBMciqrt5zKaUfi3cDCcReofhlDB8xbdDsu3wfFfm?=
- =?us-ascii?Q?2TeJ2AhNFZdCwJ5B7VWdm0kdkSAGCzM+MbwxmiahQnog5/j+apxOR5qFHm6n?=
- =?us-ascii?Q?JxKZv3t750DpM8IN/tIjPYdLBtGDOeTywL/vxd84kmnTtieDTUy0jk/WOPS+?=
- =?us-ascii?Q?VfuEXM0LRh+5+75GLna7httNfIO2bOtk+WtP4M5XP1KsbvTMIvI5iIw3utiy?=
- =?us-ascii?Q?CODCR1xsBlwudE9LmnKhu/hCG3AnvQGhC1H8M1ccYC7vejzMB4uzK6f93WDl?=
- =?us-ascii?Q?ln8RQW57Da6j1m1upZUm0wFZkc4qBzkFagLMXUvYDhLub+NAZLGPEqL52uwd?=
- =?us-ascii?Q?xtVhdUBEMypSDkNaKImEnfz2tGbigK2tA7CDgiQtwuPG1B1XOuVi0XoWwwi2?=
- =?us-ascii?Q?ZG9KA2NA8QYg4dr2fbA/lgw1qZxygjGW2QcIrDmeU6twLxRuEyJOJQ72pr8d?=
- =?us-ascii?Q?rxIjuTVxt1HobQgtsc/gIwAVZ5CbzG8hUn5BPpDsxNzcVLOdUFj1C7WbtiQN?=
- =?us-ascii?Q?jUJRCdH5WYodaiuighLKyObSsGU8AFL5x0ePbQ194d4q6ZPX?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BoaXEMy2"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59e5f52b13eso6255835e87.2
+        for <netdev@vger.kernel.org>; Mon, 23 Feb 2026 23:24:07 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771917846; cv=none;
+        d=google.com; s=arc-20240605;
+        b=SEapLtgLqr0FfbDV/YHc5Ds4cr/NCx2QCAyrM4qn44QJtICcjD38CsBTZc5zLAFplh
+         YjiGl9r3E4DG2nYR/aGIqHzkUnYW8Gi19FR2Fe0j2ptpAguKDvCN7uA4z4WtT9dZ0by2
+         KlU2+zMkp9RLBdi0P7Bx1MHVKGvu7egqmQMtWaVRwSfY6sznjoYBEob4lcVUjd6Z60gl
+         kFOPlOPtweCb4roerGWN+Uw2f62aqZpOARDS3z9P7UXeatohnIVYICbSVoOP1a8Cfm4m
+         jo6S6EAgKIo62wI/HfOHAVWZ3fVvlnmMdG7vvr6Wu0pRy7tuSDxDg5CJiDQimjmoY2pi
+         gzqA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ULd+oRTA8UiwXl4Lb5nizVLXiKCKx7ppXxndo2HO3Aw=;
+        fh=iimxS/toxw1tqakfW7lgDLfbqHnkLGiu5BceWk1v/ZM=;
+        b=dNnXqj7oHvF69gcL0gEWovqItsrKKhod+jtU1VZfXFeqZ+JxejjwI1jvwhBYlY7/U3
+         Idu6yZF6j765TcIBVN3xP/KU0VwtlpeW8N1yBPak3NV1WaQPgBZZA5/kmvBS7Kaa2V88
+         uBbFBaQb4sk1dTv4OsnFKczCMPsNY1SbUyNmA/GAV6i9VUwrrp4bynwj1xbb1H9Wkbsz
+         SXfPnOdtgOkcFi9ZBiBN4IvIyq+gjHTnXqVSD73TfQpaXgbyHncIbgirovkSUrc1HfUA
+         zG/80QYhzPGLrcpTppvPiAoqT163Z79hfd3VONJGaXnvUbo/5xVEvQUiWCP+y0BmEma5
+         axXQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1771917846; x=1772522646; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ULd+oRTA8UiwXl4Lb5nizVLXiKCKx7ppXxndo2HO3Aw=;
+        b=BoaXEMy2F7OAjJamk9KWf04b+60eygj6RgaNQuCjZy2fXgsavxwv3loBIEUSMfsysB
+         RAu+BDeBuDGiLJQXFsBvSzMUxWZU3X1idXl9ZJX9AiJOpTnE3XZ3TFezZACwhh4LXgk+
+         zILc2R8Tp7Hq6Lzc1RJkEfaOdAUhuPqjlm2rTXcX49azdnu+j+JYzzSw2kbOWrhybdBB
+         IhTbfWTkmS4VjnE/rdSWyHORVeDlTEmmZZt0ytx88fGf1Rlsuak1nfNGn1DVYvXX8SHf
+         Blrpbq9vl/t5wCY6kjhEp3Kq6sEgiaezd/61j/EsCc+hhmYK/i2GQugpG8M5UvyMXCJS
+         bArQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771917846; x=1772522646;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ULd+oRTA8UiwXl4Lb5nizVLXiKCKx7ppXxndo2HO3Aw=;
+        b=lHJT5RJrOyW7GaSc/x3Ci9lohg0/NaRIxbUipiWHeoCRoaAymQu8Q9I8NzuVoNdRYL
+         BohXwkv5MQuTyMGCFUGwbKYoAWYiTFv8KI1Lvbd5AVzeBkQHboTMZWEOympr12y+noBg
+         YgY/YEc/bbjvSUH+npHerVfAVLhHMDd4rd8neQkWREm/TkBo+2Z7dF0JLlB4WTQ6hOWN
+         aeYYgA0eqLcvgXt+hHbuWmE+21ZVtzebQy8MRDMzrlTXAXx7/dmVdmkGIUzMbtX7AaWZ
+         WQMbVv81uB1El3KDDvpAMJPedbQS7U8u2YQXVUE14qrWOa5OY2+3QzIEywxKs3Tri1ZG
+         WKxw==
+X-Gm-Message-State: AOJu0YwMbFogwsv14agCXaEsqUYlNdfUxlvU6DBug08+KU0F96F+e9Vg
+	kHmkIiVGHPIrzBEXAwgXzU7CCSjAPGW5Llni9al7oSHvyJLCs/fsQgkj2a0Pre9IGFLvHzSFS1F
+	vkapgUShuBZ6sJ3QfBxQs9sSlxwvKo10=
+X-Gm-Gg: ATEYQzzAz57CALGGrKaLHlS/r10TSHcOu/1PGEAYMZ158bWtPQIcz6FLHQsQVEX+5SF
+	xFhFY62WKEe/v3aGDEyyB/gUs1Bg8/H3Ly9oIie7Wq5U6mbuljMbe4tBYkyETq18l+74VDREQc6
+	49loct131qyXZ86vAK1f2w/cE3OQGuKvfalnSPJRACHGdMQBHL1uG7ohSJySOU7a6IESu24B8o7
+	nfZs4YKfu0sIVrawY8hwE7cYTkz/+KmcKXDSLhvWuHK0xEu/thc8uuTzl5NHwr2Y+C2t4BgnRXa
+	rKEDTSCs
+X-Received: by 2002:a05:6512:250f:b0:59f:6db3:152c with SMTP id
+ 2adb3069b0e04-5a0ed87a67amr4003240e87.7.1771917845447; Mon, 23 Feb 2026
+ 23:24:05 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB7965.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: be6af487-81d4-484f-be5e-08de73752a41
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Feb 2026 07:20:18.9886
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 0lv/TGzeYFQ7xds3MzVzGQyWwE8bIElppXN/beeV7bscN2oPXi4pSwY45oqbMJsXEenStuUVTBSrsa+Rd8U1Dw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR11MB6954
-X-OriginatorOrg: intel.com
+References: <e8355c0d7fd48981ba505e455387971f91210fa8.1771734206.git.tonghao@bamaicloud.com>
+ <CAL+tcoDR2-WTmhBakWcvEuLCwAU7RGRA8syfor-+RJJq7_ZOKw@mail.gmail.com>
+ <65307E32-7AFF-44EF-B2BB-89AA15F3D0D1@bamaicloud.com> <CAL+tcoB0uV0E9cDCfw58kAuzNcanstx_OT3h=dkQVOW1b-nN+A@mail.gmail.com>
+ <C914CAC5-AEF2-4814-84FC-30EA4B70F832@bamaicloud.com> <CAL+tcoDzik63K1aqpDTn7K6Jkta5ZtjedTQ58TB455+pwkq8Pw@mail.gmail.com>
+ <3AB6E925-3A2E-439D-8432-B00F4DEFE7F1@bamaicloud.com> <CAL+tcoD+TL6xbTodAKp=w0NVeLOubxoJpk=-b_8Z0bPvFrzXCQ@mail.gmail.com>
+ <4E09E708-FA5A-4523-8E75-359C3D8B43E6@bamaicloud.com>
+In-Reply-To: <4E09E708-FA5A-4523-8E75-359C3D8B43E6@bamaicloud.com>
+From: Jason Xing <kerneljasonxing@gmail.com>
+Date: Tue, 24 Feb 2026 15:23:27 +0800
+X-Gm-Features: AaiRm53SWjolA5DC8EeO5QdP3fbiUdoyMmv93KkJ64Nta57w4RY5mb1Beu3QGEA
+Message-ID: <CAL+tcoAo++zNTneOD+YM5gbAqSOyZtGT=FgRUpSZuzrE7WffHw@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: core: introduce the netdev_fetch_core_stats()
+To: Tonghao Zhang <tonghao@bamaicloud.com>
+Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Samiullah Khawaja <skhawaja@google.com>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of
-> Larysa Zaremba
-> Sent: 17 November 2025 19:19
-> To: intel-wired-lan@lists.osuosl.org; Nguyen, Anthony L
-> <anthony.l.nguyen@intel.com>
-> Cc: Lobakin, Aleksander <aleksander.lobakin@intel.com>; Samudrala, Sridha=
-r
-> <sridhar.samudrala@intel.com>; Singhai, Anjali <anjali.singhai@intel.com>=
-;
-> Michal Swiatkowski <michal.swiatkowski@linux.intel.com>; Zaremba, Larysa
-> <larysa.zaremba@intel.com>; Fijalkowski, Maciej
-> <maciej.fijalkowski@intel.com>; Tantilov, Emil S <emil.s.tantilov@intel.c=
-om>;
-> Chittim, Madhu <madhu.chittim@intel.com>; Hay, Joshua A
-> <joshua.a.hay@intel.com>; Keller, Jacob E <jacob.e.keller@intel.com>;
-> Shanmugam, Jayaprakash <jayaprakash.shanmugam@intel.com>;
-> Wochtman, Natalia <natalia.wochtman@intel.com>; Jiri Pirko
-> <jiri@resnulli.us>; David S. Miller <davem@davemloft.net>; Eric Dumazet
-> <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; Paolo Abeni
-> <pabeni@redhat.com>; Simon Horman <horms@kernel.org>; Jonathan
-> Corbet <corbet@lwn.net>; Richard Cochran <richardcochran@gmail.com>;
-> Kitszel, Przemyslaw <przemyslaw.kitszel@intel.com>; Andrew Lunn
-> <andrew+netdev@lunn.ch>; netdev@vger.kernel.org; linux-
-> doc@vger.kernel.org; linux-kernel@vger.kernel.org; Burra, Phani R
-> <phani.r.burra@intel.com>
-> Subject: [Intel-wired-lan] [PATCH iwl-next v5 03/15] libie: add PCI devic=
+On Tue, Feb 24, 2026 at 2:54=E2=80=AFPM Tonghao Zhang <tonghao@bamaicloud.c=
+om> wrote:
+>
+>
+>
+> > On Feb 24, 2026, at 14:24, Jason Xing <kerneljasonxing@gmail.com> wrote=
+:
+> >
+> > On Tue, Feb 24, 2026 at 2:08=E2=80=AFPM Tonghao Zhang <tonghao@bamaiclo=
+ud.com> wrote:
+> >>
+> >>
+> >>
+> >>> On Feb 24, 2026, at 13:28, Jason Xing <kerneljasonxing@gmail.com> wro=
+te:
+> >>>
+> >>> On Tue, Feb 24, 2026 at 12:07=E2=80=AFPM Tonghao Zhang <tonghao@bamai=
+cloud.com> wrote:
+> >>>>
+> >>>>
+> >>>>
+> >>>>> On Feb 24, 2026, at 11:52, Jason Xing <kerneljasonxing@gmail.com> w=
+rote:
+> >>>>>
+> >>>>> On Tue, Feb 24, 2026 at 11:22=E2=80=AFAM Tonghao Zhang <tonghao@bam=
+aicloud.com> wrote:
+> >>>>>>
+> >>>>>>
+> >>>>>>
+> >>>>>>> On Feb 23, 2026, at 08:20, Jason Xing <kerneljasonxing@gmail.com>=
+ wrote:
+> >>>>>>>
+> >>>>>>> On Sun, Feb 22, 2026 at 12:38=E2=80=AFPM Tonghao Zhang <tonghao@b=
+amaicloud.com> wrote:
+> >>>>>>>>
+> >>>>>>>> Network device statistics retrieved via procfs, sysfs, and netli=
+nk
+> >>>>>>>> represent the combined total of core_stats + driver, hardware st=
+atistics.
+> >>>>>>>>
+> >>>>>>>> However, in some scenarios, when monitoring netdev metrics, it i=
+s valuable
+> >>>>>>>> to clearly distinguish whether the values originate from the net=
+working
+> >>>>>>>> stack's core statistics or from the driver, hardware layer. This=
+ helps
+> >>>>>>>> improve debugging and addressing issues.
+> >>>>>>>>
+> >>>>>>>> Approaches were considered:
+> >>>>>>>> - commit 5247dbf16cee ("net/core: Introduce netdev_core_stats_in=
+c()").
+> >>>>>>>> This allows tracking increments to core_stats and helps identify=
+ specific
+> >>>>>>>> causes of changes, but not provide the total counters.
+> >>>>>>>> - extending rtnl_link_stats64 with new core_xxx fields.
+> >>>>>>>> This would likely confuse or break existing userspace applicatio=
+ns relying
+> >>>>>>>> on this struct.
+> >>>>>>>> - adding a tracepoint inside dev_get_stats().
+> >>>>>>>> This implementation is not simple or straightforward enough.
+> >>>>>>>>
+> >>>>>>>> The solution in this patch is therefore to introduce a new dedic=
+ated function
+> >>>>>>>> for collecting core statistics and mark it noinline. This approa=
+ch is simple,
+> >>>>>>>> clean, and maintainable to obtain driver, hardware statistics se=
+parately when needed.
+> >>>>>>>>
+> >>>>>>>> Signed-off-by: Tonghao Zhang <tonghao@bamaicloud.com>
+> >>>>>>>> Cc: "David S. Miller" <davem@davemloft.net>
+> >>>>>>>> Cc: Eric Dumazet <edumazet@google.com>
+> >>>>>>>> Cc: Jakub Kicinski <kuba@kernel.org>
+> >>>>>>>> Cc: Paolo Abeni <pabeni@redhat.com>
+> >>>>>>>> Cc: Simon Horman <horms@kernel.org>
+> >>>>>>>> Cc: Stanislav Fomichev <sdf@fomichev.me>
+> >>>>>>>> Cc: Kuniyuki Iwashima <kuniyu@google.com>
+> >>>>>>>> Cc: Samiullah Khawaja <skhawaja@google.com>
+> >>>>>>>> Cc: Ahmed Zaki <ahmed.zaki@intel.com>
+> >>>>>>>> Cc: Alexander Lobakin <aleksander.lobakin@intel.com>
+> >>>>>>>
+> >>>>>>> It's a simple refactor patch that only moves that logic to a new
+> >>>>>>> helper. I don't see any new possible callers right now so could y=
+ou
+> >>>>>>> provide more straightward/clear use cases and intentions behind t=
+his
+> >>>>>>> patch? For example, give us what kind of dumping stats you want t=
+o
+> >>>>>>> tweak and your next movements.
+> >>>>>> Thanks, Jason
+> >>>>>> This patch tries to add one helper function which marked as noinli=
+ne for bpf tracing (this commit 5247dbf16cee also use the noinline for trac=
+ing). This helper is not used other place in kernel.
+> >>>>>>
+> >>>>>> For example,
+> >>>>>> sudo bpftrace -e '
+> >>>>>> kprobe:netdev_core_stats_fetch {printf("%d\n", ((struct rtnl_link_=
+stats64 *)arg1)->rx_dropped);}
+> >>>>>> kretprobe:netdev_core_stats_fetch {printf("%d\n", ((struct rtnl_li=
+nk_stats64 *)retval)->rx_dropped);}
+> >>>>>> '
+> >>>>>
+> >>>>> Can't we use the global symbol dev_get_stats() instead? It should b=
+e the same.
+> >>>>
+> >>>> - if kprobe the dev_get_stats(), the rtnl_link_stats64 *storage is n=
+ot used by drivers (ndo_get_stats64, ndo_get_stats..,), the rx_dropped, for=
+ example, is 0.
+> >>>
+> >>> How about computing the delta of @storage->xxx between two consecutiv=
 e
-> initialization helpers to libie
->=20
-> From: Phani R Burra <phani.r.burra@intel.com>
->=20
-> Add memory related support functions for drivers to access MMIO space and
-> allocate/free dma buffers.
->=20
-> Reviewed-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> Signed-off-by: Phani R Burra <phani.r.burra@intel.com>
-> Co-developed-by: Victor Raj <victor.raj@intel.com>
-> Signed-off-by: Victor Raj <victor.raj@intel.com>
-> Co-developed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-> Signed-off-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
-> Co-developed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-> Signed-off-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-> Co-developed-by: Larysa Zaremba <larysa.zaremba@intel.com>
-> Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-> ---
->  drivers/net/ethernet/intel/libie/Kconfig  |   6 +
->  drivers/net/ethernet/intel/libie/Makefile |   4 +
->  drivers/net/ethernet/intel/libie/pci.c    | 187 ++++++++++++++++++++++
->  include/linux/intel/libie/pci.h           |  56 +++++++
->  4 files changed, 253 insertions(+)
-> =20
+> >>> kretprobes hitting this function? And you can also identify the sourc=
+e
+> >
+> > two consecutive __kretprobes__=E2=80=A6
+> I got it. In fact, it is not solving the problem. For example, @storage->=
+rx_dropped is increasing, but it's impossible to determine whether the incr=
+ease comes from core_stats.rx_dropped, from the driver=E2=80=99s rx_dropped=
+, or from both.
 
-Tested-by: Bharath R <bharath.r@intel.com>
+To be more specific, in dev_get_stats() @storage is only one memory
+area that records the information from @core_stats. So it is
+@core_stats that takes effect and is widely used/scattered over the
+place (please see how one example like dev_core_stats_rx_dropped_inc()
+gets called, it can be used by drivers like ipvlan or stack). We
+cannot tell which one causes the increment by looking at @core_stats.
 
+Besides, another trivial thing is that, even with your patch applied,
+it doesn't change anything since core_stats->rx_dropped can get
+increased in between kprobe and kretprobe of the new helper you added.
+
+With that said, how can you accurately know where the increment comes
+from? Is it from the stack or driver? I dunno :S
+
+Thanks,
+Jason
