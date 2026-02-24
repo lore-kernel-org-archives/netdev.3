@@ -1,115 +1,136 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E2B27E1DC
-	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 15:36:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771947372; cv=none; b=Rb7DMt6qUqP1glXSyfdPnMo0k65V5we1RywrC5HfLkOFa3o3GSQWtoeeHGOhfjoTR7+LunGr9YAElWXNI3rrdQTLJRBefqmmvqg/km6ugvHXc+aahuNATK6S0mQRxa1YgmiOkNdt1h032tzIPUSD5R885jSARNwxT9c7wbN8I4g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771947372; c=relaxed/simple;
-	bh=NmxLWvbIlebeZn6AKtgHcEK1/JKHs8ZQvP1lC80mkiw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iKgdB34xM48ZEyORK5Rhg3Vgyq086iij2gfgaelIOUJnb49HjGtrUBKijH0/a9Yj+xHzKazpZklLwW/QW6HOMWUs8eDCri/BkGCJkU59gv1jANappSIMdPUoKP5cQFe+BU/yZkcL8MJq8kQcDyFV+XUZgeFQ+vlVhQjuFS0lwzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WH2FFnyz; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE14292B4B
+	for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 15:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.169
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771947637; cv=pass; b=TNcsMhFYBw3+nGggG4eCPHpRi94TuY0mkJ7ntUd0xSlvYnNslFfUJEEZbXbK/OWFSKvU75+KioxXiplMw7lqeN4+xrwLUoxKWlbAnPD6ogN/cnc2ZLGoCMFs4qFj+WabEsjfu02hs7DuDFYiiygQ818Qoiy6U9Ove4OlMSJ6phY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771947637; c=relaxed/simple;
+	bh=O3QyF9FLKTP6W6pa/p3xJuZO0tSDoqWpWsvRiZjDSKc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EhzFQ10W5Ya/cSc31EykX4+ZeQLrBNZw+XwrS438cJ1tEE75frikb8+i57zP+s86PXd8jep0tkHibsiqe5hDkHJPU6i5GAYhEKx7JqPnLlq/W3hSPTbycdyAVC0tS0UHmL1D7OZqhxgcAePqIY/Xa8wYrcfaMTqvHCP7ICmf+jA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qYtwN44p; arc=pass smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WH2FFnyz"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-824b32875e7so2718708b3a.3
-        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 07:36:11 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qYtwN44p"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-5062fc5d86aso53971701cf.1
+        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 07:40:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771947635; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KI21W6ecUL4t4z7IGBzgILecXL1qelNorBUX6vmBL5u1jti4lll+2QMW+EcRDE+gUi
+         qHdZHC9ax6JE+UEjrSmrxoVJfGt8b4Xz1iytYeyaveuxlUBmluhW9xgAFHg3P6t1FWqf
+         F0spEhblB0BDcdthygxJqqd1qVXKwqBIhAjWs3P9Kw8nkUIU6iAx6DnGwR+pMU2+v+aj
+         n/Jp34Pe72wlcI/tK5kqhbmiQQu4/GgRt79RnOt78/GEkPnC1eI3Ynmw/XQ7DJZTIhl+
+         /hmg5wcTJStt+2zh4LEcm79wqiiHO9LnQuXxBNzEOGDJmr28AVecHjK5SytDLgNREPJA
+         zzoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=s1imFveo5pSvSVBui0etS47YYyKWam8zfgbleGHkHh8=;
+        fh=F9Pa3NeVI0ElM4w8oSGkuVZPpQ5kQ4uD4fHIr5y8sNE=;
+        b=Kp3MgBYiwUmpHUmsgRPLpJuEwahVCQkzbBmkBYqj4mlSaFrV4qd613FsOFb9pndL7T
+         I+PR3Iqon7/5YwKvCk2PvkVs3m2bhvB6zfk9oYf1j+6cP6MPsZvRMhBiWwR5m1cGrSrd
+         h9YzsyYL1Ul8FGX2CyP/tLLmcmZKcxJzhHvievwrvLYcpIB02s1mVKlW90cHDRSkiePO
+         6Wau+htaczIGhTpX99bpmqLcSYOJHcsAlsDt7Cy5zA1f2mJBLXJHMUesM7lbyiR4Olo+
+         KSQBLm0Lz/yNKReGDQJNOvrdiM6RJ/yUHvCkCKnoOE0qUpmw/YCv0zKmPHxsOSelhqOR
+         r8jg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771947371; x=1772552171; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=J0m5QrjYNnqHXl9e832+w13ILtwNiaT2S5RFUJztWJo=;
-        b=WH2FFnyzc7ZgiOb3xmnDcm6qi7tpiinFHSnq2i1q/wvAhARVsTAt5TpSj6ZV2Le8UD
-         JOwz2TjsMWE51//RoebWb/5u3VYNDmy72oXk7oAP5YMy+12xQD+R2cWbnD68zW51PCAQ
-         fuWnOqiIAKdj70iY5SZ0SdTlK4X+hE7ZpKbJD55HjgD8vx/BJdH5YyyYpJpHMFfEokJB
-         vzyDsW8oe6WI3UUBrhIfTbc0VtY1hPn0UXv7l+MOEoZfyDdVm0YOlXDxTQtbypuK6xTN
-         KmmWwCEqjXD155oDuOMtveMGpDREv/SXg6oy2jD0iGHf/dY8qfKvpJyDnx1jKtO3JI+m
-         wl/A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771947371; x=1772552171;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1771947635; x=1772552435; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=J0m5QrjYNnqHXl9e832+w13ILtwNiaT2S5RFUJztWJo=;
-        b=a82b5a1f92GUIVqF6Uoyx2+Eg57cWIj5xF8/1lT2TSXQgUpr4U/L830rQ6Q91clqAC
-         26bqxyp//jo9A5SgFiVixYvjVo6rvGyADyDcnWYUWdMGqYFkTQZDrTlpm6AvL5UZ4cP8
-         OJ8oORQTIIy1auQL66JY9dxh+NcQpnbIn8hEihk45BEJoh3mKN398sJuvVmTXiuIvnrw
-         Ey6vxTquwBpSlo/ro8z0JoFkZxOMdn8Y1OdYLl10KvqO/LwV5qxWQdjtpPXPPf8c5STf
-         3NpJXXskfFAT+/TZHuv5so93wXLNEUCjkk8HFB4MWQANogWIjrM2W66Z1Xfpj2NcTc0Y
-         adGg==
-X-Forwarded-Encrypted: i=1; AJvYcCUoXH1OBLpkWTwa+MvuTU9Db+KX7sOI6Ns1zDj5fe2yTTWpC1ENgYn4VuzU6VzSh3NcyE9nB3Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHJ0oeySkUNeyM6/fPASHRK7bHJJCrGfDpbtpJBZ5lJyWlFaaj
-	T30+BgU4BvdkQ9w4OsBEhIC4MtZPn8WsqABNjlRg2PhdhU8PHsIRLOMg
-X-Gm-Gg: AZuq6aLg1XplozhD+FfUk6Jh0mwhn0ZcDwayidYaiUMF7ws7GJ+Mw5OGmbnb8Kot06w
-	zl6myx0YaDfEU+zZYdu7lTP5aIuk9BbK/9GDOEUVxYIpvE1EbWo+Wv2RBQbPNpEGxo7Bl9e2Bq0
-	P8B35nZMaxKOweL/1b55qrZdwOxH1ll9vpmQzDosrLezKSxF0mGI+6Ja6P+M8lnxKf0vWFV3UYE
-	upZjWT54qSOA4CDswVmynLUR4rskXvAQwkxUWTeSeYf7sXUaWbtrr/FdgKyssHPD9bNmS3jHD6G
-	cA2EQaKTQZar02xzsaA6uFQheObKVgc7lPgHZjhkNPttLX6/nfabIBbcmAU6bpL+LIhe+Oa3s8j
-	evoutgWY/w5fT7KiEHw80y3CF7+zSZGsgJQFOr/G8wn0KlpdeGEnjnvd+88h9yTTl7L1aNENeYz
-	uaMC5ujHj/S9T5fl6L1AF8tbHQY+Hdm2g8Lu9Mh8YmA5zWKVz+enirbnwaptRDpCCZkkM=
-X-Received: by 2002:a05:6a21:38e:b0:38d:f745:4d5f with SMTP id adf61e73a8af0-39545ecc333mr11285126637.24.1771947371007;
-        Tue, 24 Feb 2026 07:36:11 -0800 (PST)
-Received: from Ubuntu-Kernel-2204.local.tld ([49.207.50.26])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-826dd64111csm10698181b3a.6.2026.02.24.07.36.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 07:36:10 -0800 (PST)
-From: Abhilekh Deka <abhindeka@gmail.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	nnac123@linux.ibm.com
-Cc: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	linuxppc-dev@lists.ozlabs.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Abhilekh Deka <abhindeka@gmail.com>
-Subject: [PATCH v3] net/ibmveth: fix comment typos in ibmveth.c
-Date: Tue, 24 Feb 2026 21:06:01 +0530
-Message-Id: <20260224153601.17534-1-abhindeka@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        bh=s1imFveo5pSvSVBui0etS47YYyKWam8zfgbleGHkHh8=;
+        b=qYtwN44pAzzsRjFi4t7xLa0ihOwQ8nhRGHkL8576eBlADkU6wyLDBoOUpnRgQgcPEb
+         PqnK7OgqBlt9NniKN6IZ3MdxpswrU4NMGgc6deoAezK5eOgmcYeiZQoyB6JwIg87cy2+
+         ph7FB2Mr94J4WJin09SwjDWdlWPks611GwxrtsPXm2lE9Tkf73WjFIdtSx5OxNap6is3
+         oUowm56NJPIYC74UYWwTGi4diPjOq5h1ExMjnzWDB+csjA6s4ExuWgN0KHXL4vxYEynt
+         uOGVzM69ZdwzUNDEyerZYFFzr4+SEFBvZKm/Irq+MOC49sx2LooDjDVOBtSfTQInDVLF
+         nSoA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771947635; x=1772552435;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=s1imFveo5pSvSVBui0etS47YYyKWam8zfgbleGHkHh8=;
+        b=oxXg4JvdCPgOD/8RLch44AcCkvu4EMFDo5oz0INcJgeJwAepSLUw8ySY94hsP17ZLD
+         thk2zydTmu/m0Mx2UcZx8jIW47VKUDbvETy3mvqrRHHA4JeZA9yy5AfWwHUdkRnWlGbh
+         bYzr1JQiAvr6JBdDxeG0Rt46DPfU4mQbm7GpxShP7Jj7FMMuLYuPuB/MKdlvEMujmcL2
+         QVqfKWozASTGHMC0v5tg1f4/RCjhGRLR842FeEX0zHoPXkrYKMzyiS1H/D2pYTFdyiVs
+         f9jSTxr9QgCj0hWD3AZzHyzsyARUkOyaJrjOZFVw9mAYZxfZrC/KimRM+86WrBnhDlh1
+         Yd6w==
+X-Forwarded-Encrypted: i=1; AJvYcCVjEFocb/2Js7FjIW5iaLh+/BLBfKeIW0AXTtS0PR83a6qqVZckQlE+cxQqAbtbWuaBL/f6pWI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzE1q7qm4ozCmgGcfsFbi/3jVAhtXLKkAgnnc/sEpGChLqn+cLg
+	yQJVLGRGo8uqRvVIdbe0wgcnyYtKEt10GCQjJSP1UCdOFMJWN99PDawL+mYgVxrYN2W7o9B6XvF
+	jVDU2Z/6/3Y5sOeqJT9ULr98dj20U3mTkUdkXCXKG
+X-Gm-Gg: AZuq6aKQPuoL7KOfT5MNiHO5XhqLwIzkgbRm/2eeqLBcgiWyzpIfuHw7u3g8M/b+lIx
+	0QhnliELwIrOaf4E3ixLrLYz/qbyma6y816nfFZ6U9t1EscRQQI51DltcKILg/dnVdmWlHv08NL
+	mi8ZG5ElA51mWZ4A9coWIfxsF2vUJNuBSqBZ2eYs02U8htv9AaveodcFdzMBq4LN7qZm0udr4Pu
+	CIDh6FSt9kdRLYQaGxuUfafwD9XmrAkiKbboSyMyI9xzmJCDUiLI6Cv6EB09LuLLlOGrC6/dWFN
+	QOGe56Th3nXX+8BqXrlx3cK9zPHyygIKGTkLL+Uopw==
+X-Received: by 2002:a05:622a:155:b0:501:466b:513f with SMTP id
+ d75a77b69052e-5070bb81aecmr170572891cf.15.1771947634673; Tue, 24 Feb 2026
+ 07:40:34 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260224122856.3152608-1-edumazet@google.com> <aZ2fA2x5nHsnQoBu@strlen.de>
+In-Reply-To: <aZ2fA2x5nHsnQoBu@strlen.de>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 24 Feb 2026 16:40:21 +0100
+X-Gm-Features: AaiRm533J9ZDgyKQm7SRyYWq-5zpwgDCD5gGsi5iohdc-GX4zvKgIhR8q5fnwgE
+Message-ID: <CANn89iLP2xFerYywu=x8bnox_+vjrDVUxkEf-nUEJM0VmNfVdA@mail.gmail.com>
+Subject: Re: [PATCH net-next] netfilter: xt_owner: no longer acquire
+ sk_callback_lock in mt_owner()
+To: Florian Westphal <fw@strlen.de>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Pablo Neira Ayuso <pablo@netfilter.org>, 
+	Jozsef Kadlecsik <kadlec@netfilter.org>, netdev@vger.kernel.org, 
+	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
+	eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Correct spelling mistakes in comments:
-- Fix misspelling of gro_receive
-- Fix misspelling of Partition
+On Tue, Feb 24, 2026 at 1:52=E2=80=AFPM Florian Westphal <fw@strlen.de> wro=
+te:
+>
+> Eric Dumazet <edumazet@google.com> wrote:
+> > After commit 983512f3a87f ("net: Drop the lock in skb_may_tx_timestamp(=
+)")
+> > from Sebastian Andrzej Siewior, apply the same logic in mt_owner()
+> > to avoid touching sk_callback_lock.
+> > -     read_lock_bh(&sk->sk_callback_lock);
+> > -     filp =3D sk->sk_socket ? sk->sk_socket->file : NULL;
+> > +     /* The sk pointer remains valid as long as the skb is. The sk_soc=
+ket and
+> > +      * file pointer may become NULL if the socket is closed. Both str=
+uctures
+> > +      * (including file->cred) are RCU freed which means they can be a=
+ccessed
+> > +      * within a RCU read section.
+> > +      */
+> > +     rcu_read_lock();
+> > +     sock =3D READ_ONCE(sk->sk_socket);
+> > +     filp =3D sock ? READ_ONCE(sock->file) : NULL;
+>
+> Thanks for doing this Eric!
+>
+> Minor nit: rcu_read_lock is already acquired from nf_hook() helper, so
+> we aleays have it in both iptables and nftables.
+>
+> Reviewed-by: Florian Westphal <fw@strlen.de>
 
-Signed-off-by: Abhilekh Deka <abhindeka@gmail.com>
----
- drivers/net/ethernet/ibm/ibmveth.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Sure, I will remove the rcu_read_lock()/rcu_read_unlock()
 
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 3108bf50576f..b2a578e6ff31 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -355,7 +355,7 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
- 
- 		/*
- 		 * If multi rx buffers hcall is no longer supported by FW
--		 * e.g. in the case of Live Parttion Migration
-+		 * e.g. in the case of Live Partition Migration
- 		 */
- 		if (batch > 1 && lpar_rc == H_FUNCTION) {
- 			/*
-@@ -480,7 +480,7 @@ static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
- 	 */
- 	if (!reuse) {
- 		/* remove the skb pointer to mark free. actual freeing is done
--		 * by upper level networking after gro_recieve
-+		 * by upper level networking after gro_receive
- 		 */
- 		adapter->rx_buff_pool[pool].skbuff[index] = NULL;
- 
--- 
-2.34.1
+Do you think adding lockdep_assert_in_rcu_read_lock() would be useful
+or would it be too much, iptables/nftables willl always be run under RCU
+and this is well understood ?
 
+Thanks.
