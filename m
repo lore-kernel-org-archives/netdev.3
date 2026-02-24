@@ -1,190 +1,120 @@
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Received: from mail-m1973185.qiye.163.com (mail-m1973185.qiye.163.com [220.197.31.85])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB38C1E9B1A;
-	Tue, 24 Feb 2026 02:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B491A9FBC;
+	Tue, 24 Feb 2026 02:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771899571; cv=none; b=GxrtELfr6bFKEDchk8Gm/1rZb5VEVNvG2I5zV9SjMyJeHTA2mWOCwBPgbXRsJPlYobJhV1dJGjNB7DFr1Flkx2xVhvEtRX5g+Hlt5S2Tfh3r8gb5kqIKriHquXU9MIr7zqepi9d2oIRQ0qQmh6005ULDi1Cbxt/67RsW1q2II20=
+	t=1771899876; cv=none; b=i0G+WlUN05LrDEyhg86ed61NX2390HjVK1Nw168H8D9oYAqWqCJ8Kc1DhlksYxQ40vDIaBXAby4GqiieOEoMPo4ZjEMvTqAV0bJMspa2LWsQTnSVY9u2GaNzxABoT6jr2fJa6JcaJDZyv80frqEgimnv6IvHjPibpobnLvDRijA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771899571; c=relaxed/simple;
-	bh=P1/UInNRTPbopanuJYg1QuNK9n0JH1eKu+uglbJlSL8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nExCm5cTQpVzr8bPw3lwve8ewUO+BEjr8wnoVZ88sE8PKjF6xFVQ5Q2g/ZpowKA8Tlo4Q7QX7vn+L08owIwnePeuMq4nx4JO6+Lup1Xi4jxEsrgg61ezzEoi4pTULq2eMgtbccdD4784OLk2zLpU4r4F4u2cNmfdo1STo25oWcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Ndn0Pf+3; arc=none smtp.client-ip=115.124.30.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1771899876; c=relaxed/simple;
+	bh=VFI84jsJoxKxbbl2Av3iihOwmdaUZt/3qxvYrHVfk1A=;
+	h=Cc:Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=VBPYwiL4yLQsyXsqVnEg6E1nWzE0tL7EPnj76s3zTnS0GpxARrzBahESAw79vNYluJ3W/EIcPb2Vq5xCiGAYTj/MTxF0UvZ24dC0kpmcS9PiFPhx0V/AuLtxcCh3Qr9XopNzLG+wuDoLJW1449mAJVoqgpN0+f5Y4/ljj9srBeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=I2JxoTtV; arc=none smtp.client-ip=220.197.31.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Ndn0Pf+3"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1771899565; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=9NJlGZYkY4YMHtEUyi3QBzwIAufqLmLbDzPVClrsg80=;
-	b=Ndn0Pf+3yf93iNGFbLKetXLPq/P10jtU5orrsJ+wsyIeJPG8MSTHYd+EeTFBN0iWGODnc56Cwp+ixBkKOvfOhGMJdqhOp4uSSbCKzcydUONPkNwFaMCBRfvTiQ5aNoO+fipXStQuqqOqY8JBW6FmNyFKN+UCdcVBWVgTGGDigjI=
-Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0WzhsA2w_1771899564 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 24 Feb 2026 10:19:24 +0800
-Date: Tue, 24 Feb 2026 10:19:24 +0800
-From: "D. Wythe" <alibuda@linux.alibaba.com    >
-To: Mahanta Jambigi <mjambigi@linux.ibm.com>
-Cc: "D. Wythe" <alibuda@linux.alibaba.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dust Li <dust.li@linux.alibaba.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Sidraya Jayagond <sidraya@linux.ibm.com>,
-	Wenjia Zhang <wenjia@linux.ibm.com>,
-	Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
-	Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-	netdev@vger.kernel.org, oliver.yang@linux.alibaba.com,
-	pasic@linux.ibm.com
-Subject: Re: [PATCH RFC net-next] net/smc: transition to RDMA core CQ pooling
-Message-ID: <20260224021924.GA53803@j66a10360.sqa.eu95>
-References: <20260202094800.30373-1-alibuda@linux.alibaba.com>
- <daefb72f-398e-489f-bdbc-db997ef9c5ae@linux.ibm.com>
- <20260209075338.GA61095@j66a10360.sqa.eu95>
- <2d71bab3-161d-414e-90e3-0e408ca931c2@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="I2JxoTtV"
+Received: from [172.16.12.14] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 34bd86f1b;
+	Tue, 24 Feb 2026 10:08:59 +0800 (GMT+08:00)
+Cc: shawn.lin@rock-chips.com, Bjorn Helgaas <bhelgaas@google.com>,
+ "Vaibhaav Ram T . L" <vaibhaavram.tl@microchip.com>,
+ Kumaravel Thiagarajan <kumaravel.thiagarajan@microchip.com>,
+ Even Xu <even.xu@intel.com>, Xinpeng Sun <xinpeng.sun@intel.com>,
+ Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+ Jiri Kosina <jikos@kernel.org>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Zhou Wang <wangzhou1@hisilicon.com>, Longfang Liu <liulongfang@huawei.com>,
+ Vinod Koul <vkoul@kernel.org>, Lee Jones <lee@kernel.org>,
+ Jijie Shao <shaojijie@huawei.com>, Jian Shen <shenjian15@huawei.com>,
+ Sunil Goutham <sgoutham@marvell.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Heiner Kallweit <hkallweit1@gmail.com>,
+ "David S . Miller" <davem@davemloft.net>,
+ Jeff Hugo <jeff.hugo@oss.qualcomm.com>, Oded Gabbay <ogabbay@kernel.org>,
+ Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+ Karol Wachowski <karol.wachowski@linux.intel.com>,
+ Min Ma <mamin506@gmail.com>, Lizhi Hou <lizhi.hou@amd.com>,
+ Andreas Noever <andreas.noever@gmail.com>,
+ Mika Westerberg <westeri@kernel.org>, Tomasz Jeznach
+ <tjeznach@rivosinc.com>, Will Deacon <will@kernel.org>,
+ Xinliang Liu <xinliang.liu@linaro.org>, Tian Tao <tiantao6@hisilicon.com>,
+ Davidlohr Bueso <dave@stgolabs.net>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Srujana Challa <schalla@marvell.com>, Bharat Bhushan
+ <bbhushan2@marvell.com>, Antoine Tenart <atenart@kernel.org>,
+ Herbert Xu <herbert@gondor.apana.org.au>, Raag Jadav <raag.jadav@intel.com>,
+ Hans de Goede <hansg@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jiri Slaby <jirislaby@kernel.org>, Andy Shevchenko <andy@kernel.org>,
+ Manivannan Sadhasivam <mani@kernel.org>,
+ Mika Westerberg <mika.westerberg@linux.intel.com>,
+ Andi Shyti <andi.shyti@kernel.org>, Robert Richter <rric@kernel.org>,
+ Mark Brown <broonie@kernel.org>, Nirmal Patel
+ <nirmal.patel@linux.intel.com>, Kurt Schwemmer
+ <kurt.schwemmer@microsemi.com>, Logan Gunthorpe <logang@deltatee.com>,
+ Linus Walleij <linusw@kernel.org>, Bartosz Golaszewski <brgl@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Bingbu Cao <bingbu.cao@intel.com>, Ulf Hansson <ulf.hansson@linaro.org>,
+ Arnd Bergmann <arnd@arndb.de>, Benjamin Tissoires <bentiss@kernel.org>,
+ linux-input@vger.kernel.org, linux-i3c@lists.infradead.org,
+ dmaengine@vger.kernel.org, Philipp Stanner <phasta@kernel.org>,
+ netdev@vger.kernel.org, nic_swsd@realtek.com, linux-arm-msm@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-usb@vger.kernel.org,
+ iommu@lists.linux.dev, linux-riscv@lists.infradead.org,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ linux-cxl@vger.kernel.org, linux-crypto@vger.kernel.org,
+ platform-driver-x86@vger.kernel.org, linux-serial@vger.kernel.org,
+ mhi@lists.linux.dev, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Jan Dabros <jsd@semihalf.com>, linux-i2c@vger.kernel.org,
+ Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ linux-spi@vger.kernel.org, Jonathan Derrick <jonathan.derrick@linux.dev>,
+ linux-pci@vger.kernel.org, linux-gpio@vger.kernel.org,
+ Mauro Carvalho Chehab <mchehab@kernel.org>, linux-media@vger.kernel.org,
+ linux-mmc@vger.kernel.org
+Subject: Re: [PATCH 01/37] PCI/MSI: Add Devres managed IRQ vectors allocation
+To: Jakub Kicinski <kuba@kernel.org>
+References: <1771860581-82092-1-git-send-email-shawn.lin@rock-chips.com>
+ <1771860581-82092-2-git-send-email-shawn.lin@rock-chips.com>
+ <20260223160402.3ad8f079@kernel.org>
+From: Shawn Lin <shawn.lin@rock-chips.com>
+Message-ID: <ec226aa1-5cc8-855f-8f90-1d7f89efe766@rock-chips.com>
+Date: Tue, 24 Feb 2026 10:08:58 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.11.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+In-Reply-To: <20260223160402.3ad8f079@kernel.org>
+Content-Type: text/plain; charset=gbk; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <2d71bab3-161d-414e-90e3-0e408ca931c2@linux.ibm.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+X-HM-Tid: 0a9c8d68279109cckunm6766673b9bec2a
+X-HM-MType: 1
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZQ09CQ1YYTU4fGk8fHk9CSE1WFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSEtKTE
+	tVSktLVUtZBg++
+DKIM-Signature: a=rsa-sha256;
+	b=I2JxoTtVS0Yy5g50bgv4Wil//q2f9q9dCHuXovK/5LdNvBScPX9QRZNqNln/2pGvmbHOVQSNiAizH26Ay9wuN1CW4yf959RsxwxZnY1zkzGm1f2heNBE5Aht1ygGExZDhYnxUaCH2lYQFIRzQh1Ji7cYGdQWjF/HKhpMW2zjyIY=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=VXxBr7dg17LQLBnY9v36F+7EuLqaMgXXNtGWjPOgYcA=;
+	h=date:mime-version:subject:message-id:from;
 
-On Fri, Feb 13, 2026 at 04:53:28PM +0530, Mahanta Jambigi wrote:
+在 2026/02/24 星期二 8:04, Jakub Kicinski 写道:
+> On Mon, 23 Feb 2026 23:29:40 +0800 Shawn Lin wrote:
+>> pcim_alloc_irq_vectors() and pcim_alloc_irq_vectors_affinity() are created for
+>> pci device drivers which rely on the devres machinery to help cleanup the IRQ
+>> vectors.
 > 
-> 
-> On 09/02/26 1:23 pm, D. Wythe wrote:
-> > On Fri, Feb 06, 2026 at 04:58:23PM +0530, Mahanta Jambigi wrote:
-> >>
-> >>
-> >> On 02/02/26 3:18 pm, D. Wythe wrote:
-> >>> The current SMC-R implementation relies on global per-device CQs
-> >>> and manual polling within tasklets, which introduces severe
-> >>> scalability bottlenecks due to global lock contention and tasklet
-> >>> scheduling overhead, resulting in poor performance as concurrency
-> >>> increases.
-> >>>
-> >>> Refactor the completion handling to utilize the ib_cqe API and
-> >>> standard RDMA core CQ pooling. This transition provides several key
-> >>> advantages:
-> >>>
-> >>> 1. Multi-CQ: Shift from a single shared per-device CQ to multiple
-> >>> link-specific CQs via the CQ pool. This allows completion processing
-> >>> to be parallelized across multiple CPU cores, effectively eliminating
-> >>> the global CQ bottleneck.
-> >>>
-> >>> 2. Leverage DIM: Utilizing the standard CQ pool with IB_POLL_SOFTIRQ
-> >>> enables Dynamic Interrupt Moderation from the RDMA core, optimizing
-> >>> interrupt frequency and reducing CPU load under high pressure.
-> >>>
-> >>> 3. O(1) Context Retrieval: Replaces the expensive wr_id based lookup
-> >>> logic (e.g., smc_wr_tx_find_pending_index) with direct context retrieval
-> >>> using container_of() on the embedded ib_cqe.
-> >>>
-> >>> 4. Code Simplification: This refactoring results in a reduction of
-> >>> ~150 lines of code. It removes redundant sequence tracking, complex lookup
-> >>> helpers, and manual CQ management, significantly improving maintainability.
-> >>>
-> >>> Performance Test: redis-benchmark with max 32 connections per QP
-> >>> Data format: Requests Per Second (RPS), Percentage in brackets
-> >>> represents the gain/loss compared to TCP.
-> >>>
-> >>> | Clients | TCP      | SMC (original)      | SMC (cq_pool)       |
-> >>> |---------|----------|---------------------|---------------------|
-> >>> | c = 1   | 24449    | 31172  (+27%)       | 34039  (+39%)       |
-> >>> | c = 2   | 46420    | 53216  (+14%)       | 64391  (+38%)       |
-> >>> | c = 16  | 159673   | 83668  (-48%)  <--  | 216947 (+36%)       |
-> >>> | c = 32  | 164956   | 97631  (-41%)  <--  | 249376 (+51%)       |
-> >>> | c = 64  | 166322   | 118192 (-29%)  <--  | 249488 (+50%)       |
-> >>> | c = 128 | 167700   | 121497 (-27%)  <--  | 249480 (+48%)       |
-> >>> | c = 256 | 175021   | 146109 (-16%)  <--  | 240384 (+37%)       |
-> >>> | c = 512 | 168987   | 101479 (-40%)  <--  | 226634 (+34%)       |
-> >>>
-> >>> The results demonstrate that this optimization effectively resolves the
-> >>> scalability bottleneck, with RPS increasing by over 110% at c=64
-> >>> compared to the original implementation.
-> >>
-> >> I applied your patch to the latest kernel(6.19-rc8) & saw below
-> >> Performance results:
-> >>
-> >> 1) In my evaluation, I ran several *uperf* based workloads using a
-> >> request/response (RR) pattern, and I observed performance *degradation*
-> >> ranging from *4%* to *59%*, depending on the specific read/write sizes
-> >> used. For example, with a TCP RR workload using 50 parallel clients
-> >> (nprocs=50) sending a 200鈥慴yte request and reading a 1000鈥慴yte response
-> >> over a 60鈥憇econd run, I measured approximately 59% degradation compared
-> >> to SMC鈥慠 original performance.
-> >>
-> > 
-> > The only setting I changed was net.smc.smcr_max_conns_per_lgr = 32, all
-> > other parameters were left at their default values. redis-benchmark is a
-> > classic Request/Response (RR) workload, which contradicts your test
-> > results. Since I'm unable to reproduce your results, it would be
-> > very helpful if you could share the specific test configuration for my
-> > analysis.
-> 
-> I used a simple client鈥搒erver setup connected via 25鈥疓b/s RoCE_Express2
-> adapters on the same LAN(connection established via SMC-R v1). After
-> running the commands shown below, I observed a performance degradation
-> of up to 59%.
-> 
-> Server: smc_run uperf -s
-> Client: smc_run uperf -m rr1c-200x1000-50.xml
-> 
-> cat rr1c-200x1000-50.xml
-> 
-> <?xml version="1.0"?>
-> <profile name="TCP_RR">
-> 	<group nprocs="50">
-> 		<transaction iterations="1">
-> 			<flowop type="connect" options="remotehost=server_ip protocol=tcp
-> tcp_nodelay" />
-> 		</transaction>
-> 		<transaction duration="60">
-> 			<flowop type="write" options="size=200"/>
-> 			<flowop type="read" options="size=1000"/>
-> 		</transaction>
-> 		<transaction iterations="1">
-> 			<flowop type="disconnect" />
-> 		</transaction>
-> 	</group>
-> </profile>
+> If you can please add this API with just a few users, and then convert
+> remaining users via the subsystem trees in the next cycle.
+> There's no need to risk wasting maintainer time on conflicts with
+> conversions like this.
 
-Using the exact same XML profile you provided, I tested this on a 25Gb
-NIC. I observed no degradation. Instead, performance improved
-significantly:
-
-Original: ~1.08 Gb/s
-Patched: ~5.1 Gb/s
-
-I suspect the 59% drop might be due to connections falling back to TCP.
-Could you check smcss -a during your test to see if the traffic is
-actually running over SMC-R?
+Thanks for the suggestion, Jakub. I have little experience with 
+cross-subsystem cleanups like this, so your suggestion is very helpful.
 
 > 
-> I installed redis-server on the server machine & redis-benchmark on the
-> client machine & I was able to establish the SMC-R using below commands.
-> If you could help me with the exact commands you used to measure the
-> redis-benchmark performance, I can try the same on my setup.
-> 
-> Server: smc_run redis-server --port <port_num> --save "" --appendonly no
->   --protected-mode no --bind 0.0.0.0
-> Client: smc_run redis-benchmark -h <server_ip> -p <port_num> -n 10000 -c
-> 50 -t ping_inline,ping_bulk -q
-
-Here are the exact commands and scripts I used for the
-redis-benchmark:
-
-Server: smc_run redis-server --protected-mode no --save
-
-Client: smc_run redis-benchmark -h <server_ip> -n 5000000 -t set --threads 3
--c <conn_num>
-
-D. Wythe
