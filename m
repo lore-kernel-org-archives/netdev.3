@@ -1,103 +1,168 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 789A0315D43;
-	Wed, 25 Feb 2026 09:02:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573C036D4E4;
+	Wed, 25 Feb 2026 09:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772010179; cv=none; b=F2DxknE/RPsnotd4KEF8vkbYF71AhK9jmPhR12b9fK/Bi0iUwUCpwiSioc+Jz8j12mE5n1DyPQRiTOe7NPCECA0dGgjdZOMqHPmNz3yFs0/8uvI/ZzKxwW0fHz8zROAysixnn4Ndp20oIWTTYFpuysB32m1mXntoQCYYuCpfH6k=
+	t=1772010386; cv=none; b=FHkd78UjtcdAE/470t+/1+5hWfQ0zgIhmy4ddECG6VgfAo1WVvdBvWBJDtf5GzLNCJ+VThsnlMwseV7MrBBNd6iGkX4fFV4sljXpYU3UXULkVXh6IIZteZbXNQAV3Dv1vwHI/aXNkQoYL8N8hTkwrQS5d0C3dy+QYKKiKLyTwpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772010179; c=relaxed/simple;
-	bh=H9+DBdlE8x00eUqoZDGOVOqgsAOU/jAQ7XS7u05/bqM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fFjCQvnltCJXkI4AbbuWCsNiEs+oHvggF0oMjbxnSz7GBPQiZL4/5v5BjxGWgtcZTnM8xgyn/+LtHQ+nEE4bqG1WOc6QM1pxGM9ODGdFkWAzHKwmCslScd0q/bI/bNZhSy5ecw+UjL7dEjnINAKnNexY5zwkwk1M3ddgrhJfJ8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=OXWchm/h; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1772010386; c=relaxed/simple;
+	bh=Ms5EvdSvw59+pigEbOTMZYJRJle67s3XN/MmS6G0DeM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
+	 In-Reply-To:To:CC; b=G3g7cXKcYpAHILzEzD7Bu9ICsaEnvVcGx4+r2lDrK7r+NHl84S01pL7EKo4azglOyNYedfgdr06FyNqR3c50tZWrn2F+G6g/fh+NZiaR2xxfqECIjg4bS7OKgo49ia7VXAJNHW+F5c7xnu12cGho84xoJiYPwoTFtgdVboV1xHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=lFpp0k4K; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="OXWchm/h"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+lPxBPC3Dnkz/F6LRRTTUMzYTCUigzfPqij8o+dSSuU=; b=OXWchm/hvQcnPIi1R43Rll9Qlj
-	Jar0vLf4GN4vbSpoesm3SfjgSl/86ccGrDy0U7BV/8HXW1DKe+HvaBzKBXEdXzBswXqse9tk105Mi
-	rzTA1llYwtb1NmgnBknI+jQCTwCC31eATotRe/PRmcH+kksWnZWqXwhaty2qz3xw4G8zcR/ZKbpEY
-	ea6b8xuz5OovfZOZHREtTASyyXPmVP4tRC7S3xDEi2BkyY1uf0NhDD62uY98cMj6hzOh6zu/7j2ti
-	qdWAIgVQ+WvZ+EbwZrut/IlzGZ7FV5OTS8CgfMRoyBlULS48FQEUhleuoB1L1vlnhV3zPZa+ROUFk
-	+eeYDvcw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33598)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vvAnE-000000006HK-35li;
-	Wed, 25 Feb 2026 09:02:52 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vvAnC-000000000oQ-0Xf2;
-	Wed, 25 Feb 2026 09:02:50 +0000
-Date: Wed, 25 Feb 2026 09:02:49 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-phy@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH net-next 0/9] net: stmmac: qcom-ethqos: further serdes
- reorganisation
-Message-ID: <aZ66uXCwGgH7B_A-@shell.armlinux.org.uk>
-References: <aZ66OT9scKipRRu2@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="lFpp0k4K"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1772010384; x=1803546384;
+  h=from:date:subject:mime-version:content-transfer-encoding:
+   message-id:references:in-reply-to:to:cc;
+  bh=Ms5EvdSvw59+pigEbOTMZYJRJle67s3XN/MmS6G0DeM=;
+  b=lFpp0k4KQvdHwlO0f7ncNkg0ixmqqESgsmERVC/c/10Fa4wJheIiHtih
+   H9if6dQFVsKTC8sfnNQjW9MVtS63cX39KyEj1lJS4iEq1/MnlBkFugDdr
+   4GmTptgUmUYf4Wpe3PlRhHGSYdrI9zLu4X32q91dDbWMWwNtD30xGX3he
+   WAeUvr1J+GzawqXwEOq6AQRFCilIWJNxZe6soDR9UHWcOWVPDIhxdC71t
+   LmHt4KeXmVD1dETrF7Yq4LbG5JU4p6bg8gFm4a1xBhEomZN1ZS0G+as5O
+   USoH85bXG1XzWpwxA3EtCASBqG+BhxWhb7GDJVnZA8gcnf0mVGk9nVUTO
+   w==;
+X-CSE-ConnectionGUID: GvK6L9OjSSuGPw39llTOAQ==
+X-CSE-MsgGUID: wGZ5CqykQMGMVoCtVHo6Sg==
+X-IronPort-AV: E=Sophos;i="6.21,310,1763449200"; 
+   d="scan'208";a="61259299"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 02:06:23 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Wed, 25 Feb 2026 02:06:14 -0700
+Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Wed, 25 Feb 2026 02:06:12 -0700
+From: Daniel Machon <daniel.machon@microchip.com>
+Date: Wed, 25 Feb 2026 10:05:26 +0100
+Subject: [PATCH net-next 3/7] net: sparx5: move VCAP initialization to
+ probe
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aZ66OT9scKipRRu2@shell.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-ID: <20260225-sparx5-init-deinit-v1-3-97036580b9f0@microchip.com>
+References: <20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com>
+In-Reply-To: <20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
+	<Steen.Hegelund@microchip.com>, <UNGLinuxDriver@microchip.com>, "Richard
+ Cochran" <richardcochran@gmail.com>
+CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>
+X-Mailer: b4 0.14.3
 
-Note: only 8 patches in this series, not 9 as the subject line says,
-as the set_clk_tx_rate() patch became part of the first series.
+Move the VCAP initialization code from sparx5_start() to probe(). Add
+proper error handling with a cleanup_vcap label and sparx5_vcap_deinit()
+call.
 
-On Wed, Feb 25, 2026 at 09:00:41AM +0000, Russell King (Oracle) wrote:
-> This is part 2 of the qcom-ethqos series, part 1 has now been merged.
-> 
-> This part of the series focuses on the generic PHY driver, but these
-> changes have dependencies on the ethernet driver, hence why
-> it will need to go via net-next. Furthermore, subsequent changes
-> depend on these patches.
-> 
-> The underlying ideas here are:
-> 
-> - get rid of the driver using phy_set_speed() with SPEED_1000 and
->   SPEED_2500 which makes no sense for an ethernet SerDes due to the
->   PCS 8B10B data encoding, which inflates the data rate at the SerDes
->   compared to the MAC. This is replaced with phy_set_mode_ext().
-> - allow phy_power_on() / phy_set_mode*() to be called in any order.
-> 
-> Mohd has tested this series, but it would be great to get acks/reviews
-> from the generic PHY maintainers.
-> 
->  .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    | 31 +++--------
->  drivers/phy/qualcomm/phy-qcom-sgmii-eth.c          | 62 +++++++++++++++++-----
->  2 files changed, 57 insertions(+), 36 deletions(-)
-> 
-> -- 
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
-> 
+Also, rename sparx5_vcap_destroy() to sparx5_vcap_deinit() to stay
+consistent with the naming.
+
+Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+---
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c      | 16 ++++++++++------
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.h      |  2 +-
+ drivers/net/ethernet/microchip/sparx5/sparx5_vcap_impl.c |  2 +-
+ 3 files changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+index 9887a260bafc..28ee45815c7f 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
+@@ -775,10 +775,6 @@ static int sparx5_start(struct sparx5 *sparx5)
+ 
+ 	sparx5_board_init(sparx5);
+ 
+-	err = sparx5_vcap_init(sparx5);
+-	if (err)
+-		return err;
+-
+ 	/* Start Frame DMA with fallback to register based INJ/XTR */
+ 	err = -ENXIO;
+ 	if (sparx5->fdma_irq >= 0) {
+@@ -985,12 +981,18 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
+ 		goto cleanup_ports;
+ 	}
+ 
++	err = sparx5_vcap_init(sparx5);
++	if (err) {
++		dev_err(sparx5->dev, "Failed to initialize VCAP\n");
++		goto cleanup_ptp;
++	}
++
+ 	INIT_LIST_HEAD(&sparx5->mall_entries);
+ 
+ 	err = sparx5_register_netdevs(sparx5);
+ 	if (err) {
+ 		dev_err(sparx5->dev, "Failed to register net devices\n");
+-		goto cleanup_ptp;
++		goto cleanup_vcap;
+ 	}
+ 
+ 	err = sparx5_register_notifier_blocks(sparx5);
+@@ -1014,6 +1016,8 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
+ 	sparx5_unregister_notifier_blocks(sparx5);
+ cleanup_netdevs:
+ 	sparx5_unregister_netdevs(sparx5);
++cleanup_vcap:
++	sparx5_vcap_deinit(sparx5);
+ cleanup_ptp:
+ 	sparx5_ptp_deinit(sparx5);
+ cleanup_ports:
+@@ -1047,9 +1051,9 @@ static void mchp_sparx5_remove(struct platform_device *pdev)
+ 	}
+ 	sparx5_unregister_notifier_blocks(sparx5);
+ 	sparx5_unregister_netdevs(sparx5);
++	sparx5_vcap_deinit(sparx5);
+ 	sparx5_ptp_deinit(sparx5);
+ 	ops->fdma_deinit(sparx5);
+-	sparx5_vcap_destroy(sparx5);
+ 	sparx5_destroy_netdevs(sparx5);
+ 	destroy_workqueue(sparx5->mact_queue);
+ }
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+index fe7d8bcc0cd9..6a069434fca6 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
+@@ -563,7 +563,7 @@ void sparx5_get_hwtimestamp(struct sparx5 *sparx5,
+ 
+ /* sparx5_vcap_impl.c */
+ int sparx5_vcap_init(struct sparx5 *sparx5);
+-void sparx5_vcap_destroy(struct sparx5 *sparx5);
++void sparx5_vcap_deinit(struct sparx5 *sparx5);
+ 
+ /* sparx5_pgid.c */
+ enum sparx5_pgid_type {
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_vcap_impl.c b/drivers/net/ethernet/microchip/sparx5/sparx5_vcap_impl.c
+index 25066ddb8d4d..9b4ea3e22ef8 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_vcap_impl.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_vcap_impl.c
+@@ -2083,7 +2083,7 @@ int sparx5_vcap_init(struct sparx5 *sparx5)
+ 	return err;
+ }
+ 
+-void sparx5_vcap_destroy(struct sparx5 *sparx5)
++void sparx5_vcap_deinit(struct sparx5 *sparx5)
+ {
+ 	struct vcap_control *ctrl = sparx5->vcap_ctrl;
+ 	struct vcap_admin *admin, *admin_next;
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.34.1
+
