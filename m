@@ -1,152 +1,101 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F566327BF3;
-	Wed, 25 Feb 2026 09:15:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DF43859DC
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 09:16:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772010950; cv=none; b=eINFTEofjWXfLoNiEgjmD/Rs0WL9yRiJrKBv1MGn/7O+9pcAspXs28opU93DYPY7DFCgyaZOj15rUoAH3hKfWLBFlY113LteCE0DmnVm0x6BxbfVkLIdmiPrtK61LnRFzdmbz0G2YDj3MYqKS3xqjV8gKeIwRfOy5f4fi43JusA=
+	t=1772011003; cv=none; b=fOcJFHyAzbcQXoUYZu4lC1RDdxu12+vMfNrqaxa9IeXUS92APpWnSkYHeEHeJoctJHnONVBEbYEZ0RlVh04/SCOdvRJzUV5zJb1zJEl673ehW4zJwgsZeQfcZKzSx/DqR/GtKXk9RPOZWupmCSTUaqJ8Jh61UoqUgY1FmosXpYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772010950; c=relaxed/simple;
-	bh=MA1Ecp6qNdTIWIHqsRnR9gWXtW2IAe3WLoXNtA2gOU0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jXOCXlvyE1ttNMjVC56HvVmAARKJId+e0xXmZS+Kh54LMJrUiinraUh70ap+3xlYmlt4NlENgfUUYpz+w8HtnJZMI71HPcDOmuUMJI0kL8Xkc3v0J0JlkYCiavQSMaF5aff6g2Bi1Dzb0wkUDiSHylT5yO5tZJteqmnNdmjb/b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=aIJ3NCHy; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1772011003; c=relaxed/simple;
+	bh=ptKQ7QWcRgz5CwuOYOqzRGPycQ0CtGHVI9PF3GJruz0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=nDD59WcbYx9XPPmafZLSddMncO6UBBmX8buN1XDncJq96bb4N9OkJn11HzPZDBfH4xF6Hj6bQ6ZvW+IqQdV2zSAVwZv85kr0N1eLvOkysX8dXzzWxQphfH9qGWUp7oVLgiJASyBzfo46Pya92OzODC8mE7Xwe/uTeAjd3tOEwi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=DoSJibHx; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="aIJ3NCHy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=UbuiIKVkAPOuDTirizvhEGsPkRAbXAkPZHZsKwKoZLU=; b=aIJ3NCHygeUg6MZOKP/iBOl7iu
-	9i+Ci3ElTX+LeXN9sY95/h++iBi44uhy8vn2rNRKK5OPO77MN9UdeICypHQXIzf37vJ7L8IYGLodd
-	sXfh0dh0tPDIftToHXZQWnmlt76aoZkTQ4ulcpdmdPGnj6Z5L/JSl/cWYtV8pllSUFE1XVwpt+seN
-	nr2/0Td0+yYsFDfjc3u4k/ArlLHSB750YCe1+ZDAP3g190IVocEPVAYBtHsOverwG6woLFTL41V3a
-	hAIU6WfJX4CdnRx7DIekdzF1w9MHdH/CtR2vBMVN1idMMcugjwGDxiAsW6TbXLDUFfhU7s+Gho1OF
-	MssfE1bA==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:33474)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vvAza-000000006Iw-1lB8;
-	Wed, 25 Feb 2026 09:15:38 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vvAzY-000000000pS-2juC;
-	Wed, 25 Feb 2026 09:15:36 +0000
-Date: Wed, 25 Feb 2026 09:15:36 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Daniel Machon <daniel.machon@microchip.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Steen Hegelund <Steen.Hegelund@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Richard Cochran <richardcochran@gmail.com>, netdev@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 0/7] net: sparx5: clean up probe/remove init and
- deinit paths
-Message-ID: <aZ69uEQHdhASe5dj@shell.armlinux.org.uk>
-References: <20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="DoSJibHx"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 33F18A3F83;
+	Wed, 25 Feb 2026 10:16:37 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1772010997; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=1F3wQSgQUr+bRNh4foANZwEl+te/rijyMRWi5ttWK/s=;
+	b=DoSJibHxLbE2QCN6QmJmNMkHcjfwf5WaPjgHhTuIe7mHlkNJNx9DVm27UMA/7gmUb6+hR7
+	62EtL6BAV3yXqafZyug2DO4KLUPBnO+wBrpmctmxKbYwBrICwsAsVHNSLzh5PvJLsW9EGh
+	/u1KojMjFDb3+QXxPZ9jtP4OY+SJv0hExiD9mvvBjKRniK44uzoJy+Scq/ZpoIeKBwNxZW
+	qNFWCgZCsrHcpIOdN0XTAhU/WVMPzy9eOSxb5JCTlRuZrXJkSzRxPR1rXV6mz8wUCZX2gp
+	+uk+djXHndo+K9TZz3ZOshO5AVv05j1JvR2GebGpepZV/OY8KOsULpjYbyh7GA==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	claudiu.beznea@tuxon.dev,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	nicolas.ferre@microchip.com,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	phil@raspberrypi.com,
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH 2/5] net: cadence: macb: add EEE LPI statistics counters
+Date: Wed, 25 Feb 2026 10:15:55 +0100
+Message-Id: <20260225091558.51157-3-nb@tipi-net.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260225091558.51157-1-nb@tipi-net.de>
+References: <20260225091558.51157-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Feb 25, 2026 at 10:05:23AM +0100, Daniel Machon wrote:
-> This series refactors the sparx5 init and deinit code out of
-> sparx5_start() and into probe(), adding proper per-subsystem cleanup
-> labels and deinit functions.
-> 
-> Currently, the sparx5 driver initializes most subsystems inside
-> sparx5_start(), which is called from probe(). This includes registering
-> netdevs, starting worker threads for stats and MAC table polling,
-> requesting PTP IRQs, and initializing VCAP. The function has grown to
-> handle many unrelated subsystems, and has no granular error handling —
-> it either succeeds entirely or returns an error, leaving cleanup to a
-> single catch-all label in probe().
-> 
-> The remove() path has a similar problem: teardown is not structured as
-> the reverse of initialization, and several subsystems lack proper deinit
-> functions. For example, the stats workqueue has no corresponding
-> cleanup, and the mact workqueue is destroyed without first cancelling
-> its delayed work.
-> 
-> Refactor this by moving each init function out of sparx5_start() and
-> into probe(), with a corresponding goto-based cleanup label. Add deinit
-> functions for subsystems that allocate resources, to properly cancel
-> work and destroy workqueues. Ensure that cleanup order in both error
-> paths and remove() follows the reverse of initialization order. What
-> remains in sparx5_start() is only hardware register setup and FDMA/XTR
-> initialization that does not require cleanup.
-> 
-> Before this series, most init functions live inside sparx5_start() with
-> no individual cleanup:
-> 
->   probe():
->     sparx5_start():              <- no granular error handling
->       sparx5_mact_init()
->       sparx_stats_init()           <- starts worker, no cleanup
->       mact_queue setup             <- no cancel on teardown
->       sparx5_register_netdevs()
->       sparx5_register_notifier_blocks()
->       sparx5_vcap_init()
->     sparx5_ptp_init()
-> 
->     probe() error path:
->       cleanup_ports:
->         sparx5_cleanup_ports()
->         destroy_workqueue(mact_queue)
-> 
-> After this series, probe() initializes subsystems in order with
-> matching cleanup labels, and remove() tears down in reverse:
-> 
-> probe():
->     sparx5_ptp_init()
->     sparx5_vcap_init()
->     sparx5_mact_init()
->     sparx5_stats_init()
->     sparx5_register_netdevs()
->     sparx5_register_notifier_blocks()
->     sparx5_start()
-> 
->   remove():
->     sparx5_unregister_notifier_blocks()
->     sparx5_unregister_netdevs()
->     sparx5_stats_deinit()
->     sparx5_mact_deinit()
->     sparx5_vcap_deinit()
->     sparx5_ptp_deinit()
->     sparx5_destroy_netdevs()
-> 
-> Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
+Expose the GEM MAC's EEE Low Power Idle hardware counters through
+ethtool -S:
 
-Note that there is the general principle that drivers should not
-"publish" themselves (aka register their netdevs and/or ptp) until
-they have initialised enough so the facility that has been published
-is functional.
+- rx_lpi_transitions: number of RX LPI entry events
+- rx_lpi_time: cumulative time spent in RX LPI
+- tx_lpi_transitions: number of TX LPI entry events (TXLPIEN 0->1)
+- tx_lpi_time: cumulative time in TX LPI
 
-That, in general, means that there should be very little initialisation
-after the calls to register the netdevs and ptp.
+These are clear-on-read hardware registers at offsets 0x270-0x27c,
+automatically collected by the existing gem_statistics read loop.
 
-It's fine if something gets published and then a later publication of
-another interface fails, causing the first publication to be withdrawn,
-that is pretty much unavoidable, but in such scenarios, one would want
-to do as much of the initialisation that may fail before any
-publication of any user interfaces.
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+ drivers/net/ethernet/cadence/macb.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index 729751d424c2..e3520e5aec67 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -1050,6 +1050,10 @@ struct gem_stats {
+ 	u64	rx_ip_header_checksum_errors;
+ 	u64	rx_tcp_checksum_errors;
+ 	u64	rx_udp_checksum_errors;
++	u64	rx_lpi_transitions;
++	u64	rx_lpi_time;
++	u64	tx_lpi_transitions;
++	u64	tx_lpi_time;
+ };
+ 
+ /* Describes the name and offset of an individual statistic register, as
+@@ -1149,6 +1153,10 @@ static const struct gem_statistic gem_statistics[] = {
+ 			    GEM_BIT(NDS_RXERR)),
+ 	GEM_STAT_TITLE_BITS(RXUDPCCNT, "rx_udp_checksum_errors",
+ 			    GEM_BIT(NDS_RXERR)),
++	GEM_STAT_TITLE(RXLPI, "rx_lpi_transitions"),
++	GEM_STAT_TITLE(RXLPITIME, "rx_lpi_time"),
++	GEM_STAT_TITLE(TXLPI, "tx_lpi_transitions"),
++	GEM_STAT_TITLE(TXLPITIME, "tx_lpi_time"),
+ };
+ 
+ #define GEM_STATS_LEN ARRAY_SIZE(gem_statistics)
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.51.0
+
