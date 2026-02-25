@@ -1,126 +1,123 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from inva021.nxp.com (inva021.nxp.com [92.121.34.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 395912DA749
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 10:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1371919B5B1;
+	Wed, 25 Feb 2026 10:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.121.34.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772013730; cv=none; b=FzLelr5jYrUSN24uNYmBC79Aa3TmdGYHfYs9H6jw/zd4X/g/l/sFCMlXakza8bvtdg0tkupysdYhBbPdjzddyF+7wnmJ+jLwsstPzyTfLZnoZwr7bqdrX+skwEd1JLJYdM75t0cqJvyXhX+mSSzV06EZwOwrwmSjg0lTbFFPymo=
+	t=1772013770; cv=none; b=adO934OpumRdITCGXh4RDdkQ2k1RqtXeqtX3JqJFFYIoP90RFxM0g/O9mWV6hz8xmlSwtj+afzTnTe4HkmiAnejgYoKasMEh0GAxbCV6PfoP1OhBv4LFXWCGB6npC2Xtu+Ls5Mui6cTFRgZtQnnR7817UyKMg9raUO0GKtt2I+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772013730; c=relaxed/simple;
-	bh=IhVt4phoj1lYkoSFK3OYPIsDBh/FpkWOM7axoUMASqc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PnZHWvaDeesslFofiRizPcj138ZG1BEbd00FVwN6qi7yIjpZlAikdO1+fAQply6ISTyDDxgomFNNqKZTAl1ZY7DrVcGYjWZIeXFv6eIopFR6Erf8BVixWb40XzJAVcEMVPIYlllt5MH/68jRhWdrPzEpbhzen0O3sL1TKOe4h9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=g4G9fJdC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="g4G9fJdC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772013728;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=Cg5Gjl2amw0T9d2qORAIX+1bQ59fHlgumxxtVuZFhPM=;
-	b=g4G9fJdCR6UmP05cWln5du9bQKq+iNtg1gNee+5wl0kGpUdDupPfR3or5Jac0N/8tv1IUc
-	Kjp4TKMyWCc5ts7sGlYIvr9OUwmN1peKsn+dLY1xChIU/cmBsnUsv7JQEXYD4nm6J1LxEG
-	nx9SJzt1rWTI0LJYZ8r8XLRaV3mX1+4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-648-Xc32Keg6NpmMeZ1XcMuGJw-1; Wed,
- 25 Feb 2026 05:02:04 -0500
-X-MC-Unique: Xc32Keg6NpmMeZ1XcMuGJw-1
-X-Mimecast-MFC-AGG-ID: Xc32Keg6NpmMeZ1XcMuGJw_1772013722
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 82D53195609F;
-	Wed, 25 Feb 2026 10:02:01 +0000 (UTC)
-Received: from ShadowPeak.redhat.com (unknown [10.45.225.132])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6067E3003D8C;
-	Wed, 25 Feb 2026 10:01:58 +0000 (UTC)
-From: Petr Oros <poros@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Petr Oros <poros@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Ahmed Zaki <ahmed.zaki@intel.com>,
-	intel-wired-lan@lists.osuosl.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH iwl-net] iavf: fix VLAN filter lost on add/delete race
-Date: Wed, 25 Feb 2026 11:01:37 +0100
-Message-ID: <20260225100137.383527-1-poros@redhat.com>
+	s=arc-20240116; t=1772013770; c=relaxed/simple;
+	bh=5qu0+i5/S8lFVCwnC3vdFY4BnnruuoF7pmrW57g1tqo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pNngFNGjmfiZb0YNI8ch604aah6+m8cBgt8YkAf8FL0L/3PaDNs7zykGqCgeeuxmr3ue2FkWLHWbImg1AcM0KBSGtAIOhkWlLJv6JLvf3+gjJS4ObJpb5IF5t8S/k8VrUBtZPe1gECpGhHUfqxatBas67uxg98Pm7Fz/UetIY/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com; spf=pass smtp.mailfrom=oss.nxp.com; arc=none smtp.client-ip=92.121.34.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=oss.nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.nxp.com
+Received: from inva021.nxp.com (localhost [127.0.0.1])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 2FA77200D05;
+	Wed, 25 Feb 2026 11:02:42 +0100 (CET)
+Received: from inva024.eu-rdc02.nxp.com (inva024.eu-rdc02.nxp.com [134.27.226.22])
+	by inva021.eu-rdc02.nxp.com (Postfix) with ESMTP id 13AFE200D16;
+	Wed, 25 Feb 2026 11:02:42 +0100 (CET)
+Received: from lsv051416.swis.nl-cdc01.nxp.com (lsv051416.swis.nl-cdc01.nxp.com [10.168.48.122])
+	by inva024.eu-rdc02.nxp.com (Postfix) with ESMTP id CD6852037D;
+	Wed, 25 Feb 2026 11:02:41 +0100 (CET)
+Date: Wed, 25 Feb 2026 11:02:42 +0100
+From: Jan Petrous <jan.petrous@oss.nxp.com>
+To: Simon Horman <horms@kernel.org>
+Cc: alexandre.torgue@foss.st.com, devicetree@vger.kernel.org,
+	festevam@gmail.com, chester62515@gmail.com, s.hauer@pengutronix.de,
+	linux-arm-kernel@lists.infradead.org, davem@davemloft.net,
+	mbrugger@suse.com, netdev@vger.kernel.org, andrew+netdev@lunn.ch,
+	s32@nxp.com, pabeni@redhat.com, linux-kernel@vger.kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, Frank.Li@nxp.com,
+	robh@kernel.org, kuba@kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	ghennadi.procopciuc@oss.nxp.com, kernel@pengutronix.de,
+	shawnguo@kernel.org, edumazet@google.com, mcoquelin.stm32@gmail.com,
+	imx@lists.linux.dev
+Subject: Re: [v5,4/4] stmmac: s32: enable support for Multi-IRQ mode
+Message-ID: <aZ7IwgwP5iy2kej8@lsv051416.swis.nl-cdc01.nxp.com>
+References: <20260223-dwmac_multi_irq-v5-4-8fc699a5fac4@oss.nxp.com>
+ <20260225092513.174261-1-horms@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225092513.174261-1-horms@kernel.org>
+X-Virus-Scanned: ClamAV using ClamSMTP
 
-When iavf_add_vlan() finds an existing filter in IAVF_VLAN_REMOVE
-state, it transitions the filter to IAVF_VLAN_ACTIVE assuming the
-pending delete can simply be cancelled. However, there is no guarantee
-that iavf_del_vlans() has not already processed the delete AQ request
-and removed the filter from the PF. In that case the filter remains in
-the driver's list as IAVF_VLAN_ACTIVE but is no longer programmed on
-the NIC. Since iavf_add_vlans() only picks up filters in
-IAVF_VLAN_ADD state, the filter is never re-added, and spoof checking
-drops all traffic for that VLAN.
+On Wed, Feb 25, 2026 at 09:25:13AM +0000, Simon Horman wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> 
+> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> ---
+> stmmac: s32: enable support for Multi-IRQ mode
+> 
+> This commit enables Multi-IRQ mode for the S32 DWMAC driver, allowing
+> per-queue IRQs for improved performance. The driver checks for multiple
+> queues and per-queue IRQs, enabling multi-IRQ mode when both are present.
+> 
+> > diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > index af594a096676..4aad7077c9d6 100644
+> > --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> > +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> 
+> [ ... ]
+> 
+> > @@ -165,6 +165,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+> >  	plat->core_type = DWMAC_CORE_GMAC4;
+> >  	plat->pmt = 1;
+> >  	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
+> > +
+> > +	/* Check for multi-IRQ config. Assumption: symmetrical rx/tx queues */
+> > +	if (plat->rx_queues_to_use > 1 &&
+> > +	    (res.rx_irq[0] > 0 && res.tx_irq[0] > 0)) {
+> > +		plat->flags |= STMMAC_FLAG_MULTI_MSI_EN;
+> > +		dev_info(dev, "Multi-IRQ mode (per queue IRQs) selected\n");
+> > +	} else {
+> > +		dev_info(dev, "MAC IRQ mode selected\n");
+> > +	}
+> 
+> Does this validation check all queues have IRQs? The condition verifies
+> only res.rx_irq[0] and res.tx_irq[0] but doesn't confirm that higher
+> queues have IRQs when rx_queues_to_use > 1.
+> 
+> If a device tree specifies multiple queues but only provides IRQs for
+> queue 0:
+> 
+>     snps,rx-queues-to-use = <2>;
+>     interrupt-names = "macirq", "rx-queue-0", "tx-queue-0";
+>                       /* queue 1 IRQs missing */
+> 
+> The driver would enable STMMAC_FLAG_MULTI_MSI_EN, but later in
+> stmmac_request_irq_multi_msi() (drivers/net/ethernet/stmicro/stmmac/
+> stmmac_main.c), queues with rx_irq[i] == 0 are silently skipped:
+> 
+>     for (i = 0; i < priv->plat->rx_queues_to_use; i++) {
+>         if (priv->rx_irq[i] <= 0)
+>             continue;  /* queue 1+ skipped, no handler registered */
+>         ...
+>     }
+> 
+> This would leave higher-numbered queues with no interrupt handler,
+> causing packet loss when traffic arrives on those queues.
+> 
+> Would it be safer to validate all queue IRQs before enabling multi-IRQ
+> mode, or fall back to MAC IRQ mode if any queue IRQ is missing?
+> 
+> > +
+> >  	plat->rx_fifo_size = 20480;
+> >  	plat->tx_fifo_size = 20480;
 
-  CPU0                       CPU1                     Workqueue
-  ----                       ----                     ---------
-  iavf_del_vlan(vlan 100)
-    f->state = REMOVE
-    schedule AQ_DEL_VLAN
-                             iavf_add_vlan(vlan 100)
-                               f->state = ACTIVE
-                                                      iavf_del_vlans()
-                                                        f is ACTIVE, skip
-                                                      iavf_add_vlans()
-                                                        f is ACTIVE, skip
+Hi Simon,
 
-  Filter is ACTIVE in driver but absent from NIC.
+I already addressed this in v6 I sent today.
 
-Transition to IAVF_VLAN_ADD instead and schedule
-IAVF_FLAG_AQ_ADD_VLAN_FILTER so iavf_add_vlans() re-programs the
-filter.  A duplicate add is idempotent on the PF.
-
-Fixes: 0c0da0e95105 ("iavf: refactor VLAN filter states")
-
-Signed-off-by: Petr Oros <poros@redhat.com>
----
- drivers/net/ethernet/intel/iavf/iavf_main.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
-index 4b0fc8f354bc90..6046b93c7f3472 100644
---- a/drivers/net/ethernet/intel/iavf/iavf_main.c
-+++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
-@@ -782,10 +782,13 @@ iavf_vlan_filter *iavf_add_vlan(struct iavf_adapter *adapter,
- 		adapter->num_vlan_filters++;
- 		iavf_schedule_aq_request(adapter, IAVF_FLAG_AQ_ADD_VLAN_FILTER);
- 	} else if (f->state == IAVF_VLAN_REMOVE) {
--		/* IAVF_VLAN_REMOVE means that VLAN wasn't yet removed.
--		 * We can safely only change the state here.
-+		/* Re-add the filter since we cannot tell whether the
-+		 * pending delete has already been processed by the PF.
-+		 * A duplicate add is harmless.
- 		 */
--		f->state = IAVF_VLAN_ACTIVE;
-+		f->state = IAVF_VLAN_ADD;
-+		iavf_schedule_aq_request(adapter,
-+					 IAVF_FLAG_AQ_ADD_VLAN_FILTER);
- 	}
- 
- clearout:
--- 
-2.52.0
-
+/Jan
