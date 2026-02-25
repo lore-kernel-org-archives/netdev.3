@@ -1,69 +1,76 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433F126E708;
-	Wed, 25 Feb 2026 01:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1114A28A3FA;
+	Wed, 25 Feb 2026 01:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983770; cv=none; b=F9ahWSqJ21ft8wffzZjTj79dZp53x01ZUu4oGHv1XGmSnB5pAU1JGRntxCL1Tg4w9KObs3Q5mvRmx9R/VESsKtYOl5ZZZsp6DFbCzl/HnUWbleqMbx2RlWgnBdxm2Fr9TlplLXF+Va1QJpNNXTiEa50T5PXfXdPnvy1/hhg7+Sg=
+	t=1771983951; cv=none; b=A9k3VwZPZtnAb0FRhzHJeT03gk9+eVKcTCUU43k+uNBA52+en9bJsPJhTmQ7yR+sZRH3dA9b6XHfwDqfNMyCYg7hIvw8XhQFxZ2tZv3pJFB/7zD9vdwLUxNZUcj3AtT6Ali6wQKiUMFVy/QSgvZJT1VeERelH+pVaOspJvJ4s10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983770; c=relaxed/simple;
-	bh=/qQjUHwquTb5CtLX9o/HbDuVUMkNhBPNqviYoX0oBfw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ScKefGvqutiZeNQdpAgV/G/jD7KF25U2Hfl2cISFiydn/421jjNwOEenHmlPsXk/mKhf09vJxJrL/pTVPbOAxQ/yVNalPCUYVOl3b+tVfrN0Qb31YO9y36Sa8bJrL/ewwqSnjYb3h/qh9ncNSoJZkB6fbfq3uXFZA2gwYFlGd8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEkcb6Tu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1771983951; c=relaxed/simple;
+	bh=U87I1AJLHguxn79pLOdJU1CrX0Y7Wl2GoTWom5CKtks=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rPPmhwn0oeurJykMWC2ybItzxceCNIkPex/3bUYe13yLhPwjI0VvgE/dVnZ+eyKL94Sx2+xy1Kvvdqb2iT7/SPWrwTZ1s8l1M7E6IN1OdgBPrTNtIwLmBxUAmHJ30jEHeF9qDfWoAujwT2mCyhHL4KD4yc1VpYulUkhFs1SgFpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=WAIDdKWu; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEkcb6Tu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F808C116D0;
-	Wed, 25 Feb 2026 01:42:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771983770;
-	bh=/qQjUHwquTb5CtLX9o/HbDuVUMkNhBPNqviYoX0oBfw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=QEkcb6Tuc0iKl2UxCSmBYbFxw6qntU3lrFUzz4BKQxVoE9/YYNWT13kCfD4+AhcOF
-	 RNXlrph3ieqUNHcte7QZ87XLh2tsRGENgva3thu2q/nkJRKuE3q47jCIQkliGFm9Kv
-	 sq1FfjwOOVMorQuiiicy7NWc1w2BvMPUqQIcQcGupVdgQ0pq4njJEbLAlx48vxgerr
-	 oDaAVWjutWpizzMEuTlc7KgWABpP9CPrjhDQZjss2qV13HhaoTuiHE2Hz6J7E/FEQ8
-	 7QThnNxxgGnhXAJSuXnN/ZYqUgNHMSLtIm2nrpf2ZPVoLDIE++SerUtJdGBy+OCh6J
-	 fenqV6kLKwnuA==
-Date: Tue, 24 Feb 2026 17:42:48 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Andrew Lunn <andrew@lunn.ch>, Alexandre Torgue
- <alexandre.torgue@foss.st.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Frank
- Li <Frank.Li@nxp.com>, imx@lists.linux.dev,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-stm32@st-md-mailman.stormreply.com, Maxime Chevallier
- <maxime.chevallier@bootlin.com>, Mohd Ayaan Anwar
- <mohd.anwar@oss.qualcomm.com>, netdev@vger.kernel.org, Paolo Abeni
- <pabeni@redhat.com>, Pengutronix Kernel Team <kernel@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH net-next 08/10] net: stmmac: qcom-ethqos: use phy
- interface mode for inband
-Message-ID: <20260224174248.09dd1cbe@kernel.org>
-In-Reply-To: <aZ5QmRjp_78ZT_Az@shell.armlinux.org.uk>
-References: <aZwfAFJQcp9f0niI@shell.armlinux.org.uk>
-	<E1vuSL5-0000000AScX-2wuM@rmk-PC.armlinux.org.uk>
-	<20260224171052.27bebff0@kernel.org>
-	<aZ5QmRjp_78ZT_Az@shell.armlinux.org.uk>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="WAIDdKWu"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1771983946; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=UibE2I8JbVmcSHsndJX9DCfJwX/LXdoM0FXt05GZLDs=;
+	b=WAIDdKWuldeF6VOT5R0I0iJANHjKRbuWp9B3Cs7F2ZAoAIs8rXoSxWJDrPKLDbWMbjCTaAok9rh22YzeRwwvBBRg9zgJ+OJFgsNx+y8hjmDsuVdk2OCqyXc6N2BLEob/03/C+ev2I+WiEi+sWy3f7zGKskWc/3trHrz7rW3de2s=
+Received: from 30.221.130.33(mailfrom:guwen@linux.alibaba.com fp:SMTPD_---0WzkmwlC_1771983937 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 25 Feb 2026 09:45:45 +0800
+Message-ID: <3929f57c-afd2-461f-a840-7bfee6bfb5dd@linux.alibaba.com>
+Date: Wed, 25 Feb 2026 09:45:37 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC] Defining a home/maintenance model for non-NIC PHC devices
+ using the /dev/ptpX API
+To: Imran Shaik <imran.shaik@oss.qualcomm.com>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>,
+ Richard Cochran <richardcochran@gmail.com>
+Cc: Jakub Kicinski <kuba@kernel.org>, Dust Li <dust.li@linux.alibaba.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ David Woodhouse <dwmw2@infradead.org>, virtualization@lists.linux.dev,
+ Nick Shi <nick.shi@broadcom.com>, Sven Schnelle <svens@linux.ibm.com>,
+ Paolo Abeni <pabeni@redhat.com>, linux-clk@vger.kernel.org,
+ Taniya Das <taniya.das@oss.qualcomm.com>
+References: <0afe19db-9c7f-4228-9fc2-f7b34c4bc227@linux.alibaba.com>
+ <51e8d8ce-f291-4e31-a938-2c1a0e8684c2@linux.alibaba.com>
+ <bb28589e-714b-459d-a609-0153b97ac158@oss.qualcomm.com>
+From: Wen Gu <guwen@linux.alibaba.com>
+In-Reply-To: <bb28589e-714b-459d-a609-0153b97ac158@oss.qualcomm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On Wed, 25 Feb 2026 01:30:01 +0000 Russell King (Oracle) wrote:
-> It doesn't. The code ends up as:
-> 
-> 	switch (speed) {
-> 	case SPEED_2500:
-> 	case SPEED_1000:
-> 		rgmii_setmask(ethqos, RGMII_CONFIG2_RGMII_CLK_SEL_CFG,
-> 			      RGMII_IO_MACRO_CONFIG2);
-> 		break;
 
-SMH, sorry for the noise..
+
+On 2026/2/19 17:29, Imran Shaik wrote:
+> 
+> Hi Wen,
+> 
+> Thanks for driving this discussion.
+> 
+> Is there a patch series posted that reflects the new proposal?
+> 
+> As Manivannan mentioned, some Qcom MHI devices have similar requirements. Once the reorganized changes are posted, we will also resend our patch series adopting the latest changes.
+> 
+> Thanks,
+> Imran
+
+Hi Imran,
+
+Yes, I will send a patch series reflecting the new proposal in the next couple of days.
+
+Thanks.
