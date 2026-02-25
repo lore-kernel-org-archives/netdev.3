@@ -1,63 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D0337419B;
-	Wed, 25 Feb 2026 09:14:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946D61F30A9
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 09:15:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772010886; cv=none; b=hsrZdI4tSSanEfcIbQmvvTbyqydYPdfaifnTlZ8Pga6+Z3JogHSajxnMVjuhgWiBZXhGCcX5HLEsb4YACRMLAoRWPR9m4O+niPInXng4YmCcg8qVCUbALCRLt05xnPA2jx4uQqMX0f7DFh0SHoxQ6DGT96vzyyzq5KND/RU2VcI=
+	t=1772010938; cv=none; b=heUrCNMFgR2LNohpRkM0HBYr6EnqbmuEgjw8g1d28zY3YlsTOIZiEW3NB7ev9dsP4nTQMfnM4R1ca00THVSK06AarBMbjCoesBmtumtGaVaEko5uoTVmnuz4b00eHvx185bvO8LS0kZZ/ExXmtBugkVhL//EZWOww7g4CMFwQqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772010886; c=relaxed/simple;
-	bh=p25+5pv7NVZmKWEKuRjfwdQ6ErbXfWp0m5SN4Bks0XI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QqfXilt5jwg6IX+SmHHul4gOPMJvmuy4etJ7MZ55oq2/fhC7L5k61oY+QxxgRgWOndEdSjXJEqAkni1cO8ZAmjqCSoVJbZbtbx2sTWgg4DAJDLyca5n7rLrXMKB+i27QjktuVB/SkRN8z+6GZItomnEe6MZPGTM1fan3VQ4uPqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mIH9eEuY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772010938; c=relaxed/simple;
+	bh=DKAG1wPJpFmlhcmR96WVsVojidnrTLm5pSaQ3dE9lmc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=T2JrW9YAEw5rAgzAI/5OTCXE+c9PdCVHcwzhWJf694U+mTu9k82GBEIWGDSBcQj6eDkCGofINcv3RfNq2hhftl6/puvlsRd+uDqulF+/TIpkylAu7OKf4A5FGPHFAinNG5Q1UkfPdmIuMZDZsRlHcZamibOYyyNH2laVBo/R2f4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ll7KPv3Z; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mIH9eEuY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DEEC116D0;
-	Wed, 25 Feb 2026 09:14:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772010886;
-	bh=p25+5pv7NVZmKWEKuRjfwdQ6ErbXfWp0m5SN4Bks0XI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mIH9eEuYj/i0juLEtIdKqUN1r9o8OYN+mDL8pLrD0iulqzOW5IsanB783jYLKRgVm
-	 YlLvCPqT+8O6ploD0lHhcQD/zPKsiVZ485zBqPcE+Wzp1NkgYn6vQI2KCf0wxsMYFZ
-	 pPxCEcDlPykOs8VxaZdSBztOy/yvBnk5KqBxyX1sgZGh4LcU6K2++eoSlVnmXBb+4L
-	 SExM6s6MPLGVP0Xc2AHURmZScuxYzpe6UmV8oEd+EtzNtSHL3lohpf6EEc8UKa2eKm
-	 FU9r/Ii1Xxv1gF52gzOprhZ7UF6OE/7/7UIpZoxEoh4+cH9PZK4e/FxNMufbVdfuX9
-	 Dkfk8ARplvrlg==
-Date: Wed, 25 Feb 2026 09:14:38 +0000
-From: Simon Horman <horms@kernel.org>
-To: Byungchul Park <byungchul@sk.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
-	hawk@kernel.org, andrew+netdev@lunn.ch, david@kernel.org,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	ziy@nvidia.com, willy@infradead.org, toke@redhat.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, asml.silence@gmail.com, axboe@kernel.dk,
-	ncardwell@google.com, kuniyu@google.com, dsahern@kernel.org,
-	almasrymina@google.com, sdf@fomichev.me, dw@davidwei.uk,
-	ap420073@gmail.com, dtatulea@nvidia.com, shivajikant@google.com,
-	io-uring@vger.kernel.org
-Subject: Re: [RESEND PATCH net-next] netmem: remove the pp fields from net_iov
-Message-ID: <aZ69fs1_OsqkQfQ2@horms.kernel.org>
-References: <20260224061424.11219-1-byungchul@sk.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ll7KPv3Z"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772010937; x=1803546937;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DKAG1wPJpFmlhcmR96WVsVojidnrTLm5pSaQ3dE9lmc=;
+  b=ll7KPv3ZiuKCbVmRqe3H1NF0EsQ2RvP8TjaPceWLApGt5umkS+/GPkCC
+   WeniPTjzRQ5cJmlsb+ROi7kWrJL5rrQS88tXWq4ooULX2HHZrBXODzduP
+   xd5na2dzK1XOeNHb5/syyQ3t/91j5FeBKbmji9ljVdFzo6xd/3L/IALiq
+   tlj5BJ62vjgyi3vNY3+kaalYbVSLjb2ryuP7i7ePYGWSqgNl98xUF8xcE
+   tynjGdhph4AypRRaDZNCXWbVyr2PCkvhjBA6rvj6aQvSThIRSc6p9+H3E
+   301UM0OAmQjxBH33wmGslje6dbxnG8xxR8xkX5JIe+jMFbSY36BjSbx1l
+   g==;
+X-CSE-ConnectionGUID: fk3jAySZTH60wBeRZ9If7A==
+X-CSE-MsgGUID: KcyyJGY1QQS1In4REye5qg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11711"; a="72081448"
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; 
+   d="scan'208";a="72081448"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 01:15:36 -0800
+X-CSE-ConnectionGUID: zozFFWJDSU6sxOWJBMEAcg==
+X-CSE-MsgGUID: cZhlqmQSQdKOi91W/j+4qw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; 
+   d="scan'208";a="220774531"
+Received: from korred.igk.intel.com ([10.237.113.2])
+  by fmviesa005.fm.intel.com with ESMTP; 25 Feb 2026 01:15:34 -0800
+From: Natalia Wochtman <natalia.wochtman@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	grzegorz.nitka@intel.com,
+	przemyslaw.kitszel@intel.com,
+	aleksandr.loktionov@intel.com,
+	Natalia Wochtman <natalia.wochtman@intel.com>
+Subject: [PATCH iwl-next v1] ice: remove redundant checks from PTP init
+Date: Wed, 25 Feb 2026 10:02:36 +0100
+Message-ID: <20260225090236.187255-1-natalia.wochtman@intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260224061424.11219-1-byungchul@sk.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Feb 24, 2026 at 03:14:24PM +0900, Byungchul Park wrote:
-> Now that the pp fields in net_iov have no users, remove them from
-> net_iov and clean up.
-> 
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
+Remove unnecessary condition checks in
+ice_ptp_setup_adapter() and ice_ptp_init().
+They are duplicated in ice_pf_src_tmr_owned().
 
-Reviewed-by: Simon Horman <horms@kernel.org>
+Change ice_ptp_setup_adapter() to return void.
+
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Natalia Wochtman <natalia.wochtman@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_ptp.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp.c b/drivers/net/ethernet/intel/ice/ice_ptp.c
+index d8fd01fa617b..2b26024de888 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp.c
+@@ -3065,14 +3065,9 @@ void ice_ptp_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
+ 	dev_err(ice_pf_to_dev(pf), "PTP reset failed %d\n", err);
+ }
+ 
+-static int ice_ptp_setup_adapter(struct ice_pf *pf)
++static void ice_ptp_setup_adapter(struct ice_pf *pf)
+ {
+-	if (!ice_pf_src_tmr_owned(pf) || !ice_is_primary(&pf->hw))
+-		return -EPERM;
+-
+ 	pf->adapter->ctrl_pf = pf;
+-
+-	return 0;
+ }
+ 
+ static int ice_ptp_setup_pf(struct ice_pf *pf)
+@@ -3315,10 +3310,9 @@ void ice_ptp_init(struct ice_pf *pf)
+ 	/* If this function owns the clock hardware, it must allocate and
+ 	 * configure the PTP clock device to represent it.
+ 	 */
+-	if (ice_pf_src_tmr_owned(pf) && ice_is_primary(hw)) {
+-		err = ice_ptp_setup_adapter(pf);
+-		if (err)
+-			goto err_exit;
++	if (ice_pf_src_tmr_owned(pf)) {
++		ice_ptp_setup_adapter(pf);
++
+ 		err = ice_ptp_init_owner(pf);
+ 		if (err)
+ 			goto err_exit;
+-- 
+2.49.0
 
