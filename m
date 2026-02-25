@@ -1,52 +1,52 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6388136EA94;
-	Wed, 25 Feb 2026 09:06:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 469F936E499;
+	Wed, 25 Feb 2026 09:06:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772010393; cv=none; b=NtLXFpzmateT2E7ELAOt07EPUqy5b1BtvC3r91RDh63d1GZpnmzZFiCxe1q80G0Nwn1ohlYvWLHZZe/woFYJQbWG/iXfIoRVc77cXkle2gW0QZ6J0dvIgHfdeUrPtX+sowB5l9t7XMsaXKLfX57xkQX4nyTKJRmK8YZ8U5o9FJ4=
+	t=1772010412; cv=none; b=RA7b64hb0kqaG9LReB5Bkt0bG5+V1EpdIxcU8If4SIPdFeAvFFueZtER6d3o91Pg8l/kEFawS1CqMAaYkszX4bbsZhbnFnX30YE7L2V5xiaLZJ9p+EGUIv4CagsT6tAlFcKuQqer+KlxKOw5YmaeyLdeUBFc7hdJIor4qa0qb74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772010393; c=relaxed/simple;
-	bh=jAVzK5Hc/AzuV81zaf70lHzotLsm9hxK1qHPaNtwaEs=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=ukAc9iMGHPj5tCqEdvTYsGxInrYtpv0lfCyskYlIl1YWwJd2NzY6k/1aEAnH3gZlBmK0KR2tUgZ8irmW2s0r9kjLYmDVoHyg/zEF94qzDrUF7joTvlT+WtW2OPV3M8GJzD35UfB3/fOIuuC9BSuNOdPKq2FrS6TIExJWb/6/eC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=qa4MGJ7I; arc=none smtp.client-ip=68.232.153.233
+	s=arc-20240116; t=1772010412; c=relaxed/simple;
+	bh=Rd8pBFRnXnJ5AAxlXaHhnrRJoWW4lC1dGDjHsSzEHx4=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=axQnReYGvRxk0aU1yrBNWH6n5+Hp89D/KRhxoHOu7ug4m1JgzA46w3wV2iSXaxYiFlW9odniwG+4h0pUQnPnQPAwtkpJt/l4YYpeSGw3YjmfiG9eV5S57TkKs60nSNxY3/CosMIL+FIsDu+l3wa7ilzD292T/gxEUK5PL3OEWG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Gigsq7bb; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="qa4MGJ7I"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Gigsq7bb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1772010390; x=1803546390;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=jAVzK5Hc/AzuV81zaf70lHzotLsm9hxK1qHPaNtwaEs=;
-  b=qa4MGJ7IxS4hIAm7mIF66Q0B8tnWEvIp88YnGJjv3xwowBDhFctU5gHe
-   yiiCcuWPf0YXs/yNZQhr/H5dwI/ElE4MnqNdP4w0KQo5EMxeYPiGfZyYF
-   Spd5bR/5+uGiPXxrmCpfkKkeDYYPZqHhzWH5OQGBQSHsZN6kcqA//JwyP
-   uJVLaPrGlonJF7mxynpOksDe9PDMgW9qWom7khed+43uByFo4pXB6crBI
-   DzxAaMoDq6rr9X8ryAeG7z/d8e+xfdIolMZd1k1blyy/GSGUuAE3jW07c
-   mwIo6bm4s4a31SLOCBOzGz2nBdghtV6K3aUMuUGFin+DhFUqr/e3k8lGL
+  t=1772010407; x=1803546407;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=Rd8pBFRnXnJ5AAxlXaHhnrRJoWW4lC1dGDjHsSzEHx4=;
+  b=Gigsq7bbvYvUr8xntrZg0MHCqpUdcZZDav5cRDxBgybyeWy7nnLUS92+
+   QF5lMgvf7N23qoj+ptMgi0eJHi4biHqryrqzB5bVoL0+Gt2ARWdIuk+Eg
+   jVzNxbam5QDlINkxA/te5IevX01zeDEdMbiTNAJvB8cVQoC77LQGHIiXd
+   aNTPb/59FVHk68t4Vqy4ceVGqvLoupJRZkFdq1yCrCcp++8ODZpblecLk
+   QWq6iqIzW15Np5dJhpKDs1kxovGDlw53dfAasaJqYL3BxENuVO1UVP+iZ
+   CBOcSD4wjqWsvmiI9DInhF1mMZShOx87b8ktf3MVagoDgYuDGoAJy1Vyy
    A==;
-X-CSE-ConnectionGUID: GvK6L9OjSSuGPw39llTOAQ==
-X-CSE-MsgGUID: M+9u7YjXSSqJIOES4TKBzw==
+X-CSE-ConnectionGUID: BbhGCtIlQZOkUhkWOAVukw==
+X-CSE-MsgGUID: rC2Dz5dBSou9sgbq3vMbFw==
 X-IronPort-AV: E=Sophos;i="6.21,310,1763449200"; 
-   d="scan'208";a="61259303"
+   d="scan'208";a="221112785"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 02:06:24 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
- chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 Feb 2026 02:06:46 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Wed, 25 Feb 2026 02:06:21 -0700
+ 15.1.2507.58; Wed, 25 Feb 2026 02:06:07 -0700
 Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 25 Feb 2026 02:06:19 -0700
+ 15.1.2507.58 via Frontend Transport; Wed, 25 Feb 2026 02:06:05 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Date: Wed, 25 Feb 2026 10:05:29 +0100
-Subject: [PATCH net-next 6/7] net: sparx5: move calendar initialization to
- probe
+Subject: [PATCH net-next 0/7] net: sparx5: clean up probe/remove init and
+ deinit paths
+Date: Wed, 25 Feb 2026 10:05:23 +0100
+Message-ID: <20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,10 +54,11 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260225-sparx5-init-deinit-v1-6-97036580b9f0@microchip.com>
-References: <20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com>
-In-Reply-To: <20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com>
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAFS7nmkC/x2MwQqAIBAFfyX23IIaGfQr0SHsVXvZQiWE6N+TT
+ sMcZh5KiIJEY/NQxC1JTq1i24bCsegOlrU6OeO8cdZzupZYehaVzCt+mG4Im/V98A5Uwytik/J
+ PJ1JkVpRM8/t+7oHzwm4AAAA=
+X-Change-ID: 20260216-sparx5-init-deinit-037cf165c62e
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
 	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
 	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
@@ -67,105 +68,95 @@ CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-kernel@vger.kernel.org>
 X-Mailer: b4 0.14.3
 
-Move the calendar initialization from sparx5_start() to probe() by
-creating a new sparx5_calendar_init() wrapper function that calls both
-sparx5_config_auto_calendar() and sparx5_config_dsm_calendar().
-Calendar initialization does not require cleanup.
+This series refactors the sparx5 init and deinit code out of
+sparx5_start() and into probe(), adding proper per-subsystem cleanup
+labels and deinit functions.
 
-Also, make the individual calendar config functions static since they
-are now only called from within sparx5_calendar.c.
+Currently, the sparx5 driver initializes most subsystems inside
+sparx5_start(), which is called from probe(). This includes registering
+netdevs, starting worker threads for stats and MAC table polling,
+requesting PTP IRQs, and initializing VCAP. The function has grown to
+handle many unrelated subsystems, and has no granular error handling —
+it either succeeds entirely or returns an error, leaving cleanup to a
+single catch-all label in probe().
+
+The remove() path has a similar problem: teardown is not structured as
+the reverse of initialization, and several subsystems lack proper deinit
+functions. For example, the stats workqueue has no corresponding
+cleanup, and the mact workqueue is destroyed without first cancelling
+its delayed work.
+
+Refactor this by moving each init function out of sparx5_start() and
+into probe(), with a corresponding goto-based cleanup label. Add deinit
+functions for subsystems that allocate resources, to properly cancel
+work and destroy workqueues. Ensure that cleanup order in both error
+paths and remove() follows the reverse of initialization order. What
+remains in sparx5_start() is only hardware register setup and FDMA/XTR
+initialization that does not require cleanup.
+
+Before this series, most init functions live inside sparx5_start() with
+no individual cleanup:
+
+  probe():
+    sparx5_start():              <- no granular error handling
+      sparx5_mact_init()
+      sparx_stats_init()           <- starts worker, no cleanup
+      mact_queue setup             <- no cancel on teardown
+      sparx5_register_netdevs()
+      sparx5_register_notifier_blocks()
+      sparx5_vcap_init()
+    sparx5_ptp_init()
+
+    probe() error path:
+      cleanup_ports:
+        sparx5_cleanup_ports()
+        destroy_workqueue(mact_queue)
+
+After this series, probe() initializes subsystems in order with
+matching cleanup labels, and remove() tears down in reverse:
+
+probe():
+    sparx5_ptp_init()
+    sparx5_vcap_init()
+    sparx5_mact_init()
+    sparx5_stats_init()
+    sparx5_register_netdevs()
+    sparx5_register_notifier_blocks()
+    sparx5_start()
+
+  remove():
+    sparx5_unregister_notifier_blocks()
+    sparx5_unregister_netdevs()
+    sparx5_stats_deinit()
+    sparx5_mact_deinit()
+    sparx5_vcap_deinit()
+    sparx5_ptp_deinit()
+    sparx5_destroy_netdevs()
 
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_calendar.c | 15 +++++++++++++--
- drivers/net/ethernet/microchip/sparx5/sparx5_main.c     | 14 ++++++--------
- drivers/net/ethernet/microchip/sparx5/sparx5_main.h     |  3 +--
- 3 files changed, 20 insertions(+), 12 deletions(-)
+Daniel Machon (7):
+      net: sparx5: call sparx5_start() last in probe()
+      net: sparx5: move netdev and notifier block registration to probe
+      net: sparx5: move VCAP initialization to probe
+      net: sparx5: move MAC table initialization and add deinit function
+      net: sparx5: move stats initialization and add deinit function
+      net: sparx5: move calendar initialization to probe
+      net: sparx5: move remaining init functions from start() to probe()
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_calendar.c b/drivers/net/ethernet/microchip/sparx5/sparx5_calendar.c
-index 5c46d81de530..4ec95590a3c6 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_calendar.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_calendar.c
-@@ -151,7 +151,7 @@ enum sparx5_cal_bw sparx5_get_port_cal_speed(struct sparx5 *sparx5, u32 portno)
- }
- 
- /* Auto configure the QSYS calendar based on port configuration */
--int sparx5_config_auto_calendar(struct sparx5 *sparx5)
-+static int sparx5_config_auto_calendar(struct sparx5 *sparx5)
- {
- 	const struct sparx5_consts *consts = sparx5->data->consts;
- 	u32 cal[7], value, idx, portno;
-@@ -578,7 +578,7 @@ static int sparx5_dsm_calendar_update(struct sparx5 *sparx5, u32 taxi,
- }
- 
- /* Configure the DSM calendar based on port configuration */
--int sparx5_config_dsm_calendar(struct sparx5 *sparx5)
-+static int sparx5_config_dsm_calendar(struct sparx5 *sparx5)
- {
- 	const struct sparx5_ops *ops = sparx5->data->ops;
- 	int taxi;
-@@ -610,3 +610,14 @@ int sparx5_config_dsm_calendar(struct sparx5 *sparx5)
- 	kfree(data);
- 	return err;
- }
-+
-+int sparx5_calendar_init(struct sparx5 *sparx5)
-+{
-+	int err;
-+
-+	err = sparx5_config_auto_calendar(sparx5);
-+	if (err)
-+		return err;
-+
-+	return sparx5_config_dsm_calendar(sparx5);
-+}
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-index 17748854ca48..581f87eb9781 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-@@ -740,14 +740,6 @@ static int sparx5_start(struct sparx5 *sparx5)
- 	/* Enable queue limitation watermarks */
- 	sparx5_qlim_set(sparx5);
- 
--	err = sparx5_config_auto_calendar(sparx5);
--	if (err)
--		return err;
--
--	err = sparx5_config_dsm_calendar(sparx5);
--	if (err)
--		return err;
--
- 	mutex_init(&sparx5->mdb_lock);
- 	INIT_LIST_HEAD(&sparx5->mdb_entries);
- 
-@@ -947,6 +939,12 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
- 		}
- 	}
- 
-+	err = sparx5_calendar_init(sparx5);
-+	if (err) {
-+		dev_err(sparx5->dev, "Failed to initialize calendar\n");
-+		goto cleanup_ports;
-+	}
-+
- 	err = sparx5_qos_init(sparx5);
- 	if (err) {
- 		dev_err(sparx5->dev, "Failed to initialize QoS\n");
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-index 97d53e229ad6..6a745bb71b5c 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-@@ -504,8 +504,7 @@ int sparx5_vlan_vid_del(struct sparx5_port *port, u16 vid);
- void sparx5_vlan_port_apply(struct sparx5 *sparx5, struct sparx5_port *port);
- 
- /* sparx5_calendar.c */
--int sparx5_config_auto_calendar(struct sparx5 *sparx5);
--int sparx5_config_dsm_calendar(struct sparx5 *sparx5);
-+int sparx5_calendar_init(struct sparx5 *sparx5);
- int sparx5_dsm_calendar_calc(struct sparx5 *sparx5, u32 taxi,
- 			     struct sparx5_calendar_data *data);
- u32 sparx5_cal_speed_to_value(enum sparx5_cal_bw speed);
+ .../ethernet/microchip/sparx5/sparx5_calendar.c    |  15 ++-
+ .../net/ethernet/microchip/sparx5/sparx5_ethtool.c |   9 +-
+ .../ethernet/microchip/sparx5/sparx5_mactable.c    |  27 +++-
+ .../net/ethernet/microchip/sparx5/sparx5_main.c    | 149 ++++++++++-----------
+ .../net/ethernet/microchip/sparx5/sparx5_main.h    |  12 +-
+ drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c |  13 ++
+ .../ethernet/microchip/sparx5/sparx5_vcap_impl.c   |   2 +-
+ 7 files changed, 135 insertions(+), 92 deletions(-)
+---
+base-commit: 17d0056f71b13050317a662a505b1a36fb7009e5
+change-id: 20260216-sparx5-init-deinit-037cf165c62e
 
+Best regards,
 -- 
-2.34.1
+Daniel Machon <daniel.machon@microchip.com>
 
