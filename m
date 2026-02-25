@@ -1,52 +1,52 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A68D6371046;
-	Wed, 25 Feb 2026 09:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C3937FF75;
+	Wed, 25 Feb 2026 09:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772010422; cv=none; b=h17Lz7clLv9ZgKDVIiKcG6eYNqnYXlGoyQ62IM4HYtws1PeqpHTyPx+9CZKH+GXg086kSxMYzy4LMf/0NnAGDDwMW9bnzqVTggb4pTLAX0fV2sNLX471So/sno7KZYhjrBydKT87WKbSVO7cCG6f4k07ZLtqaUHp689D4tlF+bY=
+	t=1772010431; cv=none; b=O/pXHos7netlch3KHUd+7XvZq88SHEY07ILaVWG5Wk5WZSUk+8oxptSB471dao5VeyN3aqlP8Qjxz1aOlWNOapykfIB5lwjhebI7iClWoPvBcYKVrudQyN0f+C3r5phIVcYJdsSVbK7mFwCJ0mnKrqIp6C3jNwTa3zBtyGrwMdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772010422; c=relaxed/simple;
-	bh=9VZ1uVovnXCdERkt2fVQaLnP6Cbs4phjqlrfHL7fq2M=;
+	s=arc-20240116; t=1772010431; c=relaxed/simple;
+	bh=wE0FxXJQW3yVDJE1a/1GJUQdpG7aGn8J4V+MDvPXIbQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=KJSAz4oOzdETaSDmZ92XpLQUWWb0ka7subWygKqdORPti6cLNkWnyG7UEtRxT0+0CQ3B4ZtZZkYluT1AmNwd5HX/uLmVYLhGQ5p8mm48HPQyq93tP4v805hiVxqcRRxO7m4BqhXAUrJz49cl6LCOP2iyExpRUV6j5caCA8bNZWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Sr8A+pdJ; arc=none smtp.client-ip=68.232.154.123
+	 In-Reply-To:To:CC; b=urljushxw+irYDDBI7ui48sr0BVXUMwOzL6592nGdg9tHnPLoHQtbvZuLD3Z0pLbi2BSg4BbNYSVO/FW6Rve8IIMCqV4+lnrwlOsOMPjiyWzJG3UY97Vuet/7yrhmCmtvIGNAhLGJMPJ6iYBsAJI0uhQ0QoZobQsCbDPiJsmmzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ATRk9tW4; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Sr8A+pdJ"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ATRk9tW4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1772010418; x=1803546418;
+  t=1772010429; x=1803546429;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=9VZ1uVovnXCdERkt2fVQaLnP6Cbs4phjqlrfHL7fq2M=;
-  b=Sr8A+pdJzZnxids5YJKv7kTfvrBD8E6tsSwdK++z4mZm1SWn1mzBKo5M
-   YxNPCKR8WT+SOmQdWQoZskknHnMHeuAIKd3fNEsBlOyCQHFVtJ+c0TFy/
-   2dTP5/y0Q2KTwCNMoBtQmmOOc1L2u9o97pB6OdOCs8dmW4oqsTEjK7wIu
-   mc4bFnKp+7jL6+ZoBwq2RIQj+8JmHZj6XNPt3twOfaVNza7XyfuhCUh/G
-   Nt/qDdQhefao+W+OIbVf7ft0Vzpm4Nr+nf549BgxtZ+vW+paifHyUaZtl
-   QZZ85vRtVU4tXxlwjqYoHBnbKRC+DN8n7Y0f71JX8CG/mKGfbEY13EhKh
-   A==;
-X-CSE-ConnectionGUID: qnurV3sJT6mUYuyKYf9Ihg==
-X-CSE-MsgGUID: vQY8kQEYSXyRvmukcJalZQ==
+  bh=wE0FxXJQW3yVDJE1a/1GJUQdpG7aGn8J4V+MDvPXIbQ=;
+  b=ATRk9tW46N9dNja269BPgDTHBV+kENXJ13FjBhLBsExZFUs5/gco8KlZ
+   z+KLHNN2OaalAxdSrQMbs2v+SnX3rdCpNVQQARUz81IEHAROPDJlWLS0U
+   uUT6kK9Bt3bTchxX+xkqht4JT/Jp1DKSULehqUW2ZnIgLWU7YzQEV4T8U
+   262Ge3LtPY8TBoffCMkBXFwhKjgesaAGXgHbp2CXaCu92iLQXKNZT8RlN
+   FmhARDSw0XdzZSIUaVrD2uIxJnzFdc5oN5kN1hDOv8guXnQWwErxQ+kp1
+   7WTeVLqHGQvRiW7MfdpRDF5XNjn9YWMCkTHiuSKPCN2slpO7eozHkEmez
+   w==;
+X-CSE-ConnectionGUID: 1d+y6PO9SFGcdWGyfjWqeQ==
+X-CSE-MsgGUID: 70P3UHu5T9G15aTdFF8Lfw==
 X-IronPort-AV: E=Sophos;i="6.21,310,1763449200"; 
-   d="scan'208";a="54259087"
+   d="scan'208";a="54259094"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 Feb 2026 02:06:58 -0700
+  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 25 Feb 2026 02:07:08 -0700
 Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 25 Feb 2026 02:06:23 -0700
+ 15.1.2507.58; Wed, 25 Feb 2026 02:06:09 -0700
 Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 25 Feb 2026 02:06:21 -0700
+ 15.1.2507.58 via Frontend Transport; Wed, 25 Feb 2026 02:06:07 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Date: Wed, 25 Feb 2026 10:05:30 +0100
-Subject: [PATCH net-next 7/7] net: sparx5: move remaining init functions
- from start() to probe()
+Date: Wed, 25 Feb 2026 10:05:24 +0100
+Subject: [PATCH net-next 1/7] net: sparx5: call sparx5_start() last in
+ probe()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260225-sparx5-init-deinit-v1-7-97036580b9f0@microchip.com>
+Message-ID: <20260225-sparx5-init-deinit-v1-1-97036580b9f0@microchip.com>
 References: <20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com>
 In-Reply-To: <20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
@@ -67,51 +67,121 @@ CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-kernel@vger.kernel.org>
 X-Mailer: b4 0.14.3
 
-Move sparx5_pgid_init(), sparx5_vlan_init(), and sparx5_board_init()
-from sparx5_start() to probe(). These functions do not require cleanup.
+The sparx5_start() function initializes hardware and enables interrupts,
+so it should be the last function called in probe(). Over time, new init
+functions have been added after it, breaking this assumption.
+
+Move sparx5_start() back to being last. To avoid breaking PTP between
+patches in this series, also consolidate all PTP initialization into
+sparx5_ptp_init() and add proper teardown via sparx5_ptp_deinit().
 
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_main.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ .../net/ethernet/microchip/sparx5/sparx5_main.c    | 35 ++++++++++------------
+ drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c | 13 ++++++++
+ 2 files changed, 29 insertions(+), 19 deletions(-)
 
 diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-index 581f87eb9781..fb3010446707 100644
+index 582145713cfd..d7e823fe4ab9 100644
 --- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
 +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-@@ -727,12 +727,6 @@ static int sparx5_start(struct sparx5 *sparx5)
- 			 ANA_CL_FILTER_CTRL_FORCE_FCS_UPDATE_ENA,
- 			 sparx5, ANA_CL_FILTER_CTRL(idx));
+@@ -820,18 +820,6 @@ static int sparx5_start(struct sparx5 *sparx5)
+ 		sparx5->xtr_irq = -ENXIO;
+ 	}
  
--	/* Init PGID table arbitrator */
--	sparx5_pgid_init(sparx5);
+-	if (sparx5->ptp_irq >= 0 &&
+-	    sparx5_has_feature(sparx5, SPX5_FEATURE_PTP)) {
+-		err = devm_request_threaded_irq(sparx5->dev, sparx5->ptp_irq,
+-						NULL, ops->ptp_irq_handler,
+-						IRQF_ONESHOT, "sparx5-ptp",
+-						sparx5);
+-		if (err)
+-			sparx5->ptp_irq = -ENXIO;
 -
--	/* Setup VLANs */
--	sparx5_vlan_init(sparx5);
+-		sparx5->ptp = 1;
+-	}
 -
- 	/* Add host mode BC address (points only to CPU) */
- 	sparx5_mact_learn(sparx5, sparx5_get_pgid(sparx5, PGID_CPU), broadcast,
- 			  NULL_VID);
-@@ -743,8 +737,6 @@ static int sparx5_start(struct sparx5 *sparx5)
- 	mutex_init(&sparx5->mdb_lock);
- 	INIT_LIST_HEAD(&sparx5->mdb_entries);
+ 	return err;
+ }
  
--	sparx5_board_init(sparx5);
--
- 	/* Start Frame DMA with fallback to register based INJ/XTR */
- 	err = -ENXIO;
- 	if (sparx5->fdma_irq >= 0) {
-@@ -939,6 +931,10 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
+@@ -1000,12 +988,6 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
  		}
  	}
  
-+	sparx5_pgid_init(sparx5);
-+	sparx5_vlan_init(sparx5);
-+	sparx5_board_init(sparx5);
-+
- 	err = sparx5_calendar_init(sparx5);
+-	err = sparx5_start(sparx5);
+-	if (err) {
+-		dev_err(sparx5->dev, "Start failed\n");
+-		goto cleanup_ports;
+-	}
+-
+ 	err = sparx5_qos_init(sparx5);
  	if (err) {
- 		dev_err(sparx5->dev, "Failed to initialize calendar\n");
+ 		dev_err(sparx5->dev, "Failed to initialize QoS\n");
+@@ -1014,14 +996,25 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
+ 
+ 	err = sparx5_ptp_init(sparx5);
+ 	if (err) {
+-		dev_err(sparx5->dev, "PTP failed\n");
++		dev_err(sparx5->dev, "Failed to initialize PTP\n");
+ 		goto cleanup_ports;
+ 	}
+ 
+ 	INIT_LIST_HEAD(&sparx5->mall_entries);
+ 
++	/* Start the rest of the initialization and enable interrupts. Must be
++	 * called last, after all subsystems are initialized.
++	 */
++	err = sparx5_start(sparx5);
++	if (err) {
++		dev_err(sparx5->dev, "Start failed\n");
++		goto cleanup_ptp;
++	}
++
+ 	goto cleanup_config;
+ 
++cleanup_ptp:
++	sparx5_ptp_deinit(sparx5);
+ cleanup_ports:
+ 	sparx5_cleanup_ports(sparx5);
+ 	if (sparx5->mact_queue)
+@@ -1047,6 +1040,10 @@ static void mchp_sparx5_remove(struct platform_device *pdev)
+ 		disable_irq(sparx5->fdma_irq);
+ 		sparx5->fdma_irq = -ENXIO;
+ 	}
++	if (sparx5->ptp_irq) {
++		disable_irq(sparx5->ptp_irq);
++		sparx5->ptp_irq = -ENXIO;
++	}
+ 	sparx5_ptp_deinit(sparx5);
+ 	ops->fdma_deinit(sparx5);
+ 	sparx5_cleanup_ports(sparx5);
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
+index 8b2e07821a95..84327ee5b8a2 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c
+@@ -606,9 +606,22 @@ static int sparx5_ptp_phc_init(struct sparx5 *sparx5,
+ int sparx5_ptp_init(struct sparx5 *sparx5)
+ {
+ 	u64 tod_adj = sparx5_ptp_get_nominal_value(sparx5);
++	const struct sparx5_ops *ops = sparx5->data->ops;
+ 	struct sparx5_port *port;
+ 	int err, i;
+ 
++	if (sparx5->ptp_irq >= 0 &&
++	    sparx5_has_feature(sparx5, SPX5_FEATURE_PTP)) {
++		err = devm_request_threaded_irq(sparx5->dev, sparx5->ptp_irq,
++						NULL, ops->ptp_irq_handler,
++						IRQF_ONESHOT, "sparx5-ptp",
++						sparx5);
++		if (err)
++			sparx5->ptp_irq = -ENXIO;
++
++		sparx5->ptp = 1;
++	}
++
+ 	if (!sparx5->ptp)
+ 		return 0;
+ 
 
 -- 
 2.34.1
