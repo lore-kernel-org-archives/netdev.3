@@ -1,138 +1,80 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outbound.baidu.com (mx24.baidu.com [111.206.215.185])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DF127CB02
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 02:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BA1273816;
+	Wed, 25 Feb 2026 02:26:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.206.215.185
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771986221; cv=none; b=Sh3TFVYERZvkEO6t7GDOWfCFtE7QeEoRDewAvb/kM71HIywNIBroUxOFlZ+4LE+xUVZZ4ybpZ0U00PRX9Oo6yXtPsqSuBFy0xt6E+1i3YAYaBm43osdDMH6parC6ToEPoujGvf92gSifPh9wEg3GUGbJgzu/rS4NAW5N2muCe7Q=
+	t=1771986369; cv=none; b=QMiTVimfE4NA1e3AiPmxYhSoVboqEKcZRE2SNNYcZl9Zde+NmLqzu5cWgdYCs3yBiujDaiBKolbg9kPqOgy7cFVUiwNQ+k2LIx7nVOm+HzB/zKmWuxFCKeENcsXQ/HSP692NNDM3X1SZbjM7SE1RwjNamjctduCuRmpuB9tNyg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771986221; c=relaxed/simple;
-	bh=Qnx0WR8R5mNoZxUAOGkxdNrNv9gzPMJmma876hrxrb0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgSLYRQv7ZRJ8FA2cXQ9P/T2bdWeY3EkDPQahvt0NuJa+hFxUj0SpKJhsOqv7i6O2dRD9YLqyMQ3wP088hM9essFB4U0oGGibvHyHhMfy0nUAlJbQ5kntXs+QAHpLkczauc9JlWUL3VgZtmG22/h3d7Ew3ORkd1/05p9bRMsZHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fp3ZRTXJ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fp3ZRTXJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32017C116D0;
-	Wed, 25 Feb 2026 02:23:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771986221;
-	bh=Qnx0WR8R5mNoZxUAOGkxdNrNv9gzPMJmma876hrxrb0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fp3ZRTXJZ5pya1Ii6clAL7Zv90xaoAQgno7x9xgaMw4ykIESZN5p1wbl01ZcWEgSt
-	 aetVlM0AAttXDwWAXhn8JX+s+qHqDbKXh9H80RoPaI35df9G+ucMoZHdRot5LItqo7
-	 rAmNeRMVEAiUtJMWrObA/F0/Db104beKBSet8QXKF+PYCWs7iQQkZ25l/naGX4RizD
-	 6vZubsEntChc3rMSo/Ge7uB9OozuUS9begkGcXAryDcgiTYblRuKiFS4vY98e57DJK
-	 xAa2+AsOizuKhCQ0zE/dYkuz3iz+WEu8PiMwI9jL9V2QAGkWlFa4esAussCWCT38bG
-	 AxAEadj1qg+MQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: jiri@resnulli.us
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	jiri@nvidia.com,
-	andrew+netdev@lunn.ch,
-	tariqt@nvidia.com,
-	matttbe@kernel.org,
-	leon@kernel.org,
-	daniel.zahka@gmail.com,
-	mhiramat@kernel.org,
-	skhan@linuxfoundation.org,
-	pabeni@redhat.com,
-	chuck.lever@oracle.com,
-	mbloch@nvidia.com,
-	netdev@vger.kernel.org,
-	przemyslaw.kitszel@intel.com,
-	davem@davemloft.net,
-	horms@kernel.org,
-	donald.hunter@gmail.com,
-	mschmidt@redhat.com,
-	corbet@lwn.net,
-	saeedm@nvidia.com,
-	edumazet@google.com,
-	cjubran@nvidia.com,
-	rostedt@goodmis.org,
-	mathieu.desnoyers@efficios.com
-Subject: Re: [net-next,09/10] documentation: networking: add shared devlink documentation
-Date: Tue, 24 Feb 2026 18:23:39 -0800
-Message-ID: <20260225022339.998218-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260223145557.248679-10-jiri@resnulli.us>
-References: <20260223145557.248679-10-jiri@resnulli.us>
+	s=arc-20240116; t=1771986369; c=relaxed/simple;
+	bh=5q/gy2Ucyfw1Ty2cmZtJ+NPyMI6M6VJcKIRA2HH2AmE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bMQtQVYCf33OlgJCZs3jpd2SSowaH4gJaQEeaPaieCOrksiIQwK/+cTHnpf5jSLQf8T0FC/GRltvpF1HtYy9g79DmzA2QeW4hrRDnhphnPMXRkFMY3ZyV3Y1UKOnUYV1r9F6UUCOU7AEaDzJ+k5gg/B0+RyxbllFUUTauMJ4jPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; arc=none smtp.client-ip=111.206.215.185
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
+From: lirongqing <lirongqing@baidu.com>
+To: Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+CC: Li RongQing <lirongqing@baidu.com>
+Subject: [PATCH][net-next] net/devlink: Move health recovery notification after abort check
+Date: Tue, 24 Feb 2026 21:10:03 -0500
+Message-ID: <20260225021003.1837-1-lirongqing@baidu.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: bjhj-exc4.internal.baidu.com (172.31.3.14) To
+ bjkjy-exc3.internal.baidu.com (172.31.50.47)
+X-FEAS-Client-IP: 172.31.50.47
+X-FE-Policy-ID: 52:10:53:SYSTEM
 
-This is an AI-generated review of your patch. The human sending this
-email says "FYI"
+From: Li RongQing <lirongqing@baidu.com>
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+In devlink_health_report(), the DEVLINK_CMD_HEALTH_REPORTER_RECOVER
+notification is sent immediately after setting the error state, before
+checking if recovery should be aborted via devlink_health_recover_abort().
+
+When devlink_health_recover_abort() returns true (e.g., due to rate
+limiting), the recovery process terminates early, but userspace has already
+received a notification implying that recovery is underway. This creates a
+misleading view of the reporter's activity.
+
+Move the notification after the abort check, ensuring it is only sent when
+recovery will actually proceed. This aligns the notification with the
+actual recovery behavior.
+
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
 ---
-documentation: networking: add shared devlink documentation
+ net/devlink/health.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This commit adds documentation for shared devlink instances, which allow
-multiple physical functions (PFs) on the same chip to share a devlink
-instance for chip-wide operations.
+diff --git a/net/devlink/health.c b/net/devlink/health.c
+index 136a67c..e9999fc 100644
+--- a/net/devlink/health.c
++++ b/net/devlink/health.c
+@@ -665,7 +665,6 @@ int devlink_health_report(struct devlink_health_reporter *reporter,
+ 	reporter->error_count++;
+ 	prev_health_state = reporter->health_state;
+ 	reporter->health_state = DEVLINK_HEALTH_REPORTER_STATE_ERROR;
+-	devlink_recover_notify(reporter, DEVLINK_CMD_HEALTH_REPORTER_RECOVER);
+ 
+ 	if (devlink_health_recover_abort(reporter, prev_health_state)) {
+ 		trace_devlink_health_recover_aborted(devlink,
+@@ -686,6 +685,7 @@ int devlink_health_report(struct devlink_health_reporter *reporter,
+ 	if (!reporter->auto_recover)
+ 		return 0;
+ 
++	devlink_recover_notify(reporter, DEVLINK_CMD_HEALTH_REPORTER_RECOVER);
+ 	devl_lock(devlink);
+ 	ret = devlink_health_reporter_recover(reporter, priv_ctx, NULL);
+ 	devl_unlock(devlink);
+-- 
+2.9.4
 
-> diff --git a/Documentation/networking/devlink/devlink-shared.rst b/Documentation/networking/devlink/devlink-shared.rst
-> new file mode 100644
-> index 000000000000..b2a1bd37564f
-> --- /dev/null
-> +++ b/Documentation/networking/devlink/devlink-shared.rst
-> @@ -0,0 +1,89 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +
-> +============================
-> +Devlink Shared Instances
-> +============================
-
-The underline length doesn't match the title. The title "Devlink Shared
-Instances" is 25 characters, but the "====" lines are 28 characters. Should
-these match?
-
-> +
-> +Overview
-> +========
-> +
-> +Shared devlink instances allow multiple physical functions (PFs) on the same
-> +chip to share an additional devlink instance for chip-wide operations. This
-> +is implemented within individual drivers alongside the individual PF devlink
-> +instances, not replacing them.
-
-Should the documentation include a note here that shared devlink instances
-are a workaround for legacy drivers, and that new drivers should have a
-single devlink instance for the entire device?
-
-This guidance appeared in multiple review discussions, particularly in the
-V7 review where it was noted: "There needs to be a note here clearly
-stating the the use of 'shared devlink instace' is a hack for legacy
-drivers, and new drivers should have a single devlink instance for the
-entire device. The fact that single instance is always preferred, and
-*more correct* must be made very clear to the reader."
-
-Without this context, readers might not understand when this feature is
-appropriate to use versus when a single devlink instance would be more
-correct.
-
-> +
-> +Multiple PFs may reside on the same physical chip, running a single firmware.
-> +Some of the resources and configurations may be shared among these PFs. The
-> +shared devlink instance provides an object to pin configuration knobs on.
-
-[ ... ]
-
-> diff --git a/Documentation/networking/devlink/index.rst b/Documentation/networking/devlink/index.rst
-> index 35b12a2bfeba..f7ba7dcf477d 100644
-> --- a/Documentation/networking/devlink/index.rst
-> +++ b/Documentation/networking/devlink/index.rst
-> @@ -68,6 +68,7 @@ general.
->     devlink-resource
->     devlink-selftests
->     devlink-trap
-> +   devlink-shared
->
->  Driver-specific documentation
->  -----------------------------
