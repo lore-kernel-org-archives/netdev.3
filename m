@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7239E258ED5
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 01:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57589280331
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 01:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771981201; cv=none; b=VrbA1cpUmtAZ1WWLH9fmjjbtZ7Ya77RC3q+6xxcHiH3nSHXedSfPA0tQ8qbeXBI5BGuVf8fTXJ0wxBPPuLmdF/UNDQ3yjYKashIpmPN/49/llFLhlFncvdoeNDoRfF18meq7O1blJEffoL2vsfz9dI1PEyLpfCJe/7/mGh3nvTM=
+	t=1771981203; cv=none; b=OIf/OyN7mAIXkIeogUX3qM4PLF70LqqpfIWdDHnW03T3ZBdjaA6aKYjaF8yAjjfDzSbiIp0UlbP+hmGVooHK0RGSHNeJM2BtO7tVbbH03eJo2v7TLVUTM9kgUuXayS1S5lhV9Pd8AD0Utkfpk3xFFuXNy5fZWQDQ9lIBeXHPftE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771981201; c=relaxed/simple;
-	bh=rQByn2RHfTtDy+xHPGd4jmIRmh5lvJsv+dB9vMFlqzM=;
+	s=arc-20240116; t=1771981203; c=relaxed/simple;
+	bh=yLZUgx5mqbzs4oaffYbIqA3f5wMo6zF71cfIZ2rkCSo=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KiKFheRBa+84jtJu9cdQ5Chr1b4GpkL0uOWhwkTZf8twKzxWx6vSqXNZfugp9JDGJcvvOqMMLEVn25qvkNxvIbbJDpAXf03So/sBsHG/6M+z+3HHCvnKulbk7cMVew+htP50ScHdkSwiN5pQNcEEhBEqHTWhgcAh1EM3JDa9OOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fyP8FhL1; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ZppvqlfYraKNIWP2FvR25blasl5aoJPIUvyRyD7H0+j37m0Y75Ciq0hkCI9IfOfg+3vLRC9QI7CiczyXXqs4BNtG2TESoKL2veYSM7pt5E5LVeLRewLowG590o2aOiSdciFUOR2mxNxVzWErHIDnq27INBkh5AUtzx3R4bzF218=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZCZBQzeK; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fyP8FhL1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AABBC19423;
-	Wed, 25 Feb 2026 01:00:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZCZBQzeK"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17834C2BC87;
+	Wed, 25 Feb 2026 01:00:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771981201;
-	bh=rQByn2RHfTtDy+xHPGd4jmIRmh5lvJsv+dB9vMFlqzM=;
+	s=k20201202; t=1771981203;
+	bh=yLZUgx5mqbzs4oaffYbIqA3f5wMo6zF71cfIZ2rkCSo=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=fyP8FhL13dWqhCcSa1ySWn+HL8dF8GsnQM8L9oHp904LT5TsC/laqLIail00GYoBw
-	 S0pPqW6yRfSPAJ9kbf0IyCkhSmkySuLoCGrzBu4K/HXaUhDMWy9WmanVfLX5NEJbb1
-	 MkfiqynV6sel0A6hhB82iR5QQ1I2sM4czCU3JFVX9B3jyuKeqYfgYU+2FjajXBh0Ib
-	 5ytNK3KgUsks0um/eMrGX4Xw58zPoSIVtUNlA0tDpVbOAi5Euo1G412jU7pNwGHinv
-	 tnuqC8Mc1qxwO98AP7DtxN/tbdXWub+L2T3E7YcugKS0AwJA+YpvUBjfw1zSWyg44e
-	 euKm4tktD0r4g==
+	b=ZCZBQzeKMnOb3B87aUO1hmiuEwwvP2A7l3zIxtgI9T5JgnQwIloXHrh7nC5/5NDz7
+	 OZ+YR+zmL3V0WkXgsaKOqF68kVZThKhJw+lghNOIFn8zwA7GEqUK7mir7iNOdO1ttZ
+	 pE9idCcsSJ1c71uaIGrR/cn91oHCYxE85/ekS+1lSx4+CzaNaaBdBVLdPcWgxWrOJl
+	 JeaoIN/9BJtrIhQXrzKhAx5AvUoZuk5xvVnavLeGlU2tJVS/ZVyBa3J6FKNeQqdw56
+	 NPApaKSWMolTt4RXRdqEnEvJpS/Uq06p0zY5pD151X9r0fyUB5K4jaPgRSe0k7hm/0
+	 +w07rDHbBe9yQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F7C3808203;
-	Wed, 25 Feb 2026 01:00:07 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02DDB3808203;
+	Wed, 25 Feb 2026 01:00:09 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,38 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] udp: move udp6_csum_init() back to
- net/ipv6/udp.c
+Subject: Re: [PATCH net-next] net: __lock_sock() can be static
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177198120655.17446.13290913764225933803.git-patchwork-notify@kernel.org>
-Date: Wed, 25 Feb 2026 01:00:06 +0000
-References: <20260223093445.3696368-1-edumazet@google.com>
-In-Reply-To: <20260223093445.3696368-1-edumazet@google.com>
+ <177198120778.17446.9183992293157130973.git-patchwork-notify@kernel.org>
+Date: Wed, 25 Feb 2026 01:00:07 +0000
+References: <20260223092716.3673939-1-edumazet@google.com>
+In-Reply-To: <20260223092716.3673939-1-edumazet@google.com>
 To: Eric Dumazet <edumazet@google.com>
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- kuniyu@google.com, willemb@google.com, netdev@vger.kernel.org,
- eric.dumazet@gmail.com
+ kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 23 Feb 2026 09:34:45 +0000 you wrote:
-> This function has a single caller in net/ipv6/udp.c.
+On Mon, 23 Feb 2026 09:27:15 +0000 you wrote:
+> After commit 6511882cdd82 ("mptcp: allocate fwd memory separately
+> on the rx and tx path") __lock_sock() can be static again.
 > 
-> Move it there so that the compiler can decide to (auto)inline
-> it if he prefers to. IBT glue is removed anyway.
+> Make sure __lock_sock() is not inlined, so that lock_sock_nested()
+> no longer needs a stack canary.
 > 
-> With clang, we can see it was able to inline it and also
-> inlined one other helper at the same time.
+> Add a noinline attribute on lock_sock_nested() so that calls
+> to lock_sock() from net/core/sock.c are not inlined,
+> none of them are fast path to deserve that:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] udp: move udp6_csum_init() back to net/ipv6/udp.c
-    https://git.kernel.org/netdev/net-next/c/f033335937d6
+  - [net-next] net: __lock_sock() can be static
+    https://git.kernel.org/netdev/net-next/c/2550def53bbf
 
 You are awesome, thank you!
 -- 
