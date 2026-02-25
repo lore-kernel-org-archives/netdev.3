@@ -1,52 +1,52 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A09C036EAA8;
-	Wed, 25 Feb 2026 09:06:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6388136EA94;
+	Wed, 25 Feb 2026 09:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772010390; cv=none; b=rKYIe2eHfkt+LAhrFofEu/lXsHsT/Rl4UYQtQqD7vvsBGts1pSdKHEEr7V/rE9hcieUJWqUdAtGE6WK5I6IGeGHm74Jlm+zAab/XSthUe1GOFrU+9n3LRJaKDy01fOimrdAlbqt9F+DARN3YYROH8HTQ/ERbISEN3gpNz4rM+IE=
+	t=1772010393; cv=none; b=NtLXFpzmateT2E7ELAOt07EPUqy5b1BtvC3r91RDh63d1GZpnmzZFiCxe1q80G0Nwn1ohlYvWLHZZe/woFYJQbWG/iXfIoRVc77cXkle2gW0QZ6J0dvIgHfdeUrPtX+sowB5l9t7XMsaXKLfX57xkQX4nyTKJRmK8YZ8U5o9FJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772010390; c=relaxed/simple;
-	bh=CEOoIShVVz67EX2t2AqHEGK8T7hIP5WU9sisxJNNPzs=;
+	s=arc-20240116; t=1772010393; c=relaxed/simple;
+	bh=jAVzK5Hc/AzuV81zaf70lHzotLsm9hxK1qHPaNtwaEs=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=jwZJcHZDQSylc25HQh0yLVDTFl0lY1vnOrEJM7cWWUBpjOSXxgko6gfVQpz4aqtxwn4JWvPtPvzYeqSnTTmMXD9OLzVbspj7x08YtebOx0O5U/rwHCpMv/Ir1GD3dksE0dGthMK1JdsIR26TS8SPHScKy6zgU2jJqS7OQHkN158=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=BN6/8T5T; arc=none smtp.client-ip=68.232.153.233
+	 In-Reply-To:To:CC; b=ukAc9iMGHPj5tCqEdvTYsGxInrYtpv0lfCyskYlIl1YWwJd2NzY6k/1aEAnH3gZlBmK0KR2tUgZ8irmW2s0r9kjLYmDVoHyg/zEF94qzDrUF7joTvlT+WtW2OPV3M8GJzD35UfB3/fOIuuC9BSuNOdPKq2FrS6TIExJWb/6/eC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=qa4MGJ7I; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="BN6/8T5T"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="qa4MGJ7I"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1772010387; x=1803546387;
+  t=1772010390; x=1803546390;
   h=from:date:subject:mime-version:content-transfer-encoding:
    message-id:references:in-reply-to:to:cc;
-  bh=CEOoIShVVz67EX2t2AqHEGK8T7hIP5WU9sisxJNNPzs=;
-  b=BN6/8T5TYq64T/e/lhmt8kJ1QnRhx3PlACOrQ+Ocy4mlUD79Vhv5QxDa
-   9kMXd1WsahrAQmHkBbPGWzU863+rA/i/9llH609iLo13/XwmCE0z+Lg7j
-   /fJdTSOxzHb8AFENKlyzQTcZsfdmnJs3l7wiemDO10VkIG0h4qA1u7z8y
-   uAHTOzyvQqApaUO1tb+ueovR1XjKj0XHthnn8oTDT9DAhSu+Pr/HViFIa
-   CgM1ZEGp0XoPv8NJhUTwziw+4+4UrVu8TqyprVtNprbIijTBen4DTlGG5
-   aLHG+zyFbDwupsrwrXYe9/vbWo54sTre1KigtYUk1oNvpL7NAGgeXpu7l
-   g==;
+  bh=jAVzK5Hc/AzuV81zaf70lHzotLsm9hxK1qHPaNtwaEs=;
+  b=qa4MGJ7IxS4hIAm7mIF66Q0B8tnWEvIp88YnGJjv3xwowBDhFctU5gHe
+   yiiCcuWPf0YXs/yNZQhr/H5dwI/ElE4MnqNdP4w0KQo5EMxeYPiGfZyYF
+   Spd5bR/5+uGiPXxrmCpfkKkeDYYPZqHhzWH5OQGBQSHsZN6kcqA//JwyP
+   uJVLaPrGlonJF7mxynpOksDe9PDMgW9qWom7khed+43uByFo4pXB6crBI
+   DzxAaMoDq6rr9X8ryAeG7z/d8e+xfdIolMZd1k1blyy/GSGUuAE3jW07c
+   mwIo6bm4s4a31SLOCBOzGz2nBdghtV6K3aUMuUGFin+DhFUqr/e3k8lGL
+   A==;
 X-CSE-ConnectionGUID: GvK6L9OjSSuGPw39llTOAQ==
-X-CSE-MsgGUID: ZyZB/CyDSGC4HN5xo0MT/Q==
+X-CSE-MsgGUID: M+9u7YjXSSqJIOES4TKBzw==
 X-IronPort-AV: E=Sophos;i="6.21,310,1763449200"; 
-   d="scan'208";a="61259302"
+   d="scan'208";a="61259303"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 02:06:23 -0700
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 02:06:24 -0700
 Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
  chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Wed, 25 Feb 2026 02:06:18 -0700
+ 15.2.2562.35; Wed, 25 Feb 2026 02:06:21 -0700
 Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Wed, 25 Feb 2026 02:06:16 -0700
+ 15.1.2507.58 via Frontend Transport; Wed, 25 Feb 2026 02:06:19 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Date: Wed, 25 Feb 2026 10:05:28 +0100
-Subject: [PATCH net-next 5/7] net: sparx5: move stats initialization and
- add deinit function
+Date: Wed, 25 Feb 2026 10:05:29 +0100
+Subject: [PATCH net-next 6/7] net: sparx5: move calendar initialization to
+ probe
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,7 +55,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-ID: <20260225-sparx5-init-deinit-v1-5-97036580b9f0@microchip.com>
+Message-ID: <20260225-sparx5-init-deinit-v1-6-97036580b9f0@microchip.com>
 References: <20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com>
 In-Reply-To: <20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
@@ -67,111 +67,104 @@ CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-kernel@vger.kernel.org>
 X-Mailer: b4 0.14.3
 
-The sparx5_stats_init() function starts a worker thread which needs to
-be cleaned up. Move the initialization code to probe() and add a
-deinit() function for proper teardown.
+Move the calendar initialization from sparx5_start() to probe() by
+creating a new sparx5_calendar_init() wrapper function that calls both
+sparx5_config_auto_calendar() and sparx5_config_dsm_calendar().
+Calendar initialization does not require cleanup.
 
-Also, rename sparx_stats_init() to sparx5_stats_init() to match the
-driver naming convention.
+Also, make the individual calendar config functions static since they
+are now only called from within sparx5_calendar.c.
 
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
- drivers/net/ethernet/microchip/sparx5/sparx5_ethtool.c |  9 ++++++++-
- drivers/net/ethernet/microchip/sparx5/sparx5_main.c    | 16 ++++++++++------
- drivers/net/ethernet/microchip/sparx5/sparx5_main.h    |  3 ++-
- 3 files changed, 20 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/microchip/sparx5/sparx5_calendar.c | 15 +++++++++++++--
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.c     | 14 ++++++--------
+ drivers/net/ethernet/microchip/sparx5/sparx5_main.h     |  3 +--
+ 3 files changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_ethtool.c b/drivers/net/ethernet/microchip/sparx5/sparx5_ethtool.c
-index 049541eeaae0..d42c57bead89 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_ethtool.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_ethtool.c
-@@ -1244,7 +1244,7 @@ const struct ethtool_ops sparx5_ethtool_ops = {
- 	.set_pauseparam         = sparx5_set_pauseparam,
- };
+diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_calendar.c b/drivers/net/ethernet/microchip/sparx5/sparx5_calendar.c
+index 5c46d81de530..4ec95590a3c6 100644
+--- a/drivers/net/ethernet/microchip/sparx5/sparx5_calendar.c
++++ b/drivers/net/ethernet/microchip/sparx5/sparx5_calendar.c
+@@ -151,7 +151,7 @@ enum sparx5_cal_bw sparx5_get_port_cal_speed(struct sparx5 *sparx5, u32 portno)
+ }
  
--int sparx_stats_init(struct sparx5 *sparx5)
-+int sparx5_stats_init(struct sparx5 *sparx5)
+ /* Auto configure the QSYS calendar based on port configuration */
+-int sparx5_config_auto_calendar(struct sparx5 *sparx5)
++static int sparx5_config_auto_calendar(struct sparx5 *sparx5)
  {
  	const struct sparx5_consts *consts = sparx5->data->consts;
- 	char queue_name[32];
-@@ -1278,3 +1278,10 @@ int sparx_stats_init(struct sparx5 *sparx5)
+ 	u32 cal[7], value, idx, portno;
+@@ -578,7 +578,7 @@ static int sparx5_dsm_calendar_update(struct sparx5 *sparx5, u32 taxi,
+ }
  
- 	return 0;
+ /* Configure the DSM calendar based on port configuration */
+-int sparx5_config_dsm_calendar(struct sparx5 *sparx5)
++static int sparx5_config_dsm_calendar(struct sparx5 *sparx5)
+ {
+ 	const struct sparx5_ops *ops = sparx5->data->ops;
+ 	int taxi;
+@@ -610,3 +610,14 @@ int sparx5_config_dsm_calendar(struct sparx5 *sparx5)
+ 	kfree(data);
+ 	return err;
  }
 +
-+void sparx5_stats_deinit(struct sparx5 *sparx5)
++int sparx5_calendar_init(struct sparx5 *sparx5)
 +{
-+	cancel_delayed_work_sync(&sparx5->stats_work);
-+	destroy_workqueue(sparx5->stats_queue);
-+	mutex_destroy(&sparx5->queue_stats_lock);
++	int err;
++
++	err = sparx5_config_auto_calendar(sparx5);
++	if (err)
++		return err;
++
++	return sparx5_config_dsm_calendar(sparx5);
 +}
 diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-index 97dd3cea0554..17748854ca48 100644
+index 17748854ca48..581f87eb9781 100644
 --- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
 +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-@@ -748,11 +748,6 @@ static int sparx5_start(struct sparx5 *sparx5)
- 	if (err)
- 		return err;
+@@ -740,14 +740,6 @@ static int sparx5_start(struct sparx5 *sparx5)
+ 	/* Enable queue limitation watermarks */
+ 	sparx5_qlim_set(sparx5);
  
--	/* Init stats */
--	err = sparx_stats_init(sparx5);
+-	err = sparx5_config_auto_calendar(sparx5);
+-	if (err)
+-		return err;
+-
+-	err = sparx5_config_dsm_calendar(sparx5);
 -	if (err)
 -		return err;
 -
  	mutex_init(&sparx5->mdb_lock);
  	INIT_LIST_HEAD(&sparx5->mdb_entries);
  
-@@ -976,12 +971,18 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
- 		goto cleanup_vcap;
+@@ -947,6 +939,12 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
+ 		}
  	}
  
-+	err = sparx5_stats_init(sparx5);
++	err = sparx5_calendar_init(sparx5);
 +	if (err) {
-+		dev_err(sparx5->dev, "Failed to initialize stats\n");
-+		goto cleanup_mact;
++		dev_err(sparx5->dev, "Failed to initialize calendar\n");
++		goto cleanup_ports;
 +	}
 +
- 	INIT_LIST_HEAD(&sparx5->mall_entries);
- 
- 	err = sparx5_register_netdevs(sparx5);
+ 	err = sparx5_qos_init(sparx5);
  	if (err) {
- 		dev_err(sparx5->dev, "Failed to register net devices\n");
--		goto cleanup_mact;
-+		goto cleanup_stats;
- 	}
- 
- 	err = sparx5_register_notifier_blocks(sparx5);
-@@ -1005,6 +1006,8 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
- 	sparx5_unregister_notifier_blocks(sparx5);
- cleanup_netdevs:
- 	sparx5_unregister_netdevs(sparx5);
-+cleanup_stats:
-+	sparx5_stats_deinit(sparx5);
- cleanup_mact:
- 	sparx5_mact_deinit(sparx5);
- cleanup_vcap:
-@@ -1040,6 +1043,7 @@ static void mchp_sparx5_remove(struct platform_device *pdev)
- 	}
- 	sparx5_unregister_notifier_blocks(sparx5);
- 	sparx5_unregister_netdevs(sparx5);
-+	sparx5_stats_deinit(sparx5);
- 	sparx5_mact_deinit(sparx5);
- 	sparx5_vcap_deinit(sparx5);
- 	sparx5_ptp_deinit(sparx5);
+ 		dev_err(sparx5->dev, "Failed to initialize QoS\n");
 diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-index e4c39cca7b26..97d53e229ad6 100644
+index 97d53e229ad6..6a745bb71b5c 100644
 --- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
 +++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.h
-@@ -514,7 +514,8 @@ enum sparx5_cal_bw sparx5_get_port_cal_speed(struct sparx5 *sparx5, u32 portno);
+@@ -504,8 +504,7 @@ int sparx5_vlan_vid_del(struct sparx5_port *port, u16 vid);
+ void sparx5_vlan_port_apply(struct sparx5 *sparx5, struct sparx5_port *port);
  
- /* sparx5_ethtool.c */
- void sparx5_get_stats64(struct net_device *ndev, struct rtnl_link_stats64 *stats);
--int sparx_stats_init(struct sparx5 *sparx5);
-+int sparx5_stats_init(struct sparx5 *sparx5);
-+void sparx5_stats_deinit(struct sparx5 *sparx5);
- 
- /* sparx5_dcb.c */
- #ifdef CONFIG_SPARX5_DCB
+ /* sparx5_calendar.c */
+-int sparx5_config_auto_calendar(struct sparx5 *sparx5);
+-int sparx5_config_dsm_calendar(struct sparx5 *sparx5);
++int sparx5_calendar_init(struct sparx5 *sparx5);
+ int sparx5_dsm_calendar_calc(struct sparx5 *sparx5, u32 taxi,
+ 			     struct sparx5_calendar_data *data);
+ u32 sparx5_cal_speed_to_value(enum sparx5_cal_bw speed);
 
 -- 
 2.34.1
