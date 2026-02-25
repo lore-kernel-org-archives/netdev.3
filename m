@@ -1,167 +1,127 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0757D311587
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 08:15:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772007324; cv=pass; b=I288T0lKRA0xCJdn3WLy1ROqikt6pDqgQ/zI1wrQdROtZPExMkr4ima0+1HkT/U2YxLs+H4LvAVXX48auWu27JfQtLXMRhArizSqhLuPoawNeT2ZTPDLmzGWV4aQ43J/KTy8fy6IbLmZn2b7dlNAM81edGMdr6KB9B9Idf6yiqM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772007324; c=relaxed/simple;
-	bh=cY3zSVRHHJ9BQVNhL7zT5pcIaJD8nWf/AITldh4B1gs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GwWmaXkToDWVm6STnz6XCHoiowt2xGJi7mwc4hVS/PWmAvXrVkTpTxqofbZzu7k1JPZVxeK8qUHIgDbRlzdk3KXiV7LGulaoMPGxwKMJhrJPm8WNOzx0M+7b+N4fbAQ4fjflrBoL6BVtSLAQz+EZolNVLtRhp+ubc4eJHjGyyAA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Dh3I7Jtz; arc=pass smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7317B1C860C
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 08:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772007864; cv=none; b=OC6wTpsqMUpntAkiNlVNWg4eQROXqZjvZHWd+jPbzwX+5oANwbJRRvufAAqEIvVRkETei9N3qGx7KfRxZNtENdxSCJLla3ETSyp4jKpt/asIxicYpw2szWMCIZoasHbWUkGBjRa4R+nvYLFpa66UNPgLDUT9gzi1yiXhL0VtDf8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772007864; c=relaxed/simple;
+	bh=U1GhL7zKltKKOQKOy/cabia1ibZK6mpbc18xNtgDDhc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YfSTwB03V6acrHKrm9uOBeaOglLthaG+MGYYoeQYAr/Wo+sQgeLKfexBLmsjfeHSTtxAeDo0HjOa3wkVQmbvjR3U5n7D7TQlwjrZUkWPkCaRF4IQ05TAwTP8sb78RbM/fVTKntwGopqzCYTQrV1DyKMoQ1ihn9R4xqyy5WMHlr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=kfzVf4+I; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Dh3I7Jtz"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-506a747448dso53697481cf.0
-        for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 00:15:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772007322; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lr/CEBw7nFcUhQw8cYGHGN4uzvVHlXFeeIVkh3UJcU2T8pToOZYr8yblcMDFQhXfWL
-         +WJi3JmCW+XxPiIHIbgofyPLowRXSN0DLF8WYPuUNqSBZpguXR+pJifPptTPCgLS3DIR
-         YiyqCOHFmTD7g65yiOhfUWQ+OOm0tK9MrIICEmVNJUBQxkxM01yMrJPU1GF4Wqr9zOJL
-         W42RD7fTBTVVcfYV07JwBm+R7Afsdq8D1oMkXibGL3gXJB85aCDtYgNd84moYpPx+lFl
-         f8BaF6qZylp92jjX/h9iweBDBL+LIhKxtCv0RUoVWDy5t1Cv5y9HCG9XNP3jmo9aEgea
-         AfsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=A+zd1Qef+gHdKi2og3MhumWj0kDR52RCsxG045c//es=;
-        fh=M7DcgeGzaEFDIrs1Lo0dQcmfYbU+VQa4lv2TQMT/0yk=;
-        b=Ziy7mhOWJitYH617I7WOaa2KYjwBcH+6uVPKeq/ng0v0+lngs2VDh6hS5BiaImlqWw
-         GgYsjm0ZqRB+AOGiqvynXS068FjaN/9+0zICpEKpWhxOMEyL5O3ZMLmr84scx3QuGmXA
-         4GA6qXJDdQhk4mlOXm2bBPusF5TX5kHLUrcaEO7/sbfBsx3Sahmd6uHlDEHTpaSWT0m5
-         5zmZipIYzccbyYqYpiTxKEaB3u/fvtCLb8gXn8A4Gxt+J/g3mOvFBVCZLsbJRJN/ne2f
-         gO9CZaHS4eeGdGRSCczv2aQaZsChc49gX0GKqBjHks7tFyxWQi9w2BokJWP9KRkg1ozI
-         e8Pw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772007322; x=1772612122; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A+zd1Qef+gHdKi2og3MhumWj0kDR52RCsxG045c//es=;
-        b=Dh3I7JtzRxEk2h8Ncf36a8tOXvb6t2I7AiBUoK3Fo1Q2Qa4xZUGyLJesS94gbQxKie
-         jv376NXt12c1fxUNW1ZCdDLXd0hzLEkUYDI9OmGy45/hJASXhfIfkbxFzM9mMTrZRZ3K
-         f995En5BRbBr9jdKmyBc7wYyi4ymCdgHj6XOZefH6Fv3XOYnO+upo6UqdWGk/dUpslsO
-         APIpt2G2YOEu6+UNKUBMxHqJZx7iXYR1iEW1LAhGSxEY00qLFIWILqSdUnU3zVQ0BK+S
-         NdHcZl93rZuaDeoTt+dZLzqUhdG8lIq9dTowZRRi9xNT80HdVzVqQvFUrsdByIVEYVy4
-         f0Hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772007322; x=1772612122;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=A+zd1Qef+gHdKi2og3MhumWj0kDR52RCsxG045c//es=;
-        b=mgdycQhsM4OLNe6EiyPcXnDaY1dbJKA5G5w8J3dpqzOMmyJDWCKl5594QSRoNH8NJe
-         mRjt+pvD5eMbx1kf829XNi6xZjqhZB8zZu3ijeKJnKSwgLQeo+PDIZN+vAGtJV6b6IYO
-         4lDWPuf303czQesStoA0b1yeNAwh20CBLW9BbAgVgMffryT+7LaG9Bf7jPQpcsrSdmPJ
-         8C6JPsCEC9NvYj93nTjz/Q2haDm080tJrP3bURZLyaww9VxDKHgqK7+2JkQHimILO9QU
-         tK/vOjNuqe7yYwl9h9F0EZtqXgilGXbECbDu602W+99WvyoVxRCkGorARKbJefR0mhIT
-         uINQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWSeoewgV4x9NbsXDKzL/E6UGOd5/Akm1YI9imPzzPOyC/nNy9fwM8H/CoffdTpsXxZItQ9Ovc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVCmv0vl2Lgrui0dd9agMgy0eW+oUnKeIGJmIGCKo7r8EYkkt6
-	aCFpcoy6Yx3xiq6LsolFGZ/DK1KsWruN0O320XuMq9cAZq+zVANRJuQ+KCgY9gJYRbDtvOADq+u
-	3m4DaoN7BnyO5djOSxYWZzkFuamywbtNP64pX3x8A
-X-Gm-Gg: ATEYQzz7OoYBSyeEcfcFNFNlgXYqSU+GiBz+LG3f1WGD4aqPepPzmuGPSNVLBqYOHUt
-	8O/IcDksqdpUW7lN36ZoEIIDpQyKClv5pN4MqXJn1vZs9wH/3EYDqwllSK7M9cKacUdSclVmoX6
-	b2xU53lkJqecziEsyEq1iGTiN9Kmlj69vSn3GMGQsq1AfF3yLeOxahUp62ooC30ZutaZOPi6V8E
-	59GdHtg5XXA4FGfLPDbuN2Pqo/JfeESF72Q1MbsW7g0Mko9d4Gv8oYlEdplX7Vg8xy7UO0vUNfT
-	J/0tsY5vYKPSuYxOqZiK1pnydSRGU/mLVTu+hWHxuA==
-X-Received: by 2002:ac8:7d8a:0:b0:4ed:1948:a8a2 with SMTP id
- d75a77b69052e-5073a2d9ed4mr20789521cf.40.1772007321368; Wed, 25 Feb 2026
- 00:15:21 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="kfzVf4+I"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=CwTftfPLORKMn5vbTjWLfPI4meAs67WbxJlY6dwYVxc=; b=kfzVf4+IM4IiPw4cIgIYd3bERw
+	+DP84XAV4/0wtN/BzlkFLseEOWDvHg5qQwgrzMP7UdzYPGcFGsl+LcyBC4dQe3XNeH6DojGmKUbjU
+	lW9s5j9i0NG1gkC50JfQdFm1oESpk+TxLCAy51Ftlum7O5nHCGLZHyTlPw9p9vmuJSpoTDRNGZaJd
+	c2f9aUY7+84rXRiU52Nk52OA3xS6MtK8ysgQ5Q0muYLqQSlfi9M7YNbGxZQ5AwVVtcgixmvEXTIxt
+	jDuS98wXkr41ETbXxZIyRzGGJMc29PQf94MX/5VFdKZazR01lZbYYmmI1JQJ41Rqy8Vp1TYqgug/8
+	OGMRSsGw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:35986)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vvABp-000000006C7-2ZRo;
+	Wed, 25 Feb 2026 08:24:13 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vvABm-000000000mM-2Dvn;
+	Wed, 25 Feb 2026 08:24:10 +0000
+Date: Wed, 25 Feb 2026 08:24:10 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: Re: [PATCH net-next] net: stmmac: fix .ndo_fix_features()
+Message-ID: <aZ6xqig4zh_Un8R7@shell.armlinux.org.uk>
+References: <E1vuU3X-0000000Ae9G-1Er8@rmk-PC.armlinux.org.uk>
+ <20260224173037.7871e5ac@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260224114113.344-1-hdanton@sina.com> <CANn89i+HrHVrV6S1fmGn62-8odQOuzyC1pnzOo+SBfN6xRZE=g@mail.gmail.com>
- <aZ6l3vTgXLsqaJHc@cae.in-ulm.de>
-In-Reply-To: <aZ6l3vTgXLsqaJHc@cae.in-ulm.de>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 25 Feb 2026 09:15:10 +0100
-X-Gm-Features: AaiRm52JxmH2eKubLmStPMe75UFFsAJhn6-v7KKATe0Pxd1TrQ5s0GI6DXRTRoo
-Message-ID: <CANn89iJAgR91+=6RzviiP8hK1iHxH0M4gY_MSaF-aOdmq143-Q@mail.gmail.com>
-Subject: Re: [PATCH net] dst: fix races in rt6_uncached_list_del() and rt_del_uncached_list()
-To: "Christian A. Ehrhardt" <lk@c--e.de>
-Cc: Hillf Danton <hdanton@sina.com>, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	syzbot+179fc225724092b8b2b2@syzkaller.appspotmail.com, 
-	Martin KaFai Lau <martin.lau@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260224173037.7871e5ac@kernel.org>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed, Feb 25, 2026 at 8:33=E2=80=AFAM Christian A. Ehrhardt <lk@c--e.de> =
-wrote:
->
->
-> Hi,
->
-> On Tue, Feb 24, 2026 at 12:58:25PM +0100, Eric Dumazet wrote:
-> > On Tue, Feb 24, 2026 at 12:41=E2=80=AFPM Hillf Danton <hdanton@sina.com=
-> wrote:
-> > >
-> > > On Mon, 12 Jan 2026 10:38:25 +0000 Eric Dumazet wrote:
-> > > > syzbot was able to crash the kernel in rt6_uncached_list_flush_dev(=
-)
-> > > > in an interesting way [1]
-> > > >
-> > > > Crash happens in list_del_init()/INIT_LIST_HEAD() while writing
-> > > > list->prev, while the prior write on list->next went well.
-> > > >
-> > > > static inline void INIT_LIST_HEAD(struct list_head *list)
-> > > > {
-> > > >       WRITE_ONCE(list->next, list); // This went well
-> > > >       WRITE_ONCE(list->prev, list); // Crash, @list has been freed.
-> > > > }
-> > > >
-> > > > Issue here is that rt6_uncached_list_del() did not attempt to lock
-> > > > ul->lock, as list_empty(&rt->dst.rt_uncached) returned
-> > > > true because the WRITE_ONCE(list->next, list) happened on the other=
- CPU.
-> > > >
-> > > > We might use list_del_init_careful() and list_empty_careful(),
-> > > > or make sure rt6_uncached_list_del() always grabs the spinlock
-> > > > whenever rt->dst.rt_uncached_list has been set.
-> > > >
-> > > > A similar fix is neeed for IPv4.
-> > > >
-> > > FYI list corruption in dst_destroy() [1] happened after this fix.
-> > >
-> > >
-> > > [1] Subject: Re: [syzbot] [kernel?] INFO: task hung in restrict_one_t=
-hread_callback
-> > > https://lore.kernel.org/lkml/699d155f.050a0220.247d23.0377.GAE@google=
-.com/
-> >
-> > Seems unrelated.
-> >
-> > Are you seeing anything wrong with my patch ?
->
-> I'm certainly not an expert on this code and I might well be wrong
-> but it seems that with your patch your are racing against a list
-> delete in rt6_uncached_list_flush_dev which removes the item from
-> the list but does not reset dst.rt_uncached_list.
+On Tue, Feb 24, 2026 at 05:30:37PM -0800, Jakub Kicinski wrote:
+> On Mon, 23 Feb 2026 11:24:51 +0000 Russell King (Oracle) wrote:
+> > netdev features documentation requires that .ndo_fix_features() is
+> > stateless: it shouldn't modify driver state. Yet, stmmac_fix_features()
+> > does exactly that, changing whether GSO frames are processed by the
+> > driver.
+> > 
+> > Move this code to stmmac_set_features() instead, which is the correct
+> > place for it. We don't need to check whether TSO is supported; this
+> > is already handled via the setup of netdev->hw_features, and we are
+> > guaranteed that if netdev->hw_features indicates that a feature is
+> > not supported, .ndo_set_features() won't be called with it set.
+> 
+> No lies detected, but is this enough? The whole TSO enablement 
+> looks quite wobbly (as you mentioned in another email IIRC). 
+> 
+> Only stmmac_hw_setup() actually calls stmmac_enable_tso(). 
+> And stmmac_set_features() does not call stmmac_hw_setup().
 
-Both rt_del_uncached_list() and rt6_uncached_list_flush_dev() use
-list_del_init()
-with the spinlock held. No race is possible.
+Looking deeper, dwmac4_enable_tso() has two paths depending on the "en"
+flag, both of which are commented as "enable TSO".
 
->
-> So I think you want to keep the list_empty() check but do it
-> under the lock?
+Then, looking at the "Enable TSO" block of code in stmmac_hw_setup(),
+it looks to me like we can end up with some queues that have TSO
+enabled, and others which don't (because TBS has been enabled on the
+queue.) As far as I'm aware, the network layer doesn't support
+per-queue TSO.
 
-A second list_del_init() is a NOP, so adding a list_empty() would only
-add extra code
-for a condition which is already handled.
+We can't call stmmac_hw_setup() from any path that we care about any
+state being preserved - it issues a software reset which causes
+everything, including the PTP clock, to be reset and all state then
+needs to be reloaded.
 
->
-> Best regards,
-> Christian
+Lastly, we don't need to disable the TSE bit (via stmmac_enable_tso()
+when we disable TSO, because there's a bit in the descriptors that
+also needs to be set for the packet to undergo TSO. However, if the
+system undergoes a suspend/resume with TSO disabled by the user, we'll
+call stmmac_hw_setup(), which as I note in the previous paragraph will
+reset all state, including the TSE bit. stmmac_enable_tso() won't be
+called, and thus the TSE bit will remain clear. If the user
+subsequently re-enables TSO, then we'll queue packets for TSO but
+the hardware won't have that enabled...
 
-Thanks.
+That's a problem today. So, while you're right to point this out (I
+had missed it) it's a separate problem to the one being addressed
+in this patch. In fact, I think there's two new issues that have now
+been identified here.
+
+1. The lack of setting TSE on resume if TSO is supported but but has
+   been disabled by the user.
+2. The interaction of TBS and TSO feature where some channels can
+   support TSO and others not, which I don't think can be supported.
+   So, I think if we have _any_ channel with TBS enabled, we have to
+   disable TSO on the entire netdev.
+
+I think these need to be separate patches, and this one is still
+valid on its own.
+
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
