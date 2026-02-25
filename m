@@ -1,133 +1,173 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110593939D1
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 10:59:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44972392831;
+	Wed, 25 Feb 2026 10:59:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772017158; cv=none; b=PoDUgfG1bjcyHpXWQ1KduSIdfExJVxvL3F92uMMBn96i1x6hQUUKXGZcoom/bAobGCXaxezlH5SyRgjgxl8saF4c9v5AjytO7oV7wtxcA2zXjCaspzo1Mi1qVcesNhr7uVmZjbOPxgkzaePhiB9gduP4oywzkGM+t28rXFXfEVI=
+	t=1772017168; cv=none; b=BsE4GRoMUy9APHXjj0IHDwL8M1XF9El8MG9oo+GuDHG2YUBVxSgtawCM3jcLUm00y9kO+v97F1oQomypzkfQa2vr+oOZf0Av3+lZppmenYz7Y+zDpkoNn4DKBTGol42ntYuBAU0ihFoeP9D7n3w3Hz+O37Fs2kWFmxVH0Fnoju0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772017158; c=relaxed/simple;
-	bh=Db3xaViep4xadUj5hbJ5gSJqVKu5FIQCIs8XzQEZQ0A=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=W5M7REgO9UPZT324s/nvUTCsoLKR9suBGVeMD0DlULMrDoR3HTUYMkg1iVgSs14Ffh+Mb05nYJmI8TKBcCebMgi4TykYMfgrIJ300/BGGlgiZWJxX4esJXXF1fQ2eseL5IhpraLmuoMR1OQyCClLAiDZy2WB6uJ87CVGB81agcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=hguYhiFZ; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1772017168; c=relaxed/simple;
+	bh=/fV4awh80lsBWfTC8nzGkofg3hP7NYlEQKqMqJBC6NA=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=m+HxRkHmgcatVCxqthcsK8TVccPN5LtB3JdFbO8J2pn1eLA5aZeobsp9u0+dYXerLmsZ4+Hs3653rNI0BP9dI5lYFQVAQdNpUhXlBFSSfOcmoWeDAxDl5nwC1Ej7Yz4t7XV0vF5Tt2Hk25TrqPUOUQ47K9ul/I/NIaJ7ivPi69w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=bZQfow/v; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="hguYhiFZ"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7F34DA0364;
-	Wed, 25 Feb 2026 11:56:28 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1772016990; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=cs+8QaoJrfxu3M8QiX2ghjZkw5IxXgF958u8DoGV4+w=;
-	b=hguYhiFZ9RIn1u09sA0kFaubEHdLjzUTC1t4ac1QsxpTw9AFX4+Ckby7n3nlGY7JbQ236z
-	dnJ0EHo37l3/14shv9zbqNkXX50E4hcSmy0RdxA/z+J8Lgyc24hGtB6kGjb6lbvR3tBSNc
-	+SXRYQI116yYv+fx5Odzdy90Ihi8/SGW32+WZgK8GKTfE3bcGgq6K+QgPDf4fLguaj3Yhg
-	JhC33OJr1Let2GyHPPSq9V6vulYuYINAXYMsrTVfI0sTFCDv/uGR6KQvYGkXwoFzT2ET/4
-	egqaTRQe+2x+/qtuTh0v1PCgCwx2Frkn1UYsXzKpixdooHrIU+1EmA03QX7SzA==
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="bZQfow/v"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=ga10eSgFE90ZtSvOsQUcopfNpkOfowVKw1XZ4wXDdCM=; b=bZQfow/vi7pdFWOl/ITz9NlKxT
+	aPIQ4Nc+zafMdUFWqbqwe7vzDE/yfiDweu0EQjca7ABawF104R0HybfM2KBqI05evdZYCRb98uDJm
+	UEk+d33k3k2znQRRIOpgyXXUWEVgbacqv4YBeJb4/kzo5TUdimo0TeIWXu3ikIQyBDg21zQ64Iiiz
+	K8ymEyol/Th1oW1AIpDgAaG89RKOeEXGtngt1pl4BLRbvZaaXmQELfq4we3jY8VaUWoVcUAur+S1N
+	Rok8C9bRzDmA92JbnokqNDD4BX85Ywfnp5dY39JFJdv7S7p2dQsIySYk+4mkaHp5B/NMN7HczYjpm
+	ElOUlZEg==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:44156 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1vvCbu-000000006Uw-39e5;
+	Wed, 25 Feb 2026 10:59:18 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1vvCbt-0000000ArKy-3Wog;
+	Wed, 25 Feb 2026 10:59:17 +0000
+In-Reply-To: <aZ66OT9scKipRRu2@shell.armlinux.org.uk>
+References: <aZ66OT9scKipRRu2@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH net-next 2/8] phy: qcom-sgmii-eth: add .set_mode() and
+ .validate() methods
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 25 Feb 2026 11:56:28 +0100
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch, claudiu.beznea@tuxon.dev, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, nicolas.ferre@microchip.com,
- pabeni@redhat.com, linux@armlinux.org.uk, phil@raspberrypi.com
-Subject: Re: [PATCH net-next v3 0/5] net: cadence: macb: add IEEE 802.3az EEE
- support
-In-Reply-To: <20260225091558.51157-1-nb@tipi-net.de>
-References: <20260225091558.51157-1-nb@tipi-net.de>
-Message-ID: <6c78119ff230910805372d155ef57fe9@tipi-net.de>
-X-Sender: nb@tipi-net.de
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1vvCbt-0000000ArKy-3Wog@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Wed, 25 Feb 2026 10:59:17 +0000
 
-On 25.2.2026 10:15, Nicolai Buchwitz wrote:
-> Add Energy Efficient Ethernet (IEEE 802.3az) support to the Cadence GEM
-> (macb) driver using phylink's managed EEE framework. The GEM MAC has
-> hardware LPI registers but no built-in idle timer, so the driver
-> implements software-managed TX LPI using a delayed_work timer while
-> delegating EEE negotiation and ethtool state to phylink.
-> 
-> Changes from v2:
->   - macb_tx_lpi_set() now returns bool indicating whether the register
->     value actually changed, avoiding redundant writes.
->   - Removed tx_lpi_enabled field from struct macb; LPI state is tracked
->     entirely within the spinlock-protected register read/modify/write.
->   - macb_tx_lpi_wake() uses the return value of macb_tx_lpi_set() to
->     skip the cancel/udelay when TXLPIEN was already clear.
->   All changes based on feedback from Russell King.
-> 
+qcom-sgmii-eth is an Ethernet SerDes supporting only Ethernet mode
+using SGMII, 1000BASE-X and 2500BASE-X.
 
-Apologies for the missing subject prefix and version tags on this
-series - should have been [PATCH net-next v3]. I'm still fairly new
-to the kernel mailing list workflow and building up the muscle memory
-around git-format-patch/send-email. I'll resend as v4 with the proper
-tags. In the meantime, feedback on the code itself is very welcome.
+Add an implementation of the .set_mode() method, which can be used
+instead of or as well as the .set_speed() method. The Ethernet
+interface modes mentioned above all have a fixed data rate, so
+setting the mode is sufficient to fully specify the operating
+parameters.
 
-> Changes from v1:
->   - Rewrote to use phylink managed EEE (mac_enable_tx_lpi /
->     mac_disable_tx_lpi callbacks) instead of the obsolete
->     phy_init_eee() approach, as recommended by Russell King.
->   - ethtool get_eee/set_eee are now pure phylink passthroughs.
->   - Removed all manual EEE state tracking from mac_link_up/down;
->     phylink handles the lifecycle.
-> 
-> The series is structured as follows:
-> 
->   1. Register definitions: LPI counter offsets (0x270-0x27c), TXLPIEN
->      bitfield (NCR bit 19), and MACB_CAPS_EEE capability flag.
-> 
->   2. LPI statistics: Expose the four hardware EEE counters (RX/TX LPI
->      transitions and time) through ethtool -S, accumulated in software
->      since they are clear-on-read.
-> 
->   3. TX LPI engine: phylink mac_enable_tx_lpi / mac_disable_tx_lpi
->      callbacks with a delayed_work-based idle timer. LPI entry is
->      deferred 1 second after link-up per IEEE 802.3az. Wake before
->      transmit with a conservative 50us PHY wake delay.
-> 
->   4. ethtool EEE ops: get_eee/set_eee delegating to phylink for PHY
->      negotiation and timer management.
-> 
->   5. RP1 enablement: Set MACB_CAPS_EEE for the Raspberry Pi 5's RP1
->      southbridge (Cadence GEM_GXL rev 0x00070109 + BCM54213PE PHY).
-> 
-> Tested on Raspberry Pi 5 (1000BASE-T, BCM54213PE PHY, 250ms LPI timer):
-> 
->   iperf3 throughput (no regression):
->     TCP TX: 937.8 Mbit/s (EEE on) vs 937.0 Mbit/s (EEE off)
->     TCP RX: 936.5 Mbit/s both
-> 
->   Latency (ping RTT, small expected increase from LPI wake):
->     1s interval:  0.273 ms (EEE on) vs 0.181 ms (EEE off)
->     10ms interval: 0.206 ms (EEE on) vs 0.168 ms (EEE off)
->     flood ping:   0.200 ms (EEE on) vs 0.156 ms (EEE off)
-> 
->   LPI counters (ethtool -S, 1s-interval ping, EEE on):
->     tx_lpi_transitions: 112
->     tx_lpi_time: 15574651
-> 
->   Zero packet loss across all tests. Also verified with
->   ethtool --show-eee / --set-eee and cable unplug/replug cycling.
-> 
-> Nicolai Buchwitz (5):
->   net: cadence: macb: add EEE register definitions and capability flag
->   net: cadence: macb: add EEE LPI statistics counters
->   net: cadence: macb: implement EEE TX LPI support
->   net: cadence: macb: add ethtool EEE support
->   net: cadence: macb: enable EEE for Raspberry Pi RP1
-> 
->  drivers/net/ethernet/cadence/macb.h      |  20 ++++
->  drivers/net/ethernet/cadence/macb_main.c | 136 ++++++++++++++++++++++-
->  2 files changed, 155 insertions(+), 1 deletion(-)
+Add an implementation of the .validate() method, which will be
+necessary to allow discovery of the SerDes capabilities for platform
+independent SerDes support in the stmmac network driver.
 
-Nicolai
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Acked-by: Vinod Koul <vkoul@kernel.org>
+Tested-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+
+Resending as netdev (and others) were missing.
+
+ drivers/phy/qualcomm/phy-qcom-sgmii-eth.c | 43 +++++++++++++++++++++++
+ 1 file changed, 43 insertions(+)
+
+diff --git a/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c b/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c
+index 5b1c82459c12..4ea3dce7719f 100644
+--- a/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c
++++ b/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c
+@@ -7,6 +7,7 @@
+ #include <linux/ethtool.h>
+ #include <linux/module.h>
+ #include <linux/of.h>
++#include <linux/phy.h>
+ #include <linux/phy/phy.h>
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+@@ -286,6 +287,37 @@ static int qcom_dwmac_sgmii_phy_power_off(struct phy *phy)
+ 	return 0;
+ }
+ 
++static int qcom_dwmac_sgmii_phy_speed(enum phy_mode mode, int submode)
++{
++	if (mode != PHY_MODE_ETHERNET)
++		return -EINVAL;
++
++	if (submode == PHY_INTERFACE_MODE_SGMII ||
++	    submode == PHY_INTERFACE_MODE_1000BASEX)
++		return SPEED_1000;
++
++	if (submode == PHY_INTERFACE_MODE_2500BASEX)
++		return SPEED_2500;
++
++	return -EINVAL;
++}
++
++static int qcom_dwmac_sgmii_phy_set_mode(struct phy *phy, enum phy_mode mode,
++					 int submode)
++{
++	struct qcom_dwmac_sgmii_phy_data *data = phy_get_drvdata(phy);
++	int speed;
++
++	speed = qcom_dwmac_sgmii_phy_speed(mode, submode);
++	if (speed < 0)
++		return speed;
++
++	if (speed != data->speed)
++		data->speed = speed;
++
++	return qcom_dwmac_sgmii_phy_calibrate(phy);
++}
++
+ static int qcom_dwmac_sgmii_phy_set_speed(struct phy *phy, int speed)
+ {
+ 	struct qcom_dwmac_sgmii_phy_data *data = phy_get_drvdata(phy);
+@@ -296,10 +328,21 @@ static int qcom_dwmac_sgmii_phy_set_speed(struct phy *phy, int speed)
+ 	return qcom_dwmac_sgmii_phy_calibrate(phy);
+ }
+ 
++static int qcom_dwmac_sgmii_phy_validate(struct phy *phy, enum phy_mode mode,
++					 int submode,
++					 union phy_configure_opts *opts)
++{
++	int ret = qcom_dwmac_sgmii_phy_speed(mode, submode);
++
++	return ret < 0 ? ret : 0;
++}
++
+ static const struct phy_ops qcom_dwmac_sgmii_phy_ops = {
+ 	.power_on	= qcom_dwmac_sgmii_phy_power_on,
+ 	.power_off	= qcom_dwmac_sgmii_phy_power_off,
++	.set_mode	= qcom_dwmac_sgmii_phy_set_mode,
+ 	.set_speed	= qcom_dwmac_sgmii_phy_set_speed,
++	.validate	= qcom_dwmac_sgmii_phy_validate,
+ 	.calibrate	= qcom_dwmac_sgmii_phy_calibrate,
+ 	.owner		= THIS_MODULE,
+ };
+-- 
+2.47.3
+
