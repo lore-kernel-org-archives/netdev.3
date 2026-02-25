@@ -1,99 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA71E22F177;
-	Wed, 25 Feb 2026 07:19:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772003978; cv=none; b=d76LxzerUZAd+1Up6N1U2JSmClFC3zTmOWdoA27HHkKT5GpzRmaGlzRriLK8ymGeUN40iqzbs9zVW/sYA2XmuZV3sSCAOL9p/3+KjNeEZbmwgIU8kWewwUtRKvWSraXWC7DD85RIiqev51NP0KXlgmx3Hmirwslksc1OkIkEKwE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772003978; c=relaxed/simple;
-	bh=A7lRttC43wF7lpKdY61+Fq1GW0SYqkp06OO3jF4y3oM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ls2GjI2ugw0OAx2gHcfgHMNpmWHhNqLHlply6CoxQPs8PJJFYXQcy3pkxw0bLRkZPZnDDMa0ImaO4SB/aT+1smFZwBgnA7t58DGoNFi0IHKfmp1IB3G6fFlNN8D1KucYNvPdA+1dRPS3OKxC6AbCJulZtKkQTPOI7IJUHrIObbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z24wLhm5; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1535E2D7DCE
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 07:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772004009; cv=pass; b=ik1VlRG0ZgeDWd5mAAvwJc51rwPvi2T20WgXa+roggBD1vhaG3MIrf220GVjyEcsM/EAmZXKlwNI29NA6BfT2fhfatkkB3b+cl9KFbMce6mzMjJhtt5Ej1+/RVTa5uTMhCrKANnUkkDup3fK3A5bL9NrTu1nuGWBPuRkueF3Q+M=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772004009; c=relaxed/simple;
+	bh=5I29VZbalTCm3rqbnUgdsldcNOKbt8fBfZD9i7LyvUc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=a/ICvVa9JWRP8qplLlIdE/AsF1M4T4wGNxgbmcXOm+0TDz/v1KegFlpw3qmKtToVU7boBgJKBmKGBWqu2Ng9mx0sz5t7/GcmtxLOmS8OAOtAJ57bDQ975Jckw1CakahcQslxWy9onJthdjP4n++gl1i9221qhlHQZoOgJi+xvEE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3s3CKya/; arc=pass smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z24wLhm5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58C22C19425;
-	Wed, 25 Feb 2026 07:19:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772003978;
-	bh=A7lRttC43wF7lpKdY61+Fq1GW0SYqkp06OO3jF4y3oM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Z24wLhm5/hlhU0gkoIm6x9z2KjkAIaHXIYJV4uUyDIR+3hmm2Bl1Ycmw6+TIfLpcL
-	 bdzlprkx0zhWuNM6KdsT2ER383xrUWorB+MYjjkLrUhH8WPSfmMZv5ai9+Dr62Nuqk
-	 yEvyIlsaervGrjeETEBQg8ogKCxZ+bH7A+mCTe+Wwu4h4wbMH4u23XDfo/Mfhun2jA
-	 hdJleBHr2kYeLtdzt7VMWUxAjImTT4y134nJTkge4cKYuTcAYRY93H5gmbl5yzfICn
-	 IlOcLpRZB71TR98tr5eHZ+mjbXIc8ocAa6yULW9aAt+hOsjlchEgDrR+oCf4sdLm6A
-	 6n2iLJ74d0RJw==
-Date: Wed, 25 Feb 2026 09:19:21 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Byungchul Park <byungchul@sk.com>
-Cc: linux-mm@kvack.org, akpm@linux-foundation.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
-	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
-	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, horms@kernel.org, jackmanb@google.com,
-	hannes@cmpxchg.org, ziy@nvidia.com, ilias.apalodimas@linaro.org,
-	willy@infradead.org, brauner@kernel.org, kas@kernel.org,
-	yuzhao@google.com, usamaarif642@gmail.com,
-	baolin.wang@linux.alibaba.com, almasrymina@google.com,
-	toke@redhat.com, asml.silence@gmail.com, bpf@vger.kernel.org,
-	linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, dw@davidwei.uk,
-	ap420073@gmail.com, dtatulea@nvidia.com
-Subject: Re: [PATCH v4] mm: introduce a new page type for page pool in page
- type
-Message-ID: <aZ6ieTRCPs3IKWpp@kernel.org>
-References: <20260224051347.19621-1-byungchul@sk.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3s3CKya/"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1270adc5121so7540081c88.0
+        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 23:20:07 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772004007; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OJgBlN0NM152TzQjk18vnaVZl7EL0poYNLrdnfTz6FtvQmEn/rEogNaKVF1CCep+/8
+         MXrbVBo5oNhE/UVCBnfjtP0dm8jbz1/HfmJETSHg0SMRZCIFXhkxrgibc0D2sS8fdNCp
+         s/5/cc7ZDR0lr9zkWU7pj5tKaUpRRFmtCKP7Sti9x57r7EJ5OZiP+/W5hqmvf8YyXxGQ
+         HrJhjDTFL1ZLl08JR+6z5yq0lgsth/rl9TcR4J1ntT1Ao7rcLjDY+H8qjv0GaFhMLeoZ
+         ivhMCKlL4wlOFL92uqx2/bZiAFyz5fKGw9eq670kwKl1KqwOPxWcSuKdTQlDd4KgTMXv
+         13DA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=mqhpk74uT9fBv8HKiORUn49XOvxveD9GSNmoEX4BxXA=;
+        fh=mVZQEoNHncbthRrRLCk76GHy1sn/e6DmJvk8fUDYde4=;
+        b=Bss3dDjspYEvbJGbUYMNxOVBP/+cdmVSllYoFVTAQlQ2wTISzttsWXWKxFi3J2bGpf
+         ePsOulPRdLuozUGdK6FFKyAdz//aH3riSwddXh/LoGy4CXbJG4kweh7uW8hHL8UkdQap
+         p6FhVXFY9o9eo0q+3dU6c2JOdbaAJh8R/gG0nM7HxpULn2uirNAy7Lx0f2Ah6eif19fs
+         1hirjtxRVWYUkdZ/t9j5LUwWzxnsUD/XGTb06qFJlreXDOJZQnVCwWI+xMGnYkOE8Fx0
+         szAEbzsIyZRkIm8pB0XPYbNQip5HRzSII/fLo+bRV7GY8plXQkpBcyh14AtQoHQXlMoA
+         02qg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772004007; x=1772608807; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mqhpk74uT9fBv8HKiORUn49XOvxveD9GSNmoEX4BxXA=;
+        b=3s3CKya/MduQruj6qCa5pUYnvsEwgiJy+Vt/yYhtH2fnyhH9zEjKgGQFUgsAfQl78h
+         wj/bv1CrGJHLZtbftzcG4f8yd0+crroHoQuZ3tSS9CocmPlKVSVdnsNGM7OV28OVgM/I
+         grygw+s93jiQnby3raaNikOTzF2g2g5ZQ83tQF405vWjQGTl2/I3KOCG/C6WaNeWnv8E
+         f1uazdjeundr6yyNuFDeUtNzUKFIY+ojjW9y+rYEJ6u5nV1IEe8f21MtZSM1diUA6cnv
+         vJ6WdPcFqn4Y8CKOM+s089/ZLiH1VCagoKwcE81x0SxnaRrCybabjCiVmO4Y5V5ZX5wt
+         tA8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772004007; x=1772608807;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=mqhpk74uT9fBv8HKiORUn49XOvxveD9GSNmoEX4BxXA=;
+        b=WxSTWlx+fkuIhngDRhu5jmLAfyjafUQloDWiJ0cxsj0R4MnC+w0PvbqzD669P1XTWO
+         y3a+wB3MH1y3Dj8HuPi7M/th1FHs6JS7GgL7LwXcQ6gonGXWE+FX1sWpN3TT6iU/xoO5
+         FF3YGPm1cJwJoPQK5nHc/vILrE6de+2SSF00k1ZDSdQ9II5aQQ3imTvF8Htxdx6j+Xe7
+         ia8oCZIXi1XO3aiWsSMjfuYBTur6Ce42QHuYeFLwm35hnzjYkwsgljCrmu8RU1IK567B
+         vbU7TyAkZHwU3cYxK/02srY3RBBiuFHEON+Cz/tb9dq0sWlC9zNQO43Sj3Lqyr1NYhEU
+         evNA==
+X-Forwarded-Encrypted: i=1; AJvYcCUat9Max/K+J/8nGnaua5jCjvRKZyBblhqRlBk77tZVTzDZe/y2Iluc31BoIeRgZWUiaVpbcbw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxS5SlX1mqVHyz30QgLkEdJ8AzGfZgmzH7mLpOh3dhOf3bZ1a6M
+	Ku64llg3z+HEFwaAOxiYGfpvY1VFN1SvXHpFyHjEFS2De/+ewYfYfFUjkVJNjXvOumtzX+uU9dy
+	cwfBRMn0FjYHgglM6EcnImC/roW/RfGwTOEJi3WXk
+X-Gm-Gg: ATEYQzysIBsPqPL2o08GZx8B9XQ0RZnyKSma7X7wxz2A3V7sHX+4BaongBwtVE/j3sP
+	VRM4ND5HUbZle8M7b+5RtW+k8sgEBrYxzfMimVX2iLEdUG9qUg7zg62VIQyQvzDyEaonWmnmWaT
+	39z6iZkvQi5JSxJEYeUrom0ZuuZkMzhAPnYHkXun7IiOL9EFSRybLijRt6QjNugN9C0csMOLUnA
+	WVk4tS0P5N9/HsVVXoC/wfx7Nt+qk3dKCY9oCFJkOeTJRnf6OPMhBTJvJalfRKhZQaAhqvqqjWx
+	lEmFVLM90g5s7wijn7XkFM+ySKEuP4QV4ylp15PcZGWn7kPog95/Z4EQ+16XkjnaHp174nTp
+X-Received: by 2002:a05:7022:40f:b0:122:2f4:b285 with SMTP id
+ a92af1059eb24-1276ad61d72mr6277793c88.25.1772004006544; Tue, 24 Feb 2026
+ 23:20:06 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260224051347.19621-1-byungchul@sk.com>
+References: <20260225033216.601205-1-edumazet@google.com>
+In-Reply-To: <20260225033216.601205-1-edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 24 Feb 2026 23:19:55 -0800
+X-Gm-Features: AaiRm50D8_9Hxq6I2GHjqHBaqarKrq1O1FH2tgukzto__lUBLDRAtg-ozb0nbow
+Message-ID: <CAAVpQUDMTefL+Rsb_9FnMFf5o8UsqhxpZ3Vgg56_TDQQbPHCRQ@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: use cmpxchg() in lock_sock_nested()
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 24, 2026 at 02:13:47PM +0900, Byungchul Park wrote:
-> Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
-> determine if a page belongs to a page pool.  However, with the planned
-> removal of @pp_magic, we should instead leverage the page_type in struct
-> page, such as PGTY_netpp, for this purpose.
-> 
-> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
-> and __ClearPageNetpp() instead, and remove the existing APIs accessing
-> @pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-> netmem_clear_pp_magic().
-> 
-> Plus, add @page_type to struct net_iov at the same offset as struct page
-> so as to use the page_type APIs for struct net_iov as well.  While at it,
-> reorder @type and @owner in struct net_iov to avoid a hole and
-> increasing the struct size.
-> 
-> This work was inspired by the following link:
-> 
->   https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
-> 
-> While at it, move the sanity check for page pool to on the free path.
-> 
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
-> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-> Signed-off-by: Byungchul Park <byungchul@sk.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> Acked-by: Zi Yan <ziy@nvidia.com>
-> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+On Tue, Feb 24, 2026 at 7:32=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> Add a fast path in lock_sock_nested(), to avoid acquiring
+> the socket spinlock only to set @owned to one:
+>
+>         spin_lock_bh(&sk->sk_lock.slock);
+>         if (unlikely(sock_owned_by_user_nocheck(sk)))
+>                 __lock_sock(sk);
+>         sk->sk_lock.owned =3D 1;
+>         spin_unlock_bh(&sk->sk_lock.slock);
+>
+> On x86_64 compiler generates something quite efficient:
+>
+> ffffffff81e96100 <lock_sock_nested>:
+> ffffffff81e96100:       f3 0f 1e fa             endbr64
+> ffffffff81e96104:       0f 1f 44 00 00          nopl   0x0(%rax,%rax,1)
+> ffffffff81e96109:       b9 01 00 00 00          mov    $0x1,%ecx
+> ffffffff81e9610e:       31 c0                   xor    %eax,%eax
+> ffffffff81e96110:       f0 48 0f b1 8f 48 01    lock cmpxchg %rcx,0x148(%=
+rdi)
+> ffffffff81e96117:       00 00
+> ffffffff81e96119:       48 85 c0                test   %rax,%rax
+> ffffffff81e9611c:       74 33                   je     ffffffff81e96151 <=
+lock_sock_nested+0x51>
+> ...// slow path
+> ffffffff81e96151:       2e e9 19 c4 33 00       cs jmp ffffffff821d2570 <=
+__pi___x86_return_thunk>
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Wow, this is interesting !
 
--- 
-Sincerely yours,
-Mike.
+>
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ---
+>  include/net/sock.h |  9 +++++++--
+>  net/core/sock.c    | 10 ++++++++++
+>  2 files changed, 17 insertions(+), 2 deletions(-)
+>
+> diff --git a/include/net/sock.h b/include/net/sock.h
+> index 55b61e4b0d8318887d527e919fc1103d78ac6d14..84c21fb38a28406e387dc33e0=
+fb5decd18893950 100644
+> --- a/include/net/sock.h
+> +++ b/include/net/sock.h
+> @@ -81,8 +81,13 @@
+>   * mini-semaphore synchronizes multiple users amongst themselves.
+>   */
+>  typedef struct {
+> -       spinlock_t              slock;
+> -       int                     owned;
+> +       union {
+> +               struct slock_owned {
+> +                       int             owned;
+> +                       spinlock_t      slock;
+> +               };
+> +               long    combined;
+> +       };
+>         wait_queue_head_t       wq;
+>         /*
+>          * We express the mutex-alike socket_lock semantics
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index cfb2a6209946089669882cdbd5d1b36c53838989..2a03d1432111f2dcea9d700f8=
+0efb7b0bb4a47d8 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -3780,6 +3780,16 @@ void noinline lock_sock_nested(struct sock *sk, in=
+t subclass)
+>         mutex_acquire(&sk->sk_lock.dep_map, subclass, 0, _RET_IP_);
+>
+>         might_sleep();
+> +#ifdef CONFIG_64BIT
+> +       if (sizeof(struct slock_owned) =3D=3D sizeof(long)) {
+> +               socket_lock_t tmp;
+> +
+> +               tmp.slock =3D __SPIN_LOCK_UNLOCKED(tmp.slock);
+> +               tmp.owned =3D 1;
+> +               if (likely(!cmpxchg(&sk->sk_lock.combined, 0, tmp.combine=
+d)))
+
+Should we use __SPIN_LOCK_UNLOCKED() for the old
+value too ?  Looks like parisc assigns a non-zero value for it.
+
+arch/parisc/include/asm/spinlock_types.h:5:#define
+__ARCH_SPIN_LOCK_UNLOCKED_VAL 0x1a46
+
+
+> +                       return;
+> +       }
+> +#endif
+>         spin_lock_bh(&sk->sk_lock.slock);
+>         if (unlikely(sock_owned_by_user_nocheck(sk)))
+>                 __lock_sock(sk);
+> --
+> 2.53.0.414.gf7e9f6c205-goog
+>
