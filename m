@@ -1,105 +1,50 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D4428C864
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 02:35:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B9279CD;
+	Wed, 25 Feb 2026 02:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771986959; cv=none; b=HUAWPVCkP3uL3QMtPWu2UGg7C12srBMAlnyNdaZ7DXL6ok1P6YMpMH1/Drv5NfCZ+BrbaELYqO0cNy4lC9uiN8ZwRoou9rblaS3F+3MoGNWxfK+afx1/d6S2kHHosSl+WXvoG0l8Gx7uWSTruhMEoRWqlVSABtrRgVAcfEloznE=
+	t=1771987534; cv=none; b=Za9o4lPisSk98rzmak7eMeYFgDh0Okykcjm0j+F51Dwg95YmpbyX/DnmSIHVfXjTOjzq3+AACtgEAJeODcIfyBfyhqeHSr0mXnqMiiSKzT5uD6A/78dVBdp7k2U9EGm9j/Fm2lnTJLFQrKmwogfrajNSV7DUiNewO+q+WAAuBGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771986959; c=relaxed/simple;
-	bh=QElLQRpIUnAep0n7/4TfJ650i2ko4+f/7YctuqkZAxI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8xCbCxfoKsUpRr3c4xZdXvujN5yhtJy1VACrAd67Lc9+4gje/EB8T78BHiKme1A1VDKg0ShfdaCMRdfRlJba66kXqXjjRwGvefxxb8yaYagecW6zOba0NBtnmsxdACuzYhl/ZjpQ1LpBYwBYNPBsH2H+Zjl+E4KNT0Y/638Jpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hwSNB8dn; arc=none smtp.client-ip=209.85.219.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771987534; c=relaxed/simple;
+	bh=u4Ye9UZ85HGexncRbfoiUF2AUeWggCHAZmWit0bJmkQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qBwjuGLcReYdXVwScPy2dizRt0dcag5CXYAKnvDmYppkOP48Q0J9D2nr522JjYkb4cxF+qlR8bth6B743h0WcTlMMIjY4tFeN2FxgLzBMNeYGERwgOOrYQp9KyhR3l6WNSnlA2N0xlVj/yQ0PJ7hRbBlD9wNNT2K87FEK1I7OOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=dkcSYxqi; arc=none smtp.client-ip=115.124.30.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hwSNB8dn"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-895341058b1so77464826d6.3
-        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 18:35:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771986956; x=1772591756; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9FpZ/2725cRjqKypDQChxQ7vBxxCxsJGEBKt/3z4F5A=;
-        b=hwSNB8dnE3ik+BJF6URhpF5Za38npHmGvqVxagG+2rnBiipij523P2N79nlKYUlZ10
-         d05B4t4Y4gl2VDU+q5J1YrpF+oa/sInhQ8YJWgLnq1t4rAgmg9eFIWiO9yKF1JHV2l9d
-         AWoOVBSwMrZNJ/ZM4+Y9cVsGIGxefqCs0SYNlpHmU/G9VE66OTtJyn7LZMi0S4hkwj67
-         kHbCmN2qLRy6q+Dagg5iXO9HE36qN7WtdCy1uflGFBAE6UZ+9+DgT4z3+rs0vXaxjFvM
-         C9gN57OXuxmPYiu9/PVqcCo7aLvy+a/OeVw7h6IYZ7fziAn/S/3onDGQLajEjuVxlNuL
-         9ssA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771986956; x=1772591756;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=9FpZ/2725cRjqKypDQChxQ7vBxxCxsJGEBKt/3z4F5A=;
-        b=M2H1y0TnLqokcmyPV0t4liWXK9OVYCWgzEklMUmnKPET9+llTCnGOQ8+RKL2NmjQKk
-         ZPwKN4oMdvNAxuDPMRP6Dk3AXxl93Ma9BrCWOqlQZFMK8Wl0docEHpxzOdsZiW/apxHx
-         XbOB7lCUUEFG7IiNv68YEhbS0XX2NKtQ8EL/8ml6XwJkk8vbV+gZqpdzMSTKuOnDdy9c
-         G/wv7vCR6XoHIW9JKO+JA/gk39z5CuQK2FyA2yegn/KOFCYCYc6I3/Vg9o7HEi37HXCn
-         /xdN6MS52zDh5syPY9Kk4hFJHLbh5uDcXbGOjqnavKqG8AV5pnzHn/oYskxeVn1tTNyY
-         sOvg==
-X-Gm-Message-State: AOJu0Yzdbx6uADKm1SKBzKmOtdzko2P2z2+5LPeDNV+SQyZHIp6j6Dq/
-	760ImtAtl2EZccBi+uLWa+I9sfJmHH95zeD6/3FkEQqO3QDg8fLohk/sj3LnPnC/
-X-Gm-Gg: ATEYQzzosSUeqsWXfRSjb7LvU/MOXHt4dq/cuvoEigZ3GaxXopaV/SV0LbVk7WEJaW0
-	59KyADlr3jrz31ExQ7C7Qg/b+gKGABUaMHoGeLJ3MVFejGEKAtzGEKbDbc70UWErfJFc4x3ysm4
-	9RispQ8fxpqxQmI3CIHofSq/AcsnzMZ0mRRJztGlgrYIDyp3C+aCrYXRhokYCE3pvvY019DAvrO
-	e5hnoXlOtTKWWS5cTU7i9IX6hOQd3ua5DoAEvSEttOlkdHKOoYTYTDRS6ptmCFfakIQsqnlkubA
-	X2mS368IEbNXWXjF5pR3Lcr3S6SbOnxTL1ADxQJKUdrhvExsj+6wnZg9H5HSbBNx6SPsuJ6DEf7
-	SdGMKJrJeAyTlVPnbFTkj+HZBJ0goAuYHomRR6QL48vBf5OktA4XcgNEF1VwRmB6NV7qEX2dIF8
-	qWUkAjzMufhA7VwrclrV+8+YdMQutWUajePSlQzirzmiB9dUpr8fA8yLnY4jHPHTDXLBEXxXsXU
-	IaBjpmInL9UGOx+piJ/3LKTdtAAfpHcnTnjjxhXkRBoPZA+1bXbYtAdLqCcUrEK4w==
-X-Received: by 2002:a05:6214:629:b0:892:70a5:3bfc with SMTP id 6a1803df08f44-899b8c856f2mr10193086d6.63.1771986955327;
-        Tue, 24 Feb 2026 18:35:55 -0800 (PST)
-Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8997e62f453sm112363586d6.36.2026.02.24.18.35.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 18:35:54 -0800 (PST)
-From: Xin Long <lucien.xin@gmail.com>
-To: network dev <netdev@vger.kernel.org>,
-	quic@lists.linux.dev
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="dkcSYxqi"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1771987526; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=TlTBJPDaVrUOcYy48NDdKo8aATfAJjTBRaKVYBTDKVo=;
+	b=dkcSYxqiJx+1CJRTPMvI0gI2OLpQYBw6vO4tADaDVSqHdTpy0znNex6riCCPqkkiraaYCI3WSsHmSvrygj0Dx2j5YShhul99ghTySzJstV6CRDFTtE+GgisNA1yUZMRGHgvhxBckoq/KAYKI+EGmzkjacvxSwajIhANuGweC4Ic=
+Received: from j66a10360.sqa.eu95.tbsite.net(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0Wzkr3-E_1771987513 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 25 Feb 2026 10:45:25 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com>
+To: "David S. Miller" <davem@davemloft.net>,
+	Dust Li <dust.li@linux.alibaba.com>,
 	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
+	Sidraya Jayagond <sidraya@linux.ibm.com>,
+	Wenjia Zhang <wenjia@linux.ibm.com>
+Cc: Mahanta Jambigi <mjambigi@linux.ibm.com>,
 	Simon Horman <horms@kernel.org>,
-	Stefan Metzmacher <metze@samba.org>,
-	Moritz Buhl <mbuhl@openbsd.org>,
-	Tyler Fanelli <tfanelli@redhat.com>,
-	Pengtao He <hepengtao@xiaomi.com>,
-	Thomas Dreibholz <dreibh@simula.no>,
-	linux-cifs@vger.kernel.org,
-	Steve French <smfrench@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Tom Talpey <tom@talpey.com>,
-	kernel-tls-handshake@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Steve Dickson <steved@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Alexander Aring <aahringo@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"D . Wythe" <alibuda@linux.alibaba.com>,
-	Jason Baron <jbaron@akamai.com>,
-	illiliti <illiliti@protonmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Daniel Stenberg <daniel@haxx.se>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	"Marc E . Fiuczynski" <marc@fiuczynski.com>
-Subject: [PATCH net-next v10 15/15] quic: add packet parser base
-Date: Tue, 24 Feb 2026 21:34:21 -0500
-Message-ID: <08a63705058aff77dd54fb388870f0bca6036c95.1771986861.git.lucien.xin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1771986861.git.lucien.xin@gmail.com>
-References: <cover.1771986861.git.lucien.xin@gmail.com>
+	Tony Lu <tonylu@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	oliver.yang@linux.alibaba.com,
+	pasic@linux.ibm.com
+Subject: [PATCH net-next] net/smc: transition to RDMA core CQ pooling
+Date: Wed, 25 Feb 2026 10:45:13 +0800
+Message-ID: <20260225024513.7861-1-alibuda@linux.alibaba.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -108,973 +53,1011 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This patch uses 'quic_packet' to handle packing of QUIC packets on the
-receive (RX) path.
+The current SMC-R implementation relies on global per-device CQs
+and manual polling within tasklets, which introduces severe
+scalability bottlenecks due to global lock contention and tasklet
+scheduling overhead, resulting in poor performance as concurrency
+increases.
 
-It introduces mechanisms to parse the ALPN from client Initial packets
-to determine the correct listener socket. Received packets are then
-routed and processed accordingly. Similar to the TX path, handling for
-application and handshake packets is not yet implemented.
+Refactor the completion handling to utilize the ib_cqe API and
+standard RDMA core CQ pooling. This transition provides several key
+advantages:
 
-- quic_packet_parse_alpn()`: Parse the ALPN from a client Initial packet,
-  then locate the appropriate listener using the ALPN.
+1. Multi-CQ: Shift from a single shared per-device CQ to multiple
+link-specific CQs via the CQ pool. This allows completion processing
+to be parallelized across multiple CPU cores, effectively eliminating
+the global CQ bottleneck.
 
-- quic_packet_rcv(): Locate the appropriate socket to handle the packet
-  via quic_packet_process().
+2. Leverage DIM: Utilizing the standard CQ pool with IB_POLL_SOFTIRQ
+enables Dynamic Interrupt Moderation from the RDMA core, optimizing
+interrupt frequency and reducing CPU load under high pressure.
 
-- quic_packet_process()`: Process the received packet.
+3. O(1) Context Retrieval: Replaces the expensive wr_id based lookup
+logic (e.g., smc_wr_tx_find_pending_index) with direct context retrieval
+using container_of() on the embedded ib_cqe.
 
-In addition to packet flow, this patch adds support for ICMP-based MTU
-updates by locating the relevant socket and updating the stored PMTU
-accordingly.
+4. Code Simplification: This refactoring results in a reduction of
+~150 lines of code. It removes redundant sequence tracking, complex lookup
+helpers, and manual CQ management, significantly improving maintainability.
 
-- quic_packet_rcv_err_pmtu(): Find the socket and update the PMTU via
-  quic_packet_mss_update().
+Performance Test: redis-benchmark with max 32 connections per QP
+Data format: Requests Per Second (RPS), Percentage in brackets
+represents the gain/loss compared to TCP.
 
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
+| Clients | TCP      | SMC (original)      | SMC (cq_pool)       |
+|---------|----------|---------------------|---------------------|
+| c = 1   | 24449    | 31172  (+27%)       | 34039  (+39%)       |
+| c = 2   | 46420    | 53216  (+14%)       | 64391  (+38%)       |
+| c = 16  | 159673   | 83668  (-48%)  <--  | 216947 (+36%)       |
+| c = 32  | 164956   | 97631  (-41%)  <--  | 249376 (+51%)       |
+| c = 64  | 166322   | 118192 (-29%)  <--  | 249488 (+50%)       |
+| c = 128 | 167700   | 121497 (-27%)  <--  | 249480 (+48%)       |
+| c = 256 | 175021   | 146109 (-16%)  <--  | 240384 (+37%)       |
+| c = 512 | 168987   | 101479 (-40%)  <--  | 226634 (+34%)       |
+
+The results demonstrate that this optimization effectively resolves the
+scalability bottleneck, with RPS increasing by over 110% at c=64
+compared to the original implementation.
+
+Signed-off-by: D. Wythe <alibuda@linux.alibaba.com>
 ---
-v5:
-  - In quic_packet_rcv_err(), remove the unnecessary quic_is_listen()
-    check and move quic_get_mtu_info() out of sock lock (suggested
-    by Paolo).
-  - Replace cancel_work_sync() to disable_work_sync() (suggested by
-    Paolo).
-v6:
-  - Fix the loop using skb_dequeue() in quic_packet_backlog_work(), and
-    kfree_skb() when sk is not found (reported by AI Reviews).
-  - Remove skb_pull() from quic_packet_rcv(), since it is now handled
-    in quic_path_rcv().
-  - Note for AI reviews: add if (dst) check in quic_packet_rcv_err_pmtu(),
-    although quic_packet_route() >= 0 already guarantees it is not NULL.
-  - Note for AI reviews: it is safe to do *plen -= QUIC_HLEN in
-    quic_packet_get_version_and_connid(), since quic_packet_get_sock()
-    already checks if (skb->len < QUIC_HLEN).
-  - Note for AI reviews: cb->length - cb->number_len - QUIC_TAG_LEN
-    cannot underflow, because quic_crypto_header_decrypt() already checks
-    if (cb->length < QUIC_PN_MAX_LEN + QUIC_SAMPLE_LEN).
-  - Note for AI reviews: the cast (u16)length in quic_packet_parse_alpn()
-    is safe, as there is a prior check if (length > (u16)len); len is
-    skb->len, which cannot exceed U16_MAX.
-  - Note for AI reviews: it's correct to do if (flags &
-    QUIC_F_MTU_REDUCED_DEFERRED) in quic_release_cb(), since
-    QUIC_MTU_REDUCED_DEFERRED is the bit used with test_and_set_bit().
-  - Note for AI reviews: move skb_cb->backlog = 1 before adding skb to
-    backlog, although it's safe to write skb_cb after adding to backlog
-    with sk_lock.slock, as skb dequeue from backlog requires sk_lock.slock.
-v7:
-  - Pass udp sk to quic_packet_rcv(), quic_packet_rcv_err() and
-    quic_sock_lookup().
-  - Move the call to skb_linearize() and skb_set_owner_sk_safe() to
-    .quic_path_rcv()/quic_packet_rcv().
-v8:
-  - Replace the global ALPN demultiplexing sysctl with the static key in
-    quic_packet_parse_alpn() (noted by Stefan).
-  - Refetch skb->data after decrypt in ALPN parsing, as skb_cow_data()
-    may reallocate the skb data buffer (reported by Syzkaller).
-  - The indirect quic_path_rcv has been removed and call quic_packet_rcv()
-    directly via extern.
-  - Do not restore skb data when QUIC Initial decryption fails, as the
-    caller will free the skb for this failure anyway.
-  - With patch 14 removed, define a temporary QUIC_FRAME_CRYPTO ID when
-    parsing the ALPN.
-v9:
-  - Remove local_bh_disable() in quic_packet_get_listen_sock() as it's now
-    using rcu_read_lock instead of spin_sock in quic_listen_sock_lookup()
-    (noted by Paolo).
-v10:
-  - Return QUIC_PACKET_INVALID (instead of -1) for invalid packet types in
-    quic_packet_version_get_type().
-  - Update the comment to clarify in quic_packet_rcv_err() that ICMP errors
-    embed the original QUIC packet, reversing src/dst addrs when parsed.
-  - Use qn->backlog_list.lock in quic_packet_backlog_schedule() to prevent
-    TOCTOU.
-  - Add check 'len < TLS_CH_RANDOM_LEN + TLS_CH_VERSION_LEN' before parsing
-    ClientHello in quic_packet_get_alpn().
-  - Add more limits in quic_packet_get_alpn() to improve robustness against
-    malformed TLS ClientHello messages.
-  - Move skb_queue_purge() to after disable_work_sync() in quic_net_exit()
-    for clarity and to satisfy AI review.
-  - quic_sock.config.plpmtud_probe_interval has been moved to
-    quic_path_group.plpmtud_interval, so update its usage in
-    quic_packet_rcv_err_pmtu() accordingly.
-  - Remove quic_packet_select_version() and quic_packet_version_change();
-    they will be reintroduced later when needed in the next patch series.
----
- net/quic/packet.c   | 577 ++++++++++++++++++++++++++++++++++++++++++++
- net/quic/packet.h   |  10 +
- net/quic/path.c     |   6 +-
- net/quic/protocol.c |   5 +
- net/quic/protocol.h |   4 +
- net/quic/socket.c   | 134 ++++++++++
- net/quic/socket.h   |   5 +
- 7 files changed, 739 insertions(+), 2 deletions(-)
+ net/smc/smc_core.c |   9 +-
+ net/smc/smc_core.h |  28 ++--
+ net/smc/smc_ib.c   | 113 +++++-----------
+ net/smc/smc_ib.h   |   7 -
+ net/smc/smc_tx.c   |   1 -
+ net/smc/smc_wr.c   | 313 +++++++++++++++++++--------------------------
+ net/smc/smc_wr.h   |  40 ++----
+ 7 files changed, 194 insertions(+), 317 deletions(-)
 
-diff --git a/net/quic/packet.c b/net/quic/packet.c
-index a56edc745bb1..a23ce99a6656 100644
---- a/net/quic/packet.c
-+++ b/net/quic/packet.c
-@@ -14,6 +14,583 @@
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index 8aca5dc54be7..436930eb2328 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -815,17 +815,11 @@ int smcr_link_init(struct smc_link_group *lgr, struct smc_link *lnk,
+ 	lnk->lgr = lgr;
+ 	smc_lgr_hold(lgr); /* lgr_put in smcr_link_clear() */
+ 	lnk->link_idx = link_idx;
+-	lnk->wr_rx_id_compl = 0;
+ 	smc_ibdev_cnt_inc(lnk);
+ 	smcr_copy_dev_info_to_link(lnk);
+ 	atomic_set(&lnk->conn_cnt, 0);
+ 	smc_llc_link_set_uid(lnk);
+ 	INIT_WORK(&lnk->link_down_wrk, smc_link_down_work);
+-	if (!lnk->smcibdev->initialized) {
+-		rc = (int)smc_ib_setup_per_ibdev(lnk->smcibdev);
+-		if (rc)
+-			goto out;
+-	}
+ 	get_random_bytes(rndvec, sizeof(rndvec));
+ 	lnk->psn_initial = rndvec[0] + (rndvec[1] << 8) +
+ 		(rndvec[2] << 16);
+@@ -863,6 +857,7 @@ int smcr_link_init(struct smc_link_group *lgr, struct smc_link *lnk,
+ 	if (rc)
+ 		goto free_link_mem;
+ 	lnk->state = SMC_LNK_ACTIVATING;
++	smc_wr_init_cqes(lnk);
+ 	return 0;
  
- #define QUIC_HLEN		1
+ free_link_mem:
+@@ -1373,7 +1368,7 @@ void smcr_link_clear(struct smc_link *lnk, bool log)
+ 	smc_llc_link_clear(lnk, log);
+ 	smcr_buf_unmap_lgr(lnk);
+ 	smcr_rtoken_clear_link(lnk);
+-	smc_ib_modify_qp_error(lnk);
++	smc_wr_drain_rq(lnk);
+ 	smc_wr_free_link(lnk);
+ 	smc_ib_destroy_queue_pair(lnk);
+ 	smc_ib_dealloc_protection_domain(lnk);
+diff --git a/net/smc/smc_core.h b/net/smc/smc_core.h
+index 5c18f08a4c8a..2c4eb5c22287 100644
+--- a/net/smc/smc_core.h
++++ b/net/smc/smc_core.h
+@@ -89,8 +89,21 @@ struct smc_rdma_sges {				/* sges per message send */
+ struct smc_rdma_wr {				/* work requests per message
+ 						 * send
+ 						 */
++	struct ib_cqe		cqe;
+ 	struct ib_rdma_wr	wr_tx_rdma[SMC_MAX_RDMA_WRITES];
+-};
++} ____cacheline_aligned_in_smp;
++
++struct smc_ib_recv_wr {
++	struct ib_cqe		cqe;
++	struct ib_recv_wr	wr;
++	int idx;
++} ____cacheline_aligned_in_smp;
++
++struct smc_ib_send_wr {
++	struct ib_cqe		cqe;
++	struct ib_send_wr	wr;
++	int idx;
++} ____cacheline_aligned_in_smp;
  
-+#define QUIC_LONG_HLEN(dcid, scid) \
-+	(QUIC_HLEN + QUIC_VERSION_LEN + 1 + (dcid)->len + 1 + (scid)->len)
+ #define SMC_LGR_ID_SIZE		4
+ 
+@@ -100,23 +113,24 @@ struct smc_link {
+ 	struct ib_pd		*roce_pd;	/* IB protection domain,
+ 						 * unique for every RoCE QP
+ 						 */
++	unsigned int		nr_cqe;		/* number of CQ entries */
++	struct ib_cq		*ib_cq;		/* IB completion queue */
+ 	struct ib_qp		*roce_qp;	/* IB queue pair */
+ 	struct ib_qp_attr	qp_attr;	/* IB queue pair attributes */
+ 
+ 	struct smc_wr_buf	*wr_tx_bufs;	/* WR send payload buffers */
+-	struct ib_send_wr	*wr_tx_ibs;	/* WR send meta data */
++	struct smc_ib_send_wr	*wr_tx_ibs;	/* WR send meta data */
+ 	struct ib_sge		*wr_tx_sges;	/* WR send gather meta data */
+ 	struct smc_rdma_sges	*wr_tx_rdma_sges;/*RDMA WRITE gather meta data*/
+ 	struct smc_rdma_wr	*wr_tx_rdmas;	/* WR RDMA WRITE */
+ 	struct smc_wr_tx_pend	*wr_tx_pends;	/* WR send waiting for CQE */
+ 	struct completion	*wr_tx_compl;	/* WR send CQE completion */
+ 	/* above four vectors have wr_tx_cnt elements and use the same index */
+-	struct ib_send_wr	*wr_tx_v2_ib;	/* WR send v2 meta data */
++	struct smc_ib_send_wr	*wr_tx_v2_ib;	/* WR send v2 meta data */
+ 	struct ib_sge		*wr_tx_v2_sge;	/* WR send v2 gather meta data*/
+ 	struct smc_wr_tx_pend	*wr_tx_v2_pend;	/* WR send v2 waiting for CQE */
+ 	dma_addr_t		wr_tx_dma_addr;	/* DMA address of wr_tx_bufs */
+ 	dma_addr_t		wr_tx_v2_dma_addr; /* DMA address of v2 tx buf*/
+-	atomic_long_t		wr_tx_id;	/* seq # of last sent WR */
+ 	unsigned long		*wr_tx_mask;	/* bit mask of used indexes */
+ 	u32			wr_tx_cnt;	/* number of WR send buffers */
+ 	wait_queue_head_t	wr_tx_wait;	/* wait for free WR send buf */
+@@ -126,7 +140,7 @@ struct smc_link {
+ 	struct completion	tx_ref_comp;
+ 
+ 	u8			*wr_rx_bufs;	/* WR recv payload buffers */
+-	struct ib_recv_wr	*wr_rx_ibs;	/* WR recv meta data */
++	struct smc_ib_recv_wr	*wr_rx_ibs;	/* WR recv meta data */
+ 	struct ib_sge		*wr_rx_sges;	/* WR recv scatter meta data */
+ 	/* above three vectors have wr_rx_cnt elements and use the same index */
+ 	int			wr_rx_sge_cnt; /* rx sge, V1 is 1, V2 is either 2 or 1 */
+@@ -135,13 +149,11 @@ struct smc_link {
+ 						 */
+ 	dma_addr_t		wr_rx_dma_addr;	/* DMA address of wr_rx_bufs */
+ 	dma_addr_t		wr_rx_v2_dma_addr; /* DMA address of v2 rx buf*/
+-	u64			wr_rx_id;	/* seq # of last recv WR */
+-	u64			wr_rx_id_compl; /* seq # of last completed WR */
+ 	u32			wr_rx_cnt;	/* number of WR recv buffers */
+ 	unsigned long		wr_rx_tstamp;	/* jiffies when last buf rx */
+-	wait_queue_head_t       wr_rx_empty_wait; /* wait for RQ empty */
+ 
+ 	struct ib_reg_wr	wr_reg;		/* WR register memory region */
++	struct ib_cqe		wr_reg_cqe;		/* ib_cqe for wr_reg */
+ 	wait_queue_head_t	wr_reg_wait;	/* wait for wr_reg result */
+ 	struct {
+ 		struct percpu_ref	wr_reg_refs;
+diff --git a/net/smc/smc_ib.c b/net/smc/smc_ib.c
+index 67211d44a1db..26bcb68bbf18 100644
+--- a/net/smc/smc_ib.c
++++ b/net/smc/smc_ib.c
+@@ -112,15 +112,6 @@ int smc_ib_modify_qp_rts(struct smc_link *lnk)
+ 			    IB_QP_MAX_QP_RD_ATOMIC);
+ }
+ 
+-int smc_ib_modify_qp_error(struct smc_link *lnk)
+-{
+-	struct ib_qp_attr qp_attr;
+-
+-	memset(&qp_attr, 0, sizeof(qp_attr));
+-	qp_attr.qp_state = IB_QPS_ERR;
+-	return ib_modify_qp(lnk->roce_qp, &qp_attr, IB_QP_STATE);
+-}
+-
+ int smc_ib_ready_link(struct smc_link *lnk)
+ {
+ 	struct smc_link_group *lgr = smc_get_lgr(lnk);
+@@ -134,10 +125,7 @@ int smc_ib_ready_link(struct smc_link *lnk)
+ 	if (rc)
+ 		goto out;
+ 	smc_wr_remember_qp_attr(lnk);
+-	rc = ib_req_notify_cq(lnk->smcibdev->roce_cq_recv,
+-			      IB_CQ_SOLICITED_MASK);
+-	if (rc)
+-		goto out;
 +
-+#define QUIC_VERSION_NUM	2
-+
-+/* Supported QUIC versions and their compatible versions. Used for Compatible Version
-+ * Negotiation in rfc9368#section-2.3.
-+ */
-+static u32 quic_versions[QUIC_VERSION_NUM][4] = {
-+	/* Version,	Compatible Versions */
-+	{ QUIC_VERSION_V1,	QUIC_VERSION_V2,	QUIC_VERSION_V1,	0 },
-+	{ QUIC_VERSION_V2,	QUIC_VERSION_V2,	QUIC_VERSION_V1,	0 },
-+};
-+
-+/* Get the compatible version list for a given QUIC version. */
-+u32 *quic_packet_compatible_versions(u32 version)
-+{
-+	u8 i;
-+
-+	for (i = 0; i < QUIC_VERSION_NUM; i++)
-+		if (version == quic_versions[i][0])
-+			return quic_versions[i];
-+	return NULL;
-+}
-+
-+/* Convert version-specific type to internal standard packet type. */
-+static u8 quic_packet_version_get_type(u32 version, u8 type)
-+{
-+	if (version == QUIC_VERSION_V1)
-+		return type;
-+
-+	switch (type) {
-+	case QUIC_PACKET_INITIAL_V2:
-+		return QUIC_PACKET_INITIAL;
-+	case QUIC_PACKET_0RTT_V2:
-+		return QUIC_PACKET_0RTT;
-+	case QUIC_PACKET_HANDSHAKE_V2:
-+		return QUIC_PACKET_HANDSHAKE;
-+	case QUIC_PACKET_RETRY_V2:
-+		return QUIC_PACKET_RETRY;
-+	default:
-+		return QUIC_PACKET_INVALID;
+ 	rc = smc_wr_rx_post_init(lnk);
+ 	if (rc)
+ 		goto out;
+@@ -658,38 +646,59 @@ void smc_ib_destroy_queue_pair(struct smc_link *lnk)
+ 	if (lnk->roce_qp)
+ 		ib_destroy_qp(lnk->roce_qp);
+ 	lnk->roce_qp = NULL;
++	if (lnk->ib_cq) {
++		ib_cq_pool_put(lnk->ib_cq, lnk->nr_cqe);
++		lnk->ib_cq = NULL;
 +	}
-+}
+ }
+ 
+ /* create a queue pair within the protection domain for a link */
+ int smc_ib_create_queue_pair(struct smc_link *lnk)
+ {
++	int max_send_wr, max_recv_wr, rc;
++	struct ib_cq *cq;
 +
-+/* Parse QUIC version and connection IDs (DCID and SCID) from a Long header packet buffer. */
-+static int quic_packet_get_version_and_connid(struct quic_conn_id *dcid, struct quic_conn_id *scid,
-+					      u32 *version, u8 **pp, u32 *plen)
-+{
-+	u64 len, v;
-+
-+	*pp += QUIC_HLEN;
-+	*plen -= QUIC_HLEN;
-+
-+	if (!quic_get_int(pp, plen, &v, QUIC_VERSION_LEN))
-+		return -EINVAL;
-+	*version = v;
-+
-+	if (!quic_get_int(pp, plen, &len, 1) ||
-+	    len > *plen || len > QUIC_CONN_ID_MAX_LEN)
-+		return -EINVAL;
-+	quic_conn_id_update(dcid, *pp, len);
-+	*plen -= len;
-+	*pp += len;
-+
-+	if (!quic_get_int(pp, plen, &len, 1) ||
-+	    len > *plen || len > QUIC_CONN_ID_MAX_LEN)
-+		return -EINVAL;
-+	quic_conn_id_update(scid, *pp, len);
-+	*plen -= len;
-+	*pp += len;
-+	return 0;
-+}
-+
-+/* Extracts a QUIC token from a buffer in the Client Initial packet. */
-+static int quic_packet_get_token(struct quic_data *token, u8 **pp, u32 *plen)
-+{
-+	u64 len;
-+
-+	if (!quic_get_var(pp, plen, &len) || len > *plen)
-+		return -EINVAL;
-+	quic_data(token, *pp, len);
-+	*plen -= len;
-+	*pp += len;
-+	return 0;
-+}
-+
-+/* Process PMTU reduction event on a QUIC socket. */
-+void quic_packet_rcv_err_pmtu(struct sock *sk)
-+{
-+	struct quic_path_group *paths = quic_paths(sk);
-+	struct quic_packet *packet = quic_packet(sk);
-+	u32 pathmtu, info, taglen;
-+	struct dst_entry *dst;
-+	bool reset_timer;
-+
-+	if (!ip_sk_accept_pmtu(sk))
-+		return;
-+
-+	info = clamp(paths->mtu_info, QUIC_PATH_MIN_PMTU, QUIC_PATH_MAX_PMTU);
-+	/* If PLPMTUD is not enabled, update MSS using the route and ICMP info. */
-+	if (!paths->plpmtud_interval) {
-+		if (quic_packet_route(sk) < 0)
-+			return;
-+
-+		dst = __sk_dst_get(sk);
-+		if (dst)
-+			dst->ops->update_pmtu(dst, sk, NULL, info, true);
-+		quic_packet_mss_update(sk, info - packet->hlen);
-+		return;
-+	}
-+	/* PLPMTUD is enabled: adjust to smaller PMTU, subtract headers and AEAD tag.  Also
-+	 * notify the QUIC path layer for possible state changes and probing.
++	/* include unsolicited rdma_writes as well,
++	 * there are max. 2 RDMA_WRITE per 1 WR_SEND.
 +	 */
-+	taglen = quic_packet_taglen(packet);
-+	info = info - packet->hlen - taglen;
-+	pathmtu = quic_path_pl_toobig(paths, info, &reset_timer);
-+	if (reset_timer)
-+		quic_timer_reset(sk, QUIC_TIMER_PMTU, paths->plpmtud_interval);
-+	if (pathmtu)
-+		quic_packet_mss_update(sk, pathmtu + taglen);
-+}
++	max_send_wr = 3 * lnk->lgr->max_send_wr;
++	max_recv_wr = lnk->lgr->max_recv_wr + 1;	/* +1 for ib_drain_rq() */
 +
-+/* Handle ICMP Toobig packet and update QUIC socket path MTU. */
-+static int quic_packet_rcv_err(struct sock *sk, struct sk_buff *skb)
-+{
-+	union quic_addr daddr, saddr;
-+	u32 info;
++	cq = ib_cq_pool_get(lnk->smcibdev->ibdev, max_send_wr + max_recv_wr, -1,
++			    IB_POLL_SOFTIRQ);
 +
-+	/* ICMP embeds the original outgoing QUIC packet, so saddr/daddr are reversed when
-+	 * parsed. Only address-based socket lookup is possible in this case.
-+	 */
-+	quic_get_msg_addrs(skb, &saddr, &daddr);
-+	sk = quic_sock_lookup(skb, &daddr, &saddr, sk, NULL);
-+	if (!sk)
-+		return -ENOENT;
-+
-+	if (quic_get_mtu_info(skb, &info)) {
-+		sock_put(sk);
-+		return 0;
++	if (IS_ERR(cq)) {
++		rc = PTR_ERR(cq);
++		return rc;
 +	}
 +
-+	/* Success: update socket path MTU info. */
-+	bh_lock_sock(sk);
-+	quic_paths(sk)->mtu_info = info;
-+	if (sock_owned_by_user(sk)) {
-+		/* Socket is in use by userspace context.  Defer MTU processing to later via
-+		 * tasklet.  Ensure the socket is not dropped before deferral.
-+		 */
-+		if (!test_and_set_bit(QUIC_MTU_REDUCED_DEFERRED, &sk->sk_tsq_flags))
-+			sock_hold(sk);
-+		goto out;
-+	}
-+	/* Otherwise, process the MTU reduction now. */
-+	quic_packet_rcv_err_pmtu(sk);
-+out:
-+	bh_unlock_sock(sk);
-+	sock_put(sk);
-+	return 1;
-+}
-+
-+#define QUIC_PACKET_BACKLOG_MAX		4096
-+
-+/* Queue a packet for later processing when sleeping is allowed. */
-+static int quic_packet_backlog_schedule(struct net *net, struct sk_buff *skb)
-+{
-+	struct quic_skb_cb *cb = QUIC_SKB_CB(skb);
-+	struct quic_net *qn = quic_net(net);
-+	struct sk_buff_head *head;
-+
-+	if (cb->backlog)
-+		return 0;
-+
-+	head = &qn->backlog_list;
-+	spin_lock(&head->lock);
-+	if (head->qlen >= QUIC_PACKET_BACKLOG_MAX) {
-+		spin_unlock(&head->lock);
-+		QUIC_INC_STATS(net, QUIC_MIB_PKT_RCVDROP);
-+		kfree_skb(skb);
-+		return -1;
-+	}
-+	cb->backlog = 1;
-+	__skb_queue_tail(head, skb);
-+	spin_unlock(&head->lock);
-+
-+	queue_work(quic_wq, &qn->work);
-+	return 1;
-+}
-+
-+#define TLS_MT_CLIENT_HELLO	1
-+#define TLS_EXT_alpn		16
-+
-+/*  TLS Client Hello Msg:
-+ *
-+ *    uint16 ProtocolVersion;
-+ *    opaque Random[32];
-+ *    uint8 CipherSuite[2];
-+ *
-+ *    struct {
-+ *        ExtensionType extension_type;
-+ *        opaque extension_data<0..2^16-1>;
-+ *    } Extension;
-+ *
-+ *    struct {
-+ *        ProtocolVersion legacy_version = 0x0303;
-+ *        Random rand;
-+ *        opaque legacy_session_id<0..32>;
-+ *        CipherSuite cipher_suites<2..2^16-2>;
-+ *        opaque legacy_compression_methods<1..2^8-1>;
-+ *        Extension extensions<8..2^16-1>;
-+ *    } ClientHello;
-+ */
-+
-+#define TLS_CH_RANDOM_LEN	32
-+#define TLS_CH_VERSION_LEN	2
-+#define TLS_MAX_EXTENSIONS	128
-+
-+/* Extract ALPN data from a TLS ClientHello message.
-+ *
-+ * Parses the TLS ClientHello handshake message to find the ALPN (Application Layer Protocol
-+ * Negotiation) TLS extension. It validates the TLS ClientHello structure, including version,
-+ * random, session ID, cipher suites, compression methods, and extensions. Once the ALPN
-+ * extension is found, the ALPN protocols list is extracted and stored in @alpn.
-+ *
-+ * Return: 0 on success or no ALPN found, a negative error code on failed parsing.
-+ */
-+static int quic_packet_get_alpn(struct quic_data *alpn, u8 *p, u32 len)
-+{
-+	int err = -EINVAL, found = 0, exts = 0;
-+	u64 length, type;
-+
-+	/* Verify handshake message type (ClientHello) and its length. */
-+	if (!quic_get_int(&p, &len, &type, 1) || type != TLS_MT_CLIENT_HELLO)
-+		return err;
-+	if (!quic_get_int(&p, &len, &length, 3) ||
-+	    len < TLS_CH_RANDOM_LEN + TLS_CH_VERSION_LEN ||
-+	    length < TLS_CH_RANDOM_LEN + TLS_CH_VERSION_LEN)
-+		return err;
-+	if (len > (u32)length) /* Limit len to handshake message length if larger. */
-+		len = length;
-+	/* Skip legacy_version (2 bytes) + random (32 bytes). */
-+	p += TLS_CH_RANDOM_LEN + TLS_CH_VERSION_LEN;
-+	len -= TLS_CH_RANDOM_LEN + TLS_CH_VERSION_LEN;
-+	/* legacy_session_id_len must be zero (QUIC requirement). */
-+	if (!quic_get_int(&p, &len, &length, 1) || length)
-+		return err;
-+
-+	/* Skip cipher_suites (2 bytes length + variable data). */
-+	if (!quic_get_int(&p, &len, &length, 2) || length > (u64)len)
-+		return err;
-+	len -= length;
-+	p += length;
-+
-+	/* Skip legacy_compression_methods (1 byte length + variable data). */
-+	if (!quic_get_int(&p, &len, &length, 1) || length > (u64)len)
-+		return err;
-+	len -= length;
-+	p += length;
-+
-+	if (!quic_get_int(&p, &len, &length, 2)) /* Read TLS extensions length (2 bytes). */
-+		return err;
-+	if (len > (u32)length) /* Limit len to extensions length if larger. */
-+		len = length;
-+	while (len > 4) { /* Iterate over extensions to find ALPN (type TLS_EXT_alpn). */
-+		if (!quic_get_int(&p, &len, &type, 2))
-+			break;
-+		if (!quic_get_int(&p, &len, &length, 2))
-+			break;
-+		if (len < (u32)length) /* Incomplete TLS extensions. */
-+			return 0;
-+		if (type == TLS_EXT_alpn) { /* Found ALPN extension. */
-+			if (length > QUIC_ALPN_MAX_LEN)
-+				return err;
-+			len = length;
-+			found = 1;
-+			break;
-+		}
-+		/* Skip non-ALPN extensions. */
-+		p += length;
-+		len -= length;
-+		if (exts++ >= TLS_MAX_EXTENSIONS)
-+			return err;
-+	}
-+	if (!found) { /* no ALPN extension found: set alpn->len = 0 and alpn->data = p. */
-+		quic_data(alpn, p, 0);
-+		return 0;
-+	}
-+
-+	/* Parse ALPN protocols list length (2 bytes). */
-+	if (!quic_get_int(&p, &len, &length, 2) || length > (u64)len)
-+		return err;
-+	quic_data(alpn, p, length); /* Store ALPN protocols list in alpn->data. */
-+	len = length;
-+	while (len) { /* Validate ALPN protocols list format. */
-+		if (!quic_get_int(&p, &len, &length, 1) || length > (u64)len) {
-+			/* Malformed ALPN entry: set alpn->len = 0 and alpn->data = NULL. */
-+			quic_data(alpn, NULL, 0);
-+			return err;
-+		}
-+		len -= length;
-+		p += length;
-+	}
-+	pr_debug("%s: alpn_len: %d\n", __func__, alpn->len);
-+	return 0;
-+}
-+
-+#define QUIC_FRAME_CRYPTO	0x06
-+
-+/* Parse ALPN from a QUIC Initial packet.
-+ *
-+ * This function processes a QUIC Initial packet to extract the ALPN from the TLS ClientHello
-+ * message inside the QUIC CRYPTO frame. It verifies packet type, version compatibility,
-+ * decrypts the packet payload, and locates the CRYPTO frame to parse the TLS ClientHello.
-+ * Finally, it calls quic_packet_get_alpn() to extract the ALPN extension data.
-+ *
-+ * Return: 0 on success or no ALPN found, a negative error code on failed parsing.
-+ */
-+static int quic_packet_parse_alpn(struct sk_buff *skb, struct quic_data *alpn)
-+{
-+	struct quic_skb_cb *cb = QUIC_SKB_CB(skb);
-+	struct net *net = sock_net(skb->sk);
-+	struct quic_conn_id dcid, scid;
-+	u32 len = skb->len, version;
-+	struct quic_crypto *crypto;
-+	u8 *p = skb->data, type;
-+	struct quic_data token;
-+	u64 offset, length;
-+	int err = -EINVAL;
-+
-+	if (!static_branch_unlikely(&quic_alpn_demux_key))
-+		return 0;
-+	if (quic_packet_get_version_and_connid(&dcid, &scid, &version, &p, &len))
-+		return err;
-+	if (!quic_packet_compatible_versions(version))
-+		return 0;
-+	/* Only parse Initial packets. */
-+	type = quic_packet_version_get_type(version, quic_hshdr(skb)->type);
-+	if (type != QUIC_PACKET_INITIAL)
-+		return 0;
-+	if (quic_packet_get_token(&token, &p, &len))
-+		return err;
-+	if (!quic_get_var(&p, &len, &length) || length > (u64)len)
-+		return err;
-+	if (!cb->backlog) { /* skb_get() needed as caller will free skb on this path. */
-+		quic_packet_backlog_schedule(net, skb_get(skb));
-+		return -EINPROGRESS;
-+	}
-+	cb->length = (u16)length;
-+
-+	/* Install initial keys for packet decryption to crypto. */
-+	crypto = &quic_net(net)->crypto;
-+	err = quic_crypto_initial_keys_install(crypto, &dcid, version, 1);
-+	if (err)
-+		return err;
-+	cb->number_offset = (u16)(p - skb->data);
-+	err = quic_crypto_decrypt(crypto, skb);
-+	if (err) {
-+		QUIC_INC_STATS(net, QUIC_MIB_PKT_DECDROP);
-+		return err;
-+	}
-+
-+	QUIC_INC_STATS(net, QUIC_MIB_PKT_DECFASTPATHS);
-+	cb->resume = 1; /* Mark this packet as already decrypted. */
-+
-+	/* Find the QUIC CRYPTO frame. */
-+	p = skb->data + cb->number_offset + cb->number_len;
-+	len = cb->length - cb->number_len - QUIC_TAG_LEN;
-+	for (; len && !(*p); p++, len--) /* Skip the padding frame. */
-+		;
-+	if (!len-- || *p++ != QUIC_FRAME_CRYPTO)
-+		return 0;
-+	if (!quic_get_var(&p, &len, &offset) || offset)
-+		return 0;
-+	if (!quic_get_var(&p, &len, &length) || length > (u64)len)
-+		return 0;
-+
-+	/* Parse the TLS CLIENT_HELLO message. */
-+	return quic_packet_get_alpn(alpn, p, length);
-+}
-+
-+/* Extract the Destination Connection ID (DCID) from a QUIC Long header packet. */
-+int quic_packet_get_dcid(struct quic_conn_id *dcid, struct sk_buff *skb)
-+{
-+	u32 plen = skb->len;
-+	u8 *p = skb->data;
-+	u64 len;
-+
-+	if (plen < QUIC_HLEN + QUIC_VERSION_LEN)
-+		return -EINVAL;
-+	plen -= (QUIC_HLEN + QUIC_VERSION_LEN);
-+	p += (QUIC_HLEN + QUIC_VERSION_LEN);
-+
-+	if (!quic_get_int(&p, &plen, &len, 1) ||
-+	    len > plen || len > QUIC_CONN_ID_MAX_LEN)
-+		return -EINVAL;
-+	quic_conn_id_update(dcid, p, len);
-+	return 0;
-+}
-+
-+/* Lookup listening socket for Client Initial packet (in process context). */
-+static struct sock *quic_packet_get_listen_sock(struct sk_buff *skb)
-+{
-+	union quic_addr daddr, saddr;
-+	struct quic_data alpns = {};
-+
-+	quic_get_msg_addrs(skb, &daddr, &saddr);
-+
-+	if (quic_packet_parse_alpn(skb, &alpns))
-+		return NULL;
-+
-+	return quic_listen_sock_lookup(skb, &daddr, &saddr, &alpns);
-+}
-+
-+/* Determine the QUIC socket associated with an incoming packet. */
-+static struct sock *quic_packet_get_sock(struct sk_buff *skb)
-+{
-+	struct quic_skb_cb *cb = QUIC_SKB_CB(skb);
-+	struct net *net = sock_net(skb->sk);
-+	struct quic_conn_id dcid, *conn_id;
-+	union quic_addr daddr, saddr;
-+	struct quic_data alpns = {};
-+	struct sock *sk = NULL;
-+
-+	if (skb->len < QUIC_HLEN)
-+		return NULL;
-+
-+	if (!quic_hdr(skb)->form) { /* Short header path. */
-+		if (skb->len < QUIC_HLEN + QUIC_CONN_ID_DEF_LEN)
-+			return NULL;
-+		/* Fast path: look up QUIC connection by fixed-length DCID
-+		 * (Currently, only source CIDs of size QUIC_CONN_ID_DEF_LEN are used).
-+		 */
-+		conn_id = quic_conn_id_lookup(net, skb->data + QUIC_HLEN,
-+					      QUIC_CONN_ID_DEF_LEN);
-+		if (conn_id) {
-+			cb->seqno = quic_conn_id_number(conn_id);
-+			return quic_conn_id_sk(conn_id); /* Return associated socket. */
-+		}
-+
-+		/* Fallback: listener socket lookup
-+		 * (May be used to send a stateless reset from a listen socket).
-+		 */
-+		quic_get_msg_addrs(skb, &daddr, &saddr);
-+		sk = quic_listen_sock_lookup(skb, &daddr, &saddr, &alpns);
-+		if (sk)
-+			return sk;
-+		/* Final fallback: address-based connection lookup
-+		 * (May be used to receive a stateless reset).
-+		 */
-+		return quic_sock_lookup(skb, &daddr, &saddr, skb->sk, NULL);
-+	}
-+
-+	/* Long header path. */
-+	if (quic_packet_get_dcid(&dcid, skb))
-+		return NULL;
-+	/* Fast path: look up QUIC connection by parsed DCID. */
-+	conn_id = quic_conn_id_lookup(net, dcid.data, dcid.len);
-+	if (conn_id) {
-+		cb->seqno = quic_conn_id_number(conn_id);
-+		return quic_conn_id_sk(conn_id); /* Return associated socket. */
-+	}
-+
-+	/* Fallback: address + DCID lookup
-+	 * (May be used for 0-RTT or a follow-up Client Initial packet).
-+	 */
-+	quic_get_msg_addrs(skb, &daddr, &saddr);
-+	sk = quic_sock_lookup(skb, &daddr, &saddr, skb->sk, &dcid);
-+	if (sk)
-+		return sk;
-+	/* Final fallback: listener socket lookup
-+	 * (Used for receiving the first Client Initial packet).
-+	 */
-+	if (quic_packet_parse_alpn(skb, &alpns))
-+		return NULL;
-+	return quic_listen_sock_lookup(skb, &daddr, &saddr, &alpns);
-+}
-+
-+/* Entry point for processing received QUIC packets. */
-+int quic_packet_rcv(struct sock *sk, struct sk_buff *skb, u8 err)
-+{
-+	struct net *net = sock_net(sk);
-+
-+	if (unlikely(err))
-+		return quic_packet_rcv_err(sk, skb);
-+
-+	/* Save the UDP socket to skb->sk for later QUIC socket lookup. */
-+	if (skb_linearize(skb) || !skb_set_owner_sk_safe(skb, sk)) {
-+		QUIC_INC_STATS(net, QUIC_MIB_PKT_RCVDROP);
-+		goto err;
-+	}
-+
-+	/* Look up socket from socket or connection IDs hash tables. */
-+	sk = quic_packet_get_sock(skb);
-+	if (!sk)
-+		goto err;
-+
-+	bh_lock_sock(sk);
-+	if (sock_owned_by_user(sk)) {
-+		/* Socket is busy (owned by user context): queue to backlog. */
-+		QUIC_SKB_CB(skb)->backlog = 1;
-+		if (sk_add_backlog(sk, skb, READ_ONCE(sk->sk_rcvbuf))) {
-+			QUIC_INC_STATS(net, QUIC_MIB_PKT_RCVDROP);
-+			bh_unlock_sock(sk);
-+			sock_put(sk);
-+			goto err;
-+		}
-+		QUIC_INC_STATS(net, QUIC_MIB_PKT_RCVBACKLOGS);
+ 	struct ib_qp_init_attr qp_attr = {
+ 		.event_handler = smc_ib_qp_event_handler,
+ 		.qp_context = lnk,
+-		.send_cq = lnk->smcibdev->roce_cq_send,
+-		.recv_cq = lnk->smcibdev->roce_cq_recv,
++		.send_cq = cq,
++		.recv_cq = cq,
+ 		.srq = NULL,
+ 		.cap = {
+ 			.max_send_sge = SMC_IB_MAX_SEND_SGE,
+ 			.max_recv_sge = lnk->wr_rx_sge_cnt,
++			.max_send_wr = max_send_wr,
++			.max_recv_wr = max_recv_wr,
+ 			.max_inline_data = 0,
+ 		},
+ 		.sq_sig_type = IB_SIGNAL_REQ_WR,
+ 		.qp_type = IB_QPT_RC,
+ 	};
+-	int rc;
+ 
+-	/* include unsolicited rdma_writes as well,
+-	 * there are max. 2 RDMA_WRITE per 1 WR_SEND
+-	 */
+-	qp_attr.cap.max_send_wr = 3 * lnk->lgr->max_send_wr;
+-	qp_attr.cap.max_recv_wr = lnk->lgr->max_recv_wr;
+ 	lnk->roce_qp = ib_create_qp(lnk->roce_pd, &qp_attr);
+ 	rc = PTR_ERR_OR_ZERO(lnk->roce_qp);
+-	if (IS_ERR(lnk->roce_qp))
++	if (IS_ERR(lnk->roce_qp)) {
+ 		lnk->roce_qp = NULL;
+-	else
++		ib_cq_pool_put(cq, max_send_wr + max_recv_wr);
 +	} else {
-+		/* Socket not busy: process immediately. */
-+		QUIC_INC_STATS(net, QUIC_MIB_PKT_RCVFASTPATHS);
-+		sk->sk_backlog_rcv(sk, skb); /* quic_packet_process(). */
+ 		smc_wr_remember_qp_attr(lnk);
++		lnk->nr_cqe = max_send_wr + max_recv_wr;
++		lnk->ib_cq = cq;
 +	}
-+	bh_unlock_sock(sk);
-+	sock_put(sk);
-+	return 0;
-+
-+err:
-+	kfree_skb(skb);
-+	return -EINVAL;
-+}
-+
-+static int quic_packet_listen_process(struct sock *sk, struct sk_buff *skb)
-+{
-+	kfree_skb(skb);
-+	return -EOPNOTSUPP;
-+}
-+
-+static int quic_packet_handshake_process(struct sock *sk, struct sk_buff *skb)
-+{
-+	kfree_skb(skb);
-+	return -EOPNOTSUPP;
-+}
-+
-+static int quic_packet_app_process(struct sock *sk, struct sk_buff *skb)
-+{
-+	kfree_skb(skb);
-+	return -EOPNOTSUPP;
-+}
-+
-+int quic_packet_process(struct sock *sk, struct sk_buff *skb)
-+{
-+	if (quic_is_closed(sk)) {
-+		kfree_skb(skb);
-+		return 0;
-+	}
-+
-+	if (quic_is_listen(sk))
-+		return quic_packet_listen_process(sk, skb);
-+
-+	if (quic_hdr(skb)->form)
-+		return quic_packet_handshake_process(sk, skb);
-+
-+	return quic_packet_app_process(sk, skb);
-+}
-+
-+/* Work function to process packets in the backlog queue. */
-+void quic_packet_backlog_work(struct work_struct *work)
-+{
-+	struct quic_net *qn = container_of(work, struct quic_net, work);
-+	struct sk_buff_head *head = &qn->backlog_list;
-+	struct sk_buff *skb;
-+	struct sock *sk;
-+
-+	while ((skb = skb_dequeue(head)) != NULL) {
-+		sk = quic_packet_get_listen_sock(skb);
-+		if (!sk) {
-+			kfree_skb(skb);
-+			continue;
-+		}
-+
-+		lock_sock(sk);
-+		quic_packet_process(sk, skb);
-+		release_sock(sk);
-+		sock_put(sk);
-+	}
-+}
-+
- /* Make these fixed for easy coding. */
- #define QUIC_PACKET_NUMBER_LEN	QUIC_PN_MAX_LEN
- #define QUIC_PACKET_LENGTH_LEN	4
-diff --git a/net/quic/packet.h b/net/quic/packet.h
-index 8c23be386207..b925e9ab148d 100644
---- a/net/quic/packet.h
-+++ b/net/quic/packet.h
-@@ -57,6 +57,8 @@ struct quic_packet {
- 
- #define QUIC_VERSION_LEN		4
- 
-+#define QUIC_ALPN_MAX_LEN		128
-+
- static inline u8 quic_packet_taglen(struct quic_packet *packet)
- {
- 	return packet->taglen[!!packet->level];
-@@ -98,6 +100,7 @@ static inline void quic_packet_reset(struct quic_packet *packet)
- 	packet->ack_immediate = 0;
+ 	return rc;
  }
  
-+int quic_packet_process(struct sock *sk, struct sk_buff *skb);
- int quic_packet_config(struct sock *sk, u8 level, u8 path);
- 
- int quic_packet_xmit(struct sock *sk, struct sk_buff *skb);
-@@ -107,3 +110,10 @@ int quic_packet_route(struct sock *sk);
- void quic_packet_mss_update(struct sock *sk, u32 mss);
- void quic_packet_flush(struct sock *sk);
- void quic_packet_init(struct sock *sk);
-+
-+int quic_packet_get_dcid(struct quic_conn_id *dcid, struct sk_buff *skb);
-+u32 *quic_packet_compatible_versions(u32 version);
-+
-+int quic_packet_rcv(struct sock *sk, struct sk_buff *skb, u8 err);
-+void quic_packet_backlog_work(struct work_struct *work);
-+void quic_packet_rcv_err_pmtu(struct sock *sk);
-diff --git a/net/quic/path.c b/net/quic/path.c
-index 9414c4f813c5..655f38af4107 100644
---- a/net/quic/path.c
-+++ b/net/quic/path.c
-@@ -17,6 +17,8 @@
- #include "family.h"
- #include "path.h"
- 
-+extern int quic_packet_rcv(struct sock *sk, struct sk_buff *skb, u8 err);
-+
- static int quic_udp_rcv(struct sock *sk, struct sk_buff *skb)
- {
- 	memset(skb->cb, 0, sizeof(skb->cb));
-@@ -25,13 +27,13 @@ static int quic_udp_rcv(struct sock *sk, struct sk_buff *skb)
- 
- 	skb_pull(skb, sizeof(struct udphdr));
- 	skb_dst_force(skb);
--	kfree_skb(skb);
-+	quic_packet_rcv(sk, skb, 0);
- 	return 0; /* .encap_rcv must return 0 if skb was either consumed or dropped. */
+@@ -855,62 +864,6 @@ void smc_ib_buf_unmap_sg(struct smc_link *lnk,
+ 	buf_slot->sgt[lnk->link_idx].sgl->dma_address = 0;
  }
  
- static int quic_udp_err(struct sock *sk, struct sk_buff *skb)
- {
--	return 0;
-+	return quic_packet_rcv(sk, skb, 1);
+-long smc_ib_setup_per_ibdev(struct smc_ib_device *smcibdev)
+-{
+-	struct ib_cq_init_attr cqattr =	{
+-		.cqe = SMC_MAX_CQE, .comp_vector = 0 };
+-	int cqe_size_order, smc_order;
+-	long rc;
+-
+-	mutex_lock(&smcibdev->mutex);
+-	rc = 0;
+-	if (smcibdev->initialized)
+-		goto out;
+-	/* the calculated number of cq entries fits to mlx5 cq allocation */
+-	cqe_size_order = cache_line_size() == 128 ? 7 : 6;
+-	smc_order = MAX_PAGE_ORDER - cqe_size_order;
+-	if (SMC_MAX_CQE + 2 > (0x00000001 << smc_order) * PAGE_SIZE)
+-		cqattr.cqe = (0x00000001 << smc_order) * PAGE_SIZE - 2;
+-	smcibdev->roce_cq_send = ib_create_cq(smcibdev->ibdev,
+-					      smc_wr_tx_cq_handler, NULL,
+-					      smcibdev, &cqattr);
+-	rc = PTR_ERR_OR_ZERO(smcibdev->roce_cq_send);
+-	if (IS_ERR(smcibdev->roce_cq_send)) {
+-		smcibdev->roce_cq_send = NULL;
+-		goto out;
+-	}
+-	smcibdev->roce_cq_recv = ib_create_cq(smcibdev->ibdev,
+-					      smc_wr_rx_cq_handler, NULL,
+-					      smcibdev, &cqattr);
+-	rc = PTR_ERR_OR_ZERO(smcibdev->roce_cq_recv);
+-	if (IS_ERR(smcibdev->roce_cq_recv)) {
+-		smcibdev->roce_cq_recv = NULL;
+-		goto err;
+-	}
+-	smc_wr_add_dev(smcibdev);
+-	smcibdev->initialized = 1;
+-	goto out;
+-
+-err:
+-	ib_destroy_cq(smcibdev->roce_cq_send);
+-out:
+-	mutex_unlock(&smcibdev->mutex);
+-	return rc;
+-}
+-
+-static void smc_ib_cleanup_per_ibdev(struct smc_ib_device *smcibdev)
+-{
+-	mutex_lock(&smcibdev->mutex);
+-	if (!smcibdev->initialized)
+-		goto out;
+-	smcibdev->initialized = 0;
+-	ib_destroy_cq(smcibdev->roce_cq_recv);
+-	ib_destroy_cq(smcibdev->roce_cq_send);
+-	smc_wr_remove_dev(smcibdev);
+-out:
+-	mutex_unlock(&smcibdev->mutex);
+-}
+-
+ static struct ib_client smc_ib_client;
+ 
+ static void smc_copy_netdev_ifindex(struct smc_ib_device *smcibdev, int port)
+@@ -969,7 +922,6 @@ static int smc_ib_add_dev(struct ib_device *ibdev)
+ 	INIT_WORK(&smcibdev->port_event_work, smc_ib_port_event_work);
+ 	atomic_set(&smcibdev->lnk_cnt, 0);
+ 	init_waitqueue_head(&smcibdev->lnks_deleted);
+-	mutex_init(&smcibdev->mutex);
+ 	mutex_lock(&smc_ib_devices.mutex);
+ 	list_add_tail(&smcibdev->list, &smc_ib_devices.list);
+ 	mutex_unlock(&smc_ib_devices.mutex);
+@@ -1018,7 +970,6 @@ static void smc_ib_remove_dev(struct ib_device *ibdev, void *client_data)
+ 	pr_warn_ratelimited("smc: removing ib device %s\n",
+ 			    smcibdev->ibdev->name);
+ 	smc_smcr_terminate_all(smcibdev);
+-	smc_ib_cleanup_per_ibdev(smcibdev);
+ 	ib_unregister_event_handler(&smcibdev->event_handler);
+ 	cancel_work_sync(&smcibdev->port_event_work);
+ 	kfree(smcibdev);
+diff --git a/net/smc/smc_ib.h b/net/smc/smc_ib.h
+index ef8ac2b7546d..a75fe8bcef3a 100644
+--- a/net/smc/smc_ib.h
++++ b/net/smc/smc_ib.h
+@@ -37,17 +37,12 @@ struct smc_ib_device {				/* ib-device infos for smc */
+ 	struct ib_device	*ibdev;
+ 	struct ib_port_attr	pattr[SMC_MAX_PORTS];	/* ib dev. port attrs */
+ 	struct ib_event_handler	event_handler;	/* global ib_event handler */
+-	struct ib_cq		*roce_cq_send;	/* send completion queue */
+-	struct ib_cq		*roce_cq_recv;	/* recv completion queue */
+-	struct tasklet_struct	send_tasklet;	/* called by send cq handler */
+-	struct tasklet_struct	recv_tasklet;	/* called by recv cq handler */
+ 	char			mac[SMC_MAX_PORTS][ETH_ALEN];
+ 						/* mac address per port*/
+ 	u8			pnetid[SMC_MAX_PORTS][SMC_MAX_PNETID_LEN];
+ 						/* pnetid per port */
+ 	bool			pnetid_by_user[SMC_MAX_PORTS];
+ 						/* pnetid defined by user? */
+-	u8			initialized : 1; /* ib dev CQ, evthdl done */
+ 	struct work_struct	port_event_work;
+ 	unsigned long		port_event_mask;
+ 	DECLARE_BITMAP(ports_going_away, SMC_MAX_PORTS);
+@@ -96,8 +91,6 @@ void smc_ib_destroy_queue_pair(struct smc_link *lnk);
+ int smc_ib_create_queue_pair(struct smc_link *lnk);
+ int smc_ib_ready_link(struct smc_link *lnk);
+ int smc_ib_modify_qp_rts(struct smc_link *lnk);
+-int smc_ib_modify_qp_error(struct smc_link *lnk);
+-long smc_ib_setup_per_ibdev(struct smc_ib_device *smcibdev);
+ int smc_ib_get_memory_region(struct ib_pd *pd, int access_flags,
+ 			     struct smc_buf_desc *buf_slot, u8 link_idx);
+ void smc_ib_put_memory_region(struct ib_mr *mr);
+diff --git a/net/smc/smc_tx.c b/net/smc/smc_tx.c
+index 3144b4b1fe29..d301df9ed58b 100644
+--- a/net/smc/smc_tx.c
++++ b/net/smc/smc_tx.c
+@@ -321,7 +321,6 @@ static int smc_tx_rdma_write(struct smc_connection *conn, int peer_rmbe_offset,
+ 	struct smc_link *link = conn->lnk;
+ 	int rc;
+ 
+-	rdma_wr->wr.wr_id = smc_wr_tx_get_next_wr_id(link);
+ 	rdma_wr->wr.num_sge = num_sges;
+ 	rdma_wr->remote_addr =
+ 		lgr->rtokens[conn->rtoken_idx][link->link_idx].dma_addr +
+diff --git a/net/smc/smc_wr.c b/net/smc/smc_wr.c
+index 5feafa98ab1a..4a4924c5cade 100644
+--- a/net/smc/smc_wr.c
++++ b/net/smc/smc_wr.c
+@@ -31,14 +31,11 @@
+ #include "smc.h"
+ #include "smc_wr.h"
+ 
+-#define SMC_WR_MAX_POLL_CQE 10	/* max. # of compl. queue elements in 1 poll */
+-
+ #define SMC_WR_RX_HASH_BITS 4
+ static DEFINE_HASHTABLE(smc_wr_rx_hash, SMC_WR_RX_HASH_BITS);
+ static DEFINE_SPINLOCK(smc_wr_rx_hash_lock);
+ 
+ struct smc_wr_tx_pend {	/* control data for a pending send request */
+-	u64			wr_id;		/* work request id sent */
+ 	smc_wr_tx_handler	handler;
+ 	enum ib_wc_status	wc_status;	/* CQE status */
+ 	struct smc_link		*link;
+@@ -63,55 +60,52 @@ void smc_wr_tx_wait_no_pending_sends(struct smc_link *link)
+ 	wait_event(link->wr_tx_wait, !smc_wr_is_tx_pend(link));
  }
  
- static void quic_udp_sock_put_work(struct work_struct *work)
-diff --git a/net/quic/protocol.c b/net/quic/protocol.c
-index 11a122d84ccb..f1a754556d8d 100644
---- a/net/quic/protocol.c
-+++ b/net/quic/protocol.c
-@@ -265,6 +265,9 @@ static int __net_init quic_net_init(struct net *net)
- 		return err;
+-static inline int smc_wr_tx_find_pending_index(struct smc_link *link, u64 wr_id)
++static void smc_wr_tx_rdma_process_cqe(struct ib_cq *cq, struct ib_wc *wc)
+ {
+-	u32 i;
++	struct smc_link *link = wc->qp->qp_context;
+ 
+-	for (i = 0; i < link->wr_tx_cnt; i++) {
+-		if (link->wr_tx_pends[i].wr_id == wr_id)
+-			return i;
+-	}
+-	return link->wr_tx_cnt;
++	/* terminate link */
++	if (wc->status)
++		smcr_link_down_cond_sched(link);
++}
++
++static void smc_wr_reg_process_cqe(struct ib_cq *cq, struct ib_wc *wc)
++{
++	struct smc_link *link = wc->qp->qp_context;
++
++	if (wc->status)
++		link->wr_reg_state = FAILED;
++	else
++		link->wr_reg_state = CONFIRMED;
++	smc_wr_wakeup_reg_wait(link);
+ }
+ 
+-static inline void smc_wr_tx_process_cqe(struct ib_wc *wc)
++static void smc_wr_tx_process_cqe(struct ib_cq *cq, struct ib_wc *wc)
+ {
+-	struct smc_wr_tx_pend pnd_snd;
++	struct smc_wr_tx_pend *tx_pend, pnd_snd;
++	struct smc_ib_send_wr *send_wr;
+ 	struct smc_link *link;
+ 	u32 pnd_snd_idx;
+ 
+ 	link = wc->qp->qp_context;
+ 
+-	if (wc->opcode == IB_WC_REG_MR) {
+-		if (wc->status)
+-			link->wr_reg_state = FAILED;
+-		else
+-			link->wr_reg_state = CONFIRMED;
+-		smc_wr_wakeup_reg_wait(link);
+-		return;
+-	}
++	send_wr = container_of(wc->wr_cqe, struct smc_ib_send_wr, cqe);
++	pnd_snd_idx = send_wr->idx;
++
++	tx_pend = (pnd_snd_idx == link->wr_tx_cnt) ? link->wr_tx_v2_pend :
++		&link->wr_tx_pends[pnd_snd_idx];
++
++	tx_pend->wc_status = wc->status;
++	memcpy(&pnd_snd, tx_pend, sizeof(pnd_snd));
++	/* clear the full struct smc_wr_tx_pend including .priv */
++	memset(tx_pend, 0, sizeof(*tx_pend));
+ 
+-	pnd_snd_idx = smc_wr_tx_find_pending_index(link, wc->wr_id);
+ 	if (pnd_snd_idx == link->wr_tx_cnt) {
+-		if (link->lgr->smc_version != SMC_V2 ||
+-		    link->wr_tx_v2_pend->wr_id != wc->wr_id)
+-			return;
+-		link->wr_tx_v2_pend->wc_status = wc->status;
+-		memcpy(&pnd_snd, link->wr_tx_v2_pend, sizeof(pnd_snd));
+-		/* clear the full struct smc_wr_tx_pend including .priv */
+-		memset(link->wr_tx_v2_pend, 0,
+-		       sizeof(*link->wr_tx_v2_pend));
+ 		memset(link->lgr->wr_tx_buf_v2, 0,
+ 		       sizeof(*link->lgr->wr_tx_buf_v2));
+ 	} else {
+-		link->wr_tx_pends[pnd_snd_idx].wc_status = wc->status;
+-		if (link->wr_tx_pends[pnd_snd_idx].compl_requested)
++		if (tx_pend->compl_requested)
+ 			complete(&link->wr_tx_compl[pnd_snd_idx]);
+-		memcpy(&pnd_snd, &link->wr_tx_pends[pnd_snd_idx],
+-		       sizeof(pnd_snd));
+-		/* clear the full struct smc_wr_tx_pend including .priv */
+-		memset(&link->wr_tx_pends[pnd_snd_idx], 0,
+-		       sizeof(link->wr_tx_pends[pnd_snd_idx]));
+ 		memset(&link->wr_tx_bufs[pnd_snd_idx], 0,
+ 		       sizeof(link->wr_tx_bufs[pnd_snd_idx]));
+ 		if (!test_and_clear_bit(pnd_snd_idx, link->wr_tx_mask))
+@@ -133,39 +127,6 @@ static inline void smc_wr_tx_process_cqe(struct ib_wc *wc)
+ 	wake_up(&link->wr_tx_wait);
+ }
+ 
+-static void smc_wr_tx_tasklet_fn(struct tasklet_struct *t)
+-{
+-	struct smc_ib_device *dev = from_tasklet(dev, t, send_tasklet);
+-	struct ib_wc wc[SMC_WR_MAX_POLL_CQE];
+-	int i = 0, rc;
+-	int polled = 0;
+-
+-again:
+-	polled++;
+-	do {
+-		memset(&wc, 0, sizeof(wc));
+-		rc = ib_poll_cq(dev->roce_cq_send, SMC_WR_MAX_POLL_CQE, wc);
+-		if (polled == 1) {
+-			ib_req_notify_cq(dev->roce_cq_send,
+-					 IB_CQ_NEXT_COMP |
+-					 IB_CQ_REPORT_MISSED_EVENTS);
+-		}
+-		if (!rc)
+-			break;
+-		for (i = 0; i < rc; i++)
+-			smc_wr_tx_process_cqe(&wc[i]);
+-	} while (rc > 0);
+-	if (polled == 1)
+-		goto again;
+-}
+-
+-void smc_wr_tx_cq_handler(struct ib_cq *ib_cq, void *cq_context)
+-{
+-	struct smc_ib_device *dev = (struct smc_ib_device *)cq_context;
+-
+-	tasklet_schedule(&dev->send_tasklet);
+-}
+-
+ /*---------------------------- request submission ---------------------------*/
+ 
+ static inline int smc_wr_tx_get_free_slot_index(struct smc_link *link, u32 *idx)
+@@ -201,8 +162,6 @@ int smc_wr_tx_get_free_slot(struct smc_link *link,
+ 	struct smc_link_group *lgr = smc_get_lgr(link);
+ 	struct smc_wr_tx_pend *wr_pend;
+ 	u32 idx = link->wr_tx_cnt;
+-	struct ib_send_wr *wr_ib;
+-	u64 wr_id;
+ 	int rc;
+ 
+ 	*wr_buf = NULL;
+@@ -226,14 +185,10 @@ int smc_wr_tx_get_free_slot(struct smc_link *link,
+ 		if (idx == link->wr_tx_cnt)
+ 			return -EPIPE;
+ 	}
+-	wr_id = smc_wr_tx_get_next_wr_id(link);
+ 	wr_pend = &link->wr_tx_pends[idx];
+-	wr_pend->wr_id = wr_id;
+ 	wr_pend->handler = handler;
+ 	wr_pend->link = link;
+ 	wr_pend->idx = idx;
+-	wr_ib = &link->wr_tx_ibs[idx];
+-	wr_ib->wr_id = wr_id;
+ 	*wr_buf = &link->wr_tx_bufs[idx];
+ 	if (wr_rdma_buf)
+ 		*wr_rdma_buf = &link->wr_tx_rdmas[idx];
+@@ -247,22 +202,16 @@ int smc_wr_tx_get_v2_slot(struct smc_link *link,
+ 			  struct smc_wr_tx_pend_priv **wr_pend_priv)
+ {
+ 	struct smc_wr_tx_pend *wr_pend;
+-	struct ib_send_wr *wr_ib;
+-	u64 wr_id;
+ 
+ 	if (link->wr_tx_v2_pend->idx == link->wr_tx_cnt)
+ 		return -EBUSY;
+ 
+ 	*wr_buf = NULL;
+ 	*wr_pend_priv = NULL;
+-	wr_id = smc_wr_tx_get_next_wr_id(link);
+ 	wr_pend = link->wr_tx_v2_pend;
+-	wr_pend->wr_id = wr_id;
+ 	wr_pend->handler = handler;
+ 	wr_pend->link = link;
+ 	wr_pend->idx = link->wr_tx_cnt;
+-	wr_ib = link->wr_tx_v2_ib;
+-	wr_ib->wr_id = wr_id;
+ 	*wr_buf = link->lgr->wr_tx_buf_v2;
+ 	*wr_pend_priv = &wr_pend->priv;
+ 	return 0;
+@@ -306,10 +255,8 @@ int smc_wr_tx_send(struct smc_link *link, struct smc_wr_tx_pend_priv *priv)
+ 	struct smc_wr_tx_pend *pend;
+ 	int rc;
+ 
+-	ib_req_notify_cq(link->smcibdev->roce_cq_send,
+-			 IB_CQ_NEXT_COMP | IB_CQ_REPORT_MISSED_EVENTS);
+ 	pend = container_of(priv, struct smc_wr_tx_pend, priv);
+-	rc = ib_post_send(link->roce_qp, &link->wr_tx_ibs[pend->idx], NULL);
++	rc = ib_post_send(link->roce_qp, &link->wr_tx_ibs[pend->idx].wr, NULL);
+ 	if (rc) {
+ 		smc_wr_tx_put_slot(link, priv);
+ 		smcr_link_down_cond_sched(link);
+@@ -322,10 +269,8 @@ int smc_wr_tx_v2_send(struct smc_link *link, struct smc_wr_tx_pend_priv *priv,
+ {
+ 	int rc;
+ 
+-	link->wr_tx_v2_ib->sg_list[0].length = len;
+-	ib_req_notify_cq(link->smcibdev->roce_cq_send,
+-			 IB_CQ_NEXT_COMP | IB_CQ_REPORT_MISSED_EVENTS);
+-	rc = ib_post_send(link->roce_qp, link->wr_tx_v2_ib, NULL);
++	link->wr_tx_v2_ib->wr.sg_list[0].length = len;
++	rc = ib_post_send(link->roce_qp, &link->wr_tx_v2_ib->wr, NULL);
+ 	if (rc) {
+ 		smc_wr_tx_put_slot(link, priv);
+ 		smcr_link_down_cond_sched(link);
+@@ -367,10 +312,7 @@ int smc_wr_reg_send(struct smc_link *link, struct ib_mr *mr)
+ {
+ 	int rc;
+ 
+-	ib_req_notify_cq(link->smcibdev->roce_cq_send,
+-			 IB_CQ_NEXT_COMP | IB_CQ_REPORT_MISSED_EVENTS);
+ 	link->wr_reg_state = POSTED;
+-	link->wr_reg.wr.wr_id = (u64)(uintptr_t)mr;
+ 	link->wr_reg.mr = mr;
+ 	link->wr_reg.key = mr->rkey;
+ 	rc = ib_post_send(link->roce_qp, &link->wr_reg.wr, NULL);
+@@ -431,94 +373,74 @@ static inline void smc_wr_rx_demultiplex(struct ib_wc *wc)
+ {
+ 	struct smc_link *link = (struct smc_link *)wc->qp->qp_context;
+ 	struct smc_wr_rx_handler *handler;
++	struct smc_ib_recv_wr *recv_wr;
+ 	struct smc_wr_rx_hdr *wr_rx;
+-	u64 temp_wr_id;
+-	u32 index;
+ 
+ 	if (wc->byte_len < sizeof(*wr_rx))
+ 		return; /* short message */
+-	temp_wr_id = wc->wr_id;
+-	index = do_div(temp_wr_id, link->wr_rx_cnt);
+-	wr_rx = (struct smc_wr_rx_hdr *)(link->wr_rx_bufs + index * link->wr_rx_buflen);
++
++	recv_wr = container_of(wc->wr_cqe, struct smc_ib_recv_wr, cqe);
++
++	wr_rx = (struct smc_wr_rx_hdr *)(link->wr_rx_bufs + recv_wr->idx * link->wr_rx_buflen);
+ 	hash_for_each_possible(smc_wr_rx_hash, handler, list, wr_rx->type) {
+ 		if (handler->type == wr_rx->type)
+ 			handler->handler(wc, wr_rx);
+ 	}
+ }
+ 
+-static inline void smc_wr_rx_process_cqes(struct ib_wc wc[], int num)
++static void smc_wr_rx_process_cqe(struct ib_cq *cq, struct ib_wc *wc)
+ {
+-	struct smc_link *link;
+-	int i;
++	struct smc_link *link = wc->qp->qp_context;
+ 
+-	for (i = 0; i < num; i++) {
+-		link = wc[i].qp->qp_context;
+-		link->wr_rx_id_compl = wc[i].wr_id;
+-		if (wc[i].status == IB_WC_SUCCESS) {
+-			link->wr_rx_tstamp = jiffies;
+-			smc_wr_rx_demultiplex(&wc[i]);
+-			smc_wr_rx_post(link); /* refill WR RX */
+-		} else {
+-			/* handle status errors */
+-			switch (wc[i].status) {
+-			case IB_WC_RETRY_EXC_ERR:
+-			case IB_WC_RNR_RETRY_EXC_ERR:
+-			case IB_WC_WR_FLUSH_ERR:
+-				smcr_link_down_cond_sched(link);
+-				if (link->wr_rx_id_compl == link->wr_rx_id)
+-					wake_up(&link->wr_rx_empty_wait);
+-				break;
+-			default:
+-				smc_wr_rx_post(link); /* refill WR RX */
+-				break;
+-			}
++	if (wc->status == IB_WC_SUCCESS) {
++		link->wr_rx_tstamp = jiffies;
++		smc_wr_rx_demultiplex(wc);
++		smc_wr_rx_post(link, wc->wr_cqe); /* refill WR RX */
++	} else {
++		/* handle status errors */
++		switch (wc->status) {
++		case IB_WC_RETRY_EXC_ERR:
++		case IB_WC_RNR_RETRY_EXC_ERR:
++		case IB_WC_WR_FLUSH_ERR:
++			smcr_link_down_cond_sched(link);
++			break;
++		default:
++			smc_wr_rx_post(link, wc->wr_cqe); /* refill WR RX */
++			break;
+ 		}
+ 	}
+ }
+ 
+-static void smc_wr_rx_tasklet_fn(struct tasklet_struct *t)
++int smc_wr_rx_post_init(struct smc_link *link)
+ {
+-	struct smc_ib_device *dev = from_tasklet(dev, t, recv_tasklet);
+-	struct ib_wc wc[SMC_WR_MAX_POLL_CQE];
+-	int polled = 0;
+-	int rc;
++	int i, rc = 0;
+ 
+-again:
+-	polled++;
+-	do {
+-		memset(&wc, 0, sizeof(wc));
+-		rc = ib_poll_cq(dev->roce_cq_recv, SMC_WR_MAX_POLL_CQE, wc);
+-		if (polled == 1) {
+-			ib_req_notify_cq(dev->roce_cq_recv,
+-					 IB_CQ_SOLICITED_MASK
+-					 | IB_CQ_REPORT_MISSED_EVENTS);
+-		}
+-		if (!rc)
+-			break;
+-		smc_wr_rx_process_cqes(&wc[0], rc);
+-	} while (rc > 0);
+-	if (polled == 1)
+-		goto again;
++	for (i = 0; i < link->wr_rx_cnt; i++)
++		rc = smc_wr_rx_post(link, &link->wr_rx_ibs[i].cqe);
++	return rc;
+ }
+ 
+-void smc_wr_rx_cq_handler(struct ib_cq *ib_cq, void *cq_context)
+-{
+-	struct smc_ib_device *dev = (struct smc_ib_device *)cq_context;
++/***************************** init, exit, misc ******************************/
+ 
+-	tasklet_schedule(&dev->recv_tasklet);
++static inline void smc_wr_reg_init_cqe(struct ib_cqe *cqe)
++{
++	cqe->done = smc_wr_reg_process_cqe;
+ }
+ 
+-int smc_wr_rx_post_init(struct smc_link *link)
++static inline void smc_wr_tx_init_cqe(struct ib_cqe *cqe)
+ {
+-	u32 i;
+-	int rc = 0;
++	cqe->done = smc_wr_tx_process_cqe;
++}
+ 
+-	for (i = 0; i < link->wr_rx_cnt; i++)
+-		rc = smc_wr_rx_post(link);
+-	return rc;
++static inline void smc_wr_rx_init_cqe(struct ib_cqe *cqe)
++{
++	cqe->done = smc_wr_rx_process_cqe;
+ }
+ 
+-/***************************** init, exit, misc ******************************/
++static inline void smc_wr_tx_rdma_init_cqe(struct ib_cqe *cqe)
++{
++	cqe->done = smc_wr_tx_rdma_process_cqe;
++}
+ 
+ void smc_wr_remember_qp_attr(struct smc_link *lnk)
+ {
+@@ -550,7 +472,7 @@ void smc_wr_remember_qp_attr(struct smc_link *lnk)
+ 	lnk->wr_tx_cnt = min_t(size_t, lnk->max_send_wr,
+ 			       lnk->qp_attr.cap.max_send_wr);
+ 	lnk->wr_rx_cnt = min_t(size_t, lnk->max_recv_wr,
+-			       lnk->qp_attr.cap.max_recv_wr);
++			       lnk->qp_attr.cap.max_recv_wr - 1);	/* -1 for ib_draib_rq() */
+ }
+ 
+ static void smc_wr_init_sge(struct smc_link *lnk)
+@@ -571,14 +493,14 @@ static void smc_wr_init_sge(struct smc_link *lnk)
+ 			lnk->roce_pd->local_dma_lkey;
+ 		lnk->wr_tx_rdma_sges[i].tx_rdma_sge[1].wr_tx_rdma_sge[1].lkey =
+ 			lnk->roce_pd->local_dma_lkey;
+-		lnk->wr_tx_ibs[i].next = NULL;
+-		lnk->wr_tx_ibs[i].sg_list = &lnk->wr_tx_sges[i];
+-		lnk->wr_tx_ibs[i].num_sge = 1;
+-		lnk->wr_tx_ibs[i].opcode = IB_WR_SEND;
+-		lnk->wr_tx_ibs[i].send_flags =
++		lnk->wr_tx_ibs[i].wr.next = NULL;
++		lnk->wr_tx_ibs[i].wr.sg_list = &lnk->wr_tx_sges[i];
++		lnk->wr_tx_ibs[i].wr.num_sge = 1;
++		lnk->wr_tx_ibs[i].wr.opcode = IB_WR_SEND;
++		lnk->wr_tx_ibs[i].wr.send_flags =
+ 			IB_SEND_SIGNALED | IB_SEND_SOLICITED;
+ 		if (send_inline)
+-			lnk->wr_tx_ibs[i].send_flags |= IB_SEND_INLINE;
++			lnk->wr_tx_ibs[i].wr.send_flags |= IB_SEND_INLINE;
+ 		lnk->wr_tx_rdmas[i].wr_tx_rdma[0].wr.opcode = IB_WR_RDMA_WRITE;
+ 		lnk->wr_tx_rdmas[i].wr_tx_rdma[1].wr.opcode = IB_WR_RDMA_WRITE;
+ 		lnk->wr_tx_rdmas[i].wr_tx_rdma[0].wr.sg_list =
+@@ -592,11 +514,11 @@ static void smc_wr_init_sge(struct smc_link *lnk)
+ 		lnk->wr_tx_v2_sge->length = SMC_WR_BUF_V2_SIZE;
+ 		lnk->wr_tx_v2_sge->lkey = lnk->roce_pd->local_dma_lkey;
+ 
+-		lnk->wr_tx_v2_ib->next = NULL;
+-		lnk->wr_tx_v2_ib->sg_list = lnk->wr_tx_v2_sge;
+-		lnk->wr_tx_v2_ib->num_sge = 1;
+-		lnk->wr_tx_v2_ib->opcode = IB_WR_SEND;
+-		lnk->wr_tx_v2_ib->send_flags =
++		lnk->wr_tx_v2_ib->wr.next = NULL;
++		lnk->wr_tx_v2_ib->wr.sg_list = lnk->wr_tx_v2_sge;
++		lnk->wr_tx_v2_ib->wr.num_sge = 1;
++		lnk->wr_tx_v2_ib->wr.opcode = IB_WR_SEND;
++		lnk->wr_tx_v2_ib->wr.send_flags =
+ 			IB_SEND_SIGNALED | IB_SEND_SOLICITED;
  	}
  
-+	INIT_WORK(&qn->work, quic_packet_backlog_work);
-+	skb_queue_head_init(&qn->backlog_list);
+@@ -622,10 +544,11 @@ static void smc_wr_init_sge(struct smc_link *lnk)
+ 			lnk->wr_rx_sges[x + 1].lkey =
+ 					lnk->roce_pd->local_dma_lkey;
+ 		}
+-		lnk->wr_rx_ibs[i].next = NULL;
+-		lnk->wr_rx_ibs[i].sg_list = &lnk->wr_rx_sges[x];
+-		lnk->wr_rx_ibs[i].num_sge = lnk->wr_rx_sge_cnt;
++		lnk->wr_rx_ibs[i].wr.next = NULL;
++		lnk->wr_rx_ibs[i].wr.sg_list = &lnk->wr_rx_sges[x];
++		lnk->wr_rx_ibs[i].wr.num_sge = lnk->wr_rx_sge_cnt;
+ 	}
 +
- #if IS_ENABLED(CONFIG_PROC_FS)
- 	err = quic_net_proc_init(net);
- 	if (err) {
-@@ -283,6 +286,8 @@ static void __net_exit quic_net_exit(struct net *net)
- #if IS_ENABLED(CONFIG_PROC_FS)
- 	quic_net_proc_exit(net);
- #endif
-+	disable_work_sync(&qn->work);
-+	skb_queue_purge(&qn->backlog_list);
- 	quic_crypto_free(&qn->crypto);
- 	free_percpu(qn->stat);
- 	qn->stat = NULL;
-diff --git a/net/quic/protocol.h b/net/quic/protocol.h
-index 850f43806688..6793255604c6 100644
---- a/net/quic/protocol.h
-+++ b/net/quic/protocol.h
-@@ -50,6 +50,10 @@ struct quic_net {
- 	struct proc_dir_entry *proc_net;	/* procfs entry for dumping QUIC socket stats */
- #endif
- 	struct quic_crypto crypto;	/* Context for decrypting Initial packets for ALPN */
+ 	lnk->wr_reg.wr.next = NULL;
+ 	lnk->wr_reg.wr.num_sge = 0;
+ 	lnk->wr_reg.wr.send_flags = IB_SEND_SIGNALED;
+@@ -641,7 +564,6 @@ void smc_wr_free_link(struct smc_link *lnk)
+ 		return;
+ 	ibdev = lnk->smcibdev->ibdev;
+ 
+-	smc_wr_drain_cq(lnk);
+ 	smc_wr_wakeup_reg_wait(lnk);
+ 	smc_wr_wakeup_tx_wait(lnk);
+ 
+@@ -763,6 +685,7 @@ int smc_wr_alloc_link_mem(struct smc_link *link)
+ 				    GFP_KERNEL);
+ 	if (!link->wr_tx_rdmas)
+ 		goto no_mem_wr_rx_ibs;
 +
-+	/* Queue of packets deferred for processing in process context */
-+	struct sk_buff_head backlog_list;
-+	struct work_struct work;	/* Work scheduled to drain and process backlog_list */
+ 	link->wr_tx_rdma_sges = kcalloc(link->max_send_wr,
+ 					sizeof(link->wr_tx_rdma_sges[0]),
+ 					GFP_KERNEL);
+@@ -837,18 +760,6 @@ int smc_wr_alloc_link_mem(struct smc_link *link)
+ 	return -ENOMEM;
+ }
+ 
+-void smc_wr_remove_dev(struct smc_ib_device *smcibdev)
+-{
+-	tasklet_kill(&smcibdev->recv_tasklet);
+-	tasklet_kill(&smcibdev->send_tasklet);
+-}
+-
+-void smc_wr_add_dev(struct smc_ib_device *smcibdev)
+-{
+-	tasklet_setup(&smcibdev->recv_tasklet, smc_wr_rx_tasklet_fn);
+-	tasklet_setup(&smcibdev->send_tasklet, smc_wr_tx_tasklet_fn);
+-}
+-
+ static void smcr_wr_tx_refs_free(struct percpu_ref *ref)
+ {
+ 	struct smc_link *lnk = container_of(ref, struct smc_link, wr_tx_refs);
+@@ -868,8 +779,6 @@ int smc_wr_create_link(struct smc_link *lnk)
+ 	struct ib_device *ibdev = lnk->smcibdev->ibdev;
+ 	int rc = 0;
+ 
+-	smc_wr_tx_set_wr_id(&lnk->wr_tx_id, 0);
+-	lnk->wr_rx_id = 0;
+ 	lnk->wr_rx_dma_addr = ib_dma_map_single(
+ 		ibdev, lnk->wr_rx_bufs,	lnk->wr_rx_buflen * lnk->wr_rx_cnt,
+ 		DMA_FROM_DEVICE);
+@@ -917,7 +826,6 @@ int smc_wr_create_link(struct smc_link *lnk)
+ 	if (rc)
+ 		goto cancel_ref;
+ 	init_completion(&lnk->reg_ref_comp);
+-	init_waitqueue_head(&lnk->wr_rx_empty_wait);
+ 	return rc;
+ 
+ cancel_ref:
+@@ -942,3 +850,42 @@ int smc_wr_create_link(struct smc_link *lnk)
+ out:
+ 	return rc;
+ }
++
++void smc_wr_init_cqes(struct smc_link *lnk)
++{
++	int i;
++
++	/* init CQE for WR fast reg */
++	smc_wr_reg_init_cqe(&lnk->wr_reg_cqe);
++	lnk->wr_reg.wr.wr_cqe = &lnk->wr_reg_cqe;
++
++	/* init CQE for WR WRITE */
++	for (i = 0; i < lnk->wr_tx_cnt; i++) {
++		int n;
++
++		smc_wr_tx_rdma_init_cqe(&lnk->wr_tx_rdmas[i].cqe);
++		for (n = 0; n < SMC_MAX_RDMA_WRITES; n++)
++			lnk->wr_tx_rdmas[i].wr_tx_rdma[n].wr.wr_cqe = &lnk->wr_tx_rdmas[i].cqe;
++	}
++
++	/* init CQEs for WR RECV */
++	for (i = 0; i < lnk->wr_rx_cnt; i++) {
++		smc_wr_rx_init_cqe(&lnk->wr_rx_ibs[i].cqe);
++		lnk->wr_rx_ibs[i].wr.wr_cqe = &lnk->wr_rx_ibs[i].cqe;
++		lnk->wr_rx_ibs[i].idx = i;
++	}
++
++	/* init CQEs for WR SEND */
++	for (i = 0; i < lnk->wr_tx_cnt; i++) {
++		smc_wr_tx_init_cqe(&lnk->wr_tx_ibs[i].cqe);
++		lnk->wr_tx_ibs[i].wr.wr_cqe = &lnk->wr_tx_ibs[i].cqe;
++		lnk->wr_tx_ibs[i].idx = i;
++	}
++
++	/* init CQE for SMC-Rv2 WR SEND */
++	if (lnk->lgr->smc_version == SMC_V2) {
++		smc_wr_tx_init_cqe(&lnk->wr_tx_v2_ib->cqe);
++		lnk->wr_tx_v2_ib->wr.wr_cqe = &lnk->wr_tx_v2_ib->cqe;
++		lnk->wr_tx_v2_ib->idx = lnk->wr_tx_cnt;
++	}
++}
+diff --git a/net/smc/smc_wr.h b/net/smc/smc_wr.h
+index aa4533af9122..295575fb060a 100644
+--- a/net/smc/smc_wr.h
++++ b/net/smc/smc_wr.h
+@@ -44,19 +44,6 @@ struct smc_wr_rx_handler {
+ 	u8			type;
  };
  
- struct quic_net *quic_net(struct net *net);
-diff --git a/net/quic/socket.c b/net/quic/socket.c
-index 4607f3ae8a7b..006c5b2747fe 100644
---- a/net/quic/socket.c
-+++ b/net/quic/socket.c
-@@ -24,6 +24,134 @@ static void quic_enter_memory_pressure(struct sock *sk)
- 	WRITE_ONCE(quic_memory_pressure, 1);
- }
- 
-+/* Lookup a connected QUIC socket based on address and dest connection ID.
-+ *
-+ * This function searches the established (non-listening) QUIC socket table for a socket that
-+ * matches the source and dest addresses and, optionally, the dest connection ID (DCID). The
-+ * value returned by quic_path_orig_dcid() might be the original dest connection ID from the
-+ * ClientHello or the Source Connection ID from a Retry packet before.
-+ *
-+ * The DCID is provided from a handshake packet when searching by source connection ID fails,
-+ * such as when the peer has not yet received server's response and updated the DCID.
-+ *
-+ * Return: A pointer to the matching connected socket, or NULL if no match is found.
-+ */
-+struct sock *quic_sock_lookup(struct sk_buff *skb, union quic_addr *sa, union quic_addr *da,
-+			      struct sock *usk, struct quic_conn_id *dcid)
-+{
-+	struct net *net = sock_net(usk);
-+	struct quic_path_group *paths;
-+	struct hlist_nulls_node *node;
-+	struct quic_shash_head *head;
-+	struct sock *sk = NULL, *tmp;
-+	unsigned int hash;
-+
-+	hash = quic_sock_hash(net, sa, da);
-+	head = quic_sock_head(hash);
-+
-+	rcu_read_lock();
-+begin:
-+	sk_nulls_for_each_rcu(tmp, node, &head->head) {
-+		if (net != sock_net(tmp))
-+			continue;
-+		paths = quic_paths(tmp);
-+		if (quic_cmp_sk_addr(tmp, quic_path_saddr(paths, 0), sa) &&
-+		    quic_cmp_sk_addr(tmp, quic_path_daddr(paths, 0), da) &&
-+		    quic_path_usock(paths, 0) == usk &&
-+		    (!dcid || !quic_conn_id_cmp(quic_path_orig_dcid(paths), dcid))) {
-+			sk = tmp;
-+			break;
-+		}
-+	}
-+	/* If the nulls value we got at the end of the iteration is different from the expected
-+	 * one, we must restart the lookup as the list was modified concurrently.
-+	 */
-+	if (!sk && get_nulls_value(node) != hash)
-+		goto begin;
-+
-+	if (sk && unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-+		sk = NULL;
-+	rcu_read_unlock();
-+	return sk;
-+}
-+
-+/* Find the listening QUIC socket for an incoming packet.
-+ *
-+ * This function searches the QUIC socket table for a listening socket that matches the dest
-+ * address and port, and the ALPN(s) if presented in the ClientHello.  If multiple listening
-+ * sockets are bound to the same address, port, and ALPN(s) (e.g., via SO_REUSEPORT), this
-+ * function selects a socket from the reuseport group.
-+ *
-+ * Return: A pointer to the matching listening socket, or NULL if no match is found.
-+ */
-+struct sock *quic_listen_sock_lookup(struct sk_buff *skb, union quic_addr *sa, union quic_addr *da,
-+				     struct quic_data *alpns)
-+{
-+	struct net *net = sock_net(skb->sk);
-+	struct hlist_nulls_node *node;
-+	struct sock *sk = NULL, *tmp;
-+	struct quic_shash_head *head;
-+	struct quic_data alpn;
-+	union quic_addr *a;
-+	u32 hash, len;
-+	u64 length;
-+	u8 *p;
-+
-+	hash = quic_listen_sock_hash(net, ntohs(sa->v4.sin_port));
-+	head = quic_listen_sock_head(hash);
-+
-+	rcu_read_lock();
-+begin:
-+	if (!alpns->len) { /* No ALPN entries present or failed to parse the ALPNs. */
-+		sk_nulls_for_each_rcu(tmp, node, &head->head) {
-+			/* If alpns->data != NULL, TLS parsing succeeded but no ALPN was found.
-+			 * In this case, only match sockets that have no ALPN set.
-+			 */
-+			a = quic_path_saddr(quic_paths(tmp), 0);
-+			if (net == sock_net(tmp) && quic_cmp_sk_addr(tmp, a, sa) &&
-+			    quic_path_usock(quic_paths(tmp), 0) == skb->sk &&
-+			    (!alpns->data || !quic_alpn(tmp)->len)) {
-+				sk = tmp;
-+				if (!quic_is_any_addr(a)) /* Prefer specific address match. */
-+					break;
-+			}
-+		}
-+		goto out;
-+	}
-+
-+	/* ALPN present: loop through each ALPN entry. */
-+	for (p = alpns->data, len = alpns->len; len; len -= length, p += length) {
-+		quic_get_int(&p, &len, &length, 1);
-+		quic_data(&alpn, p, length);
-+		sk_nulls_for_each_rcu(tmp, node, &head->head) {
-+			a = quic_path_saddr(quic_paths(tmp), 0);
-+			if (net == sock_net(tmp) && quic_cmp_sk_addr(tmp, a, sa) &&
-+			    quic_path_usock(quic_paths(tmp), 0) == skb->sk &&
-+			    quic_data_has(quic_alpn(tmp), &alpn)) {
-+				sk = tmp;
-+				if (!quic_is_any_addr(a))
-+					break;
-+			}
-+		}
-+		if (sk)
-+			break;
-+	}
-+out:
-+	/* If the nulls value we got at the end of the iteration is different from the expected
-+	 * one, we must restart the lookup as the list was modified concurrently.
-+	 */
-+	if (!sk && get_nulls_value(node) != hash)
-+		goto begin;
-+
-+	if (sk && sk->sk_reuseport)
-+		sk = reuseport_select_sock(sk, quic_addr_hash(net, da), skb, 1);
-+
-+	if (sk && unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
-+		sk = NULL;
-+	rcu_read_unlock();
-+	return sk;
-+}
-+
- static void quic_write_space(struct sock *sk)
+-/* Only used by RDMA write WRs.
+- * All other WRs (CDC/LLC) use smc_wr_tx_send handling WR_ID implicitly
+- */
+-static inline long smc_wr_tx_get_next_wr_id(struct smc_link *link)
+-{
+-	return atomic_long_inc_return(&link->wr_tx_id);
+-}
+-
+-static inline void smc_wr_tx_set_wr_id(atomic_long_t *wr_tx_id, long val)
+-{
+-	atomic_long_set(wr_tx_id, val);
+-}
+-
+ static inline bool smc_wr_tx_link_hold(struct smc_link *link)
  {
- 	struct socket_wq *wq;
-@@ -205,6 +333,10 @@ static void quic_release_cb(struct sock *sk)
- 		nflags = flags & ~QUIC_DEFERRED_ALL;
- 	} while (!try_cmpxchg(&sk->sk_tsq_flags, &flags, nflags));
- 
-+	if (flags & QUIC_F_MTU_REDUCED_DEFERRED) {
-+		quic_packet_rcv_err_pmtu(sk);
-+		__sock_put(sk);
-+	}
- 	if (flags & QUIC_F_LOSS_DEFERRED) {
- 		quic_timer_loss_handler(sk);
- 		__sock_put(sk);
-@@ -254,6 +386,7 @@ struct proto quic_prot = {
- 	.accept		=  quic_accept,
- 	.hash		=  quic_hash,
- 	.unhash		=  quic_unhash,
-+	.backlog_rcv	=  quic_packet_process,
- 	.release_cb	=  quic_release_cb,
- 	.no_autobind	=  true,
- 	.obj_size	=  sizeof(struct quic_sock),
-@@ -284,6 +417,7 @@ struct proto quicv6_prot = {
- 	.accept		=  quic_accept,
- 	.hash		=  quic_hash,
- 	.unhash		=  quic_unhash,
-+	.backlog_rcv	=  quic_packet_process,
- 	.release_cb	=  quic_release_cb,
- 	.no_autobind	=  true,
- 	.obj_size	= sizeof(struct quic6_sock),
-diff --git a/net/quic/socket.h b/net/quic/socket.h
-index 1efc76ec2033..34dbdfd2dedc 100644
---- a/net/quic/socket.h
-+++ b/net/quic/socket.h
-@@ -200,3 +200,8 @@ static inline void quic_set_state(struct sock *sk, int state)
- 	inet_sk_set_state(sk, state);
- 	sk->sk_state_change(sk);
+ 	if (!smc_link_sendable(link))
+@@ -70,9 +57,10 @@ static inline void smc_wr_tx_link_put(struct smc_link *link)
+ 	percpu_ref_put(&link->wr_tx_refs);
  }
+ 
+-static inline void smc_wr_drain_cq(struct smc_link *lnk)
++static inline void smc_wr_drain_rq(struct smc_link *lnk)
+ {
+-	wait_event(lnk->wr_rx_empty_wait, lnk->wr_rx_id_compl == lnk->wr_rx_id);
++	if (lnk->qp_attr.cur_qp_state != IB_QPS_RESET)
++		ib_drain_rq(lnk->roce_qp);
+ }
+ 
+ static inline void smc_wr_wakeup_tx_wait(struct smc_link *lnk)
+@@ -86,18 +74,12 @@ static inline void smc_wr_wakeup_reg_wait(struct smc_link *lnk)
+ }
+ 
+ /* post a new receive work request to fill a completed old work request entry */
+-static inline int smc_wr_rx_post(struct smc_link *link)
++static inline int smc_wr_rx_post(struct smc_link *link, struct ib_cqe *cqe)
+ {
+-	int rc;
+-	u64 wr_id, temp_wr_id;
+-	u32 index;
+-
+-	wr_id = ++link->wr_rx_id; /* tasklet context, thus not atomic */
+-	temp_wr_id = wr_id;
+-	index = do_div(temp_wr_id, link->wr_rx_cnt);
+-	link->wr_rx_ibs[index].wr_id = wr_id;
+-	rc = ib_post_recv(link->roce_qp, &link->wr_rx_ibs[index], NULL);
+-	return rc;
++	struct smc_ib_recv_wr *recv_wr;
 +
-+struct sock *quic_listen_sock_lookup(struct sk_buff *skb, union quic_addr *sa, union quic_addr *da,
-+				     struct quic_data *alpns);
-+struct sock *quic_sock_lookup(struct sk_buff *skb, union quic_addr *sa, union quic_addr *da,
-+			      struct sock *usk, struct quic_conn_id *dcid);
++	recv_wr = container_of(cqe, struct smc_ib_recv_wr, cqe);
++	return ib_post_recv(link->roce_qp, &recv_wr->wr, NULL);
+ }
+ 
+ int smc_wr_create_link(struct smc_link *lnk);
+@@ -107,8 +89,6 @@ void smc_wr_free_link(struct smc_link *lnk);
+ void smc_wr_free_link_mem(struct smc_link *lnk);
+ void smc_wr_free_lgr_mem(struct smc_link_group *lgr);
+ void smc_wr_remember_qp_attr(struct smc_link *lnk);
+-void smc_wr_remove_dev(struct smc_ib_device *smcibdev);
+-void smc_wr_add_dev(struct smc_ib_device *smcibdev);
+ 
+ int smc_wr_tx_get_free_slot(struct smc_link *link, smc_wr_tx_handler handler,
+ 			    struct smc_wr_buf **wr_buf,
+@@ -126,12 +106,12 @@ int smc_wr_tx_v2_send(struct smc_link *link,
+ 		      struct smc_wr_tx_pend_priv *priv, int len);
+ int smc_wr_tx_send_wait(struct smc_link *link, struct smc_wr_tx_pend_priv *priv,
+ 			unsigned long timeout);
+-void smc_wr_tx_cq_handler(struct ib_cq *ib_cq, void *cq_context);
+ void smc_wr_tx_wait_no_pending_sends(struct smc_link *link);
+ 
+ int smc_wr_rx_register_handler(struct smc_wr_rx_handler *handler);
+ int smc_wr_rx_post_init(struct smc_link *link);
+-void smc_wr_rx_cq_handler(struct ib_cq *ib_cq, void *cq_context);
+ int smc_wr_reg_send(struct smc_link *link, struct ib_mr *mr);
+ 
++void smc_wr_init_cqes(struct smc_link *lnk);
++
+ #endif /* SMC_WR_H */
 -- 
-2.47.1
+2.45.0
 
