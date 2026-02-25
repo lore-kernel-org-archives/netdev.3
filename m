@@ -1,155 +1,59 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85E113BFE40;
-	Wed, 25 Feb 2026 19:23:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15312E175F;
+	Wed, 25 Feb 2026 19:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772047389; cv=none; b=rBT72Rrw4MD17buzS7s+zduPXQYs6T92uSu0Mym44aKrlKjqx9zK1264G3nIE1Jxx8bnY+0M7fTZAUds9COM14B+iMnFv3vQqSAFrRLLeCo9TMnscsphFxxCNUP85xW3kDrXDdr2RcilhEh7VoByZQOl/bPix6EWOQB6RDXXqoM=
+	t=1772048150; cv=none; b=Mv1oujsHmgZwOZekqLrJEndiYj9FKRMM/lZxpNHP2I45FyGksGk7OVOzmATUU9d9xzY2YNfhWBW9lRsVZY6/tcPmXh2PuWI1eskji6x1WUDv5qJJIgYkKcqPyHW5+Mj3Ouzkg3eoid89l8lwCLJfUi+ajNuvuH+JRZLhKgCHl4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772047389; c=relaxed/simple;
-	bh=T8Y+REYZxTsoW83GrWfbizRvcEbIkA1m3PUG8VsBhhA=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version; b=qVQyhaN93jMmijNBdcuuSHG5cOkBMi5kTki5dvZgwPGmJcnodhhel2xuy/15wRWuN6d9nVmgKP3L3Llj1mV/JvIbdeVQhTKoQfLpPyOdX+Btql2uJllwVvObrzyWzW0p5HKC4n2cEJCp1XDraF4VuwaOuuJNffwN8ThyiA55tpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=kMgJ0FAM; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1772048150; c=relaxed/simple;
+	bh=LCcCGykLEqUy1dDs5e+ctne0AhEZqRPJSzXFbWQkanE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BVlVBolWM0KXz9Ufm0XRWzQ0GJrlpmv7Pt7WfYFrGhFylaFvA/p+Um3LgMZ6l4YEbXQY+SND6udXn8C/D5DGQwTBh0JJT+7zg5k4iuSuXiIAsFf+Rr0JQtZ2t2zQMQuVwCWcfBAqJx1RYaRSFXBWjhbYhqzyTwtZcW5PvhcZ7wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DuUm8457; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="kMgJ0FAM"
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id 60FBE20B6F02; Wed, 25 Feb 2026 11:23:08 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 60FBE20B6F02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1772047388;
-	bh=KqDA7ZAlxK3VxkShxE0vYqJgpKja+MU53NRDmDYb3Ns=;
-	h=From:To:Subject:Date:From;
-	b=kMgJ0FAM3t9RneoTeXzNJOOuWpaiD1wQM+VusWq7MGgpf3co4FJIgezMJb64oLLuH
-	 VZgmKsN+6GqvbMz5srx1UJitHzyP3zMfYj5zrs1Wi9YT+VEwq3QIX8oNI6HkfKjx7a
-	 VnrrEcfZZFO2Zkpqp7+07LeOg8TDxtrcR3JJOtC4=
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	dipayanroy@linux.microsoft.com,
-	ernis@linux.microsoft.com,
-	shirazsaleem@microsoft.com,
-	ssengar@linux.microsoft.com,
-	shradhagupta@linux.microsoft.com,
-	gargaditya@linux.microsoft.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DuUm8457"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BE2C116D0;
+	Wed, 25 Feb 2026 19:35:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772048149;
+	bh=LCcCGykLEqUy1dDs5e+ctne0AhEZqRPJSzXFbWQkanE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DuUm8457BOfpyG2LF6Aawb2CnIyALtsyAAnPzQ6jyysWIOCEZuVVbN6gZRvd8ywmZ
+	 SzdQ654EnIeoke7oBprsGnsOnJZG2OPZfs3zTBaWVXvDU7JbhiOuR/H/kqMdbuIAeq
+	 EvDFGjc/OlaBxGldm7MJy1NU3GNJ2ct4NhEMmt9VH5eaJHj8gQHVKLDmMSDz9yZTFj
+	 OCBw/WYQGBwPF34HcYWhKY02bWGUsbKSH02AO21SFnixMkxKz8ACdfyaBn6R5s3cOt
+	 KE7dRgT9Ac9aQtvDKS4e47hYMQvUXtND9LHMlmF8pDKStiEQb3UvBkyolKAl9hUmIK
+	 4Tqszr8GKHdmA==
+Date: Wed, 25 Feb 2026 19:35:45 +0000
+From: Simon Horman <horms@kernel.org>
+To: Abhilekh Deka <abhindeka@gmail.com>
+Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+	nnac123@linux.ibm.com, maddy@linux.ibm.com, mpe@ellerman.id.au,
+	linuxppc-dev@lists.ozlabs.org, netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4] net: mana: Add MAC address to vPort logs and clarify error messages
-Date: Wed, 25 Feb 2026 11:22:41 -0800
-Message-ID: <20260225192252.943534-1-ernis@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+Subject: Re: [PATCH v2] net/ibmveth: fix comment typos in imbveth.c
+Message-ID: <aZ9PEaog5ZMr7LqW@horms.kernel.org>
+References: <20260224153101.16935-1-abhindeka@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260224153101.16935-1-abhindeka@gmail.com>
 
-Add MAC address to vPort configuration success message and update error
-message to be more specific about HWC message errors in
-mana_send_request.
+On Tue, Feb 24, 2026 at 09:01:01PM +0530, Abhilekh Deka wrote:
+> Correct spelling mistakes in comments:
+> - Fix misspelling of gro_receive
+> - Fix misspelling of Partition
+> 
+> Signed-off-by: Abhilekh Deka <abhindeka@gmail.com>
 
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
----
-Changes in v4:
-* Remove logs that do not add value in hw_channel.c.
-Changes in v3:
-* Remove the changes from v2 and Update commit message.
-* Use "Enabled vPort ..." instead of "Configured vPort" in
-  mana_cfg_vport.
-* Update error logs in mana_hwc_send_request.
-Changes in v2:
-* Update commit message.
-* Use "Enabled vPort ..." instead of "Configured vPort" in
-  mana_cfg_vport.
-* Add info log in mana_uncfg_vport, mana_gd_verify_vf_version,
-  mana_gd_query_max_resources, mana_query_device_cfg and
-  mana_query_vport_cfg.
----
- drivers/net/ethernet/microsoft/mana/hw_channel.c | 12 +++++++-----
- drivers/net/ethernet/microsoft/mana/mana_en.c    |  8 ++++----
- 2 files changed, 11 insertions(+), 9 deletions(-)
+Thanks for the update.
 
-diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-index aa4e2731e2ba..e89b7ed8dd69 100644
---- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-+++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-@@ -853,6 +853,7 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 	struct hwc_caller_ctx *ctx;
- 	u32 dest_vrcq = 0;
- 	u32 dest_vrq = 0;
-+	u32 command;
- 	u16 msg_id;
- 	int err;
- 
-@@ -878,6 +879,7 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 	req_msg->req.hwc_msg_id = msg_id;
- 
- 	tx_wr->msg_size = req_len;
-+	command = req_msg->req.msg_type;
- 
- 	if (gc->is_pf) {
- 		dest_vrq = hwc->pf_dest_vrq_id;
-@@ -893,8 +895,8 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 	if (!wait_for_completion_timeout(&ctx->comp_event,
- 					 (msecs_to_jiffies(hwc->hwc_timeout)))) {
- 		if (hwc->hwc_timeout != 0)
--			dev_err(hwc->dev, "HWC: Request timed out: %u ms\n",
--				hwc->hwc_timeout);
-+			dev_err(hwc->dev, "%s:%d: Command 0x%x timed out: %u ms\n",
-+				__func__, __LINE__, command, hwc->hwc_timeout);
- 
- 		/* Reduce further waiting if HWC no response */
- 		if (hwc->hwc_timeout > 1)
-@@ -914,9 +916,9 @@ int mana_hwc_send_request(struct hw_channel_context *hwc, u32 req_len,
- 			err = -EOPNOTSUPP;
- 			goto out;
- 		}
--		if (req_msg->req.msg_type != MANA_QUERY_PHY_STAT)
--			dev_err(hwc->dev, "HWC: Failed hw_channel req: 0x%x\n",
--				ctx->status_code);
-+		if (command != MANA_QUERY_PHY_STAT)
-+			dev_err(hwc->dev, "%s:%d: Command 0x%x failed with status: 0x%x\n",
-+				__func__, __LINE__, command, ctx->status_code);
- 		err = -EPROTO;
- 		goto out;
- 	}
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 9b5a72ada5c4..53f24244de75 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1023,8 +1023,8 @@ static int mana_send_request(struct mana_context *ac, void *in_buf,
- 
- 		if (req->req.msg_type != MANA_QUERY_PHY_STAT &&
- 		    mana_need_log(gc, err))
--			dev_err(dev, "Failed to send mana message: %d, 0x%x\n",
--				err, resp->status);
-+			dev_err(dev, "Command 0x%x failed with status: 0x%x, err: %d\n",
-+				req->req.msg_type, resp->status, err);
- 		return err ? err : -EPROTO;
- 	}
- 
-@@ -1337,8 +1337,8 @@ int mana_cfg_vport(struct mana_port_context *apc, u32 protection_dom_id,
- 	apc->tx_shortform_allowed = resp.short_form_allowed;
- 	apc->tx_vp_offset = resp.tx_vport_offset;
- 
--	netdev_info(apc->ndev, "Configured vPort %llu PD %u DB %u\n",
--		    apc->port_handle, protection_dom_id, doorbell_pg_id);
-+	netdev_info(apc->ndev, "Enabled vPort %llu PD %u DB %u MAC %pM\n",
-+		    apc->port_handle, protection_dom_id, doorbell_pg_id, apc->mac_addr);
- out:
- 	if (err)
- 		mana_uncfg_vport(apc);
--- 
-2.34.1
+Reviewed-by: Simon Horman <horms@kernel.org>
 
