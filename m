@@ -1,132 +1,204 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C880284B4F
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 14:13:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772028795; cv=pass; b=D/S80cYbRlABZO3lCKjmhMVZATOD+OYKN8GDt3mKv50Iy5TAHiu+xF34D2xIsuho03ikg80ZLrzrKBuYiaUaY7zyWRXbOFgLhOTMUbtV+3e50GwMhk9r5Qk+VEqhsoz2feABFN33a0kgVE1Gw8h8TeT5bsLsS0SzoZ6Pp5yj8jg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772028795; c=relaxed/simple;
-	bh=7mu7t2CztkMODit8BuaEMgMJilepRincRc+FC1HvoqQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hhWuf/pZjwqaE0sV7f9cEBkKvkc/hmWZedMv0dm3gOxBUoCVMQ6OlTGt6DKlp6Gx1MA+ZVAIAIp1aXICNlCZzEi4O9ILNQxyhrbHhM3YdZJZKuYr0Zp6DAG5IKfAa471DSy6GqR4cNmNcnAcAnlK6aC7FFgk3QxvyOVW4LgkJ2g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OK8x0FWd; arc=pass smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88AB034E769;
+	Wed, 25 Feb 2026 14:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772029079; cv=none; b=BVA9TMASFrj7iQGdqeviadcPEHGZvuppudA2sS1XbghRBiBWxV4qwWx8fg6xLqWXkmyWc3yF11lekFBtgoLbpUU05OE+wpztYWvyvMoIwINHDXfGwbyj6gQD6zEe0MaCGhAQpC9F83RMUQHGiTJhozxTgnw5+gSIC1RzVVAtOio=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772029079; c=relaxed/simple;
+	bh=eDyZkfY11pD0yjDpAiiA3rpFMjKWDPLwHGsbIf4saMc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EAoC9DbajzwMhqm9qffRoSV+32FpA8DMiqTxX40DtF8ugKyCOIL5tZdryexP8oOrMnyvC2GH9dwKmqW1e6J0vMZyPFQ0wvhOloa0VlK7lI9yWc+BAZ5zl+8E9hN+OXYuNR4K1Ejh5c5Sy0u3L5MtHMd3tJGMUc6m8ENdaE/JIFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=EI3tXeiz; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OK8x0FWd"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7d4c68f0e47so4147708a34.1
-        for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 06:13:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772028793; cv=none;
-        d=google.com; s=arc-20240605;
-        b=cZGhVw16zBj8bGIsnmxJAZoJsuXqyH65AtxDg4O0j1APA/sSyFrVGFEfLgR8ddyW/f
-         +SDskbTk1vM31oGOSNBZnQj1S9QIZctM1V7j2cz0MC/mz+wwOrqbthISG1j8/0LJ8T7g
-         GKU29ey/23ql6xYrhRuEMbFmJb96xeEq5AoRK9mSQgrOp5OHXyHFl2iGy3jDjkQILfHt
-         p4G3CQJUKkmsKtpOgqvAd8rOmzzvV5gP1C8mBAMTg2y+mPjPRm0kjtbY2B01373V/1z4
-         l5fbo1yGWBBj7HOdpTjQ2kpT14guyYuLj9d052t2iClg3FNC9QNvYxP3a/cavmy2Aa76
-         nF9A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=XItzA6Lc/0WBuQ8Z3wzzRgeYnC2OSX1yWQ79AdSwvlc=;
-        fh=1ffhz1LCn+XjckKwJV4d58j3PNJFvGXtZYChy/J7jCo=;
-        b=d27SfGGHcBietQbuDLnzSmJpNjmOGylOTXSFjoBR0ct6rXjUcCPsuZHLv+nm8Wz9Bn
-         HDP2jHY5FPD1vhbxZSPq8/zWER6G5WLcqA/AMVJn5lGH5JMexYPA4A7iQpISkX/j2NWj
-         sKz6aCQMjLfhCT1kvj08nh7yTVFG0wXzVuBvD9991bw6i1qEAW5KiclSp2ISGG/8KZ6P
-         wlEDUnQJ3ihQEo+P5K0uDL0dKMuhSXXxDYqJ3eLn+7U+YIHF4g+I9S0ZxNtBj48D2flX
-         JWwFMpa8kmlONEcH0jTwNNobRa/41di/4niFGQ24kGyvtOuI8fqnAB2AFFfHKfDI7RY5
-         zyUg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772028793; x=1772633593; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XItzA6Lc/0WBuQ8Z3wzzRgeYnC2OSX1yWQ79AdSwvlc=;
-        b=OK8x0FWdC+X44ijCHQipipeXkDkU4FdONykBVisV5sPBd8DAXZTtWqMaHIp6eUQ71V
-         KU0cleORiYpkuvqWOX7gnZqOajz6C7YKYWQMpMaKMJlYgnRGJ6GRlVj0hZQvXypbrZsJ
-         XS3b8dqIS01NcRa6JEagWsWoVmiLXADeGfhbPHn2Y3pKyjEdP8mrBNNwONGPRaUsMmz+
-         F6fwgJbtSW+ESokoD7rQjb/CXNgwx5WH0XfajURQcReovJVArTt55WgfuHhKF5FdjdSv
-         K6+kFiTYwBFMhxBcFh7z0hnraEATtFVNbSESw+A1ug1sONgbOsw49v4poAmTwPI/ij/z
-         OMuA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772028793; x=1772633593;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XItzA6Lc/0WBuQ8Z3wzzRgeYnC2OSX1yWQ79AdSwvlc=;
-        b=L7e5URRE1/b1usnrJIsq4D7RMkP7pCTnaFGOCd3vV9L1FWuRfWMAqg6wrdTpZ8Ld9T
-         K2x3BwBUPzXo9dAQnZ5psYdJm0Sc20Qm4nloVSRqaVHK5c1TlggUvBclFP+zk7dVAtvM
-         dtdPWBDOKAertQvBhqozSR4tHSnyoTsawQkjIOTleTBzRBhO9MvGPL1+Mx6wF5pD2UHP
-         hwhe4dKLTERrvbl5j3qFFvBUc9xXCrpHqeGcl77MhqWb9VsTvlMfpiD2qAAL6ZNSbuVH
-         7wEJwlRxEgS/ps9caaq0bvE4FRmtSIkV7SXD9nVItLpWWiCmzHy02JsUhOke+SJWkoXH
-         I/nA==
-X-Gm-Message-State: AOJu0YwI0faYvHiMFr6ib56zJ6X9LnCTe5/7opqgIDWMRMOuS2Q+g9KC
-	i5rSZLOnDMO+hBJP/gird7J4RbrezqOo1bm3g/bA1AFF1VuS/IThKizrjf7Cen8P8ed7GVDRuNT
-	wyVyT2JJL39x4blmRgoSZFwy+40pXvPw=
-X-Gm-Gg: ATEYQzwnjrwHvLzZOorOLp6o83JlbfeZa9lNSubxHPwMDeSBMtagMpXa5y7uMOzWw8K
-	gK/UGgycpXo8JUTFzxtQ6PHJnzG51tTlJcNeQpleOiAK7P5DdFpzlH6Awsg+oMr7OEXX6zp1Ubj
-	c2LYWxgLou44dDH9QvD0VuaPHqB9vcfUUqaMLzMhLqEufNkLpOXI4SsCHhcndWn6PoWAiehFm7z
-	2LKmVxS4OIR2eJRzbUQPhV87JM3LUKvlRJthu7ysiXmBQKUvouEWhUsoH8vMEAS4n3LUkAs5eaq
-	Azq8KT3cMC6WpItdQCwncC0FFlaFKvDB9NftSy/2Ng==
-X-Received: by 2002:a05:6820:4b07:b0:66e:58f3:b500 with SMTP id
- 006d021491bc7-679ef929cdfmr253415eaf.29.1772028793273; Wed, 25 Feb 2026
- 06:13:13 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="EI3tXeiz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=mN1mwYfUNFyvKdpX0LeKAtQe83coanUfjd//ZCoxGjM=; b=EI3tXeiz6mxxrLgS9r/au28ak6
+	qDTtUMlVrmC6anMxmGd/q8RqlgTx9SlpxHZKYtogA+08r2sqMrrCByWhacxsSO8s98Q8Ubfqh0FSN
+	lOU+6Ly5rvOgzuFTdlbasRe5fVeu0r+dHjYBYF3PZ0htljpYgWJ3WU0CqhpcMU7nOcr8=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vvFhq-008kqp-FQ; Wed, 25 Feb 2026 15:17:38 +0100
+Date: Wed, 25 Feb 2026 15:17:38 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: David Yang <mmyangfl@gmail.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 2/3] net: dsa: yt921x: Add port police support
+Message-ID: <8be7610c-c606-4c7d-8c8b-b2873bed082e@lunn.ch>
+References: <20260225090853.2021140-1-mmyangfl@gmail.com>
+ <20260225090853.2021140-3-mmyangfl@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260225090853.2021140-1-mmyangfl@gmail.com> <20260225090853.2021140-2-mmyangfl@gmail.com>
- <cb52e6e5-c047-4190-9e06-4f80a8bef051@lunn.ch>
-In-Reply-To: <cb52e6e5-c047-4190-9e06-4f80a8bef051@lunn.ch>
-From: David Yang <mmyangfl@gmail.com>
-Date: Wed, 25 Feb 2026 22:12:36 +0800
-X-Gm-Features: AaiRm53Ezo9AQTV9YC9L8okSEaf6oJBhg_jMBc-q6l5KQU_0AhFpmsPlG7weDqw
-Message-ID: <CAAXyoMOVdeScayuJbtNKmS+QVmWdH1_5EGTUsLH9Oc4bkwDoVQ@mail.gmail.com>
-Subject: Re: [PATCH net-next 1/3] net: dsa: yt921x: Refactor long register helpers
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260225090853.2021140-3-mmyangfl@gmail.com>
 
-On Wed, Feb 25, 2026 at 9:52=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> > -/* Some registers, like VLANn_CTRL, should always be written in 64-bit=
-, even if
-> > - * you are to write only the lower / upper 32 bits.
-> > +/* Some registers, like VLANn_CTRL, should always be written in chunks=
-, even if
-> > + * you only want to write parts of 32 bits.
-> >   *
-> > - * There is no such restriction for reading, but we still provide 64-b=
-it read
-> > - * wrappers so that we always handle u64 values.
-> > + * There is no such restriction for reading, but we still provide mult=
-i-chunk
-> > + * read wrappers so that we can handle them consistently.
-> >   */
-> >
-> > -static int yt921x_reg64_read(struct yt921x_priv *priv, u32 reg, u64 *v=
-alp)
-> > +static int
-> > +yt921x_longreg_read(struct yt921x_priv *priv, u32 reg, u32 *vals,
-> > +                 unsigned int span)
->
-> Just looking at this, it is not obvious what units span is. Many bulk
-> read operations takes bytes, even if the underlying code works in
-> words. I would probably rename span to something like num_u32.
->
-> I would also keep yt921x_reg64_read, yt921x_reg64_write,
-> yt921x_reg64_update_bits() and just makes them wrappers which call
-> yt921x_longreg_read().
->
+> +static void u32a_update_u64(u32 *arr, u64 mask, u64 val)
+> +{
+> +	arr[0] &= ~((u32)mask);
+> +	arr[1] &= ~((u32)(mask >> 32));
+> +	arr[0] |= (u32)val;
+> +	arr[1] |= (u32)(val >> 32);
+> +}
 
-I don't think keeping reg64_* would make it better. There will be more
-96-bit regs as subsequent series progressing. It would be more messy
-to have three types of regs: u32, u64, and u32[].
+The name of this function is not helping me understand what it
+actually does.
+
+> +/* v * 2^e */
+> +#define ldexpi(v, e) ({ \
+> +	__auto_type _v = (v); \
+> +	__auto_type _e = (e); \
+> +	_e >= 0 ? _v << _e : _v >> -_e; \
+> +})
+> +
+> +/* slot (ns) * rate (/s) / 10^9 (ns/s) = 2^C * token * 4^unit */
+> +#define rate2token(rate, unit, slot_ns, C) \
+> +	((u32)(ldexpi((slot_ns) * (rate), \
+> +		      -(2 * (unit) + (C) + YT921X_TOKEN_RATE_C)) / 1000000000))
+> +#define token2rate(token, unit, slot_ns, C) \
+> +	(ldexpi(1000000000 * (u64)(token), \
+> +		2 * (unit) + (C) + YT921X_TOKEN_RATE_C) / (slot_ns))
+> +
+> +/* burst = 2^C * token * 4^unit */
+> +#define burst2token(burst, unit, C) ((u32)ldexpi((burst), -(2 * (unit) + (C))))
+> +#define token2burst(token, unit, C) ldexpi((u64)(token), 2 * (unit) + (C))
+
+Please avoid macros like this. Write functions. The compiler will
+inline them if that makes sense. But you gain type checking, etc.
+
+> +static struct yt921x_meter
+> +yt921x_meter_tfm(struct yt921x_priv *priv, int port, unsigned int slot_ns,
+> +		 u64 rate, u64 burst, unsigned int flags,
+> +		 u32 cir_max, u32 cbs_max, int unit_max)
+> +{
+> +	const int C = flags & YT921X_METER_PKT_MODE ? YT921X_TOKEN_PKT_C :
+> +		      YT921X_TOKEN_BYTE_C;
+> +	struct device *dev = to_device(priv);
+> +	struct yt921x_meter meter;
+> +	bool distorted;
+> +	u64 burst_est;
+> +	u64 burst_max;
+> +	u64 rate_max;
+> +
+> +	meter.unit = unit_max;
+> +	rate_max = token2rate(cir_max, meter.unit, slot_ns, C);
+> +	burst_max = token2burst(cbs_max, meter.unit, C);
+> +
+> +	/* Clamp rate and burst */
+> +	if (rate > rate_max || burst > burst_max) {
+> +		dev_warn(dev,
+> +			 "rate %llu, burst %llu too high, max is %llu, %llu, clamping...\n",
+> +			 rate, burst, rate_max, burst_max);
+
+I'm not sure clamping is the correct thing to do here. -ERANGE would
+make it clearer that what the user requests is not possible.
+
+> +
+> +		if (rate > rate_max)
+> +			rate = rate_max;
+> +		if (burst > burst_max)
+> +			burst = burst_max;
+> +
+> +		burst_est = slot_ns * rate / 1000000000;
+> +	} else {
+> +		u64 burst_sug;
+> +
+> +		burst_est = slot_ns * rate / 1000000000;
+> +		burst_sug = burst_est;
+> +		if (flags & YT921X_METER_PKT_MODE)
+> +			burst_sug++;
+> +		else
+> +			burst_sug += ETH_HLEN + yt921x_mtu_fetch(priv, port) +
+> +				     ETH_FCS_LEN;
+> +		if (burst_sug > burst)
+> +			dev_warn(dev,
+> +				 "Consider burst at least %llu to match rate %llu\n",
+> +				 burst_sug, rate);
+> +
+> +		/* Select unit */
+> +		for (; meter.unit > 0; meter.unit--) {
+> +			if (rate > (rate_max >> 2) || burst > (burst_max >> 2))
+> +				break;
+> +			rate_max >>= 2;
+> +			burst_max >>= 2;
+> +		}
+> +	}
+> +
+> +	/* Calculate information rate and bucket size */
+> +	distorted = false;
+> +	meter.cir = rate2token(rate, meter.unit, slot_ns, C);
+> +	if (!meter.cir) {
+> +		distorted = true;
+> +		meter.cir = 1;
+> +	} else if (meter.cir > cir_max) {
+> +		WARN_ON(1);
+> +		meter.cir = cir_max;
+
+What does this WARN_ON() indicate? If this fires, you want somebody
+who is debugging it to be able to understand it.
+
+> +	}
+> +	meter.cbs = burst2token(burst, meter.unit, C);
+> +	if (!meter.cbs) {
+> +		distorted = true;
+> +		meter.cbs = 1;
+> +	} else if (meter.cbs > cbs_max) {
+> +		WARN_ON(1);
+> +		meter.cbs = cbs_max;
+> +	}
+> +	if (distorted)
+> +		dev_warn(dev,
+> +			 "Have to increase rate %llu, burst %llu to %llu, %llu\n",
+> +			 rate, burst,
+> +			 token2rate(meter.cir, meter.unit, slot_ns, C),
+> +			 token2burst(meter.cbs, meter.unit, C));
+
+I see a difference between clamping, and the granularity the hardware
+can do. Clamping should be an error. However, rounding to what the
+hardware can actually do is expected, so i would not spam the logs
+with it.
+
+> +static int
+> +yt921x_dsa_port_policer_add(struct dsa_switch *ds, int port,
+> +			    const struct flow_action_police *policer)
+> +{
+> +	struct yt921x_priv *priv = to_yt921x_priv(ds);
+> +	struct device *dev = to_device(priv);
+> +	u32 ctrls[YT921X_METER_CTRL_S];
+> +	struct yt921x_meter meter;
+> +	bool pkt_mode;
+> +	u64 burst;
+> +	u64 rate;
+> +	u32 ctrl;
+> +	int res;
+> +
+> +	/* mtu defaults to unlimited but we got 2040 here, don't know why */
+> +	if (policer->exceed.act_id != FLOW_ACTION_DROP ||
+> +	    policer->notexceed.act_id != FLOW_ACTION_ACCEPT ||
+> +	    policer->peakrate_bytes_ps || policer->avrate ||
+> +	    policer->overhead) {
+> +		dev_err(dev, "Unsupported options specified\n");
+
+dev_dbg()
+
+You might also want to extend .port_policer_add() to pass the extack
+dsa_user_add_cls_matchall_police() has, so you can give a user
+friendly error message.
+
+	Andrew
