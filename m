@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA7F314A82;
-	Wed, 25 Feb 2026 21:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D488314D16
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 21:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772054161; cv=none; b=GsarXG9b4NU+CQTrASruWMadyqJVQyCrFNkFBNBDkYYmtt2n/DNqsxZTmw6DzotsL1wPLx4qU2vsdrmWwES7LJkSfUUPemZawcfMLLQgK+NQBm5JYyG+Elwh66HrYYNAClrhYqEf/u1N02hOxO6pqR4odAV7VFtBTyFzj74CkIs=
+	t=1772054161; cv=none; b=GvwTWNuDpOqvhMHC6JB1NxDD8iAMKiUDHlY0icxkwjZuHfSRpz3C1qvu2Xfcr5Obv8q4DexNfVhMNXIQbR7Wx9Mtm8lpGezC4FtOC4L1IsFgM8c9icvgG4XSXXPQhyWaa7gC4wr+p8VqMAR/X3C6p/QprNABqiKZ+kcxTr/kr2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772054161; c=relaxed/simple;
-	bh=rWG09sxb4d5oN6hg5wMkg4dgKd29FcaXmVKoIXL5BCQ=;
+	bh=1KcvINjx2zyVslDHy0Ibpn02518YOwAK8XndWCYYeaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d02/2Om4lwJ6C8GjXz6I2bKZBy5maPZ6ErdDIpPEy81S0Ntz+Cvj0OtQrMPf1zB/hCQuBtBMYcHIEGDnVQMWf17hNyZbPNQGhZZ2qY8kLE0lnxbSxjZq5SGx024AbDIsQyka4jybn8Ip9ySZQO3JX24O2pI3FXHSkQf2HB9NklQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=In8aS3Sy; arc=none smtp.client-ip=192.198.163.17
+	 MIME-Version; b=CUjDZwtC2gSTPnezyNoY2zzApsa5zLwkSAHU7xQ6G//R9sVS8q+5MFxbW09xXqmB5cA/JY8RMtOU4wLgHf8aTqNKnxGgsf/K6j0G85D2XSQ23kYTTGbbrbAxklSLpscv/jkKqmZ3zO3xCubMhdp1ow64cX1q5L06sZ1/fsGVufQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AxFlNoLV; arc=none smtp.client-ip=192.198.163.17
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="In8aS3Sy"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AxFlNoLV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772054160; x=1803590160;
+  t=1772054161; x=1803590161;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=rWG09sxb4d5oN6hg5wMkg4dgKd29FcaXmVKoIXL5BCQ=;
-  b=In8aS3SyDKaq6whzj98c6tYVlNuWNbIWqoDn6ciSzMUFOW26elcwYZ8e
-   ldKFP5sw3jN2OxRf2fDR3pWFzbLszsbwUi0j2ffQAvtSKdmNzyD/B20+k
-   GRHYkq8lljdBCEKzNFTqcwg1sKbLfyQRNHLeOKHE0LxEUEAy+L6iI796L
-   +Fokbezo/4B0q5sSofmzLRlC34dKjyu6OX0jryFWwKlOFi0BleqmkMTK1
-   gd1goOgGZhIgHYOqzgolmCBLOCjkhdNkkFqRxiu07rypuLidtlDZtONa+
-   NfMFHbyie5TxyzFm8p42DUCKbnfJkQiHAIW4/t/bfLpgIK8CUuwJTvtHd
+  bh=1KcvINjx2zyVslDHy0Ibpn02518YOwAK8XndWCYYeaY=;
+  b=AxFlNoLVRyuZfISvkly8PrtRP73OFHnOvHjzp/ES+wafgFOFulAc434J
+   9iSTA/j0H39COkaaMlTUV3+xzt0rc8izOl1umV5tsOfj3YunVLSX316lZ
+   XJTr7khXYv4HAK8wdySz/gaKe5DnhmE5YeEL8k6lrfpz+TGXZdTvVaAVI
+   664auOl4H4dSBb/uZ+vZHkPh4/VfCeNGB3O487KsGfWL8fnqLPFvdG9/g
+   c0e1STW72L2G1JIuMqZQphMYwuRHLWwC6KeJnlNY1ec5GVv90wHPkaFiH
+   V1jxfm8sAYV3oQgNqkT8oQi3lrL50eFGHHiRtX2kz+/O+Uh7iDaxUeNXB
    g==;
-X-CSE-ConnectionGUID: CouMLEInSPC8kPg6W4WipA==
-X-CSE-MsgGUID: t/l7djzKRKaZleTPC3puPw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="73013822"
+X-CSE-ConnectionGUID: jGcehJdMTgeM7QafIi9aOQ==
+X-CSE-MsgGUID: mUbUJUVUTx6XTw64Tgs5Dw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="73013838"
 X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
-   d="scan'208";a="73013822"
+   d="scan'208";a="73013838"
 Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 13:15:57 -0800
-X-CSE-ConnectionGUID: HapgMNX6RRWe/CySXzci0A==
-X-CSE-MsgGUID: EgtshCswRl62FloiBDDDog==
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 13:15:58 -0800
+X-CSE-ConnectionGUID: /CqauMncSG+YIF2nlWDc/Q==
+X-CSE-MsgGUID: whuDQDsBQRyDIg318YrG5Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,311,1763452800"; 
-   d="scan'208";a="239349709"
+   d="scan'208";a="239349715"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa002.fm.intel.com with ESMTP; 25 Feb 2026 13:15:56 -0800
+  by fmviesa002.fm.intel.com with ESMTP; 25 Feb 2026 13:15:57 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
@@ -50,16 +50,15 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Jedrzej Jagielski <jedrzej.jagielski@intel.com>,
+Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
 	anthony.l.nguyen@intel.com,
+	dima.ruinskiy@intel.com,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Piotr Kwapulinski <piotr.kwapulinski@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	stable@vger.kernel.org,
-	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net v2 10/12] ixgbevf: fix link setup issue
-Date: Wed, 25 Feb 2026 13:15:41 -0800
-Message-ID: <20260225211546.1949260-11-anthony.l.nguyen@intel.com>
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>
+Subject: [PATCH net v2 12/12] e1000e: clear DPG_EN after reset to avoid autonomous power-gating
+Date: Wed, 25 Feb 2026 13:15:43 -0800
+Message-ID: <20260225211546.1949260-13-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260225211546.1949260-1-anthony.l.nguyen@intel.com>
 References: <20260225211546.1949260-1-anthony.l.nguyen@intel.com>
@@ -71,50 +70,57 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-It may happen that VF spawned for E610 adapter has problem with setting
-link up. This happens when ixgbevf supporting mailbox API 1.6 cooperates
-with PF driver which doesn't support this version of API, and hence
-doesn't support new approach for getting PF link data.
+Panther Lake systems introduced an autonomous power gating feature for
+the integrated Gigabit Ethernet in shutdown state (S5) state. As part of
+it, the reset value of DPG_EN bit was changed to 1. Clear this bit after
+performing hardware reset to avoid errors such as Tx/Rx hangs, or packet
+loss/corruption.
 
-In that case VF asks PF to provide link data but as PF doesn't support
-it, returns -EOPNOTSUPP what leads to early bail from link configuration
-sequence.
-
-Avoid such situation by using legacy VFLINKS approach whenever negotiated
-API version is less than 1.6.
-
-To reproduce the issue just create VF and set its link up - adapter must
-be any from the E610 family, ixgbevf must support API 1.6 or higher while
-ixgbevf must not.
-
-Fixes: 53f0eb62b4d2 ("ixgbevf: fix getting link speed data for E610 devices")
+Fixes: 0c9183ce61bc ("e1000e: Add support for the next LOM generation")
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Piotr Kwapulinski <piotr.kwapulinski@intel.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
 Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ixgbevf/vf.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/e1000e/defines.h | 1 +
+ drivers/net/ethernet/intel/e1000e/ich8lan.c | 9 +++++++++
+ 2 files changed, 10 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbevf/vf.c b/drivers/net/ethernet/intel/ixgbevf/vf.c
-index 74d320879513..b67b580f7f1c 100644
---- a/drivers/net/ethernet/intel/ixgbevf/vf.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/vf.c
-@@ -852,7 +852,8 @@ static s32 ixgbevf_check_mac_link_vf(struct ixgbe_hw *hw,
- 	if (!mac->get_link_status)
- 		goto out;
+diff --git a/drivers/net/ethernet/intel/e1000e/defines.h b/drivers/net/ethernet/intel/e1000e/defines.h
+index ba331899d186..d4a1041e456d 100644
+--- a/drivers/net/ethernet/intel/e1000e/defines.h
++++ b/drivers/net/ethernet/intel/e1000e/defines.h
+@@ -33,6 +33,7 @@
  
--	if (hw->mac.type == ixgbe_mac_e610_vf) {
-+	if (hw->mac.type == ixgbe_mac_e610_vf &&
-+	    hw->api_version >= ixgbe_mbox_api_16) {
- 		ret_val = ixgbevf_get_pf_link_state(hw, speed, link_up);
- 		if (ret_val)
- 			goto out;
+ /* Extended Device Control */
+ #define E1000_CTRL_EXT_LPCD  0x00000004     /* LCD Power Cycle Done */
++#define E1000_CTRL_EXT_DPG_EN	0x00000008 /* Dynamic Power Gating Enable */
+ #define E1000_CTRL_EXT_SDP3_DATA 0x00000080 /* Value of SW Definable Pin 3 */
+ #define E1000_CTRL_EXT_FORCE_SMBUS 0x00000800 /* Force SMBus mode */
+ #define E1000_CTRL_EXT_EE_RST    0x00002000 /* Reinitialize from EEPROM */
+diff --git a/drivers/net/ethernet/intel/e1000e/ich8lan.c b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+index 23421a640097..dea208db1be5 100644
+--- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
++++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
+@@ -4932,6 +4932,15 @@ static s32 e1000_reset_hw_ich8lan(struct e1000_hw *hw)
+ 	reg |= E1000_KABGTXD_BGSQLBIAS;
+ 	ew32(KABGTXD, reg);
+ 
++	/* The hardware reset value of the DPG_EN bit is 1.
++	 * Clear DPG_EN to prevent unexpected autonomous power gating.
++	 */
++	if (hw->mac.type >= e1000_pch_ptp) {
++		reg = er32(CTRL_EXT);
++		reg &= ~E1000_CTRL_EXT_DPG_EN;
++		ew32(CTRL_EXT, reg);
++	}
++
+ 	return 0;
+ }
+ 
 -- 
 2.47.1
 
