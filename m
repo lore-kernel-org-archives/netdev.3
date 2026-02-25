@@ -1,96 +1,63 @@
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D6343806D8;
-	Wed, 25 Feb 2026 09:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D0337419B;
+	Wed, 25 Feb 2026 09:14:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772010822; cv=none; b=V7buga4LLIqnHOLZTLFAmAeeL39DbwAjX1yVwCf2JNdphYy2xTmDOaChYFNdk/dvzRZkf1vLuUIod72zw4vcUTCTS+RWP37fZt3vmke1JvwT3W0t8o75971SPXUFStcHr6fctW6V5/cW5evBqfA6qYn/+hJ0xar3puQXjndZpVE=
+	t=1772010886; cv=none; b=hsrZdI4tSSanEfcIbQmvvTbyqydYPdfaifnTlZ8Pga6+Z3JogHSajxnMVjuhgWiBZXhGCcX5HLEsb4YACRMLAoRWPR9m4O+niPInXng4YmCcg8qVCUbALCRLt05xnPA2jx4uQqMX0f7DFh0SHoxQ6DGT96vzyyzq5KND/RU2VcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772010822; c=relaxed/simple;
-	bh=fcYQNX+dsQkTsWfuCFVmKfA1rruaZ9TkRJ9npZsfuNk=;
-	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=jcV1vVuh/CiqfCRtcIIXaZHf5RCk2Oyjndu/+Xk/5+ISpR6Jj0r0KjQVdUCeq11UcbyRX8Xt7oDE9K2mrpbAqNT1KCk/lTBvnTIoXF2UTiZJFHO49qk8NPkALlZ+Hnf8VqGTN2Tfw1coPCur7gp2fid4u4bueL8zQsWgRyAsmHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=PLaTp9+I; arc=none smtp.client-ip=113.46.200.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1772010886; c=relaxed/simple;
+	bh=p25+5pv7NVZmKWEKuRjfwdQ6ErbXfWp0m5SN4Bks0XI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QqfXilt5jwg6IX+SmHHul4gOPMJvmuy4etJ7MZ55oq2/fhC7L5k61oY+QxxgRgWOndEdSjXJEqAkni1cO8ZAmjqCSoVJbZbtbx2sTWgg4DAJDLyca5n7rLrXMKB+i27QjktuVB/SkRN8z+6GZItomnEe6MZPGTM1fan3VQ4uPqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mIH9eEuY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="PLaTp9+I"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=4/dgtOlrG2tnOFcCm68A8jmq/5buZwuVT1Nvka9+ekM=;
-	b=PLaTp9+I18iY81SzhfnUgxsAkhi56nf5XkEBxZQ8v02we3EPPDztxYGJVoMR0Tp1Wob2Idg71
-	CFKfV5k00acNO1T0MxO4dxJx5y3Ut5SzczK+zjUHwQPLlRlJHiQ6yph3ygEx2VwWwN3DeVnjj4T
-	qGpdNR+DuIxGqDjjJhG3aVM=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4fLTKX5WHFz1cyQF;
-	Wed, 25 Feb 2026 17:08:48 +0800 (CST)
-Received: from kwepemk100013.china.huawei.com (unknown [7.202.194.61])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5971F40561;
-	Wed, 25 Feb 2026 17:13:35 +0800 (CST)
-Received: from [10.67.120.192] (10.67.120.192) by
- kwepemk100013.china.huawei.com (7.202.194.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 25 Feb 2026 17:13:34 +0800
-Message-ID: <5191a479-fd32-4e64-b0b1-af013412b989@huawei.com>
-Date: Wed, 25 Feb 2026 17:13:32 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mIH9eEuY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2DEEC116D0;
+	Wed, 25 Feb 2026 09:14:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772010886;
+	bh=p25+5pv7NVZmKWEKuRjfwdQ6ErbXfWp0m5SN4Bks0XI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mIH9eEuYj/i0juLEtIdKqUN1r9o8OYN+mDL8pLrD0iulqzOW5IsanB783jYLKRgVm
+	 YlLvCPqT+8O6ploD0lHhcQD/zPKsiVZ485zBqPcE+Wzp1NkgYn6vQI2KCf0wxsMYFZ
+	 pPxCEcDlPykOs8VxaZdSBztOy/yvBnk5KqBxyX1sgZGh4LcU6K2++eoSlVnmXBb+4L
+	 SExM6s6MPLGVP0Xc2AHURmZScuxYzpe6UmV8oEd+EtzNtSHL3lohpf6EEc8UKa2eKm
+	 FU9r/Ii1Xxv1gF52gzOprhZ7UF6OE/7/7UIpZoxEoh4+cH9PZK4e/FxNMufbVdfuX9
+	 Dkfk8ARplvrlg==
+Date: Wed, 25 Feb 2026 09:14:38 +0000
+From: Simon Horman <horms@kernel.org>
+To: Byungchul Park <byungchul@sk.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, kernel_team@skhynix.com, harry.yoo@oracle.com,
+	hawk@kernel.org, andrew+netdev@lunn.ch, david@kernel.org,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+	ziy@nvidia.com, willy@infradead.org, toke@redhat.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, asml.silence@gmail.com, axboe@kernel.dk,
+	ncardwell@google.com, kuniyu@google.com, dsahern@kernel.org,
+	almasrymina@google.com, sdf@fomichev.me, dw@davidwei.uk,
+	ap420073@gmail.com, dtatulea@nvidia.com, shivajikant@google.com,
+	io-uring@vger.kernel.org
+Subject: Re: [RESEND PATCH net-next] netmem: remove the pp fields from net_iov
+Message-ID: <aZ69fs1_OsqkQfQ2@horms.kernel.org>
+References: <20260224061424.11219-1-byungchul@sk.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-CC: <shaojijie@huawei.com>, Vladimir Oltean <vladimir.oltean@nxp.com>, Claudiu
- Manoil <claudiu.manoil@nxp.com>, Alexandre Belloni
-	<alexandre.belloni@bootlin.com>, "maintainer:OCELOT ETHERNET SWITCH DRIVER"
-	<UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, open list
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] net: dsa: felix: use kmalloc_flex helper
-To: Rosen Penev <rosenp@gmail.com>, <netdev@vger.kernel.org>
-References: <20260225040323.69497-1-rosenp@gmail.com>
-From: Jijie Shao <shaojijie@huawei.com>
-In-Reply-To: <20260225040323.69497-1-rosenp@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemk100013.china.huawei.com (7.202.194.61)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260224061424.11219-1-byungchul@sk.com>
 
+On Tue, Feb 24, 2026 at 03:14:24PM +0900, Byungchul Park wrote:
+> Now that the pp fields in net_iov have no users, remove them from
+> net_iov and clean up.
+> 
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
 
-on 2026/2/25 12:03, Rosen Penev wrote:
-> A little simpler than using a separate size variable.
->
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->   drivers/net/dsa/ocelot/felix_vsc9959.c | 5 ++---
->   1 file changed, 2 insertions(+), 3 deletions(-)
->
-> diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c b/drivers/net/dsa/ocelot/felix_vsc9959.c
-> index 8387dd208adb..cb132679fd99 100644
-> --- a/drivers/net/dsa/ocelot/felix_vsc9959.c
-> +++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
-> @@ -2254,7 +2254,7 @@ static int vsc9959_psfp_filter_add(struct ocelot *ocelot, int port,
->   	struct felix_stream_gate *sgi;
->   	struct ocelot_psfp_list *psfp;
->   	struct ocelot_policer pol;
-> -	int ret, i, size;
-> +	int ret, i;
->   	u64 rate, burst;
->   	u32 index;
->   
-> @@ -2271,8 +2271,7 @@ static int vsc9959_psfp_filter_add(struct ocelot *ocelot, int port,
->   	flow_action_for_each(i, a, &f->rule->action) {
->   		switch (a->id) {
->   		case FLOW_ACTION_GATE:
-> -			size = struct_size(sgi, entries, a->gate.num_entries);
-> -			sgi = kzalloc(size, GFP_KERNEL);
-> +			sgi = kzalloc_flex(*sgi, entries, a->gate.num_entries, GFP_KERNEL);
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-Sorry, the subject is kmalloc_flex but code is kzalloc_flex
-
->   			if (!sgi) {
->   				ret = -ENOMEM;
->   				goto err;
