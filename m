@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723AD23EA90;
-	Wed, 25 Feb 2026 09:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CF638759D;
+	Wed, 25 Feb 2026 09:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772011513; cv=none; b=E9jCUviu7oPM8aPtSEKhL8dui5VN2622yTE7D7q1A/EvdSNarST6NtokTtZZLgfMV87SLdhzhEvsrMBw/p4ELzcoJKuunGIAQq7NdWENi4RTgzPpjp8CWgY1NnEI7O2eDO4vg/psddQX18BMMpbC2YdDo8Idso9g4dYNhehgJbo=
+	t=1772011522; cv=none; b=rmAKFAlc3FV5FhskqnAl/UiQFVmQAkONUVbwi8Y0izmlN4KczugUxfACAUnNOhWUSMkPvPhb9/yMRjL8Efl7Ys7Q962Hfld1O/CgSMxY5eNLGk3z2clxFZt7fQkZgQ/o5Mjutq00cI1LGzQHS0VUpsgTQmXEEz0gVfr5Bghdf5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772011513; c=relaxed/simple;
-	bh=NVl0XIW72KAhGvaPeyo/7NTd/1b/tlHpMZEcCiTlegM=;
+	s=arc-20240116; t=1772011522; c=relaxed/simple;
+	bh=3F7Z5Pfj8Pt/optjPDV9G8Xvyryo9NuHarxp+2EdQZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HZf4Jhl40ejVum3UdtZg+gX23MC7BIFVKPnfJSRQP+Y/jy4tB7bTAdt4K9PhHuCE2e4ASwInjf4R4GSuwTy2vvZ5RjaEq3ws6z4uF1klGaWjOlI1cFDwhLGlGSfMJGOh4xxK5c7QUBhhqZ25mQFCEozII8/oaUdfbSz5RPDV4ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MlFU4BBW; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=qEyHQFMdKByNwgclp+gwk7Yt3QSPo3FIg8Ok0rBT+1eAKz6Glnn1LnlUasub7ndmzPCM8RIVWtJ8lDiFe8AkyBBknSt2DcNCjxBajzoFUquPzJApzZY2S74KwKcqGSKbuYt9T/GU1ZZtbHH7S08I3ubiydiH/TZU3PZWQFIT4NA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uJXxxlHB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MlFU4BBW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C5DC19422;
-	Wed, 25 Feb 2026 09:25:07 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uJXxxlHB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EE0C2BC86;
+	Wed, 25 Feb 2026 09:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772011512;
-	bh=NVl0XIW72KAhGvaPeyo/7NTd/1b/tlHpMZEcCiTlegM=;
+	s=k20201202; t=1772011522;
+	bh=3F7Z5Pfj8Pt/optjPDV9G8Xvyryo9NuHarxp+2EdQZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlFU4BBWC1HPasx276GWqfaq/QOBboToGp0pvjjvuj1GJAEAIP1IVxHdQ229N1nJ1
-	 cH5zb92QVL+SPBmBIzFGM17hk4NsxeQg+eQvsCCb01wQ7FZ0mNNmZu9pT5aRUWaJqT
-	 7beomQPmrFZFEHjyuOGfgbeKw2a9KjIorAW2fSboKnnUwoWy1c7JacDG4JYhV80+1w
-	 U07ANgmSqXtfa0TkFaPk3mq4GYWLh4DeBO18ffsWZsqR4xlFTV47rAtd/1kxZIQQGT
-	 hMfuqOW4kbN1o4c/c5499KlPCxm//TtzFnfmgIZdm/1TvJBxwgG9hsb/hpQJyMe45g
-	 shnTEi0SQ4oTQ==
+	b=uJXxxlHBV0DRrSf9EXAEusXlJPeHnoT0EXFvLsrldQu/5D1nC+cn49GEzCZn5mSbM
+	 A/xtGjS6xvWhP74lBLA/DVb/a4R6aeCiawcKj3TaGKNHT/TXw8XSi16nLSzWcQlnis
+	 v0m+TCnAHsyPXyt2AknbqUGNEyD6LZYPnXc76KzrSaqQiZhlkwECxt+w/6vM3LLfHp
+	 khpI2max/MI8mlIiNJLbDhcnYr2sSLHsuQBluXaRBJHXwNwXKsHHqzTo30n1Yu2Ss+
+	 qSurO9g1H5v2Zq3H06S6xZDG61BdabR3sXwIssrYT/w6bZq7HIzDkIaA3SmP20SxVt
+	 Lug+csEN4rnXw==
 From: Simon Horman <horms@kernel.org>
 To: jan.petrous@oss.nxp.com
 Cc: Simon Horman <horms@kernel.org>,
@@ -54,12 +54,12 @@ Cc: Simon Horman <horms@kernel.org>,
 	edumazet@google.com,
 	mcoquelin.stm32@gmail.com,
 	imx@lists.linux.dev
-Subject: Re: [v5,1/4] net: stmmac: platform: read channels irq
-Date: Wed, 25 Feb 2026 09:24:56 +0000
-Message-ID: <20260225092456.174241-1-horms@kernel.org>
+Subject: Re: [v5,4/4] stmmac: s32: enable support for Multi-IRQ mode
+Date: Wed, 25 Feb 2026 09:25:13 +0000
+Message-ID: <20260225092513.174261-1-horms@kernel.org>
 X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260223-dwmac_multi_irq-v5-1-8fc699a5fac4@oss.nxp.com>
-References: <20260223-dwmac_multi_irq-v5-1-8fc699a5fac4@oss.nxp.com>
+In-Reply-To: <20260223-dwmac_multi_irq-v5-4-8fc699a5fac4@oss.nxp.com>
+References: <20260223-dwmac_multi_irq-v5-4-8fc699a5fac4@oss.nxp.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -73,78 +73,60 @@ email has considered the AI review valid, or at least plausible.
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-net: stmmac: platform: read channels irq
+stmmac: s32: enable support for Multi-IRQ mode
 
-This commit adds support for reading IRQ resources for all rx/tx channels
-in the stmmac platform driver to enable Multi-IRQ mode for platform glue
-drivers.
+This commit enables Multi-IRQ mode for the S32 DWMAC driver, allowing
+per-queue IRQs for improved performance. The driver checks for multiple
+queues and per-queue IRQs, enabling multi-IRQ mode when both are present.
 
-> diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> index 5c9fd91a1db9..6166a9b0c0bb 100644
-> --- a/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> +++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_platform.c
-> @@ -700,6 +700,9 @@ EXPORT_SYMBOL_GPL(stmmac_pltfr_find_clk);
->  int stmmac_get_platform_resources(struct platform_device *pdev,
->  				  struct stmmac_resources *stmmac_res)
->  {
-> +	char name[16];
-> +	int i;
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> index af594a096676..4aad7077c9d6 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+
+[ ... ]
+
+> @@ -165,6 +165,16 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+>  	plat->core_type = DWMAC_CORE_GMAC4;
+>  	plat->pmt = 1;
+>  	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
 > +
->  	memset(stmmac_res, 0, sizeof(*stmmac_res));
->
->  	/* Get IRQ information early to have an ability to ask for deferred
-> @@ -735,7 +738,42 @@ int stmmac_get_platform_resources(struct platform_device *pdev,
->
->  	stmmac_res->addr = devm_platform_ioremap_resource(pdev, 0);
->
-> -	return PTR_ERR_OR_ZERO(stmmac_res->addr);
-> +	if (IS_ERR(stmmac_res->addr))
-> +		return PTR_ERR(stmmac_res->addr);
-> +
-> +	/* RX channels irq */
-> +	for (i = 0; i < MTL_MAX_RX_QUEUES; i++) {
-> +		scnprintf(name, sizeof(name), "rx-queue-%d", i);
-> +		stmmac_res->rx_irq[i] = platform_get_irq_byname_optional(pdev,
-> +									 name);
-> +		if (stmmac_res->rx_irq[i] <= 0) {
-> +			if (stmmac_res->rx_irq[i] == -EPROBE_DEFER)
-> +				return -EPROBE_DEFER;
-> +			dev_dbg(&pdev->dev, "IRQ rx-queue-%d not found\n", i);
-> +
-> +			/* Stop on first unset rx-queue-%i property member */
-> +			stmmac_res->rx_irq[i] = 0;
-> +			break;
-> +		}
-> +	}
-> +
-> +	/* TX channels irq */
-> +	for (i = 0; i < MTL_MAX_TX_QUEUES; i++) {
-> +		scnprintf(name, sizeof(name), "tx-queue-%d", i);
-> +		stmmac_res->tx_irq[i] = platform_get_irq_byname_optional(pdev,
-> +									 name);
-> +		if (stmmac_res->tx_irq[i] <= 0) {
-> +			if (stmmac_res->tx_irq[i] == -EPROBE_DEFER)
-> +				return -EPROBE_DEFER;
-> +			dev_dbg(&pdev->dev, "IRQ tx-queue-%d not found\n", i);
-> +
-> +			/* Stop on first unset tx-queue-%i property member */
-> +			stmmac_res->tx_irq[i] = 0;
-> +			break;
-> +		}
+> +	/* Check for multi-IRQ config. Assumption: symmetrical rx/tx queues */
+> +	if (plat->rx_queues_to_use > 1 &&
+> +	    (res.rx_irq[0] > 0 && res.tx_irq[0] > 0)) {
+> +		plat->flags |= STMMAC_FLAG_MULTI_MSI_EN;
+> +		dev_info(dev, "Multi-IRQ mode (per queue IRQs) selected\n");
+> +	} else {
+> +		dev_info(dev, "MAC IRQ mode selected\n");
 > +	}
 
-This isn't a bug, but the RX and TX channel IRQ handling blocks follow an
-identical 14-line pattern that differs only in the queue name format string
-and target array. Both blocks format the IRQ name with scnprintf(), call
-platform_get_irq_byname_optional(), check for -EPROBE_DEFER, log a debug
-message on error, and break on the first missing IRQ.
+Does this validation check all queues have IRQs? The condition verifies
+only res.rx_irq[0] and res.tx_irq[0] but doesn't confirm that higher
+queues have IRQs when rx_queues_to_use > 1.
 
-Could this duplication be reduced with a helper function? Note that the
-existing code in this function already contains similar non-factored
-patterns for wol_irq and sfty_irq handling, so this level of duplication
-may be acceptable in this file's style.
+If a device tree specifies multiple queues but only provides IRQs for
+queue 0:
+
+    snps,rx-queues-to-use = <2>;
+    interrupt-names = "macirq", "rx-queue-0", "tx-queue-0";
+                      /* queue 1 IRQs missing */
+
+The driver would enable STMMAC_FLAG_MULTI_MSI_EN, but later in
+stmmac_request_irq_multi_msi() (drivers/net/ethernet/stmicro/stmmac/
+stmmac_main.c), queues with rx_irq[i] == 0 are silently skipped:
+
+    for (i = 0; i < priv->plat->rx_queues_to_use; i++) {
+        if (priv->rx_irq[i] <= 0)
+            continue;  /* queue 1+ skipped, no handler registered */
+        ...
+    }
+
+This would leave higher-numbered queues with no interrupt handler,
+causing packet loss when traffic arrives on those queues.
+
+Would it be safer to validate all queue IRQs before enabling multi-IRQ
+mode, or fall back to MAC IRQ mode if any queue IRQ is missing?
 
 > +
-> +	return 0;
->  }
->  EXPORT_SYMBOL_GPL(stmmac_get_platform_resources);
+>  	plat->rx_fifo_size = 20480;
+>  	plat->tx_fifo_size = 20480;
