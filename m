@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653063115AF;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9495238E5C4;
 	Wed, 25 Feb 2026 09:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772011256; cv=none; b=jr0GxZWy4qCljlC259t9Y8We2455tYfZPfspZPoDtrW+mQwvcx/isfdWfwui6FLpCCn7vV8Z/Rfq1ByGVF3AXoBLLpbPkGaPh9qKLw7ccSIfIwvvigFgYUZRDndi/qznD8GKxl9r+Q1ZqcLYK5HMBMHMyD1tsb5lXfOWGAlXPBg=
+	t=1772011256; cv=none; b=l8ZhetL8/iLgsuDfIMwRP9Nrh3rSpMwVDL5fzl6+Ot/x/kgVI3Tfv57BrP7xdwVzHEbP+LSsPltIgoBorZj7PIletM6xSZDXTwt3bFyufEs0TEsBuuif/eoT/Oe2Pxu5me8JH2HU+o7rcXBrI/jX9Wp67YFiNVLE7dhFzWmPvB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772011256; c=relaxed/simple;
-	bh=tVDFFZNNq+3cx8vwsO+uDpr3OUAYyGNXUn5yFrn4B/A=;
+	bh=1wg2w5Y5/YzQPQzVr+3ynFChKDaTwYad7mRHpb7T0TQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=tVED1USNz0ff9XI8zHwhuZfx00kf7eCpPsMCiziAvBCUg7EUw/c3Jy+lFzLI9JeHNacFjinn75yEXblfIv0ezVCuRymZlL/5K++RRDnABcOElnukUXn+AWOEBpjq+0HAUES0ltI/dR2J5SzKc0a/ZJNDQmqf4IhdjvFY/JqMyI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JXPsanD/; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=o5srob9RWWMLX+9HM6ApifgYG4C57hdtRR7pzmoywt2wWzbcsdMSygpW8L3FCo9V9xp+onpnh+NuIUpzS7JMMSHwSiDj22RXiHwcqSQC8M5ch0cUlnC7TOHYhZ4HrUFHY6fxTFtxn5nXqKGa9Fk/xETqpNO2jWB5lpSkb3q1lA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ucyZelTL; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JXPsanD/"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 38C81C2BCAF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ucyZelTL"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 5FA47C2BCB7;
 	Wed, 25 Feb 2026 09:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772011256;
-	bh=tVDFFZNNq+3cx8vwsO+uDpr3OUAYyGNXUn5yFrn4B/A=;
+	bh=1wg2w5Y5/YzQPQzVr+3ynFChKDaTwYad7mRHpb7T0TQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=JXPsanD//VsaFQcPMShNKBgteAhvdx1NG2U6HOqUIGyYv7Q4EnT3/4MllO4ck4hkZ
-	 f8RvKtRmtsO9IV1onfPoq3CLPEfEtN0DkT3F8L8TW2Hc35XeWidDMyboSxatpWjWaO
-	 21/PLTypNtLGJCAQZidh+kuApjNi+JOvmBWHqG0dEYpqCLAQGFk3sl4RkdE/L3qEfX
-	 fzAY2JGRSE1i0sBUD1g4WivSmX8BHS5Cg1FuS9f4ouiWVFPOlnyzB/2sGlLpigQBGR
-	 6f52dPErewgp6sl6MZ/tNXjaENxHbehChur8p2mmSFXtq/dLrNjloHC1DuvBKzwQlh
-	 FyZTpGyoorCiw==
+	b=ucyZelTLPocdMfhxnHrWFYcQU4O36uEVnHyFGCcZxHZ23XZ1Fs01rN/xqkDTh3n/7
+	 qOb4LdDj9NauLxFtGzcM58uVv9dQ611qBAlY/x21Lk+ePHJxJgZcEizn6hx1YT7eAL
+	 VnTdJLt9UVlTqt32aK+VZfI2nDVGxXb0JU9mLKEtZNOY2xJxVJn7QKu+GYwhjdPUH5
+	 yd1iCXByxKS6DqlP9sgcrpgVWA9yhfjkPy0DDV0Kyv9rKz8HIPblrTl+3Q6FjXRYcU
+	 UTa1KP5lMKpEHXyzt2BkrkT/FBLW2GbU7ay/n12PCk7kV2fqbloy2ksKaHSEHb1r8b
+	 yL83I59QLbEZg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2F185EFD218;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 543C3EFD216;
 	Wed, 25 Feb 2026 09:20:56 +0000 (UTC)
 From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
-Date: Wed, 25 Feb 2026 10:20:35 +0100
-Subject: [PATCH v6 3/5] dt-bindings: net: nxp,s32-dwmac: Declare per-queue
- interrupts
+Date: Wed, 25 Feb 2026 10:20:37 +0100
+Subject: [PATCH v6 5/5] stmmac: s32: enable support for Multi-IRQ mode
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260225-dwmac_multi_irq-v6-3-245bf1d7110c@oss.nxp.com>
+Message-Id: <20260225-dwmac_multi_irq-v6-5-245bf1d7110c@oss.nxp.com>
 References: <20260225-dwmac_multi_irq-v6-0-245bf1d7110c@oss.nxp.com>
 In-Reply-To: <20260225-dwmac_multi_irq-v6-0-245bf1d7110c@oss.nxp.com>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -62,11 +61,11 @@ Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
  imx@lists.linux.dev, devicetree@vger.kernel.org, rmk+kernel@armlinux.org.uk, 
  "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772011254; l=3455;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772011254; l=4698;
  i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
- bh=Ulgz8SoBFJZWXNyBqoPUpgpX/c4gObaapFU2nTXzIJo=;
- b=AC6wNeGv8aQtc7cr0XOUhnGKEWZKpdZqNwRaWPvig2xRkfbtZYQmvkf2Mny5N4c7RxgQ0f23R
- onBymk62fhkAiFTrZG+cv2VG1TQ4sXRdiCZej4ybeMnlYwxqqy4zeiK
+ bh=VhNXhFN3LNj9piUSrvcU0j8rDNgFhxjzRPwBQhKPqME=;
+ b=tG4OPocKqVIacnzg6C8UUg/DR2vaS/X/hta0AyweSYYSjJMzjIGZkxO8P5gK8neG2nzpjZwAT
+ N6pBZ5ltd6hDKEerKCfVeJH9gdRvqiShQiZCBgp+lwc+r83oWkdK9Lj
 X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
  pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
 X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
@@ -76,92 +75,140 @@ Reply-To: jan.petrous@oss.nxp.com
 
 From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
-The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
-set them to allow using Multi-IRQ mode.
+Based on previous changes in platform driver, the vendor
+glue driver can enable Multi-IRQ mode, if needed.
+
+To get enabled Multi-IRQ mode for dwmac-s32, the driver checks:
+
+  1) property of 'snps,mtl-xx-config' subnode
+     defines 'snps,xx-queues-to-use' bigger then one, ie:
+
+     ethernet@4033c000 {
+         compatible = "nxp,s32g2-dwmac";
+         ...
+         snps,mtl-rx-config = <&mtl_rx_setup>;
+         ...
+
+         mtl_rx_setup: rx-queues-config {
+             snps,rx-queues-to-use = <2>;
+         };
+
+  2) queue based IRQs are set, ie:
+
+     ethernet@4033c000 {
+         compatible = "nxp,s32g2-dwmac";
+         ...
+         interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
+                      /* CHN 0: tx, rx */
+                      <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
+                      <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
+                      /* CHN 1: tx, rx */
+                      <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
+                      <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>;
+         interrupt-names = "macirq",
+                           "tx-queue-0", "rx-queue-0",
+                           "tx-queue-1", "rx-queue-1";
+
+If those prerequisites are met, the driver switch to Multi-IRQ mode,
+using per-queue IRQs for rx/tx data pathr:
+
+[    1.387045] s32-dwmac 4033c000.ethernet: Multi-IRQ mode (per queue IRQs) selected
+
+Now the driver owns all queues IRQs:
+
+root@s32g399aevb3:~# grep eth /proc/interrupts
+ 29:    0    0    0    0    0    0    0    0    GICv3  89 Level   eth0:mac
+ 30:    0    0    0    0    0    0    0    0    GICv3  91 Level   eth0:rx-0
+ 31:    0    0    0    0    0    0    0    0    GICv3  93 Level   eth0:rx-1
+ 32:    0    0    0    0    0    0    0    0    GICv3  95 Level   eth0:rx-2
+ 33:    0    0    0    0    0    0    0    0    GICv3  97 Level   eth0:rx-3
+ 34:    0    0    0    0    0    0    0    0    GICv3  99 Level   eth0:rx-4
+ 35:    0    0    0    0    0    0    0    0    GICv3  90 Level   eth0:tx-0
+ 36:    0    0    0    0    0    0    0    0    GICv3  92 Level   eth0:tx-1
+ 37:    0    0    0    0    0    0    0    0    GICv3  94 Level   eth0:tx-2
+ 38:    0    0    0    0    0    0    0    0    GICv3  96 Level   eth0:tx-3
+ 39:    0    0    0    0    0    0    0    0    GICv3  98 Level   eth0:tx-4
+
+Otherwise, if one of the prerequisite don't met, the driver
+continue with MAC IRQ mode:
+
+[    1.387045] s32-dwmac 4033c000.ethernet: MAC IRQ mode selected
+
+And only MAC IRQ will be attached:
+
+root@s32g399aevb3:~# grep eth /proc/interrupts
+ 29:    0    0    0    0    0    0    0    0    GICv3  89 Level   eth0:mac
+
+What represents the original MAC IRQ mode and is fully backward
+compatible.
 
 Reviewed-by: Matthias Brugger <mbrugger@suse.com>
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
- .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 44 +++++++++++++++++++---
- 1 file changed, 39 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c | 36 ++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
-index 1b2934f3c87c..3a0e41b63c3d 100644
---- a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
-+++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
-@@ -1,5 +1,5 @@
- # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
--# Copyright 2021-2024 NXP
-+# Copyright 2021-2026 NXP
- %YAML 1.2
- ---
- $id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
-@@ -16,6 +16,8 @@ description:
-   the SoC S32R45 has two instances. The devices can use RGMII/RMII/MII
-   interface over Pinctrl device or the output can be routed
-   to the embedded SerDes for SGMII connectivity.
-+  The DWMAC instances have connected all RX/TX queues interrupts,
-+  enabling load balancing of data traffic across all CPU cores.
+diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+index af594a096676..03e014c10d3f 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
++++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-s32.c
+@@ -2,7 +2,7 @@
+ /*
+  * NXP S32G/R GMAC glue layer
+  *
+- * Copyright 2019-2024 NXP
++ * Copyright 2019-2026 NXP
+  *
+  */
  
- properties:
-   compatible:
-@@ -45,10 +47,22 @@ properties:
-       FlexTimer Modules connect to GMAC_0.
+@@ -110,6 +110,37 @@ static void s32_gmac_exit(struct device *dev, void *priv)
+ 	clk_disable_unprepare(gmac->rx_clk);
+ }
  
-   interrupts:
--    maxItems: 1
-+    minItems: 11
-+    maxItems: 11
++static void s32_gmac_validate_multi_irq(struct device *dev,
++					struct plat_stmmacenet_data *plat,
++					struct stmmac_resources *res)
++{
++	int i;
++
++	/* RX IRQs */
++	STMMAC_FOREACH_MTL_QUEUE(i, plat->rx_queues_to_use) {
++		if (res->rx_irq[i] <= 0) {
++			dev_dbg(dev, "Missing RX queue %d interrupt\n", i);
++			goto no_multi_irq;
++		}
++	}
++
++	/* TX IRQs */
++	STMMAC_FOREACH_MTL_QUEUE(i, plat->tx_queues_to_use) {
++		if (res->tx_irq[i] <= 0) {
++			dev_dbg(dev, "Missing TX queue %d interrupt\n", i);
++			goto no_multi_irq;
++		}
++	}
++
++	plat->flags |= STMMAC_FLAG_MULTI_MSI_EN;
++	dev_info(dev, "Multi-IRQ mode (per queue IRQs) selected\n");
++	return;
++
++no_multi_irq:
++	plat->flags &= ~STMMAC_FLAG_MULTI_MSI_EN;
++	dev_info(dev, "MAC IRQ mode selected\n");
++}
++
+ static int s32_dwmac_probe(struct platform_device *pdev)
+ {
+ 	struct plat_stmmacenet_data *plat;
+@@ -165,6 +196,9 @@ static int s32_dwmac_probe(struct platform_device *pdev)
+ 	plat->core_type = DWMAC_CORE_GMAC4;
+ 	plat->pmt = 1;
+ 	plat->flags |= STMMAC_FLAG_SPH_DISABLE;
++
++	s32_gmac_validate_multi_irq(dev, plat, &res);
++
+ 	plat->rx_fifo_size = 20480;
+ 	plat->tx_fifo_size = 20480;
  
-   interrupt-names:
--    const: macirq
-+    items:
-+      - const: macirq
-+      - const: tx-queue-0
-+      - const: rx-queue-0
-+      - const: tx-queue-1
-+      - const: rx-queue-1
-+      - const: tx-queue-2
-+      - const: rx-queue-2
-+      - const: tx-queue-3
-+      - const: rx-queue-3
-+      - const: tx-queue-4
-+      - const: rx-queue-4
- 
-   clocks:
-     items:
-@@ -88,8 +102,28 @@ examples:
-               <0x0 0x4007c004 0x0 0x4>;    /* GMAC_0_CTRL_STS */
-         nxp,phy-sel = <&gpr 0x4>;
-         interrupt-parent = <&gic>;
--        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
--        interrupt-names = "macirq";
-+        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
-+                     /* CHN 0: tx, rx */
-+                     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
-+                     /* CHN 1: tx, rx */
-+                     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
-+                     /* CHN 2: tx, rx */
-+                     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
-+                     /* CHN 3: tx, rx */
-+                     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
-+                     /* CHN 4: tx, rx */
-+                     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
-+                     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
-+        interrupt-names = "macirq",
-+                          "tx-queue-0", "rx-queue-0",
-+                          "tx-queue-1", "rx-queue-1",
-+                          "tx-queue-2", "rx-queue-2",
-+                          "tx-queue-3", "rx-queue-3",
-+                          "tx-queue-4", "rx-queue-4";
-         snps,mtl-rx-config = <&mtl_rx_setup>;
-         snps,mtl-tx-config = <&mtl_tx_setup>;
-         clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
 
 -- 
 2.47.0
