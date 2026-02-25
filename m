@@ -1,80 +1,66 @@
-Received: from outbound.baidu.com (mx24.baidu.com [111.206.215.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99BA1273816;
-	Wed, 25 Feb 2026 02:26:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.206.215.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCB0228CA9;
+	Wed, 25 Feb 2026 02:32:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771986369; cv=none; b=QMiTVimfE4NA1e3AiPmxYhSoVboqEKcZRE2SNNYcZl9Zde+NmLqzu5cWgdYCs3yBiujDaiBKolbg9kPqOgy7cFVUiwNQ+k2LIx7nVOm+HzB/zKmWuxFCKeENcsXQ/HSP692NNDM3X1SZbjM7SE1RwjNamjctduCuRmpuB9tNyg4=
+	t=1771986774; cv=none; b=r/F4C1fMf9tqhlnCXJwXDdQ5tShF8tuhVuaXOg2jZ0tnMfSUolQVI1/CA2foeVsGf0Xnl+wIM2cBiL7CrO06ZfLr5nhlA5XvSEPwii9GGUS4xlQ9/vhx8KY2GSVHQOVsPVa6jKke6TWPJjYHIm1Zig9fdOy1pjK2Fg/P7P+ENbU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771986369; c=relaxed/simple;
-	bh=5q/gy2Ucyfw1Ty2cmZtJ+NPyMI6M6VJcKIRA2HH2AmE=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=bMQtQVYCf33OlgJCZs3jpd2SSowaH4gJaQEeaPaieCOrksiIQwK/+cTHnpf5jSLQf8T0FC/GRltvpF1HtYy9g79DmzA2QeW4hrRDnhphnPMXRkFMY3ZyV3Y1UKOnUYV1r9F6UUCOU7AEaDzJ+k5gg/B0+RyxbllFUUTauMJ4jPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; arc=none smtp.client-ip=111.206.215.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
-From: lirongqing <lirongqing@baidu.com>
-To: Jiri Pirko <jiri@resnulli.us>, "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: Li RongQing <lirongqing@baidu.com>
-Subject: [PATCH][net-next] net/devlink: Move health recovery notification after abort check
-Date: Tue, 24 Feb 2026 21:10:03 -0500
-Message-ID: <20260225021003.1837-1-lirongqing@baidu.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1771986774; c=relaxed/simple;
+	bh=ibk16yeTZlaqlGBnC0WuhDja1zTjrU6fF717LH0KpRE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GRH7ZsXmYMIthEbx2w/tzec0xvDrFzkJD2oqRaGRlH/t6Fv4JNjxYE9qMY00HtSH3XJxUDyeua6E+9qlByRya+kWSihE6j9h6KfzFYnTdQXfbgw/BAzvUrAdtUD5AWMYPX0JhDlyvx+FNHmyAowh5+pbjK8xlSkaGWEgGeQNMmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SajrUMH4; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SajrUMH4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023B1C116D0;
+	Wed, 25 Feb 2026 02:32:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1771986774;
+	bh=ibk16yeTZlaqlGBnC0WuhDja1zTjrU6fF717LH0KpRE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SajrUMH4rdtv695yz63D9f4cENf0m1MC7zo+JTjaSyy15p3ijdNg8QUOj/tLx0KTD
+	 MCbDCoxXkF1e+xyLXp9XsdjBLy7mxjiL6YdtZhI9M9GO4B3Tjl6draLl0SyXi8jYlx
+	 4THahWSThZCNreDGhoteRpepdWogx147UMVIheZJdVskevty9TX5WibvWQaieAoqmI
+	 WqoYHYMK7NKUhnrFr86IUrUOHrJXjqt7RFxLF6KAwtRyS51+id91ewf8Vmw2VnYcBt
+	 M6GU2v14VTpvhGO4LgBKboZzB8Y069rK39SEET6MlMM9JEKYnear9rk4MOg3uQt0cX
+	 sHlWxO8wHlHDQ==
+Date: Tue, 24 Feb 2026 18:32:53 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
+Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ andrew+netdev@lunn.ch, horms@kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, michael.chan@broadcom.com,
+ pavan.chebbi@broadcom.com, vsrama-krishna.nemani@broadcom.com,
+ vikas.gupta@broadcom.com, Ajit Kumar Khaparde <ajit.khaparde@broadcom.com>
+Subject: Re: [PATCH net-next 1/7] bng_en: add per-PF workqueue, timer, and
+ slow-path task
+Message-ID: <20260224183253.23143628@kernel.org>
+In-Reply-To: <20260223163641.755200-2-bhargava.marreddy@broadcom.com>
+References: <20260223163641.755200-1-bhargava.marreddy@broadcom.com>
+	<20260223163641.755200-2-bhargava.marreddy@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: bjhj-exc4.internal.baidu.com (172.31.3.14) To
- bjkjy-exc3.internal.baidu.com (172.31.50.47)
-X-FEAS-Client-IP: 172.31.50.47
-X-FE-Policy-ID: 52:10:53:SYSTEM
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Li RongQing <lirongqing@baidu.com>
+On Mon, 23 Feb 2026 22:06:35 +0530 Bhargava Marreddy wrote:
+> +	if (atomic_read(&bn->intr_sem) != 0)
+> +		goto bnge_restart_timer;
+> +
+> +	/* Periodic work added by later patches */
+> +
+> +bnge_restart_timer:
+> +	mod_timer(&bn->timer, jiffies + bn->current_interval);
 
-In devlink_health_report(), the DEVLINK_CMD_HEALTH_REPORTER_RECOVER
-notification is sent immediately after setting the error state, before
-checking if recovery should be aborted via devlink_health_recover_abort().
+This intr_sem thing looks highly questionable.
 
-When devlink_health_recover_abort() returns true (e.g., due to rate
-limiting), the recovery process terminates early, but userspace has already
-received a notification implying that recovery is underway. This creates a
-misleading view of the reporter's activity.
-
-Move the notification after the abort check, ensuring it is only sent when
-recovery will actually proceed. This aligns the notification with the
-actual recovery behavior.
-
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
----
- net/devlink/health.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/devlink/health.c b/net/devlink/health.c
-index 136a67c..e9999fc 100644
---- a/net/devlink/health.c
-+++ b/net/devlink/health.c
-@@ -665,7 +665,6 @@ int devlink_health_report(struct devlink_health_reporter *reporter,
- 	reporter->error_count++;
- 	prev_health_state = reporter->health_state;
- 	reporter->health_state = DEVLINK_HEALTH_REPORTER_STATE_ERROR;
--	devlink_recover_notify(reporter, DEVLINK_CMD_HEALTH_REPORTER_RECOVER);
- 
- 	if (devlink_health_recover_abort(reporter, prev_health_state)) {
- 		trace_devlink_health_recover_aborted(devlink,
-@@ -686,6 +685,7 @@ int devlink_health_report(struct devlink_health_reporter *reporter,
- 	if (!reporter->auto_recover)
- 		return 0;
- 
-+	devlink_recover_notify(reporter, DEVLINK_CMD_HEALTH_REPORTER_RECOVER);
- 	devl_lock(devlink);
- 	ret = devlink_health_reporter_recover(reporter, priv_ctx, NULL);
- 	devl_unlock(devlink);
--- 
-2.9.4
-
+It provides no synchronization guarantee since the state of intr_sem 
+may change immediately after the read. Please use normal locking
+primitives and/or cancel the timer _sync() if you want to make sure
+it's not running.
