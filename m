@@ -1,186 +1,205 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A352E0938
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 07:36:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296732F4A0C
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 07:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.47
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772004977; cv=pass; b=Rb8Lxqc0LTTZua0hYe6nOaPQAwSxVu7BHFsu6aCeZXGzsNVVZwmNJRfOuznrVMqO9aOXgavdsoQrdGNsOSOZJnkY6N879WUAgZM/QA6jAXFsh19lP3eABsDJ3oHAEy7Sm3GQJYpwTXQD9lpgjaIfzB3kyJXj3ADriqvomZDlG/s=
+	t=1772005409; cv=pass; b=a7cf0fS7xBxGGta0dDQVSXM46j8pl/BXBzGK1Hq9LWtBch3Ubdmul+pZCYWnvfNh6grJaA+WnO0WFAGJ1u6G58rChe4ZX2HJDy9DTCvSvY/ToKY5Q0Q48Gpzn7EJJlCCKcIG/L/MhIYC0jl4ZQCrXgl/DfyyKe3D8AM+tDEMfhU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772004977; c=relaxed/simple;
-	bh=qPMyRmiQw7pJhER5YKqD7lk1WLwtH8C/KfNioQXmSXY=;
+	s=arc-20240116; t=1772005409; c=relaxed/simple;
+	bh=pD5qgSyj+M+ZKRt0xRcrtKgBujxN495BZuFlw6/RleE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nMG9O9DrNYRgCrM7hJ15DYTgnEvPbw/IexQTYM5wlg5HMthYM9tAixQvCo/OKYDLi1PTXxC90bR22uEnJl6JQR/UgRDdSKgY3kFcqTsHnlgLiYI/K3p+bM2AWTlmvYTJRiuE32+nwQ/oLEtQOBtKvs/GTGLu/zUgaoIhPOmqXMc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PUG0fwgp; arc=pass smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=K01rOGYXsEhJvMRqx95KQn08vxhYqgjRx9K8wEmPNp0SwTDKD8pryBWrT3tzPj9ELZJLQVSJb6bZUcHLvVpAd/pO0yCQ6sAm4YjQ3Mw5xW/gx6zprK0HzWlxs+9Qbjw1Rq2fzq8B0z34kVFHKcT5QvowgXVVndfvCfF7nccuIcI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2a7lISA9; arc=pass smtp.client-ip=74.125.82.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PUG0fwgp"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43984d7e49bso1346986f8f.2
-        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 23:36:15 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772004974; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2a7lISA9"
+Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1277d379936so1566945c88.1
+        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 23:43:27 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772005407; cv=none;
         d=google.com; s=arc-20240605;
-        b=Bx/N9XopshQN1VlLONaYujZQLjrqEiEr5vpcdHOBQDtp04TpTLIfOQWaIczIBgIKwK
-         H8O7iQ/5i6+GQvQ8P7vq+H0WZormKGtT43FmT1zMOBhmtZ8N2hFz3GPImbW5DBCoQjaV
-         QL4Xg6TvxZb+Oi8xN6C5DaYziUs1ZlOf3TfPNrqKwUFMBaUzZUGWZXaRK81qpwBFoabM
-         54NjLgIlctLXKNo4xMl3xn3oUCySeXUe9JdA6i1TrsTv0EgLRHH8UFiZuAH9x4Qxv2hD
-         QBXaiLanwdPOq+lHt/n//L+YJJHGWObf4hON0cn1JGpCMSG0Qa1VCWRKGWaqXUyYmbWC
-         RMNg==
+        b=BmBqOeDMoTqCmBiwclQSk3EB/Bi/nS1kRrFf9HaNTpgZsp+xPNQyTulh0642V3+WfM
+         r5EMk9iXJzd/lenuJwBFSpweBc2dB2OGG96FZSOy8LLW4rHntIKejbm9gl/QeI0fqM4D
+         zCR6SJR+XUwI3nkyB2WbQaXH2HOSk55CDBe/2pZx/VI9QoYKyubBPMcHK7XmT4jeZVZ7
+         eDJIbz2I7RANiXpRWgNHUWaKHx7hdyZouMiWQlYXoKQsX2c3lum5FeS2EqI6MxI+aowc
+         Vfew59bUFurmX+r30Y3ljsI3tdj1oEOe3jGidX2LY8EAIy2TPDmQpVQf4uaPteJwm5ui
+         tAkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=cPsEREjpbbRl+Ykcb3p5rXFShnBdQuEGwwIZOOJ5aCo=;
-        fh=FmPeW7fpm18BmxHH5bTwO42lg9wwF+kG4Ilj8tqK4QA=;
-        b=TNusb4Jz60bacsQI/1GoB8pQ9UT2VDYKf4wFhr5d5zycubCbAftKgH+RFh2MFQHeBy
-         +bzB8U3VkbRRa+wSyuJzI2vauKyVzTTgBvfC0h+yIF4SvALH+cikrxnDBVlRdV2+VWSx
-         s1l5E3IB+xfF3JyvFVQmsSp6GgCGmDUMBeigisN2mIoFPygXs4dxVYJBU6Ze04M5pOec
-         wJIJOp+RvhQdJXc5qOXErhSlkhCtT+YHGF2364zxKOa933TNn44g0I0jNQYwTdIzKzL8
-         SLcnJ0pEk1i49hm2zhO4bDL1jnxdrd2TifhbjeRPsnrblapzTsR9QodgRi7eJRcVlT1T
-         EO5g==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=31tKxIamTKYA+kb9Yej+epsVr+m056uORYnUnfM4tIQ=;
+        fh=XgIqm8f/4rP5JqkRLrBgw7sDDwws/HvLfnTtZ8roUo8=;
+        b=eekwfJ40ZeE7OSi3L3Ylv+em6L3WUgNBR9+dUQbBEiyxUFrEXuJNV0trTEQP9Eixth
+         BPcjHortjzcf9ITNv5YnmmE6F+ikEb8ROxccy/jdgfj1qFZyR2NAlyG/AXZ5xCd+fxX9
+         OLR87O+sBYP/Y0Bbz6wouxJVCUgegvSzKCSqMDy1HOYFDsh9RJwqPe9KexyVVu9abhNJ
+         XyF8gsT/gDA5lsy+OoRV7PQWJGdmQ67yLoOw2zgjbV64vx425mr/xp5eIlLMZveb5bPS
+         GNE43e+gsXBWYKXNhBfoluNO6vMBnbgcB8W9QSGjtsrKw6n35dm1Fmh8HPI9kpRiUwuI
+         AOBg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772004974; x=1772609774; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=cPsEREjpbbRl+Ykcb3p5rXFShnBdQuEGwwIZOOJ5aCo=;
-        b=PUG0fwgplVBzSMC2G2vQcXHqb6X/6eDcrRJdxegwb+lxeVbWESdRNczbsXGyZOA+zD
-         ZSM6t/28ah8E7kaHKovf8z1mtBKT7t+GgLFtBx3mUrvbD5U9SarbLPyczDV9611so0uz
-         LPoRafj2E4W7HflbslC5IUoim3oNT+ra8ZpkupeAeIl/io25q3akz4y/bb2CFIg8EqCR
-         Y3De+1SMPE6MfKtTKxNs6VwRjDBVsL1GkuETnScJsy0H/i1cQSQoqfZ4Wsve52nPb7EO
-         VEn5vrlI/yy+ylH+mEFm8a2p2omh6i9V14vB1UCwroCPSzUOtryW/RyxV3gNsM30T7T2
-         JYDg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772004974; x=1772609774;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1772005407; x=1772610207; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cPsEREjpbbRl+Ykcb3p5rXFShnBdQuEGwwIZOOJ5aCo=;
-        b=pEo6yxg+kcooIFrdfTrai2svOVUcSUjRHV3X3RAXFqN68Tgf6Q/B7DaqaI7HeKgqe/
-         DAwmrLElEuMqh9mbNEFzPqVnot+lUMn2gz3ebYCS1pGKPZyh54/Xhk5iQyQFIfpVvJCy
-         dlWNuGTgHPLye75/34LDu2LcFnomfy4PudYZqX+f9oLBu1ZnbfpFzWfSfo1DDP0/riSC
-         rjqfgYogbEKPTxIIoEbg+SUAF+LiGpIiFFEESFBdnSWTpUq22rMWjvcfBZwOZ++hP6wX
-         vQxYMojRIxjPjwhJJGPz6MXOFURMVF26g9LgEyq9kruwDB7/LBfdy4wS5z5VeGkqcwN4
-         wKVg==
-X-Forwarded-Encrypted: i=1; AJvYcCVJAGDr6USZifOiLttTRKV6CXe5MZ4RnED/YNq+PqYJuqYq+aXMrM2f4rgnEZ/SLkAQfQOywdM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFuVKbeLoOxWth6VgA+rHkzQWreNq4dZcb6LnJwIng7b6DyAiV
-	azk9/bzgHunRVgSzCKKjM0GherlRcHmYvSAztCLRJkwx0KSZqqa2mxJOdRb1IMbQ3hhVk3M0iJY
-	YoTAVajHHNm+IQY7PibnZUMurIZ5U8jY=
-X-Gm-Gg: ATEYQzxvbqwU6EBIXsExL0XSstm96qxNsqlWzTY8pCbGlNjTwCxkZKpdxd1b0+w3zXI
-	xvr/wtZ4rTXXiGe0+uQvuhO6i7WIeJMVIWv6xf1khQzfVfgqBhgRev6ROT7/xYnyY5aYW9PZaKV
-	KvcnZvMPRwApT7cOObIeha0g0rMyG1pRans+J3pFxP4R/zOSaMKD+a/mY6YoKqHqTL4gHdYTvl1
-	Zd2aAbpLUPjVDKkX7cWk9v6zPz0oak1v8mhPMNaRAOs1BuDpITfaxbPRE83dRwqmcUyWvLJKyaF
-	CGRnOQm6gFLawUo=
-X-Received: by 2002:a05:6000:438a:b0:437:6661:fcc9 with SMTP id
- ffacd0b85a97d-4396f17d264mr27401304f8f.50.1772004973270; Tue, 24 Feb 2026
- 23:36:13 -0800 (PST)
+        bh=31tKxIamTKYA+kb9Yej+epsVr+m056uORYnUnfM4tIQ=;
+        b=2a7lISA9mMWG7B2HSe+/iD0XEsgdG4WXd3QQlLKDdcHl40hC5Db9rPnhYxFJDlJh9X
+         c0PAUUJJI1tDYQNiO5gwbDx59duTy1PQTHv70LDt+DIal+zGGe8/4hmiZkhmGEr5Te9p
+         sUxiTT5FPmv2jratSKV2OYE7ybcsJcNooXyQNMFmajFCVHqy3eItA7wCPnI3vPRJpmDS
+         sL7iEgwjguXXKiVjju+r6yIZKS+E1kkkdFAfIjUzK4GhtX6LDj7aDDh3WjwOKDMVc1ZX
+         ZzVUGjncNWrR7lybLjRqN2hHwT0puidEV6R9idUk/KeEe0CMgTI/SAvUqhPQSfTlIcfV
+         nIQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772005407; x=1772610207;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=31tKxIamTKYA+kb9Yej+epsVr+m056uORYnUnfM4tIQ=;
+        b=FIdtKqKbFS1RacKKMpvmgr3nfgSLP3Iym53zukmeNiAxLGUXBkpa+Y+4SwLLGD+U+B
+         CB7zwR/1ZQfnEj/iOvR8iw3e57Xag+2Ifk5VJ2x+4nD6YXYUfdC6WpsaYDzZJOAvHQ9l
+         HIjelMRKWHBlgfhaeK9Vsf9Keq3GsMD2X1novZYBkXAPKYTfWjXbsD/UYntD3n/aHdrg
+         yS7CcwtMpHRsgbBvVoAEX5gSRMaLjQNDqebjB3mWhMquH4bwkB31CjOJOGHO8MwDTz1e
+         jHqdkGwPrKAz0T0GArcocATGm5UKt054Cs7ZJb9PmxDlZtvM0Gcmvoy/TYQhGnDQU7l2
+         vL6A==
+X-Forwarded-Encrypted: i=1; AJvYcCVxKUx1eAgOoZHnmnoKBF1CastL6D1utuj4OErtR0Jg//SLCzxHg9xJ9wP1JJdKVlYBXEFoHlw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrX9LuAEPOzt1/BNTMI4GsWx76yUHqVfgrxD92z1r1VOt9Wudk
+	RlbylsCgCSzlgll3ozeYG6BsuIAboocYmuHsASi+SZ+mOxCrM31Nu86K1pgTI349D0730vYvmcw
+	fuXgHz46iz0+pRXzgjOIw9js2HZiL9CUXnQUdV3kS
+X-Gm-Gg: ATEYQzwY5m7TURUBuvlhhCJoOPpYNLLgp1QjvZXPfSwpOSid/muxrWyQxyKzXgq2WN2
+	5VMh6NliqcZ9OAsJthquys5D+7846Kf/hbxzFCIlQ1ZhWQ9NS+xQ22jE2EO0dIEnucfSc+uq8ru
+	yeDW4AS5JInTx4eUJ2zjL2jzuw236ks8+EhJDB38j2t2ikVE2dMPek4fN3I3giVMXsE6lrGGfPO
+	VrkjAX6/Rc6SwZdNqIadKUFdN06xY380iRICvaAeuZZ6vkbjvg40zfy//bdwc/eG7qL9GbzzyYw
+	d/rLWR1gQgZ2sEJ4bYLHqHKX92OH8HcDEozcL9P99BKRps1D4p3I2AlLLDlgh2jYKM4S16ZN
+X-Received: by 2002:a05:7022:6724:b0:119:e569:f61b with SMTP id
+ a92af1059eb24-12781df5bc9mr599957c88.20.1772005406674; Tue, 24 Feb 2026
+ 23:43:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPh3n803k8JcBPV5qEzUB-oKzWkAs-D5CU7z=Vd_nLRCr5ZqQg@mail.gmail.com>
- <95ccf5a6-975b-4543-80a3-595f1ee20543@redhat.com>
-In-Reply-To: <95ccf5a6-975b-4543-80a3-595f1ee20543@redhat.com>
-From: Daniele Palmas <dnlplm@gmail.com>
-Date: Wed, 25 Feb 2026 08:19:46 +0100
-X-Gm-Features: AaiRm53G8wva2-r8k7hpjoD_2UgFtTWerh0eqF47qBCR6-DpITxxvsKCTqNKHBU
-Message-ID: <CAGRyCJE85fLOahUR3PAUnS_jH4+qpBq37qpged=nvObbg1m+Qw@mail.gmail.com>
-Subject: Re: commit 662dc80a5e86 breaks rmnet over usb
-To: Laurent Vivier <lvivier@redhat.com>
-Cc: Koen Vandeputte <koen.vandeputte@citymesh.com>, oneukum@suse.com, andrew+netdev@lunn.ch, 
-	Eric Dumazet <edumazet@google.com>, kuba@kernel.org, pabeni@redhat.com, 
-	netdev <netdev@vger.kernel.org>, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20260225033216.601205-1-edumazet@google.com> <CAAVpQUDMTefL+Rsb_9FnMFf5o8UsqhxpZ3Vgg56_TDQQbPHCRQ@mail.gmail.com>
+ <CANn89i+oE7SpzKq8cVw4J=0DTHvQt2Ou_v=cxmNKhCviK7fXRw@mail.gmail.com> <CANn89iKfD5-MZUcCFjnkWV1E=RwBVf6T+sSFRv+zEiAMEc46Sg@mail.gmail.com>
+In-Reply-To: <CANn89iKfD5-MZUcCFjnkWV1E=RwBVf6T+sSFRv+zEiAMEc46Sg@mail.gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Tue, 24 Feb 2026 23:43:14 -0800
+X-Gm-Features: AaiRm513VY2ZpjytvehcsVn7C9rFth2yqVf00mZMtSsAOzmmuozodI_ObzQ3EiI
+Message-ID: <CAAVpQUBMF5Awq_JRJTRrNMx5SrqFwrCHc2ySFw-4O6+QL2Zkag@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: use cmpxchg() in lock_sock_nested()
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hello,
+On Tue, Feb 24, 2026 at 11:29=E2=80=AFPM Eric Dumazet <edumazet@google.com>=
+ wrote:
+>
+> On Wed, Feb 25, 2026 at 8:23=E2=80=AFAM Eric Dumazet <edumazet@google.com=
+> wrote:
+> >
+> > On Wed, Feb 25, 2026 at 8:20=E2=80=AFAM Kuniyuki Iwashima <kuniyu@googl=
+e.com> wrote:
+> > >
+> > > On Tue, Feb 24, 2026 at 7:32=E2=80=AFPM Eric Dumazet <edumazet@google=
+.com> wrote:
+> > > >
+> > > > Add a fast path in lock_sock_nested(), to avoid acquiring
+> > > > the socket spinlock only to set @owned to one:
+> > > >
+> > > >         spin_lock_bh(&sk->sk_lock.slock);
+> > > >         if (unlikely(sock_owned_by_user_nocheck(sk)))
+> > > >                 __lock_sock(sk);
+> > > >         sk->sk_lock.owned =3D 1;
+> > > >         spin_unlock_bh(&sk->sk_lock.slock);
+> > > >
+> > > > On x86_64 compiler generates something quite efficient:
+> > > >
+> > > > ffffffff81e96100 <lock_sock_nested>:
+> > > > ffffffff81e96100:       f3 0f 1e fa             endbr64
+> > > > ffffffff81e96104:       0f 1f 44 00 00          nopl   0x0(%rax,%ra=
+x,1)
+> > > > ffffffff81e96109:       b9 01 00 00 00          mov    $0x1,%ecx
+> > > > ffffffff81e9610e:       31 c0                   xor    %eax,%eax
+> > > > ffffffff81e96110:       f0 48 0f b1 8f 48 01    lock cmpxchg %rcx,0=
+x148(%rdi)
+> > > > ffffffff81e96117:       00 00
+> > > > ffffffff81e96119:       48 85 c0                test   %rax,%rax
+> > > > ffffffff81e9611c:       74 33                   je     ffffffff81e9=
+6151 <lock_sock_nested+0x51>
+> > > > ...// slow path
+> > > > ffffffff81e96151:       2e e9 19 c4 33 00       cs jmp ffffffff821d=
+2570 <__pi___x86_return_thunk>
+> > >
+> > > Wow, this is interesting !
+> >
+> > And using try_cmpxchg() might remove the "test %rax,%rax" after the
+> > "lock cmpxchg"
+> >
+> > >
+> > > Should we use __SPIN_LOCK_UNLOCKED() for the old
+> > > value too ?  Looks like parisc assigns a non-zero value for it.
+> > >
+> > > arch/parisc/include/asm/spinlock_types.h:5:#define
+> > > __ARCH_SPIN_LOCK_UNLOCKED_VAL 0x1a46
+> > >
+> >
+> > I will take a look thanks !
+>
+> WIth this diff on top of V1 we indeed remove one test.
 
-Il giorno lun 23 feb 2026 alle ore 15:08 Laurent Vivier
-<lvivier@redhat.com> ha scritto:
->
-> On 2/23/26 13:04, Koen Vandeputte wrote:
-> > Hi Laurent,
->
-> Hi Koen,
->
-> > I'm testing the latest openwrt state and found an issue probably
-> > caused by your usb mtu limit patch :-)
-> >
-> > I'm talking about this one:
-> > 662dc80a5e86 ("usbnet: limit max_mtu based on device's hard_mtu")
-> >
-> > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.12.74&id=662dc80a5e86b35bbf339e0b87b7cc3f07c09de1
-> >
-> >
-> > When using wwan0 iface normally, this makes sense, but the problem is
-> > when using QMI modems combined with the rmnet driver and aggregated
-> > frames.
-> >
-> > - The modem is configured to frame sizes of 16383 or 32767 using QMI
-> > - wwan0 (using qmi_wwan) is configured to match this frame size by
-> > setting it's MTU to the same value
-> > - Frames of this size are sent over to qmi_wwan driver (containing
-> > multiple data packets)
-> > - Frames are then forwarded to the rmnet driver
-> > - Frames get de-aggregated here and sent to the network stack for processing.
-> >
-> > The reason here is to reduce USB transfers heavily.
-> >
-> >
-> > As you see, it's perfectly possible here to use very large MTU sizes
-> > as the aggregation feature by rmnet relies on this.
-> > Also the modem can be perfectly configured to send very large aggregated frames.
-> >
-> > After your patch, wwan0 is limited to 1500 bytes it seems, effectively
-> > breaking aggregation.
-> >
-> > On my tests, download speeds are reduced from >300Mbps to ~.8Mbps
-> >
-> > I also made a build reverting this patch and all works well again.
-> >
-> >
-> > Is there any other solution to fix this?
-> > I guess it should be reverted otherwise :-)
->
-> It's weird to be able to set an MTU that is not supported by the hardware.
->
-> To restore performance I think the rx_usb_size should be decoupled from MTU max in qmi_wwan.
->
-> Could you try something like:
->
-> diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-> index 3a4985b582cb..6b4796fac692 100644
-> --- a/drivers/net/usb/qmi_wwan.c
-> +++ b/drivers/net/usb/qmi_wwan.c
-> @@ -788,6 +788,8 @@ static int qmi_wwan_bind(struct usbnet *dev, struct usb_interface *intf)
->                  usbnet_get_ethernet_addr(dev, cdc_ether->iMACAddress);
->          }
->
-> +       dev->rx_urb_size = 32768;
-> +
+Cool, I was wondering why the test was needed and
+understood it was just to clear ZF which we can reuse
+with try_cmpxchg() !
 
-So far userspace tools (e.g. also the most important one which is
-ModemManager) rely on changing the rx_urb_size by changing the MTU: I
-know this is ugly, but it is a behavior that has been there since a
-lot of time, not sure how many tools based on this assumption could
-break.
+With that diff:
 
-There's also the chance that there are modems which require a higher
-rx_urb_size, so having this fixed could not work well.
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-Unfortunately usbnet serves many drivers, I agree with Koen that a
-revert is the safest option.
+Thanks!
 
-Regards,
-Daniele
-
->          /* claim data interface and set it up */
->          if (info->control != info->data) {
->                  status = usb_driver_claim_interface(driver, info->data, dev);
 >
-> Thanks,
-> Laurent
+> diff --git a/net/core/sock.c b/net/core/sock.c
+> index 2a03d1432111f2dcea9d700f80efb7b0bb4a47d8..86185f194d64b4eea0835ee0f=
+9b53fda184c73cb
+> 100644
+> --- a/net/core/sock.c
+> +++ b/net/core/sock.c
+> @@ -3782,11 +3782,14 @@ void noinline lock_sock_nested(struct sock
+> *sk, int subclass)
+>         might_sleep();
+>  #ifdef CONFIG_64BIT
+>         if (sizeof(struct slock_owned) =3D=3D sizeof(long)) {
+> -               socket_lock_t tmp;
+> +               socket_lock_t tmp, old;
 >
+>                 tmp.slock =3D __SPIN_LOCK_UNLOCKED(tmp.slock);
+>                 tmp.owned =3D 1;
+> -               if (likely(!cmpxchg(&sk->sk_lock.combined, 0, tmp.combine=
+d)))
+> +               old.slock =3D __SPIN_LOCK_UNLOCKED(old.slock);
+> +               old.owned =3D 0;
+> +               if (likely(try_cmpxchg(&sk->sk_lock.combined,
+> +                                      &old.combined, tmp.combined)))
+>                         return;
+>         }
+>  #endif
 >
+> 00000000000077c0 <lock_sock_nested>:
+>     77c0:       f3 0f 1e fa             endbr64
+>     77c4:       e8 00 00 00 00          call   77c9 <lock_sock_nested+0x9=
+>
+>                         77c5: R_X86_64_PLT32    __fentry__-0x4
+>     77c9:       b9 01 00 00 00          mov    $0x1,%ecx
+>     77ce:       31 c0                   xor    %eax,%eax
+>     77d0:       f0 48 0f b1 8f 48 01    lock cmpxchg %rcx,0x148(%rdi)
+>     77d7:       00 00
+>     77d9:       75 06                   jne    77e1
+> <lock_sock_nested+0x21> // slow path
+>     77db:       2e e9 00 00 00 00       cs jmp 77e1 <lock_sock_nested+0x2=
+1>
+>                         77dd: R_X86_64_PLT32    __x86_return_thunk-0x4
