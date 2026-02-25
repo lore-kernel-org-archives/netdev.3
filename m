@@ -1,164 +1,104 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80DD02C11EF
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 09:21:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD2EE38E10B
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 09:22:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772011310; cv=none; b=CpwODWu0c1iqwLpQs7zSULL81Q8GSER7ex335XkwAM/xsUFJ2x7vGgjJeCqZZiw62PoTVHHbU45GFx/Rz12u0kIAlMKzkvEfPfCUGhUeIZrwcvs4eI+wr4v/km8m9UnlAnfT+1ThaEQ349rz+22HYAM3y3iY0PeGJjWzeh267Aw=
+	t=1772011333; cv=none; b=fXQnHHkbnB9d30oH9ahuNF5IacdyoAWvS4uMvwUE/43ryZPkbBQn7ovEDRSh6vXqH44CNhlxT9MEKm5CTklgavHOoXDhoO5DW1zA+Olh+e/cZu5xgTqj4KtAMKO4CCoqQoUOz0fiUC5vSiWevEVBlwGKz6mSW+I76KCDv9y80v4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772011310; c=relaxed/simple;
-	bh=uR+FHRvgMS0My+A8b/hXZJBomP/5mjTDYeDFN34P1jw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MMOccq3IGV1k94ZEmtY1JzyVvrtu6lgkRu/wakVeLRUqKeHySaS/y8Wks12UnxwHuPPY4LlqfGarIrpu61osf8pi53oCDT4TMGIWOOszofoqqoijqB55wZA91rhwUR/GS8+GxqwTufLjZI+MfKzVG4gK+3Zng4C6E11hbzziSlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RNLmZjpT; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772011333; c=relaxed/simple;
+	bh=usJdWGjdVWHyoeOFLpeq87JVlSPKqO+60Ixrrf+Cd2w=;
+	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To; b=HtFibpqwL21fVN6JeKCxjSWDV7TTui70Vkee8bP2ektDR6GF1PRNVmRwGsuoF9dekAepLZogl0JyeTDGeY66jdRcZdYwiBaChAwqT8JIZQANzIJSi2d4qgsJpSFnS5iU5WAdzey2KnFhXKPI66HGmsxZF8FJNynf4xquFJkRAds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=yWlss9bZ; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RNLmZjpT"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-483703e4b08so5692625e9.1
-        for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 01:21:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772011306; x=1772616106; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=36E00Mt78zkDakn20fS4QqpcK/9dmMkZpzDB/+zMCj0=;
-        b=RNLmZjpTZ1nJkiGGYtKYUJT1zqnQYvOkjqcAhIaEmpn5vOMxZOhhqtrnhCoB16a8Xf
-         Yhkn2cHmkiEJJB6bdcbEa/oUdpPS2s2jCXkRkZnyRAi0RQ/rPDrpHqc4kCdtmdLXgvoY
-         UXubk99tNAZmCXwg8BDGpJ2Z2dsEbPRJ7lM1UI64gU7MahTl0X6SJb7qx4k34QSS42Ym
-         I+CgzbCQ4aJrsVEkECoA++dOkg5wa97S7QIMAR/peGlsJveet/cBnggVBdyICMZgUus6
-         lPBHT7Jg7/Tl0jkKi7cUSVTad0q5Us7avqg632iTthZaMknShPRA2P+EFxjTWB+BEDTi
-         CRFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772011306; x=1772616106;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=36E00Mt78zkDakn20fS4QqpcK/9dmMkZpzDB/+zMCj0=;
-        b=k9IUgu/4SPk8CyM/fXKXPF8XCYouYMlyZxh51AIzDKthTnMBVqLEQcQJywipAX6UXl
-         AM7XefFN4gTRYyrXxtljLYC7u1E4jkde3n7XVXC5v4aeJeyWc3rGUGhuqrC7ehgWIhEn
-         iePuDp72T+zYgLCV3eDWfMlRiphZYiKchLaLCju2MbBj4Q1qwnA07cc2Ecb/zcSwAsmO
-         7EYRUAf+IlW6nbTUnveYjfIRPwEehkkLpKc3deMErL4qt40HCJ6umupnQPqxnAwGnrWx
-         T1DbhrgcISOG5SwOyjKyreLaLJInKf4sbjf5DsQwVJ0BPIggu03/ApFMUrdFF0bXBOZn
-         uKwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUxzgxVxBkqQZmAOB8KeUEZ/HgeQqkxyl5/txp1N2jqekW4AeR79+o4Id253AOlBHInRZnqHi8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQTgvIp4D0eUp50XwOYHBM8Gor0TBGyeK60+RZnl8xzWnYKwph
-	1CpadJGGXKyDyc/7/6Gseozy/wy/LVhn/P44Cd+aYhnnSGASDQgmnOBo
-X-Gm-Gg: ATEYQzxRAJ95hW1qGAParUjEIeLf2s7qKn+5R+83v6fOpI2n1NFNq4ESi1Vjss19yEq
-	cVAERQiA/02W6nWq66l0fuPl5CQ3Wdpv0ZzCfWvXhQVWhMfxMNIClYY1pg9hc5Vl4nUmYLftoul
-	kwa7sX0KjVPHevnY7eIeaoZ3QYDv1br7vp46pSLSmx6b5lajMex/WhQaqnnVOdI0Rn+BFFX2gMZ
-	wda28iCRb1ODrjGFISt6aHU3N7KCE2XAcI1nYsvcOwh+3JuJ9CRi8WFk+YDBSMikp5KIn2oWM8A
-	Pdq0Yv5kV+JB6bgr0JNuclXy57s3FR+fepJR5tuWGXELwRErr7gPU7qd1e4eCixjvieho5YcJCy
-	N5/2/D31LsddaESRiXKBmAsZMPJ4EDCyCJbDmGiLb4bCmfI0XGc94POlGz3wb1bXDcNQNcJTTHd
-	zTIb75+sGez/h1AWTJjB4v53wGX1JPIwxvCC/0MdfJOLXcQoKc0a+aR+2RMqaG852f
-X-Received: by 2002:a05:600c:3652:b0:477:991c:a17c with SMTP id 5b1f17b1804b1-483bd726fc9mr35770595e9.6.1772011306218;
-        Wed, 25 Feb 2026 01:21:46 -0800 (PST)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d4c60bsm32005302f8f.27.2026.02.25.01.21.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Feb 2026 01:21:45 -0800 (PST)
-Date: Wed, 25 Feb 2026 09:21:44 +0000
-From: David Laight <david.laight.linux@gmail.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski
- <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com
-Subject: Re: [PATCH net-next] net: use cmpxchg() in lock_sock_nested()
-Message-ID: <20260225092144.40f64b6f@pumpkin>
-In-Reply-To: <20260225033216.601205-1-edumazet@google.com>
-References: <20260225033216.601205-1-edumazet@google.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="yWlss9bZ"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1772011322; h=Message-ID:Subject:Date:From:To;
+	bh=Jij/vp1VmGg7OCxxZ+6UMDbKQTv+EwP6Pty7TdVomV0=;
+	b=yWlss9bZB1aI9+tW0k6ICUYUgnMs0LTF+W2p5TCp91YEbokbqJQsir9sIU+/wKk7mab8rz63LoxjGIhIukf86PpKs31DtF2Fs1BVjHgsuh1cSSuSnVn34QwzmnBK//2HtFeBIj6O00umXmvGfT0pxO+O26uatGzJk/uu0TtC4SI=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0Wzm3MxA_1772011321 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 25 Feb 2026 17:22:02 +0800
+Message-ID: <1772010702.3747633-2-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH net-next,2/2] virtio_net: replace RSS key size max check with BUILD_BUG_ON
+Date: Wed, 25 Feb 2026 17:11:42 +0800
+From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To: Srujana Challa <schalla@marvell.com>
+Cc: <pabeni@redhat.com>,
+ <mst@redhat.com>,
+ <jasowang@redhat.com>,
+ <xuanzhuo@linux.alibaba.com>,
+ <eperezma@redhat.com>,
+ <davem@davemloft.net>,
+ <edumazet@google.com>,
+ <kuba@kernel.org>,
+ <ndabilpuram@marvell.com>,
+ <kshankar@marvell.com>,
+ <schalla@marvell.com>,
+ <netdev@vger.kernel.org>,
+ <virtualization@lists.linux.dev>
+References: <20260224065850.962826-1-schalla@marvell.com>
+ <20260224065850.962826-2-schalla@marvell.com>
+In-Reply-To: <20260224065850.962826-2-schalla@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Wed, 25 Feb 2026 03:32:16 +0000
-Eric Dumazet <edumazet@google.com> wrote:
-
-> Add a fast path in lock_sock_nested(), to avoid acquiring
-> the socket spinlock only to set @owned to one:
-> 
->         spin_lock_bh(&sk->sk_lock.slock);
->         if (unlikely(sock_owned_by_user_nocheck(sk)))
->                 __lock_sock(sk);
->         sk->sk_lock.owned = 1;
->         spin_unlock_bh(&sk->sk_lock.slock);
-
-There has to be a better commit message that just quoting the old code.
-The whole thing is quite subtle.
-Not helped by the 'helper' sock_owned_by_user_nocheck() obfuscating things
-and that __lock_sock() is 'wait for socket to be unlocked' and doesn't
-actually lock it at all.
-
-	David
-
-> 
-> On x86_64 compiler generates something quite efficient:
-> 
-> ffffffff81e96100 <lock_sock_nested>:
-> ffffffff81e96100:       f3 0f 1e fa             endbr64
-> ffffffff81e96104:       0f 1f 44 00 00          nopl   0x0(%rax,%rax,1)
-> ffffffff81e96109:       b9 01 00 00 00          mov    $0x1,%ecx
-> ffffffff81e9610e:       31 c0                   xor    %eax,%eax
-> ffffffff81e96110:       f0 48 0f b1 8f 48 01    lock cmpxchg %rcx,0x148(%rdi)
-> ffffffff81e96117:       00 00
-> ffffffff81e96119:       48 85 c0                test   %rax,%rax
-> ffffffff81e9611c:       74 33                   je     ffffffff81e96151 <lock_sock_nested+0x51>
-> ...// slow path
-> ffffffff81e96151:       2e e9 19 c4 33 00       cs jmp ffffffff821d2570 <__pi___x86_return_thunk>
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+On Tue, 24 Feb 2026 12:28:50 +0530, Srujana Challa <schalla@marvell.com> wrote:
+> Since NETDEV_RSS_KEY_LEN was increased to 256 in net-next, use
+> BUILD_BUG_ON to enforce the limit at compile time and remove the
+> redundant runtime max check.
+>
+> Signed-off-by: Srujana Challa <schalla@marvell.com>
 > ---
->  include/net/sock.h |  9 +++++++--
->  net/core/sock.c    | 10 ++++++++++
->  2 files changed, 17 insertions(+), 2 deletions(-)
-> 
-> diff --git a/include/net/sock.h b/include/net/sock.h
-> index 55b61e4b0d8318887d527e919fc1103d78ac6d14..84c21fb38a28406e387dc33e0fb5decd18893950 100644
-> --- a/include/net/sock.h
-> +++ b/include/net/sock.h
-> @@ -81,8 +81,13 @@
->   * mini-semaphore synchronizes multiple users amongst themselves.
->   */
->  typedef struct {
-> -	spinlock_t		slock;
-> -	int			owned;
-> +	union {
-> +		struct slock_owned {
-> +			int		owned;
-> +			spinlock_t	slock;
-> +		};
-> +		long	combined;
-> +	};
->  	wait_queue_head_t	wq;
->  	/*
->  	 * We express the mutex-alike socket_lock semantics
-> diff --git a/net/core/sock.c b/net/core/sock.c
-> index cfb2a6209946089669882cdbd5d1b36c53838989..2a03d1432111f2dcea9d700f80efb7b0bb4a47d8 100644
-> --- a/net/core/sock.c
-> +++ b/net/core/sock.c
-> @@ -3780,6 +3780,16 @@ void noinline lock_sock_nested(struct sock *sk, int subclass)
->  	mutex_acquire(&sk->sk_lock.dep_map, subclass, 0, _RET_IP_);
->  
->  	might_sleep();
-> +#ifdef CONFIG_64BIT
-> +	if (sizeof(struct slock_owned) == sizeof(long)) {
-> +		socket_lock_t tmp;
-> +
-> +		tmp.slock = __SPIN_LOCK_UNLOCKED(tmp.slock);
-> +		tmp.owned = 1;
-> +		if (likely(!cmpxchg(&sk->sk_lock.combined, 0, tmp.combined)))
-> +			return;
-> +	}
-> +#endif
->  	spin_lock_bh(&sk->sk_lock.slock);
->  	if (unlikely(sock_owned_by_user_nocheck(sk)))
->  		__lock_sock(sk);
+>  drivers/net/virtio_net.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
+>
+> diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+> index eeefe8abc122..768ad5523dfa 100644
+> --- a/drivers/net/virtio_net.c
+> +++ b/drivers/net/virtio_net.c
+> @@ -6639,13 +6639,7 @@ static int virtnet_validate(struct virtio_device *vdev)
+>  			__virtio_clear_bit(vdev, VIRTIO_NET_F_RSS);
+>  			__virtio_clear_bit(vdev, VIRTIO_NET_F_HASH_REPORT);
+>  		}
+> -		if (key_sz > NETDEV_RSS_KEY_LEN) {
+> -			dev_warn(&vdev->dev,
+> -				 "rss_max_key_size=%u exceeds driver limit %u, disabling RSS\n",
+> -				 key_sz, NETDEV_RSS_KEY_LEN);
+> -			__virtio_clear_bit(vdev, VIRTIO_NET_F_RSS);
+> -			__virtio_clear_bit(vdev, VIRTIO_NET_F_HASH_REPORT);
+> -		}
+> +		BUILD_BUG_ON(type_max(key_sz) >= NETDEV_RSS_KEY_LEN);
 
+Do we really need this check?
+
+If I understand correctly, the intention is to cap key_sz at 256. However, since
+key_sz is of type u8, its maximum value is inherently 255, making this check
+redundant. This is not only limited by this kernel code, the virtio-net spec
+defines this.
+
+Moreover, if NETDEV_RSS_KEY_LEN is ever reduced to a value smaller than 256 in
+the future, this check would no longer enforce the intended limit correctly.
+
+
+Moreover, you should add a cover letter.
+
+Thanks.
+
+
+
+
+
+>  	}
+>
+>  	return 0;
+> --
+> 2.25.1
+>
