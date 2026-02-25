@@ -1,82 +1,77 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E92E33B96F
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 13:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1AF13C1990
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 13:44:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772026933; cv=none; b=U/dmq7ijFCY7MQ/q61+RHwDBpgTMeH3h5cxEVjEpXm8qwRTuaf1qJDLQHcJqp29ZznVwRASVPgP1ejdS/XFIHrVs6VwlRHh/Kw17nMAQPK7uzmRnP0RQ4G+gJRCvo+w8SxlR0vhiMN1qUejQBjdFJF+y3godOdVTJk5AbHy4/ms=
+	t=1772027048; cv=none; b=kQFiDQEuKa8ZJWp+T+ROer4Fc8Xks31MqWDu5oXSNB0sgRwHPn3xPhb2w9/kvdkKQYgvrcbJ1TKfrGgqLAoVg2datssrI8fVzLAYRMSx8MfxKLjhQyrAS+/zIbDZJ/1ezhKIDwWQeFCrgWBfZIaBeFBYjD5LFceWxLm1Cn//Rds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772026933; c=relaxed/simple;
-	bh=yxVFLdm33KsMlSlc4xGhy4Xh/lIXe6ydeFC0jS8Q6kQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eDjeGGoUQ3QO2bASxbxowR0avxT++GenHBcfgwmgk68Gw+l7nkWA1aazTX3K+rYTJatMwpLPENMhb1guILpgfhzpWxp6ztJqmlJZlz0u4EZECF4fDLMjEwrCQrVTD38jwQfSo4PTdI7SSZNcAsHXy9xMavSfBvbnk5rbF72Z7MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=PIL01JTb; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=nZGbCDTi; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=fy9FwyIk; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Y7CFRDk1; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1772027048; c=relaxed/simple;
+	bh=Tv8D3ooWHsrrQJZJU6Zs5IraaN6Rhqt7asbjzaLch48=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QRQh/kvB/B36ZTO/jHxpAWkWMUvtxVCo66SrV26cFChxmOwp9Teei7uey05ksqZ/4XVEbAHLQEFPP+6cJAUkLAZ6pH2Q/LnKP0UtirnZZtbDEjelScXFvGZBgIkROucKwEj0j2v5d0KgMAqIec/1G0X5Ph+iqzfP/sXo0NW2rlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=i4C2PrQr; arc=none smtp.client-ip=209.85.221.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="PIL01JTb";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="nZGbCDTi";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="fy9FwyIk";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Y7CFRDk1"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 64D215C66C;
-	Wed, 25 Feb 2026 13:42:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772026929; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=uWvR7N40cFYsmM/FHVHwZttrkmyobfSR9FBNswNUI7M=;
-	b=PIL01JTbQaVCYz1Nvgm9iLleep96DQWVHgo2pyiB13eUlDW/uLlX04hynCKEKJ4I1uceau
-	ljsg5nTZ3/jm8kJOK76BXWd1lo8BQFUx6XnKpcOB7iypRTEWQjcMfFstmJcWv9OUlf1THP
-	SAEEq6BmdUokYb7JDAQkmLHABQ5Dhyw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772026929;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=uWvR7N40cFYsmM/FHVHwZttrkmyobfSR9FBNswNUI7M=;
-	b=nZGbCDTiOCZP3e7h1wGSL5n7VPeFam5MKT7gt2LT1+dN/Lo9BIK29PcpZMrHYncln1422f
-	0C4bbNHy+0Npq6BQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772026928; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=uWvR7N40cFYsmM/FHVHwZttrkmyobfSR9FBNswNUI7M=;
-	b=fy9FwyIkg1hwv9ycueKQhQhBUQ3rCR5bmeOfwr1U9dJm80FgEV0Yb5zMgwpPIch34ibrGv
-	wK7nd7XPSIA9bBW3+psu5WUEDp6Vx0WDmEiV2QHENkI0nZlyHlENYxXHEeXcQx92hEl5rj
-	31QUPQHGUACbGL0/6KKjTLYKRFg3hfc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772026928;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=uWvR7N40cFYsmM/FHVHwZttrkmyobfSR9FBNswNUI7M=;
-	b=Y7CFRDk16DY9Cd9G4/shl+DmoVrgVnToFDH9yfgyJJX7CjuJjlK9yUGGxpepbsnNHY0dM9
-	cWntorKS1OXJa7Ag==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C3F2C3EA65;
-	Wed, 25 Feb 2026 13:42:07 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id +zSbLC/8nmnwJwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Wed, 25 Feb 2026 13:42:07 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: horms@kernel.org,
-	pabeni@redhat.com,
-	kuba@kernel.org,
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="i4C2PrQr"
+Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-56636dc53a6so2280876e0c.2
+        for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 05:44:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1772027046; x=1772631846; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vuB5WURp7hHKc2L/wHlQOaLe5kBJBFcQNgXO3P8yPlc=;
+        b=i4C2PrQr8Tjgi9TH4oU4tNwDrye1t59p/MttTHR7Djs32QJhaIsaXj+G/Ko5DaTcZG
+         VV69rkOX4286DbkJ20ijZ31XgNqMpC5dU9aQ/TU6/P0MIhwQPnW9rRJ+Hw0WA8rxURdq
+         SY4drUMKb4IOrKNXkSHj1nRwVZedpG+OTQaC4Zmd0Ho490PkPFgqbwobnzHhdCGagoUp
+         4EXubLKboxXoqa02dVvw5aV+MkG7Hk00Jxp6W6TH/dCozCwe0a7aI5dVGPs4DSTtMrTs
+         BO+c6ABIsnMBGAzUcCUBZ191l6b6+xXi2pS6wsSii3ZUrXPLUOD62W/A9v7utXqtWPV9
+         3Apg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772027046; x=1772631846;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vuB5WURp7hHKc2L/wHlQOaLe5kBJBFcQNgXO3P8yPlc=;
+        b=YHs6pKC0A+YuTHGzvWFqa9Un4dSvCnq6wb3Gg+CMtZ6uYKulskiolfP19cAPmlaDTo
+         CH7ArMbQxmxWIYXwyMXtNagzpN0gd5vKqyqtuMTMpP7Rr2nqo2/ej+10KUudmSlYv+Lf
+         gTu2jzjIxDhwAsgMMgVwHns0WF2XRlIILzKosnLcX90KAYSbjbX1uxai2DfOJ5DJu4Wg
+         CVM8KpFOWH/jt7XDQvqcM4+msta/YjBM96zVuFg6U/zy0i25D56AkDCNr9PVkoSslBA1
+         TmcMtgNxnDUKcwjO9jNLiB8kmI7jT+eGVCS/MtXq9lqoeqlwq9PuulmkzpEMrQsRZXTq
+         az3Q==
+X-Gm-Message-State: AOJu0YztvYXADptAVxlYob3XhIfaYX1lvtlSViYha2A88soFwLLeg3Ml
+	o5/e7R97B5fMmXFqOjlTYRqSAhhXO3jVcwx3HR/LYsihzfX5og202T01CWOwwL2Ljg==
+X-Gm-Gg: ATEYQzwpsEyfmoXDqTDf7v8AiJqFzHFd1YPJY95WJ+YnUIFLNB88rKixbFzwugY23lR
+	R1UHzkv8nDJAr+kpYqUAKUK0KC36vYw44bYGXhe9iKmUO6YQxAoqxN2/KeQXWIqgBUfKs6zR4UG
+	0Dq1brYfNmyDVD8IiH6BtObHHGni3WIj5IjB2cjR2ocDxcQTLPlb4S14dQX+PX11lpOLwAjntEJ
+	me3cDpum+DWcVtLkKeYXlWRVw/N36nEYbV62jHvBDirxXK72SoDGf3lnZRRXsU3GUV+A9KhwgUM
+	2Z+Ppo4Xte9/ld+lB89bk1S70OE1F0U7HDgKL308HAPmXACxGxrG03PMzwba6zBP42GKqzD52U5
+	vQaqjM/ruyPzFqyyiNpAbD8qJVkmxkrsDp9hldqZ/p0jAkFalI1nbTq++6a1d28H3WkqF445zKl
+	TpT8rYKSE=
+X-Received: by 2002:a05:6122:318b:b0:566:eb31:4713 with SMTP id 71dfb90a1353d-568e4867e06mr6015124e0c.9.1772027045652;
+        Wed, 25 Feb 2026 05:44:05 -0800 (PST)
+Received: from exu-caveira ([2804:14d:5c54:4efb::1c9d])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-568e57d42fbsm15971517e0c.6.2026.02.25.05.44.00
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 05:44:04 -0800 (PST)
+From: Victor Nogueira <victor@mojatatu.com>
+To: davem@davemloft.net,
 	edumazet@google.com,
-	dsahern@kernel.org,
-	davem@davemloft.net,
-	Fernando Fernandez Mancera <fmancera@suse.de>
-Subject: [PATCH net-next v2] ipv6: discard fragment queue earlier if there is malformed datagram
-Date: Wed, 25 Feb 2026 14:37:58 +0100
-Message-ID: <20260225133758.4553-1-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	jhs@mojatatu.com,
+	jiri@resnulli.us,
+	horms@kernel.org,
+	taoliu828@163.com
+Cc: netdev@vger.kernel.org,
+	pctammela@mojatatu.com,
+	km.kim1503@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH net 1/2] net/sched: Only allow act_ct to bind to clsact/ingress qdiscs and shared blocks
+Date: Wed, 25 Feb 2026 10:43:48 -0300
+Message-ID: <20260225134349.1287037-1-victor@mojatatu.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -84,76 +79,89 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[]
-X-Spam-Flag: NO
 
-Currently the kernel IPv6 implementation is not dicarding the fragment
-queue upon receiving a IPv6 fragment that is not 8 bytes aligned. It
-relies on queue expiration to free the queue.
+As Paolo said earlier [1]:
 
-While RFC 8200 section 4.5 does not explicitly mention that the rest of
-fragments must be discarded, it does not make sense to keep them. The
-parameter problem message is sent regardless that. In addition, if the
-sender is able to re-compose the datagram so it is 8 bytes aligned it
-would qualify as a new whole datagram not fitting into the same fragment
-queue.
+"Since the blamed commit below, classify can return TC_ACT_CONSUMED while
+the current skb being held by the defragmentation engine. As reported by
+GangMin Kim, if such packet is that may cause a UaF when the defrag engine
+later on tries to tuch again such packet."
 
-The same situation happens if segment end is exceeding the IPv6 maximum
-packet length. The sooner we can free resources the better during
-reassembly, the better.
+act_ct was never meant to be used in the egress path, however some users
+are attaching it to egress today [2]. Attempting to reach a middle
+ground, we noticed that, while most qdiscs are not handling
+TC_ACT_CONSUMED, clsact/ingress qdiscs are. With that in mind, we
+address the issue by only allowing act_ct to bind to clsact/ingress
+qdiscs and shared blocks. That way it's still possible to attach act_ct to
+egress (albeit only with clsact).
 
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+[1] https://lore.kernel.org/netdev/674b8cbfc385c6f37fb29a1de08d8fe5c2b0fbee.1771321118.git.pabeni@redhat.com/
+[2] https://lore.kernel.org/netdev/cc6bfb4a-4a2b-42d8-b9ce-7ef6644fb22b@ovn.org/
+
+Reported-by: GangMin Kim <km.kim1503@gmail.com>
+Fixes: 3f14b377d01d ("net/sched: act_ct: fix skb leak and crash on ooo frags")
+CC: stable@vger.kernel.org
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
 ---
-v2: handle segment end bigger than IPv6 maximum packet length 
----
- net/ipv6/reassembly.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/net/act_api.h | 1 +
+ net/sched/act_ct.c    | 6 ++++++
+ net/sched/cls_api.c   | 7 +++++++
+ 3 files changed, 14 insertions(+)
 
-diff --git a/net/ipv6/reassembly.c b/net/ipv6/reassembly.c
-index 25ec8001898d..11f9144bebbe 100644
---- a/net/ipv6/reassembly.c
-+++ b/net/ipv6/reassembly.c
-@@ -132,6 +132,9 @@ static int ip6_frag_queue(struct net *net,
- 		/* note that if prob_offset is set, the skb is freed elsewhere,
- 		 * we do not free it here.
- 		 */
-+		inet_frag_kill(&fq->q, refs);
-+		__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)),
-+				IPSTATS_MIB_REASMFAILS);
- 		return -1;
+diff --git a/include/net/act_api.h b/include/net/act_api.h
+index 91a24b5e0b93..2ba40eb45aad 100644
+--- a/include/net/act_api.h
++++ b/include/net/act_api.h
+@@ -70,6 +70,7 @@ struct tc_action {
+ #define TCA_ACT_FLAGS_REPLACE	(1U << (TCA_ACT_FLAGS_USER_BITS + 2))
+ #define TCA_ACT_FLAGS_NO_RTNL	(1U << (TCA_ACT_FLAGS_USER_BITS + 3))
+ #define TCA_ACT_FLAGS_AT_INGRESS	(1U << (TCA_ACT_FLAGS_USER_BITS + 4))
++#define TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT	(1U << (TCA_ACT_FLAGS_USER_BITS + 5))
+ 
+ /* Update lastuse only if needed, to avoid dirtying a cache line.
+  * We use a temp variable to avoid fetching jiffies twice.
+diff --git a/net/sched/act_ct.c b/net/sched/act_ct.c
+index 81d488655793..7de6eb3ff53b 100644
+--- a/net/sched/act_ct.c
++++ b/net/sched/act_ct.c
+@@ -1360,6 +1360,12 @@ static int tcf_ct_init(struct net *net, struct nlattr *nla,
+ 		return -EINVAL;
  	}
  
-@@ -163,6 +166,9 @@ static int ip6_frag_queue(struct net *net,
- 			 * this case. -DaveM
- 			 */
- 			*prob_offset = offsetof(struct ipv6hdr, payload_len);
-+			inet_frag_kill(&fq->q, refs);
-+			__IP6_INC_STATS(net, ip6_dst_idev(skb_dst(skb)),
-+					IPSTATS_MIB_REASMFAILS);
- 			return -1;
- 		}
- 		if (end > fq->q.len) {
++	if (bind && !(flags & TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT)) {
++		NL_SET_ERR_MSG_MOD(extack,
++				   "Attaching ct to a non ingress/clsact qdisc is unsupported");
++		return -EOPNOTSUPP;
++	}
++
+ 	err = nla_parse_nested(tb, TCA_CT_MAX, nla, ct_policy, extack);
+ 	if (err < 0)
+ 		return err;
+diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
+index ebca4b926dcf..8c72faf3314d 100644
+--- a/net/sched/cls_api.c
++++ b/net/sched/cls_api.c
+@@ -2228,6 +2228,11 @@ static bool is_qdisc_ingress(__u32 classid)
+ 	return (TC_H_MIN(classid) == TC_H_MIN(TC_H_MIN_INGRESS));
+ }
+ 
++static bool is_ingress_or_clsact(struct tcf_block *block, struct Qdisc *q)
++{
++	return tcf_block_shared(block) || (q && !!(q->flags & TCQ_F_INGRESS));
++}
++
+ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+ 			  struct netlink_ext_ack *extack)
+ {
+@@ -2420,6 +2425,8 @@ static int tc_new_tfilter(struct sk_buff *skb, struct nlmsghdr *n,
+ 		flags |= TCA_ACT_FLAGS_NO_RTNL;
+ 	if (is_qdisc_ingress(parent))
+ 		flags |= TCA_ACT_FLAGS_AT_INGRESS;
++	if (is_ingress_or_clsact(block, q))
++		flags |= TCA_ACT_FLAGS_AT_INGRESS_OR_CLSACT;
+ 	err = tp->ops->change(net, skb, tp, cl, t->tcm_handle, tca, &fh,
+ 			      flags, extack);
+ 	if (err == 0) {
 -- 
-2.53.0
+2.52.0
 
