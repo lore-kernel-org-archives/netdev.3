@@ -1,140 +1,238 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C9D230BEC;
-	Wed, 25 Feb 2026 15:06:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFF03B8BD0;
+	Wed, 25 Feb 2026 15:07:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772031995; cv=none; b=KlyJjO0i8AHrWWTpNP6RpcT88/jrYIfFfsbrXfxBGa2r0mHG7aShoIjQBBuwpvE4mMTVlgk5E5qT70LsdhOa/VMUg5llY4LmpnZ4b0P4YgD3HC6p/+1cukE/1oPvprepm6lN9I2VB0Kazy9hGAdA/fCOZQjh0D2hVJinG0xa7kM=
+	t=1772032036; cv=none; b=e+LpCyZ1OWSe/rBMJXDQUGIoOQ5VfY1iMoEzKNeW3/MGscth4Q3xFu7OKKmHbhsc56oH7bJi7ZCIq9wazr8GBM5bLjwLSDORdkJD4+uQt2XMaJxR9UrTgIwUGuRIYXfWlsQuJ5nPUZT87d8qCG0LKPPYWDhBb7xZ5pB8rtSpqfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772031995; c=relaxed/simple;
-	bh=YVhG/CbLxWddfCPCFJoGp0XGnJSap4YFoLkT6WLPxsU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JjMtqyDTeyfrEpryz0ETB8o2yGoH+UhMNkRc8ZSiZ9L0l0TzdGkZKr/vAfAk/TVqekA9HUjcymMeH2v6aVS/RIfxyE/gW1yxdPf8YYSKJtVB+aUeXfiloDs5Zz0m8n30gOHPBlkZmYw5shNeB/XiTHN9KLHXZAv5xTcR+i4kYVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bk0g61NM; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1772032036; c=relaxed/simple;
+	bh=8or/mYqaq7JvRRiDNT5LccUd1wdBLjkN/BAK++WiMTo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PVX2O+6/XFhWyKoJUPO0ARbW/nuYbtXsX3/4+h3fRclAqPfMXDlbw8BtyH+RjmqZ6L5vfNmCAc/QaKsNXq+MlJZYBE0pmvO9usyelHJpzA6I1cnhS52FHIUfvpVjc9fRWVcjlspkqqE54lV9Fx/V8k4FBeopF4gQLnIKK+zBY+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ItNjkFQb; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bk0g61NM"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
-	In-Reply-To:References; bh=YyzqB3h3wj0ZFQ3tzFmvcazlJJUUMErmv5XYy62kmHM=; b=bk
-	0g61NMiMPoJtnnJ557M9Br6/jHR/Mr6nVb5h7XvsASx8ZkwzGIsUnkVgPe1lvxsDg7tZLxAXNt0Oj
-	oUgfj8fiDwEeK60PkbpH5si8iKCdaPO8QU+niL7my5aUksuMn4+FFPCyXe9YCXTp72uc6s7oobzuI
-	9DGLr1gnWEpVbjE=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vvGT3-008lGk-01; Wed, 25 Feb 2026 16:06:25 +0100
-Date: Wed, 25 Feb 2026 16:06:24 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: David Yang <mmyangfl@gmail.com>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/3] net: dsa: yt921x: Add port police support
-Message-ID: <a11993f5-144b-4c3e-863d-2e3104d41bf1@lunn.ch>
-References: <20260225090853.2021140-1-mmyangfl@gmail.com>
- <20260225090853.2021140-3-mmyangfl@gmail.com>
- <8be7610c-c606-4c7d-8c8b-b2873bed082e@lunn.ch>
- <CAAXyoMO7YS28fwAkf93qN8Bc45qE2M6N9OzzKW+wSTJ_ujeXnQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ItNjkFQb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772032033; x=1803568033;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=8or/mYqaq7JvRRiDNT5LccUd1wdBLjkN/BAK++WiMTo=;
+  b=ItNjkFQb2oRf+zEy5rndh3nMcq5DWcQz5cLQ4vyW3SG9uLYXCquAwELn
+   ggDCoTeZHzFSHsnSOOalnweRS0/qaPZ8flt7owY/Jvh5ZkBVDyJDazq3T
+   pHoRzHVuLkFvEzpMA6IQGT/5xwxErRVeHcTsbi7ESbPALDyzkil/8HR0K
+   HLLy2S6ctMuAt4By5R8e2Zp18/0hbtngIeYglfRXiRsBay9J/7XQ7AAv6
+   TdD/6bnPeR0Y8D7prKoujY7sW4rFwRuK3d4BOEcXnSZFV6Jugzs51qMqL
+   6hk7/3/PAHEU7yF0k7c7jKCpLpXDOeSFsAFOavTREsAShL0BODqHz7O65
+   g==;
+X-CSE-ConnectionGUID: L8/QBwydRHSlYikPYMe5Eg==
+X-CSE-MsgGUID: xQI2a/STTYuNGWO72+wFZQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11712"; a="73247475"
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; 
+   d="scan'208";a="73247475"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 07:07:13 -0800
+X-CSE-ConnectionGUID: Q9X9IRVLS/mC//eGSTX1qQ==
+X-CSE-MsgGUID: vT2WZnmiQpe48u/ASWnIcw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,310,1763452800"; 
+   d="scan'208";a="215481080"
+Received: from tfalcon-desk.amr.corp.intel.com (HELO [10.125.111.86]) ([10.125.111.86])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Feb 2026 07:07:13 -0800
+Message-ID: <fe586c59-e476-44ad-bc90-8fff386b0dbd@intel.com>
+Date: Wed, 25 Feb 2026 08:07:12 -0700
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAAXyoMO7YS28fwAkf93qN8Bc45qE2M6N9OzzKW+wSTJ_ujeXnQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/3] net: ntb_netdev: Add Multi-queue support
+To: Koichiro Den <den@valinux.co.jp>
+Cc: Jon Mason <jdmason@kudzu.us>, Allen Hubbe <allenbh@gmail.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ ntb@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260224152809.1799199-1-den@valinux.co.jp>
+ <eeae611a-d35f-44f1-a100-50a397ae3eb4@intel.com>
+ <u7rapy5hbjkmc7wwxoxmgloz37z57q2ml5sjubmswsimqns4r7@mqget5wihsib>
+Content-Language: en-US
+From: Dave Jiang <dave.jiang@intel.com>
+In-Reply-To: <u7rapy5hbjkmc7wwxoxmgloz37z57q2ml5sjubmswsimqns4r7@mqget5wihsib>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Wed, Feb 25, 2026 at 10:47:18PM +0800, David Yang wrote:
-> On Wed, Feb 25, 2026 at 10:17 PM Andrew Lunn <andrew@lunn.ch> wrote:
-> ...
-> > > +/* v * 2^e */
-> > > +#define ldexpi(v, e) ({ \
-> > > +     __auto_type _v = (v); \
-> > > +     __auto_type _e = (e); \
-> > > +     _e >= 0 ? _v << _e : _v >> -_e; \
-> > > +})
-> > > +
-> > > +/* slot (ns) * rate (/s) / 10^9 (ns/s) = 2^C * token * 4^unit */
-> > > +#define rate2token(rate, unit, slot_ns, C) \
-> > > +     ((u32)(ldexpi((slot_ns) * (rate), \
-> > > +                   -(2 * (unit) + (C) + YT921X_TOKEN_RATE_C)) / 1000000000))
-> > > +#define token2rate(token, unit, slot_ns, C) \
-> > > +     (ldexpi(1000000000 * (u64)(token), \
-> > > +             2 * (unit) + (C) + YT921X_TOKEN_RATE_C) / (slot_ns))
-> > > +
-> > > +/* burst = 2^C * token * 4^unit */
-> > > +#define burst2token(burst, unit, C) ((u32)ldexpi((burst), -(2 * (unit) + (C))))
-> > > +#define token2burst(token, unit, C) ldexpi((u64)(token), 2 * (unit) + (C))
-> >
-> > Please avoid macros like this. Write functions. The compiler will
-> > inline them if that makes sense. But you gain type checking, etc.
-> >
+
+
+On 2/24/26 8:36 PM, Koichiro Den wrote:
+> On Tue, Feb 24, 2026 at 09:20:35AM -0700, Dave Jiang wrote:
+>>
+>>
+>> On 2/24/26 8:28 AM, Koichiro Den wrote:
+>>> Hi,
+>>>
+>>> ntb_netdev currently hard-codes a single NTB transport queue pair, which
+>>> means the datapath effectively runs as a single-queue netdev regardless
+>>> of available CPUs / parallel flows.
+>>>
+>>> The longer-term motivation here is throughput scale-out: allow
+>>> ntb_netdev to grow beyond the single-QP bottleneck and make it possible
+>>> to spread TX/RX work across multiple queue pairs as link speeds and core
+>>> counts keep increasing.
+>>>
+>>> Multi-queue also unlocks the standard networking knobs on top of it. In
+>>> particular, once the device exposes multiple TX queues, qdisc/tc can
+>>> steer flows/traffic classes into different queues (via
+>>> skb->queue_mapping), enabling per-flow/per-class scheduling and QoS in a
+>>> familiar way.
+>>>
+>>> This series is a small plumbing step towards that direction:
+>>>
+>>>   1) Introduce a per-queue context object (struct ntb_netdev_queue) and
+>>>      move queue-pair state out of struct ntb_netdev. Probe creates queue
+>>>      pairs in a loop and configures the netdev queue counts to match the
+>>>      number that was successfully created.
+>>>
+>>>   2) Expose ntb_num_queues as a module parameter to request multiple
+>>>      queue pairs at probe time. The value is clamped to 1..64 and kept
+>>>      read-only for now (no runtime reconfiguration).
+>>>
+>>>   3) Report the active queue-pair count via ethtool -l (get_channels),
+>>>      so users can confirm the device configuration from user space.
+>>>
+>>> Compatibility:
+>>>   - Default remains ntb_num_queues=1, so behaviour is unchanged unless
+>>>     the user explicitly requests more queues.
+>>>
+>>> Kernel base:
+>>>   - ntb-next latest:
+>>>     commit 7b3302c687ca ("ntb_hw_amd: Fix incorrect debug message in link
+>>>                           disable path")
+>>>
+>>> Usage (example):
+>>>   - modprobe ntb_netdev ntb_num_queues=<N> # Patch 2 takes care of it
+>>>   - ethtool -l <ifname> # Patch 3 takes care of it
+>>>
+>>> Patch summary:
+>>>   1/3 net: ntb_netdev: Introduce per-queue context
+>>>   2/3 net: ntb_netdev: Make queue pair count configurable
+>>>   3/3 net: ntb_netdev: Expose queue pair count via ethtool -l
+>>>
+>>> Testing / results:
+>>>   Environment / command line:
+>>>     - 2x R-Car S4 Spider boards
+>>>       "Kernel base" (see above) + this series
+>>>     - For TCP load:
+>>>       [RC] $ sudo iperf3 -s
+>>>       [EP] $ sudo iperf3 -Z -c ${SERVER_IP} -l 65480 -w 512M -P 4
+>>>     - For UDP load:
+>>>       [RC] $ sudo iperf3 -s
+>>>       [EP] $ sudo iperf3 -ub0 -c ${SERVER_IP} -l 65480 -w 512M -P 4
+>>>
+>>>   Before (without this series):
+>>>       TCP / UDP : 602 Mbps / 598 Mbps
+>>>
+>>>   Before (ntb_num_queues=1):
+>>>       TCP / UDP : 588 Mbps / 605 Mbps
+>>
+>> What accounts for the dip in TCP performance?
 > 
-> ldexpi is generic over integer types and we do type conversions in the
-> formulas below. So I think it cannot be expressed as a function.
-
-Writing functions will then help makes the types clearer. Why are type
-conversions needed? Making them explicit would make the code better.
-
-> > > +static struct yt921x_meter
-> > > +yt921x_meter_tfm(struct yt921x_priv *priv, int port, unsigned int slot_ns,
-> > > +              u64 rate, u64 burst, unsigned int flags,
-> > > +              u32 cir_max, u32 cbs_max, int unit_max)
-> > > +{
-> > > +     const int C = flags & YT921X_METER_PKT_MODE ? YT921X_TOKEN_PKT_C :
-> > > +                   YT921X_TOKEN_BYTE_C;
-> > > +     struct device *dev = to_device(priv);
-> > > +     struct yt921x_meter meter;
-> > > +     bool distorted;
-> > > +     u64 burst_est;
-> > > +     u64 burst_max;
-> > > +     u64 rate_max;
-> > > +
-> > > +     meter.unit = unit_max;
-> > > +     rate_max = token2rate(cir_max, meter.unit, slot_ns, C);
-> > > +     burst_max = token2burst(cbs_max, meter.unit, C);
-> > > +
-> > > +     /* Clamp rate and burst */
-> > > +     if (rate > rate_max || burst > burst_max) {
-> > > +             dev_warn(dev,
-> > > +                      "rate %llu, burst %llu too high, max is %llu, %llu, clamping...\n",
-> > > +                      rate, burst, rate_max, burst_max);
-> >
-> > I'm not sure clamping is the correct thing to do here. -ERANGE would
-> > make it clearer that what the user requests is not possible.
-> >
+> I believe this is within normal run-to-run variance. To be sure, I repeated the
+> TCP tests multiple times. The aggregated results are:
 > 
-> The maxima are way larger than the physical limitations of GbE, so
-> they are also acceptable. Still it would be quite unusual for users to
-> supply such values.
-
-If they are unusual, then maybe ERANGE makes more sense, the user has
-probably misunderstood the API, which can be quite easy with tc :-(
-
-> > > +     } else if (meter.cir > cir_max) {
-> > > +             WARN_ON(1);
-> > > +             meter.cir = cir_max;
-> >
-> > What does this WARN_ON() indicate? If this fires, you want somebody
-> > who is debugging it to be able to understand it.
-> >
+>   +------+----------+------------------+------------------+
+>   |      | Baseline | ntb_num_queues=1 | ntb_num_queues=2 |
+>   +------+----------+------------------+------------------+
+>   | Mean | 599.5    | 595.2 (-0.7%)    | 600.4 (+0.2%)    |
+>   | Min  | 590      | 590   (+0.0%)    | 593   (+0.5%)    |
+>   | Max  | 605      | 604   (-0.2%)    | 605   (+0.0%)    |
+>   | Med  | 602      | 593              | 601.5            |
+>   | SD   | 5.84     | 6.01             | 4.12             |
+>   +------+----------+------------------+------------------+
 > 
-> It means logical error during unit selection. Surely internal error
-> and the debugger must be familiar with the implementation details, I
-> think.
+> On my setup (2x R-Car S4 Spider), I do not observe any statistically meaningful
+> improvement or degradation. For completeness, here is the raw data:
+> 
+>               .----------------------------- Baseline (without this series)
+>               :           .----------------- ntb_num_queues=1
+>               :           :            .---- ntb_num_queues=2
+>               :           :            :
+>     #1     601 Mbps    604 Mbps     601 Mbps
+>     #2     604 Mbps    604 Mbps     603 Mbps
+>     #3     592 Mbps    590 Mbps     600 Mbps
+>     #4     593 Mbps    593 Mbps     603 Mbps
+>     #5     605 Mbps    591 Mbps     605 Mbps
+>     #6     590 Mbps    603 Mbps     602 Mbps
+>     #7     605 Mbps    590 Mbps     596 Mbps
+>     #8     598 Mbps    594 Mbps     593 Mbps
+>     #9     603 Mbps    590 Mbps     605 Mbps
+>     #10    604 Mbps    593 Mbps     596 Mbps
+> 
+> To see a tangible performance gain, another patch series I submitted yesterday
+> is also relevant:
+> 
+>   [PATCH 00/10] NTB: epf: Enable per-doorbell bit handling while keeping legacy offset
+>   https://lore.kernel.org/all/20260224133459.1741537-1-den@valinux.co.jp/
+> 
+> With that series applied as well, and with irq smp_affinity properly adjusted,
+> the results become:
+> 
+>   After (ntb_num_queues=2 + the other series also applied):
+>       TCP / UDP : 1.15 Gbps / 1.18 Gbps
+> 
+> In that sense, that series is also important groundwork from a performance
+> perspective. Since that work touches NTB-tree code, I'd appreciate it if you
+> could also have a look at that series.
+> 
+> Side note: R-Car S4 Spider has limited BAR resources. Although BAR2 is
+> resizable, ~2 MiB appears to be the practical ceiling for arbitrary mappings in
+> this setup, so I haven't tested larger ntb_num_queues=<N> values. On platforms
+> with more BAR space, sufficient CPUs for memcpy, or sufficent DMA channels for
+> DMA memcpy available to ntb_transport, further scaling with larger <N> values
+> should be possible.
 
-     } else if (WARN_ON(meter.cir > cir_max)) {
-             meter.cir = cir_max;
+Thanks for the data. I'll take a look at the other series.
 
-would be more normal.
+> 
+> Thanks,
+> Koichiro
+> 
+>>
+>>>
+>>>   After (ntb_num_queues=2):
+>>>       TCP / UDP : 602 Mbps / 598 Mbps
+>>>
+>>>   Notes:
+>>>     In my current test environment, enabling multiple queue pairs does
+>>>     not improve throughput. The receive-side memcpy in ntb_transport is
+>>>     the dominant cost and limits scaling at present.
+>>>
+>>>     Still, this series lays the groundwork for future scaling, for
+>>>     example once a transport backend is introduced that avoids memcpy
+>>>     to/from PCI memory space on both ends (see the superseded RFC
+>>>     series:
+>>>     https://lore.kernel.org/all/20251217151609.3162665-1-den@valinux.co.jp/).
+>>>
+>>>
+>>> Best regards,
+>>> Koichiro
+>>>
+>>> Koichiro Den (3):
+>>>   net: ntb_netdev: Introduce per-queue context
+>>>   net: ntb_netdev: Make queue pair count configurable
+>>>   net: ntb_netdev: Expose queue pair count via ethtool -l
+>>>
+>>>  drivers/net/ntb_netdev.c | 326 +++++++++++++++++++++++++++------------
+>>>  1 file changed, 228 insertions(+), 98 deletions(-)
+>>>
+>>
+>> for the series
+>> Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+>>
 
-      Andrew
