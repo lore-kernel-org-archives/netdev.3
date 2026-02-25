@@ -1,126 +1,130 @@
-Received: from helium.schroedingers-bit.net (helium.schroedingers-bit.net [94.16.120.183])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D0931327F
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 19:41:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.16.120.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173072D876A
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 19:49:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772048520; cv=none; b=i2l1Xh8uiiZGT+/POOoh8/xKj8RpcKYml3alG+kUM4uYDX8WR2Njbi5+NMJIqHU1Lza6qCvK79hGXwxtj7mOamEPFP3fNYB9dZx7c5+5+XeX34DorJLuGXF7D7msrfz2h5g10QcsFWgICX8RIHpWvyN01oAwohSD/muCf2XZnlY=
+	t=1772048976; cv=none; b=m3Cjasnb9h6ANX88x7sgmSb4dVkEfVk29j65KhTkyUY7Hpfkzluey5IMQiiskyzQXwKDa2X4YvikqmRQgrHInou8DLkfBYnoJfG2NiwjIn+owyaEkA/SEtEAC7ZtEegU+pxxK9qd/hqiktDqdAgfp9ohcfhfSl+RxAOn8U+IeVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772048520; c=relaxed/simple;
-	bh=qzW6aev4COlrQUfRViYoYe4RlLx41xsUX/RO6DhKLbs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h5nnEkUgOzu54ir7M8OoQt2H1pss0+MuHfzaj5IvOManGAXjsYN3JWVsruQmZEfyA1hxbvGu8BDY6rVnCAMIfP3bZr+aLC0OlIUGQpeLlZHDPsqoBYUpqnnHBNHo+NDuAuKTKMhMuhXNDy/kR8ZPst8GcbwdOwHL2MndwFAjQ68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schroedingers-bit.net; spf=pass smtp.mailfrom=schroedingers-bit.net; arc=none smtp.client-ip=94.16.120.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=schroedingers-bit.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=schroedingers-bit.net
-Received: from eldingar.service.vpn.picture-instruments.com (2a0a-a54a-a968-0-ea9c-25ff-fe12-908b.ipv6dyn.netcologne.de [IPv6:2a0a:a54a:a968:0:ea9c:25ff:fe12:908b])
-	by helium.schroedingers-bit.net (Postfix) with ESMTPSA id 5526887044;
-	Wed, 25 Feb 2026 19:41:50 +0000 (UTC)
-From: Daniel Schulte <trilader@schroedingers-bit.net>
-To: netdev@vger.kernel.org
-Cc: dsahern@kernel.org,
-	stephen@networkplumber.org,
-	Daniel Schulte <trilader@schroedingers-bit.net>
-Subject: [PATCH netdev-next v2] ss: Remove trailing whitespace when output is not a TTY
-Date: Wed, 25 Feb 2026 20:39:03 +0100
-Message-ID: <20260225194104.3182640-1-trilader@schroedingers-bit.net>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225102331.6d09b8b9@phoenix.local>
-References: <20260225102331.6d09b8b9@phoenix.local>
+	s=arc-20240116; t=1772048976; c=relaxed/simple;
+	bh=IwiTgpjkeqFMqWSFK6RU5LNOiF/JEUJlaNjNpyEVOUU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=J7NStjcJmzSdczeeC4yL6Kd2jtQnIgRKoa/Bhe5qh/qiKUtGoBZNTu7+SDNRnCcKtkMc0WHiXcv/EBHciGGnhIYeHvWIqUD2Xklb8Ide0CWHF9+XWrLHSpma1qAiYjrcjFGkos+cq2DeK+f7/GmQ3g4q+ZLb+d+6xLMjFCUqp6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zet2AlBP; arc=none smtp.client-ip=209.85.128.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zet2AlBP"
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-7987531082aso347217b3.3
+        for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 11:49:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772048974; x=1772653774; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=lBrBuKxNKltSGjbyuexsLRyWWbzoDm03jz7Y5rzbxME=;
+        b=Zet2AlBPmHI5Rv3ENu2Jk8uIbAvg0EVsgsP8PC0VlhGQij8l5+fdGVvEefRmdkgOpr
+         PCv3UBXTWipbTyvSwKSaCn4Yqgc46U37V1SsWvYEF7y1latHLj3DnYtrJ352mBeI/MHN
+         264VOufHSa9ujJ4aWh2mhT/bpvLolzHu3er5BLvoLOnWexeNXpribzbeGjsEV5iBmY6C
+         K/60NJECmyDJII91v4uH0MnCSDBpfvIGcO0RcRmzDMTsXGG06oLwDBMTOz+fJNmvwCiK
+         orC8fbhqY72TX7Hoj/Ti/D+EG6kx4zhQKMjObyasbbvejm+bthPVNmnYUwvEWUnIm1WG
+         oZbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772048974; x=1772653774;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=lBrBuKxNKltSGjbyuexsLRyWWbzoDm03jz7Y5rzbxME=;
+        b=O5Hs0ul8VeorKsnuEZYxSsis50SeoZAl5j5nEN4mTzRlzRxTFuCKch2R6KrxnEGU7k
+         SwSa+oG91MbXbn+dUzc6i2yzSauEhSODINbdQCQtmBLauOTbC3oi8MYmpxZr2a1DTxqn
+         HCVGuRnqngzG+mlU7biFLa4iYwDVsAx2nBN1rd/FHYkTfkf26IGLAoyFMrYbPjBYvFZQ
+         JruPz7PGs8z6O1ydw+5gnJdYwg6XvEEZMYiGcUfIPsH7e50kHovrK4wyP4Zpem/djETk
+         xh3afOAMakgTJI7bMKAw4i+y8s2QrSJoVK1e6GbqgF0nvwaCBjeUoQNviiW8pMQQRYXd
+         P6RQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUCt8cfD5w//r19tX+aMN0HVf2AyVN01GAZd5PO0V/d9WjEPc3k2A+Ncy+nMac3YGjhIYO7c5I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzde1NSErt7ykk8w9SHe1vIvgxrWPJEoBz2fXjVUmdyTAdQNrKR
+	GYl5falni2J0nx1KMzaeY9P3DmZx1Ec4qgILrJlFfswYyGUjeR88OTqW
+X-Gm-Gg: ATEYQzxwqzTW2EtaxWeEaSyUalyo/y0CfuoTLkLCcebAVuUx2Wa0hJAEs+avppd7Jxl
+	oUCWFe3m47VIhE7Kiyc6rmDLnEdiELFarbQhbKmWAYNuQ4I1H1u+nTjwpDOCmFSnJS6kaTAm8FR
+	rjgG8A4oaju5A888J3MkVMh/Djp+whixdQSoEtNmD3rXGH1d2bRS7SyEqUvfVuHkRoQXiFOlOR9
+	TDeRxOCSoLjwhbWZs3q1jttZ4c7b7JDvFAP/Xw5HTI8c5HuPdmDbDRykJJ+H5Lnw1NljU5+HPpd
+	qxD4sNXbFTAX5eiH6EVZVnLQ5K7134uWPavXKTBvy36u1fCzkdI3SnWkAsamW80qzbHfJCehZBK
+	xR7KMW1iUSdooQl146HFxvBTEYLbfsgy+025CRTGZBrcLqq8NQRJY4j0bRlA6sEaa2Nzdz1MDgW
+	NUYQjXtL0mjFHHDxMsnzJxWImEz0lA5GIfADzH2zALdMqzWQs=
+X-Received: by 2002:a05:690c:6086:b0:796:3c99:1833 with SMTP id 00721157ae682-79829174a23mr160398677b3.60.1772048974112;
+        Wed, 25 Feb 2026 11:49:34 -0800 (PST)
+Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:74::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7982dbd9fa2sm60176917b3.18.2026.02.25.11.49.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 11:49:33 -0800 (PST)
+Date: Wed, 25 Feb 2026 11:49:31 -0800
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Mina Almasry <almasrymina@google.com>
+Cc: Stanislav Fomichev <stfomichev@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Kaiyuan Zhang <kaiyuanz@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Bobby Eshleman <bobbyeshleman@meta.com>
+Subject: Re: [PATCH net] net: devmem: use READ_ONCE/WRITE_ONCE on binding->dev
+Message-ID: <aZ9SS22ig+7BJsGD@devvm11784.nha0.facebook.com>
+References: <20260223-devmem-membar-fix-v1-1-37dcae1e49f8@meta.com>
+ <aZ5VNkUqkTEzX6PJ@mini-arch>
+ <aZ8R5n80NmnPb1J9@devvm11784.nha0.facebook.com>
+ <CAHS8izM9gS+4rKaxSdqx3yjn4harxKQ2HeCszPyq6XNbq+UcMQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAHS8izM9gS+4rKaxSdqx3yjn4harxKQ2HeCszPyq6XNbq+UcMQ@mail.gmail.com>
 
-Sometimes a value in the last column might be very long.
-When grepping ss output the matched lines are also padded to the longest value.
-In some cases this can result in multiple lines of the terminal getting filled
-with spaces.
+On Wed, Feb 25, 2026 at 09:31:48AM -0800, Mina Almasry wrote:
+> On Wed, Feb 25, 2026 at 7:14 AM Bobby Eshleman <bobbyeshleman@gmail.com> wrote:
+> >
+> > On Tue, Feb 24, 2026 at 05:49:42PM -0800, Stanislav Fomichev wrote:
+> > > On 02/23, Bobby Eshleman wrote:
+> > > > From: Bobby Eshleman <bobbyeshleman@meta.com>
+> > > >
+> > > > binding->dev is protected on the write-side in
+> > > > mp_dmabuf_devmem_uninstall() against concurrent writes, but due to the
+> > > > concurrent bare read in net_devmem_get_binding() it should be wrapped in
+> > > > a READ_ONCE/WRITE_ONCE pair to make sure no compiler optimizations play
+> > > > with the underlying register in unforeseen ways.
+> > > >
+> > > > Fixes: bd61848900bf ("net: devmem: Implement TX path")
+> > > > Signed-off-by: Bobby Eshleman <bobbyeshleman@meta.com>
+> 
+> Looks correct to me, and AFAIU Stan is right, we might as well
+> annotate all the reads of ->dev as technically there could be a dmabuf
+> uninstall happing concurrently on another CPU. I also think it's
+> probably good to annotate potential races.
+> 
+> The ->dev write in dmabuf binding doesn't need WRITE_ONCE annotation I
+> guess because it's initialization, it can't race with any reads.
+> 
+> This makes me wonder what other fields in dmabuf need annotations. I
+> hope I didn't miss many more.
+> 
+> I would add this is really not a critical bug because
+> net_devmem_get_binding() is in TX path, and it is more than fine here
+> if we fail this check if there is an unbind happening in paraller with
+> sendmsg(), but it's probably good to annotate potential races anyway.
+> 
 
-Don't print right padding in last visible column when ss can't determine the
-screen width.
+Sounds good. I'll take a look at some of the other fields while my mind
+is in this space.
 
-Signed-off-by: Daniel Schulte <trilader@schroedingers-bit.net>
----
-Resubmitting as v2 using git send-email.
----
- misc/ss.c | 20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+I agree about it being non-critical, good point about TX passing through
+fine on failed check.
 
-diff --git a/misc/ss.c b/misc/ss.c
-index b3566f6b..2cd6b470 100644
---- a/misc/ss.c
-+++ b/misc/ss.c
-@@ -1211,7 +1211,7 @@ static int render_screen_width(void)
-  * aligned across lines. Available screen space is equally spread between fields
-  * as additional spacing.
-  */
--static void render_calc_width(void)
-+static bool render_calc_width(void)
- {
- 	int screen_width, first, len = 0, linecols = 0;
- 	struct column *c, *eol = columns - 1;
-@@ -1245,7 +1245,7 @@ static void render_calc_width(void)
- 
- 	if (compact_output) {
- 		/* Compact output, skip extending columns. */
--		return;
-+		return compact_output;
- 	}
- 
- 	/* Second pass: find out newlines and distribute available spacing */
-@@ -1304,6 +1304,7 @@ newline:
- 		len = 0;
- 		linecols = 0;
- 	}
-+	return compact_output;
- }
- 
- /* Render buffered output with spacing and delimiters, then free up buffers */
-@@ -1311,7 +1312,8 @@ static void render(void)
- {
- 	struct buf_token *token;
- 	int printed, line_started = 0;
--	struct column *f;
-+	struct column *f, *last_visible_column = 0;
-+	bool compact_output = false;
- 
- 	if (!buffer.head)
- 		return;
-@@ -1321,11 +1323,18 @@ static void render(void)
- 	/* Ensure end alignment of last token, it wasn't necessarily flushed */
- 	buffer.tail->end += buffer.cur->len % 2;
- 
--	render_calc_width();
-+	compact_output = render_calc_width();
- 
- 	/* Rewind and replay */
- 	buffer.tail = buffer.head;
- 
-+	f = columns;
-+	while (!field_is_last(f)) {
-+		if (!f->disabled)
-+			last_visible_column = f;
-+		f++;
-+	}
-+
- 	f = columns;
- 	while (!f->width)
- 		f++;
-@@ -1340,7 +1349,8 @@ static void render(void)
- 		/* Print field content from token data with spacing */
- 		printed += print_left_spacing(f, token->len, printed);
- 		printed += fwrite(token->data, 1, token->len, stdout);
--		print_right_spacing(f, printed);
-+		if (!compact_output || f != last_visible_column)
-+			print_right_spacing(f, printed);
- 
- 		/* Go to next non-empty field, deal with end-of-line */
- 		do {
--- 
-2.53.0
-
+Best,
+Bobby
