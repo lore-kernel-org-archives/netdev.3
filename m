@@ -1,140 +1,179 @@
-Received: from outbound.st.icloud.com (p-east2-cluster6-host3-snip4-7.eps.apple.com [57.103.76.138])
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB89828489E
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 15:15:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.76.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956AA27280F
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 15:16:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772032514; cv=none; b=noMlEWejpnW+mzQyEKF4cYJtWFUSPmfGNfgh8reYEWC5nyxffLqVOjPbSXeB7dbTkJvYI00kAUb0A1aQyDrSawC2p2QBjC3W/pidM664OfeRxNCtVKGfQKx6xfnE1W0xCF0/gVznt7pudkn/MXyABojqZdKCpJ3ZCojfu6U2db8=
+	t=1772032579; cv=none; b=E7sDDSBaBMi0TZEJBjMhdCLP4fAg1wGVeLNB6EeonZllPtQscfgqYBoBlTNVimGbM6fKjAdoMK/+iofe+WpfpnGSjzGxshCnNIrwdc7MU+rlgw2rPSddX+aOxgQkvr6IccUBHaagHU22NTcrgflP2FB3PZM3GUPc7YF530ewa70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772032514; c=relaxed/simple;
-	bh=ZZ7ix51AfEYIX0Jt+w6zB/ER9ghq5eP5PmN1S+UyLnc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RMAKPuAGUHG60zCtqgXiGl3yAcsr1vnvkcUs4HFmpF4fyTwdTT5C7ebA9vZP592UcKn4uGseoFA13qIKurzJKA2ZERDP1ISAUh0o/Prj5Ui2/ZMbnLAfe6PPX/wbZqFfDT30Y9wdhMHo3OdouR0B4VaQFuuPJ/srb/PQwi2KHUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=y-koj.net; spf=pass smtp.mailfrom=y-koj.net; dkim=fail (0-bit key) header.d=y-koj.net header.i=@y-koj.net header.b=2TYCnWDU reason="key not found in DNS"; arc=none smtp.client-ip=57.103.76.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=y-koj.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=y-koj.net
+	s=arc-20240116; t=1772032579; c=relaxed/simple;
+	bh=2v4+h7fONrljMow2c+RVTQnuVYSvEGGP7MQ7qIyqGpc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KIeMvKa11KBJhiczeB2cxvjdRjx/6f8OiG43HG5M/X+2WGmW7kTDa7+DUhl3R2eeQqs/Qrpc9Tkm4lsoAxC5MpWeqjsZCnVPc/P5bakGcCsqkHJQLcGc7bwNy8dCNLF24D4H80nPvlfxrH77g6LZU+Ao573w8QurwrQbtK+tSqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=wtFB3V3h; arc=none smtp.client-ip=91.218.175.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=y-koj.net header.i=@y-koj.net header.b="2TYCnWDU"
-Received: from outbound.st.icloud.com (unknown [127.0.0.2])
-	by p00-icloudmta-asmtp-us-east-1a-60-percent-12 (Postfix) with ESMTPS id C3D78180016C;
-	Wed, 25 Feb 2026 15:15:10 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=y-koj.net; s=sig1; t=1772032512; x=1774624512; bh=SN1JpAZST7zZcbBBH7RXi7OwS7WQdyzRqZ6Jk74I9i0=; h=From:To:Subject:Date:Message-ID:MIME-Version:x-icloud-hme; b=2TYCnWDUvGakyX0EkX/fGsxbRUT5Lrx8bCbELGOVsThKlrhRUfDsgfjlSJn8+nGu9TtWJDa2+hBit2NdUHNX8PrqUIPOhmKV7MXNUDqW0D2CXzRpNA3EaoYt/MNAM4A8Y6KYrFWWTLyjGm60DVFx/i8m0cCp61LpB0xEGJQh7flpYgOAIgfTyxr5WuC8ribI0nff82L1yV/dbzigZhJRLN2yEnk/OmFg10k+Lu3NyvNfPsaYhe7ya6kyb2L6BaWwEtui9fGmq3wNpxW1EOOiJPqatdodTcQPK2Qtb4r5z49GfmsqPS4Wc27lDsOGA9GRXoc6GwNtW5ymQy9T6z+n8A==
-mail-alias-created-date: 1719758601013
-Received: from desktop.tail809fd.ts.net (unknown [17.42.251.67])
-	by p00-icloudmta-asmtp-us-east-1a-60-percent-12 (Postfix) with ESMTPSA id D6BB81800214;
-	Wed, 25 Feb 2026 15:15:07 +0000 (UTC)
-From: Yohei Kojima <yk@y-koj.net>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Cc: Yohei Kojima <yk@y-koj.net>,
-	netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3] docs: ethtool: clarify the bit-by-bit bitset format description
-Date: Thu, 26 Feb 2026 00:12:09 +0900
-Message-ID: <ef90a56965ca66e57aa177929ce3e10c5ca815fa.1772031974.git.yk@y-koj.net>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="wtFB3V3h"
+Message-ID: <0383ff36-df20-4376-9374-99ff32a527f4@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772032575;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+ht1IsfkuNiCWNDQxQQ9oeNsmgvwISL3gSGHhQ9b5ks=;
+	b=wtFB3V3hJzoIj/6NCuu3CNIh/Ni0VeK128IyhG0t+3YpgSOC3/IIplpDBSjrRLxQ6uFU0E
+	OOT9IHx1+YFteW01mvPoNroI5jrz/FoIOqnIUUeLVf1zFZQyfPr/axPf9h3HUj1g1i7JCN
+	dmNqcRNbf5fp3U4Vq8kXZ1O+wL5qpXg=
+Date: Wed, 25 Feb 2026 23:15:52 +0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Subject: Re: [PATCH bpf-next 2/8] bpf: Disallow !kprobe_write_ctx progs
+ tail-calling kprobe_write_ctx progs
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: bpf <bpf@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+ Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
+ <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+ Yonghong Song <yonghong.song@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>,
+ Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+ Feng Yang <yangfeng@kylinos.cn>, Menglong Dong <menglong8.dong@gmail.com>,
+ Puranjay Mohan <puranjay@kernel.org>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Pu Lehui <pulehui@huawei.com>,
+ LKML <linux-kernel@vger.kernel.org>,
+ "open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ Network Development <netdev@vger.kernel.org>, kernel-patches-bot@fb.com
+References: <20260224154024.12504-1-leon.hwang@linux.dev>
+ <20260224154024.12504-3-leon.hwang@linux.dev>
+ <CAADnVQ+-V0-1i8_+CYpK7G0CnV-2n8e9Szv43yM3Az197eL_0A@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Leon Hwang <leon.hwang@linux.dev>
+In-Reply-To: <CAADnVQ+-V0-1i8_+CYpK7G0CnV-2n8e9Szv43yM3Az197eL_0A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDE0NiBTYWx0ZWRfX1VNyKWyrL6HS
- d9Ryq47JyulJ13KPXNcH2IeV2kfHG9qgIFfV7ef2DXBuJO39R+uFm/eboN4GUy9HXEGU9hb1pER
- mUJBZOURdSdMWxZ6PijI1PLsfAhicJT09TrDejRRFae7b3OutMHKrhaB+0D378aTO6LtEV1oU5k
- UGYXdra4GFugOB7/JEX3oyEmfo1afz/nmpnOn+pNARTCE8jUeG6L9S/PK3DwatrEoUkfNaNZwLX
- 4AzBwClcKzBDGMpgE5udHvtlXRxjYmH3PFqFfzYfy4sLNeB+4p18DbN2ltw98RJRymeGy6y0Wxq
- mJE5IX+RiiPO1ffFdoSxn1sr/BLK1FzDQAT0SMCQR4hJHYrrgcAifh28B54BlM=
-X-Authority-Info-Out: v=2.4 cv=BcfVE7t2 c=1 sm=1 tr=0 ts=699f11ff
- cx=c_apl:c_apl_out:c_pps a=YrL12D//S6tul8v/L+6tKg==:117
- a=YrL12D//S6tul8v/L+6tKg==:17 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
- a=Mpw57Om8IfrbqaoTuvik:22 a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8
- a=jnl5ZKOAAAAA:8 a=8WQVRTqVWvD3vaqRZeAA:9 a=RNrZ5ZR47oNZP8zBN2PD:22
-X-Proofpoint-ORIG-GUID: K6e5Zvfi3hVp0fk10h1dDgdg-5bvmlOg
-X-Proofpoint-GUID: K6e5Zvfi3hVp0fk10h1dDgdg-5bvmlOg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-02-25_01,2026-02-25_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
- malwarescore=0 adultscore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0
- phishscore=0 mlxscore=0 spamscore=0 clxscore=1030 classifier=spam authscore=0
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2601150000
- definitions=main-2602250146
-X-JNJ: AAAAAAAB8l25vLSFFMxQeBFCwhCHSSa78ZEjmitzaxLHv2ZaC6TZzGpgB+7wr0Qs5ooVYoDL9xLfB95umgtVx3oqZvgXrQQvn+q5tWlRYPu5blV1EOLZGX1HslMDWBhwGS/8ZMfqK4RIuxkHAECGe7ZT3HCTtzYe/5E/gpd5SHaZVLXDXjtSGfFtnx6d9Zq2A69bOj3Fc8z01ZfNACOA4Ooeax961eT2TzBhAFuf33HQsGVCFG+LZz3c/SVpEuoCVQ4OMQosulx0wwdyW9gs9O9+tzkccGxakHomqca5V+M5+rO87UExLStykmwyZl7Xt8HBQnL3Lni2DSG1+f/9VrLn3dShXQ2kxNNuUYqgjw/mR5LaCFaOWUenMZ5YeviTQNBLlE46OR1MJMDYcPFg8qlHwjnt+G1c4WCCe5bo1pPvdbhmw5eSLiGFiPOsqA2KLEeUb/14H7AFFyRtH4Ivx/B5qF6irLMXOoYYGOnOAhXncj/RzhZfG+UdUJLG05RUu8ivYvyiIO+HpmKvjpFwnfNdHLQoWcXBMRGl44RZLB8DS0HewgXRh6lI5nETJbqWD2w1bWSwDDEM9rGzg5fHtTXVpxNFAvEG3zO53wQ2nDKERRKnKp8tDDjL+mO4Wbs38vUJFC2+kHy0mEC/Zls7zKi0IDzG6cDhmp4tm8PD4ARJ03GLi/Ro8qdl7+vOdqDb7ePEePZifbi+GkgBukhx9dJHNkuU7JbAh4c088dtNw/wSeflUns7ubylhgQtVpws/rVulJSYCGUcSi8BA7+vRHNNnY7tRzGAYLQ1AxuSrKZsJS7LZYk=
+X-Migadu-Flow: FLOW_OUT
 
-Clarify the bit-by-bit bitset format's behavior around mandatory
-attributes and bit identification. More specifically, the following
-changes are made:
 
-* Rephrase a misleading sentence which implies name and index are
-  mutually exclusive
-* Describe that ETHTOOL_A_BITSET_BITS nest is mandatory
-* Describe that a request fails if inconsistent identifiers are given
 
-Signed-off-by: Yohei Kojima <yk@y-koj.net>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
----
-Current ethtool-netlink documentation doesn't describe several behaviors
-around bit-by-bit bitset, which makes it hard to develop a ethtool
-library without digging into the kernel code. This patch eases the gap
-between the kernel behavior and the documentation by adding descriptions
-around the mandatory attribute and bit identification.
+On 2026/2/25 00:57, Alexei Starovoitov wrote:
+> On Tue, Feb 24, 2026 at 7:41 AM Leon Hwang <leon.hwang@linux.dev> wrote:
+>>
+>> uprobe programs that can modify pt_regs require different runtime
+>> assumptions than pt_regs-read-only uprobe programs. Mixing both in
+>> one prog_array can make owner expectations diverge from callee behavior.
+>>
+>> Reject the combination of !kprobe_write_ctx progs with kprobe_write_ctx
+>> progs in __bpf_prog_map_compatible() to address the issue.
+>>
+>> Fixes: 7384893d970e ("bpf: Allow uprobe program to change context registers")
+>> Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+>> ---
+>>  include/linux/bpf.h | 7 ++++---
+>>  kernel/bpf/core.c   | 3 +++
+>>  2 files changed, 7 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+>> index b78b53198a2e..2a2f6448a5fb 100644
+>> --- a/include/linux/bpf.h
+>> +++ b/include/linux/bpf.h
+>> @@ -285,9 +285,10 @@ struct bpf_list_node_kern {
+>>   */
+>>  struct bpf_map_owner {
+>>         enum bpf_prog_type type;
+>> -       bool jited;
+>> -       bool xdp_has_frags;
+>> -       bool sleepable;
+>> +       u32 jited:1,
+>> +           xdp_has_frags:1,
+>> +           sleepable:1,
+>> +           kprobe_write_ctx:1;
+> 
+> Don't you see how much churn you're adding this way?
+> Every patch has to touch two lines instead of one.
+> Use
+> u32 jited:1;
+> u32 xdp_has_frags:1;
+> 
 
-ChangeLog
-=========
-v3 (this version):
-* Rebase to the latest net-next/main
-* Add Reviewed-by tag provided by Jakub and Simon. Thank you!
-v2: https://lore.kernel.org/netdev/f43999612ed9d17fb7fe8f21e777e1c784f23c46.1770457868.git.yk@y-koj.net/
-* Minimize the diff for ease of review
-v1: https://lore.kernel.org/lkml/e9ea0fe8bf7935d6439e4dc883414b685afbaf58.1770045398.git.yk@y-koj.net/
+Ack.
 
----
- Documentation/networking/ethtool-netlink.rst | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+> also the bot is correct on patch 2 and 3.
 
-diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
-index af56c304cef4..32179168eb73 100644
---- a/Documentation/networking/ethtool-netlink.rst
-+++ b/Documentation/networking/ethtool-netlink.rst
-@@ -96,7 +96,7 @@ For short bitmaps of (reasonably) fixed length, standard ``NLA_BITFIELD32``
- type is used. For arbitrary length bitmaps, ethtool netlink uses a nested
- attribute with contents of one of two forms: compact (two binary bitmaps
- representing bit values and mask of affected bits) and bit-by-bit (list of
--bits identified by either index or name).
-+bits identified by index or name).
- 
- Verbose (bit-by-bit) bitsets allow sending symbolic names for bits together
- with their values which saves a round trip (when the bitset is passed in a
-@@ -156,12 +156,16 @@ Bit-by-bit form: nested (bitset) attribute contents:
-  | | | ``ETHTOOL_A_BITSET_BIT_VALUE`` | flag   | present if bit is set       |
-  +-+-+--------------------------------+--------+-----------------------------+
- 
--Bit size is optional for bit-by-bit form. ``ETHTOOL_A_BITSET_BITS`` nest can
-+For bit-by-bit form, ``ETHTOOL_A_BITSET_SIZE`` is optional, and
-+``ETHTOOL_A_BITSET_BITS`` is mandatory. ``ETHTOOL_A_BITSET_BITS`` nest can
- only contain ``ETHTOOL_A_BITSET_BITS_BIT`` attributes but there can be an
- arbitrary number of them.  A bit may be identified by its index or by its
- name. When used in requests, listed bits are set to 0 or 1 according to
--``ETHTOOL_A_BITSET_BIT_VALUE``, the rest is preserved. A request fails if
--index exceeds kernel bit length or if name is not recognized.
-+``ETHTOOL_A_BITSET_BIT_VALUE``, the rest is preserved.
-+
-+A request fails if index exceeds kernel bit length or if name is not
-+recognized. If both name and index are set, the request will fail if they
-+point to different bits.
- 
- When ``ETHTOOL_A_BITSET_NOMASK`` flag is present, bitset is interpreted as
- a simple bitmap. ``ETHTOOL_A_BITSET_BIT_VALUE`` attributes are not used in
--- 
-2.52.0
+Agreed.
+
+Here's a concrete example that breaks the constraint:
+
+struct {
+	__uint(type, BPF_MAP_TYPE_PROG_ARRAY);
+	__uint(max_entries, 1);
+	__uint(key_size, sizeof(__u32));
+	__uint(value_size, sizeof(__u32));
+} jmp_table SEC(".maps");
+
+SEC("?kprobe")
+int prog_a(struct pt_regs *regs)
+{
+	regs->ax = 0;
+	bpf_tail_call_static(regs, &jmp_table, 0);
+	return 0;
+}
+
+SEC("?kprobe")
+int prog_b(struct pt_regs *regs)
+{
+	bpf_tail_call_static(regs, &jmp_table, 0);
+	return 0;
+}
+
+The jmp_table is shared between prog_a and prog_b.
+
+The constraint can be broken by:
+
+* Load prog_a first.
+  At this point, owner->kprobe_write_ctx=true.
+* Load prog_b next.
+  At this point, prog_b passes the prog map compatibility validation.
+* Add prog_a to jmp_table.
+* Attach prog_b to a kernel function.
+
+When the kernel function runs, the regs will be updated via prog_a.
+
+> Don't be fancy. Require strict conformance both ways in *all* patches.
+> 
+
+It was to avoid awkward UX.
+
+For example, the tail call from prog_a (kprobe_write_ctx=true) to prog_b
+(kprobe_write_ctx=false) should be allowed. If prog_b is required to be
+kprobe_write_ctx=true, prog_b will break user's expectation that prog_b
+should not always update ctx.
+
+The same awkward UX applies to call_get_func_ip, call_session_cookie,
+and call_session_is_return.
+
+I'll find a way to avoid such awkward UX by keeping the one-directional
+validation, and to avoid the aforementioned constraint-broken issue at
+the same time.
+
+> And your codex selftests are garbage. I don't have other words
+> to describe it. They are not testing the actual bug that
+> your patches are fixing. Think of what you're doing.
+> Asking LLM to write a test for your other patch is not what you
+> should be asking it to do. The selftest should be such that
+> it proves the unsafety/crash before the fix.
+> 
+
+OK. I'll reimplement the selftests by myself in the next revision.
+
+Thanks,
+Leon
 
