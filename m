@@ -1,177 +1,197 @@
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f65.google.com (mail-wr1-f65.google.com [209.85.221.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FA31239086;
-	Wed, 25 Feb 2026 10:52:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549802D0C82
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 10:58:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772016751; cv=none; b=JB3XaQLTkFud2qFvCp09EEBYpBd0GTBOQMlk00pMMKvglqyXsnDgoDwZtpoc3tnPpmcA1XrNc/sgFQezM2JHPr7G+IaHuiE20ynb4ujC6nq0+STqI+p85Ls3inSdSBpBAaD+igLIODuA5aKqOtRlmtsN2ogVGh46/XNl2NcSSDk=
+	t=1772017133; cv=none; b=eL17sosyxcRuIAdhCNBKqkuHUXufJXjmmiqW24/S8NyRivMRr+7S7fcRucIuN3HHmDd9l9wky9BNGhLfBeZlRNpmfEvZtGwWYfGVDlj5ChgWTAcmFGRlkryGfa/WJPZlUG9jluSQ+MNekgKAF7rnqCmVFM2+beqK5187bgNgYso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772016751; c=relaxed/simple;
-	bh=yuwwmarVQJbGtgQN4ILOy6JSC3S+6/92DRhYX5b5AXg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GXWc01WMqKmbw1AjvqTOEgitNcOIlQEvuoFjns8nWc0HGngVwA5sO/fcuYpHP8g4kp46Wa/tIsrhPzrlXZAv1TBRZ3bCZu5kwAx0mPlKV6mCOM2m1aXmAX/zq3HoBhUKrYCJ1JTy+2YMg0naMNQH8bTJCp722SFv62J97oJsMNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
-Received: from [172.18.249.96] (ip-185-104-138-144.ptr.icomera.net [185.104.138.144])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: pmenzel)
-	by mx.molgen.mpg.de (Postfix) with ESMTPSA id DC9DF4C2C37D48;
-	Wed, 25 Feb 2026 11:51:26 +0100 (CET)
-Message-ID: <5d2c5f84-436f-4681-ad81-9900a8563b61@molgen.mpg.de>
-Date: Wed, 25 Feb 2026 11:50:57 +0100
+	s=arc-20240116; t=1772017133; c=relaxed/simple;
+	bh=DPQ/B0yNcFKdxTDFMr/6BjzBWJxZRyvE01ySyp+G1Gg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OT7TomzjWZdeVNdl/8oiQHJx/FaJ77KY/p/UkgdRSK8zGzpWtyXg3RqpvKKx3GixwC3t3a5E7lL+ixaDMGF3FaqoyFe43fqbS7cCcw8jEoaLg7skOvteLVDg/X17jeYt2NQVZad6g/m2jhrEk+uMn+/s6IL+ug4yaxKb0OXDinU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J9eYSS4U; arc=none smtp.client-ip=209.85.221.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J9eYSS4U"
+Received: by mail-wr1-f65.google.com with SMTP id ffacd0b85a97d-4377174e1ebso4967137f8f.3
+        for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 02:58:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1772017131; x=1772621931; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=VIdRCk7t4GWQocuOik2n76ea1IYJUFZ1loDMZ8piecQ=;
+        b=J9eYSS4UQR9nKC5YqxSoDnYWv4R+Js1MrQTKqQl+nxqfu4TFgr9RMxWJMChmAcjVOS
+         fJ+cjdTHDymKhI/mOxhDAgPKrnsEHpwpGQn+z2/qpx4o0BeOrURhq7pKCihYIq+X17zW
+         49doZq7qi3sRQpl9reqrDU2ygAD1llJcG92iVfD0YPqdTs61DwcADxk+sTAuO7QQdqDP
+         UUbmPd9LwqS8NGRGHLDQ1kcQUVS2kOEwTVyt/PTnEwbKRIPI0V2YwoScdvOFIYKv2zBQ
+         QI5mDZ/JSRfuNYuesWiC4sFMeJ3SG5mJoaHKHW6a2YhbtDM2PnNCLZTsPyQVPXWbuI2r
+         42DQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772017131; x=1772621931;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VIdRCk7t4GWQocuOik2n76ea1IYJUFZ1loDMZ8piecQ=;
+        b=Qm6zmJtMUlDBEmwH5SgP3Hmi/qFko068RlAMvYn2+iboENJSWWUSMuNVOrR/w7yO23
+         TPm9Cbif7r7xdMLWb4KqJfa4QXLAGokUqlTY/NfHgEBYJdB5FSridAM4UJWAcTUFYgJM
+         UuD5GbLRzCW5AUrAM0soAE9efncy3GzuPT3MVP+zT5sPkEhVXBVyE2IwkxA71cpOgFHF
+         jT6I1d2+GVUUEt8yyPz+9bfyw6iGBfXWBqjkUJLFCuLSHMqVprF+WNRHQI5eniBaHhhv
+         YprTPT0dQc93ebeYQZQ7MgMgLcNElEV0EpdQgNSus1knU8lFHVbzQj5z/HiVxsijFoK1
+         ICWA==
+X-Gm-Message-State: AOJu0Yz/TCrQpHwi0kc0cQdtzg80CLs3xFei//eXB5PbFS6LdnPvIFIH
+	ORhAeqIfyQBgzRPtjo+kFGql71RHECfO5sAqIMNyGdMKiKiDt7LpJ69wK9FBNwy61/U=
+X-Gm-Gg: ATEYQzwmkPmff7RbJzJTJsV5yv/1eOvTycPQtlbhF3XiJHxp8t5XMhNRcPCK8O51Qre
+	D+E664rg+aAv2GnNtZC5o97b1Hmj3OkwVIbNh1Aofye+litz2oRfmwPzrRB3G1hW2TxY6/UbjvJ
+	2wRu83t6BmuCm24A47CrIvWZeVCLnAAnDBNGBehdqWqVA3ilJvkxpXYk5rmQbBANwUXfRUL45n4
+	EDkzQeYUgtapyCepGhaELygSvqOu/ykXmiZNF889F9KK+wX/d+XlWDXhCqfeBxbNoh87uXsWvAL
+	FJgjqyxTsWo9W/bTA6joECg11IAdxWxaHqqYnLidszVlI+TVqXvGDYqdTqz04mHB9ZjeZMrgAtA
+	9Z6f9C5sXgA6VzVw9GxIAwSA70B8RBVQn7r30FU6Mftb/Tkxo9o84DQPJu/ARBzYmPyadhiMWtY
+	cv9w24Z/QLGQX8I1v6vMeeOoQ7xY4=
+X-Received: by 2002:a5d:5885:0:b0:439:8f9f:4994 with SMTP id ffacd0b85a97d-4398f9f4d4bmr2551757f8f.0.1772017130528;
+        Wed, 25 Feb 2026 02:58:50 -0800 (PST)
+Received: from localhost ([41.210.147.106])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970d4c95dsm36546719f8f.33.2026.02.25.02.58.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Feb 2026 02:58:50 -0800 (PST)
+Date: Wed, 25 Feb 2026 13:58:45 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, Jiayuan Chen <jiayuan.chen@shopee.com>,
+	syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+	Thomas Gleixner <tglx@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v1] atm: lec: fix null-ptr-deref in lec_arp_clear_vccs
+Message-ID: <aZ7V5b5ZplD4B9i1@stanley.mountain>
+References: <20260224044648.243578-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH v2] igc: fix page fault in XDP TX
- timestamps handling
-To: Zdenek Bouska <zdenek.bouska@siemens.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>,
- Richard Cochran <richardcochran@gmail.com>,
- Song Yoong Siang <yoong.siang.song@intel.com>,
- Lai Peter Jun Ann <jun.ann.lai@intel.com>,
- Vinicius Costa Gomes <vinicius.gomes@intel.com>,
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
- Florian Bezdeka <florian.bezdeka@siemens.com>
-References: <20260225-igc-fix-xdp-tx-tstamp-pagefault-v2-1-bf797ec20f3b@siemens.com>
-Content-Language: en-US
-From: Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <20260225-igc-fix-xdp-tx-tstamp-pagefault-v2-1-bf797ec20f3b@siemens.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260224044648.243578-1-jiayuan.chen@linux.dev>
 
-Dear Zdenek,
-
-
-Thank you for your patch.
-
-Am 25.02.26 um 10:58 schrieb Zdenek Bouska via Intel-wired-lan:
-> If an XDP application that requested TX timestamping is shutting down
-> while the link of the interface in use is still up the following kernel
-> splat is reported:
+On Tue, Feb 24, 2026 at 12:46:38PM +0800, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
 > 
-> [  883.803618] [   T1554] BUG: unable to handle page fault for address: ffffcfb6200fd008
-> ...
-> [  883.803650] [   T1554] Call Trace:
-> [  883.803652] [   T1554]  <TASK>
-> [  883.803654] [   T1554]  igc_ptp_tx_tstamp_event+0xdf/0x160 [igc]
-> [  883.803660] [   T1554]  igc_tsync_interrupt+0x2d5/0x300 [igc]
-> ...
+> syzkaller reported a null-ptr-deref in lec_arp_clear_vccs().
+> This issue can be easily reproduced using the syzkaller reproducer.
 > 
-> During shutdown of the TX ring the xsk_meta pointers are left behind, so
-> that the IRQ handler is trying to touch them.
+> In the ATM LANE (LAN Emulation) module, the same atm_vcc can be shared by
+> multiple lec_arp_table entries (e.g., via entry->vcc or entry->recv_vcc).
+> When the underlying VCC is closed, lec_vcc_close() iterates over all
+> ARP entries and calls lec_arp_clear_vccs() for each matched entry.
 > 
-> This issue is now being fixed by cleaning up the stale xsk meta data on
-> TX shutdown. TX timestamps on other queues remain unaffected.
-
-If you have the commands to reproduce this, that’d be great to have.
-
-> Fixes: 15fd021bc427 ("igc: Add Tx hardware timestamp request for AF_XDP zero-copy packet")
-> Signed-off-by: Zdenek Bouska <zdenek.bouska@siemens.com>
+> For example, when lec_vcc_close() iterates through the hlists in
+> priv->lec_arp_empty_ones or other ARP tables:
+> 
+> 1. In the first iteration, for the first matched ARP entry sharing the VCC,
+> lec_arp_clear_vccs() frees the associated vpriv (which is vcc->user_back)
+> and sets vcc->user_back to NULL.
+> 2. In the second iteration, for the next matched ARP entry sharing the same
+> VCC, lec_arp_clear_vccs() is called again. It obtains a NULL vpriv from
+> vcc->user_back (via LEC_VCC_PRIV(vcc)) and then attempts to dereference it
+> via `vcc->pop = vpriv->old_pop`, leading to a null-ptr-deref crash.
+> 
+> Fix this by adding a null check for vpriv before dereferencing it. If
+> vpriv is already NULL, it means the VCC has been cleared by a previous
+> call, so we can safely skip the cleanup and just clear the entry's
+> vcc/recv_vcc pointers. Note that the added check is intentional and
+> necessary to avoid calling vcc_release_async() multiple times on the
+> same vcc/recv_vcc, not just protecting the kfree().
+> 
+> Reported-by: syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/68c95a83.050a0220.3c6139.0e5c.GAE@google.com/T/
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 > ---
-> Changes in v2:
-> - Moved 'adapter' variable declaration into the if block (Vinicius)
-> - Link to v1: https://lore.kernel.org/r/20260224-igc-fix-xdp-tx-tstamp-pagefault-v1-1-7c729ef61ee5@siemens.com
-> ---
->   drivers/net/ethernet/intel/igc/igc.h      |  2 ++
->   drivers/net/ethernet/intel/igc/igc_main.c |  7 +++++++
->   drivers/net/ethernet/intel/igc/igc_ptp.c  | 33 +++++++++++++++++++++++++++++++
->   3 files changed, 42 insertions(+)
+>  net/atm/lec.c | 27 +++++++++++++++------------
+>  1 file changed, 15 insertions(+), 12 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-> index a427f05814c1ae7330c6f7034cd0f2b40b74dab6..17236813965d334f14eba928affbd4f91b96ecd4 100644
-> --- a/drivers/net/ethernet/intel/igc/igc.h
-> +++ b/drivers/net/ethernet/intel/igc/igc.h
-> @@ -781,6 +781,8 @@ int igc_ptp_hwtstamp_set(struct net_device *netdev,
->   			 struct kernel_hwtstamp_config *config,
->   			 struct netlink_ext_ack *extack);
->   void igc_ptp_tx_hang(struct igc_adapter *adapter);
-> +void igc_ptp_clear_xsk_tx_tstamp_queue(struct igc_adapter *adapter,
-> +				       u16 queue_id);
->   void igc_ptp_read(struct igc_adapter *adapter, struct timespec64 *ts);
->   void igc_ptp_tx_tstamp_event(struct igc_adapter *adapter);
->   
-> diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-> index 89a321a344d263ace5c66f7ade782b40cc482566..1931fcb659354d5009e0ea02316bf3a47b66b04d 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_main.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_main.c
-> @@ -264,6 +264,13 @@ static void igc_clean_tx_ring(struct igc_ring *tx_ring)
->   	/* reset next_to_use and next_to_clean */
->   	tx_ring->next_to_use = 0;
->   	tx_ring->next_to_clean = 0;
-> +
-> +	/* Clear any lingering XSK TX timestamp requests */
-> +	if (test_bit(IGC_RING_FLAG_TX_HWTSTAMP, &tx_ring->flags)) {
-> +		struct igc_adapter *adapter = netdev_priv(tx_ring->netdev);
-> +
-> +		igc_ptp_clear_xsk_tx_tstamp_queue(adapter, tx_ring->queue_index);
-> +	}
->   }
->   
->   /**
-> diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-> index 7aae83c108fd7611b00bf075592f93a902b83422..98491346d21b80925ce42ba276d851d4318e66b7 100644
-> --- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-> +++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-> @@ -576,6 +576,39 @@ static void igc_ptp_clear_tx_tstamp(struct igc_adapter *adapter)
->   	spin_unlock_irqrestore(&adapter->ptp_tx_lock, flags);
->   }
->   
-> +/**
-> + * igc_ptp_clear_xsk_tx_tstamp_queue - Clear pending XSK TX timestamps for a queue
-> + * @adapter: Board private structure
-> + * @queue_id: TX queue index to clear timestamps for
-> + *
-> + * Iterates over all TX timestamp registers and releases any pending
-> + * timestamp requests associated with the given TX queue. This is
-> + * called when an XDP pool is being disabled to ensure no stale
-> + * timestamp references remain.
-> + */
-> +void igc_ptp_clear_xsk_tx_tstamp_queue(struct igc_adapter *adapter, u16 queue_id)
-> +{
-> +	unsigned long flags;
-> +	int i;
-> +
-> +	spin_lock_irqsave(&adapter->ptp_tx_lock, flags);
-> +
-> +	for (i = 0; i < IGC_MAX_TX_TSTAMP_REGS; i++) {
-> +		struct igc_tx_timestamp_request *tstamp = &adapter->tx_tstamp[i];
-> +
-> +		if (tstamp->buffer_type != IGC_TX_BUFFER_TYPE_XSK)
-> +			continue;
-> +		if (tstamp->xsk_queue_index != queue_id)
-> +			continue;
-> +		if (!tstamp->xsk_tx_buffer)
-> +			continue;
-> +
-> +		igc_ptp_free_tx_buffer(adapter, tstamp);
-> +	}
-> +
-> +	spin_unlock_irqrestore(&adapter->ptp_tx_lock, flags);
-> +}
-> +
->   static void igc_ptp_disable_tx_timestamp(struct igc_adapter *adapter)
->   {
->   	struct igc_hw *hw = &adapter->hw;
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> diff --git a/net/atm/lec.c b/net/atm/lec.c
+> index afb8d3eb2185..a5b80d6df603 100644
+> --- a/net/atm/lec.c
+> +++ b/net/atm/lec.c
+> @@ -1260,24 +1260,27 @@ static void lec_arp_clear_vccs(struct lec_arp_table *entry)
+>  		struct lec_vcc_priv *vpriv = LEC_VCC_PRIV(vcc);
+>  		struct net_device *dev = (struct net_device *)vcc->proto_data;
+>  
+> -		vcc->pop = vpriv->old_pop;
+> -		if (vpriv->xoff)
+> -			netif_wake_queue(dev);
+> -		kfree(vpriv);
+> -		vcc->user_back = NULL;
+> -		vcc->push = entry->old_push;
+> -		vcc_release_async(vcc, -EPIPE);
+> +		if (vpriv) {
+> +			vcc->pop = vpriv->old_pop;
+> +			if (vpriv->xoff)
+> +				netif_wake_queue(dev);
+> +			kfree(vpriv);
+> +			vcc->user_back = NULL;
+> +			vcc->push = entry->old_push;
+> +			vcc_release_async(vcc, -EPIPE);
+> +		}
+>  		entry->vcc = NULL;
+>  	}
+>  	if (entry->recv_vcc) {
+>  		struct atm_vcc *vcc = entry->recv_vcc;
+>  		struct lec_vcc_priv *vpriv = LEC_VCC_PRIV(vcc);
+>  
+> -		kfree(vpriv);
+> -		vcc->user_back = NULL;
+> -
+> -		entry->recv_vcc->push = entry->old_recv_push;
+> -		vcc_release_async(entry->recv_vcc, -EPIPE);
+> +		if (vpriv) {
+> +			kfree(vpriv);
+> +			vcc->user_back = NULL;
+> +			vcc->push = entry->old_recv_push;
+> +			vcc_release_async(vcc, -EPIPE);
 
+I wasn't going say anything, but since it seems like maybe you're going
+to redo this patch anyway.  Changing "entry->recv_vcc->push" to
+"vcc->push" is obviously nice but could you do that in a separate
+patch?
 
-Kind regards,
+I use a tool to strip out the indenting changes:
+https://github.com/error27/rename_rev
 
-Paul
+So when I review a patch like this, I want to pipe it to my script and
+just see:
+
++		if (vpriv) {
+			vcc->pop = vpriv->old_pop;
+			if (vpriv->xoff)
+				netif_wake_queue(dev);
+			kfree(vpriv);
+			vcc->user_back = NULL;
+			vcc->push = entry->old_push;
+			vcc_release_async(vcc, -EPIPE);
++		}
+  		entry->vcc = NULL;
+  	}
+  	if (entry->recv_vcc) {
+  		struct atm_vcc *vcc = entry->recv_vcc;
+  		struct lec_vcc_priv *vpriv = LEC_VCC_PRIV(vcc);
+
++		if (vpriv) {
+			kfree(vpriv);
+			vcc->user_back = NULL;
+
+			entry->recv_vcc->push = entry->old_recv_push;
+			vcc_release_async(entry->recv_vcc, -EPIPE);
++		}
+
+The renames are nice but now I have to check things by hand.
+
+regards,
+dan carpenter
