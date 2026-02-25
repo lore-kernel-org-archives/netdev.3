@@ -1,45 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCB0228CA9;
-	Wed, 25 Feb 2026 02:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9478DF76;
+	Wed, 25 Feb 2026 02:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771986774; cv=none; b=r/F4C1fMf9tqhlnCXJwXDdQ5tShF8tuhVuaXOg2jZ0tnMfSUolQVI1/CA2foeVsGf0Xnl+wIM2cBiL7CrO06ZfLr5nhlA5XvSEPwii9GGUS4xlQ9/vhx8KY2GSVHQOVsPVa6jKke6TWPJjYHIm1Zig9fdOy1pjK2Fg/P7P+ENbU=
+	t=1771986929; cv=none; b=s1kt18YxXNVlMOdbdkYNiRWtrWAamYXhBq/UKhlEQLDuZ09nI0k8Jn8EIBMSSN3Ng0gw81mGlJTH6j7xyGDjCVIITQSXVNpYwSUU3vwM1rH0ll2l+z/mRpcR3LDAHQ+3bTiM0q7dKMAIoeHCWK569ZwDCkVPFn7IwhIPnqmLSLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771986774; c=relaxed/simple;
-	bh=ibk16yeTZlaqlGBnC0WuhDja1zTjrU6fF717LH0KpRE=;
+	s=arc-20240116; t=1771986929; c=relaxed/simple;
+	bh=GCNigCkhCxhmteC3OPykN+XbAA3IA5VTyCCE/lVMn40=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GRH7ZsXmYMIthEbx2w/tzec0xvDrFzkJD2oqRaGRlH/t6Fv4JNjxYE9qMY00HtSH3XJxUDyeua6E+9qlByRya+kWSihE6j9h6KfzFYnTdQXfbgw/BAzvUrAdtUD5AWMYPX0JhDlyvx+FNHmyAowh5+pbjK8xlSkaGWEgGeQNMmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SajrUMH4; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=HYxjqmxSwiuGRuvdvYy0vEDvgh1cRNmO+egcpcvXNJAqe0UCZJW504TewO0gXjHcGXYnC2Q+8XcQWOwA5WyjH4J83kM97WBeQsqjYHOfSxQKCd0cJDYMw7hCjCfgPqjPXEDANZEGTfhfI/JVHRwltqhX3MIjqUxgrEqu1sEr+Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eJLP7rf0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SajrUMH4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023B1C116D0;
-	Wed, 25 Feb 2026 02:32:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eJLP7rf0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 050C9C116D0;
+	Wed, 25 Feb 2026 02:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771986774;
-	bh=ibk16yeTZlaqlGBnC0WuhDja1zTjrU6fF717LH0KpRE=;
+	s=k20201202; t=1771986929;
+	bh=GCNigCkhCxhmteC3OPykN+XbAA3IA5VTyCCE/lVMn40=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SajrUMH4rdtv695yz63D9f4cENf0m1MC7zo+JTjaSyy15p3ijdNg8QUOj/tLx0KTD
-	 MCbDCoxXkF1e+xyLXp9XsdjBLy7mxjiL6YdtZhI9M9GO4B3Tjl6draLl0SyXi8jYlx
-	 4THahWSThZCNreDGhoteRpepdWogx147UMVIheZJdVskevty9TX5WibvWQaieAoqmI
-	 WqoYHYMK7NKUhnrFr86IUrUOHrJXjqt7RFxLF6KAwtRyS51+id91ewf8Vmw2VnYcBt
-	 M6GU2v14VTpvhGO4LgBKboZzB8Y069rK39SEET6MlMM9JEKYnear9rk4MOg3uQt0cX
-	 sHlWxO8wHlHDQ==
-Date: Tue, 24 Feb 2026 18:32:53 -0800
+	b=eJLP7rf0sURe5/cf2E8qt0ItrntJaYQJlsqC5hQahjcrNecOUPRlhyn1+qzQWAk8I
+	 pW6nI60fiVR5Hl0Je6ro8GRJZPDCbkpXEANXXvyDcy2j1szAj48aGgAr3MxJJZiPnQ
+	 T48XdHSiACHTBvHGCzutBasM9BeFQB3nN/S690Z93C3g6Isn+QjVkqjLN0QrxROm2c
+	 Ln2JGV9T2wBLyq0wcupdu57e+WG8MUD0ZJRCM0D6kN8V9PbmB+LT8GAypRyScqVEvo
+	 cZe0U5RE/K1D3Izqy2G5oc4g4bL/clRVWC/8zaIN/kKRRPD8bFzFTLmlP6MvVWoAUK
+	 F+WjUqc8FL2fg==
+Date: Tue, 24 Feb 2026 18:35:28 -0800
 From: Jakub Kicinski <kuba@kernel.org>
 To: Bhargava Marreddy <bhargava.marreddy@broadcom.com>
 Cc: davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
  andrew+netdev@lunn.ch, horms@kernel.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, michael.chan@broadcom.com,
  pavan.chebbi@broadcom.com, vsrama-krishna.nemani@broadcom.com,
- vikas.gupta@broadcom.com, Ajit Kumar Khaparde <ajit.khaparde@broadcom.com>
-Subject: Re: [PATCH net-next 1/7] bng_en: add per-PF workqueue, timer, and
- slow-path task
-Message-ID: <20260224183253.23143628@kernel.org>
-In-Reply-To: <20260223163641.755200-2-bhargava.marreddy@broadcom.com>
+ vikas.gupta@broadcom.com, Rajashekar Hudumula
+ <rajashekar.hudumula@broadcom.com>, Ajit Kumar Khaparde
+ <ajit.khaparde@broadcom.com>
+Subject: Re: [PATCH net-next 2/7] bng_en: query PHY capabilities and report
+ link status
+Message-ID: <20260224183528.757e1174@kernel.org>
+In-Reply-To: <20260223163641.755200-3-bhargava.marreddy@broadcom.com>
 References: <20260223163641.755200-1-bhargava.marreddy@broadcom.com>
-	<20260223163641.755200-2-bhargava.marreddy@broadcom.com>
+	<20260223163641.755200-3-bhargava.marreddy@broadcom.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,18 +51,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 23 Feb 2026 22:06:35 +0530 Bhargava Marreddy wrote:
-> +	if (atomic_read(&bn->intr_sem) != 0)
-> +		goto bnge_restart_timer;
-> +
-> +	/* Periodic work added by later patches */
-> +
-> +bnge_restart_timer:
-> +	mod_timer(&bn->timer, jiffies + bn->current_interval);
+On Mon, 23 Feb 2026 22:06:36 +0530 Bhargava Marreddy wrote:
+> +	/* To protect link related settings during link changes and
+> +	 * ethtool settings changes.
+> +	 */
+> +	struct mutex		link_lock;
+> +	struct bnge_link_info	link_info;
 
-This intr_sem thing looks highly questionable.
+Why does link deserve its own lock? Are the operations slow?
 
-It provides no synchronization guarantee since the state of intr_sem 
-may change immediately after the read. Please use normal locking
-primitives and/or cancel the timer _sync() if you want to make sure
-it's not running.
+bnxt was written before the netdev instance lock existed, if you're
+just trying to avoid taking rtnl_lock the instance lock would do.
