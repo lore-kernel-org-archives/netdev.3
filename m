@@ -1,119 +1,109 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D79DA1FE45D
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 01:53:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771984391; cv=pass; b=AjTf6/r7pAmOJ8dX/l9ECtWnhDNnEUFpnL7tqakRxD1uU6Zk2RUVCmeXGgOS2/hkK/MccPv/m3RNklHxQJi+USADFGmfgP5SZgBGowGlA1nLWaf7YxECKtFXe6G7GX040nFUw2bIVcKJSoUnJrbwxOqevKcPzLdgFcwZY2d2S+0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771984391; c=relaxed/simple;
-	bh=C0mgObuGCdALZFtLxXhk51l8QBviikLcMCOIR5kmFvQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Xoo3GRSaFXyZuuLVxc8vbIBw9aiQ/ip/DapjlRK8RDcoi/XMfPbQzy0ASfiOBva6b4kJ9azS+d7xEvgevaQ3cToeKmoEAbLvMre2oY9kYb/FJckRa6SG7KtkXyksO0M78TQaPl9RgXdnyLDaYymTwR9Gx/efkrNXRSDyIkcuDQo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eqN5V+g6; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45EC32505B2;
+	Wed, 25 Feb 2026 01:57:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771984625; cv=none; b=uYoXYr2O7f56ENPJpyM4/rxWybeRZvGTNXrCw4dygIbIh34m1K8GApBIJmrusaXP7K1/vNfOyF/oDYSVH2GUYpEK/AnAv18r0uQgyjyTAB3DVXnAkd2aXQhbmXzoB7SCuIoXZgfgpGSSDNHXmfVTEz9l8xJ/37UmtQmSF9fz5XY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771984625; c=relaxed/simple;
+	bh=iX1vuBEHioUWth5SQ/gIG0ctnR9Imkegqk1Txkur6Bc=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TIRd8ALEP9WH8GAqkGWbqg+op73xEM5FHNIb2TqEtQornXmkOIBYwobFTevl8XrQUR71oLs0qHOS+Zm1dSZR6yRBsKZOYyRlSivVjN6NTT0Wdt/sH7ZAK++0607nBehZrEnnD0E1+w5stGSiVtZHNL2G9mIDXYWFH1LWc19Ky7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=hVpCXyYJ; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eqN5V+g6"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-506a1b23c05so76636381cf.0
-        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 17:53:09 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1771984389; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GtMeT6uWYNpYWcbuorpgpI/X3C49ZiO+WwlKErXKxoYZbNzTg6csL5Nc6q2MxTeNdj
-         zbXfDisd1SlXQEwEUN+D7wC4xTrH+saJXuMHiNHhY/s/227Uh5LfDYQoXghD3UFDJ5x1
-         FnN3m9AXCt+jRiysE7uDaN7V0+X5DPPhK7MUWZsO7wmIZmrnyrLuRBs82bEbcnaFXqMm
-         PTkyOkzqyBJWv8zrAtEbf4yG0Nzbm76JC0nZKT9R7szwMXToj0kWWCStL+K0QRwUlfnX
-         xH47KYzMFnTqgw5LXcRl0pEood40UYKgy/BFCRpuuevqNud6CgPlQG4Hmg/nsqWB1Et1
-         dcOw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RM2zN9RmIf2LWyhacPOeFCgnfc2/rTz6ZpEpYI1sHT8=;
-        fh=62q3/F2kP9eCfnjNj9zmsf8Kt80gjQEWnKqL00ixUsY=;
-        b=dTKnFknyam6xHj/16sThuELoa/2F0RiIFDKp2Xj7iZeUfxVcBoemCs7N+rDPhl+LdD
-         KLvryA0/Lcq4iLaWEufJPJxpbUErwqMAQVGppHC7YvsKzjgVdJyXfIdNezDrVtS5BGo0
-         zRgC1axespSLYaJj81x+Eqa8YTFlT13sBl/z5m6hJkIdOKWeTH0u6MkQiR2u1ti1IQXu
-         Ri9NOvVRIIwOp7Y8wsJKJRaqqbtjCiZ9w0T3HQHKE3W66ycXL/LuHnO9xhXZPpsGBg+U
-         Sa2GFzPx4R2VH5UeSfMQ650joSIvOsOxFwqjyIYN21+CAZfUJU2QqUPFFoVfy7rbKUHK
-         UyQg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1771984389; x=1772589189; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RM2zN9RmIf2LWyhacPOeFCgnfc2/rTz6ZpEpYI1sHT8=;
-        b=eqN5V+g6SjSNr3xByIZC6GL3QBAcnypS/NC71oEdKqdzYc+jHjteKtVcyzrmafldTA
-         WvSLs6wYjGkIa80ugHSpQ76zA3woekGNk+tYQd+Jqk79zmUBZlBKVTbyHIFg8i3phWcZ
-         nL4svxTCuUDYj/62fgJx8qoonYHagG1vWfgvaCseh2SldZh0AlqWlZllmgGW129qCS/7
-         T23/Ws12q4Pn5XZ6oBZnerLMiSqWnH318t+Vc03yLUQRQkQKt8P99uKNShbqPcvMuU5A
-         Q0kTSItmZc2xqZWx6TPYHc6W6jD4Eex+O3yk3ogaB4l6TCxgRnCYld/ZQlp+2TeY+WQV
-         pMbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771984389; x=1772589189;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RM2zN9RmIf2LWyhacPOeFCgnfc2/rTz6ZpEpYI1sHT8=;
-        b=FUZpABJb2qdnRkGpbkR1bDJs3cn+Kg3R5E67LtffEEB+zQzz24+QWffR8PhxZVG4Dv
-         Mx9UkbjgBBUkOWz4zEUrInDDG/kEYOYY7YtPuPQWNOULB5wLTg2mZDQMKm8VyXOH9Tit
-         big9i33tEUe2UyvbQkffXPkIZVRPlyfcqlEgvil1LP3PN5cKqQJdy1MiGFv7zMgAyaQo
-         vKKQmkrO4MkvV+KykpwmZ+PNNpPi07ctp2izhttt1k5GyiS2+fP2hyJ06/7dkDbtOVvl
-         IUfbQUCKADWoVVFDIFIVM00rWCLssevQUxO/OVx+NShuEwl2suE68buyKWxAxWRaP6cE
-         bVzA==
-X-Forwarded-Encrypted: i=1; AJvYcCWtL8L9E5EaIrEh6Q6zpVKRuVng3Lcqj9Y0Uv56e8TVDB4VI8gy6/BIPkyIfb/OcC+O+/9wAPY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkKV6a6yWNHvI59n6ofs1PnEy4WfrmnNGlEekpb3jVgv3pmQkO
-	3d+YhywgxtxdSv4IAm0LdxFUtKOf1KYP+F98NTAOg8dX4tp5AQ+A8BBSDkwM5FYyWO2jDY+lFGA
-	gVFQhIa+WZwofCa9ed5FFVYxSL+wew+gUgldPGXYN
-X-Gm-Gg: AZuq6aL08OXP7MXpMSFibbHBZ9aYz9iYuxMcugAgXTwRq7oAxD+BD22iGePsf+UEhNq
-	koT6S9TyVY6bJMH4we7FC7lGnnh16AFAxXPhOL+HbS1Dsx+giXjqy+StJDYGXDUGi5xhFKlukrq
-	v6fGQdOvCwt+TiGag4DYR8caeE0GriLhWu0kcvvTzytbUqUnBEKfXJLQttKlGVLT7F/Pl0dvMli
-	+dR7U6CHjfeqPVmBhQdR2LG7JLi2vayrGVW79/Dcynsj+fTbb1rE6zelGAMwdQaQMrANL4h857V
-	q+w4GMBqKI201taOK/dZ2KA0q1NQyACeE+3Al1HVGg==
-X-Received: by 2002:a05:622a:1ba6:b0:4f1:c6be:c853 with SMTP id
- d75a77b69052e-5073a27842dmr10647161cf.25.1771984388362; Tue, 24 Feb 2026
- 17:53:08 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="hVpCXyYJ"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61ONRoxM1176380;
+	Tue, 24 Feb 2026 17:56:51 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pfpt0220; bh=N8HjTjjDc4OOjtft1aCSlShXT
+	lMLdH1wa8usCFRcCZk=; b=hVpCXyYJyDXXMZvUTobF6ZS2pR7pHYXs1zLJgik6r
+	ISsbsUaAPrsI5Lwx2NPOEmOguWt9fZKKl9qWVts5N7+1WVUBoBBJ4FnPJRfHLpyU
+	AwPAW69ZbO4Om56wyRn6aJerrS+wRLZUmJo9xEqSDH+v3OHhYrqPI9XV5EHY6Sv/
+	JEIuFkTc2rgX9OkkOBx5NRg8Z4TLOQu1h4xZ/1czASUJUJu674ELH39POrTFfR3A
+	RQbxKuVz92euXund1S91OAoRbUxSF7ebJG6tQ7b2gaasJw56++N4qJ6lhfScMoqe
+	SeB8fxVHc++xixMiiYyeqRLwAkWihzYYQu0UQYG4039Cw==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4chnp8r8x2-2
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Feb 2026 17:56:51 -0800 (PST)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.25; Tue, 24 Feb 2026 17:56:51 -0800
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
+ Transport; Tue, 24 Feb 2026 17:56:50 -0800
+Received: from rkannoth-OptiPlex-7090 (unknown [10.28.36.165])
+	by maili.marvell.com (Postfix) with SMTP id 603D35C68EE;
+	Tue, 24 Feb 2026 17:56:48 -0800 (PST)
+Date: Wed, 25 Feb 2026 07:26:47 +0530
+From: Ratheesh Kannoth <rkannoth@marvell.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <sgoutham@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
+        <pabeni@redhat.com>, <andrew+netdev@lunn.ch>
+Subject: Re: [PATCH net-next v9 00/13] NPC HW block support for cn20k
+Message-ID: <aZ5W35hJWsU8btAN@rkannoth-OptiPlex-7090>
+References: <20260224080009.4147301-1-rkannoth@marvell.com>
+ <20260224103537.4eed8e8b@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260223153342.892477-1-edumazet@google.com> <20260224174909.59f52345@kernel.org>
-In-Reply-To: <20260224174909.59f52345@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 25 Feb 2026 02:52:55 +0100
-X-Gm-Features: AaiRm51151WKQ92TFPLi_hKiZgz4jkIqnghV1pK8o8k2Fn170njkUP5pnfhJrT0
-Message-ID: <CANn89iLjKzLwPirGBY3SzrC33OioPCrnZMcGuP4PGj7GWp39eA@mail.gmail.com>
-Subject: Re: [PATCH net-next] ipv6: move ip6_dst_hoplimit() to net/ipv6/ip6_output.c
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, 
-	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, David Ahern <dsahern@kernel.org>, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20260224103537.4eed8e8b@kernel.org>
+X-Proofpoint-ORIG-GUID: nwYeR_hedoixjp4sLtHzxjk5PSyjICqD
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDAxNSBTYWx0ZWRfX1i8Pl6w8PGAB
+ cdCvc5MQmaNjeTsosTvM3RYoIiqwnJ0eR3OGTDO0YP6o/Eq866wWuucofkcKCBDnZRvyqp2RbS9
+ EGIGPEhH8Tq8G+ax10IbVo2HXEdZtoQJxYlpeCRwwrlmBTK+1Mdau7gjZqnLpyADiQYvaZAHUZL
+ XzBvaxQOeLdzkuYVHqswYdXMOTsWmjJ8PaYwezI9S8Ba4F3/LjcFBtfbNaDhJRuGJGLevR8Zulz
+ OxIxorqcN4k2BoCUU+NgHU3b9rcI15cEpAU/TOaoUE4WMYWRHdwcqtARHI+GmJZcLV0vBdAvEbS
+ vOOsbGUrW4d5TERHNAuKyxEK+awxD5s9c4yTXFwz0eiYh9ZL8w93a42NsFCMIEWGeUN+NlhPVFF
+ XVwIIe4wYIZWmnarO3eJ3B5ydlj6zltaRt+g62z988eOGffWk6z5HCcla1+vGu/Y27l0HGfvPcn
+ z57Xw1zbaPVPEaEmeCg==
+X-Authority-Analysis: v=2.4 cv=bNYb4f+Z c=1 sm=1 tr=0 ts=699e56e3 cx=c_pps
+ a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
+ a=kj9zAlcOel0A:10 a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=l0iWHRpgs5sLHlkKQ1IR:22 a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8
+ a=M5GUcnROAAAA:8 a=WljHKSap0GIyhByar9MA:9 a=CjuIK1q_8ugA:10
+ a=OBjm3rFKGHvpk9ecZwUJ:22 a=lhd_8Stf4_Oa5sg58ivl:22
+X-Proofpoint-GUID: nwYeR_hedoixjp4sLtHzxjk5PSyjICqD
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-24_03,2026-02-23_03,2025-10-01_01
 
-On Wed, Feb 25, 2026 at 2:49=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> wr=
-ote:
+On 2026-02-25 at 00:05:37, Jakub Kicinski (kuba@kernel.org) wrote:
+> On Tue, 24 Feb 2026 13:29:56 +0530 Ratheesh Kannoth wrote:
+> > v8 -> v9: Addressed Jakub comments.
+> > 	https://lore.kernel.org/netdev/20260204182428.05a77b13@kernel.org/
 >
-> On Mon, 23 Feb 2026 15:33:42 +0000 Eric Dumazet wrote:
-> > Move ip6_dst_hoplimit() to net/ipv6/ip6_output.c so that compiler
-> > can (auto)inline it from ip6_xmit().
-> >
-> > $ scripts/bloat-o-meter -t vmlinux.old vmlinux.new
-> > add/remove: 0/0 grow/shrink: 1/0 up/down: 47/0 (47)
-> > Function                                     old     new   delta
-> > ip6_xmit                                    1481    1528     +47
-> > Total: Before=3D25076476, After=3D25076523, chg +0.00%
->
-> allmodconfig is not happy:
->
-> ld.lld: error: undefined symbol: ip6_dst_hoplimit
-> >>> referenced by xfrm_output.c:348 (/srv/nipa-poller/net-next/wt-0/build=
-_clang/../net/xfrm/xfrm_output.c:348)
-> >>>               vmlinux.o:(xfrm_outer_mode_output)
-> --
+> v8 was 20 days ago. You replied to the review comments _today_ and then
+> immediately posted v9. This is very frustrating, because corrections
+> I suggested in the reply to v8 obviously can't be part of v9. Making v9
+> pretty much useless. If you can't follow common sense rules of
+> engagement with the community we will not merge any of your code.
 
-Oh well, this maze of config options...
+I understand your frustration, and I apologize for posting v9 immediately
+after replying to the v8 review comments.  My intention was to keep the
+process moving forward, as new AI generated review comments are generated each time.
+I had asked the same question in v7
+(https://lore.kernel.org/netdev/20260129083339.264386-12-rkannoth@marvell.com/T/#m0681b88b55f80b0f58fc1e6e9be2220220111224).
+
+But I see now that doing so prevented your latest suggestions from being incorporated and disrupted the expected
+review workflow. That was not my intent. I appreciate the time and effort you put into reviewing the patches,
+and I certainly do not want to undermine that process.
+
+Going forward, I will wait for feedback after replying to review comments before posting a new version,
+ to ensure that all suggested corrections are properly addressed. If there are additional changes you would like
+included beyond what was already discussed, I am happy to incorporate them in the next revision.
+
+Thank you again for the review and for your guidance on community expectations.
