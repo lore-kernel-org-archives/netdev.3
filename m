@@ -1,138 +1,88 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D75A7315D33
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 08:32:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772008362; cv=pass; b=mHMPhLR+3G/QmKh2jLUAtONWfBR2h+luDBw1CRJIOpoHK8ptz4/oZwkHIlrEoG1g8Zs7zKpKTpa7t5z8U4LPFOZBDtB7W22WfIJ+0UXIaiNwQdDXvuDAmK48fgCQr0DbSkLHn62t+zywlGJTCMv5LKEPeEoB2q+mdVIvkBuxWXI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772008362; c=relaxed/simple;
-	bh=j1XDmOFF9ikLIHIw8UOC65mfDZU8nF4o3uQ12APFwhw=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Content-Type; b=RCyZV8Cg6ic08qK1rS2IkFvaL5qImI91PRbFrcdGQ/7ylT26Qcu4wrXxxWdhVlGmKCAOsSFxybGuBGEwlv/RIECG+V3B4F9XZSMgVQUaEvpbISQLsQZySOm3tEB+4BCnf/Dh/bB8agmLrxXMeuGQQ9+kRKAKsq1PJXaINEqlMNY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EGS2ZSu/; arc=pass smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5843323E35F;
+	Wed, 25 Feb 2026 08:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772008630; cv=none; b=JxIGoMECJ5ThuUJvot01CYVx3WdWj1AXoJyOGKHk+/NfndhiICCy49KtknQXIHVZOKr+tS5xfXOvxU126y29ypbqog3BfMfKy1oJwxApVoUXKFujSeWoaLqnk8wjz1Q2f4PZfGlZtU7QOWClFnLbPUa0aKYFEcGivDCU1fIZjQY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772008630; c=relaxed/simple;
+	bh=v2rH28nFVvo3EsdsY4l5mm7g16gXuk4fKlF1OhHQTwc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c9lw0jK8WzAKjqPTDBff2uN5FXOzUxcFJ0j5TLGmFAU/zDA10bGb/8Ch+AsIYGgyfAXFtiA6G4YkVteatKCnsc8MbC/3nndyEuq7jDUtwUPTTwlybyTtnqLZI0To0MSMvVQrMsu+B28eZrHpwjnOd4qT45ZTuKG+0/Vtn3G98QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQh/oDwg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EGS2ZSu/"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-2bdb17511aaso1869725eec.0
-        for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 00:32:40 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772008360; cv=none;
-        d=google.com; s=arc-20240605;
-        b=arLqyPFcb213IA/HRmQtWCExWniltB6NynDF80Ht6DXsAjcz2tqhDY8YgzqCz4+dDY
-         4sFgl+103CZNOqpZ/VIFc+tKeKgPeED2FnX9/uQrurYHC1cpTqZLgy+3lSIORrNY4kzd
-         By1QQWnDK8FkphRbcWNEU5tGFgieAyf8eLqPANdeYzAjMFmsrASd9Obm4AZtpcdg6TRJ
-         lCVPLoZhEbRdVB2vouXa1N0jtRP3qfaj8TxBWJGAJfHAObU2NRAidrljlsOZyAXCRp7V
-         xAliz8A/QtAbRAEpN1t+2x7GKM692zDQET+YCrsxfO1XkhC4ZuQp0KOleQ9DGjwVkSAy
-         ooDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=j1XDmOFF9ikLIHIw8UOC65mfDZU8nF4o3uQ12APFwhw=;
-        fh=aDUZZ9N6NPmO6DMPx8G1ADwl9DVnQFUvUJ2oivftvxg=;
-        b=O1c0IZzQmFsRDX48TV9Ir8UQ5OAtSXUmPHjq4RZjMh0IhWL77cSCpJIjHetbYYL/o+
-         ipilRj036aKKn5ante2yL/mz5DioQ3sN1XJag/YL6bVIKsitC34PP+esR5ST9pefKqfe
-         i+RVtBQukTW4fjFLDA2NOk5IWNfAx7uhQLouSxQzxAPsRazW+9EiKZOsk+ddTQWmFEyA
-         rajDGw0hh4TNElUuUEHHGHQY/eEfInnaQVcZyNbUYfhTHP+9SM2+QHzptsPFfauUwmXY
-         7QU+wG6SYkYc91UUUuh+uHglDsJ4ifoKY/0L7+Wjy5Ljs96NUY4zGNR+3xfEXO6pY94K
-         g7/w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772008360; x=1772613160; darn=vger.kernel.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=j1XDmOFF9ikLIHIw8UOC65mfDZU8nF4o3uQ12APFwhw=;
-        b=EGS2ZSu/dbx947UHtrB5yzB+j9326+Jm0MzQJZHrxlYuA/ZNNBr/opB0LqCk2DBmXy
-         EnCMOBZd0ptiuOI56A+cc119iDkdzzaJ25g4LF2veHEGtgkP0Kl96trdW5HMvka3I6aq
-         w2Q+SwZWtAlodgvOURYnh2FaK7cquzPaXAncX2kDvXT1j8OyKgRjFdFNRHxpamMqgGq8
-         vFXEDT3ecqNmcqGewDucJxC3lpAHc2gXs6XehVcxhZzbCR63WCiLXXVTDy7q9oKT1NV/
-         Z30M7MJRdGYejrLmVArusPRdwC+NAdkSxXNuSFmunT07is01GhTf7w/nK0k+oM2v0UXu
-         pN5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772008360; x=1772613160;
-        h=to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=j1XDmOFF9ikLIHIw8UOC65mfDZU8nF4o3uQ12APFwhw=;
-        b=jx9s9srNq1k8hV8Xk6wSLxkSbpojH4q6Vekc546nrRu5i/xBHy++Hgc8U1DZSchlcH
-         tAQ5mX+T6VwLE53jciO+RuYCtcsRx3zhW/7uwpVHvb27tiGQ/x6xVXkbZatH4+YQ4zc/
-         /en3U5x20ixbD6EPnCPeRqgHDqxWDHroNJTZuFTtKIP38X3XUamJyhuyTduU9N4EfqZI
-         xbz3hMOVOjyPeMZJ6JGlwSWw1CBZ2xFsCk2/p2xLSkqHaaVWHct30ZuRk7xp1gSlkL32
-         J/6vRc0XESFnC/AHQzeSdykwnwN0LmEe2fg+1g2ammn/+rKp15cACPMGZ5fBIWdrp9ES
-         tuAA==
-X-Gm-Message-State: AOJu0YztXMG4my84LpNLIN/2N1KIBFOdyLyEK+uUhqf1+v7xnRvd6nEW
-	go7jEIeSAlB22XQ5RNsM+i640YP8x7B7Rnk/siwXdOY01O7DenCu3ZOxIP9D4Labj4pvwWekmM1
-	DUjJinBjzFYYCq1JmmsL+IcTVmPeDo6TqryqR
-X-Gm-Gg: ATEYQzwLb7x/z5nlOWqgEK9snRv7ConlPoAjcmz1AjCCQl7gsbd9JgS3/u5YWUtq0Y1
-	I8AnVtZtUJvUYCpM0ukXALIqIOVb9nhKz+sK56ulFlGyMmhF3KzN9ATg4P0ed38bVMthSJG1DD0
-	rQPzqRhFBJZDR+Kol5LykgtXbK52rxVAQSKndSmW7IjJJdNXPZSWUxasDuLnsxhtJEhdL87C1z+
-	/17QViy/fBxa+SQ1y0l40t7sUDQ713kUVUiA2cAhH1dU2uEOqSxVJzucQ5G/dqaTSwyGVsFAtRz
-	polQnd2tIdbmF2jPAGCKOJLnaq11LCK03BZcVlByw7omJJEMd28w8CgKZci5eEvyl1M=
-X-Received: by 2002:a05:7300:d4cb:b0:2ba:a3c5:ccd with SMTP id
- 5a478bee46e88-2bd7bd7162cmr5712863eec.37.1772008359742; Wed, 25 Feb 2026
- 00:32:39 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQh/oDwg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946D9C116D0;
+	Wed, 25 Feb 2026 08:37:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772008629;
+	bh=v2rH28nFVvo3EsdsY4l5mm7g16gXuk4fKlF1OhHQTwc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nQh/oDwghR4VGZoT2ipd2jZskB/lLXAY7AK5bgABVXn4tvYygDUriJC6d3JcOfY/U
+	 wXohKYEvRGYwSfcxRD/f/V9ZZyg9PZvKlOhGv0Hi5sQ2ji11vxiJaN9Zu817DfQV+y
+	 qK2m3JZSQ7s9lahjEHHQJtANwtcz/FnfoWku8eopG0tgwEjG3/qC4WM8KPcZ6sgiJw
+	 +97ZN8Si11iBiH0cDtQYNwDOHYsKjAqzEnwXM9A9AZo0aVk+0mHFasF+hsNsW1GSKe
+	 6JJQi9O2FybXuRvI1u8XDgprK/3s4Eg431fvCpo3OHHcM5dQeQHofxE1+qbzoIrINu
+	 /7vT61fAs68nA==
+Date: Wed, 25 Feb 2026 08:37:05 +0000
+From: Simon Horman <horms@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, Jiayuan Chen <jiayuan.chen@shopee.com>,
+	syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net v1] atm: lec: fix null-ptr-deref in lec_arp_clear_vccs
+Message-ID: <aZ60sfG1tdraA0zB@horms.kernel.org>
+References: <20260224044648.243578-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Patryk <pbiel7@gmail.com>
-Date: Wed, 25 Feb 2026 09:32:28 +0100
-X-Gm-Features: AaiRm520FyidZTc_8ReftC7rg60pv0xElcTnBLRnDGOJ5M2FiQy94KW00QeURAA
-Message-ID: <CA+DkFDaW_wJ5p9_P7pMpz-8iE6xeKkdF-MQcd2m2GcyVUE3S4Q@mail.gmail.com>
-Subject: 10G-QXGMII phy no autonegotiation on LS1028A
-To: netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260224044648.243578-1-jiayuan.chen@linux.dev>
 
-Hello, I've been trying to bring-up the 10G-QXGMII PHY on LS1028A
-based board and I have some problems. I guess that they come from the
-fact that I do not see the whole picture as this is the second phy
-I've been working on (actually the first one that uses serdes, the
-previous one was connected through RGMII). Anyway I decided to send
-this mail and post some of my questions hoping someone will find some
-time to steer a newbie in the right direction.
+On Tue, Feb 24, 2026 at 12:46:38PM +0800, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> 
+> syzkaller reported a null-ptr-deref in lec_arp_clear_vccs().
+> This issue can be easily reproduced using the syzkaller reproducer.
+> 
+> In the ATM LANE (LAN Emulation) module, the same atm_vcc can be shared by
+> multiple lec_arp_table entries (e.g., via entry->vcc or entry->recv_vcc).
+> When the underlying VCC is closed, lec_vcc_close() iterates over all
+> ARP entries and calls lec_arp_clear_vccs() for each matched entry.
+> 
+> For example, when lec_vcc_close() iterates through the hlists in
+> priv->lec_arp_empty_ones or other ARP tables:
+> 
+> 1. In the first iteration, for the first matched ARP entry sharing the VCC,
+> lec_arp_clear_vccs() frees the associated vpriv (which is vcc->user_back)
+> and sets vcc->user_back to NULL.
+> 2. In the second iteration, for the next matched ARP entry sharing the same
+> VCC, lec_arp_clear_vccs() is called again. It obtains a NULL vpriv from
+> vcc->user_back (via LEC_VCC_PRIV(vcc)) and then attempts to dereference it
+> via `vcc->pop = vpriv->old_pop`, leading to a null-ptr-deref crash.
+> 
+> Fix this by adding a null check for vpriv before dereferencing it. If
+> vpriv is already NULL, it means the VCC has been cleared by a previous
+> call, so we can safely skip the cleanup and just clear the entry's
+> vcc/recv_vcc pointers. Note that the added check is intentional and
+> necessary to avoid calling vcc_release_async() multiple times on the
+> same vcc/recv_vcc, not just protecting the kfree().
+> 
+> Reported-by: syzbot+72e3ea390c305de0e259@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/68c95a83.050a0220.3c6139.0e5c.GAE@google.com/T/
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-The phy I've been using, once started, autoconfigures to 10G-QXGMII
-mode with auto negotiation enabled. It detects the link partner
-abilities and completes the autoneg process (at least on the line
-side). I think we can assume it works as expected. From the SoC side,
-as I understand the crucial part is pcs-lynx implementation. It
-configures the USXGMII mode, checks the state, reads the link partner
-ability that is carried "in-band". and so on. In the device tree I
-configure my phy to use mode="in-band-status".
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-The problem is as follows - the pcs-lynx correctly detect the USXGII
-link however does not detect the link partner ability thus, the link
-never becomes functional. It looks like the autonegotiation on the SoC
-side does not work at all. I browsed through the pcs-lynx sources,
-looking at the LS1028A reference manual, and I've found that Serdes
-module on this SoC features some MDIO devices, whereas one of them is
-"QXGMII USXGMII Replicator" (LS1028ARM 29.6 MDIO register spaces for
-anyone interested). I checked this device and it features the Control
-Register, which contains the Auto_Negotiation_Enable bit that is never
-set by the pcs-lynx driver. I patched the driver (just out of
-curiosity) and in lynx_pcs_config_usxgmii I added code that sets this
-bit. Somehow after this change the autoneg state machine kicked-in and
-pcs-lynx was able to detect the link partner abilities, the negotiated
-speed and make the link functional. I was even able to exchange some
-information through this link - ping, scp file.
-
-But this is ofc - in my opinion - not the solution, as I just can't
-believe that someone just forgot to set this bit in the pcs-lynx
-driver, I guess that the real solution is somewhere else. If this bit
-is not set in the driver then what makes the autoneg process enabled?
-I'm wondering if perhaps someone here has done something like this
-before and would like to share some hints on how to approach this? The
-second question I have - I mentioned that I was able to establish
-communication with the link partner, however there were some errors
-especially while sending bigger packets, e.g. sending ping -s 20 ended
-up with 100% success rate, however ping -s 300 ended with ~50% success
-rate. I'm wondering how big of an impact on the communication quality
-has the fact that the PHY I've been using is connected through the
-connector, not directly soldered on the PCB? It's just my feeling -
-but if I were to guess I would say that in the case of 10G QXGMII it
-may be significant, but I'm not that experienced to be sure of this
-statement.
-
-Best regards
-Patryk
