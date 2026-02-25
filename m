@@ -1,136 +1,85 @@
-Received: from smtpout-02.galae.net (smtpout-02.galae.net [185.246.84.56])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF8D3D1CBB
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 17:42:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.84.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C714433B3
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 17:50:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772041336; cv=none; b=OozlFZUueGyX8kaLXo7e5773hqWZp9EaekMvhLFlZ9iTCrE92rYthZ5qurO0hgvR2Y2EUyh8ojZOfI9U6qN84zkzyZdQKmm0p0DZSSshuFZL098pZWnpGldrUu+FmqnZvS9fV0vZd64X+Za10mROOTKyBPKNIZw6mdT7ELFvN+s=
+	t=1772041822; cv=none; b=Zwje1w/f43j9I9iccBLxd4k5zta6ygBQa6MvKMqvkM2K2VB8pv3a7C4AZe2x/OrIbKIGTZVQ19466ONofX4ViIWrIx571c3DfsdVwXnQHw9XCGbz5LurdUf4qBPMZoKN0xUPruZ18cgAf7OFsXMwemWBXBpRCcMTphUI5PTOHZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772041336; c=relaxed/simple;
-	bh=xzrEVWd6VkI2RRxct2Zx/+mUbX1Dsh5R3vgl8pEOChU=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:To:From:Subject:
-	 References:In-Reply-To; b=jCa4RZHdd5ToYfGa60QreHIDCb+RmbX6pJr541gFN8A+mDMRC6R1IrFuEG89xcTkD2KJq05e98VjD7iohvyIcn5dcPVyfkC7FTSAvTtdwaYc6jTyEt9vlu+jdDecRaNIZK+tx5MOGKOd2n+EiKKPgJNts5TFtwRF+WRStRrz9qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=Z809eauC; arc=none smtp.client-ip=185.246.84.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1772041822; c=relaxed/simple;
+	bh=bk58F2GzH/RlTRTTtPRboEFPupA02RhtI9p7QHOCNSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SciAX24IZFNfjPt57OHH+EnBQAB6HOQ3Xf/+nOuJD1h1JH30A37jl5t4+OS0fvZaU9L+BXOcVipOOGs4g+TdVNwCiWi+sIqVXEK5h90uSTb+SBBFTUy1ZS/8VkbsWjPdIIbzWb72RYT/wVwVhtOPJPrNpjt2i16eTsu4ZK9hLLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=eo67cY3v; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="Z809eauC"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-02.galae.net (Postfix) with ESMTPS id 60ACE1A12ED;
-	Wed, 25 Feb 2026 17:42:13 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 233535FDE6;
-	Wed, 25 Feb 2026 17:42:13 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 4AB9710368CA9;
-	Wed, 25 Feb 2026 18:42:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772041332; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=8ehkN9gRCcAmYKz588331O0LBZbMErU/m5PmKWIZd4w=;
-	b=Z809eauCeTJn7rYtjz9XlLdUHAkEZLJBBM0T+x/Fiq4SQMq5XcFPRlS8JiGbqp4bz6/w6Y
-	RTpW74V5lqiCNR7+/yBzBg+N7NuWGDQmH/f+QcFZq5IPHXlJIw3eogq4a/lwADc+X9fQDy
-	WrFIBUx0SougUpUNTzV2aZ3F/zkSAPKdJOPSQ6XnFGVx3O/wgcrv8FCjNo6cL4q5AJ8kGs
-	asz4giS/qdOEC54EXcs5Gg/lrRBotDx9bibLJN+Wb9HvS9rXpLsoQ/2acfipYMfchRt4eu
-	W5RdO82LdjGvISm6BKkFa5ELjWjPHkwlhGCuqwSSrLCqm4XAPxQrCjJkUISaPA==
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="eo67cY3v"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=EQQY3uqd3zLWuRKt8lN5oNMmp8hnL6v12hW4GdilSfQ=; b=eo67cY3vb2phmPo19cUVuczCFF
+	RR5w2RJp6t1jQ2175sprEaCb6MLALA+R1zop6f8OOaM/WakBqG1X67msUjE6ZlvFryd3wmeyrhFAd
+	T9ySH9vw6L1lTjFw+TaLdA0qYdCwQ6bJpG0nrlH6l6rDUn4suuDN8GqP/4PlbEkBRw4dumWH9km2s
+	IstfaqJ322CblAaDN1d2RVK8ApR9YEDQnv4Rvpz0fiJ90VnsYGoHqJt9QAhFVd7MROiXAUYkJOBCZ
+	7LDW5/6MSdibPnkDEAAshWAvaQFnlYO3OYE5WrL4G9JO/CIc37H7K5zYGRiHDyge96c8ulD8ouPZ2
+	LdZRVa5g==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:59194)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vvJ1c-000000006zk-0hUf;
+	Wed, 25 Feb 2026 17:50:16 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vvJ1Z-0000000019d-0lBO;
+	Wed, 25 Feb 2026 17:50:13 +0000
+Date: Wed, 25 Feb 2026 17:50:12 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
+Cc: Nicolai Buchwitz <nb@tipi-net.de>, netdev@vger.kernel.org,
+	andrew+netdev@lunn.ch, claudiu.beznea@tuxon.dev,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	nicolas.ferre@microchip.com, pabeni@redhat.com,
+	phil@raspberrypi.com,
+	=?iso-8859-1?Q?Gr=E9gory?= Clement <gregory.clement@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Subject: Re: [PATCH 3/5] net: cadence: macb: implement EEE TX LPI support
+Message-ID: <aZ82VFPu2FDmPpJ0@shell.armlinux.org.uk>
+References: <20260225091558.51157-1-nb@tipi-net.de>
+ <20260225091558.51157-4-nb@tipi-net.de>
+ <DGO88446M74S.6C1O0I79IM0E@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Feb 2026 18:42:08 +0100
-Message-Id: <DGO88446M74S.6C1O0I79IM0E@bootlin.com>
-Cc: <andrew+netdev@lunn.ch>, <claudiu.beznea@tuxon.dev>,
- <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
- <nicolas.ferre@microchip.com>, <pabeni@redhat.com>,
- <linux@armlinux.org.uk>, <phil@raspberrypi.com>,
- =?utf-8?q?Gr=C3=A9gory_Clement?= <gregory.clement@bootlin.com>, "Thomas
- Petazzoni" <thomas.petazzoni@bootlin.com>
-To: "Nicolai Buchwitz" <nb@tipi-net.de>, <netdev@vger.kernel.org>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH 3/5] net: cadence: macb: implement EEE TX LPI support
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260225091558.51157-1-nb@tipi-net.de>
- <20260225091558.51157-4-nb@tipi-net.de>
-In-Reply-To: <20260225091558.51157-4-nb@tipi-net.de>
-X-Last-TLS-Session-Version: TLSv1.3
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <DGO88446M74S.6C1O0I79IM0E@bootlin.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Wed Feb 25, 2026 at 10:15 AM CET, Nicolai Buchwitz wrote:
-> Implement Energy Efficient Ethernet TX Low Power Idle using phylink's
-> managed EEE framework. The Cadence GEM MAC has no built-in idle timer
-> =E2=80=94 TXLPIEN (NCR bit 19) immediately blocks all TX when set and the=
- MAC
-> does NOT auto-wake =E2=80=94 so the driver uses a software delayed_work t=
-imer
-> for idle detection.
->
-> The TX LPI lifecycle:
->   - phylink calls mac_enable_tx_lpi() after link-up with the negotiated
->     timer value. The driver defers the first LPI entry by 1 second per
->     IEEE 802.3az section 22.7a.
->   - macb_tx_complete() reschedules the idle timer after each TX drain.
->   - macb_start_xmit() wakes from LPI by clearing TXLPIEN, cancelling
->     the pending work, and waiting 50us (conservative Tw_sys) before
->     initiating the transmit.
->   - phylink calls mac_disable_tx_lpi() before link-down, which cancels
->     the work and clears TXLPIEN.
->
-> The phylink_config is populated with LPI capabilities (MII, GMII, RGMII
-> modes; 100FD and 1000FD speeds) and a 250ms default idle timer, gated
-> on MACB_CAPS_EEE.
->
-> Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
-> ---
->  drivers/net/ethernet/cadence/macb.h      |   5 +
->  drivers/net/ethernet/cadence/macb_main.c | 111 +++++++++++++++++++++++
->  2 files changed, 116 insertions(+)
->
-> diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ether=
-net/cadence/macb_main.c
-> index 43cd013bb70e..a9ae7ecf9fe9 100644
-> --- a/drivers/net/ethernet/cadence/macb_main.c
-> +++ b/drivers/net/ethernet/cadence/macb_main.c
+On Wed, Feb 25, 2026 at 06:42:08PM +0100, Théo Lebrun wrote:
+> On Wed Feb 25, 2026 at 10:15 AM CET, Nicolai Buchwitz wrote:
+> > @@ -2349,6 +2454,8 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
+> >  	netdev_tx_sent_queue(netdev_get_tx_queue(bp->dev, queue_index),
+> >  			     skb->len);
+> >  
+> > +	macb_tx_lpi_wake(bp);
+> 
+> Should this be protected by a bp->eee_active condition? It could go
+> in macb_tx_lpi_wake(). We avoid a spinlock acquire per xmit for most
+> platforms. Probably negligeable though.
 
-[...]
+It will read the register, find the bit clear, and then return if
+EEE is already disabled.
 
-> +/* Wake from LPI before transmitting. The MAC must deassert TXLPIEN
-> + * and wait for the PHY to exit LPI before any frame can be sent.
-> + * IEEE 802.3az Tw_sys is ~17us for 1000BASE-T, ~30us for 100BASE-TX;
-> + * we use a conservative 50us.
-> + */
-> +static void macb_tx_lpi_wake(struct macb *bp)
-> +{
-> +	if (!macb_tx_lpi_set(bp, false))
-> +		return;
-> +
-> +	cancel_delayed_work(&bp->tx_lpi_work);
-> +	udelay(50);
-> +}
-
-[...]
-
-> @@ -2349,6 +2454,8 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *=
-skb, struct net_device *dev)
->  	netdev_tx_sent_queue(netdev_get_tx_queue(bp->dev, queue_index),
->  			     skb->len);
-> =20
-> +	macb_tx_lpi_wake(bp);
-
-Should this be protected by a bp->eee_active condition? It could go
-in macb_tx_lpi_wake(). We avoid a spinlock acquire per xmit for most
-platforms. Probably negligeable though.
-
-For the full series:
-
-Reviewed-by: Th=C3=A9o Lebrun <theo.lebrun@bootlin.com>
-
-Thanks!
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
-
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
