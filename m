@@ -1,59 +1,117 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212471D5141;
-	Wed, 25 Feb 2026 01:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771983725; cv=none; b=c+0Cqi2VZyYPKLCKIv4ut9vX4xznTqxIQuBou7tNHFo/Ifms3g1OTd4d4FLxUQio+L7RF+tHguEhEUza/n3R9XjvtFCV2c8261aDd8lslC7kYFJDngEJwJbZPjsyn0r+vuygCnfEWcolmr5pHrN6SBxMsireX023FN7gU5S1mPM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771983725; c=relaxed/simple;
-	bh=BqZm7X762VsHjVyMnNELv3A+c+xHuWbznHS6VRPJBtI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H1WzWT9bRGlcMfhpWt0dxSZcjh56tdi2QSEVQC0oewlXn+AFxQEsv5yjKpr8I0CbaaMBF/9WUVktqX9CqnwnO7Se3/VpWgRi34BWs+lGpLTc6SKK64muLnMl3QErTXkHmuKj3MCP+oWnPaKl8Tftru7f4d1b6IDWGeiDDgPXdH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VflXjdjK; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B245F24677D
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 01:42:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.173
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1771983751; cv=pass; b=EPSgJvD0pLDBU7ddHA2JUYTxkJ+SH7Fq+DKw1U15OaJJ/Ex7ELvtBi4evp6vVCkUYSKVHC76Vexe5amAYueboXZ1BvaMLTqFFwStlPV/lMUtyjfEIpbW+1FP8txJaeEw+yWsiXusVIYBTCoHPfxgYSeMabaS4ydyHYu7uph0mag=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1771983751; c=relaxed/simple;
+	bh=OwCKz6DoNXd7WY88RtyvLc4norQmtNz/YpyIYcDLX7g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fJ4WYrxN7r9llLOpQMjI8Vk9UZR+JIO6c9jmG+WmTIsxZxtuc1PUtwupqQ2vy43BPWz7zVilPEMDuQKBcLOCQprPe1Ip023c2ox/GGL6sqs8ZeQKN4usYeaxVvgwcAXg1LLlJN4OeOCZftYoWYufJAZacET439FLG6b/CmGZRUk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tIrcN2No; arc=pass smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VflXjdjK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92600C116D0;
-	Wed, 25 Feb 2026 01:42:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1771983724;
-	bh=BqZm7X762VsHjVyMnNELv3A+c+xHuWbznHS6VRPJBtI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=VflXjdjKIUbmldcYDAGA9Tyven3hpVzxnEpJjaURyfWDXgw+CW0g6SPUwrIvSSt5r
-	 GJ63Wv8grRxeW40rdRMs2Ej+NAqJ6+9rjUHNoKerEoXdIuGVDlgDKDVQSbvULlQ1bJ
-	 03TDumiNKsnmnvyc2gni7m3N100XbyNImPJfFTNQA1/bp510ajyEVpXyCFHmllYGei
-	 PYD2tY8Z1OCzxUhWHIM3Navl/vhmCXphoVyrzndJMNhHG0jQo/4In3dHfW+Q95pHFs
-	 gjxv9tJbnmJi5q2tev0ZBHQV/bThuD6KnnmZMjrfIniUkKAcWA2vgUkNyj6QHTxU/o
-	 DEEHXA8LfU8FQ==
-Date: Tue, 24 Feb 2026 17:42:03 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stable
- <stable@kernel.org>
-Subject: Re: [PATCH net] nfc: pn533: properly drop the usb interface
- reference on disconnect
-Message-ID: <20260224174203.405d0a93@kernel.org>
-In-Reply-To: <2026022329-flashing-ought-7573@gregkh>
-References: <2026022329-flashing-ought-7573@gregkh>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tIrcN2No"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-506251815a3so59663351cf.0
+        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 17:42:30 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1771983750; cv=none;
+        d=google.com; s=arc-20240605;
+        b=fknglScNSPi5XvhQzB0kvD5mNk10vvR9K2yIrZhjJz0X/PcyptmzzO7/Ri/ndHtkto
+         +qzbIY3/bL5U94t5n7EzjepfmAXQ61oJ4MgCT7Uept6uyK8j1e3DUILY6hFM2dNBAbOg
+         KX49is9RmV4wFsBie6URtJOeJbcQ+ZBS7JYdi9aP+43cDir97Opc9i6LdNa7Dthc4g79
+         qdiHrGV9Otry7PHYzEbeV7lFXrNUGzfGQGaabOekMgzcwOZXnP6MhJNw0DBy6SQjpLqW
+         sMGfvr7OrqqgWVDIVtq+GJROnCpiEr5lKY1i/ShHgMjuMPZS5XVrfgdZXgxpNXliuxVo
+         QtAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EAIHxtxHesjnRTvP6ODrjoH4xwBhFzrGg24YTnZCNzk=;
+        fh=8hb/iUWqt5Qzq+DkPrt+huRq5z5YGFtvajFp1vIjnjc=;
+        b=MuGrkSPiapnR2qT7onYeRZJbxRWDOHTZgysm26TXW4/F4lOpIFXymfWBy11dJmJtdv
+         BxelpcFV3vcGwccufkfJZpEoaApnxkb27N2vuiuIYhSXbJqmr8p8XphaOP92Vg0WH3Z2
+         1jURRGDqmkinGHkZQ2HMvL9HOi/DrdPZcK2xOD6Seba8v/XGcSidBq2MNFRGeTlF7VRo
+         4l7CJhXoAnp+PHCMvHz44kj8/LyKjFwevIjugZ001NSafuQ2R0vWSJbqYUQ0y6FcQZ83
+         DQknb9M6Z6rpQMAxB94yXOSPK4c+wrzemoYdnN0QtmxlSsHaYKRc2ybTNGNfTavUAlFS
+         4Ovw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1771983750; x=1772588550; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EAIHxtxHesjnRTvP6ODrjoH4xwBhFzrGg24YTnZCNzk=;
+        b=tIrcN2No8qioLBht9lq+4G1nuCsPwmpGob53zQa+YzpSuOpicXHAiwz/BMPJf3HH4f
+         WrJhq8q2XsYUjZioW89PNHd08Z0hXHjP/wy5CXypwZMwt59w1oBzB6FtZnV5eqev/Bq1
+         dd7Vjscn3cT/4mxDmM8SFBqizgihmjK6UyGu6fO/W2NZf3F31peKp4TFh3xIvfJ74NUr
+         IrPSq3eUX+48jBBb9iVzA1SqRn+NRww9tQhaLH7HNCR8izQmUTJLs+S5Ca6sOHIv+Wpa
+         tAGxeM836LhagKpl3mtVR7KbQSi33zUNPpmvEHfb75MprqRJ+eL+KndPCpfreshftnrI
+         2n5Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1771983750; x=1772588550;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EAIHxtxHesjnRTvP6ODrjoH4xwBhFzrGg24YTnZCNzk=;
+        b=kGIzFUPDPmTOraibQ51johhbF/Zr3AS0dtVrwSHj8MFZBzju0xYRRQhTn6Mfnvz9Xw
+         QE2bxgj8Pbv6hfj2u3/TCSMjzpQHaLWoz0XfcQiVxWvrDmHjtk8l75lr/DtruCjnHnS2
+         mzROXVF6Wf19wx0yNDSVphAVy659uwv1xk5dOwQBtyWGy1puS8I0/scgS6Kza/wXyqmJ
+         AL8DwY5cn1TfLY2WRCBRM3GuPP5WZCIYo4L24gNm5CFjSvbv2LOm3QuJSzNMX9KEw1nA
+         GXgN3l6Ur81SBd8RdYOo6jDGTr8nnbHvS/suhBV8S4fCTypPNy6gAXnRSNc3S4C5CGbj
+         QuDw==
+X-Forwarded-Encrypted: i=1; AJvYcCWUSBNUWS8IV1DCEYZpIqe9+dro86M1Lsfd9w4QZSr4OyEtaDm1lnPZU1ALU7n0iwUZUrI+Eb8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjpAfRknuN5iv2FANc1bkwwz8/n83rpbFqLw8c91PlcQVi63OH
+	tWLP4RX01i/RuFXjVHS4HHlYTHRHHNnQl1G0JyzVlU0mcKA7uexjrDKdhJCIRPd24l5x0YCeGa9
+	+i0cZhqjPAWE7sFJNBglQik3R/angu4fJ2TBnjEww
+X-Gm-Gg: ATEYQzwEV8ztubyWmvlzNKm4bXsg+kZzrQL5gkaY+BUWAnTrP0Nr1VAJJ5iji9dkonS
+	o/PmyIPgXtQDMV7TFPnQh9MfK/amocz+ouUTqkSNHz//yROgsGigA5/ncLQWUf60RxD3Gmb3he9
+	1zqeI8OEedNi9XFf5ooskRfLm+zaDsdF8SMUes2FOo8XUzCWKh5XiIrZAI8TAVbtj30Omg7HBMY
+	5lb2ipQYFCJNokJ+/OJIYOa1ublsDpinxQ7QxvDWPXdv5+OFFeUhM3hg0IMh+u5beAKH1s0Xb/d
+	lN6vUw==
+X-Received: by 2002:ac8:5d94:0:b0:506:be2c:a963 with SMTP id
+ d75a77b69052e-5070bba1e9dmr198206191cf.5.1771983749151; Tue, 24 Feb 2026
+ 17:42:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260223230749.2376145-1-kuniyu@google.com>
+In-Reply-To: <20260223230749.2376145-1-kuniyu@google.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 25 Feb 2026 02:42:18 +0100
+X-Gm-Features: AaiRm52vDF57heYr8hpSBkOsLG-qCG4yAX-OV1At8yiGf0TV2Avs5kv6bwSbEck
+Message-ID: <CANn89iJOAzHKNcO-0JjhUTVNgFn_TuajTbecf5X-XHZyGG7a+Q@mail.gmail.com>
+Subject: Re: [PATCH v1 net-next] bonding: Optimise is_netpoll_tx_blocked().
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 23 Feb 2026 12:28:30 +0100 Greg Kroah-Hartman wrote:
-> Assisted-by: gkh_clanker_2000
+On Tue, Feb 24, 2026 at 12:07=E2=80=AFAM Kuniyuki Iwashima <kuniyu@google.c=
+om> wrote:
+>
+> bond_start_xmit() spends some cycles in is_netpoll_tx_blocked():
+>
+>   if (unlikely(is_netpoll_tx_blocked(dev)))
+>       return NETDEV_TX_BUSY;
+>
+> because of the "pushf;pop reg" sequence (aka irqs_disabled()).
+>
+> Let's swap the conditions in is_netpoll_tx_blocked() and
+> convert netpoll_block_tx to a static key.
+>
 
-I feel like this tag completely validates my position that the whole
-Assisted-by tag is nonsense. Random "Person X's bot" tags cannot help
-any cross-kernel research into problems with AI coding tools. And all
-of us, employees of AI-pilled companies, are routinely using a whole
-slew of AI-backed tools on our kernel submissions. Which cannot be
-practically captured by such tags, since they are evolving rapidly.
+> Suggested-by: Eric Dumazet <edumazet@google.com>
+> Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 
-Are you okay with me stripping these when I apply your patches?
-Or do you strongly prefer to keep them?
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+
+Thanks!
