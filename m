@@ -1,183 +1,75 @@
-Received: from mta-64-225.siemens.flowmailer.net (mta-64-225.siemens.flowmailer.net [185.136.64.225])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E8FE38F93B
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 09:58:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897B221FF47
+	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 09:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772013532; cv=none; b=sqyOVm6JyXuJhnx1MF8zdDKz/6iHb73NOcIDtNCVuvXsawdbeg/EfB0ruPbfqlM8ZyJRhd/6eagxyFLAvMhdynmGvc/aqn2Gc0HC3iPZlREhoKl1iX8H0CI7+2xsPdCZH98xyUlEPlM6aIWQnqT5+AI2UhYxU0uRNT8qGc2chnc=
+	t=1772013585; cv=none; b=hRrtBOH1rzN2P6zGBrWhygCpJW6Sl//qNdzV+6TdsFVD2LYWpsQLdpdsdbDgfm2GE/SyuimTE8wbs131Pj7+mrhuAPzLgYbSw4ub92oesXMWShqaer7KOHW0Vh1xNkL6BV6pIrmRgTiSyZ99mneqPfUGiigYo1MlK0LAhPfGiqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772013532; c=relaxed/simple;
-	bh=Ox0L7LirTZNfJd5VLbNpMdUA+4MnK0U5rhS/1YdWexA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Lbh26hlNDb6d07RNYGO6Mt9I/tbkM1DhoHqx33O2C9VZmpLkQgnno7xoJVIDPaqOC2aWjgnjhpOqwfj/RqZDBSq6oaKQhmfvQx+b5TfDbAJDJFbUsVNdmjbz8bg1Bc3zAS6S2U6vv5dpr6ZRZy5s07+8xgcn2iXHGvhU7PvhaGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=zdenek.bouska@siemens.com header.b=POAQ8MaP; arc=none smtp.client-ip=185.136.64.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+	s=arc-20240116; t=1772013585; c=relaxed/simple;
+	bh=unrCpWR0ZUEpdxq3xVrxxq2dTQ1Gxls1sXOcFsbziJM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nXxGx6o35w/QoWJlS/9tfY469a2fbAlMrYAYDATsAs8rvPcBzH4ZdTonuf8g9ZRzhDTT2ac89eQkI7TUXAE6GDfq975QRYCMsEzJnTrbix2viz6ag7i/Py86D+2NMv9zzNRMwVe0MyE9xLssRzqhqOXhd7SnHcFScXrk8mG2y3A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=neBGT/qt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=zdenek.bouska@siemens.com header.b="POAQ8MaP"
-Received: by mta-64-225.siemens.flowmailer.net with ESMTPSA id 2026022509583875defc16ec000207f4
-        for <netdev@vger.kernel.org>;
-        Wed, 25 Feb 2026 10:58:38 +0100
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm2;
- d=siemens.com; i=zdenek.bouska@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=vbj4RSQJDuRYZ5fTpF5eYkTEyvzPIP9uBuxY7VVzDmM=;
- b=POAQ8MaPlX4fuojo9+xfcFWxUf97NiISPsrBO2/DpPm093KQwl0AJglgbNtaQJzz0iIFp6
- AAfPsLjNAV/eE+cPiN9/yvtya0J9mNc6iJ5qioKDKLoiR5g7yarF7s1+VCCEo147aipwwrX+
- HcrlK5Qk4F9EkN6ApiPnnM4FY++3CqEznsh0cfOzSBHXah68oViZ3s45liPWlE572HgU5+yX
- 1CsbEiUgOOOWzfz3fLxb6sxQ+L9vFRqXJjhr3+fJQtDOrUTqUdlnML7rYV273MOF1eWSc2pR
- +PE0TVizaznqZI94VNSYZeneQ1VUIEGxhZCUhbsQnyZ7sPwoJZ+OIZUQ==;
-From: Zdenek Bouska <zdenek.bouska@siemens.com>
-Date: Wed, 25 Feb 2026 10:58:29 +0100
-Subject: [PATCH v2] igc: fix page fault in XDP TX timestamps handling
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="neBGT/qt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC0EC116D0;
+	Wed, 25 Feb 2026 09:59:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772013585;
+	bh=unrCpWR0ZUEpdxq3xVrxxq2dTQ1Gxls1sXOcFsbziJM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=neBGT/qtGwdrHvi/EBGGCJvW4Q2pyDnXSE0bhqWmDauu/4pln2gpvcU7LizVCTXcG
+	 CEro1Mfixxi83KUDz1kyprGdPaNMYsJKBmYm8oUc2t8WsvCO7s3OYRZXm7s2W08Ehz
+	 otJpgz4dZzQuHLJ1hmdnb0vryhJQDapsYc59UVTTFekhRFQqNYnqlqFGgYuN5oKrdp
+	 WZsiqBURIvny5zJ/wZ2t77+7sxDZa6XLYhAOkz4/pS86I5/GRhPIuagFgBGmc2sIQw
+	 ZsJAiQEeNTAHNzT3A/gXY30OZfYlPJtSylQB+FnKxvTMCUqxXsejq/rLCEK/dZ+nu3
+	 ZPthXlsflwe5Q==
+Date: Wed, 25 Feb 2026 09:59:41 +0000
+From: Simon Horman <horms@kernel.org>
+To: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com, przemyslaw.kitszel@intel.com
+Subject: Re: [PATCH iwl-net v2] ice: dpll: Fix compilation warning
+Message-ID: <aZ7IDXaOOnwcnuuq@horms.kernel.org>
+References: <20260223143214.241797-1-przemyslaw.korba@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260225-igc-fix-xdp-tx-tstamp-pagefault-v2-1-bf797ec20f3b@siemens.com>
-X-B4-Tracking: v=1; b=H4sIAMTHnmkC/4WNyw6CMBBFf4XM2jF05KGu/A/DopYBJhHatJVgC
- P9uJe5dnpubc1YI7IUDXLMVPM8SxE4J6JCBGfTUM0qbGCinKidFKL3BThZcWodxwRiiHh063XO
- nX8+IptCPlovydK4IksV5Tve9cG8SDxKi9e89OKvv+nNT8dc9K1RYm5ou3FWKubwF4ZGncDR2h
- Gbbtg9mcT600AAAAA==
-X-Change-ID: 20260212-igc-fix-xdp-tx-tstamp-pagefault-c4abde453862
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, 
- Richard Cochran <richardcochran@gmail.com>, 
- Song Yoong Siang <yoong.siang.song@intel.com>, 
- Lai Peter Jun Ann <jun.ann.lai@intel.com>
-Cc: Vinicius Costa Gomes <vinicius.gomes@intel.com>, 
- intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
- Florian Bezdeka <florian.bezdeka@siemens.com>, 
- Zdenek Bouska <zdenek.bouska@siemens.com>
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-1328595:519-21489:flowmailer
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260223143214.241797-1-przemyslaw.korba@intel.com>
 
-If an XDP application that requested TX timestamping is shutting down
-while the link of the interface in use is still up the following kernel
-splat is reported:
+On Mon, Feb 23, 2026 at 03:31:55PM +0100, Przemyslaw Korba wrote:
+> ice_dpll.c: In function ‘ice_dpll_init’:
+> ice_dpll.c:3588:59: error: ‘%u’ directive output may be truncated
+> writing between 1 and 10 bytes into a region of size 4
+> [-Werror=format-truncation=] snprintf(pin_name, sizeof(pin_name),
+> "rclk%u", i);
+> 
+> Fixes: ad1df4f2d591 ("ice: dpll: Support E825-C SyncE and dynamic pin discovery")
+> Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
 
-[  883.803618] [   T1554] BUG: unable to handle page fault for address: ffffcfb6200fd008
+Hi Przemyslaw,
+
+I agree that it is good to address this problem.
+But is it a bug?
+
+It seems to me that of the 8 bytes of pin_name, three are available for %u.
+So values up to 999 can be safely formatted.  And I suspect that
+pf->dplls.rclk.num_parents is always significantly smaller than that.
+
+If so, I'd suggest this is iwl-next material. And should not have
+a Fixes tag. But you could cite the commit that introduced the problem
+something like this (the part starting with 'commit' is the syntax for
+citing commits):
+
+Introduced by commit ad1df4f2d591 ("ice: dpll: Support E825-C SyncE and
+dynamic pin discovery")
+
 ...
-[  883.803650] [   T1554] Call Trace:
-[  883.803652] [   T1554]  <TASK>
-[  883.803654] [   T1554]  igc_ptp_tx_tstamp_event+0xdf/0x160 [igc]
-[  883.803660] [   T1554]  igc_tsync_interrupt+0x2d5/0x300 [igc]
-...
-
-During shutdown of the TX ring the xsk_meta pointers are left behind, so
-that the IRQ handler is trying to touch them.
-
-This issue is now being fixed by cleaning up the stale xsk meta data on
-TX shutdown. TX timestamps on other queues remain unaffected.
-
-Fixes: 15fd021bc427 ("igc: Add Tx hardware timestamp request for AF_XDP zero-copy packet")
-Signed-off-by: Zdenek Bouska <zdenek.bouska@siemens.com>
----
-Changes in v2:
-- Moved 'adapter' variable declaration into the if block (Vinicius)
-- Link to v1: https://lore.kernel.org/r/20260224-igc-fix-xdp-tx-tstamp-pagefault-v1-1-7c729ef61ee5@siemens.com
----
- drivers/net/ethernet/intel/igc/igc.h      |  2 ++
- drivers/net/ethernet/intel/igc/igc_main.c |  7 +++++++
- drivers/net/ethernet/intel/igc/igc_ptp.c  | 33 +++++++++++++++++++++++++++++++
- 3 files changed, 42 insertions(+)
-
-diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
-index a427f05814c1ae7330c6f7034cd0f2b40b74dab6..17236813965d334f14eba928affbd4f91b96ecd4 100644
---- a/drivers/net/ethernet/intel/igc/igc.h
-+++ b/drivers/net/ethernet/intel/igc/igc.h
-@@ -781,6 +781,8 @@ int igc_ptp_hwtstamp_set(struct net_device *netdev,
- 			 struct kernel_hwtstamp_config *config,
- 			 struct netlink_ext_ack *extack);
- void igc_ptp_tx_hang(struct igc_adapter *adapter);
-+void igc_ptp_clear_xsk_tx_tstamp_queue(struct igc_adapter *adapter,
-+				       u16 queue_id);
- void igc_ptp_read(struct igc_adapter *adapter, struct timespec64 *ts);
- void igc_ptp_tx_tstamp_event(struct igc_adapter *adapter);
- 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 89a321a344d263ace5c66f7ade782b40cc482566..1931fcb659354d5009e0ea02316bf3a47b66b04d 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -264,6 +264,13 @@ static void igc_clean_tx_ring(struct igc_ring *tx_ring)
- 	/* reset next_to_use and next_to_clean */
- 	tx_ring->next_to_use = 0;
- 	tx_ring->next_to_clean = 0;
-+
-+	/* Clear any lingering XSK TX timestamp requests */
-+	if (test_bit(IGC_RING_FLAG_TX_HWTSTAMP, &tx_ring->flags)) {
-+		struct igc_adapter *adapter = netdev_priv(tx_ring->netdev);
-+
-+		igc_ptp_clear_xsk_tx_tstamp_queue(adapter, tx_ring->queue_index);
-+	}
- }
- 
- /**
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index 7aae83c108fd7611b00bf075592f93a902b83422..98491346d21b80925ce42ba276d851d4318e66b7 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -576,6 +576,39 @@ static void igc_ptp_clear_tx_tstamp(struct igc_adapter *adapter)
- 	spin_unlock_irqrestore(&adapter->ptp_tx_lock, flags);
- }
- 
-+/**
-+ * igc_ptp_clear_xsk_tx_tstamp_queue - Clear pending XSK TX timestamps for a queue
-+ * @adapter: Board private structure
-+ * @queue_id: TX queue index to clear timestamps for
-+ *
-+ * Iterates over all TX timestamp registers and releases any pending
-+ * timestamp requests associated with the given TX queue. This is
-+ * called when an XDP pool is being disabled to ensure no stale
-+ * timestamp references remain.
-+ */
-+void igc_ptp_clear_xsk_tx_tstamp_queue(struct igc_adapter *adapter, u16 queue_id)
-+{
-+	unsigned long flags;
-+	int i;
-+
-+	spin_lock_irqsave(&adapter->ptp_tx_lock, flags);
-+
-+	for (i = 0; i < IGC_MAX_TX_TSTAMP_REGS; i++) {
-+		struct igc_tx_timestamp_request *tstamp = &adapter->tx_tstamp[i];
-+
-+		if (tstamp->buffer_type != IGC_TX_BUFFER_TYPE_XSK)
-+			continue;
-+		if (tstamp->xsk_queue_index != queue_id)
-+			continue;
-+		if (!tstamp->xsk_tx_buffer)
-+			continue;
-+
-+		igc_ptp_free_tx_buffer(adapter, tstamp);
-+	}
-+
-+	spin_unlock_irqrestore(&adapter->ptp_tx_lock, flags);
-+}
-+
- static void igc_ptp_disable_tx_timestamp(struct igc_adapter *adapter)
- {
- 	struct igc_hw *hw = &adapter->hw;
-
----
-base-commit: 05f7e89ab9731565d8a62e3b5d1ec206485eeb0b
-change-id: 20260212-igc-fix-xdp-tx-tstamp-pagefault-c4abde453862
-
-Best regards,
--- 
-Zdenek Bouska
-
-Siemens, s.r.o.
-Foundational Technologies
-
