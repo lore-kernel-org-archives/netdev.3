@@ -1,1073 +1,1067 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D7BD15624B
-	for <netdev@vger.kernel.org>; Wed, 25 Feb 2026 04:30:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709BE2D0C82;
+	Wed, 25 Feb 2026 04:49:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1771993825; cv=none; b=f3mRKhFJ+LNZTH/L6yq1wqmaJy8uuu2VdcFuELH89uTIIAu1UmkAT9tGxyieWWZrlcMFOBUrt4dyofo4dOy2MPqMI+JIESHu6feX/OGGftgPD7ETKcdPWNrbY2MXumV7N0kH/6T3TX3KEVxryKAJWrS0nvLZMNixb30S5eNpY4Y=
+	t=1771994996; cv=none; b=YxK6umuWRbBxfU5C43Rlffwt5+aUCiNw8DYe6pl0izxML75rDTLRvJ824WEEIoZjZcsvhtTleDaz/NvrwLbDP/4st6QK9yKCbIUSaKeTRI0v6fI25prpqLHfaWQRx6/4RVC2X4fKB8lgcvUEX6Mu8LMSR7IHJb86AvNxhCCpeOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1771993825; c=relaxed/simple;
-	bh=GubF+Ov1P8aYwrsezKny3FMZbZsoxYQXIc3Eo2Tcv88=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Be/R0Q9vN0/CkeOC1725tF+2Ra8K6niTnVEWYrkjQNsrjFhxq5FU08FTg6h/TByQ8I5rvXljSHzN1U6EbyNYRFeDtgGKkilD+WYw/sfEoElov/wBmKXS4hBM8QMql98jKf+d/T8+JW1wlh4htLTB6u2oMY/ZCwbZZmpakjU5atc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XkoJPnAI; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1771994996; c=relaxed/simple;
+	bh=yUU7AQ/xCHgKirUcQHpiXiCx3I7MVVxpBCkmALqmavs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ge38JGs6S65R3fJj1MGMrWVnHrp8Ius/mGLrC0kO0IVNP0g9+BKBB/sISHLtZZeWyFEahGf3W7ZONpdOosBypEXXpH3lTCbaCj3jEr9xoEbdcAaujgueIzVYf8Ay2JYramNVcR+LjCt9V4QSjIaLf6MDTSIb2pE617Yq8pbhuek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=vZRdccDg; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XkoJPnAI"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8231061d234so4967893b3a.1
-        for <netdev@vger.kernel.org>; Tue, 24 Feb 2026 20:30:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1771993822; x=1772598622; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1v6ieBtXk2fxkjLNY8qLuPGokYRXR50lHiaQqm2VuMo=;
-        b=XkoJPnAIuczIvbUD5KzD4ix09sZvzfE0eSSmUP7KJ5dnvWkIqJNQzp3bRMY+MKe6gG
-         2DZoBLINfYmdUE9su69daQ4fRmHpOw0S+CNV/+Xuq13De4sumEevqiHpTElmRhWoJPI6
-         QXkr9dD82k8hCM8n4rr8VrPoCsd8QJvXlUuVOk45YW7R0rfn5SQdRM7kfjdYoBlGLByJ
-         wwtzDF6G1K1FIxurE9VdEDHaimZOLQW7HPnSLUy2MlELqrX0FLx9bclSoGs5wwNcaF5J
-         tpSlkuAVH0BcTzqHBwYdHX+1KQE22kf4s66N90cTK3Lhm5Zs9V1Hy6XR+pQM9+hNcpwy
-         tjVA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1771993822; x=1772598622;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1v6ieBtXk2fxkjLNY8qLuPGokYRXR50lHiaQqm2VuMo=;
-        b=noa+fd3jplK/N+8qCaslLa+etFDteInQbORo4/0rVYGrArTUTr3cwf3e/SAKZ7o99Q
-         fAc1FJSc2c0qFkJYBgyMl27Oler/K9n//i3Ct4cdcB74sB6lyn9qjxo1apgR1vjFca2Z
-         TVYk2iLcfgYqm6PyaslcK+GbyYuoTYolMm/Yeev6G8zO0PCxUU82ofBoWuzk1vZm5sZ4
-         pj5s1Y50N22BylOjGCfmuBoAPmw0pmC3AXiZMFqLJjo7PxPdxoQhAO9vSDRSJ9ioq36a
-         0QvFcuEe+RL0/nHk+O/NCqH0B6iCOKrzS7STdJT7knOfbD3wludADK/nmLLSm6IwpCoy
-         1/eg==
-X-Gm-Message-State: AOJu0YzHIogjJ+KXVXbea+Wiu3/OLzLypR2jBnFrbNvxhTGjjN8UvpxX
-	5l/Wfk7N1Lrw4Fr2YYdrBSSCQQud/TGNOBSmObIOCt2OG7tfpb2yUZC99pgVuW2c
-X-Gm-Gg: ATEYQzx9rBuV54QdPBNduOGCQPPFOVRROx/csQuDswk56dhHfUH4sryDjqbi7ddnFhe
-	1vbQdJtLaf2OWKva3gM443PrcTuEs0d8dWFUuQ5efrbqsAfbOIIK1asgsAJXGgk3rfEuRqwTSII
-	HYE0nQbo812QhKA2oAwkWDc037oRYTZOAKBhh7a5yU6iazRj/tbCF2G9bd6cp/UATg4Be8czg2u
-	9Hb00zXP9advWpIcv/TDF2BDBdF2PHxdQPUXTW4Bbloc3i5hvEfFcCeIOdN9fHn9uOcmgsRzmQ4
-	VwOeb5xYpzL6XXcI3hi+fkQ9IwtIt0KuegQaYzwxR9pLL7bioxDKOyigapM5BTf+JHLi9UvBQ8I
-	sC0RfuTWZvWE8tb+p54fAljDe049y/hNaFzOpL1exJVGf/FnKGQCwXJ0I9ZdL5GCVQdVGG2x4J8
-	frj1/UjQv2QONq2nwYbZtujlxjZId/YOEi07cDpMOnicUx9tpDLntmq2dtX/exUcVWjZYShht09
-	HG3MnhU3/OPzaaaZ1sGDxK37VUYj5gF967CGwz/B3+MHqDeYLuDxx9KLqfbVp7ukQ==
-X-Received: by 2002:ad4:5942:0:b0:892:6681:a92b with SMTP id 6a1803df08f44-89979d6436emr195133086d6.49.1771986938180;
-        Tue, 24 Feb 2026 18:35:38 -0800 (PST)
-Received: from wsfd-netdev58.anl.eng.rdu2.dc.redhat.com ([66.187.232.140])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8997e62f453sm112363586d6.36.2026.02.24.18.35.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Feb 2026 18:35:37 -0800 (PST)
-From: Xin Long <lucien.xin@gmail.com>
-To: network dev <netdev@vger.kernel.org>,
-	quic@lists.linux.dev
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stefan Metzmacher <metze@samba.org>,
-	Moritz Buhl <mbuhl@openbsd.org>,
-	Tyler Fanelli <tfanelli@redhat.com>,
-	Pengtao He <hepengtao@xiaomi.com>,
-	Thomas Dreibholz <dreibh@simula.no>,
-	linux-cifs@vger.kernel.org,
-	Steve French <smfrench@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Tom Talpey <tom@talpey.com>,
-	kernel-tls-handshake@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Steve Dickson <steved@redhat.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Alexander Aring <aahringo@redhat.com>,
-	David Howells <dhowells@redhat.com>,
-	Matthieu Baerts <matttbe@kernel.org>,
-	John Ericson <mail@johnericson.me>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"D . Wythe" <alibuda@linux.alibaba.com>,
-	Jason Baron <jbaron@akamai.com>,
-	illiliti <illiliti@protonmail.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-	Daniel Stenberg <daniel@haxx.se>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	"Marc E . Fiuczynski" <marc@fiuczynski.com>
-Subject: [PATCH net-next v10 03/15] quic: provide common utilities and data structures
-Date: Tue, 24 Feb 2026 21:34:09 -0500
-Message-ID: <57fd97d2e92514116ca4c93cce1c88dfbf52ec09.1771986861.git.lucien.xin@gmail.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <cover.1771986861.git.lucien.xin@gmail.com>
-References: <cover.1771986861.git.lucien.xin@gmail.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="vZRdccDg"
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 61P09GIs996452;
+	Tue, 24 Feb 2026 20:49:33 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=s2048-2025-q2; bh=fAmVTsiY3BxvMkSQvJ
+	6lU+qnadN1Sgj2rDTxiNANOuM=; b=vZRdccDg2+eKdlIcSIceG+PgthVJ1gDt+w
+	hEhzONE1iu3cyNJOmVqsnVS+Wz1VMfnQGhtbmyntjlQXsgrTX+/px2BBcRe77RCb
+	vXaIjmwPFHhTUZ3DUGA8KZWQeuv6BteVoSo9eB670Dn9jQgopobL+pqHUjzRTMGU
+	dMp0st+5XUzTgKB/tQbU/D/gwqybQwXLhzmZ0DAXiTMwKZeb8oKTTHaeJ31xDJQl
+	RaaM5wZer91DM1x5rfvX/M/Rt0foYT8iGWB9qFw3ugxAqhrCKc7GhA5gcap47S4q
+	N9yoUxaJiag67gc4sJ0KljFMbI7EpOq6+9FXFpLE1DJ0I+FM6tLQ==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by m0001303.ppops.net (PPS) with ESMTPS id 4chhkt4ms8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 24 Feb 2026 20:49:32 -0800 (PST)
+Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.35; Wed, 25 Feb
+ 2026 04:49:19 +0000
+From: Vishwanath Seshagiri <vishs@meta.com>
+To: "Michael S . Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>
+CC: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        =?UTF-8?q?Eugenio=20P=C3=A9rez?=
+	<eperezma@redhat.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S .
+ Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, David Wei
+	<dw@davidwei.uk>,
+        Matteo Croce <technoboy85@gmail.com>,
+        Ilias Apalodimas
+	<ilias.apalodimas@linaro.org>,
+        <netdev@vger.kernel.org>, <virtualization@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <kernel-team@meta.com>
+Subject: [PATCH v7 RESEND net-next] virtio_net: add page_pool support for buffer allocation
+Date: Tue, 24 Feb 2026 20:49:10 -0800
+Message-ID: <20260225044910.1328791-1-vishs@meta.com>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI1MDA0NCBTYWx0ZWRfX1YGmgtSyyUsB
+ xxML/xRlB/Fpf+jKII5J66fMVcs4kUtI4ZKuhq00gd/qQ8I8S1rITPuFfoh0HUCpsLb6BrBIC9h
+ aganDTAmxSBfsk0D868NohHgzoBIWznE8t3WyZdIftbfo0NoipGcDEFKpMR+v8AHHqIOdnYz8Ni
+ Po/tvwZO2eRsX47quhWJRPS7zYWJpKCHaLTQtFFTOOsoWtAHsW6h9oESHgpEs9ujUD69FpiK373
+ NpZM9Kki5C6X4tIHcOij/+cikpeCdsm1Dt7bjdqnH1RWrTEIVNKXRYmWQDC4xT8mXrjlqo5+mL0
+ 80BT4zaJcPJOoD/C8F8AXxud61BMAyULjeWxEDXqBiMoM7IzQG5/fd4xDzGw2DgTqI1trd5PqKK
+ Hg1LQA0oAkkGcZdaxSz9rvaTLNxyeecjN3EP+xIWczuLf8Cw0PZzNjErSDOY93YkrODyFv6bQ0z
+ 0LtMOwhjHtOrgQ0HE0g==
+X-Proofpoint-ORIG-GUID: SyBi_ktm-DrKOwMFf7nP0_50rCJQm8C6
+X-Proofpoint-GUID: SyBi_ktm-DrKOwMFf7nP0_50rCJQm8C6
+X-Authority-Analysis: v=2.4 cv=H+jWAuYi c=1 sm=1 tr=0 ts=699e7f5c cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=Mpw57Om8IfrbqaoTuvik:22
+ a=GgsMoib0sEa3-_RKJdDe:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
+ a=YKODAeZf0HZpgJc5_y8A:9 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-02-24_03,2026-02-23_03,2025-10-01_01
 
-This patch provides foundational data structures and utilities used
-throughout the QUIC stack.
+Use page_pool for RX buffer allocation in mergeable and small buffer
+modes to enable page recycling and avoid repeated page allocator calls.
+skb_mark_for_recycle() enables page reuse in the network stack.
 
-It introduces packet header types, connection ID support, and address
-handling. Hash tables are added to manage socket lookup and connection
-ID mapping.
+Big packets mode is unchanged because it uses page->private for linked
+list chaining of multiple pages per buffer, which conflicts with
+page_pool's internal use of page->private.
 
-A flexible binary data type is provided, along with helpers for parsing,
-matching, and memory management. Helpers for encoding and decoding
-transport parameters and frames are also included.
+Implement conditional DMA premapping using virtqueue_dma_dev():
+- When non-NULL (vhost, virtio-pci): use PP_FLAG_DMA_MAP with page_pool
+  handling DMA mapping, submit via virtqueue_add_inbuf_premapped()
+- When NULL (VDUSE, direct physical): page_pool handles allocation only,
+  submit via virtqueue_add_inbuf_ctx()
 
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
+This preserves the DMA premapping optimization from commit 31f3cd4e5756b
+("virtio-net: rq submits premapped per-buffer") while adding page_pool
+support as a prerequisite for future zero-copy features (devmem TCP,
+io_uring ZCRX).
+
+Page pools are created in probe and destroyed in remove (not open/close),
+following existing driver behavior where RX buffers remain in virtqueues
+across interface state changes.
+
+Signed-off-by: Vishwanath Seshagiri <vishs@meta.com>
 ---
-v3:
-  - Rework hashtables: split into two types and size them based on
-    totalram_pages(), similar to SCTP (reported by Paolo).
-  - struct quic_shash_table: use rwlock instead of spinlock.
-  - quic_data_from/to_string(): add safety and common-case checks
-    (noted by Paolo).
-v4:
-  - Handle the error returned by quic_hash_tables_init() properly
-    (reported by Simon).
-  - Use vmalloc() to simplify hashtable allocations (suggested by Paolo).
-  - Replace rwlock_t with spinlock_t and use hlist_nulls_head in
-    quic_shash_head for lockless lookup/access (suggested by Paolo).
-  - Define QUIC_PN_BITS to replace a magical number in quic_get_num()
-    (reported by Paolo)
-  - Rename several hash-related functions:
-    * quic_(listen_)sock_hash() → quic_(listen_)sock_head()
-    * quic_(listen_)sock_head() → quic_(listen_)sock_hash()
-    * quic_shash() → quic_addr_hash()
-    * quic_ahash() → call its code directly in quic_sock_hash().
-  - Include net in the hash calculations in quic_listen_sock_hash() and
-    quic_udp_sock_head(), and include len in quic_source_conn_id_head().
-v5:
-  - Use u64 for skb_cb->time and u32 for skb_cb->seqno, and introduce
-    quic_ktime_get_us() to obtain timestamps in microseconds.
-  - Remove skb_cb->number_max and reuse number as the largest previously
-    seen, and add skb_cb->crypto_ctx for async crypto context freeing.
-  - Add case 8 to quic_put_int(), which will be used to pack a u64
-    timestamp into the token in a later patch.
-v6:
-  - Since transport_header is no longer set for QUIC, use skb->data
-    instead in quic_hdr() and quic_hshdr(). As the UDP header can now
-    be accessed via udp_hdr(), drop udph_offset from struct quic_skb_cb.
-  - Note for AI reviews: although ticket/token/alpn are not initialized
-    in quic_init_sock(), it is safe to kfree() them in quic_destroy_sock()
-    because they are always set to NULL (via sk_alloc() in inet/6_create()
-    or memset(0) in quic_accept() in a later patchset).
-v7:
-  - Add the missing check len < length in quic_data_has/match() (reported
-    by AI review).
-v9:
-  - Add BUILD_BUG_ON() to check size of struct quic_skb_cb in quic_init()
-    (suggested by Paolo).
-v10:
-  - Add a comment to quic_conn_id_update() to clarify that the caller is
-    responsible for ensuring the connection ID length does not
-    exceed QUIC_CONN_ID_MAX_LEN.
-  - Ensure quic_get_param() validates that the decoded parameter value
-    consumes exactly the expected valuelen in quic_get_param() (noted by
-    AI review).
-  - Replace manual memcpy() + endian conversion and temporary union usage
-    with get_unaligned_beNN() and put_unaligned_beNN() helpers for reading
-    and writing integers in network byte order.
-  - Replace vmalloc(size * sizeof(type)) with vmalloc_array() in hash
-    table allocations.
-  - Move *plen update to after successful parse in quic_get_int().
----
- net/quic/Makefile   |   2 +-
- net/quic/common.c   | 550 ++++++++++++++++++++++++++++++++++++++++++++
- net/quic/common.h   | 205 +++++++++++++++++
- net/quic/protocol.c |   9 +
- net/quic/socket.c   |   4 +
- net/quic/socket.h   |  21 ++
- 6 files changed, 790 insertions(+), 1 deletion(-)
- create mode 100644 net/quic/common.c
- create mode 100644 net/quic/common.h
+Resend for net-next window (no changes from v7).
+- v7:
+  https://lore.kernel.org/virtualization/20260210014305.3236342-1-vishs@meta.com/ 
 
-diff --git a/net/quic/Makefile b/net/quic/Makefile
-index 020e4dd133d8..e0067272de7d 100644
---- a/net/quic/Makefile
-+++ b/net/quic/Makefile
-@@ -5,4 +5,4 @@
+Changes in v7:
+- Replace virtnet_put_page() helper with direct page_pool_put_page()
+  calls (Xuan Zhuo)
+- Add virtnet_no_page_pool() helper to consolidate big_packets mode check
+  (Michael S. Tsirkin)
+- Add DMA sync_for_cpu for subsequent buffers in xdp_linearize_page() when
+  use_page_pool_dma is set (Michael S. Tsirkin)
+- Remove unused pp_params.dev assignment in non-DMA path
+- Add page pool recreation in virtnet_restore_up() for freeze/restore support (Chris Mason's 
+Review Prompt)
+- v6:
+  https://lore.kernel.org/virtualization/20260208175410.1910001-1-vishs@meta.com/ 
+
+Changes in v6:
+- Drop page_pool_frag_offset_add() helper and switch to page_pool_alloc_va();
+  page_pool_alloc_netmem() already handles internal fragmentation internally
+  (Jakub Kicinski)
+- v5:
+  https://lore.kernel.org/virtualization/20260206002715.1885869-1-vishs@meta.com/
+
+Benchmark results:
+
+Configuration: pktgen TX -> tap -> vhost-net | virtio-net RX -> XDP_DROP
+
+Small packets (64 bytes, mrg_rxbuf=off):
+  1Q:  853,493 -> 868,923 pps  (+1.8%)
+  2Q: 1,655,793 -> 1,696,707 pps (+2.5%)
+  4Q: 3,143,375 -> 3,302,511 pps (+5.1%)
+  8Q: 6,082,590 -> 6,156,894 pps (+1.2%)
+
+Mergeable RX (64 bytes):
+  1Q:   766,168 ->   814,493 pps  (+6.3%)
+  2Q: 1,384,871 -> 1,670,639 pps (+20.6%)
+  4Q: 2,773,081 -> 3,080,574 pps (+11.1%)
+  8Q: 5,600,615 -> 6,043,891 pps  (+7.9%)
+
+Mergeable RX (1500 bytes):
+  1Q:   741,579 ->   785,442 pps  (+5.9%)
+  2Q: 1,310,043 -> 1,534,554 pps (+17.1%)
+  4Q: 2,748,700 -> 2,890,582 pps  (+5.2%)
+  8Q: 5,348,589 -> 5,618,664 pps  (+5.0%)
+
+ drivers/net/Kconfig      |   1 +
+ drivers/net/virtio_net.c | 467 ++++++++++++++++++++-------------------
+ 2 files changed, 243 insertions(+), 225 deletions(-)
+
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index ac12eaf11755..f1e6b6b0a86f 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -450,6 +450,7 @@ config VIRTIO_NET
+ 	depends on VIRTIO
+ 	select NET_FAILOVER
+ 	select DIMLIB
++	select PAGE_POOL
+ 	help
+ 	  This is the virtual network driver for virtio.  It can be used with
+ 	  QEMU based VMMs (like KVM or Xen).  Say Y or M.
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index db88dcaefb20..32aede2b1ed5 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -26,6 +26,7 @@
+ #include <net/netdev_rx_queue.h>
+ #include <net/netdev_queues.h>
+ #include <net/xdp_sock_drv.h>
++#include <net/page_pool/helpers.h>
  
- obj-$(CONFIG_IP_QUIC) += quic.o
+ static int napi_weight = NAPI_POLL_WEIGHT;
+ module_param(napi_weight, int, 0444);
+@@ -290,14 +291,6 @@ struct virtnet_interrupt_coalesce {
+ 	u32 max_usecs;
+ };
  
--quic-y := protocol.o socket.o
-+quic-y := common.o protocol.o socket.o
-diff --git a/net/quic/common.c b/net/quic/common.c
-new file mode 100644
-index 000000000000..3e284d7940ae
---- /dev/null
-+++ b/net/quic/common.c
-@@ -0,0 +1,550 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Initialization/cleanup for QUIC protocol support.
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
+-/* The dma information of pages allocated at a time. */
+-struct virtnet_rq_dma {
+-	dma_addr_t addr;
+-	u32 ref;
+-	u16 len;
+-	u16 need_sync;
+-};
+-
+ /* Internal representation of a send virtqueue */
+ struct send_queue {
+ 	/* Virtqueue associated with this send _queue */
+@@ -356,8 +349,10 @@ struct receive_queue {
+ 	/* Average packet length for mergeable receive buffers. */
+ 	struct ewma_pkt_len mrg_avg_pkt_len;
+ 
+-	/* Page frag for packet buffer allocation. */
+-	struct page_frag alloc_frag;
++	struct page_pool *page_pool;
 +
-+#include <linux/unaligned.h>
-+#include <net/netns/hash.h>
-+#include <linux/vmalloc.h>
-+#include <linux/jhash.h>
-+
-+#include "common.h"
-+
-+#define QUIC_VARINT_1BYTE_MAX		0x3fULL
-+#define QUIC_VARINT_2BYTE_MAX		0x3fffULL
-+#define QUIC_VARINT_4BYTE_MAX		0x3fffffffULL
-+#define QUIC_VARINT_8BYTE_MAX		0x3fffffffffffffffULL
-+
-+#define QUIC_VARINT_2BYTE_PREFIX	0x40
-+#define QUIC_VARINT_4BYTE_PREFIX	0x80
-+#define QUIC_VARINT_8BYTE_PREFIX	0xc0
-+
-+#define QUIC_VARINT_LENGTH(p)		BIT((*(p)) >> 6)
-+
-+struct quic_hashinfo {
-+	struct quic_shash_table		shash; /* Source connection ID hashtable */
-+	struct quic_shash_table		lhash; /* Listening sock hashtable */
-+	struct quic_shash_table		chash; /* Connection sock hashtable */
-+	struct quic_uhash_table		uhash; /* UDP sock hashtable */
-+};
-+
-+static struct quic_hashinfo quic_hashinfo;
-+
-+u32 quic_sock_hash_size(void)
++	/* True if page_pool handles DMA mapping via PP_FLAG_DMA_MAP */
++	bool use_page_pool_dma;
+ 
+ 	/* RX: fragments + linear part + virtio header */
+ 	struct scatterlist sg[MAX_SKB_FRAGS + 2];
+@@ -370,9 +365,6 @@ struct receive_queue {
+ 
+ 	struct xdp_rxq_info xdp_rxq;
+ 
+-	/* Record the last dma info to free after new pages is allocated. */
+-	struct virtnet_rq_dma *last_dma;
+-
+ 	struct xsk_buff_pool *xsk_pool;
+ 
+ 	/* xdp rxq used by xsk */
+@@ -521,11 +513,14 @@ static int virtnet_xdp_handler(struct bpf_prog *xdp_prog, struct xdp_buff *xdp,
+ 			       struct virtnet_rq_stats *stats);
+ static void virtnet_receive_done(struct virtnet_info *vi, struct receive_queue *rq,
+ 				 struct sk_buff *skb, u8 flags);
+-static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
++static struct sk_buff *virtnet_skb_append_frag(struct receive_queue *rq,
++					       struct sk_buff *head_skb,
+ 					       struct sk_buff *curr_skb,
+ 					       struct page *page, void *buf,
+ 					       int len, int truesize);
+ static void virtnet_xsk_completed(struct send_queue *sq, int num);
++static void free_unused_bufs(struct virtnet_info *vi);
++static void virtnet_del_vqs(struct virtnet_info *vi);
+ 
+ enum virtnet_xmit_type {
+ 	VIRTNET_XMIT_TYPE_SKB,
+@@ -706,15 +701,18 @@ static struct page *get_a_page(struct receive_queue *rq, gfp_t gfp_mask)
+ 	return p;
+ }
+ 
++static bool virtnet_no_page_pool(struct virtnet_info *vi)
 +{
-+	return quic_hashinfo.chash.size;
++	return vi->big_packets && !vi->mergeable_rx_bufs;
 +}
 +
-+u32 quic_sock_hash(struct net *net, union quic_addr *s, union quic_addr *d)
+ static void virtnet_rq_free_buf(struct virtnet_info *vi,
+ 				struct receive_queue *rq, void *buf)
+ {
+-	if (vi->mergeable_rx_bufs)
+-		put_page(virt_to_head_page(buf));
+-	else if (vi->big_packets)
++	if (virtnet_no_page_pool(vi))
+ 		give_pages(rq, buf);
+ 	else
+-		put_page(virt_to_head_page(buf));
++		page_pool_put_page(rq->page_pool, virt_to_head_page(buf), -1, false);
+ }
+ 
+ static void enable_rx_mode_work(struct virtnet_info *vi)
+@@ -876,10 +874,16 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
+ 		skb = virtnet_build_skb(buf, truesize, p - buf, len);
+ 		if (unlikely(!skb))
+ 			return NULL;
++		/* Big packets mode chains pages via page->private, which is
++		 * incompatible with the way page_pool uses page->private.
++		 * Currently, big packets mode doesn't use page pools.
++		 */
++		if (virtnet_no_page_pool(vi)) {
++			page = (struct page *)page->private;
++			if (page)
++				give_pages(rq, page);
++		}
+ 
+-		page = (struct page *)page->private;
+-		if (page)
+-			give_pages(rq, page);
+ 		goto ok;
+ 	}
+ 
+@@ -925,133 +929,18 @@ static struct sk_buff *page_to_skb(struct virtnet_info *vi,
+ 	hdr = skb_vnet_common_hdr(skb);
+ 	memcpy(hdr, hdr_p, hdr_len);
+ 	if (page_to_free)
+-		put_page(page_to_free);
++		page_pool_put_page(rq->page_pool, page_to_free, -1, true);
+ 
+ 	return skb;
+ }
+ 
+-static void virtnet_rq_unmap(struct receive_queue *rq, void *buf, u32 len)
+-{
+-	struct virtnet_info *vi = rq->vq->vdev->priv;
+-	struct page *page = virt_to_head_page(buf);
+-	struct virtnet_rq_dma *dma;
+-	void *head;
+-	int offset;
+-
+-	BUG_ON(vi->big_packets && !vi->mergeable_rx_bufs);
+-
+-	head = page_address(page);
+-
+-	dma = head;
+-
+-	--dma->ref;
+-
+-	if (dma->need_sync && len) {
+-		offset = buf - (head + sizeof(*dma));
+-
+-		virtqueue_map_sync_single_range_for_cpu(rq->vq, dma->addr,
+-							offset, len,
+-							DMA_FROM_DEVICE);
+-	}
+-
+-	if (dma->ref)
+-		return;
+-
+-	virtqueue_unmap_single_attrs(rq->vq, dma->addr, dma->len,
+-				     DMA_FROM_DEVICE, DMA_ATTR_SKIP_CPU_SYNC);
+-	put_page(page);
+-}
+-
+ static void *virtnet_rq_get_buf(struct receive_queue *rq, u32 *len, void **ctx)
+ {
+ 	struct virtnet_info *vi = rq->vq->vdev->priv;
+-	void *buf;
+-
+-	BUG_ON(vi->big_packets && !vi->mergeable_rx_bufs);
+-
+-	buf = virtqueue_get_buf_ctx(rq->vq, len, ctx);
+-	if (buf)
+-		virtnet_rq_unmap(rq, buf, *len);
+-
+-	return buf;
+-}
+-
+-static void virtnet_rq_init_one_sg(struct receive_queue *rq, void *buf, u32 len)
+-{
+-	struct virtnet_info *vi = rq->vq->vdev->priv;
+-	struct virtnet_rq_dma *dma;
+-	dma_addr_t addr;
+-	u32 offset;
+-	void *head;
+-
+-	BUG_ON(vi->big_packets && !vi->mergeable_rx_bufs);
+-
+-	head = page_address(rq->alloc_frag.page);
+-
+-	offset = buf - head;
+-
+-	dma = head;
+-
+-	addr = dma->addr - sizeof(*dma) + offset;
+-
+-	sg_init_table(rq->sg, 1);
+-	sg_fill_dma(rq->sg, addr, len);
+-}
+-
+-static void *virtnet_rq_alloc(struct receive_queue *rq, u32 size, gfp_t gfp)
+-{
+-	struct page_frag *alloc_frag = &rq->alloc_frag;
+-	struct virtnet_info *vi = rq->vq->vdev->priv;
+-	struct virtnet_rq_dma *dma;
+-	void *buf, *head;
+-	dma_addr_t addr;
+-
+-	BUG_ON(vi->big_packets && !vi->mergeable_rx_bufs);
+-
+-	head = page_address(alloc_frag->page);
+-
+-	dma = head;
+-
+-	/* new pages */
+-	if (!alloc_frag->offset) {
+-		if (rq->last_dma) {
+-			/* Now, the new page is allocated, the last dma
+-			 * will not be used. So the dma can be unmapped
+-			 * if the ref is 0.
+-			 */
+-			virtnet_rq_unmap(rq, rq->last_dma, 0);
+-			rq->last_dma = NULL;
+-		}
+-
+-		dma->len = alloc_frag->size - sizeof(*dma);
+-
+-		addr = virtqueue_map_single_attrs(rq->vq, dma + 1,
+-						  dma->len, DMA_FROM_DEVICE, 0);
+-		if (virtqueue_map_mapping_error(rq->vq, addr))
+-			return NULL;
+-
+-		dma->addr = addr;
+-		dma->need_sync = virtqueue_map_need_sync(rq->vq, addr);
+-
+-		/* Add a reference to dma to prevent the entire dma from
+-		 * being released during error handling. This reference
+-		 * will be freed after the pages are no longer used.
+-		 */
+-		get_page(alloc_frag->page);
+-		dma->ref = 1;
+-		alloc_frag->offset = sizeof(*dma);
+-
+-		rq->last_dma = dma;
+-	}
+-
+-	++dma->ref;
+ 
+-	buf = head + alloc_frag->offset;
++	BUG_ON(virtnet_no_page_pool(vi));
+ 
+-	get_page(alloc_frag->page);
+-	alloc_frag->offset += size;
+-
+-	return buf;
++	return virtqueue_get_buf_ctx(rq->vq, len, ctx);
+ }
+ 
+ static void virtnet_rq_unmap_free_buf(struct virtqueue *vq, void *buf)
+@@ -1067,9 +956,6 @@ static void virtnet_rq_unmap_free_buf(struct virtqueue *vq, void *buf)
+ 		return;
+ 	}
+ 
+-	if (!vi->big_packets || vi->mergeable_rx_bufs)
+-		virtnet_rq_unmap(rq, buf, 0);
+-
+ 	virtnet_rq_free_buf(vi, rq, buf);
+ }
+ 
+@@ -1335,7 +1221,7 @@ static int xsk_append_merge_buffer(struct virtnet_info *vi,
+ 
+ 		truesize = len;
+ 
+-		curr_skb  = virtnet_skb_append_frag(head_skb, curr_skb, page,
++		curr_skb  = virtnet_skb_append_frag(rq, head_skb, curr_skb, page,
+ 						    buf, len, truesize);
+ 		if (!curr_skb) {
+ 			put_page(page);
+@@ -1771,7 +1657,7 @@ static int virtnet_xdp_xmit(struct net_device *dev,
+ 	return ret;
+ }
+ 
+-static void put_xdp_frags(struct xdp_buff *xdp)
++static void put_xdp_frags(struct receive_queue *rq, struct xdp_buff *xdp)
+ {
+ 	struct skb_shared_info *shinfo;
+ 	struct page *xdp_page;
+@@ -1781,7 +1667,7 @@ static void put_xdp_frags(struct xdp_buff *xdp)
+ 		shinfo = xdp_get_shared_info_from_buff(xdp);
+ 		for (i = 0; i < shinfo->nr_frags; i++) {
+ 			xdp_page = skb_frag_page(&shinfo->frags[i]);
+-			put_page(xdp_page);
++			page_pool_put_page(rq->page_pool, xdp_page, -1, true);
+ 		}
+ 	}
+ }
+@@ -1873,7 +1759,7 @@ static struct page *xdp_linearize_page(struct net_device *dev,
+ 	if (page_off + *len + tailroom > PAGE_SIZE)
+ 		return NULL;
+ 
+-	page = alloc_page(GFP_ATOMIC);
++	page = page_pool_alloc_pages(rq->page_pool, GFP_ATOMIC);
+ 	if (!page)
+ 		return NULL;
+ 
+@@ -1896,8 +1782,12 @@ static struct page *xdp_linearize_page(struct net_device *dev,
+ 		p = virt_to_head_page(buf);
+ 		off = buf - page_address(p);
+ 
++		if (rq->use_page_pool_dma)
++			page_pool_dma_sync_for_cpu(rq->page_pool, p,
++						   off, buflen);
++
+ 		if (check_mergeable_len(dev, ctx, buflen)) {
+-			put_page(p);
++			page_pool_put_page(rq->page_pool, p, -1, true);
+ 			goto err_buf;
+ 		}
+ 
+@@ -1905,21 +1795,21 @@ static struct page *xdp_linearize_page(struct net_device *dev,
+ 		 * is sending packet larger than the MTU.
+ 		 */
+ 		if ((page_off + buflen + tailroom) > PAGE_SIZE) {
+-			put_page(p);
++			page_pool_put_page(rq->page_pool, p, -1, true);
+ 			goto err_buf;
+ 		}
+ 
+ 		memcpy(page_address(page) + page_off,
+ 		       page_address(p) + off, buflen);
+ 		page_off += buflen;
+-		put_page(p);
++		page_pool_put_page(rq->page_pool, p, -1, true);
+ 	}
+ 
+ 	/* Headroom does not contribute to packet length */
+ 	*len = page_off - XDP_PACKET_HEADROOM;
+ 	return page;
+ err_buf:
+-	__free_pages(page, 0);
++	page_pool_put_page(rq->page_pool, page, -1, true);
+ 	return NULL;
+ }
+ 
+@@ -1996,7 +1886,7 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
+ 			goto err_xdp;
+ 
+ 		buf = page_address(xdp_page);
+-		put_page(page);
++		page_pool_put_page(rq->page_pool, page, -1, true);
+ 		page = xdp_page;
+ 	}
+ 
+@@ -2028,13 +1918,15 @@ static struct sk_buff *receive_small_xdp(struct net_device *dev,
+ 	if (metasize)
+ 		skb_metadata_set(skb, metasize);
+ 
++	skb_mark_for_recycle(skb);
++
+ 	return skb;
+ 
+ err_xdp:
+ 	u64_stats_inc(&stats->xdp_drops);
+ err:
+ 	u64_stats_inc(&stats->drops);
+-	put_page(page);
++	page_pool_put_page(rq->page_pool, page, -1, true);
+ xdp_xmit:
+ 	return NULL;
+ }
+@@ -2056,6 +1948,13 @@ static struct sk_buff *receive_small(struct net_device *dev,
+ 	 */
+ 	buf -= VIRTNET_RX_PAD + xdp_headroom;
+ 
++	if (rq->use_page_pool_dma) {
++		int offset = buf - page_address(page) +
++			     VIRTNET_RX_PAD + xdp_headroom;
++
++		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, len);
++	}
++
+ 	len -= vi->hdr_len;
+ 	u64_stats_add(&stats->bytes, len);
+ 
+@@ -2082,12 +1981,14 @@ static struct sk_buff *receive_small(struct net_device *dev,
+ 	}
+ 
+ 	skb = receive_small_build_skb(vi, xdp_headroom, buf, len);
+-	if (likely(skb))
++	if (likely(skb)) {
++		skb_mark_for_recycle(skb);
+ 		return skb;
++	}
+ 
+ err:
+ 	u64_stats_inc(&stats->drops);
+-	put_page(page);
++	page_pool_put_page(rq->page_pool, page, -1, true);
+ 	return NULL;
+ }
+ 
+@@ -2142,7 +2043,7 @@ static void mergeable_buf_free(struct receive_queue *rq, int num_buf,
+ 		}
+ 		u64_stats_add(&stats->bytes, len);
+ 		page = virt_to_head_page(buf);
+-		put_page(page);
++		page_pool_put_page(rq->page_pool, page, -1, true);
+ 	}
+ }
+ 
+@@ -2252,8 +2153,12 @@ static int virtnet_build_xdp_buff_mrg(struct net_device *dev,
+ 		page = virt_to_head_page(buf);
+ 		offset = buf - page_address(page);
+ 
++		if (rq->use_page_pool_dma)
++			page_pool_dma_sync_for_cpu(rq->page_pool, page,
++						   offset, len);
++
+ 		if (check_mergeable_len(dev, ctx, len)) {
+-			put_page(page);
++			page_pool_put_page(rq->page_pool, page, -1, true);
+ 			goto err;
+ 		}
+ 
+@@ -2272,7 +2177,7 @@ static int virtnet_build_xdp_buff_mrg(struct net_device *dev,
+ 	return 0;
+ 
+ err:
+-	put_xdp_frags(xdp);
++	put_xdp_frags(rq, xdp);
+ 	return -EINVAL;
+ }
+ 
+@@ -2337,7 +2242,7 @@ static void *mergeable_xdp_get_buf(struct virtnet_info *vi,
+ 		if (*len + xdp_room > PAGE_SIZE)
+ 			return NULL;
+ 
+-		xdp_page = alloc_page(GFP_ATOMIC);
++		xdp_page = page_pool_alloc_pages(rq->page_pool, GFP_ATOMIC);
+ 		if (!xdp_page)
+ 			return NULL;
+ 
+@@ -2347,7 +2252,7 @@ static void *mergeable_xdp_get_buf(struct virtnet_info *vi,
+ 
+ 	*frame_sz = PAGE_SIZE;
+ 
+-	put_page(*page);
++	page_pool_put_page(rq->page_pool, *page, -1, true);
+ 
+ 	*page = xdp_page;
+ 
+@@ -2393,6 +2298,8 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
+ 		head_skb = build_skb_from_xdp_buff(dev, vi, &xdp, xdp_frags_truesz);
+ 		if (unlikely(!head_skb))
+ 			break;
++
++		skb_mark_for_recycle(head_skb);
+ 		return head_skb;
+ 
+ 	case XDP_TX:
+@@ -2403,10 +2310,10 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
+ 		break;
+ 	}
+ 
+-	put_xdp_frags(&xdp);
++	put_xdp_frags(rq, &xdp);
+ 
+ err_xdp:
+-	put_page(page);
++	page_pool_put_page(rq->page_pool, page, -1, true);
+ 	mergeable_buf_free(rq, num_buf, dev, stats);
+ 
+ 	u64_stats_inc(&stats->xdp_drops);
+@@ -2414,7 +2321,8 @@ static struct sk_buff *receive_mergeable_xdp(struct net_device *dev,
+ 	return NULL;
+ }
+ 
+-static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
++static struct sk_buff *virtnet_skb_append_frag(struct receive_queue *rq,
++					       struct sk_buff *head_skb,
+ 					       struct sk_buff *curr_skb,
+ 					       struct page *page, void *buf,
+ 					       int len, int truesize)
+@@ -2446,7 +2354,7 @@ static struct sk_buff *virtnet_skb_append_frag(struct sk_buff *head_skb,
+ 
+ 	offset = buf - page_address(page);
+ 	if (skb_can_coalesce(curr_skb, num_skb_frags, page, offset)) {
+-		put_page(page);
++		page_pool_put_page(rq->page_pool, page, -1, true);
+ 		skb_coalesce_rx_frag(curr_skb, num_skb_frags - 1,
+ 				     len, truesize);
+ 	} else {
+@@ -2475,6 +2383,10 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 	unsigned int headroom = mergeable_ctx_to_headroom(ctx);
+ 
+ 	head_skb = NULL;
++
++	if (rq->use_page_pool_dma)
++		page_pool_dma_sync_for_cpu(rq->page_pool, page, offset, len);
++
+ 	u64_stats_add(&stats->bytes, len - vi->hdr_len);
+ 
+ 	if (check_mergeable_len(dev, ctx, len))
+@@ -2499,6 +2411,8 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 
+ 	if (unlikely(!curr_skb))
+ 		goto err_skb;
++
++	skb_mark_for_recycle(head_skb);
+ 	while (--num_buf) {
+ 		buf = virtnet_rq_get_buf(rq, &len, &ctx);
+ 		if (unlikely(!buf)) {
+@@ -2513,11 +2427,17 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 		u64_stats_add(&stats->bytes, len);
+ 		page = virt_to_head_page(buf);
+ 
++		if (rq->use_page_pool_dma) {
++			offset = buf - page_address(page);
++			page_pool_dma_sync_for_cpu(rq->page_pool, page,
++						   offset, len);
++		}
++
+ 		if (check_mergeable_len(dev, ctx, len))
+ 			goto err_skb;
+ 
+ 		truesize = mergeable_ctx_to_truesize(ctx);
+-		curr_skb  = virtnet_skb_append_frag(head_skb, curr_skb, page,
++		curr_skb  = virtnet_skb_append_frag(rq, head_skb, curr_skb, page,
+ 						    buf, len, truesize);
+ 		if (!curr_skb)
+ 			goto err_skb;
+@@ -2527,7 +2447,7 @@ static struct sk_buff *receive_mergeable(struct net_device *dev,
+ 	return head_skb;
+ 
+ err_skb:
+-	put_page(page);
++	page_pool_put_page(rq->page_pool, page, -1, true);
+ 	mergeable_buf_free(rq, num_buf, dev, stats);
+ 
+ err_buf:
+@@ -2666,32 +2586,40 @@ static void receive_buf(struct virtnet_info *vi, struct receive_queue *rq,
+ static int add_recvbuf_small(struct virtnet_info *vi, struct receive_queue *rq,
+ 			     gfp_t gfp)
+ {
+-	char *buf;
+ 	unsigned int xdp_headroom = virtnet_get_headroom(vi);
+ 	void *ctx = (void *)(unsigned long)xdp_headroom;
+-	int len = vi->hdr_len + VIRTNET_RX_PAD + GOOD_PACKET_LEN + xdp_headroom;
++	unsigned int len = vi->hdr_len + VIRTNET_RX_PAD + GOOD_PACKET_LEN + xdp_headroom;
++	struct page *page;
++	dma_addr_t addr;
++	char *buf;
+ 	int err;
+ 
+ 	len = SKB_DATA_ALIGN(len) +
+ 	      SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+ 
+-	if (unlikely(!skb_page_frag_refill(len, &rq->alloc_frag, gfp)))
+-		return -ENOMEM;
+-
+-	buf = virtnet_rq_alloc(rq, len, gfp);
++	buf = page_pool_alloc_va(rq->page_pool, &len, gfp);
+ 	if (unlikely(!buf))
+ 		return -ENOMEM;
+ 
+ 	buf += VIRTNET_RX_PAD + xdp_headroom;
+ 
+-	virtnet_rq_init_one_sg(rq, buf, vi->hdr_len + GOOD_PACKET_LEN);
++	if (rq->use_page_pool_dma) {
++		page = virt_to_head_page(buf);
++		addr = page_pool_get_dma_addr(page) +
++		       (buf - (char *)page_address(page));
+ 
+-	err = virtqueue_add_inbuf_premapped(rq->vq, rq->sg, 1, buf, ctx, gfp);
+-	if (err < 0) {
+-		virtnet_rq_unmap(rq, buf, 0);
+-		put_page(virt_to_head_page(buf));
++		sg_init_table(rq->sg, 1);
++		sg_fill_dma(rq->sg, addr, vi->hdr_len + GOOD_PACKET_LEN);
++		err = virtqueue_add_inbuf_premapped(rq->vq, rq->sg, 1,
++						    buf, ctx, gfp);
++	} else {
++		sg_init_one(rq->sg, buf, vi->hdr_len + GOOD_PACKET_LEN);
++		err = virtqueue_add_inbuf_ctx(rq->vq, rq->sg, 1,
++					      buf, ctx, gfp);
+ 	}
+ 
++	if (err < 0)
++		page_pool_put_page(rq->page_pool, virt_to_head_page(buf), -1, false);
+ 	return err;
+ }
+ 
+@@ -2764,13 +2692,14 @@ static unsigned int get_mergeable_buf_len(struct receive_queue *rq,
+ static int add_recvbuf_mergeable(struct virtnet_info *vi,
+ 				 struct receive_queue *rq, gfp_t gfp)
+ {
+-	struct page_frag *alloc_frag = &rq->alloc_frag;
+ 	unsigned int headroom = virtnet_get_headroom(vi);
+ 	unsigned int tailroom = headroom ? sizeof(struct skb_shared_info) : 0;
+ 	unsigned int room = SKB_DATA_ALIGN(headroom + tailroom);
+-	unsigned int len, hole;
+-	void *ctx;
++	unsigned int len, alloc_len;
++	struct page *page;
++	dma_addr_t addr;
+ 	char *buf;
++	void *ctx;
+ 	int err;
+ 
+ 	/* Extra tailroom is needed to satisfy XDP's assumption. This
+@@ -2779,39 +2708,35 @@ static int add_recvbuf_mergeable(struct virtnet_info *vi,
+ 	 */
+ 	len = get_mergeable_buf_len(rq, &rq->mrg_avg_pkt_len, room);
+ 
+-	if (unlikely(!skb_page_frag_refill(len + room, alloc_frag, gfp)))
+-		return -ENOMEM;
+-
+-	if (!alloc_frag->offset && len + room + sizeof(struct virtnet_rq_dma) > alloc_frag->size)
+-		len -= sizeof(struct virtnet_rq_dma);
+-
+-	buf = virtnet_rq_alloc(rq, len + room, gfp);
++	alloc_len = len + room;
++	buf = page_pool_alloc_va(rq->page_pool, &alloc_len, gfp);
+ 	if (unlikely(!buf))
+ 		return -ENOMEM;
+ 
+ 	buf += headroom; /* advance address leaving hole at front of pkt */
+-	hole = alloc_frag->size - alloc_frag->offset;
+-	if (hole < len + room) {
+-		/* To avoid internal fragmentation, if there is very likely not
+-		 * enough space for another buffer, add the remaining space to
+-		 * the current buffer.
+-		 * XDP core assumes that frame_size of xdp_buff and the length
+-		 * of the frag are PAGE_SIZE, so we disable the hole mechanism.
+-		 */
+-		if (!headroom)
+-			len += hole;
+-		alloc_frag->offset += hole;
+-	}
+ 
+-	virtnet_rq_init_one_sg(rq, buf, len);
++	if (!headroom)
++		len = alloc_len - room;
+ 
+ 	ctx = mergeable_len_to_ctx(len + room, headroom);
+-	err = virtqueue_add_inbuf_premapped(rq->vq, rq->sg, 1, buf, ctx, gfp);
+-	if (err < 0) {
+-		virtnet_rq_unmap(rq, buf, 0);
+-		put_page(virt_to_head_page(buf));
++
++	if (rq->use_page_pool_dma) {
++		page = virt_to_head_page(buf);
++		addr = page_pool_get_dma_addr(page) +
++		       (buf - (char *)page_address(page));
++
++		sg_init_table(rq->sg, 1);
++		sg_fill_dma(rq->sg, addr, len);
++		err = virtqueue_add_inbuf_premapped(rq->vq, rq->sg, 1,
++						    buf, ctx, gfp);
++	} else {
++		sg_init_one(rq->sg, buf, len);
++		err = virtqueue_add_inbuf_ctx(rq->vq, rq->sg, 1,
++					      buf, ctx, gfp);
+ 	}
+ 
++	if (err < 0)
++		page_pool_put_page(rq->page_pool, virt_to_head_page(buf), -1, false);
+ 	return err;
+ }
+ 
+@@ -2963,7 +2888,7 @@ static int virtnet_receive_packets(struct virtnet_info *vi,
+ 	int packets = 0;
+ 	void *buf;
+ 
+-	if (!vi->big_packets || vi->mergeable_rx_bufs) {
++	if (!virtnet_no_page_pool(vi)) {
+ 		void *ctx;
+ 		while (packets < budget &&
+ 		       (buf = virtnet_rq_get_buf(rq, &len, &ctx))) {
+@@ -3128,7 +3053,10 @@ static int virtnet_enable_queue_pair(struct virtnet_info *vi, int qp_index)
+ 		return err;
+ 
+ 	err = xdp_rxq_info_reg_mem_model(&vi->rq[qp_index].xdp_rxq,
+-					 MEM_TYPE_PAGE_SHARED, NULL);
++					 vi->rq[qp_index].page_pool ?
++						MEM_TYPE_PAGE_POOL :
++						MEM_TYPE_PAGE_SHARED,
++					 vi->rq[qp_index].page_pool);
+ 	if (err < 0)
+ 		goto err_xdp_reg_mem_model;
+ 
+@@ -3168,6 +3096,82 @@ static void virtnet_update_settings(struct virtnet_info *vi)
+ 		vi->duplex = duplex;
+ }
+ 
++static int virtnet_create_page_pools(struct virtnet_info *vi)
 +{
-+	u32 ports = ((__force u32)s->v4.sin_port) << 16 | (__force u32)d->v4.sin_port;
-+	u32 saddr = (s->sa.sa_family == AF_INET6) ? jhash(&s->v6.sin6_addr, 16, 0) :
-+						    (__force u32)s->v4.sin_addr.s_addr;
-+	u32 daddr = (d->sa.sa_family == AF_INET6) ? jhash(&d->v6.sin6_addr, 16, 0) :
-+						    (__force u32)d->v4.sin_addr.s_addr;
++	int i, err;
 +
-+	return jhash_3words(saddr, ports, net_hash_mix(net), daddr) & (quic_sock_hash_size() - 1);
-+}
++	if (virtnet_no_page_pool(vi))
++		return 0;
 +
-+struct quic_shash_head *quic_sock_head(u32 hash)
-+{
-+	return &quic_hashinfo.chash.hash[hash];
-+}
++	for (i = 0; i < vi->max_queue_pairs; i++) {
++		struct receive_queue *rq = &vi->rq[i];
++		struct page_pool_params pp_params = { 0 };
++		struct device *dma_dev;
 +
-+u32 quic_listen_sock_hash_size(void)
-+{
-+	return quic_hashinfo.lhash.size;
-+}
++		if (rq->page_pool)
++			continue;
 +
-+u32 quic_listen_sock_hash(struct net *net, u16 port)
-+{
-+	return jhash_2words((__force u32)port, net_hash_mix(net), 0) &
-+		(quic_listen_sock_hash_size() - 1);
-+}
++		if (rq->xsk_pool)
++			continue;
 +
-+struct quic_shash_head *quic_listen_sock_head(u32 hash)
-+{
-+	return &quic_hashinfo.lhash.hash[hash];
-+}
++		pp_params.order = 0;
++		pp_params.pool_size = virtqueue_get_vring_size(rq->vq);
++		pp_params.nid = dev_to_node(vi->vdev->dev.parent);
++		pp_params.netdev = vi->dev;
++		pp_params.napi = &rq->napi;
 +
-+struct quic_shash_head *quic_source_conn_id_head(struct net *net, u8 *scid, u32 len)
-+{
-+	struct quic_shash_table *ht = &quic_hashinfo.shash;
++		/* Use page_pool DMA mapping if backend supports DMA API.
++		 * DMA_SYNC_DEV is needed for non-coherent archs on recycle.
++		 */
++		dma_dev = virtqueue_dma_dev(rq->vq);
++		if (dma_dev) {
++			pp_params.dev = dma_dev;
++			pp_params.flags = PP_FLAG_DMA_MAP | PP_FLAG_DMA_SYNC_DEV;
++			pp_params.dma_dir = DMA_FROM_DEVICE;
++			pp_params.max_len = PAGE_SIZE;
++			pp_params.offset = 0;
++			rq->use_page_pool_dma = true;
++		} else {
++			/* No DMA API (e.g., VDUSE): page_pool for allocation only. */
++			pp_params.flags = 0;
++			rq->use_page_pool_dma = false;
++		}
 +
-+	return &ht->hash[jhash_2words(jhash(scid, len, 0), net_hash_mix(net), 0) & (ht->size - 1)];
-+}
-+
-+struct quic_uhash_head *quic_udp_sock_head(struct net *net, u16 port)
-+{
-+	struct quic_uhash_table *ht = &quic_hashinfo.uhash;
-+
-+	return &ht->hash[jhash_2words((__force u32)port, net_hash_mix(net), 0) & (ht->size - 1)];
-+}
-+
-+u32 quic_addr_hash(struct net *net, union quic_addr *a)
-+{
-+	u32 addr = (a->sa.sa_family == AF_INET6) ? jhash(&a->v6.sin6_addr, 16, 0) :
-+						   (__force u32)a->v4.sin_addr.s_addr;
-+
-+	return  jhash_3words(addr, (__force u32)a->v4.sin_port, net_hash_mix(net), 0);
-+}
-+
-+void quic_hash_tables_destroy(void)
-+{
-+	vfree(quic_hashinfo.shash.hash);
-+	vfree(quic_hashinfo.lhash.hash);
-+	vfree(quic_hashinfo.chash.hash);
-+	vfree(quic_hashinfo.uhash.hash);
-+}
-+
-+static int quic_shash_table_init(struct quic_shash_table *ht, u32 size)
-+{
-+	int i;
-+
-+	ht->hash = vmalloc_array(size, sizeof(struct quic_shash_head));
-+	if (!ht->hash)
-+		return -ENOMEM;
-+
-+	ht->size = size;
-+	for (i = 0; i < ht->size; i++) {
-+		spin_lock_init(&ht->hash[i].lock);
-+		INIT_HLIST_NULLS_HEAD(&ht->hash[i].head, i);
++		rq->page_pool = page_pool_create(&pp_params);
++		if (IS_ERR(rq->page_pool)) {
++			err = PTR_ERR(rq->page_pool);
++			rq->page_pool = NULL;
++			goto err_cleanup;
++		}
 +	}
 +	return 0;
-+}
 +
-+static int quic_uhash_table_init(struct quic_uhash_table *ht, u32 size)
-+{
-+	int i;
++err_cleanup:
++	while (--i >= 0) {
++		struct receive_queue *rq = &vi->rq[i];
 +
-+	ht->hash = vmalloc_array(size, sizeof(struct quic_uhash_head));
-+	if (!ht->hash)
-+		return -ENOMEM;
-+
-+	ht->size = size;
-+	for (i = 0; i < ht->size; i++) {
-+		mutex_init(&ht->hash[i].lock);
-+		INIT_HLIST_HEAD(&ht->hash[i].head);
++		if (rq->page_pool) {
++			page_pool_destroy(rq->page_pool);
++			rq->page_pool = NULL;
++		}
 +	}
-+	return 0;
-+}
-+
-+int quic_hash_tables_init(void)
-+{
-+	unsigned long nr_pages = totalram_pages();
-+	u32 limit, size;
-+	int err;
-+
-+	/* Scale hash table size based on system memory, similar to SCTP. */
-+	if (nr_pages >= (128 * 1024))
-+		limit = nr_pages >> (22 - PAGE_SHIFT);
-+	else
-+		limit = nr_pages >> (24 - PAGE_SHIFT);
-+
-+	limit = roundup_pow_of_two(limit);
-+
-+	/* Source connection ID table (fast lookup, larger size) */
-+	size = min(limit, 64 * 1024U);
-+	err = quic_shash_table_init(&quic_hashinfo.shash, size);
-+	if (err)
-+		goto err;
-+	size = min(limit, 16 * 1024U);
-+	err = quic_shash_table_init(&quic_hashinfo.lhash, size);
-+	if (err)
-+		goto err;
-+	err = quic_shash_table_init(&quic_hashinfo.chash, size);
-+	if (err)
-+		goto err;
-+	err = quic_uhash_table_init(&quic_hashinfo.uhash, size);
-+	if (err)
-+		goto err;
-+	return 0;
-+err:
-+	quic_hash_tables_destroy();
 +	return err;
 +}
 +
-+/* Returns the number of bytes required to encode a QUIC variable-length integer. */
-+u8 quic_var_len(u64 n)
++static void virtnet_destroy_page_pools(struct virtnet_info *vi)
 +{
-+	if (n <= QUIC_VARINT_1BYTE_MAX)
-+		return 1;
-+	if (n <= QUIC_VARINT_2BYTE_MAX)
-+		return 2;
-+	if (n <= QUIC_VARINT_4BYTE_MAX)
-+		return 4;
-+	return 8;
-+}
++	int i;
 +
-+/* Decodes a QUIC variable-length integer from a buffer. */
-+u8 quic_get_var(u8 **pp, u32 *plen, u64 *val)
-+{
-+	u8 *p = *pp, len;
-+	u64 v = 0;
++	for (i = 0; i < vi->max_queue_pairs; i++) {
++		struct receive_queue *rq = &vi->rq[i];
 +
-+	if (!*plen)
-+		return 0;
-+
-+	len = QUIC_VARINT_LENGTH(p);
-+	if (*plen < len)
-+		return 0;
-+
-+	switch (len) {
-+	case 1:
-+		v = *p;
-+		break;
-+	case 2:
-+		v = get_unaligned_be16(p) & QUIC_VARINT_2BYTE_MAX;
-+		break;
-+	case 4:
-+		v = get_unaligned_be32(p) & QUIC_VARINT_4BYTE_MAX;
-+		break;
-+	case 8:
-+		v = get_unaligned_be64(p) & QUIC_VARINT_8BYTE_MAX;
-+		break;
-+	default:
-+		return 0;
-+	}
-+
-+	*plen -= len;
-+	*pp = p + len;
-+	*val = v;
-+	return len;
-+}
-+
-+/* Reads a fixed-length integer from the buffer. */
-+u32 quic_get_int(u8 **pp, u32 *plen, u64 *val, u32 len)
-+{
-+	u8 *p = *pp;
-+	u64 v = 0;
-+
-+	if (*plen < len)
-+		return 0;
-+
-+	switch (len) {
-+	case 1:
-+		v = *p;
-+		break;
-+	case 2:
-+		v = get_unaligned_be16(p);
-+		break;
-+	case 3:
-+		v = get_unaligned_be24(p);
-+		break;
-+	case 4:
-+		v = get_unaligned_be32(p);
-+		break;
-+	case 8:
-+		v = get_unaligned_be64(p);
-+		break;
-+	default:
-+		return 0;
-+	}
-+	*plen -= len;
-+	*pp = p + len;
-+	*val = v;
-+	return len;
-+}
-+
-+u32 quic_get_data(u8 **pp, u32 *plen, u8 *data, u32 len)
-+{
-+	if (*plen < len)
-+		return 0;
-+
-+	memcpy(data, *pp, len);
-+	*pp += len;
-+	*plen -= len;
-+
-+	return len;
-+}
-+
-+/* Encodes a value into the QUIC variable-length integer format. */
-+u8 *quic_put_var(u8 *p, u64 num)
-+{
-+	if (num <= QUIC_VARINT_1BYTE_MAX) {
-+		*p++ = (u8)num;
-+		return p;
-+	}
-+	if (num <= QUIC_VARINT_2BYTE_MAX) {
-+		put_unaligned_be16((u16)num, p);
-+		*p |= QUIC_VARINT_2BYTE_PREFIX;
-+		return p + 2;
-+	}
-+	if (num <= QUIC_VARINT_4BYTE_MAX) {
-+		put_unaligned_be32((u32)num, p);
-+		*p |= QUIC_VARINT_4BYTE_PREFIX;
-+		return p + 4;
-+	}
-+	put_unaligned_be64(num, p);
-+	*p |= QUIC_VARINT_8BYTE_PREFIX;
-+	return p + 8;
-+}
-+
-+/* Writes a fixed-length integer to the buffer in network byte order. */
-+u8 *quic_put_int(u8 *p, u64 num, u8 len)
-+{
-+	switch (len) {
-+	case 1:
-+		*p++ = (u8)num;
-+		return p;
-+	case 2:
-+		put_unaligned_be16((u16)num, p);
-+		return p + 2;
-+	case 4:
-+		put_unaligned_be32((u32)num, p);
-+		return p + 4;
-+	case 8:
-+		put_unaligned_be64(num, p);
-+		return p + 8;
-+	default:
-+		return NULL;
-+	}
-+}
-+
-+/* Encodes a value as a variable-length integer with explicit length. */
-+u8 *quic_put_varint(u8 *p, u64 num, u8 len)
-+{
-+	switch (len) {
-+	case 1:
-+		*p++ = (u8)num;
-+		return p;
-+	case 2:
-+		put_unaligned_be16((u16)num, p);
-+		*p |= QUIC_VARINT_2BYTE_PREFIX;
-+		return p + 2;
-+	case 4:
-+		put_unaligned_be32((u32)num, p);
-+		*p |= QUIC_VARINT_4BYTE_PREFIX;
-+		return p + 4;
-+	default:
-+		return NULL;
-+	}
-+}
-+
-+u8 *quic_put_data(u8 *p, u8 *data, u32 len)
-+{
-+	if (!len)
-+		return p;
-+
-+	memcpy(p, data, len);
-+	return p + len;
-+}
-+
-+/* Writes a transport parameter as two varints: ID and value length, followed by value. */
-+u8 *quic_put_param(u8 *p, u16 id, u64 value)
-+{
-+	p = quic_put_var(p, id);
-+	p = quic_put_var(p, quic_var_len(value));
-+	return quic_put_var(p, value);
-+}
-+
-+/* Reads a QUIC transport parameter value. */
-+u8 quic_get_param(u64 *pdest, u8 **pp, u32 *plen)
-+{
-+	u64 valuelen;
-+
-+	if (!quic_get_var(pp, plen, &valuelen))
-+		return 0;
-+
-+	if (*plen < valuelen)
-+		return 0;
-+
-+	if (quic_get_var(pp, plen, pdest) != valuelen)
-+		return 0;
-+
-+	return (u8)valuelen;
-+}
-+
-+/* rfc9000#section-a.3: DecodePacketNumber()
-+ *
-+ * Reconstructs the full packet number from a truncated one.
-+ */
-+s64 quic_get_num(s64 max_pkt_num, s64 pkt_num, u32 n)
-+{
-+	s64 expected = max_pkt_num + 1;
-+	s64 win = BIT_ULL(n * 8);
-+	s64 hwin = win / 2;
-+	s64 mask = win - 1;
-+	s64 cand;
-+
-+	cand = (expected & ~mask) | pkt_num;
-+	if (cand <= expected - hwin && cand < BIT_ULL(QUIC_PN_BITS) - win)
-+		return cand + win;
-+	if (cand > expected + hwin && cand >= win)
-+		return cand - win;
-+	return cand;
-+}
-+
-+int quic_data_dup(struct quic_data *to, u8 *data, u32 len)
-+{
-+	if (!len)
-+		return 0;
-+
-+	data = kmemdup(data, len, GFP_ATOMIC);
-+	if (!data)
-+		return -ENOMEM;
-+
-+	kfree(to->data);
-+	to->data = data;
-+	to->len = len;
-+	return 0;
-+}
-+
-+int quic_data_append(struct quic_data *to, u8 *data, u32 len)
-+{
-+	u8 *p;
-+
-+	if (!len)
-+		return 0;
-+
-+	p = kzalloc(to->len + len, GFP_ATOMIC);
-+	if (!p)
-+		return -ENOMEM;
-+	p = quic_put_data(p, to->data, to->len);
-+	p = quic_put_data(p, data, len);
-+
-+	kfree(to->data);
-+	to->len = to->len + len;
-+	to->data = p - to->len;
-+	return 0;
-+}
-+
-+/* Check whether 'd2' is equal to any element inside the list 'd1'.
-+ *
-+ * 'd1' is assumed to be a sequence of length-prefixed elements. Each element
-+ * is compared to 'd2' using 'quic_data_cmp()'.
-+ *
-+ * Returns 1 if a match is found, 0 otherwise.
-+ */
-+int quic_data_has(struct quic_data *d1, struct quic_data *d2)
-+{
-+	struct quic_data d;
-+	u64 length;
-+	u32 len;
-+	u8 *p;
-+
-+	for (p = d1->data, len = d1->len; len; len -= length, p += length) {
-+		if (!quic_get_int(&p, &len, &length, 1) || len < length)
-+			return 0;
-+		quic_data(&d, p, length);
-+		if (!quic_data_cmp(&d, d2))
-+			return 1;
-+	}
-+	return 0;
-+}
-+
-+/* Check if any element of 'd1' is present in the list 'd2'.
-+ *
-+ * Iterates through each element in 'd1', and uses 'quic_data_has()' to check
-+ * for its presence in 'd2'.
-+ *
-+ * Returns 1 if any match is found, 0 otherwise.
-+ */
-+int quic_data_match(struct quic_data *d1, struct quic_data *d2)
-+{
-+	struct quic_data d;
-+	u64 length;
-+	u32 len;
-+	u8 *p;
-+
-+	for (p = d1->data, len = d1->len; len; len -= length, p += length) {
-+		if (!quic_get_int(&p, &len, &length, 1) || len < length)
-+			return 0;
-+		quic_data(&d, p, length);
-+		if (quic_data_has(d2, &d))
-+			return 1;
-+	}
-+	return 0;
-+}
-+
-+/* Serialize a list of 'quic_data' elements into a comma-separated string.
-+ *
-+ * Each element in 'from' is length-prefixed. This function copies their raw
-+ * content into the output buffer 'to', inserting commas in between. The
-+ * resulting string length is written to '*plen'.
-+ */
-+int quic_data_to_string(u8 *to, u32 *plen, struct quic_data *from)
-+{
-+	u32 remlen = *plen;
-+	struct quic_data d;
-+	u8 *data = to, *p;
-+	u64 length;
-+	u32 len;
-+
-+	p = from->data;
-+	len = from->len;
-+	while (len) {
-+		if (!quic_get_int(&p, &len, &length, 1) || len < length)
-+			return -EINVAL;
-+
-+		quic_data(&d, p, length);
-+		if (d.len > remlen)
-+			return -EOVERFLOW;
-+
-+		data = quic_put_data(data, d.data, d.len);
-+		remlen -= d.len;
-+		p += d.len;
-+		len -= d.len;
-+		if (len) {
-+			if (!remlen)
-+				return -EOVERFLOW;
-+			data = quic_put_int(data, ',', 1);
-+			remlen--;
++		if (rq->page_pool) {
++			page_pool_destroy(rq->page_pool);
++			rq->page_pool = NULL;
 +		}
 +	}
-+	*plen = data - to;
-+	return 0;
 +}
 +
-+/* Parse a comma-separated string into a 'quic_data' list format.
-+ *
-+ * Each comma-separated token is turned into a length-prefixed element. The
-+ * first byte of each element stores the length. Elements are stored in
-+ * 'to->data', and 'to->len' is updated.
-+ */
-+int quic_data_from_string(struct quic_data *to, u8 *from, u32 len)
-+{
-+	u32 remlen = to->len;
-+	struct quic_data d;
-+	u8 *p = to->data;
-+
-+	to->len = 0;
-+	while (len) {
-+		while (len && *from == ' ') {
-+			from++;
-+			len--;
-+		}
-+		if (!len)
-+			break;
-+		if (!remlen)
-+			return -EOVERFLOW;
-+		d.data = p++;
-+		d.len  = 0;
-+		remlen--;
-+		while (len) {
-+			if (*from == ',') {
-+				from++;
-+				len--;
-+				break;
-+			}
-+			if (!remlen)
-+				return -EOVERFLOW;
-+			*p++ = *from++;
-+			len--;
-+			d.len++;
-+			remlen--;
-+		}
-+		if (d.len > U8_MAX)
-+			return -EINVAL;
-+		*d.data = (u8)(d.len);
-+		to->len += d.len + 1;
-+	}
-+	return 0;
-+}
-diff --git a/net/quic/common.h b/net/quic/common.h
-new file mode 100644
-index 000000000000..31b90a52da86
---- /dev/null
-+++ b/net/quic/common.h
-@@ -0,0 +1,205 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* QUIC kernel implementation
-+ * (C) Copyright Red Hat Corp. 2023
-+ *
-+ * This file is part of the QUIC kernel implementation
-+ *
-+ * Written or modified by:
-+ *    Xin Long <lucien.xin@gmail.com>
-+ */
-+
-+#include <net/net_namespace.h>
-+
-+#define QUIC_MAX_ACK_DELAY	(16384 * 1000)
-+#define QUIC_DEF_ACK_DELAY	25000
-+
-+#define QUIC_STREAM_BIT_FIN	0x01
-+#define QUIC_STREAM_BIT_LEN	0x02
-+#define QUIC_STREAM_BIT_OFF	0x04
-+#define QUIC_STREAM_BIT_MASK	0x08
-+
-+#define QUIC_CONN_ID_MAX_LEN	20
-+#define QUIC_CONN_ID_DEF_LEN	8
-+
-+#define QUIC_PN_MAX_LEN		4	/* For encoded packet number */
-+#define QUIC_PN_BITS		62
-+#define QUIC_PN_MAX		(BIT_ULL(QUIC_PN_BITS) - 1)
-+
-+struct quic_conn_id {
-+	u8 data[QUIC_CONN_ID_MAX_LEN];
-+	u8 len;
-+};
-+
-+static inline void quic_conn_id_update(struct quic_conn_id *conn_id, u8 *data, u32 len)
-+{
-+	/* Caller must ensure len does not exceed QUIC_CONN_ID_MAX_LEN. */
-+	memcpy(conn_id->data, data, len);
-+	conn_id->len = (u8)len;
-+}
-+
-+struct quic_skb_cb {
-+	/* Callback and temporary context when encryption/decryption completes in async mode */
-+	void (*crypto_done)(struct sk_buff *skb, int err);
-+	void *crypto_ctx;
-+	union {
-+		struct sk_buff *last;	/* Last packet in bundle on TX */
-+		u64 time;		/* Arrival timestamp in UDP tunnel on RX */
-+	};
-+	s64 number;		/* Parsed packet number, or the largest previously seen */
-+	u32 seqno;		/* Dest connection ID number on RX */
-+	u16 errcode;		/* Error code if encryption/decryption fails */
-+	u16 length;		/* Payload length + packet number length */
-+
-+	u16 number_offset;	/* Offset of packet number field */
-+	u8 number_len;		/* Length of the packet number field */
-+	u8 level;		/* Encryption level: Initial, Handshake, App, or Early */
-+
-+	u8 key_update:1;	/* Key update triggered by this packet */
-+	u8 key_phase:1;		/* Key phase used (0 or 1) */
-+	u8 backlog:1;		/* Enqueued into backlog list */
-+	u8 resume:1;		/* Crypto already processed (encrypted or decrypted) */
-+	u8 path:1;		/* Packet arrived from a new or migrating path */
-+	u8 ecn:2;		/* ECN marking used on TX */
-+};
-+
-+#define QUIC_SKB_CB(skb)	((struct quic_skb_cb *)&((skb)->cb[0]))
-+
-+struct quichdr {
-+#if defined(__LITTLE_ENDIAN_BITFIELD)
-+	__u8 pnl:2,
-+	     key:1,
-+	     reserved:2,
-+	     spin:1,
-+	     fixed:1,
-+	     form:1;
-+#elif defined(__BIG_ENDIAN_BITFIELD)
-+	__u8 form:1,
-+	     fixed:1,
-+	     spin:1,
-+	     reserved:2,
-+	     key:1,
-+	     pnl:2;
-+#endif
-+};
-+
-+static inline struct quichdr *quic_hdr(struct sk_buff *skb)
-+{
-+	return (struct quichdr *)skb->data;
-+}
-+
-+struct quichshdr {
-+#if defined(__LITTLE_ENDIAN_BITFIELD)
-+	__u8 pnl:2,
-+	     reserved:2,
-+	     type:2,
-+	     fixed:1,
-+	     form:1;
-+#elif defined(__BIG_ENDIAN_BITFIELD)
-+	__u8 form:1,
-+	     fixed:1,
-+	     type:2,
-+	     reserved:2,
-+	     pnl:2;
-+#endif
-+};
-+
-+static inline struct quichshdr *quic_hshdr(struct sk_buff *skb)
-+{
-+	return (struct quichshdr *)skb->data;
-+}
-+
-+union quic_addr {
-+	struct sockaddr_in6 v6;
-+	struct sockaddr_in v4;
-+	struct sockaddr sa;
-+};
-+
-+static inline union quic_addr *quic_addr(const void *addr)
-+{
-+	return (union quic_addr *)addr;
-+}
-+
-+struct quic_shash_head {
-+	struct hlist_nulls_head	head;
-+	spinlock_t		lock;	/* Protects 'head' in atomic context */
-+};
-+
-+struct quic_shash_table {
-+	struct quic_shash_head *hash;
-+	u32 size;
-+};
-+
-+struct quic_uhash_head {
-+	struct hlist_head	head;
-+	struct mutex		lock;	/* Protects 'head' in process context */
-+};
-+
-+struct quic_uhash_table {
-+	struct quic_uhash_head *hash;
-+	u32 size;
-+};
-+
-+struct quic_data {
-+	u8 *data;
-+	u32 len;
-+};
-+
-+static inline struct quic_data *quic_data(struct quic_data *d, u8 *data, u32 len)
-+{
-+	d->data = data;
-+	d->len  = len;
-+	return d;
-+}
-+
-+static inline int quic_data_cmp(struct quic_data *d1, struct quic_data *d2)
-+{
-+	return d1->len != d2->len || memcmp(d1->data, d2->data, d1->len);
-+}
-+
-+static inline void quic_data_free(struct quic_data *d)
-+{
-+	kfree(d->data);
-+	d->data = NULL;
-+	d->len = 0;
-+}
-+
-+static inline u64 quic_ktime_get_us(void)
-+{
-+	return ktime_to_us(ktime_get());
-+}
-+
-+u32 quic_sock_hash(struct net *net, union quic_addr *s, union quic_addr *d);
-+struct quic_shash_head *quic_sock_head(u32 hash);
-+u32 quic_sock_hash_size(void);
-+
-+u32 quic_listen_sock_hash(struct net *net, u16 port);
-+struct quic_shash_head *quic_listen_sock_head(u32 hash);
-+u32 quic_listen_sock_hash_size(void);
-+
-+struct quic_shash_head *quic_source_conn_id_head(struct net *net, u8 *scid, u32 len);
-+struct quic_uhash_head *quic_udp_sock_head(struct net *net, u16 port);
-+u32 quic_addr_hash(struct net *net, union quic_addr *a);
-+
-+void quic_hash_tables_destroy(void);
-+int quic_hash_tables_init(void);
-+
-+u32 quic_get_data(u8 **pp, u32 *plen, u8 *data, u32 len);
-+u32 quic_get_int(u8 **pp, u32 *plen, u64 *val, u32 len);
-+s64 quic_get_num(s64 max_pkt_num, s64 pkt_num, u32 n);
-+u8 quic_get_param(u64 *pdest, u8 **pp, u32 *plen);
-+u8 quic_get_var(u8 **pp, u32 *plen, u64 *val);
-+u8 quic_var_len(u64 n);
-+
-+u8 *quic_put_param(u8 *p, u16 id, u64 value);
-+u8 *quic_put_data(u8 *p, u8 *data, u32 len);
-+u8 *quic_put_varint(u8 *p, u64 num, u8 len);
-+u8 *quic_put_int(u8 *p, u64 num, u8 len);
-+u8 *quic_put_var(u8 *p, u64 num);
-+
-+int quic_data_from_string(struct quic_data *to, u8 *from, u32 len);
-+int quic_data_to_string(u8 *to, u32 *plen, struct quic_data *from);
-+
-+int quic_data_match(struct quic_data *d1, struct quic_data *d2);
-+int quic_data_append(struct quic_data *to, u8 *data, u32 len);
-+int quic_data_has(struct quic_data *d1, struct quic_data *d2);
-+int quic_data_dup(struct quic_data *to, u8 *data, u32 len);
-diff --git a/net/quic/protocol.c b/net/quic/protocol.c
-index 6ab81f1c50cc..f20e4aef1fa5 100644
---- a/net/quic/protocol.c
-+++ b/net/quic/protocol.c
-@@ -304,6 +304,8 @@ static __init int quic_init(void)
- 	int max_share, err = -ENOMEM;
- 	unsigned long limit;
- 
-+	BUILD_BUG_ON(sizeof(struct quic_skb_cb) > sizeof_field(struct sk_buff, cb));
-+
- 	/* Set QUIC memory limits based on available system memory, similar to sctp_init(). */
- 	limit = nr_free_buffer_pages() / 8;
- 	limit = max(limit, 128UL);
-@@ -326,6 +328,10 @@ static __init int quic_init(void)
+ static int virtnet_open(struct net_device *dev)
+ {
+ 	struct virtnet_info *vi = netdev_priv(dev);
+@@ -5715,6 +5719,10 @@ static int virtnet_restore_up(struct virtio_device *vdev)
  	if (err)
- 		goto err_percpu_counter;
+ 		return err;
  
-+	err = quic_hash_tables_init();
++	err = virtnet_create_page_pools(vi);
 +	if (err)
-+		goto err_hash;
++		goto err_del_vqs;
 +
- 	err = register_pernet_subsys(&quic_net_ops);
- 	if (err)
- 		goto err_def_ops;
-@@ -343,6 +349,8 @@ static __init int quic_init(void)
- err_protosw:
- 	unregister_pernet_subsys(&quic_net_ops);
- err_def_ops:
-+	quic_hash_tables_destroy();
-+err_hash:
- 	percpu_counter_destroy(&quic_sockets_allocated);
- err_percpu_counter:
+ 	virtio_device_ready(vdev);
+ 
+ 	enable_rx_mode_work(vi);
+@@ -5724,12 +5732,24 @@ static int virtnet_restore_up(struct virtio_device *vdev)
+ 		err = virtnet_open(vi->dev);
+ 		rtnl_unlock();
+ 		if (err)
+-			return err;
++			goto err_destroy_pools;
+ 	}
+ 
+ 	netif_tx_lock_bh(vi->dev);
+ 	netif_device_attach(vi->dev);
+ 	netif_tx_unlock_bh(vi->dev);
++	return 0;
++
++err_destroy_pools:
++	virtio_reset_device(vdev);
++	free_unused_bufs(vi);
++	virtnet_destroy_page_pools(vi);
++	virtnet_del_vqs(vi);
++	return err;
++
++err_del_vqs:
++	virtio_reset_device(vdev);
++	virtnet_del_vqs(vi);
  	return err;
-@@ -355,6 +363,7 @@ static __exit void quic_exit(void)
- #endif
- 	quic_protosw_exit();
- 	unregister_pernet_subsys(&quic_net_ops);
-+	quic_hash_tables_destroy();
- 	percpu_counter_destroy(&quic_sockets_allocated);
- 	pr_info("quic: exit\n");
  }
-diff --git a/net/quic/socket.c b/net/quic/socket.c
-index d65236482ad3..6e1999f171b1 100644
---- a/net/quic/socket.c
-+++ b/net/quic/socket.c
-@@ -49,6 +49,10 @@ static int quic_init_sock(struct sock *sk)
  
- static void quic_destroy_sock(struct sock *sk)
+@@ -5857,7 +5877,7 @@ static int virtnet_xsk_pool_enable(struct net_device *dev,
+ 	/* In big_packets mode, xdp cannot work, so there is no need to
+ 	 * initialize xsk of rq.
+ 	 */
+-	if (vi->big_packets && !vi->mergeable_rx_bufs)
++	if (virtnet_no_page_pool(vi))
+ 		return -ENOENT;
+ 
+ 	if (qid >= vi->curr_queue_pairs)
+@@ -6287,17 +6307,6 @@ static void free_receive_bufs(struct virtnet_info *vi)
+ 	rtnl_unlock();
+ }
+ 
+-static void free_receive_page_frags(struct virtnet_info *vi)
+-{
+-	int i;
+-	for (i = 0; i < vi->max_queue_pairs; i++)
+-		if (vi->rq[i].alloc_frag.page) {
+-			if (vi->rq[i].last_dma)
+-				virtnet_rq_unmap(&vi->rq[i], vi->rq[i].last_dma, 0);
+-			put_page(vi->rq[i].alloc_frag.page);
+-		}
+-}
+-
+ static void virtnet_sq_free_unused_buf(struct virtqueue *vq, void *buf)
  {
-+	quic_data_free(quic_ticket(sk));
-+	quic_data_free(quic_token(sk));
-+	quic_data_free(quic_alpn(sk));
+ 	struct virtnet_info *vi = vq->vdev->priv;
+@@ -6401,7 +6410,7 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
+ 	vqs_info = kcalloc(total_vqs, sizeof(*vqs_info), GFP_KERNEL);
+ 	if (!vqs_info)
+ 		goto err_vqs_info;
+-	if (!vi->big_packets || vi->mergeable_rx_bufs) {
++	if (!virtnet_no_page_pool(vi)) {
+ 		ctx = kcalloc(total_vqs, sizeof(*ctx), GFP_KERNEL);
+ 		if (!ctx)
+ 			goto err_ctx;
+@@ -6441,10 +6450,8 @@ static int virtnet_find_vqs(struct virtnet_info *vi)
+ 		vi->rq[i].min_buf_len = mergeable_min_buf_len(vi, vi->rq[i].vq);
+ 		vi->sq[i].vq = vqs[txq2vq(i)];
+ 	}
+-
+ 	/* run here: ret == 0. */
+ 
+-
+ err_find:
+ 	kfree(ctx);
+ err_ctx:
+@@ -6945,6 +6952,14 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 			goto free;
+ 	}
+ 
++	/* Create page pools for receive queues.
++	 * Page pools are created at probe time so they can be used
++	 * with premapped DMA addresses throughout the device lifetime.
++	 */
++	err = virtnet_create_page_pools(vi);
++	if (err)
++		goto free_irq_moder;
 +
- 	sk_sockets_allocated_dec(sk);
- 	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
+ #ifdef CONFIG_SYSFS
+ 	if (vi->mergeable_rx_bufs)
+ 		dev->sysfs_rx_queue_group = &virtio_net_mrg_rx_group;
+@@ -6958,7 +6973,7 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 		vi->failover = net_failover_create(vi->dev);
+ 		if (IS_ERR(vi->failover)) {
+ 			err = PTR_ERR(vi->failover);
+-			goto free_vqs;
++			goto free_page_pools;
+ 		}
+ 	}
+ 
+@@ -7075,9 +7090,11 @@ static int virtnet_probe(struct virtio_device *vdev)
+ 	unregister_netdev(dev);
+ free_failover:
+ 	net_failover_destroy(vi->failover);
+-free_vqs:
++free_page_pools:
++	virtnet_destroy_page_pools(vi);
++free_irq_moder:
++	virtnet_free_irq_moder(vi);
+ 	virtio_reset_device(vdev);
+-	free_receive_page_frags(vi);
+ 	virtnet_del_vqs(vi);
+ free:
+ 	free_netdev(dev);
+@@ -7102,7 +7119,7 @@ static void remove_vq_common(struct virtnet_info *vi)
+ 
+ 	free_receive_bufs(vi);
+ 
+-	free_receive_page_frags(vi);
++	virtnet_destroy_page_pools(vi);
+ 
+ 	virtnet_del_vqs(vi);
  }
-diff --git a/net/quic/socket.h b/net/quic/socket.h
-index 98d3f738e909..9a2f4b851676 100644
---- a/net/quic/socket.h
-+++ b/net/quic/socket.h
-@@ -10,6 +10,8 @@
- 
- #include <net/udp_tunnel.h>
- 
-+#include "common.h"
-+
- #include "protocol.h"
- 
- extern struct proto quic_prot;
-@@ -25,6 +27,10 @@ enum quic_state {
- struct quic_sock {
- 	struct inet_sock		inet;
- 	struct list_head		reqs;
-+
-+	struct quic_data		ticket;
-+	struct quic_data		token;
-+	struct quic_data		alpn;
- };
- 
- struct quic6_sock {
-@@ -42,6 +48,21 @@ static inline struct list_head *quic_reqs(const struct sock *sk)
- 	return &quic_sk(sk)->reqs;
- }
- 
-+static inline struct quic_data *quic_token(const struct sock *sk)
-+{
-+	return &quic_sk(sk)->token;
-+}
-+
-+static inline struct quic_data *quic_ticket(const struct sock *sk)
-+{
-+	return &quic_sk(sk)->ticket;
-+}
-+
-+static inline struct quic_data *quic_alpn(const struct sock *sk)
-+{
-+	return &quic_sk(sk)->alpn;
-+}
-+
- static inline bool quic_is_serv(const struct sock *sk)
- {
- 	return !!sk->sk_max_ack_backlog;
 -- 
-2.47.1
+2.47.3
 
