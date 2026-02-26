@@ -1,82 +1,134 @@
-Received: from mx1.secunet.com (mx1.secunet.com [62.96.220.36])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 413382D77F7
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 07:32:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.96.220.36
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C483914D29B;
+	Thu, 26 Feb 2026 07:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772091138; cv=none; b=s384Q1cfjO1CMOEGbvCK6qjJmpXpFU4TlghlFVxgSuUlySMgOomCHRpcSXdz/2vsFWYceRPJlPK0gkaTli4lcuj9NqYCwy0d4veJ0sSJhNXIEQUUAJj9bq7cDyU0G4selIrnwMMbvZQ4dCQu0cGUoGCD1rxR7UUMka79kxe8s60=
+	t=1772091522; cv=none; b=tDQBQIuL0xKBSg6WXGRMxRlLcPuZEFEDO96B56hD2l6iCU8L4wmdGmrJODrVfL8jIpMMs0CauKgscqJyqV/q5sgqMAjKYOaLfkfyYZklpL26ocFSQxo75CCPh9ezi5L+7Kp5TFCnCXeCELqYWVrIYMjuxSXQhR5y5XSb30vqFsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772091138; c=relaxed/simple;
-	bh=x55hYzCSm7VgD+GfN6eoDfS7Btq8R1kEb9kTFNiOzy4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HLljTifrobzdk7RBgSbk51XYC4i+q43hjIe3GfqJIlGYqgRxwM0ZaOLzPbdE9OdxTFLkgUNbZNu7bS2vf5HW0BrlZ4tdSZwKaeBLy3btuqU+Ou3NMbEpOqQGisE2cMDFsZIypw5Ntxibm9M6RAFL0ogu06jIriC2YPBi9rEpQE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com; spf=pass smtp.mailfrom=secunet.com; dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b=jt3WkLao; arc=none smtp.client-ip=62.96.220.36
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=secunet.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=secunet.com
+	s=arc-20240116; t=1772091522; c=relaxed/simple;
+	bh=Wrc4xAun5CwndqcKF0a9rvejO9WBiD5pCK7g3zIJna4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XeGfcdgYJoFg84u7SK2vfiFgDnHFIbFK96uOVVMhfGo17l1JLlfClKiswInfa9JzV2ht3AaGOINf3l5aPOk3sTYA3BM9NZRurDGn41jatRwtTfRpr+S169uo1al2EE+U+ytTKqw/6Z9gcAtQCmKePA5vkev5IXDLpfpfSHiaslc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MuUKU8Ha; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=secunet.com header.i=@secunet.com header.b="jt3WkLao"
-Received: from localhost (localhost [127.0.0.1])
-	by mx1.secunet.com (Postfix) with ESMTP id 9C6712053D;
-	Thu, 26 Feb 2026 08:32:08 +0100 (CET)
-X-Virus-Scanned: by secunet
-Received: from mx1.secunet.com ([127.0.0.1])
- by localhost (mx1.secunet.com [127.0.0.1]) (amavisd-new, port 10024)
- with ESMTP id 2RU0LFAGqFiD; Thu, 26 Feb 2026 08:32:08 +0100 (CET)
-Received: from EXCH-01.secunet.de (rl1.secunet.de [10.32.0.231])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx1.secunet.com (Postfix) with ESMTPS id 2335920538;
-	Thu, 26 Feb 2026 08:32:08 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx1.secunet.com 2335920538
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=secunet.com;
-	s=202301; t=1772091128;
-	bh=XgeaWrYyfzhZpi0iUGl++AjyNSvw6dNqiDgXhtzNjTc=;
-	h=Date:From:To:CC:Subject:References:In-Reply-To:From;
-	b=jt3WkLaoikmCqZ2XePPt48t5JUuucbTtDWkh7QyIrP1Ecm0GS/vrV5TGtZi0tAMgC
-	 DIVPrkZKPgZ+6zC3cnfT9m48TixJ/D0AvYTeEFIvXmaeA9QhgOj75ALe+X1KA+s8dn
-	 uo6NgVfwGY23/LlfVajcXAgWV8jPi/jigmWP9NojRzrE0W8RORyx1Hc2wFJSN/zSw4
-	 /RdaNxdGQ1Z/kjw0yoorVdWPo32zEjnYtuYmeQMl3nzPGJVMeaRlTiOhMAHf/Lx4NT
-	 j1W8ZCObttZ1nb+tDtIH6W+A631MHoIc/Rgv+Tx6OOkZKLdfNah+JCd9lfrcPsM4ju
-	 SS+w8sRu7xYjg==
-Received: from secunet.com (10.182.7.193) by EXCH-01.secunet.de (10.32.0.171)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 26 Feb
- 2026 08:32:07 +0100
-Received: (nullmailer pid 3246379 invoked by uid 1000);
-	Thu, 26 Feb 2026 07:32:06 -0000
-Date: Thu, 26 Feb 2026 08:32:06 +0100
-From: Steffen Klassert <steffen.klassert@secunet.com>
-To: Sabrina Dubroca <sd@queasysnail.net>
-CC: <netdev@vger.kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>
-Subject: Re: [PATCH ipsec 0/4] xfrm: misc bugfixes
-Message-ID: <aZ_29mjhbCRxRr5Z@secunet.com>
-References: <cover.1771876412.git.sd@queasysnail.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MuUKU8Ha"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0698DC19424;
+	Thu, 26 Feb 2026 07:38:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772091522;
+	bh=Wrc4xAun5CwndqcKF0a9rvejO9WBiD5pCK7g3zIJna4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MuUKU8HaopIuxCmBB3FBoI5xYavpPuRdntHOycIA4tf/iyw0mu44c+PlbVfX5HlI8
+	 tKNN3qDS+T2o39hlVjIkJFbLFbbidazicsEVmV0EE7rPRF9nWpLNeuL083/z5vLWCi
+	 GhEUWa679c8MByObex9yLlneYIZWL/GMfxJj8bJaKIzKsq6b87YEw6K/LMMzPwXnm8
+	 wzXB/6gsTdbZMMi23oQpbE0hEQRuqkYro/rWrJR0htwTugrgCVOa7YbtnZEFjpDWzD
+	 wN7YBYghNls8CUdgkBfzjmiZoMDitC1Hc6ZEYLzi2E6T+LK3GjgVYkUseG430trA95
+	 6O4pY3UPxw2lA==
+Date: Thu, 26 Feb 2026 08:38:39 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Zhengping Zhang <aquapinn@qq.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com, zhengping.zhang@airoha.com,
+	upstream@airoha.com, Simon Horman <horms@kernel.org>
+Subject: Re: [RESEND PATCH net-next] net: airoha: fix typo in function name
+Message-ID: <aZ_4f5LrAlKpG6cZ@lore-desk>
+References: <tencent_E4FD5D6BC0131E617D848896F5F9FCED6E0A@qq.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ywZFAiZulEAzxkCv"
 Content-Disposition: inline
-In-Reply-To: <cover.1771876412.git.sd@queasysnail.net>
-X-ClientProxiedBy: EXCH-04.secunet.de (10.32.0.184) To EXCH-01.secunet.de
- (10.32.0.171)
+In-Reply-To: <tencent_E4FD5D6BC0131E617D848896F5F9FCED6E0A@qq.com>
 
-On Tue, Feb 24, 2026 at 12:05:10AM +0100, Sabrina Dubroca wrote:
-> These patches fix a few small bugs in IPsec.
-> 
-> Sabrina Dubroca (4):
->   xfrm: add missing extack for XFRMA_SA_PCPU in add_acquire and allocspi
->   xfrm: fix the condition on x->pcpu_num in xfrm_sa_len
->   xfrm: call xdo_dev_state_delete during state update
->   esp: fix skb leak with espintcp and async crypto
-> 
->  net/ipv4/esp4.c       | 9 ++++++---
->  net/ipv6/esp6.c       | 9 ++++++---
->  net/xfrm/xfrm_state.c | 1 +
->  net/xfrm/xfrm_user.c  | 7 +++++--
->  4 files changed, 18 insertions(+), 8 deletions(-)
 
-Series applied, thanks a lot Sabrina!
+--ywZFAiZulEAzxkCv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+> Corrected the typo in the function name from
+>  `airhoa_is_lan_gdm_port` to `airoha_is_lan_gdm_port`. This change ensures
+>  consistency in the API naming convention.
+
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+
+>=20
+> Signed-off-by: Zhengping Zhang <aquapinn@qq.com>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> ---
+>  drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
+>  drivers/net/ethernet/airoha/airoha_eth.h | 2 +-
+>  drivers/net/ethernet/airoha/airoha_ppe.c | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
+net/airoha/airoha_eth.c
+> index 62bcbbbe2a95..3779f93b47bc 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.c
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
+> @@ -76,7 +76,7 @@ static void airoha_set_macaddr(struct airoha_gdm_port *=
+port, const u8 *addr)
+>  	struct airoha_eth *eth =3D port->qdma->eth;
+>  	u32 val, reg;
+> =20
+> -	reg =3D airhoa_is_lan_gdm_port(port) ? REG_FE_LAN_MAC_H
+> +	reg =3D airoha_is_lan_gdm_port(port) ? REG_FE_LAN_MAC_H
+>  					   : REG_FE_WAN_MAC_H;
+>  	val =3D (addr[0] << 16) | (addr[1] << 8) | addr[2];
+>  	airoha_fe_wr(eth, reg, val);
+> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
+net/airoha/airoha_eth.h
+> index 20e602d61e61..59ed7569f7c3 100644
+> --- a/drivers/net/ethernet/airoha/airoha_eth.h
+> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
+> @@ -626,7 +626,7 @@ u32 airoha_rmw(void __iomem *base, u32 offset, u32 ma=
+sk, u32 val);
+>  #define airoha_qdma_clear(qdma, offset, val)			\
+>  	airoha_rmw((qdma)->regs, (offset), (val), 0)
+> =20
+> -static inline bool airhoa_is_lan_gdm_port(struct airoha_gdm_port *port)
+> +static inline bool airoha_is_lan_gdm_port(struct airoha_gdm_port *port)
+>  {
+>  	/* GDM1 port on EN7581 SoC is connected to the lan dsa switch.
+>  	 * GDM{2,3,4} can be used as wan port connected to an external
+> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ether=
+net/airoha/airoha_ppe.c
+> index 2221bafaf7c9..9e07b4653af1 100644
+> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
+> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+> @@ -321,7 +321,7 @@ static int airoha_ppe_foe_entry_prepare(struct airoha=
+_eth *eth,
+>  			/* For downlink traffic consume SRAM memory for hw
+>  			 * forwarding descriptors queue.
+>  			 */
+> -			if (airhoa_is_lan_gdm_port(port))
+> +			if (airoha_is_lan_gdm_port(port))
+>  				val |=3D AIROHA_FOE_IB2_FAST_PATH;
+>  			if (dsa_port >=3D 0)
+>  				val |=3D FIELD_PREP(AIROHA_FOE_IB2_NBQ,
+> --=20
+> 2.43.0
+>=20
+
+--ywZFAiZulEAzxkCv
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaZ/4fwAKCRA6cBh0uS2t
+rFNxAQC51ZWEWtupLqf0J9rgQp3GNeH/exHXOYErWxwPix1qdAEAh4brjMkl6Kj7
+jXa2inBVSXHqhZ8HLhfMmH1E28YqxQ8=
+=YVf+
+-----END PGP SIGNATURE-----
+
+--ywZFAiZulEAzxkCv--
