@@ -1,73 +1,85 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C57331223
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 11:42:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2B736921C
+	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 11:43:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772106151; cv=none; b=pjfIjtNhxVufAuJTsZhfVtTvk22HJv9x5zpOl4MLmqFReJq+Wdoc4mkWZ9tfXzaXbi38tu5TX32/o19PYq55ybKTB9OFfNtBTTgLq/WkduaXQ3y4VtPzPHZr0d0UyWyMrvIMMI5bUYv8wpjO5LtBHlga9UwQ7QYcSBUeuRqpIrI=
+	t=1772106193; cv=none; b=UZC+KpuhCprGpFJEPDiw2LK+yVEPKtvdBTEamojEyeItAVEIxBHtsI8M5cnigatZQ2zytVG5FrMhJs8dzHNbgVIZW5ODMT9r3RqtnTcQ6RP2Pz5PdnnvRzL7kTBo/tHOOQeaDJQ2elPltFII1hRP5eoqaVGSgwFk9a0bsO5Hrbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772106151; c=relaxed/simple;
-	bh=IDrLfRtrqKE0vqLJeMWWDhA7SZYVBeN/uUxbu4C0CYc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iR0SIvAFS6n/FtpQ7PJA8/QD677qAokKMwTSmsizyLj+HPFjuXwjM8Op8Lh2Eyxs79EO2VlaHeOrKj1HpXMey0CZMurDUZSffq6eHkcPh5b7lmvHx/89/0UdbrB55yVY7W26lBKKRFqNXTldeFaB8MifBDVujbKsfW/rsH/TMuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QYAiz2WG; arc=none smtp.client-ip=209.85.210.182
+	s=arc-20240116; t=1772106193; c=relaxed/simple;
+	bh=dJjhH8ryVeN8VbL+ettl5uMr2GTzSV/PrDSmpGn4P1A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sGYJTD0lBDNk7tXEC/ZYWoEXGv6SDYloAoN1a2ZbgsNHei30Z/SR4F0gfI/teGda3PBt6CP4h4+i8BqmsbUA7UE6UatDL86vCQuHB738l/h48/AjFT3GvktXgqgCxNaWIsf7ANoOZApCHxkVWs4/FUNUAM2pqMJONpTZubjg2Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iGHwNFYY; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QYAiz2WG"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82361bcbd8fso498476b3a.0
-        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 03:42:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iGHwNFYY"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2adcede372cso2982695ad.0
+        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 03:43:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772106149; x=1772710949; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1772106192; x=1772710992; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=qe/aj2KQhLNcuuoZGHRjm4hoJjeXJVcke9BH8aNmqhY=;
-        b=QYAiz2WGorTExHGqpk/d4TvmnwhjuOwSixjrxD0pH2Z+sgBx+h6MaqOdLP3R0wF7cj
-         kfzn9K8G7GX+FhqoLIaZII2wmVz9AVMJS/RGisG0NyDdrZRPl7Nm6vOmMgq4ahJByyg8
-         FSLR4NkU0B8TkzAFqelaqVN10NFXHLI4dkl39JYw48nLJGemfwP7pLUp6Jl6yvT/a+Lh
-         QKB2Vf47/XBFFCNvBEDcOknBx60WY9uICMRHA3axTmxg3Wtn0qHZm1fb0igtnmYOaZtg
-         b09Xk9MRLWHIrZhkuunLMQnAFwH3mLd4QKtQ+6O0qWAij7q1ECDxpYULOVDdJDoLp3rk
-         6hwQ==
+        bh=EdgMvJCRheKq92C1xI4uXJcoc9Cjrdybv0fSGYfTngw=;
+        b=iGHwNFYYnqtMTKZXwzX3O7g5/PT2MTMqUwzUTObYF/7zNa8dRCvgKUULhklyLSkFGO
+         9XQFXhgZtJb38e0mJX6gI+aDxtnPvXkbTnX+icXtKbeUDjRYk8Z3EGfx8AN2SJzu2pLI
+         OOjbp2tGWsmnABC3jizYfsRUAcXukTHh28Z3L2QzE9MRjMoXQBqrtl6oLcsCGKODbffp
+         9LKfv3cYNprmzSjaOGWsJbtpcGinlUdr4e4odj8w6sHGKZC9yG8zstibrpmJxT+Kjx7m
+         1XtKJEDt+6ITL1UN/FpCj2RtbDTQLAWTMrNG89lD8lDmHSCLrzJJGkJ+14a/NiqXidGg
+         da9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772106149; x=1772710949;
+        d=1e100.net; s=20230601; t=1772106192; x=1772710992;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=qe/aj2KQhLNcuuoZGHRjm4hoJjeXJVcke9BH8aNmqhY=;
-        b=U9NwvdVfRiI9LFrxT70eeN5Wple5n4j0GCVnqG9QYwRs3K6TS58ocB8o3FzBXV8IK0
-         r9eSYc06QxtG9QaLZr7XBcGC5IqNUeTb0lU/Bb8TW+0lMT+aZYvXN1mrFBejwaMQy/7l
-         7m7kzcDS1Wy7fVALkpvnOEA9ARssgHRH6z7S9feqD/uTVfTyqUY+kimGPpc/g3AbbZbl
-         IbBSdxg9yy0WxySbhvzWSfB+hnJwEg0FcO8PxIgqcarzfwRAKnr5VuyRwyzSc78cbBa3
-         /xvx+1sIL5AXSb0Mpslk7zlHjPSELi6DGOfQKkmLYoRd1jCQ3rEL9yAMX+TzkTZAJEyD
-         KoDQ==
-X-Gm-Message-State: AOJu0Yx829aTmIJrYv4r1vL9yM1oqQZNSoPOo6mAXKOOUQIcg+NPGE3Z
-	115FbGBz13z8qDN9EKt5fNWrcMV+j+Z9whQktY0novaR0bfWoI7+tltFa5ouNQ==
-X-Gm-Gg: ATEYQzzwmEc5w3pZkDRLblAFemscgMl1Ug2FJXd46n5rGuEQBuCLGJknAapNNfWBGxo
-	2DYsMx6NO10K+nAQlfhfKAwJqlMYSK3kZjJ8773cmv1dbFXaAS2BubcM2Lh4ydTLETmk6YitjnQ
-	WuTCl05IKhCVZgDuboWyAegjMnUrpIktPwl6A/loB6aHPbKR9oghJkPUeahSEssMIDEF6uXrMg4
-	HNNd4UnfRH2vYCNHzOyMQcDdi24g2sw7W46G+O2G6ij56b7SA8vIvYI0Av8ChLcxO+82JeU77IX
-	3NunAmUC18qrV9PqIj1yTBC7KF1qhj4J4+C6hwPcMCpyyJHxXm8jMwIMO2YQpEmmo4PLMfxDgwW
-	HQt7ZrMi5z7ZyXARltaGV0EOvvD5oDBlGmIovLYZRTnnb5Gdb1VokRQ8WBlj7x3TNvwa+e5X9ZF
-	xmmIPr9iWoay60WZC1DaaScBqI9ySrGxq/XNFo2Yc4qC83iZdqPJ0=
-X-Received: by 2002:aa7:88d1:0:b0:81f:4529:83a7 with SMTP id d2e1a72fcca58-8273368c2camr4149476b3a.15.1772106149409;
-        Thu, 26 Feb 2026 03:42:29 -0800 (PST)
-Received: from eric-wcnlab.tail151456.ts.net ([2001:288:7001:1099:68f:cc94:9882:f73d])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739d8c7aesm2985938b3a.21.2026.02.26.03.42.27
+        bh=EdgMvJCRheKq92C1xI4uXJcoc9Cjrdybv0fSGYfTngw=;
+        b=xLCdoEeDcgj047yJMxOUEup3wFTKXYfYBwoWvvbZ1083xTmOSK9FuC9tKlQWO7dZkc
+         orgwwaMXjnQHZfIdb1XrIW+77U/STbJC/EzO4KCWGj57Avbm4a+7Yrhohcx0F0QeF2hv
+         kWcoESRZSkp9S8ebd26oKvH3kmgXiA1tLW2EU7nU3U6HF3uG0GdJ8TEOqa7FXme9GXMx
+         QNNZQZKODassjEYUhmC6sbVmQ0edi7MzxB6o3PY8Iry5Or8EDgvMLMclagK3+LtO8JEN
+         FxP3TxkLYyXtTs1Jja9WZm6GD5cVwb7cRf56GTpljJgqMrh0apNC6sJDAiVZiZdSZNGx
+         VNfg==
+X-Gm-Message-State: AOJu0Yw5roXPFRTPBbv7oduOVJ5xgNFE7Dz5Xd2QUfJVaZW+1pN/6pks
+	VPWVr7KAfjoyt+PPk3qkY9LJMCngMp6pvWJKiFKKdEBwEP/9FFCTyBdTBXmOhcNaPMU=
+X-Gm-Gg: ATEYQzzefaOMj1uoVeqrfG9Rw/DxYySWtrxdnHmd42pBT8fmLrlk+J/wXhRogOOd0LH
+	RBJ8gplblAhiq8oZsQkOulejE8xHQm3VnBp+LYYukddfcaD8yHIzMOEwx3+ToeVP9oQciXeIU91
+	JuGAVc/oz0ODD8ry00d3EUcJ8snJjQgPHAb4rCKV5W7Vc9Hebe35wiNMgXyMCFRCDWvO5uGcuWR
+	KRlrF3DZTJglqQI8cu7n7k1bk5EbUzPSXbZRXupM5h+GxzrjHKdG7urTblB7lhGtOYabvQGDM4e
+	fllq55rkzx8C7yTGSWGVH7SjfaIdH5m3SM8DDyGLB+It6znmnELb2cZ9O2tGHY0sHDDhc8wOnOm
+	VryTEY8rcUiflHM9xo6t/rgnVh044nFapZKWVwdfG99i5JktFxbjtPM/fCu8N4GPNfJluU5IsQ9
+	+WXcxK4/+rbEu0zjnctGbk+TGc78rKxadgqYa94Q==
+X-Received: by 2002:a17:902:ce03:b0:2aa:ea3d:a37b with SMTP id d9443c01a7336-2ae0305ebeamr20234825ad.2.1772106191620;
+        Thu, 26 Feb 2026 03:43:11 -0800 (PST)
+Received: from fedora ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5dbac7sm34131545ad.37.2026.02.26.03.43.04
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 03:42:29 -0800 (PST)
-From: Cheng-Yang Chou <yphbchou0911@gmail.com>
-To: netdev@vger.kernel.org,
-	saeedm@nvidia.com,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com
-Cc: leon@kernel.org,
-	jserv@ccns.ncku.edu.tw,
-	charlie910417@gmail.com,
-	yphbchou0911@gmail.com
-Subject: [PATCH v2] net/mlx5/core: Allocate ttc_params on heap
-Date: Thu, 26 Feb 2026 19:42:19 +0800
-Message-ID: <20260226114219.2111793-1-yphbchou0911@gmail.com>
-X-Mailer: git-send-email 2.48.1
+        Thu, 26 Feb 2026 03:43:10 -0800 (PST)
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: netdev@vger.kernel.org
+Cc: Jay Vosburgh <jv@jvosburgh.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Jiri Pirko <jiri@resnulli.us>,
+	Simon Horman <horms@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	Ahmed Zaki <ahmed.zaki@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	linux-kernel@vger.kernel.org,
+	bridge@lists.linux.dev,
+	Hangbin Liu <liuhangbin@gmail.com>
+Subject: [RFC PATCH net-next 0/3] net: add ndo_update_offloads for offload computation
+Date: Thu, 26 Feb 2026 11:42:05 +0000
+Message-ID: <20260226114208.27774-1-liuhangbin@gmail.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -76,164 +88,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The ttc_params structure is too large to be allocated on the stack,
-triggering warnings for exceeding the 1024-byte frame size limit.
-Consuming excessive stack space risks causing stack overflows.
+Currently, master devices (bonding, bridge, team) manually call
+netdev_compute_master_upper_features() scattered throughout their port
+add/remove operations. This approach requires each driver to remember
+to update features at the right times and leads to code duplication.
 
-Allocate the structure dynamically to maintain safe stack boundaries.
+The series adds a new ndo_update_offloads callback that is automatically
+invoked during feature updates when upper/lower device relationships change.
+This centralizes the feature computation flow and removes the burden
+from individual drivers.
 
-Signed-off-by: Po-Ying Chiu <charlie910417@gmail.com>
-Signed-off-by: Cheng-Yang Chou <yphbchou0911@gmail.com>
-Suggested-by: Leon Romanovsky <leon@kernel.org>
----
-Changes in v2:
-- Use kzalloc_obj() instead of kzalloc() to align with the new memory 
-  allocation API introduced in v7.0-rc1 (Leon Romanovsky)
-- Link to v1: https://lore.kernel.org/all/20260226092857.1583984-1-yphbchou0911@gmail.com/
+Changes:
+1. Patch 1: Add ndo_update_offloads callback to net_device_ops and invoke
+   it from __netdev_update_features()
+2. Patch 2: Convert bonding, bridge, and team drivers to use the new
+   callback, removing manual feature computation calls
+3. Patch 3: Convert net_failover driver, significantly simplifying its
+   feature management code
 
- .../net/ethernet/mellanox/mlx5/core/en_rep.c  | 15 +++++++++----
- .../net/ethernet/mellanox/mlx5/core/en_tc.c   | 15 ++++++++++---
- .../mellanox/mlx5/core/lag/port_sel.c         | 22 ++++++++++++++-----
- 3 files changed, 39 insertions(+), 13 deletions(-)
+*Discuss*:
+1. Should we set ndo_update_offloads after ndo_set_features? Or maybe just
+   call netdev_compute_master_upper_features() in ndo_set_features?
+2. Do we need to compute the offload feature for hsr?
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 1db4ecb2356f..c3a4dc2b4a1a 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -966,27 +966,34 @@ static int mlx5e_create_rep_ttc_table(struct mlx5e_priv *priv)
- {
- 	struct mlx5e_rep_priv *rpriv = priv->ppriv;
- 	struct mlx5_eswitch_rep *rep = rpriv->rep;
--	struct ttc_params ttc_params = {};
-+	struct ttc_params *ttc_params;
- 	int err;
- 
-+	ttc_params = kzalloc_obj(*ttc_params);
-+	if (!ttc_params)
-+		return -ENOMEM;
-+
- 	mlx5e_fs_set_ns(priv->fs,
- 			mlx5_get_flow_namespace(priv->mdev,
- 						MLX5_FLOW_NAMESPACE_KERNEL), false);
- 
- 	/* The inner_ttc in the ttc params is intentionally not set */
--	mlx5e_set_ttc_params(priv->fs, priv->rx_res, &ttc_params, false, false);
-+	mlx5e_set_ttc_params(priv->fs, priv->rx_res, ttc_params, false, false);
- 
- 	if (rep->vport != MLX5_VPORT_UPLINK)
- 		/* To give uplik rep TTC a lower level for chaining from root ft */
--		ttc_params.ft_attr.level = MLX5E_TTC_FT_LEVEL + 1;
-+		ttc_params->ft_attr.level = MLX5E_TTC_FT_LEVEL + 1;
- 
--	mlx5e_fs_set_ttc(priv->fs, mlx5_create_ttc_table(priv->mdev, &ttc_params), false);
-+	mlx5e_fs_set_ttc(priv->fs, mlx5_create_ttc_table(priv->mdev, ttc_params), false);
- 	if (IS_ERR(mlx5e_fs_get_ttc(priv->fs, false))) {
- 		err = PTR_ERR(mlx5e_fs_get_ttc(priv->fs, false));
- 		netdev_err(priv->netdev, "Failed to create rep ttc table, err=%d\n",
- 			   err);
-+		kfree(ttc_params);
- 		return err;
- 	}
-+
-+	kfree(ttc_params);
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 1434b65d4746..b7525da60f92 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -855,7 +855,7 @@ static void mlx5e_hairpin_set_ttc_params(struct mlx5e_hairpin *hp,
- static int mlx5e_hairpin_rss_init(struct mlx5e_hairpin *hp)
- {
- 	struct mlx5e_priv *priv = hp->func_priv;
--	struct ttc_params ttc_params;
-+	struct ttc_params *ttc_params;
- 	struct mlx5_ttc_table *ttc;
- 	int err;
- 
-@@ -867,8 +867,14 @@ static int mlx5e_hairpin_rss_init(struct mlx5e_hairpin *hp)
- 	if (err)
- 		goto err_create_indirect_tirs;
- 
--	mlx5e_hairpin_set_ttc_params(hp, &ttc_params);
--	hp->ttc = mlx5_create_ttc_table(priv->mdev, &ttc_params);
-+	ttc_params = kzalloc_obj(*ttc_params);
-+	if (!ttc_params) {
-+		err = -ENOMEM;
-+		goto err_alloc_ttc_params;
-+	}
-+
-+	mlx5e_hairpin_set_ttc_params(hp, ttc_params);
-+	hp->ttc = mlx5_create_ttc_table(priv->mdev, ttc_params);
- 	if (IS_ERR(hp->ttc)) {
- 		err = PTR_ERR(hp->ttc);
- 		goto err_create_ttc_table;
-@@ -879,9 +885,12 @@ static int mlx5e_hairpin_rss_init(struct mlx5e_hairpin *hp)
- 		   hp->num_channels,
- 		   mlx5_get_ttc_flow_table(ttc)->id);
- 
-+	kfree(ttc_params);
- 	return 0;
- 
- err_create_ttc_table:
-+	kfree(ttc_params);
-+err_alloc_ttc_params:
- 	mlx5e_hairpin_destroy_indirect_tirs(hp);
- err_create_indirect_tirs:
- 	mlx5e_rqt_destroy(&hp->indir_rqt);
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c b/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
-index 16c7d16215c4..d4e7bd3c2bf4 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lag/port_sel.c
-@@ -514,15 +514,20 @@ static int mlx5_lag_create_ttc_table(struct mlx5_lag *ldev)
- {
- 	int first_idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
- 	struct mlx5_lag_port_sel *port_sel = &ldev->port_sel;
--	struct ttc_params ttc_params = {};
-+	struct ttc_params *ttc_params;
- 	struct mlx5_core_dev *dev;
- 
- 	if (first_idx < 0)
- 		return -EINVAL;
- 
-+	ttc_params = kzalloc_obj(*ttc_params);
-+	if (!ttc_params)
-+		return -ENOMEM;
-+
- 	dev = ldev->pf[first_idx].dev;
--	mlx5_lag_set_outer_ttc_params(ldev, &ttc_params);
--	port_sel->outer.ttc = mlx5_create_ttc_table(dev, &ttc_params);
-+	mlx5_lag_set_outer_ttc_params(ldev, ttc_params);
-+	port_sel->outer.ttc = mlx5_create_ttc_table(dev, ttc_params);
-+	kfree(ttc_params);
- 	return PTR_ERR_OR_ZERO(port_sel->outer.ttc);
- }
- 
-@@ -530,15 +535,20 @@ static int mlx5_lag_create_inner_ttc_table(struct mlx5_lag *ldev)
- {
- 	int first_idx = mlx5_lag_get_dev_index_by_seq(ldev, MLX5_LAG_P1);
- 	struct mlx5_lag_port_sel *port_sel = &ldev->port_sel;
--	struct ttc_params ttc_params = {};
-+	struct ttc_params *ttc_params;
- 	struct mlx5_core_dev *dev;
- 
- 	if (first_idx < 0)
- 		return -EINVAL;
- 
-+	ttc_params = kzalloc_obj(*ttc_params);
-+        if (!ttc_params)
-+		return -ENOMEM;
-+
- 	dev = ldev->pf[first_idx].dev;
--	mlx5_lag_set_inner_ttc_params(ldev, &ttc_params);
--	port_sel->inner.ttc = mlx5_create_inner_ttc_table(dev, &ttc_params);
-+	mlx5_lag_set_inner_ttc_params(ldev, ttc_params);
-+	port_sel->inner.ttc = mlx5_create_inner_ttc_table(dev, ttc_params);
-+	kfree(ttc_params);
- 	return PTR_ERR_OR_ZERO(port_sel->inner.ttc);
- }
- 
+
+Hangbin Liu (3):
+  net: add ndo_update_offloads
+  net: use ndo_update_offloads for bonding/bridge/team
+  failover: use .ndo_update_offloads for failover
+
+ drivers/net/bonding/bond_main.c | 10 ++++--
+ drivers/net/net_failover.c      | 64 ++++-----------------------------
+ drivers/net/team/team_core.c    | 11 +++---
+ include/linux/netdevice.h       |  7 ++++
+ include/net/net_failover.h      |  7 ----
+ net/bridge/br_device.c          |  6 ++++
+ net/bridge/br_if.c              |  4 ---
+ net/core/dev.c                  | 11 ++++--
+ 8 files changed, 42 insertions(+), 78 deletions(-)
+
 -- 
-2.48.1
+2.50.1
 
