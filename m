@@ -1,135 +1,173 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011051.outbound.protection.outlook.com [52.101.62.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE6D36656C
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 11:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772104688; cv=none; b=hX+vKfURARlJ8sv0+ijwNWe2RLvXb+J+MrUvLN4vcQM6DtREneSUI15S5rM4LKO9O9KGQ8+oCNcV60xHkrk9Ib+Bhl/KaYn1IADvO2ys9BBnuXeJKn0jWRMAWvhYc4zUGvsjlWLQU1/ph9iSSuJD/yxnH+3oFJr6xqKCUySrHFk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772104688; c=relaxed/simple;
-	bh=Tda3X1h6hjXboAEqtey5KSiQRBdK9Kh2CQJXrLYM4X0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QmG9prcIZ0bPveivE/juqMCeRS+PZIWISkwd3cKrn7COZe1vvlkYgAV9Ut8ZdoIbuEmdfMh4I/uBBDkOV5E40Xa9Knqg6a+l9b0SMbbAh/ZCbwhpEHHtt/pFwINXH4R3wEeP8K0ivIkWX33ztEpOoDQEg2kjOEJNpliJ0czjobQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FQvACxiY; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0443311960;
+	Thu, 26 Feb 2026 11:33:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772105607; cv=fail; b=rbkwwOa8vgBACnCdvWXAZ/meACBGkpD7+IUsaJ/MxaN1DvBxJjy8pM5CisciSRxa0DgGb+xwwTn53NVeR83UbBpsN+Sqw5MsJf+DgzqPAWORozjPQoH3FrML3e1HGfqRv9Ba7ARpWa3MZgYgkoK4a40S1dgHq3WVxwigYJA87Jo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772105607; c=relaxed/simple;
+	bh=DOfdBpcBdACnWCavRBhgu4+1AGQl4zDdqVTFpCPi0K8=;
+	h=Message-ID:Date:MIME-Version:CC:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=JyJS3jn1ifjRx5NoffXfq46cYB8aICIV3NjwAdzmU9zxLqsEUSwRXGC7TNCyZYtTQVUmNAbrHasHCHQyUTMbPdGVaOrO0qbVgWP8/MBt4pr8ga76aaxOnoX+wNjr00OBBUJgQ1Wh+O9GQCOBRenXCJ/LD2295vtQM3VMXtg3UTM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=hItviFXI; arc=fail smtp.client-ip=52.101.62.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FQvACxiY"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8272c559597so728995b3a.1
-        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 03:18:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772104683; x=1772709483; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jV7kecYCTzcrsCFjFw3qK5G5qwWc4nsIa+UHPnJX5do=;
-        b=FQvACxiYMZI6OIPAnmHZcBTt3ku9aJujLIk9yLB/cOkVKtFKrRfu56+VfrwALwFFtU
-         dud4h9PAysP3MwbkCuP89IAdcs/7md4j280wYF1KwgQaoNTmabeRwHTRJ/HiJRypiW2l
-         yIGxZKQ2y86Lzn8vhII4ucqwcd3Rg3zxifmOb67NOfEKMG5B6wB/6RQapeyxReCdAbiD
-         UC81/fZyEV0NIIRSq3/oRV9picQcnfZNbX43FD6phGzq4umS3rznexd/KoO6sGi9YJfS
-         JSUQLUV3o1u/oq3ECRaGe+gntjOZIbdr9hEyQU9qn9OIkhCSOQ3ZTFM/SeKSVfPKl79H
-         GgwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772104683; x=1772709483;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jV7kecYCTzcrsCFjFw3qK5G5qwWc4nsIa+UHPnJX5do=;
-        b=UD1Gsye3AnEnwBk5eu8pPWafAX4n8u72/Er9Nf9cz8mE1+PY/ljEjfZmkDj8YE+48R
-         VZNaBE442MeZG5Z2lxNuaflWPZ/enQAli1BLc0GEH5YFYTxtvB+XV9zZOcELHay7DN8A
-         TxkvQgloQAByQ7lQPjZ4fF5WGY4AOohpGAKbPA/tfnVRxjafUavg+U6A0HRq8gsT/7pP
-         fieK7RtD9BqyrZQhQvQVWBQ4jzvNpiwdSZkSfTHZ5OyOuQX3DJVGz6bwawHTjn1o+Tv6
-         ZpSyUVsUWEq4N2upNlC5Ws1yPebMBLM25bS2Os7J1Q6L0XrbRRbhBTYW7Ekg2l9G9pF/
-         yR/w==
-X-Gm-Message-State: AOJu0YxDC5z4jRfgfwF8o73nJAiP8Hw6+iXf1PBpmQQQn2R+/b4Enic4
-	O+o/Hy1sYAnv/xJdjn2A/0bFu32/3KZZ1xdmQeIq+KrOoK+kCeMGqPwZ
-X-Gm-Gg: ATEYQzyFjnMsGxLijZC4vPmsXoSHwTqFTvnLzgadhvXKpp0VAjF+2XIf456Lo16429B
-	hrMvkTaE+rB8Rqr6cOWHp73aPTSmH8RyPKw2FU8aHi90LPb+1qaGTFf2pu6EIoxi2bef813jLll
-	mKnnxkjuj1T70XoIoETVWHh7LdQI6P6FCtpr/48vs31pGJPdVFpm1q20+HcrQJFDc1yTU02VcwR
-	lk2YYyheEN8CsgrNoJQPJz/ohCbu6cgs4tYu3wK5KORIkLsrIiCLdNy3vpGiy4E5VpTUhxPX/2L
-	bV55FzvRfJpLCAJ3QARgdBuambv7R0+i2rbH6rTHCTxyDJ5OyFFncEfpG6u820E+CfVezyOGpEn
-	C5bi0pa690cAOSYO9Zz2hsANcRFKtmihmTD30zkxXQfvKOSkWb6TAJkjcWgxYTk5siel09HBOdN
-	jBV+NIttX4kYGqnZEx7bxupektyupubAjMUAbs4z++aH5kiD8r7W+xz4NkPbq5TpFNuYBOKmrWh
-	URP2PF+mgwun/9vxBbEsLyzpF5tM39DBr389F6u/CpNAiCrwiyOcdy+mZYpKFEnqaG7IZJJl2M+
-	xtRhRTyywQ==
-X-Received: by 2002:a05:6a00:3e0b:b0:824:a81e:97b5 with SMTP id d2e1a72fcca58-8273bfa235emr2041811b3a.38.1772104683383;
-        Thu, 26 Feb 2026 03:18:03 -0800 (PST)
-Received: from yuu-U24E.. (2001-b400-e3d7-38de-fa71-5111-1751-cb7a.emome-ip6.hinet.net. [2001:b400:e3d7:38de:fa71:5111:1751:cb7a])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8273a088517sm2110831b3a.65.2026.02.26.03.17.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 03:18:02 -0800 (PST)
-From: Yung Chih Su <yuuchihsu@gmail.com>
-To: davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	nathan@kernel.org,
-	nick.desaulniers+lkml@gmail.com,
-	morbo@google.com,
-	justinstitt@google.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	Yung Chih Su <yuuchihsu@gmail.com>
-Subject: [PATCH] net: ipv6: fix ARM64 alignment fault in fib_multipath_hash_from_keys()
-Date: Thu, 26 Feb 2026 19:17:21 +0800
-Message-ID: <20260226111721.25454-1-yuuchihsu@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="hItviFXI"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jBVP8SIzGcx4hUNDGitz8CYJkggOrHniA09cNnIUPrDS/5brCwjwL6bli6sbqRSNae/ysWfb6YBUKeQjezqCY4+qf3g47pst76FGIGFj7wWHUq5QmQkGt5Ejt6Ed2rriolFNhmXlqvarNp+kO+2ChZiEcKbMz3EGwTATmuAd0kFuNjjPxVMZtTzQ6xIuvO8r1JTyd8w8a30KtZz6QIHPftWmZqjU4kn0aJ8O+kUuRIm4dm0teYejpEyYil6DDcFz+glMsDEyFr59OP5S6xsLot7ogZmHnKeo29rgZweznt3YUgj1M1DLiWQ+OkuSC5xigCm+jV40bwKHpUBgzKN/Cg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kf9Lsk9tqa0JEoB1QAiR37ScRsWtnO5bb48lhJxCaFk=;
+ b=krqHDt7FbqfBllJ0JqHHdZwRIorIwKagY2W4cluVip32/DTmYcbXofpxhavybc53qdkBKXns3G53SgMMqTykqjbekSQFdsimFYefPhs09fHRXhY296D5muX1AtWI6sboLyXWg4NFBehhoUXN6Tl1W2AlLNukSinZq9dFvPuVt4ix3OMd4owby1eLdMMcqyEa27guIMAnwpp569qG8uvmjcCeSRI4dDmoOWngTkSbxaOpRdIGBSe4WvxUfQE7BYjjBu4lM08BRjaHImMCL/6QxN94qv9klcGPu8BVrH8NW0jMqor2b5AxAllW2YgnCwNgd6zww+2FPU1IQR8rQddHFQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.195) smtp.rcpttodomain=lists.infradead.org smtp.mailfrom=ti.com;
+ dmarc=pass (p=quarantine sp=none pct=100) action=none header.from=ti.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kf9Lsk9tqa0JEoB1QAiR37ScRsWtnO5bb48lhJxCaFk=;
+ b=hItviFXI+0+803aK2GTfv2CsnPbrT6gxl6I1yoIfEltbvkaVKQBWFRJ7IpbcZNNSXTxGCYt2804RBo5aDC1OUU7SJVu3Bf70jmu++HhNQGzbTiH9XncMcVJaTenUM6daRK3XEB6VK1Qfmi4McEOi2MN4EffIhdj56qkvSoctW/o=
+Received: from CYZPR05CA0013.namprd05.prod.outlook.com (2603:10b6:930:89::11)
+ by SJ0PR10MB5890.namprd10.prod.outlook.com (2603:10b6:a03:3ef::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.23; Thu, 26 Feb
+ 2026 11:33:23 +0000
+Received: from CY4PEPF0000EE34.namprd05.prod.outlook.com
+ (2603:10b6:930:89:cafe::15) by CYZPR05CA0013.outlook.office365.com
+ (2603:10b6:930:89::11) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9654.14 via Frontend Transport; Thu,
+ 26 Feb 2026 11:33:23 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
+Received: from lewvzet201.ext.ti.com (198.47.23.195) by
+ CY4PEPF0000EE34.mail.protection.outlook.com (10.167.242.40) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9632.12 via Frontend Transport; Thu, 26 Feb 2026 11:33:23 +0000
+Received: from DLEE213.ent.ti.com (157.170.170.116) by lewvzet201.ext.ti.com
+ (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 26 Feb
+ 2026 05:33:21 -0600
+Received: from DLEE208.ent.ti.com (157.170.170.97) by DLEE213.ent.ti.com
+ (157.170.170.116) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 26 Feb
+ 2026 05:33:20 -0600
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE208.ent.ti.com
+ (157.170.170.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Thu, 26 Feb 2026 05:33:20 -0600
+Received: from [10.24.73.74] (uda0492258.dhcp.ti.com [10.24.73.74])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 61QBXFg62288259;
+	Thu, 26 Feb 2026 05:33:15 -0600
+Message-ID: <668bab11-0362-4b12-a935-c2db784fb034@ti.com>
+Date: Thu, 26 Feb 2026 17:04:45 +0530
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+CC: <andrew+netdev@lunn.ch>, <davem@davemloft.net>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <danishanwar@ti.com>, <rogerq@kernel.org>,
+	<horms@kernel.org>, <mwalle@kernel.org>, <nm@ti.com>, <v-singh1@ti.com>,
+	<vadim.fedorenko@linux.dev>, <matthias.schiffer@ew.tq-group.com>,
+	<vigneshr@ti.com>, <m-malladi@ti.com>, <jacob.e.keller@intel.com>,
+	<stable@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<srk@ti.com>, <s-vadapalli@ti.com>
+Subject: Re: [PATCH net 2/3] net: ethernet: ti: icssg_common: set irq_disabled
+ after disabling TX IRQ
+To: Jakub Kicinski <kuba@kernel.org>
+References: <20260220041431.372610-1-s-vadapalli@ti.com>
+ <20260220041431.372610-3-s-vadapalli@ti.com>
+ <20260223184840.06069afa@kernel.org>
+ <57e05b57556e94ed666acd8b4c542efc28e7408b.camel@ti.com>
+ <20260224154953.63b558c1@kernel.org>
+ <be80263f-667c-4330-bc24-5078fe07b994@ti.com>
+ <20260225160958.64bbc4c5@kernel.org>
+Content-Language: en-US
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
+In-Reply-To: <20260225160958.64bbc4c5@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CY4PEPF0000EE34:EE_|SJ0PR10MB5890:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3db4e07b-c3b2-42a3-3ed9-08de752ad9b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|34020700016|376014|7416014|1800799024|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	pni9iQC6njGGA4/4hxKnpRhJUub6ChgWvjEURJxh85qnWeq9RDKS72AbPobP8J2JqZDClIhSohmHcHIeVLVxsn4lX+g/hDMeg1VKbaYBjucDbyZ2hsx3jXUqVpbDyySvM7Y1x57t/GX4tr3jAhfmgofGnFnGcZD+Z5chp1Xo6JAVzUFUeWNLoXhsOl0FXAYV63yS/myTu9q0rU6peg0YJteMrbhuxSfgzKxMjMi7poKkELHejGpF34Ku6twNYOHjhXTfwhO149NnIU7fuUNEaeqJgZmbRK727azY1u/mfiexwPU6mhAH78f/8lakVUtqeNUNXnQmewv+kzymiPVnc90U5d8eCP6FN74BPlPCkEfio7jgA2kEUN/2fn5j/jLgp6cB29LptGjPyEV4/ppnUh3XkmwPe7bS+j6I/CwfKV4sX0FEMRxWUJjZrHKNwe6KO1yHW87NsytXbUjSxK4cW6cs0HAfKsPrJdDZL2XUViBUd6tvTGvrfy3IH2Gk5EdPzhrZicorqDK1i+7eI5Z+xley+5hpfSfyVohuRkPxzr27wq78q8eeXMrbSv2hhO3yzNtWEyJ2NwSndD2Ocf1iyTwnLJch0LdbVzs0ygGKrHaPvwVyq/FpIIbAgIxtmPT1aOFkLax7eQVNt7ebQ8fGOzC2tIZJW5gzFqsGMaBUH5NvZRIFrq7cbkZ88KxUgfDDwhe/LdSb++pD58qmZFeehMe3OHu2Nzb/zdSnrgaMTkJ3AZlyM0GdD0vEvoI/R767U2YoAlxr0CYHZS2mFqSDb25EY1SH1NFFBzKitvT4JWuPTdtG/ts7GuZctiqUfEeaf07i42YmLwLJw53cd6fRmw==
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(34020700016)(376014)(7416014)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	gZnurVpEXGr65YH527d+wITAb+HZH/QebMctRcFIwSb+k3sp61NPqdb2nVX+LiIV23U8We2GdsixzDk9J8ICkBlQGUXFQWDV2MFKLbl8/pCO4MdhoSBzCHhEQbe/iFI9DV8cIAUk5Ma1OfQyqdaKVAetk35DT5DTGQcAkVcvo5sqUXnaR+d3vL4vC6XDPB8OMJnBtrvCViETGNuhxMYhPhRqb0b7tVJx8u9VIsZNvxHw3xnTDCAoYLOw0TW/XyGWtIBXR1xqh6IdrNqBj/A86lqdbMHscfKY+hQJNRljk9vHnJJ6FVERDMkbug3gcIGnLKFyb0uWqgWGgY9TUBS7gbAQ0QEPo1xqG33N/348te4oXaaQ4h7qtMOdCLq5B5/SNl6xgaNJZK0a7Yy7U9AHW7yCcvq1/jip8uwyz2m6JRayQ2qHc5AJxxQW/69mKKnP
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 11:33:23.4000
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3db4e07b-c3b2-42a3-3ed9-08de752ad9b7
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CY4PEPF0000EE34.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5890
 
-struct sysctl_fib_multipath_hash_seed contains two u32 fields (user_seed
-and mp_seed), making it an 8-byte structure with a 4-byte alignment requirement.
+On 26/02/26 05:39, Jakub Kicinski wrote:
+> On Wed, 25 Feb 2026 17:01:31 +0530 Siddharth Vadapalli wrote:
+>> 	net_rx_action
+>> 		__napi_poll
+>> 			NAPI TX Handler
+>>
+>> It does seem strange that the 'net_rx_action' leads to the NAPI TX Handler.
+> 
+> For historic reason rx_action runs all NAPI, it's fine.
+> 
+>> However, it is exactly this path that causes the warning, and it is due to
+>> this that we could end up in the following situation:
+>>
+>>                   CPU0                             CPU1
+>>      -----------------------------      -----------------------------
+>> 1. TX HARD IRQ Handler entered         NAPI TX Handler is running
+>> 2. irq_disabled is set to true         Sees irq_disabled being true
+>> 3. Calls disable_irq_nosync()          Calls enable_irq()
+>> 4. Enters disable_irq_nosync()         [WARNING: Unbalanced enable for IRQ]
+> 
+> Right, but for Tx NAPI is only scheduled from the IRQ so this is not
 
-In fib_multipath_hash_from_keys(), the code evaluates the entire struct
-atomically via READ_ONCE():
+But the NAPI TX Handler running on CPU1 at step-1 is a previously queued 
+instance and not the one corresponding to the TX HARD IRQ Handler running 
+on CPU0 in step-1.
 
-mp_seed = READ_ONCE(net->ipv4.sysctl_fib_multipath_hash_seed).mp_seed;
-While this silently works on GCC by falling back to unaligned regular loads
-(e.g., LDR/LDUR) which the ARM64 kernel tolerates, it causes a fatal kernel
-panic when compiled with Clang and LTO enabled.
+> possible. For Rx yes, AFAICT there are paths in the driver which
+> schedule the Rx NAPI (AF_XDP?). But Tx NAPI seemed to have only
+> been scheduled by IRQ. And if that's the case the NAPI can't run
+> until CPU0's IRQ handler calls napi_schedule().
 
-Commit e35123d83ee3 ("arm64: lto: Strengthen READ_ONCE() to acquire when
-CONFIG_LTO=y") strengthens READ_ONCE() to use Load-Acquire instructions
-(ldar / ldapr) to prevent compiler reordering bugs under Clang LTO.
-
-Since the macro evaluates the full 8-byte struct, Clang emits a 64-bit
-ldar instruction. ARM64 architecture strictly requires ldar to be
-naturally aligned. Executing a 64-bit ldar on a 4-byte aligned address
-(e.g., ending in 0xEC) triggers a strict Alignment Fault (FSC = 0x21).
-
-Fix this by moving the READ_ONCE() directly to the specific u32 member:
-
-mp_seed = READ_ONCE(net->ipv4.sysctl_fib_multipath_hash_seed.mp_seed);
-This instructs the compiler to emit a 32-bit load (ldar Wn or ldr Wn),
-which perfectly satisfies the 4-byte alignment requirement and resolves
-the crash.
-
-Fixes: [4ee2a8cace3fb9a34aea6a56426f89d26dd514f3] ("net: ipv4: Add a sysctl to set multipath hash seed")
-Signed-off-by: Yung Chih Su <yuuchihsu@gmail.com>
----
- include/net/ip_fib.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/include/net/ip_fib.h b/include/net/ip_fib.h
-index b4495c38e0a0..318593743b6e 100644
---- a/include/net/ip_fib.h
-+++ b/include/net/ip_fib.h
-@@ -559,7 +559,7 @@ static inline u32 fib_multipath_hash_from_keys(const struct net *net,
- 	siphash_aligned_key_t hash_key;
- 	u32 mp_seed;
- 
--	mp_seed = READ_ONCE(net->ipv4.sysctl_fib_multipath_hash_seed).mp_seed;
-+	mp_seed = READ_ONCE(net->ipv4.sysctl_fib_multipath_hash_seed.mp_seed);
- 	fib_multipath_hash_construct_key(&hash_key, mp_seed);
- 
- 	return flow_hash_from_keys_seed(keys, &hash_key);
--- 
-2.43.0
+Wouldn't net_rx_action periodically schedule the NAPI TX Handler? Please 
+note the following:
+1. The call trace shows net_rx_action scheduling the NAPI TX Handler.
+2. Since CPU0 entered the TX HARD IRQ Handler for the TX Completion 
+Interrupt, it indicates that the TX Interrupt was indeed enabled at that 
+point in time. Hence, a previous instance of the NAPI TX Handler has 
+already invoked 'enable_irq()' and enabled the TX Interrupt.
+3. Given that 'another' previous instance of the NAPI TX Handler is running 
+even though the TX Interrupt is already enabled (given that CPU0 takes the 
+interrupt), it indicates that it has been scheduled by some entity.
+4. The entity that seems to schedule the NAPI TX Handler despite TX 
+Interrupt already being enabled by a previous run of the NAPI TX Handler 
+seems to be 'net_rx_action'.
 
