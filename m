@@ -1,116 +1,245 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABC62DCF55;
-	Thu, 26 Feb 2026 17:29:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461613290D3;
+	Thu, 26 Feb 2026 17:39:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772126973; cv=none; b=WeHrlIc7UtAsbg+Qe93W2d5PaJQvqehdnSLseknLAuCB/6YicP84o63RJJBKwbVLBHvdLoOwoN7hWEOhUxIhN2ISgfkCW1ZeCGtKbhthIGy9d56mCzQWnLwRRHHi3CPQfbk69GXW8wjoWrSmnXlGFRf42XmkvHapYGdBXMwn+tU=
+	t=1772127554; cv=none; b=a/n0sXJooMqTyN6QCfu75trfUmGXiPt6bp8h/nO+/aV2o6WQKfvzEIqN0v1KkWzqleXJ2waw4zUoERVCn5++llDv6ccti+8dBFtkScmm4EiJbebmGirHdrU2sRhHfLTz+KZ8geOzI/jX2Y1FOt+09MUSurkqJxxmVFbtz9hCyiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772126973; c=relaxed/simple;
-	bh=HkxuC+nx5cv8FxXXEPLtI1CKkJ3zA90jA9K1ZWlwOeU=;
+	s=arc-20240116; t=1772127554; c=relaxed/simple;
+	bh=nThCQLbabJ0yq+l47grbVRbkwAW8YTIAhiJzvLJHKX4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HxclOgyqwH1tX5MBJH0LX/bjN0vN41D/6+kexw8kKg9/zPzRH6dSYAtN6zgj36lpt2DoVWlViCy5UdmHxtJXq198+YUKtAlukSEtAnbAyHXhJuphFcP9tqPFCDR0duyaRSWG2vbiYA6HbWqt9dQseRv0575zOHd06PWJ4mDnST8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=fK89xSBs; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WA/aXwMW; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=FLOaX5SSzwdUHZopKCYxseLYu2Pl7DjDptxhskAIiXStna2agefS3zvEI0K4B3v+utNPMJthciyO6TupUC50izexmTPjeAgOvZy83r/2kYaZxLQmhyijU+4hH4ih4MpZcGETia9ZONJuuSFuUHXJqigHrYPqYqtnT7R/HYQ9Ftg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RwugQ86/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="fK89xSBs";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WA/aXwMW"
-Date: Thu, 26 Feb 2026 18:29:27 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772126968;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DZTmXT8OEklMRMPnRi3PdFdSswJgDgsHV6ZxsOoaP1E=;
-	b=fK89xSBsTi60oKmtmmfNaHfMjleb9Gh6tOJs86QmGDM3Zvhdx8dc1q1KsY9zAdkUxkuRr5
-	OSHPrbUK7GBT17DocolsVYZnNKJbKf2JuqSl7qDMv5NmCkzK8P5ErlmwkUqJj6yFUcgiQw
-	elufs0ke1ANFGROQKV/nDVM/XJijuhsRovxQRKz3f6HTBj0w2g+SNUxNrTQWYJtHIOg87W
-	7mpuMKQX2uBQAg3/nmsqhYdBW7MOigo68oO/liKy0tsD+EFwf/2nzu4QSPdTVi63xfqXFr
-	LB6P+DocJAm1CXY9eucKFtR+nVwxsi2+DzufBar8tJzQx6+EVRZIpBxTMSuoaA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772126968;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DZTmXT8OEklMRMPnRi3PdFdSswJgDgsHV6ZxsOoaP1E=;
-	b=WA/aXwMW3Yua3PWz0tPGHqZ0MYmeQczx8RsPdjIEXnwNex9hxEKvnLSPrzWmcUghNydmmG
-	2BH3V6FnzKOk2+AA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Bert Karwatzki <spasswolf@web.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org
-Subject: Re: "Dead loop on virtual device" error without softirq-BKL on
- PREEMPT_RT
-Message-ID: <20260226172927.2Ck9wZMw@linutronix.de>
-References: <37d6e27f96afb57c5716798530cb3560d25202e5.camel@web.de>
- <20260217071952.WCXLGs5-@linutronix.de>
- <80114792206dc00d0099f00999a209e717debb12.camel@web.de>
- <20260217095700.SjYjM8RO@linutronix.de>
- <4fba57892e5bd6a1afc4a36a80b40e3ecc28cac5.camel@web.de>
- <fd609cfe186ee48e0e9a08e35764175a2516dd14.camel@web.de>
- <2369ba83d204290dcfe157aed3f943206213b979.camel@web.de>
- <aa02f39ec4640c9d98963f42121b76e59b58371d.camel@web.de>
- <20260218073036.AlkNRoAP@linutronix.de>
- <ae213d2b908e46d34856be9daec891d7210f46f7.camel@web.de>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RwugQ86/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDAD9C116C6;
+	Thu, 26 Feb 2026 17:39:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772127553;
+	bh=nThCQLbabJ0yq+l47grbVRbkwAW8YTIAhiJzvLJHKX4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RwugQ86/npjsesdwAJsYp2Ax+O2Pngm5aol5NZ55QZJ7T1ahJAkwWQQ2B2OMAFQNt
+	 vvdRAwhJN/5OBlwYrJcnz3QuG41dimSLOXm3zd42wyBClcB6Jzuawao30M0A6fJoSl
+	 feYmXZR44DaBYDiMJlCAwNdAB0WBYOYuDVDA7TYOYWvjFwrphLsqglbNvIypSPNKRw
+	 ZYdurlezM0nrCHqs2jwIg4uTT6CeqXx9YFGZc4ttk8y3B8bMsJY2EOu2jr/VPq5g/M
+	 8LDwDHr2kc2FsYyb6DGCJqN48VEKdUyIhPPYvEeWDR+m2tg7IgZbSCfM9N8iAIKG2N
+	 8WNUpBR13S4Ng==
+Date: Thu, 26 Feb 2026 17:39:09 +0000
+From: Simon Horman <horms@kernel.org>
+To: Birger Koblitz <mail@birger-koblitz.de>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, pabeni@redhat.com,
+	linux-kernel@vger.kernel.org, kuba@kernel.org,
+	linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+	edumazet@google.com, opensource@vdorst.com
+Subject: Re: [net-next,v2] r8152: Add 2500baseT EEE status/configuration
+ support
+Message-ID: <aaCFPZ2JYur6hdha@horms.kernel.org>
+References: <20260224-b4-eee2g5-v2-1-cf5c83df036e@birger-koblitz.de>
+ <20260225194848.188081-2-horms@kernel.org>
+ <875598e7-5fa1-49b0-be14-181b18ae97fe@birger-koblitz.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ae213d2b908e46d34856be9daec891d7210f46f7.camel@web.de>
+In-Reply-To: <875598e7-5fa1-49b0-be14-181b18ae97fe@birger-koblitz.de>
 
-On 2026-02-18 13:50:14 [+0100], Bert Karwatzki wrote:
-> Am Mittwoch, dem 18.02.2026 um 08:30 +0100 schrieb Sebastian Andrzej Siewior:
-> > On 2026-02-17 20:10:09 [+0100], Bert Karwatzki wrote:
-> > > 
-> > > I tried to research the original commit which introduced the xmit_lock_owner check, but
-> > > it is present since linux 2.3.6 (released 19990610) (when __dev_queue_xmit() was still called dev_queue_xmit()),
-> > > so I can't tell the original idea behind that check (perhaps recuesion detection ...), so I'm
-> > > not completely sure if it can be omitted (and just let dev_xmit_recursion() do the recursion checking).
-> > 
-> > Okay. Thank you. I add it to my list.
-> > 
-> I've thought about it again and I now think the xmit_lock_owner check IS necessary to
-> avoid deadlocks on recursion in the non-RT case.
+On Wed, Feb 25, 2026 at 11:02:17PM +0100, Birger Koblitz wrote:
+> Hi Simon,
 > 
-> My idea to use get_current()->tgid as lock owner also does not work as interrupts are still enabled
-> and __dev_queue_xmit() can be called from interrupt context. So in a situation where an interrupt occurs
-> after the lock has been taken and the interrupt handler calls __dev_queue_xmit() on the same CPU a deadlock
-> would occur.
+> Thanks for the thorough analysis!
+> 
+> On 25/02/2026 8:48 pm, Simon Horman wrote:
+> 
+> > 
+> > > @@ -8922,7 +8924,8 @@ static void rtl8152_get_strings(struct net_device *dev, u32 stringset, u8 *data)
+> > > 
+> > >   static int r8152_get_eee(struct r8152 *tp, struct ethtool_keee *eee)
+> > >   {
+> > > -	__ETHTOOL_DECLARE_LINK_MODE_MASK(common);
+> > > +	__ETHTOOL_DECLARE_LINK_MODE_MASK(common) = {};
+> > > +	u16 speed = rtl8152_get_speed(tp);
+> > >   	u16 val;
+> > > 
+> > >   	val = r8152_mmd_read(tp, MDIO_MMD_PCS, MDIO_PCS_EEE_ABLE);
+> > 
+> > This isn't a bug, but the variable declarations are not in reverse
+> > Christmas tree order. Simon Horman's AI review raised this in v1, you
+> > acknowledged it and said it would be fixed in v2, but the ordering issue
+> > remains. The longest line should come first, followed by shorter lines.
+> > Should be:
+> > 
+> > 	__ETHTOOL_DECLARE_LINK_MODE_MASK(common) = {};
+> > 	u16 speed = rtl8152_get_speed(tp);
+> > 	u16 val;
+> > 
+> I do not understand what the AI is complaining about, here. The lines in the
+> v2 patch are in exactly the order you requested:
+> -	__ETHTOOL_DECLARE_LINK_MODE_MASK(common);
+> +	__ETHTOOL_DECLARE_LINK_MODE_MASK(common) = {};
+> +	u16 speed = rtl8152_get_speed(tp);
+>  	u16 val;
+> gives
+> 	__ETHTOOL_DECLARE_LINK_MODE_MASK(common) = {};
+> 	u16 speed = rtl8152_get_speed(tp);
+>  	u16 val;
 
-The warning happens because taskA on cpuX goes through
-HARD_TX_LOCK(), gets preempted and then taskB on cpuX wants also to send
-send a packet. The second one throws the warning.
+Sorry, there was supposed to be some commentary from me included in
+my previous email. But somehow it got lost.
 
-We could ignore this check because a deadlock will throw a warning and
-"halt" the task that runs into the deadlock.
-But then we could be smart about this in the same way !RT is and
-pro-active check for the simple deadlock. The lock owner of
-netdev_queue::_xmit_lock is recorded can be checked vs current.
+I agree the AI is wrong here.
 
-The snippet below should work. I need to see if tomorrow this is still a
-good idea.
+> 
+> > (Reference: https://lore.kernel.org/all/20260224170206.146491-3-horms@kernel.org/)
+> > 
+> > [ ... ]
+> > 
+> > > @@ -8956,7 +8968,8 @@ static int r8152_set_eee(struct r8152 *tp, struct ethtool_keee *eee)
+> > > 
+> > >   static int r8153_get_eee(struct r8152 *tp, struct ethtool_keee *eee)
+> > >   {
+> > > -	__ETHTOOL_DECLARE_LINK_MODE_MASK(common);
+> > > +	__ETHTOOL_DECLARE_LINK_MODE_MASK(common) = {};
+> > > +	u16 speed = rtl8152_get_speed(tp);
+> > >   	u16 val;
+> > > 
+> > >   	val = ocp_reg_read(tp, OCP_EEE_ABLE);
+> > 
+> > Same reverse Christmas tree order issue here. The same pattern should be
+> > applied as in r8152_get_eee().
+> Same argument as above.
 
-diff --git a/net/core/dev.c b/net/core/dev.c
-index 6ff4256700e60..de342ceb17201 100644
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -4821,7 +4821,7 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net_device *sb_dev)
- 		/* Other cpus might concurrently change txq->xmit_lock_owner
- 		 * to -1 or to their cpu id, but not to our id.
- 		 */
--		if (READ_ONCE(txq->xmit_lock_owner) != cpu) {
-+		if (rt_mutex_owner(&txq->_xmit_lock.lock) != current) {
- 			if (dev_xmit_recursion())
- 				goto recursion_alert;
- 
+Agreed.
 
-> Bert Karwatzki
+> > [ ... ]
+> > 
+> > > @@ -8968,10 +8981,29 @@ static int r8153_get_eee(struct r8152 *tp, struct ethtool_keee *eee)
+> > >   	val = ocp_reg_read(tp, OCP_EEE_LPABLE);
+> > >   	mii_eee_cap1_mod_linkmode_t(eee->lp_advertised, val);
+> > > 
+> > > +	if (tp->support_2500full) {
+> > > +		linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, eee->supported);
+> > > +
+> > > +		val = ocp_reg_read(tp, OCP_EEE_ADV2);
+> > > +		mii_eee_cap2_mod_linkmode_adv_t(eee->advertised, val);
+> > > +
+> > > +		val = ocp_reg_read(tp, OCP_EEE_LPABLE2);
+> > > +		mii_eee_cap2_mod_linkmode_adv_t(eee->lp_advertised, val);
+> > > +
+> > > +		if (speed & _2500bps)
+> > > +			linkmode_set_bit(ETHTOOL_LINK_MODE_2500baseT_Full_BIT, common);
+> > > +	}
+> > > +
+> > >   	eee->eee_enabled = tp->eee_en;
+> > > 
+> > > -	linkmode_and(common, eee->advertised, eee->lp_advertised);
+> > > -	eee->eee_active = phy_check_valid(tp->speed, tp->duplex, common);
+> > > +	if (speed & _1000bps)
+> > > +		linkmode_set_bit(ETHTOOL_LINK_MODE_1000baseT_Full_BIT, common);
+> > > +	if (speed & _100bps)
+> > > +		linkmode_set_bit(ETHTOOL_LINK_MODE_100baseT_Full_BIT, common);
+> > > +
+> > > +	linkmode_and(common, common, eee->advertised);
+> > > +	linkmode_and(common, common, eee->lp_advertised);
+> > > +	eee->eee_active = !linkmode_empty(common);
+> > > 
+> > >   	return 0;
+> > >   }
+> > 
+> > The eee_active determination logic is now duplicated between
+> > r8152_get_eee() and r8153_get_eee(). Both functions convert speed
+> > register bits to linkmode bits, AND with advertised and lp_advertised,
+> > and test emptiness in the same way. Would it make sense to factor this
+> > into a shared helper to reduce maintenance burden?
+> This could make sense, but I tried to make this as minimally intrusive as
+> possible and was already at a doubt whether I should even fix the RTL8152
+> version of get_eee() to correctly depend on the actual, not the desired
+> speed. Then I decided for fixing this incorrect behavior and have
+> consistency. The style of the existing code has plenty of duplicate code for
+> the different chip-versions and is already difficult to follow to this point
+> depending on the chip version. Personally, I find the readability improved
+> if the few lines of code are repeated instead of separating this out into
+> yet another nested function, and readability also helps code maintenance.
+> Plus, it is quite likely that these functions further diverge with e.g.
+> support for the RTL8157 (5GBit/s).
 
-Sebastian
+Understood. I did think this point was worth raising.
+And I appreciate your feedback. We can let this one go for now.
+
+> 
+> > 
+> > > @@ -9512,6 +9544,7 @@ static int rtl_ops_init(struct r8152 *tp)
+> > >   	case RTL_VER_11:
+> > >   		tp->eee_en		= true;
+> > >   		tp->eee_adv		= MDIO_EEE_1000T | MDIO_EEE_100TX;
+> > > +		tp->eee_adv2		= MDIO_EEE_2_5GT;
+> > >   		fallthrough;
+> > >   	case RTL_VER_10:
+> > >   		ops->init		= r8156_init;
+> > 
+> > [ ... ]
+> > 
+> > > @@ -9537,6 +9570,7 @@ static int rtl_ops_init(struct r8152 *tp)
+> > >   	case RTL_VER_15:
+> > >   		tp->eee_en		= true;
+> > >   		tp->eee_adv		= MDIO_EEE_1000T | MDIO_EEE_100TX;
+> > > +		tp->eee_adv2		= MDIO_EEE_2_5GT;
+> > >   		ops->init		= r8156b_init;
+> > >   		ops->enable		= rtl8156b_enable;
+> > >   		ops->disable		= rtl8153_disable;
+> > 
+> > Does RTL_VER_15 support 2.5G links? Looking at the code, only RTL_VER_12
+> > and RTL_VER_13 set tp->support_2500full before falling through, but
+> > RTL_VER_15 does not. With this change, tp->eee_adv2 = MDIO_EEE_2_5GT is
+> > set for VER_15.
+> VER 15 supports 2.5GBit links. The existing code enabled 2.5GBit EEE
+> unconditionally in rtl_eee_enable():
+> 	case RTL_VER_10:
+> 	case RTL_VER_11:
+> 	case RTL_VER_12:
+> 	case RTL_VER_13:
+> 	case RTL_VER_15:
+> 		if (enable) {
+> 			r8156_eee_en(tp, true);
+> 			ocp_reg_write(tp, OCP_EEE_ADV, tp->eee_adv);
+> 		} else {
+> 			r8156_eee_en(tp, false);
+> 			ocp_reg_write(tp, OCP_EEE_ADV, 0);
+> 		}
+> 		break;
+> Note that previously r8156_eee_en() did not conditionally enable the 2.5GBit
+> advertisement depending on tp->eee_adv2, but always enabled it, also for VER
+> 15.
+
+Sorry, I missed that when reviewing the AI generated feedback.
+
+> > When r8156_eee_en() is called for a VER_15 device with EEE enabled:
+> > 
+> > static void r8156_eee_en(struct r8152 *tp, bool enable)
+> > {
+> > 	u16 config;
+> > 
+> > 	config = ocp_reg_read(tp, OCP_EEE_ADV2);
+> > 
+> > 	if (enable && (tp->eee_adv2 & MDIO_EEE_2_5GT))
+> > 		config |= MDIO_EEE_2_5GT;
+> > 
+> > The condition (tp->eee_adv2 & MDIO_EEE_2_5GT) will be true, causing
+> > MDIO_EEE_2_5GT to be written into the OCP_EEE_ADV2 hardware register.
+> > This would advertise 2.5G EEE capability to the link partner on a device
+> > that does not support 2.5Gbit links.
+> > 
+> > Should the eee_adv2 initialization be moved into the RTL_VER_12/13 block
+> > (before the fallthrough), or should RTL_VER_15 be given eee_adv2 = 0 to
+> > remain consistent with its lack of support_2500full?
+> No, see above.
+
+Ack.
+
+It looks like the AI was all false positives this time.
+And I'll mark it accordingly in the system. Thanks for looking over it.
