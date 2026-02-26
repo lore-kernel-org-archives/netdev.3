@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C974B38945A;
-	Thu, 26 Feb 2026 03:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600CF385533;
+	Thu, 26 Feb 2026 03:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772075420; cv=none; b=nJhttmnpIKGhisWucR53Esy/4kamcQa82HLhU7MW0TwImH4Mh7b0E8maVn6SKL1JzHhE9XnNZEQKD7JCcp5r/kSi8LDsQxGoQcW5X1Ep+Pvkydz0s+OQohIDARBBRI0imMebk0EZCIMxqOuBuluB4NfdLY2V1CGLMQIwY/FUTLE=
+	t=1772075422; cv=none; b=kE5OjOVXxk5mxsNePuDHQrV+wm9WQcBduUEN6sMJF0E7cHIXpIqQvgoRtxZbebwpxVBNJehqpf84fjgR4s7TAfaW9SMsoTVGzs2xbWLo6AIe4s6cMiwGvLfs/DSgFsXOZmwnESOGboSbkfQlsmZ24V5VEwpjhGR0tLmnWKsBYDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772075420; c=relaxed/simple;
-	bh=IjXhAYsw4OUQTJMNuPG7lix6YagktwGTXHy5SUxgx74=;
+	s=arc-20240116; t=1772075422; c=relaxed/simple;
+	bh=WEuS4UpaH1mhIWOXTq0r0IT77NR5gxE3+MA6q4btOhU=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=R4BqLpSBi+1VksCGUYgMjm5KtOdu4A7l5M7r409NH8ihHfzso9WEvBjJcWU1pk1ntByHbeO8Z1JQDQcwc9GC5db7asQUDEiYn9wAqggJY585z8UdTUwcmqVNl3oy1OXrCEHxKdhFbtK/LEcQ4eGiYRfuMwxr18D7Gls2IkQrtTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H7hbkQAS; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=pjiuwoFBb8bvOBbxbEAUhltjLup62Wnjch4RLqm7YbjaMMB37tYm487oMtkf/pCEF/fF3sMz4IJNc1m6e/gjvM/U5CcrSrcSPqqIGjYjjWeQEr9c50EIHzaJ2K2RrPgRxxk8GppPExOkhbkoHqX2K8A6zP5zxZ8P1qEyAaLguE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D3P7j/3h; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H7hbkQAS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86001C19425;
-	Thu, 26 Feb 2026 03:10:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D3P7j/3h"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A946C116D0;
+	Thu, 26 Feb 2026 03:10:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772075420;
-	bh=IjXhAYsw4OUQTJMNuPG7lix6YagktwGTXHy5SUxgx74=;
+	s=k20201202; t=1772075422;
+	bh=WEuS4UpaH1mhIWOXTq0r0IT77NR5gxE3+MA6q4btOhU=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=H7hbkQASDOFJWNgtwTVCBJecfXV6Fs53uqEtCidoXgdl9mCSgvPnJq0r6OPxlSudP
-	 hj8f1L6Byh8X6GShV0DVx4UwHfnPgSEdJfNmgmdgInJ1Gda2HjGM+3njpiGcHgpM81
-	 aCs//BuPAnlJhoivjk0FqDOOD8gTNoML18F3vkaEgZMqQUZCaiESIUTe8v9tpjlq1n
-	 +aS9gZ2rGN1ldqYqMGms8rCktbGdWbfBWSTpX9cA+JE4ClSdw+HljC+e8MerY/b6Ro
-	 UcnXWWXfe3ajJpdDGJSads+iiwhyobdzCKcVzmadchbeFZRbfI6Sn3ZlN2JRp1UxOC
-	 yOvVmQc2qkdJQ==
+	b=D3P7j/3h2OKv9yJKV4WmVeFHd+O7/FsGSb7Z0XFndDxNikaWTzyqt0bzBJmL2uard
+	 RukAUeCwrWIdpDPcwUiUG/KFdHscIneyNWirPw8zxdf9iDvW7/11ti+Ulu6jXl+w/a
+	 Dl7BJwZa50XOei3pUhQYk1TIF6SoJJ4sM9YfRi0XKSbMrAnYtuvKT5/WaGphkRMp+t
+	 +4TBSEdIxM5gokvRH3tNd1Jiawkm+YeTDYeGKfS0fWKDKbh30ETlYybmkgiuJtmS6b
+	 0F8roWj6nkVZtvQyXe/+pI5NXgeFJ4UwqOHlVfSVRWnrXpmEmMCxW6KYwUqTBbeym/
+	 L/6cd6mHujBNg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CD69380A94B;
-	Thu, 26 Feb 2026 03:10:26 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02C13380A94B;
+	Thu, 26 Feb 2026 03:10:28 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] selftests: hw-net: tso: set a TCP window clamp
- to
- avoid spurious drops
+Subject: Re: [PATCH net-next] net: fs_enet: allow nvmem to override MAC
+ address
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177207542504.1014739.4371014505655007281.git-patchwork-notify@kernel.org>
-Date: Thu, 26 Feb 2026 03:10:25 +0000
-References: <20260223204030.4142884-1-kuba@kernel.org>
-In-Reply-To: <20260223204030.4142884-1-kuba@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org, shuah@kernel.org,
- daniel.zahka@gmail.com, willemb@google.com, linux-kselftest@vger.kernel.org
+ <177207542654.1014739.9375392210981588857.git-patchwork-notify@kernel.org>
+Date: Thu, 26 Feb 2026 03:10:26 +0000
+References: <20260224014607.353378-1-rosenp@gmail.com>
+In-Reply-To: <20260224014607.353378-1-rosenp@gmail.com>
+To: Rosen Penev <rosenp@gmail.com>
+Cc: netdev@vger.kernel.org, pantelis.antoniou@gmail.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 23 Feb 2026 12:40:30 -0800 you wrote:
-> The TSO test wants to make sure that there isn't a lot of retransmits,
-> because that could indicate that device has a buggy TSO implementation.
-> On debug kernels, however, we're likely to see significant packet loss
-> because we simply overwhelm the receiver.
+On Mon, 23 Feb 2026 17:46:06 -0800 you wrote:
+> NVMEM typically loads after the ethernet driver and
+> of_get_ethdev_address returns -EPROBE_DEFER. return in such a case to
+> allow NVMEM to work.
 > 
-> In a QEMU loop with virtio devices we see ~10% false positive rate
-> with occasional run hitting the threshold of 25% packet loss.
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+> ---
+>  drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] selftests: hw-net: tso: set a TCP window clamp to avoid spurious drops
-    https://git.kernel.org/netdev/net-next/c/6698d6ce6a6b
+  - [net-next] net: fs_enet: allow nvmem to override MAC address
+    https://git.kernel.org/netdev/net-next/c/dc2a1facbde8
 
 You are awesome, thank you!
 -- 
