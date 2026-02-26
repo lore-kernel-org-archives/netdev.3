@@ -1,96 +1,182 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from lithops.sigma-star.at (mailout.nod.at [116.203.167.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C43226D00;
-	Thu, 26 Feb 2026 21:05:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE1D91DE8BE;
+	Thu, 26 Feb 2026 21:06:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.167.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772139935; cv=none; b=BFSxwrakcSDCWQ3cdTWEOLcczP7FbbzHg4/vmrqTTM0fA4cilPP5NdW5XXEh+MPBzUmKkXI8mseyPkas1FUl5htlzak+GFUoGCgiE8iV7nbcy0oX8uU16agIgqioUX1IXG5KsQwveMjvGpdOzcEi4X13AFvkXiBgNbuZXZoXBQM=
+	t=1772139978; cv=none; b=GZxO36JFXC7sEdPDrTGwLkw6SSwZT5hsTdW3a46s7P7H/mM0ZdPHW8x6vgGAYobPVPYiU5s9ftCZBA9qyvdnLOP4dWXy0OSkxde+Ljc1vybuQaXeBvhMrRiiTaPqxZrCJyu3uIZSfdZmpF4PSEU2LidooiOzQQxpsby6IBJAFp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772139935; c=relaxed/simple;
-	bh=uc2Eq1H6971eNvHKFTRJYOX7q5n+tCYl7A9InNjRaH8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fw6pEv1ThH59eODX56GuxfJ5bMQ/3BXb1uyIKtoqyk3H4PC1lvZ8KJp7OJLxUUND4rjk0XxFiva5JqfNnXjkZjOYNZJk3jnskJxQ9MRsWaCmAQEa5wAY0b90IHGGUSGPr4UGvgelnxAyeMuQQfB/9aDTb9ah04NyfAqohZNePLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SA1lSey7; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SA1lSey7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E3DC116C6;
-	Thu, 26 Feb 2026 21:05:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772139934;
-	bh=uc2Eq1H6971eNvHKFTRJYOX7q5n+tCYl7A9InNjRaH8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SA1lSey7XhMAKn/SCMxAPovHfyKkgOinYudsb7u/ytZIPYcSHCzd10SKo2nsoUFtW
-	 Bq+XgqE/POnX0vlY/JUby2FpVZWzBkwMR1v32u514TFk4+QeQBqvmaHJOsQ+s457a3
-	 BJASiId8grbDjYc8RizCmYUFhfranVDAqSQw45Zjrg8pSEYUVXFUq2gCWnvEI8/A+7
-	 F/dg7mlPHiDmPvouR5ezn9CL4IYxyZ+1J75IJ1cGvOPQGLbHrNpJ2cXk+4ZVebzgPR
-	 2ixhclO0NrYwcAJ8lWL+cOwB0aCsg43sQ0ZoJmpZDLFELG/1JH0hxtj9qhfntbjV7H
-	 XnSPcNMvTy1rg==
-Date: Thu, 26 Feb 2026 21:05:28 +0000
-From: Conor Dooley <conor@kernel.org>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Beno=EEt?= Monin <benoit.monin@bootlin.com>,
-	=?iso-8859-1?Q?Gr=E9gory?= Clement <gregory.clement@bootlin.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
-Subject: Re: [PATCH net-next v3 5/5] net: macb: Add "mobileye,eyeq5-gem"
- compatible
-Message-ID: <20260226-marry-blend-0a63d3572d76@spud>
-References: <20251023-macb-eyeq5-v3-0-af509422c204@bootlin.com>
- <20251023-macb-eyeq5-v3-5-af509422c204@bootlin.com>
- <20260226-folic-excitable-82eff83a125a@spud>
- <aaCd_zV5kY-s1RBL@shell.armlinux.org.uk>
- <20260226-perennial-sanctity-25c6adae5ec0@spud>
- <aaCwxeMHMSCHk0nx@shell.armlinux.org.uk>
+	s=arc-20240116; t=1772139978; c=relaxed/simple;
+	bh=bEoBogC1VzaZVt9sFWvD/EyoNIxugjqj7GsKHA+l8e0=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=LhEwLIxr9MnpeOM/eRPF6bw/q9aQtW5lvqgYzTKStiYS9M+c/6YwY4oz55DTSJIKXXRWuMLR41WZ9vyURfow0qwZzrOdJ/hMoINPhZxyFQVEAYnuCeYCOTo/PP7J1zo0tRk6s0fY1l0JhdMQTrjgpRae1S1AftOKjY+Oj64D9/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at; spf=fail smtp.mailfrom=nod.at; arc=none smtp.client-ip=116.203.167.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nod.at
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nod.at
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 4443729ABCA;
+	Thu, 26 Feb 2026 22:06:13 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id q-09uAsPH7el; Thu, 26 Feb 2026 22:06:11 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by lithops.sigma-star.at (Postfix) with ESMTP id B7BFC29859E;
+	Thu, 26 Feb 2026 22:06:10 +0100 (CET)
+Received: from lithops.sigma-star.at ([127.0.0.1])
+	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id QvCFCS-3rI0s; Thu, 26 Feb 2026 22:06:09 +0100 (CET)
+Received: from lithops.sigma-star.at (lithops.sigma-star.at [195.201.40.130])
+	by lithops.sigma-star.at (Postfix) with ESMTP id 1868E298580;
+	Thu, 26 Feb 2026 22:06:08 +0100 (CET)
+Date: Thu, 26 Feb 2026 22:06:07 +0100 (CET)
+From: Richard Weinberger <richard@nod.at>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Jan Kara <jack@suse.cz>, Steven Rostedt <rostedt@goodmis.org>, 
+	mhiramat <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	dan j williams <dan.j.williams@intel.com>, 
+	Matthew Wilcox <willy@infradead.org>, 
+	Eric Biggers <ebiggers@kernel.org>, tytso <tytso@mit.edu>, 
+	Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@kernel.org>, 
+	David Howells <dhowells@redhat.com>, 
+	Paulo Alcantara <pc@manguebit.org>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
+	Trond Myklebust <trondmy@kernel.org>, anna <anna@kernel.org>, 
+	chuck lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, 
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Steve French <sfrench@samba.org>, 
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+	Shyam <sprasad@microsoft.com>, Bharath SM <bharathsm@microsoft.com>, 
+	Alexander Aring <alex.aring@gmail.com>, 
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, 
+	Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	David Sterba <dsterba@suse.com>, 
+	Marc Dionne <marc.dionne@auristor.com>, raven <raven@themaw.net>, 
+	Luis de Bethencourt <luisbg@kernel.org>, 
+	Salah Triki <salah.triki@gmail.com>, 
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, 
+	Ilya Dryomov <idryomov@gmail.com>, 
+	Alex Markuze <amarkuze@redhat.com>, Jan Harkes <jaharkes@cs.cmu.edu>, 
+	coda@cs.cmu.edu, Nicolas Pitre <nico@fluxnic.net>, 
+	Tyler Hicks <code@tyhicks.com>, Amir Goldstein <amir73il@gmail.com>, 
+	Christoph Hellwig <hch@infradead.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Yangtao Li <frank.li@vivo.com>, 
+	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, 
+	David Woodhouse <dwmw2@infradead.org>, 
+	Dave Kleikamp <shaggy@kernel.org>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Mike Marshall <hubcap@omnibond.com>, 
+	Martin Brandenburg <martin@omnibond.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>, 
+	chengzhihao1 <chengzhihao1@huawei.com>, 
+	Damien Le Moal <dlemoal@kernel.org>, 
+	Naohiro Aota <naohiro.aota@wdc.com>, 
+	Johannes Thumshirn <jth@kernel.org>, 
+	John Johansen <john.johansen@canonical.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, 
+	Mimi Zohar <zohar@linux.ibm.com>, 
+	Roberto Sassu <roberto.sassu@huawei.com>, 
+	Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, 
+	Ondrej Mosnacek <omosnace@redhat.com>, 
+	Casey Schaufler <casey@schaufler-ca.com>, 
+	Alex Deucher <alexander.deucher@amd.com>, 
+	Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	sumit semwal <sumit.semwal@linaro.org>, 
+	edumazet <edumazet@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, pabeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, davem <davem@davemloft.net>, 
+	kuba <kuba@kernel.org>, Simon Horman <horms@kernel.org>, 
+	oleg <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	mingo <mingo@redhat.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, 
+	"Darrick J. Wong" <djwong@kernel.org>, 
+	Martin Schiller <ms@dev.tdt.de>, 
+	linux-fsdevel <linux-fsdevel@vger.kernel.org>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, 
+	linux-trace-kernel <linux-trace-kernel@vger.kernel.org>, 
+	nvdimm@lists.linux.dev, fsverity@lists.linux.dev, 
+	linux-mm <linux-mm@kvack.org>, netfs@lists.linux.dev, 
+	linux-ext4 <linux-ext4@vger.kernel.org>, 
+	linux-f2fs-devel <linux-f2fs-devel@lists.sourceforge.net>, 
+	linux-nfs <linux-nfs@vger.kernel.org>, 
+	linux-cifs <linux-cifs@vger.kernel.org>, 
+	samba-technical <samba-technical@lists.samba.org>, 
+	linux-nilfs <linux-nilfs@vger.kernel.org>, 
+	v9fs <v9fs@lists.linux.dev>, 
+	linux-afs <linux-afs@lists.infradead.org>, autofs@vger.kernel.org, 
+	ceph-devel <ceph-devel@vger.kernel.org>, codalist@coda.cs.cmu.edu, 
+	ecryptfs <ecryptfs@vger.kernel.org>, 
+	linux-mtd <linux-mtd@lists.infradead.org>, 
+	jfs-discussion <jfs-discussion@lists.sourceforge.net>, 
+	ntfs3 <ntfs3@lists.linux.dev>, 
+	ocfs2-devel <ocfs2-devel@lists.linux.dev>, 
+	devel <devel@lists.orangefs.org>, 
+	linux-unionfs <linux-unionfs@vger.kernel.org>, 
+	apparmor@lists.ubuntu.com, 
+	LSM <linux-security-module@vger.kernel.org>, 
+	linux-integrity <linux-integrity@vger.kernel.org>, 
+	selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+	DRI mailing list <dri-devel@lists.freedesktop.org>, 
+	linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	netdev <netdev@vger.kernel.org>, linux-perf-users@vger.kernel.org, 
+	linux-fscrypt <linux-fscrypt@vger.kernel.org>, 
+	linux-xfs <linux-xfs@vger.kernel.org>, linux-hams@vger.kernel.org, 
+	linux-x25@vger.kernel.org
+Message-ID: <909001762.1963.1772139967060.JavaMail.zimbra@nod.at>
+In-Reply-To: <20260226-iino-u64-v1-47-ccceff366db9@kernel.org>
+References: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org> <20260226-iino-u64-v1-47-ccceff366db9@kernel.org>
+Subject: Re: [PATCH 47/61] ubifs: update format strings for u64 i_ino
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="KjizatTjNwr03SpN"
-Content-Disposition: inline
-In-Reply-To: <aaCwxeMHMSCHk0nx@shell.armlinux.org.uk>
-
-
---KjizatTjNwr03SpN
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+X-Mailer: Zimbra 8.8.12_GA_3807 (ZimbraWebClient - FF147 (Linux)/8.8.12_GA_3809)
+Thread-Topic: ubifs: update format strings for u64 i_ino
+Thread-Index: W1YwJFGUiVxHsVs+FtVDAklXBDhaRQ==
 
-On Thu, Feb 26, 2026 at 08:44:53PM +0000, Russell King (Oracle) wrote:
-
-> Ethernet PHYs are described in Ethernet controller DT using the
-> "phy-handle" property (and previously "phy" or "phy-device"
+----- Urspr=C3=BCngliche Mail -----
+> Von: "Jeff Layton" <jlayton@kernel.org>
+> Update format strings and local variable types in ubifs for the
+> i_ino type change from unsigned long to u64.
 >=20
-> Generic PHYs are described using the "phys" property.
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> ---
+> fs/ubifs/debug.c   |  8 ++++----
+> fs/ubifs/dir.c     | 28 ++++++++++++++--------------
+> fs/ubifs/file.c    | 28 ++++++++++++++--------------
+> fs/ubifs/journal.c |  6 +++---
+> fs/ubifs/super.c   | 16 ++++++++--------
+> fs/ubifs/tnc.c     |  4 ++--
+> fs/ubifs/xattr.c   | 14 +++++++-------
+> 7 files changed, 52 insertions(+), 52 deletions(-)
 
-Ahh, this was key and I think I understand the analysis now.
-Thanks for explaining Russell.
+Acked-by: Richard Weinberger <richard@nod.at>
 
---KjizatTjNwr03SpN
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaaC1mAAKCRB4tDGHoIJi
-0rsSAQCic9F4/sDeaWWJyHR/xFKd96b3VtkDllYQPQdMbb+i8wEAtlcgj2zLLZmO
-9dAyRADtpjYNIZiAWFvipaTFX19dBgM=
-=rTs1
------END PGP SIGNATURE-----
-
---KjizatTjNwr03SpN--
+Thanks,
+//richard
