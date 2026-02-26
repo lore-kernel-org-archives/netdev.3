@@ -1,224 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7C03603C9;
-	Thu, 26 Feb 2026 16:09:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772122141; cv=none; b=BcJixDtZmyZ5bPalhgnj82+UOkQSgbKUd40yZV11eBAZfsc9AusIwmw7GpHlNAFC+yMz0XLSeZEepS41xOcOfXwMhc/+9QzOoQmPI2ZKyEbhNwixGjqErbTk6GUn9GCemwdTnNLzFaIpNSa62KRcCTZpTgREg612FbRSYFDv/FI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772122141; c=relaxed/simple;
-	bh=ohZEfeuOi4xkg2naUuFketibeULdy5VGYUJnnORD2g0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mEvNHyWJwXHDE/QeONkgdknCaAUHqJgvSaqWe2h3VxyaOiMQ1ZGUVbDT3lCiBrEn1ry+0aJaaUa/5GxgGmHny3xMf1WX089ZNYFOpkGmgoJba+y9t8dK/uuIk/yRAF4hZqWVTxKWDx7ZYU6ur2k6jgHu+eBOJxidxoMk2owwlD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Idts03oy; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CC1443E4AB
+	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 16:10:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772122219; cv=pass; b=G3nAlA4/9WGZnfD+SeSx4sW0VEjyLLrw2Y/X4sGe/yHDVHR5QhqcPKt6yfieA6ijy41Tmowh3d9/J3E8XOB8lE8uIK2FfUqbbUix7Ik8y8+FGTzpBK4H6rWqNgmOmffsYyD9ocDvfLw4PkzZxdxPubv5DIbFBhfzQ2LWbhDjJbk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772122219; c=relaxed/simple;
+	bh=dXUwA0TQXWiB5tGToQJfVmSDM/JIXXUFQoNEi5/JUnk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kRqryI2nfvg0ArmiwnDly/dFxHfEiyxugcesWlznCNR+q0A1fYpkaysvZmV2pOqTkHDS9BQT0OBqNFFNvkROIJFuzptfwTFyOtKn+SQHaQvStsdk49YlPFRSwPi3rojksIvqZkohMsbIG/1UOM9Wwr01iArnv/pmjZ62m6akd38=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z1HDMIYe; arc=pass smtp.client-ip=209.85.217.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Idts03oy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF4AC2BCB0;
-	Thu, 26 Feb 2026 16:08:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772122141;
-	bh=ohZEfeuOi4xkg2naUuFketibeULdy5VGYUJnnORD2g0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Idts03oyKH96SfAopisoKaTLc9SLusBKptp8k/MDagLyPeOPplHCfbxiFlufDFLUc
-	 5K4x+4vaAaBsfCpythF7s9D8EXByli3J3u+iy7xATN3OlRJcUBEcuJN4S7kWV8Q8G4
-	 kOfdNs81HdEuVdL2gjffCyo3XQcO4jO4Dnwu4cYxFGG1cqCeDmWXs52Am2xXWjWgS4
-	 OHldjywAYIMuMJotzrCl3t6dbCEWDiOdxjpl+MI3bIDcoO73xuazQ8k66fi6Admx/j
-	 nWxyaEUpqRkV/SeIHZG9VWpdqkUZ5a5E8jjeNvQO8d/KJ1BO0kCzaj91GgaIrGYKnL
-	 sd5mww8Joksmg==
-From: Jeff Layton <jlayton@kernel.org>
-Date: Thu, 26 Feb 2026 10:56:03 -0500
-Subject: [PATCH 61/61] vfs: update core format strings for u64 i_ino
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z1HDMIYe"
+Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-5ff1699312bso545968137.3
+        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 08:10:13 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772122212; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HFCn/1cTs6qxs+8VOIMXSddm1Prrzwi8Bqt/2kgw4V9fjbyBtGcHq4NOq1mACkdeNM
+         /Kbq2/xswt3a4Naz58/9z2iePyxUFNVJA99NtWAzpxBcOegU7M5Xu0etXnC94sih1gOe
+         W6mpjYFMAWBeLEOz9HlRWTSmxcgD8jySu/N0Hj8ddzb3txo6HIInd53p3RwdTfOxgjqD
+         MB0/aJa1JfOAVShVJmGjse1tGaLjO93qDJG2F+ad2PLgTdf7HrtyQtQz7ajrJ5ynxpEa
+         jr2GcdT1ev5H734irHDNoxrPuPLAvoGKZ2LNpWMlIX2Tyc8Ye1K6mzDsEZp1yEhWaQDQ
+         NR+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=dXUwA0TQXWiB5tGToQJfVmSDM/JIXXUFQoNEi5/JUnk=;
+        fh=YpnUg7eXVwdCUy8q6oEN3uPdK5VZTdzpBc5LfX5ZuEM=;
+        b=DtDnD1EaXIygSVlwHA7iAHQneF6vY5iyb8r2S70EGrMwjW+H3CWRxR/HoAOKK3c7iJ
+         pAjAxRP1i8R5yZZuSzs1J+OznRF5bukS7EPQYOMsyEv+6aXH24oAj/wUMVe2eUHkXfbp
+         gp5f1gxu8RCIwFIuui+vpKVrWjrtupnN45xZ6mqS7o44wpBPYuCA2xC/HBkicWDHSfZ2
+         DwB9+b2Ln2uHyeuCYoQUZ2T9/BgeXB7V6e9jJjX076BW1cRVKpkTIVOAHGssXNFSTcxZ
+         VRwc65QIpEZKnfvIDy4bKmGyijLpBRuauWY8VnCcGTbg5sdAGVMCt2jhImwkfYy0ef3R
+         Ko9A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772122212; x=1772727012; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dXUwA0TQXWiB5tGToQJfVmSDM/JIXXUFQoNEi5/JUnk=;
+        b=Z1HDMIYeLTmoyOtaW8cBILpe5gGI14KwZGlLANTcUocbWgSAmjvyp5jVKu+AOoqgL+
+         Z9dAzaG8CKG2rbAOSLt6zkjrrysBROefAy4yC7IBOTD3SpIBgMowc44O/c5IiYUjqUMw
+         gkLn/+VRacf3ZfjTvMllljWUPsfi8uEu0cGyioWX/dx4ougPcaiBVt9y9+PAuxKbRW6G
+         ZKNbnjNc0cA9Xnnnhmr3IoEl0+lsUMmMjaigSqApIinXo5HKVKbHSVg3DuQH6IWAFnGE
+         HCZSMkSaW8uKHR0bjAINNqpUpoFfZQ/uRPolUuQ37v69bVnu/8Gd3amt9/FyIMC6qzJq
+         rUWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772122212; x=1772727012;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=dXUwA0TQXWiB5tGToQJfVmSDM/JIXXUFQoNEi5/JUnk=;
+        b=Pj3wubYYhL8a2Fcqog8FLeT8eoTSMtwdSc0ciuy885Qwm2QL8q+xVOhdCcDTViR6Wj
+         nF0guHkmHqtzN6+pdUjDLdTYtgXUGiRyTIDS3ME9NH5jH7Zz276zaMhSr4NAUuf04G4Y
+         otRbauOcOjhWdgxZyLGmlsBnOdl0rDvGPfulH2su34DgOGl9EQJXOeL0fQLQJCL/5CXZ
+         i7J2lP3Y9dipk4tkELA0m7ZYuX1rJSEge537+wLXO3cdIK5MTsVxyB3hz1mfeMY2Zb3G
+         hqYAlzCqlqINk2+LnWMb2WGl/4ojFBQM/F1GYchF/DfMW4ee1NYV1Epz4W3cE6q+K7lr
+         aPwg==
+X-Forwarded-Encrypted: i=1; AJvYcCUO5RTilOQvh28OKtYu7OIUdp6KdZfuH25gxFk5THFDtvJjBQ+gCEGBRW2ZNV15hm7S9M/mPrc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwertmMKk58QEKBSPtwWATuqZ2LWVs0QNuKHPqFi/1u+gPJHJod
+	E5vWQx3fdTcxCGyPPghH9zSfgqNH6GmVa9mBy98yEl5P4NDOlEPcSp1gzJUQeS3JtgFcji87Qab
+	vUNo7189mrZU3IFCr6AyQqJpxICCI6+o=
+X-Gm-Gg: ATEYQzzRFI/KS2K/SGn4HuWCU3HnUdtllv7U0i1xlFvQXOt7x0D8gUFc7YS9LZYtxBw
+	2j3up1DDRZSJdZLUwJMlrA73usyL6tv2toamuVDt2spOKvkOBdy/17RRBG2a1Psvorp8oL2vZif
+	FzPDfyi3FDC4nhHoCUimnennmOLPhqVUk9Ns833cg19KM2OZSVNTsYe73jYj65x1Lw+Z495xrBP
+	lmS4UqwnDIPPGMeRSX/ay9KKquRVd1NxIjia++a1/wmgYNRjrBGdod732tA8Wzq3nLrzgTH+q3T
+	nUED1rKIH4N78myoK0grAiuhKnT+iqx653dGXbOPXC7Gc3jZ3Bx9aR9CRvkbGPmsQi0=
+X-Received: by 2002:a05:6102:54a8:b0:5ff:2cea:c173 with SMTP id
+ ada2fe7eead31-5ff2cead351mr567040137.23.1772122211894; Thu, 26 Feb 2026
+ 08:10:11 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260226-iino-u64-v1-61-ccceff366db9@kernel.org>
-References: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
-In-Reply-To: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
-To: Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Dan Williams <dan.j.williams@intel.com>, 
- Matthew Wilcox <willy@infradead.org>, Eric Biggers <ebiggers@kernel.org>, 
- "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
- David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>, 
- Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, 
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
- Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>, 
- Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
- Shyam Prasad N <sprasad@microsoft.com>, 
- Bharath SM <bharathsm@microsoft.com>, 
- Alexander Aring <alex.aring@gmail.com>, 
- Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
- Viacheslav Dubeyko <slava@dubeyko.com>, 
- Eric Van Hensbergen <ericvh@kernel.org>, 
- Latchesar Ionkov <lucho@ionkov.net>, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>, 
- David Sterba <dsterba@suse.com>, Marc Dionne <marc.dionne@auristor.com>, 
- Ian Kent <raven@themaw.net>, Luis de Bethencourt <luisbg@kernel.org>, 
- Salah Triki <salah.triki@gmail.com>, 
- "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, 
- Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
- Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
- Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>, 
- Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
- Yangtao Li <frank.li@vivo.com>, 
- Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, 
- David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, 
- Dave Kleikamp <shaggy@kernel.org>, 
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
- Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
- Joseph Qi <joseph.qi@linux.alibaba.com>, 
- Mike Marshall <hubcap@omnibond.com>, 
- Martin Brandenburg <martin@omnibond.com>, 
- Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>, 
- Zhihao Cheng <chengzhihao1@huawei.com>, Damien Le Moal <dlemoal@kernel.org>, 
- Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
- John Johansen <john.johansen@canonical.com>, 
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
- "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
- Roberto Sassu <roberto.sassu@huawei.com>, 
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- Ondrej Mosnacek <omosnace@redhat.com>, 
- Casey Schaufler <casey@schaufler-ca.com>, 
- Alex Deucher <alexander.deucher@amd.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- James Clark <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>, 
- Martin Schiller <ms@dev.tdt.de>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
- fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev, 
- linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
- linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
- samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org, 
- v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org, 
- ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu, 
- ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
- jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev, 
- ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
- linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
- linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
- selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
- linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, 
- linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
- linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
- linux-x25@vger.kernel.org, Jeff Layton <jlayton@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2734; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=ohZEfeuOi4xkg2naUuFketibeULdy5VGYUJnnORD2g0=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpoG0TArPB/A14lA7MwkzhIW1OToQ0CsW6q2kMJ
- NMIT4N0RQ2JAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaBtEwAKCRAADmhBGVaC
- Fd2vEAC7kuwrOi18JaQDOOAKwnH+i9pcIGDqiGslLsrUPbu1STWmcsQX2/GZrZEiyYKHKP0S6Wl
- zcMnbPl3utwH6hWUgGtAY+gzzjhdicih0FDyp40jJOzpKVKjISFyGXmUR+d+WyX5NpbL6x7qZu9
- 1Miz3ZXPbvTnSNhE8UDHtPJWb2LmH5aKdBmNvDuy1kUOZgpWBZN0V+Ugpt5CfHOpb07X6niHBko
- zYIXIl6b8SQvksIwttBHLHM7QD8ow6T8ami6Pv1KXGhOOsW5PIUcgKu7c6qD1Ir8/ZfUUAlgFgV
- C9+vZOR5mC4QnKJBd++VbAJ3ULe7TCMOJv3o9H2kRNMQGl5ztzX6aB9BGpF+YXEKrIeFwlVdTJs
- Wd6qjLkpJj32hltK0IEZaYfHtDb2wBvKqYxVW6nrow+NnCFN/ks1A7JF6fvNPLkiVzv6bsthwaT
- hT6eCv8yxReYIOkkcqbBpyYIyRStZuKDMahsoKkn/NLlvFbCqB06XLmdAHID33m0jXIuroMxuC5
- el7Oug4tahBPWWr4msK1xsxlFlcvwmzmYJvLsGrgik6EThKzRuz1zmh3kfJ5AOnN+pKoArTRBQK
- SunbKJEttAFl0PfaA332vCGW9ETR82ytCvG59Wew+5CiziepSNpMW6ZDKu0oYg5nww31TsjGKV6
- lhC0Z4ASG6kR0mg==
-X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
- fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
+References: <CA+DkFDaW_wJ5p9_P7pMpz-8iE6xeKkdF-MQcd2m2GcyVUE3S4Q@mail.gmail.com>
+ <5bbafc78-9dbb-448f-a86e-c5e94618f2f8@lunn.ch> <20260226123647.kvv7zbu5ijkbn6jb@skbuf>
+In-Reply-To: <20260226123647.kvv7zbu5ijkbn6jb@skbuf>
+From: Patryk <pbiel7@gmail.com>
+Date: Thu, 26 Feb 2026 17:09:59 +0100
+X-Gm-Features: AaiRm53ktauUgmdhmBo00yFpBVQLxDGlckCb9nK5-7NQjBdgQT7CvGi0_93Nht4
+Message-ID: <CA+DkFDZfJ4kD0=6O6XB5=azeFukiGxou4T0mM30qVktQCB8-1w@mail.gmail.com>
+Subject: Re: 10G-QXGMII phy no autonegotiation on LS1028A
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, netdev@vger.kernel.org, 
+	Ioana Ciornei <ioana.ciornei@nxp.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Update format strings from %lu/%lx to %llu/%llx and 0UL literal to
-0ULL in pipe, dcache, fserror, and eventpoll, now that i_ino is u64
-instead of unsigned long.
+Hi,
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
----
- fs/dcache.c    | 4 ++--
- fs/eventpoll.c | 2 +-
- fs/fserror.c   | 2 +-
- fs/pipe.c      | 2 +-
- 4 files changed, 5 insertions(+), 5 deletions(-)
+czw., 26 lut 2026 o 13:36 Vladimir Oltean <vladimir.oltean@nxp.com> napisa=
+=C5=82(a):
+> The problem that Patryk has identified is correct. Both PCS and PHY
+> in-band auto-negotiation used to rely on U-Boot pre-configuration to be
+> in sync.
+>
+> To bring some context, the U-Boot driver for the Felix switch does
+> enable in-band auto-negotiation here:
+> https://github.com/u-boot/u-boot/blob/master/drivers/net/mscc_eswitch/fel=
+ix_switch.c#L200-L201
+> so the reason why Patryk is seeing this issue is probably because he is
+> not using that driver.
 
-diff --git a/fs/dcache.c b/fs/dcache.c
-index 24f4f3acaa8cffd6f98124eec38c1a92d6c9fd8e..9e8425ecd88955c72027d21591b1d12c87e7e8aa 100644
---- a/fs/dcache.c
-+++ b/fs/dcache.c
-@@ -1637,11 +1637,11 @@ static enum d_walk_ret umount_check(void *_data, struct dentry *dentry)
- 	if (dentry == _data && dentry->d_lockref.count == 1)
- 		return D_WALK_CONTINUE;
- 
--	WARN(1, "BUG: Dentry %p{i=%lx,n=%pd} "
-+	WARN(1, "BUG: Dentry %p{i=%llx,n=%pd} "
- 			" still in use (%d) [unmount of %s %s]\n",
- 		       dentry,
- 		       dentry->d_inode ?
--		       dentry->d_inode->i_ino : 0UL,
-+		       dentry->d_inode->i_ino : 0ULL,
- 		       dentry,
- 		       dentry->d_lockref.count,
- 		       dentry->d_sb->s_type->name,
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 5714e900567c499739bb205f43bb6bf73f7ebe54..4ccd4d2e31adf571f939d2e777123e40302e565f 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -1080,7 +1080,7 @@ static void ep_show_fdinfo(struct seq_file *m, struct file *f)
- 		struct inode *inode = file_inode(epi->ffd.file);
- 
- 		seq_printf(m, "tfd: %8d events: %8x data: %16llx "
--			   " pos:%lli ino:%lx sdev:%x\n",
-+			   " pos:%lli ino:%llx sdev:%x\n",
- 			   epi->ffd.fd, epi->event.events,
- 			   (long long)epi->event.data,
- 			   (long long)epi->ffd.file->f_pos,
-diff --git a/fs/fserror.c b/fs/fserror.c
-index 06ca86adab9b769dfb72ec58b9e51627abee5152..1e4d11fd9562fd158a23b64ca60e9b7e01719cb8 100644
---- a/fs/fserror.c
-+++ b/fs/fserror.c
-@@ -176,7 +176,7 @@ void fserror_report(struct super_block *sb, struct inode *inode,
- lost:
- 	if (inode)
- 		pr_err_ratelimited(
-- "%s: lost file I/O error report for ino %lu type %u pos 0x%llx len 0x%llx error %d",
-+ "%s: lost file I/O error report for ino %llu type %u pos 0x%llx len 0x%llx error %d",
- 		       sb->s_id, inode->i_ino, type, pos, len, error);
- 	else
- 		pr_err_ratelimited(
-diff --git a/fs/pipe.c b/fs/pipe.c
-index b44a756c0b4165edc2801b2290bf35480245d7a6..9841648c9cf3e8e569cf6ba5c792624fe92396f5 100644
---- a/fs/pipe.c
-+++ b/fs/pipe.c
-@@ -873,7 +873,7 @@ static struct vfsmount *pipe_mnt __ro_after_init;
-  */
- static char *pipefs_dname(struct dentry *dentry, char *buffer, int buflen)
- {
--	return dynamic_dname(buffer, buflen, "pipe:[%lu]",
-+	return dynamic_dname(buffer, buflen, "pipe:[%llu]",
- 				d_inode(dentry)->i_ino);
- }
- 
+Indeed, I don't use this driver in u-boot.
 
--- 
-2.53.0
+> Not depending on U-Boot pre-configuration is obviously a great goal, but
+> the infrastructure just hasn't existed until very recently. Again, it's
+> a combination of PHY and PCS settings, not exclusively a PHY or a PCS iss=
+ue.
+> This is not the only place where an implicit dependency upon U-Boot has
+> existed.
+>
+> What we are looking at here are the loose ends for 10G-QXGMII, where the
+> Linux driver was just assuming that U-Boot would pre-initialize in-band
+> autoneg, and just validate that the device tree has
+> managed =3D "in-band-status". This is obviously insufficient for the new
+> world where we have API in place to ensure PHY and PCS settings are in
+> sync.
+>
+> The good news, so to speak, is that I am not expecting regressions if we
+> were to configure 10G-QXGMII in-band autoneg in phylink_pcs_config()
+> according to the passed neg_mode, and remove the "%s only supports in-ban=
+d AN for now\n"
+> limitation.
 
+Thanks for the detailed explanation, that makes sense now.
+
+> Patryk, which PHY are you working with? Are you able to also patch its
+> phylib driver so as to report both LINK_INBAND_DISABLE | LINK_INBAND_ENAB=
+LE
+> in its inband_caps() method? It would be great if the mode without
+> managed =3D "in-band-status" would also work. My notes on this topic whil=
+e
+> I was working with the AQR412C didn't show a clear procedure on how to
+> disabled 10G-QXGMII in-band auto-negotiation.
+
+As for the phy... I'm aware that this isn't ideal for community
+visibility, but the PHY I'm working with has not been upstreamed yet
+and is currently under a strict NDA. Unfortunately, I cannot disclose
+the specific model at this stage. This is a constraint I'm bound by,
+as I'm working with vendor-supplied sources. I can however patch the
+vendor supplied sources adding modification you suggested so I guess
+the phy will be working as expected.
+
+> How do you wish we proceed? Is the above context enough for you to
+> submit patches, or do you need assistance?
+
+Of course I=E2=80=99ll gladly prepare patches. Just to summarize what needs=
+ to be done:
+- in lynx_pcs_config_usxgmii the constraint about in-band only
+supported mode should be removed
+- if neg_mode =3D PHYLINK_PCS_NEG_INBAND_ENABLED then the vendor
+specific registers to enable and restart autoneg (similarly like in
+u-boot) should be configured
+- additionally it should also work without in-band-status defined in
+the device tree
+
+Is this what you're suggesting? I'll proceed with this unless you have
+any objections.
+
+Best regards
+Patry
