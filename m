@@ -1,180 +1,135 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9198C3A6404
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 10:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE6A30FC34;
+	Thu, 26 Feb 2026 10:46:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772102611; cv=none; b=Mcvuw6u6vwkpYiChoGHNnO34NdUYKRfgYqRj86uWBXOWeqbBsbIHYgLlogtJW5rqhV7Y56zPWiy+sLgzdvWwaZmHF5nW3iRj/zPzFPxN2FSwtTwzHpQFlCl1cMb4kcRevRrGSQl2vSxfLhRqDPrMUr8pNR4UZj4EZl9UmCEpyqU=
+	t=1772102791; cv=none; b=KZ2dZskIwtYt9hI1337VeNVcl4U8hdzSY3+ID83M7pIFGtajk0LdhrnKWGRn1itRVoGSjwSsjnN2l2sQVFUnfilpYS5qOczSE03qbRfY7R2U/9BEr2ImL4LRkPv2RtV0dmNlyzZTihJjcgEm37h+5mtEcfRmz0kxdw1UV1rYWSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772102611; c=relaxed/simple;
-	bh=RujNMISISbGmip+gsV3i8B5HSZDusgL8kyOq5K5N+GU=;
+	s=arc-20240116; t=1772102791; c=relaxed/simple;
+	bh=uDsB0i6QXrY22o/BHBYBi7a/Koo8ot6LI6Ju593/6xY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KAdxvC6SzW8rYfP+H8WuaqWbJweWt7gxqpZdU9Sp9p/C8Ipr4+BFFVvF4FNzl7wfK6CKy7xhjvsHd2qozjyiaMLDuDkQ9+z63bFj5FK3R9xavdcUsHeXBe6T4ykoxPDmBsov9NVhYPqa+LUM4CMbo5ZM6Vhe6iCWFyHCUv8NM78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CBoQo9jy; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=UBIQBPqCt1IxlVSHltR4g6WGbXmI5V4dRFh55NQkZdj3PE5mAS7pJ/8qYa9mZslURFcm9rfJA7wcTBlXzhaI3kYHz+INUeNEjEnn1AwYZDZpZqIxAkPLr8uUKCZMRXAnPgmJX+6wCgv8pMo4pSjBDdlhsl4A4CqoYgIfyg3YGEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dqApQBF+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CBoQo9jy"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-436356740e6so722833f8f.2
-        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 02:43:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772102609; x=1772707409; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vYnij3WUKIrhr1paKuZQio94gFo5v03yqnu75blnTg4=;
-        b=CBoQo9jyM2yTd9XTP3GjFZB0m9pMVVnC2KlMwc2WiZ7WiOUQpGdw7D+lYXneZRk5f0
-         wxkMaw4uvOPqZqMYYYOCI1O6ho0Lzzki+UltNWUG86IdXkudyPunvO3pqAQloLHfaovc
-         q5HpYO2LLE5fFSqLQqZZNlHAyFhzpF+JaDP87ntt/cmGLiYoPFhzYAPlE3ppb8T2qt9o
-         DTDNBtRRk0cRb/d5DGG5ySIr+L5vYHVdZsGJvtlZepby9vw7hPrIi4u/nYQi6o9EvG+F
-         4NA36HIucCRbzCPXhgOfULLFLOd/UykxGn9CkyF6MGX64m/7jU/S2vV2d9e4M7JZYMwZ
-         UMSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772102609; x=1772707409;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vYnij3WUKIrhr1paKuZQio94gFo5v03yqnu75blnTg4=;
-        b=VRZRuQBcT0DJ9IqKAe/3ACBi+X3xbxUgh1f3E18xdhmPXspBiFAHEzoJmpPubuL/qk
-         YPJZ8CouAXBeKLzjBZfi1yRGNpizcjNjvFZQF2V/Pe8f9WRCfqJAjLqCwcb4rg99Q79B
-         qTk1PkL0vuubsCwTbgza9z2NhITDWDIIBTMba97pRooUJovc+Xhj1gMFaCbf/Bz/1t8s
-         udpl6hmqUMLPHuuq1Q98SlSmEtnpn3g1U3M5vhM1RFmH47UI7WvADb3fI3yUREhFhceI
-         apIpcnUQ8UwEDkbqsDHj1IAUzkOLvyNmjzU6foBOgYH4MQ8L/CocA6QAsmpjcsWMD6aD
-         0lCQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUnEATxYa2PWwzu0590l38Wi1PejrSxLaNPJ14sMOD3f3PNOqBLBZ22vQ0Gx85Zp211TdVc8aU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxv5fyhhMsdVAqJcb26UvqaI4phmha0HJhk9VMjtcPgii6lNpli
-	o+aBsLyQlMSvhYSRqnY7+pQiREPJngMFFeOoAo5CFpisVACAwaq3ZFee
-X-Gm-Gg: ATEYQzyIbXGqppcAt3NotCN0J8yrRoz20eKFq1EUzkEkXpQghHvYsoB43l+8BuwtlJ6
-	PotE2KJuzxXQOzpm2ph34XlSLaVfe1Iq2tGBVYr1rGLk/6/fZrmX2R6T37zzfUqG6vzQf2THPxs
-	pAMesEDyy1Vg6a0Xsmuostja4Slpe19VCt0MmKWz/mXbzQzdoq0KLz6D9qfGPXEPRyYU6nGZr8B
-	ln8aEo4zio+A4zpyduBK8DO/fSstugXD4oeNURMkr26C/5IqJvDgaG5/BQLS0rWb1qklcVHOC74
-	8vE2LtalDlcoBUkX9JONeK7HjHVQT9YZ+CCxx6QkZjX1kdcJkxrmGYThwOeXF51cNk6zu4vC5h1
-	dgoLfj5sky2/B8qLYmazUJpwMF284BOIyZagV8T/gmpZ2pNpySKJcGWV42Oi1LYEXst6AZstjUA
-	xIUMOhNk8xRYd8ODmH2twNyWQhkUwnxX6dDjBJxoZzrFUDM6AUA+TfoJWliKRRI9tANQkGZPQyH
-	5p1ObaE3m2zBVDA9xFlN4E=
-X-Received: by 2002:a05:6000:25c3:b0:439:704a:9838 with SMTP id ffacd0b85a97d-439942a422fmr6869715f8f.19.1772102608659;
-        Thu, 26 Feb 2026 02:43:28 -0800 (PST)
-Received: from gandalf.schnuecks.de (p200300c14f1996009e6b00fffe39b8a7.dip0.t-ipconnect.de. [2003:c1:4f19:9600:9e6b:ff:fe39:b8a7])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970bf9ff5sm42355609f8f.4.2026.02.26.02.43.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 02:43:27 -0800 (PST)
-Received: by gandalf.schnuecks.de (Postfix, from userid 500)
-	id 840D52FE34AD; Thu, 26 Feb 2026 11:43:27 +0100 (CET)
-Date: Thu, 26 Feb 2026 11:43:27 +0100
-From: Simon Baatz <gmbnomis@gmail.com>
-To: Matthieu Baerts <matttbe@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dqApQBF+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07D3DC19422;
+	Thu, 26 Feb 2026 10:46:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772102790;
+	bh=uDsB0i6QXrY22o/BHBYBi7a/Koo8ot6LI6Ju593/6xY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dqApQBF+a2+ASv11fBkuASvxv1L0IH4ibb8JP4ZH741RqaqHOnojnW7ZD73cWyILw
+	 4ccTSta1YxM3CTOtwBKqpP88pwM2bJq5ZDEo2SE8qUZEeEEfIzKGk+r54IcZcq6niu
+	 F/uQAHbMjIIbcvf8RJ3M7/kbtKnMCbRbYlPCsxePO2kcyvP7I5dLUI7XkF5LHfvuEj
+	 zRr4ILjiH+d7im/as1dCHxhKkGqma3V982rxtxvQAxkVGpJHn/heQbzHOb+pwvwq0+
+	 IDeqGkI7Ov0GaGVVO/gjejuSIKGV6K+eL8PX6ok8+G3hOVEUI4YUvXQkyMQ9NUEVsI
+	 s5iCS8uLt3e+g==
+Date: Thu, 26 Feb 2026 10:46:24 +0000
+From: Conor Dooley <conor@kernel.org>
+To: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	David Ahern <dsahern@kernel.org>,
-	Stefano Brivio <sbrivio@redhat.com>, Jon Maloy <jmaloy@redhat.com>,
-	Jason Xing <kerneljasonxing@gmail.com>, mfreemon@cloudflare.com,
-	Shuah Khan <shuah@kernel.org>,
-	Christian Ebner <c.ebner@proxmox.com>, netdev@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH RFC net-next v2 0/5] tcp: RFC 7323-compliant window
- retraction handling
-Message-ID: <aaAjz647AueLYvjl@gandalf.schnuecks.de>
-References: <20260226-tcp_rfc7323_retract_wnd_rfc-v2-0-aa3f8f9cc639@gmail.com>
- <dffe019f-93be-4fa8-aa29-743450f6c05f@kernel.org>
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	=?iso-8859-1?Q?Beno=EEt?= Monin <benoit.monin@bootlin.com>,
+	=?iso-8859-1?Q?Gr=E9gory?= Clement <gregory.clement@bootlin.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
+Subject: Re: [PATCH net-next v3 5/5] net: macb: Add "mobileye,eyeq5-gem"
+ compatible
+Message-ID: <20260226-folic-excitable-82eff83a125a@spud>
+References: <20251023-macb-eyeq5-v3-0-af509422c204@bootlin.com>
+ <20251023-macb-eyeq5-v3-5-af509422c204@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Im2QyThLb1POUKOO"
 Content-Disposition: inline
-In-Reply-To: <dffe019f-93be-4fa8-aa29-743450f6c05f@kernel.org>
-
-Hi Matt,
-
-On Thu, Feb 26, 2026 at 09:12:07AM +0100, Matthieu Baerts wrote:
-> Hi Simon,
-> 
-> On 26/02/2026 01:49, Simon Baatz via B4 Relay wrote:
-> > this series implements the receiver-side requirements for TCP window
-> > retraction as specified in RFC 7323 and adds packetdrill tests to
-> > cover the new behavior.
-> 
-> Thank you for looking at that.
-
-Thank you for chiming in; I know that my comments are somewhat
-provocative. :)
-
-> > It addresses a regression with somewhat complex causes; see my message
-> > "Re: [regression] [PATCH net-next 7/8] tcp: stronger sk_rcvbuf checks"
-> > (https://lkml.kernel.org/netdev/aXaHEk_eRJyhYfyM@gandalf.schnuecks.de/).
-> > 
-> > Please see the first patch for background and implementation details.
-> > 
-> > This is an RFC because a few open questions remain:
-> 
-> (...)
-> 
-> > - MPTCP seems to modify tp->rcv_wnd of subflows. And the modifications
-> >   look odd:
-> > 
-> >   1. It is updated in the RX path. Since we never advertised that
-> >      value, we shouldn't need to update rcv_mwnd_seq.
-> 
-> FYI, with MPTCP the received windows are shared between subflows. This
-> might be surprising, but maintaining per-subflow receive windows could
-> end up stalling some subflows while others would not use up their
-> window. For more details, please check this section of the RFC:
-> 
->   https://datatracker.ietf.org/doc/html/rfc8684#sec_rwin
-
-RFC 8646 has several pointers to RFC 5961 and in section 3.3.5 it
-says:
-
-                                                 ... Each of these
-   segments will be mapped onto subflows, as long as subflow sequence
-   numbers are in the allowed windows for those subflows.  Note that
-
-So, I assume that on sub-flow level we are still supposed to do
-the standard TCP sequence acceptability checks with respect to
-the advertised window for the subflow.
-
-If so, my concern is that raising rcv_wnd in the RX path means that
-we may accept sequence numbers that we never advertised in that
-particular subflow.
-
-> 
-> >   2. In the TX path, there is:
-> >   
-> >      tp->rcv_wnd = min_t(u64, win, U32_MAX);
-> > 
-> >      To me, that looks very wrong and that code might need to be fixed
-> >      first.
-> The capping is explained because the MPTCP-level ack seq is on 64-bit,
-> while the TCP level receive window is on 32-bit.
-
-The issues I see here are:
-
-1. When calculating the usable receive window in TCP, we use 32-bit
-   signed arithmetic.
-2. The max. window size with window scaling is around 1GB
-3. As said, rcv_wnd is used for acceptability checks.  In standard
-   TCP we ensure that rcv_wnd is aligned to the window scaling
-   factor.
-
-So, I had assumed to see the "reverse" of the current TX raise window
-logic in MPTCP: First, calculate the advertised window to put into
-the outgoing packet and then update rcv_wnd accordingly.
- 
-> I hope this helps better understanding these modifications, and
-> hopefully not introducing regressions on the MPTCP side :)
-
-Yes, thank you. Regarding regressions, I couldn't agree more.
+In-Reply-To: <20251023-macb-eyeq5-v3-5-af509422c204@bootlin.com>
 
 
-- Simon
- 
--- 
-Simon Baatz <gmbnomis@gmail.com>
+--Im2QyThLb1POUKOO
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, Oct 23, 2025 at 06:22:55PM +0200, Th=E9o Lebrun wrote:
+> Add support for the two GEM instances inside Mobileye EyeQ5 SoCs, using
+> compatible "mobileye,eyeq5-gem". With it, add a custom init sequence
+> that must grab a generic PHY and initialise it.
+>=20
+> We use bp->phy in both RGMII and SGMII cases. Tell our mode by adding a
+> phy_set_mode_ext() during macb_open(), before phy_power_on(). We are
+> the first users of bp->phy that use it in non-SGMII cases.
+>=20
+> The phy_set_mode_ext() call is made unconditionally. It cannot cause
+> issues on platforms where !bp->phy or !bp->phy->ops->set_mode as, in
+> those cases, the call is a no-op (returning zero). From reading
+> upstream DTS, we can figure out that no platform has a bp->phy and a
+> PHY driver that has a .set_mode() implementation:
+>  - cdns,zynqmp-gem: no DTS upstream.
+>  - microchip,mpfs-macb: microchip/mpfs.dtsi, &mac0..1, no PHY attached.
+>  - xlnx,versal-gem: xilinx/versal-net.dtsi, &gem0..1, no PHY attached.
+>  - xlnx,zynqmp-gem: xilinx/zynqmp.dtsi, &gem0..3, PHY attached to
+>    drivers/phy/xilinx/phy-zynqmp.c which has no .set_mode().
+
+Ran into this patch while looking at other stuff. Theo could you explain
+this analysis to someone not really au fait with phys? Looking at
+soc.dtsi files won't show you phys, since that's a board level decision,
+but you have found one for the zynqmp-gem so I guess that's just the way
+you presented the data?
+mpfs definitely has phys attached, so is you not finding one for it but
+finding for zynqmp, an indication that you were only looking for rgmii
+phys? Also, is the analysis of the connected phy driver accurate for
+zynmqmp?
+zynqmp-zc1751-xm018-dc4.dts seems to have 4 ethernet phys:
+		ethernet_phy0: ethernet-phy@0 { /* Marvell 88e1512 */
+			reg =3D <0>;
+		};
+		ethernet_phy7: ethernet-phy@7 { /* Vitesse VSC8211 */
+			reg =3D <7>;
+		};
+		ethernet_phy3: ethernet-phy@3 { /* Realtek RTL8211DN */
+			reg =3D <3>;
+		};
+		ethernet_phy8: ethernet-phy@8 { /* Vitesse VSC8211 */
+			reg =3D <8>;
+		};
+
+I'm not sure that this matters because they probably don't actually
+implement mode changes as they're dedicated ethernet phys. The zynmp phy
+seems to only be used for !ethernet devices. The phys I'm aware of being
+used with mpfs are all also dedicated ethernet ones. Calling
+phy_set_mode_ext() seems to be to be the right decision, but the rationale
+confused me a little.
+
+Cheers,
+Conor.
+
+--Im2QyThLb1POUKOO
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaaAkgAAKCRB4tDGHoIJi
+0iTVAP9HHR8z82MzQweWvBR0kQrJMikIfQ3m8ksMbGhiqsLiKAD8Cxa8C7Ggx/NI
+dVXtXKShc3DBXOu7l49uCeq8DFBqgQg=
+=x46e
+-----END PGP SIGNATURE-----
+
+--Im2QyThLb1POUKOO--
