@@ -1,42 +1,42 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE976355F52
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 16:42:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED20435A38D
+	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 16:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772124130; cv=none; b=huS3Lq1Ce0KTztTlbKNiHBpft8cBkVATGK3+Z/pEoA7HnVMWOMncxbL4x6ir7knQYwB5Wd+XdOGycn0KpuIhj7JO/D4eqc3phy90b8+wNcZeJ34yAiaEajmm2ZpgJt83ZiAh88VWzuTSbZTOXywwjPNybb2PFMuxy2T7x3joyq4=
+	t=1772124132; cv=none; b=Om7e+maM69SeLUOOkZSVX241nUHfoIKtqxgd176HQcnilF+JhFTVnbpnEeq+aHiCWrDu4AQEL2R23XCHuOOywy9ClshIzO8z2+IyrsnUoXhyyEdC69dHgdltIR0fYP83dlx3oGK+W54b79BZb8iXYyk7TpWyaqK9mWQfl2Tj5YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772124130; c=relaxed/simple;
-	bh=SS2r0x9fJePpa8zmgS9MB4sz3aG3ECRVaSr1UTx4t2Y=;
+	s=arc-20240116; t=1772124132; c=relaxed/simple;
+	bh=qAUGqtuwCqJ0laxCFzHnXNutNvHz8zxfyVdBttZkIQY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=b49ZZ737CO9hydoj/23QH3Q7KtoufZ/hLObHbgDMMPAW4iGaOxPNJuky6PVlzvlXGcPotLQJ/g3jCVhhDXOjdIs9BG9+9ZpxdZ1Kt0feFpShJkZXSniOp+zQRwKzMNeF1pnXAUkkBOOzECH5XH8uZTNqc1VB0lqs+9Mx+exUxU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=OquxiftT; arc=none smtp.client-ip=185.246.85.4
+	 In-Reply-To:To:Cc; b=rgL+gpCWOS/4wZh58GE64jJSVZ6+YcuiYEdvHXA9YDgT3pxzR1yGbcFm153f0iN0djNXrYvj/NbXdtqsidQICuDeg6T+rIeebMgwoPxtSDxwPl1z9/L3KE5qn7Nm6HUJK9RThSOs5KZHAz/oPxuAyQgEqvFar/HOafpoEVV73Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=PrYNTNMJ; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="OquxiftT"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="PrYNTNMJ"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id AC6434E4122F;
-	Thu, 26 Feb 2026 16:42:07 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id EEC10C4069C;
+	Thu, 26 Feb 2026 16:42:18 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 801565FDE9;
-	Thu, 26 Feb 2026 16:42:07 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id E1051103693FD;
-	Thu, 26 Feb 2026 17:42:04 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 707225FDE9;
+	Thu, 26 Feb 2026 16:42:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0D6D3103693FB;
+	Thu, 26 Feb 2026 17:42:00 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772124126; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1772124122; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=RCz7ZiFxHupdO6m0tzR5VygQNoN38bElGRsCY7k3JYI=;
-	b=OquxiftTQbqzdCxMyWM0e1MQmzcv5cbNzxwlStHDF4PfuhBD45Lj8tlTwo2mgSlGbSgRlU
-	S/0JKAr5kyN6Q27Fg5HAY81oC8fNfBQ8nxGRHELjir6v/Jjiwv/dUJ812R52jMsVJMdhK2
-	bb5gU3hIyLPteYC9EZevLbd1axE/hpDbNG4Z1Ha6+Ps9ioJFPZUoeiMoc54KwNq6V5Uy+k
-	1mYaKfSeNLFGcWtPnS53D82+titThbE1cPUWlcQzVM9wH5afQPCagIFKb3+7iTSUN/uuCv
-	ad+UIWBq3ZfsTbqK6orpVd6zd2JcNbH+vWw6YJw95PuPU1vjFJKFAS88G0+/Uw==
+	bh=Dt/xWp/luOgqyet9/x/e/zuW8LChXz1mN0JA1otPa0w=;
+	b=PrYNTNMJMZx+6shinKM+OCrZhocShxW44POVa68Cz1kDuY3trTQlAN3M2vLx1FNNzunh5V
+	AUPE5bk+Fu0AIPN8CPz6qba2FxtsSjhlUDBKFo2hkL/wx1oLoQ7htpqEzNIX4w3BmjTQsI
+	oP9gA2UIU4OBQLo09zojZHC5+dCnDMJagEZD4JxFEZUlSF993k9qI86MjtuyEArkEvURD/
+	dYPWWTMvSkPpewYK8y7CsfF4VNjnFoyJ7uJTlEwRxcoLiMtcSF82PZPGTRpGatw0vZu9bt
+	PkcRhTSUqeio+NqUTZQCMEy2w6t3at60NXMy/qgc90gTsrsu6DQ/K/1XmC2r4w==
 From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Thu, 26 Feb 2026 17:41:52 +0100
-Subject: [PATCH net-next v5 5/9] net: dsa: tag_ksz: Share code for KSZ8795
- and KSZ9893 xmit operations
+Date: Thu, 26 Feb 2026 17:41:50 +0100
+Subject: [PATCH net-next v5 3/9] net: dsa: microchip: Decorrelate msg_irq
+ index from IRQ bit offset
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,7 +45,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260226-ksz8463-ptp-v5-5-1bc24fb9627d@bootlin.com>
+Message-Id: <20260226-ksz8463-ptp-v5-3-1bc24fb9627d@bootlin.com>
 References: <20260226-ksz8463-ptp-v5-0-1bc24fb9627d@bootlin.com>
 In-Reply-To: <20260226-ksz8463-ptp-v5-0-1bc24fb9627d@bootlin.com>
 To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
@@ -61,228 +61,63 @@ Cc: Pascal Eberhard <pascal.eberhard@se.com>,
 X-Mailer: b4 0.14.2
 X-Last-TLS-Session-Version: TLSv1.3
 
-KSZ8795 and KSZ9893 have very similar tag handling in the xmit path,
-leading to code duplication.
+KSZ8463 has one register containing all the PTP-related interrupts from
+all ports. So it will use one IRQ domain for all of them, leading to 4
+interrupt bits to be dispatched in two ports. Current implementation
+doesn't allow to do so because the IRQ bit offset is also used as index
+to store the struct ptpmsg_irq in the table held by the port.
 
-There are only two differences between the two ksz*_xmit():
-- the KSZ8795 doesn't handle priorities between frames
-- ksz8795_xmit() directly returns the SKB instead of calling
-ksz_defer_xmit(). Yet, ksz_defer_xmit() also returns directly the SKB
-if no clone is present inside the SKB. Clones are only created by the KSZ
-driver when the PTP feature is enabled. Since KSZ8795 doesn't support
-PTP, returning the SKB directly or ksz_defer_xmit() is the same.
-
-The upcoming support for the KSZ8463 also requires a similar xmit().
-
-Move KSZ8795 operations below the definition of ksz_defer_xmit().
-
-Gather the common code from ksz8795_xmit() and ksz9893_xmit() into a new
-ksz_common_xmit() function that takes three input arguments:
-- do_tstamp to tell whether ksz_xmit_timestamp() should be called
-- prio to give the priority tag (if any)
-- override_mask to give the location of the override bit (if any)
+Add a new input to the setup() function to independently provide the
+interrupt bit offset and the ptpmsg_irq index.
 
 Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
 ---
- net/dsa/tag_ksz.c | 161 +++++++++++++++++++++++++++---------------------------
- 1 file changed, 80 insertions(+), 81 deletions(-)
+ drivers/net/dsa/microchip/ksz_ptp.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
-index d2475c3bbb7d227bb42b0368914275b00fb2784a..6ec9bcb324a953d988ef665a177566159e27027f 100644
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -99,68 +99,6 @@ static struct sk_buff *ksz_common_rcv(struct sk_buff *skb,
- 	return skb;
+diff --git a/drivers/net/dsa/microchip/ksz_ptp.c b/drivers/net/dsa/microchip/ksz_ptp.c
+index 3b0dddf918595e9318c9e9779035d5152dcd9dde..ae46ba41c588c076de2c3b70c7c6702ad85263d5 100644
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -1099,7 +1099,8 @@ static void ksz_ptp_msg_irq_free(struct ksz_port *port, u8 n)
+ 	irq_dispose_mapping(ptpmsg_irq->num);
  }
  
--/*
-- * For Ingress (Host -> KSZ8795), 1 byte is added before FCS.
-- * ---------------------------------------------------------------------------
-- * DA(6bytes)|SA(6bytes)|....|Data(nbytes)|tag(1byte)|FCS(4bytes)
-- * ---------------------------------------------------------------------------
-- * tag : each bit represents port (eg, 0x01=port1, 0x02=port2, 0x10=port5)
-- *
-- * For Egress (KSZ8795 -> Host), 1 byte is added before FCS.
-- * ---------------------------------------------------------------------------
-- * DA(6bytes)|SA(6bytes)|....|Data(nbytes)|tag0(1byte)|FCS(4bytes)
-- * ---------------------------------------------------------------------------
-- * tag0 : zero-based value represents port
-- *	  (eg, 0x0=port1, 0x2=port3, 0x3=port4)
-- */
--
--#define KSZ8795_TAIL_TAG_EG_PORT_M	GENMASK(1, 0)
--#define KSZ8795_TAIL_TAG_OVERRIDE	BIT(6)
--#define KSZ8795_TAIL_TAG_LOOKUP		BIT(7)
--
--static struct sk_buff *ksz8795_xmit(struct sk_buff *skb, struct net_device *dev)
--{
--	struct ethhdr *hdr;
--	u8 *tag;
--
--	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
--		return NULL;
--
--	/* Tag encoding */
--	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
--	hdr = skb_eth_hdr(skb);
--
--	*tag = dsa_xmit_port_mask(skb, dev);
--	if (is_link_local_ether_addr(hdr->h_dest))
--		*tag |= KSZ8795_TAIL_TAG_OVERRIDE;
--
--	return skb;
--}
--
--static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
--{
--	u8 *tag;
--
--	if (skb_linearize(skb))
--		return NULL;
--
--	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
--
--	return ksz_common_rcv(skb, dev, tag[0] & KSZ8795_TAIL_TAG_EG_PORT_M,
--			      KSZ_EGRESS_TAG_LEN);
--}
--
--static const struct dsa_device_ops ksz8795_netdev_ops = {
--	.name	= KSZ8795_NAME,
--	.proto	= DSA_TAG_PROTO_KSZ8795,
--	.xmit	= ksz8795_xmit,
--	.rcv	= ksz8795_rcv,
--	.needed_tailroom = KSZ_INGRESS_TAG_LEN,
--};
--
--DSA_TAG_DRIVER(ksz8795_netdev_ops);
--MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ8795, KSZ8795_NAME);
--
- /*
-  * For Ingress (Host -> KSZ9477), 2/6 bytes are added before FCS.
-  * ---------------------------------------------------------------------------
-@@ -274,6 +212,35 @@ static struct sk_buff *ksz_defer_xmit(struct dsa_port *dp, struct sk_buff *skb)
- 	return NULL;
- }
- 
-+static struct sk_buff *ksz_common_xmit(struct sk_buff *skb,
-+				       struct net_device *dev,
-+				       bool do_tstamp,
-+				       u8 prio,
-+				       u8 override_mask)
-+{
-+	struct dsa_port *dp = dsa_user_to_port(dev);
-+	struct ethhdr *hdr;
-+	u8 *tag;
-+
-+	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
-+		return NULL;
-+
-+	/* Tag encoding */
-+	if (do_tstamp)
-+		ksz_xmit_timestamp(dp, skb);
-+
-+	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
-+	hdr = skb_eth_hdr(skb);
-+
-+	*tag = dsa_xmit_port_mask(skb, dev);
-+	*tag |= prio;
-+
-+	if (is_link_local_ether_addr(hdr->h_dest))
-+		*tag |= override_mask;
-+
-+	return ksz_defer_xmit(dp, skb);
-+}
-+
- static struct sk_buff *ksz9477_xmit(struct sk_buff *skb,
- 				    struct net_device *dev)
+-static int ksz_ptp_msg_irq_setup(struct irq_domain *domain, struct ksz_port *port, u8 n)
++static int ksz_ptp_msg_irq_setup(struct irq_domain *domain, struct ksz_port *port,
++				 u8 index, int irq)
  {
-@@ -339,35 +306,67 @@ static const struct dsa_device_ops ksz9477_netdev_ops = {
- DSA_TAG_DRIVER(ksz9477_netdev_ops);
- MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ9477, KSZ9477_NAME);
+ 	u16 ts_reg[] = {REG_PTP_PORT_PDRESP_TS, REG_PTP_PORT_XDELAY_TS,
+ 			REG_PTP_PORT_SYNC_TS};
+@@ -1108,15 +1109,15 @@ static int ksz_ptp_msg_irq_setup(struct irq_domain *domain, struct ksz_port *por
+ 	const struct ksz_dev_ops *ops = port->ksz_dev->dev_ops;
+ 	struct ksz_ptp_irq *ptpmsg_irq;
  
--#define KSZ9893_TAIL_TAG_PRIO		GENMASK(4, 3)
--#define KSZ9893_TAIL_TAG_OVERRIDE	BIT(5)
--#define KSZ9893_TAIL_TAG_LOOKUP		BIT(6)
-+/*
-+ * For Ingress (Host -> KSZ8795), 1 byte is added before FCS.
-+ * ---------------------------------------------------------------------------
-+ * DA(6bytes)|SA(6bytes)|....|Data(nbytes)|tag(1byte)|FCS(4bytes)
-+ * ---------------------------------------------------------------------------
-+ * tag : each bit represents port (eg, 0x01=port1, 0x02=port2, 0x10=port5)
-+ *
-+ * For Egress (KSZ8795 -> Host), 1 byte is added before FCS.
-+ * ---------------------------------------------------------------------------
-+ * DA(6bytes)|SA(6bytes)|....|Data(nbytes)|tag0(1byte)|FCS(4bytes)
-+ * ---------------------------------------------------------------------------
-+ * tag0 : zero-based value represents port
-+ *	  (eg, 0x0=port1, 0x2=port3, 0x3=port4)
-+ */
+-	ptpmsg_irq = &port->ptpmsg_irq[n];
+-	ptpmsg_irq->num = irq_create_mapping(domain, n);
++	ptpmsg_irq = &port->ptpmsg_irq[index];
++	ptpmsg_irq->num = irq_create_mapping(domain, irq);
+ 	if (!ptpmsg_irq->num)
+ 		return -EINVAL;
  
--static struct sk_buff *ksz9893_xmit(struct sk_buff *skb,
--				    struct net_device *dev)
-+#define KSZ8795_TAIL_TAG_EG_PORT_M	GENMASK(1, 0)
-+#define KSZ8795_TAIL_TAG_OVERRIDE	BIT(6)
-+#define KSZ8795_TAIL_TAG_LOOKUP		BIT(7)
-+
-+static struct sk_buff *ksz8795_xmit(struct sk_buff *skb, struct net_device *dev)
-+{
-+	return ksz_common_xmit(skb, dev, false, 0, KSZ8795_TAIL_TAG_OVERRIDE);
-+}
-+
-+static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
- {
--	u16 queue_mapping = skb_get_queue_mapping(skb);
--	u8 prio = netdev_txq_to_tc(dev, queue_mapping);
--	struct dsa_port *dp = dsa_user_to_port(dev);
--	struct ethhdr *hdr;
- 	u8 *tag;
+ 	ptpmsg_irq->port = port;
+-	ptpmsg_irq->ts_reg = ops->get_port_addr(port->num, ts_reg[n]);
++	ptpmsg_irq->ts_reg = ops->get_port_addr(port->num, ts_reg[index]);
  
--	if (skb->ip_summed == CHECKSUM_PARTIAL && skb_checksum_help(skb))
-+	if (skb_linearize(skb))
- 		return NULL;
+-	strscpy(ptpmsg_irq->name, name[n]);
++	strscpy(ptpmsg_irq->name, name[index]);
  
--	/* Tag encoding */
--	ksz_xmit_timestamp(dp, skb);
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
+ 	return request_threaded_irq(ptpmsg_irq->num, NULL,
+ 				    ksz_ptp_msg_thread_fn, IRQF_ONESHOT,
+@@ -1161,7 +1162,7 @@ int ksz_ptp_irq_setup(struct dsa_switch *ds, u8 p)
+ 		goto out;
  
--	tag = skb_put(skb, KSZ_INGRESS_TAG_LEN);
--	hdr = skb_eth_hdr(skb);
-+	return ksz_common_rcv(skb, dev, tag[0] & KSZ8795_TAIL_TAG_EG_PORT_M,
-+			      KSZ_EGRESS_TAG_LEN);
-+}
- 
--	*tag = dsa_xmit_port_mask(skb, dev);
--	*tag |= FIELD_PREP(KSZ9893_TAIL_TAG_PRIO, prio);
-+static const struct dsa_device_ops ksz8795_netdev_ops = {
-+	.name	= KSZ8795_NAME,
-+	.proto	= DSA_TAG_PROTO_KSZ8795,
-+	.xmit	= ksz8795_xmit,
-+	.rcv	= ksz8795_rcv,
-+	.needed_tailroom = KSZ_INGRESS_TAG_LEN,
-+};
- 
--	if (is_link_local_ether_addr(hdr->h_dest))
--		*tag |= KSZ9893_TAIL_TAG_OVERRIDE;
-+DSA_TAG_DRIVER(ksz8795_netdev_ops);
-+MODULE_ALIAS_DSA_TAG_DRIVER(DSA_TAG_PROTO_KSZ8795, KSZ8795_NAME);
- 
--	return ksz_defer_xmit(dp, skb);
-+#define KSZ9893_TAIL_TAG_PRIO		GENMASK(4, 3)
-+#define KSZ9893_TAIL_TAG_OVERRIDE	BIT(5)
-+#define KSZ9893_TAIL_TAG_LOOKUP		BIT(6)
-+
-+static struct sk_buff *ksz9893_xmit(struct sk_buff *skb,
-+				    struct net_device *dev)
-+{
-+	u16 queue_mapping = skb_get_queue_mapping(skb);
-+	u8 prio = netdev_txq_to_tc(dev, queue_mapping);
-+
-+	return ksz_common_xmit(skb, dev, true,
-+			       FIELD_PREP(KSZ9893_TAIL_TAG_PRIO, prio),
-+			       KSZ9893_TAIL_TAG_OVERRIDE);
- }
- 
- static const struct dsa_device_ops ksz9893_netdev_ops = {
+ 	for (irq = 0; irq < ptpirq->nirqs; irq++) {
+-		ret = ksz_ptp_msg_irq_setup(ptpirq->domain, port, irq);
++		ret = ksz_ptp_msg_irq_setup(ptpirq->domain, port, irq, irq);
+ 		if (ret)
+ 			goto out_ptp_msg;
+ 	}
 
 -- 
 2.53.0
