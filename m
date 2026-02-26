@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF78638757B;
-	Thu, 26 Feb 2026 03:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232BA387591;
+	Thu, 26 Feb 2026 03:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772076010; cv=none; b=KZFjxIEq6df1Q4GD1VUdqZz1PYuwSEoUZjY9llWyG3uTnWcjieBAQFrDlgWiDwQcPDUvIXrISi4O0tqR62hB269xPa62Uz67pKXGyKH7dTPqDMHDvQvg+GGPpCW7uP054zQSSVV0EXxB+gQPZZacfW7qYSnTTkV0vAqbXKrjCc0=
+	t=1772076011; cv=none; b=JSQG5v+RFnGCTDFNoMxi5B3PEyyJv5Y99/Id4UhjSMuyd5hRi7iWLvGc/wPG0Vlupgrjg6TsNLx6Sx0psR+UWt/KE1Uan7b7x0fm/pdwaNUHVNNA0/MgFJehJ7dDPpzPSpvA8AFOJvLiFCxTcrt925oJgk7+o10r34FHHqnKQLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772076010; c=relaxed/simple;
-	bh=x+hXaKRyH3CbhBqsiU+WtoQDutqA45cAk54/G6S2Khw=;
+	s=arc-20240116; t=1772076011; c=relaxed/simple;
+	bh=WtRU1/cRaO2s8GzsA9VtEY2PQaschyD60erBK06fE+0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WQNbCNUrLlp3/j7Ge2xa7mFNbO+SWeXBh55xohtFrwtJ+7ixztR684a+LBnM7o3gVCX5OXDxOPorTIG0fcVu+D9XCaI/FWlan/aJxX5hoSsYV8w4GlzuTHRHEpf7Ag31HDudPReQW/L2LCRB5Q70LdxhBbRBHpNQiL9TLAQvnlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UwMZwUbx; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=ToiUKBYYQ/bjSftp8Dj0qRrx2ytopdHv+/0IfEu8nnqsf82rlrKop5mzFFgUprAlt6H6ccQyonMrIZd4A9n2dLtVxrNgFej4/AqbatAl3K/YJNjzLlvD3nZDXJ4lB3y/Gb7otRU7lqbAsy/wJVwafV0zWnGzmymKESle5544LsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sDW5aBqD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UwMZwUbx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89016C2BC86;
-	Thu, 26 Feb 2026 03:20:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sDW5aBqD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE2C8C116D0;
+	Thu, 26 Feb 2026 03:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772076009;
-	bh=x+hXaKRyH3CbhBqsiU+WtoQDutqA45cAk54/G6S2Khw=;
+	s=k20201202; t=1772076010;
+	bh=WtRU1/cRaO2s8GzsA9VtEY2PQaschyD60erBK06fE+0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=UwMZwUbxfvNfgNu88FlrWqB2vsISVFGHadfXT8QJMh/XzoHws51Ca2d+DLXcPeUa9
-	 ZjKuxH2+31auNn4xzKgb2UjuMzHqaRM85J8FlA6wcv6577dF/ZZ7r0EfxNsqZhUVMq
-	 THmj12BC6cx2N6aJr3ovEBvnmTkVLQwqW3g2np7rE6OI9v1rjBEvD4fPxMex++r1rG
-	 nN+DXh7IpjFN12TPDA/WNR0LRRiAS9z84gtGB9T549rKPRd30eupn7MD54nZaWen8D
-	 YEEX5s8GS6m8442ClKsydlpknQ5m6M9JEdNSNyL+U875gsIzeyW2N/4L7oGySInFZW
-	 01D9qyy/ysUYw==
+	b=sDW5aBqDm3BeJo4KASF6bs0GOlF5BIm07yJdAEFBEy3hUKpuYlAeR4bWcntxBoAQl
+	 xlnI1rtMWiIdePbOG3vGMpLxNGHVXuD6oDzyefsGCmGTondk/Nnkn6PThVOTJ6JeNH
+	 CPiqPJ0bZHHPjm8BCVS/1GiV9JELs0eQqbAl0GGzHBbmJ/R+r87j26+C/eVLdXNV7t
+	 nVHRV1C+5QjSOeK06jgaSLrn9+Ua2QZWKj3NI8FfqDyJWIgU/G7+kN4bAntigG3RIm
+	 KzWY8/Y/zDOJDQmAGaIatunfYmybwbk+ofm0U7sMR7vMXl4ZeqQF2YPujo3VV2mI5o
+	 Ekm/RMcwly93w==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEB7380A94B;
-	Thu, 26 Feb 2026 03:20:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9F3C380A94B;
+	Thu, 26 Feb 2026 03:20:16 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,50 +37,41 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] net: mana: Fix double destroy_workqueue on service
- rescan PCI path
+Subject: Re: [PATCH net-next] MAINTAINERS: Update maintainer entry for
+ QUALCOMM
+ ETHQOS ETHERNET DRIVER
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177207601404.1018003.17798164390456983637.git-patchwork-notify@kernel.org>
-Date: Thu, 26 Feb 2026 03:20:14 +0000
+ <177207601554.1018003.6224176217701309243.git-patchwork-notify@kernel.org>
+Date: Thu, 26 Feb 2026 03:20:15 +0000
 References: 
- <aZ2bzL64NagfyHpg@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <20260224-qcom_ethqos_maintainer-v1-1-24e02701ea52@oss.qualcomm.com>
 In-Reply-To: 
- <aZ2bzL64NagfyHpg@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
- shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
- ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- dipayanroy@microsoft.com
+ <20260224-qcom_ethqos_maintainer-v1-1-24e02701ea52@oss.qualcomm.com>
+To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Cc: kuba@kernel.org, vkoul@kernel.org, netdev@vger.kernel.org,
+ linux@armlinux.org.uk, linux-kernel@vger.kernel.org,
+ linux-arm-msm@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 24 Feb 2026 04:38:36 -0800 you wrote:
-> While testing corner cases in the driver, a use-after-free crash
-> was found on the service rescan PCI path.
+On Tue, 24 Feb 2026 17:58:47 +0530 you wrote:
+> Replace Vinod Koul with Mohd Ayaan Anwar as the maintainer of the
+> QUALCOMM ETHQOS ETHERNET DRIVER. Vinod confirmed he is no longer
+> active in this area and agreed to be removed.
 > 
-> When mana_serv_reset() calls mana_gd_suspend(), mana_gd_cleanup()
-> destroys gc->service_wq. If the subsequent mana_gd_resume() fails
-> with -ETIMEDOUT or -EPROTO, the code falls through to
-> mana_serv_rescan() which triggers pci_stop_and_remove_bus_device().
-> This invokes the PCI .remove callback (mana_gd_remove), which calls
-> mana_gd_cleanup() a second time, attempting to destroy the already-
-> freed workqueue. Fix this by NULL-checking gc->service_wq in
-> mana_gd_cleanup() and setting it to NULL after destruction.
+> Acked-by: Vinod Koul <vkoul@kernel.org>
+> Suggested-by: Russell King (Oracle) <linux@armlinux.org.uk>
+> Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] net: mana: Fix double destroy_workqueue on service rescan PCI path
-    https://git.kernel.org/netdev/net/c/f975a0955276
+  - [net-next] MAINTAINERS: Update maintainer entry for QUALCOMM ETHQOS ETHERNET DRIVER
+    https://git.kernel.org/netdev/net/c/916864e5eda0
 
 You are awesome, thank you!
 -- 
