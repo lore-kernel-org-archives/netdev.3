@@ -1,81 +1,101 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6755E19AD8B
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 03:20:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from azure-sdnproxy.icoremail.net (azure-sdnproxy.icoremail.net [207.46.229.174])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CAB285CB4;
+	Thu, 26 Feb 2026 03:20:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.46.229.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772076017; cv=none; b=njglZOGCePAOHszR1dFRl73awu7Z8Gp6wd5C+sDRaNchboeJrQmZS0OJ7swW1dvMyiJPXFcg0bGxyz5GCIJKowqhZk3Yr9YLj9R+AXGlHD0WNavi2ExMr+ocj+PhOxg0sawyEc5YEbtgmuXXRUduXgIpDgmILzTbxjOG/24m1L0=
+	t=1772076052; cv=none; b=fYH7fupfgyf+lRPuEdQc2fEGmKqK1cjZxnqKbHZMFsM8rTLyWXQnAjoZjV3TVVTyoc+j5O4WV+MPcKLqiyhoG2aXlhrTxTgfHrdb5Y3XWtWBxWoHmTFnX/GkZCrENQzC7T2xydcf5VJLMqGvuzcYGzXKLd/xeujVrme8RjCxb6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772076017; c=relaxed/simple;
-	bh=2zmgXg8tJ0GzwYGuMnLjz1ZeoPrFhYj5IT1BMlHijNM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pwpXLDfx1UUtyJlzdozKzmIW3+7kusCTHBsLswWLnz6fSiNIuzXjeYuh1okCcv1fII+o6H7K8lClx/7dYLw4PMCZIFF6+vU8t/L5AOWCGQVrQ4tt9k+jDusJMNf3+Jx5jslWypUgtRbjG2rc5uAVG8wkfqhXKu+nA3bOrw9hr7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mR7dRM2l; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mR7dRM2l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B979C116D0;
-	Thu, 26 Feb 2026 03:20:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772076017;
-	bh=2zmgXg8tJ0GzwYGuMnLjz1ZeoPrFhYj5IT1BMlHijNM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=mR7dRM2laJxdyx6iZmCw4IkMUwjaMrUDPl1CCXLdLrm8zC2sion63uMHd5bIfr1lk
-	 iiqyl/oRlv1UXoa1FPMww9Dm+MktLVle0I2Lw1WPR7MgbbDR1QgPzbx1k1ED0PA4h8
-	 rmAOVB+0agDoHHyUFRZzMCw06EB+gatJXGKAaNCbyXIIVe93RvtqgOrYZcNcQWoKDL
-	 leMoE/3yIecGQ79VBg071sVO3NPmiwdzWkvK9v60kMVinl2WqE1GQEXQNsqMpmaNAB
-	 MDjFEHwNuIJHwF6JzNEj6GqLja9aCrQoVuxa08wYZ68Iab0mkAyAvxaZtowR5IUfOj
-	 +dYKsaD1J2Ivg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02C44380A94B;
-	Thu, 26 Feb 2026 03:20:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1772076052; c=relaxed/simple;
+	bh=N9pzA0KKk9pAydgPApXyHsI9MmCEVWk3nfMnXSs0C2o=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID; b=bbGl9Nn+ygRFw3/3znaAqjxelVUxlsjunu16YgL5CJjY8zJSYedZdFpsej2CVZ50aDRq2qdR9Vr/szFi3SAc7x/zqxo7fc0HM5yHNEtScjiAv98wP4hpPhl/XHC4iftUEkDri0L7pTNeuBXIFuKxysSqEHE8TwehyP+u3STrQ5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com; spf=pass smtp.mailfrom=eswincomputing.com; arc=none smtp.client-ip=207.46.229.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=eswincomputing.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=eswincomputing.com
+Received: from lizhi2$eswincomputing.com ( [10.11.96.26] ) by
+ ajax-webmail-app1 (Coremail) ; Thu, 26 Feb 2026 11:20:02 +0800 (GMT+08:00)
+Date: Thu, 26 Feb 2026 11:20:02 +0800 (GMT+08:00)
+X-CM-HeaderCharset: UTF-8
+From: =?UTF-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>
+To: "Marcel Ziswiler" <marcel@ziswiler.com>
+Cc: devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, robh@kernel.org,
+	krzk+dt@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	ningyu@eswincomputing.com, linmin@eswincomputing.com,
+	pinkesh.vaghela@einfochips.com, weishangjuan@eswincomputing.com,
+	dongxuyang@eswincomputing.com, ganboing@gmail.com,
+	pritesh.patel@einfochips.com
+Subject: Re: Re: [PATCH v2 0/2] net: stmmac: eic7700: fix EIC7700 eth1 RX
+ sampling timing
+X-Priority: 3
+X-Mailer: Coremail Webmail Server Version 2024.2-cmXT6 build
+ 20241203(6b039d88) Copyright (c) 2002-2026 www.mailtech.cn
+ mispb-72143050-eaf5-4703-89e0-86624513b4ce-eswincomputing.com
+In-Reply-To: <5f99968ec561631852bfa72aea95a100dcad5324.camel@ziswiler.com>
+References: <20260209094628.886-1-lizhi2@eswincomputing.com>
+ <5f99968ec561631852bfa72aea95a100dcad5324.camel@ziswiler.com>
+Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=UTF-8
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/2] net: stmmac: fix interrupt coalescing
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177207602178.1018003.6114992445042344713.git-patchwork-notify@kernel.org>
-Date: Thu, 26 Feb 2026 03:20:21 +0000
-References: <aZ1o2dmfpeiubCik@shell.armlinux.org.uk>
-In-Reply-To: <aZ1o2dmfpeiubCik@shell.armlinux.org.uk>
-To: Russell King (Oracle) <linux@armlinux.org.uk>
-Cc: andrew@lunn.ch, alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
- pabeni@redhat.com
+Message-ID: <6137cd6a.4859.19c97f5eb67.Coremail.lizhi2@eswincomputing.com>
+X-Coremail-Locale: zh_CN
+X-CM-TRANSID:TAJkCgBn_HDiu59pn6YDAA--.351W
+X-CM-SenderInfo: xol2xx2s6h245lqf0zpsxwx03jof0z/1tbiAgEKDGmfJIYS1AAAsX
+X-Coremail-Antispam: 1Ur529EdanIXcx71UUUUU7IcSsGvfJ3iIAIbVAYjsxI4VWxJw
+	CS07vEb4IE77IF4wCS07vE1I0E4x80FVAKz4kxMIAIbVAFxVCaYxvI4VCIwcAKzIAtYxBI
+	daVFxhVjvjDU=
 
-Hello:
-
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Tue, 24 Feb 2026 09:01:13 +0000 you wrote:
-> Hi,
-> 
-> While cleaning up the descriptor handling, I noticed that the accounting
-> of transmit "packets" for interrupt coalescing was buggy in that it
-> takes the difference of the two indexes into the circular list of
-> transmit discriptors and merely subtracts one from the other without
-> regard for the indexes wrapping.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v2,1/2] net: stmmac: use circ_buf helpers for descriptors
-    https://git.kernel.org/netdev/net-next/c/819101c3c158
-  - [net-next,v2,2/2] net: stmmac: fix transmit interrupt coalescing
-    https://git.kernel.org/netdev/net-next/c/dd53a0e85969
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+SGkgTWFyY2VsLAoKVGhhbmtzIGZvciBzaGFyaW5nIHRoZSBkZXRhaWxzLgoKMS4gSSBjaGVja2Vk
+IHlvdXIgbG9nIGFuZCBub3RpY2VkIHRoYXQgdGhlIGtlcm5lbCBjbWRsaW5lIGFscmVhZHkgaW5j
+bHVkZXMKICAgImNsa19pZ25vcmVfdW51c2VkIi4gVGhlcmVmb3JlLCB5b3VyIGlzc3VlIGRvZXMg
+bm90IGFwcGVhciB0byBiZSB0aGUKICAgc2FtZSBhcyB0aGUgb25lIHByZXZpb3VzbHkgcmVwb3J0
+ZWQgYnkgQm8gR2FuLgoKMi4gSSBhbHNvIHZlcmlmaWVkIHRoYXQgdjYuMTkuMiBhbHJlYWR5IGNv
+bnRhaW5zIHRoZSB0d28gZU1NQyBmaXggcGF0Y2hlczoKICAgaHR0cHM6Ly9sb3JlLmtlcm5lbC5v
+cmcvYWxsL0NBUER5S0ZxY015TS09eCsyRldOTGhIWT1ndTVBcEhOUFFocDB4QktESkdyN0JoRXg0
+UUBtYWlsLmdtYWlsLmNvbS8KICAgaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsL0NBUER5S0Zy
+a0VaRHVNYkdwZnhpc21jeD12SmtTU0tfWGJ0Qjc2MitzVUZvY3VwVDYzd0BtYWlsLmdtYWlsLmNv
+bS8KCiAgIEEgbGlrZWx5IGNhdXNlIGlzIHRoYXQgdGhlIGVNTUMgRFRTIG5vZGUgaXMgbWlzc2lu
+ZyB0aGUgQVhJIGNsb2NrIGRlZmluaXRpb24uCiAgIFBsZWFzZSByZWZlciB0byB0aGUgRFRTIHVw
+ZGF0ZXMgaW4gdGhlIGZvbGxvd2luZyBwdWxsIHJlcXVlc3QgZm9yIHJlZmVyZW5jZToKICAgaHR0
+cHM6Ly9naXRodWIuY29tL2Vzd2luY29tcHV0aW5nL2xpbnV4LW5leHQvcHVsbC8yMAoKMy4gSW4g
+YWRkaXRpb24sIHBsZWFzZSBjaGVjayB3aGV0aGVyIENPTkZJR19HUElPX0RXQVBCPXkgaXMgZW5h
+YmxlZCBpbiB5b3VyCiAgIGtlcm5lbCBjb25maWd1cmF0aW9uLiBTaW5jZSBHTUFDIGlzIGJ1aWx0
+LWluIGJ5IGRlZmF1bHQsIGl0IGRlcGVuZHMgb24KICAgR1BJTyBiZWluZyBhdmFpbGFibGUgZHVy
+aW5nIGVhcmx5IGluaXRpYWxpemF0aW9uLgoKSG9wZSB0aGlzIGhlbHBzIG5hcnJvdyB0aGluZ3Mg
+ZG93bi4gUGxlYXNlIGxldCBtZSBrbm93IHdoYXQgeW91IGZpbmQuCgpCZXN0IHJlZ2FyZHMsClpo
+aSBMaQoKCj4gLS0tLS3ljp/lp4vpgq7ku7YtLS0tLQo+IOWPkeS7tuS6ujogIk1hcmNlbCBaaXN3
+aWxlciIgPG1hcmNlbEB6aXN3aWxlci5jb20+Cj4g5Y+R6YCB5pe26Ze0OjIwMjYtMDItMjEgMDI6
+Mzc6NTcgKOaYn+acn+WFrSkKPiDmlLbku7bkuro6IGxpemhpMkBlc3dpbmNvbXB1dGluZy5jb20s
+IGRldmljZXRyZWVAdmdlci5rZXJuZWwub3JnLCBhbmRyZXcrbmV0ZGV2QGx1bm4uY2gsIGRhdmVt
+QGRhdmVtbG9mdC5uZXQsIGVkdW1hemV0QGdvb2dsZS5jb20sIGt1YmFAa2VybmVsLm9yZywgcm9i
+aEBrZXJuZWwub3JnLCBrcnprK2R0QGtlcm5lbC5vcmcsIGNvbm9yK2R0QGtlcm5lbC5vcmcsIG5l
+dGRldkB2Z2VyLmtlcm5lbC5vcmcsIHBhYmVuaUByZWRoYXQuY29tLCBtY29xdWVsaW4uc3RtMzJA
+Z21haWwuY29tLCBhbGV4YW5kcmUudG9yZ3VlQGZvc3Muc3QuY29tLCBybWsra2VybmVsQGFybWxp
+bnV4Lm9yZy51aywgbGludXgtc3RtMzJAc3QtbWQtbWFpbG1hbi5zdG9ybXJlcGx5LmNvbSwgbGlu
+dXgtYXJtLWtlcm5lbEBsaXN0cy5pbmZyYWRlYWQub3JnLCBsaW51eC1rZXJuZWxAdmdlci5rZXJu
+ZWwub3JnCj4g5oqE6YCBOiBuaW5neXVAZXN3aW5jb21wdXRpbmcuY29tLCBsaW5taW5AZXN3aW5j
+b21wdXRpbmcuY29tLCBwaW5rZXNoLnZhZ2hlbGFAZWluZm9jaGlwcy5jb20sIHdlaXNoYW5nanVh
+bkBlc3dpbmNvbXB1dGluZy5jb20sIGRvbmd4dXlhbmdAZXN3aW5jb21wdXRpbmcuY29tCj4g5Li7
+6aKYOiBSZTogW1BBVENIIHYyIDAvMl0gbmV0OiBzdG1tYWM6IGVpYzc3MDA6IGZpeCBFSUM3NzAw
+IGV0aDEgUlggc2FtcGxpbmcgdGltaW5nCj4gCj4gSGkgWmhpIExpCj4gCj4gU29ycnksIHRvIHN0
+ZWFsIHRoaXMgdGhyZWFkLCBidXQgSSBkbyBoYXZlIGEgcXVpY2sgcXVlc3Rpb24gY29uY2Vybmlu
+ZyBFdGhlcm5ldCBvbiB0aGUgRUlDNzcwMC4gRXZlcnkgdGltZSBJCj4gZW5hYmxlIGdtYWMwIGlu
+IHRoZSBkZXZpY2UgdHJlZSBteSBFQkM3NzAwIHN0b3BzIGJvb3RpbmcgKGUuZy4gU0QgY2FyZCBp
+cyBubyBsb25nZXIgZGV0ZWN0ZWQpIHdoaWxlIEV0aGVybmV0Cj4gZG9lcyBzZWVtIHRvIGF0IGxl
+YXN0IGdldCBkZXRlY3RlZC4gVGhpcyBoYXMgYmVlbiBzZWVuIHVzaW5nIG5leHQtMjAyNjAyMTks
+IHN0YWJsZSB2Ni4xOS4yIFsxXSBhcyB3ZWxsIGFzCj4gNi4xOC4wLXJjNiBbMl0uIEFueSBpZGVh
+IHdoYXQgY291bGQgYmUgZ29pbmcgd3Jvbmc/Cj4gCj4gSSBhZG1pdCBzbyBmYXIgSSBvbmx5IGRv
+IGhhdmUgb25lIHNpbmdsZSBFQkM3NzAwIGF0IGhhbmQgd2hpbGUgd2FpdGluZyBmb3IgZnVydGhl
+ciBoYXJkd2FyZSB0byBhcnJpdmUuCj4gCj4gVGhhbmtzIQo+IAo+IFsxXSBodHRwczovL2dpdGh1
+Yi5jb20vcmlzY3YvbWV0YS1yaXNjdi9wdWxsLzYwMQo+IFsyXSBodHRwczovL2dpdGh1Yi5jb20v
+ZXN3aW5jb21wdXRpbmcvbGludXgtbmV4dC90cmVlL2Rldi90ZXN0LXVwc3RyZWFtLXY2LjE4LXJj
+Ngo+IAo+IENoZWVycwo+IAo+IE1hcmNlbAo+IAo+IFtzbmlwXQo=
