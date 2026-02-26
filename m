@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600CF385533;
-	Thu, 26 Feb 2026 03:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5132A32B99F
+	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 03:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772075422; cv=none; b=kE5OjOVXxk5mxsNePuDHQrV+wm9WQcBduUEN6sMJF0E7cHIXpIqQvgoRtxZbebwpxVBNJehqpf84fjgR4s7TAfaW9SMsoTVGzs2xbWLo6AIe4s6cMiwGvLfs/DSgFsXOZmwnESOGboSbkfQlsmZ24V5VEwpjhGR0tLmnWKsBYDs=
+	t=1772076007; cv=none; b=EynlrqQQEg0tT2egLDlrs25Nzf+4/BjM3POTxfgEuNqjPvgFeic5NvCPgJaywq9EZKGphZYhEuy8yjFhwe5jIaICf552t6L7kVAWDHxsaZaE0xEXO9PtKKcoD1TOK1I9bNs366TIsjXJckR2DlyNJaS4fUbirBSjuNPOvwvV85k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772075422; c=relaxed/simple;
-	bh=WEuS4UpaH1mhIWOXTq0r0IT77NR5gxE3+MA6q4btOhU=;
+	s=arc-20240116; t=1772076007; c=relaxed/simple;
+	bh=AXFIRSjHXB3AC9Amsj68Q4lWvNZydmQVbVkBF4nDmak=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pjiuwoFBb8bvOBbxbEAUhltjLup62Wnjch4RLqm7YbjaMMB37tYm487oMtkf/pCEF/fF3sMz4IJNc1m6e/gjvM/U5CcrSrcSPqqIGjYjjWeQEr9c50EIHzaJ2K2RrPgRxxk8GppPExOkhbkoHqX2K8A6zP5zxZ8P1qEyAaLguE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D3P7j/3h; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=lsiqCmEGhum7yA1Xm3nZuF8Ro/IJ6ffLaWDTR9gMLfyGFmyRcw3swGbG+JZvBJNXYjFx4H9RePSeOTIbSFmjqQVlMaBc4Hmp1yTsewmt+dxmdgN15qHwuz3K5iJxMDQa9wTZSHSMNl5RWK2DyN2UIPuIS5LVf9qB47XcHUqqjDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CgsK0sCb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D3P7j/3h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A946C116D0;
-	Thu, 26 Feb 2026 03:10:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CgsK0sCb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAD08C116D0;
+	Thu, 26 Feb 2026 03:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772075422;
-	bh=WEuS4UpaH1mhIWOXTq0r0IT77NR5gxE3+MA6q4btOhU=;
+	s=k20201202; t=1772076006;
+	bh=AXFIRSjHXB3AC9Amsj68Q4lWvNZydmQVbVkBF4nDmak=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=D3P7j/3h2OKv9yJKV4WmVeFHd+O7/FsGSb7Z0XFndDxNikaWTzyqt0bzBJmL2uard
-	 RukAUeCwrWIdpDPcwUiUG/KFdHscIneyNWirPw8zxdf9iDvW7/11ti+Ulu6jXl+w/a
-	 Dl7BJwZa50XOei3pUhQYk1TIF6SoJJ4sM9YfRi0XKSbMrAnYtuvKT5/WaGphkRMp+t
-	 +4TBSEdIxM5gokvRH3tNd1Jiawkm+YeTDYeGKfS0fWKDKbh30ETlYybmkgiuJtmS6b
-	 0F8roWj6nkVZtvQyXe/+pI5NXgeFJ4UwqOHlVfSVRWnrXpmEmMCxW6KYwUqTBbeym/
-	 L/6cd6mHujBNg==
+	b=CgsK0sCbUPYYw3RmZwHHkPNrLwQmz26fnPUymAnrq3MJ1Qah9Cd/0tc9kMXNfk9lN
+	 y+cQSaU3lXVZOFXYqrue/IVXBu98iTVwtdI7YKnsRURnn6fYvO7XXlEQy6/oQSKJ15
+	 wYaekAtV3AVeTqE0ZkUNrS3VqCzbHso/ojfwIIju75eI5ejk+ZkggxDrwcQI8s22yI
+	 NUkgkr/eXIFlYhEO/m70wtezJVr+7deOXropATM1yXG1pQZr8FWl58hkmmQ82T8qbJ
+	 +LtVN1E/fFO9b+sss6xSNXj582eak9wCylA0o7heBE3Hf0SotD2g6jRqCn/+qwBOrp
+	 EQp4/c3CBH9/Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02C13380A94B;
-	Thu, 26 Feb 2026 03:10:28 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9FD1380A94B;
+	Thu, 26 Feb 2026 03:20:12 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,40 +37,46 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: fs_enet: allow nvmem to override MAC
- address
+Subject: Re: [PATCH net v3 0/2] team: Fix reference count leak when changing
+ port
+ netns
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177207542654.1014739.9375392210981588857.git-patchwork-notify@kernel.org>
-Date: Thu, 26 Feb 2026 03:10:26 +0000
-References: <20260224014607.353378-1-rosenp@gmail.com>
-In-Reply-To: <20260224014607.353378-1-rosenp@gmail.com>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, pantelis.antoniou@gmail.com,
- andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+ <177207601154.1018003.1626571189104356486.git-patchwork-notify@kernel.org>
+Date: Thu, 26 Feb 2026 03:20:11 +0000
+References: <20260224125709.317574-1-idosch@nvidia.com>
+In-Reply-To: <20260224125709.317574-1-idosch@nvidia.com>
+To: Ido Schimmel <idosch@nvidia.com>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, kuba@kernel.org,
+ pabeni@redhat.com, edumazet@google.com, jiri@resnulli.us,
+ andrew+netdev@lunn.ch, penguin-kernel@I-love.SAKURA.ne.jp,
+ stfomichev@gmail.com
 
 Hello:
 
-This patch was applied to netdev/net-next.git (main)
+This series was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon, 23 Feb 2026 17:46:06 -0800 you wrote:
-> NVMEM typically loads after the ethernet driver and
-> of_get_ethdev_address returns -EPROBE_DEFER. return in such a case to
-> allow NVMEM to work.
+On Tue, 24 Feb 2026 14:57:07 +0200 you wrote:
+> Patch #1 fixes a reference count leak that was reported by syzkaller.
+> The leak happens when a net device that is member in a team is changing
+> netns. The fix is to align the team driver with the bond driver and have
+> it suppress NETDEV_CHANGEMTU events for a net device that is being
+> unregistered.
 > 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->  drivers/net/ethernet/freescale/fs_enet/fs_enet-main.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
+> Without this change, the NETDEV_CHANGEMTU event causes inetdev_event()
+> to recreate an inet device for this net device in its original netns,
+> after it was previously destroyed upon NETDEV_UNREGISTER. Later on, when
+> inetdev_event() receives a NETDEV_REGISTER event for this net device in
+> the new nents, it simply leaks the reference:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] net: fs_enet: allow nvmem to override MAC address
-    https://git.kernel.org/netdev/net-next/c/dc2a1facbde8
+  - [net,v3,1/2] team: avoid NETDEV_CHANGEMTU event when unregistering slave
+    https://git.kernel.org/netdev/net/c/bb4c698633c0
+  - [net,v3,2/2] selftests: team: Add a reference count leak test
+    https://git.kernel.org/netdev/net/c/58f8ef625e23
 
 You are awesome, thank you!
 -- 
