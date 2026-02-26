@@ -1,208 +1,129 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012046.outbound.protection.outlook.com [52.101.43.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9664392C27;
-	Thu, 26 Feb 2026 08:02:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772092929; cv=fail; b=BDgOb8da7T/EAil7+657cZIDmrovPirRkgMgymXKGyA4U5jH15S6Pe5Kqqgvh89IjrAAfcOuSGndmJAOJx6ZxXMWXaWb7j/UePnyf8JoryoOQQkOA9JU/spwXKt58VYtFuEL1uo67jJQnLA5P+Jq9xTEsrsy1+9UMb+OB+8impw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772092929; c=relaxed/simple;
-	bh=hhtyOrRgYrK6f+WSECuGQ/U6RnTmUdi9UEWa7HxXzbo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=E1Q61MBuG9gbTrsgoF/SjYQcdf/IUf+3OVXvaGiXZOnhasojivTtQZgt442+NvvE/Z/DD0a2FWp//r8c1jDgpRObtog6pi7dKQBaPmD/xbzkHqcMfUQHJVzw3DfIHdyRAv2ljdYeRxWvFuYhTW6Z0zp3DuNGfcDuNxTUzpngB8A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ACOs5gGd; arc=fail smtp.client-ip=52.101.43.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECA1392C28
+	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 08:02:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772092932; cv=none; b=XahTFkr7kIzYXo66/FVmJUCZSkAHOvsahFXJM4svtaVCktwEduekTPPPPmOxho5njV2UInYy6qmu79gpTCe7DvV7+eBqLKayBacFC0nBACmKR6GwHT+NXj03wBSkH/o1hSCMXwoUSYjz3fFQU8BHNmctcbvolbpZUJ1wt+n2Qvs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772092932; c=relaxed/simple;
+	bh=psYWwKUvm0boCnP/VBokoXXzODe+2v77zcC70+9bdVU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s/982RsXPxWkI2aucUkuSX/ANZqOhVP2ShwgCLkZ5CAfHSFzdB7f/5jgUmuOmAveXDprFU+ORdjshXUaC78TPgn3Dh8d9s2WQ808c8DCZSkm7E7u9r+vgqao0UarfCfOjwXzDr6F6hcjs5xtK3NIqbOmY983TduyQxpnASrgPiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=pWeDcwtH; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ACOs5gGd"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=E0LVeWV6n0hY2vavljGw8bST1/qiqIKBsixoB6xu/kEGYXIyVWyRf2/OgSEaf9RNDS/dZKokZDKrnWA2ny0sCvKKgyH9eWuvaPDL7W/BOegtQMUuIkfsVg4F7PAEBsz134Muvf/PTDv99OGxrSG5IG07I1XJRcHOYnI2y+YRvj03ohgJ4OWeCeYoohwJt6OMNbwm2efZUvpLKQTkNSoCTs9S8L/WtxdoyHCYcVJGs44UAB9Q4C75LSVxt7SN2RZReX1T9u/8GJKT3OI+KMeM2JKE386dKgXLz588+ozPMwSJzSD1QyyOU6ajVNZ7ybiwHIkI4xqu1KWleSjLY2WMpg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=leApNsE4ZZUN9qdNyT9Irog7tqSCHBLSH+p9MHr5l10=;
- b=f8amkGP87efWqikxHE2kUKVB/K7kr4bqeH+bA+Pi6u8gMHsDoVt2jZBzBOfgf46q8d9rC9U8LfwkI8BqLjT+pQPdccECy+bt3ExGCmtjFOvu+XuomqKUjO81V9qlPB0ekEvtDokKznNFvx5abRm/0OIwvASvhJ/9vYOnc8N0L8s3ipV7oA2bQwIepMiTw29VV9Nlyd6ezu/4d6/6qJJW06XhestGD1n0W3J/xd6XOGC5XgCL/9V5GOjRlXlOH4PEmBas3UQxaTqI7XoBWKYKIUc3CSheeS7V5oQqJ89zPkFhtanLxFt3EqLJkkXHWBIF1JE4B9ZYMCYe/W1ndp3xlw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=leApNsE4ZZUN9qdNyT9Irog7tqSCHBLSH+p9MHr5l10=;
- b=ACOs5gGdH+890peyJJxKkgUF6eUYDSZaXBypdnqj5X/I3SkgzXoc98//2H3bnM5VxaO8m4gFHPotb/lbL+UvDCIvCqTsIR2q386WTk9ucx6GBZyOlXcGQzeQngw/y3GXDsy3wvgurDDDEE4Y5toxUC5URLfes29i0jtEU1gwarj5niCsDsjYHWXxFYWp3107pTebD6upKuEGbWIo8/8vNy1czPpfYxqQwYovCxmTLz4xOTu4X0vX7Ql4F5nJJ/40akRVIj7f2pFDuc5dJpI0QLJ8eJtXu50yZKY9iGhUWSFHHlfVBhlA7OOq+LiiKBUFcoPFX76V7+/afJEHqo6EoA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7900.namprd12.prod.outlook.com (2603:10b6:8:14e::10)
- by SJ1PR12MB6362.namprd12.prod.outlook.com (2603:10b6:a03:454::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Thu, 26 Feb
- 2026 08:02:04 +0000
-Received: from DS0PR12MB7900.namprd12.prod.outlook.com
- ([fe80::3033:67fc:3646:c62f]) by DS0PR12MB7900.namprd12.prod.outlook.com
- ([fe80::3033:67fc:3646:c62f%5]) with mapi id 15.20.9632.010; Thu, 26 Feb 2026
- 08:02:04 +0000
-From: Ido Schimmel <idosch@nvidia.com>
-To: netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Cc: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	dsahern@gmail.com,
-	petrm@nvidia.com,
-	horms@kernel.org,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	martin.lau@linux.dev,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	Ido Schimmel <idosch@nvidia.com>
-Subject: [RFC PATCH bpf-next 9/9] selftests/bpf: fib_lookup: Add IPv6 link-local tests
-Date: Thu, 26 Feb 2026 10:00:03 +0200
-Message-ID: <20260226080003.524935-10-idosch@nvidia.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260226080003.524935-1-idosch@nvidia.com>
-References: <20260226080003.524935-1-idosch@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR4P281CA0093.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:cb::12) To DS0PR12MB7900.namprd12.prod.outlook.com
- (2603:10b6:8:14e::10)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="pWeDcwtH"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-43770c94dfaso496877f8f.2
+        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 00:02:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1772092929; x=1772697729; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jLAiq0vc9Bp5MrzPDt1hlssSl6Q9GvdlXHn67lqmMxA=;
+        b=pWeDcwtH/SyTRxn/gel4iQdgnwFWvs5yJ/2OOLRnMxf4DhoDBWrdrLaEUQAUdIfCCg
+         dHdlqwvKZFBHEeRcAuBl7UKY5quebtTrvyqdj4mmm0XpFjWMm6sKF3wvSSUCuRUXtYGl
+         tppbX2ixmydtaw7utT039N2BdU79iLrPrbr3JbtRjTXU6qh8jWXQ8nP5edo3WgsumjTI
+         GMT3M4042PYVjNxftpvxsyVeNkvuWW3NXM2uqGRXJ88qNjMlL7vkK8OZH5kbx3dKtdju
+         PAmL88vzpd4Ov1N7UFGIYt076MA71ThtUdaIulRB53bQ0zChNlcDM8A2cGwnJodMpygx
+         vt6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772092929; x=1772697729;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jLAiq0vc9Bp5MrzPDt1hlssSl6Q9GvdlXHn67lqmMxA=;
+        b=X5CULlY034dExT78LxeAW/aTOlaiLpiS3vQwV3vSnxwGW6LGUCV9NKLvBVTcSJzQOO
+         IDImj7mFhXtQb8umKm+4SSaQHb27yX9NwXbWRlRDwgHcA69RcLZ7wBYYaXU1b+XiNbVw
+         hMJvKSJKAxFpJwegug21eVtd7e5hm2nkzuPtZyleptaWj8vj8r9Hyxsyq2eCD4kxHbIX
+         4NT9wHmVmceKbVASl/iIXD6wIn5mkUiKJ4nPlTyq/GNNkgoJJMecKW32gU2zIK6pUL3V
+         Ohr5ksWUlLYWP79saBYrtD/tRPlwUSMKIbZGz1+c4fP1KYykR1d4jAWsr9QuLrTMRaa0
+         fAwA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCS49Ju/J4LiIMUtpiMMbEmF75wLBD9h0ouLjYSfMZttGhNH7hAlgtsP6NSYW61p354a+FAAw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGtY3EU33v7MssOIsfNl7zu7IY7xO8fKm1QDv2p81R91brm0GS
+	CqT8XHDsdOGp0ep3HdtAJqiL+IWTsd8xK9ZgpnFABgrXVrTFrGQOFhGWXvExEw7yYm8zxeG4SeV
+	O5FYQ
+X-Gm-Gg: ATEYQzwYlyl9sqnYH75hkXLBTiLxev0eB38mDlVkrWsfpK51fu9/T1Ag4/c1McRUGl+
+	Vs4RHknNHNG9n1X8zgb0+VfWF5x6Yg7T446gaFgANbY/DVNT6pvE3VZ0MHTkaV+RSZD4QmvK+D3
+	N0tZoFaX5TwOmwop5LbeW3s+raOa+tMsNLfQh4+eh1yFza454ZdOmYgGxjVatBjx8r3VQ4Q24oe
+	A5ZWphaPgD4nvCnOCMM5Ur86Z2ODw1XOrcRlw3LTkjr0w7+3TxelwdQS9Tl4y99JHmdwx1OO8Pd
+	l78gKULn9jZyhtSqq3qkYXBRORePbJX8WMlVQwwhdN/hgfB+JBjhK/KRcOJDk3x3YWPxJuN48eQ
+	u/h07ErP+/KtTKgJjj1Z+fHFKu7fNJn1xXqTLSZS9wLqDOuTGF6AeeQrc2dbfKcIhPdH55rB+b9
+	eLU2w5QAYUIn2yJ7dlipGgYP7BxPXP
+X-Received: by 2002:a5d:588b:0:b0:439:9106:3bb3 with SMTP id ffacd0b85a97d-43997f469ccmr2397212f8f.59.1772092929269;
+        Thu, 26 Feb 2026 00:02:09 -0800 (PST)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-43970c09897sm40536977f8f.17.2026.02.26.00.02.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 00:02:08 -0800 (PST)
+Date: Thu, 26 Feb 2026 11:02:06 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Zeeshan Ahmad <zeeshanahmad022019@gmail.com>
+Cc: Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>, netdev@vger.kernel.org,
+	kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [PATCH net v2] net: core: failover: fix NULL pointer dereference
+ in failover_slave_register()
+Message-ID: <aZ_9_twriI6Z1oh7@stanley.mountain>
+References: <20260226075737.8948-1-zeeshanahmad022019@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7900:EE_|SJ1PR12MB6362:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1e0cbbf7-5a76-4898-c928-08de750d5485
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	EGa7pT7ZdJeShMu+JvAzAoqlfhVVKTmbVYCZgPE2q9uFWb6PosIBoz0lkdcRMctxpU6EoHZSgzo5oHontEx0BtT4vJpdaMpwMDFS8QnMhrSGIYzGc0JbmfsvdiXw+bv9p3owkGg1KMKYNOkP8cIQohtnE4NMk4IAs0aqJ99ZqHIGDNjBUxcFBciPoWGLEiK/MOXVCY9Xt4Gq8aoYMi8H8CRbJ+xFRld41w4aOlvCaMARSNcoSh0mx8qTimZN/hzmBtIFTSfwhIqJ9pZM8JsZFkiWKrKBsbe5uArVyCSnUn5mezMdlFXbHxIKC3p39I/YJRRkx3n1R6QiCrPw66XJ7l1D3lxPOwKLpNeE+2raQyp+3Ht8M8JYtlL8ECOtO9Qgk5Ysqqvxna7aGzCrHy8d/9WanijOf6KuWuoHnCFQRH766exoBEHOYKTuGwFyC+whwasQZhPccKSVrYQlmCANV3no4iBkFGJZy/ZoMTu5LwNi0bfhf8EcYrwuwzXdqI813GlqcKqCkl2x7B9vXvDbkfhmTNSNW7RrCHHciZ3Sa/yJfCprsR3zf0buGgaC5eILhH/Boam6XBFxxr2g8OvBl1H8VE+ZRt9dPsIAhJIaazpOv424o8WKR0IrVX0cLkNV7PFqOS0uXGx7df/1lUKQ+ctbJQrq/1I/JjoAwbpjs86Tec1V1/8Q/lmRFSJHsi+WJgHZPZtw0E76NdtZrGaWIoMV7bX1lNeNpMSDxqCsSKk=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7900.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5iaQhoepiAh3ayQg7hwCU1NYfq+Yjn8izmthdOvk8DiIvCeQ22P5bBpc3LgW?=
- =?us-ascii?Q?1Qe9czD0u5vz/LM5xB3q8WeXXIM22LpOTZa2zW5u6fXIFyMiZ2gU35q5Sx4y?=
- =?us-ascii?Q?3qLFLUuOhq+usTOO/Boq6qveRzRDM+LqHgpfC3BMrcoPJxfJRIsIDahGMqhA?=
- =?us-ascii?Q?XsN83JKsD64yBMfcyI+czBeM6uz8q661147P5GK0S+oKap91Wq/iGAMnI1QU?=
- =?us-ascii?Q?g/h2tAoFB+aGM+Y/EdmGU9eot0lPbxAcu+qNV1a6RfqfUgATx+8Mz8SsTlL7?=
- =?us-ascii?Q?9MLMYJA8qYlsrRzkSwDigaW9oz48c1BndElcDM1GUficSW3OZhmzBLDCfOTU?=
- =?us-ascii?Q?/C+Yf4EGN+t6VnyekS7XuDxiQDHu/92xW90PaSTSmDW+MPCNqWOE5xPPv9WD?=
- =?us-ascii?Q?B9Emhi+VQC6tU6suL1n4pdngu6NmdpofBmdNUFsBVPzCTv3j5DxoCZdjvKlC?=
- =?us-ascii?Q?Xr7EhO7Lx3hh1WE7qQyd49XGjM+OWpGVAafQt06z5IE1agSnYM2cilstemle?=
- =?us-ascii?Q?ckcYHrPk+X8PB1qRsobdTsRzSw7qMY10nsSlxglqC4s3QZHGFOddH+WSzGfW?=
- =?us-ascii?Q?3h21OmE2ySO6o+BIY7eSmDnAwc1UlGYH6dhzG0voNN9Ej39M/kXpYXdYvm/L?=
- =?us-ascii?Q?THH2aTbE9iBpPeXnuJL6H6Co2reEEfiqGlpWH2XgFDY42mV7BpD4mjBoVvOT?=
- =?us-ascii?Q?d5wTV0a08LuKAHLqJlGZbVPOEPMWo0KW8ZbauqBcHmnpVbSc9KVxbU4NBtat?=
- =?us-ascii?Q?SMjxf+ZrVnQsoK0iQi+j3rDk5K8KXFiiLWZebvdZQH8QjvnjmMpVcm71wGSS?=
- =?us-ascii?Q?0p5+gJ/33O4sqB4aqY5Ye+HujDd+7c0Ayzmg78xtatp0qQ+Jz375FZQsF9ia?=
- =?us-ascii?Q?gd/2HKlEHAr9nzCUDaBGlCGGAeVUKESKQCY6cJjwqm7stimxpDhvR9fxhUMW?=
- =?us-ascii?Q?F1H/zaYwc1dWtfhImJ4ttZpbDMgm3I+HkUjAnO2Eqpg0OjEGHb7xxJoTcgob?=
- =?us-ascii?Q?/WGKa5xpjNTlMMdcjLik0aRSsbC/ZhZzUkG4r/QWEh3pPa3sOCL2O9hzSNA7?=
- =?us-ascii?Q?xLNH0MTxo3or6Wp0nizJa8MHRoLQXr+v2ubPDNXW/N/tMzx9wooufkCiSiye?=
- =?us-ascii?Q?OdIPu5V6DG2lJ9qhVefb4OcOZlHp3l6e8pT/Rd31FbDOMLlLK12OhN6v4PWy?=
- =?us-ascii?Q?aTcZHKbRVPUW+l5/TKi30IOvaQTmHbKowxBDvOof+qtYC04Q+qBgpOWkFaFa?=
- =?us-ascii?Q?TwFFtY2xzbJ6qKQNY+KsFcTgc1gbf1g4XcIe9r3W7a3dPcCD8tzA8T4x8FFD?=
- =?us-ascii?Q?uewYmUWfhj5kFTZ35e+lmxcs7K+F13Q5JBtX8uMU6by2CXAxUjmzOCkvlzJv?=
- =?us-ascii?Q?hAHLmQELYOhSs0Icf/gmy131rv0HEZaNB3ZAF72YNhdKyLBPZ7uswv4hMb1W?=
- =?us-ascii?Q?SqwSYU2PA26bkWKjdlXvLRkkf20Pr1uvL189TgHXH/8LR5u7vNT9IMhvpcYZ?=
- =?us-ascii?Q?LD2NPnKAu1/5lySEoT6+dBkXp8tiekNcBA32MM57JKU4Mnd3pNsvBopaw304?=
- =?us-ascii?Q?PJ0mmOJ90t5TomQiXJtQmhFopegYzvPf74n8kXtCNYb5tnoRePsZzuzpvdaB?=
- =?us-ascii?Q?ApGHFODyeCark6Mj5In4M73Ey/mrklMf2H2C/2L1XvTBifwblg6iHNWzqvYk?=
- =?us-ascii?Q?9XSUkPeiXZg7VEJr4aiP7c7GgjvEDCVTNOU+oJU+rQXuvJrg3rD1GU4evNMD?=
- =?us-ascii?Q?PxLl6NHBdw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1e0cbbf7-5a76-4898-c928-08de750d5485
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7900.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 08:02:04.7683
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: o7mXppbs4NLe5OYPfP055oWEhIpa6OcVdWfAWIRMMXAUAG+OjHRdQXtC/7WP2ez8Tt4P686kQ7PJzsuL00dlAA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6362
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260226075737.8948-1-zeeshanahmad022019@gmail.com>
 
-Add tests that verify that bpf_fib_lookup() is able to resolve the
-destination MAC for an IPv6 link-local address when specifying the
-BPF_FIB_LOOKUP_OUTPUT flag.
+On Thu, Feb 26, 2026 at 12:57:37PM +0500, Zeeshan Ahmad wrote:
+> Smatch warns that 'fops' is dereferenced at line 69 without a NULL check.
+> While other callbacks in this function properly check 'fops', the
+> rx_handler registration does not.
+> 
+> If failover_get_bymac() returns a valid failover_dev but a NULL fops,
+> the kernel will encounter a NULL pointer dereference when registering
+> the rx_handler.
+> 
+> Following the pattern of other failover callers, add a WARN_ON_ONCE()
+> to catch this misconfiguration. Abort the registration if fops is
+> missing to prevent an inconsistent state where a slave is logically
+> linked to a master but lacks a functional data path hook.
+> 
+> Fixes: 30c8bd5aa8b2 ("net: Introduce generic failover module")
+> Signed-off-by: Zeeshan Ahmad <zeeshanahmad022019@gmail.com>
+> ---
+> v2:
+>  - Target 'net' tree as this is a bug fix.
+>  - Change logic from an early return (v1) to WARN_ON_ONCE() and abort
+>    registration to prevent inconsistent state, as discussed with
+>    Simon Horman.
+>  - Update commit message with detailed impact analysis.
+> 
+>  net/core/failover.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/net/core/failover.c b/net/core/failover.c
+> index 2a140b3ea669..1702bb1feca1 100644
+> --- a/net/core/failover.c
+> +++ b/net/core/failover.c
+> @@ -63,6 +63,9 @@ static int failover_slave_register(struct net_device *slave_dev)
+>  	    fops->slave_pre_register(slave_dev, failover_dev))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+>  		goto done;
+>  
+> +	if (WARN_ON_ONCE(!fops))
+> +		goto done;
 
-Output without "bpf: fib_lookup: Allow output lookups for IPv6
-link-local addresses":
 
- # ./test_progs -a fib_lookup
- [...]
- Testing IPv6 output route, link-local, via first device set_lookup_params:PASS:inet_pton(IPV6_IFACE_ADDR) 0 nsec
- test_fib_lookup:PASS:bpf_prog_test_run_opts 0 nsec
- test_fib_lookup:FAIL:fib_lookup_ret unexpected fib_lookup_ret: actual 4 != expected 0
- [...]
- Testing IPv6 output route, link-local, via second device set_lookup_params:PASS:inet_pton(IPV6_IFACE_ADDR) 0 nsec
- test_fib_lookup:PASS:bpf_prog_test_run_opts 0 nsec
- test_fib_lookup:FAIL:fib_lookup_ret unexpected fib_lookup_ret: actual 4 != expected 0
- [...]
- #119     fib_lookup:FAIL
- Summary: 0/0 PASSED, 0 SKIPPED, 1 FAILED
+Move the NULL check in front of the fops->slave_pre_register() stuff and
+delete the other later NULL checks.
 
-Output with "bpf: fib_lookup: Allow output lookups for IPv6 link-local
-addresses":
-
- # ./test_progs -a fib_lookup
- #119     fib_lookup:OK
- Summary: 1/0 PASSED, 0 SKIPPED, 0 FAILED
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
----
- .../testing/selftests/bpf/prog_tests/fib_lookup.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/fib_lookup.c b/tools/testing/selftests/bpf/prog_tests/fib_lookup.c
-index 9e933daf56d7..3dca6fde249b 100644
---- a/tools/testing/selftests/bpf/prog_tests/fib_lookup.c
-+++ b/tools/testing/selftests/bpf/prog_tests/fib_lookup.c
-@@ -47,6 +47,8 @@
- #define IPV4_OUTPUT_DST		"192.0.2.1"
- #define IPV6_OUTPUT_NET		"2001:db8:1::"
- #define IPV6_OUTPUT_DST		"2001:db8:1::1"
-+#define IPV6_LL_ADDR		"fe80::1"
-+#define IPV6_LL_DST		"fe80::2"
- 
- struct fib_lookup_test {
- 	const char *desc;
-@@ -207,6 +209,14 @@ static const struct fib_lookup_test tests[] = {
- 	  .expected_ret = BPF_FIB_LKUP_RET_NOT_FWDED,
- 	  .lookup_flags = BPF_FIB_LOOKUP_OUTPUT | BPF_FIB_LOOKUP_SKIP_NEIGH,
- 	  .ifindex = IFINDEX_VETH2, },
-+	{ .desc = "IPv6 output route, link-local, via first device",
-+	  .daddr = IPV6_LL_DST, .expected_ret = BPF_FIB_LKUP_RET_SUCCESS,
-+	  .lookup_flags = BPF_FIB_LOOKUP_OUTPUT, .dmac = DMAC_INIT,
-+	  .ifindex = IFINDEX_VETH1, .expected_ifindex = IFINDEX_VETH1, },
-+	{ .desc = "IPv6 output route, link-local, via second device",
-+	  .daddr = IPV6_LL_DST, .expected_ret = BPF_FIB_LKUP_RET_SUCCESS,
-+	  .lookup_flags = BPF_FIB_LOOKUP_OUTPUT, .dmac = DMAC_INIT2,
-+	  .ifindex = IFINDEX_VETH2, .expected_ifindex = IFINDEX_VETH2, },
- };
- 
- static int setup_netns(void)
-@@ -289,6 +299,11 @@ static int setup_netns(void)
- 	SYS(fail, "ip neigh add %s dev veth1 lladdr %s nud perm", IPV6_OUTPUT_DST, DMAC);
- 	SYS(fail, "ip neigh add %s dev veth2 lladdr %s nud perm", IPV6_OUTPUT_DST, DMAC2);
- 
-+	SYS(fail, "ip addr add %s/64 dev veth1 nodad", IPV6_LL_ADDR);
-+	SYS(fail, "ip addr add %s/64 dev veth2 nodad", IPV6_LL_ADDR);
-+	SYS(fail, "ip neigh add %s dev veth1 lladdr %s nud perm", IPV6_LL_DST, DMAC);
-+	SYS(fail, "ip neigh add %s dev veth2 lladdr %s nud perm", IPV6_LL_DST, DMAC2);
-+
- 	return 0;
- fail:
- 	return -1;
--- 
-2.53.0
+regards,
+dan carpenter
 
