@@ -1,131 +1,196 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4B16441045;
-	Thu, 26 Feb 2026 19:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A9344CF55;
+	Thu, 26 Feb 2026 19:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772133901; cv=none; b=EOLhVkDCqzGyWByuBZIstXu0oht+0l7pi+PuoVhZYxD+uHRQYMtIE0PzGhItUfQxTEJtGjdUVAlKBqiXJA4RWvIrx2uWINSEyF9bMUKvTD0XtBBhOj3577QmulVrdBSClUetGGZh3rTQAGMHSoPkAS6LZPEos+XR0t9Ysp6PvCI=
+	t=1772133949; cv=none; b=Av1Lle/v2HVKuBJsN8Wxyy7ewBDRkSOBL2IBCYDZniCwlNNNPJ/qim7o3SAQQN3aUgmgTkw29TO0A/vTlv0AvG53m8xCR0jSKE7ljN1abhT12vRiu9tCru3qKQ/uT0aTaKkz43FdIxwPaO6vpF2znOzCxjTDGH0hXYUEnFF72kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772133901; c=relaxed/simple;
-	bh=At6EOPq1k0loTOHnkSiH4ces/B2b8vQCiL2Y+oLau8M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oiUxRRe0+lfSS+oKbZhSROL6Eqb7bFrnJB4LUZoD/waJsQqC0HEUZG2+TFMhTKwawx7NDSi+EEMxL9JTJwpz9ibNlRoQRVKW1vvNcm04PGAOxMDVq434Cmj79QvQQ1tPAGx9Yp7/aWLrj0NJxHY/ASGpBQ+n6DAaC58vvmBqWbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=fhOvzYBU; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1772133949; c=relaxed/simple;
+	bh=i3wKPYd8EFlc8IZ73L+p7gW+K0o00fx/yJw+0Jptrls=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ZZPj5BK886Ok3JFCOwIZYa/r65zrWUYXxr/hiZYd5pj6rr3gpd/GCXoNOw61uQgXsis2CXKwKDP1gLsedokz58gLJk9FLjWEJExECZlGUfei6g17J3FbAp4rZSoPon9gRuJw8J96K1DRhq1ks3IbwzDPmyLnYv5reH0cjMYr6Q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=vwHaHfhU; arc=none smtp.client-ip=193.238.174.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="fhOvzYBU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=RnhAKvHWNvmyO5wpr0bj8ELDG7XVxHtN3iOWEruVtsk=; b=fhOvzYBU6quBigzV3qkmKbRWjI
-	oLkuAz55lA11Xq6nUd8g4l0/HP49Q7ZMfCO8TPqTPmf5URl9Y3ykjhXdcZuIjkp5xEsZB431CJGS1
-	HHbYgRqpB/2omWulmLYy1nkj9On/LQjlU1hqzLBCObIqSY4fFYL/ImVVUoMS/GmVhrzMZoiUidrSZ
-	9hAk1lRUN+PgxGyK4XQdKzkUqhUWusZMw0sbntq9uZR/s1PSMTklC7+ZjzP9sSDP/9kzsFbuEoIqg
-	/HWHTHiyUvp6uYrWxUZqqIyi9OBww3x3fR4YUjMQXfkbSCV47/byivg0IJx/1WMPVOR40fLODqeIb
-	3tsZSDmg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:53236)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vvgyf-000000008NJ-1x4W;
-	Thu, 26 Feb 2026 19:24:49 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vvgyd-000000002Gr-3hoY;
-	Thu, 26 Feb 2026 19:24:47 +0000
-Date: Thu, 26 Feb 2026 19:24:47 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Conor Dooley <conor@kernel.org>
-Cc: =?iso-8859-1?Q?Th=E9o?= Lebrun <theo.lebrun@bootlin.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	=?iso-8859-1?Q?Beno=EEt?= Monin <benoit.monin@bootlin.com>,
-	=?iso-8859-1?Q?Gr=E9gory?= Clement <gregory.clement@bootlin.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Tawfik Bayouk <tawfik.bayouk@mobileye.com>,
-	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
-	Vladimir Kondratiev <vladimir.kondratiev@mobileye.com>
-Subject: Re: [PATCH net-next v3 5/5] net: macb: Add "mobileye,eyeq5-gem"
- compatible
-Message-ID: <aaCd_zV5kY-s1RBL@shell.armlinux.org.uk>
-References: <20251023-macb-eyeq5-v3-0-af509422c204@bootlin.com>
- <20251023-macb-eyeq5-v3-5-af509422c204@bootlin.com>
- <20260226-folic-excitable-82eff83a125a@spud>
+	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="vwHaHfhU"
+Received: from mx.ssi.bg (localhost [127.0.0.1])
+	by mx.ssi.bg (Potsfix) with ESMTP id BAD5C21D4F;
+	Thu, 26 Feb 2026 21:19:57 +0200 (EET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
+	:content-type:content-type:date:from:from:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
+	 bh=Exe2tq+Qjn8oUB9BaUlHxkZcSCOCRHMqp4FnkJz94AA=; b=vwHaHfhUI3ig
+	HqMDxpDmjZtDDoNUW0vdk5vA1ZUiCEb+TOtFQJWazf0ycFFYQ8ad4mVFYEdwHlMc
+	QHQ3N/MKMKI08qtrpPXAs0VqctHG8vBVhok6snlwBWmH3O4iLTZjVbw8VPDl4JFL
+	jdukUF9LW9PfA6HNUrmfwlFoozuo/YJGu0GsuTXSKn18ECk36j5setNOpLWSxUeH
+	bXD7hEF0t1Nz3Y6WAouOkkurY5oLu7r9S89sPynTMC7XpBEGAROTwxo7sUhv7o7v
+	7AG30BPppCXanbbtBy99fujFEJlGdZP6J77zxb2s+pze8NnINqYR9T7VDUFcAXDF
+	4I/Qx/5+MeOlM1yvXZ2BS7JlAdH274hxSPaOuVu/5lsmvL887TPZ4ho6CDtpepg6
+	jNPzgdR1kbc/CC6ZBYEqCPRyUCIMqGKMgdvI+LFMjMmtj9oEwOGPjnK4XgpRGN4y
+	IM+T5tIRegh0Jo+yp0tQFYthWjVX9B6Xd9k7Sas2EDWRISphDiMNegH4cEqR+vm1
+	THe+Xck2d/VLBFk8/3tS8RJlZroze6tM1/6B80jMFEPEtQ/i0Y70OpFSfbpJRnGJ
+	W3tvNOvYEK+IBLSWK8KLcuTB4iJqZHRtpT5xjWFEQmXzJ3FnN8sajocVjhym0IJF
+	Pr95suJflirl2+2JJaEh3a6DepqRQpk=
+Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
+	by mx.ssi.bg (Potsfix) with ESMTPS;
+	Thu, 26 Feb 2026 21:19:56 +0200 (EET)
+Received: from ja.ssi.bg (unknown [213.16.62.126])
+	by box.ssi.bg (Potsfix) with ESMTPSA id 911EA60973;
+	Thu, 26 Feb 2026 21:19:54 +0200 (EET)
+Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
+	by ja.ssi.bg (8.18.1/8.18.1) with ESMTP id 61QJJhQF062224;
+	Thu, 26 Feb 2026 21:19:44 +0200
+Date: Thu, 26 Feb 2026 21:19:43 +0200 (EET)
+From: Julian Anastasov <ja@ssi.bg>
+To: Jakub Kicinski <kuba@kernel.org>
+cc: fw@strlen.de, netfilter-devel@vger.kernel.org, pabeni@redhat.com,
+        davem@davemloft.net, edumazet@google.com, netdev@vger.kernel.org,
+        pablo@netfilter.org
+Subject: Re: [net-next,1/9] ipvs: make ip_vs_svc_table and ip_vs_svc_fwm_table
+ per netns
+In-Reply-To: <20260226034114.1806906-1-kuba@kernel.org>
+Message-ID: <2b88af71-9294-e4a6-968a-cb9b314bc87f@ssi.bg>
+References: <20260224205048.4718-2-fw@strlen.de> <20260226034114.1806906-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260226-folic-excitable-82eff83a125a@spud>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset=US-ASCII
 
-On Thu, Feb 26, 2026 at 10:46:24AM +0000, Conor Dooley wrote:
-> On Thu, Oct 23, 2025 at 06:22:55PM +0200, Théo Lebrun wrote:
-> > Add support for the two GEM instances inside Mobileye EyeQ5 SoCs, using
-> > compatible "mobileye,eyeq5-gem". With it, add a custom init sequence
-> > that must grab a generic PHY and initialise it.
-> > 
-> > We use bp->phy in both RGMII and SGMII cases. Tell our mode by adding a
-> > phy_set_mode_ext() during macb_open(), before phy_power_on(). We are
-> > the first users of bp->phy that use it in non-SGMII cases.
-> > 
-> > The phy_set_mode_ext() call is made unconditionally. It cannot cause
-> > issues on platforms where !bp->phy or !bp->phy->ops->set_mode as, in
-> > those cases, the call is a no-op (returning zero). From reading
-> > upstream DTS, we can figure out that no platform has a bp->phy and a
-> > PHY driver that has a .set_mode() implementation:
-> >  - cdns,zynqmp-gem: no DTS upstream.
-> >  - microchip,mpfs-macb: microchip/mpfs.dtsi, &mac0..1, no PHY attached.
-> >  - xlnx,versal-gem: xilinx/versal-net.dtsi, &gem0..1, no PHY attached.
-> >  - xlnx,zynqmp-gem: xilinx/zynqmp.dtsi, &gem0..3, PHY attached to
-> >    drivers/phy/xilinx/phy-zynqmp.c which has no .set_mode().
+
+	Hello,
+
+On Wed, 25 Feb 2026, Jakub Kicinski wrote:
+
+> This is an AI-generated review of your patch. The human sending this
+> email says "FYI"
 > 
-> Ran into this patch while looking at other stuff. Theo could you explain
-> this analysis to someone not really au fait with phys? Looking at
-> soc.dtsi files won't show you phys, since that's a board level decision,
-> but you have found one for the zynqmp-gem so I guess that's just the way
-> you presented the data?
-> mpfs definitely has phys attached, so is you not finding one for it but
-> finding for zynqmp, an indication that you were only looking for rgmii
-> phys? Also, is the analysis of the connected phy driver accurate for
-> zynmqmp?
-> zynqmp-zc1751-xm018-dc4.dts seems to have 4 ethernet phys:
-> 		ethernet_phy0: ethernet-phy@0 { /* Marvell 88e1512 */
-> 			reg = <0>;
-> 		};
-> 		ethernet_phy7: ethernet-phy@7 { /* Vitesse VSC8211 */
-> 			reg = <7>;
-> 		};
-> 		ethernet_phy3: ethernet-phy@3 { /* Realtek RTL8211DN */
-> 			reg = <3>;
-> 		};
-> 		ethernet_phy8: ethernet-phy@8 { /* Vitesse VSC8211 */
-> 			reg = <8>;
-> 		};
+> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> ---
+> ipvs: make ip_vs_svc_table and ip_vs_svc_fwm_table per netns
+> 
+> This commit converts the global IPVS service tables and their
+> associated mutex from global to per-netns, improving lookup
+> performance in large-scale deployments with multiple network
+> namespaces.
+> 
+> > diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
+> > index 29a36709e7f3..074a204ec6db 100644
+> > --- a/include/net/ip_vs.h
+> > +++ b/include/net/ip_vs.h
+> > @@ -33,6 +33,12 @@
+> >
+> >  #define IP_VS_HDR_INVERSE	1
+> >  #define IP_VS_HDR_ICMP		2
+> > +/*
+> > + *	Hash table: for virtual service lookups
+> > + */
+> > +#define IP_VS_SVC_TAB_BITS 8
+> > +#define IP_VS_SVC_TAB_SIZE BIT(IP_VS_SVC_TAB_BITS)
+> > +#define IP_VS_SVC_TAB_MASK (IP_VS_SVC_TAB_SIZE - 1)
+> 
+> The patch removes the global mutex definition DEFINE_MUTEX(__ip_vs_mutex)
+> from net/netfilter/ipvs/ip_vs_ctl.c and replaces all usage sites with the
+> per-netns ipvs->service_mutex. However, the extern declaration at line 52
+> of include/net/ip_vs.h is still present:
+> 
+>     extern struct mutex __ip_vs_mutex;
 
-Ethernet PHYs (drivers/net/phy/) are different from generic PHYs
-(drivers/phy/). Ethernet PHYs are completely different beast with a
-completely separate subsystem, which doesn't have a "set_mode" method.
+	I have fixes for all these issues in a followup
+patches. Sorry that I forgot to push them to the right
+patch.
 
-Théo is referring to generic PHYs not Ethernet PHYs.
+> Since no in-tree code references __ip_vs_mutex after this conversion,
+> should this declaration be removed for consistency?
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+	It will be removed in a followup patchset, in its patch 3/5.
+
+> 
+> [ ... ]
+> 
+> > diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+> > index 068702894377..d871273ce917 100644
+> > --- a/net/netfilter/ipvs/ip_vs_ctl.c
+> > +++ b/net/netfilter/ipvs/ip_vs_ctl.c
+> 
+> [ ... ]
+> 
+> > @@ -2306,9 +2282,9 @@ static struct ip_vs_service *ip_vs_info_array(struct seq_file *seq, loff_t pos)
+> >
+> >  	/* look in hash by protocol */
+> >  	for (idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+> > -		hlist_for_each_entry_rcu(svc, &ip_vs_svc_table[idx], s_list) {
+> > -			if ((svc->ipvs == ipvs) && pos-- == 0) {
+> > -				iter->table = ip_vs_svc_table;
+> > +		hlist_for_each_entry_rcu(svc, &ipvs->svc_table[idx], s_list) {
+> > +			if (pos-- == 0) {
+> > +				iter->table = ipvs->svc_table;
+> >  				iter->bucket = idx;
+> >  				return svc;
+> >  			}
+> > @@ -2317,10 +2293,10 @@ static struct ip_vs_service *ip_vs_info_array(struct seq_file *seq, loff_t pos)
+> >
+> >  	/* keep looking in fwmark */
+> >  	for (idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
+> > -		hlist_for_each_entry_rcu(svc, &ip_vs_svc_fwm_table[idx],
+> > +		hlist_for_each_entry_rcu(svc, &ipvs->svc_fwm_table[idx],
+> >  					 f_list) {
+> > -			if ((svc->ipvs == ipvs) && pos-- == 0) {
+> > -				iter->table = ip_vs_svc_fwm_table;
+> > +			if (pos-- == 0) {
+> > +				iter->table = ipvs->svc_fwm_table;
+> >  				iter->bucket = idx;
+> >  				return svc;
+> >  			}
+> 
+> [ ... ]
+> 
+> > @@ -2414,7 +2392,7 @@ static int ip_vs_info_seq_show(struct seq_file *seq, void *v)
+> >
+> >  		if (svc->ipvs != ipvs)
+> >  			return 0;
+> > -		if (iter->table == ip_vs_svc_table) {
+> > +		if (iter->table == ipvs->svc_table) {
+> >  #ifdef CONFIG_IP_VS_IPV6
+> >  			if (svc->af == AF_INET6)
+> >  				seq_printf(seq, "%s  [%pI6]:%04X %s ",
+> 
+> The conversion to per-netns tables makes 'svc->ipvs != ipvs' always false
+> here in ip_vs_info_seq_show(). Every service in ipvs->svc_table belongs
+> to that netns by construction.
+> 
+> Looking at the patch, similar checks were removed everywhere else:
+> - ip_vs_flush(): removed 'svc->ipvs == ipvs' check
+> - ip_vs_dst_event(): removed 'svc->ipvs == ipvs' check
+> - ip_vs_zero_all(): removed 'svc->ipvs == ipvs' check
+> - __ip_vs_service_find(): removed 'svc->ipvs == ipvs' check
+> - __ip_vs_svc_fwm_find(): removed 'svc->ipvs == ipvs' check
+> - ip_vs_genl_dump_services(): removed 'svc->ipvs != ipvs' check
+> - __ip_vs_get_service_entries(): removed 'svc->ipvs != ipvs' check
+> - ip_vs_info_array(): removed 'svc->ipvs == ipvs' check
+> 
+> But this one in ip_vs_info_seq_show() was left behind. Should it also
+> be removed for consistency?
+
+	It was removed later in patch 3 ("ipvs: use single svc table").
+
+	Comments about patch 3/9:
+
+- svc_fwm_table in comments will be removed in a followup
+patchset, in its patch 3/5.
+
+	Comments about patch 4/9:
+
+- bitwise ops have precedence over the logical ops but as the
+series is already applied we can make it less confusing later
+
+Regards
+
+--
+Julian Anastasov <ja@ssi.bg>
+
