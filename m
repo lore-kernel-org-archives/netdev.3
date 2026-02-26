@@ -1,160 +1,168 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231AB2AE68
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 08:26:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772094387; cv=pass; b=kwg7pEZy5iMpbz+CVcXRLMqt+bUh9OHfwWQBn3cx9OJ9T0TVT8Ls8fx2Ko8IRZgMVAI080t54KVdPjphmPKMRIpP5TnsbdeRkuxVq9Qy/Cz4IiC060i5/hT212I4auVFSbm2hfO6Nz7wcmqFXYOyocdKvGDfSPC7G9gx9Othzbw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772094387; c=relaxed/simple;
-	bh=dSbRnTtbphPH/CVU76suyGb8H6esoTis5rJLM+HBS2k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dIjdiGW6qBoYR75bNzUgwiBWM8FYuM8YpoA+j1wEEFxTgYhyprwJwRilxk99Ron3fcCd7wCJzw8QekK5vuFsx6Kir8a3wqm4MugT9n60iU07aRLg1bbJDY6TZ7kHc91OMwWND5vSfqmlinpf8vCI4rk6Uah0O444Q97B9CB5QPw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UbdKFfrR; arc=pass smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BFB38BF76;
+	Thu, 26 Feb 2026 08:26:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772094400; cv=none; b=GoF1DUC6hla+uPhEqdhtesEPDm4NDquXPBmSEgGcVXLp+yx9GIANf4LFgHV9A/4SwuenW2Mk85OXe8aWmuKJbkDmrxvPDku6AnUnkAqwn2ygNBzTvIfNrPiV53mkxO0ZHWyb3w/zhcvMdvawAQiLomEZRg9rHMjieMy82no+xkg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772094400; c=relaxed/simple;
+	bh=CuI2yNXHozZ33l6jpyWWDZFsLsZN9RIjVXSuGyZRcBo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=XEjKYmgIRxb5PNnXwIOGFeh4iGEywsGaPX6+dMgN/dxmSqAY+vS0oiR1QAwPzr/m8YiWEQMps6qQBYujB4tFTlUXWQuTBfihxB0Fkcu9qFNl9dKQ2BE5tEhgzA2G5eyXeva2j2Np/7mSldUtTD9aD76jXDvG2KWq2Bwp6A/YsWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ErGTIqCz; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UbdKFfrR"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-43767807da6so359141f8f.2
-        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 00:26:25 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772094384; cv=none;
-        d=google.com; s=arc-20240605;
-        b=kHHjef7C6Ve0hUfHtQLOT9WF9HR/uwAJXGJbEt+eyoNyKLL4WvFPgvrjKlgGmVjNqR
-         VgqirjtU5z5LY5qF7NLlYGZ0fBDyC5DkzB+msDutO3+zcVHFD8giz4kd1CNfkFK6qj/i
-         DPR21PBAUZ17MPl60SSWs3kifrCmYhidLwMVXdTw9L58XMrpVSOWNFtfgjAeUm38En/N
-         DV8fKsD0o9qbm6CjKutBEIaj6kW/E8oyQTohU7OrVahIaBnIJMsxvUjc5SxXO+RnxDA0
-         Xbe8hNGZ60NVnvjc5J2ZW5agQGBrdFwrdmziyZfP9z2/1xlnC7U9EAKzuc6X8QQB4673
-         +fxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=p8tFDUI/IrHDdHe0oMgvftUeNiQenULG77NWOiabLck=;
-        fh=q9arsb+XP23/FtlzKx4t+g1QYtxhNYaoy3MbapfGAPg=;
-        b=FfiPSqEIb6oM+NgY6cZvU65KAaHS/M8slxHSDzgt/n8otpTlYQxn/HRtOPFUxhMpBX
-         4CjoF4bVzN+xlJFeZ9GRYamDC1SlJmjNNq5NQc4FKeuemZIGtqASbu8fSeH7TOibU7PL
-         lAOOa7RCfoiuqDd3aZp3NZu6jCaunJgKpgOd9VXmYKEwcO29yaO6W7MzEWRUM9U0g4UL
-         CEzmLjQiFY36fcWEN92WVJlEGKdOdam+dGQNm4syDoDjLJPCoQpgnTTq/SnUVs4bBMC7
-         wYcbLRI6wKgnOzXoYLE/gWAIt0LWaXusY4wD0xqlQoh31F/juahaFZeAbzah2/0PzoMz
-         Ueag==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772094384; x=1772699184; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=p8tFDUI/IrHDdHe0oMgvftUeNiQenULG77NWOiabLck=;
-        b=UbdKFfrRIuoE+NPjCjrp3b5Fi5iZjQrTqUSSVbgIjGRHmU5cJy6Ik9z2Ejq2qk6uYX
-         znU/JPq2+5E40iQUH1MvGEixQ0nnbAgXtNJ+eo5ayxRgw1EBZob6C6V0cQNLhlhTLKgZ
-         Thf1L6WQHkbyvSNxVN3fhAX3gcICxzO+ME1+0uXBwjz/+GehBBAqwlF8OLay9Bz1YK/T
-         VznmC4xf9ZZkfa4dpnaIGlwQxuxq4bjzTM8IwzxxeNYPXK1alIjpRrENTkTOJ2kDuL8M
-         OPU2I//+xuXnHL2aUBjBB05I9YIPA39n6i6D1YwBsr7FhZCTgIIWOxNqZg/2jKSRMdeI
-         L1Jw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772094384; x=1772699184;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=p8tFDUI/IrHDdHe0oMgvftUeNiQenULG77NWOiabLck=;
-        b=MpUuZ4TwD8mDJ/0ch0e4dxLwSn9xiWUZjbaIBH1W1Ld/mC1cjIKp4jX0jQ8YB4SuDS
-         Jj1cUWJev4+oC0Wood6YYjhOIU78wo/crMvC85tYWpavov7KIGW6XGipAAW00NeVWnTn
-         oEe0rALZMxbBAVQ13d91k9+mNUEYDwIV2fNc3AsEg06gWJPGmeojlsGC72427Kkluff2
-         Vnc7GF3mCCDR5S2KNg/+abNdft4AMPWJ+d2t4d751SYQplzzzSYpu3pE825abJhTIV7x
-         o4GIpOtpnNINGAqsnqcz2ic5DMozpemBE8/0a+G8Myw2qqXCG4mNcfcMv8eaeit3iNr5
-         GT8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUehGyr0gwAiU1AYG+q0y1jN4lIPvmDgdVOczmRzK/+ISbPkAvfYNOYiFUrAzw6MojrFZAElYc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzwWhRQZWGqXIRNu0WqUSw6TuUNdg1WuFunJKnYTCrxiA9xxa+G
-	cMWDMQFdeUQM1perPFdl/ies5dUQCzrFLVv8ahW7X4zv0Og5VDuXWJmx3BLzhfLvKOCAYExlcxE
-	erc0DWNR5b8wH/c65Npk2cT7Yrbf+aG4=
-X-Gm-Gg: ATEYQzyeRv7QROd+Z057knbbO0DEwZgXLFLYHC16JXs2bu8F1xFITPVoa67kmdy8qrS
-	4GwfY5jKr76rXgrcuJMHVpbbFMczbu2K/4RotcMTcz2MrmhtbdhNwcRwCHDz+zlf62Xp7wXEzJS
-	GovcJwrv77Zo+9wUGZN+dq7mx8xMzXXvneVFOJtddVnUlXokuu+CVAU1Nm1kRXC17lvuVTdTWDf
-	g8Y+bBCi29MM1qS0mEVts7DvIyLgLeyuwB13wyLz59DGnUSbDdfbrBZSW9SO8/CrQayJ7DRxIue
-	rAkR6ILvxaQALcqR5g==
-X-Received: by 2002:a05:6000:1a8c:b0:439:9124:f2b7 with SMTP id
- ffacd0b85a97d-43997f341bemr2365098f8f.29.1772094384270; Thu, 26 Feb 2026
- 00:26:24 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ErGTIqCz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=WM
+	jluf9TG1wFE9HBrFIWE9aXj+JL5OmXE4kFqv3zFRw=; b=ErGTIqCzEM/0Qj9WAN
+	tQC5d3FBs9lh8GbRH0LcDpJTOjpuaVKfX3z4js0c9p80Lm4y0WTcwOOVzmpKG9ny
+	0lY2KCwn96XnCmmWKT2YexcVGo7XRkhjbfmIW8bwDdMMZ9PtKCb/u7n11PvfQYQ4
+	CZlkkoXgMu9mh6PohhV3d4NAs=
+Received: from pek-lpg-core5.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-0 (Coremail) with SMTP id _____wBndakSA6BpaN3nMw--.29763S2;
+	Thu, 26 Feb 2026 16:23:47 +0800 (CST)
+From: Robert Garcia <rob_garcia@163.com>
+To: stable@vger.kernel.org,
+	David Howells <dhowells@redhat.com>
+Cc: Marc Dionne <marc.dionne@auristor.com>,
+	Robert Garcia <rob_garcia@163.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-kernel@vger.kernel.org,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Faith <faith@zellic.io>,
+	Pumpkin Chang <pumpkin@devco.re>,
+	Nir Ohfeld <niro@wiz.io>,
+	Willy Tarreau <w@1wt.eu>,
+	Simon Horman <horms@kernel.org>
+Subject: [PATCH 6.12.y] rxrpc: Fix recvmsg() unconditional requeue
+Date: Thu, 26 Feb 2026 16:23:46 +0800
+Message-Id: <20260226082346.3200864-1-rob_garcia@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAPh3n803k8JcBPV5qEzUB-oKzWkAs-D5CU7z=Vd_nLRCr5ZqQg@mail.gmail.com>
- <95ccf5a6-975b-4543-80a3-595f1ee20543@redhat.com> <CAGRyCJE85fLOahUR3PAUnS_jH4+qpBq37qpged=nvObbg1m+Qw@mail.gmail.com>
- <20260225170155.0ae83ae9@kernel.org>
-In-Reply-To: <20260225170155.0ae83ae9@kernel.org>
-From: Daniele Palmas <dnlplm@gmail.com>
-Date: Thu, 26 Feb 2026 09:26:11 +0100
-X-Gm-Features: AaiRm50DmBPE8bIbQbuDkJOR9inJwsjkwvr1SpWPBNCMnCqpiSUe-nkgxF4o3fM
-Message-ID: <CAGRyCJGYLemYFDNw8cfcCHoxe8YqfRRgnJXgz03WVssKDYXhUA@mail.gmail.com>
-Subject: Re: commit 662dc80a5e86 breaks rmnet over usb
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Laurent Vivier <lvivier@redhat.com>, Koen Vandeputte <koen.vandeputte@citymesh.com>, oneukum@suse.com, 
-	andrew+netdev@lunn.ch, Eric Dumazet <edumazet@google.com>, pabeni@redhat.com, 
-	netdev <netdev@vger.kernel.org>, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wBndakSA6BpaN3nMw--.29763S2
+X-Coremail-Antispam: 1Uf129KBjvJXoWxWF4Duw4DWryxKF17Cry7trb_yoWrury8pF
+	n8ArsxZw18Xw1IvFZ3GFy8WF15WFs2gr17Jr1fXasakr1Svw4vqF1jga13ZF15CanrArWU
+	XF1DGw4jyrs8X37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07US9a9UUUUU=
+X-CM-SenderInfo: 5uresw5dufxti6rwjhhfrp/xtbC5hVIs2mgAxW6OwAA3W
 
-Hello Jakub,
+From: David Howells <dhowells@redhat.com>
 
-Il giorno gio 26 feb 2026 alle ore 02:01 Jakub Kicinski
-<kuba@kernel.org> ha scritto:
->
-> On Wed, 25 Feb 2026 08:19:46 +0100 Daniele Palmas wrote:
-> > > Could you try something like:
-> > >
-> > > diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-> > > index 3a4985b582cb..6b4796fac692 100644
-> > > --- a/drivers/net/usb/qmi_wwan.c
-> > > +++ b/drivers/net/usb/qmi_wwan.c
-> > > @@ -788,6 +788,8 @@ static int qmi_wwan_bind(struct usbnet *dev, struct usb_interface *intf)
-> > >                  usbnet_get_ethernet_addr(dev, cdc_ether->iMACAddress);
-> > >          }
-> > >
-> > > +       dev->rx_urb_size = 32768;
-> > > +
-> >
-> > So far userspace tools (e.g. also the most important one which is
-> > ModemManager) rely on changing the rx_urb_size by changing the MTU: I
-> > know this is ugly, but it is a behavior that has been there since a
-> > lot of time, not sure how many tools based on this assumption could
-> > break.
->
-> What's the policy in ModemManager to change the rx_urb_size?
-> Increase it to make sure it can hold some specific cmd / packet?
->
-> I wonder if having rx_urb_size max of (mtu, 32k) would break anything.
->
+[ Upstream commit 2c28769a51deb6022d7fbd499987e237a01dd63a ]
 
-Typically the host sends a QMI request to the modem for setting the
-size of the maximum QMAP aggregated packets block. Then the modem
-replies with the maximum size it supports and that one is then set by
-the host through changing the MTU of the netdevice. Low-cat modems
-usually support 4-8 KB, while 5G 16-32KB.
+If rxrpc_recvmsg() fails because MSG_DONTWAIT was specified but the call at
+the front of the recvmsg queue already has its mutex locked, it requeues
+the call - whether or not the call is already queued.  The call may be on
+the queue because MSG_PEEK was also passed and so the call was not dequeued
+or because the I/O thread requeued it.
 
-On ModemManager side this is currently fixed at 16KB, but one can use
-other tools e.g. qmicli to set custom values as far as they are
-supported by the modem.
+The unconditional requeue may then corrupt the recvmsg queue, leading to
+things like UAFs or refcount underruns.
 
-> Since we're talking about rx buffer config the right API to configure
-> it is likely ethtool -G rx-buf-len :(
->
+Fix this by only requeuing the call if it isn't already on the queue - and
+moving it to the front if it is already queued.  If we don't queue it, we
+have to put the ref we obtained by dequeuing it.
 
-Thanks for the hint, I'll try to have a look at that to improve qmi_wwan.
+Also, MSG_PEEK doesn't dequeue the call so shouldn't call
+rxrpc_notify_socket() for the call if we didn't use up all the data on the
+queue, so fix that also.
 
-> > There's also the chance that there are modems which require a higher
-> > rx_urb_size, so having this fixed could not work well.
-> >
-> > Unfortunately usbnet serves many drivers, I agree with Koen that a
-> > revert is the safest option.
->
-> Then again the usbnet driver is brittle enough as is, if it's just qmi
-> that needs this workaround we would be making common code less robust
-> for a benefit of a single "hack" (for lack of a better term)
+Fixes: 540b1c48c37a ("rxrpc: Fix deadlock between call creation and sendmsg/recvmsg")
+Reported-by: Faith <faith@zellic.io>
+Reported-by: Pumpkin Chang <pumpkin@devco.re>
+Signed-off-by: David Howells <dhowells@redhat.com>
+Acked-by: Marc Dionne <marc.dionne@auristor.com>
+cc: Nir Ohfeld <niro@wiz.io>
+cc: Willy Tarreau <w@1wt.eu>
+cc: Simon Horman <horms@kernel.org>
+cc: linux-afs@lists.infradead.org
+cc: stable@kernel.org
+Link: https://patch.msgid.link/95163.1768428203@warthog.procyon.org.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[Use spin_unlock instead of spin_unlock_irq to maintain context consistency.]
+Signed-off-by: Robert Garcia <rob_garcia@163.com>
+---
+ include/trace/events/rxrpc.h |  4 ++++
+ net/rxrpc/recvmsg.c          | 19 +++++++++++++++----
+ 2 files changed, 19 insertions(+), 4 deletions(-)
 
-Makes sense, also Laurent proposed a solution to keep his fix in
-usbnet and make qmi_wwan the exception.
+diff --git a/include/trace/events/rxrpc.h b/include/trace/events/rxrpc.h
+index eea3769765ac..c6cae9456698 100644
+--- a/include/trace/events/rxrpc.h
++++ b/include/trace/events/rxrpc.h
+@@ -274,6 +274,7 @@
+ 	EM(rxrpc_call_put_kernel,		"PUT kernel  ") \
+ 	EM(rxrpc_call_put_poke,			"PUT poke    ") \
+ 	EM(rxrpc_call_put_recvmsg,		"PUT recvmsg ") \
++	EM(rxrpc_call_put_recvmsg_peek_nowait,	"PUT peek-nwt") \
+ 	EM(rxrpc_call_put_release_sock,		"PUT rls-sock") \
+ 	EM(rxrpc_call_put_release_sock_tba,	"PUT rls-sk-a") \
+ 	EM(rxrpc_call_put_sendmsg,		"PUT sendmsg ") \
+@@ -291,6 +292,9 @@
+ 	EM(rxrpc_call_see_distribute_error,	"SEE dist-err") \
+ 	EM(rxrpc_call_see_input,		"SEE input   ") \
+ 	EM(rxrpc_call_see_recvmsg,		"SEE recvmsg ") \
++	EM(rxrpc_call_see_recvmsg_requeue,	"SEE recv-rqu") \
++	EM(rxrpc_call_see_recvmsg_requeue_first, "SEE recv-rqF") \
++	EM(rxrpc_call_see_recvmsg_requeue_move,	"SEE recv-rqM") \
+ 	EM(rxrpc_call_see_release,		"SEE release ") \
+ 	EM(rxrpc_call_see_userid_exists,	"SEE u-exists") \
+ 	EM(rxrpc_call_see_waiting_call,		"SEE q-conn  ") \
+diff --git a/net/rxrpc/recvmsg.c b/net/rxrpc/recvmsg.c
+index e24a44bae9a3..b6e524c065f0 100644
+--- a/net/rxrpc/recvmsg.c
++++ b/net/rxrpc/recvmsg.c
+@@ -430,7 +430,8 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 	if (rxrpc_call_has_failed(call))
+ 		goto call_failed;
+ 
+-	if (!skb_queue_empty(&call->recvmsg_queue))
++	if (!(flags & MSG_PEEK) &&
++	    !skb_queue_empty(&call->recvmsg_queue))
+ 		rxrpc_notify_socket(call);
+ 	goto not_yet_complete;
+ 
+@@ -461,11 +462,21 @@ int rxrpc_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ error_requeue_call:
+ 	if (!(flags & MSG_PEEK)) {
+ 		spin_lock(&rx->recvmsg_lock);
+-		list_add(&call->recvmsg_link, &rx->recvmsg_q);
+-		spin_unlock(&rx->recvmsg_lock);
++		if (list_empty(&call->recvmsg_link)) {
++			list_add(&call->recvmsg_link, &rx->recvmsg_q);
++			rxrpc_see_call(call, rxrpc_call_see_recvmsg_requeue);
++			spin_unlock(&rx->recvmsg_lock);
++		} else if (list_is_first(&call->recvmsg_link, &rx->recvmsg_q)) {
++			spin_unlock(&rx->recvmsg_lock);
++			rxrpc_put_call(call, rxrpc_call_see_recvmsg_requeue_first);
++		} else {
++			list_move(&call->recvmsg_link, &rx->recvmsg_q);
++			spin_unlock(&rx->recvmsg_lock);
++			rxrpc_put_call(call, rxrpc_call_see_recvmsg_requeue_move);
++		}
+ 		trace_rxrpc_recvmsg(call_debug_id, rxrpc_recvmsg_requeue, 0);
+ 	} else {
+-		rxrpc_put_call(call, rxrpc_call_put_recvmsg);
++		rxrpc_put_call(call, rxrpc_call_put_recvmsg_peek_nowait);
+ 	}
+ error_no_call:
+ 	release_sock(&rx->sk);
+-- 
+2.34.1
 
-Regards,
-Daniele
