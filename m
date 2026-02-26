@@ -1,81 +1,73 @@
-Received: from mail-oo1-f71.google.com (mail-oo1-f71.google.com [209.85.161.71])
+Received: from mail-ot1-f72.google.com (mail-ot1-f72.google.com [209.85.210.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921B72DB7A1
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 12:58:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D002DAFB9
+	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 12:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772110718; cv=none; b=L6wiedJuCHSAReCnqCSJnPnQewbf9gBtb5Za44aNXGvPd2Ya/8BYncmSr75ya/B685RKs4tfxaV7Q043RpIU7MhnrzvuCFR+TeBwcLl4eUa8PP609drfhdVKbrShuAJQ/74efgz2EGi39DztKGpCdIuu4xrUaxNOzBzfFSf/hIM=
+	t=1772110761; cv=none; b=DtdTyGXux2vL9F5XRQBwBDGvgKcMgxuwFqWcM1rnTmWtE3OEyd09Pb2niBFQMKVFrQo89k4ISWltvxqAIIwVbpW0MgI5NLHCVhGF6t4qwv+lNA4HLB0TzdV5Kh7MVsANsmqBlNbE3LVnUAyqnM6C1r4lFtQmKD+xw012utKpjjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772110718; c=relaxed/simple;
-	bh=TiqbeE6FK5tIk/RJQnJ1wxvW8bDjSQKh5wvvtBQbv4g=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=C5jyDEmGgh+jp/OrZvCpGd2gpDnj2And1esYmDt4VDjLW6sraRrRjq+6tjAsXewimwFORCnM5T2IVjwyObl5s3RbhrjmxATMRutCghbZx3LscKk75KutTZMqc0n2rlbtu8pdOPcSgo3ELdi6vRSo4ahLRyyh32ZivqWVavMGg7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.71
+	s=arc-20240116; t=1772110761; c=relaxed/simple;
+	bh=six8rnEJiQPYWzcQX1THF1cLIU6oDaq+bzhspJ/Nb5o=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=gdxISyCwbtc65ujidfGZHC/QtDCRwIjdlKRGKcM4Q9EpNonClWUKC2NDRwVRajPOD6VaFrs4dum4OfAnTn1Gh+gttTtcW1kIm/rUaG8/OvCz8LQoM4kaWPTC3KAN4hJ68iT+xTtH6bFkebsJDwrQOX2sj9f5P3s5/Ut8uJl24tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.210.72
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f71.google.com with SMTP id 006d021491bc7-679c69b46c6so7366807eaf.0
-        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 04:58:36 -0800 (PST)
+Received: by mail-ot1-f72.google.com with SMTP id 46e09a7af769-7d1950b48f3so3554507a34.0
+        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 04:59:20 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772110716; x=1772715516;
+        d=1e100.net; s=20230601; t=1772110759; x=1772715559;
         h=to:from:subject:message-id:date:mime-version:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=ahVCnuEXR3Y0gW4V9lcm+HW1q/eix0cX0sztaTxYmyk=;
-        b=sFxk4irurM6MNKVdwHYjhQGk7LiUByBtvEIeCnHJny84LRIaAH7ijQTcWs+aC9QB2q
-         tns+iYDmy0RQ7OiC4A9lkE3aNjFyN2xtOA7exeRUD2QlbHGmcBw7CwU6Yo11siSEJslC
-         39kC5GpvmtTcAfKhPJn5PMYVlsaiiypKeKnmW0Z8YAM3tUf2H5GcEi1FV5awPxBknRvM
-         pu3Owcxo+NnNDuhJ36axYzvVIVBN1oSFUOW4G8Xie5gOqiklc2w7Kwi+U0y0GwVWKFn3
-         rRJ7ZLfxTtrLUW1aJiRmFammjIYaqag5w6MAWRTvVt3CbqoGyx1q9Trg+UdDqxg/v5og
-         HztA==
-X-Forwarded-Encrypted: i=1; AJvYcCW0QQdmMuvdhXwi4jCDaqbZo9YiWUINp2yiNkwnmWsHCGUwNgLcitGyrIpFRUPPaOFZzgikWRI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxrhG8U+tOAFXsK16r8a/FYnN6HWqKmoViNl6M1aAV9YNftB56p
-	UT8Utfc/9UU0wsVWDBsltpr6Kn36Wb/BMljXP8NwxiDs1KXAvyNz+J59xnEQipxmU4wxJ0Gs5AQ
-	SzxOmuxAkvdOCSarB1XuKvpNsegJsgpoGqIG22cSOzIfOCXSdWtt78fG2iIs=
+        bh=oDdEeTN4Szojn/rjG8dW2fuRWLH4QpxpS/wKHni5q4o=;
+        b=v/459tRdOL0ffTrbLvN6ODgpFcGZM+i5JZOBDNLl+CQuWfbl8MjWjr3xzYe1m23DeA
+         s9t+QRTRfpDP/78UtZoXlUgovedpSlg1h6pZVezXDeP2C3vR596OEL8io/biKIHYpIgI
+         GQxCUvDhUBdxMvM6rPHbbJ1mJFg3jdsPWXDtgiy3yo90AFsy+YHR060OWIK5zxwN7ndK
+         dSQNBEConl5Yyf9DgHbOE2MfdYwmOQAVvFaD1t7m5p/7s8VOuxF9wABQxLYeA2FLoMx5
+         82ekYMfnhpX6scn7DsC97ELS6lJDIRTn+J4igIXiZzYUYdd61SFVHK7nmEST8hTQS4IM
+         bI+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU3hwQzrYdyQzIuaweg+dbh0JffwWKQ2bgX4XHNYfvp8jjMXOh854bVX9iRwu72oxyyHNXex0Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnxRtsi71ht6/mqfSZcSh24tsx4xqHcjJ+Fwe0peOqW4IesQmg
+	1YQ02oOtxUfAk8AbZG48IJNuhC/ErqaCJ8febdnJJyVl0HwAM/Ffw/UkbkGCeNMO/wiEqkq3gXX
+	NZM0GRmO+COspXcO7WpZ/ahRJrTpPUsuTuvhVovRT/Dd4V8CiYO4vSRS5pX8=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6820:169e:b0:662:c0f7:bed8 with SMTP id
- 006d021491bc7-679ef7fb075mr1712875eaf.12.1772110715794; Thu, 26 Feb 2026
- 04:58:35 -0800 (PST)
-Date: Thu, 26 Feb 2026 04:58:35 -0800
+X-Received: by 2002:a05:6820:1391:b0:679:e9c1:a91b with SMTP id
+ 006d021491bc7-679f3d0378fmr1014279eaf.22.1772110759502; Thu, 26 Feb 2026
+ 04:59:19 -0800 (PST)
+Date: Thu, 26 Feb 2026 04:59:19 -0800
 X-Google-Appengine-App-Id: s~syzkaller
 X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69a0437b.a00a0220.21906d.00e9.GAE@google.com>
-Subject: [syzbot] Monthly netfilter report (Feb 2026)
-From: syzbot <syzbot+listc25fa2ef6d483674daf7@syzkaller.appspotmail.com>
-To: fw@strlen.de, linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	netfilter-devel@vger.kernel.org, pablo@netfilter.org, 
-	syzkaller-bugs@googlegroups.com
+Message-ID: <69a043a7.050a0220.2fcbed.0009.GAE@google.com>
+Subject: [syzbot] Monthly wpan report (Feb 2026)
+From: syzbot <syzbot+list29614c14e531b35da2e2@syzkaller.appspotmail.com>
+To: alex.aring@gmail.com, linux-kernel@vger.kernel.org, 
+	linux-wpan@vger.kernel.org, miquel.raynal@bootlin.com, netdev@vger.kernel.org, 
+	stefan@datenfreihafen.org, syzkaller-bugs@googlegroups.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hello netfilter maintainers/developers,
+Hello wpan maintainers/developers,
 
-This is a 31-day syzbot report for the netfilter subsystem.
+This is a 31-day syzbot report for the wpan subsystem.
 All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/netfilter
+https://syzkaller.appspot.com/upstream/s/wpan
 
-During the period, 1 new issues were detected and 2 were fixed.
-In total, 15 issues are still open and 194 have already been fixed.
+During the period, 0 new issues were detected and 0 were fixed.
+In total, 5 issues are still open and 26 have already been fixed.
 
 Some of the still happening issues:
 
 Ref Crashes Repro Title
-<1> 4865    Yes   INFO: rcu detected stall in worker_thread (9)
-                  https://syzkaller.appspot.com/bug?extid=225bfad78b079744fd5e
-<2> 906     Yes   BUG: unable to handle kernel paging request in ip_route_output_key_hash_rcu
-                  https://syzkaller.appspot.com/bug?extid=334190e097a98a1b81bb
-<3> 671     Yes   INFO: rcu detected stall in addrconf_rs_timer (6)
-                  https://syzkaller.appspot.com/bug?extid=fecf8bd19c1f78edb255
-<4> 311     Yes   INFO: rcu detected stall in gc_worker (3)
-                  https://syzkaller.appspot.com/bug?extid=eec403943a2a2455adaa
-<5> 47      No    WARNING in nf_hook_entry_head (2)
-                  https://syzkaller.appspot.com/bug?extid=6f6a1d20567a8d6b2a58
-<6> 32      Yes   KASAN: use-after-free Read in nf_hook_entry_head
-                  https://syzkaller.appspot.com/bug?extid=bb9127e278fa198e110c
-<7> 14      Yes   WARNING in __nf_unregister_net_hook (9)
-                  https://syzkaller.appspot.com/bug?extid=78ac1e46d2966eb70fda
+<1> 398     Yes   KMSAN: uninit-value in ieee802154_hdr_push (2)
+                  https://syzkaller.appspot.com/bug?extid=60a66d44892b66b56545
+<2> 347     Yes   WARNING in lowpan_xmit (2)
+                  https://syzkaller.appspot.com/bug?extid=5b74e0e96f12e3728ec8
+<3> 43      Yes   KMSAN: kernel-infoleak in move_addr_to_user (7)
+                  https://syzkaller.appspot.com/bug?extid=346474e3bf0b26bd3090
 
 ---
 This report is generated by a bot. It may contain errors.
