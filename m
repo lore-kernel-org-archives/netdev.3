@@ -1,94 +1,86 @@
-Received: from mx.nohats.ca (mx.nohats.ca [193.110.157.85])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F6A23D3307
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 13:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.110.157.85
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B65239B4A5;
+	Thu, 26 Feb 2026 14:00:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772114382; cv=none; b=GEeklzeKk1x2cKDFNZGPw4aybm7aQ1WbgdfLIaM44ds0Bso68Tgj9ByzQnssimxhML4u3ovQMJ+rj8kEZJwLeCwneh50v+y6yK4vgGsTbXsF3CIok/w5xnMTlsAICShQTT/JWD/ANH8GnmOGedjIsmi4SssSyJo7XraKLq/3ec4=
+	t=1772114402; cv=none; b=iVmSNMP4mr+ofYREXWyv0kxR9ht9siTGC5LnTntLLGaDB4D4IIo48Mc3YmMA28uBcIkw7dSTAy6AmvFYSfOncOzCGF8DwGf8MUTmd2AmD3s7h5FHsdidrfcgfgFKeYgzD1slu5Tj8wNtocgdbKblR/kfhgeZwSADn9NcXXbhclQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772114382; c=relaxed/simple;
-	bh=1r/8+emM2pEM6Dpvvs1rgL44IH3Bny9dzRofl/A6Kyw=;
-	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
-	 Cc:In-Reply-To:To; b=dJ/PQyWMyCbAJOiJT7MnCa2MzEp3ZJ5ZfvlK1pcS4DN/cZ3FA2wI+yYYqArw7Bnr1JqWkktTOfi/kY6bJoJK/aZ+mqPry7v1IDkgtjDG4L6vnrYgW8W+P3RlWxo1MgLZkYjUCKPUFNzXaBdRTNRSC1/4cpCxecVP5TLYBxB9AKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nohats.ca; spf=pass smtp.mailfrom=nohats.ca; dkim=pass (1024-bit key) header.d=nohats.ca header.i=@nohats.ca header.b=FUhIEVdP; arc=none smtp.client-ip=193.110.157.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nohats.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nohats.ca
+	s=arc-20240116; t=1772114402; c=relaxed/simple;
+	bh=kY839M1FiQyG/rTWUN37NiUx9KNkhkKWxJrdxAzSGjE=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=Ll/F9omib+bHfydnaxWQgv4TV+5P/uX4/Ub0TGR7Ur2T6DubB1XKUDB81TTk8SYtCziZZZ2xOhD/f5Cp9UUZ2j+FXkAc0VMmuYbGg0G7wnHJoWbPY6F3XQS0c6Yb2m6QHxn8CGbX8u6J9il/Zy88wxQR/WM1oiaZzsyBrm6Lmt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MNXSi6NZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=nohats.ca header.i=@nohats.ca header.b="FUhIEVdP"
-Received: from localhost (localhost [IPv6:::1])
-	by mx.nohats.ca (Postfix) with ESMTP id 4fMCYF1BrFz1J7;
-	Thu, 26 Feb 2026 14:51:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nohats.ca;
-	s=default; t=1772113889;
-	bh=1r/8+emM2pEM6Dpvvs1rgL44IH3Bny9dzRofl/A6Kyw=;
-	h=From:Subject:Date:References:Cc:In-Reply-To:To;
-	b=FUhIEVdP9rOpxtlAtGONubfU6rl8fQbJLwEyYTxkO6Ymjqm9xS9ARNYpJgYF333+e
-	 +okwHTKbGYj2GzxyMx4uhyV6LRXvDpWZFRVs14o4YpD4G+oi6Q76PJSp50hhI3Vwae
-	 EmzLFFTeNSpCZdNcikN61VOQGS02V6qTaB/NNvz8=
-X-Virus-Scanned: amavisd-new at mx.nohats.ca
-X-Spam-Flag: NO
-X-Spam-Score: 1.206
-X-Spam-Level: *
-Received: from mx.nohats.ca ([IPv6:::1])
-	by localhost (mx.nohats.ca [IPv6:::1]) (amavisd-new, port 10024)
-	with ESMTP id wvF8vfCdoFJh; Thu, 26 Feb 2026 14:51:27 +0100 (CET)
-Received: from bofh.nohats.ca (bofh.nohats.ca [193.110.157.194])
-	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by mx.nohats.ca (Postfix) with ESMTPS;
-	Thu, 26 Feb 2026 14:51:27 +0100 (CET)
-Received: from smtpclient.apple (unknown [193.110.157.207])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by bofh.nohats.ca (Postfix) with ESMTPSA id 73794184FB82;
-	Thu, 26 Feb 2026 08:51:26 -0500 (EST)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From: Paul Wouters <paul@nohats.ca>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MNXSi6NZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 382FFC116C6;
+	Thu, 26 Feb 2026 14:00:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772114401;
+	bh=kY839M1FiQyG/rTWUN37NiUx9KNkhkKWxJrdxAzSGjE=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=MNXSi6NZIZEHa6c4wrlYy6s6gHYzD3uENmadJrr/NnTggjNGK0rOT1Cv4qN990HkY
+	 8nd0SPqFzWvwgcoPIAV4x+rGkSpbJzcclgmeCukhDFxj+NevfRRnyOY+sDiCN90CpI
+	 m3OfH7KUeu4ka5WPBmCg7SmjfX3Whkv/y4z37zTpJrVITwYmFE5UuG/6y4pOSAKxI+
+	 kCMplXRj+zOyJJGHFMBxVaVEYxTemc6Ikfy/W2490G3+7qAcNEDgkCWArH/EmC97Dx
+	 aS030HX1TVyfk895tW10gOxcLDBaQWaSDhSL3icE/PQ+TcqBBrZNr4/r/TRUIW5rUU
+	 4BfHXwr9/UHsg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FF373930925;
+	Thu, 26 Feb 2026 14:00:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [devel-ipsec] [PATCH net-next v5 0/2] icmp: Fix icmp error source address over xfrm tunnel
-Date: Thu, 26 Feb 2026 08:51:25 -0500
-Message-Id: <054384A9-EE12-4671-8B9F-40E2134036B3@nohats.ca>
-References: <cover.1772101380.git.antony.antony@secunet.com>
-Cc: Jakub Kicinski <kuba@kernel.org>,
- Steffen Klassert <steffen.klassert@secunet.com>, netdev@vger.kernel.org,
- David S Miller <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Eric Dumazet <edumazet@google.com>, Abeni Paolo <pabeni@redhat.com>,
- Herbert Xu <herbert@gondor.apana.org.au>, Shuah Khan <shuah@kernel.org>,
- devel@linux-ipsec.org, Tobias Brunner <tobias@strongswan.org>,
- Simon Horman <horms@kernel.org>, Sabrina Dubroca <sd@queasysnail.net>,
- Antony Antony <antony.antony@secunet.com>
-In-Reply-To: <cover.1772101380.git.antony.antony@secunet.com>
-To: Antony Antony <antony.antony@secunet.com>
-X-Mailer: iPhone Mail (23D127)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 1/2] netfilter: nf_conntrack_h323: fix OOB read in
+ decode_choice()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177211440505.1230752.18207522034751824623.git-patchwork-notify@kernel.org>
+Date: Thu, 26 Feb 2026 14:00:05 +0000
+References: <20260225130619.1248-2-fw@strlen.de>
+In-Reply-To: <20260225130619.1248-2-fw@strlen.de>
+To: Florian Westphal <fw@strlen.de>
+Cc: netdev@vger.kernel.org, pabeni@redhat.com, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, netfilter-devel@vger.kernel.org,
+ pablo@netfilter.org
+
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Wed, 25 Feb 2026 14:06:18 +0100 you wrote:
+> From: Vahagn Vardanian <vahagn@redrays.io>
+> 
+> In decode_choice(), the boundary check before get_len() uses the
+> variable `len`, which is still 0 from its initialization at the top of
+> the function:
+> 
+>     unsigned int type, ext, len = 0;
+>     ...
+>     if (ext || (son->attr & OPEN)) {
+>         BYTE_ALIGN(bs);
+>         if (nf_h323_error_boundary(bs, len, 0))  /* len is 0 here */
+>             return H323_ERROR_BOUND;
+>         len = get_len(bs);                        /* OOB read */
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,1/2] netfilter: nf_conntrack_h323: fix OOB read in decode_choice()
+    https://git.kernel.org/netdev/net/c/baed0d9ba91d
+  - [net,2/2] netfilter: nf_tables: unconditionally bump set->nelems before insertion
+    (no matching commit)
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-
-> On Feb 26, 2026, at 05:30, Antony Antony via Devel <devel@lists.linux-ipse=
-c.org> wrote:
->=20
-> =EF=BB=BF
-> icmp: Fix icmp error source address over xfrm tunnel
->=20
-> This fix, originally sent to XFRM/IPsec, has been recommended by
-> Steffen Klassert to submit to the net tree, since it changes ICMP
-> behavior.
->=20
-> The patch addresses a minor issue related to the IPv4 source address
-> of ICMP error messages. The bug only occurs when xfrm policies are
-> configured. It originated from an old 2011 commit:
->=20
-> commit 415b3334a21a ("icmp: Fix regression in nexthop resolution during
-> replies.")
-
-This bug has been confusing me for many years and I slays blamed libreswan f=
-or it. Thanks for fixing it!
-
-Paul=
