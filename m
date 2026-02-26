@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFA0F2E2679;
-	Thu, 26 Feb 2026 11:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 749E9337117;
+	Thu, 26 Feb 2026 11:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772103860; cv=none; b=P+XmxxWF+iXjGU4WoAtSd1MtLkYIBpKC+jzhlUqBzP67GVin3XJBZ0QphaiPLfGDagUWhxkYfHiBKV0EFtffHYgBG8wWRIYC8ZKHpp+WJt7qch0GhnR7Xk412Vh1LTatduLcpV6PMo2FkZ0GjQrZ2SR+mkMF/bHVE8tXVHDR4kU=
+	t=1772103866; cv=none; b=AP2KK8zSU4strrAXyNJ6qLDCsu6kX7bJIfqzxPPmTiA5SLZNakHQW/sLXX3sLPx49QHpZJYKmWD1mtYXCknKUvkA0mlrHYg5tmtJd21HbchitWqOtKvyTtm7r1XD0C+X530n0JDnCgUoEnpS+AuT8Qj8Z2s0H8z5YHXHa4c8b3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772103860; c=relaxed/simple;
-	bh=AZyqWxB8IUDeUfwf7KTkklB/ywiMAc2oAo1jnQG57wQ=;
+	s=arc-20240116; t=1772103866; c=relaxed/simple;
+	bh=2jj3tlUPwNJyQbcAlJb/OigLgav3z1nU51BP4RvIQIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nQat3yw64NakCUu8HSsJfEk22b7TFrfVmQE2zYuMOexXpNUIp3rdzfVYZdXTZ1gNQTOcWQWUEhU6hPInyH1rtBA68D36QNQ8PPqnUS5w3Xa9duWoZSd/3QXT9HCeLye8Tjasy8yJ7WDvuNKehlHwzi6lzh19I6vLcB2Srrxlqlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=puaJ6vN5; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=OWGD+xq211ypyy7y9pcIlDYZK0DPYdEuuwz4ED88WEegthzB0+jabY7X59qWEr3Kkn1Y5baZ4+1Dnx1PXcAxBpKZv7hW+9KV69mH3tzJocHJzW63HrjgLXR8k8NK+6RE6sk2WgT1eg1UgtqWTjNYtYVkuGj5JJuoHe5t+h45LO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GckSiqhb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="puaJ6vN5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2965EC2BC87;
-	Thu, 26 Feb 2026 11:04:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GckSiqhb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D38D5C116C6;
+	Thu, 26 Feb 2026 11:04:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772103860;
-	bh=AZyqWxB8IUDeUfwf7KTkklB/ywiMAc2oAo1jnQG57wQ=;
+	s=k20201202; t=1772103866;
+	bh=2jj3tlUPwNJyQbcAlJb/OigLgav3z1nU51BP4RvIQIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=puaJ6vN5bb0wkvN2tH14Dl/RZZbEeYLSDSck7yfnYwUIZDwI5HN6UvYp44EUnl5BJ
-	 gwysPDUb45yKtO0TUtXQyxVJ7xdls3yQwkkInLWrBx4tikklo8BgYkLPxxNjg1yfIa
-	 BslI9zaX4K4V05Z4Xt40jbthmhZsas89XSnyqkUFrqsmgDjfA85bS4D/BlSvD82BxZ
-	 mmBisrDM2MtWsJCmBvGKjMEMwaFnUyO7GG/EpFTjSIbY0a0q0vx2djiYdO7Vmsh36Z
-	 sEyFOiEbeigLCsv4UYiyMorw7lZ4mnNEdiooLVjIQiTP+Gs+ouvzv2gURmpI5s3y0M
-	 1KTfTqT0B62ag==
+	b=GckSiqhb0AxxsgsyCythZCvx+sJjErEC+mAIzuC/u+lef3vKn3Vtu/nRBzGxCv7VF
+	 e91X1p0Ym8p6+kVuwLdrZwO0vu6ADhv/ZbYJyKsyu0N0tuyNSHUBZ28ElCrPMCdtRD
+	 XKvcAkdervGCuLf9svjgDwJ7ATR87loTVGyQ212Qivs/0SfmoNINYD+A3FBW+gQaPF
+	 e84QK7c5Ww6RwPbm3C+e3aUkwfqlaJbTdshkq6ybWIxkobxVH3hhwFIKrWKOXfpV5V
+	 +uae31yqWuhal4LJs877VDNkN4qJNiZIdjGaJO7I6p/cpTBIjH+SYQBtTaujv5cQsb
+	 sdIg6EIEF2v3A==
 From: Conor Dooley <conor@kernel.org>
 To: netdev@vger.kernel.org
 Cc: conor@kernel.org,
@@ -57,9 +57,9 @@ Cc: conor@kernel.org,
 	Vineeth Karumanchi <vineeth.karumanchi@amd.com>,
 	Abin Joseph <abin.joseph@amd.com>,
 	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>
-Subject: [PATCH net-next v2 7/8] net: macb: warn on pclk use as a tsu_clk fallback
-Date: Thu, 26 Feb 2026 11:03:22 +0000
-Message-ID: <20260226-crouton-gratitude-4bdbe2aa98dc@spud>
+Subject: [PATCH net-next v2 8/8] net: macb: clean up tsu clk rate acquisition
+Date: Thu, 26 Feb 2026 11:03:23 +0000
+Message-ID: <20260226-mammary-relearn-bab7519111c0@spud>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260226-snowshoe-amusable-6716d4ddea11@spud>
 References: <20260226-snowshoe-amusable-6716d4ddea11@spud>
@@ -69,69 +69,48 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2993; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=ItmiQ5vlNC1QS/7ZhO15GpA5CWwDTt/eS2Bem3qx+yc=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJkLNCpi4nWvLmkzCD+0YN2f45pMnEyf9aZ/fnxy6bajJ goZy4xMO0pZGMS4GGTFFFkSb/e1SK3/47LDuectzBxWJpAhDFycAjARywSGf4rWy2unnLRs/dPw 5bTcz58O1kUfAl5b7Pi2VXhW5/WFC04x/M9mNp/dck1n9+7p5U1vlx0WcDn1RFX96JzV5yS+fjV QvcELAA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1291; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=apFAb9W0Y5znFJfOtey/gSV/AiSmELU+MiBfWgmgUMI=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJkLNCoMcy6v374hpsdCOEh8VmxBX0T3hknf5+WmVgrti /59T3NTRykLgxgXg6yYIkvi7b4WqfV/XHY497yFmcPKBDKEgYtTACbC5MjwzyavVtNw0eIYg4Kp smejfnH965skt67qziItoQxBq2ub3Bj+53PZVMzbt2rKx4+XjuwQM5B+Wiso0PZi+d213z1l47L ruQE=
 X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
 Content-Transfer-Encoding: 8bit
 
 From: Conor Dooley <conor.dooley@microchip.com>
 
-The Candence GEM IP has a configuration parameter which determines the
-source of the clock used for the timestamp unit (if it is enabled),
-switching it between using the pclk and a dedicated input.
-
-When ptp support was added to the macb driver, a new tsu_clk was added
-to represent the dedicated input. While this is understanble, I think
-it is bug prone and that the tsu_clk should represent whatever clock is
-used for the timerstamper and not just that specific input.
-
->From a devicetree point of view, it doesn't really matter if the tsu_clk
-represents a physical clock or a conceptual clock, because the clock
-configuration is determined when the IP is instantiated not at runtime.
->From a driver point of view, the benefit of taking the conceptual
-approach is avoiding misconfiguring the driver when the hardware
-supports ptp (and it is set as a capability in the relevant per-device
-structure) but no tsu_clk is provided in devicetree. At the moment, the
-timestamper will be registered and programmed with an increment that
-reflects the pclk in these cases, but will malfunction if the pclk and
-tsu_clk frequencies do not match.
-
-Out of the devices that claim MACB_CAPS_GEM_HAS_PTP the fu540, mpfs,
-sama5d2 and sama7g5-emac (but not sama7g5-gem) are at risk of having
-this problem with the in-kernel devicetrees. It may be that these
-platforms actually do use the pclk for the timestamper (either by
-supplying pclk to the tsu_clk input of the IP, or by having the IP
-block configured to use pclk instead of the tsu_clk input), but
-at least mpfs is wrong though, it does not use pclk for the
-tsu_clk, so the driver is registering the ptp clock incorrectly.
-
-Add a warning if no tsu_clk is provided on a platform that uses the
-timerstamper, to encourage people to specifically provide a tsu_clk and
-avoid silently registering the timerstamper with the wrong clock
-
-While this changes the meaning of the devicetree property, it is
-backwards compatible as there's no functional change for platforms that
-didn't provide a tsu_clk and the changed meaning of providing a tsu_clk
-in the devicetree does not impact platforms that already provided one as
-the decision about the tsu clock source is at IP instantiation time
-rather than at runtime.
+tsu_clk is grabbed during probe, so doesn't need to be re-grabbed here.
+pclk is mandatory, probe will fail if it is err/NULL, so there's no need
+to check it here or have a !pclk 3rd arm. Simplify gem_get_tsu_rate() to
+account for these facts.
 
 Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/cadence/macb_main.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index ca141f8935d48..5c24ea146d63d 100644
+index 5c24ea146d63d..f5ec283ddb497 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -3534,6 +3534,7 @@ static unsigned int gem_get_tsu_rate(struct macb *bp)
- 	else if (!IS_ERR(bp->pclk)) {
+@@ -3527,16 +3527,14 @@ static unsigned int gem_get_tsu_rate(struct macb *bp)
+ 	struct clk *tsu_clk;
+ 	unsigned int tsu_rate;
+ 
+-	tsu_clk = devm_clk_get(&bp->pdev->dev, "tsu_clk");
+-	if (!IS_ERR(tsu_clk))
+-		tsu_rate = clk_get_rate(tsu_clk);
+-	/* try pclk instead */
+-	else if (!IS_ERR(bp->pclk)) {
++	if (!IS_ERR_OR_NULL(bp->tsu_clk)) {
++		tsu_rate = clk_get_rate(bp->tsu_clk);
++	} else {
  		tsu_clk = bp->pclk;
  		tsu_rate = clk_get_rate(tsu_clk);
-+		dev_warn(&bp->pdev->dev, "devicetree missing tsu_clk, using pclk as fallback\n");
- 	} else
- 		return -ENOTSUPP;
+ 		dev_warn(&bp->pdev->dev, "devicetree missing tsu_clk, using pclk as fallback\n");
+-	} else
+-		return -ENOTSUPP;
++	}
++
  	return tsu_rate;
+ }
+ 
 -- 
 2.51.0
 
