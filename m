@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3EF2727E0;
-	Thu, 26 Feb 2026 03:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF78638757B;
+	Thu, 26 Feb 2026 03:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772076008; cv=none; b=UTNqVGST2nizAsl177mutZfYy5q7a8cEpwkMPopcCyIl1oRAUuZz7t1NSuXTlAOYP46RS8pu+nzkHFGdCiqlOt9P59FwxDXRukW1ruUIOeehPfm38ZotiwQzWOz6LV+KHQVSZ3NkrbV44OQ0Q2nI5LCHw+PjxsfXP6j4RkfBuKU=
+	t=1772076010; cv=none; b=KZFjxIEq6df1Q4GD1VUdqZz1PYuwSEoUZjY9llWyG3uTnWcjieBAQFrDlgWiDwQcPDUvIXrISi4O0tqR62hB269xPa62Uz67pKXGyKH7dTPqDMHDvQvg+GGPpCW7uP054zQSSVV0EXxB+gQPZZacfW7qYSnTTkV0vAqbXKrjCc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772076008; c=relaxed/simple;
-	bh=xugchI5TC8kDJlZj+zK0zU57UQ5m7JSKube//5QBkFI=;
+	s=arc-20240116; t=1772076010; c=relaxed/simple;
+	bh=x+hXaKRyH3CbhBqsiU+WtoQDutqA45cAk54/G6S2Khw=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=dvjbhUbLJxVYfbezQ7TebZHnna1/8yaCfxjd9LMtZzP1+9LRh5HWXkYydK9lW17UnHoDrhbXAzobu7WcB5SCpIfcgY3kEXWQSJsDxH2Zvo96RBfn43msQ/JKrylSuwVggWZWatWh7RWIzd8RKXpSimz+aDj9TG5Bg2ddRv+ly7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pmdcSooX; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=WQNbCNUrLlp3/j7Ge2xa7mFNbO+SWeXBh55xohtFrwtJ+7ixztR684a+LBnM7o3gVCX5OXDxOPorTIG0fcVu+D9XCaI/FWlan/aJxX5hoSsYV8w4GlzuTHRHEpf7Ag31HDudPReQW/L2LCRB5Q70LdxhBbRBHpNQiL9TLAQvnlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UwMZwUbx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pmdcSooX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07374C116D0;
-	Thu, 26 Feb 2026 03:20:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UwMZwUbx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89016C2BC86;
+	Thu, 26 Feb 2026 03:20:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772076008;
-	bh=xugchI5TC8kDJlZj+zK0zU57UQ5m7JSKube//5QBkFI=;
+	s=k20201202; t=1772076009;
+	bh=x+hXaKRyH3CbhBqsiU+WtoQDutqA45cAk54/G6S2Khw=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=pmdcSooXM3JhH4fiPWFuReou3oPc/MSkRAK537pQlEH0IOa0y5VH8gXS63rKFQ5wO
-	 fOKJleO3BPz26VxR6MFpY76ip/sMNI10q1B5c7X+bm1J0bEkSERxp0PevaoQpmtx9t
-	 B027KzMPzo0l8AOv0qp9E3WlAgEU/HNdMjMTss55T/GSYYiqzb3hGQLJF2Fi9TB9Bk
-	 N67td/j2KkqQ7CQYJSSrJnGFPqf/ibxTwSYkffb3ick26G9RkqJiSS8hQbMVoQhrmT
-	 XHrdplW1fxxI8inESSVd274T355zAz8OUdd16ePKklAimBeuDRggkq9h2O7bp38T/q
-	 GF59PNOVciDeA==
+	b=UwMZwUbxfvNfgNu88FlrWqB2vsISVFGHadfXT8QJMh/XzoHws51Ca2d+DLXcPeUa9
+	 ZjKuxH2+31auNn4xzKgb2UjuMzHqaRM85J8FlA6wcv6577dF/ZZ7r0EfxNsqZhUVMq
+	 THmj12BC6cx2N6aJr3ovEBvnmTkVLQwqW3g2np7rE6OI9v1rjBEvD4fPxMex++r1rG
+	 nN+DXh7IpjFN12TPDA/WNR0LRRiAS9z84gtGB9T549rKPRd30eupn7MD54nZaWen8D
+	 YEEX5s8GS6m8442ClKsydlpknQ5m6M9JEdNSNyL+U875gsIzeyW2N/4L7oGySInFZW
+	 01D9qyy/ysUYw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D99380A94B;
-	Thu, 26 Feb 2026 03:20:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEB7380A94B;
+	Thu, 26 Feb 2026 03:20:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,50 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v2] dpll: zl3073x: Remove redundant cleanup in
- devm_dpll_init()
+Subject: Re: [PATCH net] net: mana: Fix double destroy_workqueue on service
+ rescan PCI path
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177207601279.1018003.4268544138074557807.git-patchwork-notify@kernel.org>
-Date: Thu, 26 Feb 2026 03:20:12 +0000
-References: <20260224-dpll-v2-1-d7786414a830@gmail.com>
-In-Reply-To: <20260224-dpll-v2-1-d7786414a830@gmail.com>
-To: Felix Gu <ustc.gu@gmail.com>
-Cc: ivecera@redhat.com, Prathosh.Satish@microchip.com,
- vadim.fedorenko@linux.dev, arkadiusz.kubalewski@intel.com, jiri@resnulli.us,
- kuba@kernel.org, przemyslaw.kitszel@intel.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org
+ <177207601404.1018003.17798164390456983637.git-patchwork-notify@kernel.org>
+Date: Thu, 26 Feb 2026 03:20:14 +0000
+References: 
+ <aZ2bzL64NagfyHpg@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+In-Reply-To: 
+ <aZ2bzL64NagfyHpg@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
+ shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
+ ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
+ linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
+ dipayanroy@microsoft.com
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 24 Feb 2026 19:04:04 +0800 you wrote:
-> The devm_add_action_or_reset() function already executes the cleanup
-> action on failure before returning an error, so the explicit goto error
-> and subsequent zl3073x_dev_dpll_fini() call causes double cleanup.
+On Tue, 24 Feb 2026 04:38:36 -0800 you wrote:
+> While testing corner cases in the driver, a use-after-free crash
+> was found on the service rescan PCI path.
 > 
-> Fixes: ebb1031c5137 ("dpll: zl3073x: Refactor DPLL initialization")
-> Reviewed-by: Ivan Vecera <ivecera@redhat.com>
-> Signed-off-by: Felix Gu <ustc.gu@gmail.com>
+> When mana_serv_reset() calls mana_gd_suspend(), mana_gd_cleanup()
+> destroys gc->service_wq. If the subsequent mana_gd_resume() fails
+> with -ETIMEDOUT or -EPROTO, the code falls through to
+> mana_serv_rescan() which triggers pci_stop_and_remove_bus_device().
+> This invokes the PCI .remove callback (mana_gd_remove), which calls
+> mana_gd_cleanup() a second time, attempting to destroy the already-
+> freed workqueue. Fix this by NULL-checking gc->service_wq in
+> mana_gd_cleanup() and setting it to NULL after destruction.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v2] dpll: zl3073x: Remove redundant cleanup in devm_dpll_init()
-    https://git.kernel.org/netdev/net/c/676c7af91fcd
+  - [net] net: mana: Fix double destroy_workqueue on service rescan PCI path
+    https://git.kernel.org/netdev/net/c/f975a0955276
 
 You are awesome, thank you!
 -- 
