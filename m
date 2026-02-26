@@ -1,231 +1,324 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
+Received: from mail-pl1-f228.google.com (mail-pl1-f228.google.com [209.85.214.228])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4FE376BFB
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 11:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772106215; cv=none; b=JCou2Pty0kDddu3Lvjn6aebv3JnIcM9xsKc/Smj1Iaw6aUsmUzXq1AEts8FuHrMUaasjkfGdDKxVM474oNLE2qif389KolfPJ8bUHJoznyY++4paTehiOD49ZwAiq8XGg5WgcsAE6UwccDtgejzi57V4ej+TYLjwwEb9xoZKHWc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772106215; c=relaxed/simple;
-	bh=W8/P9pOZ2TaGtqC+2IqlgV4WZxsB2rdjDd83Ft34dw4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9/OCWC5qUuFMr3F/Ff9YP9BU2mDXUgGo2ax5yNOm+qW7GaYU4CUTMtvh01HtOvg9adqgKl4w5LKpYfPnjUvVhY87egNDZrGde/JQeG/yZ9/wutZnHrOHbxVucj91b/RIeYBXAsoa/USdrn8Pq9O2ktnfSk7RI4E6Tm73FlEHeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ERy1PxuB; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC7936A032
+	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 11:47:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.228
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772106459; cv=pass; b=MJdtyIjEL0cdS+Olit669+u3NC0sG+a9zr5rjqgIgz4Gc1rmZJHfM7HokHsWTD5fBtaZyrO6dxR7zFQeDUU79RT9zcwo+CqqwMpP6oGTtmO5Zxp1ssNhUivZ9mocOfIM2vpkRinstKoqMUbM4G4acmm4QKTwcK4XtZ/DlX5IR+Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772106459; c=relaxed/simple;
+	bh=euSTzPq2F1klfGutM2tOKaO76fvZ7WdYUpBMkfRWduM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uXgBVC3LiILXN2Vjls7VfQwbdYQWZDIOKl8XSJ7sY2Ddl2FaoGplnOrJ7afIgl3ZoyUw4bH8k0O8IEyfzvnsBXK38jz8wkM7pIDFO6Jo4Ug068+6qi5qNL75+X49hNvcB4jSlP7Hh8cNOjdsOkIYSjkmYFGbiYdZZ3hPm1pAS0s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=Te6vM2Oh; arc=pass smtp.client-ip=209.85.214.228
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ERy1PxuB"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2a871daa98fso5739505ad.1
-        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 03:43:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772106213; x=1772711013; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PbhS0NvKYgSA4IUttJNgnpP91LFlge369iIxmO7B660=;
-        b=ERy1PxuBzHujcE1H+s+0KuXiE01OUdcIDWsRStKHS7fjsmiGejgn0LtD7JWVlS8xe0
-         jM5FwmnimPE+AQG1gOPPqx9uZoGEADLI9ww2DYFUJLX2bNracRCBjr03iqm3a8iAIYNU
-         yTETcdfxXLctMH5wn/77vfQYGgUYiPqoiI+iDbH6qa9ROJ6755NOXHJRugP3X3BPbYl1
-         K271h7Lq5XaWmIHTEy9+aTr+9Fewnitp8wrPy2WfyrqUWR6/T8n9ab7XrR5zNMZ98nrb
-         uncN3fcEk7dEvhBkmLSNhi2c/JzrwegcCwMo8eN4KXN7cm4VuUN4JE5oDU3cZK8FCRUI
-         SO/Q==
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="Te6vM2Oh"
+Received: by mail-pl1-f228.google.com with SMTP id d9443c01a7336-2ab232cc803so3756515ad.3
+        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 03:47:38 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772106213; x=1772711013;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=PbhS0NvKYgSA4IUttJNgnpP91LFlge369iIxmO7B660=;
-        b=inzQLOttqd/z8h/kmePRgoeLr2TXo4BIzn4GCziIobHhm8BVBbD3JNnXEuZxXe8U3r
-         ziTC1Cv3b+flSaeIBhfhmRRAFe2/e1c1sD9yLPsG56SBBj9vyNdn6tQmSKFKrn7mWdJG
-         TcAVTV5vKHZKP1Tv+kAspbnUy0Oj62d/f3sRICrqAmTY5rTNL1kgxq1apIuPwbwYzoLI
-         ftOaxmWk+3NNZC758R0F3DRL3NLn2W0av8lsBpWZiabeVGs9CHCFLpW1YbZFz/OpD5lo
-         BVvflnNfFVkoar9cOCQJrO7WiCJfTyM9HEljmgtpj79YA+Y3i6q5Cz6KNZmQ7CEJYJ06
-         axdw==
-X-Gm-Message-State: AOJu0YwXlejl7kQdc9Hnu5Bz9rkefX2Q/WQ8LEH/hAzGVxFfgdcwNkE6
-	DPb3hSgThTrg4Xm5Q7oKR8GAsuFXtiD6asVY6/MBBOD5g/9QeOE1TdRfiQ0NCdTs+2A=
-X-Gm-Gg: ATEYQzxa/A5hgxnk6AZV8B8uzj0U4dWU5QGQSQxkX5S2Asd6sz0uu5cbBw+Y016mOHe
-	BXMaKQalkisOBZeLOI7m6j1kOUIdrTW1FHZ4EO54H+m+/xkeAfdLoTjxvwQDXQm6FlOqZmib6Wp
-	hHYtrk1LBplaPgpWtYMYYkF9K2Ck08+M0rC9o/CrjvtByJl8TM7CnUEPoXHjHejC8ODduLPX0jF
-	2el2DXkjw0ERsuXUhICOv5z+b1rqC2HNeIWS6jh3IpwKk7l4w3T9UvjdpCjEYKKVQ2mbyj6zq2Z
-	EftmYibizs1ALt+c4utqsEArmIh9gVH3O3Ohor66yALUNTSYInHSgSI9S3/ZtHF1I56LdQdkPQ6
-	Zv+Fsgf+E6nec9FgsDuDpRaK/u56fKVqz5PJYQfGhLTEF5nHZ1ljv6eYQEnWIt6VSjZTpZM7LRQ
-	BCU35wAITUz3ZbRZ4RljEYoJT7CWk=
-X-Received: by 2002:a17:902:f68c:b0:2ad:ae4f:3468 with SMTP id d9443c01a7336-2ade9a4fd5cmr39424435ad.38.1772106213588;
-        Thu, 26 Feb 2026 03:43:33 -0800 (PST)
-Received: from fedora ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5dbac7sm34131545ad.37.2026.02.26.03.43.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 03:43:33 -0800 (PST)
-From: Hangbin Liu <liuhangbin@gmail.com>
-To: netdev@vger.kernel.org
-Cc: Jay Vosburgh <jv@jvosburgh.net>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Samiullah Khawaja <skhawaja@google.com>,
-	Ahmed Zaki <ahmed.zaki@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	linux-kernel@vger.kernel.org,
-	bridge@lists.linux.dev,
-	Hangbin Liu <liuhangbin@gmail.com>
-Subject: [RFC PATCH net-next 3/3] failover: use .ndo_update_offloads for failover
-Date: Thu, 26 Feb 2026 11:42:08 +0000
-Message-ID: <20260226114208.27774-4-liuhangbin@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <20260226114208.27774-1-liuhangbin@gmail.com>
-References: <20260226114208.27774-1-liuhangbin@gmail.com>
+        d=1e100.net; s=20230601; t=1772106458; x=1772711258;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uDgQfZEqeYjIqNd6BT6EySh1xk9DorRuGMHGS2SIX1Y=;
+        b=HJGik2bzwl01MzEE/886txJZpdBaJXFk4xOEprDMjA3pUx9BFxzGNsiXlZ1opY9LX1
+         8/BskXCeBVCdkmsBqtt/Ws18yPFHeETPsYYjrA7o1AelK+t9q+EpEQegqohCC4xv/HOG
+         JjqfFcT6pKiwmSzwfoxn9zn7HwhxaCvDJ6J6W4wlGw6i4MGwdpswlZPYqj3jv3+Fduip
+         MvLUqYlvGcuo6V6ldKJEEyyeoPt5HhFeU0+Z55vNy74xtdCA/JqxerWMQzDheCrTSFCM
+         RlyiuklROBSlfSowZgSYmFmexyXTI46fLsIc4wggZ9Jt7FNlfTg7TVANXUrNRxvQyQty
+         DZgg==
+X-Forwarded-Encrypted: i=2; AJvYcCXV/mf0a3L6Hvr/cJP4m+eQmOk5QdYwaoBiAhsk3UJbqBi+QsHaLtFTrl34d/0pJkq2D99QErY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwsQSRr0p14uWkvENadmnN34fdAVFdRf+vIZGWlKPNL78394hii
+	1zdP+4JIxFHPhiyMz0yHrDmAa9iX5WwaLShwhBjVHSa1J+B1wm+xV/VGr0TfDcQlP45ObV+MoG4
+	wxAan1+IzrwU2DKXqslc3fMh16EQlP02pjhepWWtbfiHOSKmIwwYIDM0Pr+kaZyZq1fF3KAw8AY
+	YWZJhHXr9Dzg9wnz6j1qgw221q3t7sY/3ZWNkdyZDSGPCUOQ7llY1gPn2eoAdFMrOWAk1VbzAWp
+	eUx1mkw1g==
+X-Gm-Gg: ATEYQzw7g2C+KDUN+K4G7Yffyf5vfZHC1/5Kj96nnPlQq4SXaP+QY5WJ3E8c/O8nFYZ
+	sRq7DBALnBIGU6LgGmfXyje0TNmfN9BFgqeif86hxWJ9Aja+PQ3lZZcYcxC3GkxxFPncP9Um6aP
+	pewnnYQs5thqKcp2q7n3Sv3ju3aoRDYWsLg/pGkBzOCTAY4IPQWnSaMGSmXGkTPmnXBFURLLcWe
+	p7LyY6OzAhjXzOaVmc7HQzszp48aWHKlsAvNRuXUXUfLLHqc6nqIJ3yOFGPp3sX2fjMu1i7km7V
+	qcBfOdYKXeIFu9Rp0N7bBp4aUVs5/95eg0qR6NqKTVnB8NrY+iZ2RIR+5lpsycMCCGytz+9A4KY
+	ti8XCXY/TPXnWqMohVaCfYgD1X8CpNCezpsta7XkwTtwdQjJ1TneotK9UIr6A5ce/SqLx5+1wcQ
+	nBqMc8uzvftgHBLArJ/hvoYiE5QUT2Al0H7A7EKs3BPzJDa1oViJ3NLIeWkQ==
+X-Received: by 2002:a17:902:db02:b0:2a0:fe9f:1884 with SMTP id d9443c01a7336-2ade9aac40amr37532025ad.55.1772106457579;
+        Thu, 26 Feb 2026 03:47:37 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-118.dlp.protect.broadcom.com. [144.49.247.118])
+        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2adfb5eee32sm2263645ad.42.2026.02.26.03.47.37
+        for <netdev@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Thu, 26 Feb 2026 03:47:37 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pg1-f200.google.com with SMTP id 41be03b00d2f7-c5269fcecdeso429680a12.0
+        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 03:47:36 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772106456; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DH6dG4zkZZDIOSWO7/QgcxNfJOhbBHSfAbpptgHJhOtWU6XTRl0b7D/AwKTwRfotEx
+         fymfkaM29jHnntWu1uCIkTQxQbaM+7pZjLs3T6hOTVfEow5v3/ASNMUn4Q1FQHhZqZ4q
+         aBsxsbh8DU/by6+Hu0qXEe3aUUrUdw1ndqWM1twLCKYmTiaRIyoIHF5ixFTgeeo64hi5
+         4NDfsag4NQVXvPhg/E4OKpfHCrMYTcSi8rlEJgDqQ+R3zqc/aEHhOWQBUNnQfk5KMz2c
+         CsQfZjNLL1XzDacabJfFWD3iwAImfL8Lo7vNZvYj02whs42DBdk8nt9ZhiLrEBHjcWLL
+         uPkw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=uDgQfZEqeYjIqNd6BT6EySh1xk9DorRuGMHGS2SIX1Y=;
+        fh=aM7YBv92mTAopUdolQeOePUU58/1ANBKFfBs9RyuHJw=;
+        b=HVETb+Iys07rGRRk3rMRi8+AnLJFL0EdJC9vPlrLlwhfp7S+GTkt4I9xluqFHKOqWt
+         7BFAqJid6QBxxnrh2LjfICvQuGKfq/FyOuW7wSUj1x4bO8nLQaa+OFW5++WZGzWyqZd5
+         y/kmu+W0CYj4lri523OVaDsHN3bBxOjuyxIOL/za1PnXB2EWxSyDsQZ98uI0AF/dDzu9
+         /AdmZSmEH1vW5H5WNFvLIqNqrKji0jBqvLs92sUigcdataPQVZvV5y8IkI4cNyYV74uL
+         eOoZUIM4zUKLajYCleLrIyRomrqqR5DyoRkRTYOAr8/HqKrgnuP4PBH3Npt6tMvvhCra
+         5bRg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1772106456; x=1772711256; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=uDgQfZEqeYjIqNd6BT6EySh1xk9DorRuGMHGS2SIX1Y=;
+        b=Te6vM2Ohq5XsFj/IvimXNliI9xw2JRRZk6vpGsyRwNpTcGA2kyoFR5wBo2wbihFa+c
+         hjINIPnGebMFkAZ/AIGNCtQaoPo/Bke6EZ8MwRTwro0wuqtw4rq18XR3PEcSmNi+qZKn
+         GJ15mp+ObcRmi9KIELHiFP3uqx1h+nRs+99KY=
+X-Forwarded-Encrypted: i=1; AJvYcCUB7sx/kwLubNJXGpj0b/hYAjXzK5rx20xG5a/3ctAOzd666AuYTHtduMMvR1fYXOgM18mwTpM=@vger.kernel.org
+X-Received: by 2002:a05:6a20:2d08:b0:38d:fbb3:d577 with SMTP id adf61e73a8af0-395ad27e8efmr3361286637.66.1772106455936;
+        Thu, 26 Feb 2026 03:47:35 -0800 (PST)
+X-Received: by 2002:a05:6a20:2d08:b0:38d:fbb3:d577 with SMTP id
+ adf61e73a8af0-395ad27e8efmr3361269637.66.1772106455462; Thu, 26 Feb 2026
+ 03:47:35 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260223191154.2800616-1-kiran.kella@broadcom.com>
+ <20260223191154.2800616-2-kiran.kella@broadcom.com> <0a850f65-be67-4a66-941f-17d8440e987b@gmail.com>
+In-Reply-To: <0a850f65-be67-4a66-941f-17d8440e987b@gmail.com>
+From: Kiran Kella <kiran.kella@broadcom.com>
+Date: Thu, 26 Feb 2026 17:16:58 +0530
+X-Gm-Features: AaiRm53xFbGiXfLqovTFpAqyCtRs5jzO3JWaPF3zjgRMA39ajMSJwkWfEtSXQXA
+Message-ID: <CAPHeo3eJRYc503Ta24h9r+Uu1cGqb1dCfmnxuZQ4MJLCTFd9Lw@mail.gmail.com>
+Subject: Re: [net-next, v2 1/2] psp: Support for transmit on logical device
+ when the underlying transport device supports PSP.
+To: Daniel Zahka <daniel.zahka@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	willemb@google.com, pabeni@redhat.com, andrew+netdev@lunn.ch, 
+	horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	jayakrishnan.udayavarma@broadcom.com, ajit.khaparde@broadcom.com, 
+	akhilesh.samineni@broadcom.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-Convert net_failover to use the new ndo_update_offloads callback
-instead of manually calling netdev_compute_master_upper_features()
-during slave registration/unregistration.
+On Wed, Feb 25, 2026 at 2:28=E2=80=AFAM Daniel Zahka <daniel.zahka@gmail.co=
+m> wrote:
+>
+>
+>
+> On 2/23/26 2:11 PM, Kiran Kella wrote:
+> > This is achieved by propagating the psp_dev from the lower device
+> > to the upper devices in the device stack via a netdevice notifier.
+> > The lowest device owns the psp_dev pointer while the upper devices
+> > just borrow the pointer. When the lower device is unlinked, the
+> > borrowed pointer is cleared in the upper device.
+> > Assumption being that psp_dev is set on the lowest device before
+> > any upper devices are stacked on that lowest device.
+> >
+> > Signed-off-by: Kiran Kella <kiran.kella@broadcom.com>
+> > Reviewed-by: Ajit Kumar Khaparde <ajit.khaparde@broadcom.com>
+> > Reviewed-by: Akhilesh Samineni <akhilesh.samineni@broadcom.com>
+> > ---
+> >   net/psp/psp_main.c | 109 ++++++++++++++++++++++++++++++++++++++++++++=
+-
+> >   1 file changed, 108 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/net/psp/psp_main.c b/net/psp/psp_main.c
+> > index a8534124f626..fac785dcfa0f 100644
+> > --- a/net/psp/psp_main.c
+> > +++ b/net/psp/psp_main.c
+> > @@ -3,6 +3,7 @@
+> >   #include <linux/bitfield.h>
+> >   #include <linux/list.h>
+> >   #include <linux/netdevice.h>
+> > +#include <linux/rtnetlink.h>
+> >   #include <linux/xarray.h>
+> >   #include <net/net_namespace.h>
+> >   #include <net/psp.h>
+> > @@ -110,13 +111,45 @@ void psp_dev_free(struct psp_dev *psd)
+> >       kfree_rcu(psd, rcu);
+> >   }
+> >
+> > +/**
+> > + * psp_clear_upper_dev_psp_dev() - Clear borrowed psp_dev pointer on u=
+pper
+> > + *                              device
+> > + * @upper_dev:       Upper device that may have borrowed psp_dev point=
+er
+> > + * @priv:    netdev_nested_priv containing the psp_dev being unregiste=
+red
+> > + *
+> > + * Callback for netdev_walk_all_upper_dev_rcu() to clear borrowed psp_=
+dev
+> > + * pointers on upper devices when the underlying psp_dev is being unre=
+gistered.
+> > + *
+> > + * Return: 0 to continue walking, non-zero to stop.
+> > + */
+> > +static int psp_clear_upper_dev_psp_dev(struct net_device *upper_dev,
+> > +                                    struct netdev_nested_priv *priv)
+> > +{
+> > +     struct psp_dev *psd =3D priv->data;
+> > +     struct psp_dev *upper_psd;
+> > +
+> > +     upper_psd =3D rcu_dereference(upper_dev->psp_dev);
+> > +     if (upper_psd =3D=3D psd)
+> > +             rcu_assign_pointer(upper_dev->psp_dev, NULL);
+> > +
+> > +     return 0;
+> > +}
+> > +
+> >   /**
+> >    * psp_dev_unregister() - unregister PSP device
+> >    * @psd:    PSP device structure
+> > + *
+> > + * Unregisters a PSP device and clears all borrowed psp_dev pointers o=
+n
+> > + * upper devices (e.g., VLAN subinterfaces) that reference this device=
+.
+> > + * This prevents use-after-free if upper devices still have borrowed
+> > + * pointers when the psp_dev structure is freed.
+> >    */
+> >   void psp_dev_unregister(struct psp_dev *psd)
+> >   {
+> >       struct psp_assoc *pas, *next;
+> > +     struct netdev_nested_priv priv =3D {
+> > +             .data =3D psd,
+> > +     };
+> >
+> >       mutex_lock(&psp_devs_lock);
+> >       mutex_lock(&psd->lock);
+> > @@ -137,6 +170,12 @@ void psp_dev_unregister(struct psp_dev *psd)
+> >
+> >       rcu_assign_pointer(psd->main_netdev->psp_dev, NULL);
+> >
+> > +     /* Clear borrowed psp_dev pointers on all upper devices */
+> > +     rcu_read_lock();
+> > +     netdev_walk_all_upper_dev_rcu(psd->main_netdev,
+> > +                                   psp_clear_upper_dev_psp_dev, &priv)=
+;
+> > +     rcu_read_unlock();
+> > +
+> >       psd->ops =3D NULL;
+> >       psd->drv_priv =3D NULL;
+> >
+> > @@ -313,11 +352,79 @@ int psp_dev_rcv(struct sk_buff *skb, u16 dev_id, =
+u8 generation, bool strip_icv)
+> >   }
+> >   EXPORT_SYMBOL(psp_dev_rcv);
+> >
+> > +/**
+> > + * psp_netdevice_event() - Handle netdevice events for PSP device prop=
+agation
+> > + * @nb:              notifier block
+> > + * @event:   netdevice event
+> > + * @ptr:     netdevice notifier info
+> > + *
+> > + * Propagates psp_dev pointer from lower devices to upper devices when
+> > + * upper devices are created (e.g., VLAN subinterfaces).
+> > + * Excluding from this logic, the upper devices that have multiple low=
+er
+> > + * devices eg., bond devices.
+> > + *
+> > + * Return: NOTIFY_DONE
+> > + */
+> > +static int psp_netdevice_event(struct notifier_block *nb,
+> > +                            unsigned long event, void *ptr)
+> > +{
+> > +     struct netdev_notifier_changeupper_info *info;
+> > +     struct net_device *dev, *upper_dev;
+> > +     struct psp_dev *psd;
+> > +
+> > +     if (event !=3D NETDEV_CHANGEUPPER)
+> > +             return NOTIFY_DONE;
+> > +
+> > +     info =3D ptr;
+> > +     dev =3D netdev_notifier_info_to_dev(ptr);
+> > +     upper_dev =3D info->upper_dev;
+> > +
+> > +     if (netif_is_lag_master(upper_dev))
+> > +             return NOTIFY_DONE;
+> > +
+> > +     if (info->linking) {
+> > +             /* Lower device is being linked to an upper device.
+> > +              * Propagate psp_dev from the immediate lower device to t=
+he
+> > +              * upper device. The immediate lower device would have al=
+ready
+> > +              * got the psp_dev pointer set in a previous notification=
+ (or
+> > +              * owns it if it's the lowest device).
+> > +              * Upper devices just borrow the pointer.
+> > +              */
+> > +             psd =3D rtnl_dereference(dev->psp_dev);
+> > +             if (psd)
+> > +                     rcu_assign_pointer(upper_dev->psp_dev, psd);
+> > +     } else {
+> > +             /* Lower device is being unlinked from an upper device.
+> > +              * Clear the borrowed psp_dev pointer.
+> > +              */
+> > +             psd =3D rtnl_dereference(upper_dev->psp_dev);
+> > +             if (psd)
+> > +                     rcu_assign_pointer(upper_dev->psp_dev, NULL);
+> > +     }
+> > +
+> > +     return NOTIFY_DONE;
+> > +}
+> > +
+> > +static struct notifier_block psp_netdevice_notifier =3D {
+> > +     .notifier_call =3D psp_netdevice_event,
+> > +};
+> > +
+> >   static int __init psp_init(void)
+> >   {
+> > +     int err;
+> > +
+> >       mutex_init(&psp_devs_lock);
+> >
+> > -     return genl_register_family(&psp_nl_family);
+> > +     err =3D register_netdevice_notifier(&psp_netdevice_notifier);
+> > +     if (err)
+> > +             return err;
+> > +
+> > +     err =3D genl_register_family(&psp_nl_family);
+> > +     if (err) {
+> > +             unregister_netdevice_notifier(&psp_netdevice_notifier);
+> > +             return err;
+> > +     }
+> > +     return 0;
+> >   }
+> >
+> >   subsys_initcall(psp_init);
+>
+> The lack of support for netns is a bit of a gap for this feature. It may
+> make sense to see if what was posted in
+> https://lore.kernel.org/netdev/20260224002410.1553838-1-weibunny@fb.com/
+> is sufficient for your use case, as it handles cases where upper devices
+> are in a different netns from psd->main_netdev.
 
-This simplifies the failover code significantly by removing the custom
-feature computation logic and relying on the centralized feature update
-mechanism. The callback is automatically invoked during feature updates
-when upper/lower device links change.
+Thanks. Went through the changes in
+https://lore.kernel.org/netdev/20260224002410.1553838-1-weibunny@fb.com/
+It is sufficient for my use case too, although it specifically
+addresses the cross-netns virtual devices use case.
+But the same net-ns stacked devices like VLANs can be handled with
+this patch implicitly, without user intervention through dev-assoc.
+I think both approaches can co-exist without conflict.
+However, I am ok with using a single approach to use the dev-assoc for
+the same net-ns use case too.
 
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
----
- drivers/net/net_failover.c | 64 ++++----------------------------------
- include/net/net_failover.h |  7 -----
- 2 files changed, 6 insertions(+), 65 deletions(-)
-
-diff --git a/drivers/net/net_failover.c b/drivers/net/net_failover.c
-index d0361aaf25ef..527175f554a6 100644
---- a/drivers/net/net_failover.c
-+++ b/drivers/net/net_failover.c
-@@ -300,6 +300,11 @@ static int net_failover_vlan_rx_kill_vid(struct net_device *dev, __be16 proto,
- 	return 0;
- }
- 
-+static void failover_update_offloads(struct net_device *dev)
-+{
-+	netdev_compute_master_upper_features(dev, true);
-+}
-+
- static const struct net_device_ops failover_dev_ops = {
- 	.ndo_open		= net_failover_open,
- 	.ndo_stop		= net_failover_close,
-@@ -312,6 +317,7 @@ static const struct net_device_ops failover_dev_ops = {
- 	.ndo_vlan_rx_kill_vid	= net_failover_vlan_rx_kill_vid,
- 	.ndo_validate_addr	= eth_validate_addr,
- 	.ndo_features_check	= passthru_features_check,
-+	.ndo_update_offloads    = failover_update_offloads,
- };
- 
- #define FAILOVER_NAME "net_failover"
-@@ -373,61 +379,6 @@ static rx_handler_result_t net_failover_handle_frame(struct sk_buff **pskb)
- 	return RX_HANDLER_ANOTHER;
- }
- 
--static void net_failover_compute_features(struct net_device *dev)
--{
--	netdev_features_t vlan_features = FAILOVER_VLAN_FEATURES &
--					  NETIF_F_ALL_FOR_ALL;
--	netdev_features_t enc_features  = FAILOVER_ENC_FEATURES;
--	unsigned short max_hard_header_len = ETH_HLEN;
--	unsigned int dst_release_flag = IFF_XMIT_DST_RELEASE |
--					IFF_XMIT_DST_RELEASE_PERM;
--	struct net_failover_info *nfo_info = netdev_priv(dev);
--	struct net_device *primary_dev, *standby_dev;
--
--	primary_dev = rcu_dereference(nfo_info->primary_dev);
--	if (primary_dev) {
--		vlan_features =
--			netdev_increment_features(vlan_features,
--						  primary_dev->vlan_features,
--						  FAILOVER_VLAN_FEATURES);
--		enc_features =
--			netdev_increment_features(enc_features,
--						  primary_dev->hw_enc_features,
--						  FAILOVER_ENC_FEATURES);
--
--		dst_release_flag &= primary_dev->priv_flags;
--		if (primary_dev->hard_header_len > max_hard_header_len)
--			max_hard_header_len = primary_dev->hard_header_len;
--	}
--
--	standby_dev = rcu_dereference(nfo_info->standby_dev);
--	if (standby_dev) {
--		vlan_features =
--			netdev_increment_features(vlan_features,
--						  standby_dev->vlan_features,
--						  FAILOVER_VLAN_FEATURES);
--		enc_features =
--			netdev_increment_features(enc_features,
--						  standby_dev->hw_enc_features,
--						  FAILOVER_ENC_FEATURES);
--
--		dst_release_flag &= standby_dev->priv_flags;
--		if (standby_dev->hard_header_len > max_hard_header_len)
--			max_hard_header_len = standby_dev->hard_header_len;
--	}
--
--	dev->vlan_features = vlan_features;
--	dev->hw_enc_features = enc_features | NETIF_F_GSO_ENCAP_ALL;
--	dev->hard_header_len = max_hard_header_len;
--
--	dev->priv_flags &= ~IFF_XMIT_DST_RELEASE;
--	if (dst_release_flag == (IFF_XMIT_DST_RELEASE |
--				 IFF_XMIT_DST_RELEASE_PERM))
--		dev->priv_flags |= IFF_XMIT_DST_RELEASE;
--
--	netdev_change_features(dev);
--}
--
- static void net_failover_lower_state_changed(struct net_device *slave_dev,
- 					     struct net_device *primary_dev,
- 					     struct net_device *standby_dev)
-@@ -550,7 +501,6 @@ static int net_failover_slave_register(struct net_device *slave_dev,
- 	}
- 
- 	net_failover_lower_state_changed(slave_dev, primary_dev, standby_dev);
--	net_failover_compute_features(failover_dev);
- 
- 	call_netdevice_notifiers(NETDEV_JOIN, slave_dev);
- 
-@@ -621,8 +571,6 @@ static int net_failover_slave_unregister(struct net_device *slave_dev,
- 
- 	dev_put(slave_dev);
- 
--	net_failover_compute_features(failover_dev);
--
- 	netdev_info(failover_dev, "failover %s slave:%s unregistered\n",
- 		    slave_is_standby ? "standby" : "primary", slave_dev->name);
- 
-diff --git a/include/net/net_failover.h b/include/net/net_failover.h
-index b12a1c469d1c..f0f038d113a0 100644
---- a/include/net/net_failover.h
-+++ b/include/net/net_failover.h
-@@ -30,11 +30,4 @@ struct net_failover_info {
- struct failover *net_failover_create(struct net_device *standby_dev);
- void net_failover_destroy(struct failover *failover);
- 
--#define FAILOVER_VLAN_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
--				 NETIF_F_FRAGLIST | NETIF_F_ALL_TSO | \
--				 NETIF_F_HIGHDMA | NETIF_F_LRO)
--
--#define FAILOVER_ENC_FEATURES	(NETIF_F_HW_CSUM | NETIF_F_SG | \
--				 NETIF_F_RXCSUM | NETIF_F_ALL_TSO)
--
- #endif /* _NET_FAILOVER_H */
--- 
-2.50.1
-
+Thanks,
+Kiran
