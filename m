@@ -1,31 +1,31 @@
 Received: from mail.toke.dk (mail.toke.dk [45.145.95.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E78936682C
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 12:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AAB37FF6F
+	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 12:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.145.95.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772107501; cv=none; b=svvi+pzIKBSLjrWJ08CADSxFtTbdy2GCdn01oWr4fb2vykhcQAUKOwkxcqDiAkd3NZKn54qIiwARLGjZLVbKaT+R7qTLCqypJa8gEDxmwymIPls8KbrASB+GZEhLozQlObKFVof1ygMigiixrD/YvjvLYaKHEd+oeMTk3HJxYtg=
+	t=1772107539; cv=none; b=ZGik03ehv0U3Jw8X8yQLZ1m87HayENIsdwkfhpfX7fx6mt2fX+DIMY7qArltIHMBlPkChg5h8Nb3ygOAMJZ6KM6rUy2BXl6NnYdXj/sGOlZl7cSXzBW71LSq2hd996qH2W2k7TPlKAW1h4R4QXAUNqOl9oxqToxrmA4cSuQ6WQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772107501; c=relaxed/simple;
-	bh=qMKVcxH3JxZ2sUWwtxj/iC4YG2Sf3lqypstyaZYLIew=;
+	s=arc-20240116; t=1772107539; c=relaxed/simple;
+	bh=A5dFRRCQjsWGVb/MvbVCVM8MvJA8LbLiMMWYqv5yflI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=iLNJD2lrAot3Lk4DxjofOxpnkml2JrmkVv8WNlNoVpRexT8/Vzp+jH9XTLHtlWUnvMsDxCf4x0jvcj44mn/+69cTG0Q3DpPT0nz/rrtAIvF2ibFE6rFsIG7SFoLNq1fPbx3DxyZMVUHYxjY+LX3RL/8KQg8kjt0T6X83guj67JQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=UAxOvLyk; arc=none smtp.client-ip=45.145.95.4
+	 MIME-Version:Content-Type; b=CArkhfpB1rUbraGrVYUKVhNEDXMgtmjjAOwt5diihsuEP/rmJJwGWhZqA6obS6M38RGqr0DQJEhkPpQlr8JmTzmVADjiGnEwbLJnPNaJ7k1YDN2oy7rupvyHRdhm3qgOvy/02/MT7fwElNDtSiKwFVqKEHG2NJUXvrRR1KfvMIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk; spf=pass smtp.mailfrom=toke.dk; dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b=IvwH9DoY; arc=none smtp.client-ip=45.145.95.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=toke.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=toke.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="UAxOvLyk"
+	dkim=pass (2048-bit key) header.d=toke.dk header.i=@toke.dk header.b="IvwH9DoY"
 From: Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=toke.dk; s=20161023;
-	t=1772107490; bh=qMKVcxH3JxZ2sUWwtxj/iC4YG2Sf3lqypstyaZYLIew=;
+	t=1772107536; bh=A5dFRRCQjsWGVb/MvbVCVM8MvJA8LbLiMMWYqv5yflI=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=UAxOvLyksafMv4xOBZT3Ygt991y/0VBfiJ0GXPzNRzSuatbgpYuwtJV8NwH6YOaXo
-	 tSPGYce3i+p97CYUNxL91cpme4NOlQhmPfz3Ch1K58j9kLWo4GKXNCNI90emm4z/nk
-	 vLhhNliVEh96U2xXQlKAYa4TJFTd5JPzndf0EwlNM1hJdkrqxb6nJdqLdKJtpfeG7Y
-	 p0AhEbJNX1t5djKpQjNpap5aRezlUwJCsNzpSB6LsBElo6C1bKcByYZrC4t+jFMzAN
-	 kmpCNFCAD+q56R9AuX2rIeByonzUM52xHy+H/HW+uXZFUqHxJhLPLFrjzFdIuYNO46
-	 IQ3AvEb9/eJsg==
+	b=IvwH9DoYYdKF9J3FjEqQYkV0sYW5LehRJLHm0OiCL1eD7GVONSeuD5gFqh2i0vJmB
+	 SXW6JR18hvKxfylkfzmI0QPk2nfUZc7Q+5LODGL6GhvylxM9GhJgjG1Ytn/+cf73PI
+	 rjRIz8JiRmpaC0sXDIn3HcV2rpRoJ/6ce+yHLNyzbIOMhA2zujWwGkJOsU86KxY/WT
+	 t3FEKfa3N4inQTMQNkeSDitg3c9cfXHzcoeCbZDTahEKHeVZFjCO8oET3ib//GBl8+
+	 leLnBCqMoGx/xkip7MYZlTmlNDZ1Ohipj7IvtPE83rbH8V5F/5lXzn9NGWlU7Q1yB9
+	 +Vx+bw8qBhuKg==
 To: Jonas =?utf-8?Q?K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>, Jamal Hadi
  Salim
  <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, "David S. Miller"
@@ -35,14 +35,14 @@ To: Jonas =?utf-8?Q?K=C3=B6ppeler?= <j.koeppeler@tu-berlin.de>, Jamal Hadi
 Cc: cake@lists.bufferbloat.net, netdev@vger.kernel.org, Jonas =?utf-8?Q?K?=
  =?utf-8?Q?=C3=B6ppeler?=
  <j.koeppeler@tu-berlin.de>
-Subject: Re: [PATCH net 1/2] net/sched: sch_cake: avoid sync overhead when
- unlimited
-In-Reply-To: <20260226-cake-mq-skip-sync-bandwidth-unlimited-v1-1-01830bb4db87@tu-berlin.de>
+Subject: Re: [PATCH net 2/2] net/sched: sch_cake: fixup cake_mq rate
+ adjustment for diffserv config
+In-Reply-To: <20260226-cake-mq-skip-sync-bandwidth-unlimited-v1-2-01830bb4db87@tu-berlin.de>
 References: <20260226-cake-mq-skip-sync-bandwidth-unlimited-v1-0-01830bb4db87@tu-berlin.de>
- <20260226-cake-mq-skip-sync-bandwidth-unlimited-v1-1-01830bb4db87@tu-berlin.de>
-Date: Thu, 26 Feb 2026 13:04:47 +0100
+ <20260226-cake-mq-skip-sync-bandwidth-unlimited-v1-2-01830bb4db87@tu-berlin.de>
+Date: Thu, 26 Feb 2026 13:05:36 +0100
 X-Clacks-Overhead: GNU Terry Pratchett
-Message-ID: <87v7fjlnhc.fsf@toke.dk>
+Message-ID: <87seanlnfz.fsf@toke.dk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,8 +54,10 @@ Content-Transfer-Encoding: quoted-printable
 
 Jonas K=C3=B6ppeler <j.koeppeler@tu-berlin.de> writes:
 
-> Skip inter-instance sync when no rate limit is configured, as it serves
-> no purpose and only adds overhead.
+> cake_mq's rate adjustment during the sync periods did not adjust the
+> rates for every tin in a diffserv config. This lead to inconsistencies
+> of rates between the tins. Fix this by setting the rates for all tins
+> during synchronization.
 >
 > Fixes: 1bddd758bac2 ("net/sched: sch_cake: share shaper state across sub-=
 instances of cake_mq")
