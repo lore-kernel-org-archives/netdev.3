@@ -1,110 +1,115 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC94299920;
-	Thu, 26 Feb 2026 12:23:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDC9285056;
+	Thu, 26 Feb 2026 12:32:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772108626; cv=none; b=syTW3CydP3nT7hGMDAHvGKLLzgc8iKkrrlL4smtUx4ThXu8Rl+CmWevXIHRpGt/dBQ1rTOYWEKX6slBUqRdwxg/mve8BFDxHZ5ICYmCNuzj8wSODIrZd3oA/H86wFeOKXAGNjZuJlIqA5r34QQz0mxWJpnumFWpP5GHgOUjP2jE=
+	t=1772109148; cv=none; b=nANOcVG7W+eRv8R7x0a6pccts3NLXvokjRYbxmcUblK3wx7bD7r3uIl3KgozlqPidteGjq6w+UhEiTRqkTTdDS5XKp0xileoVye2GoaHiO5brKBYAgVybUerogY2jSgT1f6HCka0Hg7r86Hpr7eZXBm9ql2ADTvnt0IoSlTTSa0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772108626; c=relaxed/simple;
-	bh=EHuyXiIbamgacSccW1uh8ZqqgH4yrLHuCBJoewXcNTI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dBafHVFoWYHzAbTPlV9R/75HuLjUGFEC5s5kOpzdZlF0cshSOOZ1KSlBzL9+21e+p1UA0b0tTRsCgGokL44DNMcIDOZ6mSUYqPPDRWD4zYfC4NFTi3YFIbvi5uPw1UutL9evC7nxMr8aKVDLkLJWwFEFnTFW0DDVTzIQ4FB1Ax4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WTT8yzxw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772109148; c=relaxed/simple;
+	bh=7G/Xw0vgEtxD1MOJ5DsyAXBv4m0BhjJ7WjEoAC/FN7w=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=qv0kLa04IoSzCJoiyw2YTDjazSCRV3DV7X5KcSpiplCLCmQf3DEg0W3g5kmHgJ+yNG8wUWX9zg1f0/6k56OYFklsNUdq8TOBu1yL7Y+Oz2meMvJ470nugkhfBt+X4tabCPWypY8+fHxKah+7wmGv91qY80xPUcgZfkX+C3KKayQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rKSYeHdv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WTT8yzxw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33844C116C6;
-	Thu, 26 Feb 2026 12:23:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rKSYeHdv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD23C116C6;
+	Thu, 26 Feb 2026 12:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772108625;
-	bh=EHuyXiIbamgacSccW1uh8ZqqgH4yrLHuCBJoewXcNTI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WTT8yzxwwJj9obaOQMUuKVdckkw6dYpzRbZkm2AwMvDEb30cTjLqQY7EzffDxq3ZR
-	 awoxUro543SWIBYXQuDPIdHDepA/YIVd6DJyfyswI2TqsPmGG/0EveaWbY03UBP7Wu
-	 /W41twqYQJh6xgI3XuHJB4+k8oT/li0Tm2XL0qIIVJLagUo2lnVcSgBQNntCGjqRZI
-	 m2eZi7TdEgH3arwOsPCoFr8fYuktadtr2hNOHL1RFJ3sqDqqBsUCWS/9rBdheQz/Zb
-	 iws+xGLxcFqGN80yVGhKeKFVEOmHJlozOZ4IfAFEXckTD8Le8nfF2zGYcTpbFdzMpU
-	 AL4BqWWTFgICg==
-Date: Thu, 26 Feb 2026 12:23:41 +0000
-From: Simon Horman <horms@kernel.org>
-To: Rosen Penev <rosenp@gmail.com>
-Cc: netdev@vger.kernel.org, Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	"maintainer:OCELOT ETHERNET SWITCH DRIVER" <UNGLinuxDriver@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] net: dsa: felix: use kmalloc_flex helper
-Message-ID: <aaA7TcdhXQPa_Y1U@horms.kernel.org>
-References: <20260225040323.69497-1-rosenp@gmail.com>
+	s=k20201202; t=1772109148;
+	bh=7G/Xw0vgEtxD1MOJ5DsyAXBv4m0BhjJ7WjEoAC/FN7w=;
+	h=Date:From:To:Cc:Subject:From;
+	b=rKSYeHdvxwWcz2zrqb4a+n2StLPH4R6X00yArzd/4tsIc141if/3Av3bqcR0HDAfb
+	 5Ce8WShRiYCo6DazoQW9TcKFETB6MiQoJ2ofWhyfo74o8db9KYZch6o6dbmjcnvu7V
+	 nfWtXqBpsYi+U+tIIBWWJR+RKw77Gdo1MiQ8hU06vW4ziUPny6Dz2NAxUm6aa2exOi
+	 WivIaWdw5NwzmxxO61Mwdgu4Ei5pRTaF9rVHYTUdPxzQb0byznAwrZsgO1eDw38QmB
+	 +D/t/OcgW34Y+qTRvaoX8h/b8YvKtFKWB2EWKw/P3s1+s66JrFyMUXj2d46V500rOC
+	 CAsL3xhl0e59w==
+Date: Thu, 26 Feb 2026 12:32:24 +0000
+From: Mark Brown <broonie@kernel.org>
+To: David Miller <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Networking <netdev@vger.kernel.org>
+Cc: Dimitri Daskalakis <dimitri.daskalakis1@gmail.com>,
+	Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+	Linux Next Mailing List <linux-next@vger.kernel.org>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>
+Subject: linux-next: manual merge of the net-next tree with the net tree
+Message-ID: <aaA9WOQzW2ylYjRx@sirena.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="Ic8H4ymLkqF9lgLP"
+Content-Disposition: inline
+
+
+--Ic8H4ymLkqF9lgLP
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260225040323.69497-1-rosenp@gmail.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Feb 24, 2026 at 08:03:23PM -0800, Rosen Penev wrote:
-> A little simpler than using a separate size variable.
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->  drivers/net/dsa/ocelot/felix_vsc9959.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c b/drivers/net/dsa/ocelot/felix_vsc9959.c
-> index 8387dd208adb..cb132679fd99 100644
-> --- a/drivers/net/dsa/ocelot/felix_vsc9959.c
-> +++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
-> @@ -2254,7 +2254,7 @@ static int vsc9959_psfp_filter_add(struct ocelot *ocelot, int port,
->  	struct felix_stream_gate *sgi;
->  	struct ocelot_psfp_list *psfp;
->  	struct ocelot_policer pol;
-> -	int ret, i, size;
-> +	int ret, i;
->  	u64 rate, burst;
->  	u32 index;
->  
-> @@ -2271,8 +2271,7 @@ static int vsc9959_psfp_filter_add(struct ocelot *ocelot, int port,
->  	flow_action_for_each(i, a, &f->rule->action) {
->  		switch (a->id) {
->  		case FLOW_ACTION_GATE:
-> -			size = struct_size(sgi, entries, a->gate.num_entries);
-> -			sgi = kzalloc(size, GFP_KERNEL);
-> +			sgi = kzalloc_flex(*sgi, entries, a->gate.num_entries, GFP_KERNEL);
+Hi all,
 
-Hi Rosen,
+Today's linux-next merge of the net-next tree got a conflict in:
 
-This line is now too long; Kernel code still prefers code to be 80
-columns wide or less.
+  tools/testing/selftests/drivers/net/hw/rss_ctx.py
 
-To be honest, I think the improvement here is marginal.
-And I lean towards the rule about cleanups applying here.
+between commit:
 
-Quoting documentation:
+  ce5a0f4612dba ("selftests: drv-net: rss_ctx: test RSS contexts persist af=
+ter ifdown/up")
 
-  Clean-up patches
-  ~~~~~~~~~~~~~~~~
+=66rom the net tree and commit:
 
-  Netdev discourages patches which perform simple clean-ups, which are not in
-  the context of other work. For example:
+  19c3a2a81d2bc ("selftests: drv-net: rss: Generate unique ports for RSS co=
+ntext tests")
 
-  * Addressing checkpatch.pl warnings
-  * Addressing Local variable ordering issues
-  * Conversions to device-managed APIs (devm_ helpers)
+=66rom the net-next tree.
 
-  This is because it is felt that the churn that such changes produce comes
-  at a greater cost than the value of such clean-ups.
+I fixed it up (see below) and can carry the fix as necessary. This
+is now fixed as far as linux-next is concerned, but any non trivial
+conflicts should be mentioned to your upstream maintainer when your tree
+is submitted for merging.  You may also want to consider cooperating
+with the maintainer of the conflicting tree to minimise any particularly
+complex conflicts.
 
-  Conversely, spelling and grammar fixes are not discouraged.
+diff --cc tools/testing/selftests/drivers/net/hw/rss_ctx.py
+index b9b7527c2c6b9,cbeb3a38fdfeb..0000000000000
+--- a/tools/testing/selftests/drivers/net/hw/rss_ctx.py
++++ b/tools/testing/selftests/drivers/net/hw/rss_ctx.py
+@@@ -10,9 -9,8 +10,9 @@@ from lib.py import ksft_eq, ksft_ne, ks
+  from lib.py import NetDrvEpEnv
+  from lib.py import EthtoolFamily, NetdevFamily
+  from lib.py import KsftSkipEx, KsftFailEx
+ +from lib.py import ksft_disruptive
+- from lib.py import rand_port
++ from lib.py import rand_port, rand_ports
+ -from lib.py import ethtool, ip, defer, GenerateTraffic, CmdExitFailure
+ +from lib.py import cmd, ethtool, ip, defer, GenerateTraffic, CmdExitFailu=
+re, wait_file
+ =20
+ =20
+  def _rss_key_str(key):
 
-See: https://www.kernel.org/doc/html/next/process/maintainer-netdev.html#clean-up-patches
---
-pw-bot: cr
+--Ic8H4ymLkqF9lgLP
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmmgPVcACgkQJNaLcl1U
+h9DngAf8CIjoSMK1++TkATfroGzHi2Md2eVH/xtpF5Xr8SjogurNkuDHHi8SxEAy
+rcfGmNxQtBuqCNELBAhjW3hRTclHR4IWyRomB3NLMpThfH/QoKXOj/BDjKkZoU1k
++KI5IlHBk/r5zDg/OlMUk2AnrZ3TN0RTFsUgyd2cz46uPh+M0PFG2MHdJMQGeb6n
+yCmlNifShHVlFlk59T/bTmsIImaJxXtSFPZiDNcGgO2V+B1P310v/SvMUTgf0W+R
+TiWU4H66fSXJMRnS7M/vwzEZbCq+ppF0uNAO0a3nj01YwumKc57w3cB50XU6Cta2
+6D4UfgdwNnQvvJpVsnFSjSqgqHw3qA==
+=72R2
+-----END PGP SIGNATURE-----
+
+--Ic8H4ymLkqF9lgLP--
