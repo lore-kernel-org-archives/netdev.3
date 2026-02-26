@@ -1,132 +1,115 @@
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541B8395DBA
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 08:56:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E8239526D
+	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 08:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772096191; cv=none; b=hWG1k1ggjE3aViWIteP2ZA1z2mp7gw8STH8N22SIU6u5N/eCAEY7GeSIIT2QcpqxJy4bd3rapUcZW26f1Giljguwq5SHdDr1vqetq5GMPC6zxLPGkvOkJ0LNk9SrZ6Ei8YbDkA3ECui7TyV57LKFiLHzVOm982mWq9Ind1UUkaQ=
+	t=1772096302; cv=none; b=ulfp8SFRt1Ai+M1vCWZRbcAMBAC5YPNvWoe/wk7BVnEDyiF/GuouGNIZ+xwtu7NikPxq9+GNVuYVO0lULONuKFOWfOt0eZSnuzvRr73mxSZIlYpHSzNW2khvnd4wTr69TrflefzGknC6TY/U46+Z7fxrHOiXikvn+fT5nz4mtdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772096191; c=relaxed/simple;
-	bh=yjujEF507FkM1LvRmeoa1lnj6VPSIxn7+rlLXsx2RIk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TfYgto4DYsvTQoWHAJaOpR0i3DHGAsGCgYpvsnissP5qprAWDUY9TKAZQ1ZJK2Q8W90L/FAQenADe5PAPzIoGd7QDV7KXnM9NtE+75tUBeCGWVEpnGL3+uH0uFYLwkpmi+3Sys//9yPvstuttSn9hOsnbei3sMI47T8KESaGSIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CM6CiUii; arc=none smtp.client-ip=209.85.214.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772096302; c=relaxed/simple;
+	bh=SlOHjbFT6bgglmBCcv8V5rdB3omMjR2vXC7pzkgZVik=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MVI6ehJVS+Q5UB+OdXxR0JAmH39y5EztmOV6EqOVk30p6PC9weSwEdsdkpqMvrjXI0h3KlZetwBQCbSQt+v6oQhj+lIv0gW0Xjk3/q7xjIfS+Jj2O5v/SjSV0CrnkqYT980XSpgFVHIiPFRAEba/dswuHAYboa0LHmjCVVrKCFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n9jHG6mU; arc=none smtp.client-ip=209.85.160.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CM6CiUii"
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2a9296b3926so4684235ad.1
-        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 00:56:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n9jHG6mU"
+Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-503915b0a88so109436711cf.1
+        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 00:58:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772096189; x=1772700989; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=V4C5I1Pt/wEGclaDi4K2UNhQ2nDAFpcehkeSkCYPJ+M=;
-        b=CM6CiUiivWgCnTC2q4j6DiK0qOQDMYEC3ZHKHcs9H+8NycAlfyvkPEggOy3z/NqiG1
-         HNQwqmQH3DlNUEv2vEhzwxtIuloXHFbW6S/ACCDopopNbPVO4khBjXSgRcYoUoaKA4RJ
-         5nDO0SRpzRxKIKKZ5oSHpKpyoR2MKJpOuBjjOEz3exBNgTqfRPW7CXSHaLSMIckz1qaw
-         W1AkP0xCwt/g3Japp84NpIlPhDfVLKMmHC4D6x7uW+62TA6cqwvnawFDU9x0f0WGuOF4
-         tRqqJmma+SMy7Zs8lF71Pj0QWtAusmdX5rEYh9ag6ql5BtcHZdIfr6jguIHIrxZ8pZIA
-         PUyA==
+        d=google.com; s=20230601; t=1772096298; x=1772701098; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0wuPspiPv1csZE43cGiBpIC+UQAJFmaKX0o5kmlUK68=;
+        b=n9jHG6mULKfDQlh4lWSJVn4TClmcBExfDhWyIgUW/K8fkb/spUSmqiYHO3cUqilygo
+         DMRy/k1H2e2XjWiVEQewd0NCA2nN/JoBs72JBjM+LB/GWmoxmVoJHxHzGRR8NQ6UcWcA
+         XcTR1lqQH5u+GoyX9A2/x7Za7KCHpyAxZ+U2rnCLqS50ZAlujmHj+8viI4ATDZY4Ez0W
+         Z7qCbyRy94RY6fiV+wPwe1BQsbpdja6czLPYqXGRRPVkLzd4aRttujJGBx1LA3nu+oVn
+         8CRqCsZOyWMIR4z+CSu0cpE22h+hBW8cyjDyWZTrzyH2b2WsZm7RzFQHcFwDcE/3jgEH
+         l3FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772096189; x=1772700989;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=V4C5I1Pt/wEGclaDi4K2UNhQ2nDAFpcehkeSkCYPJ+M=;
-        b=SqebLudsHmFS65p/w5U7WwVs2C+6pPTtwqi2r+nWd396zqjnDAVWg7thQdgkSUv4zu
-         lMAF5FJlsrfdpe/xm/0Xf+KaBvbOvUbJkRG+Sgg1QkMR9DbvB2P01SRJ39q6CdakNMcN
-         Yr7DuyxDBU98u9lOMY07RH/f3jDJDG45WbBgry+OvleuQfwscYZ0vIa0FEuO/6dLi+Mm
-         QZNXJoe4pFeTew/I45ylQryT5Ow+VQATGQ43nfom5FXU3UNZy1XdpalodWdQP9E3uuVQ
-         7mC6cze1KyhXqN9kMO2YhXw7VXQfgQjsWGPmcVMMqXZNMlX2KQwXu+m+jmmP3CpWvcoD
-         EPGA==
-X-Gm-Message-State: AOJu0Yx5g39cGZP91dqpZV+K1DJBDL8M28of/THPtx/HnjIRNP6ADP/9
-	l08g8S7G+PA0QjsV5nL3big/UGUnHVzSgYu3LMHE2ZTPlwJsSMtQci/i
-X-Gm-Gg: ATEYQzxb8ZdEAfpXIZnTIrZTrJvKbl7C6Fdq0NGNFucbsG9flf439ly/eiQXKzxiL4P
-	aZK52XioCS7FiwF+eqcYe6YfFhW1WfBKvYBzrhYAAkU4vGcCVOVxcxfz447CJnihNHFwNhxpmDD
-	QUGuk6A8Hv/lapjQqJxwLiS3CFDe+XStA0+FVnkzj23Pz7zPlCMip3aXCPzbLjVeGcznZ7dGtF5
-	AEFy+w9t2twDYh18ojQFxzsp8lEFpwxtrzCO5rJZLkaTSwxjkrE6bMlMj2+bq9/Qq3V8LHxKDA4
-	o/Rsqpy1dQL60yCPeoU8/IjhrshJlkti+ZVSRTH8pOaidxsj7ZWKCWvEXiI9PCVrZLhmxj9j+SR
-	FCSmiwVML0kcp9F2sgL4rB6LCVfJ6F6CYTCBgAAQmaunUwxj6Hqrmm+Kq6J23fZlCejfHhu5tro
-	YmRVjlUQrjRTMqSaWigpPnIoTQUp8p5N+J4gDKJG2R9AbcA5czPtiekEzNjG6ODs7VXOgT
-X-Received: by 2002:a17:902:e5ce:b0:2a9:62ce:1c0c with SMTP id d9443c01a7336-2ae0305f1bdmr16231495ad.6.1772096188631;
-        Thu, 26 Feb 2026 00:56:28 -0800 (PST)
-Received: from zeeshan-Standard-PC-Q35-ICH9-2009.. ([110.93.227.54])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739d8c7aesm2220020b3a.21.2026.02.26.00.56.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 00:56:28 -0800 (PST)
-From: Zeeshan Ahmad <zeeshanahmad022019@gmail.com>
-To: Sridhar Samudrala <sridhar.samudrala@intel.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>
-Cc: netdev@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Zeeshan Ahmad <zeeshanahmad022019@gmail.com>
-Subject: [PATCH net v3] net: core: failover: fix NULL pointer dereference in failover_slave_register()
-Date: Thu, 26 Feb 2026 13:56:01 +0500
-Message-ID: <20260226085601.11343-1-zeeshanahmad022019@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20230601; t=1772096298; x=1772701098;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0wuPspiPv1csZE43cGiBpIC+UQAJFmaKX0o5kmlUK68=;
+        b=Ce/ArZwd4nKT8bUR4m8zis6wykYMNjO4srEkM5kkEvXQoo5qBnxfoZFi8UtNVKyeqO
+         91bYLARO381pMB4/ru/yXfiwc6FmbRlKub8DnMV7JmkEjpo0wUF7GMVxJ1cOtBc5v019
+         M2ndAud4oPlc+TEuwAaOjXAl0Ub37MqHIxqZvfp7VicmZBuYZqw5lRrPRtxm/X2KQ8Fg
+         4bj1u1I6djcgfydLuomiM801XYr651bNxP9rDPagyynF4m/E1MG7TjQHRa97NZUBSLVr
+         VNbd5q7d8cOGsDu198bt7ACshhhp9FdLpKJbxhd+g/8WSCua53wU77TQbL4H0PYJ9aHJ
+         vUyw==
+X-Gm-Message-State: AOJu0YxIcStNV3LZgEXu0xKP9bfvrT1ut5Ovz5gKcH7s5/TFxT08LhBe
+	IyfKV87Oyv2mvLKoFQ7GDGzgc/gfeYUgfpsE3HadgnQXVMmktXgoqBZ0hiYmJ4jqmq2ODhq5fvb
+	JLvf5KBAFtpB49w==
+X-Received: from qtxn14.prod.google.com ([2002:a05:622a:40e:b0:506:5118:a54f])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:ac8:5d4a:0:b0:4ed:b441:d866 with SMTP id d75a77b69052e-50741fbd9ecmr46698241cf.65.1772096298187;
+ Thu, 26 Feb 2026 00:58:18 -0800 (PST)
+Date: Thu, 26 Feb 2026 08:58:16 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
+Message-ID: <20260226085816.2272259-1-edumazet@google.com>
+Subject: [PATCH nf-next] netfilter: nfnetlink_log: no longer acquire sk_callback_lock
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
+Cc: netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, 
+	coreteam@netfilter.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Smatch warns that 'fops' is dereferenced without a NULL check.
-While other callbacks in this function properly check 'fops', the
-rx_handler registration does not.
+After commit 983512f3a87f ("net: Drop the lock in skb_may_tx_timestamp()")
+from Sebastian Andrzej Siewior, apply the same logic in
+__build_packet_message() to avoid touching sk->sk_callback_lock.
 
-Consolidate the NULL check for 'fops' at the beginning of the function,
-before it is first used in slave_pre_register(). This ensures 'fops' is
-valid for the entire function scope and allows the removal of redundant
-NULL checks later in the function, as suggested by Dan Carpenter.
-
-Fixes: 30c8bd5aa8b2 ("net: Introduce generic failover module")
-Signed-off-by: Zeeshan Ahmad <zeeshanahmad022019@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
 ---
-v3:
- - Move the fops NULL check to the top of the function before any 
-   dereferences occur and remove subsequent redundant NULL checks, 
-   as suggested by Dan Carpenter.
-v2:
- - Target 'net' tree as this is a bug fix.
- - Change logic from an early return (v1) to WARN_ON_ONCE() and abort
-   registration, as discussed with Simon Horman.
+ net/netfilter/nfnetlink_log.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
- net/core/failover.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/net/core/failover.c b/net/core/failover.c
-index 2a140b3ea669..47e4a91dcaa6 100644
---- a/net/core/failover.c
-+++ b/net/core/failover.c
-@@ -59,7 +59,10 @@ static int failover_slave_register(struct net_device *slave_dev)
- 	if (!failover_dev)
- 		goto done;
- 
--	if (fops && fops->slave_pre_register &&
-+	if (WARN_ON_ONCE(!fops))
-+		goto done;
+diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
+index bfcb9cd335bff59fa4d0d09eb52943566e4098e7..bef28e5230bb3b4d4b1ef4d5111909bac969b343 100644
+--- a/net/netfilter/nfnetlink_log.c
++++ b/net/netfilter/nfnetlink_log.c
+@@ -611,19 +611,26 @@ __build_packet_message(struct nfnl_log_net *log,
+ 	/* UID */
+ 	sk = skb->sk;
+ 	if (sk && sk_fullsock(sk)) {
+-		read_lock_bh(&sk->sk_callback_lock);
+-		if (sk->sk_socket && sk->sk_socket->file) {
+-			struct file *file = sk->sk_socket->file;
++		const struct socket *sock;
++		const struct file *file;
 +
-+	if (fops->slave_pre_register &&
- 	    fops->slave_pre_register(slave_dev, failover_dev))
- 		goto done;
++		/* The sk pointer remains valid as long as the skb is.
++		 * The sk_socket and file pointer may become NULL
++		 * if the socket is closed.
++		 * Both structures (including file->cred) are RCU freed
++		 * which means they can be accessed within a RCU read section.
++		 */
++		sock = READ_ONCE(sk->sk_socket);
++		file = sock ? READ_ONCE(sock->file) : NULL;
++		if (file) {
+ 			const struct cred *cred = file->f_cred;
+ 			struct user_namespace *user_ns = inst->peer_user_ns;
+ 			__be32 uid = htonl(from_kuid_munged(user_ns, cred->fsuid));
+ 			__be32 gid = htonl(from_kgid_munged(user_ns, cred->fsgid));
+-			read_unlock_bh(&sk->sk_callback_lock);
+ 			if (nla_put_be32(inst->skb, NFULA_UID, uid) ||
+ 			    nla_put_be32(inst->skb, NFULA_GID, gid))
+ 				goto nla_put_failure;
+-		} else
+-			read_unlock_bh(&sk->sk_callback_lock);
++		}
+ 	}
  
-@@ -82,7 +85,7 @@ static int failover_slave_register(struct net_device *slave_dev)
- 
- 	slave_dev->priv_flags |= (IFF_FAILOVER_SLAVE | IFF_NO_ADDRCONF);
- 
--	if (fops && fops->slave_register &&
-+	if (fops->slave_register &&
- 	    !fops->slave_register(slave_dev, failover_dev))
- 		return NOTIFY_OK;
- 
+ 	/* local sequence number */
 -- 
-2.43.0
+2.53.0.414.gf7e9f6c205-goog
 
