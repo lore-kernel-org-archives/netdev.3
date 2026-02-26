@@ -1,134 +1,339 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out28-147.mail.aliyun.com (out28-147.mail.aliyun.com [115.124.28.147])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C483914D29B;
-	Thu, 26 Feb 2026 07:38:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080DF38B7B3;
+	Thu, 26 Feb 2026 07:39:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.147
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772091522; cv=none; b=tDQBQIuL0xKBSg6WXGRMxRlLcPuZEFEDO96B56hD2l6iCU8L4wmdGmrJODrVfL8jIpMMs0CauKgscqJyqV/q5sgqMAjKYOaLfkfyYZklpL26ocFSQxo75CCPh9ezi5L+7Kp5TFCnCXeCELqYWVrIYMjuxSXQhR5y5XSb30vqFsM=
+	t=1772091553; cv=none; b=g875Dx4AFEemMxr+hL7AdM5iUQ7TH15v60Ycy68wctOTGshLV/gvG/92VxhFpbcCvY17sDM1jHMvzdxzAgWs2thRYK0KydXMPtBTYO9AA2cfSnKwZXP24g9pb0QBIyJiwAmqbtNtSwLu3F7bMsXs5VWd+IDBPEchkhMEmhq7h9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772091522; c=relaxed/simple;
-	bh=Wrc4xAun5CwndqcKF0a9rvejO9WBiD5pCK7g3zIJna4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XeGfcdgYJoFg84u7SK2vfiFgDnHFIbFK96uOVVMhfGo17l1JLlfClKiswInfa9JzV2ht3AaGOINf3l5aPOk3sTYA3BM9NZRurDGn41jatRwtTfRpr+S169uo1al2EE+U+ytTKqw/6Z9gcAtQCmKePA5vkev5IXDLpfpfSHiaslc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MuUKU8Ha; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MuUKU8Ha"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0698DC19424;
-	Thu, 26 Feb 2026 07:38:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772091522;
-	bh=Wrc4xAun5CwndqcKF0a9rvejO9WBiD5pCK7g3zIJna4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MuUKU8HaopIuxCmBB3FBoI5xYavpPuRdntHOycIA4tf/iyw0mu44c+PlbVfX5HlI8
-	 tKNN3qDS+T2o39hlVjIkJFbLFbbidazicsEVmV0EE7rPRF9nWpLNeuL083/z5vLWCi
-	 GhEUWa679c8MByObex9yLlneYIZWL/GMfxJj8bJaKIzKsq6b87YEw6K/LMMzPwXnm8
-	 wzXB/6gsTdbZMMi23oQpbE0hEQRuqkYro/rWrJR0htwTugrgCVOa7YbtnZEFjpDWzD
-	 wN7YBYghNls8CUdgkBfzjmiZoMDitC1Hc6ZEYLzi2E6T+LK3GjgVYkUseG430trA95
-	 6O4pY3UPxw2lA==
-Date: Thu, 26 Feb 2026 08:38:39 +0100
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Zhengping Zhang <aquapinn@qq.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com, zhengping.zhang@airoha.com,
-	upstream@airoha.com, Simon Horman <horms@kernel.org>
-Subject: Re: [RESEND PATCH net-next] net: airoha: fix typo in function name
-Message-ID: <aZ_4f5LrAlKpG6cZ@lore-desk>
-References: <tencent_E4FD5D6BC0131E617D848896F5F9FCED6E0A@qq.com>
+	s=arc-20240116; t=1772091553; c=relaxed/simple;
+	bh=vpO1pK+X6jjBw4igVhJzxFRhRxB8HX3cgz4OAh9KCxs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=awRQQPb/o+NKWY1AXHh/AnUx9n0VKKUK225ZAg4+E9XtR2lwH3Jam8YKA0RlP86vayumJfQtMvTVDo3cAk0sT+x66r7qc4jsDVLUrnep4l52CFK+GLtAIsIqkRggsCmiMD9nBdR+pBZ9i1x75sjPnKIQXtAW0ljC1djLZzT4Sxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.147
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.gfIwj0c_1772091545 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 26 Feb 2026 15:39:06 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	linux-doc@vger.kernel.org,
+	lorenzo@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v5 net-next 10/11] net/nebula-matrix: add common/ctrl dev init/reinit operation
+Date: Thu, 26 Feb 2026 15:38:35 +0800
+Message-ID: <20260226073840.3222-11-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260226073840.3222-1-illusion.wang@nebula-matrix.com>
+References: <20260226073840.3222-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ywZFAiZulEAzxkCv"
-Content-Disposition: inline
-In-Reply-To: <tencent_E4FD5D6BC0131E617D848896F5F9FCED6E0A@qq.com>
+Content-Transfer-Encoding: 8bit
 
+Common Device Setup: nbl_dev_setup_common_dev configures mailbox queues,
+registers cleanup tasks, and cfg IRQs.
+Control Device Setup (optional): nbl_dev_setup_ctrl_dev initializes
+the chip and configures all channel queues.
 
---ywZFAiZulEAzxkCv
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
+---
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.c      | 172 ++++++++++++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |  35 ++++
+ .../nbl/nbl_include/nbl_include.h             |   7 +-
+ 3 files changed, 211 insertions(+), 3 deletions(-)
 
-> Corrected the typo in the function name from
->  `airhoa_is_lan_gdm_port` to `airoha_is_lan_gdm_port`. This change ensures
->  consistency in the API naming convention.
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+index 8db2cfd5488f..bda7ac7d41a3 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
+@@ -6,6 +6,159 @@
+ 
+ #include "nbl_dev.h"
+ 
++static void nbl_dev_cfg_common_irq(struct nbl_dev_mgt *dev_mgt)
++{
++	struct nbl_dev_common *dev_common = dev_mgt->common_dev;
++	struct nbl_msix_info *msix_info = &dev_common->msix_info;
++
++	msix_info->serv_info[NBL_MSIX_MAILBOX_TYPE].num = 1;
++}
++
++/* ----------  Channel config  ---------- */
++static int nbl_dev_setup_chan_qinfo(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
++{
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
++	struct device *dev = dev_mgt->common->dev;
++	int ret = 0;
++
++	if (!chan_ops->check_queue_exist(priv, chan_type))
++		return 0;
++
++	ret = chan_ops->cfg_chan_qinfo_map_table(priv, chan_type);
++	if (ret)
++		dev_err(dev, "setup chan:%d, qinfo map table failed\n",
++			chan_type);
++
++	return ret;
++}
++
++static int nbl_dev_setup_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
++{
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
++	int ret = 0;
++
++	if (chan_ops->check_queue_exist(priv, chan_type))
++		ret = chan_ops->setup_queue(priv, chan_type);
++
++	return ret;
++}
++
++static int nbl_dev_remove_chan_queue(struct nbl_dev_mgt *dev_mgt, u8 chan_type)
++{
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++	struct nbl_channel_mgt *priv = dev_mgt->chan_ops_tbl->priv;
++	int ret = 0;
++
++	if (chan_ops->check_queue_exist(priv, chan_type))
++		ret = chan_ops->teardown_queue(priv, chan_type);
++
++	return ret;
++}
++
++static void nbl_dev_register_chan_task(struct nbl_dev_mgt *dev_mgt,
++				       u8 chan_type, struct work_struct *task)
++{
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++
++	if (chan_ops->check_queue_exist(dev_mgt->chan_ops_tbl->priv, chan_type))
++		chan_ops->register_chan_task(dev_mgt->chan_ops_tbl->priv,
++					     chan_type, task);
++}
++
++/* ----------  Tasks config  ---------- */
++static void nbl_dev_clean_mailbox_task(struct work_struct *work)
++{
++	struct nbl_dev_common *common_dev =
++		container_of(work, struct nbl_dev_common, clean_mbx_task);
++	struct nbl_dev_mgt *dev_mgt = common_dev->dev_mgt;
++	struct nbl_channel_ops *chan_ops = dev_mgt->chan_ops_tbl->ops;
++
++	chan_ops->clean_queue_subtask(dev_mgt->chan_ops_tbl->priv,
++				      NBL_CHAN_TYPE_MAILBOX);
++}
++
++/* ----------  Dev init process  ---------- */
++static int nbl_dev_setup_common_dev(struct nbl_adapter *adapter,
++				    struct nbl_init_param *param)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	struct nbl_dispatch_mgt *priv = dev_mgt->disp_ops_tbl->priv;
++	struct nbl_common_info *common = dev_mgt->common;
++	struct nbl_dev_common *common_dev;
++
++	common_dev = devm_kzalloc(&adapter->pdev->dev,
++				  sizeof(struct nbl_dev_common), GFP_KERNEL);
++	if (!common_dev)
++		return -ENOMEM;
++	common_dev->dev_mgt = dev_mgt;
++
++	if (nbl_dev_setup_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX))
++		goto setup_chan_fail;
++
++	INIT_WORK(&common_dev->clean_mbx_task, nbl_dev_clean_mailbox_task);
++	common->vsi_id = disp_ops->get_vsi_id(priv, 0, NBL_VSI_DATA);
++	disp_ops->get_eth_id(priv, common->vsi_id, &common->eth_mode,
++			     &common->eth_id, &common->logic_eth_id);
++
++	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX,
++				   &common_dev->clean_mbx_task);
++
++	dev_mgt->common_dev = common_dev;
++	nbl_dev_cfg_common_irq(dev_mgt);
++	return 0;
++
++setup_chan_fail:
++	return -EFAULT;
++}
++
++static void nbl_dev_remove_common_dev(struct nbl_adapter *adapter)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dev_common *common_dev = dev_mgt->common_dev;
++
++	if (!common_dev)
++		return;
++
++	nbl_dev_register_chan_task(dev_mgt, NBL_CHAN_TYPE_MAILBOX, NULL);
++	cancel_work_sync(&common_dev->clean_mbx_task);
++	nbl_dev_remove_chan_queue(dev_mgt, NBL_CHAN_TYPE_MAILBOX);
++}
++
++static int nbl_dev_setup_ctrl_dev(struct nbl_adapter *adapter,
++				  struct nbl_init_param *param)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++	int i, ret = 0;
++
++	ret = disp_ops->init_chip_module(dev_mgt->disp_ops_tbl->priv);
++	if (ret)
++		goto chip_init_fail;
++
++	for (i = 0; i < NBL_CHAN_TYPE_MAX; i++) {
++		ret = nbl_dev_setup_chan_qinfo(dev_mgt, i);
++		if (ret)
++			goto setup_chan_q_fail;
++	}
++
++	return 0;
++setup_chan_q_fail:
++	disp_ops->deinit_chip_module(dev_mgt->disp_ops_tbl->priv);
++chip_init_fail:
++	return ret;
++}
++
++static void nbl_dev_remove_ctrl_dev(struct nbl_adapter *adapter)
++{
++	struct nbl_dev_mgt *dev_mgt = adapter->core.dev_mgt;
++	struct nbl_dispatch_ops *disp_ops = dev_mgt->disp_ops_tbl->ops;
++
++	disp_ops->deinit_chip_module(dev_mgt->disp_ops_tbl->priv);
++}
++
+ static struct nbl_dev_mgt *nbl_dev_setup_dev_mgt(struct nbl_common_info *common)
+ {
+ 	struct nbl_dev_mgt *dev_mgt;
+@@ -38,11 +191,30 @@ int nbl_dev_init(struct nbl_adapter *adapter, struct nbl_init_param *param)
+ 	dev_mgt->chan_ops_tbl = chan_ops_tbl;
+ 	adapter->core.dev_mgt = dev_mgt;
+ 
++	ret = nbl_dev_setup_common_dev(adapter, param);
++	if (ret)
++		return ret;
++
++	if (common->is_ctrl) {
++		ret = nbl_dev_setup_ctrl_dev(adapter, param);
++		if (ret)
++			goto setup_ctrl_dev_fail;
++	}
++
+ 	return 0;
++
++setup_ctrl_dev_fail:
++	nbl_dev_remove_common_dev(adapter);
++	return ret;
+ }
+ 
+ void nbl_dev_remove(struct nbl_adapter *adapter)
+ {
++	struct nbl_common_info *common = &adapter->common;
++
++	if (common->is_ctrl)
++		nbl_dev_remove_ctrl_dev(adapter);
++	nbl_dev_remove_common_dev(adapter);
+ }
+ 
+ /* ----------  Dev start process  ---------- */
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
+index f94ddff8d7e5..c87b801c2b54 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
+@@ -9,10 +9,45 @@
+ 
+ #include "nbl_core.h"
+ 
++#define DEFAULT_MSG_ENABLE (NETIF_MSG_DRV | NETIF_MSG_PROBE | \
++			    NETIF_MSG_LINK | NETIF_MSG_IFDOWN | \
++			    NETIF_MSG_IFUP)
++
++#define NBL_STRING_NAME_LEN			32
++
++enum nbl_msix_serv_type {
++	/* virtio_dev has a config vector_id, and the vector_id need is 0 */
++	NBL_MSIX_VIRTIO_TYPE = 0,
++	NBL_MSIX_NET_TYPE,
++	NBL_MSIX_MAILBOX_TYPE,
++	NBL_MSIX_TYPE_MAX
++};
++
++struct nbl_msix_serv_info {
++	char irq_name[NBL_STRING_NAME_LEN];
++	u16 num;
++	u16 base_vector_id;
++	/* true: hw report msix, hw need to mask actively */
++	bool hw_self_mask_en;
++};
++
++struct nbl_msix_info {
++	struct nbl_msix_serv_info serv_info[NBL_MSIX_TYPE_MAX];
++};
++
++struct nbl_dev_common {
++	struct nbl_dev_mgt *dev_mgt;
++	struct nbl_msix_info msix_info;
++	char mailbox_name[NBL_STRING_NAME_LEN];
++	// for ctrl-dev/net-dev mailbox recv msg
++	struct work_struct clean_mbx_task;
++};
++
+ struct nbl_dev_mgt {
+ 	struct nbl_common_info *common;
+ 	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
+ 	struct nbl_channel_ops_tbl *chan_ops_tbl;
++	struct nbl_dev_common *common_dev;
+ };
+ 
+ #endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+index 4cdb3e97d6d3..d4c7faaee844 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+@@ -1,4 +1,4 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
++/* SPDX-License-Identifier: GPL-2.0*/
+ /*
+  * Copyright (c) 2025 Nebula Matrix Limited.
+  * Author:
+@@ -10,7 +10,7 @@
+ #include <linux/types.h>
+ #include <linux/netdevice.h>
+ /*  ------  Basic definitions  -------  */
+-#define NBL_DRIVER_NAME					"nbl"
++#define NBL_DRIVER_NAME					"nbl_core"
+ #define NBL_MAX_PF					8
+ #define NBL_NEXT_ID(id, max)				\
+ 	({						\
+@@ -37,7 +37,8 @@ struct nbl_func_caps {
+ 	u32 has_ctrl:1;
+ 	u32 has_net:1;
+ 	u32 is_nic:1;
+-	u32 rsv:29;
++	u32 is_ocp:1;
++	u32 rsv:28;
+ };
+ 
+ struct nbl_init_param {
+-- 
+2.47.3
 
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-
->=20
-> Signed-off-by: Zhengping Zhang <aquapinn@qq.com>
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> ---
->  drivers/net/ethernet/airoha/airoha_eth.c | 2 +-
->  drivers/net/ethernet/airoha/airoha_eth.h | 2 +-
->  drivers/net/ethernet/airoha/airoha_ppe.c | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
->=20
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.c b/drivers/net/ether=
-net/airoha/airoha_eth.c
-> index 62bcbbbe2a95..3779f93b47bc 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.c
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.c
-> @@ -76,7 +76,7 @@ static void airoha_set_macaddr(struct airoha_gdm_port *=
-port, const u8 *addr)
->  	struct airoha_eth *eth =3D port->qdma->eth;
->  	u32 val, reg;
-> =20
-> -	reg =3D airhoa_is_lan_gdm_port(port) ? REG_FE_LAN_MAC_H
-> +	reg =3D airoha_is_lan_gdm_port(port) ? REG_FE_LAN_MAC_H
->  					   : REG_FE_WAN_MAC_H;
->  	val =3D (addr[0] << 16) | (addr[1] << 8) | addr[2];
->  	airoha_fe_wr(eth, reg, val);
-> diff --git a/drivers/net/ethernet/airoha/airoha_eth.h b/drivers/net/ether=
-net/airoha/airoha_eth.h
-> index 20e602d61e61..59ed7569f7c3 100644
-> --- a/drivers/net/ethernet/airoha/airoha_eth.h
-> +++ b/drivers/net/ethernet/airoha/airoha_eth.h
-> @@ -626,7 +626,7 @@ u32 airoha_rmw(void __iomem *base, u32 offset, u32 ma=
-sk, u32 val);
->  #define airoha_qdma_clear(qdma, offset, val)			\
->  	airoha_rmw((qdma)->regs, (offset), (val), 0)
-> =20
-> -static inline bool airhoa_is_lan_gdm_port(struct airoha_gdm_port *port)
-> +static inline bool airoha_is_lan_gdm_port(struct airoha_gdm_port *port)
->  {
->  	/* GDM1 port on EN7581 SoC is connected to the lan dsa switch.
->  	 * GDM{2,3,4} can be used as wan port connected to an external
-> diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ether=
-net/airoha/airoha_ppe.c
-> index 2221bafaf7c9..9e07b4653af1 100644
-> --- a/drivers/net/ethernet/airoha/airoha_ppe.c
-> +++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-> @@ -321,7 +321,7 @@ static int airoha_ppe_foe_entry_prepare(struct airoha=
-_eth *eth,
->  			/* For downlink traffic consume SRAM memory for hw
->  			 * forwarding descriptors queue.
->  			 */
-> -			if (airhoa_is_lan_gdm_port(port))
-> +			if (airoha_is_lan_gdm_port(port))
->  				val |=3D AIROHA_FOE_IB2_FAST_PATH;
->  			if (dsa_port >=3D 0)
->  				val |=3D FIELD_PREP(AIROHA_FOE_IB2_NBQ,
-> --=20
-> 2.43.0
->=20
-
---ywZFAiZulEAzxkCv
-Content-Type: application/pgp-signature; name=signature.asc
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaZ/4fwAKCRA6cBh0uS2t
-rFNxAQC51ZWEWtupLqf0J9rgQp3GNeH/exHXOYErWxwPix1qdAEAh4brjMkl6Kj7
-jXa2inBVSXHqhZ8HLhfMmH1E28YqxQ8=
-=YVf+
------END PGP SIGNATURE-----
-
---ywZFAiZulEAzxkCv--
