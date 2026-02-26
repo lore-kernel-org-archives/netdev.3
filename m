@@ -1,65 +1,75 @@
-Received: from TYVP286CU001.outbound.protection.outlook.com (mail-japaneastazon11021081.outbound.protection.outlook.com [52.101.125.81])
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010042.outbound.protection.outlook.com [52.101.56.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E88AC392809;
-	Thu, 26 Feb 2026 08:01:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.125.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3E2392C22;
+	Thu, 26 Feb 2026 08:01:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772092911; cv=fail; b=AuKHHwkwXFYJ+nldeBcroCI0i8XJ4i9UdO6jOQSQl3Oo1ytQVkPD5vDJGvNFpr5Vs3WgFTtmtBHCgPMfhWm7CPfILzoGV6P8U0d7AO4z/S5gHzZecc5yj6yzV1Qr54IX+kRgPQk4kzJ2J2uazUazUiMGQnYNXruW8w5wMI6zlJ8=
+	t=1772092911; cv=fail; b=b6FTf0yYgf9C0TF+0Eet3pjcIORyyyAUf5GU8ZrpW1nII5ZeGDOfn4RnyiNmLvuG22iuXvtYbahBWBHmGGunCB1448xZyPhLKeSdq8YoOdrTIp1AfLVWf+i9Db/VmGp9YQaorU31qQjihBhQHZ+Vq99W43fWKQcGtK603Xfy478=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772092911; c=relaxed/simple;
-	bh=1DXqElUjtuC6ho5Cw6gIs0KUXlKmL/btuGBuVjbEPyI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=rL+f8GJA6iZPexbvyQibofeSKZyYIUEt0YH6CkTClc/hkJv6pMzxb5yMFvTIkhsvtxp0v58umFqvVNcp5lqg3gtCgeCe2KmcmCdM0FWRwHHcRHeqIuIyG1NLxtfHtZdamwT7zx+onI3XHO6Ukc0O3xNPCkuT3NeV6SXMXVH+djQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp; spf=pass smtp.mailfrom=valinux.co.jp; dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b=lRDcaW06; arc=fail smtp.client-ip=52.101.125.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=valinux.co.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valinux.co.jp
+	bh=towvVODpATeg5h2gO3uaPIyJNdUnPH67fDZ3lSIh9d4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=lc7Emc9jJ031sel6dz08SMipF5jJxJfkdOCCcy7yc/vxYbWCjVxnkWXuL82VgSGurkYHSa9cUICEgRD3mlw7N5TMWwtGTMVPyj4e6TRKCs4uy+2d34FV5CGWeVdOd36TNLYsRT9llB6+C+6iRANinl3UMuQv/woPVPdzwKmwkkA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=mJrR6gj2; arc=fail smtp.client-ip=52.101.56.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=valinux.co.jp header.i=@valinux.co.jp header.b="lRDcaW06"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="mJrR6gj2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=t+LKIni5H4HBNv+lcLyc+Xp40u1gXB6YxYZq+vVUGK8DLrZn0YSzEE1LuZmvIkuq2hpKuFLqFqa8VTD5a64IoRRzmx3MTLKTAyPrLQwbszK7WLGItftq7tgTA7lAa3/4YUJXEoxpafCnfBVYycFEqlPei2tR49MSa00zXYC5MLBGNeD3gfgsaFrKY+7PoeXDcuxYELxdTnGlN99DTORf4M7z98Wk6Z/JX32yOvqUNaf5SodNtimFx5HMis/ioNku3FbQxbgWeslMU5RCFLH7eRrnbzxZ18DsAJRp+JfDI8qsXAQrWG8431SXbXEZhMZ7z7kwib4mdoPmmwUVkvMJVA==
+ b=oXnhNhivHHb4JEwi/uWlJeS2rljDinK7X+uJpcn9gvrbkUXqILUo9FiC+m/UVNZ4oxc+REgXuFRa663uTM8hHsds5qk1J0IHFvPKWYO2kSxHkJvEvXKzj8ObXtyUe2ZC5D/VqmxDFQLlbXCS3yv2jwGBf43tYWH9eKMqh07QqnjFcBxLi/mtHj2Lx6fiebzuVRDkB/pvwZKo9zFVH8WoCSj1N9N/iYKX0wjK2uifS83X5RI0bl4u079Wvld/aqayNQkBeGb25F89hJf8Vqy+djNeoemFxJeZ4YP9mRYbTMGMC7WY1b42i2slzTlCZXkYMM7nTTyInI1nPj+7HeekKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=908cDv0zbKf3Iaz1S1bXtK6TnT5sRud/qogdUOL98ZA=;
- b=Mb+JWooZMDzs0+wSxknV7PObFdDQP7a9j93nkWv+VYZWyHoR5LYw8SEXk4SipJTECSiIbVKxRgHqAS6KxoKL1T4VoQvyKx35mYYYbZ6CVMd7Q+yjFZv9iHdzYfv74hZSzrjSjjC5AOUWNhfp3EaYjwl+1RxWdmsNkAtQt9pkgjIYiMm64HMyzio6WRuS2t6d2sGOfC3+diUp/qv+KCSFkCIKFv3l56sDAPD6uAxcXnKhYy0dWu4cI+alxSH5KzaKnoPRLBy9GXmAzCSLJW8MFuVGnMPE4RMI6+BaLeTVgVuVhWUx83t9CTdTTyTQnI3xf2x/IpVnnkQXbi2iT15IOQ==
+ bh=q2mHPJ3nuU6QWzHRKECaeijrMiqdYNfVaCq2YGUNkMY=;
+ b=lWzzTn7uAqbRSPImyXsIx/gApkPpZhQV0e+adaVwwNCpSk736T7zQFC7HQvPWfEclUmxrWLymJveIODOzTOGocoKRJcbVWGiROSFc15AYs6AHNKcwfM7jjCLnPhM2oZpx65OAHDXVFJkA9OM2xrD8cMp5i9uWCpnsp6ROsgFC6Ibv+oaWOPFeZPwd323Hq2zwQw/6mvsM2H3bujNaoGT9RrZkvivMBE9wKJjNcv9BlH+FijUFYXOwiloqOYuDNBb3eQuarevDVFpbI0koBkx+I0n3c4SL//PP0B5dNjrkIed5YYrVd2UomNwVirA3KcI2ZU1EwheUnMTXHa0quTGrA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=valinux.co.jp; dmarc=pass action=none
- header.from=valinux.co.jp; dkim=pass header.d=valinux.co.jp; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valinux.co.jp;
- s=selector1;
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=908cDv0zbKf3Iaz1S1bXtK6TnT5sRud/qogdUOL98ZA=;
- b=lRDcaW06Nd4jmpzFxOy+HKfYR6EwkS6o3j6+qURMOG7a8veA5QK0YWAm0Pmq7hzDJPmDpcbZ7lRSHTNTQtxJVZU+O+JKa3iHI/9eABYfjcyFX3KWA2t+QW7Eu2OAtcN/AnkOgIY6Arm+DHg37AUYB+lrffOqt+yxEmlOUX29sYE=
+ bh=q2mHPJ3nuU6QWzHRKECaeijrMiqdYNfVaCq2YGUNkMY=;
+ b=mJrR6gj2iORKMy7tvpVV0fykNeNPsGkZctl5BVAq0WhCQ51eUD3XA04PpcbOc7jGAlK5zuOPlV1F34NWcqMrp8dPzIOa1qSXX649bB8nQkCHfXaO6fpKiKVYiW4K3HAdWA0ve374BRZNzCnbh543EJOgJtoAnC/W44G2JTGq2M+NhHBhdqtinSZCqNi+kwmZ0TJ8PLd4atVSaj7SAxWj98oGU4e4lgIEYud4gs0ov+KXdUGWOPfNZ7dIAbXndgIJUtp44gI42cu6Zz6Jcub2cqA+cjwb4qQ/h65P3cBfTtEvXqNnweUoIGxrNri8zbNOv8X7f2gKjA8QEEtpL6vu1g==
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=valinux.co.jp;
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM (2603:1096:405:38f::10)
- by TY3P286MB2482.JPNP286.PROD.OUTLOOK.COM (2603:1096:400:22d::11) with
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7900.namprd12.prod.outlook.com (2603:10b6:8:14e::10)
+ by SJ1PR12MB6362.namprd12.prod.outlook.com (2603:10b6:a03:454::22) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.13; Thu, 26 Feb
- 2026 08:01:46 +0000
-Received: from TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32]) by TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- ([fe80::2305:327c:28ec:9b32%5]) with mapi id 15.20.9632.017; Thu, 26 Feb 2026
- 08:01:46 +0000
-Date: Thu, 26 Feb 2026 17:01:44 +0900
-From: Koichiro Den <den@valinux.co.jp>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Jon Mason <jdmason@kudzu.us>, Dave Jiang <dave.jiang@intel.com>, 
-	Allen Hubbe <allenbh@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Paolo Abeni <pabeni@redhat.com>, ntb@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] net: ntb_netdev: Add Multi-queue support
-Message-ID: <u6k7xyjkqdn5xsgderrxi5yw6mhwtl3srfeefagp44jco7jc44@c7f4tzlaem2l>
-References: <20260224152809.1799199-1-den@valinux.co.jp>
- <20260225195004.7e9c8b3a@kernel.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260225195004.7e9c8b3a@kernel.org>
-X-ClientProxiedBy: TYCPR01CA0125.jpnprd01.prod.outlook.com
- (2603:1096:400:26d::7) To TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
- (2603:1096:405:38f::10)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9632.22; Thu, 26 Feb
+ 2026 08:01:47 +0000
+Received: from DS0PR12MB7900.namprd12.prod.outlook.com
+ ([fe80::3033:67fc:3646:c62f]) by DS0PR12MB7900.namprd12.prod.outlook.com
+ ([fe80::3033:67fc:3646:c62f%5]) with mapi id 15.20.9632.010; Thu, 26 Feb 2026
+ 08:01:47 +0000
+From: Ido Schimmel <idosch@nvidia.com>
+To: netdev@vger.kernel.org,
+	bpf@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	dsahern@gmail.com,
+	petrm@nvidia.com,
+	horms@kernel.org,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	martin.lau@linux.dev,
+	john.fastabend@gmail.com,
+	sdf@fomichev.me,
+	Ido Schimmel <idosch@nvidia.com>
+Subject: [RFC PATCH bpf-next 7/9] selftests/bpf: fib_lookup: Add IPv6 output route tests
+Date: Thu, 26 Feb 2026 10:00:01 +0200
+Message-ID: <20260226080003.524935-8-idosch@nvidia.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260226080003.524935-1-idosch@nvidia.com>
+References: <20260226080003.524935-1-idosch@nvidia.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR0P281CA0164.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:b3::6) To DS0PR12MB7900.namprd12.prod.outlook.com
+ (2603:10b6:8:14e::10)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -67,81 +77,159 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: TY7P286MB7722:EE_|TY3P286MB2482:EE_
-X-MS-Office365-Filtering-Correlation-Id: daa2933d-9f3e-4c6e-7427-08de750d4972
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7900:EE_|SJ1PR12MB6362:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8a02df10-5fba-4231-3b92-08de750d4a01
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	wAUxhlJN21y5qjD7puWXK20/qne4v1kJHsRGJHEMb9A/shHoEJ+A0SKBh30QOu4RCo6dGTF93mbEgGzljpuVucEEfGIs05firWKjp/GuelwZx0/v2Ai5rPqQ3gou58rSDpj3e01Ci8knfZcnfRe6+nx3cf+Plq3a8f4iZ1h6uguE6TxHoZr7yTde26wlFs2zfiy7WNU0CcuvuN+g7ohKkTsLI4zid6z1QkBmnA+Q7g4xaJgGMnaBTFHpe/WWsSLFeUHcl7oEJ0M1hVL6uBlQHRAeAJSGujwDCAfLs7/TbRCU9ZeU2Att3D4a6TLSeYomJiCSdCmwlAVTLTsnFhBc47xzmn+n4rVGhLJb3LTbQlSIjJY1FoQbU6p3hnhN4F1EEtJd2rmdX8Q2Di1ZlXbrWKONI7BoM+9Ux1HdnTZPka3uf5rAbOxKgVcNYMnP7Lv3OK8rUANkq6Q+vcaFWoRNmWHbQFhqzsCI9BsGbA9CjxNufZSgW4dUP49SYS0eq9ciH6339E8/x+txf5QXh+IOMnswp2uRBvROS/ERcYbFJtonb/d2tkQQSVfxc4ESJLkfh4XAcxvEyxG/aRdsvX7uLrVPxk8YZ0cqL2DX/n12mjIedymYasHgtSrhIy0VW0YCvL/MKfydYH6Vtbm3rlZnW1GU9yao6WjSYpkEXbh/NLSs7ppr/v/LIxC6AJt24bK6P1u2yIaY+d4Qw1IlJYJoS4kVO6JGrkaw7jU6looJudw=
+	AwQGV1ZXhE9KtqPf/v7mzcPu1HcvfhSqMoQUsf0NQAO3R0HAOG7LQL5K9JnwBG8m9oUM/0s9O3rAKb1N2jaMNmJ7/DzSf4OSLjLxAHI83fSBplTDr3+dijMtug9Fx/otdjVrI+4z8PXvhF0kN7eKseUwN82zcz5G4QSFluYhQIDE9/OcV5iereiPQ0x69JEKHstSFad08V3jmNu8Cg5l/lcp8s2VIAiZHa83FOyN7lJ4UOJseSydQ1X/07ZBx7bKsd/jJblrWywK4AXFQ4s3SWJw2npFTAg8xRLb6PKutH0mnUOTzjlOsqV6HgIvvA3Ba5yOByKVBzSLvFswV2HN1y8svzMgyoazqQ/3G3bndAh5OVhGPEu9FvZHPqk7V1a7Py0SxzKvtgnIjK0jm/fBBlPYgG1HBRX2XZhWCBGv0vBaztvNJkB+FMiFQBI12waoaZ3wlMv6cMXKI5w2oezOyq+qi0xWQgs9nr1OhWQmXdGcpfgt7X2wym6dpkyGk+BJqYTCCuo/5lNYU4dm4xl740ZSaawap+VqkWpEAsOxCGMe0DxmsPPUkTaDw1aJpiQSw1msaoM27eWbf7sAjp74C9nx/rJKyXHdFXHh/tvg1jU7rd0kMHOSt71eM8oCb1Ter3lptVc4w41pAKpyFLLtj9vZ090Ak7iySG/Ngpyq5ZktbEMvSiKW6vaczG/nF3xDn0HQwLgT6mfsups4kpR8x9uc7SdmJxwfjcqBYrLrcM4=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7900.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gMhps8OvvgsgF2uzwEpjIfiEC/+u0+I8wDBHxHLkW0rEjllx6qPiEjOHbyk6?=
- =?us-ascii?Q?Lvfge+ZKQmFTzrMlF8zJjVmPX4FPEoNXmHB+T2yoPh9YBzlzETyKJUFNQo20?=
- =?us-ascii?Q?8Yjj+Q33WNZTy+n22ABsaLV6Vwv4lxuWt+chCPjXda8Wza371ZtNHaKEh2EJ?=
- =?us-ascii?Q?YfT4ojMNZl5TFTNQc4z1SnJSAhwQlByy8e4HJ8WeXDQwoZhZAFNQla8zgMQD?=
- =?us-ascii?Q?ef8RytyqducAFEtTCZtqBSDH6nVPNnk7hwURoAseHfLr19FFitWGVaOk4r3/?=
- =?us-ascii?Q?xgdA7srVgejGj9+MKyX8VcLwhrehDIvwJdRK2MoEEHecrNLtk6boaMrmcCEW?=
- =?us-ascii?Q?zooSlaBzNmZjDQU74aeIlnoSVHV+FSe5jTvboZxIkvVwhnqt2ZgUxPcAeSrt?=
- =?us-ascii?Q?bsSUJq0ySl57HTDQPeciHFdnEXeT9vFJDLDIDF1WKss6Cq5jGsThkMiXB1rs?=
- =?us-ascii?Q?3Djow/W6m0ZGJhqj9fsV546S9tWcGB9AouUvh+7LHr2RnUSMJSouTj98ZAIQ?=
- =?us-ascii?Q?PipvEKOYtgg6v/1SAaj+lFopUzHPvfrH6AywZCm84pD2gRYfOMAptytHhVyR?=
- =?us-ascii?Q?Fn0Ae6ghA4z7/uuSkHCprZ5gBX9vjhe9KQefc2+XjpA5ts5t+KvV+O+lUaOA?=
- =?us-ascii?Q?oE3z2KYK3ASz/TZcN+PglavSv5dje2EEsn/ujydyh11J4AYPScBMqDzFoxJ4?=
- =?us-ascii?Q?5jDveOfdPdNVopCav7gSTf/4Uv0qvxin8EiGXRoUqsQdtkIQsowKvPSdcx++?=
- =?us-ascii?Q?b1IocmqL63CXqCLqFpN0JuheLmADUqgPJKQfUafYbhJX21HzDeOlYiAQVE3+?=
- =?us-ascii?Q?UadZ/f84qMXz7CDE75DizLvgtdnSujuVKnV8EwTe3/UKQUhX28FjcS0Ae0uA?=
- =?us-ascii?Q?dKBHsJg3P97bMVWE/IaeLiCVe1Dbl0efChgsjvEhq/Spjx0BnTg9FZJ8Oqtk?=
- =?us-ascii?Q?AIUeMxNJLZykkqKI8R3W6Ej/yed3fCDtXKiW+OvHcaiyVY7U67w2Au8sQ7D3?=
- =?us-ascii?Q?gk4IuHkDCp9yoUCZBy3nY4lIAmcGd6axVLOinpes7RqN3qDIK0unuv4n64WL?=
- =?us-ascii?Q?K943Pjck0HmGIlyowgIkCjIJd3GPmuX428jGmo51iOtdfgHHxmvnFs3Pl9/K?=
- =?us-ascii?Q?6tukcFTdBHa5nS4zPNQ2OVJ8GWhgk3HLL1+RcJMGy471qtQ+H9VgprnjAw+l?=
- =?us-ascii?Q?6sBiVgIHI3r3T4Rk4L6Wo+/22i7zYQO3BdWzcWx3P+wXZziIHWZM4i6Xra+C?=
- =?us-ascii?Q?hVUxOH5d1/G7A/zW/8jHfzCcQibLQ0s5jmapGoXrRaCWaFgyzvmitI6rwpDz?=
- =?us-ascii?Q?GH7CmEg3usp0ElJdsqlcVvDdnRCsc/lC2ZdM6C5OA3gz0hU1CoxsP0kdEXQ1?=
- =?us-ascii?Q?N90803OA89+Kyb38Ikp6rq9tDorGvMw95jSPgB63lzBeO1QFgxJKa1JPbXlH?=
- =?us-ascii?Q?251PX/8tlALgm8UfMGf7uWKUFiVHYTydJj7Dzwek2JI53q/frKSfHAu44MNj?=
- =?us-ascii?Q?mwCvjEYGUlHmgzY97t9Y9euTq8IaORq/v9N2KnHa59NCkcLPIlNGLRl2jtgI?=
- =?us-ascii?Q?seE8TZqkUq0BvEXGdjMyvnkvU8ul2q6xylekI7FM4fA4oXadYllV5ZnJvRZc?=
- =?us-ascii?Q?Ju3JMmDNAKctc08gP9gfxt6LhyqQybHRv5CgSAcGQFof6Ijv72K+8vOpvsjM?=
- =?us-ascii?Q?cq3EFmkotlbvA7iARKqwJ+gVDOCmML9riyCk8r1ABX1Dq3IKQAFMJrL31xsO?=
- =?us-ascii?Q?4S8yACSwaWt6oveBIY69dOx6Bmxn2GNTNY+kDJG6NF868ZcxCYsk?=
-X-OriginatorOrg: valinux.co.jp
-X-MS-Exchange-CrossTenant-Network-Message-Id: daa2933d-9f3e-4c6e-7427-08de750d4972
-X-MS-Exchange-CrossTenant-AuthSource: TY7P286MB7722.JPNP286.PROD.OUTLOOK.COM
+	=?us-ascii?Q?c9gLhLhwsleyjq2aIwHib7sJapovS6Q1cpYyYFaomA0tojAPLe0Caxvdgljo?=
+ =?us-ascii?Q?JsotpUv5b71fUmad636jRaEuuu6bfMYu1/MM0B4WU6oPOFjZg0+wdx3U/JQc?=
+ =?us-ascii?Q?RatLooxy0mTOUT5hTcULf3XsEQAD14yL7d1e8V5ATzJEUjyJ52coPoN6rufY?=
+ =?us-ascii?Q?lahG+oaQsvyfnJucfislXxSmnwKMpUTlax9ip/hJl1VeD0yfhu4KMTFeIkLA?=
+ =?us-ascii?Q?NNfBea0zJl+d9pPekb6JVqBz8vowXsWFJyhvii91/+WL61h8WN75x5g3y5+W?=
+ =?us-ascii?Q?5lcQeRc6lEGvsSN/PhqjMa2/3pRACKKeQJQubGtITmApCEZR4nUEPGt0zklN?=
+ =?us-ascii?Q?1Q0QKRyAp9dUsRI/VUOTISudGlHPoJhP+Vzizhkglh/89UASB0B9A/oPSz+Z?=
+ =?us-ascii?Q?7XMLaVnweD9bNBMzVUt8Tx9QCNtlKUi2W+hIt1C/FbM1laz552DM0+94wOlm?=
+ =?us-ascii?Q?Da4J4gmKPxkhDw2Cdtxkr9HbXu4Uy3Lw+fnwdUxZ8j4jVoS7erWzXBrIX8z0?=
+ =?us-ascii?Q?fFK8iQLhwPLy5XzzuZZ1mfvnOmi3Jka2qcATUlcqTJOVVgjkLHSoWpwa8Cfq?=
+ =?us-ascii?Q?gABCjV/fDOiMIOBCdPrMzwra3zb3r6xbHEO8iD+mwSPn9oHKS5b5VsFTfwGB?=
+ =?us-ascii?Q?fUu96OQeMi/scKDm382s4MtVPdmksUdrubLBUY15sr+SaaqsmxIcfkn1BsCT?=
+ =?us-ascii?Q?r9S+HGrPYAo/IgFgNEBe0HcdO1Rah14APaqstC/EvxjoEDJOa6tc1RczVGpa?=
+ =?us-ascii?Q?xu4t1Dhab1hv2YplGe9ZguLsB73JhM6owfjTRqxrGGPxvsgfTXRmCdynhWs1?=
+ =?us-ascii?Q?JXJuK+gx3BpNgO5d20ZAViBTN4qrr+ZeugqFvTCTK1VQEj0cCvG0qv+sY6Ku?=
+ =?us-ascii?Q?8Ixhxnu+Jxy85Ld5JzBMeJd/sVQ0VGMfBjkIDjf8b1/wqQ6sVOjfluMAit3x?=
+ =?us-ascii?Q?69kwi/+C1cM01GMK9ZgxiOVT52gszfUvlBDEDLOBVbItczAlPaJ07B6JBe4P?=
+ =?us-ascii?Q?JtqabYt+6XcUTzY4jq9Pn052YrTkDKG0XO6sdXehuowFd/LFS1C9BEn7IVOW?=
+ =?us-ascii?Q?kU3/pysrHy8vOQve5EHW0LVGn6nPG/nsyLazEIN5T4Cw/AZZXh+LcunVJtaw?=
+ =?us-ascii?Q?OLRKpIr3TcNNMdLFZrf2/cgOl7bijKfNLC5ACqTGw2GwjpYP9BNh6gHVkWiK?=
+ =?us-ascii?Q?KMd9zpSN1gPpGG2iBcGmDo002Owq18s7SAQqV04dUSTz3KwZwXjlG5oilzNB?=
+ =?us-ascii?Q?XHfA7ln/Cc+9ZSEnRi8OLXyxIMLBeVgsmbHDhv6aY6jy9I3IayWja7MND6Of?=
+ =?us-ascii?Q?ECNwZ5IQz8GgrX2sj33sxNyXhrmOVNR4Ltgk11hjW87u07jGycT1fGeB033/?=
+ =?us-ascii?Q?uEAnV9n3dqWbUz5vc9eAvSpKPYnQeiTgG5+eXISUgFOFvhUvN48C2r1L/KAZ?=
+ =?us-ascii?Q?RVgNW37IXRslu3lUagH7CJ+zKjBoA2QRUwwLPwDsKceIgxEdquAlgvKAJyW6?=
+ =?us-ascii?Q?rOQNvmBEdKVDDazooNwOgFvu4YVPLIDoMGNqBTS44m95xJHNhotB2Ll7c3J6?=
+ =?us-ascii?Q?yyshtSScpjtZX2MGnvZpCqIN6ZFKOIashu7trNUj4GOZRR/1aRfqn3qO2a1R?=
+ =?us-ascii?Q?n2V5UPWeK1+uTffKj5xi48yyzKfzTMNipmXlsw5V1DfjwqHxeRcgZjRuB6t3?=
+ =?us-ascii?Q?jnZDPga+dQjkfNwCmwfVthxFLQGdpn+D4bD5gEd3ERevmnmcaiqUbDmsP2J3?=
+ =?us-ascii?Q?bGAnze5mBg=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a02df10-5fba-4231-3b92-08de750d4a01
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7900.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 08:01:46.1422
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Feb 2026 08:01:47.1210
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 7a57bee8-f73d-4c5f-a4f7-d72c91c8c111
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E+Uh406kiSFeXFmibCmJVyUUCjTRxU3nPEB998JTqBRpHZSVbMqzCrJpWibG9zjDB097U9BS1Wec9btReAUWHg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: TY3P286MB2482
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9x37gHVUMiJyOfQvw7q/BrERuq3ii8mJqGun1frrznYu8cnGN+QnGz9TdRHUREM5Z45jX3r5xTxtI7ORuHTn3w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR12MB6362
 
-On Wed, Feb 25, 2026 at 07:50:04PM -0800, Jakub Kicinski wrote:
-> On Wed, 25 Feb 2026 00:28:06 +0900 Koichiro Den wrote:
-> > Usage (example):
-> >   - modprobe ntb_netdev ntb_num_queues=<N> # Patch 2 takes care of it
-> >   - ethtool -l <ifname> # Patch 3 takes care of it
-> 
-> Module parameters are not a very user friendly choice for uAPI.
-> You use ethtool -l for GET, what's the challenge with implementing SET
-> via ethtool -L?
+In a similar fashion to the IPv4 output route tests, add equivalent IPv6
+tests.
 
-Thanks for the comment, Jakub.
+Output without "bpf: fib_lookup: Honor oif in IPv6 output route
+lookups":
 
-There is no technical limitation. I didn't include SET support simply to keep
-the initial series minimal as possible.
+ # ./test_progs -a fib_lookup
+ [...]
+ Testing IPv6 output route, without source, via second device test_fib_lookup:PASS:bpf_prog_test_run_opts 0 nsec
+ test_fib_lookup:PASS:fib_lookup_ret 0 nsec
+ test_fib_lookup:FAIL:ifindex does not match unexpected ifindex does not match: actual 10010 != expected 10020
+ [...]
+ Testing IPv6 output route, with source, via second device set_lookup_params:PASS:inet_pton(IPV6_IFACE_ADDR) 0 nsec
+ test_fib_lookup:PASS:bpf_prog_test_run_opts 0 nsec
+ test_fib_lookup:PASS:fib_lookup_ret 0 nsec
+ test_fib_lookup:FAIL:ifindex does not match unexpected ifindex does not match: actual 10010 != expected 10020
+ [...]
+ Testing IPv6 output route, oif mismatch set_lookup_params:PASS:inet_pton(IPV6_IFACE_ADDR) 0 nsec
+ test_fib_lookup:PASS:bpf_prog_test_run_opts 0 nsec
+ test_fib_lookup:FAIL:fib_lookup_ret unexpected fib_lookup_ret: actual 0 != expected 4
+ [...]
+ #119     fib_lookup:FAIL
+ Summary: 0/0 PASSED, 0 SKIPPED, 1 FAILED
 
-However, you're right, adding such a module parameter would also make it part of
-the uAPI and unnecesarily hard to remove later. It's better to implement SET
-from the beggining.
+Output with "bpf: fib_lookup: Honor oif in IPv6 output route lookups":
 
-Dave, let me respin the series with SET support and drop the module parameter.
-Please let me know if you have any objections.
+ # ./test_progs -a fib_lookup
+ #119     fib_lookup:OK
+ Summary: 1/0 PASSED, 0 SKIPPED, 0 FAILED
 
-Best regards,
-Koichiro
+That is, without the specified patch, unlike IPv4, IPv6 would always
+resolve the most specific route with the lowest metric, even if its
+nexthop device does not match the specified oif.
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+---
+ .../selftests/bpf/prog_tests/fib_lookup.c     | 35 +++++++++++++++++++
+ 1 file changed, 35 insertions(+)
+
+diff --git a/tools/testing/selftests/bpf/prog_tests/fib_lookup.c b/tools/testing/selftests/bpf/prog_tests/fib_lookup.c
+index 6ceeecbdca43..9e933daf56d7 100644
+--- a/tools/testing/selftests/bpf/prog_tests/fib_lookup.c
++++ b/tools/testing/selftests/bpf/prog_tests/fib_lookup.c
+@@ -45,6 +45,8 @@
+ #define IFINDEX_VETH2		10020
+ #define IPV4_OUTPUT_NET		"192.0.2.0"
+ #define IPV4_OUTPUT_DST		"192.0.2.1"
++#define IPV6_OUTPUT_NET		"2001:db8:1::"
++#define IPV6_OUTPUT_DST		"2001:db8:1::1"
+ 
+ struct fib_lookup_test {
+ 	const char *desc;
+@@ -177,6 +179,34 @@ static const struct fib_lookup_test tests[] = {
+ 	  .expected_ret = BPF_FIB_LKUP_RET_NOT_FWDED,
+ 	  .lookup_flags = BPF_FIB_LOOKUP_OUTPUT | BPF_FIB_LOOKUP_SKIP_NEIGH,
+ 	  .ifindex = IFINDEX_VETH2, },
++	{ .desc = "IPv6 output route, without source, via first device",
++	  .daddr = IPV6_OUTPUT_DST, .expected_ret = BPF_FIB_LKUP_RET_SUCCESS,
++	  .lookup_flags = BPF_FIB_LOOKUP_OUTPUT | BPF_FIB_LOOKUP_SRC,
++	  .dmac = DMAC_INIT, .ifindex = IFINDEX_VETH1,
++	  .expected_ifindex = IFINDEX_VETH1, },
++	{ .desc = "IPv6 output route, without source, via second device",
++	  .daddr = IPV6_OUTPUT_DST, .expected_ret = BPF_FIB_LKUP_RET_SUCCESS,
++	  .lookup_flags = BPF_FIB_LOOKUP_OUTPUT | BPF_FIB_LOOKUP_SRC,
++	  .dmac = DMAC_INIT2, .ifindex = IFINDEX_VETH2,
++	  .expected_ifindex = IFINDEX_VETH2, },
++	{ .desc = "IPv6 output route, with source, via first device",
++	  .daddr = IPV6_OUTPUT_DST, .expected_ret = BPF_FIB_LKUP_RET_SUCCESS,
++	  .lookup_flags = BPF_FIB_LOOKUP_OUTPUT, .dmac = DMAC_INIT,
++	  .ifindex = IFINDEX_VETH1, .expected_ifindex = IFINDEX_VETH1, },
++	{ .desc = "IPv6 output route, with source, via second device",
++	  .daddr = IPV6_OUTPUT_DST, .expected_ret = BPF_FIB_LKUP_RET_SUCCESS,
++	  .lookup_flags = BPF_FIB_LOOKUP_OUTPUT, .dmac = DMAC_INIT2,
++	  .ifindex = IFINDEX_VETH2, .expected_ifindex = IFINDEX_VETH2, },
++	{ .desc = "IPv6 output route, oif match",
++	  .daddr = IPV6_NUD_STALE_ADDR,
++	  .expected_ret = BPF_FIB_LKUP_RET_SUCCESS,
++	  .lookup_flags = BPF_FIB_LOOKUP_OUTPUT | BPF_FIB_LOOKUP_SKIP_NEIGH,
++	  .ifindex = IFINDEX_VETH1, .expected_ifindex = IFINDEX_VETH1, },
++	{ .desc = "IPv6 output route, oif mismatch",
++	  .daddr = IPV6_NUD_STALE_ADDR,
++	  .expected_ret = BPF_FIB_LKUP_RET_NOT_FWDED,
++	  .lookup_flags = BPF_FIB_LOOKUP_OUTPUT | BPF_FIB_LOOKUP_SKIP_NEIGH,
++	  .ifindex = IFINDEX_VETH2, },
+ };
+ 
+ static int setup_netns(void)
+@@ -254,6 +284,11 @@ static int setup_netns(void)
+ 	SYS(fail, "ip neigh add %s dev veth1 lladdr %s nud perm", IPV4_OUTPUT_DST, DMAC);
+ 	SYS(fail, "ip neigh add %s dev veth2 lladdr %s nud perm", IPV4_OUTPUT_DST, DMAC2);
+ 
++	SYS(fail, "ip route add %s/64 dev veth1 metric 100", IPV6_OUTPUT_NET);
++	SYS(fail, "ip route add %s/64 dev veth2 metric 200", IPV6_OUTPUT_NET);
++	SYS(fail, "ip neigh add %s dev veth1 lladdr %s nud perm", IPV6_OUTPUT_DST, DMAC);
++	SYS(fail, "ip neigh add %s dev veth2 lladdr %s nud perm", IPV6_OUTPUT_DST, DMAC2);
++
+ 	return 0;
+ fail:
+ 	return -1;
+-- 
+2.53.0
+
