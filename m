@@ -1,196 +1,125 @@
-Received: from mx.ssi.bg (mx.ssi.bg [193.238.174.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A9344CF55;
-	Thu, 26 Feb 2026 19:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.238.174.39
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF6144105B;
+	Thu, 26 Feb 2026 19:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772133949; cv=none; b=Av1Lle/v2HVKuBJsN8Wxyy7ewBDRkSOBL2IBCYDZniCwlNNNPJ/qim7o3SAQQN3aUgmgTkw29TO0A/vTlv0AvG53m8xCR0jSKE7ljN1abhT12vRiu9tCru3qKQ/uT0aTaKkz43FdIxwPaO6vpF2znOzCxjTDGH0hXYUEnFF72kw=
+	t=1772134121; cv=none; b=ZFymIRLlTaYwYq3Goo1yBbjWN37QNT7LGALfkccw1DM19ycnObuTy2CvsWGSlGNhxcQ6rxyy56LKuewBlaXOzAGkKuEtlRjKzJ896L9otOQyGBYbcPheDZNnmIZkikTnT+7T2HfrukG+flHvtqe2PndmxspBJIOQFxqKqX4Dx6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772133949; c=relaxed/simple;
-	bh=i3wKPYd8EFlc8IZ73L+p7gW+K0o00fx/yJw+0Jptrls=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=ZZPj5BK886Ok3JFCOwIZYa/r65zrWUYXxr/hiZYd5pj6rr3gpd/GCXoNOw61uQgXsis2CXKwKDP1gLsedokz58gLJk9FLjWEJExECZlGUfei6g17J3FbAp4rZSoPon9gRuJw8J96K1DRhq1ks3IbwzDPmyLnYv5reH0cjMYr6Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg; spf=pass smtp.mailfrom=ssi.bg; dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b=vwHaHfhU; arc=none smtp.client-ip=193.238.174.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ssi.bg
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=ssi.bg header.i=@ssi.bg header.b="vwHaHfhU"
-Received: from mx.ssi.bg (localhost [127.0.0.1])
-	by mx.ssi.bg (Potsfix) with ESMTP id BAD5C21D4F;
-	Thu, 26 Feb 2026 21:19:57 +0200 (EET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ssi.bg; h=cc:cc
-	:content-type:content-type:date:from:from:in-reply-to:message-id
-	:mime-version:references:reply-to:subject:subject:to:to; s=ssi;
-	 bh=Exe2tq+Qjn8oUB9BaUlHxkZcSCOCRHMqp4FnkJz94AA=; b=vwHaHfhUI3ig
-	HqMDxpDmjZtDDoNUW0vdk5vA1ZUiCEb+TOtFQJWazf0ycFFYQ8ad4mVFYEdwHlMc
-	QHQ3N/MKMKI08qtrpPXAs0VqctHG8vBVhok6snlwBWmH3O4iLTZjVbw8VPDl4JFL
-	jdukUF9LW9PfA6HNUrmfwlFoozuo/YJGu0GsuTXSKn18ECk36j5setNOpLWSxUeH
-	bXD7hEF0t1Nz3Y6WAouOkkurY5oLu7r9S89sPynTMC7XpBEGAROTwxo7sUhv7o7v
-	7AG30BPppCXanbbtBy99fujFEJlGdZP6J77zxb2s+pze8NnINqYR9T7VDUFcAXDF
-	4I/Qx/5+MeOlM1yvXZ2BS7JlAdH274hxSPaOuVu/5lsmvL887TPZ4ho6CDtpepg6
-	jNPzgdR1kbc/CC6ZBYEqCPRyUCIMqGKMgdvI+LFMjMmtj9oEwOGPjnK4XgpRGN4y
-	IM+T5tIRegh0Jo+yp0tQFYthWjVX9B6Xd9k7Sas2EDWRISphDiMNegH4cEqR+vm1
-	THe+Xck2d/VLBFk8/3tS8RJlZroze6tM1/6B80jMFEPEtQ/i0Y70OpFSfbpJRnGJ
-	W3tvNOvYEK+IBLSWK8KLcuTB4iJqZHRtpT5xjWFEQmXzJ3FnN8sajocVjhym0IJF
-	Pr95suJflirl2+2JJaEh3a6DepqRQpk=
-Received: from box.ssi.bg (box.ssi.bg [193.238.174.46])
-	by mx.ssi.bg (Potsfix) with ESMTPS;
-	Thu, 26 Feb 2026 21:19:56 +0200 (EET)
-Received: from ja.ssi.bg (unknown [213.16.62.126])
-	by box.ssi.bg (Potsfix) with ESMTPSA id 911EA60973;
-	Thu, 26 Feb 2026 21:19:54 +0200 (EET)
-Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by ja.ssi.bg (8.18.1/8.18.1) with ESMTP id 61QJJhQF062224;
-	Thu, 26 Feb 2026 21:19:44 +0200
-Date: Thu, 26 Feb 2026 21:19:43 +0200 (EET)
-From: Julian Anastasov <ja@ssi.bg>
-To: Jakub Kicinski <kuba@kernel.org>
-cc: fw@strlen.de, netfilter-devel@vger.kernel.org, pabeni@redhat.com,
-        davem@davemloft.net, edumazet@google.com, netdev@vger.kernel.org,
-        pablo@netfilter.org
-Subject: Re: [net-next,1/9] ipvs: make ip_vs_svc_table and ip_vs_svc_fwm_table
- per netns
-In-Reply-To: <20260226034114.1806906-1-kuba@kernel.org>
-Message-ID: <2b88af71-9294-e4a6-968a-cb9b314bc87f@ssi.bg>
-References: <20260224205048.4718-2-fw@strlen.de> <20260226034114.1806906-1-kuba@kernel.org>
+	s=arc-20240116; t=1772134121; c=relaxed/simple;
+	bh=4+/gPRmOnelNZFaT8rEZv0BR2u18GWMLCvj8hKBcPwM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TTW3OS9fGrBGDZvqfSEcsGelZDdhlNaTYQ13cx2JTGVSADCxYn2S3qM0YyVfZ2Hxb5ZrYzLSahwz+cNKf4UDrCaOrGS9aDNJ+rrOQgjv5zEoWPfpdESstquWSWZ7wYhD4jC8vHQaKZsgyS+GRrL8n/WLJ6dHKaaegSFGrH6/9vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id 7726920B6F02; Thu, 26 Feb 2026 11:28:38 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7726920B6F02
+From: Long Li <longli@microsoft.com>
+To: "K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH net v2] net: mana: Ring doorbell at 4 CQ wraparounds
+Date: Thu, 26 Feb 2026 11:28:33 -0800
+Message-ID: <20260226192833.1050807-1-longli@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 
+MANA hardware requires at least one doorbell ring every 8 wraparounds
+of the CQ. The driver rings the doorbell as a form of flow control to
+inform hardware that CQEs have been consumed.
 
-	Hello,
+The NAPI poll functions mana_poll_tx_cq() and mana_poll_rx_cq() can
+poll up to CQE_POLLING_BUFFER (512) completions per call. If the CQ
+has fewer than 512 entries, a single poll call can process more than
+4 wraparounds without ringing the doorbell. The doorbell threshold
+check also uses ">" instead of ">=", delaying the ring by one extra
+CQE beyond 4 wraparounds. Combined, these issues can cause the driver
+to exceed the 8-wraparound hardware limit, leading to missed
+completions and stalled queues.
 
-On Wed, 25 Feb 2026, Jakub Kicinski wrote:
+Fix this by capping the number of CQEs polled per call to 4 wraparounds
+of the CQ in both TX and RX paths. Also change the doorbell threshold
+from ">" to ">=" so the doorbell is rung as soon as 4 wraparounds are
+reached.
 
-> This is an AI-generated review of your patch. The human sending this
-> email says "FYI"
-> 
-> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
-> ---
-> ipvs: make ip_vs_svc_table and ip_vs_svc_fwm_table per netns
-> 
-> This commit converts the global IPVS service tables and their
-> associated mutex from global to per-netns, improving lookup
-> performance in large-scale deployments with multiple network
-> namespaces.
-> 
-> > diff --git a/include/net/ip_vs.h b/include/net/ip_vs.h
-> > index 29a36709e7f3..074a204ec6db 100644
-> > --- a/include/net/ip_vs.h
-> > +++ b/include/net/ip_vs.h
-> > @@ -33,6 +33,12 @@
-> >
-> >  #define IP_VS_HDR_INVERSE	1
-> >  #define IP_VS_HDR_ICMP		2
-> > +/*
-> > + *	Hash table: for virtual service lookups
-> > + */
-> > +#define IP_VS_SVC_TAB_BITS 8
-> > +#define IP_VS_SVC_TAB_SIZE BIT(IP_VS_SVC_TAB_BITS)
-> > +#define IP_VS_SVC_TAB_MASK (IP_VS_SVC_TAB_SIZE - 1)
-> 
-> The patch removes the global mutex definition DEFINE_MUTEX(__ip_vs_mutex)
-> from net/netfilter/ipvs/ip_vs_ctl.c and replaces all usage sites with the
-> per-netns ipvs->service_mutex. However, the extern declaration at line 52
-> of include/net/ip_vs.h is still present:
-> 
->     extern struct mutex __ip_vs_mutex;
+Cc: stable@vger.kernel.org
+Fixes: 58a63729c957 ("net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings")
+Signed-off-by: Long Li <longli@microsoft.com>
+---
+v2: Use min() instead of min_t(u32, ...) since queue_size is already u32
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 23 +++++++++++++++----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
-	I have fixes for all these issues in a followup
-patches. Sorry that I forgot to push them to the right
-patch.
-
-> Since no in-tree code references __ip_vs_mutex after this conversion,
-> should this declaration be removed for consistency?
-
-	It will be removed in a followup patchset, in its patch 3/5.
-
-> 
-> [ ... ]
-> 
-> > diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-> > index 068702894377..d871273ce917 100644
-> > --- a/net/netfilter/ipvs/ip_vs_ctl.c
-> > +++ b/net/netfilter/ipvs/ip_vs_ctl.c
-> 
-> [ ... ]
-> 
-> > @@ -2306,9 +2282,9 @@ static struct ip_vs_service *ip_vs_info_array(struct seq_file *seq, loff_t pos)
-> >
-> >  	/* look in hash by protocol */
-> >  	for (idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
-> > -		hlist_for_each_entry_rcu(svc, &ip_vs_svc_table[idx], s_list) {
-> > -			if ((svc->ipvs == ipvs) && pos-- == 0) {
-> > -				iter->table = ip_vs_svc_table;
-> > +		hlist_for_each_entry_rcu(svc, &ipvs->svc_table[idx], s_list) {
-> > +			if (pos-- == 0) {
-> > +				iter->table = ipvs->svc_table;
-> >  				iter->bucket = idx;
-> >  				return svc;
-> >  			}
-> > @@ -2317,10 +2293,10 @@ static struct ip_vs_service *ip_vs_info_array(struct seq_file *seq, loff_t pos)
-> >
-> >  	/* keep looking in fwmark */
-> >  	for (idx = 0; idx < IP_VS_SVC_TAB_SIZE; idx++) {
-> > -		hlist_for_each_entry_rcu(svc, &ip_vs_svc_fwm_table[idx],
-> > +		hlist_for_each_entry_rcu(svc, &ipvs->svc_fwm_table[idx],
-> >  					 f_list) {
-> > -			if ((svc->ipvs == ipvs) && pos-- == 0) {
-> > -				iter->table = ip_vs_svc_fwm_table;
-> > +			if (pos-- == 0) {
-> > +				iter->table = ipvs->svc_fwm_table;
-> >  				iter->bucket = idx;
-> >  				return svc;
-> >  			}
-> 
-> [ ... ]
-> 
-> > @@ -2414,7 +2392,7 @@ static int ip_vs_info_seq_show(struct seq_file *seq, void *v)
-> >
-> >  		if (svc->ipvs != ipvs)
-> >  			return 0;
-> > -		if (iter->table == ip_vs_svc_table) {
-> > +		if (iter->table == ipvs->svc_table) {
-> >  #ifdef CONFIG_IP_VS_IPV6
-> >  			if (svc->af == AF_INET6)
-> >  				seq_printf(seq, "%s  [%pI6]:%04X %s ",
-> 
-> The conversion to per-netns tables makes 'svc->ipvs != ipvs' always false
-> here in ip_vs_info_seq_show(). Every service in ipvs->svc_table belongs
-> to that netns by construction.
-> 
-> Looking at the patch, similar checks were removed everywhere else:
-> - ip_vs_flush(): removed 'svc->ipvs == ipvs' check
-> - ip_vs_dst_event(): removed 'svc->ipvs == ipvs' check
-> - ip_vs_zero_all(): removed 'svc->ipvs == ipvs' check
-> - __ip_vs_service_find(): removed 'svc->ipvs == ipvs' check
-> - __ip_vs_svc_fwm_find(): removed 'svc->ipvs == ipvs' check
-> - ip_vs_genl_dump_services(): removed 'svc->ipvs != ipvs' check
-> - __ip_vs_get_service_entries(): removed 'svc->ipvs != ipvs' check
-> - ip_vs_info_array(): removed 'svc->ipvs == ipvs' check
-> 
-> But this one in ip_vs_info_seq_show() was left behind. Should it also
-> be removed for consistency?
-
-	It was removed later in patch 3 ("ipvs: use single svc table").
-
-	Comments about patch 3/9:
-
-- svc_fwm_table in comments will be removed in a followup
-patchset, in its patch 3/5.
-
-	Comments about patch 4/9:
-
-- bitwise ops have precedence over the logical ops but as the
-series is already applied we can make it less confusing later
-
-Regards
-
---
-Julian Anastasov <ja@ssi.bg>
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 9919183ad39e..7fed4ae07071 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1770,8 +1770,14 @@ static void mana_poll_tx_cq(struct mana_cq *cq)
+ 	ndev = txq->ndev;
+ 	apc = netdev_priv(ndev);
+ 
++	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
++	 * doorbell can be rung in time for the hardware's requirement
++	 * of at least one doorbell ring every 8 wraparounds.
++	 */
+ 	comp_read = mana_gd_poll_cq(cq->gdma_cq, completions,
+-				    CQE_POLLING_BUFFER);
++				    min((cq->gdma_cq->queue_size /
++					  COMP_ENTRY_SIZE) * 4,
++					 CQE_POLLING_BUFFER));
+ 
+ 	if (comp_read < 1)
+ 		return;
+@@ -2156,7 +2162,14 @@ static void mana_poll_rx_cq(struct mana_cq *cq)
+ 	struct mana_rxq *rxq = cq->rxq;
+ 	int comp_read, i;
+ 
+-	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp, CQE_POLLING_BUFFER);
++	/* Limit CQEs polled to 4 wraparounds of the CQ to ensure the
++	 * doorbell can be rung in time for the hardware's requirement
++	 * of at least one doorbell ring every 8 wraparounds.
++	 */
++	comp_read = mana_gd_poll_cq(cq->gdma_cq, comp,
++				    min((cq->gdma_cq->queue_size /
++					  COMP_ENTRY_SIZE) * 4,
++					 CQE_POLLING_BUFFER));
+ 	WARN_ON_ONCE(comp_read > CQE_POLLING_BUFFER);
+ 
+ 	rxq->xdp_flush = false;
+@@ -2201,11 +2214,11 @@ static int mana_cq_handler(void *context, struct gdma_queue *gdma_queue)
+ 		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
+ 		cq->work_done_since_doorbell = 0;
+ 		napi_complete_done(&cq->napi, w);
+-	} else if (cq->work_done_since_doorbell >
+-		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
++	} else if (cq->work_done_since_doorbell >=
++		   (cq->gdma_cq->queue_size / COMP_ENTRY_SIZE) * 4) {
+ 		/* MANA hardware requires at least one doorbell ring every 8
+ 		 * wraparounds of CQ even if there is no need to arm the CQ.
+-		 * This driver rings the doorbell as soon as we have exceeded
++		 * This driver rings the doorbell as soon as it has processed
+ 		 * 4 wraparounds.
+ 		 */
+ 		mana_gd_ring_cq(gdma_queue, 0);
+-- 
+2.43.0
 
