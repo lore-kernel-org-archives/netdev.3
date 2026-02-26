@@ -1,114 +1,96 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f70.google.com (mail-oo1-f70.google.com [209.85.161.70])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8182A2DA749
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 12:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2ED242D76
+	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 12:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.70
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772110671; cv=none; b=eBBPbMDy1Svvll2Ias/r73d8h/1Z58PtC2fod/GDurC0m3ffRT4UPLIRTqIeLHamm4LQHidelIuiqUkxVCnXzWPEuKPkcMfYHPmoo7CiO0wY7pTRh+SObHDunRKcWQtJ0IC0w1z7qqUQpdkwDpdhl8KWJovqYI2TdFNfwYSshWo=
+	t=1772110717; cv=none; b=MoIGwCkthgvQS/LlOkwJF8j/YHGr1s1zBiRfuAFhiI8Lw2/J+jhzIiZUvtEZ1d8GsnnlgEz8gEncxi7OWAF0pL8DIxXojSgQQcVkIFtrN/tQAMXV6+Z3fm+Rq1Ox/HMvXv8diR4YX2KQe+qhpOhcarApA2MfuUCj69vOIW9/fNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772110671; c=relaxed/simple;
-	bh=irALN3T00J/ivDQLCP39g36pjWOy4DCRCyKbVN7mMrg=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=EMrZJv8bd7A6twnCCRbO3qKiHejov8f5xzLpMba/4fQ7o5S2cYx4mI+u2vK9PM33d1NZ6QJoeJKQE/G3r0Oy6gmr3glsKGIxOh7pPPrf1Xz9c4Ic1njuFNHe6qKJ8SqgYopLBnVIxwXti46KVFbWPGW+k4LCPZtZpkQdTbv9g3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=g/+ySRV1; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="g/+ySRV1"
+	s=arc-20240116; t=1772110717; c=relaxed/simple;
+	bh=jgTMHcWDHylG0I0dXdBiZGDrftWEX9QlvkG1P7mnCho=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ecl8GOhOSt46nZsVxj+O2uwv0hfUU6w5kn0LX5M5cetl4wA3VmBnb4F8LBOuNTLLbnPxduFJKZ0PIV29jIX5oSyp0+am4WI78XBy3Xr0XKHo6LJVq3JE2ioFebLNWsP7dQL7JpK7CV+1V52fHcNU1TSxji/trNTHcW4YcJ2QRD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.70
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f70.google.com with SMTP id 006d021491bc7-67995e1ecacso18395567eaf.0
+        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 04:58:35 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772110715; x=1772715515;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=r8k5Nu+4WdoFwZvOfUmhYahsobY/Ezi5a3CfLGRDfYM=;
+        b=VA8iv524G9CRkQ8IoVs60EbipRU/MjKsVZBwPpM6UyodnPvDSrt8Gs3IrVnBqZcre4
+         ObM2rE8PlsLPeqZCCgQTlonYUFe7tUnPD/emJGBEAZ0lVVCHY7SiDeK92Nnsbng4Iasa
+         r+q5i2AuDfPHDkzph01LIQo72UWiTfcy+XknR203VrPAXKE7BVyQKCvgieN4T50RWC1j
+         8Dj6XnfRtSf/gcyE2lK3y9YlUFoACwmPTqEX4csFDmplUXSt6nmWgxyf4QGhqKlVh7O5
+         wvh2LpngkxN751m/UzTMMs/JLe3EAAeLjGg1gfnnDdx0UOgiLMB3bFLIbg9rr8zFV7AI
+         xA+g==
+X-Forwarded-Encrypted: i=1; AJvYcCX4Zg6FgfmgYJrmwbdUDvEOriu+2XD5//Rkn8GbYQObN3tZYmyy74DR+qTroVgF7SLvXdcfbsI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNhrItWNkW8A8educMqls4Cwks9DD4KLQA8czWbqvgtCK/O6eF
+	+Sd+UnLdHzaDq+UJSOHVD5mOr330RswZyohZa8htVYXRjxQ4KEsaKIwMPjCWcQ7/KTKgMLljmpc
+	n6yhIR8xsYBxVR+9ySg7iotvBbGtnawtj3hChxRWn0EWwdUJa6VNvbk3CRcA=
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772110667;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FgOOpgkX5YNsXP5gZs5nXmJh9pEodVW2WxIYRj4mQco=;
-	b=g/+ySRV1eAXyikJbUGR3VHGIeTxIkRP1iHT+bzH+IOxWL1hOEM/HkUzKfba7j03cAKrbrh
-	xlNCyva3xY50y7hGUpQ0VQhnNmNMOe8EpUq+VtuU3BFfK8Zg0TG3/5HRInEvGL4k6IQwJS
-	OaKMPhtfNezz5++P5hn7+V4iAGFVJBU=
-Date: Thu, 26 Feb 2026 12:57:40 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <77167c3125d7db5daa958c30e24e87dae308d7b6@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH bpf v1 1/2] net/bpf: fix null-ptr-deref in
- xdp_master_redirect() for bonding
-To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
-Cc: bpf@vger.kernel.org, jiayuan.chen@shopee.com,
- syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com, "Martin KaFai Lau"
- <martin.lau@linux.dev>, "Daniel Borkmann" <daniel@iogearbox.net>, "John
- Fastabend" <john.fastabend@gmail.com>, "Stanislav Fomichev"
- <sdf@fomichev.me>, "Alexei Starovoitov" <ast@kernel.org>, "Andrii
- Nakryiko" <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>,
- "Song Liu" <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>,
- "KP Singh" <kpsingh@kernel.org>, "Hao Luo" <haoluo@google.com>, "Jiri
- Olsa" <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>,
- "Jesper Dangaard Brouer" <hawk@kernel.org>, "Shuah Khan"
- <shuah@kernel.org>, "Clark Williams" <clrkwllms@kernel.org>, "Steven
- Rostedt" <rostedt@goodmis.org>, "Jussi Maki" <joamaki@gmail.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-rt-devel@lists.linux.dev
-In-Reply-To: <20260226095859.hLxDgGdn@linutronix.de>
-References: <20260224112545.37888-1-jiayuan.chen@linux.dev>
- <20260224112545.37888-2-jiayuan.chen@linux.dev>
- <20260226095859.hLxDgGdn@linutronix.de>
-X-Migadu-Flow: FLOW_OUT
+X-Received: by 2002:a05:6820:999:b0:679:f08b:5382 with SMTP id
+ 006d021491bc7-679f08b5ebemr2171559eaf.11.1772110715212; Thu, 26 Feb 2026
+ 04:58:35 -0800 (PST)
+Date: Thu, 26 Feb 2026 04:58:35 -0800
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69a0437b.a00a0220.21906d.00e6.GAE@google.com>
+Subject: [syzbot] Monthly hams report (Feb 2026)
+From: syzbot <syzbot+liste72a2905ed88c1b0dc99@syzkaller.appspotmail.com>
+To: linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-2026/2/26 17:58, "Sebastian Andrzej Siewior" <bigeasy@linutronix.de mailt=
-o:bigeasy@linutronix.de?to=3D%22Sebastian%20Andrzej%20Siewior%22%20%3Cbig=
-easy%40linutronix.de%3E > wrote:
+Hello hams maintainers/developers,
 
+This is a 31-day syzbot report for the hams subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/hams
 
->=20
->=20On 2026-02-24 19:25:41 [+0800], Jiayuan Chen wrote:
->=20
->=20>=20
->=20> --- a/net/core/filter.c
-> >  +++ b/net/core/filter.c
-> >  @@ -4387,6 +4387,9 @@ u32 xdp_master_redirect(struct xdp_buff *xdp)
-> >  struct net_device *master, *slave;
-> >=20=20
->=20>  master =3D netdev_master_upper_dev_get_rcu(xdp->rxq->dev);
-> >  + if (unlikely(!master || !netif_running(master)))
-> >  + return XDP_TX;
-> >  +
-> >=20
->=20I'm not sure this check belongs here as this is not bond specific, is
-> it? Also nothing stops the admin to put the device right after the
-> netif_running() check so it fails later but the race window is not as
-> wide as it is now.
->=20
->=20The per-CPU memory could be allocated while the bond device is create=
-d.
-> I don't think delaying it until "device up" brings any advantages.
-> One creates the device with the intention to use it so the "up" is
-> inevitable.
-> The bond_xmit_get_slave() callback has the same logic. Couldn't this
-> scenario also occur to the ->ndo_get_xmit_slave() user?
->=20
->=20>=20
->=20> slave =3D master->netdev_ops->ndo_xdp_get_xmit_slave(master, xdp);
-> >  if (slave && slave !=3D xdp->rxq->dev) {
-> >  /* The target device is different from the receiving device, so
-> >=20
->=20Sebastian
->
+During the period, 2 new issues were detected and 0 were fixed.
+In total, 16 issues are still open and 46 have already been fixed.
 
-I agree with your points, especially allocating
-rr_tx_counter unconditionally at device creation time in bond_setup().
+Some of the still happening issues:
 
-This eliminates the NULL possibility from the root, fixes both the
-ndo_xdp_get_xmit_slave and ndo_get_xmit_slave paths, and keeps the
-change within the bonding subsystem.
+Ref  Crashes Repro Title
+<1>  13802   Yes   possible deadlock in nr_rt_device_down (3)
+                   https://syzkaller.appspot.com/bug?extid=ccdfb85a561b973219c7
+<2>  6378    Yes   possible deadlock in nr_rt_ioctl (2)
+                   https://syzkaller.appspot.com/bug?extid=14afda08dc3484d5db82
+<3>  2258    Yes   WARNING: ODEBUG bug in handle_softirqs
+                   https://syzkaller.appspot.com/bug?extid=60db000b8468baeddbb1
+<4>  1878    Yes   general protection fault in rose_transmit_link (4)
+                   https://syzkaller.appspot.com/bug?extid=d00f90e0af54102fb271
+<5>  1005    Yes   possible deadlock in nr_remove_neigh (2)
+                   https://syzkaller.appspot.com/bug?extid=8863ad36d31449b4dc17
+<6>  162     Yes   possible deadlock in nr_del_node (2)
+                   https://syzkaller.appspot.com/bug?extid=6eb7834837cf6a8db75b
+<7>  24      Yes   WARNING: refcount bug in ax25_setsockopt
+                   https://syzkaller.appspot.com/bug?extid=0ee4da32f91ae2a3f015
+<8>  23      Yes   KASAN: slab-use-after-free Read in nr_rt_ioctl
+                   https://syzkaller.appspot.com/bug?extid=df52f4216bf7b4d768e7
+<9>  10      Yes   KASAN: slab-use-after-free Read in ax25_find_cb
+                   https://syzkaller.appspot.com/bug?extid=caa052a0958a9146870d
+<10> 6       No    KASAN: slab-use-after-free Read in rose_t0timer_expiry
+                   https://syzkaller.appspot.com/bug?extid=44cccec2c6a4501f6a45
 
-I'll wait a bit to collect more feedback before sending a v2.
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
+
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
