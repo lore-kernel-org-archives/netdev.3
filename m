@@ -1,115 +1,124 @@
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E8239526D
-	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 08:58:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F11938E5F2
+	for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 09:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772096302; cv=none; b=ulfp8SFRt1Ai+M1vCWZRbcAMBAC5YPNvWoe/wk7BVnEDyiF/GuouGNIZ+xwtu7NikPxq9+GNVuYVO0lULONuKFOWfOt0eZSnuzvRr73mxSZIlYpHSzNW2khvnd4wTr69TrflefzGknC6TY/U46+Z7fxrHOiXikvn+fT5nz4mtdU=
+	t=1772096797; cv=none; b=bhiGm6RyMYK0a4CDYJDIVEELOmvVoo3jsQdBJOZjkrCBwUrfb5lPS9m4xJRCpB9LFvrZuQpuIhl5e22VjPGQu70TDuIn4bsold3j1NPrGopS4CIyGI1UReER9UldZsJN6w40wq/yR58rKMUbNP8j7bHMrXWtL1tOzg58WL9YhIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772096302; c=relaxed/simple;
-	bh=SlOHjbFT6bgglmBCcv8V5rdB3omMjR2vXC7pzkgZVik=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MVI6ehJVS+Q5UB+OdXxR0JAmH39y5EztmOV6EqOVk30p6PC9weSwEdsdkpqMvrjXI0h3KlZetwBQCbSQt+v6oQhj+lIv0gW0Xjk3/q7xjIfS+Jj2O5v/SjSV0CrnkqYT980XSpgFVHIiPFRAEba/dswuHAYboa0LHmjCVVrKCFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n9jHG6mU; arc=none smtp.client-ip=209.85.160.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1772096797; c=relaxed/simple;
+	bh=f2kfGH116KzX79wZr+txjpVvF2HZyCV+Oj53yvAZHxA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NRFhvgDESt+GCj2U6y2FPdJZTBb4AGeBwyWNiSCFo8yxx0CunmArDynZvvD570L93Fv06ntpz+9t8/WTwr9MQ72fVl1UBITL7hXbFpxKmW5QN63qpIL9SELNxqWPBRLsUq6xxCpONYI6p5nU8rfKRIIgYdxh0tGiICwdzTpbUec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=qo2Sd8xj; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n9jHG6mU"
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-503915b0a88so109436711cf.1
-        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 00:58:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772096298; x=1772701098; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=0wuPspiPv1csZE43cGiBpIC+UQAJFmaKX0o5kmlUK68=;
-        b=n9jHG6mULKfDQlh4lWSJVn4TClmcBExfDhWyIgUW/K8fkb/spUSmqiYHO3cUqilygo
-         DMRy/k1H2e2XjWiVEQewd0NCA2nN/JoBs72JBjM+LB/GWmoxmVoJHxHzGRR8NQ6UcWcA
-         XcTR1lqQH5u+GoyX9A2/x7Za7KCHpyAxZ+U2rnCLqS50ZAlujmHj+8viI4ATDZY4Ez0W
-         Z7qCbyRy94RY6fiV+wPwe1BQsbpdja6czLPYqXGRRPVkLzd4aRttujJGBx1LA3nu+oVn
-         8CRqCsZOyWMIR4z+CSu0cpE22h+hBW8cyjDyWZTrzyH2b2WsZm7RzFQHcFwDcE/3jgEH
-         l3FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772096298; x=1772701098;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0wuPspiPv1csZE43cGiBpIC+UQAJFmaKX0o5kmlUK68=;
-        b=Ce/ArZwd4nKT8bUR4m8zis6wykYMNjO4srEkM5kkEvXQoo5qBnxfoZFi8UtNVKyeqO
-         91bYLARO381pMB4/ru/yXfiwc6FmbRlKub8DnMV7JmkEjpo0wUF7GMVxJ1cOtBc5v019
-         M2ndAud4oPlc+TEuwAaOjXAl0Ub37MqHIxqZvfp7VicmZBuYZqw5lRrPRtxm/X2KQ8Fg
-         4bj1u1I6djcgfydLuomiM801XYr651bNxP9rDPagyynF4m/E1MG7TjQHRa97NZUBSLVr
-         VNbd5q7d8cOGsDu198bt7ACshhhp9FdLpKJbxhd+g/8WSCua53wU77TQbL4H0PYJ9aHJ
-         vUyw==
-X-Gm-Message-State: AOJu0YxIcStNV3LZgEXu0xKP9bfvrT1ut5Ovz5gKcH7s5/TFxT08LhBe
-	IyfKV87Oyv2mvLKoFQ7GDGzgc/gfeYUgfpsE3HadgnQXVMmktXgoqBZ0hiYmJ4jqmq2ODhq5fvb
-	JLvf5KBAFtpB49w==
-X-Received: from qtxn14.prod.google.com ([2002:a05:622a:40e:b0:506:5118:a54f])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:ac8:5d4a:0:b0:4ed:b441:d866 with SMTP id d75a77b69052e-50741fbd9ecmr46698241cf.65.1772096298187;
- Thu, 26 Feb 2026 00:58:18 -0800 (PST)
-Date: Thu, 26 Feb 2026 08:58:16 +0000
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="qo2Sd8xj"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id C14FDA47AC;
+	Thu, 26 Feb 2026 10:06:32 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1772096793; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=MI/AUX7s9MIyRYPCeAlGjNBvlJqOiHqYeew4KPUYIWE=;
+	b=qo2Sd8xjFR9pnm97B6Z++hVWkwer77961Mu0X+9j553i6nBDu1JsevvhxJCRZjpfoP4Y/B
+	1IIS7olV3RRHQ1xvHvCT5Bs790IydMonmSJ/v3kFuALP2Sr84BEZMyy2PW1/YNsvEJT4V4
+	68zjnzkFdKjXDaJTgJxFTyNC6CAozvkR+obKAZV2I/bGScVLx9WH6fLw46YoQ60UpUCagU
+	D1dE0oofhIKllK4i/3eu7ZIaqB11MGOXyTtwl6l2KIAOo81sy79PDoPQDeZ810Cni8SaTu
+	aWq/i7+Kj9LMG969BZQWyLCMTMfffd9aWS+6rJ9kpMDK3pEWvUAnbpoyVPmC9Q==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	claudiu.beznea@tuxon.dev,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	nicolas.ferre@microchip.com,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	theo.lebrun@bootlin.com,
+	rmk+kernel@armlinux.org.uk,
+	phil@raspberrypi.com,
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net-next v4 1/4] net: cadence: macb: add EEE LPI statistics counters
+Date: Thu, 26 Feb 2026 10:06:05 +0100
+Message-Id: <20260226090608.54802-2-nb@tipi-net.de>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20260226090608.54802-1-nb@tipi-net.de>
+References: <20260226090608.54802-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.414.gf7e9f6c205-goog
-Message-ID: <20260226085816.2272259-1-edumazet@google.com>
-Subject: [PATCH nf-next] netfilter: nfnetlink_log: no longer acquire sk_callback_lock
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Pablo Neira Ayuso <pablo@netfilter.org>, Florian Westphal <fw@strlen.de>
-Cc: netdev@vger.kernel.org, netfilter-devel@vger.kernel.org, 
-	coreteam@netfilter.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-After commit 983512f3a87f ("net: Drop the lock in skb_may_tx_timestamp()")
-from Sebastian Andrzej Siewior, apply the same logic in
-__build_packet_message() to avoid touching sk->sk_callback_lock.
+The GEM MAC provides four read-only, clear-on-read LPI statistics
+registers at offsets 0x270-0x27c:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+  GEM_RXLPI     (0x270): RX LPI transition count (16-bit)
+  GEM_RXLPITIME (0x274): cumulative RX LPI time (24-bit)
+  GEM_TXLPI     (0x278): TX LPI transition count (16-bit)
+  GEM_TXLPITIME (0x27c): cumulative TX LPI time (24-bit)
+
+Add register offset definitions, extend struct gem_stats with
+corresponding u64 software accumulators, and register the four
+counters in gem_statistics[] so they appear in ethtool -S output.
+Because the hardware counters clear on read, the existing
+macb_update_stats() path accumulates them into the u64 fields on
+every stats poll, preventing loss between userspace reads.
+
+These registers are present on SAMA5D2, SAME70, PIC32CZ, and RP1
+variants of the Cadence GEM IP and have been confirmed on RP1 via
+devmem reads.
+
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- net/netfilter/nfnetlink_log.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/cadence/macb.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/net/netfilter/nfnetlink_log.c b/net/netfilter/nfnetlink_log.c
-index bfcb9cd335bff59fa4d0d09eb52943566e4098e7..bef28e5230bb3b4d4b1ef4d5111909bac969b343 100644
---- a/net/netfilter/nfnetlink_log.c
-+++ b/net/netfilter/nfnetlink_log.c
-@@ -611,19 +611,26 @@ __build_packet_message(struct nfnl_log_net *log,
- 	/* UID */
- 	sk = skb->sk;
- 	if (sk && sk_fullsock(sk)) {
--		read_lock_bh(&sk->sk_callback_lock);
--		if (sk->sk_socket && sk->sk_socket->file) {
--			struct file *file = sk->sk_socket->file;
-+		const struct socket *sock;
-+		const struct file *file;
-+
-+		/* The sk pointer remains valid as long as the skb is.
-+		 * The sk_socket and file pointer may become NULL
-+		 * if the socket is closed.
-+		 * Both structures (including file->cred) are RCU freed
-+		 * which means they can be accessed within a RCU read section.
-+		 */
-+		sock = READ_ONCE(sk->sk_socket);
-+		file = sock ? READ_ONCE(sock->file) : NULL;
-+		if (file) {
- 			const struct cred *cred = file->f_cred;
- 			struct user_namespace *user_ns = inst->peer_user_ns;
- 			__be32 uid = htonl(from_kuid_munged(user_ns, cred->fsuid));
- 			__be32 gid = htonl(from_kgid_munged(user_ns, cred->fsgid));
--			read_unlock_bh(&sk->sk_callback_lock);
- 			if (nla_put_be32(inst->skb, NFULA_UID, uid) ||
- 			    nla_put_be32(inst->skb, NFULA_GID, gid))
- 				goto nla_put_failure;
--		} else
--			read_unlock_bh(&sk->sk_callback_lock);
-+		}
- 	}
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index 87414a2ddf6e..19aa98d01c8c 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -170,6 +170,10 @@
+ #define GEM_PCSANNPTX		0x021c /* PCS AN Next Page TX */
+ #define GEM_PCSANNPLP		0x0220 /* PCS AN Next Page LP */
+ #define GEM_PCSANEXTSTS		0x023c /* PCS AN Extended Status */
++#define GEM_RXLPI		0x0270 /* RX LPI Transitions */
++#define GEM_RXLPITIME		0x0274 /* RX LPI Time */
++#define GEM_TXLPI		0x0278 /* TX LPI Transitions */
++#define GEM_TXLPITIME		0x027c /* TX LPI Time */
+ #define GEM_DCFG1		0x0280 /* Design Config 1 */
+ #define GEM_DCFG2		0x0284 /* Design Config 2 */
+ #define GEM_DCFG3		0x0288 /* Design Config 3 */
+@@ -1043,6 +1047,10 @@ struct gem_stats {
+ 	u64	rx_ip_header_checksum_errors;
+ 	u64	rx_tcp_checksum_errors;
+ 	u64	rx_udp_checksum_errors;
++	u64	rx_lpi_transitions;
++	u64	rx_lpi_time;
++	u64	tx_lpi_transitions;
++	u64	tx_lpi_time;
+ };
  
- 	/* local sequence number */
+ /* Describes the name and offset of an individual statistic register, as
+@@ -1142,6 +1150,10 @@ static const struct gem_statistic gem_statistics[] = {
+ 			    GEM_BIT(NDS_RXERR)),
+ 	GEM_STAT_TITLE_BITS(RXUDPCCNT, "rx_udp_checksum_errors",
+ 			    GEM_BIT(NDS_RXERR)),
++	GEM_STAT_TITLE(RXLPI, "rx_lpi_transitions"),
++	GEM_STAT_TITLE(RXLPITIME, "rx_lpi_time"),
++	GEM_STAT_TITLE(TXLPI, "tx_lpi_transitions"),
++	GEM_STAT_TITLE(TXLPITIME, "tx_lpi_time"),
+ };
+ 
+ #define GEM_STATS_LEN ARRAY_SIZE(gem_statistics)
 -- 
-2.53.0.414.gf7e9f6c205-goog
+2.51.0
 
