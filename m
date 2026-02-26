@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805613612F4;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A5FD36EAB7;
 	Thu, 26 Feb 2026 00:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772066966; cv=none; b=ZapP+Xz8WYiUri3iIyIyPpd0ffUAhw2YGYgSN+px8Q5szpgp8xXxOJYhjJFHF4Di9FgPnG0+7HuFe6+jJ5sk61VtbnfQi3sP+d6U8XySYR2Vp1Ib0UccODHfvLcdUTGw74fiJbgMMzp1iPKDZvKM3ETb3gltQkuVxnmik+lSB60=
+	t=1772066966; cv=none; b=K7vva8/pA1H6aWMMVyZraU+KLbarcEM7A+weSM2/YI251Qwvm8tgWnBPv/zfhT1b86OehdBfSHl99GUjNx5hcsX0tBrC43KJTrEDiC1ASXEkWYRMFfqFp2NYP2FwW0vx9QNtKfsIrlWkGuQD6SWPLKYA4luuxDUn6a1KMVtYdXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772066966; c=relaxed/simple;
-	bh=YHtDERu+dGZKwokXML/KbGIAJKjFs9XTNnGWe5MyxQY=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=fcKr6O/T1OQutWFLJa0OV6MQr4SdzMVOQy3NERN12y2czMwSGQxaR7k2T66aAdH8enfzouOvwvgjOoNc5IK6DryrqNiThIw1za7U7COZfRGRuhq/sfNACiAOjCgtG65Q2ni6JCKqJOO/5AXf++zF8LS0zyvumZbzt/RbPkUAkT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZtkdZINV; arc=none smtp.client-ip=10.30.226.201
+	bh=emTIU1TaBbIx/tDTZhzmiIjXQ7JpqWXdQa8oeCKbuEQ=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=QUOdviRMvR8M0MRf/VfwpquKrAVFQ29RLTkMpzrB8JHh/0hfHL1DFlKKfkOKbrGNZm36J/wCzqB9Jo98w2a00n8Gen8SgFd3qdn/p96Ppe75Mp31ICD/+5c5c8X0y6fW6Xh/pY73grWdr7p+cB63M96f0a4vSaIL35M/hktCyvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vGfuIYgx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZtkdZINV"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 25FF2C116D0;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vGfuIYgx"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7AEDEC2BCB3;
 	Thu, 26 Feb 2026 00:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772066966;
-	bh=YHtDERu+dGZKwokXML/KbGIAJKjFs9XTNnGWe5MyxQY=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=ZtkdZINVIFGs2UX3J1me2TerYygxXkAhPLMVcLaXe9Kc0VBQAmhWrJ2bTGzfEMsMA
-	 ZYOQqY92urwxvmCPFXq/4dCjP6IT6RMBykn3RqpBke24EVnmDlCkVU+Ni4FSK9unjV
-	 fsgVHB1stLXXigkdjHDuls9DbnVww+v0UeXxU852O7zRJExz5h19LhDQhugZoHQIyN
-	 YdjOsQFsWz2GgU6DlBHTucko097nCTSe3aRU7jr6EoafMzCcf3L1aOtwhr2P9MTSRh
-	 7RilUuWvMNKaDgC+JVPPxN2fCqWXPMj9E+9RIiRjowE597J/l6HyXyzI5U9401yw+F
-	 ydIt0d7Asq+YA==
+	bh=emTIU1TaBbIx/tDTZhzmiIjXQ7JpqWXdQa8oeCKbuEQ=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=vGfuIYgx4DoBb5f4vSs6mOxQudTIUHweAho9Fjkungb1qds1LyZ/TtP0w+DRtkOPO
+	 qWVZVKWJGFPopemycgKK0bm0HSKZynQoDvXNSA+gtXN5Ban/cfPfB/nk3T2oB1wivU
+	 Mh+82R1x0kjroVe6fUU7ZZDYQpgEirUNd1ZTacwzNCfv/pxbxQQPgy+PI8G2/1b3N9
+	 fXfk4Ulji99zlWN+gRDpNOJO11p1oOsC0ZT3drX97zFBplLzDyt3snZL5/R6y7IhZ8
+	 S5Iq9UF7tHmTtKd0aVxGfyA3ZdQcs5qBNXHtqjJRnV1lYjRzbLAWGqzyvaCJOaaPhc
+	 vqPiPJv8uVv1A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 0ED18FD45FF;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 70737FD45FE;
 	Thu, 26 Feb 2026 00:49:26 +0000 (UTC)
 From: Simon Baatz via B4 Relay <devnull+gmbnomis.gmail.com@kernel.org>
-Subject: [PATCH RFC net-next v2 0/5] tcp: RFC 7323-compliant window
- retraction handling
-Date: Thu, 26 Feb 2026 01:49:06 +0100
-Message-Id: <20260226-tcp_rfc7323_retract_wnd_rfc-v2-0-aa3f8f9cc639@gmail.com>
+Date: Thu, 26 Feb 2026 01:49:11 +0100
+Subject: [PATCH RFC net-next v2 5/5] selftests/net: packetdrill: add
+ tcp_rcv_neg_window.pkt
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,11 +41,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/42N3wqCMBSHX0XOdYt5NM2ugqAH6DZE5nbUQU7Zh
- hmyd2/5BF3+/vB9Gziymhxckg0sLdrpycSAhwTkIExPTKuYATkWHJEzL+fGdrLMMGsseSukb95
- G/TomzwIVtoJaRRAJs6VOrzv9CY/7LTHkmaHVQx3XQTs/2c+uXtL985dlSRlnFc+rHE9FmpfVt
- R+Ffh3lNEIdQvgCiPkMpdQAAAA=
-X-Change-ID: 20260220-tcp_rfc7323_retract_wnd_rfc-c8a2d2baebde
+Message-Id: <20260226-tcp_rfc7323_retract_wnd_rfc-v2-5-aa3f8f9cc639@gmail.com>
+References: <20260226-tcp_rfc7323_retract_wnd_rfc-v2-0-aa3f8f9cc639@gmail.com>
+In-Reply-To: <20260226-tcp_rfc7323_retract_wnd_rfc-v2-0-aa3f8f9cc639@gmail.com>
 To: Eric Dumazet <edumazet@google.com>, 
  Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
  "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
@@ -59,11 +57,11 @@ Cc: Christian Ebner <c.ebner@proxmox.com>, netdev@vger.kernel.org,
  linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
  linux-kselftest@vger.kernel.org, Simon Baatz <gmbnomis@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772066964; l=3983;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772066964; l=1560;
  i=gmbnomis@gmail.com; s=20260220; h=from:subject:message-id;
- bh=YHtDERu+dGZKwokXML/KbGIAJKjFs9XTNnGWe5MyxQY=;
- b=N0mn084EpHoTzzizetrZ3FJM/LK2M7Xhs7TrG0vLQs7Vld6CoyM/xKEdyG4BKmEp4cPfefUoI
- lgc8R4hpclvDUoFb7xF0KiCNm/S+71rDNMv+Ka7mjP+yqO2gyxzl0RA
+ bh=/JWWw4Fx6ONTjfm9hTqMNguk1B74iLUSkQSY5L1syFw=;
+ b=qtBvPU3M3B3V/VgUAmVlVHh3U9olqOaO8RlGMGMq/jDkZ3NJb8DN2fmTUTuAv9N6vkBm7o8Zl
+ i1rmFiNfQTYBQ+Kkkk6LDQbUeM7RXN9h3C3Mwq9qcT33KON9ik/bgHf
 X-Developer-Key: i=gmbnomis@gmail.com; a=ed25519;
  pk=T/JIz/6F5bf1uQJr69lmyi7czVG+F9TVZ/8x5z9Wtqw=
 X-Endpoint-Received: by B4 Relay for gmbnomis@gmail.com/20260220 with
@@ -71,99 +69,51 @@ X-Endpoint-Received: by B4 Relay for gmbnomis@gmail.com/20260220 with
 X-Original-From: Simon Baatz <gmbnomis@gmail.com>
 Reply-To: gmbnomis@gmail.com
 
-Hi,
+From: Simon Baatz <gmbnomis@gmail.com>
 
-this series implements the receiver-side requirements for TCP window
-retraction as specified in RFC 7323 and adds packetdrill tests to
-cover the new behavior.
-
-It addresses a regression with somewhat complex causes; see my message
-"Re: [regression] [PATCH net-next 7/8] tcp: stronger sk_rcvbuf checks"
-(https://lkml.kernel.org/netdev/aXaHEk_eRJyhYfyM@gandalf.schnuecks.de/).
-
-Please see the first patch for background and implementation details.
-
-This is an RFC because a few open questions remain:
-
-- Placement of the new rcv_mwnd_seq field in tcp_sock:
-
-  rcv_mwnd_seq is updated together with rcv_wup and rcv_wnd in
-  tcp_select_window(). However, rcv_wup is documented as RX read_write
-  only (even though it is updated in tcp_select_window()), and rcv_wnd
-  is TX read_write / RX read_mostly.
-
-  rcv_mwnd_seq is only updated in tcp_select_window(). If we
-  count tcp_sequence() as fast path, it is read in the fast path.
-
-  Therefore, the proposal is to put rcv_mwnd_seq in rcv_wnd's
-  cacheline group.
-
-- In tcp_minisocks.c, it is not clear to me whether we should change
-  "tcptw->tw_rcv_wnd = tcp_receive_window(tp)" to
-  "tcptw->tw_rcv_wnd = tcp_max_receive_window(tp)". I could not find a
-  case where this makes a practical difference and have left the
-  existing behavior unchanged.
-
-- MPTCP seems to modify tp->rcv_wnd of subflows. And the modifications
-  look odd:
-
-  1. It is updated in the RX path. Since we never advertised that
-     value, we shouldn't need to update rcv_mwnd_seq.
-  2. In the TX path, there is:
-  
-     tp->rcv_wnd = min_t(u64, win, U32_MAX);
-
-     To me, that looks very wrong and that code might need to be fixed
-     first.
-
-- Although this series addresses a regression triggered by commit
-  d2fbaad7cd8 ("tcp: stronger sk_rcvbuf checks") the underlying
-  problem is shrinking the window. Thus, I added "Fixes" headers for
-  the commits that introduced window shrinking.
-
-I would appreciate feedback on the overall approach and on these
-questions.
+The test ensures we correctly apply the maximum advertised window limit
+when rcv_nxt advances past rcv_mwnd_seq, so that the "usable window"
+is properly clamped to zero rather than becoming negative.
 
 Signed-off-by: Simon Baatz <gmbnomis@gmail.com>
 ---
-Changes in v2:
+ .../net/packetdrill/tcp_rcv_neg_window.pkt         | 26 ++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
-- tcp_rcv_wnd_shrink_nomem.pkt tests more RX code paths using various
-  segment types. It also uses a more drastic rcv. buffer reduction (1MB
-  to 16KB).
-- Setting the TCP_REPAIR_WINDOW socket option initializes rcv_mwnd_seq.
-- SKB_DROP_REASON_TCP_OVERWINDOW increases LINUX_MIB_BEYOND_WINDOW now.
-- Moved rcv_mwnd_seq into rcv_wnd's cacheline group.
-- Small editorial changes
-- Link to v1: https://lore.kernel.org/r/20260220-tcp_rfc7323_retract_wnd_rfc-v1-0-904942561479@gmail.com
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_rcv_neg_window.pkt b/tools/testing/selftests/net/packetdrill/tcp_rcv_neg_window.pkt
+new file mode 100644
+index 0000000000000000000000000000000000000000..15a9b4938f16d175ac54f3fd192ed2b59b0a4399
+--- /dev/null
++++ b/tools/testing/selftests/net/packetdrill/tcp_rcv_neg_window.pkt
+@@ -0,0 +1,26 @@
++// SPDX-License-Identifier: GPL-2.0
++
++--mss=1000
++
++`./defaults.sh`
++
++// Establish a connection.
++   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++   +0 setsockopt(3, SOL_SOCKET, SO_RCVBUF, [20000], 4) = 0
++   +0 bind(3, ..., ...) = 0
++   +0 listen(3, 1) = 0
++
++   +0 < S 0:0(0) win 32792 <mss 1000,nop,wscale 7>
++   +0 > S. 0:0(0) ack 1 win 18980 <mss 1460,nop,wscale 0>
++  +.1 < . 1:1(0) ack 1 win 257
++
++   +0 accept(3, ..., ...) = 4
++
++// A too big packet is accepted if the receive queue is empty
++   +0 < P. 1:20001(20000) ack 1 win 257
++// Send a RST immediately so that there is no rcv_wup/rcv_mwnd_seq update yet
++   +0 < R. 20001:20001(0) ack 1 win 257
++
++  +.1 %{ assert tcpi_state == TCP_CLOSE, tcpi_state }%
++
 
----
-Simon Baatz (5):
-      tcp: implement RFC 7323 window retraction receiver requirements
-      tcp: increase LINUX_MIB_BEYOND_WINDOW for SKB_DROP_REASON_TCP_OVERWINDOW
-      selftests/net: packetdrill: add tcp_rcv_wnd_shrink_nomem.pkt
-      selftests/net: packetdrill: add tcp_rcv_wnd_shrink_allowed.pkt
-      selftests/net: packetdrill: add tcp_rcv_neg_window.pkt
-
- .../networking/net_cachelines/tcp_sock.rst         |   1 +
- include/linux/tcp.h                                |   3 +
- include/net/tcp.h                                  |  13 ++
- net/ipv4/tcp.c                                     |   1 +
- net/ipv4/tcp_fastopen.c                            |   1 +
- net/ipv4/tcp_input.c                               |   7 +-
- net/ipv4/tcp_minisocks.c                           |   1 +
- net/ipv4/tcp_output.c                              |  12 ++
- .../net/packetdrill/tcp_rcv_big_endseq.pkt         |   2 +-
- .../net/packetdrill/tcp_rcv_neg_window.pkt         |  26 ++++
- .../net/packetdrill/tcp_rcv_wnd_shrink_allowed.pkt |  40 ++++++
- .../net/packetdrill/tcp_rcv_wnd_shrink_nomem.pkt   | 141 +++++++++++++++++++++
- 12 files changed, 245 insertions(+), 3 deletions(-)
----
-base-commit: 2f61f38a217462411fed950e843b82bc119884cf
-change-id: 20260220-tcp_rfc7323_retract_wnd_rfc-c8a2d2baebde
-
-Best regards,
 -- 
-Simon Baatz <gmbnomis@gmail.com>
+2.53.0
 
 
