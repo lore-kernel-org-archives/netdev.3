@@ -1,56 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA6233A70B;
-	Fri, 27 Feb 2026 03:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D66D33B962;
+	Fri, 27 Feb 2026 03:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772164382; cv=none; b=sSfdHlCOt+VsRz5ZvAux/bKZ8+z/zK8yt0bplRg9rbBipfrUkJtdgCTtef4u+TRy8GgzYZr5fGJ4xYladK77Tkaa1h7u3mGjYFTwmmBe9chHL0mdaG4/IJt+FNTxs2w8kgihhmOVCkbAoB8X2Xvmzh7WRmGx0atB52q+0vtPvYE=
+	t=1772164539; cv=none; b=GCbrA7pO3X93TIwNyrrrJcsjxpxzOI78iF5Fxgrz2zoxZh1WlJ0ZkIvuiTgVx0NQcPgDrYfwfnfIJJIImutga3N3yciEfufVmrUlTYBQ8RYX20lWugO/wQud1q1nh4BpbrH2hVAfiun0UomszlIFLH7q3mjiRBAb2vTffnK0cb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772164382; c=relaxed/simple;
-	bh=85iHLWRx8ynP5HbfuLYmK1cCtUJceJFWMGhV7uqh/Y4=;
+	s=arc-20240116; t=1772164539; c=relaxed/simple;
+	bh=vCJxghyfT798EInsE9LvMJSZ9J9gpFJ+AVfK86WiR1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6co+/SPyaJgD175NbmWH86O/4GGY0WTAIoY56lzDKOrKFipGS+ObUaH8VdXbhOr2tZtbqWHzaq86g447o4hENBhYVW6iHPCO33skX5Y1TQSyihna2Fl5B4UbyCPvo5IsWVK31sbuhTwx+QnqQ4u4OBbtxCso5V9sLMuy4hPSuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IsVdHpn0; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=ITK2nIkiq1dSTT1mHzKAaKF9/I5lgQBClB0p7Rl9ojRFka6FCr08lzWywr4+K196PRfPhslM/xuc+4TJ4Af83GIWfzn5vF7YOkrnYE2v85121o9EQAIGlgfaU0jJlWWgHZ9o1ulFlqfTjH3vGav5c0PLd9XM7vNQn37LmzSNSDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oLOFEB20; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IsVdHpn0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 945F2C116C6;
-	Fri, 27 Feb 2026 03:53:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oLOFEB20"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3AA3C19421;
+	Fri, 27 Feb 2026 03:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772164382;
-	bh=85iHLWRx8ynP5HbfuLYmK1cCtUJceJFWMGhV7uqh/Y4=;
+	s=k20201202; t=1772164539;
+	bh=vCJxghyfT798EInsE9LvMJSZ9J9gpFJ+AVfK86WiR1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IsVdHpn0G4PaDJLgkUUJQnMAYpTW/NwSMkIo6MHCCmDgL/nioWn/3Si6cA6NbFqRp
-	 4RJaDBU8jEPtatwM5OsVYMdcqsScIn8noSD6nWmQUaPlR2AZzBjJ/emTHD7YfEfgmv
-	 zYIGWS8yh7oPTgoz2TqnGB72IoB7J1ynDBrwTSJIrU/qBEs9ns1ug8lkrVpTJj/UAI
-	 Z8FGoRNITGI9DGw5/eYIOugB5PcEll4En8hXyuxNGTYipQWr5JGm4mMuTsvXrVjRpV
-	 bhGk/WvWy6+ZEbNYZc7x2R/eeAPAC8uyL8KnKlPh89rUAaZnYjNpKuokbBwBaw1/Cn
-	 HZ9pqU48uBo6g==
+	b=oLOFEB20CcQfYtHS2Z0NLb3jh2DzxgriOVUZovDTKgpMyiEj0Sx1Tn+qTAHsUjR6I
+	 tySv7g4I/UBu5gkIUQk0DPJoLj+0+s4o6IWzcPd6GKINfcqQJFWs7Nn8iTlSWr79Mz
+	 kr3yFZFVxE5bzTkS1JMiyFql5AKVmbJjXFXG3Z9Antc1Y7BfmKdq8Qbb+m/1YHcs6y
+	 esq/lrpzaKDvEPgR6AbARpb0DK4b6SflBPjDPhhxlPoT22pQ0NeQHIb/nAfp9ov4te
+	 o+VQiVxA/QNYsGSOdiZAKMe7k2hvStpoqh3cRJ/wSFwJYvctPZIJOSpLdVZezPU4Oy
+	 6JLWpj6sZKfAg==
 From: Jakub Kicinski <kuba@kernel.org>
-To: alibuda@linux.alibaba.com
+To: cedric.jehasse@luminex.be
 Cc: Jakub Kicinski <kuba@kernel.org>,
 	netdev@vger.kernel.org,
-	pabeni@redhat.com,
-	linux-rdma@vger.kernel.org,
-	sidraya@linux.ibm.com,
-	horms@kernel.org,
-	davem@davemloft.net,
-	linux-s390@vger.kernel.org,
-	mjambigi@linux.ibm.com,
-	oliver.yang@linux.alibaba.com,
+	andrew@lunn.ch,
+	olteanv@gmail.com,
 	edumazet@google.com,
-	wenjia@linux.ibm.com,
-	guwen@linux.alibaba.com,
-	tonylu@linux.alibaba.com,
-	dust.li@linux.alibaba.com,
-	linux-kernel@vger.kernel.org,
-	pasic@linux.ibm.com
-Subject: Re: [net-next] net/smc: transition to RDMA core CQ pooling
-Date: Thu, 26 Feb 2026 19:53:00 -0800
-Message-ID: <20260227035300.2628494-1-kuba@kernel.org>
+	davem@davemloft.net,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	linux-kernel@vger.kernel.org
+Subject: Re: [net-next,v4] net: dsa: mv88e6xxx: Add partial support for TCAM entries
+Date: Thu, 26 Feb 2026 19:55:37 -0800
+Message-ID: <20260227035537.2630823-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225024513.7861-1-alibuda@linux.alibaba.com>
-References: <20260225024513.7861-1-alibuda@linux.alibaba.com>
+In-Reply-To: <20260225-net-next-mv88e6xxx-tcam-v4-1-117f600e41d7@luminex.be>
+References: <20260225-net-next-mv88e6xxx-tcam-v4-1-117f600e41d7@luminex.be>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,137 +56,136 @@ email has considered the AI review valid, or at least plausible.
 
 For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
 ---
-net/smc: transition to RDMA core CQ pooling
+net: dsa: mv88e6xxx: Add partial support for TCAM entries
 
-This commit refactors SMC-R completion handling to use the ib_cqe API
-and RDMA core CQ pooling, replacing the previous per-device global CQs
-and manual tasklet polling. The refactoring aims to eliminate scalability
-bottlenecks by enabling multi-CQ parallelization and O(1) context retrieval.
+This patch adds partial Ternary Content Addressable Memory (TCAM)
+support for the mv88e6390 and mv88e6393 family of switches. The
+implementation introduces matching on IP addresses/protocol with the
+ability to trap matched frames to the CPU.
 
-> diff --git a/net/smc/smc_wr.c b/net/smc/smc_wr.c
-> index 5feafa98ab1a..4a4924c5cade 100644
-> --- a/net/smc/smc_wr.c
-> +++ b/net/smc/smc_wr.c
+> diff --git a/drivers/net/dsa/mv88e6xxx/tcam.c b/drivers/net/dsa/mv88e6xxx/tcam.c
+> new file mode 100644
+> index 000000000000..f56cc7e0c00f
+> --- /dev/null
+> +++ b/drivers/net/dsa/mv88e6xxx/tcam.c
 
 [ ... ]
 
-> @@ -63,55 +60,52 @@ void smc_wr_tx_wait_no_pending_sends(struct smc_link *link)
->  	wait_event(link->wr_tx_wait, !smc_wr_is_tx_pend(link));
->  }
->
-> -static inline int smc_wr_tx_find_pending_index(struct smc_link *link, u64 wr_id)
-> +static void smc_wr_tx_rdma_process_cqe(struct ib_cq *cq, struct ib_wc *wc)
->  {
-> -	u32 i;
-> +	struct smc_link *link = wc->qp->qp_context;
->
-> -	for (i = 0; i < link->wr_tx_cnt; i++) {
-> -		if (link->wr_tx_pends[i].wr_id == wr_id)
-> -			return i;
-> -	}
-> -	return link->wr_tx_cnt;
-> +	/* terminate link */
-> +	if (wc->status)
-> +		smcr_link_down_cond_sched(link);
-> +}
-> +
-> +static void smc_wr_reg_process_cqe(struct ib_cq *cq, struct ib_wc *wc)
+> +/* insert tcam entry in ordered list and move existing entries if necessary */
+> +static int mv88e6xxx_tcam_insert_entry(struct mv88e6xxx_chip *chip,
+> +				       struct mv88e6xxx_tcam_entry *entry)
 > +{
-> +	struct smc_link *link = wc->qp->qp_context;
+> +	struct mv88e6xxx_tcam_entry *elem;
+> +	struct list_head *hpos;
+> +	int err;
 > +
-> +	if (wc->status)
-> +		link->wr_reg_state = FAILED;
-> +	else
-> +		link->wr_reg_state = CONFIRMED;
-> +	smc_wr_wakeup_reg_wait(link);
->  }
->
-> -static inline void smc_wr_tx_process_cqe(struct ib_wc *wc)
-> +static void smc_wr_tx_process_cqe(struct ib_cq *cq, struct ib_wc *wc)
->  {
-> -	struct smc_wr_tx_pend pnd_snd;
-> +	struct smc_wr_tx_pend *tx_pend, pnd_snd;
-> +	struct smc_ib_send_wr *send_wr;
->  	struct smc_link *link;
->  	u32 pnd_snd_idx;
->
->  	link = wc->qp->qp_context;
->
-> -	if (wc->opcode == IB_WC_REG_MR) {
-> -		if (wc->status)
-> -			link->wr_reg_state = FAILED;
-> -		else
-> -			link->wr_reg_state = CONFIRMED;
-> -		smc_wr_wakeup_reg_wait(link);
-> -		return;
-> -	}
-> +	send_wr = container_of(wc->wr_cqe, struct smc_ib_send_wr, cqe);
-> +	pnd_snd_idx = send_wr->idx;
+> +	list_for_each_prev(hpos, &chip->tcam.entries) {
+> +		u8 move_idx;
 > +
-> +	tx_pend = (pnd_snd_idx == link->wr_tx_cnt) ? link->wr_tx_v2_pend :
-> +		&link->wr_tx_pends[pnd_snd_idx];
+> +		elem = list_entry(hpos, struct mv88e6xxx_tcam_entry, list);
+> +		if (entry->prio >= elem->prio)
+> +			break;
 > +
-> +	tx_pend->wc_status = wc->status;
-> +	memcpy(&pnd_snd, tx_pend, sizeof(pnd_snd));
-> +	/* clear the full struct smc_wr_tx_pend including .priv */
-> +	memset(tx_pend, 0, sizeof(*tx_pend));
->
-> -	pnd_snd_idx = smc_wr_tx_find_pending_index(link, wc->wr_id);
->  	if (pnd_snd_idx == link->wr_tx_cnt) {
-> -		if (link->lgr->smc_version != SMC_V2 ||
-> -		    link->wr_tx_v2_pend->wr_id != wc->wr_id)
-> -			return;
-> -		link->wr_tx_v2_pend->wc_status = wc->status;
-> -		memcpy(&pnd_snd, link->wr_tx_v2_pend, sizeof(pnd_snd));
-> -		/* clear the full struct smc_wr_tx_pend including .priv */
-> -		memset(link->wr_tx_v2_pend, 0,
-> -		       sizeof(*link->wr_tx_v2_pend));
->  		memset(link->lgr->wr_tx_buf_v2, 0,
->  		       sizeof(*link->lgr->wr_tx_buf_v2));
->  	} else {
-> -		link->wr_tx_pends[pnd_snd_idx].wc_status = wc->status;
-> -		if (link->wr_tx_pends[pnd_snd_idx].compl_requested)
-> +		if (tx_pend->compl_requested)
-                    ^^^^^^
+> +		move_idx = elem->hw_idx + 1;
+> +
+> +		err = mv88e6xxx_tcam_flush_entry(chip, move_idx);
+> +		if (err)
+> +			return err;
+> +
+> +		err = chip->info->ops->tcam_ops->entry_add(chip, elem,
+> +							   move_idx);
+> +		if (err)
+> +			return err;
+> +
+> +		elem->hw_idx = move_idx;
+> +	}
 
-Does this read the correct field? The code above memsets tx_pend to zero,
-so compl_requested is always 0 and complete() is never called.
+If entry_add() fails after some entries have already been moved to new
+hardware positions with their hw_idx updated, doesn't the function return
+without rolling back those partial moves?
 
-The refactoring created a local copy pnd_snd before the memset:
+The software list would then have some entries pointing to their new
+positions while the gap for the new entry is only partially created.
+This could leave the TCAM in an inconsistent state for subsequent
+operations.
 
-memcpy(&pnd_snd, tx_pend, sizeof(pnd_snd));
-memset(tx_pend, 0, sizeof(*tx_pend));
-
-But then it reads from the zeroed tx_pend instead of pnd_snd. Should this be
-pnd_snd.compl_requested instead?
-
-This affects smc_wr_tx_send_wait(), which sets compl_requested and waits for
-the completion that never arrives, causing LLC message timeouts.
-
->  			complete(&link->wr_tx_compl[pnd_snd_idx]);
-> -		memcpy(&pnd_snd, &link->wr_tx_pends[pnd_snd_idx],
-> -		       sizeof(pnd_snd));
-> -		/* clear the full struct smc_wr_tx_pend including .priv */
-> -		memset(&link->wr_tx_pends[pnd_snd_idx], 0,
-> -		       sizeof(link->wr_tx_pends[pnd_snd_idx]));
->  		memset(&link->wr_tx_bufs[pnd_snd_idx], 0,
->  		       sizeof(link->wr_tx_bufs[pnd_snd_idx]));
->  		if (!test_and_clear_bit(pnd_snd_idx, link->wr_tx_mask))
+Is there error handling to ensure the TCAM state remains consistent when
+insertion partially succeeds?
 
 [ ... ]
 
-> @@ -550,7 +472,7 @@ void smc_wr_remember_qp_attr(struct smc_link *lnk)
->  	lnk->wr_tx_cnt = min_t(size_t, lnk->max_send_wr,
->  			       lnk->qp_attr.cap.max_send_wr);
->  	lnk->wr_rx_cnt = min_t(size_t, lnk->max_recv_wr,
-> -			       lnk->qp_attr.cap.max_recv_wr);
-> +			       lnk->qp_attr.cap.max_recv_wr - 1);	/* -1 for ib_draib_rq() */
-                                                                                        ^^^^^^^^^^^^^^
-This isn't a bug, but there's a typo in the comment: ib_draib_rq() should be
-ib_drain_rq().
+> diff --git a/drivers/net/dsa/mv88e6xxx/tcflower.c b/drivers/net/dsa/mv88e6xxx/tcflower.c
+> new file mode 100644
+> index 000000000000..05b289463834
+> --- /dev/null
+> +++ b/drivers/net/dsa/mv88e6xxx/tcflower.c
+> @@ -0,0 +1,164 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Marvell 88E6xxx Switch flower support
+> + *
+> + * Copyright (c) 2026 Luminex Network Intelligence
+> + */
+> +
+> +#include "chip.h"
+> +#include "tcflower.h"
+> +#include "tcam.h"
+> +
+> +#define MV88E6XXX_ETHTYPE_OFFSET 16
+> +#define MV88E6XXX_IP_PROTO_OFFSET 27
+> +#define MV88E6XXX_IPV4_SRC_OFFSET 30
+> +#define MV88E6XXX_IPV4_DST_OFFSET 34
+> +
+> +static int mv88e6xx_flower_parse_key(struct mv88e6xxx_chip *chip,
+> +				     struct netlink_ext_ack *extack,
+> +				     struct flow_cls_offload *cls,
+> +				     struct mv88e6xxx_tcam_key *key)
+> +{
+> +	struct flow_rule *rule = flow_cls_offload_flow_rule(cls);
+> +	struct flow_dissector *dissector = rule->match.dissector;
+> +	u16 addr_type = 0;
+> +
+> +	if (dissector->used_keys &
+> +	    ~(BIT_ULL(FLOW_DISSECTOR_KEY_BASIC) |
+> +	      BIT_ULL(FLOW_DISSECTOR_KEY_CONTROL) |
+> +	      BIT_ULL(FLOW_DISSECTOR_KEY_IPV4_ADDRS) |
+> +	      BIT_ULL(FLOW_DISSECTOR_KEY_IPV6_ADDRS))) {
+> +		NL_SET_ERR_MSG_MOD(extack,
+> +				   "Unsupported keys used");
+> +		return -EOPNOTSUPP;
+> +	}
 
->  }
+FLOW_DISSECTOR_KEY_IPV6_ADDRS is included in the allowed keys bitmask,
+but there is no code below to parse IPv6 addresses into the TCAM key.
 
-[ ... ]
+If a user creates a tc flower rule with IPv6 addresses, the rule passes
+this validation check but the addresses are never programmed into the
+TCAM. This would cause the hardware entry to match broader traffic than
+intended.
+
+Looking at the code further down:
+
+> +	if (addr_type == FLOW_DISSECTOR_KEY_IPV4_ADDRS) {
+> +		struct flow_match_ipv4_addrs match;
+> +
+> +		flow_rule_match_ipv4_addrs(cls->rule, &match);
+> +		mv88e6xxx_tcam_match_set(key, MV88E6XXX_IPV4_SRC_OFFSET,
+> +					 match.key->src,
+> +					 match.mask->src);
+> +		mv88e6xxx_tcam_match_set(key, MV88E6XXX_IPV4_DST_OFFSET,
+> +					 match.key->dst,
+> +					 match.mask->dst);
+> +	} else {
+> +		NL_SET_ERR_MSG_MOD(extack,
+> +				   "Unsupported address type");
+> +		return -EOPNOTSUPP;
+> +	}
+
+The check at line 68-72 rejects non-IPv4 address types, but the IPv6 key
+is still in the allowed keys bitmask at line 30. This creates a confusing
+situation where IPv6 is both 'allowed' and 'unsupported'.
+
+Should FLOW_DISSECTOR_KEY_IPV6_ADDRS be removed from the allowed keys
+until IPv6 parsing is implemented?
 -- 
 pw-bot: cr
