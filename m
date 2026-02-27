@@ -1,32 +1,32 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B1942EEC1;
-	Fri, 27 Feb 2026 15:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E2643C046;
+	Fri, 27 Feb 2026 15:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772204930; cv=none; b=gKtzzmBxTCe8FaKGxKGDsLbTW0ACcqgI1ctkcvLG83aqiWLLt7eHviIUJSZjHYZ/Ya/gYMutHUyanaIKqNEnEqdhU90ItsStTAhA6MhyhBqqIHomP2utDkKk6t34PEFjz0U6nZ80ko0icJJ1Jp6fU+G/WQUT28VsSQbLMdFcEgc=
+	t=1772204932; cv=none; b=dB7/C6aG/RBuR5fTD9SOvMPR7BRiV8mVPQlg/sBaNCwb7UxZ/v9LL7N5mynTTYp3sk0xMwIKO1AGf876cNqETslVooG2Yx/HQD1w6MurLVaYSA3JeUEkIWaVfIhjHZe8xLG5i90tk47buMPajgchB9A6B+FDl3V+Hh5FlZvPTSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772204930; c=relaxed/simple;
-	bh=QkwfhhWgXcsXTJC24lyZEtiFjpVR0EkyXcmT9TMSAI8=;
+	s=arc-20240116; t=1772204932; c=relaxed/simple;
+	bh=mYoK1FihVJvEr0NMlfRRBuE7/55cVkFDth49zLmyEKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m+KeN4mSq+ovlU65uozP6GFnyuCRsHsuTOtBhvwZ395URzSV8wUM5rkMOULwAvTn6K4PJVSXtOQBkJSaxbf1QK37d1AlvJTAMSulU4Mg0/NCeHdu2Qa7EJimyFb15lYXoAY+w0jhM8qFqfq5mo6MXwov4IzZnJ3Wz+GDXNfAMlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=52PbBd3N; arc=none smtp.client-ip=194.13.80.246
+	 MIME-Version:Content-Type; b=iACgzTFw2hbSB2mlTKnPTGw5+3ej9HoFP2C+mOw4wVupQ7Xe62emy+jTPYjmS6mxWx9ySqaYJfhwIQm8hNWOLgJcBgqFiYWFHEM+s/KHDcoMEKojPwvVmUYCub90/Jmgoi8rEfeR+vb0Hmww486K86i0/9/qOoxTErXm+jdM40M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=E3eIrlyr; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="52PbBd3N"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 9BA53A5005;
-	Fri, 27 Feb 2026 16:08:44 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="E3eIrlyr"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 00EFCA5009;
+	Fri, 27 Feb 2026 16:08:45 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1772204925; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1772204926; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=lSCPFfeGozLmMJQnP50afD8kI4SZlBMY+0sjS3RHZFk=;
-	b=52PbBd3NIZ0bvU3ci+T9Jsjr5VdLRkqGfFb8y2R6L6ZOCCdYzoJEuKohIoluTcnW0P1hcY
-	8bNHbO/icYArOP9krOpRsmy1AGW2cTJx1Kzd26jNrvAOqn/CXNYjtzJkbKADbS8C1jYplP
-	4QjsEFKjJQZ/l5z2bK00xTq2/9Nmpe7/37W4y1TdmODzEP1Gpgv6bqSmNqy8ADJMAjnNAE
-	fQq5jEQcMqMFLqtXQ/Tu0JyY8BHvxBK+0yCzfMeihFvVqbFyrpU3Qx1+kFSG+AnjwYUzkm
-	yBwv/YsyZ94HXk3PFwqeuvEOb3wT+BHHrZDsFsvu+naROOe8Ir6g/txuNhnQWQ==
+	bh=c5YmtHEwmcbZmGCVvz6y3GMkg0blJKUkEfPrdXSW/30=;
+	b=E3eIrlyrmu6UOSb0bcHzxlrUE61b0rdu1dNwgAA7tDneUOw6D8jXgm+UL5lmgoLLODAZoy
+	e2wyLbxIkkfgqCXW6u1YVIyXUM2ha3TBxdCD575yTRfZv/2YrZPT8Cl6PRyKCHUXZPoCsh
+	7S0ETUNJh30K9TjyhRluRWoQgkzS29eq+FwVpUfZ5vw7zq9C0FMj9Ux6YThHypOw0nS7XH
+	idIgdEyu+gbymX9/XT7z2nx3XVEW+TXHR8F1kwa6zj3TrQK4JnruMiRrHBIDgHtz+uiUdb
+	KKNrpJT1kwnsVtbwHB7R6KIVGct+i6MeLDAziq7i794dGujT+IkU5tKvBcYffQ==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -41,9 +41,9 @@ Cc: davem@davemloft.net,
 	theo.lebrun@bootlin.com,
 	phil@raspberrypi.com,
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next v5 3/5] net: cadence: macb: add ethtool EEE support
-Date: Fri, 27 Feb 2026 16:06:08 +0100
-Message-ID: <20260227150610.242215-4-nb@tipi-net.de>
+Subject: [PATCH net-next v5 5/5] net: cadence: macb: enable EEE for Mobileye EyeQ5
+Date: Fri, 27 Feb 2026 16:06:10 +0100
+Message-ID: <20260227150610.242215-6-nb@tipi-net.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260227150610.242215-1-nb@tipi-net.de>
 References: <20260227150610.242215-1-nb@tipi-net.de>
@@ -57,55 +57,30 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Implement get_eee and set_eee ethtool ops for GEM as simple passthroughs
-to phylink_ethtool_get_eee() and phylink_ethtool_set_eee().
+Set MACB_CAPS_EEE for the Mobileye EyeQ5 GEM instance. EEE has been
+verified on EyeQ5 hardware using a loopback setup with ethtool
+--show-eee confirming EEE active on both ends at 100baseT/Full and
+1000baseT/Full.
 
-No MACB_CAPS_EEE guard is needed: phylink returns -EOPNOTSUPP from both
-ops when mac_supports_eee is false, which is the case when
-lpi_capabilities and lpi_interfaces are not populated. Those fields are
-only set when MACB_CAPS_EEE is present (previous patch), so phylink
-already handles the unsupported case correctly.
-
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Tested-by: Théo Lebrun <theo.lebrun@bootlin.com>
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/net/ethernet/cadence/macb_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index c23485f049d3..3e724417d444 100644
+index 0196a13c0688..58a265ee9f9e 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -4050,6 +4050,20 @@ static const struct ethtool_ops macb_ethtool_ops = {
- 	.set_ringparam		= macb_set_ringparam,
- };
- 
-+static int macb_get_eee(struct net_device *dev, struct ethtool_keee *eee)
-+{
-+	struct macb *bp = netdev_priv(dev);
-+
-+	return phylink_ethtool_get_eee(bp->phylink, eee);
-+}
-+
-+static int macb_set_eee(struct net_device *dev, struct ethtool_keee *eee)
-+{
-+	struct macb *bp = netdev_priv(dev);
-+
-+	return phylink_ethtool_set_eee(bp->phylink, eee);
-+}
-+
- static const struct ethtool_ops gem_ethtool_ops = {
- 	.get_regs_len		= macb_get_regs_len,
- 	.get_regs		= macb_get_regs,
-@@ -4072,6 +4086,8 @@ static const struct ethtool_ops gem_ethtool_ops = {
- 	.set_rxnfc			= gem_set_rxnfc,
- 	.get_rx_ring_count		= gem_get_rx_ring_count,
- 	.nway_reset			= phy_ethtool_nway_reset,
-+	.get_eee		= macb_get_eee,
-+	.set_eee		= macb_set_eee,
- };
- 
- static int macb_ioctl(struct net_device *dev, struct ifreq *rq, int cmd)
+@@ -5518,7 +5518,7 @@ static const struct macb_config versal_config = {
+ static const struct macb_config eyeq5_config = {
+ 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_JUMBO |
+ 		MACB_CAPS_GEM_HAS_PTP | MACB_CAPS_QUEUE_DISABLE |
+-		MACB_CAPS_NO_LSO,
++		MACB_CAPS_NO_LSO | MACB_CAPS_EEE,
+ 	.dma_burst_length = 16,
+ 	.clk_init = macb_clk_init,
+ 	.init = eyeq5_init,
 -- 
 2.51.0
 
