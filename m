@@ -1,109 +1,92 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B34D361DA2
-	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 10:20:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E65EC395DB4;
+	Fri, 27 Feb 2026 10:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772187607; cv=none; b=A/7OI3ydSy5rzqEUF7itwvI5Dj5XBmVvdJonILhhFyErkzNoHumOragjmD1hGHZgHBf0zF+G3/MU0aPVscyH16xtJnNs7Mpgp9q1c9b96AoqgVre63wg/OJ7noa4dqBfIgf7j+hVBKxRyCCk2eVhypado0T0G01P/WhbU1WYJxc=
+	t=1772187714; cv=none; b=IRVclwGRyphaQCy2cFJfrd8gU7K07otE9AEpNaSZlYxrlnlxnGG0VMJr6Spd42ooj5LPUu6eX5J7lXcm97isBm9DZjnHsmNwqgMR/ndrF9Om8tjGorv85kA1caBhsWTlGVsCjTjTZJXW965VoX3pQEGdhnKkVForM56J4YG//lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772187607; c=relaxed/simple;
-	bh=S5WbKUe/GSU6gr4sflzxccH6wjNJ3Au64Oqxsj6D0Rk=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=ENkXSHMF7n9MvepsiY9cWLCO2UaN5DdUYr4Rl1vqo8dYrO59WMosnFmiSnAq+z2c+DerKTzWy+ka9JerUg3pcrOosQxyarI9FLlLLJx0cLoBBTktiVCtVmlc5d96zN2IUr8/d8VyP8penMdVb/F3Z88HxssA7AgSzzkhpD3dt5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=XRuEyIeA; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1772187714; c=relaxed/simple;
+	bh=UsgWvp1GgBfZzBi1bQ6C6S5njIGPpnPU/XFTEKEJPaY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=r7a11BGBTcEBVNHIrOD4rDxHBpZda24iZovtJD9JMgOlCrokvgNIGR8S3wG8wpU0E+aYqUUgGVBzDeiPa7fSl2X4qVoBKsrUeQHLfg8B5jJcqRLx0ZAhzGRosdrWASgTeLTGc1cuUFx0s3P9kzKTIAUHsGHYA/LGyTon6r2k1PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YyE8+P6T; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=WtXquy3y; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="XRuEyIeA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=gc2DPN8dhX2Y1LOPz3Pgjt4dmwCjQz6dghOPKT5Mkqc=; b=XRuEyIeAZwlUVZF1DdUW031rTe
-	cvvhNEEzGhi671hJzVqyKXUiWPT34bBho+i3MQDoZkj5prIbekJXlJVsSB/98Y5aQPZdg7keIBOul
-	e7o3J0LjKtdlHaD9V8VFiSj5BPjSWkghqn8Z4JWb5irZRwTcqv2Doa3uzHfCdaSg6gRhgsfAyX2un
-	usKAWz1E3VYotNfggkhzfv43CGdbuex8AuSftqAVG7gZ6LYf1/0zxam8IXHP8OY0YqkK2rSoiasyF
-	ZCXLH5bFdDeMwWeSzEhZbDXnpAjB6ZK6vIeiZoDzZIgryNrbBBx3c36Id8vwskgNe0wiSfUsYxw/m
-	xbEPlcBw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:43828 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vvuY5-000000000fN-13zF;
-	Fri, 27 Feb 2026 09:54:17 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vvuY3-0000000Avnq-1Spv;
-	Fri, 27 Feb 2026 09:54:15 +0000
-In-Reply-To: <aaFpZvuIzOLaNM0m@shell.armlinux.org.uk>
-References: <aaFpZvuIzOLaNM0m@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YyE8+P6T";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="WtXquy3y"
+Date: Fri, 27 Feb 2026 11:21:49 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1772187711;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UsgWvp1GgBfZzBi1bQ6C6S5njIGPpnPU/XFTEKEJPaY=;
+	b=YyE8+P6Tjo+S+BcZoSBuMWXn2hz+l+vNFOLWtJMvSjiNergSVEkkxT6tsvTRF1jxmsuaxa
+	MdCs/2CkJLEtHHTeNKA+MsvS4v/OriaN1U7gH3UK4xijBauQLq5l9JAyD74VU7J/cdgsCJ
+	6/JXhWBrb4CxHTVhyOUEjPs5ERHb+QOHaWDQI2g8Eq/59fuISBz8VMU5ohS6TliUs+ka3H
+	V1OAslSzz4IydKu6CCHi5EMS+O6OauuOIc5pqPqEHPWXdb+KxgeCEeawrWxJ0M7mFs5i9e
+	4/W6pin84La3pzPtBnpyV23qlLCBLHLjVaivMHbrA2aFo5dJWtsQsb7wCpdC7A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1772187711;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UsgWvp1GgBfZzBi1bQ6C6S5njIGPpnPU/XFTEKEJPaY=;
+	b=WtXquy3yQNm+aAp6lM6ngwO+HwtWiMVlBJp+FBIgmEV74EhwIXAvXszUa8eVsFR+/5UOiF
+	hCTY13bsVdtV8KAg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, jiayuna.chen@linux.dev, jiayuna.chen@shopee.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com,
+	Jay Vosburgh <jv@jvosburgh.net>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH net-next 14/14] net: stmmac: move DMA configuration validation
- to driver probe
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jussi Maki <joamaki@gmail.com>, linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH net v2 1/2] bonding: fix null-ptr-deref in
+ bond_rr_gen_slave_id()
+Message-ID: <20260227102149.10ZgLF-t@linutronix.de>
+References: <20260227092254.272603-1-jiayuan.chen@linux.dev>
+ <20260227092254.272603-2-jiayuan.chen@linux.dev>
+ <20260227094558._Fna2iSe@linutronix.de>
+ <4cc373b555ec3d6ff57037c569d12966a8b701db@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vvuY3-0000000Avnq-1Spv@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Fri, 27 Feb 2026 09:54:15 +0000
+In-Reply-To: <4cc373b555ec3d6ff57037c569d12966a8b701db@linux.dev>
 
-Move the DMA configuration validation from stmmac_init_dma_engine()
-to the start of the driver probe function. The platform glue is
-expected to supply the DMA configuration, and a non-zero programmable
-burst length (bpl).
+On 2026-02-27 10:17:29 [+0000], Jiayuan Chen wrote:
+> bond_mode can be changed after device creation via sysfs or netlink, a bond created
+> in active-backup mode can later be switched to round-robin, which means the allocation
+> must not be conditional on the mode at creation time.
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+Must the device be in down state or can this be also changed while the
+device is up?
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index a9b26d12a057..5d1cc9aead00 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -3249,11 +3249,6 @@ static int stmmac_init_dma_engine(struct stmmac_priv *priv)
- 	u32 chan = 0;
- 	int ret = 0;
- 
--	if (!priv->plat->dma_cfg || !priv->plat->dma_cfg->pbl) {
--		netdev_err(priv->dev, "Invalid DMA configuration\n");
--		return -EINVAL;
--	}
--
- 	ret = stmmac_prereset_configure(priv);
- 	if (ret)
- 		return ret;
-@@ -7733,6 +7728,11 @@ static int __stmmac_dvr_probe(struct device *device,
- 	u32 rxq;
- 	int i, ret = 0;
- 
-+	if (!plat_dat->dma_cfg || !plat_dat->dma_cfg->pbl) {
-+		dev_err(device, "invalid DMA configuration\n");
-+		return -EINVAL;
-+	}
-+
- 	ndev = devm_alloc_etherdev_mqs(device, sizeof(struct stmmac_priv),
- 				       MTL_MAX_TX_QUEUES, MTL_MAX_RX_QUEUES);
- 	if (!ndev)
--- 
-2.47.3
-
+Sebastian
