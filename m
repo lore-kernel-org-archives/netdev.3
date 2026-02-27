@@ -1,382 +1,192 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011050.outbound.protection.outlook.com [40.93.194.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DC03F23D8
-	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 15:20:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772205641; cv=none; b=ebmL2X5mhUpBMga2I9QgEOgqh5VZf9qI2au/rtG8K5PVU0P8QL5RbOl/NOU8sONc+69RMtbjo+ef3ypfu8ikt7rIkRdlBjz7CBLGuKhp+ZUAs2QcVyCH9xUoW8gGql2oZG8hEYnXnbwAiIOXXHVkKb8HL5gCdERu36q4NpEB/40=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772205641; c=relaxed/simple;
-	bh=Ucu5Ro/Hjoewx7VZ1CndqIRj4auAHqA3pNCVtRLfF74=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C56Iui3Q2mR6nab6izUaHyuub+xCEecLayFhtgPKzCPMnUiNQninoAlhQf9Rem8KG9tr9+r6lk3SCSy/zwEsz/avm6UBlPdnL+2DxcpEcRvIfqF0WTTLGezqhj6gnETks+n3pCogqWgwq8CFIvuPRTVUR5hS9s41SB+Xs3xHek0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=oIw4CkYL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=fldL9BQ4; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=oIw4CkYL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=fldL9BQ4; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384633271EA;
+	Fri, 27 Feb 2026 15:21:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772205718; cv=fail; b=DvaT3oy3TlfVMuC5F4RutccL+Z1/M0N9Qb9h9R4BGZkYS53wdjtuBVdzoATdKRkQ8qEp1vkgeVaPGMKTtLWq32rKyFtkNpnqtovl0NA9aISp4iV8yn3n21+7PKvXIYM6DdDnQml1MgZgI4KimEV9ivYunJH2M1ZannYlbqtBhCU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772205718; c=relaxed/simple;
+	bh=JiutV3UHwO72khaD4bAX/jR/hJu6sW2z18WKSrAeVbQ=;
+	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=SFeH3g5HIbDrD9+35GSzTRqgkLqehFvOSdlRERERyRuhHxLOzejBlUgV2dhs6P9uNusLhdnCGrJbZskZAKV1UtUFRwKN8DGvZW5EPBtSReqEnccXDilkBMHNietbIfKJ+luwwgnUbncZz7GeSv1opqz7LmJR2n+i3F/y9SFlr3g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=E/U3XnQr; arc=fail smtp.client-ip=40.93.194.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="oIw4CkYL";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="fldL9BQ4";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="oIw4CkYL";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="fldL9BQ4"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 776D13FCE2;
-	Fri, 27 Feb 2026 15:20:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772205636; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AiGwAFn9EKy52FCi+TKx67ubELYVUTHPOvHsztjUS74=;
-	b=oIw4CkYLQOpmxTptEaLEpwgchUcB6ZrWHZKkqSdG4I6wJcvA6fOVElgduXUNVr7+7vM3oP
-	XtPWm3+jeqT/q9FdmB8QOiMD9Wt9UatM7eq/PscmMW6YeQJ3LjVpX51YHJTI1pXjZFnz7R
-	xAZYPt4+qWIJLnHpa0eZpbu8gwuGdaI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772205636;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AiGwAFn9EKy52FCi+TKx67ubELYVUTHPOvHsztjUS74=;
-	b=fldL9BQ4mj/6HJodbVPi3M2119O6qjKjK/Mzk/0VDb0yxMsjCRi6AKXq+Ap2y/Zyx4N/7o
-	1qSj71NtNBLdhyBQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772205636; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AiGwAFn9EKy52FCi+TKx67ubELYVUTHPOvHsztjUS74=;
-	b=oIw4CkYLQOpmxTptEaLEpwgchUcB6ZrWHZKkqSdG4I6wJcvA6fOVElgduXUNVr7+7vM3oP
-	XtPWm3+jeqT/q9FdmB8QOiMD9Wt9UatM7eq/PscmMW6YeQJ3LjVpX51YHJTI1pXjZFnz7R
-	xAZYPt4+qWIJLnHpa0eZpbu8gwuGdaI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772205636;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AiGwAFn9EKy52FCi+TKx67ubELYVUTHPOvHsztjUS74=;
-	b=fldL9BQ4mj/6HJodbVPi3M2119O6qjKjK/Mzk/0VDb0yxMsjCRi6AKXq+Ap2y/Zyx4N/7o
-	1qSj71NtNBLdhyBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6A82D3EA69;
-	Fri, 27 Feb 2026 15:20:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id nID8GUS2oWnAIAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 27 Feb 2026 15:20:36 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 3122FA06D4; Fri, 27 Feb 2026 16:20:36 +0100 (CET)
-Date: Fri, 27 Feb 2026 16:20:36 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
-	Josef Bacik <josef@toxicpanda.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
-	linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 09/14] xattr: move user limits for xattrs to generic infra
-Message-ID: <ba2xttc5jggmzjj3z273vwagyqqjdcg6yzwnnashqdgzwj5zbt@r7sa2xsllyau>
-References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
- <20260216-work-xattr-socket-v1-9-c2efa4f74cb7@kernel.org>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="E/U3XnQr"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YP1peUDWITSMWFnvH+P5a6HQvl4OJEFD+k85Tc1yeU1CA/bL2fWfhLm7+63KT+QPM7cYQwUe8S0RGvjvph4WXHvN208HVJpB/mMk9Uayd/hah6XnHQDFYC26x9dks4rlGfb9Sdrj8q4EkGvXfpbJiHH05sZ4m93VPoQFMf4Cgk9NsVgB8QKmIN8ifpOJd7GGCuhQGCJ2VatMuMiEY5lXZQE1QOkabHqmQGWjw6PZGZsVP5ruhYspJ2vKn+KYrZSn+zdHTRNVhCuejLEdHtWHdGKC8pihZNjew0gngCjudWNJSFrLp3wSpiZJkzbkCOC9f14I+Bfh+humr3JotnblvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=GeOOZg4wK1CrnDE2ZVe5Nhy28oZpvsckyx9rGp2ty2E=;
+ b=jqEVUmtTJu5LiSbxMglWmu1VtesGAk1f8B3P4EJEX+7Q5B9QmB8ph3dE46GndKO0dwIcjc95bWJFtaUqB4qt8HH2umoT40/1BBvqIW+t2v0+TONzK8HP2CY7JWCOfLtZeQbsCpfkhDZadB9OuMJaKg+q3gVd+lBb0Ku4ju52vhstJRcVIRP6vfMmPRqA98QXkyGnBrqADLtm1gy+RdNko1M/saLh9v1uTuDwJ/bMCD3VrTPbG590wrz18cCEZ2uq9i5Y1wpOOiHynICgbg/YWq0jiPGS6mlNmWSnC8I2plxPGxLrh9k/2xog9bgDh/eE6UsNwYyuA250z6uztSeKkQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=GeOOZg4wK1CrnDE2ZVe5Nhy28oZpvsckyx9rGp2ty2E=;
+ b=E/U3XnQrosTGSy9b7eTUTm4nsR2WmShbisY00Mj1KYI2ONaalCOc6ef/nsdJLLU6ue9hapC1eS/E6q2uYfxbsYed+zR7lcBImZd7mZulO3WGjnR8oKAgXLl5uSIGuT1Kn1af+hmR/yWdGdrloWQ2C+zBP3gYx/PpemNYm9rLjWvSn5tPNGT0R3YPavBE8fOFLflrkdjjPz5fQTrfhAwYDGcFnx+ZlJI5vPjKVDoz64N/mpuojdE1dle7aMYxkTxG4XBcc7WiSpLdUWIF9KAN4tXy4y3QemYjsiTtUIP1qk6BSuW1zf8Y1GoqLIfyyWhg05kRaOcbCG5EKZFcd9Nq2w==
+Received: from SJ0PR05CA0087.namprd05.prod.outlook.com (2603:10b6:a03:332::32)
+ by DS0PR12MB7849.namprd12.prod.outlook.com (2603:10b6:8:141::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Fri, 27 Feb
+ 2026 15:21:45 +0000
+Received: from SJ1PEPF00001CE7.namprd03.prod.outlook.com
+ (2603:10b6:a03:332:cafe::ae) by SJ0PR05CA0087.outlook.office365.com
+ (2603:10b6:a03:332::32) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9654.14 via Frontend Transport; Fri,
+ 27 Feb 2026 15:21:44 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ1PEPF00001CE7.mail.protection.outlook.com (10.167.242.23) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9654.16 via Frontend Transport; Fri, 27 Feb 2026 15:21:44 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 27 Feb
+ 2026 07:21:18 -0800
+Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 27 Feb
+ 2026 07:21:14 -0800
+References: <20260225150648.1542206-1-ioana.ciornei@nxp.com>
+ <20260225150648.1542206-6-ioana.ciornei@nxp.com>
+ <20260226182223.5eb1b10f@kernel.org>
+User-agent: mu4e 1.8.14; emacs 30.2
+From: Petr Machata <petrm@nvidia.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Ioana Ciornei <ioana.ciornei@nxp.com>, <netdev@vger.kernel.org>, "Andrew
+ Lunn" <andrew+netdev@lunn.ch>, "David S.  Miller" <davem@davemloft.net>,
+	"Eric Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Shuah
+ Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>, "Petr
+ Machata" <petrm@nvidia.com>
+Subject: Re: [PATCH net-next 5/5] selftests: drivers: hw: add tests for the
+ ethtool standard counters
+Date: Fri, 27 Feb 2026 14:53:06 +0100
+In-Reply-To: <20260226182223.5eb1b10f@kernel.org>
+Message-ID: <87ms0ufc0p.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260216-work-xattr-socket-v1-9-c2efa4f74cb7@kernel.org>
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_THREE(0.00)[3];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.cz:email]
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
-X-Spam-Level: 
+Content-Type: text/plain
+X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE7:EE_|DS0PR12MB7849:EE_
+X-MS-Office365-Filtering-Correlation-Id: cba2866c-cfd2-456f-aaf8-08de7613eabe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|36860700013|3122999024;
+X-Microsoft-Antispam-Message-Info:
+	K/HIOu7FlWCVIC+GJFhftLHTAfQFzc4hhNSB+1IqzDDE5RcZfGys4fnu4URaH0gTIrk4BOw2WpcmqOi8b3KHUewe0IUBwv1mvttSc35hYnmnlppjUw0eYqRVza2uagnyR/rg6yGsvtAbXEu6kO8Re2VChXUFq6RFdGfhd3t+RgjCjqJCDP4kjzKfKPGP8Cgrs5LNX2OxoEBvzVP5SSgfTbw4RjbbPQWytBQfXXLi275vp6+AP0XFMbqYiBsTfCUU31sEOYMir/2IPgrSz+gmpyxw1vEXAEGpj4ioj3U8tEI0wzJMFsSe+JF0e2L3gMqmHRhBJz5zIZ+cFzNNXCS/A4hBHTOTSXre+MU0GBgZDlnYKz6Wq7Pfh4d+mORjI3Zbj/WxOtLpkothJqqpEL80+0RrqYarjEpMSnqszhmQI8RAO+fZmrTVXiGfdurvB5c4IXzIDImngBYHdlLdCRHuTumiabLiurFPZ0Ic5mfV2gAQ5oWjGd7WYNZ+lBlwThS0vZWFavuvL3WviQYeXkxz2LlHw5f9rBX9Q4Uic/JksXWEtN424vpcCECUZPrPt9AvJ3Ttwqz3g7pY4NjD3GLOrTRTKQGOE+xNtVN4wH0CnQuEFeACCzPlc2Zm+IzZgkEosR0CE8gMbaxY9Bb6sssZxB8cTwIIGc9luOwEi/GsdCMeO+XZdYA3Exsw/qA9pvGTwd93bLRhoborqhq05V8XTZ0S8yqqz/HTQFZGTSv8NdUwVGO+FLgXfdLjfrjcwe+RXchf4njfaEFmHp8QJ3GAADdQI81b7UIo5wwMoXv3+o4weqiMSHlTPhmdPCysr17ky5IJ3vjcsfN2HeeMbDgG1A==
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700013)(3122999024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	lr2Xu6UhATEP39O3SZ6whsSgO61Gu6v5Tz5dMnBjhxeWtjnmde1iJpPPPeyH2uKbSdylSNA9PubvwAkCIvPiIhzMxL2XXo6DZ2xioE1EutrGaRXaxbytZp57SCtMDXxx6dLKxltu+4WVZfj6xAHZ5BY4uGqBQrlslpvQ/aV+nW8pK+Bd7LfWaavjrnNpWXlL65S+S5MtyKWkt00rR7bLs1BHnk1HYB1FaOwJ0pbvg26T9u/Zky7KcFpFdf2NOVWtP9i/oys+h8wrK9vth35Ute4CASBz2vdz/n4gRzJtFCTb1dIAfTicuSQLrKzp3IISQWHr3EJbKIDTO2f6BwwjQOtfoKxA6cSImAh23pCczqlzIbOCOszQrfGY0o/iRlzQptYwITE5C1iQ6zBuS5zafAIwXL92RIfz5s5/2E/X051j3NSseCaSg4OhX6zjGooD
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 15:21:44.7702
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cba2866c-cfd2-456f-aaf8-08de7613eabe
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00001CE7.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7849
 
-On Mon 16-02-26 14:32:05, Christian Brauner wrote:
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
 
-Looks good. Feel free to add:
+Jakub Kicinski <kuba@kernel.org> writes:
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+> On Wed, 25 Feb 2026 17:06:48 +0200 Ioana Ciornei wrote:
+>> +ALL_TESTS="
+>> +	test_eth_ctrl_stats
+>> +	test_eth_mac_stats
+>> +	test_pause_stats
+>> +"
+>> +STABLE_MAC_ADDRS=yes
+>> +NUM_NETIFS=2
+>> +lib_dir=$(dirname "$0")
+>> +# shellcheck source=./../../../net/forwarding/lib.sh
+>> +source "$lib_dir"/../../../net/forwarding/lib.sh
+>
+> Argh, at some point we should probably decide whether we have 
+> a preference on which "library" / set of env vars we use under 
+> drivers/net/hw. Adding Petr to CC.
 
-								Honza
+I think the expectation is that by default, tests written in Bash are
+run on one machine without remotes.
 
-> ---
->  fs/kernfs/inode.c           | 75 ++-------------------------------------------
->  fs/kernfs/kernfs-internal.h |  3 +-
->  fs/xattr.c                  | 65 +++++++++++++++++++++++++++++++++++++++
->  include/linux/kernfs.h      |  2 --
->  include/linux/xattr.h       | 18 +++++++++++
->  5 files changed, 87 insertions(+), 76 deletions(-)
-> 
-> diff --git a/fs/kernfs/inode.c b/fs/kernfs/inode.c
-> index dfc3315b5afc..1de10500842d 100644
-> --- a/fs/kernfs/inode.c
-> +++ b/fs/kernfs/inode.c
-> @@ -45,8 +45,7 @@ static struct kernfs_iattrs *__kernfs_iattrs(struct kernfs_node *kn, bool alloc)
->  	ret->ia_mtime = ret->ia_atime;
->  	ret->ia_ctime = ret->ia_atime;
->  
-> -	atomic_set(&ret->nr_user_xattrs, 0);
-> -	atomic_set(&ret->user_xattr_size, 0);
-> +	simple_xattr_limits_init(&ret->xattr_limits);
->  
->  	/* If someone raced us, recognize it. */
->  	if (!try_cmpxchg(&kn->iattr, &attr, ret))
-> @@ -355,69 +354,6 @@ static int kernfs_vfs_xattr_set(const struct xattr_handler *handler,
->  	return kernfs_xattr_set(kn, name, value, size, flags);
->  }
->  
-> -static int kernfs_vfs_user_xattr_add(struct kernfs_node *kn,
-> -				     const char *full_name,
-> -				     struct simple_xattrs *xattrs,
-> -				     const void *value, size_t size, int flags)
-> -{
-> -	struct kernfs_iattrs *attr = kernfs_iattrs_noalloc(kn);
-> -	atomic_t *sz = &attr->user_xattr_size;
-> -	atomic_t *nr = &attr->nr_user_xattrs;
-> -	struct simple_xattr *old_xattr;
-> -	int ret;
-> -
-> -	if (atomic_inc_return(nr) > KERNFS_MAX_USER_XATTRS) {
-> -		ret = -ENOSPC;
-> -		goto dec_count_out;
-> -	}
-> -
-> -	if (atomic_add_return(size, sz) > KERNFS_USER_XATTR_SIZE_LIMIT) {
-> -		ret = -ENOSPC;
-> -		goto dec_size_out;
-> -	}
-> -
-> -	old_xattr = simple_xattr_set(xattrs, full_name, value, size, flags);
-> -	if (!old_xattr)
-> -		return 0;
-> -
-> -	if (IS_ERR(old_xattr)) {
-> -		ret = PTR_ERR(old_xattr);
-> -		goto dec_size_out;
-> -	}
-> -
-> -	ret = 0;
-> -	size = old_xattr->size;
-> -	simple_xattr_free_rcu(old_xattr);
-> -dec_size_out:
-> -	atomic_sub(size, sz);
-> -dec_count_out:
-> -	atomic_dec(nr);
-> -	return ret;
-> -}
-> -
-> -static int kernfs_vfs_user_xattr_rm(struct kernfs_node *kn,
-> -				    const char *full_name,
-> -				    struct simple_xattrs *xattrs,
-> -				    const void *value, size_t size, int flags)
-> -{
-> -	struct kernfs_iattrs *attr = kernfs_iattrs_noalloc(kn);
-> -	atomic_t *sz = &attr->user_xattr_size;
-> -	atomic_t *nr = &attr->nr_user_xattrs;
-> -	struct simple_xattr *old_xattr;
-> -
-> -	old_xattr = simple_xattr_set(xattrs, full_name, value, size, flags);
-> -	if (!old_xattr)
-> -		return 0;
-> -
-> -	if (IS_ERR(old_xattr))
-> -		return PTR_ERR(old_xattr);
-> -
-> -	atomic_sub(old_xattr->size, sz);
-> -	atomic_dec(nr);
-> -	simple_xattr_free_rcu(old_xattr);
-> -	return 0;
-> -}
-> -
->  static int kernfs_vfs_user_xattr_set(const struct xattr_handler *handler,
->  				     struct mnt_idmap *idmap,
->  				     struct dentry *unused, struct inode *inode,
-> @@ -440,13 +376,8 @@ static int kernfs_vfs_user_xattr_set(const struct xattr_handler *handler,
->  	if (IS_ERR_OR_NULL(xattrs))
->  		return PTR_ERR(xattrs);
->  
-> -	if (value)
-> -		return kernfs_vfs_user_xattr_add(kn, full_name, xattrs,
-> -						 value, size, flags);
-> -	else
-> -		return kernfs_vfs_user_xattr_rm(kn, full_name, xattrs,
-> -						value, size, flags);
-> -
-> +	return simple_xattr_set_limited(xattrs, &attrs->xattr_limits,
-> +					full_name, value, size, flags);
->  }
->  
->  static const struct xattr_handler kernfs_trusted_xattr_handler = {
-> diff --git a/fs/kernfs/kernfs-internal.h b/fs/kernfs/kernfs-internal.h
-> index 1324ed8c0661..1d3831e3a270 100644
-> --- a/fs/kernfs/kernfs-internal.h
-> +++ b/fs/kernfs/kernfs-internal.h
-> @@ -27,8 +27,7 @@ struct kernfs_iattrs {
->  	struct timespec64	ia_ctime;
->  
->  	struct simple_xattrs	*xattrs;
-> -	atomic_t		nr_user_xattrs;
-> -	atomic_t		user_xattr_size;
-> +	struct simple_xattr_limits xattr_limits;
->  };
->  
->  struct kernfs_root {
-> diff --git a/fs/xattr.c b/fs/xattr.c
-> index 328ed7558dfc..5e559b1c651f 100644
-> --- a/fs/xattr.c
-> +++ b/fs/xattr.c
-> @@ -1427,6 +1427,71 @@ struct simple_xattr *simple_xattr_set(struct simple_xattrs *xattrs,
->  	return old_xattr;
->  }
->  
-> +static inline void simple_xattr_limits_dec(struct simple_xattr_limits *limits,
-> +					   size_t size)
-> +{
-> +	atomic_sub(size, &limits->xattr_size);
-> +	atomic_dec(&limits->nr_xattrs);
-> +}
-> +
-> +static inline int simple_xattr_limits_inc(struct simple_xattr_limits *limits,
-> +					  size_t size)
-> +{
-> +	if (atomic_inc_return(&limits->nr_xattrs) > SIMPLE_XATTR_MAX_NR) {
-> +		atomic_dec(&limits->nr_xattrs);
-> +		return -ENOSPC;
-> +	}
-> +
-> +	if (atomic_add_return(size, &limits->xattr_size) <= SIMPLE_XATTR_MAX_SIZE)
-> +		return 0;
-> +
-> +	simple_xattr_limits_dec(limits, size);
-> +	return -ENOSPC;
-> +}
-> +
-> +/**
-> + * simple_xattr_set_limited - set an xattr with per-inode user.* limits
-> + * @xattrs: the header of the xattr object
-> + * @limits: per-inode limit counters for user.* xattrs
-> + * @name: the name of the xattr to set or remove
-> + * @value: the value to store (NULL to remove)
-> + * @size: the size of @value
-> + * @flags: XATTR_CREATE, XATTR_REPLACE, or 0
-> + *
-> + * Like simple_xattr_set(), but enforces per-inode count and total value size
-> + * limits for user.* xattrs. Uses speculative pre-increment of the atomic
-> + * counters to avoid races without requiring external locks.
-> + *
-> + * Return: On success zero is returned. On failure a negative error code is
-> + * returned.
-> + */
-> +int simple_xattr_set_limited(struct simple_xattrs *xattrs,
-> +			     struct simple_xattr_limits *limits,
-> +			     const char *name, const void *value,
-> +			     size_t size, int flags)
-> +{
-> +	struct simple_xattr *old_xattr;
-> +	int ret;
-> +
-> +	if (value) {
-> +		ret = simple_xattr_limits_inc(limits, size);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	old_xattr = simple_xattr_set(xattrs, name, value, size, flags);
-> +	if (IS_ERR(old_xattr)) {
-> +		if (value)
-> +			simple_xattr_limits_dec(limits, size);
-> +		return PTR_ERR(old_xattr);
-> +	}
-> +	if (old_xattr) {
-> +		simple_xattr_limits_dec(limits, old_xattr->size);
-> +		simple_xattr_free_rcu(old_xattr);
-> +	}
-> +	return 0;
-> +}
-> +
->  static bool xattr_is_trusted(const char *name)
->  {
->  	return !strncmp(name, XATTR_TRUSTED_PREFIX, XATTR_TRUSTED_PREFIX_LEN);
-> diff --git a/include/linux/kernfs.h b/include/linux/kernfs.h
-> index b5a5f32fdfd1..d8f57f0af5e4 100644
-> --- a/include/linux/kernfs.h
-> +++ b/include/linux/kernfs.h
-> @@ -99,8 +99,6 @@ enum kernfs_node_type {
->  
->  #define KERNFS_TYPE_MASK		0x000f
->  #define KERNFS_FLAG_MASK		~KERNFS_TYPE_MASK
-> -#define KERNFS_MAX_USER_XATTRS		128
-> -#define KERNFS_USER_XATTR_SIZE_LIMIT	(128 << 10)
->  
->  enum kernfs_node_flag {
->  	KERNFS_ACTIVATED	= 0x0010,
-> diff --git a/include/linux/xattr.h b/include/linux/xattr.h
-> index f60357d9f938..90a43a117127 100644
-> --- a/include/linux/xattr.h
-> +++ b/include/linux/xattr.h
-> @@ -118,6 +118,20 @@ struct simple_xattr {
->  	char value[];
->  };
->  
-> +#define SIMPLE_XATTR_MAX_NR		128
-> +#define SIMPLE_XATTR_MAX_SIZE		(128 << 10)
-> +
-> +struct simple_xattr_limits {
-> +	atomic_t	nr_xattrs;	/* current user.* xattr count */
-> +	atomic_t	xattr_size;	/* current total user.* value bytes */
-> +};
-> +
-> +static inline void simple_xattr_limits_init(struct simple_xattr_limits *limits)
-> +{
-> +	atomic_set(&limits->nr_xattrs, 0);
-> +	atomic_set(&limits->xattr_size, 0);
-> +}
-> +
->  int simple_xattrs_init(struct simple_xattrs *xattrs);
->  struct simple_xattrs *simple_xattrs_alloc(void);
->  struct simple_xattrs *simple_xattrs_lazy_alloc(struct simple_xattrs **xattrsp,
-> @@ -132,6 +146,10 @@ int simple_xattr_get(struct simple_xattrs *xattrs, const char *name,
->  struct simple_xattr *simple_xattr_set(struct simple_xattrs *xattrs,
->  				      const char *name, const void *value,
->  				      size_t size, int flags);
-> +int simple_xattr_set_limited(struct simple_xattrs *xattrs,
-> +			     struct simple_xattr_limits *limits,
-> +			     const char *name, const void *value,
-> +			     size_t size, int flags);
->  ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
->  			  char *buffer, size_t size);
->  int simple_xattr_add(struct simple_xattrs *xattrs,
-> 
-> -- 
-> 2.47.3
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+I think this fundamentally stems from the fact that running processes in
+Python is a bit unwieldy, so it makes sense to have helpers, so
+everybody uses them, so you can have helpers grow brains to do things
+like over-the-ssh configuration. In Bash, running a traffic generator is
+easier than working with arrays. So the helpers tend not to be as useful
+and we don't generally have them. At least not in any consistent way.
+
+Eyeing the file, the requirement for the remote interface to be up and
+configured with an IP address is a bit surprising to me. I would think a
+down state is the most natural, and have the test bring it up and
+configure it in a way that it needs. I'm thinking maybe this is to allow
+testing a sole interface on like an embedded device?
+
+Anyway, that's a fairly strong differency between how Bash tests are
+typically written and the NIC setup. I think basically all existing
+tests assume the devices are theirs to tamper with.
+
+> The existing tests under drivers/net/hw which source forwarding/lib.sh
+> pre-date the "NIC setup" described in 
+> tools/testing/selftests/drivers/net/README.rst
+>
+> Should we ask "NIC setup" to be used for all tests which only need
+> NUM_NETIFS=2 ? These are basically simple tests where one netif is 
+> a traffic generator and the other is the DUT. And IIUC the "forwarding
+> setup" can't be used when the traffic generator is controlled over SSH?
+
+In principle nothing prevents lib.sh from growing brains to support
+these remote shenanigans. I think it's just that so far nobody cared
+enough to actually do it.
+
+I think that a helper that in effect does "run this on a machine where
+$swp1 is" is mostly what is needed. That and "make sure $swp1 and $swp2
+are on the same machine". It's going to be annoying to work with though,
+because you need to annotate every single command. I bet there's a nice
+syntax to make it not activelly annoying.
+
+If we have this, it might make sense to require tests to make use of it.
+(With an explicit opt-out for special cases.) But I do not want every
+test to have to reinvent this wheel and cargo-cult snippets from other
+tests.
+
+BTW, my guess is that even many multi-port tests that I wrote boil down
+to just a bunch of fairly independent loopbacks whose far ends could be
+on remote machines. It's not a priori nonsense to me that one would run
+a test like this, or whatever magic we'd use:
+
+    ./test.sh ssh://petr@10.1.2.3:eth1 swp1 veth1 ns://foo:veth2
+
+And it just works, because only swp1 and swp2 need to be bridged, the
+rest can be remote, and the traffic generation helper knows that to pump
+traffic to ssh://10.1.2.3:eth1, obviously you need to ssh there first.
+But the library would need to have helpers for this, and the tests would
+need to use them.
+
+At least ethtool counters would cause problems obviously.
