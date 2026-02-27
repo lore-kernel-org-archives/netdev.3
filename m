@@ -1,139 +1,146 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33FFC33A9CC;
-	Fri, 27 Feb 2026 03:56:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E752F33D6F8
+	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 03:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772164588; cv=none; b=BrzqO5azsN+NiPPkZOnWrHLl+F6F0F3J37vaelbJ40w+VTx4HfUCJCeWf08cy9lzU8zVP5X1SKVcKAZPDJFhP9CbVvhVr6rYxl26VBwN5yJ6eHtd2NOPPWXhx7jM99WiHgtiQ+4Kz8PMKj86CsF+gISi3NMrFeRmUHXFw/UyRWE=
+	t=1772164771; cv=none; b=qSn4H9bDYeWCN1iqVMx+U18JHwylQ4lkNepHs7X5XODvStPQTFKhk5Gw+4khfcJ3NwcYEyy7BW5YfTHG0Uq/AB7KMA0wt7GKkKuduYrOEBVxXyqzhqhQMUVjoU+PXN/WvrdojkeKlk7bb0LBBiMi2T8R66/4crVSldkZUZOHINI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772164588; c=relaxed/simple;
-	bh=z5xjxIuCEpexUDITWJ0ilvcIxUSMlU5ufgnavoF6tA0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvHQc1wFqG9Ocso/qyQjyY6pEUpnV4e+9YHIHu5i7Utkm1FVrGOxy3rLaap2TPjAIO84t5i5qKO/m28T5a28OY4QAguuxU8/7WUDGnxFks/6xFG7xQM9O8c1nf5RQxGYfT7DVj6+62JGQi56CKsN2Uc92yjJBJFmiCvjkbKXMw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nJk1ta4A; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772164771; c=relaxed/simple;
+	bh=AOlUQIQwRM3TfQVWpY8IO+Oimy0yKwkaz63Brgmpmk0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=T+MCvW3JEvoz+JohbpeRjvIUJ5fKYd7pub1dqP+F2YEnz8Gpvi1YtvAzseJgCYw6VKbLtwse8V41y7Y4uI7+ImA5D5+Yhiaa/WmEYe99cnq4EjRX9Ap/CzDzPKffFz+Fv8sfPWHf4FTavPtmx9+/kEzEi15CVlsPl6vcMYhTpME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3ras7j6w; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nJk1ta4A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A928C116C6;
-	Fri, 27 Feb 2026 03:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772164587;
-	bh=z5xjxIuCEpexUDITWJ0ilvcIxUSMlU5ufgnavoF6tA0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJk1ta4ASdK91McYHdy5oBfPe9radvFqWvayT8OODWfwrt9QgxRP0NcGE8mKFP0OK
-	 5DpKFIIDVaYYx3CIXX7ko3X6nD11zA66J09yrufa+G1vETQuMzoC7hSeDM7hhxvgpf
-	 S+Jbec0bFt3uOT1XVJqEbHoV1G9L/SGEa4KV9hS62VLK+NO39ixsViQVXC+eftNLeX
-	 gQ/kuzGvptBEEsG8BRmva3yZaExaaC3IsvCkb9tJOtbkG+wt6hnZiQiPAOsX3m7BTH
-	 Qp1ngEDRNpQzgkoxV3xVXdTXtq/eWqU/SUFruliEGlnWkWsyKppBZygxfBqsB4IYdd
-	 SW4ztcJJpjzAA==
-From: Jakub Kicinski <kuba@kernel.org>
-To: anthony.l.nguyen@intel.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	andrew+netdev@lunn.ch,
-	avigailx.dahan@intel.com,
-	boolli@google.com,
-	aaron.ma@canonical.com,
-	decot@google.com,
-	willemb@google.com,
-	przemyslaw.kitszel@intel.com,
-	sridhar.samudrala@intel.com,
-	aleksandr.loktionov@intel.com,
-	davem@davemloft.net,
-	pabeni@redhat.com,
-	sreedevi.joshi@intel.com,
-	Samuel.salin@intel.com,
-	netdev@vger.kernel.org,
-	sx.rinitha@intel.com,
-	joshua.a.hay@intel.com,
-	tglx@kernel.org,
-	dima.ruinskiy@intel.com,
-	emil.s.tantilov@intel.com,
-	david.m.ertman@intel.com,
-	stable@vger.kernel.org,
-	brianvv@google.com,
-	pmenzel@molgen.mpg.de,
-	edumazet@google.com,
-	horms@kernel.org,
-	piotr.kwapulinski@intel.com,
-	joe@dama.to,
-	rafal.romanowski@intel.com,
-	brett.creeley@amd.com,
-	mschmidt@redhat.com,
-	jacob.e.keller@intel.com,
-	intel-wired-lan@lists.osuosl.org,
-	vitaly.lifshits@intel.com,
-	jedrzej.jagielski@intel.com
-Subject: Re: [net,v2,02/12] idpf: skip deallocating bufq_sets from rx_qgrp if it is NULL
-Date: Thu, 26 Feb 2026 19:56:25 -0800
-Message-ID: <20260227035625.2632753-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260225211546.1949260-3-anthony.l.nguyen@intel.com>
-References: <20260225211546.1949260-3-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3ras7j6w"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c6e18b8fe1eso1637885a12.1
+        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 19:59:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772164769; x=1772769569; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jMr9OVkiEqDw4Lp9EzktAf71Dg6nani4781m7h3dn/8=;
+        b=3ras7j6w9778Xxr8zEGUwr5qnSBaYvEzvqev2lNHSyErm2CwF04Vwqalka4+MO+n9F
+         cwVaMAleLMGnEmeO7x479zKtFMHfgS/5750V4aguXzILZADTJHcPY/tOiIwXQ1Yb22dx
+         XmpT44R2w5Swa3bdYAEzUfKkJjLnNof9EBOCzYt6kau0tjtrcwzyPgBLxT29ij6cdvO2
+         sN1qKfDO5WFns6pSx+qHNFxFnDr4D1qUD87qSRVCPihvLzL/vaV3+5Cp/DESkb3UYtio
+         zXV24hlhK4NvU097jDccAk6IaQWFPTK9vEb5PyI/6bplGD2VSVFj/aUzNQIwhF5Dx2MJ
+         oS9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772164769; x=1772769569;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jMr9OVkiEqDw4Lp9EzktAf71Dg6nani4781m7h3dn/8=;
+        b=BaVkIbtsypFSKgtRatsjfc6LJooGVZocFNXU4ljr5PIba5E2SUbURLM0eA7Cra7lIn
+         bFUp9SgGSxZNw2IZ0tNwD1XEcIF6lNTYTpGbYsCH8cB9w+JEqczxZMjKTjQzFbh3wWkU
+         FuCMin/7+6+asvoicHVRyB9sFKy+C7Peqp2ax006fVR7D/TbfAA+O/gE1nfyKvY62dgV
+         +sPoGthuoj1T+WCe0Ly95SRdapngRhLX/mZa/TYsIfCBQyk30KWNssXflsUj9NCYkZBu
+         XBtHfhDh64VrykxMNtxOjFjaQRnhA0CTV+s8LFIrHzV2wvqsxD2seloSlJI9BOfOaugs
+         I8gg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJu1sWQqbRjoMDEi9QZue8PMgNTl730Ah3CHm4ZoQPbUdZ3+vVeRPmS61WIY/pn9tzdt3MAvc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzv1NnV463VSreUqRCCJWBSYjoKh6KHNUHUCYBvqzDzZ4apQbiZ
+	8wlbjuxTa8qXJq3uG3D7bAShtX6LnpMGbHfd4RnKhW9FfdDSDFqv17JFdR+7UvuYUnAhbxMifTz
+	bxSujpw==
+X-Received: from pgbfp5.prod.google.com ([2002:a05:6a02:2ce5:b0:c0e:c1b4:51a5])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:4d8e:b0:35e:5055:1ec
+ with SMTP id adf61e73a8af0-395c472a18dmr1455185637.17.1772164769058; Thu, 26
+ Feb 2026 19:59:29 -0800 (PST)
+Date: Fri, 27 Feb 2026 03:55:35 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <20260227035547.3321327-1-kuniyu@google.com>
+Subject: [PATCH v2 net] udp: Unhash auto-bound connected sk from 4-tuple hash
+ table when disconnected.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, Philo Lu <lulie@linux.alibaba.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+Let's say we bind() an UDP socket to the wildcard address with a
+non-zero port, connect() it to an address, and disconnect it from
+the address.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+bind() sets SOCK_BINDPORT_LOCK on sk->sk_userlocks (but not
+SOCK_BINDADDR_LOCK), and connect() calls udp_lib_hash4() to put
+the socket into the 4-tuple hash table.
+
+Then, __udp_disconnect() calls sk->sk_prot->rehash(sk).
+
+It computes a new hash based on the wildcard address and moves
+the socket to a new slot in the 4-tuple hash table, leaving a
+garbage in the chain that no packet hits.
+
+Let's remove such a socket from 4-tuple hash table when disconnected.
+
+Note that udp_sk(sk)->udp_portaddr_hash needs to be udpated after
+udp_hash4_dec(hslot2) in udp_unhash4().
+
+Fixes: 78c91ae2c6de ("ipv4/udp: Add 4-tuple hash for connected socket")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
 ---
-idpf: skip deallocating bufq_sets from rx_qgrp if it is NULL
+v2: Moved udp_portaddr_hash update later
+v1: https://lore.kernel.org/netdev/20260225002709.156882-1-kuniyu@google.com/
+---
+ net/ipv4/udp.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-This patch adds a NULL check for rx_qgrp->splitq.bufq_sets to prevent
-kernel panic when idpf_rxq_group_alloc() fails during initialization and
-the error path calls idpf_rxq_sw_queue_rel(). The panic was occurring
-during device opening when adding to a bonding interface.
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 014fdfdd331b..b60fad393e18 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -2287,7 +2287,6 @@ void udp_lib_rehash(struct sock *sk, u16 newhash, u16 newhash4)
+ 				     udp_sk(sk)->udp_port_hash);
+ 		hslot2 = udp_hashslot2(udptable, udp_sk(sk)->udp_portaddr_hash);
+ 		nhslot2 = udp_hashslot2(udptable, newhash);
+-		udp_sk(sk)->udp_portaddr_hash = newhash;
+ 
+ 		if (hslot2 != nhslot2 ||
+ 		    rcu_access_pointer(sk->sk_reuseport_cb)) {
+@@ -2321,19 +2320,25 @@ void udp_lib_rehash(struct sock *sk, u16 newhash, u16 newhash4)
+ 		if (udp_hashed4(sk)) {
+ 			spin_lock_bh(&hslot->lock);
+ 
+-			udp_rehash4(udptable, sk, newhash4);
+-			if (hslot2 != nhslot2) {
+-				spin_lock(&hslot2->lock);
+-				udp_hash4_dec(hslot2);
+-				spin_unlock(&hslot2->lock);
+-
+-				spin_lock(&nhslot2->lock);
+-				udp_hash4_inc(nhslot2);
+-				spin_unlock(&nhslot2->lock);
++			if (inet_rcv_saddr_any(sk)) {
++				udp_unhash4(udptable, sk);
++			} else {
++				udp_rehash4(udptable, sk, newhash4);
++				if (hslot2 != nhslot2) {
++					spin_lock(&hslot2->lock);
++					udp_hash4_dec(hslot2);
++					spin_unlock(&hslot2->lock);
++
++					spin_lock(&nhslot2->lock);
++					udp_hash4_inc(nhslot2);
++					spin_unlock(&nhslot2->lock);
++				}
+ 			}
+ 
+ 			spin_unlock_bh(&hslot->lock);
+ 		}
++
++		udp_sk(sk)->udp_portaddr_hash = newhash;
+ 	}
+ }
+ EXPORT_IPV6_MOD(udp_lib_rehash);
+-- 
+2.53.0.473.g4a7958ca14-goog
 
-> diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> index 761a77510467..59aafadae3d0 100644
-> --- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> +++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-> @@ -1341,6 +1341,9 @@ static void idpf_txq_group_rel(struct idpf_q_vec_rsrc *rsrc)
->   */
->  static void idpf_rxq_sw_queue_rel(struct idpf_rxq_group *rx_qgrp)
->  {
-> +	if (!rx_qgrp->splitq.bufq_sets)
-> +		return;
-> +
->  	for (unsigned int i = 0; i < rx_qgrp->splitq.num_bufq_sets; i++) {
->  		struct idpf_bufq_set *bufq_set = &rx_qgrp->splitq.bufq_sets[i];
->
->  		for (unsigned int j = 0; j < bufq_set->num_refillqs; j++) {
->  			kfree(bufq_set->refillqs[j].ring);
->  			bufq_set->refillqs[j].ring = NULL;
-                           ^^^^^^
-This patch adds a NULL check for bufq_sets, but does the same issue
-exist for refillqs?
-
-Looking at idpf_rxq_group_alloc() in the same file, it first sets
-bufq_set->num_refillqs to a non-zero value, then attempts to allocate
-refillqs:
-
-idpf_rxq_group_alloc() {
-    ...
-    bufq_set->num_refillqs = num_rxq;
-    bufq_set->refillqs = kcalloc(bufq_set->num_refillqs,
-                                  sizeof(struct idpf_sw_queue),
-                                  GFP_KERNEL);
-    if (!bufq_set->refillqs) {
-        err = -ENOMEM;
-        goto err_alloc;
-    }
-    ...
-}
-
-If this allocation fails, bufq_set->refillqs is NULL but
-bufq_set->num_refillqs is non-zero. The error path calls
-idpf_rxq_sw_queue_rel() which now passes the bufq_sets check but then
-dereferences bufq_set->refillqs[j].ring in the inner loop.
-
-The inner loop condition (j < bufq_set->num_refillqs) would be true,
-causing the same NULL pointer dereference the patch is meant to prevent.
-
-Would this need a similar check before the inner loop, similar to the
-bufq_sets check added in this patch?
