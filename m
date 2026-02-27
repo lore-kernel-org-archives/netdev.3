@@ -1,43 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B7CC2FD
-	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 00:34:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11519217648
+	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 00:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772152443; cv=none; b=YPoSIkzlAkS9WJkb5MZTwtjPdwq7AG22o/sSoigNM8yYxfPDVTVPl0WwZ/Ee/T4XKm+bQCPg+czQLJ2XyqgaelHc7rYZeZ7DUVIMBZaApwujznlPLbnPMGkXqi60xaZ0o00USrW9U+JmtYkxMmqhEbL9pGQ95tCEE3nRhKRnpQ8=
+	t=1772152458; cv=none; b=oJJg7K9dg2J/jXzRfJhsmxpSbcqdO0+gpa/s+8W9XDlDhvazbyRc9+gnmxc5R2gCOCW8Im4w8pRUIY5wWffXRV9OvkkeXSJSB2pFoBiSHqRd3RK+LIo2wa8IpMdC1iS5wSG+1qizWL/Uym6F2NZiv3nss3h296OKy0B15+YDciY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772152443; c=relaxed/simple;
-	bh=FIiBOQWKDGXTvjBOcL3qT9M5UHfxgEf7pQHYa8sxS/w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gHi2x5AR5KEtvC7Dt9Vakf8ZNVObX+iaXG0kw+ti1Lf9k16RVT5ttxH9mo9QysdKek+ZNNFVlWgt9xO8Cl5qa0sfFSDcxNazxdMQW4Wh/3/nozX0vPHMUlOqaEhFnfYzWAoSyRDUhM4m77/A2AGsDtCPWpwcSI5Qy34mN5I/YO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HuHjpDsX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772152458; c=relaxed/simple;
+	bh=yzHLJjzwb4n4gW3VhMsS3shKMAbFBbbojDRBAEo83JE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LK53Zh2UWCpctoH9o0XI7T//6CzpgEWUFUnX30gEml3kTTt/WLm2OoOg58h9tfR36+EKQDW2E3l6WqTZaqVE7Z41yqR2Eo1XKZk3OJ8HJAsMYlT97XhpnSIOZop8tMFgU2Kke7fpEWDiqPPEngbyEkzjx1PD/vQaPJO2epdhBvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XH+CtYCf; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HuHjpDsX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7318DC116C6;
-	Fri, 27 Feb 2026 00:34:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772152442;
-	bh=FIiBOQWKDGXTvjBOcL3qT9M5UHfxgEf7pQHYa8sxS/w=;
-	h=From:To:Cc:Subject:Date:From;
-	b=HuHjpDsXLKCzsAGnVMYcU9pjfpiYDdLpoOByCaNQzZykOwn89YO6UNNfrUZS5qktd
-	 MZcf6vm6Z3lJKsYN0vZ3cLTyN+nO59JRn/qe3635CPLgNV0+94nJJ/IxTRKz6CTlBC
-	 GG+ER0dv2dsK1LS1xQEyZojx9MKI6Ec2dKlLuOv7LE3acAaIKvjvkfgaF8fx1N9/TF
-	 KrBCqLkV9vz8ZocO6PtnDOpLKP9xt/O9X/lPfc2S7YDR4KuYPdGu580MwoPlsiDzRu
-	 KSQuCeMaQ1IQTFVkoyCiFsRn/uy56nvavWqlsJfZR3DH4aS7msuQRC6N68f0IKOIb3
-	 1+jT00FCHvNsw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: davem@davemloft.net
-Cc: netdev@vger.kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	andrew+netdev@lunn.ch,
-	horms@kernel.org,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XH+CtYCf"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c7103601c8cso555491a12.2
+        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 16:34:16 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772152456; x=1772757256; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IFfXFrEqVAtSKEy1ZLZ5f+PEt10WgQn8etbc6mkxu7I=;
+        b=XH+CtYCff1/uLY0gxdg8NF09ZhrgMvxR2uW7gpDif7e+bppdU9KneeRRhcpNps6gQL
+         tINX198MyHgtRb6RgBuRQ2qKV6QdVCv+4iZ1uugswngxKv7t1Hp+TcbBrNBIm+ZvMTcB
+         /3syLM1EYtU2jlVieYns6Vi7Tiq9nX8wQ/k2EFf3kxJ0HOFzTGW46iLnNFTnd5V/vRYC
+         qCs/3GLbclF0sONM/eGnd7BsWmmrfrWT3qlmL3UYCujUTMTilQ7C+65X9Rma5gHOzpZZ
+         Ghy3/Kx3COKM7N5kkECC1fx5J5q+qa7jmCXKmR7mHn6iFPbBoq5neexq6m6ohGnZs1nx
+         EIyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772152456; x=1772757256;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IFfXFrEqVAtSKEy1ZLZ5f+PEt10WgQn8etbc6mkxu7I=;
+        b=dEWrJyNxHYwJ6m1mGZs6U5shVKDALSWam04Lv0BMgFng/Qv+U6ATbw6cvQCosmkdKe
+         9TfEEqL7ky/Ezw3HoNm6imaR/9oxwJUtwdC82l5H6eDvF7WVjb6i+gYL82x1Bo4XIuCW
+         QUD/t7+vBHYR5NA2pnyS2Tb+npkGOWjCg+fhTieK4UmWSaIX1OA3HN0HnIDd0+K35e7d
+         vDeAJZcgYJNXKgBCit9CtgVtPvk4lzoOBBWNa/Wt9dj21hSRCUrPHbKLsVhGy/ctHsoX
+         lMbn8dB82BAmcdSZv0bzMvoPCmaIA4qMOv+KW4vSDVFTEk42izg4Svxz1E1wfgKlrKtz
+         FdYg==
+X-Forwarded-Encrypted: i=1; AJvYcCUCExdh4mQ3d10N7hSjvOs+x3N8DHXKAN1voF26wEs3zBNaGX2jlHOw6QoAAb3BA/cDqeTo+e4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzX065ArxE5fBRbk24tk+4973rF2prGiWzXcENvb+Oj1Nyi27OF
+	OHrvzq3NjhbnbblQMBan1ZqzqLPaQR/c92pGIkXCJxWr01H5p+3Xl78c
+X-Gm-Gg: ATEYQzzEPvHcBj9hgbEZekj7Daoi5AWOY0bG7iJqYYJE2dgOf9BnbQu6/WAWvI4PmMc
+	nsZVlh/04FDf4FybIblpRsvsKeUFabeLMU3S79ywKJZu0MlUo8fkPUNbPgdmGtc06A9x3Dbia82
+	rsg1RhV9TEqCMYsrjx64aAVvbfy7zEjU+yh5Fiaka0V/cACXLBiNlZFG8RKRjYSoHWgg+XA1xFs
+	Yj8dXKD6VPlWRXUk2rAg+LW00IFEneCpJiR78MfEX1m/QPB7F04mjW4LAzWBDPh9/CjSaZJXfzm
+	X/6bK3J/9N9OukGipXINRc08cRES5hS9WENXWIt8V86KFf8TI6vid8WkrEXwMsnjQjqTiNS1xV9
+	TKZCRiJkc15KiNR3B/E7727s6tMX9X7EiqFn89qzAlIqp6nwVmGHE8U63p4y3UZktRX7uQLM6FA
+	g9/qsqkXw5V7mqDs3j2Eq4Bw==
+X-Received: by 2002:a17:90b:5282:b0:355:35b0:8b83 with SMTP id 98e67ed59e1d1-35965d02c06mr986223a91.33.1772152456373;
+        Thu, 26 Feb 2026 16:34:16 -0800 (PST)
+Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c70fa5e4aafsm3040811a12.4.2026.02.26.16.34.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 16:34:15 -0800 (PST)
+From: Inochi Amaoto <inochiama@gmail.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	ncardwell@google.com,
-	kuniyu@google.com
-Subject: [PATCH net] tcp: give up on stronger sk_rcvbuf checks (for now)
-Date: Thu, 26 Feb 2026 16:33:59 -0800
-Message-ID: <20260227003359.2391017-1-kuba@kernel.org>
+	Paolo Abeni <pabeni@redhat.com>,
+	Karol Gugala <kgugala@antmicro.com>,
+	Mateusz Holenko <mholenko@antmicro.com>,
+	Gabriel Somlo <gsomlo@gmail.com>,
+	Joel Stanley <joel@jms.id.au>
+Cc: Inochi Amaoto <inochiama@gmail.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Longbin Li <looong.bin@gmail.com>
+Subject: [PATCH net-next v3 0/2] net: ethernet: litex: minor improvment for the codebase
+Date: Fri, 27 Feb 2026 08:33:46 +0800
+Message-ID: <20260227003351.752934-1-inochiama@gmail.com>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -47,72 +82,25 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-We hit another corner case which leads to TcpExtTCPRcvQDrop
+Improve the litex code for using the device managed function to register
+netdev and replace all the "pdev->dev" with dev pointer instead.
 
-Connections which send RPCs in the 20-80kB range over loopback
-experience spurious drops. The exact conditions for most of
-the drops I investigated are that:
- - socket exchanged >1MB of data so its not completely fresh
- - rcvbuf is around 128kB (default, hasn't grown)
- - there is ~60kB of data in rcvq
- - skb > 64kB arrives
+Change from v2:
+- https://lore.kernel.org/netdev/20260119040446.741970-1-inochiama@gmail.com
+1. Apply Andrew' tag
+2. patch 2: wrap the line to match the characters limit
 
-The sum of skb->len (!) of both of the skbs (the one already
-in rcvq and the arriving one) is larger than rwnd.
-My suspicion is that this happens because __tcp_select_window()
-rounds the rwnd up to (1 << wscale) if less than half of
-the rwnd has been consumed.
+Change from v1:
+- https://lore.kernel.org/netdev/20260116003150.183070-1-inochiama@gmail.com/
+1. separate the original patch into two patches.
 
-Eric suggests that given the number of Fixes we already have
-pointing to 1d2fbaad7cd8 it's probably time to give up on it,
-until a bigger revamp of rmem management.
+Inochi Amaoto (2):
+  net: ethernet: litex: use devm_register_netdev() to register netdev
+  net: ethernet: litex: use device pointer to simplify code.
 
-Also while we could risk tweaking the rwnd math, there are other
-drops on workloads I investigated, after the commit in question,
-not explained by this phenomenon.
+ drivers/net/ethernet/litex/litex_liteeth.c | 21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/20260225122355.585fd57b@kernel.org
-Fixes: 1d2fbaad7cd8 ("tcp: stronger sk_rcvbuf checks")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
-CC: ncardwell@google.com
-CC: kuniyu@google.com
----
- net/ipv4/tcp_input.c | 16 +---------------
- 1 file changed, 1 insertion(+), 15 deletions(-)
-
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 1c6b8ca67918..77283bbe4bce 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5374,25 +5374,11 @@ static void tcp_ofo_queue(struct sock *sk)
- static bool tcp_prune_ofo_queue(struct sock *sk, const struct sk_buff *in_skb);
- static int tcp_prune_queue(struct sock *sk, const struct sk_buff *in_skb);
- 
--/* Check if this incoming skb can be added to socket receive queues
-- * while satisfying sk->sk_rcvbuf limit.
-- *
-- * In theory we should use skb->truesize, but this can cause problems
-- * when applications use too small SO_RCVBUF values.
-- * When LRO / hw gro is used, the socket might have a high tp->scaling_ratio,
-- * allowing RWIN to be close to available space.
-- * Whenever the receive queue gets full, we can receive a small packet
-- * filling RWIN, but with a high skb->truesize, because most NIC use 4K page
-- * plus sk_buff metadata even when receiving less than 1500 bytes of payload.
-- *
-- * Note that we use skb->len to decide to accept or drop this packet,
-- * but sk->sk_rmem_alloc is the sum of all skb->truesize.
-- */
- static bool tcp_can_ingest(const struct sock *sk, const struct sk_buff *skb)
- {
- 	unsigned int rmem = atomic_read(&sk->sk_rmem_alloc);
- 
--	return rmem + skb->len <= sk->sk_rcvbuf;
-+	return rmem <= sk->sk_rcvbuf;
- }
- 
- static int tcp_try_rmem_schedule(struct sock *sk, const struct sk_buff *skb,
--- 
+--
 2.53.0
 
