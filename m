@@ -1,32 +1,30 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60FCD42EEBF;
-	Fri, 27 Feb 2026 15:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DF642982D;
+	Fri, 27 Feb 2026 15:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772204929; cv=none; b=pmsp1q9YgNYaJeQvml21cxBwS+FI0CC4aXlSDMY4I971mrkj8oes6ZgxNZ+UtNrcA78DRAsGVVuwKJu1Grgn5Quy+EU4WmZloV/HbVHuDj1tdQiyCnrtfWZaxHjfTjOW1PsfzEJU2yULzuVTaM8EWDfpP/796Z67kYFgJ7/SVAI=
+	t=1772204930; cv=none; b=Iwy+GjrAIqXCr1UJ2XnsaLC2qZLOJW3yaEDnS/v+EREeBQ4mwOK/2pH5GZSMYnsmAFNjF2QGv01Ju8hiD3xLxHyxByikGpFRvBu9qzMet+oP17tUvi0ynHmR9qnqpTNHleWDLlimMP/dnQxmBLdCmagPs2fEN6q+6Drh1JIIjNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772204929; c=relaxed/simple;
-	bh=deKl210dEPTH61NE3uPje7uAdxuwszbBLhacecZfR2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xzb8pftl+SF2cGOWd8XM7iWrr0o7ab8AP4A4YZHAJD32dllhNmAePi4SOC8tWYzMBOZ/l2KIFa3018i6AEStyoBh9oIrjRpSBrfk2I6GMRbU5b3RZ6DMTRGKtqYlhm3L0UT9Ops3kcnbwIfT6NM3ID4W7xDKEH7cYsbf2KGfyN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=i6Jlrp90; arc=none smtp.client-ip=194.13.80.246
+	s=arc-20240116; t=1772204930; c=relaxed/simple;
+	bh=UWPzidXv50Ohev+2Kuh1a1F27XILD7Ys1g1PNk/Gxpk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ik6/YgXZQcjY2X3CtFwMJpPdXOBJVHIKyZw1fo6zbxG4pdG0kSozd+o8ckmEwsTezHwrXBjlM8nR6t6OqzrcZHVwIlFh5si4+WXk05TnkEwAflsCTCxDhbsqgXKyoolZ8zH4D7IQNVVi60TYhkiciX6CHjxESNxNH8Qi8oy/sxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=ii2ddVfm; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="i6Jlrp90"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B361BA5004;
-	Fri, 27 Feb 2026 16:08:43 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="ii2ddVfm"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6D59DA0372;
+	Fri, 27 Feb 2026 16:08:38 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1772204924; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=8GC3kyRUMLQo0KzjbX6agpaPEYobEOwV6XjlkKdmHeE=;
-	b=i6Jlrp90ugTYEzrEOuBnlICkLsEyot9xoladiMB+i+9XnLq7QHbvJnuuAJvYLfv26j86I7
-	Rn6vSo0XwrywloxUWF6oTtFgfAN2nvh9X4Zcfpp28C+Jgfy+/D/kuYO3ZLkn4z5fJoECC7
-	8WOVMvfPquFWxlHYIk174US3z82LhWRGk6SqvZ2KKMgB+xNZWU6NPf/owfF/AWdtI5sfLZ
-	3qQ+UFiVKeG8p4CrGHOtco2vm35+bIec+wgzuIWph+trc258TwkzDnGIV9fmUUUW/2sSgg
-	Y6Npola12sEO3TDpN1ww2fxu+LvmHxh3t/j5Kx0i3tTO1dNGPld0TYUqc08S7g==
+	t=1772204922; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=7KTH05gyJSdZSQEy1yi/hV+PVgYHcPpmxyEMnrFSVao=;
+	b=ii2ddVfmhuJDVivx42d5LOVIi7lntf9fUfWh+8dVsbI8UK1kE4X5ovvPyQy6uuzMchfdUS
+	V6NoW1iKQlBwkprP69WLGHDyimWEHNigsKnmT+sbFmnPGjGOE3nS+W0Xt+S0yZGNXS5gPU
+	kiMa0xVX9Ad7kQlVgrl5dxZJUNMc8L89ampY390jUS2gzsDiXugzL4EOD4OUjS8CMIN70n
+	H9QVIKWpE5g+yMF6dhBR+wX/EJ/oPB5u9ecxkFtzkwTSxfoG47D7ow7vo9+mWBexBYhUXZ
+	yZCtmMCv+tFH5L7VquPpUhZEEG1jVNKkA+k7mz7ROTe47N6N0yBBn10s/Oec7g==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -41,12 +39,10 @@ Cc: davem@davemloft.net,
 	theo.lebrun@bootlin.com,
 	phil@raspberrypi.com,
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next v5 2/5] net: cadence: macb: implement EEE TX LPI support
-Date: Fri, 27 Feb 2026 16:06:07 +0100
-Message-ID: <20260227150610.242215-3-nb@tipi-net.de>
+Subject: [PATCH net-next v5 0/5] net: cadence: macb: add IEEE 802.3az EEE support
+Date: Fri, 27 Feb 2026 16:06:05 +0100
+Message-ID: <20260227150610.242215-1-nb@tipi-net.de>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260227150610.242215-1-nb@tipi-net.de>
-References: <20260227150610.242215-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -57,267 +53,96 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-The GEM MAC has hardware LPI registers (NCR bit 19: TXLPIEN) but no
-built-in idle timer, so asserting TXLPIEN blocks all TX immediately
-with no automatic wake. A software idle timer is required, as noted
-in Microchip documentation (section 40.6.19): "It is best to use
-firmware to control LPI."
+Add Energy Efficient Ethernet (IEEE 802.3az) support to the Cadence GEM
+(macb) driver using phylink's managed EEE framework. The GEM MAC has
+hardware LPI registers but no built-in idle timer, so the driver
+implements software-managed TX LPI using a delayed_work timer while
+delegating EEE negotiation and ethtool state to phylink.
 
-Implement phylink managed EEE using the mac_enable_tx_lpi and
-mac_disable_tx_lpi callbacks:
+Changes from v4:
+  - Removed redundant MACB_CAPS_EEE guards from macb_get_eee/set_eee;
+    phylink already returns -EOPNOTSUPP when lpi_capabilities and
+    lpi_interfaces are not populated. Based on feedback from Russell King.
+  - Added patch 5 enabling EEE for Mobileye EyeQ5, tested by Théo Lebrun
+    using a hardware loopback.
 
-- macb_tx_lpi_set(): atomically sets or clears TXLPIEN under the
-  existing bp->lock spinlock; returns bool indicating whether the
-  register actually changed, avoiding redundant writes.
+Changes from v3:
+  - Dropped the register-definitions-only patch; LPI counter offsets
+    (GEM_RXLPI/RXLPITIME/TXLPI/TXLPITIME) now land in the statistics
+    patch, and TXLPIEN + MACB_CAPS_EEE are introduced alongside the TX
+    LPI implementation where they are first used. Series is now 4 patches.
+  - Add Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com> to all patches.
+  - Split chained assignment in macb_tx_lpi_set() (suggested by checkpatch).
 
-- macb_tx_lpi_work_fn(): delayed_work handler that enters LPI if all
-  TX queues are idle and EEE is still active.
+Changes from v2:
+  - macb_tx_lpi_set() now returns bool indicating whether the register
+    value actually changed, avoiding redundant writes.
+  - Removed tx_lpi_enabled field from struct macb; LPI state is tracked
+    entirely within the spinlock-protected register read/modify/write.
+  - macb_tx_lpi_wake() uses the return value of macb_tx_lpi_set() to
+    skip the cancel/udelay when TXLPIEN was already clear.
+  All changes based on feedback from Russell King.
 
-- macb_tx_lpi_schedule(): arms the work timer using the LPI timer
-  value provided by phylink (default 250 ms). Called from
-  macb_tx_complete() after each TX drain so the idle countdown
-  restarts whenever the ring goes quiet.
+Changes from v1:
+  - Rewrote to use phylink managed EEE (mac_enable_tx_lpi /
+    mac_disable_tx_lpi callbacks) instead of the obsolete
+    phy_init_eee() approach, as recommended by Russell King.
+  - ethtool get_eee/set_eee are now pure phylink passthroughs.
+  - Removed all manual EEE state tracking from mac_link_up/down;
+    phylink handles the lifecycle.
 
-- macb_tx_lpi_wake(): called from macb_start_xmit() before TSTART.
-  Clears TXLPIEN and applies a 50 us udelay for PHY wake (IEEE
-  802.3az Tw_sys_tx is 16.5 us for 1000BASE-T / 30 us for
-  100BASE-TX; GEM has no hardware enforcement). Only delays when
-  TXLPIEN was actually set, avoiding overhead on the common path.
-  The delay is placed after tx_head is advanced so the work_fn's
-  queue-idle check sees a non-empty ring and cannot race back into
-  LPI before the frame is transmitted.
+The series is structured as follows:
 
-- mac_enable_tx_lpi: stores the timer and sets eee_active, then
-  defers the first LPI entry by 1 second per IEEE 802.3az section
-  22.7a.
+  1. LPI statistics: Expose the four hardware EEE counters (RX/TX LPI
+     transitions and time) through ethtool -S, accumulated in software
+     since they are clear-on-read. Adds register offset definitions
+     GEM_RXLPI/RXLPITIME/TXLPI/TXLPITIME (0x270-0x27c).
 
-- mac_disable_tx_lpi: clears eee_active, cancels the work, and
-  deasserts TXLPIEN.
+  2. TX LPI engine: Introduces GEM_TXLPIEN (NCR bit 19) and
+     MACB_CAPS_EEE alongside the implementation that uses them.
+     phylink mac_enable_tx_lpi / mac_disable_tx_lpi callbacks with a
+     delayed_work-based idle timer. LPI entry is deferred 1 second
+     after link-up per IEEE 802.3az. Wake before transmit with a
+     conservative 50us PHY wake delay (IEEE 802.3az Tw_sys_tx).
 
-Populate phylink_config lpi_interfaces (MII, GMII, RGMII variants)
-and lpi_capabilities (MAC_100FD | MAC_1000FD) so phylink can
-negotiate EEE with the PHY and call the callbacks appropriately.
-Set lpi_timer_default to 250000 us and eee_enabled_default to true.
+  3. ethtool EEE ops: get_eee/set_eee delegating to phylink for PHY
+     negotiation and timer management.
 
-Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
-Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
----
- drivers/net/ethernet/cadence/macb.h      |   8 ++
- drivers/net/ethernet/cadence/macb_main.c | 112 +++++++++++++++++++++++
- 2 files changed, 120 insertions(+)
+  4. RP1 enablement: Set MACB_CAPS_EEE for the Raspberry Pi 5's RP1
+     southbridge (Cadence GEM_GXL rev 0x00070109 + BCM54213PE PHY).
 
-diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index 19aa98d01c8c..c69828b27dae 100644
---- a/drivers/net/ethernet/cadence/macb.h
-+++ b/drivers/net/ethernet/cadence/macb.h
-@@ -309,6 +309,8 @@
- #define MACB_IRXFCS_SIZE	1
- 
- /* GEM specific NCR bitfields. */
-+#define GEM_TXLPIEN_OFFSET		19
-+#define GEM_TXLPIEN_SIZE		1
- #define GEM_ENABLE_HS_MAC_OFFSET	31
- #define GEM_ENABLE_HS_MAC_SIZE		1
- 
-@@ -783,6 +785,7 @@
- #define MACB_CAPS_DMA_PTP			BIT(22)
- #define MACB_CAPS_RSC				BIT(23)
- #define MACB_CAPS_NO_LSO			BIT(24)
-+#define MACB_CAPS_EEE				BIT(25)
- 
- /* LSO settings */
- #define MACB_LSO_UFO_ENABLE			0x01
-@@ -1369,6 +1372,11 @@ struct macb {
- 
- 	struct work_struct	hresp_err_bh_work;
- 
-+	/* EEE / LPI state */
-+	bool			eee_active;
-+	struct delayed_work	tx_lpi_work;
-+	u32			tx_lpi_timer;
-+
- 	int	rx_bd_rd_prefetch;
- 	int	tx_bd_rd_prefetch;
- 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 02eab26fd98b..c23485f049d3 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -10,6 +10,7 @@
- #include <linux/clk-provider.h>
- #include <linux/clk.h>
- #include <linux/crc32.h>
-+#include <linux/delay.h>
- #include <linux/dma-mapping.h>
- #include <linux/etherdevice.h>
- #include <linux/firmware/xlnx-zynqmp.h>
-@@ -621,6 +622,94 @@ static const struct phylink_pcs_ops macb_phylink_pcs_ops = {
- 	.pcs_config = macb_pcs_config,
- };
- 
-+static bool macb_tx_lpi_set(struct macb *bp, bool enable)
-+{
-+	unsigned long flags;
-+	u32 old, ncr;
-+
-+	spin_lock_irqsave(&bp->lock, flags);
-+	ncr = macb_readl(bp, NCR);
-+	old = ncr;
-+	if (enable)
-+		ncr |= GEM_BIT(TXLPIEN);
-+	else
-+		ncr &= ~GEM_BIT(TXLPIEN);
-+	if (old != ncr)
-+		macb_writel(bp, NCR, ncr);
-+	spin_unlock_irqrestore(&bp->lock, flags);
-+
-+	return old != ncr;
-+}
-+
-+static bool macb_tx_all_queues_idle(struct macb *bp)
-+{
-+	unsigned int q;
-+
-+	for (q = 0; q < bp->num_queues; q++) {
-+		struct macb_queue *queue = &bp->queues[q];
-+
-+		if (queue->tx_head != queue->tx_tail)
-+			return false;
-+	}
-+	return true;
-+}
-+
-+static void macb_tx_lpi_work_fn(struct work_struct *work)
-+{
-+	struct macb *bp = container_of(work, struct macb, tx_lpi_work.work);
-+
-+	if (bp->eee_active && macb_tx_all_queues_idle(bp))
-+		macb_tx_lpi_set(bp, true);
-+}
-+
-+static void macb_tx_lpi_schedule(struct macb *bp)
-+{
-+	if (bp->eee_active)
-+		mod_delayed_work(system_wq, &bp->tx_lpi_work,
-+				 usecs_to_jiffies(bp->tx_lpi_timer));
-+}
-+
-+/* Wake from LPI before transmitting. The MAC must deassert TXLPIEN
-+ * and wait for the PHY to exit LPI before any frame can be sent.
-+ * IEEE 802.3az Tw_sys is ~17us for 1000BASE-T, ~30us for 100BASE-TX;
-+ * we use a conservative 50us.
-+ */
-+static void macb_tx_lpi_wake(struct macb *bp)
-+{
-+	if (!macb_tx_lpi_set(bp, false))
-+		return;
-+
-+	cancel_delayed_work(&bp->tx_lpi_work);
-+	udelay(50);
-+}
-+
-+static void macb_mac_disable_tx_lpi(struct phylink_config *config)
-+{
-+	struct net_device *ndev = to_net_dev(config->dev);
-+	struct macb *bp = netdev_priv(ndev);
-+
-+	bp->eee_active = false;
-+	cancel_delayed_work_sync(&bp->tx_lpi_work);
-+	macb_tx_lpi_set(bp, false);
-+}
-+
-+static int macb_mac_enable_tx_lpi(struct phylink_config *config, u32 timer,
-+				  bool tx_clk_stop)
-+{
-+	struct net_device *ndev = to_net_dev(config->dev);
-+	struct macb *bp = netdev_priv(ndev);
-+
-+	bp->tx_lpi_timer = timer;
-+	bp->eee_active = true;
-+
-+	/* Defer initial LPI entry by 1 second after link-up per
-+	 * IEEE 802.3az section 22.7a.
-+	 */
-+	mod_delayed_work(system_wq, &bp->tx_lpi_work, msecs_to_jiffies(1000));
-+
-+	return 0;
-+}
-+
- static void macb_mac_config(struct phylink_config *config, unsigned int mode,
- 			    const struct phylink_link_state *state)
- {
-@@ -769,6 +858,8 @@ static const struct phylink_mac_ops macb_phylink_ops = {
- 	.mac_config = macb_mac_config,
- 	.mac_link_down = macb_mac_link_down,
- 	.mac_link_up = macb_mac_link_up,
-+	.mac_disable_tx_lpi = macb_mac_disable_tx_lpi,
-+	.mac_enable_tx_lpi = macb_mac_enable_tx_lpi,
- };
- 
- static bool macb_phy_handle_exists(struct device_node *dn)
-@@ -864,6 +955,18 @@ static int macb_mii_probe(struct net_device *dev)
- 		}
- 	}
- 
-+	/* Configure EEE LPI if supported */
-+	if (bp->caps & MACB_CAPS_EEE) {
-+		__set_bit(PHY_INTERFACE_MODE_MII,
-+			  bp->phylink_config.lpi_interfaces);
-+		__set_bit(PHY_INTERFACE_MODE_GMII,
-+			  bp->phylink_config.lpi_interfaces);
-+		phy_interface_set_rgmii(bp->phylink_config.lpi_interfaces);
-+		bp->phylink_config.lpi_capabilities = MAC_100FD | MAC_1000FD;
-+		bp->phylink_config.lpi_timer_default = 250000;
-+		bp->phylink_config.eee_enabled_default = true;
-+	}
-+
- 	bp->phylink = phylink_create(&bp->phylink_config, bp->pdev->dev.fwnode,
- 				     bp->phy_interface, &macb_phylink_ops);
- 	if (IS_ERR(bp->phylink)) {
-@@ -1260,6 +1363,9 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
- 		netif_wake_subqueue(bp->dev, queue_index);
- 	spin_unlock_irqrestore(&queue->tx_ptr_lock, flags);
- 
-+	if (packets)
-+		macb_tx_lpi_schedule(bp);
-+
- 	return packets;
- }
- 
-@@ -2365,6 +2471,8 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	netdev_tx_sent_queue(netdev_get_tx_queue(bp->dev, queue_index),
- 			     skb->len);
- 
-+	macb_tx_lpi_wake(bp);
-+
- 	spin_lock(&bp->lock);
- 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
- 	spin_unlock(&bp->lock);
-@@ -3026,6 +3134,8 @@ static int macb_close(struct net_device *dev)
- 		netdev_tx_reset_queue(netdev_get_tx_queue(dev, q));
- 	}
- 
-+	cancel_delayed_work_sync(&bp->tx_lpi_work);
-+
- 	phylink_stop(bp->phylink);
- 	phylink_disconnect_phy(bp->phylink);
- 
-@@ -5633,6 +5743,7 @@ static int macb_probe(struct platform_device *pdev)
- 	}
- 
- 	INIT_WORK(&bp->hresp_err_bh_work, macb_hresp_error_task);
-+	INIT_DELAYED_WORK(&bp->tx_lpi_work, macb_tx_lpi_work_fn);
- 
- 	netdev_info(dev, "Cadence %s rev 0x%08x at 0x%08lx irq %d (%pM)\n",
- 		    macb_is_gem(bp) ? "GEM" : "MACB", macb_readl(bp, MID),
-@@ -5676,6 +5787,7 @@ static void macb_remove(struct platform_device *pdev)
- 		mdiobus_free(bp->mii_bus);
- 
- 		device_set_wakeup_enable(&bp->pdev->dev, 0);
-+		cancel_delayed_work_sync(&bp->tx_lpi_work);
- 		cancel_work_sync(&bp->hresp_err_bh_work);
- 		pm_runtime_disable(&pdev->dev);
- 		pm_runtime_dont_use_autosuspend(&pdev->dev);
+  5. EyeQ5 enablement: Set MACB_CAPS_EEE for the Mobileye EyeQ5 GEM
+     instance, verified with a hardware loopback by Théo Lebrun.
+
+Tested on Raspberry Pi 5 (1000BASE-T, BCM54213PE PHY, 250ms LPI timer):
+
+  iperf3 throughput (no regression):
+    TCP TX: 937.8 Mbit/s (EEE on) vs 937.0 Mbit/s (EEE off)
+    TCP RX: 936.5 Mbit/s both
+
+  Latency (ping RTT, small expected increase from LPI wake):
+    1s interval:  0.273 ms (EEE on) vs 0.181 ms (EEE off)
+    10ms interval: 0.206 ms (EEE on) vs 0.168 ms (EEE off)
+    flood ping:   0.200 ms (EEE on) vs 0.156 ms (EEE off)
+
+  LPI counters (ethtool -S, 1s-interval ping, EEE on):
+    tx_lpi_transitions: 112
+    tx_lpi_time: 15574651
+
+  Zero packet loss across all tests. Also verified with
+  ethtool --show-eee / --set-eee and cable unplug/replug cycling.
+
+Nicolai Buchwitz (5):
+  net: cadence: macb: add EEE LPI statistics counters
+  net: cadence: macb: implement EEE TX LPI support
+  net: cadence: macb: add ethtool EEE support
+  net: cadence: macb: enable EEE for Raspberry Pi RP1
+  net: cadence: macb: enable EEE for Mobileye EyeQ5
+
+ drivers/net/ethernet/cadence/macb.h      |  20 +++++
+ drivers/net/ethernet/cadence/macb_main.c | 133 ++++++++++++++++++++++++++++++-
+ 2 files changed, 151 insertions(+), 2 deletions(-)
+
 -- 
 2.51.0
 
