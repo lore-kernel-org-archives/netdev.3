@@ -1,308 +1,94 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A7B4266A6
-	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 15:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FC342EEC3;
+	Fri, 27 Feb 2026 15:08:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772204446; cv=none; b=npoH9qZmKwGu79Dz2wdSJAuM7A5pz6CvDZG3sDPCD1ZH7dSxnccfB2BbSt5QJnkulZh4nP3T2xwUnsyNW8pAd2Ezac63kZG5/FdThyLxdPVCUcr5THcAf+6AGVQyRmUN/DuYEhS/nwBLSUPBCu9ntvBgTtojo6nXK7fuJBR4R8I=
+	t=1772204929; cv=none; b=Qx139c0MyH7qCH/gxNGcyyolIuMYn/omajrRAqB6ozu/kRjLH/0ZWsOn5Ixm90PEBeiKih6LqeUetAUKFNjjTwZeONSJ4bnOVBgomVYVRKsnycT1c+zV3XuYxxXW0YxrWAX6IeXv7SBjAEHEOe5XrXo/aVzYUopxLQzK2dPmgLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772204446; c=relaxed/simple;
-	bh=QPveIje7+4fjwO64UgxbflsOGVbhrFLPp1RlTXeNJkE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MT2+pdFFuFGyhHOs1OoCh4TqT+ZBv88dB10jIrS34ZRy22c3uhrr/iYhKey2U3LSOET+Ym+OPngZLCOVGTYScsipTT39ZQwUA1GEHy5ENTJaTogP2Rj8Xe04WrTIwHJAwlG2afVi0v0dDRWiRg2tF2cxiM9GukRBWmpfBO/FI/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=DOLJEFuP; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=6Zg0hZbS; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=V7ZJMDi6; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Kiq1gZkH; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1772204929; c=relaxed/simple;
+	bh=ZPK0Z3oJzLp5z+yIV5jrJ30aG+zF/bTYYWFChZzHvlA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G2qjHjknYNFgPFi7bLQJqUmttXWBs9C4hv6BWeCBCqIc7L/mTUr1+C6ZBf/3BCZVnourOvtYyxwQAS69jrJKD6PH9CQzo79S7p3u8hSDYjaHO/n7eMVq7ghM0E7OQj6zaZoMwaJp/himi2I9XpZcsuhm0/+mKjtUhErnf3Q9zEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=QH80glPb; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="DOLJEFuP";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="6Zg0hZbS";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="V7ZJMDi6";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Kiq1gZkH"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3E6D05D050;
-	Fri, 27 Feb 2026 15:00:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772204443; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9YNa9VbblGOYweoA7bNUqLw4ueQtOdJWihgMEEJuMI4=;
-	b=DOLJEFuPIC16vEbxIGuupy9DHG/corFZNPnenZy1j1j7NMqvoT1/9mQda8uvzQW/Y2DgfQ
-	zZQCJ1ILFmbFIDp0aobj0ahw3XUUhD/JjCz4zYvpvdFPvD6wctwoKZc2vxbiO+gfGBE2DH
-	p2ekwPYeWNniPQgbDy53qTREqMuZxmY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772204443;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9YNa9VbblGOYweoA7bNUqLw4ueQtOdJWihgMEEJuMI4=;
-	b=6Zg0hZbSlxLC5ASoVl7eTX8pOspi90GHPRBxl19nFvuN4HlSeZZjgI0h/0wEZBCt+uS+Lg
-	pHjTQi4vuPxQBnAQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1772204438; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9YNa9VbblGOYweoA7bNUqLw4ueQtOdJWihgMEEJuMI4=;
-	b=V7ZJMDi69Q/Hdeq9tLefvDyOTmVqEiO6CtG6hmBZ52L5njImrJmF2h9dtGBmIvmTsxyjya
-	Lht22QeznVsztUP4mDzyBuCQ6ePHP4CxFukiTIXVaQAsJTr00Rup16ndeW3e9RIiK2T29Q
-	TG41S1GO4PnJ8CJ7Q0cvMmLAuCLhunc=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1772204438;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9YNa9VbblGOYweoA7bNUqLw4ueQtOdJWihgMEEJuMI4=;
-	b=Kiq1gZkH2Da8WdXkaXCk74+yBeGcw+ypIhnhB3xLf/ciO/9QH9aU/VxAhLN/qOYUQzCsII
-	EfGxjUsn5UTZ4UDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2EBCB3EA69;
-	Fri, 27 Feb 2026 15:00:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id QPJiC5axoWkaDAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 27 Feb 2026 15:00:38 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id DEADDA06D4; Fri, 27 Feb 2026 16:00:37 +0100 (CET)
-Date: Fri, 27 Feb 2026 16:00:37 +0100
-From: Jan Kara <jack@suse.cz>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
-	Josef Bacik <josef@toxicpanda.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
-	linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 04/14] kernfs: adapt to rhashtable-based simple_xattrs
- with lazy allocation
-Message-ID: <3cnmtqmakpbb2uwhenrj7kdqu3uefykiykjllgfbtpkiwhaa4s@sghkevv7jned>
-References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
- <20260216-work-xattr-socket-v1-4-c2efa4f74cb7@kernel.org>
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="QH80glPb"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55F5BA5007;
+	Fri, 27 Feb 2026 16:08:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1772204925; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=XUWlS3K11Yw45ldTqgq8qbaqscSO6wYBy4epMkSa2kU=;
+	b=QH80glPb/jUHmBW6icYjEpABRJYcW6se1Af4WhGbMPCB3O06v9tOrBcCJUv5byq/ZBApr2
+	HDpue/lI0/XO9JcgkLGt+uiN47/j4zyfOVckj4Sa/gf3XsUT4+3vxbraOCNL9wKc4/1z0j
+	K/uGhtNBPcF6ZEjin0GsuQGbx1hIyqIvcjKZCKBF1zPqTmBHcGjNnkEYw/xWhfxvFyCU7W
+	MSA8gLcjVUXOhrp7n3zYNWVBs791tmWEKnsppVVOXXZ69cfpXBPz4WfW+IfDYmIKaJUL7j
+	w4a/GLMjBjvB6ueqKE3jxzsS9ZfUrJGhLPcLicEtrI6MPxbq264guCTFFaqqPA==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	claudiu.beznea@tuxon.dev,
+	nicolas.ferre@microchip.com,
+	linux-kernel@vger.kernel.org,
+	theo.lebrun@bootlin.com,
+	phil@raspberrypi.com,
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net-next v5 4/5] net: cadence: macb: enable EEE for Raspberry Pi RP1
+Date: Fri, 27 Feb 2026 16:06:09 +0100
+Message-ID: <20260227150610.242215-5-nb@tipi-net.de>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260227150610.242215-1-nb@tipi-net.de>
+References: <20260227150610.242215-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260216-work-xattr-socket-v1-4-c2efa4f74cb7@kernel.org>
-X-Spamd-Result: default: False [-3.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_COUNT_THREE(0.00)[3];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[15];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.com:email]
-X-Spam-Flag: NO
-X-Spam-Score: -3.80
-X-Spam-Level: 
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon 16-02-26 14:32:00, Christian Brauner wrote:
-> Adapt kernfs to use the rhashtable-based xattr path and switch from an
-> embedded struct to pointer-based lazy allocation.
-> 
-> Change kernfs_iattrs.xattrs from embedded 'struct simple_xattrs' to a
-> pointer 'struct simple_xattrs *', initialized to NULL (zeroed by
-> kmem_cache_zalloc). Since kernfs_iattrs is already lazily allocated
-> itself, this adds a second level of lazy allocation specifically for
-> the xattr store.
-> 
-> The xattr store is allocated on first setxattr. Read paths
-> check for NULL and return -ENODATA or empty list.
-> 
-> Replaced xattr entries are freed via simple_xattr_free_rcu() to allow
-> concurrent RCU readers to finish.
-> 
-> The cleanup paths in kernfs_free_rcu() and __kernfs_new_node() error
-> handling conditionally free the xattr store only when allocated.
-> 
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
+Set MACB_CAPS_EEE for the Raspberry Pi 5 RP1 southbridge
+(Cadence GEM_GXL rev 0x00070109 paired with BCM54213PE PHY).
 
-...
+EEE has been verified on RP1 hardware: the LPI counter registers
+at 0x270-0x27c return valid data, the TXLPIEN bit in NCR (bit 19)
+controls LPI transmission correctly, and ethtool --show-eee reports
+the negotiated state after link-up.
 
-> @@ -584,6 +582,12 @@ void kernfs_put(struct kernfs_node *kn)
->  	if (kernfs_type(kn) == KERNFS_LINK)
->  		kernfs_put(kn->symlink.target_kn);
->  
-> +	if (kn->iattr && kn->iattr->xattrs) {
-> +		simple_xattrs_free(kn->iattr->xattrs, NULL);
-> +		kfree(kn->iattr->xattrs);
-> +		kn->iattr->xattrs = NULL;
-> +	}
-> +
->  	spin_lock(&root->kernfs_idr_lock);
->  	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
->  	spin_unlock(&root->kernfs_idr_lock);
+Other GEM variants that share the same LPI register layout (SAMA5D2,
+SAME70, PIC32CZ) can be enabled by adding MACB_CAPS_EEE to their
+respective config entries once tested.
 
-This is a slight change in the lifetime rules because previously kernfs
-xattrs could be safely accessed only under RCU but after this change you
-have to hold inode reference *and* RCU to safely access them. I don't think
-anybody would be accessing xattrs without holding inode reference so this
-should be safe but it would be good to mention this in the changelog.
-Otherwise feel free to add:
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> @@ -682,7 +686,10 @@ static struct kernfs_node *__kernfs_new_node(struct kernfs_root *root,
->  
->   err_out4:
->  	if (kn->iattr) {
-> -		simple_xattrs_free(&kn->iattr->xattrs, NULL);
-> +		if (kn->iattr->xattrs) {
-> +			simple_xattrs_free(kn->iattr->xattrs, NULL);
-> +			kfree(kn->iattr->xattrs);
-> +		}
->  		kmem_cache_free(kernfs_iattrs_cache, kn->iattr);
->  	}
->   err_out3:
-> diff --git a/fs/kernfs/inode.c b/fs/kernfs/inode.c
-> index a36aaee98dce..dfc3315b5afc 100644
-> --- a/fs/kernfs/inode.c
-> +++ b/fs/kernfs/inode.c
-> @@ -45,7 +45,6 @@ static struct kernfs_iattrs *__kernfs_iattrs(struct kernfs_node *kn, bool alloc)
->  	ret->ia_mtime = ret->ia_atime;
->  	ret->ia_ctime = ret->ia_atime;
->  
-> -	simple_xattrs_init(&ret->xattrs);
->  	atomic_set(&ret->nr_user_xattrs, 0);
->  	atomic_set(&ret->user_xattr_size, 0);
->  
-> @@ -146,7 +145,8 @@ ssize_t kernfs_iop_listxattr(struct dentry *dentry, char *buf, size_t size)
->  	if (!attrs)
->  		return -ENOMEM;
->  
-> -	return simple_xattr_list(d_inode(dentry), &attrs->xattrs, buf, size);
-> +	return simple_xattr_list(d_inode(dentry), READ_ONCE(attrs->xattrs),
-> +				 buf, size);
->  }
->  
->  static inline void set_default_inode_attr(struct inode *inode, umode_t mode)
-> @@ -298,27 +298,38 @@ int kernfs_xattr_get(struct kernfs_node *kn, const char *name,
->  		     void *value, size_t size)
->  {
->  	struct kernfs_iattrs *attrs = kernfs_iattrs_noalloc(kn);
-> +	struct simple_xattrs *xattrs;
-> +
->  	if (!attrs)
->  		return -ENODATA;
->  
-> -	return simple_xattr_get(&attrs->xattrs, name, value, size);
-> +	xattrs = READ_ONCE(attrs->xattrs);
-> +	if (!xattrs)
-> +		return -ENODATA;
-> +
-> +	return simple_xattr_get(xattrs, name, value, size);
->  }
->  
->  int kernfs_xattr_set(struct kernfs_node *kn, const char *name,
->  		     const void *value, size_t size, int flags)
->  {
->  	struct simple_xattr *old_xattr;
-> +	struct simple_xattrs *xattrs;
->  	struct kernfs_iattrs *attrs;
->  
->  	attrs = kernfs_iattrs(kn);
->  	if (!attrs)
->  		return -ENOMEM;
->  
-> -	old_xattr = simple_xattr_set(&attrs->xattrs, name, value, size, flags);
-> +	xattrs = simple_xattrs_lazy_alloc(&attrs->xattrs, value, flags);
-> +	if (IS_ERR_OR_NULL(xattrs))
-> +		return PTR_ERR(xattrs);
-> +
-> +	old_xattr = simple_xattr_set(xattrs, name, value, size, flags);
->  	if (IS_ERR(old_xattr))
->  		return PTR_ERR(old_xattr);
->  
-> -	simple_xattr_free(old_xattr);
-> +	simple_xattr_free_rcu(old_xattr);
->  	return 0;
->  }
->  
-> @@ -376,7 +387,7 @@ static int kernfs_vfs_user_xattr_add(struct kernfs_node *kn,
->  
->  	ret = 0;
->  	size = old_xattr->size;
-> -	simple_xattr_free(old_xattr);
-> +	simple_xattr_free_rcu(old_xattr);
->  dec_size_out:
->  	atomic_sub(size, sz);
->  dec_count_out:
-> @@ -403,7 +414,7 @@ static int kernfs_vfs_user_xattr_rm(struct kernfs_node *kn,
->  
->  	atomic_sub(old_xattr->size, sz);
->  	atomic_dec(nr);
-> -	simple_xattr_free(old_xattr);
-> +	simple_xattr_free_rcu(old_xattr);
->  	return 0;
->  }
->  
-> @@ -415,6 +426,7 @@ static int kernfs_vfs_user_xattr_set(const struct xattr_handler *handler,
->  {
->  	const char *full_name = xattr_full_name(handler, suffix);
->  	struct kernfs_node *kn = inode->i_private;
-> +	struct simple_xattrs *xattrs;
->  	struct kernfs_iattrs *attrs;
->  
->  	if (!(kernfs_root(kn)->flags & KERNFS_ROOT_SUPPORT_USER_XATTR))
-> @@ -424,11 +436,15 @@ static int kernfs_vfs_user_xattr_set(const struct xattr_handler *handler,
->  	if (!attrs)
->  		return -ENOMEM;
->  
-> +	xattrs = simple_xattrs_lazy_alloc(&attrs->xattrs, value, flags);
-> +	if (IS_ERR_OR_NULL(xattrs))
-> +		return PTR_ERR(xattrs);
-> +
->  	if (value)
-> -		return kernfs_vfs_user_xattr_add(kn, full_name, &attrs->xattrs,
-> +		return kernfs_vfs_user_xattr_add(kn, full_name, xattrs,
->  						 value, size, flags);
->  	else
-> -		return kernfs_vfs_user_xattr_rm(kn, full_name, &attrs->xattrs,
-> +		return kernfs_vfs_user_xattr_rm(kn, full_name, xattrs,
->  						value, size, flags);
->  
->  }
-> diff --git a/fs/kernfs/kernfs-internal.h b/fs/kernfs/kernfs-internal.h
-> index 6061b6f70d2a..1324ed8c0661 100644
-> --- a/fs/kernfs/kernfs-internal.h
-> +++ b/fs/kernfs/kernfs-internal.h
-> @@ -26,7 +26,7 @@ struct kernfs_iattrs {
->  	struct timespec64	ia_mtime;
->  	struct timespec64	ia_ctime;
->  
-> -	struct simple_xattrs	xattrs;
-> +	struct simple_xattrs	*xattrs;
->  	atomic_t		nr_user_xattrs;
->  	atomic_t		user_xattr_size;
->  };
-> 
-> -- 
-> 2.47.3
-> 
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 3e724417d444..0196a13c0688 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5529,7 +5529,8 @@ static const struct macb_config eyeq5_config = {
+ static const struct macb_config raspberrypi_rp1_config = {
+ 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_CLK_HW_CHG |
+ 		MACB_CAPS_JUMBO |
+-		MACB_CAPS_GEM_HAS_PTP,
++		MACB_CAPS_GEM_HAS_PTP |
++		MACB_CAPS_EEE,
+ 	.dma_burst_length = 16,
+ 	.clk_init = macb_clk_init,
+ 	.init = macb_init,
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.51.0
+
