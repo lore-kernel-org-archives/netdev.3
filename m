@@ -1,32 +1,32 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FC342EEC3;
-	Fri, 27 Feb 2026 15:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E8442EEB0;
+	Fri, 27 Feb 2026 15:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772204929; cv=none; b=Qx139c0MyH7qCH/gxNGcyyolIuMYn/omajrRAqB6ozu/kRjLH/0ZWsOn5Ixm90PEBeiKih6LqeUetAUKFNjjTwZeONSJ4bnOVBgomVYVRKsnycT1c+zV3XuYxxXW0YxrWAX6IeXv7SBjAEHEOe5XrXo/aVzYUopxLQzK2dPmgLY=
+	t=1772204929; cv=none; b=e4+t+0US8/Qo44wxcbUjWVdTdzBFYOK2xELedXIy520efQbHVd5K+tk+9ZsJrkSbHGEUzPNzLky1qEfjoS6LSuUI4ct09k3gWw9HwCLcdrvF29Xv0ClgcHE1Xbek9YOfaAE4IALFJ84FxErm8bBfTykQic9S7FjiU9TvaeUlJdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772204929; c=relaxed/simple;
-	bh=ZPK0Z3oJzLp5z+yIV5jrJ30aG+zF/bTYYWFChZzHvlA=;
+	bh=f2kfGH116KzX79wZr+txjpVvF2HZyCV+Oj53yvAZHxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G2qjHjknYNFgPFi7bLQJqUmttXWBs9C4hv6BWeCBCqIc7L/mTUr1+C6ZBf/3BCZVnourOvtYyxwQAS69jrJKD6PH9CQzo79S7p3u8hSDYjaHO/n7eMVq7ghM0E7OQj6zaZoMwaJp/himi2I9XpZcsuhm0/+mKjtUhErnf3Q9zEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=QH80glPb; arc=none smtp.client-ip=194.13.80.246
+	 MIME-Version:Content-Type; b=cetfvnCr7L3w/ybxnMbiXacSk7KTcvNBqCPd/DVYiyzwq4D2/iRUjXb4ZGGU40AwYWA711h1pTC8kLOvIWtCmvTHLtUi61Upm0vtzMB2kI/fuxI1dvuFg8k1MUIBOrIf4P2Ql4pnyOMcrdJzIArzVcRG5JsA6XBLhScTf0vM2Ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=sa8TUGGk; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="QH80glPb"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 55F5BA5007;
-	Fri, 27 Feb 2026 16:08:45 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="sa8TUGGk"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DAFC7A4FB6;
+	Fri, 27 Feb 2026 16:08:42 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1772204925; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	t=1772204923; h=from:subject:date:message-id:to:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=XUWlS3K11Yw45ldTqgq8qbaqscSO6wYBy4epMkSa2kU=;
-	b=QH80glPb/jUHmBW6icYjEpABRJYcW6se1Af4WhGbMPCB3O06v9tOrBcCJUv5byq/ZBApr2
-	HDpue/lI0/XO9JcgkLGt+uiN47/j4zyfOVckj4Sa/gf3XsUT4+3vxbraOCNL9wKc4/1z0j
-	K/uGhtNBPcF6ZEjin0GsuQGbx1hIyqIvcjKZCKBF1zPqTmBHcGjNnkEYw/xWhfxvFyCU7W
-	MSA8gLcjVUXOhrp7n3zYNWVBs791tmWEKnsppVVOXXZ69cfpXBPz4WfW+IfDYmIKaJUL7j
-	w4a/GLMjBjvB6ueqKE3jxzsS9ZfUrJGhLPcLicEtrI6MPxbq264guCTFFaqqPA==
+	bh=MI/AUX7s9MIyRYPCeAlGjNBvlJqOiHqYeew4KPUYIWE=;
+	b=sa8TUGGkDWZM1Q6kUBTwKY7h3GtGstYySJ8pW8MCJ48wScleMBsFabSH9i1XWQmlNjyugp
+	KkvVi7tOnklqoo7M7kYrbmi93Z+fb2vC1zzW606h3/9e+DJaM6B4v1Zm1BjnvGuYFt660W
+	dCIsXvOsVwLc4+jWUo+Bw8y1CoA3WiFOMLNoLyUfFblqjCLPp2YDIlw2j99sJBdjS6Uu1X
+	Nk5dJOwx8NhDbQKUkuDcwEO8ttfdHzVpCy/su/D73OLkpf6B2ABXxJqTrwHbieZHeiUSPo
+	2YvAhH+zf8Y3Hk3sAadY84LCZ69KyY4HZ2DvoPdHJYx+DHTp4MJTPOjdGxqx6w==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
@@ -41,9 +41,9 @@ Cc: davem@davemloft.net,
 	theo.lebrun@bootlin.com,
 	phil@raspberrypi.com,
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next v5 4/5] net: cadence: macb: enable EEE for Raspberry Pi RP1
-Date: Fri, 27 Feb 2026 16:06:09 +0100
-Message-ID: <20260227150610.242215-5-nb@tipi-net.de>
+Subject: [PATCH net-next v5 1/5] net: cadence: macb: add EEE LPI statistics counters
+Date: Fri, 27 Feb 2026 16:06:06 +0100
+Message-ID: <20260227150610.242215-2-nb@tipi-net.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260227150610.242215-1-nb@tipi-net.de>
 References: <20260227150610.242215-1-nb@tipi-net.de>
@@ -57,38 +57,68 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Set MACB_CAPS_EEE for the Raspberry Pi 5 RP1 southbridge
-(Cadence GEM_GXL rev 0x00070109 paired with BCM54213PE PHY).
+The GEM MAC provides four read-only, clear-on-read LPI statistics
+registers at offsets 0x270-0x27c:
 
-EEE has been verified on RP1 hardware: the LPI counter registers
-at 0x270-0x27c return valid data, the TXLPIEN bit in NCR (bit 19)
-controls LPI transmission correctly, and ethtool --show-eee reports
-the negotiated state after link-up.
+  GEM_RXLPI     (0x270): RX LPI transition count (16-bit)
+  GEM_RXLPITIME (0x274): cumulative RX LPI time (24-bit)
+  GEM_TXLPI     (0x278): TX LPI transition count (16-bit)
+  GEM_TXLPITIME (0x27c): cumulative TX LPI time (24-bit)
 
-Other GEM variants that share the same LPI register layout (SAMA5D2,
-SAME70, PIC32CZ) can be enabled by adding MACB_CAPS_EEE to their
-respective config entries once tested.
+Add register offset definitions, extend struct gem_stats with
+corresponding u64 software accumulators, and register the four
+counters in gem_statistics[] so they appear in ethtool -S output.
+Because the hardware counters clear on read, the existing
+macb_update_stats() path accumulates them into the u64 fields on
+every stats poll, preventing loss between userspace reads.
+
+These registers are present on SAMA5D2, SAME70, PIC32CZ, and RP1
+variants of the Cadence GEM IP and have been confirmed on RP1 via
+devmem reads.
 
 Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
 Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 3e724417d444..0196a13c0688 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5529,7 +5529,8 @@ static const struct macb_config eyeq5_config = {
- static const struct macb_config raspberrypi_rp1_config = {
- 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_CLK_HW_CHG |
- 		MACB_CAPS_JUMBO |
--		MACB_CAPS_GEM_HAS_PTP,
-+		MACB_CAPS_GEM_HAS_PTP |
-+		MACB_CAPS_EEE,
- 	.dma_burst_length = 16,
- 	.clk_init = macb_clk_init,
- 	.init = macb_init,
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index 87414a2ddf6e..19aa98d01c8c 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -170,6 +170,10 @@
+ #define GEM_PCSANNPTX		0x021c /* PCS AN Next Page TX */
+ #define GEM_PCSANNPLP		0x0220 /* PCS AN Next Page LP */
+ #define GEM_PCSANEXTSTS		0x023c /* PCS AN Extended Status */
++#define GEM_RXLPI		0x0270 /* RX LPI Transitions */
++#define GEM_RXLPITIME		0x0274 /* RX LPI Time */
++#define GEM_TXLPI		0x0278 /* TX LPI Transitions */
++#define GEM_TXLPITIME		0x027c /* TX LPI Time */
+ #define GEM_DCFG1		0x0280 /* Design Config 1 */
+ #define GEM_DCFG2		0x0284 /* Design Config 2 */
+ #define GEM_DCFG3		0x0288 /* Design Config 3 */
+@@ -1043,6 +1047,10 @@ struct gem_stats {
+ 	u64	rx_ip_header_checksum_errors;
+ 	u64	rx_tcp_checksum_errors;
+ 	u64	rx_udp_checksum_errors;
++	u64	rx_lpi_transitions;
++	u64	rx_lpi_time;
++	u64	tx_lpi_transitions;
++	u64	tx_lpi_time;
+ };
+ 
+ /* Describes the name and offset of an individual statistic register, as
+@@ -1142,6 +1150,10 @@ static const struct gem_statistic gem_statistics[] = {
+ 			    GEM_BIT(NDS_RXERR)),
+ 	GEM_STAT_TITLE_BITS(RXUDPCCNT, "rx_udp_checksum_errors",
+ 			    GEM_BIT(NDS_RXERR)),
++	GEM_STAT_TITLE(RXLPI, "rx_lpi_transitions"),
++	GEM_STAT_TITLE(RXLPITIME, "rx_lpi_time"),
++	GEM_STAT_TITLE(TXLPI, "tx_lpi_transitions"),
++	GEM_STAT_TITLE(TXLPITIME, "tx_lpi_time"),
+ };
+ 
+ #define GEM_STATS_LEN ARRAY_SIZE(gem_statistics)
 -- 
 2.51.0
 
