@@ -1,222 +1,175 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013066.outbound.protection.outlook.com [40.107.162.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBD5393DD4;
-	Fri, 27 Feb 2026 10:26:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772187976; cv=none; b=iZLhp/099kZMgF1gu2TZRdvCHRoV7HIp21Vg+sjXMcoser9fZ13J42NkCi8VGcUIdpZtTGDPn/Kc1Mj1dj7ZWRGawP4hA6+7zNmqIw/GS5xTc893yWqGnSHv5vFa4dwczm4zdaiawPU8NhpMW+UknNhmVz1J6vbpjoq0L/mK2sA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772187976; c=relaxed/simple;
-	bh=U6qsG3RCujy4VZbDK4gJJXjVt51fYC4GNNceCnOjb1M=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XKVx5umfJwY3E2glRWCSbe32mISO1KsqGv+C23Vas6kLq9FQOXp4khTaPEvhu841a/xhkPw6EWP3C/U8sdrSU1Kx9zhzNSHHwkOl/9P/iULCdjIJxpAvf0sXD9oy0+HpVQzc3rUaa6otbptspyboZlEx+W5RIlky+OyeHvZ/juE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=gXtXppNQ; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B74304BDC;
+	Fri, 27 Feb 2026 10:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772188684; cv=fail; b=dht/iFO94VZuH6kK37c7rp/ypfCT5Ezjy/PfKNHUc+QsRhlucjcwS/i8KnMsv8MuPYXkjC7j8WC8t4iAGt6dcYwDxoc7DU/OpfWIq6dcj4x9FlwOChZw7R2vPMipNurLlTpbfyrRmNMNwzBF3gOc8vVDNNUhyLHEHq9A9FF8tPs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772188684; c=relaxed/simple;
+	bh=xd4aDxTWeG+1kFV0ghcIAY5p/9K3pojFecyemLVNns8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fiMJggF390r/a3FHszAN2uBP2TQzgw7X9y2Z+wf32RQomS/E0Lk0eLR5WEZzlx0sOA69uaq8fXCFs18W4ge+0uOOCmDZA7M2fqmltUd2yMaMMtI7hNA3Sk0fbnHHAb3vjpIhGhdXwSqwVo8sqLSbV9676yJNxyUGZ7HVgubIgM0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=iTgj597f; arc=fail smtp.client-ip=40.107.162.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="gXtXppNQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=U6qsG3RCujy4VZbDK4gJJXjVt51fYC4GNNceCnOjb1M=; b=gXtXppNQJz4Sgw/rAH5I0a2NgA
-	xuMdaYIB884cY7rWoBaGORqp4+FaeU51rCEHatNpaWjgkW0rTzb6TM0XYihONfCKlpWwV78K7kNU6
-	oVf59lpBPgePIRsem0A119YQvSvCBOmJvjf2KW9ct/5BbLQ7HQNfr/l/wuoPBfbcXIGOIh/sa4nQ5
-	ks4ZXvpA13KcjnZZzoXTKQ+ZW8hQaal8EkerdpmSNwjMn8qwLeaaBqXBBX8eb61WWUqlA+rCQvpv0
-	q/e5JG4q2ItdIVhvFoly+dXjWD/+DRyLWA7RRo1CZvW7828u3yK+RBk7U/h52F3HA6WE3fwae629l
-	z499h0fg==;
-Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vvv2i-0000000Cs0H-2VRb;
-	Fri, 27 Feb 2026 10:25:57 +0000
-Message-ID: <be4c63a8dc43be15576565b4bd4567b3cf433d58.camel@infradead.org>
-Subject: Re: [RFC v2 0/2] ptp: Move non-NIC PHC drivers from netdev to
- clock/timekeeping maintainership
-From: David Woodhouse <dwmw2@infradead.org>
-To: Wen Gu <guwen@linux.alibaba.com>, tglx@kernel.org, tglx@linutronix.de, 
-	richardcochran@gmail.com, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, mani@kernel.org, 
-	imran.shaik@oss.qualcomm.com
-Cc: vladimir.oltean@nxp.com, wei.fang@nxp.com, xiaoning.wang@nxp.com, 
- jonathan.lemon@gmail.com, vadim.fedorenko@linux.dev, yangbo.lu@nxp.com, 
- svens@linux.ibm.com, nick.shi@broadcom.com, ajay.kaher@broadcom.com, 
- alexey.makhalov@broadcom.com, bcm-kernel-feedback-list@broadcom.com, 
- linux-fpga@vger.kernel.org, imx@lists.linux.dev,
- linux-s390@vger.kernel.org,  dust.li@linux.alibaba.com,
- xuanzhuo@linux.alibaba.com,  taniya.das@oss.qualcomm.com
-Date: Fri, 27 Feb 2026 10:25:56 +0000
-In-Reply-To: <20260227081934.96865-1-guwen@linux.alibaba.com>
-References: <20260227081934.96865-1-guwen@linux.alibaba.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-jelaBrtampaCjwXLPKWD"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="iTgj597f"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=KK0/CauzWtic6qW4903sXkKcWfKp2pZVHOtoJxmlrMWBsSOpUs9ow4TqSlRDlBaJGGGqjzeiOG6cUz+swQ5N24l6oEFmDjbcik/f/hoAlWkSokA4A6PKIMx7mo2MRf1FASOv4LfU7lfkJPlkt7/nj4yVSQB7+R4Y709q9S04df8U7FFs5gaXpJPZisLWjA4Q8o+3hB2ed50k5+tzQpdPQFAhLKSDjbCK/8X615mwGeK6ojjQ+8PkQbYO+xK4JmN+H563/IjuK5jMAqdyy2H2x5F04+f8VOcWhAWj50yqKKRep+V6hqqUjteS3hvH78hvSqcwjhV9+5zMu+eKq2zlGA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=C9HDwUqO1R8PzvfhBN9PdxSux/QCTQdTczx4+YCPhMs=;
+ b=F2kKHlXLS2CYCmAvXEftwLeQU+J7X6bBZd0ipGN1SFT6eemZymfazUB3hzM7KvpWylCYHtdgm8znuL+P9z79dGZXNh9kYB9/xwNKmmgut5fE1yz5qiV493QMM39HWdoqbQeo4LqgM9bCpgIG3Q7Lz+VE760VJaUDtATujK23BuCUIOXInyw5ycwo6jYv4bmJKPY4QKtN+DunCLyEWWLEqoPtvJta5iekDkz+2U3Kwy+1YbcDHHeUO33gTD4CodHd2BBL/ZXQhocqtzPkehuGKbVtO6MGA4DkeD4uQnP9TWOZlzcIfswG5JMOVjtSxXBpAtGKsHIcXS2IcXoPFCSAUQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=C9HDwUqO1R8PzvfhBN9PdxSux/QCTQdTczx4+YCPhMs=;
+ b=iTgj597fBlTffaG1u3pXYFO/3frIFwgMgNdvuptM64ulUoB57NS505/Veg11jBlAedt3aXxpbuaKe4ck9vy1ug1p+/89fveGaGMySNetQQHrsm1hiGW5nOm8+CkOGZDRBRcKzvPhq9DpZnrAg4ZnIlBoaUqZAfUKRpaqEg78hj8O7f4DaH7ASLmsiIPnSUwmzedtbj6bvJv0naNyFL3UplTb5+xaAjBsUGbCdbnxjqCYG+KJ8fEHXPAFT5EAw4Z+u+F5q1Vs14aqq5MIrfTrLtadcEJ51Vh+nyjdXsQp3GdvNblkbMmipxEvWa2pB984hHWQ1Kve+rIhsDugspgaaA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8253.eurprd04.prod.outlook.com (2603:10a6:102:1bf::7)
+ by PA1PR04MB10170.eurprd04.prod.outlook.com (2603:10a6:102:463::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.15; Fri, 27 Feb
+ 2026 10:38:00 +0000
+Received: from PAXPR04MB8253.eurprd04.prod.outlook.com
+ ([fe80::2b4e:8130:4419:d633]) by PAXPR04MB8253.eurprd04.prod.outlook.com
+ ([fe80::2b4e:8130:4419:d633%3]) with mapi id 15.20.9654.013; Fri, 27 Feb 2026
+ 10:38:00 +0000
+Date: Fri, 27 Feb 2026 12:37:56 +0200
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: andrew+netdev@lunn.ch, linux-kernel@vger.kernel.org, horms@kernel.org, 
+	edumazet@google.com, davem@davemloft.net, linux-kselftest@vger.kernel.org, 
+	pabeni@redhat.com, shuah@kernel.org, netdev@vger.kernel.org
+Subject: Re: [net-next,2/5] net: dpaa2-mac: retrieve MAC statistics in one
+ firmware command
+Message-ID: <zvplmxo52xj7j64njbrwqdge3mcgswa4w5aym4zuapxgxslaun@nk3kvb5cx5bf>
+References: <20260225150648.1542206-3-ioana.ciornei@nxp.com>
+ <20260227022613.2519224-1-kuba@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227022613.2519224-1-kuba@kernel.org>
+X-ClientProxiedBy: FR4P281CA0393.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:cf::18) To PAXPR04MB8253.eurprd04.prod.outlook.com
+ (2603:10a6:102:1bf::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8253:EE_|PA1PR04MB10170:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7e580a19-946a-4672-3516-08de75ec4775
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|19092799006|376014|7416014;
+X-Microsoft-Antispam-Message-Info:
+	fSnKRqA09qzrmQPz3cCjSTfpDdnJIYpgejxA+F391tbPHr0LFg/2oHWMK1xW7sNVbQnc5/s85Y+351+epGBy+zBLbq1W3lYtOKCC2ooFoHHeSbo5OHaXh5hs9L51MQwrtbgMPR0FLYGh4KBQoXrIvsqLuftt11MdeL+lbtd9JsQvb0+vKLxRgpAgBBSUdsbR9y4CZF9oQURjpfiYvr7/u1jA5MmqsuanqNH0Ih9i2P97U8j72m/G29rjPwhyBNuo0pM90ybM9YNc/I4HOU+He5XhcanHobzmVXBju/yb8xCOakxfd9BB0v3/+uweFQ4ulqPtngPcTbyqNJB9dk2FlNXj4xTM8JW++LO9Wn4oRDT3Te1uchOvOSWk/Aqn68kp3kKDhpd+ltDAXN+k2Oj4b4IdD01L/YkzfxQJWtqqcZBMjvJvzDT1OIcnv7AqBo/jG6KwcChBkAVysHs1P1u+RSpJccOdxg2w0fDMMEqAzv9kz2SqfgMg5a02FWnsjxIoHOMUlaDtfo4s4pAavNMmlSntquGlKX9kj8zrWJr5U58FgpsSfXGZh7bsFWYP0qpOGnOQkCUfSGeRcHb5b8NQKDHEIXvlPGkc313FbSUsqXSbIR+sXWmm9vdlJFNAVAlZqrymVnpvzrkDoGYXFRwVQmgKdIWJM0iDtcbD7lSLf1CfJd/HC0BzQiOSa5najr8o
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8253.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(19092799006)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?33JJuN+ZUWsk+upemujInqsJrmlIET50eKZVGdVzWvx6GqIRIWNl0XBfjCBR?=
+ =?us-ascii?Q?FjfneWditT0U/9hDSmI4xZGNCtYg3f0TWZqZKtV90CBOuP9kQbsc+xgNvuif?=
+ =?us-ascii?Q?QcV1ZpgxxK7XEbW5CrhbHKifqA2B06Ubfqg7OzY07N8RKhz55jRnI9aErjyk?=
+ =?us-ascii?Q?PMFj4H/NBgrzHYXvqP5D9YKTvGb1nCTym6Pz6Hcy0qw5ql56l2QYE8/Q++Hd?=
+ =?us-ascii?Q?QcXkdP8HO9Jl0I1/0Vk/0f5nQayOe2dJKf4IBDs0o64oobId/nQnpI8luDtH?=
+ =?us-ascii?Q?g5Mmmvg6gFy+Z+GhA8mI2iBBZiENG6MrW38TaulUQKsbWPQBwT4vWYxPjEvw?=
+ =?us-ascii?Q?fT+nDdka92ODkOaOvcNiWhMOtg+BSZGFNLxf9MEoMjcYt4lIJTlGa3JpOSne?=
+ =?us-ascii?Q?LpAHyt/aUEKalHx+Ei3801c9VqVvdx27KmZs9KLqkdt7c4t67nmxL+KulTzk?=
+ =?us-ascii?Q?WcQ+QltlysPq9vD81GKQhFeyEzpBFIUyjOolbnfNC3vNfbueM+pES2oFv4JM?=
+ =?us-ascii?Q?0ldtSijrL1yU6+QaSb9659H8bdhfONt6hz0xnStZlXBIP2h8GqJRnUOR/krl?=
+ =?us-ascii?Q?j3yXepOk5xILztk9HTe8zy+kkAzM8CzZ4En9Hh0yQVf9Bf2CousdBIQKfkMa?=
+ =?us-ascii?Q?VbbguprfVQ8ctFjKHwU2RmXD3QdDPO1+dFEJHGQi2I6xY6PWZltwkIqazfgi?=
+ =?us-ascii?Q?sxcZrrp7OiiGWw23OBP9XdpEBe7+HwktGmsMl3aOXuRolZTCS6ko+HS0LqSg?=
+ =?us-ascii?Q?Ya332pWzdO5uEyfXLxM05UNfVR4uI5zUGFkcoZEJWyfc3b6sn9XqaMQba3gc?=
+ =?us-ascii?Q?SG4jj13+baZhiw6efwmn8gqYdbKTUHNBrOxkE0dTfCbhsk125VTCZGim5yC0?=
+ =?us-ascii?Q?FZ2VBTJpbO9HRaGiRXlKwNW/mmE/j2Y/je5L30S6d5CbumlSAUlWpgQn7hkS?=
+ =?us-ascii?Q?kISxopcDOAJQinoXDEqyZRdGXuUz1jbpPpfsJqb7aiTdBpCaqYpeNqBd7+GP?=
+ =?us-ascii?Q?kCyPvl/uSQTAq0IAEMAj5O+YDkoCNUltSjDNUC4sH2o/g2n5q2CLp6FFNnPf?=
+ =?us-ascii?Q?CObspcdD0xbquUm+QXoqAF+Sir9XQnq1aWEp3+KMvMRdSIzwXANfKo9FtJZu?=
+ =?us-ascii?Q?fgBLxel1/a5egGZCVde0+O+vQVscvXbXcQGbfugAIvGgy1eYQsx0m4xtipKf?=
+ =?us-ascii?Q?P9q1DwzHfNOj3Z8Sq+qgJE3kETVoLW5aWLNuYnSbnPsMLogrMrNOddV+SJ8N?=
+ =?us-ascii?Q?FsJRpDQV2iYPrHmNpO3WLqOnSIfzrKVcygNNBoFLzP8an2Wm/4jTX3k4ieF1?=
+ =?us-ascii?Q?E3ItBYS8mFAvAKbkTj0BvfbdH1Eifb4FGzVaI+PqOImktt50/eKAK9WejvLe?=
+ =?us-ascii?Q?R5lJ989Iu65i/VuIa+eL2L7BiiTsHnhdb1TjyFsBouX2LxxHc46jLjnJ3T/h?=
+ =?us-ascii?Q?L8Ld/Hz73J8vii5cadLWu9iWNd6URIDNPtW34YMa/TfV5ZSj6s7CdNZ4O8D0?=
+ =?us-ascii?Q?RuIHRjZK12Y3ZHeYn9GkpWP9Bi9RCT/XX//DK9o4beze1mu+nnJPUl7olade?=
+ =?us-ascii?Q?RHA1jG6ejM2k3pY0kllfog7Iz3XsgfSF4M8D8t83n3cMHOPI5pDSFN+Rd1zx?=
+ =?us-ascii?Q?R8ubIFl1EgvuyyrVyI5+WbXoMTd58ObdYaU7INKbXI6A/6iiVCpoFMYl4aOz?=
+ =?us-ascii?Q?+jWF5Zk9zR1YQhWegn3vgOfBCvxBXzsfLO/yD8ebqfCagd6Rtfcyf66MBu2G?=
+ =?us-ascii?Q?/3s9ACLINA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7e580a19-946a-4672-3516-08de75ec4775
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8253.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 10:38:00.6174
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 0EoGSzAFVnGOBcOrUIJHQWJ3Gqv+QZs3bT4LZ1cmB7jZv3zU3NRTL8BjvpROdzDAWqAaLm+FNSrgARnqm79fVw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10170
 
+On Thu, Feb 26, 2026 at 06:26:13PM -0800, Jakub Kicinski wrote:
+> This is an AI-generated review of your patch. The human sending this
+> email has considered the AI review valid, or at least plausible.
+> 
+> For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+> ---
+> net: dpaa2-mac: retrieve MAC statistics in one firmware command
+> 
+> The latest MC firmware version added a new command to retrieve all DPMAC
+> counters in a single firmware call. Use this new command, when possible,
+> in dpaa2-mac as well. In order to use the dpmac_get_statistics() API,
+> two DMA memory areas are used: one to transmit what counters the driver
+> is requesting and one to receive the values of those counters. These
+> memory areas are allocated and DMA mapped at probe time so that we don't
+> waste time at runtime.
+> 
+> > diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
+> > index 422ce13a7c94..63dc597dbd7c 100644
+> > --- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
+> > +++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-mac.c
+> 
 
---=-jelaBrtampaCjwXLPKWD
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+(...)
 
-On Fri, 2026-02-27 at 16:19 +0800, Wen Gu wrote:
->=20
-> Patch 1 performs the refactor: move drivers and split Kconfig/Makefiles
-> accordingly, without intended functional changes.
->=20
-> Patch 2 updates MAINTAINERS to match the new layout and adds a dedicated =
-entry
-> for drivers/ptp/emulated/, moving review and ownership routing for this c=
-lass
-> of drivers away from the netdev maintainership.
->=20
-> No userspace ABI changes are intended, this is a refactor and maintenance
-> metadata update only.
+> > +fallback:
+> > +
+> > +	/* Fallback and retrieve each counter one by one */
+> > +	for (i = 0; i < DPAA2_MAC_NUM_ETHTOOL_STATS; i++) {
+> >  		err = dpmac_get_counter(mac->mc_io, 0, dpmac_dev->mc_handle,
+> >  					i, &value);
+>                                         ^
+> 
+> Does the fallback path need to pass dpaa2_mac_ethtool_stats[i].id instead
+> of i here?
+> 
+> The old code used a sparse array indexed by enum dpmac_counter_id values:
+> 
+>     static char dpaa2_mac_ethtool_stats[][ETH_GSTRING_LEN] = {
+>         [DPMAC_CNT_ING_ALL_FRAME] = "[mac] rx all frames",
+>         ...
+>     };
+> 
+> where the loop index i directly corresponded to the enum value passed to
+> dpmac_get_counter(). The new code uses a compact array where array index 0
+> contains DPMAC_CNT_ING_ALL_FRAME (enum value 18), but the fallback code
+> still passes i (sequential 0, 1, 2...) instead of the stored enum value.
+> 
+> When i=0, the code requests counter 0 (DPMAC_CNT_ING_FRAME_64) but the
+> name is "[mac] rx all frames" (DPMAC_CNT_ING_ALL_FRAME). This would cause
+> all statistics to report wrong values for their labels.
 
-While no ABI changes are intended in *this* patch series, we do need
-some.
+Yes, that is indeed true. Thanks for catching it!
 
-These 'emulated' clocks mostly exist not to emulate IEEE1588 per se,
-but as a way to provide a precision real time clock to systems
-(especially virtual guests).
-
-We have already discussed the need to expose clock error bounds, and to
-expose paired timestamps against the actual hardware counter (TSC, arch
-counter, timebase, etc.).
-
-Another key difference is that we'll generally want to be able to
-derive UTC from these clocks, and feed them directly into the kernel's
-CLOCK_REALTIME.
-
-I don't have strong views on whether we extend the /dev/ptpX userspace
-ABI, or start to treat these 'emulated' clocks as a class of device in
-their own right and just shim them to /dev/ptpX for compatibility.
-
-> # Request for comments
->=20
-> 1. Following the clocksource/timekeeping and POSIX timer areas, this RFC =
-routes
-> changes for drivers/ptp/emulated/ to linux-kernel@vger.kernel.org=C2=A0(r=
-ather than
-> netdev). However, the preferred integration path is still unclear (e.g. w=
-hich
-> tree should take such changes, and who should collect/pull them for mergi=
-ng). We
-> would really appreciate guidance from the time/clock maintainers, especia=
-lly any
-> input from Thomas Gleixner, on the preferred tree/workflow for these chan=
-ges.
->=20
-> 2. This RFC currently lists us as the maintainers for drivers/ptp/emulate=
-d/ as a
-> fallback contact point. Ideally, we would prefer this area to be maintain=
-ed by
-> clock/time experts in the long run. Suggestions on more suitable maintain=
-ers are
-> very welcome.
-
-I'm happy to be involved too.
-
---=-jelaBrtampaCjwXLPKWD
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDIyNzEwMjU1
-NlowLwYJKoZIhvcNAQkEMSIEIApMRR6lrWlfy1F7DLIOd1tOhNa/sPYF5xTZs1ErRG4PMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAux2gS3uE73/T
-/y2EdDngzAENt7K2hUVP6wb56ewP4zodfWLusjZMPhpVfg96MY6svcvPHcHpvLN+aXHRI0qOWklW
-SQd0jUTzta0wekkJ1THbUxB1skin4l3YBHiutb6A5Y4poK5lD3s7JpWTcgzubteDbTcUOIMjkx7v
-ZTAB0eAXPzhx0SbffIh7PiEbFn+NpJf4nONvf26PwYBzg0C7UA3BxZBzeH0rud7nSKcbQXUFXxkK
-LBsByUhsKr0P0LRDWlVIp29i/jcKBrsF0sJ8IcRP/z+eTe+tiy4WIE/Klr6xLe+vtR6EgeN8pgV7
-ITyQ3ZBHDKhbgfdP6QaN/2xXZ1adbVqacuB1kSnNU2nZo/5joXYuGM2msQ1FNriNQNpiDNplk5+j
-iBWGoAlwjGpSqBEFRRLJThnxc4KL0Z+2n1pQiPQZ5AMEujW6QWE9tikRCm+GAHLxNV6ghBGglWyg
-/Jtg1RzrUT1IXdFwGhpC+Ejyt7tmxgYAeOPZMePSnoB/bwVazRtH+Vy+kFaMBJTnRC7cdM3rVCMy
-8f91DumnNMJ1QdNcCBI1S58Ym+bSdwQILvGT82ErGwvVl1MviD8TUJrXeASYxguD6uJiHqPHoVGC
-ZacMcn0ZmEliBL2Avhw7etrZcnyNxkUHLg9JLamdhcukzGoZuoEl0Xkj7nHNcEgAAAAAAAA=
-
-
---=-jelaBrtampaCjwXLPKWD--
+Ioana
