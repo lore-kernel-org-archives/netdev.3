@@ -1,192 +1,345 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011050.outbound.protection.outlook.com [40.93.194.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 384633271EA;
-	Fri, 27 Feb 2026 15:21:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772205718; cv=fail; b=DvaT3oy3TlfVMuC5F4RutccL+Z1/M0N9Qb9h9R4BGZkYS53wdjtuBVdzoATdKRkQ8qEp1vkgeVaPGMKTtLWq32rKyFtkNpnqtovl0NA9aISp4iV8yn3n21+7PKvXIYM6DdDnQml1MgZgI4KimEV9ivYunJH2M1ZannYlbqtBhCU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772205718; c=relaxed/simple;
-	bh=JiutV3UHwO72khaD4bAX/jR/hJu6sW2z18WKSrAeVbQ=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=SFeH3g5HIbDrD9+35GSzTRqgkLqehFvOSdlRERERyRuhHxLOzejBlUgV2dhs6P9uNusLhdnCGrJbZskZAKV1UtUFRwKN8DGvZW5EPBtSReqEnccXDilkBMHNietbIfKJ+luwwgnUbncZz7GeSv1opqz7LmJR2n+i3F/y9SFlr3g=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=E/U3XnQr; arc=fail smtp.client-ip=40.93.194.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0D243D4FC
+	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 15:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772205925; cv=none; b=dRda5BF79E2K/pGvPFXI0NgIJpzucDuxS97qaWKmGLFIaphbj/zWcunzSNCf49Y0EtGbwZ77TEV0AoYH0teHatLLNA86o4FiYGKb4xYXr2Vn3oZ2XwkQE5+HIUuwY+0bAvXDx8TPvd6dATuKNXH5nyOuK8t3RmeTnDDGIqdM7h0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772205925; c=relaxed/simple;
+	bh=/isemzo6xva7gyTrOlIzU59+B0mzlBJn2S8L6/hIz8E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rwwViHaZ//IZwYqDjUGKgXhjtESH7SnYZvAaTYQf+KOfz/t0K2Blpt2wuzJZRi3k47l5A8ZZ9hbjxzsDoaNfarlrJ51yxCy1iIedFbpU02VXLKROQVZw9Iq2E5W/PQ4gNM4RIPT5MiqCw6fKpRTR9W/43x+X6dG6b4Tjj6lanYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dINi8une; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=HSTI1aHB; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dINi8une; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=HSTI1aHB; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="E/U3XnQr"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YP1peUDWITSMWFnvH+P5a6HQvl4OJEFD+k85Tc1yeU1CA/bL2fWfhLm7+63KT+QPM7cYQwUe8S0RGvjvph4WXHvN208HVJpB/mMk9Uayd/hah6XnHQDFYC26x9dks4rlGfb9Sdrj8q4EkGvXfpbJiHH05sZ4m93VPoQFMf4Cgk9NsVgB8QKmIN8ifpOJd7GGCuhQGCJ2VatMuMiEY5lXZQE1QOkabHqmQGWjw6PZGZsVP5ruhYspJ2vKn+KYrZSn+zdHTRNVhCuejLEdHtWHdGKC8pihZNjew0gngCjudWNJSFrLp3wSpiZJkzbkCOC9f14I+Bfh+humr3JotnblvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=GeOOZg4wK1CrnDE2ZVe5Nhy28oZpvsckyx9rGp2ty2E=;
- b=jqEVUmtTJu5LiSbxMglWmu1VtesGAk1f8B3P4EJEX+7Q5B9QmB8ph3dE46GndKO0dwIcjc95bWJFtaUqB4qt8HH2umoT40/1BBvqIW+t2v0+TONzK8HP2CY7JWCOfLtZeQbsCpfkhDZadB9OuMJaKg+q3gVd+lBb0Ku4ju52vhstJRcVIRP6vfMmPRqA98QXkyGnBrqADLtm1gy+RdNko1M/saLh9v1uTuDwJ/bMCD3VrTPbG590wrz18cCEZ2uq9i5Y1wpOOiHynICgbg/YWq0jiPGS6mlNmWSnC8I2plxPGxLrh9k/2xog9bgDh/eE6UsNwYyuA250z6uztSeKkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=GeOOZg4wK1CrnDE2ZVe5Nhy28oZpvsckyx9rGp2ty2E=;
- b=E/U3XnQrosTGSy9b7eTUTm4nsR2WmShbisY00Mj1KYI2ONaalCOc6ef/nsdJLLU6ue9hapC1eS/E6q2uYfxbsYed+zR7lcBImZd7mZulO3WGjnR8oKAgXLl5uSIGuT1Kn1af+hmR/yWdGdrloWQ2C+zBP3gYx/PpemNYm9rLjWvSn5tPNGT0R3YPavBE8fOFLflrkdjjPz5fQTrfhAwYDGcFnx+ZlJI5vPjKVDoz64N/mpuojdE1dle7aMYxkTxG4XBcc7WiSpLdUWIF9KAN4tXy4y3QemYjsiTtUIP1qk6BSuW1zf8Y1GoqLIfyyWhg05kRaOcbCG5EKZFcd9Nq2w==
-Received: from SJ0PR05CA0087.namprd05.prod.outlook.com (2603:10b6:a03:332::32)
- by DS0PR12MB7849.namprd12.prod.outlook.com (2603:10b6:8:141::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Fri, 27 Feb
- 2026 15:21:45 +0000
-Received: from SJ1PEPF00001CE7.namprd03.prod.outlook.com
- (2603:10b6:a03:332:cafe::ae) by SJ0PR05CA0087.outlook.office365.com
- (2603:10b6:a03:332::32) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9654.14 via Frontend Transport; Fri,
- 27 Feb 2026 15:21:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ1PEPF00001CE7.mail.protection.outlook.com (10.167.242.23) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.16 via Frontend Transport; Fri, 27 Feb 2026 15:21:44 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 27 Feb
- 2026 07:21:18 -0800
-Received: from fedora (10.126.230.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 27 Feb
- 2026 07:21:14 -0800
-References: <20260225150648.1542206-1-ioana.ciornei@nxp.com>
- <20260225150648.1542206-6-ioana.ciornei@nxp.com>
- <20260226182223.5eb1b10f@kernel.org>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Ioana Ciornei <ioana.ciornei@nxp.com>, <netdev@vger.kernel.org>, "Andrew
- Lunn" <andrew+netdev@lunn.ch>, "David S.  Miller" <davem@davemloft.net>,
-	"Eric Dumazet" <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Shuah
- Khan <shuah@kernel.org>, Simon Horman <horms@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>, "Petr
- Machata" <petrm@nvidia.com>
-Subject: Re: [PATCH net-next 5/5] selftests: drivers: hw: add tests for the
- ethtool standard counters
-Date: Fri, 27 Feb 2026 14:53:06 +0100
-In-Reply-To: <20260226182223.5eb1b10f@kernel.org>
-Message-ID: <87ms0ufc0p.fsf@nvidia.com>
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dINi8une";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="HSTI1aHB";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dINi8une";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="HSTI1aHB"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 5B1275BE3C;
+	Fri, 27 Feb 2026 15:25:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772205919; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
+	b=dINi8uneytLlfwiLDZTKCU0VnXhcm0QxVjxx3aQqVR9fRNI5Ys4CVeOeecY0KVOpnXBj7h
+	wJnqsPM+OCq7uRiL4ESlyzFzMOCZ5id9+v07SLlDfdWU36PShgpuLyYZ5KqW7VU7H2ZudX
+	ufkyCxFpSBcZ/yti4B2QsF9nOLN/nT0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772205919;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
+	b=HSTI1aHByYN8VeVIe6kfQqDDdzzJQeaTr6tBk9A7sh2zMqb6qXaC3/+A2/l7XDARcvCR6D
+	dpoYpEhZ5rvMGgAQ==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dINi8une;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HSTI1aHB
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1772205919; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
+	b=dINi8uneytLlfwiLDZTKCU0VnXhcm0QxVjxx3aQqVR9fRNI5Ys4CVeOeecY0KVOpnXBj7h
+	wJnqsPM+OCq7uRiL4ESlyzFzMOCZ5id9+v07SLlDfdWU36PShgpuLyYZ5KqW7VU7H2ZudX
+	ufkyCxFpSBcZ/yti4B2QsF9nOLN/nT0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1772205919;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g9Lj+MCFwQ65SeHnvmQaDCdaKKYNg9T/G8p+sWH2qz8=;
+	b=HSTI1aHByYN8VeVIe6kfQqDDdzzJQeaTr6tBk9A7sh2zMqb6qXaC3/+A2/l7XDARcvCR6D
+	dpoYpEhZ5rvMGgAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 47D283EA6A;
+	Fri, 27 Feb 2026 15:25:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id NTGIEV+3oWnKJQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 27 Feb 2026 15:25:19 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 077C4A06D4; Fri, 27 Feb 2026 16:25:14 +0100 (CET)
+Date: Fri, 27 Feb 2026 16:25:14 +0100
+From: Jan Kara <jack@suse.cz>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
+	Josef Bacik <josef@toxicpanda.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, 
+	linux-mm@kvack.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
+Subject: Re: [PATCH 10/14] xattr,net: support limited amount of extended
+ attributes on sockfs sockets
+Message-ID: <nvbbdg5v2o5tzyzhzfpj2cyldsstgxsnwr7qfr36vwsyks7qjv@ey4qw2ut6q7z>
+References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
+ <20260216-work-xattr-socket-v1-10-c2efa4f74cb7@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00001CE7:EE_|DS0PR12MB7849:EE_
-X-MS-Office365-Filtering-Correlation-Id: cba2866c-cfd2-456f-aaf8-08de7613eabe
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|7416014|376014|36860700013|3122999024;
-X-Microsoft-Antispam-Message-Info:
-	K/HIOu7FlWCVIC+GJFhftLHTAfQFzc4hhNSB+1IqzDDE5RcZfGys4fnu4URaH0gTIrk4BOw2WpcmqOi8b3KHUewe0IUBwv1mvttSc35hYnmnlppjUw0eYqRVza2uagnyR/rg6yGsvtAbXEu6kO8Re2VChXUFq6RFdGfhd3t+RgjCjqJCDP4kjzKfKPGP8Cgrs5LNX2OxoEBvzVP5SSgfTbw4RjbbPQWytBQfXXLi275vp6+AP0XFMbqYiBsTfCUU31sEOYMir/2IPgrSz+gmpyxw1vEXAEGpj4ioj3U8tEI0wzJMFsSe+JF0e2L3gMqmHRhBJz5zIZ+cFzNNXCS/A4hBHTOTSXre+MU0GBgZDlnYKz6Wq7Pfh4d+mORjI3Zbj/WxOtLpkothJqqpEL80+0RrqYarjEpMSnqszhmQI8RAO+fZmrTVXiGfdurvB5c4IXzIDImngBYHdlLdCRHuTumiabLiurFPZ0Ic5mfV2gAQ5oWjGd7WYNZ+lBlwThS0vZWFavuvL3WviQYeXkxz2LlHw5f9rBX9Q4Uic/JksXWEtN424vpcCECUZPrPt9AvJ3Ttwqz3g7pY4NjD3GLOrTRTKQGOE+xNtVN4wH0CnQuEFeACCzPlc2Zm+IzZgkEosR0CE8gMbaxY9Bb6sssZxB8cTwIIGc9luOwEi/GsdCMeO+XZdYA3Exsw/qA9pvGTwd93bLRhoborqhq05V8XTZ0S8yqqz/HTQFZGTSv8NdUwVGO+FLgXfdLjfrjcwe+RXchf4njfaEFmHp8QJ3GAADdQI81b7UIo5wwMoXv3+o4weqiMSHlTPhmdPCysr17ky5IJ3vjcsfN2HeeMbDgG1A==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(7416014)(376014)(36860700013)(3122999024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	lr2Xu6UhATEP39O3SZ6whsSgO61Gu6v5Tz5dMnBjhxeWtjnmde1iJpPPPeyH2uKbSdylSNA9PubvwAkCIvPiIhzMxL2XXo6DZ2xioE1EutrGaRXaxbytZp57SCtMDXxx6dLKxltu+4WVZfj6xAHZ5BY4uGqBQrlslpvQ/aV+nW8pK+Bd7LfWaavjrnNpWXlL65S+S5MtyKWkt00rR7bLs1BHnk1HYB1FaOwJ0pbvg26T9u/Zky7KcFpFdf2NOVWtP9i/oys+h8wrK9vth35Ute4CASBz2vdz/n4gRzJtFCTb1dIAfTicuSQLrKzp3IISQWHr3EJbKIDTO2f6BwwjQOtfoKxA6cSImAh23pCczqlzIbOCOszQrfGY0o/iRlzQptYwITE5C1iQ6zBuS5zafAIwXL92RIfz5s5/2E/X051j3NSseCaSg4OhX6zjGooD
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 15:21:44.7702
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cba2866c-cfd2-456f-aaf8-08de7613eabe
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00001CE7.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7849
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260216-work-xattr-socket-v1-10-c2efa4f74cb7@kernel.org>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.cz:dkim,suse.cz:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	RCVD_COUNT_THREE(0.00)[3];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Queue-Id: 5B1275BE3C
+X-Spam-Flag: NO
+X-Spam-Score: -4.01
+X-Spam-Level: 
 
+On Mon 16-02-26 14:32:06, Christian Brauner wrote:
+> Now that we've generalized the infrastructure for user.* xattrs make it
+> possible to set up to 128 user.* extended attributes on a sockfs inode
+> or up to 128kib. kernfs (cgroupfs) has the same limits and it has proven
+> to be quite sufficient for nearly all use-cases.
+> 
+> This will allow containers to label sockets and will e.g., be used by
+> systemd and Gnome to find various sockets in containers where
+> high-privilege or more complicated solutions aren't available.
+> 
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
 
-Jakub Kicinski <kuba@kernel.org> writes:
+Looks good. Feel free to add:
 
-> On Wed, 25 Feb 2026 17:06:48 +0200 Ioana Ciornei wrote:
->> +ALL_TESTS="
->> +	test_eth_ctrl_stats
->> +	test_eth_mac_stats
->> +	test_pause_stats
->> +"
->> +STABLE_MAC_ADDRS=yes
->> +NUM_NETIFS=2
->> +lib_dir=$(dirname "$0")
->> +# shellcheck source=./../../../net/forwarding/lib.sh
->> +source "$lib_dir"/../../../net/forwarding/lib.sh
->
-> Argh, at some point we should probably decide whether we have 
-> a preference on which "library" / set of env vars we use under 
-> drivers/net/hw. Adding Petr to CC.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-I think the expectation is that by default, tests written in Bash are
-run on one machine without remotes.
+								Honza
 
-I think this fundamentally stems from the fact that running processes in
-Python is a bit unwieldy, so it makes sense to have helpers, so
-everybody uses them, so you can have helpers grow brains to do things
-like over-the-ssh configuration. In Bash, running a traffic generator is
-easier than working with arrays. So the helpers tend not to be as useful
-and we don't generally have them. At least not in any consistent way.
-
-Eyeing the file, the requirement for the remote interface to be up and
-configured with an IP address is a bit surprising to me. I would think a
-down state is the most natural, and have the test bring it up and
-configure it in a way that it needs. I'm thinking maybe this is to allow
-testing a sole interface on like an embedded device?
-
-Anyway, that's a fairly strong differency between how Bash tests are
-typically written and the NIC setup. I think basically all existing
-tests assume the devices are theirs to tamper with.
-
-> The existing tests under drivers/net/hw which source forwarding/lib.sh
-> pre-date the "NIC setup" described in 
-> tools/testing/selftests/drivers/net/README.rst
->
-> Should we ask "NIC setup" to be used for all tests which only need
-> NUM_NETIFS=2 ? These are basically simple tests where one netif is 
-> a traffic generator and the other is the DUT. And IIUC the "forwarding
-> setup" can't be used when the traffic generator is controlled over SSH?
-
-In principle nothing prevents lib.sh from growing brains to support
-these remote shenanigans. I think it's just that so far nobody cared
-enough to actually do it.
-
-I think that a helper that in effect does "run this on a machine where
-$swp1 is" is mostly what is needed. That and "make sure $swp1 and $swp2
-are on the same machine". It's going to be annoying to work with though,
-because you need to annotate every single command. I bet there's a nice
-syntax to make it not activelly annoying.
-
-If we have this, it might make sense to require tests to make use of it.
-(With an explicit opt-out for special cases.) But I do not want every
-test to have to reinvent this wheel and cargo-cult snippets from other
-tests.
-
-BTW, my guess is that even many multi-port tests that I wrote boil down
-to just a bunch of fairly independent loopbacks whose far ends could be
-on remote machines. It's not a priori nonsense to me that one would run
-a test like this, or whatever magic we'd use:
-
-    ./test.sh ssh://petr@10.1.2.3:eth1 swp1 veth1 ns://foo:veth2
-
-And it just works, because only swp1 and swp2 need to be bridged, the
-rest can be remote, and the traffic generation helper knows that to pump
-traffic to ssh://10.1.2.3:eth1, obviously you need to ssh there first.
-But the library would need to have helpers for this, and the tests would
-need to use them.
-
-At least ethtool counters would cause problems obviously.
+> ---
+>  net/socket.c | 119 +++++++++++++++++++++++++++++++++++++++++++++--------------
+>  1 file changed, 92 insertions(+), 27 deletions(-)
+> 
+> diff --git a/net/socket.c b/net/socket.c
+> index 136b98c54fb3..7aa94fce7a8b 100644
+> --- a/net/socket.c
+> +++ b/net/socket.c
+> @@ -315,45 +315,70 @@ static int move_addr_to_user(struct sockaddr_storage *kaddr, int klen,
+>  
+>  static struct kmem_cache *sock_inode_cachep __ro_after_init;
+>  
+> +struct sockfs_inode {
+> +	struct simple_xattrs *xattrs;
+> +	struct simple_xattr_limits xattr_limits;
+> +	struct socket_alloc;
+> +};
+> +
+> +static struct sockfs_inode *SOCKFS_I(struct inode *inode)
+> +{
+> +	return container_of(inode, struct sockfs_inode, vfs_inode);
+> +}
+> +
+>  static struct inode *sock_alloc_inode(struct super_block *sb)
+>  {
+> -	struct socket_alloc *ei;
+> +	struct sockfs_inode *si;
+>  
+> -	ei = alloc_inode_sb(sb, sock_inode_cachep, GFP_KERNEL);
+> -	if (!ei)
+> +	si = alloc_inode_sb(sb, sock_inode_cachep, GFP_KERNEL);
+> +	if (!si)
+>  		return NULL;
+> -	init_waitqueue_head(&ei->socket.wq.wait);
+> -	ei->socket.wq.fasync_list = NULL;
+> -	ei->socket.wq.flags = 0;
+> +	si->xattrs = NULL;
+> +	simple_xattr_limits_init(&si->xattr_limits);
+> +
+> +	init_waitqueue_head(&si->socket.wq.wait);
+> +	si->socket.wq.fasync_list = NULL;
+> +	si->socket.wq.flags = 0;
+> +
+> +	si->socket.state = SS_UNCONNECTED;
+> +	si->socket.flags = 0;
+> +	si->socket.ops = NULL;
+> +	si->socket.sk = NULL;
+> +	si->socket.file = NULL;
+>  
+> -	ei->socket.state = SS_UNCONNECTED;
+> -	ei->socket.flags = 0;
+> -	ei->socket.ops = NULL;
+> -	ei->socket.sk = NULL;
+> -	ei->socket.file = NULL;
+> +	return &si->vfs_inode;
+> +}
+> +
+> +static void sock_evict_inode(struct inode *inode)
+> +{
+> +	struct sockfs_inode *si = SOCKFS_I(inode);
+> +	struct simple_xattrs *xattrs = si->xattrs;
+>  
+> -	return &ei->vfs_inode;
+> +	if (xattrs) {
+> +		simple_xattrs_free(xattrs, NULL);
+> +		kfree(xattrs);
+> +	}
+> +	clear_inode(inode);
+>  }
+>  
+>  static void sock_free_inode(struct inode *inode)
+>  {
+> -	struct socket_alloc *ei;
+> +	struct sockfs_inode *si = SOCKFS_I(inode);
+>  
+> -	ei = container_of(inode, struct socket_alloc, vfs_inode);
+> -	kmem_cache_free(sock_inode_cachep, ei);
+> +	kmem_cache_free(sock_inode_cachep, si);
+>  }
+>  
+>  static void init_once(void *foo)
+>  {
+> -	struct socket_alloc *ei = (struct socket_alloc *)foo;
+> +	struct sockfs_inode *si = (struct sockfs_inode *)foo;
+>  
+> -	inode_init_once(&ei->vfs_inode);
+> +	inode_init_once(&si->vfs_inode);
+>  }
+>  
+>  static void init_inodecache(void)
+>  {
+>  	sock_inode_cachep = kmem_cache_create("sock_inode_cache",
+> -					      sizeof(struct socket_alloc),
+> +					      sizeof(struct sockfs_inode),
+>  					      0,
+>  					      (SLAB_HWCACHE_ALIGN |
+>  					       SLAB_RECLAIM_ACCOUNT |
+> @@ -365,6 +390,7 @@ static void init_inodecache(void)
+>  static const struct super_operations sockfs_ops = {
+>  	.alloc_inode	= sock_alloc_inode,
+>  	.free_inode	= sock_free_inode,
+> +	.evict_inode	= sock_evict_inode,
+>  	.statfs		= simple_statfs,
+>  };
+>  
+> @@ -417,9 +443,48 @@ static const struct xattr_handler sockfs_security_xattr_handler = {
+>  	.set = sockfs_security_xattr_set,
+>  };
+>  
+> +static int sockfs_user_xattr_get(const struct xattr_handler *handler,
+> +				 struct dentry *dentry, struct inode *inode,
+> +				 const char *suffix, void *value, size_t size)
+> +{
+> +	const char *name = xattr_full_name(handler, suffix);
+> +	struct simple_xattrs *xattrs;
+> +
+> +	xattrs = READ_ONCE(SOCKFS_I(inode)->xattrs);
+> +	if (!xattrs)
+> +		return -ENODATA;
+> +
+> +	return simple_xattr_get(xattrs, name, value, size);
+> +}
+> +
+> +static int sockfs_user_xattr_set(const struct xattr_handler *handler,
+> +				 struct mnt_idmap *idmap,
+> +				 struct dentry *dentry, struct inode *inode,
+> +				 const char *suffix, const void *value,
+> +				 size_t size, int flags)
+> +{
+> +	const char *name = xattr_full_name(handler, suffix);
+> +	struct sockfs_inode *si = SOCKFS_I(inode);
+> +	struct simple_xattrs *xattrs;
+> +
+> +	xattrs = simple_xattrs_lazy_alloc(&si->xattrs, value, flags);
+> +	if (IS_ERR_OR_NULL(xattrs))
+> +		return PTR_ERR(xattrs);
+> +
+> +	return simple_xattr_set_limited(xattrs, &si->xattr_limits,
+> +					name, value, size, flags);
+> +}
+> +
+> +static const struct xattr_handler sockfs_user_xattr_handler = {
+> +	.prefix = XATTR_USER_PREFIX,
+> +	.get = sockfs_user_xattr_get,
+> +	.set = sockfs_user_xattr_set,
+> +};
+> +
+>  static const struct xattr_handler * const sockfs_xattr_handlers[] = {
+>  	&sockfs_xattr_handler,
+>  	&sockfs_security_xattr_handler,
+> +	&sockfs_user_xattr_handler,
+>  	NULL
+>  };
+>  
+> @@ -572,26 +637,26 @@ EXPORT_SYMBOL(sockfd_lookup);
+>  static ssize_t sockfs_listxattr(struct dentry *dentry, char *buffer,
+>  				size_t size)
+>  {
+> -	ssize_t len;
+> -	ssize_t used = 0;
+> +	struct sockfs_inode *si = SOCKFS_I(d_inode(dentry));
+> +	ssize_t len, used;
+>  
+> -	len = security_inode_listsecurity(d_inode(dentry), buffer, size);
+> +	len = simple_xattr_list(d_inode(dentry), READ_ONCE(si->xattrs),
+> +				buffer, size);
+>  	if (len < 0)
+>  		return len;
+> -	used += len;
+> +
+> +	used = len;
+>  	if (buffer) {
+> -		if (size < used)
+> -			return -ERANGE;
+>  		buffer += len;
+> +		size -= len;
+>  	}
+>  
+> -	len = (XATTR_NAME_SOCKPROTONAME_LEN + 1);
+> +	len = XATTR_NAME_SOCKPROTONAME_LEN + 1;
+>  	used += len;
+>  	if (buffer) {
+> -		if (size < used)
+> +		if (size < len)
+>  			return -ERANGE;
+>  		memcpy(buffer, XATTR_NAME_SOCKPROTONAME, len);
+> -		buffer += len;
+>  	}
+>  
+>  	return used;
+> 
+> -- 
+> 2.47.3
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
