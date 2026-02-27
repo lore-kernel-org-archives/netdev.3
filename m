@@ -1,35 +1,60 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8DD029E10B
-	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 01:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1D31D8E01;
+	Fri, 27 Feb 2026 01:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772157004; cv=none; b=jZZmjCltWMIYbl+YFR0KUpUqDGjiF9+v6obmu7wIKclB5Q7oTFkW/ZQSgIzB/TDhh5Ruj2XFpof/Jwo3yZcOTQxEqmbQaO9GAjCEO8/F84VeHvDzkgdAgOqLWqfIyXvJ2/kIOB0u713bQBKsYSrfHmDpi8xPicO5jqKRDpY3BcU=
+	t=1772157298; cv=none; b=EqnHLg5wlXd6IRcbxg3ifojNA7G9jjdaz4B72ptdYAqIr5eAwSLI+eRO5ceEewHzXsAC3xvXrBWSEljsIFWbPCfjcaAF7zZaNFneEOf2JTlOxE6b1j0f8zXynRlEM7BGqmdXhaxtYWZLHnDcSM/vUFTiiTVjA9HZzVXQpkTqHps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772157004; c=relaxed/simple;
-	bh=zEIkP0v+Gt6GKxEd6rrduCgxlWdMNrWP0C7sJGM9NSY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ZGHQXDk1o5uOx1+fmvYrP1mCraWwxrztbfGVoQ5fiG8zPSVWWeE8NsHRq+7oiGA0FNNwLEvqNX+/0ELJqgKCTknrrAQm/4Rud6u+E1wrdJRkMfIVcQ4I09XikPELB6QrmE/pa8TMYinS43DMJeJxHLYaFVkGWaPtB3r1OgJJm5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CmbRBvhE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772157298; c=relaxed/simple;
+	bh=f9sfjqMofAlwbcUX4rR2RxDkSdmosaiAPVZln1mCbN8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mOk+wElbMGiF6MPtsCwtwDhOaLEYUQce6Ac80CdGxTkPU1/BB1lBtQr6lHb2NgpUNN1X5M+oiLvSwAVAH53iZArMjtqN5RogzW30ftg6mC+JAgjXIB8q0hp2bBW1MJdZqrugz2KLCBInPu1ftUA4ekcxZjbJM2PmaD5OWXugMAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U5cTQki+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CmbRBvhE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB567C116C6;
-	Fri, 27 Feb 2026 01:50:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U5cTQki+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA2BC116C6;
+	Fri, 27 Feb 2026 01:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772157003;
-	bh=zEIkP0v+Gt6GKxEd6rrduCgxlWdMNrWP0C7sJGM9NSY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=CmbRBvhE8XpF06ktiuTWDldt8B3JOhztqsyrsGnCtopGkKWJbUKXD6rOrA4HWEZZu
-	 o2J7w+J8JyjfPG7HU/WZOPjF4vVlAINDAwTdtvBpw8a9fZWHOZ/cAi24HVfvJCscYL
-	 i9rUOTanNM6xLJzmbWWQqpMaaIYRQy8GRMxj0G9Qat4QoEI7Fmaoiu1VgphqdTvAsx
-	 nZA13RyQ/gGLtC1GanNG9puhtv2e4d4Ws5QjW4l0I46KQn/z18ISjzzaZJuTSnXK4D
-	 zcsgF6y+8lwL1cOXHiB9yhL5TZQKo6LmZDfAJtTATIHt7dBAS5DO0ZmPkYRlPIs8yP
-	 N96jAjMs4B2ow==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02CA5393109B;
-	Fri, 27 Feb 2026 01:50:09 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1772157297;
+	bh=f9sfjqMofAlwbcUX4rR2RxDkSdmosaiAPVZln1mCbN8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=U5cTQki+3UCI8UNOxlpwH/n3sl/pa5prG/IsPn6WXsHuIB+pwGZeYoq4g8AdekQFB
+	 gbyH0UfbSXwb8s00RyNgIC4QU9yMvtzehZ9r1+qKKDT38hzCsqGjAWm1pU2y507e25
+	 TzicJeZ8cOWrNbeYWO0PzYx1xd1NYug8LOaSQlyXjBGmvutJzQbx5WfKZ6i8Nk9/1E
+	 3oKQi0c7ebXYqg10qozCPBLox5P3mVOFelRvOCBvFZgDIP9oo1va5Vw8EEQ6XujJ/F
+	 L8I4+l3/YyCumIVReLde6VfgsK4+OjaVM0s9g/+RVQYsay1exdFWtFrxh+JxVa+e/c
+	 ADL+FGJO3HH8w==
+From: Jakub Kicinski <kuba@kernel.org>
+To: konradybcio@kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	elder@riscstar.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	konrad.dybcio@oss.qualcomm.com,
+	krzk@kernel.org,
+	linux-kernel@vger.kernel.org,
+	conor+dt@kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	dmitry.baryshkov@oss.qualcomm.com,
+	devicetree@vger.kernel.org,
+	krzk+dt@kernel.org,
+	robh@kernel.org,
+	edumazet@google.com,
+	elder@kernel.org,
+	andersson@kernel.org,
+	krzysztof.kozlowski@oss.qualcomm.com,
+	davem@davemloft.net,
+	marijn.suijten@somainline.org,
+	horms@kernel.org
+Subject: Re: [net-next,v5,3/3] net: ipa: Grab IMEM slice base/size from DTS
+Date: Thu, 26 Feb 2026 17:54:49 -0800
+Message-ID: <20260227015449.2484275-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260224-topic-ipa_imem-v5-3-015bf09e123e@oss.qualcomm.com>
+References: <20260224-topic-ipa_imem-v5-3-015bf09e123e@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,44 +62,120 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2] net: stmmac: ptp: limit n_per_out
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177215700779.1935486.3167937625716884926.git-patchwork-notify@kernel.org>
-Date: Fri, 27 Feb 2026 01:50:07 +0000
-References: <E1vvBhn-0000000ArCg-4C4u@rmk-PC.armlinux.org.uk>
-In-Reply-To: <E1vvBhn-0000000ArCg-4C4u@rmk-PC.armlinux.org.uk>
-To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Cc: andrew@lunn.ch, alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- Jose.Abreu@synopsys.com, linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
- pabeni@redhat.com
 
-Hello:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+net: ipa: Grab IMEM slice base/size from DTS
 
-On Wed, 25 Feb 2026 10:01:19 +0000 you wrote:
-> ptp_clock_ops.n_per_out sets the number of PPS outputs, which the PTP
-> subsystem uses to validate userspace input, such as the index number
-> used in a PTP_CLK_REQ_PEROUT request.
-> 
-> stmmac_enable() uses this to index the priv->pps array, which is an
-> array of size STMMAC_PPS_MAX. ptp_clock_ops.n_per_out is initialised
-> using priv->dma_cap.pps_out_num, which is a three bit field read from
-> hardware.
-> 
-> [...]
+This commit changes IPA driver initialization to retrieve IMEM slice
+base and size from the device tree instead of hardcoded platform data,
+with fallback to the old method for backwards compatibility.
 
-Here is the summary with links:
-  - [net-next,v2] net: stmmac: ptp: limit n_per_out
-    https://git.kernel.org/netdev/net-next/c/5c894879f17c
+> diff --git a/drivers/net/ipa/ipa_data.h b/drivers/net/ipa/ipa_data.h
+> index 2fd03f0799b2..f3bdc64cef05 100644
+> --- a/drivers/net/ipa/ipa_data.h
+> +++ b/drivers/net/ipa/ipa_data.h
+> @@ -185,8 +185,13 @@ struct ipa_resource_data {
+>  struct ipa_mem_data {
+>  	u32 local_count;
+>  	const struct ipa_mem *local;
+> -	u32 imem_addr;
+> -	u32 imem_size;
+> +
+> +	/* These values are now passed via DT, but to support
+> +	 * older systems we must allow this to be specified here.
+> +	 */
+> +	u32 imem_addr; /* DEPRECATED */
+> +	u32 imem_size; /* DEPRECATED */
+> +
+>  	u32 smem_size;
+>  };
+>
+> diff --git a/drivers/net/ipa/ipa_mem.c b/drivers/net/ipa/ipa_mem.c
+> index 835a3c9c1fd4..5d3f68bd02d9 100644
+> --- a/drivers/net/ipa/ipa_mem.c
+> +++ b/drivers/net/ipa/ipa_mem.c
+> @@ -7,6 +7,7 @@
+>  #include <linux/dma-mapping.h>
+>  #include <linux/io.h>
+>  #include <linux/iommu.h>
+> +#include <linux/of_address.h>
+>  #include <linux/platform_device.h>
+>  #include <linux/types.h>
+>
 
-You are awesome, thank you!
+[ ... ]
+
+> @@ -656,7 +659,24 @@ int ipa_mem_init(struct ipa *ipa, struct platform_device *pdev,
+>  	ipa->mem_addr = res->start;
+>  	ipa->mem_size = resource_size(res);
+>
+> -	ret = ipa_imem_init(ipa, mem_data->imem_addr, mem_data->imem_size);
+> +	ipa_slice_np = of_parse_phandle(dev->of_node, "sram", 0);
+> +	if (ipa_slice_np) {
+> +		ret = of_address_to_resource(ipa_slice_np, 0, res);
+> +		of_node_put(ipa_slice_np);
+> +		if (ret)
+> +			goto err_unmap;
+> +
+> +		imem_base = res->start;
+> +		imem_size = resource_size(res);
+                     ^^^^
+
+Does this code corrupt the platform device's resource array? The variable
+'res' was obtained from platform_get_resource_byname() earlier in this
+function, which returns a pointer directly into pdev->resource[]:
+
+drivers/base/platform.c:platform_get_resource_byname()
+    return platform_get_resource(dev, type, num);
+        => return &dev->resource[i];
+
+Passing this pointer to of_address_to_resource() causes
+__of_address_to_resource() to memset the entire structure to zero and then
+overwrite all fields:
+
+drivers/of/address.c:__of_address_to_resource()
+    memset(r, 0, sizeof(struct resource));
+    ...
+    r->flags = ...
+    r->name = ...
+    r->start = ...
+    r->end = ...
+
+This permanently corrupts the platform device's "ipa-shared" resource entry.
+While ipa->mem_addr and ipa->mem_size were saved before the corruption, the
+platform device's resource array is shared kernel infrastructure.
+
+After this corruption:
+- /proc/iomem and sysfs will report incorrect resource information
+- If the driver is unbound and rebound, platform_get_resource_byname(pdev,
+  IORESOURCE_MEM, "ipa-shared") will fail because the resource's name field
+  was overwritten with the sram DT node's full_name, causing probe to fail
+  with -ENODEV
+
+Would it be better to use a separate local variable for the
+of_address_to_resource() call?
+
+struct resource sram_res;
+...
+ret = of_address_to_resource(ipa_slice_np, 0, &sram_res);
+...
+imem_base = sram_res.start;
+imem_size = resource_size(&sram_res);
+
+> +	} else {
+> +		/* Backwards compatibility for DTs lacking
+> +		 * an explicit reference
+> +		 */
+> +		imem_base = mem_data->imem_addr;
+> +		imem_size = mem_data->imem_size;
+> +	}
+> +
+> +	ret = ipa_imem_init(ipa, imem_base, imem_size);
+>  	if (ret)
+>  		goto err_unmap;
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+pw-bot: cr
