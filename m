@@ -1,104 +1,97 @@
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1CF25FA05
-	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 10:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75F73364935
+	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 10:20:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772187468; cv=none; b=cDN5RMRlyKlklTEXHo2eRmVxaHnSWV2QBnkJl3LFMiRtIcszf5GWn5SRhC9BQDliABHcuj8+6UhZ2j+2cXcTvq3LMA7ylix5VcGE3zH7U/ODu8XUQ6xIHhB9LWi1iBPsPPyFjro5nPqXXjbwrj0dGmC/KAgvfMR3NTCqwVEjF38=
+	t=1772187601; cv=none; b=PbO7gRdRN8aVkefqeD+uIRqaVuMQSk+PbheLX1eQXOwh0BzHOUy9nu9UU8vw6OSUFK/f/EB9R8QH6AXao4TyDxeRDQJOyfQfGcfid9oHShx93tt84sTN/GbOLxlNvtUtsI61jIwJEGxM1HVC4eTO1ia82GVk0J5nQEunZQ0Y4Qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772187468; c=relaxed/simple;
-	bh=NW4dWVQlwvCzbVWNqt13jaHF92YiUWYLPdc4jid6CmM=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=IB6mkkTCkWy8lEiVP2yLHd3PinAngWUlJQZWopmk5/xcZcwVUaClS/xHJ1jlRTUp9ZAGdDA95sKFTx80VAVBA6tU051mSSFusdJ/3MzoSoiI+COCmW62eKNKQANnVXnSsN8nhNBVgDAcQl/oAd19gTZDTL0ITrSy3ISbM+1TJeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=XxxWuBDX; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1772187601; c=relaxed/simple;
+	bh=9cBK++4q9mzyAv/nJlE+HKa8SLcaHWUVeyg7gIUelgE=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=Fe0XQByZgfTEfgryZlR+SDxoZwMWy8p2SYimxK5l2r4HwGhOkDSX94TIaFy9auI7i8bbmy4RhqU7vJq8jRaDw1yTQ/E45pGnUvfS66BVk35ESSsI+3EFHYLEUzjmJnEEnRbDhEIrF5lhOie+lHv8GhkJeEkvUxdKkJtZKaM+Ta8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=NFnXDZqZ; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="XxxWuBDX"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="NFnXDZqZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=DKAkTM53E2y1DtK2v4QGCI56px12Jk+xBwE3HDfh0v8=; b=NFnXDZqZz/tiXb1LffWyxzF8Ml
+	5Da0EB/MMTENnA9KhokZz/3Nyo7yGG+290lApA2aj3UeK1sTZAaQr7JMy4O8v0YKSvLf06xR/Vwrm
+	avWRq1leBv/Vy0m2hgsvIcHo5BleKeUL8+dIOVQI0IBR29F91I3daHmtPszGzy6A2vSbsxE9Qphe0
+	zuPNxZc2Fk1Q/ukhliPiOl443y26mpRRR94AX3XYVi2CDn+HOBLaHQeI7GaCYt8W8YP5zLLacZwMW
+	79yyFzne/eN2QCeijBtW7f3tX2NAwH+WC2yWhTsSa98D9RHFuFH8UvxxidqJD3GntW2g7UwRmaQfo
+	5EeSsGJQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:43818 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1vvuY2-000000000f7-0ZfH;
+	Fri, 27 Feb 2026 09:54:14 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1vvuXy-0000000Avnk-10Q8;
+	Fri, 27 Feb 2026 09:54:10 +0000
+In-Reply-To: <aaFpZvuIzOLaNM0m@shell.armlinux.org.uk>
+References: <aaFpZvuIzOLaNM0m@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH net-next 13/14] net: stmmac: simplify atds initialisation
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772187454;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=znk0ndRTMwqpetLAuBC2hcTpstjFU2Nmt/SHfAZLZ6k=;
-	b=XxxWuBDXbRCk9C6RVmhQfZD3Flut1Pha4sF4gVVP6hm7fMjYYgVOiL320E6HgFV+u/65Im
-	fAV5QkkXA11rUstBuJ5flELbDmNK4MUE2QxTz3wlCwTinVkGH414DT5cA0sb605mDKR+G+
-	wAsvxNirEG1fVuZaHlfQMQqNn3pUGRU=
-Date: Fri, 27 Feb 2026 10:17:29 +0000
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <4cc373b555ec3d6ff57037c569d12966a8b701db@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH net v2 1/2] bonding: fix null-ptr-deref in
- bond_rr_gen_slave_id()
-To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
-Cc: netdev@vger.kernel.org, jiayuna.chen@linux.dev, jiayuna.chen@shopee.com,
- "Jiayuan Chen" <jiayuan.chen@shopee.com>,
- syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com, "Jay Vosburgh"
- <jv@jvosburgh.net>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>,
- "Simon Horman" <horms@kernel.org>, "Alexei Starovoitov" <ast@kernel.org>,
- "Daniel Borkmann" <daniel@iogearbox.net>, "Jesper Dangaard Brouer"
- <hawk@kernel.org>, "John Fastabend" <john.fastabend@gmail.com>,
- "Stanislav Fomichev" <sdf@fomichev.me>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>,
- "Yonghong Song" <yonghong.song@linux.dev>, "KP Singh"
- <kpsingh@kernel.org>, "Hao Luo" <haoluo@google.com>, "Jiri Olsa"
- <jolsa@kernel.org>, "Shuah Khan" <shuah@kernel.org>, "Clark Williams"
- <clrkwllms@kernel.org>, "Steven Rostedt" <rostedt@goodmis.org>, "Jussi
- Maki" <joamaki@gmail.com>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-In-Reply-To: <20260227094558._Fna2iSe@linutronix.de>
-References: <20260227092254.272603-1-jiayuan.chen@linux.dev>
- <20260227092254.272603-2-jiayuan.chen@linux.dev>
- <20260227094558._Fna2iSe@linutronix.de>
-X-Migadu-Flow: FLOW_OUT
+Message-Id: <E1vvuXy-0000000Avnk-10Q8@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Fri, 27 Feb 2026 09:54:10 +0000
 
-2026/2/27 17:45, "Sebastian Andrzej Siewior" <bigeasy@linutronix.de mailt=
-o:bigeasy@linutronix.de?to=3D%22Sebastian%20Andrzej%20Siewior%22%20%3Cbig=
-easy%40linutronix.de%3E > wrote:
+atds is boolean, and there is only one place that its value is changed.
+Simplify this to a boolean assignment.
 
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
->=20
->=20On 2026-02-27 17:22:49 [+0800], Jiayuan Chen wrote:
->=20
->=20>=20
->=20> --- a/drivers/net/bonding/bond_main.c
-> >  +++ b/drivers/net/bonding/bond_main.c
-> >  @@ -6458,6 +6458,12 @@ int bond_create(struct net *net, const char *=
-name)
-> >  dev_net_set(bond_dev, net);
-> >  bond_dev->rtnl_link_ops =3D &bond_link_ops;
-> >=20=20
->=20>  + res =3D bond_create_init(bond);
-> >=20
->=20Wouldn't it be better to put into bond_init()?
->=20
->=20I haven't look into it but when can the bond_mode be changed?
->=20
->=20Sebastian
->
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 38f6b890ec37..a9b26d12a057 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -7448,10 +7448,11 @@ static int stmmac_hw_init(struct stmmac_priv *priv)
+ 
+ 	/* Set alternate descriptor size (which tells the hardware that
+ 	 * descriptors are 8 32-bit words) when using extended descriptors
+-	 * with ring mode. Only applicable for pre-v4.0 cores.
++	 * with ring mode. Only applicable for pre-v4.0 cores. Platform glue
++	 * is not expected to change this.
+ 	 */
+-	if (priv->extend_desc && priv->mode == STMMAC_RING_MODE)
+-		priv->plat->dma_cfg->atds = 1;
++	priv->plat->dma_cfg->atds = priv->extend_desc &&
++				    priv->mode == STMMAC_RING_MODE;
+ 
+ 	/* Rx Watchdog is available in the COREs newer than the 3.40.
+ 	 * In some case, for example on bugged HW this feature
+-- 
+2.47.3
 
-Thanks! bond_init() (ndo_init) is indeed a better fit, it is called by re=
-gister_netdevice()
-and naturally covers both bond_create() and bond_newlink() without a sepa=
-rate helper.
-
-bond_mode can be changed after device creation via sysfs or netlink, a bo=
-nd created
-in active-backup mode can later be switched to round-robin, which means t=
-he allocation
-must not be conditional on the mode at creation time.
