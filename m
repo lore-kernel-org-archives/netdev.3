@@ -1,24 +1,37 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481AC2D73A6;
-	Fri, 27 Feb 2026 05:25:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866113D9033
+	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 05:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772169948; cv=none; b=FXwcZJPIjopiYO5FTWx7FF3OgsoDtEz+aztRph6Dd6RztjcjIjNnRLWznGrAGUS09zL084bxngH1Pm2xi3GVJi7OKJo6nZ8nZOHhP46ql9IGssIveYp+GF8YR0AK3/s4nzd2vePTuPJlABr75FJ11BaBkbQwoaNmV5zsE3IaaOk=
+	t=1772170943; cv=none; b=GtLN8PIYmBlomRqju4tG8i6B4gxwzrwTF9jHSNtchSmGEoa139+5FfbSSI3Ov6QJiwflPmyKYXwzSK55B98PdeKhq6xViJgmCxvjMy6hMKfRBH9ZCxJVU18yOPNSTr8RnMk4/wy1XTev1qSo6bCZ5COikrY2J8KsaQa5uoQhwyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772169948; c=relaxed/simple;
-	bh=+31iF3OoYMGJbCN6LTtZ31nBlwQ8uRo+RoyxWzMNZYc=;
+	s=arc-20240116; t=1772170943; c=relaxed/simple;
+	bh=RMgTn//3VD0skLwGXal83rQtLdDKbXTjgdSCa8YcvZk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oPf9bgBiQXYfFyPvmTVKYnIUzj7p1jhV8YW8LZyB8DRJ40TdIVF3ZzlG/vvlXo03SOGD7ZuRb6MmQtEcvIVuwbCmb+AMX1hcAZUi4Sjguo9Pdq51kgmSE7b8aRoBPyehhfYDis9XbNpFN/KkE8GV0/6dIGaGOIJQ8KPG+pMs1CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [192.168.0.103] (unknown [123.118.222.47])
-	by APP-01 (Coremail) with SMTP id qwCowABH72qvKqFp4fXQCA--.7323S2;
-	Fri, 27 Feb 2026 13:25:04 +0800 (CST)
-Message-ID: <c9329ae2-721d-4127-9380-b1ea454bd8f2@iscas.ac.cn>
-Date: Fri, 27 Feb 2026 13:25:03 +0800
+	 In-Reply-To:Content-Type; b=eoCGf3ggdmCGKvfuM5Xi5bDXfZsxme4j0A1B8+8Ikq3ALTMnRQXeCfl4k3i1WW8Z+LY30QbuITeqGQ1c5Fo/KmbKwvgmdFKv9ePfOHqax3LfJ7SWfMT8ynHBA8lA3iCCMLT5EXIzBz7XJaXfi90xTYVKGwZC66/om0/j6lSamvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pqlTM/oZ; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pqlTM/oZ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=FCXyDNwvU09VY0cJyx8qcSX051IO03LUT5ogxYUChzs=; b=pqlTM/oZFub/wVoLQLV+x22ldG
+	2TqPEhB0cVQzjhOsz5eQw+uybU+V1nQow7KADUo3tfnqpaihTCgfOO3urRcSOCLbxBGC3KdsV1Smg
+	GcKjWVJXxqpg9mI8Vgg11DNp1ehqbX0/NbM1dwj1u8OfQ7OvaPa8L0ZOpVu5UzCitVIChZxKl/mxb
+	kqEt3tepxzL4wtRPCfJgVrsOH1BGn5u7siAIpKq7R5z0y5ya0WTq03wUx/JAGWI7kgvzNWWecPHfv
+	CPIH3VFkMNvgukvUFqoM5JKHRGNiJhc0vp/LeyGvHbzbiDorrmkS47u2y99EFDVnD3JW0duG7Vxvd
+	CNmrOtiA==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vvqcE-00000007jll-31YV;
+	Fri, 27 Feb 2026 05:42:18 +0000
+Message-ID: <10b1d487-1324-4bc5-843d-e8799b036add@infradead.org>
+Date: Thu, 26 Feb 2026 21:42:18 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -26,85 +39,77 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/4] PCI/MSI: Conservatively generalize no_64bit_msi
- into msi_addr_mask
-To: Mark Bloch <mbloch@nvidia.com>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>,
- "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
- Alex Deucher <alexander.deucher@amd.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+Subject: Re: [PATCH -net] net: openvswitch: clean up some kernel-doc warnings
+To: Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org
+Cc: Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Bjorn Helgaas <bhelgaas@google.com>, Jaroslav Kysela <perex@perex.cz>,
- Takashi Iwai <tiwai@suse.com>, Brett Creeley <brett.creeley@amd.com>
-Cc: Han Gao <gaohan@iscas.ac.cn>, Thomas Gleixner <tglx@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
- amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- netdev@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-sound@vger.kernel.org, linux-riscv@lists.infradead.org,
- sophgo@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
- Maor Gottlieb <maorg@nvidia.com>
-References: <20260129-pci-msi-addr-mask-v4-0-70da998f2750@iscas.ac.cn>
- <20260129-pci-msi-addr-mask-v4-1-70da998f2750@iscas.ac.cn>
- <fb23d54a-fca0-43a2-ae1d-03ae52112192@nvidia.com>
+ Simon Horman <horms@kernel.org>, dev@openvswitch.org
+References: <20260226221054.1041044-1-rdunlap@infradead.org>
+ <5708dc9f-2cc7-463c-a9a7-32e82634c94c@ovn.org>
 Content-Language: en-US
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-In-Reply-To: <fb23d54a-fca0-43a2-ae1d-03ae52112192@nvidia.com>
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <5708dc9f-2cc7-463c-a9a7-32e82634c94c@ovn.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:qwCowABH72qvKqFp4fXQCA--.7323S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7WrykArWkCrW7tr1xAr48tFb_yoW8Gr4fpF
-	WDWF4rtF4UKry7t39Fvw1DZF45Zws5Z3s3Wry5twnakan0v3W2qr1qyr4aga42gr48Jw4Y
-	kryjgw1vqrs8Z37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvE14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvEwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
-	0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-	1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-	AIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWI
-	evJa73UjIFyTuYvjTRM6wCDUUUU
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-On 2/27/26 02:25, Mark Bloch wrote:
 
-> On 29/01/2026 3:56, Vivian Wang wrote:
->> Some PCI devices have PCI_MSI_FLAGS_64BIT in the MSI capability, but
->> implement less than 64 address bits. This breaks on platforms where such
->> a device is assigned an MSI address higher than what's reachable.
->>
->> Currently, the no_64bit_msi bit is set for these devices, meaning that
->> only 32-bit MSI addresses are allowed for them. However, on some
->> platforms the MSI doorbell address is above the 32-bit limit but within
->> the addressable range of the device.
->>
->> As a first step to enabling MSI on those combinations of devices and
->> platforms, conservatively generalize the single-bit flag no_64bit_msi
->> into msi_addr_mask. (The name msi_addr_mask is chosen to avoid confusion
->> with msi_mask.)
->>
->> The translation is essentially:
->>
->> - no_64bit_msi = 1    ->    msi_addr_mask = DMA_BIT_MASK(32)
->> - no_64bit_msi = 0    ->    msi_addr_mask = DMA_BIT_MASK(64)
->> - if (no_64bit_msi)   ->    if (msi_addr_mask < DMA_BIT_MASK(64))
->>
-> Hey Vivian,
->
-> We are seeing issues while reloading mlx5 on a PPC64 platform.
 
-Mea culpa. There's a fix on the list [1] since last Friday. I'm not sure
-why it hasn't moved yet, but please take a look.
+On 2/26/26 2:57 PM, Ilya Maximets wrote:
+> On 2/26/26 11:10 PM, Randy Dunlap wrote:
+>> Fix some kernel-doc warnings in openvswitch.h:
+>>
+>> Mark enum placeholders that are not used as "private" so that kernel-doc
+>> comments are not needed for them.
+>>
+>> Correct names for 2 enum values:
+>> Warning: include/uapi/linux/openvswitch.h:300 Excess enum value
+>>  '@OVS_VPORT_UPCALL_SUCCESS' description in 'ovs_vport_upcall_attr'
+>> Warning: include/uapi/linux/openvswitch.h:300 Excess enum value
+>>  '@OVS_VPORT_UPCALL_FAIL' description in 'ovs_vport_upcall_attr'
+>>
+>> Warning: include/uapi/linux/openvswitch.h:638 This comment starts with
+>>  '/**', but isn't a kernel-doc comment.
+>>  * Omit attributes for notifications.
+>>
+>> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+>> ---
+> 
+> Hi, Randy.  Thanks for the fixes!
+> 
+> If the private/public is the style to follow, it sounds good to me,
+> though there seem to be an inconsistency in how the kernel-only
+> attributes are marked.  I see the OVS_SAMPLE_ATTR_ARG is in the
+> private section, but OVS_CHECK_PKT_LEN_ATTR_ARG and the
+> OVS_ACTION_ATTR_SET_TO_MASKED are public.  They should either all
+> be public or all private, as they are used for very similar purposes,
+> which is storing extra information about the action to make it easier
+> for the kernel to work with them.  These attributes should never be
+> used in the communication with userspace.  So, maybe private?
 
-Vivian "dramforever" Wang
+I documented them and made them all public:.
 
-[1]: https://lore.kernel.org/all/20260220070239.1693303-1-nilay@linux.ibm.com/
+> 
+> __OVS_CHECK_PKT_LEN_ATTR_MAX is also public for some reason.  I guess,
+> it is because while it has kernel-doc-style comment, it doesn't start
+> with /**, so it's not treated like one.  Maybe we should fix that here
+> just to be consistent?
+
+I didn't follow the "it doesn't start with /**", but I made it private:.
+
+> note: Some enums and structures do not have kernel-doc comments, so
+> I guess that's the reason to not mark them.  I suppose it's fine,
+> since adding extra docs is not the purpose of this patch.
+
+I ended up adding comments for several enums, but you might want to correct
+a few of them.
+
+> nit: the subject prefix is a little strange.
+
+I hope that I fixed that.
+I'll send v2 after 24++ hours.
+
+thanks.
+-- 
+~Randy
 
