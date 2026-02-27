@@ -1,66 +1,65 @@
-Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+Received: from mx0a-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DE32DD60F;
-	Fri, 27 Feb 2026 09:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117B93ACEE3;
+	Fri, 27 Feb 2026 09:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772183665; cv=none; b=dGMKEzyc3IvUXIvh61Z6Z9oA2jj7kifPL8o/l0JbJrhKhSi+AOR+YwQZTwez1TBYs1RZNB3td5nEMOlxV9dpvKIwOeYIQW7iMmkUTC19GatQi6Upqy4eRXA8n95i8rQpgGwnaKU69zZr+3mRGqXMf7OGSnKRcvqqD51eZAZjpro=
+	t=1772183671; cv=none; b=EorgFu0HsbFX0UoyRgZh/fYosLoKO/qNtsBQpOuSR9F2fwoh0iGMLNh64tL+8REiJ0iIXOe/Mvl64mu9gllJK9WJHhKDxt5px2Wzw4j0rqqqIstU+6zmb+MtyA0/hbdS7pO2oIou3WO8zvBLjNQdG2YBMmIIC25gNClrWuZ+s8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772183665; c=relaxed/simple;
-	bh=MIMkx/Y/ASdUx8iiWbmztrfHiR/YcXbJNPe1CoSwNWA=;
+	s=arc-20240116; t=1772183671; c=relaxed/simple;
+	bh=SJxpPP8NkehXGQXkNiEVGSFJLxSi+9IoeBlUJRK46sw=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d1buIWM6uiL4+qu3Y7mG5roAPougfpuiEFu1jEbnb7kHixpdQDMBKskHY4BKQCIxFGbHj00Q4Ak6Rxr74Nf7vNDvkeYtf+DlDprDCscw1Vk4U9ns8wzlA2ENTE/9EzUNtwvTvpXJ2LqKqcmOlnB03JhDRXbc57b6pzPW6XCgOeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=P5MaWaFd; arc=none smtp.client-ip=67.231.148.174
+	 MIME-Version:Content-Type; b=I6AaHBAB5+Bo5/K3ZiF+qRGrNFjtwRk96ezhbkYAb1QXSSQtZu0su4QK5HUX+pfua3sVWCGdyFaDVhbpydjLxPiYoKA/QatUu1uEsL6mUqdXD+CUfGg/I+mKoKEFcNpEg8c5nldtSwHTxejgqwwI7bNsB0fGgUPy1hcLBi060Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=hhIqKTYt; arc=none smtp.client-ip=67.231.148.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="P5MaWaFd"
-Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
-	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QNKV5u2260183;
-	Fri, 27 Feb 2026 01:14:14 -0800
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="hhIqKTYt"
+Received: from pps.filterd (m0431384.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61R7uWA31536616;
+	Fri, 27 Feb 2026 01:14:21 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=h
-	Lb0Uk6R2IaCViloOJoBAGHOQQ6/HnT/IRDoSIyYi48=; b=P5MaWaFd9bqh+hwpX
-	+VXLP6Nh9gYuOTg/7LNohwygPeYNqHSitP+6L+7GhrUs0unVsg7fOnPCGK94O0T+
-	JPNKH1RZcthhqZspABwX53IQQTmJwUoZopWB2pEMImKjb95oZtQ1fe4Uen56RnCD
-	yJVo+wH/q/jW4VWLIExdHd5TEv+9RM8GA4Gt6Irc0XoCu8VEALBjjdtjEnMDG6nV
-	n8Vyjzr3/ZMfog54ULUddCnx3bhvWWLZJpbeWYPbEQIA9j7HIQopZZlpg5dHlPin
-	W/1+j55JU2RE+qczh/Ev5kqXfheLcPg89zy/Le1ykGtN2g9tpCSAwFlfFosmMjMT
-	bUHfg==
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=G
+	oGOKF9vKwI5kyX31k/hdIlj72Da3pHhPwYQ+8+5L/I=; b=hhIqKTYt5jhDHh/C3
+	wK+AYzSEU3GuEBVeaFyihWPNZxQkdZ3r1KVapvt52P/xz7+O/kuyP/me3cn7bB7B
+	bgLcxb8d5bb0XNleB/qpyMljOFQUd9GGvWNgeHRR0xBp2jd5XMe+sNuOlGCO8R20
+	qCcywBImUzdsEYZMhCS8+UVeERwAZ6swdD1gzceShuy9wSUB414DT2ugHgrsqUrV
+	z7h4UmEf5Dsr5y+TrSsJfWP0UWszXuc+u1HXf/vE2CqHykE3AZ3pG1nP/ajb7dYH
+	/jIb5b4DtBbdFKE4sSOgGoOHgLTRf3s4nBare83rqyoEreo9jfMHbNprt5KTD05+
+	VFQTg==
 Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4cjyrx116q-1
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4cjtnd9ywf-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Feb 2026 01:14:14 -0800 (PST)
+	Fri, 27 Feb 2026 01:14:21 -0800 (PST)
 Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
  DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 27 Feb 2026 01:14:12 -0800
+ 15.2.1544.25; Fri, 27 Feb 2026 01:14:20 -0800
 Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
  (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 27 Feb 2026 01:14:12 -0800
+ Transport; Fri, 27 Feb 2026 01:14:20 -0800
 Received: from 101hsapphire1.sclab.marvell.com (unknown [10.111.168.47])
-	by maili.marvell.com (Postfix) with ESMTP id 3609E3F705E;
-	Fri, 27 Feb 2026 01:14:12 -0800 (PST)
+	by maili.marvell.com (Postfix) with ESMTP id CBB613F705A;
+	Fri, 27 Feb 2026 01:14:19 -0800 (PST)
 From: Vimlesh Kumar <vimleshk@marvell.com>
 To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <sedara@marvell.com>, <srasheed@marvell.com>, <hgani@marvell.com>,
         "Vimlesh Kumar" <vimleshk@marvell.com>,
         Veerasenareddy Burru
 	<vburru@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        Abhijit Ayarekar
-	<aayarekar@marvell.com>,
-        Satananda Burla <sburla@marvell.com>
-Subject: [PATCH net v2 2/4] octeon_ep: avoid compiler and IQ/OQ reordering
-Date: Fri, 27 Feb 2026 09:13:58 +0000
-Message-ID: <20260227091402.1773833-3-vimleshk@marvell.com>
+        Satananda Burla <sburla@marvell.com>,
+        Andrew Lunn
+	<andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>
+Subject: [PATCH net v2 4/4] octeon_ep_vf: avoid compiler and IQ/OQ reordering
+Date: Fri, 27 Feb 2026 09:14:00 +0000
+Message-ID: <20260227091402.1773833-5-vimleshk@marvell.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260227091402.1773833-1-vimleshk@marvell.com>
 References: <20260227091402.1773833-1-vimleshk@marvell.com>
@@ -72,21 +71,21 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=Y6H1cxeN c=1 sm=1 tr=0 ts=69a16066 cx=c_pps
+X-Proofpoint-GUID: -FAlnb9fNyZ0nokk1QrsdHLu7m3YK0IH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDA3OSBTYWx0ZWRfX3LxRzh2SIrkI
+ 92Ul8YiyC1GLHPPYVbLkL1pQyt45txa/VkQNxXhOoEirimrETzm91+rOuufQghC62KnDk7TUnAP
+ qvjn1fp+GlUP3KfRmshJG5l0Bn4vk/sT+rW9y3ddlp513f097lQDxceE4k6dtPTt3VbdPZRmxPA
+ Qmj6shlOepWJxL+wOyEjPRTAedA7tFxLPk1TXP8QqHU3oCM+eltPgkPGkNjIxZK1bUcV9IQDnyy
+ kHAn8dETbevXX8ag8C6Vigg5yUEifV4R7LZX5QJ3q2BI1HDVSHdrU9u9z5hcvPoJoaoutveaia+
+ bgsq7sbiI45Oh9mnVsk+jGJRAlMo1g3TeipyIhgaNo061UjO3uHY70tZ6Oiy90dTjwnZNMwdxo3
+ 0ooA9tsKEAEE2h5lFXVc/CJfTkG3Ez0lgA3Zpq04OB41Be9kQdNKIhiOpa0q0X1jwEKLvC2pY+Z
+ QjoHleKEpZSUAaV2mUg==
+X-Proofpoint-ORIG-GUID: -FAlnb9fNyZ0nokk1QrsdHLu7m3YK0IH
+X-Authority-Analysis: v=2.4 cv=WYMBqkhX c=1 sm=1 tr=0 ts=69a1606d cx=c_pps
  a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
  a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=EAYMVhzMl8SCOHhVQcBL:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
- a=OZLdTvkJ1xrx5OaBTMEA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-ORIG-GUID: qUZVOHdPHjkZcCaYEbeO464eb0svZdba
-X-Proofpoint-GUID: qUZVOHdPHjkZcCaYEbeO464eb0svZdba
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDA3OSBTYWx0ZWRfX2r/A8O7azJrG
- 8hCVrO4ofWDHIJZyM6el0ehgY1joH/pjeg3v6pOmYQYKYVBK7inwxKFC79JhStISrteOFZwDFo7
- hL4QEgl1gcoA1Z16UsTUdnoyv2mr9GBTCUljd7rHrwWu7efCzv+tUk5ZLkjl4TFR7ko7GsSqjgy
- t4E38e8zWkM0h7u0xllJYFlABGd9N0/4WeeGFQmF1CmZ81nyKLk97aGPR4XFy1xR7qtRDcI4V4P
- miNgKShVPo0BJR4e8f3dUmpujtkzfAfp4AgJDWtSc4YGQZWQl/M0y1a4ucy/IuEBtBjqXYon5Ab
- HGTyby2MBSdcuOw+Ls5+mqjRF/lZ1JesdjTbpbznkytniaQdk9yEIDBN8hzAGXZcymiRDj5yqvT
- rs4eL3WYjIvL6EcRfw8MqNxih0d4j52uT/7wg2PulOMCokRnmtoIw4K3m4GcPFBpdyKZQn1lqmx
- wUjhI8mj4whHbqh1kEA==
+ a=TtqV-g6YmW1Jfm2GSLaY:22 a=VwQbUJbxAAAA:8 a=M5GUcnROAAAA:8
+ a=eIslcybm3wAIAy_GHo8A:9 a=OBjm3rFKGHvpk9ecZwUJ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-27_01,2026-02-26_01,2025-10-01_01
@@ -107,24 +106,24 @@ didn't properly update its internal state.
 wmb/rmb only provides ordering guarantees but doesn't prevent the compiler
 from performing optimizations like caching in registers, load tearing etc.
 
-Fixes: 37d79d0596062 ("octeon_ep: add Tx/Rx processing and interrupt support")
+Fixes: 1cd3b407977c3 ("octeon_ep_vf: add Tx/Rx processing and interrupt support")
 Signed-off-by: Sathesh Edara <sedara@marvell.com>
 Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
 Signed-off-by: Vimlesh Kumar <vimleshk@marvell.com>
 ---
-V1: https://lore.kernel.org/all/20260212121634.360252-2-vimleshk@marvell.com/
+V1: https://lore.kernel.org/all/20260212121634.360252-3-vimleshk@marvell.com/ 
 
- .../ethernet/marvell/octeon_ep/octep_main.c   | 21 +++++++++------
- .../net/ethernet/marvell/octeon_ep/octep_rx.c | 27 +++++++++++++------
- 2 files changed, 32 insertions(+), 16 deletions(-)
+ .../marvell/octeon_ep_vf/octep_vf_main.c      | 21 ++++++++------
+ .../marvell/octeon_ep_vf/octep_vf_rx.c        | 28 +++++++++++++------
+ 2 files changed, 33 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-index a93c3c9994c2..ccfb248d0914 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-@@ -562,17 +562,22 @@ static void octep_clean_irqs(struct octep_device *oct)
-  */
- static void octep_update_pkt(struct octep_iq *iq, struct octep_oq *oq)
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+index e113c846f9d1..27a5fc38bccb 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+@@ -294,17 +294,22 @@ static void octep_vf_clean_irqs(struct octep_vf_device *oct)
+ 
+ static void octep_vf_update_pkt(struct octep_vf_iq *iq, struct octep_vf_oq *oq)
  {
 -	u32 pkts_pend = oq->pkts_pending;
 +	u32 pkts_pend = READ_ONCE(oq->pkts_pending);
@@ -153,12 +152,12 @@ index a93c3c9994c2..ccfb248d0914 100644
  	}
  
  	/* Flush the previous wrties before writing to RESEND bit */
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-index 82b6b19e76b4..11f1b45d0f92 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_rx.c
-@@ -318,10 +318,16 @@ static int octep_oq_check_hw_for_pkts(struct octep_device *oct,
- 				      struct octep_oq *oq)
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+index d70c8be3cfc4..31380962c212 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_rx.c
+@@ -319,9 +319,16 @@ static int octep_vf_oq_check_hw_for_pkts(struct octep_vf_device *oct,
+ 					 struct octep_vf_oq *oq)
  {
  	u32 pkt_count, new_pkts;
 +	u32 last_pkt_count, pkts_pending;
@@ -167,15 +166,15 @@ index 82b6b19e76b4..11f1b45d0f92 100644
 -	new_pkts = pkt_count - oq->last_pkt_count;
 +	last_pkt_count = READ_ONCE(oq->last_pkt_count);
 +	new_pkts = pkt_count - last_pkt_count;
- 
++
 +	if (pkt_count < last_pkt_count) {
 +		dev_err(oq->dev, "OQ-%u pkt_count(%u) < oq->last_pkt_count(%u)\n",
 +			oq->q_no, pkt_count, last_pkt_count);
 +	}
+ 
  	/* Clear the hardware packets counter register if the rx queue is
  	 * being processed continuously with-in a single interrupt and
- 	 * reached half its max value.
-@@ -332,8 +338,9 @@ static int octep_oq_check_hw_for_pkts(struct octep_device *oct,
+@@ -333,8 +340,9 @@ static int octep_vf_oq_check_hw_for_pkts(struct octep_vf_device *oct,
  		pkt_count = readl(oq->pkts_sent_reg);
  		new_pkts += pkt_count;
  	}
@@ -187,8 +186,8 @@ index 82b6b19e76b4..11f1b45d0f92 100644
  	return new_pkts;
  }
  
-@@ -408,7 +415,7 @@ static int __octep_oq_process_rx(struct octep_device *oct,
- 	u16 rx_ol_flags;
+@@ -363,7 +371,7 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
+ 	struct sk_buff *skb;
  	u32 read_idx;
  
 -	read_idx = oq->host_read_idx;
@@ -196,7 +195,7 @@ index 82b6b19e76b4..11f1b45d0f92 100644
  	rx_bytes = 0;
  	desc_used = 0;
  	for (pkt = 0; pkt < pkts_to_process; pkt++) {
-@@ -493,7 +500,7 @@ static int __octep_oq_process_rx(struct octep_device *oct,
+@@ -457,7 +465,7 @@ static int __octep_vf_oq_process_rx(struct octep_vf_device *oct,
  		napi_gro_receive(oq->napi, skb);
  	}
  
@@ -205,10 +204,10 @@ index 82b6b19e76b4..11f1b45d0f92 100644
  	oq->refill_count += desc_used;
  	oq->stats->packets += pkt;
  	oq->stats->bytes += rx_bytes;
-@@ -516,22 +523,26 @@ int octep_oq_process_rx(struct octep_oq *oq, int budget)
+@@ -480,22 +488,26 @@ int octep_vf_oq_process_rx(struct octep_vf_oq *oq, int budget)
  {
  	u32 pkts_available, pkts_processed, total_pkts_processed;
- 	struct octep_device *oct = oq->octep_dev;
+ 	struct octep_vf_device *oct = oq->octep_vf_dev;
 +	u32 pkts_pending;
  
  	pkts_available = 0;
@@ -219,7 +218,7 @@ index 82b6b19e76b4..11f1b45d0f92 100644
 -		if (oq->pkts_pending == 0)
 +		pkts_pending = READ_ONCE(oq->pkts_pending);
 +		if (pkts_pending == 0)
- 			octep_oq_check_hw_for_pkts(oct, oq);
+ 			octep_vf_oq_check_hw_for_pkts(oct, oq);
 +		pkts_pending = READ_ONCE(oq->pkts_pending);
  		pkts_available = min(budget - total_pkts_processed,
 -				     oq->pkts_pending);
@@ -227,8 +226,8 @@ index 82b6b19e76b4..11f1b45d0f92 100644
  		if (!pkts_available)
  			break;
  
- 		pkts_processed = __octep_oq_process_rx(oct, oq,
- 						       pkts_available);
+ 		pkts_processed = __octep_vf_oq_process_rx(oct, oq,
+ 							  pkts_available);
 -		oq->pkts_pending -= pkts_processed;
 +		pkts_pending = READ_ONCE(oq->pkts_pending);
 +		WRITE_ONCE(oq->pkts_pending, (pkts_pending - pkts_processed));
