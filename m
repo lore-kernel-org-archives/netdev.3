@@ -1,450 +1,426 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012034.outbound.protection.outlook.com [52.101.48.34])
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4A0329E53;
-	Fri, 27 Feb 2026 16:38:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE9934B425
+	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 16:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.125.188.123
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772210325; cv=fail; b=fAnQ/QF3twN+MRZIbGwSld3WB/M4lu889VONifMTalPrQbdu8Q0bBpvNJARcE+F9/qtqb40qwSosW7YKkJ7Pa02H5nH6RUstXxSIqW49rg8JsOYVunS/DMdi2a0rCFW6h/IgpMLhJHYZVAkkbh5j3IXPn9SpG6b+t9J0Xsl56OY=
+	t=1772210847; cv=pass; b=pR4U8FttPTxQQkGXiDXdSM01BR2Jw1HjvpCxZV5+UZDF80JrjafnFU1DZ6w1wHKHH9+niwyLTApg2YnTpKlYgdhSYp59MWt9X3wscIAYjOPKU2I8w1tJ389X2issU2JUl686tYeBD2XgpXeBrdrKhTYEB6X7l90vxW6TgNDtJzY=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772210325; c=relaxed/simple;
-	bh=OrmpgZIeAh2yn4bVdjmStqDM88dnnETM5kxNAV7GrTw=;
-	h=References:From:To:CC:Subject:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Mqn/UbghPXDHXZe8MH+l1jwH8QLN273YVl+k1AV+CdYd+yyneVKJiyMzlibjKBoQ00cdKI5ogCPiypDunYZyHjJ+CEIamYVCKFLxl/ePueGCfCcjjs+vfdjGdTi5YpuixmJE8TvyFGq0GewCShYdN3LhEqw4azfPVe01BgUMMWA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Eyme87Wa; arc=fail smtp.client-ip=52.101.48.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1772210847; c=relaxed/simple;
+	bh=EtniMrkccfrrFst83snpcJ9FJYzCqUqT1Eux3rWxpmo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nJeu80G5n+hTPXb0pKonY2UBePn/0KTi7P+zidpnJpYTdhMhhaXJ4xwLWA34JOBWR77HqIE48I5NuPhFX29wFfQdxs3zrnbuODGSJhBn6TyZc89MM3mhAbQWmf40u8dhzvq/bwI1WbfH4XX0iKD2aPYcdhv5jYGIrwZEuXlVt/Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b=AsZRArcr; arc=pass smtp.client-ip=185.125.188.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=canonical.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Eyme87Wa"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eIpHPgVFvaUVgv6d0lspavzwX5QTuhkNSkk+XC8v7YIoRrbgXo2j5RVNx7MAGro+FPDvrKDinViF0UNTb/OSena5hdUpfpRO6vnIakszEJVTQoNckn1cOi6X1+ZcKx7CKF4Eq0i1Ju759zg2e4aNbPJ7TEK4uJLK0DNYsrabw3fImf0/RN8h6fMZIY3bZI0lTSMZTr9LUk8wjM1zVLA8yL93wfdBbIUeC3Tt64LiD3OzGGH6LYgjMHxkUM4euAXxSBei5+UMcxJL2PAEj8emFqcs5ouXJDrX8iLd0LR6I63R8XeUisLkHeACndCaGsQDZs4l8U7fAwWQuqV8i6t/Rg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SkIxcFL5ZLnSwB2F9Qj7KV6LhZiNrfPECfGV1ApCUg8=;
- b=VuLgFN9xSd9ZjIxLupkO2RkBqyPVV4uo5F/P10KqrrMzARYinsTAOgmAaTRnRKQtnUhGmJAFse8oylO3hZGk0kD/koFmp6ytGok+JFiVVG0dx3m3e6HdMbQSmNRjAtq8mHO/yAHts50SrGnmsjZNcOPtvdCqJ+6Tqh4VyyU5C18vfgnmzWAloWjIDbh8R1AbsR066j3ZVIxDJBJhofm/NHc7KsAycyoRNJy/IkIIcKsL9HHrLmIyFZ63fuAH/7SKwobVo0rt8MAb8c0vdcKinqBTCL90vJjIXvJ9plIB7X3mAPi8mHS0q1wGrDb2WsKdDD3JeUPDHTf5gogWJ2mwYQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SkIxcFL5ZLnSwB2F9Qj7KV6LhZiNrfPECfGV1ApCUg8=;
- b=Eyme87Wav15QDxtgU9+YZI6a6KQXLQimRTTCom0tNyCaQKm7pqX9Os0zCJSKe21OXfGGjrUaO0N1WmesNOavmtGbYJSHYfIpXIlh94qxpHEG7COAnTED0w6vabZJTX+5OTH6/f/K8Lt6o7s3jGc2jknCP/hJPmLt29Db5S1Q2vy1TPxEE+Suj2F7Hyy50KPkhzgEi3VZOdXVh3HSYDx+SRs6twN/z2ESnZQ715eD1oqH9VyPa57bl/oeNUkGHZg0rBBEmUpB4J+xZGTyQegCtewJwwR6LHL1aRv0nLSZfcBVguswyXiQ/MQYvkrZuQEZF22qo6PhlbKvcBI9XPRYWw==
-Received: from CH5P220CA0010.NAMP220.PROD.OUTLOOK.COM (2603:10b6:610:1ef::14)
- by IA0PR12MB7602.namprd12.prod.outlook.com (2603:10b6:208:43a::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.16; Fri, 27 Feb
- 2026 16:38:37 +0000
-Received: from DS2PEPF000061C3.namprd02.prod.outlook.com
- (2603:10b6:610:1ef:cafe::56) by CH5P220CA0010.outlook.office365.com
- (2603:10b6:610:1ef::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.27 via Frontend Transport; Fri,
- 27 Feb 2026 16:38:32 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- DS2PEPF000061C3.mail.protection.outlook.com (10.167.23.70) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.16 via Frontend Transport; Fri, 27 Feb 2026 16:38:37 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 27 Feb
- 2026 08:38:21 -0800
-Received: from fedora (10.126.231.35) by rnnvmail201.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 27 Feb
- 2026 08:38:16 -0800
-References: <20260225150648.1542206-1-ioana.ciornei@nxp.com>
- <20260225150648.1542206-6-ioana.ciornei@nxp.com>
-User-agent: mu4e 1.8.14; emacs 30.2
-From: Petr Machata <petrm@nvidia.com>
-To: Ioana Ciornei <ioana.ciornei@nxp.com>
-CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Shuah Khan
-	<shuah@kernel.org>, Simon Horman <horms@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH net-next 5/5] selftests: drivers: hw: add tests for the
- ethtool standard counters
-Date: Fri, 27 Feb 2026 16:45:47 +0100
-In-Reply-To: <20260225150648.1542206-6-ioana.ciornei@nxp.com>
-Message-ID: <87fr6mf8gb.fsf@nvidia.com>
+	dkim=pass (4096-bit key) header.d=canonical.com header.i=@canonical.com header.b="AsZRArcr"
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com [209.85.128.199])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 65E463FE2C
+	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 16:47:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
+	s=20251003; t=1772210832;
+	bh=BKQzT9t7ZI3mb+6EDIKBTxaX0DX68JkIAcPYLBp08+M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type;
+	b=AsZRArcr+IHOjGSBnonu/oj477dSluZfbYqix5/Y3zCBdoV1+uw6mYYHWwc4sPEzW
+	 HjFcFZE09FnavTkEnrKbxmF0r3YbTQPiFMojDWqkufdWKDMCZW9OPxWmPLHGl8VYyP
+	 aEEDR142r/egN11v+6BUwh9UCjnO7iqcqVKNlvjuimRs6gHHfWgooiT0xYazkycZV9
+	 iGaNpfepDa56QYdI4I7j3O9bAMZ5DH4c2WTlkXndqNrhlLiQOUUvwizjaREzzR+RaW
+	 G6qhyP2mK34/AwEY8BsSjxU/P2yJBLCVcFF0FazsuIIhPpIJJoppDe/KKLv377XKJO
+	 ckRoiSwBJ3h5NMgLM0yT68s2FLDl6gyLkP/lRN3fVuLZu1yxgjda/ENN1odqNnDS9i
+	 cUltWCZdejwVb0iOVt7w8SJ+e7iURRxp5NxrVK346lnXyAMDOroqzltJLwTrKWTFrE
+	 AN4ruGpriTmmvQ9GwGNvr1LpOw6mwnclV+8SKwiXFM2kWGMs7WC4UqqVSYW/5oxS+O
+	 xoiqh6Acy+TYgniHFTAsDU75wpJzuZLSiIVgwW31LUadIpejlNvpg5EcfEaBbQmLVj
+	 NgnJJyPdPSKozzmB9LKkQNdrUwMQftfhfgs3hHlvFhllpGK5m8UgazcxDHxIY0+WhT
+	 Efp718XcrpREHjvzQoHFxdjs=
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-79868381229so23013067b3.0
+        for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 08:47:12 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772210831; cv=none;
+        d=google.com; s=arc-20240605;
+        b=M5k3+DXkJBQhuDUD+Z3XP64qDn2Hd2HtRhuXXzhy1v7rVT3D3+xWd/LvY2/YeBmA5C
+         lGXunGe+nLZ7If0/e247+rvKhHpNcCOX3bXyV2Uo2sz+T0gN1AM7FDJ8Cl1V8Ity6QkS
+         pZ1c+XdhVsXalAuY9HH5cmpPYW2pnwrpi2fvX0+8SVROv8UMAlvzeIxvfMnogOAoEYS6
+         AsJEuMIt4d1CeKaBvw451ornjLA+oL7l6sQS5RxmBrdeHnNz9+aCF4z/+mR6bbiluXQa
+         13/DgudYReJH69y0lHxHACnAa1MFp2TQjDUxrYtYhujVbnKG1UKTU1AA+k87hOakAV9l
+         Ei/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=BKQzT9t7ZI3mb+6EDIKBTxaX0DX68JkIAcPYLBp08+M=;
+        fh=1ly1i0waVsPJVoQ7I+DJ+JnqRCeBor9hw/GFhYcvdbk=;
+        b=AP38XnunhQp8vMrqDr7bcnDelmo8GE+14wDytG337Gpk6z3H2+J6rz79f1KULNDk7e
+         SsZODQyNHMNX0QM0BOCMx+rw7AYwZHZN3y/+6uC/GhNWncr9R45HcPLbzDeKPxtZc3Gj
+         e9pjkiL6aDv832Huau+uiZ9dDCxlWTB1cHoxxU8VFFvNxYBu6/+rIKljj3Ty9Qsv77kO
+         1NQB0hBPdQtYfSC1dXsrtKxbLncOdIzqbk+6E8EW/G3L3efiZZFShqcO0LXf3zFo2bjl
+         Hl0e0OeBaDC1PccxtAyQxUL9xoRdYqREAiWw/hDD/gNJ15CBSse7KUcEZgl7HQX9ckk3
+         3VkQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772210831; x=1772815631;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BKQzT9t7ZI3mb+6EDIKBTxaX0DX68JkIAcPYLBp08+M=;
+        b=YUigmC4GX+2qe5xgEHRdvNTBSRpsIMw7LjvF3h0KiBvt/MtW87bVO7hup5YLdlFKxL
+         DRzBR71vCCB67sLRHe1FW4niw5ZdDHALEF+nWBgZO/NIS+BfLP+PCspSlx6aq+Q6wFMW
+         BbBGWmex0S2IWbGsXb1yz8krdC/UDT2bfT8ezsGN+h5sRnCuP+xt6YaW7wQtrJ/tWzuI
+         CsAXM1VTBLJvLdO7XYif7CdJ0PE7FdcPAvPatKfafjQ43MrOGePwMEDA/gLLGhkr75T+
+         WcW8swWSHaLr3EtWgdX3VT+3o5FH28iOjwvfUCBnxw0VEzjh8ewyM/JYSVPyfpGQvG+7
+         tIAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMFdosv1HN1lamfQg5fl7RDUWJze0ZRTKShtq4FuA8ZySZ4c2uw7rM2bmbMRQ1xm0Wf9Q5iOg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7QJLSIWb7RhpnxyYnHWVNxJqV+uHai5AaLa42nM9vQ2L+CxB2
+	+G9SJ/0W8i4J4ix3WeeatQCCInK/uJLU+XCKrz9CLWe4gMbdrg0pbvpnhDNGrrxLBseya4inK+C
+	J5J5tqeQGsfG+IHBT19pXpJgWKlEa2eEb0a34jBCU7/IMqYdMtpFCL7UFYCDGEbXrftHHB2owRk
+	4zXhjZe+IbVwBb+HtIk1izyQUvZ4WLeJ9ZEn/vPild5QUBKvs3
+X-Gm-Gg: ATEYQzypCmEeLSPl/WgLlQxGpvvvNQC4cgokw5BC6byVA09hZVtJLChH8GJHiKmVvYB
+	4JXZYokK2+3CWRUM57s+82uT+W52KBfmrn+2Aj2rb9dw/80ACr0Vrw27Naf2eRYYd+IO/fsJWeW
+	Top2odml0OZ5Y8hiHIsMSsGDlLZttyEjuweIO3XMmY77/D3rGaTgLBEWjhWfu/ylIJU4gM65ogF
+	Fnv8w/NXEs6XoTOXaE/dQ/biN9az7zyVYDvLynPuJqQsSJGftqtj+VJ7xUd39DiWo4=
+X-Received: by 2002:a53:b743:0:b0:64c:9b84:92ee with SMTP id 956f58d0204a3-64cb6f438a9mr3821167d50.31.1772210830731;
+        Fri, 27 Feb 2026 08:47:10 -0800 (PST)
+X-Received: by 2002:a53:b743:0:b0:64c:9b84:92ee with SMTP id
+ 956f58d0204a3-64cb6f438a9mr3821130d50.31.1772210830102; Fri, 27 Feb 2026
+ 08:47:10 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: rnnvmail202.nvidia.com (10.129.68.7) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF000061C3:EE_|IA0PR12MB7602:EE_
-X-MS-Office365-Filtering-Correlation-Id: 436e3ede-a82b-43d5-89cb-08de761ea813
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	ZAsTJbbS1vaROkQCtxJ+ppMGxVoP9bH1h6bM3kwasCBiVHZPjZTjBh+CzIJJvuv703ZxcZvcCI/GRXpad3ThrZd9bZa122pXXueOa7mXSFamM8MFlRZuUapDWwLg2reZMr3MKYNLroT3GLH/9q6xPEtlhyuzqZSnQGThDkuHhBYIKfIaNU73Hd7VjMEYHOOg4DUWQUC6Rx3cKgfX8VnbV6KFFWZwSAFSjLzFaAM92mIZOD9qE+2+s2C/VXsaIHpZFpqfmIc6tn39+XH5py0wcVB7YscjV9weBbg7u6Acnb4OQJ6RC+XeCi7K4SdD3GY6Xk49aL15Fa2HZSF6UqeI7oiBOjR2zFKVJCaAyyP/CDi59Ed7S0IJO2iZSLOQC8FoNfqEaGDJSZS4ncPpYtWoIvRE9hCi9ds4wxx+f2/86QGUVhRAvJAl/VpHq3/ged2Fvw1Tpcj1/WbXYu7Q+f7bh9FfisV3N9dyWDvAdVL2O6os4mSAZ6YuK5+Do/bD5mdLDMy7YAs7zrb5awqkCWP4qKLxTz4NmNUaFpa6ryooAMayilDyC2icTVZJBXj3MR7Fq+J2maO1VaLsRRUqu0wZ2XIJAgAPRDM6K+7lP4SDmoFB85KFgX/np7y2GKcPINlDbVV6qLGZWfMuycL6wDh6zZzISRevByoj/LD1LQWkdi7Ece1DK0tigMYREn3Ub4MfTD7/C/gh2ii/E7cBhw9mJl28nB591PqdsDVcKlFf94t5qo7jnTAcCFLkJDlzVHN7wHrajE/UTjVsKBP5cfbUCRo+WYw9ALhb+S7B9knnDSB8bu7WY/Z6vjLMMMEx3acE7Oxj++cKwOuGeSWLTDV85A==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	+FbDoe8K0Ov25P6QzbkMsdbzEHc/tWkjkY77gcawMDUoj2pAT79i1fcYffWU33hG6yct+hWY5q737+pZ6fv00eqeBVVNtHVdCGP9jcfTVr8PuFnsaVtC4cuR/TDte2+e3F5I63wK6R99j6wMR2z4JDrXpAS2ndnqzwbTPSdjCa/ByxYN3RTfVVrDp4mcFDhpbnmTuJAGze6FmPYNOeQWwpZvyJj2AaVgssGIZ8XwYNjlY278+dCAl789DkDIvoXfu0feb0ZaUczWt8QXjDBw9j/D+Y6bb1W7yFZoTjEOPmOpzGfGV0oMLk83U+WTsMFKlxM/VwLv3EsjGDmbJ+KGY/rZFxaxLCLuqxPxXqTI6m86Ee+oofkNVEYu4ek5vjDLd+K/5Q06Bw438aVzv844cmLfSc9pLtSsI7gxqmOyO+OgWH42dEbdjVtn4vI2QgKk
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 16:38:37.2547
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 436e3ede-a82b-43d5-89cb-08de761ea813
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS2PEPF000061C3.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7602
+References: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org> <20260226-iino-u64-v1-51-ccceff366db9@kernel.org>
+In-Reply-To: <20260226-iino-u64-v1-51-ccceff366db9@kernel.org>
+From: Ryan Lee <ryan.lee@canonical.com>
+Date: Fri, 27 Feb 2026 08:46:58 -0800
+X-Gm-Features: AaiRm50sr0j0-BwzNnmwGRvH8jyB1wNkHgZo3vdp3K_4YIT1mBOH-BzuS2c5S3A
+Message-ID: <CAKCV-6ujQK3yj8sB2eHafaw4pvrJUeK18Hu4vzvNSjH48RVgYg@mail.gmail.com>
+Subject: Re: [PATCH 51/61] security: update audit format strings for u64 i_ino
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Matthew Wilcox <willy@infradead.org>, Eric Biggers <ebiggers@kernel.org>, 
+	"Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+	David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, 
+	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
+	Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+	Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
+	Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, 
+	Steve French <sfrench@samba.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+	Shyam Prasad N <sprasad@microsoft.com>, Bharath SM <bharathsm@microsoft.com>, 
+	Alexander Aring <alex.aring@gmail.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
+	Viacheslav Dubeyko <slava@dubeyko.com>, Eric Van Hensbergen <ericvh@kernel.org>, 
+	Latchesar Ionkov <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, 
+	Christian Schoenebeck <linux_oss@crudebyte.com>, David Sterba <dsterba@suse.com>, 
+	Marc Dionne <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>, 
+	Luis de Bethencourt <luisbg@kernel.org>, Salah Triki <salah.triki@gmail.com>, 
+	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>, Ilya Dryomov <idryomov@gmail.com>, 
+	Alex Markuze <amarkuze@redhat.com>, Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
+	Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>, Amir Goldstein <amir73il@gmail.com>, 
+	Christoph Hellwig <hch@infradead.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Yangtao Li <frank.li@vivo.com>, 
+	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, David Woodhouse <dwmw2@infradead.org>, 
+	Richard Weinberger <richard@nod.at>, Dave Kleikamp <shaggy@kernel.org>, 
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>, 
+	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Mike Marshall <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>, 
+	Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>, 
+	Zhihao Cheng <chengzhihao1@huawei.com>, Damien Le Moal <dlemoal@kernel.org>, 
+	Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
+	John Johansen <john.johansen@canonical.com>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	Casey Schaufler <casey@schaufler-ca.com>, Alex Deucher <alexander.deucher@amd.com>, 
+	=?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+	Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+	Willem de Bruijn <willemb@google.com>, "David S. Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>, 
+	Martin Schiller <ms@dev.tdt.de>, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
+	fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev, 
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+	samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org, 
+	v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org, 
+	ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu, 
+	ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev, 
+	ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
+	linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
+	selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
+	linux-x25@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-Ioana Ciornei <ioana.ciornei@nxp.com> writes:
-
-> Add a new selftest - ethtool_std_stats.sh - which validates the
-> eth-ctrl, eth-mac and pause standard statistics exported by an
-> interface. Not all counters can be validated in software, especially
-> those that are keeping track of errors. Counters such as
-> SingleCollisionFrames, FrameCheckSequenceErrors etc are not tested nor
-> included in this new selftest.
+On Thu, Feb 26, 2026 at 9:13=E2=80=AFAM Jeff Layton <jlayton@kernel.org> wr=
+ote:
 >
-> The central part of this patch is the traffic_test() function which
-> gathers the 'before' counter values, sends a batch of traffic and then
-> interrogates again the same counters in order to determine if the delta
-> is on target. The function receives an array through which the caller
-> can request what counters to be interrogated and, for each of them, what
-> is their target delta value.
+> Update %lu/%ld to %llu/%lld in security audit logging functions that
+> print inode->i_ino, since i_ino is now u64.
 >
-> The output from this selftest looks as follows on a LX2160ARDB board:
+> Files updated: apparmor/apparmorfs.c, integrity/integrity_audit.c,
+> ipe/audit.c, lsm_audit.c.
 >
-> $ ./ethtool_std_stats.sh eth0 eth1
-> TEST: eth-ctrl tx on eth0 (MACControlFramesTransmitted on eth0)     [ OK ]
-> TEST: eth-ctrl tx on eth0 (MACControlFramesReceived on eth1)        [ OK ]
-> TEST: eth-ctrl tx on eth1 (MACControlFramesTransmitted on eth1)     [ OK ]
-> TEST: eth-ctrl tx on eth1 (MACControlFramesReceived on eth0)        [ OK ]
-> TEST: eth-mac bcast tx on eth0 (BroadcastFramesXmittedOK on eth0)   [ OK ]
-> TEST: eth-mac bcast tx on eth0 (FramesTransmittedOK on eth0)        [ OK ]
-> TEST: eth-mac bcast tx on eth0 (OctetsTransmittedOK on eth0)        [ OK ]
-> TEST: eth-mac bcast tx on eth0 (MulticastFramesXmittedOK on eth0)   [ OK ]
-> TEST: eth-mac bcast tx on eth0 (BroadcastFramesReceivedOK on eth1)  [ OK ]
-> TEST: eth-mac bcast tx on eth0 (FramesReceivedOK on eth1)           [ OK ]
-> TEST: eth-mac bcast tx on eth0 (OctetsReceivedOK on eth1)           [ OK ]
-> TEST: eth-mac bcast tx on eth0 (MulticastFramesReceivedOK on eth1)  [ OK ]
-> TEST: eth-mac mcast tx on eth0 (BroadcastFramesXmittedOK on eth0)   [ OK ]
-> TEST: eth-mac mcast tx on eth0 (FramesTransmittedOK on eth0)        [ OK ]
-> TEST: eth-mac mcast tx on eth0 (OctetsTransmittedOK on eth0)        [ OK ]
-> TEST: eth-mac mcast tx on eth0 (MulticastFramesXmittedOK on eth0)   [ OK ]
-> TEST: eth-mac mcast tx on eth0 (BroadcastFramesReceivedOK on eth1)  [ OK ]
-> TEST: eth-mac mcast tx on eth0 (FramesReceivedOK on eth1)           [ OK ]
-> TEST: eth-mac mcast tx on eth0 (OctetsReceivedOK on eth1)           [ OK ]
-> TEST: eth-mac mcast tx on eth0 (MulticastFramesReceivedOK on eth1)  [ OK ]
-> TEST: eth-mac ucast tx on eth0 (BroadcastFramesXmittedOK on eth0)   [ OK ]
-> TEST: eth-mac ucast tx on eth0 (FramesTransmittedOK on eth0)        [ OK ]
-> TEST: eth-mac ucast tx on eth0 (OctetsTransmittedOK on eth0)        [ OK ]
-> TEST: eth-mac ucast tx on eth0 (MulticastFramesXmittedOK on eth0)   [ OK ]
-> TEST: eth-mac ucast tx on eth0 (BroadcastFramesReceivedOK on eth1)  [ OK ]
-> TEST: eth-mac ucast tx on eth0 (FramesReceivedOK on eth1)           [ OK ]
-> TEST: eth-mac ucast tx on eth0 (OctetsReceivedOK on eth1)           [ OK ]
-> TEST: eth-mac ucast tx on eth0 (MulticastFramesReceivedOK on eth1)  [ OK ]
-> TEST: pause tx on eth0 (tx_pause_frames on eth0)                    [ OK ]
-> TEST: pause tx on eth0 (rx_pause_frames on eth1)                    [ OK ]
-> TEST: pause tx on eth1 (tx_pause_frames on eth1)                    [ OK ]
-> TEST: pause tx on eth1 (rx_pause_frames on eth0)                    [ OK ]
->
-> Please note that not all MACs are counting the software injected pause
-> frames as real Tx pause. For example, on a LS1028ARDB the selftest
-> output will reflect the fact that neither the ENETC MAC, nor the Felix
-> switch MAC are able to detect Tx pause frames injected by software.
->
-> $ ./ethtool_std_stats.sh eno0 swp0
-> (...)
-> TEST: Not all MACs detect injected pause frames                     [XFAIL]
-> TEST: pause tx on eno0 (rx_pause_frames on swp0)                    [ OK ]
-> TEST: Not all MACs detect injected pause frames                     [XFAIL]
-> TEST: pause tx on swp0 (rx_pause_frames on eno0)                    [ OK ]
->
-> Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 > ---
->  .../testing/selftests/drivers/net/hw/Makefile |   1 +
->  .../drivers/net/hw/ethtool_std_stats.sh       | 192 ++++++++++++++++++
->  2 files changed, 193 insertions(+)
->  create mode 100755 tools/testing/selftests/drivers/net/hw/ethtool_std_stats.sh
+>  security/apparmor/apparmorfs.c       |  4 ++--
+>  security/integrity/integrity_audit.c |  2 +-
+>  security/ipe/audit.c                 |  2 +-
+>  security/lsm_audit.c                 | 10 +++++-----
+>  security/selinux/hooks.c             |  4 ++--
+>  security/smack/smack_lsm.c           | 12 ++++++------
+>  6 files changed, 17 insertions(+), 17 deletions(-)
 >
-> diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-> index a64140333a46..d447813a14b2 100644
-> --- a/tools/testing/selftests/drivers/net/hw/Makefile
-> +++ b/tools/testing/selftests/drivers/net/hw/Makefile
-> @@ -26,6 +26,7 @@ TEST_PROGS = \
->  	ethtool_extended_state.sh \
->  	ethtool_mm.sh \
->  	ethtool_rmon.sh \
-> +	ethtool_std_stats.sh \
->  	hw_stats_l3.sh \
->  	hw_stats_l3_gre.sh \
->  	iou-zcrx.py \
-> diff --git a/tools/testing/selftests/drivers/net/hw/ethtool_std_stats.sh b/tools/testing/selftests/drivers/net/hw/ethtool_std_stats.sh
-> new file mode 100755
-> index 000000000000..4ce8f140a18c
-> --- /dev/null
-> +++ b/tools/testing/selftests/drivers/net/hw/ethtool_std_stats.sh
-> @@ -0,0 +1,192 @@
-> +#!/bin/bash
-> +# SPDX-License-Identifier: GPL-2.0
-> +#shellcheck disable=SC2034 # SC does not see the global variables
-> +
-> +ALL_TESTS="
-> +	test_eth_ctrl_stats
-> +	test_eth_mac_stats
-> +	test_pause_stats
-> +"
-> +STABLE_MAC_ADDRS=yes
-> +NUM_NETIFS=2
-> +lib_dir=$(dirname "$0")
-> +# shellcheck source=./../../../net/forwarding/lib.sh
-> +source "$lib_dir"/../../../net/forwarding/lib.sh
-> +
-> +traffic_test()
-> +{
-> +	local iface=$1; shift
-> +	local neigh=$1; shift
-> +	local num_tx=$1; shift
-> +	local pkt_format="$1"; shift
-> +	local title="$1"; shift
-> +	declare -a counters=( "${@:2:$1}" ); shift "$(( $1 + 1 ))"
+> diff --git a/security/apparmor/apparmorfs.c b/security/apparmor/apparmorf=
+s.c
+> index 2f84bd23edb69e7e69cb097e554091df0132816d..7b645f40e71c956f216fa6a7d=
+69c3ecd4e2a5ff4 100644
+> --- a/security/apparmor/apparmorfs.c
+> +++ b/security/apparmor/apparmorfs.c
+> @@ -149,7 +149,7 @@ static int aafs_count;
+>
+>  static int aafs_show_path(struct seq_file *seq, struct dentry *dentry)
+>  {
+> -       seq_printf(seq, "%s:[%lu]", AAFS_NAME, d_inode(dentry)->i_ino);
+> +       seq_printf(seq, "%s:[%llu]", AAFS_NAME, d_inode(dentry)->i_ino);
+>         return 0;
+>  }
+>
+> @@ -2644,7 +2644,7 @@ static int policy_readlink(struct dentry *dentry, c=
+har __user *buffer,
+>         char name[32];
 
-Please make this local -a. declare inside a function also introduces a
-local variable, so the effect is the same, but using local is more
-obvious.
+I have confirmed that the buffer is still big enough for a 64-bit inode num=
+ber.
 
-BTW, just a suggestion, personally I'd just make the counters a pure
-"rest" argument:
+>         int res;
+>
+> -       res =3D snprintf(name, sizeof(name), "%s:[%lu]", AAFS_NAME,
+> +       res =3D snprintf(name, sizeof(name), "%s:[%llu]", AAFS_NAME,
+>                        d_inode(dentry)->i_ino);
+>         if (res > 0 && res < sizeof(name))
+>                 res =3D readlink_copy(buffer, buflen, name, strlen(name))=
+;
 
-	local -a counters=("$@")
+For the AppArmor portion:
 
-simply because functions usually don't need more than one, and it's
-easier to use on call site, and easier to understand what's going on.
+Reviewed-By: Ryan Lee <ryan.lee@canonical.com>
 
-> +	local before after delta target_high extra
-> +	local int grp counter target unit
-> +	local num_rx=$((num_tx * 2))
-> +	local xfail_message
-> +	local src="aggregate"
-
-And local i.
-
-> +
-> +	for i in "${!counters[@]}"; do
-> +		read -r int grp counter target unit xfail_message <<< "${counters[$i]}"
-> +		before[i]=$(ethtool_std_stats_get "$int" "$grp" "$counter" "$src")
-> +	done
-> +
-> +	# shellcheck disable=SC2086 # needs split options
-> +	$MZ "$iface" -q -c "$num_tx" $pkt_format
-> +
-> +	# shellcheck disable=SC2086 # needs split options
-> +	$MZ "$neigh" -q -c "$num_rx" $pkt_format
-> +
-> +	for i in "${!counters[@]}"; do
-
-There should be a RET=0 here, so that the check_err below gets a clean slate.
-
-> +		read -r int grp counter target unit xfail_message<<< "${counters[$i]}"
-> +
-> +		after[i]=$(ethtool_std_stats_get "$int" "$grp" "$counter" "$src")
-> +		if [[ "${after[$i]}" == "null" ]]; then
-> +			log_test_skip "$int does not support $grp-$counter"
-> +			continue;
-> +		fi
-> +
-> +		delta=$((after[i] - before[i]))
-> +
-> +		# Allow an extra 1% tolerance for random packets sent by the stack
-> +		extra=$((num_pkts * unit / 100))
-> +		target_high=$((target + extra))
-> +
-> +		RET=0
-> +		[ "$delta" -ge "$target" ] && [ "$delta" -le "$target_high" ]
-> +		err="$?"
-> +		if [[ $err != 0  ]] && [[ -n $xfail_message ]]; then
-> +			log_test_xfail "$xfail_message"
-
-I think this should mention the $title as well. I think that the
-xfail_message could be the log_test's opt_str, so:
-
-                        log_test_xfail "$title" "$xfail_message"
-
-A bit annoying that log_test_xfail clears the retmsg. It does so so that
-messages from previous runs do not show up, which is desirable in
-general, but here it would be handy.
-
-> +			continue;
-> +		fi
-> +		check_err "$err" "$grp-$counter is not valid on $int (expected $target, got $delta)"
-> +		log_test "$title" "$counter on $int"
-> +	done
-> +}
-> +
-> +test_eth_ctrl_stats()
-> +{
-> +	local pkt_format="-a own -b bcast 88:08 -p 64"
-> +	local num_pkts=1000
-> +	local counters
-
-local -a
-
-(Though yeah, bash doesn't care.)
-
-> +
-> +	counters=("$h1 eth-ctrl MACControlFramesTransmitted $num_pkts 1"
-> +		  "$h2 eth-ctrl MACControlFramesReceived $num_pkts 1")
-> +	traffic_test "$h1" "$h2" "$num_pkts" "$pkt_format" \
-> +		"eth-ctrl tx on $h1" \
-> +		"${#counters[@]}" "${counters[@]}"
-> +
-> +	counters=("$h2 eth-ctrl MACControlFramesTransmitted $num_pkts 1"
-> +		  "$h1 eth-ctrl MACControlFramesReceived $num_pkts 1")
-> +	traffic_test "$h2" "$h1" "$num_pkts" "$pkt_format" \
-> +		"eth-ctrl tx on $h2" \
-> +		"${#counters[@]}" "${counters[@]}"
-> +}
-> +
-> +test_eth_mac_stats()
-> +{
-> +	local pkt_size=100
-> +	local pkt_size_fcs=$((pkt_size + 4))
-> +	local bcast_pkt_format="-a own -b bcast -p $pkt_size"
-> +	local mcast_pkt_format="-a own -b -b 01:00:5E:00:00:01 -p $pkt_size"
-> +	local ucast_pkt_format="-a own -b $h2_mac -p $pkt_size"
-> +	local num_pkts=2000
-> +	local octets=$((pkt_size_fcs * num_pkts))
-> +	local counters
-
-local -a
-
-> +
-> +	counters=("$h1 eth-mac BroadcastFramesXmittedOK $num_pkts 1"
-> +		  "$h1 eth-mac FramesTransmittedOK $num_pkts 1"
-> +		  "$h1 eth-mac OctetsTransmittedOK $octets $pkt_size_fcs"
-> +		  "$h1 eth-mac MulticastFramesXmittedOK 0 1"
-> +		  "$h2 eth-mac BroadcastFramesReceivedOK $num_pkts 1"
-> +		  "$h2 eth-mac FramesReceivedOK $num_pkts 1"
-> +		  "$h2 eth-mac OctetsReceivedOK $octets $pkt_size_fcs"
-> +		  "$h2 eth-mac MulticastFramesReceivedOK 0 1")
-> +	traffic_test "$h1" "$h2" "$num_pkts" "$bcast_pkt_format" \
-> +		"eth-mac bcast tx on $h1" \
-> +		"${#counters[@]}" "${counters[@]}"
-> +
-> +	counters=("$h1 eth-mac BroadcastFramesXmittedOK 0 1"
-> +		  "$h1 eth-mac FramesTransmittedOK $num_pkts 1"
-> +		  "$h1 eth-mac OctetsTransmittedOK $octets $pkt_size_fcs"
-> +		  "$h1 eth-mac MulticastFramesXmittedOK $num_pkts 1"
-> +		  "$h2 eth-mac BroadcastFramesReceivedOK 0 1"
-> +		  "$h2 eth-mac FramesReceivedOK $num_pkts 1"
-> +		  "$h2 eth-mac OctetsReceivedOK $octets $pkt_size_fcs"
-> +		  "$h2 eth-mac MulticastFramesReceivedOK $num_pkts 1")
-> +	traffic_test "$h1" "$h2" "$num_pkts" "$mcast_pkt_format" \
-> +		"eth-mac mcast tx on $h1" \
-> +		"${#counters[@]}" "${counters[@]}"
-> +
-> +	counters=("$h1 eth-mac BroadcastFramesXmittedOK 0 1"
-> +		  "$h1 eth-mac FramesTransmittedOK $num_pkts 1"
-> +		  "$h1 eth-mac OctetsTransmittedOK $octets $pkt_size_fcs"
-> +		  "$h1 eth-mac MulticastFramesXmittedOK 0 1"
-> +		  "$h2 eth-mac BroadcastFramesReceivedOK 0 1"
-> +		  "$h2 eth-mac FramesReceivedOK $num_pkts 1"
-> +		  "$h2 eth-mac OctetsReceivedOK $octets $pkt_size_fcs"
-> +		  "$h2 eth-mac MulticastFramesReceivedOK 0 1")
-> +	traffic_test "$h1" "$h2" "$num_pkts" "$ucast_pkt_format" \
-> +		"eth-mac ucast tx on $h1" \
-> +		"${#counters[@]}" "${counters[@]}"
-> +}
-> +
-> +test_pause_stats()
-> +{
-> +	local pkt_format="-a own -b 01:80:c2:00:00:01 88:08:00:01:00:01"
-> +	local xfail_message="Not all MACs detect injected pause frames"
-> +	local num_pkts=2000
-> +	local counters i
-
-counters should be declared local -a
-
-> +
-> +	# Check that there is pause frame support
-> +	for ((i = 1; i <= NUM_NETIFS; ++i)); do
-> +		if ! ethtool -I --json -a "${NETIFS[p$i]}" > /dev/null 2>&1; then
-> +			log_test_skip "No support for pause frames, skip tests"
-> +			exit
-> +		fi
-> +	done
-> +
-> +	counters=("$h1 pause tx_pause_frames $num_pkts 1 $xfail_message"
-> +		  "$h2 pause rx_pause_frames $num_pkts 1")
-> +	traffic_test "$h1" "$h2" "$num_pkts" "$pkt_format" \
-> +		"pause tx on $h1" \
-> +		"${#counters[@]}" "${counters[@]}"
-> +
-> +	counters=("$h2 pause tx_pause_frames $num_pkts 1 $xfail_message"
-> +		  "$h1 pause rx_pause_frames $num_pkts 1")
-> +	traffic_test "$h2" "$h1" "$num_pkts" "$pkt_format" \
-> +		"pause tx on $h2" \
-> +		"${#counters[@]}" "${counters[@]}"
-> +}
-> +
-> +setup_prepare()
-> +{
-> +	h1=${NETIFS[p1]}
-> +	h2=${NETIFS[p2]}
-> +
-> +	h2_mac=$(mac_get "$h2")
-> +
-> +	for iface in $h1 $h2; do
-
-These should be quoted.
-iface should be local.
-
-> +		ip link set dev "$iface" up
-
-Plesae use defer:
-
-		ip link set dev "$iface" up
-		defer ip link set dev "$iface" down
-
-Then drop the hand-rolled cleanup() altogether. Retain the "trap cleanup
-EXIT" -- it will pick up forwarding/lib.sh's cleanup(), which calls
-pre_cleanup and defer_scopes_cleanup().
-
-> +	done
-> +}
-> +
-> +cleanup()
-> +{
-> +	pre_cleanup
-> +
-> +	for iface in $h2 $h1; do
-> +		ip link set dev "$iface" down
-> +	done
-> +}
-> +
-> +check_ethtool_counter_group_support
-> +trap cleanup EXIT
-> +
-> +setup_prepare
-> +setup_wait
-> +
-> +tests_run
-> +
-> +exit "$EXIT_STATUS"
-
+> diff --git a/security/integrity/integrity_audit.c b/security/integrity/in=
+tegrity_audit.c
+> index 0ec5e4c22cb2a1066c2b897776ead6d3db72635c..d8d9e5ff1cd22b091f462d1e8=
+3d28d2d6bd983e9 100644
+> --- a/security/integrity/integrity_audit.c
+> +++ b/security/integrity/integrity_audit.c
+> @@ -62,7 +62,7 @@ void integrity_audit_message(int audit_msgno, struct in=
+ode *inode,
+>         if (inode) {
+>                 audit_log_format(ab, " dev=3D");
+>                 audit_log_untrustedstring(ab, inode->i_sb->s_id);
+> -               audit_log_format(ab, " ino=3D%lu", inode->i_ino);
+> +               audit_log_format(ab, " ino=3D%llu", inode->i_ino);
+>         }
+>         audit_log_format(ab, " res=3D%d errno=3D%d", !result, errno);
+>         audit_log_end(ab);
+> diff --git a/security/ipe/audit.c b/security/ipe/audit.c
+> index 3f0deeb54912730d9acf5e021a4a0cb29a34e982..93fb59fbddd60b56c0b22be2a=
+38b809ef9e18b76 100644
+> --- a/security/ipe/audit.c
+> +++ b/security/ipe/audit.c
+> @@ -153,7 +153,7 @@ void ipe_audit_match(const struct ipe_eval_ctx *const=
+ ctx,
+>                 if (inode) {
+>                         audit_log_format(ab, " dev=3D");
+>                         audit_log_untrustedstring(ab, inode->i_sb->s_id);
+> -                       audit_log_format(ab, " ino=3D%lu", inode->i_ino);
+> +                       audit_log_format(ab, " ino=3D%llu", inode->i_ino)=
+;
+>                 } else {
+>                         audit_log_format(ab, " dev=3D? ino=3D?");
+>                 }
+> diff --git a/security/lsm_audit.c b/security/lsm_audit.c
+> index 7d623b00495c14b079e10e963c21a9f949c11f07..737f5a263a8f79416133315ed=
+f363ece3d79c722 100644
+> --- a/security/lsm_audit.c
+> +++ b/security/lsm_audit.c
+> @@ -202,7 +202,7 @@ void audit_log_lsm_data(struct audit_buffer *ab,
+>                 if (inode) {
+>                         audit_log_format(ab, " dev=3D");
+>                         audit_log_untrustedstring(ab, inode->i_sb->s_id);
+> -                       audit_log_format(ab, " ino=3D%lu", inode->i_ino);
+> +                       audit_log_format(ab, " ino=3D%llu", inode->i_ino)=
+;
+>                 }
+>                 break;
+>         }
+> @@ -215,7 +215,7 @@ void audit_log_lsm_data(struct audit_buffer *ab,
+>                 if (inode) {
+>                         audit_log_format(ab, " dev=3D");
+>                         audit_log_untrustedstring(ab, inode->i_sb->s_id);
+> -                       audit_log_format(ab, " ino=3D%lu", inode->i_ino);
+> +                       audit_log_format(ab, " ino=3D%llu", inode->i_ino)=
+;
+>                 }
+>                 break;
+>         }
+> @@ -228,7 +228,7 @@ void audit_log_lsm_data(struct audit_buffer *ab,
+>                 if (inode) {
+>                         audit_log_format(ab, " dev=3D");
+>                         audit_log_untrustedstring(ab, inode->i_sb->s_id);
+> -                       audit_log_format(ab, " ino=3D%lu", inode->i_ino);
+> +                       audit_log_format(ab, " ino=3D%llu", inode->i_ino)=
+;
+>                 }
+>
+>                 audit_log_format(ab, " ioctlcmd=3D0x%hx", a->u.op->cmd);
+> @@ -246,7 +246,7 @@ void audit_log_lsm_data(struct audit_buffer *ab,
+>                 if (inode) {
+>                         audit_log_format(ab, " dev=3D");
+>                         audit_log_untrustedstring(ab, inode->i_sb->s_id);
+> -                       audit_log_format(ab, " ino=3D%lu", inode->i_ino);
+> +                       audit_log_format(ab, " ino=3D%llu", inode->i_ino)=
+;
+>                 }
+>                 break;
+>         }
+> @@ -265,7 +265,7 @@ void audit_log_lsm_data(struct audit_buffer *ab,
+>                 }
+>                 audit_log_format(ab, " dev=3D");
+>                 audit_log_untrustedstring(ab, inode->i_sb->s_id);
+> -               audit_log_format(ab, " ino=3D%lu", inode->i_ino);
+> +               audit_log_format(ab, " ino=3D%llu", inode->i_ino);
+>                 rcu_read_unlock();
+>                 break;
+>         }
+> diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+> index d8224ea113d1ac273aac1fb52324f00b3301ae75..150ea86ebc1f7c7f8391af410=
+9a3da82b12d00d2 100644
+> --- a/security/selinux/hooks.c
+> +++ b/security/selinux/hooks.c
+> @@ -1400,7 +1400,7 @@ static int inode_doinit_use_xattr(struct inode *ino=
+de, struct dentry *dentry,
+>         if (rc < 0) {
+>                 kfree(context);
+>                 if (rc !=3D -ENODATA) {
+> -                       pr_warn("SELinux: %s:  getxattr returned %d for d=
+ev=3D%s ino=3D%ld\n",
+> +                       pr_warn("SELinux: %s:  getxattr returned %d for d=
+ev=3D%s ino=3D%lld\n",
+>                                 __func__, -rc, inode->i_sb->s_id, inode->=
+i_ino);
+>                         return rc;
+>                 }
+> @@ -3477,7 +3477,7 @@ static void selinux_inode_post_setxattr(struct dent=
+ry *dentry, const char *name,
+>                                            &newsid);
+>         if (rc) {
+>                 pr_err("SELinux:  unable to map context to SID"
+> -                      "for (%s, %lu), rc=3D%d\n",
+> +                      "for (%s, %llu), rc=3D%d\n",
+>                        inode->i_sb->s_id, inode->i_ino, -rc);
+>                 return;
+>         }
+> diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+> index 98af9d7b943469d0ddd344fc78c0b87ca40c16c4..7e2f54c17a5d5c70740bbfa92=
+ba4d4f1aca2cf22 100644
+> --- a/security/smack/smack_lsm.c
+> +++ b/security/smack/smack_lsm.c
+> @@ -182,7 +182,7 @@ static int smk_bu_inode(struct inode *inode, int mode=
+, int rc)
+>         char acc[SMK_NUM_ACCESS_TYPE + 1];
+>
+>         if (isp->smk_flags & SMK_INODE_IMPURE)
+> -               pr_info("Smack Unconfined Corruption: inode=3D(%s %ld) %s=
+\n",
+> +               pr_info("Smack Unconfined Corruption: inode=3D(%s %lld) %=
+s\n",
+>                         inode->i_sb->s_id, inode->i_ino, current->comm);
+>
+>         if (rc <=3D 0)
+> @@ -195,7 +195,7 @@ static int smk_bu_inode(struct inode *inode, int mode=
+, int rc)
+>
+>         smk_bu_mode(mode, acc);
+>
+> -       pr_info("Smack %s: (%s %s %s) inode=3D(%s %ld) %s\n", smk_bu_mess=
+[rc],
+> +       pr_info("Smack %s: (%s %s %s) inode=3D(%s %lld) %s\n", smk_bu_mes=
+s[rc],
+>                 tsp->smk_task->smk_known, isp->smk_inode->smk_known, acc,
+>                 inode->i_sb->s_id, inode->i_ino, current->comm);
+>         return 0;
+> @@ -214,7 +214,7 @@ static int smk_bu_file(struct file *file, int mode, i=
+nt rc)
+>         char acc[SMK_NUM_ACCESS_TYPE + 1];
+>
+>         if (isp->smk_flags & SMK_INODE_IMPURE)
+> -               pr_info("Smack Unconfined Corruption: inode=3D(%s %ld) %s=
+\n",
+> +               pr_info("Smack Unconfined Corruption: inode=3D(%s %lld) %=
+s\n",
+>                         inode->i_sb->s_id, inode->i_ino, current->comm);
+>
+>         if (rc <=3D 0)
+> @@ -223,7 +223,7 @@ static int smk_bu_file(struct file *file, int mode, i=
+nt rc)
+>                 rc =3D 0;
+>
+>         smk_bu_mode(mode, acc);
+> -       pr_info("Smack %s: (%s %s %s) file=3D(%s %ld %pD) %s\n", smk_bu_m=
+ess[rc],
+> +       pr_info("Smack %s: (%s %s %s) file=3D(%s %lld %pD) %s\n", smk_bu_=
+mess[rc],
+>                 sskp->smk_known, smk_of_inode(inode)->smk_known, acc,
+>                 inode->i_sb->s_id, inode->i_ino, file,
+>                 current->comm);
+> @@ -244,7 +244,7 @@ static int smk_bu_credfile(const struct cred *cred, s=
+truct file *file,
+>         char acc[SMK_NUM_ACCESS_TYPE + 1];
+>
+>         if (isp->smk_flags & SMK_INODE_IMPURE)
+> -               pr_info("Smack Unconfined Corruption: inode=3D(%s %ld) %s=
+\n",
+> +               pr_info("Smack Unconfined Corruption: inode=3D(%s %lld) %=
+s\n",
+>                         inode->i_sb->s_id, inode->i_ino, current->comm);
+>
+>         if (rc <=3D 0)
+> @@ -253,7 +253,7 @@ static int smk_bu_credfile(const struct cred *cred, s=
+truct file *file,
+>                 rc =3D 0;
+>
+>         smk_bu_mode(mode, acc);
+> -       pr_info("Smack %s: (%s %s %s) file=3D(%s %ld %pD) %s\n", smk_bu_m=
+ess[rc],
+> +       pr_info("Smack %s: (%s %s %s) file=3D(%s %lld %pD) %s\n", smk_bu_=
+mess[rc],
+>                 sskp->smk_known, smk_of_inode(inode)->smk_known, acc,
+>                 inode->i_sb->s_id, inode->i_ino, file,
+>                 current->comm);
+>
+> --
+> 2.53.0
+>
+>
