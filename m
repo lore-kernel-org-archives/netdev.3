@@ -1,66 +1,65 @@
 Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B748E1FE45D;
-	Fri, 27 Feb 2026 09:14:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D5936A009;
+	Fri, 27 Feb 2026 09:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772183672; cv=none; b=qT19xpFKEDI76vPWzUljrzS2O4mfatOsnvwtSJCxsm39jtzPFMhpCe/hInc97BHo5Zh9KB4PU9gGRAj5VUeiwPn7/P+/uBTgrRiAAVOg5DLAV3nEBD4QhULFrqAOulhpydbX+DAMuYYSlayK5KpQprIZURm7zNe66DsmYeeGgzY=
+	t=1772183673; cv=none; b=cMlFsGE/fF55ezCxlUeBD5FieadS/D7aBUuuMeL+Jxs2iQbp41RJSoY3plFKLxCsb4PjqFvKEs9LWK8r2mbGlfZU68S0Y7pQQZVd294zrKXKnc0stDrku3/+awyIBXKDZK3wdGmzWk/U4QISE0KVvB0Dst+IdEMsbINrgikYAnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772183672; c=relaxed/simple;
-	bh=VT3oFG9DRvFa2kerIMUoN8Bg68KC7AQhmi4O8Zo1DZo=;
+	s=arc-20240116; t=1772183673; c=relaxed/simple;
+	bh=48ByVAjchdJGbtgbwmuBIyBfBDt0oYIf1gvDZH6zrsA=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=POU00FLoTLCT8A4H/7330m4QjOnyv7VbHCXNwFYVXHqrlZpD/Lpnjd6cxXJacQZEcM5SOJRkH/Ko78ouwcxzFLhQ7b0F0Z+AX+/8bEAKNqfw8mQJteXYXnAMK3bgvJ8nqQTO65QC/xjmDsS2p+VV/DUMIee5VyjQtySUIC0vXjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=QAVtXR0a; arc=none smtp.client-ip=67.231.156.173
+	 MIME-Version:Content-Type; b=txsjnWq7no+ndTaJFldtQkEjvk7iu7Jegol+NyAmBHwsmpv8oXeXe6NX55M2qNafionrCVSt9wi3rMAXAVmvf9nlwwlqbbPGg42HFsDhj3AePa41xcT0Z+0lh4dRtqs0X/ax7IouKxDB5JHQuVL8vZO0pqoYxqQKKLd8D8oU6iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=CJSmN2al; arc=none smtp.client-ip=67.231.156.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="QAVtXR0a"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61R0MvRt096637;
-	Fri, 27 Feb 2026 01:14:10 -0800
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="CJSmN2al"
+Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 61QKAZ2e240757;
+	Fri, 27 Feb 2026 01:14:17 -0800
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=K
-	dUUXFAXd7Gwinbgwn04tUkJyTDpoe6Hn5EyBghqdzY=; b=QAVtXR0axjyY/rlnU
-	sdj/YBX7S14Nd/Or4yipOLkrq3+A25qW2DGsYFBg3x44WoGtwyULf5I601ANGN/j
-	4pMqXVMQfQJQJBRp1Nty4tqafc/bqunyC1NOV+491nooEBHg4wxsoa6oC+Ji0PaF
-	nzEp4MJs1o1QrZsH7LDS3U+ABxpHt2zWJ2vvaip5MmWbv1q16h7umDQ7kBQigz7R
-	YUk4qdd+Qmpd45imJNpzHgSpF/aVc/DKyRiZoMjgE03gbC38KJaAaEOz13a9MzNw
-	09efP9Az/4uEF7Dpy97xYlfv8ifYVtYMdNUD5xp+fqCfqwH4Jd/wwUjiuPzhrTkT
-	gJY2g==
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=z
+	g18l2emhDDDBQJLpFA6hc+1FosgnXVga7yX2JaHwHU=; b=CJSmN2alun9lu/ZVe
+	J0g7CWNQNULvE/GI0QBtbgaAk9ZBlvxTbYZSm8zzO6CZagkbF16b8AKrmekZmsBK
+	T7qyD2tUqvl6xdw8N37jLmVUH0sNP+RctPQ9It+gHT4b7xSuTdyKFHOBeANI0l/G
+	RDlUMnCFk2rdSiQmfSps0E9j7mavPPauLT2JC863osWmr2vvBKUUpvR3DgBGVPpE
+	4F+zYhZjfcTmrNzZ2zoi9duK/6QKfpfi0L56eS4FIlPrZSTxcX1qZ7wBGzh+9FkB
+	iode240q9ZVfmODdyJo+Imcx1oHmbyLcW1O4z9Zr0CKCRE3rWKI2db7L0H4ErP7f
+	kJ5/Q==
 Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4cjpuhjswd-1
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4chqcyy84a-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 27 Feb 2026 01:14:10 -0800 (PST)
+	Fri, 27 Feb 2026 01:14:17 -0800 (PST)
 Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
  DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Fri, 27 Feb 2026 01:14:09 -0800
+ 15.2.1544.25; Fri, 27 Feb 2026 01:14:16 -0800
 Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
  (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Fri, 27 Feb 2026 01:14:09 -0800
+ Transport; Fri, 27 Feb 2026 01:14:16 -0800
 Received: from 101hsapphire1.sclab.marvell.com (unknown [10.111.168.47])
-	by maili.marvell.com (Postfix) with ESMTP id 9927A3F705E;
-	Fri, 27 Feb 2026 01:14:08 -0800 (PST)
+	by maili.marvell.com (Postfix) with ESMTP id 854593F70B4;
+	Fri, 27 Feb 2026 01:14:15 -0800 (PST)
 From: Vimlesh Kumar <vimleshk@marvell.com>
 To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <sedara@marvell.com>, <srasheed@marvell.com>, <hgani@marvell.com>,
         "Vimlesh Kumar" <vimleshk@marvell.com>,
         Veerasenareddy Burru
 	<vburru@marvell.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller"
-	<davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>,
-        "Paolo Abeni" <pabeni@redhat.com>,
-        Satananda Burla
-	<sburla@marvell.com>,
-        "Abhijit Ayarekar" <aayarekar@marvell.com>
-Subject: [PATCH net v2 1/4] octeon_ep: Relocate counter updates before NAPI
-Date: Fri, 27 Feb 2026 09:13:57 +0000
-Message-ID: <20260227091402.1773833-2-vimleshk@marvell.com>
+        Satananda Burla <sburla@marvell.com>,
+        Andrew Lunn
+	<andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni
+	<pabeni@redhat.com>
+Subject: [PATCH net v2 3/4] octeon_ep_vf: Relocate counter updates before NAPI
+Date: Fri, 27 Feb 2026 09:13:59 +0000
+Message-ID: <20260227091402.1773833-4-vimleshk@marvell.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260227091402.1773833-1-vimleshk@marvell.com>
 References: <20260227091402.1773833-1-vimleshk@marvell.com>
@@ -72,91 +71,85 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: queF7QBYG0PE8njXM4uHpRLegMlRBf7S
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDA3OSBTYWx0ZWRfX4S2ODsWUBI0A
- UPqIeNZLkIVeFAdBHmszA0LpBYsvXaMWXcw8BIHJoJXV9D9JuMKNdniIBXcfzpHTwd9d9fC9vlu
- XBn9GQck56naEb5pBzEfvYsUwxGpfq9RGUUPJ5kQXMBD3+6BjoqnSY1jUpGNzU1aI8fjy6mt14e
- jIwR3joApwOkWwoqLVJz4Tu+58xxzGzQwmdEaXfP5q/WHqpPKPkyzXahVnaSpevpNDbpIAhCi2/
- u6D0LHyMaC+nKvRyZRo4ipZtvjHvrozwUylVRzyD7lPrwHLADhECVyEAvFgOeyMZT85Q4biLN5b
- /QfAY53B9or/kfd46ASFBtg5Epn02VhhyBqjBE/vVqL0qUwcY1SHGbyRGRGITQSzFiuJA7WMeIW
- LWdIelc/l45+WlerjGbcE0Xgwm0yS3brL4FZkPdmBhoVBdcWVMnAMHM5DnzXMllL0FqUimE05/5
- Hs+76/VLd3OtBGStPdw==
-X-Proofpoint-GUID: queF7QBYG0PE8njXM4uHpRLegMlRBf7S
-X-Authority-Analysis: v=2.4 cv=f7JFxeyM c=1 sm=1 tr=0 ts=69a16062 cx=c_pps
+X-Proofpoint-GUID: 68xEKrNVg6vqEA5VjOGCqnzosQQqHrrl
+X-Proofpoint-ORIG-GUID: 68xEKrNVg6vqEA5VjOGCqnzosQQqHrrl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMjI3MDA3OSBTYWx0ZWRfX+srhLAQ/aRRi
+ IDB585ZrimtU77h7n/w96mewOttaXsS6W7T3WbSi+WkrLs/GBDE9zgGKT0G+f87Ados+LRqmkub
+ 3nFRanUrFU9R2kVRqNRNvHiafNzm72fbDAJJ4qsfudfxOv8cx+nADkxOS3/IfpdtkuZrqmM7CZd
+ ioGcyJB8U+jPisgmZUicpH3e8o57bBVuoWtWMU9j1VmSuLqQW7wTIokUzD7c4cOQUqeRVISU+9m
+ XoIyNsuz1bwCXH5w9Mf6+rgJQ9iykoFsFCBoEziumTXw6NpO1t3cQeuuu22ZJ2hW7pgBRECkw61
+ YPaYWGrm/y7Ep3ex/ikwh6b4k1f7tgVIWxJHQ2A6lU4VKT6yHuX9Alu9dSpdx8aEMM2Khnj1PcH
+ kfXcS7QQ6MKL2jiE085uCWIiMH3qp76bqIUkd5cyU9H3np7H2Tj7qNuYWP4NbLrKO+e4bJ7BYHs
+ pO14LTsF/kQi5Sp3ipg==
+X-Authority-Analysis: v=2.4 cv=B/S0EetM c=1 sm=1 tr=0 ts=69a16069 cx=c_pps
  a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
  a=HzLeVaNsDn8A:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=l8fbD5RvBbpoYuFOKEoA:9
+ a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=2r72hCCS2uxvEu3KRW0A:9
  a=OBjm3rFKGHvpk9ecZwUJ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-02-27_01,2026-02-26_01,2025-10-01_01
 
-Relocate IQ/OQ IN/OUT_CNTS updates to occur before NAPI completion,
-and replace napi_complete with napi_complete_done.
-
+Relocate IQ/OQ IN/OUT_CNTS updates to occur before NAPI completion.
 Moving the IQ/OQ counter updates before napi_complete_done ensures
 1. Counter registers are updated before re-enabling interrupts.
 2. Prevents a race where new packets arrive but counters aren't properly
    synchronized.
-napi_complete_done (vs napi_complete) allows for better
-interrupt coalescing.
 
-Fixes: 37d79d0596062 ("octeon_ep: add Tx/Rx processing and interrupt support")
+Fixes: 1cd3b407977c3 ("octeon_ep_vf: add Tx/Rx processing and interrupt support")
 Signed-off-by: Sathesh Edara <sedara@marvell.com>
 Signed-off-by: Shinas Rasheed <srasheed@marvell.com>
 Signed-off-by: Vimlesh Kumar <vimleshk@marvell.com>
 ---
- .../ethernet/marvell/octeon_ep/octep_main.c   | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ .../marvell/octeon_ep_vf/octep_vf_main.c        | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-index bcea3fc26a8c..a93c3c9994c2 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-@@ -555,12 +555,12 @@ static void octep_clean_irqs(struct octep_device *oct)
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+index 420c3f4cf741..e113c846f9d1 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+@@ -286,12 +286,13 @@ static void octep_vf_clean_irqs(struct octep_vf_device *oct)
  }
  
  /**
-- * octep_enable_ioq_irq() - Enable MSI-x interrupt of a Tx/Rx queue.
-+ * octep_update_pkt() - Update IQ/OQ IN/OUT_CNT registers.
+- * octep_vf_enable_ioq_irq() - Enable MSI-x interrupt of a Tx/Rx queue.
++ * octep_vf_update_pkt() - Update IQ/OQ IN/OUT_CNT registers.
   *
   * @iq: Octeon Tx queue data structure.
   * @oq: Octeon Rx queue data structure.
   */
--static void octep_enable_ioq_irq(struct octep_iq *iq, struct octep_oq *oq)
-+static void octep_update_pkt(struct octep_iq *iq, struct octep_oq *oq)
+-static void octep_vf_enable_ioq_irq(struct octep_vf_iq *iq, struct octep_vf_oq *oq)
++
++static void octep_vf_update_pkt(struct octep_vf_iq *iq, struct octep_vf_oq *oq)
  {
  	u32 pkts_pend = oq->pkts_pending;
  
-@@ -576,7 +576,17 @@ static void octep_enable_ioq_irq(struct octep_iq *iq, struct octep_oq *oq)
- 	}
+@@ -308,6 +309,17 @@ static void octep_vf_enable_ioq_irq(struct octep_vf_iq *iq, struct octep_vf_oq *
  
  	/* Flush the previous wrties before writing to RESEND bit */
--	wmb();
-+	smp_wmb();
+ 	smp_wmb();
 +}
 +
 +/**
-+ * octep_enable_ioq_irq() - Enable MSI-x interrupt of a Tx/Rx queue.
++ * octep_vf_enable_ioq_irq() - Enable MSI-x interrupt of a Tx/Rx queue.
 + *
 + * @iq: Octeon Tx queue data structure.
 + * @oq: Octeon Rx queue data structure.
 + */
-+static void octep_enable_ioq_irq(struct octep_iq *iq, struct octep_oq *oq)
++static void octep_vf_enable_ioq_irq(struct octep_vf_iq *iq,
++				    struct octep_vf_oq *oq)
 +{
- 	writeq(1UL << OCTEP_OQ_INTR_RESEND_BIT, oq->pkts_sent_reg);
- 	writeq(1UL << OCTEP_IQ_INTR_RESEND_BIT, iq->inst_cnt_reg);
+ 	writeq(1UL << OCTEP_VF_OQ_INTR_RESEND_BIT, oq->pkts_sent_reg);
+ 	writeq(1UL << OCTEP_VF_IQ_INTR_RESEND_BIT, iq->inst_cnt_reg);
  }
-@@ -602,7 +612,8 @@ static int octep_napi_poll(struct napi_struct *napi, int budget)
+@@ -333,6 +345,7 @@ static int octep_vf_napi_poll(struct napi_struct *napi, int budget)
  	if (tx_pending || rx_done >= budget)
  		return budget;
  
--	napi_complete(napi);
-+	octep_update_pkt(ioq_vector->iq, ioq_vector->oq);
-+	napi_complete_done(napi, rx_done);
- 	octep_enable_ioq_irq(ioq_vector->iq, ioq_vector->oq);
- 	return rx_done;
- }
++	octep_vf_update_pkt(ioq_vector->iq, ioq_vector->oq);
+ 	if (likely(napi_complete_done(napi, rx_done)))
+ 		octep_vf_enable_ioq_irq(ioq_vector->iq, ioq_vector->oq);
+ 
 -- 
 2.47.3
 
