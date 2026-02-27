@@ -1,95 +1,84 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC153A1D0A
-	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 10:53:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4FFC3E9F92
+	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 10:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772189591; cv=none; b=ei1fN2SmCRtiIc2ucxiVT0gmdxcI5Y/OgN9C+b06i+wMr2gVpJ2EoX0hW54wdWj88m8c/uXjcmX8Y5LUVBAWq5nUopIOgw0W6M3QMWWGIic9DZrR2IlcaweS+OcCavV72d6zhRnKIbV8Uv6wQAWT1uY1CHahL0eRSk9rgdQhaAw=
+	t=1772189594; cv=none; b=PeUsGDoyiQ615pZbYIipAo/Ycm9dzYLgcBNTXi+nKlZukJZSyH5K9BAzLuH6g41p/MYkVrukYCzFu+O1JrOkf3+zV74AV2oFdCK4pG5cglM8c7SNXTLeQ77ESJKvN8ES+FnWih+KKX5W9OAk+QQhGNX3krfeDkfXurdetTp8mSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772189591; c=relaxed/simple;
-	bh=Edr9N2olxLaxijMUHS0n8GHZ3f5PPU6Cf1V3LCWMLL8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IqFTdI7WGGRPnGQuh9R//YXsbEdb4JBIfuSN7SKoYJwXdo66a1kwC2+93fhtYmZuafgZihE02Y/rIf3JnRacOgjnpbiaSvNDOZRxn+8TvGKe/7volO3dt3SbkJK1m3AHdY73SFYMauKiiCc+18KVzK7Theg7kU8h+xirlPSoeSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fhCCvHJS; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1772189594; c=relaxed/simple;
+	bh=eGrM0jDl+frkNNYvyMhzBflmvuBVGMudEcwWiLqV+r4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fkxkHYj1H9Vp66yWm8LndWvbPTNiiscZgAkas/ybkumWXW9kVbPaluBYTPxP6VJPtKNGEB+MgN4y4wt75VxPDbqqgqYaXkyhgoaPObXyuW49YKvuqL54zWpELj1GVdT3PX85dWBFrF6WloZIQL0q3yQ8ZkPwmf+gGTNcy7lBltE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=HJlFgcnE; arc=none smtp.client-ip=91.218.175.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fhCCvHJS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772189589;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="HJlFgcnE"
+Message-ID: <328c9b1b-43f0-4926-9ea4-12ea97036472@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772189591;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=k6zEE769409AJr5AjsfM0SAQkPjG4+rPKOFVf3cs9/A=;
-	b=fhCCvHJSEtf/slqwHpnB/Ol8ZZ+XrOFWQihi1ySK7qas1GUZfd6ZebBx3a9UaSvRXlJHXl
-	eLHHifIYbTBi1b9o1ygWFqCpoxMgMt1OLcM2YeaBo5Jw2D2ImUKG+Vl4XfPmMj4gLrLFC1
-	bQ+EPAr6V9gdDNzegrq8a6eJfxYumAw=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-102-3aD-Mma2OVuECTDZiIXxXQ-1; Fri,
- 27 Feb 2026 05:53:06 -0500
-X-MC-Unique: 3aD-Mma2OVuECTDZiIXxXQ-1
-X-Mimecast-MFC-AGG-ID: 3aD-Mma2OVuECTDZiIXxXQ_1772189585
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id ADC411956071;
-	Fri, 27 Feb 2026 10:53:04 +0000 (UTC)
-Received: from p16v.redhat.com (unknown [10.45.225.15])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id EA44D19560B5;
-	Fri, 27 Feb 2026 10:53:01 +0000 (UTC)
-From: Ivan Vecera <ivecera@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Prathosh Satish <Prathosh.Satish@microchip.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Arkadiusz Kubalewski <arkadiusz.kubalewski@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Petr Oros <poros@redhat.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 0/2] dpll: zl3073x: consolidate chip info and add temperature reporting
-Date: Fri, 27 Feb 2026 11:52:58 +0100
-Message-ID: <20260227105300.710272-1-ivecera@redhat.com>
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xnrXoUnmccJNYRxxY7invs6d6S59ar9ZX0PftI7XRnI=;
+	b=HJlFgcnE1yMwpxclJocw80gvZkcnHWh3Jk0PTk8PBEGpms6/ni1nmsVgV++F7JJ7T7XnWp
+	kATI+EUrCCBI/pb9SaOemjbXTKsBM5jakNcw3uxLC6VMXrkqFIpWArRL8Z1ayDLEr4Xw9p
+	dkBNDd6J09l8iNN0w4XtShOxqu18FGk=
+Date: Fri, 27 Feb 2026 10:53:01 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Subject: Re: [PATCH net v2] net: mana: Ring doorbell at 4 CQ wraparounds
+To: Long Li <longli@microsoft.com>, "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S . Miller" <davem@davemloft.net>, Eric Dumazet
+ <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>
+Cc: Shradha Gupta <shradhagupta@linux.microsoft.com>,
+ Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+ linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260226192833.1050807-1-longli@microsoft.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20260226192833.1050807-1-longli@microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-This series refactors the ZL3073x chip variant handling and adds die
-temperature reporting for chips that support it.
+On 26/02/2026 19:28, Long Li wrote:
+> MANA hardware requires at least one doorbell ring every 8 wraparounds
+> of the CQ. The driver rings the doorbell as a form of flow control to
+> inform hardware that CQEs have been consumed.
+> 
+> The NAPI poll functions mana_poll_tx_cq() and mana_poll_rx_cq() can
+> poll up to CQE_POLLING_BUFFER (512) completions per call. If the CQ
+> has fewer than 512 entries, a single poll call can process more than
+> 4 wraparounds without ringing the doorbell. The doorbell threshold
+> check also uses ">" instead of ">=", delaying the ring by one extra
+> CQE beyond 4 wraparounds. Combined, these issues can cause the driver
+> to exceed the 8-wraparound hardware limit, leading to missed
+> completions and stalled queues.
+> 
+> Fix this by capping the number of CQEs polled per call to 4 wraparounds
+> of the CQ in both TX and RX paths. Also change the doorbell threshold
+> from ">" to ">=" so the doorbell is rung as soon as 4 wraparounds are
+> reached.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 58a63729c957 ("net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings")
+> Signed-off-by: Long Li <longli@microsoft.com>
+> ---
+> v2: Use min() instead of min_t(u32, ...) since queue_size is already u32
+>   drivers/net/ethernet/microsoft/mana/mana_en.c | 23 +++++++++++++++----
+>   1 file changed, 18 insertions(+), 5 deletions(-)
 
-Patch 1 replaces the five per-variant chip_info structures and their
-exported symbols with a single consolidated lookup table.  The chip
-variant is now detected at runtime from the chip ID register rather
-than being selected at compile time via bus driver match data. This
-simplifies the I2C/SPI drivers and makes adding new variants a
-single-line table addition.  A flags field replaces the hardcoded
-chip_id switch in zl3073x_dev_is_ref_phase_comp_32bit().
-
-Patch 2 uses the new flags infrastructure to add die temperature
-reporting for chip variants that provide a temperature status register.
-The temp_get callback is conditionally set during device registration
-based on the ZL3073X_FLAG_DIE_TEMP chip flag.
-
-Ivan Vecera (2):
-  dpll: zl3073x: detect DPLL channel count from chip ID at runtime
-  dpll: zl3073x: add die temperature reporting for supported chips
-
- drivers/dpll/zl3073x/core.c | 118 ++++++++++--------------------------
- drivers/dpll/zl3073x/core.h |  59 +++++++++---------
- drivers/dpll/zl3073x/dpll.c |  28 ++++++++-
- drivers/dpll/zl3073x/dpll.h |   2 +
- drivers/dpll/zl3073x/i2c.c  |  37 ++++-------
- drivers/dpll/zl3073x/regs.h |   2 +
- drivers/dpll/zl3073x/spi.c  |  37 ++++-------
- 7 files changed, 113 insertions(+), 170 deletions(-)
-
--- 
-2.52.0
-
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
