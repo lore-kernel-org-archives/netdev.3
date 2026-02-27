@@ -1,190 +1,204 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from mout.perfora.net (mout.perfora.net [74.208.4.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8158C35A3AE
-	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 09:55:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772186147; cv=fail; b=JyeO0wpZ+EgFFzRSRBt8D7mQH32ONrhBrdtWq8zj3Mh2N4+egmpaxlUg1inTmD4TKmjUBkRHyfMreYXrRT96crZV1VXh9/oSS7iq0XpMrF9dlZMgbC98dpziZtmBSy8Kpxd9RdXSYOsjD6xArz1yXEo+aGYpuudtG5kTELeH9KI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772186147; c=relaxed/simple;
-	bh=HUKdyveMZ5UZgUcKEORZeb9bY80ZG5rzJ3uXaqDKTaY=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=AOaWQDK7ghmzwAfbmtbLhvflhpFSW4jy9NmP42QXfsjxDLk38+09pDHKtiGWu9BApmo/u5sXwChXBtET2uQ5cZuSClO/YaXb4YOstD9Z9cv2cSN+TzeAVn+dflRh+WgIUEbsTw2QagEt2AItlOdewHK2mQokb9fcA6D3+Y7anRo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ksyTKNei; arc=fail smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9754621770A;
+	Fri, 27 Feb 2026 09:59:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.197
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772186364; cv=none; b=kGT1re4FVTYf4NOUWoG+ivjy+AYMunmsGmuFQlHtFtLamVTRKU/xkx6Tu16M171A0zGQFE4ZE426cfTMfPkbir9BnUm/E+dcRjiK4GDJtJ6IoLXKfBFgm3GlFOigfzYgvHKKSbhrl6Diri7XrKSA8R9maE57Dv87fdPwJrzZfJU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772186364; c=relaxed/simple;
+	bh=osg/KBiSHPE8q8+l4cSGrjz/3ljFNSwcPbponOZHnUQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=B8lThX+eIUtqOcbWKJkwlztAV2bf2uZoUDoBQcNsbg3JtsiqASvrsN11gwoCRkfLIk8ixz3SsboZXFpau7mkT/byVwBHYClxMagCkCRVR0qRYDUsy2edr55IcFm7DKVLfw2JXhZl9p0x4+ebJgQTSnyRh0JNJIlWBE0pw1oTFEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ziswiler.com; spf=pass smtp.mailfrom=ziswiler.com; dkim=pass (2048-bit key) header.d=ziswiler.com header.i=marcel@ziswiler.com header.b=RxE+5H3D; arc=none smtp.client-ip=74.208.4.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ziswiler.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziswiler.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ksyTKNei"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772186144; x=1803722144;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=HUKdyveMZ5UZgUcKEORZeb9bY80ZG5rzJ3uXaqDKTaY=;
-  b=ksyTKNeiFs+MoI/NPrdHkrVRqcYXHedbPJX0AkchZEkmGr8xeY5Dd4Nb
-   CFwyX7sLJVKaoQxriVof9zXKduJMnIf3WbSpayclipYJ/yvlgNfIVZbGs
-   WRO7tN43zVHj8mn6XEm7LV5DLb7PkFeo6qrxh1B9A8gt8ZW7+tS0LQDFx
-   GLaeZqDuV6Yf7abE0UfOyIsCvbi4d4u99LFIQGSXG7e8wiwxaNgyMRmB0
-   FCcEyqApHrnguBFWl3EzJUuPFia+NndaHpo3zEVf1WYdwTujZpG1MzzsO
-   HXfPVIJ7f9dWq5iRv866GzhnNBZaVDAZBIwgjXnE2X2xSt0+LU9aTIn7z
-   A==;
-X-CSE-ConnectionGUID: xtvgMB3aSoyazFzAyorDWA==
-X-CSE-MsgGUID: ezcKbbXuRZ+9ZMvbz05yJw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11713"; a="73450237"
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
-   d="scan'208";a="73450237"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2026 01:55:44 -0800
-X-CSE-ConnectionGUID: NW/qXCCwSvG9t0FAA+r82A==
-X-CSE-MsgGUID: wNVzM3aVRmS86a/3SOc1NA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,313,1763452800"; 
-   d="scan'208";a="214292469"
-Received: from fmsmsx901.amr.corp.intel.com ([10.18.126.90])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2026 01:55:46 -0800
-Received: from FMSMSX902.amr.corp.intel.com (10.18.126.91) by
- fmsmsx901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 27 Feb 2026 01:55:45 -0800
-Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
- FMSMSX902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 27 Feb 2026 01:55:45 -0800
-Received: from BN1PR04CU002.outbound.protection.outlook.com (52.101.56.9) by
- edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 27 Feb 2026 01:55:44 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=dLFQdNiLuXqsWVy9Z64Ep/PLQdEA684VkORX7PFA2nkqsCBXEwgX7R0qfxE+2NDjIaOhVwUZig0daeNKrPCjIoWpLdMgU5Iz1ozsyZe0yyUchmE0FL9GBGr/zYTu+DBeAQ8AXX/0DhZZOm6EFw8wSYYB7foox2kWwOg8icxYC2DY3oxtvSbA9NWJL5TOACWWIC0qVUFHwubeSbGb7BCkZ2WepucAFLwNNmuOnOtKN9WLcWAEBhWyEJlt+yc7IySwSI2cmsEA/MSw3sqPv2jtW4WSDEioKWUKkYazeMMLHFBhPYEF9U5SWs6H54Cte2C/zLT9VCxgWxSnyVen0tAzQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HUKdyveMZ5UZgUcKEORZeb9bY80ZG5rzJ3uXaqDKTaY=;
- b=eALFl+DUUK4WZOvhQigrzotSbFYH0fYPivNQgnKMiSmbkqvPtwAxITVAl171JLzSak1L5o+byPsHgYx4eDpnqMZ4RdhvFuYkBtHBoOQs9s9SdpKUvBBEEBJPGKMcvi7SL2sOK/uLzoiGlO73WFnxxVEUZTLprzeJwHRIT2hxiQp4qjZrk465hEPgYdlPkZOoSKKP3O+SwlfbYuvUCpIY8A+jELh+yio7mNH5ywuw6BSCbmyUz4Yeklb++2yShXd2QMwjBI9BuaFm2mMygEqM9Y8OhdM9kX6EHVj5KSYOFB7YMudooJ+Ie4qoZJQJr6E66A7xOQuhxZ4apeUYg9g2yA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from CY5PR11MB6258.namprd11.prod.outlook.com (2603:10b6:930:25::16)
- by IA0PR11MB8333.namprd11.prod.outlook.com (2603:10b6:208:491::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Fri, 27 Feb
- 2026 09:55:37 +0000
-Received: from CY5PR11MB6258.namprd11.prod.outlook.com
- ([fe80::3aeb:4e49:6de6:9ee]) by CY5PR11MB6258.namprd11.prod.outlook.com
- ([fe80::3aeb:4e49:6de6:9ee%3]) with mapi id 15.20.9654.014; Fri, 27 Feb 2026
- 09:55:37 +0000
-From: "Rinitha, SX" <sx.rinitha@intel.com>
-To: Takashi Kozu <takkozu@amazon.com>, "horms@kernel.org" <horms@kernel.org>
-CC: "Nguyen, Anthony L" <anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
-	<przemyslaw.kitszel@intel.com>, "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"intel-wired-lan@lists.osuosl.org" <intel-wired-lan@lists.osuosl.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Loktionov, Aleksandr"
-	<aleksandr.loktionov@intel.com>, "pmenzel@molgen.mpg.de"
-	<pmenzel@molgen.mpg.de>, "Kwapulinski, Piotr" <piotr.kwapulinski@intel.com>,
-	"enjuk@amazon.com" <enjuk@amazon.com>
-Subject: RE: [Intel-wired-lan] [PATCH iwl-next v6 3/3] igb: allow configuring
- RSS key via ethtool set_rxfh
-Thread-Topic: [Intel-wired-lan] [PATCH iwl-next v6 3/3] igb: allow configuring
- RSS key via ethtool set_rxfh
-Thread-Index: AQHclQx+q82AFEDfwEiX3adA/xRlxrWWarMg
-Date: Fri, 27 Feb 2026 09:55:37 +0000
-Message-ID: <CY5PR11MB625810BD6BA76352434032DF8B73A@CY5PR11MB6258.namprd11.prod.outlook.com>
-References: <20260203125417.37285-5-takkozu@amazon.com>
- <20260203125417.37285-8-takkozu@amazon.com>
-In-Reply-To: <20260203125417.37285-8-takkozu@amazon.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY5PR11MB6258:EE_|IA0PR11MB8333:EE_
-x-ms-office365-filtering-correlation-id: c1954884-f117-46ed-05bb-08de75e65bbb
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700021;
-x-microsoft-antispam-message-info: CPd+Z5Q2np/dmioQFWIvZ6iJJX+SYVe8kfZDCRJB25cUQH8i6LanQkMvKQV+t7OcZHjvZfvYJXDMYY2Rhhk9BUuqVojTdutUvht2ts5zRD2V4w6Yf52eNLrS+VDR8mBSoAbctCDMQvVY2KCAS0BCiTR6hcep1FEU57tef9g3zKnKbPttLUhOD3d8H/+jqGs/NX2blOCuuIp5GJ4oL/58ptZNxff8UmDV7NkmQsh0JxDVpDGl4ZOidwIP329pIRssPxGjpWk5F5RoC9VfBJ81xxtETA/+7/x+AFygYlFkExsSN0AZVmTRlp9rD+QuUlaO23nnRW+Dck2w9nBYJ72FxY0Yxsy3RPcv9nQs1mA73UnsBx+A3CbtAZ8Y9e2Jwmh37Bkqka31sWCe5bw+B3Scg3prB5JjgEvLWNoC6jN8h3DKdxgwVB7l22hserPXPzAo0MuijnncnbfwDIQ6ntu3kjtfjwIgNMT+UD9MLgajRATTUTx6jRif6ll9/+2DHLcKip3km16sBA8DNlEqCTBAIQXr7/Jb105tvRmi0L9cbs3OHYe5QlfCCrFpx384h6pO4QHxo5xSt3JfiQdGCIeq37g/xhBXhYOazh7K63sndTYWcfUf1WqJiVsd8jxDzkIS3x0fB0xIJNkK+5/VSzYdJYGp2mwhsLAzFmHhp3SK3gVNqYkfGP4gkyuevKGOXa7zkfiqIRWemaR+l8bckaEsPM6Bu1pso8/JFEBTJJaLH4FyAVMKXEL1zvNEMi2dGLB7q5rjdEvDzGSxL9q5ZGXRE1sIvCyojg8kF9huDHrHARk=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6258.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?a0K0sqR1a+yaVLWyJ6HwvEUP80EgFchfNDw5eWpg56byJ+S++Xgox/u4qEv2?=
- =?us-ascii?Q?a5wHun+OZQ68/fb0nlIK4y0RiMT9uZ7jWtxyJXfYzXP8W1R61qMPhrIIhOLz?=
- =?us-ascii?Q?SPV5Jw0do7ZFad2l9j8OoM2GDvUyBWXLYCA6jYCKnLxPjKdRTJxunWfXl+6x?=
- =?us-ascii?Q?5Bj7tCkMCTbK90eSxHCO7+Z+/MfypIWkFvU74YiAKNDAflm6bkt6M9p1qcE9?=
- =?us-ascii?Q?IoWV2t0kKCYu6rFUE/gxLHcG7EfhwwRlpxIy6T6ISc5Rb5w4iney69kS+xNP?=
- =?us-ascii?Q?seeDrwOdUDwEcsxGVAk4ynNc+02/bq3sm9GVofluf9zZmPpKHBL6jiFFD6pC?=
- =?us-ascii?Q?j70d8Dp8XmiIOICd4K7sRTBgtJQnRK4C1UfVDJNlAat92BTDY5Jf0bmehmx8?=
- =?us-ascii?Q?Zmzas2ipF2ojEYw17Jx6UFyWv9IvJqtixai9oT7IBUyvBkLxXYO1qxxcpMkh?=
- =?us-ascii?Q?ZketgZ+lTEgQC0Tt1DKX6GxdqoRjMcTYRuafnKDhIAdmiiFpOXICTz8Dpbsu?=
- =?us-ascii?Q?ddvGj2fbk6QofR7ajPm8s7b2w3mUrtMlZ8LVXKNbRyKk9SQHrbn3ioCdEHmn?=
- =?us-ascii?Q?7ZoIT3kBNbnfzqmWAJQ60eXBVvBU+rxJpcLsb5ksOkMTtyJbBA4Kkbfuoz30?=
- =?us-ascii?Q?ztjA3eXAH0C0+v5HW834G0DyzE9GhoHWYgiGA4y1BEuhIPXvCEIwuMYOBrOZ?=
- =?us-ascii?Q?LDYWKo+YaifIu3RDV98jpQvQGlTsQMFvHCY/YgdtYpaoyoUgiaktX729NFP/?=
- =?us-ascii?Q?xQcS9H1L7zGeyD5tUMQxNdJWQ8ByR16KggE0Y76tp1t5JTKLdS9MqCJ1srqo?=
- =?us-ascii?Q?00fcqu0djuVpIMKJsW3X0996vXc48IL3kWHOmU9Zf+S+V2CzoTl+3LVMMlzM?=
- =?us-ascii?Q?YTaf2cVknbBeP26j3NuCauMaWIlQpa7fkS/9aXBDaZKKIGTMcGIKMr0mwCwj?=
- =?us-ascii?Q?ZX3EwJ7v/FGxYTrbutOM1cDY2poj/+ziHsdV35kQ1WEIj1mWpAOxlpC1QV8U?=
- =?us-ascii?Q?dHuCAaWuliMedTCOAz3udc8Up5+2O0K9TGZOMh76iQPKDst+raVWQ2oyAOA7?=
- =?us-ascii?Q?Vv99zzrnJSMB/mhXS5LmuFC92rT+cRvpDJrmj0kPlpttz43WmxI29TvLRBbd?=
- =?us-ascii?Q?c7ST07QTFlBa4KOT30T5WX+xZUvjidj3v9MNQtSp1kjxR4cMsQzQsAt8zXUH?=
- =?us-ascii?Q?0fErT3zb59uaWnM4PQaBEIXAW/r8U2zMGhZ/fIHVIOpesB8qDFs+xWLUAj2K?=
- =?us-ascii?Q?XTy4ywdPGOeprFnZOEUqvGcAeX2Th8oCBumsUllXZz57T2ge8FbIGxpBIm0u?=
- =?us-ascii?Q?oNLUzXJ7j2EbGoj5K3xwVYxRf/aCj02uOWFQVXdsRkzhDJRbFnd/tv4MadkE?=
- =?us-ascii?Q?diAoYHY79iPe3sXJKHI9wyMPFDbaIs5FZgKXymmZa/glM2/ZTiu2kwGZDnw1?=
- =?us-ascii?Q?sTpoCanoqVW5iXStRq87o4rYDsOSAIWzFoz10nJnqaXLARLkr0/RICCZ+RNx?=
- =?us-ascii?Q?L4ChyRIJQoq07iil0nVBONWBsOnM30xb5G4sMEifZvnODQZBbG9rzzg9yV+8?=
- =?us-ascii?Q?XtrYhb/sHTml/HS436wQwt4YA9IbyXj0kLUHhnwtXZFaQFt4H2jQvZPJhnNb?=
- =?us-ascii?Q?jT7+8/rN1M7UQZQ/4CPk3AxHlnAbCHzta6fDwu4gTr//YaFj9Pp0sTj+Jf38?=
- =?us-ascii?Q?qdfeUvwwktlf9NZ612M0fugB0Ictm4+ySR2qxK3MZnu6mFtI?=
-Content-Type: text/plain; charset="us-ascii"
+	dkim=pass (2048-bit key) header.d=ziswiler.com header.i=marcel@ziswiler.com header.b="RxE+5H3D"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziswiler.com;
+	s=s1-ionos; t=1772186361; x=1772791161; i=marcel@ziswiler.com;
+	bh=osg/KBiSHPE8q8+l4cSGrjz/3ljFNSwcPbponOZHnUQ=;
+	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
+	 References:Content-Type:Content-Transfer-Encoding:MIME-Version:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=RxE+5H3D+hjAwJeoIbw4vpt+sxfM/raHIKCHVPEstNVbxwhWS256pgGu0xcP+6LI
+	 F3y+5GSLcSxApT6rMsP8hJVK3NGQcOaBPAha+DJGWU/PPm9QdivaQmmTbM2Gwz3W5
+	 Z8dHwXq2g89Z6lfAjd39LEZ7nq/P8syluHoEPA7Q5wewjFS37q8/P/pw6uAhI02AX
+	 VaBXXzytfeUR+81vfGG+Kl6Kg3oSQVMleCidjPVGmqjlwnPfuFpCnPVGhIIuzFHW7
+	 L3P4Gm15PlAeZZ2c0svaId++Ow5TEe+13yw0O07aAiTiSz/urCXVlUqypAfZ8ce3+
+	 PHeajIuhEiVee0Oobw==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from client.hidden.invalid by mrelay.perfora.net (mreueus004
+ [74.208.5.2]) with ESMTPSA (Nemesis) id 1N4965-1vVGqJ3eDp-00rOlj; Fri, 27 Feb
+ 2026 10:53:07 +0100
+Message-ID: <e2130fa8e18cdffb9be9426a8576e67675e87d55.camel@ziswiler.com>
+Subject: Re: Re: [PATCH v2 0/2] net: stmmac: eic7700: fix EIC7700 eth1 RX
+ sampling timing
+From: Marcel Ziswiler <marcel@ziswiler.com>
+To: =?UTF-8?Q?=E6=9D=8E=E5=BF=97?= <lizhi2@eswincomputing.com>
+Cc: devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
+	rmk+kernel@armlinux.org.uk, linux-stm32@st-md-mailman.stormreply.com, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	ningyu@eswincomputing.com, linmin@eswincomputing.com, 
+	pinkesh.vaghela@einfochips.com, weishangjuan@eswincomputing.com, 
+	dongxuyang@eswincomputing.com, ganboing@gmail.com,
+ pritesh.patel@einfochips.com
+Date: Fri, 27 Feb 2026 10:52:55 +0100
+In-Reply-To: <6137cd6a.4859.19c97f5eb67.Coremail.lizhi2@eswincomputing.com>
+References: <20260209094628.886-1-lizhi2@eswincomputing.com>
+	 <5f99968ec561631852bfa72aea95a100dcad5324.camel@ziswiler.com>
+	 <6137cd6a.4859.19c97f5eb67.Coremail.lizhi2@eswincomputing.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (by Flathub.org) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6258.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c1954884-f117-46ed-05bb-08de75e65bbb
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Feb 2026 09:55:37.4867
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: eQZXJUks57YwTJcGkvaF89W835Y3P7R+1NKP+xCvC5H641L7u+c5QUVjSAWkIiby+pzCprhyibH/Fhh9krbcUw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB8333
-X-OriginatorOrg: intel.com
+X-Provags-ID: V03:K1:P7rtaATGEKMWJFkzUg8ddjiTxi9RHPpZ3eAD8g5GykxXsfTcBTX
+ 8RXzCrhmAc5Vm8vo5y1jI0txTBr30Z6MJfl46iwascAdegNwXLF6TXOAfQRWSJB2uYY9XWl
+ dt0tvp3HLYBjkGuG+00bNoMDBoNn6gZOOikO9YDx/ihQDYDOvNeLt1z5PGKPi6KVwwkcFPm
+ LWc7lQqLeeV8Xby4TQxWQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:e+tGgFVXqR4=;P4w55yIVSVGUVy00/3b4FKTCY6Y
+ RTrug6CV9InDrBudF+MCINUZN1RCy6G5EmLGsmDldrYAKMshs11CcEonq2yjcl3mUCINDU66a
+ DZDSMbUNWSM4rnZdpXEciw1JvzkllQyZk9TIixo1flKpyQbdnspyNME0aZsvxH3EiUGDg80S0
+ toy/fVyUTg85AyLmOr1+xg5fIJu1itlg7xDQFxtWJpVoJH9DhW56QQqLE6EUH3jU4H7wAwB5N
+ /6A2NVIA+dYJl8OfOyDWHtPxy2M+9x3uL9M/VUo2s8nZcnsnxiL8Vu5NTl0dqVqeMRiTaWdMp
+ bBJdC6HjhvNh7nBG1jTvAeZiKC1yQKQbicXli9IhAkM3w2OqaKhySd0NvQpuyF3ZvQ3inqvRE
+ GT8KaVHgNq1J+OmyMYufgIh1Rsd+nTaRHWM7Z6b0+aOox1WKm5nzt1DK7Z+NprHbmC0teC3Ug
+ ONt/MlBs4yeUiIuq+Y0w0786/XTHeGQHMG4ivph9yyO9CbxcfLv2z4Ghvw56Z82uJZqnziHKl
+ 6yG8dCccLpIThofmp95Ld4vUjRyEgzTgkDuO4KIZan4CfJi6c+Tud/83bo/VSeBdpz96RGVWP
+ cpukD4+Dj24wK9rKwed/l7tErBKuOwj79ezXd6Zi7NVzoUm5AvVn1dk6Jt7fpr6zCU30zluid
+ UHSNAVtfY4cTbpdDrBWrd3y6Ap2ur6hRwn04a/eshhnM4tEY8ME9Gdoi0me/6j12yjHRw5x0L
+ zIoP1I95u+YDQKoPABj/NPfTu7VM61UjIjyuLbemKbyxpjh5Mnx/VVPpWTL0QQGDvDF+OGf+G
+ yl4scU/QwuwgbkTOx2udHxp87BGbA1AAMXnz5lBvGyW6ZsLkfNJy0/HbeXnDqPKhSpz7G6Sx8
+ dmAoJKwWtdlPpYiHJkI3y96nXuw3fQ9bGqknguLlsscxnbx4kIb9WsMohI/pHzzTMSsY56Mb1
+ ERg48Tiy+aZymu0zcRvV8u+Genx3l3nkzfk6h9EVLxtN3GCEzrwCY4foxVEZysqMGKIvm4Ia1
+ y7Iyb6x4tRoIPjPAoEZkGwXhATXhxV/qlh4ZoElg+tykHWHgR0+Sp8basLK0BK2GmTD6C82Y+
+ ia2+2qyByu+zAxeG2rtz6Q+ve/aFwLx5+iWc8I9RIOrTP94L5xx/2vZUjG4UM72iftA9iXS+R
+ JJEclJZcULzwxTLpf8MgbKWLlQeo9Zvv7py7NzpOHH6Iv7+KqSQtC1uPuidsM5EZ0XFU/08xo
+ iv28i87vGBcDBw3g513Wj0zyDUJE4sYybq5GA8Bbz9lDbVnxEeP5WaHZIcLjE5gPsSIu6zF71
+ z5xIjY6AWXsQNhIZlHcdbbd4H5cDAAauK3U32q5rOuoDirFC5cnAj+TaRWMZf21g0tFocAdM/
+ uSAAK3QKtJMRxfM0pR9FB0Lm8OVl9kdvcMR2VJho37yQNC48nGy8RiHvFpxvVeOK6sCfAV2TK
+ cAmCg3mGTybbG/jERgD4nAI7qilHDixJ4ZrkS61Mf58O8OinX+aT7f40SlqAU6WL/f5CQYtpg
+ rJH4vHfLsDriXTLRt8oS36vtqbPapdFxoFGv8u0fd7OBWpP5wHyCX9RJYAbHJ8pSdemHsTh+O
+ SO+U7JbfRZymX6H0RorL/n43b25aADKx8pwbVIJkICtgi+KlTtIfZnJpe8owteU2pi+hGhRDO
+ u65eULA5zs5NLIrpzV6ssPSMp7S8jEYEVXbMcbfdeKc1rBCwQVT1TTHHlwxZn7jNr1hSDjFsI
+ yDd94N5Pzoed8i8BB3UJ6y+JFF1Lh5BHSFA==
 
-> -----Original Message-----
-> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf Of T=
-akashi Kozu
-> Sent: 03 February 2026 18:24
-> To: horms@kernel.org
-> Cc: Nguyen, Anthony L <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw <=
-przemyslaw.kitszel@intel.com>; andrew+netdev@lunn.ch; davem@davemloft.net; =
-edumazet@google.com; kuba@kernel.org; pabeni@redhat.com; intel-wired-lan@li=
-sts.osuosl.org; netdev@vger.kernel.org; Loktionov, Aleksandr <aleksandr.lok=
-tionov@intel.com>; pmenzel@molgen.mpg.de; Kwapulinski, Piotr <piotr.kwapuli=
-nski@intel.com>; enjuk@amazon.com; Takashi Kozu <takkozu@amazon.com>
-> Subject: [Intel-wired-lan] [PATCH iwl-next v6 3/3] igb: allow configuring=
- RSS key via ethtool set_rxfh
->
-> Change igb_set_rxfh() to accept and save a userspace-provided RSS key. Wh=
-en a key is provided, store it in the adapter and write the
-> E1000 registers accordingly.
->
-> This can be tested using `ethtool -X <dev> hkey <key>`.
->
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> Signed-off-by: Takashi Kozu <takkozu@amazon.com>
-> ---
-> drivers/net/ethernet/intel/igb/igb_ethtool.c | 48 +++++++++++---------
-> 1 file changed, 26 insertions(+), 22 deletions(-)
->
+Hi Zhi Li
 
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+On Thu, 2026-02-26 at 11:20 +0800, =E6=9D=8E=E5=BF=97 wrote:
+> Hi Marcel,
+>=20
+> Thanks for sharing the details.
+>=20
+> 1. I checked your log and noticed that the kernel cmdline already include=
+s
+> =C2=A0=C2=A0 "clk_ignore_unused". Therefore, your issue does not appear t=
+o be the
+> =C2=A0=C2=A0 same as the one previously reported by Bo Gan.
+
+Yes, that actually came from ESWIN's hifive-premier-p550_defconfig which I =
+disabled now.
+
+> 2. I also verified that v6.19.2 already contains the two eMMC fix patches=
+:
+> =C2=A0=C2=A0 https://lore.kernel.org/all/CAPDyKFqcMyM-=3Dx+2FWNLhHY=3Dgu5=
+ApHNPQhp0xBKDJGr7BhEx4Q@mail.gmail.com/
+> =C2=A0=C2=A0 https://lore.kernel.org/all/CAPDyKFrkEZDuMbGpfxismcx=3DvJkSS=
+K_XbtB762+sUFocupT63w@mail.gmail.com/
+
+Yes.
+
+> =C2=A0=C2=A0 A likely cause is that the eMMC DTS node is missing the AXI =
+clock definition.
+> =C2=A0=C2=A0 Please refer to the DTS updates in the following pull reques=
+t for reference:
+> =C2=A0=C2=A0 https://github.com/eswincomputing/linux-next/pull/20
+
+Ah, that one helped (;-p).
+
+BTW: For CPU frequency scaling to actually work one may additionally need C=
+ONFIG_RISCV_SBI_CPUIDLE=3Dy.
+
+> 3. In addition, please check whether CONFIG_GPIO_DWAPB=3Dy is enabled in =
+your
+> =C2=A0=C2=A0 kernel configuration. Since GMAC is built-in by default, it =
+depends on
+> =C2=A0=C2=A0 GPIO being available during early initialization.
+
+Yes, I also changed that from =3Dm to =3Dy (;-p).
+
+> Hope this helps narrow things down. Please let me know what you find.
+
+Yes, it all works now perfectly incl. CPU frequency scaling. See [1].
+
+Next one would be working PCIe and USB. Unfortunately, for PCIe on EBC77 on=
+e would likely need some sort of an
+adapter cable/PCB. Maybe I can solder something together. Let's see...
+
+Thank you very much!
+
+[1] https://github.com/riscv/meta-riscv/pull/602
+
+> Best regards,
+> Zhi Li
+
+Cheers
+
+Marcel
+
+> > -----=E5=8E=9F=E5=A7=8B=E9=82=AE=E4=BB=B6-----
+> > =E5=8F=91=E4=BB=B6=E4=BA=BA: "Marcel Ziswiler" <marcel@ziswiler.com>
+> > =E5=8F=91=E9=80=81=E6=97=B6=E9=97=B4:2026-02-21 02:37:57 (=E6=98=9F=E6=
+=9C=9F=E5=85=AD)
+> > =E6=94=B6=E4=BB=B6=E4=BA=BA: lizhi2@eswincomputing.com, devicetree@vger=
+.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+> > edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.o=
+rg, conor+dt@kernel.org,
+> > netdev@vger.kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com, a=
+lexandre.torgue@foss.st.com,
+> > rmk+kernel@armlinux.org.uk, linux-stm32@st-md-mailman.stormreply.com, l=
+inux-arm-kernel@lists.infradead.org,
+> > linux-kernel@vger.kernel.org
+> > =E6=8A=84=E9=80=81: ningyu@eswincomputing.com, linmin@eswincomputing.co=
+m, pinkesh.vaghela@einfochips.com,
+> > weishangjuan@eswincomputing.com, dongxuyang@eswincomputing.com
+> > =E4=B8=BB=E9=A2=98: Re: [PATCH v2 0/2] net: stmmac: eic7700: fix EIC770=
+0 eth1 RX sampling timing
+> >=20
+> > Hi Zhi Li
+> >=20
+> > Sorry, to steal this thread, but I do have a quick question concerning =
+Ethernet on the EIC7700. Every time
+> > I
+> > enable gmac0 in the device tree my EBC7700 stops booting (e.g. SD card =
+is no longer detected) while
+> > Ethernet
+> > does seem to at least get detected. This has been seen using next-20260=
+219, stable v6.19.2 [1] as well as
+> > 6.18.0-rc6 [2]. Any idea what could be going wrong?
+> >=20
+> > I admit so far I only do have one single EBC7700 at hand while waiting =
+for further hardware to arrive.
+> >=20
+> > Thanks!
+> >=20
+> > [1] https://github.com/riscv/meta-riscv/pull/601
+> > [2] https://github.com/eswincomputing/linux-next/tree/dev/test-upstream=
+-v6.18-rc6
+> >=20
+> > Cheers
+> >=20
+> > Marcel
+> >=20
+> > [snip]
