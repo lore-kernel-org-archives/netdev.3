@@ -1,61 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2ADE7155322;
-	Fri, 27 Feb 2026 02:32:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE93A2D1F6B
+	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 02:36:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772159574; cv=none; b=K87T1hwyRrgwM8iQS/oy2WierzA/2ZA1EieUSqg/qMblfIek73IRZMFgdlhdkm0Jkq0R5geQhmEG9xFFBskqM06gYK7zZ+XKgY8vyNa9rkpn4qQAtTuvYlK1VMN2GBcp0KZZPzDHOnoo6zpouYf8pc3cDz61iHqo+EANaMkFbTU=
+	t=1772159802; cv=none; b=P2EKv1WEgXiMlhY/NERYhwQI20QU0QUr1HPW5JRGSDz6jb/cCx552ShNkpcxr10vfUkBR+RmBuEAq73zloWNBVifHELsPBPNfk/O+WwYwonAKycokZvnrRXKpWH7/d/a+BrUPUGQdoQCmX1B6rwGcJAp4LBKAmeIMZtM+RC+Qzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772159574; c=relaxed/simple;
-	bh=s4VqgOlh50jP0EyqtYbvYmU0KxuxxueBDh7dIzhJNfo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GN9o6vcrc+pPdjo5TJhjOzJmpj31kSdiqQjxgDouaCESs19EGQjbNNxfpDKa0S7rtW5TuAYW6MbfWUmGQTOCzVQtG8orYun2d3ooHv73xtidXN/VlygaXGYxbXbQj8HI/GIdySc0eM1Jke9rLmip5PeXhoFEza34OGuXyqZYNjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qNV2x/kM; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772159802; c=relaxed/simple;
+	bh=l+nEv2Y6FEb2oVcBaKlzWxtlJ3m0mj77GVOFIJR4dlU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PFanl7SSBzWByToaUjdz1ZP8QhM3U2xL8bth7BDSxQ4N9RMGHS4nGr3IchlrTVo+7Pwp30TXo+PrOMr2vPEdIlgt5nEJQRetBoJ+UpuB3Ohj/1Fck7ccT4dHcXV/GAFN8PQD74VhOBsvswkyv8/nVHw1p0ILCxN5f5/fyKyh/Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VLOmXgkb; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qNV2x/kM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4385DC116C6;
-	Fri, 27 Feb 2026 02:32:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772159573;
-	bh=s4VqgOlh50jP0EyqtYbvYmU0KxuxxueBDh7dIzhJNfo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=qNV2x/kMC16I1tgxMq1/FAEA6jcumBTmWBP0mF08elh3Vll1FWLABfp1XwHzwvvFT
-	 z4Mn99BhV7peYDji6vymUXEGXq549rkmsvbhls/W6WrGIXHtxu3z8a1bY3fbPSsy69
-	 2kRl4Eiy2T/okuUZ3Dm3LUZLTii+Jt73vJqdjZm8wU41KIhLK0XyQn3gsL4gdRsF2N
-	 ykDMb4CbTMro91MXEphZStuQLg539EaymecyxjsvKz5H9s4G2zVe06w4kBpdQlW1nj
-	 X+xtgfhgZOKwz/Y4DZBRPb0fDOsyA/e5d7Jujm56C3+t53cLMcYRNv/4h2n9ZiRgvB
-	 T9lpiZ25h7+sQ==
-Date: Thu, 26 Feb 2026 18:32:52 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Adam Young <admiyo@os.amperecomputing.com>
-Cc: Jeremy Kerr <jk@codeconstruct.com.au>, Matt Johnston
- <matt@codeconstruct.com.au>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>, Jonathan
- Cameron <Jonathan.Cameron@huawei.com>, Huisong Li <lihuisong@huawei.com>
-Subject: Re: [net-next v31 2/2] mctp pcc: Implement MCTP over PCC Transport
-Message-ID: <20260226183252.10fb6003@kernel.org>
-In-Reply-To: <20260224231055.393329-3-admiyo@os.amperecomputing.com>
-References: <20260224231055.393329-1-admiyo@os.amperecomputing.com>
-	<20260224231055.393329-3-admiyo@os.amperecomputing.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VLOmXgkb"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2aadc18f230so10043135ad.3
+        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 18:36:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772159799; x=1772764599; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cTaHWVqVPPHKKO9lr97zROxv1lwqPfLhEfsjJzvUNbY=;
+        b=VLOmXgkbVw22+QEGE+XkSX6KJWiPeDt+PEYtUsEeAaUllBPgJVp9ceuCEUCuPWn1A8
+         YCpiUleE7ooUWvDU0ELG7NMAwYiJF4JCWwIs42hG8Qaxl2UCO4KY6rC4wQ0cWZ6lOMXw
+         t140K5rgRwxWMW/j6tokXbzObhTzv/M872i9ujz+B8nw5fl57U+GSe7mcfciLXA6QhNt
+         ylF6uBrGOuiMWmdWOyIfUgFcblpUudccoh9XMLrD9/jtnOfmN8ZN/lv68dLI2BOUc8g8
+         JKD1nIaF4chwU4lTlUNo0UThzf4JVhQy8x1MgQGyQF1MqaAsndqiq3Ha9FfjZ0NUB9zI
+         v36g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772159799; x=1772764599;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cTaHWVqVPPHKKO9lr97zROxv1lwqPfLhEfsjJzvUNbY=;
+        b=QyQ7g0P3AmlNqaUUE2d/F/le36dZCRIqimxCiuquF7lwlfEUgKSZdMRF3xwXbJek60
+         NKMjXq4FJXI0AgzWgycpDuABBOb835g4Qr9AIE7t6R5PQ24lZslCxsGxMhPAkatHEuh3
+         SxDZjjw2EJxZoH4ytFOMwPtVg6TNSJ+o6SMpbDlEB6fibzKzGopNDC0L6iB8Bsmsk7+j
+         VN2uSixAcva9DV84hFVsUGkggTOXFOnNQQXDynGSGiLf+C6jmh9t9PwMrvI+3I2qXENu
+         8SwCwRifNfLSL09nbvDG+1+RT5BGXdDMl6+CMCWMCqfFVhl88j3JAUMkja3ef0/Hha3b
+         DDXA==
+X-Gm-Message-State: AOJu0YyxhfMwi9qmQhaX+rgw2xu6u9u5qZLcjLBLdceBt/jbC2JzoR+k
+	O6wPMoJQ7A7CwHdFi8YGs7h3TpDWb4BOQnqAgwYmL3h8QBj80/Nvdlti
+X-Gm-Gg: ATEYQzwdBp9ErHvwLontK/lMK53tIhPHluiHAPKLpitwYnrE2Jjc2/mcGIk93sdx5gx
+	W3DpzcfNECMUSIUvRg7a/RRGsIzN8SmllDkRYQcBTwtiA76fSY2fQToJCkUGnmI4WKZYURe/r0O
+	IGteKSPDZBkfzsMqpzdo6APR5epsshAxQiF0jj9xmJQoVty27FzAGkkwGaXU4QcqzF5PckFuRqz
+	qmYnXNGz/kYKwGIwba+NOa6whNNoTkhe5moegedEZSRP/+C/a87ylVE6u9jMUJupxGGdJGO+QWf
+	Ctg1GQJgEkJ+fHK08u41GOdc3fcZKOT9O9M8LT1QFjufGCuqaTRXp7fIqLV8zIfypVOpxQzzQBR
+	YJrpoAOmttw/YKljWyxKhsLlheyV7BQgg2wXY6ycukL6TcN44OedsjEpFUhAO6CYShYYSkx2bP2
+	iwm1eIc5PrmM+tJBWBxPf77pFA4G0=
+X-Received: by 2002:a17:902:ccc7:b0:2a9:db7:446a with SMTP id d9443c01a7336-2ae2e3ce5a1mr11578285ad.9.1772159799125;
+        Thu, 26 Feb 2026 18:36:39 -0800 (PST)
+Received: from fedora ([209.132.188.88])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5b257esm38646095ad.4.2026.02.26.18.36.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Feb 2026 18:36:38 -0800 (PST)
+Date: Fri, 27 Feb 2026 02:36:31 +0000
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Jay Vosburgh <jv@jvosburgh.net>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Mahesh Bandewar <maheshb@google.com>, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, Liang Li <liali@redhat.com>
+Subject: Re: [PATCHv3 net 2/3] bonding: restructure ad_churn_machine
+Message-ID: <aaEDL09GtkQnlE8X@fedora>
+References: <20260226125331.28147-1-liuhangbin@gmail.com>
+ <20260226125331.28147-3-liuhangbin@gmail.com>
+ <941081.1772152606@famine>
+ <aaDq5vTsk8SW4bIA@fedora>
+ <943602.1772156533@famine>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <943602.1772156533@famine>
 
-On Tue, 24 Feb 2026 18:10:52 -0500 Adam Young wrote:
-> Implementation of network driver for
-> Management Component Transport Protocol(MCTP)
-> over Platform Communication Channel(PCC)
+On Thu, Feb 26, 2026 at 05:42:13PM -0800, Jay Vosburgh wrote:
+> >I added it here to help new readers and reviewers understand the logic
+> >quickly. If you think there’s no need to include it in the code, maybe
+> >we can move it to the commit description?
+> 
+> 	Personally, I'd leave it out, and just put a reference.
+> 
+> 	The churn machine isn't that critical, even the standards
+> committee didn't like it and removed it from the 2020 edition of
+> 802.1AX.
 
-make sure this builds cleanly with W=1 please:
+Oh, I didn't notice this. I posted a patch[1] to net-next to export the
+churn state via netlink recently. Should I revert this patch?
 
-drivers/net/mctp/mctp-pcc.c:133:27: warning: variable 'outbox' set but not used [-Wunused-but-set-variable]
-  133 |         struct mctp_pcc_mailbox *outbox;
-      |                                  ^
+> 
+> 	Still, whatever we provide should work in accordance with the
+> 2014 standard we're nominally conforming to, so functionally the patch
+> looks fine to me.
+
+Got it, I will remove it.
+
+[1] http://lore.kernel.org/netdev/20260224020215.6012-1-liuhangbin@gmail.com
+
+Thanks
+Hangbin
