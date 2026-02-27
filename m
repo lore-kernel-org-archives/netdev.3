@@ -1,27 +1,27 @@
 Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C34335541
-	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 07:36:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAC1D35A3AA
+	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 07:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772177778; cv=none; b=qIZHr2pkestGP2+PIRi2Fseg+FRo9shvjZbJlY2bNwoRwliO/4eCRgbpUaNJwXEq1NhjaBJOOl+Ag+2IxSQyiU4rfVG7UqMET2xxxuDiWeg9x82ack75H5M3b68+wfFK420L5SObJqdc0c+Vy8zExwVYiRe4IWjqM0UO1XadIX8=
+	t=1772177778; cv=none; b=naWVxWEIuTznS1abvaNSXQwnLNW0tLXZZp9BrX1ukQVZT7PMp4dLSXYorcMzjBF1qMwTYl3sh0JOh+6e+G8RNiAct2AZmSxNvB0k3wP4mletzC/yYaZzKHFhCokvDq4mzVyLXirzm6IJXp/p1We2HIuzIxIF90bAZA9UF5vpFyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772177778; c=relaxed/simple;
-	bh=Qz3X7wFoPw2MQVserjn2t3iqQDg0xX+aA1AQbFK3asI=;
+	bh=q6a+GioDSfSF4AddXdEep52Nm8x2sma2LQZ7pUGUMHQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=giJ/b46aBXrE7DRr/xfuAFZy49sDX2O8o9L2JzN0PdKkrh2tdwlCJI2EuFtFBr+rl5jaP0yqN4JrOGVcQsLiqcON/QqqcxahUBH5KzOW/Y2WlM5p6z2UCPLa9XbrsAg67DpPIOq/A5+PtWWtJplFbvefU0K6STMmlPBuLZx93EQ=
+	 MIME-Version; b=sBOjeIx+wmrxw9FWLGg/G6t+YY3rhWS34TmnS11F0++jNao/rI6j5sEKU5WamxgZH4E7fOYAPaiqRQ0wLh5NnSQqxFHnFlFbhaM7IvASoy3O7/HV0FTrDdQEIdt3q6NRM8TvRUiymIIiLbPj8NC3/mew0u3RhOxv5jZ1ArA3DQc=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.243.244.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpgz16t1772177707t20cfbbff
-X-QQ-Originating-IP: fgrcwrOL62JfXqTfvinJNGph8sFAZdN4VB4zpJpfwEI=
+X-QQ-mid: esmtpgz16t1772177714te6b5e7ed
+X-QQ-Originating-IP: URXJUIz24L4AifGkj0EJmKIwqLSxIQVALtthR15vkwE=
 Received: from lap-jiawenwu.trustnetic.com ( [36.24.96.164])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 27 Feb 2026 15:35:05 +0800 (CST)
+	id ; Fri, 27 Feb 2026 15:35:12 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 4420345484911093155
+X-BIZMAIL-ID: 14282051805719472887
 EX-QQ-RecipientCnt: 9
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org,
@@ -33,9 +33,9 @@ To: netdev@vger.kernel.org,
 	Simon Horman <horms@kernel.org>
 Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v2 2/8] net: ngbe: remove redundant macros
-Date: Fri, 27 Feb 2026 15:34:44 +0800
-Message-Id: <20260227073450.23680-3-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v2 5/8] net: txgbe: add power management support
+Date: Fri, 27 Feb 2026 15:34:47 +0800
+Message-Id: <20260227073450.23680-6-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20260227073450.23680-1-jiawenwu@trustnetic.com>
 References: <20260227073450.23680-1-jiawenwu@trustnetic.com>
@@ -48,70 +48,166 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NHu6THI/J1zco6hYCDuwUpFrkflg5MQ2KpKQHEwz6yzPG6WZd6P/cAqO
-	MO8mdNN1Q/4QKYi0VoyIh45uJzcOaIUdCzkGP/mFdWWQmIOb3v0pOnql0qkNMn7Zp2D7BPz
-	Qo5dMWrIjWyvC4FQZGp1u0KJMy54tuNeOpKmnWwITLmkMDwLRcgFxRp48k1I71ri2H/+cPn
-	1aUF0a6fZK+9lWBlsnMXSQmbhELjmczoxtPZ9JBU0a8M4iSS54lc7jVx5jP13sC9y6P3nhf
-	pGalYN0WJpDTg/rX0+tsqFhEJNZuZvbj7HAwEMKGtYQRBu8aOgjpt8na4iGCQ2tp8RMNv8R
-	URsn9QrLPkd3Xk/g1xAc/pm1i1bMckfi2b4FRLEv0geaqXc/CQIU/j7ywmPTr98iHsbbboS
-	KXgdHYwd98GqGpBqu4BHdkdLZNyPKfiXrD1160Znjx4Qlo7Hd2w+pvIpLZWN4EXDZhHkbdx
-	fs1pukFRMumvLNGE+ZpHSTqAfdFnLAXoGFmzUdx2LRDTJJsuUhcwsyFGrALmOGgIXek538l
-	MDk4fBCTo7YHqq6Mhb0oMBaSkMImn/W2JHneD1Q14+9Exzn8XwE+sxidQ9c8Ke78J3OFA9b
-	Z6Og/y9nRL79bE0ygV3xemJwryE9nxGXdAcb8UG357oTNyGOt/UR0IRrmRXdblYkPGilosH
-	o0dJRCzxOJKSsp+kG7jeSBcb8NzTe8+fpR0fZ6+afrnV4ft5FiHXzLWDIde7edCpqKxwpyy
-	dVcymiA4JRvtc7wKtXWX8PE4jZbEj91di2RXuc6xbZD5t7kwJzCsm197tdGQ4mzr31OpR6W
-	bDZnaP0G0+DZoVsIxXM7nuprelm/CKX9thvy6CHaiVyoPsfmaiOjjdiAayn0yKKGOpBblmp
-	LjCW+H0igJ/E3fkwDggl6JwGCoLUIwzXmI6fmuToBnWsnAzhMqxG7yz6ReZ3c14COm3mN6+
-	zIWo9+cWza6QnUK+X/v5FGMbblEP4xqm4XvGjNoR2TSA1/4RMESVMD+XUdOk40NMi3MlGJl
-	uDX777mU80GLna0sXC9DqjOTMxt/QgE4NOYMM2VyN9elVMzIjfDYWUVLs5JG0=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-XMAILINFO: Njp1rspSmtOfngwlwVbKvec7lPoV9nguYgFghQ3dQ57JwjSccpfhnIvQ
+	Idk8eo5GMQZErKPEHALLu6kR9IdVbYwO7DQ6mDQ6y1eXm6jSTgLXUgJ/RQxR3uqWTKIrrhp
+	bdGNH+NanJ/osGjkBEKV5S1BrN3XrHxwkZTUm4zyTjPB335pS4aBpYOEsgHZY/i4lWuh2y5
+	xWczf1ki6hrAQ4UWP3LbEaL9K4yGqDN50OiO9U2++MhL9BEMSLNP3L6DMNf+kHAN0WF8Vdu
+	4BY5gLijRgrc0w+tIByndsQhAIbqLJVJJyTIOyU8PmRofAUEVJ9UFG/if+wGy9jcAs1Cqj3
+	XBnwHbrjrDqWQpIg4/FeHXyqIb3Dz6FCsUfCbZR2lY6krEBFF3+TZvWqY7ey+sbo6FjyiuX
+	o6VATXEc+v/tAgzdu8eUMx+oZPJ/De96C5tQnp1QIENDb8d/3nHXZ3swyffXDQ1rlIgff+y
+	sy9urUk6mn7QbKwQTND0xRkoeksHHZypEC/WCU2vld6G1WO1Hh8JewWSTqGXSJzVTGqQUtd
+	Z99whwx37FSbzQQ4GOfvRYEa79+odfHGXnXADlT2rdZf/BoZuwyJI4DckU2EMvvmeGtBm00
+	BDl0TbpYKUwWsJfjNr33D40mDl3tDZpFlW7G7E3ZWPAj6jYfZG8hRhVJMwXrJ1GqVskSbSz
+	Qe3L4UhIioYV71ZKB1EeTZOt9VcMqDf0q6tdG+hncQuJCQ6zJLZ/tfszrxlkeapgcN6JEkX
+	CQDlo/zZZqWbvf4+gh0skDz9WMGdjGruyS2hcwBZtmJ/BxVSl1DtL8pSE++J6J1oSLeRnPy
+	JTqY3pWgUg56h9sa0ptns0TKvVFhOfTw5+SZ9h1embTLcvoWFcrLoldRRv24M5cBPph2apW
+	5tKxtvh6YPALuORkzXkzKRWjgM6rRGg9DrWUckeGUJKNb9OijTD/gWon3TDUuWgURXSE+Uc
+	TSeid3mABYzX3mwT277PTXbSc2ZHY+3DO43iV1xce583rp4LakG5C/O3DLOc3AUNLaQTpzG
+	LNe4orE2H0hDehD1KwMHL7Qwk7ItwFyDu4RUsl9GNp/CQ6zSzv5sNxj6jYARSD1gpc1K1Sq
+	UUVzBrVeUGDQZMSyKTSNe234WBjOLb5Cw==
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
 X-QQ-RECHKSPAM: 0
 
-NGBE_NCSI_SUP and NGBE_NCSI_MASK are duplicate-defined, they can be
-replaced by the macros defined in libwx. Just remove them.
+Support .suspend and .resume and Wake-on-LAN.
+
+Implement ethtool ops .get_wol and .set_wol to support Wake-on-LAN
+function. WOL requires hardware board support which is identified by
+subsystem device ID. Magic packets are checked by firmware, and
+currently only WAKE_MAGIC is supported.
+
+And WOL related operations are added to txgbe_shutdown(), it matches the
+implementation of wx_shutdown(). So change to call wx_shutdown()
+directly in txgbe driver.
 
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
 ---
- drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 4 ++--
- drivers/net/ethernet/wangxun/ngbe/ngbe_type.h | 3 ---
- 2 files changed, 2 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  3 +-
+ .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |  2 +
+ .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 49 +++++++------------
+ 3 files changed, 21 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-index e28ddf684a06..8c9d505721b1 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
-@@ -57,7 +57,7 @@ static void ngbe_init_type_code(struct wx *wx)
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+index bee9e245e792..150a063daafd 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
+@@ -1313,8 +1313,7 @@ void wx_disable_rx(struct wx *wx)
+ 		rxctrl &= ~WX_RDB_PB_CTL_RXEN;
+ 		wr32(wx, WX_RDB_PB_CTL, rxctrl);
  
- 	wx->mac.type = wx_mac_em;
- 	type_mask = (u16)(wx->subsystem_device_id & NGBE_OEM_MASK);
--	ncsi_mask = wx->subsystem_device_id & NGBE_NCSI_MASK;
+-		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
+-		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
++		if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
+ 			/* disable mac receiver */
+ 			wr32m(wx, WX_MAC_RX_CFG,
+ 			      WX_MAC_RX_CFG_RE, 0);
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+index 9157b8275be1..c92eb71e0c15 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
+@@ -575,6 +575,8 @@ static const struct ethtool_ops txgbe_ethtool_ops = {
+ 	.get_link		= ethtool_op_get_link,
+ 	.get_link_ksettings	= txgbe_get_link_ksettings,
+ 	.set_link_ksettings	= wx_set_link_ksettings,
++	.get_wol		= wx_get_wol,
++	.set_wol		= wx_set_wol,
+ 	.get_sset_count		= wx_get_sset_count,
+ 	.get_strings		= wx_get_strings,
+ 	.get_ethtool_stats	= wx_get_ethtool_stats,
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+index 30f66507809b..ddc7cea9d7c2 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
+@@ -245,8 +245,7 @@ static void txgbe_disable_device(struct wx *wx)
+ 		wx_set_all_vfs(wx);
+ 	}
+ 
+-	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
+-	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
++	if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
+ 		/* disable mac transmiter */
+ 		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
+ 	}
+@@ -303,6 +302,7 @@ void txgbe_up(struct wx *wx)
+ static void txgbe_init_type_code(struct wx *wx)
+ {
+ 	u8 device_type = wx->subsystem_device_id & 0xF0;
++	u16 wol_mask, ncsi_mask;
+ 
+ 	switch (wx->device_id) {
+ 	case TXGBE_DEV_ID_SP1000:
+@@ -347,6 +347,11 @@ static void txgbe_init_type_code(struct wx *wx)
+ 		wx->media_type = wx_media_unknown;
+ 		break;
+ 	}
++
++	wol_mask = wx->subsystem_device_id & WX_WOL_MASK;
 +	ncsi_mask = wx->subsystem_device_id & WX_NCSI_MASK;
- 	wol_mask = wx->subsystem_device_id & WX_WOL_MASK;
++	wx->wol_hw_supported = (wol_mask == WX_WOL_SUP) ? 1 : 0;
++	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP) ? 1 : 0;
+ }
  
- 	val = rd32(wx, WX_CFG_PORT_ST);
-@@ -66,7 +66,7 @@ static void ngbe_init_type_code(struct wx *wx)
- 		       em_mac_type_mdi;
+ /**
+@@ -534,34 +539,6 @@ static int txgbe_close(struct net_device *netdev)
+ 	return 0;
+ }
  
- 	wx->wol_hw_supported = (wol_mask == WX_WOL_SUP) ? 1 : 0;
--	wx->ncsi_enabled = (ncsi_mask == NGBE_NCSI_MASK ||
-+	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP ||
- 			   type_mask == NGBE_SUBID_OCP_CARD) ? 1 : 0;
- 
- 	switch (type_mask) {
-diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-index f1957fa0add4..7077a0da4c98 100644
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
-@@ -37,9 +37,6 @@
- 
- #define NGBE_OEM_MASK				0x00FF
- 
--#define NGBE_NCSI_SUP				0x8000
--#define NGBE_NCSI_MASK				0x8000
+-static void txgbe_dev_shutdown(struct pci_dev *pdev)
+-{
+-	struct wx *wx = pci_get_drvdata(pdev);
+-	struct net_device *netdev;
 -
- /**************** EM Registers ****************************/
- /* chip control Registers */
- #define NGBE_MIS_PRB_CTL			0x10010
+-	netdev = wx->netdev;
+-	netif_device_detach(netdev);
+-
+-	rtnl_lock();
+-	if (netif_running(netdev))
+-		txgbe_close_suspend(wx);
+-	rtnl_unlock();
+-
+-	wx_control_hw(wx, false);
+-
+-	pci_disable_device(pdev);
+-}
+-
+-static void txgbe_shutdown(struct pci_dev *pdev)
+-{
+-	txgbe_dev_shutdown(pdev);
+-
+-	if (system_state == SYSTEM_POWER_OFF) {
+-		pci_wake_from_d3(pdev, false);
+-		pci_set_power_state(pdev, PCI_D3hot);
+-	}
+-}
+-
+ /**
+  * txgbe_setup_tc - routine to configure net_device for multiple traffic
+  * classes.
+@@ -824,6 +801,14 @@ static int txgbe_probe(struct pci_dev *pdev,
+ 	eth_hw_addr_set(netdev, wx->mac.perm_addr);
+ 	wx_mac_set_default_filter(wx, wx->mac.perm_addr);
+ 
++	wx->wol = 0;
++	if (wx->wol_hw_supported)
++		wx->wol = WX_PSR_WKUP_CTL_MAG;
++
++	netdev->ethtool->wol_enabled = !!(wx->wol);
++	wr32(wx, WX_PSR_WKUP_CTL, wx->wol);
++	device_set_wakeup_enable(&pdev->dev, wx->wol);
++
+ 	txgbe_init_service(wx);
+ 
+ 	err = wx_init_interrupt_scheme(wx);
+@@ -975,7 +960,9 @@ static struct pci_driver txgbe_driver = {
+ 	.id_table = txgbe_pci_tbl,
+ 	.probe    = txgbe_probe,
+ 	.remove   = txgbe_remove,
+-	.shutdown = txgbe_shutdown,
++	.suspend  = wx_suspend,
++	.resume   = wx_resume,
++	.shutdown = wx_shutdown,
+ 	.sriov_configure = wx_pci_sriov_configure,
+ };
+ 
 -- 
 2.48.1
 
