@@ -1,144 +1,342 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b2-smtp.messagingengine.com (fhigh-b2-smtp.messagingengine.com [202.12.124.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29A111B425C
-	for <netdev@vger.kernel.org>; Fri, 27 Feb 2026 00:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B973E13B5AE;
+	Fri, 27 Feb 2026 00:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772152464; cv=none; b=Il3Yzwl51zR4olHEUWbqo0xNu5ZIlBrdQEkJjps2M9QLnc6UmbRpCDyFLOtEBoaNOtC5OTAxlPn6vWVftG74ItyXkEB+qpybuxowuVU+a0wev5DmjqOjYWa11+yVMzXIgDWqhmdySbFTBL93oA9Y8mAEb1h30vxI/er5FsR78bk=
+	t=1772152613; cv=none; b=H9bj4So4UyzVlV6K4or2ysuHk+83qyTETKMjs6DSyCqb0AthGCbrQwZtSkvuZmdomgpYBoY7yEHNka/8CICYPd4rGRzM1Ob/jVeoW/XIKgI5rZ99JoU+U44YQMU6tqFJBRefL1f5bztJ8e1UqrCXlgQeVWUJ/qjxdanV2d7N4iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772152464; c=relaxed/simple;
-	bh=Tl1DUbzj2D6+ov5SZhXxdWxDOWwdxk9yqTv2bgl3vdA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nkMO/I7U9iCQyR1w29a3YwXDIAtwsiaXLL8gIXqcCzmnuB/SUkvTfCz+3qTpSitC7XJc16M2GmJXlh1oRAT4mYODnlx1zYDaBTcjAZaHqBa8yxoGfK/p2XGRwlmTgUcjp7OEj9l4tve+N3vqZ3bw/VxWPxEhYSqbnGPBOqe0VTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fenMoisd; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772152613; c=relaxed/simple;
+	bh=o4j6xlT2I++wb1H/DSbUakhHMJnaCbFbAX+BkOQadUg=;
+	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
+	 Content-Type:Date:Message-ID; b=fG/SsI6McQ/pVg+j30MgdcL8WzSoUR3oRvjYVdjmRkwcvuFvMOi9pkyv7T4jfvxDEc0Dge5znL/Cla9yFXbz0gNFt8QnDK8i98bMmSPiOFPpdyM1U5f5TuDjNoFNqQWjLLyy07n4Ppj8qv40vVWXiOhIisY4chYJrZ1OItQQAVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=XxQsvEM1; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=MYDCc0wT; arc=none smtp.client-ip=202.12.124.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fenMoisd"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-82746ed8cb1so498188b3a.3
-        for <netdev@vger.kernel.org>; Thu, 26 Feb 2026 16:34:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772152462; x=1772757262; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HzRkRbcVXy8YX35iFm3cdXSJ7hIcR1jCcHzwRyHNf2E=;
-        b=fenMoisd+uOeJegkhXGT4DH5P0IF99bHLL0FQUA7oqbRQhyrkPNyS9fBSzTA3ePGJQ
-         XEaJvekvxQgcDzlLU896+rR4zcpVrh5iglLCnpYZko16pOdDW/hE4wbNZrRrHLBD4+u1
-         vtZe2xNyVpY4lRcbzxDgkoyklAiplb9V0w2LTOSLBUHZlczKx/PuPvRARxLZ7Ei8+zyZ
-         CR4bgVYOPR1iqMRh+PSAPs0K+8WcNytqOh6itwKXC7gIco2q5tdlM4bc3Qg30eWKwqTe
-         BVcXHmSPJ6+RtJ1oqBo0+WwipLfFyXiF6g3CrwJBW8Z4n7usVnnvxIeEedkz8k+lfdG9
-         Xu5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772152462; x=1772757262;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HzRkRbcVXy8YX35iFm3cdXSJ7hIcR1jCcHzwRyHNf2E=;
-        b=oN+d631AiVNDPXCwHfvksccSlFNW9ibMV3Vt7iV3w+WP+JxGyndbDvaOok8HXdy0CD
-         t9KrddlIJW2owVbKxRD+KE4dZY1PKS6YYdDyUGCnU0HwFS4iYwqdqqmzyZ8nXKhLupt+
-         M+f8fqXbmzshbwYaxh1LWRvgCbgAsIp1Tl61xuhjcDhmzUt2KIh7EpRv9s4t2GWsHF5P
-         vSO9vpC0e8txzvVboyaUR0Zgn+jcoGm8hzsATHteETMY31u4dApyy03TEjVxKJNVKwUa
-         uH5u4+tnJesCh3loErxPf75mzS7USdtqzXa8EKv7oB+2h6be9wNOun1N1rU6wfQRvozC
-         8aoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXPx5UhY7irJ/kZedwQ5hqBWqBXLceboQJnf+rORrDCHoZO+oeFdZxxp4Wwi+qCxo80wJnyK+U=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw28LsxTR07VaRdb608d2Nv743oEAYJggIplNmnQkmTJzStxM1/
-	NWg9Nqi2duH85TKOC9Q5OQ+jfa4cgnT5zXll0KdzOcKVXtq7jnwUFOHN
-X-Gm-Gg: ATEYQzzPCzVWpDye3E6V4JFSN38qGNPgcHuxYlMQKTFeOO4NaDwVM9AEnER2aOUAfZ9
-	ehH6iWK5R2W2gBU9st2OAkfPIkJh+C888wflkzKwK3NIDJ8il1r9433Un7GkM50jkfoHRBOr01c
-	LaGh+wVOzGUYtIVhnbJGi62jpBGSEVgAfTPxy7rychFbm1HLn8GZtxgqhsab7Ihlk850IYoVuo+
-	A4ra9YF+PzhgGHGaJPsNYUZhY9aUJDUi5jSHjqMnUiCbw1darn/CaEc82gVlrWnaRsmX1zp2p8/
-	46bcrsyd90l+XO6u5o5nWNZgoKUbjOIxta7UqkdJ6oHhU3gMVmXL5A7NKYC0J2JKm4r3E/l23Xh
-	1YmW/wSEdBb6V+amDf/5YoCEe5c3bwaDAp7JROtAiCek0QeJFbEKyp2Yyn1nPtNFmQzT82UJlv9
-	OX20DEh++XL00Vf2m6P2GDdQ==
-X-Received: by 2002:a05:6a00:9290:b0:827:3310:fb18 with SMTP id d2e1a72fcca58-8274da13ecamr832145b3a.51.1772152462511;
-        Thu, 26 Feb 2026 16:34:22 -0800 (PST)
-Received: from localhost ([2001:19f0:ac00:4eb8:5400:5ff:fe30:7df3])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82739d4e10csm3631262b3a.1.2026.02.26.16.34.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 26 Feb 2026 16:34:22 -0800 (PST)
-From: Inochi Amaoto <inochiama@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Karol Gugala <kgugala@antmicro.com>,
-	Mateusz Holenko <mholenko@antmicro.com>,
-	Gabriel Somlo <gsomlo@gmail.com>,
-	Joel Stanley <joel@jms.id.au>
-Cc: Inochi Amaoto <inochiama@gmail.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Longbin Li <looong.bin@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH net-next v3 2/2] net: ethernet: litex: use device pointer to simplify code.
-Date: Fri, 27 Feb 2026 08:33:48 +0800
-Message-ID: <20260227003351.752934-3-inochiama@gmail.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260227003351.752934-1-inochiama@gmail.com>
-References: <20260227003351.752934-1-inochiama@gmail.com>
+	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="XxQsvEM1";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="MYDCc0wT"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 4F3DD7A010C;
+	Thu, 26 Feb 2026 19:36:49 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Thu, 26 Feb 2026 19:36:49 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+	 t=1772152609; x=1772239009; bh=cZWPtpK1wR62v3hNhnhEkbQvQC8jzjQm
+	E3dVCg93bIQ=; b=XxQsvEM1tQauih7lH/F45pOTRnAtzFXp59U6ZSzkHHvfwXk2
+	1POqK46P3sK7SFitgojBgQVxciuhzjrVZkUp8r66IZvbsaKh6csvmw/jq8cRbPhQ
+	SuEl5XIrAhxRZdfZZim0h8pooFt071mTVPZKuSwXw66UAhixVOe5BzIBu0/st2Al
+	YwpSpWtA4HiYx2A45GH4xZnEynnzqvrp2dJ6u5EhYieQSbt4syHa4vIhzZnjoHvY
+	h2eKSfMnelQ52ZPMo1B6VyUNJizpvcR7NHNk4M4N6eLcPB0hgHUId+FjN1hjZja+
+	XFVn6iRaHAeNTHcaKXvForB4fSuWReuydtD+SQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1772152609; x=
+	1772239009; bh=cZWPtpK1wR62v3hNhnhEkbQvQC8jzjQmE3dVCg93bIQ=; b=M
+	YDCc0wTpvQeGHpGBMGMy2Sn061dU3ET/f54OP74VNTeXKDY+iMc2LKgOH49x7HLf
+	VyvlbnkFHo/ceNRbehPTfxN1wsENvknTFGK3ao4IVRZEthPPfc6hiOrz0XioaCob
+	T82PGKU7d2vqKiZG2UgpPxxyHOBrrVLm2geBCR7MHRL5/b5OLDqExWM2Rn2YV17c
+	kdg7SM4+hlvawaN2y5HRibIiomAt44qJYGI98SvkJgIo4E3elaXmu0Kw8A0P79ZI
+	jMUy3Ku+xgvdwoxYLDjG6W4TE1G5G5cQEiTxbtkYeUftTEknuC94+kOEkUMUQnYJ
+	sL+Vr+U/Iw7VBJj3ZXMpw==
+X-ME-Sender: <xms:IOegaf420vyBgsBhyb_z5cFLDtywiib-qlt5TbO8etmxUd6nVwaYLw>
+    <xme:IOegaRnqu4bdKtOT1NM2SZSg_h_7JhvTz5osE-NO_rH4rD7jZ0gYGya0VBqFk_-Wp
+    Q4IQHgnnH7TCDuT8_M_ALXgmtgYArSvV8l0w2Ckszi6XJkzbS27noE>
+X-ME-Received: <xmr:IOegaaUFTyneGD3aaqAJ9C3rAXsZBRub-wQ50ot07I51MWB-BLuL52WozdicikKvgo5Thg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvgeejheehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefujghfofggtgfgfffksehtqhertdertdejnecuhfhrohhmpeflrgihucgg
+    ohhssghurhhghhcuoehjvhesjhhvohhssghurhhghhdrnhgvtheqnecuggftrfgrthhtvg
+    hrnhepgeefgffhgffhhfejgfevkefhueekvefftefhgfdtuddtfeffueehleegleeiuefh
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhhvse
+    hjvhhoshgsuhhrghhhrdhnvghtpdhnsggprhgtphhtthhopedufedpmhhouggvpehsmhht
+    phhouhhtpdhrtghpthhtoheprhgriihorhessghlrggtkhifrghllhdrohhrghdprhgtph
+    htthhopegurghvvghmsegurghvvghmlhhofhhtrdhnvghtpdhrtghpthhtoheplhhiuhhh
+    rghnghgsihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepvgguuhhmrgiivghtsehgoh
+    hoghhlvgdrtghomhdprhgtphhtthhopehmrghhvghshhgssehgohhoghhlvgdrtghomhdp
+    rhgtphhtthhopehkuhgsrgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhuhgrhh
+    eskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghnughrvgifodhnvghtuggvvheslhhu
+    nhhnrdgthhdprhgtphhtthhopehlihgrlhhisehrvgguhhgrthdrtghomh
+X-ME-Proxy: <xmx:IOegaaSYmX2DVgJMxF_z_COESVrepRSYOPccNBVH68K6r8FqZxXjDg>
+    <xmx:IOegaXCjMDBe8_pR-49AOVSi6fqssFz0yTIXgV3oyVV8opHTiPKEog>
+    <xmx:IOegaSt-TDNTftGibsNZFxp-VF_i0cwgwg450J_4jJm6NMGRnHtJng>
+    <xmx:IOegaV_i-kk7_hBVqSMiCF7kk2fg-JKUe0bT9i_ScsdnPm4Pddz1YQ>
+    <xmx:IeegaQhz6OX8gCh8PBTFSDSAyRQ7wv4-XdYsJ7W1FvJF_5NS_A7NpPN2>
+Feedback-ID: i53714940:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 26 Feb 2026 19:36:48 -0500 (EST)
+Received: by famine.localdomain (Postfix, from userid 1000)
+	id 05BA39FCB1; Thu, 26 Feb 2026 16:36:47 -0800 (PST)
+Received: from famine (localhost [127.0.0.1])
+	by famine.localdomain (Postfix) with ESMTP id 02DDC9FC39;
+	Thu, 26 Feb 2026 16:36:47 -0800 (PST)
+From: Jay Vosburgh <jv@jvosburgh.net>
+To: Hangbin Liu <liuhangbin@gmail.com>
+cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+    "David S. Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+    Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>,
+    Nikolay Aleksandrov <razor@blackwall.org>,
+    Mahesh Bandewar <maheshb@google.com>, linux-kernel@vger.kernel.org,
+    linux-kselftest@vger.kernel.org, Liang Li <liali@redhat.com>
+Subject: Re: [PATCHv3 net 2/3] bonding: restructure ad_churn_machine
+In-reply-to: <20260226125331.28147-3-liuhangbin@gmail.com>
+References: <20260226125331.28147-1-liuhangbin@gmail.com> <20260226125331.28147-3-liuhangbin@gmail.com>
+Comments: In-reply-to Hangbin Liu <liuhangbin@gmail.com>
+   message dated "Thu, 26 Feb 2026 12:53:29 +0000."
+X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Thu, 26 Feb 2026 16:36:46 -0800
+Message-ID: <941081.1772152606@famine>
 
-As there is already a device pointer in the probe function, replace
-all "&pdev->dev" pattern with this predefined device pointer.
+Hangbin Liu <liuhangbin@gmail.com> wrote:
 
-Signed-off-by: Inochi Amaoto <inochiama@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+>The current ad_churn_machine implementation only transitions the
+>actor/partner churn state to churned or none after the churn timer expires.
+>However, IEEE 802.1AX-2014 specifies that a port should enter the none
+>state immediately once the actor=E2=80=99s port state enters synchronizati=
+on.
+>
+>Another issue is that if the churn timer expires while the churn machine is
+>not in the monitor state (e.g. already in churn), the state may remain
+>stuck indefinitely with no further transitions. This becomes visible in
+>multi-aggregator scenarios. For example:
+>
+>Ports 1 and 2 are in aggregator 1 (active)
+>Ports 3 and 4 are in aggregator 2 (backup)
+>
+>Ports 1 and 2 should be in none
+>Ports 3 and 4 should be in churned
+>
+>If a failover occurs due to port 2 link down/up, aggregator 2 becomes acti=
+ve.
+>Under the current implementation, the resulting states may look like:
+>
+>agg 1 (backup): port 1 -> none, port 2 -> churned
+>agg 2 (active): ports 3,4 keep in churned.
+>
+>The root cause is that ad_churn_machine() only clears the
+>AD_PORT_CHURNED flag and starts a timer. When a churned port becomes activ=
+e,
+>its RX state becomes AD_RX_CURRENT, preventing the churn flag from being s=
+et
+>again, leaving no way to retrigger the timer. Fixing this solely in
+>ad_rx_machine() is insufficient.
+>
+>This patch rewrites ad_churn_machine according to IEEE 802.1AX-2014
+>(Figures 6-23 and 6-24), ensuring correct churn detection, state transitio=
+ns,
+>and timer behavior. With new implementation, there is no need to set
+>AD_PORT_CHURNED in ad_rx_machine().
+>
+>Fixes: 14c9551a32eb ("bonding: Implement port churn-machine (AD standard 4=
+3.4.17).")
+>Reported-by: Liang Li <liali@redhat.com>
+>Tested-by: Liang Li <liali@redhat.com>
+>Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+
+	I missed this last time it was posted, but reading it now I
+think the functional change looks good, but I question the usefulness of
+including the 25 line ASCII art version of the state diagram.
+
+	The standard is publicly available, so a comment saying that the
+state machine logic conforms to IEEE 802.1AX-2014 figures 6-23 and 6-24
+should be sufficient.  Anyone seriously checking the code against the
+standard will need to read the relevant text, so they'll be looking it
+up anyway.
+
+	-J
+
+>---
+> drivers/net/bonding/bond_3ad.c | 96 +++++++++++++++++++++++++---------
+> 1 file changed, 71 insertions(+), 25 deletions(-)
+>
+>diff --git a/drivers/net/bonding/bond_3ad.c b/drivers/net/bonding/bond_3ad=
+.c
+>index c47f6a69fd2a..68258d61fd1c 100644
+>--- a/drivers/net/bonding/bond_3ad.c
+>+++ b/drivers/net/bonding/bond_3ad.c
+>@@ -44,7 +44,6 @@
+> #define AD_PORT_STANDBY         0x80
+> #define AD_PORT_SELECTED        0x100
+> #define AD_PORT_MOVED           0x200
+>-#define AD_PORT_CHURNED         (AD_PORT_ACTOR_CHURN | AD_PORT_PARTNER_CH=
+URN)
+>=20
+> /* Port Key definitions
+>  * key is determined according to the link speed, duplex and
+>@@ -1254,7 +1253,6 @@ static void ad_rx_machine(struct lacpdu *lacpdu, str=
+uct port *port)
+> 	/* first, check if port was reinitialized */
+> 	if (port->sm_vars & AD_PORT_BEGIN) {
+> 		port->sm_rx_state =3D AD_RX_INITIALIZE;
+>-		port->sm_vars |=3D AD_PORT_CHURNED;
+> 	/* check if port is not enabled */
+> 	} else if (!(port->sm_vars & AD_PORT_BEGIN) && !port->is_enabled)
+> 		port->sm_rx_state =3D AD_RX_PORT_DISABLED;
+>@@ -1262,8 +1260,6 @@ static void ad_rx_machine(struct lacpdu *lacpdu, str=
+uct port *port)
+> 	else if (lacpdu && ((port->sm_rx_state =3D=3D AD_RX_EXPIRED) ||
+> 		 (port->sm_rx_state =3D=3D AD_RX_DEFAULTED) ||
+> 		 (port->sm_rx_state =3D=3D AD_RX_CURRENT))) {
+>-		if (port->sm_rx_state !=3D AD_RX_CURRENT)
+>-			port->sm_vars |=3D AD_PORT_CHURNED;
+> 		port->sm_rx_timer_counter =3D 0;
+> 		port->sm_rx_state =3D AD_RX_CURRENT;
+> 	} else {
+>@@ -1347,7 +1343,6 @@ static void ad_rx_machine(struct lacpdu *lacpdu, str=
+uct port *port)
+> 			port->partner_oper.port_state |=3D LACP_STATE_LACP_TIMEOUT;
+> 			port->sm_rx_timer_counter =3D __ad_timer_to_ticks(AD_CURRENT_WHILE_TIM=
+ER, (u16)(AD_SHORT_TIMEOUT));
+> 			port->actor_oper_port_state |=3D LACP_STATE_EXPIRED;
+>-			port->sm_vars |=3D AD_PORT_CHURNED;
+> 			break;
+> 		case AD_RX_DEFAULTED:
+> 			__update_default_selected(port);
+>@@ -1379,11 +1374,41 @@ static void ad_rx_machine(struct lacpdu *lacpdu, s=
+truct port *port)
+>  * ad_churn_machine - handle port churn's state machine
+>  * @port: the port we're looking at
+>  *
+>+ * IEEE 802.1AX-2014 Figure 6-23 - Actor Churn Detection machine state di=
+agram
+>+ *
+>+ *                                                     BEGIN || (! port_e=
+nabled)
+>+ *                                                               |
+>+ *                                      (3)                (1)   v
+>+ *   +----------------------+     ActorPort.Sync     +-------------------=
+------+
+>+ *   |    NO_ACTOR_CHURN    | <--------------------- |   ACTOR_CHURN_MONI=
+TOR   |
+>+ *   |=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D|=
+                        |=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D|
+>+ *   | actor_churn =3D FALSE; |    ! ActorPort.Sync    | actor_churn =3D =
+FALSE;    |
+>+ *   |                      | ---------------------> | Start actor_churn_=
+timer |
+>+ *   +----------------------+           (4)          +-------------------=
+------+
+>+ *             ^                                                 |
+>+ *             |                                                 |
+>+ *             |                                      actor_churn_timer e=
+xpired
+>+ *             |                                                 |
+>+ *       ActorPort.Sync                                          |  (2)
+>+ *             |              +--------------------+             |
+>+ *        (3)  |              |   ACTOR_CHURN      |             |
+>+ *             |              |=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D|             |
+>+ *             +------------- | actor_churn =3D True | <-----------+
+>+ *                            |                    |
+>+ *                            +--------------------+
+>+ *
+>+ * Similar for the Figure 6-24 - Partner Churn Detection machine state di=
+agram
+>+ *
+>+ * We don=E2=80=99t need to check actor_churn, because it can only be tru=
+e when the
+>+ * state is ACTOR_CHURN.
+>  */
+> static void ad_churn_machine(struct port *port)
+> {
+>-	if (port->sm_vars & AD_PORT_CHURNED) {
+>-		port->sm_vars &=3D ~AD_PORT_CHURNED;
+>+	bool partner_synced =3D port->partner_oper.port_state & LACP_STATE_SYNCH=
+RONIZATION;
+>+	bool actor_synced =3D port->actor_oper_port_state & LACP_STATE_SYNCHRONI=
+ZATION;
+>+
+>+	/* ---- 1. begin or port not enabled ---- */
+>+	if ((port->sm_vars & AD_PORT_BEGIN) || !port->is_enabled) {
+> 		port->sm_churn_actor_state =3D AD_CHURN_MONITOR;
+> 		port->sm_churn_partner_state =3D AD_CHURN_MONITOR;
+> 		port->sm_churn_actor_timer_counter =3D
+>@@ -1392,25 +1417,46 @@ static void ad_churn_machine(struct port *port)
+> 			 __ad_timer_to_ticks(AD_PARTNER_CHURN_TIMER, 0);
+> 		return;
+> 	}
+>-	if (port->sm_churn_actor_timer_counter &&
+>-	    !(--port->sm_churn_actor_timer_counter) &&
+>-	    port->sm_churn_actor_state =3D=3D AD_CHURN_MONITOR) {
+>-		if (port->actor_oper_port_state & LACP_STATE_SYNCHRONIZATION) {
+>-			port->sm_churn_actor_state =3D AD_NO_CHURN;
+>-		} else {
+>-			port->churn_actor_count++;
+>-			port->sm_churn_actor_state =3D AD_CHURN;
+>-		}
+>+
+>+	if (port->sm_churn_actor_timer_counter)
+>+		port->sm_churn_actor_timer_counter--;
+>+
+>+	if (port->sm_churn_partner_timer_counter)
+>+		port->sm_churn_partner_timer_counter--;
+>+
+>+	/* ---- 2. timer expired, enter CHURN ---- */
+>+	if (port->sm_churn_actor_state =3D=3D AD_CHURN_MONITOR &&
+>+	    !port->sm_churn_actor_timer_counter) {
+>+		port->sm_churn_actor_state =3D AD_CHURN;
+>+		port->churn_actor_count++;
+> 	}
+>-	if (port->sm_churn_partner_timer_counter &&
+>-	    !(--port->sm_churn_partner_timer_counter) &&
+>-	    port->sm_churn_partner_state =3D=3D AD_CHURN_MONITOR) {
+>-		if (port->partner_oper.port_state & LACP_STATE_SYNCHRONIZATION) {
+>-			port->sm_churn_partner_state =3D AD_NO_CHURN;
+>-		} else {
+>-			port->churn_partner_count++;
+>-			port->sm_churn_partner_state =3D AD_CHURN;
+>-		}
+>+
+>+	if (port->sm_churn_partner_state =3D=3D AD_CHURN_MONITOR &&
+>+	    !port->sm_churn_partner_timer_counter) {
+>+		port->sm_churn_partner_state =3D AD_CHURN;
+>+		port->churn_partner_count++;
+>+	}
+>+
+>+	/* ---- 3. CHURN_MONITOR/CHURN + sync -> NO_CHURN ---- */
+>+	if ((port->sm_churn_actor_state =3D=3D AD_CHURN_MONITOR ||
+>+	     port->sm_churn_actor_state =3D=3D AD_CHURN) && actor_synced)
+>+		port->sm_churn_actor_state =3D AD_NO_CHURN;
+>+
+>+	if ((port->sm_churn_partner_state =3D=3D AD_CHURN_MONITOR ||
+>+	     port->sm_churn_partner_state =3D=3D AD_CHURN) && partner_synced)
+>+		port->sm_churn_partner_state =3D AD_NO_CHURN;
+>+
+>+	/* ---- 4. NO_CHURN + !sync -> MONITOR ---- */
+>+	if (port->sm_churn_actor_state =3D=3D AD_NO_CHURN && !actor_synced) {
+>+		port->sm_churn_actor_state =3D AD_CHURN_MONITOR;
+>+		port->sm_churn_actor_timer_counter =3D
+>+			__ad_timer_to_ticks(AD_ACTOR_CHURN_TIMER, 0);
+>+	}
+>+
+>+	if (port->sm_churn_partner_state =3D=3D AD_NO_CHURN && !partner_synced) {
+>+		port->sm_churn_partner_state =3D AD_CHURN_MONITOR;
+>+		port->sm_churn_partner_timer_counter =3D
+>+			__ad_timer_to_ticks(AD_PARTNER_CHURN_TIMER, 0);
+> 	}
+> }
+>=20
+>--=20
+>2.50.1
+>
+
 ---
- drivers/net/ethernet/litex/litex_liteeth.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/net/ethernet/litex/litex_liteeth.c b/drivers/net/ethernet/litex/litex_liteeth.c
-index 67ad1058c2ab..108d0a0db206 100644
---- a/drivers/net/ethernet/litex/litex_liteeth.c
-+++ b/drivers/net/ethernet/litex/litex_liteeth.c
-@@ -238,7 +238,7 @@ static int liteeth_probe(struct platform_device *pdev)
- 	struct liteeth *priv;
- 	int irq, err;
-
--	netdev = devm_alloc_etherdev(&pdev->dev, sizeof(*priv));
-+	netdev = devm_alloc_etherdev(dev, sizeof(*priv));
- 	if (!netdev)
- 		return -ENOMEM;
-
-@@ -247,9 +247,9 @@ static int liteeth_probe(struct platform_device *pdev)
-
- 	priv = netdev_priv(netdev);
- 	priv->netdev = netdev;
--	priv->dev = &pdev->dev;
-+	priv->dev = dev;
-
--	netdev->tstats = devm_netdev_alloc_pcpu_stats(&pdev->dev,
-+	netdev->tstats = devm_netdev_alloc_pcpu_stats(dev,
- 						      struct pcpu_sw_netstats);
- 	if (!netdev->tstats)
- 		return -ENOMEM;
-@@ -277,7 +277,7 @@ static int liteeth_probe(struct platform_device *pdev)
- 	priv->tx_base = buf_base + priv->num_rx_slots * priv->slot_size;
- 	priv->tx_slot = 0;
-
--	err = of_get_ethdev_address(pdev->dev.of_node, netdev);
-+	err = of_get_ethdev_address(dev->of_node, netdev);
- 	if (err)
- 		eth_hw_addr_random(netdev);
-
-@@ -285,7 +285,7 @@ static int liteeth_probe(struct platform_device *pdev)
-
- 	err = devm_register_netdev(dev, netdev);
- 	if (err) {
--		dev_err(&pdev->dev, "Failed to register netdev %d\n", err);
-+		dev_err(dev, "Failed to register netdev %d\n", err);
- 		return err;
- 	}
-
---
-2.53.0
-
+	-Jay Vosburgh, jv@jvosburgh.net
