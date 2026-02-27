@@ -1,52 +1,52 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A5D42B736;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90AED42B73B;
 	Fri, 27 Feb 2026 14:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772204250; cv=none; b=V1X/y1I44fZLuqlHWToeSPCyA1ATYBJP8tNRrOgZrDf5o0qtAWtnyla00QLwpKcHCTL/hrI8DxgJ0B1gcps/BsjrYe4hqqvJL80d0v8mneb/Ii6i26ZQm/J7ICrVprT3YxIXPRQFn7dgyQ9f/ZLd+VeVsXsrT6JxT7gjZ3xv0fI=
+	t=1772204250; cv=none; b=rhDiPG0HjLNWhW6KVcV03qph2xF75kG3ZZ2KZThpCZjwcH4r3qT5SJIvYUXJIpPVJKpNM3yii5P7Vtu7/9QgyMIVkTtDSWjNBPQJGstbtDRiuJrZ3V20iq/GBv865Diar1ER/F9lEvjpkpMpYlVprRMbDZG4VoZTazRAg0/lmGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772204250; c=relaxed/simple;
-	bh=QuZtKrwJ6nTCMVf8hjdLyFF0aUMoEHD05EoYboEqLIU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=NrkhKzJWsRFWAruWlVIsbKJ+z48k8V/IUToNsUGadrTrcO5d98RpzIgouZlxIzaesz2swse+SJOi7+E7/w70a0dppPvzx2rpAECbBDjCiFUVNpBIlGOxK8iqOovj1h02n5vBQ9efXqdCe+nqZh8gnZwb2B/+A+tW9vIb1myhB24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=GomUfPy+; arc=none smtp.client-ip=68.232.153.233
+	bh=Ow4BaL7t8+ptDhmm93kvq3SCgaiHZrjMuwhCUtx9vBY=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=kT+kp1GVxJaccfLMSUjvE9SLx3ZwBP+PSxKTahOhQOE/kJL/rKt9ET06OSLNlIFdkukhz2nLIODAqcuFVeYYIxrarbCQ0kiWuikVhcEt4ui8poGf6rFRTRb0M+4fZaHpjcYJpWcQm8Ru9eLhVyGafG1oxouJecG8gF2pPSXeMEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=2nJ+EFhg; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="GomUfPy+"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="2nJ+EFhg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1772204248; x=1803740248;
-  h=from:date:subject:mime-version:content-transfer-encoding:
-   message-id:references:in-reply-to:to:cc;
-  bh=QuZtKrwJ6nTCMVf8hjdLyFF0aUMoEHD05EoYboEqLIU=;
-  b=GomUfPy+OZUOjGQBd3SCFRh3TTnVuFFG+qU1IQCzBpvzj4++d0h4QMHA
-   q/scxXWRD7m+A7yG+8r9nnorm7IR+mESOhkh3BeyvRdK1M0/XSde0IJTT
-   nxWZNo5cxlUCmLAKRsdIsRH9Ttcq0oHlGmVXWpIOk+lOVJ9/SbqlRTI90
-   AaTs+zgxNP4FewhTSa/r0IPoIMzYY0yTMCvcermQ37q+cfTaZq1Jwd63d
-   mrV/jclWPkN1Bc2+WCHJehOKF5HTO9O8tvSfsO7pdsthYMhSej89DTzkU
-   5+9/55wY0lrxhn6kwj8GMbrMgXoQGQYgvaPUwBc6wZtmfNNJOQbfMTWfj
-   Q==;
-X-CSE-ConnectionGUID: wgI98+BBT5OZU+rH87zgwA==
-X-CSE-MsgGUID: cYck7q/MSl603WhN33PF+g==
+  t=1772204247; x=1803740247;
+  h=from:subject:date:message-id:mime-version:
+   content-transfer-encoding:to:cc;
+  bh=Ow4BaL7t8+ptDhmm93kvq3SCgaiHZrjMuwhCUtx9vBY=;
+  b=2nJ+EFhgaeN+aVsfSwHxZBNhO2tJyxFBS6+sPUzbxMqs74aL4Ncg49Mu
+   VMpA16spwbxAGI4zaEhQIAHmIR6Oq7A3XJD0jBbggW0Zs6A2IaLrf0afB
+   5uYje6bAYlN2A8E/SNsmfJkmhwafOO2fnzqQU8Ymk4wPlD6qq1DCdOHjS
+   QmnvdQSWNer+agh62zUGdHKHSLzEDj0ZeUiVvRw+tiZoFtyLx/23puu7N
+   wMx6eDXq09gq2iu8vhRciVHRh8XN6BlhQfanpP+Ogouy1I2ST5NDdUG2n
+   /vFSSFAGyp0wCRRWbpcdx2CUa15JltAMdVONb3tYNZOV3zeAjF7bRq9Gi
+   w==;
+X-CSE-ConnectionGUID: kLDX0HSLSkif0YfeYYLp1A==
+X-CSE-MsgGUID: sKY45YYqSf+b1MKrmg4FDg==
 X-IronPort-AV: E=Sophos;i="6.21,314,1763449200"; 
-   d="scan'208";a="53970560"
+   d="scan'208";a="61420721"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 27 Feb 2026 07:57:27 -0700
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2026 07:57:27 -0700
 Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
- chn-vm-ex02.mchp-main.com (10.10.87.72) with Microsoft SMTP Server
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Fri, 27 Feb 2026 07:57:01 -0700
+ 15.2.2562.35; Fri, 27 Feb 2026 07:56:58 -0700
 Received: from DEN-DL-M70577.microsemi.net (10.10.85.11) by
  chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Fri, 27 Feb 2026 07:56:58 -0700
+ 15.1.2507.58 via Frontend Transport; Fri, 27 Feb 2026 07:56:56 -0700
 From: Daniel Machon <daniel.machon@microchip.com>
-Date: Fri, 27 Feb 2026 15:56:39 +0100
-Subject: [PATCH net-next v2 1/9] net: sparx5: move netdev and notifier
- block registration to probe
+Subject: [PATCH net-next v2 0/9] net: sparx5: clean up probe/remove init
+ and deinit paths
+Date: Fri, 27 Feb 2026 15:56:38 +0100
+Message-ID: <20260227-sparx5-init-deinit-v2-0-10ba54ccf005@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -54,10 +54,12 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20260227-sparx5-init-deinit-v2-1-10ba54ccf005@microchip.com>
-References: <20260227-sparx5-init-deinit-v2-0-10ba54ccf005@microchip.com>
-In-Reply-To: <20260227-sparx5-init-deinit-v2-0-10ba54ccf005@microchip.com>
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAKawoWkC/22NwQ6DIBBEf8XsudsABqw99T8aDxbXugfBACE2x
+ n8vodeeJi+TeXNApMAU4d4cEChzZO8KqEsDdhndm5CnwqCEMkJJg3Ebw66RHSecqIZoOztLo61
+ RBGW4BZp5r9InOEroaE8wlGbhmHz41Lcsa/8TK/1PnCUK7DvRGn0Tr34Wj5Vt8Hbh7Wr9CsN5n
+ l+bo0/NwgAAAA==
+X-Change-ID: 20260216-sparx5-init-deinit-037cf165c62e
 To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
 	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
 	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Steen Hegelund
@@ -68,103 +70,126 @@ CC: <netdev@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
 	<linux-kernel@vger.kernel.org>
 X-Mailer: b4 0.14.3
 
-Move netdev registration and notifier block registration from
-sparx5_start() to probe(). This allows proper cleanup via goto-based
-error labels in probe().
+This series refactors the sparx5 init and deinit code out of
+sparx5_start() and into probe(), adding proper per-subsystem cleanup
+labels and deinit functions.
 
-Also, remove the sparx5_cleanup_ports() helper as its functionality is now
-split between sparx5_unregister_netdevs() and sparx5_destroy_netdevs()
-called at appropriate points.
+Currently, the sparx5 driver initializes most subsystems inside
+sparx5_start(), which is called from probe(). This includes registering
+netdevs, starting worker threads for stats and MAC table polling,
+requesting PTP IRQs, and initializing VCAP. The function has grown to
+handle many unrelated subsystems, and has no granular error handling —
+it either succeeds entirely or returns an error, leaving cleanup to a
+single catch-all label in probe().
+
+The remove() path has a similar problem: teardown is not structured as
+the reverse of initialization, and several subsystems lack proper deinit
+functions. For example, the stats workqueue has no corresponding
+cleanup, and the mact workqueue is destroyed without first cancelling
+its delayed work.
+
+Refactor this by moving each init function out of sparx5_start() and
+into probe(), with a corresponding goto-based cleanup label. Add deinit
+functions for subsystems that allocate resources, to properly cancel
+work and destroy workqueues. Ensure that cleanup order in both error
+paths and remove() follows the reverse of initialization order.
+sparx5_start() is eliminated entirely — its hardware register setup
+is renamed to sparx5_forwarding_init() and its FDMA/XTR setup is
+extracted to sparx5_frame_io_init().
+
+Before this series, most init functions live inside sparx5_start() with
+no individual cleanup:
+
+  probe():
+    sparx5_start():              <- no granular error handling
+      sparx5_mact_init()
+      sparx_stats_init()           <- starts worker, no cleanup
+      mact_queue setup             <- no cancel on teardown
+      sparx5_register_netdevs()
+      sparx5_register_notifier_blocks()
+      sparx5_vcap_init()
+    sparx5_ptp_init()
+
+    probe() error path:
+      cleanup_ports:
+        sparx5_cleanup_ports()
+        destroy_workqueue(mact_queue)
+
+After this series, probe() initializes subsystems in order with
+matching cleanup labels, and remove() tears down in reverse:
+
+  probe():
+    sparx5_pgid_init()
+    sparx5_vlan_init()
+    sparx5_board_init()
+    sparx5_forwarding_init()
+    sparx5_calendar_init()         -> cleanup_ports
+    sparx5_qos_init()              -> cleanup_ports
+    sparx5_vcap_init()             -> cleanup_ports
+    sparx5_mact_init()             -> cleanup_vcap
+    sparx5_stats_init()            -> cleanup_mact
+    sparx5_frame_io_init()         -> cleanup_stats
+    sparx5_ptp_init()              -> cleanup_frame_io
+    sparx5_register_netdevs()      -> cleanup_ptp
+    sparx5_register_notifier_blocks() -> cleanup_netdevs
+
+  remove():
+    sparx5_unregister_notifier_blocks()
+    sparx5_unregister_netdevs()
+    sparx5_ptp_deinit()
+    sparx5_frame_io_deinit()
+    sparx5_stats_deinit()
+    sparx5_mact_deinit()
+    sparx5_vcap_deinit()
+    sparx5_destroy_netdevs()
 
 Signed-off-by: Daniel Machon <daniel.machon@microchip.com>
 ---
- .../net/ethernet/microchip/sparx5/sparx5_main.c    | 41 +++++++++++-----------
- 1 file changed, 21 insertions(+), 20 deletions(-)
+Changes in v2:
 
-diff --git a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-index 582145713cfd..0ca4001a3667 100644
---- a/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-+++ b/drivers/net/ethernet/microchip/sparx5/sparx5_main.c
-@@ -773,20 +773,11 @@ static int sparx5_start(struct sparx5 *sparx5)
- 	mutex_init(&sparx5->mdb_lock);
- 	INIT_LIST_HEAD(&sparx5->mdb_entries);
- 
--	err = sparx5_register_netdevs(sparx5);
--	if (err)
--		return err;
--
- 	sparx5_board_init(sparx5);
--	err = sparx5_register_notifier_blocks(sparx5);
--	if (err)
--		return err;
- 
- 	err = sparx5_vcap_init(sparx5);
--	if (err) {
--		sparx5_unregister_notifier_blocks(sparx5);
-+	if (err)
- 		return err;
--	}
- 
- 	/* Start Frame DMA with fallback to register based INJ/XTR */
- 	err = -ENXIO;
-@@ -835,12 +826,6 @@ static int sparx5_start(struct sparx5 *sparx5)
- 	return err;
- }
- 
--static void sparx5_cleanup_ports(struct sparx5 *sparx5)
--{
--	sparx5_unregister_netdevs(sparx5);
--	sparx5_destroy_netdevs(sparx5);
--}
--
- static int mchp_sparx5_probe(struct platform_device *pdev)
- {
- 	struct initial_port_config *configs, *config;
-@@ -1020,10 +1005,26 @@ static int mchp_sparx5_probe(struct platform_device *pdev)
- 
- 	INIT_LIST_HEAD(&sparx5->mall_entries);
- 
-+	err = sparx5_register_netdevs(sparx5);
-+	if (err) {
-+		dev_err(sparx5->dev, "Failed to register net devices\n");
-+		goto cleanup_ptp;
-+	}
-+
-+	err = sparx5_register_notifier_blocks(sparx5);
-+	if (err) {
-+		dev_err(sparx5->dev, "Failed to register notifier blocks\n");
-+		goto cleanup_netdevs;
-+	}
-+
- 	goto cleanup_config;
- 
-+cleanup_netdevs:
-+	sparx5_unregister_netdevs(sparx5);
-+cleanup_ptp:
-+	sparx5_ptp_deinit(sparx5);
- cleanup_ports:
--	sparx5_cleanup_ports(sparx5);
-+	sparx5_destroy_netdevs(sparx5);
- 	if (sparx5->mact_queue)
- 		destroy_workqueue(sparx5->mact_queue);
- cleanup_config:
-@@ -1047,12 +1048,12 @@ static void mchp_sparx5_remove(struct platform_device *pdev)
- 		disable_irq(sparx5->fdma_irq);
- 		sparx5->fdma_irq = -ENXIO;
- 	}
-+	sparx5_unregister_notifier_blocks(sparx5);
-+	sparx5_unregister_netdevs(sparx5);
- 	sparx5_ptp_deinit(sparx5);
- 	ops->fdma_deinit(sparx5);
--	sparx5_cleanup_ports(sparx5);
- 	sparx5_vcap_destroy(sparx5);
--	/* Unregister netdevs */
--	sparx5_unregister_notifier_blocks(sparx5);
-+	sparx5_destroy_netdevs(sparx5);
- 	destroy_workqueue(sparx5->mact_queue);
- }
- 
+v2 mainly addresses the comment from Russell on v1, saying that a
+minimal initialization should be done after netdev publication. This is
+now done by moving initialization in sparx5_start out to proper init
+functions. This also means that no initialization is done after netdev
+publication in v2.
 
+- Drop v1 patch 1 ("call sparx5_start() last in probe()"); PTP IRQ
+  handling is now a separate commit and sparx5_start() is eliminated
+  in the final patch.
+- Add patch to move PTP IRQ handling out of sparx5_start() into its
+  own init/deinit with cleanup label.
+- Add patch to extract FDMA/XTR initialization from sparx5_start()
+  into sparx5_frame_io_init() with cleanup label.
+- Add patch to rename sparx5_start() to sparx5_forwarding_init() and
+  change return type to void, eliminating sparx5_start() entirely.
+
+Link to v1: https://lore.kernel.org/r/20260225-sparx5-init-deinit-v1-0-97036580b9f0@microchip.com
+
+---
+Daniel Machon (9):
+      net: sparx5: move netdev and notifier block registration to probe
+      net: sparx5: move VCAP initialization to probe
+      net: sparx5: move MAC table initialization and add deinit function
+      net: sparx5: move stats initialization and add deinit function
+      net: sparx5: move calendar initialization to probe
+      net: sparx5: move remaining init functions from start() to probe()
+      net: sparx5: move PTP IRQ handling out of sparx5_start()
+      net: sparx5: move FDMA/XTR initialization out of sparx5_start()
+      net: sparx5: replace sparx5_start() with sparx5_forwarding_init()
+
+ .../ethernet/microchip/sparx5/sparx5_calendar.c    |  15 +-
+ .../net/ethernet/microchip/sparx5/sparx5_ethtool.c |   9 +-
+ .../ethernet/microchip/sparx5/sparx5_mactable.c    |  34 ++-
+ .../net/ethernet/microchip/sparx5/sparx5_main.c    | 253 ++++++++++-----------
+ .../net/ethernet/microchip/sparx5/sparx5_main.h    |  12 +-
+ drivers/net/ethernet/microchip/sparx5/sparx5_ptp.c |  18 ++
+ .../ethernet/microchip/sparx5/sparx5_vcap_impl.c   |   2 +-
+ 7 files changed, 196 insertions(+), 147 deletions(-)
+---
+base-commit: 17d0056f71b13050317a662a505b1a36fb7009e5
+change-id: 20260216-sparx5-init-deinit-037cf165c62e
+
+Best regards,
 -- 
-2.34.1
+Daniel Machon <daniel.machon@microchip.com>
 
