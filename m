@@ -1,295 +1,159 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazhn15012042.outbound.protection.outlook.com [52.102.128.42])
+Received: from PH7PR06CU001.outbound.protection.outlook.com (mail-westus3azon11020082.outbound.protection.outlook.com [52.101.201.82])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92EDD44BCA3;
-	Fri, 27 Feb 2026 17:43:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.102.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54ED0348479;
+	Fri, 27 Feb 2026 17:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.201.82
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772214196; cv=fail; b=B3iVNViX2XaudFSCoMRYupZrhGh6XP4ZB+yw432Ypn7m8yid8zGLr+Mv/MwGrJsf8yHKNLRN04NjO2nXfiP0jdS907ea6lx8OKf1MI7QPhoFXqufkzbeZoJjjxf+KAeHPslC73Pu9/meFxGJ9zcAHfpByy9tLZDYOJ3xdkMDdRU=
+	t=1772214474; cv=fail; b=ok3y7XJkTrnkzCOviQapHbr++N9ni7acAHRJ3P5l0Yl/66H9tDzJa74oKNvdpNh5F7rus2KfZWSivxQ8igru7YHeMkOu+ZyF+LgxCTUHMuYPMkU0XjxUq/5XLNvG0PLiclAkJFLB/yEZebJYKRmN+sncDsT1qMAvq27cyxaG+V0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772214196; c=relaxed/simple;
-	bh=/qADd07IQbyjRFT1fZ642bfisUCWwkO7VQw5JzeKeM4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qnpLURNILUMHxw6evHsil9FCDpuZEq87djlAphFfhtLBck3QKCzYBzi0/eGcysJvGzkbIKwCmYiW1QIeRIf2QFIGLKbGy3OASRXnpnvyl3gfs8jCon3wK7L2QEZ4IaMV9HfPq5xkyfWqABRTjFdJLIYt6gv1DveAE7Zk6Me7bWg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=HC69O4Du; arc=fail smtp.client-ip=52.102.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+	s=arc-20240116; t=1772214474; c=relaxed/simple;
+	bh=TwdSeForohRj5WPwsvx+OyODPAjFd0PUYJmr6c/57BY=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=Wfu0CAx/ZVRGZMW1Ke32vTElia6fL17SGIohuF1/ye+NYWBmn0duWKrS+J+rljHBg0z+Xv0AXlIa/KDnGLhOZeaFTStPOLO4X9zBeGTtOHfWoE/aqiPsb6XMkbEyWsh6VFw9TqacyGNz4GIIpKRifftjWKIEHYaxGjoQfXlbczc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com; spf=pass smtp.mailfrom=os.amperecomputing.com; dkim=fail (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b=f+URTy1K reason="key not found in DNS"; arc=fail smtp.client-ip=52.101.201.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=amperemail.onmicrosoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=os.amperecomputing.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="HC69O4Du"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=amperemail.onmicrosoft.com header.i=@amperemail.onmicrosoft.com header.b="f+URTy1K"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fnREBcAIGdDKXbO1SoftSTXwOaOLv+jqUhgANyGkGQAY7QWE+hhAwiidEpV42Jjqc3aXEr8EhzKKothjdbGRm+5edhJbGumvpVBDnh8wX0E9G7WoLRUjXFgDLT3mWVmfPprRp2HRQ/NfQwwLxJka4djrnrA3vmUT1BToE/Q/r7dDB4oMTD9/gCiS6qcOYonz9ijRy7QJ0M6f+yrgBFw5d78E5B/iB6xLHUdWWGQyi+2wa6Jzl+n45srbzp5oRx9XAX2RtTmDuyE1hWDJqOhxkK2EGzU+Aouxmq0fkqXADoGudtC9n+e1LatdCRrO+v8+SUXvktA2i62L4KkOshDF9w==
+ b=IXwB4zYTzxtnaLydverNFvIZxjgWusuQt/4+r+RwmaaZR78Dsu5wR+FLrxbSHR9t4A1m/QMNAr5ejzb02WveN7kjKtgJkdWW8urGux3Csvc/KZwsVUq0mZIeZnle9UAxaUzms0fJdnXT7y+SRn7kPjJgSN0L4afpBSV4J70CzJtagaaONUhclklabr7Kobb0QTaq2RDRCTzqxhMUkpmZclUjsgUQxBSU+Mo/HlHq4g5rZGajeRBZBhL/teonRgmkCtwkgrAvPGnc7Qp4gCpgPVdDrNj4rGYZ/44eicuNzly/AtHVZpNJXGA06jVZjMDHSWeNLjAW67DU1l9jBKqwug==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PrCCQaBYgKQGcTp3C0fxlRQhhqPKhxAZfjgNw6tNvNY=;
- b=e8i4YKd8eA97mZetfhxQatm77JQx7CDU/x/30K9dGx4J7MlAq4Nvh0o6zXD9csO42Agce5360Vviq5/jNTQRFxEZFjPW3rSgXGhPz2SGAOdzrOufSsdmQDXHCpmcfUb4hVKHBXXdY5vWpOSt5WaIQCL2w2LIyr4P5lX93klMwmX4Ddh5HgEukPeeX4eUPEfCDWcXbLd9tTzT/nKTu0Av4KAOYrGfpcXB7Wxvomij/tiK9sAElX0xq9PwOybRN/7ZMHQXINa88WrdvOnMhq03zmNct2/KqRPq5tH1h7+OqctXOYsq8PN/VrPzWJTSY2EpeHJxh1s/c1eNAclJJ5cUsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 198.47.23.195) smtp.rcpttodomain=lunn.ch smtp.mailfrom=ti.com; dmarc=pass
- (p=quarantine sp=none pct=100) action=none header.from=ti.com; dkim=none
- (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ bh=TyM0E6WXmEKSLMqV+MGRibYLiQOp4R4XLLgOpwqQExw=;
+ b=LZr1QBJz3OADc2L38u/C67bAnpOel10eavNetRn/icsuF4sohsJ9IFMcDovVErOGuGgTfJmg5K1fU5RuBcQkQTurYCZ0uZS0CyOPrPcTEVIbkvE7hYjY4LQ1tOtR4+IiOn40UCZJjopeGHIiLzJJeqCV2/owiRJGQ2/9m2osMmIYMkWPV59xkhLphSqTHKAcT34N450rubs+ZF1qo2TqVz2cqK1HVu+HO1QS3YndBbb6WHiNW432/rhvTCo7uRc1tJIBzkkykFkSm73Rl2R8TPB8Zu3gHCFoiZzE2YKzMNkG093S2qFH8RMKX1yEuUKXkIXdf7kc8yTig7l00w4GFg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=os.amperecomputing.com; dmarc=pass action=none
+ header.from=amperemail.onmicrosoft.com; dkim=pass
+ header.d=amperemail.onmicrosoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=amperemail.onmicrosoft.com; s=selector1-amperemail-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PrCCQaBYgKQGcTp3C0fxlRQhhqPKhxAZfjgNw6tNvNY=;
- b=HC69O4DuUDBYq6ADEcZlt8x1IwQRJ9tMSvZW13O4vTMPx35QkKJUPHYL0N/70nsXka5QDu38Gf+nPbQaH8yHoGWaN55PAFgUhtgvW4a3un/DefpWYilZdlcK2o0cFrue0/syXVil+C8u2ZJ1tQ8I0ISqJ651RnfKihK8zdpQVyY=
-Received: from SA0PR11CA0058.namprd11.prod.outlook.com (2603:10b6:806:d0::33)
- by DS0PR10MB8030.namprd10.prod.outlook.com (2603:10b6:8:1f7::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.14; Fri, 27 Feb
- 2026 17:43:08 +0000
-Received: from SN1PEPF0002636D.namprd02.prod.outlook.com
- (2603:10b6:806:d0:cafe::4f) by SA0PR11CA0058.outlook.office365.com
- (2603:10b6:806:d0::33) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9632.27 via Frontend Transport; Fri,
- 27 Feb 2026 17:42:40 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
- smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
- action=none header.from=ti.com;
-Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
- 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
- client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
-Received: from lewvzet201.ext.ti.com (198.47.23.195) by
- SN1PEPF0002636D.mail.protection.outlook.com (10.167.241.138) with Microsoft
+ bh=TyM0E6WXmEKSLMqV+MGRibYLiQOp4R4XLLgOpwqQExw=;
+ b=f+URTy1KtEVvsEd7tjQthaQxkNzAteafCCwzJB53iF+dIvwtJB+2VqMmM8+qxuL32MPYsJyNMfJpIyKgf3rUxyhpkpIZKCB11SWhnmjOe0i30ei85TyCCSg/vJ9karjsDjt5lZwyeW6AvCTM3xM7+urDWghjAEuGBv05w5vBx84=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amperemail.onmicrosoft.com;
+Received: from BN3PR01MB9212.prod.exchangelabs.com (2603:10b6:408:2cb::8) by
+ CO1PR01MB7339.prod.exchangelabs.com (2603:10b6:303:156::18) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.16 via Frontend Transport; Fri, 27 Feb 2026 17:43:07 +0000
-Received: from DLEE206.ent.ti.com (157.170.170.90) by lewvzet201.ext.ti.com
- (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 27 Feb
- 2026 11:42:59 -0600
-Received: from DLEE202.ent.ti.com (157.170.170.77) by DLEE206.ent.ti.com
- (157.170.170.90) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 27 Feb
- 2026 11:42:59 -0600
-Received: from lelvem-mr06.itg.ti.com (10.180.75.8) by DLEE202.ent.ti.com
- (157.170.170.77) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Fri, 27 Feb 2026 11:42:59 -0600
-Received: from lelv0854.itg.ti.com (lelv0854.itg.ti.com [10.181.64.140])
-	by lelvem-mr06.itg.ti.com (8.18.1/8.18.1) with ESMTP id 61RHgxn54139956;
-	Fri, 27 Feb 2026 11:42:59 -0600
-Received: from localhost (dhcp-172-24-231-152.dhcp.ti.com [172.24.231.152])
-	by lelv0854.itg.ti.com (8.14.7/8.14.7) with ESMTP id 61RHgvst008410;
-	Fri, 27 Feb 2026 11:42:58 -0600
-From: MD Danish Anwar <danishanwar@ti.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
-	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
-	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Meghana Malladi
-	<m-malladi@ti.com>, Jacob Keller <jacob.e.keller@intel.com>, Kevin Hao
-	<haokexin@gmail.com>, Vadim Fedorenko <vadim.fedorenko@linux.dev>
-CC: <linux-arm-kernel@lists.infradead.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, "Roger
- Quadros" <rogerq@kernel.org>, <danishanwar@ti.com>
-Subject: [PATCH net-next] net: ti: icssg: Add HSR/PRP protocol frame filtering
-Date: Fri, 27 Feb 2026 23:12:54 +0530
-Message-ID: <20260227174254.3821443-1-danishanwar@ti.com>
-X-Mailer: git-send-email 2.34.1
+ 15.20.9632.14; Fri, 27 Feb 2026 17:47:46 +0000
+Received: from BN3PR01MB9212.prod.exchangelabs.com
+ ([fe80::44f3:1050:dce8:1ea9]) by BN3PR01MB9212.prod.exchangelabs.com
+ ([fe80::44f3:1050:dce8:1ea9%6]) with mapi id 15.20.9654.014; Fri, 27 Feb 2026
+ 17:47:44 +0000
+Message-ID: <4382aa4f-cc67-4813-a79e-f77f103d5ab7@amperemail.onmicrosoft.com>
+Date: Fri, 27 Feb 2026 12:47:38 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [net-next v31 2/2] mctp pcc: Implement MCTP over PCC Transport
+To: Jakub Kicinski <kuba@kernel.org>,
+ Adam Young <admiyo@os.amperecomputing.com>
+Cc: Jeremy Kerr <jk@codeconstruct.com.au>,
+ Matt Johnston <matt@codeconstruct.com.au>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sudeep Holla <sudeep.holla@arm.com>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Huisong Li <lihuisong@huawei.com>
+References: <20260224231055.393329-1-admiyo@os.amperecomputing.com>
+ <20260224231055.393329-3-admiyo@os.amperecomputing.com>
+ <20260226183252.10fb6003@kernel.org>
+Content-Language: en-US
+From: Adam Young <admiyo@amperemail.onmicrosoft.com>
+In-Reply-To: <20260226183252.10fb6003@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BY1P220CA0024.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:5c3::9) To BN3PR01MB9212.prod.exchangelabs.com
+ (2603:10b6:408:2cb::8)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
-X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002636D:EE_|DS0PR10MB8030:EE_
-X-MS-Office365-Filtering-Correlation-Id: a473df0b-0ac2-4de9-0838-08de7627aae7
+X-MS-TrafficTypeDiagnostic: BN3PR01MB9212:EE_|CO1PR01MB7339:EE_
+X-MS-Office365-Filtering-Correlation-Id: a1ff1497-cbbc-44a6-0bda-08de76284ff5
+X-MS-Exchange-AtpMessageProperties: SA
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|34020700016|82310400026|36860700013|1800799024|12100799066;
+	BCL:0;ARA:13230040|1800799024|10070799003|7416014|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	8VhGA8GfEctnHy2yjDr/a2BuQXFDV6prXZbikTbFbypYQifFT1yqrHw/Q7xS3Z+QCV2UG2r0OZkV67dVkm0vlvMXEjMtrCfU4rLYRq36iXw6zeHBOAGLcmu1/fBPq4sP28QNZ5XH9zp2ND4lv0JpBN85XFvpCxCqxSl2Ke6tshNn1yJNIe1soZZkYjGH6Y4tD4vaJODvZDP4subISIOMs2HU32BgxRryKXcnNaeTsDlg2CwnvKfrU2VVg6XapWTBBuhyeyF1qyQfvjCm8dfG1WTmNxRRjjrcJbAFiw9xYtKyx0CbM5npyo/3G12OcNVQh9MV/O3y5efb6GD087+amfcket7bLJm0obMeKENanlcuA/eum2V0wiU4XpsbUxaJ0ZKvGAdRt/1bWAru7WIpjhFJCSibguG+q/hhes6IZnzp8ZlOVV/ENpbZr4OiayzaIPNh0Uh6Qrz5MwOIwZFdJ/F1d7hoMR+y1+aInDSiEq4QZ58o/7ZusWCOMKBsVg4u9nZEUpvtKgMzBpKyz+iSVXHr+xlVU9UxUVuD0Dgw9oY6jutR8/7aTWdP1J9RgI2+YVQFhUIVf9l2RabthTjMCG53YzBNAHLu75otPloIbVPpXKk9PsPyHMLyihQnrLs5Q/PHiloDVOD2CGfMxw6RQLfXMmD0ZC6W6k1IJpxhD34Q/MzxhHzhwWwVpih1OQPSf8BOJKoYE/2E7wPdHyP8g1mdqKagzgnW8GRc+g/PpMRs9LLsJhw/z6IUd/qCvuqI7FPnzGAQcRtZvPg9sJOu6pacgE6z9OapyghCx+asBRxo3tdYrTSH3Mo9DRXbJliJoSiAmmATPZqWBFPp3MpMPg==
+	qRgbAsp5sUxZl3XEiRA1mw+kgg+x+IZmW3W53zco/r1na5EMtt5VKDqWhkeoOaZc7vdSnPwMuU/1Ao746yKNL2ocFN0HlNC2xkXJPITA4fA1yJKUyAusQM78kVGB/acHee6LW/b/Si7h6AzbkmKlqLqraUgBxNF+dxCJcXNif29BWaddtRazk8cDywTqY83NK16JaSVy7tBqKXx+FqHffGxjrVS81lc1ILI4XfgYBz8IWZAw70MDlshHjMtgPfmgTqjqs0QyFtkyhm4jfUXZ7cF/eLjnGDiYgJUiBuOvveVtZLw4BRf7z7O4H01AaLeFt29BmunA2HLkaa0H3wE7XE1LBunABEzKECtS/8v0LWT+31CSGz1XJYsz9xcqWccLf+UaNcBtcpXOieCfYMXMEHZgTbMnDQOoe5hcxpR6vqlt9hEWpcf1Ms1831+q7YB4msTq2nYO3cCdelxOvwgbKyBzKOUl8Uhxt++eXTZcSUw9XocxhMg7OI1aQ0/x8wUz8A3cYeFS95K+8sI4CsdNukuogBYfIEpsxfHYaivzwmND4l0zgbNszUxubgS7TMRbOo++2v0l1yMML7CIqUpGZRIOx8SzWoFjcN+XZPzlmIey2Tkj3ASov3qa8yj6R4+pMK9cDnRBj+45kgoCft2fyi0tmDlnWdyCsC+2c03YdOFt7bJCL6Gvx2CzTqVU+dL85p4u+mWAngpg2dFBL5uglFA4+hoRljFJnr1EGPP96fM=
 X-Forefront-Antispam-Report:
-	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(34020700016)(82310400026)(36860700013)(1800799024)(12100799066);DIR:OUT;SFP:1501;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN3PR01MB9212.prod.exchangelabs.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(7416014)(376014)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 2
 X-MS-Exchange-AntiSpam-MessageData-0:
-	Id8n87TveFksCTIM4l04n6FHCuD+Q1Ec79BxoriydL1FMEMrzKpbCI9BwwDpL/fdkzwf8zdpNentyBxrWS3Ml1yLSRy8tRLunafiTr947vCw2WCMrEOhKNDTUUY4bW1bSaeYvXtUF05/1LQugXpnZy3qXo+EfqBrIbAXT9HfeSbbaSkumNGdBY+HRV7GfSETnGPkAcNg0WP1D6yrKEFHHi5zqD/ZZb5ydmORnv2dRTrs1CqTti8bt+Aynxox5jQorPe+8n6M+vmYNnXSKHlNqM/RfsZ7gazm7569Xo+Jm9e3kV7pCy4pHHFUyKmFwPvLJGGCulAS0Ysw1pbDVhDLJ5u2Ao0y7r6q7+MCXRnfJ0y3y1Woy63//1EvMHVUZr6JrFqaJopBIPxwM9jDx6HYPeyjYcvZumGhVxNK0sleE6n6GTEclQ9EAH7S2Usv9Dmf
-X-OriginatorOrg: ti.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 17:43:07.5876
+	=?utf-8?B?WXZGdGxXVGdNMHZJdmtYT1o4Y0owc1puRlJ5T2FlNmxHSW1jbFNCbVdXRkNT?=
+ =?utf-8?B?WkZEQmFLZTk5WC9zLzRMRmhGbEdWQmliOXJTY2lRM1cvWVB0RVp0bis1N0Zn?=
+ =?utf-8?B?d2oyWGFnMWlHdXcyaEg2Q2x4a2haWHNqZUs4NHRiMGUrd2piV3BWOWQyVUZ1?=
+ =?utf-8?B?WnJWa1l0dExHeVA0RFhFWnpXS1p5QWxDTWFZQmZhWXRYMG5DcG1GZTlDbDZy?=
+ =?utf-8?B?d0N6T29tMHE3dXVUSXBTZzV0QkQ3WkZuTWhRNTl2Qis3aEs3c1NIdnlwaUo2?=
+ =?utf-8?B?OFBudkFwOVJycENxTnh5VU5odHdxTU1iNzVnWUJSZGtVUTFqcDRaOTA1SlQw?=
+ =?utf-8?B?OHl3U2luN0plNWxYNGUzRjRLT0ZRYi95Ykgxa2tQZGltTFh4UlluRG9XY2dr?=
+ =?utf-8?B?TGdsWlFiMFFReldNV3UrQ3hhQ0lSYUxhZkpqNExNNHE2bDJoS0NCVUZDeFUr?=
+ =?utf-8?B?dmU5YkF5ZzBFNCt3YzRYaWZGUlpyODVwRzlxZnlYQ3dnYUpWaG9WVGsva0xk?=
+ =?utf-8?B?dXhRdDRUMDBaZlRSU0tBZHlLbkNqUnJlM1o3TmtycnRyelJlVDJneStHZlRU?=
+ =?utf-8?B?ejdXMlVIOTl2TitSU2tkZWtSVUxueEdEYzQ0RHNHY0pBb215ZjN3QWduNzhX?=
+ =?utf-8?B?a01RWlgxSHUxMzdrNmpHWHBLY21sbE12UzlzM3pkNlV4ZTNDbFpzN0lqVXE3?=
+ =?utf-8?B?QUdINENNa2srZFNPVjZJSyt1QUdrOW4xNkx6aThEckNDSkU5YkJHVDlYNldY?=
+ =?utf-8?B?dzFyZ05zaWlWY1JFVm1EemU5Wjhwd2E3NE1aMUhacnRnMnBuWkU5QmdDaVcz?=
+ =?utf-8?B?WHptT3BHQ2IvdTJrQ1R5M01MSGg4YUZLVzlvREFlT2p2NFFNL21pc2FESW40?=
+ =?utf-8?B?aVhmcGRwSWFSZGRIRWs1VEhOWjlYQnpDbDZsRG8xbWkrNHR6TXRXOUNTZUJB?=
+ =?utf-8?B?QUdiYlZXWmd4Ty95SHBPRmFiSzl3U3ZaalBmZUI5RENLb24rbHhCbjFPRFc4?=
+ =?utf-8?B?WFhEWXVKWVUrYVhTK2VZR1hjcW1VYm9FYWpwRit1c2dOamtwT1oyRDZCQWtF?=
+ =?utf-8?B?akVlaTRpNTF4MFV6eVplSkJOc0NSd2o2ZDVMNzFlV2V6bkNjRDFSbWd1QUtB?=
+ =?utf-8?B?b2p5Uk80bEN4d1pwRGlEMWVVSEdSSlozOXU5NDEwZnVXSkNSL3dwditrMVBt?=
+ =?utf-8?B?M0x2UENtZFFPaFZHNXkwUjZETlNlWkpVN0oyc1dWMG9Kdll1REJMQnpXc1Vt?=
+ =?utf-8?B?ZmRmZytNcTdUclpTOVVGT3ZtUitBRlBPL0dPNGsvQjJBaUFSNFY5WlFSRzhZ?=
+ =?utf-8?B?RSswbUl1Nkh0Q01JWVFNc2wycHBCS2U5bHZNN3JwTkNCSDBaS1o4R0hJZ2du?=
+ =?utf-8?B?bVY0cGo4MEs1UnhqbWxFZStHOVB2bEtkaFlEWEUzcFpoODl6SHhGNVJzNXF2?=
+ =?utf-8?B?azZIWUcxc1hrYytmazlqazA1YmtkRWdQS08xVll0N3FGanN5RWlCUjZsWXVD?=
+ =?utf-8?B?RzkzaHBDM2dqL2FPOUJsRW5qckplanJ3TThCVXExb044cTJ2OVNmS3A1ck5L?=
+ =?utf-8?B?QzdsdDJVbVFudDlzeVk0UHJMejYvYlYySUphZlB2eVlBc09iaVdiQ3RjYk1v?=
+ =?utf-8?B?Q3UyYXVMUUowV3dTUDQza0JMTS9wUGhlQ0dRMHlWQkFoeEtUZDFUQzNIQnFQ?=
+ =?utf-8?B?MEdWd002NFBlNEZUUmZrWXRjTWE1a3EzcExROWh6YjhVZU9qdFYwdzlhaHJW?=
+ =?utf-8?B?WEUwWDZLYjFReHJYZWVqK2V1Rnd1WjBPdzdlVE5LbE5ablF3Q1lyQnVtV1R6?=
+ =?utf-8?B?SXppYXRmN2pTN29QUWxDSnR2QWl1YStKRVYvWXZiaG13NGZBSFMvQWRocnlL?=
+ =?utf-8?B?TlBtTmNMTmppMCtVWDJnNkM1NVV3ME1IUFFkQzNRdUNSU0s0TDQ1OGZ0TFFC?=
+ =?utf-8?B?Vk9OcWNvS21DdVlqckxYMXZRWS9IUm9lNEdqbWNwSzM4WStXOUUwRWVMODI1?=
+ =?utf-8?B?eGtadnd1c0xBbUxQV3RkS2lSR3dxdDY2ZEl6ZU9qRXVGMUZCK2tqS2t6YUJM?=
+ =?utf-8?B?NWY4QUJDcmJ0c2JBV1ZQSGJYZ2dTUmk3ZXJ5QmVXYU1CbmVlTkVSNDU1dkE1?=
+ =?utf-8?B?QlhwNkJSQ1B5dGdIb0RUd3JMSTB4MUdjMGNVNVFSUTQ5NktvbHgzalJPU29H?=
+ =?utf-8?B?bkhySVdiV0lDWVhvRTBQRkhxU2hoN0RqRGVOdk82bWFENW5LcjR3Y1ZES1ds?=
+ =?utf-8?B?ZEpsdXFUMi8ybjVXWEdRVG5SdFU3dy92NjdUL0MzbHI2MWsxUXpvSEJkWUNQ?=
+ =?utf-8?B?KzdGS2hiRHN5S2cvZEYyV2Y0Qi9LMjhWS2VDZnk0cE1kWElVNVo0bk4vaVVL?=
+ =?utf-8?Q?/6kQeE+Q3T6JU25qsfUJyOfJLCKl/wsAGlQskrOYpWIM8?=
+X-MS-Exchange-AntiSpam-MessageData-1:
+	cmymqwdcqO0Sm8TqLt4ojqgpKIiwDmYHCZDzrDB1gqnDFYlOCY6psQng
+X-OriginatorOrg: amperemail.onmicrosoft.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a1ff1497-cbbc-44a6-0bda-08de76284ff5
+X-MS-Exchange-CrossTenant-AuthSource: BN3PR01MB9212.prod.exchangelabs.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Feb 2026 17:47:44.7015
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a473df0b-0ac2-4de9-0838-08de7627aae7
-X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002636D.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB8030
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3bc2b170-fd94-476d-b0ce-4229bdc904a7
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: rxQL6+eEy8UASSIeH94IVdgC4T9HyJqSCBSIYGAas8PZzhNuabahRPPbQ7ZtT8WFs2DgjaElT9mP+hYbv5uTXfmM3LvsQpBoRrsiPzdbeU58ZeozEolS88TtivggQM1q
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR01MB7339
 
-Add support for HSR and PRP protocol frame filtering in the ICSSG
-classifier by configuring filter table 3 (FT3) to detect PTP frames
-(EtherType 0x88F7) in HSR/PRP tagged packets.
 
-Also add rx_class_or_base to miig_rt_offsets structure to support
-RX_CLASS_OR register access, and fix typos in FT1_N_REG and FT3_N_REG
-macros (slize -> slice).
+On 2/26/26 21:32, Jakub Kicinski wrote:
+> On Tue, 24 Feb 2026 18:10:52 -0500 Adam Young wrote:
+>> Implementation of network driver for
+>> Management Component Transport Protocol(MCTP)
+>> over Platform Communication Channel(PCC)
+> make sure this builds cleanly with W=1 please:
+>
+> drivers/net/mctp/mctp-pcc.c:133:27: warning: variable 'outbox' set but not used [-Wunused-but-set-variable]
+>    133 |         struct mctp_pcc_mailbox *outbox;
+>        |                                  ^
 
-Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
----
- .../net/ethernet/ti/icssg/icssg_classifier.c  | 69 ++++++++++++++++++-
- drivers/net/ethernet/ti/icssg/icssg_prueth.c  |  6 ++
- drivers/net/ethernet/ti/icssg/icssg_prueth.h  |  2 +
- 3 files changed, 75 insertions(+), 2 deletions(-)
+Sorry about that, but building on both ARM64 and x86_64 with -W=1 did 
+not report that issue.  Is there another tool I should be using?
 
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_classifier.c b/drivers/net/ethernet/ti/icssg/icssg_classifier.c
-index 833ca86d0b71..cde53d9aaa7b 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_classifier.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_classifier.c
-@@ -27,7 +27,7 @@
- #define FT1_DA0_MASK	0x8
- #define FT1_DA1_MASK	0xc
- 
--#define FT1_N_REG(slize, n, reg)	\
-+#define FT1_N_REG(slice, n, reg)	\
- 	(offs[slice].ft1_slot_base + FT1_SLOT_SIZE * (n) + (reg))
- 
- #define FT1_LEN_MASK		GENMASK(19, 16)
-@@ -62,7 +62,7 @@ enum ft1_cfg_type {
- #define FT3_T			0x18
- #define FT3_T_MASK		0x1c
- 
--#define FT3_N_REG(slize, n, reg)	\
-+#define FT3_N_REG(slice, n, reg)	\
- 	(offs[slice].ft3_slot_base + FT3_SLOT_SIZE * (n) + (reg))
- 
- /* offsets from rx_class n's base */
-@@ -74,6 +74,9 @@ enum ft1_cfg_type {
- #define RX_CLASS_N_REG(slice, n, reg)	\
- 	(offs[slice].rx_class_base + RX_CLASS_EN_SIZE * (n) + (reg))
- 
-+#define RX_CLASS_OR_REG(slice, n, reg)	\
-+	(offs[slice].rx_class_or_base + RX_CLASS_EN_SIZE * (n) + (reg))
-+
- /* RX Class Gates */
- #define RX_CLASS_GATES_SIZE	0x4	/* bytes */
- 
-@@ -102,6 +105,22 @@ enum ft1_cfg_type {
- 	((BIT(slot) << RX_CLASS_FT_FT1_MATCH_SHIFT) & \
- 	RX_CLASS_FT_FT1_MATCH_MASK)
- 
-+/* HSR/PRP protocol frame filtering */
-+#define HSR_PTP_ETHERTYPE_OFFSET	0x12
-+#define PRP_PTP_ETHERTYPE_OFFSET	0x0C
-+#define FT3_PTP_PATTERN			0xF788
-+#define FT3_ETHERTYPE_MASK		0xFFFF0000U
-+#define FT3_VLAN_MODE_BOTH		0x1
-+#define RX_CLASS_OR_DUP_PTP		0x4200
-+#define RX_CLASS_OR_HSR_TAG		0x4000
-+#define RX_CLASS_GATE_PTP		0x50
-+#define RX_CLASS_DISABLE		0x0
-+
-+/* HSR/PRP classifier indices */
-+#define CLASSIFIER_PTP_DUP		10
-+#define CLASSIFIER_HSR_TAG		11
-+#define FT3_PTP_SLOT			14
-+
- /* RX class type */
- enum rx_class_sel_type {
- 	RX_CLASS_SEL_TYPE_OR = 0,
-@@ -133,6 +152,7 @@ struct miig_rt_offsets {
- 	u32 ft3_p_base;
- 	u32 ft_rx_ptr;
- 	u32 rx_class_base;
-+	u32 rx_class_or_base;
- 	u32 rx_class_cfg1;
- 	u32 rx_class_cfg2;
- 	u32 rx_class_gates_base;
-@@ -161,6 +181,7 @@ static const struct miig_rt_offsets offs[] = {
- 		0x308,
- 		0x408,
- 		0x40c,
-+		0x410,
- 		0x48c,
- 		0x490,
- 		0x494,
-@@ -186,6 +207,7 @@ static const struct miig_rt_offsets offs[] = {
- 		0x8d4,
- 		0x9d4,
- 		0x9d8,
-+		0x9dc,
- 		0xa58,
- 		0xa5c,
- 		0xa60,
-@@ -467,3 +489,46 @@ void icssg_ft1_set_mac_addr(struct regmap *miig_rt, int slice, u8 *mac_addr)
- 	rx_class_ft1_cfg_set_type(miig_rt, slice, 0, FT1_CFG_TYPE_EQ);
- }
- EXPORT_SYMBOL_GPL(icssg_ft1_set_mac_addr);
-+
-+/**
-+ * icssg_ft3_hsr_configurations - Configure filter table for HSR/PRP protocol frames
-+ * @miig_rt: Pointer to the MII-G register map
-+ * @slice: ICSSG slice number (0 or 1)
-+ * @prueth: Pointer to prueth structure to determine HSR/PRP mode
-+ *
-+ * Configures FT3 to detect PTP frames (EtherType 0x88F7) in HSR/PRP tagged packets.
-+ * HSR frames have a 6-byte tag, while PRP has no tag offset for EtherType detection.
-+ */
-+void icssg_ft3_hsr_configurations(struct regmap *miig_rt, int slice,
-+				  struct prueth *prueth)
-+{
-+	u8 offset = (prueth->hsr_prp_version == PRP_V1) ?
-+		    PRP_PTP_ETHERTYPE_OFFSET : HSR_PTP_ETHERTYPE_OFFSET;
-+
-+	regmap_write(miig_rt, FT3_N_REG(slice, FT3_PTP_SLOT, FT3_START), offset);
-+	regmap_write(miig_rt, FT3_N_REG(slice, FT3_PTP_SLOT, FT3_START_AUTO), 0);
-+	regmap_write(miig_rt, FT3_N_REG(slice, FT3_PTP_SLOT, FT3_START_OFFSET), 0);
-+	regmap_write(miig_rt, FT3_N_REG(slice, FT3_PTP_SLOT, FT3_JUMP_OFFSET), 0);
-+	regmap_write(miig_rt, FT3_N_REG(slice, FT3_PTP_SLOT, FT3_LEN), 0);
-+	regmap_write(miig_rt, FT3_N_REG(slice, FT3_PTP_SLOT, FT3_CFG), FT3_VLAN_MODE_BOTH);
-+	regmap_write(miig_rt, FT3_N_REG(slice, FT3_PTP_SLOT, FT3_T), FT3_PTP_PATTERN);
-+	regmap_write(miig_rt, FT3_N_REG(slice, FT3_PTP_SLOT, FT3_T_MASK),
-+		     FT3_ETHERTYPE_MASK);
-+
-+	regmap_write(miig_rt, RX_CLASS_N_REG(slice, CLASSIFIER_PTP_DUP, RX_CLASS_AND_EN),
-+		     RX_CLASS_DISABLE);
-+	regmap_write(miig_rt, RX_CLASS_OR_REG(slice, CLASSIFIER_PTP_DUP, RX_CLASS_OR_EN),
-+		     RX_CLASS_OR_DUP_PTP);
-+	regmap_write(miig_rt, RX_CLASS_GATES_N_REG(slice, CLASSIFIER_PTP_DUP),
-+		     RX_CLASS_GATE_PTP);
-+
-+	if (prueth->hsr_prp_version != PRP_V1) {
-+		regmap_write(miig_rt, RX_CLASS_N_REG(slice, CLASSIFIER_HSR_TAG, RX_CLASS_AND_EN),
-+			     RX_CLASS_DISABLE);
-+		regmap_write(miig_rt, RX_CLASS_OR_REG(slice, CLASSIFIER_HSR_TAG, RX_CLASS_OR_EN),
-+			     RX_CLASS_OR_HSR_TAG);
-+		regmap_write(miig_rt, RX_CLASS_GATES_N_REG(slice, CLASSIFIER_HSR_TAG),
-+			     RX_CLASS_GATE_PTP);
-+	}
-+}
-+EXPORT_SYMBOL_GPL(icssg_ft3_hsr_configurations);
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-index 0939994c932f..9efa39069c8c 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-@@ -260,6 +260,12 @@ static int prueth_emac_common_start(struct prueth *prueth)
- 	icssg_class_default(prueth->miig_rt, ICSS_SLICE0, 0, false);
- 	icssg_class_default(prueth->miig_rt, ICSS_SLICE1, 0, false);
- 
-+	/* Configure HSR/PRP protocol filtering if in HSR offload mode */
-+	if (prueth->is_hsr_offload_mode) {
-+		icssg_ft3_hsr_configurations(prueth->miig_rt, ICSS_SLICE0, prueth);
-+		icssg_ft3_hsr_configurations(prueth->miig_rt, ICSS_SLICE1, prueth);
-+	}
-+
- 	if (prueth->is_switch_mode || prueth->is_hsr_offload_mode)
- 		icssg_init_fw_offload_mode(prueth);
- 	else
-diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.h b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-index 3d94fa5a7ac1..df93d15c5b78 100644
---- a/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-+++ b/drivers/net/ethernet/ti/icssg/icssg_prueth.h
-@@ -423,6 +423,8 @@ void icssg_class_promiscuous_sr1(struct regmap *miig_rt, int slice);
- void icssg_class_add_mcast_sr1(struct regmap *miig_rt, int slice,
- 			       struct net_device *ndev);
- void icssg_ft1_set_mac_addr(struct regmap *miig_rt, int slice, u8 *mac_addr);
-+void icssg_ft3_hsr_configurations(struct regmap *miig_rt, int slice,
-+				  struct prueth *prueth);
- 
- /* config helpers */
- void icssg_config_ipg(struct prueth_emac *emac);
-
-base-commit: fd6dad4e1ae296b67b87291256878a58dad36c93
--- 
-2.34.1
 
