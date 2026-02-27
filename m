@@ -1,204 +1,152 @@
-Received: from mout.perfora.net (mout.perfora.net [74.208.4.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9754621770A;
-	Fri, 27 Feb 2026 09:59:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.208.4.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B787F39E192;
+	Fri, 27 Feb 2026 10:07:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772186364; cv=none; b=kGT1re4FVTYf4NOUWoG+ivjy+AYMunmsGmuFQlHtFtLamVTRKU/xkx6Tu16M171A0zGQFE4ZE426cfTMfPkbir9BnUm/E+dcRjiK4GDJtJ6IoLXKfBFgm3GlFOigfzYgvHKKSbhrl6Diri7XrKSA8R9maE57Dv87fdPwJrzZfJU=
+	t=1772186831; cv=none; b=SUPeuNzjIEJ+ipI+jmDhzOgOuadSHRk8GheHfQqt+SC7VKICfATJKOI1xDVuNm5OFRkJdsOV4ojHynZutdizJxpewDBtAZPSYU4Nbt1OoMz3JVLXH/FwoFjS4mrLRPqvogbKOJO6/1VyoVSpHxyqYyXZXIakwmg3Tb+DowJ3Fi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772186364; c=relaxed/simple;
-	bh=osg/KBiSHPE8q8+l4cSGrjz/3ljFNSwcPbponOZHnUQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=B8lThX+eIUtqOcbWKJkwlztAV2bf2uZoUDoBQcNsbg3JtsiqASvrsN11gwoCRkfLIk8ixz3SsboZXFpau7mkT/byVwBHYClxMagCkCRVR0qRYDUsy2edr55IcFm7DKVLfw2JXhZl9p0x4+ebJgQTSnyRh0JNJIlWBE0pw1oTFEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ziswiler.com; spf=pass smtp.mailfrom=ziswiler.com; dkim=pass (2048-bit key) header.d=ziswiler.com header.i=marcel@ziswiler.com header.b=RxE+5H3D; arc=none smtp.client-ip=74.208.4.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ziswiler.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziswiler.com
+	s=arc-20240116; t=1772186831; c=relaxed/simple;
+	bh=Mp1JXSTiLvThOX9+iafDoJIcaXcdqjP2+vG+mtpInGY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lcg1qTnGtQhxt5quDXzvXc3u59WD5Tvz+9tBRHoXa4RpQIAsuzic/NiSRjbecLsDtE9T9sDc5riyBw/BjfkuNeCd2bX4+EOOT4hcmjryOGDHnNJrL3MoPXzmgorL8VamgIgejZgTIJEyJlPCMciueFLYOpMWKkiUpLgCe35h+Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LELv1nLz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziswiler.com header.i=marcel@ziswiler.com header.b="RxE+5H3D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ziswiler.com;
-	s=s1-ionos; t=1772186361; x=1772791161; i=marcel@ziswiler.com;
-	bh=osg/KBiSHPE8q8+l4cSGrjz/3ljFNSwcPbponOZHnUQ=;
-	h=X-UI-Sender-Class:Message-ID:Subject:From:To:Cc:Date:In-Reply-To:
-	 References:Content-Type:Content-Transfer-Encoding:MIME-Version:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=RxE+5H3D+hjAwJeoIbw4vpt+sxfM/raHIKCHVPEstNVbxwhWS256pgGu0xcP+6LI
-	 F3y+5GSLcSxApT6rMsP8hJVK3NGQcOaBPAha+DJGWU/PPm9QdivaQmmTbM2Gwz3W5
-	 Z8dHwXq2g89Z6lfAjd39LEZ7nq/P8syluHoEPA7Q5wewjFS37q8/P/pw6uAhI02AX
-	 VaBXXzytfeUR+81vfGG+Kl6Kg3oSQVMleCidjPVGmqjlwnPfuFpCnPVGhIIuzFHW7
-	 L3P4Gm15PlAeZZ2c0svaId++Ow5TEe+13yw0O07aAiTiSz/urCXVlUqypAfZ8ce3+
-	 PHeajIuhEiVee0Oobw==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from client.hidden.invalid by mrelay.perfora.net (mreueus004
- [74.208.5.2]) with ESMTPSA (Nemesis) id 1N4965-1vVGqJ3eDp-00rOlj; Fri, 27 Feb
- 2026 10:53:07 +0100
-Message-ID: <e2130fa8e18cdffb9be9426a8576e67675e87d55.camel@ziswiler.com>
-Subject: Re: Re: [PATCH v2 0/2] net: stmmac: eic7700: fix EIC7700 eth1 RX
- sampling timing
-From: Marcel Ziswiler <marcel@ziswiler.com>
-To: =?UTF-8?Q?=E6=9D=8E=E5=BF=97?= <lizhi2@eswincomputing.com>
-Cc: devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
-	rmk+kernel@armlinux.org.uk, linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	ningyu@eswincomputing.com, linmin@eswincomputing.com, 
-	pinkesh.vaghela@einfochips.com, weishangjuan@eswincomputing.com, 
-	dongxuyang@eswincomputing.com, ganboing@gmail.com,
- pritesh.patel@einfochips.com
-Date: Fri, 27 Feb 2026 10:52:55 +0100
-In-Reply-To: <6137cd6a.4859.19c97f5eb67.Coremail.lizhi2@eswincomputing.com>
-References: <20260209094628.886-1-lizhi2@eswincomputing.com>
-	 <5f99968ec561631852bfa72aea95a100dcad5324.camel@ziswiler.com>
-	 <6137cd6a.4859.19c97f5eb67.Coremail.lizhi2@eswincomputing.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (by Flathub.org) 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LELv1nLz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC9A2C116C6;
+	Fri, 27 Feb 2026 10:06:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772186830;
+	bh=Mp1JXSTiLvThOX9+iafDoJIcaXcdqjP2+vG+mtpInGY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LELv1nLziJIInpPEfBGwhAV2gMFZg12s7lFE0KxfTQldEo18NluQr9e3C+Zct+lyZ
+	 drhXLzadFmCAbIbeq3bsgUtgfAnwVSB9B/lX0VpyOvlAJ9ihOIftg2vbjxkn/BO8qX
+	 uVjQZAzhR6+W+W0J8fzC9LGfhszCyPHqWUyfeWWQk54n5K8J2+Lq3RSoWH238qvmja
+	 zUj111yecfmSqu9Gzo21TEY0Dy7GefpBTvyuB7b0hFZ8/UWmvbKQ/1AsQMoZt7sN+P
+	 SMQhFN/3rME7rBp2YRNdOAUhubk/iwSO58hKw1S3dlOGtmn8p+ue+G/QetiQW6CaQr
+	 Vs7VZ81sfYPdg==
+Date: Fri, 27 Feb 2026 11:06:39 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Matthew Wilcox <willy@infradead.org>, Eric Biggers <ebiggers@kernel.org>, 
+	"Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+	David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>, 
+	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, Jaegeuk Kim <jaegeuk@kernel.org>, 
+	Chao Yu <chao@kernel.org>, Trond Myklebust <trondmy@kernel.org>, 
+	Anna Schumaker <anna@kernel.org>, Chuck Lever <chuck.lever@oracle.com>, 
+	NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>, 
+	Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>, 
+	Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam Prasad N <sprasad@microsoft.com>, 
+	Bharath SM <bharathsm@microsoft.com>, Alexander Aring <alex.aring@gmail.com>, 
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>, Viacheslav Dubeyko <slava@dubeyko.com>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	David Sterba <dsterba@suse.com>, Marc Dionne <marc.dionne@auristor.com>, 
+	Ian Kent <raven@themaw.net>, Luis de Bethencourt <luisbg@kernel.org>, 
+	Salah Triki <salah.triki@gmail.com>, "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, 
+	Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
+	Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, Nicolas Pitre <nico@fluxnic.net>, 
+	Tyler Hicks <code@tyhicks.com>, Amir Goldstein <amir73il@gmail.com>, 
+	Christoph Hellwig <hch@infradead.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	Yangtao Li <frank.li@vivo.com>, Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, 
+	David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, 
+	Dave Kleikamp <shaggy@kernel.org>, Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+	Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall <hubcap@omnibond.com>, 
+	Martin Brandenburg <martin@omnibond.com>, Miklos Szeredi <miklos@szeredi.hu>, 
+	Anders Larsen <al@alarsen.net>, Zhihao Cheng <chengzhihao1@huawei.com>, 
+	Damien Le Moal <dlemoal@kernel.org>, Naohiro Aota <naohiro.aota@wdc.com>, 
+	Johannes Thumshirn <jth@kernel.org>, John Johansen <john.johansen@canonical.com>, 
+	Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	"Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+	Roberto Sassu <roberto.sassu@huawei.com>, Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+	Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+	Stephen Smalley <stephen.smalley.work@gmail.com>, Ondrej Mosnacek <omosnace@redhat.com>, 
+	Casey Schaufler <casey@schaufler-ca.com>, Alex Deucher <alexander.deucher@amd.com>, 
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>, David Airlie <airlied@gmail.com>, 
+	Simona Vetter <simona@ffwll.ch>, Sumit Semwal <sumit.semwal@linaro.org>, 
+	Eric Dumazet <edumazet@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Paolo Abeni <pabeni@redhat.com>, Willem de Bruijn <willemb@google.com>, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+	Adrian Hunter <adrian.hunter@intel.com>, James Clark <james.clark@linaro.org>, 
+	"Darrick J. Wong" <djwong@kernel.org>, Martin Schiller <ms@dev.tdt.de>, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
+	fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev, 
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
+	linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, samba-technical@lists.samba.org, 
+	linux-nilfs@vger.kernel.org, v9fs@lists.linux.dev, linux-afs@lists.infradead.org, 
+	autofs@vger.kernel.org, ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu, 
+	ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
+	jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev, 
+	devel@lists.orangefs.org, linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, selinux@vger.kernel.org, 
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+	linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
+	linux-x25@vger.kernel.org
+Subject: Re: [PATCH 00/61] vfs: change inode->i_ino from unsigned long to u64
+Message-ID: <20260227-herab-wolken-c52d560f40d5@brauner>
+References: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Provags-ID: V03:K1:P7rtaATGEKMWJFkzUg8ddjiTxi9RHPpZ3eAD8g5GykxXsfTcBTX
- 8RXzCrhmAc5Vm8vo5y1jI0txTBr30Z6MJfl46iwascAdegNwXLF6TXOAfQRWSJB2uYY9XWl
- dt0tvp3HLYBjkGuG+00bNoMDBoNn6gZOOikO9YDx/ihQDYDOvNeLt1z5PGKPi6KVwwkcFPm
- LWc7lQqLeeV8Xby4TQxWQ==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:e+tGgFVXqR4=;P4w55yIVSVGUVy00/3b4FKTCY6Y
- RTrug6CV9InDrBudF+MCINUZN1RCy6G5EmLGsmDldrYAKMshs11CcEonq2yjcl3mUCINDU66a
- DZDSMbUNWSM4rnZdpXEciw1JvzkllQyZk9TIixo1flKpyQbdnspyNME0aZsvxH3EiUGDg80S0
- toy/fVyUTg85AyLmOr1+xg5fIJu1itlg7xDQFxtWJpVoJH9DhW56QQqLE6EUH3jU4H7wAwB5N
- /6A2NVIA+dYJl8OfOyDWHtPxy2M+9x3uL9M/VUo2s8nZcnsnxiL8Vu5NTl0dqVqeMRiTaWdMp
- bBJdC6HjhvNh7nBG1jTvAeZiKC1yQKQbicXli9IhAkM3w2OqaKhySd0NvQpuyF3ZvQ3inqvRE
- GT8KaVHgNq1J+OmyMYufgIh1Rsd+nTaRHWM7Z6b0+aOox1WKm5nzt1DK7Z+NprHbmC0teC3Ug
- ONt/MlBs4yeUiIuq+Y0w0786/XTHeGQHMG4ivph9yyO9CbxcfLv2z4Ghvw56Z82uJZqnziHKl
- 6yG8dCccLpIThofmp95Ld4vUjRyEgzTgkDuO4KIZan4CfJi6c+Tud/83bo/VSeBdpz96RGVWP
- cpukD4+Dj24wK9rKwed/l7tErBKuOwj79ezXd6Zi7NVzoUm5AvVn1dk6Jt7fpr6zCU30zluid
- UHSNAVtfY4cTbpdDrBWrd3y6Ap2ur6hRwn04a/eshhnM4tEY8ME9Gdoi0me/6j12yjHRw5x0L
- zIoP1I95u+YDQKoPABj/NPfTu7VM61UjIjyuLbemKbyxpjh5Mnx/VVPpWTL0QQGDvDF+OGf+G
- yl4scU/QwuwgbkTOx2udHxp87BGbA1AAMXnz5lBvGyW6ZsLkfNJy0/HbeXnDqPKhSpz7G6Sx8
- dmAoJKwWtdlPpYiHJkI3y96nXuw3fQ9bGqknguLlsscxnbx4kIb9WsMohI/pHzzTMSsY56Mb1
- ERg48Tiy+aZymu0zcRvV8u+Genx3l3nkzfk6h9EVLxtN3GCEzrwCY4foxVEZysqMGKIvm4Ia1
- y7Iyb6x4tRoIPjPAoEZkGwXhATXhxV/qlh4ZoElg+tykHWHgR0+Sp8basLK0BK2GmTD6C82Y+
- ia2+2qyByu+zAxeG2rtz6Q+ve/aFwLx5+iWc8I9RIOrTP94L5xx/2vZUjG4UM72iftA9iXS+R
- JJEclJZcULzwxTLpf8MgbKWLlQeo9Zvv7py7NzpOHH6Iv7+KqSQtC1uPuidsM5EZ0XFU/08xo
- iv28i87vGBcDBw3g513Wj0zyDUJE4sYybq5GA8Bbz9lDbVnxEeP5WaHZIcLjE5gPsSIu6zF71
- z5xIjY6AWXsQNhIZlHcdbbd4H5cDAAauK3U32q5rOuoDirFC5cnAj+TaRWMZf21g0tFocAdM/
- uSAAK3QKtJMRxfM0pR9FB0Lm8OVl9kdvcMR2VJho37yQNC48nGy8RiHvFpxvVeOK6sCfAV2TK
- cAmCg3mGTybbG/jERgD4nAI7qilHDixJ4ZrkS61Mf58O8OinX+aT7f40SlqAU6WL/f5CQYtpg
- rJH4vHfLsDriXTLRt8oS36vtqbPapdFxoFGv8u0fd7OBWpP5wHyCX9RJYAbHJ8pSdemHsTh+O
- SO+U7JbfRZymX6H0RorL/n43b25aADKx8pwbVIJkICtgi+KlTtIfZnJpe8owteU2pi+hGhRDO
- u65eULA5zs5NLIrpzV6ssPSMp7S8jEYEVXbMcbfdeKc1rBCwQVT1TTHHlwxZn7jNr1hSDjFsI
- yDd94N5Pzoed8i8BB3UJ6y+JFF1Lh5BHSFA==
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260226-iino-u64-v1-0-ccceff366db9@kernel.org>
 
-Hi Zhi Li
+On Thu, Feb 26, 2026 at 10:55:02AM -0500, Jeff Layton wrote:
+> Christian said [1] to "just do it" when I proposed this, so here we are!
+> 
+> For historical reasons, the inode->i_ino field is an unsigned long,
+> which means that it's 32 bits on 32 bit architectures. This has caused a
+> number of filesystems to implement hacks to hash a 64-bit identifier
+> into a 32-bit field, and deprives us of a universal identifier field for
+> an inode.
+> 
+> This patchset changes the inode->i_ino field from an unsigned long to a
+> u64. This shouldn't make any material difference on 64-bit hosts, but
+> 32-bit hosts will see struct inode grow by at least 4 bytes. This could
+> have effects on slabcache sizes and field alignment.
+> 
+> The bulk of the changes are to format strings and tracepoints, since the
+> kernel itself doesn't care that much about the i_ino field. The first
+> patch changes some vfs function arguments, so check that one out
+> carefully.
+> 
+> With this change, we may be able to shrink some inode structures. For
+> instance, struct nfs_inode has a fileid field that holds the 64-bit
+> inode number. With this set of changes, that field could be eliminated.
+> I'd rather leave that sort of cleanups for later just to keep this
+> simple.
+> 
+> Much of this set was generated by LLM, but I attributed it to myself
+> since I consider this to be in the "menial tasks" category of LLM usage.
+> 
+> [1]: https://lore.kernel.org/linux-fsdevel/20260219-portrait-winkt-959070cee42f@brauner/
 
-On Thu, 2026-02-26 at 11:20 +0800, =E6=9D=8E=E5=BF=97 wrote:
-> Hi Marcel,
->=20
-> Thanks for sharing the details.
->=20
-> 1. I checked your log and noticed that the kernel cmdline already include=
-s
-> =C2=A0=C2=A0 "clk_ignore_unused". Therefore, your issue does not appear t=
-o be the
-> =C2=A0=C2=A0 same as the one previously reported by Bo Gan.
+I'm working under the assumption that we have crossed the threshold and
+people send patches they did completely themselves and also patches that
+were done with the help of or almost completely by a tool. You have to
+defend it one way or the other.
 
-Yes, that actually came from ESWIN's hifive-premier-p550_defconfig which I =
-disabled now.
+Frankly, as long as you understand what you're doing in general well and
+I know that you are a trusted and thorough developer/maintainer I could
+not care less if you tell me whether or not you did this all on your
+own or with the help of some tool. In my experience, laziness grows with
+experience but so does the amount of ideas. 
 
-> 2. I also verified that v6.19.2 already contains the two eMMC fix patches=
-:
-> =C2=A0=C2=A0 https://lore.kernel.org/all/CAPDyKFqcMyM-=3Dx+2FWNLhHY=3Dgu5=
-ApHNPQhp0xBKDJGr7BhEx4Q@mail.gmail.com/
-> =C2=A0=C2=A0 https://lore.kernel.org/all/CAPDyKFrkEZDuMbGpfxismcx=3DvJkSS=
-K_XbtB762+sUFocupT63w@mail.gmail.com/
-
-Yes.
-
-> =C2=A0=C2=A0 A likely cause is that the eMMC DTS node is missing the AXI =
-clock definition.
-> =C2=A0=C2=A0 Please refer to the DTS updates in the following pull reques=
-t for reference:
-> =C2=A0=C2=A0 https://github.com/eswincomputing/linux-next/pull/20
-
-Ah, that one helped (;-p).
-
-BTW: For CPU frequency scaling to actually work one may additionally need C=
-ONFIG_RISCV_SBI_CPUIDLE=3Dy.
-
-> 3. In addition, please check whether CONFIG_GPIO_DWAPB=3Dy is enabled in =
-your
-> =C2=A0=C2=A0 kernel configuration. Since GMAC is built-in by default, it =
-depends on
-> =C2=A0=C2=A0 GPIO being available during early initialization.
-
-Yes, I also changed that from =3Dm to =3Dy (;-p).
-
-> Hope this helps narrow things down. Please let me know what you find.
-
-Yes, it all works now perfectly incl. CPU frequency scaling. See [1].
-
-Next one would be working PCIe and USB. Unfortunately, for PCIe on EBC77 on=
-e would likely need some sort of an
-adapter cable/PCB. Maybe I can solder something together. Let's see...
-
-Thank you very much!
-
-[1] https://github.com/riscv/meta-riscv/pull/602
-
-> Best regards,
-> Zhi Li
-
-Cheers
-
-Marcel
-
-> > -----=E5=8E=9F=E5=A7=8B=E9=82=AE=E4=BB=B6-----
-> > =E5=8F=91=E4=BB=B6=E4=BA=BA: "Marcel Ziswiler" <marcel@ziswiler.com>
-> > =E5=8F=91=E9=80=81=E6=97=B6=E9=97=B4:2026-02-21 02:37:57 (=E6=98=9F=E6=
-=9C=9F=E5=85=AD)
-> > =E6=94=B6=E4=BB=B6=E4=BA=BA: lizhi2@eswincomputing.com, devicetree@vger=
-.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
-> > edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.o=
-rg, conor+dt@kernel.org,
-> > netdev@vger.kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com, a=
-lexandre.torgue@foss.st.com,
-> > rmk+kernel@armlinux.org.uk, linux-stm32@st-md-mailman.stormreply.com, l=
-inux-arm-kernel@lists.infradead.org,
-> > linux-kernel@vger.kernel.org
-> > =E6=8A=84=E9=80=81: ningyu@eswincomputing.com, linmin@eswincomputing.co=
-m, pinkesh.vaghela@einfochips.com,
-> > weishangjuan@eswincomputing.com, dongxuyang@eswincomputing.com
-> > =E4=B8=BB=E9=A2=98: Re: [PATCH v2 0/2] net: stmmac: eic7700: fix EIC770=
-0 eth1 RX sampling timing
-> >=20
-> > Hi Zhi Li
-> >=20
-> > Sorry, to steal this thread, but I do have a quick question concerning =
-Ethernet on the EIC7700. Every time
-> > I
-> > enable gmac0 in the device tree my EBC7700 stops booting (e.g. SD card =
-is no longer detected) while
-> > Ethernet
-> > does seem to at least get detected. This has been seen using next-20260=
-219, stable v6.19.2 [1] as well as
-> > 6.18.0-rc6 [2]. Any idea what could be going wrong?
-> >=20
-> > I admit so far I only do have one single EBC7700 at hand while waiting =
-for further hardware to arrive.
-> >=20
-> > Thanks!
-> >=20
-> > [1] https://github.com/riscv/meta-riscv/pull/601
-> > [2] https://github.com/eswincomputing/linux-next/tree/dev/test-upstream=
--v6.18-rc6
-> >=20
-> > Cheers
-> >=20
-> > Marcel
-> >=20
-> > [snip]
+So attribute it to yourself or attribute it partially to the tool. I
+personally don't care.
