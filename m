@@ -1,90 +1,80 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421BAF9C0;
-	Sat, 28 Feb 2026 17:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C085D307AE3;
+	Sat, 28 Feb 2026 17:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772298947; cv=none; b=DOtig7tk23fFDUNjCj9xQNwtZh/P9jmOcvfdX9J5HMQ0aNZv80f4y0xgUhh/Nqywi6+TjwmHkUUi69ZwbNfTrgRPJoEyA+F9B9pSV8QLg67L1CJ/n3HbIjvlockPKkH9bMlDqlbdOVeoXlnEcOUlqAFFJFTpAeCbr11QBBAP+5A=
+	t=1772299203; cv=none; b=FSvCaUCUBtQmbKOEUzbe5hWHYbQQLD1NO45CVWXj8ead+eYSy0Imi2ZiHADVkQkzgjtIy4A0/8wZbcesN8o8jd4llb4M2wtdHZMFydM/n5UJomEfqt11hu+4F3rX3zRpLt6/X2ID9ta7LY5fNCDxJHCSkIkCeJ0peKHkYBsY7FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772298947; c=relaxed/simple;
-	bh=g5zuGVKS7v7fviuuVEC+z+dh+biXaZe2a+7u1x3Txx4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ngAGlFRCaMTqqKCzrX3mPardTFGSZ7jtFThOywrR5EPyO1DsA0ykzTUbiwu4C4cDcmYbHoOwW/zBdcs7+npPYa6Fp+fjMMCDB0sWGsScg7lRNBX2fsJ/hffr74OCUVKw/khLjNuUX22UEwnUunsy38pxWpTMgPn3hblqRozFzrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aLQL9r7y; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772299203; c=relaxed/simple;
+	bh=OhF8YS72DsRMISZJclWzQnqaxGkmyI7Uol113aCLDVw=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=gclB3LdT4W64xoNCq7RhGD8xmfVm3sP+Kgn0v/l78Y1oDlOOhYRBg3yrWuQsDQwHSAzRFRaq1cRSFpEJXwXhQBmOQZ7XzrZhqaAT0rUjpdGBKkypDx/jiDaHoKnSSPKKbOygZgsxkyT8sQchwU8QfYuz9V59qHLaYyczOHrCOEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oRYDRODC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aLQL9r7y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CC96C116D0;
-	Sat, 28 Feb 2026 17:15:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oRYDRODC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E3FC116D0;
+	Sat, 28 Feb 2026 17:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772298946;
-	bh=g5zuGVKS7v7fviuuVEC+z+dh+biXaZe2a+7u1x3Txx4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aLQL9r7yE9NDzL8fJ1nHueq4A01CPlMlAh9Xrw/Mb+AFs+v/KyvGYdL1DS31Kgly9
-	 dp5qRwlira7rMEWlqOUT1o9V6PIvutz2EYDdAFG6fg0j1hql8C9rjcc2xhvilSuo2d
-	 9uSIrcakN18H6KxKO01ac9sDL6Ar67gFg900e4675ixG5A4t4u6i/zo2Tf4nCZcjwk
-	 1AF31EQ8E8JCGzxzkujoH2Y6ioU7XqgqmuZrlWNbbRzKm73icV+W/RQs19f9cM039/
-	 08/HmWlF2khBttTY1dKQPtipft5TEE8Jc7refbadKMGMojjBbgfsZ7iJvfRfDKBFfy
-	 qXHZtPNL5NXuA==
-Date: Sat, 28 Feb 2026 09:15:45 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: netdev@vger.kernel.org, Jiayuan Chen <jiayuan.chen@shopee.com>,
- syzbot+ca1345cca66556f3d79b@syzkaller.appspotmail.com, John Fastabend
- <john.fastabend@gmail.com>, Sabrina Dubroca <sd@queasysnail.net>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Vakul Garg
- <vakul.garg@nxp.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v1] tls: fix hung task in tx_work_handler by using
- non-blocking sends
-Message-ID: <20260228091545.412a9a2d@kernel.org>
-In-Reply-To: <20260227063231.168520-1-jiayuan.chen@linux.dev>
-References: <20260227063231.168520-1-jiayuan.chen@linux.dev>
+	s=k20201202; t=1772299203;
+	bh=OhF8YS72DsRMISZJclWzQnqaxGkmyI7Uol113aCLDVw=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=oRYDRODCnr+XIK4HeTj2R2tvuJU3dkq55OBk+K8bA6JmRDW5iJwNCHPYQtVwotDUl
+	 pefbWV5W3mWG/NRO3tscAUfQz0ne37ydri6ewNOXOsPa90X5qQ+h+dfQE+yC1BHh91
+	 rjd6M7e5Jnf+FNOkH5FR6c4chcB4+XOsq8pSVlJoBUZi8nbOLzMxv727akz3yp6sjv
+	 TVuMD8d4b+gcWX1ijzeGQgPniLHc4+mSVvZFtkWwY48bMHlNDicsz42ybYMOGfoFy3
+	 fIv1D9eLsNFOwRIH5TZYl7tMehNleUVXndpBUJ42Is3vRLb2TzL8RwW/HX2Mta/lIa
+	 WvDATrArVnDyA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9FFD39F2022;
+	Sat, 28 Feb 2026 17:20:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH] dpaa2-switch: Fix interrupt storm after receiving bad
+ if_id
+ in IRQ handler
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177229920630.3019354.11284025791830317467.git-patchwork-notify@kernel.org>
+Date: Sat, 28 Feb 2026 17:20:06 +0000
+References: <20260227055812.1777915-1-linux@roeck-us.net>
+In-Reply-To: <20260227055812.1777915-1-linux@roeck-us.net>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: ioana.ciornei@nxp.com, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ moonafterrain@outlook.com
 
-On Fri, 27 Feb 2026 14:32:31 +0800 Jiayuan Chen wrote:
-> tx_work_handler calls tls_tx_records with flags=-1, which preserves
-> each record's original tx_flags but results in tcp_sendmsg_locked
-> using an infinite send timeout. When the peer is unresponsive and the
-> send buffer is full, tcp_sendmsg_locked blocks indefinitely in
-> sk_stream_wait_memory. This causes tls_sk_proto_close to hang in
-> cancel_delayed_work_sync waiting for tx_work_handler to finish,
-> leading to a hung task:
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Thu, 26 Feb 2026 21:58:12 -0800 you wrote:
+> Commit 31a7a0bbeb00 ("dpaa2-switch: add bounds check for if_id in IRQ
+> handler") introduces a range check for if_id to avoid an out-of-bounds
+> access. If an out-of-bounds if_id is detected, the interrupt status is
+> not cleared. This may result in an interrupt storm.
 > 
->   INFO: task ...: blocked for more than ... seconds.
->   Call Trace:
->     cancel_delayed_work_sync
->     tls_sw_cancel_work_tx
->     tls_sk_proto_close
+> Clear the interrupt status after detecting an out-of-bounds if_id to avoid
+> the problem.
 > 
-> A workqueue handler should never block indefinitely. Fix this by
-> introducing __tls_tx_records() with an extra_flags parameter that
-> gets OR'd into each record's tx_flags. tx_work_handler uses this to
-> pass MSG_DONTWAIT so tcp_sendmsg_locked returns -EAGAIN immediately
-> when the send buffer is full, without overwriting the original
-> per-record flags (MSG_MORE, MSG_NOSIGNAL, etc.). On -EAGAIN, the
-> existing reschedule mechanism retries after a short delay.
-> 
-> Also consolidate the two identical reschedule paths (lock contention
-> and -EAGAIN) into one.
+> [...]
 
-It's not that simple. The default semantics for TCP sockets is that
-queuing data and then calling close() is a legitimate thing to do
-and the data should be sent cleanly, followed by a normal FIN in such
-case.
+Here is the summary with links:
+  - dpaa2-switch: Fix interrupt storm after receiving bad if_id in IRQ handler
+    https://git.kernel.org/netdev/net/c/74badb9c20b1
 
-Maybe we should explore trying to make sure we have enough wmem before
-we start creating records. Get rid of the entire workqueue mess?
-
-Regarding your patch I think all callers passing -1 as flags are on 
-the close path, you could have just added | DONTWAIT if the flags 
-are -1.
+You are awesome, thank you!
 -- 
-pw-bot: cr
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
