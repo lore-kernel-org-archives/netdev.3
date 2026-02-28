@@ -1,45 +1,71 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B01431771E;
-	Sat, 28 Feb 2026 02:11:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7A0250C06
+	for <netdev@vger.kernel.org>; Sat, 28 Feb 2026 02:19:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772244719; cv=none; b=ESo/+Q+d3dVIWNumGzdEJu2l+cTJUe6Jh+y4KANSmbPbEq0+bf1Vx6BxBdqv1LUGIn5V9oGnzFFUYnSCwSMzFjhZOuU0OEO+2DB2NnR/GXm9sw+9qAevuT1C4nJ8Ltxe0wrwYDZ9vgnqoUDyf1/B5QB/Jj2X+ROjYxBbEHvfWTE=
+	t=1772245180; cv=none; b=spOqPkHwASgaXTd+cOG89Gtul1BCWMqThsZhXrWsdanGq7fE5rjaJF6veg4bh0PRGoOGt0NIO1PWBYPclKFz6vQl+8MtnwPNC2d7LFFlgvLzKYTH40mDCzLg4c9lkUeUe5IS7cUUWpTa5KB/0y3HYTkDbfRwX09HdcvZTV/Wv7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772244719; c=relaxed/simple;
-	bh=Kv2Wpv6sNKUBlOMyDWFKKxyQsjyD8eSCM1sIZj9ddDA=;
+	s=arc-20240116; t=1772245180; c=relaxed/simple;
+	bh=rXow/PRXQEfMD31sAZeBu8Jf9CdmQ4mCbIebBHbaD/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cPl42HQPR5xmwZuS9nsrFjQf4fcluWuPMYGS9XKKAz0b5QgIK7ea+5vb3CxeOTcNAgoqm2PNBKIFq8lSc6Suu5x9iibsSG5aXoKCNufMz2BF5bqpG+iK4FXUL8HqxmMRu1ZVMY3MlIr5wiRWlqdm9DJx0Yj764Ghk/qBrHiQw7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1202)
-	id 7203E20B6F07; Fri, 27 Feb 2026 18:11:57 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7203E20B6F07
-From: Long Li <longli@microsoft.com>
-To: Long Li <longli@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
+	 MIME-Version; b=uUeyetFEGsALIY4VNVCnzKVnEdH2T7Y4bgBZMcWuG0uxg8H+hFkSqVXKWog0RGkJN2u5UY0HGZv0VYRi6TKuTLfdGYix4GinPhwWD9l4+oedubzIlVMZj9sUYSHbAGEPCP3OGceyVdsJxC5ws8RjKD+K0eHDo8Bug+aloYEEPXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kqHcyjtP; arc=none smtp.client-ip=91.218.175.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kqHcyjtP"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772245175;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZaJBbEzRJdsFnp51qeiA4kb7YNrOB8BN6YafYX4UbiI=;
+	b=kqHcyjtPfncBW/XP7POg97ovV0m1kmRCEuZrb1i0LRXY/QOcBf48vxPTUbKBnxYVElrMm7
+	KHC6+GcZQLTHJfJWtJvIPV+XLkgnwnlCmyBfdvn3nZ9uc8jgWqPlofGYmcDBlXVKrQADlj
+	V9y+mXnPTQ5Qjf0O5tP0Ta7EtLKGzOM=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org
+Cc: jiayuna.chen@linux.dev,
+	jiayuna.chen@shopee.com,
+	Jiayuan Chen <jiayuan.chen@shopee.com>,
+	syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com,
+	Jay Vosburgh <jv@jvosburgh.net>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>
-Cc: Simon Horman <horms@kernel.org>,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next 6/6] RDMA/mana_ib: Allocate interrupt contexts on EQs
-Date: Fri, 27 Feb 2026 18:11:44 -0800
-Message-ID: <20260228021144.85054-7-longli@microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260228021144.85054-1-longli@microsoft.com>
-References: <20260228021144.85054-1-longli@microsoft.com>
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jussi Maki <joamaki@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH net v3 1/2] bonding: fix null-ptr-deref in bond_rr_gen_slave_id()
+Date: Sat, 28 Feb 2026 10:19:13 +0800
+Message-ID: <20260228021918.141002-2-jiayuan.chen@linux.dev>
+In-Reply-To: <20260228021918.141002-1-jiayuan.chen@linux.dev>
+References: <20260228021918.141002-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,124 +73,76 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-Use the GIC functions to allocate interrupt contexts for RDMA EQs. These
-interrupt contexts may be shared with Ethernet EQs when MSI-X vectors
-are limited.
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-The driver now supports allocating dedicated MSI-X for each EQ. Indicate
-this capability through driver capability bits.
+bond_rr_gen_slave_id() dereferences bond->rr_tx_counter without a NULL
+check. rr_tx_counter is a per-CPU counter only allocated in bond_open()
+when the bond mode is round-robin. If the bond device was never brought
+up, rr_tx_counter remains NULL, causing a null-ptr-deref.
 
-Signed-off-by: Long Li <longli@microsoft.com>
+The XDP redirect path can reach this code even when the bond is not up:
+bpf_master_redirect_enabled_key is a global static key, so when any bond
+device has native XDP attached, the XDP_TX -> xdp_master_redirect()
+interception is enabled for all bond slaves system-wide. This allows the
+path xdp_master_redirect() -> bond_xdp_get_xmit_slave() ->
+bond_xdp_xmit_roundrobin_slave_get() -> bond_rr_gen_slave_id() to be
+reached on a bond that was never opened.
+
+The normal TX path (bond_xmit_roundrobin) is not affected because TX
+requires the bond to be UP, which guarantees rr_tx_counter is allocated.
+However, bond_xmit_get_slave() (ndo_get_xmit_slave) has the same code
+pattern via bond_xmit_roundrobin_slave_get() and could theoretically
+hit the same issue.
+
+Fix this by allocating rr_tx_counter unconditionally in bond_init()
+(ndo_init), which is called by register_netdevice() and covers both
+device creation paths (bond_create() and bond_newlink()). This also
+handles the case where bond mode is changed to round-robin after device
+creation. The conditional allocation in bond_open() is removed. Since
+bond_destructor() already unconditionally calls
+free_percpu(bond->rr_tx_counter), the lifecycle is clean: allocate at
+ndo_init, free at destructor.
+
+Fixes: 879af96ffd72 ("net, core: Add support for XDP redirection to slave device")
+Reported-by: syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/698f84c6.a70a0220.2c38d7.00cc.GAE@google.com/T/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
 ---
- drivers/infiniband/hw/mana/main.c | 33 ++++++++++++++++++++++++++-----
- include/net/mana/gdma.h           |  5 ++++-
- 2 files changed, 32 insertions(+), 6 deletions(-)
+ drivers/net/bonding/bond_main.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
-index cfa954460585..029609fb91c5 100644
---- a/drivers/infiniband/hw/mana/main.c
-+++ b/drivers/infiniband/hw/mana/main.c
-@@ -787,6 +787,7 @@ int mana_ib_create_eqs(struct mana_ib_dev *mdev)
- {
- 	struct gdma_context *gc = mdev_to_gc(mdev);
- 	struct gdma_queue_spec spec = {};
-+	struct gdma_irq_context *gic;
- 	int err, i;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 78cff904cdc3..9f63f67d8418 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -4279,12 +4279,6 @@ static int bond_open(struct net_device *bond_dev)
+ 	struct list_head *iter;
+ 	struct slave *slave;
  
- 	spec.type = GDMA_EQ;
-@@ -797,9 +798,15 @@ int mana_ib_create_eqs(struct mana_ib_dev *mdev)
- 	spec.eq.log2_throttle_limit = LOG2_EQ_THROTTLE;
- 	spec.eq.msix_index = 0;
+-	if (BOND_MODE(bond) == BOND_MODE_ROUNDROBIN && !bond->rr_tx_counter) {
+-		bond->rr_tx_counter = alloc_percpu(u32);
+-		if (!bond->rr_tx_counter)
+-			return -ENOMEM;
+-	}
+-
+ 	/* reset slave->backup and slave->inactive */
+ 	if (bond_has_slaves(bond)) {
+ 		bond_for_each_slave(bond, slave, iter) {
+@@ -6411,6 +6405,12 @@ static int bond_init(struct net_device *bond_dev)
+ 	if (!bond->wq)
+ 		return -ENOMEM;
  
-+	gic = mana_gd_get_gic(gc, false, &spec.eq.msix_index);
-+	if (!gic)
++	bond->rr_tx_counter = alloc_percpu(u32);
++	if (!bond->rr_tx_counter) {
++		destroy_workqueue(bond->wq);
 +		return -ENOMEM;
-+
- 	err = mana_gd_create_mana_eq(mdev->gdma_dev, &spec, &mdev->fatal_err_eq);
--	if (err)
-+	if (err) {
-+		mana_gd_put_gic(gc, false, 0);
- 		return err;
 +	}
- 
- 	mdev->eqs = kcalloc(mdev->ib_dev.num_comp_vectors, sizeof(struct gdma_queue *),
- 			    GFP_KERNEL);
-@@ -810,31 +817,47 @@ int mana_ib_create_eqs(struct mana_ib_dev *mdev)
- 	spec.eq.callback = NULL;
- 	for (i = 0; i < mdev->ib_dev.num_comp_vectors; i++) {
- 		spec.eq.msix_index = (i + 1) % gc->num_msix_usable;
 +
-+		gic = mana_gd_get_gic(gc, false, &spec.eq.msix_index);
-+		if (!gic) {
-+			err = -ENOMEM;
-+			goto destroy_eqs;
-+		}
-+
- 		err = mana_gd_create_mana_eq(mdev->gdma_dev, &spec, &mdev->eqs[i]);
--		if (err)
-+		if (err) {
-+			mana_gd_put_gic(gc, false, spec.eq.msix_index);
- 			goto destroy_eqs;
-+		}
- 	}
+ 	bond->notifier_ctx = false;
  
- 	return 0;
- 
- destroy_eqs:
--	while (i-- > 0)
-+	while (i-- > 0) {
- 		mana_gd_destroy_queue(gc, mdev->eqs[i]);
-+		mana_gd_put_gic(gc, false, (i + 1) % gc->num_msix_usable);
-+	}
- 	kfree(mdev->eqs);
- destroy_fatal_eq:
- 	mana_gd_destroy_queue(gc, mdev->fatal_err_eq);
-+	mana_gd_put_gic(gc, false, 0);
- 	return err;
- }
- 
- void mana_ib_destroy_eqs(struct mana_ib_dev *mdev)
- {
- 	struct gdma_context *gc = mdev_to_gc(mdev);
--	int i;
-+	int i, msi;
- 
- 	mana_gd_destroy_queue(gc, mdev->fatal_err_eq);
-+	mana_gd_put_gic(gc, false, 0);
- 
--	for (i = 0; i < mdev->ib_dev.num_comp_vectors; i++)
-+	for (i = 0; i < mdev->ib_dev.num_comp_vectors; i++) {
- 		mana_gd_destroy_queue(gc, mdev->eqs[i]);
-+		msi = (i + 1) % gc->num_msix_usable;
-+		mana_gd_put_gic(gc, false, msi);
-+	}
- 
- 	kfree(mdev->eqs);
- }
-diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
-index 4eb94d1df439..f0d5c873f856 100644
---- a/include/net/mana/gdma.h
-+++ b/include/net/mana/gdma.h
-@@ -610,6 +610,8 @@ enum {
- 
- /* Driver supports dynamic MSI-X vector allocation */
- #define GDMA_DRV_CAP_FLAG_1_DYNAMIC_IRQ_ALLOC_SUPPORT BIT(13)
-+/* Driver supports separate EQ/MSIs for each vPort */
-+#define GDMA_DRV_CAP_FLAG_1_EQ_MSI_UNSHARE_MULTI_VPORT BIT(19)
- 
- /* Driver can self reset on EQE notification */
- #define GDMA_DRV_CAP_FLAG_1_SELF_RESET_ON_EQE BIT(14)
-@@ -644,7 +646,8 @@ enum {
- 	 GDMA_DRV_CAP_FLAG_1_PERIODIC_STATS_QUERY | \
- 	 GDMA_DRV_CAP_FLAG_1_SKB_LINEARIZE | \
- 	 GDMA_DRV_CAP_FLAG_1_PROBE_RECOVERY | \
--	 GDMA_DRV_CAP_FLAG_1_HANDLE_STALL_SQ_RECOVERY)
-+	 GDMA_DRV_CAP_FLAG_1_HANDLE_STALL_SQ_RECOVERY | \
-+	 GDMA_DRV_CAP_FLAG_1_EQ_MSI_UNSHARE_MULTI_VPORT)
- 
- #define GDMA_DRV_CAP_FLAGS2 0
- 
+ 	spin_lock_init(&bond->stats_lock);
 -- 
 2.43.0
 
