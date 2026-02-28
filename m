@@ -1,168 +1,159 @@
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77875283FDB;
-	Sat, 28 Feb 2026 13:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772283956; cv=none; b=V+Co14MCP8VI/hCdo3gHznAuZaMkN73zBEtnJakSz30ZbZqxKXRFoc+2H7kYwMbr6l++CAZtJQG+vCnLagDShWjDK1rtqWiJnJeBbVTqVZNI1aU0/kTWs+Aoec0CZye6Q+855ufXJIJAUvtV+myYKRQeIJbaJHzr3v4sT43Ac/A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772283956; c=relaxed/simple;
-	bh=Kp99RHVH20I6HuYgBP+WhRnM/GM6AC7c9yUMHnJPmow=;
-	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
-	 MIME-Version:Content-Type; b=PRhiwkwAOCa1mEn3tVx2IDf26fzPKk+Gygu8aQkaaxjJb3sFO24j7wNnjQZ1oBL4QocR5pTNa8OZOhukOUtF/PHz84sXPCXLLOC4yG/GF8/sXju4w3Frbz2PilbdpHOM5AicT3xOeHJciQt0UltNEOPHLhVhV6WHrN4sLOzLWRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pmachata.org; spf=pass smtp.mailfrom=pmachata.org; dkim=pass (2048-bit key) header.d=pmachata.org header.i=@pmachata.org header.b=GgxHoMsO; arc=none smtp.client-ip=80.241.56.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pmachata.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pmachata.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B011487F6
+	for <netdev@vger.kernel.org>; Sat, 28 Feb 2026 13:30:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772285447; cv=pass; b=mk3EGuUaSgt9oSSIon+Ojxw8CEftJm9UfwaIR9UeVBpuAOw2UxMQg9nzTzHBYDaS0sL8FzCxQe/hLhAfMjm+Q5qgBvGQ8yvujPMUhSVZxOVvVj9/J/K/uzqYdyEnBxLyLrfM3uAvsdt5RxskzTcGrKv8CUbf5qU39OkzMJcH18E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772285447; c=relaxed/simple;
+	bh=80jwD2gHI64J1JGG4o86aD1JoyB7X9z+PTWBAKv56SQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mtuNybZBGPyZdFmQLwZu5Zgdj9i0jsYrQRX1Q72U3FgM8siplW379PiWfpVUDG3kHpcwbY6rkPbL4TCGg0ZP4owXctZdixMKVnce+TKrwFMbJ3XyB4LkEqE92Yxz5BNPVTBGeFsmjl+IHmY40/yZ+cl81YBwuXm/V4/8sX3/x9o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=huUMpM+x; arc=pass smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pmachata.org header.i=@pmachata.org header.b="GgxHoMsO"
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4fNQRV1sf3z9tZ4;
-	Sat, 28 Feb 2026 14:05:42 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pmachata.org;
-	s=MBO0001; t=1772283942;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vBCTqfoUFB8sEME4u3rPQMqwI7w/71GcIE63YBTocA0=;
-	b=GgxHoMsOrYIq8LukeJOWt7iwf/VmndWsp6AXkgOwTcV/hRWSCiBqm/lHkQG8OwOk1DRo6n
-	1815aFOYmjXVXThcSDmiJEIrCzqktqRYUsASSGEjibbtTQfif8c9fNnqoP0+J00mOhgump
-	K4XzH4WZu01Teb7XZw0rtMKd5PIFHICw7c/0srN+kTlW1XmedvCd+D0pFckS5volwwLu32
-	hG9/nxHijyZsVG+n/XxDCvqJlDVjVpf4kwzyeEGUJKEFPMG2j0ZJEWrf3Em0N8x4tVuNke
-	B9cnhwQACNIZeNohn1dWhGR6hkSHnpJyFy8ayXFezgWIWba38gF3jAIxqEX9Mw==
-Authentication-Results: outgoing_mbo_mout;
-	dkim=none;
-	spf=pass (outgoing_mbo_mout: domain of me@pmachata.org designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=me@pmachata.org
-References: <20260225150648.1542206-1-ioana.ciornei@nxp.com>
- <20260225150648.1542206-6-ioana.ciornei@nxp.com>
- <20260226182223.5eb1b10f@kernel.org> <87ms0ufc0p.fsf@nvidia.com>
- <20260227164348.63afcc43@kernel.org>
-From: Petr Machata <me@pmachata.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Petr Machata <petrm@nvidia.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
- netdev@vger.kernel.org, Andrew  Lunn <andrew+netdev@lunn.ch>, "David S.
-  Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
- Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, Simon Horman
- <horms@kernel.org>, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH net-next 5/5] selftests: drivers: hw: add tests for the
- ethtool standard counters
-Date: Sat, 28 Feb 2026 10:11:26 +0100
-In-reply-to: <20260227164348.63afcc43@kernel.org>
-Message-ID: <877brxf272.fsf@nvidia.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="huUMpM+x"
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-64aea64bf15so2577412d50.2
+        for <netdev@vger.kernel.org>; Sat, 28 Feb 2026 05:30:46 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772285445; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VmAgOHpn7eyPUpTbR875ecMVfPGnYYVPbE8LjF+otW+yDXq2rx7p+MRvUDYaTxS+Ue
+         GPxNrwxl9+td3WsTkz606wB8qzrPOWNSGN8fsaeYDwCS9lqdUfmvbYIVosUPLbWGt86j
+         8xkDO8fRzUicfaXrcPuVSC3lhMK0jzhlSJANF0QjPo5W1PZXU2IbZO7mI1tb2rUprX33
+         r5CszzVUgk7luADfCOPd5gsgPot7VeMvzQD4WI59oS7MLJ45seDbh9+Y3h052pP3rC0B
+         LWhgZM/4plf1nzjK/QYfTORVdKLbREtI1OoB9zjwjKozgWI1HSq/iXClxJ2kotSqSCKs
+         0FrQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=80jwD2gHI64J1JGG4o86aD1JoyB7X9z+PTWBAKv56SQ=;
+        fh=blZ0jvUq9qyU2Kr4RXf1cuMIc2Yf5jghjuGMYjzLMuM=;
+        b=VoJ5KTH5MvLD39qY8EvS5hblt7OI8y27+V5ZgFbgMQxg69CGncT++JVok5s8AfMviT
+         JIzJx04vVwpdgAzaTCH1yJCSNGEUafCG6SFaonTfpKiGFWXp1qntjgBPuqvfQiz42z2n
+         CQrBxQfW8VhY++I1OerpW1hR9AbnoOw4oLHKEyrVvJTawhfOuvC1vC9Xf0G6DOtad2O6
+         5sqB3RF1lHsfx/YsNLERaWiSBGSEpGxbs125BNg9ejsiGbC3UpcIC4y9YJBebR9oJFBg
+         TH2pKkbYfcebp0TDCpZ6/wXMEPPoxRcxtMsRRJKQpzna0fBupXJJHpXrn/h64WWnRRAR
+         E5tA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772285445; x=1772890245; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=80jwD2gHI64J1JGG4o86aD1JoyB7X9z+PTWBAKv56SQ=;
+        b=huUMpM+xSbdhhbo+rkqPXBQYdsiCQ56OQXVadbvqGj9xbajdilZVy95JOlxGbEMkAl
+         rSZPKlcEmX/y4p5y8MvfxxVvgfcG+3GsAvPylTKFqJwqpoZxGyhYFwYP+HKjirpnEHUg
+         wH34q/ylpjD6PkjrjmPWrE6dlc76kfZrGAbUTIBl7OCwAWP6gGz58+Je2lYFyXdKavWp
+         AUzRl7xYZl2K1ACkeraoeIeuDjBlTAhZN1E+VrgSgDG/p5nYFPHC/BAiKaAQ69AsNaij
+         SOjl1/OK9d/V3VJ0z6RcJfwyuRfSPb4YXhXjLuWYQ56izVApF6VJjYkJHIPk+KPB1bSQ
+         tEEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772285445; x=1772890245;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=80jwD2gHI64J1JGG4o86aD1JoyB7X9z+PTWBAKv56SQ=;
+        b=ltciWVKrysxiVI1xeNGXDtVxEYqfeWwsziIUQ6vY1BJJmlzHSv6vkK5YN+BgVDwa9o
+         7mJ4cpSPZizfpGuE6475RdzICTKYB/A7t1hA62CvAp7rJBXhYiYRfCn8Gu5++uO4RmcR
+         X6fIeXnst5o8+MbwQlyqisxgTVP8RIlHcpfnenRVk1DYXTEMb31NQsuJsTG48a5787pO
+         Dk5nquyEa2mcvnB8PphzChXjNiQ1xE9IfJDz+7zKzce9bJC+ly/rldVnl5zC9rfrhaRj
+         L88Py08KmhPbIaofMTCW50mTPIlkUPXBE7abj5srkrP4ldfBdQV6cBQOVQlG5xnLvZO7
+         CWKA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+vUDS81nQWfnqSFF78psUJSjQMYpeY1PrGfCcI+gvHcxk/bsOHyRxorFfoz5Kl2r0R2TWKCc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxfgTHO2wMMC6P8MysmPODsNzZpT8Pa5M0aqSuh+nt7Zfnb3U2+
+	KPQQHyhNwf53huxWWMmgwLV6M0Zzs/WyknLPavP/cja/tICUfg9JzQJxNLT12yMj8eK680hshHm
+	FFep+HJelULjIAjkRHd/krf4MjoKXTPs=
+X-Gm-Gg: ATEYQzwx+umDUlFR3jn66BaFUCcdFQtpOis5n+86kLBZkBjRx8uCDL5B0hDLR5agL/R
+	hPs709YMe+KgmlkhYUzqF4GOtYBEuLLpK2//K4JrWJgPqiL5ZZVgBlcFKzYRKqymvfg5FL+xoYA
+	kOVB++g+s+Rte49po8aOBy4b87sz0AZoLMSEvURl4xOQPNmkU2juzYLFQ20Cwm4fNXv5URlA3nK
+	bIcD/QOGcnYRk9URLWSlC3WRCV2PPSWRUJZKGr5umK2eKFjuvVSUzuA8izsCDT+KrU3BNqyCaSJ
+	voxvsuEa
+X-Received: by 2002:a53:b642:0:b0:64a:d74f:257b with SMTP id
+ 956f58d0204a3-64cc2080be0mr3732882d50.7.1772285445069; Sat, 28 Feb 2026
+ 05:30:45 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: 4fNQRV1sf3z9tZ4
+References: <20250508091424.26870-1-jonas.gorski@gmail.com>
+ <ce4d9b7b-aaf6-4796-94fb-8c3d6a1dcd4d@gmail.com> <d7f9775e-0af6-4294-837b-47e31e0d30d7@broadcom.com>
+ <CACna6rw1kF-r40dr-nxouV9E0AigmeVj9fxQm_Px34Z_n2up9g@mail.gmail.com>
+ <CACna6ry9B9LiPbWdXzi7FCcaU1YC+HPkor53AiSEaRSNUMcLwQ@mail.gmail.com>
+ <eccf1d40-e4f2-4ea1-a8e2-328606fc0860@gmail.com> <CACna6rzi3_pnduEphRBY3NDKrNqhK2i5TdVTNeEGb4nHm+vOMg@mail.gmail.com>
+In-Reply-To: <CACna6rzi3_pnduEphRBY3NDKrNqhK2i5TdVTNeEGb4nHm+vOMg@mail.gmail.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
+Date: Sat, 28 Feb 2026 14:30:34 +0100
+X-Gm-Features: AaiRm53elsgk7jk696p2Zj0G5jSypB-BM7g_7_ulmzSDXWuOw76Aoel8UWvKo7A
+Message-ID: <CAOiHx=m9JQkm3pMj_mEMoVwCApB=Ef4J7FBzOf9_8o9eiYbCjg@mail.gmail.com>
+Subject: Re: [PATCH net] net: dsa: b53: prevent standalone from trying to
+ forward to other ports
+To: =?UTF-8?B?UmFmYcWCIE1pxYJlY2tp?= <zajec5@gmail.com>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Hauke Mehrtens <hauke@hauke-m.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi,
 
-Jakub Kicinski <kuba@kernel.org> writes:
+sorry for being late to the party; currently on vacation (be back
+early next week).
 
-> On Fri, 27 Feb 2026 14:53:06 +0100 Petr Machata wrote:
->> Jakub Kicinski <kuba@kernel.org> writes:
->> > On Wed, 25 Feb 2026 17:06:48 +0200 Ioana Ciornei wrote:  
->> >> +ALL_TESTS="
->> >> +	test_eth_ctrl_stats
->> >> +	test_eth_mac_stats
->> >> +	test_pause_stats
->> >> +"
->> >> +STABLE_MAC_ADDRS=yes
->> >> +NUM_NETIFS=2
->> >> +lib_dir=$(dirname "$0")
->> >> +# shellcheck source=./../../../net/forwarding/lib.sh
->> >> +source "$lib_dir"/../../../net/forwarding/lib.sh  
->> >
->> > Argh, at some point we should probably decide whether we have 
->> > a preference on which "library" / set of env vars we use under 
->> > drivers/net/hw. Adding Petr to CC.  
->> 
->> I think the expectation is that by default, tests written in Bash are
->> run on one machine without remotes.
+On Fri, Feb 27, 2026 at 7:13=E2=80=AFPM Rafa=C5=82 Mi=C5=82ecki <zajec5@gma=
+il.com> wrote:
 >
-> I think we need to define the guidance by properties of the test, not
-> the machine? Of course _tests_ which don't need a traffic source can
-
-Oh yeah, I'm just stating that's how it currently is and how we got here.
-
-> simply consume the NETIF evn variable, so its trivial to write them in
-> any language without much library support. But for tests which need
-> traffic input we need a different distinction than "does the author
-> care about single-interface machines", so to speak?
-
-I agree that adherence to the drivers/net/README protocol is valuable to
-some users and would be good to uphold if reasonable in a given tests.
-If that's what you have in mind.
-
-There are going to be tests where it's not a great fit, but I think that
-of those NUM_NETIFS=2 tests that we currently have, maybe
-ethtool_extended_state has a good reason to be obstinate, because it
-sets up negotiations and needs an extra unplugged netdevice.
-
->> 
->> > The existing tests under drivers/net/hw which source forwarding/lib.sh
->> > pre-date the "NIC setup" described in 
->> > tools/testing/selftests/drivers/net/README.rst
->> >
->> > Should we ask "NIC setup" to be used for all tests which only need
->> > NUM_NETIFS=2 ? These are basically simple tests where one netif is 
->> > a traffic generator and the other is the DUT. And IIUC the "forwarding
->> > setup" can't be used when the traffic generator is controlled over SSH?  
->> 
->> In principle nothing prevents lib.sh from growing brains to support
->> these remote shenanigans. I think it's just that so far nobody cared
->> enough to actually do it.
->> 
->> I think that a helper that in effect does "run this on a machine where
->> $swp1 is" is mostly what is needed. That and "make sure $swp1 and $swp2
->> are on the same machine". It's going to be annoying to work with though,
->> because you need to annotate every single command. I bet there's a nice
->> syntax to make it not activelly annoying.
->> 
->> If we have this, it might make sense to require tests to make use of it.
->> (With an explicit opt-out for special cases.) But I do not want every
->> test to have to reinvent this wheel and cargo-cult snippets from other
->> tests.
->> 
->> BTW, my guess is that even many multi-port tests that I wrote boil down
->> to just a bunch of fairly independent loopbacks whose far ends could be
->> on remote machines. It's not a priori nonsense to me that one would run
->> a test like this, or whatever magic we'd use:
->> 
->>     ./test.sh ssh://petr@10.1.2.3:eth1 swp1 veth1 ns://foo:veth2
->> 
->> And it just works, because only swp1 and swp2 need to be bridged, the
->> rest can be remote, and the traffic generation helper knows that to pump
->> traffic to ssh://10.1.2.3:eth1, obviously you need to ssh there first.
->> But the library would need to have helpers for this, and the tests would
->> need to use them.
+> pt., 27 lut 2026 o 18:58 Florian Fainelli <f.fainelli@gmail.com> napisa=
+=C5=82(a):
+> > On 2/27/26 05:32, Rafa=C5=82 Mi=C5=82ecki wrote:
+> > > pt., 27 lut 2026 o 13:23 Rafa=C5=82 Mi=C5=82ecki <zajec5@gmail.com> n=
+apisa=C5=82(a):
+> > >> czw., 26 lut 2026 o 22:26 Florian Fainelli
+> > >> <florian.fainelli@broadcom.com> napisa=C5=82(a):
+> > >>> Could you try to program GMNGCFG (page 0x02, offset 0) bits 7:6 to =
+have
+> > >>> the value 0b11 which is dual IMP port (IMPO is port 8 and IMP1 is p=
+ort
+> > >>> 5) and see if that helps?
+> > >>
+> > >> On my Luxul XWR-3150 (it uses gmac0 and port 5) the value of
+> > >> B53_MGMT_PAGE (0x02) / B53_GLOBAL_CONFIG (0x00) is 0xc2. Nothing to
+> > >> set there I suppose?
+> > >
+> > > I tried other possible values:
+> > > 0x02
+> > > 0x82
+> > > 0x42
+> > >
+> > > None affected my switch / wan / lan ports.
+> > >
+> >
+> > Thanks for giving it a try, how about the BRCM_HDR_CTRL register
+> > programming (page 0x02, offset 0x03)? Can you see whether it is set to
+> > 0x3 or 0x1?
 >
-> Right, to be clear I primarily care about being able to run these tests
-> with traffic generator on a remote system. Otherwise someone who cares
-> about single-port systems will have to add a separate test I guess?
-> And we will have to maintain two tests? :S
->
-> A nice to have is for all drivers/net/hw tests to use the "NIC" env
-> variables (move tests which really only make sense on multi-port
-> devices to drivers/net/forwarding?) But I think "translating"
-> forwarding variables to NIC if NUMIF=2 could easily be done
-> automatically by the test / lib so that's lower priority.
+> It's 0x02 which seems to match BRCM_HDR_P5_EN. It makes sense as
+> XWR-3150 uses gmac0 + port 5.
 
-The reason for my diatribe above was like, if forwarding/lib.sh is
-clever enough to handle these things transparently, then the NIC case
-might be supported through a wrapper that just does the right thing, and
-the test can be overtly just a run of the mill forwarding test.
+Does this affect all ports, or only the wan port?
 
-The requirement for the remote netdevice to be up and preconfigured
-throws a wrench in this idea though, so dunno.
+Have you tried to check the hardware counters if they get sent out a
+different (cpu) port? AFAIK they should be available as ethtool
+counters via gmacs, though I'm not 100% sure.
 
-One way or another, _some_ brains need to reside somewhere in a library.
-I'm not sure forwarding.sh is the place. But I don't want to end up in
-the same situation as like lib/half_the_tests.sh that reinvent logging
-from first principles again and again.
+Can you check the contents of the EAP Port config registers? Maybe
+some extra mode is set there by default.
+
+I don't have NS(+) device, so I can only guess. Though I always
+wondered if the setup which CPU port (5/8/both) to use is just a
+software thing or actually a hardware thing ... .
+
+Best regards,
+Jonas
