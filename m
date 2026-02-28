@@ -1,33 +1,33 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA045FDA7;
-	Sat, 28 Feb 2026 20:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197BB3101A5;
+	Sat, 28 Feb 2026 20:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772311829; cv=none; b=nSCz4SQycbaeiqCJT7qeCctZOnbbZ9wx2J9WTbt678C6D+2Pe+RBtMvGzQlpOyx76i7NL9PRVhrrnxkIdmqIlCKuWsa1SneNcknQZSP1vpezm+e+pgg6recOmdla3YM3O8oZUVqVQqBsfkUFNdbXVRKyczVx8cHLQUAsZTCyLFc=
+	t=1772312374; cv=none; b=N/v0qMVlQ6WUB07t8/xmOHUpoWTkSPPNJgyiSy6YGatpov1QMZYmFQK/5nhmw4TmtyLim4Qi+pBNK2i/BXFu2j6Mdz0eH4WBUjVJzp6P8l112RXXW/CKQKHMXossREbzpUry8t2AWM4AB6sh4RNLa4Eqo/dRjT8Yf3cbUyO7Jbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772311829; c=relaxed/simple;
-	bh=FwTgjiCtraLuXMfdXw4gBl+jxXmEf2hMBpF7WF/kxpo=;
+	s=arc-20240116; t=1772312374; c=relaxed/simple;
+	bh=nFIMGrF3Sthd/vK5fAbW361iIoujC3GOyHBeinY8p/c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E0UcBkwDh0muXTdhNpqUCcFX9EPudBa4o38VlhakqutbgT8xeow2AICbf9zuWkhpv+OQDAk5YJyIKRPMZNmxs1EIOHfYo7uE4VUyWdow+3y4O2VD01Vo/+0JkVhxmbcMetlOrZUvw93g05bKk4bWUxgPblB6S+kMc2sYOKn/fCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qQVSCZcr; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=oQv2yustuFJ7PY1ZKwTwUdE/T4r4iRMyRbO95O8EiViu1DAn8CHYIhwlwqUxUIIzHK6QMs7zdGbKcSgC8m2F2XAU4tINdUd9z/5khjc7dT3DK3vMJy7dTDRtRUCB368GWFWis8Y/Wxol4CFdHLkZ6pVwWCAXT1gPbJcF761mWZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=PBB8N4qe; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qQVSCZcr"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="PBB8N4qe"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=GR0zUbUSdkThp+budEXJULNzc5JronWqLIlaC/ZNF5k=; b=qQVSCZcr+ySlfYYrHr9SYhBnzp
-	N3M2Uygz8VVXoUSzXbGzimyZ/X9SEtEDxJoC1ttf5NWbgSgmdYNxY73+r9+0NLNpQ6g5IVLVp5vqe
-	wOiD/9YGuAKmZ6uyos5upk79OxZ6WsoMAok3TGcLXCIYwDWcqrARUSyk9hDKqaaSQJNo=;
+	bh=biAwKoGqS3OZX+ntBTmdPsMRsc94h1FYpRLLpH1nnHQ=; b=PBB8N4qelMn1yZmMLBw7dM9sff
+	54dIxTqqwfe/9a0hYp5SWj5jYobXsQgvV7PwhOTclL8glJO+wKxJm8evBzpcDbxuwC7OUAPRcclkl
+	EtPsiaHGITo+WCewOSG8kVPINM8v0StZFFpth+gcIduFlLvlpo3coqTL7o32R198pzJA=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1vwRGT-009DsM-SO; Sat, 28 Feb 2026 21:50:17 +0100
-Date: Sat, 28 Feb 2026 21:50:17 +0100
+	id 1vwRPF-009DwA-Vk; Sat, 28 Feb 2026 21:59:21 +0100
+Date: Sat, 28 Feb 2026 21:59:21 +0100
 From: Andrew Lunn <andrew@lunn.ch>
 To: "illusion.wang" <illusion.wang@nebula-matrix.com>
 Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
@@ -37,11 +37,11 @@ Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
 	horms@kernel.org, vadim.fedorenko@linux.dev,
 	lukas.bulwahn@redhat.com, edumazet@google.com,
 	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 net-next 08/11] net/nebula-matrix: add vsi resource
- implementation
-Message-ID: <4e979488-3a6f-43a1-a958-a6606e422372@lunn.ch>
+Subject: Re: [PATCH v5 net-next 11/11] net/nebula-matrix: add common dev
+ start/stop operation
+Message-ID: <b8f71f46-735b-4b1f-8df8-01a532bc7964@lunn.ch>
 References: <20260226073840.3222-1-illusion.wang@nebula-matrix.com>
- <20260226073840.3222-9-illusion.wang@nebula-matrix.com>
+ <20260226073840.3222-12-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -50,28 +50,62 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260226073840.3222-9-illusion.wang@nebula-matrix.com>
+In-Reply-To: <20260226073840.3222-12-illusion.wang@nebula-matrix.com>
 
-> +static void nbl_hw_set_driver_status(struct nbl_hw_mgt *hw_mgt, bool active)
+> +int nbl_dev_start(struct nbl_adapter *adapter, struct nbl_init_param *param)
 > +{
-> +	u32 status = 0;
+> +	int ret;
 > +
-> +	status = nbl_hw_rd32(hw_mgt, NBL_DRIVER_STATUS_REG);
+> +	ret = nbl_dev_start_common_dev(adapter, param);
+> +	return ret;
 
-No point initialising status if the first thing your do is assign to
-it.
+return nbl_dev_start_common_dev(adapter, param);
 
-> +static int nbl_res_vsi_init_chip_module(struct nbl_resource_mgt *res_mgt)
+But then i have to ask, why bother having nbl_dev_start() when you can
+just call nbl_dev_start_common().
+
+> -#define NBL_DRIVER_NAME					"nbl_core"
+> +#define NBL_DRIVER_NAME					"nbl"
+
+Don't change things like this. Get it correct from the beginning.
+
+> @@ -37,8 +37,7 @@ struct nbl_func_caps {
+>  	u32 has_ctrl:1;
+>  	u32 has_net:1;
+>  	u32 is_nic:1;
+> -	u32 is_ocp:1;
+> -	u32 rsv:28;
+> +	u32 rsv:29;
+
+Why has is_ocp disappeared? Was it never used? Then don't add it in
+the first place.
+
+> -module_pci_driver(nbl_driver);
+> +static int __init nbl_module_init(void)
 > +{
-> +	u8 eth_speed = res_mgt->resource_info->board_info.eth_speed;
-> +	u8 eth_num = res_mgt->resource_info->board_info.eth_num;
-> +	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
-> +	struct nbl_hw_mgt *p = res_mgt->hw_ops_tbl->priv;
-> +	int ret = 0;
+> +	int status;
 > +
-> +	ret = hw_ops->init_chip_module(p, eth_speed, eth_num);
+> +	status = nbl_common_create_wq();
+> +	if (status) {
+> +		pr_err("Failed to create wq, err = %d\n", status);
+> +		goto wq_create_failed;
+> +	}
+> +	status = pci_register_driver(&nbl_driver);
+> +	if (status) {
+> +		pr_err("Failed to register PCI driver, err = %d\n", status);
+> +		goto pci_register_driver_failed;
+> +	}
+> +	pr_info("nbl module loaded\n");
 
-Another example. Please review all the driver for such pointless
-initialisation.
+Don't spam the log.
+
+> +static void __exit nbl_module_exit(void)
+> +{
+> +	pci_unregister_driver(&nbl_driver);
+> +	nbl_common_destroy_wq();
+> +
+> +	pr_info("nbl module unloaded\n");
+
+More log spamming
 
 	Andrew
