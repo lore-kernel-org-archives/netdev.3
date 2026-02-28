@@ -1,143 +1,104 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140E53019B0
-	for <netdev@vger.kernel.org>; Sat, 28 Feb 2026 14:12:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7A1A38736D
+	for <netdev@vger.kernel.org>; Sat, 28 Feb 2026 14:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772287976; cv=none; b=fPxEysEh83eE9FBA1TjcT730iMELMcJO/BFCXkZ/C0EdgUDVmNOx1vMbprT7BYPVY85DpO6Fk9cyeAYhTl0B5fTlB7JCOt/ESYDV3yv1QY0crw4w4XTlNq5VuE78QD+93/c7Lv7sgrKc/dhADgHPNYE6Hwrr2T/+sR2Ce2uYrr0=
+	t=1772288446; cv=none; b=F6dSGcnUl2uEImIBkottvKrRn6EjHso8EV9lnJBUYP9m3aWNBMbTmIgPLmIzHvPQ/+WNSkspZjwiZLtxvqqbnkfBYSle1epsE7c2EGrxI/nGuU8f/TZWG3VsSU6G2ulMWxkT9ZIu0042FxLGlyR5/TaOKgE1igi+yiPHf8+J2CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772287976; c=relaxed/simple;
-	bh=QBLdIEEnHpSiWyj65PwX0yZyN3lZmmDAc5D7n7PH7ms=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=bQdsVW1ea65UPMOPmidIPi2vNod2W6vmyL4kcf0lDAYsGLk6NSygX1OfKh+z8hOuufUfnn8JgR+tsdYxb3I4dw1BvzqMOEGvm9y++j9aeCkiaTxLedxPTs3X4jV3ZVbghWLKnrr1QyTi7vnAYDxFSRawsZKhQqVozUMvU4ToabA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3fCbFevV; arc=none smtp.client-ip=209.85.222.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1772288446; c=relaxed/simple;
+	bh=7f5+r7ycTP2wUCbYBrRzzA6BhtcZIHqy7pWqX2qOIF4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WaBCMYEjLufmhZXzGxnjxrV0kd4V8O1HU4/vb3A0tRvjMlz2UnGqE0T+juQOZ856tj+7iwjZmaUjmVwwWjgLy+ZxhLH2htZLWnIJ10MgPLA+6+9c/1g0G6kRDi2NryhYwcSG49qEUsT5veL4z56Tcyts/me1CTj9FsIAaRDG+oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kdNYSrcW; arc=none smtp.client-ip=95.215.58.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3fCbFevV"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-8cb3a129cd2so3061029585a.0
-        for <netdev@vger.kernel.org>; Sat, 28 Feb 2026 06:12:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772287974; x=1772892774; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5xfpeDrS28+GJWagtJ5tbfozq/tKlFdhequt2eFMJJQ=;
-        b=3fCbFevVpnhuyhF2D1f4sBCHdrexa2/43HSQKv1DSSuiU/n/TKHUe7TJ0h4/BzXvoW
-         fb7NcpOO7Szw0UjnVxaLnA+70jkt9e7c1vTp5qMGvo2d0ZBqx3gtVqqU5ePEDOBX0NOx
-         qzYzBfNG8V0BqbWzixaPeAh2L1JeCdPQKh2UhyMUij6VPpj8HsXhtCs0bGE/wDnpJKmA
-         vKot/je5lJs89ALGuyorh85sfOW1PRZdowzRyZUw+rmb+LNmM+nCIR2RPvPnLQrx3TSf
-         rvcyU3qIXzXApVRnYf4kGuwTOyFTBBBDohW+iCyKOylmT9Y2aeC/4emj7HfkORGyAk+v
-         HYog==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772287974; x=1772892774;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=5xfpeDrS28+GJWagtJ5tbfozq/tKlFdhequt2eFMJJQ=;
-        b=NMSKyL7kcbyCye8i17wa72vcZ2gdkh5xelmti51rfWqe+MThAZkpkgPlMX1TSzhNbG
-         3/S/oyjFDgxRz6jDVoWBR6C4rQWh1SrPSVIR5Bc3vjoHTGxVwn/DGGLUa/Lth194MU5a
-         bBLV2J9fx4gT/7sUHJWAUgNelt4rbdKG0egORJiK2GZqd2PNKy0UExilph50U/zLD2Zi
-         TMSgBzrKts6U6qf3MxRNIUCztc/HzDc5Us4mtCyTo3/HdqpN2aGEFxo+mm1f1myeNi/l
-         R7DeLqI8fiER/eZ8RY0rIZCAPBn1aE5rvgle+IRKJxvjEJvodA1k/zwsMbX/ws5P6OcF
-         UYIA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjLgSDlPn5oo3A6T+ZaglduXfAXLjF2fZSbBarmCQ66WFEvDd48oxDn9ZIO+yw0nZ71Wp0sGU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzj5EnHEE0c7XPKNa41ok8xZ6D03AUWMDdncZ1z1ImXTGBrJmBk
-	4b9hrxCi1w4pBaREvRbqSIffC4JiHHBxWeffZBKNeQXG4Dso+HVoElDOF+AUVWLwOXPixNJst3c
-	FGqrrY/aLfOwjyA==
-X-Received: from qknsk6.prod.google.com ([2002:a05:620a:3a46:b0:8cb:4038:5d20])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:620a:318b:b0:8a6:92d1:2dae with SMTP id af79cd13be357-8cbc8c47908mr755691885a.5.1772287973734;
- Sat, 28 Feb 2026 06:12:53 -0800 (PST)
-Date: Sat, 28 Feb 2026 14:12:52 +0000
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kdNYSrcW"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772288441;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oaHUxVaobjs+nvwAKL/h30L1BqLPqcHDSgP0kHDwdc8=;
+	b=kdNYSrcWgsufXjWGjib/VZy2Bqp1osTgP3+loYpCfqscJwNdtD8HlbRAcQzfLKQE3q16mx
+	PE7HXXkmhnUgu4h9+jVLjjRtKRB67xXlWuOuk1KmufEOndo3fpYmiPIvPrwImoBx5Bg9CM
+	SUGNO9XzYlFARce+XpR8oDn2vTDJVjI=
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Tejun Heo <tj@kernel.org>
+Cc: Johannes Weiner <hannes@cmpxchg.org>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Daniel Sedlak <daniel.sedlak@cdn77.com>,
+	Meta kernel team <kernel-team@meta.com>,
+	linux-mm@kvack.org,
+	netdev@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 1/3] cgroup: reduce cgroup_file_kn_lock hold time in cgroup_file_notify()
+Date: Sat, 28 Feb 2026 06:20:16 -0800
+Message-ID: <20260228142018.3178529-2-shakeel.butt@linux.dev>
+In-Reply-To: <20260228142018.3178529-1-shakeel.butt@linux.dev>
+References: <20260228142018.3178529-1-shakeel.butt@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260228141252.435509-1-edumazet@google.com>
-Subject: [PATCH net-next] net: adopt SLUB sheaves for skbuff_small_head
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Eric Dumazet <edumazet@google.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-skbuff_small_head is used both on receive and send paths,
-serving potentially 80 million allocations and frees per second.
+cgroup_file_notify() calls kernfs_notify() while holding the global
+cgroup_file_kn_lock.  kernfs_notify() does non-trivial work including
+wake_up_interruptible() and acquisition of a second global spinlock
+(kernfs_notify_lock), inflating the hold time.
 
-Tuning it on large servers has been problematic, especially
-on AMD Turins platforms, where "lock cmpxch16b" latency can
-be over 30,000 cycles.
+Take a kernfs_get() reference under the lock and call kernfs_notify()
+after dropping it, following the pattern from cgroup_file_show().
 
-Switching to SLUB sheaves fixes the issue nicely.
-
-tcp_rr benchmark with 10,000 flows goes from 25 Mpps to 40 Mpps
-on AMD Turin.
-
-Other platforms show benefits with tcp_rr with more than 30,000
-flows.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reported-by: Jakub Kicinski <kuba@kernel.org>
 ---
- net/core/skbuff.c | 31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+ kernel/cgroup/cgroup.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 513cbfed19bc34bbb6767cdd7a50dad68be430fb..79eb7eb6eea9aa4a76c555e6ddd33bf0bc84c921 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5174,6 +5174,19 @@ static void skb_extensions_init(void) {}
- 
- void __init skb_init(void)
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index be1d71dda317..33282c7d71e4 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -4687,6 +4687,7 @@ int cgroup_add_legacy_cftypes(struct cgroup_subsys *ss, struct cftype *cfts)
+ void cgroup_file_notify(struct cgroup_file *cfile)
  {
-+	struct kmem_cache_args kmem_args_small_head = {
-+		.align		= 0,
-+		.ctor		= NULL,
-+		/* usercopy should only access first SKB_SMALL_HEAD_HEADROOM
-+		 * bytes.
-+		 * struct skb_shared_info is located at the end of skb->head,
-+		 * and should not be copied to/from user.
-+		 */
-+		.useroffset	= 0,
-+		.usersize	= SKB_SMALL_HEAD_HEADROOM,
-+		.sheaf_capacity = 32,
-+	};
+ 	unsigned long flags;
++	struct kernfs_node *kn = NULL;
+ 
+ 	spin_lock_irqsave(&cgroup_file_kn_lock, flags);
+ 	if (cfile->kn) {
+@@ -4696,11 +4697,17 @@ void cgroup_file_notify(struct cgroup_file *cfile)
+ 		if (time_in_range(jiffies, last, next)) {
+ 			timer_reduce(&cfile->notify_timer, next);
+ 		} else {
+-			kernfs_notify(cfile->kn);
++			kn = cfile->kn;
++			kernfs_get(kn);
+ 			cfile->notified_at = jiffies;
+ 		}
+ 	}
+ 	spin_unlock_irqrestore(&cgroup_file_kn_lock, flags);
 +
- 	net_hotdata.skbuff_cache = kmem_cache_create_usercopy("skbuff_head_cache",
- 					      sizeof(struct sk_buff),
- 					      0,
-@@ -5189,17 +5202,13 @@ void __init skb_init(void)
- 						0,
- 						SLAB_HWCACHE_ALIGN|SLAB_PANIC,
- 						NULL);
--	/* usercopy should only access first SKB_SMALL_HEAD_HEADROOM bytes.
--	 * struct skb_shared_info is located at the end of skb->head,
--	 * and should not be copied to/from user.
--	 */
--	net_hotdata.skb_small_head_cache = kmem_cache_create_usercopy("skbuff_small_head",
--						SKB_SMALL_HEAD_CACHE_SIZE,
--						0,
--						SLAB_HWCACHE_ALIGN | SLAB_PANIC,
--						0,
--						SKB_SMALL_HEAD_HEADROOM,
--						NULL);
-+
-+	net_hotdata.skb_small_head_cache = kmem_cache_create(
-+			"skbuff_small_head",
-+			SKB_SMALL_HEAD_CACHE_SIZE,
-+			&kmem_args_small_head,
-+			SLAB_HWCACHE_ALIGN | SLAB_PANIC);
-+
- 	skb_extensions_init();
++	if (kn) {
++		kernfs_notify(kn);
++		kernfs_put(kn);
++	}
  }
+ EXPORT_SYMBOL_GPL(cgroup_file_notify);
  
 -- 
-2.53.0.473.g4a7958ca14-goog
+2.47.3
 
