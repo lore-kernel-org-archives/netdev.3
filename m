@@ -1,63 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD02C175A86;
-	Sat, 28 Feb 2026 20:30:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C03D2D0C79
+	for <netdev@vger.kernel.org>; Sat, 28 Feb 2026 20:31:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772310658; cv=none; b=igD+Wq89fQB8pNDkt5w+HDmkKJA5+uOLdQjX6oPf5GOf5t7t2kDhHMqgZqCk1rvnsC34LrC0yW5O+7vfpGmw2/I5PQpX1hQUfcLlV57p7A4UoIXsKza6i7KMCf1WIfT5+8p1jG4hiewBdzwJ5pwFVG4ybV2gnfuB6FXkz79kFa4=
+	t=1772310688; cv=none; b=HEqU96mmVgKDAmys95ilr97O7gXJcSxT6af+Jmsh46UPul+7PnVUfSMTAzU5FiaHIhxSCl7Q3YPYx8VFOUNRd33oDT76ZRK56PtYzGqQtanQwXviC0jzKfAgVV0mHE/4wBRWkroQmwggdLi6HMYnOj4XPS7vGDxLyCNDeFaRig8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772310658; c=relaxed/simple;
-	bh=5osuwdeoFbtAVKtAuWPRvfoorRhWrOkgKlCC1JCHjX4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lbuE/hEmxWEcHB0hhiPUTmnltRMnMHXpUIYQjaIKwWB1qqC8UmpOfPnfUhg6pst1LrgQQcTdty4lPygSuGo54aBt9U4wVEmCztSXSHUIQew2Bzemt9H242089qZOvbr+eU95JFL1gOOiE8aUgsxnFYz3k5Y+uCJUUwRsq40aSbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ukdzHTEO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772310688; c=relaxed/simple;
+	bh=PnltOAfz+yZUl0NCtYutNI1n4JIg3WZLyegty4BKc9k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dyG6Q9KxdhwidAMWsjrk2/rrK3521m0up1dybJOQpRnWMCqHMLYgT0Rk11wjJPf56h2L594AuJhEgq/Cte2yWiRSeF6qG5DhjXPhnUYd876Ea1KgEYhqtCwPfMltiaiFtRZfWV3a4xsb/NJU5sXFIVxyL1EXJ1QPacHftrM1nhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=ZPIelEqM; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ukdzHTEO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CEAEC116D0;
-	Sat, 28 Feb 2026 20:30:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772310658;
-	bh=5osuwdeoFbtAVKtAuWPRvfoorRhWrOkgKlCC1JCHjX4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ukdzHTEO9sKeX64F965atQW/VYBfheZwuA/3E7Uj4JGWjCKt8pCAWXe+VgfntwdYK
-	 TQsvsprRjBAItAb/WcHOTodq5M3gOpllVFQcJAgwmTjSBi+5HnhDmIeCFTIGioA0no
-	 j1heXxnJCW8D+uXX7va59C+2WR9NTGf1h9LtQlrFTxEfE3daRtgPc/c4jN84gqerXw
-	 4zj6gp5Cno8vuNkmXelrL74R4x/+G9lXWFjw52VV+gx+8u00qF8AMZeMvLStESzE1w
-	 XmfryvVoKxggOAVL7HGhrLl7lRRno/gWlNkm4UCbCy8ee6RCxo+IfQrmBJEJewae+E
-	 Xe/Fu4EhxHlqg==
-Date: Sat, 28 Feb 2026 12:30:57 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: netdev@vger.kernel.org, bridge@lists.linux.dev,
- roopa@cumulusnetworks.com, horms@kernel.org, pabeni@redhat.com,
- edumazet@google.com, davem@davemloft.net, idosch@nvidia.com,
- razor@blackwall.org
-Subject: Re: [PATCH net] net: bridge: fix nd_tbl NULL dereference when IPv6
- is disabled
-Message-ID: <20260228123057.14050980@kernel.org>
-In-Reply-To: <20260226234059.19402-1-fmancera@suse.de>
-References: <20260226234059.19402-1-fmancera@suse.de>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="ZPIelEqM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=nMxDUrLuLUd3EietRVzH2dDww4K4V7mpwa5/kLdWqWs=; b=ZPIelEqME7sp6eUIjb3d/4zMhg
+	tTMHiEiTkCLM5WkA0gujPoy8R7GEC0+fpVNjCoAO/nolK1otT6hrR5RU4B43cp84e0lUqeEwpUWbK
+	2qUcph6hBAo2TtwvqWrhJ5BfQfA6EIMGeiHXFUQWaioarRkRl0htoGP8NMqrOI9BluZw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vwQyB-009Diw-Vj; Sat, 28 Feb 2026 21:31:23 +0100
+Date: Sat, 28 Feb 2026 21:31:23 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Joris Vaisvila <joey@tinyisr.com>
+Cc: netdev@vger.kernel.org, Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Subject: Re: [RFC PATCH 2/2 net-next] net: dsa: initial support for MT7628
+ embedded switch
+Message-ID: <62e825cd-7b5d-4839-a8d7-ae936dfa03fe@lunn.ch>
+References: <20260228185242.800836-1-joey@tinyisr.com>
+ <20260228185242.800836-4-joey@tinyisr.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260228185242.800836-4-joey@tinyisr.com>
 
-On Fri, 27 Feb 2026 00:40:59 +0100 Fernando Fernandez Mancera wrote:
-> Fix this by adding a check before br_is_local_ip6() or neigh_lookup()
-> call. If ipv6_stub->nd_tbl is NULL, return immediately.
+> +static void mt7628_vendor_phys_init(struct dsa_switch *ds)
+> +{
+> +	/* vendor specific init sequence from openwrt/uboot */
+> +	mt7628_phy_write(ds, 0, 31, 0x2000); /* change G2 page */
+> +	mt7628_phy_write(ds, 0, 26, 0x0020);
+> +
+> +	for (int i = 0; i < 5; i++) {
+> +		mt7628_phy_write(ds, i, 31, 0x8000); /* change L0 page */
+> +		mt7628_phy_write(ds, i, 0, 0x3100);
+> +
+> +		/* EEE disable */
+> +		mt7628_phy_write(ds, i, 30, 0xa000);
+> +		mt7628_phy_write(ds, i, 31, 0xa000); /* change L2 page */
+> +		mt7628_phy_write(ds, i, 16, 0x0606);
+> +		mt7628_phy_write(ds, i, 23, 0x0f0e);
+> +		mt7628_phy_write(ds, i, 24, 0x1610);
+> +		mt7628_phy_write(ds, i, 30, 0x1f15);
+> +		mt7628_phy_write(ds, i, 28, 0x6111);
+> +		mt7628_phy_write(ds, i, 31, 0x2000);
+> +		mt7628_phy_write(ds, i, 26, 0x0000);
+> +	}
+> +
+> +	/* 100Base AOI setting */
+> +	mt7628_phy_write(ds, 0, 31, 0x5000); /* change G5 page */
+> +	mt7628_phy_write(ds, 0, 19, 0x004a);
+> +	mt7628_phy_write(ds, 0, 20, 0x015a);
+> +	mt7628_phy_write(ds, 0, 21, 0x00ee);
+> +	mt7628_phy_write(ds, 0, 22, 0x0033);
+> +	mt7628_phy_write(ds, 0, 23, 0x020a);
+> +	mt7628_phy_write(ds, 0, 24, 0x0000);
+> +	mt7628_phy_write(ds, 0, 25, 0x024a);
+> +	mt7628_phy_write(ds, 0, 26, 0x035a);
+> +	mt7628_phy_write(ds, 0, 27, 0x02ee);
+> +	mt7628_phy_write(ds, 0, 28, 0x0233);
+> +	mt7628_phy_write(ds, 0, 29, 0x000a);
+> +	mt7628_phy_write(ds, 0, 30, 0x0000);
 
-The problem should probably be fixed by replacing IS_ENABLED(IPV6) in
-the callers with ipv6_mod_enabled(), rather than randomly sprinkling
-null checks?
+Do you have any idea what this is actually doing?
 
-> Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
-> Closes: https://lore.kernel.org/netdev/CAHXs0ORzd62QOG-Fttqa2Cx_A_VFp=utE2H2VTX5nqfgs7LDxQ@mail.gmail.com/
+Normally, a MAC driver would not touch the PHY. It would be the PHY
+driver which enables workarounds for erratas etc. 
 
-I think we should also have a Reported-by: in this case?
--- 
-pw-bot: cr
+Does this PHY support C45 over C22? Can EEE be disabled in the normal
+way, writing to the standard EEE registers?
+
+I would try to put this code into the probe function of a PHY driver.
+
+	Andrew
