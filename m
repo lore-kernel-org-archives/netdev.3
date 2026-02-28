@@ -1,171 +1,168 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58158364944
-	for <netdev@vger.kernel.org>; Sat, 28 Feb 2026 13:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.214.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772283931; cv=pass; b=DbwktXJ1KIXCTdiC5Ik3iy+9iRWMB0Mi3LiryJua4i/MxvWmxxC8kwi+YIeK72fYAIsDKbloR6gJsTdABneaPF5E6ZktpSJ5kY31OasIrGAZwVJr19MYscIgntjBc7vnhw9MSh8fvnNX4dy7QLSO5KtlWQhJe5vOk5ayz2/DWZI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772283931; c=relaxed/simple;
-	bh=OqozRgE+7Hr2AbFLJnG6hrQ5TWyJLeOE7GLaUeOb7A0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V/f7icxEFt/+y7AOkCa6qHjUqCGkWb1BveRhaktI0HBWmlXuhPhiX4PRpclDE1H2uTfUDkDs72QlUioIMUGDkeTuTXG3EBFLgQa2xsYky8T0OafyZQE5ElfCrI5JyeOwSRueT3zKHglIOV2oWVIJxkmZsGoO4KF2UzNhSDsrLaI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=LdWYHt/z; arc=pass smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77875283FDB;
+	Sat, 28 Feb 2026 13:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772283956; cv=none; b=V+Co14MCP8VI/hCdo3gHznAuZaMkN73zBEtnJakSz30ZbZqxKXRFoc+2H7kYwMbr6l++CAZtJQG+vCnLagDShWjDK1rtqWiJnJeBbVTqVZNI1aU0/kTWs+Aoec0CZye6Q+855ufXJIJAUvtV+myYKRQeIJbaJHzr3v4sT43Ac/A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772283956; c=relaxed/simple;
+	bh=Kp99RHVH20I6HuYgBP+WhRnM/GM6AC7c9yUMHnJPmow=;
+	h=References:From:To:Cc:Subject:Date:In-reply-to:Message-ID:
+	 MIME-Version:Content-Type; b=PRhiwkwAOCa1mEn3tVx2IDf26fzPKk+Gygu8aQkaaxjJb3sFO24j7wNnjQZ1oBL4QocR5pTNa8OZOhukOUtF/PHz84sXPCXLLOC4yG/GF8/sXju4w3Frbz2PilbdpHOM5AicT3xOeHJciQt0UltNEOPHLhVhV6WHrN4sLOzLWRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pmachata.org; spf=pass smtp.mailfrom=pmachata.org; dkim=pass (2048-bit key) header.d=pmachata.org header.i=@pmachata.org header.b=GgxHoMsO; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=pmachata.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pmachata.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="LdWYHt/z"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ad4d639db3so14239925ad.0
-        for <netdev@vger.kernel.org>; Sat, 28 Feb 2026 05:05:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772283930; cv=none;
-        d=google.com; s=arc-20240605;
-        b=SbQaJBTJeR5afJW/jjf19ipCgwX94tLpl/PI/9pY/RobRDBBqoMnUcMQxfl/CaOzxx
-         rtVdkY/Mwz4X3p4EaEU33fWr+mZ/bpCTKGGWzH8b/EFhuhintWzzu0xQg6kGcLWvhAbL
-         flZmwoRVKGfJ7D0AmfRDMzomNx3CD7LvjDF9FBuzNzqk+tYJz891G0dkaTXmuuj42fLO
-         uiEZZJNqmELnJL/KjI/Bmqfx617qqKKEAlvemL49aulllfoGN74IDVGRztMDxAGfHCQQ
-         eb7upYUQolBP+2fk7l4EACdD1qUZHx3c4ai10+E7TURk1U8jRHXC0ubRF7ZI3reMCRFg
-         Up5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=OqozRgE+7Hr2AbFLJnG6hrQ5TWyJLeOE7GLaUeOb7A0=;
-        fh=vjLW6jY5srCzNU4cDo2A0X0bPYmeHUDTwq+W+b+Sm2I=;
-        b=aefY3FMyHFgREo8en86vdzvsfzzFAQb7fPFKCsttti8KLY50cjJmYwXce6wKtXl3g8
-         lvM8IzXR/mWjtccwwdJCh5oXdUHphHt2r0ZTjNA7znxZ2o6O3cW34Pxsbe0F2MYw34oC
-         r16dTCHKa53Xse+rBtN2jEDDbbFGQLfvEHnmEX87qWd8pKUrtsMoUJPr1K3VUHfpXRx+
-         zAVveLr6w9l/JttoXc0sjOMoAKrUU/+6RlAsHWVtzLFrpzGlHG+JvieggD4M9doKl4vZ
-         JtB4Xrbob4xQtc4XEd95EVEZk8a7NtP28QMr1qsJ//Uoo3eBYa9hBRsgRCm2zKejedZe
-         GK0Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1772283930; x=1772888730; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OqozRgE+7Hr2AbFLJnG6hrQ5TWyJLeOE7GLaUeOb7A0=;
-        b=LdWYHt/z7UszWxsjf2OOzfhxDD5y9UTAr37f0eD793Z1/354DhMychY27Dl5AdKmS7
-         0tnSiuN/1u6EHiQ1c7gfR+0qx1vDkgg6y2H5kFW3zv9fwItp3+NzWyV9Jr3PIaI6emgA
-         ni8t0OvdSEAXdImwHwu9QmrpoxYo0kfwZ/ptUW15MfThkPrg+ZbNX9VehwnLynX6cryk
-         7jn4+i2LUJt0hpjkKrXam6FjsGMvWNuIoteW1X6AURnW60TmzuvsWs5qlrVl2Ioh/Ld5
-         ujhzCaGfFVyi6L7z63DNonnNuH/ZC3JhWyjz2VLS8QtXxVZhNnsFDU565TlL/ziwsK+f
-         v8Hg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772283930; x=1772888730;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=OqozRgE+7Hr2AbFLJnG6hrQ5TWyJLeOE7GLaUeOb7A0=;
-        b=nYGAcq58HpNXbnkvDVHVWl37NSDFlgZUwX6/6fQRM9mgz7eSoUFguLGUvLkobMUyjq
-         lnc07pXd5iKoq3w20D1tX4InX/vebwqhr1twMQi9FvMhckM6+5u75EYdXQOjXVxUY1S5
-         P9Dzy1xw3XjfLliilRg1yx54c9bl+a8vKnT4D+zz46r58g9NfXQJS6ThkqFi1BXsFD4D
-         /OvzWcpQdaES00/o5bboyycpgmuhMeP3VqbGy/hxavAjcmkFYkaes/rzQr7c3drVvLVf
-         TLFUB/yL2fKnRBQYLOmlje4YDcqg7pAj7bbUQE5PzZq1KogA80nnL1wqkq4jbo5cyBIs
-         tYqw==
-X-Forwarded-Encrypted: i=1; AJvYcCUNgWOQJS4vhnrLX0IQDWNtZEPVP0YSvr9ODbLAZQ+mjmHbmJnaIumZp/4UBqpTT58Ne/7F57w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykc1vXS+uypq/MmKFA294eQNpgJ5Ln3C72GObyG0Qq5npiSQJQ
-	XQF2nabYg5hZqZlwMj6lLqKUetNYR4ju55w3cqNbOXHiLm/WtnDNxJhh1r67oVkoOYlsX+WgK5X
-	BtGStG2FlBZbA7aiyE7nd2mmZqYeliVWXsTC2J2tv
-X-Gm-Gg: ATEYQzxMJixruRqaZ5c1DaXtwybAOYH258tw55295nA5ddUPXTaZf5ka5Fe11xzc1vG
-	JMC6AXbgOG3OfwKufkmDrEc+FoHUoaXxwqV7z/hsyXbAiUw701iBUm/UwlYzQzfRruSR5SWAvMs
-	hHABr4jXUIxxzShFqLHdUTHTDPyFh8Y7lkDfhSdTJiIkxQJPSgSzTa8ApPRgPLAhfD+1PdMLnTh
-	JxBT89fsyzVSzX4M1xB7ytpJswVuCO95KWbNQsc+bRFKV2BQEEg64c6xG4dz+j+mUnmlOAWBRHz
-	IZUSJHLVaqnT7ieWjq6ynIcO0w==
-X-Received: by 2002:a17:902:cf0f:b0:2ad:99bb:3129 with SMTP id
- d9443c01a7336-2ae2e4e8d73mr54637665ad.50.1772283929489; Sat, 28 Feb 2026
- 05:05:29 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=pmachata.org header.i=@pmachata.org header.b="GgxHoMsO"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4fNQRV1sf3z9tZ4;
+	Sat, 28 Feb 2026 14:05:42 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pmachata.org;
+	s=MBO0001; t=1772283942;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vBCTqfoUFB8sEME4u3rPQMqwI7w/71GcIE63YBTocA0=;
+	b=GgxHoMsOrYIq8LukeJOWt7iwf/VmndWsp6AXkgOwTcV/hRWSCiBqm/lHkQG8OwOk1DRo6n
+	1815aFOYmjXVXThcSDmiJEIrCzqktqRYUsASSGEjibbtTQfif8c9fNnqoP0+J00mOhgump
+	K4XzH4WZu01Teb7XZw0rtMKd5PIFHICw7c/0srN+kTlW1XmedvCd+D0pFckS5volwwLu32
+	hG9/nxHijyZsVG+n/XxDCvqJlDVjVpf4kwzyeEGUJKEFPMG2j0ZJEWrf3Em0N8x4tVuNke
+	B9cnhwQACNIZeNohn1dWhGR6hkSHnpJyFy8ayXFezgWIWba38gF3jAIxqEX9Mw==
+Authentication-Results: outgoing_mbo_mout;
+	dkim=none;
+	spf=pass (outgoing_mbo_mout: domain of me@pmachata.org designates 2001:67c:2050:b231:465::202 as permitted sender) smtp.mailfrom=me@pmachata.org
+References: <20260225150648.1542206-1-ioana.ciornei@nxp.com>
+ <20260225150648.1542206-6-ioana.ciornei@nxp.com>
+ <20260226182223.5eb1b10f@kernel.org> <87ms0ufc0p.fsf@nvidia.com>
+ <20260227164348.63afcc43@kernel.org>
+From: Petr Machata <me@pmachata.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Petr Machata <petrm@nvidia.com>, Ioana Ciornei <ioana.ciornei@nxp.com>,
+ netdev@vger.kernel.org, Andrew  Lunn <andrew+netdev@lunn.ch>, "David S.
+  Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, Simon Horman
+ <horms@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH net-next 5/5] selftests: drivers: hw: add tests for the
+ ethtool standard counters
+Date: Sat, 28 Feb 2026 10:11:26 +0100
+In-reply-to: <20260227164348.63afcc43@kernel.org>
+Message-ID: <877brxf272.fsf@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260111163947.811248-1-jhs@mojatatu.com> <d42f0c80-e289-4e0f-8608-10580d315fd9@redhat.com>
- <CAM0EoMkFMURPj3+gNOaqO60D4deeht2F3EZWZbmShjO+B4wJBA@mail.gmail.com>
- <CAF=yD-Jah3+1Sj3-Us72fKNu-__sg7pNb+-kC_knAV=iTHAitQ@mail.gmail.com> <CAM0EoMmAQ8RvHRmyEeMwehhNe0yXzn8NU5UvwitzAoL3cwVPqg@mail.gmail.com>
-In-Reply-To: <CAM0EoMmAQ8RvHRmyEeMwehhNe0yXzn8NU5UvwitzAoL3cwVPqg@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Sat, 28 Feb 2026 08:05:18 -0500
-X-Gm-Features: AaiRm50J7n10K1tJc5XtV8aE3FRKjaSqWroTN1RyVqgLAaiRSaTEaJr15HC97dA
-Message-ID: <CAM0EoMmXq67kso-n_+Y6sCMhJkkiE8b0R1Kn-d0rLb_X=ALV3A@mail.gmail.com>
-Subject: Re: [PATCH net 0/6] net/sched: Fix packet loops in mirred and netem
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Paolo Abeni <pabeni@redhat.com>, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, horms@kernel.org, andrew+netdev@lunn.ch, 
-	netdev@vger.kernel.org, jiri@resnulli.us, victor@mojatatu.com, 
-	dcaratti@redhat.com, lariel@nvidia.com, daniel@iogearbox.net, 
-	pablo@netfilter.org, kadlec@netfilter.org, fw@strlen.de, phil@nwl.cc, 
-	netfilter-devel@vger.kernel.org, coreteam@netfilter.org, 
-	zyc199902@zohomail.cn, lrGerlinde@mailfence.com, jschung2@proton.me, 
-	Stephen Hemminger <stephen@networkplumber.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
+X-Rspamd-Queue-Id: 4fNQRV1sf3z9tZ4
 
-()
-Sorry, I was busied out so dropped the ball on this one...
 
-On Thu, Jan 29, 2026 at 4:22=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.com>=
- wrote:
+Jakub Kicinski <kuba@kernel.org> writes:
+
+> On Fri, 27 Feb 2026 14:53:06 +0100 Petr Machata wrote:
+>> Jakub Kicinski <kuba@kernel.org> writes:
+>> > On Wed, 25 Feb 2026 17:06:48 +0200 Ioana Ciornei wrote:  
+>> >> +ALL_TESTS="
+>> >> +	test_eth_ctrl_stats
+>> >> +	test_eth_mac_stats
+>> >> +	test_pause_stats
+>> >> +"
+>> >> +STABLE_MAC_ADDRS=yes
+>> >> +NUM_NETIFS=2
+>> >> +lib_dir=$(dirname "$0")
+>> >> +# shellcheck source=./../../../net/forwarding/lib.sh
+>> >> +source "$lib_dir"/../../../net/forwarding/lib.sh  
+>> >
+>> > Argh, at some point we should probably decide whether we have 
+>> > a preference on which "library" / set of env vars we use under 
+>> > drivers/net/hw. Adding Petr to CC.  
+>> 
+>> I think the expectation is that by default, tests written in Bash are
+>> run on one machine without remotes.
 >
-> On Thu, Jan 29, 2026 at 12:06=E2=80=AFAM Willem de Bruijn
-> <willemdebruijn.kernel@gmail.com> wrote:
-> >
-> > On Thu, Jan 15, 2026 at 6:33=E2=80=AFAM Jamal Hadi Salim <jhs@mojatatu.=
-com> wrote:
-> > >
-> > > On Thu, Jan 15, 2026 at 5:23=E2=80=AFAM Paolo Abeni <pabeni@redhat.co=
-m> wrote:
+> I think we need to define the guidance by properties of the test, not
+> the machine? Of course _tests_ which don't need a traffic source can
 
-[..]
+Oh yeah, I'm just stating that's how it currently is and how we got here.
 
-> > > > Generally speaking I think that a more self-encapsulated solution s=
-hould
-> > > > be preferable.
-> > > >
-> > >
-> > > I dont see a way to do that with mirred. I am more than happy if
-> > > someone else solves that issue or gives me an idea how to.
-> >
-> > It might be informative that there used to be a redirect ttl field. I
-> > removed it as part of tc_verd in commit aec745e2c520 ("net-tc: remove
-> > unused tc_verd fields"). It was already unused by that time. The
-> > mechanism was removed earlier in commit c19ae86a510c ("tc: remove
-> > unused redirect ttl").
+> simply consume the NETIF evn variable, so its trivial to write them in
+> any language without much library support. But for tests which need
+> traffic input we need a different distinction than "does the author
+> care about single-interface machines", so to speak?
+
+I agree that adherence to the drivers/net/README protocol is valuable to
+some users and would be good to uphold if reasonable in a given tests.
+If that's what you have in mind.
+
+There are going to be tests where it's not a great fit, but I think that
+of those NUM_NETIFS=2 tests that we currently have, maybe
+ethtool_extended_state has a good reason to be obstinate, because it
+sets up negotiations and needs an extra unplugged netdevice.
+
+>> 
+>> > The existing tests under drivers/net/hw which source forwarding/lib.sh
+>> > pre-date the "NIC setup" described in 
+>> > tools/testing/selftests/drivers/net/README.rst
+>> >
+>> > Should we ask "NIC setup" to be used for all tests which only need
+>> > NUM_NETIFS=2 ? These are basically simple tests where one netif is 
+>> > a traffic generator and the other is the DUT. And IIUC the "forwarding
+>> > setup" can't be used when the traffic generator is controlled over SSH?  
+>> 
+>> In principle nothing prevents lib.sh from growing brains to support
+>> these remote shenanigans. I think it's just that so far nobody cared
+>> enough to actually do it.
+>> 
+>> I think that a helper that in effect does "run this on a machine where
+>> $swp1 is" is mostly what is needed. That and "make sure $swp1 and $swp2
+>> are on the same machine". It's going to be annoying to work with though,
+>> because you need to annotate every single command. I bet there's a nice
+>> syntax to make it not activelly annoying.
+>> 
+>> If we have this, it might make sense to require tests to make use of it.
+>> (With an explicit opt-out for special cases.) But I do not want every
+>> test to have to reinvent this wheel and cargo-cult snippets from other
+>> tests.
+>> 
+>> BTW, my guess is that even many multi-port tests that I wrote boil down
+>> to just a bunch of fairly independent loopbacks whose far ends could be
+>> on remote machines. It's not a priori nonsense to me that one would run
+>> a test like this, or whatever magic we'd use:
+>> 
+>>     ./test.sh ssh://petr@10.1.2.3:eth1 swp1 veth1 ns://foo:veth2
+>> 
+>> And it just works, because only swp1 and swp2 need to be bridged, the
+>> rest can be remote, and the traffic generation helper knows that to pump
+>> traffic to ssh://10.1.2.3:eth1, obviously you need to ssh there first.
+>> But the library would need to have helpers for this, and the tests would
+>> need to use them.
 >
-> True - we used to have 3 bits, but we can leave with two;
-> Unfortunately, a single bit won't work - otherwise we could have just
-> used the one available.
-> Only one bit was available, so we recouped another (skb->from_ingress)
-> and adapted it to use the tc cb struct.
-> There is still a chance that could cause issues - all the users of
-> this field were CC'ed and i was hoping they would respond.
+> Right, to be clear I primarily care about being able to run these tests
+> with traffic generator on a remote system. Otherwise someone who cares
+> about single-port systems will have to add a separate test I guess?
+> And we will have to maintain two tests? :S
 >
+> A nice to have is for all drivers/net/hw tests to use the "NIC" env
+> variables (move tests which really only make sense on multi-port
+> devices to drivers/net/forwarding?) But I think "translating"
+> forwarding variables to NIC if NUMIF=2 could easily be done
+> automatically by the test / lib so that's lower priority.
 
-And indeed reclaiming that bit is problematic. So the AI didnt catch this ;=
-->
-Stephen, see if you can improve your prompt to catch this in the
-future. Should be noted this would be nice to include as well in the
-netdev type AI to catch cb stomping bugs. Turning skb->from_ingress
-into an skb->cb field is problematic because the bit gets written way
-before we hit tc. First the mlnx driver writes it in
-mlx5e_tc_int_port_dev_fwd() and then the GRO code trumples over it. So
-by the time it gets to tc it could have an arbitrary value. So I guess
-our overlords are not ready to take over ;->
+The reason for my diatribe above was like, if forwarding/lib.sh is
+clever enough to handle these things transparently, then the NIC case
+might be supported through a wrapper that just does the right thing, and
+the test can be overtly just a run of the mill forwarding test.
 
-> > The IFB specific redirect logic remains (tc_at_ingress,
-> > tc_skip_classify, from_ingress, redirected). Maybe some of those bits
-> > can be used more efficiently. The cover letter for commit aec745e2c520
-> > had a few suggestions [1].
-> >
->
-> Using the iif check against netdev feels a bit "dirty," but if there's
-> a strong view that it's okay, we could liberate that bit (some testing
-> needed) and in that case i would leave skb->from_ingress alone.
->
+The requirement for the remote netdevice to be up and preconfigured
+throws a wrench in this idea though, so dunno.
 
-Let me try to reclaim skb->tc_skip_classify first and see if that
-causes any issues.
-
-cheers,
-jamal
+One way or another, _some_ brains need to reside somewhere in a library.
+I'm not sure forwarding.sh is the place. But I don't want to end up in
+the same situation as like lib/half_the_tests.sh that reinvent logging
+from first principles again and again.
