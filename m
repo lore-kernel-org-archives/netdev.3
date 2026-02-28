@@ -1,98 +1,120 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAC53430B8C;
-	Sat, 28 Feb 2026 20:44:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A8B3033F5
+	for <netdev@vger.kernel.org>; Sat, 28 Feb 2026 20:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772311474; cv=none; b=Cs83dydjAc6Cglv9MzvOdVw1J1ZnwD5lKKOK21Nr/16Pbo37//MZ+GgKBPwflTfmBKeBmGdjKm4RVjN1+6b9JzMTpcT79DfOn/TBR4unhFKskyws/yXPzSghVPYPGAv4AV9ots6Dwl+K18ZqIJ4leKDgovXXoKwa6iZ2iEc9UJk=
+	t=1772311656; cv=none; b=MyC0GALRffS9phRuwv3IeRsB20mc3F0cfLwITrrSij6HVg2+KEaLju5D6LB6sO89BLNPLzX/zLcujo+02hlGyQIMuSFmp1HNrWOJHv2UGw07sA8dWD9f8Nui0/bgRYS0Ho+nDnEQqE96AGVIHtjEMSmVNGT0f+BDX8rlfeN8Zz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772311474; c=relaxed/simple;
-	bh=fouJcXrcIqnS4OK5wrynhLTd93+//OFNPP5WduPOU9s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QtVAvD5n36b7bRR4MEQET5ykbeOFYxPGng3Y2WoSrQhzWmBajmFHV4WequSI+hUl6ZS+DTFv3V3HZ/L2T+mHfKhNeA32Q38P/jZmrXnX7M8tWs0wFUnN608xGwCKjguI7HqQ/nDf1oI4T3UyL9sf4c0E32hOxSGW4PC1o2Lh50o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Isai794V; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1772311656; c=relaxed/simple;
+	bh=aMxta8OcgOYuoYdQDIvKYmzgkP6ZNu6hava1KxYRR9I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=g2TO48wYCh/3e1nLLLNTWeYXBmoo3l71+lcOzQZWpTTUZ5GUL910gB7VyYh2EJmHumoZ12FOm5ivqqD8ObZnE/EFBKsgCdT4OfwDMd8iLfCC3ONKzSosLlsba1CL9gdPSC9H6+PCVZRW0jwoF97AhPYliN7f32yKft8f8xBzUaw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=3V1kSKpM; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Isai794V"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=SrzHTbYPCKrR1q3pp5B8ty/C+EIi95VJx+2ipEIuh1Q=; b=Isai794V+IltfaW+HZj+S+m8Sh
-	UXkVo7GQuH6Uey8Rp4NvWi2kESCjHagAscaKN9heSSxhs9jMmj4tj+phtOKwg7s0zocpCl2GuByXf
-	rksZ62YmhlCvy/lMVXZ+EQUlt23mrryaOrTKkREkZ3rvj9rPN/7hZ5OIH23ZMsqG4o3k=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vwRAb-009Dpe-Eb; Sat, 28 Feb 2026 21:44:13 +0100
-Date: Sat, 28 Feb 2026 21:44:13 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: "illusion.wang" <illusion.wang@nebula-matrix.com>
-Cc: dimon.zhao@nebula-matrix.com, alvin.wang@nebula-matrix.com,
-	sam.chen@nebula-matrix.com, netdev@vger.kernel.org,
-	andrew+netdev@lunn.ch, corbet@lwn.net, kuba@kernel.org,
-	linux-doc@vger.kernel.org, lorenzo@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, vadim.fedorenko@linux.dev,
-	lukas.bulwahn@redhat.com, edumazet@google.com,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 net-next 06/11] net/nebula-matrix: add common resource
- implementation
-Message-ID: <10134f9b-e389-45c8-ac57-10e8a465453c@lunn.ch>
-References: <20260226073840.3222-1-illusion.wang@nebula-matrix.com>
- <20260226073840.3222-7-illusion.wang@nebula-matrix.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="3V1kSKpM"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=X2lDY4kDa1zrMSQDVyUC0SYDijyb4f3C2MvFpLo/vus=; b=3V1kSKpMWhQuqL9Vg9d+5bS2eV
+	T4iXE9aG59bxftkOjuEud8C5WgjPjhRbq6qEI43SqzMxdDv4QtLy9R8nwaZ6vmyPop/dumeMeRBEC
+	NLYueLtWjUtDG3B5A5ALJUUsdHPZk0qN4yPoPkkJtC7eJ9tjyotIb1JbylZwItvZfh+jcf/r0SB4l
+	0vrSUN3APK6bDs6AlOwegoGztQJ9pVTpucR2+OTcpkumxWyTdzupZHcEAoElddvtWmX2tKST9BQa4
+	f7JLZjFrrREJt6YwWCB1411kXa6A1WauI0ALepTaTi58u8sV8FtLTlZtZ5EU8RhAwloJzHHVo2wyD
+	DUcvEFgw==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vwRDn-0000000AGSe-0TjP;
+	Sat, 28 Feb 2026 20:47:31 +0000
+Message-ID: <b57d3819-b531-4901-81db-b0cd1f16eed5@infradead.org>
+Date: Sat, 28 Feb 2026 12:47:30 -0800
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260226073840.3222-7-illusion.wang@nebula-matrix.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net v2] net: openvswitch: clean up some kernel-doc
+ warnings
+To: Ilya Maximets <i.maximets@ovn.org>, netdev@vger.kernel.org
+Cc: Aaron Conole <aconole@redhat.com>, Eelco Chaudron <echaudro@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, dev@openvswitch.org
+References: <20260228010058.2385110-1-rdunlap@infradead.org>
+ <4bf254a7-8e4c-4436-befb-1e0a2835100d@ovn.org>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <4bf254a7-8e4c-4436-befb-1e0a2835100d@ovn.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> +++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
-> @@ -6,7 +6,32 @@
->  
->  #include "nbl_resource_leonis.h"
->  
-> +static u16 nbl_res_get_vsi_id(struct nbl_resource_mgt *res_mgt, u16 func_id,
-> +			      u16 type)
-> +{
-> +	return nbl_res_func_id_to_vsi_id(res_mgt, func_id, type);
-> +}
+Hi Ilya,
+Thanks for your careful review of these changes.
 
-> +int nbl_res_func_id_to_pfvfid(struct nbl_resource_mgt *res_mgt, u16 func_id,
-> +			      int *pfid, int *vfid)
-> +{
-> +	return func_id_to_pfvfid(res_mgt, func_id, pfid, vfid);
-> +}
-> +
-> +u16 nbl_res_pfvfid_to_vsi_id(struct nbl_resource_mgt *res_mgt, int pfid,
-> +			     int vfid, u16 type)
-> +{
-> +	return pfvfid_to_vsi_id(res_mgt, pfid, vfid, type);
-> +}
-> +
-> +int nbl_res_func_id_to_bdf(struct nbl_resource_mgt *res_mgt, u16 func_id,
-> +			   u8 *bus, u8 *dev, u8 *function)
-> +{
-> +	return func_id_to_bdf(res_mgt, func_id, bus, dev, function);
-> +}
-> +
-> +int nbl_res_vsi_id_to_pf_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id)
-> +{
-> +	return vsi_id_to_pf_id(res_mgt, vsi_id);
-> +}
-> +
-> +u16 nbl_res_func_id_to_vsi_id(struct nbl_resource_mgt *res_mgt, u16 func_id,
-> +			      u16 type)
-> +{
-> +	return func_id_to_vsi_id(res_mgt, func_id, type);
-> +}
+On 2/28/26 9:55 AM, Ilya Maximets wrote:
+> On 2/28/26 2:00 AM, Randy Dunlap wrote:
+
+>>
+>>  include/uapi/linux/openvswitch.h |   72 ++++++++++++++++++++++++++---
+>>  1 file changed, 65 insertions(+), 7 deletions(-)
+>>
+>> --- linux-next-20260227.orig/include/uapi/linux/openvswitch.h
+>> +++ linux-next-20260227/include/uapi/linux/openvswitch.h
 
 
-None of these functions actually do anything. Why do they exist?
 
-	Andrew
+>> @@ -291,12 +313,13 @@ enum ovs_vport_attr {
+>>  
+>>  /**
+>>   * enum ovs_vport_upcall_attr - attributes for %OVS_VPORT_UPCALL* commands
+> 
+> Not a problem of this patch, but this line is also wrong, there are no
+> such commands.  These are attributes for OVS_VPORT_ATTR_UPCALL_STATS.
+
+I corrected that.
+
+
+>> @@ -652,6 +681,8 @@ enum ovs_flow_attr {
+>>   * %UINT32_MAX samples all packets and intermediate values sample intermediate
+>>   * fractions of packets.
+>>   * @OVS_SAMPLE_ATTR_ACTIONS: Set of actions to execute in sampling event.
+>> + * @OVS_SAMPLE_ATTR_ARG: same as @OVS_SAMPLE_ATTR_PROBABILITY, for in-kernel
+>> + * use, passing &struct sample_arg.
+> 
+> I wouldn't call it 'the same', more like 'extended', or just omit that part of
+> the description, keeping only what's after the comma.  Or maybe "For in-kernel
+> use, passing &struct sample_arg derived from other attributes.".
+> 
+>>   * Actions are passed as nested attributes.
+> 
+> This line belongs to OVS_SAMPLE_ATTR_ACTIONS.
+
+OK, moved it.
+
+
+>>   * @OVS_ACTION_ATTR_PUSH_MPLS: Push a new MPLS label stack entry onto the
+>>   * top of the packets MPLS label stack.  Set the ethertype of the
+>>   * encapsulating frame to either %ETH_P_MPLS_UC or %ETH_P_MPLS_MC to
+>> @@ -997,6 +1050,7 @@ enum ovs_psample_attr {
+>>   * start of the packet or at the start of the l3 header depending on the value
+>>   * of l3 tunnel flag in the tun_flags field of OVS_ACTION_ATTR_ADD_MPLS
+>>   * argument.
+>> + * @OVS_ACTION_ATTR_DEC_TTL: Nested OVS_DEC_TTL_ATTR_* action.
+> 
+> "Decreate TTL or hop limit of the packet.  Execute nested %OVS_DEC_TTL_ATTR_*
+
+   Decrement
+?
+
+> actions if the value is less or equal to 1."
+
+thanks.
+-- 
+~Randy
+
