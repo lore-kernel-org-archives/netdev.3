@@ -1,116 +1,79 @@
-Received: from sonic313-20.consmr.mail.ir2.yahoo.com (sonic313-20.consmr.mail.ir2.yahoo.com [77.238.179.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sendmail.purelymail.com (sendmail.purelymail.com [34.202.193.197])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC84E1FC101
-	for <netdev@vger.kernel.org>; Sun,  1 Mar 2026 12:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.179.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FAE031DD97
+	for <netdev@vger.kernel.org>; Sun,  1 Mar 2026 13:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=34.202.193.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772369007; cv=none; b=l5IVLGb2fbQkpbuZJP02OjS0g33Ic4LIMtcKS6Txhh57Aealrn8q19y0QHXlmInV0lJaOorV86+oKEwlbpfCdbIoElo35FLMDVsvrlOEe0Gq427h1INywr4IwVAjzlGTK7btOhR6iBqJB76HEJciGRHUDKl0rH9MWl06CgpkgJU=
+	t=1772370829; cv=none; b=HxqSJ78EC+FFNiKJ4/VM6mU5vPtoA1X4WG/K5HWi7bRww9KXD40mkOG01EoSTDuj+laIfjPoGKCZ7dHV/ZQ6iqtASWJUOGPrNkY634W4PZfLxy/79Xa5aO0aSokHlzyBuXfufPfxveaiaEBXEngwY5Rr3c+HygrY9TsALAoRYj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772369007; c=relaxed/simple;
-	bh=0n9CQEnb8/1swuDU2igeiPoDmdNypCeegoMYWhLBwuA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=QVMe9Txqq5c145MEaQ3kUGDTAJGLKm5xh3FfywKECqBVdcKH2nQCJ059/WirhN1PyY0snbTw0AfDi0dYzEXAXIuo/TBT0v8rP/hRX0XqUQvf1rvze/peTa2x4k/fqZovt5xc9MouAey06hKZd7IyWn884zD1o+AJWRR6GXOYsHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=mf8783d+; arc=none smtp.client-ip=77.238.179.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
+	s=arc-20240116; t=1772370829; c=relaxed/simple;
+	bh=onrirJo6ydCcYll7DRFQH980eTfE0dFqfteq+y/Q7Ns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RqpTirs9NJAM/dlpclW+LPPv0JQlwXDMmcIMZxbZ2yxNCi4eGKvhP+vmBY6InVdqWJPmQ4G3W/IP7tkmvXwFFBbHISJYmazEZO1tGCPH2sgGFr7HrW08CJEejL5cjaA/SxKLFDpbvKaeNMnHylapPvEdAIUrOi625ibXqsrhGDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com; spf=pass smtp.mailfrom=tinyisr.com; dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b=l7AFNGy4; dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b=Id1qQbJP; arc=none smtp.client-ip=34.202.193.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tinyisr.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tinyisr.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="mf8783d+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1772369004; bh=IQJlk8l41h57Oau1XI+KCQR7I6Tu4lnhPIT0mluCmjY=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=mf8783d+Cw0j3oJ+NJGZQpY94g3jXpALCtgZ3J4nKWBxeupITiS132VRdymULh569QicdlypX5WIYZ98qg11ebsY+4zkBfasiIqJbDK/rHO+W5BjRszU7s2q6NrLYYHPvau4pLMlGmKRpmsKCFxJhoLGJow63cZo8yHqR5TKJl8BJeYme9SAnDx25inEYv5F3PEzbSFjn54jbmqsbWHflDN3FEHb5jZgxgETCtaXuNmK9OS90FkUO4wyhFJwedoYu/jLNf1nllzxyxuxoJJb02SJjAV6vkKnQv+GbuwSKTO5jLfT2NO3SygKLbI765+4njkrEEJ5zA2XxsyzNNN4YQ==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1772369004; bh=DKCDPSmS6qKS9qwfJsD2i6JucQETasoL+IHFNm/juoJ=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=gJJSV981dw1SCrM2f2sB/D458wWst4ehkLH9rIFB02o8gIOqLpIwVR2zuDrQAFV9915zmMC3lx9k00ADPAL4y/+ox+KCrPJfg+/mkLofYBc5ZvlHnPZEDXvBpWgdAd4yQoIsl/i/TiWVJcYPU9JHKJX2Lz1aLtzi0SPVik3xMxoyIjax4zidlerFkHnJcmdZmAstcW8O+Hmo6uqvqHR9g54FwqSY770o5kPnriHkQVZX7e0hkMYTQU9vtWq1ZFYK4+W2jkUwhIiy2+UpfqSFzvNGvkXeLaGah4E3u1Mdn6r+am9Jk15EaDPslNRdFpI1va3uVXo89XtCqjaFZwEH5A==
-X-YMail-OSG: 5bNjWD8VM1kGNY8E0NVmMHTH5ZkY.nbNffkbzqDOQ5fFaSbWfqW6Y9aqDjXH1Qa
- ldN22FVc5LzyEQC5Wj7tu._ipG6v7vMXQnL6kp0.M4AJDKvsfd3LMVBXUajmwlY3yxfINawRFCFG
- eEvzKHi_zsOwMhDihPDhdiCfsHLSnYXnklelxR.gSfmcMda0CvWdjRb9z.HJNH7mY4cii4VvZGdW
- iY4KNntQK4ng627Rv4_fNhr5vAm4JypRJINDgJLyqz1hUvk0X9xKGtNqv7vP5z50IIOhcg84s1fG
- zZO16UZXUP1qap.P8nN9JX.Poi2kxpctFXE862G4GG.NcKBfaOtPMWbIXZEzjQ4xvEVlvHRmtHAQ
- wn4RJeXIBHB.RfssSXL8U1rd_kOdyqXsh9x.rcjvTsPn1dwB6_JfGm7BgBisYTrPgPTVeNu39Y73
- 5gZoz3EqGX_MfAl4w5.gzlc0Rt6iVH2Pr_gqQ.yq3AgG4vWalsvWNINub_YcGECLWHk7KrkZpW2q
- awmmSljiZ0vs7zFpV3HXROwHzhyN8TbBOa9akwqqrSqwDYIyJkZnrHymxEGsbNO62xCgd2zdKF5a
- cYHCPyGAJ3rn5dudezJRxgoVWf9nzfSh2tojprTUX3XywMeoo6_eCx3uSx_PeL7meJbFVnn9pWLH
- atCgmowYuXzQQ20VbPohoYmZF6aizcupGWDk8ZsvyLmUMISv_hHXiEWzrHzciQtX7N3nWHaFhC.F
- MWTuJcHSJ2eKeCcPOBustBWP0mcuwI.RsLjC0XM6Qd2gax4gETgSDybBAKtNBL6fyQoMlwUC0kES
- mwpz7Fl9ynozNIK0MMfgqc9KJv5i1gpW.XBG3dWoIB7t9InP8bg7r9hPqlfi.nZY8Rh.pHQCWHE5
- 621C69oYDQkPi7nkGLxUQCxBVG9tNT6Sh5C6FH6N_44Gsm5oMpzMA9ZV4Hlu9vZRiwLjE9Q.F_uH
- 5IJpzZOta_oPVsf9I2YZirMkwt4.IOAoGt.WjyhXBQITTV8BNYVGwKprCAb1o2fvIz1vUmGAIHse
- d1Wjn7jSjSLgclDhXaDZQlIghTrPyzvD5pEAOOtyBUT2Hu_59X.cWK3WEIS86QNUt_LPC19yv7q.
- xL3fQ_5i8QoK4YVcBciwgwBnR90JukiRxstoLtY6bs8E4b15EhFosSfWE5RS8WMiOL5vZtSnhNZY
- 72VuEnNh4I_4arc3Qvrim3fgFBdh4arJQ7Amia82t6CQAt.eTr0YKmTEXvc8nbEHjgjnWDZ2IaIs
- sSztf_dAcOviUE8x_eQb_EVMrYoWgovNnpPqZ3ZVLKQj_59k50ptFAAdstIhnvYkyV63B4yjJi2V
- G2xwe9YrzwC4x7St0Cgjpbx.NbamcKJMmUoXMzde4y5j3Zgq2xgYNOE5FWRgYLwSUgGY6yEb0HEf
- Cu6T2GE_pqDufyz5TYAsKH0oFGXpnAVno4MvoDByV.CzdCu7JQ6txBKQKy2hDUhpoCK5keVZt19n
- 4xydnwLI_avc.2isyl7vDS97jhIEA.mYQibK4FjX81khaIfNIpeJAiBiFox25TgW0_D2iDXlk.Zw
- 1KEVPfpjZ5khNkVX8tPgRakryw5_MWJENbKaNLedsJCN3ovkdD_rD6Y86dRvk2DCqFZr2SZjtZCu
- _t1ivogDIa2IUhbOZjuaDoNd3c1PE2fcRdJyYSewTqFXB0Y150NDGD_xmYHOt4Ntx9HjBhTOASF8
- nsSP.DTgLXrn8Qbn7toUVGAM5rT2SBAbQcBXPiAd0IciBH0cdhr1TeXaQUgzSX.Jb2oqXnQw0NFf
- c1tWBQSXZbf1B.TMIqopYQe9KJWGMMF7LFpcaoy9jmbaouOzLmLR_5dMRoqoKiPfYAvGZwLCy6nM
- kkXgkxl3aTD_K4_mZdTf46vO45MeJPH83v0NOgeMqRRoFJlduzzMLxNjwxtkIdGMgnqVAuNG6VRA
- 225e_QGMGWeloL8Y3Z_O0f7dTEVjn0d5E7TRcnndYvL6aqxx22Mins04uVYZN4mu.v4XNMcBo8z1
- yFMfoxyZhnqvJrtl0EGQe2n0LZwkXvpZJwZpqaAj6DKVfioIn6vO3XjUK_4MJnNVD.2.C5S0oeEP
- yO7tLBPYf3IcZ18KhcEd2anabnY_8IGjVrmnTnwOMgCqiLPOGRWZSDaA686YkVZYjwF2zhQ4igVr
- L4RSOM9wvzMGJojmFAjccAvOGCs08Aa_pk6Ff3DLcrserjaV5fxMBIQSmKfkWjstGLte0I1bTOzW
- FN5DXHJqAD.LPARHoffckwusgFATHK.PbfBV2DIPEQCBM_dZrIqc-
-X-Sonic-MF: <tomasz.unger@yahoo.pl>
-X-Sonic-ID: aafc7c08-e6ce-488d-9f72-c2072f5681d4
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ir2.yahoo.com with HTTP; Sun, 1 Mar 2026 12:43:24 +0000
-Received: by hermes--production-ir2-bbcfb4457-d9ssk (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 269077dfba5a73e3246f5329f26f66e4;
-          Sun, 01 Mar 2026 12:12:57 +0000 (UTC)
-From: tomasz.unger@yahoo.pl
-To: netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Tomasz Unger <tomasz.unger@yahoo.pl>
-Subject: [PATCH net-next v4] NFC: pn544: i2c: Replace strcpy() with strscpy()
-Date: Sun,  1 Mar 2026 13:12:54 +0100
-Message-ID: <20260301121254.174354-1-tomasz.unger@yahoo.pl>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=tinyisr.com header.i=@tinyisr.com header.b="l7AFNGy4";
+	dkim=pass (2048-bit key) header.d=purelymail.com header.i=@purelymail.com header.b="Id1qQbJP"
+DKIM-Signature: a=rsa-sha256; b=l7AFNGy4IEwW2WASA8umQzD/AlXwX3SIi/6TyLTXSarUsQnOWFipKhfRmVzPEuaDcPgYMo7IeY9sH31uuQlb+GXgt+d1mZhRpFbG1LMdBOZCaif3VfN2dB0U1RRj4TdTaG0v1Gh5umNkZ/x9DQ1OdoTL/yGS6P6wtO2m2UisYXZDRXUV3enOEINBPzaRxEEwpcfjiKiM4429vCGO0fZWbo+taJPlAuRjJn1tvkBXKRzZozwZ21LrZct9/ScG7HewxxDjfXCLnTYAe7mdpDfQa9PEYK7uQUxZb2c2xfemvOvLaN8UeYpslkQAgVGrL6x3dY1Zn0x+m4kc1laM65qtVg==; s=purelymail3; d=tinyisr.com; v=1; bh=onrirJo6ydCcYll7DRFQH980eTfE0dFqfteq+y/Q7Ns=; h=Received:Date:From:To:Subject;
+DKIM-Signature: a=rsa-sha256; b=Id1qQbJPHXTlOtEWJ+dn8S1Zy28x+59rtr2toB26nOoRPJoN90v3oTnRf3WwvLqokULlZ98D3Q6jTgMjLFCW2E9FBkDut2c/kgQL9f292SwsL2uyKdDxZlWeB3eVO/2WYAEKpv+57iS4dCs+99Q17seek2U/5CTzLchdqmJkfAt1d9Y/DqesfhdCheJq5ok3tij1qTXGPNL0qSrI6iBE/ytWGpooeGOVsaxdFYRsXMRkY6TUeWuMI876o8355NL6SQzRc/Fcxsw33jgo4LD2J9jD3Ow2xDAjf1MbFww+97aS3kwRlEjbLLTzfw+doFXI/m1mBILz1Vl5iV0yfY8F/Q==; s=purelymail3; d=purelymail.com; v=1; bh=onrirJo6ydCcYll7DRFQH980eTfE0dFqfteq+y/Q7Ns=; h=Feedback-ID:Received:Date:From:To:Subject;
+Feedback-ID: 99681:12517:null:purelymail
+X-Pm-Original-To: netdev@vger.kernel.org
+Received: by smtp.purelymail.com (Purelymail SMTP) with ESMTPSA id 1817600932;
+          (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
+          Sun, 01 Mar 2026 13:13:34 +0000 (UTC)
+Date: Sun, 1 Mar 2026 15:13:28 +0200
+From: Joris =?utf-8?B?VmFpxaF2aWxh?= <joey@tinyisr.com>
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: Daniel Golle <daniel@makrotopia.org>, netdev@vger.kernel.org, 
+	Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+Subject: Re: [RFC 0/2 net-next] net: dsa: MT7628 embedded switch initial
+ support
+Message-ID: <aaQ15ZLlZRvlqZ3H@archlinux>
+References: <20260228185242.800836-1-joey@tinyisr.com>
+ <20260228234031.bimzpo4mmu6t5rty@skbuf>
+ <aaQqdwNsuwzRb7Xu@makrotopia.org>
+ <20260301123619.skschp4ioxnevh3u@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-References: <20260301121254.174354-1-tomasz.unger.ref@yahoo.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260301123619.skschp4ioxnevh3u@skbuf>
 
-From: Tomasz Unger <tomasz.unger@yahoo.pl>
+Hi Vladimir,
+Thank you for the feedback.
 
-Replace strcpy() with strscpy() which limits the copy to the size of
-the destination buffer. Since phy->firmware_name is an array, the
-two-argument variant of strscpy() is used - the compiler deduces
-the buffer size automatically.
+On Sun, Mar 01, 2026 at 02:36:19PM +0200, Vladimir Oltean wrote:
+> I see a slight discrepancy between what the documentation claims the
+> hardware does, and what the driver claims it does. The documentation
+> seems to say that setting this bit is what allows the vlan->untag bits
+> to take effect.
 
-This is a defensive cleanup. As pointed out by Jakub Kicinski
-<kuba@kernel.org>, firmware_name is already bounded to
-NFC_FIRMWARE_NAME_MAXSIZE via nla_strscpy() in net/nfc/netlink.c
-before reaching this driver, so no actual buffer overflow is possible.
+The comment was referencing an accidentally deleted line that enables
+double tagging:
 
-Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
----
-Changes since v3:
-- Reworded commit message: removed "bug fix" and "buffer overflow"
-  language as pointed out by Jakub Kicinski <kuba@kernel.org>;
-  firmware_name is already bounded via nla_strscpy() in netlink.c
-- Changed submission target from net to net-next (cleanup, not a fix)
+	/* set up switch for double tagging to simulate vlan unawareness */
+	regmap_set_bits(esw->regmap, MT7628_ESW_REG_SGC2,
+			FIELD_PREP(MT7628_ESW_SGC2_DOUBLE_TAG_EN,
+			MT7628_ESW_PORTS_NOCPU));
 
-Testing:
-- checkpatch.pl: 0 errors, 0 warnings
-- make M=drivers/nfc/pn544/: compiled successfully, 0 errors, 0 warnings
+I only re-tested untagged traffic before sending this in. Apologies for
+that. I will expand my testing procedures to prevent this from happening
+again.
 
- drivers/nfc/pn544/i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> A VLAN-unaware port means that when an ingress packet comes with 802.1Q
+> TPID 0x8100 and VID X from the wire, this VLAN header will be ignored by
+> the switch, and the PVID of the port will be pushed as an outer tag, for
+> any value of X, regardless of whether it is in the VLAN table or not.
+> Does it do that?
 
-diff --git a/drivers/nfc/pn544/i2c.c b/drivers/nfc/pn544/i2c.c
-index a0dfb3f98d5a..b31b5bef7187 100644
---- a/drivers/nfc/pn544/i2c.c
-+++ b/drivers/nfc/pn544/i2c.c
-@@ -526,7 +526,7 @@ static int pn544_hci_i2c_fw_download(void *phy_id, const char *firmware_name,
- 
- 	pr_info("Starting Firmware Download (%s)\n", firmware_name);
- 
--	strcpy(phy->firmware_name, firmware_name);
-+	strscpy(phy->firmware_name, firmware_name);
- 
- 	phy->hw_variant = hw_variant;
- 	phy->fw_work_state = FW_WORK_STATE_START;
-
--- 
-2.53.0
-
+That is what is intended to happen and it does do that if the
+DOUBLE_TAG_EN is properly set. Will be fixed in later revisions.
