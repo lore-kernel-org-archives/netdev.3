@@ -1,284 +1,152 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EE22F3C37;
-	Sun,  1 Mar 2026 02:02:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D119C2FE577
+	for <netdev@vger.kernel.org>; Sun,  1 Mar 2026 02:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330537; cv=none; b=OlBtsvsnkxuWpPdfbGVUyvtEaDJXh/G4rMsngSZ1pcKBZcrLX7JBfRw10wA1WoVAv/8xpK20YK1s32Fas/QQfEVLz+rRuoa3mOyhh4SbNyOvI7zUkMy5u184GXiABXiOW4ZGQtx6n6JpvAj1cyj7jRWlNgAfRihQXBGG2fK5e6M=
+	t=1772330562; cv=none; b=OTp6A02jjRmyymYKPu5HDdUnSQCqiOo1PDOmAOSqHyJbOct3z8ZFl8QK63EU9dMxjhl4ktyS5KEQC2IFFvyoNIrJWRd+gEveWhlWwmhbNTSKpCLJFnDL7BM7SzGasQkR4u0d7gt9OnYfDJRLKpZSUIKdIw/k85kNdhurOr0OnAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330537; c=relaxed/simple;
-	bh=R1AZHaVsMa4PdxU6i+xPmifjcoHR7rnNANoQGskjYl0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gYkSAbgRKHPlDLD2zcBdBH3tX35OByfMQ3wfpvIxHvLXuuHgrsqHee2ioRwMF6D5ywslHJj+Ije8TD44FvWdYVUq2aDNDq5zms+AQ1t084Q1JZ/nmh+1hve/k4ckkOtN11qAy7p4c74GzCIa1xfs3oZDXpThFjhq6lUHjdrKKDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FpwrZowt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772330562; c=relaxed/simple;
+	bh=Kdg7Xf8W1Cmbmj0cjpTRVWbmr3wrfz0FHa1eGLUS4zQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZrHIHeGxJiTgNaI1m6K+PnCNQCYIPmgbwdTa+068Wccs5OKRyBWuzEsuiwCgZl01wPkTXH+CSlSswypxUbrxoEQRIwZABcTVZQlWynLtos/1cFqUQYVxVVL9mzt9HZiGyInnU/FSXqZBZA3wTiAhz2cMoIxBVGhkvP8QhbGcpp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=A4g0gTbk; arc=none smtp.client-ip=130.117.225.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FpwrZowt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF540C19421;
-	Sun,  1 Mar 2026 02:02:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330537;
-	bh=R1AZHaVsMa4PdxU6i+xPmifjcoHR7rnNANoQGskjYl0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=FpwrZowtwsMkPUgHTdoJ4XM/02j+gSsG2TXpnDJp5OuLtmk+BQNLZAcQHLxs0XpcH
-	 5ovIy7ZS0prJwMNqdMZOdi4Q7QbrKUM0PntSm0enkDvzWzE6vGiQsl133DFXfwcDCV
-	 Fv/ukJKe1pzEPMUKBU+Xf11x2sj4sZ0la/pDUebZLr0Q1wy2Ql/BE1H5nLqKpm2dZz
-	 aIEowFfRu3ofr4b429dPhCQICy7EgMLCsrkTeA31ghSggC+hSCTE4qMR8eKawCy+ZL
-	 HTkAUZG6YRjbkCOPQqN3hHZJgsgDr75ImjxZWlEGTzQHOTTbiW2uvDMFZDnJVMLVIp
-	 QMv0jvIdlQoHw==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	chuck.lever@oracle.com
-Cc: Xingjing Deng <micro6947@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "SUNRPC: auth_gss: fix memory leaks in XDR decoding error paths" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:02:15 -0500
-Message-ID: <20260301020215.1729821-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="A4g0gTbk"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+	Content-Type; bh=01eX58DYYoF4zbyQXiM2CCggLRdSBFTsTJlkXC7cPSE=; b=A4g0gTbk5dlo
+	f0nmr/r6zigMNmvllTv5gUilTp+A2zf7veiNjUtKJUATngEfEcY/Rn0khrUcYOCL93j33FVBQEEDq
+	NJTDNIevIEpTTkVzs1Rm52AcixSdC6CPU3HLasew9raoucMipU1YIjZNSvfWCOdqtsx81vEy8V/en
+	MS/pPH3YwknoUJDrbqsUUBdRzr+wMhnyM1EMJ3LJ+pHAuavuBa8gr1zMlyvzTufgHWBrqR7BCIS1t
+	P0Z+WvS3axeK3e9BeAjbtE/uSgcTDPl7SCLgUUy0BENOCxgZvUH+cL7RCUj6c0UEjSQU5Z+dIdlcl
+	qw/K7RGGdYeU35GfQblqhQ==;
+Received: from [130.117.225.5] (helo=dev004.aci.vzint.dev)
+	by relay.virtuozzo.com with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <aleksey.oladko@virtuozzo.com>)
+	id 1vwVsS-00CZeA-01;
+	Sun, 01 Mar 2026 02:47:09 +0100
+Received: from dev004.aci.vzint.dev (localhost [127.0.0.1])
+	by dev004.aci.vzint.dev (8.16.1/8.16.1) with ESMTPS id 6211lDgb454254
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sun, 1 Mar 2026 01:47:13 GMT
+Received: (from root@localhost)
+	by dev004.aci.vzint.dev (8.16.1/8.16.1/Submit) id 6211lB0i454253;
+	Sun, 1 Mar 2026 01:47:11 GMT
+From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+To: "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Shuah Khan <shuah@kernel.org>, Petr Machata <petrm@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>, Nir Dotan <nird@mellanox.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+Subject: [PATCH net] selftests: net: forwarding: fix IPv6 address leak in cleanup
+Date: Sun,  1 Mar 2026 01:47:06 +0000
+Message-ID: <20260301014706.454243-1-aleksey.oladko@virtuozzo.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Patchwork-Hint: ignore
-X-stable: review
 Content-Transfer-Encoding: 8bit
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Several forwarding tests (e.g., gre_multipath.sh) initialize both IPv4
+and IPv6 addresses using simple_if_init, but only clean up IPv4
+in simple_if_fini. This leaves stale IPv6 addresses on the interfaces,
+which causes subsequent tests to fail when they encounter unexpected
+address configuration.
 
-Thanks,
-Sasha
+The issue can be reproduced by running tests in sequence:
+  # run_kselftest.sh -t net/forwarding:ipip_hier_gre.sh
+  # run_kselftest.sh -t net/forwarding:min_max_mtu.sh
+  TAP version 13
+  1..1
+  # timeout set to 0
+  # selftests: net/forwarding: min_max_mtu.sh
+  # TEST: ping                                                          [ OK ]
+  # TEST: ping6                                                         [ OK ]
+  # TEST: Test maximum MTU configuration                                [ OK ]
+  # TEST: Test traffic, packet size is maximum MTU                      [FAIL]
+  #       Ping6, packet size: 65487 succeeded, but should have failed
+  # TEST: Test minimum MTU configuration                                [ OK ]
+  # TEST: Test traffic, packet size is minimum MTU                      [ OK ]
+  not ok 1 selftests: net/forwarding: min_max_mtu.sh # exit=1
 
------------------- original commit in Linus's tree ------------------
+Fix this by adding the missing IPv6 argument to simple_if_fini in
+all affected tests.
 
-From 3e6397b056335cc56ef0e9da36c95946a19f5118 Mon Sep 17 00:00:00 2001
-From: Chuck Lever <chuck.lever@oracle.com>
-Date: Fri, 26 Dec 2025 10:15:32 -0500
-Subject: [PATCH] SUNRPC: auth_gss: fix memory leaks in XDR decoding error
- paths
+Fixes: fed926d4f64c ("selftests: forwarding: Add IP tunneling lib")
+Fixes: 902280cacc03 ("selftests: forwarding: Add resilient multipath tunneling nexthop test")
+Fixes: 54818c4c4b93 ("selftests: forwarding: Test multipath tunneling")
+Fixes: e035146d6560 ("selftests: forwarding: Add multipath tunneling nexthop test")
 
-The gssx_dec_ctx(), gssx_dec_status(), and gssx_dec_name()
-functions allocate memory via gssx_dec_buffer(), which calls
-kmemdup(). When a subsequent decode operation fails, these
-functions return immediately without freeing previously
-allocated buffers, causing memory leaks.
-
-The leak in gssx_dec_ctx() is particularly relevant because
-the caller (gssp_accept_sec_context_upcall) initializes several
-buffer length fields to non-zero values, resulting in memory
-allocation:
-
-    struct gssx_ctx rctxh = {
-        .exported_context_token.len = GSSX_max_output_handle_sz,
-        .mech.len = GSS_OID_MAX_LEN,
-        .src_name.display_name.len = GSSX_max_princ_sz,
-        .targ_name.display_name.len = GSSX_max_princ_sz
-    };
-
-If, for example, gssx_dec_name() succeeds for src_name but
-fails for targ_name, the memory allocated for
-exported_context_token, mech, and src_name.display_name
-remains unreferenced and cannot be reclaimed.
-
-Add error handling with goto-based cleanup to free any
-previously allocated buffers before returning an error.
-
-Reported-by: Xingjing Deng <micro6947@gmail.com>
-Closes: https://lore.kernel.org/linux-nfs/CAK+ZN9qttsFDu6h1FoqGadXjMx1QXqPMoYQ=6O9RY4SxVTvKng@mail.gmail.com/
-Fixes: 1d658336b05f ("SUNRPC: Add RPC based upcall mechanism for RPCGSS auth")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
 ---
- net/sunrpc/auth_gss/gss_rpc_xdr.c | 82 ++++++++++++++++++++++++-------
- 1 file changed, 64 insertions(+), 18 deletions(-)
+ tools/testing/selftests/net/forwarding/gre_multipath.sh        | 2 +-
+ tools/testing/selftests/net/forwarding/gre_multipath_nh.sh     | 2 +-
+ tools/testing/selftests/net/forwarding/gre_multipath_nh_res.sh | 2 +-
+ tools/testing/selftests/net/forwarding/ipip_lib.sh             | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/sunrpc/auth_gss/gss_rpc_xdr.c b/net/sunrpc/auth_gss/gss_rpc_xdr.c
-index 7d2cdc2bd374e..f320c0a8e6049 100644
---- a/net/sunrpc/auth_gss/gss_rpc_xdr.c
-+++ b/net/sunrpc/auth_gss/gss_rpc_xdr.c
-@@ -320,29 +320,47 @@ static int gssx_dec_status(struct xdr_stream *xdr,
- 
- 	/* status->minor_status */
- 	p = xdr_inline_decode(xdr, 8);
--	if (unlikely(p == NULL))
--		return -ENOSPC;
-+	if (unlikely(p == NULL)) {
-+		err = -ENOSPC;
-+		goto out_free_mech;
-+	}
- 	p = xdr_decode_hyper(p, &status->minor_status);
- 
- 	/* status->major_status_string */
- 	err = gssx_dec_buffer(xdr, &status->major_status_string);
- 	if (err)
--		return err;
-+		goto out_free_mech;
- 
- 	/* status->minor_status_string */
- 	err = gssx_dec_buffer(xdr, &status->minor_status_string);
- 	if (err)
--		return err;
-+		goto out_free_major_status_string;
- 
- 	/* status->server_ctx */
- 	err = gssx_dec_buffer(xdr, &status->server_ctx);
- 	if (err)
--		return err;
-+		goto out_free_minor_status_string;
- 
- 	/* we assume we have no options for now, so simply consume them */
- 	/* status->options */
- 	err = dummy_dec_opt_array(xdr, &status->options);
-+	if (err)
-+		goto out_free_server_ctx;
- 
-+	return 0;
-+
-+out_free_server_ctx:
-+	kfree(status->server_ctx.data);
-+	status->server_ctx.data = NULL;
-+out_free_minor_status_string:
-+	kfree(status->minor_status_string.data);
-+	status->minor_status_string.data = NULL;
-+out_free_major_status_string:
-+	kfree(status->major_status_string.data);
-+	status->major_status_string.data = NULL;
-+out_free_mech:
-+	kfree(status->mech.data);
-+	status->mech.data = NULL;
- 	return err;
+diff --git a/tools/testing/selftests/net/forwarding/gre_multipath.sh b/tools/testing/selftests/net/forwarding/gre_multipath.sh
+index 57531c1d884d..397422cd5aea 100755
+--- a/tools/testing/selftests/net/forwarding/gre_multipath.sh
++++ b/tools/testing/selftests/net/forwarding/gre_multipath.sh
+@@ -72,7 +72,7 @@ h1_create()
+ h1_destroy()
+ {
+ 	ip route del vrf v$h1 192.0.2.16/28 via 192.0.2.2
+-	simple_if_fini $h1 192.0.2.1/28
++	simple_if_fini $h1 192.0.2.1/28 2001:db8:1::1/64
  }
  
-@@ -505,28 +523,35 @@ static int gssx_dec_name(struct xdr_stream *xdr,
- 	/* name->name_type */
- 	err = gssx_dec_buffer(xdr, &dummy_netobj);
- 	if (err)
--		return err;
-+		goto out_free_display_name;
- 
- 	/* name->exported_name */
- 	err = gssx_dec_buffer(xdr, &dummy_netobj);
- 	if (err)
--		return err;
-+		goto out_free_display_name;
- 
- 	/* name->exported_composite_name */
- 	err = gssx_dec_buffer(xdr, &dummy_netobj);
- 	if (err)
--		return err;
-+		goto out_free_display_name;
- 
- 	/* we assume we have no attributes for now, so simply consume them */
- 	/* name->name_attributes */
- 	err = dummy_dec_nameattr_array(xdr, &dummy_name_attr_array);
- 	if (err)
--		return err;
-+		goto out_free_display_name;
- 
- 	/* we assume we have no options for now, so simply consume them */
- 	/* name->extensions */
- 	err = dummy_dec_opt_array(xdr, &dummy_option_array);
-+	if (err)
-+		goto out_free_display_name;
- 
-+	return 0;
-+
-+out_free_display_name:
-+	kfree(name->display_name.data);
-+	name->display_name.data = NULL;
- 	return err;
+ sw1_create()
+diff --git a/tools/testing/selftests/net/forwarding/gre_multipath_nh.sh b/tools/testing/selftests/net/forwarding/gre_multipath_nh.sh
+index 7d5b2b9cc133..c667b81da37f 100755
+--- a/tools/testing/selftests/net/forwarding/gre_multipath_nh.sh
++++ b/tools/testing/selftests/net/forwarding/gre_multipath_nh.sh
+@@ -80,7 +80,7 @@ h1_destroy()
+ {
+ 	ip route del vrf v$h1 2001:db8:2::/64 via 2001:db8:1::2
+ 	ip route del vrf v$h1 192.0.2.16/28 via 192.0.2.2
+-	simple_if_fini $h1 192.0.2.1/28
++	simple_if_fini $h1 192.0.2.1/28 2001:db8:1::1/64
  }
  
-@@ -649,32 +674,34 @@ static int gssx_dec_ctx(struct xdr_stream *xdr,
- 	/* ctx->state */
- 	err = gssx_dec_buffer(xdr, &ctx->state);
- 	if (err)
--		return err;
-+		goto out_free_exported_context_token;
- 
- 	/* ctx->need_release */
- 	err = gssx_dec_bool(xdr, &ctx->need_release);
- 	if (err)
--		return err;
-+		goto out_free_state;
- 
- 	/* ctx->mech */
- 	err = gssx_dec_buffer(xdr, &ctx->mech);
- 	if (err)
--		return err;
-+		goto out_free_state;
- 
- 	/* ctx->src_name */
- 	err = gssx_dec_name(xdr, &ctx->src_name);
- 	if (err)
--		return err;
-+		goto out_free_mech;
- 
- 	/* ctx->targ_name */
- 	err = gssx_dec_name(xdr, &ctx->targ_name);
- 	if (err)
--		return err;
-+		goto out_free_src_name;
- 
- 	/* ctx->lifetime */
- 	p = xdr_inline_decode(xdr, 8+8);
--	if (unlikely(p == NULL))
--		return -ENOSPC;
-+	if (unlikely(p == NULL)) {
-+		err = -ENOSPC;
-+		goto out_free_targ_name;
-+	}
- 	p = xdr_decode_hyper(p, &ctx->lifetime);
- 
- 	/* ctx->ctx_flags */
-@@ -683,17 +710,36 @@ static int gssx_dec_ctx(struct xdr_stream *xdr,
- 	/* ctx->locally_initiated */
- 	err = gssx_dec_bool(xdr, &ctx->locally_initiated);
- 	if (err)
--		return err;
-+		goto out_free_targ_name;
- 
- 	/* ctx->open */
- 	err = gssx_dec_bool(xdr, &ctx->open);
- 	if (err)
--		return err;
-+		goto out_free_targ_name;
- 
- 	/* we assume we have no options for now, so simply consume them */
- 	/* ctx->options */
- 	err = dummy_dec_opt_array(xdr, &ctx->options);
-+	if (err)
-+		goto out_free_targ_name;
-+
-+	return 0;
- 
-+out_free_targ_name:
-+	kfree(ctx->targ_name.display_name.data);
-+	ctx->targ_name.display_name.data = NULL;
-+out_free_src_name:
-+	kfree(ctx->src_name.display_name.data);
-+	ctx->src_name.display_name.data = NULL;
-+out_free_mech:
-+	kfree(ctx->mech.data);
-+	ctx->mech.data = NULL;
-+out_free_state:
-+	kfree(ctx->state.data);
-+	ctx->state.data = NULL;
-+out_free_exported_context_token:
-+	kfree(ctx->exported_context_token.data);
-+	ctx->exported_context_token.data = NULL;
- 	return err;
+ sw1_create()
+diff --git a/tools/testing/selftests/net/forwarding/gre_multipath_nh_res.sh b/tools/testing/selftests/net/forwarding/gre_multipath_nh_res.sh
+index 370f9925302d..d04bad58a96a 100755
+--- a/tools/testing/selftests/net/forwarding/gre_multipath_nh_res.sh
++++ b/tools/testing/selftests/net/forwarding/gre_multipath_nh_res.sh
+@@ -80,7 +80,7 @@ h1_destroy()
+ {
+ 	ip route del vrf v$h1 2001:db8:2::/64 via 2001:db8:1::2
+ 	ip route del vrf v$h1 192.0.2.16/28 via 192.0.2.2
+-	simple_if_fini $h1 192.0.2.1/28
++	simple_if_fini $h1 192.0.2.1/28 2001:db8:1::1/64
  }
  
+ sw1_create()
+diff --git a/tools/testing/selftests/net/forwarding/ipip_lib.sh b/tools/testing/selftests/net/forwarding/ipip_lib.sh
+index 01e62c4ac94d..a5c23a28d50e 100644
+--- a/tools/testing/selftests/net/forwarding/ipip_lib.sh
++++ b/tools/testing/selftests/net/forwarding/ipip_lib.sh
+@@ -151,7 +151,7 @@ h1_create()
+ h1_destroy()
+ {
+ 	ip route del vrf v$h1 192.0.2.16/28 via 192.0.2.2
+-	simple_if_fini $h1 192.0.2.1/28
++	simple_if_fini $h1 192.0.2.1/28 2001:db8:1::1/64
+ }
+ 
+ h2_create()
 -- 
-2.51.0
-
-
-
+2.43.0
 
