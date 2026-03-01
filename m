@@ -1,38 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6146C72631;
-	Sun,  1 Mar 2026 01:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E7F328725B;
+	Sun,  1 Mar 2026 01:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328487; cv=none; b=EgNAzvfxiNSTknl+UsF5cEDdzPw9eCS3gG3jtGX1ofekhCdySVQszP8GZwNy/4vv2VPsjl4lMHmx/1R7puuSbgCEjAzA3hm7wmxCG9zu2dQyscFlYo8qhszoFuw8SuIw9BhGjbjzMp+xGhYFc6/439vU2nJpRd7YQgD5pBXrh14=
+	t=1772328494; cv=none; b=DXPdjLlhxW96noIaO2b4kvtwav1lk8oo3SpOX4Xx7EXRiSttFeE0gFKgOctqKurRcUB6+1QIeNE7gqdzmWX3lcICiXjk9PAoQd6asxm/HLiV/DpkfFK/B7YJ3xg5yQCI8SP+hxJIJ9xR6uGMb+bGYri/I1UiivwFWMWMIeWUE/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328487; c=relaxed/simple;
-	bh=ltXK1mXBTmcLlbkb4KUma1hGTUSXItEziaL6dLHL/ds=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bgddIIPk/r4p6/fqgZoSilCkH0HdO1yV3BdDctencIVQr3h2BAd36/iebufbLMOZI2ONDQz5Xjh9wUA31zFUshK7PiTHiNaVQ+wyl+JAjJnTN9euE8KyJ8s5iEuwnClA8XYlaYe2n/I3bcmUISFyf3gVD+aOEqhDxjR70sIGkkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gs2kYJ2T; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772328494; c=relaxed/simple;
+	bh=caGLC4eiAMQuTnRrjh2L4wlwOWWY1jUeLUW3d4w/g0c=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=feNWgHFCimEGfAsN5q8B7HRvR+GyWBVwoRqpWQ2DUbhLbqukVMmQvJyyWCC+j4h3jX1qm0P5h551MycEWB6elPtl/0N+6/6StyXuGNk9b0zzPwjogtgF8v2zrJyOrMwnb5mJd9H2lDQ5iVBi7iHIDJhIEnyFAhoGkg9BykT9CB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8Vo+ttC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gs2kYJ2T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32E2C19421;
-	Sun,  1 Mar 2026 01:28:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8Vo+ttC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE031C19424;
+	Sun,  1 Mar 2026 01:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328487;
-	bh=ltXK1mXBTmcLlbkb4KUma1hGTUSXItEziaL6dLHL/ds=;
+	s=k20201202; t=1772328494;
+	bh=caGLC4eiAMQuTnRrjh2L4wlwOWWY1jUeLUW3d4w/g0c=;
 	h=From:To:Cc:Subject:Date:From;
-	b=gs2kYJ2TqLkndJw9Hztj/fTGA43EkNRP3pzOXXy+pMNmHKTo4mUmeV4AQMxDR8qoG
-	 2PyKQ+4cbINEjGJAJCCHp94cPIli2bvLS9CM7yQlsEPP0wG+rZ/QctCAdFABd9mlWv
-	 SVXYjdyNK/BCWtBC7m2aO8tC7pruDSFOSwKIdEgaA++75dTbK05anR/S6JxJtCTx7F
-	 ID54tQGkBnwEY/9K6OzZgp8jSr3eV5MI2gqMGBTijlyUxaIAJdxsRkSBZiq8lHT3Rj
-	 WYu9hQMEqgK6Dp9IApLSrxkBfcK5H3UOxBAETYF/UXzdAd7uHEv29PVyMtoHZPKyl3
-	 khFUqubECbnCg==
+	b=i8Vo+ttCsB09oz4w2xuwNtQViEoT+KhsJ/C5HycLyVfqP2jkEXs7Ru4/q5+Q5RRUR
+	 OdwSaPXO523RMSljTiHwt/KjHw6jYv69KvVni9pm1o1aSxknD9gpLeIxPpdVAzSGJf
+	 +VAU+N+zhoPd1P3l8wBkjmkTIFOpyI0z0JHODSEdG1ynla4xFlMgS2q40eSqB7OxUH
+	 xYtQe9minaICWyUqSi0d+yd7Bkyw8Tu44cSdL3+UoHRD54UQaCa4DMR8WhBJCTjn7v
+	 cB4sMo3e4srkld38A3wnE7pO6v+J4iPgW5YYSjGtnus4ZBsAcSp8rAx3iR+CDhUysV
+	 T9w3EX3KOkLPw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	haokexin@gmail.com
-Cc: Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: macb: Fix tx/rx malfunction after phy link down and up" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:28:05 -0500
-Message-ID: <20260301012805.1685772-1-sashal@kernel.org>
+	fourier.thomas@gmail.com
+Cc: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: FAILED: Patch "net: wan/fsl_ucc_hdlc: Fix dma_free_coherent() in uhdlc_memclean()" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:28:12 -0500
+Message-ID: <20260301012812.1685923-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -54,77 +56,54 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From bf9cf80cab81e39701861a42877a28295ade266f Mon Sep 17 00:00:00 2001
-From: Kevin Hao <haokexin@gmail.com>
-Date: Sun, 8 Feb 2026 16:45:52 +0800
-Subject: [PATCH] net: macb: Fix tx/rx malfunction after phy link down and up
+From 36bd7d5deef936c4e1e3cd341598140e5c14c1d3 Mon Sep 17 00:00:00 2001
+From: Thomas Fourier <fourier.thomas@gmail.com>
+Date: Fri, 6 Feb 2026 09:53:33 +0100
+Subject: [PATCH] net: wan/fsl_ucc_hdlc: Fix dma_free_coherent() in
+ uhdlc_memclean()
 
-In commit 99537d5c476c ("net: macb: Relocate mog_init_rings() callback
-from macb_mac_link_up() to macb_open()"), the mog_init_rings() callback
-was moved from macb_mac_link_up() to macb_open() to resolve a deadlock
-issue. However, this change introduced a tx/rx malfunction following
-phy link down and up events. The issue arises from a mismatch between
-the software queue->tx_head, queue->tx_tail, queue->rx_prepared_head,
-and queue->rx_tail values and the hardware's internal tx/rx queue
-pointers.
+The priv->rx_buffer and priv->tx_buffer are alloc'd together as
+contiguous buffers in uhdlc_init() but freed as two buffers in
+uhdlc_memclean().
 
-According to the Zynq UltraScale TRM [1], when tx/rx is disabled, the
-internal tx queue pointer resets to the value in the tx queue base
-address register, while the internal rx queue pointer remains unchanged.
-The following is quoted from the Zynq UltraScale TRM:
-  When transmit is disabled, with bit [3] of the network control register
-  set low, the transmit-buffer queue pointer resets to point to the address
-  indicated by the transmit-buffer queue base address register. Disabling
-  receive does not have the same effect on the receive-buffer queue
-  pointer.
+Change the cleanup to only call dma_free_coherent() once on the whole
+buffer.
 
-Additionally, there is no need to reset the RBQP and TBQP registers in a
-phy event callback. Therefore, move macb_init_buffers() to macb_open().
-In a phy link up event, the only required action is to reset the tx
-software head and tail pointers to align with the hardware's behavior.
-
-[1] https://docs.amd.com/v/u/en-US/ug1085-zynq-ultrascale-trm
-
-Fixes: 99537d5c476c ("net: macb: Relocate mog_init_rings() callback from macb_mac_link_up() to macb_open()")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260208-macb-init-ring-v1-1-939a32c14635@gmail.com
+Reviewed-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+Fixes: c19b6d246a35 ("drivers/net: support hdlc function for QE-UCC")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20260206085334.21195-2-fourier.thomas@gmail.com
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/net/wan/fsl_ucc_hdlc.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 6511ecd5856bd..4ebb40adfab37 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -705,14 +705,12 @@ static void macb_mac_link_up(struct phylink_config *config,
- 		if (rx_pause)
- 			ctrl |= MACB_BIT(PAE);
+diff --git a/drivers/net/wan/fsl_ucc_hdlc.c b/drivers/net/wan/fsl_ucc_hdlc.c
+index f999798a56127..dff84731343cc 100644
+--- a/drivers/net/wan/fsl_ucc_hdlc.c
++++ b/drivers/net/wan/fsl_ucc_hdlc.c
+@@ -790,18 +790,14 @@ static void uhdlc_memclean(struct ucc_hdlc_private *priv)
  
--		/* Initialize rings & buffers as clearing MACB_BIT(TE) in link down
--		 * cleared the pipeline and control registers.
--		 */
--		macb_init_buffers(bp);
--
--		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
-+		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
-+			queue->tx_head = 0;
-+			queue->tx_tail = 0;
- 			queue_writel(queue, IER,
- 				     bp->rx_intr_mask | MACB_TX_INT_FLAGS | MACB_BIT(HRESP));
-+		}
+ 	if (priv->rx_buffer) {
+ 		dma_free_coherent(priv->dev,
+-				  RX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
++				  (RX_BD_RING_LEN + TX_BD_RING_LEN) * MAX_RX_BUF_LENGTH,
+ 				  priv->rx_buffer, priv->dma_rx_addr);
+ 		priv->rx_buffer = NULL;
+ 		priv->dma_rx_addr = 0;
+-	}
+ 
+-	if (priv->tx_buffer) {
+-		dma_free_coherent(priv->dev,
+-				  TX_BD_RING_LEN * MAX_RX_BUF_LENGTH,
+-				  priv->tx_buffer, priv->dma_tx_addr);
+ 		priv->tx_buffer = NULL;
+ 		priv->dma_tx_addr = 0;
++
  	}
+ }
  
- 	macb_or_gem_writel(bp, NCFGR, ctrl);
-@@ -2954,6 +2952,7 @@ static int macb_open(struct net_device *dev)
- 	}
- 
- 	bp->macbgem_ops.mog_init_rings(bp);
-+	macb_init_buffers(bp);
- 
- 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
- 		napi_enable(&queue->napi_rx);
 -- 
 2.51.0
 
