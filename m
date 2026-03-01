@@ -1,255 +1,116 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011027.outbound.protection.outlook.com [52.101.62.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic313-20.consmr.mail.ir2.yahoo.com (sonic313-20.consmr.mail.ir2.yahoo.com [77.238.179.187])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9021B175A83;
-	Sun,  1 Mar 2026 12:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772368869; cv=fail; b=ISfkncp+sfiYaKRE6Q4abPzpJPcjayYOONKJgN0TbEHVlSHA1dXbi3/40N7J/CAfulSOegdjH10STWTPMLoes7ZphLc31VhV2YiO3c0iAXutzJgvrygAZX7bW/R8kC9fwe3CKLquaHCR3uYrzETp8xCGcmlosOcS7rUY5Rp5z9A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772368869; c=relaxed/simple;
-	bh=vzeQuRolMjEg3YjiOVHg29uD/FTPn+C8lK7gEtyKmkw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CPTdVvzDcPDuntNbZaeAHKRESmHhdQ25AXx1WAwlWNXwSLlHyQKn4MyqfAJw8AWGIrY0i+o5U0wtNiOP2BEHlO4s7V6rrsru5NpiMmBsG2CWfJ2ZrOmUyqyavOP4dBcpEZ9r4le7mqnldQb3hX81kLJZSEcizigVLbyXfvjGwoA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=i8yK4nOM; arc=fail smtp.client-ip=52.101.62.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC84E1FC101
+	for <netdev@vger.kernel.org>; Sun,  1 Mar 2026 12:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.179.187
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772369007; cv=none; b=l5IVLGb2fbQkpbuZJP02OjS0g33Ic4LIMtcKS6Txhh57Aealrn8q19y0QHXlmInV0lJaOorV86+oKEwlbpfCdbIoElo35FLMDVsvrlOEe0Gq427h1INywr4IwVAjzlGTK7btOhR6iBqJB76HEJciGRHUDKl0rH9MWl06CgpkgJU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772369007; c=relaxed/simple;
+	bh=0n9CQEnb8/1swuDU2igeiPoDmdNypCeegoMYWhLBwuA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=QVMe9Txqq5c145MEaQ3kUGDTAJGLKm5xh3FfywKECqBVdcKH2nQCJ059/WirhN1PyY0snbTw0AfDi0dYzEXAXIuo/TBT0v8rP/hRX0XqUQvf1rvze/peTa2x4k/fqZovt5xc9MouAey06hKZd7IyWn884zD1o+AJWRR6GXOYsHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=mf8783d+; arc=none smtp.client-ip=77.238.179.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="i8yK4nOM"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RtXFkJCtjNHvsAYf3yG101uJQcDHJmKNOsgAYtDQxIDZSelM70Od9OwJmkrzpf74JD3WhsFKIy5mhyeWqJMupIXotehPPDzdeJ8xCf6o8hg+hlRRMR2CLG82C1x4qJBW7sGgBpyeMJVJ9+jO25ScXluql4gg9u3wr6BFVzMcBRpt5P7ku8LN8WKL/LPLi59zGZwKwKWCM+4UfPQKMspZ6zB2b/s4k7d4sHCymIRPK3yVgU36k78QARRaDE9CwYnMOwRbZhsOBxaCeB0eivYMOfZHkyY0pChpUCYXTLi1eXjxsS3Xn5VdBlW0yOEOdbCSMGBFwLsHu6xsET4Y69+dag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QT1oco0lUNN9DH/tSjfI2vGj/FB1AMEJ6iT0zBvQ4AE=;
- b=FHRBsSeXcR6G7Bc1ibu0bTMIzL1d6gnDprRrv+WSIlgQu9BFO7UQ2l1jyNGEONkNRDNx26gSfqJ6AwNySO910uUwP/23x4rtoDw0FOexBHxhqdzw4eS9q5zhgWmy7B5FA22eZVLFiN6NpOczbIY9dQ0OEJs+WvJ9ABkffgLQTcLT2YoBDCPyg2XsS1cDi9k+nq/eqrzeIHJZaiRm1Rmfd3hgANKaolEApWhPxBCFaUqz9xjoYfY6lWcV2dkqKbmB031rK4x+tTJCpXCoB/NgSjJ0Kj5CYkOYKl2QSeKMaHjn9gmr/9YRkmEsEjNqvDy2lK7NjoojRzhqsc16OCRWKg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QT1oco0lUNN9DH/tSjfI2vGj/FB1AMEJ6iT0zBvQ4AE=;
- b=i8yK4nOMORjfgkUBebXAsnZue8dcQJPgKI/Ew/rdkovzc+YYAEynYcZAGQBox3u7lRVlZzVmyJ3rUfKkBGb9EFUL9p9yaGZYCPreP90sGdnskR5TzHDVQLvPopPbxgURWzk4ppac3JiwzQ+VkG9N/4SLc/UBx3Qe0T+j/CWMID/9veCSf4a8X/xi4TnLd+CZ1OYG+3AWBZ1cwXZvjFn8oboIlWGQbvqQdzqk2o5Vw6NdSxX0IS7c3BE4vmOMF/YJiJVnMsfVvTewdzgGcscEU3Dn6devkla01/z8WFk5U6ZCnqRaGmAuejVs0xPDBceRKE5kBfAdzLgcGPXbZYhaPQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SA3SPRMB0009.namprd12.prod.outlook.com (2603:10b6:806:31a::8)
- by DS7PR12MB5910.namprd12.prod.outlook.com (2603:10b6:8:7b::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9654.15; Sun, 1 Mar 2026 12:41:02 +0000
-Received: from SA3SPRMB0009.namprd12.prod.outlook.com
- ([fe80::ff04:ba7f:5bdc:4f89]) by SA3SPRMB0009.namprd12.prod.outlook.com
- ([fe80::ff04:ba7f:5bdc:4f89%6]) with mapi id 15.20.9632.017; Sun, 1 Mar 2026
- 12:41:01 +0000
-Date: Sun, 1 Mar 2026 14:40:52 +0200
-From: Ido Schimmel <idosch@nvidia.com>
-To: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-Cc: "David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>,
-	Petr Machata <petrm@nvidia.com>, Nir Dotan <nird@mellanox.com>,
-	netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net] selftests: net: forwarding: fix IPv6 address leak in
- cleanup
-Message-ID: <20260301124052.GA713428@shredder>
-References: <20260301014706.454243-1-aleksey.oladko@virtuozzo.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260301014706.454243-1-aleksey.oladko@virtuozzo.com>
-X-ClientProxiedBy: TL0P290CA0004.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:5::17) To SA3SPRMB0009.namprd12.prod.outlook.com
- (2603:10b6:806:31a::8)
+	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="mf8783d+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1772369004; bh=IQJlk8l41h57Oau1XI+KCQR7I6Tu4lnhPIT0mluCmjY=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=mf8783d+Cw0j3oJ+NJGZQpY94g3jXpALCtgZ3J4nKWBxeupITiS132VRdymULh569QicdlypX5WIYZ98qg11ebsY+4zkBfasiIqJbDK/rHO+W5BjRszU7s2q6NrLYYHPvau4pLMlGmKRpmsKCFxJhoLGJow63cZo8yHqR5TKJl8BJeYme9SAnDx25inEYv5F3PEzbSFjn54jbmqsbWHflDN3FEHb5jZgxgETCtaXuNmK9OS90FkUO4wyhFJwedoYu/jLNf1nllzxyxuxoJJb02SJjAV6vkKnQv+GbuwSKTO5jLfT2NO3SygKLbI765+4njkrEEJ5zA2XxsyzNNN4YQ==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1772369004; bh=DKCDPSmS6qKS9qwfJsD2i6JucQETasoL+IHFNm/juoJ=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=gJJSV981dw1SCrM2f2sB/D458wWst4ehkLH9rIFB02o8gIOqLpIwVR2zuDrQAFV9915zmMC3lx9k00ADPAL4y/+ox+KCrPJfg+/mkLofYBc5ZvlHnPZEDXvBpWgdAd4yQoIsl/i/TiWVJcYPU9JHKJX2Lz1aLtzi0SPVik3xMxoyIjax4zidlerFkHnJcmdZmAstcW8O+Hmo6uqvqHR9g54FwqSY770o5kPnriHkQVZX7e0hkMYTQU9vtWq1ZFYK4+W2jkUwhIiy2+UpfqSFzvNGvkXeLaGah4E3u1Mdn6r+am9Jk15EaDPslNRdFpI1va3uVXo89XtCqjaFZwEH5A==
+X-YMail-OSG: 5bNjWD8VM1kGNY8E0NVmMHTH5ZkY.nbNffkbzqDOQ5fFaSbWfqW6Y9aqDjXH1Qa
+ ldN22FVc5LzyEQC5Wj7tu._ipG6v7vMXQnL6kp0.M4AJDKvsfd3LMVBXUajmwlY3yxfINawRFCFG
+ eEvzKHi_zsOwMhDihPDhdiCfsHLSnYXnklelxR.gSfmcMda0CvWdjRb9z.HJNH7mY4cii4VvZGdW
+ iY4KNntQK4ng627Rv4_fNhr5vAm4JypRJINDgJLyqz1hUvk0X9xKGtNqv7vP5z50IIOhcg84s1fG
+ zZO16UZXUP1qap.P8nN9JX.Poi2kxpctFXE862G4GG.NcKBfaOtPMWbIXZEzjQ4xvEVlvHRmtHAQ
+ wn4RJeXIBHB.RfssSXL8U1rd_kOdyqXsh9x.rcjvTsPn1dwB6_JfGm7BgBisYTrPgPTVeNu39Y73
+ 5gZoz3EqGX_MfAl4w5.gzlc0Rt6iVH2Pr_gqQ.yq3AgG4vWalsvWNINub_YcGECLWHk7KrkZpW2q
+ awmmSljiZ0vs7zFpV3HXROwHzhyN8TbBOa9akwqqrSqwDYIyJkZnrHymxEGsbNO62xCgd2zdKF5a
+ cYHCPyGAJ3rn5dudezJRxgoVWf9nzfSh2tojprTUX3XywMeoo6_eCx3uSx_PeL7meJbFVnn9pWLH
+ atCgmowYuXzQQ20VbPohoYmZF6aizcupGWDk8ZsvyLmUMISv_hHXiEWzrHzciQtX7N3nWHaFhC.F
+ MWTuJcHSJ2eKeCcPOBustBWP0mcuwI.RsLjC0XM6Qd2gax4gETgSDybBAKtNBL6fyQoMlwUC0kES
+ mwpz7Fl9ynozNIK0MMfgqc9KJv5i1gpW.XBG3dWoIB7t9InP8bg7r9hPqlfi.nZY8Rh.pHQCWHE5
+ 621C69oYDQkPi7nkGLxUQCxBVG9tNT6Sh5C6FH6N_44Gsm5oMpzMA9ZV4Hlu9vZRiwLjE9Q.F_uH
+ 5IJpzZOta_oPVsf9I2YZirMkwt4.IOAoGt.WjyhXBQITTV8BNYVGwKprCAb1o2fvIz1vUmGAIHse
+ d1Wjn7jSjSLgclDhXaDZQlIghTrPyzvD5pEAOOtyBUT2Hu_59X.cWK3WEIS86QNUt_LPC19yv7q.
+ xL3fQ_5i8QoK4YVcBciwgwBnR90JukiRxstoLtY6bs8E4b15EhFosSfWE5RS8WMiOL5vZtSnhNZY
+ 72VuEnNh4I_4arc3Qvrim3fgFBdh4arJQ7Amia82t6CQAt.eTr0YKmTEXvc8nbEHjgjnWDZ2IaIs
+ sSztf_dAcOviUE8x_eQb_EVMrYoWgovNnpPqZ3ZVLKQj_59k50ptFAAdstIhnvYkyV63B4yjJi2V
+ G2xwe9YrzwC4x7St0Cgjpbx.NbamcKJMmUoXMzde4y5j3Zgq2xgYNOE5FWRgYLwSUgGY6yEb0HEf
+ Cu6T2GE_pqDufyz5TYAsKH0oFGXpnAVno4MvoDByV.CzdCu7JQ6txBKQKy2hDUhpoCK5keVZt19n
+ 4xydnwLI_avc.2isyl7vDS97jhIEA.mYQibK4FjX81khaIfNIpeJAiBiFox25TgW0_D2iDXlk.Zw
+ 1KEVPfpjZ5khNkVX8tPgRakryw5_MWJENbKaNLedsJCN3ovkdD_rD6Y86dRvk2DCqFZr2SZjtZCu
+ _t1ivogDIa2IUhbOZjuaDoNd3c1PE2fcRdJyYSewTqFXB0Y150NDGD_xmYHOt4Ntx9HjBhTOASF8
+ nsSP.DTgLXrn8Qbn7toUVGAM5rT2SBAbQcBXPiAd0IciBH0cdhr1TeXaQUgzSX.Jb2oqXnQw0NFf
+ c1tWBQSXZbf1B.TMIqopYQe9KJWGMMF7LFpcaoy9jmbaouOzLmLR_5dMRoqoKiPfYAvGZwLCy6nM
+ kkXgkxl3aTD_K4_mZdTf46vO45MeJPH83v0NOgeMqRRoFJlduzzMLxNjwxtkIdGMgnqVAuNG6VRA
+ 225e_QGMGWeloL8Y3Z_O0f7dTEVjn0d5E7TRcnndYvL6aqxx22Mins04uVYZN4mu.v4XNMcBo8z1
+ yFMfoxyZhnqvJrtl0EGQe2n0LZwkXvpZJwZpqaAj6DKVfioIn6vO3XjUK_4MJnNVD.2.C5S0oeEP
+ yO7tLBPYf3IcZ18KhcEd2anabnY_8IGjVrmnTnwOMgCqiLPOGRWZSDaA686YkVZYjwF2zhQ4igVr
+ L4RSOM9wvzMGJojmFAjccAvOGCs08Aa_pk6Ff3DLcrserjaV5fxMBIQSmKfkWjstGLte0I1bTOzW
+ FN5DXHJqAD.LPARHoffckwusgFATHK.PbfBV2DIPEQCBM_dZrIqc-
+X-Sonic-MF: <tomasz.unger@yahoo.pl>
+X-Sonic-ID: aafc7c08-e6ce-488d-9f72-c2072f5681d4
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ir2.yahoo.com with HTTP; Sun, 1 Mar 2026 12:43:24 +0000
+Received: by hermes--production-ir2-bbcfb4457-d9ssk (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 269077dfba5a73e3246f5329f26f66e4;
+          Sun, 01 Mar 2026 12:12:57 +0000 (UTC)
+From: tomasz.unger@yahoo.pl
+To: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Tomasz Unger <tomasz.unger@yahoo.pl>
+Subject: [PATCH net-next v4] NFC: pn544: i2c: Replace strcpy() with strscpy()
+Date: Sun,  1 Mar 2026 13:12:54 +0100
+Message-ID: <20260301121254.174354-1-tomasz.unger@yahoo.pl>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA3SPRMB0009:EE_|DS7PR12MB5910:EE_
-X-MS-Office365-Filtering-Correlation-Id: 16318a5f-1301-4252-f61f-08de778fcbd0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	6cbsX1mSVzNJ35gJhNufDuYhVCF9vccvQZxxmkRH0zC0njZYqazdF5IVmDzMmiRs5yZpaBNcxh+XqV8ESe2+AUd8SCdDXzpE+lRuSg0F4Avtvl0ybpI7yGfz4uXcoiHcFJdrE/YOMs/ypOcPUR2C6ztJChm0TqYtqdv0MB5i1xmZO/+BKr8Me2c3wuaSRVhUCKbFFqygmhBhJFXZaX3q7Yf/NZD/JNtWuH/c5tgXOzebLplGFcdCjj/XNmCgw0eFyt2h5VdvQ09bpAe/bi6/CvMcLlTWryAqGLC7yzvP0T/OJwHkxFMoyoywQSF4dfkqZzR6RX+UDAuz+d0mFaiYo0wWp6MtlNvNrnpv5/n9j+xwyjouu/UGklPle/p/2o/9LltuoFZXeRHugNjuW7FXoOsfZ7V0UPiLomklL432ZPcI974+nsCui0axSr3cwysaa3DdCdInmFx0TP4L33vzF1UzkGxgB5fBdz7u+75yj31oV/iWTFJNwmsgrBoQFJnLeYdMBffEhRG6hxwIFG2nv4bMxBi9NXoZOdMbNKHjJI+6klIm86DzRZPIB3+c6/n1GO+bhJHTMlhkQrFNMjUiZqD6RZAHwIyVZymtUuXUjkA8gQYWLCGxuqvy/eqqHFi3raCcUssQVwQPgsEWvJaVgAqfZlxFJ76uEyiQItQaZzmYSWdaIogdFxxCEIhfJzXL+rEnD/Tfl7Q5+I4CG1rGEAot9DU3ryEkUOiLz7Y6LHA=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA3SPRMB0009.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MHMTLL1DCWua74IVd2DRVA2jBGzI12hYn0711I7WwBtEzbFj70uSgvKySDbX?=
- =?us-ascii?Q?P+MBvabb/Cz+jjvk8LUjud54uo26sTKQwxfmJ3QceKdL31riWTWqb462sdR3?=
- =?us-ascii?Q?kqbDSDeuZikUhOec/rDo8+9Y4qIhsBpYC7XaS+TUKU+8ADBUNDzHyJSy/ApO?=
- =?us-ascii?Q?04wRt/KPf2zPOL3xVgRXBgrr+QSwD7q50sUBh8ezGdX09qZnSy5SMeOZIhu4?=
- =?us-ascii?Q?zPHO0Mx84DVCr+h6vFNlNBMPEMzPi/rw5yg/aqLBjaPPugO5V3oqjeRz+2yy?=
- =?us-ascii?Q?yPDbCDoazMTSEHx1IKVG38ZG72h4mvxeEwfeYDCPXtlRVfTnHBGxO+rtBK/H?=
- =?us-ascii?Q?dZaSicvOfTS6PxeaOvOgR60CQEHYPmHmPpP4D1MB70UEvH/EgsUgkpBjeWeK?=
- =?us-ascii?Q?uUDvz1U7DFAcQNv/feaFi6qJbIADoV27e1q+vifo3rmST0SCAcqLYXX2J33Y?=
- =?us-ascii?Q?2I3LxpK2xdZhLS9mh2FrZwWG3SDdTOlJR1KXXr8tc1oCTuFBGbnXSebPoEhm?=
- =?us-ascii?Q?GpTEdAG2UUwVdaO7RHS9YK2tAHwHe1+7LpdssAgGigVIOs3Qu/gpYQCanTie?=
- =?us-ascii?Q?HcAmnsRIXwZDPMATs7A80u9KRV01K5xmtoAO12haAnJh1vH52oXGDR7DFERv?=
- =?us-ascii?Q?COIM1oFn51K+94bujPAfXBsicrn4qumwa+l22C3K2dYimxX6ITXc1Czr7Mxd?=
- =?us-ascii?Q?oSXTZ5Lc4/QJPjrPe0eA34o4mVYMcnRxyznVvrbUJuxXJ3InYludlCqAPEIF?=
- =?us-ascii?Q?7cKWpXg0fmNPuciCz7cZwiFLIIgFJIFqsn2JpClytxI9cBQLaKkUR5guRXtv?=
- =?us-ascii?Q?bSmZ9dRD1eG6F676Suop9+NJioyZuwXp2NLaNTwbflfbR/aQ7dv9PDyLr25N?=
- =?us-ascii?Q?2YDnjlsSC4ibiO1TOxSoiw9Mny8yo/T7QRPk1rEQolhkC5WOoYoNZf4utT30?=
- =?us-ascii?Q?cVj/h5NZP3412INlQszZ90Y3EMH5UTD0aL3cLTMZ0SUPZIOQ+G87+kp0Sxrz?=
- =?us-ascii?Q?tz/55DnabvsXNWRvswwNQpTawbbTWm6muoUpYd+Gtu/jlGQ0zMNhMwKj2AZb?=
- =?us-ascii?Q?oli4ecGHM9yyi1weGg6DtnL0Q8cqGFdI32/SdJwA6ovJ0Ud739QjbmIg++rL?=
- =?us-ascii?Q?7BDTW9GMBrcEyuNLckhEcsHOGBQanSagduEQRpNyf45xrmeNTab1avRZUBMM?=
- =?us-ascii?Q?MPNnkKlQL7CWUlU80hB2BLDJDf3mK8wvA7aP20K8wsOuTPTa6kmjXk3+mw2e?=
- =?us-ascii?Q?vfBaaowcyte9CjBnB4b+JBQDNMqNvv5dQl22YPmNz6JTN2kx6EXq5lkYr/gv?=
- =?us-ascii?Q?M3LWx5s9KOkhEmFoKdX4a++4nmwZ6hSWXA1KLg4O5yydBXRJ27vPElmxLwVm?=
- =?us-ascii?Q?DUE4s51uMqBn7tuHGoGa2g4tphgCnfwyQqKGBWFRd1Aakr7G2OLeOfiL8ymF?=
- =?us-ascii?Q?7maNnM9OYAT+dN7t+q9NiDb4C0AQn5BYQPI0hUZzmanAywG0ndPGM6T+KZ/N?=
- =?us-ascii?Q?+EfRQ+dyax4VGlBZ+CfciGOP3ILCZuTH75rlAcSQWlJ476fdB6gUhkRo9OT3?=
- =?us-ascii?Q?P5AFO7Q5Gx3QRnt8O3UyBv9lsjSGHd/C4CYJfEN/8No92mufnfJSaPacgnHI?=
- =?us-ascii?Q?UgiStodGL3fQfPjwNapyW+viOuqbCZHRxGpnppAU2kVLNEsiLlpi8LyhdUm/?=
- =?us-ascii?Q?SmjKdkjgE3D94yi92V4nQ7PDQvogRioC6o3AgJRGOQeAXm+eYWLGF6M7hJMD?=
- =?us-ascii?Q?nn0hn8sBSw=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 16318a5f-1301-4252-f61f-08de778fcbd0
-X-MS-Exchange-CrossTenant-AuthSource: SA3SPRMB0009.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Mar 2026 12:41:01.7801
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ZPtYvjarOzO3AcAdynM+86Qa3pp4p2tgl/Jo6Q9Alxv6e2XpO3gYZ8jR4n3C+DHrv9dcI5DUCM2X68J+IMjSKA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5910
+Content-Transfer-Encoding: 8bit
+References: <20260301121254.174354-1-tomasz.unger.ref@yahoo.pl>
 
-On Sun, Mar 01, 2026 at 01:47:06AM +0000, Aleksei Oladko wrote:
-> Several forwarding tests (e.g., gre_multipath.sh) initialize both IPv4
-> and IPv6 addresses using simple_if_init, but only clean up IPv4
-> in simple_if_fini. This leaves stale IPv6 addresses on the interfaces,
-> which causes subsequent tests to fail when they encounter unexpected
-> address configuration.
-> 
-> The issue can be reproduced by running tests in sequence:
->   # run_kselftest.sh -t net/forwarding:ipip_hier_gre.sh
->   # run_kselftest.sh -t net/forwarding:min_max_mtu.sh
->   TAP version 13
->   1..1
->   # timeout set to 0
->   # selftests: net/forwarding: min_max_mtu.sh
->   # TEST: ping                                                          [ OK ]
->   # TEST: ping6                                                         [ OK ]
->   # TEST: Test maximum MTU configuration                                [ OK ]
->   # TEST: Test traffic, packet size is maximum MTU                      [FAIL]
->   #       Ping6, packet size: 65487 succeeded, but should have failed
->   # TEST: Test minimum MTU configuration                                [ OK ]
->   # TEST: Test traffic, packet size is minimum MTU                      [ OK ]
->   not ok 1 selftests: net/forwarding: min_max_mtu.sh # exit=1
-> 
-> Fix this by adding the missing IPv6 argument to simple_if_fini in
-> all affected tests.
-> 
-> Fixes: fed926d4f64c ("selftests: forwarding: Add IP tunneling lib")
-> Fixes: 902280cacc03 ("selftests: forwarding: Add resilient multipath tunneling nexthop test")
-> Fixes: 54818c4c4b93 ("selftests: forwarding: Test multipath tunneling")
-> Fixes: e035146d6560 ("selftests: forwarding: Add multipath tunneling nexthop test")
-> 
+From: Tomasz Unger <tomasz.unger@yahoo.pl>
 
-Please remove the blank line
+Replace strcpy() with strscpy() which limits the copy to the size of
+the destination buffer. Since phy->firmware_name is an array, the
+two-argument variant of strscpy() is used - the compiler deduces
+the buffer size automatically.
 
-> Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-> ---
->  tools/testing/selftests/net/forwarding/gre_multipath.sh        | 2 +-
->  tools/testing/selftests/net/forwarding/gre_multipath_nh.sh     | 2 +-
->  tools/testing/selftests/net/forwarding/gre_multipath_nh_res.sh | 2 +-
->  tools/testing/selftests/net/forwarding/ipip_lib.sh             | 2 +-
->  4 files changed, 4 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/net/forwarding/gre_multipath.sh b/tools/testing/selftests/net/forwarding/gre_multipath.sh
-> index 57531c1d884d..397422cd5aea 100755
-> --- a/tools/testing/selftests/net/forwarding/gre_multipath.sh
-> +++ b/tools/testing/selftests/net/forwarding/gre_multipath.sh
-> @@ -72,7 +72,7 @@ h1_create()
->  h1_destroy()
->  {
->  	ip route del vrf v$h1 192.0.2.16/28 via 192.0.2.2
-> -	simple_if_fini $h1 192.0.2.1/28
-> +	simple_if_fini $h1 192.0.2.1/28 2001:db8:1::1/64
+This is a defensive cleanup. As pointed out by Jakub Kicinski
+<kuba@kernel.org>, firmware_name is already bounded to
+NFC_FIRMWARE_NAME_MAXSIZE via nla_strscpy() in net/nfc/netlink.c
+before reaching this driver, so no actual buffer overflow is possible.
 
-The test only runs IPv4 traffic in the overlay, so I believe the IPv6
-address can be removed from h1 (h2 doesn't have one as well):
+Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
+---
+Changes since v3:
+- Reworded commit message: removed "bug fix" and "buffer overflow"
+  language as pointed out by Jakub Kicinski <kuba@kernel.org>;
+  firmware_name is already bounded via nla_strscpy() in netlink.c
+- Changed submission target from net to net-next (cleanup, not a fix)
 
-diff --git a/tools/testing/selftests/net/forwarding/gre_multipath.sh b/tools/testing/selftests/net/forwarding/gre_multipath.sh
-index 57531c1d884d..ce4ae74843d9 100755
---- a/tools/testing/selftests/net/forwarding/gre_multipath.sh
-+++ b/tools/testing/selftests/net/forwarding/gre_multipath.sh
-@@ -65,7 +65,7 @@ source lib.sh
+Testing:
+- checkpatch.pl: 0 errors, 0 warnings
+- make M=drivers/nfc/pn544/: compiled successfully, 0 errors, 0 warnings
+
+ drivers/nfc/pn544/i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/nfc/pn544/i2c.c b/drivers/nfc/pn544/i2c.c
+index a0dfb3f98d5a..b31b5bef7187 100644
+--- a/drivers/nfc/pn544/i2c.c
++++ b/drivers/nfc/pn544/i2c.c
+@@ -526,7 +526,7 @@ static int pn544_hci_i2c_fw_download(void *phy_id, const char *firmware_name,
  
- h1_create()
- {
--	simple_if_init $h1 192.0.2.1/28 2001:db8:1::1/64
-+	simple_if_init $h1 192.0.2.1/28
- 	ip route add vrf v$h1 192.0.2.16/28 via 192.0.2.2
- }
-
->  }
->  
->  sw1_create()
-> diff --git a/tools/testing/selftests/net/forwarding/gre_multipath_nh.sh b/tools/testing/selftests/net/forwarding/gre_multipath_nh.sh
-> index 7d5b2b9cc133..c667b81da37f 100755
-> --- a/tools/testing/selftests/net/forwarding/gre_multipath_nh.sh
-> +++ b/tools/testing/selftests/net/forwarding/gre_multipath_nh.sh
-> @@ -80,7 +80,7 @@ h1_destroy()
->  {
->  	ip route del vrf v$h1 2001:db8:2::/64 via 2001:db8:1::2
->  	ip route del vrf v$h1 192.0.2.16/28 via 192.0.2.2
-> -	simple_if_fini $h1 192.0.2.1/28
-> +	simple_if_fini $h1 192.0.2.1/28 2001:db8:1::1/64
->  }
->  
->  sw1_create()
-> diff --git a/tools/testing/selftests/net/forwarding/gre_multipath_nh_res.sh b/tools/testing/selftests/net/forwarding/gre_multipath_nh_res.sh
-> index 370f9925302d..d04bad58a96a 100755
-> --- a/tools/testing/selftests/net/forwarding/gre_multipath_nh_res.sh
-> +++ b/tools/testing/selftests/net/forwarding/gre_multipath_nh_res.sh
-> @@ -80,7 +80,7 @@ h1_destroy()
->  {
->  	ip route del vrf v$h1 2001:db8:2::/64 via 2001:db8:1::2
->  	ip route del vrf v$h1 192.0.2.16/28 via 192.0.2.2
-> -	simple_if_fini $h1 192.0.2.1/28
-> +	simple_if_fini $h1 192.0.2.1/28 2001:db8:1::1/64
->  }
->  
->  sw1_create()
-> diff --git a/tools/testing/selftests/net/forwarding/ipip_lib.sh b/tools/testing/selftests/net/forwarding/ipip_lib.sh
-> index 01e62c4ac94d..a5c23a28d50e 100644
-> --- a/tools/testing/selftests/net/forwarding/ipip_lib.sh
-> +++ b/tools/testing/selftests/net/forwarding/ipip_lib.sh
-> @@ -151,7 +151,7 @@ h1_create()
->  h1_destroy()
->  {
->  	ip route del vrf v$h1 192.0.2.16/28 via 192.0.2.2
-> -	simple_if_fini $h1 192.0.2.1/28
-> +	simple_if_fini $h1 192.0.2.1/28 2001:db8:1::1/64
-
-Let's remove the IPv6 address in this case as well. Looks like it was
-added by mistake:
-
-diff --git a/tools/testing/selftests/net/forwarding/ipip_lib.sh b/tools/testing/selftests/net/forwarding/ipip_lib.sh
-index 01e62c4ac94d..b255646b737a 100644
---- a/tools/testing/selftests/net/forwarding/ipip_lib.sh
-+++ b/tools/testing/selftests/net/forwarding/ipip_lib.sh
-@@ -144,7 +144,7 @@
+ 	pr_info("Starting Firmware Download (%s)\n", firmware_name);
  
- h1_create()
- {
--	simple_if_init $h1 192.0.2.1/28 2001:db8:1::1/64
-+	simple_if_init $h1 192.0.2.1/28
- 	ip route add vrf v$h1 192.0.2.16/28 via 192.0.2.2
- }
+-	strcpy(phy->firmware_name, firmware_name);
++	strscpy(phy->firmware_name, firmware_name);
+ 
+ 	phy->hw_variant = hw_variant;
+ 	phy->fw_work_state = FW_WORK_STATE_START;
 
->  }
->  
->  h2_create()
-> -- 
-> 2.43.0
-> 
+-- 
+2.53.0
+
