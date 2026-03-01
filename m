@@ -1,94 +1,103 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 246182EE262;
-	Sun,  1 Mar 2026 02:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041811DF736;
+	Sun,  1 Mar 2026 02:44:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330749; cv=none; b=HMok06aVE0/bgi3hCMBNskjpMW5HrfJ+qswaibxapNLvG2469982FQ2X7xM1KA2Y4UnPNMRmBdQb4YqVuv2zKSgrRB+wG5w3AVjBEgIJNm6dwjQkF1RjWYOJPd06pUAYVDDwnuba5s8vcdCJ0r2oyucxVWx/s6iBeYvnPwahv/8=
+	t=1772333082; cv=none; b=taHfTekBfzZ8gyNMEqV4ZlMzbO9xJBL2nlzTlBM5XiO6DYPZkzTAlsVPWC6/t16d5KDWmgBMAC0Btnv3X6awVvzADuVEIL9AU46WCe0XVvXRrlKU3MWg0juad1gEYExems7snoHH1Mj1NQmq7S0nadBWzLmNdJK4jZwkgEfCuyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330749; c=relaxed/simple;
-	bh=KAoL1cx2EuRA7/IhGFw6mkGmsTeE2YWJNJJwGTPnKfs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J756BEfEnSS/BysOCGtPaxSTNykJJ1koo0LyqIJV/va7E9NmmHQ/cl8AmmQ9acgsbZQuBP78Nhi1ah8ItepVyIm+RA4NR7SVLqZLQQOwcoRJ99Iv4u+QW5azcDmk/4rnLRJjv8QMUpn0V7GbdUADqr1/mABNK1bim6D7VTxvPhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m2Xhzpi1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772333082; c=relaxed/simple;
+	bh=Lcvsy1/nFMPntqrLdhtQADgDpVMjx7JQ9RpemuAbrIg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TelJMpJZeY73lrvJz4coP6XC0UHQgJZxeGOqFS7YDTA1cWk79SibRAyTBPXP2x3F8jh+uooZmfVU9l7HNaPIuWxiinHv2lvaP6vhmc9Mll2ot3RIkb6lxzgd7ivraexNDjMeGDjBJQZjCz5Pa775yklLUd/LMwn1VVLf5io+TtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L2ri9Y7J; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m2Xhzpi1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88D25C19421;
-	Sun,  1 Mar 2026 02:05:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330749;
-	bh=KAoL1cx2EuRA7/IhGFw6mkGmsTeE2YWJNJJwGTPnKfs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=m2Xhzpi1CAJEZRtOXh0NyZ/UgSnI5ttuMyn0h1oFF9LE6bBC9k1RUO14rohleKBkH
-	 ERa5mIxDYj5aF+EONvIVZm22EdDcK1cpZUrX+ZGqvNgyb+Z2TUJW6OJKNXRfOF7iqZ
-	 ErJCrckA2OV6PuKE7wGz8+GkLFvaif/P8RNmv51KbIS9ZJj1/KWUVKrdVS0BjHvIX7
-	 /8dsJvLlv89rS1BmMza4dFuFeGAWTRJRnvUkUhiEGWTlEGr+xyehV+P7MFr4rhhc+4
-	 r0ejSe0bTuIYzvCozI/zFHWywkRz3XvQwTmY2M0zPjLW5uuLlnMI9CeqfEzKrzZJI5
-	 bZcUNalITWzyg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	fourier.thomas@gmail.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: ethernet: ec_bhf: Fix dma_free_coherent() dma handle" failed to apply to 5.10-stable tree
-Date: Sat, 28 Feb 2026 21:05:47 -0500
-Message-ID: <20260301020547.1734617-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L2ri9Y7J"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772333081; x=1803869081;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Lcvsy1/nFMPntqrLdhtQADgDpVMjx7JQ9RpemuAbrIg=;
+  b=L2ri9Y7Jgf7YSjmUM+YD8OYqxiBQ/OAfQ9/XxyXkuEHf0r5Yd/yrz/it
+   5WThv2eeG2ymgywPokliFGYtr+0+PzLZQELBhRyJbfLCw9xjgFK70rY19
+   Pl67AUZ/UvJbh0IlGSAVJkEnXi8gLw8aKF7TBxab8CX+IuKVSZr/Vh1Iw
+   obB7NckskbSb3hzRLbraYYeLFZTDgrybeIk7WW6wj++PgkQ40b5vXTFoK
+   AaydMRdtoi5zdQ3PKoSFVKaOZVFej3cRuswn/kVdkc+p61Y4yBkmz5Yuc
+   2OrqAzJjGBZ6t1B3SDLKMY3dPG5cL6Jg0Oj/JfHEc8XsAJmvgvteqgajt
+   g==;
+X-CSE-ConnectionGUID: Kx4sn0oRRfKtGBXSzRSyUg==
+X-CSE-MsgGUID: nZPAwLXuSBasJhgepxvRJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11715"; a="90955170"
+X-IronPort-AV: E=Sophos;i="6.21,317,1763452800"; 
+   d="scan'208";a="90955170"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Feb 2026 18:44:40 -0800
+X-CSE-ConnectionGUID: YbvMI+g9RtCkRDyd7EJBwA==
+X-CSE-MsgGUID: rP2G94vzTP6C1525oYLZ/g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,317,1763452800"; 
+   d="scan'208";a="216415922"
+Received: from lkp-server01.sh.intel.com (HELO 59784f1c7b2a) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 28 Feb 2026 18:44:38 -0800
+Received: from kbuild by 59784f1c7b2a with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vwWnK-0000000018X-1CkV;
+	Sun, 01 Mar 2026 02:44:34 +0000
+Date: Sun, 1 Mar 2026 10:43:54 +0800
+From: kernel test robot <lkp@intel.com>
+To: Jakub =?utf-8?B?VmFuxJtr?= <linuxtardis@gmail.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Frank <Frank.Sae@motor-comm.com>,
+	Sai Krishna <saikrishnag@marvell.com>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Jakub =?utf-8?B?VmFuxJtr?= <linuxtardis@gmail.com>
+Subject: Re: [PATCH net-next v2 5/5] net: phy: motorcomm: yt8821: Disable
+ MDIO broadcast
+Message-ID: <202603011047.rzQIXPzJ-lkp@intel.com>
+References: <20260228232241.1274236-6-linuxtardis@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Patchwork-Hint: ignore
-X-stable: review
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260228232241.1274236-6-linuxtardis@gmail.com>
 
-The patch below does not apply to the 5.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Hi Jakub,
 
-Thanks,
-Sasha
+kernel test robot noticed the following build warnings:
 
------------------- original commit in Linus's tree ------------------
+[auto build test WARNING on net-next/main]
 
-From ffe68c3766997d82e9ccaf1cdbd47eba269c4aa2 Mon Sep 17 00:00:00 2001
-From: Thomas Fourier <fourier.thomas@gmail.com>
-Date: Fri, 13 Feb 2026 17:43:39 +0100
-Subject: [PATCH] net: ethernet: ec_bhf: Fix dma_free_coherent() dma handle
+url:    https://github.com/intel-lab-lkp/linux/commits/Jakub-Van-k/net-mdiobus-Scan-buses-in-reverse-order-31-0/20260301-072526
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20260228232241.1274236-6-linuxtardis%40gmail.com
+patch subject: [PATCH net-next v2 5/5] net: phy: motorcomm: yt8821: Disable MDIO broadcast
+config: nios2-defconfig (https://download.01.org/0day-ci/archive/20260301/202603011047.rzQIXPzJ-lkp@intel.com/config)
+compiler: nios2-linux-gcc (GCC) 11.5.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260301/202603011047.rzQIXPzJ-lkp@intel.com/reproduce)
 
-dma_free_coherent() in error path takes priv->rx_buf.alloc_len as
-the dma handle. This would lead to improper unmapping of the buffer.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603011047.rzQIXPzJ-lkp@intel.com/
 
-Change the dma handle to priv->rx_buf.alloc_phys.
+All warnings (new ones prefixed by >>):
 
-Fixes: 6af55ff52b02 ("Driver for Beckhoff CX5020 EtherCAT master module.")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20260213164340.77272-2-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
----
- drivers/net/ethernet/ec_bhf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+>> Warning: drivers/net/phy/phy_common_fixups.c:16 function parameter 'phydev' not described in 'yt8821_disable_broadcast'
+>> Warning: drivers/net/phy/phy_common_fixups.c:16 function parameter 'phydev' not described in 'yt8821_disable_broadcast'
 
-diff --git a/drivers/net/ethernet/ec_bhf.c b/drivers/net/ethernet/ec_bhf.c
-index 67275aa4f65b2..0c86cbb0313c3 100644
---- a/drivers/net/ethernet/ec_bhf.c
-+++ b/drivers/net/ethernet/ec_bhf.c
-@@ -423,7 +423,7 @@ static int ec_bhf_open(struct net_device *net_dev)
- 
- error_rx_free:
- 	dma_free_coherent(dev, priv->rx_buf.alloc_len, priv->rx_buf.alloc,
--			  priv->rx_buf.alloc_len);
-+			  priv->rx_buf.alloc_phys);
- out:
- 	return err;
- }
 -- 
-2.51.0
-
-
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
