@@ -1,150 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B86243969;
-	Sun,  1 Mar 2026 15:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E34A33344A;
+	Sun,  1 Mar 2026 15:11:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772377825; cv=none; b=U+5lDOsseVmdQ8BWwRutjpuUVgif1Lnl9cJEpYdJ8u4LEPm12/N5jSfeby+Ow76Pumsscqv8us8yTUd8AJ3rjNoFf4KscqXvSpNhk/qFbCPmX7B0p5Q/CXj/44GgzLwZeRUJlAL3lpWdfKuiYJYM7r2PTthlfni0vwTwM9tziC0=
+	t=1772377884; cv=none; b=eXiJQo8/tl7FkHAjZm08AgUfvNmr1+SSb86xSyMW+u30KAwpkkMb1urREmmRiLXW5CaogOfrT9YCj6r4J1+j7TY2leKfPVAP/EP9LQWu1hoJa7+lxV4DkU3ZEY1bTGaiLoXYT3iRb86rRgCK8K9M7oKSWg6WSy8HrFufExyMRwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772377825; c=relaxed/simple;
-	bh=Kxz+c6xsoZc7JcZ4DqWUnLqDgizGrfu1X4ndZCweW94=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLJhD7+FFm0U04LBvhVea/XS4d35kx26Q78xActYZIxqMJqAf/taBTxT8sk7Zu51sLyXPWPAdTajPh/tGTZPcX/P2kp48Sg/vmZBpaggyM33Uu91VZBHdWkY16rqK8VSW7DuOIPK1DcOb/ArYe4kK5w93fD5O3/GDduzk+GmoVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Knzhm1Hd; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772377884; c=relaxed/simple;
+	bh=5oipx8+TOnO24hSfjvP1Igdv1jnKwQ3GJ3LYT5IOIBI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hAI4bqaBqW9+aKa1CUOgZoCk3BuTOIChuLzGNRUgdHz2tgMBRCYL2nQ9E5KRZ0u/y57Gsocau3OZp2jQ377nCXDxqFS8x4l54Rdm/7COKPprtDTEGLBDxSHbjzm2mNTbPmOWTd9NSgTAD3zPgUkU7PaK67Oh4s9bYqbLh4RkAUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=uaifjYPF; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Knzhm1Hd"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93022C116C6;
-	Sun,  1 Mar 2026 15:10:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772377825;
-	bh=Kxz+c6xsoZc7JcZ4DqWUnLqDgizGrfu1X4ndZCweW94=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Knzhm1HdRIudIC5LMlGc3hobiNp/zms4Oa15Vb0t/rdZb9yNdSR0aTDdc6+4fHEzl
-	 NgjxCleNqNTtikejihk1etUlKB3rlaIeSe+Pn6CqXuTPln8nJ3Z9ZvbpyEZy7ujYrb
-	 q3c/RoXPZh+beS7rADNg4Oa5ip7laDc5WZtZlGgidDoYlHLO44Tn3VRdBMjxe+FhSv
-	 syOtK6JQQjvJ/wfLNpWuKqNX4hbZujLjN9839MCctuQ+F7wdu8dzg2pP4KvUvctR4T
-	 Up9LVz63s3d428cwBA7miqPEewhjek4/00bmNT456lBugJLsHU/rde05mxdMZv26PK
-	 a3rh7tUi1dfPA==
-From: Simon Horman <horms@kernel.org>
-To: m-malladi@ti.com
-Cc: Simon Horman <horms@kernel.org>,
-	vladimir.oltean@nxp.com,
-	haokexin@gmail.com,
-	pabeni@redhat.com,
-	rogerq@kernel.org,
-	parvathi@couthit.com,
-	edumazet@google.com,
-	vigneshr@ti.com,
-	basharath@couthit.com,
-	andrew+netdev@lunn.ch,
-	linux-arm-kernel@lists.infradead.org,
-	danishanwar@ti.com,
-	jacob.e.keller@intel.com,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	srk@ti.com,
-	kuba@kernel.org,
-	afd@ti.com,
-	vadim.fedorenko@linux.dev,
-	davem@davemloft.net
-Subject: Re: [net-next,v4,2/2] net: ti: icssg-prueth: Add ethtool ops for Frame Preemption MAC Merge
-Date: Sun,  1 Mar 2026 15:10:14 +0000
-Message-ID: <20260301151014.460245-1-horms@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260224124803.3634808-3-m-malladi@ti.com>
-References: <20260224124803.3634808-3-m-malladi@ti.com>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="uaifjYPF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=pwhmjQsbXem5Vo4+DF9ztOlh3riUC6Eb/RZs2skHZhM=; b=ua
+	ifjYPFYxJmwzZWRUP+45XE/IYbZ9N6tUi7WDav8TMsug6GMtySN8fcLHRR5j/8Mdt3s5nZ26Hqo0P
+	erizph5rZQS+TiyWdo8A8mNfEa8BGrpxvhaaZLgce00uYFcLeE9lac9TsWw9DMyuw7UEt3KADUlg+
+	/sTMJhXEcMITBYA=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1vwiRt-009OYP-Jh; Sun, 01 Mar 2026 16:11:13 +0100
+Date: Sun, 1 Mar 2026 16:11:13 +0100
+From: Andrew Lunn <andrew@lunn.ch>
+To: Jakub =?utf-8?B?VmFuxJtr?= <linuxtardis@gmail.com>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Frank <Frank.Sae@motor-comm.com>,
+	Sai Krishna <saikrishnag@marvell.com>,
+	Daniel Golle <daniel@makrotopia.org>
+Subject: Re: [PATCH net-next v2 1/5] net: mdiobus: Scan buses in reverse
+ order (31 -> 0)
+Message-ID: <cf2d16d7-be4a-4729-80e3-81f6f02eeb8c@lunn.ch>
+References: <20260228232241.1274236-1-linuxtardis@gmail.com>
+ <20260228232241.1274236-2-linuxtardis@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260228232241.1274236-2-linuxtardis@gmail.com>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Sun, Mar 01, 2026 at 12:22:37AM +0100, Jakub Vaněk wrote:
+> Some PHY devices incorrectly treat address 0 as a broadcast address.
+> As a result, accesses to address 0 may cause multiple PHYs to respond,
+> making one or both PHYs work unreliably. In other cases, the PHY may be
+> detected twice by Linux: once at address 0 and once at its actual
+> address).
+> 
+> On several PHYs (e.g. Motorcomm YT8821 and Realtek RTL8221B), this
+> behavior can be disabled via a vendor-specific internal register.
+> However, for that to be useful, that register would have to be
+> programmed before address 0 is accessed for the first time.
+> 
+> On non-Device Tree systems, MDIO buses are typically scanned in
+> mdiobus_register(). Change the address scan order from 0->31 to 31->0
+> so that PHY fixups are applied to addresses 1-31 before address 0
+> is probed. This way the address collision can be avoided.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-net: ti: icssg-prueth: Add ethtool ops for Frame Preemption MAC Merge
+Please add a comment about phy_package_join() etc. You need to
+indicate this change has not broken any assumptions. It might also be
+good to extend the documentation about PHY packages.
 
-This commit adds driver support for viewing and changing the MAC Merge
-sublayer parameters and dumping MAC Merge statistics via ethtool
-operations.
+     Andrew
 
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_ethtool.c b/drivers/net/ethernet/ti/icssg/icssg_ethtool.c
-> index b715af21d23a..2176536a0989 100644
-> --- a/drivers/net/ethernet/ti/icssg/icssg_ethtool.c
-> +++ b/drivers/net/ethernet/ti/icssg/icssg_ethtool.c
-
-[ ... ]
-
-> @@ -294,6 +293,100 @@ static int emac_set_per_queue_coalesce(struct net_device *ndev, u32 queue,
->  	return 0;
->  }
->
-> +static int emac_get_mm(struct net_device *ndev, struct ethtool_mm_state *state)
-> +{
-> +	struct prueth_emac *emac = netdev_priv(ndev);
-> +	struct prueth_qos_iet *iet = &emac->qos.iet;
-> +
-> +	if (emac->is_sr1)
-> +		return -EOPNOTSUPP;
-> +
-> +	state->tx_enabled = iet->fpe_enabled;
-> +	state->pmac_enabled = true;
-> +	state->tx_min_frag_size = iet->tx_min_frag_size;
-> +	/* 64Bytes is the minimum fragment size supported
-> +	 * by the firmware. <64B leads to min frame errors
-> +	 */
-> +	state->rx_min_frag_size = 64;
-> +	state->tx_active = iet->fpe_active;
-> +	state->verify_enabled = iet->mac_verify_configure;
-> +	state->verify_time = iet->verify_time_ms;
-> +
-> +	switch (iet->verify_status) {
-> +	case ICSSG_IETFPE_STATE_DISABLED:
-> +		state->verify_status = ETHTOOL_MM_VERIFY_STATUS_DISABLED;
-> +		break;
-> +	case ICSSG_IETFPE_STATE_SUCCEEDED:
-> +		state->verify_status = ETHTOOL_MM_VERIFY_STATUS_SUCCEEDED;
-> +		break;
-> +	case ICSSG_IETFPE_STATE_FAILED:
-> +		state->verify_status = ETHTOOL_MM_VERIFY_STATUS_FAILED;
-> +		break;
-> +	default:
-> +		state->verify_status = ETHTOOL_MM_VERIFY_STATUS_UNKNOWN;
-> +		break;
-> +	}
-
-Does this switch statement handle all valid verify_status values?
-
-The switch only explicitly handles ICSSG_IETFPE_STATE_DISABLED,
-ICSSG_IETFPE_STATE_SUCCEEDED, and ICSSG_IETFPE_STATE_FAILED, falling
-through to ETHTOOL_MM_VERIFY_STATUS_UNKNOWN for any other states.
-
-Looking at the icssg_ietfpe_verify_states enum, there are also
-ICSSG_IETFPE_STATE_INITIAL and ICSSG_IETFPE_STATE_VERIFYING states. The
-ethtool UAPI defines ETHTOOL_MM_VERIFY_STATUS_INITIAL and
-ETHTOOL_MM_VERIFY_STATUS_VERIFYING which directly correspond to these
-states.
-
-When the MAC Verify process is actively running, userspace will see
-'unknown' instead of the more accurate 'verifying' status. This means
-information about the ongoing state machine transition is lost.
-
-Should the switch include explicit cases for ICSSG_IETFPE_STATE_INITIAL
-and ICSSG_IETFPE_STATE_VERIFYING to provide more accurate status
-reporting to userspace?
-
-> +
-> +	/* 802.3-2018 clause 30.14.1.6, says that the aMACMergeVerifyTime
-> +	 * variable has a range between 1 and 128 ms inclusive. Limit to that.
-> +	 */
-> +	state->max_verify_time = ETHTOOL_MM_MAX_VERIFY_TIME_MS;
-> +
-> +	return 0;
-> +}
-
-[ ... ]
