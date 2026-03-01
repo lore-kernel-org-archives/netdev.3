@@ -1,39 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2111125228C;
-	Sun,  1 Mar 2026 01:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B3B18E02A;
+	Sun,  1 Mar 2026 01:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772328561; cv=none; b=KUlazaTi1O1GqNDXAGKoH+glkrmnmzw3ZHUCn7F6Nq1InrX4SzDwvOmqu5MRFt0bT8mqejG3EqaUvz9Q2hjVXwptFvv6rBbNZ1LDIAkt/6qduvzc7BNLsG01zl78f0gA8fFwMe0JQfUd8D7LHk5kHGnLF8rQImlyNF84XUN5ArA=
+	t=1772328572; cv=none; b=Y1hk0S+PM0mr0oq24B2BL2hvaRjRgQnGU0y0QT3ekr4l/raBybl3MxyIehEOV5LP8eeCUmRfQNWH8WsHONRgSXq0FG1p+7gm18WrfuzN3fXP2/b6psUtMxoi7Pp5q90tg9FD6m6eb44zrhbuq1lPgCg2RHdS0+bJI0KNvE+1CCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772328561; c=relaxed/simple;
-	bh=iLlWlm0a5I+knnaxhS9qVL6DlR+uTJ7+tJP19yUA6I8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TvKFCYIBH2heMHIs+fbJk/jSTFy0BJl1868qX8n+tESq/Km1b0PV0NnrfPKi3Kwh1D8xzX3HLJXrCBsEErqiOwZ0oIIr8gYp3M1stdLPOJGzKPEPgepd1HUCGflp9zN6kyWJ1Q825nGq3F4WKWzGjdlTYVGYRR7lDhtYQlA8YpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BkRMak02; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772328572; c=relaxed/simple;
+	bh=M+zI4eYL7YLs3m4YazUH2ZwRBQXskG7rZsEymWKFGeA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cviucObxooDnTAqgk6wPX+wTMSdmKmM0UeFXvsEKLjW5ED36+a2UIwlpxKhNKCryW2Y0XpgA2dMLURgHyiZWkIqJNbpfQATWp/GPVrM7qY5LBAqX+QO+2iTNbq5jfO7sAHeYRKyvTtBYBTiLIg5mAVEsCTMte2cBECNiKN22MGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r/HJ5NhG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BkRMak02"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62AE3C19421;
-	Sun,  1 Mar 2026 01:29:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r/HJ5NhG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B342C19421;
+	Sun,  1 Mar 2026 01:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772328561;
-	bh=iLlWlm0a5I+knnaxhS9qVL6DlR+uTJ7+tJP19yUA6I8=;
+	s=k20201202; t=1772328572;
+	bh=M+zI4eYL7YLs3m4YazUH2ZwRBQXskG7rZsEymWKFGeA=;
 	h=From:To:Cc:Subject:Date:From;
-	b=BkRMak02tRGbSDe7J60799Rh4CD+7Z3t+/xxdK26w2LxDUhFIpO3LGjBKd4Y0Ygd+
-	 mhsc3sY9m0axdn+Rn8ARidmYqVh2HSU+cEXlJclPcPG5Don0ennausAnXjhVul/ubu
-	 aG5qiwDR5OthxYv+hghrb+GgwXOsffN3HT8Z54dTMZh4A7yKTZOddmgwlWcog2c+xj
-	 y/axU95nuUPeyCe++8h3DbYax1899ycfixzedl8fBA+uXRKGNP5ODRCXQX7uTiOYTm
-	 yJxXSPFLV3v2AUo6dxyLLZye3ERB0YF91+fG9afn5uY0aabUqzeh5MZ8wjir2Bm7g5
-	 vk4ZUQlTrnhTw==
+	b=r/HJ5NhGfeb2lV3uiIhUi490OueYp2yGlI7QnPdNG5OjAIqQRx3TDDVdGhTbcZBFQ
+	 qJb4xRllYioCmwDqFE8a6H/B3rmdYd8ESUPJX50i1AwhH0gmu95QrHeVCs1q/fQYVw
+	 9gmonsMLaH93MoROAB/n5fdsqkMxVghGzA16t/yWBITcA6nnsFGn6N35+YypeZmsWo
+	 tYrjLxWPgRkP5vZPoaf3YRAAO4M8H12+vbtiKGSfVuywfCtdMRit5G8rKqLM0SG0qA
+	 yqL2JZYcKeGtJkVZXiSVuTwPg08Y/eHeGsaih6PBJwqNHrLfiLfAp6wVZfl1qgsQNg
+	 uUWEt9wYqNvGA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	enelsonmoore@gmail.com
-Cc: Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	fourier.thomas@gmail.com
+Cc: Jakub Kicinski <kuba@kernel.org>,
 	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: arcnet: com20020-pci: fix support for 2.5Mbit cards" failed to apply to 6.12-stable tree
-Date: Sat, 28 Feb 2026 20:29:18 -0500
-Message-ID: <20260301012919.1687040-1-sashal@kernel.org>
+Subject: FAILED: Patch "net: ethernet: ec_bhf: Fix dma_free_coherent() dma handle" failed to apply to 6.12-stable tree
+Date: Sat, 28 Feb 2026 20:29:30 -0500
+Message-ID: <20260301012930.1687295-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -55,79 +54,38 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From c7d9be66b71af490446127c6ffcb66d6bb71b8b9 Mon Sep 17 00:00:00 2001
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Thu, 12 Feb 2026 20:55:09 -0800
-Subject: [PATCH] net: arcnet: com20020-pci: fix support for 2.5Mbit cards
+From ffe68c3766997d82e9ccaf1cdbd47eba269c4aa2 Mon Sep 17 00:00:00 2001
+From: Thomas Fourier <fourier.thomas@gmail.com>
+Date: Fri, 13 Feb 2026 17:43:39 +0100
+Subject: [PATCH] net: ethernet: ec_bhf: Fix dma_free_coherent() dma handle
 
-Commit 8c14f9c70327 ("ARCNET: add com20020 PCI IDs with metadata")
-converted the com20020-pci driver to use a card info structure instead
-of a single flag mask in driver_data. However, it failed to take into
-account that in the original code, driver_data of 0 indicates a card
-with no special flags, not a card that should not have any card info
-structure. This introduced a null pointer dereference when cards with
-no flags were probed.
+dma_free_coherent() in error path takes priv->rx_buf.alloc_len as
+the dma handle. This would lead to improper unmapping of the buffer.
 
-Commit bd6f1fd5d33d ("net: arcnet: com20020: Fix null-ptr-deref in
-com20020pci_probe()") then papered over this issue by rejecting cards
-with no driver_data instead of resolving the problem at its source.
+Change the dma handle to priv->rx_buf.alloc_phys.
 
-Fix the original issue by introducing a new card info structure for
-2.5Mbit cards that does not set any flags and using it if no
-driver_data is present.
-
-Fixes: 8c14f9c70327 ("ARCNET: add com20020 PCI IDs with metadata")
-Fixes: bd6f1fd5d33d ("net: arcnet: com20020: Fix null-ptr-deref in com20020pci_probe()")
-Cc: stable@vger.kernel.org
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Link: https://patch.msgid.link/20260213045510.32368-1-enelsonmoore@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 6af55ff52b02 ("Driver for Beckhoff CX5020 EtherCAT master module.")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20260213164340.77272-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/net/arcnet/com20020-pci.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/ec_bhf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/arcnet/com20020-pci.c b/drivers/net/arcnet/com20020-pci.c
-index 19e411b2e3a77..dbadda08dce23 100644
---- a/drivers/net/arcnet/com20020-pci.c
-+++ b/drivers/net/arcnet/com20020-pci.c
-@@ -115,6 +115,8 @@ static const struct attribute_group com20020_state_group = {
- 	.attrs = com20020_state_attrs,
- };
+diff --git a/drivers/net/ethernet/ec_bhf.c b/drivers/net/ethernet/ec_bhf.c
+index 67275aa4f65b2..0c86cbb0313c3 100644
+--- a/drivers/net/ethernet/ec_bhf.c
++++ b/drivers/net/ethernet/ec_bhf.c
+@@ -423,7 +423,7 @@ static int ec_bhf_open(struct net_device *net_dev)
  
-+static struct com20020_pci_card_info card_info_2p5mbit;
-+
- static void com20020pci_remove(struct pci_dev *pdev);
- 
- static int com20020pci_probe(struct pci_dev *pdev,
-@@ -140,7 +142,7 @@ static int com20020pci_probe(struct pci_dev *pdev,
- 
- 	ci = (struct com20020_pci_card_info *)id->driver_data;
- 	if (!ci)
--		return -EINVAL;
-+		ci = &card_info_2p5mbit;
- 
- 	priv->ci = ci;
- 	mm = &ci->misc_map;
-@@ -347,6 +349,18 @@ static struct com20020_pci_card_info card_info_5mbit = {
- 	.flags = ARC_IS_5MBIT,
- };
- 
-+static struct com20020_pci_card_info card_info_2p5mbit = {
-+	.name = "ARC-PCI",
-+	.devcount = 1,
-+	.chan_map_tbl = {
-+		{
-+			.bar = 2,
-+			.offset = 0x00,
-+			.size = 0x08,
-+		},
-+	},
-+};
-+
- static struct com20020_pci_card_info card_info_sohard = {
- 	.name = "SOHARD SH ARC-PCI",
- 	.devcount = 1,
+ error_rx_free:
+ 	dma_free_coherent(dev, priv->rx_buf.alloc_len, priv->rx_buf.alloc,
+-			  priv->rx_buf.alloc_len);
++			  priv->rx_buf.alloc_phys);
+ out:
+ 	return err;
+ }
 -- 
 2.51.0
 
