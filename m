@@ -1,189 +1,151 @@
 Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69A7919EED3
-	for <netdev@vger.kernel.org>; Sun,  1 Mar 2026 11:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF372E3AF1
+	for <netdev@vger.kernel.org>; Sun,  1 Mar 2026 12:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772364286; cv=none; b=kW+cdQ4rwQT7AZz4FK18YU69XbIabufPnJtF69u4sb6aluqFZXGgVdFLqZpxFQtzOdnF60BpcF2SYQ1dDNGiJ1Qx3BpzaD3f+p7mUavzDUzRhqnpywtXalInQLHMkvoT2+bHSSiMG4WYj3fqmmG9eBvhbLM5BReZUk/sd981NJY=
+	t=1772366912; cv=none; b=QpDIYDxNgQ60A07moW24cjDZ/0oGA2tqJdtLxc1JDYBqjxl5TlkUBrqO2iD1/qS2UwWRX9oq2dtX53fXXR4r2sn3xCXrewWoF1nAmBzxltK2cWHoc2dJ2h5QAT1F2+mEKK0Qwgygs4BzysXljgEVmFD3vf8UJ9MUKrPgdy8gCsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772364286; c=relaxed/simple;
-	bh=rw8fm1QBFBlYpvs0lvKeEaHr3iU1o700icBZixujDgs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LrZQhKL5fxPLpXBci7w6sfWn6cKQULNRGSrUZWVg0WwTVKDbiX5IU2wvgjnnLnZSJ63lHrjDr5acXZmOuNCKfZicIEjSWk8cUEh5kpAxmk9+e72+wFAM0jc30yWJ+SHJzndNFMh+xaTAa0WEJNxMGEwgDxKpHiyTczqFHhpRcY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=TfJ3eAq/; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1772366912; c=relaxed/simple;
+	bh=8k2C0jPmWIaM9el8miNXWEkBgsxEkaRz5GqnZvFuqYE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ukNwz2dlH8NNauWDCbySPelEB8iBT3tr09S8R6qWmnNy60FebwDkXMtCI+Vv0jJSvzWkszhj9i/BzQC9SISnCs8r+LthDxKjM98IRSedC3RXt2rQvwJtoW+iQmiVeNQ+L9x+DpLSBwMljvHHSLE1FkNudulUC0/Nq4QHJwsoNNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mE+KhqJd; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="TfJ3eAq/"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-483708b697cso4053735e9.3
-        for <netdev@vger.kernel.org>; Sun, 01 Mar 2026 03:24:44 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mE+KhqJd"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-4830b67aa6bso3730295e9.0
+        for <netdev@vger.kernel.org>; Sun, 01 Mar 2026 04:08:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1772364283; x=1772969083; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Bl4aZfTNKgTxCzAwFVHIT8LFNEV2L78bSM6cZ8P+v2s=;
-        b=TfJ3eAq/wmzDnkgXFgRKIeH2DbByxjkq0JPNGhOWMnbZpgtqK8dK+woDUWURVnF82f
-         DMvxI7ESmDsbsYW8Vh7wizFuQisvhWNpczCgcnOUqIIzhGr7qapT5pvPmwUVVkavuyuS
-         U6G61hk11N9eK+I4Lj5KJRPHbuc57iEZx8Nmypnc1KL1Si0vIYBwSjptw0k0AIexRtgi
-         4eIhmgZpuB82ALMP0Las7OieWMCmzkkAQj4PDJG61YPjrDmxPpx0l6D0KUXxMTIny5YX
-         O8aUrm9WjskgI/JHyi3Un+IPCwXx7+CDr/kur5b61N9I6zln2bL5xyj+Kw5QyNwuvSWK
-         BVtg==
+        d=gmail.com; s=20230601; t=1772366908; x=1772971708; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=UwOed2BoBm+IaxGS8G+Dca7DMJY6cOw/pE55KOFYvnI=;
+        b=mE+KhqJdPGNgDpt0ltwFT/Nf/ALulrK1ZMPmVUKC7EvN0NOV315og+2LlBt+5lr0cE
+         wlThYNEAQmjtQwvW+d3eyihuF6jLndaaoFSuII2de7OKYU+7KNf9Sj/OnntDXuk4Bq9k
+         NAeVwqcpF8IsEHRNQGkreLaWd14NM94a61Yb2m2CvXtWgHoP/4dIL3NZLdVD1n7xMs8l
+         xkHdA6mY/AVimfYT43m5r4Ruesn9nqpabmiTp46wB9qJyqHNW/1Y37/kJU1BPTlNadXN
+         9rBJqdRPUGU+k1mqQYY8+QWXNWfOfbOyzWAIk2kHBGFCQNw4g6nMqcQ55HkqKAfNuHc/
+         mQ0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772364283; x=1772969083;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Bl4aZfTNKgTxCzAwFVHIT8LFNEV2L78bSM6cZ8P+v2s=;
-        b=Ot0MtqPKL12HG4aDACNUwtx2bUaz51VqHvL84IYFs3AmtHYbVWEZehvhFRh1NpQsEm
-         cKTfR6AqWMcCb9FZXsjZnI2GsOmhRzE1WHAqKDmmIY+eZcmo83MNArg7Zv4gM3E3mFEF
-         YpiYEwTSVKW8I5yBtUEeVCkJgDShZ+ZAC0UhgSYdJxZl583Jgspj7wDHqpI0wwPJQqK6
-         v/V3ckLWxDbWN4VojabGrBXaq416Awt+xF2+jt4zKbE8gxV1mUptd6YHE6bbDN6dlmZw
-         KCGZnkTOoqZMCXFpeW95AN491ExNl+Dd5cmEgnWxBHnF0YeTrrbNmgWOHk6OnyAInWQ5
-         cu1g==
-X-Forwarded-Encrypted: i=1; AJvYcCWzvaJWyABkOZ7EFP0/IefXn44cW0+B4a2nLR6llpaYMSAdr6aHWvr9nP7OMNHG+babU6vB4ng=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwxwYfTH0ILaiPwMqJA6TxI955caLek1cQo1bQerX9zMH2XgmVc
-	6qbZZZnPreObUKDyBRGDEeUyvhedJLg4MpILt03E1L3rJaGYglgW6nLjS+i1YynbkFA=
-X-Gm-Gg: ATEYQzz1FldA/1O4rSZt7gseNBa6QG+d8/LPMOIxC4hpsI5ZWbJRphvQZoRtUBKBzpN
-	9KNPmreU8Uzr18MfrF2JrnDdy4IM8+KMn8cnyr8Doj3ZjHlqi8JY0GfjmXnAxwUMUeQf5Lot6eB
-	ynxZQDVHIiySycwDRShPYghQwMWBYGaRf0wXxn8HdtqYkTty/ESHdAGcVamOEWpL5g+XB0IvZKc
-	0RpGZ3cang2bXLdCHstZ+GTIiiYCw/mvp4SaIpnEs3OvSZoJAzspmgldVXxZdUUSNGVrXcosX6H
-	tm6LwigyO2/OSfmS3zKpevg12b0n7yTucbf5FYYJjv7XGT4oCNGOs4TlBxQieibPIejbcOfR1bu
-	kAreMRUU+l7flcs+3YVpHDJ0qirzhQVXRVtDRmZ2smqZO2Wu6UvQ3f77pa1XXci6r/WDuQNKt9i
-	cZg1F2GpivvS4kJB3IOuGSczICe2tM1LmBF0DFTTy4m7z6AkA289HcZOSonQ==
-X-Received: by 2002:a05:600c:1d1a:b0:480:1f6b:d4a2 with SMTP id 5b1f17b1804b1-483c9c32c36mr87984125e9.7.1772364282573;
-        Sun, 01 Mar 2026 03:24:42 -0800 (PST)
-Received: from ?IPV6:2001:1a48:8:903:1ed6:4f73:ce38:f9d4? ([2001:1a48:8:903:1ed6:4f73:ce38:f9d4])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bfcb4f8bsm257802705e9.4.2026.03.01.03.24.41
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 01 Mar 2026 03:24:42 -0800 (PST)
-Message-ID: <31a14f1c-7d20-4b0f-a039-9e034762ed98@suse.com>
-Date: Sun, 1 Mar 2026 12:24:41 +0100
+        d=1e100.net; s=20230601; t=1772366908; x=1772971708;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UwOed2BoBm+IaxGS8G+Dca7DMJY6cOw/pE55KOFYvnI=;
+        b=fIuRuw/zN9AevGp3LsR/EUDHDWbvNKZjgvIjrpm9slwV2BOQaHTh5jJCZYDmXTFPYm
+         qwI6i9ct/USiBVwMzGh3TdMJcBQS/om0W7Oy4ukGEfJDp2zVJVbMvSVjUYdsz4AZwxPq
+         caZdBVH+tv30IX1WWtBz5R2i01SBXV2mgIDtFRXyJrO7l649VVGZOrRZt2mHwy09hXBZ
+         x//edx6UmeFBSXMSokO+tXTmPt0uF6YVxodwvxp5E3GYHk+fE3DYV0pbD6KKCKukdmFb
+         5QEmy1LmgLpUrsUYi7mVnf9uidIH16rcvwIKNacJuDadKLVA7wlqfa15Y6q0CcQ/Xsv2
+         P1mg==
+X-Forwarded-Encrypted: i=1; AJvYcCXfvNNI2/tv/o3EqbnChwnuQjwOOpzbzLpcRPnSO8QY5BTYHX9Ubqd0xg/YbK+6pZwh1fqUTl0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhR/eikzLXhVEyP5ouhdJ73xiPTJBHqZLPXlSPFQ8/U7MBATEX
+	HGYhkWsEvmtHjB2r71hP9zB1e2zSEf2ezZ2Uq+hhITYJUqOCC7W5Weio
+X-Gm-Gg: ATEYQzzEgAxJ9sO8Zim8i8VfvBrwLww3WakUV/9DYBAbvXrrmwsptAFQyErrirLJN16
+	zZDsbHINgYzwg3NFXqw9goso4PfLFepNSVnbmvt6R+xpe3nnEk1vNOH7+aYrRLahTuy9GEBGQqs
+	E+kzWEiWtGiZwh6GBX4cibpE0qk2VJXUGzirzirrQzVN67O37lLqEPDqZWLers2K5240VnSb/E1
+	e5X6h60GbU5NfAfX7P8UXGQF5aQdM1asDe7hn+SfYqN+6gvZH532Onq4mPekjMaH9X7ULKxA5nu
+	O7QXD9bDm9th66kj+DdCnDSbDrJPyCW9Zv5465rCo3Xy7eOOghwh9ZKOkWYpf+nqiQ6onnCBLDB
+	Wq3Wdas/lilNvpO2GMcodGrJf+5M2tGpfwwwznBp3GcI4eS37oYsigkK1vH5w1xl0OcqH6XG3B9
+	MGN8nWplkOKYKnD/w12HY=
+X-Received: by 2002:a05:600c:828c:b0:47e:e20e:bbbc with SMTP id 5b1f17b1804b1-483c9ba6db4mr86494875e9.1.1772366907868;
+        Sun, 01 Mar 2026 04:08:27 -0800 (PST)
+Received: from skbuf ([2a02:2f04:d608:3a00:8f4c:42a4:aebb:ef65])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd7507adsm363973255e9.9.2026.03.01.04.08.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 01 Mar 2026 04:08:27 -0800 (PST)
+Date: Sun, 1 Mar 2026 14:08:24 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
+Subject: Re: [PATCH RESEND2 net-next 0/8] net: stmmac: qcom-ethqos: further
+ serdes reorganisation
+Message-ID: <20260301120824.ot53bhv7z7kn5lfd@skbuf>
+References: <aaDSJAc-x2-klvHJ@shell.armlinux.org.uk>
+ <aaIysVxy-WxbiJz9@shell.armlinux.org.uk>
+ <20260227165556.5cf9e844@kernel.org>
+ <20260228083111.5df8550c@kernel.org>
+ <20260301001453.lpd2rawy7bqxyivp@skbuf>
+ <20260228163229.1024f263@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: adopt SLUB sheaves for skbuff_small_head
-Content-Language: en-US
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>,
- netdev@vger.kernel.org, eric.dumazet@gmail.com,
- Vlastimil Babka <vbabka@suse.cz>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Hao Li <hao.li@linux.dev>
-References: <20260228141252.435509-1-edumazet@google.com>
-From: Vlastimil Babka <vbabka@suse.com>
-In-Reply-To: <20260228141252.435509-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260228163229.1024f263@kernel.org>
 
-On 2/28/26 15:12, Eric Dumazet wrote:
-> skbuff_small_head is used both on receive and send paths,
-> serving potentially 80 million allocations and frees per second.
+On Sat, Feb 28, 2026 at 04:32:29PM -0800, Jakub Kicinski wrote:
+> > I'm working on a series for phy-next which will conflict with this 
+> > hunk from Russell's patch 1:
+> > 
+> > diff --git a/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c b/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c
+> > index 5b1c82459c12..4ea3dce7719f 100644
+> > --- a/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c
+> > +++ b/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c
+> > @@ -7,6 +7,7 @@
+> >  #include <linux/ethtool.h>
+> >  #include <linux/module.h>
+> >  #include <linux/of.h>
+> > +#include <linux/phy.h>
+> >  #include <linux/phy/phy.h> // this gets renamed to <linux/phy/phy-provider.h>
+> >  #include <linux/platform_device.h>
+> >  #include <linux/regmap.h>
 > 
-> Tuning it on large servers has been problematic, especially
-> on AMD Turins platforms, where "lock cmpxch16b" latency can
-> be over 30,000 cycles.
+> That's not too bad.. if that's the extent of the conflict (which is
+> probably hard to predict at rc2?) we could let linux-next handle it. 
 
-Huh, really? That sounds insane. Any pointers about that?
+Yeah, I can't predict the future beyond that.
 
-> Switching to SLUB sheaves fixes the issue nicely.
+> Of course assuming Vinod is okay with us merging Russell's entire
+> series.
 > 
-> tcp_rr benchmark with 10,000 flows goes from 25 Mpps to 40 Mpps
-> on AMD Turin.
+> > If there's no other way to provide a stable tag other than on v7.0-rc1
+> > (like for example a snapshot of current net-next/main), which I didn't
+> > know wouldn't be possible, then I think going with the route of fewer/
+> > more trivial merge conflicts makes sense.
 > 
-> Other platforms show benefits with tcp_rr with more than 30,000
-> flows.
-
-That's nice, thanks!
-
-However I must point out some caveates. I assume you did this on 6.19, where
-sheaves are still opt-in. But also, when you opt-in, the pre-existing
-per-cpu caching layer of percpu slab and percpu partial slabs is also still
-there, so effectively the amount of percpu cached slab objects increase,
-which can be the main performance difference for some workloads, and not the
-difference between sheaves and percpu (partial) slabs implementation.
-
-Note: but hopefully for your workload it's really the implementation.
-"(lock) cmpxch16b" should be avoided, until you start freeing NUMA-remote
-(to the freeing cpu) objects in significant volumes.
-
-In 7.0-rc1 sheaves are enabled for every cache automatically, and cpu
-(partial) caches are gone completely. Their size is calculated to roughly
-match the average amount of percpu caching the old scheme achieved (but that
-effectively depended on the workload too, so can't be exactly translated)
-and the result is visible in /sys/kernel/slab/$cache/sheaf_capacity
-the args.sheaf_capacity can override that automatic sizing, if the specified
-one is larger.
-
-So what I would suggest is checking the performance betwen 6.19 and 7.0-rc1
-without this patch (hope there won't be any other factors in the upgrade
-influencing this much), noting the auto-calculated capacity. If it still
-looks good, you don't need to do anything, otherwise you can try making the
-capacity larger and see what happens.
-
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> Cc: Vlastimil Babka <vbabka@suse.cz>
-> Cc: David Rientjes <rientjes@google.com>
-> Cc: Roman Gushchin <roman.gushchin@linux.dev>
-> ---
->  net/core/skbuff.c | 31 ++++++++++++++++++++-----------
->  1 file changed, 20 insertions(+), 11 deletions(-)
+> To be clear, it's only about having a common ancestor, I wasn't actually
+> planning on making y'all a tag. I'd just apply the series on top of
+> v7.0-rc1 and merge them in. Then anyone can tag the relevant commit 
+> in net-next or use as a base for their own work.
 > 
-> diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-> index 513cbfed19bc34bbb6767cdd7a50dad68be430fb..79eb7eb6eea9aa4a76c555e6ddd33bf0bc84c921 100644
-> --- a/net/core/skbuff.c
-> +++ b/net/core/skbuff.c
-> @@ -5174,6 +5174,19 @@ static void skb_extensions_init(void) {}
->  
->  void __init skb_init(void)
->  {
-> +	struct kmem_cache_args kmem_args_small_head = {
-> +		.align		= 0,
-> +		.ctor		= NULL,
-> +		/* usercopy should only access first SKB_SMALL_HEAD_HEADROOM
-> +		 * bytes.
-> +		 * struct skb_shared_info is located at the end of skb->head,
-> +		 * and should not be copied to/from user.
-> +		 */
-> +		.useroffset	= 0,
-> +		.usersize	= SKB_SMALL_HEAD_HEADROOM,
-> +		.sheaf_capacity = 32,
-> +	};
-> +
->  	net_hotdata.skbuff_cache = kmem_cache_create_usercopy("skbuff_head_cache",
->  					      sizeof(struct sk_buff),
->  					      0,
-> @@ -5189,17 +5202,13 @@ void __init skb_init(void)
->  						0,
->  						SLAB_HWCACHE_ALIGN|SLAB_PANIC,
->  						NULL);
-> -	/* usercopy should only access first SKB_SMALL_HEAD_HEADROOM bytes.
-> -	 * struct skb_shared_info is located at the end of skb->head,
-> -	 * and should not be copied to/from user.
-> -	 */
-> -	net_hotdata.skb_small_head_cache = kmem_cache_create_usercopy("skbuff_small_head",
-> -						SKB_SMALL_HEAD_CACHE_SIZE,
-> -						0,
-> -						SLAB_HWCACHE_ALIGN | SLAB_PANIC,
-> -						0,
-> -						SKB_SMALL_HEAD_HEADROOM,
-> -						NULL);
-> +
-> +	net_hotdata.skb_small_head_cache = kmem_cache_create(
-> +			"skbuff_small_head",
-> +			SKB_SMALL_HEAD_CACHE_SIZE,
-> +			&kmem_args_small_head,
-> +			SLAB_HWCACHE_ALIGN | SLAB_PANIC);
-> +
->  	skb_extensions_init();
->  }
->  
+> I haven't looked how bad the conflict would be if Russell's work was
+> rebased on Linus's tree. If the delta is not too bad, and we can just
+> resolve the merge conflict when pulling it into net-next. That's
+> probably the cleanest.
 
+I don't think applying the current series on top of v7.0-rc1 would be a
+good idea. It depends upon this series in a very non-trivial way,
+basically building upon it:
+https://patchwork.kernel.org/project/netdevbpf/list/?series=1056390&state=*
+
+For example, that previous series introduces ethqos_mac_finish_serdes()
+- absent in v7.0-rc1 - and this series modifies it (in current net-next/main,
+it is calling phy_set_speed(), and after this series, it is calling
+phy_set_mode_ext()).
+
+By comparison, the merge conflict with me renaming <linux/phy/phy.h>
+would be smaller.
+
+> I don't recall us ever making a "dirty tag" on net-next which would
+> propagate few 100s of netdev patches into someone else's tree :S
+> IDK how Linus would react. It's the least good option IMO.
+
+Just for my curiosity, what difference would it make to him?
