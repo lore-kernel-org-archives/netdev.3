@@ -1,40 +1,39 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDDA42EBBA9;
-	Sun,  1 Mar 2026 01:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1D42FDC3C;
+	Sun,  1 Mar 2026 01:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772330032; cv=none; b=B4aRt7Q4uChJOM2ifxxwRcv76467V2Wx4YP//g1F/rVfDcz0tLALCuTVhVK9C+FdlI8RVHZswfG82xPLb1oxTUlM+RuBef0fUzwVDdRp1m+PrwOLZmHnhB9YzSrdJ0DS5GCl19RNnMz1Qj9TmHATM3nPtGb+7yZt8iDQBCmqVYQ=
+	t=1772330109; cv=none; b=RQiZVL+RoCjVCas1MXt1r4BknR1sOwayg4jnOGB0UckVsfs8f6h7dhqy5y1RcE8bKIIa/FTKHClYx5i7by2HQhU+Ul1NhiLHVzd87ofunD8Mjbcua6eWcN/Vw9bTCNPp+nK4dghD8JdUikkwcxdNgat/u/MRcJVS81NNmK3Xrms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772330032; c=relaxed/simple;
-	bh=wFc3eqkLKnXa9Xcuu9+1/PbiJsbfOPhi5b6zFMDWKwA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BfWJlx9LVuu0iOgr+MVRLo6Fy2krs7K3hiF2tpkqNLa/0dv3cPVqjImnNA+gs9SGKSQQOXTtnBBPb8K78+zSQxPfc06ljeL8LzK+3gzxBg4a/I9HLZlr9SzfCNhrf/iFW3ygighoGFu2Mr1PcxkGL0pE1qwEUu/t1uhmTNIR07g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gn0lnQXE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772330109; c=relaxed/simple;
+	bh=cSJeQhbI6pB3AN1s863qk+ib3NYzwAJMbo2hpD05AvI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qcyLlfdhi8+O3kqstJXPLga2AJcWOmFbOMZhuMGy//7FcXQU8dvzbj0NWafjHvuFeu+3WwLUWtIjWAAL8JbJEgxelUhvx7MwbMdjiF6zZc2gf7PpDxSCjzZnxkDSBIyZ4lartX1l1fbu9lDCYJdM7rj4kdSkSgu9p0oCZ3IZVFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jE3ATKLw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gn0lnQXE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDECCC19421;
-	Sun,  1 Mar 2026 01:53:51 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jE3ATKLw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A01AC19421;
+	Sun,  1 Mar 2026 01:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772330032;
-	bh=wFc3eqkLKnXa9Xcuu9+1/PbiJsbfOPhi5b6zFMDWKwA=;
+	s=k20201202; t=1772330109;
+	bh=cSJeQhbI6pB3AN1s863qk+ib3NYzwAJMbo2hpD05AvI=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Gn0lnQXEdDytQa5N1P+ZIknU+DdhjQ4GDI4/pZ/CNUhVHQSNb0lSgPqOT94ksxlJG
-	 cInAIA1iLCjY8J8NTG6S1Kj657Qiw9X3vP/H0rgxyMeNhhuJi0ULBMyv8i5OAlcHS8
-	 NAZI9ueT5S20mC55xLtSJM99IzI+0C+cpAvrnfDbx/XlkQz3Ro0+1n6S4u4vi6ma79
-	 NCW7fmPDMme+N/ZDd9fTFKqsGFUjs7/k0B4NYwAFyV9QAAHWhnI1tEb0ODa5WsqHI9
-	 VBRKy3CtxwJZxF7PK68NypY9g8Cfn52lcF7H5r0od8DJJuQjT2MjYK0zxTpq+W4+n2
-	 oWBGVPg4K59+w==
+	b=jE3ATKLwjNRA/D0GY2RlOrDshtoKXn2LDYmkznRmxKkChFEQw5IByDYCqF0smW+Bs
+	 vctSD/+4X0X1Z1UxU62JUI8yJ2bl/uzZkpEZRV8L6Y++PmSNe26hq9K6+tGimyZ+Ms
+	 LeLea2DeX7gDVD8/FNyac7SMhnw5DwR79VGLBsjmL34QTHpKde190KSak8ocPQflfg
+	 iemMQJzSF9fh2dFUN7p3/zdWmd6CTbSJds5X/ONgYbZArCijWZBgM89fK+qyY3llul
+	 Z3aAZ9IWm+temLVHizA6PqH9TbslNMiIUrmJ2jp2Gwx/Zu75ssllmQYFqo5BWHL+rO
+	 djAJq9nr0Hf2g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	haokexin@gmail.com
-Cc: Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-omap@vger.kernel.org,
+	git@danielhodges.dev
+Cc: Anna Schumaker <anna.schumaker@oracle.com>,
+	linux-nfs@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: FAILED: Patch "net: cpsw_new: Fix unnecessary netdev unregistration in cpsw_probe() error path" failed to apply to 5.15-stable tree
-Date: Sat, 28 Feb 2026 20:53:50 -0500
-Message-ID: <20260301015350.1720710-1-sashal@kernel.org>
+Subject: FAILED: Patch "SUNRPC: fix gss_auth kref leak in gss_alloc_msg error path" failed to apply to 5.15-stable tree
+Date: Sat, 28 Feb 2026 20:55:07 -0500
+Message-ID: <20260301015507.1722249-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -56,87 +55,54 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 62db84b7efa63b78aed9fdbdae90f198771be94c Mon Sep 17 00:00:00 2001
-From: Kevin Hao <haokexin@gmail.com>
-Date: Thu, 5 Feb 2026 10:47:02 +0800
-Subject: [PATCH] net: cpsw_new: Fix unnecessary netdev unregistration in
- cpsw_probe() error path
+From dd2fdc3504592d85e549c523b054898a036a6afe Mon Sep 17 00:00:00 2001
+From: Daniel Hodges <git@danielhodges.dev>
+Date: Fri, 6 Feb 2026 15:41:46 -0500
+Subject: [PATCH] SUNRPC: fix gss_auth kref leak in gss_alloc_msg error path
 
-The current error handling in cpsw_probe() has two issues:
-- cpsw_unregister_ports() may be called before cpsw_register_ports() has
-  been executed.
+Commit 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c") added
+a kref_get(&gss_auth->kref) call to balance the gss_put_auth() done
+in gss_release_msg(), but forgot to add a corresponding kref_put()
+on the error path when kstrdup_const() fails.
 
-- cpsw_unregister_ports() is already invoked within cpsw_register_ports()
-  in case of a register_netdev() failure, but the error path would call
-  it again.
+If service_name is non-NULL and kstrdup_const() fails, the function
+jumps to err_put_pipe_version which calls put_pipe_version() and
+kfree(gss_msg), but never releases the gss_auth reference. This leads
+to a kref leak where the gss_auth structure is never freed.
 
-Fixes: ed3525eda4c4 ("net: ethernet: ti: introduce cpsw switchdev based driver part 1 - dual-emac")
-Signed-off-by: Kevin Hao <haokexin@gmail.com>
+Add a forward declaration for gss_free_callback() and call kref_put()
+in the err_put_pipe_version error path to properly release the
+reference taken earlier.
+
+Fixes: 5940d1cf9f42 ("SUNRPC: Rebalance a kref in auth_gss.c")
 Cc: stable@vger.kernel.org
-Reviewed-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Link: https://patch.msgid.link/20260205-cpsw-error-path-v1-1-6e58bae6b299@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Daniel Hodges <git@danielhodges.dev>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 ---
- drivers/net/ethernet/ti/cpsw_new.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ net/sunrpc/auth_gss/auth_gss.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/ti/cpsw_new.c b/drivers/net/ethernet/ti/cpsw_new.c
-index 21af0a10626aa..b9fc31eb06134 100644
---- a/drivers/net/ethernet/ti/cpsw_new.c
-+++ b/drivers/net/ethernet/ti/cpsw_new.c
-@@ -2003,7 +2003,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 	/* setup netdevs */
- 	ret = cpsw_create_ports(cpsw);
- 	if (ret)
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
+diff --git a/net/sunrpc/auth_gss/auth_gss.c b/net/sunrpc/auth_gss/auth_gss.c
+index 5c095cb8cb201..bb3c3db2713b1 100644
+--- a/net/sunrpc/auth_gss/auth_gss.c
++++ b/net/sunrpc/auth_gss/auth_gss.c
+@@ -39,6 +39,8 @@ static const struct rpc_authops authgss_ops;
+ static const struct rpc_credops gss_credops;
+ static const struct rpc_credops gss_nullops;
  
- 	/* Grab RX and TX IRQs. Note that we also have RX_THRESHOLD and
- 	 * MISC IRQs which are always kept disabled with this driver so
-@@ -2017,14 +2017,14 @@ static int cpsw_probe(struct platform_device *pdev)
- 			       0, dev_name(dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
++static void gss_free_callback(struct kref *kref);
++
+ #define GSS_RETRY_EXPIRED 5
+ static unsigned int gss_expired_cred_retry_delay = GSS_RETRY_EXPIRED;
+ 
+@@ -551,6 +553,7 @@ gss_alloc_msg(struct gss_auth *gss_auth,
  	}
- 
- 	ret = devm_request_irq(dev, cpsw->irqs_table[1], cpsw_tx_interrupt,
- 			       0, dev_name(dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 	}
- 
- 	if (!cpsw->cpts)
-@@ -2034,7 +2034,7 @@ static int cpsw_probe(struct platform_device *pdev)
- 			       0, dev_name(&pdev->dev), cpsw);
- 	if (ret < 0) {
- 		dev_err(dev, "error attaching misc irq (%d)\n", ret);
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 	}
- 
- 	/* Enable misc CPTS evnt_pend IRQ */
-@@ -2043,7 +2043,7 @@ static int cpsw_probe(struct platform_device *pdev)
- skip_cpts:
- 	ret = cpsw_register_notifiers(cpsw);
- 	if (ret)
--		goto clean_unregister_netdev;
-+		goto clean_cpts;
- 
- 	ret = cpsw_register_devlink(cpsw);
- 	if (ret)
-@@ -2065,8 +2065,6 @@ static int cpsw_probe(struct platform_device *pdev)
- 
- clean_unregister_notifiers:
- 	cpsw_unregister_notifiers(cpsw);
--clean_unregister_netdev:
--	cpsw_unregister_ports(cpsw);
- clean_cpts:
- 	cpts_release(cpsw->cpts);
- 	cpdma_ctlr_destroy(cpsw->dma);
+ 	return gss_msg;
+ err_put_pipe_version:
++	kref_put(&gss_auth->kref, gss_free_callback);
+ 	put_pipe_version(gss_auth->net);
+ err_free_msg:
+ 	kfree(gss_msg);
 -- 
 2.51.0
 
