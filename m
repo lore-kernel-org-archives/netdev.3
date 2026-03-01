@@ -1,41 +1,40 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31705243969;
-	Sun,  1 Mar 2026 01:44:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7332C2DCBFA;
+	Sun,  1 Mar 2026 01:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329451; cv=none; b=QX78y/74EsY23ghK3vtnP8PQUaDvl5VJ2evRl200473jNgMfkl2XgCYJT+PoruwCT1Nac0Y416zn8xY3lBxstpBBDQslYPxhsGpsWfe5FIC0R8gfnz30/6ykis5OPx8p2t1Vj37j8EeX0qWJAQFo1UhaCZAMTx7AdqWVQYvzDUU=
+	t=1772329526; cv=none; b=ETfUUfnPBnAzo94WUA+olRLwhDo9tMh5S+q0/HXCvTHdY7dgXK2IKyVtCwkuIlweWZNbPySFB+EFbhzxdcSn0qB1ovPbQ5hWfJSYFrekr3l3dKNhuhLPMBtB+CBHOW6dYRAmvlg3S6aPPRi0LGdYRcGROgbCpNgfF97yMwPoIDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329451; c=relaxed/simple;
-	bh=ICWJceNjWAcsYgqkB2Ubv4dZDEYGG4zPXXvZXz8Lmxc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=PxyF8F4pnzeNawYzN7mg4J1p4Y8qZhBcX0OAV7CluZIN3OiLmUwFM4a/WB/2N98EcnV6LEPH9fanHywiqo91urkJcPoWe1JHe72XVNB6zQ4ZO5swztBSrjCizgr0Owre4WFua94kkZQ6b+X82IPuu/Awrdxvs8rW3IZ1Glwf7HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Akhc/Xt2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772329526; c=relaxed/simple;
+	bh=U/jfytw9j9ZCs8LI5qFO3J10IirM7zXSKOZpB0D7NtE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eGHZXaFJGpGEC47lZ6QyZ9q2sKnrhbZdlUJSs9Z0oCqiKMNC6/nH4YrpgcH5d/mPWwSMBuRbFR1iqcDSYfEAApe+O/SHIFlAheAHJ4qqc7GXlgjSjJY22fdLUJrX9+21DOCvx7ItCPj1/Zu1xLL23wngkakkkE4QBwC6O7jl7Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EHR+yXMd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Akhc/Xt2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9EAC19421;
-	Sun,  1 Mar 2026 01:44:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EHR+yXMd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDFFC19421;
+	Sun,  1 Mar 2026 01:45:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329451;
-	bh=ICWJceNjWAcsYgqkB2Ubv4dZDEYGG4zPXXvZXz8Lmxc=;
+	s=k20201202; t=1772329526;
+	bh=U/jfytw9j9ZCs8LI5qFO3J10IirM7zXSKOZpB0D7NtE=;
 	h=From:To:Cc:Subject:Date:From;
-	b=Akhc/Xt2UlLelGxL4GLWZ3Zp8z5owBYfdpO2KuAcD4CMQWr8KjwZaJOM7wK1WKP36
-	 BVw7YzgB2UQf/Hz7gOgf/bGuPOSAL3tc3q5EZrU3JFIDcUTPTu1cvcmOmgoDTy9mRb
-	 Zpk6rWwD72oVLgNbwpFIIGu0PXaPJ13v2ZebHIeyaDL7vjTvkEGbOhPHMeL8QOGl+/
-	 /+f18K15XJjAPuF4XfdZzUJ1Z7m0kXLeFdb0i6H6g2pkxsKkeobhSDEZOs2bTQqzJl
-	 JMtCEjMeLRIFoNUC8nPgux0tlZ+sDCJmOXN/KOhJu3QS+41sFnoaW3VflCnFI7Pc+5
-	 l3S4q5bQl9QGw==
+	b=EHR+yXMdIJT8NOa/eOvkdYnni/2V/UF9h31948MYrX7WQBKEZfkUOaG4SU1UH5yqe
+	 k5VNlWg4wlJuwglUmKQMbaf7VhIy/quNOT9VU9GgELc5B2txMY6ZZcgRQ81kUQFeT+
+	 XffTjN/G12yYCnsjzwSzOIotOVcNnSgrHJG9Wf5pSUi7mxlmodX2gkwMazfMZG/bGF
+	 EfmyIg2UI9M+fzyz3MlqX79/u5kNKzLxXl9sYvVYNCVTdOSMqHZP2PRyur/NfjKsHX
+	 t+vWsvtibMig4HwVRJGIyoSClS2Me9c6AkxrhUCU2s6Owm0kTZQiCA1Ku0KVMfNVpq
+	 FBC1l2rTHHjfQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	eperezma@redhat.com
-Cc: Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: FAILED: Patch "vhost: move vdpa group bound check to vhost_vdpa" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:44:08 -0500
-Message-ID: <20260301014409.1706293-1-sashal@kernel.org>
+	hodgesd@meta.com
+Cc: Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net
+Subject: FAILED: Patch "tipc: fix RCU dereference race in tipc_aead_users_dec()" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:45:24 -0500
+Message-ID: <20260301014524.1708000-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -45,7 +44,6 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Patchwork-Hint: ignore
 X-stable: review
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 The patch below does not apply to the 6.1-stable tree.
@@ -58,76 +56,41 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From cd025c1e876b4e262e71398236a1550486a73ede Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>
-Date: Mon, 19 Jan 2026 15:32:54 +0100
-Subject: [PATCH] vhost: move vdpa group bound check to vhost_vdpa
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 6a65c0cb0ff20b3cbc5f1c87b37dd22cdde14a1c Mon Sep 17 00:00:00 2001
+From: Daniel Hodges <hodgesd@meta.com>
+Date: Tue, 3 Feb 2026 09:56:21 -0500
+Subject: [PATCH] tipc: fix RCU dereference race in tipc_aead_users_dec()
 
-Remove duplication by consolidating these here.  This reduces the
-posibility of a parent driver missing them.
+tipc_aead_users_dec() calls rcu_dereference(aead) twice: once to store
+in 'tmp' for the NULL check, and again inside the atomic_add_unless()
+call.
 
-While we're at it, fix a bug in vdpa_sim where a valid ASID can be
-assigned to a group equal to ngroups, causing an out of bound write.
+Use the already-dereferenced 'tmp' pointer consistently, matching the
+correct pattern used in tipc_aead_users_inc() and tipc_aead_users_set().
 
+Fixes: fc1b6d6de220 ("tipc: introduce TIPC encryption & authentication")
 Cc: stable@vger.kernel.org
-Fixes: bda324fd037a ("vdpasim: control virtqueue support")
-Acked-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: Eugenio Pérez <eperezma@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Message-Id: <20260119143306.1818855-2-eperezma@redhat.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Daniel Hodges <hodgesd@meta.com>
+Link: https://patch.msgid.link/20260203145621.17399-1-git@danielhodges.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- drivers/vdpa/mlx5/net/mlx5_vnet.c | 3 ---
- drivers/vdpa/vdpa_sim/vdpa_sim.c  | 6 ------
- drivers/vhost/vdpa.c              | 2 +-
- 3 files changed, 1 insertion(+), 10 deletions(-)
+ net/tipc/crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-index ddaa1366704bb..44062e9d68f00 100644
---- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
-+++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
-@@ -3640,9 +3640,6 @@ static int mlx5_set_group_asid(struct vdpa_device *vdev, u32 group,
- 	struct mlx5_vdpa_dev *mvdev = to_mvdev(vdev);
- 	int err = 0;
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 970db62bd029b..a3f9ca28c3d53 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -460,7 +460,7 @@ static void tipc_aead_users_dec(struct tipc_aead __rcu *aead, int lim)
+ 	rcu_read_lock();
+ 	tmp = rcu_dereference(aead);
+ 	if (tmp)
+-		atomic_add_unless(&rcu_dereference(aead)->users, -1, lim);
++		atomic_add_unless(&tmp->users, -1, lim);
+ 	rcu_read_unlock();
+ }
  
--	if (group >= MLX5_VDPA_NUMVQ_GROUPS)
--		return -EINVAL;
--
- 	mvdev->mres.group2asid[group] = asid;
- 
- 	mutex_lock(&mvdev->mres.lock);
-diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim.c b/drivers/vdpa/vdpa_sim/vdpa_sim.c
-index c1c6431950e1b..df9c7ddc5d782 100644
---- a/drivers/vdpa/vdpa_sim/vdpa_sim.c
-+++ b/drivers/vdpa/vdpa_sim/vdpa_sim.c
-@@ -606,12 +606,6 @@ static int vdpasim_set_group_asid(struct vdpa_device *vdpa, unsigned int group,
- 	struct vhost_iotlb *iommu;
- 	int i;
- 
--	if (group > vdpasim->dev_attr.ngroups)
--		return -EINVAL;
--
--	if (asid >= vdpasim->dev_attr.nas)
--		return -EINVAL;
--
- 	iommu = &vdpasim->iommu[asid];
- 
- 	mutex_lock(&vdpasim->mutex);
-diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
-index 05a481e4c385a..9d25b735b43dd 100644
---- a/drivers/vhost/vdpa.c
-+++ b/drivers/vhost/vdpa.c
-@@ -680,7 +680,7 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
- 	case VHOST_VDPA_SET_GROUP_ASID:
- 		if (copy_from_user(&s, argp, sizeof(s)))
- 			return -EFAULT;
--		if (s.num >= vdpa->nas)
-+		if (idx >= vdpa->ngroups || s.num >= vdpa->nas)
- 			return -EINVAL;
- 		if (!ops->set_group_asid)
- 			return -EOPNOTSUPP;
 -- 
 2.51.0
 
