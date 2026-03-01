@@ -1,40 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7BEC244670;
-	Sun,  1 Mar 2026 01:47:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21ED52F25F5;
+	Sun,  1 Mar 2026 01:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772329620; cv=none; b=YtRA961EGQcrXIkGEabCimEM+yUeJSc+Ssqiw+ZZlEjWynepe+B4FkkDMasEmTNI0nQ2gT8vu9P/IjkaZyc+0BF/jEMYlNV+pSBmTCD8CBf/2n9OCQwsNAUIcuXTXJd4f5V2rnybcORwJuigcn+S88xSdVMraH9Yn+R/QA2j9Bo=
+	t=1772329630; cv=none; b=i/C+ArtNVo7WhJNu+kXA16bzhAleBqVhT+Nbzvb8jkoWO7noZ2K12fLnTgDwEDBmFaH6vg39CmnbLms0Kbm19Rins6KnrUjEt8HaTVYUQVf8354pUmGlHiPwoySJwJEikv44pX0cM4fnvCWZV2Jr/3zQSgyeM3swdcM8nCvVrzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772329620; c=relaxed/simple;
-	bh=cMDV/GsPhNn31CguAG6uxms9WmKyLp/27GPTJViqR0I=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p5M/g4c4qTplRCH0C1BS2DT/DecGEJS/VJErPsucd6VWuRX8U5YwsO4D763tWeF7B1gvSbDnd1buvdbXutp3qlI2YtvN362bvUSB8sIOHZlSqdiILLhLDme8+VpN2JbKlUif4JUGELkBmtUNY5cutcLU87StpRB5ME05DvgoVfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBzV1Y/O; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772329630; c=relaxed/simple;
+	bh=3SSeFCCfAkqeNnx3CbQeqwJZweZyXC2JCytdjnmDrzs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PzR5LjZ025llCHtg2S2Dk4KQtK0GfV4mjSjmW8g8DG3FrhNR38w75HmUo1YkZnX1+Up8Mx5+0JXgpEDHDHATyk40OYvY7lcXlARGmVsWLkcw/qBr25HmxhMxs6ZUOjTQdH2yT6oziV/UR1+umrmFO1EE4M5PkEAR510/1u5hA4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOKHyZwq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBzV1Y/O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF92C19421;
-	Sun,  1 Mar 2026 01:46:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOKHyZwq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26784C19421;
+	Sun,  1 Mar 2026 01:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772329620;
-	bh=cMDV/GsPhNn31CguAG6uxms9WmKyLp/27GPTJViqR0I=;
+	s=k20201202; t=1772329629;
+	bh=3SSeFCCfAkqeNnx3CbQeqwJZweZyXC2JCytdjnmDrzs=;
 	h=From:To:Cc:Subject:Date:From;
-	b=NBzV1Y/OSmNikrcrYkMJ68c83b0HwPmWISArMGRMCHWLse7sS7wGpUR21Vry+XRDV
-	 4lrP6hy39We/0nbYP9axlfkLuumikIKRbfzU4PRVDf0GjXVgi1AjFK71lCm1p0CCBB
-	 1sg+xzc0hjwB//vvJzd9Qt7xLmKdFs8ss8JMeCdODk6HYpNfK3NTfIuvHxU32LrOtG
-	 9cALU6Ed3pDsy9yEHKjqQRu+5/6GvO3srm0MIxgXNQQ3kAe960TOFeiqjq0kNu9Zg0
-	 /LuEOpSuiwi02//50G0iyNR7N5dZfshfoIGwzmqrkwkQk+yZfPn/1Ai8ramrb+Blmc
-	 D45RPVfp7jUKQ==
+	b=HOKHyZwqtFKbALDW4K5GqoJ6gPSXhRIOsrWNN2w2MVx+ieLYQU8NxoYrQZiv+7fo8
+	 wof/z+Kpc24lGcHoMQA/C51o98H4WbMARoaPG8Nr5Bc2uPEz9bGp6lS7cXalWMOh3c
+	 pMuHEqScPOxxdBzF9A9Fecz+e7Sd0PF9QJKfGkDl4b8jFdYrAQrV9OxR/dG2Vek6eh
+	 o4nVY3NM8E2DbJJ/THFkl6BGgL3nFdcM7rpyVAyWBl4Azf1kPB/nEbCcxU9bqs4c3+
+	 WVfgFkbqdtOJch2tkzxEqH1xAHkzrKqxoC1H8XgfMVskEX6v/a7tgdOY293Sfq19pB
+	 gFJnV2d9OXsMA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	bo@mboxify.com
-Cc: Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	enelsonmoore@gmail.com
+Cc: Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org
-Subject: FAILED: Patch "octeontx2-af: CGX: fix bitmap leaks" failed to apply to 6.1-stable tree
-Date: Sat, 28 Feb 2026 20:46:58 -0500
-Message-ID: <20260301014658.1710141-1-sashal@kernel.org>
+Subject: FAILED: Patch "net: ethernet: marvell: skge: remove incorrect conflicting PCI ID" failed to apply to 6.1-stable tree
+Date: Sat, 28 Feb 2026 20:47:07 -0500
+Message-ID: <20260301014708.1710461-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -56,46 +54,47 @@ Sasha
 
 ------------------ original commit in Linus's tree ------------------
 
-From 3def995c4ede842adf509c410e92d09a0cedc965 Mon Sep 17 00:00:00 2001
-From: Bo Sun <bo@mboxify.com>
-Date: Fri, 6 Feb 2026 21:09:24 +0800
-Subject: [PATCH] octeontx2-af: CGX: fix bitmap leaks
+From d01103fdcb871fd83fd06ef5803d576507c6a801 Mon Sep 17 00:00:00 2001
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Thu, 5 Feb 2026 23:17:14 -0800
+Subject: [PATCH] net: ethernet: marvell: skge: remove incorrect conflicting
+ PCI ID
 
-The RX/TX flow-control bitmaps (rx_fc_pfvf_bmap and tx_fc_pfvf_bmap)
-are allocated by cgx_lmac_init() but never freed in cgx_lmac_exit().
-Unbinding and rebinding the driver therefore triggers kmemleak:
+The ID 1186:4302 is matched by both r8169 and skge. The same device ID
+should not be in more than one driver, because in that case, which
+driver is used is unpredictable. I downloaded the latest drivers for
+all hardware revisions of the D-Link DGE-530T from D-Link's website,
+and the only drivers which contain this ID are Realtek drivers.
+Therefore, remove this device ID from skge.
 
-    unreferenced object (size 16):
-        backtrace:
-          rvu_alloc_bitmap
-          cgx_probe
+In the kernel bug report which requested addition of this device ID,
+someone created a patch to add the ID to skge. Then, it was pointed
+out that this device is an "r8169 in disguise", and a patch was created
+to add it to r8169. Somehow, both of these patches got merged. See the
+link below.
 
-Free both bitmaps during teardown.
-
-Fixes: e740003874ed ("octeontx2-af: Flow control resource management")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=38862
+Fixes: c074304c2bcf ("add pci-id for DGE-530T")
 Cc: stable@vger.kernel.org
-Signed-off-by: Bo Sun <bo@mboxify.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Reviewed-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20260206130925.1087588-2-bo@mboxify.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Link: https://patch.msgid.link/20260206071724.15268-1-enelsonmoore@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/cgx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/marvell/skge.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-index 42044cd810b1f..fd4792e432bf0 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cgx.c
-@@ -1823,6 +1823,8 @@ static int cgx_lmac_exit(struct cgx *cgx)
- 		cgx->mac_ops->mac_pause_frm_config(cgx, lmac->lmac_id, false);
- 		cgx_configure_interrupt(cgx, lmac, lmac->lmac_id, true);
- 		kfree(lmac->mac_to_index_bmap.bmap);
-+		rvu_free_bitmap(&lmac->rx_fc_pfvf_bmap);
-+		rvu_free_bitmap(&lmac->tx_fc_pfvf_bmap);
- 		kfree(lmac->name);
- 		kfree(lmac);
- 	}
+diff --git a/drivers/net/ethernet/marvell/skge.c b/drivers/net/ethernet/marvell/skge.c
+index 05349a0b2db1c..cf4e26d337bb5 100644
+--- a/drivers/net/ethernet/marvell/skge.c
++++ b/drivers/net/ethernet/marvell/skge.c
+@@ -78,7 +78,6 @@ static const struct pci_device_id skge_id_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_SYSKONNECT, 0x4320) }, /* SK-98xx V2.0 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4b01) },	  /* D-Link DGE-530T (rev.B) */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4c00) },	  /* D-Link DGE-530T */
+-	{ PCI_DEVICE(PCI_VENDOR_ID_DLINK, 0x4302) },	  /* D-Link DGE-530T Rev C1 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x4320) },	  /* Marvell Yukon 88E8001/8003/8010 */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_MARVELL, 0x5005) },	  /* Belkin */
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_CNET, 0x434E) }, 	  /* CNet PowerG-2000 */
 -- 
 2.51.0
 
