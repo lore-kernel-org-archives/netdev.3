@@ -1,391 +1,116 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6AB398911;
-	Mon,  2 Mar 2026 20:36:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3495D39A073;
+	Mon,  2 Mar 2026 20:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772483762; cv=none; b=moV7c7vpC6LLx8SMlRkurgtuYPGCDA4jxPJYvWwMM/lFypD2EFxmiiLYnZbTLenca6XbC8ZWVRzhr78HYkFv2nwFetYugy0fws0J0dE+EnCOegU8QKlfCJnfVmygaZdnHwQHtzOp6jeeSGECqTt/suatcv21k23qni3YDN3RQU8=
+	t=1772483769; cv=none; b=X2TirDD4J7fr+Z6v+ws6+bjMj0mTq0n1BiQEk5gN27WsiqXN6U7PFm322gynTtrDIQX5Op6oUz/h2wPIUrnnAt3sqUF4qXP6XiDNjanrXmODiR6zZTik8arskRFwSCm7AXGlKusA4If+g8MS+LVn74clUC8PP+hykmEhyoRhuTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772483762; c=relaxed/simple;
-	bh=ERGVnc/eNvk3T/zuaFFuXcHD9EL1GuErviurDex5W4o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=CT3zIHRYHKpuNmQ2UjDfw2jIGgeJuJ2uCaM0oHv+IiMcqlTvyw12EVSc8R2PF0qR8UF8rV/aqNB2yqB4Zu/zWAbZLEAvFDLVvYc/N2lo19LuN/j+BFDO5YtCyCerdiZ8c5EZ51WDBq3qk9kSXzQe6nzdnCZwgNBc9PUtKItnTOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=REYuvFsD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772483769; c=relaxed/simple;
+	bh=yUOzZwoaUnAI2MDcEdhdi6+VTNYTtn0k7bRlSgoxklA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ct3mI32xZXjggtCfxbSWqPNMqihmlq2zkTTYiooyurWpnxoBFYnvMeWu5u5uxqVjbX2D1pSAI3l4gZBxH/GuMU7B3xWll3jxEkj+TwGl3eK70GtET+S6D35oPByOU47zU/EhL0fg387mhCsVfawtdkNj/EzW3yImFiO2LZd7tmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mG02Re/K; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="REYuvFsD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0873CC2BCB5;
-	Mon,  2 Mar 2026 20:35:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mG02Re/K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 785DBC2BC87;
+	Mon,  2 Mar 2026 20:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772483762;
-	bh=ERGVnc/eNvk3T/zuaFFuXcHD9EL1GuErviurDex5W4o=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=REYuvFsDDR+oxBK7+A0CfVNiADY41vFTKoKcokLx+U/4MauiWmR5IPgW1ys7G/NW0
-	 loEvYpig71yLk0MwJ0ymDsMR98bBIpzDrWen0Tw54b7bCP/xbmKsKGfH9coaRp/18y
-	 Eo0H6ZGp5Ty/7F7rwpR4r+Hx2H0nZLg+fbnV+iiEv5zC6whurjOhbHJHY3KZ17yzlS
-	 XKpFn831tIVJfa3gRbLsfyQ4ot+jkdGNv2F60iwxRINAN0TQk+lIUPAd1iK7ktRn3M
-	 O0XnapSqAqCnsDUZsfqS8R2J6JsY/rdYoLvxzMnEaMALXPuXaWeiy70Wdi10ERpMSm
-	 X3mDLx+Xd6KIw==
-From: Jeff Layton <jlayton@kernel.org>
-Date: Mon, 02 Mar 2026 15:24:30 -0500
-Subject: [PATCH v2 046/110] udf: use PRIino format for i_ino
+	s=k20201202; t=1772483769;
+	bh=yUOzZwoaUnAI2MDcEdhdi6+VTNYTtn0k7bRlSgoxklA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mG02Re/KaRem0x/EwCMT8L2Q4SflumAv+SIicV2DFI2ey3WfZkVwzvD+mPXEIq/0k
+	 ATgK+HxoIN9zKVw0l6JgYcK/UB0HYDG181aJ6UzdletCUp/4ofhDC+TeZlh4uZbQaW
+	 Vgj/Bjh4EZw2Y2ARsdsXMbP09Gk4+2thKOIqngS7PoExDtUmUrLQs/jFpoAf95q/fs
+	 JJvYmBc+tM023G1c26BkOyL6d7d/S1mxQp/XJA2OEXFbRUXCqvz5oJMsYahl0zgxYS
+	 bP0cnkZa2iXwIJbobyuqYBxsLxwHcS34X12wyizvJ/UYbOHFJCuvPG2/YFdl6OmwJo
+	 BA0ORNOuklxQQ==
+From: Eric Biggers <ebiggers@kernel.org>
+To: netdev@vger.kernel.org,
+	"David S . Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Neal Cardwell <ncardwell@google.com>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Eric Biggers <ebiggers@kernel.org>,
+	stable@vger.kernel.org,
+	Dmitry Safonov <0x7f454c46@gmail.com>
+Subject: [PATCH net] net/tcp-ao: Fix MAC comparison to be constant-time
+Date: Mon,  2 Mar 2026 12:36:00 -0800
+Message-ID: <20260302203600.13561-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260302-iino-u64-v2-46-e5388800dae0@kernel.org>
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
-In-Reply-To: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
-To: Alexander Viro <viro@zeniv.linux.org.uk>, 
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Dan Williams <dan.j.williams@intel.com>, 
- Matthew Wilcox <willy@infradead.org>, Eric Biggers <ebiggers@kernel.org>, 
- "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>, 
- Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
- David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>, 
- Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, 
- Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
- Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
- Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
- Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
- Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>, 
- Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
- Shyam Prasad N <sprasad@microsoft.com>, 
- Bharath SM <bharathsm@microsoft.com>, 
- Alexander Aring <alex.aring@gmail.com>, 
- Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
- Viacheslav Dubeyko <slava@dubeyko.com>, 
- Eric Van Hensbergen <ericvh@kernel.org>, 
- Latchesar Ionkov <lucho@ionkov.net>, 
- Dominique Martinet <asmadeus@codewreck.org>, 
- Christian Schoenebeck <linux_oss@crudebyte.com>, 
- David Sterba <dsterba@suse.com>, Marc Dionne <marc.dionne@auristor.com>, 
- Ian Kent <raven@themaw.net>, Luis de Bethencourt <luisbg@kernel.org>, 
- Salah Triki <salah.triki@gmail.com>, 
- "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, 
- Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
- Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
- Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>, 
- Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
- John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
- Yangtao Li <frank.li@vivo.com>, 
- Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, 
- David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, 
- Dave Kleikamp <shaggy@kernel.org>, 
- Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
- Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
- Joseph Qi <joseph.qi@linux.alibaba.com>, 
- Mike Marshall <hubcap@omnibond.com>, 
- Martin Brandenburg <martin@omnibond.com>, 
- Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>, 
- Zhihao Cheng <chengzhihao1@huawei.com>, Damien Le Moal <dlemoal@kernel.org>, 
- Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
- John Johansen <john.johansen@canonical.com>, 
- Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
- "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
- Roberto Sassu <roberto.sassu@huawei.com>, 
- Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
- Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
- Stephen Smalley <stephen.smalley.work@gmail.com>, 
- Ondrej Mosnacek <omosnace@redhat.com>, 
- Casey Schaufler <casey@schaufler-ca.com>, 
- Alex Deucher <alexander.deucher@amd.com>, 
- =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>, 
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
- Willem de Bruijn <willemb@google.com>, 
- "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
- Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
- Arnaldo Carvalho de Melo <acme@kernel.org>, 
- Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
- Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
- Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
- Adrian Hunter <adrian.hunter@intel.com>, 
- James Clark <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>, 
- Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>, 
- Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>, 
- Johan Hedberg <johan.hedberg@gmail.com>, 
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
- Oliver Hartkopp <socketcan@hartkopp.net>, 
- Marc Kleine-Budde <mkl@pengutronix.de>, David Ahern <dsahern@kernel.org>, 
- Neal Cardwell <ncardwell@google.com>, 
- Steffen Klassert <steffen.klassert@secunet.com>, 
- Herbert Xu <herbert@gondor.apana.org.au>, 
- Remi Denis-Courmont <courmisch@gmail.com>, 
- Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
- Xin Long <lucien.xin@gmail.com>, 
- Magnus Karlsson <magnus.karlsson@intel.com>, 
- Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
- Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, 
- Daniel Borkmann <daniel@iogearbox.net>, 
- Jesper Dangaard Brouer <hawk@kernel.org>, 
- John Fastabend <john.fastabend@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
- fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev, 
- linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
- linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
- samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org, 
- v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org, 
- ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu, 
- ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
- jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev, 
- ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
- linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
- linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
- selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
- dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
- linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, 
- linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
- linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
- linux-x25@vger.kernel.org, audit@vger.kernel.org, 
- linux-bluetooth@vger.kernel.org, linux-can@vger.kernel.org, 
- linux-sctp@vger.kernel.org, bpf@vger.kernel.org, 
- Jeff Layton <jlayton@kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=9467; i=jlayton@kernel.org;
- h=from:subject:message-id; bh=ERGVnc/eNvk3T/zuaFFuXcHD9EL1GuErviurDex5W4o=;
- b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBppfH7+07vkyyUMJ8L7y9+mlPY4jMzb+NyG+v/R
- pgBoyVgEcOJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaaXx+wAKCRAADmhBGVaC
- FfZHEADJ/fjGrDSfQhhbluCM8cNtkizM9fG4iQpD1GJd8F6pckX2OF3puZnuhvDvkJx1GrSQGpf
- QW/yi7pUzSsl5pmkzn8cPf0XOVnw/HrW30iy7qftMlY1u4pe2cGXaxj9L5mEwIF3RaXpFvqiU45
- 812ILv/xFfAB+tE0lLgn8azq/WMlHUpMUdDxjKutRWykRDMjdYLNd7xsS1Iv/C4J3qmMZGBCPhW
- oJ4fdndEf8wcBjyb2ZakJRWtI5/6KqcytqeHHnC3Hf8MxGbSEoxP+U+AfYMb6Up7xG4/BZJIoqu
- NH0S4x6NhuPkIz7iKLoyYpNPaCfjTBfW32smIeAFg1dmNWBaSxFLsp7I1sW9MCTU7GjwT3kJB0e
- RqzRBjmuIMay1eqHOGoO3jQAhchsuDJ/RKxnWofZPYIQQAKLDB+w4DwT6sAHBFBtJt3Pog1XFGw
- 0fFbFLdIOZhBnJoWN6O2n+BW8auYit7amRfHOQcyREVzZhFGjJdwruGm0vXmoCfUMBgecY1Josh
- 1sot2IriM7ar0A+xdl7wMN74Fer508nUbS76dwwBz+KNC8OTHje4X5uWQXE/XzBqXWeuFRgYK6E
- qTaGyUMzpjWB2HiLSpxSKYcyu6wLbgTYgBtGNMo2HR2W4GR5ZXkfdtWbSGi6w3i4eZ2BwxyF6NW
- i6WIlbxHST3GYpA==
-X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
- fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
+Content-Transfer-Encoding: 8bit
 
-Convert udf i_ino format strings to use the PRIino format
-macro in preparation for the widening of i_ino via kino_t.
+To prevent timing attacks, MACs need to be compared in constant
+time.  Use the appropriate helper function for this.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Fixes: 0a3a809089eb ("net/tcp: Verify inbound TCP-AO signed segments")
+Cc: stable@vger.kernel.org
+Cc: Dmitry Safonov <0x7f454c46@gmail.com>
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 ---
- fs/udf/directory.c | 18 +++++++++---------
- fs/udf/file.c      |  2 +-
- fs/udf/inode.c     | 12 ++++++------
- fs/udf/namei.c     |  8 ++++----
- fs/udf/super.c     |  2 +-
- 5 files changed, 21 insertions(+), 21 deletions(-)
+ net/ipv4/Kconfig  | 1 +
+ net/ipv4/tcp_ao.c | 3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/udf/directory.c b/fs/udf/directory.c
-index 632453aa38934a0b58b420717ec0674c85627ce5..c825e11c017f652500a3dfc83905679ef86ec570 100644
---- a/fs/udf/directory.c
-+++ b/fs/udf/directory.c
-@@ -22,7 +22,7 @@ static int udf_verify_fi(struct udf_fileident_iter *iter)
+diff --git a/net/ipv4/Kconfig b/net/ipv4/Kconfig
+index b71c22475c515..3ab6247be5853 100644
+--- a/net/ipv4/Kconfig
++++ b/net/ipv4/Kconfig
+@@ -746,10 +746,11 @@ config TCP_SIGPOOL
+ 	tristate
  
- 	if (iter->fi.descTag.tagIdent != cpu_to_le16(TAG_IDENT_FID)) {
- 		udf_err(iter->dir->i_sb,
--			"directory (ino %lu) has entry at pos %llu with incorrect tag %x\n",
-+			"directory (ino %" PRIino "u) has entry at pos %llu with incorrect tag %x\n",
- 			iter->dir->i_ino, (unsigned long long)iter->pos,
- 			le16_to_cpu(iter->fi.descTag.tagIdent));
- 		return -EFSCORRUPTED;
-@@ -30,7 +30,7 @@ static int udf_verify_fi(struct udf_fileident_iter *iter)
- 	len = udf_dir_entry_len(&iter->fi);
- 	if (le16_to_cpu(iter->fi.lengthOfImpUse) & 3) {
- 		udf_err(iter->dir->i_sb,
--			"directory (ino %lu) has entry at pos %llu with unaligned length of impUse field\n",
-+			"directory (ino %" PRIino "u) has entry at pos %llu with unaligned length of impUse field\n",
- 			iter->dir->i_ino, (unsigned long long)iter->pos);
- 		return -EFSCORRUPTED;
- 	}
-@@ -41,20 +41,20 @@ static int udf_verify_fi(struct udf_fileident_iter *iter)
- 	 */
- 	if (len > 1 << iter->dir->i_blkbits) {
- 		udf_err(iter->dir->i_sb,
--			"directory (ino %lu) has too big (%u) entry at pos %llu\n",
-+			"directory (ino %" PRIino "u) has too big (%u) entry at pos %llu\n",
- 			iter->dir->i_ino, len, (unsigned long long)iter->pos);
- 		return -EFSCORRUPTED;
- 	}
- 	if (iter->pos + len > iter->dir->i_size) {
- 		udf_err(iter->dir->i_sb,
--			"directory (ino %lu) has entry past directory size at pos %llu\n",
-+			"directory (ino %" PRIino "u) has entry past directory size at pos %llu\n",
- 			iter->dir->i_ino, (unsigned long long)iter->pos);
- 		return -EFSCORRUPTED;
- 	}
- 	if (udf_dir_entry_len(&iter->fi) !=
- 	    sizeof(struct tag) + le16_to_cpu(iter->fi.descTag.descCRCLength)) {
- 		udf_err(iter->dir->i_sb,
--			"directory (ino %lu) has entry where CRC length (%u) does not match entry length (%u)\n",
-+			"directory (ino %" PRIino "u) has entry where CRC length (%u) does not match entry length (%u)\n",
- 			iter->dir->i_ino,
- 			(unsigned)le16_to_cpu(iter->fi.descTag.descCRCLength),
- 			(unsigned)(udf_dir_entry_len(&iter->fi) -
-@@ -78,7 +78,7 @@ static int udf_copy_fi(struct udf_fileident_iter *iter)
- 	}
- 	if (iter->dir->i_size < iter->pos + sizeof(struct fileIdentDesc)) {
- 		udf_err(iter->dir->i_sb,
--			"directory (ino %lu) has entry straddling EOF\n",
-+			"directory (ino %" PRIino "u) has entry straddling EOF\n",
- 			iter->dir->i_ino);
- 		return -EFSCORRUPTED;
- 	}
-@@ -184,7 +184,7 @@ static int udf_fiiter_advance_blk(struct udf_fileident_iter *iter)
- 			return 0;
- 		}
- 		udf_err(iter->dir->i_sb,
--			"extent after position %llu not allocated in directory (ino %lu)\n",
-+			"extent after position %llu not allocated in directory (ino %" PRIino "u)\n",
- 			(unsigned long long)iter->pos, iter->dir->i_ino);
- 		return -EFSCORRUPTED;
- 	}
-@@ -272,7 +272,7 @@ int udf_fiiter_init(struct udf_fileident_iter *iter, struct inode *dir,
- 		if (pos == dir->i_size)
- 			return 0;
- 		udf_err(dir->i_sb,
--			"position %llu not allocated in directory (ino %lu)\n",
-+			"position %llu not allocated in directory (ino %" PRIino "u)\n",
- 			(unsigned long long)pos, dir->i_ino);
- 		err = -EFSCORRUPTED;
- 		goto out;
-@@ -483,7 +483,7 @@ int udf_fiiter_append_blk(struct udf_fileident_iter *iter)
- 		   &iter->loffset, &etype);
- 	if (err <= 0 || etype != (EXT_RECORDED_ALLOCATED >> 30)) {
- 		udf_err(iter->dir->i_sb,
--			"block %llu not allocated in directory (ino %lu)\n",
-+			"block %llu not allocated in directory (ino %" PRIino "u)\n",
- 			(unsigned long long)block, iter->dir->i_ino);
- 		return -EFSCORRUPTED;
- 	}
-diff --git a/fs/udf/file.c b/fs/udf/file.c
-index 32ae7cfd72c549958b70824b449cf146f6750f44..ab8093b87dc8f21ce8af6a72621e2868fb4b9a82 100644
---- a/fs/udf/file.c
-+++ b/fs/udf/file.c
-@@ -133,7 +133,7 @@ long udf_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 	int result;
+ config TCP_AO
+ 	bool "TCP: Authentication Option (RFC5925)"
+ 	select CRYPTO
++	select CRYPTO_LIB_UTILS
+ 	select TCP_SIGPOOL
+ 	depends on 64BIT && IPV6 != m # seq-number extension needs WRITE_ONCE(u64)
+ 	help
+ 	  TCP-AO specifies the use of stronger Message Authentication Codes (MACs),
+ 	  protects against replays for long-lived TCP connections, and
+diff --git a/net/ipv4/tcp_ao.c b/net/ipv4/tcp_ao.c
+index 4980caddb0fc4..a97cdf3e6af4c 100644
+--- a/net/ipv4/tcp_ao.c
++++ b/net/ipv4/tcp_ao.c
+@@ -8,10 +8,11 @@
+  *		Salam Noureddine <noureddine@arista.com>
+  */
+ #define pr_fmt(fmt) "TCP: " fmt
  
- 	if (file_permission(filp, MAY_READ) != 0) {
--		udf_debug("no permission to access inode %lu\n", inode->i_ino);
-+		udf_debug("no permission to access inode %" PRIino "u\n", inode->i_ino);
- 		return -EPERM;
- 	}
+ #include <crypto/hash.h>
++#include <crypto/utils.h>
+ #include <linux/inetdevice.h>
+ #include <linux/tcp.h>
  
-diff --git a/fs/udf/inode.c b/fs/udf/inode.c
-index 7fae8002344a0e1e7e51022e97f1e0e2424185f9..ecc22aded0d287ccdfb34b42a0d82e392054f585 100644
---- a/fs/udf/inode.c
-+++ b/fs/udf/inode.c
-@@ -147,7 +147,7 @@ void udf_evict_inode(struct inode *inode)
- 		if (iinfo->i_alloc_type != ICBTAG_FLAG_AD_IN_ICB &&
- 		    inode->i_size != iinfo->i_lenExtents) {
- 			udf_warn(inode->i_sb,
--				 "Inode %lu (mode %o) has inode size %llu different from extent length %llu. Filesystem need not be standards compliant.\n",
-+				 "Inode %" PRIino "u (mode %o) has inode size %llu different from extent length %llu. Filesystem need not be standards compliant.\n",
- 				 inode->i_ino, inode->i_mode,
- 				 (unsigned long long)inode->i_size,
- 				 (unsigned long long)iinfo->i_lenExtents);
-@@ -1386,13 +1386,13 @@ static int udf_read_inode(struct inode *inode, bool hidden_inode)
- 	 */
- 	bh = udf_read_ptagged(inode->i_sb, iloc, 0, &ident);
- 	if (!bh) {
--		udf_err(inode->i_sb, "(ino %lu) failed !bh\n", inode->i_ino);
-+		udf_err(inode->i_sb, "(ino %" PRIino "u) failed !bh\n", inode->i_ino);
- 		return -EIO;
- 	}
+ #include <net/tcp.h>
+ #include <net/ipv6.h>
+@@ -920,11 +921,11 @@ tcp_ao_verify_hash(const struct sock *sk, const struct sk_buff *skb,
+ 		return SKB_DROP_REASON_NOT_SPECIFIED;
  
- 	if (ident != TAG_IDENT_FE && ident != TAG_IDENT_EFE &&
- 	    ident != TAG_IDENT_USE) {
--		udf_err(inode->i_sb, "(ino %lu) failed ident=%u\n",
-+		udf_err(inode->i_sb, "(ino %" PRIino "u) failed ident=%u\n",
- 			inode->i_ino, ident);
- 		goto out;
- 	}
-@@ -1641,7 +1641,7 @@ static int udf_read_inode(struct inode *inode, bool hidden_inode)
- 		udf_debug("METADATA BITMAP FILE-----\n");
- 		break;
- 	default:
--		udf_err(inode->i_sb, "(ino %lu) failed unknown file type=%u\n",
-+		udf_err(inode->i_sb, "(ino %" PRIino "u) failed unknown file type=%u\n",
- 			inode->i_ino, fe->icbTag.fileType);
- 		goto out;
- 	}
-@@ -1942,7 +1942,7 @@ static int udf_update_inode(struct inode *inode, int do_sync)
- 	if (do_sync) {
- 		sync_dirty_buffer(bh);
- 		if (buffer_write_io_error(bh)) {
--			udf_warn(inode->i_sb, "IO error syncing udf inode [%08lx]\n",
-+			udf_warn(inode->i_sb, "IO error syncing udf inode [%08" PRIino "x]\n",
- 				 inode->i_ino);
- 			err = -EIO;
- 		}
-@@ -2224,7 +2224,7 @@ int udf_next_aext(struct inode *inode, struct extent_position *epos,
- 
- 		if (++indirections > UDF_MAX_INDIR_EXTS) {
- 			udf_err(inode->i_sb,
--				"too many indirect extents in inode %lu\n",
-+				"too many indirect extents in inode %" PRIino "u\n",
- 				inode->i_ino);
- 			return -EFSCORRUPTED;
- 		}
-diff --git a/fs/udf/namei.c b/fs/udf/namei.c
-index 5f2e9a892bffa9579143cedf71d80efa7ad6e9fb..32209549a31f451a486918e673a41497bef42e89 100644
---- a/fs/udf/namei.c
-+++ b/fs/udf/namei.c
-@@ -550,7 +550,7 @@ static int udf_unlink(struct inode *dir, struct dentry *dentry)
- 		goto end_unlink;
- 
- 	if (!inode->i_nlink) {
--		udf_debug("Deleting nonexistent file (%lu), %u\n",
-+		udf_debug("Deleting nonexistent file (%" PRIino "u), %u\n",
- 			  inode->i_ino, inode->i_nlink);
- 		set_nlink(inode, 1);
- 	}
-@@ -809,7 +809,7 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 					       &diriter);
- 		if (retval == -ENOENT) {
- 			udf_err(old_inode->i_sb,
--				"directory (ino %lu) has no '..' entry\n",
-+				"directory (ino %" PRIino "u) has no '..' entry\n",
- 				old_inode->i_ino);
- 			retval = -EFSCORRUPTED;
- 		}
-@@ -821,7 +821,7 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 				old_dir->i_ino) {
- 			retval = -EFSCORRUPTED;
- 			udf_err(old_inode->i_sb,
--				"directory (ino %lu) has parent entry pointing to another inode (%lu != %u)\n",
-+				"directory (ino %" PRIino "u) has parent entry pointing to another inode (%" PRIino "u != %u)\n",
- 				old_inode->i_ino, old_dir->i_ino,
- 				udf_get_lb_pblock(old_inode->i_sb, &tloc, 0));
- 			goto out_oiter;
-@@ -869,7 +869,7 @@ static int udf_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 	retval = udf_fiiter_find_entry(old_dir, &old_dentry->d_name, &oiter);
- 	if (retval) {
- 		udf_err(old_dir->i_sb,
--			"failed to find renamed entry again in directory (ino %lu)\n",
-+			"failed to find renamed entry again in directory (ino %" PRIino "u)\n",
- 			old_dir->i_ino);
- 	} else {
- 		udf_fiiter_delete_entry(&oiter);
-diff --git a/fs/udf/super.c b/fs/udf/super.c
-index 27f463fd1d89e8ae4844cd70c291d737aee1589e..c6e372d573885742745d3ff4b3b017facf228a32 100644
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -1166,7 +1166,7 @@ static int udf_fill_partdesc_info(struct super_block *sb,
- 		}
- 		map->s_uspace.s_table = inode;
- 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_TABLE;
--		udf_debug("unallocSpaceTable (part %d) @ %lu\n",
-+		udf_debug("unallocSpaceTable (part %d) @ %" PRIino "u\n",
- 			  p_index, map->s_uspace.s_table->i_ino);
- 	}
- 
+ 	/* XXX: make it per-AF callback? */
+ 	tcp_ao_hash_skb(family, hash_buf, key, sk, skb, traffic_key,
+ 			(phash - (u8 *)th), sne);
+-	if (memcmp(phash, hash_buf, maclen)) {
++	if (crypto_memneq(phash, hash_buf, maclen)) {
+ 		NET_INC_STATS(sock_net(sk), LINUX_MIB_TCPAOBAD);
+ 		atomic64_inc(&info->counters.pkt_bad);
+ 		atomic64_inc(&key->pkt_bad);
+ 		trace_tcp_ao_mismatch(sk, skb, aoh->keyid,
+ 				      aoh->rnext_keyid, maclen);
 
+base-commit: 9439a661c2e80485406ce2c90b107ca17858382d
 -- 
 2.53.0
 
