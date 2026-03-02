@@ -1,115 +1,104 @@
-Received: from sonic311-30.consmr.mail.ir2.yahoo.com (sonic311-30.consmr.mail.ir2.yahoo.com [77.238.176.162])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4053D39527C
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 10:19:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.176.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AC0239B95E
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 10:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772446766; cv=none; b=t1V+HdTo1vMBiEC3cvnM+dXUTbzro2BiMRZ8JwdfODm6LC8zCn8DtrfvcmhMPQJiGjwtOMGGZt27E7aErrkEcSDjsAT1xXqbi/BaxXdvebxX3lAo95unC6YF/PHNec9cCbQZOxVWrserjDg5/Uo6Oonh3LVyzuvQaSo4GhwTsqU=
+	t=1772447004; cv=none; b=cEJ93L00Q5DTdfywuqGRPMTnl4CY7EgCRDS+lIfVDhjVlDRjxNh/4YUAdGN2ok8rHBbWF6p6On8UddPz5IrZQxQIQIJyEzcuzs78DPq6V3bpQbHvmV4O4QdUVq4cqvaSe2Wbh6YaO5UxJ50PEHtV8D0cvBEbtrOHYhznfnqKD84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772446766; c=relaxed/simple;
-	bh=bLProma0DHl/1j4RJTh29W1mmGS92CuzeHI8c2d30S0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=X+1e6gZv6w5VRO+OaORUpwmwvgpYxGIIxzwq4oa5CHFz/Pjzi9Uj1un6O8BXqahv2HumSrbwvvWg2YObQ87tloiOiS0dlq3QOB6izETFbMxbODEtX3QCu8al3txza9DEMtWt4p8vZvUey5J8E3/+u+X26CZ0Ceo+b+fBL2D/vyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=js3p5gcv; arc=none smtp.client-ip=77.238.176.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
+	s=arc-20240116; t=1772447004; c=relaxed/simple;
+	bh=DxIjiuRLSsy1tFjfqwnUtZGdPPrFPa2emHdfIPwLGaA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CKUq//8CLnOJLqR58SJB46LfXBNAzq9if6Lw/Fe5Ne6wHqiIMfzvxCe7OfZy5VQNPcNePq5tKgbZdp6cRlRzUqtgOw/W2jkfs3biJSjhc/14s3tT5Un8XADf74lsbyjpGuARjNi7TTmAS/Llj2TmDbdpTl2UIOReAc6xS1BYauE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=qejSHz/m; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="js3p5gcv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1772446762; bh=0B9sEv6mlxV1KYtt9m4HrAvho+QF9xsFUGyCQyI1pLc=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=js3p5gcvlAzMxMu4FYlkoLWmks+BQK6+LtEmadQJrKmtTDYpNFOZME/Vylv87xuCg38aiqiUYuwGzJwgn8SlLLTHAz/QFWGzB+BVbg8+WywVwBKTAOltcnVaH2/M3B9sy0FoQV7Hp8EHc2UiilbY93gz8e9+KB0sSI3YMiUFz1wST0ylWw+MMsaHkKbsdsuJ6ur2WGXJXIRGQJfa+aStoCIaCCX3R99Kkt+WRLSnldx7Pf6hJolgyEPPm1+KHeOhURRsaypK1a07Wr75k0SU+tAM+NPBYm+8z4EquqP8PHYj32dZtkVISJSiBdjspBiNVon2+r2Iiv3tW4SC3slmeA==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1772446762; bh=tZQIbgd0xqbaA+ro3f/OzEFfZCSef+bCQtz8EBB6EHn=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=TdNwSQJuzanEPp7MdTPYMbzqsZfGP3KKx/VQ0kXrMzxjXgcm86G/gWBb78hmvzk65oql22Jnf2SGuVk1S8YVaJBldVm/nRPLIryLeLd60LeyMbofTVGv+VWIroXoDCinY5LhB09S9IeicIz/358sV5UXlfbF7cNkilltMDq1XqpalZ4Nk7JiWLufGwxtzeAVQ1Stg8oU8hktTraDvaqVa/SDlbr8kw+AzIVDdsZfD193SRRMr+VZygCwT0nioevvmMGxfdY2U8MMmiv/M1/mb4C7ljhVT/XUOHfMv68Po4q036fUF2aqvpCGjQwapqarxpB8c9CblwPdKz91bzkuDg==
-X-YMail-OSG: oqaa7Z0VM1kAdjIsC9UzteQZQjFWchAT_49mfoqRubek9rbBFo_nzhgVV6yXstC
- pHHqzn0FDloK1JG828lGWJvM1sD9YMh1Hc3pb.O._.df5KQyo26qbjXcdCPZ8f3k0CRzn0HauoPu
- Y5wNlvRgF47As3uJbjFPQWdzkmQQIXO8xYz942deoES23dBSaS0y1gZVpGF.XpH5D3ZU0gJvu5P0
- B8wvtnmJCxAgDKDwU11eqV09UM1nC46p8HMbytzOJ.fY2QlfFboFc5sgY13B8SZ9yTNMdUcWc.nl
- sKfhDmxtJkUPD2XkDqJl1X49Horc.UK6g14ZRnLSAJsbbLWQLSIvEUrICBm1MZewexiUA8gEkR5S
- 5MwnpIq16tfGyFJfCSfkYeKmsN5GAuicUYBwYH3gptZ44pn9SxJsYc4JUTLgNFk._6hKAfhSi1HO
- 2fOaCdKM8XkSN8Z.zpeA6eYp3pA_MscQJXxJPaXR2b6ss2iiBd9S5xb9YJB1o.yMuchrwJBJhr71
- MsfSX4X9CJ98OribdnonbioxiQD2s0lhF3RwDJwryCx4DUBnSsv4fSz_SsLwQIsvrPg5Cxy7mVru
- 1hJnb2kJxx3nKiGdyHc2c98knj2HaqDoT2ieZAijL8z8F4YcWcC7oxxdpYTKg2pXIhM0.IgaQf96
- F8z_Cb7_EEvIm5nhwOO1_KP6hDfCLr.uMIjbE5OwYBvJzTIR9UKVjTN.dKCfByrrcfthLR6Saf_W
- UdWluhOsTO8TBCR3R3Ornc6Q72sImhdnllJOiWaQyNaikEYiI3fjGKpS4ec2h4OG5abG9HzUseSB
- ZTOXMHhOqTwhRJIODRTMDhDXH8frdTRaE2EdaajAei71OaZbWjNUke7kMulM15leqCpn_T_CbKu3
- rRVlwQ10WaKdd5iwtAbvgQv7PerHh7to117yvPIoYxujU6MF0TlIJGL0hbkEQWExJs5oNvylCM6C
- Kybf.S5i.DC.Git6ho_vFs0JWY42aHbRqbAgO71gudsGniddK0unj5octnu7mymZuHBuAceWKb_B
- vE3v3rbLhmReM06mYilRu0GF1W.t2Rh9jpndWS7DMoY8IK7gDLkhkzj3SH383aFtOfLoNokT97D3
- k2kb9PV8hU23rM6HJmpB1UOM5LNcudxnlau3E6lD4WzGHn7.rQRIWyxkLCjCmptZUN24ItnewqAi
- ARws0ryqfVZWB4m8DmuhPvtEr_Xpp5J7XJb7hrkBLgZ4gi2G0vVpL4dGo_WdI1YO_q5lq56Nw0kF
- evIcp8naValrkfztG8ezhOap4meOksU6tOYCzylVEkGODjNISa8nVRcT9T66NsOrzziqRZDk.qmi
- hzGXcuqR4poqIN4_1fka.WiJb0BM8Fbd8qKlRJrgJo_udg7jWgTfQEsmdjFHpFL8Mj2ERCpSn93b
- _5Wc1297PFAInqZLDBa_Vd34b6CnwfRnSIqQ80izlBniclBGDwHNfkTMuaAS.bdBwA7.DNjKJOU4
- ctRsTRl0EL.l_d3J7XAijStt21vJjYybL1DHWYtZ5Nj9hDBP3RzrP3Exff9cuWXgWVpr.QH1UM8D
- jNxEdE_IkON..PUSbwc.sIe.NMTXIpStcKxELSUKcU3Q5crFdV8R0skeodLRLhwVW8iZ4uOf3544
- Gn5DISHq7iTtw8QQURGskPTmJxSEJu7Ma0AakX1_BtfTZxFFBiQf8EuUOUDAMtvMs9xodDy9FZar
- l5HEF0Vhn4ry0oLemUB5SBlb5t1seKA3_hXMv63VWLJLleVjpxTosptR97bKFxdtIrBAF6.AwlVt
- HjEMKQKXA9Ku58xii11lluPyhwhTJPBpyGnh9FzjsPGV4M16CcLIL_z7sQrYpiq9p3q2k0yiyqJz
- FVmlgNP.qape_e.TtnqlAccD8l6TUDECPom9DpCBqtpuDVNLoJ8q_EoFc0sLCljqry20rsM_iQoh
- 4XePVY_0WP1Ctklq5Li9kRf8hipFdIu8l10wtdtLRHqbMVM3NOkhHl2cBhr6JnuKDyaEhLsJn_6w
- 60i5v6ehwmIFFJDo782Ia1RyZs5Z1GpPHD1TgcETrJsDRtfZwJ4MljreVObJgXOGkM13s7wytkxg
- QkVXakUtaXiyYHCx0WE.v.zv.VI3r7jmzd93XkUxt7eBpvNvuH7to2RHFaV4IgqFh13t6U4hquYB
- 1K4GJbJCjVHSrYqemgj6yax9o.NZNZ6SM.rZoIP8XemNgfspZVRCHgfXOAG8CO_5yavbM11Feihq
- EaZ5jIHxI_rBSZ80IIWtTzDiUYH21mFrzrXa9K3cboEHuUQ2j.EUz9YfMm49O
-X-Sonic-MF: <tomasz.unger@yahoo.pl>
-X-Sonic-ID: 9e68b505-d869-4a37-b6a1-f0b7ad82117d
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ir2.yahoo.com with HTTP; Mon, 2 Mar 2026 10:19:22 +0000
-Received: by hermes--production-ir2-bbcfb4457-d9ssk (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 05798cde46ae7785b9d7f1959d335729;
-          Mon, 02 Mar 2026 10:09:11 +0000 (UTC)
-From: tomasz.unger@yahoo.pl
-To: krzk@kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Tomasz Unger <tomasz.unger@yahoo.pl>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH net-next v3] NFC: s3fwrn5: Replace strcpy() with strscpy()
-Date: Mon,  2 Mar 2026 11:09:08 +0100
-Message-ID: <20260302100908.26399-1-tomasz.unger@yahoo.pl>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="qejSHz/m"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-439aa2f8ebaso998019f8f.2
+        for <netdev@vger.kernel.org>; Mon, 02 Mar 2026 02:23:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1772447000; x=1773051800; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xyf5aAwmciBE7QFfA+/PpQQaPUYccIgX3fQYsSxVl+U=;
+        b=qejSHz/mv7HaqVvybUq9mMdRh91/klcPbrp8m9TDyN6bXhHdCoYkRcI+r0+jbsLuON
+         7V780DKi5GhyAkBytjq2KpvODxTn0X03VlsAQQpYS6py12jJWPQrJU7/rm3LBHu7lD7i
+         UjCVZcSmmNp9mKBlkHOADSXgpl8s9AyI1yxAK1XFCzUbfbotkL1mOYOqvkD2AjRVQ+RF
+         53EouXoHMx31/vSAx9ke/y4E26GeiroFmRLRGzYCSy169dWOQmA9ViMFPosIwtLRY8kX
+         1mfWQ4UXY5lnssavO4yvfLH+vmR2Zt/3QzPiKwI8xtJiuEaxHRgMNv+JLyrRZdMDBTru
+         SN/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772447000; x=1773051800;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xyf5aAwmciBE7QFfA+/PpQQaPUYccIgX3fQYsSxVl+U=;
+        b=ZeqeIQOBJZELGpsMsHK7YzvAMnIpr0S5Y1gqflLrq4dR4QGSDuryAd8LJI+6ZdMry3
+         m4QGHPUiEp5vzCV7cAW4JfkceVHxvg7Iiueo2sjSHoi7/IKviGWK1n2LhOB1ZsA7KVqF
+         TFaHhnmudksJVoLPaN9ZJAIb1Ig9MIB5jBJn7MLAbdSOOLoLLm/zP1asKdGkzZzOz+Ys
+         KIB3uSDtkxAq9Am1k+4RmHqHz/De+L3UghHDvcE7PAqK57uzuf+SUejFYllqdPPSjdE6
+         jtymSSJj837S4Lu3XSZy9qllSF/DpynT5/cawS74mjUNynPMSiYHSC+G4Y+3nOjn7H3U
+         Wpkw==
+X-Gm-Message-State: AOJu0YwAfEVHeLz4FLD14Ge2uDiKSzUeRsqIhZ+cheV69hFfyrc8/J2j
+	UGYVedYk44VAHUIwec4rZpDeQg+FBLg9HK2H1GsaBcpkWjxdHkJv0D3x/EY4LeSBEp7/mUWQPtK
+	sX1V6
+X-Gm-Gg: ATEYQzwwOW5waL6ZkS+823WDBNH4yzCRfe1y+xvWAs5fa2pCWf6A1NLhKFLLCGh7+Lu
+	8hRYEvoOLyQ/p2QWBBz5vyRHxTn/6+WNWb1ep+Jz2Fs7yI2cqxJrTFQVWlZ6I/p5oxilF4KVzfv
+	czHcb2FTchxo5aAes0K4tsEq5QkoVYYqyeSAR+UvY43cLxZ1dRZ/KN7b1GN+ngGyTV9Suw7YNjs
+	VSLIq3egmM1tecEyE5KkkkBCaC3F82kvs6FzCA4a+hUMDjwsgG4OuidSrsz2vAZ0Wm7ySbD0QwT
+	zME6DGgcxeboX48DIKyuw2+jMYJWVqnb7RLknAMmnnVKP9Xr9DFeBWwRzitygprLM3efruIc9YT
+	GvMcs+weqRk3W5EoGv2EmUgd9FnWTKZB+Gqoa9yui1HbGPbK5f4XAot0rgsy0Khuo/j/QsYStzx
+	P/GP0vUuTmTtF6D5mZV/cOrsWChRK5fj4=
+X-Received: by 2002:a05:6000:186e:b0:439:b374:c6d3 with SMTP id ffacd0b85a97d-439b374c7b0mr7633629f8f.32.1772447000348;
+        Mon, 02 Mar 2026 02:23:20 -0800 (PST)
+Received: from FV6GYCPJ69 ([85.163.81.98])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439b1116698sm12378754f8f.16.2026.03.02.02.23.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Mar 2026 02:23:19 -0800 (PST)
+Date: Mon, 2 Mar 2026 11:23:16 +0100
+From: Jiri Pirko <jiri@resnulli.us>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com, 
+	pabeni@redhat.com, horms@kernel.org, donald.hunter@gmail.com, corbet@lwn.net, 
+	skhan@linuxfoundation.org, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com, 
+	mbloch@nvidia.com, przemyslaw.kitszel@intel.com, mschmidt@redhat.com, 
+	andrew+netdev@lunn.ch, rostedt@goodmis.org, mhiramat@kernel.org, 
+	mathieu.desnoyers@efficios.com, chuck.lever@oracle.com, matttbe@kernel.org, cjubran@nvidia.com, 
+	daniel.zahka@gmail.com, linux-doc@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 04/10] devlink: allow to use devlink index as
+ a command handle
+Message-ID: <onwmw7ql5g2xqacrqnawcphdlzfu5v5ohgslsbvoeraszm7m4m@2ywv2ql37wu7>
+References: <20260225133422.290965-1-jiri@resnulli.us>
+ <20260225133422.290965-5-jiri@resnulli.us>
+ <20260228144846.40f5dfeb@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-References: <20260302100908.26399-1-tomasz.unger.ref@yahoo.pl>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260228144846.40f5dfeb@kernel.org>
 
-From: Tomasz Unger <tomasz.unger@yahoo.pl>
+Sat, Feb 28, 2026 at 11:48:46PM +0100, kuba@kernel.org wrote:
+>On Wed, 25 Feb 2026 14:34:16 +0100 Jiri Pirko wrote:
+>> +	if (attrs[DEVLINK_ATTR_INDEX]) {
+>> +		index = nla_get_uint(attrs[DEVLINK_ATTR_INDEX]);
+>> +		devlink = devlinks_xa_lookup_get(net, index);
+>> +		if (!devlink)
+>> +			return ERR_PTR(-ENODEV);
+>> +		goto found;
+>> +	}
+>> +
+>>  	if (!attrs[DEVLINK_ATTR_BUS_NAME] || !attrs[DEVLINK_ATTR_DEV_NAME])
+>>  		return ERR_PTR(-EINVAL);
+>
+>If both INDEX and BUS_NAME + DEV_NAME are provided we should check
+>that they point to the same device? Or reject user space passing both?
 
-Replace strcpy() with strscpy() which limits the copy to the size of
-the destination buffer. Since fw_info->fw_name is an array with a
-fixed, declared size, the two-argument variant of strscpy() is used -
-the compiler deduces the buffer size automatically.
-
-This is a defensive cleanup replacing the deprecated strcpy()
-with the preferred strscpy().
-
-Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
----
-Changes since v2:
-- Fixed commit message line wrapping (Krzysztof Kozlowski)
-- Added Reviewed-by tag from Krzysztof Kozlowski
-
-Changes since v1:
-- Clarified commit message: fw_info->fw_name described as
-  "an array with a fixed, declared size" as requested by
-  Krzysztof Kozlowski <krzk@kernel.org>
-
- drivers/nfc/s3fwrn5/firmware.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/nfc/s3fwrn5/firmware.c b/drivers/nfc/s3fwrn5/firmware.c
-index 64d61b2a715a..9145deec7f6c 100644
---- a/drivers/nfc/s3fwrn5/firmware.c
-+++ b/drivers/nfc/s3fwrn5/firmware.c
-@@ -454,7 +454,7 @@ void s3fwrn5_fw_init(struct s3fwrn5_fw_info *fw_info, const char *fw_name)
- 	fw_info->parity = 0x00;
- 	fw_info->rsp = NULL;
- 	fw_info->fw.fw = NULL;
--	strcpy(fw_info->fw_name, fw_name);
-+	strscpy(fw_info->fw_name, fw_name);
- 	init_completion(&fw_info->completion);
- }
- 
--- 
-2.53.0
-
+I implemented reject. I don't see much of value of allowing both. The
+code that would do the checking is too much for this hypothetical case.
