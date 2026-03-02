@@ -1,106 +1,68 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870DE175A8B;
-	Mon,  2 Mar 2026 23:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC923375CD;
+	Mon,  2 Mar 2026 23:29:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772494178; cv=none; b=T5sItySvKP35+nTfA0ia3EYtXzWEfvdFzfefTDNCfKvz8smG6JAerDCr+hFxVnRsVhTn8jFu7FsefBHWVwVh6xKPn+oiDHQI5yPzsQUqvckRQBmYLgeDvGs1pgelbdNzx3nwvwslFVGR1AIgyRb+3GlF5leOjsbE32sNh2NLlgE=
+	t=1772494189; cv=none; b=H/SBPtesKDrg+q2RadS1HPVpOrc94DzsgUVvqTSiP81RhW+w8SuYVnKxpvcpxmLxP/r41O1Vj5Du+92AkQQKTbhRCjQ2nRYxoD9xZSwHDWyEXBjva1Qe4+qWzrN61fjkLeCb831GQHOgKldrvrX49mtMa8LHI8JPAJXK1MeLITs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772494178; c=relaxed/simple;
-	bh=cGbDhS0SYNM7ywiKo18nxPHughICS0VYorf2j+DgiJI=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=g3hHH+zDDTxkJyHJkey9uTFiwg8Buuc2kdMjBcIzqTb4uwdJKGbZ3baEEkmiTw1MBJy98twra857rLTxrDTGZJmUooBbBjMAGkhymbOHN2w9lR4Xci8UI54puscRomys/MBLyb/QbBMR/mxC0z/bTIeKRQiLV/S2oCG2ym9rR+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TSxh7FtX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772494189; c=relaxed/simple;
+	bh=JjhsBZbYD+PYZg+8Sa8bG20c+cqtp6NekCY1b69oRyQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k0DKKQIIb0m3TDHrzobcWpzYuuetbYkAMoTvAFhnG2Jhgxi6b54N47g1kjTUOqT2yfEVQNSxGqTtTDk7pKSf0gPHZry7XzYoTVB9aIU7+bfHZPTQBVw6uc/O5J1Xl136+bC4BAkrgl8HSZ4Az6aTA3L/xPhVkgHwpIYE9tSW2SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EKt/ujlm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TSxh7FtX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67948C2BC86;
-	Mon,  2 Mar 2026 23:29:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1772494178;
-	bh=cGbDhS0SYNM7ywiKo18nxPHughICS0VYorf2j+DgiJI=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EKt/ujlm"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38149C19423;
+	Mon,  2 Mar 2026 23:29:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772494188;
+	bh=JjhsBZbYD+PYZg+8Sa8bG20c+cqtp6NekCY1b69oRyQ=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=TSxh7FtXeAjmq+kHAoxRq7blbJce7OjcAyo5efUABhyEIDg5ECsbidW5Mcj6tsYRQ
-	 DzsG6rRpbWkeoTG5vogARAaO0jUDloWcC8I+5NMkdmsuNVjw9kdp+VtHQVYC7rwOhD
-	 vT8qcareSz2ZYaJdXKgw++Ul/6kRr6+5kG6+y49U=
-Date: Mon, 2 Mar 2026 15:29:34 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Arm)" <david@kernel.org>
-Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
- <linux-mm@kvack.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Jann Horn
- <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>, David Rientjes
- <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, Alice Ryhl
- <aliceryhl@google.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman <mpe@ellerman.id.au>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Claudio
- Imbrenda <imbrenda@linux.ibm.com>, Alexander Gordeev
- <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Arve =?ISO-8859-1?Q?Hj=F8nnev?=
- =?ISO-8859-1?Q?=E5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>,
- Christian Brauner <brauner@kernel.org>, Carlos Llamas
- <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>, H Hartley Sweeten
- <hsweeten@visionengravers.com>, Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi
- <rodrigo.vivi@intel.com>, Tvrtko Ursulin <tursulin@ursulin.net>, David
- Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jason
- Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Dimitri
- Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim
- <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>, Vincenzo Frascino
- <vincenzo.frascino@arm.com>, Eric Dumazet <edumazet@google.com>, Neal
- Cardwell <ncardwell@google.com>, "David S. Miller" <davem@davemloft.net>,
- David Ahern <dsahern@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH v1 00/16] mm: cleanups around unmapping / zapping
-Message-Id: <20260302152934.eba1cfede1c9b8cebdf45b09@linux-foundation.org>
-In-Reply-To: <20260227200848.114019-1-david@kernel.org>
-References: <20260227200848.114019-1-david@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	b=EKt/ujlmky2u6ZnrW0ZzIzvKVdvfswEr0r5SgScQgGqScbTcrnJfKRuu0fvXxqRid
+	 /hGQfglqXwH5c1P743ShC+bWlVez3LWQSj3+LVw6GzJYp5JUIGfOBH+QT8LapMMqha
+	 0GWr8KXbhvMqimB8TJZJZkPt3p1jWNLC8zVfE7u7MN2ViPCaT6+pQzoYAwSR1kLfzz
+	 W0mPDaNfumIKp5D/kuzKmmViL8TO4MkLJswpI6fEVP0JKiMRBKw2h1SVzKczhk9TTM
+	 RDrhQXwMIEuxDcKkRdlRVD6Yokio18R8Hd3P+6sOVU9mKyAlHRowZPoKEFw7rnbseo
+	 ifkm0+P7hNdCA==
+Date: Mon, 2 Mar 2026 15:29:47 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, Andrew Lunn
+ <andrew@lunn.ch>, Alexandre Torgue <alexandre.torgue@foss.st.com>, Andrew
+ Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, linux-arm-kernel@lists.infradead.org,
+ linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, Mohd Ayaan Anwar
+ <mohd.anwar@oss.qualcomm.com>, Neil Armstrong <neil.armstrong@linaro.org>,
+ netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, Vinod Koul
+ <vkoul@kernel.org>
+Subject: Re: [PATCH RESEND2 net-next 0/8] net: stmmac: qcom-ethqos: further
+ serdes reorganisation
+Message-ID: <20260302152947.3f2a0c2d@kernel.org>
+In-Reply-To: <20260301120824.ot53bhv7z7kn5lfd@skbuf>
+References: <aaDSJAc-x2-klvHJ@shell.armlinux.org.uk>
+	<aaIysVxy-WxbiJz9@shell.armlinux.org.uk>
+	<20260227165556.5cf9e844@kernel.org>
+	<20260228083111.5df8550c@kernel.org>
+	<20260301001453.lpd2rawy7bqxyivp@skbuf>
+	<20260228163229.1024f263@kernel.org>
+	<20260301120824.ot53bhv7z7kn5lfd@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Fri, 27 Feb 2026 21:08:31 +0100 "David Hildenbrand (Arm)" <david@kernel.org> wrote:
+On Sun, 1 Mar 2026 14:08:24 +0200 Vladimir Oltean wrote:
+> > I don't recall us ever making a "dirty tag" on net-next which would
+> > propagate few 100s of netdev patches into someone else's tree :S
+> > IDK how Linus would react. It's the least good option IMO.  
+> 
+> Just for my curiosity, what difference would it make to him?
 
-> A bunch of cleanups around unmapping and zapping. Mostly simplifications,
-> code movements, documentation and renaming of zapping functions.
-
-Thanks, I added this (and the below) to mm.git
-
-I suppressed the dded-to-mm emails to protect the innocent.
-
---- a/rust/kernel/mm/virt.rs~mm-memory-remove-zap_details-parameter-from-zap_page_range_single-fix
-+++ a/rust/kernel/mm/virt.rs
-@@ -123,9 +123,7 @@ impl VmaRef {
-         // SAFETY: By the type invariants, the caller has read access to this VMA, which is
-         // sufficient for this method call. This method has no requirements on the vma flags. The
-         // address range is checked to be within the vma.
--        unsafe {
--            bindings::zap_page_range_single(self.as_ptr(), address, size)
--        };
-+        unsafe { bindings::zap_page_range_single(self.as_ptr(), address, size) };
-     }
- 
-     /// If the [`VM_MIXEDMAP`] flag is set, returns a [`VmaMixedMap`] to this VMA, otherwise
-_
-
+The PHY PR will contain a bunch of networking code.
