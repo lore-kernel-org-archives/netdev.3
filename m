@@ -1,125 +1,251 @@
-Received: from sg-1-103.ptr.blmpb.com (sg-1-103.ptr.blmpb.com [118.26.132.103])
+Received: from mail.aperture-lab.de (mail.aperture-lab.de [116.203.183.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15792D5436
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 05:47:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=118.26.132.103
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1FC800;
+	Mon,  2 Mar 2026 05:49:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.183.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772430427; cv=none; b=HlLnQ2Wzv8JvqYsF9Zs4b/jaRd5nalSPKPLnwwh4ijheTrtUU6CX9mP3RC9tnm5l9fTwX3c/zUEa0Bt7vlA1Cu26t5K0ghxCP+D2uYVOjVX+NJjknsDENdrI8PWzzRRe/TX37Px+QX5rheBfdFGq5nqv8hSgT1rD+xNwLiThqXg=
+	t=1772430565; cv=none; b=JIVD8qpnRmXhd/LZP4PpEGap8viKRPDFlUIKeEuWpVPOr94iaPM5vd08kyo2fZg8Sh3hoDeYl9dytFX+YQ+4zMT5kQnr4/k3XhfWjZKm6FNlsPJbSwbd3yWdM+qcxqiiH4E0WWjGarD5kZJ7qtiJwAXuoEBPHHfmTMjs8m5tbW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772430427; c=relaxed/simple;
-	bh=FBUj8CXqrMmWiCJ6H5cfj4MYT+crFnEv2ztcbGdjJyQ=;
-	h=Date:From:Mime-Version:Content-Type:To:Subject:Message-Id; b=YuXeLZDCZSAg+RiVTM5GhWGVVpMkov6JTF1qNoxfS8ti6cAXooD/+/eXt7MqK917z/f7ovP2rg6EEGoD7y/iw19uukh++m1Jzothe0Fj6KB3UCR3QbHzIItG3aEsbyDUpPWQKeBCKpNxpJhac9y17tpUNbV5ePQlyWJ7r77oPJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=VUEX2y+d; arc=none smtp.client-ip=118.26.132.103
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="VUEX2y+d"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1772430403; h=from:subject:
- mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
- mime-version:in-reply-to:message-id;
- bh=D4s3Y/dQGNCVxUUgdzoFPBIj3DOlIkW5R8WMjLUI9yM=;
- b=VUEX2y+dAFt5rCkT/ocb/U8e+AnrTr3b3+7uKtEGuPXoFD3iLGNCp3Q3D7nH72uUo71Oo4
- WLMbbuOhYLbFnglh59xOhw56s6oMMEtLtywSmD3tGQDEsby3Tv006MDDP1l8jHKdVvbWpV
- O6JbAyul31ZRigF1V9dvQl74EbS5ZjtdBEcTnSZHKw6Z4+5vZepr6T+OiYAzvnoVb+RG1c
- c2y6YAnR/1ua6mpMo7jkdtKHjXkqgJUIRPVD1VpaAiVAkAvJTebKkwUordlCtt/xRcMpdj
- JQbWOaNQ4j/iaGKnS+Tc8xDLESy+riH0GdSz0DdVGm3xl66BuVuK8Y7grVh0Pg==
-Date: Mon,  2 Mar 2026 13:46:29 +0800
-X-Mailer: git-send-email 2.20.1
-From: "Jian Zhang" <zhangjian.3032@bytedance.com>
+	s=arc-20240116; t=1772430565; c=relaxed/simple;
+	bh=SbsONLiS8QHCIdQItshvBsw32uRRwWjCowxMnBA8FFE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cdn8BLXgG1bgjNi2re8p0OWy8DMROVZC3OQVioTpeizA+2eMrtFXNjwKvIFVOuisBnVj5CElvQmI/4i/fXdftuW4fsrMmZSpsYiQYwdOh+ysA57WY8sQDBxvW1BM5uvmBu4mYdgzHILrnC15SyOu8ha0EjdmiNmcgMynerq4J1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue; spf=pass smtp.mailfrom=c0d3.blue; arc=none smtp.client-ip=116.203.183.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c0d3.blue
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2643B54CC61;
+	Mon,  2 Mar 2026 06:40:46 +0100 (CET)
+From: =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
+To: bridge@lists.linux.dev
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Xiao Liang <shaw.leon@gmail.com>,
+	shuah@kernel.org,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
+Subject: [PATCH net-next v3 04/14] net: bridge: mcast: track active state, IGMP/MLD querier appearance
+Date: Mon,  2 Mar 2026 06:39:58 +0100
+Message-ID: <20260302054008.21638-5-linus.luessing@c0d3.blue>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260302054008.21638-1-linus.luessing@c0d3.blue>
+References: <20260302054008.21638-1-linus.luessing@c0d3.blue>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Original-From: Jian Zhang <zhangjian.3032@bytedance.com>
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-To: "Samuel Mendoza-Jonas" <sam@mendozajonas.com>, 
-	"Paul Fertser" <fercerpav@gmail.com>, 
-	"David S. Miller" <davem@davemloft.net>, 
-	"Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>, 
-	"Paolo Abeni" <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, 
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net] net: ncsi: fix skb leak in error paths
-Message-Id: <20260302054629.1347119-1-zhangjian.3032@bytedance.com>
-Content-Transfer-Encoding: 7bit
-X-Lms-Return-Path: <lba+269a52441+210b70+vger.kernel.org+zhangjian.3032@bytedance.com>
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Early return paths in NCSI RX and AEN handlers fail to release
-the received skb, resulting in a memory leak.
+This is the first step to track in dedicated, per protocol family
+variables if we can actively and safely use multicast snooping.
+To later use these in the fast/data path instead of performing
+all these checks for every packet and to later notify DSA/switchdev
+about this state.
 
-Specifically, ncsi_aen_handler() returns on invalid AEN packets
-without consuming the skb. Similarly, ncsi_rcv_rsp() exits early
-when failing to resolve the NCSI device, response handler, or
-request, leaving the skb unfreed.
+This toggles these new variables to true after a Maximum Response Delay
+(default: 10 seconds) if a new IGMP or MLD querier has appeared. This
+can be triggered either through receiving an IGMP/MLD query from another
+host or by a user enabling our own IGMP/MLD querier.
 
-Signed-off-by: Jian Zhang <zhangjian.3032@bytedance.com>
+This is the first of several requirements, similar to what
+br_multicast_querier_exists() already checks so far, to be able to
+reliably receive IGMP/MLD reports, which in turn are needed to build
+a complete multicast database.
+
+No functional change for the fast/data path yet.
+
+Signed-off-by: Linus Lüssing <linus.luessing@c0d3.blue>
 ---
- net/ncsi/ncsi-aen.c |  3 ++-
- net/ncsi/ncsi-rsp.c | 16 ++++++++++++----
- 2 files changed, 14 insertions(+), 5 deletions(-)
+ net/bridge/br_multicast.c | 109 ++++++++++++++++++++++++++++++++++++--
+ net/bridge/br_private.h   |   2 +
+ 2 files changed, 108 insertions(+), 3 deletions(-)
 
-diff --git a/net/ncsi/ncsi-aen.c b/net/ncsi/ncsi-aen.c
-index 62fb1031763d..040a31557201 100644
---- a/net/ncsi/ncsi-aen.c
-+++ b/net/ncsi/ncsi-aen.c
-@@ -224,7 +224,8 @@ int ncsi_aen_handler(struct ncsi_dev_priv *ndp, struct sk_buff *skb)
- 	if (!nah) {
- 		netdev_warn(ndp->ndev.dev, "Invalid AEN (0x%x) received\n",
- 			    h->type);
--		return -ENOENT;
-+		ret = -ENOENT;
-+		goto out;
- 	}
- 
- 	ret = ncsi_validate_aen_pkt(h, nah->payload);
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index 271ec6c3929e..9d3ca1c020b6 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -1176,8 +1176,10 @@ int ncsi_rcv_rsp(struct sk_buff *skb, struct net_device *dev,
- 	/* Find the NCSI device */
- 	nd = ncsi_find_dev(orig_dev);
- 	ndp = nd ? TO_NCSI_DEV_PRIV(nd) : NULL;
--	if (!ndp)
--		return -ENODEV;
-+	if (!ndp) {
-+		ret = -ENODEV;
-+		goto bail;
-+	}
- 
- 	/* Check if it is AEN packet */
- 	hdr = (struct ncsi_pkt_hdr *)skb_network_header(skb);
-@@ -1199,7 +1201,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, struct net_device *dev,
- 	if (!nrh) {
- 		netdev_err(nd->dev, "Received unrecognized packet (0x%x)\n",
- 			   hdr->type);
--		return -ENOENT;
-+		ret = -ENOENT;
-+		goto bail;
- 	}
- 
- 	/* Associate with the request */
-@@ -1207,7 +1210,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, struct net_device *dev,
- 	nr = &ndp->requests[hdr->id];
- 	if (!nr->used) {
- 		spin_unlock_irqrestore(&ndp->lock, flags);
--		return -ENODEV;
-+		ret = -ENODEV;
-+		goto bail;
- 	}
- 
- 	nr->rsp = skb;
-@@ -1261,4 +1265,8 @@ int ncsi_rcv_rsp(struct sk_buff *skb, struct net_device *dev,
- out:
- 	ncsi_free_request(nr);
- 	return ret;
-+
-+bail:
-+	consume_skb(skb);
-+	return ret;
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index b90f0e149c40..83c1331843f3 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -1067,6 +1067,81 @@ static struct sk_buff *br_ip4_multicast_alloc_query(struct net_bridge_mcast *brm
+ 	return skb;
  }
+ 
++static bool br_ip4_multicast_querier_exists(struct net_bridge_mcast *brmctx)
++{
++	return __br_multicast_querier_exists(brmctx, &brmctx->ip4_other_query, false);
++}
++
++#if IS_ENABLED(CONFIG_IPV6)
++static bool br_ip6_multicast_querier_exists(struct net_bridge_mcast *brmctx)
++{
++	return __br_multicast_querier_exists(brmctx, &brmctx->ip6_other_query, true);
++}
++#endif
++
++static void br_ip4_multicast_update_active(struct net_bridge_mcast *brmctx,
++					   bool force_inactive)
++{
++	if (force_inactive)
++		brmctx->ip4_active = false;
++	else
++		brmctx->ip4_active = br_ip4_multicast_querier_exists(brmctx);
++}
++
++static void br_ip6_multicast_update_active(struct net_bridge_mcast *brmctx,
++					   bool force_inactive)
++{
++#if IS_ENABLED(CONFIG_IPV6)
++	if (force_inactive)
++		brmctx->ip6_active = false;
++	else
++		brmctx->ip6_active = br_ip6_multicast_querier_exists(brmctx);
++#endif
++}
++
++static void br_multicast_notify_active(struct net_bridge_mcast *brmctx,
++				       bool ip4_active_old, bool ip6_active_old)
++{
++	if (brmctx->ip4_active == ip4_active_old &&
++	    brmctx->ip6_active == ip6_active_old)
++		return;
++
++	br_debug(brmctx->br, "mc_active changed, vid: %i: v4: %i->%i, v6: %i->%i\n",
++		 brmctx->vlan ? brmctx->vlan->vid : -1,
++		 ip4_active_old, brmctx->ip4_active,
++		 ip6_active_old, brmctx->ip6_active);
++}
++
++/**
++ * br_multicast_update_active() - update mcast active state
++ * @brmctx: the bridge multicast context to check
++ *
++ * This (potentially) updates the IPv4/IPv6 multicast active state. And by
++ * that enables or disables snooping of multicast payload traffic in fast
++ * path.
++ *
++ * The multicast active state is set, per protocol family, if:
++ *
++ * - an IGMP/MLD querier is present
++ *
++ * And is unset otherwise.
++ *
++ * This function should be called by anything that changes one of the
++ * above prerequisites.
++ */
++static void br_multicast_update_active(struct net_bridge_mcast *brmctx)
++{
++	bool ip4_active_old = brmctx->ip4_active, ip6_active_old = brmctx->ip6_active;
++	bool force_inactive = false;
++
++	lockdep_assert_held_once(&brmctx->br->multicast_lock);
++
++	br_ip4_multicast_update_active(brmctx, force_inactive);
++	br_ip6_multicast_update_active(brmctx, force_inactive);
++
++	br_multicast_notify_active(brmctx, ip4_active_old, ip6_active_old);
++}
++
+ #if IS_ENABLED(CONFIG_IPV6)
+ static struct sk_buff *br_ip6_multicast_alloc_query(struct net_bridge_mcast *brmctx,
+ 						    struct net_bridge_mcast_port *pmctx,
+@@ -1770,10 +1845,36 @@ static void br_ip6_multicast_querier_expired(struct timer_list *t)
+ }
+ #endif
+ 
+-static void br_multicast_query_delay_expired(struct timer_list *t)
++static void br_ip4_multicast_query_delay_expired(struct timer_list *t)
+ {
++	struct net_bridge_mcast *brmctx = timer_container_of(brmctx, t,
++							     ip4_other_query.delay_timer);
++
++	spin_lock(&brmctx->br->multicast_lock);
++	if (!br_multicast_is_stopping(brmctx->br, t))
++		/* an own or other IGMP querier appeared some seconds ago and all
++		 * reports should have arrived by now, maybe set multicast state to active
++		 */
++		br_multicast_update_active(brmctx);
++	spin_unlock(&brmctx->br->multicast_lock);
+ }
+ 
++#if IS_ENABLED(CONFIG_IPV6)
++static void br_ip6_multicast_query_delay_expired(struct timer_list *t)
++{
++	struct net_bridge_mcast *brmctx = timer_container_of(brmctx, t,
++							     ip6_other_query.delay_timer);
++
++	spin_lock(&brmctx->br->multicast_lock);
++	if (!br_multicast_is_stopping(brmctx->br, t))
++		/* an own or other MLD querier appeared some seconds ago and all
++		 * reports should have arrived, maybe set multicast state to active
++		 */
++		br_multicast_update_active(brmctx);
++	spin_unlock(&brmctx->br->multicast_lock);
++}
++#endif
++
+ static void br_multicast_select_own_querier(struct net_bridge_mcast *brmctx,
+ 					    struct br_ip *ip,
+ 					    struct sk_buff *skb)
+@@ -4115,11 +4216,13 @@ void br_multicast_ctx_init(struct net_bridge *br,
+ 	brmctx->multicast_membership_interval = 260 * HZ;
+ 
+ 	brmctx->ip4_querier.port_ifidx = 0;
++	brmctx->ip4_active = 0;
+ 	seqcount_spinlock_init(&brmctx->ip4_querier.seq, &br->multicast_lock);
+ 	brmctx->multicast_igmp_version = 2;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	brmctx->multicast_mld_version = 1;
+ 	brmctx->ip6_querier.port_ifidx = 0;
++	brmctx->ip6_active = 0;
+ 	seqcount_spinlock_init(&brmctx->ip6_querier.seq, &br->multicast_lock);
+ #endif
+ 
+@@ -4232,12 +4335,12 @@ void br_multicast_reset_timer_cbs(struct net_bridge_mcast *brmctx)
+ 
+ 	brmctx->ip4_mc_router_timer.function = br_ip4_multicast_local_router_expired;
+ 	brmctx->ip4_other_query.timer.function = br_ip4_multicast_querier_expired;
+-	brmctx->ip4_other_query.delay_timer.function = br_multicast_query_delay_expired;
++	brmctx->ip4_other_query.delay_timer.function = br_ip4_multicast_query_delay_expired;
+ 	brmctx->ip4_own_query.timer.function = br_ip4_multicast_query_expired;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	brmctx->ip6_mc_router_timer.function = br_ip6_multicast_local_router_expired;
+ 	brmctx->ip6_other_query.timer.function = br_ip6_multicast_querier_expired;
+-	brmctx->ip6_other_query.delay_timer.function = br_multicast_query_delay_expired;
++	brmctx->ip6_other_query.delay_timer.function = br_ip6_multicast_query_delay_expired;
+ 	brmctx->ip6_own_query.timer.function = br_ip6_multicast_query_expired;
+ #endif
+ }
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index a181a27aa559..4cc59abdb8e1 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -160,12 +160,14 @@ struct net_bridge_mcast {
+ 	struct bridge_mcast_other_query	ip4_other_query;
+ 	struct bridge_mcast_own_query	ip4_own_query;
+ 	struct bridge_mcast_querier	ip4_querier;
++	bool				ip4_active;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	struct hlist_head		ip6_mc_router_list;
+ 	struct timer_list		ip6_mc_router_timer;
+ 	struct bridge_mcast_other_query	ip6_other_query;
+ 	struct bridge_mcast_own_query	ip6_own_query;
+ 	struct bridge_mcast_querier	ip6_querier;
++	bool				ip6_active;
+ #endif /* IS_ENABLED(CONFIG_IPV6) */
+ #endif /* CONFIG_BRIDGE_IGMP_SNOOPING */
+ };
 -- 
-2.20.1
+2.51.0
+
