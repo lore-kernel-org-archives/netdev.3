@@ -1,33 +1,33 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F7B3644C1;
-	Mon,  2 Mar 2026 09:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53290B652;
+	Mon,  2 Mar 2026 09:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772442397; cv=none; b=dNOY5XoqpW68R/uCfgylv/10534n8haeyoFiZPy+N8f6Sv71nQYOMDNLMXpaFh2OPbbL+lyUbwWa2Laqqoxisf1KngfJv/F8i0/YcYgNY6FsY27RvubWDvBJ1bmubS2NhGSwctALWt7xKn/UkxLin8TcHwrcgvzZ9XoPUgqPDGs=
+	t=1772442412; cv=none; b=PUuA8dZLne9SFDymLqKBO5Cqh6rDj2ya6LYmIJLy6ODSyvZjEwnCAGJaywovHfzzSoiKpxX+2DDm6Qt2IRWC5Skhep8aSJbTwSJVMITnSUBF7dLFHWZUhwf6hkmS7jmKdUjiAUSec3fOcgzSd7v/+yqoxM/us/xL+FAhX1ZvmwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772442397; c=relaxed/simple;
-	bh=xpGqB4wavQgjNY8RXhcLZPq7YLRIblDh0LY+azaYvi8=;
+	s=arc-20240116; t=1772442412; c=relaxed/simple;
+	bh=pmT0V9wuBSkTfEoEZkcwg5gauZj4ApLMrU81hdXwW84=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UKLVQohXrS2/4BHiUQJUNMSJpry0oTS1ipc/iePs+jtoMraaXwSTCoZaU95UlkhU2OeunhnprmfsKTQq8tK9DpSciEB3HkqVb81CKVTcY9lXH69CezLgBbk7dlaazJ/Xr4ziK2JmAzzSwTD4b9QlRW6purVj5XgXaYB554t6VqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IFu/aBNe; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type; b=duu9KFRIHL89633/20h2rdRx+vLxsJ9j1m+PumWFmlujDHBaMCP9YTx8wrdp13w8PFLhR9xi3Isghug7HWX7bElndoLGOCKMBBAMZh8UstVcFrZO+BuQznTbA4fWdtLwTGUdUZwrvhL2E6SISQn8kaY+EtD8Cn/4ZmaP/hssHok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7dUwB+k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFu/aBNe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7821AC19423;
-	Mon,  2 Mar 2026 09:06:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7dUwB+k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103FBC2BC9E;
+	Mon,  2 Mar 2026 09:06:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772442397;
-	bh=xpGqB4wavQgjNY8RXhcLZPq7YLRIblDh0LY+azaYvi8=;
+	s=k20201202; t=1772442412;
+	bh=pmT0V9wuBSkTfEoEZkcwg5gauZj4ApLMrU81hdXwW84=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=IFu/aBNeAOzdnnDZ0oQUY8/sSFQmDxtTiWCM9p2BMgtIdZ+UpUpcXlwSst9ZRlAda
-	 tfLVsMW33D9z6N5qGo7gzEO2KYQoikF6zE5nFm05UEcPGJaN3cI5JDMAKKzVmKEtno
-	 49qJSDK3BFIhlFJR9aJDSWGP+5DAnQnP1Z4RonYxPnjNVvDQJsPczIdEMsXAe7HXUs
-	 akSoGZ5wFlx16CXWZHVQFCPv3s3K7XOEK3o3FhPKHpyjjVaYHzH91xnAbmm31GEhBD
-	 VC8dPLQTc5cetOvur43AmQ6E1xSGf4QOQrHbUvMU5zxHZjxgQFxTHHJqXDFq4/5fh9
-	 y5DIDK9Y6hrsQ==
-Message-ID: <028990bd-b595-4515-b419-92544f052904@kernel.org>
-Date: Mon, 2 Mar 2026 10:06:34 +0100
+	b=W7dUwB+k7tgwr3a7Cy7UVJvyDRd7LvWGT6byCVjEgKOfFyYHlDqs3GlYLdsZGor87
+	 4BLyidoh9ecbwgJDVHpoWIpKO8Aa+P7mWw7L7VtdOLjQtJy2k3PXSpTkR9bq+NV2DB
+	 PfxBjm+v6lRfsym7PU4DPep8KQNo7PGgJAjz2sCEBoDx84mYG1nVzCqle+M7KeZA9Y
+	 hr4pv7fr6wg28rdXo6IOmQI+IeDlhf8w2C5TorWEB8dG+bJACpZ3HvocRJjIjK1+4u
+	 NSuLpIpX5BTUCne/gWLNmQfVGTbMC/o+I4qO0R0V0RriPeAj83rI1a9sI1P5xf/LoO
+	 YypVfhe2gFMXw==
+Message-ID: <e29a8f61-8a53-4a5a-864d-bd15f42f87e9@kernel.org>
+Date: Mon, 2 Mar 2026 10:06:49 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -94,41 +94,11 @@ On 01/03/2026 18:49, tomasz.unger@yahoo.pl wrote:
 > 
 > Replace strcpy() with strscpy() which limits the copy to the size of
 > the destination buffer. Since fw_info->fw_name is an array with a fixed, declared size, the
-> two-argument variant of strscpy() is used - the compiler deduces
-> the buffer size automatically.
-> 
-> This is a defensive cleanup replacing the deprecated strcpy()
-> with the preferred strscpy().
-> 
-> Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
-> ---
-> Changes since v1:
-> - Clarified commit message: fw_info->fw_name described as
->   "an array with a fixed, declared size" as requested by
->   Krzysztof Kozlowski <krzk@kernel.org>
 
+Please wrap commit message according to Linux coding style / submission
+process (neither too early nor over the limit):
+https://elixir.bootlin.com/linux/v6.4-rc1/source/Documentation/process/submitting-patches.rst#L597
 
-And ignored the rest?
-
-<form letter>
-This is a friendly reminder during the review process.
-
-It looks like you received a tag and forgot to add it.
-
-If you do not know the process, here is a short explanation:
-Please add Acked-by/Reviewed-by/Tested-by tags when posting new versions
-of patchset, under or above your Signed-off-by tag, unless patch changed
-significantly (e.g. new properties added to the DT bindings). Tag is
-"received", when provided in a message replied to you on the mailing
-list. Tools like b4 can help here. However, there's no need to repost
-patches *only* to add the tags. The upstream maintainer will do that for
-tags received on the version they apply.
-
-Please read:
-https://elixir.bootlin.com/linux/v6.12-rc3/source/Documentation/process/submitting-patches.rst#L577
-
-If a tag was not added on purpose, please state why and what changed.
-</form letter>
 
 Best regards,
 Krzysztof
