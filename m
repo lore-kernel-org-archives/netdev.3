@@ -1,166 +1,172 @@
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3DE2DB7BE;
-	Mon,  2 Mar 2026 06:33:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772433185; cv=none; b=T+AAknnPQh4WZ0rOYLseV39nZmFRDIxoVTLxLT019StF3isRZliC5aKNoh6HAQBGp6Rm/nnUweJ45CP8C6xc/X1Gbr016ra8RhmCSPfYj4jd49FimmQaagdIU5ZnjYwzgHzcVqBVMXrDp82iQhVCEplB0rFDa0xlZQIKfNfUqgE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772433185; c=relaxed/simple;
-	bh=K+IEkb/8NvymAItniSffOTQbXkrUNTWTZNiqcK3erXU=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=On1x0y6moi2ocdpM5e++sESJPcm89bKFlHEraySHcOHYuce6sXYsETUmatXUL8hVQkgISg0xRyR/kcZQ9CRBNBIOw1/SCJ+Izro7r08D3naaM7jVALBfxnllDetzGj19KoOj8/eC8EFjIjhkOPd7e3qS1XhIlTeFm0FLPgrgYuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn; spf=pass smtp.mailfrom=realsil.com.cn; dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b=O75lwZEm; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realsil.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realsil.com.cn
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6913172618
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 06:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772433376; cv=pass; b=t/rqolLb98g2oTDPanaRQyR+jRm7ABweYl+DUWR0wAQ8A6/7k6/1BryHR+x1zWiWOH52USAaEZ41LUFPvKhBXIFOOrxHkAstIRu6jMOUCpnh4msYq5bu24vQbLAfguzSCJUbnLyAawTkSddKRK0SWAGGPR6Vom0m6VaVPPTls/Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772433376; c=relaxed/simple;
+	bh=2mzkZ+7ay5mPOTVxHTRghXB7Yvl5MwH5CneKgQvRVOk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CHenufigxCZc787urUpvcm4Z1Dpev6RW2Bx5JsvwNnR3G2DfYukwPfydwpLbBxn32cv36w/shM3AdQFWeFwhFYOdOPoQcRhjlCFdn1pEoP0z/FRDlpMfJiy0A5YQbWTz+wVNzLPJB4KR+l/CN989JYQNcJCjgFtD9nmhLyYKTlk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lyPjOXMN; arc=pass smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=realsil.com.cn header.i=@realsil.com.cn header.b="O75lwZEm"
-X-SpamFilter-By: ArmorX SpamTrap 5.80 with qID 6226WUKy82520768, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=realsil.com.cn;
-	s=dkim; t=1772433150;
-	bh=g9fpf2D8wlRPpSgMTpbeW1qb5Lcbi6ymib/fUSLIje8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Transfer-Encoding:Content-Type;
-	b=O75lwZEmHBksySHGJkgByJO/tZNA5QDFCquPEQmjzXU0jshQXdi+bwRJ6WqRvOyU2
-	 /iq02ooAOTLVs1mIN31/WxpGYUjEtQc2vvPojRx3vAtMeN+qeb0/krctTsWuyOOVuP
-	 Z9uhBwjozShsvRBmjyhol4/exGmECmipkOMJsxAgJN48Cyum/wXhJgQ27+zMLelmVp
-	 9I7d6qhnzlWDENC4lJC5LcWbHzLr4t21R1dAqEzk6O9fV08l2gIpKt0nPqlUf+a+Fb
-	 afsYlfp+cQH+PnLTsY4gpndizW5sPt931vjPaN+mkZfIwDrPEB4aAlbRKnL4Kxup+m
-	 zZWq/a5JkpYtg==
-Received: from RS-EX-MBS2.realsil.com.cn ([172.29.17.102])
-	by rtits2.realtek.com.tw (8.15.2/3.21/5.94) with ESMTPS id 6226WUKy82520768
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Mon, 2 Mar 2026 14:32:30 +0800
-Received: from RS-EX-MBS1.realsil.com.cn (172.29.17.101) by
- RS-EX-MBS2.realsil.com.cn (172.29.17.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.39; Mon, 2 Mar 2026 14:32:30 +0800
-Received: from 172.29.37.154 (172.29.37.152) by RS-EX-MBS1.realsil.com.cn
- (172.29.17.101) with Microsoft SMTP Server id 15.2.1748.39 via Frontend
- Transport; Mon, 2 Mar 2026 14:32:30 +0800
-From: javen <javen_xu@realsil.com.cn>
-To: <hkallweit1@gmail.com>, <nic_swsd@realtek.com>, <andrew+netdev@lunn.ch>,
-        <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <horms@kernel.org>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Javen Xu
-	<javen_xu@realsil.com.cn>
-Subject: [PATCH net-next v1 1/4] r8169: add ltr support for RTL8116af
-Date: Mon, 2 Mar 2026 14:32:11 +0800
-Message-ID: <20260302063215.1790-2-javen_xu@realsil.com.cn>
-X-Mailer: git-send-email 2.50.1.windows.1
-In-Reply-To: <20260302063215.1790-1-javen_xu@realsil.com.cn>
-References: <20260302063215.1790-1-javen_xu@realsil.com.cn>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lyPjOXMN"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-389f933034cso50941041fa.2
+        for <netdev@vger.kernel.org>; Sun, 01 Mar 2026 22:36:14 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772433373; cv=none;
+        d=google.com; s=arc-20240605;
+        b=DDGQ+9dJI/lIiS/B/R+wv5GlCrc5HvA+6f0aJLjVHXyW1dBnKwV2zezJcFBg2Dredx
+         ZoF5ATgXi1342ym/wxsaHSgaM3UlJUt354FfGN53NjZt3jgZ39tiWBxbwiNFl0JIEdjJ
+         L3m5xXpG4bAx/yKv2H1ptlkfN9g74mTWavTMeVGRd/fG9ArSHVzFy8fCdNW4Y5VrQhFy
+         wxfg8XvXaRPIr8NllWhan20WnBN4rToda2tqqAlmFUKRoktek8IQr7h9kU7ROU76hqCU
+         cdCsbLXqF3xD46ckcUyd0FYr/MWptLWIRLMySc+VVAe04MsNVvUdW+flL3aB4xo0o248
+         Xsgg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=9pmNPDeirZpzNt2b2qSmOZwVDIdXzjn8yvY6dGccuss=;
+        fh=om7SFUHtyde21PzcP7OB6EYQ7teHhxWzyvXIm54iymg=;
+        b=QwcpxGfXAV/ivBkNE/p3LNOhZgjpHCPA9h74kcQzBSOlURTN7w+n7SqHjvR6DgrfA/
+         10m0ZuU4zQOAroj+qbxkikGMd5RbbO9DHYjtjGrYifqkRnYdUdKqM4bU1u5KLJDbZOgN
+         YANP3JD9Hh/tu0R27c4jORQDJDBW8AoL9NYw6ejOP5Y/EfcUrpeBFwklZ2vfUotK0zrP
+         IUh71aA2edLfb/N7ril7fvXJrN4KaL3W65xVMzmmF8OqTcxe4qcujm2s/eG5D1y76M2Z
+         eCXJvMyne4FdKDhgjXmeLqGLThkobxd3hBHp+CrRxWroBRTRXbX5o+HBGMefz3WWK2K3
+         +bGQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772433373; x=1773038173; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9pmNPDeirZpzNt2b2qSmOZwVDIdXzjn8yvY6dGccuss=;
+        b=lyPjOXMNlT3eYiz+EGbhGLVnQpSY0/XvpTOEVmi5CDQiNYhxXAPkb61SdJl2F7r3Uf
+         dx+kyUOOgRhzzfDd7YuENd0xO2GRhttHPPRvKtE7Y3HgQwKjfFfqiTgfIy3KdKfkTp6E
+         K1pc8rJPnAqTVQqFlQ5lUGHNDpTEFPTcu1Qj48YwRc23VUVVQE74eu3NyR68eloKgvzw
+         YGtgBkj87iHKDZ8a+7mrr3nqQm0MO9UCMFtvjGbWZXJhhKLdKmu/xan8kHRG8xXM/a2f
+         EeCRAosHD8dv/X+vELYp+Mrq0MSKtb/HI2dSSF7ZdRn93rxjIMhaKlq/oAOlt3IN2Uxe
+         VdSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772433373; x=1773038173;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=9pmNPDeirZpzNt2b2qSmOZwVDIdXzjn8yvY6dGccuss=;
+        b=J/v/Cl8vnm0rRo7nD69svesiTvqoqyO6nsvP0WMOYXn8GtgLUe7cKbbqXOzf5vJd3X
+         6sYMHYV9o+tI+tdLkLHmyGE93zXDmQ5ml7QELyuMzadsSVjpBzB8cAKuHS4F/Zc3CtVW
+         Q80tuRZ+4oMq4BiuYh7DpSZlShzyd69UU0vhUHqlUFXvrUwUIYSe0mbZsM2GdLHJ812B
+         UdNcAb/D30NpuFh41+pyObPJUj5S8sPNZtQxjIXjXdooPe1EiS84hRZUxcbSlwBs6LfJ
+         8d4gRVDPzMPII3aRRl91nceaXU33XSRd4yEmXAzpXuhMbAzOAevHG2aWGtODQ0rMADZj
+         /2ng==
+X-Forwarded-Encrypted: i=1; AJvYcCWs+bdwmlzUWouznZWc4mBoc+FBszydMYQURKGyUOumhdJlM7cDoyt6gEyz89RbkpoBneEhrio=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRIZTYtUbwIkVhfeQXjlOs1M0168Yq8feMXgripsv8LT1msz9/
+	RUpBznamG8tyqvH/BFUAwfzwvre6Jw9xHLkb3zIOxwKMEiiI8RgxzdpHcu8DRJyTUzDjedJqoLn
+	vo4JRUfOjYiGrVzj7TRLaCuhS2QMnlgg=
+X-Gm-Gg: ATEYQzzyAvbUfQjX9arh0irES6VH+zdB4Q8S000OsvR0TPU+Uo+yOn6GJSR36AjNuB/
+	CTWa3EAQhgaWyHHrX1qm11uhY+8BsNdxIpRxf4cL9bp0wXFNOb7M23KjUmipiYfcoqyLxQEjrEU
+	hMm95kjGX4DQBb94IoeUkZH6cPHRfLkbFqkwC8uTCSAokyZ/Pi+zlIr+1Qo+JcAUUQuJcN4zut8
+	11rXyqaS/3blx7uYQnd48GsBPuMPcFAbadjoykxbxWq5DjOBcz3/U/IcB5SxuDW3ULpFPvZp9YK
+	DqADyRv1iY6B+C9+Xg7J9HBp4jE8WykVtxzYtx8PAfSAr8/118RCu+/iFunrjgv5uoowHlJNfIp
+	IdDHNZP8Vtw7p/wwNJ7HxUY3dHBc=
+X-Received: by 2002:a05:651c:2123:b0:382:4d6b:993b with SMTP id
+ 38308e7fff4ca-389ff365a4bmr80217491fa.35.1772433372378; Sun, 01 Mar 2026
+ 22:36:12 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+References: <20260302060247.7066-1-yuuchihsu@gmail.com> <CANn89i+O5b0xfcP5GLtUopqHz2ppewK9zSr4995jsjCPM+3AFQ@mail.gmail.com>
+In-Reply-To: <CANn89i+O5b0xfcP5GLtUopqHz2ppewK9zSr4995jsjCPM+3AFQ@mail.gmail.com>
+From: Sam Su <yuuchihsu@gmail.com>
+Date: Mon, 2 Mar 2026 14:36:00 +0800
+X-Gm-Features: AaiRm5370M-3aS4oZ0cTBd8XDVVI1Uw-ouldM7nEfiGAhn2Xv88YDaO3hyfPcuM
+Message-ID: <CAPAzCqHgoiMBC0=r0vAH6jP=J=HVVxDbnQjAUOcgR6MHE2mNsQ@mail.gmail.com>
+Subject: Re: [PATCH v2] net: ipv4: fix ARM64 alignment fault in multipath hash seed
+To: Eric Dumazet <edumazet@google.com>
+Cc: davem@davemloft.net, dsahern@kernel.org, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, nathan@kernel.org, 
+	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Javen Xu <javen_xu@realsil.com.cn>
+Hi Eric,
 
-This patch adds ltr support for RTL8116af, enables RTL8116af enter l1.2
-state. This makes sense for the system to enter c10 state.
+Got it! Thank you so much for the clarification and all your help with
+the review.
 
-Signed-off-by: Javen Xu <javen_xu@realsil.com.cn>
----
- drivers/net/ethernet/realtek/r8169_main.c | 31 +++++++++++++++++++----
- 1 file changed, 26 insertions(+), 5 deletions(-)
+Best regards,
+Yung Chih.
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 58788d196c57..fb2247a20c36 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -330,11 +330,13 @@ enum rtl_registers {
- 	ALDPS_LTR	= 0xe0a2,
- 	LTR_OBFF_LOCK	= 0xe032,
- 	LTR_SNOOP	= 0xe034,
-+	SEND_LTR_MSG	= 0xe038,
- 
- #define ALDPS_LTR_EN			BIT(0)
- #define LTR_OBFF_LOCK_EN		BIT(0)
- #define LINK_SPEED_CHANGE_EN		BIT(14)
- #define LTR_SNOOP_EN			GENMASK(15, 14)
-+#define LTR_MSG_EN			BIT(0)
- };
- 
- enum rtl8168_8101_registers {
-@@ -3093,8 +3095,22 @@ static void rtl_enable_ltr(struct rtl8169_private *tp)
- 		r8168_mac_ocp_write(tp, 0xcdf2, 0x9003);
- 		r8168_mac_ocp_modify(tp, LTR_OBFF_LOCK, 0x0000, LINK_SPEED_CHANGE_EN);
- 		break;
--	case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
- 	case RTL_GIGA_MAC_VER_52:
-+		r8168_mac_ocp_write(tp, 0xcdd0, 0x9003);
-+		r8168_mac_ocp_modify(tp, LTR_SNOOP, 0x0000, LTR_SNOOP_EN);
-+		r8168_mac_ocp_write(tp, 0xe02c, 0x1880);
-+		r8168_mac_ocp_write(tp, 0xe02e, 0x4880);
-+		r8168_mac_ocp_modify(tp, ALDPS_LTR, 0x0000, ALDPS_LTR_EN);
-+		r8168_mac_ocp_write(tp, 0xcdd8, 0x9003);
-+		r8168_mac_ocp_write(tp, 0xcdda, 0x9003);
-+		r8168_mac_ocp_write(tp, 0xcddc, 0x9003);
-+		r8168_mac_ocp_write(tp, 0xcdd2, 0x883c);
-+		r8168_mac_ocp_write(tp, 0xcdd4, 0x8c12);
-+		r8168_mac_ocp_write(tp, 0xcdd6, 0x9003);
-+		r8168_mac_ocp_write(tp, 0xe0a6, 0x9003);
-+		r8168_mac_ocp_write(tp, 0xe0a8, 0x9003);
-+		break;
-+	case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
- 		r8168_mac_ocp_modify(tp, ALDPS_LTR, 0x0000, ALDPS_LTR_EN);
- 		RTL_W8(tp, COMBO_LTR_EXTEND, RTL_R8(tp, COMBO_LTR_EXTEND) | COMBO_LTR_EXTEND_EN);
- 		fallthrough;
-@@ -3114,6 +3130,7 @@ static void rtl_enable_ltr(struct rtl8169_private *tp)
- 	}
- 	/* chip can trigger LTR */
- 	r8168_mac_ocp_modify(tp, LTR_OBFF_LOCK, 0x0003, LTR_OBFF_LOCK_EN);
-+	r8168_mac_ocp_modify(tp, SEND_LTR_MSG, 0x0000, LTR_MSG_EN);
- }
- 
- static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
-@@ -3147,6 +3164,7 @@ static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
- 		rtl_enable_ltr(tp);
- 		switch (tp->mac_version) {
- 		case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
-+		case RTL_GIGA_MAC_VER_52:
- 		case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_LAST:
- 			/* reset ephy tx/rx disable timer */
- 			r8168_mac_ocp_modify(tp, 0xe094, 0xff00, 0);
-@@ -3159,6 +3177,7 @@ static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
- 	} else {
- 		switch (tp->mac_version) {
- 		case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
-+		case RTL_GIGA_MAC_VER_52:
- 		case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_LAST:
- 			r8168_mac_ocp_modify(tp, 0xe092, 0x00ff, 0);
- 			break;
-@@ -3672,7 +3691,9 @@ static void rtl_hw_start_8117(struct rtl8169_private *tp)
- 
- 	rtl_eri_set_bits(tp, 0xd4, 0x0010);
- 
--	rtl_eri_write(tp, 0x5f0, ERIAR_MASK_0011, 0x4f87);
-+	rtl_eri_write(tp, 0x5f0, ERIAR_MASK_0011, 0x4000);
-+
-+	r8168_mac_ocp_write(tp, 0xe098, 0xc302);
- 
- 	rtl_disable_rxdvgate(tp);
- 
-@@ -3697,9 +3718,9 @@ static void rtl_hw_start_8117(struct rtl8169_private *tp)
- 	}
- 
- 	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0000);
--	r8168_mac_ocp_write(tp, 0xea80, 0x0003);
--	r8168_mac_ocp_modify(tp, 0xe052, 0x0000, 0x0009);
--	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
-+	r8168_mac_ocp_write(tp, 0xea80, 0x0000);
-+	r8168_mac_ocp_modify(tp, 0xe052, 0x0009, 0x0000);
-+	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x045f);
- 
- 	r8168_mac_ocp_write(tp, 0xe63e, 0x0001);
- 	r8168_mac_ocp_write(tp, 0xe63e, 0x0000);
--- 
-2.43.0
+Eric Dumazet <edumazet@google.com> =E6=96=BC 2026=E5=B9=B43=E6=9C=882=E6=97=
+=A5=E9=80=B1=E4=B8=80 =E4=B8=8B=E5=8D=882:12=E5=AF=AB=E9=81=93=EF=BC=9A
 
+>
+> On Mon, Mar 2, 2026 at 7:03=E2=80=AFAM Yung Chih Su <yuuchihsu@gmail.com>=
+ wrote:
+> >
+> > `struct sysctl_fib_multipath_hash_seed` contains two u32 fields
+> > (user_seed and mp_seed), making it an 8-byte structure with a 4-byte
+> > alignment requirement.
+> >
+> > In `fib_multipath_hash_from_keys()`, the code evaluates the entire
+> > struct atomically via `READ_ONCE()`:
+> >
+> >     mp_seed =3D READ_ONCE(net->ipv4.sysctl_fib_multipath_hash_seed).mp_=
+seed;
+> >
+> > While this silently works on GCC by falling back to unaligned regular
+> > loads which the ARM64 kernel tolerates, it causes a fatal kernel panic
+> > when compiled with Clang and LTO enabled.
+> >
+> > Commit e35123d83ee3 ("arm64: lto: Strengthen READ_ONCE() to acquire
+> > when CONFIG_LTO=3Dy") strengthens `READ_ONCE()` to use Load-Acquire
+> > instructions (`ldar` / `ldapr`) to prevent compiler reordering bugs
+> > under Clang LTO. Since the macro evaluates the full 8-byte struct,
+> > Clang emits a 64-bit `ldar` instruction. ARM64 architecture strictly
+> > requires `ldar` to be naturally aligned, thus executing it on a 4-byte
+> > aligned address triggers a strict Alignment Fault (FSC =3D 0x21).
+> >
+> > Fix the read side by moving the `READ_ONCE()` directly to the `u32`
+> > member, which emits a safe 32-bit `ldar Wn`.
+> >
+> > Furthermore, Eric Dumazet pointed out that `WRITE_ONCE()` on the entire
+> > struct in `proc_fib_multipath_hash_set_seed()` is also flawed. Analysis
+> > shows that Clang splits this 8-byte write into two separate 32-bit
+> > `str` instructions. While this avoids an alignment fault, it destroys
+> > atomicity and exposes a tear-write vulnerability. Fix this by
+> > explicitly splitting the write into two 32-bit `WRITE_ONCE()`
+> > operations.
+> >
+> > Finally, add the missing `READ_ONCE()` when reading `user_seed` in
+> > `proc_fib_multipath_hash_seed()` to ensure proper pairing and
+> > concurrency safety.
+> >
+> > Fixes: 4ee2a8cace3f ("net: ipv4: Add a sysctl to set multipath hash see=
+d")
+> > Suggested-by: Eric Dumazet <edumazet@google.com>
+>
+> Nit: Use of Suggested-by: implies I made the original suggestion for
+> this patch (before the V1)
+> I simply gave a feedback on your V1. The idea of the patch came from you =
+:)
+>
+> So next time, do not add a "Suggested-by:", as the expected step is
+> that I add a Reviewed-by tag when I am happy with a new version,
+> if I see it in time before it is merged.
+>
+> No need for a V3, this is simply a reminder for your next patches.
+>
+> > Signed-off-by: Yung Chih Su <yuuchihsu@gmail.com>
+> > ---
+>
+> Reviewed-by: Eric Dumazet <edumazet@google.com>
+>
+> Thanks !
