@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6993BA25F
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 15:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86D3A411609
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 15:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772465294; cv=none; b=p1DL1pTW45w9dhlCTt4UVcTi+XyEGlOBHohwGFxlyw+5cUe3G/Bqrcq/OjcZ3IXSVfAvlm1YC1+MFzHAXHrLV9qRgoEnytWSj2zWMHwJ5qmY0fCHPxJXqAlXohXDbvIKuGiln5Kee5ze9mOLmVL7dGJ7OADjjxkQU1WdNCTGfCI=
+	t=1772465295; cv=none; b=RiA5coHSWzMhcNpRbgud0qLdsy1x4vILwX7ILHS1/9L0QInhIzjx/4eMl0my953u2iDTMK0b05kiNq353viCzXmw8DYedxDWBkTtgCDLunC2E0iDjNb7HZH+tNP+ha80OXDNmcIyPRZpJpNs31r+dHSZQ2Ki2KNpNrCUHuFceck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772465294; c=relaxed/simple;
-	bh=zfOXt80gMdH+q3h68x0XYFT/0zPXziEHJpYFMQdxu3I=;
+	s=arc-20240116; t=1772465295; c=relaxed/simple;
+	bh=UX44iS51LpvMCtg5mQsc4i3lOH1BVoiRDQbumEkLrkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=piq2gCIZ6SXab3VO7Yh07046of5F0Sy8Fx7/TwGw/gksfk9VLlY1TLfJLKyJKzwdTjORibQnYw4z3bGL2hHE+tKMbW5XaXUaBcTdjVTtqc5GfaJL/HMIDC3s/ay9bqIRBic4ukyusn6Hg8NIWMrRbPeeSxelZoSUIUoaMNXZuI8=
+	 MIME-Version; b=CXE/7fFgK/loTaWEA6+g0Xs94FnCRWkcKPmWih5+P8PzIeRGFaaELmS9kt1y2iIZHgL5WbM+s/dC2sOhDM3iE/cPFS9gTohFRyCf4z78rNeN1lvOSsTEalIv+4UQMDNGvDzBRI4gVlGyipJlDq7lHbZVE+puDxfnUBGqh0dj5K0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Bf-0004kK-40; Mon, 02 Mar 2026 16:27:59 +0100
+	id 1vx5Be-0004kO-Lt; Mon, 02 Mar 2026 16:27:58 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Bc-003P0b-1a;
-	Mon, 02 Mar 2026 16:27:57 +0100
+	id 1vx5Bc-003P0m-2L;
+	Mon, 02 Mar 2026 16:27:58 +0100
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 8C5F34F546C;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id CD3F64F5470;
 	Mon, 02 Mar 2026 15:27:57 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,11 +38,13 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Alban Bedel <alban.bedel@lht.dlh.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 03/12] can: mcp251x: fix deadlock in error path of mcp251x_open
-Date: Mon,  2 Mar 2026 16:16:09 +0100
-Message-ID: <20260302152755.1700177-4-mkl@pengutronix.de>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Vincent Mailhol <mailhol@kernel.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	stable@kernel.org
+Subject: [PATCH net 07/12] can: usb: etas_es58x: correctly anchor the urb in the read bulk callback
+Date: Mon,  2 Mar 2026 16:16:13 +0100
+Message-ID: <20260302152755.1700177-8-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260302152755.1700177-1-mkl@pengutronix.de>
 References: <20260302152755.1700177-1-mkl@pengutronix.de>
@@ -58,67 +60,52 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Alban Bedel <alban.bedel@lht.dlh.de>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-The mcp251x_open() function call free_irq() in its error path with the
-mpc_lock mutex held. But if an interrupt already occurred the
-interrupt handler will be waiting for the mpc_lock and free_irq() will
-deadlock waiting for the handler to finish.
+When submitting an urb, that is using the anchor pattern, it needs to be
+anchored before submitting it otherwise it could be leaked if
+usb_kill_anchored_urbs() is called.  This logic is correctly done
+elsewhere in the driver, except in the read bulk callback so do that
+here also.
 
-This issue is similar to the one fixed in commit 7dd9c26bd6cf ("can:
-mcp251x: fix deadlock if an interrupt occurs during mcp251x_open") but
-for the error path.
-
-To solve this issue move the call to free_irq() after the lock is
-released. Setting `priv->force_quit = 1` beforehand ensure that the IRQ
-handler will exit right away once it acquired the lock.
-
-Signed-off-by: Alban Bedel <alban.bedel@lht.dlh.de>
-Link: https://patch.msgid.link/20260209144706.2261954-1-alban.bedel@lht.dlh.de
-Fixes: bf66f3736a94 ("can: mcp251x: Move to threaded interrupts instead of workqueues.")
+Cc: Vincent Mailhol <mailhol@kernel.org>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Cc: stable@kernel.org
+Assisted-by: gkh_clanker_2000
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
+Tested-by: Vincent Mailhol <mailhol@kernel.org>
+Link: https://patch.msgid.link/2026022320-poser-stiffly-9d84@gregkh
+Fixes: 8537257874e9 ("can: etas_es58x: add core support for ETAS ES58X CAN USB interfaces")
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/spi/mcp251x.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/can/usb/etas_es58x/es58x_core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
-index fa97adf25b73..bb7782582f40 100644
---- a/drivers/net/can/spi/mcp251x.c
-+++ b/drivers/net/can/spi/mcp251x.c
-@@ -1214,6 +1214,7 @@ static int mcp251x_open(struct net_device *net)
- {
- 	struct mcp251x_priv *priv = netdev_priv(net);
- 	struct spi_device *spi = priv->spi;
-+	bool release_irq = false;
- 	unsigned long flags = 0;
- 	int ret;
+diff --git a/drivers/net/can/usb/etas_es58x/es58x_core.c b/drivers/net/can/usb/etas_es58x/es58x_core.c
+index 2d248deb69dc..b259f6109808 100644
+--- a/drivers/net/can/usb/etas_es58x/es58x_core.c
++++ b/drivers/net/can/usb/etas_es58x/es58x_core.c
+@@ -1461,12 +1461,18 @@ static void es58x_read_bulk_callback(struct urb *urb)
+ 	}
  
-@@ -1257,12 +1258,24 @@ static int mcp251x_open(struct net_device *net)
- 	return 0;
- 
- out_free_irq:
--	free_irq(spi->irq, priv);
-+	/* The IRQ handler might be running, and if so it will be waiting
-+	 * for the lock. But free_irq() must wait for the handler to finish
-+	 * so calling it here would deadlock.
-+	 *
-+	 * Setting priv->force_quit will let the handler exit right away
-+	 * without any access to the hardware. This make it safe to call
-+	 * free_irq() after the lock is released.
-+	 */
-+	priv->force_quit = 1;
-+	release_irq = true;
+  resubmit_urb:
++	usb_anchor_urb(urb, &es58x_dev->rx_urbs);
+ 	ret = usb_submit_urb(urb, GFP_ATOMIC);
++	if (!ret)
++		return;
 +
- 	mcp251x_hw_sleep(spi);
- out_close:
- 	mcp251x_power_enable(priv->transceiver, 0);
- 	close_candev(net);
- 	mutex_unlock(&priv->mcp_lock);
-+	if (release_irq)
-+		free_irq(spi->irq, priv);
- 	return ret;
- }
- 
++	usb_unanchor_urb(urb);
++
+ 	if (ret == -ENODEV) {
+ 		for (i = 0; i < es58x_dev->num_can_ch; i++)
+ 			if (es58x_dev->netdev[i])
+ 				netif_device_detach(es58x_dev->netdev[i]);
+-	} else if (ret)
++	} else
+ 		dev_err_ratelimited(dev,
+ 				    "Failed resubmitting read bulk urb: %pe\n",
+ 				    ERR_PTR(ret));
 -- 
 2.51.0
 
