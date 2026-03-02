@@ -1,128 +1,77 @@
-Received: from out198-15.us.a.mail.aliyun.com (out198-15.us.a.mail.aliyun.com [47.90.198.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.aperture-lab.de (mail.aperture-lab.de [116.203.183.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9EB238736C;
-	Mon,  2 Mar 2026 08:01:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9F01F2B88;
+	Mon,  2 Mar 2026 08:09:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.183.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772438474; cv=none; b=pi3usgRHzCehiTD09f2dYJwpOlLW2bwv2cZaSE25jTyUTYmf/Z/3dY6TJgq3j/PhpbFzxdhZHX4CuEccnpJ7NS8yeeLrCrxKyoU8Ac/quO9ZgHXiEaBkrTFRtX7YIErd/gjAUux0kBJqHRbk47vS+lupsAeCnKwtWVjqInW7+TA=
+	t=1772438946; cv=none; b=jjg/koZ+EIY6FhcxHZ6GEos6u1hSBGwaqFJEgjryP8J6ytjsWllrUMzdazcqxnjVCwrFYoggpD2rSslrVw+RaJ8RvbFtjmHdAYSN9HjeEP9wdDN0yA+bcvFJPTuRETBgxPwm6juWuUE9E7uqskir+PKk91C8Qmm7YhBIUCQngc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772438474; c=relaxed/simple;
-	bh=4fkRjMkBZtaZkgH1P7CtUJ17M4HovcxBBDB6lugAgNQ=;
-	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:References:
-	 In-Reply-To:Content-Type; b=G41/r2Zzjj0Z/DenqOwNA2+Mt11++GU73LO47Ij/LhS7ovfm62WQASUiwQFXZRpwooiySXReEIaFhs2AwoM3HcQykRXzvt/KpvuNvuf1GGyCDEjxm4OSXWXqTWUrZqbc92VR18UpCQOujhsnW3qHeK5XATsLHCUnuikwak5yAwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.770608|0.1449812;CH=green;DM=|AD|false|;DS=CONTINUE|ham_regular_dialog|0.0980831-0.00167374-0.900243;FP=2573661096110080963|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033037021217;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DW;RN=16;RT=16;SR=0;TI=W4_0.2.3_21252303_1772438017138_o7001c1614;
-Received: from WS-web (Illusion.Wang@nebula-matrix.com[W4_0.2.3_21252303_1772438017138_o7001c1614] cluster:ay29) at Mon, 02 Mar 2026 16:00:46 +0800
-Date: Mon, 02 Mar 2026 16:00:46 +0800
-From: "Illusion Wang" <Illusion.Wang@nebula-matrix.com>
-To: "Andrew Lunn" <andrew@lunn.ch>
-Cc: "Dimon" <dimon.zhao@nebula-matrix.com>,
-  "Alvin" <alvin.wang@nebula-matrix.com>,
-  "Sam" <sam.chen@nebula-matrix.com>,
-  "netdev" <netdev@vger.kernel.org>,
-  "andrew+netdev" <andrew+netdev@lunn.ch>,
-  "corbet" <corbet@lwn.net>,
-  "kuba" <kuba@kernel.org>,
-  "linux-doc" <linux-doc@vger.kernel.org>,
-  "lorenzo" <lorenzo@kernel.org>,
-  "pabeni" <pabeni@redhat.com>,
-  "horms" <horms@kernel.org>,
-  "vadim.fedorenko" <vadim.fedorenko@linux.dev>,
-  "lukas.bulwahn" <lukas.bulwahn@redhat.com>,
-  "edumazet" <edumazet@google.com>,
-  "open list" <linux-kernel@vger.kernel.org>
-Reply-To: "Illusion Wang" <Illusion.Wang@nebula-matrix.com>
-Message-ID: <5b6205dd-bca8-42e1-b281-52be11f31f69.Illusion.Wang@nebula-matrix.com>
-Subject: =?UTF-8?B?5Zue5aSN77yaW1BBVENIIHY1IG5ldC1uZXh0IDAzLzExXSBuZXQvbmVidWxhLW1hdHJpeDog?=
-  =?UTF-8?B?YWRkIGNoaXAgcmVsYXRlZCBkZWZpbml0aW9ucw==?=
-X-Mailer: [Alimail-Mailagent revision 1106][W4_0.2.3][null][Chrome]
+	s=arc-20240116; t=1772438946; c=relaxed/simple;
+	bh=D3RZLvV0PsxmO/YS0/AtGcTqc0z3e2/zT9l56j2AvQQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QQ3rwOQOjJkXl8KQsTrprfSgpANURgXTWdET4GoVTo0oyLcLPSs98UYhEfLp7mMk9SXQeTtIWAhAso91em4wErzvae4Apr1xzZkdrDIR4SO3btid0sROzkYi9p25zhhmcb7LStEjMD5xkjHdHLhmQZG7fmJ6t5ApvgDWgtU2f6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue; spf=pass smtp.mailfrom=c0d3.blue; arc=none smtp.client-ip=116.203.183.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c0d3.blue
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B3F1154C45D;
+	Mon,  2 Mar 2026 09:08:59 +0100 (CET)
+Date: Mon, 2 Mar 2026 09:08:58 +0100
+From: Linus =?utf-8?Q?L=C3=BCssing?= <linus.luessing@c0d3.blue>
+To: bridge@lists.linux.dev
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Xiao Liang <shaw.leon@gmail.com>, shuah@kernel.org
+Subject: Re: [PATCH net-next v3 02/14] net: bridge: mcast: track active
+ state, adding tests
+Message-ID: <aaVFmtS1hdYSYRZR@sellars>
+References: <20260302054008.21638-1-linus.luessing@c0d3.blue>
+ <20260302054008.21638-3-linus.luessing@c0d3.blue>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-x-aliyun-im-through: {"version":"v1.0"}
-References: <20260226073840.3222-1-illusion.wang@nebula-matrix.com> <20260226073840.3222-4-illusion.wang@nebula-matrix.com>,<c5d2ba02-55b8-4839-bbd1-1d387da27f96@lunn.ch>
-x-aliyun-mail-creator: W4_0.2.3_null_EuMTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEzMy4wLjY5NDMuMTQyIFNhZmFyaS81MzcuMzYgZGluZ3RhbGstd2luLzEuMC4wIG53KDAuMTQuNykgRGluZ1RhbGsoOC4yLjEwLVJlbGVhc2UuMjYwMjAzMDA3KSBNb2pvLzEuMC4wIE5hdGl2ZSBBcHBUeXBlKHJlbGVhc2UpIENoYW5uZWwvMjAxMjAwIEFyY2hpdGVjdHVyZS94ODZfNjQgd2ViRHQvUEM=uL
-In-Reply-To: <c5d2ba02-55b8-4839-bbd1-1d387da27f96@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260302054008.21638-3-linus.luessing@c0d3.blue>
+X-Last-TLS-Session-Version: TLSv1.3
 
-Cj4gPiArc3RhdGljIHUzMiBuYmxfc2VjMDQ2XzFwX2RhdGFbXSA9IHsKPiA+ICsgMHgwMDAwMDAw
-MCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHhhMDAw
-MDAwMCwKPiA+ICsgMHgwMDA3N2MyYiwgMHgwMDVjMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwODEw
-MCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwg
-MHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgyMDAwMDAwMCwgMHgwMDA3MzAyOSwg
-MHgwMDQ4MDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwODEwMCwgMHgwMDAwMDAwMCwgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAw
-MDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+
-ICsgMHgwMDAwMDAwMCwgMHgyMDAwMDAwMCwgMHgwMDA3MzAyOSwgMHgwMDQ4MDAwMCwgMHg3MDAw
-MDAwMCwgMHgwMDAwMDAyMCwKPiA+ICsgMHgyNDE0MDAwMCwgMHgwMDAwMDAyMCwgMHgwMDAwMDAw
-MCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwg
-MHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHhhMDAwMDAw
-MCwKPiA+ICsgMHgwMDAwMDAwOSwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMjEwMCwg
-MHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAw
-MDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHhiMDAwMDAwMCwgMHgwMDAwMDAwOSwgMHgw
-MDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAw
-MDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAw
-MCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsg
-MHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAw
-MCwgMHgwMDAwMDEwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwg
-MHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwK
-PiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDEwMCwgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAw
-MDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAw
-MCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAw
-MDAwMCwKPiA+ICsgMHg3MDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgyMDE0MDAwMCwgMHgwMDAwMDAw
-MCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwg
-MHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHg3MDAwMDAwMCwg
-MHgwMDAwMDAwMCwKPiA+ICsgMHgyMDE0MDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAw
-MDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+
-ICsgMHgwMDAwMDAwMCwgMHgzODQzMDAwMCwgMHg3MDAwMDAwNiwgMHgwMDAwMDAyMCwgMHgyNDE0
-MDAwMCwgMHgwMDAwMDAyMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAw
-MCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHg5OGNiMTE4MCwg
-MHg2ZTM2ZDQ2OSwgMHg5ZDhlYjkxYywgMHg4N2UzZWY0NywgMHhhMjkzMTI4OCwgMHgwODQwNWM1
-YSwKPiA+ICsgMHg3Mzg2NTA4NiwgMHgwMDAwMDA4MCwgMHgzMDE0MDAwMCwgMHgwMDAwMDA4MCwg
-MHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAw
-MDAwMCwgMHhiMDAwMDAwMCwgMHgwMDBiMzg0OSwgMHgzODQzMDAwMCwgMHgwMDAwMDAwNiwgMHgw
-MDAwYzEwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAw
-MDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAw
-MCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHhiMDAwMDAwMCwKPiA+ICsg
-MHgwMDEzMzg4OSwgMHgwODQwMDAwMCwgMHgwMzg2NTA4NiwgMHg0YzAxNjEwMCwgMHgwMDAwMDAx
-NCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwg
-MHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwK
-PiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAw
-MDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAw
-MCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAw
-MDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAw
-MCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwg
-MHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwKPiA+ICsgMHgw
-MDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwg
-MHgwMDAwMDAwMCwKPiA+ICsgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgwMDAwMDAwMCwgMHgw
-MDAwMDAwMCwKPiA+ICt9Cgo+V2hhdCBpcyBhbGwgdGhpcyBkYXRhPyBIb3cgYmlnIGlzIHRoZSBv
-YmplY3QgZmlsZSBjcmVhdGVkIGZyb20gdGhpcz8KCj5TaG91bGQgaXQgYmUgY29uc3Q/Cgo+Q291
-bGQgaXQgYmUgbWFya2VkIF9faW5pdGRhdGE/IE9yIG1vdmVkIGludG8gZmlybXdhcmUgZmlsZXM/
-CgrCoD4gwqAgwqAgQW5kcmV3CgoKVGhhbmsgeW91IGZvciB5b3VyIGZlZWRiYWNrLgpUaGVzZSBk
-YXRhIGFyZSB1c2VkIHRvIGNvbmZpZ3VyZSBQNC1yZWxhdGVkIHJlZ2lzdGVycy4gVGhlIGRyaXZl
-cuKAmXMgZnVuY3Rpb25hbGl0eQoKZGVwZW5kcyBoZWF2aWx5IG9uIHRoZXNlIHJlZ2lzdGVyIHNl
-dHRpbmdzLiBUaGV5IHdpbGwgYmUgZGVjbGFyZWQgYXMgY29uc3QuCgpCdXQgdGhleSBjYW4gYmUg
-bWFya2VkIF9faW5pdGRhdGEuIEJlY2F1c2UgaXQgd2lsbCBiZSBjYWxsZWQgYnkgcGNpX2RyaXZl
-ci5wcm9iZS4KClRoZXkgYWxzbyBzaG91bGQgbm90IGJlIG1vdmVkIGludG8gZmlybXdhcmUgZmls
-ZXMsIGFzIHRoZSBzb2Z0d2FyZSBmdW5jdGlvbmFsaXR5CgppcyB0aWdodGx5IGNvdXBsZWQgd2l0
-aCB0aGVzZSBjb25maWd1cmF0aW9ucy4gSWYgdGhleSB3ZXJlIG1vdmVkIHRvIGZpcm13YXJlLAoK
-dXNlcnMgY291bGQgZWFzaWx5IGVuZCB1cCB3aXRoIG1pc21hdGNoZWQgdmVyc2lvbnMgb2YgdGhl
-IGZpcm13YXJlIGFuZCB0aGUga2VybmVsCgpkcml2ZXIgbW9kdWxlLCBsZWFkaW5nIHRvIGZ1bmN0
-aW9uYWwgaW5jb25zaXN0ZW5jaWVzIG9yIHN5c3RlbSBtYWxmdW5jdGlvbnMuCmlsbHVzaW9uLndh
-bmcKCgoK
+On Mon, Mar 02, 2026 at 06:39:56AM +0100, Linus Lüssing wrote:
+> Before making any significant changes to the internals of the Linux
+> bridge add some tests regarding the multicast activity. This is
+> also to verify that we have the semantics of the new
+> *_MCAST_ACTIVE_{V4,V6} netlink attributes as expected.
+> 
+> Signed-off-by: Linus Lüssing <linus.luessing@c0d3.blue>
+> ---
+
+Sorry, I might need some guidance on what the checks patchwork
+lists want from me here.
+
+I'm running the tests with the following command without any
+issues:
+
+PATH="/mnt/net/iproute2/ip/:/mnt/net/iproute2/bridge/:$PATH" make -C tools/testing/selftests TARGETS="net/forwarding" TEST_GEN_PROGS="" TEST_PROGS="bridge_mdb_active.sh" run_tests
+
+But why does shellcheck list so many errors with
+"This function is never invoked." Even though they are invoked
+with my above command?
+
+
+I also don't get what netdev/check_selftest wants from me. I only
+see "FAILED" here? https://netdev-ctrl.bots.linux.dev/logs/build/1059784/14444497/check_selftest/summary
+
+
+Regards, Linus
