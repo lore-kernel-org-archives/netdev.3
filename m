@@ -1,57 +1,166 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97911282F03;
-	Mon,  2 Mar 2026 22:55:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9781630F539;
+	Mon,  2 Mar 2026 22:58:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772492105; cv=none; b=WzC/gCGQzLsTsokQio/bmsoxy/DZOPapu8K7K2pWpSLaEQN4ueuc4413LC/MbMCO5JoCUz0q75o3Z3XrWWRkIFHxETyjJTh5fGiCiWQI2ObyJHQmxnRCq/xHQDSSWg5UG72GhZc30dBZPDAiFPMVI7nQUBiWiTRQO2U65oc1+xg=
+	t=1772492300; cv=none; b=PVxX09c2pqaYfeoQaIveAC+WvJ3kCmI8hFZro/cBhxsSTSUI77ovVlk9dejJ49gPG3taV0A9OqxZO8N12L0aB5iFb04UFgNhag4J9n1WjK/ff69zGIJn2W+NtU/ke3Jgc0904BdFnSjdCx6O3egHnXgonlnzAjySRxlVRkuEXFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772492105; c=relaxed/simple;
-	bh=U6JUcqYh1LvRQQ1R7rmcPBgDLm0ri8voDLKmQqdul58=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k87crUe4tviFvODzE8ySHNmRnqkB4UvOdpLu1CELLo9pMpt1mBAXreVCezuSf+zeG1kVaF5atvb4drJryAkRUgieOaN0WayGUtIRu34fLX74NKJN6f8aJndnCobJTnHmViqnb7UeWAqjH4wK6SjFAxDhd2k8gDh8FAl1TZz9vPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwxjt4yD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772492300; c=relaxed/simple;
+	bh=dSvaafq7s+HEj/Y72jLuoeKNRy1B3Rikjpm6NcM7diE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=M9WstFiM3+TQqxgU3wzFdgLD7DdsiFN2PN9ggypyuOBpMpsH7wxQq02Z1FCF5SL0Ti1b8qyDqTCnKuQs6qqHgVtECRXJ2M7g02b5Vi8Utes8cubOv8InIrcl2wMa2JAc3M1cddf67rnYJfhEpfH4wQAE4khiPZkZXWPP7fcVk3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p0GsC9wo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwxjt4yD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7237C19423;
-	Mon,  2 Mar 2026 22:55:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1772492105;
-	bh=U6JUcqYh1LvRQQ1R7rmcPBgDLm0ri8voDLKmQqdul58=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uwxjt4yDH++cEsfqU4mgri7BjttlcF8OOfyNgl3IjIWehB5MA714xIOIPTOg0uv6c
-	 5KjxGULICOI6E8wR2mF0HweBf8Zah5dISTdgin3jiN65KbcTq12fRG+qTc14S8Zmgp
-	 l3qJXZPMehGb6DlpsXXMqKPqFyzLcTGoYnsMPDR4=
-Date: Mon, 2 Mar 2026 17:54:54 -0500
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jori Koolstra <jkoolstra@xs4all.nl>
-Cc: Alexandra Winter <wintera@linux.ibm.com>,
-	"open list:DIBS (DIRECT INTERNAL BUFFER SHARING)" <netdev@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] dibs: change dibs_class to a const struct
-Message-ID: <2026030246-savor-hardener-6102@gregkh>
-References: <20260302163103.3324304-1-jkoolstra@xs4all.nl>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p0GsC9wo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65343C19423;
+	Mon,  2 Mar 2026 22:57:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772492300;
+	bh=dSvaafq7s+HEj/Y72jLuoeKNRy1B3Rikjpm6NcM7diE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=p0GsC9woFCUKtxDwipZDfc1GU9rUyiVi0vJPYP2u+0lYlFaKaiE4wvtujTtUsUSSG
+	 y9tJP1pMFCSZdbVlZJsp/30PmZ1S1faPO832d6Ub6IMUIFkIp8SCUMEnJc2IJ8q+Ka
+	 ZpyDlt5SN2HnUNutEs6KYH5Vx0HXoq7KvmUrZbG2IxG5LEgsEnTMz87mdm/+x6Ju03
+	 1GI4Matlc31LEhXo5LtVUEq5GJUiz63iWVRgT2s1o3D5+9nJtUMseF11lElVDkS1f/
+	 DQZuLjZC0NNLwbtBL3D60LeHl8deT4SR0u9RtbK2+hz+nll+4jjYRTC9U8dXhLefK3
+	 ACgo7vVXPcUag==
+Message-ID: <8f2d476f-5c2a-48d5-8e20-998c06d7ea88@kernel.org>
+Date: Tue, 3 Mar 2026 07:57:53 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302163103.3324304-1-jkoolstra@xs4all.nl>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 048/110] zonefs: use PRIino format for i_ino
+To: Jeff Layton <jlayton@kernel.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
+ <willy@infradead.org>, Eric Biggers <ebiggers@kernel.org>,
+ "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>,
+ David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>,
+ Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
+ Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
+ Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>,
+ Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>,
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+ Shyam Prasad N <sprasad@microsoft.com>, Bharath SM
+ <bharathsm@microsoft.com>, Alexander Aring <alex.aring@gmail.com>,
+ Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+ Viacheslav Dubeyko <slava@dubeyko.com>,
+ Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>,
+ Christian Schoenebeck <linux_oss@crudebyte.com>,
+ David Sterba <dsterba@suse.com>, Marc Dionne <marc.dionne@auristor.com>,
+ Ian Kent <raven@themaw.net>, Luis de Bethencourt <luisbg@kernel.org>,
+ Salah Triki <salah.triki@gmail.com>,
+ "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+ Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
+ Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
+ Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>,
+ Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Yangtao Li <frank.li@vivo.com>,
+ Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
+ David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>,
+ Dave Kleikamp <shaggy@kernel.org>,
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+ Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+ Joseph Qi <joseph.qi@linux.alibaba.com>, Mike Marshall
+ <hubcap@omnibond.com>, Martin Brandenburg <martin@omnibond.com>,
+ Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>,
+ Zhihao Cheng <chengzhihao1@huawei.com>, Naohiro Aota <naohiro.aota@wdc.com>,
+ Johannes Thumshirn <jth@kernel.org>,
+ John Johansen <john.johansen@canonical.com>, Paul Moore
+ <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>,
+ Roberto Sassu <roberto.sassu@huawei.com>,
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
+ Stephen Smalley <stephen.smalley.work@gmail.com>,
+ Ondrej Mosnacek <omosnace@redhat.com>,
+ Casey Schaufler <casey@schaufler-ca.com>,
+ Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Willem de Bruijn <willemb@google.com>, "David S. Miller"
+ <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+ Adrian Hunter <adrian.hunter@intel.com>, James Clark
+ <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>,
+ Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>,
+ Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>,
+ Johan Hedberg <johan.hedberg@gmail.com>,
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+ Oliver Hartkopp <socketcan@hartkopp.net>,
+ Marc Kleine-Budde <mkl@pengutronix.de>, David Ahern <dsahern@kernel.org>,
+ Neal Cardwell <ncardwell@google.com>,
+ Steffen Klassert <steffen.klassert@secunet.com>,
+ Herbert Xu <herbert@gondor.apana.org.au>,
+ Remi Denis-Courmont <courmisch@gmail.com>,
+ Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+ Xin Long <lucien.xin@gmail.com>, Magnus Karlsson
+ <magnus.karlsson@intel.com>,
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>,
+ Daniel Borkmann <daniel@iogearbox.net>,
+ Jesper Dangaard Brouer <hawk@kernel.org>,
+ John Fastabend <john.fastabend@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
+ fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
+ linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+ linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
+ v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
+ ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org,
+ jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev,
+ ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org,
+ linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com,
+ linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org,
+ selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org,
+ linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org,
+ linux-x25@vger.kernel.org, audit@vger.kernel.org,
+ linux-bluetooth@vger.kernel.org, linux-can@vger.kernel.org,
+ linux-sctp@vger.kernel.org, bpf@vger.kernel.org
+References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
+ <20260302-iino-u64-v2-48-e5388800dae0@kernel.org>
+Content-Language: en-US
+From: Damien Le Moal <dlemoal@kernel.org>
+Organization: Western Digital Research
+In-Reply-To: <20260302-iino-u64-v2-48-e5388800dae0@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 02, 2026 at 05:31:03PM +0100, Jori Koolstra wrote:
-> The class_create() call has been deprecated in favor of class_register()
-> as the driver core now allows for a struct class to be in read-only
-> memory. Change dibs_class to be a const struct class and drop the
-> class_create() call.
+On 3/3/26 05:24, Jeff Layton wrote:
+> Convert zonefs i_ino format strings to use the PRIino format
+> macro in preparation for the widening of i_ino via kino_t.
 > 
-> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
-> ---
->  drivers/dibs/dibs_main.c | 14 ++++++++------
->  1 file changed, 8 insertions(+), 6 deletions(-)
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
 
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Damien Le Moal <dlemoal@kernel.org>
+
+
+-- 
+Damien Le Moal
+Western Digital Research
