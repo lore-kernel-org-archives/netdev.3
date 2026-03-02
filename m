@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2737C411625
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 15:28:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6993BA25F
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 15:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772465295; cv=none; b=MmNP64sUnJM2JBlIRnlP0mQKY9jmQ9AVZKFDjCrXdz42Xoa5MQ61PoSnYDM9/HBTCWBY94Vzn4A1BK8Y1mDyVCsmnCSYIdR0PTzpmrbEyljQOHFXtG2APz7NYtQyOh1wBTY6/IHsC+xADUxJFuO3XTYH0MNbv28DRR+vQPVhOlA=
+	t=1772465294; cv=none; b=p1DL1pTW45w9dhlCTt4UVcTi+XyEGlOBHohwGFxlyw+5cUe3G/Bqrcq/OjcZ3IXSVfAvlm1YC1+MFzHAXHrLV9qRgoEnytWSj2zWMHwJ5qmY0fCHPxJXqAlXohXDbvIKuGiln5Kee5ze9mOLmVL7dGJ7OADjjxkQU1WdNCTGfCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772465295; c=relaxed/simple;
-	bh=diS5TUW926RW8wWUUKUqyVhUPEJ5JEskuMP+cfk/Un4=;
+	s=arc-20240116; t=1772465294; c=relaxed/simple;
+	bh=zfOXt80gMdH+q3h68x0XYFT/0zPXziEHJpYFMQdxu3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZaJG/Ew5rSER/kmmU/ItpsVtegU+qE0V4stqHRT7fpivq0GsJO6Htt/fvMCqSnFygAqgj3Dx3EhM4ZVbwPBFrwcAh+5igZvuAZ0TALVYNKd/kRcug+ZeHeY/8+arNxpjpaJ2ry3g71B9P2cRt+vFFEX4Ioh1vTXFb343T+C97Fk=
+	 MIME-Version; b=piq2gCIZ6SXab3VO7Yh07046of5F0Sy8Fx7/TwGw/gksfk9VLlY1TLfJLKyJKzwdTjORibQnYw4z3bGL2hHE+tKMbW5XaXUaBcTdjVTtqc5GfaJL/HMIDC3s/ay9bqIRBic4ukyusn6Hg8NIWMrRbPeeSxelZoSUIUoaMNXZuI8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Be-0004kM-Lt; Mon, 02 Mar 2026 16:27:58 +0100
+	id 1vx5Bf-0004kK-40; Mon, 02 Mar 2026 16:27:59 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Bc-003P0h-1y;
+	id 1vx5Bc-003P0b-1a;
 	Mon, 02 Mar 2026 16:27:57 +0100
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id B1D3C4F546E;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 8C5F34F546C;
 	Mon, 02 Mar 2026 15:27:57 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,13 +38,11 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Vincent Mailhol <mailhol@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	stable@kernel.org
-Subject: [PATCH net 05/12] can: ems_usb: ems_usb_read_bulk_callback(): check the proper length of a message
-Date: Mon,  2 Mar 2026 16:16:11 +0100
-Message-ID: <20260302152755.1700177-6-mkl@pengutronix.de>
+	Alban Bedel <alban.bedel@lht.dlh.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net 03/12] can: mcp251x: fix deadlock in error path of mcp251x_open
+Date: Mon,  2 Mar 2026 16:16:09 +0100
+Message-ID: <20260302152755.1700177-4-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260302152755.1700177-1-mkl@pengutronix.de>
 References: <20260302152755.1700177-1-mkl@pengutronix.de>
@@ -60,55 +58,67 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Alban Bedel <alban.bedel@lht.dlh.de>
 
-When looking at the data in a USB urb, the actual_length is the size of
-the buffer passed to the driver, not the transfer_buffer_length which is
-set by the driver as the max size of the buffer.
+The mcp251x_open() function call free_irq() in its error path with the
+mpc_lock mutex held. But if an interrupt already occurred the
+interrupt handler will be waiting for the mpc_lock and free_irq() will
+deadlock waiting for the handler to finish.
 
-When parsing the messages in ems_usb_read_bulk_callback() properly check
-the size both at the beginning of parsing the message to make sure it is
-big enough for the expected structure, and at the end of the message to
-make sure we don't overflow past the end of the buffer for the next
-message.
+This issue is similar to the one fixed in commit 7dd9c26bd6cf ("can:
+mcp251x: fix deadlock if an interrupt occurs during mcp251x_open") but
+for the error path.
 
-Cc: Vincent Mailhol <mailhol@kernel.org>
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: stable@kernel.org
-Assisted-by: gkh_clanker_2000
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026022316-answering-strainer-a5db@gregkh
-Fixes: 702171adeed3 ("ems_usb: Added support for EMS CPC-USB/ARM7 CAN/USB interface")
+To solve this issue move the call to free_irq() after the lock is
+released. Setting `priv->force_quit = 1` beforehand ensure that the IRQ
+handler will exit right away once it acquired the lock.
+
+Signed-off-by: Alban Bedel <alban.bedel@lht.dlh.de>
+Link: https://patch.msgid.link/20260209144706.2261954-1-alban.bedel@lht.dlh.de
+Fixes: bf66f3736a94 ("can: mcp251x: Move to threaded interrupts instead of workqueues.")
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/usb/ems_usb.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/can/spi/mcp251x.c | 15 ++++++++++++++-
+ 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/usb/ems_usb.c b/drivers/net/can/usb/ems_usb.c
-index 4c219a5b139b..9b25dda7c183 100644
---- a/drivers/net/can/usb/ems_usb.c
-+++ b/drivers/net/can/usb/ems_usb.c
-@@ -445,6 +445,11 @@ static void ems_usb_read_bulk_callback(struct urb *urb)
- 		start = CPC_HEADER_SIZE;
+diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
+index fa97adf25b73..bb7782582f40 100644
+--- a/drivers/net/can/spi/mcp251x.c
++++ b/drivers/net/can/spi/mcp251x.c
+@@ -1214,6 +1214,7 @@ static int mcp251x_open(struct net_device *net)
+ {
+ 	struct mcp251x_priv *priv = netdev_priv(net);
+ 	struct spi_device *spi = priv->spi;
++	bool release_irq = false;
+ 	unsigned long flags = 0;
+ 	int ret;
  
- 		while (msg_count) {
-+			if (start + CPC_MSG_HEADER_LEN > urb->actual_length) {
-+				netdev_err(netdev, "format error\n");
-+				break;
-+			}
+@@ -1257,12 +1258,24 @@ static int mcp251x_open(struct net_device *net)
+ 	return 0;
+ 
+ out_free_irq:
+-	free_irq(spi->irq, priv);
++	/* The IRQ handler might be running, and if so it will be waiting
++	 * for the lock. But free_irq() must wait for the handler to finish
++	 * so calling it here would deadlock.
++	 *
++	 * Setting priv->force_quit will let the handler exit right away
++	 * without any access to the hardware. This make it safe to call
++	 * free_irq() after the lock is released.
++	 */
++	priv->force_quit = 1;
++	release_irq = true;
 +
- 			msg = (struct ems_cpc_msg *)&ibuf[start];
+ 	mcp251x_hw_sleep(spi);
+ out_close:
+ 	mcp251x_power_enable(priv->transceiver, 0);
+ 	close_candev(net);
+ 	mutex_unlock(&priv->mcp_lock);
++	if (release_irq)
++		free_irq(spi->irq, priv);
+ 	return ret;
+ }
  
- 			switch (msg->type) {
-@@ -474,7 +479,7 @@ static void ems_usb_read_bulk_callback(struct urb *urb)
- 			start += CPC_MSG_HEADER_LEN + msg->length;
- 			msg_count--;
- 
--			if (start > urb->transfer_buffer_length) {
-+			if (start > urb->actual_length) {
- 				netdev_err(netdev, "format error\n");
- 				break;
- 			}
 -- 
 2.51.0
 
