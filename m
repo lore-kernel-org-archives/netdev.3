@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDCB40F8D8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58BB822157B
 	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 15:28:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772465293; cv=none; b=DRB1ByqTxyRNgYdDVFe6rcLahqsCm4kx2tuIEk52PtkdMqgyvB2iTUpMsXKJHqGq3RkNMiIBth8RU1PVaEDDjCHvJLWFuUyp086VY1hWLpPeKEb92d4jd4cZHcXDwbp6hN/kbu9SwdIoJscHadf3fd6K1BOAf3kK1XIZOdqKr4g=
+	t=1772465294; cv=none; b=PxB6hs5dAmwBsD9VpPSSQOSUmFdhVtAqonASmjDorJ4JQ4bqDiuntxcIgIcPSshyQGoZAx3qKNI7wY1rV2mrR071xvsYu7q3y29umt/eM6RdxbZW3XbHq8vw9bzQgI9YXpm80cALPTAf6haa5KwhcAv009UMqy1TK47qFlsCl+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772465293; c=relaxed/simple;
-	bh=eESALG8Vhe6eR2lflGD4lx4FYXngsDPD93CNWqujpqM=;
+	s=arc-20240116; t=1772465294; c=relaxed/simple;
+	bh=kESa7BlQcqDPKo1mISYqOdErqWp1q3mT2qZ3X+VWvF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UwrL/iDJvKAWha6P8lb0henTkE6CW7cvMh5de17S0OESUy+TTatv2uphQJ6C16mhCloBZVtkJa3magfocqx8h7kvweXjKzMEPyhTDOFAEl7t7RWoM0TyWh+dnHaYBlSN36zMp7wWS/+KUeN+QqvN2dJBn3dcgKJubCK89SH1b14=
+	 MIME-Version; b=qO3pMWIo+dVIqmYKgK0MoxZyMllFnjqR5QP/YOWhO+aiMPINAP/UG7Y0Q0dNjAO6KUhoGlLmDhJ8riIwZzRueI1W07mW6+hT226pgdnl5yxaD+og1GM8pac8hUrLeDV6KBG+hOx/TfEoInBdSok+i2NWEKj1XGKFf29SO/cUDXQ=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,32 +18,32 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Be-0004kJ-Oc; Mon, 02 Mar 2026 16:27:58 +0100
+	id 1vx5Bf-0004kT-5x; Mon, 02 Mar 2026 16:27:59 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Bc-003P0a-1O;
-	Mon, 02 Mar 2026 16:27:57 +0100
+	id 1vx5Bd-003P13-0H;
+	Mon, 02 Mar 2026 16:27:58 +0100
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 7E2494F546B;
-	Mon, 02 Mar 2026 15:27:57 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 35F2D4F5475;
+	Mon, 02 Mar 2026 15:27:58 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
 Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Oliver Hartkopp <socketcan@hartkopp.net>,
-	Vincent Mailhol <mailhol@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 02/12] can: dummy_can: dummy_can_init(): fix packet statistics
-Date: Mon,  2 Mar 2026 16:16:08 +0100
-Message-ID: <20260302152755.1700177-3-mkl@pengutronix.de>
+Subject: [PATCH net 12/12] dt-bindings: net: can: nxp,sja1000: add reference to mc-peripheral-props.yaml
+Date: Mon,  2 Mar 2026 16:16:18 +0100
+Message-ID: <20260302152755.1700177-13-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260302152755.1700177-1-mkl@pengutronix.de>
 References: <20260302152755.1700177-1-mkl@pengutronix.de>
@@ -59,38 +59,35 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Frank Li <Frank.Li@nxp.com>
 
-The former implementation was only counting the tx_packets value but not
-the tx_bytes as the skb was dropped on driver layer.
+Add a reference to mc-peripheral-props.yaml to allow vendor-specific
+properties for memory access timings.
 
-Enable CAN echo support (IFF_ECHO) in dummy_can_init(), which activates the
-code for setting and retrieving the echo SKB and counts the tx_bytes
-correctly.
+Fix below CHECK_DTBS warings:
+arch/arm/boot/dts/nxp/imx/imx27-phytec-phycore-rdk.dtb: can@4,0 (nxp,sja1000): Unevaluated properties are not allowed ('fsl,weim-cs-timing' was unexpected)
+        from schema $id: http://devicetree.org/schemas/net/can/nxp,sja1000.yaml
 
-Fixes: 816cf430e84b ("can: add dummy_can driver")
-Cc: Vincent Mailhol <mailhol@kernel.org>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20260126104540.21024-1-socketcan@hartkopp.net
-[mkl: make commit message imperative]
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://patch.msgid.link/20260212163000.1195586-1-Frank.Li@nxp.com
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/dummy_can.c | 1 +
+ Documentation/devicetree/bindings/net/can/nxp,sja1000.yaml | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/dummy_can.c b/drivers/net/can/dummy_can.c
-index 41953655e3d3..cd23de488edc 100644
---- a/drivers/net/can/dummy_can.c
-+++ b/drivers/net/can/dummy_can.c
-@@ -241,6 +241,7 @@ static int __init dummy_can_init(void)
+diff --git a/Documentation/devicetree/bindings/net/can/nxp,sja1000.yaml b/Documentation/devicetree/bindings/net/can/nxp,sja1000.yaml
+index ec0c2168e4b9..6bcfff970117 100644
+--- a/Documentation/devicetree/bindings/net/can/nxp,sja1000.yaml
++++ b/Documentation/devicetree/bindings/net/can/nxp,sja1000.yaml
+@@ -87,6 +87,7 @@ required:
  
- 	dev->netdev_ops = &dummy_can_netdev_ops;
- 	dev->ethtool_ops = &dummy_can_ethtool_ops;
-+	dev->flags |= IFF_ECHO; /* enable echo handling */
- 	priv = netdev_priv(dev);
- 	priv->can.bittiming_const = &dummy_can_bittiming_const;
- 	priv->can.bitrate_max = 20 * MEGA /* BPS */;
+ allOf:
+   - $ref: can-controller.yaml#
++  - $ref: /schemas/memory-controllers/mc-peripheral-props.yaml
+   - if:
+       properties:
+         compatible:
 -- 
 2.51.0
 
