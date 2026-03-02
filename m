@@ -1,232 +1,115 @@
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic311-30.consmr.mail.ir2.yahoo.com (sonic311-30.consmr.mail.ir2.yahoo.com [77.238.176.162])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944F0394483
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 10:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4053D39527C
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 10:19:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=77.238.176.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772446544; cv=none; b=jdmQOmaucmKaSl0rgBrj3Pn2a60TBHjEBO1ucKg6a4vAlCcl6rHqqi6wgPZ6kbXVCw3u6GmCX/uZPu6DMgxwHdKAPDd30VzMbqSRYqV9f9IVfPpeXAtP4I0Yn5K0qgGFB8CcqTnWxjP8IOQOPaT/1RzNlJ79g8w+n8FVBUUMMkE=
+	t=1772446766; cv=none; b=t1V+HdTo1vMBiEC3cvnM+dXUTbzro2BiMRZ8JwdfODm6LC8zCn8DtrfvcmhMPQJiGjwtOMGGZt27E7aErrkEcSDjsAT1xXqbi/BaxXdvebxX3lAo95unC6YF/PHNec9cCbQZOxVWrserjDg5/Uo6Oonh3LVyzuvQaSo4GhwTsqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772446544; c=relaxed/simple;
-	bh=VM2a2BeuVgfGi1ShAXDtMB92p4B/RtLDTkk5cGM+saY=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=VH2qhUEXyMlikQqG8YOt3bdAzK9kThdTAduA/nSwmYg6Y5jGcOA5J/85UWHp38VKdSADZTCNjJMaCSwutZ5M/1ZImey5/t1hIEQthW4ow36JzQFuxEWnqkIZWyFZk/51qU3VlsOkg+FmuxsJGeSWDojCu7rEzOsj9CFFv5FxPr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aERnsOFL; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1772446766; c=relaxed/simple;
+	bh=bLProma0DHl/1j4RJTh29W1mmGS92CuzeHI8c2d30S0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:References; b=X+1e6gZv6w5VRO+OaORUpwmwvgpYxGIIxzwq4oa5CHFz/Pjzi9Uj1un6O8BXqahv2HumSrbwvvWg2YObQ87tloiOiS0dlq3QOB6izETFbMxbODEtX3QCu8al3txza9DEMtWt4p8vZvUey5J8E3/+u+X26CZ0Ceo+b+fBL2D/vyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl; spf=pass smtp.mailfrom=yahoo.pl; dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b=js3p5gcv; arc=none smtp.client-ip=77.238.176.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=yahoo.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yahoo.pl
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aERnsOFL"
+	dkim=pass (2048-bit key) header.d=yahoo.pl header.i=@yahoo.pl header.b="js3p5gcv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.pl; s=s2048; t=1772446762; bh=0B9sEv6mlxV1KYtt9m4HrAvho+QF9xsFUGyCQyI1pLc=; h=From:To:Cc:Subject:Date:References:From:Subject:Reply-To; b=js3p5gcvlAzMxMu4FYlkoLWmks+BQK6+LtEmadQJrKmtTDYpNFOZME/Vylv87xuCg38aiqiUYuwGzJwgn8SlLLTHAz/QFWGzB+BVbg8+WywVwBKTAOltcnVaH2/M3B9sy0FoQV7Hp8EHc2UiilbY93gz8e9+KB0sSI3YMiUFz1wST0ylWw+MMsaHkKbsdsuJ6ur2WGXJXIRGQJfa+aStoCIaCCX3R99Kkt+WRLSnldx7Pf6hJolgyEPPm1+KHeOhURRsaypK1a07Wr75k0SU+tAM+NPBYm+8z4EquqP8PHYj32dZtkVISJSiBdjspBiNVon2+r2Iiv3tW4SC3slmeA==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1772446762; bh=tZQIbgd0xqbaA+ro3f/OzEFfZCSef+bCQtz8EBB6EHn=; h=X-Sonic-MF:From:To:Subject:Date:From:Subject; b=TdNwSQJuzanEPp7MdTPYMbzqsZfGP3KKx/VQ0kXrMzxjXgcm86G/gWBb78hmvzk65oql22Jnf2SGuVk1S8YVaJBldVm/nRPLIryLeLd60LeyMbofTVGv+VWIroXoDCinY5LhB09S9IeicIz/358sV5UXlfbF7cNkilltMDq1XqpalZ4Nk7JiWLufGwxtzeAVQ1Stg8oU8hktTraDvaqVa/SDlbr8kw+AzIVDdsZfD193SRRMr+VZygCwT0nioevvmMGxfdY2U8MMmiv/M1/mb4C7ljhVT/XUOHfMv68Po4q036fUF2aqvpCGjQwapqarxpB8c9CblwPdKz91bzkuDg==
+X-YMail-OSG: oqaa7Z0VM1kAdjIsC9UzteQZQjFWchAT_49mfoqRubek9rbBFo_nzhgVV6yXstC
+ pHHqzn0FDloK1JG828lGWJvM1sD9YMh1Hc3pb.O._.df5KQyo26qbjXcdCPZ8f3k0CRzn0HauoPu
+ Y5wNlvRgF47As3uJbjFPQWdzkmQQIXO8xYz942deoES23dBSaS0y1gZVpGF.XpH5D3ZU0gJvu5P0
+ B8wvtnmJCxAgDKDwU11eqV09UM1nC46p8HMbytzOJ.fY2QlfFboFc5sgY13B8SZ9yTNMdUcWc.nl
+ sKfhDmxtJkUPD2XkDqJl1X49Horc.UK6g14ZRnLSAJsbbLWQLSIvEUrICBm1MZewexiUA8gEkR5S
+ 5MwnpIq16tfGyFJfCSfkYeKmsN5GAuicUYBwYH3gptZ44pn9SxJsYc4JUTLgNFk._6hKAfhSi1HO
+ 2fOaCdKM8XkSN8Z.zpeA6eYp3pA_MscQJXxJPaXR2b6ss2iiBd9S5xb9YJB1o.yMuchrwJBJhr71
+ MsfSX4X9CJ98OribdnonbioxiQD2s0lhF3RwDJwryCx4DUBnSsv4fSz_SsLwQIsvrPg5Cxy7mVru
+ 1hJnb2kJxx3nKiGdyHc2c98knj2HaqDoT2ieZAijL8z8F4YcWcC7oxxdpYTKg2pXIhM0.IgaQf96
+ F8z_Cb7_EEvIm5nhwOO1_KP6hDfCLr.uMIjbE5OwYBvJzTIR9UKVjTN.dKCfByrrcfthLR6Saf_W
+ UdWluhOsTO8TBCR3R3Ornc6Q72sImhdnllJOiWaQyNaikEYiI3fjGKpS4ec2h4OG5abG9HzUseSB
+ ZTOXMHhOqTwhRJIODRTMDhDXH8frdTRaE2EdaajAei71OaZbWjNUke7kMulM15leqCpn_T_CbKu3
+ rRVlwQ10WaKdd5iwtAbvgQv7PerHh7to117yvPIoYxujU6MF0TlIJGL0hbkEQWExJs5oNvylCM6C
+ Kybf.S5i.DC.Git6ho_vFs0JWY42aHbRqbAgO71gudsGniddK0unj5octnu7mymZuHBuAceWKb_B
+ vE3v3rbLhmReM06mYilRu0GF1W.t2Rh9jpndWS7DMoY8IK7gDLkhkzj3SH383aFtOfLoNokT97D3
+ k2kb9PV8hU23rM6HJmpB1UOM5LNcudxnlau3E6lD4WzGHn7.rQRIWyxkLCjCmptZUN24ItnewqAi
+ ARws0ryqfVZWB4m8DmuhPvtEr_Xpp5J7XJb7hrkBLgZ4gi2G0vVpL4dGo_WdI1YO_q5lq56Nw0kF
+ evIcp8naValrkfztG8ezhOap4meOksU6tOYCzylVEkGODjNISa8nVRcT9T66NsOrzziqRZDk.qmi
+ hzGXcuqR4poqIN4_1fka.WiJb0BM8Fbd8qKlRJrgJo_udg7jWgTfQEsmdjFHpFL8Mj2ERCpSn93b
+ _5Wc1297PFAInqZLDBa_Vd34b6CnwfRnSIqQ80izlBniclBGDwHNfkTMuaAS.bdBwA7.DNjKJOU4
+ ctRsTRl0EL.l_d3J7XAijStt21vJjYybL1DHWYtZ5Nj9hDBP3RzrP3Exff9cuWXgWVpr.QH1UM8D
+ jNxEdE_IkON..PUSbwc.sIe.NMTXIpStcKxELSUKcU3Q5crFdV8R0skeodLRLhwVW8iZ4uOf3544
+ Gn5DISHq7iTtw8QQURGskPTmJxSEJu7Ma0AakX1_BtfTZxFFBiQf8EuUOUDAMtvMs9xodDy9FZar
+ l5HEF0Vhn4ry0oLemUB5SBlb5t1seKA3_hXMv63VWLJLleVjpxTosptR97bKFxdtIrBAF6.AwlVt
+ HjEMKQKXA9Ku58xii11lluPyhwhTJPBpyGnh9FzjsPGV4M16CcLIL_z7sQrYpiq9p3q2k0yiyqJz
+ FVmlgNP.qape_e.TtnqlAccD8l6TUDECPom9DpCBqtpuDVNLoJ8q_EoFc0sLCljqry20rsM_iQoh
+ 4XePVY_0WP1Ctklq5Li9kRf8hipFdIu8l10wtdtLRHqbMVM3NOkhHl2cBhr6JnuKDyaEhLsJn_6w
+ 60i5v6ehwmIFFJDo782Ia1RyZs5Z1GpPHD1TgcETrJsDRtfZwJ4MljreVObJgXOGkM13s7wytkxg
+ QkVXakUtaXiyYHCx0WE.v.zv.VI3r7jmzd93XkUxt7eBpvNvuH7to2RHFaV4IgqFh13t6U4hquYB
+ 1K4GJbJCjVHSrYqemgj6yax9o.NZNZ6SM.rZoIP8XemNgfspZVRCHgfXOAG8CO_5yavbM11Feihq
+ EaZ5jIHxI_rBSZ80IIWtTzDiUYH21mFrzrXa9K3cboEHuUQ2j.EUz9YfMm49O
+X-Sonic-MF: <tomasz.unger@yahoo.pl>
+X-Sonic-ID: 9e68b505-d869-4a37-b6a1-f0b7ad82117d
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ir2.yahoo.com with HTTP; Mon, 2 Mar 2026 10:19:22 +0000
+Received: by hermes--production-ir2-bbcfb4457-d9ssk (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 05798cde46ae7785b9d7f1959d335729;
+          Mon, 02 Mar 2026 10:09:11 +0000 (UTC)
+From: tomasz.unger@yahoo.pl
+To: krzk@kernel.org
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Tomasz Unger <tomasz.unger@yahoo.pl>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Subject: [PATCH net-next v3] NFC: s3fwrn5: Replace strcpy() with strscpy()
+Date: Mon,  2 Mar 2026 11:09:08 +0100
+Message-ID: <20260302100908.26399-1-tomasz.unger@yahoo.pl>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772446530;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=CSeL517KPCXAMzvziO2NinmrAr+nMWkzlUfOO21t6Vc=;
-	b=aERnsOFLNEAqLlHB/bLDI13cu6rZN8FFkuVi6DTSGcbPUom+ThQEt2Hcr2k/fHnDr3RQoF
-	6XerNbJjSsQGJEeUa5C7MU77RVHEXfDonFAjzT8ANp6fzkr6ewMEFyUqqxXEOUG6oKpw1m
-	7ceXuMVeLXMxz2+c3sHcWH+CDafnvKE=
-Date: Mon, 02 Mar 2026 10:15:22 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <e4a2a652784ec206728eb3a929a9892238c61f06@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH net v3 1/2] bonding: fix null-ptr-deref in
- bond_rr_gen_slave_id()
-To: "Sebastian Andrzej Siewior" <bigeasy@linutronix.de>
-Cc: "Jay Vosburgh" <jv@jvosburgh.net>, netdev@vger.kernel.org,
- jiayuna.chen@linux.dev, jiayuna.chen@shopee.com, "Jiayuan Chen"
- <jiayuan.chen@shopee.com>,
- syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com, "Andrew Lunn"
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>,
- "Paolo Abeni" <pabeni@redhat.com>, "Alexei Starovoitov" <ast@kernel.org>,
- "Daniel Borkmann" <daniel@iogearbox.net>, "Jesper Dangaard Brouer"
- <hawk@kernel.org>, "John Fastabend" <john.fastabend@gmail.com>,
- "Stanislav Fomichev" <sdf@fomichev.me>, "Andrii Nakryiko"
- <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Martin
- KaFai Lau" <martin.lau@linux.dev>, "Song Liu" <song@kernel.org>,
- "Yonghong Song" <yonghong.song@linux.dev>, "KP Singh"
- <kpsingh@kernel.org>, "Hao Luo" <haoluo@google.com>, "Jiri Olsa"
- <jolsa@kernel.org>, "Shuah Khan" <shuah@kernel.org>, "Clark Williams"
- <clrkwllms@kernel.org>, "Steven Rostedt" <rostedt@goodmis.org>, "Jussi
- Maki" <joamaki@gmail.com>, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-rt-devel@lists.linux.dev
-In-Reply-To: <20260302081021.MiQQ_LQr@linutronix.de>
-References: <20260228021918.141002-1-jiayuan.chen@linux.dev>
- <20260228021918.141002-2-jiayuan.chen@linux.dev>
- <999129.1772247707@famine>
- <08041bd78c06981b18b3de90a95e0c951bf1623c@linux.dev>
- <20260302081021.MiQQ_LQr@linutronix.de>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+References: <20260302100908.26399-1-tomasz.unger.ref@yahoo.pl>
 
-March 2, 2026 at 16:10, "Sebastian Andrzej Siewior" <bigeasy@linutronix.d=
-e mailto:bigeasy@linutronix.de?to=3D%22Sebastian%20Andrzej%20Siewior%22%2=
-0%3Cbigeasy%40linutronix.de%3E > wrote:
+From: Tomasz Unger <tomasz.unger@yahoo.pl>
 
+Replace strcpy() with strscpy() which limits the copy to the size of
+the destination buffer. Since fw_info->fw_name is an array with a
+fixed, declared size, the two-argument variant of strscpy() is used -
+the compiler deduces the buffer size automatically.
 
->=20
->=20On 2026-02-28 03:36:24 [+0000], Jiayuan Chen wrote:
->=20
->=20>=20
->=20> My only concern is that this will waste a percpu u32 per bond
-> >  device for the majority of bonding use cases (which use modes other =
-than
-> >  balance-rr), which could be a few hundred bytes on a large machine.
-> >=20=20
->=20>  Does everything work reliably if the rr_tx_counter allocation
-> >  happens conditionally on mode =3D=3D BOND_MODE_ROUNDROBIN in bond_se=
-tup, as
-> >  well as in bond_option_mode_set?
-> >=20
->=20=E2=80=A6
->=20
->=20>=20
->=20> An alternative would be to allocate conditionally in bond_init() (s=
-ince the default mode is round-robin)
-> >  and manage allocation/deallocation in bond_option_mode_set() when th=
-e mode changes.
-> >=20
->=20This sounds reasonable.
->=20
->=20>=20
->=20> This is a trade-off between the added complexity of conditional all=
-oc/free across multiple code
-> >  paths and saving a per-CPU u32 for non-round-robin bonds.
-> >=20=20
->=20>  For the per-CPU u32 overhead, it's only 4 extra bytes per CPU per =
-bond device =E2=80=94 and machines with
-> >  that many CPUs tend to have plenty of memory to match.
-> >=20
->=204 bytes is the minimum allocation for per-CPU memory. The memory is
-> already "there" it is just not assigned. So for the 4 byte allocation i=
-t
-> is needed to find a single area (the smallest allocation size).
-> In case there no free block, a new block will be allocated and mapped
-> for each CPU which the part that costs memory.
-> That said, we should not waste memory but it is not _that_ expensive
-> either for a bond device. Things change if here are hundreds of devices=
-.
+This is a defensive cleanup replacing the deprecated strcpy()
+with the preferred strscpy().
 
+Signed-off-by: Tomasz Unger <tomasz.unger@yahoo.pl>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+---
+Changes since v2:
+- Fixed commit message line wrapping (Krzysztof Kozlowski)
+- Added Reviewed-by tag from Krzysztof Kozlowski
 
-Hi Jay, Sebastian,
+Changes since v1:
+- Clarified commit message: fw_info->fw_name described as
+  "an array with a fixed, declared size" as requested by
+  Krzysztof Kozlowski <krzk@kernel.org>
 
-Sorry, the conditional alloc/free approach in bond_option_mode_set()
-I suggested earlier doesn't work well on closer inspection.
+ drivers/nfc/s3fwrn5/firmware.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Since bond_option_mode_set() requires the bond to be down, and as this
-bug shows, the XDP redirect path can still reach a downed bond device,
-we need to carefully order the operations:
+diff --git a/drivers/nfc/s3fwrn5/firmware.c b/drivers/nfc/s3fwrn5/firmware.c
+index 64d61b2a715a..9145deec7f6c 100644
+--- a/drivers/nfc/s3fwrn5/firmware.c
++++ b/drivers/nfc/s3fwrn5/firmware.c
+@@ -454,7 +454,7 @@ void s3fwrn5_fw_init(struct s3fwrn5_fw_info *fw_info, const char *fw_name)
+ 	fw_info->parity = 0x00;
+ 	fw_info->rsp = NULL;
+ 	fw_info->fw.fw = NULL;
+-	strcpy(fw_info->fw_name, fw_name);
++	strscpy(fw_info->fw_name, fw_name);
+ 	init_completion(&fw_info->completion);
+ }
+ 
+-- 
+2.53.0
 
-when switching to RR, alloc rr_tx_counter before setting mode;
-when switching away, set mode before freeing rr_tx_counter.
-
-Strictly speaking, this also requires smp_wmb()/smp_rmb() pairs to
-guarantee the ordering is visible to other CPUs =E2=80=94 the write side =
-in
-bond_option_mode_set() and the read side in the XDP path.
-
-In practice the race window is very small and unlikely to trigger, but
-leaving out the barriers would look incorrect, and adding them to the
-XDP hot path feels wrong for saving only 4 bytes per CPU per bond device.
-
-
-smp_wmb()/smp_rmb() (no test):=20
-
-diff=20--git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond=
-_main.c
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -4279,12 +4279,6 @@ static int bond_open(struct net_device *bond_dev)
-	struct list_head *iter;
-	struct slave *slave;
-
--     if (BOND_MODE(bond) =3D=3D BOND_MODE_ROUNDROBIN && !bond->rr_tx_cou=
-nter) {
--             bond->rr_tx_counter =3D alloc_percpu(u32);
--             if (!bond->rr_tx_counter)
--                     return -ENOMEM;
--     }
--
-	/* reset slave->backup and slave->inactive */
-	if (bond_has_slaves(bond)) {
-			bond_for_each_slave(bond, slave, iter) {
-@@ -5532,6 +5526,8 @@ bond_xdp_get_xmit_slave(struct net_device *bond_dev=
-, struct xdp_buff *xdp)
-
-	switch (BOND_MODE(bond)) {
-	case BOND_MODE_ROUNDROBIN:
-+             /* Pairs with smp_wmb() in bond_option_mode_set() */
-+             smp_rmb();
-			slave =3D bond_xdp_xmit_roundrobin_slave_get(bond, xdp);
-			break;
-
-@@ -6411,6 +6407,14 @@ static int bond_init(struct net_device *bond_dev)
-	if (!bond->wq)
-			return -ENOMEM;
-
-+     /* Default mode is round-robin, allocate rr_tx_counter for it.
-+      * For mode changes, bond_option_mode_set() manages the lifecycle.
-+      */
-+     bond->rr_tx_counter =3D alloc_percpu(u32);
-+     if (!bond->rr_tx_counter) {
-+             destroy_workqueue(bond->wq);
-+             return -ENOMEM;
-+     }
-+
-	bond->notifier_ctx =3D false;
-
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bon=
-d_options.c
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -918,7 +918,27 @@ static int bond_option_mode_set(struct bonding *bond=
-,
-	/* don't cache arp_validate between modes */
-	bond->params.arp_validate =3D BOND_ARP_VALIDATE_NONE;
--     bond->params.mode =3D newval->value;
-+
-+     if (newval->value =3D=3D BOND_MODE_ROUNDROBIN) {
-+             /* Switching to round-robin: allocate before setting mode,
-+              * so XDP path seeing BOND_MODE_ROUNDROBIN always finds
-+              * rr_tx_counter allocated.
-+              */
-+             if (!bond->rr_tx_counter) {
-+                     bond->rr_tx_counter =3D alloc_percpu(u32);
-+                     if (!bond->rr_tx_counter)
-+                             return -ENOMEM;
-+             }
-+             /* Pairs with smp_rmb() in bond_xdp_get_xmit_slave() */
-+             smp_wmb();
-+             bond->params.mode =3D newval->value;
-+     } else {
-+             /* Switching away: set mode first so XDP no longer
-+              * enters RR branch before we free rr_tx_counter.
-+              */
-+             bond->params.mode =3D newval->value;
-+             /* Pairs with smp_rmb() in bond_xdp_get_xmit_slave() */
-+             smp_wmb();
-+             free_percpu(bond->rr_tx_counter);
-+             bond->rr_tx_counter =3D NULL;
-+     }
-
-Thanks,
-Jiayuan
-
-
-> >=20
->=20> Thanks
-> >=20=20
->=20>  -J
-> >=20
->=20Sebastian
->
