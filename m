@@ -1,67 +1,121 @@
-Received: from s1.jo-so.de (s1.jo-so.de [37.221.195.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f41.google.com (mail-dl1-f41.google.com [74.125.82.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5AA175A6E
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 21:35:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.221.195.157
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772487354; cv=none; b=PzxwrRJ6uS2tkp3cla1NjD0dVfwvFq8Frgv/izZI4IRBVBEvpytk2XA+Wnqf5/iR7jJktNqJHo+lZe/OvwbWiDX+HegxK7WjKYgomuMDBtqQq0Omnz9sTbHB2FwfVefZ3Rx4u5MPmHD3OEsbuM3cdz4aBZDn3aq/V5/RlIKCBfc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772487354; c=relaxed/simple;
-	bh=VQFSb0/E+dZ13xnXchY6MONmQU1NrWG1Nsmw3KlwiXM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MtOKuPZALZ87uCtyANYxMTrKdIaDV3huNx2jEl7gAdUm3Jb7dy1n+C27oQ6jUKqaXyrMDVD2C2VD9Dm7OOByBLq4NPXrfI0far70HPNCJCRtlZVEZ80IENoHFZKpp8n8HCvY+pQzDx8hVmfq3KIw38DJ8qprMf3EGuH32CABu50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jo-so.de; spf=pass smtp.mailfrom=jo-so.de; arc=none smtp.client-ip=37.221.195.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jo-so.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jo-so.de
-Received: from mail-relay (helo=jo-so.de)
-	by s1.jo-so.de with local-bsmtp (Exim 4.98.2)
-	(envelope-from <joerg@jo-so.de>)
-	id 1vxAZj-0000000A0Pi-0vGH
-	for netdev@vger.kernel.org;
-	Mon, 02 Mar 2026 22:13:11 +0100
-Received: from joerg by zenbook.jo-so.de with local (Exim 4.99.1)
-	(envelope-from <joerg@jo-so.de>)
-	id 1vxAZi-00000001LGB-2ADp
-	for netdev@vger.kernel.org;
-	Mon, 02 Mar 2026 22:13:10 +0100
-From: =?UTF-8?q?J=C3=B6rg=20Sommer?= <joerg@jo-so.de>
-To: netdev@vger.kernel.org
-Subject: [PATCH] doc/ip-sysctl: tcp_timestamps is per src-dst not connection
-Date: Mon,  2 Mar 2026 22:13:10 +0100
-Message-ID: <d206f3f708dbc81af07bd71b19e94894181dafc3.1772485990.git.joerg@jo-so.de>
-X-Mailer: git-send-email 2.51.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C421A680E
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 21:48:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772488082; cv=pass; b=I+iEeBhSfiqP9FGVJVNWdEmAPcFzAp150ug2o8UyRhl9xBdZ8D/7vjBTN1oViddkdzQFRyvvrFBgluoTB8CgLUJhrZb59C6PPQ1EW11nqlVlFJfhRVSKAqqwTcNImA1AoAwd50VWhnrng4hy9su+EKCoop8RNJljhU3df0KIxEE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772488082; c=relaxed/simple;
+	bh=feHI6NH1LtpEWw/0IGOd0agJUbY2/UVXbUUM0cOZbjQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=r+Hw0flsjap5biyRpzcMv9rU0TI8ZJcSSTYuDOXUQc6sWTceUHOCsWidELtVtzFDFjbmwrOGwT0dqw+XNmVfhWhqFnfojFFK2p1Du88XCYcCJkO5yYw+EIH1JN6APx4YD31bVCDJJ5eJpg7RqOZ+XFQLmgOWOJtbKR6PC+3IIww=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0WDP3dl7; arc=pass smtp.client-ip=74.125.82.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0WDP3dl7"
+Received: by mail-dl1-f41.google.com with SMTP id a92af1059eb24-127380532eeso1856702c88.1
+        for <netdev@vger.kernel.org>; Mon, 02 Mar 2026 13:48:00 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772488080; cv=none;
+        d=google.com; s=arc-20240605;
+        b=iZX6bVlD5gF9qTEk67RqdtXE+brXv3+PZ1pqSFdXjNmGvkYVQvForvwOX40HvTuKmo
+         aoTOBJm0FY8jBEh6GMIpf9BtvA86LACFtQLakSHKs8+FmaltVhKxGTIv1deQ2SNJy3eh
+         g3gsPlx8rnk/GufI6GmeKOz0iL9buiOb8+oUhEiQQk9p5RY+DjM/CyEwm2b/rhxpL8oR
+         08AMcTRc9wEt/bw945C1nA3QeXq8QMlsSevQyj8ByRemGSN1nAR1H1W4gkG7DjviF8UP
+         bprnT4xumNbxUips8Qn/1fGzpZxaTyinAju8PspTZnlqnRaxu58bKiCjokjSpiudbV0O
+         Uc8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=feHI6NH1LtpEWw/0IGOd0agJUbY2/UVXbUUM0cOZbjQ=;
+        fh=HE+yhFJcgTFzUebC+D9PX1qumIIBaMQZ8lar4KJRvkw=;
+        b=emxXp0svv9iOBEmT6C007OlQvdGxHiYVw3ly0jlLagiwAt4Xg+AiGaq9TiSHVWIxdY
+         tTkhUByqGOrLM02voPH1uf9MMaXDpi1MPJ5Q5L5xZUheqnUk6oIIoFGTHwk43MaebxWT
+         YVCMOHQ7tFA2JtMJRsItwTWuyi1C3gadBZxF/23TltbINj6I5MsQprxQroDkz/YRO6AH
+         ZdLRbp2A935o8PKUBe51tnupvipkUeUmd0qLU9w17gEGxAQ62cmPgUq4FF3KAcjlbauO
+         aV9xslw3T7v8+e/r6YnKCNpcg8txZaLMNwyCaoysJWpIiSJnwaxa8y7fSsNFmWI3HtUx
+         bVBA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772488080; x=1773092880; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=feHI6NH1LtpEWw/0IGOd0agJUbY2/UVXbUUM0cOZbjQ=;
+        b=0WDP3dl7YFu4K/KO4gDuPROxmLrWRxPO8rJGDuJ0R8q+b/aFBmVL6xqI4LJJ8mWZED
+         EFgKdfl5cryxt7cJbDkdTmJHRgyS2nasvrDR1Cy/gLqD4UzRdmhpuH+cgzWrfbX738fn
+         GnLWnkDqpyVj9WeeLA5v1XFnwj1gYB3yAg3Bx4CoseTlgBrFMz/zgoInbP8JEg8y6+Rk
+         vRdRf8n93bWrzwX09vY2rPWgoweXFgUpFrM0p12/+koz/3bJQiMEYQjaYl2NeMLODtE9
+         3u7+TtwXJeA1RrVU/JInJESI67m4bhRufKFQx7y02I6d4VWUYrd7lPc8z+svFC7eyxwB
+         GtSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772488080; x=1773092880;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=feHI6NH1LtpEWw/0IGOd0agJUbY2/UVXbUUM0cOZbjQ=;
+        b=O9Kf5tjL5iGecJjULXoBBr+b4dcrV9wBsx6NIeq7MuqlxMHMly9XwmProISsxu7p0r
+         jGyIg/6d6KNO7kK2AAVOMbQg/BFo4jBiwx0L5J31fqKtL36D2Ux8E3QqRKBeSbJuhEWe
+         Tgr66QTPl9fOsOu2e5gt46H/9pWXKsv2ohSehr4wy+fzpFRc3bMb0yU3yWQHjuBo4kZZ
+         mD1Y5dlsOEcIPbMhlBryYML2YxtIy/uX9TQvmbwRvF/bUy23Fd2OAaj7maDKyToLhkzy
+         QHVFQP/94wLIbmJFxtAKHDveCchochEpY98H9/Jd605lP6gXwv+YIaYmzo1ZnZIybzk3
+         XSLA==
+X-Forwarded-Encrypted: i=1; AJvYcCXec1CgT+vu9qSVmkbevGaLZTes2Rst5cLKUgWDKPonIyeSma95jKZaH63qyOqxpibEAEIq/04=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKQCRCHoFrq0wHgCigkWtHN9ryPT1FPdDzu7xPaImIyURU2070
+	BLqfWU/C8WIPJmE3hJLQXrhxMMXGUJGtnP3MTVH0FXuUFNM10njQwZX0GSwp+BBQN98bgMYOBD7
+	EjW/R0Vw5bWJ9tF9WRhp3FBZ4tq9RlAjd9Z+V6yWJ
+X-Gm-Gg: ATEYQzx8DebqDuHOcROme3TiMqGYMZ48R8Wc+1UA4jdCBnz5H/2+eIGxo91nnb3DWIZ
+	YzXdaOpYaVvsn+awzF1G8mCqvJnsvIfrGcldnOA9RWIjtU+FuxCtjQB4pCzs8W+6IkK59ktky7t
+	Ig1rK0aTQ0KY31JZIqi08ZJJw1VfAOWAMzJEmlDWSRMkodNnBJbNU9RL3mEqyf8g219jboE8r63
+	5IG8XbgaxCPm2joC3PiwETr2+9tzwR20rBNzY8qUEW4/w0R/qZ0W4mb8JqkNtywg8d7JMiEqz6Q
+	+IYIAPRtADWMX5mToSLO52Q1tEg9yygkS0NEwmxH/9El/cazkPpxnsMMBfWVc9H900de/ns=
+X-Received: by 2002:a05:7022:e02:b0:119:e56b:c75b with SMTP id
+ a92af1059eb24-1278fd1318emr5946869c88.32.1772488079645; Mon, 02 Mar 2026
+ 13:47:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260302205527.1982836-1-edumazet@google.com>
+In-Reply-To: <20260302205527.1982836-1-edumazet@google.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Mon, 2 Mar 2026 13:47:48 -0800
+X-Gm-Features: AaiRm538wos0Ww1dNiBmZD0E8P7t9GdSBNNRZcMBSW-jLZHhNJnkHgOXS945_oc
+Message-ID: <CAAVpQUDFV6PxGu=yCDXRrpC5RGBFG-QNtw7LUX03jx+Vi-S-Fg@mail.gmail.com>
+Subject: Re: [PATCH net] tcp: secure_seq: add back ports to TS offset
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	Neal Cardwell <ncardwell@google.com>, Willy Tarreau <w@1wt.eu>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Zhouyan Deng <dengzhouyan_nwpu@163.com>, 
+	Florian Westphal <fw@strlen.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since 28ee1b746f493b7c62347d714f58fbf4f70df4f0 (secure_seq: downgrade to
-per-host timestamp offsets) the random offset for TCP timestamps is the same
-for all connections between a same source and destination addresses; the
-port does not matter.
+On Mon, Mar 2, 2026 at 12:55=E2=80=AFPM Eric Dumazet <edumazet@google.com> =
+wrote:
+>
+> This reverts 28ee1b746f49 ("secure_seq: downgrade to per-host timestamp o=
+ffsets")
+>
+> tcp_tw_recycle went away in 2017.
+>
+> Zhouyan Deng reported off-path TCP source port leakage via
+> SYN cookie side-channel that can be fixed in multiple ways.
+>
+> One of them is to bring back TCP ports in TS offset randomization.
+>
+> As a bonus, we perform a single siphash() computation
+> to provide both an ISN and a TS offset.
+>
+> Fixes: 28ee1b746f49 ("secure_seq: downgrade to per-host timestamp offsets=
+")
+> Reported-by: Zhouyan Deng <dengzhouyan_nwpu@163.com>
+> Signed-off-by: Eric Dumazet <edumazet@google.com>
 
-Signed-off-by: Jörg Sommer <joerg@jo-so.de>
----
- Documentation/networking/ip-sysctl.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/networking/ip-sysctl.rst
-index 6921d8594b84..0d74f8d8a79e 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -1071,7 +1071,7 @@ tcp_timestamps - INTEGER
- 
- 	- 0: Disabled.
- 	- 1: Enable timestamps as defined in RFC1323 and use random offset for
--	  each connection rather than only using the current time.
-+	  each pair (src-addr, dst-addr) rather than only using the current time.
- 	- 2: Like 1, but without random offsets.
- 
- 	Default: 1
--- 
-2.51.0
-
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
