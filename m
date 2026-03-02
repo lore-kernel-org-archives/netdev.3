@@ -1,97 +1,101 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE7DE38F22B;
-	Mon,  2 Mar 2026 10:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81CEA39B968
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 10:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772446019; cv=none; b=LKfs1xFPyNlS05EEYywEo5cfBhi3Hb2SkPZZ+sHpmweJcnWp2CzrFpjLAr8AH+2zqqTHim82+w84nURKrCYwutjMUz4CSVddBLftUY5pon9ws9Owiv7ybZUdEv8WHjX+FF4p/GI17YWtWXtS/TwuqsLmKXWCeuIzPL1V6oLS2W8=
+	t=1772446496; cv=none; b=VBrdqMsE9ot8qZlfCuVeraXev9AFeD+Vy1mGew4hJWJfbEd8iXXSUPn/hrLNCX5tVI/Mki+vCwU9Jkkmit1yAeei4K6uyiFJYFICx7HxRPI3rDZnzt11smDfqcL+890mRGROXVEnpxsT+5Iyk7OAuyLzo9yjEt6FC5sV8umfvcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772446019; c=relaxed/simple;
-	bh=g3floAcObkvaeafCOJ6rhcIBNt3NL60xTBljK0LwcnM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NpL0rIi3du3z69TolC/CKvmOOYl53/GAN/BfX2exDwVzusXg7uKTjiHOlM6L/6RYonlHbnpO42qloLU/Y4H2GJOVNghQl7Dlt1Jkt4+9WAFfhR2cppdP0GoahrfpZ6aDk9hffoet0cWJfVC46kEnnOKRJ+LvL88BxGMzGFdtvdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HodwTgYJ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772446496; c=relaxed/simple;
+	bh=yL9eUJXHi4REduqyWswfkgW16JkoDI/iPoZz8fNv0BE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZOQWh961saoUVM4+kddmk1/gjsgUFa7zUdpdYFQq5ZTX1CestnUcZpt39NsVLdBzIuTH12J37UnpunPHlX48ZpgYC4szCB8MYdl6Td3nIuGercB4PGElB4lUZxN/hO3XNNCH2BFE1GU828JeAYvd3Tva1lQVnihpt7snL9HRLoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lvhvdtzP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HodwTgYJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9137CC19425;
-	Mon,  2 Mar 2026 10:06:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lvhvdtzP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BAA4C2BCB4
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 10:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772446019;
-	bh=g3floAcObkvaeafCOJ6rhcIBNt3NL60xTBljK0LwcnM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HodwTgYJRXawuioz6fWJbfhRDuJN9ptuur5qsUNjgkqN0KmODfHpQRQJWspSniAjF
-	 nVtktb3KfiT7easFF+PRVx8w7mBAOpd5sCjcthpTJ3rarmA49p/diJ+WKo9u34xOHI
-	 +4LbxYX7+gfPmg2CerBaEUWWDTI8Q7YkEwTvFnc7LXMvrTRT5xuFHe2VxdL+g2zejF
-	 FBhUl2mXFNvFK0jRBjJP9o0K+HCO/fHK1HLTjuHwUWkcA6gcguQtkJeeIKNpxW6XI3
-	 uTzyGPL3Qqs2GuL+HH1BfT7mBnEZA4ml1+oVXaxlNsY01vGXZW0eoWfRuy58lxNrYu
-	 DKAwDOS8XRyIA==
-Date: Mon, 2 Mar 2026 11:06:54 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Jan Kara <jack@suse.cz>
-Cc: linux-fsdevel@vger.kernel.org, Jeff Layton <jlayton@kernel.org>, 
-	Josef Bacik <josef@toxicpanda.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	linux-kernel@vger.kernel.org, Hugh Dickins <hughd@google.com>, linux-mm@kvack.org, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Tejun Heo <tj@kernel.org>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Jann Horn <jannh@google.com>, netdev@vger.kernel.org
-Subject: Re: [PATCH 04/14] kernfs: adapt to rhashtable-based simple_xattrs
- with lazy allocation
-Message-ID: <20260302-wahnsinn-bettdecken-2107be02c746@brauner>
-References: <20260216-work-xattr-socket-v1-0-c2efa4f74cb7@kernel.org>
- <20260216-work-xattr-socket-v1-4-c2efa4f74cb7@kernel.org>
- <3cnmtqmakpbb2uwhenrj7kdqu3uefykiykjllgfbtpkiwhaa4s@sghkevv7jned>
+	s=k20201202; t=1772446496;
+	bh=yL9eUJXHi4REduqyWswfkgW16JkoDI/iPoZz8fNv0BE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lvhvdtzP0FEiKCUc4jExgViUpuhyJK6fzcxJAobspM/IAfx8U/hdb8EI27FH9fgf2
+	 PE4w+rwuRgU0pBjeeieyZdzdxhkbkAC5vm79R8zpAqht+v5plHLlCrzVvdaUUdS9z0
+	 Jm/YZ7ij9CEUdL9z1D9BLqZxWkr/KLemt3XXFxpT+Xy3UVbmkUtby2cWwBLUdequUV
+	 QOtoe/BfbyPdM7ZnWXVV/P3Od8kOOMHGAAoH6nr80DDYmI0oe6EcWQxbRgSn0LAN2w
+	 ogKEsoO4WCdCStkJBdKra0nx+qvFCQ/wK8TfGnXI1cwhDfVMVn3QbUtR9ZWDoaR62L
+	 Mf6SyJe74W7Nw==
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-64aedd812baso3643936d50.3
+        for <netdev@vger.kernel.org>; Mon, 02 Mar 2026 02:14:55 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWheee8hFFw0rNkodGz+rl91OLvEJYdf4hasi4Wz+pqrjdH8AUwCF0D+mi3V1WGeba8X6B0t9A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPtCGYReu44RmGN0VJXXvgy7wd40z0RzzGdt6LESm/NN6nMuwU
+	7b8SC4aF3wDqdPTsTQnikHDdY+lTwdX7vuIMXio/s4gz07a5VPfUoy4idxp9a9Ayjc3Zt+zJUwR
+	tCyLkz+WGWPgrJM7C8TsRCLHDosCcLkk=
+X-Received: by 2002:a53:ee42:0:b0:641:f5bc:69a4 with SMTP id
+ 956f58d0204a3-64cc236a35amr7180230d50.82.1772446495327; Mon, 02 Mar 2026
+ 02:14:55 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3cnmtqmakpbb2uwhenrj7kdqu3uefykiykjllgfbtpkiwhaa4s@sghkevv7jned>
+References: <20260227-a3720-pinctlr-missing-items-v1-1-e476e4df1ad6@gmail.com>
+In-Reply-To: <20260227-a3720-pinctlr-missing-items-v1-1-e476e4df1ad6@gmail.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Mon, 2 Mar 2026 11:14:44 +0100
+X-Gmail-Original-Message-ID: <CAD++jLkiuGxDbMr=w+ADcwvhr9a8h+ryE1cmrnWw9L4kE4Op0w@mail.gmail.com>
+X-Gm-Features: AaiRm50-e86imS0v4p4bAzBL_z2ShkagB8FlB4mx63CF_zWh3_u5uWJJFfQZkZU
+Message-ID: <CAD++jLkiuGxDbMr=w+ADcwvhr9a8h+ryE1cmrnWw9L4kE4Op0w@mail.gmail.com>
+Subject: Re: [PATCH] dt-bindings: pinctrl: marvell,armada3710-xb-pinctrl: add
+ missing items keyword
+To: Gabor Juhos <j4g8y7@gmail.com>
+Cc: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Conor Dooley <conor+dt@kernel.org>, Richard Cochran <richardcochran@gmail.com>, 
+	Gregory CLEMENT <gregory.clement@bootlin.com>, =?UTF-8?B?TWFyZWsgQmVow7pu?= <kabel@kernel.org>, 
+	Miquel Raynal <miquel.raynal@bootlin.com>, linux-gpio@vger.kernel.org, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Feb 27, 2026 at 04:00:37PM +0100, Jan Kara wrote:
-> On Mon 16-02-26 14:32:00, Christian Brauner wrote:
-> > Adapt kernfs to use the rhashtable-based xattr path and switch from an
-> > embedded struct to pointer-based lazy allocation.
-> > 
-> > Change kernfs_iattrs.xattrs from embedded 'struct simple_xattrs' to a
-> > pointer 'struct simple_xattrs *', initialized to NULL (zeroed by
-> > kmem_cache_zalloc). Since kernfs_iattrs is already lazily allocated
-> > itself, this adds a second level of lazy allocation specifically for
-> > the xattr store.
-> > 
-> > The xattr store is allocated on first setxattr. Read paths
-> > check for NULL and return -ENODATA or empty list.
-> > 
-> > Replaced xattr entries are freed via simple_xattr_free_rcu() to allow
-> > concurrent RCU readers to finish.
-> > 
-> > The cleanup paths in kernfs_free_rcu() and __kernfs_new_node() error
-> > handling conditionally free the xattr store only when allocated.
-> > 
-> > Signed-off-by: Christian Brauner <brauner@kernel.org>
-> 
-> ...
-> 
-> > @@ -584,6 +582,12 @@ void kernfs_put(struct kernfs_node *kn)
-> >  	if (kernfs_type(kn) == KERNFS_LINK)
-> >  		kernfs_put(kn->symlink.target_kn);
-> >  
-> > +	if (kn->iattr && kn->iattr->xattrs) {
-> > +		simple_xattrs_free(kn->iattr->xattrs, NULL);
-> > +		kfree(kn->iattr->xattrs);
-> > +		kn->iattr->xattrs = NULL;
-> > +	}
-> > +
-> >  	spin_lock(&root->kernfs_idr_lock);
-> >  	idr_remove(&root->ino_idr, (u32)kernfs_ino(kn));
-> >  	spin_unlock(&root->kernfs_idr_lock);
-> 
-> This is a slight change in the lifetime rules because previously kernfs
-> xattrs could be safely accessed only under RCU but after this change you
-> have to hold inode reference *and* RCU to safely access them. I don't think
-> anybody would be accessing xattrs without holding inode reference so this
-> should be safe but it would be good to mention this in the changelog.
+On Fri, Feb 27, 2026 at 3:16=E2=80=AFPM Gabor Juhos <j4g8y7@gmail.com> wrot=
+e:
 
-Done.
+> Even though the type of the 'groups' property of a pinmux node is
+> specified as string-array in pinmux-node.yaml, but trying to use
+> multiple strings causes dtbs_check warnings.
+>
+> For example, checking the following dts ...
+>
+>   $ cat arch/arm64/boot/dts/marvell/armada-3720-test.dts
+>   /dts-v1/;
+>
+>   #include "armada-372x.dtsi"
+>
+>   &pinctrl_nb {
+>           pwm-gpio-pins {
+>                   groups =3D "pwm0", "pwm1", "pwm2", "pwm3";
+>                   function =3D "gpio";
+>           };
+>   };
+>
+> ... results in this warning:
+>
+>   arch/arm64/boot/dts/marvell/armada-3720-test.dtb: pinctrl@13800 (marvel=
+l,armada3710-nb-pinctrl): pwm-gpio-pins:groups: ['pwm0', 'pwm1', 'pwm2', 'p=
+wm3'] is too long
+>           from schema $id: http://devicetree.org/schemas/pinctrl/marvell,=
+armada3710-xb-pinctrl.yaml
+>
+> Add the missing 'items' keyword to the schema to allow using multiple
+> strings without such warnings. Also adjust the indentation of the next
+> statements accordingly.
+>
+> Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+
+Patch applied!
+
+Yours,
+Linus Walleij
