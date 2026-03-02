@@ -1,29 +1,29 @@
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79065313520
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 09:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299A93644C1
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 09:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772442260; cv=none; b=ccZzBvJihvYDhGL5JEwTO/QN0RAdDANuD6XCwQXsVTcpIFeOs9jxocCtoRx4RV7ERyD68tFR2qghL+pB9Deg0QMmSQPP0Kuyg0zugsBgFUYYQmOU50pKAfjq/ZJz2jpHlVa+5YG9+awGdWjloykghpz8nnVkim3gWYfSVLhWTng=
+	t=1772442262; cv=none; b=HaRiGBjprX14BCxCqo9uMrFCQovGo446D/ZRJzJXXHwnl/T0VFlvh0l0GvozYp9mjCEcdKfEQKQRkkUH6hBafBi9xG9EWLAbU3eDAg8tT3V5mBT7LMim1RCuMSwHVH+myraAHV1Hhw/BwF8thPJdUpZllBCG7TrynQ2XqPyt/a0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772442260; c=relaxed/simple;
-	bh=qs5px/UxujnucZ9qwyAOvbcd9+BtDKZc/LkcPUQjYtY=;
+	s=arc-20240116; t=1772442262; c=relaxed/simple;
+	bh=mg9TpiFcLsGtPNoUmtw3dtMT17dkIgq+HnkfknQKBNY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tynBASM3EtEpTiYoe+pp6X5nte3sS9IskiTu2DnciqnyRvC1uSsiUDfw8p1c3TQQWBCtGDs3CFTk5JWCoK/dIzLoqmF7wWKZOY0hesBUI2I2F3AQtQYMag3WfCBFa2v+vTpNJLI3GZhZWktqRp5dRY/cpzeiYG0LGq88QPurHtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=MuADD4L1; arc=none smtp.client-ip=115.124.30.113
+	 MIME-Version; b=OCa9XD487ZDLsZi1NFADL/TS4S4z1IEX0HXoEoReur3SrFtDcuouVe1GUYyq7dKhg67feoFM6xu6M7ZGG7fVdYiAbK2pn7s0oCJ0XTB6fWfCLGrzZ51Nrxj45vpmNRMdNGVsNtC97M/L/0ZpwivtH517D02kxWAriwZhFU9jIxE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Fgqr7CD5; arc=none smtp.client-ip=115.124.30.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="MuADD4L1"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Fgqr7CD5"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
 	t=1772442256; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=rxlPX0OvoZIotLN2GYZBhe+6cISZ5dyHktquYK9IguM=;
-	b=MuADD4L1vrtXhRq0NHzFBE0+jM3jriq60epKOXKokHVSsbcMc92WVdBiMBpKcyXJyKWbkq63kJu79cq8tpSyeR3zAu24P92cnQ8fZ7Z92+NkInEQq+yDvvmfyDPJynnCE+Nc+8OTrntt/GFL4nEGAUx5s/TwMza1i1rPbJMnkKE=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X-3.d7r_1772442254 cluster:ay36)
+	bh=GZHe5g/FvtcoQAZypE3GZTUpsVtMQ3JGrxXyS85peuY=;
+	b=Fgqr7CD5npfGVmqoEeMuiYdg040mTW0CVtSjFMy1RskUFc7odxKGnz0hO3coN7hVflxM2YNIVAjlQjWXBv/ZooU3+vvhc4ub5jOzGmrRDMsK7PQnJ6heC209XRX9aXGftTztL7KsrayZ21H8JLF8IG7DOwDiRCuVqDChQPOefTE=
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X-2pCwl_1772442254 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 02 Mar 2026 17:04:15 +0800
+          Mon, 02 Mar 2026 17:04:14 +0800
 From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 To: netdev@vger.kernel.org
 Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
@@ -39,9 +39,9 @@ Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
 	Jiri Pirko <jiri@resnulli.us>,
 	Alvaro Karsz <alvaro.karsz@solid-run.com>,
 	virtualization@lists.linux.dev
-Subject: [PATCH net v7 2/2] virtio-net: correct hdr_len handling for tunnel gso
-Date: Mon,  2 Mar 2026 17:04:13 +0800
-Message-Id: <20260302090413.86471-3-xuanzhuo@linux.alibaba.com>
+Subject: [PATCH net v7 1/2] virtio-net: correct hdr_len handling for VIRTIO_NET_F_GUEST_HDRLEN
+Date: Mon,  2 Mar 2026 17:04:12 +0800
+Message-Id: <20260302090413.86471-2-xuanzhuo@linux.alibaba.com>
 X-Mailer: git-send-email 2.32.0.3.g01195cf9f
 In-Reply-To: <20260302090413.86471-1-xuanzhuo@linux.alibaba.com>
 References: <20260302090413.86471-1-xuanzhuo@linux.alibaba.com>
@@ -54,94 +54,180 @@ MIME-Version: 1.0
 X-Git-Hash: 411d21554521
 Content-Transfer-Encoding: 8bit
 
-The commit a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP
-GSO tunneling.") introduces support for the UDP GSO tunnel feature in
-virtio-net.
+The commit be50da3e9d4a ("net: virtio_net: implement exact header length
+guest feature") introduces support for the VIRTIO_NET_F_GUEST_HDRLEN
+feature in virtio-net.
 
-The virtio spec says:
+This feature requires virtio-net to set hdr_len to the actual header
+length of the packet when transmitting, the number of
+bytes from the start of the packet to the beginning of the
+transport-layer payload.
 
-    If the \field{gso_type} has the VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 bit or
-    VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6 bit set, \field{hdr_len} accounts for
-    all the headers up to and including the inner transport.
+However, in practice, hdr_len was being set using skb_headlen(skb),
+which is clearly incorrect. This commit fixes that issue.
 
-The commit did not update the hdr_len to include the inner transport.
-
-I observed that the "hdr_len" is 116 for this packet:
-
-    17:36:18.241105 52:55:00:d1:27:0a > 2e:2c:df:46:a9:e1, ethertype IPv4 (0x0800), length 2912: (tos 0x0, ttl 64, id 45197, offset 0, flags [none], proto UDP (17), length 2898)
-        192.168.122.100.50613 > 192.168.122.1.4789: [bad udp cksum 0x8106 -> 0x26a0!] VXLAN, flags [I] (0x08), vni 1
-    fa:c3:ba:82:05:ee > ce:85:0c:31:77:e5, ethertype IPv4 (0x0800), length 2862: (tos 0x0, ttl 64, id 14678, offset 0, flags [DF], proto TCP (6), length 2848)
-        192.168.3.1.49880 > 192.168.3.2.9898: Flags [P.], cksum 0x9266 (incorrect -> 0xaa20), seq 515667:518463, ack 1, win 64, options [nop,nop,TS val 2990048824 ecr 2798801412], length 2796
-
-116 = 14(mac) + 20(ip) + 8(udp) + 8(vxlan) + 14(inner mac) + 20(inner ip) + 32(innner tcp)
-
-Fixes: a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP GSO tunneling.")
+Fixes: be50da3e9d4a ("net: virtio_net: implement exact header length guest feature")
 Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 ---
- include/linux/virtio_net.h | 28 ++++++++++++++++++----------
- 1 file changed, 18 insertions(+), 10 deletions(-)
+ drivers/net/tun_vnet.h     |  2 +-
+ drivers/net/virtio_net.c   |  8 +++--
+ include/linux/virtio_net.h | 61 ++++++++++++++++++++++++++++++--------
+ 3 files changed, 56 insertions(+), 15 deletions(-)
 
+diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
+index a5f93b6c4482..fa5cab9d3e55 100644
+--- a/drivers/net/tun_vnet.h
++++ b/drivers/net/tun_vnet.h
+@@ -244,7 +244,7 @@ tun_vnet_hdr_tnl_from_skb(unsigned int flags,
+ 
+ 	if (virtio_net_hdr_tnl_from_skb(skb, tnl_hdr, has_tnl_offload,
+ 					tun_vnet_is_little_endian(flags),
+-					vlan_hlen, true)) {
++					vlan_hlen, true, false)) {
+ 		struct virtio_net_hdr_v1 *hdr = &tnl_hdr->hash_hdr.hdr;
+ 		struct skb_shared_info *sinfo = skb_shinfo(skb);
+ 
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 72d6a9c6a5a2..1800058c8072 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3265,9 +3265,13 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
+ 	const unsigned char *dest = ((struct ethhdr *)skb->data)->h_dest;
+ 	struct virtnet_info *vi = sq->vq->vdev->priv;
+ 	struct virtio_net_hdr_v1_hash_tunnel *hdr;
+-	int num_sg;
+ 	unsigned hdr_len = vi->hdr_len;
++	bool feature_hdrlen;
+ 	bool can_push;
++	int num_sg;
++
++	feature_hdrlen = virtio_has_feature(vi->vdev,
++					    VIRTIO_NET_F_GUEST_HDRLEN);
+ 
+ 	pr_debug("%s: xmit %p %pM\n", vi->dev->name, skb, dest);
+ 
+@@ -3288,7 +3292,7 @@ static int xmit_skb(struct send_queue *sq, struct sk_buff *skb, bool orphan)
+ 
+ 	if (virtio_net_hdr_tnl_from_skb(skb, hdr, vi->tx_tnl,
+ 					virtio_is_little_endian(vi->vdev), 0,
+-					false))
++					false, feature_hdrlen))
+ 		return -EPROTO;
+ 
+ 	if (vi->mergeable_rx_bufs)
 diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index d31c9af1f3d6..906157779955 100644
+index 75dabb763c65..d31c9af1f3d6 100644
 --- a/include/linux/virtio_net.h
 +++ b/include/linux/virtio_net.h
-@@ -209,18 +209,29 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+@@ -207,20 +207,40 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 	return __virtio_net_hdr_to_skb(skb, hdr, little_endian, hdr->gso_type);
+ }
  
- static inline void virtio_net_set_hdrlen(const struct sk_buff *skb,
- 					 struct virtio_net_hdr *hdr,
-+					 struct skb_shared_info *sinfo,
- 					 bool little_endian,
- 					 bool feature_hdrlen)
+-static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
+-					  struct virtio_net_hdr *hdr,
+-					  bool little_endian,
+-					  bool has_data_valid,
+-					  int vlan_hlen)
++static inline void virtio_net_set_hdrlen(const struct sk_buff *skb,
++					 struct virtio_net_hdr *hdr,
++					 bool little_endian,
++					 bool feature_hdrlen)
++{
++	u16 hdr_len;
++
++	if (feature_hdrlen) {
++		hdr_len = skb_transport_offset(skb);
++
++		if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
++			hdr_len += sizeof(struct udphdr);
++		else
++			hdr_len += tcp_hdrlen(skb);
++	} else {
++		/* This is a hint as to how much should be linear. */
++		hdr_len = skb_headlen(skb);
++	}
++
++	hdr->hdr_len = __cpu_to_virtio16(little_endian, hdr_len);
++}
++
++static inline int __virtio_net_hdr_from_skb(const struct sk_buff *skb,
++					    struct virtio_net_hdr *hdr,
++					    bool little_endian,
++					    bool has_data_valid,
++					    bool feature_hdrlen,
++					    int vlan_hlen)
  {
- 	u16 hdr_len;
+ 	memset(hdr, 0, sizeof(*hdr));   /* no info leak */
  
- 	if (feature_hdrlen) {
--		hdr_len = skb_transport_offset(skb);
--
--		if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
--			hdr_len += sizeof(struct udphdr);
--		else
--			hdr_len += tcp_hdrlen(skb);
-+		if (sinfo->gso_type & (SKB_GSO_UDP_TUNNEL |
-+				       SKB_GSO_UDP_TUNNEL_CSUM)) {
-+			hdr_len = skb_inner_transport_offset(skb);
-+
-+			if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
-+				hdr_len += sizeof(struct udphdr);
-+			else
-+				hdr_len += inner_tcp_hdrlen(skb);
-+		} else {
-+			hdr_len = skb_transport_offset(skb);
-+
-+			if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
-+				hdr_len += sizeof(struct udphdr);
-+			else
-+				hdr_len += tcp_hdrlen(skb);
-+		}
- 	} else {
- 		/* This is a hint as to how much should be linear. */
- 		hdr_len = skb_headlen(skb);
-@@ -252,7 +263,7 @@ static inline int __virtio_net_hdr_from_skb(const struct sk_buff *skb,
+ 	if (skb_is_gso(skb)) {
+ 		struct skb_shared_info *sinfo = skb_shinfo(skb);
+ 
+-		/* This is a hint as to how much should be linear. */
+-		hdr->hdr_len = __cpu_to_virtio16(little_endian,
+-						 skb_headlen(skb));
+ 		hdr->gso_size = __cpu_to_virtio16(little_endian,
+ 						  sinfo->gso_size);
+ 		if (sinfo->gso_type & SKB_GSO_TCPV4)
+@@ -231,6 +251,10 @@ static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
+ 			hdr->gso_type = VIRTIO_NET_HDR_GSO_UDP_L4;
  		else
  			return -EINVAL;
- 
--		virtio_net_set_hdrlen(skb, hdr, little_endian,
-+		virtio_net_set_hdrlen(skb, hdr, sinfo, little_endian,
- 				      feature_hdrlen);
- 
++
++		virtio_net_set_hdrlen(skb, hdr, little_endian,
++				      feature_hdrlen);
++
  		if (sinfo->gso_type & SKB_GSO_TCP_ECN)
-@@ -443,11 +454,8 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
-         vhdr->hash_hdr.hash_report = 0;
-         vhdr->hash_hdr.padding = 0;
+ 			hdr->gso_type |= VIRTIO_NET_HDR_GSO_ECN;
+ 	} else
+@@ -250,6 +274,16 @@ static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
+ 	return 0;
+ }
  
--	/* Let the basic parsing deal with plain GSO features. */
--	skb_shinfo(skb)->gso_type &= ~tnl_gso_type;
- 	ret = __virtio_net_hdr_from_skb(skb, hdr, true, false,
- 					feature_hdrlen, vlan_hlen);
--	skb_shinfo(skb)->gso_type |= tnl_gso_type;
++static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
++					  struct virtio_net_hdr *hdr,
++					  bool little_endian,
++					  bool has_data_valid,
++					  int vlan_hlen)
++{
++	return __virtio_net_hdr_from_skb(skb, hdr, little_endian,
++					 has_data_valid, false, vlan_hlen);
++}
++
+ static inline unsigned int virtio_l3min(bool is_ipv6)
+ {
+ 	return is_ipv6 ? sizeof(struct ipv6hdr) : sizeof(struct iphdr);
+@@ -385,7 +419,8 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+ 			    bool tnl_hdr_negotiated,
+ 			    bool little_endian,
+ 			    int vlan_hlen,
+-			    bool has_data_valid)
++			    bool has_data_valid,
++			    bool feature_hdrlen)
+ {
+ 	struct virtio_net_hdr *hdr = (struct virtio_net_hdr *)vhdr;
+ 	unsigned int inner_nh, outer_th;
+@@ -395,8 +430,9 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+ 	tnl_gso_type = skb_shinfo(skb)->gso_type & (SKB_GSO_UDP_TUNNEL |
+ 						    SKB_GSO_UDP_TUNNEL_CSUM);
+ 	if (!tnl_gso_type)
+-		return virtio_net_hdr_from_skb(skb, hdr, little_endian,
+-					       has_data_valid, vlan_hlen);
++		return __virtio_net_hdr_from_skb(skb, hdr, little_endian,
++						 has_data_valid,
++						 feature_hdrlen, vlan_hlen);
+ 
+ 	/* Tunnel support not negotiated but skb ask for it. */
+ 	if (!tnl_hdr_negotiated)
+@@ -409,7 +445,8 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
+ 
+ 	/* Let the basic parsing deal with plain GSO features. */
+ 	skb_shinfo(skb)->gso_type &= ~tnl_gso_type;
+-	ret = virtio_net_hdr_from_skb(skb, hdr, true, false, vlan_hlen);
++	ret = __virtio_net_hdr_from_skb(skb, hdr, true, false,
++					feature_hdrlen, vlan_hlen);
+ 	skb_shinfo(skb)->gso_type |= tnl_gso_type;
  	if (ret)
  		return ret;
- 
 -- 
 2.32.0.3.g01195cf9f
 
