@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9238240149C
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 15:28:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC71407566
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 15:28:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772465294; cv=none; b=K/eCIelrx2qcAlqaWmxvyOjRn6aFRS8oMZzAMx2tUCMOZhmv9SQj0vkzbtt27a4TrGS+1oJ5DvRm5SFbHn4nSwZBD+CsjXEhFawRdoMsl2DnxRsnU11ZKKMac/II8ABE769SVY/shKgvzn/ZNALek8hvxTEHOw8zEz0w+6a3dbo=
+	t=1772465294; cv=none; b=sMl6PxXiK5bCVpwflRsIr6AkILUwvFyporD6cjA6yGsUNI4NawBQBQZAZt6Tw9EfVAN5yXoAPCcAao9t1ppRFYbAh40S7O+ENT0rVsnwBGrS/pg7IrNeMLlYLtLqmmSO6h9hzF0H+nnyWd3m160Iw0JZLF7ppdLnHjCHsh+N1Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772465294; c=relaxed/simple;
-	bh=3mZYEsDbDr9pGbHA3lo0cd5gHLsYCxXiw9738mCq+R4=;
+	bh=X9u3E5XH1NT5ojXk3VDLa4paTMladaDW2C5ixjXM96Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KuYqIn4ag/Qp7gTNjcPUaWK8F/UMhUhCj8bG2NTWlljukSw7W1dJ0j2WsAjK1m+lm/QcXhEp73yXXbxZzd1etBlQbjm6nJRyXmgc1APIvoGyWFqQw15ebFoSUZTrt0qFR/1wULOxvPpVnuCIbND2MRO/ox608TEFtG8IrNEpV/Q=
+	 MIME-Version; b=qycLXsZAS6kG3SX/bzSmZVP1d52JULQ4aMqTB0tdaFeUHQPXQ88vShM1nyAgwZ6iFILUQysLihKPS+ruKVWBiEW9rFCslYeqcvuko7w44fhray+H7uiEfZqcA7sbZ6LFa7qMLoyEP7OcL1gqaZH93aaP8nawgVW2wiSi29236L8=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Be-0004kL-SH; Mon, 02 Mar 2026 16:27:58 +0100
+	id 1vx5Be-0004kI-TB; Mon, 02 Mar 2026 16:27:58 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Bc-003P0e-1m;
+	id 1vx5Bc-003P0Z-1D;
 	Mon, 02 Mar 2026 16:27:57 +0100
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 9AF994F546D;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 712B44F546A;
 	Mon, 02 Mar 2026 15:27:57 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -38,12 +38,12 @@ Cc: davem@davemloft.net,
 	kuba@kernel.org,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
-	Ziyi Guo <n7l8m4@u.northwestern.edu>,
-	Vincent Mailhol <mailhol@kernel.org>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	syzbot+5b11eccc403dd1cea9f8@syzkaller.appspotmail.com,
 	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH net 04/12] can: esd_usb: add endpoint type validation
-Date: Mon,  2 Mar 2026 16:16:10 +0100
-Message-ID: <20260302152755.1700177-5-mkl@pengutronix.de>
+Subject: [PATCH net 01/12] can: bcm: fix locking for bcm_op runtime updates
+Date: Mon,  2 Mar 2026 16:16:07 +0100
+Message-ID: <20260302152755.1700177-2-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260302152755.1700177-1-mkl@pengutronix.de>
 References: <20260302152755.1700177-1-mkl@pengutronix.de>
@@ -59,132 +59,43 @@ X-SA-Exim-Mail-From: mkl@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-From: Ziyi Guo <n7l8m4@u.northwestern.edu>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-esd_usb_probe() constructs bulk pipes for two endpoints without
-verifying their transfer types:
+Commit c2aba69d0c36 ("can: bcm: add locking for bcm_op runtime updates")
+added a locking for some variables that can be modified at runtime when
+updating the sending bcm_op with a new TX_SETUP command in bcm_tx_setup().
 
-  - usb_rcvbulkpipe(dev->udev, 1) for RX (version reply, async RX data)
-  - usb_sndbulkpipe(dev->udev, 2) for TX (version query, CAN frames)
+Usually the RX_SETUP only handles and filters incoming traffic with one
+exception: When the RX_RTR_FRAME flag is set a predefined CAN frame is
+sent when a specific RTR frame is received. Therefore the rx bcm_op uses
+bcm_can_tx() which uses the bcm_tx_lock that was only initialized in
+bcm_tx_setup(). Add the missing spin_lock_init() when allocating the
+bcm_op in bcm_rx_setup() to handle the RTR case properly.
 
-A malformed USB device can present these endpoints with transfer types
-that differ from what the driver assumes, triggering the WARNING in
-usb_submit_urb().
-
-Use usb_find_common_endpoints() to discover and validate the first
-bulk IN and bulk OUT endpoints at probe time, before any allocation.
-Found pipes are saved to struct esd_usb and code uses them directly
-instead of making pipes in place.
-
-Similar to
-- commit 136bed0bfd3b ("can: mcba_usb: properly check endpoint type")
-  which established the usb_find_common_endpoints() + stored pipes
-  pattern for CAN USB drivers.
-
-Fixes: 96d8e90382dc ("can: Add driver for esd CAN-USB/2 device")
-Suggested-by: Vincent Mailhol <mailhol@kernel.org>
-Signed-off-by: Ziyi Guo <n7l8m4@u.northwestern.edu>
-Reviewed-by: Vincent Mailhol <mailhol@kernel.org>
-Link: https://patch.msgid.link/20260213203927.599163-1-n7l8m4@u.northwestern.edu
+Fixes: c2aba69d0c36 ("can: bcm: add locking for bcm_op runtime updates")
+Reported-by: syzbot+5b11eccc403dd1cea9f8@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-can/699466e4.a70a0220.2c38d7.00ff.GAE@google.com/
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20260218-bcm_spin_lock_init-v1-1-592634c8a5b5@hartkopp.net
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/usb/esd_usb.c | 30 +++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ net/can/bcm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/can/usb/esd_usb.c b/drivers/net/can/usb/esd_usb.c
-index 2892a68f510a..d257440fa01f 100644
---- a/drivers/net/can/usb/esd_usb.c
-+++ b/drivers/net/can/usb/esd_usb.c
-@@ -272,6 +272,9 @@ struct esd_usb {
+diff --git a/net/can/bcm.c b/net/can/bcm.c
+index b7324e9c955b..fd9fa072881e 100644
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -1176,6 +1176,7 @@ static int bcm_rx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
+ 		if (!op)
+ 			return -ENOMEM;
  
- 	struct usb_anchor rx_submitted;
- 
-+	unsigned int rx_pipe;
-+	unsigned int tx_pipe;
-+
- 	int net_count;
- 	u32 version;
- 	int rxinitdone;
-@@ -537,7 +540,7 @@ static void esd_usb_read_bulk_callback(struct urb *urb)
- 	}
- 
- resubmit_urb:
--	usb_fill_bulk_urb(urb, dev->udev, usb_rcvbulkpipe(dev->udev, 1),
-+	usb_fill_bulk_urb(urb, dev->udev, dev->rx_pipe,
- 			  urb->transfer_buffer, ESD_USB_RX_BUFFER_SIZE,
- 			  esd_usb_read_bulk_callback, dev);
- 
-@@ -626,9 +629,7 @@ static int esd_usb_send_msg(struct esd_usb *dev, union esd_usb_msg *msg)
- {
- 	int actual_length;
- 
--	return usb_bulk_msg(dev->udev,
--			    usb_sndbulkpipe(dev->udev, 2),
--			    msg,
-+	return usb_bulk_msg(dev->udev, dev->tx_pipe, msg,
- 			    msg->hdr.len * sizeof(u32), /* convert to # of bytes */
- 			    &actual_length,
- 			    1000);
-@@ -639,12 +640,8 @@ static int esd_usb_wait_msg(struct esd_usb *dev,
- {
- 	int actual_length;
- 
--	return usb_bulk_msg(dev->udev,
--			    usb_rcvbulkpipe(dev->udev, 1),
--			    msg,
--			    sizeof(*msg),
--			    &actual_length,
--			    1000);
-+	return usb_bulk_msg(dev->udev, dev->rx_pipe, msg,
-+			    sizeof(*msg), &actual_length, 1000);
- }
- 
- static int esd_usb_setup_rx_urbs(struct esd_usb *dev)
-@@ -677,8 +674,7 @@ static int esd_usb_setup_rx_urbs(struct esd_usb *dev)
- 
- 		urb->transfer_dma = buf_dma;
- 
--		usb_fill_bulk_urb(urb, dev->udev,
--				  usb_rcvbulkpipe(dev->udev, 1),
-+		usb_fill_bulk_urb(urb, dev->udev, dev->rx_pipe,
- 				  buf, ESD_USB_RX_BUFFER_SIZE,
- 				  esd_usb_read_bulk_callback, dev);
- 		urb->transfer_flags |= URB_NO_TRANSFER_DMA_MAP;
-@@ -903,7 +899,7 @@ static netdev_tx_t esd_usb_start_xmit(struct sk_buff *skb,
- 	/* hnd must not be 0 - MSB is stripped in txdone handling */
- 	msg->tx.hnd = BIT(31) | i; /* returned in TX done message */
- 
--	usb_fill_bulk_urb(urb, dev->udev, usb_sndbulkpipe(dev->udev, 2), buf,
-+	usb_fill_bulk_urb(urb, dev->udev, dev->tx_pipe, buf,
- 			  msg->hdr.len * sizeof(u32), /* convert to # of bytes */
- 			  esd_usb_write_bulk_callback, context);
- 
-@@ -1298,10 +1294,16 @@ static int esd_usb_probe_one_net(struct usb_interface *intf, int index)
- static int esd_usb_probe(struct usb_interface *intf,
- 			 const struct usb_device_id *id)
- {
-+	struct usb_endpoint_descriptor *ep_in, *ep_out;
- 	struct esd_usb *dev;
- 	union esd_usb_msg *msg;
- 	int i, err;
- 
-+	err = usb_find_common_endpoints(intf->cur_altsetting, &ep_in, &ep_out,
-+					NULL, NULL);
-+	if (err)
-+		return err;
-+
- 	dev = kzalloc_obj(*dev);
- 	if (!dev) {
- 		err = -ENOMEM;
-@@ -1309,6 +1311,8 @@ static int esd_usb_probe(struct usb_interface *intf,
- 	}
- 
- 	dev->udev = interface_to_usbdev(intf);
-+	dev->rx_pipe = usb_rcvbulkpipe(dev->udev, ep_in->bEndpointAddress);
-+	dev->tx_pipe = usb_sndbulkpipe(dev->udev, ep_out->bEndpointAddress);
- 
- 	init_usb_anchor(&dev->rx_submitted);
- 
++		spin_lock_init(&op->bcm_tx_lock);
+ 		op->can_id = msg_head->can_id;
+ 		op->nframes = msg_head->nframes;
+ 		op->cfsiz = CFSIZ(msg_head->flags);
+
+base-commit: 9439a661c2e80485406ce2c90b107ca17858382d
 -- 
 2.51.0
 
