@@ -1,161 +1,95 @@
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
+Received: from mail.aperture-lab.de (mail.aperture-lab.de [116.203.183.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CC031716C
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 05:34:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FC433168E6;
+	Mon,  2 Mar 2026 05:40:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.183.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772429685; cv=none; b=hRrogcJydh+gqioeRF1QxOJjfQE6m5LjqyxB4QvcWyq2bphxQ5BBW1VkojVNPr7xDeXIvma82eW85Wz5XmeP+tVB0BMyBICp0MEWsmKues/RvwEKJ/q/80vLK6wIWAKujeMvy7WeDCZIiBDo/ydKYS7TW1tW0vbjQoltoqmZG70=
+	t=1772430052; cv=none; b=NVlWKeSXHSCr98kp+duaOMeGyia5G17jdmKgIvlIAiD3dtiQaadiSHUHzXU7ojZXi1Wz3ISe4sSbaWpNWQVhwdbhMDDydaeehiUQMBF/CYF2ajdKMsuHKz2DuXbPyp368/96AIHdNRZGzGYx9jig1dVPC94PUnV7ulomLGJ0xFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772429685; c=relaxed/simple;
-	bh=icHZY2wqQ9jqRK4LJNunuA+NRbPEqtIg1aKitJDaEGk=;
+	s=arc-20240116; t=1772430052; c=relaxed/simple;
+	bh=mxtKwzhqyehoPNgZs5UxSR6JsnKb6vAGvUm2j0rpxbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nA45wToAMcaR+UUe+VpGzQhbm4eBwT4xnIYUCXUuPOzK8Pzkc8JwwiRiRuj/zOxOoodOhqTCD7/F/T1Xeat2LY0GavcynDkHuIh4YQE8gmcz3UGh4SUOJ+B79m1TngW3x24iUxl0nJL4Evzh/gMABj8lWu8bz+D9iDof2elKwNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk; spf=none smtp.mailfrom=davidwei.uk; dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b=isJfDSFj; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=davidwei.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=davidwei.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=davidwei-uk.20230601.gappssmtp.com header.i=@davidwei-uk.20230601.gappssmtp.com header.b="isJfDSFj"
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-7d4c7d04890so3817000a34.3
-        for <netdev@vger.kernel.org>; Sun, 01 Mar 2026 21:34:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=davidwei-uk.20230601.gappssmtp.com; s=20230601; t=1772429683; x=1773034483; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pdi5TfqHB20Phx1gxNlcCaQkHXP3aF10Zkb2EJi23sI=;
-        b=isJfDSFjcLkXV/Ktsws31QUQELuDOI+Fc+3i78PzcsejfzoEZcuQ33gsy+vZJTNpCc
-         YOcGp8OVnIGNRWWC42ddZs0inrP7t597xbMY/igYZ09A/lnTvIqhL3/vb8m1ooDSP/Qo
-         9GG6WihJR7awfCsYphJ/6mzDfjyIyb0epCcBo9BBEjS/S4h3JgNe9huJJuCRbe3P0hRN
-         cTnNysMgRpRKpElsH4wX1T8roCit8P43+NOxty1AUZyrBxCpCG24+VSgMmi4jcsmiiaD
-         PYcWpjylyNjrcGTt8FBm7nXOlS9Pz5NBz50FQBoSG7oRJbWJlBxeryYUHDT2iQTTKZQx
-         17hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772429683; x=1773034483;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Pdi5TfqHB20Phx1gxNlcCaQkHXP3aF10Zkb2EJi23sI=;
-        b=xIOSYRSN5YZGLb13+Pa7l4w76uuw1y4lGXYsE52ybryJ611z/dQJmZfYMW+qZGWCsx
-         ci04EQA9f6kK66ij0d1x1Kwd21XArxzKha0s0/hgOdhgRc/HBEeXVgYyeu4S8KfBvRR2
-         rKYgmmAWH6asWVmZrnp5tNBc4B36NVctZY5bD5T7rT3pazFn0Rhio+axLxtiEuQrxqjM
-         dZN/JjGrUR5Y4GNwao9CAu5YWF0HlDXLe1fwpV0sWeE2eC1Stbm3hLP2BreZpJDibviZ
-         kwQlqPT/H1QoFO1Ug1K+RvZRrtmdd7Tuj3ioV/TPR5dFiJ7dKefe/xWN5pA24EPmndwy
-         pHYw==
-X-Gm-Message-State: AOJu0Yxen+CnD5G40jehjq+gS1zw10TZCTX3wxJT2kV8K1smQWatZCmP
-	vOMXv8Bu+oeSi1TmegEtOfb+d+mo+vKk8aiyj9amyWkd5K3O4G/R6Qs1YQxekEiPoaX8/Ww2PQp
-	QqcPX
-X-Gm-Gg: ATEYQzylhT6+4xQ+VUJ0VgG5pzBd12cTdRTLZOeEkpm5UujzAui0cXGAp77fs8a2K4I
-	oDg/MmnYQke3HHuS365dxeR2n7gI/SOtdokdGvwGeEWTgI0iTo5vxE3HQQ2J6hq4HaUPhy5YBoA
-	Af51o3fVhOdFQwyeP1rBsE3ydLAb4+QZefkmwZRLZoY2Q1L3BLkjcyN7mBW9nId3melsBAk5mXX
-	uA4ZOP68SXXWW6b7h9NVi+SIFTLtVdRruhb83vx76ThK+xzMGjqsTqeFB/h8kPD8Aj5FxaI2ptL
-	0yMk8IV6EYFcz5jNJk55ReuCNOHaFytZpO7w+u2CcPzViG1Y+NtLkCt2C7bYtOuJ91VSgbuEyuB
-	mbrXTwv18qPFhwcXnadpxsjvPryaQhuZfISq75yxJN882Nj9NCN66omMSgsV476jJgrMgo+oo+O
-	B6GM7i8E/N65t7wBm6DE84GYE6FLQ3fva8nMrkKLue
-X-Received: by 2002:a05:6830:3808:b0:7d1:9cdb:f499 with SMTP id 46e09a7af769-7d591b1af81mr7632220a34.5.1772429682800;
-        Sun, 01 Mar 2026 21:34:42 -0800 (PST)
-Received: from localhost ([2a03:2880:10ff:3::])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7d586474d4csm11240809a34.9.2026.03.01.21.34.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 01 Mar 2026 21:34:42 -0800 (PST)
-From: David Wei <dw@davidwei.uk>
-To: netdev@vger.kernel.org
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	 MIME-Version:Content-Type; b=r+utkyzW7rirsHNP6t2G+NeMqBcy5geo6VftCoXgml7VMIAlWfKb+lPkRSq1AaJRL6QFRo8CBpKeiQkWD0Mtg/HLVDV1h3RqA3lyqoEUYfD23Z2n2WcF9ywLx6s86Br5u57hLObXyGF136R5kVx0TtjaoCsTTE0yRazFIi+bt9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue; spf=pass smtp.mailfrom=c0d3.blue; arc=none smtp.client-ip=116.203.183.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c0d3.blue
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id DB25554CC65;
+	Mon,  2 Mar 2026 06:40:48 +0100 (CET)
+From: =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
+To: bridge@lists.linux.dev
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Joe Damato <joe@dama.to>,
-	Wei Wang <weibunny@meta.com>,
-	Bobby Eshleman <bobbyeshleman@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
 	Stanislav Fomichev <sdf@fomichev.me>,
-	Nikolay Aleksandrov <razor@blackwall.org>
-Subject: [PATCH net-next v2 4/4] selftests/net: Add netkit container ping test
-Date: Sun,  1 Mar 2026 21:33:15 -0800
-Message-ID: <20260302053315.1919859-5-dw@davidwei.uk>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260302053315.1919859-1-dw@davidwei.uk>
-References: <20260302053315.1919859-1-dw@davidwei.uk>
+	Xiao Liang <shaw.leon@gmail.com>,
+	shuah@kernel.org,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
+Subject: [PATCH net-next v3 06/14] net: bridge: mcast: track active state, IPv6 address availability
+Date: Mon,  2 Mar 2026 06:40:00 +0100
+Message-ID: <20260302054008.21638-7-linus.luessing@c0d3.blue>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260302054008.21638-1-linus.luessing@c0d3.blue>
+References: <20260302054008.21638-1-linus.luessing@c0d3.blue>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Add a basic ping test using NetDrvContEnv that sets up a netkit pair,
-with one end in a netns. Use LOCAL_PREFIX_V6 and nk_forward BPF program
-to ping from a remote host to the netkit in netns.
+If we are the only potential MLD querier but don't have an IPv6
+link-local address configured on our bridge interface then we can't
+create a valid MLD query and in turn can't reliably receive MLD reports
+and can't build a complete MDB. Hence disable the new multicast active
+state variable then. Or reenable it if an IPv6 link-local address
+became available.
 
-Signed-off-by: David Wei <dw@davidwei.uk>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+No functional change for the fast/data path yet.
+
+Signed-off-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
 ---
- .../testing/selftests/drivers/net/hw/Makefile |  1 +
- tools/testing/selftests/drivers/net/hw/config |  3 +++
- .../selftests/drivers/net/hw/nk_netns.py      | 23 +++++++++++++++++++
- 3 files changed, 27 insertions(+)
- create mode 100755 tools/testing/selftests/drivers/net/hw/nk_netns.py
+ net/bridge/br_multicast.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/Makefile b/tools/testing/selftests/drivers/net/hw/Makefile
-index a64140333a46..91df028abfc0 100644
---- a/tools/testing/selftests/drivers/net/hw/Makefile
-+++ b/tools/testing/selftests/drivers/net/hw/Makefile
-@@ -32,6 +32,7 @@ TEST_PROGS = \
- 	irq.py \
- 	loopback.sh \
- 	nic_timestamp.py \
-+	nk_netns.py \
- 	pp_alloc_fail.py \
- 	rss_api.py \
- 	rss_ctx.py \
-diff --git a/tools/testing/selftests/drivers/net/hw/config b/tools/testing/selftests/drivers/net/hw/config
-index 2307aa001be1..b6524040418e 100644
---- a/tools/testing/selftests/drivers/net/hw/config
-+++ b/tools/testing/selftests/drivers/net/hw/config
-@@ -1,3 +1,4 @@
-+CONFIG_BPF_SYSCALL=y
- CONFIG_FAIL_FUNCTION=y
- CONFIG_FAULT_INJECTION=y
- CONFIG_FAULT_INJECTION_DEBUG_FS=y
-@@ -5,6 +6,8 @@ CONFIG_FUNCTION_ERROR_INJECTION=y
- CONFIG_IO_URING=y
- CONFIG_IPV6=y
- CONFIG_IPV6_GRE=y
-+CONFIG_NETKIT=y
-+CONFIG_NET_CLS_BPF=y
- CONFIG_NET_IPGRE=y
- CONFIG_NET_IPGRE_DEMUX=y
- CONFIG_UDMABUF=y
-diff --git a/tools/testing/selftests/drivers/net/hw/nk_netns.py b/tools/testing/selftests/drivers/net/hw/nk_netns.py
-new file mode 100755
-index 000000000000..afa8638195d8
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/nk_netns.py
-@@ -0,0 +1,23 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+
-+from lib.py import ksft_run, ksft_exit
-+from lib.py import NetDrvContEnv
-+from lib.py import cmd
-+
-+
-+def test_ping(cfg) -> None:
-+    cfg.require_ipver("6")
-+
-+    cmd(f"ping -c 1 -W5 {cfg.nk_guest_ipv6}", host=cfg.remote)
-+    cmd(f"ping -c 1 -W5 {cfg.remote_addr_v['6']}", ns=cfg.netns)
-+
-+
-+def main() -> None:
-+    with NetDrvContEnv(__file__) as cfg:
-+        ksft_run([test_ping], args=(cfg,))
-+    ksft_exit()
-+
-+
-+if __name__ == "__main__":
-+    main()
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index b05f00b4d832..12be40a1d0a2 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -1123,6 +1123,7 @@ static void br_multicast_notify_active(struct net_bridge_mcast *brmctx,
+  * The multicast active state is set, per protocol family, if:
+  *
+  * - an IGMP/MLD querier is present
++ * - for own IPv6 MLD querier: an IPv6 link-local address is configured on the bridge
+  *
+  * And is unset otherwise.
+  *
+@@ -1220,10 +1221,12 @@ static struct sk_buff *br_ip6_multicast_alloc_query(struct net_bridge_mcast *brm
+ 			       &ip6h->daddr, 0, &ip6h->saddr)) {
+ 		kfree_skb(skb);
+ 		br_opt_toggle(brmctx->br, BROPT_HAS_IPV6_ADDR, false);
++		br_multicast_update_active(brmctx);
+ 		return NULL;
+ 	}
+ 
+ 	br_opt_toggle(brmctx->br, BROPT_HAS_IPV6_ADDR, true);
++	br_multicast_update_active(brmctx);
+ 	ipv6_eth_mc_map(&ip6h->daddr, eth->h_dest);
+ 
+ 	hopopt = (u8 *)(ip6h + 1);
 -- 
-2.47.3
+2.51.0
 
