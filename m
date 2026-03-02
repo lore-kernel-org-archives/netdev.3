@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98EC410D38
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 15:28:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3499241323D
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 15:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772465298; cv=none; b=eaGLGl5e+rlR3L7bMAo0diESGiYzt1Qeo4rsfk0avfmMjQgz7jotzd3fjXAqaSIze5b/am0dOWaUylBguIMaCNTyx4bs5Us4/HHZIS0VBMaqwqRK8GUp387BWOSSluyYRvGFWv0UJ57WcKf1H7mOYXeWFqzqW9YYQlXVeIWlO8U=
+	t=1772465298; cv=none; b=SZ1TmtjlDelAq7d4BzffoekmMAE1fxHTTiHJ14lxEYspgwpz57s4cHYH5WaZexARb49SUEhLzdvp+wtPvHoasNPXPKmb77mkpoPYx+qbuc21gCwmrA8eApZdArJGgZHBtO5YD6qO3WHRaVJ5Kbzrmx+lls5DMrqqmtCcy1/63GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772465298; c=relaxed/simple;
-	bh=fxloLn3Yxk0QYlcgqUvBz/l3tfOezX52/8JTNwhCxNE=;
+	bh=LSraQ2AcORcbd7ZOuAZuHzLNdAzt7tZnO72YKhqLNRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAqXBqNGe3a4LPRm+DnIqLnpiujH1FF/tZaox8Cf7wA5cZNgNKyp4XvQ8zoqieyGFpcVKTjDjtBu1NOwzu4mnjFVxRc/lCsYb/ljVgKqRvQU+UvdOcqMfWr7IU/ZkZd1wBDY0kSBX8xFhyExPRVkA2ehUWNJXEZrEs2MWJn/xZY=
+	 MIME-Version; b=jX+O0lW28K2lLFE6bQOnVTAqQIHneif8GofdwsAJEjCHgVU6O+DGuVxHcJKMQawN6U//cq/czmfUVS0uoMyLEtAHeuZErzTsjXG82MyAucllSaEuz/L1tbI6gVv6xvcdd6O/Jdb8mhOnHKrvqlBIApiHGfPOjrP8qTmGbDyw4Yk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,19 +18,19 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Be-0004kN-Lt; Mon, 02 Mar 2026 16:27:58 +0100
+	id 1vx5Bf-0004kP-Mt; Mon, 02 Mar 2026 16:27:59 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vx5Bc-003P0k-28;
+	id 1vx5Bc-003P0q-2V;
 	Mon, 02 Mar 2026 16:27:58 +0100
 Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id C0BC84F546F;
+	by smtp.blackshift.org (Postfix) with ESMTPSA id DB19A4F5471;
 	Mon, 02 Mar 2026 15:27:57 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 To: netdev@vger.kernel.org
@@ -39,12 +39,13 @@ Cc: davem@davemloft.net,
 	linux-can@vger.kernel.org,
 	kernel@pengutronix.de,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Ji-Ze Hong (Peter Hong)" <peter_hong@fintek.com.tw>,
 	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Vincent Mailhol <mailhol@kernel.org>,
 	stable@kernel.org
-Subject: [PATCH net 06/12] can: ucan: Fix infinite loop from zero-length messages
-Date: Mon,  2 Mar 2026 16:16:12 +0100
-Message-ID: <20260302152755.1700177-7-mkl@pengutronix.de>
+Subject: [PATCH net 08/12] can: usb: f81604: handle short interrupt urb messages properly
+Date: Mon,  2 Mar 2026 16:16:14 +0100
+Message-ID: <20260302152755.1700177-9-mkl@pengutronix.de>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260302152755.1700177-1-mkl@pengutronix.de>
 References: <20260302152755.1700177-1-mkl@pengutronix.de>
@@ -62,41 +63,39 @@ X-PTX-Original-Recipient: netdev@vger.kernel.org
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-If a broken ucan device gets a message with the message length field set
-to 0, then the driver will loop for forever in
-ucan_read_bulk_callback(), hanging the system.  If the length is 0, just
-skip the message and go on to the next one.
+If an interrupt urb is received that is not the correct length, properly
+detect it and don't attempt to treat the data as valid.
 
-This has been fixed in the kvaser_usb driver in the past in commit
-0c73772cd2b8 ("can: kvaser_usb: leaf: Fix potential infinite loop in
-command parsers"), so there must be some broken devices out there like
-this somewhere.
-
+Cc: Ji-Ze Hong (Peter Hong) <peter_hong@fintek.com.tw>
 Cc: Marc Kleine-Budde <mkl@pengutronix.de>
 Cc: Vincent Mailhol <mailhol@kernel.org>
 Cc: stable@kernel.org
 Assisted-by: gkh_clanker_2000
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/2026022319-huff-absurd-6a18@gregkh
-Fixes: 9f2d3eae88d2 ("can: ucan: add driver for Theobroma Systems UCAN devices")
+Link: https://patch.msgid.link/2026022331-opal-evaluator-a928@gregkh
+Fixes: 88da17436973 ("can: usb: f81604: add Fintek F81604 support")
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/usb/ucan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/f81604.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/can/usb/ucan.c b/drivers/net/can/usb/ucan.c
-index c79508b1c43e..0ea0ac75e42f 100644
---- a/drivers/net/can/usb/ucan.c
-+++ b/drivers/net/can/usb/ucan.c
-@@ -748,7 +748,7 @@ static void ucan_read_bulk_callback(struct urb *urb)
- 		len = le16_to_cpu(m->len);
+diff --git a/drivers/net/can/usb/f81604.c b/drivers/net/can/usb/f81604.c
+index 76578063ac82..c61bd30d1765 100644
+--- a/drivers/net/can/usb/f81604.c
++++ b/drivers/net/can/usb/f81604.c
+@@ -620,6 +620,12 @@ static void f81604_read_int_callback(struct urb *urb)
+ 		netdev_info(netdev, "%s: Int URB aborted: %pe\n", __func__,
+ 			    ERR_PTR(urb->status));
  
- 		/* check sanity (length of content) */
--		if (urb->actual_length - pos < len) {
-+		if ((len == 0) || (urb->actual_length - pos < len)) {
- 			netdev_warn(up->netdev,
- 				    "invalid message (short; no data; l:%d)\n",
- 				    urb->actual_length);
++	if (urb->actual_length < sizeof(*data)) {
++		netdev_warn(netdev, "%s: short int URB: %u < %zu\n",
++			    __func__, urb->actual_length, sizeof(*data));
++		goto resubmit_urb;
++	}
++
+ 	switch (urb->status) {
+ 	case 0: /* success */
+ 		break;
 -- 
 2.51.0
 
