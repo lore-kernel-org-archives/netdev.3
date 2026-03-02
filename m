@@ -1,160 +1,186 @@
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82EDE379ED1
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 06:13:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.182
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772432017; cv=pass; b=s/YPdUfWM1AziHx48QiQdaSAN5zXK58aFOfVhARR4Pan6ZC5WmjLs/GooeWWYTV4i4SV+fzS2Pn09r9CrbbtNrzTNaelJJCn+bmXVZxgdauC68QuTFXKLz2BhubvM7lK0R0m6QxKo+ggjrYshtfGDou6eI1AobjWubdhqqtlFtQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772432017; c=relaxed/simple;
-	bh=+Q6GGX8zNMM8BQ0PS2o57GNeCicr0Q6irsXem04CyRU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=avh8u5q+JAXfnazC8y98snbNWKXgNAHi/ERiPOi14TA4LC6Uof7SfQryzQBq4truTIXqKVSG48rSVhdp8p2KM/1DCA/7II1kCBD8xW6pA/TO0hIXBW1Nyv37H4dJ6mEOTDenpO2nYlHFKbEbt76D92RJ85aG15+vsQPJjKf7N4k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XM7Qc+cy; arc=pass smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C29D430BA2;
+	Mon,  2 Mar 2026 06:23:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772432635; cv=none; b=IROPTicgm5JhLsuDqU3RIQ+h4YbjCpamgixqwzlIq0hVv55neSsNHDm68XrCLUAcRth442T9LsAwd2GQFmCUngeDQhe+tdUR93Gq3HvN/xGvAWQsYSXUAExhFIWusWEEdcEKwbaXbAuh3yg0zRdvWC8TutmbwOzu4pbqs29C/PA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772432635; c=relaxed/simple;
+	bh=ETFAMKvM2p+aTqiHy/mq+6EI4H7X8Cu5PUgu/h3dUVE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fOVG5GS6wJtCVmgBkT9c89i1/8Zw4jJnhlqYQzY598lOCUhb7sm1Z1SSX/3LWIhRy9A6CsUvz0zGaU7lP51lRnLTGWNiBQJcAjiA6/1mWVvugDoF82Mz4lmEAXRfnhWqMdqGbYEKt+pdSD/d8FQRkebRKuzvREaC5ohnxxV7xag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=VwLbdIak; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XM7Qc+cy"
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-389fac627c9so56447941fa.0
-        for <netdev@vger.kernel.org>; Sun, 01 Mar 2026 22:13:32 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772432010; cv=none;
-        d=google.com; s=arc-20240605;
-        b=JpziyhzKHZo2EnV7xBOeXaOIEkBTuiEjc4uZZcevJbor9al1yi4s61ywjIOGWQ9WIB
-         uhygKPa+c778tG8cdvObMjkY47vFhaiL9jVO2nkU3YkFa6F+gQE/kLGgQ25EBgKPp+oC
-         +JX/BRmi6uNM8QrBZkJMLpVMEutFKlkbkcfPq/sD3exaLShtkkIPlJzPdArHJvgQ7XSO
-         5+l3a1umzC6nfo5ojTpn2I2PpKSQ8TEkwwW3Q9re42SiFFoRkw2bTPB9T5Yxn45nSlqv
-         EHlnWXhnYSxfPoFSstlMMCOEn/05XeMCaZFwWHxDj86LMzOxLee9mGFHJMjGTicIv/QO
-         +OqQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=ux5RqO/ZTufyk9Xe7c4ok2Mzm+WSW1boQMNoNgz5Yho=;
-        fh=ajCJDNaXQdZ2ivfohX3FUfS+0psEvWv70WYKYVV+YYs=;
-        b=k7/yP76/ORP5SywhGd7bA+JgweDv3CyCzJI2mY9BXYek/5pw7RB/HyhyYI8ONJA8xc
-         pK6tbbOwTYHFe2f16Bzh40BMgOj33cEs1jWttH7jhVAs7s1x1FhDEq24N+hdyFkBsu1S
-         04YxY1NJlh43XdfWW6RlVxW/QuhlHpMdCN79S4TpCRjwznFZoqxdMqytwVs7nuRTew6F
-         XHpb/fV757TpGHxSgpvv+ty4Mug3bmHpvoY9j5T0DPpC3O9hRFwBa4GdiUGrf5CzX3q9
-         fphvKqNDi+x99+yrlaCN2OvFieDEcxluruyVcHOrqSAMy5QzSRDN/UOgMd+XcMhGzmua
-         Jz4Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772432010; x=1773036810; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ux5RqO/ZTufyk9Xe7c4ok2Mzm+WSW1boQMNoNgz5Yho=;
-        b=XM7Qc+cy791Tkrs0X/C4f+Zo0iSQlwkMu324pfrHMyZgCJ925/a71vA6J+ixkrGxh+
-         k+p3fXGhB1uBhwuzK804GQ9C1GkBNq/BiQ4fOI/wa9Mlz/vOwdzYN1BSocuCrRpLmlsH
-         R+UtB+bfS708/QoMemCBjJ9YJTToaZrRbPdW8ZGPCxa+QpBQ3JilPIYWKJLP5H3u0nV+
-         ud6KZRvWaDWlUNaRJVeAgL6ti6rexdjjYAj2cIzBHjVVOq2saRTh/ou6BDMycwCvGZGw
-         Trac4h5x1relQEKR1El0wp8F6nwylWycJkCTzjvtogLxdkkNNrjZ3vYXrd3IJSxfgN+m
-         kibA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772432010; x=1773036810;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ux5RqO/ZTufyk9Xe7c4ok2Mzm+WSW1boQMNoNgz5Yho=;
-        b=gRbCsOkDvxRdMlB74eGzSgfLoR6qTnicCSVOZEjj6olvekcVRlP77Tv7NNO6HhWjq2
-         FZtVbkMbjLyl9In8QbovtjK1ey+CGIg+sBKCqCr3zgvvcjyVDvYOwKOT8720sU5TlDM7
-         N8YfhyPrw/FIncqFxjmXtDLjb5OCKkSKcbuLB3imTSP8/KqCI7QdqJVUaw8z0ewWa39c
-         1iH6dOO2jaWDPywLCYO/EnBB0gApaY5lpO4G39w0TnUyzaqUASWBl7plVl/y5V/Rs9h4
-         /S2srb8HaoayW1/Ujum34JdWZ2M2zJdL3OcBvusMnm79RvbPCrrjj4/2c5238Q4mjFCh
-         Ow1A==
-X-Forwarded-Encrypted: i=1; AJvYcCWuFCuRXjK9bnrt+GrC15Eou13rQ5JDcR2mudTQfbGj0z0296eLuTkGOMKgrfqv85t4bR6RLu4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywvo+1tZWHp3+VAJNCFnJZ0ZgwGgNoiQuiL8cCWlhPwmJSRhfIj
-	73kpJtABR14B9ia9nXhhd1Fxblpv1PpLzJ3rbB7pcR0FxnwWy9xVATR3bBD+b0AJrxHxtaEGv4K
-	vjsJnooVs+6KfMEpDzO/4gZXT0J9eAqw=
-X-Gm-Gg: ATEYQzzzIz0lDlRMkLE/kYSrVcXxdqbJUImMijCimW738cIblF9vKXMiS9Nu1peCqBf
-	YFO2qhXHVlCOPoqSEYhEMegpsdHE4atPCMmzxk07FtTqbwL3dJJfC2scIzHImsjxDXhSk4y1o/4
-	EjwJhxFvUOrVWTiU6WhB00z/RxYwz6YWOUNFrYgW8+k+txF+BsuY6xKKVE13+l5TGfgsRZZaOHN
-	Tfvu0w7arjmOAsbmHm83qTjiz1dqmD6ugDsp+BeI3f7RBNvJEJ7fRx5G4xuUrGI1R+GprFZVWY1
-	CogHLKujcA9SM4Og55sZvnJtfGf1Z1KrbCb/ABQ2N7A4LC14gJm4Kd2EDEmNmkSE23fcjU7FsHo
-	t1ll9yFHaLKFaqSzdf8iHN5cSMkQ=
-X-Received: by 2002:a05:651c:19a0:b0:37f:a216:e473 with SMTP id
- 38308e7fff4ca-389ff08accdmr74673101fa.0.1772432010206; Sun, 01 Mar 2026
- 22:13:30 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="VwLbdIak"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=el70PQUy5TDt030EAxyWMSUU/k9z7ERBjTCSg7M8Na0=; b=VwLbdIakXpCpmLaFT52E/b6VME
+	szGqKfUR9tCmoPsPwrrqO//KJhRs7ViAVKa/VOtWppWzGoPQLkhmlh/vXdlb+rr77k4+KdTDG8Ulv
+	cCUe8xn+DTeU4BiSfTf+gRm3cYv5WGkkSN+kniFlUkFGxlwdnGVen2NxnWDu1/X7QSoGP0tC7VYqH
+	QKTIUrwir0flKtPc0ben86Mdg/CB0doC5aW3e35GmDlLsj/+KeMM+8l4Jn2V4mrMkcEmhGld8cnrm
+	PPuwqjeP+DDwZxdDpIPhg7kkhSvyKLFBU9nZmr1f2mC7vl0Vxpz3auwOhjvasuY22rijwJF2gVtk3
+	kVUqdSRw==;
+Received: from sslproxy07.your-server.de ([78.47.199.104])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1vwwJG-0000C3-33;
+	Mon, 02 Mar 2026 06:59:15 +0100
+Received: from localhost ([127.0.0.1])
+	by sslproxy07.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1vwwJE-000L55-2d;
+	Mon, 02 Mar 2026 06:59:13 +0100
+Message-ID: <0b52257d-d557-4f26-9931-34c81ab621bc@iogearbox.net>
+Date: Mon, 2 Mar 2026 06:58:46 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260226111721.25454-1-yuuchihsu@gmail.com> <20260226171401.7461b9da@kernel.org>
- <CAPAzCqE3k9PehK9gec7pcfq-Tnjsx-reD63GUaO+MEnP8LZ0Vg@mail.gmail.com>
-In-Reply-To: <CAPAzCqE3k9PehK9gec7pcfq-Tnjsx-reD63GUaO+MEnP8LZ0Vg@mail.gmail.com>
-From: Sam Su <yuuchihsu@gmail.com>
-Date: Mon, 2 Mar 2026 14:13:18 +0800
-X-Gm-Features: AaiRm50l6QwVrBMPu3EbKOf4uYs_vW7YhtWWMq4Ps4rEAgTsv1FkTCq0fhJK2-0
-Message-ID: <CAPAzCqEmfhZNk4Ysjo80QXX6ijyek7Vz9mexQ91tO0pwA67tvg@mail.gmail.com>
-Subject: Re: [PATCH] net: ipv6: fix ARM64 alignment fault in fib_multipath_hash_from_keys()
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: davem@davemloft.net, dsahern@kernel.org, edumazet@google.com, 
-	pabeni@redhat.com, horms@kernel.org, nathan@kernel.org, 
-	nick.desaulniers+lkml@gmail.com, morbo@google.com, justinstitt@google.com, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net 1/3] bpf: bpf_out_neigh_v4: Fix nd_tbl NULL
+ dereference when IPv6 is disabled
+To: =?UTF-8?Q?Ricardo_B=2E_Marli=C3=A8re?= <rbm@suse.com>,
+ Martin KaFai Lau <martin.lau@linux.dev>,
+ John Fastabend <john.fastabend@gmail.com>,
+ Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
+ KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
+ Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+ David Ahern <dsahern@kernel.org>, Jay Vosburgh <jv@jvosburgh.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Hangbin Liu <liuhangbin@gmail.com>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>, bpf@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260228-net-nd_tbl_fixes-v1-0-2b2a274df9bb@suse.com>
+ <20260228-net-nd_tbl_fixes-v1-1-2b2a274df9bb@suse.com>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+Autocrypt: addr=daniel@iogearbox.net; keydata=
+ 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
+In-Reply-To: <20260228-net-nd_tbl_fixes-v1-1-2b2a274df9bb@suse.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: Clear (ClamAV 1.4.3/27927/Sun Mar  1 08:24:39 2026)
 
-Hi Eric,
+Hi Ricardo,
 
-I just sent out the v2 patch, which includes this missing READ_ONCE()
-fix for the read side as you suggested.
+On 2/28/26 6:46 PM, Ricardo B. Marlière wrote:
+> When booting with the 'ipv6.disable=1' parameter, the nd_tbl is never
+> initialized because inet6_init() exits before ndisc_init() is called which
+> initializes it. If bpf_redirect_neigh() is called from tc with an explicit
+> nexthop of nh_family == AF_INET6, bpf_out_neigh_v4() takes the AF_INET6
+> branch and calls ip_neigh_gw6(), which relies on ipv6_stub->nd_tbl.
+> 
+>   BUG: kernel NULL pointer dereference, address: 0000000000000248
+>   Oops: Oops: 0000 [#1] SMP NOPTI
+>   RIP: 0010:skb_do_redirect+0xb93/0xf00
+>   Call Trace:
+>    <TASK>
+>    ? srso_alias_return_thunk+0x5/0xfbef5
+>    ? __tcf_classify.constprop.0+0x83/0x160
+>    ? srso_alias_return_thunk+0x5/0xfbef5
+>    ? tcf_classify+0x2b/0x50
+>    ? srso_alias_return_thunk+0x5/0xfbef5
+>    ? tc_run+0xb8/0x120
+>    ? srso_alias_return_thunk+0x5/0xfbef5
+>    __dev_queue_xmit+0x6fa/0x1000
+>    ? srso_alias_return_thunk+0x5/0xfbef5
+>    ? srso_alias_return_thunk+0x5/0xfbef5
+>    ? alloc_skb_with_frags+0x58/0x200
+>    packet_sendmsg+0x10da/0x1700
+>    ? srso_alias_return_thunk+0x5/0xfbef5
+>    __sys_sendto+0x1f3/0x220
+>    __x64_sys_sendto+0x24/0x30
+>    do_syscall_64+0x101/0xf80
+>    ? exc_page_fault+0x6e/0x170
+>    ? srso_alias_return_thunk+0x5/0xfbef5
+>    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+>    </TASK>
+> 
+> Fix this by adding an early check in the AF_INET6 branch of
+> bpf_out_neigh_v4(). If ipv6_stub->nd_tbl is NULL, unlock RCU and drop the
+> packet.
+> 
+> Suggested-by: Fernando Fernandez Mancera <fmancera@suse.de>
+> Fixes: ba452c9e996d ("bpf: Fix bpf_redirect_neigh helper api to support supplying nexthop")
+> Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+> ---
+>   net/core/filter.c | 4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/net/core/filter.c b/net/core/filter.c
+> index 0d5d5a17acb2..9ab2fae3a0d9 100644
+> --- a/net/core/filter.c
+> +++ b/net/core/filter.c
+> @@ -2335,6 +2335,10 @@ static int bpf_out_neigh_v4(struct net *net, struct sk_buff *skb,
+>   
+>   		neigh = ip_neigh_for_gw(rt, skb, &is_v6gw);
+>   	} else if (nh->nh_family == AF_INET6) {
+> +		if (!ipv6_stub->nd_tbl) {
+> +			rcu_read_unlock();
+> +			goto out_drop;
+> +		}
 
-I also wanted to share a quick update on the WRITE_ONCE() behavior we
-discussed. I tested the sysctl write on my ARM64 device and dumped the
-assembly. Surprisingly, the original code didn't crash.
+Can we just completely get rid of allowing IPv6 as a module?
+So either its built-in or not available at all, and then we
+can get rid of the stub completely rather than adding checks
+in various places which also brings a small performance benefit
+of not having indirect calls in some places.
 
-Looking at the objdump, because the ARM64 kernel workaround for Clang
-LTO (commit e35123d83ee3) only strengthens the read side to use `ldar`
-(Load-Acquire), the WRITE_ONCE() here falls back to regular store
-instructions. Clang actually splits the 8-byte struct write into two
-separate 32-bit `str Wn` instructions:
-
-    b905ae68      str     w8, [x19, #0x5ac]  // user_seed
-    b905b268      str     w8, [x19, #0x5b0]  // mp_seed
-
-This completely confirms your concern: the current WRITE_ONCE(struct)
-quietly destroys atomicity and exposes a tear-write vulnerability
-without crashing the hardware.
-
-Splitting it explicitly into two 32-bit WRITE_ONCE() calls in the v2
-patch was definitely the right move. I have tested all these changes
-on my ARM64 board, and everything works perfectly.
-
-Thanks again for the review and guidance!
-
-Best regards,
-Yung Chih.
-
-Sam Su <yuuchihsu@gmail.com> =E6=96=BC 2026=E5=B9=B42=E6=9C=8827=E6=97=A5=
-=E9=80=B1=E4=BA=94 =E4=B8=8B=E5=8D=883:12=E5=AF=AB=E9=81=93=EF=BC=9A
->
-> Jakub Kicinski <kuba@kernel.org> =E6=96=BC 2026=E5=B9=B42=E6=9C=8827=E6=
-=97=A5=E9=80=B1=E4=BA=94 =E4=B8=8A=E5=8D=889:14=E5=AF=AB=E9=81=93=EF=BC=9A
-> >
-> > On Thu, 26 Feb 2026 19:17:21 +0800 Yung Chih Su wrote:
-> > > Fixes: [4ee2a8cace3fb9a34aea6a56426f89d26dd514f3] ("net: ipv4: Add a =
-sysctl to set multipath hash seed")
-> >
-> > Please use the traditional abbreviated format of the Fixes tag
->
-> Hi Jakub,
->
-> Got it, my apologies for the formatting mistake.
-> I will format it strictly as 12-char abbreviated without brackets in
-> the upcoming v2 patch:
-> Fixes: 4ee2a8cace3f ("net: ipv4: Add a sysctl to set multipath hash seed"=
-)
->
-> I am currently preparing the v2 patch which will also include Eric
-> Dumazet's suggestion regarding the WRITE_ONCE() and READ_ONCE() on the
-> sysctl read/write side.
->  I will send out the v2 after my local testing is done.
->
-> Thanks for the review!
->
-> Best regards,
-> Yung Chih
+Thanks,
+Daniel
