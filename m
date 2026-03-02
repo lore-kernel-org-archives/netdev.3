@@ -1,144 +1,280 @@
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
+Received: from USG02-BN3-obe.outbound.protection.office365.us (mail-bn3usg02on0051.outbound.protection.office365.us [23.103.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6678F2F3C22
-	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 17:00:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.176
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772470839; cv=none; b=MvF6ZsWkRr3yyXkwD1SbcUU7Qo/BxC8jvPV6inXxrWloXZ3I+BugS9d9xkJhGXI5g2mYviF50vu88XUawHPdmUqiSihcIkP9FaRrWaFug1+lEILio5tv51684iXT6pDYnjuQQ7QMYviOwVGsyo9/E+OjX9aSKXhFZwiz1z+wdA0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772470839; c=relaxed/simple;
-	bh=qNDFaM+YfYwiLYlicpcDxZluGw6w/AEmiQ+6S3VzBeE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QXdLeyXzn1vhwCcXpVObMSRYzZcdcRH1uhNmYNG8CRFuhm6q/Pyp+440cLLbzbIQwFPrMRdEBfK+wK9+MkUzw7ysM2jxsNpAdVvvMOEi7GLq9uZwrvCc6EV28SG2poN5PK75yWqsij/axejhEK8wqbeMfzoAHGW+BnkG66OUTY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=QM+FemWK; arc=none smtp.client-ip=95.215.58.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 989F236C9CD
+	for <netdev@vger.kernel.org>; Mon,  2 Mar 2026 17:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=23.103.208.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772472141; cv=fail; b=nX6kYZDA6XNr6qPXfic8Ze7aitpLV+YGldhkTuRRLjNLHMEFHh0DkZi3hkMGbdGqdqJhtHXXc8yB4jITayGArMc/9c5dM1yehSEieXI5570OwnyKSZ8bC0H0qpeBzvWYTJenWICNW5hs8L/+HYcQnIlQetIMICmt6LmBNNUYgqY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772472141; c=relaxed/simple;
+	bh=oCr6GegVwXYMGPRlhWZumZhHm+bslriZWlRqyj0z3IQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Wm2ycDE0QLHuZC+0eAK96zvlkGCNe70lp8pgrcMSK4/IcpK2N1pamPOTzWzl4WAc4OEj3/pq2dRoREanFlNGLdR5amP0w+J7XXHtt6VBZFoKTYjcAE3E80GiebluE8kr5MBPJZm8AR3BS4k84SPm+N4rrpLG6z0PkdbFQBIrI0g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ga.com; spf=pass smtp.mailfrom=ga.com; dkim=pass (2048-bit key) header.d=ga.com header.i=@ga.com header.b=aBWjD6UH; arc=fail smtp.client-ip=23.103.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ga.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ga.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="QM+FemWK"
-Date: Mon, 2 Mar 2026 09:00:10 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772470826;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WbAs9ykKjGj1acVkdZLpnTflSlmI29KTifSwOcqBl6o=;
-	b=QM+FemWKuEjzR06V0+l7g/FTA9BP0C/iPlSfw9pkv9G5M1hdQfOly2TwTD4+rNwMhqH/bn
-	T+8kvhEDBbuIhVFJ8GbNVA5bJCEsWUXglP1KG0rc5R/dx16wW2t2fj/+Z3PO0epJAgbm6B
-	/qIfXUGfLqj4AceUt5U7OJ0Eh/hTSwA=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Kuniyuki Iwashima <kuniyu@google.com>, Daniel Sedlak <daniel.sedlak@cdn77.com>, 
-	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
-Subject: Re: [PATCH 2/3] cgroup: add lockless fast-path checks to
- cgroup_file_notify()
-Message-ID: <aaXB0A7eTbyZ4wA_@linux.dev>
-References: <20260228142018.3178529-1-shakeel.butt@linux.dev>
- <20260228142018.3178529-3-shakeel.butt@linux.dev>
- <40c77bba-0862-4422-b23e-2a10cd01c728@huaweicloud.com>
- <aaW2feETIF7I65i1@linux.dev>
+	dkim=pass (2048-bit key) header.d=ga.com header.i=@ga.com header.b="aBWjD6UH"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector5401; d=microsoft.com; cv=none;
+ b=r2PHl9Fxi2ZTLj7oxfg2krX1GNFI0U1OIqzlwaxoma+TyJ9KABAhew5fAa/8Qdv9BInM5ybF3PcQlWlwdlgqpHoI+PnvjEtPIs4whie/xX1bHrWyUh87BcwasvDeuRaNT56M2knD6SYZC/ora0epu2U/7Hkldfj/uyl9Lyen+ifA+zC1VsMl8vADawQOtlf7dNOxeGY4poNZdl9q/0DhsrL/m0UD/k7FpU6puNYhsVuoGQbsTL9Qp4jPDl+ZRlcRfWy2tluqM2NWx35Qhkrsld6EuISYAUCV8lMeaJxL3mwUPukDi720Y39UzTB/reeMiIvbsUgLleA2TvGtgxxAhw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector5401;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=smEF7XYMGoNbfdU2BLYdn/Yf9G2VQZDzU5JOx9Uv4SE=;
+ b=ts3CtUPFIw/OfKYZtoveTkkWkC6RwvVswmQCsna3F76HVGARjWZYXrgVGqH8sN5y0W9m7UpBaODZRNAurmxnpmx60N7wvsNEmsUcSHtfqHOtHaRqdTyUJx0EXR6a3rBL3uTTOYV82RTh/FDZdOAnDzb2Ux4xyahW+x5ZxVLdOnm/URt++uGQIPMNG/KFdCAO7AWFo4wTCArGy6sNXgTsfZ5qez2R+c/WeG3KtfgAl+qxQc4Co7Pj67GuIlOOy69jD16G6mVaAoGrZ4vWqqNsyGcTVnjIN1wOV+ktFzs3vx3yND5iu0FTS1ZImsSwHmQICcOcOzegTsMsjZc0Sqbspw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ga.com; dmarc=pass action=none header.from=ga.com; dkim=pass
+ header.d=ga.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ga.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=smEF7XYMGoNbfdU2BLYdn/Yf9G2VQZDzU5JOx9Uv4SE=;
+ b=aBWjD6UH0LD5Pqn29MSVuEJ/SWXl96Q34VQDaytOTr3rcNbeo/KiOwmHHnw7BhteHDwKZNoG41ke9/qXVLUGN7Hvrt5f1ZZtxeGEGzCjPeNj3z2ty6yAWeZgbLl/YXVGrIIDAjq9XWLnHAEXjY7erdmXp5/qCy1s03ttgz/WgFguQMvhvDTONLbRTxpsyU07RzwvwsIfHChexFblI9Mjj28rffKBW+NylWluRfdWgTXBBUeuxxQDf1EYBK7D2UOYqkd6n2GXhn2h+6Mk8JurB71US1v/+eapT0f/B63vxCVFiQj2B6DowajGZ5i+O9AoEvpzeUpjzahe/zNXQGfX6w==
+Received: from SN5P110MB0848.NAMP110.PROD.OUTLOOK.COM (2001:489a:200:429::17)
+ by SA1P110MB2008.NAMP110.PROD.OUTLOOK.COM (2001:489a:200:1ab::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.20; Mon, 2 Mar
+ 2026 16:49:20 +0000
+Received: from SN5P110MB0848.NAMP110.PROD.OUTLOOK.COM
+ ([fe80::6e97:4555:2019:b375]) by SN5P110MB0848.NAMP110.PROD.OUTLOOK.COM
+ ([fe80::6e97:4555:2019:b375%3]) with mapi id 15.20.9632.025; Mon, 2 Mar 2026
+ 16:49:19 +0000
+From: "Soderlund, David" <David.Soderlund@ga.com>
+To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-rt-devel@lists.linux.dev" <linux-rt-devel@lists.linux.dev>
+CC: "David S. Miller" <davem@davemloft.net>, Andrew Lunn
+	<andrew+netdev@lunn.ch>, Bert Karwatzki <spasswolf@web.de>, Clark Williams
+	<clrkwllms@kernel.org>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Subject: RE: -EXT-[PATCH net] net: Provide a PREEMPT_RT specific check for
+ netdev_queue::_xmit_lock
+Thread-Topic: -EXT-[PATCH net] net: Provide a PREEMPT_RT specific check for
+ netdev_queue::_xmit_lock
+Thread-Index: AQHcqmOxryFcHgEwzk66wXf5AsWaCLWbdBsw
+Date: Mon, 2 Mar 2026 16:49:19 +0000
+Message-ID:
+ <SN5P110MB0848D42085BBED56246C59789F7EA@SN5P110MB0848.NAMP110.PROD.OUTLOOK.COM>
+References: <20260302162631.uGUyIqDT@linutronix.de>
+In-Reply-To: <20260302162631.uGUyIqDT@linutronix.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=ga.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SN5P110MB0848:EE_|SA1P110MB2008:EE_
+x-ms-office365-filtering-correlation-id: 252fae21-a6cd-4ed1-50a0-08de787ba64a
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|7416014|366016|1800799024|38070700021;
+x-microsoft-antispam-message-info:
+ Lh+1mRDiceM2ylGyC7yjQ5sbprMQaYaPJjkWIZFb6iKV4JzEGclnE1dC0gAB+IwkM03mF6pll2MiLEmEH0PN+mwMMcSw5/ve4IqQZX62Ydnw/9VAt3+CmshIFKnNd2j8yQ9BJObTdxaXcU6Uwy6Kv9uW1b9VprufHeBsuHkMQ2KTOYoQ8U2DossV/fdBg5q1julkX8bVtw7FnrIazMLsOJKcF06RgazCaNLPF70ifQm2pXaqbaT7pAYXoUl+nH0YGV8R3WdIkKzOecowwUwAJxH459gN1x0zLf/ex/WWnHFb8ABxZIiQ37Vefr1HKvcMRBw0+FSQXFFSsTcxVSvfu3IIwhHiF9Hrq/kv1YiSX2eDqNE0gHiTj3ZA+8b+5j+YUJSOnx+jW3nCQ6gYI929/NUicFk3sd6PWH1ensuy3ngUovLBoFsMs1FKodaBxz9rT5mDP+mByKwpHESYTfem9NxvxrEGDf/e1Cu822gB52u3hyvBLJFRNcfW8kwM6L7FIm/GZgh/Y2icAnZ8iBiwRaeUsEqMp/9ildbbQcxqZTNBh8fGq7OaeDcuPonbe2kcmsNBeFvSzmkOoX7LmzGP1Zmzrmctle4SnYMLiPiij5t5HXmWkCvB4wJBWiYBiKl/VtHmajrZSWyZuPYvFluIapHKhh6oRwtcVOU3ZfzRm/BAhgpUuDER22bNSj9FPGug+WIp36RTSk2qrzGTEl13uCw8e/N7XmgSaFcRIYrWhW9/3REPKgBat6BDG9HS+pUMIDIEFEjQbKORNSKcPe3/RuPU817sxtpZrPLY+eMNzzM=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN5P110MB0848.NAMP110.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(366016)(1800799024)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?Ms944swEJxU9asWtgYocFO6d0tIB90yrzQ1nKI/qR8+dS7ULYfqElCgLNSjt?=
+ =?us-ascii?Q?CqSRvgxw1sZUvwTwb+Eh574wzAri/HpJ9DzL8TTIfzVdEiovK7FSzEkrnpq2?=
+ =?us-ascii?Q?AvOiH29/eEBqlXtVuulx7vYi+9agwWGkEOQvA8Sht2I2ofsuBoeLk/Znd+5M?=
+ =?us-ascii?Q?B97K1fdsH7QLFEZuszMlAw1uz7CvdEk0mcQ9D8Zp4majHvnRo4565QroaGDi?=
+ =?us-ascii?Q?c7dqis5AO/UVCl8N2naGDJsSjHOijsLGIYs4yr0lMKslPJsXqsfNvL9Cohbt?=
+ =?us-ascii?Q?vyVLqypapsF8LXrImicv3swi2czHJiECMIDSH/qpqIcBmjNU6z0YSD2dCXB7?=
+ =?us-ascii?Q?gymfp7kF5iRCPTX/Qypv8dGKgGXtBB30Y44LQKXFHSFNb49/QmMMp5vqS0al?=
+ =?us-ascii?Q?efw0DE6DX0M94HEsgTWlpn1TFKmmYBdbQPq0ZT5tOfN50/2yAkHYzbUJOnnQ?=
+ =?us-ascii?Q?kHNccgngh4wRVCd0f0iLSWkviXD1c8V1vqS8j3mn/6XqSph6NuA6oialvN2Y?=
+ =?us-ascii?Q?neNI9YCQUr774pJ9h86cDsH1rvItuOVqpJdey/9SdfZMumphFRIXCKYy3KgA?=
+ =?us-ascii?Q?P7GED1DFs20MhcsxOaolvi8MwVBZe8yD6xmQo615rllsl2qEuLa1xje/maLc?=
+ =?us-ascii?Q?tfEP0r68OtiEBSwIjgiD5hZJNr4KHQPqpEfrLZgwRPKdvN96JVBTNpNVUU6R?=
+ =?us-ascii?Q?85MDOPRnTDRu2ONJ1LrzL2H1WtBIhEqUs8Lh0uU5sCYnwv645FOEMNjGOjp/?=
+ =?us-ascii?Q?0IsNgwwQeYB15KWm5rvgIq4uN3Tea4sgZ2wBlCWKPIS2dHL44gedAQxVJoxk?=
+ =?us-ascii?Q?U22tbyYpKkhE34RlQKwmB9BwCJGwUPc192PK0RkKBrK+qOPceJrwm44qKhEE?=
+ =?us-ascii?Q?VDKe78yH5XHsJrpOBWjl7Uhlp8TITYjbyG7gJSAlgXBLrPsgzZskNM5/EqAG?=
+ =?us-ascii?Q?sF1rcE8H65BtKoWkyiMHQ8YmZ++K3cHree0AwRaQDMb0bZQfdnssA7N6/Qdc?=
+ =?us-ascii?Q?q0oPW0s8jA0BcYHZaXUK5BRFJwNXpocxDJgw9Fhs3o2F3LRMnLcvd3pNOtQv?=
+ =?us-ascii?Q?KZBBU+3+h8GrKu3H1LB6VIcy0fPvNGBgBKVSAVMZ5cjilPW3r5AhtHMnCGxt?=
+ =?us-ascii?Q?13CZ+g3o1MfVqaXdmWlO1LMtUDu1WlqR7aBAYdWN1bN/egN3aeYveiOpHdh7?=
+ =?us-ascii?Q?mEac4xxZ82AMQHjt/TMNQlgWvQ+akEZuEiAPvVGaBMeidddA/KYMxV6locjh?=
+ =?us-ascii?Q?P+91B2CDDfAwPtOd3+4ip9mOQgDRn7pSHfoSZ1Ct4l3fVR2x+4s8kBsSRAYJ?=
+ =?us-ascii?Q?MKfsBHCNkT8KpdgtGBWBY4FI6XUYoqNQ6Nr2ZocR8TX7mNkeLWuo3k413QHl?=
+ =?us-ascii?Q?lgOGIbu75eoEysRJO5sziCCS1kwJIpQu88w4mYMREMXdG5ucGkrk2GYDeEXZ?=
+ =?us-ascii?Q?tyb/o1qoFbmppOnTUtqt2wQny7GlW92lBBY/ueK2vnN4G5SqaSEQ65HUDJJe?=
+ =?us-ascii?Q?NLBWjFKaEn9G824=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaW2feETIF7I65i1@linux.dev>
-X-Migadu-Flow: FLOW_OUT
+X-OriginatorOrg: ga.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SN5P110MB0848.NAMP110.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 252fae21-a6cd-4ed1-50a0-08de787ba64a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 02 Mar 2026 16:49:19.9029
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 05e53887-e4b3-4595-87f7-3ae79f0e723e
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1P110MB2008
 
-On Mon, Mar 02, 2026 at 08:14:05AM -0800, Shakeel Butt wrote:
-> Hi Chen, thanks for taking a look.
-> 
-> On Mon, Mar 02, 2026 at 09:50:53AM +0800, Chen Ridong wrote:
-> > 
-[...]
-> > > +	last = READ_ONCE(cfile->notified_at);
-> > > +	if (time_before_eq(jiffies, last + CGROUP_FILE_NOTIFY_MIN_INTV))
-> > > +		return;
-> > > +
-> > 
-> > Previously, if a notification arrived within the rate-limit window, we would
-> > still call timer_reduce(&cfile->notify_timer, next) to schedule a deferred
-> > notification.
-> > 
-> > With this change, returning early here bypasses that timer scheduling entirely.
-> > Does this risk missing notifications that would have been delivered by the timer?
-> > 
-> 
-> You are indeed right that this can cause missed notifications. After giving some
-> thought I think the lockless check-and-return can be pretty much simplified to
-> timer_pending() check. If timer is active, just do nothing and the notification
-> will be delivered eventually.
-> 
-> I will send the updated version soon. Any comments on the other two patches?
-> 
+Please remove from list
+  Thanks,
+     David
 
-Something like the following:
 
-From 598199723b50813b015393122796f6775eee02d7 Mon Sep 17 00:00:00 2001
-From: Shakeel Butt <shakeel.butt@linux.dev>
-Date: Sat, 28 Feb 2026 04:01:28 -0800
-Subject: [PATCH] cgroup: add lockless fast-path checks to cgroup_file_notify()
+-----Original Message-----
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Sent: Monday, March 2, 2026 9:27 AM
+To: netdev@vger.kernel.org; linux-rt-devel@lists.linux.dev
+Cc: David S. Miller <davem@davemloft.net>; Andrew Lunn <andrew+netdev@lunn.=
+ch>; Bert Karwatzki <spasswolf@web.de>; Clark Williams <clrkwllms@kernel.or=
+g>; Eric Dumazet <edumazet@google.com>; Jakub Kicinski <kuba@kernel.org>; P=
+aolo Abeni <pabeni@redhat.com>; Simon Horman <horms@kernel.org>; Steven Ros=
+tedt <rostedt@goodmis.org>
+Subject: -EXT-[PATCH net] net: Provide a PREEMPT_RT specific check for netd=
+ev_queue::_xmit_lock
 
-Add two lockless checks before acquiring the lock:
+WARNING:  This message is from an external source.  Evaluate the message ca=
+refully BEFORE clicking on links or opening attachments.
 
-1. READ_ONCE(cfile->kn) NULL check to skip torn-down files.
-2. timer_pending() check to skip when a deferred notification
-   timer is already armed.
+After acquiring netdev_queue::_xmit_lock the number of the CPU owning the l=
+ock is recorded in netdev_queue::xmit_lock_owner. This works as long as the=
+ BH context is not preemptible.
 
-Both checks have safe error directions -- a stale read can only
-cause unnecessary lock acquisition, never a missed notification.
+On PREEMPT_RT the softirq context is preemptible and without the softirq-lo=
+ck it is possible to have multiple user in __dev_queue_xmit() submitting a =
+skb on the same CPU. This is fine in general but this means also that the c=
+urrent CPU is recorded as netdev_queue::xmit_lock_owner.
+This in turn leads to the recursion alert and the skb is dropped.
 
-Annotate cfile->kn write sites with WRITE_ONCE() to pair with the
-lockless reader.
+Instead checking the for CPU number, that owns the lock, PREEMPT_RT can che=
+ck if the lockowner matches the current task.
 
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Reported-by: Jakub Kicinski <kuba@kernel.org>
+Add netif_tx_owned() which returns true if the current context owns the loc=
+k by comparing the provided CPU number with the recorded number. This resem=
+bles the current check by negating the condition (the current check returns=
+ true if the lock is not owned).
+On PREEMPT_RT use rt_mutex_owner() to return the lock owner and compare the=
+ current task against it.
+Use the new helper in __dev_queue_xmit() and netif_local_xmit_active() whic=
+h provides a similar check.
+Update comments regarding pairing READ_ONCE().
+
+Reported-by: Bert Karwatzki <spasswolf@web.de>
+Closes: https://lore.kernel.org/all/20260216134333.412332-1-spasswolf@web.d=
+e
+Fixes: 3253cb49cbad4 ("softirq: Allow to drop the softirq-BKL lock on PREEM=
+PT_RT")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- kernel/cgroup/cgroup.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/linux/netdevice.h | 27 ++++++++++++++++++++++-----
+ net/core/dev.c            |  5 +----
+ net/core/netpoll.c        |  2 +-
+ 3 files changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 2b298a2cf206..6e816d27ee25 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -1749,7 +1749,7 @@ static void cgroup_rm_file(struct cgroup *cgrp, const struct cftype *cft)
- 		struct cgroup_file *cfile = (void *)css + cft->file_offset;
- 
- 		spin_lock_irq(&cgroup_file_kn_lock);
--		cfile->kn = NULL;
-+		WRITE_ONCE(cfile->kn, NULL);
- 		spin_unlock_irq(&cgroup_file_kn_lock);
- 
- 		timer_delete_sync(&cfile->notify_timer);
-@@ -4430,7 +4430,7 @@ static int cgroup_add_file(struct cgroup_subsys_state *css, struct cgroup *cgrp,
- 		timer_setup(&cfile->notify_timer, cgroup_file_notify_timer, 0);
- 
- 		spin_lock_irq(&cgroup_file_kn_lock);
--		cfile->kn = kn;
-+		WRITE_ONCE(cfile->kn, kn);
- 		spin_unlock_irq(&cgroup_file_kn_lock);
- 	}
- 
-@@ -4689,6 +4689,12 @@ void cgroup_file_notify(struct cgroup_file *cfile)
- 	unsigned long flags;
- 	struct kernfs_node *kn = NULL;
- 
-+	if (!READ_ONCE(cfile->kn))
-+		return;
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h index d4=
+e6e00bb90a7..67e25f6d15a47 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -4711,7 +4711,7 @@ static inline u32 netif_msg_init(int debug_value, int=
+ default_msg_enable_bits)  static inline void __netif_tx_lock(struct netdev=
+_queue *txq, int cpu)  {
+        spin_lock(&txq->_xmit_lock);
+-       /* Pairs with READ_ONCE() in __dev_queue_xmit() */
++       /* Pairs with READ_ONCE() in netif_tx_owned() */
+        WRITE_ONCE(txq->xmit_lock_owner, cpu);  }
+
+@@ -4729,7 +4729,7 @@ static inline void __netif_tx_release(struct netdev_q=
+ueue *txq)  static inline void __netif_tx_lock_bh(struct netdev_queue *txq)=
+  {
+        spin_lock_bh(&txq->_xmit_lock);
+-       /* Pairs with READ_ONCE() in __dev_queue_xmit() */
++       /* Pairs with READ_ONCE() in netif_tx_owned() */
+        WRITE_ONCE(txq->xmit_lock_owner, smp_processor_id());  }
+
+@@ -4738,7 +4738,7 @@ static inline bool __netif_tx_trylock(struct netdev_q=
+ueue *txq)
+        bool ok =3D spin_trylock(&txq->_xmit_lock);
+
+        if (likely(ok)) {
+-               /* Pairs with READ_ONCE() in __dev_queue_xmit() */
++               /* Pairs with READ_ONCE() in netif_tx_owned() */
+                WRITE_ONCE(txq->xmit_lock_owner, smp_processor_id());
+        }
+        return ok;
+@@ -4746,14 +4746,14 @@ static inline bool __netif_tx_trylock(struct netdev=
+_queue *txq)
+
+ static inline void __netif_tx_unlock(struct netdev_queue *txq)  {
+-       /* Pairs with READ_ONCE() in __dev_queue_xmit() */
++       /* Pairs with READ_ONCE() in netif_tx_owned() */
+        WRITE_ONCE(txq->xmit_lock_owner, -1);
+        spin_unlock(&txq->_xmit_lock);
+ }
+
+ static inline void __netif_tx_unlock_bh(struct netdev_queue *txq)  {
+-       /* Pairs with READ_ONCE() in __dev_queue_xmit() */
++       /* Pairs with READ_ONCE() in netif_tx_owned() */
+        WRITE_ONCE(txq->xmit_lock_owner, -1);
+        spin_unlock_bh(&txq->_xmit_lock);  } @@ -4846,6 +4846,23 @@ static =
+inline void netif_tx_disable(struct net_device *dev)
+        local_bh_enable();
+ }
+
++#ifndef CONFIG_PREEMPT_RT
++static inline bool netif_tx_owned(struct netdev_queue *txq, unsigned
++int cpu) {
++       /* Other cpus might concurrently change txq->xmit_lock_owner
++        * to -1 or to their cpu id, but not to our id.
++        */
++       return READ_ONCE(txq->xmit_lock_owner) =3D=3D cpu; }
 +
-+	if (timer_pending(&cfile->notify_timer))
-+		return;
++#else
++static inline bool netif_tx_owned(struct netdev_queue *txq, unsigned
++int cpu) {
++       return rt_mutex_owner(&txq->_xmit_lock.lock) =3D=3D current; }
 +
- 	spin_lock_irqsave(&cgroup_file_kn_lock, flags);
- 	if (cfile->kn) {
- 		unsigned long last = cfile->notified_at;
--- 
-2.47.3
++#endif
++
+ static inline void netif_addr_lock(struct net_device *dev)  {
+        unsigned char nest_level =3D 0;
+diff --git a/net/core/dev.c b/net/core/dev.c index c1a9f7fdcffa9..e9ca0b1fd=
+7900 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4818,10 +4818,7 @@ int __dev_queue_xmit(struct sk_buff *skb, struct net=
+_device *sb_dev)
+        if (dev->flags & IFF_UP) {
+                int cpu =3D smp_processor_id(); /* ok because BHs are off *=
+/
+
+-               /* Other cpus might concurrently change txq->xmit_lock_owne=
+r
+-                * to -1 or to their cpu id, but not to our id.
+-                */
+-               if (READ_ONCE(txq->xmit_lock_owner) !=3D cpu) {
++               if (!netif_tx_owned(txq, cpu)) {
+                        bool is_list =3D false;
+
+                        if (dev_xmit_recursion()) diff --git a/net/core/net=
+poll.c b/net/core/netpoll.c index a8558a52884f9..cd74beffd209c 100644
+--- a/net/core/netpoll.c
++++ b/net/core/netpoll.c
+@@ -132,7 +132,7 @@ static int netif_local_xmit_active(struct net_device *d=
+ev)
+        for (i =3D 0; i < dev->num_tx_queues; i++) {
+                struct netdev_queue *txq =3D netdev_get_tx_queue(dev, i);
+
+-               if (READ_ONCE(txq->xmit_lock_owner) =3D=3D smp_processor_id=
+())
++               if (netif_tx_owned(txq, smp_processor_id()))
+                        return 1;
+        }
+
+--
+2.53.0
+
 
