@@ -1,71 +1,136 @@
-Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E9A6387372;
-	Mon,  2 Mar 2026 16:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.79.88.28
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2378641C0A3;
+	Mon,  2 Mar 2026 16:14:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.186
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772468049; cv=none; b=A2CHjJgARZDxY9NdotAS0So5jaTy61OO6VNdWv3fViUufQFOsWi5qmJQ1kktONrhDKOE/YwhX/OLHz22mwEeDIwYKp8KivQZ1gpkKnAFshvX/ajRTb5KUEiXYMihu8YaC2cLG/iQyXHvJIMuAtYrMlEVA2MmT5kz87SnRM070AY=
+	t=1772468057; cv=none; b=EdFeiU2WbXQ14X+NwmKito/MBK+K7QIE0JQwmzKfjZmNe+p1j8sP0x6tFAOgX9kk2lH72+1gghoAVdQwe/PJomdSRaPkcczEMPIVxkKDaQzDUc+p9RKNZd1J3tVVeFVzIdzS+BTiyyTsO//Jy3M/lJ5/vfs/RC9S0FBb6ksEcbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772468049; c=relaxed/simple;
-	bh=GllBRQ+/5lw/YKIoqIlltaCvkXN3t0K2P1wecZTMdfo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=j8/8FJXbtPcyYCvRx1OjvnFxC70LLBIx57cfUCBPzTr1LJeI7/WffZi0LJ7dyddFqaax3f/H76XkRoineRQCTvUntb6kbTe2FjIGOP/6Fyuj70KF0fFAoRbqTlttiXXG+KJsMrL7RASBrvXCSByBAgW9DLlGn6e2dPRcGUzp3jI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net; spf=pass smtp.mailfrom=lwn.net; dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b=f8pn8U6F; arc=none smtp.client-ip=45.79.88.28
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lwn.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lwn.net
+	s=arc-20240116; t=1772468057; c=relaxed/simple;
+	bh=YI1rAxGkTWrOMsOCcvJkmb0xR/cuc9o+Z4PTFycl9PA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MD4CYRNHLgWL2T7I+H31JYTZJ1jD7WgwSzcd6SzotipID56W7b3mSIsBoFVpF+4ItmbHUVBcafTYOQQXi22Lb11tH1uIv6WSR86mAGITFkvv1pVQhSS5jMDwRHrEnyPriiKY+b+9mR0K5Hvx3dA6OHgrfPh1RcPUB7X6yFtld7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YG01ILjL; arc=none smtp.client-ip=95.215.58.186
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=lwn.net header.i=@lwn.net header.b="f8pn8U6F"
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 5854040C69
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-	t=1772468041; bh=GllBRQ+/5lw/YKIoqIlltaCvkXN3t0K2P1wecZTMdfo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=f8pn8U6FA7kUP/r8iFJZ4rWUypHnzoaqHWxdAGjfHjokYaiGJKCr7IU0F2JeN/8Fw
-	 azpeD8ldqGCxtqmHWLxHS49TZl0QI+PrcVa1ESn/HNUJLsJpACllhhxKlZ7WWhWA0G
-	 4aJvqrqR8VuLoM4+Eg+rb1g/Si03GSmPlar/FE1+ppa4Qndh/WT11KisZJg8mqwbVh
-	 /WzQmizJRbq2GmBEJHki9LsLvF6IsnP61jEwvwgciTs1BsM2J6ZOLVi4QFAAp0/ZhL
-	 xDEN8yE0rRR0o2SHCha4a+omT/xNujvFQOxlgrR+kzRwwpwg0ORD4R3MLY+vZKFmpC
-	 3fI6jawrtR2kg==
-Received: from localhost (unknown [IPv6:2601:280:4600:27b::1fe])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature ECDSA (prime256v1) server-digest SHA256)
-	(No client certificate requested)
-	by ms.lwn.net (Postfix) with ESMTPSA id 5854040C69;
-	Mon,  2 Mar 2026 16:14:01 +0000 (UTC)
-From: Jonathan Corbet <corbet@lwn.net>
-To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Cc: Alexander Lobakin <aleksander.lobakin@intel.com>, Kees Cook
- <kees@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>,
- intel-wired-lan@lists.osuosl.org, linux-doc@vger.kernel.org,
- linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org,
- netdev@vger.kernel.org, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Aleksandr Loktionov <aleksandr.loktionov@intel.com>, Randy Dunlap
- <rdunlap@infradead.org>, Shuah Khan <skhan@linuxfoundation.org>
-Subject: Re: [Intel-wired-lan] [PATCH 00/38] docs: several improvements to
- kernel-doc
-In-Reply-To: <20260302165433.27f11148@localhost>
-References: <cover.1771408406.git.mchehab+huawei@kernel.org>
- <87sear2kbm.fsf@trenco.lwn.net> <20260302165433.27f11148@localhost>
-Date: Mon, 02 Mar 2026 09:14:00 -0700
-Message-ID: <87y0kaw6nr.fsf@trenco.lwn.net>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YG01ILjL"
+Date: Mon, 2 Mar 2026 08:14:05 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772468053;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=MLL8CQedq0WsIHC423sVIgR4mj4t68qiQx4HMXd9uDE=;
+	b=YG01ILjLYI0dk46V+QncPZZT1q3hBjoc84PeXOZJVUm0yLSx284+Q4kliCpzftFLybp+5L
+	kpTVPFxfUITqsKaMqQAgDHi5QNKoE5mvAK0ecsIL/CeH8tWyYKJTYft+DRokoxgqFSwbBG
+	1ptqeewLBnfoxD5xDpCIAv4liTj8Y2c=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: Tejun Heo <tj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Kuniyuki Iwashima <kuniyu@google.com>, Daniel Sedlak <daniel.sedlak@cdn77.com>, 
+	Meta kernel team <kernel-team@meta.com>, linux-mm@kvack.org, netdev@vger.kernel.org, 
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>
+Subject: Re: [PATCH 2/3] cgroup: add lockless fast-path checks to
+ cgroup_file_notify()
+Message-ID: <aaW2feETIF7I65i1@linux.dev>
+References: <20260228142018.3178529-1-shakeel.butt@linux.dev>
+ <20260228142018.3178529-3-shakeel.butt@linux.dev>
+ <40c77bba-0862-4422-b23e-2a10cd01c728@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <40c77bba-0862-4422-b23e-2a10cd01c728@huaweicloud.com>
+X-Migadu-Flow: FLOW_OUT
 
-Mauro Carvalho Chehab <mchehab+huawei@kernel.org> writes:
+Hi Chen, thanks for taking a look.
 
-> So, instead of merging this patchset, I'll be sending you
-> a smaller series with the basic stuff, in a way that it would
-> be easier to review. My plan is to send patches along this week
-> on smaller chunks, and after checking the differences before/after,
-> in terms of man/rst/error output.
+On Mon, Mar 02, 2026 at 09:50:53AM +0800, Chen Ridong wrote:
+> 
+> Hi Shakeel,
+> 
+> Good series to move away from the global lock.
+> 
+> On 2026/2/28 22:20, Shakeel Butt wrote:
+> > Add two lockless checks before acquiring the lock:
+> > 
+> > 1. READ_ONCE(cfile->kn) NULL check to skip torn-down files.
+> > 2. READ_ONCE(cfile->notified_at) check to skip when within the
+> >    rate-limit window (~10ms).
+> > 
+> > Both checks have safe error directions -- a stale read can only cause
+> > unnecessary lock acquisition, never a missed notification.  Annotate
+> > all write sites with WRITE_ONCE() to pair with the lockless readers.
+> > 
+> > The trade-off is that trailing timer_reduce() calls during bursts are
+> > skipped, so the deferred notification that delivers the final state
+> > may be lost.  This is acceptable for the primary callers like
+> > __memcg_memory_event() where events keep arriving.
+> > 
+> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Reported-by: Jakub Kicinski <kuba@kernel.org>
+> > ---
+> >  kernel/cgroup/cgroup.c | 21 ++++++++++++++-------
+> >  1 file changed, 14 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+> > index 33282c7d71e4..5473ebd0f6c1 100644
+> > --- a/kernel/cgroup/cgroup.c
+> > +++ b/kernel/cgroup/cgroup.c
+> > @@ -1749,7 +1749,7 @@ static void cgroup_rm_file(struct cgroup *cgrp, const struct cftype *cft)
+> >  		struct cgroup_file *cfile = (void *)css + cft->file_offset;
+> >  
+> >  		spin_lock_irq(&cgroup_file_kn_lock);
+> > -		cfile->kn = NULL;
+> > +		WRITE_ONCE(cfile->kn, NULL);
+> >  		spin_unlock_irq(&cgroup_file_kn_lock);
+> >  
+> >  		timer_delete_sync(&cfile->notify_timer);
+> > @@ -4430,7 +4430,7 @@ static int cgroup_add_file(struct cgroup_subsys_state *css, struct cgroup *cgrp,
+> >  		timer_setup(&cfile->notify_timer, cgroup_file_notify_timer, 0);
+> >  
+> >  		spin_lock_irq(&cgroup_file_kn_lock);
+> > -		cfile->kn = kn;
+> > +		WRITE_ONCE(cfile->kn, kn);
+> >  		spin_unlock_irq(&cgroup_file_kn_lock);
+> >  	}
+> >  
+> > @@ -4686,20 +4686,27 @@ int cgroup_add_legacy_cftypes(struct cgroup_subsys *ss, struct cftype *cfts)
+> >   */
+> >  void cgroup_file_notify(struct cgroup_file *cfile)
+> >  {
+> > -	unsigned long flags;
+> > +	unsigned long flags, last, next;
+> >  	struct kernfs_node *kn = NULL;
+> >  
+> > +	if (!READ_ONCE(cfile->kn))
+> > +		return;
+> > +
+> > +	last = READ_ONCE(cfile->notified_at);
+> > +	if (time_before_eq(jiffies, last + CGROUP_FILE_NOTIFY_MIN_INTV))
+> > +		return;
+> > +
+> 
+> Previously, if a notification arrived within the rate-limit window, we would
+> still call timer_reduce(&cfile->notify_timer, next) to schedule a deferred
+> notification.
+> 
+> With this change, returning early here bypasses that timer scheduling entirely.
+> Does this risk missing notifications that would have been delivered by the timer?
+> 
 
-OK... *whew* ... that sounds like a better way to proceed :)
+You are indeed right that this can cause missed notifications. After giving some
+thought I think the lockless check-and-return can be pretty much simplified to
+timer_pending() check. If timer is active, just do nothing and the notification
+will be delivered eventually.
 
-Thanks,
+I will send the updated version soon. Any comments on the other two patches?
 
-jon
