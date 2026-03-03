@@ -1,119 +1,237 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD7E347D94B;
-	Tue,  3 Mar 2026 14:48:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96728374E76
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 14:51:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772549283; cv=none; b=I6+HXm7fVDSz6EuL0puPoBgOhx/vybyhWd/axdvg7dMwNWFS1V74234gO357TprcorlBUK9pTg+YElEOVt6zLY43TaqHldrBBZngFQ9PxIAMtoZSFfyl+L/GrBH17LHqNPLLM8o26TtR2pffwXpe4W2Jhj8ZnIslbRmkCcejUY8=
+	t=1772549497; cv=none; b=tT24VQWdxvTqnxE0j4zJXnIkjhxt3WBvolfciPl7Jjj55lAuU6dRRSpg/ZM4GJnGpnEArdqVoXX2IPQcUmD1LOff0LYwJGsMyTjl0bBhFoht8IymXyTm/zucLX390D8NYZWs9oZ3x58Wh+kDl4vhPg/+vdeAF/B73wdAy2vKRyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772549283; c=relaxed/simple;
-	bh=QnHHRj1fZrwIMzf7+wSQ98EmiraRvhjneiHYOKoyUP8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kptvMYoo0S/Mnxsr/4sMFmz006iT3PHsx/GRsH5QqhFTM71WM6U25H4a76cXDj62i/YLzpWpJjrX02qngnh8qEyVPbg58bespJJp48tlKiX4ZiuXkRYVGSNFu7Ox96j5hEFnKNxdf9Hq43VOz5n8UEZHKznGnM8U4aQc1OXkmx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=pbh5f+N6; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1772549497; c=relaxed/simple;
+	bh=6KdAnhQrt+OtDqhpU53NGZUuv8Yx4CgsDTHUa/zHqBk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=raJuATY4lmbSzgFmpwR9acxZaeyP27jHBqnv+NiSCKljq4mNww3epI3656x1NXuzNpkoAZg4a7eRxSi1M2+43a/IYlyyOoVpGlLfiqG9rVwqs87URP6GwerUXfnM67qVCPuPnzFLeb8KOdXMia8N/zuwfkAwaivu6pRvImdKi/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fxn+FZQL; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="pbh5f+N6"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 623EEswD589479;
-	Tue, 3 Mar 2026 14:47:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=oFoTCX
-	y0/GyltE0aycDntxY7McweJqwoNivGdSYPi/A=; b=pbh5f+N6czdclUjLM9Lfyc
-	wosgo4+ycgpHurPUlnsmJzVUdNW3gvDSeOod8TWh1Ue6OKtLhWjRQEo2KZL/l/vt
-	Xac5o1KdqodNCKu3/nLD2OYLFyRhmFh6WjyEjeHGu9zOaGuFSX6rudBw+sYDWxLl
-	v6LphinsEMkobdWseN7hVZ24oe8YDExqE5IGJ5btQX5n5dxiWxrVJXffTOwLDvT5
-	bfZgwc8lzkVS0soPLAdhsbQkVUvNoNY0lyx5o4la1sba+gmXnavyRNXE+VBuLTfk
-	ujtaTHILYBUJVUHUQfKHzXaCv0ZYpQVT9DH+Hm301nIEK56amOJoe4aSfAahqEKQ
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ckssmk6t8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 14:47:59 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 623BPUIF027658;
-	Tue, 3 Mar 2026 14:47:58 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmcwjag2a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 14:47:58 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 623ElvBw59638104
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Mar 2026 14:47:57 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 112102004D;
-	Tue,  3 Mar 2026 14:47:57 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E95262004B;
-	Tue,  3 Mar 2026 14:47:56 +0000 (GMT)
-Received: from [9.52.217.119] (unknown [9.52.217.119])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  3 Mar 2026 14:47:56 +0000 (GMT)
-Message-ID: <813dafb4-36e9-4e48-8909-fc1b2c1d3b47@linux.ibm.com>
-Date: Tue, 3 Mar 2026 15:47:56 +0100
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fxn+FZQL"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-48378e60742so6739685e9.1
+        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 06:51:35 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772549494; x=1773154294; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=YEdSGTNZRnrKg7rdXD/O1fVlFTgm/leciP0nfy91AHw=;
+        b=Fxn+FZQLFum5I9kK2LgMpQYThU8VFT5GBrKHN9e7zDdip3HjkfW7TJLoqb7c94suR1
+         vRyZouXtlvhHZZev4l6lbSO8NzOnwLqALP4KsNb9w9YAVIlD8eKz87Xx5F3BVA2U8SpM
+         AnYUmyLikjEn8UpEQ8veuFeD6NJzYxenbCzZi6DnLOpngFHqF8FBCuNDNbuZwCo4OYTS
+         qDEraDAceAx2DEUvdKPybUdGB49WPIyc8V5cjebf0z4wgefqMPKW4y/P7gsyyBAhxWtN
+         hgNXqP2Ff1qT5OOrmN8VE41aNq1FCR8Qy02752JKbvxlErGVqR2rWBGY3n55um7wVkuw
+         5qLQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772549494; x=1773154294;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YEdSGTNZRnrKg7rdXD/O1fVlFTgm/leciP0nfy91AHw=;
+        b=hrsKyC2OS3qdDpqg9w7wHJOdJOjWR9RxPXSyY5+IT+hvwn5XIuTyVLBVW0PRaLuQST
+         lnm7Wf83vvLTVNiQRex5m4vXLHZONNLEyktSTVqAmIElWN6gQ5rZvlvlValX2VeHtOFm
+         xE36n2drCUF9vycYSa5DYUbz9xDHRfY/hAbKmQy82J9wgYIJ50xyS4qPhHCOAd7dhha5
+         RKqEW8wGH7g2/zKMaOo/V9FH3nG9HK5apaaBSveNCkehf3FVVUjwOTlIKaz0CfLqIhe7
+         gbN4fmpVIclni0e6Noe7LK2TVxrCJn3mxLkj65398WS4PBqob+hX+v8HffppTF+f6ZEA
+         rf1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVjLwz/YSFrCscrQe9R0mhdSW/9RAkrssypPEPGMzM6RHEmGHn3yIw0p7xKHw89Jv5dZqzNz+s=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxvl2WRBTS+P3G3yXuBJlhAmfpss/XJQ8rWh4iqXgSYWNwvdK8s
+	oE+0OvGr+AZ7weAKcN4oXpdW3Nka3uhwMIThDk0FDERcGFoNdWORNAHF
+X-Gm-Gg: ATEYQzyB49mzVW2sTMBqA+VyYrIPgMAAhJESKR5N6arN1QH1Kr2mMLZLfDqnCscC3Ck
+	pTIKsDI35vgYNmuSmdvM9U4Wp1hQrM4UGiAbOkPU1d4o2IrAl3powVdYsZNFCCqn/Ovag79jddJ
+	FjxP1AnmwNAEveGLc0por6Q2SkpOpwZCAA6FH80jlnOP45y6NObs3RUZjiQ40/Ywc+/n6SFLE4J
+	LZtm4mmjZ98nY9XhoSGCYGDGy8xFkfyfHYjVsQltV/2Mre9JNW4bozhd5JNJborhkRvC+MAliZI
+	9/0wRM7/UVe8JpOIO1FEqlNp2BhDA05wbjIkoubzbpZW3JWAqoCoCjoQjk3kLnwFJqwbIvZI6QG
+	GePM5Zjz/97zz7uK657kcCktlYqNCVD5MHm2K7eJpfTVigaWeGz/klUxAq1RNjbgrqNpSzAteNp
+	8UJEh6H2dy9miLjKE=
+X-Received: by 2002:a05:600c:3542:b0:477:5b01:7d42 with SMTP id 5b1f17b1804b1-483c9bc3f6bmr156313945e9.5.1772549493842;
+        Tue, 03 Mar 2026 06:51:33 -0800 (PST)
+Received: from skbuf ([2a02:2f04:d00e:3600:2472:8e4a:cf12:bb30])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483c3b84023sm356468875e9.12.2026.03.03.06.51.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 06:51:33 -0800 (PST)
+Date: Tue, 3 Mar 2026 16:51:30 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: Jens Emil Schulz =?utf-8?Q?=C3=98stergaard?= <jensemil.schulzostergaard@microchip.com>
+Cc: UNGLinuxDriver@microchip.com, Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next 5/8] net: dsa: lan9645x: add bridge support
+Message-ID: <20260303145130.rbp3qycr3eh5ifcp@skbuf>
+References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
+ <20260303-dsa_lan9645x_switch_driver_base-v1-5-bff8ca1396f5@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dibs: change dibs_class to a const struct
-To: Jori Koolstra <jkoolstra@xs4all.nl>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: "open list:DIBS (DIRECT INTERNAL BUFFER SHARING)"
- <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20260302163103.3324304-1-jkoolstra@xs4all.nl>
- <2026030246-savor-hardener-6102@gregkh>
- <b4804b53-c25c-485e-8cb3-9ade70a6f625@linux.ibm.com>
- <1787125475.222946.1772544235267@kpc.webmail.kpnmail.nl>
- <9354017b-36d6-4001-a28b-a3f777506909@linux.ibm.com>
- <1277375914.227884.1772545668781@kpc.webmail.kpnmail.nl>
-Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <1277375914.227884.1772545668781@kpc.webmail.kpnmail.nl>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDExNiBTYWx0ZWRfX/uk8ZyG+iZSu
- UCK543Y0R9mSlCGT3ErvfjmIPuX1SuFZXGqfWwfLhkNAyPvnVcrRWvg5K8CHlDqdT21Q37hkL8b
- +f0sp9PdZ46TSMrbT79B91rfcta15Rx/RB7241AvVDYq3pQznXwGCOrRhsPVIzD4T4fId2Uf8g7
- ezHd/EoByT5XcWFpAeTOJW3HU3r+s314S4bkmnYjiCHycAiuxpe/mBuk2iTJbwBD/+4mTj3Kc2j
- i0F0KqZi0sJiQCSTdb7A1gyfNroxNg5MtkR5wfOdQM3zwh1nwFy6tKDAlujVgUdMpuHf3O32ixE
- KFfT8z1lL+slesrwCqOmMDzpdP1kJO/HLb8xYf6HDYO9xkvbTmvGC5T9zxEz8r3L5OB5MI0aH8T
- wu827TQiY7JwqhD4cpErUteoWBnRRNjBIRs4TfFT7KcHkrG5RBDyv3HfdmdzuOkgNLOhurfRXEt
- Dbrr5P2yuUyuaCeiOew==
-X-Proofpoint-ORIG-GUID: Py7xApIe6hsbPuExU3dhJ6MpGSIz-upv
-X-Proofpoint-GUID: Py7xApIe6hsbPuExU3dhJ6MpGSIz-upv
-X-Authority-Analysis: v=2.4 cv=AobjHe9P c=1 sm=1 tr=0 ts=69a6f49f cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=T3uTMoZwtbrLHnHwW6wA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 bulkscore=0 impostorscore=0 malwarescore=0
- spamscore=0 clxscore=1015 suspectscore=0 adultscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603030116
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260303-dsa_lan9645x_switch_driver_base-v1-5-bff8ca1396f5@microchip.com>
 
-
-
-On 03.03.26 14:47, Jori Koolstra wrote:
+On Tue, Mar 03, 2026 at 01:22:31PM +0100, Jens Emil Schulz Østergaard wrote:
+> Add support for hardware offloading of the bridge. We support a single
+> bridge device.
 > 
->>
->> Thank you.
->> Would you mind sending a quick v2 with the link, so netdev maintainers can take this?
->>
+> Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
+> Signed-off-by: Jens Emil Schulz Østergaard <jensemil.schulzostergaard@microchip.com>
+> ---
+>  drivers/net/dsa/microchip/lan9645x/lan9645x_main.c | 196 +++++++++++++++++++++
+>  drivers/net/dsa/microchip/lan9645x/lan9645x_main.h |  11 ++
+>  drivers/net/dsa/microchip/lan9645x/lan9645x_port.c |   2 +
+>  3 files changed, 209 insertions(+)
 > 
-> Sure. How does that work with the reviewed-by tags? Do I have to add them
-> manually to v2, or ... ?
+> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+> index 739013f049d0..b6efaf669a3f 100644
+> --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+> @@ -171,6 +171,8 @@ static int lan9645x_setup(struct dsa_switch *ds)
+>  		return err;
+>  	}
+>  
+> +	mutex_init(&lan9645x->fwd_domain_lock);
+> +
+>  	/* Link Aggregation Mode: NETDEV_LAG_HASH_L2 */
+>  	lan_wr(ANA_AGGR_CFG_AC_SMAC_ENA |
+>  	       ANA_AGGR_CFG_AC_DMAC_ENA,
+> @@ -288,6 +290,192 @@ static void lan9645x_port_phylink_get_caps(struct dsa_switch *ds, int port,
+>  	lan9645x_phylink_get_caps(ds->priv, port, config);
+>  }
+>  
+> +static int lan9645x_set_ageing_time(struct dsa_switch *ds, unsigned int msecs)
+> +{
+> +	u32 age_secs = max(1, msecs / 1000 / 2);
 
-Yes, that is my understanding.
+s/1000/MSEC_PER_SEC/
+
+> +	struct lan9645x *lan9645x = ds->priv;
+> +
+> +	/* Entry is must suffer two aging scans before it is removed, so an
+
+"An entry must suffer (...), so it is aged"
+
+> +	 * entry is aged after 2*AGE_PERIOD, and the unit is in seconds.
+> +	 * An age period of 0 disables automatic aging.
+> +	 */
+> +	lan_rmw(ANA_AUTOAGE_AGE_PERIOD_SET(age_secs),
+> +		ANA_AUTOAGE_AGE_PERIOD,
+> +		lan9645x, ANA_AUTOAGE);
+> +	return 0;
+> +}
+> +
+> +static int lan9645x_port_pre_bridge_flags(struct dsa_switch *ds, int port,
+> +					  struct switchdev_brport_flags flags,
+> +					  struct netlink_ext_ack *extack)
+> +{
+> +	if (flags.mask &
+> +	    ~(BR_LEARNING | BR_FLOOD | BR_MCAST_FLOOD | BR_BCAST_FLOOD))
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +
+> +static void lan9645x_port_pgid_set(struct lan9645x *lan9645x, u16 pgid,
+> +				   int chip_port, bool enabled)
+> +{
+> +	u32 reg_msk, port_msk;
+> +
+> +	WARN_ON(chip_port > CPU_PORT);
+> +
+> +	port_msk = ANA_PGID_PGID_SET(enabled ? BIT(chip_port) : 0);
+> +	reg_msk = ANA_PGID_PGID_SET(BIT(chip_port));
+> +
+> +	lan_rmw(port_msk, reg_msk, lan9645x, ANA_PGID(pgid));
+> +}
+> +
+> +static void lan9645x_port_set_learning(struct lan9645x *lan9645x, int port,
+> +				       bool enabled)
+> +{
+> +	struct lan9645x_port *p;
+> +
+> +	lan_rmw(ANA_PORT_CFG_LEARN_ENA_SET(enabled), ANA_PORT_CFG_LEARN_ENA,
+> +		lan9645x, ANA_PORT_CFG(port));
+
+Actually, the port may be in an STP state where learning shouldn't be
+enabled, when this function is called. Enabling the "learning" bridge
+port flag shouldn't change that.
+
+> +
+> +	p = lan9645x_to_port(lan9645x, port);
+> +	p->learn_ena = enabled;
+> +}
+> +
+> +static int lan9645x_port_bridge_flags(struct dsa_switch *ds, int port,
+> +				      struct switchdev_brport_flags f,
+> +				      struct netlink_ext_ack *extack)
+> +{
+> +	struct lan9645x *l = ds->priv;
+
+Could we have some consistency in variable naming throughout the driver,
+at least for the main private structure? I don't have an issue with it
+being called l, it's just that I would prefer it being called the same
+everywhere.
+
+> +
+> +	if (WARN_ON(port == l->npi))
+> +		return -EINVAL;
+> +
+> +	if (f.mask & BR_LEARNING)
+> +		lan9645x_port_set_learning(l, port, !!(f.val & BR_LEARNING));
+> +
+> +	if (f.mask & BR_FLOOD)
+> +		lan9645x_port_pgid_set(l, PGID_UC, port, !!(f.val & BR_FLOOD));
+> +
+> +	if (f.mask & BR_MCAST_FLOOD) {
+> +		bool ena = !!(f.val & BR_MCAST_FLOOD);
+> +
+> +		lan9645x_port_pgid_set(l, PGID_MC, port, ena);
+> +		lan9645x_port_pgid_set(l, PGID_MCIPV4, port, ena);
+> +		lan9645x_port_pgid_set(l, PGID_MCIPV6, port, ena);
+> +	}
+> +
+> +	if (f.mask & BR_BCAST_FLOOD)
+> +		lan9645x_port_pgid_set(l, PGID_BC, port,
+> +				       !!(f.val & BR_BCAST_FLOOD));
+> +
+> +	return 0;
+> +}
+> diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c b/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
+> index 038868ae0a32..b60c64458957 100644
+> --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
+> +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
+> @@ -15,6 +15,8 @@ int lan9645x_port_init(struct lan9645x *lan9645x, int port)
+>  		ANA_PORT_CFG_LEARN_ENA,
+>  		lan9645x, ANA_PORT_CFG(p->chip_port));
+>  
+> +	p->learn_ena = false;
+> +
+
+This is already zero-initialized memory.
+
+>  	lan9645x_port_set_maxlen(lan9645x, port, ETH_DATA_LEN);
+>  
+>  	lan9645x_phylink_port_down(lan9645x, port);
+> 
+> -- 
+> 2.52.0
+> 
