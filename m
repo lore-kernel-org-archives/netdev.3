@@ -1,108 +1,114 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D0339098C
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 23:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454D63932FD
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 23:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772579368; cv=none; b=SPThdguL7r9OLdjv4FD8h6xHBd3qMVuNa6SghgKhV+1rRdiBdBNxyI/GQ932fyaYQe3/NmuYqPoKi+8Zpre7Y7RNMfhcyn2U1gHls580CbIaRP3TZ8cep84AW2R/mWv0m3AnVhsoL/zD9ut7YrQdxWpVg5lC8u2iTl6OFBupSwM=
+	t=1772579522; cv=none; b=oarboKuBXB4P/RF4u51s34mU8gc+FDsykZmDqft8T1Ug5PaooMMtHZep/hq5JR/WwiAkVng+//ngbmVJgUv93bX8tWtM9hTsiwarofBPPQXRZ/ffahf3cKvxTO4ADy8bC2vlZ0ZBooJsdpltG0kfKydtesxRgKlLPH4Gqu9G82s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772579368; c=relaxed/simple;
-	bh=tQBclTQoEFogvOvzg1NNYMQjkLHMah5juUwioIlFtyA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=niSiUgKjbAzhaVJHyj8QAefOtKDPnmsg6HA3khwErY1KBQEEBpvFcJecxNitBZDjmkDodSg7ZIILLsOrZEA1jOEhkBgBQHJJffhE8P5m1mcB6rxkiyjZSa/69Az6/Zakkwpqw1xo/58xNCG3YvtGlW2ky+no0KPHZ6mODS6TJKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=nNlCkWH4; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1772579522; c=relaxed/simple;
+	bh=iXA5oGXc/zYj9mOtlwqVvYFTCXZ3t4pHavmfO5nNuEQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Y1Y5+5Q+mXWMI5yINUImnTyzOFhIkcJ7TF7fVZsHrlDa5oYC0LvUlq+sU0KP3OlPYal9mhwD3hnRdoV4BPFthjK0NPVKqjOD9ZcjToSvD3pbFtRpy0vY08fLwAdf5ga1pacy6xwtw1UJLYdW8oFl+wkAIq7NLAeDFTg5u+9kpTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EvMksDlS; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="nNlCkWH4"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3598c008455so1637365a91.3
-        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 15:09:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1772579365; x=1773184165; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4F+wvsg+rCfB+Xgc2i771Wn+E0HEDYAO2XFtN4tcCqo=;
-        b=nNlCkWH46EwoJa8jGLd3miZLBYcqhvkst78l2V0tTlYL9JDiyUjMc9LsdAs+dmtdlU
-         SbIeyWDGaIow83vojk1LaycyiK8Uvo6xmn47jDbe64LzNNCzj63F7LA6r0C6M+oUFHHp
-         3B65LkopYhvSaqw0B2N1+ygj76BKZjCiKsAHZgR/ZCWB9UT7qX5aQvqQN5XcLZEuDzx2
-         5n7lhD4nWxk5DZRcfcCJoBewyF3VzKbrnyiBTi1wMNI5GdM7GY9ytGXOVjeC9xwRD7XW
-         iv5Sy2uYaFCKp8he6fDxy3Je/T7l3gwaIhThxgsDdfVonVB8Wt34pvmzaoYDugMO5NWu
-         Cewg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772579365; x=1773184165;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4F+wvsg+rCfB+Xgc2i771Wn+E0HEDYAO2XFtN4tcCqo=;
-        b=V5U6V4xfmu/0TS038a8fY11ysiT+KmCkvbOa2loRrIFrp5pQetUdB1z06P1vBdjBIG
-         s9M/ULwos1M28WNTMEH/QyUXYRXp+MLcS3lKod1t/B8+AAcMS6/YZmPmz2Qc8jrdvbOw
-         r5PgIILrVq4XcgcCSQsa3EGpT65nKdl7FE297UXvVFH6NJQ2sdbeXv10H2OrwXtn1jus
-         gXcLJEZMx7xUBhpp214CTSXqZ0CmW4t7OzFmdPD3GGkiCIHc7baoKMx4eUGl05vHF3ak
-         jHmG7b438oIN4o1cLCk4h9rrGy7/Ef9G9Z1jXUAa2elDfOxboa937OG2EfJhiKNb8eXc
-         upHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW1xVyy65s3zYORbOjCz7/R7+mBFaRCY7f0gye2UiT3AcGIZxsUbIq6C5eZBypvDKNYR1PJ0MY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6YcHMlaK3lvf6I4oF56iwj8GYUmFlkjreMRDxEOSZDv9vMJjl
-	XX5MgqJupG7lP5vGYAGqF5J9SmIfcwJfSq9YZdDDEWuBCyhtwnzUvYUXZIsvezNIGy8=
-X-Gm-Gg: ATEYQzynusQGHM7LWhPnnsRB/5F+G9KeAHKavY/xLhkcmrNnRwkwZMBFRU3kBZTI4hT
-	WR30Z5ZhhUzOuXt6+KqkHpFIYhokeGJf2P067/x5AzyXqXtvbs+Q/1w2kRVTxM1vEBMNAFvKr2I
-	kXBxyeT+Lt3dwCSLCLT6V68kpKhWQEfAXcNJGNecbStlnobWJ6umkO1tf8RwKxJuRepsRZ4lquv
-	iWzBEuY6f1nUNiDoBfHmDUupcIOhYGkCgFIvnr6pAEpWNCQWg+SoIu1P8oZQOQd+QM5gv5nJph8
-	mBhRnmD+KAyyAZCcXLFy62VcnQgj6UbQDOQB3DtGMLfgtTH7xaF2kiKaOl3PfvPw+gBQFbSUcI+
-	Ut8tnmV+AELLqUbQTqhElv7qbY1lSN20M9XcW2QzNYodEpGF0suGyhAHNsUvRAaKABcq3LRgsHH
-	3SBvWF
-X-Received: by 2002:a17:90b:3e4b:b0:33b:be31:8194 with SMTP id 98e67ed59e1d1-359a6a7d267mr67210a91.34.1772579365311;
-        Tue, 03 Mar 2026 15:09:25 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:58::])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3599c39db5bsm3340289a91.9.2026.03.03.15.09.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 15:09:24 -0800 (PST)
-Date: Tue, 3 Mar 2026 15:09:24 -0800
-From: Joe Damato <joe@dama.to>
-To: maximilianpezzullo@gmail.com
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] igc: fix typos in comments
-Message-ID: <aadqJKC8MagHA1de@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>, maximilianpezzullo@gmail.com,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-References: <20260303-master-v1-0-f180b1ad98b5@gmail.com>
- <20260303-master-v1-2-f180b1ad98b5@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EvMksDlS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772579520; x=1804115520;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=iXA5oGXc/zYj9mOtlwqVvYFTCXZ3t4pHavmfO5nNuEQ=;
+  b=EvMksDlSaDFqvuLHcha5irU6q3lujovFE6xDTaIDqLhIXNya3pBT3S2O
+   MKdex2T1At58oW3Zf1gLv3wL/c6Qm9q1qcK4bu6JUFqvhAyLiRwNMKVjL
+   JY4nNhnptAltUas8suh0zp2gn5BPHjSJJ8VrBDyhVFv95Q3g7jPQkkO2P
+   ZNKUsiunktdiQL4ZwMLE2T7iUaJG9owOHFNFqQUnbCHx0N+rliU0OZdFj
+   wyPiNMLw+SiGPiWGnmD51Ha8SOgiz85vpkfu2Z6BXKmgb4quHcB4e42k5
+   4JpbE+0NOjY3EpXCe89qE/v0FAyuA4ArmQvbw/LQgf0AaHjUkjwFxbkpi
+   A==;
+X-CSE-ConnectionGUID: nsJ3E3mwRxmvPTQyQf6BIw==
+X-CSE-MsgGUID: WVtt5O6KQR26Knxy4zc1PQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77238789"
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
+   d="scan'208";a="77238789"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 15:11:58 -0800
+X-CSE-ConnectionGUID: HSoX9SKrRG+ts85SLh5efA==
+X-CSE-MsgGUID: AVEpCak3SlG1sN0L/mFk8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
+   d="scan'208";a="248633796"
+Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
+  by orviesa002.jf.intel.com with ESMTP; 03 Mar 2026 15:11:59 -0800
+From: Tony Nguyen <anthony.l.nguyen@intel.com>
+To: davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	edumazet@google.com,
+	andrew+netdev@lunn.ch,
+	netdev@vger.kernel.org
+Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
+	anthony.l.nguyen@intel.com,
+	michal.swiatkowski@linux.intel.com,
+	przemyslaw.kitszel@intel.com,
+	horms@kernel.org,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>
+Subject: [PATCH net 1/8] ice: fix adding AQ LLDP filter for VF
+Date: Tue,  3 Mar 2026 15:11:47 -0800
+Message-ID: <20260303231155.2895065-2-anthony.l.nguyen@intel.com>
+X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20260303231155.2895065-1-anthony.l.nguyen@intel.com>
+References: <20260303231155.2895065-1-anthony.l.nguyen@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260303-master-v1-2-f180b1ad98b5@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Mar 03, 2026 at 10:38:21PM +0100, Maximilian Pezzullo via B4 Relay wrote:
-> From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
-> 
-> Fix spelling errors in code comments:
->  - igc_diag.c: 'autonegotioation' -> 'autonegotiation'
->  - igc_main.c: 'revisons' -> 'revisions' (two occurrences)
-> 
-> Signed-off-by: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
-> ---
->  drivers/net/ethernet/intel/igc/igc_diag.c | 2 +-
->  drivers/net/ethernet/intel/igc/igc_main.c | 4 ++--
->  2 files changed, 3 insertions(+), 3 deletions(-)
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-Reviewed-by: Joe Damato <joe@dama.to>
+The referenced commit came from a misunderstanding of the FW LLDP filter
+AQ (Admin Queue) command due to the error in the internal documentation.
+Contrary to the assumptions in the original commit, VFs can be added and
+deleted from this filter without any problems. Introduced dev_info message
+proved to be useful, so reverting the whole commit does not make sense.
+
+Without this fix, trusted VFs do not receive LLDP traffic, if there is an
+AQ LLDP filter on PF. When trusted VF attempts to add an LLDP multicast
+MAC address, the following message can be seen in dmesg on host:
+
+ice 0000:33:00.0: Failed to add Rx LLDP rule on VSI 20 error: -95
+
+Revert checking VSI type when adding LLDP filter through AQ.
+
+Fixes: 4d5a1c4e6d49 ("ice: do not add LLDP-specific filter if not necessary")
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+---
+ drivers/net/ethernet/intel/ice/ice_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+index 6cd63190f55d..74fe74225277 100644
+--- a/drivers/net/ethernet/intel/ice/ice_common.c
++++ b/drivers/net/ethernet/intel/ice/ice_common.c
+@@ -6391,7 +6391,7 @@ int ice_lldp_fltr_add_remove(struct ice_hw *hw, struct ice_vsi *vsi, bool add)
+ 	struct ice_aqc_lldp_filter_ctrl *cmd;
+ 	struct libie_aq_desc desc;
+ 
+-	if (vsi->type != ICE_VSI_PF || !ice_fw_supports_lldp_fltr_ctrl(hw))
++	if (!ice_fw_supports_lldp_fltr_ctrl(hw))
+ 		return -EOPNOTSUPP;
+ 
+ 	cmd = libie_aq_raw(&desc);
+-- 
+2.47.1
+
