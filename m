@@ -1,143 +1,119 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC358421A11
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 13:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772543302; cv=pass; b=p7LEfkfeCIJuMbGKpes3x9yCWL8rOQaCiOtJrbTYSx3m7ipS/uRs93KTIQb7e3jqn01yWMsa18xED9/zWkc5FuMbQUAIT+lWDAUnSOsScjFkBsYlmRK6Enl2/Z5+8TJrd+lATdgaoTjPZ/cJl2HvokoyW1bL8jFzJYkcZZde0E0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772543302; c=relaxed/simple;
-	bh=fEKulSd1PmTL8WxGU61UMjkUJvtTae79rFbx+6mxzoc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UHXZ6rzgp4nAAy+xc9KPrP8iw6CkwMjRFi6gOg/1rhwkBmS4Dt5+97sqP6NdCDHmv2SstU8HizbBQP1JYW4aAp6mkp/4Sju8cGS1Wk1/5nTnhrmPUkqfZKoZEgjG7AKkQM6yGYFmDOsg4DhqQ94HFyGXeIXRYuJwQOfaIqj34MI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=k2OSEZNg; arc=pass smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A9C27E1DC;
+	Tue,  3 Mar 2026 13:18:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772543921; cv=none; b=R08IUJdSbkYWhozzt9T6/HBMzSKJKEsiTgs/slaz75DquonwFmYsKGZ7OwPFhhXA9g4+MjmktRrZSHeKrzlbhzcnmuuHJxLuZgsovQV3jRvvhAKLtMK3DlxgucjEPXhHXaEcKkcOv86xIIIEuxSAAIbC7oM7SLhqcWgqbrXnReU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772543921; c=relaxed/simple;
+	bh=S4vp4JQ72s3eWuG8J9mcgxDfPnpnYZ+oZQ9woXEJC0c=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=UjJauge9UEQ7YmS9VfpDSaZk/BSJoYt+3aSud1eQvBICQs8YCPO+j93C9JkYISkLLk9BtA9NBI/hG7mg6zmu+LKqTVUEjOqsFERBLcGLUSP+hR3kUZNeEobW6GEgc+UYLCNeo+IC6lJ+BK58uV1ZTxH0vev6LaH5VDbPpGOj49Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TyYqaB5r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="k2OSEZNg"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-79860421382so52816797b3.0
-        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 05:08:20 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772543300; cv=none;
-        d=google.com; s=arc-20240605;
-        b=W4fW3zpvwkt7XnX7NxZiC73jSG80N97FitbqGajQwOeqWGEllL/wZ42s7t8WkE+qHd
-         LS4tCs2Y3v5fLW0bDd7hWSpcHpi001SvHlWg8WeYhaHDwIRwL5+Pzm4C1bPu6BWgwUQZ
-         6Zy8gvZWxMbgIxUIFxJRKO1sCHOb/zcAOW7dx7QbMKdud9aVRcNr+exNn7w+zb/gwAqu
-         zv2g/WBlAtLHEMPIwa+xqe3vU8+3wM4YyZ24EiQziAr1/J/M96gvQYt/z9xNgi2Oza4K
-         aj1HYK7V8tv3+M9AgPji7DP2EsV+HGzOO0kB/moFHsX6IYsSVSjcpxiQOiZVJJ5eG6Fw
-         3Jxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=zzHyJu1zsXD5QTAUauHKQsg8XWyFjizwJkcjUH3f8pI=;
-        fh=Fi9N6eQ3N/AvAiCSRAJz3QfscejVU/ANMZqRLq0N2qc=;
-        b=RznHVLTdu5MXWsDeIxfvzRInPs6pVPWeCC7DrEamX3WAKlWvsFR6IlA6DFnMHOwdKB
-         DkW/LUqq/ooaH+5pMEBrMjMO/NDSlP0ToaCq7Fosy7YNh2c/3AvUgurbxulpwF6WzCo9
-         DhAfJKlRp74eBq9u6G7Bl25HZgV4Ogbw4oIxDwn64KRD+5WOXBPD658prYUEFxdhJMmS
-         VPPW8bjV46J2v15usTrGYVT9pYSny4SjRQh4tIcDkWjoiN+Zn+XDRxuXsAhpatFyfMqi
-         tnpqyX8hDKchcb6PtWg36XUdR7+zE5MVZtwLDgmEwaka5FEZDNyh3DrS/raj/e1uwk3/
-         FzYQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1772543300; x=1773148100; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zzHyJu1zsXD5QTAUauHKQsg8XWyFjizwJkcjUH3f8pI=;
-        b=k2OSEZNgvl8+8d55qdCe6ArRWJ0BhAywf+anDFW4eQI/wGaelUBpT62RGRUqxenKf1
-         7nVznTOqSHQEsLV3MEByVSZ3qGxvOYoTiLAcyzvUAi9eqwtCzGLxGuleTiaFW6GljQ8L
-         23ddf8y28OzM1zqPCgmkwwzjG8BJ8/xWJC9ThjZfVclyjhVboMa9JrrHZqutb1nCKzyk
-         XMPHMrythgzmP2jlppVigdDUfnSU7TmugVavinUxHrQQOqkatN9lDH1kSN413J6z9LAu
-         7IoigmG/KP78XBIgLSjUWy+BXdP/jmNnflX1O2QtUZmrSuB02SPOcuIevU4LaC+Lk6tG
-         bZ7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772543300; x=1773148100;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zzHyJu1zsXD5QTAUauHKQsg8XWyFjizwJkcjUH3f8pI=;
-        b=YarDiY1IO4WYGHU5U/ZkzG1GlHfCvAKunYnUM+pbBnbf44aWyfTlNXqjThHM+uwPRu
-         frCuzyHP+Bzq1d9R+uoEYCY+oL+ExNCvqa/ZbeUUkYSGQAAVphg9gZkJ0AIl9wkjlYxa
-         1O0OC/BCbTB0Mtua+LLze56jpnp9QX74WZcMPyo7GB9r7WRDrAROEu6D4HgVlH2I1A7/
-         iQVCYP0N69eBuYx/M2/65tVAyshfI5zFzIV7p5pfTea+IeHttJaeHPDYgUaDwtbghidf
-         QRdxzuYcMNOKYJ2eHNUWIVyKoR6Trd7NQwz4U3qyeUIPB7EGtR2567e2EF4UoKpOyRv7
-         SN+A==
-X-Forwarded-Encrypted: i=1; AJvYcCXlEmNpc9qYfxCwqwL+JuLu5AwWfkaE1iVomaN6nQ7oSGxBBbtGD9/RWoscl+07pGFic5ztz5M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpWUBZMvd4bxivDc9Y7EkWKTMaY+Ns8eFA9O05foj4ubrbPAa9
-	ge6jxvTC8aZZeSG4JW3eL3LahSh/ghTEkr1td/pI2Q0NaobWeSUmC03Gojs79+6C+LUO80aP8FD
-	BloiTRgdfqoapXvRHUevnyfuD+ysYWPM+NLURNhemDtOztRCMO/0=
-X-Gm-Gg: ATEYQzwtkg5B3KQaPSy7XxfOJ+3G1dHtulRcwejBnYoyiKQGNSzAN/4qnNdJTqxdsZV
-	n13+g6rD/3M9MDoy14L1Y/SY7pvhrOfq9xpsXbsvtptCIGvvX1wOLi5p6pTIxuP04X3bBg8uHle
-	1XQ0QAX+LZDqRw0AjZHEGecGU2a5CZq+oPcP16Tp3uu7BAFEqggTgn3fQbYamg40qOnoyQmdGBT
-	FNtPrNiOQD0znUeCKXcAAD6AqriliL1hWiWkaMZQZ3Foa3dXddnKRY90+mjh7AjRHjX82SxYfqH
-	A8poAesnxqY3rinTZYW8UQ==
-X-Received: by 2002:a05:690c:e3e9:b0:798:5cab:cb70 with SMTP id
- 00721157ae682-79885508bbamr125655137b3.21.1772543299950; Tue, 03 Mar 2026
- 05:08:19 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TyYqaB5r"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A45E8C2BC9E;
+	Tue,  3 Mar 2026 13:18:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772543920;
+	bh=S4vp4JQ72s3eWuG8J9mcgxDfPnpnYZ+oZQ9woXEJC0c=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=TyYqaB5rYDZ7OJf8DsvtXCspw/YmCp5o1ltlUiEZ2wcBEhwslkw6pWOcjEpr5aeJv
+	 g+mAJ74krEXwZTxA630/aBz+Q9rAp2qndnkpoZUcL98v12wAp66pOMos5pMTTY6Ihu
+	 vxuPZBVvSG7up4wVv1TFrd0DigHbNJcvE8wJNiMHpYaX5AaoBL+iht87NGwLN+l0XE
+	 dERQ2mfmhDFjpz5sS6MKjG1hDXdxAkQbVZ6RIqJkcdzCjt/8lW+ztYqs2d7ZflK04W
+	 E7ACsBo3rXeeCQ7lvXMSKEi4cAydEURyoM8f0T58Ewm+BrVwrDbyxkoHhhIZSOHf26
+	 2sztwy2PevH6A==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 8CAC4EC143C;
+	Tue,  3 Mar 2026 13:18:40 +0000 (UTC)
+From: Cedric Jehasse via B4 Relay <devnull+cedric.jehasse.luminex.be@kernel.org>
+Date: Tue, 03 Mar 2026 14:18:23 +0100
+Subject: [PATCH net-next v5 1/2] net/sched: cls_flower: remove unions from
+ fl_flow_key
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260211170725.1514427-1-victor@mojatatu.com> <20260225132623.0395441f@phoenix.local>
-In-Reply-To: <20260225132623.0395441f@phoenix.local>
-From: Victor Nogueira <victor@mojatatu.com>
-Date: Tue, 3 Mar 2026 10:08:08 -0300
-X-Gm-Features: AaiRm50EyCTEPDcr6AUXLMxJ27vPuyrGVeJ5tAdanHPFgLZcex7MUnGfXnQ31vQ
-Message-ID: <CA+NMeC8P7RPudNkDm6kUWjxEZKJDZZg0oNDr2Y7K00NUzhOXbg@mail.gmail.com>
-Subject: Re: [PATCH iproute2 0/3] Add JSON output support to the remaining qdiscs
-To: Stephen Hemminger <stephen@networkplumber.org>
-Cc: dsahern@kernel.org, jhs@mojatatu.com, deren.teo@outlook.com, 
-	andrew@lunn.ch, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260303-net-next-mv88e6xxx-tcam-v5-1-6f9129687276@luminex.be>
+References: <20260303-net-next-mv88e6xxx-tcam-v5-0-6f9129687276@luminex.be>
+In-Reply-To: <20260303-net-next-mv88e6xxx-tcam-v5-0-6f9129687276@luminex.be>
+To: Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Russell King <linux@armlinux.org.uk>, Jamal Hadi Salim <jhs@mojatatu.com>, 
+ Jiri Pirko <jiri@resnulli.us>, Simon Horman <horms@kernel.org>
+Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+ Cedric Jehasse <cedric.jehasse@luminex.be>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772543918; l=1808;
+ i=cedric.jehasse@luminex.be; s=20260213; h=from:subject:message-id;
+ bh=XHxAavS3OSIr6KhDGV4nKk6jIBOKNR2K6BPZWurwweQ=;
+ b=gbTT7fjU3RO8peEn8VdgpzNxuE3GHZv6YwDBC+asrnpgA0gTLml6+wwTTZVUvuKASiuNom4yq
+ OSR+1nd3pOMCBeoxEgqUrBjZHOcB0UGRfrI/byA8CGmtH+DW97Z0Q75
+X-Developer-Key: i=cedric.jehasse@luminex.be; a=ed25519;
+ pk=DL2RaHc2bc7tTDTMJdugm42BtJk4Ip+7V41Gkj+Avjk=
+X-Endpoint-Received: by B4 Relay for cedric.jehasse@luminex.be/20260213
+ with auth_id=638
+X-Original-From: Cedric Jehasse <cedric.jehasse@luminex.be>
+Reply-To: cedric.jehasse@luminex.be
 
-On Wed, Feb 25, 2026 at 6:26=E2=80=AFPM Stephen Hemminger
-<stephen@networkplumber.org> wrote:
->
-> On Wed, 11 Feb 2026 14:07:22 -0300
-> Victor Nogueira <victor@mojatatu.com> wrote:
->
-> > Since qdisc core already assumes all qdiscs are able to output JSON,
-> > add JSON output support to the remaning qdiscs (HFSC, QFQ, muiltiq)
-> > so that a JSON qdisc dump outputs valid JSON.
-> >
-> > Victor Nogueira (3):
-> >   tc: Add JSON output support to HFSC
-> >   tc: Add JSON output support to QFQ
-> >   tc: Add JSON output support to multiq
-> >
-> >  tc/q_hfsc.c   | 29 ++++++++++++++++++-----------
-> >  tc/q_multiq.c |  4 +++-
-> >  tc/q_qfq.c    |  8 ++++----
-> >  3 files changed, 25 insertions(+), 16 deletions(-)
-> >
->
-> Good start but some minor issues found by AI patch review
->
-> Must-fix bug in patch 1/3 (HFSC): Copy-paste error on line printing
-> level =E2=80=94 it uses st->period instead of st->level, silently emittin=
-g
-> wrong data in both text and JSON modes.
->
-> Design concerns worth discussing:
->
-> HFSC d (delay) field is emitted as a human-readable string in JSON
-> ("5ms") rather than a raw numeric value (microseconds), which goes
-> against the iproute2 JSON convention that JSON should carry raw values
-> for script consumption
->
-> HFSC service curve keys use flat compound names with spaces ("rt m1")
-> rather than nested JSON objects =E2=80=94 functional but awkward for cons=
-umers
->
-> multiq bands emits a compound string ("3/16") rather than separate
-> numeric fields =E2=80=94 once this JSON format ships it becomes API
+From: Cedric Jehasse <cedric.jehasse@luminex.be>
 
-Thank you for reviewing.
-I sent a v2 with the fixes you suggested.
+When creating a flower classifier with an ipv4 address the
+flow_dissector has both FLOW_DISSECTOR_KEY_IPV4_ADDRS and
+FLOW_DISSECTOR_KEY_IPV6_ADDRS bits set in used_keys.
+This happens because ipv4/ipv6 fields are a union and
+FL_KEY_SET_IF_MASKED() will interpret either being set as both.
 
-cheers,
-Victor
+Removing the unions fixes this behavior without needing special handling
+for union fields.
+
+Example of a command that caused FLOW_DISSECTOR_KEY_IPV4_ADDRS and
+FLOW_DISSECTOR_KEY_IPV6_ADDRS to be set:
+tc filter add dev p1 ingress protocol ip flower skip_sw \
+    dst_ip 224.0.1.129 action trap
+
+Signed-off-by: Cedric Jehasse <cedric.jehasse@luminex.be>
+---
+ net/sched/cls_flower.c | 12 ++++--------
+ 1 file changed, 4 insertions(+), 8 deletions(-)
+
+diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
+index 7669371c1354..b95dbe847dde 100644
+--- a/net/sched/cls_flower.c
++++ b/net/sched/cls_flower.c
+@@ -59,18 +59,14 @@ struct fl_flow_key {
+ 	struct flow_dissector_key_eth_addrs eth;
+ 	struct flow_dissector_key_vlan vlan;
+ 	struct flow_dissector_key_vlan cvlan;
+-	union {
+-		struct flow_dissector_key_ipv4_addrs ipv4;
+-		struct flow_dissector_key_ipv6_addrs ipv6;
+-	};
++	struct flow_dissector_key_ipv4_addrs ipv4;
++	struct flow_dissector_key_ipv6_addrs ipv6;
+ 	struct flow_dissector_key_ports tp;
+ 	struct flow_dissector_key_icmp icmp;
+ 	struct flow_dissector_key_arp arp;
+ 	struct flow_dissector_key_keyid enc_key_id;
+-	union {
+-		struct flow_dissector_key_ipv4_addrs enc_ipv4;
+-		struct flow_dissector_key_ipv6_addrs enc_ipv6;
+-	};
++	struct flow_dissector_key_ipv4_addrs enc_ipv4;
++	struct flow_dissector_key_ipv6_addrs enc_ipv6;
+ 	struct flow_dissector_key_ports enc_tp;
+ 	struct flow_dissector_key_mpls mpls;
+ 	struct flow_dissector_key_tcp tcp;
+
+-- 
+2.43.0
+
+
