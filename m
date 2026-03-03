@@ -1,114 +1,87 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4344949F7;
-	Tue,  3 Mar 2026 16:01:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1061D4949FD;
+	Tue,  3 Mar 2026 16:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772553674; cv=none; b=UC67rK5ZY74jYaStkEzPlQR9ZTYVr4H8f6SliTQoU2pRTfuS0SvShYGRLj+vgcvXlNdjwamqqYTDJAhHU6eLy+tLSF/rW8/XGYcNDPk4JxWkOYPW5rDHeUaeVWYcV0jnueU4UWOaJi4KM756DDmOFHCkIBXCbSHf/UBLj3IAteU=
+	t=1772553708; cv=none; b=SsBKtixJs5BKVunOyPfhd7+WSx79lKg+KRpIrMKt3Lm4vwMMBUXEnXv/CLPj3WJKwo59I84pcKhViMeS9ui9Nw0B3rAIyzpkiACCceEyLVDSMDugJ7L2cyq/kYwwmgcw4bDpXCipKH4IsvxgNreJl7P7zgqu21AA7REd/+J+kzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772553674; c=relaxed/simple;
-	bh=8yCuPNtz/lobINON3e4aCuPyNSz1Q74SWKUzvQN6ZiQ=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GJTNLNNlfA85tEVBCAFzcPOUvbXpflgsTPpqOSVoWYLe7kyDcqRce+uq4pybD2Lcw3piInBMuL5IVksMoafS9ZhDkYPKZB8QFobN7YoPP1+Zg83JoAh1gXJwthqWFa1MU7s/kkFN2U+0vEbMHT/SMhN1ryl3HUezNuuFyeNsOaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Fz72B2ES; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1772553708; c=relaxed/simple;
+	bh=gZkQlr5YEVXuW9a0G2wQiLAsUpIgl/yFyoQA91g2dZc=;
+	h=Content-Type:MIME-Version:Message-Id:In-Reply-To:References:
+	 Subject:From:To:Cc:Date; b=ZE1FnFZRKeHRpjJKLaVv+e56T+1I5Dfap175c9AZqsQHtwvBuUU/vz+OI47VkMaGdfpe3RjlIrb93sraN3ACt+4RJc+1fa9sG3i3UK6zAw6/jIA4KmQLA89gJdd0SjTGG+tgVgRU6byYpKeiFC4GAzC15XQVnYArR4vMW6VIWkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=shZZJlfE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Fz72B2ES"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1772553672; x=1804089672;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=8yCuPNtz/lobINON3e4aCuPyNSz1Q74SWKUzvQN6ZiQ=;
-  b=Fz72B2ES9s8H0Z+ui/5aQukOtbPYsjn2kIqAF+UDrBBFVRdWPIJ90v6t
-   rNDwLW7I5xSIqANM+pFsc0A9kSR1F0WGgH0/COXo7nXhgX8N9YHBU4eTh
-   9dKYeEUK+O7FbQy01OajLRhMbgQPi6+7KqKIz1+kGZY9Us9jEzgbpuaUY
-   kFxAKFg3PPCKnOu15DZmzVGppGW3fxHEPdyXAA1k2Vwqqd7K+aRDyRDtq
-   fmP565QWEHhAwFc3Vgg58TPUUn3340oUBbPQRDq3YsuwD3a+IAksZK69B
-   5KnjzagKQ37rCv+MRAtMDTUTSzmkHDL5rPrluJTisFPCAAxZi3SdFeHzn
-   A==;
-X-CSE-ConnectionGUID: iWTYXrUhRFePhBGVr5GA+A==
-X-CSE-MsgGUID: bBNBg1hfQfWHSktGkuAN1w==
-X-IronPort-AV: E=Sophos;i="6.21,322,1763449200"; 
-   d="scan'208";a="221419278"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Mar 2026 09:01:12 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 3 Mar 2026 09:00:09 -0700
-Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 3 Mar 2026 09:00:06 -0700
-Message-ID: <99d068de7a781eef4f67b8fbe3dafb2fffbf752c.camel@microchip.com>
-Subject: Re: [PATCH net-next 2/8] dt-bindings: net: lan9645x: add LAN9645X
- switch bindings
-From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-To: Vladimir Oltean <olteanv@gmail.com>
-CC: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Woojung Huh
-	<woojung.huh@microchip.com>, Russell King <linux@armlinux.org.uk>, "Steen
- Hegelund" <Steen.Hegelund@microchip.com>, Daniel Machon
-	<daniel.machon@microchip.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>
-Date: Tue, 3 Mar 2026 17:00:05 +0100
-In-Reply-To: <20260303132226.6de5boh5pl6hi3hh@skbuf>
-References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
-	 <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
-	 <20260303-dsa_lan9645x_switch_driver_base-v1-2-bff8ca1396f5@microchip.com>
-	 <20260303-dsa_lan9645x_switch_driver_base-v1-2-bff8ca1396f5@microchip.com>
-	 <20260303132226.6de5boh5pl6hi3hh@skbuf>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="shZZJlfE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41125C116C6;
+	Tue,  3 Mar 2026 16:01:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772553707;
+	bh=gZkQlr5YEVXuW9a0G2wQiLAsUpIgl/yFyoQA91g2dZc=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=shZZJlfEb7bNjg6xWR+8o+dCaJm3SfdmOzxgXop+HrvU/BKRUQz1MMFjHJZISiZlX
+	 jf4xlOZvvEwT/0FEELuaokgm/d6Er3BPMjweUZXXVEorQBgKv0hLFl6fkEgFzSZkue
+	 5knKIzrfFkDQ9Pvi5Vv0UyNCT5qIjqYVBIDQ+/GCIGujV2IM/v/lAWoYfJtyvEwl1F
+	 V+kMdJ9Xvjxi8Uf0kp23EF2ecqT2Di6prZXgjgRC8Dp3hwu2EI6pXHo0ojWPSzgNFJ
+	 h1vtO6VQcZBt7XOTZGnTcJZt9nW7E74kYbkTfvP4Oz+O2jlgNwlncnhgxdvlabi5z1
+	 29A50pbnnD36g==
+Content-Type: multipart/mixed; boundary="===============0027368851576621044=="
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Message-Id: <47fbcb9aa941b07054bfef30b802d488688fafdf6df889e78b38313a614b98c1@mail.kernel.org>
+In-Reply-To: <20260303150639.85007-4-leon.hwang@linux.dev>
+References: <20260303150639.85007-4-leon.hwang@linux.dev>
+Subject: Re: [PATCH bpf-next v3 3/6] bpf: Disallow !kprobe_write_ctx progs tail-calling kprobe_write_ctx progs
+From: bot+bpf-ci@kernel.org
+To: leon.hwang@linux.dev,bpf@vger.kernel.org
+Cc: ast@kernel.org,daniel@iogearbox.net,andrii@kernel.org,martin.lau@linux.dev,eddyz87@gmail.com,song@kernel.org,yonghong.song@linux.dev,john.fastabend@gmail.com,kpsingh@kernel.org,sdf@fomichev.me,haoluo@google.com,jolsa@kernel.org,shuah@kernel.org,yangfeng@kylinos.cn,leon.hwang@linux.dev,menglong8.dong@gmail.com,puranjay@kernel.org,bjorn@kernel.org,pulehui@huawei.com,linux-kernel@vger.kernel.org,linux-kselftest@vger.kernel.org,netdev@vger.kernel.org,kernel-patches-bot@fb.com,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Tue,  3 Mar 2026 16:01:47 +0000 (UTC)
 
-On Tue, 2026-03-03 at 15:22 +0200, Vladimir Oltean wrote:
->=20
-> On Tue, Mar 03, 2026 at 01:22:28PM +0100, Jens Emil Schulz =C3=98stergaar=
-d wrote:
-> > +examples:
-> > +  - |
-> > +    soc {
-> > +        #address-cells =3D <1>;
-> > +        #size-cells =3D <0>;
-> > +
-> > +      ethernet-switch@0 {
-> > +        reg =3D <0>;
-> > +        compatible =3D "microchip,lan96459f-switch", "microchip,lan964=
-55s-switch";
-> > +        pinctrl-0 =3D <&lan9645x_leds>;
-> > +        pinctrl-names =3D "default";
-> > +
-> > +        ethernet-ports {
-> > +          #address-cells =3D <1>;
-> > +          #size-cells =3D <0>;
-> > +
-> > +          port@0 {
-> > +            reg =3D <0>;
-> > +            label =3D "lan0";
->=20
-> Please remove labels from DSA examples. They do not constitute best
-> practice, and it is preferable they don't leak into device trees by
-> promoting them through binding examples.
->=20
-> It is currently recommended to name DSA (like other) network interfaces
-> using udev rules set up by user space. Using labels is perhaps only
-> tolerated for cases where the udev implementation is sub-par, like
-> OpenWrt.
+--===============0027368851576621044==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
-I will remove the labels in the next version.
+> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+> --- a/kernel/bpf/core.c
+> +++ b/kernel/bpf/core.c
 
-Thanks,
-Emil
+[ ... ]
+
+> +	switch (match) {
+> +	case BPF_MAP_OWNER_MATCH_FOR_INIT:
+> +		if (owner->kprobe_write_ctx != aux->kprobe_write_ctx)
+> +			return false;
+> +		break;
+> +
+> +	case BPF_MAP_OWNER_MATCH_FOR_UPDATE:
+> +		if (!owner->kprobe_write_ctx && aux->kprobe_write_ctx)
+> +			return false;
+> +		break;
+> +	}
+
+In the v1 review, Alexei Starovoitov asked for strict conformance
+both ways rather than one-directional validation:
+
+    "Don't be fancy. Require strict conformance both ways
+    in *all* patches."
+
+https://lore.kernel.org/bpf/CAADnVQ+-V0-1i8_+CYpK7G0CnV-2n8e9Szv43yM3Az197eL_0A@mail.gmail.com/
+
+The BPF_MAP_OWNER_MATCH_FOR_UPDATE case still uses one-directional
+matching, rejecting only !owner->kprobe_write_ctx && aux->kprobe_write_ctx
+but allowing the reverse.  Was this an intentional design choice, and
+if so, should the changelog note the disagreement?
+
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/22630000544
+--===============0027368851576621044==--
