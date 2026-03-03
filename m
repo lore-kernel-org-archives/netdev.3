@@ -1,107 +1,115 @@
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AFA38C408;
-	Tue,  3 Mar 2026 09:25:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6763E38C427;
+	Tue,  3 Mar 2026 09:25:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772529904; cv=none; b=OmYKlrCK4JZbpL9BviQk12fsPOLAdD/jyqD85wIr5qtyEO/A7cGMMReHgJVgPcP6cAB80UBJZWg0sFEiuSB3e7E98ps85qHP613AUJD/BbGIKrbp9wFMqlWASYPTXqtBpyRJ5DYVFRk/lQcjvzKFLPcZxqOfXlntt8LLZ2fs89s=
+	t=1772529949; cv=none; b=cl0MyZaQ7D3fhVrR8Ph+ruKEol/bOyE2VlWKTYro+qmRjGi7u98EElob9GbBCA0q/dhJNyxq0yje/jghp3kYYLcOHh9ikbPFtP8DktpDyQj4Lj/2PIUoL3nHmU1ghetepqYmVndXx5rueuuDbDtWdDNsnEID4xD3OPTTHvWJZ9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772529904; c=relaxed/simple;
-	bh=r4HdT4eDrYVYg/rJz37nOvgsHymgxKr++v5KE2g6obc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GxJiu7E6QtWqX1gmGsyprIak8UTfxo7tMMcMV22Hc1Fybqm0Q7jdVvy4UzcIxe2SBJ483paTA4OdYVHH4mz2iSiwYddVtEfTV9iIJXgoPU3LfmJLY6ZdmTMpqm90K0SgbUa0mNazfL4H1m/ZekxpVltnxVRSZBCPHgMq4LMnq5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from [127.0.0.2] (unknown [210.73.43.101])
-	by APP-01 (Coremail) with SMTP id qwCowAA34WzPqKZpyU4sCQ--.6573S5;
-	Tue, 03 Mar 2026 17:24:33 +0800 (CST)
-From: Vivian Wang <wangruikang@iscas.ac.cn>
-Date: Tue, 03 Mar 2026 17:24:20 +0800
-Subject: [PATCH net-next 3/4] net: spacemit: Fix error handling in
- emac_tx_mem_map()
+	s=arc-20240116; t=1772529949; c=relaxed/simple;
+	bh=2z8ZSyC5A7LLCOOWT8EV9tuw/GmjD3s5IHXtdve+8Ug=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P8TrYe1l4Rqzw6e+FGY5lYwGRNtIjL6PQScOe4Of3Ck4x0sDbryzihBjHyBnpstSC1XxX+QPTTeA5AzEUc9crfM8MYtQN8b0y1VHGfsqbh2e4T59NW5mVYyYu/2ZFlaeyr1g5+zC+iS8EibhmskNrrpBrMPy2uHWFkl4boqJZXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZeyjEFQM; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZeyjEFQM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56996C2BC87;
+	Tue,  3 Mar 2026 09:25:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772529948;
+	bh=2z8ZSyC5A7LLCOOWT8EV9tuw/GmjD3s5IHXtdve+8Ug=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZeyjEFQMukw3TU8d5tOoDLzd3ODMTrHFhlOmHqLJBRHk1ybfs/HzLXRzD8+RhvdyS
+	 EIcansrNtvHYscxkbudam4Ys/cs/RV0zLEi9KxRvWw8kk5gGWe+GcVCvChwK3EOfs6
+	 RAK2QT394GtuMA4811HyKgLz7/60l9UPzRKs6xxDBjej/YaRRdlAB+fM+gUx8gHe2V
+	 YceWVCmdeOuRCGLYI07ztlafMcO2Lt766kX5V99XTMKJZAO1E8OQ/YclLqWthx++6F
+	 ifn/8lgvE0DIc256/bKLBh2/wLPLecfGmWkVzxUP7d3HN5wb83KcKnd08caPKt2nk+
+	 5ejoQlh/diXAg==
+Date: Tue, 3 Mar 2026 10:25:46 +0100
+From: Lorenzo Bianconi <lorenzo@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: Felix Fietkau <nbd@nbd.name>, Sean Wang <sean.wang@mediatek.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Paolo Valerio <pvalerio@redhat.com>, netdev@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org, bpf@vger.kernel.org
+Subject: Re: [PATCH net] net: ethernet: mtk_eth_soc: Reset prog ptr to NULL
+ in case of error in mtk_xdp_setup()
+Message-ID: <aaapGn50iQ54jl8t@lore-desk>
+References: <20260227-mtk-xdp-prog-ptr-fix-v1-1-b73d7588b645@kernel.org>
+ <20260302182909.06de1942@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260303-k1-ethernet-more-fixes-v1-3-0ab0122fdd14@iscas.ac.cn>
-References: <20260303-k1-ethernet-more-fixes-v1-0-0ab0122fdd14@iscas.ac.cn>
-In-Reply-To: <20260303-k1-ethernet-more-fixes-v1-0-0ab0122fdd14@iscas.ac.cn>
-To: Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Yixun Lan <dlan@kernel.org>, 
- Maxime Chevallier <maxime.chevallier@bootlin.com>, 
- Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
- Troy Mitchell <troy.mitchell@linux.spacemit.com>, 
- Vivian Wang <wangruikang@iscas.ac.cn>
-Cc: netdev@vger.kernel.org, linux-riscv@lists.infradead.org, 
- spacemit@lists.linux.dev, linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-CM-TRANSID:qwCowAA34WzPqKZpyU4sCQ--.6573S5
-X-Coremail-Antispam: 1UD129KBjvJXoWruFyfCrW7Cw15uF1kAF1fZwb_yoW8JF1fpa
-	yDWasxCr18JF43WwsFkr4xZa90vay0qry8Ca4Sy39YqasIyw4jgFy0yF17Jrn5ArZ5WryS
-	vw4qv345GF1DAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmE14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JrWl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
-	8EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AI
-	xVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20x
-	vE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xv
-	r2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04
-	v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrwCFx2Iq
-	xVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r
-	106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AK
-	xVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcI
-	k0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4U
-	JVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUjoUDJUUUUU==
-X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="yCyu0DIjJWfjcGTH"
+Content-Disposition: inline
+In-Reply-To: <20260302182909.06de1942@kernel.org>
 
-The DMA mappings were leaked on mapping error. Free them with the
-existing emac_free_tx_buf() function.
 
-Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
-Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
----
- drivers/net/ethernet/spacemit/k1_emac.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+--yCyu0DIjJWfjcGTH
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
-index e9e2cd4e6a89..f7f16397a2c2 100644
---- a/drivers/net/ethernet/spacemit/k1_emac.c
-+++ b/drivers/net/ethernet/spacemit/k1_emac.c
-@@ -730,7 +730,7 @@ static void emac_tx_mem_map(struct emac_priv *priv, struct sk_buff *skb)
- 	struct emac_desc tx_desc, *tx_desc_addr;
- 	struct device *dev = &priv->pdev->dev;
- 	struct emac_tx_desc_buffer *tx_buf;
--	u32 head, old_head, frag_num, f;
-+	u32 head, old_head, frag_num, f, i;
- 	bool buf_idx;
- 
- 	frag_num = skb_shinfo(skb)->nr_frags;
-@@ -798,6 +798,15 @@ static void emac_tx_mem_map(struct emac_priv *priv, struct sk_buff *skb)
- 
- err_free_skb:
- 	dev_dstats_tx_dropped(priv->ndev);
-+
-+	i = old_head;
-+	while (i != head) {
-+		emac_free_tx_buf(priv, i);
-+
-+		if (++i == tx_ring->total_cnt)
-+			i = 0;
-+	}
-+
- 	dev_kfree_skb_any(skb);
- }
- 
+> On Fri, 27 Feb 2026 16:52:11 +0100 Lorenzo Bianconi wrote:
+> > --- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> > +++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+> > @@ -3751,8 +3751,16 @@ static int mtk_xdp_setup(struct net_device *dev,=
+ struct bpf_prog *prog,
+> >  	if (old_prog)
+> >  		bpf_prog_put(old_prog);
+> > =20
+> > -	if (netif_running(dev) && need_update)
+> > -		return mtk_open(dev);
+> > +	if (netif_running(dev) && need_update) {
+> > +		int err;
+> > +
+> > +		err =3D mtk_open(dev);
+> > +		if (err) {
+> > +			rcu_assign_pointer(eth->prog, NULL);
+> > +
+> > +			return err;
+> > +		}
+> > +	}
+> > =20
+> >  	return 0;
+>=20
+> Maybe there's something special here, not obvious without context,
+> but why are we setting eth->prog to NULL rather than old_prog?
+> At the very least the commit message needs to explain..
 
--- 
-2.53.0
+Reviewing the code I agree, we can just restore the old program, moving
+bpf_prog_put() below the error condition. I will fix it in v2.
 
+Regards,
+Lorenzo
+
+> --=20
+> pw-bot: cr
+
+--yCyu0DIjJWfjcGTH
+Content-Type: application/pgp-signature; name=signature.asc
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaaapGgAKCRA6cBh0uS2t
+rIStAP4k8YfdaIeG/OvYD60XFhFefPws3OFtIzDTK6JLsChQ5AD/eA9wJQv6eO5c
+T2X7PaXMz/PBi9Y7g9wayveHv1am8gc=
+=ljTC
+-----END PGP SIGNATURE-----
+
+--yCyu0DIjJWfjcGTH--
