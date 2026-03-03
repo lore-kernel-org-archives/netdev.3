@@ -1,121 +1,79 @@
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70AD2E414
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 23:42:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79AC53368B7
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 23:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772581346; cv=none; b=HabL7OroGyWZCjz+Gp3M6aC8N8gSvmWHGShshpHI14ndiLzMNqdJfnS+eMEdjPPKuIdFqaZUMryyrrWL369K6jQ/EFI650UeGuNFTyPtu37qdoRoDK15DJBgMVrS35nmbsrME7YVdWK2AqWGkkpOzmyFTqz8fiUvoZjIdtAQLos=
+	t=1772581587; cv=none; b=aCs7geYJb1ZAxrqQRbg2C/xt4YM3A54gq264wgerZucA/47LGUm+ZASUggz6bFD70IPDWX0VpAyhCke0AckOt9fBxy9sCn+s9bxwYIRhQavYyG1jsSV+2JxcFqGvbqEors2M37vlXxhGCaiuVwQH0tdtaBhVjVpHPOHSH33re4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772581346; c=relaxed/simple;
-	bh=kWhijkX4NW9+j8hjQNKVNHbTc1OwH2G//Ljxi1C9zNk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lTF5mbLInZ7HbVTmUQ/WOwDOlmXajDLyvQrqjtxL1Ud4knAGh/eWXMW1xZ48XXpNWj2YyPA1epJ4R+eM+uxnB35jP0l4tr0IFk482Cw2fB1o3D8i6RzZX2gnpQXwDFk0/5pX5LrzOLGfFYp9V60lKp1vW4VOTqK8qA/qM9AkOqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WiuJU9xS; arc=none smtp.client-ip=95.215.58.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1772581587; c=relaxed/simple;
+	bh=gmBtsUjerG61SRCQ734yxFIH0o6o8shvEP94oudXQ0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XXPjRDCCVxKEVs4kvncxivajXU2bWNpSmyjKqHPatqjJSQFw0mc5DnuXsHjFUyYbgzran4U9hx/e87Lm5jr6KN0hysAvhAgKqiVMpLeZ9SS9W7HwKfwXGYck40CCwJolZ8+RrJ8YyawbOW0xaLgaBSzuI4Ur1YqJxd4CxhjylbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rKTtk2kX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WiuJU9xS"
-Message-ID: <da42af3a-7595-4e51-8c85-5b419266a8a3@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772581341;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GZ/CIewNUhK4DMFEo8Ql83aiKEIEGzE6lChFBdbn6Qw=;
-	b=WiuJU9xSpPqUUi0fFmsaSFfdclDs2RnncKi0uexKiZV2/5T4+rQp/AV0D0U+vMuHTPOnJM
-	SQNP2pe4y/+PsPJyUZh/iG8WrSk9ez3KpnRawQZA4Mp7+lrQvzE25mPhAWdLfESidtEZmP
-	QJrH2E7Ss/GwiBZHXDJ5i6lPo3pa2YI=
-Date: Tue, 3 Mar 2026 15:42:12 -0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rKTtk2kX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967E2C116C6;
+	Tue,  3 Mar 2026 23:46:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772581587;
+	bh=gmBtsUjerG61SRCQ734yxFIH0o6o8shvEP94oudXQ0g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=rKTtk2kX7PH1rd1pujUhvKTS3UzTrvZ7sxEmqtEv3xU4WKqn+Zw5k4rXfA7GIn1rh
+	 Q1dS6MIwp9KVnC09xianyUvEs0b43A1zdvpxAj7Sxk6nQFgGafVpJwMp46gyL4XDjf
+	 TxJPbnn7vj/jfCJIp7da+oc2tevSk0bjUzSKajdOCyr7ZYTm488V1kmMUxW8CxlKbX
+	 eMlQz+ItfZQH8oLjRZOenwnCGDqOc7+A1ifu36P56V93EkA21nuH9d3+chXijdf84U
+	 u3CWQrJvhP4w2ij32Sr3Ah955m5J9mBuFyX4S+zmqBY9gZhcJK8u6mH6q84tA7oyWM
+	 iJ2x8V/o1wqEA==
+Date: Tue, 3 Mar 2026 15:46:25 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: David Wei <dw@davidwei.uk>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Joe Damato <joe@dama.to>, Wei Wang
+ <weibunny@meta.com>, Bobby Eshleman <bobbyeshleman@gmail.com>, Stanislav
+ Fomichev <sdf@fomichev.me>, Nikolay Aleksandrov <razor@blackwall.org>
+Subject: Re: [PATCH net-next v2 2/4] selftests/net: Export Netlink class via
+ lib.py
+Message-ID: <20260303154625.5b8092a9@kernel.org>
+In-Reply-To: <20260302053315.1919859-3-dw@davidwei.uk>
+References: <20260302053315.1919859-1-dw@davidwei.uk>
+	<20260302053315.1919859-3-dw@davidwei.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 bpf-next] net: core: allow
- netdev_upper_get_next_dev_rcu from bh context
-To: Jakub Kicinski <kuba@kernel.org>, Kohei Enju <kohei@enjuk.jp>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>,
- =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
- kohei.enju@gmail.com
-References: <20260220110922.94781-1-kohei@enjuk.jp>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-In-Reply-To: <20260220110922.94781-1-kohei@enjuk.jp>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
 
+On Sun,  1 Mar 2026 21:33:13 -0800 David Wei wrote:
+> diff --git a/tools/testing/selftests/net/lib/py/ynl.py b/tools/testing/selftests/net/lib/py/ynl.py
+> index 32c223e93b2c..a52b067f7589 100644
+> --- a/tools/testing/selftests/net/lib/py/ynl.py
+> +++ b/tools/testing/selftests/net/lib/py/ynl.py
+> @@ -13,14 +13,14 @@ try:
+>          SPEC_PATH = KSFT_DIR / "net/lib/specs"
+>  
+>          sys.path.append(tools_full_path.as_posix())
+> -        from net.lib.ynl.pyynl.lib import YnlFamily, NlError
+> +        from net.lib.ynl.pyynl.lib import YnlFamily, NlError, Netlink
 
-
-On 2/20/26 3:09 AM, Kohei Enju wrote:
-> Since XDP programs are called from a NAPI poll context, the RCU
-> reference liveness is ensured by local_bh_disable().
-> 
-> Commit aeea1b86f936 ("bpf, devmap: Exclude XDP broadcast to master
-> device") started to call netdev_upper_get_next_dev_rcu() from this
-> context, but missed adding rcu_read_lock_bh_held() as a condition to the
-> RCU checks.
-> While both bh_disabled and rcu_read_lock() provide RCU protection,
-> lockdep complains since the check condition is insufficient [1].
-> 
-> Add rcu_read_lock_bh_held() as condition to help lockdep to understand
-> the dereference is safe, in the same way as commit 694cea395fde ("bpf:
-> Allow RCU-protected lookups to happen from bh context").
-> 
-> [1]
->   WARNING: net/core/dev.c:8099 at netdev_upper_get_next_dev_rcu+0x96/0xd0, CPU#0: swapper/0/0
->   ...
->   RIP: 0010:netdev_upper_get_next_dev_rcu+0x96/0xd0
->   ...
->    <IRQ>
->    dev_map_enqueue_multi+0x411/0x970
->    xdp_do_redirect+0xdf2/0x1030
->    __igc_xdp_run_prog+0x6a0/0xc80
->    igc_poll+0x34b0/0x70b0
->    __napi_poll.constprop.0+0x98/0x490
->    net_rx_action+0x8f2/0xfa0
->    handle_softirqs+0x1c7/0x710
->    __irq_exit_rcu+0xb1/0xf0
->    irq_exit_rcu+0x9/0x20
->    common_interrupt+0x7f/0x90
->    </IRQ>
-> 
-> Signed-off-by: Kohei Enju <kohei@enjuk.jp>
-> ---
->   net/core/dev.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index 096b3ff13f6b..b99d46b682c6 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -8103,7 +8103,8 @@ struct net_device *netdev_upper_get_next_dev_rcu(struct net_device *dev,
->   {
->   	struct netdev_adjacent *upper;
->   
-> -	WARN_ON_ONCE(!rcu_read_lock_held() && !lockdep_rtnl_is_held());
-> +	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held() &&
-
-
-lgtm after re-reading some of the threads related to commit 694cea395fde.
-
-Jakub, if it looks good to you also, can you take it to the net-next 
-tree? Thanks.
-
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-
-> +		     !lockdep_rtnl_is_held());
->   
->   	upper = list_entry_rcu((*iter)->next, struct netdev_adjacent, list);
->   
-
+index a52b067f7589..b42986bf39e3 100644
+--- a/tools/testing/selftests/net/lib/py/ynl.py
++++ b/tools/testing/selftests/net/lib/py/ynl.py
+@@ -27,6 +27,12 @@ from .ksft import ksft_pr, ktap_result
+     ktap_result(True, comment="SKIP")
+     sys.exit(4)
+ 
++__all__ = [
++    "NlError", "Netlink", "YnlFamily", "SPEC_PATH",
++    "EthtoolFamily", "RtnlFamily", "RtnlAddrFamily",
++    "NetdevFamily", "NetshaperFamily", "DevlinkFamily", "PSPFamily",
++]
++
+ #
+ # Wrapper classes, loading the right specs
+ # Set schema='' to avoid jsonschema validation, it's slow
