@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 523BF3988E9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF69396B67;
 	Tue,  3 Mar 2026 23:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772579526; cv=none; b=HpKGzYNAAUJw+nrrI5QxKoDiM+gZfSKT6VeJzbmFJU8fQtDjMlDqd1zNLrp6J98nXzCfas2iI7RCUsu4TL42potnCXTEBzEADQ7nwvIvP8a4HI1Qz0B6djwBZb0F5BU3O2ZI1tsgBZ0669+noeHpZ4HkwN+qM5/jOPFzqPu0xWw=
+	t=1772579525; cv=none; b=j3bjipQJ6UIriIg17fOV/Phk7NOTVi/hXhduQUEmi/E88XGPu0tyHLnpx7n1CBwGzsRxlpfw2mWyEwWHuzA3ClN3LB54DcJxJvzmKt7zP/0NaGTrTpdfmbO4dfAnm8UZ65+UhZqhyTnZTFmxVZZNlmTI7qNiCZxVWXf2gH8fI2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772579526; c=relaxed/simple;
-	bh=4lj6Mv86DOUniLAjUedxKmqRrWgLF398XXuyJ71yUPw=;
+	s=arc-20240116; t=1772579525; c=relaxed/simple;
+	bh=K0fRyEWZrjrVoRd5ZbHxJR9zHkvq5aMjQ6/6pRtJqZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M1wEW3Df96SPdN2MH2HXk8i+Uypl9Y+pINaVf9kBrFwxFBqFsPZWQBqCxrQbuSZcMa/TRySkNdr/6B6QVKdKbO2nIdBI21obnTeQfy9BdT/SONFfu83erlSbHOv9TIhiARF3sDEUnTH8WTQxLYU6fXCSDR0BQ3NygMAzNX279g8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZjS6XIng; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=FqCr28Xm+3h/Tu/JTWg/ZVVWi/f/bIzQcqAtzY6OL97I6XzgjG2QBaFCwDyZiA37Xbj7vM0ypH3Ml0iwVcIN7lhvlcAx18b7uvzMX2gRHKPf/edjCtCSbCSIh2Txpyzyg7NQAZoKlyXxxj8I7kLhsmuioHys5nxHMyDRCpKCPMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e/RToW9Z; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZjS6XIng"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e/RToW9Z"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772579523; x=1804115523;
+  t=1772579522; x=1804115522;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=4lj6Mv86DOUniLAjUedxKmqRrWgLF398XXuyJ71yUPw=;
-  b=ZjS6XIng0TyNgL1DTYNQ7qoMsNKAEnA/TP1THVHOKQSoUl0SUoM2MpgC
-   3Ri87MFmdgk371Q0wEzQ++nzmDyBLHrqvF9adl2hP8rb1GCvyPtXH9LFj
-   zjZmJYgfWBScd2FB8/gSUM1vQWwD+tBceHhj+U51cbq75gVSAXrTgIJc3
-   iklfYMUjL4gjyfNKyi5hs2irYo37K4s46TAXgW1gkFHEwocdFIKt+OrAu
-   XFgj6mBZqBR1dgunkHXrfDA41dgg3IbdEUG+zkXFygmsPAwhEOjQwwojZ
-   lUh2y6Mb5+4XzfO5N+Xjux3kkqSajdeJJJWjE5G8Z7mUFOntYprh2UDhh
-   Q==;
-X-CSE-ConnectionGUID: 6QuBnbghSW22Wm/MlA0tqQ==
-X-CSE-MsgGUID: DXL6ly/TQwW8Xqi0wdetgw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77238809"
+  bh=K0fRyEWZrjrVoRd5ZbHxJR9zHkvq5aMjQ6/6pRtJqZo=;
+  b=e/RToW9ZAcK3egmvSYYEOFsMTaukXcgIkzNdLEE3urOh4Jvv0vnuILAk
+   LjtmE+yrBCvs6EUk35GSZoaHmIjkpSjM8n9fss1UzpacW/BCS6awKPMgv
+   olCi/fmqq32ne3eQiNn9ucWI5/uIzJLfCJ0R2UD13XRlFzZcRVmII8qZm
+   jQakSFvY2kxnCLsSAj1/dUs/K4ZWmOhM2DRD8ocYo3ZX9OBlWHt+Yv0zC
+   TvutW48X0sI7ZqvfLpZl+y1/UiuHrgN3ehoNHduFcYf21t+Js4WgiCQkp
+   rTgsT0m6DrWgS4iB/XBRIIHDjym9RKbEseJHD2/F0urky5Tw1gsy0Tkrj
+   g==;
+X-CSE-ConnectionGUID: ZnRRz5AsQxOK/XLXhhz0wQ==
+X-CSE-MsgGUID: zAt34b34SPmooUDvVbcigQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77238802"
 X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
-   d="scan'208";a="77238809"
+   d="scan'208";a="77238802"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
   by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 15:11:59 -0800
-X-CSE-ConnectionGUID: 0sKhPT93SlSm3z4dAMeNRA==
-X-CSE-MsgGUID: tVP1ahfcT9mb0uoxTF1oaA==
+X-CSE-ConnectionGUID: l1ro+eBbT3We97QOMe5CXQ==
+X-CSE-MsgGUID: fjTW86lRTGm9OAZLAxYHJw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
-   d="scan'208";a="248633807"
+   d="scan'208";a="248633804"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa002.jf.intel.com with ESMTP; 03 Mar 2026 15:11:59 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,22 +50,18 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Zilin Guan <zilin@seu.edu.cn>,
+Cc: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
 	anthony.l.nguyen@intel.com,
-	maciej.fijalkowski@intel.com,
-	magnus.karlsson@intel.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	bpf@vger.kernel.org,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
+	przemyslaw.kitszel@intel.com,
+	scott.w.taylor@intel.com,
+	stable@vger.kernel.org,
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net 4/8] ice: Fix memory leak in ice_set_ringparam()
-Date: Tue,  3 Mar 2026 15:11:50 -0800
-Message-ID: <20260303231155.2895065-5-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 3/8] ice: fix retry for AQ command 0x06EE
+Date: Tue,  3 Mar 2026 15:11:49 -0800
+Message-ID: <20260303231155.2895065-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260303231155.2895065-1-anthony.l.nguyen@intel.com>
 References: <20260303231155.2895065-1-anthony.l.nguyen@intel.com>
@@ -77,68 +73,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
 
-In ice_set_ringparam, tx_rings and xdp_rings are allocated before
-rx_rings. If the allocation of rx_rings fails, the code jumps to
-the done label leaking both tx_rings and xdp_rings. Furthermore, if
-the setup of an individual Rx ring fails during the loop, the code jumps
-to the free_tx label which releases tx_rings but leaks xdp_rings.
+Executing ethtool -m can fail reporting a netlink I/O error while firmware
+link management holds the i2c bus used to communicate with the module.
 
-Fix this by introducing a free_xdp label and updating the error paths to
-ensure both xdp_rings and tx_rings are properly freed if rx_rings
-allocation or setup fails.
+According to Intel(R) Ethernet Controller E810 Datasheet Rev 2.8 [1]
+Section 3.3.10.4 Read/Write SFF EEPROM (0x06EE)
+request should to be retried upon receiving EBUSY from firmware.
 
-Compile tested only. Issue found using a prototype static analysis tool
-and code review.
+Commit e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
+implemented it only for part of ice_get_module_eeprom(), leaving all other
+calls to ice_aq_sff_eeprom() vulnerable to returning early on getting
+EBUSY without retrying.
 
-Fixes: fcea6f3da546 ("ice: Add stats and ethtool support")
-Fixes: efc2214b6047 ("ice: Add support for XDP")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Remove the retry loop from ice_get_module_eeprom() and add Admin Queue
+(AQ) command with opcode 0x06EE to the list of commands that should be
+retried on receiving EBUSY from firmware.
+
+Cc: stable@vger.kernel.org
+Fixes: e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
+Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Link: https://www.intel.com/content/www/us/en/content-details/613875/intel-ethernet-controller-e810-datasheet.html [1]
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_common.c  |  1 +
+ drivers/net/ethernet/intel/ice/ice_ethtool.c | 35 ++++++++------------
+ 2 files changed, 15 insertions(+), 21 deletions(-)
 
+diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+index fd32c318d3f5..ce11fea122d0 100644
+--- a/drivers/net/ethernet/intel/ice/ice_common.c
++++ b/drivers/net/ethernet/intel/ice/ice_common.c
+@@ -1816,6 +1816,7 @@ static bool ice_should_retry_sq_send_cmd(u16 opcode)
+ 	case ice_aqc_opc_lldp_stop:
+ 	case ice_aqc_opc_lldp_start:
+ 	case ice_aqc_opc_lldp_filter_ctrl:
++	case ice_aqc_opc_sff_eeprom:
+ 		return true;
+ 	}
+ 
 diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 29e341251754..b9be10b58856 100644
+index 3c1a084c2a4b..29e341251754 100644
 --- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
 +++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3332,7 +3332,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
- 	rx_rings = kzalloc_objs(*rx_rings, vsi->num_rxq);
- 	if (!rx_rings) {
- 		err = -ENOMEM;
--		goto done;
-+		goto free_xdp;
- 	}
+@@ -4509,7 +4509,7 @@ ice_get_module_eeprom(struct net_device *netdev,
+ 	u8 addr = ICE_I2C_EEPROM_DEV_ADDR;
+ 	struct ice_hw *hw = &pf->hw;
+ 	bool is_sfp = false;
+-	unsigned int i, j;
++	unsigned int i;
+ 	u16 offset = 0;
+ 	u8 page = 0;
+ 	int status;
+@@ -4551,26 +4551,19 @@ ice_get_module_eeprom(struct net_device *netdev,
+ 		if (page == 0 || !(data[0x2] & 0x4)) {
+ 			u32 copy_len;
  
- 	ice_for_each_rxq(vsi, i) {
-@@ -3359,7 +3359,7 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
+-			/* If i2c bus is busy due to slow page change or
+-			 * link management access, call can fail. This is normal.
+-			 * So we retry this a few times.
+-			 */
+-			for (j = 0; j < 4; j++) {
+-				status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
+-							   !is_sfp, value,
+-							   SFF_READ_BLOCK_SIZE,
+-							   0, NULL);
+-				netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%X)\n",
+-					   addr, offset, page, is_sfp,
+-					   value[0], value[1], value[2], value[3],
+-					   value[4], value[5], value[6], value[7],
+-					   status);
+-				if (status) {
+-					usleep_range(1500, 2500);
+-					memset(value, 0, SFF_READ_BLOCK_SIZE);
+-					continue;
+-				}
+-				break;
++			status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
++						   !is_sfp, value,
++						   SFF_READ_BLOCK_SIZE,
++						   0, NULL);
++			netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%pe)\n",
++				   addr, offset, page, is_sfp,
++				   value[0], value[1], value[2], value[3],
++				   value[4], value[5], value[6], value[7],
++				   ERR_PTR(status));
++			if (status) {
++				netdev_err(netdev, "%s: error reading module EEPROM: status %pe\n",
++					   __func__, ERR_PTR(status));
++				return status;
  			}
- 			kfree(rx_rings);
- 			err = -ENOMEM;
--			goto free_tx;
-+			goto free_xdp;
- 		}
- 	}
  
-@@ -3411,6 +3411,13 @@ ice_set_ringparam(struct net_device *netdev, struct ethtool_ringparam *ring,
- 	}
- 	goto done;
- 
-+free_xdp:
-+	if (xdp_rings) {
-+		ice_for_each_xdp_txq(vsi, i)
-+			ice_free_tx_ring(&xdp_rings[i]);
-+		kfree(xdp_rings);
-+	}
-+
- free_tx:
- 	/* error cleanup if the Rx allocations failed after getting Tx */
- 	if (tx_rings) {
+ 			/* Make sure we have enough room for the new block */
 -- 
 2.47.1
 
