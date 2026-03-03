@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C713932CB;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8CDA3932D2;
 	Tue,  3 Mar 2026 21:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772573920; cv=none; b=lpf4IOpT3RnSitUTL2/JlrkKij4w9q+yiCy9o0l9Kr01oeVYEUA6xZCT5l8Z1/N7kdg+0HoExsMgplz8ku0k/O31IidwfV1lisMKJPD5MBpe4+gJZTbWlbnpZWAIAh3AyxJIKYJ+faqCmBz6nvuSgXDtr4x7bwVzePQ9/gw11Bs=
+	t=1772573920; cv=none; b=fSjKMDNOimVM80UJjFwmtimHNgMHOE00V7xQG8rFPZj30dk0fiNTxLVRUNF17ZhBIOhU1DHRE1avbqa+U50/9l3M1svWXgwYD9ymuoPJKaLiB5KlTeBQiGzDDKdhZ9vUSi/rFTA/rc+0ZRfbrxHyBRU9s8w+wUJrgYvZX7XTWYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772573920; c=relaxed/simple;
-	bh=AjH7WLa9bAhWMALSAH3NuMvfF6ECbIBSXWNf/e4MfJg=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=j+mI4hnR3mFKdimbZPq8ItEnzHzQvLhHyREJQeLVue2skxiBHNUV3uA7jyHiufkbNyi4m0kNrA+joZdX2UINS/XxqrfyNC/8HT2UcBintYYd7GdTEPcZp9+PEwAlzcZCVtBoFH3ruEOYGUvxU2z4VUSiWTejCrPqsLkl6qJrB/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rn087zih; arc=none smtp.client-ip=10.30.226.201
+	bh=ncE0CctbXbxGWCznoqU5F/hOD+FPfa97eLIKp7komgg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=LUogGqF5+i/Zg2MZebvLrkxUGxD4Ltmh70SH63UzFGwaJwouBTVTVZlX18RfCVeWODjmW5LqV+1JrCwSCkswEuNh2HKOgD+CMPxw+WTpHOl+OETJsCojX2hbI4cUnp0hytumLyIl52P5n+hE3FMqETlZvZ7OUQACQzYfZVzOpWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sbnFiomA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rn087zih"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5EF2AC116C6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sbnFiomA"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 7F4A5C2BC87;
 	Tue,  3 Mar 2026 21:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772573920;
-	bh=AjH7WLa9bAhWMALSAH3NuMvfF6ECbIBSXWNf/e4MfJg=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=rn087zihY75Rgf6dJNfes7sHjzjTudtvvIhJssC0bBLqQZz5LZEwh5H9/94J9j3ph
-	 5ROujE48IFsVEGemtSYZB2Fadxbs/ADGiyLG/ng/90LwYK5pBHsuuNcIBhqCFfH9s8
-	 U37PifeiziEAFNt9CL8zAEiohEpyTizE7CUIlMAV8a7XNBq3PGmNm2MHUwl33dIecR
-	 vKqT4RVIjcxOnnVYp60I6jbEVoRs2obqpnA0gRAr1cE5LvlUl1J5Bt1To8zhkGbM9Z
-	 Z2JNkcqeQyR2Yl7YSUOFb5AMOrGZK7EB1Xr83XAwPpxmU0SFAi9FIRHNsRkiidTpkD
-	 kNJdbdsYezYpA==
+	bh=ncE0CctbXbxGWCznoqU5F/hOD+FPfa97eLIKp7komgg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=sbnFiomABj/XjQvcSLjqFae8r0RjcI+S8ubExK+QDP4GkOHMIB3OfgSVwJrbM6jSu
+	 xq5j69eJpOBrBiavGLFlVeOViMxIEKYDWZGjmme5sJlD0iijoSOf8TAziRwY4hPrmw
+	 9kPg10/nPvlOgpqdgk70IDWPN3JqiA1ykrANz/HW9I3W59ywwniCrkhapDSECNOOfH
+	 Ps1X23UijDyZms5XXlZRf3Vx3mOm2/M37Oh9HihEPfD8pOdH0cDwaakXB98/YnxdkW
+	 dZcKNb23a+kaZXDadD5Pta8wpp0qTp3RI1PfRR2wymWH1VYgjCcRgCUGSs3ncReP/s
+	 S7J39mveIaJiA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4A7E0EDEBED;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 6CCECEDEBF7;
 	Tue,  3 Mar 2026 21:38:40 +0000 (UTC)
 From: Maximilian Pezzullo via B4 Relay <devnull+maximilianpezzullo.gmail.com@kernel.org>
-Subject: [PATCH 0/2] Fix typos in comments in Intel Ethernet drivers (igb,
- igc)
-Date: Tue, 03 Mar 2026 22:38:19 +0100
-Message-Id: <20260303-master-v1-0-f180b1ad98b5@gmail.com>
+Date: Tue, 03 Mar 2026 22:38:20 +0100
+Subject: [PATCH 1/2] igb: fix typos in comments
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,10 +40,9 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDYwNj3dzE4pLUIl3DVEtLSwMLSwvDpGQloOKCotS0zAqwQdGxtbUAojo
- o1lgAAAA=
-X-Change-ID: 20260303-master-1e99908981bc
+Message-Id: <20260303-master-v1-1-f180b1ad98b5@gmail.com>
+References: <20260303-master-v1-0-f180b1ad98b5@gmail.com>
+In-Reply-To: <20260303-master-v1-0-f180b1ad98b5@gmail.com>
 To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
  Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
  Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -54,11 +52,11 @@ Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
  linux-kernel@vger.kernel.org, 
  Maximilian Pezzullo <maximilianpezzullo@gmail.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772573919; l=656;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772573919; l=2465;
  i=maximilianpezzullo@gmail.com; s=20260303; h=from:subject:message-id;
- bh=AjH7WLa9bAhWMALSAH3NuMvfF6ECbIBSXWNf/e4MfJg=;
- b=L/lPOvYciaiOzmbZFaB9ATg9XQKiN5iExZe8cRlu0nHygPOjY8Zq026P5Nt/nThTqABdnRJ0g
- Jt6S6R0m4IIDygn/0pWWTORonyao+CMPl5iUbD3KSErd876dkCdcEuE
+ bh=AFngQ6STbyhDDwY5fngMlDBMLtfCdqw2s6bzouZtL2E=;
+ b=qscFiBIdFr8gVcycZYKsdxDbGRaYYhZi4k7TpaBmZU7jRhh6Nk2lxZlcIWLxJ7Zpg/q6WksS8
+ hzVQxLU3m3aCckvy74Hmcjb2k2p2TNMacZ7ggzkVt5InwkGRXoR1osh
 X-Developer-Key: i=maximilianpezzullo@gmail.com; a=ed25519;
  pk=TRTR4c2Vb1IfluQvv5OUDPg7EE+pIzdPBND85UU559w=
 X-Endpoint-Received: by B4 Relay for maximilianpezzullo@gmail.com/20260303
@@ -66,24 +64,61 @@ X-Endpoint-Received: by B4 Relay for maximilianpezzullo@gmail.com/20260303
 X-Original-From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
 Reply-To: maximilianpezzullo@gmail.com
 
+From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
+
+Fix spelling errors in code comments:
+ - e1000_nvm.c: 'likley' -> 'likely'
+ - e1000_mac.c: 'auto-negotitation' -> 'auto-negotiation'
+ - e1000_mbx.h: 'exra' -> 'extra'
+
 Signed-off-by: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
 ---
-Maximilian Pezzullo (2):
-      igb: fix typos in comments
-      igc: fix typos in comments
-
  drivers/net/ethernet/intel/igb/e1000_mac.c | 2 +-
  drivers/net/ethernet/intel/igb/e1000_mbx.h | 2 +-
  drivers/net/ethernet/intel/igb/e1000_nvm.c | 2 +-
- drivers/net/ethernet/intel/igc/igc_diag.c  | 2 +-
- drivers/net/ethernet/intel/igc/igc_main.c  | 4 ++--
- 5 files changed, 6 insertions(+), 6 deletions(-)
----
-base-commit: 4258db5c0acd08e795c78c7cd59f05860b7cb769
-change-id: 20260303-master-1e99908981bc
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Best regards,
+diff --git a/drivers/net/ethernet/intel/igb/e1000_mac.c b/drivers/net/ethernet/intel/igb/e1000_mac.c
+index fa3dfafd2..2bcce6eef 100644
+--- a/drivers/net/ethernet/intel/igb/e1000_mac.c
++++ b/drivers/net/ethernet/intel/igb/e1000_mac.c
+@@ -1581,7 +1581,7 @@ s32 igb_disable_pcie_master(struct e1000_hw *hw)
+  *  igb_validate_mdi_setting - Verify MDI/MDIx settings
+  *  @hw: pointer to the HW structure
+  *
+- *  Verify that when not using auto-negotitation that MDI/MDIx is correctly
++ *  Verify that when not using auto-negotiation that MDI/MDIx is correctly
+  *  set, which is forced to MDI mode only.
+  **/
+ s32 igb_validate_mdi_setting(struct e1000_hw *hw)
+diff --git a/drivers/net/ethernet/intel/igb/e1000_mbx.h b/drivers/net/ethernet/intel/igb/e1000_mbx.h
+index 178e60ec7..9e44527f5 100644
+--- a/drivers/net/ethernet/intel/igb/e1000_mbx.h
++++ b/drivers/net/ethernet/intel/igb/e1000_mbx.h
+@@ -30,7 +30,7 @@
+ /* Indicates that VF is still clear to send requests */
+ #define E1000_VT_MSGTYPE_CTS	0x20000000
+ #define E1000_VT_MSGINFO_SHIFT	16
+-/* bits 23:16 are used for exra info for certain messages */
++/* bits 23:16 are used for extra info for certain messages */
+ #define E1000_VT_MSGINFO_MASK	(0xFF << E1000_VT_MSGINFO_SHIFT)
+ 
+ #define E1000_VF_RESET		0x01 /* VF requests reset */
+diff --git a/drivers/net/ethernet/intel/igb/e1000_nvm.c b/drivers/net/ethernet/intel/igb/e1000_nvm.c
+index c8638502c..cf4e5d0e9 100644
+--- a/drivers/net/ethernet/intel/igb/e1000_nvm.c
++++ b/drivers/net/ethernet/intel/igb/e1000_nvm.c
+@@ -405,7 +405,7 @@ s32 igb_read_nvm_eerd(struct e1000_hw *hw, u16 offset, u16 words, u16 *data)
+  *  Writes data to EEPROM at offset using SPI interface.
+  *
+  *  If e1000_update_nvm_checksum is not called after this function , the
+- *  EEPROM will most likley contain an invalid checksum.
++ *  EEPROM will most likely contain an invalid checksum.
+  **/
+ s32 igb_write_nvm_spi(struct e1000_hw *hw, u16 offset, u16 words, u16 *data)
+ {
+
 -- 
-Maximilian Pezzullo <maximilianpezzullo@gmail.com>
+Git-155)
 
 
