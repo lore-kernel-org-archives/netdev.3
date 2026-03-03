@@ -1,76 +1,160 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E26D26A0A7;
-	Tue,  3 Mar 2026 01:11:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9283535BDAC
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 01:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772500294; cv=none; b=EzK7/W8KwmDW3oaLRWAX8cvoreY8ZIOl9cwlYP0eARZLQkvTz6lWwMmWiamkgBczbWRY1XsZcZVZxKtaFY9s8UVqOKgmLL2sReq6lQea9A1HOGhXdQ6fqANPvqoStwR2wEGVJf2PbryJvoQBilh2an3rwe9DoJH6gBwTKhSl0tA=
+	t=1772500680; cv=none; b=MMtaWY8RH48tZKw4+mOyb/POa/ouZvkuaA2t5hhG5tqMWhvKGuBSy7g7l7BuNToYi08KoMST1m39QZXGBCisOmWY56X0ZinxcZ4/oeGMNypG1OS14gRkaprwdG5MQozfPuaOOed1PgnGiTf+BznjQ2PWZHEi0XyRKx5g1PguRVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772500294; c=relaxed/simple;
-	bh=8hjgCw9tBxfdHn7nYg46ux20VTettEl4HQsWGCPdvaA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H4q/ce8BJurRBvjR8wmAp7Y7XwepRhJZEMv52B3gT88wwW+deOfmbQOdWDnmHkBzRfXqGbSXxpzYUgiFM+wMjytVrcwEciIUyzPUmzDOfJcUSsXB6VxpDY/tu8zfLPbVb6fgwb1a7TooO8a+y+Pbqc/XPX4CcjpB8Z1lzsZ1v/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOngzt/p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772500680; c=relaxed/simple;
+	bh=YyV/2W+rzuQDsuStd2bW++jjatn642X5DiNInwOahgE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ua1muCMg28RJn8/q6ScrZLPclrHGKoU7TMNe2jl5c40SmFUsuOh/rZ0MjK6Zi7OwTIEZo3+/y1MDvls+mZcHftpvtcKNXcdfOMImJIXLuDd8woPX+A/aGKCFZrdscKZC+FYbR7qA4IyPpDeEJ2GBEPwRLvfTxMc3fpwCDixZCTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FZHYM4FK; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOngzt/p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC9F9C19423;
-	Tue,  3 Mar 2026 01:11:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772500293;
-	bh=8hjgCw9tBxfdHn7nYg46ux20VTettEl4HQsWGCPdvaA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UOngzt/p8pSLllijatbO4/Gy7fc+I2xwykXJabnI1UymCCMkyw9mEKC5jF/Rt9TCM
-	 4NxdoabAtppSRChGJUvzEnKuecUDe/x2zA1JrihX5rgsNWVmVcKfWi1RqyfPCImw08
-	 i8DkNSm8X9nBKDcK+VkG63rz/Dov1wPeo2ZyooQrYnK9J4znXuUDKHVaTf/f0nFiW9
-	 hO9jpM3IGGcQOwFgVi8kDQIpyv5MWs3pON3WqMONfmg29q7r739wfhMDnFqEe0h1aK
-	 c7RUdhMLMMIx31lEzYutAjCv1jGhEzG0icaTJbWNGvrgaifVBsllPFABKO+v8u61YI
-	 ye9EYbPYagUwg==
-Date: Mon, 2 Mar 2026 17:11:31 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Daniel Borkmann <daniel@iogearbox.net>
-Cc: "Ricardo B. =?UTF-8?B?TWFybGnDqHJl?=" <rbm@suse.com>, Martin KaFai Lau
- <martin.lau@linux.dev>, John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP
- Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?=
- <toke@redhat.com>, David Ahern <dsahern@kernel.org>, Jay Vosburgh
- <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, Hangbin Liu
- <liuhangbin@gmail.com>, Fernando Fernandez Mancera <fmancera@suse.de>,
- bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net 1/3] bpf: bpf_out_neigh_v4: Fix nd_tbl NULL
- dereference when IPv6 is disabled
-Message-ID: <20260302171131.28373ccb@kernel.org>
-In-Reply-To: <0b52257d-d557-4f26-9931-34c81ab621bc@iogearbox.net>
-References: <20260228-net-nd_tbl_fixes-v1-0-2b2a274df9bb@suse.com>
-	<20260228-net-nd_tbl_fixes-v1-1-2b2a274df9bb@suse.com>
-	<0b52257d-d557-4f26-9931-34c81ab621bc@iogearbox.net>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FZHYM4FK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772500678; x=1804036678;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=YyV/2W+rzuQDsuStd2bW++jjatn642X5DiNInwOahgE=;
+  b=FZHYM4FK9stcAj/aGBN7C/us6iZRTGCO4Di4dMhO7wfniEgN0sdLtwEB
+   W5ofbxOB+4Q1py0FHPe4DqoGvxPSuwHxh/UITlfCw1Qd91848kF+i/8+Z
+   MXXx2/YlJJDkgpVscx0pW1n4efW6ke+T1QPXLr1XkpagUgtGgfCUYAhCL
+   +duz6KVnYu9lCC3u1Sw4+QvHo0HPu3YOgrqyAWN97pdeB9EA93Am3uhZm
+   a1FmMnG7/E2WKhqC0cwaTzkIc0r8A/JCv5NFQYGhlQPL5Apkyy15O5TZa
+   w4F8R8MUOF5nZRfutISIzfhR03kCCLpIwep9+eRrGN/3/1R5dZEboDLAW
+   w==;
+X-CSE-ConnectionGUID: dlLOSBVXTN2urIf+jCwbpw==
+X-CSE-MsgGUID: llO2CEDhTF6ZmacQK05AXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11717"; a="96137598"
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
+   d="scan'208";a="96137598"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2026 17:17:57 -0800
+X-CSE-ConnectionGUID: 7B/3Sl81TgG4P9UlbQocbg==
+X-CSE-MsgGUID: r7+fbmdWQ/+ld7cGDSSWwA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,321,1763452800"; 
+   d="scan'208";a="217064310"
+Received: from dcskidmo-m40.jf.intel.com ([10.166.241.14])
+  by orviesa010.jf.intel.com with ESMTP; 02 Mar 2026 17:17:57 -0800
+From: Joshua Hay <joshua.a.hay@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [Intel-wired-lan] [PATCH iwl-net] idpf: clear stale cdev_info ptr
+Date: Mon,  2 Mar 2026 17:28:31 -0800
+Message-Id: <20260303012831.662492-1-joshua.a.hay@intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 2 Mar 2026 06:58:46 +0100 Daniel Borkmann wrote:
-> >   	} else if (nh->nh_family == AF_INET6) {
-> > +		if (!ipv6_stub->nd_tbl) {
-> > +			rcu_read_unlock();
-> > +			goto out_drop;
-> > +		}  
-> 
-> Can we just completely get rid of allowing IPv6 as a module?
-> So either its built-in or not available at all, and then we
-> can get rid of the stub completely rather than adding checks
-> in various places which also brings a small performance benefit
-> of not having indirect calls in some places.
+Deinit calls idpf_idc_deinit_core_aux_device to free the cdev_info
+memory, but leaves the adapter->cdev_info field with a stale pointer
+value. This will bypass subsequent "if (!cdev_info)" checks if cdev_info
+is not reallocated. For example, if idc_init fails after a reset,
+cdev_info will already have been freed during the reset handling, but it
+will not have been reallocated. The next reset or rmmod will result in a
+crash.
 
-+1 fwiw, if someone complains we can revert it back in
-feels like a complete waste of everyone's time to maintain it
-https://lore.kernel.org/all/20260224180544.3c865751@kernel.org/
+[  +0.000008] BUG: kernel NULL pointer dereference, address: 00000000000000d0
+[  +0.000033] #PF: supervisor read access in kernel mode
+[  +0.000020] #PF: error_code(0x0000) - not-present page
+[  +0.000017] PGD 2097dfa067 P4D 0
+[  +0.000017] Oops: Oops: 0000 [#1] SMP NOPTI
+...
+[  +0.000018] RIP: 0010:device_del+0x3e/0x3d0
+[  +0.000010] Call Trace:
+[  +0.000010]  <TASK>
+[  +0.000012]  idpf_idc_deinit_core_aux_device+0x36/0x70 [idpf]
+[  +0.000034]  idpf_vc_core_deinit+0x3e/0x180 [idpf]
+[  +0.000035]  idpf_remove+0x40/0x1d0 [idpf]
+[  +0.000035]  pci_device_remove+0x42/0xb0
+[  +0.000020]  device_release_driver_internal+0x19c/0x200
+[  +0.000024]  driver_detach+0x48/0x90
+[  +0.000018]  bus_remove_driver+0x6d/0x100
+[  +0.000023]  pci_unregister_driver+0x2e/0xb0
+[  +0.000022]  __do_sys_delete_module.isra.0+0x18c/0x2b0
+[  +0.000025]  ? kmem_cache_free+0x2c2/0x390
+[  +0.000023]  do_syscall_64+0x107/0x7d0
+[  +0.000023]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Pass the adapter struct into idpf_idc_deinit_core_aux_device instead and
+clear the cdev_info ptr.
+
+Fixes: f4312e6bfa2a ("idpf: implement core RDMA auxiliary dev create, init, and destroy")
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
+ drivers/net/ethernet/intel/idpf/idpf.h          | 2 +-
+ drivers/net/ethernet/intel/idpf/idpf_idc.c      | 6 ++++--
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 2 +-
+ 3 files changed, 6 insertions(+), 4 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index b206fba092c8..ec1b75f039bb 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -1066,7 +1066,7 @@ bool idpf_vport_set_hsplit(const struct idpf_vport *vport, u8 val);
+ int idpf_idc_init(struct idpf_adapter *adapter);
+ int idpf_idc_init_aux_core_dev(struct idpf_adapter *adapter,
+ 			       enum iidc_function_type ftype);
+-void idpf_idc_deinit_core_aux_device(struct iidc_rdma_core_dev_info *cdev_info);
++void idpf_idc_deinit_core_aux_device(struct idpf_adapter *adapter);
+ void idpf_idc_deinit_vport_aux_device(struct iidc_rdma_vport_dev_info *vdev_info);
+ void idpf_idc_issue_reset_event(struct iidc_rdma_core_dev_info *cdev_info);
+ void idpf_idc_vdev_mtu_event(struct iidc_rdma_vport_dev_info *vdev_info,
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_idc.c b/drivers/net/ethernet/intel/idpf/idpf_idc.c
+index bd4785fb8d3e..7e4f4ac92653 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_idc.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_idc.c
+@@ -470,10 +470,11 @@ int idpf_idc_init_aux_core_dev(struct idpf_adapter *adapter,
+ 
+ /**
+  * idpf_idc_deinit_core_aux_device - de-initialize Auxiliary Device(s)
+- * @cdev_info: IDC core device info pointer
++ * @adapter: driver private data structure
+  */
+-void idpf_idc_deinit_core_aux_device(struct iidc_rdma_core_dev_info *cdev_info)
++void idpf_idc_deinit_core_aux_device(struct idpf_adapter *adapter)
+ {
++	struct iidc_rdma_core_dev_info *cdev_info = adapter->cdev_info;
+ 	struct iidc_rdma_priv_dev_info *privd;
+ 
+ 	if (!cdev_info)
+@@ -485,6 +486,7 @@ void idpf_idc_deinit_core_aux_device(struct iidc_rdma_core_dev_info *cdev_info)
+ 	kfree(privd->mapped_mem_regions);
+ 	kfree(privd);
+ 	kfree(cdev_info);
++	adapter->cdev_info = NULL;
+ }
+ 
+ /**
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index d5a877e1fef8..113ecfc16dd7 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -3668,7 +3668,7 @@ void idpf_vc_core_deinit(struct idpf_adapter *adapter)
+ 
+ 	idpf_ptp_release(adapter);
+ 	idpf_deinit_task(adapter);
+-	idpf_idc_deinit_core_aux_device(adapter->cdev_info);
++	idpf_idc_deinit_core_aux_device(adapter);
+ 	idpf_rel_rx_pt_lkup(adapter);
+ 	idpf_intr_rel(adapter);
+ 
+-- 
+2.39.2
+
