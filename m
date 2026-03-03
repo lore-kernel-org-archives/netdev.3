@@ -1,25 +1,26 @@
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA71386C05;
-	Tue,  3 Mar 2026 09:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AFA38C408;
+	Tue,  3 Mar 2026 09:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772529903; cv=none; b=W4gyS6ZmtNMtHNT78itwoqkZvUY+305ggU9Xqnp2RnFtZyrxewws3sec48gss45wlnZfS5TzsLH0Ga+PAf+vLE+wvfv1wGEktrVYyyu5eJf7EmeftSMGahr7ElH2fG96Wrd18w0UVtxvE45f/5IRcjhuxoP1K2j1C5OlCiHJTOA=
+	t=1772529904; cv=none; b=OmYKlrCK4JZbpL9BviQk12fsPOLAdD/jyqD85wIr5qtyEO/A7cGMMReHgJVgPcP6cAB80UBJZWg0sFEiuSB3e7E98ps85qHP613AUJD/BbGIKrbp9wFMqlWASYPTXqtBpyRJ5DYVFRk/lQcjvzKFLPcZxqOfXlntt8LLZ2fs89s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772529903; c=relaxed/simple;
-	bh=pNGIRrVNhUiNOohX7PFMnc3U2qxmYZWl2eyepBc2w4k=;
+	s=arc-20240116; t=1772529904; c=relaxed/simple;
+	bh=r4HdT4eDrYVYg/rJz37nOvgsHymgxKr++v5KE2g6obc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aQM88ly7pGi4fD/C/qnC0/72rMIN7xooHpiaBcYnV2pt9u5J+5xFbRIbMQy+6K6xBbWXa04659FgFFaUmW5Tm7xo2NO1hE8maKYFN/G0koHBAEQm81W+llTbiFsQ/TobKP8CdgxrZ9l1YbunhynlXC5XfHd1qaxeMGpEBIMsQVk=
+	 In-Reply-To:To:Cc; b=GxJiu7E6QtWqX1gmGsyprIak8UTfxo7tMMcMV22Hc1Fybqm0Q7jdVvy4UzcIxe2SBJ483paTA4OdYVHH4mz2iSiwYddVtEfTV9iIJXgoPU3LfmJLY6ZdmTMpqm90K0SgbUa0mNazfL4H1m/ZekxpVltnxVRSZBCPHgMq4LMnq5E=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from [127.0.0.2] (unknown [210.73.43.101])
-	by APP-01 (Coremail) with SMTP id qwCowAA34WzPqKZpyU4sCQ--.6573S3;
+	by APP-01 (Coremail) with SMTP id qwCowAA34WzPqKZpyU4sCQ--.6573S5;
 	Tue, 03 Mar 2026 17:24:33 +0800 (CST)
 From: Vivian Wang <wangruikang@iscas.ac.cn>
-Date: Tue, 03 Mar 2026 17:24:18 +0800
-Subject: [PATCH net-next 1/4] net: spacemit: Remove unused buff_addr fields
+Date: Tue, 03 Mar 2026 17:24:20 +0800
+Subject: [PATCH net-next 3/4] net: spacemit: Fix error handling in
+ emac_tx_mem_map()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -28,7 +29,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260303-k1-ethernet-more-fixes-v1-1-0ab0122fdd14@iscas.ac.cn>
+Message-Id: <20260303-k1-ethernet-more-fixes-v1-3-0ab0122fdd14@iscas.ac.cn>
 References: <20260303-k1-ethernet-more-fixes-v1-0-0ab0122fdd14@iscas.ac.cn>
 In-Reply-To: <20260303-k1-ethernet-more-fixes-v1-0-0ab0122fdd14@iscas.ac.cn>
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
@@ -42,62 +43,64 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: netdev@vger.kernel.org, linux-riscv@lists.infradead.org, 
  spacemit@lists.linux.dev, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-CM-TRANSID:qwCowAA34WzPqKZpyU4sCQ--.6573S3
-X-Coremail-Antispam: 1UD129KBjvdXoWrZF13Cr1UWF15uFyrtFyxZrb_yoWDJrbEg3
-	4ava1rWF1DCr9Yk3WxGr4agrW2vrZrXr9akF9rKrZxtwnFywn5Z3yDCryxKrW3WF48ZFZx
-	WF17KFWUAw4UWjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbBxFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUGwA2048vs2IY02
-	0Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
-	wVC0I7IYx2IY67AKxVW8JVW5JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwA2z4
-	x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E
-	0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67
-	AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48I
-	cxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2xKxw
-	CY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_GFWl42xK82IYc2Ij64vIr41l4I8I3I0E
-	4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGV
-	WUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_
-	Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rV
-	WUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4UJVWx
-	JrUvcSsGvfC2KfnxnUUI43ZEXa7sRR7Ks7UUUUU==
+X-CM-TRANSID:qwCowAA34WzPqKZpyU4sCQ--.6573S5
+X-Coremail-Antispam: 1UD129KBjvJXoWruFyfCrW7Cw15uF1kAF1fZwb_yoW8JF1fpa
+	yDWasxCr18JF43WwsFkr4xZa90vay0qry8Ca4Sy39YqasIyw4jgFy0yF17Jrn5ArZ5WryS
+	vw4qv345GF1DAw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUmE14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JrWl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
+	8EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AI
+	xVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20x
+	vE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xv
+	r2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04
+	v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrwCFx2Iq
+	xVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r
+	106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AK
+	xVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcI
+	k0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v26r4U
+	JVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUjoUDJUUUUU==
 X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-These were never used. Just remove them.
+The DMA mappings were leaked on mapping error. Free them with the
+existing emac_free_tx_buf() function.
 
 Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
 Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
 ---
- drivers/net/ethernet/spacemit/k1_emac.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/net/ethernet/spacemit/k1_emac.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
-index 338a2637b1da..af58eae6fcd8 100644
+index e9e2cd4e6a89..f7f16397a2c2 100644
 --- a/drivers/net/ethernet/spacemit/k1_emac.c
 +++ b/drivers/net/ethernet/spacemit/k1_emac.c
-@@ -57,7 +57,6 @@
+@@ -730,7 +730,7 @@ static void emac_tx_mem_map(struct emac_priv *priv, struct sk_buff *skb)
+ 	struct emac_desc tx_desc, *tx_desc_addr;
+ 	struct device *dev = &priv->pdev->dev;
+ 	struct emac_tx_desc_buffer *tx_buf;
+-	u32 head, old_head, frag_num, f;
++	u32 head, old_head, frag_num, f, i;
+ 	bool buf_idx;
  
- struct desc_buf {
- 	u64 dma_addr;
--	void *buff_addr;
- 	u16 dma_len;
- 	u8 map_as_page;
- };
-@@ -70,7 +69,6 @@ struct emac_tx_desc_buffer {
- struct emac_rx_desc_buffer {
- 	struct sk_buff *skb;
- 	u64 dma_addr;
--	void *buff_addr;
- 	u16 dma_len;
- 	u8 map_as_page;
- };
-@@ -340,7 +338,6 @@ static void emac_free_tx_buf(struct emac_priv *priv, int i)
+ 	frag_num = skb_shinfo(skb)->nr_frags;
+@@ -798,6 +798,15 @@ static void emac_tx_mem_map(struct emac_priv *priv, struct sk_buff *skb)
  
- 		buf->dma_addr = 0;
- 		buf->map_as_page = false;
--		buf->buff_addr = NULL;
- 	}
+ err_free_skb:
+ 	dev_dstats_tx_dropped(priv->ndev);
++
++	i = old_head;
++	while (i != head) {
++		emac_free_tx_buf(priv, i);
++
++		if (++i == tx_ring->total_cnt)
++			i = 0;
++	}
++
+ 	dev_kfree_skb_any(skb);
+ }
  
- 	if (tx_buf->skb) {
 
 -- 
 2.53.0
