@@ -1,47 +1,48 @@
 Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7358E37F01A;
-	Tue,  3 Mar 2026 18:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14ED3264CE;
+	Tue,  3 Mar 2026 18:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772561083; cv=none; b=cDhHZK+aGv4eM0cPgGCUAoL13352sg3isksyO4G50Zl2iUpfMYDYwzYqyyl1rFtPd8+Tx6lHR4uX6L59vKWaIb1fxtIpzimfIFLdn3ZA/Eqh9OoAv+7PGoT4OeLWgI6WyIgG2+qp32bNqeEW7FiYKWrPHEKFy3JvrU0dVfmvXRY=
+	t=1772561085; cv=none; b=HXjN9hJbhdJEByD9ztxB+p2rLOXCOGYX2Qp6wDFJLLAvQSRDFPP3ulbuTANPl14/LcQPnOwVHxAdzP7GpFQNGfChccEbMayLoxLGnt+iXnH4bw+9OUHbSpzZ8SRlQuMoUJD4utT48fz1KYLaJPoOQr2UTpfRnD+GkNnQp3FcRYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772561083; c=relaxed/simple;
-	bh=hioxzY+gEVd1ChDcz9lwQg5PKNGBcQMuxrI2BTfYFkc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=J7qtncLuGBh+snK7651BQQkqIyV05aRzshsxo/uSjWs0B1JI9GROkhWUhvumYb62/aCKgXM2lsWAdIYETn70PDxM0ktO9D0JgYag6H7Ieoc8qwCV8xsRzv3n127W5qc6lzbKEn/m5Rd7M26HHAcaBo9cfJ71vpf6Hd6aBuZtYTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=r18DtKyP; arc=none smtp.client-ip=68.232.154.123
+	s=arc-20240116; t=1772561085; c=relaxed/simple;
+	bh=t4zK7NTHUyQbdGFZkkU3CbwoIF9aUvQz3CB5fTHlilg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=I8GVjEQyOI2kfbQDeUr5opeVUgCktaHnF5cmY+Ck/UwMUzVCXaWfQYgOqEb4utQc42ifDvMc2Isu4NkVQHYcsk3u9vqkxE0XRTvace+QQdBc7E27IJ9UADg8sPEISUsxH8ftt9Q9lGR5EOCg0GoJbyWtzRou1nzAYXIq5AJ2iVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=j2ajA9sQ; arc=none smtp.client-ip=68.232.154.123
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="r18DtKyP"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="j2ajA9sQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1772561082; x=1804097082;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=hioxzY+gEVd1ChDcz9lwQg5PKNGBcQMuxrI2BTfYFkc=;
-  b=r18DtKyPJTy95SojHdqmeqN4DdysnnbbOvHRgJIw8OZ/VvT/0AWYDFHz
-   kfxjxjiXlkl9CUl4ToANPCOZQL+SavPXJzD+kl2+8FQ3tBAJmlakwcUdX
-   WUPF7so73hO6MlhlISUeVj1uRUo6tvF9x4qiHY1WueMcu9p07hmMTp+Cz
-   8qW+J2w6WBBZopAWIUJ9Nztr4KBi2Ez7BRDiipkGRjabz9E2P1FEyKSkU
-   7D+3VnnZQkCo5//DrB+GfLtYTIqHG7ajZChlz3W6tDHvBTdsI85vO2LW7
-   FNgg7xpAdtkiOhcRFFO8Y0z5UIiMqxuSLjXDiJu09Sa39oR7TRZMCCLnS
-   w==;
+  t=1772561083; x=1804097083;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=t4zK7NTHUyQbdGFZkkU3CbwoIF9aUvQz3CB5fTHlilg=;
+  b=j2ajA9sQc2HsqAfvoKjHER/H6ZnUcRflA0h51Jc51Y5LQILVIbGsNiRU
+   6GX0T2Dpg3NtOGe4x3jkmYcNoYpOtVdMCwq39/9Kdk6OoF/qcHyENtPAb
+   LaTW9SCPHZJ4WIgUrebT3HH6/AlcEAoa55MaO/4vuCdV3exPJORIq6sWV
+   XtjZc5j2c0XYyjWD2Q/tmDtsbQVIRYlP5zDpQ9l/ntGRx26vkLM/s9mMq
+   tEeWYUBIC+Q4I101Fq+0M2XCpINVGvJwMF0lnx4CwLBRGF8OtwT4wTgTJ
+   rRp+65QEEkNPRcACL4U19neDwilwIBKRaFEB4BsPLJ2hBHhJlRMjv65Gw
+   A==;
 X-CSE-ConnectionGUID: R0Y1SJ/2TCKiAbvM64J+LA==
-X-CSE-MsgGUID: p5mK4CBCSIyLdVY9U0Ug5Q==
+X-CSE-MsgGUID: UiADTrq8QEON33fQEzWX1w==
 X-IronPort-AV: E=Sophos;i="6.21,322,1763449200"; 
-   d="scan'208";a="53419559"
+   d="scan'208";a="53419561"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Mar 2026 11:04:41 -0700
+  by esa4.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Mar 2026 11:04:42 -0700
 Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
  chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 3 Mar 2026 11:04:09 -0700
+ 15.1.2507.58; Tue, 3 Mar 2026 11:04:19 -0700
 Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
  chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 3 Mar 2026 11:04:08 -0700
+ 15.1.2507.58 via Frontend Transport; Tue, 3 Mar 2026 11:04:18 -0700
 From: Charles Perry <charles.perry@microchip.com>
 To: <netdev@vger.kernel.org>
 CC: Charles Perry <charles.perry@microchip.com>, Andrew Lunn
@@ -51,10 +52,12 @@ CC: Charles Perry <charles.perry@microchip.com>, Andrew Lunn
 	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nicolas Ferre
 	<nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next 0/4] Initial support for p64h GEM
-Date: Tue, 3 Mar 2026 10:03:14 -0800
-Message-ID: <20260303180318.1814791-1-charles.perry@microchip.com>
+Subject: [PATCH net-next 2/4] dt-bindings: net: cdns,macb: forbid phy nodes for Microchip p64h
+Date: Tue, 3 Mar 2026 10:03:16 -0800
+Message-ID: <20260303180318.1814791-3-charles.perry@microchip.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260303180318.1814791-1-charles.perry@microchip.com>
+References: <20260303180318.1814791-1-charles.perry@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,42 +67,47 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Hello,
+The GEM IPs within Microchip p64h have their MDIO controllers
+unconnected from any physical pin.
 
-This series add basic support for Microchip "PIC64-HPSC" and "PIC64HX"
-(abbreviated "p64h") Ethernet endpoint. Both MPUs contain 4 GEM IP with
-support for MII/RGMII/SGMII/USXGMII at rates of 10M to 10G. Only RGMII and
-SGMII at a rate of 1G is tested for now. Each GEM IP has 8 priority queues
-and the revision register reads 0x220c010e.
+When compiling a p64h device tree with a phy on a GEM node with
+CHECK_DTBS=1, this generates an error like:
 
-One particularity of this instantiation of GEM is that the MDIO controller
-within the GEM IP is disconnected from any physical pin and p64h rely on
-another standalone MDIO controller. For that reason, I've added a dt
-binding rule to forbid phys from being added under the gem DT node. See
-patch 2.
+```
+linux/arch/riscv/boot/dts/microchip/p64h-hb130x.dtb:
+ethernet@40004180000 (microchip,p64h-gem): ethernet-phy@0: False
+schema does not allow {'reg': [[0]]}
+	from schema $id:
+http://devicetree.org/schemas/net/cdns,macb.yaml#
+```
 
-The maximum jumbo frame size also seems to be different on p64h (16383)
-than what most other platforms use (10240). I've found that I need to
-tweak a bit the MTU calculation for this, otherwise the RXBS field of the
-DMACFG register overflows. See patch 3 for more details.
+Signed-off-by: Charles Perry <charles.perry@microchip.com>
+---
+ Documentation/devicetree/bindings/net/cdns,macb.yaml | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-p64h also supports other features guarded behind CAPS bit like
-MACB_CAPS_QBV but I've omitted those intentionally because I didn't test
-these.
-
-Thanks,
-Charles
-
-Charles Perry (4):
-  dt-bindings: net: cdns,macb: add a compatible for Microchip p64h
-  dt-bindings: net: cdns,macb: forbid phy nodes for Microchip p64h
-  net: macb: add safeguards for jumbo frame larger than 10240
-  net: macb: add support for Microchip p64h ethernet endpoint
-
- .../devicetree/bindings/net/cdns,macb.yaml       | 12 ++++++++++++
- drivers/net/ethernet/cadence/macb_main.c         | 16 ++++++++++++++--
- 2 files changed, 26 insertions(+), 2 deletions(-)
-
+diff --git a/Documentation/devicetree/bindings/net/cdns,macb.yaml b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+index dff350302098..be66cc9a42fd 100644
+--- a/Documentation/devicetree/bindings/net/cdns,macb.yaml
++++ b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+@@ -197,6 +197,17 @@ allOf:
+       required:
+         - phys
+ 
++  - if:
++      properties:
++        compatible:
++          contains:
++            const: microchip,p64h-gem
++    then:
++      patternProperties:
++        "^ethernet-phy@[0-9a-f]$": false
++      properties:
++        mdio: false
++
+ unevaluatedProperties: false
+ 
+ examples:
 -- 
 2.47.3
 
