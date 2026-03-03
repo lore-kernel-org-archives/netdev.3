@@ -1,111 +1,206 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC4B3CB2FC;
-	Tue,  3 Mar 2026 10:56:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C303CC9ED
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 10:56:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772535401; cv=none; b=lW2bBg3rz3gZ3t6YEKUfXO1nMf+2eOAA5wf8LNIz99KErFohDrk/LdACc8mnT9qWMuH7SDvS4G1dbCYgTawbJOx0UIAcmv8qJRgMMZCu0HLMqDphhaxfv1D0XUvZ/WgKQ5LaWGy8eVJhF3SirWtEpXpXzWLraRoTUF3HpYjchcc=
+	t=1772535400; cv=none; b=oMJICc1IASmdj7AuJNBEfMl+o59asPJ5+X0mF1Hx1lvSyV5t77M73VMoLrA58opIzgEAikH5R8ES9pznjfjxllTJ1uR/BGVUUz/6LhvnN5Jtx3ROdppeokJxXSqyP3pH5++slzqBU349tfrUboI+mMeTgJAhTLxPTxmVoo6HKzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772535401; c=relaxed/simple;
-	bh=3hIjxPBplMqBbUMZCyZ/eh+tqQIDphwx8R8DneO0OWM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ueWqp3o4XxLURBtUPB4SsrmFxe8TR7JRNHdMiYrNS4A/m+iiML5KbDUal9khK6YZlI4j+1NwARUUsbtsV6TzyjDjEI+JaM8Y1FvjCtj6+IbqEL30iYtEfs6nYHHHvJpNYpAa688TVXwLLcDRPhmYcuzal8602g3PWcXmTTT3kOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ijI8TL7p; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772535400; c=relaxed/simple;
+	bh=ZJFR9/2OtrcnrgSTa4EHnH5JX9DBPEZCrlsYG5puECk=;
+	h=From:In-Reply-To:References:To:cc:Subject:MIME-Version:
+	 Content-Type:Date:Message-ID; b=Nj6vcXv6GDaMxL4jgp1MhCMkKJqdRaH2We3xBfLj8puRDse0nc02w/Nqiz69d2Ukb7eVknKgYNiJvAMqzyTNZino/dzEqQyGKhwylze+20KCAERTIQWksdRqEDXYUF3eLDhmI72pkHu9xW1nOQCerGjuGl1ecbpqdjJKWzEI7bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MsjAVrLm; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ijI8TL7p"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1FBC2BCB3;
-	Tue,  3 Mar 2026 10:56:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772535400;
-	bh=3hIjxPBplMqBbUMZCyZ/eh+tqQIDphwx8R8DneO0OWM=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=ijI8TL7pvMYOQTZ8/vo8iKSNIrmdB8c86WQoRavcdg/i6s7431YJlcWsCGvykFpHa
-	 kF8MWIDUIgW55B1t0rzM69RvzPAiI/uBQ06HpLEFU4F7Lc5nmh7v0fNzYPww0pB+M0
-	 gKtoPN5ePGcTYQ0ush4kWGXCU2XHqoyD/STCVCA4I/kpng6wrLJoX8pploFx3j3OTw
-	 y2JzY8/fUSye0nl3zfVR6gtWnV8z0bKHtjhLm+e+V7i/aFRN7To9xm1cGVkq2GLZSw
-	 NmGb8Xsk6JzjUTcMlQiJGCMGDazaz0tR74m1lD0JzaASkgIeU+stqW+6z82ffD5JL9
-	 8Awc5tiTINXLQ==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Tue, 03 Mar 2026 11:56:06 +0100
-Subject: [PATCH net 5/5] selftests: mptcp: join: check removing
- signal+subflow endp
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MsjAVrLm"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1772535395;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=lQfcYf0nTgw81P/IsIDOOQjFjTNPUrLYna+XMlLw958=;
+	b=MsjAVrLmlvCsfeLEz90fkDnjAwLfwkvNtqGeaCXkyrSHROEDwFBC4bLuvVtSr3W8Ef7Jlg
+	bgMs6E/NfnNigL/U/8c98gIPOZGsB3L+DnTFNSRcBaZwb37c+zXQ+rehAhQA1yr0r5Jn8D
+	6I0yThH5IiyukhqNQ6xa4XBLdp3h1ZE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-RJWksza1OqO68BHOisxy0Q-1; Tue,
+ 03 Mar 2026 05:56:27 -0500
+X-MC-Unique: RJWksza1OqO68BHOisxy0Q-1
+X-Mimecast-MFC-AGG-ID: RJWksza1OqO68BHOisxy0Q_1772535385
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B1BB719560B2;
+	Tue,  3 Mar 2026 10:56:24 +0000 (UTC)
+Received: from warthog.procyon.org.uk (unknown [10.44.33.249])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B3DC31800672;
+	Tue,  3 Mar 2026 10:55:35 +0000 (UTC)
+Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
+	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
+	Kingdom.
+	Registered in England and Wales under Company Registration No. 3798903
+From: David Howells <dhowells@redhat.com>
+In-Reply-To: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
+References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
+To: Jeff Layton <jlayton@kernel.org>
+cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+    Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+    Steven Rostedt <rostedt@goodmis.org>,
+    Masami Hiramatsu <mhiramat@kernel.org>,
+    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+    Dan Williams <dan.j.williams@intel.com>,
+    Matthew Wilcox <willy@infradead.org>,
+    Eric Biggers <ebiggers@kernel.org>,
+    "Theodore Y. Ts'o" <tytso@mit.edu>,
+    Muchun Song <muchun.song@linux.dev>,
+    Oscar Salvador <osalvador@suse.de>,
+    David Hildenbrand <david@kernel.org>,
+    David Howells <dhowells@redhat.com>,
+    Paulo Alcantara <pc@manguebit.org>,
+    Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
+    Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
+    Trond Myklebust <trondmy@kernel.org>,
+    Anna Schumaker <anna@kernel.org>,
+    Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
+    Olga Kornievskaia <okorniev@redhat.com>,
+    Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
+    Steve French <sfrench@samba.org>,
+    Ronnie Sahlberg <ronniesahlberg@gmail.com>,
+    Shyam Prasad N <sprasad@microsoft.com>,
+    Bharath SM <bharathsm@microsoft.com>,
+    Alexander Aring <alex.aring@gmail.com>,
+    Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+    Viacheslav Dubeyko <slava@dubeyko.com>,
+    Eric Van Hensbergen <ericvh@kernel.org>,
+    Latchesar Ionkov <lucho@ionkov.net>,
+    Dominique Martinet <asmadeus@codewreck.org>,
+    Christian Schoenebeck <linux_oss@crudebyte.com>,
+    David Sterba <dsterba@suse.com>,
+    Marc Dionne <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>,
+    Luis de Bethencourt <luisbg@kernel.org>,
+    Salah Triki <salah.triki@gmail.com>,
+    "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+    Ilya Dryomov <idryomov@gmail.com>,
+    Alex Markuze <amarkuze@redhat.com>, Jan Harkes <jaharkes@cs.cmu.edu>,
+    coda@cs.cmu.edu, Nicolas Pitre <nico@fluxnic.net>,
+    Tyler Hicks <code@tyhicks.com>, Amir Goldstein <amir73il@gmail.com>,
+    Christoph Hellwig <hch@infradead.org>,
+    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+    Yangtao Li <frank.li@vivo.com>,
+    Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
+    David Woodhouse <dwmw2@infradead.org>,
+    Richard Weinberger <richard@nod.at>,
+    Dave Kleikamp <shaggy@kernel.org>,
+    Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+    Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
+    Joseph Qi <joseph.qi@linux.alibaba.com>,
+    Mike Marshall <hubcap@omnibond.com>,
+    Martin Brandenburg <martin@omnibond.com>,
+    Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>,
+    Zhihao Cheng <chengzhihao1@huawei.com>,
+    Damien Le Moal <dlemoal@kernel.org>,
+    Naohiro Aota <naohiro.aota@wdc.com>,
+    Johannes Thumshirn <jth@kernel.org>,
+    John Johansen <john.johansen@canonical.com>,
+    Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+    "Serge E. Hallyn" <serge@hallyn.com>,
+    Mimi Zohar <zohar@linux.ibm.com>,
+    Roberto Sassu <roberto.sassu@huawei.com>,
+    Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
+    Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
+    Stephen Smalley <stephen.smalley.work@gmail.com>,
+    Ondrej Mosnacek <omosnace@redhat.com>,
+    Casey Schaufler <casey@schaufler-ca.com>,
+    Alex Deucher <alexander.deucher@amd.com>,
+    Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
+    David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+    Sumit Semwal <sumit.semwal@linaro.org>,
+    Eric Dumazet <edumazet@google.com>,
+    Kuniyuki Iwashima <kuniyu@google.com>,
+    Paolo Abeni <pabeni@redhat.com>,
+    Willem de Bruijn <willemb@google.com>,
+    "David S. Miller" <davem@davemloft.net>,
+    Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
+    Oleg Nesterov <oleg@redhat.com>,
+    Peter Zijlstra <peterz@infradead.org>,
+    Ingo Molnar <mingo@redhat.com>,
+    Arnaldo Carvalho de Melo <acme@kernel.org>,
+    Namhyung Kim <namhyung@kernel.org>,
+    Mark Rutland <mark.rutland@arm.com>,
+    Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+    Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+    Adrian Hunter <adrian.hunter@intel.com>,
+    James Clark <james.clark@linaro.org>,
+    "Darrick J. Wong" <djwong@kernel.org>,
+    Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>,
+    Joerg Reuter <jreuter@yaina.de>,
+    Marcel Holtmann <marcel@holtmann.org>,
+    Johan Hedberg <johan.hedberg@gmail.com>,
+    Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+    Oliver Hartkopp <socketcan@hartkopp.net>,
+    Marc Kleine-Budde <mkl@pengutronix.de>,
+    David Ahern <dsahern@kernel.org>,
+    Neal Cardwell <ncardwell@google.com>,
+    Steffen Klassert <steffen.klassert@secunet.com>,
+    Herbert Xu <herbert@gondor.apana.org.au>,
+    Remi Denis-Courmont <courmisch@gmail.com>,
+    Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+    Xin Long <lucien.xin@gmail.com>,
+    Magnus Karlsson <magnus.karlsson@intel.com>,
+    Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+    Stanislav Fomichev <sdf@fomichev.me>,
+    Alexei Starovoitov <ast@kernel.org>,
+    Daniel Borkmann <daniel@iogearbox.net>,
+    Jesper Dangaard Brouer <hawk@kernel.org>,
+    John Fastabend <john.fastabend@gmail.com>,
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+    linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
+    fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
+    linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
+    linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+    samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
+    v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+    autofs@vger.kernel.org, ceph-devel@vger.kernel.org,
+    codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+    linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+    ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+    devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
+    apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
+    linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
+    amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+    linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+    netdev@vger.kernel.org, linux-perf-users@vger.kernel.org,
+    linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org,
+    linux-hams@vger.kernel.org, linux-x25@vger.kernel.org,
+    audit@vger.kernel.org, linux-bluetooth@vger.kernel.org,
+    linux-can@vger.kernel.org, linux-sctp@vger.kernel.org,
+    bpf@vger.kernel.org
+Subject: Re: [PATCH v2 000/110] vfs: change inode->i_ino from unsigned long to u64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260303-net-mptcp-misc-fixes-7-0-rc2-v1-5-4b5462b6f016@kernel.org>
-References: <20260303-net-mptcp-misc-fixes-7-0-rc2-v1-0-4b5462b6f016@kernel.org>
-In-Reply-To: <20260303-net-mptcp-misc-fixes-7-0-rc2-v1-0-4b5462b6f016@kernel.org>
-To: Mat Martineau <martineau@kernel.org>, Geliang Tang <geliang@kernel.org>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Simon Horman <horms@kernel.org>, Shuah Khan <shuah@kernel.org>
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev, 
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
- "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1902; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=3hIjxPBplMqBbUMZCyZ/eh+tqQIDphwx8R8DneO0OWM=;
- b=owGbwMvMwCVWo/Th0Gd3rumMp9WSGDKX7YtIPrYwQoSLc4cS/6TlEkmGB64u9X/9paTsy/76p
- pdR05PLOkpZGMS4GGTFFFmk2yLzZz6v4i3x8rOAmcPKBDKEgYtTACYim83I8CaE/5RiQrtaYt/E
- 0h7P3E9T3gZM/f34oFmAVqX/zNvatYwM66YdScp3PrzKcPLyBSL2Qg4LJ196cvnIXd7ErbP07oj
- 84gIA
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
- fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Type: text/plain
+Date: Tue, 03 Mar 2026 10:55:32 +0000
+Message-ID: <1787281.1772535332@warthog.procyon.org.uk>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-This validates the previous commit: endpoints with both the signal and
-subflow flags should always be marked as used even if it was not
-possible to create new subflows due to the MPTCP PM limits.
+Jeff Layton <jlayton@kernel.org> wrote:
 
-For this test, an extra endpoint is created with both the signal and the
-subflow flags, and limits are set not to create extra subflows. In this
-case, an ADD_ADDR is sent, but no subflows are created. Still, the local
-endpoint is marked as used, and no warning is fired when removing the
-endpoint, after having sent a RM_ADDR.
+> This version splits the change up to be more bisectable. It first adds a
+> new kino_t typedef and a new "PRIino" macro to hold the width specifier
+> for format strings. The conversion is done, and then everything is
+> changed to remove the new macro and typedef.
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+Why remove the typedef?  It might be better to keep it.
 
-Fixes: 85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
----
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 058ad5a13d24..a3144d7298a5 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -2626,6 +2626,19 @@ remove_tests()
- 		chk_rst_nr 0 0
- 	fi
- 
-+	# signal+subflow with limits, remove
-+	if reset "remove signal+subflow with limits"; then
-+		pm_nl_set_limits $ns1 0 0
-+		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal,subflow
-+		pm_nl_set_limits $ns2 0 0
-+		addr_nr_ns1=-1 speed=slow \
-+			run_tests $ns1 $ns2 10.0.1.1
-+		chk_join_nr 0 0 0
-+		chk_add_nr 1 1
-+		chk_rm_nr 1 0 invert
-+		chk_rst_nr 0 0
-+	fi
-+
- 	# addresses remove
- 	if reset "remove addresses"; then
- 		pm_nl_set_limits $ns1 3 3
-
--- 
-2.51.0
+David
 
