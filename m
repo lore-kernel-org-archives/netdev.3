@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3887B4DBD6D
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF21E4E3788
 	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 16:23:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772555035; cv=none; b=Ccg1VzulKcK0JXiBrGAkBUuHgY1gQEa1dgyaJCSbYjV1Tod9f0AeafbKNsu3Swh1eKNEQ2iv++MPfU8/T/A7Lduon9TkUkUgYNQhN4ZT0ShGngnWyKUXsT6jxiezF3IQhKdd3Wnn/iBRd2ixK/Xdk/XqaTxsVDIV6tPOpB6+gBs=
+	t=1772555035; cv=none; b=Di8l3MJbYLebWlbzHIrmkleXVpVOBm5aNqZuJ7ZqoUHerQG+QS/TKXtJ3GeXkSF8m4gn1dQSZI8jxpmIUUQlptLeERiJYayURKrwm85+0OAsI35c83lkJmLgblnjp68iPNAq2Rl8DUcX+0IiYmXjCLjb1AFrdcLcxjEKUn0DinU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772555035; c=relaxed/simple;
-	bh=0Mad6XA1ZznQcSRHUz3PpH3lPRdMURQoYVbNPkSJ6Mo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pYW90x9cql8XcnGa71TCjwSQY/VrPsnE2UkCCvdv4BuVDSBdKkDxZzmTHn/FwkUf8USzxz9ajUEDXVNIttbuOll2kFCVMH9Xx7Nji5d0NOmTk6MG5ra0jbaJ/DwB61fb0tZ+IpqD8NmNhqh5nc/H0yebGKWc704yg2f7tQxssgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dm9fJ8t3; arc=none smtp.client-ip=10.30.226.201
+	bh=8G3v3PE8hzY4kHYbTMAlFZglWTeWb8+M9yyU291CPnw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=XBAOMFUWHWi8O0eQc8/kGiXur753W3AJepFvburKmVRR4PSaOBvz7QUOdU4atdPAt8b6ZOy+2166zZ8H6+hz3SfPQnfLxtQmAonpgFSpoQ/IQ1mVxGHQvHQn+eaq1Ecq5zVH6T/tOupKVaq82BXNSgBhKfz7DMrMYO86FN95KoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DAwg4Ryn; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dm9fJ8t3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB83C2BCAF;
-	Tue,  3 Mar 2026 16:23:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DAwg4Ryn"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E1B4C19425;
+	Tue,  3 Mar 2026 16:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772555034;
-	bh=0Mad6XA1ZznQcSRHUz3PpH3lPRdMURQoYVbNPkSJ6Mo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=dm9fJ8t3T4RLAQDOo/gOheTk9JuWFxDTsTXuvtPJAzsHqDFiD8Hhhh7/bUGLslLer
-	 1L/oeRhLGWXzU/Mbn+vMs8iA0ukvubNgXe6fAzhA8s5/SKNm+ezYC1S4AVnpzizqdN
-	 lY4RrUfeAvuh34WVCS+IE4Zs47yPLh7eoT38tNc8fXNTVYxYhLL3pGtO6F81iZZWgp
-	 Q9Vj+GN3FkHlYpQ8chSgd6onn82vkU08OV2sBs05JXaFCh8HioJx0DGKsbiN7ijEly
-	 XbXKnwf4efkClGhoWohwwQlWLvh1NmkOrEPyq9R2ilLSSzMhYrrQmsKiN6optcmtEG
-	 4Mf4pRvRz2MDQ==
+	s=k20201202; t=1772555035;
+	bh=8G3v3PE8hzY4kHYbTMAlFZglWTeWb8+M9yyU291CPnw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DAwg4RynLKENND6EJLF76NrswdhGlmHVMrkqrHBH8n4JipvKqlZawZrIxpiPB14lz
+	 e7uL/gJjdcFrIXomJ4qm/kLMaeuU454K7ryl9JQomVU8KvSNyY7ZfZhtcMPyIiBapg
+	 jN6qvUWSvHCfhalDA6/zKc0fSXXq5cbWrRmM1V2D2XQbNPNV5v2Lyo4VtZTWLO4RDY
+	 m9QGfHn2mJdMY0x5Yo17md+FpVAo2KlyfdNdWvmv5fmtzUt2VS3IT39DfpCAVfF28Z
+	 wCGjPBPdGCTIKv3rqSWcZWJ1H0+Kzscj2529O5cYn4gNAJSSXZUGuBP1oYZUxwZJ9s
+	 qhEZ5qI+TDvoQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -33,10 +34,12 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net 0/5] nfc: fix leaks and races surfaced by NIPA
-Date: Tue,  3 Mar 2026 08:23:40 -0800
-Message-ID: <20260303162346.2071888-1-kuba@kernel.org>
+Subject: [PATCH net 1/5] nfc: nci: free skb on nci_transceive early error paths
+Date: Tue,  3 Mar 2026 08:23:41 -0800
+Message-ID: <20260303162346.2071888-2-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260303162346.2071888-1-kuba@kernel.org>
+References: <20260303162346.2071888-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,23 +48,64 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-I recently added the nci test to NIPA. Somewhat surprisingly it runs
-without much settup but hits kmemleaks fairly often. Fix a handful of
-issues to make the test pass in a stable way.
+nci_transceive() takes ownership of the skb passed by the caller,
+but the -EPROTO, -EINVAL, and -EBUSY error paths return without
+freeing it.
 
-Jakub Kicinski (5):
-  nfc: nci: free skb on nci_transceive early error paths
-  nfc: digital: free skb on digital_in_send error paths
-  nfc: nci: complete pending data exchange on device close
-  nfc: nci: clear NCI_DATA_EXCHANGE before calling completion callback
-  nfc: rawsock: cancel tx_work before socket teardown
+Due to issues clearing NCI_DATA_EXCHANGE fixed by subsequent changes
+the nci/nci_dev selftest hits the error path occasionally in NIPA,
+and kmemleak detects leaks:
 
- net/nfc/digital_core.c |  8 ++++++--
- net/nfc/nci/core.c     | 18 ++++++++++++++++--
- net/nfc/nci/data.c     | 12 ++++++++----
- net/nfc/rawsock.c      | 11 +++++++++++
- 4 files changed, 41 insertions(+), 8 deletions(-)
+unreferenced object 0xff11000015ce6a40 (size 640):
+  comm "nci_dev", pid 3954, jiffies 4295441246
+  hex dump (first 32 bytes):
+    6b 6b 6b 6b 00 a4 00 0c 02 e1 03 6b 6b 6b 6b 6b  kkkk.......kkkkk
+    6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b 6b  kkkkkkkkkkkkkkkk
+  backtrace (crc 7c40cc2a):
+    kmem_cache_alloc_node_noprof+0x492/0x630
+    __alloc_skb+0x11e/0x5f0
+    alloc_skb_with_frags+0xc6/0x8f0
+    sock_alloc_send_pskb+0x326/0x3f0
+    nfc_alloc_send_skb+0x94/0x1d0
+    rawsock_sendmsg+0x162/0x4c0
+    do_syscall_64+0x117/0xfc0
 
+Fixes: 6a2968aaf50c ("NFC: basic NCI protocol implementation")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ net/nfc/nci/core.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
+index 6e9b76e2cc56..40fc397858ce 100644
+--- a/net/nfc/nci/core.c
++++ b/net/nfc/nci/core.c
+@@ -1035,18 +1035,23 @@ static int nci_transceive(struct nfc_dev *nfc_dev, struct nfc_target *target,
+ 	struct nci_conn_info *conn_info;
+ 
+ 	conn_info = ndev->rf_conn_info;
+-	if (!conn_info)
++	if (!conn_info) {
++		kfree_skb(skb);
+ 		return -EPROTO;
++	}
+ 
+ 	pr_debug("target_idx %d, len %d\n", target->idx, skb->len);
+ 
+ 	if (!ndev->target_active_prot) {
+ 		pr_err("unable to exchange data, no active target\n");
++		kfree_skb(skb);
+ 		return -EINVAL;
+ 	}
+ 
+-	if (test_and_set_bit(NCI_DATA_EXCHANGE, &ndev->flags))
++	if (test_and_set_bit(NCI_DATA_EXCHANGE, &ndev->flags)) {
++		kfree_skb(skb);
+ 		return -EBUSY;
++	}
+ 
+ 	/* store cb and context to be used on receiving data */
+ 	conn_info->data_exchange_cb = cb;
 -- 
 2.53.0
 
