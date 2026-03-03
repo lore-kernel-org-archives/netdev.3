@@ -1,206 +1,195 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C303CC9ED
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B1D3CC9E9
 	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 10:56:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772535400; cv=none; b=oMJICc1IASmdj7AuJNBEfMl+o59asPJ5+X0mF1Hx1lvSyV5t77M73VMoLrA58opIzgEAikH5R8ES9pznjfjxllTJ1uR/BGVUUz/6LhvnN5Jtx3ROdppeokJxXSqyP3pH5++slzqBU349tfrUboI+mMeTgJAhTLxPTxmVoo6HKzI=
+	t=1772535401; cv=none; b=f7DVJXtA3LVUUZVKELa13n1TBFHbbMCFFFquQ6GaxE5Q//QkrNo/o7jT8A1HelNZ7coflkUE2y4mpy8U+m0rQcVxcfov/EQj9EKpryAC38NL78Sdd9qB2mzb1gHKOxaFAY5cpXCBX4srlUdkdHAhwbAPyplVoxv46Te/Eps4t5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772535400; c=relaxed/simple;
-	bh=ZJFR9/2OtrcnrgSTa4EHnH5JX9DBPEZCrlsYG5puECk=;
-	h=From:In-Reply-To:References:To:cc:Subject:MIME-Version:
-	 Content-Type:Date:Message-ID; b=Nj6vcXv6GDaMxL4jgp1MhCMkKJqdRaH2We3xBfLj8puRDse0nc02w/Nqiz69d2Ukb7eVknKgYNiJvAMqzyTNZino/dzEqQyGKhwylze+20KCAERTIQWksdRqEDXYUF3eLDhmI72pkHu9xW1nOQCerGjuGl1ecbpqdjJKWzEI7bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MsjAVrLm; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1772535401; c=relaxed/simple;
+	bh=sxxVfVpOS6gefLhTyaSzi6d8tpJBgjZuKKmC8M1vrOk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=S+Gv2wAT2sfgsjirA2VVcsBNHpSYdhBhOYdpiArjuuvuqziZaka52OE+QMVwXjpciL86QMVVP6yjN6QWiURb+Gg5cymGrtSD9uyEO10LvwKdMZbleyRvFnCtgDx7Nv0O2O3fPu9tr6+PBfhSeyq7izfxYAaz8sRXByejtwj88+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YyNR9zUU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tJ7L5XIw; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MsjAVrLm"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YyNR9zUU";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tJ7L5XIw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772535395;
+	s=mimecast20190719; t=1772535394;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lQfcYf0nTgw81P/IsIDOOQjFjTNPUrLYna+XMlLw958=;
-	b=MsjAVrLmlvCsfeLEz90fkDnjAwLfwkvNtqGeaCXkyrSHROEDwFBC4bLuvVtSr3W8Ef7Jlg
-	bgMs6E/NfnNigL/U/8c98gIPOZGsB3L+DnTFNSRcBaZwb37c+zXQ+rehAhQA1yr0r5Jn8D
-	6I0yThH5IiyukhqNQ6xa4XBLdp3h1ZE=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-13-RJWksza1OqO68BHOisxy0Q-1; Tue,
- 03 Mar 2026 05:56:27 -0500
-X-MC-Unique: RJWksza1OqO68BHOisxy0Q-1
-X-Mimecast-MFC-AGG-ID: RJWksza1OqO68BHOisxy0Q_1772535385
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B1BB719560B2;
-	Tue,  3 Mar 2026 10:56:24 +0000 (UTC)
-Received: from warthog.procyon.org.uk (unknown [10.44.33.249])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B3DC31800672;
-	Tue,  3 Mar 2026 10:55:35 +0000 (UTC)
-Organization: Red Hat UK Ltd. Registered Address: Red Hat UK Ltd, Amberley
-	Place, 107-111 Peascod Street, Windsor, Berkshire, SI4 1TE, United
-	Kingdom.
-	Registered in England and Wales under Company Registration No. 3798903
-From: David Howells <dhowells@redhat.com>
-In-Reply-To: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
-References: <20260302-iino-u64-v2-0-e5388800dae0@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-cc: Alexander Viro <viro@zeniv.linux.org.uk>,
-    Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-    Steven Rostedt <rostedt@goodmis.org>,
-    Masami Hiramatsu <mhiramat@kernel.org>,
-    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-    Dan Williams <dan.j.williams@intel.com>,
-    Matthew Wilcox <willy@infradead.org>,
-    Eric Biggers <ebiggers@kernel.org>,
-    "Theodore Y. Ts'o" <tytso@mit.edu>,
-    Muchun Song <muchun.song@linux.dev>,
-    Oscar Salvador <osalvador@suse.de>,
-    David Hildenbrand <david@kernel.org>,
-    David Howells <dhowells@redhat.com>,
-    Paulo Alcantara <pc@manguebit.org>,
-    Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
-    Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-    Trond Myklebust <trondmy@kernel.org>,
-    Anna Schumaker <anna@kernel.org>,
-    Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>,
-    Olga Kornievskaia <okorniev@redhat.com>,
-    Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-    Steve French <sfrench@samba.org>,
-    Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-    Shyam Prasad N <sprasad@microsoft.com>,
-    Bharath SM <bharathsm@microsoft.com>,
-    Alexander Aring <alex.aring@gmail.com>,
-    Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-    Viacheslav Dubeyko <slava@dubeyko.com>,
-    Eric Van Hensbergen <ericvh@kernel.org>,
-    Latchesar Ionkov <lucho@ionkov.net>,
-    Dominique Martinet <asmadeus@codewreck.org>,
-    Christian Schoenebeck <linux_oss@crudebyte.com>,
-    David Sterba <dsterba@suse.com>,
-    Marc Dionne <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>,
-    Luis de Bethencourt <luisbg@kernel.org>,
-    Salah Triki <salah.triki@gmail.com>,
-    "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-    Ilya Dryomov <idryomov@gmail.com>,
-    Alex Markuze <amarkuze@redhat.com>, Jan Harkes <jaharkes@cs.cmu.edu>,
-    coda@cs.cmu.edu, Nicolas Pitre <nico@fluxnic.net>,
-    Tyler Hicks <code@tyhicks.com>, Amir Goldstein <amir73il@gmail.com>,
-    Christoph Hellwig <hch@infradead.org>,
-    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-    Yangtao Li <frank.li@vivo.com>,
-    Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
-    David Woodhouse <dwmw2@infradead.org>,
-    Richard Weinberger <richard@nod.at>,
-    Dave Kleikamp <shaggy@kernel.org>,
-    Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-    Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-    Joseph Qi <joseph.qi@linux.alibaba.com>,
-    Mike Marshall <hubcap@omnibond.com>,
-    Martin Brandenburg <martin@omnibond.com>,
-    Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>,
-    Zhihao Cheng <chengzhihao1@huawei.com>,
-    Damien Le Moal <dlemoal@kernel.org>,
-    Naohiro Aota <naohiro.aota@wdc.com>,
-    Johannes Thumshirn <jth@kernel.org>,
-    John Johansen <john.johansen@canonical.com>,
-    Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-    "Serge E. Hallyn" <serge@hallyn.com>,
-    Mimi Zohar <zohar@linux.ibm.com>,
-    Roberto Sassu <roberto.sassu@huawei.com>,
-    Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-    Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
-    Stephen Smalley <stephen.smalley.work@gmail.com>,
-    Ondrej Mosnacek <omosnace@redhat.com>,
-    Casey Schaufler <casey@schaufler-ca.com>,
-    Alex Deucher <alexander.deucher@amd.com>,
-    Christian =?utf-8?Q?K=C3=B6nig?= <christian.koenig@amd.com>,
-    David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-    Sumit Semwal <sumit.semwal@linaro.org>,
-    Eric Dumazet <edumazet@google.com>,
-    Kuniyuki Iwashima <kuniyu@google.com>,
-    Paolo Abeni <pabeni@redhat.com>,
-    Willem de Bruijn <willemb@google.com>,
-    "David S. Miller" <davem@davemloft.net>,
-    Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-    Oleg Nesterov <oleg@redhat.com>,
-    Peter Zijlstra <peterz@infradead.org>,
-    Ingo Molnar <mingo@redhat.com>,
-    Arnaldo Carvalho de Melo <acme@kernel.org>,
-    Namhyung Kim <namhyung@kernel.org>,
-    Mark Rutland <mark.rutland@arm.com>,
-    Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-    Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-    Adrian Hunter <adrian.hunter@intel.com>,
-    James Clark <james.clark@linaro.org>,
-    "Darrick J. Wong" <djwong@kernel.org>,
-    Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>,
-    Joerg Reuter <jreuter@yaina.de>,
-    Marcel Holtmann <marcel@holtmann.org>,
-    Johan Hedberg <johan.hedberg@gmail.com>,
-    Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-    Oliver Hartkopp <socketcan@hartkopp.net>,
-    Marc Kleine-Budde <mkl@pengutronix.de>,
-    David Ahern <dsahern@kernel.org>,
-    Neal Cardwell <ncardwell@google.com>,
-    Steffen Klassert <steffen.klassert@secunet.com>,
-    Herbert Xu <herbert@gondor.apana.org.au>,
-    Remi Denis-Courmont <courmisch@gmail.com>,
-    Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-    Xin Long <lucien.xin@gmail.com>,
-    Magnus Karlsson <magnus.karlsson@intel.com>,
-    Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-    Stanislav Fomichev <sdf@fomichev.me>,
-    Alexei Starovoitov <ast@kernel.org>,
-    Daniel Borkmann <daniel@iogearbox.net>,
-    Jesper Dangaard Brouer <hawk@kernel.org>,
-    John Fastabend <john.fastabend@gmail.com>,
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-    linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-    fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
-    linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-    linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-    samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
-    v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
-    autofs@vger.kernel.org, ceph-devel@vger.kernel.org,
-    codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
-    linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-    ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
-    devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
-    apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-    linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-    amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-    linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-    netdev@vger.kernel.org, linux-perf-users@vger.kernel.org,
-    linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org,
-    linux-hams@vger.kernel.org, linux-x25@vger.kernel.org,
-    audit@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-    linux-can@vger.kernel.org, linux-sctp@vger.kernel.org,
-    bpf@vger.kernel.org
-Subject: Re: [PATCH v2 000/110] vfs: change inode->i_ino from unsigned long to u64
+	bh=unnFcg3oz6A6y1pxfDBz1S5V10XOha7AqEFUFjOVM58=;
+	b=YyNR9zUUpccpsFUaTj732mTcfyJHgW2+rfD/cOqa5aCc7iYzUCHlCBCcHiINOohp6EtGFB
+	gcSSCRFQ489N3QUlXlZxORXnfy9FVQvtv5kqfn/pu2x01eKmXdsl8WwJKqb5izK/iNo1lM
+	O0+TWj+EX2l86aA2/Wwn4fAnrpHsQZ0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-114-MkMAund9MdK_xOMbkFqVaQ-1; Tue, 03 Mar 2026 05:56:33 -0500
+X-MC-Unique: MkMAund9MdK_xOMbkFqVaQ-1
+X-Mimecast-MFC-AGG-ID: MkMAund9MdK_xOMbkFqVaQ_1772535392
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-482d8e6e13aso45995625e9.3
+        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 02:56:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1772535392; x=1773140192; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=unnFcg3oz6A6y1pxfDBz1S5V10XOha7AqEFUFjOVM58=;
+        b=tJ7L5XIwnOWSLAs/1WjlOmuHEMBX48JwdwZ97rzru1iDBmQpWs9G6fAVSVuWr/Jukl
+         8W8VAP9woRjyHkodR4XzR3zHT4bilT3dO8Mtv4iFkEgSFT7y+WxlwzweDgopWsi6dRbV
+         5DFKgefDAijxCtDAlMNPd4e8fzVpK70a++aWpxNF2oU7u8xKGj8/6dVMXVLraOfwZfHW
+         hq9Mx6Rf84hYYfgiB4uL2HN6S/ZQ58K6kzPzxR/GPQBIcFoFO0L8Zv2+OGoYIHHZqjWL
+         k5BHksItHA564XnFhL1fQoqvtN1O5AV8by5ncYm05U6EX+T1XR+BuP5O49T14SwiLk6Q
+         CIxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772535392; x=1773140192;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=unnFcg3oz6A6y1pxfDBz1S5V10XOha7AqEFUFjOVM58=;
+        b=lnXEjPyQlam8fmf92xZPiidFVkrphcGyyP4qxiWNeuy1vEepmsGg2safs4nbjM7ZXi
+         9wHu740MXHopjltKMBJJfFXh8GO8Ueb+3pb3CGuPVBe1zoIkPqSs1uaS/B+UVXHhoaIi
+         XgnIBaws9+hGktXAl/Z22XJFziqkjVHynsuoJNGB3SdrvCsy1htUt4rUTdNNsWyAQ+PQ
+         cfsFM6yNCXxOvHBPlflohWgqoXZ8tDVFGIf4lcUhRFHKxJCZGOayoKZaGa9wdwPX65aU
+         4G1NzlG3IVC69PfY4KHRxrqLXu1JwQdyjoTd3/YORlxKdhFsE2ZXMyMD+GD1v5F8n3RH
+         rL+g==
+X-Forwarded-Encrypted: i=1; AJvYcCX9PI0s/3NjGZRGLmLoD86E7+NokMbJOsWXOZX06/Tk+6A7EKUQ1ctfCmC9wcVpC5rL49/RlN0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyH72/7PTZNgW0tgtVc+BodqTrZl7bcF36fcJfJCijzXBtq7L2o
+	j/Na9nZIiUIYE0w8LzZ7yLP0ujFwbxx0KuuBQPy6U/LM7Wm9aayG+FoZTHf2/dkwiAfiNBqpTdQ
+	QG8rjtsRpByUR0d/QEu0tljMw6VxOnVkMyqUtn7qTCRPVMkV1DqG/MaBvfBvhqdlgVw==
+X-Gm-Gg: ATEYQzxkuYY6TJCaSYm2TxIht6R1I51BiXiNnRVFZAmp9ewtU6MC7G96F5sfx91VPoH
+	vL06bfA/P9nBKGjNkE+srZzBCRt7arJgETSnMu+YxCOgv4ww0F5fGFIkRAAGzoE8Zf7kLT9p1WZ
+	TA3zVmMqWeM7YbUiOP1Hx6bQcVR9nS4B/5YVnM8cjAgkhSbbsVHGYKWLHTaX7fApbhCM/04rcfp
+	mIKpF79cU4N3l8wcwiPJMqun6W6HZ6T2ZsE+na3J+74ffos8XuBjdNA7eK4IfieLbNhMqmu14UF
+	qt8o7m9eVDBgAFCZtbeGkCgA4A4BdaTpj2/EDVge2jSaFBwwMSMyRbmj+T+FDiw0q3zN7qpHcEI
+	Qmeh2D3YLGj6d09GDHZMAaSCZ
+X-Received: by 2002:a05:600c:6812:b0:483:8062:b2f with SMTP id 5b1f17b1804b1-483c9ba3af1mr238405705e9.6.1772535391871;
+        Tue, 03 Mar 2026 02:56:31 -0800 (PST)
+X-Received: by 2002:a05:600c:6812:b0:483:8062:b2f with SMTP id 5b1f17b1804b1-483c9ba3af1mr238405265e9.6.1772535391377;
+        Tue, 03 Mar 2026 02:56:31 -0800 (PST)
+Received: from [192.168.88.32] ([212.105.155.73])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-483bd750701sm492414275e9.11.2026.03.03.02.56.29
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Mar 2026 02:56:30 -0800 (PST)
+Message-ID: <81b7e296-0cfe-4c24-ac97-7f6c712aa0e9@redhat.com>
+Date: Tue, 3 Mar 2026 11:56:29 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Date: Tue, 03 Mar 2026 10:55:32 +0000
-Message-ID: <1787281.1772535332@warthog.procyon.org.uk>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: mana: Force full-page RX buffers for 4K
+ page size on specific systems.
+To: Dipayaan Roy <dipayanroy@linux.microsoft.com>, kys@microsoft.com,
+ haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, leon@kernel.org, longli@microsoft.com,
+ kotaranov@microsoft.com, horms@kernel.org, shradhagupta@linux.microsoft.com,
+ ssengar@linux.microsoft.com, ernis@linux.microsoft.com,
+ shirazsaleem@microsoft.com, linux-hyperv@vger.kernel.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, dipayanroy@microsoft.com
+References: <aaFusIxdbVkUqIpd@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+Content-Language: en-US
+From: Paolo Abeni <pabeni@redhat.com>
+In-Reply-To: <aaFusIxdbVkUqIpd@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Jeff Layton <jlayton@kernel.org> wrote:
+On 2/27/26 11:15 AM, Dipayaan Roy wrote:
+> On certain systems configured with 4K PAGE_SIZE, utilizing page_pool
+> fragments for RX buffers results in a significant throughput regression.
+> Profiling reveals that this regression correlates with high overhead in the
+> fragment allocation and reference counting paths on these specific
+> platforms, rendering the multi-buffer-per-page strategy counterproductive.
+> 
+> To mitigate this, bypass the page_pool fragment path and force a single RX
+> packet per page allocation when all the following conditions are met:
+>   1. The system is configured with a 4K PAGE_SIZE.
+>   2. A processor-specific quirk is detected via SMBIOS Type 4 data.
+> 
+> This approach restores expected line-rate performance by ensuring
+> predictable RX refill behavior on affected hardware.
+> 
+> There is no behavioral change for systems using larger page sizes
+> (16K/64K), or platforms where this processor-specific quirk do not
+> apply.
+> 
+> Signed-off-by: Dipayaan Roy <dipayanroy@linux.microsoft.com>
+> ---
+>  .../net/ethernet/microsoft/mana/gdma_main.c   | 120 ++++++++++++++++++
+>  drivers/net/ethernet/microsoft/mana/mana_en.c |  23 +++-
+>  include/net/mana/gdma.h                       |  10 ++
+>  3 files changed, 151 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> index 0055c231acf6..26bbe736a770 100644
+> --- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> +++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+> @@ -9,6 +9,7 @@
+>  #include <linux/msi.h>
+>  #include <linux/irqdomain.h>
+>  #include <linux/export.h>
+> +#include <linux/dmi.h>
+>  
+>  #include <net/mana/mana.h>
+>  #include <net/mana/hw_channel.h>
+> @@ -1955,6 +1956,115 @@ static bool mana_is_pf(unsigned short dev_id)
+>  	return dev_id == MANA_PF_DEVICE_ID;
+>  }
+>  
+> +/*
+> + * Table for Processor Version strings found from SMBIOS Type 4 information,
+> + * for processors that needs to force single RX buffer per page quirk for
+> + * meeting line rate performance with ARM64 + 4K pages.
+> + * Note: These strings are exactly matched with version fetched from SMBIOS.
+> + */
+> +static const char * const mana_single_rxbuf_per_page_quirk_tbl[] = {
+> +	"Cobalt 200",
+> +};
+> +
+> +static const char *smbios_get_string(const struct dmi_header *hdr, u8 idx)
+> +{
+> +	const u8 *start, *end;
+> +	u8 i;
+> +
+> +	/* Indexing starts from 1. */
+> +	if (!idx)
+> +		return NULL;
+> +
+> +	start   = (const u8 *)hdr + hdr->length;
+> +	end = start + SMBIOS_STR_AREA_MAX;
+> +
+> +	for (i = 1; i < idx; i++) {
+> +		while (start < end && *start)
+> +			start++;
+> +		if (start < end)
+> +			start++;
+> +		if (start + 1 < end && start[0] == 0 && start[1] == 0)
+> +			return NULL;
+> +	}
+> +
+> +	if (start >= end || *start == 0)
+> +		return NULL;
+> +
+> +	return (const char *)start;
 
-> This version splits the change up to be more bisectable. It first adds a
-> new kino_t typedef and a new "PRIino" macro to hold the width specifier
-> for format strings. The conversion is done, and then everything is
-> changed to remove the new macro and typedef.
+If I read correctly, the above sort of duplicate dmi_decode_table().
 
-Why remove the typedef?  It might be better to keep it.
+I think you are better of:
+- use the mana_get_proc_ver_from_smbios() decoder to store the
+SMBIOS_TYPE4_PROC_VERSION_OFFSET index into gd
+- do a 2nd walk with a different decoder to fetch the string at the
+specified index.
 
-David
+/P
 
