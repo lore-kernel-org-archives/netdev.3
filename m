@@ -1,104 +1,81 @@
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84325373C0A
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 01:51:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B9B373C1E;
+	Tue,  3 Mar 2026 01:52:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.220
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772502689; cv=none; b=CfW5xB6mIUjl474M88FRdaE70dnquDJy48bXaZlG3SwLvf2/Axwtb1dOvcsHxJp8yk5acs2x4+c0h8cHEHFCp/rXXn04v5xdRGPzLVSjtGOEpGd2ntl2HVCdTw/7Z/FDn7VTXsuJ7BvYZlM3rL8j34D8YWJDylUTCtNam+hd5d0=
+	t=1772502775; cv=none; b=soSEKiMHBfuOhl7MK9YeGo1KOq0J+ppn0bj5N/1SPGrrsbX12L5ANnbvQfYhwWKp9AiFKobhM9YZN5K5Wecw8qdJx/t+YPaVNmwSEZR3DUtak8wkcfLRt6hiJICY+V5LYWAzqSkDw2PD5zPZowQoQ4svgJ5Vgcwr/8ACIUg4tYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772502689; c=relaxed/simple;
-	bh=QR9xC+LbZjTEcw2B3g6RGPgRmzHv4fIjmH/+ye7UnDs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IL6rykrnwNPmWo6z+BNN+URnoLUyjEH6dqxQSXBUnYkJAaVcFMMCJEc6sqC254/YMIkFiwA+1zEiyrwi/6/Ss0c6ljgu80X/dhIzkKDL/aQAKOYqe3iczqy/KVdgiqJcWilOkqQK4OVcGR6ShqQ6oNmZycdE3CmFVALe0Mz8Um4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Bm5NO3tr; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1772502775; c=relaxed/simple;
+	bh=JZvMyrY5V3kzs/3jcRLWkNDy/3HjAklixRnfXAdFXyw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=pgzAzblKG7fcTnm38C3avm2ELtxxD+cVEsU/J0MC9mcGz6eukkiIENkxq1P+bY+FBIHoh27//d024c/SMLGNwpVYrSVBHbsfOH+IwthIZxqaElb6xr0buCuVRpyWcfYlnszNH/NaA2fjeflUnWcPdmQOKmTUfzAcaSV8KgpeCeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=HOgQ5imi; arc=none smtp.client-ip=113.46.200.220
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Bm5NO3tr"
-Message-ID: <f38608e1-4e85-4bc4-8872-c9ecf38e5d7e@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772502686;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H6veD8qM4F+WyZg576UBUjZ2Qmn0u8K3QCi47PEsWrI=;
-	b=Bm5NO3trAPfude3N6WDHXMoo5/emzVqA759MZb7U4Ltx4YakxOrYeuBn5F/zsr8qmw538h
-	Pvgjz5Y+vsWw7ahEeJjuB+JU++N4PnCPLfZo55eb/ypkGWnJ5NWLnmfQsZcZ/A3leEt8Sw
-	S83EC/8fTfoiwKGlHYh7+RS/u8VNsWY=
-Date: Mon, 2 Mar 2026 17:51:18 -0800
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="HOgQ5imi"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=2YhXVcXFOvl4RE+GcFTcGZzoQ+UcaaWJmcXg81gKeR0=;
+	b=HOgQ5imigO06MUzgcGo2v2RJaPNLmyZ6bvZB/rglUU5bh7ersziWGtvol14QgM/ycT0Hw7AJF
+	cSa6K2k1QfDpbKSWfFH18IUTJ2tBGyXPviJHZc0tmCAyuaIjPUQRkbBRmXITVvG12sKErWpwt8F
+	KPJSJP+JJDD2FBL7YspYpBw=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4fPzGM4FJZz12LCl;
+	Tue,  3 Mar 2026 09:48:11 +0800 (CST)
+Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
+	by mail.maildlp.com (Postfix) with ESMTPS id D40A82025F;
+	Tue,  3 Mar 2026 09:52:48 +0800 (CST)
+Received: from kwepemq200017.china.huawei.com (7.202.195.228) by
+ dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 3 Mar 2026 09:52:48 +0800
+Received: from hulk-vt.huawei.com (10.67.174.72) by
+ kwepemq200017.china.huawei.com (7.202.195.228) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 3 Mar 2026 09:52:48 +0800
+From: Cai Xinchen <caixinchen1@huawei.com>
+To: <ioana.ciornei@nxp.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
+	<edumazet@google.com>, <kuba@kernel.org>, <pabeni@redhat.com>
+CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<caixinchen1@huawei.com>
+Subject: [PATCH -next] dpaa2-switch: Add depend on FSL_DPAA2_ETH to FSL_DPAA2_SWITCH
+Date: Tue, 3 Mar 2026 01:38:14 +0000
+Message-ID: <20260303013814.338989-1-caixinchen1@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf v2 3/4] bpf, sockmap: Adapt for the af_unix-specific
- lock
-To: Michal Luczaj <mhal@rbox.co>
-Cc: Kuniyuki Iwashima <kuniyu@google.com>,
- John Fastabend <john.fastabend@gmail.com>,
- Jakub Sitnicki <jakub@cloudflare.com>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Willem de Bruijn <willemb@google.com>, Cong Wang <cong.wang@bytedance.com>,
- Alexei Starovoitov <ast@kernel.org>, Yonghong Song <yhs@fb.com>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
- KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
- Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
- Shuah Khan <shuah@kernel.org>, netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260207-unix-proto-update-null-ptr-deref-v2-0-9f091330e7cd@rbox.co>
- <20260207-unix-proto-update-null-ptr-deref-v2-3-9f091330e7cd@rbox.co>
- <CAAVpQUA+8GL_j63CaKb8hbxoL21izD58yr1NvhOhU=j+35+3og@mail.gmail.com>
- <c4eaead1-ad69-42f0-9699-5f2d555a7693@rbox.co>
- <a2f2c260-38e8-4ba3-8655-cffbee046259@linux.dev>
- <b75bbc3f-85fd-4209-9ce1-3bf685ba62ff@rbox.co>
- <d122ed8b-ebfb-4d59-96ce-10c361e76676@linux.dev>
- <1022fcaf-ca38-43d2-84cb-f66a504335e1@rbox.co>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Martin KaFai Lau <martin.lau@linux.dev>
-Content-Language: en-US
-In-Reply-To: <1022fcaf-ca38-43d2-84cb-f66a504335e1@rbox.co>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemq200017.china.huawei.com (7.202.195.228)
 
-On 2/24/26 7:28 AM, Michal Luczaj wrote:
-> On 2/23/26 22:43, Martin KaFai Lau wrote:
->>
->> On 2/11/26 2:02 AM, Michal Luczaj wrote:
->>>> It should also be helpful to be consistent with tcp/udp iter and use
->>>> lock_sock() instead of lock_sock_fast() in bpf_iter_unix_seq_show().
->>> OK, I'll tweak that in v3.
->>
->> Hi, Michal. Are you planning to send v3 soon? I don't think the
->> sock_owned_by_user for the non-tracing prog needs to be addressed in the
->> same set.
-> 
-> Yes, I'm working on it. Sorry for the delay, I'm taking my sweet time to
-> come up with a selftest.
-> 
-> I think I can neatly fit the sock_owned_by_user()-related stuff in this
-> series, but let me know if you'd rather have it separately. Whichever way,
-> I don't mind.
+When CONFIG_FSL_DPAA2_ETH=n, dpaa2 cannot be compiled. Thus Add
+depend on FSL_DPAA2_ETH to FSL_DPAA2_SWITCH in Kconfig
 
-I think sock_owned_by_user() is not related to the AF_UNIX's sockmap 
-fix. If it is not, it's better to separate it. I think one thing at a 
-time is easier to review.
+Signed-off-by: Cai Xinchen <caixinchen1@huawei.com>
+---
+ drivers/net/ethernet/freescale/dpaa2/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-If they are related somewhat or it's easier to review them together, see 
-if it makes sense to structure them in a way such that the AF_UNIX's 
-sockmap-related fixes and tests are at the beginning of the patch set so 
-that they can be applied first if others need more discussion.
-
-Regarding the "Keeping sparse annotations in 
-sock_map_sk_{acquire,release}() required some
-hackery...". Maybe just remove the annotations?
-[ btw, from commit 5b63d0ae94cc, the sparse support is removed and it
-   depends solely on clang now (?). If it is the case, what does clang do
-   on the "sock_or_unix_lock"? ]
+diff --git a/drivers/net/ethernet/freescale/dpaa2/Kconfig b/drivers/net/ethernet/freescale/dpaa2/Kconfig
+index d029b69c3f18..b303af155a86 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/Kconfig
++++ b/drivers/net/ethernet/freescale/dpaa2/Kconfig
+@@ -34,6 +34,7 @@ config FSL_DPAA2_SWITCH
+ 	tristate "Freescale DPAA2 Ethernet Switch"
+ 	depends on BRIDGE || BRIDGE=n
+ 	depends on NET_SWITCHDEV
++	depends on FSL_DPAA2_ETH
+ 	help
+ 	  Driver for Freescale DPAA2 Ethernet Switch. This driver manages
+ 	  switch objects discovered on the Freeescale MC bus.
+-- 
+2.34.1
 
