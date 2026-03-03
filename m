@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD414E3797
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0754E378F
 	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 16:23:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772555036; cv=none; b=M/6wbnXNy522l8wqTyPZJtjXPNC4bFqbef9sMGLlqE7mzUTf+1+qyUSD5TGpCSgXoJJLatyoJirg0qqBCvyp/4yqE7qd5i1SswNlqdZ9A+c94i+J86zCtu271phjJqBx5dPZeyT8s14Sn56x7TUTlEGF9vVQCb7UX9IRYsJOu78=
+	t=1772555036; cv=none; b=meip2quVdtvzxgvdMdikHbTffo0qUsJmoDxbxICECR9zbfzOWY7NVBYFSVjdA6NVKYE4gFochNnDVaTgTNiT0mujqpi47C4g6mJOX5Zep97Quqag+ZMHhOCpAz6MCkdQODFWtIFH/N3QpvGjDKjQM69xz2r0UxhLvQXlnXSMl54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772555036; c=relaxed/simple;
-	bh=BQOz81h1tGXtJUu/dbPf/3nKtS0uGYEMD18y6QUy2Jk=;
+	bh=JUqEZ7X7BpbWXCQVNijkh8zldU565fRMhL/0n8wvdFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BsqooRkVGsJXB/CE9hWBpjQNvUM5NblrlyLHaJ2A2wjjhfk970pJlAxyke4WneeHyigze1pxj0UIFEOJKgmzqOxkPS1CJbKKHxSfiNMGkcHFTvVmhLbgoNAVI7++TGRXdbEfyqa3lykBSRjScBNZTCRh7w9VW6q2bsogwOsoe4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mfef36P6; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=A/vjh6R9btu1Mabh723d6/FDLuSJdUppvqMoECB35/fOETss/ClO8rWPc0tN1ANTbTqOjazSXF48+sVyA8KYuF5lESMiD/2wnm7CoohnNqRfmraf3tXK/OBXw7BsK0avY19pAvejIVAt1Q3wFHCJRGEFG1zYRBXb3bwMm7ykrM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s6nivYvP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mfef36P6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B619C2BCB2;
-	Tue,  3 Mar 2026 16:23:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s6nivYvP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C88AC2BCB1;
+	Tue,  3 Mar 2026 16:23:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772555036;
-	bh=BQOz81h1tGXtJUu/dbPf/3nKtS0uGYEMD18y6QUy2Jk=;
+	s=k20201202; t=1772555035;
+	bh=JUqEZ7X7BpbWXCQVNijkh8zldU565fRMhL/0n8wvdFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mfef36P6wN7ywOd5x9px91ejs8WHk11+YopRMgXP6ZIHSw/8tjRLlH9qAET67X1f5
-	 aav7oTlhoSoXXuEET1DQ4KFEF7L4ZAFHhOvDsZ6zTA83C+Dhu6wQaKR8XehpT53v0q
-	 upFgKXLQZ8T7+fi4OQFAKV2F5Ees99FEbg+qOfKe9Hv2jRQdGf+x4jlOnx1qfIabd5
-	 pWF3HANBzBzKrLI1T136kXwSHSitKFMogBBxh2FxLXZMUXs0JPZVTcJ/arwl69AFga
-	 4P10okLpqBVEB/p1dxqTAFFJ2qq8227CLYTiEk7DcOxqGNKHSJvYVCuTN9LwMU+cgZ
-	 kBYp29k/wysmA==
+	b=s6nivYvPTuoqvQRTLxH38h8Hc2HgJSOwM0xzLlRMppl/ePE6n+v4PlwVrUHnO+5hI
+	 JXkH3ZnDnzKcOSKks6k80rg2qXNpBaGMCUsK+pk7Nibm/VQIJju/U6teoaijErWcyI
+	 RCjyYBtgsqfm3ki41qaCFUuCqR2Mv+3Vap13A3x5Nh1UG/Fm8KjKK1NPJXbKKSL5NT
+	 n4Moa4jaetRUyGLepyNbqAwXqLCUgZA1mHIwUFR7aG7ZLF2TEDXuWSULj1NmAZHpao
+	 IasKGTSAelwjGErrhB31oMeG8cZ5EoUg9qldDP5ZI/m7VJUX4xPJztqKN/uqDvMneH
+	 mg0s0qi4jnvxw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -34,9 +34,9 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net 3/5] nfc: nci: complete pending data exchange on device close
-Date: Tue,  3 Mar 2026 08:23:43 -0800
-Message-ID: <20260303162346.2071888-4-kuba@kernel.org>
+Subject: [PATCH net 2/5] nfc: digital: free skb on digital_in_send error paths
+Date: Tue,  3 Mar 2026 08:23:42 -0800
+Message-ID: <20260303162346.2071888-3-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260303162346.2071888-1-kuba@kernel.org>
 References: <20260303162346.2071888-1-kuba@kernel.org>
@@ -48,62 +48,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-In nci_close_device(), complete any pending data exchange before
-closing. The data exchange callback (e.g.
-rawsock_data_exchange_complete) holds a socket reference.
+digital_in_send() takes ownership of the skb passed by the caller
+(nfc_data_exchange), make sure it's freed on all error paths.
 
-NIPA occasionally hits this leak:
+Found looking around the real driver for similar bugs to the one
+just fixed in nci.
 
-unreferenced object 0xff1100000f435000 (size 2048):
-  comm "nci_dev", pid 3954, jiffies 4295441245
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    27 00 01 40 00 00 00 00 00 00 00 00 00 00 00 00  '..@............
-  backtrace (crc ec2b3c5):
-    __kmalloc_noprof+0x4db/0x730
-    sk_prot_alloc.isra.0+0xe4/0x1d0
-    sk_alloc+0x36/0x760
-    rawsock_create+0xd1/0x540
-    nfc_sock_create+0x11f/0x280
-    __sock_create+0x22d/0x630
-    __sys_socket+0x115/0x1d0
-    __x64_sys_socket+0x72/0xd0
-    do_syscall_64+0x117/0xfc0
-    entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: 38f04c6b1b68 ("NFC: protect nci_data_exchange transactions")
+Fixes: 7d0911c02fa2 ("NFC: digital: Add NFC-DEP Initiator-side send/receive support")
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- net/nfc/nci/core.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/nfc/digital_core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/net/nfc/nci/core.c b/net/nfc/nci/core.c
-index 40fc397858ce..f8c0bab2ec07 100644
---- a/net/nfc/nci/core.c
-+++ b/net/nfc/nci/core.c
-@@ -567,6 +567,10 @@ static int nci_close_device(struct nci_dev *ndev)
- 		flush_workqueue(ndev->cmd_wq);
- 		timer_delete_sync(&ndev->cmd_timer);
- 		timer_delete_sync(&ndev->data_timer);
-+		if (test_bit(NCI_DATA_EXCHANGE, &ndev->flags))
-+			nci_data_exchange_complete(ndev, NULL,
-+						   ndev->cur_conn_id,
-+						   -ENODEV);
- 		mutex_unlock(&ndev->req_lock);
- 		return 0;
- 	}
-@@ -598,6 +602,11 @@ static int nci_close_device(struct nci_dev *ndev)
- 	flush_workqueue(ndev->cmd_wq);
+diff --git a/net/nfc/digital_core.c b/net/nfc/digital_core.c
+index 3670bb33732e..7cb1e6aaae90 100644
+--- a/net/nfc/digital_core.c
++++ b/net/nfc/digital_core.c
+@@ -707,8 +707,10 @@ static int digital_in_send(struct nfc_dev *nfc_dev, struct nfc_target *target,
+ 	int rc;
  
- 	timer_delete_sync(&ndev->cmd_timer);
-+	timer_delete_sync(&ndev->data_timer);
-+
-+	if (test_bit(NCI_DATA_EXCHANGE, &ndev->flags))
-+		nci_data_exchange_complete(ndev, NULL, ndev->cur_conn_id,
-+					   -ENODEV);
+ 	data_exch = kzalloc_obj(*data_exch);
+-	if (!data_exch)
++	if (!data_exch) {
++		kfree_skb(skb);
+ 		return -ENOMEM;
++	}
  
- 	/* Clear flags except NCI_UNREG */
- 	ndev->flags &= BIT(NCI_UNREG);
+ 	data_exch->cb = cb;
+ 	data_exch->cb_context = cb_context;
+@@ -731,8 +733,10 @@ static int digital_in_send(struct nfc_dev *nfc_dev, struct nfc_target *target,
+ 				 data_exch);
+ 
+ exit:
+-	if (rc)
++	if (rc) {
++		kfree_skb(skb);
+ 		kfree(data_exch);
++	}
+ 
+ 	return rc;
+ }
 -- 
 2.53.0
 
