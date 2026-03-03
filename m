@@ -1,140 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7FED49251F
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 15:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772553260; cv=none; b=lm1GCsuOgPW3C9PJ81SzFkfgDZ5JxmfiiXJ+sQeQEsOUxUJk8e4iSxksIK5MYvg8Gv6SQnpSldG4cohpBm0WoklRjYBKg+Ey3n6RfN6D0XHK8dBeQ327/uur6nhzlLjpWseD3/uVvf6wp8/8mOKEqcpdlay/9PXyXJ7p+7sIchk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772553260; c=relaxed/simple;
-	bh=7Csp+KecJs5xE7uneLNyrOL/WiLvB1IKlhAVaz2x72w=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=tsQt1DhzOC+L2b8AubIOE6aDM3DLIGhc0ZDL34ddghQCkxGI1ZBi4Cz6NxUtxhFON0SyqCOiNVXwiByDjfU0xqaIskxzc/hJ4rEqEacadENoDTsP34eRaSxkGGZm7UVLhfqG7fMA5xzBK0M+e1y+KyoroWbxvfi1ib+IyDQsPYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QxqY85br; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QxqY85br"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428A1C19422;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A040E492517;
 	Tue,  3 Mar 2026 15:54:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772553259;
-	bh=7Csp+KecJs5xE7uneLNyrOL/WiLvB1IKlhAVaz2x72w=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=QxqY85brKDfk30GnV/hv71WZPAfsJ6D/Gn/IguRfS1UT3rYhOKoYSU5dPiKnKRBj1
-	 KHKKBb1NnvtN2QBsvgHtdgicDE7WYHhERn3lwfC39IosuY5zBl+wFNaR6bdy2sHv0t
-	 KjeXkAsbX/J5rO+m0U7LkWAskwrJFAc3QND6OvsZw/iwMwVGQ9txDRgMLGygDp2XcB
-	 Ps+0lJaw7dxnz7TMt6n0sUOJIM5fioHx8bW3UB+33vE85xmAfDX3n/fPQzoO+BSESM
-	 m/ZqXNlRM6Vpm9iCFFD0y6WuBjtkCohEtHxCTQ2UqobQu3iXnfPN6OBsq+dLKUR84D
-	 yTfrBb0KJepWA==
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 2780BF40068;
-	Tue,  3 Mar 2026 10:54:18 -0500 (EST)
-Received: from phl-imap-15 ([10.202.2.104])
-  by phl-compute-10.internal (MEProxy); Tue, 03 Mar 2026 10:54:18 -0500
-X-ME-Sender: <xms:KgSnaU8DvfFLFwOH8ah_7pRv5Ys73nzEdY5lKLlNjW_LAII6JrFaLQ>
-    <xme:KgSnaXg21ijQV60t6RzN2u-XttkstvmLZIKpjAEszJVYGTENio2oxCTUa258DuwAI
-    t1JGitiv-pWjZwTtQ4kVeADle7K9iwFNpv_X9m1lYmMFgDv0BmreQ8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddviedtleelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfvehhuhgt
-    khcunfgvvhgvrhdfuceotggvlheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtthgvrh
-    hnpefhffekffeftdfgheeiveekudeuhfdvjedvfedvueduvdegleekgeetgfduhfefleen
-    ucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegthhhutg
-    hklhgvvhgvrhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeifeegleel
-    leehledqfedvleekgeegvdefqdgtvghlpeepkhgvrhhnvghlrdhorhhgsehfrghsthhmrg
-    hilhdrtghomhdpnhgspghrtghpthhtohepkedpmhhouggvpehsmhhtphhouhhtpdhrtghp
-    thhtohepuggrvhgvmhesuggrvhgvmhhlohhfthdrnhgvthdprhgtphhtthhopegvughumh
-    griigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohepkhhusggrsehkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopegthhhutghkrdhlvghvvghrsehorhgrtghlvgdrtghomhdprh
-    gtphhtthhopeguhhhofigvlhhlshesrhgvughhrghtrdgtohhmpdhrtghpthhtohepphgr
-    sggvnhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehlihhnuhigqdhfshguvghvvg
-    hlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvthguvghvsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:KgSnaedrdCcmhV1LUkkMx-4I3WAQvErU51UbD3yqlicA9rRXzgXn-Q>
-    <xmx:KgSnaUN5LxGvb46M2urvAqkYVeIGZrDUo6rcZu5bhp8k1s6FPUIe-w>
-    <xmx:KgSnaRsksF4awmcEZnpYv4ekiqfiUw9YaGyQqO7-3hkvrbuvtxdInA>
-    <xmx:KgSnadCBB3dxZ75J9uK0yGdim0pc2Ipw1L-3LP1Rnjcxnrz15YcNhA>
-    <xmx:KgSnaYb6sP_1r_-rG08njHjG8mFsjwtEeZ6ur7oiJ-DmkYF544ZBRl9c>
-Feedback-ID: ifa6e4810:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 0063E780070; Tue,  3 Mar 2026 10:54:17 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772553261; cv=none; b=gNyu16Kk4tTDtuPmMiPCIcBnywNCJKqBL/JovHpstFSQwhK+BJwOMSayJbdPwcDIF6wwKl9+9i5gYpFeCzu6M4j5seEHA5X3SBxQ1o9UeVlQrBD4MDjhXCO0Qm55MaIwbQXQCS7Jf2hrqzi2SGeOFnhmDEYeQi2UOvLz1rZLeUU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772553261; c=relaxed/simple;
+	bh=9SUN97ZiL34DOUQytHdeTX2kIUaF80J/YGNVZhBoYzA=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=c4tIaDsYNTpfdSJ1RyDGBsMhD7eBsWTVQcJOl9k/0u8JmEG59WD/vN9F3XzMjTJuOQYAkLJ5aCFFT09/ICJ3j7BWsJwQLGEY+kyVA8kIEi/eBWWBzQZOyOnOb3+V+e5Mr+6YGcryC2yi7DXkYM/CuXb/IpxxXE5s2zvnp/ttfTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=lGt6OcXC; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="lGt6OcXC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=V8KDgIkpcmCGC9UdHJ9+Z0NC00Ap0an/G+dXrnKdvp0=; b=lGt6OcXCJhYYjeDuaZqgykXJRP
+	vADhEyKbi/8VtOLbu0zTxtHqfAIQvvSfSQUWG7BmZwQIcBZNv0qQJmkzMCej4IrV4d+HrRfV/FVu2
+	YbUlRNkZpGvyJrzuJbVMju0kqzFA/PvQFXuDyHQK+v9egbP1BTh6RQ+zEWe89Hs53pt1fWPuHc9Bm
+	CsL7gUgSH5aTA1zpnFIGlagcYE2oAEPR8hYtuWtJdU24DbYzf69ho2M557R/fM5yEmAW1i/vZYqcl
+	eZIptMJC4jo2CruTJmMUAFwQljvxzFKQnhGoZhwanv6FJkhxxz6k93I2uYbpJ6v0hKUE3vX9MYSuU
+	1EBOAbZw==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:38696 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1vxS4R-000000005Kw-1mG6;
+	Tue, 03 Mar 2026 15:54:03 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1vxS4P-0000000BQXs-0vGB;
+	Tue, 03 Mar 2026 15:54:01 +0000
+In-Reply-To: <aacD3osfaZkLsGxm@shell.armlinux.org.uk>
+References: <aacD3osfaZkLsGxm@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH net-next v2 6/7] phy: qcom-sgmii-eth: relax order of
+ .power_on() vs .set_mode*()
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-ThreadId: Aj7RBWB7jqYs
-Date: Tue, 03 Mar 2026 10:53:57 -0500
-From: "Chuck Lever" <cel@kernel.org>
-To: "Paolo Abeni" <pabeni@redhat.com>,
- "David S. Miller" <davem@davemloft.net>,
- "Eric Dumazet" <edumazet@google.com>, "Jakub Kicinski" <kuba@kernel.org>
-Cc: "David Howells" <dhowells@redhat.com>,
- "Network Development" <netdev@vger.kernel.org>,
- "open list:FILESYSTEMS (VFS and infrastructure)" <linux-fsdevel@vger.kernel.org>,
- "Chuck Lever" <chuck.lever@oracle.com>
-Message-Id: <4e3afa53-8c24-46b8-8dc8-876784a3ef80@app.fastmail.com>
-In-Reply-To: 
- <CAF6piCKbxHF7DASK47-q3DFdtKgvheAGdLUaTwYsfg3ikZAi-w@mail.gmail.com>
-References: 
- <CAF6piCKbxHF7DASK47-q3DFdtKgvheAGdLUaTwYsfg3ikZAi-w@mail.gmail.com>
-Subject: Re: [PATCH net-next] net: datagram: Bypass usercopy checks for kernel
- iterators
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1vxS4P-0000000BQXs-0vGB@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Tue, 03 Mar 2026 15:54:01 +0000
 
+Allow any order of the .power_on() and .set_mode*() methods as per the
+recent discussion. This means phy_power_on() with this SerDes will now
+restore the previous setup without requiring a subsequent
+phy_set_mode*() call.
 
+Tested-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Acked-by: Vinod Koul <vkoul@kernel.org>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+---
+ drivers/phy/qualcomm/phy-qcom-sgmii-eth.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-On Tue, Mar 3, 2026, at 4:42 AM, Paolo Abeni wrote:
-> On 2/25/26 5:25 PM, Chuck Lever wrote:
->> From: Chuck Lever <chuck.lever@oracle.com>
->>
->> Profiling NFSD under an iozone workload showed that hardened
->> usercopy checks consume roughly 1.3% of CPU in the TCP receive path.
->> These checks validate memory regions during copies, but provide no
->> security benefit when both source (skb data) and destination (kernel
->> pages in BVEC/KVEC iterators) reside in kernel address space.
->
-> Are you sure? AFAICS:
->
-> size_t copy_from_iter(void *addr, size_t bytes, struct iov_iter *i)
-> {
->         if (check_copy_size(addr, bytes, false))
->                 return _copy_from_iter(addr, bytes, i);
->
-> calls check_copy_size() on the source address, and the latter:
->
-> static __always_inline __must_check bool
-> check_copy_size(const void *addr, size_t bytes, bool is_source)
-> {
->         int sz = __builtin_object_size(addr, 0);
->         if (unlikely(sz >= 0 && sz < bytes)) {
->         if (!__builtin_constant_p(bytes))
->                         copy_overflow(sz, bytes);
->                 else if (is_source)$
->                         __bad_copy_from();
->                 else
->                         __bad_copy_to();
->                 return false;
->         }
->         if (WARN_ON_ONCE(bytes > INT_MAX))
->                 return false;
->
-> Validates vs overflow regardless of the source address being in kernel
-> space or user-space.
->
-> FTR, I also observe a relevant overhead in check_copy_size(), especially
-> for oldish CPUs.
->
-> /P
-
-Paolo, thanks for the review. I'll post a refreshed patch shortly that
-attempts to address your comments, and that modifies the common helper,
-as Jakub suggested earlier.
-
-
+diff --git a/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c b/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c
+index 6332ff291fdf..f48faa2929a6 100644
+--- a/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c
++++ b/drivers/phy/qualcomm/phy-qcom-sgmii-eth.c
+@@ -271,8 +271,17 @@ static int qcom_dwmac_sgmii_phy_calibrate(struct phy *phy)
+ static int qcom_dwmac_sgmii_phy_power_on(struct phy *phy)
+ {
+ 	struct qcom_dwmac_sgmii_phy_data *data = phy_get_drvdata(phy);
++	int ret;
++
++	ret = clk_prepare_enable(data->refclk);
++	if (ret < 0)
++		return ret;
+ 
+-	return clk_prepare_enable(data->refclk);
++	ret = qcom_dwmac_sgmii_phy_calibrate(phy);
++	if (ret < 0)
++		clk_disable_unprepare(data->refclk);
++
++	return ret;
+ }
+ 
+ static int qcom_dwmac_sgmii_phy_power_off(struct phy *phy)
+@@ -318,6 +327,9 @@ static int qcom_dwmac_sgmii_phy_set_mode(struct phy *phy, enum phy_mode mode,
+ 	if (submode != data->interface)
+ 		data->interface = submode;
+ 
++	if (phy->power_count == 0)
++		return 0;
++
+ 	return qcom_dwmac_sgmii_phy_calibrate(phy);
+ }
+ 
 -- 
-Chuck Lever
+2.47.3
+
