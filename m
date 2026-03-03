@@ -1,291 +1,115 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D55138C2D6
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 09:20:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E57638C40E;
+	Tue,  3 Mar 2026 09:25:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772529631; cv=none; b=mYmoc818VBwQ1sb/NzP88NFwU7x/E52Rsy1ogJUnDf9eTe6GtnM41QccCuNaDXTnfcxSW60SkSjRR17moP497kGe5fjQw1JgnS34ivty50xpQv8hlG58VbIVfFuIS6NbL7Elc1RMXBVbNxlJSCTY2qMj585PIc+0t8M5Sv1wT7g=
+	t=1772529902; cv=none; b=nudFwk7nrnoFdEHOu7pOd/MzywkhZzyoyJ6ErwKU8FgO/SxSjIQTXWQ3E6tluzgVaS7ybcI/l96GF/LB3AB6eZ+l26C9VuzM5EbN7PpGl8SidhmtRTp9ROz1GWvBC+l8vL/uicdLN1WNxy6iCZZugV/CeRiH3ZYlXBfDE1B70R0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772529631; c=relaxed/simple;
-	bh=MejEvDloU3hQV/G806El7k8OYLeyv3mAwyANiGas3zY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=btZikHeYdQlXkuCrRr4pOHsj3TZXYcTTULgHza4LjrSBTVAQqhdNdovpVwb2qKI/Vy0BZfTVv/HzKwrVcmqlgrb18O3OI+TpG+UFQa4H7XYesyl0UcBk3zcCfmr6mS++4SI9SDjqMF+KuPnJ5qbL8YbPoYnsmKG4+Btly2FHcr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SQlWDeIr; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SQlWDeIr"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ab232cc803so26033555ad.3
-        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 01:20:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772529629; x=1773134429; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XSV+AC8eWTk36V/fHXUoLjLGPO33bJQuNND71Ov3wWs=;
-        b=SQlWDeIrcaTD7GkahmChiTGDxC6RL0x01a0O4v+eIQqg2C+N3TNV8+gYJLlRFSL4rQ
-         e9mV9HduzWMi8O+L6bm/msOy6HQUnRww3b0mkvdHFZ2CPbcL40nMcjPV3V99RJwQOSLi
-         9839bz6gNWgayxjAr1h2RcpoNS0ovJ3pXvAX0a8ATVncNuzsltMtvfvNWkTbxM/53rr0
-         XWEvEWhYmlCmk2f9SmJZJFcqvYyFVXwzV1Sa1m+T8Ur3CTlrOth20IcsP30OhGInxWS0
-         YJGAxGdyI+VkB8yIUBYL0q/3vmhNGZgXbvTd53GUbRx2FNXIDfYLzuEA5iinMhrg1gQE
-         TSlQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772529629; x=1773134429;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XSV+AC8eWTk36V/fHXUoLjLGPO33bJQuNND71Ov3wWs=;
-        b=MkPFTgERpjFfAqQd26pckNPOgQmsa4llHXxdELZV9SxxcRezBZzx3EfE/vPkyESiw4
-         sjbB2xuU1ppybbjddGz6PY6XluD60F7qIyPN+GUiJx+qYIv2edplCFBLVdw3n8VJur+d
-         s267VXSh3LOk3x2BfEJEuTuJUPsu5OlsSBqh+f0spifKYbp9kFZKWT+1SK8nI4MAAvrx
-         J8C3lDxS3KORbdWTrP7Iwa0cO2eezAHD1c48biCf5S/9crGWepiohS7tWvMHhwgUJxFo
-         th4t+VNyQCOp3oalSc31ZsALJC3pSi997yqOZuM4UwNp2WYyf1Emi7sQ5GHtyf9D+LEO
-         VlXg==
-X-Forwarded-Encrypted: i=1; AJvYcCWHpYGghlMx1TILt8HMs4TswZAMnlgLMKU19hzMyQKMgEBuZ0cOotAZGPGaErffGHoaoZoRFDw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdyBVCBStuhIPiFXeqPPBHKeVvLVVFQWgUj6WkSMybBH+h7hZL
-	8kLOh0z2QfTFMnVmb1iO+Cl9LJ0DGLOGQyQpD+2hhQFhjaxG+M1fPL5d
-X-Gm-Gg: ATEYQzw1GciwSk9esKuCSBLji9Yd7mDPHprBu3TUK2j6zzaH+61yBCb1iOFUB8yxWUv
-	ozAiKEN3KeYbfyeIbotDPtijVGIfmFyNOiGTIv/SfCsQoxKleC0bD4KMbhpyhDELvSZQJftSp/p
-	xSLoCWpaGwTzRUaJMpR9lB3hM+UYBAmVzzIboPPFZKQM7Dg0wGpEZ6i0ZPK6KyuzQkTXvbqQoNb
-	0/k+He+I4GZxq9p8xRd8Pp/R0Ao9vpRq9dlmypvZORM/Hapua4F0aYqBvIig4GH4ajuyDY+cqyT
-	9ueKFtyYs94k4X4wq4OF2gT63hdC8l3m5/1o/hjMELy7FsBTxXEkQ8JRYhwboOqZPeiXePliLNn
-	cOMXJSDcXJYZ7PtC5bkDgBAUOun/+0UOmZ6p99zMcGhNX/7APx9cMZgR+nXeXfF0BViIGTuOFw/
-	7BYTqqySNb7MlwX0L7vpLfFdFs2zNysrIXKtXTVjduqtmvgStuv2Zy8nYOGu68YVhMlndSfxAvA
-	GtgcXJnUm4y
-X-Received: by 2002:a17:903:1aeb:b0:2ae:6192:8da3 with SMTP id d9443c01a7336-2ae619297cemr15448335ad.42.1772529629524;
-        Tue, 03 Mar 2026 01:20:29 -0800 (PST)
-Received: from localhost.localdomain (60-250-196-139.hinet-ip.hinet.net. [60.250.196.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb69f996sm158777475ad.50.2026.03.03.01.20.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 01:20:29 -0800 (PST)
-From: Joey Lu <a0987203069@gmail.com>
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	mcoquelin.stm32@gmail.com,
-	richardcochran@gmail.com
-Cc: alexandre.torgue@foss.st.com,
-	joabreu@synopsys.com,
-	ychuang3@nuvoton.com,
-	schung@nuvoton.com,
-	yclu4@nuvoton.com,
-	peppe.cavallaro@st.com,
-	linux-arm-kernel@lists.infradead.org,
-	netdev@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	openbmc@lists.ozlabs.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Joey Lu <a0987203069@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>
-Subject: [PATCH net-next v13 3/3] net: stmmac: dwmac-nuvoton: Add dwmac glue for Nuvoton MA35 family
-Date: Tue,  3 Mar 2026 17:20:06 +0800
-Message-ID: <20260303092006.263715-4-a0987203069@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260303092006.263715-1-a0987203069@gmail.com>
-References: <20260303092006.263715-1-a0987203069@gmail.com>
+	s=arc-20240116; t=1772529902; c=relaxed/simple;
+	bh=mFemJ5MhTC3Evj5G1qJK0FtddN++smwPzX8fsw54PuU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=nmuQdUogziLrBynQhgEs7ftUapLZrPqiOZK/J86we8EiHEIqhw2PpMlZjg2btxpPJ12uwUehPIUIIrNjJOG7BD7VbATmXVRh7aOa2Ypnej3MbTo1vw0rPZubnI0l1aZDoXjBtKP2Y+99idF6plUJteeRshxCGMeV2R9BjyfNvfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from [127.0.0.2] (unknown [210.73.43.101])
+	by APP-01 (Coremail) with SMTP id qwCowAA34WzPqKZpyU4sCQ--.6573S6;
+	Tue, 03 Mar 2026 17:24:33 +0800 (CST)
+From: Vivian Wang <wangruikang@iscas.ac.cn>
+Date: Tue, 03 Mar 2026 17:24:21 +0800
+Subject: [PATCH net-next 4/4] net: spacemit: Free rings of memory after
+ unmapping DMA
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260303-k1-ethernet-more-fixes-v1-4-0ab0122fdd14@iscas.ac.cn>
+References: <20260303-k1-ethernet-more-fixes-v1-0-0ab0122fdd14@iscas.ac.cn>
+In-Reply-To: <20260303-k1-ethernet-more-fixes-v1-0-0ab0122fdd14@iscas.ac.cn>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Yixun Lan <dlan@kernel.org>, 
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, 
+ Vadim Fedorenko <vadim.fedorenko@linux.dev>, 
+ Troy Mitchell <troy.mitchell@linux.spacemit.com>, 
+ Vivian Wang <wangruikang@iscas.ac.cn>
+Cc: netdev@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ spacemit@lists.linux.dev, linux-kernel@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-CM-TRANSID:qwCowAA34WzPqKZpyU4sCQ--.6573S6
+X-Coremail-Antispam: 1UD129KBjvJXoW7AryrZF4Uury7tr48XryUAwb_yoW8XrykpF
+	W7ZasrGryUtF45JrsrAF4Iy3W8AayrtFWj93yYvws3XF9IyrZrKFyFyry7Gr1DArWkKryY
+	vrWqyw13JF1DAr7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQY14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
+	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
+	z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr
+	1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0D
+	M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
+	v20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
+	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
+	IY04v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrwCF
+	x2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14
+	v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY
+	67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI
+	8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7VUj89NPUUUUU==
+X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-Add support for Gigabit Ethernet on Nuvoton MA35 series using dwmac driver.
+In emac_free_{tx,rx}_resources, call dma_free_coherent() to unmap DMA
+before calling kfree() to deallocate the memory, instead of the other
+way around.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Joey Lu <a0987203069@gmail.com>
+Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
+Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
 ---
- drivers/net/ethernet/stmicro/stmmac/Kconfig   |  12 ++
- drivers/net/ethernet/stmicro/stmmac/Makefile  |   1 +
- .../ethernet/stmicro/stmmac/dwmac-nuvoton.c   | 136 ++++++++++++++++++
- 3 files changed, 149 insertions(+)
- create mode 100644 drivers/net/ethernet/stmicro/stmmac/dwmac-nuvoton.c
+ drivers/net/ethernet/spacemit/k1_emac.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Kconfig b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-index 07088d03dbab..861f1c6c14f1 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Kconfig
-+++ b/drivers/net/ethernet/stmicro/stmmac/Kconfig
-@@ -132,6 +132,18 @@ config DWMAC_MESON
- 	  the stmmac device driver. This driver is used for Meson6,
- 	  Meson8, Meson8b and GXBB SoCs.
+diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
+index f7f16397a2c2..02a009afc921 100644
+--- a/drivers/net/ethernet/spacemit/k1_emac.c
++++ b/drivers/net/ethernet/spacemit/k1_emac.c
+@@ -446,12 +446,12 @@ static void emac_free_tx_resources(struct emac_priv *priv)
  
-+config DWMAC_NUVOTON
-+	tristate "Nuvoton MA35 dwmac support"
-+	default ARCH_MA35
-+	depends on OF && (ARCH_MA35 || COMPILE_TEST)
-+	select MFD_SYSCON
-+	help
-+	  Support for Ethernet controller on Nuvoton MA35 series SoC.
+ 	emac_clean_tx_desc_ring(priv);
+ 
+-	kfree(tr->tx_desc_buf);
+-	tr->tx_desc_buf = NULL;
+-
+ 	dma_free_coherent(dev, tr->total_size, tr->desc_addr,
+ 			  tr->desc_dma_addr);
+ 	tr->desc_addr = NULL;
 +
-+	  This selects the Nuvoton MA35 series SoC glue layer support
-+	  for the stmmac device driver. The nuvoton-dwmac driver is
-+	  used for MA35 series SoCs.
++	kfree(tr->tx_desc_buf);
++	tr->tx_desc_buf = NULL;
+ }
+ 
+ static void emac_free_rx_resources(struct emac_priv *priv)
+@@ -461,12 +461,12 @@ static void emac_free_rx_resources(struct emac_priv *priv)
+ 
+ 	emac_clean_rx_desc_ring(priv);
+ 
+-	kfree(rr->rx_desc_buf);
+-	rr->rx_desc_buf = NULL;
+-
+ 	dma_free_coherent(dev, rr->total_size, rr->desc_addr,
+ 			  rr->desc_dma_addr);
+ 	rr->desc_addr = NULL;
 +
- config DWMAC_QCOM_ETHQOS
- 	tristate "Qualcomm ETHQOS support"
- 	default ARCH_QCOM
-diff --git a/drivers/net/ethernet/stmicro/stmmac/Makefile b/drivers/net/ethernet/stmicro/stmmac/Makefile
-index c9263987ef8d..4ade030b634f 100644
---- a/drivers/net/ethernet/stmicro/stmmac/Makefile
-+++ b/drivers/net/ethernet/stmicro/stmmac/Makefile
-@@ -20,6 +20,7 @@ obj-$(CONFIG_DWMAC_IPQ806X)	+= dwmac-ipq806x.o
- obj-$(CONFIG_DWMAC_LPC18XX)	+= dwmac-lpc18xx.o
- obj-$(CONFIG_DWMAC_MEDIATEK)	+= dwmac-mediatek.o
- obj-$(CONFIG_DWMAC_MESON)	+= dwmac-meson.o dwmac-meson8b.o
-+obj-$(CONFIG_DWMAC_NUVOTON)	+= dwmac-nuvoton.o
- obj-$(CONFIG_DWMAC_QCOM_ETHQOS)	+= dwmac-qcom-ethqos.o
- obj-$(CONFIG_DWMAC_RENESAS_GBETH) += dwmac-renesas-gbeth.o
- obj-$(CONFIG_DWMAC_ROCKCHIP)	+= dwmac-rk.o
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-nuvoton.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-nuvoton.c
-new file mode 100644
-index 000000000000..80f1d7419d46
---- /dev/null
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-nuvoton.c
-@@ -0,0 +1,136 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Nuvoton DWMAC specific glue layer
-+ *
-+ * Copyright (C) 2025 Nuvoton Technology Corp.
-+ *
-+ * Author: Joey Lu <a0987203069@gmail.com>
-+ */
-+
-+#include <linux/mfd/syscon.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/of.h>
-+#include <linux/of_net.h>
-+#include <linux/platform_device.h>
-+#include <linux/regmap.h>
-+#include <linux/stmmac.h>
-+
-+#include "stmmac_platform.h"
-+
-+#define NVT_REG_SYS_GMAC0MISCR  0x108
-+#define NVT_REG_SYS_GMAC1MISCR  0x10C
-+
-+#define NVT_MISCR_RMII          BIT(0)
-+
-+/* Two thousand picoseconds are evenly mapped to a 4-bit field,
-+ * resulting in each step being 2000/15 picoseconds.
-+ */
-+#define NVT_PATH_DELAY_STEP     134
-+#define NVT_TX_DELAY_MASK       GENMASK(19, 16)
-+#define NVT_RX_DELAY_MASK       GENMASK(23, 20)
-+
-+struct nvt_priv_data {
-+	struct device *dev;
-+	struct regmap *regmap;
-+	u32 macid;
-+};
-+
-+static int nvt_gmac_get_delay(struct device *dev, const char *property)
-+{
-+	u32 arg;
-+
-+	if (of_property_read_u32(dev->of_node, property, &arg))
-+		return 0;
-+
-+	if (arg > 2000)
-+		return -EINVAL;
-+
-+	if (arg == 2000)
-+		return 15;
-+
-+	return arg / NVT_PATH_DELAY_STEP;
-+}
-+
-+static int nvt_set_phy_intf_sel(void *bsp_priv, u8 phy_intf_sel)
-+{
-+	struct nvt_priv_data *priv = bsp_priv;
-+	u32 reg, val;
-+	int ret;
-+
-+	if (phy_intf_sel == PHY_INTF_SEL_RGMII) {
-+		ret = nvt_gmac_get_delay(priv->dev, "rx-internal-delay-ps");
-+		if (ret < 0)
-+			return ret;
-+		val = FIELD_PREP(NVT_RX_DELAY_MASK, ret);
-+
-+		ret = nvt_gmac_get_delay(priv->dev, "tx-internal-delay-ps");
-+		if (ret < 0)
-+			return ret;
-+		val |= FIELD_PREP(NVT_TX_DELAY_MASK, ret);
-+	} else if (phy_intf_sel == PHY_INTF_SEL_RMII) {
-+		val = NVT_MISCR_RMII;
-+	} else {
-+		return -EINVAL;
-+	}
-+
-+	reg = (priv->macid == 0) ? NVT_REG_SYS_GMAC0MISCR : NVT_REG_SYS_GMAC1MISCR;
-+	regmap_update_bits(priv->regmap, reg,
-+			   NVT_RX_DELAY_MASK | NVT_TX_DELAY_MASK | NVT_MISCR_RMII, val);
-+
-+	return 0;
-+}
-+
-+static int nvt_gmac_probe(struct platform_device *pdev)
-+{
-+	struct plat_stmmacenet_data *plat_dat;
-+	struct stmmac_resources stmmac_res;
-+	struct device *dev = &pdev->dev;
-+	struct nvt_priv_data *priv;
-+	int ret;
-+
-+	ret = stmmac_get_platform_resources(pdev, &stmmac_res);
-+	if (ret)
-+		return dev_err_probe(dev, ret, "Failed to get platform resources\n");
-+
-+	plat_dat = devm_stmmac_probe_config_dt(pdev, stmmac_res.mac);
-+	if (IS_ERR(plat_dat))
-+		return dev_err_probe(dev, PTR_ERR(plat_dat), "Failed to get platform data\n");
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
-+	if (!priv)
-+		return dev_err_probe(dev, -ENOMEM, "Failed to allocate private data\n");
-+
-+	priv->regmap = syscon_regmap_lookup_by_phandle_args(dev->of_node, "nuvoton,sys",
-+							    1, &priv->macid);
-+	if (IS_ERR(priv->regmap))
-+		ret = dev_err_probe(dev, PTR_ERR(priv->regmap), "Failed to get sys register\n");
-+
-+	if (priv->macid > 1)
-+		ret = dev_err_probe(dev, -EINVAL, "Invalid sys arguments\n");
-+
-+	plat_dat->bsp_priv = priv;
-+	plat_dat->set_phy_intf_sel = nvt_set_phy_intf_sel;
-+
-+	return stmmac_pltfr_probe(pdev, plat_dat, &stmmac_res);
-+}
-+
-+static const struct of_device_id nvt_dwmac_match[] = {
-+	{ .compatible = "nuvoton,ma35d1-dwmac"},
-+	{ }
-+};
-+MODULE_DEVICE_TABLE(of, nvt_dwmac_match);
-+
-+static struct platform_driver nvt_dwmac_driver = {
-+	.probe  = nvt_gmac_probe,
-+	.remove = stmmac_pltfr_remove,
-+	.driver = {
-+		.name           = "nuvoton-dwmac",
-+		.pm		= &stmmac_pltfr_pm_ops,
-+		.of_match_table = nvt_dwmac_match,
-+	},
-+};
-+module_platform_driver(nvt_dwmac_driver);
-+
-+MODULE_AUTHOR("Joey Lu <a0987203069@gmail.com>");
-+MODULE_DESCRIPTION("Nuvoton DWMAC specific glue layer");
-+MODULE_LICENSE("GPL");
++	kfree(rr->rx_desc_buf);
++	rr->rx_desc_buf = NULL;
+ }
+ 
+ static int emac_tx_clean_desc(struct emac_priv *priv)
+
 -- 
-2.43.0
+2.53.0
 
