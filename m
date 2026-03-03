@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2632DEA7B
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 04:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3EE2E541E
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 04:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772513226; cv=none; b=pU9+AeXR4uk8v+8rD3PAffzaDMwufzWSfaq5/8uOBdHUV7Tl9YfAvdGlLI8lUJYcmxU28Vvah91N1Au77x1+xD5913O03H/BivLdS/cmhLgU+U2iCGfZjDWmtgkpcqGl2oyKhLKhSHtusrbCr6wAr5pOGJqM0p0E3m6y5eh8NJw=
+	t=1772513227; cv=none; b=EFbkwlf2pTHFeyJVC2PNpErk5af/kdvW8wdgqBonwqO4uS++lxapK8spQvkvYrWRyMLY0x2amwhwEisL95VBh1HQU7aU/WiVUFUVWzzuEGP8PLirTXQoNbSV9vJruKaSRqh87DmPuIUf1Vilq5ot3TtxF2joSCzz366zNvLN4kY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772513226; c=relaxed/simple;
-	bh=9UAcM0PnwplsMMTWj6SaZi0nTm/VBVk9KOgMZRW5uug=;
+	s=arc-20240116; t=1772513227; c=relaxed/simple;
+	bh=L2kPs4yvsFiZg+JA614pK4ludT5dZh/L65eSLTe9SRc=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=H9vxSJGriaLMXs8oIalGPLpwzH5qrp7QvixbP3G4+X+ruYmD+HKL3xcOaaV1oS9eBZarE2Uj9t/ZeuS+ro8ru837ud0ciWYN2bdszsq3g4T8YaHMcjLEk9tOp3EyU/YATRg0MgVAgu602BihqAGPs9xxyrIA30j02R/jtqKXbko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ixm2gBCA; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=jVTKk6jW3GAomIwHynQ/7mfDs0qT4Gz5sJGR1XaT11RnTDrph7oorUNDllsvwLEm1KbWmW1yHFnapG3+19fBiouMbqedSBTSMF2bI5sP1geZd3q4g7GJbvMzXO9z8hvFYbu49zMeJXhel3ArDjHtJuvCVdvolUfCtwm4KURdZnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EnMEYgOI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ixm2gBCA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A541C116C6;
-	Tue,  3 Mar 2026 04:47:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EnMEYgOI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0431C116C6;
+	Tue,  3 Mar 2026 04:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772513226;
-	bh=9UAcM0PnwplsMMTWj6SaZi0nTm/VBVk9KOgMZRW5uug=;
+	s=k20201202; t=1772513227;
+	bh=L2kPs4yvsFiZg+JA614pK4ludT5dZh/L65eSLTe9SRc=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ixm2gBCA+uMYEQOYvgDJwLEyjbzIhqhBXd74vtlwk1mJhuLXG1/E4uKpMLue0YhW1
-	 dFg/1t0Mhn/Ue9S94CmbIWUIfW9LVbK35mJRvn6Kzxx7unA6SEIe3eUvLNUfCnCPwZ
-	 YOMO6VsqCbK/EpDXuQumgK55vELRt21s9Yw/J8H19GfCEtnG/xFIciiFwQ8KmvY2Pm
-	 u8RbbUU3P++iC50UCy2nfMgECetxlouqNqKogPeWQ8CJjzN1IxvGYkfEe2mZFfjXnX
-	 b6NH0Ys6hgzwqAKHZqfjayyHqct9MCXIlcTw8tkO+6Ds81Jrz9r+zJoh9TLoOJIKVB
-	 BjpOb3JEM6WuQ==
+	b=EnMEYgOIxiQBnqeayJumalaYvLWbJPEMIsEpkNNK4mmwKW7hJP6OAQI9JWXAbqxDO
+	 /RCg/k1m2PDnO5hcm14ERCaGLHl/JXiu94hgli7kqCHol8P0CyGZjk7TUoHuXr+1SZ
+	 3OiCFryZouvgIxGlEiPtigXnL/gVuxs8N8zpcwLbm7EWLclp2wt90UBb7B+AGrKaC6
+	 q0AZ8hqidGsi2x8cRXT5y8ra9K6A2SOXYO5gMWVgZymAE67E7blK7qs5i+bv35wXHn
+	 34hYF5nWEpdLM9zGwHriJKZ7VTQ5/llEgm6+NapZW0sprDuPidjtkAmGdjTZrLmCKw
+	 s6HcgQRV/5PYw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02CD53809A80;
-	Tue,  3 Mar 2026 04:47:09 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CD653809A80;
+	Tue,  3 Mar 2026 04:47:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,33 +37,36 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] mpls: remove test against ipv6_stub
+Subject: Re: [PATCH v1 net-next] dccp Remove inet_hashinfo2_init_mod().
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177251322754.625663.4715533455698311741.git-patchwork-notify@kernel.org>
-Date: Tue, 03 Mar 2026 04:47:07 +0000
-References: <20260228175715.1195536-1-edumazet@google.com>
-In-Reply-To: <20260228175715.1195536-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com
+ <177251322904.625663.4529024196210841547.git-patchwork-notify@kernel.org>
+Date: Tue, 03 Mar 2026 04:47:09 +0000
+References: <20260301063756.1581685-1-kuniyu@google.com>
+In-Reply-To: <20260301063756.1581685-1-kuniyu@google.com>
+To: Kuniyuki Iwashima <kuniyu@google.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, kuni1840@gmail.com,
+ netdev@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sat, 28 Feb 2026 17:57:15 +0000 you wrote:
-> ipv6_stub is never NULL, let's remove this test.
+On Sun,  1 Mar 2026 06:37:55 +0000 you wrote:
+> Commit c92c81df93df ("net: dccp: fix kernel crash on module load")
+> added inet_hashinfo2_init_mod() for DCCP.
 > 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
-> ---
->  net/mpls/af_mpls.c | 3 ---
->  1 file changed, 3 deletions(-)
+> Commit 22d6c9eebf2e ("net: Unexport shared functions for DCCP.")
+> removed EXPORT_SYMBOL_GPL() it but forgot to remove the function
+> itself.
+> 
+> [...]
 
 Here is the summary with links:
-  - [net-next] mpls: remove test against ipv6_stub
-    https://git.kernel.org/netdev/net-next/c/a0e8c9a5060f
+  - [v1,net-next] dccp Remove inet_hashinfo2_init_mod().
+    https://git.kernel.org/netdev/net-next/c/425e080a1c34
 
 You are awesome, thank you!
 -- 
