@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B682D46B3
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 11:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A9F2D46B3;
+	Tue,  3 Mar 2026 11:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772538604; cv=none; b=gY8Dh0yAO7rC/t+2DEWPuRxo/QPQcJoQb9xZ1tRfzvxEM3p6JnoONHcvC7K4N9LN4t/AjccM89rlds5VGP+oSv/CjZwuE/1vNJ0Rba8draIUGdQktUzKG4xlyACT9YnRnMVjdsETOdFSx7AkbxH/KAeRSeIC0uQa0T5Rcqt5+Y8=
+	t=1772538608; cv=none; b=RtwKpkSYgck/qt9jFmoeKI2ZH/1thFh5WamUYGMFQeU2BJo2yuZ6krjn0CS27oLp/nIM4KOml0wNYkewpO6u3AAzGqI0WHX4WewaDp5W9ucPFl+fPBjhnWCQPb1T0gvdZIkcmxxQ8swM2HGEwY0vclh145Ett+ysclV5RUtf0SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772538604; c=relaxed/simple;
-	bh=u8rbT8/NeKpEeeWz81Ro38SoLa3EiUTRyj4XZHnUePs=;
+	s=arc-20240116; t=1772538608; c=relaxed/simple;
+	bh=9GLyG+++AmoUClZPw6vDXpyimeIQuYiszXoyeZyFG+0=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Qj69GMopMOMGc0dbuSn1kMQXUcQVOZ5lZ/hslIMBHag6uS/Hdk6aSdCdEEa2LFbpS/hCO6MA6gp01hzQMSu+KJS1DF7ebGyYYekyA0EWAHck5vHQLYhvWVmvIZeSpLcclOcwupYl9hRZr2ORDg/IVX021F34iuNjJrrp72g66VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ES/NAHaf; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=eZZFq2oCH+WpR/hgimyNMNqNFXOGvpS+by+JdgNnJ/1DshrSXXDNdk8ZDH9fyOlAy264LEELGjCSkN49no8t4Ft/oaIg6UKW+7FuetnxUTY5cx4bybqGkHk44NjZcvGeHyFriuHEdxWXz3lxt8HUsRlfbZXgGvcYJc2dPNBJHYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nqSvVayH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ES/NAHaf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1154C116C6;
-	Tue,  3 Mar 2026 11:50:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nqSvVayH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC10C116C6;
+	Tue,  3 Mar 2026 11:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772538603;
-	bh=u8rbT8/NeKpEeeWz81Ro38SoLa3EiUTRyj4XZHnUePs=;
+	s=k20201202; t=1772538608;
+	bh=9GLyG+++AmoUClZPw6vDXpyimeIQuYiszXoyeZyFG+0=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ES/NAHafPPT6VOzbqOeuwzNiDHTrQNI1c1pbNI6Mjb05tHLgfLn6Q/hNyo8P+zEt1
-	 i1511EMuYJby5DUv6/QPUpdxXYL1O4BLSc7oLm8sN5/w/lYdVxV1TvFo79985nKEB0
-	 nNN2mpvwTX2s4PaJIXN9vU+xnvorZKk5kH74LpmOvht09iwa+OW9IvqzSHoG/IzUCS
-	 d53kIn9yCKlyS3CzG6tC1MWW0f/Yie+vMew1kfyw+6yg5nB0m4BPtiCDYyU7Rgz8vn
-	 lxGoqZaB6SLcqI3M9Fsj48surk3XYwv8eTPXQ7KSBtMPiBMHOIHPqwvlL2NcQzMR5r
-	 9wUqs9NgnBCjg==
+	b=nqSvVayH179lP2OPO1l96rGSaqaO3HtT2PnaIzaQeYvJRF/HhUkkh8ROJ9g8O06uL
+	 cpWETR54+979upoYU1ptZOmxY6qRAAI8MMCRmb4JxplF0YYFbwZ8/tgzCJgtA8i2Z1
+	 5M9l/MB+RYTGRcyEQ9mdcbNYWTaNjG0tsR5N0rn7Ev8JILj+jNwsGb8nhj2Fo3ynRW
+	 x6JNviRtFXq6Iu9ev1t9WJJBXhap1+I92+UuT7Y47FnnfHWtOHL0OhwqRig1co+Cwp
+	 J375p9vmd62/BBDKPaiK014JIdAkNwpjps7z6Vix4MrTEMFyY1ADCgzjYND91acWRj
+	 0cBHmXlrMqHsw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEC7380A965;
-	Tue,  3 Mar 2026 11:50:06 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA068380A965;
+	Tue,  3 Mar 2026 11:50:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,37 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] indirect_call_wrapper: do not reevaluate function
- pointer
+Subject: Re: [PATCH net-next] net: ti: icssg: Add HSR/PRP protocol frame
+ filtering
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177253860530.835747.6240964290195165095.git-patchwork-notify@kernel.org>
-Date: Tue, 03 Mar 2026 11:50:05 +0000
-References: <20260227172603.1700433-1-edumazet@google.com>
-In-Reply-To: <20260227172603.1700433-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- kuniyu@google.com, netdev@vger.kernel.org, eric.dumazet@gmail.com
+ <177253860929.835747.5608802035058183541.git-patchwork-notify@kernel.org>
+Date: Tue, 03 Mar 2026 11:50:09 +0000
+References: <20260227174254.3821443-1-danishanwar@ti.com>
+In-Reply-To: <20260227174254.3821443-1-danishanwar@ti.com>
+To: MD Danish Anwar <danishanwar@ti.com>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, m-malladi@ti.com,
+ jacob.e.keller@intel.com, haokexin@gmail.com, vadim.fedorenko@linux.dev,
+ linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, vigneshr@ti.com, rogerq@kernel.org
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Paolo Abeni <pabeni@redhat.com>:
 
-On Fri, 27 Feb 2026 17:26:03 +0000 you wrote:
-> We have an increasing number of READ_ONCE(xxx->function)
-> combined with INDIRECT_CALL_[1234]() helpers.
+On Fri, 27 Feb 2026 23:12:54 +0530 you wrote:
+> Add support for HSR and PRP protocol frame filtering in the ICSSG
+> classifier by configuring filter table 3 (FT3) to detect PTP frames
+> (EtherType 0x88F7) in HSR/PRP tagged packets.
 > 
-> Unfortunately this forces INDIRECT_CALL_[1234]() to read
-> xxx->function many times, which is not what we wanted.
-> 
-> Fix these macros so that xxx->function value is not reloaded.
+> Also add rx_class_or_base to miig_rt_offsets structure to support
+> RX_CLASS_OR register access, and fix typos in FT1_N_REG and FT3_N_REG
+> macros (slize -> slice).
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] indirect_call_wrapper: do not reevaluate function pointer
-    https://git.kernel.org/netdev/net/c/710f5c765803
+  - [net-next] net: ti: icssg: Add HSR/PRP protocol frame filtering
+    https://git.kernel.org/netdev/net-next/c/f56438a74d88
 
 You are awesome, thank you!
 -- 
