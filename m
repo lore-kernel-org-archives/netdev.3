@@ -1,98 +1,69 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897DF3603C3;
-	Tue,  3 Mar 2026 01:31:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A15830148B;
+	Tue,  3 Mar 2026 01:33:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772501465; cv=none; b=e7WamQ3BnDb5OjW65h2CBZWm9BfVRtaa1NdmANlxpY6zHI3y1VpbAIr9mZweu9H33UpZbDbY9n2F/TFB994AOv8cW1HFdwIK2jzTqCVQqZxqoO73o5t208yyKnNyTaGPfbyJo858vMFv5BNWDt7lyQvJrO5wnkCdVIbebprlKaw=
+	t=1772501584; cv=none; b=IC1u+8cBCK7alKO4itomJZzWpkl8RpsJC/yQBr34lvYXwdcV5q7PMoBm/FE0Pc/BdLhBL0kh/0gahgP0mt4XTOnLuyU/BoAdmOLFJN4PysT/MXNtfSUtgLEJ3T+tWW6lj/A9DbEFwkVr2UT/cginq/2rzt5kqEqDevF6H8s5Uvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772501465; c=relaxed/simple;
-	bh=4YJ21+u9iaHR/3fliCDM5sQsRGumRp1QiMPhtK95E8A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RBUwYZ3X1qNinBIIMA+ZSzTdETGKNNs+vdzrtfYvByn1P4Zkt9RUg65qFHucCbqbelQzK2UJvbmwNiRk5Gpj5bLHzdIZ8jA+nvp7HY1WDsxdTrx6OB4vJnUJM/5Kyamzs+FQd+Y7vDkcqjjQRY8Uu3iqehockj0FLip/sqL/66w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=TF5B/smj; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1772501584; c=relaxed/simple;
+	bh=IUUZMklsuDqt9XDyM9yk4sjEMlG0JCQemvWf3MVHwlE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=W5HJdpj9BRDpMqJhCD1ZQR/vRK0cRVlBhK8lbM+WU8g4r9e0IhWFBk5/fFmJlKCqZqkvpQxSY5BCSixaZtpQpxjW+AWQG5bnkl51sMZnLI70s3rUfTW7cezop2PSnuN6rrMwrmISf2jnIcFr9YB2P8JoA3MaDmcxwSu+anffkPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bj1dklSB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="TF5B/smj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=HUKL9Y5s8qQvy223sWGjb++3da04HXQ26Z6GEuwMerc=; b=TF5B/smjiLlQUtcGCfFsFPta+Q
-	1ont1wMORchdXMOo5dHeQKh92q1h4bXTT8IichY2T2BiPzhYhKw9xqEvdkPCBG6A50bik8lgs2ZTZ
-	b0F8FKG1cnbzD68qMusKDyL+TXyi/JRRIkyxbRJ/c5cUfoXXONa7rrnAkTQctM7hqLR8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vxEar-009mO2-I2; Tue, 03 Mar 2026 02:30:37 +0100
-Date: Tue, 3 Mar 2026 02:30:37 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jacky Chou <jacky_chou@aspeedtech.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Po-Yu Chuang <ratbert@faraday-tech.com>,
-	Joel Stanley <joel@jms.id.au>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-aspeed@lists.ozlabs.org, taoren@meta.com
-Subject: Re: [PATCH net-next v6 0/5] Add AST2600 RGMII delay into ftgmac100
-Message-ID: <ef88bb50-9f2c-458d-a7e5-dc5ecb9c777a@lunn.ch>
-References: <20260302-rgmii_delay_2600-v6-0-68319a4c4110@aspeedtech.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bj1dklSB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9B6C19423;
+	Tue,  3 Mar 2026 01:33:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772501583;
+	bh=IUUZMklsuDqt9XDyM9yk4sjEMlG0JCQemvWf3MVHwlE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Bj1dklSB20+0Kay/8hcYBsj29heJW2oqguhj7spRmyhM8d0TF6NbRWyKNGDjZ0Dvc
+	 3Rsq1JnW2WuGk36M6P9w8+MsFx3wVl0cKkz1lJ3lKIcsUBw3b0qMznwdouEHq/5j+D
+	 y2NfYxMS7DzP0mRyTdHMgbTDhEWqm3fwYSqBaiEA1LlKLXR/BBSSvRM6QWRavvlv8Y
+	 8XdtHbycUO3SV91pgi4YKG/ExD+oYobj3cmt580hxvcoAs4thhzmQKrSz9yDnJDeOO
+	 zmIS4Js6XenCLxEAoTRCF4Ax4M3T9MWRg4om8OmUzj0Y9It+csZRPF2eS20yPnZV0e
+	 JlGtq4Bm1NpEg==
+Date: Mon, 2 Mar 2026 17:33:02 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Allison Henderson <achender@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ pabeni@redhat.com, edumazet@google.com, rds-devel@oss.oracle.com,
+ horms@kernel.org, linux-rdma@vger.kernel.org, allison.henderson@oracle.com
+Subject: Re: [PATCH net-next v1 0/2] selftests: rds: refactor and expand rds
+ selftests test
+Message-ID: <20260302173302.4d1634be@kernel.org>
+In-Reply-To: <20260302055518.301620-1-achender@kernel.org>
+References: <20260302055518.301620-1-achender@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302-rgmii_delay_2600-v6-0-68319a4c4110@aspeedtech.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Mon, Mar 02, 2026 at 06:24:27PM +0800, Jacky Chou wrote:
-> This patch series adds support for configuring RGMII internal delays for the
-> Aspeed AST2600 FTGMAC100 Ethernet MACs.
+On Sun,  1 Mar 2026 22:55:16 -0700 Allison Henderson wrote:
+> This series aims to improve the current rds selftests.  The first patch
+> refactors the existing test.py such that the networking set up can be
+> reused as general purpose infrastructure for other tests.  The existing
+> send and receive code is hoisted into a separate rds_basic.py.  The next
+> patch adds a new rds_stress.py that exercises RDS via the external
+> rds-stress tool from the rds-tools package if it is available on the host.
+> We add two new flags to test.py, -b and -s to select rds_basic or
+> rds_stress respectively.  The intent is to make the RDS selftests more
+> modular and extensible.  Let me know what you all think.
+> 
+> Questions, comments, suggestions appreciated!
 
-I've been thinking about this some more. And i would like to propose a
-completely different solution.
+IDK Allison. I tried to integrate the remaining tests with Netdev CI
+this weekend. The two groups of networking tests which can't be run
+like all the other selftests are vsock and RDS. I get vsock being
+different. vsock is used to communicate between VMs and host, setting
+up the vms with the locally built kernel makes it different.
 
-What we are trying to achieve is allowing the correct phy-mode to be
-used in DT, rgmii-id. Being able to specify internal delays is nice to
-have, but for most platforms should not be needed. It is only needed
-for badly designed boards where the designer of the PCB did not take
-care with the length of the traces.
-
-Part of the problem is that the MAC driver is not actually
-"broken". It does what we recommend, read the phy-mode value from DT,
-and pass it to the PHY. The real issue is that the bootloader enabled
-delays in the MAC, behind the MAC drivers back. Because the MAC driver
-is not "broken", it is hard to "fix" the issue in the MAC driver.
-
-So lets solve this in the bootloader. I suggest you patch the
-bootloader to no longer enable the delays in the MAC. It also needs to
-patch the DT blob. If the blob says "rgmii", change it to
-"rgmii-id". u-boot should be able to do this.
-
-That should give backwards compatibility:
-
-* Existing DT blobs with old bootloader gain the delays in the MAC.
-
-* Existing DT blobs with the new bootloader gain delays in the PHY.
-
-* For new boards being added to Linux, we NACK them with "rgmii", tell
-  the developer to upgrade the bootloader, and use the correct
-  rgmii-id. This is a power we do have.
-
-* Developers of existing .dts files can submit patches to replace
-  "rgmii" with "rgmii-id" once they are happy all platforms have had
-  their bootloader upgraded. That might be never, since developers are
-  lazy, and we cannot force this on them.
-
-	Andrew
+But I'm not exactly sure what makes RDS different. Would you mind
+explaining the challenges with fitting RDS into the ksft framework?
