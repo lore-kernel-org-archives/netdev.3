@@ -1,88 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53DF239B964;
-	Tue,  3 Mar 2026 10:30:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772533804; cv=none; b=hhf9ZtXQOPiDGmGXOn6zMe09FICjA8s5tKu8FYVrslMDTrle5OHvqUG9CD91ZPsCOcKPpR2EG9vs+hZ8usItpPUy4aPBzfBTckWLgjOpGSNQwwA+PGJjU3sDS9BTKvKSe9Kx8tkASRC39B0d2VQ1Zd0AGFKmd7Yr64MY85ILQrM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772533804; c=relaxed/simple;
-	bh=GaDJnvf4eHmmDEHwX/7rXkKBrLrxQ/AIs2w/z/b1Lwo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pGd5hWMzoNQq+sFuV9VmbF44XrR7Suj7rrg7F45uL6prQgNzktn8YlTHhQCudLvWkXesg4PEiEec9jwf1D9irabISueZOqbOg6O3XAIEsbObfOeu4CebopQgjLl4hupND3c6U9sXJyJQeU0ZLVnV/5uZiXBgk7heIHZ9pwSlsYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zp4hDVu4; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FDB28506C;
+	Tue,  3 Mar 2026 10:34:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772534049; cv=pass; b=h+len7Sh1+LTF7kOJ8FW8+5f6DphY+PUQAYgFmuBfigdEXigfRKUcFmLjqO+6gqxyOPQ68280MEQhJ3o8TH+kWWP18XGAUZcsdA8ODVr6vZlEfCuNhjkMsvA2dOPD6x+k8WVanxVQM3GvretFz0LMne2yjlxw7BwmtfE5ZoghJU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772534049; c=relaxed/simple;
+	bh=YtM6ZAhf2doLYEzWj9OT/mOFfWPnVR0fzUHchlepzRw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=e9B5g5o+tnwpA5VxZO+tfvJSy5GvZvx0DW5U0UMqOLoVbM2XnqV9ZiKqLmCukt4ZTwR72qnQrWSu1vU1HhnaqkYlSO9FEuF2CiPmsTnhjcsdrVvUE02Ks2w/NL2PxFRjIzDtde8l4tLXCY+QNH2fj/gwRxP1UTOqwBoTDsyX4Mc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc; spf=pass smtp.mailfrom=ziyao.cc; dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b=Ed+TPOC+; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ziyao.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziyao.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zp4hDVu4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D078FC2BC87;
-	Tue,  3 Mar 2026 10:30:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772533803;
-	bh=GaDJnvf4eHmmDEHwX/7rXkKBrLrxQ/AIs2w/z/b1Lwo=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Zp4hDVu4RbZ280lWNLzD8Ezqj99uKUnUvlKozrRxLnAKdOIx++rzLCttbpwXzWsab
-	 rgz9iALGd56VavzKIIQpbE8Pn4fLJcblGq6T70H3Lugw5N4yu7x3HNQ5DyEpaqzaQW
-	 noC0TWCB9RlvIfhKdw50588GKemzvUQy+5tyQtYBb64veYLY/BOA2FmePZe3pByAzR
-	 ket/z7PyR2ahOJ58OMsbWT+RFroC+O8V8yY/0GC0DtnY7plgfp3y9OtEPbZ2R1x1N/
-	 tyGJZpHVjyQaQoYd8Wt5PmuF0qXuc7/HwX51E66yA3XoCDuuTtx53uYuvKnNmKWN+y
-	 0e5dajRIU8BOw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D0C4380A961;
-	Tue,  3 Mar 2026 10:30:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=ziyao.cc header.i=me@ziyao.cc header.b="Ed+TPOC+"
+ARC-Seal: i=1; a=rsa-sha256; t=1772534002; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=VQOMfMUATbLwFue8XJSnkr0LD2wH17JwAI9UIvOezcp+iYBiGn5GMa8hTuMXp98SlSh/JhYh13tXhXuLAbpRyw/qkElSn3m8lgy5jacaqEhjGNJrVKa6neymwYkzn5ZgdRG7MyiOpoJepPo+cRqtWFSDv/jhzeFwLIufTmPYIL8=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1772534002; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=PbCy8PRJgxvl7inL/4lV7PwnbNxjPe8sBUP9fng+MLM=; 
+	b=DZZawfMRM3zu95Z/jVMjT57aYA93Ay49vX/9a4FqMW0KSN8Aeed32scT61B1Wy24ZuRPBRdZ+uBOhvrlwA4qJQAdYPXk2Hd9+ndhRJ/LpFOSIr4QbmxxOcdGvacdoSFjTPBxfq6rYJvQ82k36V4DvCxiz+0X2EA4+4hZWdbA6L8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=ziyao.cc;
+	spf=pass  smtp.mailfrom=me@ziyao.cc;
+	dmarc=pass header.from=<me@ziyao.cc>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772534002;
+	s=zmail; d=ziyao.cc; i=me@ziyao.cc;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
+	bh=PbCy8PRJgxvl7inL/4lV7PwnbNxjPe8sBUP9fng+MLM=;
+	b=Ed+TPOC+fV576dF8loSHtbyPLzFwTZiwE0U3kbDDyPrHVKq6ZFnKJa28v9G8oUb+
+	WWsd5SV+xqHo4DPH1RnlroVnd1c2xuRVvK3sicHFl7Pc5e8uROzOBQYoviysuCllr94
+	mU8FGSwcwae+mgp+QB9IeMYgm7ZVh1qXi5GsYWtY=
+Received: by mx.zohomail.com with SMTPS id 1772533977967751.4643569015835;
+	Tue, 3 Mar 2026 02:32:57 -0800 (PST)
+Date: Tue, 3 Mar 2026 10:32:38 +0000
+From: Yao Zi <me@ziyao.cc>
+To: lizhi2@eswincomputing.com, devicetree@vger.kernel.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com,
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com,
+	rmk+kernel@armlinux.org.uk, wens@kernel.org, pjw@kernel.org,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+	linux-riscv@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: ningyu@eswincomputing.com, linmin@eswincomputing.com,
+	pinkesh.vaghela@einfochips.com, pritesh.patel@einfochips.com,
+	weishangjuan@eswincomputing.com
+Subject: Re: [PATCH net-next v3 3/3] riscv: dts: eswin:
+ eic7700-hifive-premier-p550: enable Ethernet controller
+Message-ID: <aaa4xodVNaY0gmBA@pie>
+References: <20260303061525.846-1-lizhi2@eswincomputing.com>
+ <20260303061732.918-1-lizhi2@eswincomputing.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next,
- v2] net: mana: Trigger VF reset/recovery on health
- check failure due to HWC timeout
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177253380531.787310.15467452212055546531.git-patchwork-notify@kernel.org>
-Date: Tue, 03 Mar 2026 10:30:05 +0000
-References: 
- <aaFShvKnwR5FY8dH@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-In-Reply-To: 
- <aaFShvKnwR5FY8dH@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-To: Dipayaan Roy <dipayanroy@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
- decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
- longli@microsoft.com, kotaranov@microsoft.com, horms@kernel.org,
- shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
- ernis@linux.microsoft.com, shirazsaleem@microsoft.com,
- linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- dipayanroy@microsoft.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260303061732.918-1-lizhi2@eswincomputing.com>
+X-ZohoMailClient: External
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri, 27 Feb 2026 00:15:02 -0800 you wrote:
-> The GF stats periodic query is used as mechanism to monitor HWC health
-> check. If this HWC command times out, it is a strong indication that
-> the device/SoC is in a faulty state and requires recovery.
+On Tue, Mar 03, 2026 at 02:17:32PM +0800, lizhi2@eswincomputing.com wrote:
+> From: Zhi Li <lizhi2@eswincomputing.com>
 > 
-> Today, when a timeout is detected, the driver marks
-> hwc_timeout_occurred, clears cached stats, and stops rescheduling the
-> periodic work. However, the device itself is left in the same failing
-> state.
+> Enable the on-board Gigabit Ethernet controller on the
+> HiFive Premier P550 development board.
 > 
-> [...]
+> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
+> ---
+>  .../dts/eswin/eic7700-hifive-premier-p550.dts | 50 +++++++++++++++++
+>  arch/riscv/boot/dts/eswin/eic7700.dtsi        | 54 +++++++++++++++++++
+>  2 files changed, 104 insertions(+)
+> 
+> diff --git a/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts b/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts
+> index 131ed1fc6b2e..d558f0fdfb38 100644
+> --- a/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts
+> +++ b/arch/riscv/boot/dts/eswin/eic7700-hifive-premier-p550.dts
 
-Here is the summary with links:
-  - [net-next,v2] net: mana: Trigger VF reset/recovery on health check failure due to HWC timeout
-    https://git.kernel.org/netdev/net-next/c/2b12ffb66955
+...
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+> @@ -20,6 +22,54 @@ chosen {
+>  	};
+>  };
+>  
+> +&gmac0 {
+> +	phy-handle = <&gmac0_phy0>;
+> +	phy-mode = "rgmii-id";
+> +	pinctrl-names = "default";
+> +	pinctrl-0 = <&gpio106_pins>;
+> +	rx-internal-delay-ps = <20>;
+> +	tx-internal-delay-ps = <100>;
+> +	status = "okay";
+> +
+> +	mdio {
+> +		compatible = "snps,dwmac-mdio";
 
+Since it's implemented in the DWMAC IP, I think the mdio bus is
+SoC-specific and should be put into the SoC devicetree instead.
 
+Regards,
+Yao Zi
+
+> +		#address-cells = <1>;
+> +		#size-cells = <0>;
+> +
+> +		gmac0_phy0: ethernet-phy@0 {
+> +			compatible = "ethernet-phy-id001c.c916";
+> +			reg = <0>;
+> +			reset-gpios = <&gpioD 10 GPIO_ACTIVE_LOW>;
+> +			reset-assert-us = <10000>;
+> +			reset-deassert-us = <80000>;
+> +		};
+> +	};
+> +};
