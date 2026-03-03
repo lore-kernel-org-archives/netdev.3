@@ -1,27 +1,27 @@
 Received: from smtpbg154.qq.com (smtpbg154.qq.com [15.184.224.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3F837B01E
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 03:04:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23E6375F96
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 03:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=15.184.224.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772507091; cv=none; b=sa+di81jQxDtBHHq9cVAs8B/irbIYOFE2MaVJ8RCbX4CDwkn3kIyEr49okN+qEF6atGuUiN3oxi4f9XDgYIwa5kiHqb0JsG9/5zzu36bJVwk28MgucutoktxGMglxMhfg+nk0tA4pKSZ6OfoDxm4Gh35wWL8yCJ1L5fDdVEkwQc=
+	t=1772507094; cv=none; b=V+PFYbBkHTKtw7+O4sdJwORhxkM5zDlwZNIqXXptJQjR9fZb9JSfuV7GcLVF9x2uteFNVhrbOViP8mRGhVNcg/cWeC1fEVrTEslQC3Lwoehje90L8OHr3Tx6wr6zKqnw+n2RaAKk/50A7AgkUevg4a57TZAyTQxKN1f73oVhHOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772507091; c=relaxed/simple;
-	bh=WJSWaLjWbON+BMECS1XrVYPa7mMp0uQhMEJK8eIaaco=;
+	s=arc-20240116; t=1772507094; c=relaxed/simple;
+	bh=DS37ZtIrZGfCBkLXCBoFV4Vy2v8jIKZx0O9zqzQ8JUA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YLebpdmVeiYJXP40R5CWYntK/tmGkH2SgA6uRMY1dp6S5ZkwKmPK5m2d6+HO2blbsqi7WPk+U/Q1nf0gy6s+c36F9SUP9H0yMZA4fIgagGTEeqaJ4vggxFifnVF42HTa4Rm0UIi5xCMGQ0wLza7QY1NZ+SYnWbTA6Vtd0rW+nqo=
+	 MIME-Version; b=Ggm439rEETAb6K8YFAS7hW3ytQ/5ZkCjLjixIqhTwB/4kMTyRRbwG9qRhvDMt2NaOG/zuNSb1GPZ0j5nxyW0+ejWjrsgJbwcSLpDLV/70xVsXTdEyyQ0LdsmDHC0ujUznftaS6b0Yy2FcQhZMs5Il67CCMYXT2MWg/yD8b0hX64=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=15.184.224.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
-X-QQ-mid: esmtpsz19t1772507040tfa2d20ee
-X-QQ-Originating-IP: xIg3hn5n/DXc7/tV+DCJsyNHfwdw+YqEY/INZVWN3VU=
+X-QQ-mid: esmtpsz19t1772507046t36c9f2fc
+X-QQ-Originating-IP: 2LoGqsZ0zODGA3pflDhUi3QC+BweNUK4iq28vijmKHY=
 Received: from lap-jiawenwu.trustnetic.com ( [125.120.70.252])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 03 Mar 2026 11:03:58 +0800 (CST)
+	id ; Tue, 03 Mar 2026 11:04:04 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 3153843117219811331
+X-BIZMAIL-ID: 8353490627856057035
 EX-QQ-RecipientCnt: 18
 From: Jiawen Wu <jiawenwu@trustnetic.com>
 To: netdev@vger.kernel.org
@@ -42,9 +42,9 @@ Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
 	Abdun Nihaal <abdun.nihaal@gmail.com>,
 	Breno Leitao <leitao@debian.org>,
 	Jiawen Wu <jiawenwu@trustnetic.com>
-Subject: [PATCH net-next v3 5/9] net: txgbe: add power management support
-Date: Tue,  3 Mar 2026 11:03:27 +0800
-Message-Id: <20260303030331.24076-6-jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v3 7/9] net: wangxun: delete service_timer before cancel service_work
+Date: Tue,  3 Mar 2026 11:03:29 +0800
+Message-Id: <20260303030331.24076-8-jiawenwu@trustnetic.com>
 X-Mailer: git-send-email 2.21.0.windows.1
 In-Reply-To: <20260303030331.24076-1-jiawenwu@trustnetic.com>
 References: <20260303030331.24076-1-jiawenwu@trustnetic.com>
@@ -57,167 +57,61 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
-X-QQ-XMAILINFO: NG+oLgkBIWry1W90tgwIjFxna5nDQ2fdZhI7gKXtay/M/z/WfSi86Beu
-	L+IusRQbGYVRM8h7taahUM2Yy7A2VwqlUUvdyjLZbhqKv5EjwV0aX9TZmEeQNWtL5XeiGEt
-	shJu7iUkp0C/FTDKqBe+AL2pJbiyo/IOCo7+ltTAs49qoc62n816gXZTwqUtjYxSSj7U6z0
-	cWAOwVCFzmpielwOvB0I6wQskMQlVsi73qcXqEbkLkmRV76v5AhkvsMCUgjkDJR5jgZFU7k
-	SLs4vN+3mA94wSJK4kSkhC7pUO5A4tvujrFvMMk9/1Ypz+sp+FyUSaRO7KY45EIQ77aNDzp
-	Rb7KlKUICmY3qrQcS5bb4hZZR5K2PFplcWTeP/f7b7aWtfHzAAnhS7tpkGJaWM6KFHeXc+B
-	IiRBHpKmpkq2d2D6s79wz8g75/SlgmI4ZxmIxpHcMq1/BGoamVWmhUo9TRLM6vw8EOopO9k
-	u6YSbC+0W21nqA1tW9PValIR9ZNjbei72MjZtjo/xOnFRGtsX9rMHdorFNlSKjGPDaDqk72
-	fPErnvJV8zeJuVdslI8yxvCdqSfvn/OcWK1H6lSDvVhMoreF/63lvefxz0/q7oV83WRVSAM
-	NWYM1IDNT4PcmcgUCqV27vXkWU9WgcdwsIq3xo98/FmybL3majPb4LKTQE8cZeQsRxELDnk
-	7a5ouWtdvEYvt50woD6LT+Gu62WChkB1fAocQ/9taOctIqDvFoyGozD89JCUB10Yr79fyMJ
-	amJjVlmJaW3/MHidz/J8qhA+FL4ZZe8WVWHyuPgZhFwpj9sjxfkC0pVmH9Psd6H8lnbjpdx
-	rJWX7vAYcv+u3ICvnJHsesWvA3YFoz0fOrnFsZ+JL9hcNgvTM+PW6tfpNVNXUfTe7bN7Ktk
-	XnH1yD2yFXoZRD1PDPQpAHVgBroRcc65l+YOrbngVUW2fVshWCxV5wzHBdvcsS3NIf/a1B+
-	ZbVgMU8Wxp/TBP78/lUFBT8Ts4Eu6icyNP9I8q9O138pvTPZWj2wG2Tg2jvpCnX7Wd3Urae
-	ZBS5fb5VkNsHJdPshjuUYZD9VlIgd2Wfue/scul80HT4k2OPg9sWTuRLrHiz4tHn6ZVs58W
-	ey/RDjnGHvZ/I5ZnYqoMHAyqJUWF+mGTg==
-X-QQ-XMRINFO: MPJ6Tf5t3I/ylTmHUqvI8+Wpn+Gzalws3A==
+X-QQ-XMAILINFO: McFs54YitxxB+ypTG+xNQodfOi0VXws3wVx1fRkQhmQqOxalJLV1pe9l
+	ajg9zAtZVMkF+c04r1drgoHci0a148tzGk+a2SSF7oi6Thqyil1JeTMOH1yUQPopI5hu0/y
+	rc7feU/5g+g54t6Qz3/rIm089ySB9vdKrvdyDEZch4QaOzNODQZaG8lXnCAZwL04KUgeMvI
+	Iy4bWvXBT3iNIDmzlIe8gxm6g0TkOiHUmr+ssPgwDTMip6V98gTicvj1sNYg3zWTls6Z6ZW
+	f1YDjHB6ifDMJMFTN2zQk8fDRqVSCKPdX2XkEUqvxYXP17MeyVJNW30ed4Yq4KdA+jZYdq2
+	kxJjbmUjym86FQMMFtPn3KF/wUTfuHltvMvuMVDQqdMBx8Nk6tdDJFcz79RQX6q+BbxXHsu
+	8zOpT1JSAA0cd9R/6p5KcB7N6LcDNhhssK2oVG153/BvGu81vZYF/W8c1I0MiW2PI7AEOiY
+	5MR7EHqexFBk6xzJnv2RSmtTJZhTGnw3gKxR6PG35DAw43ES3Tw5yzXw3lbImcSy8jJDsaR
+	h6y2w0djlB2FCEQp+beywcriCW6pXl1O/DUbaT019TxqPHwactCBuQzwCY02D8362yicNuF
+	I/LuG2/ir2CUZZwH4CAMWwiLtbm6f6AwKsKH/rpbmOYJQFWMKT79hxJ4TPMJpcUshBZevZF
+	7BcmV8jRb+V/yWOs2gszuLvCyS0W2d3w09x4KYL9+BnYIgc7gi1yxrH2hDn7z5rMCWH+7fm
+	n1TAWo8TkC0pTRGI0Q34g+FLg95WEgc7ZaZ9WjR2wXZMVtLD1CAzQ5qOEEpzd0n9Jbh2Y1Y
+	7PEIXO22Uo1Dc3oODxnEsCbAVdVdMhBdIz8wBhoxdSZsH3FQpbrWRI+AOG4f/GyDWtGPZvM
+	IsRd5LW6D+Ux6XB9r47EcHKyTywvjqXqcCCp5ukxuLGuqIZBs84iM1Pa7KrFnNlG6EU58o4
+	sJq8W6/eta1FpGMsYUgN/s9eHClhq3TwBYxhmICZyGiSVdUm2Drtzte0Ndv/ZjJRSRr9gN+
+	tMOyz4cDo4d05Z7cBui3OHNsG+IWlGaLG7nNbuKW/DDDSHqRiLHm7H9lR0ZaF3zFhzAZKJI
+	JyKZwfR/1PibXMP8ISNYXbqtC01RSa0qQ==
+X-QQ-XMRINFO: MSVp+SPm3vtSI1QTLgDHQqIV1w2oNKDqfg==
 X-QQ-RECHKSPAM: 0
 
-Support .suspend and .resume and Wake-on-LAN.
-
-Implement ethtool ops .get_wol and .set_wol to support Wake-on-LAN
-function. WOL requires hardware board support which is identified by
-subsystem device ID. Magic packets are checked by firmware, and
-currently only WAKE_MAGIC is supported.
-
-And WOL related operations are added to txgbe_shutdown(), it matches the
-implementation of wx_shutdown(). So change to call wx_shutdown()
-directly in txgbe driver.
+When removing the device, timer_delete_sync(&wx->service_timer) is
+called in .ndo_stop() after cancel_work_sync(&wx->service_task). This
+may cause new work to be queued after device down. So we should delete
+service_timer first.
 
 Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-Reviewed-by: Joe Damato <joe@dama.to>
 ---
- drivers/net/ethernet/wangxun/libwx/wx_hw.c    |  3 +-
- .../ethernet/wangxun/txgbe/txgbe_ethtool.c    |  2 +
- .../net/ethernet/wangxun/txgbe/txgbe_main.c   | 49 +++++++------------
- 3 files changed, 21 insertions(+), 33 deletions(-)
+ drivers/net/ethernet/wangxun/libwx/wx_vf_common.c | 1 +
+ drivers/net/ethernet/wangxun/txgbe/txgbe_main.c   | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_hw.c b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-index bee9e245e792..150a063daafd 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_hw.c
-@@ -1313,8 +1313,7 @@ void wx_disable_rx(struct wx *wx)
- 		rxctrl &= ~WX_RDB_PB_CTL_RXEN;
- 		wr32(wx, WX_RDB_PB_CTL, rxctrl);
+diff --git a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+index ade2bfe563aa..5565062c7471 100644
+--- a/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
++++ b/drivers/net/ethernet/wangxun/libwx/wx_vf_common.c
+@@ -48,6 +48,7 @@ void wxvf_remove(struct pci_dev *pdev)
+ 	struct wx *wx = pci_get_drvdata(pdev);
+ 	struct net_device *netdev;
  
--		if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
--		      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-+		if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
- 			/* disable mac receiver */
- 			wr32m(wx, WX_MAC_RX_CFG,
- 			      WX_MAC_RX_CFG_RE, 0);
-diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-index 9157b8275be1..c92eb71e0c15 100644
---- a/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-+++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_ethtool.c
-@@ -575,6 +575,8 @@ static const struct ethtool_ops txgbe_ethtool_ops = {
- 	.get_link		= ethtool_op_get_link,
- 	.get_link_ksettings	= txgbe_get_link_ksettings,
- 	.set_link_ksettings	= wx_set_link_ksettings,
-+	.get_wol		= wx_get_wol,
-+	.set_wol		= wx_set_wol,
- 	.get_sset_count		= wx_get_sset_count,
- 	.get_strings		= wx_get_strings,
- 	.get_ethtool_stats	= wx_get_ethtool_stats,
++	timer_delete_sync(&wx->service_timer);
+ 	cancel_work_sync(&wx->service_task);
+ 	netdev = wx->netdev;
+ 	unregister_netdev(netdev);
 diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-index 30f66507809b..ddc7cea9d7c2 100644
+index ddc7cea9d7c2..01ceaf270b70 100644
 --- a/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
 +++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_main.c
-@@ -245,8 +245,7 @@ static void txgbe_disable_device(struct wx *wx)
- 		wx_set_all_vfs(wx);
- 	}
+@@ -936,6 +936,7 @@ static void txgbe_remove(struct pci_dev *pdev)
+ 	struct txgbe *txgbe = wx->priv;
+ 	struct net_device *netdev;
  
--	if (!(((wx->subsystem_device_id & WX_NCSI_MASK) == WX_NCSI_SUP) ||
--	      ((wx->subsystem_device_id & WX_WOL_MASK) == WX_WOL_SUP))) {
-+	if (!(wx->ncsi_enabled || wx->wol_hw_supported)) {
- 		/* disable mac transmiter */
- 		wr32m(wx, WX_MAC_TX_CFG, WX_MAC_TX_CFG_TE, 0);
- 	}
-@@ -303,6 +302,7 @@ void txgbe_up(struct wx *wx)
- static void txgbe_init_type_code(struct wx *wx)
- {
- 	u8 device_type = wx->subsystem_device_id & 0xF0;
-+	u16 wol_mask, ncsi_mask;
++	timer_delete_sync(&wx->service_timer);
+ 	cancel_work_sync(&wx->service_task);
  
- 	switch (wx->device_id) {
- 	case TXGBE_DEV_ID_SP1000:
-@@ -347,6 +347,11 @@ static void txgbe_init_type_code(struct wx *wx)
- 		wx->media_type = wx_media_unknown;
- 		break;
- 	}
-+
-+	wol_mask = wx->subsystem_device_id & WX_WOL_MASK;
-+	ncsi_mask = wx->subsystem_device_id & WX_NCSI_MASK;
-+	wx->wol_hw_supported = (wol_mask == WX_WOL_SUP) ? 1 : 0;
-+	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP) ? 1 : 0;
- }
- 
- /**
-@@ -534,34 +539,6 @@ static int txgbe_close(struct net_device *netdev)
- 	return 0;
- }
- 
--static void txgbe_dev_shutdown(struct pci_dev *pdev)
--{
--	struct wx *wx = pci_get_drvdata(pdev);
--	struct net_device *netdev;
--
--	netdev = wx->netdev;
--	netif_device_detach(netdev);
--
--	rtnl_lock();
--	if (netif_running(netdev))
--		txgbe_close_suspend(wx);
--	rtnl_unlock();
--
--	wx_control_hw(wx, false);
--
--	pci_disable_device(pdev);
--}
--
--static void txgbe_shutdown(struct pci_dev *pdev)
--{
--	txgbe_dev_shutdown(pdev);
--
--	if (system_state == SYSTEM_POWER_OFF) {
--		pci_wake_from_d3(pdev, false);
--		pci_set_power_state(pdev, PCI_D3hot);
--	}
--}
--
- /**
-  * txgbe_setup_tc - routine to configure net_device for multiple traffic
-  * classes.
-@@ -824,6 +801,14 @@ static int txgbe_probe(struct pci_dev *pdev,
- 	eth_hw_addr_set(netdev, wx->mac.perm_addr);
- 	wx_mac_set_default_filter(wx, wx->mac.perm_addr);
- 
-+	wx->wol = 0;
-+	if (wx->wol_hw_supported)
-+		wx->wol = WX_PSR_WKUP_CTL_MAG;
-+
-+	netdev->ethtool->wol_enabled = !!(wx->wol);
-+	wr32(wx, WX_PSR_WKUP_CTL, wx->wol);
-+	device_set_wakeup_enable(&pdev->dev, wx->wol);
-+
- 	txgbe_init_service(wx);
- 
- 	err = wx_init_interrupt_scheme(wx);
-@@ -975,7 +960,9 @@ static struct pci_driver txgbe_driver = {
- 	.id_table = txgbe_pci_tbl,
- 	.probe    = txgbe_probe,
- 	.remove   = txgbe_remove,
--	.shutdown = txgbe_shutdown,
-+	.suspend  = wx_suspend,
-+	.resume   = wx_resume,
-+	.shutdown = wx_shutdown,
- 	.sriov_configure = wx_pci_sriov_configure,
- };
- 
+ 	netdev = wx->netdev;
 -- 
 2.48.1
 
