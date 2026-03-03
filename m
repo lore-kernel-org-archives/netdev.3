@@ -1,164 +1,83 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 610A6421EEE
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 11:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBF33421F1F;
+	Tue,  3 Mar 2026 11:20:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772536695; cv=none; b=sYu77T1S5xyO5IYHRiSSFlkZmUNo/Uz541Ro9bYX4LStThGMlfsW7Waiz0Avypr5c7wdqBQUiyaABIY6wYeesAUfHuwvwYDlJaTp0Q/BxsjCckXMEoLEp35BXzCodoL2ybBRERluhK9hvWNmpkWqyEaqTVs50hHHJ08ZHfrj+tg=
+	t=1772536825; cv=none; b=tnEIkI8hfxKqvlF5KkFr5pSuZjFnY6SWJhflZroaEbmUvNlYeaVGOyGk4ogttjK618WOigy01qGKOYxYCxYEUO/x+yD3FKvTBUy2QGf6LrtkJDkJ8WWHOprG7mqxpHguKPgkmEyf1zAeM0xAPKHGtuEoZbAmsHNHTqGQBudZj/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772536695; c=relaxed/simple;
-	bh=BjIk8tiq+TAUzq0+BzZIJ32j+Zo/0o3Qj1XDI8hrRh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FcP9+MPa4JBjXRmtTGLFM9eY4T/zab2aobJxxEnS9Y1XWtOSMeSE2MBX/WERa4aw5n0eMgP6iT1XnO8IwsrgfoM2kQHQ+3Zqkd0ZpN7qSsGdzVz0ZuoP7SnBmNM1bEBSkVy8uTmIGoorm6WpGRSw7+0mz4H8jlHq+/G86CpAR0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BkFAS++5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8HlbMCBj; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BkFAS++5; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=8HlbMCBj; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1772536825; c=relaxed/simple;
+	bh=1zLBoayefsVujzmUj7FVehNCVB9bIfkKRDeMLwRJTN4=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=cpF6/TikIe5QQ4bVb51wFcoLCQf9BSnIe79F4ST4aYnH4epTUJR3zoYrWSsCRhY+GAWHA9KnUb6YBlQ4LVVhHr8+uBR7SGP/uYSURCRg2wOAypogOCedSZmVNJaqpCbP+GJc013u/bAghvxXfdjsAkqgsd0fJoeDi2zr0dzk4M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NynQZo9l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BkFAS++5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8HlbMCBj";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BkFAS++5";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="8HlbMCBj"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A05325BD15;
-	Tue,  3 Mar 2026 11:18:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772536691; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9AEVZ90tFj3NWUIQ7kVxP/nON9bYU5NOyMqJpy/xA6Y=;
-	b=BkFAS++5jTBNcxwQIxwiObQmLM2xT0fgKnI4Nbe/KZmfsBYJy+ZKZHCyFBPs6NbGSwIXYC
-	hOWZEkpiOV0lER9aNJC5y243vz493UlgofVWcfrPxkdZtk42qY6bnZtgbt5Q9I0R0vqRa9
-	pET9MxEVbTwoFZJUoHJKfdFLC7rw2Uk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772536691;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9AEVZ90tFj3NWUIQ7kVxP/nON9bYU5NOyMqJpy/xA6Y=;
-	b=8HlbMCBj96n8LEIlFZx5vVpFZp37e9UqhtR4tQ6UBWjZuJWNwFCFJ4FQw3l98iXQnK4/Se
-	A8psbFNkUCXeP3DQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1772536691; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9AEVZ90tFj3NWUIQ7kVxP/nON9bYU5NOyMqJpy/xA6Y=;
-	b=BkFAS++5jTBNcxwQIxwiObQmLM2xT0fgKnI4Nbe/KZmfsBYJy+ZKZHCyFBPs6NbGSwIXYC
-	hOWZEkpiOV0lER9aNJC5y243vz493UlgofVWcfrPxkdZtk42qY6bnZtgbt5Q9I0R0vqRa9
-	pET9MxEVbTwoFZJUoHJKfdFLC7rw2Uk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1772536691;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9AEVZ90tFj3NWUIQ7kVxP/nON9bYU5NOyMqJpy/xA6Y=;
-	b=8HlbMCBj96n8LEIlFZx5vVpFZp37e9UqhtR4tQ6UBWjZuJWNwFCFJ4FQw3l98iXQnK4/Se
-	A8psbFNkUCXeP3DQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 43D5E3EA69;
-	Tue,  3 Mar 2026 11:18:10 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KyWhDXLDpmliQwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Tue, 03 Mar 2026 11:18:10 +0000
-Message-ID: <0d7bb5c5-4122-4dc9-b52b-c305591207d1@suse.de>
-Date: Tue, 3 Mar 2026 12:18:01 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NynQZo9l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58457C116C6;
+	Tue,  3 Mar 2026 11:20:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772536824;
+	bh=1zLBoayefsVujzmUj7FVehNCVB9bIfkKRDeMLwRJTN4=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=NynQZo9lgeBykP6uMG0Ik5hVbboGkvl7AWrjMFuBb0l8exZrX5PWAh1koKuB6b0Q9
+	 bjPxchTtDq9OawqNPO615XS+OdnyimjKIm2irJE0ypyZVyM7ysnmiS50ikHRhmrUdG
+	 uITah4icqwx2O6zyyECQLP+WuWmKXUbofTV3yMg6bEzG3E5pfY/BYJZr+akpsJQ/+e
+	 J/VupnLV3g4Kuw+n9a3piX0C20MXf5atmwKsfglyBGZN0JQ2ejQIjmMYZiIlpUUTZv
+	 XYdN8yJDnObFTfel8Ot6Eb/T9jEoVjKZMqHNRABNBZSc3ockk0dKT0fzoOhPa0h5vL
+	 zMirJ3QD4Zjww==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02F13380A964;
+	Tue,  3 Mar 2026 11:20:27 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 1/3] bpf: bpf_out_neigh_v4: Fix nd_tbl NULL
- dereference when IPv6 is disabled
-To: Jakub Kicinski <kuba@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>
-Cc: =?UTF-8?Q?Ricardo_B=2E_Marli=C3=A8re?= <rbm@suse.com>,
- Martin KaFai Lau <martin.lau@linux.dev>,
- John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>,
- KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?=
- <toke@redhat.com>, David Ahern <dsahern@kernel.org>,
- Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Hangbin Liu <liuhangbin@gmail.com>, bpf@vger.kernel.org,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260228-net-nd_tbl_fixes-v1-0-2b2a274df9bb@suse.com>
- <20260228-net-nd_tbl_fixes-v1-1-2b2a274df9bb@suse.com>
- <0b52257d-d557-4f26-9931-34c81ab621bc@iogearbox.net>
- <20260302171131.28373ccb@kernel.org>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260302171131.28373ccb@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	URIBL_BLOCKED(0.00)[suse.de:mid,imap1.dmz-prg2.suse.org:helo];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[26];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[suse.com,linux.dev,gmail.com,fomichev.me,kernel.org,google.com,davemloft.net,redhat.com,jvosburgh.net,lunn.ch,vger.kernel.org];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[netdev];
-	R_RATELIMIT(0.00)[to_ip_from(RLrr9ek4ud4f4qwi71m7motjzt)];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Spam-Level: 
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next 0/2] dpll: zl3073x: consolidate chip info and add
+ temperature reporting
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177253682580.812154.847436671148185282.git-patchwork-notify@kernel.org>
+Date: Tue, 03 Mar 2026 11:20:25 +0000
+References: <20260227105300.710272-1-ivecera@redhat.com>
+In-Reply-To: <20260227105300.710272-1-ivecera@redhat.com>
+To: Ivan Vecera <ivecera@redhat.com>
+Cc: netdev@vger.kernel.org, Prathosh.Satish@microchip.com,
+ vadim.fedorenko@linux.dev, arkadiusz.kubalewski@intel.com, jiri@resnulli.us,
+ poros@redhat.com, mschmidt@redhat.com, linux-kernel@vger.kernel.org
 
-On 3/3/26 2:11 AM, Jakub Kicinski wrote:
-> On Mon, 2 Mar 2026 06:58:46 +0100 Daniel Borkmann wrote:
->>>    	} else if (nh->nh_family == AF_INET6) {
->>> +		if (!ipv6_stub->nd_tbl) {
->>> +			rcu_read_unlock();
->>> +			goto out_drop;
->>> +		}
->>
->> Can we just completely get rid of allowing IPv6 as a module?
->> So either its built-in or not available at all, and then we
->> can get rid of the stub completely rather than adding checks
->> in various places which also brings a small performance benefit
->> of not having indirect calls in some places.
+Hello:
+
+This series was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Fri, 27 Feb 2026 11:52:58 +0100 you wrote:
+> This series refactors the ZL3073x chip variant handling and adds die
+> temperature reporting for chips that support it.
 > 
-> +1 fwiw, if someone complains we can revert it back in
-> feels like a complete waste of everyone's time to maintain it
-> https://lore.kernel.org/all/20260224180544.3c865751@kernel.org/
+> Patch 1 replaces the five per-variant chip_info structures and their
+> exported symbols with a single consolidated lookup table.  The chip
+> variant is now detected at runtime from the chip ID register rather
+> than being selected at compile time via bus driver match data. This
+> simplifies the I2C/SPI drivers and makes adding new variants a
+> single-line table addition.  A flags field replaces the hardcoded
+> chip_id switch in zl3073x_dev_is_ref_phase_comp_32bit().
+> 
+> [...]
 
-Dropping IPv6 as a module sounds good to me. I could prepare a patch for 
-net-next as RFC to start the discussion/feedback loop.
+Here is the summary with links:
+  - [net-next,1/2] dpll: zl3073x: detect DPLL channel count from chip ID at runtime
+    https://git.kernel.org/netdev/net-next/c/4845f2fff730
+  - [net-next,2/2] dpll: zl3073x: add die temperature reporting for supported chips
+    https://git.kernel.org/netdev/net-next/c/3a97e02b3e91
 
-Anyway, I think we still need to fix these crashes on net tree first.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Thanks,
-Fernando.
+
