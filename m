@@ -1,26 +1,25 @@
 Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4841E38C40D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6B4E3822BF;
 	Tue,  3 Mar 2026 09:24:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772529902; cv=none; b=Fyu8Au2uXwTle1ziWGfe1/kM1W2CTBAzBeZleLFsMt8ZpTFpwFCeFV49rVDeNE1DdK+nMKZ6lJ49ltx7+Y4tbjCGE8ia61e8YKANhBVp4KiPdgKRBrNnlxTB5PfjCOU59ZI6EGc9Po+KWlGmKIJKET9K/8WK53zIDBrRUTQDBtQ=
+	t=1772529902; cv=none; b=mGFNNRfdjAqT5Z6KoY5k2QuJjryDyHVBo5bThRO0DTBjzdgrPONhx0gfsiPfmmv4M0NizQTSK/6PAPMUZ+gVM6uQ8NfhxhU8Pe78nywNvWCxbAjvWheqlOKpmNpxNzzCnPuqjMAVuAP+NW233uweYxO4J00dRY10dUOOkXHVmUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772529902; c=relaxed/simple;
-	bh=L3vqGdrjPgeePS4XPFmgc5WhIHXYkU3ylitb8fPbG3o=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=aVxT69yGxWnFawkyKDYXovFjb+b7ORejR2Hu7HR4WpW0rMKY+8IXoT9WxfPoKyKguCgLk57g2BvaWP+bD0jtKw762Kkcs69A9v8nKJ3anPurb17TuEyRch8C4tbHNlQ5/b78C3pwWXkzEJvqhw0696Ioe2ELICSuwV4D9VpVMPQ=
+	bh=IGMy6AoudwM3qQzQsTyFrfysxoz2oZZIfFuKomrnazM=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=EUHT2RCG7UeFMwIfdadQZ3U1lKUHjRx2uWTs6aJeEJuk9pHGh+UMJU5zlvYSSH2mmyngCYoED+4jUHc+Gh2nKVPKO8VNJbVf7BmpuGH6pRxKdOLmnWBW2NdRINJce7mrdzWgcZT2atzKTRS0A686gY5O4xSuiBdXvO6YMRebs64=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from [127.0.0.2] (unknown [210.73.43.101])
-	by APP-01 (Coremail) with SMTP id qwCowAA34WzPqKZpyU4sCQ--.6573S4;
+	by APP-01 (Coremail) with SMTP id qwCowAA34WzPqKZpyU4sCQ--.6573S2;
 	Tue, 03 Mar 2026 17:24:33 +0800 (CST)
 From: Vivian Wang <wangruikang@iscas.ac.cn>
-Date: Tue, 03 Mar 2026 17:24:19 +0800
-Subject: [PATCH net-next 2/4] net: spacemit: Fix error handling in
- emac_alloc_rx_desc_buffers()
+Subject: [PATCH net-next 0/4] net: spacemit: A few minor/theoretical fixes
+Date: Tue, 03 Mar 2026 17:24:17 +0800
+Message-Id: <20260303-k1-ethernet-more-fixes-v1-0-0ab0122fdd14@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -29,9 +28,10 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260303-k1-ethernet-more-fixes-v1-2-0ab0122fdd14@iscas.ac.cn>
-References: <20260303-k1-ethernet-more-fixes-v1-0-0ab0122fdd14@iscas.ac.cn>
-In-Reply-To: <20260303-k1-ethernet-more-fixes-v1-0-0ab0122fdd14@iscas.ac.cn>
+X-B4-Tracking: v=1; b=H4sIAMGopmkC/y2NWwrCMBREt1Lut1eSFqx2K1KhxqkNktTexFII2
+ bvx8Xk4c5hEAWIRqKsSCVYb7OwL6F1FZhr8HWxvhalW9UE1quGHZsQJ4hHZzQIe7YbA+lifTNP
+ q1oygEj8FX1HaM322Hluk/mcEy6s8xb++DgFsZuds7Kq13SsWoy8pU5/zG/0iN2WhAAAA
+X-Change-ID: 20260303-k1-ethernet-more-fixes-1829c3717cfe
 To: Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
  Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
@@ -43,65 +43,47 @@ To: Andrew Lunn <andrew+netdev@lunn.ch>,
 Cc: netdev@vger.kernel.org, linux-riscv@lists.infradead.org, 
  spacemit@lists.linux.dev, linux-kernel@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-CM-TRANSID:qwCowAA34WzPqKZpyU4sCQ--.6573S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxJrW7ZFykGryUXr17JF15XFb_yoW8GFWDpr
-	Wj9F93WwnrtF4Yk3Z7JF4xXws5Aay0qFyrWay0vw4Fv3ZIkF1jgF1rt3W3Jr48CrZ2qF4S
-	vr4jvws3GF1DZw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUmK14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_Gr1UM2
-	8EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AI
-	xVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20x
-	vE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xv
-	r2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04
-	v7MxkF7I0En4kS14v26r1q6r43MxkIecxEwVAFwVW8uwCF04k20xvY0x0EwIxGrwCFx2Iq
-	xVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r
-	106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AK
-	xVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7
-	xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr1j
-	6F4UJbIYCTnIWIevJa73UjIFyTuYvjfU8TmhDUUUU
+X-CM-TRANSID:qwCowAA34WzPqKZpyU4sCQ--.6573S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrZFy3WFW5GF43WFyfGr13CFg_yoWDXrg_uF
+	W8Zas7GF4UWFn7GFy5CwsI9rWvkrs5XrsYqFyFq3y5A347Grn2g3yktrWrZr1fXa1kJrsx
+	J347ZrWrZr17ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbTkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s
+	1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0
+	cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8Jw
+	ACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka
+	0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK67AK6r4fMxAIw28IcxkI7VAKI48JMx
+	C20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAF
+	wI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20x
+	vE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v2
+	0xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxV
+	W8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU4VbkUUUUU=
 X-CM-SenderInfo: pzdqw2pxlnt03j6l2u1dvotugofq/
 
-Even if we get a dma_mapping_error() while mapping an RX buffer, we
-should still update rx_ring->head to ensure that the buffers we were
-able to allocate and map are used. Fix this by breaking out to the
-existing code after the loop, analogous to the existing handling for skb
-allocation failure.
+Recently a user reported a supposed UAF/double-free in this driver. It
+turned out to be a false positive (ugh) from a bug with riscv's
+kfence_protect_page() [1], but it did also prompt me to review the
+driver code yet again. These are some fixes for minor/theoretical
+problems I've found.
 
-Fixes: bfec6d7f2001 ("net: spacemit: Add K1 Ethernet MAC")
-Signed-off-by: Vivian Wang <wangruikang@iscas.ac.cn>
+[1]: https://lore.kernel.org/r/20260303-handle-kfence-protect-spurious-fault-v2-0-f80d8354d79d@iscas.ac.cn/
+
 ---
- drivers/net/ethernet/spacemit/k1_emac.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+Vivian Wang (4):
+      net: spacemit: Remove unused buff_addr fields
+      net: spacemit: Fix error handling in emac_alloc_rx_desc_buffers()
+      net: spacemit: Fix error handling in emac_tx_mem_map()
+      net: spacemit: Free rings of memory after unmapping DMA
 
-diff --git a/drivers/net/ethernet/spacemit/k1_emac.c b/drivers/net/ethernet/spacemit/k1_emac.c
-index af58eae6fcd8..e9e2cd4e6a89 100644
---- a/drivers/net/ethernet/spacemit/k1_emac.c
-+++ b/drivers/net/ethernet/spacemit/k1_emac.c
-@@ -562,7 +562,9 @@ static void emac_alloc_rx_desc_buffers(struct emac_priv *priv)
- 						  DMA_FROM_DEVICE);
- 		if (dma_mapping_error(&priv->pdev->dev, rx_buf->dma_addr)) {
- 			dev_err_ratelimited(&ndev->dev, "Mapping skb failed\n");
--			goto err_free_skb;
-+			dev_kfree_skb_any(skb);
-+			rx_buf->skb = NULL;
-+			break;
- 		}
- 
- 		rx_desc_addr = &((struct emac_desc *)rx_ring->desc_addr)[i];
-@@ -587,10 +589,6 @@ static void emac_alloc_rx_desc_buffers(struct emac_priv *priv)
- 
- 	rx_ring->head = i;
- 	return;
--
--err_free_skb:
--	dev_kfree_skb_any(skb);
--	rx_buf->skb = NULL;
- }
- 
- /* Returns number of packets received */
+ drivers/net/ethernet/spacemit/k1_emac.c | 34 ++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260303-k1-ethernet-more-fixes-1829c3717cfe
 
+Best regards,
 -- 
-2.53.0
+Vivian "dramforever" Wang
 
