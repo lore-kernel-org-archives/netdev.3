@@ -1,118 +1,143 @@
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F512421A11
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 13:07:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772543275; cv=none; b=rydnFYKwVvxFXz2WybhtCsr3owwIejG99OSXRtcglwSoco3Zob4VrWpkV7u7zHD/6Vr1Lan2iZyc7h6A3+JV8JigMlZzfprTx0UIK8ftWoi+gJhXv2BNUF9E1GDyaAgDEZe+2XSVrB1IUcrpm6w4ZLhsNQweCwimGYy6r3MTg7A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772543275; c=relaxed/simple;
-	bh=0frEQdps/VBu2WyCrjWQP3xfuORe5FTT9toqUnmAdUc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FFD+tXAMr6PEG+e528oTP9/G8l7wU9fG2D3wq0veUSIab/d54GzR6EwvRzzf1ONYEH56068UPRy0tj8WKJ1V0cWkq8M1d8taqUCxXjqbzZ1RqeoXlefzOQNhA4ZqXtiZIVsly02fh52fb1wD6E8ZrhAUE1Utm7deH3emPLl5RoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=gX8txM/I; arc=none smtp.client-ip=209.85.222.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC358421A11
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 13:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772543302; cv=pass; b=p7LEfkfeCIJuMbGKpes3x9yCWL8rOQaCiOtJrbTYSx3m7ipS/uRs93KTIQb7e3jqn01yWMsa18xED9/zWkc5FuMbQUAIT+lWDAUnSOsScjFkBsYlmRK6Enl2/Z5+8TJrd+lATdgaoTjPZ/cJl2HvokoyW1bL8jFzJYkcZZde0E0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772543302; c=relaxed/simple;
+	bh=fEKulSd1PmTL8WxGU61UMjkUJvtTae79rFbx+6mxzoc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UHXZ6rzgp4nAAy+xc9KPrP8iw6CkwMjRFi6gOg/1rhwkBmS4Dt5+97sqP6NdCDHmv2SstU8HizbBQP1JYW4aAp6mkp/4Sju8cGS1Wk1/5nTnhrmPUkqfZKoZEgjG7AKkQM6yGYFmDOsg4DhqQ94HFyGXeIXRYuJwQOfaIqj34MI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=k2OSEZNg; arc=pass smtp.client-ip=209.85.128.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="gX8txM/I"
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-944168e8c5fso3143037241.2
-        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 05:07:54 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="k2OSEZNg"
+Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-79860421382so52816797b3.0
+        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 05:08:20 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772543300; cv=none;
+        d=google.com; s=arc-20240605;
+        b=W4fW3zpvwkt7XnX7NxZiC73jSG80N97FitbqGajQwOeqWGEllL/wZ42s7t8WkE+qHd
+         LS4tCs2Y3v5fLW0bDd7hWSpcHpi001SvHlWg8WeYhaHDwIRwL5+Pzm4C1bPu6BWgwUQZ
+         6Zy8gvZWxMbgIxUIFxJRKO1sCHOb/zcAOW7dx7QbMKdud9aVRcNr+exNn7w+zb/gwAqu
+         zv2g/WBlAtLHEMPIwa+xqe3vU8+3wM4YyZ24EiQziAr1/J/M96gvQYt/z9xNgi2Oza4K
+         aj1HYK7V8tv3+M9AgPji7DP2EsV+HGzOO0kB/moFHsX6IYsSVSjcpxiQOiZVJJ5eG6Fw
+         3Jxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=zzHyJu1zsXD5QTAUauHKQsg8XWyFjizwJkcjUH3f8pI=;
+        fh=Fi9N6eQ3N/AvAiCSRAJz3QfscejVU/ANMZqRLq0N2qc=;
+        b=RznHVLTdu5MXWsDeIxfvzRInPs6pVPWeCC7DrEamX3WAKlWvsFR6IlA6DFnMHOwdKB
+         DkW/LUqq/ooaH+5pMEBrMjMO/NDSlP0ToaCq7Fosy7YNh2c/3AvUgurbxulpwF6WzCo9
+         DhAfJKlRp74eBq9u6G7Bl25HZgV4Ogbw4oIxDwn64KRD+5WOXBPD658prYUEFxdhJMmS
+         VPPW8bjV46J2v15usTrGYVT9pYSny4SjRQh4tIcDkWjoiN+Zn+XDRxuXsAhpatFyfMqi
+         tnpqyX8hDKchcb6PtWg36XUdR7+zE5MVZtwLDgmEwaka5FEZDNyh3DrS/raj/e1uwk3/
+         FzYQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1772543273; x=1773148073; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1772543300; x=1773148100; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iTr6hP7Ztu+YPdu1Cxohdg3//GGLycjl8Gc06J+hcas=;
-        b=gX8txM/IF0E0/D16Ypnq6gx9vLDOwMUHezXPtjdNVf/pFg3lDZK8q2fcGEL9Zytr8o
-         OBrzoxWceVer/jyfgNp8d+QX6LUeWKninJEJXUrCpNdvj2CjSfG0MmIGUgkEkAjR2sLB
-         ErRykbKigh+fn5pe7g7mV7nNx29DVnk6DPGfVHGsxnhHQHRxosCkhX8Qx0HDpNS8LPSV
-         ZcUf/xDT8VqWAV9ngTW6J2h2nA0zuvKcxSfFyDutHNAMuRsqWbx2SAaHEi+79EUuW7ub
-         EgwjWtEmXM+36lnX5DfhbI/5WrjJKbXRZuET2EhO08K+f4pmP7vc5irUrbRy9p0FXYRs
-         IC7g==
+        bh=zzHyJu1zsXD5QTAUauHKQsg8XWyFjizwJkcjUH3f8pI=;
+        b=k2OSEZNgvl8+8d55qdCe6ArRWJ0BhAywf+anDFW4eQI/wGaelUBpT62RGRUqxenKf1
+         7nVznTOqSHQEsLV3MEByVSZ3qGxvOYoTiLAcyzvUAi9eqwtCzGLxGuleTiaFW6GljQ8L
+         23ddf8y28OzM1zqPCgmkwwzjG8BJ8/xWJC9ThjZfVclyjhVboMa9JrrHZqutb1nCKzyk
+         XMPHMrythgzmP2jlppVigdDUfnSU7TmugVavinUxHrQQOqkatN9lDH1kSN413J6z9LAu
+         7IoigmG/KP78XBIgLSjUWy+BXdP/jmNnflX1O2QtUZmrSuB02SPOcuIevU4LaC+Lk6tG
+         bZ7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772543273; x=1773148073;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1772543300; x=1773148100;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=iTr6hP7Ztu+YPdu1Cxohdg3//GGLycjl8Gc06J+hcas=;
-        b=ShTZGNJ9YBz65tuLX7vuam2Rs9ElBzN3wx9QPbyoTxcjlmv7FqgzGC7RR3mUIqYm7I
-         Y5DRGWrl4NKzJcuI9P7sQ4cc/XzA9meDOmuDAmVq0vRMv3Cql8h+2Wk7ym4aQ+hx6HhA
-         ufpdRtPfGKIvobISTwYSS331Clfqf/OQg4ZLxXSYLLLq2qRe0EaXVS+vR65uYeLdqQ+/
-         dw09brQl6z9ZFwez3rQ1Zk8aPM8Wbq+rlk01f/A05UY8xzn2EweWhOLO6RJDWlIVc9WE
-         Ms0yYG/q8173rNu/TxfNT1r4GCCv2ppc9Hxq7K+aYrXHp8gWGXokJJZ0PPlRwJDNeHrM
-         aDPg==
-X-Forwarded-Encrypted: i=1; AJvYcCVjgVKsJvQFJQBVkiV1IS3HeaNYBF1azo8DvD7ms3RtWblf7FgwzWp6NoZw9Oy2ww3dA7qOeVE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6DZKf1QkbVr5t4pMPPHCah9xt0Q9OLyaZVS3tzGucd53m3c1N
-	/76b80ox4DAcpSjl2o/v4P3qQ7EnZ2kIiGd2QRvDliWHETULRgqbYgBfxQ3mD6Lq340tHf79KB4
-	XlNE=
-X-Gm-Gg: ATEYQzyH+fjXqsmiCNk7jp1n0ptteg+0IXqgiGfIJpeTePWSe+YyZr8xGAGZE3zqzI1
-	Ksm5H6DsQ1QZ+JE6QOy/HQc1C7ybH7apZrLoaY5HS7JyfoMhboIvOj8L4jBMEgUzpEhK8lT24lk
-	fJqNuP9dWygLEcIN9/8dT6acAzTGhcxwT8VMAK04iRwtwlh1xaGVRLoph9BGZUIhNP3Y5QYvDhP
-	0RACXNnZjk4OLuEIjLPHmvGO3Li/VQgw8MVz0c2W/pTmVM3xyXjbdyUA1Gf4iEcVCMd3yInDWab
-	NS4iK2mUPAapbyQ3NnSoiqUjynaCLKxuJfYNM9F50VDGDgCb+QD+v6YibYXyaKUXK3SuKH2QQQh
-	IeOulmSJwdg34dM6RfAgXAsl1rSeDIsZB/OvfklzhWzIZRufqSNlOffu91zlXtpWlwBxheczHHS
-	Jn9EXT6mE=
-X-Received: by 2002:a05:6102:6ce:b0:5f5:3835:4796 with SMTP id ada2fe7eead31-5ff32311c31mr8432186137.15.1772543273300;
-        Tue, 03 Mar 2026 05:07:53 -0800 (PST)
-Received: from exu-caveira ([2804:14d:5c54:4efb::2000])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5ff1e80818dsm16583894137.5.2026.03.03.05.07.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 05:07:52 -0800 (PST)
-From: Victor Nogueira <victor@mojatatu.com>
-To: stephen@networkplumber.org,
-	dsahern@kernel.org
-Cc: jhs@mojatatu.com,
-	deren.teo@outlook.com,
-	andrew@lunn.ch,
-	netdev@vger.kernel.org
-Subject: [PATCH iproute2 v2 3/3] tc: Add JSON output support to multiq
-Date: Tue,  3 Mar 2026 10:07:33 -0300
-Message-ID: <20260303130733.540278-4-victor@mojatatu.com>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260303130733.540278-1-victor@mojatatu.com>
-References: <20260303130733.540278-1-victor@mojatatu.com>
+        bh=zzHyJu1zsXD5QTAUauHKQsg8XWyFjizwJkcjUH3f8pI=;
+        b=YarDiY1IO4WYGHU5U/ZkzG1GlHfCvAKunYnUM+pbBnbf44aWyfTlNXqjThHM+uwPRu
+         frCuzyHP+Bzq1d9R+uoEYCY+oL+ExNCvqa/ZbeUUkYSGQAAVphg9gZkJ0AIl9wkjlYxa
+         1O0OC/BCbTB0Mtua+LLze56jpnp9QX74WZcMPyo7GB9r7WRDrAROEu6D4HgVlH2I1A7/
+         iQVCYP0N69eBuYx/M2/65tVAyshfI5zFzIV7p5pfTea+IeHttJaeHPDYgUaDwtbghidf
+         QRdxzuYcMNOKYJ2eHNUWIVyKoR6Trd7NQwz4U3qyeUIPB7EGtR2567e2EF4UoKpOyRv7
+         SN+A==
+X-Forwarded-Encrypted: i=1; AJvYcCXlEmNpc9qYfxCwqwL+JuLu5AwWfkaE1iVomaN6nQ7oSGxBBbtGD9/RWoscl+07pGFic5ztz5M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpWUBZMvd4bxivDc9Y7EkWKTMaY+Ns8eFA9O05foj4ubrbPAa9
+	ge6jxvTC8aZZeSG4JW3eL3LahSh/ghTEkr1td/pI2Q0NaobWeSUmC03Gojs79+6C+LUO80aP8FD
+	BloiTRgdfqoapXvRHUevnyfuD+ysYWPM+NLURNhemDtOztRCMO/0=
+X-Gm-Gg: ATEYQzwtkg5B3KQaPSy7XxfOJ+3G1dHtulRcwejBnYoyiKQGNSzAN/4qnNdJTqxdsZV
+	n13+g6rD/3M9MDoy14L1Y/SY7pvhrOfq9xpsXbsvtptCIGvvX1wOLi5p6pTIxuP04X3bBg8uHle
+	1XQ0QAX+LZDqRw0AjZHEGecGU2a5CZq+oPcP16Tp3uu7BAFEqggTgn3fQbYamg40qOnoyQmdGBT
+	FNtPrNiOQD0znUeCKXcAAD6AqriliL1hWiWkaMZQZ3Foa3dXddnKRY90+mjh7AjRHjX82SxYfqH
+	A8poAesnxqY3rinTZYW8UQ==
+X-Received: by 2002:a05:690c:e3e9:b0:798:5cab:cb70 with SMTP id
+ 00721157ae682-79885508bbamr125655137b3.21.1772543299950; Tue, 03 Mar 2026
+ 05:08:19 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260211170725.1514427-1-victor@mojatatu.com> <20260225132623.0395441f@phoenix.local>
+In-Reply-To: <20260225132623.0395441f@phoenix.local>
+From: Victor Nogueira <victor@mojatatu.com>
+Date: Tue, 3 Mar 2026 10:08:08 -0300
+X-Gm-Features: AaiRm50EyCTEPDcr6AUXLMxJ27vPuyrGVeJ5tAdanHPFgLZcex7MUnGfXnQ31vQ
+Message-ID: <CA+NMeC8P7RPudNkDm6kUWjxEZKJDZZg0oNDr2Y7K00NUzhOXbg@mail.gmail.com>
+Subject: Re: [PATCH iproute2 0/3] Add JSON output support to the remaining qdiscs
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: dsahern@kernel.org, jhs@mojatatu.com, deren.teo@outlook.com, 
+	andrew@lunn.ch, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since qdisc core already assumes all qdiscs are able to output JSON,
-add JSON output support to multiq.
+On Wed, Feb 25, 2026 at 6:26=E2=80=AFPM Stephen Hemminger
+<stephen@networkplumber.org> wrote:
+>
+> On Wed, 11 Feb 2026 14:07:22 -0300
+> Victor Nogueira <victor@mojatatu.com> wrote:
+>
+> > Since qdisc core already assumes all qdiscs are able to output JSON,
+> > add JSON output support to the remaning qdiscs (HFSC, QFQ, muiltiq)
+> > so that a JSON qdisc dump outputs valid JSON.
+> >
+> > Victor Nogueira (3):
+> >   tc: Add JSON output support to HFSC
+> >   tc: Add JSON output support to QFQ
+> >   tc: Add JSON output support to multiq
+> >
+> >  tc/q_hfsc.c   | 29 ++++++++++++++++++-----------
+> >  tc/q_multiq.c |  4 +++-
+> >  tc/q_qfq.c    |  8 ++++----
+> >  3 files changed, 25 insertions(+), 16 deletions(-)
+> >
+>
+> Good start but some minor issues found by AI patch review
+>
+> Must-fix bug in patch 1/3 (HFSC): Copy-paste error on line printing
+> level =E2=80=94 it uses st->period instead of st->level, silently emittin=
+g
+> wrong data in both text and JSON modes.
+>
+> Design concerns worth discussing:
+>
+> HFSC d (delay) field is emitted as a human-readable string in JSON
+> ("5ms") rather than a raw numeric value (microseconds), which goes
+> against the iproute2 JSON convention that JSON should carry raw values
+> for script consumption
+>
+> HFSC service curve keys use flat compound names with spaces ("rt m1")
+> rather than nested JSON objects =E2=80=94 functional but awkward for cons=
+umers
+>
+> multiq bands emits a compound string ("3/16") rather than separate
+> numeric fields =E2=80=94 once this JSON format ships it becomes API
 
-Fixes: c91d262f414d ("tc: jsonify qdisc core")
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
----
- tc/q_multiq.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Thank you for reviewing.
+I sent a v2 with the fixes you suggested.
 
-diff --git a/tc/q_multiq.c b/tc/q_multiq.c
-index 63fffed4..0e8e2f9e 100644
---- a/tc/q_multiq.c
-+++ b/tc/q_multiq.c
-@@ -51,6 +51,7 @@ static int multiq_parse_opt(const struct qdisc_util *qu, int argc, char **argv,
- static int multiq_print_opt(const struct qdisc_util *qu, FILE *f, struct rtattr *opt)
- {
- 	struct tc_multiq_qopt *qopt;
-+	SPRINT_BUF(b1);
- 
- 	if (opt == NULL)
- 		return 0;
-@@ -59,7 +60,10 @@ static int multiq_print_opt(const struct qdisc_util *qu, FILE *f, struct rtattr
- 
- 	qopt = RTA_DATA(opt);
- 
--	fprintf(f, "bands %u/%u ", qopt->bands, qopt->max_bands);
-+	snprintf(b1, SPRINT_BSIZE, "%u/%u", qopt->bands, qopt->max_bands);
-+	print_string(PRINT_FP, NULL, "bands %s ", b1);
-+	print_uint(PRINT_JSON, "bands", NULL, qopt->bands);
-+	print_uint(PRINT_JSON, "max_bands", NULL, qopt->max_bands);
- 
- 	return 0;
- }
--- 
-2.53.0
-
+cheers,
+Victor
