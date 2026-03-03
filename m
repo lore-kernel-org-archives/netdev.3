@@ -1,54 +1,53 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4140237CD3A;
-	Tue,  3 Mar 2026 03:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ABE26E711
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 03:04:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772506839; cv=none; b=cBcTVFLZwYUz6NEh8Kp8FeIDeOTHgRxU77sdAC4ngcT5ppwC+3MtK3h5U5YV8p1BEMu4mfV4wAAfY75iAhqgIXPb5vU8D0A6bPtTmR0Ea+V7qJ+132Hdcs/5ZcdLslibbuOlU02ym8GwevP3UBB92M796o+p+SxLucc8ztQs3jY=
+	t=1772507079; cv=none; b=deQuqYaMzcqgpmL6D+Mri/dC4mYErT1qR1j6FgdxDzUJ6vuEhxevyIjFWpCah8NPbNPtB03I3LOSdcMxuRi9jTGX/+XJy6rKbpcH57DgSKWPktEIyYKscV7e0KPjVpzD/w50Ridmvi5RkePy9fjScTgtYCn9tekHnO5NOmH2SD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772506839; c=relaxed/simple;
-	bh=KtwscISRwX3TlOXBXsLd9wej2wApWInTjxxy2nB7cb8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DjLZWtjBrZcNGiH69MuB5pgojCKdEfmRYdc4vfxJ8duCbJRzbVmcrxiR0evInr5dt9xociq0lOfo9OwVFxMj2RbUwit3y/TcOyzD5dDl9jPZITA5EXYcjnyU8e61Cg6dAMGNPvLCrummKapdJrTBARJRaZwluMldY4sB6ekvr4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Anrf9pou; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Anrf9pou"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4088DC2BCAF;
-	Tue,  3 Mar 2026 03:00:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772506838;
-	bh=KtwscISRwX3TlOXBXsLd9wej2wApWInTjxxy2nB7cb8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Anrf9pouYXwbdsYpHMMdAyZaMsAH4JY/Gi5DvmkXko4k7ywu9J5//xUwCvp+xU4js
-	 TAdMtAtm4gylRukw05cUPpNbZ9g+HApxhQRrosm4GXiLCh3MMOPSklxSp1YZarLBjo
-	 NZuIUGxtGMjsJuCywBD5qzuNCvOBqr9oK1KPXnBLjPORqBmPrv+cJq9wxFSZSpRFIp
-	 QpvxbJKsq/0gHM0gJA931uRMrHNyR/Jkwxk0nmI+aezbqLeF52440Lyyws6yffVMbL
-	 HN1axW8x1deAmh37wmtwW2hamGBVHlYmW5Rd2hQNxFI3GhRWSzMGXuo39IJvKPApb2
-	 ed/1iVHvl5oqQ==
-From: Jakub Kicinski <kuba@kernel.org>
-To: bhargava.marreddy@broadcom.com
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	ajit.khaparde@broadcom.com,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	michael.chan@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	vsrama-krishna.nemani@broadcom.com,
-	davem@davemloft.net,
-	netdev@vger.kernel.org,
-	rajashekar.hudumula@broadcom.com,
-	vikas.gupta@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	rahul-rg.gupta@broadcom.com
-Subject: Re: [net-next,v3,6/8] bng_en: add initial support for ethtool stats display
-Date: Mon,  2 Mar 2026 19:00:36 -0800
-Message-ID: <20260303030036.1885679-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260228072715.1632280-7-bhargava.marreddy@broadcom.com>
-References: <20260228072715.1632280-7-bhargava.marreddy@broadcom.com>
+	s=arc-20240116; t=1772507079; c=relaxed/simple;
+	bh=bQ1iIvjboEs1N26sVJJEBNZjYLljImHXeHO8kndxh1Q=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=pUwFhBD+8TM3GRBaNVTLeBlCm8l2nHUkwLnBo3P2QOhActL2dT9w3F5M8YtmpWGSfAL5k5tos5DynyfGlYpcGg0YXnjQPjFmZUpQjmzvy7ZxYj/29EUPM2BZE/hhTz5oH2kYy+igpH1xH7clIwFraziqoxPxNjWa9Ce51FPHqSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.206.16.166
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: esmtpsz19t1772507030tb40bebba
+X-QQ-Originating-IP: 7YUJRh6O22CiGhMO7wv7+kIrDMyCQRM+Mni2qNEMoKE=
+Received: from lap-jiawenwu.trustnetic.com ( [125.120.70.252])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 03 Mar 2026 11:03:47 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 12091037546246444057
+EX-QQ-RecipientCnt: 18
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Joe Damato <joe@dama.to>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v3 2/9] net: ngbe: remove redundant macros
+Date: Tue,  3 Mar 2026 11:03:24 +0800
+Message-Id: <20260303030331.24076-3-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20260303030331.24076-1-jiawenwu@trustnetic.com>
+References: <20260303030331.24076-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,164 +55,74 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: MwqrwaLzgdebxj1NNPZggAN81pC9c348EnKKVsAQm4F4sm0DbYJGK/rc
+	wfpZh3jyYiVxZWVgfzkTOpZt0J/TCYI/fmqOcA4DYme2vSqLWr49vb7U6qU9K7UDJscHkV0
+	svTXFhr98LIHM1av7lw+Jr/D/He4oa8YVr29WJnsQdaJi5hk4+vGmLJn+FDOem6LL3xT83M
+	TTECUd0fTwRzaqECWq0KIqalH28cXSkbXTNdRysCybVsCNiswYSmN0DXhB9Si08y6PRLBOH
+	mN2b3rldlydXBrupwLAA7L0Ttep4+S6/ckF953ZASdtpaQf5YQa/udmcIWU4DH4IDlk4u4v
+	RZH2ShbgbOTvC/yMl/65UTgyh9a/RvVatiaPCCi4wSBo6suI4I8NDsY+uqAyj500g47IhnW
+	0rL8mxYCBhvRQS/AALiVJKThSMuNAgNjc6DPKHeOPp3l7fOY9TLiOV39VydQX6duMgjLptZ
+	4CboEHzgcBJUPM022LZPW8Es+WFvpybtXeCgbArIhrya5LGtTSWjkcWGPBtaZHfZ0ef2Jik
+	UrQjJ56O9rW64qeuwoQm9S0Ck+6dnygoasL57Shc+WweI/xXuVvrKtT5scvkdWuyvN+Kl3D
+	Knp1RCZjWWgLyL1I8EYY1uuNGkSgWehF3mJrqbLxC3iozpMtF02T8ra5z57sdNKI/jsOiqb
+	uLefzmBtv10mC8n94SVSCaeQB3ic+2JJq4vDmZtHE1YVrpC1JjSXPpXT0KNzq8aVvj5D5qv
+	JdC9HRcWMVV/2TW3majEA2FqlmnsoDQBrbztmpt4uC+kT7IgSnkSw1eDUJg1Xdbw7IIQ2WK
+	ouT7ioazha7QcCuuCASYq52tVFwE1HHMo8ruxEDp7GulymHF/lmGWRulaElWPAwZzb4sqf6
+	UlMvbVPSLvy/CkWvJ05lEiSds7i04CthPakMX47AFnYJ/++RFVx3tgCC5RFkH0ag/qd/TEk
+	bELzkTuCJM/F6TdajpcRYKTQxkPl3f0e8TGPrenCB6eYFQ/PZ+SASyfZEiOKlxhmuhBjiGk
+	ZFkory2LZ00BE6fxzXhsUZrXXfPns0vVqUEA6SfnU4mLBS7QhsuZ12Gpm3c5zJWj57RNeBI
+	7AVEvauayY1VAweRBxwMGc=
+X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
+X-QQ-RECHKSPAM: 0
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+NGBE_NCSI_SUP and NGBE_NCSI_MASK are duplicate-defined, they can be
+replaced by the macros defined in libwx. Just remove them.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Joe Damato <joe@dama.to>
 ---
-bng_en: add initial support for ethtool stats display
+ drivers/net/ethernet/wangxun/ngbe/ngbe_main.c | 4 ++--
+ drivers/net/ethernet/wangxun/ngbe/ngbe_type.h | 3 ---
+ 2 files changed, 2 insertions(+), 5 deletions(-)
 
-This commit implements ethtool -S callbacks for per-ring RX/TX, TPA,
-and port-level MAC/extended statistics, including string names, counts,
-and DMA-backed memory allocation for port stats via HWRM wrappers.
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+index e28ddf684a06..8c9d505721b1 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_main.c
+@@ -57,7 +57,7 @@ static void ngbe_init_type_code(struct wx *wx)
+ 
+ 	wx->mac.type = wx_mac_em;
+ 	type_mask = (u16)(wx->subsystem_device_id & NGBE_OEM_MASK);
+-	ncsi_mask = wx->subsystem_device_id & NGBE_NCSI_MASK;
++	ncsi_mask = wx->subsystem_device_id & WX_NCSI_MASK;
+ 	wol_mask = wx->subsystem_device_id & WX_WOL_MASK;
+ 
+ 	val = rd32(wx, WX_CFG_PORT_ST);
+@@ -66,7 +66,7 @@ static void ngbe_init_type_code(struct wx *wx)
+ 		       em_mac_type_mdi;
+ 
+ 	wx->wol_hw_supported = (wol_mask == WX_WOL_SUP) ? 1 : 0;
+-	wx->ncsi_enabled = (ncsi_mask == NGBE_NCSI_MASK ||
++	wx->ncsi_enabled = (ncsi_mask == WX_NCSI_SUP ||
+ 			   type_mask == NGBE_SUBID_OCP_CARD) ? 1 : 0;
+ 
+ 	switch (type_mask) {
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+index f1957fa0add4..7077a0da4c98 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_type.h
+@@ -37,9 +37,6 @@
+ 
+ #define NGBE_OEM_MASK				0x00FF
+ 
+-#define NGBE_NCSI_SUP				0x8000
+-#define NGBE_NCSI_MASK				0x8000
+-
+ /**************** EM Registers ****************************/
+ /* chip control Registers */
+ #define NGBE_MIS_PRB_CTL			0x10010
+-- 
+2.48.1
 
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c b/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_ethtool.c
-> @@ -31,6 +31,331 @@ static int bnge_nway_reset(struct net_device *dev)
->  	return rc;
->  }
->
-> +static const char * const bnge_ring_rx_stats_str[] = {
-> +	"rx_ucast_packets",
-> +	"rx_mcast_packets",
-> +	"rx_bcast_packets",
-> +	"rx_discards",
-> +	"rx_errors",
-> +	"rx_ucast_bytes",
-> +	"rx_mcast_bytes",
-> +	"rx_bcast_bytes",
-> +};
-> +
-> +static const char * const bnge_ring_tx_stats_str[] = {
-> +	"tx_ucast_packets",
-> +	"tx_mcast_packets",
-> +	"tx_bcast_packets",
-> +	"tx_errors",
-> +	"tx_discards",
-
-Jakub Kicinski raised this concern during v3 review: standard stats like
-rx_errors and tx_errors should not be duplicated in ethtool -S output.
-While this patch adds structured callbacks (.get_eth_mac_stats,
-.get_rmon_stats, etc.) for standard stats, rx_errors and tx_errors still
-appear in the bnge_ring_rx_stats_str[] and bnge_ring_tx_stats_str[]
-arrays above.
-
-These arrays are used by bnge_get_strings() which feeds ethtool -S,
-meaning the standard stats will still appear in ethtool -S output.
-
-Should rx_errors and tx_errors be removed from these arrays to comply
-with the kernel policy against duplicating standard stats?
-
-[ ... ]
-
-> diff --git a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
-> --- a/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
-> +++ b/drivers/net/ethernet/broadcom/bnge/bnge_hwrm_lib.c
-
-[ ... ]
-
-> +int bnge_hwrm_port_qstats_ext(struct bnge_dev *bd, u8 flags)
-> +{
-> +	struct hwrm_queue_pri2cos_qcfg_output *resp_qc;
-> +	struct bnge_net *bn = netdev_priv(bd->netdev);
-> +	struct hwrm_queue_pri2cos_qcfg_input *req_qc;
-> +	struct hwrm_port_qstats_ext_output *resp_qs;
-> +	struct hwrm_port_qstats_ext_input *req_qs;
-> +	struct bnge_pf_info *pf = &bd->pf;
-> +	u32 tx_stat_size;
-> +	int rc;
-> +
-> +	if (!(bn->flags & BNGE_FLAG_PORT_STATS_EXT))
-> +		return 0;
-> +
-> +	if (flags && !(bd->fw_cap & BNGE_FW_CAP_EXT_HW_STATS_SUPPORTED))
-> +		return -EOPNOTSUPP;
-> +
-> +	rc = bnge_hwrm_req_init(bd, req_qs, HWRM_PORT_QSTATS_EXT);
-> +	if (rc)
-> +		return rc;
-> +
-> +	req_qs->flags = flags;
-> +	req_qs->port_id = cpu_to_le16(pf->port_id);
-> +	req_qs->rx_stat_size = cpu_to_le16(sizeof(struct rx_port_stats_ext));
-> +	req_qs->rx_stat_host_addr =
-> +		cpu_to_le64(bn->rx_port_stats_ext.hw_stats_map);
-> +	tx_stat_size = bn->tx_port_stats_ext.hw_stats ?
-> +		       sizeof(struct tx_port_stats_ext) : 0;
-> +	req_qs->tx_stat_size = cpu_to_le16(tx_stat_size);
-> +	req_qs->tx_stat_host_addr =
-> +		cpu_to_le64(bn->tx_port_stats_ext.hw_stats_map);
-> +	resp_qs = bnge_hwrm_req_hold(bd, req_qs);
-> +	rc = bnge_hwrm_req_send(bd, req_qs);
-> +	if (!rc) {
-> +		bn->fw_rx_stats_ext_size =
-> +			le16_to_cpu(resp_qs->rx_stat_size) / 8;
-> +		bn->fw_tx_stats_ext_size = tx_stat_size ?
-> +			le16_to_cpu(resp_qs->tx_stat_size) / 8 : 0;
-> +	} else {
-> +		bn->fw_rx_stats_ext_size = 0;
-> +		bn->fw_tx_stats_ext_size = 0;
-> +	}
-> +	bnge_hwrm_req_drop(bd, req_qs);
-> +
-> +	if (flags)
-> +		return rc;
-> +
-> +	if (bn->fw_tx_stats_ext_size <=
-> +	    offsetof(struct tx_port_stats_ext, pfc_pri0_tx_duration_us) / 8) {
-> +		bn->pri2cos_valid = false;
-> +		return rc;
-> +	}
-> +
-> +	rc = bnge_hwrm_req_init(bd, req_qc, HWRM_QUEUE_PRI2COS_QCFG);
-> +	if (rc)
-> +		return rc;
-> +
-> +	req_qc->flags = cpu_to_le32(QUEUE_PRI2COS_QCFG_REQ_FLAGS_IVLAN);
-> +
-> +	resp_qc = bnge_hwrm_req_hold(bd, req_qc);
-> +	rc = bnge_hwrm_req_send(bd, req_qc);
-> +	if (!rc) {
-> +		u8 *pri2cos;
-> +		int i, j;
-> +
-> +		pri2cos = &resp_qc->pri0_cos_queue_id;
-> +		for (i = 0; i < 8; i++) {
-> +			u8 queue_id = pri2cos[i];
-> +			u8 queue_idx;
-> +
-> +			/* Per port queue IDs start from 0, 10, 20, etc */
-> +			queue_idx = queue_id % 10;
-> +			if (queue_idx > BNGE_MAX_QUEUE) {
-> +				bn->pri2cos_valid = false;
-> +				bnge_hwrm_req_drop(bd, req_qc);
-> +				return rc;
-> +			}
->                         ^^^^
-
-Is this bounds check off by one? BNGE_MAX_QUEUE is 8, so queue_idx of
-exactly 8 passes this check and gets stored in bn->pri2cos_idx[i].
-
-Looking at the usage in bnge_get_ethtool_stats()
-(bnge_ethtool.c:482-504), the code computes base_off + bn->pri2cos_idx[i]
-to index into the CoS stat arrays:
-
-	for (i = 0; i < 8; i++, j++) {
-		long n = bnge_rx_bytes_pri_arr[i].base_off +
-			 bn->pri2cos_idx[i];
-		buf[j] = *(rx_port_stats_ext + n);
-	}
-
-The CoS arrays in rx_port_stats_ext and tx_port_stats_ext have entries
-cos0 through cos7, which are 8 entries total with valid indices 0-7.
-When pri2cos_idx[i] equals 8, the computed offset reads one entry past
-cos7, returning data from the wrong stats counter.
-
-This can happen when firmware reports a queue_id whose modulo 10 equals 8
-(e.g., queue_id 8, 18, 28, etc.).
-
-Should the check be queue_idx >= BNGE_MAX_QUEUE instead?
-
-[ ... ]
