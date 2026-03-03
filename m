@@ -1,130 +1,152 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f51.google.com (mail-ua1-f51.google.com [209.85.222.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4368931F99D;
-	Tue,  3 Mar 2026 13:07:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44671425CF7
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 13:07:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772543267; cv=none; b=rFZfrka6lt5hBm8MRI9sENNrP4zGscB9hD5lsR6jJw3o2ddfS2ly2ZuvWtauCvFU8BqSDhNHAyR2IjLKtitAUYXli1vtGYPfWh+XqFRvaP819773kkPopiLJlyYv8AKKvou1SQ4K3pT1sVi6ubPYpFDfekgX55G1rnCjZfoBlnU=
+	t=1772543270; cv=none; b=sK7ZbruBplyu+402hhlt/gbxnPf4qvzIsuYsK//wy1ysw0j0Goq6Wvh69+efo1tYBk0CpqsC+4lrUCdtJjzc4cxSHjrf+H9IbkVE8HH8gq6y+RbiZEog7alkfl1RVorTFWHf4ILPjVTu6cfM74OJnGdQlvRT5IpaoTHi1FSRKlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772543267; c=relaxed/simple;
-	bh=5U8N+SJCZS1ohDGXHs1ZqXFnCojx/Y2kWGft94MFJMc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AXECYOBA/j6KFrftLfNBHNDCdI1pk//al15zvORH86bH9VQdEllNl2rUR8HqIr1SXOjrFwW1Foqg7Zm/79KMif5OY0gMt1sblX1rvrbvxFuQUp3XMC5EZr9UdKugLKqIGMBp7YvRUtu1JXyTF/VyCTGzhxpuKd42llvgxGP19vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Rmnz1WYf; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1772543270; c=relaxed/simple;
+	bh=+F4xfdKmKpQa4gN9aNb8dBRHfR5XY/pQ7MlecX/OXDg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=GBz9vZoDfF9eLXwyFQwatTjP4d+EWIe/MOXAhni8mjqt0WGdZIDvd8tMbFdob5JBG1hAnnjUmCmeiQB1P1ESvf3hWfjNSTnAdFnjVI9c7G486VXTBPMkMRLeZZz70IqyR6/iWZmu4MNbDYouoBnqJy9bEtXl5H7SnfpooS3h4sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=3PpLR0KE; arc=none smtp.client-ip=209.85.222.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Rmnz1WYf"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6236G1aL2154446;
-	Tue, 3 Mar 2026 13:07:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=MgQgLY
-	g9ZexzRKTQk0t+U9i77xSjeYHUUdB7VkDNIcE=; b=Rmnz1WYf8+Uexox9G3W1BF
-	uo1q7TgC8t9ZQh/IZ2NUc57w1EA8MQhteqXqRfgTIQXdJjZnaSSo+wmMiHummq+N
-	EKre+2sRvOG5HsAKejfx+Qcr/7rHnxuoOWzrAnZRCrfbBf3NGTQrMqmsaC0ujYm5
-	DBiIo5Wi+sFibhwijqJ4JUZJrN695XQrOTZa3BULz8BRfTHTbps4ANpBGsTfgtDu
-	ZW/YjfVtNiIr957JkX9dX3xpzi9VR8gt30Y7+q+Eeg8UEB/MygCOsAeQs2xy/MVn
-	IektTXtyaZSqhCUH1idHn51+hPsiqANqzlrEQum6PJsN04TTHJNokcV5sgc1xeJw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4ckskbtpqq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 13:07:44 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6238YVvH028908;
-	Tue, 3 Mar 2026 13:07:43 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmaps2eca-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 13:07:43 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 623D7gEN24248862
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 3 Mar 2026 13:07:42 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1B08920043;
-	Tue,  3 Mar 2026 13:07:42 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BB0642004D;
-	Tue,  3 Mar 2026 13:07:41 +0000 (GMT)
-Received: from [9.52.217.119] (unknown [9.52.217.119])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  3 Mar 2026 13:07:41 +0000 (GMT)
-Message-ID: <b4804b53-c25c-485e-8cb3-9ade70a6f625@linux.ibm.com>
-Date: Tue, 3 Mar 2026 14:07:41 +0100
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="3PpLR0KE"
+Received: by mail-ua1-f51.google.com with SMTP id a1e0cc1a2514c-944168e8c5fso3142991241.2
+        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 05:07:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1772543268; x=1773148068; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w4z60UqzYywzIo2HMFRhTu7/TZhTfwqd1aMPSCsv1Uk=;
+        b=3PpLR0KEI7/9aqBIpoM9qzQDnwQWCIt0h877edBYXT6z81z22P53JZN8op0KCJiDk1
+         YjomIiAlVl1YVku+eVlvTrpcZ86UYHuQm9T3VJWFGkCVCSHCDWAwffs6BE50Zs6tpE2V
+         wes6yTj5hQHXhsey/qmTGx53/QyxhDCbttB9IWR+2zBZU1GHQ5S7d8APgDN/vAWDQB3d
+         h1Guii6cEQOdu+m+qJYGnXNWShIaMto2iDOtSAHezDhHQoEqPuZSXQc8YjDmw2hth+MU
+         kbGXNK0OlvK/X0ffzDxE1lMgP8AePHt/XITMNEuV2E+HRvhmSJ5KymYys04dhN7PxcWd
+         Lqqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772543268; x=1773148068;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=w4z60UqzYywzIo2HMFRhTu7/TZhTfwqd1aMPSCsv1Uk=;
+        b=eO9plmzDc5uKiC7+9lHDxLu594x9R3O4wgRcMgEOtpZT0/VpSm84ow5R4WVDetONcW
+         VFMAQctlEgbG7AxGrm7dqaFvM+v8ujqqO/wwX4Ns8z8UTxK89ePv8ilU+XLJbua7KgyR
+         dEl5AFhCOUMmqOj3XW761rQW8n8GV7P5k9sR28W+HRUAOMYo6h/zgmWL/a5QSlyi0tWa
+         22p8nCBBpSII4WXDYYYVyx5n+7WWmWcchnT6/NAC4n2bNBqKuk9MDggN8+ghVFFu0by1
+         hXPOsA+ci649YLqmekPnSi4I6YFghZkVnyBTfDKHyK01wYsoA0Be3zF7U8Vgl9ZgLP21
+         DDLQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVn0UrFIDtFuh6X3aYkXV9tiT9r5l8pkhp2uZMxPzqmGRRpzi6pCwhfEyG1W8KOrreD7ucK/g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGZXV2GPMk/AfS8Grw31HHqqFXuTm0+ag7lpKbpnqZCO+KeL15
+	nV1/FEu9DMfT/A0RYaMe+oeKEZxgjTP1FtJC2azwxxd2o9E1GVEuZcU8SjTlKOG4HBTGEdoMZr1
+	iFbo=
+X-Gm-Gg: ATEYQzz/4Y8g3qefM7SWnPMdGjnj5MLvDskDnhi2ZTnoxPTQrnTUfDl28fsrJqyB9LI
+	i9TidQi85/xCASzu+gxv9QWCJ+zjfdh7ibQGnJJ0ixJwq8eyU+ERNCOVggNKBr54dzHCMvT0541
+	AwkSKm89+7EYIG7osXU5wLnWSFzL5F1PtgAjgNbZgPBFCyCy5GMoPGvPvJptF96E8C/BYLc6Xo6
+	dt5CVLrRrl35PTC2rj/zY/RLuE6f6g5GjFUuaX5NNb9/v0w7qM++DHontssecM4aF0wFbmaBuT8
+	0MChWgov2EUO0GDVT5+LYLQh0XLg5B97SRtlN/hv4+FlHcX27QOXHULgL0aPyhsUryLpuJ8ENfx
+	HtClKUPotedixS3b3WCurqo7oYNUQwJ2b2iMrsPrZEt/tY92O0XsY2NdFYcaewmhevUY9weHPIA
+	EOIbykK0Y=
+X-Received: by 2002:a05:6102:2ad5:b0:5f5:5c2e:59ba with SMTP id ada2fe7eead31-5ff32515061mr9039296137.33.1772543267806;
+        Tue, 03 Mar 2026 05:07:47 -0800 (PST)
+Received: from exu-caveira ([2804:14d:5c54:4efb::2000])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5ff1e80818dsm16583894137.5.2026.03.03.05.07.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 05:07:46 -0800 (PST)
+From: Victor Nogueira <victor@mojatatu.com>
+To: stephen@networkplumber.org,
+	dsahern@kernel.org
+Cc: jhs@mojatatu.com,
+	deren.teo@outlook.com,
+	andrew@lunn.ch,
+	netdev@vger.kernel.org
+Subject: [PATCH iproute2 v2 1/3] tc: Add JSON output support to HFSC
+Date: Tue,  3 Mar 2026 10:07:31 -0300
+Message-ID: <20260303130733.540278-2-victor@mojatatu.com>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260303130733.540278-1-victor@mojatatu.com>
+References: <20260303130733.540278-1-victor@mojatatu.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] dibs: change dibs_class to a const struct
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Jori Koolstra <jkoolstra@xs4all.nl>
-Cc: "open list:DIBS (DIRECT INTERNAL BUFFER SHARING)"
- <netdev@vger.kernel.org>,
-        open list <linux-kernel@vger.kernel.org>
-References: <20260302163103.3324304-1-jkoolstra@xs4all.nl>
- <2026030246-savor-hardener-6102@gregkh>
-Content-Language: en-US
-From: Alexandra Winter <wintera@linux.ibm.com>
-In-Reply-To: <2026030246-savor-hardener-6102@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UOviPD0LDMUB-TmffLad4mDrjDEI0BNC
-X-Authority-Analysis: v=2.4 cv=b66/I9Gx c=1 sm=1 tr=0 ts=69a6dd20 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8
- a=ag1SF4gXAAAA:8 a=xOd6jRPJAAAA:8 a=VnNF1IyMAAAA:8 a=dFZGIeYmx-VExCoYgmoA:9
- a=QEXdDO2ut3YA:10 a=Yupwre4RP9_Eg_Bd0iYG:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzAzMDA5OSBTYWx0ZWRfX5r5bpRvBFCvk
- gkzAZ5iKHeeg98RgxJC6jwqecnbEPFUZp+zhOhiJ1u2lfwv9TZbZQ7OfJ2z1xIWHtKxpD5E9ZSC
- 6DVhxWODNqbZAlHY74oFzLzkUrqnonYsitAz1azHCXwpAsAJBFWkDfW0Cx9GjF8xf64h3+KVISq
- NDIOGvaMWVHy9qmTscmPlTjLx5IY+hB6fuCDpMIa5c+OCBsw8w4RXVgLQJEQ0Oqu9rmVAaBeJ9P
- GaUiORSi9ZN+5dxJoF3yKuznB3lZIK2zoXVHXx5i8LIK45n1CH7zYj/2QXBq+jcUpVClJE6Rz+k
- Ix39jIYRUWokEuO4n9W9kgJOLavb4GNy+aLif0Kyo+v57/e/4PjwwBq7W5sVabVHZih3LU+gTL4
- 6SHFKIYLm9PA7g8VwtFubIkTw8CeEJPJwmtneA+kxyFm8E544wA/DZcm95yPhXwMrjeN+CYLiP4
- RsRrRC+xi0DK9FIMosA==
-X-Proofpoint-GUID: UOviPD0LDMUB-TmffLad4mDrjDEI0BNC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-02_05,2026-03-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 lowpriorityscore=0 phishscore=0 clxscore=1011 adultscore=0
- bulkscore=0 impostorscore=0 malwarescore=0 spamscore=0 priorityscore=1501
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603030099
+Content-Transfer-Encoding: 8bit
 
+Since qdisc core already assumes all qdiscs are able to output JSON,
+add JSON output support to HFSC.
 
+Fixes: c91d262f414d ("tc: jsonify qdisc core")
+Reported-by: Deren Teo <deren.teo@outlook.com>
+Closes: https://lore.kernel.org/netdev/SI2PPF4F82E9256898C9826AF17C3AE8AD9F467A@SI2PPF4F82E9256.apcprd04.prod.outlook.com/
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+---
+ tc/q_hfsc.c | 27 +++++++++++++++++----------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-On 02.03.26 23:54, Greg Kroah-Hartman wrote:
-> On Mon, Mar 02, 2026 at 05:31:03PM +0100, Jori Koolstra wrote:
->> The class_create() call has been deprecated in favor of class_register()
->> as the driver core now allows for a struct class to be in read-only
->> memory. Change dibs_class to be a const struct class and drop the
->> class_create() call.
->>
->> Suggested-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->> Signed-off-by: Jori Koolstra <jkoolstra@xs4all.nl>
->> ---
->>  drivers/dibs/dibs_main.c | 14 ++++++++------
->>  1 file changed, 8 insertions(+), 6 deletions(-)
-> 
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+diff --git a/tc/q_hfsc.c b/tc/q_hfsc.c
+index aed7130c..f68e8351 100644
+--- a/tc/q_hfsc.c
++++ b/tc/q_hfsc.c
+@@ -108,7 +108,8 @@ hfsc_print_opt(const struct qdisc_util *qu, FILE *f, struct rtattr *opt)
+ 	qopt = RTA_DATA(opt);
+ 
+ 	if (qopt->defcls != 0)
+-		fprintf(f, "default %x ", qopt->defcls);
++		print_0xhex(PRINT_ANY, "default", " default %#llx ",
++			    qopt->defcls);
+ 
+ 	return 0;
+ }
+@@ -124,13 +125,15 @@ hfsc_print_xstats(const struct qdisc_util *qu, FILE *f, struct rtattr *xstats)
+ 		return -1;
+ 	st = RTA_DATA(xstats);
+ 
+-	fprintf(f, " period %u ", st->period);
++	print_uint(PRINT_ANY, "period", " period %u ", st->period);
+ 	if (st->work != 0)
+-		fprintf(f, "work %llu bytes ", (unsigned long long) st->work);
++		print_lluint(PRINT_ANY, "work", "work %llu bytes ",
++			     (unsigned long long)st->work);
+ 	if (st->rtwork != 0)
+-		fprintf(f, "rtwork %llu bytes ", (unsigned long long) st->rtwork);
+-	fprintf(f, "level %u ", st->level);
+-	fprintf(f, "\n");
++		print_lluint(PRINT_ANY, "rtwork", "rtwork %llu bytes ",
++			     (unsigned long long)st->rtwork);
++	print_uint(PRINT_ANY, "level", " level %u ", st->level);
++	print_string(PRINT_FP, NULL, "%s", _SL_);
+ 
+ 	return 0;
+ }
+@@ -211,12 +214,16 @@ hfsc_parse_class_opt(const struct qdisc_util *qu, int argc, char **argv,
+ static void
+ hfsc_print_sc(FILE *f, char *name, struct tc_service_curve *sc)
+ {
++	unsigned int d_time = tc_core_ktime2time(sc->d);
+ 	SPRINT_BUF(b1);
+ 
+-	fprintf(f, "%s ", name);
+-	tc_print_rate(PRINT_FP, NULL, "m1 %s ", sc->m1);
+-	fprintf(f, "d %s ", sprint_time(tc_core_ktime2time(sc->d), b1));
+-	tc_print_rate(PRINT_FP, NULL, "m2 %s ", sc->m2);
++	open_json_object(name);
++	print_string(PRINT_FP, NULL, "%s ", name);
++	tc_print_rate(PRINT_ANY, "m1", "m1 %s ", sc->m1);
++	print_string(PRINT_FP, NULL, "d %s ", sprint_time(d_time, b1));
++	print_uint(PRINT_JSON, "d", NULL, d_time);
++	tc_print_rate(PRINT_ANY, "m2", "m2 %s ", sc->m2);
++	close_json_object();
+ }
+ 
+ static int
+-- 
+2.53.0
 
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-
-Thank you for the patch Jori.
-Would you mind adding a link to explain the "as the driver core now allows"?
-Maybe
-Link: https://lore.kernel.org/all/2023040248-outrage-obsolete-5a9a@gregkh/
-
-
-For my education: How could I have noticed that class_create() call has been deprecated?
-Is that marked somewhere somehow?
