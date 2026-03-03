@@ -1,111 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E4D33D75B9;
-	Tue,  3 Mar 2026 18:49:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7DCA2153D8;
+	Tue,  3 Mar 2026 18:54:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772563787; cv=none; b=dzBgDndmL2Vd3AyHOBy1MFMuRTq+2Pw2P5X2PeNpU4B4LwaGiiYaRJDUCeWBgTeaunRCmoNE0a24TglYyyAVwA3yuy0obA1X5V4p1spqP4YXlv9dlw4oZ7pid7RdMG0rpBJ2v+o7VwfujNIwekTdYrL9TL69G1niBn813Orxi70=
+	t=1772564086; cv=none; b=PAGSSx5QSYuILuvw5zPgqNlzUD3nkjoYM2H40E9BBaJqFNlSFKGNTedrk7800z/WstzhoeYbFmSlIdkuG04Vv4LrQvVufNSHb+BcGFjPm0vuBlN8uOwnfhhP4RLoS8OOaXi3E4c3arVw/cj2jOVfVcSdQFpuepG3V4WtfCvDtGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772563787; c=relaxed/simple;
-	bh=0WlC4XoIlGALIhUZv1G/NtRKkcFAo2neEeU8mwP7WoI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k3OfrQ+U2tsDPxdoBv1LFWSEjdiiux0WI6uuaQ4b6KKr+CS6ghOszTivo5q09psX+uYBJRlqD3S0NklGHYXdtQpGs7lG9IKORfyYIRQ/JGoAfOvOXtFoS5uFgUF/YUKtpuPZB5600m/y2SI0HE8ERx4/+YNAjHp8T8QoHoBD71U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u3l1b5wm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772564086; c=relaxed/simple;
+	bh=/idX8QivQo2BDr3Mxzwukch259tw+JdI2SitHpRhJcQ=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OjvbvACYY+YMCSxkmGbODbrzZMlos+LjC7hSGb218Sa3o6V/knbuC/jZZzsDmezRdFeaRZcmt+hyaZETEmc93+1OFXsIY+urt3LIYBKwfFzFOkU7OStiXEuJFIwYFM2xe3ZCeMQ8r5l2w0rr2qvMIdNPArS9lB3IyoeO79DTYDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=tp+jwrbP; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u3l1b5wm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01EADC116C6;
-	Tue,  3 Mar 2026 18:49:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772563786;
-	bh=0WlC4XoIlGALIhUZv1G/NtRKkcFAo2neEeU8mwP7WoI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=u3l1b5wm0xPMheN1Sf4uterwdI3o8tIkSfrzy5SC/6MwfVbZnyDqWt5bcU83Y7DVr
-	 pe/TJD0EP2st6eRcAtpo3L27qrO/1X386FfVOBUohhMKLcTFEAGP8z0EcPFDXYlzBz
-	 iz8OKPzyp2XHdXswRZytHI574KvB/8qGnajjtXCmQa/u90Zm8CS1AdpJ9vSBH/mNBC
-	 RT1bKfJywvRmdnpQ4zeZzuN5sbBOeN3vbDCIilnFG71Eng+2mwYgqhbUFKkbSskuyG
-	 m/ZpWuARMcc3Eq8f+ccM1EYTdU7O0j1jjxr7lujqWv5NTdCtXYC5RGgeyzAtYr9Ly/
-	 i+Ux4UxdGqOWQ==
-Date: Tue, 3 Mar 2026 18:49:40 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Jens Emil Schulz =?iso-8859-1?Q?=D8stergaard?= <jensemil.schulzostergaard@microchip.com>
-Cc: UNGLinuxDriver@microchip.com, Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 2/8] dt-bindings: net: lan9645x: add LAN9645X
- switch bindings
-Message-ID: <20260303-iron-swarm-53248ddd25df@spud>
-References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
- <20260303-dsa_lan9645x_switch_driver_base-v1-2-bff8ca1396f5@microchip.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="tp+jwrbP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1772564085; x=1804100085;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/idX8QivQo2BDr3Mxzwukch259tw+JdI2SitHpRhJcQ=;
+  b=tp+jwrbPEmJjcwHOpiYgwVZKTNINWR3R9zTwBk6u3YK31fG7AcbkXwRc
+   xJ0fpNWzlrrLada+EieLHtGeU++6QMGhZJcTf8OS2UABfsMA+ebM6s1GD
+   L3VnPVLUCvyBbqJPaR1XoLfL5LBl7W0KweuM81XlzpfFEFGyNi0JT9d/2
+   o8FqvuXCgyARwtJS1f87CWr6Ld/GsbC2Qo57tyv+Omcs6uWFbClAjhBl0
+   DA2cuj1W++YeDLim8zw4EdEao/7Anqqd+/i0GcJu5BWMxqOr/sAvFpLMZ
+   vt3taanysGkP/uJ7bka4TVVnlJ5y3AvBRnobT76Ek/Ih/2aHB66OhicHH
+   Q==;
+X-CSE-ConnectionGUID: vCCADSueTRSDNnUFr7evcQ==
+X-CSE-MsgGUID: CEhNlibjT6iB2YW6dMy4ww==
+X-IronPort-AV: E=Sophos;i="6.21,322,1763449200"; 
+   d="scan'208";a="54162938"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 03 Mar 2026 11:54:44 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Tue, 3 Mar 2026 11:54:03 -0700
+Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58 via Frontend Transport; Tue, 3 Mar 2026 11:54:02 -0700
+Date: Tue, 3 Mar 2026 10:54:01 -0800
+From: Charles Perry <charles.perry@microchip.com>
+To: Conor Dooley <conor@kernel.org>
+CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, "Claudiu
+ Beznea" <claudiu.beznea@tuxon.dev>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net-next 1/4] dt-bindings: net: cdns,macb: add a
+ compatible for Microchip p64h
+Message-ID: <aacuSRxLktvCBaNK@bby-cbu-swbuild03.eng.microchip.com>
+References: <20260303180318.1814791-1-charles.perry@microchip.com>
+ <20260303180318.1814791-2-charles.perry@microchip.com>
+ <20260303-primal-cradling-f600faca8504@spud>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="GwVaQj5pnrQyytIm"
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260303-dsa_lan9645x_switch_driver_base-v1-2-bff8ca1396f5@microchip.com>
+In-Reply-To: <20260303-primal-cradling-f600faca8504@spud>
+
+On Tue, Mar 03, 2026 at 06:18:48PM +0000, Conor Dooley wrote:
+> On Tue, Mar 03, 2026 at 10:03:15AM -0800, Charles Perry wrote:
+> > "p64h" is shorthand for "PIC64-HPSC" and "PIC64HX"
+> 
+> No, sorry. If these are different SoCs they need to have SoC-specific
+> compatibles, particularly since PIC64HY could be something that is not
+> compatible with these devices. It'd be fine to add
+> "microchip,pic64hpsc-gem" with "microchip,pic64hx-gem" as a fallback
+> though, since they do appear to be very very very similar devices and
+
+Yes, "very very very similar" is the right term.
+
+> can clearly share the same match data in the driver. That's what pic64gx
+> and mpfs do.
+
+Ok, no problem. Like this? :
+
+```
+      - items:
+          - enum:
+              - microchip,pic64hpsc-gem
+              - microchip,pic64hx-gem
+          - const: microchip,pic64h-gem
+          - const: cdns,gem
+```
+
+Also, how important is it to use "pic64h" vs "p64h"?
+
+Much of the downstream development uses "p64h" in compatibles, file names,
+function names, etc. and it would create some overhead to rename
+everything.
+
+Although, as I think of it, it might not be a bad thing since it would
+allow to quickly identify the mainstream from the downstream code.
+
+Thank you,
+Charles
+
+> 
+> pw-bot: changes-requested
+> 
+> Cheers,
+> Conor.
+> 
+> > 
+> > The generic compatible "cdns,gem" works but offers limited features.
+> > Keep it as a fallback.
+> > 
+> > Signed-off-by: Charles Perry <charles.perry@microchip.com>
+> > ---
+> >  Documentation/devicetree/bindings/net/cdns,macb.yaml | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/Documentation/devicetree/bindings/net/cdns,macb.yaml b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+> > index cb14c35ba996..dff350302098 100644
+> > --- a/Documentation/devicetree/bindings/net/cdns,macb.yaml
+> > +++ b/Documentation/devicetree/bindings/net/cdns,macb.yaml
+> > @@ -27,6 +27,7 @@ properties:
+> >  
+> >        - items:
+> >            - enum:
+> > +              - microchip,p64h-gem    # Microchip P64H SoC
+> >                - xlnx,versal-gem       # Xilinx Versal
+> >                - xlnx,zynq-gem         # Xilinx Zynq-7xxx SoC
+> >                - xlnx,zynqmp-gem       # Xilinx Zynq Ultrascale+ MPSoC
+> > -- 
+> > 2.47.3
+> > 
 
 
---GwVaQj5pnrQyytIm
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Tue, Mar 03, 2026 at 01:22:28PM +0100, Jens Emil Schulz =D8stergaard wro=
-te:
-> Add bindings for LAN9645X switch. We use a fallback compatible for the
-> smallest SKU microchip,lan96455s-switch.
->=20
-> Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-> Signed-off-by: Jens Emil Schulz =D8stergaard <jensemil.schulzostergaard@m=
-icrochip.com>
-> ---
->  .../net/dsa/microchip,lan9645x-switch.yaml         | 137 +++++++++++++++=
-++++++
->  MAINTAINERS                                        |   1 +
->  2 files changed, 138 insertions(+)
->=20
-> diff --git a/Documentation/devicetree/bindings/net/dsa/microchip,lan9645x=
--switch.yaml b/Documentation/devicetree/bindings/net/dsa/microchip,lan9645x=
--switch.yaml
-> new file mode 100644
-> index 000000000000..4a19dfa7e9d5
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/net/dsa/microchip,lan9645x-switch=
-=2Eyaml
-> @@ -0,0 +1,137 @@
-> +# SPDX-License-Identifier: GPL-2.0-only OR BSD-2-Clause
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/net/dsa/microchip,lan9645x-switch.yam=
-l#
-
-Just name the binding microchip,lan96455s-switch please, to match the
-standalone compatible.
-
---GwVaQj5pnrQyytIm
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaactRAAKCRB4tDGHoIJi
-0kyXAP9N+lJXIBVmEGoF26C5HrWbYgmxDOCvDX3hlyYFEPHVvQEAoGSFKf2KDWlZ
-m7jA1+++yThCCx5WlPNJ5H39AYosWgs=
-=NFRQ
------END PGP SIGNATURE-----
-
---GwVaQj5pnrQyytIm--
