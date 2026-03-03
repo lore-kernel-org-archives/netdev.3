@@ -1,66 +1,66 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3544D47D94F
-	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 14:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274D247DD6B
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 14:53:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772549581; cv=none; b=px4a7rI6M6BShGU7IzzRdGIy4HgtNLow9dpOWGs39WPo0j9JAT6SdwXT8W4jxNTFYiAYOvZRjpz5rlOh03GHU/heqGkNfnBAAbSh6ZHAZuhFSOPyZc9kK4JpMPP4CSe89nnnAIg61ySADexvCHFHgx9zo3VCNT4rtADUTEAuTRQ=
+	t=1772549587; cv=none; b=DlJe69aewTE3PNPdeXPr6nrI43bfFTtKBm9jfUkwC3qhVjWWtO5eHxQM0XbZFBQTWUrdou6wau8XcsHmxDzOvRIJ8/5m+kt5pTLpZbl+ZHuS3Iw3IVgL2jet/vnbj1XdiAoooruYQk/1L6JeX64oyxa/wkXgwFsUfoqAAySPwsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772549581; c=relaxed/simple;
-	bh=n+qrbntEZHCcj+hFDxl5B5IlAY7k6qlt4lrmHo/04+M=;
+	s=arc-20240116; t=1772549587; c=relaxed/simple;
+	bh=Ty+bt3DHtWxTOGpZD6KfZHK3GsAUR3f0B8WSx0HsVaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljerP0HUFv62uQ2Zo2OznJVO8KqZTVrDmAIkfOCD4x43+BmhoR+FbUMGxSmAocfYhjgF+hxSWrteCfFr36QrBpJGGuXFLAxGfn3OaqXCa27ZpNyBbMy1oXInqd+VoarRrRKma2xo15bis8ZlG1g3hCpc3W5rcOgBs+VqxFiBR3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=j61tITwA; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=j61tITwA; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=ZysEuuxQKUq5ipmwcXiQMEahVdK6ba2CSdr6xFSk6IXySwXLLjzbdyl9zu8BcmP2gHftfT6RW4YkRSxa2V3YJxUgd4dRET3+pWiR0G2sWPdW/drPryuTQshgPD4+YPGAqok0Js1ZF2twTtVupf6BLn9HEovfPA3CiLZoFLZIodc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=Mh+Cl5Bb; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=cqP0N9UF; arc=none smtp.client-ip=195.135.223.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="j61tITwA";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="j61tITwA"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="Mh+Cl5Bb";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="cqP0N9UF"
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1CAE53F915;
-	Tue,  3 Mar 2026 14:52:52 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 190EC5BE0E;
+	Tue,  3 Mar 2026 14:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
 	t=1772549572; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PRCFBTbCIUI2AwpNK16vUiAWgPqlgBr6jZaCBMOtvy0=;
-	b=j61tITwA3o4aTb40PFm9ECki1X7f+23KnO4DfudktG08EJ7RsLSyM1/xwKI7XiMCy+nnZH
-	PUNMldd7c6T8a+TJQK01pE4dG382avFpIz4TV8bhUPZBiD0pZ2pYql6MI5ZRNftlUX4jM6
-	MzwK3smMCJGRTZwUAJt9zvPYeKaVmwg=
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=j61tITwA
+	bh=Za0JBcT5V6vBaHOpl5CMFbXKhHQ2OBmbH88+gHAsx7k=;
+	b=Mh+Cl5BbVAHnUrhxKaXr7ruzsxlzEEytJZf2xaovyDJhS2BZBDxkrpqUhB4ABt2idvtkkR
+	tuf399ED4hWDdvzn0OwMUek7bUs/73DG6OBUdI5GjzBm05M9Bse5SMveP1HHshLz7hsxId
+	ecvSd0hri/3Xfe0FKFTLvjJXXPnikaI=
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=cqP0N9UF
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1772549572; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1772549571; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PRCFBTbCIUI2AwpNK16vUiAWgPqlgBr6jZaCBMOtvy0=;
-	b=j61tITwA3o4aTb40PFm9ECki1X7f+23KnO4DfudktG08EJ7RsLSyM1/xwKI7XiMCy+nnZH
-	PUNMldd7c6T8a+TJQK01pE4dG382avFpIz4TV8bhUPZBiD0pZ2pYql6MI5ZRNftlUX4jM6
-	MzwK3smMCJGRTZwUAJt9zvPYeKaVmwg=
+	bh=Za0JBcT5V6vBaHOpl5CMFbXKhHQ2OBmbH88+gHAsx7k=;
+	b=cqP0N9UF0MZ35HnkkcHzMaRnS+5/sHzf2S17k8Hq8CKs8ui3WZhQildJJvONwKZZJ56Os3
+	4q7lzX7zX66CSl0SkaemJdohpfsyrwgO7tOZp0NzpDnL3CdPFvwuf8116Jbri27bt52jdD
+	vfvNepk0Q8XQuxgo7OZ6rEUpS2m78Jg=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B6BAB3EA72;
-	Tue,  3 Mar 2026 14:52:51 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E98793EA6D;
+	Tue,  3 Mar 2026 14:52:50 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GOR4K8P1pmmPKQAAD6G6ig
-	(envelope-from <oneukum@suse.com>); Tue, 03 Mar 2026 14:52:51 +0000
+	id ADTLN8L1pmmPKQAAD6G6ig
+	(envelope-from <oneukum@suse.com>); Tue, 03 Mar 2026 14:52:50 +0000
 From: Oliver Neukum <oneukum@suse.com>
 To: andrew@lunn.ch,
 	bjorn@mork.no,
 	netdev@vger.kernel.org
 Cc: Oliver Neukum <oneukum@suse.com>
-Subject: [RFCv2 08/13] net: usb: usbnet: allow drivers to specify private space needed
-Date: Tue,  3 Mar 2026 15:50:28 +0100
-Message-ID: <20260303145242.1377514-8-oneukum@suse.com>
+Subject: [RFCv2 03/13] net: usb: centralize usbnet_cdc_zte_rx_fixup in usbnet
+Date: Tue,  3 Mar 2026 15:50:23 +0100
+Message-ID: <20260303145242.1377514-3-oneukum@suse.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260303145242.1377514-1-oneukum@suse.com>
 References: <20260303145242.1377514-1-oneukum@suse.com>
@@ -85,15 +85,15 @@ X-Spamd-Result: default: False [-3.01 / 50.00];
 	ARC_NA(0.00)[];
 	TO_DN_SOME(0.00)[];
 	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
 	RCVD_TLS_ALL(0.00)[];
 	DKIM_TRACE(0.00)[suse.com:+];
 	RCVD_COUNT_TWO(0.00)[2];
 	FROM_EQ_ENVFROM(0.00)[];
 	FROM_HAS_DN(0.00)[];
 	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:106:10:150:64:167:received,2a07:de40:b281:104:10:150:64:97:from];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
 	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
 	RCPT_COUNT_THREE(0.00)[4];
@@ -103,105 +103,77 @@ X-Spam-Flag: NO
 X-Spam-Score: -3.01
 X-Spam-Level: 
 X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 1CAE53F915
+X-Rspamd-Queue-Id: 190EC5BE0E
 
-usbnet has been providing a fixed space of unsigned long[5]
-for minidrivers. This has led to various constructions in drivers
-this is not enough space for.
-Allow minidrivers to tell usbnet how much they need by means
-of struct driver_info. For backwards compatibility zero
-is taken to mean enough space for unsigned long[5]
+This helper is used by multiple drivers using usbnet.
+It is better to be provided by usbnet than one of them.
 
 Signed-off-by: Oliver Neukum <oneukum@suse.com>
 ---
- drivers/net/usb/qmi_wwan.c   | 3 ---
- drivers/net/usb/sierra_net.c | 3 ---
- drivers/net/usb/usbnet.c     | 5 ++++-
- include/linux/usb/usbnet.h   | 6 +++++-
- 4 files changed, 9 insertions(+), 8 deletions(-)
+ drivers/net/usb/cdc_ether.c | 19 -------------------
+ drivers/net/usb/usbnet.c    | 19 +++++++++++++++++++
+ 2 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 3a4985b582cb..fc2591ccb682 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -753,9 +753,6 @@ static int qmi_wwan_bind(struct usbnet *dev, struct usb_interface *intf)
- 	struct qmi_wwan_state *info = (void *)&dev->data;
- 	struct usb_cdc_parsed_header hdr;
+diff --git a/drivers/net/usb/cdc_ether.c b/drivers/net/usb/cdc_ether.c
+index 3149fa2b6ac1..505a653d9482 100644
+--- a/drivers/net/usb/cdc_ether.c
++++ b/drivers/net/usb/cdc_ether.c
+@@ -398,25 +398,6 @@ static int usbnet_cdc_zte_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	return status;
+ }
  
--	BUILD_BUG_ON((sizeof(((struct usbnet *)0)->data) <
--		      sizeof(struct qmi_wwan_state)));
+-/* Make sure packets have correct destination MAC address
+- *
+- * A firmware bug observed on some devices (ZTE MF823/831/910) is that the
+- * device sends packets with a static, bogus, random MAC address (event if
+- * device MAC address has been updated). Always set MAC address to that of the
+- * device.
+- */
+-int usbnet_cdc_zte_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+-{
+-	if (skb->len < ETH_HLEN || !(skb->data[0] & 0x02))
+-		return 1;
 -
- 	/* set up initial state */
- 	info->control = intf;
- 	info->data = intf;
-diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
-index 4d3ed642b3e7..5a32796a7a89 100644
---- a/drivers/net/usb/sierra_net.c
-+++ b/drivers/net/usb/sierra_net.c
-@@ -855,9 +855,6 @@ static struct sk_buff *sierra_net_tx_fixup(struct usbnet *dev,
- 	u16 len;
- 	bool need_tail;
- 
--	BUILD_BUG_ON(sizeof_field(struct usbnet, data)
--				< sizeof(struct cdc_state));
+-	skb_reset_mac_header(skb);
+-	ether_addr_copy(eth_hdr(skb)->h_dest, dev->net->dev_addr);
 -
- 	dev_dbg(&dev->udev->dev, "%s", __func__);
- 	if (priv->link_up && check_ethip_packet(skb, dev) && is_ip(skb)) {
- 		/* enough head room as is? */
+-	return 1;
+-}
+-EXPORT_SYMBOL_GPL(usbnet_cdc_zte_rx_fixup);
+-
+ /* Ensure correct link state
+  *
+  * Some devices (ZTE MF823/831/910) export two carrier on notifications when
 diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 8a9e0d98d9c6..b3cc3428b342 100644
+index 906584cd71a4..8a9e0d98d9c6 100644
 --- a/drivers/net/usb/usbnet.c
 +++ b/drivers/net/usb/usbnet.c
-@@ -1734,6 +1734,7 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
- 	int				status;
- 	const char			*name;
- 	struct usb_driver 	*driver = to_usb_driver(udev->dev.driver);
-+	unsigned int extra;
- 
- 	/* usbnet already took usb runtime pm, so have to enable the feature
- 	 * for usb interface, otherwise usb_autopm_get_interface may return
-@@ -1756,7 +1757,9 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
- 	status = -ENOMEM;
- 
- 	// set up our own records
--	net = alloc_etherdev(sizeof(*dev));
-+	extra = info->required_room ?
-+		info->required_room : 5 * sizeof(unsigned long);
-+	net = alloc_etherdev(sizeof(*dev) + extra);
- 	if (!net)
- 		goto out;
- 
-diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
-index 766862427620..41582346360f 100644
---- a/include/linux/usb/usbnet.h
-+++ b/include/linux/usb/usbnet.h
-@@ -50,7 +50,6 @@ struct usbnet {
- 	struct net_device	*net;
- 	int			msg_enable;
- 	struct cdc_state	cdc;		/* too common to leave out*/
--	unsigned long		data[5];
- 	u32			xid;
- 	u32			hard_mtu;	/* count any extra framing */
- 	size_t			rx_urb_size;	/* size for rx urbs */
-@@ -93,6 +92,8 @@ struct usbnet {
-  * that must be broken
-  */
- #		define EVENT_UNPLUG		31
+@@ -2346,6 +2346,25 @@ void usbnet_cdc_status(struct usbnet *dev, struct urb *urb)
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(usbnet_cdc_status);
 +
-+	DECLARE_FLEX_ARRAY(unsigned long, data);
- };
- 
- static inline bool usbnet_going_away(struct usbnet *ubn)
-@@ -142,6 +143,9 @@ struct driver_info {
- #define FLAG_RX_ASSEMBLE	0x4000	/* rx packets may span >1 frames */
- #define FLAG_NOARP		0x8000	/* device can't do ARP */
- 
-+	/* tells us how much private space is need in the descriptor */
-+	unsigned int	required_room;
++/* Make sure packets have correct destination MAC address
++ *
++ * A firmware bug observed on some devices (ZTE MF823/831/910) is that the
++ * device sends packets with a static, bogus, random MAC address (event if
++ * device MAC address has been updated). Always set MAC address to that of the
++ * device.
++ */
++int usbnet_cdc_zte_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
++{
++	if (skb->len < ETH_HLEN || !(skb->data[0] & 0x02))
++		return 1;
 +
- 	/* init device ... can sleep, or cause probe() failure */
- 	int	(*bind)(struct usbnet *, struct usb_interface *);
++	skb_reset_mac_header(skb);
++	ether_addr_copy(eth_hdr(skb)->h_dest, dev->net->dev_addr);
++
++	return 1;
++}
++EXPORT_SYMBOL_GPL(usbnet_cdc_zte_rx_fixup);
+ /*-------------------------------------------------------------------------*/
  
+ static int __init usbnet_init(void)
 -- 
 2.53.0
 
