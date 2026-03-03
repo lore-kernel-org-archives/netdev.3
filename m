@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF69396B67;
-	Tue,  3 Mar 2026 23:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B8B3932E0
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 23:12:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772579525; cv=none; b=j3bjipQJ6UIriIg17fOV/Phk7NOTVi/hXhduQUEmi/E88XGPu0tyHLnpx7n1CBwGzsRxlpfw2mWyEwWHuzA3ClN3LB54DcJxJvzmKt7zP/0NaGTrTpdfmbO4dfAnm8UZ65+UhZqhyTnZTFmxVZZNlmTI7qNiCZxVWXf2gH8fI2M=
+	t=1772579528; cv=none; b=AqIthCGeLL2bKPdxahRTEsCK2OhhqXfL2iOG703e0s5hwpn6CMCTaBiegYuSWkyA/Oz91zrUyywDJ0r4w0cFw1KV3eWMq2eURI/rKJEOrQ6FN1VeHdZKpw/090QZvX7jxw6ej+cyeKoUT3+rMhNfCYThBEzWnFEoGJ0S9oDf/Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772579525; c=relaxed/simple;
-	bh=K0fRyEWZrjrVoRd5ZbHxJR9zHkvq5aMjQ6/6pRtJqZo=;
+	s=arc-20240116; t=1772579528; c=relaxed/simple;
+	bh=wmEgyA8nyNjdT1m/jN30lORYC9hUBMULrYP1nJIQ6Xo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqCr28Xm+3h/Tu/JTWg/ZVVWi/f/bIzQcqAtzY6OL97I6XzgjG2QBaFCwDyZiA37Xbj7vM0ypH3Ml0iwVcIN7lhvlcAx18b7uvzMX2gRHKPf/edjCtCSbCSIh2Txpyzyg7NQAZoKlyXxxj8I7kLhsmuioHys5nxHMyDRCpKCPMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e/RToW9Z; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=S6t0yef3XvNBnFvaxhEtMlnDKp/li+3mqZ0KkuEXFW9vK2j6k6jgMiIW1vYBuY7oi/fUAFO4ivJtyZxwEjO7paA1CiJX5v+oDnkyaPJUec+Jbd7hICaW6Ee2H4n5g0AL2YjadwObdInYMyI2HkmPT33ZnCacLklvx6utEDTTUBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C9vta/QV; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e/RToW9Z"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C9vta/QV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772579522; x=1804115522;
+  t=1772579525; x=1804115525;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=K0fRyEWZrjrVoRd5ZbHxJR9zHkvq5aMjQ6/6pRtJqZo=;
-  b=e/RToW9ZAcK3egmvSYYEOFsMTaukXcgIkzNdLEE3urOh4Jvv0vnuILAk
-   LjtmE+yrBCvs6EUk35GSZoaHmIjkpSjM8n9fss1UzpacW/BCS6awKPMgv
-   olCi/fmqq32ne3eQiNn9ucWI5/uIzJLfCJ0R2UD13XRlFzZcRVmII8qZm
-   jQakSFvY2kxnCLsSAj1/dUs/K4ZWmOhM2DRD8ocYo3ZX9OBlWHt+Yv0zC
-   TvutW48X0sI7ZqvfLpZl+y1/UiuHrgN3ehoNHduFcYf21t+Js4WgiCQkp
-   rTgsT0m6DrWgS4iB/XBRIIHDjym9RKbEseJHD2/F0urky5Tw1gsy0Tkrj
-   g==;
-X-CSE-ConnectionGUID: ZnRRz5AsQxOK/XLXhhz0wQ==
-X-CSE-MsgGUID: zAt34b34SPmooUDvVbcigQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77238802"
+  bh=wmEgyA8nyNjdT1m/jN30lORYC9hUBMULrYP1nJIQ6Xo=;
+  b=C9vta/QVw1KGzh8OA4r0XVE8bWUizCHfHjjV6NNa10e7jGp939GfURGu
+   zdJFTaSsn9ngSt9gwX7a6+ePQD4pAyk61mKtvyqvzS5o35yLMt46zraFw
+   mvVufy0IMb3PS41/cFB/GQr7Tf+IuJVafN4xawad0IPHBlDn//h+Oy/7N
+   RTuHd7j6ZrMTFsS4U9Wjr45LHoUcYBmWv/c4oxEo+f3+uM6cNFgLGNNol
+   k0BlEyNKtFevvSLvyp99FLpOts+XcMFnpgulcoek3u3s/PNGgiSgGoiqi
+   9lrQU7a2MkE2z1Zm9a+kUdKHtKLNSGQ2X90JAxkF/LLX3RbQLfjcn92XF
+   A==;
+X-CSE-ConnectionGUID: c/DRKASqT+CjYgV5VLlbig==
+X-CSE-MsgGUID: 3Ag/VltSRK+YQ+SwA7nCDg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77238820"
 X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
-   d="scan'208";a="77238802"
+   d="scan'208";a="77238820"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
   by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 15:11:59 -0800
-X-CSE-ConnectionGUID: l1ro+eBbT3We97QOMe5CXQ==
-X-CSE-MsgGUID: fjTW86lRTGm9OAZLAxYHJw==
+X-CSE-ConnectionGUID: eNw2mdr5QNOBjGwmyTb6cw==
+X-CSE-MsgGUID: dHMvGnSoQuy6UGJ6soGvcg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,322,1763452800"; 
-   d="scan'208";a="248633804"
+   d="scan'208";a="248633810"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by orviesa002.jf.intel.com with ESMTP; 03 Mar 2026 15:11:59 -0800
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
@@ -50,18 +50,15 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
+Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
 	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	scott.w.taylor@intel.com,
-	stable@vger.kernel.org,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	aleksander.lobakin@intel.com,
+	horms@kernel.org,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
 	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net 3/8] ice: fix retry for AQ command 0x06EE
-Date: Tue,  3 Mar 2026 15:11:49 -0800
-Message-ID: <20260303231155.2895065-4-anthony.l.nguyen@intel.com>
+Subject: [PATCH net 5/8] libie: don't unroll if fwlog isn't supported
+Date: Tue,  3 Mar 2026 15:11:51 -0800
+Message-ID: <20260303231155.2895065-6-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260303231155.2895065-1-anthony.l.nguyen@intel.com>
 References: <20260303231155.2895065-1-anthony.l.nguyen@intel.com>
@@ -73,105 +70,69 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-Executing ethtool -m can fail reporting a netlink I/O error while firmware
-link management holds the i2c bus used to communicate with the module.
+The libie_fwlog_deinit() function can be called during driver unload
+even when firmware logging was never properly initialized. This led to call
+trace:
 
-According to Intel(R) Ethernet Controller E810 Datasheet Rev 2.8 [1]
-Section 3.3.10.4 Read/Write SFF EEPROM (0x06EE)
-request should to be retried upon receiving EBUSY from firmware.
+[  148.576156] Oops: Oops: 0000 [#1] SMP NOPTI
+[  148.576167] CPU: 80 UID: 0 PID: 12843 Comm: rmmod Kdump: loaded Not tainted 6.17.0-rc7next-queue-3oct-01915-g06d79d51cf51 #1 PREEMPT(full)
+[  148.576177] Hardware name: HPE ProLiant DL385 Gen10 Plus/ProLiant DL385 Gen10 Plus, BIOS A42 07/18/2020
+[  148.576182] RIP: 0010:__dev_printk+0x16/0x70
+[  148.576196] Code: 1f 44 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 0f 1f 44 00 00 41 55 41 54 49 89 d4 55 48 89 fd 53 48 85 f6 74 3c <4c> 8b 6e 50 48 89 f3 4d 85 ed 75 03 4c 8b 2e 48 89 df e8 f3 27 98
+[  148.576204] RSP: 0018:ffffd2fd7ea17a48 EFLAGS: 00010202
+[  148.576211] RAX: ffffd2fd7ea17aa0 RBX: ffff8eb288ae2000 RCX: 0000000000000000
+[  148.576217] RDX: ffffd2fd7ea17a70 RSI: 00000000000000c8 RDI: ffffffffb68d3d88
+[  148.576222] RBP: ffffffffb68d3d88 R08: 0000000000000000 R09: 0000000000000000
+[  148.576227] R10: 00000000000000c8 R11: ffff8eb2b1a49400 R12: ffffd2fd7ea17a70
+[  148.576231] R13: ffff8eb3141fb000 R14: ffffffffc1215b48 R15: ffffffffc1215bd8
+[  148.576236] FS:  00007f5666ba6740(0000) GS:ffff8eb2472b9000(0000) knlGS:0000000000000000
+[  148.576242] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  148.576247] CR2: 0000000000000118 CR3: 000000011ad17000 CR4: 0000000000350ef0
+[  148.576252] Call Trace:
+[  148.576258]  <TASK>
+[  148.576269]  _dev_warn+0x7c/0x96
+[  148.576290]  libie_fwlog_deinit+0x112/0x117 [libie_fwlog]
+[  148.576303]  ixgbe_remove+0x63/0x290 [ixgbe]
+[  148.576342]  pci_device_remove+0x42/0xb0
+[  148.576354]  device_release_driver_internal+0x19c/0x200
+[  148.576365]  driver_detach+0x48/0x90
+[  148.576372]  bus_remove_driver+0x6d/0xf0
+[  148.576383]  pci_unregister_driver+0x2e/0xb0
+[  148.576393]  ixgbe_exit_module+0x1c/0xd50 [ixgbe]
+[  148.576430]  __do_sys_delete_module.isra.0+0x1bc/0x2e0
+[  148.576446]  do_syscall_64+0x7f/0x980
 
-Commit e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-implemented it only for part of ice_get_module_eeprom(), leaving all other
-calls to ice_aq_sff_eeprom() vulnerable to returning early on getting
-EBUSY without retrying.
+It can be reproduced by trying to unload ixgbe driver in recovery mode.
 
-Remove the retry loop from ice_get_module_eeprom() and add Admin Queue
-(AQ) command with opcode 0x06EE to the list of commands that should be
-retried on receiving EBUSY from firmware.
+Fix that by checking if fwlog is supported before doing unroll.
 
-Cc: stable@vger.kernel.org
-Fixes: e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
-Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Fixes: 641585bc978e ("ixgbe: fwlog support for e610")
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://www.intel.com/content/www/us/en/content-details/613875/intel-ethernet-controller-e810-datasheet.html [1]
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
 Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c  |  1 +
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 35 ++++++++------------
- 2 files changed, 15 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/intel/libie/fwlog.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index fd32c318d3f5..ce11fea122d0 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1816,6 +1816,7 @@ static bool ice_should_retry_sq_send_cmd(u16 opcode)
- 	case ice_aqc_opc_lldp_stop:
- 	case ice_aqc_opc_lldp_start:
- 	case ice_aqc_opc_lldp_filter_ctrl:
-+	case ice_aqc_opc_sff_eeprom:
- 		return true;
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 3c1a084c2a4b..29e341251754 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -4509,7 +4509,7 @@ ice_get_module_eeprom(struct net_device *netdev,
- 	u8 addr = ICE_I2C_EEPROM_DEV_ADDR;
- 	struct ice_hw *hw = &pf->hw;
- 	bool is_sfp = false;
--	unsigned int i, j;
-+	unsigned int i;
- 	u16 offset = 0;
- 	u8 page = 0;
+diff --git a/drivers/net/ethernet/intel/libie/fwlog.c b/drivers/net/ethernet/intel/libie/fwlog.c
+index 79020d990859..4d0c8370386b 100644
+--- a/drivers/net/ethernet/intel/libie/fwlog.c
++++ b/drivers/net/ethernet/intel/libie/fwlog.c
+@@ -1049,6 +1049,10 @@ void libie_fwlog_deinit(struct libie_fwlog *fwlog)
+ {
  	int status;
-@@ -4551,26 +4551,19 @@ ice_get_module_eeprom(struct net_device *netdev,
- 		if (page == 0 || !(data[0x2] & 0x4)) {
- 			u32 copy_len;
  
--			/* If i2c bus is busy due to slow page change or
--			 * link management access, call can fail. This is normal.
--			 * So we retry this a few times.
--			 */
--			for (j = 0; j < 4; j++) {
--				status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
--							   !is_sfp, value,
--							   SFF_READ_BLOCK_SIZE,
--							   0, NULL);
--				netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%X)\n",
--					   addr, offset, page, is_sfp,
--					   value[0], value[1], value[2], value[3],
--					   value[4], value[5], value[6], value[7],
--					   status);
--				if (status) {
--					usleep_range(1500, 2500);
--					memset(value, 0, SFF_READ_BLOCK_SIZE);
--					continue;
--				}
--				break;
-+			status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
-+						   !is_sfp, value,
-+						   SFF_READ_BLOCK_SIZE,
-+						   0, NULL);
-+			netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%pe)\n",
-+				   addr, offset, page, is_sfp,
-+				   value[0], value[1], value[2], value[3],
-+				   value[4], value[5], value[6], value[7],
-+				   ERR_PTR(status));
-+			if (status) {
-+				netdev_err(netdev, "%s: error reading module EEPROM: status %pe\n",
-+					   __func__, ERR_PTR(status));
-+				return status;
- 			}
- 
- 			/* Make sure we have enough room for the new block */
++	/* if FW logging isn't supported it means no configuration was done */
++	if (!libie_fwlog_supported(fwlog))
++		return;
++
+ 	/* make sure FW logging is disabled to not put the FW in a weird state
+ 	 * for the next driver load
+ 	 */
 -- 
 2.47.1
 
