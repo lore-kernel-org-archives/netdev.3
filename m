@@ -1,98 +1,103 @@
-Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A7E2423149;
-	Tue,  3 Mar 2026 13:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E24311940
+	for <netdev@vger.kernel.org>; Tue,  3 Mar 2026 13:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772542968; cv=none; b=BxRExdYuCoPRDO+NtKsatruohykPgTMeyKr08b5I4d/e/iOgic/GgL4TZAIlC7ragC6jCcAKlkodQctR9fhvJZ2aHYOUHWBazI91BPEz5XrrLzzSB9tcJbl9Kk6hza/Uz+ZfXRAcrQqLeoYJaVWD354bYImChcsYEYUf3f2n9Lw=
+	t=1772543267; cv=none; b=KkF3IxnGfP78qb/1e6eoYXD+WiKsTlYyhKtYzg+ywMdQh0MsQ07BWCm1uXXtWJt1SvDgl+AljJ6aavfGKSKq/MTtYdYIJI+XaT23ebQX5mgC74e8o+7KpyHHBdR7CPPijLL9mYoxEeqIP0dbDWDUytr7QojVD08u3So3PnvfvTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772542968; c=relaxed/simple;
-	bh=nbMLQsjDZkCUDwUT+GwGHmBHBs1qTAJm1jRsNfWwmoA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JvhqCkujohAr+zIYEbnXCdTbO6AGUkQpKayDAdycTSyDWeFtA6KpDc+qVQB2/+PUZM3SHQGpqtoBRUTa/ZU2fxrTCplJt63C2zum0nn97JCMcK3nUoMuep+An50ULW0VaDyVBYhaXL1LAxKEGlBfN8AgjOAh+LLHNhJiIC93CVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=NsjNPIOk; arc=none smtp.client-ip=82.195.75.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+	s=arc-20240116; t=1772543267; c=relaxed/simple;
+	bh=P7uBXAD8UGwKJwSEQ+P0PMrvtswuFIKZebErqOSpVQw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RykZldqh8p1UhFM+ZmHqUsM6sWYfTKaQx0+5sHgWdAy11ymbUFJXzSwANzYu5HTtJJrAQ7d2wo/gOn3ir41rj4T99blXm0lkQ6mRGSB+ifogDjiUE/oiCp2PUu1tw5aoZLM1aUNZu7U/0Li4+hC04c27W92CvToiLstGzjBrEik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=0D2a/0WO; arc=none smtp.client-ip=209.85.222.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="NsjNPIOk"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
-	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=JjP44SBlkIUEEU7UZs1N7B9Mcuoc4Tdde0t8mN1Kmx8=; b=NsjNPIOkDmPH5OoXUbe5VuwOSP
-	Y1OBjUQ5SXr9ZBK/1gU7+YSKJV5oLafmmGoZjJvAuOM1gwkLbX2EtC+rnDqKYAu+iQZ+0PFoIPIHt
-	jFxa5fcDIsbdy2ujO7zJGeHzcEoAozoPllWmBhA8tuM5XIaOXhNAtIDfEi+BO44jc8+KaAxs3wegV
-	EoAt4dY1EzLs1+C15nDxWSSMBlqxEiG5QnYSEbVz2iJS7HWnEm5SUOZYVyrCeCbGZujv2Upuwld1X
-	DqHhT5NnJSpJ2XuBoEkhK44koPuAZhdD7mDoIq+zS8+csFbo/r2XM6VHqtrsx7wmoAqsW/F4X6XMY
-	40iRT4LA==;
-Received: from authenticated user
-	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.94.2)
-	(envelope-from <leitao@debian.org>)
-	id 1vxPOU-00FCOc-1h; Tue, 03 Mar 2026 13:02:34 +0000
-Date: Tue, 3 Mar 2026 05:02:29 -0800
-From: Breno Leitao <leitao@debian.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	ttoukan.linux@gmail.com, netdev@vger.kernel.org, kbusch@kernel.org, 
-	Gal Pressman <gal@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>
-Subject: Re: [PATCH] iommu/dma: Rate-limit WARN in iommu_dma_unmap_phys()
-Message-ID: <aabbv39ZqJud9m1g@gmail.com>
-References: <20260211-dma_io_mmu-v1-1-cf89e24437af@debian.org>
- <20260213112355.GP12887@unreal>
+	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="0D2a/0WO"
+Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-94a231b285dso2998519241.1
+        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 05:07:45 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1772543265; x=1773148065; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LSFvuHYraGGIGL3b5V3p77h34Yf6133w/ppsYKFjvTE=;
+        b=0D2a/0WOSvdASNu/ygthi3GuHtmt5X3cvLMwZvWg8lYW4C+BOl8kYaUteIV+6loz2O
+         20TRG7+EiF+ct04cGdqNb7joDFOBVHwD+VSaU2vGBzI47Ze1wNvIj/rWiYCWZSA8Pe7v
+         NCkWq9WibQ3k3gWwRogtkk/nmJAhIBVKz9yIY7mUq2AJroJelS+bHE7zWiapZShVLKkf
+         M10N3nebGTAzgRWbMMfDERvLRXXSOZR47GHty6gzoudUEpQmYeLAIqTUVmdqFNH1gIp9
+         Joptd5Hco6e00JRdtXXKFx9jKzS9OfrAwz1f/YlDBM2tkVpTNgAStc6lCAmvvHIVtQo9
+         Czyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772543265; x=1773148065;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LSFvuHYraGGIGL3b5V3p77h34Yf6133w/ppsYKFjvTE=;
+        b=qqGNr3etoktCJ2cjzoA0qi3WMp5CeT0mbgaWAkPchHJYmIuJ/88rwrEeYeunNWIAaF
+         O47w136vrb1w0+gwoEQhlPPLeuxOdjzxytjV7x8TUYalVNHkrSHQriFPr6rdLP+OygxW
+         vCRO7IDclBB5t802ZQuAzO0cPWFxe0WycTb+nEKF2Ezq9nYboK7yRQUXmbV8MN5ix4nM
+         yLCUfTwuDMP5w4hYjHelCa9EBB8ruyhuNKRe2yalL6O9YdIaM/TXHWrpyOBSS9EhcRIB
+         +evGArDwf5RlcIl2H10fDu2Xxr5sr7nOix8smMMpoQa7yU5NCfsLh9Hv9tSq1WjHT52+
+         Pplw==
+X-Forwarded-Encrypted: i=1; AJvYcCUMBGFhODN7HJbtTIBZb/7Da5z5X6fSc/XtvSN1AKo9K2bk78yPy0/S8EGPi1Kb5PJiFLtxXbw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHyxymiKsJ1OroutpZshkZbb47WWkOLuvAvN0h1NTtog9tjhko
+	rPEjYsqmE3gFh933HMjH1MpfPBy9YO9k1RvlkXTbtp6SEU49my6Lv3Hz8rr2BltXoQ==
+X-Gm-Gg: ATEYQzxSpV1KNHviLhdhyh3LDal1kmWd1NUQqS1PNtGzb1p23ZfXIKW9jzBClWHe2HZ
+	VYWRnIUUuUKLTXQdzupsqYFIwGMEWPuaj76hQEgTF4Iab5x171I4+yhdYT3fINNimRMUD5QvjLn
+	MtA/qYRESRv8dQdnOFom0jQM0fWcsYkNCAaxU0ln87FcY5waNw6OqD3xf3iAFV1IgiSjFldBG4u
+	9yMPgC/VB3ecirD7nYCvH6IW/gz9spYIlYTs/VgFNzY4+QCu4KqjLI28L+t/DgLSNphQvlG/2Z3
+	BKy+ltf57oIMoovuZiWWV1O1xR+vJ0QGl8DTuVX21mKa/YIW7uR6CEeIOgCUo9qslHtLjWyEz61
+	+o3Cfk13WEVGan+D1kvNK+K3P9oZ/ltrFuHtkcYAF8/w7Rnkt4Tny/Igz0vpzvS8KCcVMBVcO/r
+	NE1pkE3QQ=
+X-Received: by 2002:a05:6102:a46:b0:5db:cf38:f506 with SMTP id ada2fe7eead31-5ff324e889cmr8080863137.23.1772543264603;
+        Tue, 03 Mar 2026 05:07:44 -0800 (PST)
+Received: from exu-caveira ([2804:14d:5c54:4efb::2000])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5ff1e80818dsm16583894137.5.2026.03.03.05.07.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 05:07:44 -0800 (PST)
+From: Victor Nogueira <victor@mojatatu.com>
+To: stephen@networkplumber.org,
+	dsahern@kernel.org
+Cc: jhs@mojatatu.com,
+	deren.teo@outlook.com,
+	andrew@lunn.ch,
+	netdev@vger.kernel.org
+Subject: [PATCH iproute2 v2 0/3] Add JSON output support to the remaining qdiscs
+Date: Tue,  3 Mar 2026 10:07:30 -0300
+Message-ID: <20260303130733.540278-1-victor@mojatatu.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260213112355.GP12887@unreal>
-X-Debian-User: leitao
+Content-Transfer-Encoding: 8bit
 
-hello Leon,
+Since qdisc core already assumes all qdiscs are able to output JSON,
+add JSON output support to the remaning qdiscs (HFSC, QFQ, muiltiq)
+so that a JSON qdisc dump outputs valid JSON.
 
-On Fri, Feb 13, 2026 at 01:23:55PM +0200, Leon Romanovsky wrote:
-> On Wed, Feb 11, 2026 at 07:13:03AM -0800, Breno Leitao wrote:
-> > When a PCI error (e.g. AER error or DPC containment) marks the PCI
-> > channel as frozen or permanently failed, the IOMMU mappings for the
-> > device may already be torn down. If a driver continues processing
-> > completions in this state, every call to dma_unmap_page() triggers a
-> > WARN_ON in iommu_dma_unmap_phys().
-> > 
-> > In a real-world crash scenario on an NVIDIA Grace (ARM64) platform, a
-> > DPC event froze the PCI channel and the mlx5 NAPI poll continued
-> > processing error CQEs, calling dma_unmap for each pending WQE. With
-> > dozens of pending WQEs, the resulting WARN_ON storm monopolized the CPU
-> > in softirq context for over 23 seconds, triggering a soft lockup panic.
-> > 
-> > Replace WARN_ON(!phys) with WARN_RATELIMIT() to cap the warning output
-> > at the kernel's default rate limit (10 messages per 5 seconds), while
-> > still providing visibility into the failure with the device name in the
-> > message.
-> > 
-> > Signed-off-by: Breno Leitao <leitao@debian.org>
-> > Fixes: 82612d66d51d ("iommu: Allow the dma-iommu api to use bounce buffers")
-> > ---
-> > I initially attempted to fix this in the driver itself, but that approach
-> > doesn't appear to be optimal, given the mappings can go away at any
-> > time, which is impossible to check at any time. Please see the discussion at:
-> > 
-> > https://lore.kernel.org/all/20260209-mlx5_iommu-v1-1-b17ae501aeb2@debian.org/
-> > ---
-> >  drivers/iommu/dma-iommu.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> We have similar failure in our regression and the proposal fix is below,
-> can you please try if it fixes your issue too?
+v1 -> v2:
+- Fix bug on line printing "level" field in HFSC (Pointed out by Stephen)
+- Emit HFSC d (delay) as a raw numeric microseconds
+  value (Suggested by Stephen)
+- Use nested JSON objects instead of flat names with spaces when
+  necessary in HFSC (Suggested by Stephen)
+- Output bands and max_bands as separate JSON fields for
+  multiq (Suggested by Stephen)
 
-This is not a trivial test to run, but, the early tested showed some good
-results.
+Victor Nogueira (3):
+  tc: Add JSON output support to HFSC
+  tc: Add JSON output support to QFQ
+  tc: Add JSON output support to multiq
 
-I will report back if I find regressions later,
+ tc/q_hfsc.c   | 27 +++++++++++++++++----------
+ tc/q_multiq.c |  6 +++++-
+ tc/q_qfq.c    |  8 ++++----
+ 3 files changed, 26 insertions(+), 15 deletions(-)
 
-Thanks for the fix,
---breno
+-- 
+2.53.0
+
