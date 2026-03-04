@@ -1,80 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ADCF38757C;
-	Wed,  4 Mar 2026 11:43:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A5239F173;
+	Wed,  4 Mar 2026 11:49:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772624607; cv=none; b=i9wk+cAfW5lrMht0YgbYrxWjNnt1Fb6UwMPaKItmh+rNLhf0XcQUtG81C10JAhB2DGhzYDRuMw85lNtR/YbAj9eSIZohvbtU2EuLOpm0E6VUeeZdzteL99JGK/jYuGyDTjjN3ESkUS6OOemRST38wWcm66k1WQ5QsUDrSwpphQQ=
+	t=1772624975; cv=none; b=Rn2XLbD3Iku7oWDc5lIxw7Jyu2HxUQvFsDKHsOaOkiKV+mZuGFCXV4jyzUsKwLO9WSHT2Yb81cczIwie1HnIgoOaIWAtDXRcfVeu62WvWYWi4GAQH7BFLYjG1jYSGpKLBbg9kS7cMb8NQOU8DVYIF7SMntOqJSl5l07ZL+LLBLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772624607; c=relaxed/simple;
-	bh=RdeQxpM446a30snr6DksUquAKJ3HbafVGgNp+XRn85U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BMfUuYt7f1xlabzE8w1MN7HDuX0Cv4kXJ3MmgwEFPj5QciUdVnCuoWbGMk7/4lPb37ACg7A+e6wSQdal/kvcC30TmrUAvrAxlUERKqKQf2H6pUik++YErj3gOCdt0a5nve+oK19Qfjhalcm65/IQL+UjqLwxgTPfZ13brv/Z6NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SXOmIPJb; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SXOmIPJb"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC93C19423;
-	Wed,  4 Mar 2026 11:43:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772624606;
-	bh=RdeQxpM446a30snr6DksUquAKJ3HbafVGgNp+XRn85U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SXOmIPJbVZrOiDQdxxHApj/MW4tElG/4y1VDKOns6EUYefWrdr3Nr/hORg0FG/nKl
-	 sf1jwiYbcTZbeo7mP4eRySpZJ31b4r6vFlDZoXwGsaYxUbLpzcmLCpyPBnaQMF2w6D
-	 zSU46tKdc/tDIq/9Axq5QIFsmPRUOfKWlu4Ek0SCjV2XwQQi5WJbOW0k2GOs11f74U
-	 HNyTzaWEX5p6CpRYLaPACt5i/fuBO1I2z9ZS7nlX24pj9dCw8AZa5ERaK5bSsLmVrP
-	 zWxfSaQ2ripq1cTH+j0Ox0ed/JrZaAKczpFk/forHoP1khftNCM5CvekS5OYqimc8h
-	 OnrLrF99lt4nw==
-Date: Wed, 4 Mar 2026 11:43:19 +0000
-From: Simon Horman <horms@kernel.org>
-To: Yury Norov <ynorov@nvidia.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	s=arc-20240116; t=1772624975; c=relaxed/simple;
+	bh=tNgMebyVLVIysFUKRyPizBE2w0Ibu+FjhaowLCsqS4s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e3tyBy92MQV9LMJbnDhNcBmgG2EG1CHiciYGfmkx2EU1uwdZosNNU9Lk5TrrovLfB1PCvmUy1umsl7BsSsJlKRb0fJY+rIK67JQK4RC2JCQnliG0T/Y5RxGNsjvJgCud031SKRDuzQ0RwgkxML8Cb/II1FHFqrE5uNk4+ctXBrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=Chamillionaire.breakpoint.cc
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 0E30D6026E; Wed, 04 Mar 2026 12:49:30 +0100 (CET)
+From: Florian Westphal <fw@strlen.de>
+To: <netdev@vger.kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>,
 	"David S. Miller" <davem@davemloft.net>,
-	Thomas =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Airlie <airlied@gmail.com>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Simona Vetter <simona@ffwll.ch>, Yury Norov <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	David Laight <david.laight.linux@gmail.com>
-Subject: Re: [PATCH v2 4/4] drm/xe: switch xe_pagefault_queue_init() to using
- bitmap_weighted_or()
-Message-ID: <20260304114319.GI71509@kernel.org>
-References: <20260302011159.61778-1-ynorov@nvidia.com>
- <20260302011159.61778-5-ynorov@nvidia.com>
+	<netfilter-devel@vger.kernel.org>,
+	pablo@netfilter.org
+Subject: [PATCH net-next 00/14] netfilter: updates for net-next
+Date: Wed,  4 Mar 2026 12:49:07 +0100
+Message-ID: <20260304114921.31042-1-fw@strlen.de>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260302011159.61778-5-ynorov@nvidia.com>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Mar 01, 2026 at 08:11:58PM -0500, Yury Norov wrote:
-> The function calls bitmap_or() immediately followed by bitmap_weight().
-> Switch to using the dedicated bitmap_weighted_or() and save one bitmap
-> traverse.
-> 
-> Signed-off-by: Yury Norov <ynorov@nvidia.com>
+Hi,
 
-It's not entirely clear to me why this patch is included in a patchset
-for the ice driver.
+The following patchset contains Netfilter updates for *net-next*,
+including changes to IPv6 stack and updates to IPVS from Julian Anastasov.
 
-And it's also not clear to me why, but allmodconfigs - fo4 at least x86_32
-and x86_64 - fail with this patch applied to net-next [1].
+1) ipv6: export fib6_lookup for nft_fib_ipv6 module
+2) factor out ipv6_anycast_destination logic so its usable without
+   dst_entry.  These are dependencies for patch 3.
+3) switch nft_fib_ipv6 module to no longer need temporary dst_entry
+   object allocations by using fib6_lookup() + RCU.
+   This gets us ~13% higher packet rate in my tests.
 
-ERROR: modpost: "__bitmap_weighted_or" [drivers/gpu/drm/xe/xe.ko] undefined!
+Patches 4 to 8, from Eric Dumazet, zap sk_callback_lock usage in
+netfilter.  Patch 9 removes another sk_callback_lock instance.
 
-[1] 2b12ffb66955 ("net: mana: Trigger VF reset/recovery on health check failure due to HWC timeout")
+Remaining patches, from Julian Anastasov, improve IPVS, Quoting Julian:
+* Add infrastructure for resizable hash tables based on hlist_bl.
+* Change the 256-bucket service hash table to be resizable.
+* Change the global connection table to be per-net and resizable.
+* Make connection hashing more secure for setups with multiple services.
+
+Please, pull these changes from:
+The following changes since commit 4ad96a7c9e2cebbbdc68369438a736a133539f1d:
+
+  selftests: net: add macvlan multicast test for shared source MAC (2026-03-03 18:08:13 -0800)
+
+are available in the Git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/netfilter/nf-next.git tags/nf-next-26-03-04
+
+for you to fetch changes up to f20c73b0460d15301cf1bddf0f85d060a38a75df:
+
+  ipvs: use more keys for connection hashing (2026-03-04 11:45:45 +0100)
+
+----------------------------------------------------------------
+netfilter pull request nf-next-26-03-04
+
+----------------------------------------------------------------
+
+Eric Dumazet (5):
+  netfilter: nf_log_syslog: no longer acquire sk_callback_lock in
+    nf_log_dump_sk_uid_gid()
+  netfilter: xt_owner: no longer acquire sk_callback_lock in mt_owner()
+  netfilter: nft_meta: no longer acquire sk_callback_lock in
+    nft_meta_get_eval_skugid()
+  netfilter: nfnetlink_log: no longer acquire sk_callback_lock
+  netfilter: nfnetlink_queue: no longer acquire sk_callback_lock
+
+Florian Westphal (4):
+  ipv6: export fib6_lookup for nft_fib_ipv6
+  ipv6: make ipv6_anycast_destination logic usable without dst_entry
+  netfilter: nft_fib_ipv6: switch to fib6_lookup
+  netfilter: nfnetlink_queue: remove locking in nfqnl_get_sk_secctx
+
+Julian Anastasov (5):
+  rculist_bl: add hlist_bl_for_each_entry_continue_rcu
+  ipvs: add resizable hash tables
+  ipvs: use resizable hash table for services
+  ipvs: switch to per-net connection table
+  ipvs: use more keys for connection hashing
+
+ include/linux/rculist_bl.h        |  49 +-
+ include/net/ip6_route.h           |  15 +-
+ include/net/ip_vs.h               | 377 ++++++++++--
+ net/ipv6/fib6_rules.c             |   3 +
+ net/ipv6/ip6_fib.c                |   3 +
+ net/ipv6/netfilter/nft_fib_ipv6.c |  79 ++-
+ net/netfilter/ipvs/ip_vs_conn.c   | 991 ++++++++++++++++++++++--------
+ net/netfilter/ipvs/ip_vs_core.c   | 179 ++++++
+ net/netfilter/ipvs/ip_vs_ctl.c    | 691 +++++++++++++++++----
+ net/netfilter/ipvs/ip_vs_pe_sip.c |   4 +-
+ net/netfilter/ipvs/ip_vs_sync.c   |  23 +
+ net/netfilter/nf_log_syslog.c     |  16 +-
+ net/netfilter/nfnetlink_log.c     |  19 +-
+ net/netfilter/nfnetlink_queue.c   |  24 +-
+ net/netfilter/nft_meta.c          |  23 +-
+ net/netfilter/xt_owner.c          |  28 +-
+ 16 files changed, 2011 insertions(+), 513 deletions(-)
+
+-- 
+2.52.0
