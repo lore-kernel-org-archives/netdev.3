@@ -1,190 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B661034D385;
-	Wed,  4 Mar 2026 07:44:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525E53914ED
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 07:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772610263; cv=none; b=MKUlglDYcoTPXjZHO/wKMfhhwb9vbqLd6NLPENGXYP0eFusUaMUTyt+RtyU0bYK43NJ9c2GezzQNd1AsvVNfsq5bsw1HhUR9hgLCQGsh4PvEoDPvvYIJJU+vN/mUpBUJLyAotkSluT8X/ktavskwYS6Dgu0CDdmhPUEYtStGeoo=
+	t=1772610801; cv=none; b=GWscGhPC+YEsKG+IxB70swo4vnLWATIvXe2S1bi7C7bMCpNd8flc176T5hFOCnLBK8ibzALSbnTkVGajfr+vFyNMNUounFS8jjXbbJi0grrqC/vQE0B7v38xBAA/U8EwDBx5unfGlDUGLUl3TTESLDnciIsqaV3e5ieR1QKwr4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772610263; c=relaxed/simple;
-	bh=Us0KGNplk7HG7Fg83BdG+51O34emtOY7P1nZiiQ0jEU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=suREU+sPpHI9wDQS0PAs7oXoYAbkT7svPjomiOMenhHxiFHed07KG9Gbnd0XX+ZliMTUyHrVBN1JWAhGLpTYL8CzrQQEQmj/NLvbaZAjrlw1qMhevpI0yU//7XyKi9rKm/Jbj1vUEVWNIa1pBoAl8ti8y+7cTSamwkgypvjENww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h14YwVVE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772610801; c=relaxed/simple;
+	bh=zJHPsWfDN8vhL0lXpTzuNlyk4zC+SXOHgJXn5YGKlds=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eDfnM1NIgR6i+wSgMjXw/+vf12HH2YMNOItH2caaB5U7v/GTe2I/fNd/gPLFoN/paLMsNt6wtcoieJTfnRQdPYzjLqdn3p7EM2z6qqtWb+R3VZQCe0rJh6VlITHm/RDbY8MhQDGkfDqu1IQ5pk9CIFBDjGP5DpPiOYT/PW1BkJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eff5y1/c; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h14YwVVE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F04C19423;
-	Wed,  4 Mar 2026 07:44:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772610263;
-	bh=Us0KGNplk7HG7Fg83BdG+51O34emtOY7P1nZiiQ0jEU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h14YwVVE6Wj9ayUYI7MGAZoootsuGQ+RsRUIvXmDBYdBvhOGLpsE4P9nw/2i1qmGz
-	 N+VqJuvhpyVsQ3BBLC2IEcy35P7Ad/6xl3kwoDp9ofcfS11K9avXjLWOkOANI4AyWf
-	 zJ01vAyxeRvijBP0ed+iFx0t37A5i0q2Lmim14MvcdRkXdKvcAWbmi9LfC7HaHHuYd
-	 7/rzk8X8A68rxJ7EIcgY3aUvzucihf1RDs3lmV/JqqF5wBtjK2XgakMOwBQlEsoHdv
-	 /MYd0/fycri9g3fr899YtXuwAMjsl3gXw7WHMGy5a5R7snhJZXIh3OvT7FPtFg0fkX
-	 B6OXkr5jGjEcQ==
-Date: Wed, 4 Mar 2026 08:44:21 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: lizhi2@eswincomputing.com
-Cc: devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
-	conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
-	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk, 
-	wens@kernel.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	alex@ghiti.fr, linux-riscv@lists.infradead.org, 
-	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, ningyu@eswincomputing.com, linmin@eswincomputing.com, 
-	pinkesh.vaghela@einfochips.com, pritesh.patel@einfochips.com, weishangjuan@eswincomputing.com
-Subject: Re: [PATCH net-next v3 1/3] dt-bindings: ethernet: eswin: add clock
- sampling control
-Message-ID: <20260304-hot-sponge-of-emphasis-6864db@quoll>
-References: <20260303061525.846-1-lizhi2@eswincomputing.com>
- <20260303061637.872-1-lizhi2@eswincomputing.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eff5y1/c"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4836f4cbe0bso55023885e9.3
+        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 23:53:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772610797; x=1773215597; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/KxuO5Rk7JZpEpUdLB/tVR1B3/xHR+F3Wb0f9SDpeYI=;
+        b=eff5y1/c6m7XH1JN3yogWBC2SnoYxGkKWROBny8WT7hTdmrCiyKSNYFAwRoN1ktBzq
+         VF3QXXnjoexsgWtwSgGixDNfhEgLktP/94Tim+aOdYIFi0QDZ9GGfvgB1aZcuK8sf005
+         wXPlPAO4fH3xYoxb+z0yLUY8QFdZMLFRAKj18zAJGtQmnX9brebNz9N2w2ZbiAMaTFOw
+         +akkhRhasxY0w5E6h/ESaaJIClwd4ylIL7ljRpDx5ba1WtA1Z/zpzmh3hK7vPETT1o6y
+         FDfsLgZrR326OhMrVvZ3imlEs8kfq2k2eo3olOgcUy1NgOXv6iveVZca52+HyRSUavYN
+         HRlA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772610797; x=1773215597;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/KxuO5Rk7JZpEpUdLB/tVR1B3/xHR+F3Wb0f9SDpeYI=;
+        b=uwJucB/gN9INNXq4z5mJWmH3ZJX6N8EMazdCE97k463vwWRc32HeN5i30k4BTlUkNC
+         Qu9VZoeglShqSAX3CAFdMNLzQ24IUfeYofTxlz58eQQ1E2nNaZToYOcKGXcYJ0d4XvGa
+         ZViV/JI4BdjusZO+j8XMAYvyKIeesuapvpu4FPUy0aCnbXRi8fbbiDYcftbUdEl0o4CH
+         bdZfGxok4QxqEZ7qrtnLqDZfFZC8p0api2T4BbyU15Oyx545ECzqt9YUJqZk9BQyaiqp
+         fPUXTtAiHTXrwQQglQjXqYoRP5rzYoxqoxLwyFS3PPybuyOHVhaM/RCZ3VvIQu4VGsJ4
+         WNsw==
+X-Forwarded-Encrypted: i=1; AJvYcCViw7PBBlDWjt61dqvEuSk3F8LHUMz+THTKjZLwreIK6ZlTmixXqgzwe+j+m35v2scuq3yS8qc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIYRwk2F+msdCLbNhALlSYWlSXKX9IVO5Tvt1dKGXwm5ywbOLx
+	i3c434oJL6S4FnK5nPNgn2A7sGz+M8rGw5jP+dCOf2xNxdIxNetvWAA/
+X-Gm-Gg: ATEYQzw5UOLzdl6ubz+mZgDDoZprzPPMOnqlEuEBNnD/yhhXnS7cj1jfRDzpd/9F4qJ
+	eKbKFbLvdGkKq5PajSVNFK6h3qanFzW/Nby3EAVQCpBtO/mxSwptoTL2PBd4RBVxTwVzc7LpQ8u
+	TQNYhwkr5XBGZ+Qa4d74OUmq6NOhuM/TpXeor96xwrRdBqtf3VvVHuF0CkIGjNdtP8ZHTOKbDAS
+	PaU5utyKE4sVpzc4X/3W91xIqXWwy+ICZI1UaAmBXAt55fxm/cSy8M4J0CrsUD1R07E3zZkUZ3u
+	RoGh2N9X271AHZSaZ90ciFPSvGx6BGRSgmd1rQD0LwxyXfQPlDxWKiaIOBLC+843oGlqcODzXvI
+	ydsQhcuC1ttf9RHXkAvNkTZcWj/dtUiNupgsCjXwXjN8vGoRmXrHDThsQf5Mgk1AQQUEN6aGAf7
+	kwRT9xDsBAQ00FiCfzOjbar1U5tyA/K2ObhfFAN5fMhrTDulyW95As3BQ1Bw==
+X-Received: by 2002:a05:600c:3b29:b0:483:7980:4687 with SMTP id 5b1f17b1804b1-48519899381mr17703535e9.17.1772610797310;
+        Tue, 03 Mar 2026 23:53:17 -0800 (PST)
+Received: from [10.125.201.152] ([165.85.126.96])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851887fc54sm37182745e9.10.2026.03.03.23.53.15
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Mar 2026 23:53:16 -0800 (PST)
+Message-ID: <8b501a1f-9c5e-4f3c-a136-277fc24af154@gmail.com>
+Date: Wed, 4 Mar 2026 09:53:15 +0200
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260303061637.872-1-lizhi2@eswincomputing.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] net/mlx5/core: Allocate ttc_params on heap
+To: Cheng-Yang Chou <yphbchou0911@gmail.com>
+Cc: charlie910417@gmail.com, jserv@ccns.ncku.edu.tw, leon@kernel.org,
+ mbloch@nvidia.com, netdev@vger.kernel.org, saeedm@nvidia.com,
+ tariqt@nvidia.com
+References: <20260226114219.2111793-1-yphbchou0911@gmail.com>
+ <20260226174601.2120282-1-yphbchou0911@gmail.com>
+Content-Language: en-US
+From: Tariq Toukan <ttoukan.linux@gmail.com>
+In-Reply-To: <20260226174601.2120282-1-yphbchou0911@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Mar 03, 2026 at 02:16:37PM +0800, lizhi2@eswincomputing.com wrote:
-> From: Zhi Li <lizhi2@eswincomputing.com>
-> 
-> The second Ethernet controller (eth1) on the EIC7700 SoC may experience
-> RX data sampling issues at high speed due to EIC7700-specific receive
-> clock to data skew at the MAC input.
-> 
-> On the EIC7700 SoC, the second Ethernet controller (eth1) requires
-> inversion of the internal RGMII receive clock in order to meet RX data
-> sampling timing at high speed.
-> 
-> Describe this SoC-specific difference by introducing a distinct compatible
-> string for MAC instances that require internal clock inversion, allowing the
-> driver to select the appropriate configuration without relying on per-board
-> vendor-specific properties.
 
-Pointless description/paragrapgh. Your explanation why adding a
-compatible is "because I need compatible". That's completely redundant.
 
-Explain what is special about this MAC instance, what's different in its
-programming model or other characteristics that you claim it is a
-different device.
-
+On 26/02/2026 19:46, Cheng-Yang Chou wrote:
+> The ttc_params structure is too large to be allocated on the stack,
+> triggering warnings for exceeding the 1024-byte frame size limit.
+> Consuming excessive stack space risks causing stack overflows.
 > 
-> The rx-internal-delay-ps and tx-internal-delay-ps properties now use
-> minimum and maximum constraints to reflect the actual hardware delay
-> range (0-2540 ps) applied in 20 ps steps. This relaxes the binding
-> validation compared to the previous enum-based definition and avoids
-> regressions for existing DTBs while keeping the same hardware limits.
+> Allocate the structure dynamically to maintain safe stack boundaries.
 > 
-> Treat the RX/TX internal delay properties as optional, board-specific
-> tuning knobs and remove them from the example to avoid encouraging
-> their use.
-> 
-> In addition, the binding now includes additional background information
-> about the HSP CSR registers accessed by the MAC. The TXD and RXD delay
-> control registers are included so the driver can explicitly clear any
-> residual configuration left by the bootloader. Background reference for
-> the High-Speed Subsystem and HSP CSR block is available in Chapter 10
-> ("High-Speed Interface") of the EIC7700X SoC Technical Reference Manual,
-> Part 4 (EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf):
-> https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases
-> 
-> There are currently no in-tree users of the EIC7700 Ethernet driver, so
-> these changes are safe.
-> 
-> Fixes: 888bd0eca93c ("dt-bindings: ethernet: eswin: Document for EIC7700 SoC")
-> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
+> Signed-off-by: Po-Ying Chiu <charlie910417@gmail.com>
+> Signed-off-by: Cheng-Yang Chou <yphbchou0911@gmail.com>
+> Suggested-by: Leon Romanovsky <leon@kernel.org>
 > ---
->  .../bindings/net/eswin,eic7700-eth.yaml       | 75 +++++++++++++++----
->  1 file changed, 59 insertions(+), 16 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml b/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml
-> index 91e8cd1db67b..22d1cecea07e 100644
-> --- a/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml
-> +++ b/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml
-> @@ -20,6 +20,7 @@ select:
->        contains:
->          enum:
->            - eswin,eic7700-qos-eth
-> +          - eswin,eic7700-qos-eth-clk-inversion
->    required:
->      - compatible
->  
-> @@ -28,9 +29,13 @@ allOf:
->  
->  properties:
->    compatible:
-> -    items:
-> -      - const: eswin,eic7700-qos-eth
-> -      - const: snps,dwmac-5.20
-> +    oneOf:
-> +      - items:
-> +          - const: eswin,eic7700-qos-eth
-> +          - const: snps,dwmac-5.20
-> +      - items:
-> +          - const: eswin,eic7700-qos-eth-clk-inversion
 
-So just enum for both entries?
-
-Anyway, that's the same device, so you do not get two compatibles. This
-should be a property. Which property not sure, maybe all this was
-discussed already.
-
-
-> +          - const: snps,dwmac-5.20
->  
->    reg:
->      maxItems: 1
-> @@ -63,16 +68,29 @@ properties:
->        - const: stmmaceth
->  
->    rx-internal-delay-ps:
-> -    enum: [0, 200, 600, 1200, 1600, 1800, 2000, 2200, 2400]
-> +    minimum: 0
-> +    maximum: 2540
-> +    multipleOf: 20
->  
->    tx-internal-delay-ps:
-> -    enum: [0, 200, 600, 1200, 1600, 1800, 2000, 2200, 2400]
-> +    minimum: 0
-> +    maximum: 2540
-> +    multipleOf: 20
->  
->    eswin,hsp-sp-csr:
->      description:
->        HSP CSR is to control and get status of different high-speed peripherals
->        (such as Ethernet, USB, SATA, etc.) via register, which can tune
->        board-level's parameters of PHY, etc.
-> +
-> +      Additional background information about the High-Speed Subsystem
-> +      and the HSP CSR block is available in Chapter 10 ("High-Speed Interface")
-> +      of the EIC7700X SoC Technical Reference Manual, Part 4
-> +      (EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf). The manual is
-> +      publicly available at
-> +      https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases
-> +
-> +      This reference is provided for background information only.
->      $ref: /schemas/types.yaml#/definitions/phandle-array
->      items:
->        - items:
-> @@ -81,7 +99,9 @@ properties:
->                           or external clock selection
->            - description: Offset of AXI clock controller Low-Power request
->                           register
-> +          - description: Offset of register controlling TXD delay
->            - description: Offset of register controlling TX/RX clock delay
-> +          - description: Offset of register controlling RXD delay
-
-As pointed out, you cannot change the order and there is no reason for
-doing this explained in commit msg.
-
-Best regards,
-Krzysztof
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Thanks.
 
