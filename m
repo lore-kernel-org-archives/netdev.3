@@ -1,281 +1,129 @@
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1929F35CB70
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 11:37:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772624272; cv=pass; b=YthqO2I0/wgruTs14g2kUYjbt+DtVJEAbJcOsEa6LbO11Fq8iZrg87iS+33HlR8XtweMGlk9HspHDh2x5uAA0rQK0bSnjCHQ+zdksGLLsSb0Vg/TOYQXrWmRe4vqHG6ZWjx05TxOSZKpmmIA2fDTXCGGr76dchSl6mlIDtw8JvY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772624272; c=relaxed/simple;
-	bh=ZaTX/5xZCLp8jX/BNqqW109CaVTKhBe9/NvQKJFvKx0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=V2IvrLA5k4ejQbGeGpwROd71pgibCUcVQ7iTid+XVtqab+Q1iDBl52CjLy5z7TFctBm5VFRUCHWJ8MFnWUcCyJfaVAW+ud2QaWNULXwbBIpmQAnLWOaCKDzQxQ5F0LG0ZWUhiC3HMSb9ZLr8bBVxVNl8of8VQrBXBV8pJl19fpQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OVGaupro; arc=pass smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528823451AE
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 11:38:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772624319; cv=none; b=WyLjqytvNzXE/i6KdEFZe+jnAridWTfYIHh0VkLx5arKOBQKWROEftdJl5rhc67Vw55ZvbTMv6qXLmoCLFEFtwyDqgVnN0WxcYFkMKCQSCBYswf20JIBQq1DI8RAQS1E5/9flmgyuI/KTZh+Wy173xdC0P8X759oQBunEcX0shs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772624319; c=relaxed/simple;
+	bh=AB+Jg90G24Pdqj7NqOc+YfuU/oyLVcby75ANquMxx+U=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=E7vhH3NfUPSxVHG7uis5P46gMLNYIhBqVk3jTJAWZI6KZv/pam50Ev/tUTkZtdDiES/nzyLGVaR9cHNrUJ/scL3ML+6bwwkzZ/HqrD0WFkJU4ZEq1mxyw+rRyAEF+BAzKnIvoHOu0rCH8cxwtMJbjjI5OQiUpxdDk4BHIyZGQ2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=N+du+Ixo; arc=none smtp.client-ip=95.215.58.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OVGaupro"
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-660d2e48383so1840119a12.1
-        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 03:37:50 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772624269; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YK3h5eL73UigdDEr7UwVvX9XdSpCtBulZjJQn4xmxWHm1HjC19kiKoKUhm+doG7eT8
-         eJYsyjOdgH1Mv4LxQTW78sJILTlc/3kDmKUoa+lS8Exsta05PukAO2oI4QL6lIfzQ4xz
-         d9ijnrBu0cEKXtvSgkpMYdFE9wmaHJGzelmsM7ziD0Vn5GeAkPXBkNCTmbhpc23LW40F
-         Wvj78p9+LLlH40ZGb2mE+TvfPJL1aRjdYuWTdzJZ/pBenFDWrn84aVIOFupe7bssYZYY
-         2yUhSLdmTkBk1xUkFOiSz1lHm/4GesjuX7OlNf1PtzusVaAPZscOTxlgGv1CV/K5gXzf
-         zBgw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=lDZKotLArOoGPbmGkSbdB3knGUn3d/x5zVLs33GH6ak=;
-        fh=yVU4gYIuNM8um1uH8poOGGLBP/5f3PKaSqvgZvD6r7A=;
-        b=eXFOl15gQU7BEGaa3fzS06snY5KjaD1BohGOpKwV30ktVnZtwGMBTCHtKztSOUpoKa
-         cPc03tlH96smpZbAX3pxpsO0eUNUTEqHz5XXbp1yoKVxEMTHynw4apyxqu9xlIGqfYR9
-         NTFicUqrRKv7jyoNoMXmZzCxD7ne3gimipuTNtCIrAjH+P6/tWyDeyLVKY4SA+8NLUPn
-         q+kmD7QF2MBAJHFjG/k4XneLIiCX6w6SazlDirerDBspINvmWLpdM6ij2iXGKMSCanne
-         laXnIw3xQ4KrQCMTXXYf9IXcWSTDMdl6nW7KhH8nklNCyMPYU3Oy5RB65iT42l14b/L9
-         yoPA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772624269; x=1773229069; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lDZKotLArOoGPbmGkSbdB3knGUn3d/x5zVLs33GH6ak=;
-        b=OVGauproHypGOuNaPR4sbb7gMQz4b1SFekKespaRJM3CRKzZ5wDpjl9VcSmTNijB17
-         HYzRwCwrxM02w6PpJY0avjq9T5RUK/SaITtesRZ/OXsXSWefzqGpKn5/rTOL/mNJtGtK
-         w1rOaUqpTSF87SBq/f4VoI5dMBgulFqI/wOs8YIffJke3fXGHpJsA8vgidX02iEPVSfZ
-         qSG6vuwGt7kkvEAD9cuEUUrakiyhqUC+hOj8cNCQ+OkcoxnlaSD/9Pzzv5P57v37I4P3
-         mJ+56HSwbL0ECPFYU5L5uTZh7XogrIZZSRxziYmKAbC1IQsMkT5ZI2TMytFNiGavcNUo
-         Cv0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772624269; x=1773229069;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lDZKotLArOoGPbmGkSbdB3knGUn3d/x5zVLs33GH6ak=;
-        b=OoDXawqECFAm9REavALjDf+FHrXmoqKBKRDZoAz6mlJ/DOjZZORXMi31FES2v+N9V/
-         0xE7TNxFLAxoaxLwzrDP5QdJrWlc2W8pvjL9EEcPPCZSuDeBgLW1q43inyW/2qr8s8k4
-         q7mPPfhi659TiVYw+lsfCa3m8CJyp1tznOJUtATLgi2kUoQRYHazCecVQfQTye4d2/c0
-         yNLRXVAS8vqW0lOA03sRKsFECt7s7N/qtu+baLiG9znTjEwHQe4ARtV1bJPjgbTVhMo8
-         erjZof/PPhRFlhDIEyrH+Kf0bVI8otFdV8pB3oXPWdqwBdltGMaolsY4vhgoDYbXzbK4
-         xCSw==
-X-Forwarded-Encrypted: i=1; AJvYcCX4RXL3GL5RIJlurYkld0JwGId7aXV1CvASmz1ABX52QNJd2rwqC+k52FCq824/WyCk3j+tdTU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwbCAsDp6IU+ywRfnwHRiOhahBb2ZejMxvpB+LAnV2WBupAydLh
-	nuPyJDmdVPYFxYWStaEOw9M7DT51MMfTjz+TfYQSdMuTsoTFMa40bTu4HLwGg4szRh28DJC2xzN
-	cYJFOiBt5JZPIYjCkjPooslh4oPkm2Db9J9Td
-X-Gm-Gg: ATEYQzxYknAxAaSz48lNTDnewlgveoBJame0sjV7c7Aeck0rWH1QmgqAFPHoyXt228x
-	/JzknIrv8UVQ9pOGSxPmIPWQZ5AjIJRjSNnExJl1xCaJmuPBApcWi4P18UX/hPrWEZp2/vCQA/j
-	+9OzT8dEIP9u84LeR8lwCSWGlfIPbQH5JLeFBAS1wy/LZUm8VM53uOaeATHjqVfDHCtAULAVN3v
-	ejD8L8xx5Pbr5JAhEHvfxwTQVwe/7kvPR9xTSrmmBw0b24aRvfE1/irZHLzNJpRnqd7KUJt2MpJ
-	LR4iGdfGaNFMuxlSbCs9kChsscSbFPqYRAGYGQ==
-X-Received: by 2002:a05:6402:34c9:b0:65f:80cc:a47a with SMTP id
- 4fb4d7f45d1cf-660ef7797f6mr858539a12.1.1772624269071; Wed, 04 Mar 2026
- 03:37:49 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="N+du+Ixo"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772624315;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=OAipDTQmbkNskaP08ReNQMxD+aDuMbpRguSE+JWOYdY=;
+	b=N+du+IxozO7ti+hQp/5K+dJP+P1n6cXZoi5g0DzBbc9OHJaloZLV9g92+2pGGVEVA+mOiK
+	SCV23BxzKwt1YBufpAu7QVWziW4MVHSbgoKTxRCBOWJIoLYHeCtkEZfgB6UC8cUU6REtsl
+	XSNHAJtk2dkPMmY+RLBgO0lPoqyvXo0=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: netdev@vger.kernel.org,
+	idosch@nvidia.com
+Cc: jiayuan.chen@linux.dev,
+	jiayuan.chen@shopee.com,
+	syzbot+334190e097a98a1b81bb@syzkaller.appspotmail.com,
+	"David S. Miller" <davem@davemloft.net>,
+	David Ahern <dsahern@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net v4 1/2] net: ipv6: fix panic when IPv4 route references loopback IPv6 nexthop
+Date: Wed,  4 Mar 2026 19:38:13 +0800
+Message-ID: <20260304113817.294966-2-jiayuan.chen@linux.dev>
+In-Reply-To: <20260304113817.294966-1-jiayuan.chen@linux.dev>
+References: <20260304113817.294966-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260304053500.590630-1-alistair.francis@wdc.com>
- <20260304053500.590630-5-alistair.francis@wdc.com> <103c958f-d5f9-47d3-9be8-dd7225368fd5@suse.de>
-In-Reply-To: <103c958f-d5f9-47d3-9be8-dd7225368fd5@suse.de>
-From: Alistair Francis <alistair23@gmail.com>
-Date: Wed, 4 Mar 2026 21:37:22 +1000
-X-Gm-Features: AaiRm53Rc8hKqaLsyJSSxrm4evktnm3D1AOZXCuqV_7q51qatQHTgMljJH9bALQ
-Message-ID: <CAKmqyKPdJ2bgT2JaXi_38obyFTjRQ_rR5EdGmP81so8MEJNRVw@mail.gmail.com>
-Subject: Re: [PATCH v7 4/5] nvme-tcp: Support KeyUpdate
-To: Hannes Reinecke <hare@suse.de>
-Cc: chuck.lever@oracle.com, hare@kernel.org, 
-	kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org, kbusch@kernel.org, 
-	axboe@kernel.dk, hch@lst.de, sagi@grimberg.me, kch@nvidia.com, 
-	Alistair Francis <alistair.francis@wdc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, Mar 4, 2026 at 5:40=E2=80=AFPM Hannes Reinecke <hare@suse.de> wrote=
-:
->
-> On 3/4/26 06:34, alistair23@gmail.com wrote:
-> > From: Alistair Francis <alistair.francis@wdc.com>
-> >
-> > If the nvme_tcp_try_send() or nvme_tcp_try_recv() functions return
-> > EKEYEXPIRED then the underlying TLS keys need to be updated. This occur=
-s
-> > on an KeyUpdate event as described in RFC8446
-> > https://datatracker.ietf.org/doc/html/rfc8446#section-4.6.3.
-> >
-> > If the NVMe Target (TLS server) initiates a KeyUpdate this patch will
-> > allow the NVMe layer to process the KeyUpdate request and forward the
-> > request to userspace. Userspace must then update the key to keep the
-> > connection alive.
-> >
-> > This patch allows us to handle the NVMe target sending a KeyUpdate
-> > request without aborting the connection. At this time we don't support
-> > initiating a KeyUpdate.
-> >
-> > Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
-> > ---
-> > v7:
-> >   - Use read_sock_cmsg instead of recvmsg() to handle KeyUpdate
-> > v6:
-> >   - Don't use `struct nvme_tcp_hdr` to determine TLS_HANDSHAKE_KEYUPDAT=
-E,
-> >     instead look at the cmsg fields.
-> >   - Don't flush async_event_work
-> > v5:
-> >   - Cleanup code flow
-> >   - Check for MSG_CTRUNC in the msg_flags return from recvmsg
-> >     and use that to determine if it's a control message
-> > v4:
-> >   - Remove all support for initiating KeyUpdate
-> >   - Don't call cancel_work() when updating keys
-> > v3:
-> >   - Don't cancel existing handshake requests
-> > v2:
-> >   - Don't change the state
-> >   - Use a helper function for KeyUpdates
-> >   - Continue sending in nvme_tcp_send_all() after a KeyUpdate
-> >   - Remove command message using recvmsg
-> >
-> >   drivers/nvme/host/tcp.c | 59 ++++++++++++++++++++++++++++++++++++++++=
--
-> >   1 file changed, 58 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-> > index 8b6172dd1c0f..ade11d2ac9ef 100644
-> > --- a/drivers/nvme/host/tcp.c
-> > +++ b/drivers/nvme/host/tcp.c
-> > @@ -171,6 +171,7 @@ struct nvme_tcp_queue {
-> >       bool                    tls_enabled;
-> >       u32                     rcv_crc;
-> >       u32                     snd_crc;
-> > +     key_serial_t            handshake_session_id;
-> >       __le32                  exp_ddgst;
-> >       __le32                  recv_ddgst;
-> >       struct completion       tls_complete;
-> > @@ -1361,6 +1362,59 @@ static int nvme_tcp_try_send(struct nvme_tcp_que=
-ue *queue)
-> >       return ret;
-> >   }
-> >
-> > +static void update_tls_keys(struct nvme_tcp_queue *queue)
-> > +{
-> > +     int qid =3D nvme_tcp_queue_id(queue);
-> > +     int ret;
-> > +
-> > +     dev_dbg(queue->ctrl->ctrl.device,
-> > +             "updating key for queue %d\n", qid);
-> > +
-> > +     ret =3D nvme_tcp_start_tls(&(queue->ctrl->ctrl),
-> > +                              queue, queue->ctrl->ctrl.tls_pskid,
-> > +                              HANDSHAKE_KEY_UPDATE_TYPE_RECEIVED);
-> > +
-> > +     if (ret < 0) {
-> > +             dev_err(queue->ctrl->ctrl.device,
-> > +                     "failed to update the keys %d\n", ret);
-> > +             nvme_tcp_fail_request(queue->request);
-> > +     }
-> > +}
-> > +
-> > +static int nvme_tcp_recv_cmsg(read_descriptor_t *desc,
-> > +                           struct sk_buff *skb,
-> > +                           unsigned int offset, size_t len,
-> > +                           u8 content_type)
-> > +{
-> > +     struct nvme_tcp_queue *queue =3D desc->arg.data;
-> > +     struct socket *sock =3D queue->sock;
-> > +     struct sock *sk =3D sock->sk;
-> > +
-> > +     switch (content_type) {
-> > +     case TLS_RECORD_TYPE_HANDSHAKE:
-> > +             if (len =3D=3D 5) {
-> > +                     u8 header[5];
-> > +
-> > +                     if (!skb_copy_bits(skb, offset, header,
-> > +                                        sizeof(header))) {
-> > +                             if (header[0] =3D=3D TLS_HANDSHAKE_KEYUPD=
-ATE) {
-> > +                                     dev_err(queue->ctrl->ctrl.device,=
- "KeyUpdate message\n");
-> > +                                     release_sock(sk);
-> > +                                     update_tls_keys(queue);
-> > +                                     lock_sock(sk);
-> > +                                     return 0;
-> > +                             }
-> > +                     }
-> > +             }
-> > +
-> > +             break;
-> > +     default:
-> > +             break;
-> > +     }
->
-> I think a simple 'if' condition would be sufficient here, or do you have
-> handling of other TLS record types queued somewhere?
-> And we should log unhandled TLS records.
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-I like this approach as it makes it really easy to handle more types
-in the future. I don't have any more record types queued anywhere so I
-can change it to an if statement.
+When a standalone IPv6 nexthop object is created with a loopback device
+(e.g., "ip -6 nexthop add id 100 dev lo"), fib6_nh_init() misclassifies
+it as a reject route. This is because nexthop objects have no destination
+prefix (fc_dst=::), causing fib6_is_reject() to match any loopback
+nexthop. The reject path skips fib_nh_common_init(), leaving
+nhc_pcpu_rth_output unallocated. If an IPv4 route later references this
+nexthop, __mkroute_output() dereferences NULL nhc_pcpu_rth_output and
+panics.
 
-Good point about logging unhandled records
+Simplify the check in fib6_nh_init() to only match explicit reject
+routes (RTF_REJECT) instead of using fib6_is_reject(). The loopback
+promotion heuristic in fib6_is_reject() is handled separately by
+ip6_route_info_create_nh(). After this change, the three cases behave
+as follows:
 
-Alistair
+1. Explicit reject route ("ip -6 route add unreachable 2001:db8::/64"):
+   RTF_REJECT is set, enters reject path, skips fib_nh_common_init().
+   No behavior change.
 
->
-> > +
-> > +     return -EAGAIN;
-> > +}
-> > +
-> >   static int nvme_tcp_try_recv(struct nvme_tcp_queue *queue)
-> >   {
-> >       struct socket *sock =3D queue->sock;
-> > @@ -1372,7 +1426,8 @@ static int nvme_tcp_try_recv(struct nvme_tcp_queu=
-e *queue)
-> >       rd_desc.count =3D 1;
-> >       lock_sock(sk);
-> >       queue->nr_cqe =3D 0;
-> > -     consumed =3D sock->ops->read_sock(sk, &rd_desc, nvme_tcp_recv_skb=
-);
-> > +     consumed =3D sock->ops->read_sock_cmsg(sk, &rd_desc, nvme_tcp_rec=
-v_skb,
-> > +                                          nvme_tcp_recv_cmsg);
-> >       release_sock(sk);
-> >       return consumed =3D=3D -EAGAIN ? 0 : consumed;
-> >   }
-> > @@ -1708,6 +1763,7 @@ static void nvme_tcp_tls_done(void *data, int sta=
-tus, key_serial_t pskid,
-> >                       ctrl->ctrl.tls_pskid =3D key_serial(tls_key);
-> >               key_put(tls_key);
-> >               queue->tls_err =3D 0;
-> > +             queue->handshake_session_id =3D handshake_session_id;
-> >       }
-> >
-> >   out_complete:
-> > @@ -1737,6 +1793,7 @@ static int nvme_tcp_start_tls(struct nvme_ctrl *n=
-ctrl,
-> >               keyring =3D key_serial(nctrl->opts->keyring);
-> >       args.ta_keyring =3D keyring;
-> >       args.ta_timeout_ms =3D tls_handshake_timeout * 1000;
-> > +     args.ta_handshake_session_id =3D queue->handshake_session_id;
-> >       queue->tls_err =3D -EOPNOTSUPP;
-> >       init_completion(&queue->tls_complete);
-> >       if (keyupdate =3D=3D HANDSHAKE_KEY_UPDATE_TYPE_UNSPEC)
->
-> Otherwise looks good.
->
-> Cheers,
->
-> Hannes
-> --
-> Dr. Hannes Reinecke                  Kernel Storage Architect
-> hare@suse.de                                +49 911 74053 688
-> SUSE Software Solutions GmbH, Frankenstr. 146, 90461 N=C3=BCrnberg
-> HRB 36809 (AG N=C3=BCrnberg), GF: I. Totev, A. McDonald, W. Knoblich
+2. Implicit loopback reject route ("ip -6 route add 2001:db8::/32 dev lo"):
+   RTF_REJECT is not set, takes normal path, fib_nh_common_init() is
+   called. ip6_route_info_create_nh() still promotes it to reject
+   afterward. nhc_pcpu_rth_output is allocated but unused, which is
+   harmless.
+
+3. Standalone nexthop object ("ip -6 nexthop add id 100 dev lo"):
+   RTF_REJECT is not set, takes normal path, fib_nh_common_init() is
+   called. nhc_pcpu_rth_output is properly allocated, fixing the crash
+   when IPv4 routes reference this nexthop.
+
+Suggested-by: Ido Schimmel <idosch@nvidia.com>
+Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
+Reported-by: syzbot+334190e097a98a1b81bb@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/698f8482.a70a0220.2c38d7.00ca.GAE@google.com/T/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+---
+ net/ipv6/route.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/net/ipv6/route.c b/net/ipv6/route.c
+index c0350d97307e..08b4a324987e 100644
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -3582,7 +3582,6 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+ 	netdevice_tracker *dev_tracker = &fib6_nh->fib_nh_dev_tracker;
+ 	struct net_device *dev = NULL;
+ 	struct inet6_dev *idev = NULL;
+-	int addr_type;
+ 	int err;
+ 
+ 	fib6_nh->fib_nh_family = AF_INET6;
+@@ -3624,11 +3623,10 @@ int fib6_nh_init(struct net *net, struct fib6_nh *fib6_nh,
+ 
+ 	fib6_nh->fib_nh_weight = 1;
+ 
+-	/* We cannot add true routes via loopback here,
+-	 * they would result in kernel looping; promote them to reject routes
++	/* Reset the nexthop device to the loopback device in case of reject
++	 * routes.
+ 	 */
+-	addr_type = ipv6_addr_type(&cfg->fc_dst);
+-	if (fib6_is_reject(cfg->fc_flags, dev, addr_type)) {
++	if (cfg->fc_flags & RTF_REJECT) {
+ 		/* hold loopback dev/idev if we haven't done so. */
+ 		if (dev != net->loopback_dev) {
+ 			if (dev) {
+-- 
+2.43.0
+
