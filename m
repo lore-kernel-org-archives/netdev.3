@@ -1,304 +1,264 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6855E37C908;
-	Wed,  4 Mar 2026 08:49:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CB98375F6B;
+	Wed,  4 Mar 2026 08:49:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772614147; cv=none; b=BFFsAYFFP/bI9ZhAS/C+rkKVAyXAbBu7NKxUDYmLLPzzXphdMM9ltiXQpiJI77UszxOsjHIQGAVx8m4AckwVdoHfyv0nphn7HXf3uKzC5RRV/bVSGnxNnsFD4X+DwrKYrIo2PJN6mQt3YIivravRQWNcJVNQoJwUPUgf+ei4oMM=
+	t=1772614149; cv=none; b=CJbSLKe7VATUJG1g0DV9uZujTvs9GBdiyTvzh8JOGQro2kmuKOEImkVIY1i8pP/Zqcpv+3ENiBOawqURVQzz3hNO6Ydqh8UUDH30RAfHdco7x/M7EPvNCsRwvhxTUKpkZjJq7uQXZRfwkOlHRDtcswFu8sOIV+FnhGwspvduq9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772614147; c=relaxed/simple;
-	bh=NFxZeHhQxkMAZxLAEYMpZEvJwsaMa5hibmH+9+iTugg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z6Z9cn0ubrOMSlNQs6apBE7MkebBNyDnwaq6E0R1kgRnOdAzsHcM36dMcqyT+ZE6tSoeOxdYAG+BwOR6+dXsNQJx38HU9Pr0ILQKgXsXLpwThirwukm3x7ZvPEnZoIv1vh2qOgIOZXm8QmE1PdspgXinKgYROL6Roxwh0nQkOo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org; spf=none smtp.mailfrom=vimux.org; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=vimux.org
-X-QQ-mid: esmtpgz14t1772614116taaf34ea6
-X-QQ-Originating-IP: hIugnVOhNtAhoE2XqvC26vgD/LFxxKo7NjOiWolM7A0=
-Received: from localhost.localdomain ( [119.167.27.218])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 04 Mar 2026 16:48:31 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 12975140806639715596
-EX-QQ-RecipientCnt: 8
-From: Jialu Xu <xujialu@vimux.org>
-To: linux-gpio@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: linusw@kernel.org,
-	brgl@kernel.org,
-	krzk@kernel.org,
-	kees@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jialu Xu <xujialu@vimux.org>
-Subject: [PATCH 1/3] nfc: s3fwrn5: convert to gpio descriptors
-Date: Wed,  4 Mar 2026 16:47:02 +0800
-Message-ID: <7D8A09EB5A988115+20260304084808.440955-2-xujialu@vimux.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260304084808.440955-1-xujialu@vimux.org>
-References: <20260304084808.440955-1-xujialu@vimux.org>
+	s=arc-20240116; t=1772614149; c=relaxed/simple;
+	bh=IWGW1P/9wPXZRs/KCASxtmZk96MTf2BOnOEanwidW50=;
+	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
+	 Content-Disposition:Content-Type:Message-Id:Date; b=faVLuTMvMuSAorHyKt2O9SgYmwtRGR8ZvKGpWiBW06I0y25uo6VfGN69kQbLYLskAGEg+wtoyCYEJHeFNHn8ZvJL1xSE08Nz+AMqB15bGPSNnhURKe4MrNopOLXd6rO8dw+hjwqq5Im7VMfGLUhVw6oxj3lvYsiPDoykWF/l9yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=aGfx5mkg; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="aGfx5mkg"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
+	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=X7sQm1Bi6R7xeBrWwrHPPhLvKcbYUqn6hek3B1RHnQk=; b=aGfx5mkgbG8LcQTdG6W/Wdyqok
+	dLp2iPkETsB5ndkzBuYuSb0GIfu4xdFF/YESxoFknRbExnrqAwCBTIWO/tPwfMwVosK7TGHtfb1fn
+	H8pRDTAyb2jC+j3IByJXUPai/l2yExDX/akJeDNM/Nnix0vlMxaC8a+Jxel4i/jw5Yop0q9jMqyl2
+	TnNtbuIVbY6nCmadqCq2iEfv0vSGheXq59ZzSZN9BG+fsaBNCzAFxyq2p2y+uLEjAhqRW4hFFJL9q
+	7JLReorUocvC886NjElCol+LqeWpTSpxbIg7ea124jzslody7NaK1ZAWoh9xpG/YDqmuvkjhUWRHe
+	fW7NJyzA==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:58852 helo=rmk-PC.armlinux.org.uk)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <rmk@armlinux.org.uk>)
+	id 1vxhue-00000000690-2lGh;
+	Wed, 04 Mar 2026 08:49:00 +0000
+Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
+	id 1vxhud-0000000BqGK-3U3P;
+	Wed, 04 Mar 2026 08:48:59 +0000
+In-Reply-To: <aafxqCvJ_XY4YbWw@shell.armlinux.org.uk>
+References: <aafxqCvJ_XY4YbWw@shell.armlinux.org.uk>
+From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH RFC net-next v2 1/7] net: stmmac: add BASE-X support to
+ integrated PCS
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:vimux.org:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: NS64fzUr6Xn9YAU9E0NzRY7rqB0Y61uMCdXblhjMZtzSc/Nqp8ojiayB
-	Q1hOnZJy9wAoEP+BKCKebCUMeIU7oogt0TK8CwWoLREf9PWnrgJ0ZfGI3d7Wm6Z4V7piZ/4
-	45VPrpEHC11QIp+8bcITShtQATS9oe4RWTC68H1WFUhu8NdFSgF05E2TXYjwjp19qBOvS1Z
-	vP/F4nDjLVQjOCx+tfjRMPMxzD14O7yZXKJLFzjYmGUG51xwnqxq/ijSsyexZf6C+bQYb/g
-	Qtzhvzv35LOWoFuqLtuRMfEBnSKl5IYlqzSOByUa/9V/DFAEFOlKutqrwaGc1nQiRlREGAS
-	Apu8BZOYw8vCiV+vQRPFwqZY8V/geDuBfacBw4Skl3QQ4qt5AksL7hklCNrgBoGxUWRFlao
-	dIJRrni5dTEhkWpRJ3V3LFe3CUiUFVoEI+4P8lQwRtNQefu1k4xw+pLuo500kmnb9OMNU8o
-	Oy3PgVbrPx9MORjMKQE/DTDs3/0yqbAbsAO/5IuIIW1HNYjAbDfqIyi6DEwQqqkVTA2qHb8
-	F00fL/Th50CU8/pDA1BespstlMHMJt1rUNGSIZiyrPlmn+hiB4WJoASoIQMyagJYhsjptwb
-	qLlFANajLPDqbTrpEDoPn7wISfaCVqmKepP1XUmVF2H6I6n501zmlyOqDPzpxI3fvILivps
-	QMKgvPPBcVP9xGUpH5QKNKAS4+mjT7G3s7vHxT7UICx/xlTi6jYTiHiGJM44PN+7GFeUDAA
-	DyANk+elZB5dxCOtuq2M/Gp0wc1UDaovK2FpgLUQgc1ICuiKkZLAXORJtoSNPJHlrurlslh
-	7bqoslmPM6/skzoKJ31GB/EGqDjZDcfIH0B6oQU5F7x9BQ1eAXN1FSZB5j3hKzjO5On8S3B
-	N0zY9Ud0ExcDAmCgr65+wnGI30u1DlkfYdjDj6WhkmnNpO44vXcXKGFu1d7CBGgFx3yPkyk
-	eHdO3RGqvaWZLSypNxcsirXiB5BKSJLxrnBxR1INZLkChaMduIGw2QTZt7n2DGVaQ5ZytOz
-	zwGclabUBkDGWtKDTYlzUX38X9jlgpTvtwzlcoYGL15Lid29U4GaeNX43uNup7HCk9EAPF5
-	A==
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset="utf-8"
+Message-Id: <E1vxhud-0000000BqGK-3U3P@rmk-PC.armlinux.org.uk>
+Sender: Russell King <rmk@armlinux.org.uk>
+Date: Wed, 04 Mar 2026 08:48:59 +0000
 
-Use <linux/gpio/consumer.h> instead of <linux/of_gpio.h>.
+The integrated PCS supports 802.3z (BASE-X) modes when the Synopsys
+IP is coupled with an appropriate SerDes to provide the electrical
+interface. The PCS presents a TBI interface to the SerDes for this.
+Thus, the BASE-X related registers are only present when TBI mode is
+supported.
 
-Signed-off-by: Jialu Xu <xujialu@vimux.org>
+dwmac-qcom-ethqos added support for using 2.5G with the integrated PCS
+by calling dwmac_ctrl_ane() directly.
+
+Add support for the following to the integrated PCS:
+- 1000BASE-X protocol unconditionally.
+- 2500BASE-X if the coupled SerDes supports 2.5G speed.
+- The above without autonegotiation.
+- If the PCS supports TBI, then optional BASE-X autonegotiation for each
+  of the above.
+
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/nfc/s3fwrn5/i2c.c        | 55 +++++---------------------------
- drivers/nfc/s3fwrn5/phy_common.c | 11 +++----
- drivers/nfc/s3fwrn5/phy_common.h |  5 +--
- drivers/nfc/s3fwrn5/uart.c       | 45 +++++++-------------------
- 4 files changed, 28 insertions(+), 88 deletions(-)
+ .../net/ethernet/stmicro/stmmac/stmmac_pcs.c  | 96 ++++++++++++++++++-
+ .../net/ethernet/stmicro/stmmac/stmmac_pcs.h  |  1 +
+ include/linux/stmmac.h                        |  1 +
+ 3 files changed, 95 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nfc/s3fwrn5/i2c.c b/drivers/nfc/s3fwrn5/i2c.c
-index 110d086cfe5ba..3f508b5fbf06b 100644
---- a/drivers/nfc/s3fwrn5/i2c.c
-+++ b/drivers/nfc/s3fwrn5/i2c.c
-@@ -8,10 +8,8 @@
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
+index 88fa359ea716..e606dfb85f94 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
+@@ -16,6 +16,27 @@
+ #define GMAC_ANE_LPA	0x0c	/* ANE link partener ability */
+ #define GMAC_TBI	0x14	/* TBI extend status */
  
- #include <linux/clk.h>
- #include <linux/i2c.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/delay.h>
--#include <linux/of_gpio.h>
--#include <linux/of_irq.h>
- #include <linux/module.h>
- 
- #include <net/nfc/nfc.h>
-@@ -146,37 +144,6 @@ static irqreturn_t s3fwrn5_i2c_irq_thread_fn(int irq, void *phy_id)
- 	return IRQ_HANDLED;
++static unsigned int dwmac_integrated_pcs_inband_caps(struct phylink_pcs *pcs,
++						     phy_interface_t interface)
++{
++	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
++	unsigned int ib_caps;
++
++	if (phy_interface_mode_is_8023z(interface)) {
++		ib_caps = LINK_INBAND_DISABLE;
++
++		/* If the PCS supports TBI/RTBI, then BASE-X negotiation is
++		 * supported.
++		 */
++		if (spcs->support_tbi_rtbi)
++			ib_caps |= LINK_INBAND_ENABLE;
++
++		return ib_caps;
++	}
++
++	return 0;
++}
++
+ static int dwmac_integrated_pcs_enable(struct phylink_pcs *pcs)
+ {
+ 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
+@@ -36,7 +57,39 @@ static void dwmac_integrated_pcs_get_state(struct phylink_pcs *pcs,
+ 					   unsigned int neg_mode,
+ 					   struct phylink_link_state *state)
+ {
+-	state->link = false;
++	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
++	u32 status, lpa;
++
++	status = readl(spcs->base + GMAC_AN_STATUS);
++
++	if (phy_interface_mode_is_8023z(state->interface)) {
++		/* For BASE-X modes, the PCS block supports the advertisement
++		 * and link partner advertisement registers using standard
++		 * 802.3 format. The status register also has the link status
++		 * and AN complete bits in the same bit location. This will
++		 * only be used when AN is enabled.
++		 */
++		lpa = readl(spcs->base + GMAC_ANE_LPA);
++
++		phylink_mii_c22_pcs_decode_state(state, neg_mode, status, lpa);
++	} else {
++		state->link = false;
++	}
++}
++
++static int dwmac_integrated_pcs_config_aneg(struct stmmac_pcs *spcs,
++					    phy_interface_t interface,
++					    const unsigned long *advertising)
++{
++	bool changed = false;
++	u32 adv;
++
++	adv = phylink_mii_c22_pcs_encode_advertisement(interface, advertising);
++	if (readl(spcs->base + GMAC_ANE_ADV) != adv)
++		changed = true;
++	writel(adv, spcs->base + GMAC_ANE_ADV);
++
++	return changed;
  }
  
--static int s3fwrn5_i2c_parse_dt(struct i2c_client *client)
--{
--	struct s3fwrn5_i2c_phy *phy = i2c_get_clientdata(client);
--	struct device_node *np = client->dev.of_node;
--
--	if (!np)
--		return -ENODEV;
--
--	phy->common.gpio_en = of_get_named_gpio(np, "en-gpios", 0);
--	if (!gpio_is_valid(phy->common.gpio_en)) {
--		/* Support also deprecated property */
--		phy->common.gpio_en = of_get_named_gpio(np,
--							"s3fwrn5,en-gpios",
--							0);
--		if (!gpio_is_valid(phy->common.gpio_en))
--			return -ENODEV;
--	}
--
--	phy->common.gpio_fw_wake = of_get_named_gpio(np, "wake-gpios", 0);
--	if (!gpio_is_valid(phy->common.gpio_fw_wake)) {
--		/* Support also deprecated property */
--		phy->common.gpio_fw_wake = of_get_named_gpio(np,
--							     "s3fwrn5,fw-gpios",
--							     0);
--		if (!gpio_is_valid(phy->common.gpio_fw_wake))
--			return -ENODEV;
--	}
--
--	return 0;
--}
--
- static int s3fwrn5_i2c_probe(struct i2c_client *client)
+ static int dwmac_integrated_pcs_config(struct phylink_pcs *pcs,
+@@ -46,13 +99,28 @@ static int dwmac_integrated_pcs_config(struct phylink_pcs *pcs,
+ 				       bool permit_pause_to_mac)
  {
- 	struct s3fwrn5_i2c_phy *phy;
-@@ -193,20 +160,14 @@ static int s3fwrn5_i2c_probe(struct i2c_client *client)
- 	phy->i2c_dev = client;
- 	i2c_set_clientdata(client, phy);
+ 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
++	bool changed = false, ane = true;
++
++	/* Only configure the advertisement and allow AN in BASE-X mode if
++	 * the core supports TBI/RTBI. AN will be filtered out by via phylink
++	 * and the .pcs_inband_caps() method above.
++	 */
++	if (phy_interface_mode_is_8023z(interface) &&
++	    spcs->support_tbi_rtbi) {
++		ane = neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED;
++
++		changed = dwmac_integrated_pcs_config_aneg(spcs, interface,
++							   advertising);
++	}
  
--	ret = s3fwrn5_i2c_parse_dt(client);
--	if (ret < 0)
--		return ret;
--
--	ret = devm_gpio_request_one(&phy->i2c_dev->dev, phy->common.gpio_en,
--				    GPIOF_OUT_INIT_HIGH, "s3fwrn5_en");
--	if (ret < 0)
--		return ret;
-+	phy->common.gpio_en = devm_gpiod_get(&client->dev, "en", GPIOD_OUT_HIGH);
-+	if (IS_ERR(phy->common.gpio_en))
-+		return PTR_ERR(phy->common.gpio_en);
+-	dwmac_ctrl_ane(spcs->base, 0, 1, spcs->priv->hw->reverse_sgmii_enable);
++	dwmac_ctrl_ane(spcs->base, 0, ane,
++		       spcs->priv->hw->reverse_sgmii_enable);
  
--	ret = devm_gpio_request_one(&phy->i2c_dev->dev,
--				    phy->common.gpio_fw_wake,
--				    GPIOF_OUT_INIT_LOW, "s3fwrn5_fw_wake");
--	if (ret < 0)
--		return ret;
-+	phy->common.gpio_fw_wake = devm_gpiod_get(&client->dev, "wake",
-+						   GPIOD_OUT_LOW);
-+	if (IS_ERR(phy->common.gpio_fw_wake))
-+		return PTR_ERR(phy->common.gpio_fw_wake);
+-	return 0;
++	return changed;
+ }
  
- 	/*
- 	 * S3FWRN5 depends on a clock input ("XI" pin) to function properly.
-diff --git a/drivers/nfc/s3fwrn5/phy_common.c b/drivers/nfc/s3fwrn5/phy_common.c
-index deb2c039f0fd6..39a60e34136c5 100644
---- a/drivers/nfc/s3fwrn5/phy_common.c
-+++ b/drivers/nfc/s3fwrn5/phy_common.c
-@@ -8,7 +8,6 @@
-  * Bongsu Jeon <bongsu.jeon@samsung.com>
-  */
+ static const struct phylink_pcs_ops dwmac_integrated_pcs_ops = {
++	.pcs_inband_caps = dwmac_integrated_pcs_inband_caps,
+ 	.pcs_enable = dwmac_integrated_pcs_enable,
+ 	.pcs_disable = dwmac_integrated_pcs_disable,
+ 	.pcs_get_state = dwmac_integrated_pcs_get_state,
+@@ -84,9 +152,18 @@ void stmmac_integrated_pcs_irq(struct stmmac_priv *priv, u32 status,
+ int stmmac_integrated_pcs_get_phy_intf_sel(struct phylink_pcs *pcs,
+ 					   phy_interface_t interface)
+ {
++	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
++
+ 	if (interface == PHY_INTERFACE_MODE_SGMII)
+ 		return PHY_INTF_SEL_SGMII;
  
--#include <linux/gpio.h>
- #include <linux/delay.h>
- #include <linux/module.h>
++	if (phy_interface_mode_is_8023z(interface)) {
++		if (spcs->support_tbi_rtbi)
++			return PHY_INTF_SEL_TBI;
++		else
++			return PHY_INTF_SEL_SGMII;
++	}
++
+ 	return -EINVAL;
+ }
  
-@@ -19,7 +18,7 @@ void s3fwrn5_phy_set_wake(void *phy_id, bool wake)
- 	struct phy_common *phy = phy_id;
+@@ -104,7 +181,20 @@ int stmmac_integrated_pcs_init(struct stmmac_priv *priv, unsigned int offset,
+ 	spcs->int_mask = int_mask;
+ 	spcs->pcs.ops = &dwmac_integrated_pcs_ops;
  
- 	mutex_lock(&phy->mutex);
--	gpio_set_value(phy->gpio_fw_wake, wake);
-+	gpiod_set_value(phy->gpio_fw_wake, wake);
- 	if (wake)
- 		msleep(S3FWRN5_EN_WAIT_TIME);
- 	mutex_unlock(&phy->mutex);
-@@ -33,14 +32,14 @@ bool s3fwrn5_phy_power_ctrl(struct phy_common *phy, enum s3fwrn5_mode mode)
++	/* If the PCS supports extended status, then it supports BASE-X AN
++	 * with a TBI interface to the SerDes. Otherwise, we can support
++	 * BASE-X without AN using SGMII, which is required for qcom-ethqos.
++	 */
++	if (readl(spcs->base + GMAC_AN_STATUS) & BMSR_ESTATEN)
++		spcs->support_tbi_rtbi = true;
++
+ 	__set_bit(PHY_INTERFACE_MODE_SGMII, spcs->pcs.supported_interfaces);
++	__set_bit(PHY_INTERFACE_MODE_1000BASEX, spcs->pcs.supported_interfaces);
++
++	/* Only allow 2500BASE-X if the SerDes has support. */
++	if (priv->plat->flags & STMMAC_FLAG_SERDES_SUPPORTS_2500M)
++		__set_bit(PHY_INTERFACE_MODE_2500BASEX,
++			  spcs->pcs.supported_interfaces);
  
- 	phy->mode = mode;
+ 	priv->integrated_pcs = spcs;
  
--	gpio_set_value(phy->gpio_en, 1);
--	gpio_set_value(phy->gpio_fw_wake, 0);
-+	gpiod_set_value(phy->gpio_en, 1);
-+	gpiod_set_value(phy->gpio_fw_wake, 0);
- 	if (mode == S3FWRN5_MODE_FW)
--		gpio_set_value(phy->gpio_fw_wake, 1);
-+		gpiod_set_value(phy->gpio_fw_wake, 1);
- 
- 	if (mode != S3FWRN5_MODE_COLD) {
- 		msleep(S3FWRN5_EN_WAIT_TIME);
--		gpio_set_value(phy->gpio_en, 0);
-+		gpiod_set_value(phy->gpio_en, 0);
- 		msleep(S3FWRN5_EN_WAIT_TIME);
- 	}
- 
-diff --git a/drivers/nfc/s3fwrn5/phy_common.h b/drivers/nfc/s3fwrn5/phy_common.h
-index 9cef25436bf90..871bec53dd0a9 100644
---- a/drivers/nfc/s3fwrn5/phy_common.h
-+++ b/drivers/nfc/s3fwrn5/phy_common.h
-@@ -12,6 +12,7 @@
- #define __NFC_S3FWRN5_PHY_COMMON_H
- 
- #include <linux/mutex.h>
-+#include <linux/gpio/consumer.h>
- #include <net/nfc/nci_core.h>
- 
- #include "s3fwrn5.h"
-@@ -21,8 +22,8 @@
- struct phy_common {
- 	struct nci_dev *ndev;
- 
--	int gpio_en;
--	int gpio_fw_wake;
-+	struct gpio_desc *gpio_en;
-+	struct gpio_desc *gpio_fw_wake;
- 
- 	struct mutex mutex;
- 
-diff --git a/drivers/nfc/s3fwrn5/uart.c b/drivers/nfc/s3fwrn5/uart.c
-index 9c09c10c2a464..5977a6b58f6fb 100644
---- a/drivers/nfc/s3fwrn5/uart.c
-+++ b/drivers/nfc/s3fwrn5/uart.c
-@@ -10,13 +10,12 @@
- 
- #include <linux/device.h>
- #include <linux/kernel.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/nfc.h>
- #include <linux/netdevice.h>
--#include <linux/of.h>
- #include <linux/serdev.h>
--#include <linux/gpio.h>
--#include <linux/of_gpio.h>
-+#include <linux/gpio/consumer.h>
- 
- #include "phy_common.h"
- 
-@@ -88,25 +87,6 @@ static const struct of_device_id s3fwrn82_uart_of_match[] = {
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
+index 23bbd4f10bf8..12ea87792fcb 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h
+@@ -32,6 +32,7 @@ struct stmmac_pcs {
+ 	void __iomem *base;
+ 	u32 int_mask;
+ 	struct phylink_pcs pcs;
++	bool support_tbi_rtbi;
  };
- MODULE_DEVICE_TABLE(of, s3fwrn82_uart_of_match);
  
--static int s3fwrn82_uart_parse_dt(struct serdev_device *serdev)
--{
--	struct s3fwrn82_uart_phy *phy = serdev_device_get_drvdata(serdev);
--	struct device_node *np = serdev->dev.of_node;
--
--	if (!np)
--		return -ENODEV;
--
--	phy->common.gpio_en = of_get_named_gpio(np, "en-gpios", 0);
--	if (!gpio_is_valid(phy->common.gpio_en))
--		return -ENODEV;
--
--	phy->common.gpio_fw_wake = of_get_named_gpio(np, "wake-gpios", 0);
--	if (!gpio_is_valid(phy->common.gpio_fw_wake))
--		return -ENODEV;
--
--	return 0;
--}
--
- static int s3fwrn82_uart_probe(struct serdev_device *serdev)
- {
- 	struct s3fwrn82_uart_phy *phy;
-@@ -140,20 +120,19 @@ static int s3fwrn82_uart_probe(struct serdev_device *serdev)
+ static inline struct stmmac_pcs *
+diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
+index 2fc169c7117e..3a99c4ef420c 100644
+--- a/include/linux/stmmac.h
++++ b/include/linux/stmmac.h
+@@ -192,6 +192,7 @@ enum dwmac_core_type {
+ #define STMMAC_FLAG_EN_TX_LPI_CLK_PHY_CAP	BIT(12)
+ #define STMMAC_FLAG_HWTSTAMP_CORRECT_LATENCY	BIT(13)
+ #define STMMAC_FLAG_KEEP_PREAMBLE_BEFORE_SFD	BIT(14)
++#define STMMAC_FLAG_SERDES_SUPPORTS_2500M	BIT(15)
  
- 	serdev_device_set_flow_control(serdev, false);
+ struct mac_device_info;
  
--	ret = s3fwrn82_uart_parse_dt(serdev);
--	if (ret < 0)
--		goto err_serdev;
--
--	ret = devm_gpio_request_one(&phy->ser_dev->dev, phy->common.gpio_en,
--				    GPIOF_OUT_INIT_HIGH, "s3fwrn82_en");
--	if (ret < 0)
-+	phy->common.gpio_en = devm_gpiod_get(&serdev->dev, "en",
-+					      GPIOD_OUT_HIGH);
-+	if (IS_ERR(phy->common.gpio_en)) {
-+		ret = PTR_ERR(phy->common.gpio_en);
- 		goto err_serdev;
-+	}
- 
--	ret = devm_gpio_request_one(&phy->ser_dev->dev,
--				    phy->common.gpio_fw_wake,
--				    GPIOF_OUT_INIT_LOW, "s3fwrn82_fw_wake");
--	if (ret < 0)
-+	phy->common.gpio_fw_wake = devm_gpiod_get(&serdev->dev, "wake",
-+						   GPIOD_OUT_LOW);
-+	if (IS_ERR(phy->common.gpio_fw_wake)) {
-+		ret = PTR_ERR(phy->common.gpio_fw_wake);
- 		goto err_serdev;
-+	}
- 
- 	ret = s3fwrn5_probe(&phy->common.ndev, phy, &phy->ser_dev->dev,
- 			    &uart_phy_ops);
 -- 
 2.47.3
 
