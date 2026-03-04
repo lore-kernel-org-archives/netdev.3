@@ -1,142 +1,154 @@
-Received: from mail-ej1-f65.google.com (mail-ej1-f65.google.com [209.85.218.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012067.outbound.protection.outlook.com [52.101.43.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A676533986F
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 15:28:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.218.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475A8344D9D;
+	Wed,  4 Mar 2026 15:33:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.67
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772638136; cv=pass; b=amE7xeTb1haAyQ0Q7tvjb1euhbcvwIh3fPVZkzYpo0hpK5cql0JVYDp+Vxd9eYoZI8s/s31cf/9fZIozaZoVQMNcVOVouQIy0LA/d+BEYcqAYorev+55pUu1Ytqxha2ZYIJj+8nRbj4a/roZyfUO3oNM5RSjf4BznAUDJN4v8IQ=
+	t=1772638388; cv=fail; b=eBxnG2ZyQvao6l2AfeJ4VEmm6boXKkqfpGv59uJc1jsO/tYKZKqr81xU7MkEqGWaHPfNKEw86X6oJTjISwWX2MXueamxG0QeR0wLIWLtzcAAmfFhSBROaZ9lPoV/zygv2YfrwkTeJ1tVd84IdwnAeSO0qNRz8fvIwC0bxuV8N6U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772638136; c=relaxed/simple;
-	bh=QXgnaupTOR4EHZcvNrR8+mOFrNjx7Wk4vmJzGUnHFLY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GiLlSaAfwokZ+ZxPavnqaWzaOGGamg+z05fNNcGAwfBU7RBIFrc31pTW4xe54JTTezio5cGq3vU4A++H174N/35K1X3e59B0+ON5OiUbbUatPpnrYUD3bJ4WHOaPaEZhwI35DOe3gHm8kJ3+pHwhm5Efb4++io7umHwa7AhqXqs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UuHkQCV/; arc=pass smtp.client-ip=209.85.218.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772638388; c=relaxed/simple;
+	bh=GOJqMKuNf/q84rKxliKXDHXAbzBNfCTmEMLndqm8a54=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=M+ln43efvbYy3goB01fdB4+tcg3a6nBCoe5awiFSM26H9zazuMtuhKxTm2GAf1ESf+CmqoTIZIfFf160f0w7XLBk8EkLOQFS72ZHDDzzO9l36B+Oeim9tGW+FlBvYxC7v5oxnNIsngGwlDLvimwoQZtOJ3YAa+kkYHRTF8QtJhs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=fRE7AH3S; arc=fail smtp.client-ip=52.101.43.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UuHkQCV/"
-Received: by mail-ej1-f65.google.com with SMTP id a640c23a62f3a-b8f97c626aaso1198762066b.2
-        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 07:28:55 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772638134; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Ypwktw7+W0+Jz5tHU2CcagAlfI7rSN8F3dWpqMOOxrSWwoRJwOe238hQXKHRuHgIjf
-         iWG87P+IyvJaFB6YP9yIkHdrtfHMQO+0m0nuvVMM4+A4wIKLv93Q8UWSoqjxJ3Q12Adt
-         vHmoHJ08qEtV+hjiti3SW+WGiHYw/mQBnvQcElOSc4ZRr+QBMoeKg80nztDKTl03xrNG
-         +7UFA0HLiJJ+Ec/g4kG0EWKPbPs/26iDlBzAwki1IHT3N9cosq3nFAxyn07LoRW8V1kK
-         U19hUPTnL2Xzu/83B0OtMhBONU/E1UUhle7SfRlSlCwF7GXNjgquB59YHtxGeyygGu4u
-         E7Lg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=QXgnaupTOR4EHZcvNrR8+mOFrNjx7Wk4vmJzGUnHFLY=;
-        fh=z8OwCSZ3VaboSLmYHKHeseFyNuY7IrDiCaK7n2jXzts=;
-        b=eFloGC21ZCwnnl12ZBjkLFN2ApQBczGx06bcXouQtGOooEgmDj3e2TJio8s2oea13U
-         Q9cGbKGZMRbxU4HGpHY+K+on3hqAi4iLLUyX9qwMZcHe4iNrD1Pzpkl7diNqrcPhgs4j
-         NyNAefbUoMmRDz6Jws16lw5A6JLjhGraBgnQj0F1akY2CJz17liP4FSLkQ9eN716YEuX
-         QPvThkQlih5aw39Pcfbnr+Iweix7g1dzLrml9cZ+ZfEJRnUokVbTtdmvN80e5D7ek51X
-         ooEAS0QHVsLDVg2reCFcfoqKR4t38fcU+tmYwfe+ltqRL0+p1LcS624Iz6yvy6lSn0yN
-         EClw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772638134; x=1773242934; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QXgnaupTOR4EHZcvNrR8+mOFrNjx7Wk4vmJzGUnHFLY=;
-        b=UuHkQCV/N9gktZmi72dOdADRFYWr8FJD6dEYo9ZxSWD254FAbWMxTMZNFUiRrxNdYC
-         hDoP/8pbzZrGvbFdjzWAhfx3yXP47oZsgdQAqZSOS9nQvqERHJNx00yniKqrq9pE4er+
-         QXeWKfH0hNwXcgU24K8rhoOaGLBGEz+ckUpjVEEbEyejr/Z7TAg2pRxAOsSVRxU/pzhS
-         baHFDyZ51f7kGX9hsQHBwhY0inGmO3CXJIkFCvlcGYLGHUzw54RxpxXwFeRxe1/7phE5
-         yvChzMrvtgLeEdjrRP4gR6lPsfc2rHn/Ep+d/58SPB1TeZ4DF4PSeTBLr8u2ZVilicyx
-         S89Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772638134; x=1773242934;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=QXgnaupTOR4EHZcvNrR8+mOFrNjx7Wk4vmJzGUnHFLY=;
-        b=hAaiN2lWDDWvEEzt50GjzkQq+chBFQe4TJOf8Lfnw5jn9Pw0fWrA4i3DCGFzZOF/rK
-         kL0Ghn2KB0E9ocx+Afx6nSTeREOjENRbBlZJQ74ZSi2ONyWrTsWoJJ+Wiyne4NmN1JeO
-         MwmXW5UeuC7UHm8sm0IKU3XknIZyVx507KwNBcTr7ZJmDRKsvmBKmzf6YTlLYu1q1cqt
-         UTcHS6rWKi59cyAuixfZa8saOtOCcfUmYc+QaIDjxcQp8tjLUIVRUeSGXo/x2SIz089W
-         MMoB0TljDCrnVREmo4ouqwcoBSGtIDGI4s7s3wxeMOAZCQZZLZC5h0KxbD4VOlLK6yi/
-         G9qQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX41mXKEXPfouOHGpvhxgzlJ146CjCIpXq1Lrg/TjPeIjU8Gz0pgMJatKlsH2tQiXVmrNxDoYA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyyp0HPy1RuEkN2IVciRXDwY1uehGiVNpGWYR4Cceco2EkHzVh/
-	CWUBj6i2NKLt/fhVpRKuO3a+DUghAyOayJoeXXnGWoZ//mavEuTQwJpNEdlPH8meAKvdW61RQNb
-	JQcK09PuVLRC2y2J7f/Pp/vXDEy80Myg=
-X-Gm-Gg: ATEYQzzzmD4Z2o7BJCpICM36ADaazsV6d3HmXcpa8T9xFqmipCI4dwb/PyJ9qLjJ9TZ
-	RGaIk+ZDiva+/NRAQQ6vH6tN0Po5lr6caVRAPUiP/KayWe9mT/w/UkSl8p1kfKO351gv4Vxc7qL
-	zru+ewj5/HgiUBKhzN8ESrMZRwJDdtni2riZ82C5rm+RAtqTKPiKAqGykB7hMw1K0rI/huOIVux
-	jYGHvhxp0zJ2mTWp5l0XzhGQGbXy81ARW6+192C1Dx6aH6Bf20ncYnCEVY8r8hudX3Acu8Wyk6V
-	iktXetksZH6WcudkL+774PF+8GAoFhahRiHms8qZ
-X-Received: by 2002:a17:906:fe07:b0:b93:edc0:e2e8 with SMTP id
- a640c23a62f3a-b93f159439fmr173698266b.48.1772638133729; Wed, 04 Mar 2026
- 07:28:53 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="fRE7AH3S"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BNqOXx/5WxeebwUHPWdRcYdczNX7uUqUeRfN1ubI4eUxZ0hwB6+v3H6r2IU/Yf7FcTTNmTKF0SYVwoiaHGpqAzvwfb1kMrFjnGQReiAY5o0vYL5eYeH+8WgCk8qg/mpo5EXXESFIv7MfFdKIpzoXzrDCrRVNphLG8YWx49oQDc0zLRZ3tVrhPNaHDJUFOm6WNv9bcILSzlLi+xfkOMXSZ3eI1VmwhxvAxhsAiAtexbNiarkg3xbxFkLKfLWweoPnFbXzltS5UPkmOdqRXvkT/XmZWMFlVTOFCwQYpDytreHg4oQ46jpNiTKJfvU07KyJxF4Zmd8+A1MNf0okRi/Hpw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nfx+MSjVxPFosW3PhgfKPcE0JyCotNrKDWB8TxDQAQU=;
+ b=Dwun/KTPodNFQ7XVMDmqxrw+tZWoTbstJ1CZ5WOul1/OWv1zwunISgym7YysNP2VEaM7B3B1FATYldcufbG6FUjGnjRGvON68YN6i/v+yPPopC1WnFRDRxHEfnNA2SYBTq8PKACJrSgMrSfywaEqseZywx5TUSsq+eCEtphJSkZMeaL3mzuNcNoZZBzoC8DXTTodvwPZnIYCu/i3BM+5smZxUDSXXJ3YvuoKfU2rEaJefQPpzcaK7/BYqbE9hFc1jY98Ual5Z8hvyyNJlNk5+alG4wA31DNI2wDCYFqfGT+IgB9mTk0hPdSQOOHnvdEsX6B9Vb5+YAbv+kiaSmKg8w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 198.47.23.195) smtp.rcpttodomain=kernel.org smtp.mailfrom=ti.com; dmarc=pass
+ (p=quarantine sp=none pct=100) action=none header.from=ti.com; dkim=none
+ (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nfx+MSjVxPFosW3PhgfKPcE0JyCotNrKDWB8TxDQAQU=;
+ b=fRE7AH3St0gnsxXVLFJb4R/QrXRsYyt5XjSk4JzJpR4yPMPSvRSYQj6FTBfqsl47V1zFjDh1/69iHK4n7mTH6LEuT+xU+RxN/M4Yp1jtTBMTARji+y58wiCTrVNaSX9vYpMjOz/15rBKDBFdUvLniFRsRxRKQnlsgaiOhSPDh4o=
+Received: from BN0PR04CA0203.namprd04.prod.outlook.com (2603:10b6:408:e9::28)
+ by IA6PR10MB997608.namprd10.prod.outlook.com (2603:10b6:208:5dd::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Wed, 4 Mar
+ 2026 15:33:04 +0000
+Received: from BN2PEPF000044A3.namprd02.prod.outlook.com
+ (2603:10b6:408:e9:cafe::2c) by BN0PR04CA0203.outlook.office365.com
+ (2603:10b6:408:e9::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9654.22 via Frontend Transport; Wed,
+ 4 Mar 2026 15:33:04 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 198.47.23.195)
+ smtp.mailfrom=ti.com; dkim=none (message not signed) header.d=none;dmarc=pass
+ action=none header.from=ti.com;
+Received-SPF: Pass (protection.outlook.com: domain of ti.com designates
+ 198.47.23.195 as permitted sender) receiver=protection.outlook.com;
+ client-ip=198.47.23.195; helo=lewvzet201.ext.ti.com; pr=C
+Received: from lewvzet201.ext.ti.com (198.47.23.195) by
+ BN2PEPF000044A3.mail.protection.outlook.com (10.167.243.154) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Wed, 4 Mar 2026 15:33:04 +0000
+Received: from DLEE207.ent.ti.com (157.170.170.95) by lewvzet201.ext.ti.com
+ (10.4.14.104) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 4 Mar
+ 2026 09:32:43 -0600
+Received: from DLEE208.ent.ti.com (157.170.170.97) by DLEE207.ent.ti.com
+ (157.170.170.95) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Wed, 4 Mar
+ 2026 09:32:43 -0600
+Received: from lelvem-mr05.itg.ti.com (10.180.75.9) by DLEE208.ent.ti.com
+ (157.170.170.97) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Wed, 4 Mar 2026 09:32:43 -0600
+Received: from [128.247.77.204] (a0500327ws.dhcp.ti.com [128.247.77.204])
+	by lelvem-mr05.itg.ti.com (8.18.1/8.18.1) with ESMTP id 624FWhco605514;
+	Wed, 4 Mar 2026 09:32:43 -0600
+Message-ID: <811312d5-a48a-4ce9-80a2-7c04d0b34a67@ti.com>
+Date: Wed, 4 Mar 2026 09:32:43 -0600
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260225010853.15916-1-ericterminal@gmail.com>
- <20260225033840.33000-1-ericterminal@gmail.com> <aaRbWCeu-wNdWGzB@horms.kernel.org>
-In-Reply-To: <aaRbWCeu-wNdWGzB@horms.kernel.org>
-From: Eric_Terminal <ericterminal@gmail.com>
-Date: Wed, 4 Mar 2026 23:28:42 +0800
-X-Gm-Features: AaiRm53HxF5F9P5qVnAjApnPFfDhasNN9x-M6tagR-mOrAogX8sxQv-oIasNUdM
-Message-ID: <CAKNPVZA2sFv7k=wyf5iBGyOUQcHkAdpVLVNjuqr+7XBXDKxNbg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/4] net: replace deprecated simple_strto* parsers with kstrto*
-To: Simon Horman <horms@kernel.org>
-Cc: Dominique Martinet <asmadeus@codewreck.org>, Eric Van Hensbergen <ericvh@kernel.org>, 
-	Latchesar Ionkov <lucho@ionkov.net>, "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	v9fs@lists.linux.dev, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Nikolay Aleksandrov <razor@blackwall.org>, bridge@lists.linux.dev, 
-	Anna Schumaker <anna@kernel.org>, Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/2] Add ICSSG0 dual EMAC support for AM642 EVM
+To: Meghana Malladi <m-malladi@ti.com>, <nm@ti.com>, <vigneshr@ti.com>
+CC: <conor+dt@kernel.org>, <krzk+dt@kernel.org>, <robh@kernel.org>,
+	<kristo@kernel.org>, <linux-kernel@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<netdev@vger.kernel.org>, <srk@ti.com>, Roger Quadros <rogerq@kernel.org>,
+	<danishanwar@ti.com>, <d-qiu@ti.com>
+References: <20260228113203.498839-1-m-malladi@ti.com>
+Content-Language: en-US
+From: Daolin Qiu <d-qiu@ti.com>
+In-Reply-To: <20260228113203.498839-1-m-malladi@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000044A3:EE_|IA6PR10MB997608:EE_
+X-MS-Office365-Filtering-Correlation-Id: c4d8e225-ac7e-4e9e-c84c-08de7a0353dc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|34020700016|82310400026|36860700016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	iA8bmWxDXcbYoHm+XrI0xARvoIkV1z+tMGhlFylWxCdCqVHqJEP4RAqVOVkG1KwarLRQsRUgndQC8TiNvVHDsEPB8chvSgu8u17MMJtEhqwKiOL+4SnxqcRVhfpQvMb5z9lOwykEAf39sQ6j5xSwkp9JVVSGux9xyqMxeRPNGlIZI2yf5mO//YqFNR26gG7FTm0Qa9Uu+zUriCu8yyDKvI1Nfhfa2Nu8kpeNKjDq/K4DSyFVoUSfNSWoymJrWeDxhx8CxkLJpNkshCUeMaNR6kQ+H5V1Vyb2skYtow+so2csUsxk6kYq/dzPRwWiT0maC3YHWdJNknhWqgQmQy+JCosLDdBf7JAHQCoBARBOAq1IHmV+3BAStry8wC4h/KyojatJTRU+pFhkkUd/V/t+I8X9sv8QAnwhuDV8HnnNbN6sG6ECjVmX8YbWPBC4LlP2RvgV6zdOACjxXMpcTnXRiRKwnARMo9r61mL790UoEJQMqpJ/wYllRhOLbCYKFesv8SZeu1vnPu/TYt3wmM971ARnMkKs2CgBLn1CamdrYj4DIAqwmyDqidTl/jup6Hl/KgkOxuwDDtqv63F6fD/p0lnlIJ9BUY51KbOVpietCytweEpTVMDIaAWoZ0AsgQXMe8op3jiu7psJAuhk5eRx/8ndHy3iVwLuiuCb6+rnvPDz0A3ViPP37rL+mNOQChwV8rtvsjWSaQW38GFCLrieWseML8NVTJmlRK4s4BrJIcKAvlJEnwsgRwVHfMqcYnIn4QIZ22Sb1svpCzVhIJFTBubCJ/oa9IVCHbehU1IItaE=
+X-Forefront-Antispam-Report:
+	CIP:198.47.23.195;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:lewvzet201.ext.ti.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(34020700016)(82310400026)(36860700016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	ZmgmmnFPKmrU4R6weLLj74t7QXlmz0mrOxGILwmUUrcsxMz+mX/KGy7+bqjDRfDRfdPHVocAqIGf4RWmmxNj1A2GPglsxAedhDluivgsLScxy2eW5bKuxgSG4su4Fo0dkz+65UvVvPfi3NlAiGknUPL1Xk7acj0GQrepWO/fY75luqFpFSeGCL0CnByGdixYX6EqymC4uyWoj1ndL2uaDXSZNjeIA98PMK8Yh6rEknniu1fRpsRasaHIikD2zrz9K0D1sP3IlBqDt7OSkcoxpU/723AJAE1wsDM6N6R9TW+zLPUP1fKzgo5eV/vTMl2lFNvFBKYmeWBnCdDVRBbkqNIZFv/TTBGOmQqSnAnmbz+2Mipd60apfIikqfwKOx0+Ctpfoi+QXvIycdrv9hTxgIRtozCYDvsYKbbg1HyJM7wMnVWR1BNIqarvvJ36+ay7
+X-OriginatorOrg: ti.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 15:33:04.2542
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: c4d8e225-ac7e-4e9e-c84c-08de7a0353dc
+X-MS-Exchange-CrossTenant-Id: e5b49634-450b-4709-8abb-1e2b19b982b7
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e5b49634-450b-4709-8abb-1e2b19b982b7;Ip=[198.47.23.195];Helo=[lewvzet201.ext.ti.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000044A3.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA6PR10MB997608
 
-On Sun, Mar 1, 2026 at 11:29=E2=80=AFPM Simon Horman <horms@kernel.org> wro=
-te:
-> Hi,
+
+On 2/28/26 05:32, Meghana Malladi wrote:
+> This series adds device tree overlay support for enabling ICSSG0 dual EMAC
+> on the AM642 EVM, along with the necessary PHY driver configuration.
 >
-> Thanks for your patches.
+> The overlay enables both ICSSG0 Ethernet interfaces (port0 and port1) in
+> dual EMAC mode and can be combined with the existing ICSSG1 overlay to
+> enable all four ICSSG interfaces if needed.
 >
-> I would like to understand what testing has been performed on these patch=
-es.
+> The series also enables the DP83TG720 PHY driver required for the
+> DP83TG720-IND-SPE-EVM daughter card used with the ICSSG0 interface.
 >
-> With the possible exception of patch 3/4, I feel that unless they
-> are motivated as bug fixes, these changes are too complex to accept
-> without testing. Although the opinions of the relevant maintainers
-> may differ.
+> Meghana Malladi (2):
+>    arm64: dts: ti: k3-am642-evm: Add ICSSG0 overlay for dual EMAC support
+>    arm64: defconfig: Enable DP83TG720 PHY driver
 >
-> And as for 3/4, I lean towards falling into the policy regarding
-> clean-ups not being generally accepted unless it is part of other work.
+>   arch/arm64/boot/dts/ti/Makefile               |   4 +
+>   .../boot/dts/ti/k3-am642-evm-icssg0.dtso      | 203 ++++++++++++++++++
+>   arch/arm64/configs/defconfig                  |   1 +
+>   3 files changed, 208 insertions(+)
+>   create mode 100644 arch/arm64/boot/dts/ti/k3-am642-evm-icssg0.dtso
+>
+>
+> base-commit: 4916f2e2f3fc9aef289fcd07949301e5c29094c2
 
-Hi,
+Tested both ipv6 and ipv4 ping to be functional with the following 
+topology.
 
-Thanks for the feedback. I've verified the series using virtme-ng and
-a userspace mock harness (for the 9p tokenizing logic).
+DUT 1 eth3 <---> eth2 DUT2
 
-Regarding Patch 1: This is primarily a stability fix. I've tested the
-error paths by forcing init failures on a non-Xen system; dmesg
-confirms the new sentinel-based cleanup (NULL-ing intf/data and
-checking INVALID_GRANT_REF) correctly prevents double-frees and Oops
-during teardown.
+DUT1 log: https://gist.github.com/dao-qiu/f261147110b6b05d1fb989ee74e1d694
 
-Regarding the "complexity" in Patch 2: The strsep + kstrtouint
-approach was chosen for strictness. I've verified it handles cases
-like "1,,2" (empty tokens) and "1abc" (malformed input) correctly. The
-latter is now rejected with -EINVAL, whereas simple_strto* would have
-silently accepted partial values.
+DUT2 log: https://gist.github.com/dao-qiu/3add536e2370d6afe36145f46df784e6
 
-The same applies to Patches 3 and 4. The migration to kstrto* ensures
-that sysfs/procfs interfaces now properly validate the entire input
-string.
+Tested-by: Daolin Qiu <d-qiu@ti.com>
 
-P.S. I used a translation tool for the message above, so please excuse
-any awkward wording.
-
-Thanks,
