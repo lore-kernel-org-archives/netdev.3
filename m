@@ -1,96 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f68.google.com (mail-qv1-f68.google.com [209.85.219.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC13F34D385;
-	Wed,  4 Mar 2026 07:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772608917; cv=none; b=ay/EEOOi9xxXDeeP8eebcGn+cEeg8OBOZUl9MFI26DkhcPDXi5uf2+rFqceHBHdktooid8Ubf+K67qGM0Y6o0+FXSNbcdpHJx6tZM6oFsqRHArCwIftjNxSYFFmjKWbSBKiUJQ5hT/+y2XE7tNLoaqVArifbFs4NeFj97+LZaQU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772608917; c=relaxed/simple;
-	bh=rqm1hIKFXnYB5F1diGKPD+DC9avHWqfyIaJZ3phGQak=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ej6glgEBIDsrtfYwGwbFeIhhE6mUuXBSY0ExT/N5KFmrqiWRYu9f8kJNC8tAlmZBInwR6+e+8e9adoMXqXUyFCiOuVqlmEXCBnAPsxwOL6EFtPYas36rKTkntjwvWXN25wDkA/e2Rrb1Bq4+yRQ787GbC0hlatwazwJ2drR/T7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EFjVtNVy; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A84351C0F
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 07:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772609026; cv=pass; b=mLcxiTnYDvcrOm7lfPSN7LO41hvqNUndj+icrhjy4QH2WcZxjQ3K27sCH+YGKa+JitR2VaEttjypV7ivT9kVAjSoPvtDDiBYBheHPeWLFgVo+cztxnR1cIywEzNoIB+S8/K3q7z0dWJLBvhLx+hNPFlxZifEW/iL3kFDkMnr2Gk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772609026; c=relaxed/simple;
+	bh=w8yUQbtJsEkCj9oWcla6ivUT68glsDXwhJhpf+KWMOU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YU2he4lNYpV40Q63A2Jtzz4g2EYC2CFOzcNmmZy54wDKUeELXRfGqC0KnfaWRINrJLEVGNnpR4YkC/hQDqLvW/H0anqPGqOSqHjmYyrar/lSsiFJ7+u1AZWwlf6G7Q20+lX4sJ3+jiSXKV93G7Du1/s/TYasNvXGije0uaRQ/M0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MRSp7Qh/; arc=pass smtp.client-ip=209.85.219.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EFjVtNVy"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 7035DC19423;
-	Wed,  4 Mar 2026 07:21:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772608917;
-	bh=rqm1hIKFXnYB5F1diGKPD+DC9avHWqfyIaJZ3phGQak=;
-	h=From:Subject:Date:To:Cc:Reply-To:From;
-	b=EFjVtNVyr9P91dwDw6fBSnxhY9/uQ1KUl/I2b6zgolUX95XdIsvGk50btt0DzglTs
-	 IMSFvem0Pe2QF2Mxr1/UjtnkkmM5gYZs5p/IhXNVTgCBHFrQZgzz/rOXRLIvpZWbGN
-	 boLr7X0+eVMgSANoPrJ1g9Cl76EERzXEMelhvTLwDt3zbaYAbQO4Ky6B6195Vs59CZ
-	 682+p1tX3FGVohvFO68bL793nPU9mXvdeX3P4rnydzGmD/MMLjeHdx0li4/cEag8GX
-	 sAtPBRZkes4LMeVYyJcmLD2kOzsgkTze+TsWA95z3UuKwJ/pzPhofcxsffgX+EDW5R
-	 MFWfl+KOzBQxA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5978AEDEBF7;
-	Wed,  4 Mar 2026 07:21:57 +0000 (UTC)
-From: Maximilian Pezzullo via B4 Relay <devnull+maximilianpezzullo.gmail.com@kernel.org>
-Subject: [PATCH v2 0/2] Fix typos in comments in Intel Ethernet drivers
- (igb, igc)
-Date: Wed, 04 Mar 2026 08:21:18 +0100
-Message-Id: <20260304-fix-typos-in-comments-in-intel-ethernet-drivers-igb-igc-v2-0-b6a9f1d336ff@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MRSp7Qh/"
+Received: by mail-qv1-f68.google.com with SMTP id 6a1803df08f44-89a1d7cc7f0so227936d6.1
+        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 23:23:45 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772609024; cv=none;
+        d=google.com; s=arc-20240605;
+        b=HJnMRaR7+xRPY8GbFJUvHY8lIM6j9HmAU8EOMvTTwCnQYWYzKLwCN/d7ebqFZeJ+j7
+         Vl7JMAVQAm2Ln7ykYEJ27EObFkyTZGfG2dbpBP8+vq6ofskyd/QhZtSfXuAnJ0LwYyru
+         vF4RcJE3UQHPMEEVUKoKt/ss/9lXzxVFTTm5Q+rQUoaQSh5J3Y2yaDbBt65Ur3QmzIKg
+         HpnHRH+c6h1AA5GwU4YfmZ9Z7Lu8MxuXuz2zWmbmAXrF2X/vel3IgZahhRBv+bPS6mjg
+         UNTAY+RB/r0OP47hcM/e9eXHQ38nbLagm5zinURafRHsTKfiGuZFxrhSxTWEWGejXoYJ
+         VoGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=w8yUQbtJsEkCj9oWcla6ivUT68glsDXwhJhpf+KWMOU=;
+        fh=uhv+flI/fqUYmbWqUWLE8mlDKZlIhYiuXK6Q9YFgNtA=;
+        b=BlxHfPOA1JfFmNOJo9zIvH4xAkT5WLYypiFKefty93ZWxUc1oYz35EOPOqBjs9v3Ki
+         cWbPxkFS5hBZO4xeun5alAe0eMNoTf/gADyXpkeU6Yw2FOxjf5cH0UH5ob0PnjTgPnsN
+         SHJjj3KeyLOAvCCSU7Nb96+Is4JA3EFZzIAc7jOpSnAdYq9jzT7MocW8FmPpI+phsKlF
+         yYQK4t4bXmNyEmiMUx4xt/LoUIguKL1AzNVBEgXFCCJu8qXih5/HhqBP5Cw2OJQNWaMy
+         cvVp/AL9FxPSxpNCzd3TK5PrcNIkQb90pGsOXwVRizc2GCSjix7Y9jrHSuciIqLzcXYt
+         YV6Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772609024; x=1773213824; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w8yUQbtJsEkCj9oWcla6ivUT68glsDXwhJhpf+KWMOU=;
+        b=MRSp7Qh/O2/KZAeZmNsBXMp2ueRKf8yYXqYIFJC0an+0/1kk/1Yf1dffhhIiu6m8V4
+         Z41OFoPiA8P+Ndfq9NWHuREyqtAAIOEQUq/Tt+8JCjsRBiJVXdQpgb30S7GLdWSUM8BR
+         PvfGgz+hRqXy9zwIawjv0AK7MhsRaN0y0w55C0gIdBvJoCQ0AP8ggnADAUQyugecg6EC
+         wkgsZi/ZRz4sdgxObWAIUd0/6BJ0r+aCbTnOAbHk1NO7Y70hzqjmNc5Kb5AGGJ9x7qUm
+         sS/sIil3Ou1SXbrlFWEunhDSL23GHt969tI73imI0UICmi0maA7CTrTuQ/+FyD/8yfZ5
+         70vw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772609024; x=1773213824;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=w8yUQbtJsEkCj9oWcla6ivUT68glsDXwhJhpf+KWMOU=;
+        b=h2xmKXiWgyQMb+llnt6z6pGvht4WnGZBgKT/W+c/3fTlmSrVHPFtwFxBX6cUuv5mZm
+         jOUfyKY+5Iaq7hbNTffkFGaeyRXirlOZEOWmT/0iEEvc0J7kaAVF6oT+iFvjhv90jNkT
+         Grv3CHgyGQQiHB6LlGVRwpWYP17Su+WZLWh7+koH8LddDuLiDl+kJT79hYYbFTc6FK/u
+         s7sv9GDItsb/tBf6Rr0g7GE0fMCYFUlXQIeF3NQmkScdWhdX5N6Fgb31q0gEQfvd4OKn
+         ovjNQqMNZtPtfCS9+fi1OEYhzjJErV7cnJ2RPnahmYFW2hJhZJWZGUTrqNb4z6cOmn2z
+         HmRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVk/erLplD6HoEVpKGkEPcErxmCZnLG343qaNOzvGxDR+mtm8CLpgzAlZw24Trk5/WYlFna3S8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxUjz8IPzcK1BztJtlO/eif9FqDamFWtHYWRcCNFdAe+deZoR0i
+	NUnw1dtKanyK759N6wcptE1TJzTCTwMJj5kGxopTCMcsPAT3b3Cn1Jj/nT7quHSQvhAoNIB/Rmr
+	DGSYVmMM/YJeQjtpN3aOildwBVfMVBmw=
+X-Gm-Gg: ATEYQzydoKD9Fho5szdpj3ocY7mlkOfhPkW4r2cZ6kYgx1uxMuhZVQlgsXKf7xlyrdX
+	z9RD5supFsOC4PAs26tNFJdBvSVZCVu4diyA64bfYxmGj6dpPQtMJ3HBzq7DO8Y/E8lfAa2o9fQ
+	dVcnXE46LqDc4fRNLDfU/MyuRiS67P6+YTnkAFo7ilM8/fFFAdE41CN1WHKIXu9tVVgsDv62qbh
+	42WFYvaCBPoDtR23fQOtWgvp0sGjTSfaaE7pR4j7E0ePw67UP0gwZhHc2hbkdJmBb5vYYjYSgZf
+	/GQmVaxbDM9foykovVNXtFhoMsZo2/G3rHrOB59raBUOb7qtkNgjvbxzS76Mi5sq/CUG
+X-Received: by 2002:a05:6214:2583:b0:89a:c8c:3121 with SMTP id
+ 6a1803df08f44-89a19cee158mr13714996d6.40.1772609024455; Tue, 03 Mar 2026
+ 23:23:44 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAAAAAAAC/x2NwQqDMBBEf0X23IUQQ6X9ldJDk6y6UDeyCWIR/
- 72Lh4F5DLw5oJIyVXh2ByhtXLmIgb91kOaPTIScjcE7f3e9Czjyju23loosmMqykLSrszT6IrW
- ZVKhhVt5IbZmiJWEfw2OILo9hyGD2VclU1/PrfZ5/iTsfY4kAAAA=
-X-Change-ID: 20260304-fix-typos-in-comments-in-intel-ethernet-drivers-igb-igc-3b497b0df47d
-To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
- Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Joe Damato <joe@dama.to>, 
- Maximilian Pezzullo <maximilianpezzullo@gmail.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1772608916; l=1013;
- i=maximilianpezzullo@gmail.com; s=20260303; h=from:subject:message-id;
- bh=rqm1hIKFXnYB5F1diGKPD+DC9avHWqfyIaJZ3phGQak=;
- b=jGLaa1WXEILpn8rGbNZrfHas9wq6FwGnb0CbwLp9lSUNsPN3/058qUyC7++bGPw7K1sgWQRmm
- 5uUvoYTwCdADv8y8Mi2qy30t1bf7xB0s9WLxX1ycQNn88z8rC5f/MhL
-X-Developer-Key: i=maximilianpezzullo@gmail.com; a=ed25519;
- pk=TRTR4c2Vb1IfluQvv5OUDPg7EE+pIzdPBND85UU559w=
-X-Endpoint-Received: by B4 Relay for maximilianpezzullo@gmail.com/20260303
- with auth_id=658
-X-Original-From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
-Reply-To: maximilianpezzullo@gmail.com
+References: <20260301011749.1671856-1-sashal@kernel.org>
+In-Reply-To: <20260301011749.1671856-1-sashal@kernel.org>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Date: Tue, 3 Mar 2026 23:23:33 -0800
+X-Gm-Features: AaiRm50CgErMZzS_ze7kCt_8oImY4S0b0P0oRP5fkeSHF9z9hr1Wm9mnfCaQPkY
+Message-ID: <CADkSEUj-2N8TrsEBMogJ6PtHRsGPxVnxuJh5pmOijVd1KPfG_A@mail.gmail.com>
+Subject: Re: FAILED: Patch "net: arcnet: com20020-pci: fix support for 2.5Mbit
+ cards" failed to apply to 6.18-stable tree
+To: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, Simon Horman <horms@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This is v2, adding a typo fix noticed by Joe Damato in e1000_defines.h
-("Device Reset Aserted" -> "Device Reset Asserted").
+Hi, Sasha,
 
-Changes in v2:
-- igb: also fix 'Aserted' -> 'Asserted' in e1000_defines.h (suggested by Joe Damato)
+On Sat, Feb 28, 2026 at 5:17=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
+> The patch below does not apply to the 6.18-stable tree.
+This patch applies cleanly to 6.18.15, 6.12.74, 6.6.127, 6.1.164,
+5.15.201, and 5.10.251, but I was notified that it failed to apply to
+all of these kernels. It is not in the latest git tree for any of
+those versions, although my other two "failed" patches have now been
+merged. Was 6.18.y perhaps also affected by the <=3D 6.12.y issue with
+the patch with \0 in its subject causing merging to stop?
 
-Signed-off-by: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
----
-Maximilian Pezzullo (2):
-      igb: fix typos in comments
-      igc: fix typos in comments
+Am I correct in assuming that the patch did not make it into <=3D 6.12.y
+because patches in those kernels are backported from 6.18.y? This
+would mean both 6.18.y and older kernels may be missing other patches,
+and they need a new RC.
 
- drivers/net/ethernet/intel/igb/e1000_defines.h | 2 +-
- drivers/net/ethernet/intel/igb/e1000_mac.c     | 2 +-
- drivers/net/ethernet/intel/igb/e1000_mbx.h     | 2 +-
- drivers/net/ethernet/intel/igb/e1000_nvm.c     | 2 +-
- drivers/net/ethernet/intel/igc/igc_diag.c      | 2 +-
- drivers/net/ethernet/intel/igc/igc_main.c      | 4 ++--
- 6 files changed, 7 insertions(+), 7 deletions(-)
----
-base-commit: af4e9ef3d78420feb8fe58cd9a1ab80c501b3c08
-change-id: 20260304-fix-typos-in-comments-in-intel-ethernet-drivers-igb-igc-3b497b0df47d
-
-Best regards,
--- 
-Maximilian Pezzullo <maximilianpezzullo@gmail.com>
-
-
+Ethan
