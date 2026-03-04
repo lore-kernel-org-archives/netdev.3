@@ -1,97 +1,91 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905A23BE169
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 14:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656A43B7B7C;
+	Wed,  4 Mar 2026 14:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772636306; cv=none; b=X3dIU4nbQLU9jI9MOvKoJHzXumigilLvcuMTIaPLQEsybr3alCQxyV3tXWz1p2snEuV4SstfjdQjo/+HwW33zw/M5wJqX40qbDaVQmjMIjHMU1L+yPydhX6Xz9MR5w4RFy2YUlc6VIQIq18ObMOAJqWBnAD6TQjwpiZUMDSK4Gg=
+	t=1772636363; cv=none; b=ewdY8tGWzEaaUx2592qp3paWhW9HToluQlJqsI/a08Yk+RKUmoasAXPFn6F44J42Rvn7/4R13QJEApEfoXhr2jw7GCqsV74n6LpIlDGzLXd+W3SRMmHQEGLdLvzLr8igizGoJ2qw+zKv5V+nVOEXTPyeyofVtYwdWFMUVSSajy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772636306; c=relaxed/simple;
-	bh=kJ0jHVfSY4rzfD5nXjR6HqMH1FoZNuONagn+vinay+o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jWt978CwyhQupyp6CtsrrPdWtrgi8TK7B032WDp4ysVRJC2iAwdT69E8MPIeu7LgjWeDpKmxm82qzDX8qBWJsUfr5PIQw9NewRdTIE7hIw/TMtqfvUBGAvtGvBFrpJL5zEwXyzl1/byr0ZZ75+RyEIcjmEM+Zz3jZZ9VX7MfOxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=gO3Gwf6b; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=bioPkuVA; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1772636363; c=relaxed/simple;
+	bh=/lNwR+ZYE4Pp0j2tZP/j9awuxcDAzLdyRMP+40EdGrI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Ngf5JPkzeE1XZz06aWHRYF8jCDE+xawvnqr+D5TWKPxxLb9mdEfHT4XN3NqtnlLTTpKHof12RQtimCCJENJP8mFgH0RYJgWI3wDwZdLwJY1F3R0nXKBQ6DXqZLAK1io2Gj41GVYTzly0P/8r2yo3sl1LVTis6C1ykiZZ6JcqVLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=KJ7vsDvn; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="gO3Gwf6b";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="bioPkuVA"
-Date: Wed, 4 Mar 2026 15:58:21 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1772636303;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wcEONRe9qJeZI31qG9ERdgCZQR8uEyuuevenX1qMEqk=;
-	b=gO3Gwf6bGeo0jLEf11Gmc+tOAJa9T4XHFkQcEbXcoFwbqtQmIWhtd0qCFVKSDz/u3nyHlX
-	lzUZkkrlImEp6AiytKunxIR2ixFN/CBEnndpLEYF20I3f5RWfCaKAMzHwA2hr78aIkUYoz
-	6Jw+Y6md7kZtOolrjt9vDUjepwdmeniFPMm9VD7For/geIPdBbIRUtNIYhKR3IiZ8mC+H7
-	fc879dU6HziKNekMS2cd6gGCVSU4c9F5IlPCCcnshE1RHLpzkcAjrNCPFi2w1QSG8nXJmg
-	YGO5K/5i4eORW+8EPN91VZvMfOXW5CcsrMn31WpekU763T9jwAJs9Djp/DBKqQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1772636303;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wcEONRe9qJeZI31qG9ERdgCZQR8uEyuuevenX1qMEqk=;
-	b=bioPkuVAEkGHO7xnRAimonaXw0U9UVWV2n2RpWJ8K/QztLgLfTMzWS4LdfSk2Zjaa8jfQi
-	1kdHm5K/iUCgIgBA==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Felix Maurer <fmaurer@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Simon Horman <horms@kernel.org>
-Subject: Re: [PATCH RFC net-next 1/2] hsr: Allow to send a specific port and
- with HSR header
-Message-ID: <20260304145821.TQhzhhjF@linutronix.de>
-References: <20260204-hsr_ptp-v1-0-b421c69a77da@linutronix.de>
- <20260204-hsr_ptp-v1-1-b421c69a77da@linutronix.de>
- <willemdebruijn.kernel.2d4b5c08dd442@gmail.com>
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="KJ7vsDvn"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=sUIfRa+g8fpmxFfqp2XG0bd5OP0+/q3uVgqVEbYGmPA=; b=KJ7vsDvn/Oknk0T9J4ShzV/hkt
+	EhjXH1u565mXeKNI40Hiq/ld2F8vOGUMqaUEiJqOH+46feMARlLXq/FjJpgfwGEdMKEN+TDlvGgys
+	9lc+lQHi0qlSDtKQSXX5jLivT9pCzF5mW/YKHZ6YIyGXMGOq8WDPi3XeuBVdcLxMqX7vr2PUXQQRn
+	SvjG4aaTjzBEMeK18o0s1m3PlPk5u0+IadndvJz9AwzWLHfBBDYkJb+uABSR4A4hUnoIFHX/8SSMM
+	2tJlVNrOu+5TgTQKkffGTZdLv9TJR4KW9XSUhlA92WwnyRbanA4fXdMOzb+f1ZRUFoX21Te7EnphF
+	webg1muw==;
+Received: from [179.221.50.217] (helo=[192.168.0.108])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1vxngv-008y27-95; Wed, 04 Mar 2026 15:59:13 +0100
+Message-ID: <279c7a14-2b8a-410e-85d5-ee11b0e5371e@igalia.com>
+Date: Wed, 4 Mar 2026 11:59:05 -0300
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <willemdebruijn.kernel.2d4b5c08dd442@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] netfilter: nf_tables: fix use-after-free on ops->dev
+To: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+ Pablo Neira Ayuso <pablo@netfilter.org>, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, kernel-dev@igalia.com
+References: <20260302212605.689909-1-koike@igalia.com>
+ <aaYYiPTO5JYOlhhY@chamomile>
+ <17499d82-ad03-44a9-ab3a-429d2ebea02f@igalia.com>
+ <aafD369eE31dh1VP@strlen.de> <aaglAU8E48EF1m-_@orbyte.nwl.cc>
+ <aag18YM3g0sS7wXW@strlen.de>
+Content-Language: en-US
+From: Helen Koike <koike@igalia.com>
+In-Reply-To: <aag18YM3g0sS7wXW@strlen.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 2026-02-04 12:30:47 [-0500], Willem de Bruijn wrote:
-> > --- a/include/linux/skbuff.h
-> > +++ b/include/linux/skbuff.h
-> > @@ -605,6 +605,7 @@ struct skb_shared_info {
-> >  	};
-> >  	unsigned int	gso_type;
-> >  	u32		tskey;
-> > +	u32		hsr_ptp;
+
+
+On 3/4/26 10:38 AM, Florian Westphal wrote:
+> Phil Sutter <phil@nwl.cc> wrote:
+>>> And *THIS* looks buggy.
+>>> Shouldn't that simply be:
+>>> 			if (!match || ops)
+>>> 				continue;
 > 
-> skb_shared_info cannot easily be expanded.
+
+I tested this change locally (with syz reproducer) and I'm unable to 
+trigger the issue anymore. Without this change I always reproduce it.
+
+If you are to send this patch, please add:
+
+Tested-by: Helen Koike <koike@igalia.com>
+
+
+
+> FWIW I can't get the reproducer to trigger a splat with this change.
+> I've fed this to syzbot to double-check.
 > 
-> This is too specific a use-case to warrant fields in every packet.
+>> You're right, the 'changename' check in NETDEV_REGISTER is not needed
+>> because even if not changing names one should skip if already
+>> registered. Actually, this indicates a bug unless handling
+>> NETDEV_CHANGENAME. Maybe add a WARN_ON_ONCE()?
 > 
-> I'm not super familiar with High-availability Seamless Redundancy
-> (HSR). Perhaps you can use either an skb_extension. Or the skb->cb[]
-> field if this data is only needed within the HSR protocol logic, so
-> can be assured to not be overwritten by other users of the control
-> block.
+> Well, it does trigger, afaics.
 
-skb->cb does not work because I need share it between the HSR stack
-and AF_PACKET so it gets overwritten (as it is no meant to be shared
-between layers).
-I need actually three bits: HAVE_HEADER and PORT_NUMBER which 0-2.
-Would it work if I add a :1 and :2 member to struct sk_buff into the
-header group after unreadable? In my config there is a 6bit + 1 byte
-hole. Worst case (all ifdefs enabled) it sums to 30 bits so I would have
-just 2 left. Exceeding it by one bit in this case would extend create a
-7bit + 1 byte hole and shift shifts tc_index + alloc_cpu. However there
-is a two byte hole between alloc_cpu before csum which is removed then.
 
-Would it be okay if I occupy three bits in sk_buff which look unused?
-
-Sebastian
+Thanks,
+Helen
