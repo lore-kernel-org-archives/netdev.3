@@ -1,183 +1,128 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27AD319848;
-	Wed,  4 Mar 2026 16:32:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B6A733F597;
+	Wed,  4 Mar 2026 16:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772641952; cv=none; b=qn2aNVuee2XKjZa119zrJYyqlO7lZKmKk5n5a0AV3MzxxcLswlrOWGw1m2M8FzQDkpu6PjORofglNDvaobKex+Gl0HklK8aOJB4dCf3+EwQp5N+Kkuts5/mCsMoRU+51xGkEAbdwkBqtHSSj9N5ds3OlyosoiHBobiqnLHbzWdQ=
+	t=1772642154; cv=none; b=PJK98Ono/KyUflx73/GLob0ILhIr9CQzBdcREmKWnGKjozb0i+OYVck42xyyFCYnrHbFcuCe39Mnch5OAqkWDlnaKfca4P75hc0d5maRsLavKA9CCRGBotXYPVC8n8XgMteGKGdlz7zFirzK5cPg4UHrjQ4MdmTumf13elCHdpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772641952; c=relaxed/simple;
-	bh=jg6J//vb12263kITZC9G8reXF2e1rvW3uaZ0PYjlsSU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W/PE0Jj83lFekEKkdUQGg6Q6H2OJdGxewHwlZ9fLkLCxUJXNWLLTzWlhxLmaSkV0+zSN/J76q3Q8XO5qafouhVAqWU0OEyRstL45OawLLw3yHylBZ+fopEVv7FhDWtsYmVQsS0FCDxuQLw8Xr9ja/3Dv5PMGsvqhykIhbNISC+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=kcAhc82X; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1772642154; c=relaxed/simple;
+	bh=Tz/EW6VqSDuNT9o95iMXFSH++Mx/kFvK7wixh1Rq9Lo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LQhlGt3nK7s369ck7HLtMyqhQKreVGkjdxNVaG+xUJZ5x/2dMcqJUfkIy1UbMYaG66sgWm6xZoJOejIYiq1adi3E59tABfUp9O3Hw+1s8o8IzVDlt0mOk5Bs3e6TjsVzqEztHiRvUb3lMYoeMT6bJYsuw8PmHtIcKBf9uGArfOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ducmDr+A; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="kcAhc82X"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=4E81S360LZJasm+z9mMQB95l0sk0q8GKUxtXCQeVoTg=; b=kcAhc82XV2zj4ATHfuIl5oAz9H
-	UPBtKS/AafU12aOJQMXH35D//2gq8JYzL3mNfaqnaTYYFO/5+sGwgybnjea9DTJQYbf+gkQ3PiJGQ
-	7+8gKBfoPFnKyJv2KXp9d+gkA8/THuduL5z8Ch4B78IMQEdnoendq2zWEMG0HxbXGE4BqzmSgYvek
-	er0OB5Y6bfjxP41aJPnZGKoLtRTGqVBuAc+GMh4Hg8Iq90oKKMh0tOjYJjcjeRs1mvzdehedLVz79
-	y3Y1uJH9Bx9MpiWee51iTuYKzuH2hoH9A5ngD4rBH1UnS8Azh0X3NgxnuGWkaKnnhZON21RDILiRb
-	s4+hQCSw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56966)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vxp8w-000000006lU-3Xbg;
-	Wed, 04 Mar 2026 16:32:14 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vxp8s-0000000082X-3150;
-	Wed, 04 Mar 2026 16:32:10 +0000
-Date: Wed, 4 Mar 2026 16:32:10 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ducmDr+A"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772642153; x=1804178153;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=Tz/EW6VqSDuNT9o95iMXFSH++Mx/kFvK7wixh1Rq9Lo=;
+  b=ducmDr+A7OX3cB0RtCmAuM45K0hxldfJWKTiqmVo0bung52YKGWce33W
+   JEcnPYDpV/KkpmTPL0k2CbrKexYR4kla8rKJ7mzpEv1NWhRQcuTBMK1l5
+   7xQ/pG0K/qW9TPa+JW4M312n/u/Hteiqgi/t6/mpKRWpi3qA1hQIRQKRg
+   c3vOrZPynx0Ovii//epchBtefPfjRZnLYInKh6hzAEBKTxhC3RWSkgXr6
+   a/gaDDd+inaQ6s2HLmjLj5eJoXH0TId+qd8X8ZR+u7DlNeQLb9hPT4sTK
+   nQ0UEhWccn8S1NlYHf//Kq4hBs14wlGHR56QoUt63bSW6hlaMq/TNn4P1
+   Q==;
+X-CSE-ConnectionGUID: 3dOa2prUTv6N9Pdh+I4UDg==
+X-CSE-MsgGUID: VXbUUm6DQfegZYFBMyFcfA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="77580005"
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="77580005"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 08:35:52 -0800
+X-CSE-ConnectionGUID: 28qXX9IKTM+4NtRU4IyMMw==
+X-CSE-MsgGUID: pjZ06Zf0QEGnm8h6YaITQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
+   d="scan'208";a="222895522"
+Received: from irvmail002.ir.intel.com ([10.43.11.120])
+  by orviesa004.jf.intel.com with ESMTP; 04 Mar 2026 08:35:47 -0800
+Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id 0F4B5312C7;
+	Wed,  4 Mar 2026 16:35:45 +0000 (GMT)
+From: Larysa Zaremba <larysa.zaremba@intel.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>,
+	intel-wired-lan@lists.osuosl.org
+Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>, kevin-kw.huang@airoha.com,
-	macpaul.lin@mediatek.com, matthias.bgg@gmail.com,
-	kernel@collabora.com, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] net: phy: Introduce Airoha AN8801/R Gigabit
- Ethernet PHY driver
-Message-ID: <aaheilkwpQ90xMmR@shell.armlinux.org.uk>
-References: <20260304-add-airoha-an8801-support-v1-0-0ae4ee5a2f9d@collabora.com>
- <20260304-add-airoha-an8801-support-v1-2-0ae4ee5a2f9d@collabora.com>
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Natalia Wochtman <natalia.wochtman@intel.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH iwl-next v3 00/10] libeth and full XDP for ixgbevf
+Date: Wed,  4 Mar 2026 17:03:32 +0100
+Message-ID: <20260304160345.1340940-1-larysa.zaremba@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260304-add-airoha-an8801-support-v1-2-0ae4ee5a2f9d@collabora.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 04, 2026 at 10:35:29AM +0100, Louis-Alexis Eyraud wrote:
-> +static void an8801r_get_wol(struct phy_device *phydev,
-> +			    struct ethtool_wolinfo *wol)
-> +{
-> +	u32 reg_val;
-> +
-> +	air_buckpbus_reg_read(phydev, AN8801_BPBUS_REG_WAKEUP_CTL1, &reg_val);
-> +
-> +	wol->supported = WAKE_MAGIC;
-> +
-> +	if (reg_val & AN8801_WOL_WAKE_MAGIC_EN)
-> +		wol->wolopts |= WAKE_MAGIC;
-> +	else
-> +		wol->wolopts &= ~WAKE_MAGIC;
+Update ixgbevf with standard XDP features by utilizing libeth library.
 
-Please only support WoL if you know that the PHY has been wired up in
-such a way to allow it to actually wake the system. The PHY itself
-merely supporting WoL is insufficient.
+First, in patches 1-4 refactor existing general and XDP Rx code
+to use libeth fill queues. Then in patches 5-7, add support for
+XDP multi-buffer and XDP_REDIRECT (target and source). Patch 8 addresses
+particularities of one HW type by using a software header split.
+Patches 9-10 address page pool not being reconfigured on MTU change.
 
-Please look at my recent change to realtek_main.c in commit
-b826bf795564 ("net: phy: realtek: fix RTL8211F wake-on-lan support")
-to see a possible way to achieve this.
+v2->v3:
+* remove IXGBEVF_MAX_FRAME_BUILD_SKB one patch earlier
+* remove __IXGBEVF_RX_3K_BUFFER (not used anymore)
+* correct stats for mbuf packets when XDP verdict is other than XDP_PASS
+* improve commit message in the cleanup patch
+* improve error handling when page pool creation fails
+* free data buffer when the corresponding header buffer allocation fails
+* when some Rx buffers cannot be allocated, break instead of returning,
+  so allocated buffers are not lost
 
-> +static int an8801r_config_init(struct phy_device *phydev)
-> +{
-> +	u8 led_default_function[AN8801R_NUM_LEDS] = { 0 };
-> +	int prev_page, ret;
-> +
-> +	ret = an8801r_of_init_leds(phydev, led_default_function);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Disable Low Power Mode (LPM) */
-> +	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, AN8801_REG_PHY_INTERNAL0,
-> +			    FIELD_PREP(AN8801_PHY_INTFUNC_MASK, 0x1e));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, AN8801_REG_PHY_INTERNAL1,
-> +			    FIELD_PREP(AN8801_PHY_INTFUNC_MASK, 0x2));
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Disable EEE by default */
-> +	ret = phy_write_mmd(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV, 0);
-> +	if (ret)
-> +		return ret;
+v1->v2:
+* fix wrong return value when allocating descriptor memory fails
+* tag xdp_prog in ring structure as RCU
 
-Are you sure this is safe, e.g. over a suspend/resume, and doesn't
-cause the hardware vs software state to desync?
+Larysa Zaremba (9):
+  ixgbevf: remove legacy Rx
+  ixgbevf: do not share pages between packets
+  ixgbevf: use libeth in Rx processing
+  ixgbevf: branch prediction and cleanup
+  ixgbevf: support XDP multi-buffer on Rx path
+  ixgbevf: XDP_TX in multi-buffer through libeth
+  ixgbevf: support XDP_REDIRECT and .ndo_xdp_xmit
+  ixgbevf: reconfigure page pool when reallocating buffers
+  ixgbevf: allow changing MTU when XDP program is attached
 
-> +
-> +	prev_page = phy_select_page(phydev, AIR_PHY_PAGE_EXTENDED_1);
-> +	if (prev_page < 0)
-> +		return prev_page;
+Natalia Wochtman (1):
+  ixgbevf: add pseudo header split
 
-No, this is buggy. Please read the phy_select_page() documentation to
-find out why.
-
-> +
-> +	/* Set the PHY to perform auto-downshift after 3 auto-negotiation
-> +	 * attempts
-> +	 */
-> +	__phy_write(phydev, AN8801_EXT_REG_PHY,
-> +		    FIELD_PREP(AN8801_EXT_PHY_CTRL1, 0x1d) |
-> +		    FIELD_PREP(AN8801_EXT_PHY_DOWNSHIFT_CTL, 1) |
-> +		    AN8801_EXT_PHY_DOWNSHIFT_EN);
-> +
-> +	ret = phy_restore_page(phydev, prev_page, ret);
-> +	if (ret)
-> +		return ret;
-
-However, the bug could've been avoided by using the appropriate
-accessor:
-
-	ret = phy_write_paged(phydev, AIR_PHY_PAGE_EXTENDED_1,
-			      AN8801_EXT_REG_PHY,
-			      FIELD_PREP(AN8801_EXT_PHY_CTRL1, 0x1d) |
-			      FIELD_PREP(AN8801_EXT_PHY_DOWNSHIFT_CTL, 1) |
-			      AN8801_EXT_PHY_DOWNSHIFT_EN);
-	if (ret < 0)
-		return ret;
-
-> +static int an8801r_read_status(struct phy_device *phydev)
-> +{
-> +	int prev_speed, ret;
-> +	u32 val;
-> +
-> +	prev_speed = phydev->speed;
-> +
-> +	ret = genphy_read_status(phydev);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (!phydev->link)
-> +		return 0;
-> +
-> +	if (prev_speed != phydev->speed) {
-
-Maybe:
-
-	if (phydev->link && prev_speed != phydev->speed) {
-
-?
-
-Thanks.
+ drivers/net/ethernet/intel/Kconfig            |    1 +
+ drivers/net/ethernet/intel/ixgbevf/defines.h  |    2 +-
+ drivers/net/ethernet/intel/ixgbevf/ethtool.c  |   48 -
+ drivers/net/ethernet/intel/ixgbevf/ixgbevf.h  |   99 +-
+ .../net/ethernet/intel/ixgbevf/ixgbevf_main.c | 1117 +++++++----------
+ include/net/libeth/xdp.h                      |    2 +-
+ 6 files changed, 499 insertions(+), 770 deletions(-)
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+2.52.0
+
