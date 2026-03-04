@@ -1,101 +1,172 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8B41A00F0
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 00:08:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F7C192B75
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 00:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772582892; cv=none; b=gTs9zvGN+StUbalZN+BMju34ZfCPr+in3886K3E1q2dSgJhyb2noN+hidlY8BuqQ8c2nJY/lvmutWzBfaivgmPTM2wdBZ9rIIU52HdAwVofMSUYMMLXuoaK/eXDDF8X0UbOx4RtzrxuRzcQC3c3/cLS7q/OqmF5DJtVZVsnS4/U=
+	t=1772583234; cv=none; b=JM7p/s8AGD0ZXLeYUFXmlWNqqSTjNSnr7mULiX9ozUVqPqECOMjQb9iQ1zRrlPMEUUwOmpLD0epP88hjAhU6BI2Ee//g0nHJdzRJH1P3VwbTuRsoDjE6Kt67hwwKXgWu2j5Kc2ueX/XEMm3jK2F8L6eINIkcIvGClE+gWuzTDE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772582892; c=relaxed/simple;
-	bh=ToaY1IjwIXX4dzvjVB9KZQR5bgLLcK6AimfbkfYOhw0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CzuKNALdQZfQcOw3ggBcEqU482lFIc2iPlJwAsQP2hCBymFeRU0yfTGT7STLpsA8jey2vK5PhklP9mTk5bwGzG4uO6DmFsMpgrJ3zGL1NsxQDGRXXVIeCcd2OjEjtA0fPyeaXG+r0zLYJK15tQUR1L3ZuGVUQDz0PAi3CBtAFyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DW9RvVIn; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1772583234; c=relaxed/simple;
+	bh=HOHhwBmh2uPy53v9vYBf1CyFA6dYuwZH6rPeBLyJxoA=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=g9hPpZitMyYhdjrtiBCASllP5rPJ4HTBqah5r+YCIkFKTk+Fpcuhxh0qxFaYsz9dA9Ms5omN0/QkWKmJ4Ij5zXEcifEpqpF7JCbQHlq9xWTgZAO2cDfSlYT7OA1HDRmxgObl5Olpa2b5BFhiuRoxOtlL33jsoiBmYp0s5xSywVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=t2LgQyYg; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DW9RvVIn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772582891; x=1804118891;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=ToaY1IjwIXX4dzvjVB9KZQR5bgLLcK6AimfbkfYOhw0=;
-  b=DW9RvVInRIqSAWkCUm3CN+uQOKeKdwK3accUe7BpwQ2yujo6HmMAvC6x
-   2R4sd4yhd/vkq2H673LCUgFAimnQKDVlZ+a1G+xTpuAawqm8OIIhY83cC
-   tc7Z9QgrycmfVGOj8xmtOmm50SZQl/ww4lozl50wozjEnOfjRqVdsiM2y
-   xTtfPAu4R5MrCCx7iRd2WqtgD6/12Qz35VYnJqXg/lgRdIgvddjmVE1I6
-   bdY4GN8T0muSPoeVw+MuUys4AS/d3I2TicsHOQmk2cC0sEhwertcvPoGH
-   Za3lY/Nrc1N9stvNfjkpijNEkrLUvOl5Anc/5wp+zwITfMTQy+obUxNPZ
-   g==;
-X-CSE-ConnectionGUID: MfdVsuYGQVyKhK4mYLAFuQ==
-X-CSE-MsgGUID: k69bOFtQSrCFa3xaFAEliA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77243040"
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="77243040"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 16:08:08 -0800
-X-CSE-ConnectionGUID: 157TUKkITi2hd/e92VoLKQ==
-X-CSE-MsgGUID: qxiSI50wQkGWL2zHDbsw6g==
-X-ExtLoop1: 1
-Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by fmviesa003.fm.intel.com with ESMTP; 03 Mar 2026 16:08:07 -0800
-From: Tony Nguyen <anthony.l.nguyen@intel.com>
-To: davem@davemloft.net,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	edumazet@google.com,
-	andrew+netdev@lunn.ch,
-	netdev@vger.kernel.org
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	anthony.l.nguyen@intel.com,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Subject: [PATCH net-next v2 3/4] i40e: Add missing wordpart.h header
-Date: Tue,  3 Mar 2026 16:07:55 -0800
-Message-ID: <20260304000800.3536872-4-anthony.l.nguyen@intel.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20260304000800.3536872-1-anthony.l.nguyen@intel.com>
-References: <20260304000800.3536872-1-anthony.l.nguyen@intel.com>
+	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="t2LgQyYg"
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 623M93xQ2641847
+	for <netdev@vger.kernel.org>; Tue, 3 Mar 2026 16:13:52 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=ilAgVYUcbnyvHN8xc1CxT0q/wlakEkocuZZRC4oY+Bs=; b=t2LgQyYg94oW
+	BlbOUhRSVMw9CM1YWl1s9zQ97F1Myca+PwQnaWYlgzNACgtwJfvE6fnAmfw72P4v
+	p7vU9GcrSi37woNpGz0FK3o2D6R2rBVK8E0q6jqDIwXURciP/Po48Zv12qAKyq8s
+	/baIepFyXv69Md016CC7F/G9nwV317/6QP/u/VP5Ys3SUfZYPGpkYdJeOUaUBaC+
+	3wVhMCGsmqGg/Rouh9PnzhIA8AdhO7kRwV8oubcJ60+wkEkA+dtzsyRJqjsT7U8i
+	YtmYP8aqIFqowcfTeLrEzpqFAPdZVJV3B86QmsEVY6jxTeS/o9MGZWwdHF5Dif3S
+	OwCH9pGT+w==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by m0001303.ppops.net (PPS) with ESMTPS id 4cp4knnhx0-6
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 16:13:52 -0800 (PST)
+Received: from twshared108366.16.frc2.facebook.com (2620:10d:c085:108::150d)
+ by mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Wed, 4 Mar 2026 00:13:45 +0000
+Received: by devbig1867.frc2.facebook.com (Postfix, from userid 708122)
+	id BE6FD7598FCC; Tue,  3 Mar 2026 16:13:43 -0800 (PST)
+From: Wei Wang <weibunny@fb.com>
+To: <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Daniel Zahka
+	<daniel.zahka@gmail.com>,
+        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+        David Wei <dw@davidwei.uk>, Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S.
+ Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>
+CC: Wei Wang <weibunny@fb.com>
+Subject: [PATCH v2 net-next 2/9] selftests/net: Export Netlink class via lib.py
+Date: Tue, 3 Mar 2026 16:00:42 -0800
+Message-ID: <20260304000050.3366381-3-weibunny@fb.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260304000050.3366381-1-weibunny@fb.com>
+References: <20260304000050.3366381-1-weibunny@fb.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-FB-Internal: Safe
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDAwMCBTYWx0ZWRfX88YLtj7VGMmR
+ ZUx55scXpTQaVAWWAhmKk3oYoJF1+Z6q99bcJ8lX2ng0whTN34n1JMIaz41Q5vjyap4bA5p/JI7
+ E3gI1Ni1S1youMRjIV12zWLm0uIA2kKhsk/UqJnhumenErEEZrqfATo7wFgyg7I4FQhqQhU13H8
+ w8jwQ9K/r+s0PfTte1a/o728TUt6smHEhW7PyRj4eOs5Ghh27zD6m/m3xUc/sys2bTZAKAHnJgs
+ /Mluz+gwqj8MDNDPVY+6SyB15XvXtqoQ1sKvX+Sve2XxP5guPkckMmH6Fxvz3uebieMLaZh+VoL
+ 9UyscfCQMLRldKsD9WhZKsjgrBha8XpIEhY2TrvUkjTrkskTORg0lc7HwUCKTHOtk7QRDWfwcyY
+ 3oAV9oA9ItZpzrKDsvb1T7bNl0JQXXUl1MO+zh56EMlZdXqI9nI/HLpW4mPnrlm7OAXTJk8sfUE
+ +7/xn0M90ND0H1RSgog==
+X-Authority-Analysis: v=2.4 cv=WKtyn3sR c=1 sm=1 tr=0 ts=69a77940 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=_78whYxrdx1mplLwxq1U:22 a=xKRG0ZNjTxjQNNSMgjIA:9
+X-Proofpoint-ORIG-GUID: 1b6vtR5crboprz7jPQhLEteR4MffWBQy
+X-Proofpoint-GUID: 1b6vtR5crboprz7jPQhLEteR4MffWBQy
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-03_03,2026-03-03_01,2025-10-01_01
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: David Wei <dw@davidwei.uk>
 
-When cleaning up another header I have met this build error:
+Making rtnl newlink calls requires constants defined in Netlink class in
+pyynl. Export it.
 
-drivers/net/ethernet/intel/i40e/i40e_hmc.h:105:22: error: implicit declaration of function 'upper_32_bits' [-Wimplicit-function-declaration]
-  105 |         val1 = (u32)(upper_32_bits(pa));                                \
-
-This is due to missing header, add it to fix the possible issue.
-
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: David Wei <dw@davidwei.uk>
 ---
- drivers/net/ethernet/intel/i40e/i40e_hmc.h | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/drivers/net/lib/py/__init__.py | 4 ++--
+ tools/testing/selftests/net/lib/py/__init__.py         | 4 ++--
+ tools/testing/selftests/net/lib/py/ynl.py              | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_hmc.h b/drivers/net/ethernet/intel/i40e/i40e_hmc.h
-index 480e3a883cc7..967711405919 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_hmc.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e_hmc.h
-@@ -4,6 +4,8 @@
- #ifndef _I40E_HMC_H_
- #define _I40E_HMC_H_
- 
-+#include <linux/wordpart.h>
-+
- #include "i40e_alloc.h"
- #include "i40e_io.h"
- #include "i40e_register.h"
--- 
-2.47.1
+diff --git a/tools/testing/selftests/drivers/net/lib/py/__init__.py b/too=
+ls/testing/selftests/drivers/net/lib/py/__init__.py
+index 5872d114f142..e5ef5e949c12 100644
+--- a/tools/testing/selftests/drivers/net/lib/py/__init__.py
++++ b/tools/testing/selftests/drivers/net/lib/py/__init__.py
+@@ -19,7 +19,7 @@ try:
+     # Import one by one to avoid pylint false positives
+     from net.lib.py import NetNS, NetNSEnter, NetdevSimDev
+     from net.lib.py import EthtoolFamily, NetdevFamily, NetshaperFamily,=
+ \
+-        NlError, RtnlFamily, DevlinkFamily, PSPFamily
++        NlError, RtnlFamily, DevlinkFamily, PSPFamily, Netlink
+     from net.lib.py import CmdExitFailure
+     from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, =
+\
+         fd_read_timeout, ip, rand_port, rand_ports, wait_port_listen, wa=
+it_file
+@@ -31,7 +31,7 @@ try:
+=20
+     __all__ =3D ["NetNS", "NetNSEnter", "NetdevSimDev",
+                "EthtoolFamily", "NetdevFamily", "NetshaperFamily",
+-               "NlError", "RtnlFamily", "DevlinkFamily", "PSPFamily",
++               "NlError", "RtnlFamily", "DevlinkFamily", "PSPFamily", "N=
+etlink",
+                "CmdExitFailure",
+                "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
+                "fd_read_timeout", "ip", "rand_port", "rand_ports",
+diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testi=
+ng/selftests/net/lib/py/__init__.py
+index a584e7f806a4..54e84282781c 100644
+--- a/tools/testing/selftests/net/lib/py/__init__.py
++++ b/tools/testing/selftests/net/lib/py/__init__.py
+@@ -16,7 +16,7 @@ from .utils import CmdExitFailure, fd_read_timeout, cmd=
+, bkg, defer, \
+     bpftool, ip, ethtool, bpftrace, rand_port, rand_ports, wait_port_lis=
+ten, \
+     wait_file, tool
+ from .ynl import NlError, YnlFamily, EthtoolFamily, NetdevFamily, RtnlFa=
+mily, RtnlAddrFamily
+-from .ynl import NetshaperFamily, DevlinkFamily, PSPFamily
++from .ynl import NetshaperFamily, DevlinkFamily, PSPFamily, Netlink
+=20
+ __all__ =3D ["KSRC",
+            "KsftFailEx", "KsftSkipEx", "KsftXfailEx", "ksft_pr", "ksft_e=
+q",
+@@ -31,4 +31,4 @@ __all__ =3D ["KSRC",
+            "NetdevSim", "NetdevSimDev",
+            "NetshaperFamily", "DevlinkFamily", "PSPFamily", "NlError",
+            "YnlFamily", "EthtoolFamily", "NetdevFamily", "RtnlFamily",
+-           "RtnlAddrFamily"]
++           "RtnlAddrFamily", "Netlink"]
+diff --git a/tools/testing/selftests/net/lib/py/ynl.py b/tools/testing/se=
+lftests/net/lib/py/ynl.py
+index 32c223e93b2c..a52b067f7589 100644
+--- a/tools/testing/selftests/net/lib/py/ynl.py
++++ b/tools/testing/selftests/net/lib/py/ynl.py
+@@ -13,14 +13,14 @@ try:
+         SPEC_PATH =3D KSFT_DIR / "net/lib/specs"
+=20
+         sys.path.append(tools_full_path.as_posix())
+-        from net.lib.ynl.pyynl.lib import YnlFamily, NlError
++        from net.lib.ynl.pyynl.lib import YnlFamily, NlError, Netlink
+     else:
+         # Running in tree
+         tools_full_path =3D KSRC / "tools"
+         SPEC_PATH =3D KSRC / "Documentation/netlink/specs"
+=20
+         sys.path.append(tools_full_path.as_posix())
+-        from net.ynl.pyynl.lib import YnlFamily, NlError
++        from net.ynl.pyynl.lib import YnlFamily, NlError, Netlink
+ except ModuleNotFoundError as e:
+     ksft_pr("Failed importing `ynl` library from kernel sources")
+     ksft_pr(str(e))
+--=20
+2.47.3
 
