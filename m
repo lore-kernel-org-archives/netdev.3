@@ -1,185 +1,165 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D647374745;
-	Wed,  4 Mar 2026 16:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A153368B4;
+	Wed,  4 Mar 2026 16:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772642184; cv=none; b=rX9MoWhVD4cpgGrf0E973SYRNzBocEczVHXN0hxLJWuvKnNSMHEi5JpXVetuoPcTwrUr3YRPf3Ue0AqilBIIhuV9kARMl/rHMb7MlBOPgmPVID9w0eyvflE1Jlaxa8uoF182V/GoyE0nlkekV3nr2V7sTaSQdkj3lM+nh+mP2ys=
+	t=1772643345; cv=none; b=pOYPvXVEsIWRPJ9aU4VEWHc5WMU8IFuePvoa41QCYY8x85kJVtmAFHUtkubygP9hh3HGm9UCpNc1/xpBVdpyfM97d/oa5BEDwW2NSAwwEQ1bNSvwzCJ0A3K7iB1PclC6TgMnmuDVavFaa/ojWHUX8gquG+YVWuu6OBOWvA8adJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772642184; c=relaxed/simple;
-	bh=xSoRegfDOP/5IirhtXxj8ro8oytZUXfZQIPbEnLhFj0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fKLX5/v2yVkpSvyRNb3gnXtagZyMWNJ0rq2Z7HUTSGIwARmHuAdc+Z5DPcXh64ci1u3AW923gQ6nt1hGkzA9Apdhf06z90ajIXEehlH7KKpLb3SK4ibu61RoxcbqSkm43gN4qbFh1ktT3RKcVkAXqj5SFQw3ZidHjEUZ2VjGk4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W1fvYWFH; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1772643345; c=relaxed/simple;
+	bh=N2eRMLJG/1aJGLtXlcZXeM9woo2DUmQb+2c8tcrSe0I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m7dx5SEt3SdozgkUrVbGxOhd8tQcSUXgzq3L8vBFjWjl/v09HgMupfPbjKlBCOvGOi0pf94kZU4iOc970Yn9mv8YSlX+yi5KKZchqaELStSOtIhAizwtcCseRBFMMenpEAbHqNbFq79u/2EzXACODws8OIG50Cglbw86xIWLtMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=rn45a6g2; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W1fvYWFH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772642176; x=1804178176;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=xSoRegfDOP/5IirhtXxj8ro8oytZUXfZQIPbEnLhFj0=;
-  b=W1fvYWFHPWDTUvwr+a6TUurNqZ/eK7OHMrVTvsKdUEegMXpoVQChGinI
-   1GjOKr9JJyANH+TkqeLaIy7z8KeEknOgV7czEtfVZblp22HWnCKF4We/g
-   VEkABcEN9q4fTOvQNPj3c3XGMF/C1osDQszLCwJRSO+rtHvAFNtFI8PbM
-   MJO/Y8rILcbXS55L2/tdTyhMl9N4aPT2SMxwqgffyb9vsX9Sy73HmV9Aa
-   doxQ4cs5T7pVkB3H4nqrcQnoJJR7G5A+Pf4WiyaEsgDvw3M6tmABDP/zm
-   wuVfRasade6sYtJu49yel6SvrB0c1CpihF/4Y0oDibNst+nr3f+5ke/gz
-   g==;
-X-CSE-ConnectionGUID: lPlGa30tR7a5mWu+tY9sEA==
-X-CSE-MsgGUID: XIKd8roiTBCe43olBpK+NA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="72906460"
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="72906460"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 08:36:15 -0800
-X-CSE-ConnectionGUID: 7wkR9efNR9uyL5ijqtiN3Q==
-X-CSE-MsgGUID: 1fYrwHwiR7qWLIM1XMTJOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="241405043"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa002.fm.intel.com with ESMTP; 04 Mar 2026 08:36:11 -0800
-Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 109DB312CB;
-	Wed,  4 Mar 2026 16:36:10 +0000 (GMT)
-From: Larysa Zaremba <larysa.zaremba@intel.com>
-To: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	intel-wired-lan@lists.osuosl.org
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="rn45a6g2"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Q1OR1ny9KFs0cLcczZ9iJL56E6KTQVwen5EbKPngUTI=; b=rn45a6g23EaW5caqIzZj5OZ2Ly
+	og7O38RJVXm4MlO2JKu5lghEzaQlpwSDnu07R5FwePeEnC5F/VTb8/PBDcNr71lMqVWNYqCP43qAB
+	ZR+vhBECsTPUXr3Qd8uN1vz1I82qDYoAz3qtHJQo0U8xyTtJkGCKwiFcy5ERtkJWr0TB3n6Fw/lMp
+	ue/RC/k0eC08s7w74Hr2f4kZjMLIE8df5FSJc/ZQ9Hjcv44SLU8rhvWOxYHi75+RTWuz2q4ReNoQC
+	/FBQBM1+jrm01y2cgA7SMnuOOUCfb3nQYmBKvGTXLuX+wdBDh6VosUxfa/xvvAJR+cxEixEhfmhOM
+	/iI55llQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:38232)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vxpVc-000000006mT-18Hz;
+	Wed, 04 Mar 2026 16:55:40 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vxpVa-0000000083l-0gZC;
+	Wed, 04 Mar 2026 16:55:38 +0000
+Date: Wed, 4 Mar 2026 16:55:37 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Conor Dooley <conor@kernel.org>
+Cc: Charles Perry <charles.perry@microchip.com>, netdev@vger.kernel.org,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Natalia Wochtman <natalia.wochtman@intel.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH iwl-next v3 10/10] ixgbevf: allow changing MTU when XDP program is attached
-Date: Wed,  4 Mar 2026 17:03:42 +0100
-Message-ID: <20260304160345.1340940-11-larysa.zaremba@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260304160345.1340940-1-larysa.zaremba@intel.com>
-References: <20260304160345.1340940-1-larysa.zaremba@intel.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next v2 1/3] net: macb: fix SGMII with inband aneg
+ disabled
+Message-ID: <aahkCah1pvuNIy03@shell.armlinux.org.uk>
+References: <20260224202854.112813-1-charles.perry@microchip.com>
+ <20260224202854.112813-2-charles.perry@microchip.com>
+ <20260304-nebulizer-rounding-40fbc81a2ba1@spud>
+ <aahI1y0NO9ax/V8J@bby-cbu-swbuild03.eng.microchip.com>
+ <20260304-unvented-crinkle-37f0bfd03541@spud>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260304-unvented-crinkle-37f0bfd03541@spud>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-xskxceiver attempts to change MTU after attaching XDP program,
-ixgbevf rejects the request leading to test being failed.
+On Wed, Mar 04, 2026 at 04:23:30PM +0000, Conor Dooley wrote:
+> On Wed, Mar 04, 2026 at 06:59:35AM -0800, Charles Perry wrote:
+> > On Wed, Mar 04, 2026 at 11:15:43AM +0000, Conor Dooley wrote:
+> > > On Tue, Feb 24, 2026 at 12:28:52PM -0800, Charles Perry wrote:
+> > > > Make it possible to connect a PHY which does not use inband
+> > > > autoneg to a gem MAC using phylink's information.
+> > > > 
+> > > > The previous implementation relied on whether or not the link
+> > > > was a fixed-link to disable SGMII autoneg. This commit extend
+> > > > this to all link which are not configured for inband
+> > > > autonegotiation.
+> > > > 
+> > > > Signed-off-by: Charles Perry <charles.perry@microchip.com>
+> > > 
+> > > This breaks the macb on mpfs-icicle-kit, I get stuck with:
+> > > 
+> > > [    7.189102] mpfs-sys-controller syscontroller: Registered MPFS system controller
+> > > [    7.260946] macb 20110000.ethernet eth0: PHY [20112000.ethernet-ffffffff:08] driver [Vitesse VSC8662] (irq=POLL)
+> > > [    7.273881] macb 20110000.ethernet eth0: configuring for phy/sgmii link mode
+> > > [    7.296580] macb 20110000.ethernet: gem-ptp-timer ptp clock registered.
+> > > [    7.345782] macb 20112000.ethernet eth1: PHY [20112000.ethernet-ffffffff:09] driver [Vitesse VSC8662] (irq=POLL)
+> > > [    7.358082] macb 20112000.ethernet eth1: configuring for phy/sgmii link mode
+> > > [    7.380479] macb 20112000.ethernet: gem-ptp-timer ptp clock registered.
+> > > [   11.376763] macb 20110000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
+> > > [   11.398403] Sending DHCP requests .
+> > > [   11.472699] macb 20112000.ethernet eth1: Link is Up - 1Gbps/Full - flow control off
+> > > [   13.938425] ..... timed out!
+> > > [   93.598491] macb 20110000.ethernet eth0: Link is Down
+> > > [   93.641823] macb 20110000.ethernet: gem-ptp-timer ptp clock unregistered.
+> > > [   93.659433] macb 20112000.ethernet eth1: Link is Down
+> > > [   93.691724] macb 20112000.ethernet: gem-ptp-timer ptp clock unregistered.
+> > > [   93.703977] IP-Config: Retrying forever (NFS root)...
+> > > [   93.758382] macb 20110000.ethernet eth0: PHY [20112000.ethernet-ffffffff:08] driver [Vitesse VSC8662] (irq=POLL)
+> > > [   93.770655] macb 20110000.ethernet eth0: configuring for phy/sgmii link mode
+> > > [   93.786497] macb 20110000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
+> > > [   93.795840] macb 20110000.ethernet: gem-ptp-timer ptp clock registered.
+> > > [   93.844481] macb 20112000.ethernet eth1: PHY [20112000.ethernet-ffffffff:09] driver [Vitesse VSC8662] (irq=POLL)
+> > > [   93.856769] macb 20112000.ethernet eth1: configuring for phy/sgmii link mode
+> > > [   93.870926] macb 20112000.ethernet eth1: Link is Up - 1Gbps/Full - flow control off
+> > > [   93.880302] macb 20112000.ethernet: gem-ptp-timer ptp clock registered.
+> > > 
+> > 
+> > Hello Conor,
+> > 
+> > I checked the driver for the VSC8662 and it doesn't have the
+> > ->inband_caps() and ->config_inband() callbacks so Linux leaves whatever
+> > the bootloader puts or uses the defaults. Looking at the datasheet, this
+> > should be register 23 (Extended PHY Control Set 1) bit 13 (MAC interface
+> > auto-negotiation)
+> > 
+> > My guess is that this bit is set and since this patch disable inband
+> > autonegotiation (because phylink decides it), there is a mismatch.
+> > 
+> > Can you add 'managed = "in-band-status"' in your device tree under the macb
+> > node? That's not necessarily the fix, I just want to confirm my theory.
+> 
+> No, it just produces a different error:
+> [    5.769864] mpfs-sys-controller syscontroller: Registered MPFS system controller
+> [    5.829146] macb 20110000.ethernet eth0: Could not attach PHY (-19)
+> [    5.854232] IP-Config: Failed to open eth0
+> [    5.897152] macb 20112000.ethernet eth1: Could not attach PHY (-19)
+> [    5.921061] IP-Config: Failed to open eth1
+> [    5.925592] IP-Config: No network devices available
+> [    5.938800] clk: Disabling unused clocks
+> [    5.944156] PM: genpd: Disabling unused power domains
+> [    5.961029] check access for rdinit=/usr/sbin/init failed: -2, ignoring
 
-Support MTU change operation even when XDP program is already attached,
-perform the same frame size check as when attaching a program.
+-19 is -ENODEV (I wish everyone would use %pe so we get english
+error messages rather than having to look up errno codes in the
+header files.)
 
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
----
- .../net/ethernet/intel/ixgbevf/ixgbevf_main.c | 37 ++++++++++++++-----
- 1 file changed, 27 insertions(+), 10 deletions(-)
+macb uses either phylink_of_phy_connect() or phylink_connect_phy().
+I don't think phylink_connect_phy() would return -ENODEV, but
+phylink_of_phy_connect() would - but I can't see that adding
+'managed = "in-band-status";' to DT would cause that. The only
+case I can see is that fwnode_phy_find_device() fails to find the
+phydev, but there is a PHY node specified in DT, but that would
+fail without in-band-status.
 
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-index 196e51eb516a..08ea2ae45cea 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -569,8 +569,8 @@ static void ixgbevf_alloc_rx_buffers(struct ixgbevf_ring *rx_ring,
- 	};
- 	u16 ntu = rx_ring->next_to_use;
- 
--	/* nothing to do or no valid netdev defined */
--	if (unlikely(!cleaned_count || !rx_ring->netdev))
-+	/* nothing to do or page pool is not present */
-+	if (unlikely(!cleaned_count || !fq.pp))
- 		return;
- 
- 	rx_desc = IXGBEVF_RX_DESC(rx_ring, ntu);
-@@ -1764,6 +1764,7 @@ static void ixgbevf_configure_rx_ring(struct ixgbevf_adapter *adapter,
- 	bool rlpml_valid = false;
- 	u64 rdba = ring->dma;
- 	u32 rxdctl;
-+	int err;
- 
- 	/* disable queue to avoid issues while updating state */
- 	rxdctl = IXGBE_READ_REG(hw, IXGBE_VFRXDCTL(reg_idx));
-@@ -1797,7 +1798,13 @@ static void ixgbevf_configure_rx_ring(struct ixgbevf_adapter *adapter,
- 	ring->next_to_clean = 0;
- 	ring->next_to_use = 0;
- 
--	ixgbevf_rx_create_pp(ring);
-+	err = ixgbevf_rx_create_pp(ring);
-+	if (err) {
-+		netdev_err(ring->netdev,
-+			   "Failed to create Page Pool for buffer allocation: (%pe), RxQ %d is disabled, driver reload may be needed\n",
-+			   ERR_PTR(err), ring->queue_index);
-+		return;
-+	}
- 
- 	/* RXDCTL.RLPML does not work on 82599 */
- 	if (adapter->hw.mac.type != ixgbe_mac_82599_vf) {
-@@ -4082,6 +4089,18 @@ static int ixgbevf_set_mac(struct net_device *netdev, void *p)
- 	return 0;
- }
- 
-+static bool ixgbevf_xdp_mtu_ok(const struct ixgbevf_adapter *adapter,
-+			       const struct bpf_prog *prog, unsigned int mtu)
-+{
-+	u32 frame_size = mtu + LIBETH_RX_LL_LEN;
-+	bool requires_mbuf;
-+
-+	requires_mbuf = frame_size > IXGBEVF_RX_PAGE_LEN(LIBETH_XDP_HEADROOM) ||
-+			adapter->flags & IXGBEVF_FLAG_HSPLIT;
-+
-+	return prog->aux->xdp_has_frags || !requires_mbuf;
-+}
-+
- /**
-  * ixgbevf_change_mtu - Change the Maximum Transfer Unit
-  * @netdev: network interface device structure
-@@ -4097,8 +4116,10 @@ static int ixgbevf_change_mtu(struct net_device *netdev, int new_mtu)
- 	int ret;
- 
- 	/* prevent MTU being changed to a size unsupported by XDP */
--	if (adapter->xdp_prog) {
--		dev_warn(&adapter->pdev->dev, "MTU cannot be changed while XDP program is loaded\n");
-+	if (adapter->xdp_prog &&
-+	    !ixgbevf_xdp_mtu_ok(adapter, adapter->xdp_prog, new_mtu)) {
-+		netdev_warn(netdev,
-+			    "MTU value provided cannot be set while current XDP program is attached\n");
- 		return -EPERM;
- 	}
- 
-@@ -4261,14 +4282,10 @@ ixgbevf_features_check(struct sk_buff *skb, struct net_device *dev,
- static int ixgbevf_xdp_setup(struct net_device *dev, struct bpf_prog *prog,
- 			     struct netlink_ext_ack *extack)
- {
--	u32 frame_size = READ_ONCE(dev->mtu) + LIBETH_RX_LL_LEN;
- 	struct ixgbevf_adapter *adapter = netdev_priv(dev);
- 	struct bpf_prog *old_prog;
--	bool requires_mbuf;
- 
--	requires_mbuf = frame_size > IXGBEVF_RX_PAGE_LEN(LIBETH_XDP_HEADROOM) ||
--			adapter->flags & IXGBEVF_FLAG_HSPLIT;
--	if (prog && !prog->aux->xdp_has_frags && requires_mbuf) {
-+	if (prog && !ixgbevf_xdp_mtu_ok(adapter, prog, READ_ONCE(dev->mtu))) {
- 		NL_SET_ERR_MSG_MOD(extack,
- 				   "Configured MTU or HW limitations require non-linear frames and XDP prog does not support frags");
- 		return -EOPNOTSUPP;
+> > Also '#define DEBUG' in 'drivers/net/phy/phylink.c' can help if you can
+> > recompile your kernel.
+> 
+> Setting this provided no further logs, seemingly.
+
+It certainly would if you place it before the first #include - I
+routinely build kernels with it set as such. The messages are produced
+at debug level, so should appear via "dmesg". If you want to see them
+on the console, you need to add "debug" to the kernel command line.
+
+However, the in-band-status thing needs to be root-caused first.
+
 -- 
-2.52.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
