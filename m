@@ -1,100 +1,74 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DEFE3168EB
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 01:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA1FE55A;
+	Wed,  4 Mar 2026 01:54:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772589147; cv=none; b=l7Tkb4cmPSsgnDw8s0pNjN4MRVrJUU4//3wGj+YqN/XdMKdI2KlPAo4tTCUAxOIveR9wmkKKw5j+1Gjuq32eObgaWX4IPTRjzB7xmnqJBgAumccoSluKk3IkLrWGVLKcWXBn2W35DpXYaoDimlBEqGbspAOPkFk9oBoMipFHAkw=
+	t=1772589244; cv=none; b=R+cTjG9VgGfC2ihZPG5uZQ0fnsKzqTfYsrvYoBNir/L2x4U+Qv64weh6y9D9m6D3BH6d3/LqbDE5WioOC9O7cGJCfxshg4ecYtFqfIg+9n31MqXKBl+vG3CkXIRWrqcZQcH94D928Lne8lQwVbVBdUegnzwCVmcaSDEYn3jXbbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772589147; c=relaxed/simple;
-	bh=rPTY48Iubdpu3NXqy8HT4V9ZO1OkhsoHpesXWdjQcyo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=GCV82pEqruWaJDrLkQieL9hd4XUC3e8X1suv03U77hEDNL3gIVqiNV+2SFlJBl6KyC7GkLmttUypkOZ/urCAzJ99mOVFRpO9nXiwFzd1KT+hUvLDEXrXpiwHaxi/hT1L2DAok7/m4iH99Gv/0Sp5td0CWs5Ob8YCodrD6e27HXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PtsiLxOK; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PtsiLxOK"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ad9516a653so26577245ad.0
-        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 17:52:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772589146; x=1773193946; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aIvIgLHoIA/uDprnWtl8reZar/8ysIY1y6EtxkybfUM=;
-        b=PtsiLxOKAnZ9tEhClG8ESRh2vTYOUoFW39PAyzPvM5/CjswgMRNrsvDrdLVJj6wx6L
-         29HeK2xhCarltxdHnHT9pOVsJxTjtybYhAIWQsLRWeHtDbJj9LrUmp++fcaB5vkoc1B4
-         jv39AlhFk/I/pPh4HQjXDSaXzPbwat5sffDD9SreITKtI3O9jigvtCv8/ELdRyqCm7VO
-         Tx9w1KVp1oWgaVt5nwQjww9GMlDgvttVYE6csaeT91UQzVLDDz15J9uK7X77AqNOVPTq
-         u0BTqnSCi4A2220uY1wQXnnDbaFd6Qk35g8utMutbyc7OnQfSk2WJF3117rKGfsKY/w8
-         wo5A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772589146; x=1773193946;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aIvIgLHoIA/uDprnWtl8reZar/8ysIY1y6EtxkybfUM=;
-        b=oBDqfJdLZwEC5e6pBfPniqd/Ndgc23ZhIvVzpKsRW/HBG9pnvVzuow0R7CBdeOo+a1
-         Qo13q+FYER4Ach9HMXAUnPP3Gncf3WVnmq4ebs0pyY6CYCTmHEdkOg3BRuNJUA0GV92N
-         XX2z3JiC7YQ/S/m7GU3jH415EmwwBusoxCvMuTK/srj4xQcWyTQwbjeGCzUyo8wj7eVA
-         Mza11j2SDnePFlL1ZFvXDmqv19p+objBcCnLM8jHbCAEcqr4vu4rT3H+CsnqUF3aOXDW
-         4tpGmYAnlLOUM7l9QMihU4fs85rGH4FbthwZlI3DEx4hVVui9+HUJStsKSN1HWbNcp7e
-         WIQg==
-X-Forwarded-Encrypted: i=1; AJvYcCVpA0fvb1zAFrv6rvj11/RhauIe/BHqhlji3hJpuHK3b6XP7sIwhbd49rk6Ha8BdRLYGhAP5rs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yykcp6DIF3dIBAus4OXC6dA61bANSFctbuoHlB7puk28P49anF6
-	7wSOpFuePblfsTc55Pi76L1TPMkeA9LdrmWMobhNO8AeT39ECph+/GtZ
-X-Gm-Gg: ATEYQzwWru7skM9aYG6vqMMzd7dJAdBqgrJURj9wbdiKurIQ4PWZwLRmpigG3M/K9XJ
-	etwjM+CVOvXuVNDY8LbNmfn7visthvnFY0AN1y8j4S6SsFoannQ6cfdPotwY0Te/nU47j57j3ZU
-	W8cVG/GgGiJRKtzqnSeoUYAmmphSkB9AKYzAVDJ5daC10U6t+UxRJi2KJ+WeRLbuCnN0E+oQrTF
-	pI3aDvIXlbU9NEWNdvBwCovPMwkqy7upY+aZ05znbcHbo/bCGYJAWxRYR0ZHgTsIQoHKPc0R2yL
-	ROibtShlHRg4xr9WmHY45kV6o0RqRE6yQGJV8qQ08N8QdDEKVSe90uudoJWBsPH4NMqq66X/5rL
-	hBhLEt939dsgovxdKGmbAXx/4ZCCT9TF+gv4H+Tofm3Rg/7OuxLDgxn5gEOHLa1zdl5ZvJuigkZ
-	Qkzv9FcOcgYY8MGP3ba4hCM/q8uGyCeghR7lY+tRaaTHYwphZmK2DxpBdT6wiCeNMZCTm6ZdTp7
-	rcCkQ9Jutfg
-X-Received: by 2002:a17:902:fc8d:b0:2ae:5426:da46 with SMTP id d9443c01a7336-2ae6aa8e99fmr5074385ad.29.1772589145620;
-        Tue, 03 Mar 2026 17:52:25 -0800 (PST)
-Received: from dpc2500057.. (fsb6a9315e.tkyc502.ap.nuro.jp. [182.169.49.94])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb5c20d3sm251074665ad.25.2026.03.03.17.52.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 17:52:25 -0800 (PST)
-From: Keita Morisaki <kmta1236@gmail.com>
-To: jakub@cloudflare.com
-Cc: bpf@vger.kernel.org,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	horms@kernel.org,
-	kmta1236@gmail.com,
-	kuba@kernel.org,
-	kuniyu@google.com,
-	linux-kernel@vger.kernel.org,
-	ncardwell@google.com,
-	netdev@vger.kernel.org,
-	pabeni@redhat.com
-Subject: Re: [PATCH net-next v2] tcp: shrink per-packet memset in __tcp_transmit_skb()
-Date: Wed,  4 Mar 2026 10:52:15 +0900
-Message-Id: <20260304015215.755299-1-kmta1236@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <87bjh5drmk.fsf@cloudflare.com>
-References: <87bjh5drmk.fsf@cloudflare.com>
+	s=arc-20240116; t=1772589244; c=relaxed/simple;
+	bh=wf+9WYI4wz+u51rXJN5W21h2IU7JZQleKEyPyJdCCGc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=M8flhAjUDegLPAaPXjxc1X30uEsTz9/fY/sCxwRPQsa/SyOvp9GpU4a6JFmNyzcLYRuvbjm2DTzRSkevH7aMpvwI+elSmINBFHCAVRyNVOpeodyvVUJjB8I9UXyRRyHSuf3CYNXkzLIplV2XljmtStouKvD+EvQEI7uXWhHM19k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass smtp.mailfrom=gentoo.org; arc=none smtp.client-ip=140.211.166.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentoo.org
+Received: from mop.sam.mop (2.8.3.0.0.0.0.0.0.0.0.0.0.0.0.0.a.5.c.d.c.d.9.1.0.b.8.0.1.0.0.2.ip6.arpa [IPv6:2001:8b0:19dc:dc5a::382])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sam)
+	by smtp.gentoo.org (Postfix) with ESMTPSA id 6F7C6341620;
+	Wed, 04 Mar 2026 01:53:59 +0000 (UTC)
+From: Sam James <sam@gentoo.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org,  netfilter@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [ANNOUNCE] iptables 1.8.13 release
+In-Reply-To: <aaeMFWURL-6YWIkz@chamomile>
+Organization: Gentoo
+References: <aaeMFWURL-6YWIkz@chamomile>
+User-Agent: mu4e 1.12.15; emacs 31.0.50
+Date: Wed, 04 Mar 2026 01:53:55 +0000
+Message-ID: <87h5qwgy18.fsf@gentoo.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="=-=-=";
+	micalg=pgp-sha512; protocol="application/pgp-signature"
 
-> Loosely related, noticed while reviewing - tcp_out_options.hash_size
-> looks unused:
+--=-=-=
+Content-Type: text/plain
+
+Pablo Neira Ayuso <pablo@netfilter.org> writes:
+
+> Hi!
 >
->  * MD5 - always 16
->  * AO - uses tcp_ao_maclen()
+> The Netfilter project proudly presents:
+>
+>         iptables 1.8.13
 
-Great catch. I will follow up.
+Thanks! BTW, tag seems to be missing?
 
-> Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+> [...]
 
-Thank you for the review, Jakub.
+sam
+
+--=-=-=
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEBBAEWCgCpFiEEJaa7iN2bdkxrVUHCc4QJ9SDfkZAFAmmnkLMbFIAAAAAABAAO
+bWFudTIsMi41KzEuMTIsMiwyXxSAAAAAAC4AKGlzc3Vlci1mcHJAbm90YXRpb25z
+Lm9wZW5wZ3AuZmlmdGhob3JzZW1hbi5uZXQyNUE2QkI4OEREOUI3NjRDNkI1NTQx
+QzI3Mzg0MDlGNTIwREY5MTkwDxxzYW1AZ2VudG9vLm9yZwAKCRBzhAn1IN+RkDWm
+AQDG1itKhDBKp8TtTm03507mTqkb36bB+qO7PjkNjrkyngD9EACNce97xukbTvI7
+bShwGO8BJkI+4PlNFmiCie9nXgQ=
+=cm49
+-----END PGP SIGNATURE-----
+--=-=-=--
