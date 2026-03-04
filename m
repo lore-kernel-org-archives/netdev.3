@@ -1,62 +1,68 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617A7F513;
-	Wed,  4 Mar 2026 01:57:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001CC849C
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 02:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772589438; cv=none; b=NGvHmwqmDC3rxhECO2erENMqBkjFgi7JCg0OPI8jdvMVlvMbwK1Wr9OsRt2p29Y6sQUk9JG380oCKSKZCLMmNx7WjpDrImQLZjW5U2TQfjcKFKc6A210iZyJR3ME/mwlx/6Pl5Vu21jcFut3rC8m7PswSQgEoZd8sp0/+BfDocw=
+	t=1772589684; cv=none; b=rzvAQRK1WlxBoAjd8WK49dN5FFBVy4YwsceVAVetwT305IPOuoZsaV1D92su3o4f6YBG5vgRUhF4gAxxuzzUUw1eObNIDcIZM/9umUiko25sO8KCZ4bVBUWxgxaf3ezSwg7RH7kuoieu40I6Y9CIXRl66oSpPgeTIilo11L49pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772589438; c=relaxed/simple;
-	bh=wG/8yw2tgW69ZzgkCBpAej1VR/aauIn0W29cD7SEG/s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hT+6/hldE1h3Kqkc+2M210Zg0uH2gG5DcIayZkrirQ+rJDeTOwfXH48Wl/3yRQPHpR4LX7TbSCpWv1Zkz6J9A9jOEfhIR7yJCgyJfw5KoS8gglCG7xCfvlxfQk1O0CP+8xNQKqeIuXxURwvZ3M9wjoGg7+Z/NaZTkcuVjT92wNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=Vgmo35pK; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+	s=arc-20240116; t=1772589684; c=relaxed/simple;
+	bh=T7FmybkNSy/N0YmI3/gUccmkYfny+vPep341845UZGk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=qlurlYKq4BgakoAHF2vHw53IkWLmjQjMqPOIm8E9zsMhp87xemNTAJpm3HSOJBea4qmGBzHjrqSQczdcAqu/FGRKX3OFkCHtkqUeo9eMujy7NGKH69L5xpGqZkUQKUsIJ2TED559ZnzADGOVQku9Zedb9AJHIkBJZzFITkv/9Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MbREuAb4; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="Vgmo35pK"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 606706034A;
-	Wed,  4 Mar 2026 02:57:15 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1772589435;
-	bh=tVulclVVxqqAKJbiQ1XlJd4gMy6R5scGZ56TPe1ad6s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vgmo35pKFrhGCtQIzcU1O5W0f7i7aifLML9nnQh51BzHZTL6o2Ty2O823fR8QxcTg
-	 EXWT6Ik+NsiZ0RwiXq6HF8LMARF9yO/1LdPyW1smY3qZRtKtaRAjp2Lc023z7BnESP
-	 +bnizWR597rDfT3U03oMTQboRM3I+jMxGr7m77yGBTQJkWJhN3B7jsUVPlv5UNOmCE
-	 OfWATjQmVzh4Nb1MyKi6uv8AWt97YWeCnILVHtzA/b0Jvn3v0krgdSuTWBRPHeaKtO
-	 5MVPWaeRIXF/iZHeJFTMM1KZKX0Uxj1LWGQjhSU12iVFmA82LLLXw3RJfhFcbdo4Cv
-	 J6Mn0icgyEuYw==
-Date: Wed, 4 Mar 2026 02:57:12 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Sam James <sam@gentoo.org>
-Cc: netfilter-devel@vger.kernel.org, netfilter@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [ANNOUNCE] iptables 1.8.13 release
-Message-ID: <aaeReM6MC2uBbT_6@chamomile>
-References: <aaeMFWURL-6YWIkz@chamomile>
- <87h5qwgy18.fsf@gentoo.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MbREuAb4"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA7AC116C6;
+	Wed,  4 Mar 2026 02:01:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772589683;
+	bh=T7FmybkNSy/N0YmI3/gUccmkYfny+vPep341845UZGk=;
+	h=Date:From:To:Cc:Subject:From;
+	b=MbREuAb4zj3QTuCS2lYRLadtP+KLo2/0K4oW9ybnWeNHC/4x8Pi/hfIc/m9+gJaUT
+	 sL/72KkbPmIhzqBIqSL6adl9cqK06gG4EZBHaUOwZG5f0M4yQWI6PD637UoslTV3GT
+	 ej6H1sdNkQff2uKwyHwgn9FBghrj2cF1I8QuVrXtjvrVfF8qd5yI9ls+QqqzY0vlrj
+	 8mZgEDY4sPLPwWvZ7q5XUgSgK6XTJTTv5A4vaxJT0T5Uj7uCCmgNY0Y5EnAPulCR4U
+	 iYMIb1SbYcs0rnT3m22cDF5tqZfGwrM/NHOLxCGUhDI7+Tqx20CqwYRm7tPZ+ZEVFX
+	 PWmi4hhJBFaDg==
+Date: Tue, 3 Mar 2026 18:01:22 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: netdev@vger.kernel.org
+Cc: Alexei Starovoitov <ast@kernel.org>
+Subject: review scoring
+Message-ID: <20260303180122.0929a864@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <87h5qwgy18.fsf@gentoo.org>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Mar 04, 2026 at 01:53:55AM +0000, Sam James wrote:
-> Pablo Neira Ayuso <pablo@netfilter.org> writes:
-> 
-> > Hi!
-> >
-> > The Netfilter project proudly presents:
-> >
-> >         iptables 1.8.13
-> 
-> Thanks! BTW, tag seems to be missing?
+Hi!
 
-Pushed out, thanks for telling me.
+Alexei just sent an announcement to the BPF list describing
+a new system of requiring review participation:
+https://lore.kernel.org/all/CAADnVQ+TKKptnNB25V3=bcdybh5G6c2DyW2sYtXvyRaVnPN8MA@mail.gmail.com/
+I'm very curious to see how this goes, it definitely feels like
+a logical step.
+
+On the netdev side I've been using a patch review queue which
+takes into account 
+ - the reviewer score of the author
+ - the reviewer socre of their employer (using the same logic 
+   I use for the periodic "developer statistics" email),
+ - quality metrics like "is checkpatch clean"
+ - whether someone already reviewed the patches on the list
+   (reviews from the same company do not count)
+
+I've been meaning to send an email to let folks know that I'm doing
+this. Most large companies are getting a 2 day delay from this scoring
+system. To be clear, I'm not intentionally waiting 2 days before
+looking at code (at the cost of my sanity). It's just that with our
+patch volume if something gets a 2 day delay there's plenty of patches
+that will jump earlier in the queue. And so far advancements in AI
+failed to make the days any longer..
+
+the queue: https://netdev.bots.linux.dev/suie.html?delegate=netdev
