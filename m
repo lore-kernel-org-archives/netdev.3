@@ -1,207 +1,56 @@
-Received: from mailhub11-fb.kaspersky-labs.com (mailhub11-fb.kaspersky-labs.com [81.19.104.124])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B4E1A00F0;
-	Wed,  4 Mar 2026 13:23:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.104.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42168351C12;
+	Wed,  4 Mar 2026 13:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772630608; cv=none; b=fR5DMrBd0V67ghh3iRmRenCBHyijZO3C2SRD43Tx1bEav95JRffOYtdMF2UZGe9Iqa/SuuSPmTbOOnPZCTi1b8mU+2l2kCul4IGR6sfbjfZvSy1pJmpNqcFiTDNnayYI9buVUEHu6IGAZbwmsc1l20Nrvc0ZF+xH1nz9ZFiLJkc=
+	t=1772630907; cv=none; b=p911b0WVH4gr1yazWFsFA/7lgEsshB2fZPyLTzPNfTMMMLrtpw2VwXxrMoWNa/Drts6uhcY155l6Rsn7/b5Lgb7vOiR7TjC1+0Od5bqIhXlGxnQbL086z8T8pCaZztJ3OQjALDHUm4huTtUCU9fB011cGWQM5RPRCpnceBImjBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772630608; c=relaxed/simple;
-	bh=+tFYhEAvXk9kMk9jXbCju1yKoTyIcMyFbmV3K8OXvN8=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kcfCSgRHC+FhbBHYPOezCIvgf3Mm4EKsBBC7KNsroRigJLJJzXyNBEBx0Vk1/PkhqqRaXmQgTUaYq9BOLCWkCeyLSj9Y6R/DfOB5taIxE35ZVPKQxJGbU5LqUcZR1ZlrfJTdTFiU8xtVKa459cTYHmBHSvp4tLLy5rWeGR9zOyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=ApHAy2fd; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=mAvKWwwq; arc=none smtp.client-ip=81.19.104.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="ApHAy2fd";
-	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="mAvKWwwq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1772630073;
-	bh=pWqNE5JfL+eGFQBgDauB8plhBy67CVQTUEL9xMK1N2w=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=ApHAy2fdY7hw64WcefWLTaEUFb3j/tUOkcqh7ab/xXa3zeUvQuxnU3spguKS9rwX8
-	 zdPrbG0bD3Ha7I164/v2BmmzNCsluhQeaQ9VRHzPNte36il8b2TsuUA1MXZlY25Ore
-	 get+WUn5F7DhIGLLWvPOntE/6QutIBmu46NSuUkvXlfUupidgtq5MHDsN5TbXKD64g
-	 Vpnv/QPxSXcgH6ZlMrlO7q70u3geVm0iEgozhj1UwBUZ/Ycz4y+l3RyWXDlPddw5eW
-	 zq5PcztdTQxtwCXF4onAARf2k3maf2yNCaXWXppfZ4NSkA6o1Gtdi+It4phkM4ubYV
-	 E2/kZBY+mA2WQ==
-Received: from mailhub11-fb.kaspersky-labs.com (localhost [127.0.0.1])
-	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTP id 13156E843A8;
-	Wed,  4 Mar 2026 16:14:33 +0300 (MSK)
-Received: from mx9.kaspersky-labs.com (mx9.kaspersky-labs.com [195.122.169.44])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "mx9.kaspersky-labs.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTPS id DA0DDE83F6C;
-	Wed,  4 Mar 2026 16:14:32 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
-	s=mail202505; t=1772630065;
-	bh=pWqNE5JfL+eGFQBgDauB8plhBy67CVQTUEL9xMK1N2w=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	b=mAvKWwwq4rh+E8DF6d3HuYLZ+Vu2JJtKerXP+h2bUfg0RXJo9IB4osA0X2fFa02oQ
-	 7x3ca3jeoHZArZd/b41K/SMGt3yt4988pU2Z/IMzfg6b45bbTtJkRLhoNzOtV2lBFr
-	 BKGps/MiBMltEaQvQbdtuJ1/BnHOxhCDQJvSFZsmTltgXAX/dAGeGUmbiRcsp2VZ2U
-	 NbYMFk90ymY1nS2ce4m4cF2l9SebWpjdhZ84M5r0/CYEHXpFCBm4FlSXicNYQh4hhJ
-	 iu11gWyKNb0vB2T5DwwJ5tDpC9/3sCh8u81V3eqXc3uONpU3bCrqQB9Nu46HxfcS6m
-	 s8w4w8oEtBfDw==
-Received: from relay9.kaspersky-labs.com (localhost [127.0.0.1])
-	by relay9.kaspersky-labs.com (Postfix) with ESMTP id 05CF78A090C;
-	Wed,  4 Mar 2026 16:14:25 +0300 (MSK)
-Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
-	by mailhub9.kaspersky-labs.com (Postfix) with ESMTPS id 6DE8E8A082B;
-	Wed,  4 Mar 2026 16:14:24 +0300 (MSK)
-Received: from Votokina.avp.ru (10.16.104.187) by HQMAILSRV2.avp.ru
- (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 4 Mar
- 2026 16:14:23 +0300
-From: Votokina Victoria <Victoria.Votokina@kaspersky.com>
-To: Roopa Prabhu <roopa@nvidia.com>
-CC: Victoria Votokina <Victoria.Votokina@kaspersky.com>, Nikolay Aleksandrov
-	<nikolay@nvidia.com>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
-	<kuba@kernel.org>, <bridge@lists.linux-foundation.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>,
-	<syzbot+263426984509be19c9a0@syzkaller.appspotmail.com>, Nikolay Aleksandrov
-	<razor@blackwall.org>
-Subject: [PATCH 5.10] net: bridge: mcast: wait for previous gc cycles when removing port
-Date: Wed, 4 Mar 2026 16:14:06 +0300
-Message-ID: <20260304131408.2196541-1-Victoria.Votokina@kaspersky.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1772630907; c=relaxed/simple;
+	bh=ulwdWRUfQaAJ5xq3e9RTDZMiKLOgG0zzZcyZRZa68Hw=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ezJsAAVQ8XjTz07+38/2DElEds9z/JBBNhx3CsmI+wm5l/vvqpVvb05WdKgYASYFvn5Wh/2AlafAOlFYg0lxNEgNZ3rsZAW0520eJqu6KVHdMQym6gK7kaaYjhQJOUfslnhO76uzEu/kiqBflc3JSSySlH1S80SkLmuLjfVfxoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 1429160D34; Wed, 04 Mar 2026 14:28:24 +0100 (CET)
+Date: Wed, 4 Mar 2026 14:28:24 +0100
+From: Florian Westphal <fw@strlen.de>
+To: Phil Sutter <phil@nwl.cc>, Pablo Neira Ayuso <pablo@netfilter.org>,
+	Helen Koike <koike@igalia.com>, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel-dev@igalia.com
+Subject: Re: [PATCH] netfilter: nf_tables: fix use-after-free on ops->dev
+Message-ID: <aagzeEIkk1v4OmJk@strlen.de>
+References: <20260302212605.689909-1-koike@igalia.com>
+ <aaYYiPTO5JYOlhhY@chamomile>
+ <aagqaq6LNJnrg8eC@orbyte.nwl.cc>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: HQMAILSRV4.avp.ru (10.64.57.54) To HQMAILSRV2.avp.ru
- (10.64.57.52)
-X-KSE-ServerInfo: HQMAILSRV2.avp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 03/04/2026 12:54:44
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 201061 [Mar 04 2026]
-X-KSE-AntiSpam-Info: Version: 6.1.1.20
-X-KSE-AntiSpam-Info: Envelope from: Victoria.Votokina@kaspersky.com
-X-KSE-AntiSpam-Info: LuaCore: 88 0.3.88
- cf79c71dc438a5d750ce7f66bc9a19dbc08dac54
-X-KSE-AntiSpam-Info: {date_rfc_vio_soft_silent}
-X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_black_eng_exceptions}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: syzkaller.appspot.com:7.1.1,5.0.1;kaspersky.com:7.1.1,5.0.1;patch.msgid.link:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: {Tracking_white_helo}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Deterministic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 03/04/2026 12:57:00
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 3/4/2026 10:24:00 AM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
- rules found
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/03/04 11:42:00
-X-KSMG-AntiSpam-Interceptor-Info: not scanned
-X-KSMG-AntiSpam-Status: not scanned, disabled by settings
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/03/04 04:51:00 #28247321
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-LinksScanning: NotDetected, bases: 2026/03/04 12:55:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 52
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aagqaq6LNJnrg8eC@orbyte.nwl.cc>
 
-From: Victoria Votokina <Victoria.Votokina@kaspersky.com>
+Phil Sutter <phil@nwl.cc> wrote:
+> But isn't __nf_unregister_net_hook() still called immediately when
+> handling NETDEV_UNREGISTER event? I guess struct nf_hook_ops::dev may
+> still be accessed afterwards since ops is RCU-freed. Is Helen's report
+> inaccurate in that regard?
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+Its a red herring.
 
-commit 92c4ee25208d0f35dafc3213cdf355fbe449e078 upstream.
+The device is registered twice.  But UNREGISTER only removes ONE
+instance.
 
-syzbot hit a use-after-free[1] which is caused because the bridge doesn't
-make sure that all previous garbage has been collected when removing a
-port. What happens is:
-      CPU 1                   CPU 2
- start gc cycle           remove port
-                         acquire gc lock first
- wait for lock
-                         call br_multicasg_gc() directly
- acquire lock now but    free port
- the port can be freed
- while grp timers still
- running
+Then, later, when a different device (same name!) invokes netlink handler,
+the walk finds the old, free'd net_device.
 
-Make sure all previous gc cycles have finished by using flush_work before
-freeing the port.
-
-[1]
-  BUG: KASAN: slab-use-after-free in br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
-  Read of size 8 at addr ffff888071d6d000 by task syz.5.1232/9699
-
-  CPU: 1 PID: 9699 Comm: syz.5.1232 Not tainted 6.10.0-rc5-syzkaller-00021-g24ca36a562d6 #0
-  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
-  Call Trace:
-   <IRQ>
-   __dump_stack lib/dump_stack.c:88 [inline]
-   dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
-   print_address_description mm/kasan/report.c:377 [inline]
-   print_report+0xc3/0x620 mm/kasan/report.c:488
-   kasan_report+0xd9/0x110 mm/kasan/report.c:601
-   br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
-   call_timer_fn+0x1a3/0x610 kernel/time/timer.c:1792
-   expire_timers kernel/time/timer.c:1843 [inline]
-   __run_timers+0x74b/0xaf0 kernel/time/timer.c:2417
-   __run_timer_base kernel/time/timer.c:2428 [inline]
-   __run_timer_base kernel/time/timer.c:2421 [inline]
-   run_timer_base+0x111/0x190 kernel/time/timer.c:2437
-
-Reported-by: syzbot+263426984509be19c9a0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=263426984509be19c9a0
-Fixes: e12cec65b554 ("net: bridge: mcast: destroy all entries via gc")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20240802080730.3206303-1-razor@blackwall.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Victoria Votokina <Victoria.Votokina@kaspersky.com>
----
-Backport fix for CVE-2024-44934
- net/bridge/br_multicast.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index e5328a2777ec..226183dedcbe 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -1618,16 +1618,14 @@ void br_multicast_del_port(struct net_bridge_port *port)
- {
- 	struct net_bridge *br = port->br;
- 	struct net_bridge_port_group *pg;
--	HLIST_HEAD(deleted_head);
- 	struct hlist_node *n;
- 
- 	/* Take care of the remaining groups, only perm ones should be left */
- 	spin_lock_bh(&br->multicast_lock);
- 	hlist_for_each_entry_safe(pg, n, &port->mglist, mglist)
- 		br_multicast_find_del_pg(br, pg);
--	hlist_move_list(&br->mcast_gc_list, &deleted_head);
- 	spin_unlock_bh(&br->multicast_lock);
--	br_multicast_gc(&deleted_head);
-+	flush_work(&br->mcast_gc_work);
- 	del_timer_sync(&port->multicast_router_timer);
- 	free_percpu(port->mcast_stats);
- }
--- 
-2.43.0
-
+I hacked UNREGISTER to handle this: no more splat.
+I reverted this change and altered REGISTER to never allow
+double-register: no splats.
