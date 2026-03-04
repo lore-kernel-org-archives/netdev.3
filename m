@@ -1,106 +1,241 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B179A390205
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 15:35:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D50E350A1F;
+	Wed,  4 Mar 2026 15:35:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772638543; cv=none; b=PWtcgHmvjaXLIIY4+70usqwCdmxaX+rktS7+DYOX3HyZVwomQWbp49EA+oXUAYLX4CZOU1Zk0b4ujjuVWhafgYfBNIra52uss+1YLxjHvQkczVLjA57XrPhJhUHxuMBylSBy/QPMq23DjSLdhvktxuemfuviA09FD42VaeoK8To=
+	t=1772638554; cv=none; b=r1Sqi3ubxxIk/UygLDJu6fxQ6jwb8MCbRaX5KycpN/vcMU589yfzMTjzORH7TT7/xP+t4URd+kc4cxUHKnyJBuxppROhJkrzebHrGF2sOdQn3Ke8bAukCwpGyk4LFd+V534jiC+YtL/nc6i6Iu1bcRFUJgMJedxX2xEDUQHmSB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772638543; c=relaxed/simple;
-	bh=tIMu771eti/7wiXo4Au6giCwBRYWMVsndvF+yY6uasc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k3s57TtwsXffzlKFv0r3A/DH45gB1y6Epp8Gd/cdsLyDQbs9iXtjOy3waygTJyRs8AgDYFLswnOfbKtVxPTY+2cFK/UlK+mEzOorEzpZKTA7VUDuHckRyxms6BdeC7kPLwZDgBTR2Wx7is5EP1JtIXNdO8BdT8F0v41ABingFxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gfix+b74; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772638554; c=relaxed/simple;
+	bh=HNYyRh7uJihRjIsYnqg9vR2rg+YDBytXVTWJLsChpBg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=JGMhmIQIwo01vKv7FXGzQ3dUVvXi+lkkMf4nsH6bVl9NC2TmMa8GBQUry13FqlDPW8CCuTq1Bi8IWsxc+ATnI2FMw7VlsY+9pDhAMlqRbITRwyryN84tHEz+6/mZ0PVJlSaFCEA8bpb4AVsTacLCfP50KzL20A8DQhrdW7SRaCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jJJZJuOW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gfix+b74"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ad9a9be502so46828455ad.0
-        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 07:35:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772638541; x=1773243341; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nsY5todpbk3rMcwCwi+T3uOMFloUvB58xV7DNnWbYXQ=;
-        b=Gfix+b746z5kupUDEAkxsIFumSFtKCo9Mb13RzzJa4RtMA+82Fdzp0vs1ifEJbhahO
-         K3uvGgI5HsecZPg6L03FZK6UG8pJphyl7Ia2SwyiNImrnZYQtG7FB1KqwCZ+0tfVgcKR
-         bp+HNLevynra9G/xrxGOsoclXSrl/hwl9j+BSku85TBFa9arEWqbjpIRgfklHGRNpYg1
-         8qewp6FluMbtctaU62t7HvtjbJUu/o9D852wtL4aVxt96lXspZjqL00Hh4nYH4qi5x7p
-         jrtE7Olrd1DotrZ1QzJobqb1VRmhmrdY0DfxBOLAg9MO52nyI+c8CqiNiLoRfq/8hZqA
-         mcqg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772638541; x=1773243341;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nsY5todpbk3rMcwCwi+T3uOMFloUvB58xV7DNnWbYXQ=;
-        b=iw0eT593BnIoIdaZwyT2oLgKejpDn6FSsSy8XJjm5ps86nKl6LkAIFaFBwHyGM02db
-         Y+fzaVjHsakdcXvwR9d7rWCnTH/j0V05+Fmk++gOa7bOUagcc1+nB6lPljEAaELNDkGu
-         7Q6Y8+MT5WjcPW1uDLNIA7P+oYfI56Nucx2Exi4nbeVpMknfW0GNl1LukHlpDn3Hl1RG
-         EOxOyCZVia8rl/MgW8fZQrmW0kmMYq8qmZ//IkXkhAVWeu92t9PGSHKUvmzr2JUPS6Do
-         TOcev6r2pY7DdTGE2j53TC5Gtwk1c3w6bHve1Xvf8vJLm6hNIKXdtI/6ZSX9Ywdj8bsb
-         y6hA==
-X-Gm-Message-State: AOJu0YwRn/tixNj40GZv87s2iUoMxUtdh4q3GYTS9KTDmG2aj+nR6V82
-	/NXupZPjlRlXetLqEB5OwQ8fRrdg5kpktJ9nWxE3X+w9YIfenYPWx3EB
-X-Gm-Gg: ATEYQzwJ8JHbpKikkDrq++Ll1finf532Fi9xKPXKw4RAOb+itzKvR50TIZETt0EJLP4
-	HkiA0ahxb5HgoXzapVmjZjxgo0l6faBXk4ZAxC/pwBTcDL6zeDCuHmQPv2CodChE3DLvODt/G2X
-	CTmBALfvQaHQoMc134Af8b3O9DN+Ko0TasIB3KLAdPRxmQUE/CBXACHhZs6thGnLfuTi6AdLl/U
-	Fkop+FWQFhXA16hNgqsTvs4ZlCworJKJmDwPczL1NJVqIfC5SRLMsgh64SnsrWQ2eLCt50zM2fa
-	m+27pfHwZTdpGIKZi9VgJIpB2J4kOPRyjMUp2UEvRViMUt5OnNOMaxBG8EAep7CZ5UXL7+Zsyaq
-	89TZ9fAJxhA0Ri8A1ppSiaFvv7CncHmY3Jch0uQtBH/j2gvlqXkRRPRpwmLTywsOuhIO6JKzfDS
-	1xM/TifaxXCqul0aHjOxYQ3ayvxsTB5tv9vz0LCBE7vve4VD0Gg5pDCUark53JN7Ueah3hKaD6e
-	p2gtA==
-X-Received: by 2002:a17:902:f541:b0:2ae:3a1e:3490 with SMTP id d9443c01a7336-2ae6ab10e95mr27956305ad.38.1772638540911;
-        Wed, 04 Mar 2026 07:35:40 -0800 (PST)
-Received: from ?IPV6:2001:ee0:4f0f:b1d0:50db:9305:a4f4:d29d? ([2001:ee0:4f0f:b1d0:50db:9305:a4f4:d29d])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2adfb6f0ff9sm214379215ad.84.2026.03.04.07.35.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Mar 2026 07:35:40 -0800 (PST)
-Message-ID: <e3382903-3854-4479-bcb0-bd9793148b2f@gmail.com>
-Date: Wed, 4 Mar 2026 22:35:34 +0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jJJZJuOW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CBEC2BCB2;
+	Wed,  4 Mar 2026 15:35:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772638554;
+	bh=HNYyRh7uJihRjIsYnqg9vR2rg+YDBytXVTWJLsChpBg=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=jJJZJuOWKhzm24HbRxXeYH/65v/yOXd3J5JeaPVpFEFHYCIk+4dI8RfwfOSUGeOWx
+	 1wp0BVEDUhdVwfxuISed9ev5wqFzfZBSXvHUDpSQDH7LdZQV8LqsoA3S7HSPWWSIOS
+	 q0zFPMue3eMREgGV2olfWoBJ85YhdTD+86QJA4JrqsDAypKCf/Fs0V5KoxG4qVZJty
+	 ZHH8tVkHlwp57wEI2ERBSF6F3702iYCYBykR+h4S0T4gaLEOpYVyy5DjwzbNP9mH+m
+	 8mdOGnCCkrpD5DzxE3NWsGzH9XNum7DQaX5HC6gb7/ZJs73mWVq/mG/j0amdjIFZjt
+	 SfBKgFBpfKv5Q==
+From: Jeff Layton <jlayton@kernel.org>
+Date: Wed, 04 Mar 2026 10:32:41 -0500
+Subject: [PATCH v3 11/12] nilfs2: widen trace event i_ino fields to u64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v2] virtio-net: xsk: Support wakeup on RX side
-To: Jason Xing <kerneljasonxing@gmail.com>
-Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>,
- Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-References: <20260302164158.4394-1-minhquangbui99@gmail.com>
- <CAL+tcoAm8wBEes9unXrssHHsnPP28b0XcOdqQN-TVtet5O2sAA@mail.gmail.com>
-Content-Language: en-US
-From: Bui Quang Minh <minhquangbui99@gmail.com>
-In-Reply-To: <CAL+tcoAm8wBEes9unXrssHHsnPP28b0XcOdqQN-TVtet5O2sAA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260304-iino-u64-v3-11-2257ad83d372@kernel.org>
+References: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
+In-Reply-To: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
+To: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Dan Williams <dan.j.williams@intel.com>, Eric Biggers <ebiggers@kernel.org>, 
+ "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>, 
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+ David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>, 
+ Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, 
+ Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
+ Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+ Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>, 
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+ Shyam Prasad N <sprasad@microsoft.com>, 
+ Bharath SM <bharathsm@microsoft.com>, 
+ Alexander Aring <alex.aring@gmail.com>, 
+ Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
+ Viacheslav Dubeyko <slava@dubeyko.com>, 
+ Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ David Sterba <dsterba@suse.com>, Marc Dionne <marc.dionne@auristor.com>, 
+ Ian Kent <raven@themaw.net>, Luis de Bethencourt <luisbg@kernel.org>, 
+ Salah Triki <salah.triki@gmail.com>, 
+ "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, 
+ Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
+ Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
+ Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>, 
+ Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+ Yangtao Li <frank.li@vivo.com>, 
+ Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, 
+ David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, 
+ Dave Kleikamp <shaggy@kernel.org>, 
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+ Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+ Joseph Qi <joseph.qi@linux.alibaba.com>, 
+ Mike Marshall <hubcap@omnibond.com>, 
+ Martin Brandenburg <martin@omnibond.com>, 
+ Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>, 
+ Zhihao Cheng <chengzhihao1@huawei.com>, Damien Le Moal <dlemoal@kernel.org>, 
+ Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
+ John Johansen <john.johansen@canonical.com>, 
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+ Roberto Sassu <roberto.sassu@huawei.com>, 
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ Ondrej Mosnacek <omosnace@redhat.com>, 
+ Casey Schaufler <casey@schaufler-ca.com>, 
+ Alex Deucher <alexander.deucher@amd.com>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ James Clark <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>, 
+ Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>, 
+ Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>, 
+ Johan Hedberg <johan.hedberg@gmail.com>, 
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+ Oliver Hartkopp <socketcan@hartkopp.net>, 
+ Marc Kleine-Budde <mkl@pengutronix.de>, David Ahern <dsahern@kernel.org>, 
+ Neal Cardwell <ncardwell@google.com>, 
+ Steffen Klassert <steffen.klassert@secunet.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ Remi Denis-Courmont <courmisch@gmail.com>, 
+ Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
+ Xin Long <lucien.xin@gmail.com>, 
+ Magnus Karlsson <magnus.karlsson@intel.com>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
+ fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev, 
+ linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
+ linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+ samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org, 
+ v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org, 
+ ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu, 
+ ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev, 
+ ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
+ linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
+ linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
+ selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+ linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, 
+ linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
+ linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
+ linux-x25@vger.kernel.org, audit@vger.kernel.org, 
+ linux-bluetooth@vger.kernel.org, linux-can@vger.kernel.org, 
+ linux-sctp@vger.kernel.org, bpf@vger.kernel.org, 
+ Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2217; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=HNYyRh7uJihRjIsYnqg9vR2rg+YDBytXVTWJLsChpBg=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpqFCpn4jHLr2TGESURidfEFiRx4u3yOkCGmevg
+ z8yGIn0bm2JAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaahQqQAKCRAADmhBGVaC
+ FY3fEADG2lZ27yB2I+X23lq+iIwhnlF7pXPPYkX0oxn/MGtoloSrlLv/JlUE0rFS7OLEDmEFh0v
+ 7Msy8JGrmfcwp1mYgS9BHGKB08wHoUO+/UBe39k6qMASDJIty5gEZjqBQBWvDq/CBQv2+zbPmja
+ v/XxPZ6UwR1/kBugt2FWO2bsX4XYbtCV7/rKeVgXYeVOjSEHUhOidxAg0EliqhPo/X1GMHdDpVh
+ hlxhOEt2rn82p4aiYJvdaGZJ+Cvvh8ZHZYedZtBPbh2XLdI+b4HRjxoriFnvYkreDBHrhJaFYQF
+ mDP+BJqPcTuoiMXgpEyByaON06H+tY2i2mtFB1ZxI2eel7Kz8SQMKLK4cb8mK7Czlwq/SwLc1m4
+ FOICYEN2snlvZbhqRz7dLB00X4MHWwwH50CiofjSP6O3VMhimuiWG/e8wg/4H1gm5sZYTKUCM6/
+ hbEME9qYhPsCqNagzgowu9/Ly7cNebcIrg6NuudFPojMAQGNOux1bGLLEuM1D5mPZqi35+BQDqw
+ c+9Oomp2LgByVNzze60tZa2PrkudTHPupcbq8j59Kr7wLKoNAwh9vorVNGFsm7R0rW4k8E6YePo
+ Tc6AgYvtiUDzFDOeJAt06CCLgph2tznpvQejcnIWoU+6g2Fm9zEw+sUQ8b97rt1cqbxYg6uxck3
+ fFrf+jQCmVJvCFQ==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-On 3/4/26 14:41, Jason Xing wrote:
-> On Tue, Mar 3, 2026 at 1:03 AM Bui Quang Minh <minhquangbui99@gmail.com> wrote:
->> When XDP_USE_NEED_WAKEUP is used and the fill ring is empty so no buffer
->> is allocated on RX side, allow RX NAPI to be descheduled. This avoids
->> wasting CPU cycles on polling. Users will be notified and they need to
->> make a wakeup call after refilling the ring.
->>
->> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
-> Thanks for handling that problem. Please carry my tag in the next version:
->
-> Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
->
-> You seem to have forgotten to add Xuan Zhuo's tag...
+In trace events, change __field(unsigned long, ...) to __field(u64, ...)
+and update TP_PROTO parameters and TP_printk format strings to match
+the widened field type.
 
-This version contains a bug fix which is a non-trivial change so I think 
-it might not be the same as the version that he approved of.
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+ include/trace/events/nilfs2.h | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-Thanks,
-Quang Minh.
+diff --git a/include/trace/events/nilfs2.h b/include/trace/events/nilfs2.h
+index 8880c11733dd307c223cc62ee34ebeff650ecb12..49efbd209585b294f363e950e8ab266f533a9eb6 100644
+--- a/include/trace/events/nilfs2.h
++++ b/include/trace/events/nilfs2.h
+@@ -165,14 +165,14 @@ TRACE_EVENT(nilfs2_segment_usage_freed,
+ 
+ TRACE_EVENT(nilfs2_mdt_insert_new_block,
+ 	    TP_PROTO(struct inode *inode,
+-		     unsigned long ino,
++		     u64 ino,
+ 		     unsigned long block),
+ 
+ 	    TP_ARGS(inode, ino, block),
+ 
+ 	    TP_STRUCT__entry(
++		    __field(u64, ino)
+ 		    __field(struct inode *, inode)
+-		    __field(unsigned long, ino)
+ 		    __field(unsigned long, block)
+ 	    ),
+ 
+@@ -182,7 +182,7 @@ TRACE_EVENT(nilfs2_mdt_insert_new_block,
+ 		    __entry->block = block;
+ 		    ),
+ 
+-	    TP_printk("inode = %p ino = %lu block = %lu",
++	    TP_printk("inode = %p ino = %llu block = %lu",
+ 		      __entry->inode,
+ 		      __entry->ino,
+ 		      __entry->block)
+@@ -190,15 +190,15 @@ TRACE_EVENT(nilfs2_mdt_insert_new_block,
+ 
+ TRACE_EVENT(nilfs2_mdt_submit_block,
+ 	    TP_PROTO(struct inode *inode,
+-		     unsigned long ino,
++		     u64 ino,
+ 		     unsigned long blkoff,
+ 		     enum req_op mode),
+ 
+ 	    TP_ARGS(inode, ino, blkoff, mode),
+ 
+ 	    TP_STRUCT__entry(
++		    __field(u64, ino)
+ 		    __field(struct inode *, inode)
+-		    __field(unsigned long, ino)
+ 		    __field(unsigned long, blkoff)
+ 		    /*
+ 		     * Use field_struct() to avoid is_signed_type() on the
+@@ -214,7 +214,7 @@ TRACE_EVENT(nilfs2_mdt_submit_block,
+ 		    __entry->mode = mode;
+ 		    ),
+ 
+-	    TP_printk("inode = %p ino = %lu blkoff = %lu mode = %x",
++	    TP_printk("inode = %p ino = %llu blkoff = %lu mode = %x",
+ 		      __entry->inode,
+ 		      __entry->ino,
+ 		      __entry->blkoff,
+
+-- 
+2.53.0
+
