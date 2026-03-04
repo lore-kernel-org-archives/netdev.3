@@ -1,27 +1,27 @@
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684283A873D;
-	Wed,  4 Mar 2026 10:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70873A0B3D;
+	Wed,  4 Mar 2026 10:53:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772621592; cv=none; b=eqI14mYW17rs3dOvglwLb0tcsoRdeZeL/MzEyMVQkNCX3RlVp7mEIkNNIqfbo3KKWJaXwJiIV58jG0l7cM9tIndT+NQrKxjonCMpntQlkRGJr7T914G0/uF/aY8rxQbVoVybKXKRD6GcZgIoHIkyVvz3lOBLXtFsBTASTyEE4DM=
+	t=1772621635; cv=none; b=e6osC6EakzYnFtap93TIyo5POjD77dSkGkqA0uO4uBuD9ufo4+LWVAns0PuHErK0CfNLg0emmleu57ekzV/quXFUQj+YB68+XyG8D78OQfvKZ44DjdFf9TJGl+UTD1FgMsgaaXNcz9y+qinJXpgfGOBY9sxnPOPNsXDhiixq7+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772621592; c=relaxed/simple;
-	bh=seolZAi9wS9AkLegqxuIIYBfkjQgFK23TvsRT6jiP70=;
+	s=arc-20240116; t=1772621635; c=relaxed/simple;
+	bh=mej+Jd60NcwX96dJsQ6I0J0MKqwoHQki+5lc7cwcncc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b00PyQHTKYo6H1TjO0oAi1IXjCvOjwdZrIM6l+84DKLgxdG57+e83jYQvLv/RD9iZpGepHVY+r2IOE2byO9SRNFg3Quyy46aX4XDIRFn+Z/KixltJB2guGxGDp6+J5e1OTRB/8fQykD4rAJ/XlfudRv6Q5Y/pO2Yr2iJK8VRFgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org; spf=none smtp.mailfrom=vimux.org; arc=none smtp.client-ip=18.132.163.193
+	 MIME-Version; b=peMLtl0zznogHhPLzJY6aToHz+ig8s+DxXWk5z40Ire8eVHnQSvS+lcMSs/eEDNpghVyNF/SKpzh8OYsJPPjdgvtLUJKbsQ7f9zWwZnkrxCZKdgtD7ssCiLhvvKCVBcDxrWw+JtZ9G5uZUFkicJpMKeBzlU6jymJyUQL5XGJKvI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org; spf=none smtp.mailfrom=vimux.org; arc=none smtp.client-ip=54.254.200.92
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=vimux.org
-X-QQ-mid: esmtpgz13t1772621579t2dcbf07d
-X-QQ-Originating-IP: 1bKHHpPITr/E07eNJX+HyNCDOkzeK3cYeCwu8yiSK4s=
+X-QQ-mid: esmtpgz13t1772621569t42882ecb
+X-QQ-Originating-IP: ElOmFFYXOp/Hf2EkFm5oFyQZ7VI2zAY0qVzB/Fw21OA=
 Received: from localhost.localdomain ( [219.147.0.82])
 	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 04 Mar 2026 18:52:55 +0800 (CST)
+	id ; Wed, 04 Mar 2026 18:52:33 +0800 (CST)
 X-QQ-SSF: 0000000000000000000000000000000
 X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 73543249924356061
+X-BIZMAIL-ID: 775489432918910945
 EX-QQ-RecipientCnt: 8
 From: Jialu Xu <xujialu@vimux.org>
 To: xujialu@vimux.org
@@ -32,9 +32,9 @@ Cc: brgl@kernel.org,
 	linux-gpio@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 3/3] gpio: remove of_get_named_gpio() and <linux/of_gpio.h>
-Date: Wed,  4 Mar 2026 18:52:15 +0800
-Message-ID: <DBC78F9A5471852F+20260304105215.536399-4-xujialu@vimux.org>
+Subject: [PATCH 1/3] nfc: s3fwrn5: convert to gpio descriptors
+Date: Wed,  4 Mar 2026 18:52:13 +0800
+Message-ID: <0F63C4FC246814C0+20260304105215.536399-2-xujialu@vimux.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260304105215.536399-1-xujialu@vimux.org>
 References: <7187C401290C256B+20260304084808.440955-1-xujialu@vimux.org>
@@ -48,165 +48,273 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QQ-SENDSIZE: 520
 Feedback-ID: esmtpgz:vimux.org:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: N5OohOZOOOruGsFhU/Ute3kVn3GNPmzuY4pkD53RhJBcjHjCLai8ByXt
-	8KjpzEOlVmoROrNrn16p7yGCtPskgNjXJLP026f/ZVnQAi/JBTIijW2hHjbZupR2UlLa0K7
-	qAuRxGoULubNcMMD24FYipGjjyFH21lh+dxgzAPg1Sg23vSCXT5JMGqxCcaalslDU4a8ape
-	IEqOzhtg+Bg8l1rrjHgyHqcEoBIZuFeDQPuNyb15y3RKy/srnhbSv2f20ODG2YjjXWWNKA9
-	TXtCi1it5imoTX4TFC4vBUvAH31EEB87nHmZC1Q8cmLE5rMweF9wG1nenM9aMXrEHE5oQJc
-	Ll25Z49H07dL79c8zrYsRqzAE8OnOVXOpSYWvsMX0jz9FUMloM6f/d3zFNo1Kvdz6vm8SuL
-	HTmmObcRkQfkvff/QDOxb3qo5xkaBnikOjQhkWHFfF6mbF8AosAqjXzUUXkUiFatJz2nEt8
-	ZhZvfy6IXcZK2MDa3IT+z21jm8Tu0QMayBCgA/JaOfQzrfgtLtvwpEfI0i+VMbpsyxih/xX
-	KlgIShMWte8LsM8wqbWqPBwzkiWOo1HzmT5c2Y81aM85K774LsyXHRK6rWo+opGFBS5EYhP
-	Uq5CWY81kCVEEhp7PFmG7cAeM+ULfYuRjZ486chLJsr/aZn4ipShSCDoHyO1rDq5O7BChHZ
-	nRdiWgvsW8mUVmkWimi0A5n1OjoHnPP0phW4UtYURnmjaxK36xN4p59wt9CiHAd9Y6XyyRn
-	2AIjllAkhZEQmOzMElwE/TqLOn0DA+DjB29DqpxUanClKqyvozvowt18e6oR8lYfrdoeuFI
-	BjS6ORk+Ab/XRwaYDltRKO/Tk1wmE7czn5W5g7xyvsCMjp1TlJaQwsJle0OIoJcjaVUKDUZ
-	LAtU+/hbetx8ciZQkxu8b4V/1thWTuYzDewSSazF1dnlHNiY/C1mvbBbcoAJwxZy771bmEy
-	BZglCLnn30pnUWy8wFq1usFl4I63pr/Gwq8jp0bieHuHPVD2bW4VsRDuWLW2M3eFOBDkvuK
-	ZxgbZU4ueHEwvVJMIP6yx/tbabrTSX5BXU+8xEkIZHMRCUWJJoOXaQ7a4kN14=
-X-QQ-XMRINFO: OWPUhxQsoeAVwkVaQIEGSKwwgKCxK/fD5g==
+X-QQ-XMAILINFO: OLX7ejGwdBBz1OElv18QWDYJun9ThnTAQhIDrA7a7IY0Np2DJY7GPU04
+	HtIHS/SLmhY3fPsuUGjlemCBCEYuKKSd5ijdLL7ThsQrLfH5BLqMbY4ChXYVJ9JoJu57GPc
+	McyMa2UBrAmVHozPy++pHlYL6YaFPLxG6GyeaFdYomXz+PKaU9L7R2436qmHe5sbJoCed4O
+	KUgugwvfzMfiiTgRXZVJI1t1ppzwWOozEUIDhigm8ACkOQthH6OYMYc1iapmegAR4JS2yx0
+	MdCHoA9HUGgJ/f8rr5hfRGKMmzj6au6yA0I5TME1jsZwPibCNzootwAj7ZW0dFfBlIGI9i7
+	OCVlYGnP+zRtnCk5zazMCIMTQpoYAfJ8b2b0Mo4AWNNPzlYuTJEos1iF1DRLVGlCqYwgxZC
+	quOOknPEuMNSDQWl6nqbLZytcpYRrgCZhKGnqW9RWsdjRTc+7aO3t6w/miWvDC/82A+VqDa
+	abAK677/6KAwvUSChdCKa0gppVt1mbxNzHgUodfEvYo1kBOKTtQdnZe1tcy7vzUnkIcJxyM
+	1U8rIa32Hvon2ij6bARdGFiNtJkzhs7koQPvjPckV3UX8NZllPCkZzVvmkMHVRamXQhdP2m
+	+oUc7tif7mFMFMvnhLorq2zRYgR7fbHh2ZCsFwF63057W3C/Iaekbs2ShAutPjS2Uu+Fyou
+	8h8hZaaiSjfVgovj2s5bKQEnEXZpoUwNKLsrlbfxbBJPfRzG8/lKvtMLf3JbxYNa0wn1sDK
+	Pk+eoLSDXNckX4rZwhZ2k9h5oyplAtLaMm43jzaZQriniw9pC9vFfpgEaBmOVjEuoOUnumv
+	GA65OcjzAi3gJN3npu0a9iBpKOeKerHsxOJ86VbFeZQZ06ezgXsYV47tzHDPkD9VX37lT9h
+	I6cfoP02LPARLyJ2JXQivof+QWeuJAcZxadd21ri6//PTwVjM85XHCfJ5aEzqUcoRU4ZcR2
+	uBOLVK2J618qjd98pRNW3VLBBBnNQFeasoD8UOV/LJarx3V+e44eU3Yxp01LswDxtB6WE6C
+	3iuSGgd8QW1McPfDSqfuVCUouzXNXAYGiWXK7aHNSmdCsjCwVzMfHAMtGRWYo=
+X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
 X-QQ-RECHKSPAM: 0
 
-All in-tree consumers have been converted to the descriptor-based API.
-Remove the deprecated of_get_named_gpio() helper and delete the
-<linux/of_gpio.h> header.
+Use <linux/gpio/consumer.h> instead of <linux/of_gpio.h>.
 
 Signed-off-by: Jialu Xu <xujialu@vimux.org>
 ---
- drivers/gpio/TODO         | 28 ----------------------------
- drivers/gpio/gpiolib-of.c | 27 ---------------------------
- include/linux/of_gpio.h   | 38 --------------------------------------
- 3 files changed, 93 deletions(-)
- delete mode 100644 include/linux/of_gpio.h
+ drivers/gpio/gpiolib-of.c        |  4 +++
+ drivers/nfc/s3fwrn5/i2c.c        | 55 +++++---------------------------
+ drivers/nfc/s3fwrn5/phy_common.c | 11 +++----
+ drivers/nfc/s3fwrn5/phy_common.h |  5 +--
+ drivers/nfc/s3fwrn5/uart.c       | 45 +++++++-------------------
+ 5 files changed, 32 insertions(+), 88 deletions(-)
 
-diff --git a/drivers/gpio/TODO b/drivers/gpio/TODO
-index 5acaeab029ec6..7ce80fde1f17e 100644
---- a/drivers/gpio/TODO
-+++ b/drivers/gpio/TODO
-@@ -58,34 +58,6 @@ Work items:
- 
- -------------------------------------------------------------------------------
- 
--Get rid of <linux/of_gpio.h>
--
--This header and helpers appeared at one point when there was no proper
--driver infrastructure for doing simpler MMIO GPIO devices and there was
--no core support for parsing device tree GPIOs from the core library with
--the [devm_]gpiod_get() calls we have today that will implicitly go into
--the device tree back-end. It is legacy and should not be used in new code.
--
--Work items:
--
--- Change all consumer drivers that #include <linux/of_gpio.h> to
--  #include <linux/gpio/consumer.h> and stop doing custom parsing of the
--  GPIO lines from the device tree. This can be tricky and often involves
--  changing board files, etc.
--
--- Pull semantics for legacy device tree (OF) GPIO lookups into
--  gpiolib-of.c: in some cases subsystems are doing custom flags and
--  lookups for polarity inversion, open drain and what not. As we now
--  handle this with generic OF bindings, pull all legacy handling into
--  gpiolib so the library API becomes narrow and deep and handle all
--  legacy bindings internally. (See e.g. commits 6953c57ab172,
--  6a537d48461d etc)
--
--- Delete <linux/of_gpio.h> when all the above is complete and everything
--  uses <linux/gpio/consumer.h> or <linux/gpio/driver.h> instead.
--
---------------------------------------------------------------------------------
--
- Collect drivers
- 
- Collect GPIO drivers from arch/* and other places that should be placed
 diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index 3bdd9af674474..c512d735e85ff 100644
+index ef1ac68b94b78..3bdd9af674474 100644
 --- a/drivers/gpio/gpiolib-of.c
 +++ b/drivers/gpio/gpiolib-of.c
-@@ -14,7 +14,6 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
+@@ -542,6 +542,10 @@ static struct gpio_desc *of_find_gpio_rename(struct device_node *np,
+ 		{ "reset",	"reset-n-io",	"marvell,nfc-uart" },
+ 		{ "reset",	"reset-n-io",	"mrvl,nfc-uart" },
+ #endif
++#if IS_ENABLED(CONFIG_NFC_S3FWRN5_I2C)
++		{ "en",		"s3fwrn5,en-gpios",	"samsung,s3fwrn5-i2c" },
++		{ "wake",	"s3fwrn5,fw-gpios",	"samsung,s3fwrn5-i2c" },
++#endif
+ #if IS_ENABLED(CONFIG_PCI_LANTIQ)
+ 		/* MIPS Lantiq PCI */
+ 		{ "reset",	"gpio-reset",	"lantiq,pci-xway" },
+diff --git a/drivers/nfc/s3fwrn5/i2c.c b/drivers/nfc/s3fwrn5/i2c.c
+index 110d086cfe5ba..3f508b5fbf06b 100644
+--- a/drivers/nfc/s3fwrn5/i2c.c
++++ b/drivers/nfc/s3fwrn5/i2c.c
+@@ -8,10 +8,8 @@
+ 
+ #include <linux/clk.h>
+ #include <linux/i2c.h>
+-#include <linux/gpio.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/delay.h>
 -#include <linux/of_gpio.h>
- #include <linux/pinctrl/pinctrl.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-@@ -446,32 +445,6 @@ static struct gpio_desc *of_get_named_gpiod_flags(const struct device_node *np,
- 	return desc;
+-#include <linux/of_irq.h>
+ #include <linux/module.h>
+ 
+ #include <net/nfc/nfc.h>
+@@ -146,37 +144,6 @@ static irqreturn_t s3fwrn5_i2c_irq_thread_fn(int irq, void *phy_id)
+ 	return IRQ_HANDLED;
  }
  
--/**
-- * of_get_named_gpio() - Get a GPIO number to use with GPIO API
-- * @np:		device node to get GPIO from
-- * @propname:	Name of property containing gpio specifier(s)
-- * @index:	index of the GPIO
-- *
-- * **DEPRECATED** This function is deprecated and must not be used in new code.
-- *
-- * Returns:
-- * GPIO number to use with Linux generic GPIO API, or one of the errno
-- * value on the error condition.
-- */
--int of_get_named_gpio(const struct device_node *np, const char *propname,
--		      int index)
+-static int s3fwrn5_i2c_parse_dt(struct i2c_client *client)
 -{
--	struct gpio_desc *desc;
+-	struct s3fwrn5_i2c_phy *phy = i2c_get_clientdata(client);
+-	struct device_node *np = client->dev.of_node;
 -
--	desc = of_get_named_gpiod_flags(np, propname, index, NULL);
+-	if (!np)
+-		return -ENODEV;
 -
--	if (IS_ERR(desc))
--		return PTR_ERR(desc);
--	else
--		return desc_to_gpio(desc);
+-	phy->common.gpio_en = of_get_named_gpio(np, "en-gpios", 0);
+-	if (!gpio_is_valid(phy->common.gpio_en)) {
+-		/* Support also deprecated property */
+-		phy->common.gpio_en = of_get_named_gpio(np,
+-							"s3fwrn5,en-gpios",
+-							0);
+-		if (!gpio_is_valid(phy->common.gpio_en))
+-			return -ENODEV;
+-	}
+-
+-	phy->common.gpio_fw_wake = of_get_named_gpio(np, "wake-gpios", 0);
+-	if (!gpio_is_valid(phy->common.gpio_fw_wake)) {
+-		/* Support also deprecated property */
+-		phy->common.gpio_fw_wake = of_get_named_gpio(np,
+-							     "s3fwrn5,fw-gpios",
+-							     0);
+-		if (!gpio_is_valid(phy->common.gpio_fw_wake))
+-			return -ENODEV;
+-	}
+-
+-	return 0;
 -}
--EXPORT_SYMBOL_GPL(of_get_named_gpio);
 -
- /* Converts gpio_lookup_flags into bitmask of GPIO_* values */
- static unsigned long of_convert_gpio_flags(enum of_gpio_flags flags)
+ static int s3fwrn5_i2c_probe(struct i2c_client *client)
  {
-diff --git a/include/linux/of_gpio.h b/include/linux/of_gpio.h
-deleted file mode 100644
-index d0f66a5e1b2a7..0000000000000
---- a/include/linux/of_gpio.h
-+++ /dev/null
-@@ -1,38 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0+ */
--/*
-- * OF helpers for the GPIO API
-- *
-- * Copyright (c) 2007-2008  MontaVista Software, Inc.
-- *
-- * Author: Anton Vorontsov <avorontsov@ru.mvista.com>
-- */
+ 	struct s3fwrn5_i2c_phy *phy;
+@@ -193,20 +160,14 @@ static int s3fwrn5_i2c_probe(struct i2c_client *client)
+ 	phy->i2c_dev = client;
+ 	i2c_set_clientdata(client, phy);
+ 
+-	ret = s3fwrn5_i2c_parse_dt(client);
+-	if (ret < 0)
+-		return ret;
 -
--#ifndef __LINUX_OF_GPIO_H
--#define __LINUX_OF_GPIO_H
--
--#include <linux/compiler.h>
--#include <linux/gpio/driver.h>
--#include <linux/gpio.h>		/* FIXME: Shouldn't be here */
+-	ret = devm_gpio_request_one(&phy->i2c_dev->dev, phy->common.gpio_en,
+-				    GPIOF_OUT_INIT_HIGH, "s3fwrn5_en");
+-	if (ret < 0)
+-		return ret;
++	phy->common.gpio_en = devm_gpiod_get(&client->dev, "en", GPIOD_OUT_HIGH);
++	if (IS_ERR(phy->common.gpio_en))
++		return PTR_ERR(phy->common.gpio_en);
+ 
+-	ret = devm_gpio_request_one(&phy->i2c_dev->dev,
+-				    phy->common.gpio_fw_wake,
+-				    GPIOF_OUT_INIT_LOW, "s3fwrn5_fw_wake");
+-	if (ret < 0)
+-		return ret;
++	phy->common.gpio_fw_wake = devm_gpiod_get(&client->dev, "wake",
++						   GPIOD_OUT_LOW);
++	if (IS_ERR(phy->common.gpio_fw_wake))
++		return PTR_ERR(phy->common.gpio_fw_wake);
+ 
+ 	/*
+ 	 * S3FWRN5 depends on a clock input ("XI" pin) to function properly.
+diff --git a/drivers/nfc/s3fwrn5/phy_common.c b/drivers/nfc/s3fwrn5/phy_common.c
+index deb2c039f0fd6..39a60e34136c5 100644
+--- a/drivers/nfc/s3fwrn5/phy_common.c
++++ b/drivers/nfc/s3fwrn5/phy_common.c
+@@ -8,7 +8,6 @@
+  * Bongsu Jeon <bongsu.jeon@samsung.com>
+  */
+ 
+-#include <linux/gpio.h>
+ #include <linux/delay.h>
+ #include <linux/module.h>
+ 
+@@ -19,7 +18,7 @@ void s3fwrn5_phy_set_wake(void *phy_id, bool wake)
+ 	struct phy_common *phy = phy_id;
+ 
+ 	mutex_lock(&phy->mutex);
+-	gpio_set_value(phy->gpio_fw_wake, wake);
++	gpiod_set_value(phy->gpio_fw_wake, wake);
+ 	if (wake)
+ 		msleep(S3FWRN5_EN_WAIT_TIME);
+ 	mutex_unlock(&phy->mutex);
+@@ -33,14 +32,14 @@ bool s3fwrn5_phy_power_ctrl(struct phy_common *phy, enum s3fwrn5_mode mode)
+ 
+ 	phy->mode = mode;
+ 
+-	gpio_set_value(phy->gpio_en, 1);
+-	gpio_set_value(phy->gpio_fw_wake, 0);
++	gpiod_set_value(phy->gpio_en, 1);
++	gpiod_set_value(phy->gpio_fw_wake, 0);
+ 	if (mode == S3FWRN5_MODE_FW)
+-		gpio_set_value(phy->gpio_fw_wake, 1);
++		gpiod_set_value(phy->gpio_fw_wake, 1);
+ 
+ 	if (mode != S3FWRN5_MODE_COLD) {
+ 		msleep(S3FWRN5_EN_WAIT_TIME);
+-		gpio_set_value(phy->gpio_en, 0);
++		gpiod_set_value(phy->gpio_en, 0);
+ 		msleep(S3FWRN5_EN_WAIT_TIME);
+ 	}
+ 
+diff --git a/drivers/nfc/s3fwrn5/phy_common.h b/drivers/nfc/s3fwrn5/phy_common.h
+index 9cef25436bf90..871bec53dd0a9 100644
+--- a/drivers/nfc/s3fwrn5/phy_common.h
++++ b/drivers/nfc/s3fwrn5/phy_common.h
+@@ -12,6 +12,7 @@
+ #define __NFC_S3FWRN5_PHY_COMMON_H
+ 
+ #include <linux/mutex.h>
++#include <linux/gpio/consumer.h>
+ #include <net/nfc/nci_core.h>
+ 
+ #include "s3fwrn5.h"
+@@ -21,8 +22,8 @@
+ struct phy_common {
+ 	struct nci_dev *ndev;
+ 
+-	int gpio_en;
+-	int gpio_fw_wake;
++	struct gpio_desc *gpio_en;
++	struct gpio_desc *gpio_fw_wake;
+ 
+ 	struct mutex mutex;
+ 
+diff --git a/drivers/nfc/s3fwrn5/uart.c b/drivers/nfc/s3fwrn5/uart.c
+index 9c09c10c2a464..5977a6b58f6fb 100644
+--- a/drivers/nfc/s3fwrn5/uart.c
++++ b/drivers/nfc/s3fwrn5/uart.c
+@@ -10,13 +10,12 @@
+ 
+ #include <linux/device.h>
+ #include <linux/kernel.h>
++#include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/nfc.h>
+ #include <linux/netdevice.h>
 -#include <linux/of.h>
--
--struct device_node;
--
--#ifdef CONFIG_OF_GPIO
--
--extern int of_get_named_gpio(const struct device_node *np,
--			     const char *list_name, int index);
--
--#else /* CONFIG_OF_GPIO */
--
--#include <linux/errno.h>
--
--/* Drivers may not strictly depend on the GPIO support, so let them link. */
--static inline int of_get_named_gpio(const struct device_node *np,
--                                   const char *propname, int index)
+ #include <linux/serdev.h>
+-#include <linux/gpio.h>
+-#include <linux/of_gpio.h>
++#include <linux/gpio/consumer.h>
+ 
+ #include "phy_common.h"
+ 
+@@ -88,25 +87,6 @@ static const struct of_device_id s3fwrn82_uart_of_match[] = {
+ };
+ MODULE_DEVICE_TABLE(of, s3fwrn82_uart_of_match);
+ 
+-static int s3fwrn82_uart_parse_dt(struct serdev_device *serdev)
 -{
--	return -ENOSYS;
+-	struct s3fwrn82_uart_phy *phy = serdev_device_get_drvdata(serdev);
+-	struct device_node *np = serdev->dev.of_node;
+-
+-	if (!np)
+-		return -ENODEV;
+-
+-	phy->common.gpio_en = of_get_named_gpio(np, "en-gpios", 0);
+-	if (!gpio_is_valid(phy->common.gpio_en))
+-		return -ENODEV;
+-
+-	phy->common.gpio_fw_wake = of_get_named_gpio(np, "wake-gpios", 0);
+-	if (!gpio_is_valid(phy->common.gpio_fw_wake))
+-		return -ENODEV;
+-
+-	return 0;
 -}
 -
--#endif /* CONFIG_OF_GPIO */
+ static int s3fwrn82_uart_probe(struct serdev_device *serdev)
+ {
+ 	struct s3fwrn82_uart_phy *phy;
+@@ -140,20 +120,19 @@ static int s3fwrn82_uart_probe(struct serdev_device *serdev)
+ 
+ 	serdev_device_set_flow_control(serdev, false);
+ 
+-	ret = s3fwrn82_uart_parse_dt(serdev);
+-	if (ret < 0)
+-		goto err_serdev;
 -
--#endif /* __LINUX_OF_GPIO_H */
+-	ret = devm_gpio_request_one(&phy->ser_dev->dev, phy->common.gpio_en,
+-				    GPIOF_OUT_INIT_HIGH, "s3fwrn82_en");
+-	if (ret < 0)
++	phy->common.gpio_en = devm_gpiod_get(&serdev->dev, "en",
++					      GPIOD_OUT_HIGH);
++	if (IS_ERR(phy->common.gpio_en)) {
++		ret = PTR_ERR(phy->common.gpio_en);
+ 		goto err_serdev;
++	}
+ 
+-	ret = devm_gpio_request_one(&phy->ser_dev->dev,
+-				    phy->common.gpio_fw_wake,
+-				    GPIOF_OUT_INIT_LOW, "s3fwrn82_fw_wake");
+-	if (ret < 0)
++	phy->common.gpio_fw_wake = devm_gpiod_get(&serdev->dev, "wake",
++						   GPIOD_OUT_LOW);
++	if (IS_ERR(phy->common.gpio_fw_wake)) {
++		ret = PTR_ERR(phy->common.gpio_fw_wake);
+ 		goto err_serdev;
++	}
+ 
+ 	ret = s3fwrn5_probe(&phy->common.ndev, phy, &phy->ser_dev->dev,
+ 			    &uart_phy_ops);
 -- 
 2.47.3
 
