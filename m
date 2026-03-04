@@ -1,67 +1,37 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A625833B966
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 07:15:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0BD342CA2;
+	Wed,  4 Mar 2026 07:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772608505; cv=none; b=P/lwtuSdhycWYNcbhgmNlgbg/hxZ3PtaGvVl8Aj9Z6Slj1vAJotG3qPwn2hE2k4vtG6uyMa9JYk2uoskCZcp5rpC1eWK4hFFfUIIagTt6LhBkfyBKB7QC+U8uogU/+y51x3Hof+cc4Femq91XQcDbz3qvIaUR49uzVqBqpjpV7k=
+	t=1772608917; cv=none; b=LjyDtT6KF1NtN603KPy3FTEsnJkLK4wb5sqTc8Tf82LaNQpNmwu+1UtEgjC0x9DU5yq7H0Ew7aBIEUJbcw+laOISwnPOK5cMyWaL21CMZf6/1DO2QraKHFdLt2FE0lSYIJH3ys7b2xzHl7Exd/KPtS9g/I02jscNulG//Fj0MPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772608505; c=relaxed/simple;
-	bh=4suyWihyC1ry/HvunGlIS6YHwIWLTnzKEYrI3QwXGaQ=;
+	s=arc-20240116; t=1772608917; c=relaxed/simple;
+	bh=oyRqZoSbdyXDKvYDihwfAYkGmgYR4/jkeHFWdp8zAhw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=qp23N2q8wNduBlwk/ztRVzaVP7OpMNBCZV2YAlbVjjSHz9xCje/QWRkcwaRYTEiP9f6iIBKtn+vp0k9QZp8uOTlSS1VT9z78/8J0fioWcusZgDuSdanHkpOmKeRcXddurwEvFVznF1IZrYP/oqoy7TzB7qRXjRjd3cAmtkR6R0M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lZpsIkHn; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:To:Cc; b=nnMd/rBk2HSgTGpWHBJypKgN/xigXYQg2RbtfBXuT5d6E27LT4hxOTlLbApyoXlK1y/mz8ybwruvakXUJHDDChVgKR+4YVnWg4w07KsMQjVFjklENMfvb+Zm/jg2XPdrYjx+YOY5p9rhhvDf0dR/oueU7VuO+WTbdzAotjKeEcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S2W1jNNH; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lZpsIkHn"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-c7381c4345cso40539a12.1
-        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 23:15:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772608504; x=1773213304; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pDl+XTs6aW3UhEf8SPsZqwG+HpyZqHIJ08ht/L1JbFE=;
-        b=lZpsIkHn34+/vdnx7ROu3/5LFy9fyVh5CrOqbHuNddNB+G/vHk+F9jpQrFsDH4EZNy
-         QE5EtuLbpBZ5wY8TdsbzypBGHvy9fBwO/CEab9AQxMndlWdEtCp//2u/rrnCy3PW986L
-         VyyGD5hSIZlQuizvLIf2Eo/upLixH0CD7pb300meaYdag8vxd5rY+seeOHc37kzBbU2g
-         xdj/kp0KKp6h6DlM7uNTX2OS8sBLdUjcXlo4X+mTP+eZwONllkCHYM/ws72qmXglh5SM
-         yeNCHmWhloyfd6G3llpEuxgIeEkcfYD/EBAbr7OyOOvjzjdedID6cJv99xxDy3INPKdO
-         0Lzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772608504; x=1773213304;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=pDl+XTs6aW3UhEf8SPsZqwG+HpyZqHIJ08ht/L1JbFE=;
-        b=mBdSuMdXB4WIu2ufRL7pZGe5leimRKKkw9+1HEs1wiAwfK2yxuj5r7JDcF8aEcwbkA
-         4W08xE2Y1Rtz5vgu3ctc0/GFyuJ5oZ/NhEdRpRymMsXSmIsE1TaEM64aXIPEyKX5P/ZR
-         1T2Ir7rQXTPtrM2x3W0rXyDapmBVEOtRfkqPHf8M/qmNIKqba0PDSitVSjMXqyc7BaaY
-         dgk1hZ7WPkoSXHC9kAd+0lfu+MiTCCKKFuP2JbMUb/6dVhuHIlFlegFakh08eXVyl/fn
-         BFtpBV1AiMLYQ7O+ohSQ7T7L65enOSFdCBXLaeQiPyGPZwpaPhZhPOpJ/CBMEX7HWhfG
-         lZLQ==
-X-Gm-Message-State: AOJu0YwsbBCBPg0Sn9YPQU9DmuEyiOJO+UD+z0/kASbiqAIyKbTW1spV
-	ih3Iqi5d6GmwATeX8hlzcOZlNvj2xId2GRDhx/DPxszJu/CNc1X5748A
-X-Gm-Gg: ATEYQzyU0k/oWjV8a8FZJ/u77jmFi4Sspp6+6SmCvq9sxbxIT3InB+N46mF0sRXc5X+
-	SEn5h/uZ/GK6jGjNwDMusJFrG4SCsn7v6pbZNkm7Ag+ipP1iED413yELaaPOKdR8EiC2nnFvXsA
-	iVzOQh1NO07FL68MxA4e8bifSa2QIQ94oN52YoJ3T9TZcy2s2FadwKCPnBBYc5avWN7LvyiTnM6
-	KX/jXfHZ4b2COvW2V9YRMWuuDbDmqbs7OHr880UXoI/Nz+XhvLxg0oVchxP6ozdh3jvEhcoqiGE
-	GtRr6IssRY+CnB45wicc+zxFxIZTmNfQVvT4hwajRw2YjwBhqh4OIrb3frzQxKDrHZFfJAwReW2
-	xgvV3KLPRq0tZhWMhvGTHT7WSB9luD/0vCZr0uV01gRCN/WL9/m4SkcQJneAo5S/H+AQ2oKaXcp
-	IGUtWL2io76fKU/Cd9rec6tVX3+uSN765yLmQN6BvfTZFg4nGBB5gb6hilpHyfgq+ZZp2KuWskt
-	IaL/jI+wX0gC0nYEpPD6v7Ib5u3sItSRcSsxKwGrHP2rhtSk7dz
-X-Received: by 2002:a17:90b:2691:b0:359:84a3:1942 with SMTP id 98e67ed59e1d1-3599cecc8bamr4364578a91.13.1772608504029;
-        Tue, 03 Mar 2026 23:15:04 -0800 (PST)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([240e:34c:576b:6b60:293b:552b:9870:28a3])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359aa3ebb2csm85731a91.12.2026.03.03.23.14.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Mar 2026 23:15:03 -0800 (PST)
-From: Hangbin Liu <liuhangbin@gmail.com>
-Date: Wed, 04 Mar 2026 15:13:54 +0800
-Subject: [PATCH net 2/2] bonding: handle BOND_LINK_FAIL, BOND_LINK_BACK as
- valid link states
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S2W1jNNH"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 9327FC19425;
+	Wed,  4 Mar 2026 07:21:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772608917;
+	bh=oyRqZoSbdyXDKvYDihwfAYkGmgYR4/jkeHFWdp8zAhw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=S2W1jNNHfzgsJx9+QKkefG2Di66ktkhoWKa8Qsz6Ui8VCjmL7Cf5dm1/ljKWJ/R9b
+	 0z5gfo8H9Cs2zhZXRxqRbyLt8qOHimmlA3yOt8p2/b+7rUlv/Y3uodAr+6KVwYSGPi
+	 r5QuNGU32fPfkWv6PouMdZCRgkDJfoqfNayOI+63jBjz6R7OxgI1TEJ9+yu1PovXVv
+	 znqI4Dc0dMNAfjXF+dzgIMMvhUAkmhocBPj9Ot6lQeo+8klEr4ZIjRGmEKZhe/H7Sl
+	 ARqPaOdcs2av9ETNrE94OUXcVdlQBjGUQdR8f7eiap3Dn76cZe3SZykwHUM8Ykhfcs
+	 Bv6OXXIBZfk3w==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 849E6EDEC1B;
+	Wed,  4 Mar 2026 07:21:57 +0000 (UTC)
+From: Maximilian Pezzullo via B4 Relay <devnull+maximilianpezzullo.gmail.com@kernel.org>
+Date: Wed, 04 Mar 2026 08:21:20 +0100
+Subject: [PATCH v2 2/2] igc: fix typos in comments
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,64 +40,79 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260304-b4-bond_updelay-v1-2-f72eb2e454d0@gmail.com>
-References: <20260304-b4-bond_updelay-v1-0-f72eb2e454d0@gmail.com>
-In-Reply-To: <20260304-b4-bond_updelay-v1-0-f72eb2e454d0@gmail.com>
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+Message-Id: <20260304-fix-typos-in-comments-in-intel-ethernet-drivers-igb-igc-v2-2-b6a9f1d336ff@gmail.com>
+References: <20260304-fix-typos-in-comments-in-intel-ethernet-drivers-igb-igc-v2-0-b6a9f1d336ff@gmail.com>
+In-Reply-To: <20260304-fix-typos-in-comments-in-intel-ethernet-drivers-igb-igc-v2-0-b6a9f1d336ff@gmail.com>
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, 
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Tonghao Zhang <tonghao@bamaicloud.com>, Hangbin Liu <liuhangbin@gmail.com>, 
- Nikolay Aleksandrov <razor@blackwall.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Jay Vosburgh <jay.vosburgh@canonical.com>
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Joe Damato <joe@dama.to>, 
+ Maximilian Pezzullo <maximilianpezzullo@gmail.com>
 X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1772608916; l=2238;
+ i=maximilianpezzullo@gmail.com; s=20260303; h=from:subject:message-id;
+ bh=wTWL+QiTKzAwIGFQ05V+EO1NynA/0tINfOR7I6TtIno=;
+ b=/AN+sK9PL2C+4d7bU9X1/MY23gpkk2X6byJ0rYwfANKT2fEFNCgCoHvnRiyNRURPmdy3Gt82U
+ SDZKdJvfvv0CYINO1Xu58PXu7nGfNAZ8emc6DFPAG3FvYI5jLyZILdU
+X-Developer-Key: i=maximilianpezzullo@gmail.com; a=ed25519;
+ pk=TRTR4c2Vb1IfluQvv5OUDPg7EE+pIzdPBND85UU559w=
+X-Endpoint-Received: by B4 Relay for maximilianpezzullo@gmail.com/20260303
+ with auth_id=658
+X-Original-From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
+Reply-To: maximilianpezzullo@gmail.com
 
-Before the fixed commit, we check slave->new_link during commit
-state, which values are only BOND_LINK_{NOCHANGE, UP, DOWN}. After
-the commit, we start using slave->link_new_state, which state also could
-be BOND_LINK_{FAIL, BACK}.
+From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
 
-For example, when we set updelay/downdelay, after a failover,
-the slave->link_new_state could be set to BOND_LINK_{FAIL, BACK} in
-bond_miimon_inspect(). And later in bond_miimon_commit(), it will treat
-it as invalid and print an error, which would cause confusion for users.
+Fix spelling errors in code comments:
+ - igc_diag.c: 'autonegotioation' -> 'autonegotiation'
+ - igc_main.c: 'revisons' -> 'revisions' (two occurrences)
 
-[  106.440254] bond0: (slave veth2): link status down for interface, disabling it in 200 ms
-[  106.440265] bond0: (slave veth2): invalid new link 1 on slave
-[  106.648276] bond0: (slave veth2): link status definitely down, disabling slave
-[  107.480271] bond0: (slave veth2): link status up, enabling it in 200 ms
-[  107.480288] bond0: (slave veth2): invalid new link 3 on slave
-[  107.688302] bond0: (slave veth2): link status definitely up, 10000 Mbps full duplex
-
-Let's handle BOND_LINK_{FAIL, BACK} as valid link states.
-
-Fixes: 1899bb325149 ("bonding: fix state transition issue in link monitoring")
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
 ---
- drivers/net/bonding/bond_main.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_diag.c | 2 +-
+ drivers/net/ethernet/intel/igc/igc_main.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 93a32a368d31..444519078da3 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2801,8 +2801,14 @@ static void bond_miimon_commit(struct bonding *bond)
+diff --git a/drivers/net/ethernet/intel/igc/igc_diag.c b/drivers/net/ethernet/intel/igc/igc_diag.c
+index a43d7244ee70..031561fdce49 100644
+--- a/drivers/net/ethernet/intel/igc/igc_diag.c
++++ b/drivers/net/ethernet/intel/igc/igc_diag.c
+@@ -172,7 +172,7 @@ bool igc_link_test(struct igc_adapter *adapter, u64 *data)
  
- 			continue;
+ 	*data = 0;
  
-+		case BOND_LINK_FAIL:
-+		case BOND_LINK_BACK:
-+			slave_dbg(bond->dev, slave->dev, "link_new_state %d on slave\n",
-+				  slave->link_new_state);
-+			continue;
-+
- 		default:
--			slave_err(bond->dev, slave->dev, "invalid new link %d on slave\n",
-+			slave_err(bond->dev, slave->dev, "invalid link_new_state %d on slave\n",
- 				  slave->link_new_state);
- 			bond_propose_link_state(slave, BOND_LINK_NOCHANGE);
+-	/* add delay to give enough time for autonegotioation to finish */
++	/* add delay to give enough time for autonegotiation to finish */
+ 	ssleep(5);
  
+ 	link_up = igc_has_link(adapter);
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 27e5c2109138..de3f3d95de19 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -1793,7 +1793,7 @@ static const enum pkt_hash_types igc_rss_type_table[IGC_RSS_TYPE_MAX_TABLE] = {
+ 	[IGC_RSS_TYPE_HASH_UDP_IPV6_EX] = PKT_HASH_TYPE_L4,
+ 	[10] = PKT_HASH_TYPE_NONE, /* RSS Type above 9 "Reserved" by HW  */
+ 	[11] = PKT_HASH_TYPE_NONE, /* keep array sized for SW bit-mask   */
+-	[12] = PKT_HASH_TYPE_NONE, /* to handle future HW revisons       */
++	[12] = PKT_HASH_TYPE_NONE, /* to handle future HW revisions       */
+ 	[13] = PKT_HASH_TYPE_NONE,
+ 	[14] = PKT_HASH_TYPE_NONE,
+ 	[15] = PKT_HASH_TYPE_NONE,
+@@ -7021,7 +7021,7 @@ static enum xdp_rss_hash_type igc_xdp_rss_type[IGC_RSS_TYPE_MAX_TABLE] = {
+ 	[IGC_RSS_TYPE_HASH_UDP_IPV6_EX] = XDP_RSS_TYPE_L4_IPV6_UDP_EX,
+ 	[10] = XDP_RSS_TYPE_NONE, /* RSS Type above 9 "Reserved" by HW  */
+ 	[11] = XDP_RSS_TYPE_NONE, /* keep array sized for SW bit-mask   */
+-	[12] = XDP_RSS_TYPE_NONE, /* to handle future HW revisons       */
++	[12] = XDP_RSS_TYPE_NONE, /* to handle future HW revisions       */
+ 	[13] = XDP_RSS_TYPE_NONE,
+ 	[14] = XDP_RSS_TYPE_NONE,
+ 	[15] = XDP_RSS_TYPE_NONE,
 
 -- 
 Git-155)
+
 
