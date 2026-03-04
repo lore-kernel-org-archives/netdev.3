@@ -1,51 +1,51 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F150A36F407;
-	Wed,  4 Mar 2026 16:36:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD89336C0D3;
+	Wed,  4 Mar 2026 16:36:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772642175; cv=none; b=bRpFPZpjtQQWsE8s9SHvyKPDr/OI8zK4sdc5n/xSZfLJ04lUyx88E9iCEWKI1zZX8UXpD1rLqSsJwIFRhSWv1IP6vi8g7bvDZ2+ehOmo+PdNo2sY16HkRMfvy1yU/QZ+K0+Lob68H8YkuiGaCpQbWiPHfGsYKTcsFQIZvTVlGxY=
+	t=1772642176; cv=none; b=Xpw5zY+jPQGuDTzsQLy3aFjUYAWIvWj8P7rNEegmD8dfAN9mnsXBa9VFRw/haj2sOUqobVv/z6Xz3TyS/LyJ/j5XHkU+ytQJ85x9X44wUd/RqZF9em9blzJWGTL8rfz4JCH/Z3QEznWQOhZbcV7zr+Ftq4zpXmy1qKuW/fLPNcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772642175; c=relaxed/simple;
-	bh=IOY8YI5FCKqZkUhckYEu/S/48sykVUGvU+Vw8bzqOU8=;
+	s=arc-20240116; t=1772642176; c=relaxed/simple;
+	bh=oCACM2F8kkfEfXBuuh5iayPiq9mwGCDlUS6bp5gDtSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pRtBOE5IIZHILLejk82Cesn/xdXWudHVrDWjYDOXAtU0J9Gv7kR67gvE4LCkCKxvUs0Nyqf06/XlkYASRvGIVy7oILdMpU9P+fOjyygSaE83Ttf6pmMIHeBwuUi4UkzwQURjHDzEJeDqKTOdlrpO0SlU2XpWZJMzTH5Xv3rRpko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GPFLAK4S; arc=none smtp.client-ip=192.198.163.18
+	 MIME-Version; b=Y3sd2qpZPuCK+3gXYFJZlXPzLXYpLbIxGszK2puOnbjO5H9UskZSavBjiOYhvPPEHOGjD/fPFNKPDL8vsQiiMVvYtEroeMgb7OL8SqRce9O9sb3goPoT2H8EqlgHjFMYoPZIt0JxNNC44qpIht2sXlWzXuDdF4R/NrFFfoLzVrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jzhKXBuz; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GPFLAK4S"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jzhKXBuz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772642169; x=1804178169;
+  t=1772642172; x=1804178172;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=IOY8YI5FCKqZkUhckYEu/S/48sykVUGvU+Vw8bzqOU8=;
-  b=GPFLAK4SPV/n2i++0b2qNHtgLGleGoXe9ysnHM/ohFmqZXnAvB1omZk0
-   /kMv1aVHBdTFLt5zy0SL9R2jf9D8cCQG4h4g8jyOr60hAnGsLlQkHF7on
-   mcm0XVTXOngW+nM8BpYn4ax4ZdzOvV1F3tNTie8/DlAz7XBSqAEZEbiFH
-   Wwk8lchUWecJQ+8z0Vu+peZkdv+bhDVPjbWEoxGhgF7Cw5OopInCBAFxN
-   KvrGS+rWT02prHGr5PLIKkP8PFJfKIirJoHh1lFWavR62q0rZpYCWf5Mc
-   QorFdJZ+IDLiPTbGG7qF3Ri3hnroAdA+DWYSW1f7xN8O2dPnK39L/+3BU
+  bh=oCACM2F8kkfEfXBuuh5iayPiq9mwGCDlUS6bp5gDtSo=;
+  b=jzhKXBuz5TfA00gR862+ifltM1FgErHva/U8e0W1eacrMcqZ6STC9/x2
+   q10Wo5JEylpiw/DLVsC45qbMkvpZewWC8SDdP6+8Xpz7+VluML1zG9eXa
+   VgtNH4LaK8UPPCYT4+U23DQ40VfYMTgYwinYaR80qR40dhuY9pbTdFhve
+   oJqt2FNP7+JK/Be9AmTy2RGNj0HEZITrIH10e7FYKJsS1Lu9UWrrq+YNC
+   gcFv8oSiZCwvNU502VaHUGlJXtcOq4mlfHhmzKgh/g3J9rtqZfPfUsz2L
+   fnK17PWNWPszyYBLS08vUCsrw6NNEBu7LgVrOTRs/1TGvcsDTbgA9/hU8
    g==;
-X-CSE-ConnectionGUID: LLtl15c6QzeGayapu2qLRA==
-X-CSE-MsgGUID: UH9JsTynTc2MPR3FsQeEvg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="72906383"
+X-CSE-ConnectionGUID: VknUUimaQZCMfOYFmV1FNw==
+X-CSE-MsgGUID: y3VzXhdvQ2Gq8Xw7rkbNZw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="77580039"
 X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="72906383"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 08:36:07 -0800
-X-CSE-ConnectionGUID: 3YZ5wlK2Tr+3bH7WilE6+g==
-X-CSE-MsgGUID: niAmt55NSKa0Q4eKOpBI+Q==
+   d="scan'208";a="77580039"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 08:36:04 -0800
+X-CSE-ConnectionGUID: CXspW5VzSoe+MV4hhdt45g==
+X-CSE-MsgGUID: F+Spye3VRzyYF4xcsZtV8Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,324,1763452800"; 
-   d="scan'208";a="241404968"
+   d="scan'208";a="222895571"
 Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa002.fm.intel.com with ESMTP; 04 Mar 2026 08:36:03 -0800
+  by orviesa004.jf.intel.com with ESMTP; 04 Mar 2026 08:35:59 -0800
 Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id 6D7D1312CD;
-	Wed,  4 Mar 2026 16:36:01 +0000 (GMT)
+	by irvmail002.ir.intel.com (Postfix) with ESMTP id BD90E312CB;
+	Wed,  4 Mar 2026 16:35:57 +0000 (GMT)
 From: Larysa Zaremba <larysa.zaremba@intel.com>
 To: Tony Nguyen <anthony.l.nguyen@intel.com>,
 	intel-wired-lan@lists.osuosl.org
@@ -68,9 +68,9 @@ Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	bpf@vger.kernel.org
-Subject: [PATCH iwl-next v3 06/10] ixgbevf: XDP_TX in multi-buffer through libeth
-Date: Wed,  4 Mar 2026 17:03:38 +0100
-Message-ID: <20260304160345.1340940-7-larysa.zaremba@intel.com>
+Subject: [PATCH iwl-next v3 04/10] ixgbevf: branch prediction and cleanup
+Date: Wed,  4 Mar 2026 17:03:36 +0100
+Message-ID: <20260304160345.1340940-5-larysa.zaremba@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260304160345.1340940-1-larysa.zaremba@intel.com>
 References: <20260304160345.1340940-1-larysa.zaremba@intel.com>
@@ -82,540 +82,105 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use libeth to support XDP_TX action for segmented packets.
+Add likely/unlikely markers for better branch prediction. While touching
+some functions, cleanup the code a little bit.
 
+This patch is not supposed to make any logic changes aside from making
+total_rx_bytes and total_rx_packets more correlated.
+
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
 ---
- drivers/net/ethernet/intel/ixgbevf/ixgbevf.h  |  14 +-
- .../net/ethernet/intel/ixgbevf/ixgbevf_main.c | 294 ++++++++++++------
- 2 files changed, 200 insertions(+), 108 deletions(-)
+ .../net/ethernet/intel/ixgbevf/ixgbevf_main.c | 29 +++++++++----------
+ 1 file changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-index 2626af039361..a27081ee764b 100644
---- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-+++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf.h
-@@ -81,20 +81,22 @@ struct ixgbevf_ring {
- 	struct net_device *netdev;
- 	struct bpf_prog __rcu *xdp_prog;
- 	union {
--		struct page_pool *pp;	/* Rx ring */
-+		struct page_pool *pp;	/* Rx and XDP rings */
- 		struct device *dev;	/* Tx ring */
- 	};
- 	void *desc;			/* descriptor ring memory */
--	dma_addr_t dma;			/* phys. address of descriptor ring */
--	unsigned int size;		/* length in bytes */
--	u32 truesize;			/* Rx buffer full size */
-+	union {
-+		u32 truesize;		/* Rx buffer full size */
-+		u32 pending;		/* Sent-not-completed descriptors */
-+	};
- 	u16 count;			/* amount of descriptors */
--	u16 next_to_use;
- 	u16 next_to_clean;
-+	u32 next_to_use;
- 
- 	union {
- 		struct libeth_fqe *rx_fqes;
- 		struct ixgbevf_tx_buffer *tx_buffer_info;
-+		struct libeth_sqe *xdp_sqes;
- 	};
- 	unsigned long state;
- 	struct ixgbevf_stats stats;
-@@ -114,6 +116,8 @@ struct ixgbevf_ring {
- 	int queue_index; /* needed for multiqueue queue management */
- 	u32 rx_buf_len;
- 	struct libeth_xdp_buff_stash xdp_stash;
-+	unsigned int dma_size;		/* length in bytes */
-+	dma_addr_t dma;			/* phys. address of descriptor ring */
- } ____cacheline_internodealigned_in_smp;
- 
- /* How many Rx Buffers do we bundle into one write to the hardware ? */
 diff --git a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-index 27cab542d3bb..177eb141e22d 100644
+index 5a270dd2c7aa..4619f2bea1ab 100644
 --- a/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
 +++ b/drivers/net/ethernet/intel/ixgbevf/ixgbevf_main.c
-@@ -306,10 +306,7 @@ static bool ixgbevf_clean_tx_irq(struct ixgbevf_q_vector *q_vector,
- 			total_ipsec++;
+@@ -570,7 +570,7 @@ static void ixgbevf_alloc_rx_buffers(struct ixgbevf_ring *rx_ring,
+ 	u16 ntu = rx_ring->next_to_use;
  
- 		/* free the skb */
--		if (ring_is_xdp(tx_ring))
--			libeth_xdp_return_va(tx_buffer->data, true);
--		else
--			napi_consume_skb(tx_buffer->skb, napi_budget);
-+		napi_consume_skb(tx_buffer->skb, napi_budget);
- 
- 		/* unmap skb header data */
- 		dma_unmap_single(tx_ring->dev,
-@@ -392,9 +389,8 @@ static bool ixgbevf_clean_tx_irq(struct ixgbevf_q_vector *q_vector,
- 		       eop_desc, (eop_desc ? eop_desc->wb.status : 0),
- 		       tx_ring->tx_buffer_info[i].time_stamp, jiffies);
- 
--		if (!ring_is_xdp(tx_ring))
--			netif_stop_subqueue(tx_ring->netdev,
--					    tx_ring->queue_index);
-+		netif_stop_subqueue(tx_ring->netdev,
-+				    tx_ring->queue_index);
- 
- 		/* schedule immediate reset if we believe we hung */
- 		ixgbevf_tx_timeout_reset(adapter);
-@@ -402,9 +398,6 @@ static bool ixgbevf_clean_tx_irq(struct ixgbevf_q_vector *q_vector,
- 		return true;
- 	}
- 
--	if (ring_is_xdp(tx_ring))
--		return !!budget;
--
- #define TX_WAKE_THRESHOLD (DESC_NEEDED * 2)
- 	if (unlikely(total_packets && netif_carrier_ok(tx_ring->netdev) &&
- 		     (ixgbevf_desc_unused(tx_ring) >= TX_WAKE_THRESHOLD))) {
-@@ -660,44 +653,83 @@ static inline void ixgbevf_irq_enable_queues(struct ixgbevf_adapter *adapter,
- #define IXGBEVF_XDP_CONSUMED 1
- #define IXGBEVF_XDP_TX 2
- 
--static int ixgbevf_xmit_xdp_ring(struct ixgbevf_ring *ring,
--				 struct xdp_buff *xdp)
-+static void ixgbevf_clean_xdp_num(struct ixgbevf_ring *xdp_ring, bool in_napi,
-+				  u16 to_clean)
-+{
-+	struct libeth_xdpsq_napi_stats stats = { };
-+	u32 ntc = xdp_ring->next_to_clean;
-+	struct xdp_frame_bulk cbulk;
-+	struct libeth_cq_pp cp = {
-+		.bq = &cbulk,
-+		.dev = xdp_ring->dev,
-+		.xss = &stats,
-+		.napi = in_napi,
-+	};
-+
-+	xdp_frame_bulk_init(&cbulk);
-+	xdp_ring->pending -= to_clean;
-+
-+	while (likely(to_clean--)) {
-+		libeth_xdp_complete_tx(&xdp_ring->xdp_sqes[ntc], &cp);
-+		ntc++;
-+		ntc = unlikely(ntc == xdp_ring->count) ? 0 : ntc;
-+	}
-+
-+	xdp_ring->next_to_clean = ntc;
-+	xdp_flush_frame_bulk(&cbulk);
-+}
-+
-+static u16 ixgbevf_tx_get_num_sent(struct ixgbevf_ring *xdp_ring)
- {
--	struct ixgbevf_tx_buffer *tx_buffer;
--	union ixgbe_adv_tx_desc *tx_desc;
--	u32 len, cmd_type;
--	dma_addr_t dma;
--	u16 i;
-+	u16 ntc = xdp_ring->next_to_clean;
-+	u16 to_clean = 0;
- 
--	len = xdp->data_end - xdp->data;
-+	while (likely(to_clean < xdp_ring->pending)) {
-+		u32 idx = xdp_ring->xdp_sqes[ntc].rs_idx;
-+		union ixgbe_adv_tx_desc *rs_desc;
- 
--	if (unlikely(!ixgbevf_desc_unused(ring)))
--		return IXGBEVF_XDP_CONSUMED;
-+		if (!idx--)
-+			break;
- 
--	dma = dma_map_single(ring->dev, xdp->data, len, DMA_TO_DEVICE);
--	if (dma_mapping_error(ring->dev, dma))
--		return IXGBEVF_XDP_CONSUMED;
-+		rs_desc = IXGBEVF_TX_DESC(xdp_ring, idx);
- 
--	/* record the location of the first descriptor for this packet */
--	i = ring->next_to_use;
--	tx_buffer = &ring->tx_buffer_info[i];
--
--	dma_unmap_len_set(tx_buffer, len, len);
--	dma_unmap_addr_set(tx_buffer, dma, dma);
--	tx_buffer->data = xdp->data;
--	tx_buffer->bytecount = len;
--	tx_buffer->gso_segs = 1;
--	tx_buffer->protocol = 0;
--
--	/* Populate minimal context descriptor that will provide for the
--	 * fact that we are expected to process Ethernet frames.
--	 */
--	if (!test_bit(__IXGBEVF_TX_XDP_RING_PRIMED, &ring->state)) {
-+		if (!(rs_desc->wb.status & cpu_to_le32(IXGBE_TXD_STAT_DD)))
-+			break;
-+
-+		xdp_ring->xdp_sqes[ntc].rs_idx = 0;
-+
-+		to_clean +=
-+			(idx >= ntc ? idx : idx + xdp_ring->count) - ntc + 1;
-+
-+		ntc = (idx + 1 == xdp_ring->count) ? 0 : idx + 1;
-+	}
-+
-+	return to_clean;
-+}
-+
-+static void ixgbevf_clean_xdp_ring(struct ixgbevf_ring *xdp_ring)
-+{
-+	ixgbevf_clean_xdp_num(xdp_ring, false, xdp_ring->pending);
-+}
-+
-+static u32 ixgbevf_prep_xdp_sq(void *xdpsq, struct libeth_xdpsq *sq)
-+{
-+	struct ixgbevf_ring *xdp_ring = xdpsq;
-+
-+	if (unlikely(ixgbevf_desc_unused(xdp_ring) < LIBETH_XDP_TX_BULK)) {
-+		u16 to_clean = ixgbevf_tx_get_num_sent(xdp_ring);
-+
-+		if (likely(to_clean))
-+			ixgbevf_clean_xdp_num(xdp_ring, true, to_clean);
-+	}
-+
-+	if (unlikely(!test_bit(__IXGBEVF_TX_XDP_RING_PRIMED,
-+			       &xdp_ring->state))) {
- 		struct ixgbe_adv_tx_context_desc *context_desc;
- 
--		set_bit(__IXGBEVF_TX_XDP_RING_PRIMED, &ring->state);
-+		set_bit(__IXGBEVF_TX_XDP_RING_PRIMED, &xdp_ring->state);
- 
--		context_desc = IXGBEVF_TX_CTXTDESC(ring, 0);
-+		context_desc = IXGBEVF_TX_CTXTDESC(xdp_ring, 0);
- 		context_desc->vlan_macip_lens	=
- 			cpu_to_le32(ETH_HLEN << IXGBE_ADVTXD_MACLEN_SHIFT);
- 		context_desc->fceof_saidx	= 0;
-@@ -706,48 +738,98 @@ static int ixgbevf_xmit_xdp_ring(struct ixgbevf_ring *ring,
- 				    IXGBE_ADVTXD_DTYP_CTXT);
- 		context_desc->mss_l4len_idx	= 0;
- 
--		i = 1;
-+		xdp_ring->next_to_use = 1;
-+		xdp_ring->pending = 1;
-+
-+		/* Finish descriptor writes before bumping tail */
-+		wmb();
-+		ixgbevf_write_tail(xdp_ring, 1);
- 	}
- 
--	/* put descriptor type bits */
--	cmd_type = IXGBE_ADVTXD_DTYP_DATA |
--		   IXGBE_ADVTXD_DCMD_DEXT |
--		   IXGBE_ADVTXD_DCMD_IFCS;
--	cmd_type |= len | IXGBE_TXD_CMD;
-+	*sq = (struct libeth_xdpsq) {
-+		.count = xdp_ring->count,
-+		.descs = xdp_ring->desc,
-+		.lock = NULL,
-+		.ntu = &xdp_ring->next_to_use,
-+		.pending = &xdp_ring->pending,
-+		.pool = NULL,
-+		.sqes = xdp_ring->xdp_sqes,
-+	};
-+
-+	return ixgbevf_desc_unused(xdp_ring);
-+}
- 
--	tx_desc = IXGBEVF_TX_DESC(ring, i);
--	tx_desc->read.buffer_addr = cpu_to_le64(dma);
-+static void ixgbevf_xdp_xmit_desc(struct libeth_xdp_tx_desc desc, u32 i,
-+				  const struct libeth_xdpsq *sq,
-+				  u64 priv)
-+{
-+	union ixgbe_adv_tx_desc *tx_desc =
-+		&((union ixgbe_adv_tx_desc *)sq->descs)[i];
- 
--	tx_desc->read.cmd_type_len = cpu_to_le32(cmd_type);
--	tx_desc->read.olinfo_status =
--			cpu_to_le32((len << IXGBE_ADVTXD_PAYLEN_SHIFT) |
-+	u32 cmd_type = IXGBE_ADVTXD_DTYP_DATA |
-+		       IXGBE_ADVTXD_DCMD_DEXT |
-+		       IXGBE_ADVTXD_DCMD_IFCS |
-+		       desc.len;
-+
-+	if (desc.flags & LIBETH_XDP_TX_LAST)
-+		cmd_type |= IXGBE_TXD_CMD_EOP;
-+
-+	if (desc.flags & LIBETH_XDP_TX_FIRST) {
-+		struct skb_shared_info *sinfo = sq->sqes[i].sinfo;
-+		u16 full_len = desc.len + sinfo->xdp_frags_size;
-+
-+		tx_desc->read.olinfo_status =
-+			cpu_to_le32((full_len << IXGBE_ADVTXD_PAYLEN_SHIFT) |
- 				    IXGBE_ADVTXD_CC);
-+	}
- 
--	/* Avoid any potential race with cleanup */
--	smp_wmb();
-+	tx_desc->read.buffer_addr = cpu_to_le64(desc.addr);
-+	tx_desc->read.cmd_type_len = cpu_to_le32(cmd_type);
-+}
- 
--	/* set next_to_watch value indicating a packet is present */
--	i++;
--	if (i == ring->count)
--		i = 0;
-+LIBETH_XDP_DEFINE_START();
-+LIBETH_XDP_DEFINE_FLUSH_TX(static ixgbevf_xdp_flush_tx, ixgbevf_prep_xdp_sq,
-+			   ixgbevf_xdp_xmit_desc);
-+LIBETH_XDP_DEFINE_END();
- 
--	tx_buffer->next_to_watch = tx_desc;
--	ring->next_to_use = i;
-+static void ixgbevf_xdp_set_rs(struct ixgbevf_ring *xdp_ring, u32 cached_ntu)
-+{
-+	u32 ltu = (xdp_ring->next_to_use ? : xdp_ring->count) - 1;
-+	union ixgbe_adv_tx_desc *desc;
- 
--	return IXGBEVF_XDP_TX;
-+	desc = IXGBEVF_TX_DESC(xdp_ring, ltu);
-+	xdp_ring->xdp_sqes[cached_ntu].rs_idx = ltu + 1;
-+	desc->read.cmd_type_len |= cpu_to_le32(IXGBE_TXD_CMD);
- }
- 
--static int ixgbevf_run_xdp(struct ixgbevf_adapter *adapter,
--			   struct ixgbevf_ring *rx_ring,
-+static void ixgbevf_rx_finalize_xdp(struct libeth_xdp_tx_bulk *tx_bulk,
-+				    bool xdp_xmit, u32 cached_ntu)
-+{
-+	struct ixgbevf_ring *xdp_ring = tx_bulk->xdpsq;
-+
-+	if (!xdp_xmit)
-+		goto unlock;
-+
-+	if (tx_bulk->count)
-+		ixgbevf_xdp_flush_tx(tx_bulk, LIBETH_XDP_TX_DROP);
-+
-+	ixgbevf_xdp_set_rs(xdp_ring, cached_ntu);
-+
-+	/* Finish descriptor writes before bumping tail */
-+	wmb();
-+	ixgbevf_write_tail(xdp_ring, xdp_ring->next_to_use);
-+unlock:
-+	rcu_read_unlock();
-+}
-+
-+static int ixgbevf_run_xdp(struct libeth_xdp_tx_bulk *tx_bulk,
- 			   struct libeth_xdp_buff *xdp)
- {
- 	int result = IXGBEVF_XDP_PASS;
--	struct ixgbevf_ring *xdp_ring;
--	struct bpf_prog *xdp_prog;
-+	const struct bpf_prog *xdp_prog;
- 	u32 act;
- 
--	xdp_prog = READ_ONCE(rx_ring->xdp_prog);
--
-+	xdp_prog = tx_bulk->prog;
- 	if (!xdp_prog)
- 		goto xdp_out;
- 
-@@ -756,17 +838,16 @@ static int ixgbevf_run_xdp(struct ixgbevf_adapter *adapter,
- 	case XDP_PASS:
- 		break;
- 	case XDP_TX:
--		xdp_ring = adapter->xdp_ring[rx_ring->queue_index];
--		result = ixgbevf_xmit_xdp_ring(xdp_ring, &xdp->base);
--		if (result == IXGBEVF_XDP_CONSUMED)
--			goto out_failure;
-+		result = IXGBEVF_XDP_TX;
-+		if (!libeth_xdp_tx_queue_bulk(tx_bulk, xdp,
-+					      ixgbevf_xdp_flush_tx))
-+			result = IXGBEVF_XDP_CONSUMED;
- 		break;
- 	default:
--		bpf_warn_invalid_xdp_action(rx_ring->netdev, xdp_prog, act);
-+		bpf_warn_invalid_xdp_action(tx_bulk->dev, xdp_prog, act);
- 		fallthrough;
- 	case XDP_ABORTED:
--out_failure:
--		trace_xdp_exception(rx_ring->netdev, xdp_prog, act);
-+		trace_xdp_exception(tx_bulk->dev, xdp_prog, act);
- 		fallthrough; /* handle aborts by dropping packet */
- 	case XDP_DROP:
- 		result = IXGBEVF_XDP_CONSUMED;
-@@ -784,11 +865,19 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
- 	unsigned int total_rx_bytes = 0, total_rx_packets = 0;
- 	struct ixgbevf_adapter *adapter = q_vector->adapter;
- 	u16 cleaned_count = ixgbevf_desc_unused(rx_ring);
-+	LIBETH_XDP_ONSTACK_BULK(xdp_tx_bulk);
- 	LIBETH_XDP_ONSTACK_BUFF(xdp);
-+	u32 cached_ntu;
- 	bool xdp_xmit = false;
- 	int xdp_res = 0;
- 
- 	libeth_xdp_init_buff(xdp, &rx_ring->xdp_stash, &rx_ring->xdp_rxq);
-+	libeth_xdp_tx_init_bulk(&xdp_tx_bulk, rx_ring->xdp_prog,
-+				adapter->netdev, adapter->xdp_ring,
-+				adapter->num_xdp_queues);
-+	if (xdp_tx_bulk.prog)
-+		cached_ntu =
-+			((struct ixgbevf_ring *)xdp_tx_bulk.xdpsq)->next_to_use;
- 
- 	while (likely(total_rx_packets < budget)) {
- 		union ixgbe_adv_rx_desc *rx_desc;
-@@ -821,11 +910,12 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
- 		if (ixgbevf_is_non_eop(rx_ring, rx_desc))
- 			continue;
- 
--		xdp_res = ixgbevf_run_xdp(adapter, rx_ring, xdp);
-+		xdp_res = ixgbevf_run_xdp(&xdp_tx_bulk, xdp);
- 		if (xdp_res) {
- 			if (xdp_res == IXGBEVF_XDP_TX)
- 				xdp_xmit = true;
- 
-+			xdp->data = NULL;
- 			total_rx_packets++;
- 			total_rx_bytes += xdp_get_buff_len(&xdp->base);
- 			continue;
-@@ -870,16 +960,7 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
- 	/* place incomplete frames back on ring for completion */
- 	libeth_xdp_save_buff(&rx_ring->xdp_stash, xdp);
- 
--	if (xdp_xmit) {
--		struct ixgbevf_ring *xdp_ring =
--			adapter->xdp_ring[rx_ring->queue_index];
--
--		/* Force memory writes to complete before letting h/w
--		 * know there are new descriptors to fetch.
--		 */
--		wmb();
--		ixgbevf_write_tail(xdp_ring, xdp_ring->next_to_use);
--	}
-+	ixgbevf_rx_finalize_xdp(&xdp_tx_bulk, xdp_xmit, cached_ntu);
- 
- 	u64_stats_update_begin(&rx_ring->syncp);
- 	rx_ring->stats.packets += total_rx_packets;
-@@ -909,6 +990,8 @@ static int ixgbevf_poll(struct napi_struct *napi, int budget)
- 	bool clean_complete = true;
- 
- 	ixgbevf_for_each_ring(ring, q_vector->tx) {
-+		if (ring_is_xdp(ring))
-+			continue;
- 		if (!ixgbevf_clean_tx_irq(q_vector, ring, budget))
- 			clean_complete = false;
- 	}
-@@ -1348,6 +1431,7 @@ static void ixgbevf_configure_tx_ring(struct ixgbevf_adapter *adapter,
- 	/* reset ntu and ntc to place SW in sync with hardwdare */
- 	ring->next_to_clean = 0;
- 	ring->next_to_use = 0;
-+	ring->pending = 0;
- 
- 	/* In order to avoid issues WTHRESH + PTHRESH should always be equal
- 	 * to or less than the number of on chip descriptors, which is
-@@ -1360,8 +1444,12 @@ static void ixgbevf_configure_tx_ring(struct ixgbevf_adapter *adapter,
- 		   32;           /* PTHRESH = 32 */
- 
- 	/* reinitialize tx_buffer_info */
--	memset(ring->tx_buffer_info, 0,
--	       sizeof(struct ixgbevf_tx_buffer) * ring->count);
-+	if (!ring_is_xdp(ring))
-+		memset(ring->tx_buffer_info, 0,
-+		       sizeof(struct ixgbevf_tx_buffer) * ring->count);
-+	else
-+		memset(ring->xdp_sqes, 0,
-+		       sizeof(struct libeth_sqe) * ring->count);
- 
- 	clear_bit(__IXGBEVF_HANG_CHECK_ARMED, &ring->state);
- 	clear_bit(__IXGBEVF_TX_XDP_RING_PRIMED, &ring->state);
-@@ -2016,10 +2104,7 @@ static void ixgbevf_clean_tx_ring(struct ixgbevf_ring *tx_ring)
- 		union ixgbe_adv_tx_desc *eop_desc, *tx_desc;
- 
- 		/* Free all the Tx ring sk_buffs */
--		if (ring_is_xdp(tx_ring))
--			libeth_xdp_return_va(tx_buffer->data, false);
--		else
--			dev_kfree_skb_any(tx_buffer->skb);
-+		dev_kfree_skb_any(tx_buffer->skb);
- 
- 		/* unmap skb header data */
- 		dma_unmap_single(tx_ring->dev,
-@@ -2088,7 +2173,7 @@ static void ixgbevf_clean_all_tx_rings(struct ixgbevf_adapter *adapter)
- 	for (i = 0; i < adapter->num_tx_queues; i++)
- 		ixgbevf_clean_tx_ring(adapter->tx_ring[i]);
- 	for (i = 0; i < adapter->num_xdp_queues; i++)
--		ixgbevf_clean_tx_ring(adapter->xdp_ring[i]);
-+		ixgbevf_clean_xdp_ring(adapter->xdp_ring[i]);
- }
- 
- void ixgbevf_down(struct ixgbevf_adapter *adapter)
-@@ -2834,8 +2919,6 @@ static void ixgbevf_check_hang_subtask(struct ixgbevf_adapter *adapter)
- 	if (netif_carrier_ok(adapter->netdev)) {
- 		for (i = 0; i < adapter->num_tx_queues; i++)
- 			set_check_for_tx_hang(adapter->tx_ring[i]);
--		for (i = 0; i < adapter->num_xdp_queues; i++)
--			set_check_for_tx_hang(adapter->xdp_ring[i]);
- 	}
- 
- 	/* get one bit for every active Tx/Rx interrupt vector */
-@@ -2979,7 +3062,10 @@ static void ixgbevf_service_task(struct work_struct *work)
-  **/
- void ixgbevf_free_tx_resources(struct ixgbevf_ring *tx_ring)
- {
--	ixgbevf_clean_tx_ring(tx_ring);
-+	if (!ring_is_xdp(tx_ring))
-+		ixgbevf_clean_tx_ring(tx_ring);
-+	else
-+		ixgbevf_clean_xdp_ring(tx_ring);
- 
- 	vfree(tx_ring->tx_buffer_info);
- 	tx_ring->tx_buffer_info = NULL;
-@@ -2988,7 +3074,7 @@ void ixgbevf_free_tx_resources(struct ixgbevf_ring *tx_ring)
- 	if (!tx_ring->desc)
+ 	/* nothing to do or no valid netdev defined */
+-	if (!cleaned_count || !rx_ring->netdev)
++	if (unlikely(!cleaned_count || !rx_ring->netdev))
  		return;
  
--	dma_free_coherent(tx_ring->dev, tx_ring->size, tx_ring->desc,
-+	dma_free_coherent(tx_ring->dev, tx_ring->dma_size, tx_ring->desc,
- 			  tx_ring->dma);
+ 	rx_desc = IXGBEVF_RX_DESC(rx_ring, ntu);
+@@ -586,7 +586,7 @@ static void ixgbevf_alloc_rx_buffers(struct ixgbevf_ring *rx_ring,
  
- 	tx_ring->desc = NULL;
-@@ -3023,7 +3109,9 @@ int ixgbevf_setup_tx_resources(struct ixgbevf_ring *tx_ring)
- 	struct ixgbevf_adapter *adapter = netdev_priv(tx_ring->netdev);
- 	int size;
+ 		rx_desc++;
+ 		ntu++;
+-		if (unlikely(ntu == rx_ring->count)) {
++		if (unlikely(ntu == fq.count)) {
+ 			rx_desc = IXGBEVF_RX_DESC(rx_ring, 0);
+ 			ntu = 0;
+ 		}
+@@ -823,7 +823,7 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
  
--	size = sizeof(struct ixgbevf_tx_buffer) * tx_ring->count;
-+	size = (!ring_is_xdp(tx_ring) ? sizeof(struct ixgbevf_tx_buffer) :
-+		sizeof(struct libeth_sqe)) * tx_ring->count;
+ 		rx_desc = IXGBEVF_RX_DESC(rx_ring, rx_ring->next_to_clean);
+ 		size = le16_to_cpu(rx_desc->wb.upper.length);
+-		if (!size)
++		if (unlikely(!size))
+ 			break;
+ 
+ 		/* This memory barrier is needed to keep us from reading
+@@ -855,7 +855,7 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
+ 		}
+ 
+ 		/* exit if we failed to retrieve a buffer */
+-		if (!xdp_res && !skb) {
++		if (unlikely(!xdp_res && !skb)) {
+ 			rx_ring->rx_stats.alloc_rx_buff_failed++;
+ 			break;
+ 		}
+@@ -867,21 +867,19 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
+ 			continue;
+ 
+ 		/* verify the packet layout is correct */
+-		if (xdp_res || ixgbevf_cleanup_headers(rx_ring, rx_desc, skb)) {
++		if (xdp_res ||
++		    unlikely(ixgbevf_cleanup_headers(rx_ring, rx_desc, skb))) {
+ 			skb = NULL;
+ 			continue;
+ 		}
+ 
+-		/* probably a little skewed due to removing CRC */
+-		total_rx_bytes += skb->len;
+-
+ 		/* Workaround hardware that can't do proper VEPA multicast
+ 		 * source pruning.
+ 		 */
+-		if ((skb->pkt_type == PACKET_BROADCAST ||
+-		     skb->pkt_type == PACKET_MULTICAST) &&
+-		    ether_addr_equal(rx_ring->netdev->dev_addr,
+-				     eth_hdr(skb)->h_source)) {
++		if (unlikely((skb->pkt_type == PACKET_BROADCAST ||
++			      skb->pkt_type == PACKET_MULTICAST) &&
++			     ether_addr_equal(rx_ring->netdev->dev_addr,
++					      eth_hdr(skb)->h_source))) {
+ 			dev_kfree_skb_irq(skb);
+ 			continue;
+ 		}
+@@ -889,13 +887,14 @@ static int ixgbevf_clean_rx_irq(struct ixgbevf_q_vector *q_vector,
+ 		/* populate checksum, VLAN, and protocol */
+ 		ixgbevf_process_skb_fields(rx_ring, rx_desc, skb);
+ 
++		/* probably a little skewed due to removing CRC */
++		total_rx_bytes += skb->len;
++		total_rx_packets++;
 +
- 	tx_ring->tx_buffer_info = vmalloc(size);
- 	if (!tx_ring->tx_buffer_info)
- 		goto err;
-@@ -3031,10 +3119,10 @@ int ixgbevf_setup_tx_resources(struct ixgbevf_ring *tx_ring)
- 	u64_stats_init(&tx_ring->syncp);
+ 		ixgbevf_rx_skb(q_vector, skb);
  
- 	/* round up to nearest 4K */
--	tx_ring->size = tx_ring->count * sizeof(union ixgbe_adv_tx_desc);
--	tx_ring->size = ALIGN(tx_ring->size, 4096);
-+	tx_ring->dma_size = tx_ring->count * sizeof(union ixgbe_adv_tx_desc);
-+	tx_ring->dma_size = ALIGN(tx_ring->dma_size, 4096);
+ 		/* reset skb pointer */
+ 		skb = NULL;
+-
+-		/* update budget accounting */
+-		total_rx_packets++;
+ 	}
  
--	tx_ring->desc = dma_alloc_coherent(tx_ring->dev, tx_ring->size,
-+	tx_ring->desc = dma_alloc_coherent(tx_ring->dev, tx_ring->dma_size,
- 					   &tx_ring->dma, GFP_KERNEL);
- 	if (!tx_ring->desc)
- 		goto err;
-@@ -3123,10 +3211,10 @@ int ixgbevf_setup_rx_resources(struct ixgbevf_adapter *adapter,
- 	u64_stats_init(&rx_ring->syncp);
- 
- 	/* Round up to nearest 4K */
--	rx_ring->size = rx_ring->count * sizeof(union ixgbe_adv_rx_desc);
--	rx_ring->size = ALIGN(rx_ring->size, 4096);
-+	rx_ring->dma_size = rx_ring->count * sizeof(union ixgbe_adv_rx_desc);
-+	rx_ring->dma_size = ALIGN(rx_ring->dma_size, 4096);
- 
--	rx_ring->desc = dma_alloc_coherent(fq.pp->p.dev, rx_ring->size,
-+	rx_ring->desc = dma_alloc_coherent(fq.pp->p.dev, rx_ring->dma_size,
- 					   &rx_ring->dma, GFP_KERNEL);
- 
- 	if (!rx_ring->desc) {
-@@ -3202,7 +3290,7 @@ void ixgbevf_free_rx_resources(struct ixgbevf_ring *rx_ring)
- 	xdp_rxq_info_detach_mem_model(&rx_ring->xdp_rxq);
- 	xdp_rxq_info_unreg(&rx_ring->xdp_rxq);
- 
--	dma_free_coherent(fq.pp->p.dev, rx_ring->size, rx_ring->desc,
-+	dma_free_coherent(fq.pp->p.dev, rx_ring->dma_size, rx_ring->desc,
- 			  rx_ring->dma);
- 	rx_ring->desc = NULL;
- 
+ 	/* place incomplete frames back on ring for completion */
 -- 
 2.52.0
 
