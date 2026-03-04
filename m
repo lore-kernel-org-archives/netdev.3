@@ -1,180 +1,218 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3523C3C07;
-	Wed,  4 Mar 2026 15:00:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D419B3C6A36;
+	Wed,  4 Mar 2026 15:00:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772636402; cv=none; b=Rm47Ht9nLsd3fmLfaeCPqZhfTP3b1ipztKHqOmwsOVO0PLEQhVpQ67ULrh+LqmZYkUn+QdBW3nOE5sfIYwV9ZWryqAIfCqIsGdXPy0Lz9d1FLweRQkCIV6ej4BDqd5YDYGZApFxmadIze/zVpkKG7WynnC016Y39Gi/E4ISsXbs=
+	t=1772636404; cv=none; b=OIur3zdOXTXRuQ3/HCdD0hWUEzohrQk6VGZecpsogMfxaaMHjR9S0jsoPjc+rTMzMPB90WBuQOcjuOnqO/n/mIoKHmcxVm5ufOQugEk0PbspNtTeSTdeUWh2fy34DzjgirI/8z0ofdHqwgiWWdwmgRk64RxnbeTZDyKQct7bw5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772636402; c=relaxed/simple;
-	bh=wL+j94lcC2pnf64dqcTGe4lJKYr0KLZgqJWZVNjFYA8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HR1B2GvTvG4j+4oQZfpROQ14BgeaejOUNDTqVQ49vtOA7DFPBdJdcvlLqXIuXfzmioAGyN5YwigP4p70yS0gFTTMuLVZEkoriPCXjqthvTOdIoLD0aRKnyJ/bC770uxxDmjVA/r861t/M3GMC5Kr1zUrHKYpAzlu4s/9K7qnvV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=BexXbVtF; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1772636404; c=relaxed/simple;
+	bh=16E405jWrEfN4a6uwMbsHHztxI1WGoONQmT+FIcdDU4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rGLxigv0UZGPbEVi6BiGhLVmWM6YVB4tOqS/r6rbeHEjSb3Xz5tNRyYH2IOTEf1mxGHY6IVWUfqRO5InQ+LPt9WXuqdCgpZymP5z4Fzb/I+E/+ezg72DyEak3RLkrhwp+BpY1IMwXOjxyK6fxdN0ozz4HLX5RjYzlrMAEiGkjZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ABGn02UV; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="BexXbVtF"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=vqPIfe+mfsqFhoVG72QNFvYOtrojMOGGbstCn1l5Va0=; b=BexXbVtFTtWrabAERt3I7VaQUE
-	1MDE/MWnlrPGimoVaeUcdFk3FB5zaA8BjNLAPHpAYn7v9Q4G0Kwcr5Jl3Q1XLsVswkXw0CyTTLaL/
-	g/dxJutxfPtrr083s9hbQTqwycBJ/VpA4S0S99OWCob94R/W08s1BOKSyzpRiCrzXEWM=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vxnhP-00A7ZE-C5; Wed, 04 Mar 2026 15:59:43 +0100
-Date: Wed, 4 Mar 2026 15:59:43 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>, kevin-kw.huang@airoha.com,
-	macpaul.lin@mediatek.com, matthias.bgg@gmail.com,
-	kernel@collabora.com, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next 2/2] net: phy: Introduce Airoha AN8801/R Gigabit
- Ethernet PHY driver
-Message-ID: <3fbfabf7-b3af-405b-ade4-4f62db2c1c45@lunn.ch>
-References: <20260304-add-airoha-an8801-support-v1-0-0ae4ee5a2f9d@collabora.com>
- <20260304-add-airoha-an8801-support-v1-2-0ae4ee5a2f9d@collabora.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ABGn02UV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1772636402; x=1804172402;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=16E405jWrEfN4a6uwMbsHHztxI1WGoONQmT+FIcdDU4=;
+  b=ABGn02UVmu4/TIkCGSFTX8q9xhkMagqhuf7lohud6bEOsTd0Prcxtz53
+   mmcto4XK3ai1EkOleC9PLrlFKaFbT2DN7m6fcHL9flo6/WSouDcnI/6Oh
+   BM21ps7e2EUY5NKHl6SUi78WtXxQd3jvCLeU48y7aTc86DbLmhRppuVcH
+   ZZvfB88UY+HXkGmRIJXuT/7o3JKWeWruuGyK7H5DFONAZQpzYA3KOB9Or
+   UoRpCOr79UEWiJb3ekBY0yl0dJSq7v7FRP7OEzbGbq79e6y5XX/KxlajX
+   rvBBiGjmnRDfveT21x2WNg8JQEKrqr5rQVzP/rOwitzdstZ2MmYBgPpzc
+   A==;
+X-CSE-ConnectionGUID: UCaRE/fBR4K2V+i0Z7y/9Q==
+X-CSE-MsgGUID: rrIA1Uv2SySFdtdtXiX7gg==
+X-IronPort-AV: E=Sophos;i="6.21,324,1763449200"; 
+   d="scan'208";a="221483058"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 08:00:02 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Wed, 4 Mar 2026 07:59:37 -0700
+Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
+ chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58 via Frontend Transport; Wed, 4 Mar 2026 07:59:37 -0700
+Date: Wed, 4 Mar 2026 06:59:35 -0800
+From: Charles Perry <charles.perry@microchip.com>
+To: Conor Dooley <conor@kernel.org>
+CC: <netdev@vger.kernel.org>, Sean Anderson <sean.anderson@linux.dev>,
+	"Nicolas Ferre" <nicolas.ferre@microchip.com>, Claudiu Beznea
+	<claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Russell King
+	<linux@armlinux.org.uk>, <linux-kernel@vger.kernel.org>,
+	<charles.perry@microchip.com>
+Subject: Re: [PATCH net-next v2 1/3] net: macb: fix SGMII with inband aneg
+ disabled
+Message-ID: <aahI1y0NO9ax/V8J@bby-cbu-swbuild03.eng.microchip.com>
+References: <20260224202854.112813-1-charles.perry@microchip.com>
+ <20260224202854.112813-2-charles.perry@microchip.com>
+ <20260304-nebulizer-rounding-40fbc81a2ba1@spud>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20260304-add-airoha-an8801-support-v1-2-0ae4ee5a2f9d@collabora.com>
+In-Reply-To: <20260304-nebulizer-rounding-40fbc81a2ba1@spud>
 
-> +static int an8801r_did_interrupt(struct phy_device *phydev)
-> +{
-> +	u32 irq_en, irq_status;
-> +	int ret;
-> +
-> +	ret = air_buckpbus_reg_read(phydev, AN8801_BPBUS_REG_WAKE_IRQ_EN,
-> +				    &irq_en);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = air_buckpbus_reg_read(phydev, AN8801_BPBUS_REG_WAKE_IRQ_STS,
-> +				    &irq_status);
-> +	if (ret)
-> +		return ret;
-> +
-> +	if (irq_status & AN8801_IRQ_WAKE_MAGICPKT)
-> +		return 0;
+On Wed, Mar 04, 2026 at 11:15:43AM +0000, Conor Dooley wrote:
+> On Tue, Feb 24, 2026 at 12:28:52PM -0800, Charles Perry wrote:
+> > Make it possible to connect a PHY which does not use inband
+> > autoneg to a gem MAC using phylink's information.
+> > 
+> > The previous implementation relied on whether or not the link
+> > was a fixed-link to disable SGMII autoneg. This commit extend
+> > this to all link which are not configured for inband
+> > autonegotiation.
+> > 
+> > Signed-off-by: Charles Perry <charles.perry@microchip.com>
+> 
+> This breaks the macb on mpfs-icicle-kit, I get stuck with:
+> 
+> [    7.189102] mpfs-sys-controller syscontroller: Registered MPFS system controller
+> [    7.260946] macb 20110000.ethernet eth0: PHY [20112000.ethernet-ffffffff:08] driver [Vitesse VSC8662] (irq=POLL)
+> [    7.273881] macb 20110000.ethernet eth0: configuring for phy/sgmii link mode
+> [    7.296580] macb 20110000.ethernet: gem-ptp-timer ptp clock registered.
+> [    7.345782] macb 20112000.ethernet eth1: PHY [20112000.ethernet-ffffffff:09] driver [Vitesse VSC8662] (irq=POLL)
+> [    7.358082] macb 20112000.ethernet eth1: configuring for phy/sgmii link mode
+> [    7.380479] macb 20112000.ethernet: gem-ptp-timer ptp clock registered.
+> [   11.376763] macb 20110000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
+> [   11.398403] Sending DHCP requests .
+> [   11.472699] macb 20112000.ethernet eth1: Link is Up - 1Gbps/Full - flow control off
+> [   13.938425] ..... timed out!
+> [   93.598491] macb 20110000.ethernet eth0: Link is Down
+> [   93.641823] macb 20110000.ethernet: gem-ptp-timer ptp clock unregistered.
+> [   93.659433] macb 20112000.ethernet eth1: Link is Down
+> [   93.691724] macb 20112000.ethernet: gem-ptp-timer ptp clock unregistered.
+> [   93.703977] IP-Config: Retrying forever (NFS root)...
+> [   93.758382] macb 20110000.ethernet eth0: PHY [20112000.ethernet-ffffffff:08] driver [Vitesse VSC8662] (irq=POLL)
+> [   93.770655] macb 20110000.ethernet eth0: configuring for phy/sgmii link mode
+> [   93.786497] macb 20110000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
+> [   93.795840] macb 20110000.ethernet: gem-ptp-timer ptp clock registered.
+> [   93.844481] macb 20112000.ethernet eth1: PHY [20112000.ethernet-ffffffff:09] driver [Vitesse VSC8662] (irq=POLL)
+> [   93.856769] macb 20112000.ethernet eth1: configuring for phy/sgmii link mode
+> [   93.870926] macb 20112000.ethernet eth1: Link is Up - 1Gbps/Full - flow control off
+> [   93.880302] macb 20112000.ethernet: gem-ptp-timer ptp clock registered.
+> 
 
-With a name like an8801r_did_interrupt() you would expect the return
-value to be some value of True, if there was an interrupt. I would
-suggest either a different name, or return 1. Maybe also add a
-kerneldoc header indicating the return values, since it is probably
-not going to be standard.
+Hello Conor,
 
-> +static void an8801r_get_wol(struct phy_device *phydev,
-> +			    struct ethtool_wolinfo *wol)
-> +{
-> +	u32 reg_val;
-> +
-> +	air_buckpbus_reg_read(phydev, AN8801_BPBUS_REG_WAKEUP_CTL1, &reg_val);
-> +
-> +	wol->supported = WAKE_MAGIC;
+I checked the driver for the VSC8662 and it doesn't have the
+->inband_caps() and ->config_inband() callbacks so Linux leaves whatever
+the bootloader puts or uses the defaults. Looking at the datasheet, this
+should be register 23 (Extended PHY Control Set 1) bit 13 (MAC interface
+auto-negotiation)
 
-How does WoL work on this device. Only via interrupts? If so, maybe
-you should only return WAKE_MAGIC as supported if there is a valid
-interrupt?
+My guess is that this bit is set and since this patch disable inband
+autonegotiation (because phylink decides it), there is a mismatch.
 
-> +static int an8801r_rgmii_delay_config(struct phy_device *phydev)
-> +{
-> +	switch (phydev->interface) {
-> +	case PHY_INTERFACE_MODE_RGMII_TXID:
-> +		return an8801r_rgmii_txdelay(phydev, 4);
-> +	case PHY_INTERFACE_MODE_RGMII_RXID:
-> +		return an8801r_rgmii_rxdelay(phydev, 0);
-> +	case PHY_INTERFACE_MODE_RGMII_ID:
-> +		return an8801r_rgmii_txdelay(phydev, 4);
-> +		return an8801r_rgmii_rxdelay(phydev, 0);
+Can you add 'managed = "in-band-status"' in your device tree under the macb
+node? That's not necessarily the fix, I just want to confirm my theory.
+Also '#define DEBUG' in 'drivers/net/phy/phylink.c' can help if you can
+recompile your kernel.
 
-The parameters look very odd here. 4 means 2ns, but 0 also means 0ns?
-Can this API be improved?
+> and because I am NFS root, it breaks boot :)
+> 
+> btw, I don't see an explanation in hte commit message for why the
+> macb_is_gem(bp) got dropped? Is this now done unconditionally when it
+> was conditional before?
+> 
 
-Also, PHY_INTERFACE_MODE_RGMII_TXID means 2ns delay for TX, but it
-also means 0ns delay for RX. The code appears to be missing this
-second part.
+Well if you get to the ->macb_pcs_config() callback, you most certainly
+have an SGMII PCS block. Does your IP have the PCS registers? (0x200 to
+0x23c) Also I thought that macb doesn't do SGMII (only GEM does) so it
+can't reach ->macb_pcs_config(). 
+
+Thanks alot for the testing!
+
+Regards,
+Charles
+
+> Cheers,
+> Conor.
+> 
+> > ---
+> > 
+> > Notes:
+> >     Changes in v2:
+> >       * Move my notes to the cover letter
+> >       * Remove the spinlock in macb_pcs_config
+> >       * Keep the comment about the PCSSEL register
+> > 
+> >  drivers/net/ethernet/cadence/macb_main.c | 36 +++++++++++++-----------
+> >  1 file changed, 20 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+> > index f72270a39d25..f4250e76cef0 100644
+> > --- a/drivers/net/ethernet/cadence/macb_main.c
+> > +++ b/drivers/net/ethernet/cadence/macb_main.c
+> > @@ -574,6 +574,26 @@ static int macb_pcs_config(struct phylink_pcs *pcs,
+> >  			   const unsigned long *advertising,
+> >  			   bool permit_pause_to_mac)
+> >  {
+> > +	struct macb *bp = container_of(pcs, struct macb, phylink_sgmii_pcs);
+> > +	u32 old, new;
+> > +
+> > +	old = gem_readl(bp, PCSANADV);
+> > +	new = phylink_mii_c22_pcs_encode_advertisement(interface, advertising);
+> > +	if (new != -EINVAL && old != new)
+> > +		gem_writel(bp, PCSANADV, new);
+> > +
+> > +	/* Disable AN if it's not to be used, enable otherwise.
+> > +	 * Must be written after PCSSEL is set in NCFGR which is done in
+> > +	 * macb_mac_config(), otherwise writes will not take effect.
+> > +	 */
+> > +	old = gem_readl(bp, PCSCNTRL);
+> > +	if (neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED)
+> > +		new = old | BMCR_ANENABLE;
+> > +	else
+> > +		new = old & ~BMCR_ANENABLE;
+> > +	if (old != new)
+> > +		gem_writel(bp, PCSCNTRL, new);
+> > +
+> >  	return 0;
+> >  }
+> >  
+> > @@ -628,22 +648,6 @@ static void macb_mac_config(struct phylink_config *config, unsigned int mode,
+> >  	if (old_ncr ^ ncr)
+> >  		macb_or_gem_writel(bp, NCR, ncr);
+> >  
+> > -	/* Disable AN for SGMII fixed link configuration, enable otherwise.
+> > -	 * Must be written after PCSSEL is set in NCFGR,
+> > -	 * otherwise writes will not take effect.
+> > -	 */
+> > -	if (macb_is_gem(bp) && state->interface == PHY_INTERFACE_MODE_SGMII) {
+> > -		u32 pcsctrl, old_pcsctrl;
+> > -
+> > -		old_pcsctrl = gem_readl(bp, PCSCNTRL);
+> > -		if (mode == MLO_AN_FIXED)
+> > -			pcsctrl = old_pcsctrl & ~GEM_BIT(PCSAUTONEG);
+> > -		else
+> > -			pcsctrl = old_pcsctrl | GEM_BIT(PCSAUTONEG);
+> > -		if (old_pcsctrl != pcsctrl)
+> > -			gem_writel(bp, PCSCNTRL, pcsctrl);
+> > -	}
+> > -
+> >  	spin_unlock_irqrestore(&bp->lock, flags);
+> >  }
+> >  
+> > -- 
+> > 2.47.3
+> > 
 
 
-> +	case PHY_INTERFACE_MODE_RGMII:
-
-And here you should be disabling all delays. We have seen boards where
-the strapping is wrong, the PHY boots in RGMII_ID, but RGMII is
-required, and so the driver must fully implement
-PHY_INTERFACE_MODE_RGMII disabling the delays.
-
-> +static int an8801r_config_init(struct phy_device *phydev)
-> +{
-> +	u8 led_default_function[AN8801R_NUM_LEDS] = { 0 };
-> +	int prev_page, ret;
-> +
-> +	ret = an8801r_of_init_leds(phydev, led_default_function);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Disable Low Power Mode (LPM) */
-> +	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, AN8801_REG_PHY_INTERNAL0,
-> +			    FIELD_PREP(AN8801_PHY_INTFUNC_MASK, 0x1e));
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = phy_write_mmd(phydev, MDIO_MMD_VEND2, AN8801_REG_PHY_INTERNAL1,
-> +			    FIELD_PREP(AN8801_PHY_INTFUNC_MASK, 0x2));
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Disable EEE by default */
-> +	ret = phy_write_mmd(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV, 0);
-> +	if (ret)
-> +		return ret;
-
-Why? If EEE is broken, this is not sufficient to stop a user
-re-enabling it.
-
-> +static int an8801r_read_status(struct phy_device *phydev)
-> +{
-> +	int prev_speed, ret;
-> +	u32 val;
-> +
-> +	prev_speed = phydev->speed;
-> +
-> +	ret = genphy_read_status(phydev);
-> +	if (ret)
-> +		return ret;
-
-You configure the PHY to support downshift. If it has performed a
-downshift, does it report the actual speed in the usual registers read
-by genphy_read_status(), or is it necessary to read a vendor register?
-
-> +static struct phy_driver airoha_driver[] = {
-> +{
-> +	PHY_ID_MATCH_MODEL(AN8801R_PHY_ID),
-> +	.name			= "Airoha AN8801R",
-> +	.features		= PHY_GBIT_FEATURES,
-
-Should not be needed, if the PHY enumerates its capabilities
-correctly.
-
-    Andrew
-
----
-pw-bot: cr
