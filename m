@@ -1,117 +1,155 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 681E5382290
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 07:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772610119; cv=pass; b=uvSSXxSNuzRUtFM7vS/Nm2mrBArcBHMpcFMtkSo4B2EQOlCPNO5a3MYt47gSkhYX2mq2zxRdD5OY2oyZmWE6VtDSIgmCvtb8L8+MsEDmgWQiLN5nXRkxDegt7YjVTNHn5ItxWnBWPiEQlpp94ydVjj08In1abwSV6THR+VTjwds=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772610119; c=relaxed/simple;
-	bh=qlUnuSDjsJk4CS2+9S9es8EW3SmkE/njFl/U6Z2OlLs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=quxAS3+rjc+fuXhHWQ5QD3YzBU0GS5l6aY1IS1YMTOP1H8HtiyAtS7PqkAAvYmj7lsmBrGbXwl+mvqnyTrxs7IdgFi6hwMcAJ40ino0MFGPOogoJZVgbaWzDQczLllxKzdRdJdp463Dy73IywDrlBBhA7zNQkxm6geQENyNMWYo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iJhRg7dD; arc=pass smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1E1418A6DB
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 07:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772610218; cv=none; b=WDExHl8/Xb6gW85Zm5HchcVSntPx37s1YNAa3EjyMgnsW0ChurykLzH9hXoU2jf9xSHMc0sTiVRRrtQkr8yfOrk04rHAY1b1pUO6UQWnui8wia0iJMBNAAjyNytUx3xj0cY/G08rnc+LrvJl01Ol5ABZ9i6dvhYvqkWFDysivVw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772610218; c=relaxed/simple;
+	bh=ds9fEzCzgnOh8aZtFA8qphSeg7jiatW+uffLqHndLZk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=j2yNUwDclgHARVr3bgKzKFbdqCDSS59l4bLGJy9eu0UE/7mnvRF3RaeTchwVUu9fU2XMeATSrp/DTetp2La27V4Yy8nhrGlJuaiCmxlJiF4cuLwoWk+JMhQOQ55KGaZvz3e96HXPgeA+UnyKE45Inj4oMcsBYfSqlbN58HQfM0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hPttfdbf; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iJhRg7dD"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-386fb2c31e2so118848101fa.1
-        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 23:41:56 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772610114; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CQGcMcaqIGB0OV93zSw7Xodhx2rsyJgW5jBtLtJRqge1KnD13owIAKNFXY9COkq9i5
-         Me77ZIaGStd4ai4s9qNxU441sZE2dAgWm8sYzTr9wBT/5/2s6SX6ElOzj5Ds5ufcn+lz
-         6fcVTDaHgYX7wD6cfXbNbV/2KXsYeejwmuNymutUDyiCZ39+6BH9Bf8pv4+9Jm5rbPTy
-         TbGAbJYSHd90vOQyhEREbH3I1v89GkO2ncVAJdxWfKniG1L2edifm8PYy4wWcefZJMU6
-         TI1PaFFY6RXhwuyD7hY75SdRXMsWUK4/B7WON7hmVUv58jBeg/56Xp9HDgm17+4ifn/2
-         0wLA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=qlUnuSDjsJk4CS2+9S9es8EW3SmkE/njFl/U6Z2OlLs=;
-        fh=eWq335HgoE9wufq8cJAqTeKde+wizbm17azVCD5tdSc=;
-        b=WdsWOVmWya+Ss8J5kSQ8Hg7ZgA9nJljt/76PV+67B6Da3UGXsgxUwnvEKUMXqLGtif
-         v89s/hK8q4wYaMPBDZf6Z+mFAG2PfUkcScrghKjPa/ZK2WIGb4jhXqz3O94y1c7fShZE
-         oEjFob6izIa1jZIg8c/x4klZJ5SYimkQ93RymgfZl4A6nua/FkbLM+T4jsRhP1N9pQHH
-         BBv9bDuLNSN/UoWkbNtqJR22GFeoomnGRE9L+sVbfslexhDuMFHKDqshNKViEXs7qPhx
-         2xJGWIUdRWd/3bnA6ZT8EEssZtuTdCriZ6c4ueTPp5Zl97f1WJmaahOlBJGaOfvIHNH2
-         B8ZQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772610114; x=1773214914; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qlUnuSDjsJk4CS2+9S9es8EW3SmkE/njFl/U6Z2OlLs=;
-        b=iJhRg7dDg8nKTBaphuwQiEU3LU6r1Nm852JMQ3kD6c2HdOx7VXCP8LbEUgh+uWbZjG
-         2vI7Mps6LTkCfEvC8yq623MZDIwkKZ7H8BX3yKac+G0oeoxNGttM8S8aVy0GAw8E/p3S
-         AIIiAkf/lpTgb4qtJUlrdss9bwpM+tLRuL4uI9BRaohDRXcUiz6IbZ0KDNqpPH9X6uN0
-         bdZ7FLZDzle+7QZvQ2kmIWu4Yzi+9uaRWc0d8pY4J7eafdZqCp33hfvEvjwcarHT5ud+
-         rKRvSNm8QJ+ZLm6un1TJUQcSLiSK/7PlIPmBHDzfCnmwFztfkWz5JH1fXfzHeCNV7yya
-         ajPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772610114; x=1773214914;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qlUnuSDjsJk4CS2+9S9es8EW3SmkE/njFl/U6Z2OlLs=;
-        b=omm9ruj/KHteg/eoH/Fr0BxZ/lJ4LizRFdZptFjiBtk6HiTNbGxo8XDAI27XjKfFH0
-         tvW+av+oauW2wEBup4zxqsFQRXZit02KpZ+bT2NgU+IxDUpvsMQKBXhQ7kBR6/xddHB0
-         LOdiHQ3eo+YzTvx7fRUOOd6hsEj7kdD9dbRGFZQntbVIiToo0P+KEnDWj6EkJZGC9lFQ
-         NeLx2VXFTt7xYOY+YoSFZGTL7Yzxk/UzOdidVLmaardZ0QTVOGeBKL4UXylvC2r847Zs
-         ZIhOz3d/hntpWKAvNUAyFJNJQTt3fxS+7pVqMB7FskUNFtmcTTPNlu6dOQdzxooXk4E1
-         yEDg==
-X-Gm-Message-State: AOJu0YzacXhJexUl3E7E9Y6CNF0ORdqfIhzGKHzC+ubgLR3nZ1EnNg79
-	wQlEBt/zJmuU7cmXOLY8mo35r9WcmHNquYINXRKyXc3avkgc6++HWAG4QyODRGYkXm7C6N8MmaF
-	6GBWXVcCRRGrrkrfcx6jkV57Pd+vlN0k=
-X-Gm-Gg: ATEYQzyqWH77w+Smo4O0PC83/rEdhZFfkTHbJGPQAU113t0+xmlX40DfsxAJ2D+JYXh
-	OstUSq/WK930NIe5lr5D2Opv/cz/mcOcNZhrSJJvs/MtRrYGfL+rJS1L68p9XWmtGAetpkg1qxd
-	zccZbKoIKIBGSA1krV6aInFHFVC2Qud+mzNpzGQysprwnCy2QjhmNkh6zf2uEy7qsvMs46bjol6
-	FXH4HuXnJQRG5aMmxFWk88kM1AMBps+Mz0XkhOJWYTqawKPXcQIDsRFrZV5lCBEdQtDOjqXtzpM
-	QDr84WeH
-X-Received: by 2002:a2e:8e79:0:b0:38a:26ab:700c with SMTP id
- 38308e7fff4ca-38a2c7d3c60mr7461441fa.31.1772610114211; Tue, 03 Mar 2026
- 23:41:54 -0800 (PST)
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hPttfdbf"
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772610214;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gkKYESAH5YFAD03Jj76NpTW6HeKRoN5KgHV8fqdKUwk=;
+	b=hPttfdbfoMJn5mkbkpzGib/ixwWVH0nVRqwVGlyIaVXN9oRVzmBs5c5HBelUUTKaec9iba
+	Z4Jz4Xq/vaUOzJG9K2wyfuWbtmATt2rQlm63ShEphIYdfmjN+vIRmhWudq7wFzXodtx9iD
+	4n9V8PUb0fIoIDas7XPnB0O36Oqu4Hg=
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: jv@jvosburgh.net,
+	netdev@vger.kernel.org
+Cc: jiayuan.chen@linux.dev,
+	jiayuan.chen@shopee.com,
+	syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	KP Singh <kpsingh@kernel.org>,
+	Hao Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Shuah Khan <shuah@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jussi Maki <joamaki@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	bpf@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Subject: [PATCH net v4 1/2] bonding: fix null-ptr-deref in bond_rr_gen_slave_id()
+Date: Wed,  4 Mar 2026 15:42:57 +0800
+Message-ID: <20260304074301.35482-2-jiayuan.chen@linux.dev>
+In-Reply-To: <20260304074301.35482-1-jiayuan.chen@linux.dev>
+References: <20260304074301.35482-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260302164158.4394-1-minhquangbui99@gmail.com>
-In-Reply-To: <20260302164158.4394-1-minhquangbui99@gmail.com>
-From: Jason Xing <kerneljasonxing@gmail.com>
-Date: Wed, 4 Mar 2026 15:41:16 +0800
-X-Gm-Features: AaiRm53kjsodLbYCGuUlv_RazlGLZcLSlUxqsUZ1o3B6kF53z5rIZZK8GKmcp50
-Message-ID: <CAL+tcoAm8wBEes9unXrssHHsnPP28b0XcOdqQN-TVtet5O2sAA@mail.gmail.com>
-Subject: Re: [PATCH net-next v2] virtio-net: xsk: Support wakeup on RX side
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Tue, Mar 3, 2026 at 1:03=E2=80=AFAM Bui Quang Minh <minhquangbui99@gmail=
-.com> wrote:
->
-> When XDP_USE_NEED_WAKEUP is used and the fill ring is empty so no buffer
-> is allocated on RX side, allow RX NAPI to be descheduled. This avoids
-> wasting CPU cycles on polling. Users will be notified and they need to
-> make a wakeup call after refilling the ring.
->
-> Signed-off-by: Bui Quang Minh <minhquangbui99@gmail.com>
+From: Jiayuan Chen <jiayuan.chen@shopee.com>
 
-Thanks for handling that problem. Please carry my tag in the next version:
+bond_rr_gen_slave_id() dereferences bond->rr_tx_counter without a NULL
+check. rr_tx_counter is a per-CPU counter only allocated in bond_open()
+when the bond mode is round-robin. If the bond device was never brought
+up, rr_tx_counter remains NULL, causing a null-ptr-deref.
 
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+The XDP redirect path can reach this code even when the bond is not up:
+bpf_master_redirect_enabled_key is a global static key, so when any bond
+device has native XDP attached, the XDP_TX -> xdp_master_redirect()
+interception is enabled for all bond slaves system-wide. This allows the
+path xdp_master_redirect() -> bond_xdp_get_xmit_slave() ->
+bond_xdp_xmit_roundrobin_slave_get() -> bond_rr_gen_slave_id() to be
+reached on a bond that was never opened.
 
-You seem to have forgotten to add Xuan Zhuo's tag...
+Fix this by allocating rr_tx_counter unconditionally in bond_init()
+(ndo_init), which is called by register_netdevice() and covers both
+device creation paths (bond_create() and bond_newlink()). This also
+handles the case where bond mode is changed to round-robin after device
+creation. The conditional allocation in bond_open() is removed. Since
+bond_destructor() already unconditionally calls
+free_percpu(bond->rr_tx_counter), the lifecycle is clean: allocate at
+ndo_init, free at destructor.
 
-Thanks,
-Jason
+Note: rr_tx_counter is only used by round-robin mode, so this
+deliberately allocates a per-cpu u32 that goes unused for other modes.
+Conditional allocation (e.g., in bond_option_mode_set) was considered
+but rejected: the XDP path can race with mode changes on a downed bond,
+and adding memory barriers to the XDP hot path is not justified for
+saving 4 bytes per CPU.
+
+Fixes: 879af96ffd72 ("net, core: Add support for XDP redirection to slave device")
+Reported-by: syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/698f84c6.a70a0220.2c38d7.00cc.GAE@google.com/T/
+Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+---
+ drivers/net/bonding/bond_main.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 78cff904cdc3..55b5c7a6cb5f 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -4279,12 +4279,6 @@ static int bond_open(struct net_device *bond_dev)
+ 	struct list_head *iter;
+ 	struct slave *slave;
+ 
+-	if (BOND_MODE(bond) == BOND_MODE_ROUNDROBIN && !bond->rr_tx_counter) {
+-		bond->rr_tx_counter = alloc_percpu(u32);
+-		if (!bond->rr_tx_counter)
+-			return -ENOMEM;
+-	}
+-
+ 	/* reset slave->backup and slave->inactive */
+ 	if (bond_has_slaves(bond)) {
+ 		bond_for_each_slave(bond, slave, iter) {
+@@ -6411,6 +6405,19 @@ static int bond_init(struct net_device *bond_dev)
+ 	if (!bond->wq)
+ 		return -ENOMEM;
+ 
++	/* rr_tx_counter is only used in round-robin mode, but we allocate
++	 * it unconditionally because the XDP redirect path
++	 * (xdp_master_redirect -> bond_xdp_get_xmit_slave) can reach here
++	 * even when the bond is not up, and deferring allocation to
++	 * bond_open or bond_option_mode_set would require memory barriers
++	 * on the XDP hot path. The cost is a per-cpu u32 per bond device.
++	 */
++	bond->rr_tx_counter = alloc_percpu(u32);
++	if (!bond->rr_tx_counter) {
++		destroy_workqueue(bond->wq);
++		return -ENOMEM;
++	}
++
+ 	bond->notifier_ctx = false;
+ 
+ 	spin_lock_init(&bond->stats_lock);
+-- 
+2.43.0
+
