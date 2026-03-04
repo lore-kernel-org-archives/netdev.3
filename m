@@ -1,38 +1,38 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3E0D3B7B7B
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 14:55:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8093C3BE1
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 14:55:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772636118; cv=none; b=jZNxS1vSFUPmwU3X/JbAthcODvrnKDUtlXoLZ1V8as5SPDCLPrKkhvngRgchXepqx1kb1iNfkT7ppkGTLICt+CfyYwL1HAPLdqA8NdaWy4/3KE1IWMtVEDLeTCMTDo/7RHacWofq+0yBbIA8MFqu1Mx9p58mLG6lAokWltaVRSM=
+	t=1772636122; cv=none; b=XpHW9colRA6vvnodNMzZO+6G2LLakIWSXd3vFXawlW8/ukQ54IzPBTlo7dW/s8Ef2TJ27oAu9q0/m5ChLQsbe4rhrtFrv3yNuo33IEUsbTwAgM0gWr/7Vbe2KWHG8EyJq8iv4e4nQf+sBSu1qRUdb6xxwoCp7RjkC3zDT6S/dCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772636118; c=relaxed/simple;
-	bh=/kJPSQkkdj8NlYpm/pDA4rwzUYszth0jj6KIdYl2+eo=;
+	s=arc-20240116; t=1772636122; c=relaxed/simple;
+	bh=f0/3/mrCPrJHqIVyCbu48EYwHwbuoZwmfW42AbHjWH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnbIs8eHTlnMNis1wwM7qQN2XeHYUuwy1GAM/3Q8PgJrAZ9hQV2b1/VvDYKsPZduAQTyZ5z8xdjizrwt4ZFl/CUu+YMgo+Z5GO+exM6/DpsoSGIH21nKeLaJwXqWnEMKX70oOe0pbVv5HYDvlSyxmjh0eAKGQL6wkrTN3q2Cxqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=ufHsBhqN; arc=none smtp.client-ip=185.246.85.4
+	 MIME-Version; b=QCR/76x6kCIY5ALGFPPlvleRiCH4HTBKnC7EURmO5g3w39ynK38a1f6LtdtrVXi9/BNQG6Q05S/bb8mzfnLPgwpiYZWGepeyioffWWjnp0W3u88cXQ8r0memaXsakk7A1VzLQgB1TTc8rbbZ7Lq6oPUaHqqkwgdG+gqj83y0HFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=M54BtRE+; arc=none smtp.client-ip=185.171.202.116
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="ufHsBhqN"
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="M54BtRE+"
 Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id 975344E42541;
-	Wed,  4 Mar 2026 14:55:15 +0000 (UTC)
+	by smtpout-04.galae.net (Postfix) with ESMTPS id C1758C143F7;
+	Wed,  4 Mar 2026 14:55:36 +0000 (UTC)
 Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 6CAA95FF5C;
-	Wed,  4 Mar 2026 14:55:15 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id A804D10368FE0;
-	Wed,  4 Mar 2026 15:55:11 +0100 (CET)
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 9D7935FF5C;
+	Wed,  4 Mar 2026 14:55:18 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5E28A102F17D7;
+	Wed,  4 Mar 2026 15:55:14 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772636114; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1772636116; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=udq/wOfK+wePprCbrxk5enSF5924MQO7g80D3S6WydU=;
-	b=ufHsBhqNgtKxQKIC9jWZjplsnBP054/auMfy/C/iwtgbgK5PsWoDGRwFlZPRVPrYi3C7H2
-	7rw8VCm5a/AVubmOGDj5+YWyoGaMW1FLpf5SrrflD9/thJfx1/jX2k0jFz902lbfwuX+w2
-	Oo/Jy5rbGg0pmIDYhT6M22GyIvl3RICixtJ2EnjI+UOlUaQcvwKEJjX9LVFOWWkDP6T+DH
-	ojMen483HSi48G8jMwTyw4KJXKVMUABihRjlvM+6SgKnyImOk23zHTUrIEG8DW0OJ+7vVz
-	ncW+f+KquAa9UDH3aw29w4TSPqcyCSb3kwypXHgVNC/A5r2J+jo+eqYnQUnlEw==
+	bh=oE3YHgEOb7zMldz7W5UEO4lNk/cteuFmDnyVlbi0dJs=;
+	b=M54BtRE+eoMNGHXiEAiq6XniHH1EGg5q+CMcAIYjYZ0mxuio5vT/IxD2BVC1gp9XU5j9m0
+	B0XDZVkxZa20S8yTGJBdBPzbM0ya/GNCllKrg6pgflWhrzDpZ5tzu57umTgtYW/U8gi2Eh
+	AqcQ3xVdMkzODCo4P2wxijYahf/eraIHY1G4KU8zlySxA8i9MTta7vnpANIQzw6guxLBk7
+	QwGmMZ5B5+WqiwYTeCi/rzVNf0p2lIQzzXklO5Mjqy0Pz+6elmr3HHzlx1IEqfMfHLOomr
+	CRc+1eaWc2f5sjfsQ8PDwzh7OrquXPQXoFrmxek7gR3h7Ei4qcN0UVKCmsAtlg==
 From: Maxime Chevallier <maxime.chevallier@bootlin.com>
 To: davem@davemloft.net,
 	Andrew Lunn <andrew@lunn.ch>,
@@ -58,9 +58,9 @@ Cc: Maxime Chevallier <maxime.chevallier@bootlin.com>,
 	Romain Gantois <romain.gantois@bootlin.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Dimitri Fedrau <dimitri.fedrau@liebherr.com>
-Subject: [PATCH net-next v6 07/10] net: phy: phy_port: Store information about a MII port's vacant state
-Date: Wed,  4 Mar 2026 15:54:38 +0100
-Message-ID: <20260304145444.442334-8-maxime.chevallier@bootlin.com>
+Subject: [PATCH net-next v6 08/10] net: phy: phy_link_topology: Add a helper to retrieve ports
+Date: Wed,  4 Mar 2026 15:54:39 +0100
+Message-ID: <20260304145444.442334-9-maxime.chevallier@bootlin.com>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20260304145444.442334-1-maxime.chevallier@bootlin.com>
 References: <20260304145444.442334-1-maxime.chevallier@bootlin.com>
@@ -73,128 +73,61 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-MII phy_ports are not meant to be connected directly to a link partner.
-They are meant to feed into some media converter devices, so far we only
-support SFP modules for that.
-
-We have information about what MII they can handle, however we don't
-store anything about whether they are currently connected to an SFP
-module or not. As phy_port aims at listing the front-facing ports, let's
-store an "vacant" bit to know whether or not a MII port is currently
-vacant (i.e. there's no module in the SFP cage), or not (i.e.
-there's an SFP module).
+In order to allow netlink access to phy_ports, let's add a helper to
+retrieve them. When handling a port coming from phy_link_topology, the
+caller must hold rtnl until it's done with it.
 
 Signed-off-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
 ---
- drivers/net/phy/phy_device.c | 17 +++++++++++++----
- drivers/net/phy/phylink.c    |  7 +++++++
- include/linux/phy_port.h     |  4 ++++
- 3 files changed, 24 insertions(+), 4 deletions(-)
+ include/linux/phy_link_topology.h | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
-index 8bff64040540..5d26d75b5f6b 100644
---- a/drivers/net/phy/phy_device.c
-+++ b/drivers/net/phy/phy_device.c
-@@ -1550,6 +1550,7 @@ static int phy_sfp_module_insert(void *upstream, const struct sfp_eeprom_id *id)
- 	struct phy_device *phydev = upstream;
- 	const struct sfp_module_caps *caps;
- 	struct phy_port *port;
-+	int ret = 0;
+diff --git a/include/linux/phy_link_topology.h b/include/linux/phy_link_topology.h
+index 66bceff72b19..ac2f5c80f1a6 100644
+--- a/include/linux/phy_link_topology.h
++++ b/include/linux/phy_link_topology.h
+@@ -13,6 +13,7 @@
  
- 	phy_interface_t iface;
+ #include <linux/ethtool.h>
+ #include <linux/netdevice.h>
++#include <linux/rtnetlink.h>
  
-@@ -1578,9 +1579,12 @@ static int phy_sfp_module_insert(void *upstream, const struct sfp_eeprom_id *id)
- 		phydev->port = caps->port;
- 
- 	if (port->ops && port->ops->configure_mii)
--		return port->ops->configure_mii(port, true, iface);
-+		ret = port->ops->configure_mii(port, true, iface);
- 
--	return 0;
-+	if (!ret)
-+		port->vacant = false;
-+
-+	return ret;
+ struct xarray;
+ struct phy_device;
+@@ -66,6 +67,20 @@ phy_link_topo_get_phy(struct net_device *dev, u32 phyindex)
+ 	return NULL;
  }
  
- static void phy_sfp_module_remove(void *upstream)
-@@ -1588,8 +1592,12 @@ static void phy_sfp_module_remove(void *upstream)
- 	struct phy_device *phydev = upstream;
- 	struct phy_port *port = phy_get_sfp_port(phydev);
- 
--	if (port && port->ops && port->ops->configure_mii)
--		port->ops->configure_mii(port, false, PHY_INTERFACE_MODE_NA);
-+	if (port) {
-+		if (port->ops && port->ops->configure_mii)
-+			port->ops->configure_mii(port, false,
-+						 PHY_INTERFACE_MODE_NA);
-+		port->vacant = true;
-+	}
- 
- 	if (phydev->n_ports == 1)
- 		phydev->port = PORT_NONE;
-@@ -1756,6 +1764,7 @@ static struct phy_port *phy_setup_sfp_port(struct phy_device *phydev)
- 	 */
- 	port->is_mii = true;
- 	port->is_sfp = true;
-+	port->vacant = true;
- 
- 	/* The port->supported and port->interfaces list will be populated
- 	 * when attaching the port to the phydev.
-diff --git a/drivers/net/phy/phylink.c b/drivers/net/phy/phylink.c
-index 79f7811dec22..b575f5db9ed6 100644
---- a/drivers/net/phy/phylink.c
-+++ b/drivers/net/phy/phylink.c
-@@ -1777,6 +1777,7 @@ static int phylink_create_sfp_port(struct phylink *pl)
- 	port->is_sfp = true;
- 	port->is_mii = true;
- 	port->active = true;
-+	port->vacant = true;
- 
- 	phy_interface_and(port->interfaces, pl->config->supported_interfaces,
- 			  phylink_sfp_interfaces);
-@@ -3917,6 +3918,9 @@ static int phylink_sfp_module_insert(void *upstream,
- 	pl->sfp_may_have_phy = caps->may_have_phy;
- 	pl->sfp_port = caps->port;
- 
-+	if (pl->sfp_bus_port)
-+		pl->sfp_bus_port->vacant = false;
++static inline struct phy_port *
++phy_link_topo_get_port(struct net_device *dev, u32 port_id)
++{
++	struct phy_link_topology *topo = dev->link_topo;
 +
- 	/* If this module may have a PHY connecting later, defer until later */
- 	if (pl->sfp_may_have_phy)
- 		return 0;
-@@ -3928,6 +3932,9 @@ static void phylink_sfp_module_remove(void *upstream)
++	ASSERT_RTNL();
++
++	if (!topo)
++		return NULL;
++
++	/* Caller must hold RTNL while handling the phy_port */
++	return xa_load(&topo->ports, port_id);
++}
++
+ #else
+ static inline int phy_link_topo_add_phy(struct net_device *dev,
+ 					struct phy_device *phy,
+@@ -95,6 +110,12 @@ phy_link_topo_get_phy(struct net_device *dev, u32 phyindex)
  {
- 	struct phylink *pl = upstream;
- 
-+	if (pl->sfp_bus_port)
-+		pl->sfp_bus_port->vacant = true;
-+
- 	phy_interface_zero(pl->sfp_interfaces);
+ 	return NULL;
  }
++
++static inline struct phy_port *
++phy_link_topo_get_port(struct net_device *dev, u32 port_id)
++{
++	return NULL;
++}
+ #endif
  
-diff --git a/include/linux/phy_port.h b/include/linux/phy_port.h
-index 4e2a3fdd2f2e..b0b1fa6a67a9 100644
---- a/include/linux/phy_port.h
-+++ b/include/linux/phy_port.h
-@@ -51,6 +51,9 @@ struct phy_port_ops {
-  * @is_mii: Indicates if this port is MII (Media Independent Interface),
-  *          or MDI (Media Dependent Interface).
-  * @is_sfp: Indicates if this port drives an SFP cage.
-+ * @vacant: For MII ports, indicates whether or not the port has a connection to
-+ *	    another device (e.g. for SFP ports, indicates the absence or presence
-+ *	    of an SFP module)
-  */
- struct phy_port {
- 	u32 id;
-@@ -71,6 +74,7 @@ struct phy_port {
- 	unsigned int active:1;
- 	unsigned int is_mii:1;
- 	unsigned int is_sfp:1;
-+	unsigned int vacant:1;
- };
- 
- struct phy_port *phy_port_alloc(void);
+ #endif /* __PHY_LINK_TOPOLOGY_H */
 -- 
 2.49.0
 
