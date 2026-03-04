@@ -1,32 +1,30 @@
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C4E36AB5E
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 11:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4240634C816
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 11:38:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772624322; cv=none; b=J/mot070638t1+0ALB7pkyaKYFRbmmHvyS5u40LXIzdrCEdABpF1FD2AfopWtgcUEhS/R2EZHgdPEUWofAkX5CWZFdcUu2qE4Ai3vcV1shapqoGmoiwr3GF8Rn8Qzte3/D58LFZzM2OJ6ktdkc8unp5iMHDYbFIeqPM1bUNdwlU=
+	t=1772624323; cv=none; b=jcpzho3KIe7MdRX1YURgXRPeg6Du98JccG4IfIa/OLx3m24tqs2l5h7AzGaYlIiFkVapMlMWfWGlg62LxlJZu2mf9OXVy6+c5GNWpxf+iDMqpyROeOUGUsckuwftC7BEtCWjsjaax5HW/l4NDHjLYuVBCjnaTSemF4EtjroFtb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772624322; c=relaxed/simple;
-	bh=hYuvfZFIDL2epZbB6+3TRrBKA058KlOCCRxcolYWUiA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7TBBTL9579BI2lsWp3AWvdLSDDAGN0vf76HI+gTTgxNi/S2zhdZnFxZKBeOAJuFV3QD9LA1dQEjWa51xV3D4MeVqx66T5VH0dIk/Ij06Cu8nzDu8jjzViDmRzXkYruzHhBOEJpAbNqv8YjXLsMoMHx35Ns9ourZGpUbUYniHTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FuQnxeSY; arc=none smtp.client-ip=95.215.58.182
+	s=arc-20240116; t=1772624323; c=relaxed/simple;
+	bh=rUT9cR2Ko8p7ZIZ4MUQh2PV20SEVeYcPcy7XxkSKjSs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Rva0A9jkyamcvvGnDtck9PUwWwo7fDnmhG36uhxjLjElqP4t1WHNckwogAlqYxkY7r/Jo2aZ035ULDEgeCdotsUEf8dpOxjfaC19lv66BeouUe1rP7sX5fojXiQS0Rl1TqJ6SYUNoDIlgT9QhyQok2qhoPkgvZNSb+aJHu6ww+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=qNgg+bVU; arc=none smtp.client-ip=95.215.58.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FuQnxeSY"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="qNgg+bVU"
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772624319;
+	t=1772624310;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ODRuQKMggAAl7kuSnucVregyJTgYXXmbngTapckW4oo=;
-	b=FuQnxeSYWWRvrIm9SqC4OBL8Hcx7IXArhHXPQD9IJmNvff6yaSumUyvBhReBbCTykwRc1B
-	3std9PThFmv2IItlt4Zq+tm+1kwCucl5NilAUdFxZHMADlOrWjx+nnAB7zzePt81e8ueyb
-	Y2n/fnSeC+InKXUDglVGUGzDjW7NrSw=
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=44UvKC/EWu1AwyKkiiwYyLzDteEcHJW5LNHwrUD3EQQ=;
+	b=qNgg+bVUyK+cGIZu+/4KYswGT4B6WHOVl33EX8q4nRyM4Vrm27MOkD5om6doht8ByBmxQr
+	KpzrmJK2qlxGwt/rsjA7XkbAiaXod6zDZf6jL8OIzfGM0TK9Tk8Nps9XPUTi5OHiIe/Cxw
+	gpKpxcXSuCXuswO0hiYmN6BBcFHj/dM=
 From: Jiayuan Chen <jiayuan.chen@linux.dev>
 To: netdev@vger.kernel.org,
 	idosch@nvidia.com
@@ -41,11 +39,9 @@ Cc: jiayuan.chen@linux.dev,
 	Shuah Khan <shuah@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH net v4 2/2] selftests: net: add test for IPv4 route with loopback IPv6 nexthop
-Date: Wed,  4 Mar 2026 19:38:14 +0800
-Message-ID: <20260304113817.294966-3-jiayuan.chen@linux.dev>
-In-Reply-To: <20260304113817.294966-1-jiayuan.chen@linux.dev>
-References: <20260304113817.294966-1-jiayuan.chen@linux.dev>
+Subject: [PATCH net v4 0/2] net: ipv6: fix panic when IPv4 route references loopback IPv6 nexthop and add selftest
+Date: Wed,  4 Mar 2026 19:38:12 +0800
+Message-ID: <20260304113817.294966-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -55,46 +51,87 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+syzbot reported a kernel panic [1] when an IPv4 route references
+a loopback IPv6 nexthop object:
 
-Add a regression test for a kernel panic that occurs when an IPv4 route
-references an IPv6 nexthop object created on the loopback device.
+BUG: unable to handle page fault for address: ffff8d069e7aa000
+PF: supervisor read access in kernel mode
+PF: error_code(0x0000) - not-present page
+PGD 6aa01067 P4D 6aa01067 PUD 0
+Oops: Oops: 0000 [#1] SMP PTI
+CPU: 2 UID: 0 PID: 530 Comm: ping Not tainted 6.19.0+ #193 PREEMPT
+RIP: 0010:ip_route_output_key_hash_rcu+0x578/0x9e0
+RSP: 0018:ffffd2ffc1573918 EFLAGS: 00010286
+RAX: ffff8d069e7aa000 RBX: ffffd2ffc1573988 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: ffffd2ffc1573978 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff8d060d496000
+R13: 0000000000000000 R14: ffff8d060399a600 R15: ffff8d06019a6ab8
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffff8d069e7aa000 CR3: 0000000106eb0001 CR4: 0000000000770ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ip_route_output_key_hash+0x86/0x1a0
+ __ip4_datagram_connect+0x2b5/0x4e0
+ udp_connect+0x2c/0x60
+ inet_dgram_connect+0x88/0xd0
+ __sys_connect_file+0x56/0x90
+ __sys_connect+0xa8/0xe0
+ __x64_sys_connect+0x18/0x30
+ x64_sys_call+0xfb9/0x26e0
+ do_syscall_64+0xd3/0x1510
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-The test creates an IPv6 nexthop on lo, binds an IPv4 route to it, then
-triggers a route lookup via ping to verify the kernel does not crash.
+Reproduction:
 
-  ./fib_nexthops.sh
-  Tests passed: 249
-  Tests failed:   0
+    ip -6 nexthop add id 100 dev lo
+    ip route add 172.20.20.0/24 nhid 100
+    ping -c1 172.20.20.1     # kernel crash
 
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
----
+Problem Description
+
+When a standalone IPv6 nexthop object is created with a loopback device,
+fib6_nh_init() misclassifies it as a reject route. Nexthop objects have
+no destination prefix (fc_dst=::), so fib6_is_reject() always matches
+any loopback nexthop. The reject path skips fib_nh_common_init(), leaving
+nhc_pcpu_rth_output unallocated. When an IPv4 route later references
+this nexthop and triggers a route lookup, __mkroute_output() calls
+raw_cpu_ptr(nhc->nhc_pcpu_rth_output) on a NULL pointer, causing a page
+fault.
+
+The reject classification was designed for regular IPv6 routes to prevent
+kernel routing loops, but nexthop objects should not be subject to this
+check since they carry no destination information. Loop prevention is
+handled separately when the route itself is created.
+
+Solution
+
+Patch 1: Fix the kernel panic.
+Patch 2: Add a selftest reproducing the crash scenario.
+
+Changes since v3:
+https://lore.kernel.org/netdev/20260303031318.339716-1-jiayuan.chen@linux.dev/
+- Fix error reference in commit message and change code annotation
+  (Suggested by Ido Schimmel <idosch@nvidia.com>)
+
+Changes since v2:
+https://lore.kernel.org/netdev/20260302051132.66314-1-jiayuan.chen@linux.dev/
+- Simplify the reject check in fib6_nh_init() to only match RTF_REJECT
+  instead of using fib6_is_reject(), since the loopback promotion
+  heuristic is handled separately by ip6_route_info_create()
+  (Suggested by Ido Schimmel <idosch@nvidia.com>)
+
+[1] https://syzkaller.appspot.com/bug?extid=334190e097a98a1b81bb
+
+Jiayuan Chen (2):
+  net: ipv6: fix panic when IPv4 route references loopback IPv6 nexthop
+  selftests: net: add test for IPv4 route with loopback IPv6 nexthop
+
+ net/ipv6/route.c                            |  8 +++-----
  tools/testing/selftests/net/fib_nexthops.sh | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/fib_nexthops.sh b/tools/testing/selftests/net/fib_nexthops.sh
-index 21026b667667..6eb7f95e70e1 100755
---- a/tools/testing/selftests/net/fib_nexthops.sh
-+++ b/tools/testing/selftests/net/fib_nexthops.sh
-@@ -1672,6 +1672,17 @@ ipv4_withv6_fcnal()
- 
- 	run_cmd "$IP ro replace 172.16.101.1/32 via inet6 2001:db8:50::1 dev veth1"
- 	log_test $? 2 "IPv4 route with invalid IPv6 gateway"
-+
-+	# Test IPv4 route with loopback IPv6 nexthop
-+	# Regression test: loopback IPv6 nexthop was misclassified as reject
-+	# route, skipping nhc_pcpu_rth_output allocation, causing panic when
-+	# an IPv4 route references it and triggers __mkroute_output().
-+	run_cmd "$IP -6 nexthop add id 20 dev lo"
-+	run_cmd "$IP ro add 172.20.20.0/24 nhid 20"
-+	run_cmd "ip netns exec $me ping -c1 -W1 172.20.20.1"
-+	log_test $? 1 "IPv4 route with loopback IPv6 nexthop (no crash)"
-+	run_cmd "$IP ro del 172.20.20.0/24"
-+	run_cmd "$IP nexthop del id 20"
- }
- 
- ipv4_fcnal_runtime()
 -- 
 2.43.0
 
