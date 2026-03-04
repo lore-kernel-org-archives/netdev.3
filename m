@@ -1,119 +1,121 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CF039184D
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 09:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F260C38425B;
+	Wed,  4 Mar 2026 09:07:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772615230; cv=none; b=d2diQhTrGhGxpMwbeu2ZilSEm7QgMagRhI9PFuz5q4AWlHxkoQeq8IZmuP7mCpaVYggcZVpnW+dEw9XM/63LM5eKH863kGItBdnWaKdJ9SGtFV6lSEHz3cikf6yec2IVCHyIjcOhP4HHku9FRhgLVz+Dlgwa5RvYdU3Pwj4TIfo=
+	t=1772615271; cv=none; b=XEcWL5W/hM+FG86x3gcmmZHMeSKC5tD01ol1qRy55jb399uAKE8qJjqh/ExaRO1h+m2utqW8bpOrxBN0GQyjCtsawaMXLLvhLwSTIWetZWBnbvdWZVgHytMQufbD21SCrco5K4faEQgI46CxANde9RJL8Gh7YEopQXBG/cZ5f1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772615230; c=relaxed/simple;
-	bh=MenES2bnD3YIFT8HkiuN9URfZnWIKlc//r8AacAz8MY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j/iyHxfGoue0VtKl5yBwf3RMR7FiYjdpQPmNPIiDo4EdlfUb7ZGDb1/cHLJTrfy9GxaVHYxkvqnPENoDdx39dnORJdur3TEhmQUUP9Yy17WJQxIpQ296IdOMtZ9gc7i8zZ18DIYXHuZcEJWv9wos6gQLdTEnXiOQwDbXQFX300E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Lcw9Zhac; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mMsY2mdY; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1772615271; c=relaxed/simple;
+	bh=M9cKaidmKzUaDfN/PYBYqYOMIDoOd9BIx6xEWbAbzcg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cQSzEjdtbr70Te4RedTAgbwbP9W2ZEY61h256GERjEGZQsiSWbPQq7EXB1nF6ngqX5N/21S5LYL/6A0sDeZCRxB7+8xS10LCzOo1px7flroF+9mFD9tZ9N+XBbvxkFYjXicq/25yrcw7BEKKkiXLErV3L+qy3Og6MxBtfbma14U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7cHUyZ/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Lcw9Zhac";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mMsY2mdY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772615228;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qJ+svJhZviY13V6jetu+2Lop8pt2Tw6oU+fGIcexD3k=;
-	b=Lcw9ZhacHRnJ4Mi92ZqnQy6x1eixD8GrUDdJk85td5pcsYoUDeRrVFuWkb2EElflmFGUAP
-	hECxvRVxXZ+rG3meDzfegX7FIryeGIfYnLYOGfuQ46qpyRz0CTofsfkC270+sXRUaclYnS
-	a29yWGnHY6lc7R7X36BZPwTml6AkXvw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-258-I7P6hIe3N2CiBHZq_Ms2Jg-1; Wed, 04 Mar 2026 04:07:07 -0500
-X-MC-Unique: I7P6hIe3N2CiBHZq_Ms2Jg-1
-X-Mimecast-MFC-AGG-ID: I7P6hIe3N2CiBHZq_Ms2Jg_1772615226
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4836bf1a920so71783235e9.3
-        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 01:07:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1772615226; x=1773220026; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=qJ+svJhZviY13V6jetu+2Lop8pt2Tw6oU+fGIcexD3k=;
-        b=mMsY2mdY1DyLC8jO2QM8WuGFJgPZg4QmlyjbYN47LKzXYBrmr418/HvdSWw+wBxoSj
-         m/tlp+hO7hcSS0ochN/SISnJELjFb3Y6abOj1Zo9VgbEhq/xdGBfZEdFykPyupilGYld
-         drPjBxq/7pr1IT0EDBV5QLzWPDj4jU+PC6YIZ2+pnPKAj4rbGNQ9VxXrV9GwxBW9qfUa
-         SZZAHUTe1yoK6qhMkgzNryTV+5xatsaaaaYKO9bSMX/DG2Zt/lhpzUMk1yuViR8C7Jks
-         S8N7E/ij4E3tYy1SUWUEmQPzqhQTaQH+9dKI/wCwc91XSS6/VXCR03iy1O1fshWW4laq
-         mlCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772615226; x=1773220026;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qJ+svJhZviY13V6jetu+2Lop8pt2Tw6oU+fGIcexD3k=;
-        b=dY+Mq5jMSLWtUth19p64lL7JPSxJ2B0IL8HtVpOpcvv7ZiHYky/fkzP1pb7qzhpBgd
-         luntKrTZzDVPc6qqSLzD8X9nSxWm1rQWgcsv8neXmDQwmRx4UDj6YQXlbQWY0E7it6I5
-         D3wd8NCCm/bAiBkhDaPpnePnD+PszPvJIQDJtHN4CzF//vERQ8ysHu5s4BNKjlIjpttJ
-         PnsYjENb/+joer3lhzKieQPmloiYO7xOz/peiCbb3S5d/7Ae+/YZZg5j9XdtH8geNQhM
-         jO9YdlhNBfNkG1fqioa+FuSmyIhSEb5i/QIZlYNfpLDAt/flJ5VTDoDuxKSnsu8HdSuB
-         DIhA==
-X-Gm-Message-State: AOJu0YzgSyIRQXhk/o9GfuqHamlJrInS2rnoiEyQ70Sy2clrdwAc6S9N
-	910JmlRElJu2dET7NWJDMuKljzgxJcilMSnxbVyNsa6gjhzUcaOuDAnG6p1rtbV1Pga+pnLNbd3
-	5DbkXmL9/i+0yYP7QT902/GKxhjmQWi/z1Ry4/xG+jbRGJWPHx83OvPMqJw==
-X-Gm-Gg: ATEYQzw50I+eCqC2J8otVOkwJd1ldPnXirgb8kR6Z/DaPOU2/BM4u1ozarT2q2pIucZ
-	0Q439jRsReiGRmhiv5G0HMcQuFV86OdbUO3cTIjIFuwNcSc0dSfAckNl5HowFwRGai8HZu64rtU
-	x/lLxEpixFoyCzDiUoZtjUxtmTNKGH90b6iLYbo7F8APqiTefqp0tD5+nxhomAWhJDS3M2noQ/J
-	2RT/D3FHSisi+54KYMJNJ32+RBpQv4d6Dk2vcCaGJ7qtMmD3YjHIM/351VwnvF4wGK6Nz052IsK
-	95Ss3l79oC47+9/saIMtI33ha8h4GabzYif1azaKlMRsA3HSD5M37sQMmK6YMxnJE3rOK/HN8BI
-	79pqEjO43kfF1U9nL8QsGoZJp1w==
-X-Received: by 2002:a05:600c:608c:b0:483:bcff:7948 with SMTP id 5b1f17b1804b1-48519847972mr20302075e9.10.1772615225923;
-        Wed, 04 Mar 2026 01:07:05 -0800 (PST)
-X-Received: by 2002:a05:600c:608c:b0:483:bcff:7948 with SMTP id 5b1f17b1804b1-48519847972mr20301505e9.10.1772615225458;
-        Wed, 04 Mar 2026 01:07:05 -0800 (PST)
-Received: from [192.168.88.32] ([212.105.149.216])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851aceb94dsm6878875e9.4.2026.03.04.01.07.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Mar 2026 01:07:04 -0800 (PST)
-Message-ID: <64132462-e640-4ea6-82e8-48ca07a6ad44@redhat.com>
-Date: Wed, 4 Mar 2026 10:07:02 +0100
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7cHUyZ/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27101C19423;
+	Wed,  4 Mar 2026 09:07:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1772615270;
+	bh=M9cKaidmKzUaDfN/PYBYqYOMIDoOd9BIx6xEWbAbzcg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=W7cHUyZ/msDVsDasJr/SfCGiCg6BUadDoPAKArXWzmG1S7ThEP0dGJ04yssSNroFo
+	 Z+bwUiBSGuwUS4/DiKuGIq0Xjyw41kIIViDdRxvTSZqiFHGv70sgANqevCjSB1Rlr6
+	 qGRGXfz208MVIEgUH+4vSOJXNOSIWJ+5d1C/t3ds=
+Date: Wed, 4 Mar 2026 10:07:37 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Paolo Abeni <pabeni@redhat.com>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>, netdev@vger.kernel.org,
+	davem@davemloft.net, kuba@kernel.org, linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	"Ji-Ze Hong (Peter Hong)" <peter_hong@fintek.com.tw>,
+	Vincent Mailhol <mailhol@kernel.org>, stable@kernel.org
+Subject: Re: [PATCH net 08/12] can: usb: f81604: handle short interrupt urb
+ messages properly
+Message-ID: <2026030421-playoff-unashamed-593d@gregkh>
+References: <20260302152755.1700177-1-mkl@pengutronix.de>
+ <20260302152755.1700177-9-mkl@pengutronix.de>
+ <790d9b0e-cc3f-44e4-9ddc-b7f2ac3a3f8a@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] mptcp: fix soft lockup in mptcp_recvmsg()
-To: Li Xiasong <lixiasong1@huawei.com>, matttbe@kernel.org,
- martineau@kernel.org, geliang@kernel.org, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, horms@kernel.org
-Cc: netdev@vger.kernel.org, mptcp@lists.linux.dev,
- linux-kernel@vger.kernel.org, weiyongjun1@huawei.com, yuehaibing@huawei.com,
- zhangchangzhong@huawei.com
-References: <20260302052651.1466983-1-lixiasong1@huawei.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260302052651.1466983-1-lixiasong1@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <790d9b0e-cc3f-44e4-9ddc-b7f2ac3a3f8a@redhat.com>
 
-On 3/2/26 6:26 AM, Li Xiasong wrote:
-> @@ -2343,7 +2347,7 @@ static int mptcp_recvmsg(struct sock *sk, struct msghdr *msg, size_t len,
->  
->  		pr_debug("block timeout %ld\n", timeo);
->  		mptcp_cleanup_rbuf(msk, copied);
-> -		err = sk_wait_data(sk, &timeo, NULL);
-> +		err = sk_wait_data(sk, &timeo, last);
+On Tue, Mar 03, 2026 at 03:23:19PM +0100, Paolo Abeni wrote:
+> On 3/2/26 4:16 PM, Marc Kleine-Budde wrote:
+> > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > 
+> > If an interrupt urb is received that is not the correct length, properly
+> > detect it and don't attempt to treat the data as valid.
+> > 
+> > Cc: Ji-Ze Hong (Peter Hong) <peter_hong@fintek.com.tw>
+> > Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+> > Cc: Vincent Mailhol <mailhol@kernel.org>
+> > Cc: stable@kernel.org
+> > Assisted-by: gkh_clanker_2000
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > Link: https://patch.msgid.link/2026022331-opal-evaluator-a928@gregkh
+> > Fixes: 88da17436973 ("can: usb: f81604: add Fintek F81604 support")
+> > Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> > ---
+> >  drivers/net/can/usb/f81604.c | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/drivers/net/can/usb/f81604.c b/drivers/net/can/usb/f81604.c
+> > index 76578063ac82..c61bd30d1765 100644
+> > --- a/drivers/net/can/usb/f81604.c
+> > +++ b/drivers/net/can/usb/f81604.c
+> > @@ -620,6 +620,12 @@ static void f81604_read_int_callback(struct urb *urb)
+> >  		netdev_info(netdev, "%s: Int URB aborted: %pe\n", __func__,
+> >  			    ERR_PTR(urb->status));
+> >  
+> > +	if (urb->actual_length < sizeof(*data)) {
+> > +		netdev_warn(netdev, "%s: short int URB: %u < %zu\n",
+> > +			    __func__, urb->actual_length, sizeof(*data));
+> > +		goto resubmit_urb;
+> > +	}
+> > +
+> >  	switch (urb->status) {
+> >  	case 0: /* success */
+> >  		break;
+> 
+> AI says:
+> 
+> ---
+> Should the length check happen after the status check instead of before it?
+> With the current ordering, if a URB completes with both a terminal error
+> status (like -ESHUTDOWN, -ENOENT, -EPIPE, or -EPROTO) and insufficient
+> data length, the code will jump to resubmit_urb instead of returning
+> immediately.
+> 
+> Looking at the switch statement that follows:
+> 
+> >  	switch (urb->status) {
+> >  	case 0: /* success */
+> >  		break;
+> >
+> > 	case -ENOENT:
+> > 	case -EPIPE:
+> > 	case -EPROTO:
+> > 	case -ESHUTDOWN:
+> > 		return;
+> 
+> Terminal error codes should cause immediate return without resubmission,
+> but the length check bypasses this. This could lead to inappropriate URB
+> resubmissions when the device is shutting down or has been disconnected.
+> ---
+> 
+> IDK if 'status' is valid in case of short URB, possibly the patch code
+> is fine, but please have a look. Again, not blocking the PR.
 
-Isn't
-		err = sk_wait_data(sk, &timeo,  skb_peek_tail(&sk->sk_receive_queue));
+status will be valid in case of a short URB, so all should be fine.
 
-Enough?
+thanks,
 
-Also, could you please add a paired tests-case? Thanks!
-
-Paolo
-
+greg k-h
