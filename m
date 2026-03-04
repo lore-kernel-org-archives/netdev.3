@@ -1,155 +1,188 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6778A386C09
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 08:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF048375AD9
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 08:42:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772612950; cv=none; b=soWS7Sj5sO+FwoTlhicpcM9XuJofaK504v+jPdgBKAYbs8kfU+JR2TtmWyiUmR6ctYcw3HBOAZECnFrZ+BpYskJUGiC/HtdeBl6cb1L4gTTnGjvndzhtw2PQkw5S06yUtgPgR34/slsJVn2jOE8YPme9k/j69y5tjaPY5RmrT7M=
+	t=1772613757; cv=none; b=BNZ2Vdkglm1ZiI3iogQxmH6IvnXNPnDG3pf/AmWIK/QXbNuGnDHAxguiPo5EuBnJfSmoKpoeMmS3QNkYrH8p9gzyq52bw5KXcCyH8OQr+oJJ9HOLSAxVAnzrfT44xb1RocTGTUOkpp2+hx4ZAIT2A41w+pl320ldkqJf08OIxP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772612950; c=relaxed/simple;
-	bh=W61KOgJijBTu+KgaDoSnTPcPN7wOVxVekxKvmZ2tA8A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C8Osxpgn6qZzoSCfmThBnznAK+Y8aTnipuF40bwzmtiHoyoFcn0FgIFg4pWsLYNB/AmYGv8RPQ+zLH5Ncp//Pf7B5dixB9B6C+1OuS/XDZDm1utwaT8KzhD95ytEHFT/yrDYSYGl+OF7N9/O1diVXUbcNJT/yPgPmoupBqdOG44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K9a/IGhf; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772613757; c=relaxed/simple;
+	bh=BKssnUpC3b9eO8LjpnPOwjycyVQrdp45Uj5fbygo95o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qHkLWikfdemjMlgYbHs40067AGyz04q4yx1BA2yPtHtshDOpCKDMYWnxWQUnE5LNDns0RrFBYMOF8c3hDOLujTt/f7NQwmWtlsHNmGRFm/XB2X/6qPr9CckpfRtIeROni3INv916u+DrdLo4QqZIEtN6g3Hd+/j0Cqoa2Yeko2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mgYV3ZW1; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K9a/IGhf"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-439b2965d4bso3030593f8f.2
-        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 00:29:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772612947; x=1773217747; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nSKM+6gFf9Fg1BMeTVJ4haJM0Fv9Kx92rGo08mnwG5k=;
-        b=K9a/IGhf7C/F1Y6Zu9TyAG6UZawwX0nGBdTeyDeX3DBZlrY8jMuL2i/qgtiO2vUVOC
-         K/OFqT9J7n/mnYzLCc2c7Q8XO+LBgaSQXWZjvur2Wlb4RnaDhBz1cjNsLvteq6ymF+5I
-         ImTnzpXdtYdK/g9PqO41/kPpt43eh/UjKq4ndOpXRDJep07XTEcfrqbNDUZfBvTiNdc7
-         bOd7P+D987XXes8sP8H26AwTphVPN5wyVy9G7F6TP8uEnl0eALbv7FfYZqS74cb+Z2t5
-         BnkgDgsuHFVPVWZPaszbrVakQN/Lq5iDJz4IePODoElijX3SlYVzJKEK0qx2zJ7K7wrx
-         fTMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772612947; x=1773217747;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nSKM+6gFf9Fg1BMeTVJ4haJM0Fv9Kx92rGo08mnwG5k=;
-        b=kB3reeVmy+aGkBfYhMzuLLC5Y6zDwV3MBY8YP7sHasru+fNXUGra9vByLNk1+dSA8w
-         btmnStejW7sRrICnlFIWjCQRIpTYM9x0YHfaunYUeTkQiKVTCbciFp9RXwTopCM1Jzrr
-         yHnhdsNX0hzsTSkVwtQrj8Ko3mi65+etW4n6W8CCYZpKS0kILlcQ1Rk44EH2PqcQed+D
-         JERMaP9KTr0zi5Uk0CP6tgSGurevf26sUfgPyJ/QsSGvBvWOi6S6Wszk14MlO4YVFrCq
-         KgWt/JmSZdX0OQRV4SlFjtxXbboTOcBTypZI+vl4O6YdrOWB0bgUIy0q86kryqs+/qXr
-         uBkA==
-X-Forwarded-Encrypted: i=1; AJvYcCUWweizySASd/Ms7fARdjAw3uS2L8HcHuZf8ucdBaiW/Pro1/7kdysYSuI3Dn55MkyxKxYdnTU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVani6A98icouW/LijAGsynCy72pddH/rbEhn+r3MMT0XCWB2K
-	H+ENOgYpHFILwhmkhP7r2PjRc4kWDfxvy3ZhZD/nNkcm4/pXNeBRuokP
-X-Gm-Gg: ATEYQzxd1yvY41nrrE8ml5INgfkVdUyUa6RIVQMfG9FQ0j+h7+pigDduyaNvFZ/tz+e
-	We9lDV3JE5tgbJ9xaKENiy2XGRZnemw2gBJ3+IUZ9hL4iDARUQWjjtByRk8bnm6h/p+9X4BogVB
-	Ie/ANE2IANMLES5/EkjcdEGjGFoDz0A4XuhMtge7t+9xcJRfqc2BkbHfXfo8NfF13KOQrl+iMhJ
-	KKZ19lS800FnHOqzb/a9Ql/lgkyuADM+AC5Yp4UXYNBHL1hYx6xQ/SGYaIxoyzlHaqq1u8rY6Dp
-	93BCj1+NZ4hgk3xw52Xs90CjD/fHO2mowTmudjCCcQqVeXVkXlfWw/fSfi7mh1m2/UE0HCTyAVh
-	pdu0mNGX8awnVnDcyu8KpRylJgXLxhFbhBGdIxQ37sYNNq1WunA4OJd9Gcd24IsVpTGT/4YSZDi
-	ZxP5WDY4LJuzGTHxZ/Vaw3tYEmaPl03W3lYGkreMsq3iLCrsk=
-X-Received: by 2002:a05:6000:2c07:b0:439:b7c9:2edb with SMTP id ffacd0b85a97d-439c7fbbc27mr2236706f8f.25.1772612946627;
-        Wed, 04 Mar 2026 00:29:06 -0800 (PST)
-Received: from [10.125.201.152] ([165.85.126.96])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4399c60f764sm42507855f8f.3.2026.03.04.00.29.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Mar 2026 00:29:05 -0800 (PST)
-Message-ID: <639ae63d-dbb0-428f-a13b-4cc354e19566@gmail.com>
-Date: Wed, 4 Mar 2026 10:29:05 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mgYV3ZW1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772613756; x=1804149756;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=BKssnUpC3b9eO8LjpnPOwjycyVQrdp45Uj5fbygo95o=;
+  b=mgYV3ZW1PGEBfTL+GauFzzN+f2jwoI8RM63Aseka+34UyMDSymxEgp2O
+   NojTtREnFpK+qH8BOEl+RDMJf2BchAyBy00CiqKFbXuQt8I8gVJOrPEWP
+   InnvXNpiBlS5OvR6BIdBbYDjSy6dFG/rYCH68ibB3VZslaamu6psYfuW3
+   h6x3qyPZfoXhkEeGYmdHkDdiGB9Co54oHKvILK64Z1i7rob5VAqXGVdGT
+   pRnAwoYjYZsA3bIRv7it/8vV2AUkoDkBHvN06R9M8qDoES/vMSKh1m9zd
+   Hn2RA3SlZ8DljGgkkH3wbc3jUQOpKo9cERcKeTxnBzFsC1bwaVrvy1DuO
+   A==;
+X-CSE-ConnectionGUID: OtJFI7bgQfyQwBTD1O5jMg==
+X-CSE-MsgGUID: oNmpr1jUTaS91x+a4M+CFA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="73736620"
+X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
+   d="scan'208";a="73736620"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 00:42:35 -0800
+X-CSE-ConnectionGUID: OgIxrAcgSuKhqP54zY8mEw==
+X-CSE-MsgGUID: bwVf6cETSwS5ob7SiSHtsQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
+   d="scan'208";a="223270421"
+Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
+  by orviesa005.jf.intel.com with ESMTP; 04 Mar 2026 00:42:34 -0800
+From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+To: intel-wired-lan@lists.osuosl.org,
+	anthony.l.nguyen@intel.com,
+	aleksandr.loktionov@intel.com
+Cc: netdev@vger.kernel.org,
+	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Subject: [PATCH iwl-net v1] ixgbe: stop re-reading flash on every get_drvinfo for e610
+Date: Wed,  4 Mar 2026 09:42:32 +0100
+Message-ID: <20260304084232.2937498-1-aleksandr.loktionov@intel.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] net/mlx5e: use flex array for rqns
-To: Rosen Penev <rosenp@gmail.com>, netdev@vger.kernel.org
-Cc: Saeed Mahameed <saeedm@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Tariq Toukan <tariqt@nvidia.com>, Mark Bloch <mbloch@nvidia.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- "open list:MELLANOX MLX5 core VPI driver" <linux-rdma@vger.kernel.org>,
- open list <linux-kernel@vger.kernel.org>
-References: <20260304042042.7822-1-rosenp@gmail.com>
-Content-Language: en-US
-From: Tariq Toukan <ttoukan.linux@gmail.com>
-In-Reply-To: <20260304042042.7822-1-rosenp@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
+ixgbe_get_drvinfo() calls ixgbe_refresh_fw_version() on every ethtool
+query for e610 adapters.  That ends up in ixgbe_discover_flash_size(),
+which bisects the full 16 MB NVM space issuing one ACI command per
+step (~20 ms each, ~24 steps total = ~500 ms).
 
+Profiling on an idle E610-XAT2 system with telegraf scraping ethtool
+stats every 10 seconds:
 
-On 04/03/2026 6:20, Rosen Penev wrote:
-> Simplifies allocation. Separate kcalloc and kfree not needed anymore.
-> 
-> Signed-off-by: Rosen Penev <rosenp@gmail.com>
-> ---
->   drivers/net/ethernet/mellanox/mlx5/core/en/rx_res.c | 13 +++----------
->   1 file changed, 3 insertions(+), 10 deletions(-)
-> 
+  kretprobe:ixgbe_get_drvinfo took 527603 us
+  kretprobe:ixgbe_get_drvinfo took 523978 us
+  kretprobe:ixgbe_get_drvinfo took 552975 us
+  kretprobe:ice_get_drvinfo   took       3 us
+  kretprobe:igb_get_drvinfo   took       2 us
+  kretprobe:i40e_get_drvinfo  took       5 us
 
-This is not the typical structure that matches the usage of kvzalloc_flex().
+The half-second stall happens under the RTNL lock, causing visible
+latency on ip-link and friends.
 
-I prefer keeping current code, being consistent with other dynamically 
-allocated members like rss_vhca_ids.
+The FW version can only change after an EMPR reset.  All flash data is
+already populated at probe time and the cached adapter->eeprom_id is
+what get_drvinfo should be returning.  The only place that needs to
+trigger a re-read is ixgbe_devlink_reload_empr_finish(), right after
+the EMPR completes and new firmware is running.  Additionally, refresh
+the FW version in ixgbe_reinit_locked() so that any PF that undergoes a
+reinit after an EMPR (e.g. triggered by another PF's devlink reload)
+also picks up the new version in adapter->eeprom_id.
 
+ixgbe_devlink_info_get() keeps its refresh call for explicit
+"devlink dev info" queries, which is fine given those are user-initiated.
 
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/rx_res.c b/drivers/net/ethernet/mellanox/mlx5/core/en/rx_res.c
-> index 92974b11ec75..fc71dd72938c 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/rx_res.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/rx_res.c
-> @@ -16,7 +16,6 @@ struct mlx5e_rx_res {
->   
->   	struct mlx5e_rss *rss[MLX5E_MAX_NUM_RSS];
->   	bool rss_active;
-> -	u32 *rss_rqns;
->   	u32 *rss_vhca_ids;
->   	unsigned int rss_nch;
->   
-> @@ -29,6 +28,8 @@ struct mlx5e_rx_res {
->   		struct mlx5e_rqt rqt;
->   		struct mlx5e_tir tir;
->   	} ptp;
-> +
-> +	u32 rss_rqns[];
->   };
->   
->   /* API for rx_res_rss_* */
-> @@ -316,7 +317,6 @@ struct mlx5e_rss *mlx5e_rx_res_rss_get(struct mlx5e_rx_res *res, u32 rss_idx)
->   static void mlx5e_rx_res_free(struct mlx5e_rx_res *res)
->   {
->   	kvfree(res->rss_vhca_ids);
-> -	kvfree(res->rss_rqns);
->   	kvfree(res);
->   }
->   
-> @@ -325,20 +325,13 @@ static struct mlx5e_rx_res *mlx5e_rx_res_alloc(struct mlx5_core_dev *mdev, unsig
->   {
->   	struct mlx5e_rx_res *rx_res;
->   
-> -	rx_res = kvzalloc_obj(*rx_res);
-> +	rx_res = kvzalloc_flex(*rx_res, rss_rqns, max_nch, GFP_KERNEL);
->   	if (!rx_res)
->   		return NULL;
->   
-> -	rx_res->rss_rqns = kvcalloc(max_nch, sizeof(*rx_res->rss_rqns), GFP_KERNEL);
-> -	if (!rx_res->rss_rqns) {
-> -		kvfree(rx_res);
-> -		return NULL;
-> -	}
-> -
->   	if (multi_vhca) {
->   		rx_res->rss_vhca_ids = kvcalloc(max_nch, sizeof(*rx_res->rss_vhca_ids), GFP_KERNEL);
->   		if (!rx_res->rss_vhca_ids) {
-> -			kvfree(rx_res->rss_rqns);
->   			kvfree(rx_res);
->   			return NULL;
->   		}
+Fixes: c9e563cae19e ("ixgbe: add support for devlink reload")
+Co-developed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
+ drivers/net/ethernet/intel/ixgbe/devlink/devlink.c |  2 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe.h           |  2 +-
+ drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c   | 13 +++++++------
+ drivers/net/ethernet/intel/ixgbe/ixgbe_main.c      | 10 ++++++++++
+ 4 files changed, 19 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+index d227f4d..f32e640 100644
+--- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
++++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
+@@ -474,7 +474,7 @@ static int ixgbe_devlink_reload_empr_finish(struct devlink *devlink,
+ 	adapter->flags2 &= ~(IXGBE_FLAG2_API_MISMATCH |
+ 			     IXGBE_FLAG2_FW_ROLLBACK);
+ 
+-	return 0;
++	return ixgbe_refresh_fw_version(adapter);
+ }
+ 
+ static const struct devlink_ops ixgbe_devlink_ops = {
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+index dce4936..047f040455 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
+@@ -973,7 +973,7 @@ int ixgbe_init_interrupt_scheme(struct ixgbe_adapter *adapter);
+ bool ixgbe_wol_supported(struct ixgbe_adapter *adapter, u16 device_id,
+ 			 u16 subdevice_id);
+ void ixgbe_set_fw_version_e610(struct ixgbe_adapter *adapter);
+-void ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter);
++int ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter);
+ #ifdef CONFIG_PCI_IOV
+ void ixgbe_full_sync_mac_table(struct ixgbe_adapter *adapter);
+ #endif
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+index bb4b53f..358b50c 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
+@@ -1155,12 +1155,17 @@ static int ixgbe_set_eeprom(struct net_device *netdev,
+ 	return ret_val;
+ }
+ 
+-void ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter)
++int ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter)
+ {
+ 	struct ixgbe_hw *hw = &adapter->hw;
++	int err;
++
++	err = ixgbe_get_flash_data(hw);
++	if (err)
++		return err;
+ 
+-	ixgbe_get_flash_data(hw);
+ 	ixgbe_set_fw_version_e610(adapter);
++	return 0;
+ }
+ 
+ static void ixgbe_get_drvinfo(struct net_device *netdev,
+@@ -1168,10 +1173,6 @@ static void ixgbe_get_drvinfo(struct net_device *netdev,
+ {
+ 	struct ixgbe_adapter *adapter = ixgbe_from_netdev(netdev);
+ 
+-	/* need to refresh info for e610 in case fw reloads in runtime */
+-	if (adapter->hw.mac.type == ixgbe_mac_e610)
+-		ixgbe_refresh_fw_version(adapter);
+-
+ 	strscpy(drvinfo->driver, ixgbe_driver_name, sizeof(drvinfo->driver));
+ 
+ 	strscpy(drvinfo->fw_version, adapter->eeprom_id,
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+index c58051e4..8b07f25 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
+@@ -6289,6 +6289,16 @@ void ixgbe_reinit_locked(struct ixgbe_adapter *adapter)
+ 	if (adapter->flags & IXGBE_FLAG_SRIOV_ENABLED)
+ 		msleep(2000);
+ 	ixgbe_up(adapter);
++
++	/* E610 has no FW event to notify all PFs of an EMPR reset, so
++	 * refresh the FW version here to pick up any new FW version after
++	 * a hardware reset (e.g. EMPR triggered by another PF's devlink
++	 * reload).  ixgbe_refresh_fw_version() updates both hw->flash and
++	 * adapter->eeprom_id so ethtool -i reports the correct string.
++	 */
++	if (adapter->hw.mac.type == ixgbe_mac_e610)
++		(void)ixgbe_refresh_fw_version(adapter);
++
+ 	clear_bit(__IXGBE_RESETTING, &adapter->state);
+ }
+ 
+-- 
+2.52.0
 
