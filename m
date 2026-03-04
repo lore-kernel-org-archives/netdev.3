@@ -1,267 +1,207 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailhub11-fb.kaspersky-labs.com (mailhub11-fb.kaspersky-labs.com [81.19.104.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA71260592;
-	Wed,  4 Mar 2026 13:19:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4B4E1A00F0;
+	Wed,  4 Mar 2026 13:23:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.19.104.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772630355; cv=none; b=qM50dVb26f19a/eViJacqbiaXnOrOX2U6mSBRqSndWWqsPLU3kHXvrf4iPXRfGnXncqm0sdopJXY4qQvPXMpFb/esehlwSMcN9l5RZqKh608sU1HP7VOOWzZSwjWFmqCZNuzFN8SvqDLKt/k83c7x3yW0zFIvaeV9w0KVPEn0T8=
+	t=1772630608; cv=none; b=fR5DMrBd0V67ghh3iRmRenCBHyijZO3C2SRD43Tx1bEav95JRffOYtdMF2UZGe9Iqa/SuuSPmTbOOnPZCTi1b8mU+2l2kCul4IGR6sfbjfZvSy1pJmpNqcFiTDNnayYI9buVUEHu6IGAZbwmsc1l20Nrvc0ZF+xH1nz9ZFiLJkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772630355; c=relaxed/simple;
-	bh=iO9teAmlJC4dUs2VeHJVVKZOS0flR2zqooYmkpkZims=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pa0nWuKXK4aS6wG98d56NJo8ARpW8w1HX8rpd72D/cTqPM6WLr+ptgqaB5cFdEglBJHmsk0hT52LlaRAQu+bhdT45Ltqsxo9cG28Da7OBgUFyHuzgJuAmZgRvq4GAGPMFGtW2kVDdqlG5v2cFGz9TWgNIvSvZqInvtlpx10FGP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NBycilZh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772630608; c=relaxed/simple;
+	bh=+tFYhEAvXk9kMk9jXbCju1yKoTyIcMyFbmV3K8OXvN8=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kcfCSgRHC+FhbBHYPOezCIvgf3Mm4EKsBBC7KNsroRigJLJJzXyNBEBx0Vk1/PkhqqRaXmQgTUaYq9BOLCWkCeyLSj9Y6R/DfOB5taIxE35ZVPKQxJGbU5LqUcZR1ZlrfJTdTFiU8xtVKa459cTYHmBHSvp4tLLy5rWeGR9zOyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com; spf=pass smtp.mailfrom=kaspersky.com; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=ApHAy2fd; dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b=mAvKWwwq; arc=none smtp.client-ip=81.19.104.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kaspersky.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kaspersky.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NBycilZh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527C0C2BC9E;
-	Wed,  4 Mar 2026 13:19:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772630355;
-	bh=iO9teAmlJC4dUs2VeHJVVKZOS0flR2zqooYmkpkZims=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBycilZh4WQO0JA7EPpRslcT5gNMaR8Q3BygT4jSh/T4S7/yTLOknpQayaecjXz7y
-	 40eE7UKGjbHCUtuBlUMkAxBidZxx1Z84n009moi5oIZoulXRtKcuAuA0n0PfTKCuey
-	 JEq+aBi+Kk8hGlssJ9bK9GIxSsXhOj/JKTPP/EM/7NKSPkp+jIdV1+A0qBT1xePBB2
-	 Vl2kzksllToQOPLWLZoVnY3rZNqk8jNhDKf2P8SMPJ4THzRCU/w2ci10nRmkO7D42F
-	 cZrdnIgowPweqUkHLm3LRKOnFqTBm1q2bPIThDq5A+IeUhk7KI3+4lo+zNZaljUxBy
-	 J/NtbmBhpkiUQ==
-From: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>
-To: Michael Chan <michael.chan@broadcom.com>,
-	Pavan Chebbi <pavan.chebbi@broadcom.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Cc: =?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@kernel.org>,
-	Willem de Bruijn <willemb@google.com>
-Subject: [PATCH net-next v2 3/3] selftests: rss_drv: Add RSS indirection table resize tests
-Date: Wed,  4 Mar 2026 14:18:53 +0100
-Message-ID: <20260304131855.3225539-4-bjorn@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260304131855.3225539-1-bjorn@kernel.org>
-References: <20260304131855.3225539-1-bjorn@kernel.org>
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="ApHAy2fd";
+	dkim=pass (2048-bit key) header.d=kaspersky.com header.i=@kaspersky.com header.b="mAvKWwwq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202505; t=1772630073;
+	bh=pWqNE5JfL+eGFQBgDauB8plhBy67CVQTUEL9xMK1N2w=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=ApHAy2fdY7hw64WcefWLTaEUFb3j/tUOkcqh7ab/xXa3zeUvQuxnU3spguKS9rwX8
+	 zdPrbG0bD3Ha7I164/v2BmmzNCsluhQeaQ9VRHzPNte36il8b2TsuUA1MXZlY25Ore
+	 get+WUn5F7DhIGLLWvPOntE/6QutIBmu46NSuUkvXlfUupidgtq5MHDsN5TbXKD64g
+	 Vpnv/QPxSXcgH6ZlMrlO7q70u3geVm0iEgozhj1UwBUZ/Ycz4y+l3RyWXDlPddw5eW
+	 zq5PcztdTQxtwCXF4onAARf2k3maf2yNCaXWXppfZ4NSkA6o1Gtdi+It4phkM4ubYV
+	 E2/kZBY+mA2WQ==
+Received: from mailhub11-fb.kaspersky-labs.com (localhost [127.0.0.1])
+	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTP id 13156E843A8;
+	Wed,  4 Mar 2026 16:14:33 +0300 (MSK)
+Received: from mx9.kaspersky-labs.com (mx9.kaspersky-labs.com [195.122.169.44])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "mx9.kaspersky-labs.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub11-fb.kaspersky-labs.com (Postfix) with ESMTPS id DA0DDE83F6C;
+	Wed,  4 Mar 2026 16:14:32 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kaspersky.com;
+	s=mail202505; t=1772630065;
+	bh=pWqNE5JfL+eGFQBgDauB8plhBy67CVQTUEL9xMK1N2w=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	b=mAvKWwwq4rh+E8DF6d3HuYLZ+Vu2JJtKerXP+h2bUfg0RXJo9IB4osA0X2fFa02oQ
+	 7x3ca3jeoHZArZd/b41K/SMGt3yt4988pU2Z/IMzfg6b45bbTtJkRLhoNzOtV2lBFr
+	 BKGps/MiBMltEaQvQbdtuJ1/BnHOxhCDQJvSFZsmTltgXAX/dAGeGUmbiRcsp2VZ2U
+	 NbYMFk90ymY1nS2ce4m4cF2l9SebWpjdhZ84M5r0/CYEHXpFCBm4FlSXicNYQh4hhJ
+	 iu11gWyKNb0vB2T5DwwJ5tDpC9/3sCh8u81V3eqXc3uONpU3bCrqQB9Nu46HxfcS6m
+	 s8w4w8oEtBfDw==
+Received: from relay9.kaspersky-labs.com (localhost [127.0.0.1])
+	by relay9.kaspersky-labs.com (Postfix) with ESMTP id 05CF78A090C;
+	Wed,  4 Mar 2026 16:14:25 +0300 (MSK)
+Received: from mail-hq2.kaspersky.com (unknown [91.103.66.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "mail-hq2.kaspersky.com", Issuer "Kaspersky MailRelays CA G3" (verified OK))
+	by mailhub9.kaspersky-labs.com (Postfix) with ESMTPS id 6DE8E8A082B;
+	Wed,  4 Mar 2026 16:14:24 +0300 (MSK)
+Received: from Votokina.avp.ru (10.16.104.187) by HQMAILSRV2.avp.ru
+ (10.64.57.52) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.37; Wed, 4 Mar
+ 2026 16:14:23 +0300
+From: Votokina Victoria <Victoria.Votokina@kaspersky.com>
+To: Roopa Prabhu <roopa@nvidia.com>
+CC: Victoria Votokina <Victoria.Votokina@kaspersky.com>, Nikolay Aleksandrov
+	<nikolay@nvidia.com>, "David S. Miller" <davem@davemloft.net>, Jakub Kicinski
+	<kuba@kernel.org>, <bridge@lists.linux-foundation.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>,
+	<syzbot+263426984509be19c9a0@syzkaller.appspotmail.com>, Nikolay Aleksandrov
+	<razor@blackwall.org>
+Subject: [PATCH 5.10] net: bridge: mcast: wait for previous gc cycles when removing port
+Date: Wed, 4 Mar 2026 16:14:06 +0300
+Message-ID: <20260304131408.2196541-1-Victoria.Votokina@kaspersky.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: HQMAILSRV4.avp.ru (10.64.57.54) To HQMAILSRV2.avp.ru
+ (10.64.57.52)
+X-KSE-ServerInfo: HQMAILSRV2.avp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 03/04/2026 12:54:44
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 0
+X-KSE-AntiSpam-Info: Lua profiles 201061 [Mar 04 2026]
+X-KSE-AntiSpam-Info: Version: 6.1.1.20
+X-KSE-AntiSpam-Info: Envelope from: Victoria.Votokina@kaspersky.com
+X-KSE-AntiSpam-Info: LuaCore: 88 0.3.88
+ cf79c71dc438a5d750ce7f66bc9a19dbc08dac54
+X-KSE-AntiSpam-Info: {date_rfc_vio_soft_silent}
+X-KSE-AntiSpam-Info: {Tracking_cluster_exceptions}
+X-KSE-AntiSpam-Info: {Tracking_real_kaspersky_domains}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_black_eng_exceptions}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: syzkaller.appspot.com:7.1.1,5.0.1;kaspersky.com:7.1.1,5.0.1;patch.msgid.link:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: {Tracking_white_helo}
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: Rate: 0
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Deterministic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 03/04/2026 12:57:00
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 3/4/2026 10:24:00 AM
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSE-AttachmentFiltering-Interceptor-Info: no applicable attachment filtering
+ rules found
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/03/04 11:42:00
+X-KSMG-AntiSpam-Interceptor-Info: not scanned
+X-KSMG-AntiSpam-Status: not scanned, disabled by settings
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/03/04 04:51:00 #28247321
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-LinksScanning: NotDetected, bases: 2026/03/04 12:55:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 52
 
-Add resize tests to rss_drv.py. Devices without dynamic table sizing
-are skipped via _require_dynamic_indir_size().
+From: Victoria Votokina <Victoria.Votokina@kaspersky.com>
 
-resize_periodic: set a periodic table (equal 4), shrink channels to
-fold, grow back to unfold. Check the exact pattern is preserved. Has
-main and non-default context variants.
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-resize_nonperiodic_reject: set a non-periodic table (equal N), verify
-that channel reduction is rejected.
+commit 92c4ee25208d0f35dafc3213cdf355fbe449e078 upstream.
 
-Signed-off-by: Björn Töpel <bjorn@kernel.org>
+syzbot hit a use-after-free[1] which is caused because the bridge doesn't
+make sure that all previous garbage has been collected when removing a
+port. What happens is:
+      CPU 1                   CPU 2
+ start gc cycle           remove port
+                         acquire gc lock first
+ wait for lock
+                         call br_multicasg_gc() directly
+ acquire lock now but    free port
+ the port can be freed
+ while grp timers still
+ running
+
+Make sure all previous gc cycles have finished by using flush_work before
+freeing the port.
+
+[1]
+  BUG: KASAN: slab-use-after-free in br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
+  Read of size 8 at addr ffff888071d6d000 by task syz.5.1232/9699
+
+  CPU: 1 PID: 9699 Comm: syz.5.1232 Not tainted 6.10.0-rc5-syzkaller-00021-g24ca36a562d6 #0
+  Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/07/2024
+  Call Trace:
+   <IRQ>
+   __dump_stack lib/dump_stack.c:88 [inline]
+   dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:114
+   print_address_description mm/kasan/report.c:377 [inline]
+   print_report+0xc3/0x620 mm/kasan/report.c:488
+   kasan_report+0xd9/0x110 mm/kasan/report.c:601
+   br_multicast_port_group_expired+0x4c0/0x550 net/bridge/br_multicast.c:861
+   call_timer_fn+0x1a3/0x610 kernel/time/timer.c:1792
+   expire_timers kernel/time/timer.c:1843 [inline]
+   __run_timers+0x74b/0xaf0 kernel/time/timer.c:2417
+   __run_timer_base kernel/time/timer.c:2428 [inline]
+   __run_timer_base kernel/time/timer.c:2421 [inline]
+   run_timer_base+0x111/0x190 kernel/time/timer.c:2437
+
+Reported-by: syzbot+263426984509be19c9a0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=263426984509be19c9a0
+Fixes: e12cec65b554 ("net: bridge: mcast: destroy all entries via gc")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20240802080730.3206303-1-razor@blackwall.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Victoria Votokina <Victoria.Votokina@kaspersky.com>
 ---
- .../selftests/drivers/net/hw/rss_drv.py       | 163 +++++++++++++++++-
- 1 file changed, 159 insertions(+), 4 deletions(-)
+Backport fix for CVE-2024-44934
+ net/bridge/br_multicast.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/rss_drv.py b/tools/testing/selftests/drivers/net/hw/rss_drv.py
-index 2d1a33189076..9763760f8306 100755
---- a/tools/testing/selftests/drivers/net/hw/rss_drv.py
-+++ b/tools/testing/selftests/drivers/net/hw/rss_drv.py
-@@ -5,9 +5,9 @@
- Driver-related behavior tests for RSS.
- """
+diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
+index e5328a2777ec..226183dedcbe 100644
+--- a/net/bridge/br_multicast.c
++++ b/net/bridge/br_multicast.c
+@@ -1618,16 +1618,14 @@ void br_multicast_del_port(struct net_bridge_port *port)
+ {
+ 	struct net_bridge *br = port->br;
+ 	struct net_bridge_port_group *pg;
+-	HLIST_HEAD(deleted_head);
+ 	struct hlist_node *n;
  
--from lib.py import ksft_run, ksft_exit, ksft_ge
--from lib.py import ksft_variants, KsftNamedVariant, KsftSkipEx
--from lib.py import defer, ethtool
-+from lib.py import ksft_run, ksft_exit, ksft_eq, ksft_ge
-+from lib.py import ksft_variants, KsftNamedVariant, KsftSkipEx, ksft_raises
-+from lib.py import defer, ethtool, CmdExitFailure
- from lib.py import EthtoolFamily, NlError
- from lib.py import NetDrvEnv
- 
-@@ -45,6 +45,18 @@ def _maybe_create_context(cfg, create_context):
-     return ctx_id
- 
- 
-+def _require_dynamic_indir_size(cfg, ch_max):
-+    """Skip if the device does not dynamically size its indirection table."""
-+    ethtool(f"-X {cfg.ifname} default")
-+    ethtool(f"-L {cfg.ifname} combined 2")
-+    small = len(_get_rss(cfg)['rss-indirection-table'])
-+    ethtool(f"-L {cfg.ifname} combined {ch_max}")
-+    large = len(_get_rss(cfg)['rss-indirection-table'])
-+
-+    if small == large:
-+        raise KsftSkipEx("Device does not dynamically size indirection table")
-+
-+
- @ksft_variants([
-     KsftNamedVariant("main", False),
-     KsftNamedVariant("ctx", True),
-@@ -76,11 +88,154 @@ def indir_size_4x(cfg, create_context):
-         _test_rss_indir_size(cfg, test_max, context=ctx_id)
- 
- 
-+@ksft_variants([
-+    KsftNamedVariant("main", False),
-+    KsftNamedVariant("ctx", True),
-+])
-+def resize_periodic(cfg, create_context):
-+    """Test that a periodic indirection table survives channel changes.
-+
-+    Set a non-default periodic table ([3, 2, 1, 0] x N) via netlink,
-+    reduce channels to trigger a fold, then increase to trigger an
-+    unfold. Using a reversed pattern (instead of [0, 1, 2, 3]) ensures
-+    the test can distinguish a correct fold from a driver that silently
-+    resets the table to defaults. Verify the exact pattern is preserved
-+    and the size tracks the channel count.
-+    """
-+    channels = cfg.ethnl.channels_get({'header': {'dev-index': cfg.ifindex}})
-+    ch_max = channels.get('combined-max', 0)
-+    qcnt = channels['combined-count']
-+
-+    if ch_max < 4:
-+        raise KsftSkipEx(f"Not enough queues for the test: max={ch_max}")
-+
-+    defer(ethtool, f"-L {cfg.ifname} combined {qcnt}")
-+
-+    _require_dynamic_indir_size(cfg, ch_max)
-+
-+    ctx_id = _maybe_create_context(cfg, create_context)
-+
-+    # Set a non-default periodic pattern via netlink
-+    rss = _get_rss(cfg, context=ctx_id)
-+    orig_size = len(rss['rss-indirection-table'])
-+    pattern = [3, 2, 1, 0] * (orig_size // 4)
-+    req = {'header': {'dev-index': cfg.ifindex}, 'indir': pattern}
-+    if ctx_id:
-+        req['context'] = ctx_id
-+    else:
-+        defer(ethtool, f"-X {cfg.ifname} default")
-+    cfg.ethnl.rss_set(req)
-+
-+    # Shrink — should fold
-+    ethtool(f"-L {cfg.ifname} combined 4")
-+    rss = _get_rss(cfg, context=ctx_id)
-+    indir = rss['rss-indirection-table']
-+
-+    ksft_ge(orig_size, len(indir), "Table did not shrink")
-+    ksft_eq(indir, [3, 2, 1, 0] * (len(indir) // 4),
-+            "Folded table has wrong pattern")
-+
-+    # Grow back — should unfold
-+    ethtool(f"-L {cfg.ifname} combined {ch_max}")
-+    rss = _get_rss(cfg, context=ctx_id)
-+    indir = rss['rss-indirection-table']
-+
-+    ksft_eq(len(indir), orig_size, "Table size not restored")
-+    ksft_eq(indir, [3, 2, 1, 0] * (len(indir) // 4),
-+            "Unfolded table has wrong pattern")
-+
-+
-+@ksft_variants([
-+    KsftNamedVariant("main", False),
-+    KsftNamedVariant("ctx", True),
-+])
-+def resize_nonperiodic_reject(cfg, create_context):
-+    """Test that a non-periodic table blocks channel reduction.
-+
-+    Set equal weight across all queues so the table is not periodic
-+    at any smaller size, then verify channel reduction is rejected.
-+    An additional context with a periodic table is created to verify
-+    that validation catches the non-periodic one even when others
-+    are fine.
-+    """
-+    channels = cfg.ethnl.channels_get({'header': {'dev-index': cfg.ifindex}})
-+    ch_max = channels.get('combined-max', 0)
-+    qcnt = channels['combined-count']
-+
-+    if ch_max < 4:
-+        raise KsftSkipEx(f"Not enough queues for the test: max={ch_max}")
-+
-+    defer(ethtool, f"-L {cfg.ifname} combined {qcnt}")
-+
-+    _require_dynamic_indir_size(cfg, ch_max)
-+
-+    ctx_id = _maybe_create_context(cfg, create_context)
-+    ctx_ref = f"context {ctx_id}" if ctx_id else ""
-+
-+    # Create an extra context with a periodic (foldable) table so that
-+    # the validation must iterate all contexts to find the bad one.
-+    extra_ctx = _maybe_create_context(cfg, True)
-+    ethtool(f"-X {cfg.ifname} context {extra_ctx} equal 2")
-+
-+    ethtool(f"-X {cfg.ifname} {ctx_ref} equal {ch_max}")
-+    if not create_context:
-+        defer(ethtool, f"-X {cfg.ifname} default")
-+
-+    with ksft_raises(CmdExitFailure):
-+        ethtool(f"-L {cfg.ifname} combined 2")
-+
-+
-+@ksft_variants([
-+    KsftNamedVariant("main", False),
-+    KsftNamedVariant("ctx", True),
-+])
-+def resize_nonperiodic_no_corruption(cfg, create_context):
-+    """Test that a failed resize does not corrupt table or channel count.
-+
-+    Set a non-periodic table, attempt a channel reduction (which must
-+    fail), then verify both the indirection table contents and the
-+    channel count are unchanged.
-+    """
-+    channels = cfg.ethnl.channels_get({'header': {'dev-index': cfg.ifindex}})
-+    ch_max = channels.get('combined-max', 0)
-+    qcnt = channels['combined-count']
-+
-+    if ch_max < 4:
-+        raise KsftSkipEx(f"Not enough queues for the test: max={ch_max}")
-+
-+    defer(ethtool, f"-L {cfg.ifname} combined {qcnt}")
-+
-+    _require_dynamic_indir_size(cfg, ch_max)
-+
-+    ctx_id = _maybe_create_context(cfg, create_context)
-+    ctx_ref = f"context {ctx_id}" if ctx_id else ""
-+
-+    ethtool(f"-X {cfg.ifname} {ctx_ref} equal {ch_max}")
-+    if not create_context:
-+        defer(ethtool, f"-X {cfg.ifname} default")
-+
-+    rss_before = _get_rss(cfg, context=ctx_id)
-+
-+    with ksft_raises(CmdExitFailure):
-+        ethtool(f"-L {cfg.ifname} combined 2")
-+
-+    rss_after = _get_rss(cfg, context=ctx_id)
-+    ksft_eq(rss_after['rss-indirection-table'],
-+            rss_before['rss-indirection-table'],
-+            "Indirection table corrupted after failed resize")
-+
-+    channels = cfg.ethnl.channels_get({'header': {'dev-index': cfg.ifindex}})
-+    ksft_eq(channels['combined-count'], ch_max,
-+            "Channel count changed after failed resize")
-+
-+
- def main() -> None:
-     """ Ksft boiler plate main """
-     with NetDrvEnv(__file__) as cfg:
-         cfg.ethnl = EthtoolFamily()
--        ksft_run([indir_size_4x], args=(cfg, ))
-+        ksft_run([indir_size_4x, resize_periodic,
-+                  resize_nonperiodic_reject,
-+                  resize_nonperiodic_no_corruption], args=(cfg, ))
-     ksft_exit()
- 
- 
+ 	/* Take care of the remaining groups, only perm ones should be left */
+ 	spin_lock_bh(&br->multicast_lock);
+ 	hlist_for_each_entry_safe(pg, n, &port->mglist, mglist)
+ 		br_multicast_find_del_pg(br, pg);
+-	hlist_move_list(&br->mcast_gc_list, &deleted_head);
+ 	spin_unlock_bh(&br->multicast_lock);
+-	br_multicast_gc(&deleted_head);
++	flush_work(&br->mcast_gc_work);
+ 	del_timer_sync(&port->multicast_router_timer);
+ 	free_percpu(port->mcast_stats);
+ }
 -- 
-2.53.0
+2.43.0
 
