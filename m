@@ -1,55 +1,69 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11C781EB1AA;
-	Wed,  4 Mar 2026 02:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3C5231A21
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 02:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772590880; cv=none; b=RlXWbhEBHYqqxogmNjTrikrgZdtTJCFkl4s34/OUPDtbfJ1v2KlpDra30diCYEbyl7EPbI/yJFl03ZWADfKMQPBNZg5N0YZ1MXtYIQmTV9+J8B2otYnugnRY5+kzxtH0Zxp/ZiZSwhTv+EdsQpiIbIy1sTQogoDOkXS9e5zQBKQ=
+	t=1772591071; cv=none; b=Zz0/uxrDpfCdvW0Xn6VmCyVaQSmUnoWnEyo0c6kSYeyB2afgVnVLNW09DR5NJdYvGGETINvsesPqy4bxeaO0Q0XmJVxlh8uB0a6HRpQBwCTb2ALRf0pqRslnrJLvH6LoE2PtjJo2/DyyZXdh4by/fVraUoaGa0ivHBdg1yMDwEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772590880; c=relaxed/simple;
-	bh=aZ5pVNJJLI0Jknu1MKY6nQm77CHpWY1Pd8TetJWtmfM=;
+	s=arc-20240116; t=1772591071; c=relaxed/simple;
+	bh=ZeeW69wkixY7DJrZ1C17sb88zbZ7AUfO2C8xO7Dnaq8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VAyVjrZEs/f0dJKT9rjLYDxOHvR2QOy89wcnoTduuVbapiAC3tWhgt2VLdMeBvCJuBtGVds/z646z/JTWL7gtPuPsaGHtQbYptjDpNajQWgIippH3Wh+BjyeuKvY38g3csEQ8/n6+kds/SJ4fMNbFvCTXlcJEa2eXEckJbOScaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OlqokNza; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=rpFAYCm9I/AP3sPTmqziUhK6+aLh6WBl/9AFhqo/zevb5gtBO0EyGb9XyocTHjfTTldaO6VhvcrsBLWRs5bR9/rzHNXU2wvIMciVLSmTWQ3vSbbzORXqBspOT5EAGjweXFwDvNucNzS2yI6PZ5rqyEPoZOgivxNEtSGiFyzAvVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RkcZzY8+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OlqokNza"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF41C116C6;
-	Wed,  4 Mar 2026 02:21:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RkcZzY8+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B36C116C6;
+	Wed,  4 Mar 2026 02:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772590879;
-	bh=aZ5pVNJJLI0Jknu1MKY6nQm77CHpWY1Pd8TetJWtmfM=;
+	s=k20201202; t=1772591070;
+	bh=ZeeW69wkixY7DJrZ1C17sb88zbZ7AUfO2C8xO7Dnaq8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=OlqokNza8xBlCo06Rmua98huElwMoromZeEe38MG0AE1sPIVNu3llryjrUmBa0ENQ
-	 BFh1LCxB66f7nowIKXfCvfMwP0BPndL7ZaKbsisg7lpkk7VoJyv26G8UDvKSyCL83G
-	 OXDsrFKAoxKXRdBLFZQsKkLyHEXBAYm1SJC4SCxIo4ee04MhQi1JZivaOBz/VuDAJU
-	 tuKOBOUiQ+GCeYMZqwrb9nomcRfhGWS1s2J7bJasOwrEYF5lSAEyU8GFnREbS0RVs8
-	 JNrZPnZJjma98N6jGOKpcWZb+1XjcjNmeBL+k+Cz+rws1FKhvdiKjsLNDrh9ifc/Bb
-	 k84lVSJ1axt8w==
-Date: Tue, 3 Mar 2026 18:21:18 -0800
+	b=RkcZzY8+/MA7NnIrhVConfQq8gTFDCk66xlo2h7wKL3K3ndZyzDyJP0KZ3LL6lEgC
+	 3ZhvbqV2cFAk8PUJXrwUCzxocl759MGA8gaFRqx0FPIzlkb6QSieJjcY7Aabq/vJoV
+	 BSYMYgsDBQ+9doUvDkAmUNaUqNbq8bt8GOg+5j+dXEL0NwX1R3UAx9pXpT16JVdX6t
+	 MA+BnNSdJU9Zt9ivEG+EpHOv/AkDtna+AtS9vKP56Fr46lC64DeZMN/1tAibOJVDSB
+	 914NsChthU4VspcJwm6OLuEL+r8PJZXV3D93Xlq3bpyu0yEd5Jc5rMSjAJ5T8WYJbm
+	 b4lm2B9RhfA2A==
+Date: Tue, 3 Mar 2026 18:24:29 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Cai Xinchen <caixinchen1@huawei.com>
-Cc: <ioana.ciornei@nxp.com>, <andrew+netdev@lunn.ch>, <davem@davemloft.net>,
- <edumazet@google.com>, <pabeni@redhat.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH -next] dpaa2-switch: Add depend on FSL_DPAA2_ETH to
- FSL_DPAA2_SWITCH
-Message-ID: <20260303182118.4c3c1968@kernel.org>
-In-Reply-To: <20260303013814.338989-1-caixinchen1@huawei.com>
-References: <20260303013814.338989-1-caixinchen1@huawei.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
+ <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, Ido
+ Schimmel <idosch@nvidia.com>
+Subject: Re: [PATCH net-next] ipv6: add IPV6_CALL() helper
+Message-ID: <20260303182429.49645ce8@kernel.org>
+In-Reply-To: <CANn89iKBDxAqT4MGGuQ8xxXjbNRo7HadXoYYq5QpyP0S_4rfTA@mail.gmail.com>
+References: <20260302154201.1621117-1-edumazet@google.com>
+	<20260303170841.218b0816@kernel.org>
+	<CANn89iKBDxAqT4MGGuQ8xxXjbNRo7HadXoYYq5QpyP0S_4rfTA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 3 Mar 2026 01:38:14 +0000 Cai Xinchen wrote:
-> When CONFIG_FSL_DPAA2_ETH=n, dpaa2 cannot be compiled. Thus Add
-> depend on FSL_DPAA2_ETH to FSL_DPAA2_SWITCH in Kconfig
+On Wed, 4 Mar 2026 03:13:40 +0100 Eric Dumazet wrote:
+> On Wed, Mar 4, 2026 at 2:08=E2=80=AFAM Jakub Kicinski <kuba@kernel.org> w=
+rote:
+> >
+> > On Mon,  2 Mar 2026 15:42:01 +0000 Eric Dumazet wrote: =20
+> > > ipv6_stub use is racy, we should add READ_ONCE() and WRITE_ONCE(),
+> > > even if this pointer can only change once.
+> > >
+> > > Add IPV6_CALL() macro to factorize the READ_ONCE(), and perform
+> > > direct calls when CONFIG_IPV6=3Dy. =20
+> >
+> > Does not apply to net-next.
+> > It sounds like we're going to remove IPV6=3Dm, however, perhaps transfo=
+rm
+> > this patch into that removal? =20
+>=20
+> This seems orthogonal, unless the plan is to force IPV6=3Dy ?
 
-Please add a relevant Fixes tag
--- 
-pw-bot: cr
+I thought if we remove IPV6=3Dm we would delete ipv6_stub completely?
