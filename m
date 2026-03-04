@@ -1,68 +1,116 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from flow-b1-smtp.messagingengine.com (flow-b1-smtp.messagingengine.com [202.12.124.136])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E9F73B7B84;
-	Wed,  4 Mar 2026 17:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B0F73BA22A;
+	Wed,  4 Mar 2026 17:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772645200; cv=none; b=LwW0zAKKvrNjnZkgkeUIcejgVC1Kq+JS6olPfJu7nxse9v0N33ovnYCH1P2Tz0z8iSPKsob+r3GqHTYaB4WQLI2SG2yVy/CnJjyBtT9ksDkIxj5/SeL6GYw3t1tXEI0qVS6hSow614YGA99dXJJcc+rjGm4hy7UOFHljg5+1sIU=
+	t=1772645261; cv=none; b=Uh1k72MYujx5gvo9IRNA0l9cOjwXP8FAZsMaE5RF27TRXOsD61yI4nJ9AE1nrfake0OYIRkT+QKhSp4NBV5ef2poNctnox+Y2TgY38Niv4IPxjQvHQFGqDm8U1x2ft86vq1i3KZrvH4FiRC6aYeXYXtLluUba/uiEzuQGdiG3dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772645200; c=relaxed/simple;
-	bh=LARPChrQh1p43gCZUpy+K77KnUK5C9TLQ5kz2+MNn7M=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UaYEseqUqbcZhe9q+GYaaMnhGjzeACEMyjDYGjNuIlbgGT7rHJNAYxZTb94vYsxO8/Lvta0DzNqTQ/3G9PABcuoswuYaKTQGvQp7aIarrW3g5UBupMIN9pJgqOftWtUI8AA0QgtUDLX69bbbZK1cOr//HSBmAqAiRGwVK8rCLtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=i2xy1qCK; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1772645261; c=relaxed/simple;
+	bh=ChRoXIr9yvc9qsnA8M/lFeW4TR0ctexLkYbNu6N5U84=;
+	h=From:To:cc:Subject:In-reply-to:References:MIME-Version:
+	 Content-Type:Date:Message-ID; b=fC1MkkZ5bkQwHVpMOW0NbK3sM6paNKxB5ySeg2E0CQPnO9rEnGS2e2dWIWtd2OKyNt5ZF5pZetoFpjW8NEX68jrtrE/2G7/+P7sQ7a9amKknt7b6I+sdTl5HCf1LtNrJjWrLZzCf+/cek5LSU1yGAq53wciFjrJgDML3ImG83kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net; spf=pass smtp.mailfrom=jvosburgh.net; dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b=QnC36x3Q; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Ts0Q+CyL; arc=none smtp.client-ip=202.12.124.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=jvosburgh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jvosburgh.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="i2xy1qCK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1772645195; x=1804181195;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=LARPChrQh1p43gCZUpy+K77KnUK5C9TLQ5kz2+MNn7M=;
-  b=i2xy1qCKLYN8hLpNzBexQn3JJldlMxgane6D/QO8eolCaUdNgI9D2s6V
-   7A5oywYCeUm1YMq4ZCR8xMe9BIVW8Vg9FUx1//VQuybvlciy/WSDdZyTE
-   D/4CFd+MIzjPYy8rezchhRq375PWr1sPXNJdFw+IhZE9kppK6oFfqSZVG
-   y48KGxqBo4HYJnqh0L5n8ubinPDFCUvu5W0SFDtELQnrfHuS4q1DlW7/s
-   V2yz8MVqASNOrK+1X1RkxbsyhQQnTjvSBp7xt4Cqlxrn2ImLQ+363IoRW
-   MITRAn6q1pQewwFoOtoHy5e6lNgwGm862+8YVI0lVdu3ZHXka20B3UTlW
-   Q==;
-X-CSE-ConnectionGUID: R+zGeeCTStCZFwacSaEwmw==
-X-CSE-MsgGUID: YHg8yHRwRg2O9e0Eet1mdQ==
-X-IronPort-AV: E=Sophos;i="6.21,324,1763449200"; 
-   d="scan'208";a="54654015"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 04 Mar 2026 10:26:34 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Wed, 4 Mar 2026 10:25:59 -0700
-Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58 via Frontend Transport; Wed, 4 Mar 2026 10:25:58 -0700
-Date: Wed, 4 Mar 2026 09:25:57 -0800
-From: Charles Perry <charles.perry@microchip.com>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>, Conor Dooley
-	<conor@kernel.org>
-CC: Conor Dooley <conor@kernel.org>, <netdev@vger.kernel.org>, Sean Anderson
-	<sean.anderson@linux.dev>, Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net-next v2 1/3] net: macb: fix SGMII with inband aneg
- disabled
-Message-ID: <aahrJZyn4wxRapVk@bby-cbu-swbuild03.eng.microchip.com>
-References: <20260224202854.112813-1-charles.perry@microchip.com>
- <20260224202854.112813-2-charles.perry@microchip.com>
- <20260304-nebulizer-rounding-40fbc81a2ba1@spud>
- <aahI1y0NO9ax/V8J@bby-cbu-swbuild03.eng.microchip.com>
- <20260304-unvented-crinkle-37f0bfd03541@spud>
- <aahkCah1pvuNIy03@shell.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=jvosburgh.net header.i=@jvosburgh.net header.b="QnC36x3Q";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Ts0Q+CyL"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.stl.internal (Postfix) with ESMTP id CF9111300F11;
+	Wed,  4 Mar 2026 12:27:30 -0500 (EST)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Wed, 04 Mar 2026 12:27:32 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jvosburgh.net;
+	 h=cc:cc:content-id:content-transfer-encoding:content-type
+	:content-type:date:date:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to; s=fm2; t=1772645250; x=1772652450; bh=3hZ85nMdNhByeQ6ZYVQXq
+	B9xKZH1h7PxqhN6Br3f/2c=; b=QnC36x3Q0L6xqckhgTvg0RhzwLtbHJl1LbZae
+	lQOEj5vSYUTnSoVlsVUeyWZ7BFVXvRbadXEoFjlwbuFmtCNoNr5g6QgGwQhny6EB
+	9+TJ1YY5NzwaPEddpx8Dz91sG6J7yavVO6pwgw7K00XnTGDS3NLW2t2kWbKXI/bD
+	ktlVMvv3lLGzjkrFKztKz/lOnCzXc+uBHh8LxWeqUrV0j7rKVCgZlB2ojJtQt8z2
+	d7rwxR8364Xlmf3EIgKF8a79qS4pel2lSzv450kjZmMyfz6Kcgo0Cj+C0la1LVuH
+	RAJl6zvwMmHvuMMDz0X1SnfPo/FXLXgNoyXC5a03JJIhH9prw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-id
+	:content-transfer-encoding:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+	1772645250; x=1772652450; bh=3hZ85nMdNhByeQ6ZYVQXqB9xKZH1h7PxqhN
+	6Br3f/2c=; b=Ts0Q+CyLeHtsjZa2qIsBBXYiazEhphTAUGF1UbKa8iFCnzq+F9Z
+	tpFVd3j1u8YHNdSWNkE7XrsA0j2gJqzVSc26ea5hkpBzUPp7HikTyqU8MgT8d5Sn
+	K0S/PEf75ZeANH4LYctWTja3+fzREQSau8D4BOrSKlCjqv4jAtKAsgd+2liZrw/f
+	yhpkISLwza5cFE2y/otsnbshQlvQPvvhAHgC8Dayj8qkRqyYJdVOppxQqZ7baCCe
+	Pxahyc9I55JrrKXD3ZrmWi+grgHLziieNuHHwJ8NTIf08TcgkC3sqeG12qJdllH4
+	f8R65rPiQnwJBvcMCC8Z9E2rZ0jDMdrZtnA==
+X-ME-Sender: <xms:gWuoaXqk14uE5s0m_TuMf6ts7a1i3iGW40jvSu4pR9Zi_ZfP5HqcrA>
+    <xme:gWuoaU0B4tFrUIaiHcZUah8p0Kqq7oYK-qlT7K3Nw0nygkSEH7vmRwyVXFm5slPvH
+    sPby8Kgy7liPCAcsrsEpztcXNBGkn-rFcEqJbZ-r4oFfA__sHHhYWDA>
+X-ME-Received: <xmr:gWuoabDRjtyrY32qaPOz5eDHSWtQ4mJweZH9YQJ7da5hObUf-gDGexKT6ARICdu4PKP5Iw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddvieeguddtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhephffvvefujghfofggtgfgfffksehtqhertdertddvnecuhfhrohhmpeflrgihucgg
+    ohhssghurhhghhcuoehjvhesjhhvohhssghurhhghhdrnhgvtheqnecuggftrfgrthhtvg
+    hrnhepueffvedvvdefudejfeeuudfgtdfgudettdevfeeileffhffghfdtjeekhfeitdek
+    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpehjvhesjhhvohhssghurhhghhdrnhgvthdpnhgs
+    pghrtghpthhtohepfedvpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehrrgiioh
+    hrsegslhgrtghkfigrlhhlrdhorhhgpdhrtghpthhtohepuggrvhgvmhesuggrvhgvmhhl
+    ohhfthdrnhgvthdprhgtphhtthhopehsughfsehfohhmihgthhgvvhdrmhgvpdhrtghpth
+    htohepvgguugihiiekjeesghhmrghilhdrtghomhdprhgtphhtthhopehjohgrmhgrkhhi
+    sehgmhgrihhlrdgtohhmpdhrtghpthhtohepjhhohhhnrdhfrghsthgrsggvnhgusehgmh
+    grihhlrdgtohhmpdhrtghpthhtoheprhhoshhtvgguthesghhoohgumhhishdrohhrghdp
+    rhgtphhtthhopegvughumhgriigvthesghhoohhglhgvrdgtohhmpdhrtghpthhtohephh
+    grohhluhhosehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:gWuoaf-EBMU6swfd3wz5-LiaJoCG7pZXDIGa3MJHvemjMva_eYZK7g>
+    <xmx:gWuoaZNqTd9KN2XDAKETzPj03As7PqG8KycivG-2S4CbXR-oS_YByA>
+    <xmx:gWuoaZGIr2ULQaYIa6nntoUlP4dambGdZS1-5PMwloSv7uFI8a5YCQ>
+    <xmx:gWuoaYtTjEINoFXqZu29syBRqZDb08iZ_8KL2A4Cw1Mle9DtJKzvVQ>
+    <xmx:gmuoaQPXxPfDAFDGHFskgUiH2pt0TXhr7IpjI4TKmlobe_WeiAlZ6uUc>
+Feedback-ID: i53714940:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 4 Mar 2026 12:27:29 -0500 (EST)
+Received: by famine.localdomain (Postfix, from userid 1000)
+	id 0A4769FCB4; Wed,  4 Mar 2026 09:27:28 -0800 (PST)
+Received: from famine (localhost [127.0.0.1])
+	by famine.localdomain (Postfix) with ESMTP id 08F399FC67;
+	Wed,  4 Mar 2026 09:27:28 -0800 (PST)
+From: Jay Vosburgh <jv@jvosburgh.net>
+To: Nikolay Aleksandrov <razor@blackwall.org>
+cc: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org,
+    jiayuan.chen@shopee.com,
+    syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com,
+    Andrew Lunn <andrew+netdev@lunn.ch>,
+    "David S. Miller" <davem@davemloft.net>,
+    Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+    Paolo Abeni <pabeni@redhat.com>, Alexei Starovoitov <ast@kernel.org>,
+    Daniel Borkmann <daniel@iogearbox.net>,
+    Jesper Dangaard Brouer <hawk@kernel.org>,
+    John Fastabend <john.fastabend@gmail.com>,
+    Stanislav Fomichev <sdf@fomichev.me>,
+    Andrii Nakryiko <andrii@kernel.org>,
+    Martin KaFai Lau <martin.lau@linux.dev>,
+    Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+    Yonghong Song <yonghong.song@linux.dev>,
+    KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>,
+    Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
+    Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+    Clark Williams <clrkwllms@kernel.org>,
+    Steven Rostedt <rostedt@goodmis.org>, Jussi Maki <joamaki@gmail.com>,
+    linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
+    linux-kselftest@vger.kernel.org, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH net v4 1/2] bonding: fix null-ptr-deref in
+ bond_rr_gen_slave_id()
+In-reply-to: <aahWymAi_CtRG0gJ@penguin>
+References: <20260304074301.35482-1-jiayuan.chen@linux.dev>
+ <20260304074301.35482-2-jiayuan.chen@linux.dev> <aahWymAi_CtRG0gJ@penguin>
+Comments: In-reply-to Nikolay Aleksandrov <razor@blackwall.org>
+   message dated "Wed, 04 Mar 2026 17:59:06 +0200."
+X-Mailer: MH-E 8.6+git; nmh 1.8+dev; Emacs 29.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,114 +118,128 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <aahkCah1pvuNIy03@shell.armlinux.org.uk>
+Content-ID: <1293119.1772645247.1@famine>
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 04 Mar 2026 09:27:28 -0800
+Message-ID: <1293120.1772645248@famine>
 
-On Wed, Mar 04, 2026 at 04:55:37PM +0000, Russell King (Oracle) wrote:
-> On Wed, Mar 04, 2026 at 04:23:30PM +0000, Conor Dooley wrote:
-> > On Wed, Mar 04, 2026 at 06:59:35AM -0800, Charles Perry wrote:
-> > > On Wed, Mar 04, 2026 at 11:15:43AM +0000, Conor Dooley wrote:
-> > > > On Tue, Feb 24, 2026 at 12:28:52PM -0800, Charles Perry wrote:
-> > > > > Make it possible to connect a PHY which does not use inband
-> > > > > autoneg to a gem MAC using phylink's information.
-> > > > > 
-> > > > > The previous implementation relied on whether or not the link
-> > > > > was a fixed-link to disable SGMII autoneg. This commit extend
-> > > > > this to all link which are not configured for inband
-> > > > > autonegotiation.
-> > > > > 
-> > > > > Signed-off-by: Charles Perry <charles.perry@microchip.com>
-> > > > 
-> > > > This breaks the macb on mpfs-icicle-kit, I get stuck with:
-> > > > 
-> > > > [    7.189102] mpfs-sys-controller syscontroller: Registered MPFS system controller
-> > > > [    7.260946] macb 20110000.ethernet eth0: PHY [20112000.ethernet-ffffffff:08] driver [Vitesse VSC8662] (irq=POLL)
-> > > > [    7.273881] macb 20110000.ethernet eth0: configuring for phy/sgmii link mode
-> > > > [    7.296580] macb 20110000.ethernet: gem-ptp-timer ptp clock registered.
-> > > > [    7.345782] macb 20112000.ethernet eth1: PHY [20112000.ethernet-ffffffff:09] driver [Vitesse VSC8662] (irq=POLL)
-> > > > [    7.358082] macb 20112000.ethernet eth1: configuring for phy/sgmii link mode
-> > > > [    7.380479] macb 20112000.ethernet: gem-ptp-timer ptp clock registered.
-> > > > [   11.376763] macb 20110000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
-> > > > [   11.398403] Sending DHCP requests .
-> > > > [   11.472699] macb 20112000.ethernet eth1: Link is Up - 1Gbps/Full - flow control off
-> > > > [   13.938425] ..... timed out!
-> > > > [   93.598491] macb 20110000.ethernet eth0: Link is Down
-> > > > [   93.641823] macb 20110000.ethernet: gem-ptp-timer ptp clock unregistered.
-> > > > [   93.659433] macb 20112000.ethernet eth1: Link is Down
-> > > > [   93.691724] macb 20112000.ethernet: gem-ptp-timer ptp clock unregistered.
-> > > > [   93.703977] IP-Config: Retrying forever (NFS root)...
-> > > > [   93.758382] macb 20110000.ethernet eth0: PHY [20112000.ethernet-ffffffff:08] driver [Vitesse VSC8662] (irq=POLL)
-> > > > [   93.770655] macb 20110000.ethernet eth0: configuring for phy/sgmii link mode
-> > > > [   93.786497] macb 20110000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
-> > > > [   93.795840] macb 20110000.ethernet: gem-ptp-timer ptp clock registered.
-> > > > [   93.844481] macb 20112000.ethernet eth1: PHY [20112000.ethernet-ffffffff:09] driver [Vitesse VSC8662] (irq=POLL)
-> > > > [   93.856769] macb 20112000.ethernet eth1: configuring for phy/sgmii link mode
-> > > > [   93.870926] macb 20112000.ethernet eth1: Link is Up - 1Gbps/Full - flow control off
-> > > > [   93.880302] macb 20112000.ethernet: gem-ptp-timer ptp clock registered.
-> > > > 
-> > > 
-> > > Hello Conor,
-> > > 
-> > > I checked the driver for the VSC8662 and it doesn't have the
-> > > ->inband_caps() and ->config_inband() callbacks so Linux leaves whatever
-> > > the bootloader puts or uses the defaults. Looking at the datasheet, this
-> > > should be register 23 (Extended PHY Control Set 1) bit 13 (MAC interface
-> > > auto-negotiation)
-> > > 
-> > > My guess is that this bit is set and since this patch disable inband
-> > > autonegotiation (because phylink decides it), there is a mismatch.
-> > > 
-> > > Can you add 'managed = "in-band-status"' in your device tree under the macb
-> > > node? That's not necessarily the fix, I just want to confirm my theory.
-> > 
-> > No, it just produces a different error:
-> > [    5.769864] mpfs-sys-controller syscontroller: Registered MPFS system controller
-> > [    5.829146] macb 20110000.ethernet eth0: Could not attach PHY (-19)
-> > [    5.854232] IP-Config: Failed to open eth0
-> > [    5.897152] macb 20112000.ethernet eth1: Could not attach PHY (-19)
-> > [    5.921061] IP-Config: Failed to open eth1
-> > [    5.925592] IP-Config: No network devices available
-> > [    5.938800] clk: Disabling unused clocks
-> > [    5.944156] PM: genpd: Disabling unused power domains
-> > [    5.961029] check access for rdinit=/usr/sbin/init failed: -2, ignoring
-> 
-> -19 is -ENODEV (I wish everyone would use %pe so we get english
-> error messages rather than having to look up errno codes in the
-> header files.)
-> 
-> macb uses either phylink_of_phy_connect() or phylink_connect_phy().
-> I don't think phylink_connect_phy() would return -ENODEV, but
-> phylink_of_phy_connect() would - but I can't see that adding
-> 'managed = "in-band-status";' to DT would cause that. The only
-> case I can see is that fwnode_phy_find_device() fails to find the
-> phydev, but there is a PHY node specified in DT, but that would
-> fail without in-band-status.
-> 
+Nikolay Aleksandrov <razor@blackwall.org> wrote:
 
-Conor,
+>On Wed, Mar 04, 2026 at 03:42:57PM +0800, Jiayuan Chen wrote:
+>> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+>> =
 
-Can you send us a snippet of you device tree showing the gem node and the
-phy?
+>> bond_rr_gen_slave_id() dereferences bond->rr_tx_counter without a NULL
+>> check. rr_tx_counter is a per-CPU counter only allocated in bond_open()
+>> when the bond mode is round-robin. If the bond device was never brought
+>> up, rr_tx_counter remains NULL, causing a null-ptr-deref.
+>> =
 
-The idea behind adding 'managed = "in-band-status"' in the device tree is
-to hint phylink to use MLO_AN_INBAND. I'm afraid we'll get the same result
-if we come up with a different workaround.
+>> The XDP redirect path can reach this code even when the bond is not up:
+>> bpf_master_redirect_enabled_key is a global static key, so when any bon=
+d
+>> device has native XDP attached, the XDP_TX -> xdp_master_redirect()
+>> interception is enabled for all bond slaves system-wide. This allows th=
+e
+>> path xdp_master_redirect() -> bond_xdp_get_xmit_slave() ->
+>> bond_xdp_xmit_roundrobin_slave_get() -> bond_rr_gen_slave_id() to be
+>> reached on a bond that was never opened.
+>> =
 
-Thanks,
-Charles
+>> Fix this by allocating rr_tx_counter unconditionally in bond_init()
+>> (ndo_init), which is called by register_netdevice() and covers both
+>> device creation paths (bond_create() and bond_newlink()). This also
+>> handles the case where bond mode is changed to round-robin after device
+>> creation. The conditional allocation in bond_open() is removed. Since
+>> bond_destructor() already unconditionally calls
+>> free_percpu(bond->rr_tx_counter), the lifecycle is clean: allocate at
+>> ndo_init, free at destructor.
+>> =
 
-> > > Also '#define DEBUG' in 'drivers/net/phy/phylink.c' can help if you can
-> > > recompile your kernel.
-> > 
-> > Setting this provided no further logs, seemingly.
-> 
-> It certainly would if you place it before the first #include - I
-> routinely build kernels with it set as such. The messages are produced
-> at debug level, so should appear via "dmesg". If you want to see them
-> on the console, you need to add "debug" to the kernel command line.
-> 
-> However, the in-band-status thing needs to be root-caused first.
-> 
-> -- 
-> RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-> FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+>> Note: rr_tx_counter is only used by round-robin mode, so this
+>> deliberately allocates a per-cpu u32 that goes unused for other modes.
+>> Conditional allocation (e.g., in bond_option_mode_set) was considered
+>> but rejected: the XDP path can race with mode changes on a downed bond,
+>> and adding memory barriers to the XDP hot path is not justified for
+>> saving 4 bytes per CPU.
+>> =
+
+>> Fixes: 879af96ffd72 ("net, core: Add support for XDP redirection to sla=
+ve device")
+>> Reported-by: syzbot+80e046b8da2820b6ba73@syzkaller.appspotmail.com
+>> Closes: https://lore.kernel.org/all/698f84c6.a70a0220.2c38d7.00cc.GAE@g=
+oogle.com/T/
+>> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+>> ---
+>>  drivers/net/bonding/bond_main.c | 19 +++++++++++++------
+>>  1 file changed, 13 insertions(+), 6 deletions(-)
+>> =
+
+>
+>IMO it's not worth it to waste memory in all modes, for an unpopular mode=
+.
+>I think it'd be better to add a null check in bond_rr_gen_slave_id(),
+>READ/WRITE_ONCE() should be enough since it is allocated only once, and
+>freed when the xmit code cannot be reachable anymore (otherwise we'd have
+>more bugs now). The branch will be successfully predicted practically alw=
+ays,
+>and you can also mark the ptr being null as unlikely. That way only RR ta=
+kes
+>a very minimal hit, if any.
+
+	Is what you're suggesting different from Jiayuan's proposal[0],
+in the sense of needing barriers in the XDP hot path to insure ordering?
+
+	If I understand correctly, your suggestion is something like
+(totally untested):
+
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_ma=
+in.c
+index eb27cacc26d7..ac2a4fc0aad0 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -4273,13 +4273,17 @@ void bond_work_cancel_all(struct bonding *bond)
+ static int bond_open(struct net_device *bond_dev)
+ {
+ 	struct bonding *bond =3D netdev_priv(bond_dev);
++	u32 __percpu *rr_tx_tmp;
+ 	struct list_head *iter;
+ 	struct slave *slave;
+ =
+
+-	if (BOND_MODE(bond) =3D=3D BOND_MODE_ROUNDROBIN && !bond->rr_tx_counter)=
+ {
+-		bond->rr_tx_counter =3D alloc_percpu(u32);
+-		if (!bond->rr_tx_counter)
++	if (BOND_MODE(bond) =3D=3D BOND_MODE_ROUNDROBIN &&
++	    !READ_ONCE(bond->rr_tx_counter)) {
++		rr_tx_tmp =3D alloc_percpu(u32);
++		if (!rr_tx_tmp)
+ 			return -ENOMEM;
++		WRITE_ONCE(bond->rr_tx_counter, rr_tx_tmp);
++
+ 	}
+ =
+
+ 	/* reset slave->backup and slave->inactive */
+@@ -4866,6 +4870,9 @@ static u32 bond_rr_gen_slave_id(struct bonding *bond=
+)
+ 	struct reciprocal_value reciprocal_packets_per_slave;
+ 	int packets_per_slave =3D bond->params.packets_per_slave;
+ =
+
++	if (!READ_ONCE(bond->rr_tx_counter))
++		packets_per_slave =3D 0;
++
+ 	switch (packets_per_slave) {
+ 	case 0:
+ 		slave_id =3D get_random_u32();
+
+	-J
+
+
+[0] https://lore.kernel.org/netdev/e4a2a652784ec206728eb3a929a9892238c61f0=
+6@linux.dev/
+
+---
+	-Jay Vosburgh, jv@jvosburgh.net
