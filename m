@@ -1,161 +1,103 @@
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B091C34A78F
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 16:09:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90515345CBD;
+	Wed,  4 Mar 2026 16:10:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772640556; cv=none; b=fMEnNbiF6zNrv06oZoOTuffOIRo96T5HyKkbqZG3upc7YXUFTIcoOKxqCgIqJKpFXRad7nsKQaMQ4NWYyp2TNiqIj/NRo6lhe+tLwfp5ce41gP3Qyhr8g2VJ397VgDYYxiPNG9iiNdLOlm5Kuntvsko0Q3XfSrpCYUg1YDHQgpM=
+	t=1772640642; cv=none; b=XXi7y7MHgHf9ML4ycA2S89bRQZr5QDzlUm/JtSgBnDPPyYEAuWea4PShOEUJZG6Kz8R9IbmLCTekrM1YQFYp25Fkt+DtzgQD8mdul0Cxbbxlwh+YTxY52z4r9zFx27pDfHzVKZ53dPRcRT8SEJIvOC4X6W0NUMWsoFxAW+WLGqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772640556; c=relaxed/simple;
-	bh=cyPiqNTMV9/2OwOGOP5t4mZiXAj1R4qSbE3YHJvUUMI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=P+HEqCdWfxOW7TodqCY7uVoQc18z//0wkiLkZTuogvmIukVnlg2fs7AoLvu6CLTPG9FfBUzJc6ySCzuOdtT2jmZFBJwvN3QRln/QP4VBYLpbyP/0wDFupwwa1zs3IJOku2NiC6wkqEwWLqGChhoUd+Vf1986xl4ubOXZP5xj7r0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=V96PDJpt; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1772640642; c=relaxed/simple;
+	bh=Gz289QC+ZBgxZBTkRmrcya6ao07RsmxD53Tp0Xq2DMU=;
+	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=CRrQsFznR7PZgDznuQS8QTyWVHyAH2x7gId3n3WDQPf5cso68DknicdP+y6+vdJEo0GYbZMF8CNjB+PQg8BsMYwEfvLx7oIpMo/3kyfKK2j5/NhBzqmMgaKSVxXIUtXv3Ef8R4iM7XqK3V2pO3z6cuXqY6E1sbqozRXJ6mYpN2Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=HNONgHJJ; arc=none smtp.client-ip=68.232.154.123
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="V96PDJpt"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 0CB3BC16573;
-	Wed,  4 Mar 2026 16:09:31 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B9F765FF5C;
-	Wed,  4 Mar 2026 16:09:12 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id EEBEA10369526;
-	Wed,  4 Mar 2026 17:09:05 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772640551; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to:references;
-	bh=o2/XV9ZfCgAgiuSeujNtGFRamCoYCgmA2/cu0ytNEpE=;
-	b=V96PDJpt9PWanbUhWbce/TGSLT34xeihw/YwV29JTSuYkf6IvIK28jJYeUe60g9+I4+pVt
-	rw+YTiErvwBQkgQ3D6FymrwPywgT5FUfOcMi8VA5gJQh4CEA1xqU5GaAWzPlF0LRqeABUN
-	gWtfZoEdmgtH0d9/E5kaMtRey8OJkEfqZ2w9RDbP5x6d6Yuo1npJFCjC9EDls3mopeFGDJ
-	0lPYNPgsinQ00Iq0XO0Zq4pThB6E8HalYcZkOxayyyRDAkAtGJyDLEds/PdgSg32Pu9cJZ
-	B6m6TX/pvqUpnheeh4Xr0wt5IG57pKoEJ1znXrD9ZGZLYRcekMoYQDqMwOvTqg==
-Message-ID: <9c674e92-efc4-4f4d-9bd6-2b210ffd7c9e@bootlin.com>
-Date: Wed, 4 Mar 2026 17:09:05 +0100
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="HNONgHJJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1772640641; x=1804176641;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=Gz289QC+ZBgxZBTkRmrcya6ao07RsmxD53Tp0Xq2DMU=;
+  b=HNONgHJJl+3Am0zW6CjIXt2ku1Fk2gr/wuIYPZWzF52g2g3RataggcWG
+   BzoCEu3ln1bDBM2yHbTlPy8cnbxHy2o06JxmSznWSnlcjKnV+59OE/j60
+   NaBKcPEw2moVL1jG/0Lu6euuj6rfyh8n2Gtue8pmAwdW6ecyt70gPQsVN
+   pTflx21YeGjSOdSG5Cj0dShxY12kPvcPhUBtATKQSTZ67jBvDK1wRGRij
+   qRESGsM30tsSD1CBZGPfaZTbevuSaE5oWVYxdLtS/qLEpJh3NlsNkJ4jn
+   YC56/G+NNuaMD1S2+hss/w8ZSsq7jTY6mng2CKcW4I9FIv2ZnG28bysKb
+   Q==;
+X-CSE-ConnectionGUID: 4fes5EXKR6mT6OprZhn0Tg==
+X-CSE-MsgGUID: aNj582jsSK6tqB68LIG+YQ==
+X-IronPort-AV: E=Sophos;i="6.21,324,1763449200"; 
+   d="scan'208";a="221487682"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 04 Mar 2026 09:10:34 -0700
+Received: from chn-vm-ex01.mchp-main.com (10.10.85.143) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58; Wed, 4 Mar 2026 09:10:15 -0700
+Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Wed, 4 Mar 2026 09:10:12 -0700
+Message-ID: <65fd5f46f1f996dd5f4df2de2efb52c8fa3575b3.camel@microchip.com>
+Subject: Re: [PATCH net-next 2/8] dt-bindings: net: lan9645x: add LAN9645X
+ switch bindings
+From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
+To: Conor Dooley <conor@kernel.org>
+CC: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "Vladimir
+ Oltean" <olteanv@gmail.com>, "David S. Miller" <davem@davemloft.net>, "Eric
+ Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, "Paolo
+ Abeni" <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Woojung Huh <woojung.huh@microchip.com>, "Russell
+ King" <linux@armlinux.org.uk>, Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>
+Date: Wed, 4 Mar 2026 17:10:11 +0100
+In-Reply-To: <20260303-disperser-clone-512efa99f26c@spud>
+References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
+	 <20260303-dsa_lan9645x_switch_driver_base-v1-2-bff8ca1396f5@microchip.com>
+	 <20260303-disperser-clone-512efa99f26c@spud>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC net-next 0/4] ethtool: CMIS module diagnostic loopback
- support
-To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Cc: Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
- netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
- Leon Romanovsky <leon@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
- Michael Chan <michael.chan@broadcom.com>,
- Hariprasad Kelam <hkelam@marvell.com>, Ido Schimmel <idosch@nvidia.com>,
- Danielle Ratson <danieller@nvidia.com>, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org
-References: <20260219130050.2390226-1-bjorn@kernel.org>
- <415c4922-cc8d-4e35-bbac-3a532f44d238@lunn.ch>
- <20260219160519.323041bf@kernel.org>
- <3b0949fa-0b05-4bce-86c0-2a7a058865a5@lunn.ch>
- <20260220131254.03874c4c@kernel.org>
- <CAJ+HfNgXqpqDYsmAa-mpHnO82aDgC7XbyVw3TmXk-ySFmGA-JQ@mail.gmail.com>
- <20260223150401.7993b11a@kernel.org>
- <CAJ+HfNjmRjr6VtRijmN9=4zPwxstw9B8D-_XVn3hwJzNHka1Jw@mail.gmail.com>
- <363527d6-1f29-4399-83a7-978785d1e11f@lunn.ch>
- <CAJ+HfNhwM82H-sgbz0+WJGRjXJc8Ww0aCnp_YTNi-CB4aBMi=w@mail.gmail.com>
- <4c51f18c-5eb1-4a9e-93b9-70cf7a4fd387@lunn.ch>
- <f2ce4c3b-407e-4c01-b117-c646feed877f@bootlin.com>
- <CAJ+HfNga2510HrgpDH==H7CpmKBAEsoQkEmhFBMPxqM296p2eA@mail.gmail.com>
-From: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Content-Language: en-US
-In-Reply-To: <CAJ+HfNga2510HrgpDH==H7CpmKBAEsoQkEmhFBMPxqM296p2eA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-Hi Björn,
+On Tue, 2026-03-03 at 18:56 +0000, Conor Dooley wrote:
+> On Tue, Mar 03, 2026 at 01:22:28PM +0100, Jens Emil Schulz =C3=98stergaar=
+d wrote:
+> > +examples:
+> > +  - |
+> > +    soc {
+> > +        #address-cells =3D <1>;
+> > +        #size-cells =3D <0>;
+> > +
+> > +      ethernet-switch@0 {
+> > +        reg =3D <0>;
+>=20
+> Also, this is an odd example, why are you at address 0 on a "soc" bus,
+> which usually means that this device on an AXI/AHB bus, and 0 is very
+> unusual for that. Obviously the example doesn't have to match the real
+> user, but this stands out.
+> I may have some follow up questions I think depending on your answer.
 
-On 04/03/2026 16:52, Björn Töpel wrote:
-> Hey!
-> 
-> On Mon, 2 Mar 2026 at 10:01, Maxime Chevallier
-> <maxime.chevallier@bootlin.com> wrote:
-> 
->> The overall approach after all these discussions sounds fine to me, I do
->> think that the index of the component that does the loopback needs to be
->> there somewhere, when relevant.
->>
->> Either through a name string, or a combo of an enum indicating the
->> component type (MAC/PHY/Module/etc.) + its index. I think it's safe to
->> assume that indices will fit in u32 ?
->>
->> something like :
->>
->> # MAC PCS loopback
->> ethtool --set-loopback eth0 loc mac name pcs
->>
->> # PHY id 2 PMA loopback (I'm making things up here)
->> ethtool --set-loopback eth0 loc phy id 2 name pma
->>
->> That way we can extend that fairly easily for, say, combo-port devices
->> where we could select which of the port we want to loopback :)
-> 
-> Ok! I'll spin a new version with this in mind. To improve my mental
-> model, could you give an example how you would use a combo-port from a
-> userland perspective?
+The intended way to bind this driver is via a parent MFD driver which sets
+up the SPI register protocol, initiates regmaps and distributes them to chi=
+ld
+devices (like this DSA driver).
 
-Of course :)
+Similar to mscc,vsc7512 in drivers/mfd/ocelot-spi.c.
 
-Considering this setup :
-
- +-----+     +-----+
- | MAC |     | PHY |----- SFP
- |     |-----|     |----- RJ45
- +-----+     +-----+
-
-It's still WIP but the current state of what I have in the pipe looks like :
-
-# List the ports
-ethtool --show-ports eth0
-
-Port for eth10:       # <- This port represents the RJ45 port of the PHY
-	Port id: 1
-	Supported link modes:  10baseT/Half 10baseT/Full
-	                       100baseT/Half 100baseT/Full
-	                       1000baseT/Full
-	                       10000baseT/Full
-	                       2500baseT/Full
-	                       5000baseT/Full
-	Port type: mdi
-	Active: yes
-	Link: up
-
-Port for eth1:          # <- This port represents the SFP cage
-	Port id: 2
-	Vacant: no
-	Supported MII interfaces : 10gbase-r
-	Port type: sfp
-	Active: no
-
-Port for eth1:          # <- This port represents the SFP module inside the cage
-	Port id: 4
-	Supported link modes:  10000baseCR/Full
-	Port type: mdi
-	Active: no
-	Link: up
-
-
-# Select the SFP port as the active one (note that we could either use
-port 2 or 4 here for the same result) :
-
-ethtool --set-port eth0 id 4 active on 
-
-I may add something like :
-
-ethtool --set-port eth0 type sfp active on
-ethtool --set-port eth0 type tp active on
- 
-Maxime
-
+This MFD would be the soc node. All child nodes perform register IO over
+spi, using the regmaps requested from this parent so I think the addresses
+on the bus are purely ornamental. Should I write the smallest register
+address in all regions used by the DSA driver instead?
