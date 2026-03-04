@@ -1,89 +1,90 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B091F3FED;
-	Wed,  4 Mar 2026 15:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2354624676D;
+	Wed,  4 Mar 2026 15:16:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772637307; cv=none; b=cX7vDN+Eav/jyTUK5HVk5GW9kciULGLid1YII59HwyjQhROQEpzjlECuIX2qIbfj4uitrlopAxyEsxW5e1RCH7tdMnDq+4R1k5sjG/Y5OnrYo9BaCO33ky6XWQ1ppyAt+DKT8v9lpMDJHR/yfyUXfO6t1rpEDDlu+rFe5vV0X0M=
+	t=1772637410; cv=none; b=IfFIwjI1WV/enKkxrqVjtglnQZWxy1dfMLsa/p32OGHeRXx3v5ZXZ6VgEYjZtRkU3LohCM4/K2wsb5OJNzgWVLm3s2dlzFkZmaG++A3xdcqibmHKLB+GO8ku3NqsseuqWoqxKDjcD9Ze7l3SBGfJzKfqnSV23d1QeCcrcXwO3AQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772637307; c=relaxed/simple;
-	bh=x4R8A2RNTfUwzOXr3eMyGbEAnd2tLvcvAMGI+tjAWi4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mFWMTELcbR66nMFTvH5QuDWHNmrx0+L87SsTBClYjhjKLbec6ooYLJhU0UhJoojsVN3yFCiuLvonAVAmauDx2189cafdYeujDntLDf3bxScDIVouAVUFRqOsGW+nrACdTmCyON5SL+pakH0QaodGOAfCtP/y3dnQbDqX2DNMMjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=EGGvURqh; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1772637410; c=relaxed/simple;
+	bh=Hwalj6XGGeHJHa78r5hc0CzaU3kjmvKcFZnz/ZUApGQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VOMRQZw+VcuObkHqu1sUyFf6MqKF4LlU6q9ul8dt/GoHxtOgmV+H1OWytnqKDX69mwRHPSBzuwbrbr89k/ZqaM1V4pkCupSig6dMKn4Y+rfm2xgMaahJxuSHpz/OYRQ0zceHhzaKQL1qaPu6DP0V1WL9ziC7LG31gjHJjct8CqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kP9BjpKE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="EGGvURqh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=/F/6qnqfXtJ15sBnSuLKV29FiLetLwxJj98fT8vIhN4=; b=EGGvURqhv+xBc/Oiqth4S3Uq/g
-	tfch3dfxw4MVoNSLfdrO/vjyOBNg3VDYRzZGlCNwtRe9n9+bjBzN2CNmGpwHPc7VE+6bJthhJRYQ+
-	7r567lrAq0nrS7AFv4r7k18Kl+e5hb0WPT2aDG1yl8R0i35qVdJfLogPFM/v6xhlM8zU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vxnw6-00A7lc-TR; Wed, 04 Mar 2026 16:14:54 +0100
-Date: Wed, 4 Mar 2026 16:14:54 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-Cc: UNGLinuxDriver@microchip.com, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 1/8] net: dsa: add tag driver for LAN9645X
-Message-ID: <8ce78efd-2304-43d2-a755-4189fcbffb25@lunn.ch>
-References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
- <20260303-dsa_lan9645x_switch_driver_base-v1-1-bff8ca1396f5@microchip.com>
- <c0213890-ef36-435c-aa73-869ee5e849d5@lunn.ch>
- <1ceeb7fb0abc89f4b384c9d73b7d29c73bb8d53b.camel@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kP9BjpKE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4A5C4CEF7;
+	Wed,  4 Mar 2026 15:16:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772637409;
+	bh=Hwalj6XGGeHJHa78r5hc0CzaU3kjmvKcFZnz/ZUApGQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kP9BjpKEgVUse0CsIZYAp+9Aw4PewrgVr24UbBpYTEYxGJ7wLuj0W4Tc0t/kFeWbH
+	 tI4ROeHMM+bCxICrweSU04teCK9rCHkiy7xUe6iW3LuJgH41e9mlajsXRsX+gni7xL
+	 YT4MP45Yh/mDuMPyDDe5VSitq3PJD+Gxss9xwxqpi9SSZi3M9sYTINCI3CPSDIxRQ0
+	 FD2cDYc+21busLPjtewCzOjPlXTCYwcqGZORgGUM7HvyXoAOHZB4tMn6/GmAkQk4fk
+	 C+ffaukk1XvRvTXUdYMkLAwlZs6QEbcARI/Q1cJhQ2vimK+TIFkpR+xVkOQy9YsUa0
+	 oxN3f/g9IMtuw==
+From: Jakub Kicinski <kuba@kernel.org>
+To: davem@davemloft.net
+Cc: netdev@vger.kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	horms@kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH net-next] docs: netdev: refine netdevsim testing guidance
+Date: Wed,  4 Mar 2026 07:16:46 -0800
+Message-ID: <20260304151647.2770466-1-kuba@kernel.org>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1ceeb7fb0abc89f4b384c9d73b7d29c73bb8d53b.camel@microchip.com>
+Content-Transfer-Encoding: 8bit
 
-> > These functions are big enough i would place them into the .c file.
-> > Then, normally, i would say, please don't use inline in a C file. But
-> > here we are in the fast path. Have you tried this with and without the
-> > inline? How does it change the object size and performance?
-> > 
-> 
-> I did test performance back when I first implemented this. I had some issues
-> getting gcc to inline the functions, and that hurt performance quite a bit.
-> But I did not look at object size though. I moved them to the header so I could
-> add the inline. I can move them to the .c file in the next version.
+The library to create tests for both NIC HW and netdevsim has existed
+for almost a year. netdevsim-only tests we get increasingly feel like
+a waste, we should try to write tests that work both on netdevsim and
+real HW. Refine the guidance accordingly.
 
-Developers often get inline wrong:
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+CC: corbet@lwn.net
+CC: skhan@linuxfoundation.org
+CC: workflows@vger.kernel.org
+CC: linux-doc@vger.kernel.org
+---
+ Documentation/process/maintainer-netdev.rst | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-It is used on the slow path, so all it achieves is bloating the object
-size.
+diff --git a/Documentation/process/maintainer-netdev.rst b/Documentation/process/maintainer-netdev.rst
+index 6bce4507d5d3..3aa13bc2405d 100644
+--- a/Documentation/process/maintainer-netdev.rst
++++ b/Documentation/process/maintainer-netdev.rst
+@@ -479,8 +479,14 @@ netdevsim
+ 
+ ``netdevsim`` is a test driver which can be used to exercise driver
+ configuration APIs without requiring capable hardware.
+-Mock-ups and tests based on ``netdevsim`` are strongly encouraged when
+-adding new APIs, but ``netdevsim`` in itself is **not** considered
++Mock-ups and tests based on ``netdevsim`` are encouraged when
++adding new APIs with complex logic in the stack. The tests should
++be written so that they can run both against ``netdevsim`` and a real
++device (see ``tools/testing/selftests/drivers/net/README.rst``).
++``netdevsim``-only tests should focus on testing corner cases
++and failure paths in the core which are hard to exercise with a real driver.
++
++``netdevsim`` in itself is **not** considered
+ a use case/user. You must also implement the new APIs in a real driver.
+ 
+ We give no guarantees that ``netdevsim`` won't change in the future
+-- 
+2.53.0
 
-It is used on tiny functions, which the compiler is likely to inline
-anyway.
-
-Your use case is different. This is fast path, and it is not a small
-function. You also have a good justification, you know not using
-inline really does hurt performance.
-
-So, please move this into the .c file, and use inline. And add a
-comment to the commit message adding your justification for inline.
-If something is justified, we will accept it.
-
-	Andrew
