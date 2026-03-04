@@ -1,43 +1,43 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EAFA1AA7A6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8B41A00F0
 	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 00:08:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772582891; cv=none; b=gwopTRNU8Ul44VX+S8Q5k8mssKqHeUdL6R0uHo1p4oGcbFagp975vCQPAOVZ7t2fSOuZFKl7cAwGCOy5/AkszyCdFWTKFZLEDJM+x5bsH31cl9aprs1SeLqRcBJks9fd39J/kpdx2/vZL1FN+6fAQfnoEFo+klge+lOtcPoYlbM=
+	t=1772582892; cv=none; b=gTs9zvGN+StUbalZN+BMju34ZfCPr+in3886K3E1q2dSgJhyb2noN+hidlY8BuqQ8c2nJY/lvmutWzBfaivgmPTM2wdBZ9rIIU52HdAwVofMSUYMMLXuoaK/eXDDF8X0UbOx4RtzrxuRzcQC3c3/cLS7q/OqmF5DJtVZVsnS4/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772582891; c=relaxed/simple;
-	bh=MqQ/foMj2ZT0HfPo/0S8hOjT/UVG0HKrl5XQiZ9pUNU=;
+	s=arc-20240116; t=1772582892; c=relaxed/simple;
+	bh=ToaY1IjwIXX4dzvjVB9KZQR5bgLLcK6AimfbkfYOhw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TFJHqH+X16EoCCplqjQXUd+JU4D3pZOHgHIjsLhjyCJSFICtlY+o7LzFDiHdFZW7CCr1quHbPEmMP0d9LRXNHDsXPOxY6i9BPUjK+G7LY+OkM8r7ya6klNuOQxi8l/6bb/LgK0DDtCKwWJj5nomkWR8OgiEWN8eGJbbpo78gNto=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=b+8QptXl; arc=none smtp.client-ip=198.175.65.15
+	 MIME-Version; b=CzuKNALdQZfQcOw3ggBcEqU482lFIc2iPlJwAsQP2hCBymFeRU0yfTGT7STLpsA8jey2vK5PhklP9mTk5bwGzG4uO6DmFsMpgrJ3zGL1NsxQDGRXXVIeCcd2OjEjtA0fPyeaXG+r0zLYJK15tQUR1L3ZuGVUQDz0PAi3CBtAFyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DW9RvVIn; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="b+8QptXl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DW9RvVIn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1772582891; x=1804118891;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=MqQ/foMj2ZT0HfPo/0S8hOjT/UVG0HKrl5XQiZ9pUNU=;
-  b=b+8QptXlxeJrU6o6xYuseMmJuPSbgLiElNOUEnSUTPYMEHdSSsL3Vit5
-   8DihYlvu5EkDRhbe6AnUzzmt1gC3YKSyPVQj3lnqZYOUSNEGzvX/+qfBM
-   mvqIPGzFll7JFeMYfGJNTD4xexq3I1KEKBbpW67oDB5epCLMBNpG9gFlT
-   CxBirj/e3myY0cfcKuxJXdxiKckILFUoaKm00NM6/QXNW5qIPVHBbqEC7
-   T5xAjOsq5AZ4feIAVY+zwzbHcuBvwjeIxz2GVexoWRKlcu4s/TIac7H6H
-   FAurbsuLVRbOaXdTbUOFYJDa8DJZDcGUPVxjM0Bu/kbYh+EAIgFzsFO/5
-   A==;
-X-CSE-ConnectionGUID: hvi9EX9gR7W54mXePqW8sQ==
-X-CSE-MsgGUID: P0rpcPLGTCeC4u/cqYl2Eg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77243048"
+  bh=ToaY1IjwIXX4dzvjVB9KZQR5bgLLcK6AimfbkfYOhw0=;
+  b=DW9RvVInRIqSAWkCUm3CN+uQOKeKdwK3accUe7BpwQ2yujo6HmMAvC6x
+   2R4sd4yhd/vkq2H673LCUgFAimnQKDVlZ+a1G+xTpuAawqm8OIIhY83cC
+   tc7Z9QgrycmfVGOj8xmtOmm50SZQl/ww4lozl50wozjEnOfjRqVdsiM2y
+   xTtfPAu4R5MrCCx7iRd2WqtgD6/12Qz35VYnJqXg/lgRdIgvddjmVE1I6
+   bdY4GN8T0muSPoeVw+MuUys4AS/d3I2TicsHOQmk2cC0sEhwertcvPoGH
+   Za3lY/Nrc1N9stvNfjkpijNEkrLUvOl5Anc/5wp+zwITfMTQy+obUxNPZ
+   g==;
+X-CSE-ConnectionGUID: MfdVsuYGQVyKhK4mYLAFuQ==
+X-CSE-MsgGUID: k69bOFtQSrCFa3xaFAEliA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77243040"
 X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="77243048"
+   d="scan'208";a="77243040"
 Received: from fmviesa003.fm.intel.com ([10.60.135.143])
   by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Mar 2026 16:08:08 -0800
-X-CSE-ConnectionGUID: PJvNQ4+TSXanbDWe+2RdGA==
-X-CSE-MsgGUID: +FsfgRg3TES3Xaa0xJT56A==
+X-CSE-ConnectionGUID: 157TUKkITi2hd/e92VoLKQ==
+X-CSE-MsgGUID: qxiSI50wQkGWL2zHDbsw6g==
 X-ExtLoop1: 1
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
   by fmviesa003.fm.intel.com with ESMTP; 03 Mar 2026 16:08:07 -0800
@@ -48,14 +48,13 @@ To: davem@davemloft.net,
 	edumazet@google.com,
 	andrew+netdev@lunn.ch,
 	netdev@vger.kernel.org
-Cc: Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	anthony.l.nguyen@intel.com,
-	Marcin Szycik <marcin.szycik@linux.intel.com>,
 	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH net-next v2 4/4] ixgbe: refactor: use DECLARE_BITMAP for ring state field
-Date: Tue,  3 Mar 2026 16:07:56 -0800
-Message-ID: <20260304000800.3536872-5-anthony.l.nguyen@intel.com>
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [PATCH net-next v2 3/4] i40e: Add missing wordpart.h header
+Date: Tue,  3 Mar 2026 16:07:55 -0800
+Message-ID: <20260304000800.3536872-4-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20260304000800.3536872-1-anthony.l.nguyen@intel.com>
 References: <20260304000800.3536872-1-anthony.l.nguyen@intel.com>
@@ -67,359 +66,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-Convert the ring state field from 'unsigned long' to a proper bitmap
-using DECLARE_BITMAP macro, aligning with the implementation pattern
-already used in the i40e driver.
+When cleaning up another header I have met this build error:
 
-This change:
-- Adds __IXGBE_RING_STATE_NBITS as the bitmap size sentinel to enum
-  ixgbe_ring_state_t (consistent with i40e's __I40E_RING_STATE_NBITS)
-- Changes 'unsigned long state' to 'DECLARE_BITMAP(state,
-  __IXGBE_RING_STATE_NBITS)' in struct ixgbe_ring
-- Removes the address-of operator (&) when passing ring->state to bit
-  manipulation functions, as bitmap arrays naturally decay to pointers
+drivers/net/ethernet/intel/i40e/i40e_hmc.h:105:22: error: implicit declaration of function 'upper_32_bits' [-Wimplicit-function-declaration]
+  105 |         val1 = (u32)(upper_32_bits(pa));                                \
 
-The change maintains functional equivalence while using the
-more appropriate kernel bitmap API, consistent with other Intel Ethernet
-drivers.
+This is due to missing header, add it to fix the possible issue.
 
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Marcin Szycik <marcin.szycik@linux.intel.com>
 Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ixgbe/ixgbe.h      | 27 ++++-----
- drivers/net/ethernet/intel/ixgbe/ixgbe_lib.c  |  4 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c | 56 +++++++++----------
- drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c  |  2 +-
- 4 files changed, 45 insertions(+), 44 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_hmc.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index dce4936708eb..59a1cee40b43 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -322,10 +322,11 @@ enum ixgbe_ring_state_t {
- 	__IXGBE_HANG_CHECK_ARMED,
- 	__IXGBE_TX_XDP_RING,
- 	__IXGBE_TX_DISABLED,
-+	__IXGBE_RING_STATE_NBITS, /* must be last */
- };
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_hmc.h b/drivers/net/ethernet/intel/i40e/i40e_hmc.h
+index 480e3a883cc7..967711405919 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_hmc.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_hmc.h
+@@ -4,6 +4,8 @@
+ #ifndef _I40E_HMC_H_
+ #define _I40E_HMC_H_
  
- #define ring_uses_build_skb(ring) \
--	test_bit(__IXGBE_RX_BUILD_SKB_ENABLED, &(ring)->state)
-+	test_bit(__IXGBE_RX_BUILD_SKB_ENABLED, (ring)->state)
- 
- struct ixgbe_fwd_adapter {
- 	unsigned long active_vlans[BITS_TO_LONGS(VLAN_N_VID)];
-@@ -336,23 +337,23 @@ struct ixgbe_fwd_adapter {
- };
- 
- #define check_for_tx_hang(ring) \
--	test_bit(__IXGBE_TX_DETECT_HANG, &(ring)->state)
-+	test_bit(__IXGBE_TX_DETECT_HANG, (ring)->state)
- #define set_check_for_tx_hang(ring) \
--	set_bit(__IXGBE_TX_DETECT_HANG, &(ring)->state)
-+	set_bit(__IXGBE_TX_DETECT_HANG, (ring)->state)
- #define clear_check_for_tx_hang(ring) \
--	clear_bit(__IXGBE_TX_DETECT_HANG, &(ring)->state)
-+	clear_bit(__IXGBE_TX_DETECT_HANG, (ring)->state)
- #define ring_is_rsc_enabled(ring) \
--	test_bit(__IXGBE_RX_RSC_ENABLED, &(ring)->state)
-+	test_bit(__IXGBE_RX_RSC_ENABLED, (ring)->state)
- #define set_ring_rsc_enabled(ring) \
--	set_bit(__IXGBE_RX_RSC_ENABLED, &(ring)->state)
-+	set_bit(__IXGBE_RX_RSC_ENABLED, (ring)->state)
- #define clear_ring_rsc_enabled(ring) \
--	clear_bit(__IXGBE_RX_RSC_ENABLED, &(ring)->state)
-+	clear_bit(__IXGBE_RX_RSC_ENABLED, (ring)->state)
- #define ring_is_xdp(ring) \
--	test_bit(__IXGBE_TX_XDP_RING, &(ring)->state)
-+	test_bit(__IXGBE_TX_XDP_RING, (ring)->state)
- #define set_ring_xdp(ring) \
--	set_bit(__IXGBE_TX_XDP_RING, &(ring)->state)
-+	set_bit(__IXGBE_TX_XDP_RING, (ring)->state)
- #define clear_ring_xdp(ring) \
--	clear_bit(__IXGBE_TX_XDP_RING, &(ring)->state)
-+	clear_bit(__IXGBE_TX_XDP_RING, (ring)->state)
- struct ixgbe_ring {
- 	struct ixgbe_ring *next;	/* pointer to next ring in q_vector */
- 	struct ixgbe_q_vector *q_vector; /* backpointer to host q_vector */
-@@ -364,7 +365,7 @@ struct ixgbe_ring {
- 		struct ixgbe_tx_buffer *tx_buffer_info;
- 		struct ixgbe_rx_buffer *rx_buffer_info;
- 	};
--	unsigned long state;
-+	DECLARE_BITMAP(state, __IXGBE_RING_STATE_NBITS);
- 	u8 __iomem *tail;
- 	dma_addr_t dma;			/* phys. address of descriptor ring */
- 	unsigned int size;		/* length in bytes */
-@@ -453,7 +454,7 @@ struct ixgbe_ring_feature {
-  */
- static inline unsigned int ixgbe_rx_bufsz(struct ixgbe_ring *ring)
- {
--	if (test_bit(__IXGBE_RX_3K_BUFFER, &ring->state))
-+	if (test_bit(__IXGBE_RX_3K_BUFFER, ring->state))
- 		return IXGBE_RXBUFFER_3K;
- #if (PAGE_SIZE < 8192)
- 	if (ring_uses_build_skb(ring))
-@@ -465,7 +466,7 @@ static inline unsigned int ixgbe_rx_bufsz(struct ixgbe_ring *ring)
- static inline unsigned int ixgbe_rx_pg_order(struct ixgbe_ring *ring)
- {
- #if (PAGE_SIZE < 8192)
--	if (test_bit(__IXGBE_RX_3K_BUFFER, &ring->state))
-+	if (test_bit(__IXGBE_RX_3K_BUFFER, ring->state))
- 		return 1;
- #endif
- 	return 0;
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_lib.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_lib.c
-index 87abb36f50c1..1db4bd5cc2ba 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_lib.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_lib.c
-@@ -976,7 +976,7 @@ static int ixgbe_alloc_q_vector(struct ixgbe_adapter *adapter,
- 		 * can be marked as checksum errors.
- 		 */
- 		if (adapter->hw.mac.type == ixgbe_mac_82599EB)
--			set_bit(__IXGBE_RX_CSUM_UDP_ZERO_ERR, &ring->state);
-+			set_bit(__IXGBE_RX_CSUM_UDP_ZERO_ERR, ring->state);
- 
- #ifdef IXGBE_FCOE
- 		if (adapter->netdev->fcoe_mtu) {
-@@ -984,7 +984,7 @@ static int ixgbe_alloc_q_vector(struct ixgbe_adapter *adapter,
- 			f = &adapter->ring_feature[RING_F_FCOE];
- 			if ((rxr_idx >= f->offset) &&
- 			    (rxr_idx < f->offset + f->indices))
--				set_bit(__IXGBE_RX_FCOE, &ring->state);
-+				set_bit(__IXGBE_RX_FCOE, ring->state);
- 		}
- 
- #endif /* IXGBE_FCOE */
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index e4101c59074d..0bc806aaed90 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -968,7 +968,7 @@ static void ixgbe_update_xoff_rx_lfc(struct ixgbe_adapter *adapter)
- 
- 	for (i = 0; i < adapter->num_tx_queues; i++)
- 		clear_bit(__IXGBE_HANG_CHECK_ARMED,
--			  &adapter->tx_ring[i]->state);
-+			  adapter->tx_ring[i]->state);
- }
- 
- static void ixgbe_update_xoff_received(struct ixgbe_adapter *adapter)
-@@ -1011,7 +1011,7 @@ static void ixgbe_update_xoff_received(struct ixgbe_adapter *adapter)
- 
- 		tc = tx_ring->dcb_tc;
- 		if (xoff[tc])
--			clear_bit(__IXGBE_HANG_CHECK_ARMED, &tx_ring->state);
-+			clear_bit(__IXGBE_HANG_CHECK_ARMED, tx_ring->state);
- 	}
- 
- 	for (i = 0; i < adapter->num_xdp_queues; i++) {
-@@ -1019,7 +1019,7 @@ static void ixgbe_update_xoff_received(struct ixgbe_adapter *adapter)
- 
- 		tc = xdp_ring->dcb_tc;
- 		if (xoff[tc])
--			clear_bit(__IXGBE_HANG_CHECK_ARMED, &xdp_ring->state);
-+			clear_bit(__IXGBE_HANG_CHECK_ARMED, xdp_ring->state);
- 	}
- }
- 
-@@ -1103,11 +1103,11 @@ static bool ixgbe_check_tx_hang(struct ixgbe_ring *tx_ring)
- 	if (tx_done_old == tx_done && tx_pending)
- 		/* make sure it is true for two checks in a row */
- 		return test_and_set_bit(__IXGBE_HANG_CHECK_ARMED,
--					&tx_ring->state);
-+					tx_ring->state);
- 	/* update completed stats and continue */
- 	tx_ring->tx_stats.tx_done_old = tx_done;
- 	/* reset the countdown */
--	clear_bit(__IXGBE_HANG_CHECK_ARMED, &tx_ring->state);
-+	clear_bit(__IXGBE_HANG_CHECK_ARMED, tx_ring->state);
- 
- 	return false;
- }
-@@ -1660,7 +1660,7 @@ static inline bool ixgbe_rx_is_fcoe(struct ixgbe_ring *ring,
- {
- 	__le16 pkt_info = rx_desc->wb.lower.lo_dword.hs_rss.pkt_info;
- 
--	return test_bit(__IXGBE_RX_FCOE, &ring->state) &&
-+	return test_bit(__IXGBE_RX_FCOE, ring->state) &&
- 	       ((pkt_info & cpu_to_le16(IXGBE_RXDADV_PKTTYPE_ETQF_MASK)) ==
- 		(cpu_to_le16(IXGBE_ETQF_FILTER_FCOE <<
- 			     IXGBE_RXDADV_PKTTYPE_ETQF_SHIFT)));
-@@ -1708,7 +1708,7 @@ static inline void ixgbe_rx_checksum(struct ixgbe_ring *ring,
- 		 * checksum errors.
- 		 */
- 		if ((pkt_info & cpu_to_le16(IXGBE_RXDADV_PKTTYPE_UDP)) &&
--		    test_bit(__IXGBE_RX_CSUM_UDP_ZERO_ERR, &ring->state))
-+		    test_bit(__IXGBE_RX_CSUM_UDP_ZERO_ERR, ring->state))
- 			return;
- 
- 		ring->rx_stats.csum_err++;
-@@ -3526,7 +3526,7 @@ static irqreturn_t ixgbe_msix_other(int irq, void *data)
- 			for (i = 0; i < adapter->num_tx_queues; i++) {
- 				struct ixgbe_ring *ring = adapter->tx_ring[i];
- 				if (test_and_clear_bit(__IXGBE_TX_FDIR_INIT_DONE,
--						       &ring->state))
-+						       ring->state))
- 					reinit_count++;
- 			}
- 			if (reinit_count) {
-@@ -3952,13 +3952,13 @@ void ixgbe_configure_tx_ring(struct ixgbe_adapter *adapter,
- 	if (adapter->flags & IXGBE_FLAG_FDIR_HASH_CAPABLE) {
- 		ring->atr_sample_rate = adapter->atr_sample_rate;
- 		ring->atr_count = 0;
--		set_bit(__IXGBE_TX_FDIR_INIT_DONE, &ring->state);
-+		set_bit(__IXGBE_TX_FDIR_INIT_DONE, ring->state);
- 	} else {
- 		ring->atr_sample_rate = 0;
- 	}
- 
- 	/* initialize XPS */
--	if (!test_and_set_bit(__IXGBE_TX_XPS_INIT_DONE, &ring->state)) {
-+	if (!test_and_set_bit(__IXGBE_TX_XPS_INIT_DONE, ring->state)) {
- 		struct ixgbe_q_vector *q_vector = ring->q_vector;
- 
- 		if (q_vector)
-@@ -3967,7 +3967,7 @@ void ixgbe_configure_tx_ring(struct ixgbe_adapter *adapter,
- 					    ring->queue_index);
- 	}
- 
--	clear_bit(__IXGBE_HANG_CHECK_ARMED, &ring->state);
-+	clear_bit(__IXGBE_HANG_CHECK_ARMED, ring->state);
- 
- 	/* reinitialize tx_buffer_info */
- 	memset(ring->tx_buffer_info, 0,
-@@ -4173,7 +4173,7 @@ static void ixgbe_configure_srrctl(struct ixgbe_adapter *adapter,
- 			srrctl |= PAGE_SIZE >> IXGBE_SRRCTL_BSIZEPKT_SHIFT;
- 		else
- 			srrctl |= xsk_buf_len >> IXGBE_SRRCTL_BSIZEPKT_SHIFT;
--	} else if (test_bit(__IXGBE_RX_3K_BUFFER, &rx_ring->state)) {
-+	} else if (test_bit(__IXGBE_RX_3K_BUFFER, rx_ring->state)) {
- 		srrctl |= IXGBE_RXBUFFER_3K >> IXGBE_SRRCTL_BSIZEPKT_SHIFT;
- 	} else {
- 		srrctl |= IXGBE_RXBUFFER_2K >> IXGBE_SRRCTL_BSIZEPKT_SHIFT;
-@@ -4558,7 +4558,7 @@ void ixgbe_configure_rx_ring(struct ixgbe_adapter *adapter,
- 		 * higher than the MTU of the PF.
- 		 */
- 		if (ring_uses_build_skb(ring) &&
--		    !test_bit(__IXGBE_RX_3K_BUFFER, &ring->state))
-+		    !test_bit(__IXGBE_RX_3K_BUFFER, ring->state))
- 			rxdctl |= IXGBE_MAX_2K_FRAME_BUILD_SKB |
- 				  IXGBE_RXDCTL_RLPML_EN;
- #endif
-@@ -4733,27 +4733,27 @@ static void ixgbe_set_rx_buffer_len(struct ixgbe_adapter *adapter)
- 		rx_ring = adapter->rx_ring[i];
- 
- 		clear_ring_rsc_enabled(rx_ring);
--		clear_bit(__IXGBE_RX_3K_BUFFER, &rx_ring->state);
--		clear_bit(__IXGBE_RX_BUILD_SKB_ENABLED, &rx_ring->state);
-+		clear_bit(__IXGBE_RX_3K_BUFFER, rx_ring->state);
-+		clear_bit(__IXGBE_RX_BUILD_SKB_ENABLED, rx_ring->state);
- 
- 		if (adapter->flags2 & IXGBE_FLAG2_RSC_ENABLED)
- 			set_ring_rsc_enabled(rx_ring);
- 
--		if (test_bit(__IXGBE_RX_FCOE, &rx_ring->state))
--			set_bit(__IXGBE_RX_3K_BUFFER, &rx_ring->state);
-+		if (test_bit(__IXGBE_RX_FCOE, rx_ring->state))
-+			set_bit(__IXGBE_RX_3K_BUFFER, rx_ring->state);
- 
- 		if (adapter->flags2 & IXGBE_FLAG2_RX_LEGACY)
- 			continue;
- 
--		set_bit(__IXGBE_RX_BUILD_SKB_ENABLED, &rx_ring->state);
-+		set_bit(__IXGBE_RX_BUILD_SKB_ENABLED, rx_ring->state);
- 
- #if (PAGE_SIZE < 8192)
- 		if (adapter->flags2 & IXGBE_FLAG2_RSC_ENABLED)
--			set_bit(__IXGBE_RX_3K_BUFFER, &rx_ring->state);
-+			set_bit(__IXGBE_RX_3K_BUFFER, rx_ring->state);
- 
- 		if (IXGBE_2K_TOO_SMALL_WITH_PADDING ||
- 		    (max_frame > (ETH_FRAME_LEN + ETH_FCS_LEN)))
--			set_bit(__IXGBE_RX_3K_BUFFER, &rx_ring->state);
-+			set_bit(__IXGBE_RX_3K_BUFFER, rx_ring->state);
- #endif
- 	}
- }
-@@ -7944,10 +7944,10 @@ static void ixgbe_fdir_reinit_subtask(struct ixgbe_adapter *adapter)
- 	if (ixgbe_reinit_fdir_tables_82599(hw) == 0) {
- 		for (i = 0; i < adapter->num_tx_queues; i++)
- 			set_bit(__IXGBE_TX_FDIR_INIT_DONE,
--				&(adapter->tx_ring[i]->state));
-+				adapter->tx_ring[i]->state);
- 		for (i = 0; i < adapter->num_xdp_queues; i++)
- 			set_bit(__IXGBE_TX_FDIR_INIT_DONE,
--				&adapter->xdp_ring[i]->state);
-+				adapter->xdp_ring[i]->state);
- 		/* re-enable flow director interrupts */
- 		IXGBE_WRITE_REG(hw, IXGBE_EIMS, IXGBE_EIMS_FLOW_DIR);
- 	} else {
-@@ -9488,7 +9488,7 @@ netdev_tx_t ixgbe_xmit_frame_ring(struct sk_buff *skb,
- 		ixgbe_tx_csum(tx_ring, first, &ipsec_tx);
- 
- 	/* add the ATR filter if ATR is on */
--	if (test_bit(__IXGBE_TX_FDIR_INIT_DONE, &tx_ring->state))
-+	if (test_bit(__IXGBE_TX_FDIR_INIT_DONE, tx_ring->state))
- 		ixgbe_atr(tx_ring, first);
- 
- #ifdef IXGBE_FCOE
-@@ -9528,7 +9528,7 @@ static netdev_tx_t __ixgbe_xmit_frame(struct sk_buff *skb,
- 		return NETDEV_TX_OK;
- 
- 	tx_ring = ring ? ring : adapter->tx_ring[skb_get_queue_mapping(skb)];
--	if (unlikely(test_bit(__IXGBE_TX_DISABLED, &tx_ring->state)))
-+	if (unlikely(test_bit(__IXGBE_TX_DISABLED, tx_ring->state)))
- 		return NETDEV_TX_BUSY;
- 
- 	return ixgbe_xmit_frame_ring(skb, adapter, tx_ring);
-@@ -11013,7 +11013,7 @@ static int ixgbe_xdp_xmit(struct net_device *dev, int n,
- 	if (unlikely(!ring))
- 		return -ENXIO;
- 
--	if (unlikely(test_bit(__IXGBE_TX_DISABLED, &ring->state)))
-+	if (unlikely(test_bit(__IXGBE_TX_DISABLED, ring->state)))
- 		return -ENXIO;
- 
- 	if (static_branch_unlikely(&ixgbe_xdp_locking_key))
-@@ -11119,7 +11119,7 @@ static void ixgbe_disable_txr_hw(struct ixgbe_adapter *adapter,
- static void ixgbe_disable_txr(struct ixgbe_adapter *adapter,
- 			      struct ixgbe_ring *tx_ring)
- {
--	set_bit(__IXGBE_TX_DISABLED, &tx_ring->state);
-+	set_bit(__IXGBE_TX_DISABLED, tx_ring->state);
- 	ixgbe_disable_txr_hw(adapter, tx_ring);
- }
- 
-@@ -11273,9 +11273,9 @@ void ixgbe_txrx_ring_enable(struct ixgbe_adapter *adapter, int ring)
- 		ixgbe_configure_tx_ring(adapter, xdp_ring);
- 	ixgbe_configure_rx_ring(adapter, rx_ring);
- 
--	clear_bit(__IXGBE_TX_DISABLED, &tx_ring->state);
-+	clear_bit(__IXGBE_TX_DISABLED, tx_ring->state);
- 	if (xdp_ring)
--		clear_bit(__IXGBE_TX_DISABLED, &xdp_ring->state);
-+		clear_bit(__IXGBE_TX_DISABLED, xdp_ring->state);
- 
- 	/* Rx/Tx/XDP Tx share the same napi context. */
- 	napi_enable(&rx_ring->q_vector->napi);
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-index 7b941505a9d0..89f96c463f02 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_xsk.c
-@@ -524,7 +524,7 @@ int ixgbe_xsk_wakeup(struct net_device *dev, u32 qid, u32 flags)
- 
- 	ring = adapter->xdp_ring[qid];
- 
--	if (test_bit(__IXGBE_TX_DISABLED, &ring->state))
-+	if (test_bit(__IXGBE_TX_DISABLED, ring->state))
- 		return -ENETDOWN;
- 
- 	if (!ring->xsk_pool)
++#include <linux/wordpart.h>
++
+ #include "i40e_alloc.h"
+ #include "i40e_io.h"
+ #include "i40e_register.h"
 -- 
 2.47.1
 
