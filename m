@@ -1,115 +1,63 @@
-Received: from mail-qv1-f68.google.com (mail-qv1-f68.google.com [209.85.219.68])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out198-7.us.a.mail.aliyun.com (out198-7.us.a.mail.aliyun.com [47.90.198.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A84351C0F
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 07:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.219.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772609026; cv=pass; b=mLcxiTnYDvcrOm7lfPSN7LO41hvqNUndj+icrhjy4QH2WcZxjQ3K27sCH+YGKa+JitR2VaEttjypV7ivT9kVAjSoPvtDDiBYBheHPeWLFgVo+cztxnR1cIywEzNoIB+S8/K3q7z0dWJLBvhLx+hNPFlxZifEW/iL3kFDkMnr2Gk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772609026; c=relaxed/simple;
-	bh=w8yUQbtJsEkCj9oWcla6ivUT68glsDXwhJhpf+KWMOU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YU2he4lNYpV40Q63A2Jtzz4g2EYC2CFOzcNmmZy54wDKUeELXRfGqC0KnfaWRINrJLEVGNnpR4YkC/hQDqLvW/H0anqPGqOSqHjmYyrar/lSsiFJ7+u1AZWwlf6G7Q20+lX4sJ3+jiSXKV93G7Du1/s/TYasNvXGije0uaRQ/M0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MRSp7Qh/; arc=pass smtp.client-ip=209.85.219.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MRSp7Qh/"
-Received: by mail-qv1-f68.google.com with SMTP id 6a1803df08f44-89a1d7cc7f0so227936d6.1
-        for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 23:23:45 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772609024; cv=none;
-        d=google.com; s=arc-20240605;
-        b=HJnMRaR7+xRPY8GbFJUvHY8lIM6j9HmAU8EOMvTTwCnQYWYzKLwCN/d7ebqFZeJ+j7
-         Vl7JMAVQAm2Ln7ykYEJ27EObFkyTZGfG2dbpBP8+vq6ofskyd/QhZtSfXuAnJ0LwYyru
-         vF4RcJE3UQHPMEEVUKoKt/ss/9lXzxVFTTm5Q+rQUoaQSh5J3Y2yaDbBt65Ur3QmzIKg
-         HpnHRH+c6h1AA5GwU4YfmZ9Z7Lu8MxuXuz2zWmbmAXrF2X/vel3IgZahhRBv+bPS6mjg
-         UNTAY+RB/r0OP47hcM/e9eXHQ38nbLagm5zinURafRHsTKfiGuZFxrhSxTWEWGejXoYJ
-         VoGw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=w8yUQbtJsEkCj9oWcla6ivUT68glsDXwhJhpf+KWMOU=;
-        fh=uhv+flI/fqUYmbWqUWLE8mlDKZlIhYiuXK6Q9YFgNtA=;
-        b=BlxHfPOA1JfFmNOJo9zIvH4xAkT5WLYypiFKefty93ZWxUc1oYz35EOPOqBjs9v3Ki
-         cWbPxkFS5hBZO4xeun5alAe0eMNoTf/gADyXpkeU6Yw2FOxjf5cH0UH5ob0PnjTgPnsN
-         SHJjj3KeyLOAvCCSU7Nb96+Is4JA3EFZzIAc7jOpSnAdYq9jzT7MocW8FmPpI+phsKlF
-         yYQK4t4bXmNyEmiMUx4xt/LoUIguKL1AzNVBEgXFCCJu8qXih5/HhqBP5Cw2OJQNWaMy
-         cvVp/AL9FxPSxpNCzd3TK5PrcNIkQb90pGsOXwVRizc2GCSjix7Y9jrHSuciIqLzcXYt
-         YV6Q==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772609024; x=1773213824; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w8yUQbtJsEkCj9oWcla6ivUT68glsDXwhJhpf+KWMOU=;
-        b=MRSp7Qh/O2/KZAeZmNsBXMp2ueRKf8yYXqYIFJC0an+0/1kk/1Yf1dffhhIiu6m8V4
-         Z41OFoPiA8P+Ndfq9NWHuREyqtAAIOEQUq/Tt+8JCjsRBiJVXdQpgb30S7GLdWSUM8BR
-         PvfGgz+hRqXy9zwIawjv0AK7MhsRaN0y0w55C0gIdBvJoCQ0AP8ggnADAUQyugecg6EC
-         wkgsZi/ZRz4sdgxObWAIUd0/6BJ0r+aCbTnOAbHk1NO7Y70hzqjmNc5Kb5AGGJ9x7qUm
-         sS/sIil3Ou1SXbrlFWEunhDSL23GHt969tI73imI0UICmi0maA7CTrTuQ/+FyD/8yfZ5
-         70vw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772609024; x=1773213824;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=w8yUQbtJsEkCj9oWcla6ivUT68glsDXwhJhpf+KWMOU=;
-        b=h2xmKXiWgyQMb+llnt6z6pGvht4WnGZBgKT/W+c/3fTlmSrVHPFtwFxBX6cUuv5mZm
-         jOUfyKY+5Iaq7hbNTffkFGaeyRXirlOZEOWmT/0iEEvc0J7kaAVF6oT+iFvjhv90jNkT
-         Grv3CHgyGQQiHB6LlGVRwpWYP17Su+WZLWh7+koH8LddDuLiDl+kJT79hYYbFTc6FK/u
-         s7sv9GDItsb/tBf6Rr0g7GE0fMCYFUlXQIeF3NQmkScdWhdX5N6Fgb31q0gEQfvd4OKn
-         ovjNQqMNZtPtfCS9+fi1OEYhzjJErV7cnJ2RPnahmYFW2hJhZJWZGUTrqNb4z6cOmn2z
-         HmRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVk/erLplD6HoEVpKGkEPcErxmCZnLG343qaNOzvGxDR+mtm8CLpgzAlZw24Trk5/WYlFna3S8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUjz8IPzcK1BztJtlO/eif9FqDamFWtHYWRcCNFdAe+deZoR0i
-	NUnw1dtKanyK759N6wcptE1TJzTCTwMJj5kGxopTCMcsPAT3b3Cn1Jj/nT7quHSQvhAoNIB/Rmr
-	DGSYVmMM/YJeQjtpN3aOildwBVfMVBmw=
-X-Gm-Gg: ATEYQzydoKD9Fho5szdpj3ocY7mlkOfhPkW4r2cZ6kYgx1uxMuhZVQlgsXKf7xlyrdX
-	z9RD5supFsOC4PAs26tNFJdBvSVZCVu4diyA64bfYxmGj6dpPQtMJ3HBzq7DO8Y/E8lfAa2o9fQ
-	dVcnXE46LqDc4fRNLDfU/MyuRiS67P6+YTnkAFo7ilM8/fFFAdE41CN1WHKIXu9tVVgsDv62qbh
-	42WFYvaCBPoDtR23fQOtWgvp0sGjTSfaaE7pR4j7E0ePw67UP0gwZhHc2hbkdJmBb5vYYjYSgZf
-	/GQmVaxbDM9foykovVNXtFhoMsZo2/G3rHrOB59raBUOb7qtkNgjvbxzS76Mi5sq/CUG
-X-Received: by 2002:a05:6214:2583:b0:89a:c8c:3121 with SMTP id
- 6a1803df08f44-89a19cee158mr13714996d6.40.1772609024455; Tue, 03 Mar 2026
- 23:23:44 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8516534D907;
+	Wed,  4 Mar 2026 07:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772609196; cv=none; b=IkaOz7f8/abNTbsa/GQX/1oLCNzHaZLsu6xmEmf/pvVhFWyFfBh2Ys4zdCBkmswshLBczei/rkEU0iQoWZeNi+Mn+bMifHRrtji+7Fhl6Qw0F+2M2lkFJec2zPIOzQOR23OVXMFR+1b8ZWX+dMoX3eT8Oqdc9xoDddhRTDfYvEc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772609196; c=relaxed/simple;
+	bh=ZR7JanFqGwsEU+eVdemdOmJHuhYJMpgpUzstcLswt70=;
+	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:References:
+	 In-Reply-To:Content-Type; b=TK9H3K3wK0Y6G4+riNsMbCxpe22cOYFAi/O3YSb7mpyLG+GdL5K/v3hxDIXwL70M3KpD8FPdMdABKt/c/ezmbRZFz/Az2MKMSSYYsPJwZJc56VKvUY7krgUyI+lPIuZjOzd4+m9dE32QV/tC+4BJmS04YlUyYQXEYzdvMig1s20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1157588|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_system_inform|0.195383-0.00812595-0.796491;FP=9254858517572092112|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033068016216;MF=illusion.wang@nebula-matrix.com;NM=1;PH=DW;RN=16;RT=16;SR=0;TI=W4_0.2.3_212518A3_1772608678116_o7001c49u;
+Received: from WS-web (Illusion.Wang@nebula-matrix.com[W4_0.2.3_212518A3_1772608678116_o7001c49u] cluster:ay29) at Wed, 04 Mar 2026 15:20:44 +0800
+Date: Wed, 04 Mar 2026 15:20:44 +0800
+From: "Illusion Wang" <Illusion.Wang@nebula-matrix.com>
+To: "Andrew Lunn" <andrew@lunn.ch>
+Cc: "Dimon" <dimon.zhao@nebula-matrix.com>,
+  "Alvin" <alvin.wang@nebula-matrix.com>,
+  "Sam" <sam.chen@nebula-matrix.com>,
+  "netdev" <netdev@vger.kernel.org>,
+  "andrew+netdev" <andrew+netdev@lunn.ch>,
+  "corbet" <corbet@lwn.net>,
+  "kuba" <kuba@kernel.org>,
+  "linux-doc" <linux-doc@vger.kernel.org>,
+  "lorenzo" <lorenzo@kernel.org>,
+  "pabeni" <pabeni@redhat.com>,
+  "horms" <horms@kernel.org>,
+  "vadim.fedorenko" <vadim.fedorenko@linux.dev>,
+  "lukas.bulwahn" <lukas.bulwahn@redhat.com>,
+  "edumazet" <edumazet@google.com>,
+  "open list" <linux-kernel@vger.kernel.org>
+Reply-To: "Illusion Wang" <Illusion.Wang@nebula-matrix.com>
+Message-ID: <34c4ed3f-fef6-4c4c-8b0f-9951fedf580c.Illusion.Wang@nebula-matrix.com>
+Subject: =?UTF-8?B?5Zue5aSN77yaW1BBVENIIHY1IG5ldC1uZXh0IDExLzExXSBuZXQvbmVidWxhLW1hdHJpeDog?=
+  =?UTF-8?B?YWRkIGNvbW1vbiBkZXYgc3RhcnQvc3RvcCBvcGVyYXRpb24=?=
+X-Mailer: [Alimail-Mailagent revision 1106][W4_0.2.3][null][Chrome]
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260301011749.1671856-1-sashal@kernel.org>
-In-Reply-To: <20260301011749.1671856-1-sashal@kernel.org>
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Date: Tue, 3 Mar 2026 23:23:33 -0800
-X-Gm-Features: AaiRm50CgErMZzS_ze7kCt_8oImY4S0b0P0oRP5fkeSHF9z9hr1Wm9mnfCaQPkY
-Message-ID: <CADkSEUj-2N8TrsEBMogJ6PtHRsGPxVnxuJh5pmOijVd1KPfG_A@mail.gmail.com>
-Subject: Re: FAILED: Patch "net: arcnet: com20020-pci: fix support for 2.5Mbit
- cards" failed to apply to 6.18-stable tree
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, Simon Horman <horms@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org
+x-aliyun-im-through: {"version":"v1.0"}
+References: <20260226073840.3222-1-illusion.wang@nebula-matrix.com> <20260226073840.3222-12-illusion.wang@nebula-matrix.com>,<b8f71f46-735b-4b1f-8df8-01a532bc7964@lunn.ch>
+x-aliyun-mail-creator: W4_0.2.3_null_EuMTW96aWxsYS81LjAgKFdpbmRvd3MgTlQgMTAuMDsgV2luNjQ7IHg2NCkgQXBwbGVXZWJLaXQvNTM3LjM2IChLSFRNTCwgbGlrZSBHZWNrbykgQ2hyb21lLzEzMy4wLjY5NDMuMTQyIFNhZmFyaS81MzcuMzYgZGluZ3RhbGstd2luLzEuMC4wIG53KDAuMTQuNykgRGluZ1RhbGsoOC4yLjE1LVJlbGVhc2UuMjYwMjI1MDAxKSBNb2pvLzEuMC4wIE5hdGl2ZSBBcHBUeXBlKHJlbGVhc2UpIENoYW5uZWwvMjAxMjAwIEFyY2hpdGVjdHVyZS94ODZfNjQgd2ViRHQvUEM=uL
+In-Reply-To: <b8f71f46-735b-4b1f-8df8-01a532bc7964@lunn.ch>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: base64
 
-Hi, Sasha,
-
-On Sat, Feb 28, 2026 at 5:17=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
-te:
-> The patch below does not apply to the 6.18-stable tree.
-This patch applies cleanly to 6.18.15, 6.12.74, 6.6.127, 6.1.164,
-5.15.201, and 5.10.251, but I was notified that it failed to apply to
-all of these kernels. It is not in the latest git tree for any of
-those versions, although my other two "failed" patches have now been
-merged. Was 6.18.y perhaps also affected by the <=3D 6.12.y issue with
-the patch with \0 in its subject causing merging to stop?
-
-Am I correct in assuming that the patch did not make it into <=3D 6.12.y
-because patches in those kernels are backported from 6.18.y? This
-would mean both 6.18.y and older kernels may be missing other patches,
-and they need a new RC.
-
-Ethan
+Cj4gPiAraW50IG5ibF9kZXZfc3RhcnQoc3RydWN0IG5ibF9hZGFwdGVyICphZGFwdGVyLCBzdHJ1
+Y3QgbmJsX2luaXRfcGFyYW0gKnBhcmFtKQo+ID4gK3sKPiA+ICsgaW50IHJldDsKPiA+ICsKPiA+
+ICsgcmV0ID0gbmJsX2Rldl9zdGFydF9jb21tb25fZGV2KGFkYXB0ZXIsIHBhcmFtKTsKPiA+ICsg
+cmV0dXJuIHJldDsKCj5yZXR1cm4gbmJsX2Rldl9zdGFydF9jb21tb25fZGV2KGFkYXB0ZXIsIHBh
+cmFtKTsKCj5CdXQgdGhlbiBpIGhhdmUgdG8gYXNrLCB3aHkgYm90aGVyIGhhdmluZyBuYmxfZGV2
+X3N0YXJ0KCkgd2hlbiB5b3UgY2FuCj5qdXN0IGNhbGwgbmJsX2Rldl9zdGFydF9jb21tb24oKS4K
+CllvdSdyZSBhYnNvbHV0ZWx5IHJpZ2h0LiBIb3dldmVyLCB3ZSdyZSBjb25zaWRlcmluZyBmYWNp
+bGl0YXRpbmcgZnV0dXJlCmV4cGFuc2lvbiBmb3IgdGhlIG5leHQtc3RhZ2UgbmV0ZGV2IGNvbmZp
+Z3VyYXRpb24uCgotLWlsbHVzaW9uLndhbmc=
