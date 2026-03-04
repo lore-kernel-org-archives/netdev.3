@@ -1,218 +1,121 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D419B3C6A36;
-	Wed,  4 Mar 2026 15:00:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23AF6330D4C
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 15:01:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772636404; cv=none; b=OIur3zdOXTXRuQ3/HCdD0hWUEzohrQk6VGZecpsogMfxaaMHjR9S0jsoPjc+rTMzMPB90WBuQOcjuOnqO/n/mIoKHmcxVm5ufOQugEk0PbspNtTeSTdeUWh2fy34DzjgirI/8z0ofdHqwgiWWdwmgRk64RxnbeTZDyKQct7bw5w=
+	t=1772636488; cv=none; b=T0gbLnS//quOiG5z9LzRzoXynaUcXzpZk5td2kzZCRc3eIDdKcK0VAsAQIYfd3eHHFTnGIzbZLTgKavMdG2NHqbRInatNXn2fNJiOdmUWiZo/pSyXHKuV9IViZW4x2KKqWZMD1B62UYm2VZvdnFOusbIVzrZ8cN8jsxotrxk/rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772636404; c=relaxed/simple;
-	bh=16E405jWrEfN4a6uwMbsHHztxI1WGoONQmT+FIcdDU4=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rGLxigv0UZGPbEVi6BiGhLVmWM6YVB4tOqS/r6rbeHEjSb3Xz5tNRyYH2IOTEf1mxGHY6IVWUfqRO5InQ+LPt9WXuqdCgpZymP5z4Fzb/I+E/+ezg72DyEak3RLkrhwp+BpY1IMwXOjxyK6fxdN0ozz4HLX5RjYzlrMAEiGkjZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=ABGn02UV; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1772636488; c=relaxed/simple;
+	bh=w6vRzXgHGt7cYqVyrIrXXCXIT2HmVqjf+F+dn5zh9Og=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=sxdm9cMukmFEsa1dSNyAVYjluElN+dGi9K9nuevmLiLEgUsvvD5uLb7oyDlvxDqQdy4G3aRPdLJEtgjdTh7Y0o3IDzWFgiKXOa+3sULUm3vIbhI/pzXTleCcZ3+/gvuaHJvKw5/wp+g7pmjsTwLuzevs4FS0fiB3Ou94EApBV9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=U+PRTnhn; arc=none smtp.client-ip=209.85.219.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="ABGn02UV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1772636402; x=1804172402;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=16E405jWrEfN4a6uwMbsHHztxI1WGoONQmT+FIcdDU4=;
-  b=ABGn02UVmu4/TIkCGSFTX8q9xhkMagqhuf7lohud6bEOsTd0Prcxtz53
-   mmcto4XK3ai1EkOleC9PLrlFKaFbT2DN7m6fcHL9flo6/WSouDcnI/6Oh
-   BM21ps7e2EUY5NKHl6SUi78WtXxQd3jvCLeU48y7aTc86DbLmhRppuVcH
-   ZZvfB88UY+HXkGmRIJXuT/7o3JKWeWruuGyK7H5DFONAZQpzYA3KOB9Or
-   UoRpCOr79UEWiJb3ekBY0yl0dJSq7v7FRP7OEzbGbq79e6y5XX/KxlajX
-   rvBBiGjmnRDfveT21x2WNg8JQEKrqr5rQVzP/rOwitzdstZ2MmYBgPpzc
-   A==;
-X-CSE-ConnectionGUID: UCaRE/fBR4K2V+i0Z7y/9Q==
-X-CSE-MsgGUID: rrIA1Uv2SySFdtdtXiX7gg==
-X-IronPort-AV: E=Sophos;i="6.21,324,1763449200"; 
-   d="scan'208";a="221483058"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 08:00:02 -0700
-Received: from chn-vm-ex03.mchp-main.com (10.10.87.152) by
- chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Wed, 4 Mar 2026 07:59:37 -0700
-Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58 via Frontend Transport; Wed, 4 Mar 2026 07:59:37 -0700
-Date: Wed, 4 Mar 2026 06:59:35 -0800
-From: Charles Perry <charles.perry@microchip.com>
-To: Conor Dooley <conor@kernel.org>
-CC: <netdev@vger.kernel.org>, Sean Anderson <sean.anderson@linux.dev>,
-	"Nicolas Ferre" <nicolas.ferre@microchip.com>, Claudiu Beznea
-	<claudiu.beznea@tuxon.dev>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Russell King
-	<linux@armlinux.org.uk>, <linux-kernel@vger.kernel.org>,
-	<charles.perry@microchip.com>
-Subject: Re: [PATCH net-next v2 1/3] net: macb: fix SGMII with inband aneg
- disabled
-Message-ID: <aahI1y0NO9ax/V8J@bby-cbu-swbuild03.eng.microchip.com>
-References: <20260224202854.112813-1-charles.perry@microchip.com>
- <20260224202854.112813-2-charles.perry@microchip.com>
- <20260304-nebulizer-rounding-40fbc81a2ba1@spud>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="U+PRTnhn"
+Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-89a05955720so38209476d6.2
+        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 07:01:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772636486; x=1773241286; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Z8rewBuz8Z+gvTQ8hKm8VCf8SS5YjJN48oj4GRDK7aw=;
+        b=U+PRTnhnXFeLPh4zgLL8H3k6OG8Zx4SN41mD7hhwCLVNhJAdEhZWN4l62Hq2rhgWnl
+         F4G9OccVQlEacH2lu5nn00DTFIAk2cbQrVPNggFluHg8bc9ud3MC/o1jlbUtNmmP9Rdn
+         fXD3/xegPYSL/UYMjD95Ta+j7SlGYvuNJ/zfvB1Ks8H8WhMyjjfosUDc+pWYa62WK6p4
+         YKoOwspF0p1LYd0qgWzitTZ9mAeC/S2gdCXgQ+JoJXJphC57eNuO0wZY/RfVMiSqjWXY
+         Vv2jvugtivzzXaRxEsZTuPYwz1WJ+AC2aJSkpBhJekZSDddWN3CkKDgRG3CJ94d7Ralk
+         9YEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772636486; x=1773241286;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Z8rewBuz8Z+gvTQ8hKm8VCf8SS5YjJN48oj4GRDK7aw=;
+        b=BBjLEyqb5iKqL+aS1RW2Ixm/23E/9vWz522+lpExhc42GbdYDzf+rHHX7bfQbE2IVE
+         MoXuqxiEmSGClrwvcj7WIal+mqkG3cWEsEztvjV3HC8EksxdO0Or70d0E07P51Nk192/
+         JK27OMHcmsT4tlnSHhh39ya6M0Ku6xW/LcNo2+VdEmlHblZ9hM+DRlL7gfWJhi8PKRkO
+         OgZZdys/2bMBkC6tlDbpJX4IJjnP5S493+iCg5Zs0H/iPdQkyJNas8I5kpGuvSIkhk2K
+         2oz8kwAiBdY/Rlx93gNjNeAfvYzJvO32sCQURWz/uNPmbFMIe3Fut4K8WHliuXgDy325
+         pWVw==
+X-Forwarded-Encrypted: i=1; AJvYcCWD8hp/FObi8e7xUZnl2wqaKUVU4QYd6NGLRVlWIK2v/AVfARtCqSLdssZuOGfl3ha3e0lIGMQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxR3eloRnpntKoNZbZrolrXmPZzA1Ryc9pbzQWOhGfuMoQS5eJr
+	aqjxd0v4Db4E1TKyavv4sDMP5K2DAbkenjeXke0VAOm+ss8nPHcS/nJs6d1Ofw==
+X-Gm-Gg: ATEYQzxDoVBzkmRlg+oCs3b2zv7Ea1SS9lQbJiUcpJFpbPKSWSaP53ErxglgMD/YMxF
+	YJXf2uBThkuKSg/rd3W6MJ9excR5U4/UO8rgECcjU9lsOmwlDkVmJN3jRPqVrdWq76BWao/8OxZ
+	roSg1TLLYYBYKV14doGipeSXcig+IcRGElyrW0MftiV2IldD+/2xGXXPsp928w7iE59wzylQWyt
+	Zj21eZzoDy+RBs9mjrCWAtWPvm1cR65pXRd+IAkuR/owls5JjKlQ3w4CGsNzgIibofT+vZ5K+3t
+	c4ODKm2IaBrUHTpGTaBXd6V6A1bMf7Dsr9Yu+K4Aq2SwvpRPx6NxbdpXbHkUKyy5xDy7rwp/jdn
+	M0Dg9Iev0s5JoGLKwRaxkOg09h3W0sDQf9vSj7i9P0fxRr5mEgceeww9bHNSS1okeOGjwl86lW/
+	zXzpt7SnIUAFW/EZt/2HIeh6m64duMjTBbHXHQjAQceHvigqkIjg+E
+X-Received: by 2002:a05:6214:20a2:b0:89a:110f:894e with SMTP id 6a1803df08f44-89a19979d21mr28403076d6.5.1772636466704;
+        Wed, 04 Mar 2026 07:01:06 -0800 (PST)
+Received: from ?IPV6:2a03:83e0:1145:4:d19b:d485:ed5f:e15b? ([2620:10d:c091:500::3418])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a0fbdbcb0sm39366926d6.45.2026.03.04.07.01.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 04 Mar 2026 07:01:06 -0800 (PST)
+Message-ID: <6fde8fe3-1ac9-4a47-89f5-b6f759c2f103@gmail.com>
+Date: Wed, 4 Mar 2026 10:00:59 -0500
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260304-nebulizer-rounding-40fbc81a2ba1@spud>
-
-On Wed, Mar 04, 2026 at 11:15:43AM +0000, Conor Dooley wrote:
-> On Tue, Feb 24, 2026 at 12:28:52PM -0800, Charles Perry wrote:
-> > Make it possible to connect a PHY which does not use inband
-> > autoneg to a gem MAC using phylink's information.
-> > 
-> > The previous implementation relied on whether or not the link
-> > was a fixed-link to disable SGMII autoneg. This commit extend
-> > this to all link which are not configured for inband
-> > autonegotiation.
-> > 
-> > Signed-off-by: Charles Perry <charles.perry@microchip.com>
-> 
-> This breaks the macb on mpfs-icicle-kit, I get stuck with:
-> 
-> [    7.189102] mpfs-sys-controller syscontroller: Registered MPFS system controller
-> [    7.260946] macb 20110000.ethernet eth0: PHY [20112000.ethernet-ffffffff:08] driver [Vitesse VSC8662] (irq=POLL)
-> [    7.273881] macb 20110000.ethernet eth0: configuring for phy/sgmii link mode
-> [    7.296580] macb 20110000.ethernet: gem-ptp-timer ptp clock registered.
-> [    7.345782] macb 20112000.ethernet eth1: PHY [20112000.ethernet-ffffffff:09] driver [Vitesse VSC8662] (irq=POLL)
-> [    7.358082] macb 20112000.ethernet eth1: configuring for phy/sgmii link mode
-> [    7.380479] macb 20112000.ethernet: gem-ptp-timer ptp clock registered.
-> [   11.376763] macb 20110000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
-> [   11.398403] Sending DHCP requests .
-> [   11.472699] macb 20112000.ethernet eth1: Link is Up - 1Gbps/Full - flow control off
-> [   13.938425] ..... timed out!
-> [   93.598491] macb 20110000.ethernet eth0: Link is Down
-> [   93.641823] macb 20110000.ethernet: gem-ptp-timer ptp clock unregistered.
-> [   93.659433] macb 20112000.ethernet eth1: Link is Down
-> [   93.691724] macb 20112000.ethernet: gem-ptp-timer ptp clock unregistered.
-> [   93.703977] IP-Config: Retrying forever (NFS root)...
-> [   93.758382] macb 20110000.ethernet eth0: PHY [20112000.ethernet-ffffffff:08] driver [Vitesse VSC8662] (irq=POLL)
-> [   93.770655] macb 20110000.ethernet eth0: configuring for phy/sgmii link mode
-> [   93.786497] macb 20110000.ethernet eth0: Link is Up - 1Gbps/Full - flow control off
-> [   93.795840] macb 20110000.ethernet: gem-ptp-timer ptp clock registered.
-> [   93.844481] macb 20112000.ethernet eth1: PHY [20112000.ethernet-ffffffff:09] driver [Vitesse VSC8662] (irq=POLL)
-> [   93.856769] macb 20112000.ethernet eth1: configuring for phy/sgmii link mode
-> [   93.870926] macb 20112000.ethernet eth1: Link is Up - 1Gbps/Full - flow control off
-> [   93.880302] macb 20112000.ethernet: gem-ptp-timer ptp clock registered.
-> 
-
-Hello Conor,
-
-I checked the driver for the VSC8662 and it doesn't have the
-->inband_caps() and ->config_inband() callbacks so Linux leaves whatever
-the bootloader puts or uses the defaults. Looking at the datasheet, this
-should be register 23 (Extended PHY Control Set 1) bit 13 (MAC interface
-auto-negotiation)
-
-My guess is that this bit is set and since this patch disable inband
-autonegotiation (because phylink decides it), there is a mismatch.
-
-Can you add 'managed = "in-band-status"' in your device tree under the macb
-node? That's not necessarily the fix, I just want to confirm my theory.
-Also '#define DEBUG' in 'drivers/net/phy/phylink.c' can help if you can
-recompile your kernel.
-
-> and because I am NFS root, it breaks boot :)
-> 
-> btw, I don't see an explanation in hte commit message for why the
-> macb_is_gem(bp) got dropped? Is this now done unconditionally when it
-> was conditional before?
-> 
-
-Well if you get to the ->macb_pcs_config() callback, you most certainly
-have an SGMII PCS block. Does your IP have the PCS registers? (0x200 to
-0x23c) Also I thought that macb doesn't do SGMII (only GEM does) so it
-can't reach ->macb_pcs_config(). 
-
-Thanks alot for the testing!
-
-Regards,
-Charles
-
-> Cheers,
-> Conor.
-> 
-> > ---
-> > 
-> > Notes:
-> >     Changes in v2:
-> >       * Move my notes to the cover letter
-> >       * Remove the spinlock in macb_pcs_config
-> >       * Keep the comment about the PCSSEL register
-> > 
-> >  drivers/net/ethernet/cadence/macb_main.c | 36 +++++++++++++-----------
-> >  1 file changed, 20 insertions(+), 16 deletions(-)
-> > 
-> > diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-> > index f72270a39d25..f4250e76cef0 100644
-> > --- a/drivers/net/ethernet/cadence/macb_main.c
-> > +++ b/drivers/net/ethernet/cadence/macb_main.c
-> > @@ -574,6 +574,26 @@ static int macb_pcs_config(struct phylink_pcs *pcs,
-> >  			   const unsigned long *advertising,
-> >  			   bool permit_pause_to_mac)
-> >  {
-> > +	struct macb *bp = container_of(pcs, struct macb, phylink_sgmii_pcs);
-> > +	u32 old, new;
-> > +
-> > +	old = gem_readl(bp, PCSANADV);
-> > +	new = phylink_mii_c22_pcs_encode_advertisement(interface, advertising);
-> > +	if (new != -EINVAL && old != new)
-> > +		gem_writel(bp, PCSANADV, new);
-> > +
-> > +	/* Disable AN if it's not to be used, enable otherwise.
-> > +	 * Must be written after PCSSEL is set in NCFGR which is done in
-> > +	 * macb_mac_config(), otherwise writes will not take effect.
-> > +	 */
-> > +	old = gem_readl(bp, PCSCNTRL);
-> > +	if (neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED)
-> > +		new = old | BMCR_ANENABLE;
-> > +	else
-> > +		new = old & ~BMCR_ANENABLE;
-> > +	if (old != new)
-> > +		gem_writel(bp, PCSCNTRL, new);
-> > +
-> >  	return 0;
-> >  }
-> >  
-> > @@ -628,22 +648,6 @@ static void macb_mac_config(struct phylink_config *config, unsigned int mode,
-> >  	if (old_ncr ^ ncr)
-> >  		macb_or_gem_writel(bp, NCR, ncr);
-> >  
-> > -	/* Disable AN for SGMII fixed link configuration, enable otherwise.
-> > -	 * Must be written after PCSSEL is set in NCFGR,
-> > -	 * otherwise writes will not take effect.
-> > -	 */
-> > -	if (macb_is_gem(bp) && state->interface == PHY_INTERFACE_MODE_SGMII) {
-> > -		u32 pcsctrl, old_pcsctrl;
-> > -
-> > -		old_pcsctrl = gem_readl(bp, PCSCNTRL);
-> > -		if (mode == MLO_AN_FIXED)
-> > -			pcsctrl = old_pcsctrl & ~GEM_BIT(PCSAUTONEG);
-> > -		else
-> > -			pcsctrl = old_pcsctrl | GEM_BIT(PCSAUTONEG);
-> > -		if (old_pcsctrl != pcsctrl)
-> > -			gem_writel(bp, PCSCNTRL, pcsctrl);
-> > -	}
-> > -
-> >  	spin_unlock_irqrestore(&bp->lock, flags);
-> >  }
-> >  
-> > -- 
-> > 2.47.3
-> > 
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 net-next 5/9] psp: add unprivileged version of
+ psp_device_get_locked
+To: Wei Wang <weibunny@fb.com>, netdev@vger.kernel.org,
+ Jakub Kicinski <kuba@kernel.org>,
+ Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+ David Wei <dw@davidwei.uk>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
+References: <20260304000050.3366381-1-weibunny@fb.com>
+ <20260304000050.3366381-6-weibunny@fb.com>
+Content-Language: en-US
+From: Daniel Zahka <daniel.zahka@gmail.com>
+In-Reply-To: <20260304000050.3366381-6-weibunny@fb.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
+
+On 3/3/26 7:00 PM, Wei Wang wrote:
+> Add a place holder function called psp_device_get_locked_unpriv() which
+> will be used for commands that are unprivileged and are used for
+> exisiting commands like dev-dump, dev-get, rx-assoc, tx-assoc.
+> Commands including dev-add/delete/change-ntf, key-rotate would keep
+> using the privileged version.
+
+It looks to me like get-stats is a command that is still using the 
+privileged version. Is that intentional?
+> @@ -72,7 +73,20 @@ int psp_device_get_locked(const struct genl_split_ops *ops,
+>   		return -EINVAL;
+>   
+>   	info->user_ptr[0] = psp_device_get_and_lock(genl_info_net(info),
+> -						    info->attrs[PSP_A_DEV_ID]);
+> +						    info->attrs[PSP_A_DEV_ID],
+> +						    false);
+> +	return PTR_ERR_OR_ZERO(info->user_ptr[0]);
+> +}
+> +
+> +int psp_device_get_locked_unpriv(const struct genl_split_ops *ops,
+> +				 struct sk_buff *skb, struct genl_info *info)
+> +{
+> +	if (GENL_REQ_ATTR_CHECK(info, PSP_A_DEV_ID))
+> +		return -EINVAL;
+> +
+> +	info->user_ptr[0] = psp_device_get_and_lock(genl_info_net(info),
+> +						    info->attrs[PSP_A_DEV_ID],
+> +						    true);
+>   	return PTR_ERR_OR_ZERO(info->user_ptr[0]);
+>   }
+
+nit: psp_device_get_locked() and psp_device_get_locked_unpriv() are 
+entirely identical modulo true/false. You could probably have something 
+like __psp_device_get_locked() with the common code.
