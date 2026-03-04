@@ -1,88 +1,265 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B230E34D4E9;
-	Wed,  4 Mar 2026 15:34:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E25A35838A;
+	Wed,  4 Mar 2026 15:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772638464; cv=none; b=JPS3LOADgLx9aExsjulhApJjcywKtso0lAHwal8lCBbgcmVdWoN60e3VfJxkeJyzZMtD956iEVCCk7Jmt2sxpemk3CVXHBjpDQwU6B7F6+CNgJVXAvyqj39is9gsTifnfQi3jPPWUvV5XqwT0oMHhNE4QdeCvCv7peWjS23jacQ=
+	t=1772638466; cv=none; b=FIIZobTLttKE+JrzZw8LeFUwQHfjbfUXHdPVovkeeLtDRZTPG8jvygOtE5SiUqKpN+CkEPdSq5kVncmxbZr1skIhHltKzOBDe5pJo7SQ5yUNr+Er8wznkj+t6CWQilUYH6imYOkf7FFIoz45mqRd+1nOTtEhlxXWBJkvfgsqVzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772638464; c=relaxed/simple;
-	bh=JEW4/mYA2XOun9IB4xWiRhR+DnPv1bX2ovJhr36o+es=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uMPRIvFIK+xU0FbJLtZYFC4H4QwR0Tzbn9PWKF01xtql919m22qDy1JzC1WyBTvYFfe9xBrMO/Vn2AGlMPjQ/mIdrf5an9Ssl6zT31R2FO0iq2LTtnLWSxPaxeFInwyCzobW5dbHLsEnQTF+9BwHwRTaxuCThWKfq+AQgkzPF6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=qOu6ePib; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1772638466; c=relaxed/simple;
+	bh=E8lUv5ZV2tqm8DGQreXuazegXs/r+kDs1hpPJsZQq40=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=SI3NJaDqClKnezwgbVqJ3S9k4oVZp7E8JbL2Dbfpgr+vw5ICtYfTyWTMGUF6hGO7WuDxvBejpmzPFcJxFqfpV2obOFjOQJRQ/pqgo+EKPHC6DhIjNIiULub8PG6NZ6yWNdv99mTwsYSRdcVQL7Y79SNCy0ihMcIpT6RfRCyfueY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jFK2PcIe; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="qOu6ePib"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=w7CjWWjog3juJYmm9HCe5Z2xtmDkcTaqZK/4UtPTnNc=; b=qOu6ePibtJHDVym7mJ9MeWvAmf
-	8gaN0cHadBJJ1M9vck/nLIQwYbUS+kfb6xg4B3itsLr0ZjwWpzSf8nuUAcdrv6PA3vkthJvNAH2Fe
-	btHB8Kp0gbDCmTbKTaQJ9/YdaHfRjvSiQRQ3EOMM+QLqKUkMxJqqbj7/OGEIVZvCyjk0=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vxoEn-00A7yL-Is; Wed, 04 Mar 2026 16:34:13 +0100
-Date: Wed, 4 Mar 2026 16:34:13 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-Cc: Vladimir Oltean <olteanv@gmail.com>, UNGLinuxDriver@microchip.com,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 7/8] net: dsa: lan9645x: add mac table
- integration
-Message-ID: <8a08bb19-f565-4363-9617-a752c83a762e@lunn.ch>
-References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
- <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
- <20260303-dsa_lan9645x_switch_driver_base-v1-7-bff8ca1396f5@microchip.com>
- <20260303-dsa_lan9645x_switch_driver_base-v1-7-bff8ca1396f5@microchip.com>
- <20260303152709.nospd2qq3dju2tev@skbuf>
- <67a34d22b8f59964fd3bfaee99c8418a21526f3e.camel@microchip.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jFK2PcIe"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A489C4CEF7;
+	Wed,  4 Mar 2026 15:34:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772638466;
+	bh=E8lUv5ZV2tqm8DGQreXuazegXs/r+kDs1hpPJsZQq40=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=jFK2PcIetv8IU3o5qyCGZS8yfnEmKyxt05WjYIOxfomVoagmee2rH4HxfQD9wSM3R
+	 XDE47kliJh8fJ1GmIPCIf38EzINurHOm24dnur01wBv0CCr1MWzm3/UodlkvfTl+Yd
+	 JLMs271d68CxBnznBOsuLhuPOJwK9CijGynxxvMr1DzYo8xT5nP7xaQ2iLOo4WiuUG
+	 GEyM1CYIXrez1FqWZdIBGAw55waYwPTzAZuTjz6fFeNpFv2z57PKbJiWA5N664Iul3
+	 470sy//ovrFOSVbXWzgcyyueQFN/gRyPXwy3QnmUm0TS05tzEJt1sV/d2jk6nebaeT
+	 jGXW/jOg/+gkA==
+From: Jeff Layton <jlayton@kernel.org>
+Date: Wed, 04 Mar 2026 10:32:35 -0500
+Subject: [PATCH v3 05/12] cachefiles: widen trace event i_ino fields to u64
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67a34d22b8f59964fd3bfaee99c8418a21526f3e.camel@microchip.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260304-iino-u64-v3-5-2257ad83d372@kernel.org>
+References: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
+In-Reply-To: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
+To: Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Dan Williams <dan.j.williams@intel.com>, Eric Biggers <ebiggers@kernel.org>, 
+ "Theodore Y. Ts'o" <tytso@mit.edu>, Muchun Song <muchun.song@linux.dev>, 
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@kernel.org>, 
+ David Howells <dhowells@redhat.com>, Paulo Alcantara <pc@manguebit.org>, 
+ Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>, 
+ Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, 
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Chuck Lever <chuck.lever@oracle.com>, NeilBrown <neil@brown.name>, 
+ Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+ Tom Talpey <tom@talpey.com>, Steve French <sfrench@samba.org>, 
+ Ronnie Sahlberg <ronniesahlberg@gmail.com>, 
+ Shyam Prasad N <sprasad@microsoft.com>, 
+ Bharath SM <bharathsm@microsoft.com>, 
+ Alexander Aring <alex.aring@gmail.com>, 
+ Ryusuke Konishi <konishi.ryusuke@gmail.com>, 
+ Viacheslav Dubeyko <slava@dubeyko.com>, 
+ Eric Van Hensbergen <ericvh@kernel.org>, 
+ Latchesar Ionkov <lucho@ionkov.net>, 
+ Dominique Martinet <asmadeus@codewreck.org>, 
+ Christian Schoenebeck <linux_oss@crudebyte.com>, 
+ David Sterba <dsterba@suse.com>, Marc Dionne <marc.dionne@auristor.com>, 
+ Ian Kent <raven@themaw.net>, Luis de Bethencourt <luisbg@kernel.org>, 
+ Salah Triki <salah.triki@gmail.com>, 
+ "Tigran A. Aivazian" <aivazian.tigran@gmail.com>, 
+ Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>, 
+ Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, 
+ Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>, 
+ Amir Goldstein <amir73il@gmail.com>, Christoph Hellwig <hch@infradead.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+ Yangtao Li <frank.li@vivo.com>, 
+ Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>, 
+ David Woodhouse <dwmw2@infradead.org>, Richard Weinberger <richard@nod.at>, 
+ Dave Kleikamp <shaggy@kernel.org>, 
+ Konstantin Komarov <almaz.alexandrovich@paragon-software.com>, 
+ Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>, 
+ Joseph Qi <joseph.qi@linux.alibaba.com>, 
+ Mike Marshall <hubcap@omnibond.com>, 
+ Martin Brandenburg <martin@omnibond.com>, 
+ Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>, 
+ Zhihao Cheng <chengzhihao1@huawei.com>, Damien Le Moal <dlemoal@kernel.org>, 
+ Naohiro Aota <naohiro.aota@wdc.com>, Johannes Thumshirn <jth@kernel.org>, 
+ John Johansen <john.johansen@canonical.com>, 
+ Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+ "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>, 
+ Roberto Sassu <roberto.sassu@huawei.com>, 
+ Dmitry Kasatkin <dmitry.kasatkin@gmail.com>, 
+ Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>, 
+ Stephen Smalley <stephen.smalley.work@gmail.com>, 
+ Ondrej Mosnacek <omosnace@redhat.com>, 
+ Casey Schaufler <casey@schaufler-ca.com>, 
+ Alex Deucher <alexander.deucher@amd.com>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Sumit Semwal <sumit.semwal@linaro.org>, Eric Dumazet <edumazet@google.com>, 
+ Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Willem de Bruijn <willemb@google.com>, 
+ "David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+ Simon Horman <horms@kernel.org>, Oleg Nesterov <oleg@redhat.com>, 
+ Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+ Arnaldo Carvalho de Melo <acme@kernel.org>, 
+ Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+ Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, 
+ Adrian Hunter <adrian.hunter@intel.com>, 
+ James Clark <james.clark@linaro.org>, "Darrick J. Wong" <djwong@kernel.org>, 
+ Martin Schiller <ms@dev.tdt.de>, Eric Paris <eparis@redhat.com>, 
+ Joerg Reuter <jreuter@yaina.de>, Marcel Holtmann <marcel@holtmann.org>, 
+ Johan Hedberg <johan.hedberg@gmail.com>, 
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>, 
+ Oliver Hartkopp <socketcan@hartkopp.net>, 
+ Marc Kleine-Budde <mkl@pengutronix.de>, David Ahern <dsahern@kernel.org>, 
+ Neal Cardwell <ncardwell@google.com>, 
+ Steffen Klassert <steffen.klassert@secunet.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ Remi Denis-Courmont <courmisch@gmail.com>, 
+ Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
+ Xin Long <lucien.xin@gmail.com>, 
+ Magnus Karlsson <magnus.karlsson@intel.com>, 
+ Maciej Fijalkowski <maciej.fijalkowski@intel.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ Jesper Dangaard Brouer <hawk@kernel.org>, 
+ John Fastabend <john.fastabend@gmail.com>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev, 
+ fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev, 
+ linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
+ linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+ samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org, 
+ v9fs@lists.linux.dev, linux-afs@lists.infradead.org, autofs@vger.kernel.org, 
+ ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu, 
+ ecryptfs@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ jfs-discussion@lists.sourceforge.net, ntfs3@lists.linux.dev, 
+ ocfs2-devel@lists.linux.dev, devel@lists.orangefs.org, 
+ linux-unionfs@vger.kernel.org, apparmor@lists.ubuntu.com, 
+ linux-security-module@vger.kernel.org, linux-integrity@vger.kernel.org, 
+ selinux@vger.kernel.org, amd-gfx@lists.freedesktop.org, 
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org, 
+ linaro-mm-sig@lists.linaro.org, netdev@vger.kernel.org, 
+ linux-perf-users@vger.kernel.org, linux-fscrypt@vger.kernel.org, 
+ linux-xfs@vger.kernel.org, linux-hams@vger.kernel.org, 
+ linux-x25@vger.kernel.org, audit@vger.kernel.org, 
+ linux-bluetooth@vger.kernel.org, linux-can@vger.kernel.org, 
+ linux-sctp@vger.kernel.org, bpf@vger.kernel.org, 
+ Jeff Layton <jlayton@kernel.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2680; i=jlayton@kernel.org;
+ h=from:subject:message-id; bh=E8lUv5ZV2tqm8DGQreXuazegXs/r+kDs1hpPJsZQq40=;
+ b=owEBbQKS/ZANAwAKAQAOaEEZVoIVAcsmYgBpqFCnboYZuamhSjxxOsGNVe4KX4qKQ8jKhPQAS
+ et+MGnh3xKJAjMEAAEKAB0WIQRLwNeyRHGyoYTq9dMADmhBGVaCFQUCaahQpwAKCRAADmhBGVaC
+ FRS2EACPETzruvNWJd9CA77sY2+/NqsP8aQJDqjrVWDpD5gBPLEZMyv3hyr/iNfrnRD1YKrR1ve
+ 4Bp6qUnc70Gv3PJekeMaKteUwnvKLrYaFXHRfvMW2vQxG5a+VN/ZfQqOwIFb3IxqbdLtOpKMxZZ
+ /nnZ6Id/RD1dBISUcfqJTDZQwqvLPraPCMVjfhS5Z15yRDQTXFk0l2cyZa3kOeSxpU0Qt/Loa9e
+ fm21nW5KV0Z9vgm0xbit0/5OpEvQBfYL5yZOHWrsoUEPkXCJ3wu7N1wj1S44XYAoq5AeWVxS3xz
+ l7eoPz5B0Qp9t6jNKdY7aLDlC09gqABVVTWzUWlZUbEIWbovOTLNAUsKOccgpleXonxEw92EPbL
+ m2OfW8fnr646fipgkmuQ69xHnJ5wuhHORGrYgEZLI8A7qqUclHy9LW3JS97sBkHmyw9GhpV55y7
+ F5PviCDiQQW6zNjygQG9Izn8+BIBcU6M1XHl1CDUYf6IIYD4lNI3ufLroIBzwn35/AqoUL8y40k
+ khU0NCP3PKt0SD7h7daLvk8VNw0uV5si6Yr52CxWSyuNFYKUidRb1nAZ0fK4IbbrqSOYCWDg1vp
+ rT2AhnlH6FhofgKbRzcTMifS2MvB0zCxCHXSQnAz9y00Dt1w9OHgXTnfFmfC5KheLo20gBiPwab
+ 2AYYSsJVCX8y4jQ==
+X-Developer-Key: i=jlayton@kernel.org; a=openpgp;
+ fpr=4BC0D7B24471B2A184EAF5D3000E684119568215
 
-> > > @@ -6,3 +6,4 @@ mchp-lan9645x-objs := lan9645x_main.o \
-> > >       lan9645x_port.o \
-> > >       lan9645x_phylink.o \
-> > >       lan9645x_vlan.o \
-> > > +     lan9645x_mac.o \
-> > 
-> > Is there some particular ordering here? Because it's surely not
-> > alphabetical.
-> > 
-> 
-> I just add new files at the end, I thought that made the most sense. Should they be
-> sorted by name?
+Update cachefiles trace event definitions to use u64 instead of
+ino_t/unsigned long for inode number fields.
 
-This is part of the whole 'sorted' story of lists in Linux. By keeping
-lists sorted, insertions are spread out across the list. That reduced
-merge conflicts. Within one driver, conflicts are less likely, but
-always adding to the end of Makefile, Kconfig, core code, etc will see
-merge conflicts if we have two developers adding drivers at the same
-time.
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+---
+ include/trace/events/cachefiles.h | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-So if you have any sort of list of items, please try to keep it
-sorted.
+diff --git a/include/trace/events/cachefiles.h b/include/trace/events/cachefiles.h
+index a743b2a35ea7001447b3e05d41539cb88013bc7f..6e3b1424eea4dc9e414dd9d1439339132d516339 100644
+--- a/include/trace/events/cachefiles.h
++++ b/include/trace/events/cachefiles.h
+@@ -249,10 +249,10 @@ TRACE_EVENT(cachefiles_lookup,
+ 	    TP_ARGS(obj, dir, de),
+ 
+ 	    TP_STRUCT__entry(
++		    __field(u64,			dino)
++		    __field(u64,			ino)
+ 		    __field(unsigned int,		obj)
+ 		    __field(short,			error)
+-		    __field(unsigned long,		dino)
+-		    __field(unsigned long,		ino)
+ 			     ),
+ 
+ 	    TP_fast_assign(
+@@ -263,7 +263,7 @@ TRACE_EVENT(cachefiles_lookup,
+ 		    __entry->error	= IS_ERR(de) ? PTR_ERR(de) : 0;
+ 			   ),
+ 
+-	    TP_printk("o=%08x dB=%lx B=%lx e=%d",
++	    TP_printk("o=%08x dB=%llx B=%llx e=%d",
+ 		      __entry->obj, __entry->dino, __entry->ino, __entry->error)
+ 	    );
+ 
+@@ -578,8 +578,8 @@ TRACE_EVENT(cachefiles_mark_active,
+ 
+ 	    /* Note that obj may be NULL */
+ 	    TP_STRUCT__entry(
++		    __field(u64,			inode)
+ 		    __field(unsigned int,		obj)
+-		    __field(ino_t,			inode)
+ 			     ),
+ 
+ 	    TP_fast_assign(
+@@ -587,7 +587,7 @@ TRACE_EVENT(cachefiles_mark_active,
+ 		    __entry->inode	= inode->i_ino;
+ 			   ),
+ 
+-	    TP_printk("o=%08x B=%lx",
++	    TP_printk("o=%08x B=%llx",
+ 		      __entry->obj, __entry->inode)
+ 	    );
+ 
+@@ -599,8 +599,8 @@ TRACE_EVENT(cachefiles_mark_failed,
+ 
+ 	    /* Note that obj may be NULL */
+ 	    TP_STRUCT__entry(
++		    __field(u64,			inode)
+ 		    __field(unsigned int,		obj)
+-		    __field(ino_t,			inode)
+ 			     ),
+ 
+ 	    TP_fast_assign(
+@@ -608,7 +608,7 @@ TRACE_EVENT(cachefiles_mark_failed,
+ 		    __entry->inode	= inode->i_ino;
+ 			   ),
+ 
+-	    TP_printk("o=%08x B=%lx",
++	    TP_printk("o=%08x B=%llx",
+ 		      __entry->obj, __entry->inode)
+ 	    );
+ 
+@@ -620,8 +620,8 @@ TRACE_EVENT(cachefiles_mark_inactive,
+ 
+ 	    /* Note that obj may be NULL */
+ 	    TP_STRUCT__entry(
++		    __field(u64,			inode)
+ 		    __field(unsigned int,		obj)
+-		    __field(ino_t,			inode)
+ 			     ),
+ 
+ 	    TP_fast_assign(
+@@ -629,7 +629,7 @@ TRACE_EVENT(cachefiles_mark_inactive,
+ 		    __entry->inode	= inode->i_ino;
+ 			   ),
+ 
+-	    TP_printk("o=%08x B=%lx",
++	    TP_printk("o=%08x B=%llx",
+ 		      __entry->obj, __entry->inode)
+ 	    );
+ 
 
-	Andrew
+-- 
+2.53.0
+
