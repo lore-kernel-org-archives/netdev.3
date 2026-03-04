@@ -1,139 +1,179 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C9230FC26
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 16:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772640015; cv=pass; b=VwjgLv5gQzDQgLb7tQG5gQaPvS0y81KLndAj6nHDXEqQuOUyh0Zo4MmS6X/NOarHg0DuqmWSZQ+84AEHiJw/jB+PkWEEhxvARCE+BHJOPPiFVF14ihOlrSS40l0RalOMlhMGV15Balp0c6QFAwabRqTL1ciR1h6LcytIc1BUir8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772640015; c=relaxed/simple;
-	bh=rI1GyFyPrXzA+/a7clGqi3FniatUTe9TjanGamzeT1c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r+JUB8XPGTjZoCXqGwhHWqIh1GeUTNwCDgGeu3hXY7aNZ85XPTW9RtDBBm6LSQowW1i7AQjHMNZMy5tD5wUZB3+rMXA/URyrwCQl46hw7H73xUQmkKzPztTdRWiuzSnrI+oEVVF7clRbL5ll2juQo+U2K/ja6piQAK4de1csqp4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VaD8vMyF; arc=pass smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528D4EACE
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 16:00:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772640030; cv=none; b=JjRaS9C7g5s/FgJKMtYzMN5EemAm+labVN7dCKfA9eIVC5kQoqwGEpFqZFZ83NlS8h3AXhSp3bTs+d6vsldH+xT1Bw9JnMEncTYZ9TTqTRAVfyiJIJgIeAxp0labHLXGX0CNEaNye9cwXd2Pim12Eqjq2VAbW8GDgoXZE972M4A=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772640030; c=relaxed/simple;
+	bh=Uit1Ti7AU3XxeFhawNvwoDfVMeh6nJo+iBe3Dbimg88=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gjLal5mBjJbP8WZgz/L+sYTmRnpJjR03kR7DcBI/8hBHIhZguPj9Frh0VdAklwqvJcuj64LCyoqHkVp2rAI/Vl6o3HqyB3BC+rbp1Z1ClGJxjV72o2zAdm7trzOu1dc3N9HpQamAS5iTrGVN4fehXr8jgr5Fxxsbixa6Rw7/A1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us; spf=none smtp.mailfrom=resnulli.us; dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b=xpNtugTn; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=resnulli.us
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=resnulli.us
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VaD8vMyF"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-8cb3825b0fbso677793085a.0
-        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 08:00:14 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772640013; cv=none;
-        d=google.com; s=arc-20240605;
-        b=X9BcHdeAh1Xy5Z0DpgqAcx+ANGX2znoQbla2WM7BgJeY/f9NuOZbxo211qmZqVWpfo
-         uuMP5dAqicjakdUSXECJh7167JDQZyHusxrNxuMu2eTzpvzd5n+E2j6ac4uSQPpbUBZ+
-         thDyRD2ZXRfRlmtBHUoDGmrVclEyW5/szcUrlz5+K5nuyWtZVRwfVbIGi9Cml7DhChzL
-         Rf6stzh7iWJJLVBICpcpEvG4X3vYUpa/1xtM9DVLIFhLy2RzHmRmMJcexxi2cXCAKb3y
-         5by3xliWHsLqxZFaYPsQBlPAsF4uMcqbFn8bq7y1YYOSMVN6OHZIhmGnGF3FYMAeNDQ4
-         rjyA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=uG4YJPkl73/42Js8FL99JMSYDUN35hlIqmqUUwK5i+o=;
-        fh=GDCqGVd+gGKqSibXF3Hjf6G6XtLT97S7PZsiYhvbiM8=;
-        b=ejeZ0ggQRJcquonkGhgyYzBJPocOSkWIlljf/uOhkux+efEMm2Txk7UfpBy7bys7BJ
-         BrHhvsdnw3a+m3QljNMc/dXxni2rUXXo5h7lbCahQ921Ut7L/043vlJYEVT3Q9Mqrq56
-         BJKDLXBwZBoglkUCb+1WNxjB8abW3rFMOsokzFKl9FvzVPKoqGNffUtRWujCdjzSRQBY
-         lgCC3Sd/OQqtLyHa1sMgTPQYKLgNWpTVM8QYsDr81qMtXya8sB92PCweKLLnJbXiClw8
-         DXDvH0qfnATfyNi5hw2MpDEQHhry+lJfUts8cTXGtHYc20whfMG7eoIH73GfrR5RH56Z
-         OVtg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=resnulli-us.20230601.gappssmtp.com header.i=@resnulli-us.20230601.gappssmtp.com header.b="xpNtugTn"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-439c5cce2c6so1095621f8f.3
+        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 08:00:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772640013; x=1773244813; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=resnulli-us.20230601.gappssmtp.com; s=20230601; t=1772640027; x=1773244827; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uG4YJPkl73/42Js8FL99JMSYDUN35hlIqmqUUwK5i+o=;
-        b=VaD8vMyFfWiS2jJefwjzWOs62wvDFgQISEIzqVg98BoRYTfxyfS1mrqa7IUc5G6LEJ
-         GugpYDaqKG06z3uo49+HEqRvOmLWXf7mhLYAaeLKi6HSSoRH9X7I6tLBJ9dGeZozdao8
-         wfYiREDMMZ8SvQ9d3TIiy8fcWculAIc1U8YKw9kUB63OmGZU/lIIEWnV1/7q9fQWQnou
-         Ydr9n5c0i+mLpjXG1kbdVJIg8boY4dNy7Wy2PqBZTaHAakcUDruEOzy40LQlr7rlvqmk
-         gb0KSWPh9OMBihXgGPhkBSCUHw10oaebg91nUAeP9DhEPd1Cm9GwlR+WyD9uW76EYa+h
-         0Qww==
+        bh=d9KLhKGx9RzUBsWoWUkwA/+vgETenzM1WQ8j317w0fU=;
+        b=xpNtugTn5UkhZ0Lnj1qvpN3/EWbSA+Q7NtWSKHhiGKB85+u05ycJt2AN9tUrhAORh7
+         hW+ribiQId7X1OKVlILOHPPh4w/TmVWNbsisyRB6ffJ34Vzazuplk05LwzGI7PNAcl5U
+         a+zA90aBV1Dozsn2xQ19lB4SEP4M+3LvWhRAskqdlKCT2/49kNdf0633Cpkg/jpF7ntD
+         SArn97nrknD8YfUqpQzAEJI/sgPJuRxXcFyCg3EPGuM0NLApF2sp1c/MBKdGMse3WcGY
+         E/WNZK7o9QAXHrQMSZeTupaT9WPkuOs4CHpV8+2NziKLbUHnurL7UZwLXH1a6c2g1kH6
+         9Cbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772640013; x=1773244813;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20230601; t=1772640027; x=1773244827;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=uG4YJPkl73/42Js8FL99JMSYDUN35hlIqmqUUwK5i+o=;
-        b=Co8bpg9J7KlwesUo721lf2ysAexwXRpIVQ6aoY1XVZJn7EoF3khS53NJ/TqcUzYgLp
-         3Ku7tSByxsiMK4y6tvYgCBAgyxGqA3ImOZA8erSo/zOeKwhw2aKgJPL6j++uYDMwFKAj
-         q+XjPffvOrVz6ruqUJbFwjtEsfHnR5ydZqPwlqjiHojAY5ecgeTGZ5PNgWGMyz9/nx1K
-         zLY68v1b3hJkh4yYQz5V8NgIR2I4S6Fu9XETV8wHB02sK81OJdaavAilFD2X/nHX2VKd
-         rfByeSM84VXM1frKaDDgjydEpeX+arSFyGOXxJsXyrHl/U7assvxAK91oQmT7u0vZrmX
-         ymhg==
-X-Forwarded-Encrypted: i=1; AJvYcCWTzejQXt5InRdqyQLXPxbGo3s8/0pqKMhv2SmvgQDdQy6CUd+0xU2K8UQIbSpBXhm8/FmYaz4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywz08egoL8LuTm+Y9n58alpT1XU7H9PAN4MJB+VQO0DQjcl0kpi
-	oGBvr2CpsDzDJTVgbGHILhPOyANS/Czl/T2i+q0zbfMLkwGI+i8M+AhRSNywO9gRC9xssMjtnFG
-	3Q2Y1Aj2BVZP9gEYdkifWxPAv6bsfHh2/v97aLdg7
-X-Gm-Gg: ATEYQzwIMfYDBpVYSKavdWMBhhDfAW+7TUAB7NQzTf1/Grj+jz66QQBajhGP5vQ+2BH
-	iHmqii9iNWI41Abm535NyYJfxLw6832/sQg2nFXOmUKxZt4+mFv+rRjrfdmrQnX9nLQJH6l5fIx
-	oOMzXC/lC8s0lzvMdEnjhofb69otcC+ssl09tY1js4STbro2EipVbDpFR5IkuoDRrjHm9U0eAG2
-	D/qCq09XsRM7DeClPA5vPsKeAI+/F5QOD29JJma8w8OSiDupxKHKLeW77PJloXckKdwkVTuQrjV
-	p+AGHbZL
-X-Received: by 2002:a05:622a:1998:b0:501:4730:fbe1 with SMTP id
- d75a77b69052e-508db2a7ab9mr33833311cf.22.1772640011899; Wed, 04 Mar 2026
- 08:00:11 -0800 (PST)
+        bh=d9KLhKGx9RzUBsWoWUkwA/+vgETenzM1WQ8j317w0fU=;
+        b=G6NcxfZbD7KbOKXHf40Bc6hYSfyFBMDD9TFuIhFfieN40MJhepQ6LRk2i0dvjIG1tr
+         CtTyJ+v1kAuFkoDqbJDjjMiDU4WosrvWxFILPXwgsQOXLQuJ0mWoVgsKyn2nmiN996Rb
+         wp5mi5xg3NrcstcSaRsg1nMzYbgCN0eTIVyq58/tsKwjFz06/Ms0ofLIrd5s6vuN4mh9
+         +SjtbfJchNHvDmv/UDZvjnxbcShZbehShgpVB0e2m85xvOPeVe2z2EnHeb1SFnxLktdp
+         8+r3qzCSefPM5k0IbmQZr/SY3/wACIce93EQRY/ex7HqAsh7uPypUoSiNuXd4GJXqFge
+         q4Ag==
+X-Gm-Message-State: AOJu0YwQ0sX85h+lm+dH5Haojh6O3gk3avWuImOy7w4RQm/zjKvKH8RO
+	6G5gNdxRURxWfVt9RPVfk7PO7aohy9aTinpCdaQpWr+V6G//GGFq/ZFEZBHp8YsWY80nC8H8YSY
+	il0SkPcU=
+X-Gm-Gg: ATEYQzys8VTKOYerS5yKcPKGFOf9/3tfbQcAi4NyRVSJipqW8pPKk9bDSdgLuxbh37g
+	1KwCN9kA+px03Rof580fRxvCmueqWara+Zdh3pad3vwSKqabP8LcECakYzJet33TRL96tRpP9tb
+	tEYcSC7EQAtS7XJvN6XZI72phFzEhlSaspyZe4EiNBgnBzTufycmXHt0bypnNCQsz95TCQdeZ15
+	VgRWdZ9vZLrFOH8RMQZgbMVLmhj/jdb6trEEUln4kl7+00acZ9yTr/u29zNLc5o+QHUytcjkecL
+	AhR3B4KAkdiKPereGz9uGNv2hLgTEIxRaspIolGc+DoA0b6+UmEHzwkD8zHbjG1IjsPOQL3bWje
+	EKkvb/1++oSzlA0w/ZrhdFgprs4yIVESJpoOQtpIWsG0+Zr4ZO/4D41HMD/AwMQNgpjd9Yq4sIq
+	sbIYZLa3dGegJeHJXcoT36ujbIQydaEig7g0Kb/gzJRRa9+GBFvma8lEgJ
+X-Received: by 2002:a05:6000:4006:b0:439:c279:32e9 with SMTP id ffacd0b85a97d-439c7fe3d7cmr4503831f8f.39.1772640026687;
+        Wed, 04 Mar 2026 08:00:26 -0800 (PST)
+Received: from localhost (46-13-72-179.customers.tmcz.cz. [46.13.72.179])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439b485a0b6sm27629409f8f.39.2026.03.04.08.00.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 04 Mar 2026 08:00:25 -0800 (PST)
+From: Jiri Pirko <jiri@resnulli.us>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	donald.hunter@gmail.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	mbloch@nvidia.com,
+	przemyslaw.kitszel@intel.com,
+	mschmidt@redhat.com,
+	andrew+netdev@lunn.ch,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com,
+	chuck.lever@oracle.com,
+	matttbe@kernel.org,
+	cjubran@nvidia.com,
+	daniel.zahka@gmail.com,
+	linux-doc@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH net-next v3 01/13] devlink: expose devlink instance index over netlink
+Date: Wed,  4 Mar 2026 17:00:10 +0100
+Message-ID: <20260304160022.6114-2-jiri@resnulli.us>
+X-Mailer: git-send-email 2.51.1
+In-Reply-To: <20260304160022.6114-1-jiri@resnulli.us>
+References: <20260304160022.6114-1-jiri@resnulli.us>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260304094318.1769536-1-edumazet@google.com> <93b5fb6d-7aa0-481f-823f-995ed8ab0e52@kernel.org>
-In-Reply-To: <93b5fb6d-7aa0-481f-823f-995ed8ab0e52@kernel.org>
-From: Eric Dumazet <edumazet@google.com>
-Date: Wed, 4 Mar 2026 17:00:00 +0100
-X-Gm-Features: AaiRm50I60QlYPJhewzIEKmMOkyfI19MLdtQwUrLgqb-LpW56f69_ysZ6MKpDwo
-Message-ID: <CANn89i+SQd4H7q=ELJp7-aaN5PyZ-Oakoy9MHZpbuX1iGKV1ag@mail.gmail.com>
-Subject: Re: [PATCH net-next] inet_diag: report delayed ack timer information
-To: David Ahern <dsahern@kernel.org>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, Kuniyuki Iwashima <kuniyu@google.com>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Mar 4, 2026 at 4:48=E2=80=AFPM David Ahern <dsahern@kernel.org> wro=
-te:
->
-> On 3/4/26 2:43 AM, Eric Dumazet wrote:
-> > inet_sk_diag_fill() populates r->idiag_timer with the following
-> > precedence order:
-> >
-> > 1 - Retransmit timer.
-> > 4 - Probe0 timer.
-> > 2 - Keepalive timer.
-> >
-> > This patch adds a new value, last in the list, if other timers
-> > are not active.
-> >
-> > 5 - Delayed ACK timer.
-> >
-> > A corresponding iproute2 patch is needed to replace "unknown"
-> > with "delack":
->
-> ...
->
-> > diff --git a/net/ipv4/inet_diag.c b/net/ipv4/inet_diag.c
-> > index 9d215485b5c7e7ba29dd53c924f0245439d74af5..e4cb18061aefcc22df04644=
-c00bf5c7db4e150d2 100644
-> > --- a/net/ipv4/inet_diag.c
-> > +++ b/net/ipv4/inet_diag.c
-> > @@ -298,6 +298,10 @@ int inet_sk_diag_fill(struct sock *sk, struct inet=
-_connection_sock *icsk,
-> >               r->idiag_retrans =3D READ_ONCE(icsk->icsk_probes_out);
-> >               r->idiag_expires =3D
-> >                       jiffies_delta_to_msecs(icsk->icsk_keepalive_timer=
-.expires - jiffies);
-> > +     } else if (timer_pending(&icsk->icsk_delack_timer)) {
-> > +             r->idiag_timer =3D 5;
->
-> How come the idiag_timer values an enum in
-> include/uapi/linux/inet_diag.h since this is a uapi?
+From: Jiri Pirko <jiri@nvidia.com>
 
-Yes, this can be done, although we survived all these years without it.
+Each devlink instance has an internally assigned index used for xarray
+storage. Expose it as a new DEVLINK_ATTR_INDEX uint attribute alongside
+the existing bus_name and dev_name handle.
 
-Do you want to send a patch or should I implement this idea ?
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+---
+ Documentation/netlink/specs/devlink.yaml | 5 +++++
+ include/uapi/linux/devlink.h             | 2 ++
+ net/devlink/devl_internal.h              | 2 ++
+ net/devlink/port.c                       | 1 +
+ 4 files changed, 10 insertions(+)
+
+diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
+index 837112da6738..1bed67a0eefb 100644
+--- a/Documentation/netlink/specs/devlink.yaml
++++ b/Documentation/netlink/specs/devlink.yaml
+@@ -867,6 +867,10 @@ attribute-sets:
+         type: flag
+         doc: Request restoring parameter to its default value.
+         value: 183
++      -
++        name: index
++        type: uint
++        doc: Unique devlink instance index.
+   -
+     name: dl-dev-stats
+     subset-of: devlink
+@@ -1311,6 +1315,7 @@ operations:
+           attributes:
+             - bus-name
+             - dev-name
++            - index
+             - reload-failed
+             - dev-stats
+       dump:
+diff --git a/include/uapi/linux/devlink.h b/include/uapi/linux/devlink.h
+index e7d6b6d13470..1ba3436db4ae 100644
+--- a/include/uapi/linux/devlink.h
++++ b/include/uapi/linux/devlink.h
+@@ -642,6 +642,8 @@ enum devlink_attr {
+ 	DEVLINK_ATTR_PARAM_VALUE_DEFAULT,	/* dynamic */
+ 	DEVLINK_ATTR_PARAM_RESET_DEFAULT,	/* flag */
+ 
++	DEVLINK_ATTR_INDEX,			/* uint */
++
+ 	/* Add new attributes above here, update the spec in
+ 	 * Documentation/netlink/specs/devlink.yaml and re-generate
+ 	 * net/devlink/netlink_gen.c.
+diff --git a/net/devlink/devl_internal.h b/net/devlink/devl_internal.h
+index 1377864383bc..31fa98af418e 100644
+--- a/net/devlink/devl_internal.h
++++ b/net/devlink/devl_internal.h
+@@ -178,6 +178,8 @@ devlink_nl_put_handle(struct sk_buff *msg, struct devlink *devlink)
+ 		return -EMSGSIZE;
+ 	if (nla_put_string(msg, DEVLINK_ATTR_DEV_NAME, dev_name(devlink->dev)))
+ 		return -EMSGSIZE;
++	if (nla_put_uint(msg, DEVLINK_ATTR_INDEX, devlink->index))
++		return -EMSGSIZE;
+ 	return 0;
+ }
+ 
+diff --git a/net/devlink/port.c b/net/devlink/port.c
+index 93d8a25bb920..1ff609571ea4 100644
+--- a/net/devlink/port.c
++++ b/net/devlink/port.c
+@@ -222,6 +222,7 @@ size_t devlink_nl_port_handle_size(struct devlink_port *devlink_port)
+ 
+ 	return nla_total_size(strlen(devlink->dev->bus->name) + 1) /* DEVLINK_ATTR_BUS_NAME */
+ 	     + nla_total_size(strlen(dev_name(devlink->dev)) + 1) /* DEVLINK_ATTR_DEV_NAME */
++	     + nla_total_size(8) /* DEVLINK_ATTR_INDEX */
+ 	     + nla_total_size(4); /* DEVLINK_ATTR_PORT_INDEX */
+ }
+ 
+-- 
+2.51.1
+
