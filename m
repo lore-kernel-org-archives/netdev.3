@@ -1,108 +1,130 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-of-o54.zoho.com (sender4-of-o54.zoho.com [136.143.188.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A7D336883
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 12:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772627874; cv=none; b=kjbmPMe6cmKrWsRADCJDNzBep2L7ajrGn4d3VsPm9+KOVIOMSGRWM1uhxMoef3U4H8YP1BwHyZYvKhv+53zRnr6LGMAcqJOgYIsonfDt1syp+ASeJQ3wGMw2XTLgSwN1/i2ttXt556vVp8n37Ba1qPDlaLsILRYWyVxs/px0htY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772627874; c=relaxed/simple;
-	bh=zJuo7qMutHORFwQoVNSSuIoEfHsEUlmjBsGv1qbTk3s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RxdyCYl3M7Q/oTtyTGq4xQuaJH6tdnIG6ttDRkHcvKxKtRpSXTKz5PCAVbIUcHUMuD0M9w1TAv5FpRhMy5iTHYLNd0UL9sRtS8QujvEKbzNWlzQV/DHdXnJ49ssQamTKVIHpA8YeP0hgRVVyFr7LBv2jHaY3oIpMUqkzg796/jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RzHi1LdL; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB2C18FDBD
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 12:41:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772628091; cv=pass; b=oncL00BYgbrQVEVT7rcVuvT0TWaNk+VkCWSUvIELWQ0wDNJHn8FvijvjmAPIjHUlRlqSP9iX5AyZcsxHLg/XYxj0VjZORz9NqxZbag6Qcat4dFPUsJQYE49lOH+l2wymyaUZH4Ot9sXSWAspZ2wHSiWndbOv4vVCQpP0FFZn5Y8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772628091; c=relaxed/simple;
+	bh=qk2GupJOQAR+hsNg+GUv/QedFQJGOeeIW7PqgczgpK4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X8DiHMzXnyMLeLr2tg3rNDtQw4RxG8HS0cfc3WejRG9Y+wOUiueg0SQggyv0xXqQ/pqNK11GGLW3XPs3by5/xobScN0Lh1+NZPDzh+2FbnOhyuJrwa4qY2N/AAzdmC9aMteuSa4UQgcc5XtReYj2ch9bpuoHTrAzmfqxgmY+Z6w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net; spf=pass smtp.mailfrom=machnikowski.net; dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b=PyJAML6Z; arc=pass smtp.client-ip=136.143.188.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=machnikowski.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=machnikowski.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RzHi1LdL"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-483a233819aso66918365e9.3
-        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 04:37:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772627872; x=1773232672; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UxB/uFtMk7BfQyoh1WMZKIcALFnrrxe/IZwZ8/zch24=;
-        b=RzHi1LdLnHZhTUDlkDjWx705yW7nMp5SCcE6YFZo+lgpo2RoVx4FnG2xpfN97NIp0A
-         svpyAyC3+EssTHbgM04HQYwgtEwtssaRDmTBgUUunNPVmCRcP3XaucIMEgUe9e0XAnVP
-         0J9oDvky1YRAlXKA+P9i4v998vZjUZyq12a+/hHFu2xG7Uw14CQQzNhyJc1EMWZUZbPI
-         Q+LTMdc9lRJ/dHTASXqDcf3oQERjxCZmfR9RUS3gk13NVVuf2bz7PwgXIrIfu2Qie9D7
-         vyV1+2762D+SLCno+tpjiRJaflZWyVKaHi/HxgjXZw+Zc/chwm30YvEN2yfNiegi3J8O
-         aI1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772627872; x=1773232672;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UxB/uFtMk7BfQyoh1WMZKIcALFnrrxe/IZwZ8/zch24=;
-        b=HSm03fPxJo9J5y14UduohkNyBH3MBuHxtWWbyxWrQJKp8wI0XctCu7z6votX6GDA2e
-         FGVhPWZODin+wz3iuEuMlBI3A6eZA/bXWjxYHnh/enauT1GNXCMkqWMQPLXT3g4H6hMR
-         efULmnt99YHvwBvtmP1iUyHR3zKWO8e+6xWnoHBrjkgIvzeY2sG+hs6ONyYpn1VIQ7Zy
-         Ltd9EEKta+eJNcHY5ExOuFNRZiZa1wrmTX9RUDkRselcC5A6YbdgGvh7FEOEzJyaheHw
-         FW3ZuZaSRLWcsb8cpR5fA08YDpH7/ZfevSEQh4sM2c5QzTXSPpDGFGaU8ys8zllB+LDi
-         SFBw==
-X-Forwarded-Encrypted: i=1; AJvYcCV29cQVDI61nL1LfSma9FOggmUWDkcp6y94lmDbdk625fS8ClZq8JfJAblrUZJq5rqgp3MNH1w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJNi0vlGTYFEe8Ug8ybkVFjb+FziO5LJIt+BcDBCVWz55n6FxK
-	8lWt0nEzDMtuB22iSiuH9RoXqZWdJKltCUkonrYXuwbg0vPL2btsORwg
-X-Gm-Gg: ATEYQzxUpqp8buSvS371Yp/obL6I7kkmx0uiZDnPSmr2J+TWoY/oNVqcomoxnJ/wTcW
-	zBk5Jf1Bhbfpi7j6oyen2pkaWraaXxk9qGCKIj53SKLoKUgBc3cNYUkQoyA6gopKggFJDhYdAks
-	CSOC/TlSu/dPAv7o8HIc2C+WsW6OtMJRur7/UZKzmaj37Ze+epzyw8oUUEKzGp26o4vjc1OZmob
-	3lGHpmiL8r5XF29mV/QdRY+ujmjLXq+oYV08umA2ndDHnMk4mM/VmbEn6tyiLFgT2dQKAWpTeF8
-	wLsw4hCP56jJzIPOb/hKpIzrb3LT2BpIT2LfV7GOVrJz66WvfN1u+uWr2rZM+mWlOyJ2oHsfXmo
-	KiRNl4Y4ZSNK7n5Dc8xa208Vr2h1O6yCSn0zRXyVKf1enrdggYEMHv8x18USwemhxVF3a08Hqkf
-	Enc74OOpm0TLKoF2xWRLofKsmAg6dRPLc+JszHOYNGUBb9YKyOI3w8WqnRA13ELxSCsOpvvTzjP
-	s6As0DNVhUWbNf+9/pShlms5+yR5w==
-X-Received: by 2002:a05:600c:8105:b0:477:7bca:8b34 with SMTP id 5b1f17b1804b1-4851983bf08mr28109745e9.6.1772627871679;
-        Wed, 04 Mar 2026 04:37:51 -0800 (PST)
-Received: from 127.mynet ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851a7fef84sm26505775e9.1.2026.03.04.04.37.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 04:37:51 -0800 (PST)
-From: Pavel Begunkov <asml.silence@gmail.com>
-To: io-uring@vger.kernel.org
-Cc: asml.silence@gmail.com,
-	axboe@kernel.dk,
-	netdev@vger.kernel.org
-Subject: [PATCH 1/1] io_uring/zcrx: use READ_ONCE with user shared RQEs
-Date: Wed,  4 Mar 2026 12:37:43 +0000
-Message-ID: <e93675f7a196a178d2f389c69ad96079cf98e1bb.1772627580.git.asml.silence@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=machnikowski.net header.i=maciek@machnikowski.net header.b="PyJAML6Z"
+ARC-Seal: i=1; a=rsa-sha256; t=1772628077; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Mv3jZYAOwj2qtZmdm51XJCTCDHROODOaIIOEYqmzax7GHrHpazLtGW8czeHo9ncUsxM24PFDt2ERET0LfCf9LxHnoUwLzHMOngJknnPmWVUHt1UiWzLXNkQ8AMH/4YKa7kWaEa1D65V6iUqqVHQj1c9xY5DE+0HX9mlQoJP9kw0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1772628077; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=JJ2E5NsmWeupyg71LI3AU+/puD5MlXCeXCog4bGpVeA=; 
+	b=EMpABCms4W5a1qYSOSmIAqa0t1Z3Kw8sBxFkePvahFqEMo4LBqEsr6U+eKdiyYkppLPbg+77/YF4JTQVYIjr21gjY9LGsDtXMzKikqlDgzRM813lLwmrRBGCuEBLtA6ebejaT8VfiTcVhVp70AkZyeElDV4UcUkiLH81kPgxmso=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=machnikowski.net;
+	spf=pass  smtp.mailfrom=maciek@machnikowski.net;
+	dmarc=pass header.from=<maciek@machnikowski.net>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772628077;
+	s=zoho; d=machnikowski.net; i=maciek@machnikowski.net;
+	h=Message-ID:Date:Date:MIME-Version:Subject:Subject:To:To:Cc:Cc:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=JJ2E5NsmWeupyg71LI3AU+/puD5MlXCeXCog4bGpVeA=;
+	b=PyJAML6ZETMwgaYQlGspKxGiKxWSkSs30QcJWo3NExZId/Uqsz1ScBGR8G+Crq/2
+	E/WDKQaqM4iKryItyQvSgOypMEXDt/E/eZKfJ/Kp78ZLjRXAbgOaQh/ZVCjPwnq/K3l
+	jlhiTyHD2GUxvwOa7vL+pq6JZs12TWwWgqNkVOpobcRYvEXp7qZy5YMA2JDqwOBAFCg
+	MuF0BH4nQxyFEerdxCd/dNh5R8PVmsPtqKZLVvQW58w+uOL8b6R+ETXaRkfXmOf31WI
+	jktiJDGNSv4iKYLnm16MuG4xs6+A2A9/ovR0RrCcQPfy/3dYa459OyRdT75irf3pB/s
+	M2noyLJNOA==
+Received: by mx.zohomail.com with SMTPS id 1772628074888705.3410093236516;
+	Wed, 4 Mar 2026 04:41:14 -0800 (PST)
+Message-ID: <0bc4abf1-97e8-418f-9492-8a3b1006cd01@machnikowski.net>
+Date: Wed, 4 Mar 2026 13:41:12 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 net-next 2/3] netdevsim: Implement basic ptp support
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: netdev@vger.kernel.org, richardcochran@gmail.com, milena.olech@intel.com,
+ willemdebruijn.kernel@gmail.com, andrew@lunn.ch, vadim.fedorenko@linux.dev,
+ horms@kernel.org
+References: <20260225153858.29486-1-maciek@machnikowski.net>
+ <20260225153858.29486-3-maciek@machnikowski.net>
+ <20260225180150.7eccfb08@kernel.org>
+Content-Language: en-US
+From: Maciek Machnikowski <maciek@machnikowski.net>
+In-Reply-To: <20260225180150.7eccfb08@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
 
-Refill queue entries are shared with the user space, use READ_ONCE when
-reading them.
 
-Fixes: 34a3e60821ab9 ("io_uring/zcrx: implement zerocopy receive pp memory provider");
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
----
- io_uring/zcrx.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/io_uring/zcrx.c b/io_uring/zcrx.c
-index 19b287d21f4b..0461edebb042 100644
---- a/io_uring/zcrx.c
-+++ b/io_uring/zcrx.c
-@@ -927,11 +927,12 @@ static inline bool io_parse_rqe(struct io_uring_zcrx_rqe *rqe,
- 				struct io_zcrx_ifq *ifq,
- 				struct net_iov **ret_niov)
- {
-+	__u64 off = READ_ONCE(rqe->off);
- 	unsigned niov_idx, area_idx;
- 	struct io_zcrx_area *area;
- 
--	area_idx = rqe->off >> IORING_ZCRX_AREA_SHIFT;
--	niov_idx = (rqe->off & ~IORING_ZCRX_AREA_MASK) >> ifq->niov_shift;
-+	area_idx = off >> IORING_ZCRX_AREA_SHIFT;
-+	niov_idx = (off & ~IORING_ZCRX_AREA_MASK) >> ifq->niov_shift;
- 
- 	if (unlikely(rqe->__pad || area_idx))
- 		return false;
--- 
-2.53.0
+On 26/02/2026 03:01, Jakub Kicinski wrote:
+> On Wed, 25 Feb 2026 16:38:57 +0100 Maciek Machnikowski wrote:
+>> diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
+>> index 6285fbefe..b1161c1ca 100644
+>> --- a/drivers/net/netdevsim/netdev.c
+>> +++ b/drivers/net/netdevsim/netdev.c
+>> @@ -30,6 +30,8 @@
+>>  #include <net/rtnetlink.h>
+>>  #include <net/udp_tunnel.h>
+>>  #include <net/busy_poll.h>
+>> +#include <linux/ptp_clock_kernel.h>
+>> +#include <linux/timecounter.h>
+> 
+> Alphabetical sort please
+> 
+>>  	struct netdevsim *peer_ns;
+>>  	struct netdev_config *cfg;
+>> +	bool gen_tx_tstamp = false;
+>>  	struct nsim_rq *rq;
+> 
+> reverse xmas tree
+> 
+>> +	gen_tx_tstamp = skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP;
+>> +	if (gen_tx_tstamp) {
+>> +		ptp_info = mock_phc_get_ptp_info(ns->phc);
+>> +
+>> +		/* Create a copy of tx skb to keep the tx reference */
+>> +		skb_orig = skb;
+>> +		skb = skb_copy(skb_orig, GFP_ATOMIC);
+>> +		skb_shinfo(skb_orig)->tx_flags |= SKBTX_IN_PROGRESS;
+>> +
+>> +		/* Timestamp as late as possible */
+>> +		if (ptp_info)
+>> +			ptp_info->gettime64(ptp_info, &tx_ts);
+>> +	}
+> 
+> Do we have to copy the packet? We can't deliver the timestamp before 
+> we run Rx, on the original skb?
+
+If we don't we'll get the same timestamps for Rx and Tx side. There's a
+single hwtstamps field inside the skb and it's used to deliver tx and rx
+tstamp. If I use a single skb I'll get the same tstamp on the
+transmitter side and the receiver one.
+> 
+>>  	if (unlikely(nsim_forward_skb(dev, peer_dev,
+>>  				      skb, rq, psp_ext) == NET_RX_DROP))
+>>  		goto out_drop_cnt;
+> 
+> 'Cause I think this leaks skb_orig now.
+Will address that (and formatting comments above)
+> 
+>> +	/* Generate Rx tstamp based on the peer clock */
+>> +	ptp_info = mock_phc_get_ptp_info(peer_ns->phc);
+>> +	if (ptp_info) {
+> 
+> we can still gate this on whether timestamps are enabled, no?
+Hmmm... that'd need to be gated by the peer's timestamping features -
+will check if there's reasonably easy way to add it.
+> 
+>> +		ptp_info->gettime64(ptp_info, &rx_ts);
+>> +		skb_hwtstamps(skb)->hwtstamp = timespec64_to_ktime(rx_ts);
+> 
 
