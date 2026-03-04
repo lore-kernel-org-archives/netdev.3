@@ -1,88 +1,128 @@
-Received: from smtpbgau1.qq.com (smtpbgau1.qq.com [54.206.16.166])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A47D317169;
-	Wed,  4 Mar 2026 10:41:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.206.16.166
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476633A5E85;
+	Wed,  4 Mar 2026 10:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772620912; cv=none; b=OzrYSjbYZh5327N11IyZHU1dqgRJH2FMZKDJ/Umh5q8cD7wXbL9DCkzq887Gc4lddsweVIUI2705J/UrvvrXtjGgiIEl0CdcFr7YPAe5tVzwq5JpbPbzBHQ5VuW1KSalIedbZoJor3eQkpYHHqAPvNgMNlOI9eOHANKxnIvQusg=
+	t=1772621135; cv=none; b=ZbjLCT/mLsxgVW7OoY96X/DRH4NSm5i/zMwYwjuxoNXRI9sTVQJR8esPY3KXwdA0I/fF85aHDfMR1rGhPQwfailpvr0X9KUd5AkKSSre88t7XN/6GhaIFIMklbRLIwAMMV5sQ3b7z2wAT0b8Kr97uEMXjE8CQ8oLVnL0Fzq+kMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772620912; c=relaxed/simple;
-	bh=vBzpkkTVbLKqzEH4qdFsf+sbCUXlAQ9XgD2FcdA+1qs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dD6NBpLvfA00x2RHkCd2oYqreNwdDyZJH+fr0GTA8envfg5LRY/HaIDeLnsne6jpUQx0nLHaab/YkqnBFgpJpd8gJXN+g+eU1lF6h0JKzyoO/ipJ3zklFVgtEF5fklYjcp3XoCx3NW+A4SM0x22+hw0mX9QjS4WEjVwxCLmSgs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org; spf=none smtp.mailfrom=vimux.org; arc=none smtp.client-ip=54.206.16.166
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=vimux.org
-X-QQ-mid: zesmtpsz4t1772620898teb1f7222
-X-QQ-Originating-IP: H5fycD9ZnGNZKs9XZlO/zEXviELiZsMYot81Q8K4xxo=
-Received: from localhost.localdomain ( [113.120.117.28])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 04 Mar 2026 18:41:36 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 108753647102746725
-EX-QQ-RecipientCnt: 8
-From: Jialu Xu <xujialu@vimux.org>
-To: linusw@kernel.org
-Cc: brgl@kernel.org,
-	kees@kernel.org,
-	krzk@kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	xujialu@vimux.org
-Subject: Re: [PATCH 2/3] nfc: nfcmrvl: convert to gpio descriptors
-Date: Wed,  4 Mar 2026 18:34:41 +0800
-Message-ID: <A8F8872018D582C3+20260304104125.523019-1-xujialu@vimux.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <CAD++jLmWt0Z=Bb1z0BSwMY-1KDzF=HXR6zudWCzouWDQqdotVw@mail.gmail.com>
-References: <CAD++jLmWt0Z=Bb1z0BSwMY-1KDzF=HXR6zudWCzouWDQqdotVw@mail.gmail.com>
+	s=arc-20240116; t=1772621135; c=relaxed/simple;
+	bh=h7E/8o1/7HTV0SVvlIZbDHxgfXZolheekA9fIw186h4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NISiMa+i0Qspp7IswbhK5lv4ATt1RbChkARzng2HDtA58pn1wGRYUPh/2eXWkWgZWQrcgp57XYEWktfHQYzH2Oh+lE4cHrN07IpNQd/iOJwXXAOgTFOijQVD1HbJIFirFoCJbtwgYYmsbGgcQMAvqMiL4XRTB5Wy25A8087Dimg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A/+kkbzt; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A/+kkbzt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772621133; x=1804157133;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=h7E/8o1/7HTV0SVvlIZbDHxgfXZolheekA9fIw186h4=;
+  b=A/+kkbztBcLjdMl7mkMCAFjqlZ7/3GEq/QZ+FQIVyI6Ih6IWsJqtS4f7
+   +1GD1uNsu+ZKke/nk885Lp/Vc+1lg0v3/Oin5BuVr44hL9K3Q7UZ8T3jf
+   R+Lr3gXIJNqyZxGs6BIs8QRMTLYVqztPkzKeFO9mh4NP3XbJO+Npcv6RY
+   QXYKHjrsxLGlS6TiGsb488p4U694IqALi9nd4PadEK94Dc86jMrfXjl30
+   muMN38JHg1p65+dLqEIlMdeZHlj+9mW24OdJoPE6NjTsfG5249hRHQY9v
+   LQgL6DggLkBAt+E7GhrB/+U11RvYX3N+MaGxa9kL1uVb3rUqCkldAFQyA
+   g==;
+X-CSE-ConnectionGUID: Fgp39bdORZG+99RU+0HuTw==
+X-CSE-MsgGUID: WXWxnHQCQFuA2iCiu6siBw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="77522355"
+X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
+   d="scan'208";a="77522355"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 02:45:32 -0800
+X-CSE-ConnectionGUID: oVDTgMTCR6Gc0LsRhX4bPw==
+X-CSE-MsgGUID: 5mOij3zGQFObPS2/aj14bA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
+   d="scan'208";a="222799590"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by orviesa004.jf.intel.com with ESMTP; 04 Mar 2026 02:45:28 -0800
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vxjjJ-000000001fd-2npX;
+	Wed, 04 Mar 2026 10:45:25 +0000
+Date: Wed, 4 Mar 2026 11:44:26 +0100
+From: kernel test robot <lkp@intel.com>
+To: alistair23@gmail.com, chuck.lever@oracle.com, hare@kernel.org,
+	kernel-tls-handshake@lists.linux.dev, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
+	linux-nvme@lists.infradead.org, linux-nfs@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, kbusch@kernel.org, axboe@kernel.dk,
+	hch@lst.de, sagi@grimberg.me, kch@nvidia.com, hare@suse.de,
+	alistair23@gmail.com, Alistair Francis <alistair.francis@wdc.com>
+Subject: Re: [PATCH v7 4/5] nvme-tcp: Support KeyUpdate
+Message-ID: <202603041124.uCwVY2n8-lkp@intel.com>
+References: <20260304053500.590630-5-alistair.francis@wdc.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: zesmtpsz:vimux.org:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: N83uKqxezP3+Bg7nmhgVB2W3HsqAY6GkEg17159Dax7XnE1tNW8OF5Lv
-	w0teitNXZeW+ZJvft9SyYsHAAVXHrTqaKzwI6f+xWF1mgplOf5+t5dfVnvxMlbQqSJjpc0K
-	J2EQS6IkyNr0Y+DMZm1aUFFHw7ZWNNI3iESx4nLpy6cI+yLYDKW7vP3wk7SWGnQePOvIIif
-	d7sJS9myBAuY0QdUKv3g39ND6lKI1EnjJ4TG9K5KU08Zl3pzBZwizVZqBynuixb0rcsHKqQ
-	a1bFEMjy+DpQxV8zjMFQ9iI+X9LgCb6kXv2BNw1MtLiSVvXo5nuorayEQfjwA6gBa404yLB
-	wonjSJiSc0251CQXfoYktbORT7Eh563qQWDr8SRfc/cgrcRQO1iOoSfk8Wy8Ce7grnrJcZM
-	enttdCC5sIuby4l2GIstEnnsUu/ROjZMzPhS1K59Q1EGjW94c3MNQz0okrZ9W1TbnW5M0/M
-	H3Kpf9sTh0GfeFTTLmFjU4RDNjKblld2QvNVQNuY0HrBNLXIY3GsTRpCuNVD04Nnv1jJfMv
-	7JPNUZhZYdn6O6ALIrbS1AhzKJkLz6TG0CV5s7dbk1GW3PhlmAN8g2TqgB/yALEm/PRij+b
-	U1MMfXfmckCLLy1j4qqqt6XgWcFzwcZdPd2ZeOoZdkln4UtoTly39frHguQDM6LkVp+OB9E
-	xDyFDAdKAKvkHAceWS1dt+Ts3GPUW+QJAuf8grvmo3Xy+3mX0PXe/d2Os2P0Z9exx+JKX0F
-	GRm9bSDbofLq1cjH5GTUfSF4xKijtnWdniTRyihvpvrai0HmusQvQ6dD0xA9eiqIaJQ/A61
-	DmGEFtNcDgZ7j6m1xEjYksRji13BZ9l9O5/CpBbO9PdwbImEiL3laZRp+67Xw1Sb60TqOWA
-	dJQB641Lk5Lthp0lfG96KAZfZhsBkG46lRCvKb6f2ldGyzkEjzxH9lwYcDemi0WxHHy8Wzy
-	L8ul14c1XYzWeVL8cdAg+o22gf403P5FLx42tMPr842Fu9xsVWJOxh5kHpc5wn3/WoRE=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260304053500.590630-5-alistair.francis@wdc.com>
 
->> +               priv->config.reset_gpio =
->> +                       devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
->(...)
->> -       reset_n_io = of_get_named_gpio(node, "reset-n-io", 0);
->
->This isn't gonna work, sadly. The property is named  "reset-n-io"
->in the device tree, not "reset-gpios".
->
->To handle this, add code to drivers/gpio/gpiolib-of.c in the
->of_find_gpio_rename() function to make it pretend this
->custom property is handled as "reset-gpios".
+Hi,
 
-I see, thanks for pointing that out!
+kernel test robot noticed the following build errors:
 
-Seem that, the rename quirk for "reset-n-io" -> "reset" is already
-present in gpiolib-of.c, added by commit 9c2cc7171e08 ("gpiolib:
-of: add a quirk for reset line for Marvell NFC controller").
+[auto build test ERROR on trondmy-nfs/linux-next]
+[also build test ERROR on net/main net-next/main linus/master v7.0-rc2 next-20260303]
+[cannot apply to linux-nvme/for-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-Best regards,
-Jialu Xu
+url:    https://github.com/intel-lab-lkp/linux/commits/alistair23-gmail-com/net-handshake-Store-the-key-serial-number-on-completion/20260304-134148
+base:   git://git.linux-nfs.org/projects/trondmy/linux-nfs.git linux-next
+patch link:    https://lore.kernel.org/r/20260304053500.590630-5-alistair.francis%40wdc.com
+patch subject: [PATCH v7 4/5] nvme-tcp: Support KeyUpdate
+config: x86_64-rhel-9.4-kunit (https://download.01.org/0day-ci/archive/20260304/202603041124.uCwVY2n8-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260304/202603041124.uCwVY2n8-lkp@intel.com/reproduce)
 
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603041124.uCwVY2n8-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/nvme/host/tcp.c: In function 'nvme_tcp_try_recv':
+>> drivers/nvme/host/tcp.c:1429:31: error: 'const struct proto_ops' has no member named 'read_sock_cmsg'; did you mean 'read_sock'?
+    1429 |         consumed = sock->ops->read_sock_cmsg(sk, &rd_desc, nvme_tcp_recv_skb,
+         |                               ^~~~~~~~~~~~~~
+         |                               read_sock
+
+
+vim +1429 drivers/nvme/host/tcp.c
+
+  1417	
+  1418	static int nvme_tcp_try_recv(struct nvme_tcp_queue *queue)
+  1419	{
+  1420		struct socket *sock = queue->sock;
+  1421		struct sock *sk = sock->sk;
+  1422		read_descriptor_t rd_desc;
+  1423		int consumed;
+  1424	
+  1425		rd_desc.arg.data = queue;
+  1426		rd_desc.count = 1;
+  1427		lock_sock(sk);
+  1428		queue->nr_cqe = 0;
+> 1429		consumed = sock->ops->read_sock_cmsg(sk, &rd_desc, nvme_tcp_recv_skb,
+  1430						     nvme_tcp_recv_cmsg);
+  1431		release_sock(sk);
+  1432		return consumed == -EAGAIN ? 0 : consumed;
+  1433	}
+  1434	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
