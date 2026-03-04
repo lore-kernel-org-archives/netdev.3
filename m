@@ -1,74 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3A232ED58;
-	Wed,  4 Mar 2026 01:30:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA16430CDAB;
+	Wed,  4 Mar 2026 01:34:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772587842; cv=none; b=sUzu6XT/qqBpL8sc60ImdNDdX+e6orcGNSDpccFqwWJoAqvxYYag/wdI6XE6yytQo9VlhiVMw36Tl0CiNWNg55LPDH7EiIwG0hAjP5QmnZnpa5fwjjzUoWH10v5HP7+rEdm1tytL5qzrCWmuRhL3EQTjikg0yLPxN7Iznj3wzz0=
+	t=1772588059; cv=none; b=YcYkezPJtfFsHQ7AGmB+hdfsFuEyClfAPXk+/Oq1bh7pWPa+vW+M+C83XAeNGxO02fFiE2O2nOD6iCk52FEFKnb2vENHhVyLwDz8ll0jYu+kexLTxBYgNXaymiO6oNtXzdGfFPcvAkqkrdW+iRfERJ2/K40M+k7Lh/vR6P7POPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772587842; c=relaxed/simple;
-	bh=v0spz6zycLGHWW4CpULPNZmqE/CwAExEJbdkdVT/GvY=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pyZ9ylAGowrGMd49Brj0vl04rK9clRl/d+C4h1/DDqCDGxCxD5rIl4qmP7F3LRNEmOGPx5F5Q6UaJHkjMk1/+3vTy3oQh1m2q6YiCO87XM9hmuozkA13V8JxVYjXg+2wXF+nADtaF097R7pWYGO8VJLqz4HJBnQPuJArbEfCJ5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kJoHfH5S; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772588059; c=relaxed/simple;
+	bh=t9gZ16sRwNdgu704XD8+TWQ1hwtxbyjiFS75MDq6tvM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=W15SG+mQUOnVD+wiMuBChKP1Ep1tEptm5p+UKV2o9gWvr8VQraw2sxv8hnvHGVSPb2umhMcIMcTBq+px35ADN65xhCtJPOlWYmvbPdbS/r4uFxtg8PmOOxh4uM4dIMfoP92OdQjnaoGtGoynJAWQNv2RIuaUioEUzugx3NMVQio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=txCzLKVJ; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kJoHfH5S"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DC0C116C6;
-	Wed,  4 Mar 2026 01:30:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772587842;
-	bh=v0spz6zycLGHWW4CpULPNZmqE/CwAExEJbdkdVT/GvY=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=kJoHfH5SevufvAOw8NAa1tAAbW3FHBCAMT/5EHEb+Wywl0Vyt41Sy1uzLrnwX4Xat
-	 UTUAX++Hvt7SB4ea3XPvsRqu58199bNKx9J6gykY2rr6c9YIAQR0BDXDpvs5EKpoRg
-	 p0PjnRy/AQ8gJaXaeS6nscbbeGwZzyLhBaR3zA3STabnpxrMtwOxd24uuG9dWuloF0
-	 ujha1uholOK5HEgVky4XVmjGAKqyfblbY4Tc+hMpHZqwJdtBRKiX1ul/MUWfOn1lFK
-	 Mc3WsQE/PnylVFfzUS+tEmB/oPjP+EDZFkmvs9B3/IDnXV44povlorvmsgyhPIaysf
-	 xfCANbplv1JvA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CE473808200;
-	Wed,  4 Mar 2026 01:30:44 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="txCzLKVJ"
+Received: from netfilter.org (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 1767E6017D;
+	Wed,  4 Mar 2026 02:34:16 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1772588056;
+	bh=KoOkUHlebztnj5ySuklW6b9Nj06PUyO4YBSJZL9llZc=;
+	h=Date:From:To:Cc:Subject:From;
+	b=txCzLKVJAikh/h4JjRvsinV/8Cwl8LvBztCQ6CIPkEqfKU4/17V8hoywe0y5DctJ2
+	 TyeVQJ+uWahRyjIQ8384a4IKlolHIrsFfHdNhoL4VI4irFgHxHwJpXRv7HZUVFAFcm
+	 3Ouua5bu9p6FTc/9aVmufGexwvPMKg3iOOTDdhJWVMPg5iJGYFosy5shILlGVrUvpf
+	 pFMi0dFiz+5zTKunP9q6AnsOD3Bx3r4CqsgEXVJVlAsU+csmw9mPbYT2r+5umHcR54
+	 3QZZQMLEnrAdQYjHEWsyS4IpP5KyYNA9NnvH/AFctCfP8YIy65/dWRAdWQ2AR3r8sB
+	 K3VhTpQ2RGuhw==
+Date: Wed, 4 Mar 2026 02:34:13 +0100
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org, netfilter@vger.kernel.org
+Cc: netfilter-announce@lists.netfilter.org, lwn@lwn.net,
+	netdev@vger.kernel.org
+Subject: [ANNOUNCE] iptables 1.8.13 release
+Message-ID: <aaeMFWURL-6YWIkz@chamomile>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v1] NFC: nxp-nci: Replace strcpy() with strscpy()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177258784304.1546050.13043250991778322020.git-patchwork-notify@kernel.org>
-Date: Wed, 04 Mar 2026 01:30:43 +0000
-References: <20260301135633.214497-1-tomasz.unger@yahoo.pl>
-In-Reply-To: <20260301135633.214497-1-tomasz.unger@yahoo.pl>
-To: None <tomasz.unger@yahoo.pl>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
-
-On Sun,  1 Mar 2026 14:56:33 +0100 you wrote:
-> From: Tomasz Unger <tomasz.unger@yahoo.pl>
-> 
-> Replace strcpy() with strscpy() which limits the copy to the size of
-> the destination buffer. Since fw_info->name is an array, the
-> two-argument variant of strscpy() is used - the compiler deduces
-> the buffer size automatically.
-> 
-> [...]
-
-Here is the summary with links:
-  - [net-next,v1] NFC: nxp-nci: Replace strcpy() with strscpy()
-    https://git.kernel.org/netdev/net-next/c/66e807f96f4e
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Content-Type: multipart/mixed; boundary="+j7gPogMzyv6nJsr"
+Content-Disposition: inline
 
 
+--+j7gPogMzyv6nJsr
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+
+Hi!
+
+The Netfilter project proudly presents:
+
+        iptables 1.8.13
+
+This release contains the following fixes:
+
+* Revert "libxtables: refuse to run under file capabilities",
+  which breaks Docker.
+* Fix compilation warning with strchr() and const.
+
+Upgrade from iptables 1.8.12 is recommended.
+
+See changelog for more details (attached to this email).
+
+You can download this new release from:
+
+  https://www.netfilter.org/projects/iptables/downloads.html
+  https://www.netfilter.org/pub/iptables/
+
+To build the code, libnftnl >= 1.2.6 is required:
+
+  http://netfilter.org/projects/libnftnl/downloads.html
+
+In case of bugs and feature requests, file them via:
+
+  https://bugzilla.netfilter.org
+
+Happy firewalling.
+
+--+j7gPogMzyv6nJsr
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: attachment; filename="changes-iptables-1.8.13.txt"
+
+Florian Westphal (1):
+      Revert "libxtables: refuse to run under file capabilities"
+
+Pablo Neira Ayuso (1):
+      configure: Bump version for 1.8.13 release
+
+Rudi Heitbaum (1):
+      src: fix discards 'const' qualifier
+
+
+--+j7gPogMzyv6nJsr--
