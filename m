@@ -1,188 +1,189 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.61.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF048375AD9
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 08:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810B3390C98;
+	Wed,  4 Mar 2026 08:43:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.61.103
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772613757; cv=none; b=BNZ2Vdkglm1ZiI3iogQxmH6IvnXNPnDG3pf/AmWIK/QXbNuGnDHAxguiPo5EuBnJfSmoKpoeMmS3QNkYrH8p9gzyq52bw5KXcCyH8OQr+oJJ9HOLSAxVAnzrfT44xb1RocTGTUOkpp2+hx4ZAIT2A41w+pl320ldkqJf08OIxP0=
+	t=1772613813; cv=none; b=JeyRldJRcDSkF6SKigovb9NnKk9GL4piWMjMokFWYlqVTIlyL0LuwuFaw3Nnl3DXRZ/Bav3RULyHO5ud6mD8KWo0u5LKKDztzh9+e0Js3oz4/cBvo3jYG7y4MF6ITO31lQz7SewUjZlDvF9jHzlZOnuuhwP2POxobbj4D+/6VBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772613757; c=relaxed/simple;
-	bh=BKssnUpC3b9eO8LjpnPOwjycyVQrdp45Uj5fbygo95o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qHkLWikfdemjMlgYbHs40067AGyz04q4yx1BA2yPtHtshDOpCKDMYWnxWQUnE5LNDns0RrFBYMOF8c3hDOLujTt/f7NQwmWtlsHNmGRFm/XB2X/6qPr9CckpfRtIeROni3INv916u+DrdLo4QqZIEtN6g3Hd+/j0Cqoa2Yeko2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mgYV3ZW1; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1772613813; c=relaxed/simple;
+	bh=KsdkQrCVwXharfWSfthTCrBeLRAtyjE1nS2WAo2eSIA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h/Bf9tSE30SuhCR15JahAYxZI3Tt/fGlYva3Xr6OJh7K1ZeC1/yDFdOztR+r88BVGRloVdMTQgU13uambXMKoZoM5SoIhPTz2+Ixtz0WuFBlQctyutRPMyNt3WS8HKQ5OVF/U9W2Zhkh6yh4q9YTG1/I0v77yO9STpgry2M6cMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=EWKmy0JW; arc=none smtp.client-ip=188.68.61.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mgYV3ZW1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772613756; x=1804149756;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=BKssnUpC3b9eO8LjpnPOwjycyVQrdp45Uj5fbygo95o=;
-  b=mgYV3ZW1PGEBfTL+GauFzzN+f2jwoI8RM63Aseka+34UyMDSymxEgp2O
-   NojTtREnFpK+qH8BOEl+RDMJf2BchAyBy00CiqKFbXuQt8I8gVJOrPEWP
-   InnvXNpiBlS5OvR6BIdBbYDjSy6dFG/rYCH68ibB3VZslaamu6psYfuW3
-   h6x3qyPZfoXhkEeGYmdHkDdiGB9Co54oHKvILK64Z1i7rob5VAqXGVdGT
-   pRnAwoYjYZsA3bIRv7it/8vV2AUkoDkBHvN06R9M8qDoES/vMSKh1m9zd
-   Hn2RA3SlZ8DljGgkkH3wbc3jUQOpKo9cERcKeTxnBzFsC1bwaVrvy1DuO
-   A==;
-X-CSE-ConnectionGUID: OtJFI7bgQfyQwBTD1O5jMg==
-X-CSE-MsgGUID: oNmpr1jUTaS91x+a4M+CFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11718"; a="73736620"
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="73736620"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 00:42:35 -0800
-X-CSE-ConnectionGUID: OgIxrAcgSuKhqP54zY8mEw==
-X-CSE-MsgGUID: bwVf6cETSwS5ob7SiSHtsQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,323,1763452800"; 
-   d="scan'208";a="223270421"
-Received: from amlin-019-225.igk.intel.com ([10.102.19.225])
-  by orviesa005.jf.intel.com with ESMTP; 04 Mar 2026 00:42:34 -0800
-From: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-To: intel-wired-lan@lists.osuosl.org,
-	anthony.l.nguyen@intel.com,
-	aleksandr.loktionov@intel.com
-Cc: netdev@vger.kernel.org,
-	Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Subject: [PATCH iwl-net v1] ixgbe: stop re-reading flash on every get_drvinfo for e610
-Date: Wed,  4 Mar 2026 09:42:32 +0100
-Message-ID: <20260304084232.2937498-1-aleksandr.loktionov@intel.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="EWKmy0JW"
+Received: from mors-relay-8403.netcup.net (localhost [127.0.0.1])
+	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4fQmQy6sGYz83x5;
+	Wed,  4 Mar 2026 09:43:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1772613803;
+	bh=KsdkQrCVwXharfWSfthTCrBeLRAtyjE1nS2WAo2eSIA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=EWKmy0JWIFw5FU3NKL072hPKMSSM4jwf22Wy1QryEyniF6CXwx7Gxa47c+rU9mk5P
+	 pnN40LQEzhgH938xSxEz+ZoPhBFPrP7oobtvzfxRAD9r4ew2N/KlNL33+L75klaA0V
+	 KfR7PQqumPvMscA0xjFuO7S+mJrcsDAXXTnsVv7HR1K1V5igHhgyXZzQzUJ+sO98Is
+	 aurn690+ODjh0nluY2RR+s36pYGudVtzKNuqlC5BkZZk7ez5E0D+iI261vdKRfbi23
+	 5KBa0s/UHir0HQTkFaZi079ndUCsbzYIrsGDIVvSjEoACDUwzrzOED4pDqP623oPT6
+	 3vxY05p1ZsgTw==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay-8403.netcup.net (Postfix) with ESMTPS id 4fQmQy68Rrz83rY;
+	Wed,  4 Mar 2026 09:43:22 +0100 (CET)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4fQmQy10lZz8svF;
+	Wed,  4 Mar 2026 09:43:22 +0100 (CET)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id E7AB65F74A;
+	Wed,  4 Mar 2026 09:43:20 +0100 (CET)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <4c851eb9-b990-41c0-928e-ce5a1e597722@leemhuis.info>
+Date: Wed, 4 Mar 2026 09:43:18 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] qmi_wwan: allow max_mtu above hard_mtu to control
+ rx_urb_size
+To: Laurent Vivier <lvivier@redhat.com>, Jakub Kicinski <kuba@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Daniele Palmas <dnlplm@gmail.com>,
+ Stefano Brivio <sbrivio@redhat.com>,
+ Koen Vandeputte <koen.vandeputte@citymesh.com>, linux-usb@vger.kernel.org,
+ netdev@vger.kernel.org,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <20260302102825.274385-1-lvivier@redhat.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+In-Reply-To: <20260302102825.274385-1-lvivier@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: 
+ <177261380148.3365887.14307366214397269586@mxe9fb.netcup.net>
+X-Rspamd-Server: rspamd-worker-8404
+X-Rspamd-Queue-Id: E7AB65F74A
+X-NC-CID: w2sXJKrhjkjeFdA3LQxPiJsv/+koD6twakGv08sma2Mp8/rzY9o=
 
-ixgbe_get_drvinfo() calls ixgbe_refresh_fw_version() on every ethtool
-query for e610 adapters.  That ends up in ixgbe_discover_flash_size(),
-which bisects the full 16 MB NVM space issuing one ACI command per
-step (~20 ms each, ~24 steps total = ~500 ms).
+On 3/2/26 11:28, Laurent Vivier wrote:
+> Commit c7159e960f14 ("usbnet: limit max_mtu based on device's hard_mtu")
+> capped net->max_mtu to the device's hard_mtu in usbnet_probe(). While
+> this correctly prevents oversized packets on standard USB network
+> devices, it breaks the qmi_wwan driver.
+> 
+> qmi_wwan relies on userspace (e.g. ModemManager) setting a large MTU on
+> the wwan0 interface to configure rx_urb_size via usbnet_change_mtu().
+> QMI modems negotiate USB transfer sizes of 16,383 or 32,767 bytes, and
+> the USB receive buffers must be sized accordingly. With max_mtu capped
+> to hard_mtu (~1500 bytes), userspace can no longer raise the MTU, the
+> receive buffers remain small, and download speeds drop from >300 Mbps
+> to ~0.8 Mbps.
+> 
+> Introduce a FLAG_NOMAXMTU driver flag that allows individual usbnet
+> drivers to opt out of the max_mtu cap. Set this flag in qmi_wwan's
+> driver_info structures to restore the previous behavior for QMI devices,
+> while keeping the safety fix in place for all other usbnet drivers.
+> 
+> Fixes: c7159e960f14 ("usbnet: limit max_mtu based on device's hard_mtu")
 
-Profiling on an idle E610-XAT2 system with telegraf scraping ethtool
-stats every 10 seconds:
+[disclaimer: I'm not a reviewer, just someone that keeps and eye on
+regressions]
 
-  kretprobe:ixgbe_get_drvinfo took 527603 us
-  kretprobe:ixgbe_get_drvinfo took 523978 us
-  kretprobe:ixgbe_get_drvinfo took 552975 us
-  kretprobe:ice_get_drvinfo   took       3 us
-  kretprobe:igb_get_drvinfo   took       2 us
-  kretprobe:i40e_get_drvinfo  took       5 us
+Given that the regression afaics was found in a stable series with that
+commit backported, would you maybe we willing to add a stable tag to
+ensure fast backporting to all affected series? See
+Documentation/process/stable-kernel-rules.rst for all details, but
+normally this will do:
 
-The half-second stall happens under the RTNL lock, causing visible
-latency on ip-link and friends.
+ Cc: stable@vger.kernel.org
 
-The FW version can only change after an EMPR reset.  All flash data is
-already populated at probe time and the cached adapter->eeprom_id is
-what get_drvinfo should be returning.  The only place that needs to
-trigger a re-read is ixgbe_devlink_reload_empr_finish(), right after
-the EMPR completes and new firmware is running.  Additionally, refresh
-the FW version in ixgbe_reinit_locked() so that any PF that undergoes a
-reinit after an EMPR (e.g. triggered by another PF's devlink reload)
-also picks up the new version in adapter->eeprom_id.
+> Reported-by: Koen Vandeputte <koen.vandeputte@citymesh.com>
 
-ixgbe_devlink_info_get() keeps its refresh call for explicit
-"devlink dev info" queries, which is fine given those are user-initiated.
+While at it: please considered linking to the report using a Link or
+Closes tag like this
 
-Fixes: c9e563cae19e ("ixgbe: add support for devlink reload")
-Co-developed-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Signed-off-by: Jedrzej Jagielski <jedrzej.jagielski@intel.com>
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
----
- drivers/net/ethernet/intel/ixgbe/devlink/devlink.c |  2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe.h           |  2 +-
- drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c   | 13 +++++++------
- drivers/net/ethernet/intel/ixgbe/ixgbe_main.c      | 10 ++++++++++
- 4 files changed, 19 insertions(+), 8 deletions(-)
+ Link:
+https://lore.kernel.org/lkml/CAPh3n803k8JcBPV5qEzUB-oKzWkAs-D5CU7z=Vd_nLRCr5ZqQg@mail.gmail.com/
 
-diff --git a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-index d227f4d..f32e640 100644
---- a/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-+++ b/drivers/net/ethernet/intel/ixgbe/devlink/devlink.c
-@@ -474,7 +474,7 @@ static int ixgbe_devlink_reload_empr_finish(struct devlink *devlink,
- 	adapter->flags2 &= ~(IXGBE_FLAG2_API_MISMATCH |
- 			     IXGBE_FLAG2_FW_ROLLBACK);
- 
--	return 0;
-+	return ixgbe_refresh_fw_version(adapter);
- }
- 
- static const struct devlink_ops ixgbe_devlink_ops = {
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe.h b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-index dce4936..047f040455 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe.h
-@@ -973,7 +973,7 @@ int ixgbe_init_interrupt_scheme(struct ixgbe_adapter *adapter);
- bool ixgbe_wol_supported(struct ixgbe_adapter *adapter, u16 device_id,
- 			 u16 subdevice_id);
- void ixgbe_set_fw_version_e610(struct ixgbe_adapter *adapter);
--void ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter);
-+int ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter);
- #ifdef CONFIG_PCI_IOV
- void ixgbe_full_sync_mac_table(struct ixgbe_adapter *adapter);
- #endif
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-index bb4b53f..358b50c 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_ethtool.c
-@@ -1155,12 +1155,17 @@ static int ixgbe_set_eeprom(struct net_device *netdev,
- 	return ret_val;
- }
- 
--void ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter)
-+int ixgbe_refresh_fw_version(struct ixgbe_adapter *adapter)
- {
- 	struct ixgbe_hw *hw = &adapter->hw;
-+	int err;
-+
-+	err = ixgbe_get_flash_data(hw);
-+	if (err)
-+		return err;
- 
--	ixgbe_get_flash_data(hw);
- 	ixgbe_set_fw_version_e610(adapter);
-+	return 0;
- }
- 
- static void ixgbe_get_drvinfo(struct net_device *netdev,
-@@ -1168,10 +1173,6 @@ static void ixgbe_get_drvinfo(struct net_device *netdev,
- {
- 	struct ixgbe_adapter *adapter = ixgbe_from_netdev(netdev);
- 
--	/* need to refresh info for e610 in case fw reloads in runtime */
--	if (adapter->hw.mac.type == ixgbe_mac_e610)
--		ixgbe_refresh_fw_version(adapter);
--
- 	strscpy(drvinfo->driver, ixgbe_driver_name, sizeof(drvinfo->driver));
- 
- 	strscpy(drvinfo->fw_version, adapter->eeprom_id,
-diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-index c58051e4..8b07f25 100644
---- a/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-+++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_main.c
-@@ -6289,6 +6289,16 @@ void ixgbe_reinit_locked(struct ixgbe_adapter *adapter)
- 	if (adapter->flags & IXGBE_FLAG_SRIOV_ENABLED)
- 		msleep(2000);
- 	ixgbe_up(adapter);
-+
-+	/* E610 has no FW event to notify all PFs of an EMPR reset, so
-+	 * refresh the FW version here to pick up any new FW version after
-+	 * a hardware reset (e.g. EMPR triggered by another PF's devlink
-+	 * reload).  ixgbe_refresh_fw_version() updates both hw->flash and
-+	 * adapter->eeprom_id so ethtool -i reports the correct string.
-+	 */
-+	if (adapter->hw.mac.type == ixgbe_mac_e610)
-+		(void)ixgbe_refresh_fw_version(adapter);
-+
- 	clear_bit(__IXGBE_RESETTING, &adapter->state);
- }
- 
--- 
-2.52.0
+That is something Linus really wants[1] and actually something that
+Documentation/process/submitting-patches.rst and
+Documentation/process/5.Posting.rst asks for.
+
+[1] see here:
+https://lore.kernel.org/all/CAHk-=wj2kJRPWx8B09AAtzj+_g+T6UBX11TP0ebs1WJdTtv=WQ@mail.gmail.com/
+https://lore.kernel.org/all/CAHk-=wjMmSZzMJ3Xnskdg4+GGz=5p5p+GSYyFBTh0f-DgvdBWg@mail.gmail.com/
+https://lore.kernel.org/all/CAHk-=wjxzafG-=J8oT30s7upn4RhBs6TX-uVFZ5rME+L5_DoJA@mail.gmail.com/
+
+Ciao, Thorsten
+
+> Tested-by: Daniele Palmas <dnlplm@gmail.com>
+> Signed-off-by: Laurent Vivier <lvivier@redhat.com>
+> ---
+>  drivers/net/usb/qmi_wwan.c | 4 ++--
+>  drivers/net/usb/usbnet.c   | 7 ++++---
+>  include/linux/usb/usbnet.h | 1 +
+>  3 files changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+> index 3a4985b582cb..05acac10cd2b 100644
+> --- a/drivers/net/usb/qmi_wwan.c
+> +++ b/drivers/net/usb/qmi_wwan.c
+> @@ -928,7 +928,7 @@ static int qmi_wwan_resume(struct usb_interface *intf)
+>  
+>  static const struct driver_info	qmi_wwan_info = {
+>  	.description	= "WWAN/QMI device",
+> -	.flags		= FLAG_WWAN | FLAG_SEND_ZLP,
+> +	.flags		= FLAG_WWAN | FLAG_NOMAXMTU | FLAG_SEND_ZLP,
+>  	.bind		= qmi_wwan_bind,
+>  	.unbind		= qmi_wwan_unbind,
+>  	.manage_power	= qmi_wwan_manage_power,
+> @@ -937,7 +937,7 @@ static const struct driver_info	qmi_wwan_info = {
+>  
+>  static const struct driver_info	qmi_wwan_info_quirk_dtr = {
+>  	.description	= "WWAN/QMI device",
+> -	.flags		= FLAG_WWAN | FLAG_SEND_ZLP,
+> +	.flags		= FLAG_WWAN | FLAG_NOMAXMTU | FLAG_SEND_ZLP,
+>  	.bind		= qmi_wwan_bind,
+>  	.unbind		= qmi_wwan_unbind,
+>  	.manage_power	= qmi_wwan_manage_power,
+> diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+> index ed86ba87ca4e..b72ba0803392 100644
+> --- a/drivers/net/usb/usbnet.c
+> +++ b/drivers/net/usb/usbnet.c
+> @@ -1829,11 +1829,12 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
+>  		if ((dev->driver_info->flags & FLAG_NOARP) != 0)
+>  			net->flags |= IFF_NOARP;
+>  
+> -		if (net->max_mtu > (dev->hard_mtu - net->hard_header_len))
+> +		if ((dev->driver_info->flags & FLAG_NOMAXMTU) == 0 &&
+> +		    net->max_mtu > (dev->hard_mtu - net->hard_header_len))
+>  			net->max_mtu = dev->hard_mtu - net->hard_header_len;
+>  
+> -		if (net->mtu > net->max_mtu)
+> -			net->mtu = net->max_mtu;
+> +		if (net->mtu > (dev->hard_mtu - net->hard_header_len))
+> +			net->mtu = dev->hard_mtu - net->hard_header_len;
+>  
+>  	} else if (!info->in || !info->out)
+>  		status = usbnet_get_endpoints(dev, udev);
+> diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
+> index b0e84896e6ac..bbf799ccf3b3 100644
+> --- a/include/linux/usb/usbnet.h
+> +++ b/include/linux/usb/usbnet.h
+> @@ -132,6 +132,7 @@ struct driver_info {
+>  #define FLAG_MULTI_PACKET	0x2000
+>  #define FLAG_RX_ASSEMBLE	0x4000	/* rx packets may span >1 frames */
+>  #define FLAG_NOARP		0x8000	/* device can't do ARP */
+> +#define FLAG_NOMAXMTU		0x10000	/* allow max_mtu above hard_mtu */
+>  
+>  	/* init device ... can sleep, or cause probe() failure */
+>  	int	(*bind)(struct usbnet *, struct usb_interface *);
 
