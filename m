@@ -1,584 +1,917 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A613469E6;
-	Wed,  4 Mar 2026 15:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772639457; cv=fail; b=rVUmUtJJAi6wgdWhuSztESJWdjWEo3HH5CryC8MgBxmxwqonHY7wSX2po+2FJzyI5T0xC6WwzCZq+DRpyZ/z7SFg2Ijs8GOsmnWxqG8pVXDFoEQb1lpe/eWTjBKZHYspBGCf5kHQ2df9qus+vVRs2J+2bZIEMBKaIK3Ap9CnYVE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772639457; c=relaxed/simple;
-	bh=NjazcIDePZ0YH09a4BakIs6rir8lIzqcZEJRE/9Fk+M=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=Mhiyfe8mYovg1noGj+xaxMINsdgQwCbMEFPle84H9w2u+4ipeUxH8ND3xEaZCAbrdAshxq2cnKB1MkvutXT4jtt32+fqoIbv5dwflOPy0gdzONbgSaFq7fwVx3aUu45OsBjyPJsQXucOOJm16HOkevMCI73x6UyPHd89gqUufvU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=NAnOPca3; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=jVPl0HUD; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5FD3469E6;
+	Wed,  4 Mar 2026 15:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772639479; cv=none; b=O5t/R5e1he6UQVZ8Yhxszc5lTTAh2WQ+MsPqAZAC49eIDSdGiVZl2e87VrjbFStckcx5xM9DdZTDRYVnsKgkZ16PiAdlgnd2+dz+QYYNHE7rLuwxZWyEYcl4tWEnS1PJGwq2JBQ5W3kp2zLYKMpquC/iOTNFvBjcklV7zsHe/OU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772639479; c=relaxed/simple;
+	bh=z/ke89GVh8nNVji/9e66asH0wbDfoGSapcyajl2e7iQ=;
+	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=eVhzX/J7dbP4rgLUJwp0sXs2Fo2lZlIo7dj4ewq7h7b9gFwWUScj3M8xOApAin+tVDnOaZ4/tI65pHdon66vSDIxj9p6W9x8b1ShhOBps1eMLiO+HURuZigmITVb2N3g4bl+EB2sQUJQ2W+cE7YqKLDujZjBAwjqCEy1Dh5xJ00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=kV7dIfGe; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="NAnOPca3";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="jVPl0HUD"
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 624FmGOK2847875;
-	Wed, 4 Mar 2026 15:49:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=swkCXGn/Jk8t+uFSWdyh0hQf49l4xwQt4XB3k7A/LUM=; b=
-	NAnOPca3z3jlwdH3gzr004g20Q+6rAFAzD8+3DacydvpcWPpveqKdCC49tgr4v6a
-	Gv90rn0aA7HzAfyp/OLhhew//CRKrQTwjg65Eerc8Q66Dc4t3E/44ZCNSMWtaaK2
-	0txqQYdUwGraHmfYUV80yewE0umUItA6e9j0BZeLQQcSNtfXoxGwmZegrjJ3CRiw
-	8H/94mFoVPnQulC53txoBIR8T/wzUNWVwL/kXtXly5tRs3DdO6rH5BbPVEBgw/qI
-	WwgGvQaon7x2unlrXrgfzssT760E9kcgy2m6VckDPbXPt6GqmM3wyV39ZJVm9wq4
-	BxMTREjLlyxdgCYGitcK1Q==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cpqpyg07k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 04 Mar 2026 15:49:30 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 624F0HG3001441;
-	Wed, 4 Mar 2026 15:49:30 GMT
-Received: from ph8pr06cu001.outbound.protection.outlook.com (mail-westus3azon11012031.outbound.protection.outlook.com [40.107.209.31])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4ckptg8us4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 04 Mar 2026 15:49:30 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=iKdTWsJJI9c8GQ1079+TtUBc3BSkfiyVCEPXMvnCSmFE781yF38mypu5zz5z6Y49SD8825lXfWftY0uQ/JWOZGdVJRR2pKRF3e/U9uXJZZRFZApRZEzGQM4FWl8EP7nmLWw12IA9Zb29ZRd3RE8PlJ9V8clP/dTQ/V8PAp5zsakL/QLG/+0DIwaZDuNWcvXoDO+gBbNqEF1bgZqhUYfJRG3OGCCw/Hl+8w7eHjOAP4RbS73k3I5TZ3+IYY2Vd7C4l0QfiChsf1xo7zpTVSNiuY8Ksz3dblL3YYjRdWurfFjEgML26xab71CjcSA2JC9i5QUr6euYBkEj6W4Dmf2Y+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=swkCXGn/Jk8t+uFSWdyh0hQf49l4xwQt4XB3k7A/LUM=;
- b=Z2rZamP1Bw+YnNAeSlvCbRvl44MyBBpJH0w4piGtT2g/0YWSa+DSZNZYe1xQBHRlcvWtTBV4VHmDEk8ckgVg7jRETrWmi13XoQUW7hLpiSwuunsqHHIQ1ChJ4ns1Y101dOXQlzxfdkQZNd+OKKFN/hgXKS2BCIflZPtRGij/az7VuaAd1xnShMDAXrFhD7lEu3ceuA9NNX3lKY6/nviN/efXJJVm7FwSmDsu0B2l9tJjnKQU1QQt6BbaD4HUDjpYqvXJgQPdN/kGS4WiLfmWNOjMqWFL2shCCSOQA2hjf0MyakHZ5SqCsAcKyc7s10Hz/CSBqdVK9oWKTK9z+nihLg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=swkCXGn/Jk8t+uFSWdyh0hQf49l4xwQt4XB3k7A/LUM=;
- b=jVPl0HUDO2hQgxfF/rENVMrZZfvyNg2DVNKFjqSaX6Wo2DverLjcYJlFhMbguU68Kv2q00kR0d97ev0BI3DhMYaSlBMTC4iGut2gERuXmazOpv3+E/KUpiZwxG/Gqn4Owlwx15ibp7VeYz6cWCM6JGY2NYAfymfgtZ+zygaa+2Y=
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com (2603:10b6:408:117::24)
- by IA3PR10MB8163.namprd10.prod.outlook.com (2603:10b6:208:515::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Wed, 4 Mar
- 2026 15:49:20 +0000
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::4083:91ab:47a4:f244]) by BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::4083:91ab:47a4:f244%4]) with mapi id 15.20.9678.016; Wed, 4 Mar 2026
- 15:49:19 +0000
-Message-ID: <1902b6ed-b5f8-4ab6-9bc6-5c9b0209f5d6@oracle.com>
-Date: Wed, 4 Mar 2026 10:49:09 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 12/12] treewide: change inode->i_ino from unsigned long
- to u64
-To: Jeff Layton <jlayton@kernel.org>,
-        Alexander Viro
- <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Eric Biggers <ebiggers@kernel.org>, "Theodore Y. Ts'o" <tytso@mit.edu>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@kernel.org>,
-        David Howells <dhowells@redhat.com>,
-        Paulo Alcantara <pc@manguebit.org>,
-        Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.com>,
-        Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-        Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
-        NeilBrown <neil@brown.name>, Olga Kornievskaia <okorniev@redhat.com>,
-        Dai Ngo <Dai.Ngo@oracle.com>, Tom Talpey <tom@talpey.com>,
-        Steve French <sfrench@samba.org>,
-        Ronnie Sahlberg
- <ronniesahlberg@gmail.com>,
-        Shyam Prasad N <sprasad@microsoft.com>,
-        Bharath SM <bharathsm@microsoft.com>,
-        Alexander Aring
- <alex.aring@gmail.com>,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        Viacheslav Dubeyko <slava@dubeyko.com>,
-        Eric Van Hensbergen <ericvh@kernel.org>,
-        Latchesar Ionkov
- <lucho@ionkov.net>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        Christian Schoenebeck <linux_oss@crudebyte.com>,
-        David Sterba <dsterba@suse.com>,
-        Marc Dionne <marc.dionne@auristor.com>, Ian Kent <raven@themaw.net>,
-        Luis de Bethencourt <luisbg@kernel.org>,
-        Salah Triki <salah.triki@gmail.com>,
-        "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-        Ilya Dryomov <idryomov@gmail.com>, Alex Markuze <amarkuze@redhat.com>,
-        Jan Harkes <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu,
-        Nicolas Pitre <nico@fluxnic.net>, Tyler Hicks <code@tyhicks.com>,
-        Amir Goldstein <amir73il@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Yangtao Li <frank.li@vivo.com>,
-        Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Richard Weinberger <richard@nod.at>, Dave Kleikamp <shaggy@kernel.org>,
-        Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-        Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-        Joseph Qi <joseph.qi@linux.alibaba.com>,
-        Mike Marshall
- <hubcap@omnibond.com>,
-        Martin Brandenburg <martin@omnibond.com>,
-        Miklos Szeredi <miklos@szeredi.hu>, Anders Larsen <al@alarsen.net>,
-        Zhihao Cheng <chengzhihao1@huawei.com>,
-        Damien Le Moal <dlemoal@kernel.org>,
-        Naohiro Aota <naohiro.aota@wdc.com>,
-        Johannes Thumshirn <jth@kernel.org>,
-        John Johansen <john.johansen@canonical.com>,
-        Paul Moore
- <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-        "Serge E. Hallyn" <serge@hallyn.com>, Mimi Zohar <zohar@linux.ibm.com>,
-        Roberto Sassu <roberto.sassu@huawei.com>,
-        Dmitry Kasatkin <dmitry.kasatkin@gmail.com>,
-        Eric Snowberg <eric.snowberg@oracle.com>, Fan Wu <wufan@kernel.org>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Ondrej Mosnacek <omosnace@redhat.com>,
-        Casey Schaufler <casey@schaufler-ca.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Eric Dumazet <edumazet@google.com>,
-        Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
-        Willem de Bruijn <willemb@google.com>,
-        "David S. Miller"
- <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>, Simon Horman <horms@kernel.org>,
-        Oleg Nesterov <oleg@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        James Clark
- <james.clark@linaro.org>,
-        "Darrick J. Wong" <djwong@kernel.org>, Martin Schiller <ms@dev.tdt.de>,
-        Eric Paris <eparis@redhat.com>, Joerg Reuter <jreuter@yaina.de>,
-        Marcel Holtmann <marcel@holtmann.org>,
-        Johan Hedberg <johan.hedberg@gmail.com>,
-        Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
-        David Ahern <dsahern@kernel.org>, Neal Cardwell <ncardwell@google.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Remi Denis-Courmont <courmisch@gmail.com>,
-        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-        Xin Long <lucien.xin@gmail.com>,
-        Magnus Karlsson
- <magnus.karlsson@intel.com>,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Stanislav Fomichev <sdf@fomichev.me>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Jesper Dangaard Brouer <hawk@kernel.org>,
-        John Fastabend <john.fastabend@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-trace-kernel@vger.kernel.org, nvdimm@lists.linux.dev,
-        fsverity@lists.linux.dev, linux-mm@kvack.org, netfs@lists.linux.dev,
-        linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-        linux-nfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-        samba-technical@lists.samba.org, linux-nilfs@vger.kernel.org,
-        v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
-        autofs@vger.kernel.org, ceph-devel@vger.kernel.org,
-        codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
-        linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
-        ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
-        devel@lists.orangefs.org, linux-unionfs@vger.kernel.org,
-        apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org,
-        linux-integrity@vger.kernel.org, selinux@vger.kernel.org,
-        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-        netdev@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        linux-fscrypt@vger.kernel.org, linux-xfs@vger.kernel.org,
-        linux-hams@vger.kernel.org, linux-x25@vger.kernel.org,
-        audit@vger.kernel.org, linux-bluetooth@vger.kernel.org,
-        linux-can@vger.kernel.org, linux-sctp@vger.kernel.org,
-        bpf@vger.kernel.org
-References: <20260304-iino-u64-v3-0-2257ad83d372@kernel.org>
- <20260304-iino-u64-v3-12-2257ad83d372@kernel.org>
-From: Chuck Lever <chuck.lever@oracle.com>
-Content-Language: en-US
-In-Reply-To: <20260304-iino-u64-v3-12-2257ad83d372@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CH0P221CA0046.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:610:11d::19) To BN0PR10MB5128.namprd10.prod.outlook.com
- (2603:10b6:408:117::24)
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="kV7dIfGe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1772639477; x=1804175477;
+  h=message-id:subject:from:to:cc:date:in-reply-to:
+   references:content-transfer-encoding:mime-version;
+  bh=z/ke89GVh8nNVji/9e66asH0wbDfoGSapcyajl2e7iQ=;
+  b=kV7dIfGe6uzj+2EpXM9KZKrNmmhPmtNRkTsJK7jxzEu7Haz1nB84TITv
+   unuLHoZL3fvYutiBLhg2n1gY97pMZnrT7oAXGxPhEgEDMCyeoeTWZqDe+
+   yoJkFyDrvIPtgMI+1HzdDJyFrtDDTXwT+3QNd7atrMf18wNN6P128rJJl
+   H44qpa+s9/GoTpas/1JJyipDn29HNC0n4oxYhnPOva9QPjMgncmH0a2v6
+   lRPMpsx3kEhz7WCsvoEpmwjy4bgVkIqyvUoRmFyP+7dgnBjpv1ep/GnW9
+   6W/0dunsIL/53CJv7DxC7R3UyhjU4AHF/TGY+AAdJ4PgG2SvI8TR/2kRc
+   A==;
+X-CSE-ConnectionGUID: V83HfKHCTee/V7dyrK0xQA==
+X-CSE-MsgGUID: rmsMDRGgStO0/5YYOxoLew==
+X-IronPort-AV: E=Sophos;i="6.21,324,1763449200"; 
+   d="scan'208";a="285599077"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa5.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 08:51:16 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex3.mchp-main.com (10.10.87.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Wed, 4 Mar 2026 08:50:45 -0700
+Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
+ 15.1.2507.58 via Frontend Transport; Wed, 4 Mar 2026 08:50:42 -0700
+Message-ID: <35131cd06fc5f8b5b37f315bc5ab2b283dbe29fb.camel@microchip.com>
+Subject: Re: [PATCH net-next 8/8] net: dsa: lan9645x: add port statistics
+From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
+To: Vladimir Oltean <olteanv@gmail.com>
+CC: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
+	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Woojung Huh
+	<woojung.huh@microchip.com>, Russell King <linux@armlinux.org.uk>, "Steen
+ Hegelund" <Steen.Hegelund@microchip.com>, Daniel Machon
+	<daniel.machon@microchip.com>, <linux-kernel@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>
+Date: Wed, 4 Mar 2026 16:50:41 +0100
+In-Reply-To: <20260303160159.efjtqzpa2w4awxht@skbuf>
+References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
+	 <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
+	 <20260303-dsa_lan9645x_switch_driver_base-v1-8-bff8ca1396f5@microchip.com>
+	 <20260303-dsa_lan9645x_switch_driver_base-v1-8-bff8ca1396f5@microchip.com>
+	 <20260303160159.efjtqzpa2w4awxht@skbuf>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2.1 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN0PR10MB5128:EE_|IA3PR10MB8163:EE_
-X-MS-Office365-Filtering-Correlation-Id: 394326e6-cd7d-4d40-f960-08de7a05992a
-X-LD-Processed: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
- BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007|921020;
-X-Microsoft-Antispam-Message-Info:
- FMHCtgEEKmhk3kH82k96CrqKQGBJMk84fhGsPaKeTnDi7PMHT7U+aQOl48P1szReT4TGp27WXt5gncnjVSTioI8gRIyGG31TaYIVFgI7YQzxjfYANHEcdRHdvf0jV0CFWyqj7zGd5ZurfwuGy9LAhbcJJ0aACJochSS/m71bdEKlUd93UV0e8nb0aCiGlQVBZ81kqxUjtUHZbhAaICCcUmXZGh7gafGWNbuswCiW9pJv4kG3BdcH/NM5zufFfAxZAhPEH++uAgnJ1ImG4T5vGzuaS4+f+TF+/+GLxr83vMsgDgJgmxBCW4J3sfZty92jW24YaxJ11HzxLvz/WZTUt87U17r0aVtwb3nqmmxHLPsp+NNXDTNvfqRHoMfIiy4lawq8TYJSpDuKk9C/cdl5oG1EPhFKmpIB9Cu0pR82NkSmRJHPz55oGpz8zoMptofOwlcdtv3ZFMfJ9VIb50IXjSmU7/Ep7/2grk3iiqHWptCexx1uWey1g/8eEX93s7Z+brme+s2D5ubfjyo4Ga2qzebVe6yg8giAxOpYV03JqpJ1hrjuqFw8uagO/6xRD5RmJAfBVHohulZwvStMbMOIZoVMCBLgnyozAA/IW2Ta/EE5shtkfObs2W9YEmDoyXA4FWQYQOvmkgMiresMyDJfMnkG/H3DzpMwKokSNetVsDCzQFIr5IzRhkEvI4MnaLxZD4cDxpTXndqz7hw3zyGQptxrn+U6mzn4GOuJBo7QDzCbDpgor6nJQh8kOTHbq4h7LEazPDMaqL91zJoWe8ZPVA==
-X-Forefront-Antispam-Report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5128.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
- =?utf-8?B?enlCb0xRdmpIUHB4dzFtbUxvSVJCQjhCeW5qUUNHUzdlSmhNTU1tTnpKNjV0?=
- =?utf-8?B?T1VRemFRK0tPY3hXdVVGYkJjZzg0ZGovSUg0aFlHeVA5a0lFZ2VnVkN1M2ox?=
- =?utf-8?B?QVV3ZnZYanlqRzZVM2ZkeEd1Yzk4LzlGOTJGbHovalM5VEhrM1F5a3lQTXJF?=
- =?utf-8?B?WmZKQVJySVFlcWFhbjhiNjlBZEJ5aHdINW5CbkNzRWtqMXA2d2t5dUxKcXNm?=
- =?utf-8?B?eHpwYmRzc3hlSkw4Mk5UR0Z4dTVkM2thdERtUG82YTFrWjdqdzhTSjhCRnBJ?=
- =?utf-8?B?SEhWZnFWRk5ncTZlVGk4RXFjOWxyTjhLQ3V1UnZkU2lZWC9pSDhaMHhsTXMr?=
- =?utf-8?B?dnFvM3UxOUpTbk9DY2VoaHpsTEVVVTlIcVA3Skd6MFhXMHFBRFEyNjB3cE9C?=
- =?utf-8?B?YlNYS3hZZEptVVB2ZUxnNy9mbDFwRnFpemVkWnA1SnhxN2F1RHkyWFBIQlpw?=
- =?utf-8?B?ZHBXZTdGZDRvU3c5NERzUVlUZ3g2ZkhDZVlWZldCWm90eXNmREM0OXptNkww?=
- =?utf-8?B?YVFLYlhFWTI3dmxhMWtneEtSN1VtM01ZTTFEekg2ZmZlcXFVbkc0TWlwUG5l?=
- =?utf-8?B?K0xTMUtMLzB5WVY0MFFyQTViL01haVZWR0RZajVmYzVLaXcybVRLT2FoUkRB?=
- =?utf-8?B?emRYOGJQd3pqSVlBanZ2Y2tLT0k1UXhGM1ZldkxreGVyR1ovMEJIY1dZVWs4?=
- =?utf-8?B?SUxzQWdBQ0I1eVl2Mlh5ZkNZRmZDVi9heDU3bjE4dEtWSXdJTlpsNnZmQTNT?=
- =?utf-8?B?RDVtc2Q4TzBMK3Q4b2dDQ2J6OW9IRFQ4MTF6WDJUaldQNG01TmltWnZXTTJh?=
- =?utf-8?B?eGVVbVpuNytLYjN0ZlRzR2Q5VzJRVTRya2dQSlgwdkFpK0NGVGxYVXRRVWxu?=
- =?utf-8?B?ZkxTMnMyRVNQbVFHN3NSaU54WmxnM3dLbDFTYWFYOVpqV0RZaDNEQlY3YzVh?=
- =?utf-8?B?TWQwTjltaDA5K2JQQkpvNFJ6UUlDa2NJdTdsQWhpMklEdnNYNHlhdGNkRFBC?=
- =?utf-8?B?N1V6VDJTRTZTZGhPWVNMTnhCTHJieWVwcmxVQUdJMkJBOHRxeFdHRldXSXlk?=
- =?utf-8?B?L1ZzY1hZK0pmL1cyRjNsTHNXeE44Qmc1RHZXcDZYL1BiTXFYWWRCUjNUMlZF?=
- =?utf-8?B?a2xQaHZOalJRQWZWVDJRQ3ZEN1B4WkpqLytMSDRvQ3R2TlJCTFVHbndsOGtl?=
- =?utf-8?B?RlBQRDM4UGFkaGkrdENBMkFna0liZUlKNVh4RzVxaEtDRWUvVXJUT1NCaElj?=
- =?utf-8?B?ZzcyTEFCS3B1VW9vMzMvSW53blZHVEJsRS9jWFdwQ2R6bFFKWm5OdngwQVUx?=
- =?utf-8?B?cUpnM3N3L3prR2RyL1doWnRKNTBrVTV4c3lTQXNhRVBRV3V3VktSeGhhUmkx?=
- =?utf-8?B?cjhQWVl1dkFmei9MbjFiL09rUCtERkl0ZVFpT1NlT0Vmd2VTTTVxRjI0dlZO?=
- =?utf-8?B?QW4zRDlBTDBsbzNVa1lxYkFoMng4cEVYTi9hbWdSQnVQdGtkZGhxOStVdlM5?=
- =?utf-8?B?cnJrMmI2M2l1V0ZDeUxEOGtuMGd3WG9MQ2RObFg5bnZYUUd1Um1Ca2ZxSVNS?=
- =?utf-8?B?TWJwVHN6Sit0UzJ4SkI3Si9KZEx2S2ZBbENyNlBWREhNbTNDdnNBUGhqZ2p6?=
- =?utf-8?B?MGRGdnZiZDBaOGtiNXhwTk12eDdYN2pPZFo5MXFSZmxUN3RnWGlvZkdtcTJs?=
- =?utf-8?B?cnZWTUVIOXZrVkFzNjJnYmxibU5UL0h6T2FqZlRtek5TSTU2cS9RM3ZCZTNC?=
- =?utf-8?B?RW96aWd2NGVqbFJJUUgwZzkxeWt0NzVKWXBpMmRWc1pKQndQY0hiVXhtVUpY?=
- =?utf-8?B?QXI2VGlJTHh5TTB5cFZPR2x6WGdNcEU4bXlhQU9LVW9TMmpYNlgvOGJhamtY?=
- =?utf-8?B?b3V2R2ZkVVQ1cEF5L21kMmxIQno1R1lURm1jUWhsR0NQKzhwd1NEZGJHS3M4?=
- =?utf-8?B?U21RWlFsTmtzQmJNckhwc1lnMUVpTFVCUGtIODdTbmxsa0Z2Y3h6THhKVVpQ?=
- =?utf-8?B?MG1sRDBacllvSXVIREFiVWJ3eDRsNGg4MjZhakdzVHZJT1pPRmpUVmZmUWpm?=
- =?utf-8?B?c3hZNzdPQXllK3h2cWZ4ZGRrRmNaN0JkNTY2Z2VRUnhkNGJQc0FxbmFpZzdX?=
- =?utf-8?B?MlRjZENaYkwrVTB2ZlBSUnBLblZ4ekpaZ0c4azRGM1lCdHFESW5YbThYRmdQ?=
- =?utf-8?B?eEdXSXc1WEhXSzN4L3JObFFPa1RpYjFHSERRSlZqZzB3S2IwWkZyTE5va3Zk?=
- =?utf-8?B?VThwNkJKKyt3SlYvZnNDQytieUdUeVkzNVYzaEVqYXNoVzNHT3Eza2Z5Skx3?=
- =?utf-8?B?WGdFTks3eGJOQmIwcjBCdmlBd1VzNk9LQUhDbm5MeFhLdzVlelFidz09?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	amE25Z/JEosBrjw5HbWRSYVtSOv36upcObNC2CgQZcqe+aoItqMwk6NNfr1AbX79m3Yw5MbhVJxlhQtxAR8CTigPZIF3P3yiVgU5OgPV/jyy1Y6NKq9SSLwUtM3x+Tp91SGp5o1A60WvmHJHeZ/le7lgDMD1FmZYXHtq8nFX9TEFRpYP2bneNZAXeTEWbxXUuqAtvwUivp4lbyCpUGM7TsJsDSSErhOsfRnor8nGPSdsS4u/Lt62HW01wtaK4s7ihq6JfpRA3bWhYlTx+2nNFkZwgSD6qcyUpMwopzvRJAlODNWRYYEO5i7K6d4Z1IYABk8VIFZXac8ZkOMPTZaQtH0ECU83fGGE2wHCFaZyI/hOqe4xg2JfVQhK3a3KmLNtZEwLSJU40V0XYpImdQWlNfkdYG4PZQbTwWU6Sl7Mrx+YQX3quqoxlHv44D4OCRUZ7oyzLSXAMRWz8SERkWCUrc6N4BUcrqI3wNsY+2Q0Bm9nO6KSxuqMGF8nMOP0l+dg9lTuI8Z4qGPAdAS3daRZA9n3BVN26gNl8boYT9zeSAtD477tWKmYy1mLzulJLbt0fJjrtJ7ARrLJGFLq+RouQ6qVYjQ/CVvv8lVx4yTf1gM=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 394326e6-cd7d-4d40-f960-08de7a05992a
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5128.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2026 15:49:19.7840
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Qw3qGGPBIhyv/0x8gJ9wxKXhJVVLOovx6V7iJZ7XG48BUCeDbxB5bmw00Yix8epU0TVp+eT3osGd3GdcbM4qNg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA3PR10MB8163
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-04_07,2026-03-03_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 malwarescore=0 phishscore=0
- spamscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
- definitions=main-2603040128
-X-Proofpoint-ORIG-GUID: jp0x4ejQe2fXcnZgwuK_YVSxXxefBLUN
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDEyOCBTYWx0ZWRfX5vrkasD5uN5j
- EWOThN6o9/jG2fvdpGpMAoFKBTsnFnxggaCSH8+z3e7pucGjBX98jj9o0YJi/kqPFU9xOXIcU01
- kcsCzs5E4c7nfDqSOQJs4CwNU0ooKjMNXj6O+MXiCaHGkX99fl9P5kfjY+3e0b7Dkd8VoTxFbWT
- aQbbCrqUPY/p7BQT7sU6ZMv0o7M7lNtCbTG1P0lO8CoRnYqKfXwUAAg6HD4TU7QxInbenAuplAd
- nSVmDDUeLimMNVooHmLRmUyF1h33Up3JJXjBCbu2DciKDaU8opie8gVelJoOSj1/zNABf3WncNt
- xp/NvQ+BAXPp2jxy8vfBZgJF7z9FIvZ6KtcKY70pCSBPWDxexq+XL9nzFPzWwuDEM1MSTpLS5DP
- wjZBFo3/OB+s7NSK7Oph4Uikk1mqCfE/avG3oQ35b2C97f0KpLs3R9a7uVj6HvGpwLLZmzB9GND
- 7WqXNi1nx2sqXNCn3HkqA8gBOEafOrnLXvEod2g4=
-X-Proofpoint-GUID: jp0x4ejQe2fXcnZgwuK_YVSxXxefBLUN
-X-Authority-Analysis: v=2.4 cv=Xb+EDY55 c=1 sm=1 tr=0 ts=69a8548a b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Yq5XynenixoA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=o5oIOnhZENCTenyL_yNV:22 a=VwQbUJbxAAAA:8
- a=yPCof4ZbAAAA:8 a=dsmUnGJxNMzG7wMPBDQA:9 a=QEXdDO2ut3YA:10 cc=ntf
- awl=host:13812
 
-On 3/4/26 10:32 AM, Jeff Layton wrote:
-> On 32-bit architectures, unsigned long is only 32 bits wide, which
-> causes 64-bit inode numbers to be silently truncated. Several
-> filesystems (NFS, XFS, BTRFS, etc.) can generate inode numbers that
-> exceed 32 bits, and this truncation can lead to inode number collisions
-> and other subtle bugs on 32-bit systems.
-> 
-> Change the type of inode->i_ino from unsigned long to u64 to ensure that
-> inode numbers are always represented as 64-bit values regardless of
-> architecture. Update all format specifiers treewide from %lu/%lx to
-> %llu/%llx to match the new type, along with corresponding local variable
-> types.
-> 
-> This is the bulk treewide conversion. Earlier patches in this series
-> handled trace events separately to allow trace field reordering for
-> better struct packing on 32-bit.
-> 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
-> ---
->  drivers/dma-buf/dma-buf.c                  |  2 +-
->  drivers/gpu/drm/amd/amdgpu/amdgpu_object.c |  4 +--
->  fs/9p/vfs_addr.c                           |  4 +--
->  fs/9p/vfs_inode.c                          |  6 ++--
->  fs/9p/vfs_inode_dotl.c                     |  6 ++--
->  fs/affs/amigaffs.c                         | 10 +++----
->  fs/affs/bitmap.c                           |  2 +-
->  fs/affs/dir.c                              |  2 +-
->  fs/affs/file.c                             | 20 ++++++-------
->  fs/affs/inode.c                            | 12 ++++----
->  fs/affs/namei.c                            | 14 ++++-----
->  fs/affs/symlink.c                          |  2 +-
->  fs/afs/dir.c                               | 10 +++----
->  fs/afs/dir_search.c                        |  2 +-
->  fs/afs/dynroot.c                           |  2 +-
->  fs/afs/inode.c                             |  2 +-
->  fs/autofs/inode.c                          |  2 +-
->  fs/befs/linuxvfs.c                         | 28 ++++++++---------
->  fs/bfs/dir.c                               |  4 +--
->  fs/cachefiles/io.c                         |  6 ++--
->  fs/cachefiles/namei.c                      | 12 ++++----
->  fs/cachefiles/xattr.c                      |  2 +-
->  fs/ceph/crypto.c                           |  4 +--
->  fs/coda/dir.c                              |  2 +-
->  fs/coda/inode.c                            |  2 +-
->  fs/cramfs/inode.c                          |  2 +-
->  fs/crypto/crypto.c                         |  2 +-
->  fs/crypto/hooks.c                          |  2 +-
->  fs/crypto/keyring.c                        |  4 +--
->  fs/crypto/keysetup.c                       |  2 +-
->  fs/dcache.c                                |  4 +--
->  fs/ecryptfs/crypto.c                       |  6 ++--
->  fs/ecryptfs/file.c                         |  2 +-
->  fs/efs/inode.c                             |  6 ++--
->  fs/eventpoll.c                             |  2 +-
->  fs/exportfs/expfs.c                        |  4 +--
->  fs/ext2/dir.c                              | 10 +++----
->  fs/ext2/ialloc.c                           |  9 +++---
->  fs/ext2/inode.c                            |  2 +-
->  fs/ext2/xattr.c                            | 14 ++++-----
->  fs/ext4/dir.c                              |  2 +-
->  fs/ext4/ext4.h                             |  4 +--
->  fs/ext4/extents.c                          |  8 ++---
->  fs/ext4/extents_status.c                   | 28 ++++++++---------
->  fs/ext4/fast_commit.c                      |  8 ++---
->  fs/ext4/ialloc.c                           | 10 +++----
->  fs/ext4/indirect.c                         |  2 +-
->  fs/ext4/inline.c                           | 14 ++++-----
->  fs/ext4/inode.c                            | 22 +++++++-------
->  fs/ext4/ioctl.c                            |  4 +--
->  fs/ext4/mballoc.c                          |  6 ++--
->  fs/ext4/migrate.c                          |  2 +-
->  fs/ext4/move_extent.c                      | 20 ++++++-------
->  fs/ext4/namei.c                            | 10 +++----
->  fs/ext4/orphan.c                           | 16 +++++-----
->  fs/ext4/page-io.c                          | 10 +++----
->  fs/ext4/super.c                            | 22 +++++++-------
->  fs/ext4/xattr.c                            | 10 +++----
->  fs/f2fs/compress.c                         |  4 +--
->  fs/f2fs/dir.c                              |  2 +-
->  fs/f2fs/extent_cache.c                     |  8 ++---
->  fs/f2fs/f2fs.h                             |  6 ++--
->  fs/f2fs/file.c                             | 12 ++++----
->  fs/f2fs/gc.c                               |  2 +-
->  fs/f2fs/inline.c                           |  4 +--
->  fs/f2fs/inode.c                            | 48 +++++++++++++++---------------
->  fs/f2fs/namei.c                            |  8 ++---
->  fs/f2fs/node.c                             | 10 +++----
->  fs/f2fs/recovery.c                         | 10 +++----
->  fs/f2fs/xattr.c                            | 10 +++----
->  fs/freevxfs/vxfs_bmap.c                    |  4 +--
->  fs/fserror.c                               |  2 +-
->  fs/hfs/catalog.c                           |  2 +-
->  fs/hfs/extent.c                            |  4 +--
->  fs/hfs/inode.c                             |  4 +--
->  fs/hfsplus/attributes.c                    | 10 +++----
->  fs/hfsplus/catalog.c                       |  2 +-
->  fs/hfsplus/dir.c                           |  6 ++--
->  fs/hfsplus/extents.c                       |  6 ++--
->  fs/hfsplus/inode.c                         |  8 ++---
->  fs/hfsplus/super.c                         |  6 ++--
->  fs/hfsplus/xattr.c                         | 10 +++----
->  fs/hpfs/dir.c                              |  4 +--
->  fs/hpfs/dnode.c                            |  4 +--
->  fs/hpfs/ea.c                               |  4 +--
->  fs/hpfs/inode.c                            |  4 +--
->  fs/inode.c                                 | 13 ++++----
->  fs/iomap/ioend.c                           |  2 +-
->  fs/isofs/compress.c                        |  2 +-
->  fs/isofs/dir.c                             |  2 +-
->  fs/isofs/inode.c                           |  6 ++--
->  fs/isofs/namei.c                           |  2 +-
->  fs/jbd2/journal.c                          |  4 +--
->  fs/jbd2/transaction.c                      |  2 +-
->  fs/jffs2/dir.c                             |  4 +--
->  fs/jffs2/file.c                            |  4 +--
->  fs/jffs2/fs.c                              | 18 +++++------
->  fs/jfs/inode.c                             |  2 +-
->  fs/jfs/jfs_imap.c                          |  2 +-
->  fs/jfs/jfs_metapage.c                      |  2 +-
->  fs/lockd/svclock.c                         |  8 ++---
->  fs/lockd/svcsubs.c                         |  2 +-
->  fs/locks.c                                 |  6 ++--
->  fs/minix/inode.c                           | 10 +++----
->  fs/nfs/dir.c                               | 20 ++++++-------
->  fs/nfs/file.c                              |  8 ++---
->  fs/nfs/filelayout/filelayout.c             |  8 ++---
->  fs/nfs/flexfilelayout/flexfilelayout.c     |  8 ++---
->  fs/nfs/inode.c                             |  6 ++--
->  fs/nfs/nfs4proc.c                          |  4 +--
->  fs/nfs/pnfs.c                              | 12 ++++----
->  fs/nfsd/export.c                           |  2 +-
->  fs/nfsd/nfs4state.c                        |  4 +--
->  fs/nfsd/nfsfh.c                            |  4 +--
->  fs/nfsd/vfs.c                              |  2 +-
->  fs/nilfs2/alloc.c                          | 10 +++----
->  fs/nilfs2/bmap.c                           |  2 +-
->  fs/nilfs2/btnode.c                         |  2 +-
->  fs/nilfs2/btree.c                          | 12 ++++----
->  fs/nilfs2/dir.c                            | 12 ++++----
->  fs/nilfs2/direct.c                         |  4 +--
->  fs/nilfs2/gcinode.c                        |  2 +-
->  fs/nilfs2/inode.c                          |  8 ++---
->  fs/nilfs2/mdt.c                            |  2 +-
->  fs/nilfs2/namei.c                          |  2 +-
->  fs/nilfs2/segment.c                        |  2 +-
->  fs/notify/fdinfo.c                         |  4 +--
->  fs/nsfs.c                                  |  4 +--
->  fs/ntfs3/super.c                           |  2 +-
->  fs/ocfs2/alloc.c                           |  2 +-
->  fs/ocfs2/aops.c                            |  4 +--
->  fs/ocfs2/dir.c                             |  8 ++---
->  fs/ocfs2/dlmfs/dlmfs.c                     | 10 +++----
->  fs/ocfs2/extent_map.c                      | 12 ++++----
->  fs/ocfs2/inode.c                           |  2 +-
->  fs/ocfs2/quota_local.c                     |  2 +-
->  fs/ocfs2/refcounttree.c                    | 10 +++----
->  fs/ocfs2/xattr.c                           |  4 +--
->  fs/orangefs/inode.c                        |  2 +-
->  fs/overlayfs/export.c                      |  2 +-
->  fs/overlayfs/namei.c                       |  4 +--
->  fs/overlayfs/util.c                        |  2 +-
->  fs/pipe.c                                  |  2 +-
->  fs/proc/fd.c                               |  2 +-
->  fs/proc/task_mmu.c                         |  4 +--
->  fs/qnx4/inode.c                            |  4 +--
->  fs/qnx6/inode.c                            |  2 +-
->  fs/ubifs/debug.c                           |  8 ++---
->  fs/ubifs/dir.c                             | 28 ++++++++---------
->  fs/ubifs/file.c                            | 28 ++++++++---------
->  fs/ubifs/journal.c                         |  6 ++--
->  fs/ubifs/super.c                           | 16 +++++-----
->  fs/ubifs/tnc.c                             |  4 +--
->  fs/ubifs/xattr.c                           | 14 ++++-----
->  fs/udf/directory.c                         | 18 +++++------
->  fs/udf/file.c                              |  2 +-
->  fs/udf/inode.c                             | 12 ++++----
->  fs/udf/namei.c                             |  8 ++---
->  fs/udf/super.c                             |  2 +-
->  fs/ufs/balloc.c                            |  6 ++--
->  fs/ufs/dir.c                               | 10 +++----
->  fs/ufs/ialloc.c                            |  6 ++--
->  fs/ufs/inode.c                             | 18 +++++------
->  fs/ufs/ufs_fs.h                            |  6 ++--
->  fs/ufs/util.c                              |  2 +-
->  fs/verity/init.c                           |  2 +-
->  fs/zonefs/super.c                          |  8 ++---
->  include/linux/fs.h                         |  2 +-
->  kernel/events/uprobes.c                    |  4 +--
->  net/netrom/af_netrom.c                     |  4 +--
->  net/rose/af_rose.c                         |  4 +--
->  net/socket.c                               |  2 +-
->  net/x25/x25_proc.c                         |  4 +--
->  security/apparmor/apparmorfs.c             |  4 +--
->  security/integrity/integrity_audit.c       |  2 +-
->  security/ipe/audit.c                       |  2 +-
->  security/lsm_audit.c                       | 10 +++----
->  security/selinux/hooks.c                   | 10 +++----
->  security/smack/smack_lsm.c                 | 12 ++++----
->  179 files changed, 607 insertions(+), 607 deletions(-)
+On Tue, 2026-03-03 at 18:01 +0200, Vladimir Oltean wrote:
+> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
+e content is safe
+>=20
+> On Tue, Mar 03, 2026 at 01:22:34PM +0100, Jens Emil Schulz =C3=98stergaar=
+d wrote:
+> > Add statistics support for the port counters. Chip registers are 32 bit=
+,
+> > so this unit is responsible maintaining a 64bit software cache, and
+> > updating it frequently to handle overflows in hardware.
+> >=20
+> > Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
+> > Signed-off-by: Jens Emil Schulz =C3=98stergaard <jensemil.schulzosterga=
+ard@microchip.com>
+> > ---
+> >  drivers/net/dsa/microchip/lan9645x/Makefile        |   1 +
+> >  drivers/net/dsa/microchip/lan9645x/lan9645x_main.c |  82 ++
+> >  drivers/net/dsa/microchip/lan9645x/lan9645x_main.h |   3 +
+> >  .../net/dsa/microchip/lan9645x/lan9645x_stats.c    | 825 +++++++++++++=
+++++++++
+> >  .../net/dsa/microchip/lan9645x/lan9645x_stats.h    | 288 +++++++
+> >  5 files changed, 1199 insertions(+)
+> >=20
+> > diff --git a/drivers/net/dsa/microchip/lan9645x/Makefile b/drivers/net/=
+dsa/microchip/lan9645x/Makefile
+> > index a90a46f81c72..486b005cf740 100644
+> > --- a/drivers/net/dsa/microchip/lan9645x/Makefile
+> > +++ b/drivers/net/dsa/microchip/lan9645x/Makefile
+> > @@ -7,3 +7,4 @@ mchp-lan9645x-objs :=3D lan9645x_main.o \
+> >       lan9645x_phylink.o \
+> >       lan9645x_vlan.o \
+> >       lan9645x_mac.o \
+> > +     lan9645x_stats.o \
+> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drive=
+rs/net/dsa/microchip/lan9645x/lan9645x_main.c
+> > index ba76279b4414..8a1de2588ab8 100644
+> > --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
+> > @@ -7,6 +7,7 @@
+> >  #include <linux/phy/phy.h>
+> >=20
+> >  #include "lan9645x_main.h"
+> > +#include "lan9645x_stats.h"
+> >=20
+> >  static const char *lan9645x_resource_names[NUM_TARGETS + 1] =3D {
+> >       [TARGET_GCB]          =3D "gcb",
+> > @@ -79,6 +80,7 @@ static void lan9645x_teardown(struct dsa_switch *ds)
+> >       debugfs_remove_recursive(lan9645x->debugfs_root);
+> >       lan9645x_npi_port_deinit(lan9645x, lan9645x->npi);
+> >       lan9645x_mac_deinit(lan9645x);
+> > +     lan9645x_stats_deinit(lan9645x);
+> >  }
+> >=20
+> >  static int lan9645x_change_mtu(struct dsa_switch *ds, int port, int ne=
+w_mtu)
+> > @@ -274,6 +276,12 @@ static int lan9645x_setup(struct dsa_switch *ds)
+> >=20
+> >       lan9645x_port_set_tail_drop_wm(lan9645x);
+> >=20
+> > +     err =3D lan9645x_stats_init(lan9645x);
+> > +     if (err) {
+> > +             dev_err(dev, "Lan9645x setup: failed to init stats.");
+>=20
+> Missing \n.
+> Also "Lan9645x" probably not required, it will be somewhere in the
+> driver name.
+>=20
 
-> diff --git a/fs/nfsd/export.c b/fs/nfsd/export.c
-> index 8fdbba7cad96443d92cc7fdeea6158c4cc681be1..d2259d948cc33e1c192531d34679123b826cf4dc 100644
-> --- a/fs/nfsd/export.c
-> +++ b/fs/nfsd/export.c
-> @@ -1039,7 +1039,7 @@ exp_rootfh(struct net *net, struct auth_domain *clp, char *name,
->  	}
->  	inode = d_inode(path.dentry);
->  
-> -	dprintk("nfsd: exp_rootfh(%s [%p] %s:%s/%ld)\n",
-> +	dprintk("nfsd: exp_rootfh(%s [%p] %s:%s/%llu)\n",
->  		 name, path.dentry, clp->name,
->  		 inode->i_sb->s_id, inode->i_ino);
->  	exp = exp_parent(cd, clp, &path);
-> diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-> index 6b9c399b89dfb71a52b9c97f0efe9a1dea0558a6..a569d89ac9123d66bb47e7d74c7c98610de21da2 100644
-> --- a/fs/nfsd/nfs4state.c
-> +++ b/fs/nfsd/nfs4state.c
-> @@ -1253,7 +1253,7 @@ static void nfsd4_finalize_deleg_timestamps(struct nfs4_delegation *dp, struct f
->  	if (ret) {
->  		struct inode *inode = file_inode(f);
->  
-> -		pr_notice_ratelimited("nfsd: Unable to update timestamps on inode %02x:%02x:%lu: %d\n",
-> +		pr_notice_ratelimited("nfsd: Unable to update timestamps on inode %02x:%02x:%llu: %d\n",
->  					MAJOR(inode->i_sb->s_dev),
->  					MINOR(inode->i_sb->s_dev),
->  					inode->i_ino, ret);
-> @@ -2888,7 +2888,7 @@ static void nfs4_show_superblock(struct seq_file *s, struct nfsd_file *f)
->  {
->  	struct inode *inode = file_inode(f->nf_file);
->  
-> -	seq_printf(s, "superblock: \"%02x:%02x:%ld\"",
-> +	seq_printf(s, "superblock: \"%02x:%02x:%llu\"",
->  					MAJOR(inode->i_sb->s_dev),
->  					 MINOR(inode->i_sb->s_dev),
->  					 inode->i_ino);
-> diff --git a/fs/nfsd/nfsfh.c b/fs/nfsd/nfsfh.c
-> index ed85dd43da18e6d4c4667ff14dc035f2eacff1d6..ee72c9565e4fe85356674b22b4505d3d531dbe40 100644
-> --- a/fs/nfsd/nfsfh.c
-> +++ b/fs/nfsd/nfsfh.c
-> @@ -601,9 +601,9 @@ fh_compose(struct svc_fh *fhp, struct svc_export *exp, struct dentry *dentry,
->  	struct inode * inode = d_inode(dentry);
->  	dev_t ex_dev = exp_sb(exp)->s_dev;
->  
-> -	dprintk("nfsd: fh_compose(exp %02x:%02x/%ld %pd2, ino=%ld)\n",
-> +	dprintk("nfsd: fh_compose(exp %02x:%02x/%llu %pd2, ino=%llu)\n",
->  		MAJOR(ex_dev), MINOR(ex_dev),
-> -		(long) d_inode(exp->ex_path.dentry)->i_ino,
-> +		d_inode(exp->ex_path.dentry)->i_ino,
->  		dentry,
->  		(inode ? inode->i_ino : 0));
->  
-> diff --git a/fs/nfsd/vfs.c b/fs/nfsd/vfs.c
-> index c884c3f34afb044ee5cacc962a04a97de2f7fd88..eafdf7b7890fdee55ddf802d040363f33a7be628 100644
-> --- a/fs/nfsd/vfs.c
-> +++ b/fs/nfsd/vfs.c
-> @@ -1163,7 +1163,7 @@ nfsd_direct_read(struct svc_rqst *rqstp, struct svc_fh *fhp,
->  	} else if (unlikely(host_err == -EINVAL)) {
->  		struct inode *inode = d_inode(fhp->fh_dentry);
->  
-> -		pr_info_ratelimited("nfsd: Direct I/O alignment failure on %s/%ld\n",
-> +		pr_info_ratelimited("nfsd: Direct I/O alignment failure on %s/%llu\n",
->  				    inode->i_sb->s_id, inode->i_ino);
->  		host_err = -ESERVERFAULT;
->  	}
-For the NFSD hunks:
+I will remote the lan9645x and add newline.
 
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+> > +             return err;
+> > +     }
+> > +
+> >       ds->mtu_enforcement_ingress =3D true;
+> >       ds->assisted_learning_on_cpu_port =3D true;
+> >       ds->fdb_isolation =3D true;
+> > @@ -636,6 +644,68 @@ static int lan9645x_fdb_del(struct dsa_switch *ds,=
+ int port,
+> >       return __lan9645x_fdb_del(lan9645x, port, addr, vid, br);
+> >  }
+> >=20
+> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h b/drive=
+rs/net/dsa/microchip/lan9645x/lan9645x_main.h
+> > index 4c7111375918..fe801d0ed39a 100644
+> > --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
+> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.h
+> > @@ -217,6 +217,9 @@ struct lan9645x {
+> >       u8 vlan_flags[VLAN_N_VID];
+> >       DECLARE_BITMAP(cpu_vlan_mask, VLAN_N_VID); /* CPU VLAN membership=
+ */
+> >=20
+> > +     /* Statistics  */
+> > +     struct lan9645x_stats *stats;
+> > +
+> >       int num_port_dis;
+> >       bool dd_dis;
+> >       bool tsn_dis;
+> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c b/driv=
+ers/net/dsa/microchip/lan9645x/lan9645x_stats.c
+> > new file mode 100644
+> > index 000000000000..43078e441e55
+> > --- /dev/null
+> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_stats.c
+> > @@ -0,0 +1,825 @@
+> > +// SPDX-License-Identifier: GPL-2.0+
+> > +/* Copyright (C) 2026 Microchip Technology Inc.
+> > + */
+> > +
+> > +#include <linux/workqueue.h>
+> > +#include <linux/debugfs.h>
+> > +
+> > +#include "lan9645x_main.h"
+> > +#include "lan9645x_stats.h"
+> > +
+> > +#define LAN9645X_STATS_CHECK_DELAY   (3 * HZ)
+> > +
+> > +static const struct lan9645x_stat_region lan9645x_port_stat_regions[] =
+=3D {
+> > +     /* RX region */
+> > +     { .base_offset =3D 0x0, .cnt =3D 67, .cnts_base_idx =3D 0 },
+> > +     /* TX region */
+> > +     { .base_offset =3D 0x80, .cnt =3D 48, .cnts_base_idx =3D 67 },
+> > +     /* DR region */
+> > +     { .base_offset =3D 0x100, .cnt =3D 18, .cnts_base_idx =3D 115 },
+> > +};
+>=20
+> Did you find any bug in ocelot_prepare_stats_regions(), which is
+> supposed to automatically build regions of contiguous stats registers
+> from just their declarations? Because I find this super error-prone and
+> hard to maintain in the long term, especially with cherry-picks on
+> stable branches and so on.
+>=20
+
+No I did not find a bug in ocelot_prepare_stats_regions. I will try to take
+a look and borrow it if I can. I agree this would be terrible to maintain b=
+y
+hand.
+I got a machine generated description of the stats registers and names from=
+ the
+designers and used that to generate the tables. In the out-of-tree driver
+I added all the stats at once, so it was a one-off thing.
+
+> > +
+> > +static const struct lan9645x_stat_layout lan9645x_port_stats_layout[] =
+=3D {
+> > +     { .name =3D "rx_oct",                .offset =3D 0x0 },
+>=20
+> New drivers which report a counter through standard ethtool API aren't
+> supposed to need a driver-specific string for it.
+>=20
+
+Ok, I was not aware, I will try to do this right.
+
+> > +     { .name =3D "rx_uc",                 .offset =3D 0x1 },
+> > +     { .name =3D "rx_mc",                 .offset =3D 0x2 },
+> > +     { .name =3D "rx_bc",                 .offset =3D 0x3 },
+> > +     { .name =3D "rx_short",              .offset =3D 0x4 },
+> > +     { .name =3D "rx_frag",               .offset =3D 0x5 },
+> > +     { .name =3D "rx_jabber",             .offset =3D 0x6 },
+> > +     { .name =3D "rx_crc",                .offset =3D 0x7 },
+> > +     { .name =3D "rx_symbol_err",         .offset =3D 0x8 },
+> > +     { .name =3D "rx_sz_64",              .offset =3D 0x9 },
+> > +     { .name =3D "rx_sz_65_127",          .offset =3D 0xa },
+> > +     { .name =3D "rx_sz_128_255",         .offset =3D 0xb },
+> > +     { .name =3D "rx_sz_256_511",         .offset =3D 0xc },
+> > +     { .name =3D "rx_sz_512_1023",        .offset =3D 0xd },
+> > +     { .name =3D "rx_sz_1024_1526",       .offset =3D 0xe },
+> > +     { .name =3D "rx_sz_jumbo",           .offset =3D 0xf },
+> > +     { .name =3D "rx_pause",              .offset =3D 0x10 },
+> > +     { .name =3D "rx_control",            .offset =3D 0x11 },
+> > +     { .name =3D "rx_long",               .offset =3D 0x12 },
+> > +     { .name =3D "rx_cat_drop",           .offset =3D 0x13 },
+> > +     { .name =3D "rx_red_prio_0",         .offset =3D 0x14 },
+> > +     { .name =3D "rx_red_prio_1",         .offset =3D 0x15 },
+> > +     { .name =3D "rx_red_prio_2",         .offset =3D 0x16 },
+> > +     { .name =3D "rx_red_prio_3",         .offset =3D 0x17 },
+> > +     { .name =3D "rx_red_prio_4",         .offset =3D 0x18 },
+> > +     { .name =3D "rx_red_prio_5",         .offset =3D 0x19 },
+> > +     { .name =3D "rx_red_prio_6",         .offset =3D 0x1a },
+> > +     { .name =3D "rx_red_prio_7",         .offset =3D 0x1b },
+> > +     { .name =3D "rx_yellow_prio_0",      .offset =3D 0x1c },
+> > +     { .name =3D "rx_yellow_prio_1",      .offset =3D 0x1d },
+> > +     { .name =3D "rx_yellow_prio_2",      .offset =3D 0x1e },
+> > +     { .name =3D "rx_yellow_prio_3",      .offset =3D 0x1f },
+> > +     { .name =3D "rx_yellow_prio_4",      .offset =3D 0x20 },
+> > +     { .name =3D "rx_yellow_prio_5",      .offset =3D 0x21 },
+> > +     { .name =3D "rx_yellow_prio_6",      .offset =3D 0x22 },
+> > +     { .name =3D "rx_yellow_prio_7",      .offset =3D 0x23 },
+> > +     { .name =3D "rx_green_prio_0",       .offset =3D 0x24 },
+> > +     { .name =3D "rx_green_prio_1",       .offset =3D 0x25 },
+> > +     { .name =3D "rx_green_prio_2",       .offset =3D 0x26 },
+> > +     { .name =3D "rx_green_prio_3",       .offset =3D 0x27 },
+> > +     { .name =3D "rx_green_prio_4",       .offset =3D 0x28 },
+> > +     { .name =3D "rx_green_prio_5",       .offset =3D 0x29 },
+> > +     { .name =3D "rx_green_prio_6",       .offset =3D 0x2a },
+> > +     { .name =3D "rx_green_prio_7",       .offset =3D 0x2b },
+> > +     { .name =3D "rx_assembly_err",       .offset =3D 0x2c },
+> > +     { .name =3D "rx_smd_err",            .offset =3D 0x2d },
+> > +     { .name =3D "rx_assembly_ok",        .offset =3D 0x2e },
+> > +     { .name =3D "rx_merge_frag",         .offset =3D 0x2f },
+> > +     { .name =3D "rx_pmac_oct",           .offset =3D 0x30 },
+> > +     { .name =3D "rx_pmac_uc",            .offset =3D 0x31 },
+> > +     { .name =3D "rx_pmac_mc",            .offset =3D 0x32 },
+> > +     { .name =3D "rx_pmac_bc",            .offset =3D 0x33 },
+> > +     { .name =3D "rx_pmac_short",         .offset =3D 0x34 },
+> > +     { .name =3D "rx_pmac_frag",          .offset =3D 0x35 },
+> > +     { .name =3D "rx_pmac_jabber",        .offset =3D 0x36 },
+> > +     { .name =3D "rx_pmac_crc",           .offset =3D 0x37 },
+> > +     { .name =3D "rx_pmac_symbol_err",    .offset =3D 0x38 },
+> > +     { .name =3D "rx_pmac_sz_64",         .offset =3D 0x39 },
+> > +     { .name =3D "rx_pmac_sz_65_127",     .offset =3D 0x3a },
+> > +     { .name =3D "rx_pmac_sz_128_255",    .offset =3D 0x3b },
+> > +     { .name =3D "rx_pmac_sz_256_511",    .offset =3D 0x3c },
+> > +     { .name =3D "rx_pmac_sz_512_1023",   .offset =3D 0x3d },
+> > +     { .name =3D "rx_pmac_sz_1024_1526",  .offset =3D 0x3e },
+> > +     { .name =3D "rx_pmac_sz_jumbo",      .offset =3D 0x3f },
+> > +     { .name =3D "rx_pmac_pause",         .offset =3D 0x40 },
+> > +     { .name =3D "rx_pmac_control",       .offset =3D 0x41 },
+> > +     { .name =3D "rx_pmac_long",          .offset =3D 0x42 },
+> > +     { .name =3D "tx_oct",                .offset =3D 0x80 },
+> > +     { .name =3D "tx_uc",                 .offset =3D 0x81 },
+> > +     { .name =3D "tx_mc",                 .offset =3D 0x82 },
+> > +     { .name =3D "tx_bc",                 .offset =3D 0x83 },
+> > +     { .name =3D "tx_col",                .offset =3D 0x84 },
+> > +     { .name =3D "tx_drop",               .offset =3D 0x85 },
+> > +     { .name =3D "tx_pause",              .offset =3D 0x86 },
+> > +     { .name =3D "tx_sz_64",              .offset =3D 0x87 },
+> > +     { .name =3D "tx_sz_65_127",          .offset =3D 0x88 },
+> > +     { .name =3D "tx_sz_128_255",         .offset =3D 0x89 },
+> > +     { .name =3D "tx_sz_256_511",         .offset =3D 0x8a },
+> > +     { .name =3D "tx_sz_512_1023",        .offset =3D 0x8b },
+> > +     { .name =3D "tx_sz_1024_1526",       .offset =3D 0x8c },
+> > +     { .name =3D "tx_sz_jumbo",           .offset =3D 0x8d },
+> > +     { .name =3D "tx_yellow_prio_0",      .offset =3D 0x8e },
+> > +     { .name =3D "tx_yellow_prio_1",      .offset =3D 0x8f },
+> > +     { .name =3D "tx_yellow_prio_2",      .offset =3D 0x90 },
+> > +     { .name =3D "tx_yellow_prio_3",      .offset =3D 0x91 },
+> > +     { .name =3D "tx_yellow_prio_4",      .offset =3D 0x92 },
+> > +     { .name =3D "tx_yellow_prio_5",      .offset =3D 0x93 },
+> > +     { .name =3D "tx_yellow_prio_6",      .offset =3D 0x94 },
+> > +     { .name =3D "tx_yellow_prio_7",      .offset =3D 0x95 },
+> > +     { .name =3D "tx_green_prio_0",       .offset =3D 0x96 },
+> > +     { .name =3D "tx_green_prio_1",       .offset =3D 0x97 },
+> > +     { .name =3D "tx_green_prio_2",       .offset =3D 0x98 },
+> > +     { .name =3D "tx_green_prio_3",       .offset =3D 0x99 },
+> > +     { .name =3D "tx_green_prio_4",       .offset =3D 0x9a },
+> > +     { .name =3D "tx_green_prio_5",       .offset =3D 0x9b },
+> > +     { .name =3D "tx_green_prio_6",       .offset =3D 0x9c },
+> > +     { .name =3D "tx_green_prio_7",       .offset =3D 0x9d },
+> > +     { .name =3D "tx_aged",               .offset =3D 0x9e },
+> > +     { .name =3D "tx_llct",               .offset =3D 0x9f },
+> > +     { .name =3D "tx_ct",                 .offset =3D 0xa0 },
+> > +     { .name =3D "tx_bufdrop",            .offset =3D 0xa1 },
+> > +     { .name =3D "tx_mm_hold",            .offset =3D 0xa2 },
+> > +     { .name =3D "tx_merge_frag",         .offset =3D 0xa3 },
+> > +     { .name =3D "tx_pmac_oct",           .offset =3D 0xa4 },
+> > +     { .name =3D "tx_pmac_uc",            .offset =3D 0xa5 },
+> > +     { .name =3D "tx_pmac_mc",            .offset =3D 0xa6 },
+> > +     { .name =3D "tx_pmac_bc",            .offset =3D 0xa7 },
+> > +     { .name =3D "tx_pmac_pause",         .offset =3D 0xa8 },
+> > +     { .name =3D "tx_pmac_sz_64",         .offset =3D 0xa9 },
+> > +     { .name =3D "tx_pmac_sz_65_127",     .offset =3D 0xaa },
+> > +     { .name =3D "tx_pmac_sz_128_255",    .offset =3D 0xab },
+> > +     { .name =3D "tx_pmac_sz_256_511",    .offset =3D 0xac },
+> > +     { .name =3D "tx_pmac_sz_512_1023",   .offset =3D 0xad },
+> > +     { .name =3D "tx_pmac_sz_1024_1526",  .offset =3D 0xae },
+> > +     { .name =3D "tx_pmac_sz_jumbo",      .offset =3D 0xaf },
+> > +     { .name =3D "dr_local",              .offset =3D 0x100 },
+> > +     { .name =3D "dr_tail",               .offset =3D 0x101 },
+> > +     { .name =3D "dr_yellow_prio_0",      .offset =3D 0x102 },
+> > +     { .name =3D "dr_yellow_prio_1",      .offset =3D 0x103 },
+> > +     { .name =3D "dr_yellow_prio_2",      .offset =3D 0x104 },
+> > +     { .name =3D "dr_yellow_prio_3",      .offset =3D 0x105 },
+> > +     { .name =3D "dr_yellow_prio_4",      .offset =3D 0x106 },
+> > +     { .name =3D "dr_yellow_prio_5",      .offset =3D 0x107 },
+> > +     { .name =3D "dr_yellow_prio_6",      .offset =3D 0x108 },
+> > +     { .name =3D "dr_yellow_prio_7",      .offset =3D 0x109 },
+> > +     { .name =3D "dr_green_prio_0",       .offset =3D 0x10a },
+> > +     { .name =3D "dr_green_prio_1",       .offset =3D 0x10b },
+> > +     { .name =3D "dr_green_prio_2",       .offset =3D 0x10c },
+> > +     { .name =3D "dr_green_prio_3",       .offset =3D 0x10d },
+> > +     { .name =3D "dr_green_prio_4",       .offset =3D 0x10e },
+> > +     { .name =3D "dr_green_prio_5",       .offset =3D 0x10f },
+> > +     { .name =3D "dr_green_prio_6",       .offset =3D 0x110 },
+> > +     { .name =3D "dr_green_prio_7",       .offset =3D 0x111 },
+> > +};
+> > +
+> > +static const struct lan9645x_view_stats lan9645x_view_stat_cfgs[] =3D =
+{
+> > +     [LAN9645X_STAT_PORTS] =3D {
+> > +       .name =3D "ports",
+> > +       .type =3D LAN9645X_STAT_PORTS,
+> > +       .layout =3D lan9645x_port_stats_layout,
+> > +       .num_cnts =3D ARRAY_SIZE(lan9645x_port_stats_layout),
+> > +       .num_indexes =3D NUM_PHYS_PORTS,
+> > +       .regions =3D lan9645x_port_stat_regions,
+> > +       .num_regions =3D ARRAY_SIZE(lan9645x_port_stat_regions),
+>=20
+> Odd to mix spaces with tabs.
+>=20
+
+Ah yes I will fix this.
+
+> > +     },
+> > +};
+> > +void
+> > +lan9645x_stats_get_rmon_stats(struct lan9645x *lan9645x, int port,
+> > +                           struct ethtool_rmon_stats *rmon_stats,
+> > +                           const struct ethtool_rmon_hist_range **rang=
+es)
+> > +{
+> > +     u64 *port_cnt;
+> > +
+> > +     mutex_lock(&lan9645x->stats->hw_lock);
+> > +
+> > +     __lan9645x_stats_view_idx_update(lan9645x, LAN9645X_STAT_PORTS, p=
+ort);
+> > +
+> > +     port_cnt =3D STAT_COUNTERS(lan9645x, LAN9645X_STAT_PORTS, port);
+> > +
+> > +     rmon_stats->undersize_pkts =3D
+> > +             port_cnt[SCNT_RX_SHORT] +
+> > +             port_cnt[SCNT_RX_PMAC_SHORT];
+>=20
+> You aren't supposed to sum up eMAC + pMAC stats except when
+> rmon_stats->src =3D=3D ETHTOOL_MAC_STATS_SRC_AGGREGATE. Otherwise report
+> them individually.
+>=20
+> Same thing for lan9645x_stats_get_eth_mac_stats().
+
+Ok thank you I will fix this.
+
+>=20
+> > +     rmon_stats->oversize_pkts =3D
+> > +             port_cnt[SCNT_RX_LONG] +
+> > +             port_cnt[SCNT_RX_PMAC_LONG];
+> > +     rmon_stats->fragments =3D
+> > +             port_cnt[SCNT_RX_FRAG] +
+> > +             port_cnt[SCNT_RX_PMAC_FRAG];
+> > +     rmon_stats->jabbers =3D
+> > +             port_cnt[SCNT_RX_JABBER] +
+> > +             port_cnt[SCNT_RX_PMAC_JABBER];
+> > +
+> > +     rmon_stats->hist[0] =3D
+> > +             port_cnt[SCNT_RX_SZ_64] +
+> > +             port_cnt[SCNT_RX_PMAC_SZ_64];
+> > +     rmon_stats->hist[1] =3D
+> > +             port_cnt[SCNT_RX_SZ_65_127] +
+> > +             port_cnt[SCNT_RX_PMAC_SZ_65_127];
+> > +     rmon_stats->hist[2] =3D
+> > +             port_cnt[SCNT_RX_SZ_128_255] +
+> > +             port_cnt[SCNT_RX_PMAC_SZ_128_255];
+> > +     rmon_stats->hist[3] =3D
+> > +             port_cnt[SCNT_RX_SZ_256_511] +
+> > +             port_cnt[SCNT_RX_PMAC_SZ_256_511];
+> > +     rmon_stats->hist[4] =3D
+> > +             port_cnt[SCNT_RX_SZ_512_1023] +
+> > +             port_cnt[SCNT_RX_PMAC_SZ_512_1023];
+> > +     rmon_stats->hist[5] =3D
+> > +             port_cnt[SCNT_RX_SZ_1024_1526] +
+> > +             port_cnt[SCNT_RX_PMAC_SZ_1024_1526];
+> > +     rmon_stats->hist[6] =3D
+> > +             port_cnt[SCNT_RX_SZ_JUMBO] +
+> > +             port_cnt[SCNT_RX_PMAC_SZ_JUMBO];
+> > +
+> > +     rmon_stats->hist_tx[0] =3D
+> > +             port_cnt[SCNT_TX_SZ_64] +
+> > +             port_cnt[SCNT_TX_PMAC_SZ_64];
+> > +     rmon_stats->hist_tx[1] =3D
+> > +             port_cnt[SCNT_TX_SZ_65_127] +
+> > +             port_cnt[SCNT_TX_PMAC_SZ_65_127];
+> > +     rmon_stats->hist_tx[2] =3D
+> > +             port_cnt[SCNT_TX_SZ_128_255] +
+> > +             port_cnt[SCNT_TX_PMAC_SZ_128_255];
+> > +     rmon_stats->hist_tx[3] =3D
+> > +             port_cnt[SCNT_TX_SZ_256_511] +
+> > +             port_cnt[SCNT_TX_PMAC_SZ_256_511];
+> > +     rmon_stats->hist_tx[4] =3D
+> > +             port_cnt[SCNT_TX_SZ_512_1023] +
+> > +             port_cnt[SCNT_TX_PMAC_SZ_512_1023];
+> > +     rmon_stats->hist_tx[5] =3D
+> > +             port_cnt[SCNT_TX_SZ_1024_1526] +
+> > +             port_cnt[SCNT_TX_PMAC_SZ_1024_1526];
+> > +     rmon_stats->hist_tx[6] =3D
+> > +             port_cnt[SCNT_TX_SZ_JUMBO] +
+> > +             port_cnt[SCNT_TX_PMAC_SZ_JUMBO];
+> > +
+> > +     mutex_unlock(&lan9645x->stats->hw_lock);
+> > +
+> > +     *ranges =3D lan9645x_rmon_ranges;
+> > +}
+> > +
+> > +void lan9645x_stats_get_stats64(struct lan9645x *lan9645x, int port,
+> > +                             struct rtnl_link_stats64 *stats)
+> > +{
+> > +     u64 *port_cnt;
+> > +
+> > +     /* Avoid stats update, as this is called very often by DSA. */
+> > +     mutex_lock(&lan9645x->stats->hw_lock);
+>=20
+> This is atomic context, you can't acquire a mutex which may be held by a
+> process which sleeps, which also puts you to sleep for it.
+>=20
+> This is why ocelot->stats_lock is a spinlock, different from
+> ocelot->stat_view_lock (your lan9645x->stats->hw_lock).
+>=20
+> No problem with not updating the stats upon ndo_get_stats64() call,
+> given the fact that the context is atomic.
+>=20
+
+Good point. I will look into adding a spinlock, because I believe I need
+some locking here to avoid torn reads if the host cpu is 32bit.
+And I will add a comment about atomic context.
+
+> > +
+> > +     port_cnt =3D STAT_COUNTERS(lan9645x, LAN9645X_STAT_PORTS, port);
+> > +
+> > +     stats->rx_bytes =3D port_cnt[SCNT_RX_OCT] +
+> > +                       port_cnt[SCNT_RX_PMAC_OCT];
+> > +
+> > +     stats->rx_packets =3D port_cnt[SCNT_RX_SHORT] +
+> > +                         port_cnt[SCNT_RX_FRAG] +
+> > +                         port_cnt[SCNT_RX_JABBER] +
+> > +                         port_cnt[SCNT_RX_CRC] +
+> > +                         port_cnt[SCNT_RX_SYMBOL_ERR] +
+> > +                         port_cnt[SCNT_RX_SZ_64] +
+> > +                         port_cnt[SCNT_RX_SZ_65_127] +
+> > +                         port_cnt[SCNT_RX_SZ_128_255] +
+> > +                         port_cnt[SCNT_RX_SZ_256_511] +
+> > +                         port_cnt[SCNT_RX_SZ_512_1023] +
+> > +                         port_cnt[SCNT_RX_SZ_1024_1526] +
+> > +                         port_cnt[SCNT_RX_SZ_JUMBO] +
+> > +                         port_cnt[SCNT_RX_LONG] +
+> > +                         port_cnt[SCNT_RX_PMAC_SHORT] +
+> > +                         port_cnt[SCNT_RX_PMAC_FRAG] +
+> > +                         port_cnt[SCNT_RX_PMAC_JABBER] +
+> > +                         port_cnt[SCNT_RX_PMAC_SZ_64] +
+> > +                         port_cnt[SCNT_RX_PMAC_SZ_65_127] +
+> > +                         port_cnt[SCNT_RX_PMAC_SZ_128_255] +
+> > +                         port_cnt[SCNT_RX_PMAC_SZ_256_511] +
+> > +                         port_cnt[SCNT_RX_PMAC_SZ_512_1023] +
+> > +                         port_cnt[SCNT_RX_PMAC_SZ_1024_1526] +
+> > +                         port_cnt[SCNT_RX_PMAC_SZ_JUMBO];
+> > +
+> > +     stats->multicast =3D port_cnt[SCNT_RX_MC] +
+> > +                        port_cnt[SCNT_RX_PMAC_MC];
+> > +
+> > +     stats->rx_errors =3D port_cnt[SCNT_RX_SHORT] +
+> > +                        port_cnt[SCNT_RX_FRAG] +
+> > +                        port_cnt[SCNT_RX_JABBER] +
+> > +                        port_cnt[SCNT_RX_CRC] +
+> > +                        port_cnt[SCNT_RX_SYMBOL_ERR] +
+> > +                        port_cnt[SCNT_RX_LONG] +
+> > +                        port_cnt[SCNT_RX_PMAC_SHORT] +
+> > +                        port_cnt[SCNT_RX_PMAC_FRAG] +
+> > +                        port_cnt[SCNT_RX_PMAC_JABBER] +
+> > +                        port_cnt[SCNT_RX_PMAC_CRC] +
+> > +                        port_cnt[SCNT_RX_PMAC_SYMBOL_ERR] +
+> > +                        port_cnt[SCNT_RX_PMAC_LONG];
+> > +
+> > +     stats->rx_dropped =3D port_cnt[SCNT_RX_LONG] +
+> > +                         port_cnt[SCNT_DR_LOCAL] +
+> > +                         port_cnt[SCNT_DR_TAIL] +
+> > +                         port_cnt[SCNT_RX_CAT_DROP] +
+> > +                         port_cnt[SCNT_RX_RED_PRIO_0] +
+> > +                         port_cnt[SCNT_RX_RED_PRIO_1] +
+> > +                         port_cnt[SCNT_RX_RED_PRIO_2] +
+> > +                         port_cnt[SCNT_RX_RED_PRIO_3] +
+> > +                         port_cnt[SCNT_RX_RED_PRIO_4] +
+> > +                         port_cnt[SCNT_RX_RED_PRIO_5] +
+> > +                         port_cnt[SCNT_RX_RED_PRIO_6] +
+> > +                         port_cnt[SCNT_RX_RED_PRIO_7];
+> > +
+> > +     for (int i =3D 0; i < LAN9645X_NUM_TC; i++) {
+> > +             stats->rx_dropped +=3D port_cnt[SCNT_DR_YELLOW_PRIO_0 + i=
+] +
+> > +                                  port_cnt[SCNT_DR_GREEN_PRIO_0 + i];
+> > +     }
+> > +
+> > +     stats->tx_bytes =3D port_cnt[SCNT_TX_OCT] +
+> > +                       port_cnt[SCNT_TX_PMAC_OCT];
+> > +
+> > +     stats->tx_packets =3D port_cnt[SCNT_TX_SZ_64] +
+> > +                         port_cnt[SCNT_TX_SZ_65_127] +
+> > +                         port_cnt[SCNT_TX_SZ_128_255] +
+> > +                         port_cnt[SCNT_TX_SZ_256_511] +
+> > +                         port_cnt[SCNT_TX_SZ_512_1023] +
+> > +                         port_cnt[SCNT_TX_SZ_1024_1526] +
+> > +                         port_cnt[SCNT_TX_SZ_JUMBO] +
+> > +                         port_cnt[SCNT_TX_PMAC_SZ_64] +
+> > +                         port_cnt[SCNT_TX_PMAC_SZ_65_127] +
+> > +                         port_cnt[SCNT_TX_PMAC_SZ_128_255] +
+> > +                         port_cnt[SCNT_TX_PMAC_SZ_256_511] +
+> > +                         port_cnt[SCNT_TX_PMAC_SZ_512_1023] +
+> > +                         port_cnt[SCNT_TX_PMAC_SZ_1024_1526] +
+> > +                         port_cnt[SCNT_TX_PMAC_SZ_JUMBO];
+> > +
+> > +     stats->tx_dropped =3D port_cnt[SCNT_TX_DROP] +
+> > +                         port_cnt[SCNT_TX_AGED];
+> > +
+> > +     stats->collisions =3D port_cnt[SCNT_TX_COL];
+> > +
+> > +     mutex_unlock(&lan9645x->stats->hw_lock);
+> > +}
+> > +
+> > +void lan9645x_stats_get_eth_phy_stats(struct lan9645x *lan9645x, int p=
+ort,
+> > +                                   struct ethtool_eth_phy_stats *phy_s=
+tats)
+> > +{
+> > +     u64 *port_cnt;
+> > +
+> > +     mutex_lock(&lan9645x->stats->hw_lock);
+> > +
+> > +     __lan9645x_stats_view_idx_update(lan9645x, LAN9645X_STAT_PORTS, p=
+ort);
+> > +
+> > +     port_cnt =3D STAT_COUNTERS(lan9645x, LAN9645X_STAT_PORTS, port);
+> > +
+> > +     switch (phy_stats->src) {
+> > +     case ETHTOOL_MAC_STATS_SRC_EMAC:
+> > +             phy_stats->SymbolErrorDuringCarrier =3D
+> > +                     port_cnt[SCNT_RX_SYMBOL_ERR];
+> > +             break;
+> > +     case ETHTOOL_MAC_STATS_SRC_PMAC:
+> > +             phy_stats->SymbolErrorDuringCarrier =3D
+> > +                     port_cnt[SCNT_RX_PMAC_SYMBOL_ERR];
+> > +             break;
+> > +     default:
+> > +             break;
+> > +     }
+> > +
+> > +     mutex_unlock(&lan9645x->stats->hw_lock);
+> > +}
+> > +
+> > +void
+> > +lan9645x_stats_get_eth_ctrl_stats(struct lan9645x *lan9645x, int port,
+> > +                               struct ethtool_eth_ctrl_stats *ctrl_sta=
+ts)
+> > +{
+> > +     u64 *port_cnt;
+> > +
+> > +     mutex_lock(&lan9645x->stats->hw_lock);
+> > +
+> > +     __lan9645x_stats_view_idx_update(lan9645x, LAN9645X_STAT_PORTS, p=
+ort);
+> > +
+> > +     port_cnt =3D STAT_COUNTERS(lan9645x, LAN9645X_STAT_PORTS, port);
+> > +
+> > +     switch (ctrl_stats->src) {
+> > +     case ETHTOOL_MAC_STATS_SRC_EMAC:
+> > +             ctrl_stats->MACControlFramesReceived =3D
+> > +                     port_cnt[SCNT_RX_CONTROL];
+> > +             break;
+> > +     case ETHTOOL_MAC_STATS_SRC_PMAC:
+> > +             ctrl_stats->MACControlFramesReceived =3D
+> > +                     port_cnt[SCNT_RX_PMAC_CONTROL];
+> > +             break;
+> > +     default:
+> > +             break;
+> > +     }
+> > +
+> > +     mutex_unlock(&lan9645x->stats->hw_lock);
+> > +}
+> > +
+> > +void lan9645x_stats_get_pause_stats(struct lan9645x *lan9645x, int por=
+t,
+> > +                                 struct ethtool_pause_stats *ps)
+> > +{
+> > +     u64 *port_cnt;
+> > +
+> > +     mutex_lock(&lan9645x->stats->hw_lock);
+> > +
+> > +     __lan9645x_stats_view_idx_update(lan9645x, LAN9645X_STAT_PORTS, p=
+ort);
+> > +
+> > +     port_cnt =3D STAT_COUNTERS(lan9645x, LAN9645X_STAT_PORTS, port);
+> > +
+> > +     switch (ps->src) {
+> > +     case ETHTOOL_MAC_STATS_SRC_EMAC:
+> > +             ps->tx_pause_frames =3D port_cnt[SCNT_TX_PAUSE];
+> > +             ps->rx_pause_frames =3D port_cnt[SCNT_RX_PAUSE];
+> > +             break;
+> > +     case ETHTOOL_MAC_STATS_SRC_PMAC:
+> > +             ps->tx_pause_frames =3D port_cnt[SCNT_TX_PMAC_PAUSE];
+> > +             ps->rx_pause_frames =3D port_cnt[SCNT_RX_PMAC_PAUSE];
+> > +             break;
+>=20
+> ...no aggregate? I guess this will just return zeroes under normal
+> operation, and not anything useful? Similar thing everywhere you look
+> for the source of statistics.
+>=20
+> BTW, Ioana is working on a selftest that makes sure standard counters
+> are implemeted correctly.
+> https://lore.kernel.org/netdev/20260225150648.1542206-6-ioana.ciornei@nxp=
+.com/
+>=20
+> The test packaging still needs to be improved, but it's functional.
+> Maybe you could give it a run? I'm thinking it would have caught this.
+>=20
+
+I will add the aggregate handling and try out the selftest patch.
+
+> > +     default:
+> > +             break;
+> > +     }
+> > +
+> > +     mutex_unlock(&lan9645x->stats->hw_lock);
+> > +}
+> > +
+> > +void lan9645x_stats_get_mm_stats(struct lan9645x *lan9645x, int port,
+> > +                              struct ethtool_mm_stats *stats)
+> > +{
+> > +     u64 *port_cnt;
+> > +
+> > +     mutex_lock(&lan9645x->stats->hw_lock);
+> > +
+> > +     __lan9645x_stats_view_idx_update(lan9645x, LAN9645X_STAT_PORTS, p=
+ort);
+> > +
+> > +     port_cnt =3D STAT_COUNTERS(lan9645x, LAN9645X_STAT_PORTS, port);
+> > +
+> > +     stats->MACMergeFrameAssErrorCount =3D port_cnt[SCNT_RX_ASSEMBLY_E=
+RR];
+> > +     stats->MACMergeFrameSmdErrorCount =3D port_cnt[SCNT_RX_SMD_ERR];
+> > +     stats->MACMergeFrameAssOkCount =3D port_cnt[SCNT_RX_ASSEMBLY_OK];
+> > +     stats->MACMergeFragCountRx =3D port_cnt[SCNT_RX_MERGE_FRAG];
+> > +     stats->MACMergeFragCountTx =3D port_cnt[SCNT_TX_MERGE_FRAG];
+> > +     stats->MACMergeHoldCount =3D port_cnt[SCNT_TX_MM_HOLD];
+> > +
+> > +     mutex_unlock(&lan9645x->stats->hw_lock);
+> > +}
+> > +
+> > +void lan9645x_stats_clear_counters(struct lan9645x *lan9645x,
+> > +                                enum lan9645x_view_stat_type type, int=
+ idx)
+>=20
+> Never called, please remove. Don't leave dead code in the driver.
+>=20
+
+I will remove it.
+
+> > +{
+> > +     struct lan9645x_view_stats *vstats =3D
+> > +             lan9645x_get_vstats(lan9645x, type);
+> > +     u64 *idx_grp;
+> > +     int cntr;
+> > +     u32 sel;
+> > +
+> > +     switch (type) {
+> > +     case LAN9645X_STAT_PORTS:
+> > +             /* Drop, TX and RX counters */
+> > +             sel =3D BIT(2) | BIT(1) | BIT(0);
+> > +             break;
+> > +     case LAN9645X_STAT_ISDX:
+> > +             /* ISDX and FRER seq gen */
+> > +             sel =3D BIT(5) | BIT(3);
+> > +             break;
+> > +     case LAN9645X_STAT_ESDX:
+> > +             /* ESDX */
+> > +             sel =3D BIT(6);
+> > +             break;
+> > +     case LAN9645X_STAT_SFID:
+> > +             /* Stream filter */
+> > +             sel =3D BIT(4);
+> > +             break;
+> > +     default:
+> > +             return;
+> > +     }
+> > +
+> > +     mutex_lock(&lan9645x->stats->hw_lock);
+> > +
+> > +     lan_wr(SYS_STAT_CFG_STAT_CLEAR_SHOT_SET(sel) |
+> > +            SYS_STAT_CFG_STAT_VIEW_SET(idx),
+> > +            lan9645x, SYS_STAT_CFG);
+> > +
+> > +     idx_grp =3D STATS_INDEX(vstats, idx);
+> > +     for (cntr =3D 0; cntr < vstats->num_cnts; cntr++)
+> > +             idx_grp[cntr] =3D 0;
+> > +
+> > +     mutex_unlock(&lan9645x->stats->hw_lock);
+> > +}
+> > +
+> > +static void lan9645x_check_stats_work(struct work_struct *work)
+> > +{
+> > +     struct delayed_work *del_work =3D to_delayed_work(work);
+> > +     struct lan9645x_stats *stats;
+> > +
+> > +     stats =3D container_of(del_work, struct lan9645x_stats, work);
+> > +
+> > +     lan9645x_stats_update(stats->lan9645x);
+> > +
+> > +     queue_delayed_work(stats->queue, &stats->work,
+> > +                        LAN9645X_STATS_CHECK_DELAY);
+> > +}
+> > +
+> > +static int lan9645x_stats_debugfs_show(struct seq_file *m, void *unuse=
+d)
+> > +{
+> > +     struct lan9645x_view_stats *vstats =3D m->private;
+> > +     int idx, cntr;
+> > +     size_t total;
+> > +     u64 *snap;
+> > +
+> > +     total =3D vstats->num_cnts * vstats->num_indexes;
+> > +
+> > +     /* Snapshot counters under lock to avoid holding hw_lock during
+> > +      * slow seq_printf output.
+> > +      */
+> > +     snap =3D kmalloc_array(total, sizeof(u64), GFP_KERNEL);
+> > +     if (!snap)
+> > +             return -ENOMEM;
+> > +
+> > +     mutex_lock(&vstats->stats->hw_lock);
+> > +     memcpy(snap, vstats->cnts, total * sizeof(u64));
+> > +     mutex_unlock(&vstats->stats->hw_lock);
+> > +
+> > +     for (idx =3D 0; idx < vstats->num_indexes; idx++) {
+> > +             for (cntr =3D 0; cntr < vstats->num_cnts; cntr++) {
+> > +                     seq_printf(m, "%s_%d_%-*s %llu\n", vstats->name, =
+idx,
+> > +                                30, vstats->layout[cntr].name,
+> > +                                snap[vstats->num_cnts * idx + cntr]);
+> > +             }
+> > +     }
+> > +
+> > +     kfree(snap);
+> > +     return 0;
+> > +}
+> > +DEFINE_SHOW_ATTRIBUTE(lan9645x_stats_debugfs);
+>=20
+> What is the purpose of a 'stats' debugfs?
+>=20
+> If this is about standard ethtool stats on the CPU port, we need a
+> larger discussion about this, since it is a common problem for multiple
+> drivers.
+>=20
+> I had a prototype patch to permit "ethtool" to be run on devlink ports
+> (we do have one of those on the CPU port). But I never had time to start
+> a discussion about it.
+>=20
+
+Yes I used it to expose _all_ hardware counters for all views and indices. =
+In
+particular, the cpu port. I used it for debugging, but I will remove it
+and the parent debugfs.
+Is devlink a valid use for something like this?
 
 
--- 
-Chuck Lever
+> > +
+> > +static void lan9645x_stats_debugfs(struct lan9645x *lan9645x,
+> > +                                struct dentry *parent)
+> > +{
+> > +     struct lan9645x_stats *stats =3D lan9645x->stats;
+> > +     struct dentry *dir;
+> > +     int i;
+> > +
+> > +     dir =3D debugfs_create_dir("stats", parent);
+> > +     if (PTR_ERR_OR_ZERO(dir))
+> > +             return;
+> > +
+> > +     for (i =3D 0; i < ARRAY_SIZE(stats->view); i++)
+> > +             debugfs_create_file(stats->view[i].name, 0444, dir,
+> > +                                 &stats->view[i],
+> > +                                 &lan9645x_stats_debugfs_fops);
+> > +}
+> > +
+> > +static int lan9645x_view_stat_init(struct lan9645x *lan9645x,
+> > +                                struct lan9645x_view_stats *vstat,
+> > +                                const struct lan9645x_view_stats *cfg)
+> > +{
+> > +     size_t total =3D cfg->num_cnts * cfg->num_indexes;
+> > +
+> > +     memcpy(vstat, cfg, sizeof(*cfg));
+> > +
+> > +     vstat->cnts =3D devm_kcalloc(lan9645x->dev, total, sizeof(u64),
+> > +                                GFP_KERNEL);
+> > +     if (!vstat->cnts)
+> > +             return -ENOMEM;
+> > +
+> > +     vstat->buf =3D devm_kcalloc(lan9645x->dev, total, sizeof(u32),
+> > +                               GFP_KERNEL);
+> > +     if (!vstat->buf)
+> > +             return -ENOMEM;
+> > +
+> > +     vstat->stats =3D lan9645x->stats;
+> > +
+> > +     return 0;
+> > +}
+> > +
+> > +int lan9645x_stats_init(struct lan9645x *lan9645x)
+> > +{
+> > +     const struct lan9645x_view_stats *vs;
+> > +     struct lan9645x_stats *stats;
+> > +     int err, i;
+> > +
+> > +     lan9645x->stats =3D devm_kzalloc(lan9645x->dev, sizeof(*stats),
+> > +                                    GFP_KERNEL);
+> > +     if (!lan9645x->stats)
+> > +             return -ENOMEM;
+> > +
+> > +     stats =3D lan9645x->stats;
+> > +     stats->lan9645x =3D lan9645x;
+> > +
+> > +     mutex_init(&stats->hw_lock);
+> > +     stats->queue =3D alloc_ordered_workqueue("lan9645x-stats", 0);
+> > +     if (!stats->queue)
+> > +             return -ENOMEM;
+> > +
+> > +     for (i =3D 0; i < ARRAY_SIZE(lan9645x_view_stat_cfgs); i++) {
+> > +             vs =3D &lan9645x_view_stat_cfgs[i];
+> > +
+> > +             if (!vs->num_cnts)
+> > +                     continue;
+> > +
+> > +             err =3D lan9645x_view_stat_init(lan9645x, &stats->view[vs=
+->type],
+> > +                                           vs);
+> > +             if (err)
+>=20
+> stats->queue is leaked.
+>=20
+
+Ah yes, thanks.
+
+> > +                     return err;
+> > +     }
+> > +
+> > +     INIT_DELAYED_WORK(&stats->work, lan9645x_check_stats_work);
+> > +     queue_delayed_work(stats->queue, &stats->work,
+> > +                        LAN9645X_STATS_CHECK_DELAY);
+> > +
+> > +     lan9645x_stats_debugfs(lan9645x, lan9645x->debugfs_root);
+> > +
+> > +     return 0;
+> > +}
+> >=20
+> >=20
+>=20
+
+Thank you for the comments,
+Emil
