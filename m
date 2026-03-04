@@ -1,105 +1,71 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtpbgsg2.qq.com (smtpbgsg2.qq.com [54.254.200.128])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159C53822A9;
-	Wed,  4 Mar 2026 08:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57FD35F60C;
+	Wed,  4 Mar 2026 08:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.128
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772614077; cv=none; b=WLRQc0ioTQmzH0ep9ShmLjTrJSO+ZT+HhhOHaa4xiSQ8mui6And/1iv67nf3CbU/dOBxUNeurO0A3w2hT6zNKthneeWpWpOSEhRsvRnksFvRyUw1NNyky+uZOGzdt8qPL9O1K4KpjA0zJm/aeQH1Ty8g5ZnE/5+lZIODvQG+RhA=
+	t=1772614141; cv=none; b=rJ7cRr7bTT3OIv4j0iCRgHG0vXOtqEEyMr1ROb8MLKT+awJcYY8U1czHATJiIjv5GIXfnizdi38cRaTIrj8UT+zVzeCkTEs+h60BqrQ6iwSWddPp8SBqts28zM11qnx08HPMIhuzckpaaX6e5ozB0WgjYXtNz47h3A+pQCl5RCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772614077; c=relaxed/simple;
-	bh=clGftPmj2+c1YG99mGBbz50S6DhXt1AyOqKowzose9I=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=JLvg6jA5A9csut7Q4kMC6a29tVsdOXKMR+RIf7A61gilug1V90gusyerfdEjhGjQEWANrLsT63ldfKB7EHbLlUuQCkynfxvXl/lv8dLrPGNqwWcQJd6PUMVEvKbSDxDOH5xb8JSAENAyEAFgnAs0+7lrgADduMA6eZ6WmuYMI7M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=RQL7HIlc; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="RQL7HIlc"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
-	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=R3yEO4bBe5WxEVH7suRiLaNUM3m0kjyEmV+fOL4Vhyo=; b=RQL7HIlcO587or0eFJTfqe3qxN
-	QB4xHV4oKbgXumQ3KWKvGNAlQQIHCjoiKr1kzKqN40dQoemka3vzfaCMKXLIhHiV26xEfIw9OYMZA
-	97syH3PRdGQgFqdmORM9NYSAv3XxZLUmgahw07UO9IhBeM88wesm7Jj7rvHS5o/25TNUZgP5GjzXB
-	GUruRtRiwES8/z4UZ+mtVS/PhOoFTDzhpWav1na63WCNZC0PJdjBrk5HLMean2+40K3Rtwk7TujVo
-	juNKdMYisrY83m+58imHgtUy3gDALyQzt5kRxFae3QId3CGe1nMneKSXKcd3T2A7BvvxyLDc7r50A
-	KS2EKrfg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:56142)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vxhtL-0000000068d-3e9B;
-	Wed, 04 Mar 2026 08:47:39 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vxhtI-000000007lz-1Biy;
-	Wed, 04 Mar 2026 08:47:36 +0000
-Date: Wed, 4 Mar 2026 08:47:36 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
-	netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH RFC net-next v2 0/7] net: stmmac: improve PCS support
-Message-ID: <aafxqCvJ_XY4YbWw@shell.armlinux.org.uk>
+	s=arc-20240116; t=1772614141; c=relaxed/simple;
+	bh=jp4zv1IMD+JbEDVrIN4ou0kJ6aerQ/Ci5f1dm53kmTQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TaV0D0L4ZtcJ9W/XOuL8PJxRA9EGjFe1mnlyyTMJZVVP4qkupNQAVZoHO5J1hv10k4kMwsYAa7sP8OGMLWsmdupxuybt3/7WnUIqBjA16fTOD6YDCMavUMlLUkJWNzHJD37lpxrQyGguRm5CDkStJq3m/Su4I12NycyTVqmxwwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org; spf=none smtp.mailfrom=vimux.org; arc=none smtp.client-ip=54.254.200.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=vimux.org
+X-QQ-mid: esmtpgz14t1772614110t8d33eecd
+X-QQ-Originating-IP: QVn+zZGyfbROlwYHeNK+bV2TnRksrpPVnTgqAEG9MfE=
+Received: from localhost.localdomain ( [119.167.27.218])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Wed, 04 Mar 2026 16:48:27 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 17737399994365302656
+From: Jialu Xu <xujialu@vimux.org>
+To: linux-gpio@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: linusw@kernel.org,
+	brgl@kernel.org,
+	krzk@kernel.org,
+	kees@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/3] Remove <linux/of_gpio.h>
+Date: Wed,  4 Mar 2026 16:47:01 +0800
+Message-ID: <7187C401290C256B+20260304084808.440955-1-xujialu@vimux.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:vimux.org:qybglogicsvrsz:qybglogicsvrsz3b-0
+X-QQ-XMAILINFO: OP2legL3v8uLJZI/OiDiop/rYaMhzepUFbeGjTyib26fjcvLpXvWehx3
+	/UDALfXuznHeYr8zEvykHkeYgrxdHyFGhBIl6izVL0O8H+RUPnvwB5ohG4vOaNXwK3MqAl6
+	WqJV0JR8554/3PaZHkhyPgCrqlR++ELPwttUSFWfGz9o1T/hn7CvgGRwVUHj7FIC730vD0E
+	O3B1XVEF+I0uBdGf5td6LH5P4RwHycsUJA76kiNtVsJWPwPOB5Da2WPttHPIRl9DvMdcV72
+	wdYVIphfZobGtWonjABks1MynjeQW+JGzt/S8bdTVXqB7WXsdW8yC/x0xKicSB9ev9bRm9e
+	ssR+mangP5eb66N0y9bknZp8lgKkRAITuH+44qdnGevMnL9EQMy8o4av6TqN5uTwvJvVA3S
+	73Wme66Pgq65HfVLxNei7gNPfZMTnc/NocMywAv0aDsk0+mqLFdy3KqIavKporHmqTKJ3Pn
+	ACwtzwxZ0PyhFnWJRiKFjNNpF2azxSqpTOVPd1jH+QJipL9QlfkYID8gcf0rV+JCh99h7fV
+	6NBxYm7epR/Gxts+gUoVBP0+tbMYpUx0ieq78USRAc2/xLoA7H5rup1G2nhiv7LY16UU09C
+	GebHNBvwX538vKfzD6YrP+7UvgQ4kKvR0DseLfOnmKxoPke3Q1GjVDFUsP91uXKT/2L3B8Q
+	x4HV7IeVLqWrzkT64vEizgIJ7aYYInuTX+R3BeFLN9Z0hzZ01fSP8h9kgSdWaCWByzDw/cI
+	K7ooPKrN9PveK59exzY02Tmp+OTTjDTyMABz8rb5C+3OjnMFX3JJv2cWQxKiJmvX+NyNKPS
+	foBB9OCKiXje9oqDrIjJWVDI1R+qklFe1HTpM9rm6SXTh1MGBsfaeUMfUStOk0R47DK2xLi
+	SZz8wfaF/hov/FSCDcrdloKiGm6DjkTAfruLDVPo5avXpZC7mTCJSfv5BihabnjxHYMbSuq
+	tZFgxWnAqH4QinWbMEHphKHlBIZScNYvpOnMac5S8iCm/TaI01GL2sXNvZGuHuuZa0Pc=
+X-QQ-XMRINFO: Nq+8W0+stu50tPAe92KXseR0ZZmBTk3gLg==
+X-QQ-RECHKSPAM: 0
 
-Resending this as the original RFC now conflicts with net-next.
+The legacy header <linux/of_gpio.h> exports only one deprecated
+function, of_get_named_gpio(). Its last three consumers all reside in
+the NFC subsystem. Convert them to the GPIO descriptor API and then
+remove the header entirely.
 
-This series is the next of the three part series sorting out the PCS
-support in stmmac, building on part 2, which was posted yesterday:
+Patchx 1-2 convert the NFC drivers.
+Patch 3 removes of_get_named_gpio() and deletes <linux/of_gpio.h> and
+also TODO.
 
-	net: stmmac: qcom-ethqos: further serdes reorganisation
-
-Similar patches have been posted previously. This series does away with
-the common SerDes PHY support, instead using a flag to indicate whether
-2500Mbps mode is supported (STMMAC_FLAG_SERDES_SUPPORTS_2500M.) At this
-time, I have no plans to resurect the common SerDes PHY support - the
-generic PHY layer implementations are just too random to consider that,
-and I certainly do not want the extra work of fixing that.
-
-I've also changed the last patch which prints warnings when qcom-ethqos
-changes the PCS state - this will now indicate in a readable form
-whether the ANE or SGMRAL bits have changed state, rather than having
-to refer back to the definitions in the code or the databook.
-
-I am hoping that - subject to this working for qcom-ethqos - we can
-drop this last patch in the final submission, along with the
-dwmac_ctrl_ane() and ethqos_pcs_set_inband() functions and associated
-definitions. This will also mean that stmmac will finally be driving
-the PCS correctly from a phylink point of view.
-
- drivers/net/ethernet/stmicro/stmmac/common.h       |   4 -
- .../ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c    |   1 +
- drivers/net/ethernet/stmicro/stmmac/dwmac1000.h    |  12 +-
- .../net/ethernet/stmicro/stmmac/dwmac1000_core.c   |  11 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac4.h       |  10 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c  |  10 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c  |   8 +-
- drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c   | 160 +++++++++++++++++++--
- drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.h   |  29 +++-
- include/linux/stmmac.h                             |   1 +
- 10 files changed, 200 insertions(+), 46 deletions(-)
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
