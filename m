@@ -1,172 +1,191 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED36C288C2C
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 00:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 208A228690;
+	Wed,  4 Mar 2026 00:16:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772583338; cv=none; b=tZjzkkxQBuYUm6HoujP1XW0QixbCMDukNzTxO7wZCr8C0FV7Lcm6t2d1p2zbMxncG9Y90TL/rm4NQ15Nj8NrbD98M/fXDybWfQFnIcVHo5B8mWS6DEW7IBuuPq/K8FcB2C8tlKonEYiMVA1zafOZHDOM4wKyAXStwL2VcIrXEkM=
+	t=1772583370; cv=none; b=kVLgyN2hRJKGU9kFWYqctWc5yNZ3UaQPpMv79uJcVo+0Ydce55tt24rui930tWP40Q1YmKSLfGc2Q1l1tjzO0fVvSEiiARgnWgshAQsEhYu+h7lABRqWSJjfJp/9PbwUKFqJiP6tRYHk2atAS+InRK449lpGp5quNw8W4KcWvu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772583338; c=relaxed/simple;
-	bh=oI/vGu36wfkM1nmzE96a7ohou5yqGigIgG8quRlCS5k=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jje29TQg0oHj5oCAD4W8reTyTE8hPl2jNabESAe6I7nM87EN0eNn1he5daba5q32zbPbH7QqLylu0zoLZFF0MXJU3CSpbIH1/vNtCJFOvR752uCJKA9/4Q+ai55BkOne+RnfjPrSpgPdavynpJTSN00QWfNH+FiObBoBiB4zn3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b=KHOypqXU; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=fb.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1772583370; c=relaxed/simple;
+	bh=KSvzOs7RbuEecnAo32EKvW2/iKM0O+RI6xer47V1dXM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rPozalbNwaJqYShSosYnS9Fxq09Y2bPX5/ZqneuAw4DAc1r+g2/hS+YotfnO9XMzgf4mTovE3b4HbRDqbieBYBnq95sTiimTyC+JQVZ540dRMiyJ7QxxnoA51ZRfdLS9ox2WMxUpiZzspLT3BUjAgKJE+E7CPt70g2U4gUg0nRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R4GzG+Jb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fb.com header.i=@fb.com header.b="KHOypqXU"
-Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 623K69E72733908
-	for <netdev@vger.kernel.org>; Tue, 3 Mar 2026 16:15:36 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=h53iYLfeYq7JFFSt0lCT1fiqn0WJe2A9Pnv+RsinQ3c=; b=KHOypqXUIYSL
-	I/HsCohSd1pRHMFj3gRR2Oqhvw5HmyGUUkH2Ce8P/r1uy5VLoJ1mlj8tKB5SFsQQ
-	4zFAHSTp5f4J1FP1v1pO10jRXUfkScqWvGhoiAyEFp1k1+85uSPzyWW2tw+WOfof
-	bGtPspjdubcBK1LkdiSvqaVxxseRwVG6kJrtbVtsa9dnLq/NWUmBfkK6SIuHoqX1
-	Mh+r0u2Kod51yrBQOKQvx12r0HCoXhCOYDbw6sgm5DdwE9izC7/pjRrpmUtIzJCu
-	PEJTCMOmItRKbKHN+MqS5FiBVJrLPWpGAdtJjHVltgYBeORcbc4k8xvpUfdsgywR
-	4sJqXrde6A==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4cnmun6djq-6
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <netdev@vger.kernel.org>; Tue, 03 Mar 2026 16:15:36 -0800 (PST)
-Received: from twshared108583.15.frc2.facebook.com (2620:10d:c0a8:1b::30) by
- mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Wed, 4 Mar 2026 00:15:01 +0000
-Received: by devbig1867.frc2.facebook.com (Postfix, from userid 708122)
-	id 544DB7599537; Tue,  3 Mar 2026 16:14:50 -0800 (PST)
-From: Wei Wang <weibunny@fb.com>
-To: <netdev@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Daniel Zahka
-	<daniel.zahka@gmail.com>,
-        Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-        David Wei <dw@davidwei.uk>, Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S.
- Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>
-CC: Wei Wang <weibunny@fb.com>, Bobby Eshleman <bobbyeshleman@meta.com>
-Subject: [PATCH v2 net-next 8/9] selftests/net: Add bpf skb forwarding program
-Date: Tue, 3 Mar 2026 16:00:48 -0800
-Message-ID: <20260304000050.3366381-9-weibunny@fb.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260304000050.3366381-1-weibunny@fb.com>
-References: <20260304000050.3366381-1-weibunny@fb.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R4GzG+Jb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1EBC116C6;
+	Wed,  4 Mar 2026 00:16:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772583369;
+	bh=KSvzOs7RbuEecnAo32EKvW2/iKM0O+RI6xer47V1dXM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=R4GzG+Jb0cZQZx3us7w2pr8WE62vINBtVBh/tNLOEZjIMv2ZIWypUJZ41VMjPKZlg
+	 b9kzS+H4XruNNXJrbDosplStV/PfaRwn7cngcun3FQFL8USJ9V78sVQc3MmaYaDlev
+	 rnjBy9hy4xN+Si1nEa96pKkGcvyqQcV8a6kFZbj980qtmpEdIobzueL3ghvD19Oqex
+	 rOrjrHDfCllBUAm4C/BTFvODfQKwvjWyI270rLWoJ3PcyTWyPPuKFMgNlB647Xi3AT
+	 4It9WWJQb5xiTdLxLrmOGLKtpLJpqlZmvTpoxl/b2QBftFJNp3KAr0a6btQUrZaxN2
+	 JXMlPLRVQK+Zw==
+Date: Tue, 3 Mar 2026 16:16:08 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+Cc: Michael Chan <michael.chan@broadcom.com>, Pavan Chebbi
+ <pavan.chebbi@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Willem de Bruijn <willemb@google.com>
+Subject: Re: [PATCH net-next 5/5] selftests: rss_drv: Add RSS indirection
+ table resize tests
+Message-ID: <20260303161608.647d4c4b@kernel.org>
+In-Reply-To: <20260303181535.2671734-6-bjorn@kernel.org>
+References: <20260303181535.2671734-1-bjorn@kernel.org>
+	<20260303181535.2671734-6-bjorn@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
-X-FB-Internal: Safe
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA0MDAwMCBTYWx0ZWRfXyFiHjvu3LBmc
- vkMl0gOUaIoaIZ4COOfTUCDSukEc0toFyWl1MiIa3rWHUS5ORZUHREe9uxXQA1jUGikfVfqSr+1
- Zb4sy14BzGrZi8fmwphVigYNwO/s6c6UOp12DPx0EBBELXJMdL4w9ZGuFxkpgVJiWmdxyP9eXX3
- kdbNMED8KKDU4LC/i0lwQl73W5hD1HKesJecwxayLit48oxKTTaFBMCclXjc0YIkAT5MC4mTR/l
- moJHi1nTtlmgb1gQ9qFFCIcXnOj0X9jtHaScWRV3GewsXLmVvMH6YWBZG39IftfTw9N2EJzMU+e
- 5i7SLKQOhjjDUX/u6cK9On7FStglkwlf1n+Ezt/5e26hX6WGJUWW6x+X7GqGCJ3BfRKq43Q4Pvl
- cO2YVUkpWptZrTvfAV5FKIzJI/cx01EuyMYWrbZHSYvkKrje3a5nYzDZW8oLBv0sO9cspjHkekC
- ioPcdIFxiJbvfSDO9dg==
-X-Proofpoint-ORIG-GUID: CQNEw0aW5xHUX_dO8pcRJ5hAI5pWknSK
-X-Proofpoint-GUID: CQNEw0aW5xHUX_dO8pcRJ5hAI5pWknSK
-X-Authority-Analysis: v=2.4 cv=BrGQAIX5 c=1 sm=1 tr=0 ts=69a779a8 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=crHB47gyY4rKiduisYu9:22 a=FOH2dFAWAAAA:8 a=VabnemYjAAAA:8
- a=lP32a40L5JUvlfaZ6LoA:9 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-03_03,2026-03-03_01,2025-10-01_01
 
-Add nk_redirect.bpf.c, a BPF program that forwards skbs matching some IPv=
-6
-prefix received on eth0 ifindex to a specified dev ifindex.
-bpf_redirect_neigh() is used to make sure neighbor lookup is performed
-and proper MAC addr is being used.
+On Tue,  3 Mar 2026 19:15:33 +0100 Bj=C3=B6rn T=C3=B6pel wrote:
+> +def _require_dynamic_indir_size(cfg, ch_max):
+> +    """Skip if the device does not dynamically size its indirection tabl=
+e."""
+> +    ethtool(f"-X {cfg.ifname} default")
+> +    ethtool(f"-L {cfg.ifname} combined 2")
+> +    small =3D len(_get_rss(cfg)['rss-indirection-table'])
+> +    ethtool(f"-L {cfg.ifname} combined {ch_max}")
+> +    large =3D len(_get_rss(cfg)['rss-indirection-table'])
+> +
+> +    if small =3D=3D large:
+> +        raise KsftSkipEx("Device does not dynamically size indirection t=
+able")
+> +
+> +
+>  @ksft_variants([
+>      KsftNamedVariant("main", False),
+>      KsftNamedVariant("ctx", True),
+> @@ -76,11 +88,90 @@ def indir_size_4x(cfg, create_context):
+>          _test_rss_indir_size(cfg, test_max, context=3Dctx_id)
+> =20
+> =20
+> +@ksft_variants([
+> +    KsftNamedVariant("main", False),
+> +    KsftNamedVariant("ctx", True),
+> +])
+> +def resize_periodic(cfg, create_context):
+> +    """Test that a periodic indirection table survives channel changes.
+> +
+> +    Set a periodic table (equal 2), reduce channels to trigger a
+> +    fold, then increase to trigger an unfold. Verify the table pattern
+> +    is preserved and the size tracks the channel count.
+> +    """
+> +    channels =3D cfg.ethnl.channels_get({'header': {'dev-index': cfg.ifi=
+ndex}})
+> +    ch_max =3D channels.get('combined-max', 0)
+> +    qcnt =3D channels['combined-count']
+> +
+> +    if ch_max < 4:
+> +        raise KsftSkipEx(f"Not enough queues for the test: max=3D{ch_max=
+}")
+> +
+> +    defer(ethtool, f"-L {cfg.ifname} combined {qcnt}")
+> +    ethtool(f"-L {cfg.ifname} combined {ch_max}")
+> +
+> +    _require_dynamic_indir_size(cfg, ch_max)
+> +
+> +    ctx_id =3D _maybe_create_context(cfg, create_context)
+> +    ctx_ref =3D f"context {ctx_id}" if ctx_id else ""
+> +
+> +    ethtool(f"-X {cfg.ifname} {ctx_ref} equal 2")
+> +    if not create_context:
+> +        defer(ethtool, f"-X {cfg.ifname} default")
+> +
+> +    orig_size =3D len(_get_rss(cfg, context=3Dctx_id)['rss-indirection-t=
+able'])
+> +
+> +    # Shrink =E2=80=94 should fold
+> +    ethtool(f"-L {cfg.ifname} combined 2")
 
-Signed-off-by: Wei Wang <weibunny@fb.com>
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
-Tested-by: Bobby Eshleman <bobbyeshleman@meta.com>
----
- .../drivers/net/hw/nk_redirect.bpf.c          | 60 +++++++++++++++++++
- 1 file changed, 60 insertions(+)
- create mode 100644 tools/testing/selftests/drivers/net/hw/nk_redirect.bp=
-f.c
+I wonder if we may miss some cases because we init the table to [0, 1]
+and also only enable only 2 queues. Let's set it to 4 queues here to
+potentially catch the driver resetting the table? 2 vs 4 are both tiny
+values.
 
-diff --git a/tools/testing/selftests/drivers/net/hw/nk_redirect.bpf.c b/t=
-ools/testing/selftests/drivers/net/hw/nk_redirect.bpf.c
-new file mode 100644
-index 000000000000..7ac9ffd50f15
---- /dev/null
-+++ b/tools/testing/selftests/drivers/net/hw/nk_redirect.bpf.c
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * BPF program for redirecting traffic using bpf_redirect_neigh().
-+ * Unlike bpf_redirect() which preserves L2 headers, bpf_redirect_neigh(=
-)
-+ * performs neighbor lookup and fills in the correct L2 addresses for th=
-e
-+ * target interface. This is necessary when redirecting across different
-+ * device types (e.g., from netdevsim to netkit).
-+ */
-+#include <linux/bpf.h>
-+#include <linux/pkt_cls.h>
-+#include <linux/if_ether.h>
-+#include <linux/ipv6.h>
-+#include <linux/in6.h>
-+#include <bpf/bpf_endian.h>
-+#include <bpf/bpf_helpers.h>
-+
-+#define TC_ACT_OK 0
-+#define ETH_P_IPV6 0x86DD
-+
-+#define ctx_ptr(field)		((void *)(long)(field))
-+
-+#define v6_p64_equal(a, b)	(a.s6_addr32[0] =3D=3D b.s6_addr32[0] && \
-+				 a.s6_addr32[1] =3D=3D b.s6_addr32[1])
-+
-+volatile __u32 redirect_ifindex;
-+volatile __u8 ipv6_prefix[16];
-+
-+SEC("tc/ingress")
-+int tc_redirect(struct __sk_buff *skb)
-+{
-+	void *data_end =3D ctx_ptr(skb->data_end);
-+	void *data =3D ctx_ptr(skb->data);
-+	struct in6_addr *match_prefix;
-+	struct ipv6hdr *ip6h;
-+	struct ethhdr *eth;
-+
-+	match_prefix =3D (struct in6_addr *)ipv6_prefix;
-+
-+	if (skb->protocol !=3D bpf_htons(ETH_P_IPV6))
-+		return TC_ACT_OK;
-+
-+	eth =3D data;
-+	if ((void *)(eth + 1) > data_end)
-+		return TC_ACT_OK;
-+
-+	ip6h =3D data + sizeof(struct ethhdr);
-+	if ((void *)(ip6h + 1) > data_end)
-+		return TC_ACT_OK;
-+
-+	if (!v6_p64_equal(ip6h->daddr, (*match_prefix)))
-+		return TC_ACT_OK;
-+
-+	/*
-+	 * Use bpf_redirect_neigh() to perform neighbor lookup and fill in
-+	 * correct L2 addresses for the target interface.
-+	 */
-+	return bpf_redirect_neigh(redirect_ifindex, NULL, 0, 0);
-+}
-+
-+char __license[] SEC("license") =3D "GPL";
---=20
-2.47.3
+Alternatively we could use netlink to set the inidir table as
+ [1, 0] x N
+rather than
+ [0, 1] x N
+
+and..
+
+> +    rss =3D _get_rss(cfg, context=3Dctx_id)
+> +    indir =3D rss['rss-indirection-table']
+> +
+> +    ksft_ge(orig_size, len(indir), "Table did not shrink")
+> +    ksft_eq(set(indir), {0, 1}, "Folded table has wrong queues")
+
+here actually check
+
+	ksft_eq(indir, [1, 0] * (len / 2), "Folded table has wrong queues")
+
+> +    # Grow back =E2=80=94 should unfold
+> +    ethtool(f"-L {cfg.ifname} combined {ch_max}")
+> +    rss =3D _get_rss(cfg, context=3Dctx_id)
+> +    indir =3D rss['rss-indirection-table']
+> +
+> +    ksft_eq(len(indir), orig_size, "Table size not restored")
+> +    ksft_eq(set(indir), {0, 1}, "Unfolded table has wrong queues")
+> +
+> +
+> +def resize_nonperiodic_reject(cfg):
+> +    """Test that a non-periodic table blocks channel reduction.
+> +
+> +    Set equal weight across all queues so the table is not periodic
+> +    at any smaller size, then verify channel reduction is rejected.
+> +    """
+> +    channels =3D cfg.ethnl.channels_get({'header': {'dev-index': cfg.ifi=
+ndex}})
+> +    ch_max =3D channels.get('combined-max', 0)
+> +    qcnt =3D channels['combined-count']
+> +
+> +    if ch_max < 4:
+> +        raise KsftSkipEx(f"Not enough queues for the test: max=3D{ch_max=
+}")
+> +
+> +    defer(ethtool, f"-L {cfg.ifname} combined {qcnt}")
+> +    ethtool(f"-L {cfg.ifname} combined {ch_max}")
+> +
+> +    _require_dynamic_indir_size(cfg, ch_max)
+> +
+> +    ethtool(f"-X {cfg.ifname} equal {ch_max}")
+> +    defer(ethtool, f"-X {cfg.ifname} default")
+> +
+> +    try:
+> +        ethtool(f"-L {cfg.ifname} combined 2")
+> +    except CmdExitFailure:
+> +        pass
+> +    else:
+> +        raise KsftFailEx("Channel reduction should fail with non-periodi=
+c table")
+
+grep for ksft_raises()
+
+>  def main() -> None:
+>      """ Ksft boiler plate main """
+> -    with NetDrvEnv(__file__) as cfg:
+> +    with NetDrvEnv(__file__, queue_count=3D8) as cfg:
+
+the queue_count=3D8 presumably only applies to netdevsim so it should go
+
+>          cfg.ethnl =3D EthtoolFamily()
+> -        ksft_run([indir_size_4x], args=3D(cfg, ))
+> +        ksft_run([indir_size_4x, resize_periodic,
+> +                  resize_nonperiodic_reject], args=3D(cfg, ))
+>      ksft_exit()
+> =20
+> =20
 
