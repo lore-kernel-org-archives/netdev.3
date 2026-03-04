@@ -1,127 +1,52 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662553E0C49
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 18:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDDA23D34BF;
+	Wed,  4 Mar 2026 18:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772647439; cv=none; b=JzmZ6LmXoU1k5v2OtTQegCdB3eOWMr0yl3O/xxyIH+eFsoz7/0/1TJ9I5KUZJ31aPYGCd5fpGcjlW3Y6AYDtyOFG+/UzAmBxFJIWfF2h314CG8SouSiXNs4Ex0qyeGAlqKxaJHgIGJweKkrHMyNk8Bd2WBoA9d+0ZuRyzwYLoUo=
+	t=1772647565; cv=none; b=lAj1jg0h5D/77MzyT5+qmv5rDz/+i8Ps31MvyKQkyLaNHtl5b6/QgwXQmTDKt0mX2ZJce4G6w4kRkUP+WJXhfUTSFvnjNPyJbeitGNbOwVkKYQy4hSqtKEFkOrUdSD5cCiOaCmp84ncR4q0ICiFiEEeUjzMha+/ztg+o6iqQWNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772647439; c=relaxed/simple;
-	bh=3Z5FIlxlpEZmdO3CmgYk4J1O9YL3EbPw9phnXp2eaCQ=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=LDWIc9/aImVBhC4vbM/ffVXIjSf0r0OwseMmLDXGwNOMgXqXYCXHvD8RkffLRKyaSaeRkECS7Nw8J287V0pyyi9zu4wZGEEawcYDHV5WjRis3md7Jt+YqdoN15/kTuZQwRA2N+AMOHITO65AFY6EzRFyyG/dcUs/othU196K1Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wu0Xtm8Z; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772647565; c=relaxed/simple;
+	bh=ecBtvtst316K3uojHIX0kNZYf1XPkxz49GlOWwEqnlE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RCVWxzmvUSY6jmhwUBgAP5C516lnqpLK5gvNPaKRTl5v0L0TSP2Xf9XsFGVy3SmCufgvn9tW3z4yhnrTGGoUYVad0kRvLz+EZfjQJikP/9k3W+Yie8qZQO7FK1bvjVqff36jRSGU75MTBbqE6vBOBxAlkveqNhgrOdtvZFfOAHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tc4g8VM8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wu0Xtm8Z"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8cb5138df1aso688073485a.3
-        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 10:03:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772647437; x=1773252237; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7Pu2Xcak2dY0RHwZ0e8cqpDefL3wJvEKE5gvRk2RdGQ=;
-        b=Wu0Xtm8ZDt44MnhTH5vt52kdnf4f9CQueFOBA4KCDgdPFLo6s8QAnQjPmMmMxvy4wX
-         j77PbIsNjmU6Oz+1/YV3jbBEmra24AuK+z8BlSDZ0UgaH7iOuk3scJUEK5PGVZ7ZzhDX
-         jm+zNPC7tZHPJfMZvXXAb5gBXFHaohUJZpPexzOi1vgIDcEinMv9xTdt3CN/9JvkvJb5
-         aAVx60XKUWM6n7fJGsjvT86283O8q/RvzpMUKn255629OY4/OZK9osW7GE6gkKcKoMih
-         tuK2VCFvmuG3Ai7a50cu5YnKmMWn/c/H39ZDuOoukcramzOr3balRltgkeSUCJ/Ez2vr
-         3LjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772647437; x=1773252237;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7Pu2Xcak2dY0RHwZ0e8cqpDefL3wJvEKE5gvRk2RdGQ=;
-        b=NX9JzY9W4CR/Mx2v5CWKcLy18RM7etE6i6BN/+JnoWNEWN48Vvxz2hJW3PQHgfurjQ
-         BGlBHva6fRtwU7f3ubAK0XSObBF5O2R30uCdbD/Rm2MgI5B1RDbyRyVN9v0iL+4EWSIo
-         jbf8ZDRSNP3kg2kh3cGuB2LyuwBGw9WPVNNBFL06walw5dBVWmJGK8NwKmCykgf/sZ1C
-         OClX9LTxxSxXxe77WgSwKOV2CsSFdM3mYQwCY4dzd//Fsn6h1U453tOLqW4LBuIIC2i9
-         bf7RxpdmqKCKKhbULgNoazNltRvZbLz7oOjYamlOC8y6Xo8ec1A0ztNRhRc+Shn4cElE
-         g93Q==
-X-Forwarded-Encrypted: i=1; AJvYcCX1iI4yP+fYwY2B7Wl+88/op9PXcecFkBvwkafVVBNK3m8bYIp4P8vo2R5w8EPpgkCnNDpVGLE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQIX8XppotDAksjHOayG4urbDdBdoaQHPGUy0AQgYeMny70xid
-	1U7F/+55YL6UM/I5SugOyGSca2oJ/EPxX1pJGnfNDakL2zDSdfuX0brz
-X-Gm-Gg: ATEYQzwOCP/qMtY9aCCsgln3T0KCNMkXOinv/NMrMHhxmj0iOLvRZPakBDDYdVtaF5N
-	7AHG62qdw5ffbe3djlq/yVThRH8FOAdeAacEfswyUQTkQ1L1kNCRoIu+B9CaZ4m3A2I8SSiOIL5
-	K6irDYPGGvJrVgoPn14No2mno4Hxm5mUEQJlVH0sfs3guT0A6TbYdHzfr+v1qs6afeUEshK070o
-	jkUHNHtYqvjT1+h/m2PZIgsGS2+b5lJLhn9/8JfrT06zCO3XuIFRIIanzQX+VqJX6Ztoleam2NQ
-	MbXoobQUuf3yMiUw0a8qm/a04HaPSpJvy5OndDcJz+bHRlJTdvoHbvO/0ZpJduBNnEG8U5Dl15D
-	2Jq+ZH/uLbaT6A0y0t0K+YYkFRTMeewvxKprPW5xQI2b/hiPFXh+6KLpr2N4M0CRrgvrZGUd3sQ
-	MxpE/+YnDYb6o0mVb3sEdyPphtfxa0hsoV0WIKgumKZ/46lhtPo5Ex
-X-Received: by 2002:a05:620a:31a4:b0:8c6:a539:55cd with SMTP id af79cd13be357-8cd5af818b8mr376591385a.41.1772647437304;
-        Wed, 04 Mar 2026 10:03:57 -0800 (PST)
-Received: from ?IPV6:2a03:83e0:1145:4:d19b:d485:ed5f:e15b? ([2620:10d:c091:500::3418])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf6f5c41sm1658775585a.24.2026.03.04.10.03.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 04 Mar 2026 10:03:56 -0800 (PST)
-Message-ID: <1d2b02b2-0541-4a17-af2a-95345395d2b6@gmail.com>
-Date: Wed, 4 Mar 2026 13:03:55 -0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tc4g8VM8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AEE0C19425;
+	Wed,  4 Mar 2026 18:06:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772647565;
+	bh=ecBtvtst316K3uojHIX0kNZYf1XPkxz49GlOWwEqnlE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Tc4g8VM8qv0K7lUJQyxY/jtxpDmvpLq+JHQuRTqsSMQTPDJHATdE+idWJk5VfqCtq
+	 NY6Vhku5/t6FPKLsN7T25Yd3RxkyZ0DKhv94UeNnrTszYcodvh81pO3n6b7PWoYUlI
+	 b8XQoMlbeQA0zbQ4MTNTYGY6KzSx3ecDWAUC5ADxKQhLiEEgGYol8R+Vz/JnFfIxEV
+	 MkQXLvI5QW8ErLfhXhPp3hNo9HFpHZuKBSCA4Xzjjl5jB1B1j8FJkxzHmsDHyNzbDn
+	 TFKjMAPa+M18CT/DB9kjb75GgjGr9HtLGuSlwRwJV3VaUCQADZ4eKKiUWFnGVTErYv
+	 mPamqB6y47pGw==
+Date: Wed, 4 Mar 2026 10:06:04 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Jason Xing <kerneljasonxing@gmail.com>
+Cc: netdev@vger.kernel.org, netdev-driver-reviewers@vger.kernel.org
+Subject: Re: [ANN] netdev foundation TSC meeting notes - Jan 13th
+Message-ID: <20260304100604.65552d16@kernel.org>
+In-Reply-To: <CAL+tcoB0GV3i7sQnLScHjAiRN8uxYYM6_mWR2=gZLj0qr_w23Q@mail.gmail.com>
+References: <20260113084605.60d0fc56@kernel.org>
+	<CAL+tcoB0GV3i7sQnLScHjAiRN8uxYYM6_mWR2=gZLj0qr_w23Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 net-next 5/9] psp: add unprivileged version of
- psp_device_get_locked
-From: Daniel Zahka <daniel.zahka@gmail.com>
-To: Wei Wang <weibunny@meta.com>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "kuba@kernel.org" <kuba@kernel.org>, David Wei <dw@davidwei.uk>,
- Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
-References: <20260304000050.3366381-1-weibunny@fb.com>
- <20260304000050.3366381-6-weibunny@fb.com>
- <willemdebruijn.kernel.2c99d96277de8@gmail.com>
- <SA1PR15MB5817C41068E5167A39F4CBD1BD7CA@SA1PR15MB5817.namprd15.prod.outlook.com>
- <94f9ac32-b476-40e5-bebc-37a954884396@gmail.com>
-Content-Language: en-US
-In-Reply-To: <94f9ac32-b476-40e5-bebc-37a954884396@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
+On Wed, 4 Mar 2026 14:28:20 +0800 Jason Xing wrote:
+> I wonder if it's the reason why the link below seems invalid?
+> 
+> https://netdev.bots.linux.dev/netconf/2024/index.html
 
-
-On 3/4/26 1:01 PM, Daniel Zahka wrote:
->
->
-> On 3/4/26 12:42 PM, Wei Wang wrote:
->> _______________________________________
->> From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
->> Sent: Wednesday, March 4, 2026 8:25 AM
->> To: Wei Wang; netdev@vger.kernel.org; kuba@kernel.org; 
->> daniel.zahka@gmail.com; Willem de Bruijn; David Wei; Andrew Lunn; 
->> David S. Miller; Eric Dumazet
->> Cc: Wei Wang
->> Subject: Re: [PATCH v2 net-next 5/9] psp: add unprivileged version of 
->> psp_device_get_locked
->>
->>> Can you give a concise reason for which operations to allow from
->>> another netns and which to deny. Also as forward looking heuristic for
->>> when new operations may be added.
->>>
->>> Btw minor typo in first sentence of next commit: associcate.
->> Thanks for the comment!
->> Yes. "unprivileged" means access from the main netns as well as any 
->> netns with an associated device and is used for commands like 
->> dev-dump, dev-get, rx-assoc, tx-assoc, which are user-controlled 
->> functionalities of the psd.
->> While "privileged" means access only from the main netns and is used 
->> for dev-add/delete/change-ntf, key-rotate. This is more like the 
->> admin-types of operations of the psd.
->> I will update the commit msg in the next version to make it more clear.
->
-> I think Willem's question is more: what criteria did you use to decide 
-> if each operation is privileged or not? I think one reasonable answer 
-> would be: operations that have side effects on the psp dev's state, 
-> e.g. key rotations or changing the enabled psp versions.
-
-well, now that I sent that I realize that criteria is so broad to 
-include things like rx-assoc and tx-assoc, which obviously need to be 
-unprivileged :(
+Fixed now, thanks!
