@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64FC11D6BB;
-	Wed,  4 Mar 2026 01:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D76430E837;
+	Wed,  4 Mar 2026 01:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772587832; cv=none; b=l2Tc2X7K7oUDxs+4DZ/ZZ/3e/g8fDw90Sj8Oa/FMcyNeekRbGCyXAs9hebsIAyOevVj1fiYp/j0cJc3ENVwSMToZSQMaVq1/k98fA/g4ztLpgQQlbY0alLCG/WYEm8+Lm46voXODpX4gRna4nT6FVEao2DYjNIco0H8a9sn751I=
+	t=1772587833; cv=none; b=c3uh71jucTCBeAGKQ92atFcJICjolCA9tLLkI+BMn91VSMFJhChiNrmbj5ylKwUhNrmdTOHvUcbdLlckvOuMog6mGTp0xNphT/WQHanMPl1ty5sApHUxT5z9fEPGkv/xrxIZEzYSBpQzlW8OQpmR712hArvp67cbOqzNY2sJbAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772587832; c=relaxed/simple;
-	bh=V+Yr2ILKw7n0kn5hIzo3fQKAZ+y8eMRV5OuCN/Sbf3g=;
+	s=arc-20240116; t=1772587833; c=relaxed/simple;
+	bh=9XDIQ1lW2/W6tY73S0xeg5sRD/f/ZwTOs5OGN6alcKk=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=WO0K5dsv4912ZFVEbi6trYKyDjYn0Pkpp5AkPAhpb1ykubC6WOTu+fpk4rUpdc536wgpMoVKWqZWSDAjxWW+WCHSyEckmNL4I8cVeFBxzoUbqi/wRmCSnIKJqCE1ADg+oC6fa6QkY2qJD1im5waPpeMpQC7JQn7rn9ZAEcNmMWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GalJj31O; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=WY7hiZB1LE5TTvk3eNVhpyvn70v4NWUeZY5vxIMajtoUI4s7XaG/UQNLK5vGBvE7YPzKDjCPtQ4IpIRpJFZxipXaTd20UmppzzrNDel6D0wePOkJpHpPQLP+Bghmz2gA/zxCG3JIxLYBHsn7v3zTBYc77XDSJszuMxzoqL0U2eU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TK5sB7l0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GalJj31O"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA1DC116C6;
-	Wed,  4 Mar 2026 01:30:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TK5sB7l0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B195C19422;
+	Wed,  4 Mar 2026 01:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772587832;
-	bh=V+Yr2ILKw7n0kn5hIzo3fQKAZ+y8eMRV5OuCN/Sbf3g=;
+	s=k20201202; t=1772587833;
+	bh=9XDIQ1lW2/W6tY73S0xeg5sRD/f/ZwTOs5OGN6alcKk=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=GalJj31OKG+7j8/2gBCVg2KxsiBYVBY/cLmTYp4/TDGGGtLrpJmZ6hzRv7JyrBHiM
-	 Nmzt3WS+0ZlazpUFX0yJCnqcTCSlxrsLzFQ5uLBkrsteexwBftiqzsGpq6mtoliCA4
-	 GZSvoccDItMEZtExTkTrJvMeJwBzWdN1Q6/gg/LDb5wdsX/MjHO3nnkQJOVtidy8Mg
-	 eMBXar+GreDzuhzjHAYRRyzcITSPgspUMSu8qi3LflNo2ksGQavbgO3pRQRjjqfvD4
-	 Zaj/Qpd1LMGPp40nSb2WlrUyGnEHPHv1ocJH+y4EFzfmVXumIb58MFZ83DkJw7FH05
-	 JO+tsVfEcgfKg==
+	b=TK5sB7l0iy6ihRp9hK++LT1i1m7w28nySkvx/vyo23WqSNLEPHnQPSg1x1WXNtydj
+	 CBLkHqUumKBmSnhFWhlYg8lcx4Nclz98Ij43n7HjWrP8StpajZ5Edkm+L7eiCoDuGv
+	 twuD4Uj5f8sbXLEgtQpdTfz6OyhIXBHJr29pWnMQkKwQ97FRNaqvzowGDh6JiMcT4J
+	 Q7Bsp2i8Rw5Q5FJDv7GjKbx71JYsg6e7AQeeU8oholHYy3Xl5QE0Y8gVAkpiI+qRO9
+	 6pR6Ag051Af1C0yrtfdi0o99GweKpbTOQVAyrIsOIGGQ01COgVR31UfLTUVuTrOQoj
+	 jXmfvRIr/sZgg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE973808200;
-	Wed,  4 Mar 2026 01:30:34 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CF173808200;
+	Wed,  4 Mar 2026 01:30:35 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,35 +37,40 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v3] NFC: s3fwrn5: Replace strcpy() with strscpy()
+Subject: Re: [PATCH net-next] selftests: netconsole: print diagnostic on
+ busywait timeout in netcons_basic
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177258783279.1546050.3131189679852517147.git-patchwork-notify@kernel.org>
-Date: Wed, 04 Mar 2026 01:30:32 +0000
-References: <20260302100908.26399-1-tomasz.unger@yahoo.pl>
-In-Reply-To: <20260302100908.26399-1-tomasz.unger@yahoo.pl>
-To: None <tomasz.unger@yahoo.pl>
-Cc: krzk@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- krzysztof.kozlowski@oss.qualcomm.com
+ <177258783429.1546050.10122433930612295627.git-patchwork-notify@kernel.org>
+Date: Wed, 04 Mar 2026 01:30:34 +0000
+References: <20260302-netconsole_test_verbose-v1-1-b1be5d30cd7d@debian.org>
+In-Reply-To: <20260302-netconsole_test_verbose-v1-1-b1be5d30cd7d@debian.org>
+To: Breno Leitao <leitao@debian.org>
+Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, shuah@kernel.org, netdev@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
 
 Hello:
 
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  2 Mar 2026 11:09:08 +0100 you wrote:
-> From: Tomasz Unger <tomasz.unger@yahoo.pl>
+On Mon, 02 Mar 2026 06:40:39 -0800 you wrote:
+> The script uses set -euo pipefail, so when busywait times out waiting
+> for the netconsole message to arrive, it returns 1 and the script exits
+> immediately without printing any error message. As reported by Jakub,
+> this makes failures hard to diagnose since the test reports exit=1 with
+> no explanation.
 > 
-> Replace strcpy() with strscpy() which limits the copy to the size of
-> the destination buffer. Since fw_info->fw_name is an array with a
-> fixed, declared size, the two-argument variant of strscpy() is used -
-> the compiler deduces the buffer size automatically.
+> Handle the busywait failure explicitly so that a FAIL message is printed
+> before exiting. This is how it looks like now:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next,v3] NFC: s3fwrn5: Replace strcpy() with strscpy()
-    https://git.kernel.org/netdev/net-next/c/8ce185c7e00d
+  - [net-next] selftests: netconsole: print diagnostic on busywait timeout in netcons_basic
+    https://git.kernel.org/netdev/net-next/c/dfa77c0dd4ab
 
 You are awesome, thank you!
 -- 
