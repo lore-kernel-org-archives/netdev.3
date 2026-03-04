@@ -1,94 +1,95 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29D333A257E
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 10:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5D733A1A56
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 10:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772619570; cv=none; b=hjW4r2KzFnTSA+NWy7/OWnXV36MeEl2aby/j2kysX1bqNtx5BCbKd1kDRp0ci7HvfAdQS5G9A0BFugBv3ocDqOdqecXYu2gIkkUgAXzhOVfJX240ruhjg/OtBzAL4D1OGfEGuyfUzN8avpJ07T4xl8P+IkdvdjFS1/fXFjIOPXU=
+	t=1772619746; cv=none; b=CilxXS7IsYG2GtCbbt+TvfLim3YsGf0HCa+jSscCzjWQaCHAER2m7xu7ZIxvS/UdeV0DUW3qtdtqPzN66XbvemXHFn6d6CVE0labUK1/P9rI/JOtBxHrJ/8Nk2YxeqPbm56R1pTdO9PPKVuXk6OyZnJprivMN+42I1u3rbNMabo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772619570; c=relaxed/simple;
-	bh=hlNmX8QTYbudhIP0ciMy+y3TsWJoFdhR3w6eV7zimz0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DsBxPPxkGiSoTP9C9jrhIrW19h2JoE7iUW6gDbtBB18M0OETcYtR9juRH8lWQygxkKOUWSmU0Q/LXRiuwPlF63fpUBScS5MX5flQOXWgIWhYTt7fQkOKKk9GIgthb5oH7NZ5Fm1EtfPT80EJQ0SKZSOWmpnrkG7IFTvwpDKJ3Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=aCzF1j2l; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1772619746; c=relaxed/simple;
+	bh=iBzuW4WRoW6nFwsITIYl4ECnZ2BPs43aCC/wrxnSbFE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=FIh94QH073mTVUuiKI4BvDk6sWI0qaqewW09cm6LOfc/GNW6FfCvuww75vLmwESQ5j5j5RfpVngGnl0fgFC550EgcR3j7yLOnhxMe/65MlmAyR+Bn9ifnOz6syEErb5yfjN6Bz1F9qULqPP+cjU5bVh6HufLgrwRBrnvIM3KbLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Q0VUkaoj; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="aCzF1j2l"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id E88764E4253A;
-	Wed,  4 Mar 2026 10:19:16 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id B7D765FF5C;
-	Wed,  4 Mar 2026 10:19:16 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 2EE6910369791;
-	Wed,  4 Mar 2026 11:19:14 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1772619555; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=RT79xI7c4HyPB3ciXHZP+9zR0KZk+cQOgHzcyMyuvrY=;
-	b=aCzF1j2luPALUZrF+am8IoIPUzKt3BjTOIHt/8qfxYixh3pTvMmyu3oCTqMoRhuop4qFZs
-	LW8Bkw4G7I+v/0p2z29UWxTpN4UOzNIZ376HuE3oTPi28Txigj1qoVf/bIe892eEbxZBIJ
-	edbT87zW5lrdgLpw3EIpxqx2sFhoypnLXetgBKucLXMKK4Oof7Nh7GpocLIhh87/5uUt+N
-	ewqJ7bG1BeWvzqdOlcug8ePSchL7lYCRuBdjjg4s+hr7c7X8pYBV2sIeR0XN2qI05xfHLd
-	C+9BlmBZxui7k/G95nlhzRmGmZ2S/fIhHvxzS4T07AJMjN1yVLhP15CJZhmcpg==
-From: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-Date: Wed, 04 Mar 2026 11:18:59 +0100
-Subject: [PATCH net-next v6 8/9] net: dsa: microchip: Adapt port offset for
- KSZ8463's PTP register
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Q0VUkaoj"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:Content-Type:MIME-Version:
+	Message-ID:Subject:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=OdBLbIazG3raep4NErWJj7VGaWKFPMS2dq5YWlt/Owk=; b=Q0VUkaojD3xrUsrBMjWYhuqY7d
+	093LhNGi/g1dKkIVWKAOXA9I2Qbq2douAsI3aWuGupisVhhXN9p8YcBi8hC1iZ3wzOGKrYMSRnU7Z
+	ix0uS4ZDAp7UNywT1KiwUfG5ARCxJKFnccA+HK0dYRz2O7/2f6qmLpShxYVPayNTmxpOFtcVx7tPZ
+	gp6iYPUu7YytsRqFqdV5HYo2kTL7tUszkPd+Oa8Jo1s4DfV8OV//3USIuaxGqJpg9upns0UrR7yuQ
+	v9ywa57ctMaVGYliRydb6g86e+UYWCXCuasxXj+PLRTE0PIuUxVY4KHtWujSH5dYrYWZG+32QBQH2
+	eY6c5AKw==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:38100)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vxjMs-000000006KZ-2lNg;
+	Wed, 04 Mar 2026 10:22:14 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vxjMp-000000007pY-1WGz;
+	Wed, 04 Mar 2026 10:22:11 +0000
+Date: Wed, 4 Mar 2026 10:22:11 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>, Chen-Yu Tsai <wens@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-sunxi@lists.linux.dev, netdev@vger.kernel.org,
+	Paolo Abeni <pabeni@redhat.com>,
+	Samuel Holland <samuel@sholland.org>
+Subject: [PATCH net-next 0/8] net: stmmac: mdio related cleanups
+Message-ID: <aagH023pvswd0tlT@shell.armlinux.org.uk>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260304-ksz8463-ptp-v6-8-3f4c47954c71@bootlin.com>
-References: <20260304-ksz8463-ptp-v6-0-3f4c47954c71@bootlin.com>
-In-Reply-To: <20260304-ksz8463-ptp-v6-0-3f4c47954c71@bootlin.com>
-To: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com, 
- Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Richard Cochran <richardcochran@gmail.com>, Simon Horman <horms@kernel.org>
-Cc: Pascal Eberhard <pascal.eberhard@se.com>, 
- =?utf-8?q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
-X-Mailer: b4 0.14.2
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-In KSZ8463 register's layout, the offset between port 1 and port 2
-registers isn't the same in the generic control register area than in
-the PTP register area. The get_port_addr() always uses the same offset
-so it doesn't work when it's used to access PTP registers.
+Hi,
 
-Adapt the port offset in get_port_addr() when the accessed register is
-in the PTP area.
+The first four patches clean up the MDC clock divisor selection code,
+turning the three different ways we choose a divisor into tabular form,
+rather than doing the selection purely in code.
 
-Signed-off-by: Bastien Curutchet (Schneider Electric) <bastien.curutchet@bootlin.com>
----
- drivers/net/dsa/microchip/ksz8.c | 3 +++
- 1 file changed, 3 insertions(+)
+Convert MDIO to use field_prep() which allows a non-constant mask to be
+used when preparing fields.
 
-diff --git a/drivers/net/dsa/microchip/ksz8.c b/drivers/net/dsa/microchip/ksz8.c
-index c354abdafc1b542a32c276ef939a90db30c67f55..a05527899b8bab6d53509ba38c58101b79e98ee5 100644
---- a/drivers/net/dsa/microchip/ksz8.c
-+++ b/drivers/net/dsa/microchip/ksz8.c
-@@ -2020,6 +2020,9 @@ u32 ksz8_get_port_addr(int port, int offset)
- 
- u32 ksz8463_get_port_addr(int port, int offset)
- {
-+	if (offset >= KSZ8463_PTP_CLK_CTRL)
-+		return offset + 0x20 * port;
-+
- 	return offset + 0x18 * port;
- }
- 
+Then use u32 and the associated typed GENMASK for MDIO register field
+definitions.
+
+Finally, an extra couple of patches that use appropriate types in
+struct mdio_bus_data.
+
+ drivers/net/ethernet/stmicro/stmmac/common.h       |  10 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c  |   2 +-
+ .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   |  11 +--
+ drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c  |   9 +-
+ .../net/ethernet/stmicro/stmmac/dwmac1000_core.c   |   9 +-
+ .../net/ethernet/stmicro/stmmac/dwmac100_core.c    |   9 +-
+ drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c  |   9 +-
+ .../net/ethernet/stmicro/stmmac/dwxgmac2_core.c    |  18 ++--
+ drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c  | 106 ++++++++++++---------
+ include/linux/stmmac.h                             |   6 +-
+ 10 files changed, 92 insertions(+), 97 deletions(-)
 
 -- 
-2.53.0
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
