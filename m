@@ -1,320 +1,166 @@
-Received: from smtpbgsg1.qq.com (smtpbgsg1.qq.com [54.254.200.92])
+Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70873A0B3D;
-	Wed,  4 Mar 2026 10:53:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.254.200.92
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B063A451F
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 10:54:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772621635; cv=none; b=e6osC6EakzYnFtap93TIyo5POjD77dSkGkqA0uO4uBuD9ufo4+LWVAns0PuHErK0CfNLg0emmleu57ekzV/quXFUQj+YB68+XyG8D78OQfvKZ44DjdFf9TJGl+UTD1FgMsgaaXNcz9y+qinJXpgfGOBY9sxnPOPNsXDhiixq7+U=
+	t=1772621701; cv=none; b=e9dS5hB3QWZmhmDVFIgvrPdc3k9D+pWoKtypFa3vLSiCcFzRSx9CoO7w1QwrhQCQQuXFM0rn1zGeqOjS948dZG1fq6jkpmE/AQVlePXKtk1Jb07aMfbhreOZld21SdOmYRZ3iC2OTo0hhPMYGcL0S22G+conQLeLpNSLExLlrgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772621635; c=relaxed/simple;
-	bh=mej+Jd60NcwX96dJsQ6I0J0MKqwoHQki+5lc7cwcncc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=peMLtl0zznogHhPLzJY6aToHz+ig8s+DxXWk5z40Ire8eVHnQSvS+lcMSs/eEDNpghVyNF/SKpzh8OYsJPPjdgvtLUJKbsQ7f9zWwZnkrxCZKdgtD7ssCiLhvvKCVBcDxrWw+JtZ9G5uZUFkicJpMKeBzlU6jymJyUQL5XGJKvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org; spf=none smtp.mailfrom=vimux.org; arc=none smtp.client-ip=54.254.200.92
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=vimux.org
-X-QQ-mid: esmtpgz13t1772621569t42882ecb
-X-QQ-Originating-IP: ElOmFFYXOp/Hf2EkFm5oFyQZ7VI2zAY0qVzB/Fw21OA=
-Received: from localhost.localdomain ( [219.147.0.82])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Wed, 04 Mar 2026 18:52:33 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 775489432918910945
-EX-QQ-RecipientCnt: 8
-From: Jialu Xu <xujialu@vimux.org>
-To: xujialu@vimux.org
-Cc: brgl@kernel.org,
-	kees@kernel.org,
-	krzk@kernel.org,
-	linusw@kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH 1/3] nfc: s3fwrn5: convert to gpio descriptors
-Date: Wed,  4 Mar 2026 18:52:13 +0800
-Message-ID: <0F63C4FC246814C0+20260304105215.536399-2-xujialu@vimux.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260304105215.536399-1-xujialu@vimux.org>
-References: <7187C401290C256B+20260304084808.440955-1-xujialu@vimux.org>
- <20260304105215.536399-1-xujialu@vimux.org>
+	s=arc-20240116; t=1772621701; c=relaxed/simple;
+	bh=wDy7lwFKEmxDMoxtDsk2M2wdV9BvNz6hH7XPQGFhta4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZTw2vmpuNFX+8NZavqPoSFSNVdGThEbjZzr03/3mwTJpQOTzV2c0LrOUNkwIB93PUfMiuG5T0/MXNbC4AVkvKU7KsDfpyyG1mo3zzgHw6E/7j2l5bA6qSeM5ngjn1Nt/JZv+xB5dWCro25zwBriyTYQ7x9dxJty5YbzV9xqCsTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=uaPvPuCp; arc=none smtp.client-ip=194.13.80.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="uaPvPuCp"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7A166A0042;
+	Wed,  4 Mar 2026 11:54:50 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
+	t=1772621695; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding; bh=4b9fzcnuJ5ddgbvup+eksWHf93kQSgMRpetZAz6W3xs=;
+	b=uaPvPuCpSA272XD6nS9FebqZROU28DFkJhfLu+5ISNguZ/yW0F5o0DJkiOk1QPjlUOFAez
+	dH957J95U9+cVPD4To2vHMzRaGqPbX/7D+yLxlKl30tCByIs6vgYtkfKU1ZP7hITkM4uf0
+	up1d2/6y+Nw7NwQXvebVKFNXy4WRWPURwZuJM0hmmLHghBUAjfcvfJ2D8MmDncVOYJb0vN
+	7RGqwqYfs+wIAE5xzi21z2GhgjVsFTCqfxyKoAmAwMkxU7RgY/phYq0eHekBnythkt0CyP
+	F5nDcJKQ4Xnb/jDtFGO6vbLQHWOzPgayt47Yu2Fg2FGtrIJs1uLRvc0q1GzTww==
+From: Nicolai Buchwitz <nb@tipi-net.de>
+To: netdev@vger.kernel.org
+Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
+	phil@raspberrypi.com,
+	Nicolai Buchwitz <nb@tipi-net.de>
+Subject: [PATCH net-next v6 0/5] net: cadence: macb: add IEEE 802.3az EEE support
+Date: Wed,  4 Mar 2026 11:54:27 +0100
+Message-ID: <20260304105432.631186-1-nb@tipi-net.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:vimux.org:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: OLX7ejGwdBBz1OElv18QWDYJun9ThnTAQhIDrA7a7IY0Np2DJY7GPU04
-	HtIHS/SLmhY3fPsuUGjlemCBCEYuKKSd5ijdLL7ThsQrLfH5BLqMbY4ChXYVJ9JoJu57GPc
-	McyMa2UBrAmVHozPy++pHlYL6YaFPLxG6GyeaFdYomXz+PKaU9L7R2436qmHe5sbJoCed4O
-	KUgugwvfzMfiiTgRXZVJI1t1ppzwWOozEUIDhigm8ACkOQthH6OYMYc1iapmegAR4JS2yx0
-	MdCHoA9HUGgJ/f8rr5hfRGKMmzj6au6yA0I5TME1jsZwPibCNzootwAj7ZW0dFfBlIGI9i7
-	OCVlYGnP+zRtnCk5zazMCIMTQpoYAfJ8b2b0Mo4AWNNPzlYuTJEos1iF1DRLVGlCqYwgxZC
-	quOOknPEuMNSDQWl6nqbLZytcpYRrgCZhKGnqW9RWsdjRTc+7aO3t6w/miWvDC/82A+VqDa
-	abAK677/6KAwvUSChdCKa0gppVt1mbxNzHgUodfEvYo1kBOKTtQdnZe1tcy7vzUnkIcJxyM
-	1U8rIa32Hvon2ij6bARdGFiNtJkzhs7koQPvjPckV3UX8NZllPCkZzVvmkMHVRamXQhdP2m
-	+oUc7tif7mFMFMvnhLorq2zRYgR7fbHh2ZCsFwF63057W3C/Iaekbs2ShAutPjS2Uu+Fyou
-	8h8hZaaiSjfVgovj2s5bKQEnEXZpoUwNKLsrlbfxbBJPfRzG8/lKvtMLf3JbxYNa0wn1sDK
-	Pk+eoLSDXNckX4rZwhZ2k9h5oyplAtLaMm43jzaZQriniw9pC9vFfpgEaBmOVjEuoOUnumv
-	GA65OcjzAi3gJN3npu0a9iBpKOeKerHsxOJ86VbFeZQZ06ezgXsYV47tzHDPkD9VX37lT9h
-	I6cfoP02LPARLyJ2JXQivof+QWeuJAcZxadd21ri6//PTwVjM85XHCfJ5aEzqUcoRU4ZcR2
-	uBOLVK2J618qjd98pRNW3VLBBBnNQFeasoD8UOV/LJarx3V+e44eU3Yxp01LswDxtB6WE6C
-	3iuSGgd8QW1McPfDSqfuVCUouzXNXAYGiWXK7aHNSmdCsjCwVzMfHAMtGRWYo=
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
+X-Last-TLS-Session-Version: TLSv1.3
 
-Use <linux/gpio/consumer.h> instead of <linux/of_gpio.h>.
+Add Energy Efficient Ethernet (IEEE 802.3az) support to the Cadence GEM
+(macb) driver using phylink's managed EEE framework. The GEM MAC has
+hardware LPI registers but no built-in idle timer, so the driver
+implements software-managed TX LPI using a delayed_work timer while
+delegating EEE negotiation and ethtool state to phylink.
 
-Signed-off-by: Jialu Xu <xujialu@vimux.org>
----
- drivers/gpio/gpiolib-of.c        |  4 +++
- drivers/nfc/s3fwrn5/i2c.c        | 55 +++++---------------------------
- drivers/nfc/s3fwrn5/phy_common.c | 11 +++----
- drivers/nfc/s3fwrn5/phy_common.h |  5 +--
- drivers/nfc/s3fwrn5/uart.c       | 45 +++++++-------------------
- 5 files changed, 32 insertions(+), 88 deletions(-)
+Changes from v5:
+  - macb_tx_lpi_set() no longer manages its own spinlock; it now
+    requires bp->lock to be held by the caller and asserts this with
+    lockdep_assert_held(). All callers (macb_tx_lpi_work_fn,
+    macb_mac_enable_tx_lpi, macb_mac_disable_tx_lpi) take bp->lock
+    explicitly. Based on feedback from Jakub Kicinski.
+  - macb_tx_lpi_wake() is now called under the existing bp->lock in
+    macb_start_xmit(), eliminating the redundant lock acquire/release.
+    An eee_active check at the top of macb_tx_lpi_wake() short-circuits
+    the register read on the common (EEE-disabled) path. Based on
+    feedback from Jakub Kicinski.
+  - macb_tx_all_queues_idle() uses READ_ONCE for tx_head/tx_tail
+    (called under bp->lock; taking tx_ptr_lock here would invert the
+    established lock order). Loop rewritten to match the driver
+    convention: for (q = 0, queue = bp->queues; ...; ++q, ++queue).
+    Based on feedback from Jakub Kicinski and Claudiu Beznea.
+  - Added Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev> to
+    patches 1-4.
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index ef1ac68b94b78..3bdd9af674474 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -542,6 +542,10 @@ static struct gpio_desc *of_find_gpio_rename(struct device_node *np,
- 		{ "reset",	"reset-n-io",	"marvell,nfc-uart" },
- 		{ "reset",	"reset-n-io",	"mrvl,nfc-uart" },
- #endif
-+#if IS_ENABLED(CONFIG_NFC_S3FWRN5_I2C)
-+		{ "en",		"s3fwrn5,en-gpios",	"samsung,s3fwrn5-i2c" },
-+		{ "wake",	"s3fwrn5,fw-gpios",	"samsung,s3fwrn5-i2c" },
-+#endif
- #if IS_ENABLED(CONFIG_PCI_LANTIQ)
- 		/* MIPS Lantiq PCI */
- 		{ "reset",	"gpio-reset",	"lantiq,pci-xway" },
-diff --git a/drivers/nfc/s3fwrn5/i2c.c b/drivers/nfc/s3fwrn5/i2c.c
-index 110d086cfe5ba..3f508b5fbf06b 100644
---- a/drivers/nfc/s3fwrn5/i2c.c
-+++ b/drivers/nfc/s3fwrn5/i2c.c
-@@ -8,10 +8,8 @@
- 
- #include <linux/clk.h>
- #include <linux/i2c.h>
--#include <linux/gpio.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/delay.h>
--#include <linux/of_gpio.h>
--#include <linux/of_irq.h>
- #include <linux/module.h>
- 
- #include <net/nfc/nfc.h>
-@@ -146,37 +144,6 @@ static irqreturn_t s3fwrn5_i2c_irq_thread_fn(int irq, void *phy_id)
- 	return IRQ_HANDLED;
- }
- 
--static int s3fwrn5_i2c_parse_dt(struct i2c_client *client)
--{
--	struct s3fwrn5_i2c_phy *phy = i2c_get_clientdata(client);
--	struct device_node *np = client->dev.of_node;
--
--	if (!np)
--		return -ENODEV;
--
--	phy->common.gpio_en = of_get_named_gpio(np, "en-gpios", 0);
--	if (!gpio_is_valid(phy->common.gpio_en)) {
--		/* Support also deprecated property */
--		phy->common.gpio_en = of_get_named_gpio(np,
--							"s3fwrn5,en-gpios",
--							0);
--		if (!gpio_is_valid(phy->common.gpio_en))
--			return -ENODEV;
--	}
--
--	phy->common.gpio_fw_wake = of_get_named_gpio(np, "wake-gpios", 0);
--	if (!gpio_is_valid(phy->common.gpio_fw_wake)) {
--		/* Support also deprecated property */
--		phy->common.gpio_fw_wake = of_get_named_gpio(np,
--							     "s3fwrn5,fw-gpios",
--							     0);
--		if (!gpio_is_valid(phy->common.gpio_fw_wake))
--			return -ENODEV;
--	}
--
--	return 0;
--}
--
- static int s3fwrn5_i2c_probe(struct i2c_client *client)
- {
- 	struct s3fwrn5_i2c_phy *phy;
-@@ -193,20 +160,14 @@ static int s3fwrn5_i2c_probe(struct i2c_client *client)
- 	phy->i2c_dev = client;
- 	i2c_set_clientdata(client, phy);
- 
--	ret = s3fwrn5_i2c_parse_dt(client);
--	if (ret < 0)
--		return ret;
--
--	ret = devm_gpio_request_one(&phy->i2c_dev->dev, phy->common.gpio_en,
--				    GPIOF_OUT_INIT_HIGH, "s3fwrn5_en");
--	if (ret < 0)
--		return ret;
-+	phy->common.gpio_en = devm_gpiod_get(&client->dev, "en", GPIOD_OUT_HIGH);
-+	if (IS_ERR(phy->common.gpio_en))
-+		return PTR_ERR(phy->common.gpio_en);
- 
--	ret = devm_gpio_request_one(&phy->i2c_dev->dev,
--				    phy->common.gpio_fw_wake,
--				    GPIOF_OUT_INIT_LOW, "s3fwrn5_fw_wake");
--	if (ret < 0)
--		return ret;
-+	phy->common.gpio_fw_wake = devm_gpiod_get(&client->dev, "wake",
-+						   GPIOD_OUT_LOW);
-+	if (IS_ERR(phy->common.gpio_fw_wake))
-+		return PTR_ERR(phy->common.gpio_fw_wake);
- 
- 	/*
- 	 * S3FWRN5 depends on a clock input ("XI" pin) to function properly.
-diff --git a/drivers/nfc/s3fwrn5/phy_common.c b/drivers/nfc/s3fwrn5/phy_common.c
-index deb2c039f0fd6..39a60e34136c5 100644
---- a/drivers/nfc/s3fwrn5/phy_common.c
-+++ b/drivers/nfc/s3fwrn5/phy_common.c
-@@ -8,7 +8,6 @@
-  * Bongsu Jeon <bongsu.jeon@samsung.com>
-  */
- 
--#include <linux/gpio.h>
- #include <linux/delay.h>
- #include <linux/module.h>
- 
-@@ -19,7 +18,7 @@ void s3fwrn5_phy_set_wake(void *phy_id, bool wake)
- 	struct phy_common *phy = phy_id;
- 
- 	mutex_lock(&phy->mutex);
--	gpio_set_value(phy->gpio_fw_wake, wake);
-+	gpiod_set_value(phy->gpio_fw_wake, wake);
- 	if (wake)
- 		msleep(S3FWRN5_EN_WAIT_TIME);
- 	mutex_unlock(&phy->mutex);
-@@ -33,14 +32,14 @@ bool s3fwrn5_phy_power_ctrl(struct phy_common *phy, enum s3fwrn5_mode mode)
- 
- 	phy->mode = mode;
- 
--	gpio_set_value(phy->gpio_en, 1);
--	gpio_set_value(phy->gpio_fw_wake, 0);
-+	gpiod_set_value(phy->gpio_en, 1);
-+	gpiod_set_value(phy->gpio_fw_wake, 0);
- 	if (mode == S3FWRN5_MODE_FW)
--		gpio_set_value(phy->gpio_fw_wake, 1);
-+		gpiod_set_value(phy->gpio_fw_wake, 1);
- 
- 	if (mode != S3FWRN5_MODE_COLD) {
- 		msleep(S3FWRN5_EN_WAIT_TIME);
--		gpio_set_value(phy->gpio_en, 0);
-+		gpiod_set_value(phy->gpio_en, 0);
- 		msleep(S3FWRN5_EN_WAIT_TIME);
- 	}
- 
-diff --git a/drivers/nfc/s3fwrn5/phy_common.h b/drivers/nfc/s3fwrn5/phy_common.h
-index 9cef25436bf90..871bec53dd0a9 100644
---- a/drivers/nfc/s3fwrn5/phy_common.h
-+++ b/drivers/nfc/s3fwrn5/phy_common.h
-@@ -12,6 +12,7 @@
- #define __NFC_S3FWRN5_PHY_COMMON_H
- 
- #include <linux/mutex.h>
-+#include <linux/gpio/consumer.h>
- #include <net/nfc/nci_core.h>
- 
- #include "s3fwrn5.h"
-@@ -21,8 +22,8 @@
- struct phy_common {
- 	struct nci_dev *ndev;
- 
--	int gpio_en;
--	int gpio_fw_wake;
-+	struct gpio_desc *gpio_en;
-+	struct gpio_desc *gpio_fw_wake;
- 
- 	struct mutex mutex;
- 
-diff --git a/drivers/nfc/s3fwrn5/uart.c b/drivers/nfc/s3fwrn5/uart.c
-index 9c09c10c2a464..5977a6b58f6fb 100644
---- a/drivers/nfc/s3fwrn5/uart.c
-+++ b/drivers/nfc/s3fwrn5/uart.c
-@@ -10,13 +10,12 @@
- 
- #include <linux/device.h>
- #include <linux/kernel.h>
-+#include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/nfc.h>
- #include <linux/netdevice.h>
--#include <linux/of.h>
- #include <linux/serdev.h>
--#include <linux/gpio.h>
--#include <linux/of_gpio.h>
-+#include <linux/gpio/consumer.h>
- 
- #include "phy_common.h"
- 
-@@ -88,25 +87,6 @@ static const struct of_device_id s3fwrn82_uart_of_match[] = {
- };
- MODULE_DEVICE_TABLE(of, s3fwrn82_uart_of_match);
- 
--static int s3fwrn82_uart_parse_dt(struct serdev_device *serdev)
--{
--	struct s3fwrn82_uart_phy *phy = serdev_device_get_drvdata(serdev);
--	struct device_node *np = serdev->dev.of_node;
--
--	if (!np)
--		return -ENODEV;
--
--	phy->common.gpio_en = of_get_named_gpio(np, "en-gpios", 0);
--	if (!gpio_is_valid(phy->common.gpio_en))
--		return -ENODEV;
--
--	phy->common.gpio_fw_wake = of_get_named_gpio(np, "wake-gpios", 0);
--	if (!gpio_is_valid(phy->common.gpio_fw_wake))
--		return -ENODEV;
--
--	return 0;
--}
--
- static int s3fwrn82_uart_probe(struct serdev_device *serdev)
- {
- 	struct s3fwrn82_uart_phy *phy;
-@@ -140,20 +120,19 @@ static int s3fwrn82_uart_probe(struct serdev_device *serdev)
- 
- 	serdev_device_set_flow_control(serdev, false);
- 
--	ret = s3fwrn82_uart_parse_dt(serdev);
--	if (ret < 0)
--		goto err_serdev;
--
--	ret = devm_gpio_request_one(&phy->ser_dev->dev, phy->common.gpio_en,
--				    GPIOF_OUT_INIT_HIGH, "s3fwrn82_en");
--	if (ret < 0)
-+	phy->common.gpio_en = devm_gpiod_get(&serdev->dev, "en",
-+					      GPIOD_OUT_HIGH);
-+	if (IS_ERR(phy->common.gpio_en)) {
-+		ret = PTR_ERR(phy->common.gpio_en);
- 		goto err_serdev;
-+	}
- 
--	ret = devm_gpio_request_one(&phy->ser_dev->dev,
--				    phy->common.gpio_fw_wake,
--				    GPIOF_OUT_INIT_LOW, "s3fwrn82_fw_wake");
--	if (ret < 0)
-+	phy->common.gpio_fw_wake = devm_gpiod_get(&serdev->dev, "wake",
-+						   GPIOD_OUT_LOW);
-+	if (IS_ERR(phy->common.gpio_fw_wake)) {
-+		ret = PTR_ERR(phy->common.gpio_fw_wake);
- 		goto err_serdev;
-+	}
- 
- 	ret = s3fwrn5_probe(&phy->common.ndev, phy, &phy->ser_dev->dev,
- 			    &uart_phy_ops);
--- 
-2.47.3
+Changes from v4:
+  - Removed redundant MACB_CAPS_EEE guards from macb_get_eee/set_eee;
+    phylink already returns -EOPNOTSUPP when lpi_capabilities and
+    lpi_interfaces are not populated. Based on feedback from Russell King.
+  - Added patch 5 enabling EEE for Mobileye EyeQ5, tested by Théo Lebrun
+    using a hardware loopback.
+
+Changes from v3:
+  - Dropped the register-definitions-only patch; LPI counter offsets
+    (GEM_RXLPI/RXLPITIME/TXLPI/TXLPITIME) now land in the statistics
+    patch, and TXLPIEN + MACB_CAPS_EEE are introduced alongside the TX
+    LPI implementation where they are first used. Series is now 4 patches.
+  - Add Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com> to all patches.
+  - Split chained assignment in macb_tx_lpi_set() (suggested by
+    checkpatch).
+
+Changes from v2:
+  - macb_tx_lpi_set() now returns bool indicating whether the register
+    value actually changed, avoiding redundant writes.
+  - Removed tx_lpi_enabled field from struct macb; LPI state is tracked
+    entirely within the spinlock-protected register read/modify/write.
+  - macb_tx_lpi_wake() uses the return value of macb_tx_lpi_set() to
+    skip the cancel/udelay when TXLPIEN was already clear.
+  All changes based on feedback from Russell King.
+
+Changes from v1:
+  - Rewrote to use phylink managed EEE (mac_enable_tx_lpi /
+    mac_disable_tx_lpi callbacks) instead of the obsolete
+    phy_init_eee() approach, as recommended by Russell King.
+  - ethtool get_eee/set_eee are now pure phylink passthroughs.
+  - Removed all manual EEE state tracking from mac_link_up/down;
+    phylink handles the lifecycle.
+
+The series is structured as follows:
+
+  1. LPI statistics: Expose the four hardware EEE counters (RX/TX LPI
+     transitions and time) through ethtool -S, accumulated in software
+     since they are clear-on-read. Adds register offset definitions
+     GEM_RXLPI/RXLPITIME/TXLPI/TXLPITIME (0x270-0x27c).
+
+  2. TX LPI engine: Introduces GEM_TXLPIEN (NCR bit 19) and
+     MACB_CAPS_EEE alongside the implementation that uses them.
+     phylink mac_enable_tx_lpi / mac_disable_tx_lpi callbacks with a
+     delayed_work-based idle timer. LPI entry is deferred 1 second
+     after link-up per IEEE 802.3az. Wake before transmit with a
+     conservative 50us PHY wake delay (IEEE 802.3az Tw_sys_tx).
+
+  3. ethtool EEE ops: get_eee/set_eee delegating to phylink for PHY
+     negotiation and timer management.
+
+  4. RP1 enablement: Set MACB_CAPS_EEE for the Raspberry Pi 5's RP1
+     southbridge (Cadence GEM_GXL rev 0x00070109 + BCM54213PE PHY).
+
+  5. EyeQ5 enablement: Set MACB_CAPS_EEE for the Mobileye EyeQ5 GEM
+     instance, verified with a hardware loopback by Théo Lebrun.
+
+Tested on Raspberry Pi 5 (1000BASE-T, BCM54213PE PHY, 250ms LPI timer):
+
+  iperf3 throughput (no regression):
+    TCP TX: 937.8 Mbit/s (EEE on) vs 937.0 Mbit/s (EEE off)
+    TCP RX: 936.5 Mbit/s both
+
+  Latency (ping RTT, small expected increase from LPI wake):
+    1s interval:  0.273 ms (EEE on) vs 0.181 ms (EEE off)
+    10ms interval: 0.206 ms (EEE on) vs 0.168 ms (EEE off)
+    flood ping:   0.200 ms (EEE on) vs 0.156 ms (EEE off)
+
+  LPI counters (ethtool -S, 1s-interval ping, EEE on):
+    tx_lpi_transitions: 112
+    tx_lpi_time: 15574651
+
+  Zero packet loss across all tests. Also verified with
+  ethtool --show-eee / --set-eee and cable unplug/replug cycling.
+
+Nicolai Buchwitz (5):
+  net: cadence: macb: add EEE LPI statistics counters
+  net: cadence: macb: implement EEE TX LPI support
+  net: cadence: macb: add ethtool EEE support
+  net: cadence: macb: enable EEE for Raspberry Pi RP1
+  net: cadence: macb: enable EEE for Mobileye EyeQ5
+
+ drivers/net/ethernet/cadence/macb.h      |  20 +++++
+ drivers/net/ethernet/cadence/macb_main.c | 145 ++++++++++++++++++++++++++++++-
+ 2 files changed, 163 insertions(+), 2 deletions(-)
+
+--
+2.51.0
 
