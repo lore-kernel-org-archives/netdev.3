@@ -1,44 +1,55 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FBCD373BF5;
-	Wed,  4 Mar 2026 21:07:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E3B385536
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 21:14:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772658421; cv=none; b=pUAPPYKj7CrPy4OFFk2i/3sHX2BiuAhrPcsZGwDxnscLNMhD61KKJyDF1KIYkuUXLFBc7j6ux5Nu890Zi4cH6qroPXlRrBXjA5p0/Us4W4ZQVw9/+WH8JT3+mwcr/osxkteuLhsutzpUHYiR9bwTPUIH1Mb8P9f0cPBcW+en9uk=
+	t=1772658861; cv=none; b=d6MGqCoDZZEp2rjMpummeyrcjlPVjt+lgZrg5OXkKGBRpujnpH3pkVVFWyRshrJ3Jzot1aHxLPe3vYGY7GP6K5JJZhDGwGiOHYUNVfBBKddS8mBV6JYdJ5vjSByfJqWXyZi/Nj8xFkoZotnMWMDmJbUE1M03L6FDWmKHC46unWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772658421; c=relaxed/simple;
-	bh=OP+RBHgHYvejrWEZCt/HTNw2zR66Wz18oi9+00mMvgc=;
+	s=arc-20240116; t=1772658861; c=relaxed/simple;
+	bh=QeHdo4PzDoIW+7yC/XUa+IEZtrrNchtYbV0uMClETaM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NGQ3K6p1T1FQKitWIbbM48B01q4HPdE9dHiOkapZKhAv7aVn2vMOSN/Qzt1K+mUusuLaS1ff6vPxe1fZf1GbdDLBvgMSi7dRr7ND6GaAXYfN86MRc5Atzu6NnenjP0so1PVa4UCfG6NalAfRQBnQMTUMrMci7644A5TuXu+Voq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=bts4mfUW; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	 Content-Type:Content-Disposition:In-Reply-To; b=j4V2H3XCeedEXaqQKnmOSRBrw9slrVlbZOb6GLjlpwdwKTv1jnAHKTT9npT1etNuE3AhAWsHhq59kt9Lv8Mc9Vmx9NxoihJeJVuddoO/nuudXknhgtfPLCbwUzpkLLEy2mMJqKKuOPHVl/PE3rK3YZJKbvnIz0fax/Lc6MCvrNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=I26utYhD; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="bts4mfUW"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=clDA5CykP+PmNMythbvTV2Fm5hdOkewoD5K3MJS/+wg=; b=bts4mfUWa5uGa3NcZMB73JECy4
-	zn0I2b8Jc+bn8SWfEi25R8AJk8V4wTZNTwaQRYMpilcLSmefTYRpZiYzV53N+DRuivXXC8QvShk+E
-	h0P2E/ho9usIqNXiTSo7OuxOB5BtMT6bG50x+WkTtUq1/F+1W2Xr7Zkwj9SOAOiUNKD8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1vxtQg-00AAtm-LF; Wed, 04 Mar 2026 22:06:50 +0100
-Date: Wed, 4 Mar 2026 22:06:50 +0100
-From: Andrew Lunn <andrew@lunn.ch>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, alexander.stein@ew.tq-group.com,
-	aziz.sellami@nxp.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, imx@lists.linux.dev
-Subject: Re: [PATCH net] net: enetc: fix fallback PHY address handling and do
- not skip setting for addr 0
-Message-ID: <2746e5d8-b471-44c2-9625-b009e6f1581b@lunn.ch>
-References: <20260303103047.228005-1-wei.fang@nxp.com>
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="I26utYhD"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=DIqHp97e1+CNKtjbRZfd1Zm1V5xs1TXHOVWIpIgd7Xk=; b=I26utYhDQhoVCdDCkLyX+G0OT4
+	4gvbuVpvKfse9rvRAtYMzGw3bXSexcVFbHpvOFmQCAX15N3uBBJ9onDismXb8F7NuVbHkOhjO7Jt8
+	FDrxkszxiDzYbbxQ/I6mD4Dw3WQlttxBMsz5BpO+JyDZ1FfXoIdSOG/OVkUAUNizml64qpogk/tkf
+	cENDzVab02X3l5KZYcwZ+gAd0D+rvygE58vJbvQaxwUVmM3hhX2/AX08cThsosjMtbmBqWvLOkKrq
+	qjCPME3UwGAKc271G64T2hGDB+S4pj+fg048XGqWJbCPmIOfjYsrxsDQuVGlruL57a2e9CTfZi3xN
+	DrntY01g==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:32980)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1vxtXj-00000000732-1iAG;
+	Wed, 04 Mar 2026 21:14:07 +0000
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1vxtXf-000000008FR-3YlI;
+	Wed, 04 Mar 2026 21:14:03 +0000
+Date: Wed, 4 Mar 2026 21:14:03 +0000
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Alok Tiwari <alok.a.tiwari@oracle.com>
+Cc: hkallweit1@gmail.com, quan@os.amperecomputing.com,
+	keyur@os.amperecomputing.com, iyappan@os.amperecomputing.com,
+	andrew@lunn.ch, kuba@kernel.org, davem@davemloft.net,
+	edumazet@google.com, pabeni@redhat.com, netdev@vger.kernel.org,
+	alok.a.tiwarilinux@gmail.com
+Subject: Re: [PATCH net-next] net: mdio: xgene: Fix misleading err message in
+ xgene mdio read
+Message-ID: <aaigm4iqgf6fSaZu@shell.armlinux.org.uk>
+References: <20260304195755.2468204-1-alok.a.tiwari@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,87 +58,20 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260303103047.228005-1-wei.fang@nxp.com>
+In-Reply-To: <20260304195755.2468204-1-alok.a.tiwari@oracle.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-On Tue, Mar 03, 2026 at 06:30:47PM +0800, Wei Fang wrote:
-> The current netc_get_phy_addr() implementation falls back to PHY address
-> 0 when the "mdio" node or any PHY child node is missing. On i.MX95, this
-> causes failures when a real PHY is actually assigned address 0 and is
-> managed through the EMDIO interface, the bit 0 of phy_mask becomes set,
-> leading imx95_enetc_mdio_phyaddr_config() to return an error, and the
-> netc_blk_ctrl driver probe subsequently fails. Fix this by returning
-> -ENODEV when neither an "mdio" node nor any PHY node is present.
+On Wed, Mar 04, 2026 at 11:57:36AM -0800, Alok Tiwari wrote:
+> xgene_xfi_mdio_read() prints "write failed" when the MDIO management
+> interface remains busy and the read times out. Update the message to
+> "read failed" to match the operation.
 > 
-> Given that some platforms may use PHY address 0 (I suppose the PHY may
-> not treat address 0 as a broadcast address or default response address).
-> It is possible for some boards to connect multiple PHYs to a single
-> ENETC MAC, for example:
-> 
->   - a SGMII PHY with a non-zero address (selected via DTS_A)
->   - a RGMII PHY with address 0 (selected via DTS_B)
-> 
-> For the case where the ENETC port MDIO is used to manage the PHY, when
-> switching from DTS_A to DTS_B via soft reboot, LaBCR[MDIO_PHYAD_PRTAD]
-> must be updated to 0 because the NETCMIX block is not reset during soft
-> reboot. However, the current driver explicitly skips configuring address
-> 0, which leaves the hardware in an inconsistent state.
-> 
-> Therefore, remove the special-case skip of PHY address 0 so that valid
-> configurations using address 0 are properly supported.
+> Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-Please can you break this patch up. I've not looked at all the details, but:
+Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 
-> diff --git a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
-> index 7fd39f895290..92a0f824dae7 100644
-> --- a/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
-> +++ b/drivers/net/ethernet/freescale/enetc/netc_blk_ctrl.c
-> @@ -333,11 +333,13 @@ static int netc_get_phy_addr(struct device_node *np)
->  
->  	mdio_node = of_get_child_by_name(np, "mdio");
->  	if (!mdio_node)
-> -		return 0;
-> +		return -ENODEV;
->  
->  	phy_node = of_get_next_child(mdio_node, NULL);
-> -	if (!phy_node)
-> +	if (!phy_node) {
-> +		err = -ENODEV;
->  		goto of_put_mdio_node;
-> +	}
+Thanks!
 
-This looks like it could be one patch.
-
-> @@ -423,6 +425,9 @@ static int imx95_enetc_mdio_phyaddr_config(struct platform_device *pdev)
->  
->  			addr = netc_get_phy_addr(gchild);
->  			if (addr < 0) {
-> +				if (addr == -ENODEV)
-> +					continue;
-> +
-
-This seems like a patch when combined with the if (addr < 0) hunk
-below.
-
-> @@ -433,12 +438,6 @@ static int imx95_enetc_mdio_phyaddr_config(struct platform_device *pdev)
->  				return -EINVAL;
->  			}
->  
-> -			/* The default value of LaBCR[MDIO_PHYAD_PRTAD ] is
-> -			 * 0, so no need to set the register.
-> -			 */
-> -			if (!addr)
-> -				continue;
-> -
-
-This can be a patch, along with the same delete in the last section of
-this patch.
-
-The point of having lots of small patches is that it makes to find
-regressions. If something does break, git bisect will quickly tell you
-which patch is was. The less a patch does, the more git bisect is
-useful.
-
-    Andrew
-
----
-pw-bot: cr
+-- 
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
