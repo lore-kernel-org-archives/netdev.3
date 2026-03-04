@@ -1,228 +1,190 @@
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1861F38236A;
-	Wed,  4 Mar 2026 07:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B661034D385;
+	Wed,  4 Mar 2026 07:44:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772610227; cv=none; b=lGrjzay0tTrF7PLciDDiOzOQ6zhpdx0bizbPDE8JAu0P12ujlVTGl6CTs3tchT9ffyAh4Fded89MxkPbQtiPmWaksZsrKfrH1GSJqnbk7kiCpClAgpkv/AZa5pbI5lv/QuMjdB2ZuccC6BNMQFjK/8n6bl+2+uD5todI33HJymg=
+	t=1772610263; cv=none; b=MKUlglDYcoTPXjZHO/wKMfhhwb9vbqLd6NLPENGXYP0eFusUaMUTyt+RtyU0bYK43NJ9c2GezzQNd1AsvVNfsq5bsw1HhUR9hgLCQGsh4PvEoDPvvYIJJU+vN/mUpBUJLyAotkSluT8X/ktavskwYS6Dgu0CDdmhPUEYtStGeoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772610227; c=relaxed/simple;
-	bh=/nWFWGm1LWFw2+LWBT5eLedzo5nO+2W6C3bxSAB4nQw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XMpYoA7XCsMSByzxKd7vCfCOg0NFNb9Cj5LhbnOegTrAlGCGL359nWLOLI5+qu+0nOhJEVSEFWQQf1CtAprF0y/IGM1E/sO9CRxRDEZz4/1oEgTZz/2Vwpwtn2BJvLC3d/wWPfWD+v4wZzIpyjU1II3+VwHCK7wrY56wtZsDq9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=UcoZDpUg; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1772610263; c=relaxed/simple;
+	bh=Us0KGNplk7HG7Fg83BdG+51O34emtOY7P1nZiiQ0jEU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=suREU+sPpHI9wDQS0PAs7oXoYAbkT7svPjomiOMenhHxiFHed07KG9Gbnd0XX+ZliMTUyHrVBN1JWAhGLpTYL8CzrQQEQmj/NLvbaZAjrlw1qMhevpI0yU//7XyKi9rKm/Jbj1vUEVWNIa1pBoAl8ti8y+7cTSamwkgypvjENww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h14YwVVE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="UcoZDpUg"
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772610223;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OozEdu1pfaLvelgpBknkr6XecjF2fZSlQnkaPUUUzxY=;
-	b=UcoZDpUg7fPzwB8PKIahbAswNCu/jblwcid44mW/Y20eRXHwOMxMowaGMvIlJBAGfJ8x09
-	CtDbSlLqoypeFN2BlZtFE2FdO0ux0jmnzU4nQEoUswuBDsiRKreENFTU2lE8karDwWKbA2
-	BaV+SDaSBgAk2R4uYeE7+KiWDhYhOL4=
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: jv@jvosburgh.net,
-	netdev@vger.kernel.org
-Cc: jiayuan.chen@linux.dev,
-	jiayuan.chen@shopee.com,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Jussi Maki <joamaki@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH net v4 2/2] selftests/bpf: add test for xdp_master_redirect with bond not up
-Date: Wed,  4 Mar 2026 15:42:58 +0800
-Message-ID: <20260304074301.35482-3-jiayuan.chen@linux.dev>
-In-Reply-To: <20260304074301.35482-1-jiayuan.chen@linux.dev>
-References: <20260304074301.35482-1-jiayuan.chen@linux.dev>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h14YwVVE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F04C19423;
+	Wed,  4 Mar 2026 07:44:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772610263;
+	bh=Us0KGNplk7HG7Fg83BdG+51O34emtOY7P1nZiiQ0jEU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=h14YwVVE6Wj9ayUYI7MGAZoootsuGQ+RsRUIvXmDBYdBvhOGLpsE4P9nw/2i1qmGz
+	 N+VqJuvhpyVsQ3BBLC2IEcy35P7Ad/6xl3kwoDp9ofcfS11K9avXjLWOkOANI4AyWf
+	 zJ01vAyxeRvijBP0ed+iFx0t37A5i0q2Lmim14MvcdRkXdKvcAWbmi9LfC7HaHHuYd
+	 7/rzk8X8A68rxJ7EIcgY3aUvzucihf1RDs3lmV/JqqF5wBtjK2XgakMOwBQlEsoHdv
+	 /MYd0/fycri9g3fr899YtXuwAMjsl3gXw7WHMGy5a5R7snhJZXIh3OvT7FPtFg0fkX
+	 B6OXkr5jGjEcQ==
+Date: Wed, 4 Mar 2026 08:44:21 +0100
+From: Krzysztof Kozlowski <krzk@kernel.org>
+To: lizhi2@eswincomputing.com
+Cc: devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net, 
+	edumazet@google.com, kuba@kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
+	conor+dt@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, 
+	mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk, 
+	wens@kernel.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	alex@ghiti.fr, linux-riscv@lists.infradead.org, 
+	linux-stm32@st-md-mailman.stormreply.com, linux-arm-kernel@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, ningyu@eswincomputing.com, linmin@eswincomputing.com, 
+	pinkesh.vaghela@einfochips.com, pritesh.patel@einfochips.com, weishangjuan@eswincomputing.com
+Subject: Re: [PATCH net-next v3 1/3] dt-bindings: ethernet: eswin: add clock
+ sampling control
+Message-ID: <20260304-hot-sponge-of-emphasis-6864db@quoll>
+References: <20260303061525.846-1-lizhi2@eswincomputing.com>
+ <20260303061637.872-1-lizhi2@eswincomputing.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20260303061637.872-1-lizhi2@eswincomputing.com>
 
-From: Jiayuan Chen <jiayuan.chen@shopee.com>
+On Tue, Mar 03, 2026 at 02:16:37PM +0800, lizhi2@eswincomputing.com wrote:
+> From: Zhi Li <lizhi2@eswincomputing.com>
+> 
+> The second Ethernet controller (eth1) on the EIC7700 SoC may experience
+> RX data sampling issues at high speed due to EIC7700-specific receive
+> clock to data skew at the MAC input.
+> 
+> On the EIC7700 SoC, the second Ethernet controller (eth1) requires
+> inversion of the internal RGMII receive clock in order to meet RX data
+> sampling timing at high speed.
+> 
+> Describe this SoC-specific difference by introducing a distinct compatible
+> string for MAC instances that require internal clock inversion, allowing the
+> driver to select the appropriate configuration without relying on per-board
+> vendor-specific properties.
 
-Add a selftest that reproduces the null-ptr-deref in
-bond_rr_gen_slave_id() when XDP redirect targets a bond device in
-round-robin mode that was never brought up. The test verifies the fix
-by ensuring no crash occurs.
+Pointless description/paragrapgh. Your explanation why adding a
+compatible is "because I need compatible". That's completely redundant.
 
-Test setup:
-- bond0: active-backup mode, UP, with native XDP (enables
-  bpf_master_redirect_enabled_key globally)
-- bond1: round-robin mode, never UP
-- veth1: slave of bond1, with generic XDP (XDP_TX)
-- BPF_PROG_TEST_RUN with live frames triggers the redirect path
+Explain what is special about this MAC instance, what's different in its
+programming model or other characteristics that you claim it is a
+different device.
 
-Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
----
- .../selftests/bpf/prog_tests/xdp_bonding.c    | 101 +++++++++++++++++-
- 1 file changed, 99 insertions(+), 2 deletions(-)
+> 
+> The rx-internal-delay-ps and tx-internal-delay-ps properties now use
+> minimum and maximum constraints to reflect the actual hardware delay
+> range (0-2540 ps) applied in 20 ps steps. This relaxes the binding
+> validation compared to the previous enum-based definition and avoids
+> regressions for existing DTBs while keeping the same hardware limits.
+> 
+> Treat the RX/TX internal delay properties as optional, board-specific
+> tuning knobs and remove them from the example to avoid encouraging
+> their use.
+> 
+> In addition, the binding now includes additional background information
+> about the HSP CSR registers accessed by the MAC. The TXD and RXD delay
+> control registers are included so the driver can explicitly clear any
+> residual configuration left by the bootloader. Background reference for
+> the High-Speed Subsystem and HSP CSR block is available in Chapter 10
+> ("High-Speed Interface") of the EIC7700X SoC Technical Reference Manual,
+> Part 4 (EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf):
+> https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases
+> 
+> There are currently no in-tree users of the EIC7700 Ethernet driver, so
+> these changes are safe.
+> 
+> Fixes: 888bd0eca93c ("dt-bindings: ethernet: eswin: Document for EIC7700 SoC")
+> Signed-off-by: Zhi Li <lizhi2@eswincomputing.com>
+> ---
+>  .../bindings/net/eswin,eic7700-eth.yaml       | 75 +++++++++++++++----
+>  1 file changed, 59 insertions(+), 16 deletions(-)
+> 
+> diff --git a/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml b/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml
+> index 91e8cd1db67b..22d1cecea07e 100644
+> --- a/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml
+> +++ b/Documentation/devicetree/bindings/net/eswin,eic7700-eth.yaml
+> @@ -20,6 +20,7 @@ select:
+>        contains:
+>          enum:
+>            - eswin,eic7700-qos-eth
+> +          - eswin,eic7700-qos-eth-clk-inversion
+>    required:
+>      - compatible
+>  
+> @@ -28,9 +29,13 @@ allOf:
+>  
+>  properties:
+>    compatible:
+> -    items:
+> -      - const: eswin,eic7700-qos-eth
+> -      - const: snps,dwmac-5.20
+> +    oneOf:
+> +      - items:
+> +          - const: eswin,eic7700-qos-eth
+> +          - const: snps,dwmac-5.20
+> +      - items:
+> +          - const: eswin,eic7700-qos-eth-clk-inversion
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_bonding.c b/tools/testing/selftests/bpf/prog_tests/xdp_bonding.c
-index fb952703653e..a5b15e464018 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_bonding.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_bonding.c
-@@ -191,13 +191,18 @@ static int bonding_setup(struct skeletons *skeletons, int mode, int xmit_policy,
- 	return -1;
- }
- 
--static void bonding_cleanup(struct skeletons *skeletons)
-+static void link_cleanup(struct skeletons *skeletons)
- {
--	restore_root_netns();
- 	while (skeletons->nlinks) {
- 		skeletons->nlinks--;
- 		bpf_link__destroy(skeletons->links[skeletons->nlinks]);
- 	}
-+}
-+
-+static void bonding_cleanup(struct skeletons *skeletons)
-+{
-+	restore_root_netns();
-+	link_cleanup(skeletons);
- 	ASSERT_OK(system("ip link delete bond1"), "delete bond1");
- 	ASSERT_OK(system("ip link delete veth1_1"), "delete veth1_1");
- 	ASSERT_OK(system("ip link delete veth1_2"), "delete veth1_2");
-@@ -493,6 +498,95 @@ static void test_xdp_bonding_nested(struct skeletons *skeletons)
- 	system("ip link del bond_nest2");
- }
- 
-+/*
-+ * Test that XDP redirect via xdp_master_redirect() does not crash when
-+ * the bond master device is not up. When bond is in round-robin mode but
-+ * never opened, rr_tx_counter is NULL.
-+ */
-+static void test_xdp_bonding_redirect_no_up(struct skeletons *skeletons)
-+{
-+	struct nstoken *nstoken = NULL;
-+	int xdp_pass_fd, xdp_tx_fd;
-+	int veth1_ifindex;
-+	int err;
-+	char pkt[ETH_HLEN + 1];
-+	struct xdp_md ctx_in = {};
-+
-+	DECLARE_LIBBPF_OPTS(bpf_test_run_opts, opts,
-+			    .data_in = &pkt,
-+			    .data_size_in = sizeof(pkt),
-+			    .ctx_in = &ctx_in,
-+			    .ctx_size_in = sizeof(ctx_in),
-+			    .flags = BPF_F_TEST_XDP_LIVE_FRAMES,
-+			    .repeat = 1,
-+			    .batch_size = 1,
-+		);
-+
-+	/* We can't use bonding_setup() because bond will be active */
-+	SYS(out, "ip netns add ns_rr_no_up");
-+	nstoken = open_netns("ns_rr_no_up");
-+	if (!ASSERT_OK_PTR(nstoken, "open ns_rr_no_up"))
-+		goto out;
-+
-+	/* bond0: active-backup, UP with slave veth0.
-+	 * Attaching native XDP to bond0 enables bpf_master_redirect_enabled_key
-+	 * globally.
-+	 */
-+	SYS(out, "ip link add bond0 type bond mode active-backup");
-+	SYS(out, "ip link add veth0 type veth peer name veth0p");
-+	SYS(out, "ip link set veth0 master bond0");
-+	SYS(out, "ip link set bond0 up");
-+	SYS(out, "ip link set veth0p up");
-+
-+	/* bond1: round-robin, never UP -> rr_tx_counter stays NULL */
-+	SYS(out, "ip link add bond1 type bond mode balance-rr");
-+	SYS(out, "ip link add veth1 type veth peer name veth1p");
-+	SYS(out, "ip link set veth1 master bond1");
-+
-+	veth1_ifindex = if_nametoindex("veth1");
-+	if (!ASSERT_GT(veth1_ifindex, 0, "veth1_ifindex"))
-+		goto out;
-+
-+	/* Attach native XDP to bond0 -> enables global redirect key */
-+	if (xdp_attach(skeletons, skeletons->xdp_tx->progs.xdp_tx, "bond0"))
-+		goto out;
-+
-+	/* Attach generic XDP (XDP_TX) to veth1.
-+	 * When packets arrive at veth1 via netif_receive_skb, do_xdp_generic()
-+	 * runs this program. XDP_TX + bond slave triggers xdp_master_redirect().
-+	 */
-+	xdp_tx_fd = bpf_program__fd(skeletons->xdp_tx->progs.xdp_tx);
-+	if (!ASSERT_GE(xdp_tx_fd, 0, "xdp_tx prog_fd"))
-+		goto out;
-+
-+	err = bpf_xdp_attach(veth1_ifindex, xdp_tx_fd,
-+			     XDP_FLAGS_SKB_MODE, NULL);
-+	if (!ASSERT_OK(err, "attach generic XDP to veth1"))
-+		goto out;
-+
-+	/* Run BPF_PROG_TEST_RUN with XDP_PASS live frames on veth1.
-+	 * XDP_PASS frames become SKBs with skb->dev = veth1, entering
-+	 * netif_receive_skb -> do_xdp_generic -> xdp_master_redirect.
-+	 * Without the fix, bond_rr_gen_slave_id() dereferences NULL
-+	 * rr_tx_counter and crashes.
-+	 */
-+	xdp_pass_fd = bpf_program__fd(skeletons->xdp_dummy->progs.xdp_dummy_prog);
-+	if (!ASSERT_GE(xdp_pass_fd, 0, "xdp_pass prog_fd"))
-+		goto out;
-+
-+	memset(pkt, 0, sizeof(pkt));
-+	ctx_in.data_end = sizeof(pkt);
-+	ctx_in.ingress_ifindex = veth1_ifindex;
-+
-+	err = bpf_prog_test_run_opts(xdp_pass_fd, &opts);
-+	ASSERT_OK(err, "xdp_pass test_run should not crash");
-+
-+out:
-+	link_cleanup(skeletons);
-+	close_netns(nstoken);
-+	SYS_NOFAIL("ip netns del ns_rr_no_up");
-+}
-+
- static void test_xdp_bonding_features(struct skeletons *skeletons)
- {
- 	LIBBPF_OPTS(bpf_xdp_query_opts, query_opts);
-@@ -680,6 +774,9 @@ void serial_test_xdp_bonding(void)
- 	if (test__start_subtest("xdp_bonding_redirect_multi"))
- 		test_xdp_bonding_redirect_multi(&skeletons);
- 
-+	if (test__start_subtest("xdp_bonding_redirect_no_up"))
-+		test_xdp_bonding_redirect_no_up(&skeletons);
-+
- out:
- 	xdp_dummy__destroy(skeletons.xdp_dummy);
- 	xdp_tx__destroy(skeletons.xdp_tx);
--- 
-2.43.0
+So just enum for both entries?
+
+Anyway, that's the same device, so you do not get two compatibles. This
+should be a property. Which property not sure, maybe all this was
+discussed already.
+
+
+> +          - const: snps,dwmac-5.20
+>  
+>    reg:
+>      maxItems: 1
+> @@ -63,16 +68,29 @@ properties:
+>        - const: stmmaceth
+>  
+>    rx-internal-delay-ps:
+> -    enum: [0, 200, 600, 1200, 1600, 1800, 2000, 2200, 2400]
+> +    minimum: 0
+> +    maximum: 2540
+> +    multipleOf: 20
+>  
+>    tx-internal-delay-ps:
+> -    enum: [0, 200, 600, 1200, 1600, 1800, 2000, 2200, 2400]
+> +    minimum: 0
+> +    maximum: 2540
+> +    multipleOf: 20
+>  
+>    eswin,hsp-sp-csr:
+>      description:
+>        HSP CSR is to control and get status of different high-speed peripherals
+>        (such as Ethernet, USB, SATA, etc.) via register, which can tune
+>        board-level's parameters of PHY, etc.
+> +
+> +      Additional background information about the High-Speed Subsystem
+> +      and the HSP CSR block is available in Chapter 10 ("High-Speed Interface")
+> +      of the EIC7700X SoC Technical Reference Manual, Part 4
+> +      (EIC7700X_SoC_Technical_Reference_Manual_Part4.pdf). The manual is
+> +      publicly available at
+> +      https://github.com/eswincomputing/EIC7700X-SoC-Technical-Reference-Manual/releases
+> +
+> +      This reference is provided for background information only.
+>      $ref: /schemas/types.yaml#/definitions/phandle-array
+>      items:
+>        - items:
+> @@ -81,7 +99,9 @@ properties:
+>                           or external clock selection
+>            - description: Offset of AXI clock controller Low-Power request
+>                           register
+> +          - description: Offset of register controlling TXD delay
+>            - description: Offset of register controlling TX/RX clock delay
+> +          - description: Offset of register controlling RXD delay
+
+As pointed out, you cannot change the order and there is no reason for
+doing this explained in commit msg.
+
+Best regards,
+Krzysztof
 
