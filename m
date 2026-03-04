@@ -1,30 +1,32 @@
 Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B063A451F
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 10:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496093A6F07
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 10:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772621701; cv=none; b=e9dS5hB3QWZmhmDVFIgvrPdc3k9D+pWoKtypFa3vLSiCcFzRSx9CoO7w1QwrhQCQQuXFM0rn1zGeqOjS948dZG1fq6jkpmE/AQVlePXKtk1Jb07aMfbhreOZld21SdOmYRZ3iC2OTo0hhPMYGcL0S22G+conQLeLpNSLExLlrgI=
+	t=1772621702; cv=none; b=agcOwArXFu3oRd+fxjIw6xODMcV/9zOwT844fwvF+x4Pm1p+Rovaa/BrQxype9+ScGXVQNXRf83NIZ3fFg7Pyz5CmgpC+slgQRjIb07VvW0gqC5dtRtNB00c6Va3iEfgGmJ3Hn8u8BlFbTevwHmASMK9jbeb2Ckx+rFjzK0w8Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772621701; c=relaxed/simple;
-	bh=wDy7lwFKEmxDMoxtDsk2M2wdV9BvNz6hH7XPQGFhta4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZTw2vmpuNFX+8NZavqPoSFSNVdGThEbjZzr03/3mwTJpQOTzV2c0LrOUNkwIB93PUfMiuG5T0/MXNbC4AVkvKU7KsDfpyyG1mo3zzgHw6E/7j2l5bA6qSeM5ngjn1Nt/JZv+xB5dWCro25zwBriyTYQ7x9dxJty5YbzV9xqCsTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=uaPvPuCp; arc=none smtp.client-ip=194.13.80.246
+	s=arc-20240116; t=1772621702; c=relaxed/simple;
+	bh=s2sMlXCo09q0wnNPoYMRu6IYT7j/QPtOWVpGKp2cJKY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JZ5C6mBmT10c2PfetqJVVLL96KUhmGg0TrljK1b37ze3k7jFDKkcaN30BAB/unGVlmURgvBK+26zk3+ZN97x7lIyoRRompU6wcBErsY0bbw3a76M4F/le2zqPXIF2xedgBQjs69k1Fq8SvEYJ5ii+nRokLb7cRfCQskeadHL2Tk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=VU+Zajno; arc=none smtp.client-ip=194.13.80.246
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="uaPvPuCp"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 7A166A0042;
-	Wed,  4 Mar 2026 11:54:50 +0100 (CET)
+	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="VU+Zajno"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 293EEA5614;
+	Wed,  4 Mar 2026 11:54:58 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1772621695; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding; bh=4b9fzcnuJ5ddgbvup+eksWHf93kQSgMRpetZAz6W3xs=;
-	b=uaPvPuCpSA272XD6nS9FebqZROU28DFkJhfLu+5ISNguZ/yW0F5o0DJkiOk1QPjlUOFAez
-	dH957J95U9+cVPD4To2vHMzRaGqPbX/7D+yLxlKl30tCByIs6vgYtkfKU1ZP7hITkM4uf0
-	up1d2/6y+Nw7NwQXvebVKFNXy4WRWPURwZuJM0hmmLHghBUAjfcvfJ2D8MmDncVOYJb0vN
-	7RGqwqYfs+wIAE5xzi21z2GhgjVsFTCqfxyKoAmAwMkxU7RgY/phYq0eHekBnythkt0CyP
-	F5nDcJKQ4Xnb/jDtFGO6vbLQHWOzPgayt47Yu2Fg2FGtrIJs1uLRvc0q1GzTww==
+	t=1772621698; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=Tt3o0l0xlwVxpNes4Rnb5PwdXYOdDusGhM53d+eKqpY=;
+	b=VU+ZajnodlcxoNHkzq+C3EwEw3ZGDMuFgV03aXn4A6KtgXiQZQp9/slHjHqMaUadBwXEMD
+	ynxvUiTUTUEhupPK/GCfM56gP5j3r7gXwzh5JJqLJZk2emtZWjYmcbPZCaawHcUUb93lK9
+	xkHJ28vCYFinePAvV4HSNFJ1bgYxEFllC2nI5dmyR9VEX7mMs7wu9B4i0gDG0Mjd2U/2G6
+	8xeS35Cu3NrJ77G96+LqycY0OneMf4WuEuppfw+xqs8kdeyIl59iWyX4Xz6mK9YCVmSZdD
+	QueifliEDHjJ0Mji6fy/jMcvjDAZP+6vKhByR9avLI9AIONFjQ71EdzkgzmCrg==
 From: Nicolai Buchwitz <nb@tipi-net.de>
 To: netdev@vger.kernel.org
 Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -37,10 +39,12 @@ Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
 	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
 	phil@raspberrypi.com,
 	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: [PATCH net-next v6 0/5] net: cadence: macb: add IEEE 802.3az EEE support
-Date: Wed,  4 Mar 2026 11:54:27 +0100
-Message-ID: <20260304105432.631186-1-nb@tipi-net.de>
+Subject: [PATCH net-next v6 4/5] net: cadence: macb: enable EEE for Raspberry Pi RP1
+Date: Wed,  4 Mar 2026 11:54:31 +0100
+Message-ID: <20260304105432.631186-5-nb@tipi-net.de>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260304105432.631186-1-nb@tipi-net.de>
+References: <20260304105432.631186-1-nb@tipi-net.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -51,116 +55,39 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-Add Energy Efficient Ethernet (IEEE 802.3az) support to the Cadence GEM
-(macb) driver using phylink's managed EEE framework. The GEM MAC has
-hardware LPI registers but no built-in idle timer, so the driver
-implements software-managed TX LPI using a delayed_work timer while
-delegating EEE negotiation and ethtool state to phylink.
+Set MACB_CAPS_EEE for the Raspberry Pi 5 RP1 southbridge
+(Cadence GEM_GXL rev 0x00070109 paired with BCM54213PE PHY).
 
-Changes from v5:
-  - macb_tx_lpi_set() no longer manages its own spinlock; it now
-    requires bp->lock to be held by the caller and asserts this with
-    lockdep_assert_held(). All callers (macb_tx_lpi_work_fn,
-    macb_mac_enable_tx_lpi, macb_mac_disable_tx_lpi) take bp->lock
-    explicitly. Based on feedback from Jakub Kicinski.
-  - macb_tx_lpi_wake() is now called under the existing bp->lock in
-    macb_start_xmit(), eliminating the redundant lock acquire/release.
-    An eee_active check at the top of macb_tx_lpi_wake() short-circuits
-    the register read on the common (EEE-disabled) path. Based on
-    feedback from Jakub Kicinski.
-  - macb_tx_all_queues_idle() uses READ_ONCE for tx_head/tx_tail
-    (called under bp->lock; taking tx_ptr_lock here would invert the
-    established lock order). Loop rewritten to match the driver
-    convention: for (q = 0, queue = bp->queues; ...; ++q, ++queue).
-    Based on feedback from Jakub Kicinski and Claudiu Beznea.
-  - Added Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev> to
-    patches 1-4.
+EEE has been verified on RP1 hardware: the LPI counter registers
+at 0x270-0x27c return valid data, the TXLPIEN bit in NCR (bit 19)
+controls LPI transmission correctly, and ethtool --show-eee reports
+the negotiated state after link-up.
 
-Changes from v4:
-  - Removed redundant MACB_CAPS_EEE guards from macb_get_eee/set_eee;
-    phylink already returns -EOPNOTSUPP when lpi_capabilities and
-    lpi_interfaces are not populated. Based on feedback from Russell King.
-  - Added patch 5 enabling EEE for Mobileye EyeQ5, tested by Théo Lebrun
-    using a hardware loopback.
+Other GEM variants that share the same LPI register layout (SAMA5D2,
+SAME70, PIC32CZ) can be enabled by adding MACB_CAPS_EEE to their
+respective config entries once tested.
 
-Changes from v3:
-  - Dropped the register-definitions-only patch; LPI counter offsets
-    (GEM_RXLPI/RXLPITIME/TXLPI/TXLPITIME) now land in the statistics
-    patch, and TXLPIEN + MACB_CAPS_EEE are introduced alongside the TX
-    LPI implementation where they are first used. Series is now 4 patches.
-  - Add Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com> to all patches.
-  - Split chained assignment in macb_tx_lpi_set() (suggested by
-    checkpatch).
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Reviewed-by: Théo Lebrun <theo.lebrun@bootlin.com>
+Signed-off-by: Nicolai Buchwitz <nb@tipi-net.de>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Changes from v2:
-  - macb_tx_lpi_set() now returns bool indicating whether the register
-    value actually changed, avoiding redundant writes.
-  - Removed tx_lpi_enabled field from struct macb; LPI state is tracked
-    entirely within the spinlock-protected register read/modify/write.
-  - macb_tx_lpi_wake() uses the return value of macb_tx_lpi_set() to
-    skip the cancel/udelay when TXLPIEN was already clear.
-  All changes based on feedback from Russell King.
-
-Changes from v1:
-  - Rewrote to use phylink managed EEE (mac_enable_tx_lpi /
-    mac_disable_tx_lpi callbacks) instead of the obsolete
-    phy_init_eee() approach, as recommended by Russell King.
-  - ethtool get_eee/set_eee are now pure phylink passthroughs.
-  - Removed all manual EEE state tracking from mac_link_up/down;
-    phylink handles the lifecycle.
-
-The series is structured as follows:
-
-  1. LPI statistics: Expose the four hardware EEE counters (RX/TX LPI
-     transitions and time) through ethtool -S, accumulated in software
-     since they are clear-on-read. Adds register offset definitions
-     GEM_RXLPI/RXLPITIME/TXLPI/TXLPITIME (0x270-0x27c).
-
-  2. TX LPI engine: Introduces GEM_TXLPIEN (NCR bit 19) and
-     MACB_CAPS_EEE alongside the implementation that uses them.
-     phylink mac_enable_tx_lpi / mac_disable_tx_lpi callbacks with a
-     delayed_work-based idle timer. LPI entry is deferred 1 second
-     after link-up per IEEE 802.3az. Wake before transmit with a
-     conservative 50us PHY wake delay (IEEE 802.3az Tw_sys_tx).
-
-  3. ethtool EEE ops: get_eee/set_eee delegating to phylink for PHY
-     negotiation and timer management.
-
-  4. RP1 enablement: Set MACB_CAPS_EEE for the Raspberry Pi 5's RP1
-     southbridge (Cadence GEM_GXL rev 0x00070109 + BCM54213PE PHY).
-
-  5. EyeQ5 enablement: Set MACB_CAPS_EEE for the Mobileye EyeQ5 GEM
-     instance, verified with a hardware loopback by Théo Lebrun.
-
-Tested on Raspberry Pi 5 (1000BASE-T, BCM54213PE PHY, 250ms LPI timer):
-
-  iperf3 throughput (no regression):
-    TCP TX: 937.8 Mbit/s (EEE on) vs 937.0 Mbit/s (EEE off)
-    TCP RX: 936.5 Mbit/s both
-
-  Latency (ping RTT, small expected increase from LPI wake):
-    1s interval:  0.273 ms (EEE on) vs 0.181 ms (EEE off)
-    10ms interval: 0.206 ms (EEE on) vs 0.168 ms (EEE off)
-    flood ping:   0.200 ms (EEE on) vs 0.156 ms (EEE off)
-
-  LPI counters (ethtool -S, 1s-interval ping, EEE on):
-    tx_lpi_transitions: 112
-    tx_lpi_time: 15574651
-
-  Zero packet loss across all tests. Also verified with
-  ethtool --show-eee / --set-eee and cable unplug/replug cycling.
-
-Nicolai Buchwitz (5):
-  net: cadence: macb: add EEE LPI statistics counters
-  net: cadence: macb: implement EEE TX LPI support
-  net: cadence: macb: add ethtool EEE support
-  net: cadence: macb: enable EEE for Raspberry Pi RP1
-  net: cadence: macb: enable EEE for Mobileye EyeQ5
-
- drivers/net/ethernet/cadence/macb.h      |  20 +++++
- drivers/net/ethernet/cadence/macb_main.c | 145 ++++++++++++++++++++++++++++++-
- 2 files changed, 163 insertions(+), 2 deletions(-)
-
---
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index f01366394cff..5933a5042bc8 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5537,7 +5537,8 @@ static const struct macb_config eyeq5_config = {
+ static const struct macb_config raspberrypi_rp1_config = {
+ 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE | MACB_CAPS_CLK_HW_CHG |
+ 		MACB_CAPS_JUMBO |
+-		MACB_CAPS_GEM_HAS_PTP,
++		MACB_CAPS_GEM_HAS_PTP |
++		MACB_CAPS_EEE,
+ 	.dma_burst_length = 16,
+ 	.clk_init = macb_clk_init,
+ 	.init = macb_init,
+-- 
 2.51.0
 
