@@ -1,42 +1,46 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7719E29408
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 01:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 504A139FD9;
+	Wed,  4 Mar 2026 01:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772586523; cv=none; b=ORWFs7tVx84sfb6epu+g6XY3F/edDpmIQOzISrTrJm511RPqsh5RUiapjjZb9G5+TQB8Jixk77qeZ8+yYE70KDq5e4+d6m8CawYwdlpJOjem0P0WT2pRHtT9NjKowTVrf2JXy1EiKd2KMZCaCx1CXc18PhtKgQsttj8z25xDkxM=
+	t=1772586550; cv=none; b=gQ/qT0S09NDYFz/0g1k4ZQKF1jSmr1rDnri7wNl+QWub5xo66/KN3u0v4ukoGwmUgG3j+xpPBiHMqgwOu1lZu6FIfz2sKZeHr2bq5Tal2D/0hJNnOyODBvIIFNRke5CamT7yDZNO8lxNoRL+naCt2Cwi4Pv5mwJiQiAfrWikZq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772586523; c=relaxed/simple;
-	bh=DQnIqIa8jSessrJ7z0E3IiEhGL1TxcQcGfMsY3LmGhs=;
+	s=arc-20240116; t=1772586550; c=relaxed/simple;
+	bh=oJ7H/Fg75E5Kzd69Xj5N2aHTw22/7ssgPNPD9zCo4Bk=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DTFLfibr+EHXe4rYKtKMXCfre2ejUtW+SmUsJj0B8cLJ3A5YngKNB99EMhqHsJZsp3tWoamn0YNJJIhAwGPIsAs8BxJoH3Rjsalo4Dho+uPMsFzf3DF285fxQfYn8CyxasRjBqucD/UpByt5oASN2fxCC3h/9W/OYDNFcS3H3Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SIIu8f/h; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version:Content-Type; b=fLSM+WGpulfWveLI0o4o1Gfk88GMddhA23ViFJ5SYwOZKbxiDak+RXseh9g208dLkH7OWQI/+0K/CDHMEpryRnB8IPsKFSKom0aWe7rYltkjzZSoVLu6nqBSEJXC/KVhZORTvTWA5iHBN70gU4bbDo9KUEx1qtr2PSSWXgcLXfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BoUMKuth; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SIIu8f/h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E4A7C116C6;
-	Wed,  4 Mar 2026 01:08:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BoUMKuth"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A519C116C6;
+	Wed,  4 Mar 2026 01:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772586523;
-	bh=DQnIqIa8jSessrJ7z0E3IiEhGL1TxcQcGfMsY3LmGhs=;
+	s=k20201202; t=1772586549;
+	bh=oJ7H/Fg75E5Kzd69Xj5N2aHTw22/7ssgPNPD9zCo4Bk=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SIIu8f/h12uLMM/JTLmvYi3N7DJbUrQKvJ6Kis/CcGxr63s+BWdLfEeNHqYWsLwKi
-	 7UitPMzV5DQZfdiPCowI0H5dTPB6S5hVngVUwwBqd/nrYpAadN4w37WgCkeBKrWtC6
-	 7Nj04rt65dWX+EbCtrJUCcmzrDw4T29y+bInIE2Z+093JjAoS54L9w4bihptxSk2mc
-	 /RdZQ7MUw0wnpRDBBUNIlaQDpVyGUobsNeLUctSSXREFbmkj8De60DAmAXHT/B12w8
-	 DvFyBUNf0JyaZkbfTPZZkErNEI7IpF0RS9jgDIOSYHA9/2envuu1cELQBT77o5prqG
-	 /Q+Mqxy57BduQ==
-Date: Tue, 3 Mar 2026 17:08:41 -0800
+	b=BoUMKuthe9Bgwfmljqqs2QiIrb5l3nGXqd3MVBuH9pk9MjQxXYCSyvMVml8RudKp2
+	 VRy1yEf76NEZ70+lp7e/JhnIJFYaEZaTnlewRvqTJi97OOFakCzXO/ahdLxihU1NIF
+	 ZZT5sVFWOYvATpJVh1FmdwORfDtzpAXLVKmcaVfwJ+4QpdJblD96djijIssiYHTXe6
+	 /gHzMOpIUDEN0Ffk0Tk6Kwwc2OZ/A2qBX4WLowm57MCWTq8iBOEbmWcK/aRllB1fsj
+	 S4xJjq2Q52MtoNz/DrEnMlL6vvvSFQ1DXH9gpZto7xlgfa01eAOXakAX2bYI41bWaL
+	 3qiP+n/9w4dSw==
+Date: Tue, 3 Mar 2026 17:09:08 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Kuniyuki Iwashima
- <kuniyu@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com, Ido
- Schimmel <idosch@nvidia.com>
-Subject: Re: [PATCH net-next] ipv6: add IPV6_CALL() helper
-Message-ID: <20260303170841.218b0816@kernel.org>
-In-Reply-To: <20260302154201.1621117-1-edumazet@google.com>
-References: <20260302154201.1621117-1-edumazet@google.com>
+To: "D. Wythe" <alibuda@linux.alibaba.com>
+Cc: "David S. Miller" <davem@davemloft.net>, Dust Li
+ <dust.li@linux.alibaba.com>, Eric Dumazet <edumazet@google.com>, Paolo
+ Abeni <pabeni@redhat.com>, Sidraya Jayagond <sidraya@linux.ibm.com>, Wenjia
+ Zhang <wenjia@linux.ibm.com>, Mahanta Jambigi <mjambigi@linux.ibm.com>,
+ Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>, Wen Gu
+ <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
+ netdev@vger.kernel.org, oliver.yang@linux.alibaba.com, pasic@linux.ibm.com
+Subject: Re: [PATCH net-next v2] net/smc: transition to RDMA core CQ pooling
+Message-ID: <20260303170908.64a5070f@kernel.org>
+In-Reply-To: <20260302063737.4393-1-alibuda@linux.alibaba.com>
+References: <20260302063737.4393-1-alibuda@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -46,15 +50,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon,  2 Mar 2026 15:42:01 +0000 Eric Dumazet wrote:
-> ipv6_stub use is racy, we should add READ_ONCE() and WRITE_ONCE(),
-> even if this pointer can only change once.
-> 
-> Add IPV6_CALL() macro to factorize the READ_ONCE(), and perform
-> direct calls when CONFIG_IPV6=y.
+On Mon,  2 Mar 2026 14:37:37 +0800 D. Wythe wrote:
+> The current SMC-R implementation relies on global per-device CQs
+> and manual polling within tasklets, which introduces severe
+> scalability bottlenecks due to global lock contention and tasklet
+> scheduling overhead, resulting in poor performance as concurrency
+> increases.
 
-Does not apply to net-next.
-It sounds like we're going to remove IPV6=m, however, perhaps transform
-this patch into that removal?
+does not apply, please rebase & repost
 -- 
 pw-bot: cr
