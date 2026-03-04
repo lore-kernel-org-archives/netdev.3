@@ -1,77 +1,73 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D69F37EFEE
-	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 12:12:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EF0439EF04
+	for <netdev@vger.kernel.org>; Wed,  4 Mar 2026 12:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772626345; cv=none; b=kS2tW2nu0yQe2x84SSe5V7HdvS0NnmwNZ9F63UymGZgNfFnaQugy76E06C5t4vfb5JrTZTp7uwPUw39lCA9/0XR/hWpAzjcGzCMSYEKEpkBGRlmjIsRoePwnwmyroPRG1nlVtHMt0/7GOG161adcZhomJxiIc4e7RFM9i9WqMIo=
+	t=1772626347; cv=none; b=L5stOK+gP0InYtco3o7RemF1CcODfoR+QFEzawIGENG1a35/NzhHUCHfJRH/ahiLhW2Hd3wV35wBQJ29famVBHir0RrhITtun0W3RBO35ELQgyltQBpejqETwfGowdh4F1fbbRG2ZVDLfiKwWVcEhwuStD6+rCai7BZ2mpVkhJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772626345; c=relaxed/simple;
-	bh=5PBIpDZUoWmzMLSSr4AMFrJThU2kmJNnnlCij9fJqvY=;
+	s=arc-20240116; t=1772626347; c=relaxed/simple;
+	bh=rSYha14kAP1w1wpHdg+iX8xV7RlSbT/YKdzsmMvI558=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=pKjbOY9mIVma9gR15fqPKO8fuO0HuTYrB0nEhfCln5wmpLKVvK+bP8wK/I/yVfiyik7qDwQ3YXpKbmlBDSAMJUs2Q1mXQa7/RgCy+AtluqiEvzXIDdijTZcxxor8PUmZQW52d6XSaepi3I6+MOh2cvr42mM1lbvN9Xdv0FvqrTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g1QdB4do; arc=none smtp.client-ip=209.85.128.41
+	 MIME-Version:Content-Type; b=VOuRzGidki11g+etYVXEyMKg16a5ZTvtuELO5tM2Vryu9i2QpKDFL3uiHIPfI7LPdapVbNOLrVyR2lwhcWof4VwunmbWb80oLTLGYPTvTkhB7+Yxm1R4EUPPhi36xy6RvPvO90dAQ+TGVm6htYGFZDWn7hyj4UKE6sD/62Otcks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RGK7ttSx; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g1QdB4do"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-48371bb515eso101553085e9.1
-        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 04:12:24 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RGK7ttSx"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-439c5b40f60so783433f8f.0
+        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 04:12:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772626343; x=1773231143; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :message-id:date:in-reply-to:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=5PBIpDZUoWmzMLSSr4AMFrJThU2kmJNnnlCij9fJqvY=;
-        b=g1QdB4do0A00IJyh4YOenmWRPZje1sfomIaSWdoO5KTRgO5tXJt+8mlCMh4NOULI3l
-         rajd1URAhDYtIrrmC7Dl/9yuzzy8LzEsml4ruLw7DdnS09rB16NeTdd7e17rNUvZwSC9
-         y+RCBni71L2aJUjNqpgSclEzrHB+j8xSMBMGs5fNrBqZPMsOo146NKaZo6xVXlNICYlb
-         g2AeNcNca+Mrv5i8L09J//xIzssGVbgx2Z2jiMX+JshtHVijnA1IyOo5laJ4LKvYUL5U
-         +z9CSoTGiJuT7cMFN7y0ehzUnNCJf7X2eg30hxprGKPIPBPU+2akv0N/0WUYrIgQfXls
-         jMCw==
+        d=gmail.com; s=20230601; t=1772626344; x=1773231144; darn=vger.kernel.org;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fxY3blhRYQ7Z0a4lZe+t9JzHnzGMK1TD/KOeXPkJpVY=;
+        b=RGK7ttSxFMdTEzlQ5t6rsNwH2jDIjl02qWk0q0qR/BkGhvGG0ngAGZBD5/5KVP3oXr
+         oy9027y9L0pvkYT5wI4eFFiERyZYCqCsORQ9ipE2vJd0UcijNmNQ6IzgYTmT2WaCBIXN
+         bfP+TbAiKlGHRPe5MRERDRXdKZwVg5hhbtibuIGR4/3bZ8+pMZ5d+6mQnZSpQ0x9KEJU
+         86iUSqL1EH+kECBefFdNZRJs1OLMCNJmMNs4wVybf/oQqXdDkfOWDY6Ty1yH1/61EXFb
+         SRJDs6VMP2HPvnvdXbmCv1Cuco4sm742mUy7/nH4t/p2IWKD8+jIOsxb+okGV3vurDq5
+         kb+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772626343; x=1773231143;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5PBIpDZUoWmzMLSSr4AMFrJThU2kmJNnnlCij9fJqvY=;
-        b=ZmEBNq8tXCbaUhdQ/6H9z9Ft+YaifpklbnXgCBJclypAndwEAKoBuNi7aBBT9Y5e1U
-         1lj0nY6AV6IdXLy0/yz7bymjuGoz70F9fC2XtszyWga5lDxcoJ6Y7vp/hd/CETT5/jZL
-         o9rHOCzEHZ+qbwyb3olnHJraYBeqGiPAk1+6fDCBUob0O3ts+JxbBi6jzpsYO6vspguq
-         QA71eCQXDxTuhczKTidAfg0lxiDCHwOLizPZkRBB/FYrYl1RUu/3jVUq8c4cJ/4uNoEl
-         nOlrD54OwC1ZAefzm5OTSK39BBtdfin6JwbhPkSDcWS1ZQTP56kB+MeEV7XtRbVBEu1I
-         jJgw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrm2UWN0N85623ZaI9z87q+yH3jPETWwj4RTzDeAcl/rpZMX9fT5xxnmxkjhfoS3zysRWn8mA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZkIoGbdsHaL2Q8B5ttyuiPWWkE6PoCVwmMOeaPPV5yTPzUbKA
-	7Q8qLU95J6Vs5H0Qc+NyAxG8swRpxFfRGRabSdiUT2U9gBmIQTpPEY6n
-X-Gm-Gg: ATEYQzxXtk1lC+s6qb1gqfInDtRgrmnNQv7e6hP6PfBDTS8K6C/wQqRyX0Gjwl+vyvs
-	m/9yrdss3Dnn5AyWl5Ovwp2MYk51KTyKNb5Kr6D0waLMP4WZLwJ239HriJIeUCCHrfJtwyIc//x
-	zzRMnVedKVx4du7WuA8ryLTHHPb5UgOG129wzfc4eoZSzPvr1HpZKf2zhmgPdEeDc0IF3Epx9QE
-	DqOpnvPaS0ECpMp76CTLNp692UrdOlOJBjiCijJ8h1Lx0/Vq4GsqRqQoXx/yk4fq72Fc+w/tS5/
-	53SSNu7pT8rcrqR0K0vqFbykxg4hjEyv5Ed5/KqVAoLN92aWspiJ0sfr1G8t4BbL/oSOhN/X4Mm
-	t9Ve2Q6TezI7S3NpQv/xKb/wCVP7i8WXzL2ULp75VKXOGC202HTKhZQlfSPdZatDMbmVf5WZwRi
-	NWoT5Vh2fqchtaP4YZdiThStAUBA==
-X-Received: by 2002:a05:600c:1f85:b0:47e:e712:aa88 with SMTP id 5b1f17b1804b1-4851989f765mr30694295e9.31.1772626342560;
-        Wed, 04 Mar 2026 04:12:22 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772626344; x=1773231144;
+        h=mime-version:user-agent:references:message-id:date:in-reply-to
+         :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fxY3blhRYQ7Z0a4lZe+t9JzHnzGMK1TD/KOeXPkJpVY=;
+        b=QX6unnuntdNrQOU+vG/r6KNSvF17txwne0xAzT4H/xIvkdEwQswuJSBErYYsTw3fhD
+         /aYVLJb3gNNZUYGkgiWueJK0WlyHhVo2GJYm4egGuHFmZRa98uTF+3Br2QYTsm1dtWCV
+         T823aWu0BjrunFmuiwKPrWRIKJYEfcrULESp5bYqA06SSkOtxAqxKan5fjg17M+P7UiY
+         PTApNdBSevsh1ynNTr+0+c5P7zubxgHW7IfbzE4YL2GeTBhMBnfEpzdCUbrmG2ilIdxX
+         EW3/pNC14boQ8jtCB9nj3mtxk5U4FU9oa/prKxzqdfvfwVErLCfXROHLulpgS07hIxvw
+         eCeg==
+X-Forwarded-Encrypted: i=1; AJvYcCXlyBkJEwdNnjsSCyTj6crdE5CJx8AxjtZC9p8+lZEnagMiAtBa5hqmqbJMuZ5TjKiqbrjDA4I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0tvRKx+X7forR02kCCTUswnTCX71Lc18eLzEfI7SMDXVsufva
+	OWVzxjXmK0Ww8MbFjZw3dXQhgd7dYxkVIhbx/dJaTyjz4JuZczn7lP53
+X-Gm-Gg: ATEYQzxk3cdzhxLDFHBMwTCleGtoCkUVGOdHyuWQj4U4c5S90FHtld5Fi4XI2eCOi/9
+	QYFmexnOaHNtNKT91a9NfgjPpY2vmt2ZoNBDNTtc8T4EFqY3FKKgEeeCz9stvBj1HmbEWbWYo/F
+	YGrOccMtKqwdHFkfVoJdNFJ7gH7zMYn0yMuJGvSLozkGspEwLC9hg4Xkh796JkBF2HvxamBrx5k
+	FAhYv/r5URnw5bORcUWleBrXh1TXvqO7UYyOJs1N2Mp2A/5vVry7Ce8qjKxQ3I/seMjlWUFoORJ
+	JfSPDBNLu1tvUtaE3mIsTTY8nTKluLsC1Bwtj0FF1glu/NL91RoiIhyC7dkdQQJok8PMGUmx6IW
+	C2z3nakFx60vjT/F5ja74NbbYK9GEdQLcpu3uM5HfIfAvMF1NHnYwUNOI69BPEmUc8LpOKbSEHl
+	V/ituc5kz6H1E3BxqMwblsEk1ObA==
+X-Received: by 2002:a05:6000:2382:b0:439:b811:11de with SMTP id ffacd0b85a97d-439c7f91d3bmr3486353f8f.7.1772626344294;
+        Wed, 04 Mar 2026 04:12:24 -0800 (PST)
 Received: from imac ([88.97.103.74])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-485188923c2sm48580075e9.14.2026.03.04.04.12.21
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439ae0e7abasm29291430f8f.23.2026.03.04.04.12.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Mar 2026 04:12:21 -0800 (PST)
+        Wed, 04 Mar 2026 04:12:23 -0800 (PST)
 From: Donald Hunter <donald.hunter@gmail.com>
-To: Hristo Venev <hristo@venev.name>
-Cc: Jakub Kicinski <kuba@kernel.org>,  "David S. Miller"
- <davem@davemloft.net>,  Eric Dumazet <edumazet@google.com>,  Paolo Abeni
- <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,
-  netdev@vger.kernel.org,  Josef Bacik <josef@toxicpanda.com>,  Jens Axboe
- <axboe@kernel.dk>,  linux-block@vger.kernel.org,  nbd@other.debian.org
-Subject: Re: [PATCH] netlink: specs: add specification for NBD
-In-Reply-To: <6a1339999b091edaaa15e34aceb7961dfc61581b.camel@venev.name>
-Date: Wed, 18 Feb 2026 11:28:44 +0000
-Message-ID: <m2fr6yl28j.fsf@gmail.com>
-References: <20260215180309.2255721-3-hristo@venev.name>
-	<m2o6lnlg2y.fsf@gmail.com>
-	<6a1339999b091edaaa15e34aceb7961dfc61581b.camel@venev.name>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
+  pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
+  liuhangbin@gmail.com,  matttbe@kernel.org
+Subject: Re: [PATCH net-next 0/4] tools: ynl: tests: adjust Makefile to
+ mimic ksft
+In-Reply-To: <20260303163504.2084981-1-kuba@kernel.org>
+Date: Wed, 04 Mar 2026 10:36:59 +0000
+Message-ID: <m2pl5jyj78.fsf@gmail.com>
+References: <20260303163504.2084981-1-kuba@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -79,96 +75,25 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-Hristo Venev <hristo@venev.name> writes:
+Jakub Kicinski <kuba@kernel.org> writes:
 
-> On Tue, 2026-02-17 at 12:17 +0000, Donald Hunter wrote:
->> There are yamllint errors:
->>=20
->> make -C tools/net/ynl lint
->> make: Entering directory '/home/donaldh/net-next/tools/net/ynl'
->> yamllint ../../../Documentation/netlink/specs
->> ../../../Documentation/netlink/specs/nbd.yaml
->> =C2=A0 159:81=C2=A0=C2=A0=C2=A0 error=C2=A0=C2=A0=C2=A0 line too long (1=
-04 > 80 characters)=C2=A0 (line-
->> length)
->> =C2=A0 169:6=C2=A0=C2=A0=C2=A0=C2=A0 error=C2=A0=C2=A0=C2=A0 syntax erro=
-r: expected <block end>, but found
->> '<block mapping start>' (syntax)
->> =C2=A0 170:7=C2=A0=C2=A0=C2=A0=C2=A0 error=C2=A0=C2=A0=C2=A0 wrong inden=
-tation: expected 5 but found 6=C2=A0
->> (indentation)
+> Make a few minor adjustments to tools/net/ynl/tests/Makefile
+> to align its behavior more with how real kselftests behave.
+> This series allows running the YNL tests in NIPA with little
+> extra integration effort.
 >
-> Thanks, I will fix the lint errors in v2.
+> If anyone already integrated these tests into their CI minor
+> adjustments to the integration may be needed (due to patch 2).
 >
->> > +doc: See :file:`drivers/block/nbd.c`
->>=20
->> Prefer to see a meaningful doc string here.
+> Jakub Kicinski (4):
+>   tools: ynl: rename TESTS variable to TEST_PROGS
+>   tools: ynl: don't install tests in /usr/bin/
+>   tools: ynl: support INSTALL_PATH in the tests Makefile
+>   tools: ynl: produce kselftest-list.txt from tests
 >
-> I will add more proper documentation in v2. I couldn't find any
-> existing documentation of this netlink interface, so I guess I will
-> write it myself.
->
->> > +attribute-sets:
->> > +=C2=A0 -
->> > +=C2=A0=C2=A0=C2=A0 name: nbd-attrs
->> > +=C2=A0=C2=A0=C2=A0 name-prefix: nbd-attr-
->> > +=C2=A0=C2=A0=C2=A0 doc: Configuration policy attributes, used for CON=
-NECT
->> > +=C2=A0=C2=A0=C2=A0 attributes:
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 -
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 name: unspec
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 value: 0
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 type: unused
->>=20
->> No need for unspec in the attribute list, ynl codegen does the right
->> thing.
->
-> For me `pyynl.ynl_gen_c --mode uapi --header` no longer generates
-> `NBD_ATTR_UNSPEC` if I remove this. Is there a YNL property to specify
-> the name of the zero value of the attribute set? If not, should I
-> remove it anyway, changing the generated header?
+>  tools/net/ynl/tests/Makefile | 30 +++++++++++++++++-------------
+>  1 file changed, 17 insertions(+), 13 deletions(-)
 
-Oh sorry, if your goal is 100% equivalence then I guess you need it. We
-have the same in "fou" for example.
-
->> > +operations:
->> > +=C2=A0 enum-model: unified
->> > +=C2=A0 name-prefix: nbd-cmd-
->> > +=C2=A0 list:
->> > +=C2=A0=C2=A0=C2=A0 -
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 name: unspec
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 value: 0
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 doc: NBD_CMD_UNSPEC
->
-> A similar question applies here. If I remove this, `pyynl.ynl_gen_c
-> --mode uapi --header` no longer generates `NBD_CMD_UNSPEC`. Is there a
-> YNL property to generate it? If not, should I remove it anyway?
-
-You'll need to keep it for equivalence.
-
->> > +=C2=A0=C2=A0=C2=A0 -
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 name: connect
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 doc: See :file:`drivers/block/nbd.c`,
->> > :code:`nbd_genl_connect()`
->>=20
->> Prefer to see meaningful doc string (same for other ops)
->
-> I guess I will have to document the four operations in v2 as well.
->
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 attribute-set: nbd-attrs
->> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dont-validate: [strict]
->>
->> nbd.c has strict & dump, should this be [strict, dump] ? (same for
->> other ops)
->
-> The NBD operations don't have `dump`, only `do`, so adding `dump` to
-> `dont-validate` does not change the output of `pyynl.ynl_gen_c --mode
-> kernel --source`. Should I add it anyway?
-
-Ah, so it's redundant in nbd.c.
-
-Thanks,
-Donald.
+Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
