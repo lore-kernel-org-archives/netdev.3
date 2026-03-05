@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE66351C3C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6203559E8;
 	Thu,  5 Mar 2026 21:14:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772745247; cv=none; b=TGx4eZW7XMnvSpX00rjpiRhAgvMxH3QS3PRVBcMcQKktcPZXX9KD4Umii8Zg4TcjhVDBGmqrGs25l4imZQOWemKF0lb9S7r65m6ZusbYRXUX1QHPRv6leccLqGBoW7GQ7A78TLYjGX9Xxr8FIbVljdd8uGNN8ff5Np5WmPalij0=
+	t=1772745248; cv=none; b=R3eCoMzJk/gxxwz85kF/D5n6XWc4AETNJV5q3BnaRRJcK1ri+j+oHT0pKGPLJOiNEZoXKUBIBcCHFsb8kAdhs9nuLK780lLPUJmm+jPTuHBJG2DVo0qyXVWkWM7ewbm54jWKu+dJdKGAAP6g1izQD6xy4WEsP4oDe39N0Oc0K8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772745247; c=relaxed/simple;
-	bh=ok5eaUhmp1SUTfc5L+jy3xy+akjx359vVIjnX7ZVwRY=;
+	s=arc-20240116; t=1772745248; c=relaxed/simple;
+	bh=1KFHXJvAIpYRC1eh+fWAF3XZHvBnobDbnqAzEIN1eqk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aPt640QFbyF+km0982aPBAcTDUI3Swf+GvKwhFHA6O9TlTUdV8+Wsbq6v1cV0q3bHEHGZpM2rMkjeW/374NA4pCMn0leSDRTYE2WPeDN66Pm0HOyK28UarMwiIz3nIEPfFl85EDZ/FXxREHVhCUNvdiN39ed6mPzSDey3f6pH0c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nT55LRGH; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=dikPGMkf4LHmxEE7nwhLkw19+0o/Eu2A1hvo3f+5qSjtA7mOE7Z6Twuqq6YloubBuRMC8SwJuTM/74dnflsbbYio8n3skyd784J+YAYeVT2VLk67ymvokQZXBIBBF1d1MQYLYOP9gdqppj4bvfnqJbcESbZOlxJ0SYoeLOn0Wwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QTRBNPqI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nT55LRGH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CCE4C19422;
-	Thu,  5 Mar 2026 21:14:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QTRBNPqI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B04BC116C6;
+	Thu,  5 Mar 2026 21:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772745246;
-	bh=ok5eaUhmp1SUTfc5L+jy3xy+akjx359vVIjnX7ZVwRY=;
+	s=k20201202; t=1772745247;
+	bh=1KFHXJvAIpYRC1eh+fWAF3XZHvBnobDbnqAzEIN1eqk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nT55LRGHPUY52XmznYCn5E7Yr284CDan4opTKlJ6Qi5NTqjKh2i7B/Ph5xewG+PcN
-	 3/hpnnsPeqT7jfbb8G6CcjBPVHg+TFLmIRtQWWlkEmYYnTAT4Ue/wJcMfX6Fhd5MPK
-	 W48JbJ9he/NMNxexJ6l/db7LJiMJlD/Vrk5PQJ+uPRRXvn/UePFqs7ZCoOjCv+yrCn
-	 HsiS6VM9xxxV1I+8I7gbxtobeGvNnKixkTdVtEbxckgUnWSQuKztlgw85y6juoVcN4
-	 duFxtvgtH8v1G6evXoTHieSxv9liKhu74qjnkgHdmukSVTW6emM/K5ZN3uLnf9/s+w
-	 iWBDeuFv6Ft6A==
+	b=QTRBNPqIT7rsXaTvGuCTLE4mFu8COf/bINkv2VSZVMVPtVBifd6gMX71iMk84f0sK
+	 Lf0T4eV6XAW6IxjRrHzMgVE7G/Pf8KM+S1h7QUsBGG5DkRttQtu2m+QjV9+mZVnr18
+	 pCuIldLsJ8OpOv6RWNwX4cimgmVXSi4Mdb7QgTH/spEy1ng+5EQwnYIYCYYMEwhCjG
+	 KrTC1Yyo7rc3uVdJOnCdAV8h/QmCA2nsMByRvjTiZ0NyzATPLaqCIH+Mze0OoCQEMM
+	 BjZcXlGwHJtB0y/irZbTed9CWf/AmKEYK4miJFt4+kbyV0YN1hUBSZT3yGwC/qlTn9
+	 py/0xuf7ThGWQ==
 From: Chuck Lever <cel@kernel.org>
 To: john.fastabend@gmail.com,
 	kuba@kernel.org,
@@ -35,9 +35,9 @@ Cc: <netdev@vger.kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Hannes Reinecke <hare@suse.de>,
 	Alistair Francis <alistair.francis@wdc.com>
-Subject: [PATCH v1 1/6] tls: Fix dangling skb pointer in tls_sw_read_sock()
-Date: Thu,  5 Mar 2026 16:13:57 -0500
-Message-ID: <20260305211402.39408-2-cel@kernel.org>
+Subject: [PATCH v1 2/6] tls: Factor tls_strp_msg_release() from tls_strp_msg_done()
+Date: Thu,  5 Mar 2026 16:13:58 -0500
+Message-ID: <20260305211402.39408-3-cel@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260305211402.39408-1-cel@kernel.org>
 References: <20260305211402.39408-1-cel@kernel.org>
@@ -51,50 +51,67 @@ Content-Transfer-Encoding: 8bit
 
 From: Chuck Lever <chuck.lever@oracle.com>
 
-Evaluating a dangling pointer is undefined behavior under the C
-standard. In tls_sw_read_sock(), consume_skb(skb) in the fully-
-consumed path frees the skb, but the "do { } while (skb)" loop
-condition then evaluates that freed pointer. Although the value is
-never dereferenced -- the loop either continues and overwrites skb,
-or exits -- any future change that adds a dereference between
-consume_skb() and the loop condition would produce a silent
-use-after-free.
+tls_strp_msg_done() conflates releasing the current record with
+checking for the next one via tls_strp_check_rcv(). Batch
+processing requires releasing a record without immediately
+triggering that check, so the release step is separated into
+tls_strp_msg_release(). tls_strp_msg_done() is preserved as a
+wrapper for existing callers.
 
-Fixes: 662fbcec32f4 ("net/tls: implement ->read_sock()")
 Reviewed-by: Hannes Reinecke <hare@suse.de>
 Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 ---
- net/tls/tls_sw.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/tls/tls.h      |  1 +
+ net/tls/tls_strp.c | 15 ++++++++++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index a656ce235758..108d417dcfb7 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -2355,7 +2355,7 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
- 		goto read_sock_end;
+diff --git a/net/tls/tls.h b/net/tls/tls.h
+index e8f81a006520..a97f1acef31d 100644
+--- a/net/tls/tls.h
++++ b/net/tls/tls.h
+@@ -193,6 +193,7 @@ int tls_strp_init(struct tls_strparser *strp, struct sock *sk);
+ void tls_strp_data_ready(struct tls_strparser *strp);
  
- 	decrypted = 0;
--	do {
-+	for (;;) {
- 		if (!skb_queue_empty(&ctx->rx_list)) {
- 			skb = __skb_dequeue(&ctx->rx_list);
- 			rxm = strp_msg(skb);
-@@ -2406,10 +2406,11 @@ int tls_sw_read_sock(struct sock *sk, read_descriptor_t *desc,
- 				goto read_sock_requeue;
- 		} else {
- 			consume_skb(skb);
-+			skb = NULL;
- 			if (!desc->count)
--				skb = NULL;
-+				break;
- 		}
--	} while (skb);
-+	}
+ void tls_strp_check_rcv(struct tls_strparser *strp);
++void tls_strp_msg_release(struct tls_strparser *strp);
+ void tls_strp_msg_done(struct tls_strparser *strp);
  
- read_sock_end:
- 	tls_rx_reader_release(sk, ctx);
+ int tls_rx_msg_size(struct tls_strparser *strp, struct sk_buff *skb);
+diff --git a/net/tls/tls_strp.c b/net/tls/tls_strp.c
+index 98e12f0ff57e..a7648ebde162 100644
+--- a/net/tls/tls_strp.c
++++ b/net/tls/tls_strp.c
+@@ -581,7 +581,16 @@ static void tls_strp_work(struct work_struct *w)
+ 	release_sock(strp->sk);
+ }
+ 
+-void tls_strp_msg_done(struct tls_strparser *strp)
++/**
++ * tls_strp_msg_release - release the current strparser message
++ * @strp: TLS stream parser instance
++ *
++ * Release the current record without triggering a check for the
++ * next record. Callers must invoke tls_strp_check_rcv() before
++ * releasing the socket lock, or queued data will stall until
++ * the next tls_strp_data_ready() event.
++ */
++void tls_strp_msg_release(struct tls_strparser *strp)
+ {
+ 	WARN_ON(!strp->stm.full_len);
+ 
+@@ -592,7 +601,11 @@ void tls_strp_msg_done(struct tls_strparser *strp)
+ 
+ 	WRITE_ONCE(strp->msg_ready, 0);
+ 	memset(&strp->stm, 0, sizeof(strp->stm));
++}
+ 
++void tls_strp_msg_done(struct tls_strparser *strp)
++{
++	tls_strp_msg_release(strp);
+ 	tls_strp_check_rcv(strp);
+ }
+ 
 -- 
 2.53.0
 
