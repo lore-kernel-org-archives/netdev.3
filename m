@@ -1,148 +1,138 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D953783B5;
-	Thu,  5 Mar 2026 09:53:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772704406; cv=pass; b=JTqu1JzKzrEzlhqVc5TyrK72gmp9gf3LB7fpV/hILgcf5X0LvNfh6S1kLmSfYs9Chwsj4oQAbG/DI33xZ9M/OdpcZxiWjSyJGguqw80WKKrV+fvAJG11De/ctvvDNT9CtArh7iR8MI1RI7Q3SnY9fq3mRBlbin2Q9UOJGiA4cTo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772704406; c=relaxed/simple;
-	bh=D7W50Gyx79F1BQJBBcvSYt9GNLrXBM4NZSb+Xw2SOq4=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B08419DFAB
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 09:57:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772704622; cv=none; b=Gv4f+MTHpcL5RdiyKL+xQoeTfgOpS7hOLR4BhZMmazS45BTXgq6YxCpAAhZM/j18hn8qvKqr2IhOkVlOBmVHWPqLZsPOneOEuGoDqRjsQBQ9WHwe3J7Z/jLmu2ZYKBAyyoLro8kPp5U4kM85ZcbKuW3ErJxYgrclPEewNO3/fsI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772704622; c=relaxed/simple;
+	bh=R4o8LmzUXpzex1d7EeK2gX5l1LpwQHAZjoxay6bMrc8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WAP5e7WHh5z6I+QPBlkK/PtDYW/R11767JXN7MpMcBf8W5LTMYV0QwEscS97mdzAF7pSouj+YqEpNtdnml6aYS/h8PcNrQkKLdo0QxwgDh6CYN5224CmjtZlkOkRH4/Vq6XIe2r2IGTEFh+76G1ZMCXmViKX6mG1g1Eka/IwyTg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b=kuQ6wgoy; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=DvMizcuVrecG+hxCx2Lhi4oHcY15SA1rZ2oqsm5vLnqh7j4SKloUGrXYezr+SCJV+nt+8I8d3YUI0Coz5xb0bTzkueDOnFkMnVA6iGRLUAvhtpUsx0AqdQHJnc72yW/xEqF8wGGQWR6yDNXRj8Tv0H4u6X1JrhXSrCzFSwbwyrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HZ8o35VZ; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=sebastian.reichel@collabora.com header.b="kuQ6wgoy"
-ARC-Seal: i=1; a=rsa-sha256; t=1772704388; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ILbpyWSpgsHBsljKSeJYbS7Vw03gooRrhFM0zfvSJ0mMnsLhlex4dZfvu0oPRIpkKO47xszQ2NfzHWwj0pqoFXT4WttLKvDbi1tiW3nCRR4ojr4Vznpxn72wH7dC+ms4XVRbfVzqDJCc2LgWtNUaXznEcvPGtkEc57jsG4V4QXU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1772704388; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=nzu6bAtb37Rscm3wTe12q1wA4WbiMxsyc0YgbMDmKhU=; 
-	b=mYJnA6goY8gyGl8bcxdTO/ByoiY0b4sP3KBwTqzQqQEu2c5WKfTddS9Fe6+yv32bTaxDKYI77aHYbYDm3y0nylvB+35tg6Dif1cn+oIsHiwDCXjvuTbZTh5SotriBERyVv4hZBgBiBYR/T0QbFyyAxO9Bo5rJckG1guguTRV57Q=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=sebastian.reichel@collabora.com;
-	dmarc=pass header.from=<sebastian.reichel@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1772704388;
-	s=zohomail; d=collabora.com; i=sebastian.reichel@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=nzu6bAtb37Rscm3wTe12q1wA4WbiMxsyc0YgbMDmKhU=;
-	b=kuQ6wgoyu9T6YeGL0SUqZ9zx8isgTeA+3UHBcaeWieFRMa3K4z+NnEetspD5wWZI
-	TL1RG3LK6Yh1ZgrkSKhInXGy6ScbB4h0qNcCIN3ps5vMT5cv/qWX4tybyGlWVkJHBrt
-	Vz08HTmqhf50ivIQbgSUcJHFeQhtd9qRZpIk3S4c=
-Received: by mx.zohomail.com with SMTPS id 1772704385504238.17185557574544;
-	Thu, 5 Mar 2026 01:53:05 -0800 (PST)
-Received: by venus (Postfix, from userid 1000)
-	id 8DA0C180891; Thu, 05 Mar 2026 10:52:59 +0100 (CET)
-Date: Thu, 5 Mar 2026 10:52:59 +0100
-From: Sebastian Reichel <sebastian.reichel@collabora.com>
-To: Vladimir Oltean <vladimir.oltean@nxp.com>
-Cc: linux-phy@lists.infradead.org, Vinod Koul <vkoul@kernel.org>, 
-	Neil Armstrong <neil.armstrong@linaro.org>, dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org, 
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, linux-can@vger.kernel.org, 
-	linux-gpio@vger.kernel.org, linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-pci@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	linux-samsung-soc@vger.kernel.org, linux-sunxi@lists.linux.dev, linux-tegra@vger.kernel.org, 
-	linux-usb@vger.kernel.org, netdev@vger.kernel.org, spacemit@lists.linux.dev, 
-	UNGLinuxDriver@microchip.com
-Subject: Re: [PATCH phy-next 19/22] power: supply: cpcap-charger: include
- missing <linux/property.h>
-Message-ID: <aalSUJI5jFG2kJBL@venus>
-References: <20260304175735.2660419-1-vladimir.oltean@nxp.com>
- <20260304175735.2660419-20-vladimir.oltean@nxp.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HZ8o35VZ"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4830f029407so14276715e9.2
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 01:57:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772704620; x=1773309420; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=MbmCDjNl+TQje26CyVv5dT/rLJSPHA1oxjNl1owywyI=;
+        b=HZ8o35VZfypQLkgCDw3gwCiy70LVEnyFTeGq7JLW6ZLivv17i/JEnlRaYFFRlfNGvX
+         TzL4SO+hj9WuHsMGBrG8RCdymH1Vrcq3lg2HdkgvkSuZNZkUktlWcwSUxo2Wyp9i6LVD
+         j8AvCdoERa9gkMO2NthaGUoMl28h6I0oUT/pzEJAbIYC0OYnc9aT1fXyzzPEeootCmtD
+         NhvGmVprRyZ31tSmYLUxNtDPyqVDOWZvRf/IXLE5dQhMhAzERCSizyvBMI6vnHdCz2NW
+         LlHcvE+ZRr5XKVNoe/tiUfD838Z5yIPvfDr0reTcCFLAEEP7mCosmHB7ARf5HtR5Wmaf
+         FPGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772704620; x=1773309420;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MbmCDjNl+TQje26CyVv5dT/rLJSPHA1oxjNl1owywyI=;
+        b=Wavq56LVmSTtgGqi3Es1/0UeDoZEUvF6kWVr5jqU1iYgbkcl2IffEOrZT1q39QPy3r
+         l35k0hd873WVEHTPvGBk+goh/uFxGPeU4KrZKNG59ozRrMW8OryWHyJHK3aNGJjXmRgv
+         EGlz5dXVfCGTmIJ44rklcflZySYQRGBEjN/0RcYKpOkAXFR5bxsANlk1SHfnv+DTidM+
+         vui0LwMk5xyHW07lIBi9lAxrYOYm8wXGiuBpEpIvxsqsxBvj6SdbFIfWA3uClWQ+7+eJ
+         qPBAdmDw8+gMQk9VbJJIiKueu79ClpH3OPcx1i6GTiuEbaKRRi78peNMp3tK9OpNyLm2
+         HRHg==
+X-Forwarded-Encrypted: i=1; AJvYcCWhkAZ27csqS/BaVJbd9AdQ8857d0Moe6X6J8HU+Hux0okXWZhE2ApKUoB8POmcxOWNrP5yGZw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyeNyP7qpf0Buv2N7SBb44hE8dROfdte87V8UhuDbMR11q+sCGg
+	k4rNKrc3G1XLpr6m8tmlBFAGgEcL2lg/POyRHIaE27hH+DYLkj4ZfmLX
+X-Gm-Gg: ATEYQzwjnvWJp4pTbmGXN4DDwPduqHYcNN7i8nFUg6skyrNmHuioQeOV2SPZrYbpljU
+	rpcpVwAIbSgCR82fE4pIUqJuMKJ7lRGGeWH7fCJU9VKuhG7gcs8IKQ39ezNp8nCyIZHUtAkzjeM
+	godJ7Q7objKF7CqOA5BUk/zHM7CC6K+cekh/mj7IXV/ueH7mf80jAYRuOVfTfMLpBZfxmfm60JA
+	Lc+QwKTzYwYqI35JZEmXx2idce4m7thdpbX9zQjdpWpaFuXlM5iz6kkzPUczUHl5hhUdgOSvPLK
+	YbgzwZ/PB3qw/uxcf1Xrk2pEDC19z1eYlRoAgJnFEIfk6iL6/pUlbG4BtU4SxIxc2GkvTdKsFok
+	W4yp6V19Ts2OSEAs1Q5CmIjZ08b8DVdBVcRLeqcIkSkgH+zCWWr9Js3Fyq6jivkDZrIb3rGlUBa
+	3PoRS6jFfM3BsBN9oT9ljYhvnUKQ==
+X-Received: by 2002:a05:600c:81c8:b0:477:9fa8:bc99 with SMTP id 5b1f17b1804b1-48519863aebmr48569575e9.4.1772704619462;
+        Thu, 05 Mar 2026 01:56:59 -0800 (PST)
+Received: from skbuf ([2a02:2f04:d00e:3600:16aa:c9ad:4288:9dcc])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439b41831easm33366173f8f.12.2026.03.05.01.56.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 01:56:58 -0800 (PST)
+Date: Thu, 5 Mar 2026 11:56:56 +0200
+From: Vladimir Oltean <olteanv@gmail.com>
+To: "Bastien Curutchet (Schneider Electric)" <bastien.curutchet@bootlin.com>
+Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Pascal Eberhard <pascal.eberhard@se.com>,
+	=?utf-8?Q?Miqu=C3=A8l?= Raynal <miquel.raynal@bootlin.com>,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>
+Subject: Re: [PATCH net-next v6 1/9] net: dsa: microchip: Add support for
+ KSZ8463 global irq
+Message-ID: <20260305095656.vlyaztv6nbdqrmil@skbuf>
+References: <20260304-ksz8463-ptp-v6-0-3f4c47954c71@bootlin.com>
+ <20260304-ksz8463-ptp-v6-1-3f4c47954c71@bootlin.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2vxe7ox52jklnq2g"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260304175735.2660419-20-vladimir.oltean@nxp.com>
-X-Zoho-Virus-Status: 1
-X-Zoho-AV-Stamp: zmail-av-0.2.1.1.4.3/272.682.15
-X-ZohoMailClient: External
+In-Reply-To: <20260304-ksz8463-ptp-v6-1-3f4c47954c71@bootlin.com>
 
+On Wed, Mar 04, 2026 at 11:18:52AM +0100, Bastien Curutchet (Schneider Electric) wrote:
+> @@ -2890,14 +2899,18 @@ static irqreturn_t ksz_irq_thread_fn(int irq, void *dev_id)
+>  	unsigned int nhandled = 0;
+>  	struct ksz_device *dev;
+>  	unsigned int sub_irq;
+> -	u8 data;
+> +	u16 data;
+>  	int ret;
+>  	u8 n;
+>  
+>  	dev = kirq->dev;
+>  
+> -	/* Read interrupt status register */
+> -	ret = ksz_read8(dev, kirq->reg_status, &data);
+> +	/*
+> +	 * Most of the KSZ switches have a 8-bits long interrupt status
+> +	 * register, but the KSZ8463 has a 16-bits long one. The overread here
+> +	 * is safe because we only iterate over kirq->nirqs in the below loop.
 
---2vxe7ox52jklnq2g
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH phy-next 19/22] power: supply: cpcap-charger: include
- missing <linux/property.h>
-MIME-Version: 1.0
+FWIW, this isn't the only thing making an overread "safe".
+If the adjacent register also has "clear on read" semantics, that's not
+good.
 
-Hi,
+I can't tell whether that's the case here, though. There are just too
+many hardware variations to check for. I just wanted to point out that
+the reasoning is incomplete.
 
-On Wed, Mar 04, 2026 at 07:57:32PM +0200, Vladimir Oltean wrote:
-> This file uses dev_fwnode() without including the proper header for it,
-> relying on transitive header inclusion from:
->=20
-> drivers/power/supply/cpcap-charger.c
-> - include/linux/phy/omap_usb.h
->   - include/linux/usb/phy_companion.h
->     - include/linux/usb/otg.h
->       - include/linux/phy/phy.h
->         - drivers/phy/phy-provider.h
->           - include/linux/of.h
->             - include/linux/property.h
->=20
-> With the future removal of drivers/phy/phy-provider.h from
-> include/linux/phy/phy.h, this transitive inclusion would break.
->=20
-> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-> ---
-> Cc: Sebastian Reichel <sre@kernel.org>
-> ---
+> +	 */
+> +	ret = ksz_read16(dev, kirq->reg_status, &data);
 
-Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+I guess I don't fully understand the KSZ_REGMAP_TABLE() layer, but I
+have a concern here.
 
--- Sebastian
+Take the normal ksz_girq_setup() case for example, where we set
+kirq->reg_status = REG_SW_PORT_INT_STATUS__1.
 
->  drivers/power/supply/cpcap-charger.c | 1 +
->  1 file changed, 1 insertion(+)
->=20
-> diff --git a/drivers/power/supply/cpcap-charger.c b/drivers/power/supply/=
-cpcap-charger.c
-> index d0c3008db534..24221244b45b 100644
-> --- a/drivers/power/supply/cpcap-charger.c
-> +++ b/drivers/power/supply/cpcap-charger.c
-> @@ -21,6 +21,7 @@
->  #include <linux/mod_devicetable.h>
->  #include <linux/platform_device.h>
->  #include <linux/power_supply.h>
-> +#include <linux/property.h>
->  #include <linux/regmap.h>
-> =20
->  #include <linux/gpio/consumer.h>
-> --=20
-> 2.43.0
->=20
+With ksz_read8(), we read u8 data from address REG_SW_PORT_INT_STATUS__1.
+With ksz_read16(), how do we read u16 data? Don't we read
+data[15:8] from REG_SW_PORT_INT_STATUS__1 and
+data[7:0] from REG_SW_PORT_INT_STATUS__1 + 1?
+But then we still look at the 0..kirq->nirq bits, effectively from address
+REG_SW_PORT_INT_STATUS__1 + 1 now?
 
---2vxe7ox52jklnq2g
-Content-Type: application/pgp-signature; name="signature.asc"
+Or are the registers at address i 16-bits wide without spilling over
+into address i+1? Because if that's the case, I don't understand the
+comment/concern about overreading.
 
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEE72YNB0Y/i3JqeVQT2O7X88g7+poFAmmpUncACgkQ2O7X88g7
-+prvUBAAiDlamBegg+ohGQtBVAORFIULNrYOBZOk8AG1Qluc6NS+fOqK9Cpw1hjn
-4u0f9h1GsBhjBMOb0dS/kxcNWI+xKiTxrMzu4llAu0C9WimbA0CieynGh2b2a3Ja
-R/9RQ6pXqPuVZk+7oVlT6gk++/w8TU83M31vyXL0Kx786QzieoSbOvgyZqhEwLez
-W41hmnYSkPas6nVkhjp0mnP7eqYQRhXLBeFJgUWhgXvy5YMVAfRrso3DK5JA7hB3
-4q8qNISMg2IrcIDMdDaTKVq+3+Ba1z8pRgr4WpIaOpH+Gsq8e8tzt/SEsGt/4SIY
-bKuAPMOCmsYuR8RskVyUWJiWX4qt4/YIRU01cg2xxXP404xIKR49X9Z12aEOKjg8
-DoBnNzlrSRN/RP85te7hG74Mbc/eVL2fJM9dL+7yZylsv03FFoeii0d+a50bbrQT
-QfQy75KNMSMkb7BDrpalL0DhG9bJoZn96pso0p4aD+viqdbpIybrsgMhuUv9DKVS
-2rIsnhe/N1gPds7wwpt/4shjn93YGbngre66mxi0y0YvvBQqc3eCf4YbPkGttJ0g
-18vYhd7giJO8RE2ApEXsQzT6eKtQFPh01zUJhxvemKoAb6hr3Tptep+/2bn4BVzY
-k3rY5iRgS6ono6DZg08TuLXoB3Ck/kz2OE+ntIibQIQNa0GY/4w=
-=oTrF
------END PGP SIGNATURE-----
-
---2vxe7ox52jklnq2g--
+>  	if (ret)
+>  		goto out;
