@@ -1,229 +1,215 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013061.outbound.protection.outlook.com [40.93.196.61])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E5E3988FC;
-	Thu,  5 Mar 2026 11:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772711122; cv=none; b=ozsaSSJ/AsWAlg3vf5y8wEseCfXGP6ShTKT01+g/KvBttQbgjVxgEGyD15vXE6PzfEizn7zzIR5sIj2PUgpSRR7EAWxgISqSFgvwRZ9HjmD9jvyRUVJdCx6AkJZpp/Ef83YPihoBoQqS/vluGxOJbVmZzo1sXqqt8fIwDHcDQbQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772711122; c=relaxed/simple;
-	bh=PXmSMkqkwrVUT5CWT6Z0DwoFzUVtklcyfpBugDs8vX8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EhyHCUcht/spm10/TVh4MkCzi42MEVOf65qf5sSpbhfprhD/M/WNnt60KGnUOP0440w14NdV50oEa2gBZR+ZONi9nzZvgM2E3ETBDXND05LxNMEgu14yQHyCIZC4oXcwVTAafWwbXe+0OTfS6XunNSlUgdMtlnWJ8zMQSkXTbTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K5IWR8Zb; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E49837FF73;
+	Thu,  5 Mar 2026 11:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.61
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772711201; cv=fail; b=BzwLK9h4zVWsyyPh+xpYt6PUEmybmIKPWcjvPtLeD2lj+AAYzOoJ1ykHpr/NAMtHAx3/v/JJa6GIFpX7jZIpX3MVeaMocow9jExcRSeii9pAaSbCNvIBV3VblFuQJlrlVOuTZQgCIGN4TnFG50/RRv3VVAdNR2pEwXmUoaV6z3w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772711201; c=relaxed/simple;
+	bh=EV4bpnEc9FMOQ1I4kI0OrqNJycqHDVj64XXyGojE5Jw=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=T/O+aA3ck2jyF4maCge9uEvRhCRzL7GoK7KiqJY3hx1WlIKBqQfxGcfAoNsjZmH4HSHiRBx6g1g5dciTcTgdIB+0a5zh8Z9H9Oy08QIysJlE36NeNMU4v+5hfMV46nNxbMMrOai8LsEm4QYaNi5rPgLiiHlD7Wq1KGwgJv7G7qg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5klqwnAl; arc=fail smtp.client-ip=40.93.196.61
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K5IWR8Zb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772711121; x=1804247121;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=PXmSMkqkwrVUT5CWT6Z0DwoFzUVtklcyfpBugDs8vX8=;
-  b=K5IWR8Zb/Ib8ODO//Roc8ihSBPgm0dKBYpCvfg0q5MYy4ufsjYFacx1H
-   UZrpEZyjbo2um0VvFH3zOmxgvrwJBWQxDkHXiNtyHCYiN8ZX/FOP9sTbc
-   EtCBr1z5nKTNPh3me7JzrBu3UpaR/Df+FISKKSYciyuVhXIra6y7SOGcA
-   IpKE2s+wsufwebwHmUinhAY9YO7sWdF0lQBvxG8HpulYfqhbkyaw3DAcA
-   G+NRBsIpP5Uo/mOdcv2zFqaddAGUHqOlv08s27yQ4ry5JLnG8AGKFjERr
-   oJ+xZEQYuSK1D3E3FaSzz0UHPwiCBJyGBBtob1AyojNmahi9uBGukp4Sc
-   w==;
-X-CSE-ConnectionGUID: xJ35V+SST0SRiPfyJ6Ic/g==
-X-CSE-MsgGUID: pPvrrkVtSK2MPA65c+IfXg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="84428784"
-X-IronPort-AV: E=Sophos;i="6.23,102,1770624000"; 
-   d="scan'208";a="84428784"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 03:45:21 -0800
-X-CSE-ConnectionGUID: Tdxuf4opQoiXEb9Gj0Pdjw==
-X-CSE-MsgGUID: 8PTVfBDeThyil3c40JDMUg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,102,1770624000"; 
-   d="scan'208";a="223345420"
-Received: from irvmail002.ir.intel.com ([10.43.11.120])
-  by fmviesa005.fm.intel.com with ESMTP; 05 Mar 2026 03:45:12 -0800
-Received: from lincoln.igk.intel.com (lincoln.igk.intel.com [10.102.21.235])
-	by irvmail002.ir.intel.com (Postfix) with ESMTP id C7D792876D;
-	Thu,  5 Mar 2026 11:45:08 +0000 (GMT)
-From: Larysa Zaremba <larysa.zaremba@intel.com>
-To: netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	KP Singh <kpsingh@kernel.org>,
-	Hao Luo <haoluo@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	"Bastien Curutchet (eBPF Foundation)" <bastien.curutchet@bootlin.com>,
-	Tushar Vyavahare <tushar.vyavahare@intel.com>,
-	Jason Xing <kernelxing@tencent.com>,
-	=?UTF-8?q?Ricardo=20B=2E=20Marli=C3=A8re?= <rbm@suse.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Toke Hoiland-Jorgensen <toke@redhat.com>,
-	imx@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	intel-wired-lan@lists.osuosl.org,
-	linux-kselftest@vger.kernel.org,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>
-Subject: [PATCH net v5 9/9] xdp: produce a warning when calculated tailroom is negative
-Date: Thu,  5 Mar 2026 12:12:50 +0100
-Message-ID: <20260305111253.2317394-10-larysa.zaremba@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260305111253.2317394-1-larysa.zaremba@intel.com>
-References: <20260305111253.2317394-1-larysa.zaremba@intel.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5klqwnAl"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LEFyZasnpK5qXVLQyqNZHld33lHVcZ0sN6T2KCOlRzJ53JT+V/fXG3N3j1ptLd8KpJfGFOKIBoDH7MtjL6NmgS0USnR0FVF4i3bHFSu4l0NQQFgj7xS9vEPZ45o4LIkE3I9eAVsnS92qEx/7IU9Q73wMhXDrBO2FZk+c+0XFvDiVdvcoOsEuarhPYUj5XjCm60FQ/vahSYayr0lWxlLJefu9o5N6WrMbFE7K3veljEb3Je2bPFKxW4jS8ym6Es2M47nYEiwk9EZPJBKg5wagNaXW76Ec5GYXPyFaflmTUTMUc3euW9Tf11zYzGITy/Nn2YeGwD8rBPJDtxnD1vbe/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=aSs1KJrif5zMB/PtbsOT5UY9m/uAgfNK8rduQ0X5IuA=;
+ b=MMxkflwQO5azQM/ZcJv2aGVVNxRkO29fMr6dn+J+3pmwPiyAOICtVZ+zX54tkPfXWPwOtjJ4Vk0SWcJYRKM5Tj8UApSzE4EF+pAR2DpgH82+115CF7KtFdP3LI6peBQuRmPYoWqsPxRFNyjlENPp8+aUH3AghEEPcKoFVxQvOG98Fy00U9eHmzFzfmxMLBr+cY+nFp9HujKOLmN325G0XWd3GlagVjhEn79v8Xw8LDWN6J+GRgXdbkY83ounzNTWvN5K6KKFbLG01mbK3M8IFoPOHPqYwne0xFpRLgdVBbXo4Rh0pG9ayzjGUuVaphXYjw5wAl7IvA5CFMscx5cILg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=aSs1KJrif5zMB/PtbsOT5UY9m/uAgfNK8rduQ0X5IuA=;
+ b=5klqwnAlRyJNnj0EHuSFjkk3d+Q7nmh9bIsiLxQtb8HoiIXm1UhMExNvNHLMI9FvWLdOiliOyVD/apTlWkRz2AxIn4KLUQryuJuu0MhqB08q9K2puppKPRXwxkw76C9Tdn/SV8bs4PK25MQiufttbGD5lgS2Qckpdf3WwME3RYM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from SN7PR12MB8147.namprd12.prod.outlook.com (2603:10b6:806:32e::5)
+ by DS7PR12MB8081.namprd12.prod.outlook.com (2603:10b6:8:e6::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Thu, 5 Mar
+ 2026 11:46:35 +0000
+Received: from SN7PR12MB8147.namprd12.prod.outlook.com
+ ([fe80::3923:c1a4:778b:56f2]) by SN7PR12MB8147.namprd12.prod.outlook.com
+ ([fe80::3923:c1a4:778b:56f2%3]) with mapi id 15.20.9678.017; Thu, 5 Mar 2026
+ 11:46:35 +0000
+Message-ID: <ca273ea9-2d6f-4c01-b243-803835d08248@amd.com>
+Date: Thu, 5 Mar 2026 17:16:25 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/8] xilinx: tsn: Add TSN Endpoint Ethernet MAC driver
+ support
+To: Andrew Lunn <andrew@lunn.ch>, "Neeli, Srinivas" <srinivas.neeli@amd.com>
+Cc: "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+ "davem@davemloft.net" <davem@davemloft.net>,
+ "edumazet@google.com" <edumazet@google.com>,
+ "kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com"
+ <pabeni@redhat.com>, "Simek, Michal" <michal.simek@amd.com>,
+ "robh@kernel.org" <robh@kernel.org>, "krzk+dt@kernel.org"
+ <krzk+dt@kernel.org>, "conor+dt@kernel.org" <conor+dt@kernel.org>,
+ "richardcochran@gmail.com" <richardcochran@gmail.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>, "git (AMD-Xilinx)" <git@amd.com>
+References: <20260219054911.2017362-1-srinivas.neeli@amd.com>
+ <5f884e29-151a-4ee7-9e1a-d7e1f84d9f6c@lunn.ch>
+ <SN7PR12MB81478FB396CDD9929618C2D69368A@SN7PR12MB8147.namprd12.prod.outlook.com>
+ <28b232f1-5814-4b3a-af28-1eab023743c0@lunn.ch>
+Content-Language: en-US
+From: "Neeli, Srinivas" <srneeli@amd.com>
+In-Reply-To: <28b232f1-5814-4b3a-af28-1eab023743c0@lunn.ch>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BMXPR01CA0084.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:b00:54::24) To SN7PR12MB8147.namprd12.prod.outlook.com
+ (2603:10b6:806:32e::5)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8147:EE_|DS7PR12MB8081:EE_
+X-MS-Office365-Filtering-Correlation-Id: e8257193-4710-43f0-e4dc-08de7aacda32
+X-LD-Processed: 3dd8961f-e488-4e60-8e11-a82d994e183d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	ZDTt68rSf/nTyEafCB2pwyGZ7a+ufMIYfRRo2s7fMpDbmHC8aIi7CfdypS5Nsm7PhTUWqeylISEY/2tDpOARmIOaQxGam8c/3YpqNYp3vHNzx0jTeAxVtYuU9GeBx/wdhHjIsFgQ3hacWUZ5BCOEKes82Q5rFOUCs5fSQxWrG7TfjldR1pQpbJvaNoPa1ZuhmFJdjZEa213+vP269o5ARJZeV6yzC2bCL+DNPVNonYE7vr/12Tt6+lHUlMUOYcnTnZG4ysh9sioKdkE36xq/chGVz5lDFx5aBd4oTCJ7k4346BNneYAe0kezdTwH8ZWAgEz+n71brQEzYuRAXTpH5QQ3M3dXEJCCR+ZGH/nhAgHoDP9IRwFymgVtclJy8H0XbtyR0zzydu+hdnw0xITYHp8beyuBeqFlUmOScJOIMez5KEIscdv++kLqryYluqTRXxtPVOf8OgOqM9fkHqpLz2OIdxZ2blVsiR904FSh1hJgOOUnshgvIZ1tRxSoGOfbRbo8REZ1gdKz2EBwNbsWLx5rteqO/qxl1wL1iBq4nYyGQoAeu+4DBA/Is9nfYOvepUoPyEZ3KI3j+o8iBQeKkbxT3KxDH07nQjwqtSvUOZZlK5i2bTEvyvnhJWXfEIV6GRGKvNxQsr9GT7QHGtq7sLWruniRvGBMnz2IfVoFXMiJjffVpTDkdreVqiACTRh/RG4TlxMNgIGL1CEqekyBi11g+AhnBJFkha7UK7rthtY=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8147.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N25MYkFobmk5dGZmM2pzekJwaTJUOFU4WjIxYXlza3MzNmErdUtWQXhCLzQ1?=
+ =?utf-8?B?WnBtdTFwKzcraG9ZYUNIaEFKUW1KWkNZbmJlT3lsc2RnOVpGUmJmZFRUNndX?=
+ =?utf-8?B?UVQvYmM5b3dWa2s3azMwMWpTcXZQdSswby9pd2pCSVU2N0d4eHhzR0NWQ1ZT?=
+ =?utf-8?B?OXlGbXI5N0FtTW5EK2xod1JwZmRHWEhncUVMN2VoR1ZkSytUZFBTTFZBMUh3?=
+ =?utf-8?B?V0YrWDRVTk5pWFZZcmNzbG5YZ3dBdm44VXN5cGZnSmdaUG04ajhiMGVHUmNQ?=
+ =?utf-8?B?YzRrdHE3OVhqRGZEY20veWoyYUhXRGpORm5xVnZPaCtrODlSNHlJN01uU0wy?=
+ =?utf-8?B?Y3ZPQVpteGZycDhMcDFvbW1YN2RPS3dUY0hFeE1ndTFmSXBwZHBZN0szRGZO?=
+ =?utf-8?B?d1Jpd1NaSEhER3VOQ2ErWVBqOEYyd3NERUY5N1BMZFZ5S1ZWRzhBc05nVkNv?=
+ =?utf-8?B?WkFhYngxQ1A3YnROVGNpRm91VXQvemlIVlU3SEhMMTY1bTkzbmxVdTk5NTd4?=
+ =?utf-8?B?RXM4TE9ydFBaWkUvSGlpb25JSDJlKzZpT0I3MFo0Zmc0YWR2djAzT0pYMTZy?=
+ =?utf-8?B?SU5wdyszUXo3V2FON1pvWFRuUGFXNG5ZeE1JZXIrNWQwcWY3Q2R2dDgweUxk?=
+ =?utf-8?B?ZmVMT1U0ZHJaSExUdDlRZ29saVZEemhPNlE4YTQ4NEszVlRLWTVOSTVYQkRs?=
+ =?utf-8?B?UHhWQXZFckJhdG0zWkVnRXZNT0hiWEZpc1YzUDhZWWhFWUgrcnBrRUIxVFpT?=
+ =?utf-8?B?dlI2RGx1aFZidWpaMVdLOFNOeUxPMUZIdjhuZGVsSEdGa0lQUU5lT0NTK3lE?=
+ =?utf-8?B?RXZCdFpYSnB1c0lPUFIvZVVyV2dUdTZXOTBCZkxDYk1ia3hOVTFvbVdOVUhD?=
+ =?utf-8?B?YzB5RmZQNWszNmZTWEZPSjF4d1lsb0l1aVdvdDBjcktCWHByUWY3RnIrOWtZ?=
+ =?utf-8?B?aWhCOGlVQjc0M05QM2Uwd3VEcEhNb0N1bGxDOUFkNW4yZ0cwREJQRS9YQ0lD?=
+ =?utf-8?B?WkJqTjVxZXh6K3R5djV0bHA3SGR4QWRudkUrZm1sT0o5cHZadFo2ajM4UGJI?=
+ =?utf-8?B?OEdxaitZRktDejVhbWNCeDRZelVPelF0QlB2YnY4bERLaVFldTVUa1dtdE1Z?=
+ =?utf-8?B?bHdmcmVoYjFhTXNlNExQbTlib1l6V0FRVnVLUWxFVzF3dHZlMVhublQ5R3hl?=
+ =?utf-8?B?WTdVdTZHZmxDdzIvQ1IvM09teHlubHEwTjRJSllxV0hnZ2U4VEN6Z0hXWDFp?=
+ =?utf-8?B?MFpTZllXZlptT0NKZ0JlQWo4bzQ4RW1KY0szWGFFWnc5TTlmQUpiK3YyM2dP?=
+ =?utf-8?B?ZURTUjB6cXRsZ1E2SGpQQitnRndRVjV1YzRoY09aaE04czdCMFVUV0xhYURk?=
+ =?utf-8?B?Z3pwY0hhSVFWR05RN3lEL1F3MHMwUy9CaDVHMmZ5MzNhN0JOQ3NsY2tzQ0l6?=
+ =?utf-8?B?VVFtN3lGREljY1lEOFh0WmxDNmdVNDl0WjQwNGFnM0l4VmxVUG9XTVJQUE5J?=
+ =?utf-8?B?ZDdaekFSbGttc2FaOXdLRW5JcFMyZ3ZNY2dYdllxSlNWM3ltMXk0c2g2U2Jh?=
+ =?utf-8?B?N2xPN3RzZE5Hc0R3KzgxQ1M5SlZpVFFML1p1ZGpVeGVSVTJuczFMaXF0MVVJ?=
+ =?utf-8?B?Q2k0c050cnJpbGxOeHhqWHl3T2RnS3dTQ015OWV5dVRRZmFNUzhLODBQcG9B?=
+ =?utf-8?B?dFdubGVYQVdvK29xbXRzVmNMSEY3RWZPS2ZwVDFiWFhDYmZjS25haktXeHVu?=
+ =?utf-8?B?NUdBbGRyT3VvdzJTQmVYR04vbzR2dzVZb2FBQ0h3MTNRNzdEMzA3Y2pyMXZy?=
+ =?utf-8?B?bTgyZDlTcC9DdC9pNHJGVE9Yb1JCOUtwTjROVk1uUzFuVVFUOG05eU1TOGtt?=
+ =?utf-8?B?MnYzdHpDN2NBTEd6NG81TWV6d01PVlM3OVR3RmVaMXBibGNieGpmTFowcWhp?=
+ =?utf-8?B?QzR1Y1VoRnRzMlhXYS9WTnZsYkJHaXVHaTZ1eWI4dVNOQVFmb3paMGd2UDZo?=
+ =?utf-8?B?NVB6MlplT0Fpc29rYk1RSVBsdHA4ZG1iRmZqRHFRczNQcGx5N2V0YlhFNjlF?=
+ =?utf-8?B?dEoxMUhxWi9NYnZWOXJPTVA3YjNVWHlxNHRkRDlkUVhpaDJMSnRtZHlFWUtt?=
+ =?utf-8?B?azg2KzdmS3pxNHhsenc4YVpCTVdRcUlwQU1oNUgwcnFvRnc2UHhsNVBjQ3ky?=
+ =?utf-8?B?MWRPWXpYSkpVWG1wQjM1K3JQQXR3L2pDaUh0dFZRTVlsUG1pRFRVN1R4ZXRj?=
+ =?utf-8?B?Mi9YTXBHZ3lXSnpDQTEyVTJnTVB5LytlaDFSZ1J6dlVoV2U0aU9uck5mc0tY?=
+ =?utf-8?B?end5OHRDSGNoN09aK2x4cENiT2tEYWtCMk1sS0xrNkdTY2RUbE55QT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e8257193-4710-43f0-e4dc-08de7aacda32
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8147.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 11:46:35.0752
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 3qJHf2R1QQ451sn7m9g5NtRtkxtv9ri2mSzBWleeWSRrKlT69ZAn1NwKLe4ZPPXC
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB8081
 
-Many ethernet drivers report xdp Rx queue frag size as being the same as
-DMA write size. However, the only user of this field, namely
-bpf_xdp_frags_increase_tail(), clearly expects a truesize.
+Hi Andrew,
 
-Such difference leads to unspecific memory corruption issues under certain
-circumstances, e.g. in ixgbevf maximum DMA write size is 3 KB, so when
-running xskxceiver's XDP_ADJUST_TAIL_GROW_MULTI_BUFF, 6K packet fully uses
-all DMA-writable space in 2 buffers. This would be fine, if only
-rxq->frag_size was properly set to 4K, but value of 3K results in a
-negative tailroom, because there is a non-zero page offset.
+On 2/20/2026 7:06 PM, Andrew Lunn wrote:
+> On Fri, Feb 20, 2026 at 12:59:16PM +0000, Neeli, Srinivas wrote:
+>> [AMD Official Use Only - AMD Internal Distribution Only]
+> Sorry, i'm not part of AMD...
+>
+>>> So how does the host send a frame out Port 2? Is there an extra header
+>>> on the frame sent by EndPoint, which the switch interprets?
+>>>
+>> In this RFC, I configured all switch ports in forward mode. As a
+>> result, when a frame is sent from the internal endpoint, it is
+>> flooded to both external ports.  To forward packets to a specific
+>> port instead of flooding, either static switch CAM entries need to
+>> be configured or address learning should be enabled so the switch
+>> can learn CAM entries dynamically.
+> Despite not being part of AMD, this part is important.
+>
+> I don't care about how the RFC works, i want to know how the hardware
+> works, to ensure you have the correct choice of DSA vs pure switchdev.
+>
+> Take the example of running Spanning Tree Protocol. The bridge needs
+> to send the BPDU out a specific port. What mechanism is used to do
+> that? It also needs to know which port a BPDU ingressed.
+>
+> 	Andrew
 
-We are supposed to return -EINVAL and be done with it in such case, but due
-to tailroom being stored as an unsigned int, it is reported to be somewhere
-near UINT_MAX, resulting in a tail being grown, even if the requested
-offset is too much (it is around 2K in the abovementioned test). This later
-leads to all kinds of unspecific calltraces.
 
-[ 7340.337579] xskxceiver[1440]: segfault at 1da718 ip 00007f4161aeac9d sp 00007f41615a6a00 error 6
-[ 7340.338040] xskxceiver[1441]: segfault at 7f410000000b ip 00000000004042b5 sp 00007f415bffecf0 error 4
-[ 7340.338179]  in libc.so.6[61c9d,7f4161aaf000+160000]
-[ 7340.339230]  in xskxceiver[42b5,400000+69000]
-[ 7340.340300]  likely on CPU 6 (core 0, socket 6)
-[ 7340.340302] Code: ff ff 01 e9 f4 fe ff ff 0f 1f 44 00 00 4c 39 f0 74 73 31 c0 ba 01 00 00 00 f0 0f b1 17 0f 85 ba 00 00 00 49 8b 87 88 00 00 00 <4c> 89 70 08 eb cc 0f 1f 44 00 00 48 8d bd f0 fe ff ff 89 85 ec fe
-[ 7340.340888]  likely on CPU 3 (core 0, socket 3)
-[ 7340.345088] Code: 00 00 00 ba 00 00 00 00 be 00 00 00 00 89 c7 e8 31 ca ff ff 89 45 ec 8b 45 ec 85 c0 78 07 b8 00 00 00 00 eb 46 e8 0b c8 ff ff <8b> 00 83 f8 69 74 24 e8 ff c7 ff ff 8b 00 83 f8 0b 74 18 e8 f3 c7
-[ 7340.404334] Oops: general protection fault, probably for non-canonical address 0x6d255010bdffc: 0000 [#1] SMP NOPTI
-[ 7340.405972] CPU: 7 UID: 0 PID: 1439 Comm: xskxceiver Not tainted 6.19.0-rc1+ #21 PREEMPT(lazy)
-[ 7340.408006] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-5.fc42 04/01/2014
-[ 7340.409716] RIP: 0010:lookup_swap_cgroup_id+0x44/0x80
-[ 7340.410455] Code: 83 f8 1c 73 39 48 ba ff ff ff ff ff ff ff 03 48 8b 04 c5 20 55 fa bd 48 21 d1 48 89 ca 83 e1 01 48 d1 ea c1 e1 04 48 8d 04 90 <8b> 00 48 83 c4 10 d3 e8 c3 cc cc cc cc 31 c0 e9 98 b7 dd 00 48 89
-[ 7340.412787] RSP: 0018:ffffcc5c04f7f6d0 EFLAGS: 00010202
-[ 7340.413494] RAX: 0006d255010bdffc RBX: ffff891f477895a8 RCX: 0000000000000010
-[ 7340.414431] RDX: 0001c17e3fffffff RSI: 00fa070000000000 RDI: 000382fc7fffffff
-[ 7340.415354] RBP: 00fa070000000000 R08: ffffcc5c04f7f8f8 R09: ffffcc5c04f7f7d0
-[ 7340.416283] R10: ffff891f4c1a7000 R11: ffffcc5c04f7f9c8 R12: ffffcc5c04f7f7d0
-[ 7340.417218] R13: 03ffffffffffffff R14: 00fa06fffffffe00 R15: ffff891f47789500
-[ 7340.418229] FS:  0000000000000000(0000) GS:ffff891ffdfaa000(0000) knlGS:0000000000000000
-[ 7340.419489] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 7340.420286] CR2: 00007f415bfffd58 CR3: 0000000103f03002 CR4: 0000000000772ef0
-[ 7340.421237] PKRU: 55555554
-[ 7340.421623] Call Trace:
-[ 7340.421987]  <TASK>
-[ 7340.422309]  ? softleaf_from_pte+0x77/0xa0
-[ 7340.422855]  swap_pte_batch+0xa7/0x290
-[ 7340.423363]  zap_nonpresent_ptes.constprop.0.isra.0+0xd1/0x270
-[ 7340.424102]  zap_pte_range+0x281/0x580
-[ 7340.424607]  zap_pmd_range.isra.0+0xc9/0x240
-[ 7340.425177]  unmap_page_range+0x24d/0x420
-[ 7340.425714]  unmap_vmas+0xa1/0x180
-[ 7340.426185]  exit_mmap+0xe1/0x3b0
-[ 7340.426644]  __mmput+0x41/0x150
-[ 7340.427098]  exit_mm+0xb1/0x110
-[ 7340.427539]  do_exit+0x1b2/0x460
-[ 7340.427992]  do_group_exit+0x2d/0xc0
-[ 7340.428477]  get_signal+0x79d/0x7e0
-[ 7340.428957]  arch_do_signal_or_restart+0x34/0x100
-[ 7340.429571]  exit_to_user_mode_loop+0x8e/0x4c0
-[ 7340.430159]  do_syscall_64+0x188/0x6b0
-[ 7340.430672]  ? __do_sys_clone3+0xd9/0x120
-[ 7340.431212]  ? switch_fpu_return+0x4e/0xd0
-[ 7340.431761]  ? arch_exit_to_user_mode_prepare.isra.0+0xa1/0xc0
-[ 7340.432498]  ? do_syscall_64+0xbb/0x6b0
-[ 7340.433015]  ? __handle_mm_fault+0x445/0x690
-[ 7340.433582]  ? count_memcg_events+0xd6/0x210
-[ 7340.434151]  ? handle_mm_fault+0x212/0x340
-[ 7340.434697]  ? do_user_addr_fault+0x2b4/0x7b0
-[ 7340.435271]  ? clear_bhb_loop+0x30/0x80
-[ 7340.435788]  ? clear_bhb_loop+0x30/0x80
-[ 7340.436299]  ? clear_bhb_loop+0x30/0x80
-[ 7340.436812]  ? clear_bhb_loop+0x30/0x80
-[ 7340.437323]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[ 7340.437973] RIP: 0033:0x7f4161b14169
-[ 7340.438468] Code: Unable to access opcode bytes at 0x7f4161b1413f.
-[ 7340.439242] RSP: 002b:00007ffc6ebfa770 EFLAGS: 00000246 ORIG_RAX: 00000000000000ca
-[ 7340.440173] RAX: fffffffffffffe00 RBX: 00000000000005a1 RCX: 00007f4161b14169
-[ 7340.441061] RDX: 00000000000005a1 RSI: 0000000000000109 RDI: 00007f415bfff990
-[ 7340.441943] RBP: 00007ffc6ebfa7a0 R08: 0000000000000000 R09: 00000000ffffffff
-[ 7340.442824] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-[ 7340.443707] R13: 0000000000000000 R14: 00007f415bfff990 R15: 00007f415bfff6c0
-[ 7340.444586]  </TASK>
-[ 7340.444922] Modules linked in: rfkill intel_rapl_msr intel_rapl_common intel_uncore_frequency_common skx_edac_common nfit libnvdimm kvm_intel vfat fat kvm snd_pcm irqbypass rapl iTCO_wdt snd_timer intel_pmc_bxt iTCO_vendor_support snd ixgbevf virtio_net soundcore i2c_i801 pcspkr libeth_xdp net_failover i2c_smbus lpc_ich failover libeth virtio_balloon joydev 9p fuse loop zram lz4hc_compress lz4_compress 9pnet_virtio 9pnet netfs ghash_clmulni_intel serio_raw qemu_fw_cfg
-[ 7340.449650] ---[ end trace 0000000000000000 ]---
+Hi Andrew,
 
-The issue can be fixed in all in-tree drivers, but we cannot just trust OOT
-drivers to not do this. Therefore, make tailroom a signed int and produce a
-warning when it is negative to prevent such mistakes in the future.
+I would like to briefly share an overview of our TSN switch capabilities 
+and seek your guidance on the most appropriate Linux framework for the 
+driver implementation specifically whether switchdev or DSA would be the 
+better fit.
 
-Fixes: bf25146a5595 ("bpf: add frags support to the bpf_xdp_adjust_tail() API")
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
----
- net/core/filter.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+TSN Switch Capabilities
+-----------------------
+Our TSN subsystem supports the following IEEE TSN clauses:
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index d6fafb3633b0..a77d23fe2359 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -4150,13 +4150,14 @@ static int bpf_xdp_frags_increase_tail(struct xdp_buff *xdp, int offset)
- 	struct skb_shared_info *sinfo = xdp_get_shared_info_from_buff(xdp);
- 	skb_frag_t *frag = &sinfo->frags[sinfo->nr_frags - 1];
- 	struct xdp_rxq_info *rxq = xdp->rxq;
--	unsigned int tailroom;
-+	int tailroom;
- 
- 	if (!rxq->frag_size || rxq->frag_size > xdp->frame_sz)
- 		return -EOPNOTSUPP;
- 
- 	tailroom = rxq->frag_size - skb_frag_size(frag) -
- 		   skb_frag_off(frag) % rxq->frag_size;
-+	WARN_ON_ONCE(tailroom < 0);
- 	if (unlikely(offset > tailroom))
- 		return -EINVAL;
- 
--- 
-2.52.0
+IEEE 802.1Qbv – Time-Aware Shaper (scheduled traffic using gate control)
+IEEE 802.1Qbu / IEEE 802.3br – Frame preemption
+IEEE 802.1Qci – Per-Stream Filtering and Policing (PSFP), including: 
+SDU-based filtering and Meter-based policing
+IEEE 802.1CB – Frame Replication and Elimination for Reliability (FRER)
+IEEE 802.1AS / IEEE 1588 – Time synchronization (PTP / gPTP)
+
+Hardware Architecture Overview
+------------------------------
+The switch consists of three ports:
+
+Port 0: Connected to the CPU (control/endpoint port)
+Port 1: Connected to MAC1
+Port 2: Connected to MAC2
+
+MAC1 and MAC2 are capable of transmitting and receiving PTP packets, 
+with received packets stored in internal BRAM. They will not be 
+forwarded by switch to the internal endpoint (EP) and MAC network 
+drivers xmit's and receives the PTP frames.
+The switch forwards frames based on VLAN port membership and the CAM 
+entries and switch supports TSN features such as CBS, Qci (PSFP) and 
+802.1CB (FRER) through hardware configuration.
+The CPU is intended to operate purely in the control plane and is not 
+part of the forwarding data path.
+
+Thank you very much for your time and guidance. Please let us know if 
+any additional details would be helpful.
+
+
+Best regards,
+Neeli Srinivas
 
