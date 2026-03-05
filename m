@@ -1,316 +1,310 @@
-Received: from mail-oa1-f100.google.com (mail-oa1-f100.google.com [209.85.160.100])
+Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A842378819
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 09:25:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F6437883B
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 09:27:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772702744; cv=pass; b=nvOL+LLCL1GmV3N3tQXVHXMUcc9NY4hlD0FSWvo1HfJIZjWiuiCCheswJJmqifEgCKsggvjpwQhqHp+gNtD4lvOThMuoRqqhnDUaDHhLk170f7TI30fBtED+TY/H8RD6mJY2q/3z7M9Xi2/U31TTua9y3PrCcFanP0nLZwbTAdQ=
+	t=1772702848; cv=pass; b=S942AciYxKT1zImRAruef38n3YauprQnl0Jfq6qg1DqvV/99EHAjmv17Bjpd50kdETCvcOAOjA9nSj/MQ6PJOSglxU8id3OJT7Fx6Eej+snwMiZX9C3IoCpBEeKkMq6pxP5/Y2jy4ysEDWLQB7O9GOFQt3LQ8GioJ6Ut2m/0yrs=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772702744; c=relaxed/simple;
-	bh=irVUMqwparnMf8IefxsOwq4285n4NoeANstVlkr1N6E=;
+	s=arc-20240116; t=1772702848; c=relaxed/simple;
+	bh=lMjYfl+Pmb7NDXCB4+hmAwoURdeJLXQAEFQ0PlMbzDw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oXpP2hdD3719DJOdbmktsujuSJIX562uE1qW5RTpMFOLDEKPK00rgiZjFZpym+IXI1Y94Ltla7EDUwvuUneQaeC86AlfH8C15EvY8RqTM3Vd2QMIp9jyKgkrKzGUOQAzJQVqLmPKP5CjQ5gdIT2X7CPlxEpWrEibSn9r8AgILYU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=ZdkbqenW; arc=pass smtp.client-ip=209.85.160.100
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+	 To:Cc:Content-Type; b=ptrx72ZXUwNX7oKTVulOmghH5lid0hOHpPcirOlVK4NXU9FwVV1qIoI5UilkdnjVlM4ySohn5XsbfaeBv08qtJLPL1h50NjGg8RXLsf3CV9fPVMHO0tiFl3nJVmMYQJyqpCBdj+HbYRRAlen0LOeWfH3MLyqqA5ZXc1mmxIC0fE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jrn/sVVQ; arc=pass smtp.client-ip=74.125.82.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="ZdkbqenW"
-Received: by mail-oa1-f100.google.com with SMTP id 586e51a60fabf-40f387a688dso2291609fac.0
-        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 01:25:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772702742; x=1773307542;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2xICsYpHdVQ+7oYtPbLtwbCS+HkCosggcskmGjhgsFA=;
-        b=ZiMfqzoMBO6IFZPTO+Kj1qwyX5n7OhehjPElnqQNxo40OjmyxkNQdVMMA3uZGk1oz0
-         m9PlDtkzsSPL9EEsQicQ0k4DDdmLZGEiLeTswFvRkHrexMs8ynktSeWaEFo4IjBpdLpF
-         8h+xUNE8RHbsmQNC1HrJckOcGbsHJ+Cp4VRMfGfYTG1DUtoauXmuMcvNgRZn2F9O/f6h
-         L1291SbR/ewrVWctljCX/m2y2dHMLhdOMHn/C01I8gdAVwslDecq0feQq3JBCMix/UCh
-         A/RHUVJcz1eS5+q0ZJ84I/zxckZ8M63dXzGenpZkRVbRRWXAuQbTd7wflGjh9dKD7a4F
-         49Ew==
-X-Forwarded-Encrypted: i=2; AJvYcCWuDo5VM/GiZNAqNRnX5uBxzrSjK/dm/iVfI6xAZAXGaXfQNgrUNKLyL2EmuSUD8FN7nLVCSqA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxpwkQt/9G00bN1ExnirFXj7H50x3mDPCKfWqWikk0bfooAqjTb
-	GBPGfXGs6Tc6251dh+QlDpWVQaiTQaKg5eOSY2qVA5snbYMBwpOdhP8SsJIWWGaVPDQR3WXAk/n
-	Mrh+VMeI4H5xlCipoLntqXUCABaJgQY0L6Y78RYwBsni1amy/dsZaBfJ9gjsQDcVH+sF1UzD18P
-	1idgQe4UAk38cpxnZtcUTvoWsGJGsQhRIb/JC3UnxWUg75WpA9yp1iHhEc1ZEVmUs3nPlk7X/l0
-	K5vjbgY5VY=
-X-Gm-Gg: ATEYQzz8zoa2F0AfTJGDZP5AtbjKiK8tLRSh9gaN/2Go1dNBSXjgZVQ8k2wNo/528bv
-	Z+dVT/mE9RYh26SOJTqsPALtHSSxDp7y/nzFjSSiCZOR5hJ025zwsC8mTW7Ppm0f+fE9YLo4o5T
-	HdkxpZ8PORK62mG/gVP1yIH+Wao9OcK2D/D6XA3LR26c/nxfKdXJmY7dnhdFZBWQbtHNDHiDPWL
-	smfNjQVnJ4nv7mbw/lnIuUuXKnVL/Owi+Lj8CuOurAS2568XQ3D8ft2nx5ZTWGCteQOO4EocnKZ
-	TaZyLXwIC8pIHu4nRXagGQLQv2VQ3lda4vemWkckVjDqWN4tWQEKlxr13hI0MB1kwpX95LIvKDS
-	A8EFUhF0MF2w2GXbvA9KhRpRPUhe+fSV1NRn3uqAIyGZ3F/DrfLSUD1YtByFJQKgMuyO3SC64d6
-	eGHvZo09K8Ipxem5uXVtb7hFl9BikDWJE24Mg9sTZSUucFo8E12c8YNyZe
-X-Received: by 2002:a05:6871:2b86:b0:416:b429:28e with SMTP id 586e51a60fabf-416b4290b37mr2477065fac.20.1772702742006;
-        Thu, 05 Mar 2026 01:25:42 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-19.dlp.protect.broadcom.com. [144.49.247.19])
-        by smtp-relay.gmail.com with ESMTPS id 586e51a60fabf-4160d27d3a2sm2975898fac.13.2026.03.05.01.25.41
-        for <netdev@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 05 Mar 2026 01:25:42 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-8297d261a67so492545b3a.0
-        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 01:25:41 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772702740; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jrn/sVVQ"
+Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-127380532eeso291929c88.1
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 01:27:26 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; t=1772702846; cv=none;
         d=google.com; s=arc-20240605;
-        b=e1qimCtow4FiVuLdj8VVwPnWjZiXMkKCQnRO0zUn03ku+l5vMqU95H6VwbyxbYAIT+
-         kgM43BndyqPz+MiEas15ZdOPrdFbzG8GjJ0mY+F6s+rGGVBnnNDiwiVJs0NdCpmGfF00
-         efXnbMxQa//7rBXGR5azXKNtQ0kHFjdm42ilFoPUf/7NlVcvI28JElzBLups5jd6TyQ0
-         SOLi+ZFX1lmxG2b6iOBoExKgtCMi0u9O707W/0avmg2PwqX28IZ9aBBKS+tvgyslpXc+
-         dYlsO+DVeqFF0UZfhWwIksHMCpw8vxBxcgwF6ePSn57rjuTztZTblqTF5oae3OMnPjPl
-         Lo0g==
+        b=gB5GOG74u61N/VlRDWOngt9/pQWkYslIIuOTCzJbkvPHo8vHksEnvCjrDs0USwqcVE
+         jGGWbctLsO/QE0Oe72WBb6UFVyJGKVwcH5/HmOF1z8NihT1PgVvyXwF0C7n5voqu+wK+
+         HfGvC1LFeYy75CAj6Vf/LgCEhNRGhu6I7R2D485n12KUTSu8WrySQ0kVDB1g6jAfNiaO
+         n4c1xl6WM3tIILf0asO/VJBBzmTpo2X3EGwBJrGaHAE4X6isz0GHjqSooUfuOsuPDFWd
+         q34jh7VC7V25ymk01BfE7OMyjSlXvDrx4Tznk+iQ0LIrP+7cJrhL16CzmQt1wDG5pXq3
+         D+vA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=2xICsYpHdVQ+7oYtPbLtwbCS+HkCosggcskmGjhgsFA=;
-        fh=fzvCL/R+9wlsKdh1IOk4mG0PGmzGLX2GccgbHrsyyNg=;
-        b=Im+bcmpTdnnhwOnzWkj+c0JroESs5Dd4aRqN51MS6NxZdJ1oilbhECUzVFlOhlTz7H
-         wQeGNxEOJaSzRF+P9ns/sUeD3/JANBq4OJ6YWH9qu1xFZ4mXc7X+7aXUZJIAPt9kS6SP
-         Zpv7Y4a2PHdlonv40DSX5LgfgGckcsAeB4/JzI1yaxIyZc+433QzWarDiaIK1XMmnGrR
-         N3BgvDZ3qKXfWc+itst+bJATOC547aOt5GxNfLwGe92knCBp5FwMuLyJXjrE/yJgE5oO
-         Hf4BBQAxyWAACfHpep6n051hbAFdFkcuCp9TZhFWCNhcI6EnBxJrhNyHvegIZUAc6dEi
-         NeVw==;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=YGl7YGr5hs1Mp3RVhxOnhpc/LsWUXqci1b3NWeyBdTs=;
+        fh=1NzD0GPl7PM1t3kuitb9uONyoa4TeEZ4dtDdKXWhTME=;
+        b=PTuc4lVDULpjn/NbVyYLmRNjwY1kNRXz7qslt6omw2kcVVisdD+pA6ulZSUucGgZGQ
+         Hfx7gJ6/1/vmFov8UOvP0dgun7t5wMbK7YYevGMc8SMgBA68/sYa8SVljnsWGwVtsdhS
+         LzZPQ1DrsknT0qh7Z+UthmCJbkZRETgHUewHniRrzlQkXpxp/le2/0uMLHxNb6LHKudE
+         6USIPYCABDvRZij5y0mYaL2UZaPdd+Cu8TmKWQShkXXeo4Bv5nyz16FXPYEGbrJDq7Pa
+         7a5N4U8hwQ2MQbNK0FFcvLVejsRirWXQUEGxxui7N5zSzrIicQuKsvqI02iveA7cmwbp
+         lq1g==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1772702740; x=1773307540; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2xICsYpHdVQ+7oYtPbLtwbCS+HkCosggcskmGjhgsFA=;
-        b=ZdkbqenWKRzisn7aOui7aLb5FaUZejy6OksuIK72LXiwU6d/CEtqCzLpt0u4tTKFS9
-         5R5sf+scwaD5hApUkfZ3lB/XkyKwNwg1kP4XO9CvtNSAJo/fq0EyN8XTQgmbdjRPYbr3
-         1zeG6JPdS/e7kkU1p/MDPQqE9nvXrLwWxnzQk=
-X-Forwarded-Encrypted: i=1; AJvYcCW4zBexmpBWZLPBQMrjONiG56YhXYP8xyfG21UWaq3y6+vyRWnZQLLfpsj1GLF9yDu5VYZe10Q=@vger.kernel.org
-X-Received: by 2002:a05:6a00:2e1f:b0:7fb:cf05:93cb with SMTP id d2e1a72fcca58-82972b7df71mr4082450b3a.1.1772702740291;
-        Thu, 05 Mar 2026 01:25:40 -0800 (PST)
-X-Received: by 2002:a05:6a00:2e1f:b0:7fb:cf05:93cb with SMTP id
- d2e1a72fcca58-82972b7df71mr4082439b3a.1.1772702739818; Thu, 05 Mar 2026
- 01:25:39 -0800 (PST)
+        d=google.com; s=20230601; t=1772702846; x=1773307646; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YGl7YGr5hs1Mp3RVhxOnhpc/LsWUXqci1b3NWeyBdTs=;
+        b=Jrn/sVVQs4MieGopJwRtadojipO3mkCjMRwDvBdMDScqI08y/cITVgvrqS8rKeKyPG
+         pEIBpJcvPr8HdCQ4NlX/m+W3mf06CQE5gCDQNmBItSbJbN63xuljNt7aF4dEcD4/8vD7
+         8mAxVSHzqBC33HEJB5wYfYoiPerooxy0qlino5Gg2XZ7gx7+J1HJ0NiIqUQboOazaCey
+         z2U6UKpJD3XFR+U0VDhgiIgqvsES04fLapbUUxPrRADMscrZzYwzGbCeJqgUv9Giriu8
+         XqA0nn9/8mbDKamVjuOLH3Km6ErEZ/usAQCJljY+SeSr2JajgEdDSIi5RiyOq4BhD3Ub
+         Gqfg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772702846; x=1773307646;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=YGl7YGr5hs1Mp3RVhxOnhpc/LsWUXqci1b3NWeyBdTs=;
+        b=L3uwPVsrrQauKJWhDbf7J490cdl/w6k2Q/Ue2IiIHG1PuCkFuETuduMVMn9UBQiIVN
+         g8FYVA5yPNPaAzFhx0XzK70wGlq7C5vyEgSe58mkToBhW27N+6ZizXM/5HxPt6QZ9Es9
+         CQiHtpYJvhjm2TfdZX08rz+2uB+Qdcwv7rR0VbO5hC75aYF7hIIBqB8DenpWL7znNbzi
+         P2th+75MTdLCWB4LqDestEaU5+eY+ybvL98/t+0as7cyJPAK7gdNvZIo9ZtvLoV9FTer
+         j+661dCCCk2U589cQcI9Y2hOm0iPhMmvvmjb/qDVN+eI6Ki86aLPFr55uZj5Kha1pMRH
+         ElVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXyDUZtuMpK6yUotSGJ19FRFJgVVuD3GAVJmKDDjkaoPv0fgCdBDQC2m+QP/EaeEr1BDwsCpO8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziK3YXe+mVo23KBTmSkFCEyJF7SLVWnwFJ4ov8z32Y4oQ8VT94
+	/qBLQeA+Uas/dEuvjAY86rsFthAMLCsRtfJi4BtLMPlvptfQXI+ufl6tHQ3m4Tisx8if8uPmuLV
+	LXZqWji1wCbn50HULsHj0xouwtknoZ4aT0hesDha/ZIK95QDjTN03DgCSXec=
+X-Gm-Gg: ATEYQzxTWRQ30hct90jRqox+wz1BBLm8LX4apcHPA+70DgqDK+tcuP/L2r27capfH6w
+	l5i89dadQxkS+r5AZrw1yaJ8FQguKvWswQJTic6jofj5t2vARxztSCoBYs7LLKFJWoLAsApaV4x
+	kEshz/jyqbx1BfD/1LTzjzqKkzwqPywHiwKCHOinK4pFyHGNBUqAvj4jCZWqMpa6yqZM329ixw+
+	ZGd8/Tz55ElF3lVoTmSsY6oXhdvpLBKS0AaTeZ+Aa+8ZMebk3QGtEKeZNqw+dumq9wRRlwua4Ps
+	rndlEJ7a3UDCbzUku1q6nbYAas38axgXJ1iH7HjO1mcafMLPe92i/2CmIChGN/5gxAxcCk3k
+X-Received: by 2002:a05:7022:6899:b0:11b:9386:7ecd with SMTP id
+ a92af1059eb24-128b70ef851mr2410546c88.42.1772702845137; Thu, 05 Mar 2026
+ 01:27:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260304131855.3225539-1-bjorn@kernel.org>
-In-Reply-To: <20260304131855.3225539-1-bjorn@kernel.org>
-From: Pavan Chebbi <pavan.chebbi@broadcom.com>
-Date: Thu, 5 Mar 2026 14:55:27 +0530
-X-Gm-Features: AaiRm52Y89lYHjruwmeefdiVUQxLjY5nBghjtlkES1yuGch-T7ZOXwwZ_yXSG7w
-Message-ID: <CALs4sv1ndtPm0bu9hZ5tNHQYUDG63V_A61zAFOiqW1eR5+3_qg@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 0/3] ethtool: Dynamic RSS context indirection
- table resizing
-To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
-Cc: Michael Chan <michael.chan@broadcom.com>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Willem de Bruijn <willemb@google.com>
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
-Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="00000000000026326a064c4385ef"
-
---00000000000026326a064c4385ef
+References: <20260221233234.3814768-1-kuniyu@google.com> <20260221233234.3814768-7-kuniyu@google.com>
+ <r7csevb4yonphmfhfpkj7jpc4yvjkdwrp566zxhueaf6vgjfak@stnfyjkqid6o>
+ <CAAVpQUAGSzypVhT8V-qjhUfZeEQhXQtS1z+iQC7vrzZCHEr9=A@mail.gmail.com> <389162b2e117d8a5675b02286c7bafcc342086b6@linux.dev>
+In-Reply-To: <389162b2e117d8a5675b02286c7bafcc342086b6@linux.dev>
+From: Kuniyuki Iwashima <kuniyu@google.com>
+Date: Thu, 5 Mar 2026 01:27:13 -0800
+X-Gm-Features: AaiRm51CIrbURfGzu54QGWbHrTP5af5b7cqQqQoVQE0Fnyut1UlLLTuWdt-6J08
+Message-ID: <CAAVpQUBrVzwDN2xc68owHJZP7VoAZQWhwo_xdo5noGZ27qmjpA@mail.gmail.com>
+Subject: Re: [PATCH v4 bpf/net 6/6] sockmap: Fix broken memory accounting for UDP.
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: John Fastabend <john.fastabend@gmail.com>, Jakub Sitnicki <jakub@cloudflare.com>, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, 
+	bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	syzbot+5b3b7e51dda1be027b7a@syzkaller.appspotmail.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 4, 2026 at 6:49=E2=80=AFPM Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.=
-org> wrote:
+On Thu, Mar 5, 2026 at 12:30=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
 >
-> Hi!
+> March 5, 2026 at 15:48, "Kuniyuki Iwashima" <kuniyu@google.com mailto:kun=
+iyu@google.com?to=3D%22Kuniyuki%20Iwashima%22%20%3Ckuniyu%40google.com%3E >=
+ wrote:
 >
-> Some NICs (e.g. bnxt) change their RSS indirection table size based on
-> the queue count, because the hardware table is a shared resource. The
-> ethtool core locks ctx->indir_size at context creation, so drivers
-> have to reject channel changes when RSS contexts exist.
 >
-> This series adds resize helpers and wires them up in bnxt.
+> >
+> > On Wed, Mar 4, 2026 at 10:37 PM Jiayuan Chen <jiayuan.chen@linux.dev> w=
+rote:
+> >
+> > >
+> > > On Sat, Feb 21, 2026 at 11:30:53PM +0800, Kuniyuki Iwashima wrote:
+> > >  [...]
+> > >  </TASK>
+> > >
+> > >  Fixes: d7f571188ecf ("udp: Implement ->read_sock() for sockmap")
+> > >  Reported-by: syzbot+5b3b7e51dda1be027b7a@syzkaller.appspotmail.com
+> > >  Closes: https://lore.kernel.org/netdev/698f84c6.a70a0220.2c38d7.00cb=
+.GAE@google.com/
+> > >  Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+> > >  ---
+> > >  v4: Fix deadlock when requeued
+> > >  v2: Fix build failure when CONFIG_INET=3Dn
+> > >  ---
+> > >  include/net/udp.h | 9 +++++++++
+> > >  net/core/skmsg.c | 29 +++++++++++++++++++++++++----
+> > >  net/ipv4/udp.c | 9 +++++++++
+> > >  3 files changed, 43 insertions(+), 4 deletions(-)
+> > >
+> > >  diff --git a/include/net/udp.h b/include/net/udp.h
+> > >  index 700dbedcb15f..ae38a4da9388 100644
+> > >  --- a/include/net/udp.h
+> > >  +++ b/include/net/udp.h
+> > >  @@ -455,6 +455,15 @@ struct sock *__udp6_lib_lookup(const struct net=
+ *net,
+> > >  struct sk_buff *skb);
+> > >  struct sock *udp6_lib_lookup_skb(const struct sk_buff *skb,
+> > >  __be16 sport, __be16 dport);
+> > >  +
+> > >  +#ifdef CONFIG_INET
+> > >  +void udp_sock_rfree(struct sk_buff *skb);
+> > >  +#else
+> > >  +static inline void udp_sock_rfree(struct sk_buff *skb)
+> > >  +{
+> > >  +}
+> > >  +#endif
+> > >  +
+> > >  int udp_read_skb(struct sock *sk, skb_read_actor_t recv_actor);
+> > >
+> > >  /* UDP uses skb->dev_scratch to cache as much information as possibl=
+e and avoid
+> > >  diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+> > >  index 96f43e0dbb17..dd9134a45663 100644
+> > >  --- a/net/core/skmsg.c
+> > >  +++ b/net/core/skmsg.c
+> > >  @@ -7,6 +7,7 @@
+> > >
+> > >  #include <net/sock.h>
+> > >  #include <net/tcp.h>
+> > >  +#include <net/udp.h>
+> > >  #include <net/tls.h>
+> > >  #include <trace/events/sock.h>
+> > >
+> > >  @@ -576,6 +577,7 @@ static int sk_psock_skb_ingress(struct sk_psock =
+*psock, struct sk_buff *skb,
+> > >  u32 off, u32 len, bool take_ref)
+> > >  {
+> > >  struct sock *sk =3D psock->sk;
+> > >  + bool is_udp =3D sk_is_udp(sk);
+> > >  struct sk_msg *msg;
+> > >  int err =3D -EAGAIN;
+> > >
+> > >  @@ -583,13 +585,20 @@ static int sk_psock_skb_ingress(struct sk_psoc=
+k *psock, struct sk_buff *skb,
+> > >  if (!msg)
+> > >  goto out;
+> > >
+> > >  - if (skb->sk !=3D sk && take_ref) {
+> > >  + if (is_udp) {
+> > >  + if (unlikely(skb->destructor =3D=3D udp_sock_rfree))
+> > >  + goto enqueue;
+> > >  +
+> > >  + spin_lock_bh(&sk->sk_receive_queue.lock);
+> > >  + }
+> > >  +
+> > >  + if (is_udp || (skb->sk !=3D sk && take_ref)) {
+> > >  if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
+> > >  - goto free;
+> > >  + goto unlock;
+> > >
+> > >  if (!sk_rmem_schedule(sk, skb, skb->truesize))
+> > >  - goto free;
+> > >  - } else {
+> > >  + goto unlock;
+> > >  + } else if (skb->sk =3D=3D sk || !take_ref) {
+> > >  /* This is used in tcp_bpf_recvmsg_parser() to determine whether the
+> > >  * data originates from the socket's own protocol stack. No need to
+> > >  * refcount sk because msg's lifetime is bound to sk via the ingress_=
+msg.
+> > >  @@ -604,11 +613,23 @@ static int sk_psock_skb_ingress(struct sk_psoc=
+k *psock, struct sk_buff *skb,
+> > >  * into user buffers.
+> > >  */
+> > >  skb_set_owner_r(skb, sk);
+> > >  +
+> > >  + if (is_udp) {
+> > >  + spin_unlock_bh(&sk->sk_receive_queue.lock);
+> > >  +
+> > >  + skb->destructor =3D udp_sock_rfree;
+> > >  + }
+> > >  +
+> > >  +enqueue:
+> > >  err =3D sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, =
+take_ref);
+> > >  if (err < 0)
+> > >  goto free;
+> > >  out:
+> > >  return err;
+> > >  +
+> > >  +unlock:
+> > >  + if (is_udp)
+> > >  + spin_unlock_bh(&sk->sk_receive_queue.lock);
+> > >  free:
+> > >  kfree(msg);
+> > >  goto out;
+> > >  diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> > >  index 422c96fea249..831d26748a90 100644
+> > >  --- a/net/ipv4/udp.c
+> > >  +++ b/net/ipv4/udp.c
+> > >  @@ -2039,6 +2039,15 @@ struct sk_buff *__skb_recv_udp(struct sock *s=
+k, unsigned int flags,
+> > >  }
+> > >  EXPORT_SYMBOL(__skb_recv_udp);
+> > >
+> > >  +void udp_sock_rfree(struct sk_buff *skb)
+> > >  +{
+> > >  + struct sock *sk =3D skb->sk;
+> > >  +
+> > >  + spin_lock_bh(&sk->sk_receive_queue.lock);
+> > >  + sock_rfree(skb);
+> > >  + spin_unlock_bh(&sk->sk_receive_queue.lock);
+> > >  +}
+> > >  +
+> > >  int udp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
+> > >  {
+> > >  struct sk_buff *skb;
+> > >  --
+> > >  2.53.0.371.g1d285c8824-goog
+> > >
+> > >  There are too many protocol-specific checks in the generic skmsg cod=
+e
+> > >  here. This should be abstracted out.
+> > >
+> > >  Also TCP also has a similar issue with sk_forward_alloc concurrency
+> > >  between the backlog charge and recvmsg uncharge paths so the abstrac=
+tion
+> > >  is necessary.
+> > >
+> > >  I've put together a simple diff based on your patch for reference.
+> > >  I haven't tested it thoroughly, but it at least handles TCP and UDP
+> > >  separately through a callback, keeping the generic code clean.
+> > >
+> > I can follow up on TCP, but TCP needs another fix, which
+> > cannot be factored out.
+> >
+> > Some wrong assumptions in your patch:
+> >
+> > 1) tcp_psock_ingress_charge() uses psock->ingress_lock,
+> >  but it does not protect any tcp_sock fields, especially
+> >  sk->sk_forwad_alloc.
+> >
+> > 2) TCP memory accounting happens under bh_lock_sock()
+> >  _or_ lock_sock(). sendmsg()/recvmsg() works under
+> >  lock_sock() and TCP fast path puts skb to backlog if
+> >  lock_sock() is held by userspace. This means even
+> >  a simple bh_lock_sock() in tcp_psock_ingress_charge()
+> >  race with memory accounting happening under lock_sock().
+> >
+> > Since sk_psock_skb_ingress() is called from both GFP_KERNEL
+> > and GFP_ATOMIC context, the simplest fix would be to put
+> > lock_sock() in sk_psock_backlog() for TCP, which is ugly though.
+> >
+>
+> OK, thanks.
+>
+> Now my only concern is keeping UDP-specific logic
+> out of skmsg.c.
 
-Tested-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+We already have TCP-only msg->sk logic there that
+you added.  It just does not look like TCP code.
+
+If really needed, we can do such cleanup in bpf-next
+for TCP and UDP altogether (probably after another
+TCP fix ?).
 
 
->
-> Patch 1 adds core helpers:
->   ethtool_rxfh_can_resize() - read-only validation
->   ethtool_rxfh_resize() - fold/unfold a raw table in place
->   ethtool_rxfh_ctxs_can_resize() - validate all non-default contexts
->   ethtool_rxfh_ctxs_resize() - resize all non-default contexts,
->     with locking and RSS_NTF notifications
->
-> Patch 2 uses them in bnxt_set_channels(). Validation runs before
-> bnxt_close_nic(); actual resize is deferred until after. RSS table
-> size only changes on P5 chips with older firmware.
->
-> Patch 3 adds HW tests in rss_drv.py (devices without dynamic table
-> sizing are skipped):
->   resize_periodic - fold/unfold with a non-default [3,2,1,0]xN
->     pattern, verifying exact content preservation (main + ctx)
->   resize_nonperiodic_reject - non-periodic table blocks channel
->     reduction, with an extra periodic context to exercise
->     multi-context validation (main + ctx)
->   resize_nonperiodic_no_corruption - failed resize leaves table
->     contents and channel count unchanged (main + ctx)
->
-> Running the tests:
->
->   # On real hardware
->   sudo NETIF=3Deth0 ./rss_drv.py
->
-> Changes v1 -> v2:
->
->  - Dropped netdevsim support and netdevsim selftest (Jakub)
->  - Split ethtool_rxfh_contexts_resize_all() into separate validate
->    (ethtool_rxfh_ctxs_can_resize) and apply (ethtool_rxfh_ctxs_resize)
->    so drivers can validate before closing the device (Jakub)
->  - Shortened helper names (Jakub)
->  - Replaced scoped_guard(mutex) with explicit mutex_lock/unlock
->    (Jakub)
->  - Removed defensive zero-size check, bare expressions instead of !=3D 0
->    comparisons, ! instead of =3D=3D 0 (Jakub)
->  - In bnxt, moved bnxt_check_rings() before RSS validation and
->    deferred actual resize to after bnxt_close_nic() (Jakub, Michael)
->  - Added comment that RSS table size only changes on P5 chips with
->    older firmware (Michael)
->  - Use non-default [3,2,1,0]xN pattern set via netlink to distinguish
->    correct fold from driver resetting to defaults (Jakub)
->  - Check exact indirection table pattern, not just set(indir) (Jakub)
->  - Use ksft_raises() instead of try/except/else (Jakub)
->  - Removed queue_count=3D8 from NetDrvEnv (Jakub)
->  - Added ksft_variants to resize_nonperiodic_reject for ctx coverage
->  - Added extra periodic context in reject test for multi-context
->    validation coverage
->  - Added resize_nonperiodic_no_corruption test
->
-> Open items:
->
->  - No user-controlled minimum table size yet. The plan is to record
->    the user-provided indirection table length in the context (e.g.
->    ctx->user_indir_size) and use it as a floor when folding: reject if
->    new_size < user_indir_size. This way the user's original table size
->    serves as an implicit minimum, preventing the driver from shrinking
->    below what the user intended. Left for a follow-up.
->
->
-> Bj=C3=B6rn T=C3=B6pel (3):
->   ethtool: Add RSS indirection table resize helpers
->   bnxt_en: Resize RSS contexts on channel count change
->   selftests: rss_drv: Add RSS indirection table resize tests
->
->  .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c |  36 +++-
->  include/linux/ethtool.h                       |   4 +
->  net/ethtool/common.c                          | 146 ++++++++++++++++
->  .../selftests/drivers/net/hw/rss_drv.py       | 163 +++++++++++++++++-
->  4 files changed, 338 insertions(+), 11 deletions(-)
->
->
-> base-commit: ed0abfe93fd135dac223e87a3c945017b1fa8bfc
-> --
-> 2.53.0
->
+> We could use a function pointer so that UDP
+> implements its own ingress charge in udp_bpf.c, while other
+> protocols just use a default no-op or even NULL.
 
---00000000000026326a064c4385ef
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Description: S/MIME Cryptographic Signature
+If TCP requires locking outside of the scope, there's
+no point adding one more extra layer/complexity just
+for UDP.
 
-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
-/HTPxpDrr4vzZL0yoc9XefyCbdiwfyFl99oBekp+1ZxXc5bZsVhRPVyEWFtCys66nqu5cU2GPT3a
-ySQEHOtIKyGGgzMVvitOzO2suQkoMvu/swsftfgCY/PObdlBZhv0BD97+WwR6CQJh/YEuDDEHYCy
-NDeiVtF3/jwT04bHB7lR9n+AiCSLr9wlgBHGdBFIOmT/XMX3K8fuMMGLq9PpGQEMvYa9QTkE9+zc
-MddiNNh1xtCTG0+kC7KIttdXTnffisXKsX44B8ECAwEAAaOCAd0wggHZMA4GA1UdDwEB/wQEAwIF
-oDAMBgNVHRMBAf8EAjAAMIGTBggrBgEFBQcBAQSBhjCBgzBGBggrBgEFBQcwAoY6aHR0cDovL3Nl
-Y3VyZS5nbG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NnY2NyNnNtaW1lY2EyMDIzLmNydDA5BggrBgEF
-BQcwAYYtaHR0cDovL29jc3AuZ2xvYmFsc2lnbi5jb20vZ3NnY2NyNnNtaW1lY2EyMDIzMGUGA1Ud
-IAReMFwwCQYHZ4EMAQUDAzALBgkrBgEEAaAyASgwQgYKKwYBBAGgMgoDAjA0MDIGCCsGAQUFBwIB
-FiZodHRwczovL3d3dy5nbG9iYWxzaWduLmNvbS9yZXBvc2l0b3J5LzBBBgNVHR8EOjA4MDagNKAy
-hjBodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL2dzZ2NjcjZzbWltZWNhMjAyMy5jcmwwJAYDVR0R
-BB0wG4EZcGF2YW4uY2hlYmJpQGJyb2FkY29tLmNvbTATBgNVHSUEDDAKBggrBgEFBQcDBDAfBgNV
-HSMEGDAWgBQAKTaeXHq6D68tUC3boCOFGLCgkjAdBgNVHQ4EFgQUxJ6fps/yOGneJRYDWUKPuLPk
-miYwDQYJKoZIhvcNAQELBQADggIBAI2j2qBMKYV8SLK1ysjOOS54Lpm3geezjBYrWor/BAKGP7kT
-QN61VWg3QlZqiX21KLNeBWzJH7r+zWiS8ykHApTnBlTjfNGF8ihZz7GkpBTa3xDW5rT/oLfyVQ5k
-Wr2OZ268FfZPyAgHYnrfhmojupPS4c7bT9fQyep3P0sAm6TQxmhLDh/HcsloIn7w1QywGRyesbRw
-CFkRbTnhhTS9Tz3pYs5kHbphHY5oF3HNdKgFPrfpF9ei6dL4LlwvQgNlRB6PhdUBL80CJ0UlY2Oz
-jIAKPusiSluFH+NvwqsI8VuId34ug+B5VOM2dWXR/jY0as0Va5Fpjpn1G+jG2pzr1FQu2OHR5GAh
-6Uw50Yh3H77mYK67fCzQVcHrl0qdOLSZVsz/T3qjRGjAZlIDyFRjewxLNunJl/TGtu1jk1ij7Uzh
-PtF4nfZaVnWJowp/gE+Hr21BXA1nj+wBINHA0eufDHd/Y0/MLK+++i3gPTermGBIfadXUj8NGCGe
-eIj4fd2b29HwMCvfX78QR4JQM9dkDoD1ZFClV17bxRPtxhwEU8DzzcGlLfKJhj8IxkLoww9hqNul
-Md+LwA5kUTLPBBl9irP7Rn3jfftdK1MgrNyomyZUZSI1pisbv0Zn/ru3KD3QZLE17esvHAqCfXAZ
-a2vE+o+ZbomB5XkihtQpb/DYrfjAMYICVzCCAlMCAQEwYjBSMQswCQYDVQQGEwJCRTEZMBcGA1UE
-ChMQR2xvYmFsU2lnbiBudi1zYTEoMCYGA1UEAxMfR2xvYmFsU2lnbiBHQ0MgUjYgU01JTUUgQ0Eg
-MjAyMwIMClwVCDIzIfrgd31IMA0GCWCGSAFlAwQCAQUAoIHHMC8GCSqGSIb3DQEJBDEiBCAiesSE
-ZRmQQYIkNATb8cMxa5Dnqk0gDKq2ueJE1i/W5zAYBgkqhkiG9w0BCQMxCwYJKoZIhvcNAQcBMBwG
-CSqGSIb3DQEJBTEPFw0yNjAzMDUwOTI1NDBaMFwGCSqGSIb3DQEJDzFPME0wCwYJYIZIAWUDBAEq
-MAsGCWCGSAFlAwQBFjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwCwYJKoZIhvcNAQEHMAsGCWCG
-SAFlAwQCATANBgkqhkiG9w0BAQEFAASCAQCg2z1wKPzXxwcA60IkqsNdSS36leg8HPknWz8EwNTD
-+poaKT/s2wcCiSGWPwsj0nZVACg/ER4PUW6nVIy64xzUVHzEZpOJ5CGx/y1Q7DV+YFuWV855e/wk
-rKx570WT4LTsw8RooRmROHEM38ejpEYUeW7I5S4Z1FQhORdGcSyevAmm6xyvOAAXjMiMVPy10Uqi
-/tOYHiCaEzIx39o4M+bAwFaRLelgTSVYSEgdJVZ+/ARPbLxAwv5ceBO0Nmsm1N4WzG00QoNN8MvL
-lfONerXuk6w4bRI540uFYbJNle9RUWDu5bMIJ95k+u6El2aRyUKukJDcuhxKlzhS816pOIBv
---00000000000026326a064c4385ef--
+Even if we go that way, most likely we cannot get rid
+of protocol-specific code (UDP/TCP-only hook) and
+end up with the indirect call helpers, which will be
+expensive than simple if logic.
