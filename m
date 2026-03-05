@@ -1,148 +1,285 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0E3B261388
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 03:19:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4943E270540
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 03:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772680791; cv=none; b=p0U+FqB+Ijmbag9uu6CdQ46/L8IpUWnGFkeR5/S/Q+2+BhRI9j3abLqD+ZXiP90HEvs27TYDYjnAF08EHj+HsejL+crdUzp9/OygGSEDyqGjaexr6Qe+ok6fMUWrpP105s4aXUhoGn+9OSjh0IwKuAG3ZYe5DiQSvMTA8ACtoLI=
+	t=1772681127; cv=none; b=htyy+5xDKaTO0avjJYbQwpOTMa2gzrpNVQIRZIRa0GyWGYI6IXHyz86acaKSitk2mTEJfDtpRD5tmPcf2hLtQMgdAxyMmVxW7jVWUGTe7r3CtGb69f6vaMgAP3fLlK/XAwJLHnOH2dUNalQnOGpcN9akhXYvB69a3HgEfKrOGJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772680791; c=relaxed/simple;
-	bh=gGoMyPfWwLomv0BvhZvWYrnlXKof9L+0tYuxffBKozU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uU2OMPRL52isuZGx/mmdpoMbvcgILBQ4IfRLte+hX8JxDZ+O2PnZdnW8NW2wK2MNRmTCplGD/94qvNLrPXS2TIpUV5urwXnrtJc3H/61jHuwsrwJEBl2Ucshzvu7mwKqsAzv04U+/7h2QYwR6IKQ6Oe2vCGAvhBeDRVjbPNIbcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=rttPxu4Y; arc=none smtp.client-ip=115.124.30.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1772681127; c=relaxed/simple;
+	bh=8cdCwzcIZiM0RhwEFVpTwVIxqlCZ8nO9R/03FJa2cw8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=ZFiNCW0GmJnLFEjRFmpvbPYdh+94X2N9YVKmKEZASK5i+/M/5htmviqETbImLsFzCVy/WZfBZzRWdeDDQ+BNGhKwxZKyCIszxgA0TBTehpb3ZSdI7AEATybwue68Pf41GPWqPTN+KsYOm2bERolhfjy9pXd2W5F+ugkOkUeKQtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vtuOuPXp; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="rttPxu4Y"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1772680782; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=m71AK+FF/CDMOn2acy/RuxB9KISzJ4GS2NCLxhytJ5s=;
-	b=rttPxu4YShJYnN58xe1kmKBRYHjk0ekJ7f8tpxEEnIjbQ4reyrI7yp5QBb4XHAKRoVk1QEUHfPpwH/9euXmXF+jgT+yCIZIoBqT9vFrAW7hBxa+1dPiAni9JeEUr4icAMdn9eexaEmiLWMxcF+KIYkX2Fy0J9TBM/6A7/JknvPY=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X-GwREw_1772680780 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 05 Mar 2026 11:19:40 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: netdev@vger.kernel.org
-Cc: Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Alvaro Karsz <alvaro.karsz@solid-run.com>,
-	virtualization@lists.linux.dev
-Subject: [PATCH net v8 2/2] virtio-net: correct hdr_len handling for tunnel gso
-Date: Thu,  5 Mar 2026 11:19:38 +0800
-Message-Id: <20260305031938.24518-3-xuanzhuo@linux.alibaba.com>
-X-Mailer: git-send-email 2.32.0.3.g01195cf9f
-In-Reply-To: <20260305031938.24518-1-xuanzhuo@linux.alibaba.com>
-References: <20260305031938.24518-1-xuanzhuo@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vtuOuPXp"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ae3badc00dso52499895ad.3
+        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 19:25:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1772681126; x=1773285926; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mRSnHe4WXc8o31JrOkZ13HKREi6iZmJPPXA9ncj7Loc=;
+        b=vtuOuPXp9/KvI5vE4BXBAGeKX7uuCoJSerZydzG+3003sGmR3yI3cqnWR2NuJAgekl
+         airMPJ2FFweSNFK1Kf32qMsj65ThvwDdHP9Txjj6/UeOPh0KxE3QBkiyuZ/KPp7b73W8
+         C0daqXfkVo9d4Ux7SJ32mKCbghgcsRXyZWfiBkiVmLTC2oz7Ac3pGT1cr4ic/gvzDvHf
+         Kn8Un8Lop54RZoksfV9aTeO1xaSp23oTBxGPmEQ8T2/OMnHMGSqtNYpLo1CAwKO+SsXq
+         C0UuhhXbsAm8XUDZpsmCob0n3GKG7h/Rx+fQL05TrsD8PeDEnPozbx8hw7zEFhuUr67p
+         Q9qw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772681126; x=1773285926;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mRSnHe4WXc8o31JrOkZ13HKREi6iZmJPPXA9ncj7Loc=;
+        b=kDj6HaomjzK9lYubp2adds6u5nUh5fqDoLMx4cc/E1DFriHe65M04Zdd+W3lHnEJGE
+         wXx0RCEufl+HLP2x2aGEQBr9O85aXVaUlAtwTWO/W/CYGW9DYLod+DkyzIr0BN7dg1dq
+         QcA+Sr420zs/4mVnvB3FL83jdWjD1SbntsWjzELtKC9L+TBhS+N0mlvAT0Np6uezEOav
+         FSrIbLL+4CtbKjV7yNtGgg0Aa8HhfP3WKk7E0rbmhBCWGNwpQbxWtn27CDsLJbD9WNaO
+         fw7//7wnQjsVhhhX+bqNJZPcz3VIZJk1CPJT74BLgfu6Z8X9z5KIi5qfMRisauS9OsmT
+         537A==
+X-Forwarded-Encrypted: i=1; AJvYcCVhuxnXjxoShO0boJ2w8pCGiqMSeGcEtq9CU8XiXdJaMxuhm0r0FeKY6byGtfHqAOKI8X/tzkw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDkEKLnNY1OpMssSR7t76w/gC/s/rAMIJLlsbJOOffthdQyllT
+	3Ed+7yxh++C+G1L7GrS4rxTEqZ7UzHxtLzFxW4ERDqsFeKiv+aNkl/KIhxt4qkbWAxnB6+f6EF7
+	DxcCHEw==
+X-Received: from pgc6.prod.google.com ([2002:a05:6a02:2f86:b0:c73:7d8e:b5d6])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cf07:b0:2ae:6192:8da4
+ with SMTP id d9443c01a7336-2ae6aa0fd9bmr46707585ad.2.1772681125409; Wed, 04
+ Mar 2026 19:25:25 -0800 (PST)
+Date: Thu,  5 Mar 2026 03:25:21 +0000
+In-Reply-To: <skxd6uimyxzi4x5nfmz24ez3d45qiubdnwkqawtbomjfzy5qrs@yb724ykvvkec>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Git-Hash: aa36ef004473
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <skxd6uimyxzi4x5nfmz24ez3d45qiubdnwkqawtbomjfzy5qrs@yb724ykvvkec>
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <20260305032524.2176479-1-kuniyu@google.com>
+Subject: Re: [PATCH net-next v2 1/2] udp: Preserve UDP socket addresses on abort
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: jrife@google.com
+Cc: andrii@kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net, 
+	edumazet@google.com, kuba@kernel.org, kuniyu@google.com, martin.lau@linux.dev, 
+	netdev@vger.kernel.org, sdf@fomichev.me, willemdebruijn.kernel@gmail.com, 
+	yusuke.suzuki@isovalent.com
+Content-Type: text/plain; charset="UTF-8"
 
-The commit a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP
-GSO tunneling.") introduces support for the UDP GSO tunnel feature in
-virtio-net.
+From: Jordan Rife <jrife@google.com>
+Date: Wed, 4 Mar 2026 23:52:22 +0000
+> On Wed, Mar 04, 2026 at 09:21:03PM +0000, Kuniyuki Iwashima wrote:
+> > From: Jordan Rife <jrife@google.com>
+> > Date: Tue,  3 Mar 2026 17:01:02 +0000
+> > > Currently, udp_abort() invokes __udp_disconnect() which clears out
+> > > socket fields like inet_daddr and inet_dport. This makes fields like
+> > > dst_ip4, dst_ip6, and dst_port useless inside cgroup/sock_release BPF
+> > > hooks following an abort on a connected UDP socket, since they'll always
+> > > equal zero. This differs from the behavior for TCP sockets where a
+> > > cgroup/sock_release hook will see the address and port that the socket
+> > > was connected to at the time it was aborted. This causes issues in
+> > > Cilium where a sock_release hook is used to perform map maintenance when
+> > > sockets are released, since Cilium actively destroys connected UDP
+> > > sockets in some cases.
+> > 
+> > Just curious why Cilium does not unregister the socket just
+> > after aborting it ?
+> > 
+> > At least Cilium should know the key at that moment.
+> 
+> Originally, socket aborts in Cilium were handled with sock_diag (and
+> still are on older kernels), so you'd need to do some map maintenance in
+> userspace directly before or after aborting the socket. I suppose it was
+> just cleaner to put common cleanup code in a sock_release hook.
+> 
+> > > 
+> > > Make the behavior consistent between TCP and UDP sockets by not clearing
+> > 
+> > This patch makes another inconsistency with TCP.
+> > 
+> > As you mentioned in the cover letter, before the patch, even if
+> > aborted, a bound socket still reserves a port, but it does not now.
+> > 
+> > This might be surprising for non-reuseaddr/port sockets.
+> 
+> Yeah, true. I'm curious if this behavior is something that is useful at
+> all or simply an accident of the current implementation? If I'm
+> aborting/destroying a socket, why should it hold onto bound ports until
+> the socket is closed? I wasn't quite sure about this.
 
-The virtio spec says:
+Digging into the first (long) thread of SOCK_DESTROY (TCP),
+the motivation was to kill sockets bound to an IP address
+that Android/laptop removes when it switches networks.
+https://lore.kernel.org/netdev/1447811024-8553-1-git-send-email-lorenzo@google.com/
 
-    If the \field{gso_type} has the VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV4 bit or
-    VIRTIO_NET_HDR_GSO_UDP_TUNNEL_IPV6 bit set, \field{hdr_len} accounts for
-    all the headers up to and including the inner transport.
+In that sense, holding a port seems unnecessary.
 
-The commit did not update the hdr_len to include the inner transport.
+But there are a few concerns like
 
-I observed that the "hdr_len" is 116 for this packet:
+  * someone could use the feature for server and reuse port
+    too quickly.
+    https://lore.kernel.org/netdev/1447879416.562854.443622857.62708268@webmail.messagingengine.com/
 
-    17:36:18.241105 52:55:00:d1:27:0a > 2e:2c:df:46:a9:e1, ethertype IPv4 (0x0800), length 2912: (tos 0x0, ttl 64, id 45197, offset 0, flags [none], proto UDP (17), length 2898)
-        192.168.122.100.50613 > 192.168.122.1.4789: [bad udp cksum 0x8106 -> 0x26a0!] VXLAN, flags [I] (0x08), vni 1
-    fa:c3:ba:82:05:ee > ce:85:0c:31:77:e5, ethertype IPv4 (0x0800), length 2862: (tos 0x0, ttl 64, id 14678, offset 0, flags [DF], proto TCP (6), length 2848)
-        192.168.3.1.49880 > 192.168.3.2.9898: Flags [P.], cksum 0x9266 (incorrect -> 0xaa20), seq 515667:518463, ack 1, win 64, options [nop,nop,TS val 2990048824 ecr 2798801412], length 2796
+  * it's a bit worrisome if this feature is viewed as a way for
+    resouce management.
+    https://lore.kernel.org/netdev/CALx6S35Q_pc-vBNpA0hipn5K-vSmPDsV-V=D13sODESNO7Htdw@mail.gmail.com/
 
-116 = 14(mac) + 20(ip) + 8(udp) + 8(vxlan) + 14(inner mac) + 20(inner ip) + 32(innner tcp)
+Considering these, it seems fair to only notify an error
+via epoll or blocked syscall and let the application to
+close() sockets.
 
-Fixes: a2fb4bc4e2a6a03 ("net: implement virtio helpers to handle UDP GSO tunneling.")
-Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
----
- include/linux/virtio_net.h | 31 ++++++++++++++++++++-----------
- 1 file changed, 20 insertions(+), 11 deletions(-)
+In a thread, the author mentioned this :
 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index 23f42bb8ece0..906157779955 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -209,18 +209,29 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+---8<---
+Its purpose is to interrupt
+blocked userspace socket calls, not to release resources.
+---8<---
+https://lore.kernel.org/netdev/CAKD1Yr0Gpr6Ex2i1TXEWyETn48P4g5vBvFZ9=_g+Lz_7-PqBDQ@mail.gmail.com/
+
+Also, there was an assumption that a sane application will
+close() sockets after receiving errors.
+https://lore.kernel.org/netdev/1447972381.22599.278.camel@edumazet-glaptop2.roam.corp.google.com/
+
+And yes, this does not apply to UDP, and sadly UDP patch's
+thread has no such context nor discussion.
+https://lore.kernel.org/netdev/?q=udp_abort&o=-1
+
+But anyway, now I think we can solve your problem more
+easily, see below.
+
+
+> 
+> > > out these fields in udp_abort(). Instead, just unhash the socket, mark
+> > > its state as TCP_CLOSE, and preserve the state of the other fields.
+> > > 
+> > > Fixes: f5836749c9c0 ("bpf: Add BPF_CGROUP_INET_SOCK_RELEASE hook")
+> > > Reported-by: Yusuke Suzuki <yusuke.suzuki@isovalent.com>
+> > > Signed-off-by: Jordan Rife <jrife@google.com>
+> > > ---
+> > >  net/ipv4/udp.c | 4 +++-
+> > >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+> > > index b96e47f1c8a2..01a0a0fbcd56 100644
+> > > --- a/net/ipv4/udp.c
+> > > +++ b/net/ipv4/udp.c
+> > > @@ -3247,7 +3247,9 @@ int udp_abort(struct sock *sk, int err)
+> > >  
+> > >  	sk->sk_err = err;
+> > >  	sk_error_report(sk);
+> > > -	__udp_disconnect(sk, 0);
+> > 
+> > How about passing another flag and avoid unwanted init only for
+> > bpf iterator ?  This will need another layer of __udp_disconnect()
+> > like ____udp_disconnect() (I'm not good at naming), or must make
+> > sure the flag is never used in uAPI.
+> 
+> To make sure we're on the same page about what you're describing, I'm
+> imagining:
+> 
+> static int ___udp_disconnect(struct sock *sk, int flags, bool reinit)
+> {                                                 
+> 	same as before, but if reinit == false then avoid reinitializing
+> 	fields like daddr/dport while holding onto reserved ports
+> }
+> 
+> int __udp_disconnect(struct sock *sk, int flags)
+> {
+> 	___udp_disconnect(sk, flags, true);
+> }
+> 
+> ...
+> 
+> int udp_abort(struct sock *sk, int err)
+> {
+> 	...
+> 	___udp_disconnect(sk, flags, false); <--- set reinit arg to false
+> 	...
+> }
+> 
+> This would have the same behavior with regards to reserved ports
+> following udp_abort() while preserving fields like daddr. I was
+> considering something like this initially, but it wasn't clear to me why
+> you'd want to hold onto reserved ports if the socket was destroyed as I
+> mentioned above. If it's important to maintain that aspect of the
+> behavior, then I'm OK with this approach.
+
+This was what's in my mind, but probably we could just avoid
+the initialisation:
+
+---8<---
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index ce49ed2bd36f..d44be0020446 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -2213,21 +2213,21 @@ int __udp_disconnect(struct sock *sk, int flags)
+ 	 */
  
- static inline void virtio_net_set_hdrlen(const struct sk_buff *skb,
- 					 struct virtio_net_hdr *hdr,
-+					 struct skb_shared_info *sinfo,
- 					 bool little_endian,
- 					 bool feature_hdrlen)
- {
- 	u16 hdr_len;
+ 	sk->sk_state = TCP_CLOSE;
+-	inet->inet_daddr = 0;
+-	inet->inet_dport = 0;
+ 	sock_rps_reset_rxhash(sk);
+ 	sk->sk_bound_dev_if = 0;
+-	if (!(sk->sk_userlocks & SOCK_BINDADDR_LOCK)) {
+-		inet_reset_saddr(sk);
+-		if (sk->sk_prot->rehash &&
+-		    (sk->sk_userlocks & SOCK_BINDPORT_LOCK))
+-			sk->sk_prot->rehash(sk);
+-	}
  
- 	if (feature_hdrlen) {
--		hdr_len = skb_transport_offset(skb);
--
--		if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
--			hdr_len += sizeof(struct udphdr);
--		else
--			hdr_len += tcp_hdrlen(skb);
-+		if (sinfo->gso_type & (SKB_GSO_UDP_TUNNEL |
-+				       SKB_GSO_UDP_TUNNEL_CSUM)) {
-+			hdr_len = skb_inner_transport_offset(skb);
-+
-+			if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
-+				hdr_len += sizeof(struct udphdr);
-+			else
-+				hdr_len += inner_tcp_hdrlen(skb);
-+		} else {
-+			hdr_len = skb_transport_offset(skb);
-+
-+			if (hdr->gso_type == VIRTIO_NET_HDR_GSO_UDP_L4)
-+				hdr_len += sizeof(struct udphdr);
-+			else
-+				hdr_len += tcp_hdrlen(skb);
+ 	if (!(sk->sk_userlocks & SOCK_BINDPORT_LOCK)) {
+ 		sk->sk_prot->unhash(sk);
+-		inet->inet_sport = 0;
++	} else if (!(sk->sk_userlocks & SOCK_BINDADDR_LOCK)) {
++		if (sk->sk_prot->rehash &&
++		    (sk->sk_userlocks & SOCK_BINDPORT_LOCK)) {
++			inet_reset_saddr(sk);
++			inet->inet_daddr = 0;
++			inet->inet_dport = 0;
++			sk->sk_prot->rehash(sk);
 +		}
- 	} else {
- 		/* This is a hint as to how much should be linear. */
- 		hdr_len = skb_headlen(skb);
-@@ -252,7 +263,7 @@ static inline int __virtio_net_hdr_from_skb(const struct sk_buff *skb,
- 		else
- 			return -EINVAL;
- 
--		virtio_net_set_hdrlen(skb, hdr, little_endian,
-+		virtio_net_set_hdrlen(skb, hdr, sinfo, little_endian,
- 				      feature_hdrlen);
- 
- 		if (sinfo->gso_type & SKB_GSO_TCP_ECN)
-@@ -443,10 +454,8 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *skb,
-         vhdr->hash_hdr.hash_report = 0;
-         vhdr->hash_hdr.padding = 0;
- 
--	/* Let the basic parsing deal with plain GSO features. */
--	skb_shinfo(skb)->gso_type &= ~tnl_gso_type;
--	ret = virtio_net_hdr_from_skb(skb, hdr, true, false, vlan_hlen);
--	skb_shinfo(skb)->gso_type |= tnl_gso_type;
-+	ret = __virtio_net_hdr_from_skb(skb, hdr, true, false,
-+					feature_hdrlen, vlan_hlen);
- 	if (ret)
- 		return ret;
- 
--- 
-2.32.0.3.g01195cf9f
+ 	}
++
+ 	sk_dst_reset(sk);
+ 	return 0;
+ }
+---8<---
 
+When we need to rehash(), of course we have to clear
+saddr/daddr/dport, but otherwise, we don't, even sport.
+
+When ->unhash()ed, only thing we need to do is to clear
+inet_sk(sk)->inet_num.
+
+Then, even if bind() and connect() are called later, it
+works because each syscall does not care about the old
+saddr/sport/daddr/dport and just assign a new value if
+inet->inet_num == 0.
+
+This seems a bit fragile, but TCP already relies on it and
+it's unlikely that we change the behaviour in __inet_bind(),
+inet_autobind(), and inet_dgram_connect().
+
+And all the other users of __udp_disconnect() are also
+AF_INET or AF_INET6, l2tp, ping, raw.
+
+
+> 
+> > 
+> > 
+> > 
+> > > +	sk->sk_state = TCP_CLOSE;
+> > > +	sk->sk_prot->unhash(sk);
+> > > +	sk_dst_reset(sk);
+> > >  
+> > >  out:
+> > >  	if (!has_current_bpf_ctx())
+> > > -- 
+> > > 2.53.0.473.g4a7958ca14-goog
+> > > 
+> 
+> Thanks!
+> 
+> Jordan
