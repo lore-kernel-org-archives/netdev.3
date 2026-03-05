@@ -1,62 +1,64 @@
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A563BD658
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 15:09:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5C33BD65D
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 15:09:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772723398; cv=none; b=K63Wyia85OxJ1bq9vlF59GHgWoYut8b6aFuqRemHRi4DIH3ulvLAjt2dg1Lx8pAzqv5+Fl2d4xGrUzNmFCIPvcTLviva0Ts83+o4LSYBHEtGENvO9tjxbdNs3QAewvHu9ic0HVZtz4XyvfuwmY3mbIIdod2u+97f7x6GdBy2/OI=
+	t=1772723400; cv=none; b=muRrb5bp3t+q3d9mZN/sM4VoT3in6XwKLVqsmdCcIFRE2hwNPynDITxM98nH/AhOsl6u0ou9XjhrecCqNM4RHbj17obMzP7rEy2OukoecIGP6uXUnQy+BXYgiAxwVVL7pUDw4LO3G2ZeCoffDJAXMuVd9HettVo0ielJT6eIgbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772723398; c=relaxed/simple;
-	bh=jMWRSRxVWM2jenNTKgoHLLuPIR4kQfzTVgj8rCnnS8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bf3wBYFuu0hFyCY1cPMJsix93a9fifdzEU9sVojzREKjg8tkNPULRb5GAtqlLutZp8T6KdYMU4PDtr2DC9JxeBnjTm2IYDFNo5xTz8dka6b3LHzvu2gxrT+nH1vrfVdv9IdpArpy8NNHkJzBU0C66rh0KV2CLzsVhn7a7S7jmX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jKhg4fa/; arc=none smtp.client-ip=209.85.160.170
+	s=arc-20240116; t=1772723400; c=relaxed/simple;
+	bh=5JIVRcYl1y12S5/sz2fI5bGqsHsFXiIj4xW4ZbCUe/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QXscPPsbYd1QS9fXQn8TPDpvO6XbJDoHHSJFxVoZxy4OJxW2ZCFKHkrhlabekp8O5dmzrGkJXn/Sq33/7y0r3uOtz7EJPX8oieR1+owcI1/Wc/1WqGDQlxNgYWqqLnw/0ugyIq0sH+S19SmPQUptUHXSZeQ8IBDGpTybA2Q8joA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZgLoptcz; arc=none smtp.client-ip=209.85.219.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jKhg4fa/"
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-506a321cc53so90550721cf.3
-        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 07:09:57 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZgLoptcz"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-899e85736e2so52168146d6.1
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 07:09:58 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772723396; x=1773328196; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fFxaXyZquLt6/p42eiThRQrXWJSbB2BATDuNgCg81jI=;
-        b=jKhg4fa/uN1QVk5EgySYW6NOQj4uQxLH1Iy1poz4mPjW6t89f5NatVtJQMiCp0OU7+
-         0AnBI1me2Eu2o6CpJn4qQhWZqXEw42+AckHxxNjIT8rXjJ5JIHFwwtMLa7GBvBWgEexV
-         QdO2hXBKpzkE8H7ZpOkv8k1aUsO5lSn1HBhc6p2vw1P1K+FImR7fvYsAYEHPL9iGcmd4
-         tBaHcNgYMbtn+lFJXQ4MrbU4uOqGZxzmvG4UABLnfl4+ld0FsvxpRu/8gNU0dx8GiJlJ
-         lFt/Q5scpcpTnplpZNN2tGowVupBXY37Z54c6y3gGHan2p7/NJXYv8m2h+pku0zGCdye
-         OoDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772723396; x=1773328196;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1772723398; x=1773328198; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fFxaXyZquLt6/p42eiThRQrXWJSbB2BATDuNgCg81jI=;
-        b=HXsV/fE4hbUGDTxeZGNOVK2/rteAFO5qg6l1DQIQM2OGVPX0q0rBHHkYr890fiGMrf
-         EiE6Afii2FTitibvO/PUFuQ3QBtBp/4htD9PVbKQ1n81xkPIhM2seN15B+5UQUSKVC7t
-         ih3NOf7KpHu54T3vdy0nBrhs/mraNd+5DisXDZntlRdr+oDWzTIO2iqkNhNi/a0AIZpz
-         R9JPgSc03aT70GAXi5qNhRljbXaY6E9KYDenPk1DKAlfu4xULDLnU9lRJTOj4HIFwi9x
-         LkT4axULedPJujEtSACYDnd9u3D5cfYtj1qMso9pv8LFNoluj8FLs1ajXS0JOkzZbpUl
-         r9jA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2gHA0DWvu6ogIg5DEgmY6F9pPoE3zRyFavFOWvCDR6URjHVFDP4ynvYV99HaMMrh13zq3uj8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiBOlJKPA8EgB2gw14Syt3e1/BmtJONAuPpTRVLsyDH1EuKudw
-	k6+YDg2uvjY9Cbj/I6wA6yjpyZ1ZidIFdDQ8ZRVP98MFlFDK7Lk8LHu+
-X-Gm-Gg: ATEYQzydiB0UHFGw4ydaiY2Cuj3uc6dyAp77GeiNeryDur3Bkyg4LNjIxcH8itx/RjX
-	ecy745OAPiir8tiNA+Madboz2n33I9cdbkpuVYTtbSmPSWSiZac7SvhTTBxlY8gubbbFWEi2Qua
-	ROInyozA2SKyvzfMm47VOLKDOY7elYmXX2n+f2g+edcGt8DqhNhsAjGRf2lIRQj8jtDxjv32l+m
-	/unYaD98Yvx30G8aipIFEQZ3est7TP2TURQ3cOXP0yj9TfeN4Qn6Hpv27KmiVine/vXIUbONc/1
-	4Xev//36Ly8AcHEwf91XU2CNXLzBM56ejKf/gjUbwSPxvWV7/h3M2frLAHapAdiwarEp3o9ayEW
-	anjzLRP4qFhoxUBrDU/Kq/b9DSsA0Tvm31Jx55CwU6f9Th1+yXaT+PA2/OqgxrLDGnp4lnWdafO
-	FVJes2g76tSuN701YkCMaFu35AlBCS85Si6XhezpM9YpOwA/00Mbo9ivEwOATjZGNsi3MmSKufW
-	24L87y9ZELLSZjM
-X-Received: by 2002:a05:622a:180d:b0:506:6e65:2334 with SMTP id d75a77b69052e-508db24b97dmr81999441cf.7.1772723396183;
-        Thu, 05 Mar 2026 07:09:56 -0800 (PST)
+        bh=bjZWJhe0+52/LCoiWbs/Dsrs71ktVY7uZ4rO2FBsX4k=;
+        b=ZgLoptcz/43S5tArg158/8cTvqRCPZ8UcsGIOTUHzfXwRQUw+v7lb1FH8otjexAti4
+         4/jMbuod+g+eHnaN1+runomgpj/DDYuJxjsxDNDZOnAqQGjsylauZkmaC5NX47FpVTOS
+         jsqfx/PozQzg14wJTMncHjn/QDhZTW3u3xOABgFTMOG0Q1ooVxmbaBFkP12a7mypqbAN
+         UX1RFKMnUCPsfscpomiXvjkJ7Kx013HYhNREl/1fNzXqqd62YndDm7F1llfqRt1gBG30
+         jdjJn0XrUat9ngQrCaongB8dNVNQsrDU3i86i5GbbGN1757TtOda0cUiJErn+3lMXXm5
+         mKyw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772723398; x=1773328198;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bjZWJhe0+52/LCoiWbs/Dsrs71ktVY7uZ4rO2FBsX4k=;
+        b=L5+Jh7xD47XdWotS4TWatUKolLu3M7OM7fPLDtzTeCF6hn9H2TbSMSDWwThR2JvzIM
+         a+vP7CSrzpMhO3BMNRujkFeHUg3ANJmMbto3ZrjhBuK04+u824h/1FqWju1ClODOYzfP
+         kEaul+wHuRkdtvH+WiR8CdPI92XHNwxX6HIVbxpiNT3s0fXozGK4Q59viVvMlpjxPd0D
+         eKyt3Uc6dOWzl3bRnY5e6exh9IOROqW5kk/MYhecyob6eHC8cDcoKIGwfNBVQOtS4IRP
+         zYZvee9+R4nGQ2OiFRagGBTbnqeohp1QtU6pU60C/WlEgBuvVUe5P+vPsLkJzADLc0co
+         AQlg==
+X-Forwarded-Encrypted: i=1; AJvYcCXJHwscx0LowVDqw8gR231z0cvRXA/fQMv7aMibgQE4TVfZ8sNPCuZVV9HwVnacq3msGxLVpFo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaggEJqjBkiJRspFMFWsJGJBXkaylQtWQ6PctS26/ttSYCa7/S
+	KobWdpItqD65FoA0VWjaIx3DP/luVXrNOvUw078iiZKPuGYJUgDzI5pY
+X-Gm-Gg: ATEYQzzeNLWk/xk/nznBMMSGXXEr1k28XTfLZP9geaMqJYpQiP7o3XReF13UN6kCPSQ
+	+dFC2tVpIuzNSEGCVzJeT40IxIpvmkz682t2fh3AJTVonu6sKwWd+2VEB4qjvZ70hbZCRtFbmiA
+	zzstGJLiuFnxJPrT81dkWVbzd26m82+H7v7TJTibsjRKvKDPJ5qgxXYxl0ZGa7Kzpf5elttx/65
+	ACZPVNGEJ9VS47iF3EL6sewlmcNN0AMFd5r7VmI4XlvZQpv/24lp5SCcy3gbfrrHHKrZ1QDPR5j
+	K+FCvYB8pKg8w3e/nyZkN+RnSExB2/OMssXA+356cjSpO6ML4MKuVU1SCqAAlFKISmcWQOm4gPK
+	xUHZ0FjMRI0w56TuONnvKuTt990nS10R/JCd4K/tFoShhz8By4zL4WNZLtO5jgXcgrtJtcSknzr
+	/3GgejxXBXmuCbUqmhTR+IqEHavBi2ls9FQzOosGyIEdtg9oqZDocsY5SlPMyXGVM2RJFJTtQZ6
+	WFUr8hQSO++LSe/
+X-Received: by 2002:a05:6214:300d:b0:894:7716:48dd with SMTP id 6a1803df08f44-89a2490a28fmr33947626d6.29.1772723397679;
+        Thu, 05 Mar 2026 07:09:57 -0800 (PST)
 Received: from PF5YBGDS.localdomain (70.15.25.19.res-cmts.sm3.ptd.net. [70.15.25.19])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a0bb6e27asm64183176d6.2.2026.03.05.07.09.53
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a0bb6e27asm64183176d6.2.2026.03.05.07.09.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 07:09:54 -0800 (PST)
+        Thu, 05 Mar 2026 07:09:57 -0800 (PST)
 From: mike.marciniszyn@gmail.com
 To: Alexander Duyck <alexanderduyck@fb.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -79,10 +81,12 @@ To: Alexander Duyck <alexanderduyck@fb.com>,
 Cc: mike.marciniszyn@gmail.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v3 0/5] eth fbnic: Add fbnic self tests
-Date: Thu,  5 Mar 2026 10:09:42 -0500
-Message-ID: <20260305150947.16893-1-mike.marciniszyn@gmail.com>
+Subject: [PATCH net-next v3 1/5] net: export netif_open for self_test usage
+Date: Thu,  5 Mar 2026 10:09:43 -0500
+Message-ID: <20260305150947.16893-2-mike.marciniszyn@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260305150947.16893-1-mike.marciniszyn@gmail.com>
+References: <20260305150947.16893-1-mike.marciniszyn@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -93,47 +97,37 @@ Content-Transfer-Encoding: 8bit
 
 From: "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>
 
-This series adds self tests to test the registers, the
-msix interrupts, the tlv, and the firmware mailbox.
+dev_open() already is exported, but drivers which use the netdev
+instance lock need to use netif_open() instead. netif_close() is
+also already exported [1] so this completes the pairing.
 
-This series assumes that the
-[PATCH net-next 0/2] Add debugfs hooks [1]
-is present.
+This export is required for the following fbnic self tests to
+avoid calling ndo_stop() and ndo_open() in favor of the
+more appropriate netif_open() and netif_close() that notifies
+any listeners that the interface went down to test and is now
+coming back up.
 
-When the self tests are run the with ethtool -t:
+Link: https://patch.msgid.link/20250309215851.2003708-1-sdf@fomichev.me [1]
+Signed-off-by: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
+---
+v2 - no changes
+v3 - no changes
 
-        ethtool -t eth0
-        The test result is PASS
-        The test extra info:
-        Register test (offline)  0
-        MSI-X Interrupt test (offline)   0
-        FW mailbox test (on/offline)     0
+ net/core/dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Mike Marciniszyn (Meta) (5):
-  net: export netif_open for self_test usage
-  eth fbnic: Add register self test
-  eth fbnic: Add msix self test
-  eth fbnic: TLV support for use by MBX self test
-  eth fbnic: Add mailbox self test
-
-Link: https://patch.msgid.link/20260127200644.11640-1-mike.marciniszyn@gmail.com/ [1]
-
-v2 - add enums for test return codes 2/5, 3/5, snf 5/5
-   - correct placement of fbnic_nic forward in 2/5, 4/5
-v3 - add missing enum in 3/5
-
- drivers/net/ethernet/meta/fbnic/fbnic.h       |   1 +
- drivers/net/ethernet/meta/fbnic/fbnic_csr.c   | 128 ++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |  19 ++
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  93 ++++++
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c    | 100 +++++++
- drivers/net/ethernet/meta/fbnic/fbnic_fw.h    |  27 ++
- drivers/net/ethernet/meta/fbnic/fbnic_irq.c   | 154 ++++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_tlv.c   | 276 ++++++++++++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_tlv.h   |  27 ++
- net/core/dev.c                                |   1 +
- 10 files changed, 857 insertions(+)
-
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 43de5af0d6ec..d1d5694d1ff0 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -1724,6 +1724,7 @@ int netif_open(struct net_device *dev, struct netlink_ext_ack *extack)
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL(netif_open);
+ 
+ static void __dev_close_many(struct list_head *head)
+ {
 -- 
 2.43.0
 
