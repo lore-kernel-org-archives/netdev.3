@@ -1,120 +1,81 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4983A5E6B;
-	Thu,  5 Mar 2026 14:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F013A7F4F;
+	Thu,  5 Mar 2026 14:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772722175; cv=none; b=uLeW0zc0ff+T62dQ/40NEIPVEo2vp8dvwukrGO/C3NYFs9e3e/rHIcS5vTYHXFrhYtf1NoP1Er6pTZnFurTsWqVfZeD8AYrVWsjpJk+2OwI9KCC+jlDQEs9ZOaiju2j/aAG8nWie2zDcgQ/2NEMvFSOiLekQ151t19J8clO6skc=
+	t=1772722205; cv=none; b=pzfIf5V/HdCPNAYSQQdRhbYTvhW+wLE8uSG+uWGiBDBCGgDtvGFMuvuyNSkh0mAA0I52xQWzUG6F+L07gazzwMo7GmLoaGIwlZFidY0woHF4sfIT5KZ9zfHZQA4XVy42fDTSwa0RKOThOSCzrowV7+mRHtAEYOjGi55Cy8OwZbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772722175; c=relaxed/simple;
-	bh=UfEb1q/l9qjlTMLq3/PTHwtJBl7Gqr49bdbx+RpR6VY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ipMXjmBfcQivrQHzo08DudSyrOWDDuF7oHKALkq4oW826ruHtsJBh/U6H2jFudgytXeMosgh3w2uN7/O7AZG8v/Bzy95+2VKc/C8tOEHV9zspK8tmWWnzkOJmAuxj+SAoqHtYXfCURulKWBXx93KEf8iGcb9jMW3SXscyrN5mFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KS2eLqxX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772722205; c=relaxed/simple;
+	bh=/WZhfj/29xuJ8osr61NntsurluVSN8see7f/hVhr8Co=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=UsACsMrj9okHE6QjFLhKzgpFQQeXM36dd2sIX8EXBL1uS8SESvgRawV2JO5tRZB/7sE1ViLFqWyV+N6VQwGehcHyNziYhrn9T8F1a/Xdw3dpuvoPumoRIIJBcTgh2ju2DXg02crVW0D2FzRQfdnzqnuJiTwUyKnDc7kyuywW0zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SP9Q5uyz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KS2eLqxX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AEDC116C6;
-	Thu,  5 Mar 2026 14:49:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SP9Q5uyz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FC36C116C6;
+	Thu,  5 Mar 2026 14:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772722174;
-	bh=UfEb1q/l9qjlTMLq3/PTHwtJBl7Gqr49bdbx+RpR6VY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KS2eLqxXOlPpKU+yB+wT49XqYD0qihxSkT2CzPsBqFM6Ff5GLyzH3cmUo24Y2F6p4
-	 k1ns9J/ZLOM8ax8pXyhZ71DNryyLbJ5mz20qop6ptoOCd8GYZ3OFQq+g5vj4SWpizl
-	 d854QFpQFq/RhJd0DJZHEaEAmB7juM3TlVbwWDb37hKqMwZTZVjy7z8X9jbpjuMLXp
-	 pbsZzdsM+T5CTJ+oK+kH7PN8NC3EMapKnudUnuJfWMUuyBjddjCWxPnpJ2RRsymh1G
-	 oNoo0zQOtW6PWLiTPthnPwlcYVblwetIdzQAfGl/iOhJtS2N1txM2ho7sHAfwukQQJ
-	 j2em+bppVvH5g==
-Date: Thu, 5 Mar 2026 14:49:30 +0000
-From: Conor Dooley <conor@kernel.org>
-To: "Russell King (Oracle)" <linux@armlinux.org.uk>
-Cc: Charles Perry <charles.perry@microchip.com>, netdev@vger.kernel.org,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v2 1/3] net: macb: fix SGMII with inband aneg
- disabled
-Message-ID: <20260305-kooky-refurnish-3ebbc964a8c0@spud>
-References: <20260224202854.112813-1-charles.perry@microchip.com>
- <20260224202854.112813-2-charles.perry@microchip.com>
- <20260304-nebulizer-rounding-40fbc81a2ba1@spud>
- <aahI1y0NO9ax/V8J@bby-cbu-swbuild03.eng.microchip.com>
- <20260304-unvented-crinkle-37f0bfd03541@spud>
- <aaht0/XpUCz+58bz@bby-cbu-swbuild03.eng.microchip.com>
- <20260305-backlit-epilogue-62139ae694a6@spud>
- <aamLf63OfJ5RH69v@bby-cbu-swbuild03.eng.microchip.com>
- <20260305-fantasy-useable-40ca04f0266e@spud>
- <aamS-LPZaOfamwQC@shell.armlinux.org.uk>
+	s=k20201202; t=1772722205;
+	bh=/WZhfj/29xuJ8osr61NntsurluVSN8see7f/hVhr8Co=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=SP9Q5uyzcmI8WcYuzR/Z8kBFrPNZ6Uy5on/4zN7Z3Copa0y37o6bxt9XelVOJsyjt
+	 8MxWnKFYpmaMIUQu/9YIFMDzeX6ybkG2q5gTIXFiZnGY+bMorwnnDuSYCK//qFTnoF
+	 SPlYrKUE9En4fH4dNPVurX1VdnYFeLrDQkhxiXVMnyp1gjOV/i/W0b4v7nNpmiaPRD
+	 8n892+bsTNtCsuQ23HAphMmcQliInVzJ+eCdjBb7D5vuzDB3mN64E1Swiq70q3xJnS
+	 PnWTgkHnWTmPv7u6+CIpcYMfgq//srGhQwITKfUPFOxomBc3rhw3ImS8Uz0PqfrGds
+	 Ttelth+aqwUOw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9EC73808200;
+	Thu,  5 Mar 2026 14:50:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="dfSx/xhs5e31zFL1"
-Content-Disposition: inline
-In-Reply-To: <aamS-LPZaOfamwQC@shell.armlinux.org.uk>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] net: ethernet: mtk_eth_soc: Reset prog ptr to
+ old_prog in case of error in mtk_xdp_setup()
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177272220555.3153977.11048346484291533386.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Mar 2026 14:50:05 +0000
+References: <20260303-mtk-xdp-prog-ptr-fix-v2-1-97b6dbbe240f@kernel.org>
+In-Reply-To: <20260303-mtk-xdp-prog-ptr-fix-v2-1-97b6dbbe240f@kernel.org>
+To: Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: nbd@nbd.name, sean.wang@mediatek.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ matthias.bgg@gmail.com, angelogioacchino.delregno@collabora.com,
+ ast@kernel.org, daniel@iogearbox.net, hawk@kernel.org,
+ john.fastabend@gmail.com, sdf@fomichev.me, pvalerio@redhat.com,
+ netdev@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-mediatek@lists.infradead.org, bpf@vger.kernel.org
+
+Hello:
+
+This patch was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
+
+On Tue, 03 Mar 2026 18:56:39 +0100 you wrote:
+> Reset eBPF program pointer to old_prog and do not decrease its ref-count
+> if mtk_open routine in mtk_xdp_setup() fails.
+> 
+> Fixes: 7c26c20da5d42 ("net: ethernet: mtk_eth_soc: add basic XDP support")
+> Suggested-by: Paolo Valerio <pvalerio@redhat.com>
+> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> 
+> [...]
+
+Here is the summary with links:
+  - [net,v2] net: ethernet: mtk_eth_soc: Reset prog ptr to old_prog in case of error in mtk_xdp_setup()
+    https://git.kernel.org/netdev/net/c/0abc73c8a40f
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
---dfSx/xhs5e31zFL1
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-On Thu, Mar 05, 2026 at 02:28:08PM +0000, Russell King (Oracle) wrote:
-> On Thu, Mar 05, 2026 at 02:13:24PM +0000, Conor Dooley wrote:
-> > On Thu, Mar 05, 2026 at 05:56:15AM -0800, Charles Perry wrote:
-> > > On Thu, Mar 05, 2026 at 09:42:19AM +0000, Conor Dooley wrote:
-> > > > On Wed, Mar 04, 2026 at 09:37:23AM -0800, Charles Perry wrote:
-> > > > > On Wed, Mar 04, 2026 at 04:23:30PM +0000, Conor Dooley wrote:
-> > > > >=20
-> > > > > Are you able to check register 23, bit 13 of your PHY by any chan=
-ce? Maybe
-> > > > > with the mdio/mii commands in U-Boot if you have that.
-> > > >=20
-> > > > "mii read addr 23" returns 0660 for both PHYs in U-Boot.
-> > >=20
-> > > Oh, I think you fell into a trap of U-Boot's mii command.
-> > >=20
-> > > The arguments are always in hex even if you dont prepend "0x".
-> >=20
-> > Eh no, actually I thought that you meant register 0x23. I'm not used to
-> > register addresses being given in decimal.
-> >=20
-> > > What "mii read 8 23" did is most likely read register 0x23, masked wi=
-th
-> > > 0x1f because clause 22 has only 32 registers. So it read register 0x3=
- which
-> > > is the device identifier 2 register: 0x0660.
-> > >=20
-> > > The exact command should be "mii read 8 0x17", "mii read 9 0x17".
-> >=20
-> > Both read back 2004
->=20
-> It would would be good to see the content of 0x1b, specifically bit 13.
-> The PHY supports AN bypass, and I suspect bit 13 is zero, which means
-> in combination with bit 13 set in 0x17, the PHY must complete the SGMII
-> exchange with the MAC.
-
-They're both 0401, so yea. I'll give the vitesse driver change a go
-later.
-
---dfSx/xhs5e31zFL1
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaamX+QAKCRB4tDGHoIJi
-0iVKAQDRUl3P6H2G7A6lkU7canECc7+AFn3uKOX0QtmkFjl21AEAlQC9heMF4J47
-GoPaVEQM4GUOsJFTB+sVElZeuMzHAAs=
-=AJGt
------END PGP SIGNATURE-----
-
---dfSx/xhs5e31zFL1--
