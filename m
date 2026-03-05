@@ -1,179 +1,133 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D533395261
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 14:24:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30493A4F52;
+	Thu,  5 Mar 2026 14:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772720645; cv=none; b=EYHxsTLgxz25QwY6j7me3NtIh0TKFYFBPMgdARuHceOQDsauy1wypRTcYmvbUlAHpYpNGuhG/VwaAVFtf/6gg1V2G6meBy/C5y0sEkQl4pj5P4iNUkcNY8dltNsZrIuT2AdsU8iCGIF4/lqLm1oDoRadPz4gZga2+dfzW+mdmxI=
+	t=1772720709; cv=none; b=qhrRwZfuq2jfbAOKhb0wSLreMZNMdfxHckqhCAMGaabqh7ausHv+hBD7dXZncrrNRnZ+qKusnN/z1rLnHRTSSmlorcv7/psTTrX8+HqjAF8qS60xc7D6Og8IJNrEFyYwSWuWoLhkV83bXZcPM4MzbD8hOaOxNwVyy285hkYD8vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772720645; c=relaxed/simple;
-	bh=FEf4yd3C7bmrwgds3i3LiIUniHqhwKFe+EX/oUuDxw4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9uS5A2PO0pOajEJosyDVUrqy4/mGjR4Nev4nxkubu/kO3Ok2zZVVU/N1uOnxjzWGK9fk5yD7769SFxmNe+n/AXKyaPgTN106yOzO8pLPbLOqEw8HWhmPHl+xjMla1Lxf0AaA84c1R3eEZdTcTm9ftaDlunbTbV1rwnD6Vkqj5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XCEKvxLA; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1772720709; c=relaxed/simple;
+	bh=jn3SqFSE9NEUL3pJAHFag0dmu3pCOQda1YU7o+1IXR4=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MZLqJproFfsRvWrnRLhRyhjs3bwq+RQ0v7zOQW1HMuAY1V2jVAsf+zHZeGHiKPzShnlccxr/X+Cc+FhgquAuPsBCcF7D6eIQnP5BSHnE2BdpanHPiAYVq7skT0c3WG+m5Q+/aAKRR1m+i6SEEgZWcuWrwLPubbsjUnkiho/tAVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=wma/8TQ7; arc=none smtp.client-ip=68.232.153.233
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XCEKvxLA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772720643;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C0Sl3m5ZVIWUkragul6SBNHFFYEJebGQqFRs6P/anAE=;
-	b=XCEKvxLAdpfXEJuxdDwyn3XL7kbtj+1sgQmR8B6D9/4iojnLcFxv7dH0xoGgcgDIb/X9Kx
-	czTiZ3JoumFWukMkKqHRvEZzBTtLkXyX16Tw/hiW495EJjKaluwKbwXRzSuaaNKLcSGNmA
-	v2RubLILRH3ffFnTt+OHySa5zuV6T1w=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-394-8lJmm8axNe2M1JA6zPyocg-1; Thu,
- 05 Mar 2026 09:23:58 -0500
-X-MC-Unique: 8lJmm8axNe2M1JA6zPyocg-1
-X-Mimecast-MFC-AGG-ID: 8lJmm8axNe2M1JA6zPyocg_1772720636
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8DE7E1800627;
-	Thu,  5 Mar 2026 14:23:56 +0000 (UTC)
-Received: from gerbillo.redhat.com (unknown [10.44.32.173])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 62F03195419E;
-	Thu,  5 Mar 2026 14:23:53 +0000 (UTC)
-From: Paolo Abeni <pabeni@redhat.com>
-To: bestswngs@gmail.com
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	xmei5@asu.edu,
-	kuba@kernel.org,
-	horms@kernel.org,
-	pabeni@redhat.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	security@kernel.org
-Subject: Re: [net,v2] net: add xmit recursion limit to tunnel drivers
-Date: Thu,  5 Mar 2026 15:23:38 +0100
-Message-ID: <20260305142338.369328-1-pabeni@redhat.com>
-In-Reply-To: <20260303164326.1803916-2-bestswngs@gmail.com>
-References: <20260303164326.1803916-2-bestswngs@gmail.com>
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="wma/8TQ7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1772720708; x=1804256708;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=jn3SqFSE9NEUL3pJAHFag0dmu3pCOQda1YU7o+1IXR4=;
+  b=wma/8TQ7RZYXLxLnx2zp7oAOkEUU9PGJ0imQEDi0HkL89z+tXwWu1sXo
+   58CSEkalU017Duedqi7Zcn3//7Oa+hXe/LUeL5Rd9caerNISi+TixJ/Xq
+   LtSa00Nv/3JczsoN7nkFAlYg26rj4QImbQIKTupXHJW10W+AVnLj96ZIt
+   VgdbuCjBgNoDMajNxG+AFhUJm/sKAKCidFSDZ0eQF8jbfkDF1ry0JpT+l
+   LTFnfhausvz8VlJyVZieIx97WF27d71ZfYC5KgnTBX2hIhwEIeu52fAXE
+   pq9JlVYEALNwdJGEbxdydVaqb1zgv6B6K8mhwUaQvJU14mXXOWavJS9xf
+   g==;
+X-CSE-ConnectionGUID: T+2/TH5KS++p/V5ngvAyDg==
+X-CSE-MsgGUID: /0KFBbrhTb2iQZBGPVTvNA==
+X-IronPort-AV: E=Sophos;i="6.23,103,1770620400"; 
+   d="scan'208";a="54265876"
+X-Amp-Result: SKIPPED(no attachment in message)
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa3.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 07:25:06 -0700
+Received: from chn-vm-ex04.mchp-main.com (10.10.87.151) by
+ chn-vm-ex1.mchp-main.com (10.10.87.30) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.35; Thu, 5 Mar 2026 07:24:26 -0700
+Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
+ chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.58 via Frontend Transport; Thu, 5 Mar 2026 07:24:25 -0700
+Date: Thu, 5 Mar 2026 06:24:24 -0800
+From: Charles Perry <charles.perry@microchip.com>
+To: Simon Horman <horms@kernel.org>
+CC: <netdev@vger.kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, "Claudiu
+ Beznea" <claudiu.beznea@tuxon.dev>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <charles.perry@microchip.com>
+Subject: Re: [PATCH net-next 3/4] net: macb: add safeguards for jumbo frame
+ larger than 10240
+Message-ID: <aamSGKwG4i+7zBqV@bby-cbu-swbuild03.eng.microchip.com>
+References: <20260303180318.1814791-1-charles.perry@microchip.com>
+ <20260303180318.1814791-4-charles.perry@microchip.com>
+ <20260305114010.GD90938@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+In-Reply-To: <20260305114010.GD90938@kernel.org>
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Thu, Mar 05, 2026 at 11:40:10AM +0000, Simon Horman wrote:
+> On Tue, Mar 03, 2026 at 10:03:17AM -0800, Charles Perry wrote:
+> > The RX buffers for GEM can have a maximum size of 16320 bytes
+> > (0xff in the RXBS field of the DMACFG register means 255*64 =
+> > 16320 bytes).
+> > 
+> > The "jumbo_max_length" field (bits 0..13) of the DCFG2 register
+> > can take a value of up to 16383 (0x3FFF). This field is not used
+> > when determining the max MTU, instead an hardcoded value
+> > (jumbo_max_len) is used for each platform. Right now the maximum
+> > value for jumbo_max_len is 10240 (0x2800).
+> > 
+> > GEM uses one buffer per packet which means that one buffer must
+> > allow room for the max MTU plus L2 encapsulation and alignment.
+> > 
+> > This commit adds a limit to max_mtu and rx_buffer_size so that
+> > the RXBS field can never overflow when a large MTU is used.
+> > 
+> > With this commit, it is now possible to add new platforms that
+> > have their gem_jumbo_max_length set to 16383.
+> > 
+> > Signed-off-by: Charles Perry <charles.perry@microchip.com>
+> 
+> Hi Charles,
+> 
+> I am sorry if this question is a bit naïve.
+> 
+> I understand the need to clamp the max_mtu to avoid overflowing RXBS.
+> And that this hasn't been an issue up until now due to the maximum
+> value of jumbo_max_len used in the driver.
+> 
+> But I'm unclear on the relationship between DCFG2 and the max_mtu.
+> Why does it need to be set to a value larger than that corresponding to
+> the maximum mtu and RX buf size?
+> 
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-net: add xmit recursion limit to tunnel drivers
+Hello Simon,
 
-This commit adds recursion protection to tunnel drivers to prevent stack
-exhaustion from routing loops. It moves dev_xmit_recursion helpers to a
-public header and adds recursion checks in ip_tunnel_xmit() and
-ip6_tnl_xmit().
+The DCFG2 register is the max_mtu value, there's some public documentation
+for this for AMD versal [1]. "gem_jumbo_max_length" is a define in the RTL
+code, the hardware designer probably makes a tradeoff between gate count
+and the max_mtu. The maximum value for this is 0x3FFF (16383).
 
-> diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-> index d4e6e00bb90a..1a4d2542dbab 100644
-> --- a/include/linux/netdevice.h
-> +++ b/include/linux/netdevice.h
+The maximum buffer size is 255 * 64 = 16320
 
-[ ... ]
+The GEM driver, in its current state, uses one buffer per frame, so the MTU
+needs to be clamped at the maximum buffer size.
 
-> diff --git a/include/net/ip_tunnels.h b/include/net/ip_tunnels.h
-> index 4021e6a73e32..80662f812080 100644
-> --- a/include/net/ip_tunnels.h
-> +++ b/include/net/ip_tunnels.h
+We could just set 16320 instead of 16383 into the "jumbo_max_len" of
+"struct macb_config" but it would mix information about what the hardware
+supports vs what the software support. My approach is to put what the
+hardware support in "struct macb_config" and clamp it later when
+calculating max_mtu because we know we have a software limitation.
 
-[ ... ]
+Thanks,
+Charles
 
-> diff --git a/net/core/dev.h b/net/core/dev.h
-> index 98793a738f43..ec974b3c42d9 100644
-> --- a/net/core/dev.h
-> +++ b/net/core/dev.h
+[1]: https://docs.amd.com/r/en-US/am012-versal-register-reference/IP_Config2-GEM-Register
 
-[ ... ]
-
-> diff --git a/net/ipv4/ip_tunnel.c b/net/ipv4/ip_tunnel.c
-> index 50d0f5fe4e4c..39822e845a06 100644
-> --- a/net/ipv4/ip_tunnel.c
-> +++ b/net/ipv4/ip_tunnel.c
-
-[ ... ]
-
-> diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-> index 4c29aa94e86e..55bedd5cd656 100644
-> --- a/net/ipv6/ip6_tunnel.c
-> +++ b/net/ipv6/ip6_tunnel.c
-> @@ -1101,6 +1101,14 @@ int ip6_tnl_xmit(struct sk_buff *skb, struct net_device *dev, __u8 dsfield,
->  	u8 hop_limit;
->  	int err = -1;
->
-> +	if (dev_recursion_level() > IP_TUNNEL_RECURSION_LIMIT) {
-> +		net_crit_ratelimited("Dead loop on virtual device %s, fix it urgently!\n",
-> +				     dev->name);
-> +		DEV_STATS_INC(dev, tx_errors);
-> +		kfree_skb(skb);
-> +		return -1;
-> +	}
-> +
-
-Does this create a double-free of skb in ip6_tnl_xmit()?
-
-The new recursion check frees the skb and returns -1. But all callers of
-ip6_tnl_xmit() also free the skb when they receive a non-zero error return:
-
-ip6erspan_tunnel_xmit() at net/ipv6/ip6_gre.c calls kfree_skb(skb) in its
-tx_err path after ip6_tnl_xmit returns -1:
-
-net/ipv6/ip6_gre.c:ip6erspan_tunnel_xmit() {
-    ...
-    if (ip6_tnl_xmit(skb, dev, dsfield, &fl6, encap_limit, &mtu,
-                     NEXTHDR_GRE))
-        goto tx_err;
-    ...
-tx_err:
-    if (!IS_ERR(tun_dst))
-        dst_cache_set_ip6(&t->dst_cache, &tun_dst->u.tun_info.key.u.ipv6.dst,
-                          &fl6.saddr);
-    DEV_STATS_INC(dev, tx_errors);
-    kfree_skb(skb);
-    return NETDEV_TX_OK;
-}
-
-Similarly, ip6_tnl_start_xmit() at net/ipv6/ip6_tunnel.c calls kfree_skb(skb)
-after ipxip6_tnl_xmit propagates the -1:
-
-net/ipv6/ip6_tunnel.c:ip6_tnl_start_xmit() {
-    ...
-    ret = ipxip6_tnl_xmit(skb, dev, dsfield, &fl6, encap_limit, &mtu,
-                          protocol);
-    if (ret < 0)
-        goto tx_err;
-    ...
-tx_err:
-    DEV_STATS_INC(dev, tx_errors);
-    kfree_skb(skb);
-    return NETDEV_TX_OK;
-}
-
-The existing error-return contract of ip6_tnl_xmit() is that the caller
-retains skb ownership on error. All pre-existing error paths
-(tx_err_link_failure, tx_err_dst_release, ip6_tnl_encap failure) return
-negative without freeing skb.
-
-The new recursion check breaks this contract by freeing skb AND returning -1,
-causing the caller to kfree_skb() an already-freed skb. This double-free will
-cause slab corruption or a crash exactly when the recursion protection
-triggers.
-
-Note the IPv4 counterpart ip_tunnel_xmit() is not affected because it returns
-void and always owns the skb (its existing error paths also kfree_skb
-internally).
-
+> ...
