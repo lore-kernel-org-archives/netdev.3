@@ -1,74 +1,71 @@
-Received: from mail-dy1-f171.google.com (mail-dy1-f171.google.com [74.125.82.171])
+Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC4C334685
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 13:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7BA03A1E73
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 13:32:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772717389; cv=none; b=GBPHQMiL09JSVT8RjlaMxrkMCghQVpKGY5BmYl8I7ZjydIm0G90291zKhAU8Lv8e63OibasLybvqsDiHr9zGZcZeZC95UFA9550eg88qx+doS2/YE0ZUREJmenzOK72QBhr5VabaEp0N1j0LqEjJ1/wln76IU5K8bbe8fc0E1U4=
+	t=1772717550; cv=none; b=lQC/qYD0DprJ2N3iCN1mpnF5nZ1kWjs5i9lX+M1a64vuaZm2ChTGONwHo31xz0SF9ADzbX2xB+MtfECmLSFKTGwUPKygRXsoSSfFNAVKfFcXYLKh5cesyGuDD1i1elhDi0Pso4B4hvju4VeApWppBf/5j8iy3WhS6wiA0fjOtu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772717389; c=relaxed/simple;
-	bh=2O9r9LDXDJj803X3puSuwhl3cSUwWHVBg3YhINrdJqw=;
+	s=arc-20240116; t=1772717550; c=relaxed/simple;
+	bh=C2n6OMqiUBPSfQmiMUueiTzMNpaAqJocbnsxeFPmiUQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tMJuOl45CLLdstnWNkeh4qrlwFzZmkkycnUaaiFwZPit2fUQMtRptfYoqKsb8QoNGuHGnoDAAtZmiEGN4Wh8O+8Hwwwi7MqkT3yZ0X7FrogUHk6Nrt2oaTmy7ZOEdpV3XdPOkM/7kGM4S13N5ZOA3jETqjNmpZLe+rTA3grXnnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org; spf=none smtp.mailfrom=blackwall.org; dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b=MaxfacQn; arc=none smtp.client-ip=74.125.82.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=blackwall.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=blackwall.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=tGkSLgYOxsgdUr+wyzNA5xoD2LEkhL/aO8dKuZ9zWj+YTWg7FxImSA/PkkGChjDWCDNMEPcg+364Xr50gl3axWK09HK7XOBr3UClehTCndY9qKisLM3EwNtSpn2kTLOcJiAJQvNEKmGyrMU4WXg4jQ+txLlnYxBZP+iELdWhdm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h+YydmEL; arc=none smtp.client-ip=209.85.128.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=blackwall.org header.i=@blackwall.org header.b="MaxfacQn"
-Received: by mail-dy1-f171.google.com with SMTP id 5a478bee46e88-2b4520f6b32so9193137eec.0
-        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 05:29:48 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h+YydmEL"
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-79801df3e21so73922447b3.2
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 05:32:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=blackwall.org; s=google; t=1772717388; x=1773322188; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1772717548; x=1773322348; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=W2UUm8R+QueyEkOcuCPbcorlCWNYx0VuCk3zns3tCYI=;
-        b=MaxfacQnfqdoIx1iarKZnziKdw22HNLeA3zPFpRxCgU70yBkAyjOsrdl3Sbnee3wYg
-         V2muop6c1Zru0C1lZalypILaRiS1sY4uxX8L/hActIfpL/CPo7PFKR6Wwypqe7+/8O4b
-         ty7Md5iKC1uLEcmP3g99zppXzMOJO3EjGtXQI+c72qPdYFCSCuxWSxXpGVvJjvyIOvYF
-         pEkvMV/zRxQfVEaFt/oIWZEuCT0mPudMWRSobmb8718fW10T2DHoa4qtIcwYhiilTlcA
-         s2QD/i76vOPGfL7UCl94Cc2tByf0Su+2UWzMK6s9kF+RTUKu8JH1+o2gSqQEopHMYjtN
-         ba7g==
+        bh=z/MQdRS2uWUXUzzh9zR/GPrej4iJqLveQqqBD5qeAtg=;
+        b=h+YydmELHhvDdVuLSSFex+hjeuKsDfjsOmjtYGoqStCXsL9TjWM3pc+ggBoCrLCnRN
+         EK1WXVfuHChShm9q31fW75JnM7VPu83PiXzUJMMPtkmyKbgj3tMezhlCtm9A3s0SUiau
+         cetcKbEJUFUHCxmtlFVO0vRLTCLVfLezx5YTvGocNwE295uzwutbaO+/cHRr3GsokQxc
+         239p0zQPanfdp5QevUfWdkgDQfywvem/ytz6J3VTq537du4NWbAhBGzMMe+IUOx22B6p
+         fyWCpTofG+suhQbN3kZ98orur91xEneiMk/Vir3+/25GcN9Z+7dfhMH3HG1tiMMfjj0z
+         TOww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772717388; x=1773322188;
+        d=1e100.net; s=20230601; t=1772717548; x=1773322348;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=W2UUm8R+QueyEkOcuCPbcorlCWNYx0VuCk3zns3tCYI=;
-        b=PQS6PNnvOvMT/fOeZgxtZRxjz3EmGZ6sjj+eBw/Chiqr1n3A9qFRMtyu3vxsjT6Sqp
-         70fRR5LgOCaxM5O5H2JUc5oOXzANWuVb8OIaM+RPV8fMAi94I/WwZkJj2DZzXwIEti2s
-         wvmrKS0vCt4JnpZENmkHPtVlKo9DEie16SEpufJPz0LqajXoy3hzCoMELgyrA8gzUSFA
-         JnvIuvQQF67JKCjCw1ExBJmxdH83C0SyBZBwp/vKI+mkKz8JCsaRjf5F/Yio+d/69zDx
-         +KZpunYU8tDXhNCn/geDBNCicjV8hGk4LSGj9wuZ6mGpDTytiARu1H/LMcstld3C+rg+
-         RN/A==
-X-Gm-Message-State: AOJu0YxfjT7kUx7lK6EufFp03J9Lq8QwAJ/kIosLlhjmqF7rRASkbJfx
-	N3kT32261l9o4G/L9cmaFlOdhmZe1z+OrksUW/FExIC+9T2kwfvTcQuzCm7NQIaU17qhf1x/Krs
-	pyu58lEWWZZ2IT0E=
-X-Gm-Gg: ATEYQzx9F2+6pcpdSlOeVNZFs4x5KMeHNf0F6Hs2mqBzqjEUQwXY/9ElU4QVu9g4FMu
-	ChrU7TxwuBSh0ws9eKG/9F9PCo1VuulaSghK6nFaUkqYfQgvI9Mh4D3J0o/rxGskFoZfeFsM+2Z
-	p/SOewgtE5b3Lg3AgFRK8a9eZZyMM4bRyA9nx5Vzu9RjLiObh+PO5yDqMaEDWpfvbvCIEcIrekC
-	xad57QmaqVuBu8Sfzk4rOrz0J/JpSmuNER8v3AuWczjJnqClsdR+unaVzD1lPbHBGME5t2bOz1u
-	6awi8c1cRKghA/+RA+vNNuGTruRy6fmyJ4hmyqj2jMdQg9bwL/KAioJ2RUJCodZcpJVclPVSDwY
-	ILOIYX0lPD6LFmjg51vJU/+ipndiodNT3sicXOS0c+puEZ1usSnx7E+TDaagOjVP2S/iV1LCEJO
-	+1D01tnhpgBcOZumFZ0Rsy
-X-Received: by 2002:a05:7300:e12a:b0:2ba:9835:1113 with SMTP id 5a478bee46e88-2be311c7211mr2339685eec.36.1772717387580;
-        Thu, 05 Mar 2026 05:29:47 -0800 (PST)
-Received: from localhost ([216.228.127.129])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2be1281ff70sm10108869eec.14.2026.03.05.05.29.46
+        bh=z/MQdRS2uWUXUzzh9zR/GPrej4iJqLveQqqBD5qeAtg=;
+        b=aDcn/yRrLGVbd3IDeCq52Vq/gKtlDVF3uB1SmJEp1kKBi8BvsN8w3kkg0ghkf6iYni
+         EfevRKX357vgpVNGZELjttXsj5WIPu3RNi3E1HN/05DAg2sayqm8P9xCgFhcu3Tr1H31
+         G8yQLWFpZfVs4F8zraYGzg+H9K4pWf3rRqHdMsbOhKKoQVF7Vo2zm2XJ3m6JrW7SbqUy
+         fMV+PoDvm1WKqtxwuedCy4WY6JvvzHv4ItmqUJoH9zLWFGMhFWhSJ+CCO9a1wMcFgGw5
+         zeAgUKZURiQmlH8mdUDOTduD+hhmfYd3hz1RiRzBcWUa85y5WT7pm6jEhU/OnCfbZlP1
+         Eulw==
+X-Forwarded-Encrypted: i=1; AJvYcCU8hukY81zMlfcwYj6e4iuOWNHdra75gmEqFXH9eyCPCCKxTMjbep2uzo5ikjwU/uaHVOTBFVQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwkdyL0xckQyzjHI6USH5yKB297U4Ix+gV/gtbkXGKIn3fhN3Cy
+	88yl8iWAWvXdOijTY8hYuMe+PuZK7p7dI5t0vY5Pg2l6n9BWidwBZi3/
+X-Gm-Gg: ATEYQzy5Inxesb9oIxhX65Z7DytEChu/9a6McQcVkOvlJbGSJ7/bXv1pKpEz0O9c7U9
+	2twbt4FZA4uM5uJ198zPWwgihmKIcCNihjymxW56feFlWvJgVIm2Zttw/uvaOoMx+vatnmmcsQ+
+	cKjdy88NCXeVUpzzexbRrjvrW8dAzz9ZpCzXxtWhFa1NCDlBr/6pgLyQbIUOOIeyxp17pJ6dy0s
+	EEutK0XXFgtr1CzVD+3nVCKwofh5qUaBVdwbFlMBojEu3Llo9pDskDrVxEfjRXQBKB6ycpEA3LB
+	MxCxZvdNHpPCsj3nPJs4JtyN9LzyRJ1rCK1l+29U6XdpRIPobUSPw+hPsxzgu3h3BtbQBBexq+9
+	PZw9iKKEimVhALnoKr3co93/d4pT31NO97X727qpIaQ67leto/W75+0xdX74XCIOXvBN9ZaEsZ9
+	zveEobnXfQmNDXmifU/xr5tOpfV4g6kjJ1i3FnqRIkqa0Xxqo=
+X-Received: by 2002:a05:690c:dc5:b0:797:a162:f7cb with SMTP id 00721157ae682-798c6cd975bmr46986367b3.48.1772717547914;
+        Thu, 05 Mar 2026 05:32:27 -0800 (PST)
+Received: from devvm11784.nha0.facebook.com ([2a03:2880:25ff:55::])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-79876bf8103sm88645747b3.27.2026.03.05.05.32.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 05:29:46 -0800 (PST)
-Date: Thu, 5 Mar 2026 15:29:41 +0200
-From: Nikolay Aleksandrov <razor@blackwall.org>
-To: Fernando Fernandez Mancera <fmancera@suse.de>
-Cc: netdev@vger.kernel.org, bridge@lists.linux.dev,
-	roopa@cumulusnetworks.com, sdf@fomichev.me, petrm@nvidia.com,
-	horms@kernel.org, idosch@nvidia.com, pabeni@redhat.com,
-	kuba@kernel.org, edumazet@google.com, davem@davemloft.net,
-	andrew+netdev@lunn.ch, Guruprasad C P <gurucp2005@gmail.com>
-Subject: Re: [PATCH 1/2 net v3] net: bridge: fix nd_tbl NULL dereference when
- IPv6 is disabled
-Message-ID: <aamFRR3rfa1TlHEF@penguin>
-References: <20260304120357.9778-1-fmancera@suse.de>
+        Thu, 05 Mar 2026 05:32:27 -0800 (PST)
+Date: Thu, 5 Mar 2026 05:32:25 -0800
+From: Bobby Eshleman <bobbyeshleman@gmail.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, sgarzare@redhat.com, netdev@vger.kernel.org,
+	mkutsevol@meta.com, thevlad@meta.com, christinewang@meta.com
+Subject: Re: Stable backport request: vsock namespace support for 6.18.y
+Message-ID: <aamF6ZJswoMkrFWr@devvm11784.nha0.facebook.com>
+References: <aajWMBoSgXafmw8b@devvm11784.nha0.facebook.com>
+ <2026030538-nearest-dumpster-481e@gregkh>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -77,47 +74,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260304120357.9778-1-fmancera@suse.de>
+In-Reply-To: <2026030538-nearest-dumpster-481e@gregkh>
 
-On Wed, Mar 04, 2026 at 01:03:56PM +0100, Fernando Fernandez Mancera wrote:
-> When booting with the 'ipv6.disable=1' parameter, the nd_tbl is never
-> initialized because inet6_init() exits before ndisc_init() is called
-> which initializes it. Then, if neigh_suppress is enabled and an ICMPv6
-> Neighbor Discovery packet reaches the bridge, br_do_suppress_nd() will
-> dereference ipv6_stub->nd_tbl which is NULL, passing it to
-> neigh_lookup(). This causes a kernel NULL pointer dereference.
+On Thu, Mar 05, 2026 at 08:15:12AM +0100, Greg KH wrote:
+> On Wed, Mar 04, 2026 at 05:02:48PM -0800, Bobby Eshleman wrote:
+> > I realize this may be a long-shot/big ask, as these patches definitely
+> > fall outside of the 100-line diff limit and it is a very new security
+> > feature for vsock.
 > 
->  BUG: kernel NULL pointer dereference, address: 0000000000000268
->  Oops: 0000 [#1] PREEMPT SMP NOPTI
->  [...]
->  RIP: 0010:neigh_lookup+0x16/0xe0
->  [...]
->  Call Trace:
->   <IRQ>
->   ? neigh_lookup+0x16/0xe0
->   br_do_suppress_nd+0x160/0x290 [bridge]
->   br_handle_frame_finish+0x500/0x620 [bridge]
->   br_handle_frame+0x353/0x440 [bridge]
->   __netif_receive_skb_core.constprop.0+0x298/0x1110
->   __netif_receive_skb_one_core+0x3d/0xa0
->   process_backlog+0xa0/0x140
->   __napi_poll+0x2c/0x170
->   net_rx_action+0x2c4/0x3a0
->   handle_softirqs+0xd0/0x270
->   do_softirq+0x3f/0x60
+> It's a new security feature, if you wish to have that, please just use a
+> newer kernel release.
 > 
-> Fix this by replacing IS_ENABLED(IPV6) call with ipv6_mod_enabled() in
-> the callers. This is in essence disabling NS/NA suppression when IPv6 is
-> disabled.
+> sorry,
 > 
-> Fixes: ed842faeb2bd ("bridge: suppress nd pkts on BR_NEIGH_SUPPRESS ports")
-> Reported-by: Guruprasad C P <gurucp2005@gmail.com>
-> Closes: https://lore.kernel.org/netdev/CAHXs0ORzd62QOG-Fttqa2Cx_A_VFp=utE2H2VTX5nqfgs7LDxQ@mail.gmail.com/
-> Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-> ---
-> v2: use ipv6_mod_enabled() instead of a null check and replace the check
-> on the caller
-> v3: no changes
-> ---
+> greg k-h
 
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+I understand. Thank you for the consideration.
+
+Best,
+Bobby
