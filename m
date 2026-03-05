@@ -1,141 +1,118 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011044.outbound.protection.outlook.com [52.101.57.44])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA78366569;
-	Thu,  5 Mar 2026 08:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.44
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772698144; cv=fail; b=TL1E9YJ68GRC64afBLRW/pXWJFfa20w+3ICPu/LmhBAqc0MjdF1qxPWUrKn+SUnhPIPF8+d6R1A/mIHe+1NKWtCqKL8VlqmwcVT+qlsC73p1WsYfzCrybAPQhoydIlWDmp0VgmJV4J8eQNRHhsmq1Z750RPzTNbXWZ7U60EbIsE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772698144; c=relaxed/simple;
-	bh=cvfWvRS3tumnYFJD48+4ytxn5vvQJPTfRWkNWp9jUcQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YhLo+izYNhjBSquZ1OQWANGR1JhBgbBHk4ZN1xDVxZnIRMpUxbfBwB43Dml+aqmypCaz7nPpRpIvZUlJ5ybwPxMbmCpe7MDW4mO0Wy8AxgUMiQhEGCgd55i/52SMMg2+6uxdUUEhIJMHl8Y7C/REFL0w9QlPx+4IK0TQ61zx8Qo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=g/kTzkqs; arc=fail smtp.client-ip=52.101.57.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E0A2BFC7B
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 08:09:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772698185; cv=none; b=HJ3wvOroyqrC90CpLyBS38LqWu6vNMFdVrSXEvWt7JuFgC/dem8zfVF4oyvf2GIz+tQwZ5ODe4MrQLec6oPky1+2Kfj/MUuoFpas3PKFAnlPMthKrXURwLWmcLDp02D1b+GGKDSTTwqKrmqWjMLlQk/ennMZH2Ya8uR9elbxeUo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772698185; c=relaxed/simple;
+	bh=2AODVqPJrLUctFGmiF7L8ByXAZ+zeHnXibdRafQXW1g=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=tKkUQOmMyRJFgyRxh/wj9sKxcDTIKQOM12nlEBNtU4BeqFPoIkxkOE9lFwu5cqr6hM82WrnMq/BrcX5jBNmUy6zi4XFOAMMKxyJRd1+PrlNkV2MqAO4qGSnwfSfyFBqe7ozKIYIGKiKLSNScoulemwXd4xWKK6IcEb3iEsXZXFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Wup2vosj; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="g/kTzkqs"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FxFenznsTVCiETpFT8rp85s4sEE7HIKk4ZwPPXMbYygbHoNU24RPS2XLqP4QNqpof2jgjB/bgX9izMoEcsMB5hHmDrdwAlJVkpkLr1zn1P1Fws5kNtqfsYaLBMqY/f6I0T3pTFDlc4mdgpLYg7Kk2XmNyhwPjMclP1TxY+3zkLKN60irsscXcdstRm8P7av3CMx7yTmiWe2r8R7IY5eiNt0jbU4gmx97KrU8TWJlaJ4s+b+Mhw5qIQXlQii1SpVSdCo3ltictfuUSSDnOmKLfrhFSyM5x3INUErSln/mrXarGV21bOXxaxvn8QoDaVDZ6u8AFlWVoYHpZ+D4a+5jmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9NrXnKHUVhBRcpdS5bGSUnNrvpOd7HEhSKGO1GX4ciQ=;
- b=WQQbVzBGODeog8nzvcL0WNpoW/py3g0FMzKB6t13/vQ7F9iXMjuWmhoPo1lwhgftoi5UK6Kbb1kT+gKmko7eC3ghX/H+k9q6lrQWHQslVtyd62bO4DcX996KWs3N70awHu/iBK6P3jLiAKJtE0LHMAFMXxvQ4w/NZbQHoci8OBiY98YsEbIHJZ9G+fWunuvTohnMw1XRKNNFs0sTX1wkxTABmUp+OSMD9UU6ffwtLcXBacVBimMcQczF5EKF+5ou5ZChYFXj0haaehCET0pWazDFXsRtbbD/7ooz6irlhN+anqs7etfsHfjb18TdnLyEtooaCx1iah96/Pg1XICOcQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9NrXnKHUVhBRcpdS5bGSUnNrvpOd7HEhSKGO1GX4ciQ=;
- b=g/kTzkqseRTVsjTN7pRKO/q0N69lHQx60hRCFTt7SDUWd+oOnROXEkZEndOKDb1xFCaHbMicvXYsHh5Geyp6R+ymz40u55nFMLuV75SVZZxnJDkXF4aKJNXfLtB2IXzXpQMeRpS5F+O3F7OgxrxVsMbq8AsgXOHTq3NER88bsnyZbHohzLPWO5NxlNH8CtUu56xtQXTtNZlsjQcp7w4d8CY33cAnWbU+rQru1jb3/km9IUXr834JfrEAWXrFD+2r0LUxOXCuOESSOf5yhdCIC59L8utNIbYyGQRGjxmiXh7pUV5XoOPYDr5saRH0bfmvnXd8po8GMpx+yyzmjHT6uA==
-Received: from PH7PR17CA0064.namprd17.prod.outlook.com (2603:10b6:510:325::21)
- by SAWPR12MB999141.namprd12.prod.outlook.com (2603:10b6:806:4e1::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Thu, 5 Mar
- 2026 08:08:58 +0000
-Received: from SN1PEPF000252A1.namprd05.prod.outlook.com
- (2603:10b6:510:325:cafe::1) by PH7PR17CA0064.outlook.office365.com
- (2603:10b6:510:325::21) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9654.22 via Frontend Transport; Thu,
- 5 Mar 2026 08:08:58 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SN1PEPF000252A1.mail.protection.outlook.com (10.167.242.8) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Thu, 5 Mar 2026 08:08:58 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 5 Mar
- 2026 00:08:41 -0800
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Thu, 5 Mar
- 2026 00:08:41 -0800
-Received: from f43.dev-l-178 (10.127.8.9) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Thu, 5 Mar
- 2026 00:08:38 -0800
-From: Dragos Tatulea <dtatulea@nvidia.com>
-To: Jakub Kicinski <kuba@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>, "Dragos
- Tatulea" <dtatulea@nvidia.com>
-CC: <netdev@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH net-next] selftests: drv-net: iou-zcrx: wait for memory cleanup of probe run
-Date: Thu, 5 Mar 2026 10:04:45 +0200
-Message-ID: <20260305080446.897628-2-dtatulea@nvidia.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Wup2vosj"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF000252A1:EE_|SAWPR12MB999141:EE_
-X-MS-Office365-Filtering-Correlation-Id: 88e7f1cb-7f1e-4284-3f70-08de7a8e73f9
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700016;
-X-Microsoft-Antispam-Message-Info:
-	O3tzjdgQD1mK1PVVcJSHN8mZq4fG0C0pMT1AZYKIojGStMrV9SU94NwihsCIeNuIWLKDCjF7PdbKtmqPx9yS4cU5Dop8uEnnFVToswwvtnsnqhIcW2CSB8iYhDYMyh2vUtyPHkD3AnoKb0mUnNT2UGrmYhWEwlg8aJIbhLKmi5Hz2JhOnf6TrVS2UWWbKa/HDw2U2wGhYq+GUUSiJ/9B4NNBzYFmhnxvojBjKA4vTrx39O8dH+QFcWwZzpr/Dya3LC62q7q9VMw/1JZhWWRKTYyRWkn+C1U5vhzldPFmZfW0g9gxBOAyvIpSfsLnauw5JicbfdAwqojX8Jcaepx5ds2aKGajU4Amrq/ojN46EkhWJpedaOLJrjBH6aWhEzzOzx2zmDOpY83bV8kmKVlEB1nCZjhY+TH+bf5qOMSPwIelzX4VA2CuG2bzTHPuoSEiuQyizvXaug+XoZuCVOYYhEHRCyy7F8GRkKKnTAUFJoksSJgU3j65tC6SIU1cxO4cYrcKCl4CQk4b1jcXTII6b/6BH41jgf3VXjFCunm0QUoqb+9X/JeimGAEpkB29u8kSMj/M1UUHg+c3830OhOx3VH6CWS8vlu6JEDhfE40vOsMW2j10HqCJhXxUkNR2q/TZebaS30PTv+gqstMZSuOsNzg2N+Gt49YoqtUrkEpz4ijkDDwHa3WgtZ27cnDF88IUoJfwYGYuy4RFLqghqc5FPgx2vwgRWA+tDnf7tQWGWSLNHXtTsgud47y9G27O1dxortPlBTNZtOI1duEIlUKCw==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	5wyEEdyz1VDLDag9L+lTblDEvjqCo/KRk/Nd9wLYflcghrgVPA06G17bK7sA+SY1sBGyj7GrH3k2MBtlFTYRZh3HD7ebEla2C30be8LCmJiKGjm1ohDUVZvg3x28xE9WZZo1V7eOCHBM/gIFvp05reh2Bc/s2LMxsc/XH2jfsowjHhMCGBjrNJ2EnhMB2NKyNK5CPOLx/msinsivqcEHmazipmpi23PxNFqx+2IBOn0IlbaAoq7zmvdiowLLo0sXl8exl77RsD+JOlofMitgvcZRiNz4ipUYwkcDPoWy5B6A7Czlbn5e/IIxg5dP9/lpR/xfHt1IjgTrLP9QbnqcokyU4Fm83Tq6B32PAuGOK8r5NlvOgK/4URdbsmH5ZwpOgDbA5Gps9aDmn7GI1BFlodyCqjld8JE03DjHOObfVnTs+tSyK7DowamRVGZk05SS
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Mar 2026 08:08:58.1398
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 88e7f1cb-7f1e-4284-3f70-08de7a8e73f9
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF000252A1.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAWPR12MB999141
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1772698181;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qn2OPtnXRSQsQ1Z46aFxLdCwe5jcVGJR1jtLPB+L6jA=;
+	b=Wup2vosjFdhcxPxbfQbzoZhKBDE9FQhugHA39DNP9+cokI9LwYAx2pYB/+6cz/+GgV7iP2
+	TaMHBKBHhsXunhKNht5rfthZJqsUuIDxuSU+clMt5I3xKo4icOXgO2/Z6dsC+KZpxxQB2X
+	+Vw1eN4qJdPSAji8MihO8oSoEbb6Ylk=
+Date: Thu, 05 Mar 2026 08:09:37 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Message-ID: <fef6bae161f319a188b5b6f157b33498a463e3e6@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH net-next v1] net: sched: cls_u32: Avoid memcpy()
+ false-positive warning in u32_init_knode()
+To: netdev@vger.kernel.org
+Cc: "Jiayuan Chen" <jiayuan.chen@shopee.com>,
+ syzbot+d5ace703ed883df56e42@syzkaller.appspotmail.com, "Jamal Hadi Salim"
+ <jhs@mojatatu.com>, "Jiri Pirko" <jiri@resnulli.us>, "David S. Miller"
+ <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon
+ Horman" <horms@kernel.org>, "Kees Cook" <kees@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+In-Reply-To: <20260305073343.250702-1-jiayuan.chen@linux.dev>
+References: <20260305073343.250702-1-jiayuan.chen@linux.dev>
+X-Migadu-Flow: FLOW_OUT
 
-The large chunks test does a probe run of iou-zcrx before it runs the
-actual test. After the probe run finishes, the context will still exist
-until the deferred io_uring teardown. When running iou-zcrx the second
-time, io_uring_register_ifq() can return -EEXIST due to the existence of
-the old context.
+March 5, 2026 at 15:33, "Jiayuan Chen" <jiayuan.chen@linux.dev mailto:jia=
+yuan.chen@linux.dev?to=3D%22Jiayuan%20Chen%22%20%3Cjiayuan.chen%40linux.d=
+ev%3E > wrote:
 
-The fix is simple: wait for the context teardown using the new
-mp_clear_wait() utility before running the second instance of iou-zcrx.
 
-Fixes: 27c4ab943882 ("selftests: drv-net: iou-zcrx: wait for memory provider cleanup")
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
----
- tools/testing/selftests/drivers/net/hw/iou-zcrx.py | 1 +
- 1 file changed, 1 insertion(+)
+>=20
+>=20From: Jiayuan Chen <jiayuan.chen@shopee.com>
+>=20
+>=20Syzbot reported a warning in u32_init_knode() [1].
+>=20
+>=20Similar to commit 7cba18332e36 ("net: sched: cls_u32: Avoid memcpy()
+> false-positive warning") which addressed the same issue in u32_change()=
+,
+> use unsafe_memcpy() in u32_init_knode() to work around the compiler's
+> inability to see into composite flexible array structs.
+>=20
+>=20This silences the false-positive reported by syzbot:
+>=20
+>=20 memcpy: detected field-spanning write (size 32) of single field
+>  "&new->sel" at net/sched/cls_u32.c:855 (size 16)
+>=20
+>=20Since the memory is correctly allocated with kzalloc_flex() using
+> s->nkeys, this is purely a false positive and does not need a Fixes tag=
+.
+>=20
+>=20[1] https://syzkaller.appspot.com/bug?extid=3Dd5ace703ed883df56e42
+>=20
+>=20Reported-by: syzbot+d5ace703ed883df56e42@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/69a811b9.a70a0220.b118c.0019.GAE@go=
+ogle.com/T/
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> Made-with: Cursor
+> ---
+>  net/sched/cls_u32.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>=20
+>=20diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+> index 9241c025aa74..8f30cc82181d 100644
+> --- a/net/sched/cls_u32.c
+> +++ b/net/sched/cls_u32.c
+> @@ -852,7 +852,10 @@ static struct tc_u_knode *u32_init_knode(struct ne=
+t *net, struct tcf_proto *tp,
+>  /* Similarly success statistics must be moved as pointers */
+>  new->pcpu_success =3D n->pcpu_success;
+>  #endif
+> - memcpy(&new->sel, s, struct_size(s, keys, s->nkeys));
+> + unsafe_memcpy(&new->sel, s, struct_size(s, keys, s->nkeys),
+> + /* A composite flex-array structure destination,
+> + * which was correctly sized with kzalloc_flex(),
+> + * above. */);
 
-diff --git a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-index 66dd496ec5cf..e81724cb5542 100755
---- a/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-+++ b/tools/testing/selftests/drivers/net/hw/iou-zcrx.py
-@@ -151,6 +151,7 @@ def test_zcrx_large_chunks(cfg) -> None:
-     if probe.ret == SKIP_CODE:
-         raise KsftSkipEx(probe.stdout.strip())
- 
-+    mp_clear_wait(cfg)
-     with bkg(rx_cmd, exit_wait=True):
-         wait_port_listen(cfg.port, proto="tcp")
-         cmd(tx_cmd, host=cfg.remote)
--- 
-2.52.0
 
+
+I'm thinking whether it's more appropriate:
+
+new->sel.hdr =3D s->hdr;
+memcpy(new->sel.keys, s->keys, flex_array_size(s, keys, s->nkeys));
+
+>  if (tcf_exts_init(&new->exts, net, TCA_U32_ACT, TCA_U32_POLICE)) {
+>  kfree(new);
+> --=20
+>=202.43.0
+>
