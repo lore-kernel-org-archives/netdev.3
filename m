@@ -1,108 +1,144 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A323E3A7F52
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 14:41:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E772E3A961F;
+	Thu,  5 Mar 2026 14:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772721676; cv=none; b=gCXh7CHzapbd/gUjtd3Gq9qIDgEk1G7ajAN0KC02xLRRB9vqkIhQRkJSKMgT5XletLQZ28LHB9E6BfuQTFuXyKKoHBpBRwFmftqX+4x+sXqFfmTpAgcFOUHoPjplfn3J1AQUe4TcNheDBktwhUKOt9trpiprUA7rppPgQZCgUrY=
+	t=1772721969; cv=none; b=GmoasorIo61jzQLp682yqYFoMhpcb+yg3t1jc4ZljzACEP6HY4YOjUSE1x9aUnjhHb8ZdQeSdDiVoILXAid9W6yAKmkUkTWwkVEFJr8ipWJEUgdDDPGxW/+w/BwQyiMo3gXUWEkIGbcjIgfHduOW0mdfhKvytqlRIrNMsvzYcHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772721676; c=relaxed/simple;
-	bh=jJpxs4uW9tmn1sVa7vXlYtBN8USiETjByVpeTdSNuoY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MCItqlK1bV8daNrueH/BTC99tUF7nfM0IPRlwdFZCjUVKVJ5eYhBwr4M6gbGaDLGN3QbrLe8RlH6BJYTRA2K8H3j1sq4NZw8NK/1q23Vc1N5AB88R7PMqWBQ2RTuVHfadHc7OXxSpA4pMtUY9q0AV0ePv0i+JIQwwsgNuIC0kSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=P39tM6Gw; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1772721969; c=relaxed/simple;
+	bh=7Fy8244GRUUip69C456QiN1ZM7elVxNq7hb0gn5Awbw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DFGfJJRFVeWQApPxAj+y+xF33/1ZalX08x4B7c050Y6secwfCMEwNPEfHrHtIzfnxeGCjcSzAoSDhRmHxgO69DZ/AdemR+xm+DtF/OcUxcB0obSZy2s84erT7VpO+/Wy/xegW9QYe6oXyof8KAG5eOHxc6gcVqZz4TGC9t2+8F8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=iHj2nspi; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="P39tM6Gw"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-82746ed8cb1so4551813b3a.3
-        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 06:41:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1772721673; x=1773326473; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=v8KIfrmAXO/kTH2qN+MDY/bFTmG66xWFxB/HbEpX9xQ=;
-        b=P39tM6GwriTWovmysC5Im56EAgopeF0wz6ZtvA02M7C+G7svNUR+jJC2E8AUXIz8iJ
-         uG1WXZ7g4zeHuTAzPk5mPjlMap5TAzXlwFdMT4YxdValwKap0mg4BqD2/P/CHqzepwji
-         fPIuaR9FW5PIDo6ggAXVim8yEtDvAyqGhaXSZbWWU6ejqdsnw87PusiCMS0lHv3yu+G0
-         UeePquYj0z9bjtNhuRojIBQZPxbZGGC6beiGUmdkC55Y5qiTL+j0gw33RAxoy/QBi6S/
-         BdIknXkDXsZbbjJ0EXsmrpPOsZ6TpYS87+6+tiI0sLtf04yumwVXl7Zca+fhu1yoNVLQ
-         EYqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772721673; x=1773326473;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v8KIfrmAXO/kTH2qN+MDY/bFTmG66xWFxB/HbEpX9xQ=;
-        b=j5L3Hwf0TjAsCa1xs6JwiGKMjn1B0rve4d9Rv6zeDr6OsoEr38koXbahaav6OuH+JP
-         sPS4CT7Aq7S4y+RnAh1KI7gSRVfFxWPUQ9znZMLRI26SNZxcr6jnTT0RAYh6zDGmmx6V
-         o1gX470Uj265zszIaB3u9pEEBSzqjOCiU0e/7myiIIDWvH4eJQ3FTEn+DpdCixMvhs3K
-         06Ulig+AA0KeTYi39KjRO9bxnyHE554uHmGcnZwNm4vFlmipgLy4eyqcKdtxbWvNfBUy
-         sgcD5/0JoauT6Rrx2jb8JFA3jhemLo/zRjxBd15Px7QsIL2ri0sgLMQCLwVSh9upts5/
-         JvrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU5O3HRWe7+WSvYNM5CNhDkwSjx4fTOVCFqRH/H+8CppoFnwr7L6dvEte3YRxbY1oLDk3NovUs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzG6ZVuy4LTIYH+efpFX0cAi5g/DCYv8CBQceprCf4QHcdBZrnl
-	29sYu/i1zExaRk4kmEZLVLW9dR1uq7MDakn1hSLXnYFqkurSU82Pgp9UDJQtSX6TuQo=
-X-Gm-Gg: ATEYQzyroh0+lh5l3bYDelgtGfezOnb8E1KuhVjnz2fTbs9bVgi9/oGF/pkzjSWvcss
-	2WZu9OFudBb2OZNtVrBTCB/lbKxUy/Gz82QfFOT5QbE/bJ3GRxPW86Axrvb6kVMPbRySLgP7/UD
-	5Nt6p8iA8CCFxwco1LVxDve3JbWM3TX/PYKuzlv2uHzVaRkt1o/A25QbtEPMh2E+GqZJVt9yMCS
-	L48QQl5cwJaYwQFOupD0ts+6r/aoi4xt9Uuw3gUdyyRh2JcuuntfPnzJQSmR0iiPcm7Acn+WI4r
-	oWkyJaD72g0i8wM76NAnAdC2mBT/YRZIgLmldZj6VGmhRUzWk5lB24Ovuu6Qx/v+Dp4xzKGWpNm
-	uyycNOTjfd3IzFxYhXDHfN3kDwMGL+5GtqxpNHLqIU82UcLoCfNiF+ee8TJeDJA6efJ3sTYjQ/D
-	teisWa
-X-Received: by 2002:a05:6a00:114e:b0:823:c59:9cb0 with SMTP id d2e1a72fcca58-82972b6fed7mr4994038b3a.1.1772721673040;
-        Thu, 05 Mar 2026 06:41:13 -0800 (PST)
-Received: from localhost ([2a03:2880:2ff:74::])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8299a6938a7sm37440b3a.7.2026.03.05.06.41.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 06:41:12 -0800 (PST)
-Date: Thu, 5 Mar 2026 06:41:11 -0800
-From: Joe Damato <joe@dama.to>
-To: maximilianpezzullo@gmail.com
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] igc: fix typos in comments
-Message-ID: <aamWB4kGq8hRLjdN@devvm20253.cco0.facebook.com>
-Mail-Followup-To: Joe Damato <joe@dama.to>, maximilianpezzullo@gmail.com,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-References: <20260304-fix-typos-in-comments-in-intel-ethernet-drivers-igb-igc-v2-0-b6a9f1d336ff@gmail.com>
- <20260304-fix-typos-in-comments-in-intel-ethernet-drivers-igb-igc-v2-2-b6a9f1d336ff@gmail.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="iHj2nspi"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 96F4FC4041B;
+	Thu,  5 Mar 2026 14:46:22 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id CDD995FDEB;
+	Thu,  5 Mar 2026 14:46:03 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 44B3B103697B5;
+	Thu,  5 Mar 2026 15:45:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1772721962; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=bIN4i+aSgD4SV8pfn3MjG18z5RHwGaMJsyLvyjMRK5M=;
+	b=iHj2nspiTCO247d5OrTLhEpv7bpCnCZMIkufvLZQ1uOIFX3Sejf1XhsEzd9AQy5Rh+S4sq
+	vpX4XzSjM5d+X6TLIciKp+2r89LzWv51RdJpv8WlXe83IadQaip58dFqgKkHn0tjhWc1zg
+	TlAAt7F6MUPkqBJzGsB6p/WmI8i/dmenWxouQn0QjGpF13yJF5wHiKR1YjuXZ5QYDAT3jX
+	qMcDXsYHnOUl032BTwrijiaO6ShqSrMttBSyAiX3VyFtaeRjuK6u6kHbCJmReusOT8C9lC
+	OEuCMCszO2dmkOvcwtM0PDqb4Xz62V1KiskmNL9rZ97v6Ti8hls9O8qBm3CDbA==
+Message-ID: <a3a915af-5190-4582-a3e6-4ebf92a7e35d@bootlin.com>
+Date: Thu, 5 Mar 2026 15:45:57 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260304-fix-typos-in-comments-in-intel-ethernet-drivers-igb-igc-v2-2-b6a9f1d336ff@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v6 1/9] net: dsa: microchip: Add support for
+ KSZ8463 global irq
+To: Vladimir Oltean <olteanv@gmail.com>
+Cc: Woojung Huh <woojung.huh@microchip.com>, UNGLinuxDriver@microchip.com,
+ Andrew Lunn <andrew@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, Richard Cochran <richardcochran@gmail.com>,
+ Simon Horman <horms@kernel.org>, Pascal Eberhard <pascal.eberhard@se.com>,
+ =?UTF-8?Q?Miqu=C3=A8l_Raynal?= <miquel.raynal@bootlin.com>,
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ Maxime Chevallier <maxime.chevallier@bootlin.com>, Tristram.Ha@microchip.com
+References: <20260304-ksz8463-ptp-v6-0-3f4c47954c71@bootlin.com>
+ <20260304-ksz8463-ptp-v6-1-3f4c47954c71@bootlin.com>
+ <20260305095656.vlyaztv6nbdqrmil@skbuf>
+ <98944cef-0877-4fb9-83a0-92bbd3852f66@bootlin.com>
+ <20260305125149.ejju5ptrkviqi3sm@skbuf>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260305125149.ejju5ptrkviqi3sm@skbuf>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Wed, Mar 04, 2026 at 08:21:20AM +0100, Maximilian Pezzullo via B4 Relay wrote:
-> From: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
-> 
-> Fix spelling errors in code comments:
->  - igc_diag.c: 'autonegotioation' -> 'autonegotiation'
->  - igc_main.c: 'revisons' -> 'revisions' (two occurrences)
-> 
-> Signed-off-by: Maximilian Pezzullo <maximilianpezzullo@gmail.com>
-> ---
->  drivers/net/ethernet/intel/igc/igc_diag.c | 2 +-
->  drivers/net/ethernet/intel/igc/igc_main.c | 4 ++--
->  2 files changed, 3 insertions(+), 3 deletions(-)
 
-Reviewed-by: Joe Damato <joe@dama.to>
+
+On 3/5/26 1:51 PM, Vladimir Oltean wrote:
+> On Thu, Mar 05, 2026 at 01:39:29PM +0100, Bastien Curutchet wrote:
+>> Hi Vladimir,
+>>
+>> On 3/5/26 10:56 AM, Vladimir Oltean wrote:
+>>> On Wed, Mar 04, 2026 at 11:18:52AM +0100, Bastien Curutchet (Schneider Electric) wrote:
+>>>> @@ -2890,14 +2899,18 @@ static irqreturn_t ksz_irq_thread_fn(int irq, void *dev_id)
+>>>>    	unsigned int nhandled = 0;
+>>>>    	struct ksz_device *dev;
+>>>>    	unsigned int sub_irq;
+>>>> -	u8 data;
+>>>> +	u16 data;
+>>>>    	int ret;
+>>>>    	u8 n;
+>>>>    	dev = kirq->dev;
+>>>> -	/* Read interrupt status register */
+>>>> -	ret = ksz_read8(dev, kirq->reg_status, &data);
+>>>> +	/*
+>>>> +	 * Most of the KSZ switches have a 8-bits long interrupt status
+>>>> +	 * register, but the KSZ8463 has a 16-bits long one. The overread here
+>>>> +	 * is safe because we only iterate over kirq->nirqs in the below loop.
+>>>
+>>> FWIW, this isn't the only thing making an overread "safe".
+>>> If the adjacent register also has "clear on read" semantics, that's not
+>>> good.
+>>>
+>>> I can't tell whether that's the case here, though. There are just too
+>>> many hardware variations to check for. I just wanted to point out that
+>>> the reasoning is incomplete.
+>>>
+>> You're right, I hadn't thought about the 'clear on read' case.
+>>
+>> I'll use ksz_read16() only for the KSZ8463 to be 100% sure it won't break
+>> anything for other switches.
+> 
+> I'm still on the fence on whether to say this or not, because I don't
+> really want to get so involved in internal driver bookkeeping, but...
+> this driver is just becoming a hell to review, even if I want to
+> concentrate exclusively on correct API use, like I try to do.
+> > Linus Walleij has added a new ks8995 driver, which has some overlap with
+> the common ksz driver for the KSZ8 family. Now he wants to remove the
+> overlapping device support:
+> https://lore.kernel.org/netdev/20260219-ks8995-fixups-v3-0-a7fc63fe1916@kernel.org/
+> 
+> Maybe we should go the other way around, migrate KSZ8 support to the
+> ks8995 driver instead? The common ksz driver is becoming just extremely
+> convoluted to handle all hardware variations. Would it help in any way
+> to maintain cleaner code paths, what do you think?
+
+I agree, this driver is extremely convoluted because of all the 
+different hardware it handles. It wasn't easy to fit PTP support for the 
+KSZ8463 into it. And I encountered the same kind of difficulties when 
+adding periodic output support (I have another series ready for this 
+once this PTP support will be merged).
+
+Regarding migrating the KSZ8 support into the ksz8995, I think we would 
+quickly hit the same pain points than in ksz_common. Even inside the 
+KSZ8 family we can find a quite big amount of differences between the 
+switches. For instance, both KSZ8463 and KSZ8563 support PTP, they share 
+lots of common registers but their interrupt scheme is very different.
+
+I've added Tristram in Cc:, who works at Microchip. Maybe, Tristram, you 
+have some insights about which switches could share code if we decide to 
+split the big ksz_common into several drivers ?
+
+
+Best regards,
+Bastien
+
+
+
+
+
+
