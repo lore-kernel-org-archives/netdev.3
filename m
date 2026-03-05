@@ -1,118 +1,129 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B440749C
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 00:32:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24A582D5923
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 00:51:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772757141; cv=none; b=diU0rYYos7Oe9AyVUw9UkTs+EV7OribpWrkQAmQX5LbzEKqIUsb0G0mBToa04d+6K7JYytBCX7F6sXyYdF41Tz95aLK++aYyC65utWq4GqLglfdlTOYgoflwNqNfGXbClYv8tt4vFOL99LPH7L8gaTwWWnOqKS+nFCZ996n/0X4=
+	t=1772758278; cv=none; b=u0oESrlZHDvRjEa16/M+JgvcRE0dUtqHbWfoMHXWb8jQPwpDlG1FG8eepYh7qSaOrajP4B1Wn3cOdxEZKAleAB7kBg1WPDfw0RwgFLuMAf3LYyDxjfxOONQPS6LrfXYUXOyn/IKTEkF5HhkSROhmltV7TOmqVWcp9NzmeHKY41o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772757141; c=relaxed/simple;
-	bh=nmQHG+4AnyrSSsTzc8B4eGsexpvES3uR3ESxYjP8gGM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NR+Xya+zlhDNzKNl6tcUhvFGNMrMFnxNlJd3vKBZdmGznYzYFwVndDIiB+aoRPxAy6uxH3K9Dkkqhm5470mzrx+J0zyXxC69kiHvjq0bx4YzWC72re8mfOUvBVC0v1XWGf1r7O1IfBZDi3H5l3+99SLzgB0PGzVXLOMREEGy/Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=lW9bcmfJ; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
+	s=arc-20240116; t=1772758278; c=relaxed/simple;
+	bh=3dlLQAlasBGbadIvHX9k8flSJPAsD29x0afq21FmLvg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ch17OJbTzwb40y4EMmjdIhim5OS2PyGiaHaNvarMV1fVx+lMJBj7fKpTlk4M7N4UxWlzQl/xV+HoLtKyXMSSn66g/eIHFRe/WEDh6dklGjW+xAlbHhI/NliQDq/C6v5t+tLB0hATXbB7Y93Rx7vfKyZC635HJ8AKjFOJs85oCC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=BxRq4x+7; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="lW9bcmfJ"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8cb5138df1aso841228885a.3
-        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 16:32:20 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="BxRq4x+7"
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-48374014a77so104639635e9.3
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 16:51:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1772757139; x=1773361939; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KCNCS1facBK4msNGTEPROi9xyZQiv1TuHRy7zkEiK2Y=;
-        b=lW9bcmfJOXRcl1wLtmCzgwKLXB+GRjOQIl2x5BbvMWyQIijxXPUN4kLyDZOoSxNX/V
-         Ksx1lrWzGYrUXYtsOsDLHaedA9O5tuL5Oq7bDCmBbA47aMv4EZp7gJ+LpiEeSS/FnAHa
-         4SHX0eob9JE57WZ7+wxhAvV84oD5JLkg9tFNr0p6uJkn6xvxPiMOugeD0Hfe1BssdR6g
-         Mtb8LWj/qlHrCCjTIfg7Zo5zb4KJgdasWsAM74OrjaQGMle+66hOijYy3N7bf+cMKrn6
-         PtM5ESg0RoWtrPXIYOP144yeOS0MWKnv87rARYDnHEVHInt/Vr1ir8miul+Iz5tl41AC
-         VmHA==
+        d=suse.com; s=google; t=1772758275; x=1773363075; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HfzwmS6sVtR8qdJxrV1EFi7Ums5fv3yYhTk59aaWPfk=;
+        b=BxRq4x+7iY5HrEz5E1oYjZAXM5BCZB3+BqNSZPC5Uc4QBoOfh0ZLaJi7j3nVI9U69J
+         TzJkFQlr1fkdKZtRW+QECw/tIBCkDnhaYM1wvZ6tH7qnfsdRDXoCtGS5BvoHM3VoiR1g
+         VPtkZ4M+T8myVSIgKsjDJQDnNK1OC9Xbza0LNwQbJZHwwpTQNfjdjpjrr4r3bYlw+2Rj
+         Yb07aA7TtvJbKNl2FqORAPLU+ernZ1/21V2103QEhKl75xG3kmiPOmoSa+3UcyO6lqGU
+         0AOvZTuQFEuEbGxwjegqea44kH8hiyolb6WidlJVyLLRRl+nnRHvDRqnPgiHhKCEoyCT
+         gK+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772757139; x=1773361939;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KCNCS1facBK4msNGTEPROi9xyZQiv1TuHRy7zkEiK2Y=;
-        b=r4ePQuRxALvw6lOM0j5Ju1i2JupZbpPDeUn3hZuMts4V6xrOO9CNom+Q72SY9VZ7Om
-         s4K61EHvUzoboikv0HOkJMfIGVTO042Wtv9leRbwO19tIsymYKCKRNrph/03Pf1ll1n+
-         YLP6MYoW67fsrfMo82XoibMQ1Te4TEU/R28cGuxFY9kmCQAPHw/70aVKC6AHc1IOLNNe
-         QOsTaTpLUwy3st5T2Y6C1vkVI1xVm66Ucflhoc2wE81ozsX54gOZ6IcwLl4Joxs/tf2K
-         hX7jwoS81CIz3WB5dWCfEwHk8k1GyUeprGrzqfjjP16NJwIj6Ah1JlcmPxUUEQGFtoSX
-         L4uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVSLwa2K3I01LQxWJdS1pOODcioguA+ku9gjWgDBHPL1ROW4sdEx0zN/F6yMe8KUS5kfpBiQ1g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMB5mG0VcR4WuV4IPUjDmaD67yMa9u/RC6iv7H2e+Uxd3N93Xh
-	prpMTmsho27S10SnZQnH/R1LJshOQIHl1/vN+2j8mbugLJ/sY7xJJsLCo7ChT2BocNw=
-X-Gm-Gg: ATEYQzwywvcFpr1WcAMyZNTTngpdsbLfjhiNN3unLJDiQHJdTIEDa7keXIWZiVEkXvd
-	e9+T2v/ZdVluXJNv+k+jAplJInJXLq/kPwYCIzydwU2MTVN1E+67rpKkMBti0vs9Ty1tUeoooMB
-	gzyDipVaQJzXQBnbT0b+9sbPSipaxZRG3QI8pP5VfRaiq0sgBRMAUV2tcHZ6dn0dzZV3V/h5oU+
-	Q3C421ny4mIFYhivAvI6LAuB5b+h7c+ii6452jIRKx7xrDdC1EtN6rhoza8CQkwjbuojn6E2hdy
-	Z3ryUNbhDbJJIkCBja8NAJA5iXyrCyXU4GQGpGshFQGIAAS5fPsZjJjOGbtfxRIqLRyCEJaz7hU
-	qvyJYIN8t9YPCmZVpRRtBwzzPkh70VTQaMXwJulOYk3jlQpjv8adMDwMekteXDtokH359+7yZm6
-	up1W/JsSQ9e+CLs+4vuma5m8zYPYR0W2c29ZSXPsoB2VvHxg8ucQpuffdJxX/JXya+dGxjc4amn
-	AJBif3u
-X-Received: by 2002:a05:620a:2a15:b0:8c7:1b3c:8e8 with SMTP id af79cd13be357-8cd6d4fb35dmr55157185a.40.1772757139456;
-        Thu, 05 Mar 2026 16:32:19 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-142-162-112-119.dhcp-dynamic.fibreop.ns.bellaliant.net. [142.162.112.119])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cbbf66b9d9sm2001104885a.12.2026.03.05.16.32.18
+        d=1e100.net; s=20230601; t=1772758275; x=1773363075;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HfzwmS6sVtR8qdJxrV1EFi7Ums5fv3yYhTk59aaWPfk=;
+        b=OIh9IQYe9ZeIgc1KGMX13JILMM13sHuNP1Zbs17fPR9KJWwUoBpYwWRMbARe60XPJg
+         Yxi6qR/Cdklv7tpf3aEGwxUCl86W7uYxu6qO70yTDJTVaWcTz0gkfdfkgSJgjty55poC
+         jjd26vYB7pPj6zcnZF1S/U8ahse5/SPwr23AQjZyXmkX9DkTM37Ve0uB69j50PMNsQfl
+         qlSHreiNqvOOPT1Zoh25RkzP3t674QPUdzsn8NgvyOz8H4E23wzlFxOLUNhocOLhAPfk
+         8ddQsHE+9Le8PaEuzqHFAklSplEvcYNc/UtzqtIBg6gr20Px0HT1ip0l9VBAY0N7kZ5b
+         lo3g==
+X-Forwarded-Encrypted: i=1; AJvYcCX6mNq/njWa2HU+C2DJE0AkC9yaY9Lob+cwD2VKArMs4XMI2t36/MnzVhRIB3jAFyJIjxeHn+k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/ts16bDb/wLpMw4LqIaMORHY1BCOoYros0ci5imyWW5pYwjpN
+	MqG/FsTTP7tEE0fmiTn1qLLhq2YdC9DpFdTpeXaFzwZ5ctNrhpGrH203JrM6ar1oAI4=
+X-Gm-Gg: ATEYQzy5bcLLyKRSRDmrzwbAOGTHmDSb/9abMvv4jQL8+Ez+HrCXqIQWfN+o1y2nzNc
+	BMzgJSk9f3Eclsshqz1dAj7DjMcMAVcwlghO9H35gYPrdNe5McEoVFt44xIm1ho3I/xsgdhcrOe
+	zrv/ttpTytom3TD5ZBCH2r7U+M68uxDY+2ilX+SBohyfW1pEGANppRPe9v4hnwOinQgeQhs3GWL
+	hHWywjXN+p4DpJaeIE11hzvkpMJNnWautx9j85T4QzDSD/Lq+FxULnToD+PifTMF5hWP9pJGJLO
+	aBVfJ1dX/0DlI99pGjkNBFlqldP21w8gcsScRfMzvwP8rvMLjM9GUd5bGL2qEU00pHN3fGXV1zt
+	2VBNWA6y52D9HnzsJmWFyupUvnMZWMp+lewHWT35qM9b3Fd7Vt5xpFodqq6UGD7nCr+gzge670C
+	XJQk/+cMLM1QW7YZPJPqpp
+X-Received: by 2002:a05:600c:c8f:b0:483:2c98:4368 with SMTP id 5b1f17b1804b1-4852695aec4mr2898715e9.18.1772758275517;
+        Thu, 05 Mar 2026 16:51:15 -0800 (PST)
+Received: from localhost ([189.99.238.164])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-5ffe82e4dc5sm6259137.0.2026.03.05.16.51.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 16:32:18 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vyJ74-00000008rF3-01pZ;
-	Thu, 05 Mar 2026 20:32:18 -0400
-Date: Thu, 5 Mar 2026 20:32:17 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Praveen Kannoju <praveen.kannoju@oracle.com>
-Cc: "saeedm@nvidia.com" <saeedm@nvidia.com>,
-	"leon@kernel.org" <leon@kernel.org>,
-	"tariqt@nvidia.com" <tariqt@nvidia.com>,
-	"mbloch@nvidia.com" <mbloch@nvidia.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	Rama Nichanamatlu <rama.nichanamatlu@oracle.com>,
-	Manjunath Patil <manjunath.b.patil@oracle.com>,
-	Anand Khoje <anand.a.khoje@oracle.com>
-Subject: Re: [PATCH] net/mlx5: poll mlx5 eq during irq migration
-Message-ID: <20260306003217.GB1687929@ziepe.ca>
-References: <20260304161704.910564-1-praveen.kannoju@oracle.com>
- <20260304201151.GI964116@ziepe.ca>
- <CH3PR10MB7704DD1E6B9A671796FC6B528C7DA@CH3PR10MB7704.namprd10.prod.outlook.com>
+        Thu, 05 Mar 2026 16:51:15 -0800 (PST)
+From: =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re?= <rbm@suse.com>
+Subject: [PATCH net v3 0/3] {net,bpf}: nd_tbl fixes for when ipv6.disable=1
+Date: Thu, 05 Mar 2026 18:29:54 -0300
+Message-Id: <20260305-net-nd_tbl_fixes-v3-0-fde28b30a744@suse.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CH3PR10MB7704DD1E6B9A671796FC6B528C7DA@CH3PR10MB7704.namprd10.prod.outlook.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIANL1qWkC/3WOwQ7CIBBEf6XhLApbtdaT/2FMw8JiSSw1UImm6
+ b9Le9GDHmd23s6MLFJwFNmxGFmg5KLrfRblqmC6Vf5K3JmsGQjYC4AD9zRwb5oBb411T4pc00F
+ qJUmgBZaxe6DlkKkzy2l2ySaqSByD8rqdv2V70ynn53zr4tCH17IgyYX6X5YkFxwQFFRbY2vEU
+ 3xEWuu+W2oSfPhS7H7wkHmsZFUZlKq25Rc/TdMbMpF1Nw8BAAA=
+X-Change-ID: 20260228-net-nd_tbl_fixes-ce81ca1e0bf2
+To: Martin KaFai Lau <martin.lau@linux.dev>, 
+ Daniel Borkmann <daniel@iogearbox.net>, 
+ John Fastabend <john.fastabend@gmail.com>, 
+ Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>, 
+ Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>, 
+ Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, 
+ KP Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, 
+ Jiri Olsa <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+ =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>, 
+ David Ahern <dsahern@kernel.org>, Jay Vosburgh <jv@jvosburgh.net>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, Hangbin Liu <liuhangbin@gmail.com>
+Cc: Fernando Fernandez Mancera <fmancera@suse.de>, bpf@vger.kernel.org, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Ricardo_B=2E_Marli=C3=A8re?= <rbm@suse.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=openssh-sha256; t=1772758271; l=952;
+ i=rbm@suse.com; h=from:subject:message-id;
+ bh=3dlLQAlasBGbadIvHX9k8flSJPAsD29x0afq21FmLvg=;
+ b=U1NIU0lHAAAAAQAAADMAAAALc3NoLWVkMjU1MTkAAAAgguRCc5X8/UX9M40lkMnr//aFGOhce
+ x5ezt8MFNUFlqYAAAAGcGF0YXR0AAAAAAAAAAZzaGE1MTIAAABTAAAAC3NzaC1lZDI1NTE5AAAA
+ QM1TgpuypqguctN+xKfI46/kRMYE9SzBsWbPhuzyij0XFje/ujCBxrTCHF6tCJnA1lxc1tc3gCY
+ jK7IWjxASLgQ=
+X-Developer-Key: i=rbm@suse.com; a=openssh;
+ fpr=SHA256:pzhe0fJpYLz+3cZ33FFPhIfaUElk9CXPFFXmalIH+1g
 
-On Thu, Mar 05, 2026 at 05:08:52PM +0000, Praveen Kannoju wrote:
+Signed-off-by: Ricardo B. Marlière <rbm@suse.com>
+---
+Changes in v3:
+- Don't use ipv6_mod_enabled() in net/core/filter.c.
+- Link to v2: https://lore.kernel.org/r/20260305-net-nd_tbl_fixes-v2-0-b7177db1a9f3@suse.com
 
->    Regardless of the underlying causes, which may include IRQ loss
->    or EQ re-arming failure, the TX queue becomes stuck, and the
->    timeout handler is only triggered once the queue is declared
->    full. In scenarios where only specialized packets, such as
->    heartbeat packets, are sent through the queue, it takes
->    significantly longer for the queue to fill and be identified as
->    stuck. A proven solution for this issue is polling the EQ
->    immediately after the corresponding IRQ migration, which allows
->    for earlier recovery and prevents the transmission queue from
->    becoming stuck.
+Changes in v2:
+- Used ipv6_mod_enabled() helper, guarded by unlikely().
+- Link to v1: https://lore.kernel.org/r/20260228-net-nd_tbl_fixes-v1-0-2b2a274df9bb@suse.com
 
-I undersand all of this, but for upstreaming we want the root cause,
-not bodges like this.
+---
+Ricardo B. Marlière (3):
+      bpf: bpf_out_neigh_v4: Fix nd_tbl NULL dereference when IPv6 is disabled
+      bpf: bpf_out_neigh_v6: Fix nd_tbl NULL dereference when IPv6 is disabled
+      net: bonding: Fix nd_tbl NULL dereference when IPv6 is disabled
 
-There is no reason to do what this patch does, the IRQ system is not
-supposed to loose interrupts on migration, if that is happening on
-your systems it is a serious bug that must be root caused.
+ drivers/net/bonding/bond_main.c | 3 +++
+ net/core/filter.c               | 7 +++++++
+ 2 files changed, 10 insertions(+)
+---
+base-commit: b824c3e16c1904bf80df489e293d1e3cbf98896d
+change-id: 20260228-net-nd_tbl_fixes-ce81ca1e0bf2
 
-Jason
+Best regards,
+-- 
+Ricardo B. Marlière <rbm@suse.com>
+
