@@ -1,15 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FB89460
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 14:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D0B3A9623
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 14:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772721281; cv=none; b=TplhIB1y012zbjRwpx3FAiHwG6w/rU7oQC6l4e72rwCr04vRoAlocT5vR0GabaD3MoU3Y3eLnd+Jxu0XUdRQxY6l/xA4E0Kc0rMgn42HRqVpzJ35gQmeMbrYzmlfBcIklSOGpfTI5ETHoon+sT1H4zNRmrfp/zB1ieydW+7KzhM=
+	t=1772721283; cv=none; b=izs+yhl2T1rNpwcL/Jk8hUq7H0lh5Ys13TkjhbqsU9QO6+e6c8yV/UgdY0hUhfSzAOPPE21/6wk6VkYwQHPOD3cpJxm2GcarsOfEK88SBDHwZJter7ZTrrzus+l9Mhihqkpu48phPdz7mUKWrgIJqOl6pOD/1iXmhLOxhXLsuII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772721281; c=relaxed/simple;
-	bh=uDVOFbw2XYWrpJ70udOh31mZUO7NNXV76H6RExjbvpE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=joopfPuBO9KpnSubtPRw8Y8QmGALQkUwekgOXllVY95Zar+VHz/P5ITuGxWUu3180UMf8hBr0OmE81Zgeov9N6RRBl4nrOeExhjJLvXKJFkS16eaI4aX5omyPuqT0hDzNnLjNc73UpQnp3k3wMcFHzLrKhM/LoLhDnuuooUgbcM=
+	s=arc-20240116; t=1772721283; c=relaxed/simple;
+	bh=a4dlZTkqNpOm68ghpuv23SkeBQ8R1+hPE1wmRdwRFuc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OX5LnctG+Nw/apjC026LDKBbaCnwRsgn2rJ4wgoy9rrEOiGOu5uWAZjjGE9AHBzJ495mU7nCPUZ3vCXA15wmkR+2WSXidXaTUY/JpR5B/URpJ+t80slJzRCZDhGm7qHPg3/v5RSMXvo1+kpMZG7l9YP0hpu05+CYJCwPIIJqRDk=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -17,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1vy9mZ-000460-Pg; Thu, 05 Mar 2026 15:34:31 +0100
+	id 1vy9mZ-000465-Ph; Thu, 05 Mar 2026 15:34:31 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1vy9mX-003twj-1q;
-	Thu, 05 Mar 2026 15:34:30 +0100
+	id 1vy9mX-003twn-2C;
+	Thu, 05 Mar 2026 15:34:31 +0100
 Received: from ore by dude04 with local (Exim 4.98.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1vy9mY-00000002E7w-3XA9;
+	id 1vy9mY-00000002E8S-3tmX;
 	Thu, 05 Mar 2026 15:34:30 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -38,14 +39,17 @@ To: "David S. Miller" <davem@davemloft.net>,
 	Thangaraj Samynathan <Thangaraj.S@microchip.com>,
 	Rengarajan Sundararajan <Rengarajan.S@microchip.com>
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
+	stable@vger.kernel.org,
 	kernel@pengutronix.de,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com
-Subject: [PATCH net v1 0/4] net: usb: lan78xx: accumulated bug fixes
-Date: Thu,  5 Mar 2026 15:34:25 +0100
-Message-ID: <20260305143429.530909-1-o.rempel@pengutronix.de>
+Subject: [PATCH net v1 3/4] net: usb: lan78xx: skip LTM configuration for LAN7850
+Date: Thu,  5 Mar 2026 15:34:28 +0100
+Message-ID: <20260305143429.530909-4-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260305143429.530909-1-o.rempel@pengutronix.de>
+References: <20260305143429.530909-1-o.rempel@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,20 +62,42 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-This series contains a collection of standalone bug fixes for the
-Microchip LAN78xx driver, addressing packet handling, TX statistics,
-invalid register accesses, and a kernel warning during disconnect.
+Do not configure Latency Tolerance Messaging (LTM) on USB 2.0 hardware.
 
-Oleksij Rempel (4):
-  net: usb: lan78xx: fix silent drop of packets with checksum errors
-  net: usb: lan78xx: fix TX byte statistics for small packets
-  net: usb: lan78xx: skip LTM configuration for LAN7850
-  net: usb: lan78xx: fix WARN in __netif_napi_del_locked on disconnect
+The LAN7850 is a High-Speed (USB 2.0) only device and does not support
+SuperSpeed features like LTM. Currently, the driver unconditionally
+attempts to configure LTM registers during initialization. On the
+LAN7850, these registers do not exist, resulting in writes to invalid
+or undocumented memory space.
 
- drivers/net/usb/lan78xx.c | 12 ++++++++----
- drivers/net/usb/lan78xx.h |  3 +++
- 2 files changed, 11 insertions(+), 4 deletions(-)
+This issue was identified during a port to the regmap API with strict
+register validation enabled. While no functional issues or crashes have
+been observed from these invalid writes, bypassing LTM initialization
+on the LAN7850 ensures the driver strictly adheres to the hardware's
+valid register map.
 
---
+Fixes: 55d7de9de6c3 ("Microchip's LAN7800 family USB 2/3 to 10/100/1000 Ethernet device driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ drivers/net/usb/lan78xx.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
+index 507dbcf3b7b0..f8558b87eaec 100644
+--- a/drivers/net/usb/lan78xx.c
++++ b/drivers/net/usb/lan78xx.c
+@@ -3119,6 +3119,10 @@ static int lan78xx_init_ltm(struct lan78xx_net *dev)
+ 	int ret;
+ 	u32 buf;
+ 
++	/* LAN7850 is USB 2.0 and does not support LTM */
++	if (dev->chipid == ID_REV_CHIP_ID_7850_)
++		return 0;
++
+ 	ret = lan78xx_read_reg(dev, USB_CFG1, &buf);
+ 	if (ret < 0)
+ 		goto init_ltm_failed;
+-- 
 2.47.3
 
