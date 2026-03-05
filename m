@@ -1,112 +1,120 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D1739659F;
-	Thu,  5 Mar 2026 13:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0193A0EB6
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 13:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772715735; cv=none; b=ebU+QnIyApkv62Batz8cE7/JQvUAaRQ25CylQO8HhjSywQjTegiycdtrI1LnM+ixDMNMiCXHokU0ctr4ouPDYZhvRrQ4+imfaeJglRJAWVG83v9XCf80Lmadof8wJYeQgn3OLeg4hUgiw4oVJGSKAxDiqxX+f6NLEyuIyJVARn4=
+	t=1772715976; cv=none; b=KLMz0SKil05dDEyRTxoT4Ep9PFvEbBlUevrzFw4AbDBdX/kkB20vtHzxkJyBhE2glkzzRyU54rtUjJKzFYm9nXfE0wxHBo3lLbR3yT+sG7oleb7bKaBlxsB2WDvbcVdjBLDnH/KKjc9cEF9R2Py2NX9ifIEswTVRKnLxdgTGLWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772715735; c=relaxed/simple;
-	bh=lDcJsUBjGSFKl6MrvZ3cOz/hZLTpvem7Tvya63+smjM=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=n23BVcbi2kO/KFxbVeR2NTHi/9MD0e0DVDwuI+Xt+0mcif30rJSInGuzmbCZkz0tAyXNobshIT0SHxFhwuC/h8g4emUIxaAHPKCkAapdzrZMlP55DiKU8cP1u3CI7PZUiAvtqp4BkDtELv39YyLm1rKsAtyr8DtkMTOaW4FI1PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=Cl/95vf7; arc=none smtp.client-ip=68.232.154.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="Cl/95vf7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1772715734; x=1804251734;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=lDcJsUBjGSFKl6MrvZ3cOz/hZLTpvem7Tvya63+smjM=;
-  b=Cl/95vf72sVK3hA7f4jwOBfsL8dGrfYUBAnVhpgKvAURz8WBPO1IJkwi
-   wgMF41HY9vPTg05rp9B/8ht/Wfg/mc/1IEnf0PZe0hgyOhT1/289R86g4
-   1Vi8BA3AYgY9EOfLjs94cstSFOY0RbPDVafbKkFRK6FN6AMpqCe3jRvad
-   pWzkymRRAnXth/uchatcuddo4SV8LlO3eBrcjJZlYBRyTzM/BfelwyMYw
-   5PDPFiWYl7EJGRbDEyFfv7fkjPgMRYpIshDu5W93fbHa41qhnDhMUX8k+
-   1fjid3Eo+Bo1/RA38R8502zaa6CAngG/PQ4xcny3r9N0rDItIo0tGs/VY
-   w==;
-X-CSE-ConnectionGUID: ChIxbRkOQJywFkYs2byrrA==
-X-CSE-MsgGUID: TK4XrK6xQ6aXl6g7NDOFeQ==
-X-IronPort-AV: E=Sophos;i="6.23,103,1770620400"; 
-   d="scan'208";a="221535225"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa6.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 05 Mar 2026 06:02:13 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Thu, 5 Mar 2026 06:01:34 -0700
-Received: from DEN-DL-M77643.microsemi.net (10.10.85.11) by
- chn-vm-ex04.mchp-main.com (10.10.85.152) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Thu, 5 Mar 2026 06:01:31 -0700
-Message-ID: <85fd888f981ef57c84977cd26f59729672523ff5.camel@microchip.com>
-Subject: Re: [PATCH net-next 1/8] net: dsa: add tag driver for LAN9645X
-From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: <UNGLinuxDriver@microchip.com>, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, "Simon
- Horman" <horms@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof
- Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Woojung
- Huh <woojung.huh@microchip.com>, Russell King <linux@armlinux.org.uk>, "Steen
- Hegelund" <Steen.Hegelund@microchip.com>, Daniel Machon
-	<daniel.machon@microchip.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>
-Date: Thu, 5 Mar 2026 14:01:31 +0100
-In-Reply-To: <c56db879-7556-4e13-bd59-2045d7048dc8@lunn.ch>
-References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
-	 <20260303-dsa_lan9645x_switch_driver_base-v1-1-bff8ca1396f5@microchip.com>
-	 <c56db879-7556-4e13-bd59-2045d7048dc8@lunn.ch>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4-0ubuntu2.1 
+	s=arc-20240116; t=1772715976; c=relaxed/simple;
+	bh=An6z6pGF00+43VUaOecTwb49LKqdBH2wGqINr17mp5U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uyvwrTHj2NyMnhu4zelE5Rw3QrdKSo3D0KxHnbmwyyupEXRx9oagO2m4graLX1qV5jKRM1QnxMnOLnWCtrdKd4N5k3ZQP/eTZOtG4/O72UjR9K9urlgfHtnlNvEzw1Mv9i4S6o/5ldu/dfIKQWB+AGCY66VGlXBLUxtd3sCu4oI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.215.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-bde0f62464cso2849855a12.2
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 05:06:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772715972; x=1773320772;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z/3ao61LTSp6jCCF+e+2SF+gp23jwVu9a+x2K0Dcxpg=;
+        b=n9bM3VFaOInctOHaSegiQKsaaZkxXP0ssRPHmuFsjiX0esap7F3iHMXayKYqDffoDI
+         Ab5DGkhOcxtRBV/Wou+kCD4SkjoG/Cs2uxtj6WChJmI6xHAqHwqIVE2M6v5nOUMx61r7
+         BzlqAcOErd3vJkeQPiN/pTpmCCyOQ2C9ZXTx1zAKdnqb9DxoDQJsk+pFu7n34x6CPY3p
+         +fTwIJiH5yRcLY+F4qoQzW1w4kXOw7X7U9biG6t01e5wSyQv6iSQyMGX2tlKLQvVjucV
+         VxavE33ZkYPt0B06iKTuJsjHWu10xqg2xmxrqrJg1bEEgjQ9t44OcMA92xqHSHhOh4xw
+         JijA==
+X-Forwarded-Encrypted: i=1; AJvYcCWAviZwlQ4He66c31278LHos3rkF30cDgQRuCbXly8zu0W5zmkXGn9TE2vPWhZTM8uUAYYjf28=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzg0dY3J68vkaRW9WzPqy4vvTIp1RZAfimv9HHX51Je1iusV6j0
+	y4qo8gKzgXcdUL29rIoTy1NhL5SezXEDKc9Wa9TewkeUW+QaYIKF02Lv
+X-Gm-Gg: ATEYQzzEdkRHVmmYlAIhuJfagrb0TG+VCtthl49VyBGuzM3UaHQLkMkHraEvREyQU+A
+	T2WpgtzZMz0TH+iYNZz/xKY0kwJ3dyE4JcTgayNucFRKJR64wm+4vWnQ+7hF8iLOdtbGSpdD/dU
+	anm6SXY9l76moSjcNWFZ7SImiod6QQBB0e1XvQQJHDBTpM+KtAOiTV/IpEsZG1nmBdMmYdHwY+k
+	6nBvklEJteO6AB8qpQN3+5hgnV72AyKRzR+kZcM6zA3q1qEJV/ynE/IGk1FzC1PsBJX+phplm0s
+	E88wZ1bZVexwCSkz+/ASXzuzHSi7SVkRuUs2QH2YocAtz/DqwICL/FA7JgJRXJgCaBbkBOGLK4e
+	cx1fOVs+l7Jh8vqwIjh2lNgLIpTmy+xpz1xxwFr2GR0Sn7DRxVuFRynh/nC0jpX+fgZcf3XkkEs
+	c9r6FaeKpzxEHbLJ3Dbngmo4z4CVzkKgK1SAPl/UGGT2l4qONiuAeZEtxJdB+ox8dX73wa++HDx
+	yRcNjjn/0Jaw5wxNSBxM0NBALtq4oPSECvW1JoQa+IB912XX3U=
+X-Received: by 2002:a17:902:f68a:b0:295:560a:e499 with SMTP id d9443c01a7336-2ae6a9cd41cmr53596975ad.5.1772715971749;
+        Thu, 05 Mar 2026 05:06:11 -0800 (PST)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae3d19559csm154128355ad.5.2026.03.05.05.06.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 05:06:10 -0800 (PST)
+Date: Thu, 5 Mar 2026 22:06:09 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Joe Perches <joe@perches.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	linux-phy@lists.infradead.org, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-can@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-sunxi@lists.linux.dev,
+	linux-tegra@vger.kernel.org, linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org, spacemit@lists.linux.dev,
+	UNGLinuxDriver@microchip.com
+Subject: Re: [PATCH phy-next 22/22] MAINTAINERS: add regex for linux-phy
+Message-ID: <20260305130609.GB1659133@rocinante>
+References: <20260304175735.2660419-1-vladimir.oltean@nxp.com>
+ <20260304175735.2660419-23-vladimir.oltean@nxp.com>
+ <a8fee1cd-1e69-4a9e-8533-c0988c480fb9@oss.qualcomm.com>
+ <20260305085148.7cwo3yflp7vcfldf@skbuf>
+ <f3a5aa3df78553ffc0fd0024f5fd36a4e2158c88.camel@perches.com>
+ <20260305114352.2f7btqixg4tu5bzl@skbuf>
+ <20260305121532.GA1649635@rocinante>
+ <20260305123843.i47asdrjychwlgdt@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305123843.i47asdrjychwlgdt@skbuf>
 
-On Wed, 2026-03-04 at 16:23 +0100, Andrew Lunn wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e content is safe
->=20
-> Please could you try moving these:
->=20
-> > +     BUILD_BUG_ON_MSG((_fld_sz) > 32, "IFH field size wider than 32.")=
-;\
-> > +     BUILD_BUG_ON_MSG((_fld_sz) =3D=3D 0, "IFH field size of 0.");    =
-   \
-> > +     BUILD_BUG_ON_MSG((_fld) + (_fld_sz) > LAN9645X_IFH_BITS,        \
-> > +                      "IFH field overflows IFH");                    \
->=20
-> > +static inline void lan9645x_ifh_set(u8 *ifh, u32 val, size_t pos, size=
-_t length)
-> > +{
-> > +     size_t end =3D (pos + length) - 1;
-> > +     size_t start_u8 =3D pos >> 3;
-> > +     size_t end_u8 =3D end >> 3;
-> > +     size_t end_rem =3D end & 0x7;
-> > +     size_t pos_rem =3D pos & 0x7;
-> > +     u8 end_mask, start_mask;
-> > +     size_t vshift;
-> > +     u8 *ptr;
->=20
-> here.
->=20
-> You are passing build time constant. The compiler should be able to
-> track them through the call, especially since they are inline. So i
-> think it should work. Please test it, deliberately break some of the
-> #defines and make sure the build fails.
->=20
-> I just think avoiding the macro would be nice, if possible.
->=20
->   Andrew
+Hello,
 
-Ok, I will try this, and see if I can lose the macro. Thank you.
+> > > K:    \b(?:__)?(?:devm_)?(?:of_)?phy_(?:create|destroy|provider_(?:un)?register)\b
+> > > K:    \bphy_(?:create|remove)_lookup\b
+> > > K:    \bphy_(?:get|set)?_drvdata\b
+> > > K:    \b(?:devm_)?(?:of_)?phy_(?:optional_)?(?:get|put)(?:_by_index)?\b
+> > > K:    \bphy_pm_runtime_(?:get|put)(?:_sync)?\b
+> > > K:    \bphy_(?:init|exit|power_(?:on|off))\b
+> > > K:    \bphy_|(?:get|set)_(?:mode(?:_ext)?|media|speed|bus_width|max_link_rate)\b
+> > > K:    \bphy_(?:reset|configure|validate|calibrate)\b
+> > > K:    \bphy_notify_(?:connect|disconnect|state)\b
+> > > K:    (?:struct\s+)?phy(?:_ops|_attrs|_lookup|_provider)?\b
+> > > K:    (?:linux/phy/phy\.h|phy-props\.h|phy-provider\.h)
+> > 
+> > What about
+> > 
+> >   F:    drivers/*/*phy*
+> > 
+> > or something along these lines.
+> > 
+> >         Krzysztof
+> 
+> I don't understand your suggestion. Is it meant as a replacement for the
+> keyword regexes? Your file pattern matches on:
 
-Emil
+I was thinking more along the lines of using wildcards, the F: was just an
+example.
+
+[...]
+
+> There are a lot of false positives, and a lot of false negatives.
+
+Yeah, the "catch-all", for lack of better word, will not work here.
+
+	Krzysztof
