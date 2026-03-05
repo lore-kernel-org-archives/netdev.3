@@ -1,76 +1,87 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27040334C3D
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 12:11:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F315F334C28
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 12:13:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772712711; cv=none; b=hpE6idmG8lYP0as1rPtjwdQlJBSwCN8iKsNW3mBAJ1ULGJpVXK06YXE7TJ73h1fOdeEqY/957BjikBFckhfutRl2rJgowPtg+e+fMKDYmY6cdWDSybUwrVSG57o9rbhkMTRNVDyaNdLfvZP3l6FajP5iPyNkIQLONnjWLr9msVc=
+	t=1772712799; cv=none; b=BK6nZLok9DRZDhXZi0HZxg+V7G0EedqiB0TJt4P72t86yYme0oSOAAua3AnBNR8MpxZX7N3oFTYI4f0R744Wjs/BwzVwn9uYi/mhC06caCN1+HO6EBCA0u64OfTZ5REQphSIQUCVJMMOZI1fCB1S7sJiYw2RBof4EihcomMpGjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772712711; c=relaxed/simple;
-	bh=EmZQCtLO8pRLYuoGPIN70oWLKnIAOaCwJQm16fFndd0=;
+	s=arc-20240116; t=1772712799; c=relaxed/simple;
+	bh=QEEz7bKrTbaIdtntnCFjm16TbQ6yV67W+dRNaUrpuGQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YhBBifgamiwKVVcIc99u6JjwDJqpA74SVxGuMl+rex+uHlFOfr2BVtOsWzP7G3ztNIU552XL4W0mCDo9G7CbHZLw8tpKD90Q5DEKTrs0xA5QEoV/yoP7Dybg0QRRktWZN5SANE8SwWXNusjvIEONtEj4jMb1ghvA/Hr7SJ9Qx4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qI+f/+r+; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=Gq5wAXoKTokrarucg6jmCjPQ9yTV6RXGedUlJ20qvWRo/tvRxXfEbi30o6gn76mRAk9nJ5b44mkkileIk0+zkGe5Qv2VU9d2tj6fB5eRexvcG1vNYNVuZHO/Ftxp6KxfpYNAuuo7jmW+hNO9Nx/R3VJXvftNOl+Ajh3eF9NHWvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KwFj8wHa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qI+f/+r+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C990AC19423
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 12:11:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KwFj8wHa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE720C2BC9E
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 12:13:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772712710;
-	bh=EmZQCtLO8pRLYuoGPIN70oWLKnIAOaCwJQm16fFndd0=;
+	s=k20201202; t=1772712798;
+	bh=QEEz7bKrTbaIdtntnCFjm16TbQ6yV67W+dRNaUrpuGQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=qI+f/+r+JPJl39K7jLG+gfieV35HpZjbpTrCIwcO7fexnvd6qZLnRql3qzOmjTN9E
-	 j9OKdEWPU/vi+tQuriVRI5fW05TJrFDETBOEds21F8bfCXaKb5v1IEw1muDvAYcbA0
-	 yKa4BmZeaBzMJ3efVjkL82+16EZShRsCN7eCKwx52L93tfNBrPCZY3kGF2e8UXpITf
-	 dnr2WEE7C6nSNwqLeDiJ71j8mYMDrL5zS4YdkbkyZOnM0dyBIq564iQKdnRj0P1ZyV
-	 FCe9i3PtafpEVOCIftNwUpyjHoX4dQXyCXD+soUSVAKlW65//KdUOhIIEGkTzf3+wS
-	 tKN9dPZxs1lqQ==
-Received: by mail-yx1-f48.google.com with SMTP id 956f58d0204a3-64937edbc9eso7359262d50.2
-        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 04:11:50 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWowH2nesp4uFh0Gje2XOLcVTFFI6JlO2X1lHolHzTx5oqgDY8tWyxGFnSBL2lOeZCnUbMqmJw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2ofEkKloGFE9Fzug6ZTbW+1JkGCT6+P8e6Gc4CG+ILDrz1s0c
-	3UhW+axqEMZVP0zvSZHnuGQ6b8vMRtLf8Lj9P8rJyDMlzZDrzKyfcVeRYxqe/ZRHRIbJu2jRFij
-	XVi9nYJUF66R3zFMmsMd1iL1WYdwqLoY=
-X-Received: by 2002:a05:690e:1384:b0:64c:2581:eedc with SMTP id
- 956f58d0204a3-64cf9bb0248mr4548654d50.48.1772712710090; Thu, 05 Mar 2026
- 04:11:50 -0800 (PST)
+	b=KwFj8wHaP1ZKLGkPdRDxKwD5C5ZQeR1wz4ZDZeN3/Jd0AcAWvOo/5s2bR4/hAe0yD
+	 LrIlQzzcrA2+AscZGZCeip52ikXi7Ac+mUMatonfwDUlRQHvhUXQHQAMdMuQrqjrYV
+	 gmIUBezSpHmv2fjOJkeeam1vdneYP0h40mA3zqhB27a0GKBrbR7DLUxdUlbrKdLdxK
+	 pEZboCbol+8KNiZ9WiOfxXjsWUgYfXOp9l0wXzaj+b90NDh1VBYrz9ouTLGsa7e0w1
+	 tZ4akV29jClHbg7Viz38MHr/rkuFYyEd0lNTuRWgfRjDfGmGRd3GMnbALyIElBYJ9a
+	 RufoIGv66Mx3w==
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-64aedd812baso7040507d50.3
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 04:13:18 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUIM48UMdJxqOJVctCglpN5GYcEOoqKnGLe4cLF2IE0reUag7218iRae5GJJtSu9Q1yVYyG0Vk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcaKZ4Tk+PLK3b+G7i9VdTjovbY6zpEl+vCLQSCdx7hOKc87xW
+	K4neCI18eF0yN6sbrdvqdbCcL7+DgGoTqEIZ8InaMKLFzSlrHS/WjGCcY4yG/RvWfUKQb0OVvOo
+	41ExPqFnUXyvyS74KH0GQZAsc+leQUbs=
+X-Received: by 2002:a05:690e:4107:b0:63f:b4ee:7920 with SMTP id
+ 956f58d0204a3-64cf9b22cdamr4209918d50.11.1772712798000; Thu, 05 Mar 2026
+ 04:13:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260304084808.440955-1-xujialu@vimux.org> <44DCF3FEA681AA9F+20260304084808.440955-4-xujialu@vimux.org>
-In-Reply-To: <44DCF3FEA681AA9F+20260304084808.440955-4-xujialu@vimux.org>
+References: <20260303-realtek_namiltd_fix2-v1-1-bfa433d3401e@gmail.com>
+In-Reply-To: <20260303-realtek_namiltd_fix2-v1-1-bfa433d3401e@gmail.com>
 From: Linus Walleij <linusw@kernel.org>
-Date: Thu, 5 Mar 2026 13:11:38 +0100
-X-Gmail-Original-Message-ID: <CAD++jL=Gx=MgrYQdSyLMQs_6=P2pMOBjwNvUCzsA6wEZ6SgOYQ@mail.gmail.com>
-X-Gm-Features: AaiRm51tSyYxI4aDP0UwvNO3kbw80K5f6MI1hMcQxx7lExNxDVuGrPz4WqQzF7A
-Message-ID: <CAD++jL=Gx=MgrYQdSyLMQs_6=P2pMOBjwNvUCzsA6wEZ6SgOYQ@mail.gmail.com>
-Subject: Re: [PATCH 3/3] gpio: remove of_get_named_gpio() and <linux/of_gpio.h>
-To: Jialu Xu <xujialu@vimux.org>
-Cc: linux-gpio@vger.kernel.org, netdev@vger.kernel.org, brgl@kernel.org, 
-	krzk@kernel.org, kees@kernel.org, linux-kernel@vger.kernel.org
+Date: Thu, 5 Mar 2026 13:13:07 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmAT7cQudGp0n1QcnZZLMSd1j4kc7ojEfta8Egaze6yuA@mail.gmail.com>
+X-Gm-Features: AaiRm52PEY6bStl9YYAIz4Tc_KcH2BFsUxAmecwE1hn6bFFyXDIQSzuAbuitX_4
+Message-ID: <CAD++jLmAT7cQudGp0n1QcnZZLMSd1j4kc7ojEfta8Egaze6yuA@mail.gmail.com>
+Subject: Re: [PATCH net-next] net: dsa: realtek: rtl8365mb: remove
+ ifOutDiscards from rx_packets
+To: Luiz Angelo Daros de Luca <luizluca@gmail.com>
+Cc: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
+	Andrew Lunn <andrew@lunn.ch>, Vladimir Oltean <olteanv@gmail.com>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Florian Fainelli <f.fainelli@gmail.com>, Michael Rasmussen <mir@bang-olufsen.dk>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Mieczyslaw Nalewaj <namiltd@yahoo.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Mar 4, 2026 at 9:49=E2=80=AFAM Jialu Xu <xujialu@vimux.org> wrote:
+On Tue, Mar 3, 2026 at 9:25=E2=80=AFPM Luiz Angelo Daros de Luca
+<luizluca@gmail.com> wrote:
 
-> All in-tree consumers have been converted to the descriptor-based API.
-> Remove the deprecated of_get_named_gpio() helper and delete the
-> <linux/of_gpio.h> header.
+> From: Mieczyslaw Nalewaj <namiltd@yahoo.com>
 >
-> Signed-off-by: Jialu Xu <xujialu@vimux.org>
+> rx_packets should report the number of frames successfully received:
+> unicast + multicast + broadcast. Subtracting ifOutDiscards (a TX
+> counter) is incorrect and can undercount RX packets. RX drops are
+> already reported via rx_dropped (e.g. etherStatsDropEvents), so
+> there is no need to adjust rx_packets.
+>
+> This patch removes the subtraction of ifOutDiscards from rx_packets
+> in rtl8365mb_stats_update().
+>
+> Link: https://lore.kernel.org/netdev/878777925.105015.1763423928520@mail.=
+yahoo.com/
+> Fixes: 4af2950c50c8 ("net: dsa: realtek-smi: add rtl8365mb subdriver for =
+RTL8365MB-VC")
+> Signed-off-by: Mieczyslaw Nalewaj <namiltd@yahoo.com>
+> Signed-off-by: Luiz Angelo Daros de Luca <luizluca@gmail.com>
 
-Almost!
-
-$ git grep 'linux\/of_gpio\.h'
-MAINTAINERS:F:  include/linux/of_gpio.h
-^^^
-
-Fix this as well, with that change and if the rest of the changes go in:
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+Acked-by: Linus Walleij <linusw@kernel.org>
 
 Yours,
 Linus Walleij
