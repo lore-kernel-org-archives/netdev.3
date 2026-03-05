@@ -1,310 +1,118 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F6437883B
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 09:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.43
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772702848; cv=pass; b=S942AciYxKT1zImRAruef38n3YauprQnl0Jfq6qg1DqvV/99EHAjmv17Bjpd50kdETCvcOAOjA9nSj/MQ6PJOSglxU8id3OJT7Fx6Eej+snwMiZX9C3IoCpBEeKkMq6pxP5/Y2jy4ysEDWLQB7O9GOFQt3LQ8GioJ6Ut2m/0yrs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772702848; c=relaxed/simple;
-	bh=lMjYfl+Pmb7NDXCB4+hmAwoURdeJLXQAEFQ0PlMbzDw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ptrx72ZXUwNX7oKTVulOmghH5lid0hOHpPcirOlVK4NXU9FwVV1qIoI5UilkdnjVlM4ySohn5XsbfaeBv08qtJLPL1h50NjGg8RXLsf3CV9fPVMHO0tiFl3nJVmMYQJyqpCBdj+HbYRRAlen0LOeWfH3MLyqqA5ZXc1mmxIC0fE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jrn/sVVQ; arc=pass smtp.client-ip=74.125.82.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FDA378830
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 09:27:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772702851; cv=none; b=kY5MpwcY71Q93ON3/qHAbqUeQzUknGL5wq+Alv4+nygL7OkcDddAP6qVQ84lNREAoG5eaytdKfxpzX2SSPFa8eOp2UMmcI4/ZFcXQ0c04Kzi4GvnKGLfGP/2tXM2ZtL3tdfuWIH/4dak7zBNj8AwjwesI8zdCBNhhnvkymkYkTU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772702851; c=relaxed/simple;
+	bh=2PePMH51QOQScBKIQmAwYsCjjKFqsiR+6Jtikcio/ZA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Oj9IAAdihFXXY1A7QJmWdBP5//iZg6Chg18ZvtMoRLz8EgkWnapXIGeKZDvVG8bggaq4ZVKFtpQwJoOa30En9J6EpU0JJauL4ZGKoEBo1voM3S6uEFzVga9LMSOcYHsreqyV54gDQo/UyOTeXw81nWreZFKFw4YmduFzfRokiLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmo-cybersecurity.com; spf=pass smtp.mailfrom=gmo-cybersecurity.com; dkim=pass (2048-bit key) header.d=gmo-cybersecurity.com header.i=@gmo-cybersecurity.com header.b=lxthE3MV; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmo-cybersecurity.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmo-cybersecurity.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jrn/sVVQ"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-127380532eeso291929c88.1
-        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 01:27:26 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772702846; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gB5GOG74u61N/VlRDWOngt9/pQWkYslIIuOTCzJbkvPHo8vHksEnvCjrDs0USwqcVE
-         jGGWbctLsO/QE0Oe72WBb6UFVyJGKVwcH5/HmOF1z8NihT1PgVvyXwF0C7n5voqu+wK+
-         HfGvC1LFeYy75CAj6Vf/LgCEhNRGhu6I7R2D485n12KUTSu8WrySQ0kVDB1g6jAfNiaO
-         n4c1xl6WM3tIILf0asO/VJBBzmTpo2X3EGwBJrGaHAE4X6isz0GHjqSooUfuOsuPDFWd
-         q34jh7VC7V25ymk01BfE7OMyjSlXvDrx4Tznk+iQ0LIrP+7cJrhL16CzmQt1wDG5pXq3
-         D+vA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YGl7YGr5hs1Mp3RVhxOnhpc/LsWUXqci1b3NWeyBdTs=;
-        fh=1NzD0GPl7PM1t3kuitb9uONyoa4TeEZ4dtDdKXWhTME=;
-        b=PTuc4lVDULpjn/NbVyYLmRNjwY1kNRXz7qslt6omw2kcVVisdD+pA6ulZSUucGgZGQ
-         Hfx7gJ6/1/vmFov8UOvP0dgun7t5wMbK7YYevGMc8SMgBA68/sYa8SVljnsWGwVtsdhS
-         LzZPQ1DrsknT0qh7Z+UthmCJbkZRETgHUewHniRrzlQkXpxp/le2/0uMLHxNb6LHKudE
-         6USIPYCABDvRZij5y0mYaL2UZaPdd+Cu8TmKWQShkXXeo4Bv5nyz16FXPYEGbrJDq7Pa
-         7a5N4U8hwQ2MQbNK0FFcvLVejsRirWXQUEGxxui7N5zSzrIicQuKsvqI02iveA7cmwbp
-         lq1g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmo-cybersecurity.com header.i=@gmo-cybersecurity.com header.b="lxthE3MV"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-8297c035d28so435477b3a.0
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 01:27:30 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772702846; x=1773307646; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YGl7YGr5hs1Mp3RVhxOnhpc/LsWUXqci1b3NWeyBdTs=;
-        b=Jrn/sVVQs4MieGopJwRtadojipO3mkCjMRwDvBdMDScqI08y/cITVgvrqS8rKeKyPG
-         pEIBpJcvPr8HdCQ4NlX/m+W3mf06CQE5gCDQNmBItSbJbN63xuljNt7aF4dEcD4/8vD7
-         8mAxVSHzqBC33HEJB5wYfYoiPerooxy0qlino5Gg2XZ7gx7+J1HJ0NiIqUQboOazaCey
-         z2U6UKpJD3XFR+U0VDhgiIgqvsES04fLapbUUxPrRADMscrZzYwzGbCeJqgUv9Giriu8
-         XqA0nn9/8mbDKamVjuOLH3Km6ErEZ/usAQCJljY+SeSr2JajgEdDSIi5RiyOq4BhD3Ub
-         Gqfg==
+        d=gmo-cybersecurity.com; s=google; t=1772702850; x=1773307650; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=PPXs6PfUXl1cEMp4W1johnBTotcqaLqamluhFRdFy+Q=;
+        b=lxthE3MVLq6Jc49YsIpu8x54hOhdYMENOLInJYRJLb7cqfRdUP5PhqIEnryhVoFb3V
+         HenYBEhebkx0EpaKiDyQfyYtH2mI6T5uP8GkYbh+kJeJ8ONncDoZ/NSDeq8Owlg2LRnr
+         B9Nq6zVzp6xlCp4SFXDtMcrg/7/Yf+7FLm6SuZXQ/hbK7jM+qFvgHGiXNJWQ2Ea81qJz
+         0AM619GabogMbx5CnU41gdr11Uu7AqDYhG09EvsuHVsLHHcrTEtZqARZqIfQTrURWJjV
+         3Ra9iGU6Wm5FsWfcq5ZQYbIHdit3k6Tg4aqDQlTEhaVg7TlhVFXX8+KFOpLE1oRNMmDe
+         zfNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772702846; x=1773307646;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YGl7YGr5hs1Mp3RVhxOnhpc/LsWUXqci1b3NWeyBdTs=;
-        b=L3uwPVsrrQauKJWhDbf7J490cdl/w6k2Q/Ue2IiIHG1PuCkFuETuduMVMn9UBQiIVN
-         g8FYVA5yPNPaAzFhx0XzK70wGlq7C5vyEgSe58mkToBhW27N+6ZizXM/5HxPt6QZ9Es9
-         CQiHtpYJvhjm2TfdZX08rz+2uB+Qdcwv7rR0VbO5hC75aYF7hIIBqB8DenpWL7znNbzi
-         P2th+75MTdLCWB4LqDestEaU5+eY+ybvL98/t+0as7cyJPAK7gdNvZIo9ZtvLoV9FTer
-         j+661dCCCk2U589cQcI9Y2hOm0iPhMmvvmjb/qDVN+eI6Ki86aLPFr55uZj5Kha1pMRH
-         ElVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXyDUZtuMpK6yUotSGJ19FRFJgVVuD3GAVJmKDDjkaoPv0fgCdBDQC2m+QP/EaeEr1BDwsCpO8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YziK3YXe+mVo23KBTmSkFCEyJF7SLVWnwFJ4ov8z32Y4oQ8VT94
-	/qBLQeA+Uas/dEuvjAY86rsFthAMLCsRtfJi4BtLMPlvptfQXI+ufl6tHQ3m4Tisx8if8uPmuLV
-	LXZqWji1wCbn50HULsHj0xouwtknoZ4aT0hesDha/ZIK95QDjTN03DgCSXec=
-X-Gm-Gg: ATEYQzxTWRQ30hct90jRqox+wz1BBLm8LX4apcHPA+70DgqDK+tcuP/L2r27capfH6w
-	l5i89dadQxkS+r5AZrw1yaJ8FQguKvWswQJTic6jofj5t2vARxztSCoBYs7LLKFJWoLAsApaV4x
-	kEshz/jyqbx1BfD/1LTzjzqKkzwqPywHiwKCHOinK4pFyHGNBUqAvj4jCZWqMpa6yqZM329ixw+
-	ZGd8/Tz55ElF3lVoTmSsY6oXhdvpLBKS0AaTeZ+Aa+8ZMebk3QGtEKeZNqw+dumq9wRRlwua4Ps
-	rndlEJ7a3UDCbzUku1q6nbYAas38axgXJ1iH7HjO1mcafMLPe92i/2CmIChGN/5gxAxcCk3k
-X-Received: by 2002:a05:7022:6899:b0:11b:9386:7ecd with SMTP id
- a92af1059eb24-128b70ef851mr2410546c88.42.1772702845137; Thu, 05 Mar 2026
- 01:27:25 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772702850; x=1773307650;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PPXs6PfUXl1cEMp4W1johnBTotcqaLqamluhFRdFy+Q=;
+        b=O02ShOfFvB/Snh8+33OqrSJunGjtNAniu/vFaK2wj3UYjaqTz3uGujCpW4TVG0sYmz
+         0JR+rz+do+9rARfZoUzdD2nGu5iEBJpMBMRIYCu+d6AIiNjwqnyJxVbjgz69LUKKRAUk
+         F7d1I8gnuDksnVvl7PRl9H+lUGpP5vJzhQUotKoLKfZUG+6whKAeSuI8y9r8PSBUga2U
+         J2RFOeJayl2FSWy1feltIgyIa4o75RgFbk9ign8YkIzNvQPe01BbQ3z+ByxGixIwFZD9
+         0FVz5ROv2FsgauHKCXX6mXRj3JZybheis1cLpo6uBtOvlI0qmmGi3ZtEffHMbBcGqd8v
+         wxDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVVd3VEy6Wfr1b90UdKJ7kyVoxCOZjD+181/rpX1NwIXwuGGDkAszZIcjSPttGbdePeKw3wqqQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwzV/vSSqDI4EEStlmoJ1Dv+GOEP9QB06Wb6wNHhAx8MR7COB1d
+	ZYBo6zSyfZ/rsC1TREOMZKp2NnZZPMM/T1dgcGVmvf//K2Pf2B1G0LqG13tgHSGvQ/o=
+X-Gm-Gg: ATEYQzwDhDvlnWp4YZrSE5E2sYg4R1BiwMV+ESe0BPEPuG5pDIe0jEkoW82WNwHWLs4
+	UCPTytA5Kv7geOsc0hAn+0Oxi658vJ6lGp3iOnOfZuHRCZ2OCQxoA3ZNBLXzmXSD+2EQATcH1CI
+	GjieUb7kuZIhZSIOto8C3CnwVa8ZJr9uOSByoPw0JnmWmSWZ/EdlVrRsam1zSgDYd9liT+Cmv6X
+	Jg3cm4ePMbv54XTHzfItWuzmieyf0V8Ws+i57A5UERJAD9l6+o8e3+PaMu/D6B3pAeewLs/cPxZ
+	hFqi13uW00IlACmF7fNoQh/v29ihKEXW3XHn9upAkfUYfQzkUO5OukmSjfMjbZyQlnbRyJYyenK
+	RcKgBio0TFO/LJEeAbI1mMhvCJr0Ii21EjhOJQaD4vKqsyHJslfoXLpJjz5B3HyUab4AozivMAc
+	DTxIx0XuCiA0txUiZSHhgKSFiwrv+yJQAbWjrqalF2kZsCsHCsmupnwaklplVco6nmUhajgdwQV
+	OqBYR+WMbTAH62Y7nJ7SgI=
+X-Received: by 2002:a05:6a00:928f:b0:829:9130:e699 with SMTP id d2e1a72fcca58-8299130ec95mr151661b3a.52.1772702849761;
+        Thu, 05 Mar 2026 01:27:29 -0800 (PST)
+Received: from cachyos.camel-monitor.ts.net (akacd-04p3-188.ppp11.odn.ad.jp. [210.237.248.188])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-82974e75a4csm3606530b3a.30.2026.03.05.01.27.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 01:27:29 -0800 (PST)
+From: Kota Toda <kota.toda@gmo-cybersecurity.com>
+To: Kota Toda <kota.toda@gmo-cybersecurity.com>
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Yuki Koike <yuki.koike@gmo-cybersecurity.com>
+Subject: [PATCH 0/2] net: bonding: fix type-confusion in bonding header_ops
+Date: Thu,  5 Mar 2026 18:27:02 +0900
+Message-ID: <20260305092706.145085-1-kota.toda@gmo-cybersecurity.com>
+X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260221233234.3814768-1-kuniyu@google.com> <20260221233234.3814768-7-kuniyu@google.com>
- <r7csevb4yonphmfhfpkj7jpc4yvjkdwrp566zxhueaf6vgjfak@stnfyjkqid6o>
- <CAAVpQUAGSzypVhT8V-qjhUfZeEQhXQtS1z+iQC7vrzZCHEr9=A@mail.gmail.com> <389162b2e117d8a5675b02286c7bafcc342086b6@linux.dev>
-In-Reply-To: <389162b2e117d8a5675b02286c7bafcc342086b6@linux.dev>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Thu, 5 Mar 2026 01:27:13 -0800
-X-Gm-Features: AaiRm51CIrbURfGzu54QGWbHrTP5af5b7cqQqQoVQE0Fnyut1UlLLTuWdt-6J08
-Message-ID: <CAAVpQUBrVzwDN2xc68owHJZP7VoAZQWhwo_xdo5noGZ27qmjpA@mail.gmail.com>
-Subject: Re: [PATCH v4 bpf/net 6/6] sockmap: Fix broken memory accounting for UDP.
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: John Fastabend <john.fastabend@gmail.com>, Jakub Sitnicki <jakub@cloudflare.com>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, 
-	bpf@vger.kernel.org, netdev@vger.kernel.org, 
-	syzbot+5b3b7e51dda1be027b7a@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, Mar 5, 2026 at 12:30=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.de=
-v> wrote:
->
-> March 5, 2026 at 15:48, "Kuniyuki Iwashima" <kuniyu@google.com mailto:kun=
-iyu@google.com?to=3D%22Kuniyuki%20Iwashima%22%20%3Ckuniyu%40google.com%3E >=
- wrote:
->
->
-> >
-> > On Wed, Mar 4, 2026 at 10:37 PM Jiayuan Chen <jiayuan.chen@linux.dev> w=
-rote:
-> >
-> > >
-> > > On Sat, Feb 21, 2026 at 11:30:53PM +0800, Kuniyuki Iwashima wrote:
-> > >  [...]
-> > >  </TASK>
-> > >
-> > >  Fixes: d7f571188ecf ("udp: Implement ->read_sock() for sockmap")
-> > >  Reported-by: syzbot+5b3b7e51dda1be027b7a@syzkaller.appspotmail.com
-> > >  Closes: https://lore.kernel.org/netdev/698f84c6.a70a0220.2c38d7.00cb=
-.GAE@google.com/
-> > >  Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > >  ---
-> > >  v4: Fix deadlock when requeued
-> > >  v2: Fix build failure when CONFIG_INET=3Dn
-> > >  ---
-> > >  include/net/udp.h | 9 +++++++++
-> > >  net/core/skmsg.c | 29 +++++++++++++++++++++++++----
-> > >  net/ipv4/udp.c | 9 +++++++++
-> > >  3 files changed, 43 insertions(+), 4 deletions(-)
-> > >
-> > >  diff --git a/include/net/udp.h b/include/net/udp.h
-> > >  index 700dbedcb15f..ae38a4da9388 100644
-> > >  --- a/include/net/udp.h
-> > >  +++ b/include/net/udp.h
-> > >  @@ -455,6 +455,15 @@ struct sock *__udp6_lib_lookup(const struct net=
- *net,
-> > >  struct sk_buff *skb);
-> > >  struct sock *udp6_lib_lookup_skb(const struct sk_buff *skb,
-> > >  __be16 sport, __be16 dport);
-> > >  +
-> > >  +#ifdef CONFIG_INET
-> > >  +void udp_sock_rfree(struct sk_buff *skb);
-> > >  +#else
-> > >  +static inline void udp_sock_rfree(struct sk_buff *skb)
-> > >  +{
-> > >  +}
-> > >  +#endif
-> > >  +
-> > >  int udp_read_skb(struct sock *sk, skb_read_actor_t recv_actor);
-> > >
-> > >  /* UDP uses skb->dev_scratch to cache as much information as possibl=
-e and avoid
-> > >  diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-> > >  index 96f43e0dbb17..dd9134a45663 100644
-> > >  --- a/net/core/skmsg.c
-> > >  +++ b/net/core/skmsg.c
-> > >  @@ -7,6 +7,7 @@
-> > >
-> > >  #include <net/sock.h>
-> > >  #include <net/tcp.h>
-> > >  +#include <net/udp.h>
-> > >  #include <net/tls.h>
-> > >  #include <trace/events/sock.h>
-> > >
-> > >  @@ -576,6 +577,7 @@ static int sk_psock_skb_ingress(struct sk_psock =
-*psock, struct sk_buff *skb,
-> > >  u32 off, u32 len, bool take_ref)
-> > >  {
-> > >  struct sock *sk =3D psock->sk;
-> > >  + bool is_udp =3D sk_is_udp(sk);
-> > >  struct sk_msg *msg;
-> > >  int err =3D -EAGAIN;
-> > >
-> > >  @@ -583,13 +585,20 @@ static int sk_psock_skb_ingress(struct sk_psoc=
-k *psock, struct sk_buff *skb,
-> > >  if (!msg)
-> > >  goto out;
-> > >
-> > >  - if (skb->sk !=3D sk && take_ref) {
-> > >  + if (is_udp) {
-> > >  + if (unlikely(skb->destructor =3D=3D udp_sock_rfree))
-> > >  + goto enqueue;
-> > >  +
-> > >  + spin_lock_bh(&sk->sk_receive_queue.lock);
-> > >  + }
-> > >  +
-> > >  + if (is_udp || (skb->sk !=3D sk && take_ref)) {
-> > >  if (atomic_read(&sk->sk_rmem_alloc) > sk->sk_rcvbuf)
-> > >  - goto free;
-> > >  + goto unlock;
-> > >
-> > >  if (!sk_rmem_schedule(sk, skb, skb->truesize))
-> > >  - goto free;
-> > >  - } else {
-> > >  + goto unlock;
-> > >  + } else if (skb->sk =3D=3D sk || !take_ref) {
-> > >  /* This is used in tcp_bpf_recvmsg_parser() to determine whether the
-> > >  * data originates from the socket's own protocol stack. No need to
-> > >  * refcount sk because msg's lifetime is bound to sk via the ingress_=
-msg.
-> > >  @@ -604,11 +613,23 @@ static int sk_psock_skb_ingress(struct sk_psoc=
-k *psock, struct sk_buff *skb,
-> > >  * into user buffers.
-> > >  */
-> > >  skb_set_owner_r(skb, sk);
-> > >  +
-> > >  + if (is_udp) {
-> > >  + spin_unlock_bh(&sk->sk_receive_queue.lock);
-> > >  +
-> > >  + skb->destructor =3D udp_sock_rfree;
-> > >  + }
-> > >  +
-> > >  +enqueue:
-> > >  err =3D sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, =
-take_ref);
-> > >  if (err < 0)
-> > >  goto free;
-> > >  out:
-> > >  return err;
-> > >  +
-> > >  +unlock:
-> > >  + if (is_udp)
-> > >  + spin_unlock_bh(&sk->sk_receive_queue.lock);
-> > >  free:
-> > >  kfree(msg);
-> > >  goto out;
-> > >  diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-> > >  index 422c96fea249..831d26748a90 100644
-> > >  --- a/net/ipv4/udp.c
-> > >  +++ b/net/ipv4/udp.c
-> > >  @@ -2039,6 +2039,15 @@ struct sk_buff *__skb_recv_udp(struct sock *s=
-k, unsigned int flags,
-> > >  }
-> > >  EXPORT_SYMBOL(__skb_recv_udp);
-> > >
-> > >  +void udp_sock_rfree(struct sk_buff *skb)
-> > >  +{
-> > >  + struct sock *sk =3D skb->sk;
-> > >  +
-> > >  + spin_lock_bh(&sk->sk_receive_queue.lock);
-> > >  + sock_rfree(skb);
-> > >  + spin_unlock_bh(&sk->sk_receive_queue.lock);
-> > >  +}
-> > >  +
-> > >  int udp_read_skb(struct sock *sk, skb_read_actor_t recv_actor)
-> > >  {
-> > >  struct sk_buff *skb;
-> > >  --
-> > >  2.53.0.371.g1d285c8824-goog
-> > >
-> > >  There are too many protocol-specific checks in the generic skmsg cod=
-e
-> > >  here. This should be abstracted out.
-> > >
-> > >  Also TCP also has a similar issue with sk_forward_alloc concurrency
-> > >  between the backlog charge and recvmsg uncharge paths so the abstrac=
-tion
-> > >  is necessary.
-> > >
-> > >  I've put together a simple diff based on your patch for reference.
-> > >  I haven't tested it thoroughly, but it at least handles TCP and UDP
-> > >  separately through a callback, keeping the generic code clean.
-> > >
-> > I can follow up on TCP, but TCP needs another fix, which
-> > cannot be factored out.
-> >
-> > Some wrong assumptions in your patch:
-> >
-> > 1) tcp_psock_ingress_charge() uses psock->ingress_lock,
-> >  but it does not protect any tcp_sock fields, especially
-> >  sk->sk_forwad_alloc.
-> >
-> > 2) TCP memory accounting happens under bh_lock_sock()
-> >  _or_ lock_sock(). sendmsg()/recvmsg() works under
-> >  lock_sock() and TCP fast path puts skb to backlog if
-> >  lock_sock() is held by userspace. This means even
-> >  a simple bh_lock_sock() in tcp_psock_ingress_charge()
-> >  race with memory accounting happening under lock_sock().
-> >
-> > Since sk_psock_skb_ingress() is called from both GFP_KERNEL
-> > and GFP_ATOMIC context, the simplest fix would be to put
-> > lock_sock() in sk_psock_backlog() for TCP, which is ugly though.
-> >
->
-> OK, thanks.
->
-> Now my only concern is keeping UDP-specific logic
-> out of skmsg.c.
+In bond_setup_by_slave(), the slave’s header_ops are unconditionally
+copied into the bonding device. As a result, the bonding device may invoke
+the slave-specific header operations on itself, causing
+netdev_priv(bond_dev) (a struct bonding) to be incorrectly interpreted
+as the slave's private-data type.
 
-We already have TCP-only msg->sk logic there that
-you added.  It just does not look like TCP code.
+This type-confusion bug can lead to out-of-bounds writes into the skb,
+resulting in memory corruption.
 
-If really needed, we can do such cleanup in bpf-next
-for TCP and UDP altogether (probably after another
-TCP fix ?).
+Patch 1 stores the slave's header_ops in struct bonding and sets
+wrapper callbacks in bond_In bond_setup_by_slave(), the slave’s
+header_ops are unconditionally
+copied into the bonding device. As a result, the bonding device may invoke
+the slave-specific header operations on itself, causing
+netdev_priv(bond_dev) (a struct bonding) to be incorrectly interpreted
+as the slave's private-data type.
 
+Patch 2 uses READ_ONCE when loading header_ops callbacks
+to avoid races with concurrent updates.
 
-> We could use a function pointer so that UDP
-> implements its own ingress charge in udp_bpf.c, while other
-> protocols just use a default no-op or even NULL.
+Signed-off-by: Kota Toda <kota.toda@gmo-cybersecurity.com>
+Co-developed-by: Yuki Koike <yuki.koike@gmo-cybersecurity.com>
+Signed-off-by: Yuki Koike <yuki.koike@gmo-cybersecurity.com>
+--
 
-If TCP requires locking outside of the scope, there's
-no point adding one more extra layer/complexity just
-for UDP.
+Kota Toda (2):
+  net: bonding: fix type-confusion in bonding header_ops
+  net: add READ_ONCE for header_ops callbacks
 
-Even if we go that way, most likely we cannot get rid
-of protocol-specific code (UDP/TCP-only hook) and
-end up with the indirect call helpers, which will be
-expensive than simple if logic.
+ drivers/net/bonding/bond_main.c | 66 ++++++++++++++++++++++++++++++++-
+ include/linux/netdevice.h       | 28 +++++++++-----
+ include/net/bonding.h           |  5 +++
+ include/net/cfg802154.h         |  2 +-
+ net/core/neighbour.c            |  6 +--
+ net/ipv4/arp.c                  |  2 +-
+ net/ipv6/ndisc.c                |  2 +-
+ 7 files changed, 95 insertions(+), 16 deletions(-)
+
+--
+2.53.0
+
