@@ -1,124 +1,108 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198453E3DA3;
-	Thu,  5 Mar 2026 17:23:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F81A1FBCA7;
+	Thu,  5 Mar 2026 17:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772731430; cv=none; b=WfCH4X+J43RfVQhDm9Ngpko6CIk0GRrTt/yYrEIKBNtp9Lg18xlmn1vhi3ATSlFSQsuTAkvsyVu/s219px9jFbEgfDbuo693OVzOOiY/X4T89sjuuUHdWRdNHQKhQCE5mJyWKkFTLarPQQ2pMhEBnUt9NQs29LQ2Ad/sprNwwes=
+	t=1772731682; cv=none; b=SR1GOZwHhE9l/a0LN/EUZUvKS+Z0cuKeJJXMe89nTF3GokOEEWlPZeUlK7ciCYpUcXb/enrHsOjvMUxJLJGNvGXc+xSPqoQHsqhv0ThpmsNrmZlCCYvyXiP8nbTa0dLtuXhAb06XYfgu5JBfiZ27HnTYqI6khKnvLFqd8AwqZ58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772731430; c=relaxed/simple;
-	bh=a5zeyFC0/JYThC2/hr0J3ok/nQLgMN/Nv+EAY4o1+Go=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hIBcMn0E1VsYxVpJReZNeBxxqIB3Jy3LIoHCczd7TjLjhVtZEhQL6J9GLyX55AtpxAOQyHpVajDdcAHAQ0QkmvEgub6+Q9nKldU+WhZKECPazwamC3FPtZko/Cmk4fM7obm6AuK4UhWXLnCrd7VQiJ2/+5GEj5x/wzoPbMaaJlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UBo6SF6m; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772731682; c=relaxed/simple;
+	bh=JrH33n0V7DQGy8wQ55Ys4A0vDDepY+3rB3gaaYu/P8k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XU49881RllPDn5viYqvlpLkhof4GrSnbNZKXWj1x1FS6NXYqTIPA4cFw+UWgDugOCWkiQ/hdjI0eilrAZeVPbfVQ/DNOu9G3S/7RW+ZWNIKKFDnkZHa/5bVzbLRwZfsvqrZPctE7KsYebr2WTQ/8l5RV/Xwuu6kLLoCEE6dnguk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P0jK/OPn; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UBo6SF6m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAA0C19422;
-	Thu,  5 Mar 2026 17:23:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772731429;
-	bh=a5zeyFC0/JYThC2/hr0J3ok/nQLgMN/Nv+EAY4o1+Go=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UBo6SF6m+UokvUzowlLyTmp6ASYNOcOnSJ/eje2ceH0KeIsSs4f5/IJ1ZqVyMjYvH
-	 hfPwAmdGN4ClDtBlicsnryby0thEdEYT/xWjj/M23nVwxmzcFNwKkvtTf+8sl0Vltg
-	 ynT4X1wPqrAy0aOW7Ny0+yPrjp/LXb7XqkGHOx0osApUl5z0iueG/FS3iMsm+RSuk2
-	 4XrDDBhn53byyuHWeoogIspSv9glTs9kTNcZYiC0Ro3R84nZtalWtpKrnzdTpuydi7
-	 OXflZir5TMQo8yHzyrabB+eC0ZuvGFwPqWP9T9yig1plieIXSlQqFMskMbtN4Bfe65
-	 F5MNQ/hvCue0A==
-Date: Thu, 5 Mar 2026 09:23:48 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: torvalds@linux-foundation.org
-Cc: davem@davemloft.net, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, pabeni@redhat.com
-Subject: Re: [GIT PULL] Networking for v7.0-rc3
-Message-ID: <20260305092348.1ef6a546@kernel.org>
-In-Reply-To: <20260305171004.322683-1-kuba@kernel.org>
-References: <20260305171004.322683-1-kuba@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P0jK/OPn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772731682; x=1804267682;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=JrH33n0V7DQGy8wQ55Ys4A0vDDepY+3rB3gaaYu/P8k=;
+  b=P0jK/OPnEsapZfT/oAjyi6LK83Ewh9lcTAz/h3l/rVWST7QhAWU6Uh1j
+   KtnB65Xsw4ipooilUnoF5u7r0kA45Oc6Yqio/82W8cBcV48xYCxomI/dL
+   cQvftaDscKnCJAF0gjwv+KhObfJvsr+6XVBW0UfpSClX1Y81RHkg+G9xT
+   gm0CteIbwGuESxVUwjTMzemsFtQl3NgQRhjbTwQFa1mmqlP98EUmjXkfz
+   oHpT9siSuDV+IUSLoLzazyXjyoXQHw3uZ6l+kKnQv/gb0AEjHfiRMRLT6
+   KEsFCbmKAey2wkFI3oJuMyNBW61OcqDBuOCG9jkK6Ak+H7nnE08ys8cNt
+   A==;
+X-CSE-ConnectionGUID: 8I+AVzsaQkS6ZOX/nTerig==
+X-CSE-MsgGUID: EvleGCCzSIirMgdi2y5TjA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="84158855"
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
+   d="scan'208";a="84158855"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:28:00 -0800
+X-CSE-ConnectionGUID: TSAcaiO/SSaE/Lkbkn4H8w==
+X-CSE-MsgGUID: AacHuLLiSfqnJ6DgA7oVhA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,103,1770624000"; 
+   d="scan'208";a="218877231"
+Received: from smtp.ostc.intel.com ([10.54.29.231])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 09:28:00 -0800
+Received: from ray2.sr71.net (unknown [10.125.109.20])
+	by smtp.ostc.intel.com (Postfix) with ESMTP id E14776362;
+	Thu,  5 Mar 2026 09:27:58 -0800 (PST)
+From: Dave Hansen <dave.hansen@linux.intel.com>
+To: linux-kernel@vger.kernel.org
+Cc: Dave Hansen <dave.hansen@linux.intel.com>,
+	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
+	Liu Haijun <haijun.liu@mediatek.com>,
+	Ricardo Martinez <ricardo.martinez@linux.intel.com>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Sergey Ryazanov <ryazanov.s.a@gmail.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org
+Subject: [PATCH] MAINTAINERS: Remove bouncing T7XX reviewer
+Date: Thu,  5 Mar 2026 09:28:05 -0800
+Message-ID: <20260305172806.3118806-1-dave.hansen@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu,  5 Mar 2026 09:10:04 -0800 Jakub Kicinski wrote:
-> A few PRs here narrowly missed the previous rc, but I'm not sure
-> if that explains why this PR is almost 2x the usual size.
-> I had a feeling that AI tools are helping people investigate
-> and send fixes for issues which would previously be waved off
-> as one-off / not worth the time. But the data doesn't necessarily
-> bear that out.
+This reviewer's email no longer works. Remove it from MAINTAINERS.
 
-FWIW when I say data this is supposedly breakdown of how many people
-who contributed fixes to networking have only been known to git for
-3, 6 or 12 months:
+Cc: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+Cc: Liu Haijun <haijun.liu@mediatek.com>
+Cc: Ricardo Martinez <ricardo.martinez@linux.intel.com>
+Cc: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Cc: Sergey Ryazanov <ryazanov.s.a@gmail.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ MAINTAINERS | 1 -
+ 1 file changed, 1 deletion(-)
 
-Commits     Date        Avg Age     Med Age   <3mo   <3mo%   <6mo   <6mo%  <12mo   <12m%
-------------------------------------------------------------------------------------------
-    100  2024-09-04       9.9yr      10.5yr     10   10.0%     13   13.0%     15   15.0%
-    100  2024-10-01       8.5yr       8.1yr      5    5.0%      5    5.0%     10   10.0%
-    100  2024-10-13       9.2yr       9.2yr     11   11.0%     11   11.0%     18   18.0%
-    100  2024-10-24       7.5yr       5.8yr      5    5.0%      6    6.0%     15   15.0%
-    100  2024-11-06       7.1yr       5.7yr     18   18.0%     18   18.0%     21   21.0%
-    100  2024-11-22       8.4yr       7.3yr      8    8.0%     10   10.0%     10   10.0%
-    100  2024-12-08       9.4yr      10.5yr      4    4.0%      9    9.0%      9    9.0%
-    100  2024-12-20       7.1yr       5.1yr      9    9.0%     12   12.0%     28   28.0%
-    100  2025-01-10       8.5yr       7.7yr      8    8.0%      8    8.0%     12   12.0%
-    100  2025-01-26      10.9yr      12.9yr      5    5.0%      7    7.0%      9    9.0%
-    100  2025-02-07       9.7yr       9.6yr      7    7.0%      9    9.0%     10   10.0%
-    100  2025-02-24       8.1yr       7.4yr      7    7.0%     12   12.0%     13   13.0%
-    100  2025-03-07       8.2yr       6.9yr      6    6.0%      7    7.0%     10   10.0%
-    100  2025-03-24      10.4yr      13.1yr      7    7.0%      8    8.0%      8    8.0%
-    100  2025-04-07       8.1yr       6.9yr     10   10.0%     13   13.0%     15   15.0%
-    100  2025-04-18       7.3yr       6.1yr     14   14.0%     19   19.0%     22   22.0%
-    100  2025-04-30       9.3yr      10.1yr      6    6.0%      9    9.0%     12   12.0%
-    100  2025-05-14       7.7yr       6.5yr      8    8.0%     10   10.0%     14   14.0%
-    100  2025-06-02       9.3yr       9.8yr      5    5.0%      6    6.0%      9    9.0%
-    100  2025-06-11       9.8yr       6.8yr      8    8.0%      8    8.0%     10   10.0%
-    100  2025-06-24       9.0yr       6.9yr      9    9.0%     10   10.0%     13   13.0%
-    100  2025-06-12       8.8yr       7.1yr     11   11.0%     13   13.0%     15   15.0%
-    100  2025-07-17      10.3yr      11.4yr      7    7.0%      8    8.0%     19   19.0%
-    100  2025-08-06       8.3yr       7.8yr      5    5.0%      6    6.0%      8    8.0%
-    100  2025-08-19       7.6yr       6.4yr     10   10.0%     12   12.0%     20   20.0%
-    100  2025-08-18      10.2yr      10.1yr      2    2.0%      3    3.0%      6    6.0%
-    100  2025-09-08       9.7yr       9.9yr      7    7.0%      9    9.0%     13   13.0%
-    100  2025-08-13       8.1yr       7.4yr     17   17.0%     19   19.0%     22   22.0%
-    100  2025-10-09       9.1yr       9.3yr     12   12.0%     16   16.0%     17   17.0%
-    100  2025-11-05       7.5yr       5.9yr     12   12.0%     16   16.0%     19   19.0%
-    100  2025-11-18       8.7yr      10.2yr     12   12.0%     18   18.0%     19   19.0%
-    100  2025-12-09       9.2yr       8.4yr     12   12.0%     13   13.0%     18   18.0%
-    100  2025-12-21       8.5yr       7.6yr     20   20.0%     21   21.0%     26   26.0%
-    100  2026-01-09       9.8yr       8.3yr      8    8.0%      9    9.0%     13   13.0%
-    100  2026-01-12       6.9yr       5.7yr     14   14.0%     17   17.0%     24   24.0%
-     95  2026-02-27      10.0yr      10.4yr     11   11.6%     11   11.6%     11   11.6%
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 427e45e12762e..8f4f5190df166 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -16366,7 +16366,6 @@ F:	net/dsa/tag_mtk.c
+ 
+ MEDIATEK T7XX 5G WWAN MODEM DRIVER
+ M:	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
+-R:	Chiranjeevi Rapolu <chiranjeevi.rapolu@linux.intel.com>
+ R:	Liu Haijun <haijun.liu@mediatek.com>
+ R:	Ricardo Martinez <ricardo.martinez@linux.intel.com>
+ L:	netdev@vger.kernel.org
+-- 
+2.43.0
 
-We have a sequence of high percentages since ~Nov but not in a crazy
-way.
-
-The numbers looking at just "core parts" (net/core net/ipv4
-net/ipv6 net/sched) would support the theory a little more 
-but again not very strongly and the numbers are small in absolute
-terms:
-
-Commits     Date        Avg Age     Med Age   <3mo   <3mo%   <6mo   <6mo%  <12mo   <12m%
-------------------------------------------------------------------------------------------
-     24  2024-09-11      13.7yr      14.7yr      0    0.0%      0    0.0%      0    0.0%
-     24  2024-10-15       9.4yr       9.1yr      1    4.2%      1    4.2%      1    4.2%
-     24  2024-11-28       9.4yr       9.2yr      4   16.7%      4   16.7%      4   16.7%
-     24  2024-12-19      11.5yr      12.9yr      1    4.2%      1    4.2%      2    8.3%
-     24  2025-01-27      16.0yr      19.6yr      0    0.0%      0    0.0%      0    0.0%
-     24  2025-02-07      10.7yr      13.0yr      1    4.2%      1    4.2%      2    8.3%
-     24  2025-02-25       7.8yr       5.3yr      1    4.2%      1    4.2%      1    4.2%
-     24  2025-03-28      10.8yr      13.1yr      1    4.2%      1    4.2%      1    4.2%
-     24  2025-04-03      10.3yr      13.1yr      0    0.0%      0    0.0%      0    0.0%
-     24  2025-04-26       9.6yr      11.2yr      2    8.3%      2    8.3%      3   12.5%
-     24  2025-06-04      11.8yr      13.3yr      1    4.2%      1    4.2%      3   12.5%
-     24  2025-07-09      10.7yr      12.4yr      3   12.5%      3   12.5%      5   20.8%
-     24  2025-08-08       9.4yr      11.4yr      2    8.3%      3   12.5%      3   12.5%
-     24  2025-09-10      11.1yr      13.6yr      2    8.3%      4   16.7%      5   20.8%
-     24  2025-10-28      10.9yr      13.8yr      3   12.5%      5   20.8%      5   20.8%
-     24  2026-01-05      14.5yr      20.5yr      0    0.0%      0    0.0%      2    8.3%
-     20  2026-02-23       9.1yr       7.2yr      4   20.0%      4   20.0%      4   20.0%
