@@ -1,180 +1,150 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f176.google.com (mail-oi1-f176.google.com [209.85.167.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E6E288514
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 08:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6F9B2405EB
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 08:36:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772699509; cv=none; b=q8SCPe8Ly6tASV8hcdM4MFgGalRP8ITGx3zxEhk5++ClYPKQYisR/A98TDtPIPf0Bt75aAxpkQq0YWRwAFl27EVJ885DvFkoWkSSXKHQYWjnz0hlkA/kZnFii/AtsizVgIrKr63Tv1CvYRogX0LV3dzegvBIixUPNVTNGdR2R/E=
+	t=1772699813; cv=none; b=F4n9dAC7h1hp4C7Y+M7EJ7AQV4Fnq6n19LYnC06sYbFlAwh7euU+pOmCvz3VHvdmEAAPG33IOyUeHirC6X+EvsvUxbyQkXqHIG7ISMSYN/V0b/OS9jiK0SFModcKivF9DE6hGoue4AnDNNI9/chnewvrazuWRYYpZDexnU0txgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772699509; c=relaxed/simple;
-	bh=5+PlJJMPZ01x4qhZ6DWfcD7AXC6l2dIoTVqF0OGJTYs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=UbS4PRklRfHpu0aWcIfmYSLATugcJfx1SjihV0T0itVAGU4z/ZfCc8S2TQqHns0xoyVMfJ7sHX10HLBpA2i0EuGDwiB4UrPEDdPtg2vzG0JC1r89GTnQqu4X6odVKWm4SdEQjICMqrGJzNSPvuUna2JvUJEo2TnNItM10rvTX2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=XcYAexqa; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="XcYAexqa"
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20260305083138euoutp01d6e0936816b6155743235c0c9297e3a4~Z5M03gVz41133511335euoutp01j
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 08:31:38 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20260305083138euoutp01d6e0936816b6155743235c0c9297e3a4~Z5M03gVz41133511335euoutp01j
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1772699498;
-	bh=v7F1z746S5jKq3OMET0fWLruAhJ0LQTk08cIJ/i5TEU=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=XcYAexqafDCu8WqbE2PsmLHF97TAlqYY6oeG7fvljTlwMvgKnsWxnKDORsSFsfliK
-	 G7hYH0pol2rF/Vb79dV1fguUIU4TKFvIYD+MEqvaU5mV6tLffdxMdDBKS3Lq8ZcNId
-	 ji3qfEf73moCuGh+OSacjeBH2Qmc+Bhn8kFgO2TE=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20260305083138eucas1p19943c4dec735b06f536525de26252f03~Z5M0nRDVP0267702677eucas1p1v;
-	Thu,  5 Mar 2026 08:31:38 +0000 (GMT)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20260305083137eusmtip2f9125fbc0b8da7f324d26a91ccd0cdac~Z5M0K2OZU1523515235eusmtip2h;
-	Thu,  5 Mar 2026 08:31:37 +0000 (GMT)
-Message-ID: <9433de15-8675-4645-a6aa-85458e833d2d@samsung.com>
-Date: Thu, 5 Mar 2026 09:31:37 +0100
+	s=arc-20240116; t=1772699813; c=relaxed/simple;
+	bh=CSh/OPgCewZMrxAGotXGAjNREHTmD2ri4RotS2E+6yc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Go/NuDMjLiPj9TgTkxGVLfIqEJUnMlTUpdte+JdTrOt4mg39OEM6uMErW1YeXqYwDkniOcovoIpcDK50UeKy71wPXQiWI/Z3Rn57xcJeXGBWro0QNm+3bQE2pVRVfBHfDk11jZWko3vQqSPon1YZN02b1aw8Srn7usHW9AgUv8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f176.google.com with SMTP id 5614622812f47-463f00cda04so5028495b6e.2
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 00:36:51 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772699811; x=1773304611;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8Ymdw+XC/6Jy9fN+NX35+E/o8bLZmtxZBZ4e3pQeTxE=;
+        b=NNKAeIDxERGw0ajRfypkjwgwt+EegiP06/GFyHlLE+FUY/r3Etj1vt6RCToYnjLFn7
+         4Qw0tEbAJTF+9KryIuY1JsNy/yERV/zC7qycPxHbadLRvy4+xu/gKLB5Z+9DNZjo6J6R
+         hT/uqVoq3XIUXxD7Q8ue1SN+bVCO/GCoIfmKLIEkOaBCZs+Cah/MWJxDNhH8VnMiF7kV
+         xHo+rt2dFnIqaYCBbsXlM00191tCUji2AwssMbEu07nsrdvhFPXbIB9HOPweR9YkJIol
+         6nmT692t5XVMkxKohHUPw7QvTbXZsFobdAk2IB9FMUOe1GL/F5UBSc4ycu/10MaOmEPs
+         nwsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVOT5zIa4SNAqKggRshkTuzE2Q+CAHAPOCAKn0slZv/U53gBztfQcs7ZXSh6mleeVBMD2Dkc0I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywg5EPE+E1xHji93CRNk4lVRdMe15sGKVZYl8hLyGEnyOg4IgoA
+	JM0Wn//CDY3wBhxqWQex3/1jxdSlM5GCng7yCMRLPx8nJ9s7S0Smr7IZyi1c3pUM
+X-Gm-Gg: ATEYQzwX3lrmgRMg9J6bGkWd6SivUdOntxqRVcmsJBjGtoDbXYpuYgi2g5BsOEIt5O5
+	8vaoxk+R+2nhY9TVVO26n3sMvRCD/MqrkjvoveCr7Fkm7L6b0ZIqzusXm3mgByitowS4QgHcBNT
+	byG/q21O8tNd2zb8N2XN6oNpjkwGM0xrXFN0281wPRK7dL2+vug1yShVeMGtGz4Ok0txXoNPYaN
+	Bpi6aKd5kz/3+MiN17HtfFgmo2bUcUONyl4P6U6NlZTMmbEUm0U6rAG6kffD2F9wDQfRdR/KCMj
+	zCW4f1Ci7ip/C4hcw/qNnRzEROGi+fHwiCtvoLjNj4/uyrJjXchwgZXtFQ961gNvXL+dkYNlh6W
+	VWVEdmu/faifipCj7tT09oHYUcuODC15v9yZMctHgrrYP5jBv8t9BhdI/PORwD4Lwh6RkWkqHGD
+	pUT9LMhzLSlI08ugPOTSTZliV3B4NpZD/OknltV71OKplm2oQIGcq0lAnRr7Ip
+X-Received: by 2002:a05:6808:c3ea:b0:451:4cc3:912f with SMTP id 5614622812f47-4651ab4e09fmr2585235b6e.7.1772699810611;
+        Thu, 05 Mar 2026 00:36:50 -0800 (PST)
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com. [209.85.161.43])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-464bb605f15sm13280859b6e.20.2026.03.05.00.36.50
+        for <netdev@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 05 Mar 2026 00:36:50 -0800 (PST)
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-679f980a239so3647489eaf.2
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 00:36:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWJqqDl4CamU06TGbAA24E36s0SDEkYOTCrQv4ct0snmQ8bIq9Opx05sNraQ+gVQC06lq7GWTA=@vger.kernel.org
+X-Received: by 2002:a05:6102:2ac9:b0:5f7:24dc:3ac3 with SMTP id
+ ada2fe7eead31-5ffaaa86250mr1899404137.7.1772699399463; Thu, 05 Mar 2026
+ 00:29:59 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH net-next 8/8] net: phy: improve mdiobus_stats_acct
-To: Heiner Kallweit <hkallweit1@gmail.com>, Andrew Lunn <andrew@lunn.ch>,
-	Andrew Lunn <andrew+netdev@lunn.ch>, Russell King - ARM Linux
-	<linux@armlinux.org.uk>, Paolo Abeni <pabeni@redhat.com>, Eric Dumazet
-	<edumazet@google.com>, David Miller <davem@davemloft.net>, Jakub Kicinski
-	<kuba@kernel.org>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Content-Language: en-US
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-In-Reply-To: <2ceeb542-986a-404e-ad0f-62e0a938ce7c@gmail.com>
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20260305083138eucas1p19943c4dec735b06f536525de26252f03
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20260305083138eucas1p19943c4dec735b06f536525de26252f03
-X-EPHeader: CA
-X-CMS-RootMailID: 20260305083138eucas1p19943c4dec735b06f536525de26252f03
-References: <799114be-1456-442b-b479-142e7ee9d254@gmail.com>
-	<2ceeb542-986a-404e-ad0f-62e0a938ce7c@gmail.com>
-	<CGME20260305083138eucas1p19943c4dec735b06f536525de26252f03@eucas1p1.samsung.com>
+References: <20260304175735.2660419-1-vladimir.oltean@nxp.com> <20260304175735.2660419-18-vladimir.oltean@nxp.com>
+In-Reply-To: <20260304175735.2660419-18-vladimir.oltean@nxp.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 5 Mar 2026 09:29:48 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXUBhpnFEnnTfyPdECWqNmKLweupX=FY2SedYA3bapG2g@mail.gmail.com>
+X-Gm-Features: AaiRm53mHozL13yvxji6rv0MKzaGvWxuhr7SWHD2SjBJ0VWNhqppZZeXezGpDhg
+Message-ID: <CAMuHMdXUBhpnFEnnTfyPdECWqNmKLweupX=FY2SedYA3bapG2g@mail.gmail.com>
+Subject: Re: [PATCH phy-next 17/22] net: renesas: rswitch: include PHY
+ provider header
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: linux-phy@lists.infradead.org, Vinod Koul <vkoul@kernel.org>, 
+	Neil Armstrong <neil.armstrong@linaro.org>, dri-devel@lists.freedesktop.org, 
+	freedreno@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org, 
+	linux-arm-msm@vger.kernel.org, linux-can@vger.kernel.org, 
+	linux-gpio@vger.kernel.org, linux-ide@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, 
+	linux-pci@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-samsung-soc@vger.kernel.org, linux-sunxi@lists.linux.dev, 
+	linux-tegra@vger.kernel.org, linux-usb@vger.kernel.org, 
+	netdev@vger.kernel.org, spacemit@lists.linux.dev, 
+	UNGLinuxDriver@microchip.com, 
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>, Michael Dege <michael.dege@renesas.com>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Content-Type: text/plain; charset="UTF-8"
 
-On 27.02.2026 23:11, Heiner Kallweit wrote:
-> - Remove duplicated preempt disable. Disabling preemption has been added
->    to functions like u64_stats_update_begin() in the meantime.
-> - Simplify branch structure
+On Wed, 4 Mar 2026 at 19:00, Vladimir Oltean <vladimir.oltean@nxp.com> wrote:
+> As a PHY consumer driver, the Renesas rswitch dereferences internal
+> fields of struct phy, something which shouldn't be done, as that is
+> going to be made an opaque pointer.
 >
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-
-This patch has been merged to yesterday's linux-next as commit 
-1afccc5a201e ("net: phy: improve mdiobus_stats_acct"). In my tests I 
-found that it introduces the following warning on 32bit machines with 
-USB ethernet adapters, so the preempt disable was there for a good reason:
-
-------------[ cut here ]------------
-WARNING: ./include/linux/u64_stats_sync.h:171 at 
-mdiobus_stats_acct+0x288/0x2b4, CPU#0: kworker/0:3/50
-Loading compiled-in X.509 certificates
-Modules linked in:
-CPU: 0 UID: 0 PID: 50 Comm: kworker/0:3 Not tainted 
-7.0.0-rc2-next-20260304 #12283 PREEMPT
-Hardware name: Samsung Exynos (Flattened Device Tree)
-Workqueue: usb_hub_wq hub_event
-Call trace:
-  unwind_backtrace from show_stack+0x10/0x14
-  show_stack from dump_stack_lvl+0x68/0x88
-  dump_stack_lvl from __warn+0x94/0x210
-  __warn from warn_slowpath_fmt+0x1b0/0x1bc
-  warn_slowpath_fmt from mdiobus_stats_acct+0x288/0x2b4
-  mdiobus_stats_acct from __mdiobus_read+0x84/0xf0
-  __mdiobus_read from mdiobus_read+0x30/0x44
-  mdiobus_read from get_phy_device+0xac/0x140
-  get_phy_device from mdiobus_scan+0x24/0x104
-  mdiobus_scan from __mdiobus_register+0x21c/0x478
-  __mdiobus_register from smsc95xx_bind+0x3f4/0x5f0
-  smsc95xx_bind from usbnet_probe+0x330/0x928
-  usbnet_probe from usb_probe_interface+0xec/0x318
-  usb_probe_interface from really_probe+0xe0/0x424
-  really_probe from __driver_probe_device+0x9c/0x1f4
-  __driver_probe_device from driver_probe_device+0x30/0xc0
-  driver_probe_device from __device_attach_driver+0xa8/0x140
-  __device_attach_driver from bus_for_each_drv+0x84/0xdc
-  bus_for_each_drv from __device_attach+0xb0/0x214
-  __device_attach from device_initial_probe+0x3c/0x48
-  device_initial_probe from bus_probe_device+0x24/0x80
-  bus_probe_device from device_add+0x5c0/0x810
-  device_add from usb_set_configuration+0x4e4/0x974
-  usb_set_configuration from usb_generic_driver_probe+0x3c/0x78
-  usb_generic_driver_probe from usb_probe_device+0x4c/0x14c
-  usb_probe_device from really_probe+0xe0/0x424
-  really_probe from __driver_probe_device+0x9c/0x1f4
-  __driver_probe_device from driver_probe_device+0x30/0xc0
-  driver_probe_device from __device_attach_driver+0xa8/0x140
-  __device_attach_driver from bus_for_each_drv+0x84/0xdc
-  bus_for_each_drv from __device_attach+0xb0/0x214
-  __device_attach from device_initial_probe+0x3c/0x48
-  device_initial_probe from bus_probe_device+0x24/0x80
-  bus_probe_device from device_add+0x5c0/0x810
-  device_add from usb_new_device+0x23c/0x4f8
-  usb_new_device from hub_event+0x11dc/0x1ca4
-  hub_event from process_one_work+0x24c/0x7b8
-  process_one_work from worker_thread+0x1b8/0x3bc
-  worker_thread from kthread+0x128/0x168
-  kthread from ret_from_fork+0x14/0x28
-Exception stack(0xf0a15fb0 to 0xf0a15ff8)
-...
-irq event stamp: 5711
-hardirqs last  enabled at (5911): [<c01c6c54>] 
-console_flush_one_record+0x424/0x570
-hardirqs last disabled at (5943): [<c013ce4c>] handle_softirqs+0x53c/0x5c0
-softirqs last  enabled at (5944): [<c013cc3c>] handle_softirqs+0x32c/0x5c0
-softirqs last disabled at (6157): [<c013d07c>] __irq_exit_rcu+0x144/0x1f0
----[ end trace 0000000000000000 ]---
-
-
-> ---
->   drivers/net/phy/mdio_bus.c | 11 +++--------
->   1 file changed, 3 insertions(+), 8 deletions(-)
+> It is quite clearly visible that the driver is tightly coupled with the
+> drivers/phy/renesas/r8a779f0-ether-serdes.c, which puts heavy pressure
+> on the Generic PHY subsystem.
 >
-> diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-> index 48c0447e6a8..b32a369cd25 100644
-> --- a/drivers/net/phy/mdio_bus.c
-> +++ b/drivers/net/phy/mdio_bus.c
-> @@ -358,22 +358,17 @@ EXPORT_SYMBOL(of_mdio_find_bus);
->   
->   static void mdiobus_stats_acct(struct mdio_bus_stats *stats, bool op, int ret)
->   {
-> -	preempt_disable();
->   	u64_stats_update_begin(&stats->syncp);
->   
->   	u64_stats_inc(&stats->transfers);
-> -	if (ret < 0) {
-> +	if (ret < 0)
->   		u64_stats_inc(&stats->errors);
-> -		goto out;
-> -	}
-> -
-> -	if (op)
-> +	else if (op)
->   		u64_stats_inc(&stats->reads);
->   	else
->   		u64_stats_inc(&stats->writes);
-> -out:
-> +
->   	u64_stats_update_end(&stats->syncp);
-> -	preempt_enable();
->   }
->   
->   /**
+> This was discussed before here:
+> https://lore.kernel.org/linux-phy/20260211194541.cdmibrpfn6ej6e74@skbuf/
+>
+> but to summarize, it is generally expected that when a Generic PHY
+> function is called, it takes effect immediately. When this doesn't
+> happen, the PHY provider driver must change its implementation rather
+> than the consumer be made to work around it. PHY providers which rely on
+> a hardcoded call sequence in the consumer are just lazy and wrong.
+>
+> The most obvious example is commit 5cb630925b49 ("net: renesas: rswitch:
+> Add phy_power_{on,off}() calling"). Problem description:
+> - Ethernet PHYs may change phydev->interface. When this happens, the
+>   SerDes must learn of the new phydev->interface using phy_set_mode_ext().
+> - drivers/phy/renesas/r8a779f0-ether-serdes.c implements phy_set_mode_ext(),
+>   but this only caches the mode and submode into channel->phy_interface
+>   and applies this to hardware during phy_power_on().
+>
+> The commit author decided to work around this at the consumer site, by
+> power cycling the PHY for the configuration to take effect.
+>
+> This had a worse implication from an API perspective in subsequent
+> commit 053f13f67be6 ("rswitch: Fix imbalance phy_power_off() calling").
+> It was observed that phy_power_on() and phy_power_off() calls need to be
+> balanced, and so, the consumer decided to start looking at the struct
+> phy :: power_count (the technical reason why I'm making this change).
+>
+> This is also wrong from an API perspective because
+> - a consumer should only care about its own vote on the PHY power state.
+>   If this is a multi-port submode like QSGMII, a single phy_power_off()
+>   call will not actually turn the PHY off (nor should it).
+> - the power_count is written under the &phy->mutex, but read unlocked
+>   here.
+>
+> The rswitch and r8a779f0-ether-serdes drivers both need to be completely
+> rethought in terms of Generic PHY API call sequence. There is no quick
+> fix to apply. Just include the PHY provider API along with the consumer
+> one, to keep working as before when struct phy will be made an opaque
+> pointer to normal PHY consumers. But this is a bad offender (and it's
+> not even a provider) so add a FIXME.
+>
+> Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-Best regards
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
