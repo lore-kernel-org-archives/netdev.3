@@ -1,16 +1,16 @@
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6F93A9636
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 14:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 183773A9D82
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 14:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772721284; cv=none; b=YznszibQXHKdK9in+CU8Nzb9qwBoNDz0oMCoH1SFM/5KyTKhLxaeoMhT4/mkIjXjreH4r9KrsNEnm5CkzIMdY2mGizEq+CUf6c8R8RRC6/jKsyv0hx3bGXIupermRKoFZKPVi6bndDjnkIpGWM+q8k8LXNLFZw9+yYc1P6DPF9Q=
+	t=1772721284; cv=none; b=eockgv2XBITQAcp5oJDR1Pguj/9lXa2zosw0O3iPWk4dttt1GcX5a1MQ77gVoHAtmxcdQ2m/8lDz26Z0Uai73D78caCuyjwWLK4o8exOXFiiWkhRTnmphobUvwTp9gJGdruYD641ZgdDIgXQcNf1TyO2OKTVUFcq5erF3xWXym0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772721284; c=relaxed/simple;
-	bh=cSSLChh269Nxbhsa4GCVe/nCyfZMnRXsR/UYDpHBOKw=;
+	bh=1fnU0MUKwFDu+HuPm2g0JEOYCoHt7uKd2I73uTFW9+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WL2zwSiaPy1O6OPsy1PbZE7PHVtVcLyW0bvso/KvKbMnDYCGqPJCXaEVRXW5feONq7H9OrgxcucIUeDjPuI74xMZu2/0UMlg6XDCv3P8S9LYDyralrsCAkdLiNOR26zaKnchz++/MDh4cE/ieVPLmLvFUJjmIyhAaNJtDEZx5rE=
+	 MIME-Version; b=N2DQYDrqhWeyA56CkCyi0OPse4TkPYageYYUgQzkE+YEyN80Mt/jQJRRc61IDTAfSO/n4KJ8AQpDb+iCsmmiYCdz64QbGGcuVhJMpXtGejrBd7Se7SuoeJ1f1EfzFJYjd0TNLQuvDFnnya/CmHnuCjmGv0i1Shj5VGhF5nwGd+A=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -18,16 +18,16 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1vy9mZ-000462-Pg; Thu, 05 Mar 2026 15:34:31 +0100
+	id 1vy9mZ-000464-Pm; Thu, 05 Mar 2026 15:34:31 +0100
 Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac] helo=dude04)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1vy9mX-003twk-1w;
-	Thu, 05 Mar 2026 15:34:30 +0100
+	id 1vy9mX-003two-2B;
+	Thu, 05 Mar 2026 15:34:31 +0100
 Received: from ore by dude04 with local (Exim 4.98.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1vy9mY-00000002E88-3fBv;
+	id 1vy9mY-00000002E8c-3zeM;
 	Thu, 05 Mar 2026 15:34:30 +0100
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: "David S. Miller" <davem@davemloft.net>,
@@ -44,9 +44,9 @@ Cc: Oleksij Rempel <o.rempel@pengutronix.de>,
 	linux-kernel@vger.kernel.org,
 	netdev@vger.kernel.org,
 	UNGLinuxDriver@microchip.com
-Subject: [PATCH net v1 1/4] net: usb: lan78xx: fix silent drop of packets with checksum errors
-Date: Thu,  5 Mar 2026 15:34:26 +0100
-Message-ID: <20260305143429.530909-2-o.rempel@pengutronix.de>
+Subject: [PATCH net v1 4/4] net: usb: lan78xx: fix WARN in __netif_napi_del_locked on disconnect
+Date: Thu,  5 Mar 2026 15:34:29 +0100
+Message-ID: <20260305143429.530909-5-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260305143429.530909-1-o.rempel@pengutronix.de>
 References: <20260305143429.530909-1-o.rempel@pengutronix.de>
@@ -62,63 +62,93 @@ X-SA-Exim-Mail-From: ore@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: netdev@vger.kernel.org
 
-Do not drop packets with checksum errors at the USB driver level;
-pass them to the network stack.
+Remove redundant netif_napi_del() call from disconnect path.
 
-Previously, the driver dropped all packets where the 'Receive Error
-Detected' (RED) bit was set, regardless of the specific error type. This
-caused packets with only IP or TCP/UDP checksum errors to be dropped
-before reaching the kernel, preventing the network stack from accounting
-for them or performing software fallback.
+A WARN may be triggered in __netif_napi_del_locked() during USB device
+disconnect:
 
-Add a mask for hard hardware errors to safely drop genuinely corrupt
-frames, while allowing checksum-errored frames to pass with their
-ip_summed field explicitly set to CHECKSUM_NONE.
+  WARNING: CPU: 0 PID: 11 at net/core/dev.c:7417 __netif_napi_del_locked+0x2b4/0x350
 
-Fixes: 55d7de9de6c3 ("Microchip's LAN7800 family USB 2/3 to 10/100/1000 Ethernet device driver")
+This happens because netif_napi_del() is called in the disconnect path while
+NAPI is still enabled. However, it is not necessary to call netif_napi_del()
+explicitly, since unregister_netdev() will handle NAPI teardown automatically
+and safely. Removing the redundant call avoids triggering the warning.
+
+Full trace:
+ lan78xx 1-1:1.0 enu1: Failed to read register index 0x000000c4. ret = -ENODEV
+ lan78xx 1-1:1.0 enu1: Failed to set MAC down with error -ENODEV
+ lan78xx 1-1:1.0 enu1: Link is Down
+ lan78xx 1-1:1.0 enu1: Failed to read register index 0x00000120. ret = -ENODEV
+ ------------[ cut here ]------------
+ WARNING: CPU: 0 PID: 11 at net/core/dev.c:7417 __netif_napi_del_locked+0x2b4/0x350
+ Modules linked in: flexcan can_dev fuse
+ CPU: 0 UID: 0 PID: 11 Comm: kworker/0:1 Not tainted 6.16.0-rc2-00624-ge926949dab03 #9 PREEMPT
+ Hardware name: SKOV IMX8MP CPU revC - bd500 (DT)
+ Workqueue: usb_hub_wq hub_event
+ pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : __netif_napi_del_locked+0x2b4/0x350
+ lr : __netif_napi_del_locked+0x7c/0x350
+ sp : ffffffc085b673c0
+ x29: ffffffc085b673c0 x28: ffffff800b7f2000 x27: ffffff800b7f20d8
+ x26: ffffff80110bcf58 x25: ffffff80110bd978 x24: 1ffffff0022179eb
+ x23: ffffff80110bc000 x22: ffffff800b7f5000 x21: ffffff80110bc000
+ x20: ffffff80110bcf38 x19: ffffff80110bcf28 x18: dfffffc000000000
+ x17: ffffffc081578940 x16: ffffffc08284cee0 x15: 0000000000000028
+ x14: 0000000000000006 x13: 0000000000040000 x12: ffffffb0022179e8
+ x11: 1ffffff0022179e7 x10: ffffffb0022179e7 x9 : dfffffc000000000
+ x8 : 0000004ffdde8619 x7 : ffffff80110bcf3f x6 : 0000000000000001
+ x5 : ffffff80110bcf38 x4 : ffffff80110bcf38 x3 : 0000000000000000
+ x2 : 0000000000000000 x1 : 1ffffff0022179e7 x0 : 0000000000000000
+ Call trace:
+  __netif_napi_del_locked+0x2b4/0x350 (P)
+  lan78xx_disconnect+0xf4/0x360
+  usb_unbind_interface+0x158/0x718
+  device_remove+0x100/0x150
+  device_release_driver_internal+0x308/0x478
+  device_release_driver+0x1c/0x30
+  bus_remove_device+0x1a8/0x368
+  device_del+0x2e0/0x7b0
+  usb_disable_device+0x244/0x540
+  usb_disconnect+0x220/0x758
+  hub_event+0x105c/0x35e0
+  process_one_work+0x760/0x17b0
+  worker_thread+0x768/0xce8
+  kthread+0x3bc/0x690
+  ret_from_fork+0x10/0x20
+ irq event stamp: 211604
+ hardirqs last  enabled at (211603): [<ffffffc0828cc9ec>] _raw_spin_unlock_irqrestore+0x84/0x98
+ hardirqs last disabled at (211604): [<ffffffc0828a9a84>] el1_dbg+0x24/0x80
+ softirqs last  enabled at (211296): [<ffffffc080095f10>] handle_softirqs+0x820/0xbc8
+ softirqs last disabled at (210993): [<ffffffc080010288>] __do_softirq+0x18/0x20
+ ---[ end trace 0000000000000000 ]---
+ lan78xx 1-1:1.0 enu1: failed to kill vid 0081/0
+
+Fixes: e110bc825897 ("net: usb: lan78xx: Convert to PHYLINK for improved PHY and MAC management")
 Cc: stable@vger.kernel.org
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/usb/lan78xx.c | 4 +++-
- drivers/net/usb/lan78xx.h | 3 +++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+changes v2:
+- Do not move NAPI enable/disable to link up/down callbacks.
+- Remove redundant netif_napi_del() call from disconnect path.
+- Update commit message to accurately describe the root cause and solution,
+  following feedback from maintainer.
+---
+ drivers/net/usb/lan78xx.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/net/usb/lan78xx.c b/drivers/net/usb/lan78xx.c
-index a0021df12fde..1c8f69190378 100644
+index f8558b87eaec..19cdf69fa589 100644
 --- a/drivers/net/usb/lan78xx.c
 +++ b/drivers/net/usb/lan78xx.c
-@@ -3829,6 +3829,7 @@ static void lan78xx_rx_csum_offload(struct lan78xx_net *dev,
- 	 */
- 	if (!(dev->net->features & NETIF_F_RXCSUM) ||
- 	    unlikely(rx_cmd_a & RX_CMD_A_ICSM_) ||
-+	    unlikely(rx_cmd_a & RX_CMD_A_CSE_MASK_) ||
- 	    ((rx_cmd_a & RX_CMD_A_FVTG_) &&
- 	     !(dev->net->features & NETIF_F_HW_VLAN_CTAG_RX))) {
- 		skb->ip_summed = CHECKSUM_NONE;
-@@ -3901,7 +3902,8 @@ static int lan78xx_rx(struct lan78xx_net *dev, struct sk_buff *skb,
- 			return 0;
- 		}
+@@ -4552,8 +4552,6 @@ static void lan78xx_disconnect(struct usb_interface *intf)
+ 	phylink_disconnect_phy(dev->phylink);
+ 	rtnl_unlock();
  
--		if (unlikely(rx_cmd_a & RX_CMD_A_RED_)) {
-+		if (unlikely(rx_cmd_a & RX_CMD_A_RED_) &&
-+		    (rx_cmd_a & RX_CMD_A_RX_HARD_ERRS_MASK_)) {
- 			netif_dbg(dev, rx_err, dev->net,
- 				  "Error rx_cmd_a=0x%08x", rx_cmd_a);
- 		} else {
-diff --git a/drivers/net/usb/lan78xx.h b/drivers/net/usb/lan78xx.h
-index 968e5e5faee0..17a934acff3d 100644
---- a/drivers/net/usb/lan78xx.h
-+++ b/drivers/net/usb/lan78xx.h
-@@ -74,6 +74,9 @@
- #define RX_CMD_A_ICSM_			(0x00004000)
- #define RX_CMD_A_LEN_MASK_		(0x00003FFF)
+-	netif_napi_del(&dev->napi);
+-
+ 	unregister_netdev(net);
  
-+#define RX_CMD_A_RX_HARD_ERRS_MASK_ \
-+	(RX_CMD_A_RX_ERRS_MASK_ & ~RX_CMD_A_CSE_MASK_)
-+
- /* Rx Command B */
- #define RX_CMD_B_CSUM_SHIFT_		(16)
- #define RX_CMD_B_CSUM_MASK_		(0xFFFF0000)
+ 	timer_shutdown_sync(&dev->stat_monitor);
 -- 
 2.47.3
 
