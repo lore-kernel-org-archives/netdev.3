@@ -1,194 +1,134 @@
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE4921DF27D
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 03:43:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772682198; cv=pass; b=Uwga53cJaQTZdiJp+FtItbO9LAnEKsFZOrptpDRDSpAW+/GjvYsCaOrNR7obBtZDSmiflEVPuP0WruZTx1ezt5z1vF5Tq5KO1Tkin07cjsNgvjBOh5ASwi1eF3pY84AyNxM/TgKDh9YMOFL3vF1cjcU4+appYv+T+rUQCqWBgSU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772682198; c=relaxed/simple;
-	bh=ootrVtgPccogVZf5ithD1dZ0iHB8qkN6uJMW91uTino=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ODGcGmznUNzrWnoSMnPQXxmtMBuCBnrZojKC72xyeFVD8WoVb/93riUBa1YyX8usu97f4H42Pc3d5nL9w3snZA1p2GiYjjKhMhXbnLWg3XE9gxKWIyjSoaFbTt6cz8qeGNpeYqHjFtK/rT0goKhJ9me1PoP4rx52Z1NdNaCD2YU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mRmVE107; arc=pass smtp.client-ip=74.125.82.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0082F1A6828;
+	Thu,  5 Mar 2026 04:17:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772684268; cv=none; b=o4O8eZpGglYgcqePoKt3MLIna+uwBlAoA3XrC4tXdxRYdUch8xal30j0lfiVODhhf9+cJ4bl1/kplypI+FYSLzDs+0pHCznTmyI4nZ3tj5TWUiKY0xE6Yy0Vz3fBN+zSA3Om2lZLmNZotqX9jWeQfjm10pGkNeABUbiNb6tNTZg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772684268; c=relaxed/simple;
+	bh=ju0G5UZ2rCJU+V3SLjPep3HnbLt/EM2wPBSuA/6zSAY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L+uzJXOjA+sgv1VUBGl0/f7vqncxnAvtUYzYz3jbWNPNn1KkSYpGleUHWFKEwlWFtCxWQH/Omfm8vNf68D9o2BBiQxBeyEI9D4ArSXaM5eRXaWe3fHiB36tUoT8hR2ot4LjMrU+GzbKj9riLNnQjR5KU0eL4XhUbXG6mRzuzuY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Iy1qf1p8; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mRmVE107"
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-12732e6a123so1814908c88.1
-        for <netdev@vger.kernel.org>; Wed, 04 Mar 2026 19:43:16 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772682196; cv=none;
-        d=google.com; s=arc-20240605;
-        b=E3pj7rHKg3VwHUYfGBP+PBxlLf+sqrYX8V452nHcTIxL5ShglJY7qdCkQdk0osOGkY
-         W8XIeXleEY+Ztdm/uAi0336QFxYq6G6gYr0dbm9qRJIkvcfMI8ot8ZZM4zjzwUFbxjeM
-         qiyYcf4gs6oTPP0EemdsifhZoWHcq49UFXDST8Tiwq2EQetfbeJcLunESkdjFdoNPMH5
-         u+sukuiH0eUG+Q0VtC4lebpsXcgBCVQ8KcmwmbNaoW+EsPmDwxIp0q/3+EUkXK390TVm
-         sGQqq+l8qcoPeq4v4PvJnziqvO663Gn39sk9fgiNaSvBE9BD15G0aOcUsvtUWJdooaww
-         DZQQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=laZackGfUZPohc8rpn7q9sGIcb8hpmuUOav/5ISxzRQ=;
-        fh=e7/mHBQODT+kO+xqK2mD9awXw2OxcDlemkLy5ZCGuDI=;
-        b=bqvWdZWeOCoeDfUYmkoLUbZR0hknkMZXny4ZKWdu/qYd4AAkJZvpB457un6cRK9Pv/
-         o0AKLzQKHe0Q+IOTIuM9cShdqpC8NTWJMKam2hEtlBTKnxbKq0mWOpbUvSM7FvqCGvZH
-         Yhql0fmKH+J1+dWjhjqu5k0rT3sCHUMwucP/dccXnB7TczmFdG277ZCK6LZAaByfJzmE
-         Od+aX/HPCV8zJl8Rv7YWmfFW0G6eEaNNf5bgXBDA/WgQ/ZsQa3JPUty9JNypwnpCyUY0
-         RbOXk7IgcDui9nwgFXxAJGra8oWt5ZW1Bsu6QN9mtYA5QU3kNd+LDTmVEgxek9SaQvOQ
-         MUXQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772682196; x=1773286996; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=laZackGfUZPohc8rpn7q9sGIcb8hpmuUOav/5ISxzRQ=;
-        b=mRmVE107dCyuLGH2mESEAOazzRcz4uvYuqX+lfD0ghIDG9UADSgGgdmQM/eUEoKotD
-         gecv2+iQgRXiukDqX9Cusx+MmVnTCItW3vVo32Rjmxk0J4HSUY07zXZ8A9JxeO+eYJbc
-         I1KA3zhNi+Tdi+arTWjpbD/6a5ZJL2atrX+gl5CIPtW00N8WpNc0YNXoDyanpR9McASV
-         9TEnfNX2f25k2x5c+vxYLnL+6qsH5O5dH/ytrrJsByaIJWsFH7m6AoL5NzqgKzfW/Q23
-         OEEJ9Q5i2KUCkuknj2wqyUVofIl2mNj5Zi23Utkd83OYGgMhKrmib+RBXZQA/9pFoj/O
-         9lpg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772682196; x=1773286996;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=laZackGfUZPohc8rpn7q9sGIcb8hpmuUOav/5ISxzRQ=;
-        b=HkC9i24artrSYyGX9xyjurXjklVO+bs0a5OziT5IwSAh9sjINBMFFQZOsNsbfEjCA+
-         yl+QGPCYG04ItkUQWS5RcWZFOC4QXZfwpRObE2eCS3kL7SQpUVYuuOLS1frIY1hnmjtm
-         bruAPs1er0ZYuVOSPHOySKBJe7aYSgL6tFf6vvnL9qP+uVK+ZwdC0SwJ49ER5Z3SnJ9e
-         VSVHEmmQ+zrr873QbHiFMLYH6LODpzN7gCSUsGPQWLJt0wsGcI484Uosx79dciOGaU6j
-         bCkf9b+3SzUiBQ1pLg5KEBcFIxpw3Or5gFSfYlvuV0QSZMo2c6Wbn4qwBhX2nI/4iWZE
-         f9pA==
-X-Forwarded-Encrypted: i=1; AJvYcCUloTB8bvt8x6b4d5q1DIOwse6fMiJKiCsx5t1aMirH7UTJjGqYHAMt5e6De+/z0+7q/RvDvnk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxzlOfidWDVYqPjhJg0FOl4LXvvKZUCbFxbgbb/RyFWlCHxRN2y
-	nBfBZVkPVxsyTYO/KE8T9lr8Ogbb+9sSIScHSmOn9WXeLitjEYtbIq9IpWqlhGE4Cmza6Tqp6k4
-	aoPq8XllruodKIyEyXvz/wbZrAbTo2lv8E4mDXZfK
-X-Gm-Gg: ATEYQzxBnwFsAAWdELAF8nJjJ4lhAjZEXK6I9tW0AFt+YVVka8NjjOJhlowi03rb9bq
-	DJ69QISiqG5GaC/DPCSb02V3X3G/Z9PF8NC90E4gxUblwKOYkAsZfqnBrBjey7zddHwtWCocsME
-	pY8zGWbw7Z33JuCTksk8zDtlvvlgKr2MIU5YZ2DzhNkkPQkDgFcF6qkIkWor48IQEkPRXT6dRMx
-	tKoT5+lhRrPgBnEhoB0Gprq7kx4eNywBMJLJRDmaRbRUhJR8GP6J085ztDdgY62lAMCh3GAv+Eq
-	C0LUK4ypXmkr9PvYIoI7e6BFyc9gj4BcGchiz8Irv7lrhWwsJCkn0/8gSRb9h3ThwLZzCcrA
-X-Received: by 2002:a05:7022:611:b0:127:3440:e5d5 with SMTP id
- a92af1059eb24-128b70d1277mr2482271c88.21.1772682195309; Wed, 04 Mar 2026
- 19:43:15 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Iy1qf1p8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772684265; x=1804220265;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=ju0G5UZ2rCJU+V3SLjPep3HnbLt/EM2wPBSuA/6zSAY=;
+  b=Iy1qf1p8aSKL8u7NrTInlMeyrr6g2HqHsDdjTRkuW+Gshi3tRodlLgcC
+   Vw9vXKuGUmLLLJXTT/eO92Q0gVv2vNq1Qj5Z1rzNLki+ysqSMK1uY4tRJ
+   9a61016JzDP895N+5yG2tpkER+VhBM4wzlsUmSPy046QqOwRr0j1Gi10m
+   bt9TMg6bgvDkr2ehaiDqnpQvLLMi1/UHHwrm+TX0DHcsKfYugJrQMfG37
+   sNu4GEar1nX3uEFbZ9K+ozdKHQGMw8T7KWoWviQhbljdjZ7bKgBhKUaHS
+   Y0Q5pqQ0aBi/reIHblbiL0n7e83Lhy8c3tdZwMZe6Ks2rqQPjlr1T2mmZ
+   g==;
+X-CSE-ConnectionGUID: 0+Aq+1nqS/2v1sVQc7qUmg==
+X-CSE-MsgGUID: mHQGN7gLQf6og7hlPi12TA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="84095132"
+X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
+   d="scan'208";a="84095132"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Mar 2026 20:17:45 -0800
+X-CSE-ConnectionGUID: Z0Ncu36vSUSh/gW40dxtLQ==
+X-CSE-MsgGUID: ZfeOJtbTQ7u/NXImdFn6Zg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,325,1763452800"; 
+   d="scan'208";a="218675068"
+Received: from igk-lkp-server01.igk.intel.com (HELO 9958d990ccf2) ([10.211.93.152])
+  by orviesa007.jf.intel.com with ESMTP; 04 Mar 2026 20:17:42 -0800
+Received: from kbuild by 9958d990ccf2 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vy09a-000000001wb-1w88;
+	Thu, 05 Mar 2026 04:17:38 +0000
+Date: Thu, 5 Mar 2026 05:17:13 +0100
+From: kernel test robot <lkp@intel.com>
+To: Praveen Kumar Kannoju <praveen.kannoju@oracle.com>, saeedm@nvidia.com,
+	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, rama.nichanamatlu@oracle.com,
+	manjunath.b.patil@oracle.com, anand.a.khoje@oracle.com,
+	Praveen Kumar Kannoju <praveen.kannoju@oracle.com>
+Subject: Re: [PATCH] net/mlx5: poll mlx5 eq during irq migration
+Message-ID: <202603050528.5JWnahEr-lkp@intel.com>
+References: <20260304161704.910564-1-praveen.kannoju@oracle.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260221233234.3814768-1-kuniyu@google.com> <20260221233234.3814768-3-kuniyu@google.com>
- <fjt7fesjnzwuzeuiouv6rpvoxebounjqv3jlc34tvmzh252zep@hizdvwr2qwe4>
-In-Reply-To: <fjt7fesjnzwuzeuiouv6rpvoxebounjqv3jlc34tvmzh252zep@hizdvwr2qwe4>
-From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Wed, 4 Mar 2026 19:43:04 -0800
-X-Gm-Features: AaiRm50tdKTJcrkl2TV6ugHeYrljxXQn_6A_T7cC2LyOcuGXEOHGEE6Yysg1wcY
-Message-ID: <CAAVpQUAJgFtcJGtuMufS9mhaShs7OQDxx7jTGOSbG9wCdeCN7Q@mail.gmail.com>
-Subject: Re: [PATCH v4 bpf/net 2/6] sockmap: Annotate sk->sk_write_space() for UDP.
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: John Fastabend <john.fastabend@gmail.com>, Jakub Sitnicki <jakub@cloudflare.com>, 
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, Kuniyuki Iwashima <kuni1840@gmail.com>, 
-	bpf@vger.kernel.org, netdev@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260304161704.910564-1-praveen.kannoju@oracle.com>
 
-On Wed, Mar 4, 2026 at 5:48=E2=80=AFPM Jiayuan Chen <jiayuan.chen@linux.dev=
-> wrote:
->
-> On Sat, Feb 21, 2026 at 11:30:49PM +0800, Kuniyuki Iwashima wrote:
-> > UDP TX skb->destructor() is sock_wfree(), and UDP only
-> > holds lock_sock() for UDP_CORK / MSG_MORE sendmsg().
-> >
-> > Otherwise, sk->sk_write_space() is read locklessly.
-> >
-> > Let's use WRITE_ONCE() and READ_ONCE() for sk->sk_write_space().
-> >
-> > Fixes: 7b98cd42b049 ("bpf: sockmap: Add UDP support")
-> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > ---
-> > v3: Use WRITE_ONCE() in udp_bpf_update_proto()
-> > v2: Cache sk->sk_write_space in sock_wfree()
-> > ---
-> >  net/core/skmsg.c   | 2 +-
-> >  net/core/sock.c    | 8 ++++++--
-> >  net/ipv4/udp_bpf.c | 2 +-
-> >  3 files changed, 8 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-> > index 75fa94217e1e..3d7eb2f4ac98 100644
-> > --- a/net/core/skmsg.c
-> > +++ b/net/core/skmsg.c
-> > @@ -1297,7 +1297,7 @@ void sk_psock_start_verdict(struct sock *sk, stru=
-ct sk_psock *psock)
-> >
-> >       psock->saved_data_ready =3D sk->sk_data_ready;
-> >       WRITE_ONCE(sk->sk_data_ready, sk_psock_verdict_data_ready);
-> > -     sk->sk_write_space =3D sk_psock_write_space;
-> > +     WRITE_ONCE(sk->sk_write_space, sk_psock_write_space);
-> >  }
->
-> I noticed that Patch 1 and 2 were submitted earlier and are on bpf tree.
-> Given that Eric's commit (which you reviewed) is now in net.git, these tw=
-o patches
-> should probably be dropped in the next version, right? Just confirming.
+Hi Praveen,
 
-I was thinking git can just handle them well, and even the
-patch 2 has a delta in sock_wfree().
+kernel test robot noticed the following build warnings:
+
+[auto build test WARNING on net-next/main]
+[also build test WARNING on net/main linus/master v6.16-rc1 next-20260304]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Praveen-Kumar-Kannoju/net-mlx5-poll-mlx5-eq-during-irq-migration/20260305-003505
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20260304161704.910564-1-praveen.kannoju%40oracle.com
+patch subject: [PATCH] net/mlx5: poll mlx5 eq during irq migration
+config: x86_64-rhel-9.4-ltp (https://download.01.org/0day-ci/archive/20260305/202603050528.5JWnahEr-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260305/202603050528.5JWnahEr-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603050528.5JWnahEr-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> drivers/net/ethernet/mellanox/mlx5/core/eq.c:958:6: warning: no previous prototype for 'mlx5_eq_reap_irq_notify' [-Wmissing-prototypes]
+     958 | void mlx5_eq_reap_irq_notify(struct irq_affinity_notify *notify, const cpumask_t *mask)
+         |      ^~~~~~~~~~~~~~~~~~~~~~~
+>> drivers/net/ethernet/mellanox/mlx5/core/eq.c:978:6: warning: no previous prototype for 'mlx5_eq_reap_irq_release' [-Wmissing-prototypes]
+     978 | void mlx5_eq_reap_irq_release(struct kref *ref) {}
+         |      ^~~~~~~~~~~~~~~~~~~~~~~~
 
 
->
-> https://web.git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/commit=
-/?id=3D2ef2b20cf4e04ac8a6ba68493f8780776ff84300
->
-> >  void sk_psock_stop_verdict(struct sock *sk, struct sk_psock *psock)
-> > diff --git a/net/core/sock.c b/net/core/sock.c
-> > index 693e6d80f501..710f57ff3768 100644
-> > --- a/net/core/sock.c
-> > +++ b/net/core/sock.c
-> > @@ -2673,8 +2673,12 @@ void sock_wfree(struct sk_buff *skb)
-> >       int old;
-> >
-> >       if (!sock_flag(sk, SOCK_USE_WRITE_QUEUE)) {
-> > +             void (*sk_write_space)(struct sock *sk);
-> > +
-> > +             sk_write_space =3D READ_ONCE(sk->sk_write_space);
-> > +
-> >               if (sock_flag(sk, SOCK_RCU_FREE) &&
-> > -                 sk->sk_write_space =3D=3D sock_def_write_space) {
-> > +                 sk_write_space =3D=3D sock_def_write_space) {
-> >                       rcu_read_lock();
-> >                       free =3D __refcount_sub_and_test(len, &sk->sk_wme=
-m_alloc,
-> >                                                      &old);
-> > @@ -2690,7 +2694,7 @@ void sock_wfree(struct sk_buff *skb)
-> >                * after sk_write_space() call
-> >                */
-> >               WARN_ON(refcount_sub_and_test(len - 1, &sk->sk_wmem_alloc=
-));
-> > -             sk->sk_write_space(sk);
-> > +             sk_write_space(sk);
-> >               len =3D 1;
-> >       }
-> >       /*
-> > diff --git a/net/ipv4/udp_bpf.c b/net/ipv4/udp_bpf.c
-> > index 91233e37cd97..779a3a03762f 100644
-> > --- a/net/ipv4/udp_bpf.c
-> > +++ b/net/ipv4/udp_bpf.c
-> > @@ -158,7 +158,7 @@ int udp_bpf_update_proto(struct sock *sk, struct sk=
-_psock *psock, bool restore)
-> >       int family =3D sk->sk_family =3D=3D AF_INET ? UDP_BPF_IPV4 : UDP_=
-BPF_IPV6;
-> >
-> >       if (restore) {
-> > -             sk->sk_write_space =3D psock->saved_write_space;
-> > +             WRITE_ONCE(sk->sk_write_space, psock->saved_write_space);
-> >               sock_replace_proto(sk, psock->sk_proto);
-> >               return 0;
-> >       }
-> > --
-> > 2.53.0.371.g1d285c8824-goog
-> >
+vim +/mlx5_eq_reap_irq_notify +958 drivers/net/ethernet/mellanox/mlx5/core/eq.c
+
+   957	
+ > 958	void mlx5_eq_reap_irq_notify(struct irq_affinity_notify *notify, const cpumask_t *mask)
+   959	{
+   960		u32 eqe_count;
+   961		struct mlx5_eq_comp *eq = container_of(notify, struct mlx5_eq_comp, notify);
+   962	
+   963		if (mlx5_reap_eq_irq_aff_change) {
+   964			mlx5_core_warn(eq->core.dev, "irqn = 0x%x migration notified, EQ 0x%x: Cons = 0x%x\n",
+   965				       eq->core.irqn, eq->core.eqn, eq->core.cons_index);
+   966	
+   967			while (!rtnl_trylock())
+   968				msleep(20);
+   969	
+   970			eqe_count = mlx5_eq_poll_irq_disabled(eq);
+   971			if (eqe_count)
+   972				mlx5_core_warn(eq->core.dev, "Recovered %d eqes on EQ 0x%x\n",
+   973					       eqe_count, eq->core.eqn);
+   974			rtnl_unlock();
+   975		}
+   976	}
+   977	
+ > 978	void mlx5_eq_reap_irq_release(struct kref *ref) {}
+   979	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
