@@ -1,126 +1,104 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F37377EB4
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 12:14:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56C513988EE
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 12:15:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772712842; cv=none; b=Z2UWhpAOQgh/NJi9c4SxKambyQtgucLto/VigYszKc9ewda9IbR9YGY0QYHL2sBPec97yilIb6EQshobiJxjCRDT+2YDBVb4ljXcVV0HOO5OHsW7aOqkOdxeMNLYojmJSb5UXxAP6cS363s4PblJYRDgWP2BZ1csMDtsFgfcTIU=
+	t=1772712939; cv=none; b=pL/L0gEJ+qdfMP++rHoifgkthm4vp05qmRpfiHJiltRWnn+ge9PE+joi2mBbuHFcK7+WtPo4534Ni+omHKzMUVmFO8rRss3JZ2Mbbh7bRtQ5YEnexKG16sURD1bKwYBibv2puQCsRvh5DEniKNfGa6G0b/zI9+sk38ewml7c/XY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772712842; c=relaxed/simple;
-	bh=iwX2UcBl7tP30h9WaByuWXJH1KsY4yDRWRnRss61q8c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YiHkW6fAaOHFnWzEfIZBy3zfQ2mtfaU4rtIPu/oKv1WTMr0N5LwkqbR5nlJRp/FxOBiXVFa4Z49PC+O6lf3mByb6kWk3ou8v2DN09AUy7pQXP9k8cQNbNadsZdcKP5yAfb5LdDYUZSSGNskgsjwoP+gjoQEmDE5v56qi1t1O+RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UXallV0k; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1772712939; c=relaxed/simple;
+	bh=1N9rpptCfEGuKF24I3MO+ctQKVCjB9J9sj4YNN7+SI8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mz3BZ1S6BQsKtKBjr0e0OAJ+c53wVxHBJBybQVY2aetxDMKMGinEcU46HnCVQPcVCj6IirpreWTHPAdbMbSJX6ezmZDEz8AqeYTwn2zRdV9PF6fcDjFKcUhWaT2bUywKqyf2wQD0jbT/f8ib3Zbtd63FDSvqp+hbtx0H3Y/2FQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=linux.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UXallV0k"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-48371119eacso95079965e9.2
-        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 04:14:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772712839; x=1773317639; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yPy3h4xaTybaSqSbqk4gaOiETs94bm/62y+eylc0szI=;
-        b=UXallV0kEoDcEatFGIcj67KN2TTHI0K6M7MJHzTzvGS0wUxselM5tumRPfcaKGrcmg
-         9Yy1yCCkzE8Z5i17vWT9kPfz6qAZTh2Ony6hHNf4fzEjZQhHdPok1YYDXZSfwm0cX8sK
-         mF69uErdq++Lxn49LVym8He3jSCpMQNnJH+BQ8pWuDsiBuN9MYPnlfuOO2th/oncE3cE
-         zPcJtSa7R/ZYkBAw9YSGxi0nukpUyaziZJOa5E2DotpCHR+AFivhKQeUygXk4RHyjGs0
-         HRTgGReahuxRAh/SC6iqvGFEC1tFcZMJrtnhTsnyLghu7I1pKvu61856bfkzmnwmubr/
-         N7Gg==
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-35982fd8910so2115877a91.1
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 04:15:35 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772712839; x=1773317639;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yPy3h4xaTybaSqSbqk4gaOiETs94bm/62y+eylc0szI=;
-        b=kSJtJveGZx10UOxvLg3se/euOfvIkuXo63pCWZ8fymROwXhhhZWcu+bL3lxv7z9lTu
-         2Eit33URUDbwa9UYptFe86An56ZozbXK7x9hQ5+u3t18Y82uSyX/oIn5UNnWObsR3DxV
-         vBZSM3TIy6xrE1W5nWwipPU6DXZ0z2E7NFQsGQCFiqAnReLRfJDESqpHyVWAERmlS/kK
-         m36LJncP7tbOzM0eDOSc+c8YcaexH4IzXYCd64lknHhMQ8o91Ms32K2Pz5mV6T2st3rI
-         9KTB5huGlBAtDK+hZVU7zBThh8NVPwc6/xDbFEUb+MI0Cfsieg5/M8x4hxNVX4sApqiw
-         Xr1A==
-X-Forwarded-Encrypted: i=1; AJvYcCWa+vYM2meIF9lZOmPQGLFy2qIbUef1jtPigZoc6xzE9PMgU01+z2TSC3m6clGXUbxC4wmWwDc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx285R5VtMYRvN1aVBvUn5k1sun03aR1fFcxqNzXJ+Q6oYEw2Lb
-	Ecy/08EOJsLDpCBZam5D4n4WWJOFpd3Q0QhruLUDIfksMebwLnVyltz4
-X-Gm-Gg: ATEYQzyQUKi/ngKT76vEujqq1zZM8ok6oOUT7uTHGYMHAHCr7RuxYq3vVg/GZHXp6Hr
-	2ziCqUYSr5aHKJcStbWeYLjje/OhbGoHs82gTJ67d+IQGVbcvSBGrQZJ9sAxvTqv2zp5l1/3qfv
-	N97HP675mmZyWOW0s6xzZIFZ6GOZdJ8DPUJ4hXkTMVZsY8LjxnqYmPRQFW90ntne1FBtiORuX9n
-	c++npPIgQPb3iUoTRCTzeNo/3XwB51C42HqoWzJ1TqIUhRMNKR7whCkgbtDRAU+jupzJ+1luutQ
-	Lop/A902TrLg1qXtMsgndq8oLt+IUwezTbjDKsfPq1M5ksEBc6apRvDLw9mKPHUt07t7btxmb6+
-	7TLVJmlooXUp5l5mQJYh3YqMbyamyfZngTdOBkre0S6tkJ5LQ4E6xuFlaiHOkxGipz1XBfy9sY4
-	OiErgzyJudXMTaytGO4J+jAuU1yxq9fg6Refyrrc7Z324gTnyNx53Q6kD8TC4KRdmw9RqYxk2Fv
-	lExPeW4Nyb/+5H+hxLB+KE9Dby5
-X-Received: by 2002:a05:600c:470d:b0:47d:18b0:bb9a with SMTP id 5b1f17b1804b1-485198b340emr99599985e9.33.1772712839130;
-        Thu, 05 Mar 2026 04:13:59 -0800 (PST)
-Received: from skynet.lan (2a02-9142-4581-3b00-0000-0000-0000-0008.red-2a02-914.customerbaf.ipv6.rima-tde.net. [2a02:9142:4581:3b00::8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4851acf9ac7sm32219815e9.15.2026.03.05.04.13.57
+        d=1e100.net; s=20230601; t=1772712934; x=1773317734;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yS764krKV6WfB8kOxjvP29bXooB1nm1bNBDNiujlO4g=;
+        b=OK+0Vq4TOPE7T0SJ0BDyBpaEh19OsvdcGU9uSem6BBRyPYXw/fVdjM5I97IPWgBYhE
+         kRyqm3NWzd1VWAm+Bb4B04IGQC4TO/77qXdme0EyC5OM2oF0WKzMcXyiJfuOvCQ1SyZs
+         Y4rFO990929CfTsWjNf8fzAl+AWi6UyY7LIqiqw3rCck9857zpjgXwuGpiLabsdZI+sY
+         LT0bYOB89yNtDAkvUXFejXO19Gw2HIKj7D5NuXz2h0C7Y4dk4MJYJY8jWDvCcBWwN7tX
+         ND7aMCEB78q1D44++Pa9grHkJ9Joo+k99CFfcEtDdpk2IVUXlqHFmw4ZUZJ4V+NXfC1C
+         7iFA==
+X-Forwarded-Encrypted: i=1; AJvYcCVDSgz4jcswyOQb3sGwXMZ0s/+7N75Hz5GhYr9wFwklIZHKlZPntwX9NdpsEOCyyRpocI43icI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywoq/gZvoV+e4YftFhSh5riJ+OmN79A7wVtIhtZkDyBW87UL0Pv
+	eZGniCF+6ZICkwehb+nYJ6VXZCQTBtb+Ump95sJaxV6oZhnF1UNHOiLb
+X-Gm-Gg: ATEYQzxkRgbcaxgQ3UUkukXUWq7dIjr5P3iUQqFL/5InIoUCDX+DRPkkr3XF1jplEDd
+	CPjETe48ypOI+t2w2Czetd7OnEOyHUMp9xEorrXMJcmmyVzsXjxqSTwmmD0OR7lNTopBrTR5kcx
+	N9MPC1wPzs9COKsiQwicWlNuQml2YXlgkPLLe7vl3hmb3Wka9KOd4UfRRrI0z46oSOciOWAVcsf
+	+odkd1/Vsu2nY8sA8yA68R1gJnYNJPbn6mXDJqS+cX94Cmyiw8XvAhZtyTQeriOu/jBzzinaRr1
+	o3cM1dz8GhMG3H02+nzvjdKjuuBkDuOurOFW3oSsROylFbDrEFRkQ2cA4M3ei8Rit55HdUNm5PH
+	dYO5xX5aEfM3n4mDJaFcJxYDaVk62rv9gmGqTssN8ryMVpgGZVAq1qzAakYbnZthA03oAOzogCd
+	AI6aOLbgN1xuzzAZHtE6sxpfdKvPeAkqVEJ/BZ4LqBPrgFrlBqsX/DeyfZqNxeVj6Ibf0Hg/I+X
+	q/TlarfSJGRhonKODnwIGreqGFchlXdSuVCpObP7TrQERjvMO/MZzCLr1QM9g==
+X-Received: by 2002:a17:90a:d44b:b0:34e:630c:616c with SMTP id 98e67ed59e1d1-359a6a92750mr4210979a91.31.1772712934483;
+        Thu, 05 Mar 2026 04:15:34 -0800 (PST)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359b2c1daa6sm2391359a91.0.2026.03.05.04.15.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 04:13:58 -0800 (PST)
-From: =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>
-To: linux@armlinux.org.uk,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mnhagan88@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>
-Subject: [PATCH] net: sfp: improve Huawei MA5671a fixup
-Date: Thu,  5 Mar 2026 13:12:39 +0100
-Message-ID: <20260305121354.40674-1-noltari@gmail.com>
-X-Mailer: git-send-email 2.47.3
+        Thu, 05 Mar 2026 04:15:33 -0800 (PST)
+Date: Thu, 5 Mar 2026 21:15:32 +0900
+From: Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+Cc: Joe Perches <joe@perches.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	linux-phy@lists.infradead.org, Vinod Koul <vkoul@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	dri-devel@lists.freedesktop.org, freedreno@lists.freedesktop.org,
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
+	linux-can@vger.kernel.org, linux-gpio@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-renesas-soc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, linux-sunxi@lists.linux.dev,
+	linux-tegra@vger.kernel.org, linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org, spacemit@lists.linux.dev,
+	UNGLinuxDriver@microchip.com
+Subject: Re: [PATCH phy-next 22/22] MAINTAINERS: add regex for linux-phy
+Message-ID: <20260305121532.GA1649635@rocinante>
+References: <20260304175735.2660419-1-vladimir.oltean@nxp.com>
+ <20260304175735.2660419-23-vladimir.oltean@nxp.com>
+ <a8fee1cd-1e69-4a9e-8533-c0988c480fb9@oss.qualcomm.com>
+ <20260305085148.7cwo3yflp7vcfldf@skbuf>
+ <f3a5aa3df78553ffc0fd0024f5fd36a4e2158c88.camel@perches.com>
+ <20260305114352.2f7btqixg4tu5bzl@skbuf>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305114352.2f7btqixg4tu5bzl@skbuf>
 
-With the current sfp_fixup_ignore_tx_fault() fixup we ignore the TX_FAULT
-signal, but we also need to apply sfp_fixup_ignore_los() in order to be
-able to communicate with the module even if the fiber isn't connected for
-configuration purposes.
-This is needed for all the MA5671a firmwares, excluding the FS modded
-firmware.
+Hello,
 
-Fixes: 2069624dac19 ("net: sfp: Add tx-fault workaround for Huawei MA5671A SFP ONT")
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
----
- drivers/net/phy/sfp.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+> K:	\b(?:__)?(?:devm_)?(?:of_)?phy_(?:create|destroy|provider_(?:un)?register)\b
+> K:	\bphy_(?:create|remove)_lookup\b
+> K:	\bphy_(?:get|set)?_drvdata\b
+> K:	\b(?:devm_)?(?:of_)?phy_(?:optional_)?(?:get|put)(?:_by_index)?\b
+> K:	\bphy_pm_runtime_(?:get|put)(?:_sync)?\b
+> K:	\bphy_(?:init|exit|power_(?:on|off))\b
+> K:	\bphy_|(?:get|set)_(?:mode(?:_ext)?|media|speed|bus_width|max_link_rate)\b
+> K:	\bphy_(?:reset|configure|validate|calibrate)\b
+> K:	\bphy_notify_(?:connect|disconnect|state)\b
+> K:	(?:struct\s+)?phy(?:_ops|_attrs|_lookup|_provider)?\b
+> K:	(?:linux/phy/phy\.h|phy-props\.h|phy-provider\.h)
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index 347c1e0e94d9..bcea137ad5f9 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -361,6 +361,12 @@ static void sfp_fixup_ignore_tx_fault(struct sfp *sfp)
- 	sfp->state_ignore_mask |= SFP_F_TX_FAULT;
- }
- 
-+static void sfp_fixup_huawei(struct sfp *sfp)
-+{
-+	sfp_fixup_ignore_tx_fault(sfp);
-+	sfp_fixup_ignore_los(sfp);
-+}
-+
- static void sfp_fixup_nokia(struct sfp *sfp)
- {
- 	sfp_fixup_long_startup(sfp);
-@@ -499,7 +505,7 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	// Huawei MA5671A can operate at 2500base-X, but report 1.2GBd NRZ in
- 	// their EEPROM
- 	SFP_QUIRK("HUAWEI", "MA5671A", sfp_quirk_2500basex,
--		  sfp_fixup_ignore_tx_fault),
-+		  sfp_fixup_huawei),
- 
- 	// Lantech 8330-262D-E can operate at 2500base-X, but incorrectly report
- 	// 2500MBd NRZ in their EEPROM
--- 
-2.47.3
+What about
 
+  F:	drivers/*/*phy*
+
+or something along these lines.
+
+	Krzysztof
