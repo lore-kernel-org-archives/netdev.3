@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA6123EA99;
-	Thu,  5 Mar 2026 03:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFEF7262B;
+	Thu,  5 Mar 2026 03:00:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772679611; cv=none; b=iEy6dIG1P7t07pJ6Wlc2nZMDCvbNovss3sUlZ0HUjtsnUqyUVh/s7WaGxIIjgzfoL8bu5Df7z0P4a9P5doorEV1lBrGlLjexH1otp4yquaewSPMunEQ8PSZBIw9G3vL4kTL4vv9N4dLHUs7foHR19GrLQQecDTPVWkDWcJLCAmc=
+	t=1772679618; cv=none; b=EH8S60jwe5scVExL19lRHSq0RlFsBMTPF4joJmIPsbMYvc8TUnCqot83aoOIRqMoDLCeNgQwzu0PopprKUF6k8EUCdxhFOpOleExedeKYzGXrgdAlg5ca5t1CRN2yUqIaaf/C+B6FORa4hNxpGxXh41BoNJKxyJudM24Fteljs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772679611; c=relaxed/simple;
-	bh=bi1pYv3Bgq+ShmDzGX+GwIzVgs550SZNCxuwrCsn5Zw=;
+	s=arc-20240116; t=1772679618; c=relaxed/simple;
+	bh=Bkpct6yR5Nu70vvQgvrn4i0t7yPP3oct2zteI0VdOsE=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=fkfqNfCrWEpfQ/UjuqeHewKipiFcFofhr2k2S8oAvhRArzhdE+UGZLQdbsqIA8wMR5lh/oLtiMj21KXegyufpZMAuB3XlWJAxCAtB3nrczwkB7HhM3G5RV/U4ucTANOmDjDhSAuFdNYIfrQ7HOwokL9NQmx+DQrQVbeBDbzZ96o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XKQSdhPx; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=tJkfDOev4eDQ0zpANvHC090RGoB7ooa+FOEnCop+wqFUCcbpwoIIoC9RYeDGPeYeReCkiOtBhOd0VXhMJm7ZgTJRaUU5kJIeNwC1U6JpP9Go8kX0OSRnFYgCo29ZoUcEb440XnzGndoivp4HDj67hEvlaxyJmFMgoPPjbwQCY6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vJDsHmhq; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XKQSdhPx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70ABCC4CEF7;
-	Thu,  5 Mar 2026 03:00:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vJDsHmhq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E80C2C4CEF7;
+	Thu,  5 Mar 2026 03:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772679611;
-	bh=bi1pYv3Bgq+ShmDzGX+GwIzVgs550SZNCxuwrCsn5Zw=;
+	s=k20201202; t=1772679617;
+	bh=Bkpct6yR5Nu70vvQgvrn4i0t7yPP3oct2zteI0VdOsE=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=XKQSdhPxdqmBP2Ac+rDlVNGMBaCuZAwx7jzg/ZotPWi2eFf9gQYQCBKOmRJNUmWXq
-	 g2U3tIzsNRK/2t8mrOCj9AMSueyYC+TWq28yY6D5DRjm6G8g8wvVbEVwDNnh/eYdko
-	 l6o1U8khaB+tVZFlxUUjbn7R6VmKaS+2kPuRlLB1XbhXJXPYGGo8xSb1tXkSuYE5E6
-	 Gth30+xotWb1C0xZB033o2BMfBcPRaQqCXYvsXgQxl7RnMzyIN8jnK1weviP5OKWC+
-	 TR7MoX4WFI0qQPC8ecCF5x5mzjTJ837zeu4wONFRbHyUYqkyZ/TF531sf1BSAkAqoW
-	 m/e+V7xwe49xg==
+	b=vJDsHmhqxjromjps4MR823tr5dZRp48M3iGSkFg/mD4+ox6gxt3mjHEBRywHYko7C
+	 JH7WO2WB/gkqm64qyrUR5QAa4Ba2mUx6PpJ2IcnnrRVcul+0KNqhlCJMAli1HzeM46
+	 msIaWcVRw6HC2XjWaai+tdQjsK2TBvin8RSRgsbzCX0Lnl/qaReIIChp/DO8c7c0WM
+	 anjhVqasOo/cpZVnQaHv3AOjr16GKDXMNWAIWqOXqoPw4173Bku29WE9mKp+lxbKnn
+	 UUE/uBdq+fdneJr61ZAnhguj7IzZA0MZqxIFg25ZQZl1e4v56NnwpTUhae8Uv4QZov
+	 q+JwPRnQtJQgw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D543808200;
-	Thu,  5 Mar 2026 03:00:13 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEBF3808200;
+	Thu,  5 Mar 2026 03:00:19 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,52 +37,35 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/4] net: stmmac: Fix VLAN handling when interface
- is
- down
+Subject: Re: [PATCH v2] dibs: change dibs_class to a const struct
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177267961155.2494418.12039829007710678123.git-patchwork-notify@kernel.org>
-Date: Thu, 05 Mar 2026 03:00:11 +0000
-References: <20260303145828.7845-1-ovidiu.panait.rb@renesas.com>
-In-Reply-To: <20260303145828.7845-1-ovidiu.panait.rb@renesas.com>
-To: Ovidiu Panait <ovidiu.panait.rb@renesas.com>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, mcoquelin.stm32@gmail.com,
- alexandre.torgue@foss.st.com, linux@armlinux.org.uk,
- rmk+kernel@armlinux.org.uk, maxime.chevallier@bootlin.com,
- boon.khai.ng@altera.com, rohan.g.thomas@altera.com, vladimir.oltean@nxp.com,
- hayashi.kunihiko@socionext.com, boon.leong.ong@intel.com,
- kim.tatt.chuah@intel.com, netdev@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-kernel@vger.kernel.org
+ <177267961829.2494418.7813630752818606156.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Mar 2026 03:00:18 +0000
+References: <20260303163104.3749311-1-jkoolstra@xs4all.nl>
+In-Reply-To: <20260303163104.3749311-1-jkoolstra@xs4all.nl>
+To: Jori Koolstra <jkoolstra@xs4all.nl>
+Cc: wintera@linux.ibm.com, gregkh@linuxfoundation.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue,  3 Mar 2026 14:58:24 +0000 you wrote:
-> VLAN register accesses on the MAC side require the PHY RX clock to be
-> active. When the network interface is down, the PHY is suspended and
-> the RX clock is unavailable, causing VLAN operations to fail with
-> timeouts.
+On Tue,  3 Mar 2026 17:31:04 +0100 you wrote:
+> The class_create() call has been deprecated in favor of class_register()
+> as the driver core now allows for a struct class to be in read-only
+> memory. Change dibs_class to be a const struct class and drop the
+> class_create() call.
 > 
-> The VLAN core automatically removes VID 0 after the interface goes down
-> and re-adds it when it comes back up, so these timeouts happen during
-> normal interface down/up:
+> Link: https://lore.kernel.org/all/2023040244-duffel-pushpin-f738@gregkh/
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v3,1/4] net: stmmac: Fix error handling in VLAN add and delete paths
-    https://git.kernel.org/netdev/net/c/35dfedce442c
-  - [net,v3,2/4] net: stmmac: Improve double VLAN handling
-    https://git.kernel.org/netdev/net/c/e38200e361cb
-  - [net,v3,3/4] net: stmmac: Fix VLAN HW state restore
-    https://git.kernel.org/netdev/net/c/bd7ad51253a7
-  - [net,v3,4/4] net: stmmac: Defer VLAN HW configuration when interface is down
-    https://git.kernel.org/netdev/net/c/2cd70e3968f5
+  - [v2] dibs: change dibs_class to a const struct
+    https://git.kernel.org/netdev/net-next/c/ad3dfa80be76
 
 You are awesome, thank you!
 -- 
