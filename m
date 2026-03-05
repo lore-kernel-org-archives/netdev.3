@@ -1,129 +1,147 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from omta36.uswest2.a.cloudfilter.net (omta36.uswest2.a.cloudfilter.net [35.89.44.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF773148D0;
-	Thu,  5 Mar 2026 19:25:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FAD378829
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 19:27:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772738730; cv=none; b=EuATIRvr0P2ssfc8PesAR9eOwqZ4OhBSuKB8D+5fIpQ/GWS6XvRxX9xoeeKjnF1TvnlYIE0RRJ6pboDLXlChT6vKkB3lEI+Mwfh+ec/G1HCD1F9IVqCXNtScK4LCKB/NlijZreGnjvqgqnnBXsaUdex98AMAkEEVbnh/W5rJNRg=
+	t=1772738824; cv=none; b=D2MG7nqWq7RRYGjA2RpsW3dBAQQ2jbpxtBgaq6DDBa8623oWzC/g2RUZ8FCiMaLmoyvTd+DV+eKGBecPaV2uyF1O79pKWeRGaBbKGvsbx+NniQFMM0g8XvBNErVcWyQbgJpfY9wd1DWZxmnpkaSS6XwjJzvL/ufD3jk0rnF32CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772738730; c=relaxed/simple;
-	bh=ln+zmT6dVmCfKEb11g1BjE/cjuoBJVgUvWUSnOfgvmc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YsO7aFuCqY6hE4e2Q7cDYOhUlMUpTwzqijsFOVbfB50tTlIm066Siwj+YtlD+zqxmnfTK9MiiLuOmaMHJ6GALgLgzQAZyaLfL9WKlKhijTC+nL7P84yqv1/+ukqSVZ/CdaeYJU4RLpef/9nX43glBk/B4f0WWccFWgC8XklcQsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dLjeM4LE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772738824; c=relaxed/simple;
+	bh=CYYKmhUtg90PFt9VCmUypY1dgNUEpZWlq4p9vDQbEDU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WPzTMT9ngNvfcQQAARDd6Rkz+RE/idnBHZYhfk6SyILQx3R7qX+prHW+3VmfwJpYJoxay0WjE7zIL+dYMWFbAbryfNlnHiRBKdUgUSDBUYGwpN2jc5ZxRiDgjFcRVhFJRuUhQLX+hOoNetsuI1GpGgV5a/TA6dkQUAFroh3pQfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=Qg+qnD8o; arc=none smtp.client-ip=35.89.44.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dLjeM4LE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9412C116C6;
-	Thu,  5 Mar 2026 19:25:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772738730;
-	bh=ln+zmT6dVmCfKEb11g1BjE/cjuoBJVgUvWUSnOfgvmc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=dLjeM4LE5dXR9m0xHLTdkzFdRU6WH5jM6sBt6bzgqmW/m1pCV1fgnxhtQ2vxfnQms
-	 lIGU1Pgqcrs0hGxEeqFBI2JOIInj1sdmbdDRuBYfadSL9HAfeu44vbjmZxV9XVqxsu
-	 4C7ekz8VQ87LFqLjcf3PWU32/mie8n5MOMtDpoUghFjAp+chM4CkkDwKwSZiFxLNLl
-	 n8u8HRhxDwFJ/qBA55nIwevYUCM+2DEL2RNTGVDIuGZ8NXVJFBE8FpD9HNZk2OAS2d
-	 Pz43CzlW1m78aO0KJB5qYNmiJvoxI7Z+3/LU80vHz0mDONbdHsIRnU3mKCsa8r2KVZ
-	 RNawaEMbOkqcQ==
-From: Thomas Gleixner <tglx@kernel.org>
-To: Jiri Slaby <jirislaby@kernel.org>, Peter Zijlstra <peterz@infradead.org>
-Cc: Matthieu Baerts <matttbe@kernel.org>, Stefan Hajnoczi
- <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
- kvm@vger.kernel.org, virtualization@lists.linux.dev, Netdev
- <netdev@vger.kernel.org>, rcu@vger.kernel.org, MPTCP Linux
- <mptcp@lists.linux.dev>, Linux Kernel <linux-kernel@vger.kernel.org>,
- Shinichiro Kawasaki <shinichiro.kawasaki@wdc.com>, "Paul E. McKenney"
- <paulmck@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- "luto@kernel.org" <luto@kernel.org>, Michal =?utf-8?Q?Koutn=C3=BD?=
- <MKoutny@suse.com>,
- Waiman Long <longman@redhat.com>
-Subject: Re: Stalls when starting a VSOCK listening socket: soft lockups,
- RCU stalls, timeout
-In-Reply-To: <47cba228-bba7-4e58-a69d-ea41f8de6602@kernel.org>
-References: <b24ffcb3-09d5-4e48-9070-0b69bc654281@kernel.org>
- <7f3e74d7-67dc-48d7-99d2-0b87f671651b@kernel.org>
- <863a5291-a636-47d0-891c-bb0524d2e134@kernel.org>
- <20260302114636.GL606826@noisy.programming.kicks-ass.net>
- <717310d8-6274-4b7f-8a19-561c45f5f565@kernel.org>
- <a2b573b4-af61-4b84-a7d1-012ed6bb23c9@kernel.org>
- <ba067933-bf3b-476d-a0bb-53eda56996ca@kernel.org> <87zf4m2qvo.ffs@tglx>
- <47cba228-bba7-4e58-a69d-ea41f8de6602@kernel.org>
-Date: Thu, 05 Mar 2026 20:25:22 +0100
-Message-ID: <87tsuu2i59.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="Qg+qnD8o"
+Received: from eig-obgw-5002b.ext.cloudfilter.net ([10.0.29.226])
+	by cmsmtp with ESMTPS
+	id yCzTvhLICVCBNyELYv51AQ; Thu, 05 Mar 2026 19:26:57 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id yELKvMyMUN3K1yELLvW2xY; Thu, 05 Mar 2026 19:26:43 +0000
+X-Authority-Analysis: v=2.4 cv=UdRRSLSN c=1 sm=1 tr=0 ts=69a9d900
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=k5Y5iPg+dmTXVWgYE/XtfQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=7T7KSl7uo7wA:10 a=edf1wS77AAAA:8
+ a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8 a=J2gJbEVsAAAA:8 a=hSkVLCK3AAAA:8
+ a=C9xVZAldh4BiXX6lDm0A:9 a=QEXdDO2ut3YA:10 a=DcSpbTIhAlouE1Uv7lRv:22
+ a=Bt_igOxda4ASFyQEjNxY:22 a=cQPPKAXgyycSBL8etih5:22 a=2aFnImwKRvkU0tJ3nQRT:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=PSPKeTGGopkm3YY/++r6DnAI0CLkMITuqPkvzJJH0FM=; b=Qg+qnD8ouUAuA6RGGUJgM28p1v
+	ZxxsZLYKunuqaPFONqBQ92GwS5fZPUd2CHiMH/I35qcktGB65563hbMB6tU8mRVvbxaFC3sU/XdUM
+	Kgz0lNMdig32sSLAWapa8amPKlvBhV6RA2ww5qauDcoxKYkZd0KDifyG8SiZrDs1xWcR7RPrFO/SO
+	QtOqdx941S1EWGRBosT+Rw/UKqwr2a+GfVOSs3KjFiZMXxVW5ptw8tyg2I4WgvFAoE/7QFRtRNCKh
+	/Gdmx09ACFzrjuL0BwYAqKH0hpCO1A6WvqU2o4OEATjmtqDB4S1r5rZmIOGj61HKFZan5Dg7FxT+K
+	tP0gETCw==;
+Received: from [177.238.16.13] (port=52146 helo=[192.168.0.21])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.99.1)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1vyELJ-00000000MfN-3cSS;
+	Thu, 05 Mar 2026 13:26:41 -0600
+Message-ID: <5c8bab4f-5821-428b-adcf-b2c0631da415@embeddedor.com>
+Date: Thu, 5 Mar 2026 13:26:08 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-
-On Thu, Mar 05 2026 at 18:33, Jiri Slaby wrote:
-> On 05. 03. 26, 17:16, Thomas Gleixner wrote:
->
-> ====== PID 7680 (spinning in mm_get_cid()) ======
-> 4 tasks with
->    mm = 0xffff8cc406824680
->      mm_cid.pcpu = 0x66222619df00,
->
->
-> crash> task -x -R mm_cid ffff8cc4038525c0 ffff8cc40ad40000 
-> ffff8cc40683cb80 ffff8cc418424b80
-> PID: 7680     TASK: ffff8cc4038525c0  CPU: 1    COMMAND: "asm"
->    mm_cid = {
->      active = 0x1,
->      cid = 0x80000000
->    },
-
-So CID 3 has gone AWOL...
-
-> PID: 7681     TASK: ffff8cc40ad40000  CPU: 3    COMMAND: "asm"
->    mm_cid = {
->      active = 0x1,
->      cid = 0x40000000
->    },
->
-> PID: 7682     TASK: ffff8cc40683cb80  CPU: 0    COMMAND: "asm"
->    mm_cid = {
->      active = 0x1,
->      cid = 0x40000002
->    },
->
-> PID: 7684     TASK: ffff8cc418424b80  CPU: 2    COMMAND: "asm"
->    mm_cid = {
->      active = 0x1,
->      cid = 0x40000001
->    },
->
-> crash> struct mm_cid_pcpu -x 0xfffff2e9bfc09f00
-> struct mm_cid_pcpu {
->    cid = 0x40000002
-> }
-> crash> struct mm_cid_pcpu -x 0xfffff2e9bfc89f00
-> struct mm_cid_pcpu {
->    cid = 0x0
-> }
-> crash> struct mm_cid_pcpu -x 0xfffff2e9bfd09f00
-> struct mm_cid_pcpu {
->    cid = 0x40000001
-> }
-> crash> struct mm_cid_pcpu -x 0xfffff2e9bfd89f00
-> struct mm_cid_pcpu {
->    cid = 0x40000000
-> }
-
-... as 0, 1, 2 are owned by CPUs 3, 2, 0. 
-
-The other process is not relevant. That's just fallout and has a
-different CID space, which is consistent.
-
-Is there simple way to reproduce?
-
-Thanks,
-
-        tglx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v1] net: sched: cls_u32: Avoid memcpy()
+ false-positive warning in u32_init_knode()
+To: Jiayuan Chen <jiayuan.chen@linux.dev>, netdev@vger.kernel.org
+Cc: Jiayuan Chen <jiayuan.chen@shopee.com>,
+ syzbot+d5ace703ed883df56e42@syzkaller.appspotmail.com,
+ Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Kees Cook <kees@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+References: <20260305073343.250702-1-jiayuan.chen@linux.dev>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <20260305073343.250702-1-jiayuan.chen@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 177.238.16.13
+X-Source-L: No
+X-Exim-ID: 1vyELJ-00000000MfN-3cSS
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.0.21]) [177.238.16.13]:52146
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 27
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfNG+yeq2ExKMjnPK49bJ8wRUvwOMt11Cuys35KnQpqP/x5Dq4/tQ6nDT9TNR1AMbDSss/RieOIvuCpt6DfzJg4HdITRSs/ZbuLQxZ8z0OO3+RKjjojd3
+ AJ5sw4amfm5ZAVp3KV/ONuRfD7co0CXbtphwV/frvXIMN70ogUOIfdzn5ljFbo2LWj2J/uYpf/tPz5DLG5pvppzfkqmEnG0Ix0Q=
 
 
 
+On 3/5/26 16:33, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> 
+> Syzbot reported a warning in u32_init_knode() [1].
+> 
+> Similar to commit 7cba18332e36 ("net: sched: cls_u32: Avoid memcpy()
+> false-positive warning") which addressed the same issue in u32_change(),
+> use unsafe_memcpy() in u32_init_knode() to work around the compiler's
+> inability to see into composite flexible array structs.
+> 
+> This silences the false-positive reported by syzbot:
+> 
+>    memcpy: detected field-spanning write (size 32) of single field
+>    "&new->sel" at net/sched/cls_u32.c:855 (size 16)
+> 
+> Since the memory is correctly allocated with kzalloc_flex() using
+> s->nkeys, this is purely a false positive and does not need a Fixes tag.
+> 
+> [1] https://syzkaller.appspot.com/bug?extid=d5ace703ed883df56e42
+> 
+> Reported-by: syzbot+d5ace703ed883df56e42@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/69a811b9.a70a0220.b118c.0019.GAE@google.com/T/
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+
+Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+
+Thanks
+-Gustavo
+
+> Made-with: Cursor
+> ---
+>   net/sched/cls_u32.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/net/sched/cls_u32.c b/net/sched/cls_u32.c
+> index 9241c025aa74..8f30cc82181d 100644
+> --- a/net/sched/cls_u32.c
+> +++ b/net/sched/cls_u32.c
+> @@ -852,7 +852,10 @@ static struct tc_u_knode *u32_init_knode(struct net *net, struct tcf_proto *tp,
+>   	/* Similarly success statistics must be moved as pointers */
+>   	new->pcpu_success = n->pcpu_success;
+>   #endif
+> -	memcpy(&new->sel, s, struct_size(s, keys, s->nkeys));
+> +	unsafe_memcpy(&new->sel, s, struct_size(s, keys, s->nkeys),
+> +		      /* A composite flex-array structure destination,
+> +		       * which was correctly sized with kzalloc_flex(),
+> +		       * above. */);
+>   
+>   	if (tcf_exts_init(&new->exts, net, TCA_U32_ACT, TCA_U32_POLICE)) {
+>   		kfree(new);
 
