@@ -1,129 +1,98 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A306937B022
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 10:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15BE37F018
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 10:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772707398; cv=none; b=YopMhxvUIBFqC/foLYVXs26P7ZcT5zEZ56zMJAZYrWw0UilWojHFvaXHHvmZv8xe5uvhyGKv+Jj4JO6Gm7ReUnRHaF46a/i+MnW2tKuUZUthdAicm8mk/vGrFCmdkdlf8i9dxEYmcVtiJfrboIPtESlZsc1KuE5BaOfScAdZ8cI=
+	t=1772707414; cv=none; b=GAdzbSogWliVUjPS+K2Zt334jQci+yqkt3uAVOJmuv+t3mlRi4CytnxH21XCrgsaAsnQOO60LC6rKiFhxfeA6/7Ka4nKxSETw/i51h3lbpaD+9TEFGUmTiCET61EVRaMJyGVobYX3C6Lf0/ZKGjSowOEXHJchyWwXEKkC1+Muoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772707398; c=relaxed/simple;
-	bh=PK6ORV0wwzfzjm2Ts1AjsLvWha8A5LzqyjPWYhPkVrI=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=rNWQkE46EJbE+zB29KWngCV/dMwlu0DMv6oG3fcjxkA2DHFFHxworrpaCh0oNe+LX5+kLIudFDlXKFsvLmHEfwfylBN6w0927PBo/JWlEfbq3KyJIeSelppccD0rS/EzLocBLJwxCoa4s0J5y+0BYeckZ0u6gU0LNmQP1W8d108=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=rQoMEqtH; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1772707414; c=relaxed/simple;
+	bh=BDXLchQzcpuCt+RlIax/cWPhjWIHs2fygcRWDyjz/Dg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=goWXfUdIf8dc5PrAUUhviyVA3i9ZpCzIIJHqDjV5YQ++ALVoBPGQFOTiFuBKT55bWg9XgaH9dAFTYvoUfx7USmXGWvJz9D2hAAJ4GCdZkBF0cByX0mkz0BKDn87lGLguXJuHcYhGsDzVPRHn6E6YGZ1OKRHEf2RIdzBLblgvn2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mkI+wHkA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="rQoMEqtH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=M+uU8Ete3jLODjZm/eSd2z0Hl7GhhT8W+8QoodsNuz0=; b=rQoMEqtHblG8oB1GYZD2LZWH13
-	HwHk4cqCYHU4f18hRy6xXkW3uq1OobYqWvHt9AWy585hhGqnvenh13+iiXiZ5NuNWGYFxMA9RTazP
-	2hsftJXDUJFqOoO61UxNk/iCKL1S2LdzDsQoqtZA/7ScQZLprDfyfoXLThUmqgu5ZGDbQHs9WNvP9
-	D1KW1GsUPFEflRsxmmez1q3iUlmzVmVJCoPhjk0K8d/0aoElM4rjYCLgY6eTCqbmXwizeFYqEgK32
-	gTfwxAlkvnQ2IR7vYC6EeV7zEkfn6PjP1D+NfztaBFEbUHqiSQquFGkSFD+TqY9/L3DY43oSh/IKo
-	TFSdTW4w==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:50178 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vy6Ac-000000007oy-0p0n;
-	Thu, 05 Mar 2026 10:43:06 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vy6AY-0000000BtxJ-3smT;
-	Thu, 05 Mar 2026 10:43:02 +0000
-In-Reply-To: <aald--qJquWGIvmO@shell.armlinux.org.uk>
-References: <aald--qJquWGIvmO@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Chen-Yu Tsai <wens@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-sunxi@lists.linux.dev,
-	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Samuel Holland <samuel@sholland.org>
-Subject: [PATCH net-next v2 8/8] net: stmmac: make pcs_mask and phy_mask u32
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mkI+wHkA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C97AC116C6
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 10:43:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772707414;
+	bh=BDXLchQzcpuCt+RlIax/cWPhjWIHs2fygcRWDyjz/Dg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=mkI+wHkAxCfJLWvBYkkZ2AuL01yyOHRvp/FWfhBZRLkx4Zum7wNcYbPL6XutHDxl/
+	 UFA0lSp8Hcq8Uv+DmXIdVd+HcSvNmrJfZG1kVE2TGLtV+NJpdKd2vd5KI8u3ZV1xJp
+	 6g98egKpdKUwgfZFSzxFvsmP2ZEvMD6UJn5CcIbaLI8fBLU0Bv8ajumJxBRZMCNFgN
+	 IYNrS2gnXvPUrXGO6gJbiFe0UuV4a358MZlcmZbbp+GtXjR5yv1ZTUmqRQKCZSNtSa
+	 4dAtCMAkuVpxqUcwxXgxMxQVbTHIJFa8e56qVARnd4CY/WH7CHUmnZKkGtlXx0y8yN
+	 5XRLQAWTdqMEw==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-3870778358aso94572991fa.1
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 02:43:34 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUA/INYBzkeV/+Ur1eJcuAYkYjrY1M9uw7N1rOImpzQRXfJ8SW9lAheKSIU3Gp/OpSypSCS6s8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJO4JIN3GdHGREGy1IMKsrQYe6xkmWmxhH8O3Qldp7xGiU7Y4j
+	Ek0nV1M5l/rgTP09kgVWMlViQX0TOH0uGSCUOs1DnQm95kk0TQv/2EiogSSgQQ/nyJQLPGVXHKZ
+	glU7niLLIFGS+tRoL5+ZlCpM44r0h1hKpHGI5UMkSuw==
+X-Received: by 2002:a2e:be0d:0:b0:38a:35be:bf4e with SMTP id
+ 38308e7fff4ca-38a35bec193mr6150651fa.24.1772707413045; Thu, 05 Mar 2026
+ 02:43:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vy6AY-0000000BtxJ-3smT@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Thu, 05 Mar 2026 10:43:02 +0000
+References: <7187C401290C256B+20260304084808.440955-1-xujialu@vimux.org> <1777BBA64A3D0F97+20260304105215.536399-1-xujialu@vimux.org>
+In-Reply-To: <1777BBA64A3D0F97+20260304105215.536399-1-xujialu@vimux.org>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Thu, 5 Mar 2026 11:43:20 +0100
+X-Gmail-Original-Message-ID: <CAMRc=MfBqPP3W0nCvyM9hqmgZbX8SVSZ0DGrJwLdKoAK7gqgvA@mail.gmail.com>
+X-Gm-Features: AaiRm52fjOUc5LZjGz_yqLKyR-H0G9JuRRVR4dArrtK_1qhyD2My05Xe08G1ZBw
+Message-ID: <CAMRc=MfBqPP3W0nCvyM9hqmgZbX8SVSZ0DGrJwLdKoAK7gqgvA@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] Remove <linux/of_gpio.h>
+To: Jialu Xu <xujialu@vimux.org>
+Cc: kees@kernel.org, krzk@kernel.org, linusw@kernel.org, 
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The PCS and PHY masks are passed to the mdio bus layer as phy_mask
-to prevent bus addresses between 0 and 31 inclusive being scanned,
-and this is declared as u32. Also declare these as u32 in stmmac
-for type consistency.
+On Wed, Mar 4, 2026 at 11:52=E2=80=AFAM Jialu Xu <xujialu@vimux.org> wrote:
+>
+> Convert the last three NFC consumers of <linux/of_gpio.h> to the
+> GPIO descriptor API, then remove the deprecated header entirely.
+>
+> Changes in v2:
+> - Add rename quirks in gpiolib-of.c for s3fwrn5 legacy DT properties
+>   (s3fwrn5,en-gpios -> en, s3fwrn5,fw-gpios -> wake) to preserve
+>   backward compatibility with old device trees. (Linus Walleij)
+>
+> Jialu Xu (3):
+>   nfc: s3fwrn5: convert to gpio descriptors
+>   nfc: nfcmrvl: convert to gpio descriptors
+>   gpio: remove of_get_named_gpio() and <linux/of_gpio.h>
+>
+>  drivers/gpio/TODO                | 28 ----------------
+>  drivers/gpio/gpiolib-of.c        | 31 +++---------------
+>  drivers/nfc/nfcmrvl/main.c       | 46 +++++++++-----------------
+>  drivers/nfc/nfcmrvl/nfcmrvl.h    |  4 ++-
+>  drivers/nfc/nfcmrvl/uart.c       | 23 +++++++++----
+>  drivers/nfc/nfcmrvl/usb.c        |  2 +-
+>  drivers/nfc/s3fwrn5/i2c.c        | 55 +++++---------------------------
+>  drivers/nfc/s3fwrn5/phy_common.c | 11 +++----
+>  drivers/nfc/s3fwrn5/phy_common.h |  5 +--
+>  drivers/nfc/s3fwrn5/uart.c       | 45 +++++++-------------------
+>  include/linux/of_gpio.h          | 38 ----------------------
+>  11 files changed, 67 insertions(+), 221 deletions(-)
+>  delete mode 100644 include/linux/of_gpio.h
+>
+> --
+> 2.47.3
+>
 
-Since this is a u32, use BIT_U32() rather than BIT() to generate
-values for these fields.
+Hi!
 
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
----
- drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c    | 2 +-
- drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c | 2 +-
- include/linux/stmmac.h                               | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+I really appreciate the work but your patches need to carry your
+Signed-off-by tags under the commit messages before they can be
+considered.
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-index ece2a0c38562..fc13bfb47783 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c
-@@ -699,7 +699,7 @@ static int intel_mgbe_common_data(struct pci_dev *pdev,
- 	/* Intel mgbe SGMII interface uses pcs-xcps */
- 	if (plat->phy_interface == PHY_INTERFACE_MODE_SGMII ||
- 	    plat->phy_interface == PHY_INTERFACE_MODE_1000BASEX) {
--		plat->mdio_bus_data->pcs_mask = BIT(INTEL_MGBE_XPCS_ADDR);
-+		plat->mdio_bus_data->pcs_mask = BIT_U32(INTEL_MGBE_XPCS_ADDR);
- 		plat->mdio_bus_data->default_an_inband = true;
- 		plat->select_pcs = intel_mgbe_select_pcs;
- 	}
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-index b913fe5af488..ada6c6ef1f5c 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-loongson.c
-@@ -168,7 +168,7 @@ static int loongson_gnet_data(struct pci_dev *pdev,
- 	loongson_default_data(pdev, plat);
- 
- 	plat->phy_interface = PHY_INTERFACE_MODE_GMII;
--	plat->mdio_bus_data->phy_mask = ~(u32)BIT(2);
-+	plat->mdio_bus_data->phy_mask = ~BIT_U32(2);
- 	plat->fix_mac_speed = loongson_gnet_fix_speed;
- 
- 	return 0;
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 678d03d6d3bd..965ada809fdf 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -84,8 +84,8 @@ struct stmmac_priv;
- /* Platfrom data for platform device structure's platform_data field */
- 
- struct stmmac_mdio_bus_data {
--	unsigned int phy_mask;
--	unsigned int pcs_mask;
-+	u32 phy_mask;
-+	u32 pcs_mask;
- 	int *irqs;
- 	int probed_phy_irq;
- 	bool needs_reset;
--- 
-2.47.3
-
+Bartosz
