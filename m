@@ -1,65 +1,40 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 797E2330B14;
-	Thu,  5 Mar 2026 09:29:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2266A18A92F
+	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 09:30:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772702991; cv=none; b=i7VLxZya8UY9CItH0OwGeE6afmKFIotkBWSjpUMaeFG/JAeixw+xGmIvaVwN78zAFQwAZyADwecc7VyoeiaFskeSgo0P84ZruPHzu6qvEXM3IYRSPxZksO29b1QczGOiThQIwLAbM65Q/ll1xH8lAQeSaqD6VT/QYY0Bt9Pk+pE=
+	t=1772703056; cv=none; b=MMUUzWvb3fg5Ww5keqGidteI6+zJJunK7CynLF0Bv0jVt0MGqooFp3MjZKlymrRYL6PkDRalY5RTL6bmfjSkblxIe5bygERKPxVG2aOTNa6sMLfUWfPfVZ7kISeryNkbB+P/CA2L/FdM33BkHfqzYuzI6df3cLxd7eYWMWGIRzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772702991; c=relaxed/simple;
-	bh=N9sXOBoTWgQKudwcJBZjeZWGoJgvejxlsaLCol4fg3s=;
+	s=arc-20240116; t=1772703056; c=relaxed/simple;
+	bh=2b1eWPC49WnzEkK2zp9nESZ7FeyXoj/88zwhNB7MJhs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=u7NM00JfvTFttlVAIOWaQzagNf2oHRQunjFZbApM1xAvZn3KfeHNTQn7Uaut2zJnY4+qOuJ6Q/afYdzU1zJ7hRxpmIiRcMeH8ZZ5OkZGQWCvFaWSVJIArvPFsAMyQ6mYlkMUFUAQyhsrmpLFMrRVdjUwPHKwGrR9x8Q7esXR9ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KQfvwjIj; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=GF3TLl87z1UHWrH0+Xeg3+wttTFRV73PbahPUrNyWedYf9+EfWtf4KzzAvA+7T9HbVDRLh03BroEnjkvhvaVr3gliPlzZerKcNgKSVr/qAp4jffnCfxldZQYPos210FsxOrab41wwOkOVA+a4VcpAAm/BuqkoDz8f2eByTQ84N4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cqvccO2V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KQfvwjIj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1772702990; x=1804238990;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=N9sXOBoTWgQKudwcJBZjeZWGoJgvejxlsaLCol4fg3s=;
-  b=KQfvwjIj6SxTbCFMnsEBdnrW57ePy/NGfKFXd2vMsGGaUivuvp2/NW6A
-   /ZdBQf6A/8TS3lTWD8UANdY8319HK9LDmvl2alC63jsNmYlJ9zPCko2Lj
-   CLZ5fPt/ObPbmR/xZG6Xwf4avRnr6NUqeBvrFy4Gp3D0pP7a02fR2arg/
-   j+hntPPFzLEaddbp7tI3h3ompGkX7NpestqyUAaqUnpK4cC07cNfqCyo7
-   iSuPRsjTlbAyIBVUfEJFop82Xv3C5apsr0NtNeBhKSmZM8ZZwX2JRdLSh
-   jUOM4D/kq+OKDBnqRSh8RJlsbsqoE5vkvM4CK07+7CpGEAqp/0uDKPu5N
-   w==;
-X-CSE-ConnectionGUID: 6U1RWKW/Qb2FnkxoA4/HMw==
-X-CSE-MsgGUID: Vts2Y68qQNKD6OVxEPB3ZA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11719"; a="77655246"
-X-IronPort-AV: E=Sophos;i="6.23,102,1770624000"; 
-   d="scan'208";a="77655246"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2026 01:29:48 -0800
-X-CSE-ConnectionGUID: pioHOlYERfm3eicoQfYz9w==
-X-CSE-MsgGUID: Hy0m9MfUT9q5ZieRYt+iug==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,102,1770624000"; 
-   d="scan'208";a="249088615"
-Received: from lkp-server01.sh.intel.com (HELO cadc4577a874) ([10.239.97.150])
-  by orviesa002.jf.intel.com with ESMTP; 05 Mar 2026 01:29:45 -0800
-Received: from kbuild by cadc4577a874 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1vy51Z-000000000Pu-27Q4;
-	Thu, 05 Mar 2026 09:29:41 +0000
-Date: Thu, 5 Mar 2026 17:29:22 +0800
-From: kernel test robot <lkp@intel.com>
-To: Praveen Kumar Kannoju <praveen.kannoju@oracle.com>, saeedm@nvidia.com,
-	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, rama.nichanamatlu@oracle.com,
-	manjunath.b.patil@oracle.com, anand.a.khoje@oracle.com,
-	Praveen Kumar Kannoju <praveen.kannoju@oracle.com>
-Subject: Re: [PATCH] net/mlx5: poll mlx5 eq during irq migration
-Message-ID: <202603051743.ceus9qzu-lkp@intel.com>
-References: <20260304161704.910564-1-praveen.kannoju@oracle.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cqvccO2V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E3F0C116C6;
+	Thu,  5 Mar 2026 09:30:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772703055;
+	bh=2b1eWPC49WnzEkK2zp9nESZ7FeyXoj/88zwhNB7MJhs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cqvccO2V4yW8Qla55RUDyFGDyZ4LlRg1amcoSpYDapttyd8FJxEJRoe9pyT/IXm2C
+	 bEGzA/cfV9lI3JdP9jIn8H1RihSY9YtyWCZUdxINykMUk7peDOxtuvDo8IRHJtZMVL
+	 bwwbgKLw10BL9JsqKjxeC400LG4ZScDj2zz0fm0xWNwDFk2VUK7HQsHWjFdLSBokNx
+	 BzB/3oJ96sNFv4jpI/3DjJHnfi6ETBPfPzWxZ3u7kG8gYcwU966sVL+1WjojKAQyVY
+	 TgFTXaRq4/1+rqpdqOo4IRZfdvT81XYItsU2nCJIEHuyUT4VNbW7O/1zOHWYxjFKR7
+	 dfS9Ras3aHQYQ==
+Date: Thu, 5 Mar 2026 09:30:51 +0000
+From: Simon Horman <horms@kernel.org>
+To: Joshua Hay <joshua.a.hay@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: Re: [Intel-wired-lan] [PATCH iwl-net] idpf: clear stale cdev_info ptr
+Message-ID: <20260305093051.GB90938@kernel.org>
+References: <20260303012831.662492-1-joshua.a.hay@intel.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,67 +43,46 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260304161704.910564-1-praveen.kannoju@oracle.com>
+In-Reply-To: <20260303012831.662492-1-joshua.a.hay@intel.com>
 
-Hi Praveen,
+On Mon, Mar 02, 2026 at 05:28:31PM -0800, Joshua Hay wrote:
+> Deinit calls idpf_idc_deinit_core_aux_device to free the cdev_info
+> memory, but leaves the adapter->cdev_info field with a stale pointer
+> value. This will bypass subsequent "if (!cdev_info)" checks if cdev_info
+> is not reallocated. For example, if idc_init fails after a reset,
+> cdev_info will already have been freed during the reset handling, but it
+> will not have been reallocated. The next reset or rmmod will result in a
+> crash.
+> 
+> [  +0.000008] BUG: kernel NULL pointer dereference, address: 00000000000000d0
+> [  +0.000033] #PF: supervisor read access in kernel mode
+> [  +0.000020] #PF: error_code(0x0000) - not-present page
+> [  +0.000017] PGD 2097dfa067 P4D 0
+> [  +0.000017] Oops: Oops: 0000 [#1] SMP NOPTI
+> ...
+> [  +0.000018] RIP: 0010:device_del+0x3e/0x3d0
+> [  +0.000010] Call Trace:
+> [  +0.000010]  <TASK>
+> [  +0.000012]  idpf_idc_deinit_core_aux_device+0x36/0x70 [idpf]
+> [  +0.000034]  idpf_vc_core_deinit+0x3e/0x180 [idpf]
+> [  +0.000035]  idpf_remove+0x40/0x1d0 [idpf]
+> [  +0.000035]  pci_device_remove+0x42/0xb0
+> [  +0.000020]  device_release_driver_internal+0x19c/0x200
+> [  +0.000024]  driver_detach+0x48/0x90
+> [  +0.000018]  bus_remove_driver+0x6d/0x100
+> [  +0.000023]  pci_unregister_driver+0x2e/0xb0
+> [  +0.000022]  __do_sys_delete_module.isra.0+0x18c/0x2b0
+> [  +0.000025]  ? kmem_cache_free+0x2c2/0x390
+> [  +0.000023]  do_syscall_64+0x107/0x7d0
+> [  +0.000023]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> 
+> Pass the adapter struct into idpf_idc_deinit_core_aux_device instead and
+> clear the cdev_info ptr.
+> 
+> Fixes: f4312e6bfa2a ("idpf: implement core RDMA auxiliary dev create, init, and destroy")
+> Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
 
-kernel test robot noticed the following build warnings:
+Reviewed-by: Simon Horman <horms@kernel.org>
 
-[auto build test WARNING on net-next/main]
-[also build test WARNING on net/main linus/master v7.0-rc2 next-20260304]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Praveen-Kumar-Kannoju/net-mlx5-poll-mlx5-eq-during-irq-migration/20260305-003505
-base:   net-next/main
-patch link:    https://lore.kernel.org/r/20260304161704.910564-1-praveen.kannoju%40oracle.com
-patch subject: [PATCH] net/mlx5: poll mlx5 eq during irq migration
-config: x86_64-rhel-9.4 (https://download.01.org/0day-ci/archive/20260305/202603051743.ceus9qzu-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260305/202603051743.ceus9qzu-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202603051743.ceus9qzu-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/net/ethernet/mellanox/mlx5/core/eq.c:958:6: warning: no previous prototype for 'mlx5_eq_reap_irq_notify' [-Wmissing-prototypes]
-     958 | void mlx5_eq_reap_irq_notify(struct irq_affinity_notify *notify, const cpumask_t *mask)
-         |      ^~~~~~~~~~~~~~~~~~~~~~~
->> drivers/net/ethernet/mellanox/mlx5/core/eq.c:978:6: warning: no previous prototype for 'mlx5_eq_reap_irq_release' [-Wmissing-prototypes]
-     978 | void mlx5_eq_reap_irq_release(struct kref *ref) {}
-         |      ^~~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +/mlx5_eq_reap_irq_notify +958 drivers/net/ethernet/mellanox/mlx5/core/eq.c
-
-   957	
- > 958	void mlx5_eq_reap_irq_notify(struct irq_affinity_notify *notify, const cpumask_t *mask)
-   959	{
-   960		u32 eqe_count;
-   961		struct mlx5_eq_comp *eq = container_of(notify, struct mlx5_eq_comp, notify);
-   962	
-   963		if (mlx5_reap_eq_irq_aff_change) {
-   964			mlx5_core_warn(eq->core.dev, "irqn = 0x%x migration notified, EQ 0x%x: Cons = 0x%x\n",
-   965				       eq->core.irqn, eq->core.eqn, eq->core.cons_index);
-   966	
-   967			while (!rtnl_trylock())
-   968				msleep(20);
-   969	
-   970			eqe_count = mlx5_eq_poll_irq_disabled(eq);
-   971			if (eqe_count)
-   972				mlx5_core_warn(eq->core.dev, "Recovered %d eqes on EQ 0x%x\n",
-   973					       eqe_count, eq->core.eqn);
-   974			rtnl_unlock();
-   975		}
-   976	}
-   977	
- > 978	void mlx5_eq_reap_irq_release(struct kref *ref) {}
-   979	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
