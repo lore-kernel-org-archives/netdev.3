@@ -1,42 +1,43 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA1E35AC23;
-	Thu,  5 Mar 2026 23:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE6A34D4D6;
+	Thu,  5 Mar 2026 23:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772754103; cv=none; b=iIfJ8KGCgEZ06oz5ljr17EsFIqXVmW8FXN1O1ggBneVow0yWgLUEW5I3N6hc94cITipj75Zxgb3840bWYtBNmw31pb9rXF101o9vwQykP9LC2S9QFHY40qBkdt0c2UPg/s3b/AJPDZ1B3UWg3nfidD+nNmlDXQ7x5wVxd904ayI=
+	t=1772754124; cv=none; b=OwULX0v50aNSW2pejTGgDyHrz6lplNQjoixdWVwlgEKi3txK2/xk0NkL0qAF1YwrtSQ3NZT4Yrl8Yji9yepOm4ueSCvRdy8ssUo05p1ciVKCtajPRhfRA0p5AH5lYHhP5hboJaFPiKjQ5xYVlKGaucuZtzQugQv1P2oEunfukd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772754103; c=relaxed/simple;
-	bh=3mYIpFo0Oo9G4Ia1Fic/4VIkiyuuIbuMW1gFosKJwAE=;
+	s=arc-20240116; t=1772754124; c=relaxed/simple;
+	bh=ylk/u69oIA4HjLPyU2UuATCgoA7N9ABraCIFHL30FbE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rfaQJylpF8ws7Cw1XFRyqVJk8ekvo6XQ8IR5Q3T28pXhVWPZ6qORJvzbfHPakJU0EpOPaOsj6/tcPXxw5ELVofqk8Tai2LqfO0ugiAIHL2b6NEJvwY3VEBiEk0tLgXT3i350fbHIU7UY+cpLsyTXESDYhBQVccesU4UcaKkT1bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HOAX+5MK; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=hk9cHFgT2TgMp36xhTeErxslsawG7pZgfduJcKG9P3++wrBpYPiRceWdEAXdlVK9JrmaoLPC8SNbwbhsD/pnAymx0aNojInfykxxR87rBEWJCGHY3yvt3vI7JeDvC5901qRJMitzVbJKRHc8mkL+R35lduXIY2Nv9JBrH/Dzwrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lUosBPS+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HOAX+5MK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B19C116C6;
-	Thu,  5 Mar 2026 23:41:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lUosBPS+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5E39C116C6;
+	Thu,  5 Mar 2026 23:42:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772754103;
-	bh=3mYIpFo0Oo9G4Ia1Fic/4VIkiyuuIbuMW1gFosKJwAE=;
+	s=k20201202; t=1772754124;
+	bh=ylk/u69oIA4HjLPyU2UuATCgoA7N9ABraCIFHL30FbE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HOAX+5MKIvsBrth9KtbSjUcir6c1BDkuA3jaDLHujGubMYWJvQR7VrhHaiPGJJt/V
-	 004gqMMxTh8DQ1BPipczPDeypmfLZHyooXRTftyjJk6MDYANCsve/BDhVIFy0ER2+j
-	 MmO9xUVyVgyeMIuNJis7CkVyl/1Vq3IrLWe1IzfJz31IRDvnY7uVBZnwQD3y5kwSMw
-	 bpZ+yaCjruc+6lBBiHgTRBQZoQJ21cDTDPWAFVfyDsAFLRFw65Lj8jeNEmFVQmsc9Z
-	 vL5zLLW0uiuMahVOrApe43H1SKbdbC/iJf2GhEAIxqLaSCjLjnMSOyveBRr+VjA+IA
-	 edgUazaKLt0eQ==
-Date: Thu, 5 Mar 2026 17:41:40 -0600
+	b=lUosBPS+cW3plRB//egcYoKUgOGLpzTT/QraxebJuAqMmL5oL9WNS+zab1Mvjpw1x
+	 MOoH0+5zpJUdcThPW9SyCrpO/6oRl7KUzKo3TAw5e6LRBEXtEagrC1ST+m9jp+EWnG
+	 KghpA/iodoV4cboihmSb9FeRUH2kvtdWUohFg2mkUxYiGXiRdy/F9+zWrP3RLox+/H
+	 4ZdMwrvSWHiP3e62R7/ukHcGtUTTsxRRZUWS/HpF3okUAmC66pHXGR8F27/clTAzD8
+	 lWrNIiqrvweG7YY9HKLwpVpp6hHWfDUN4pkEqybtwM9HBjmLSIsKJsAasxr0MiGQ3L
+	 eXND455nIUVAQ==
+Date: Thu, 5 Mar 2026 17:42:03 -0600
 From: "Rob Herring (Arm)" <robh@kernel.org>
 To: Damien Dejean <dam.dejean@gmail.com>
-Cc: linux-kernel@vger.kernel.org, edumazet@google.com, davem@davemloft.net,
-	maxime.chevallier@bootlin.com, devicetree@vger.kernel.org,
-	pabeni@redhat.com, kuba@kernel.org, hkallweit1@gmail.com,
-	andrew@lunn.ch, krzk+dt@kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v6 1/4] dt-bindings: net: ethernet-phy: add property
- enet-phy-pair-order
-Message-ID: <177275410010.792767.11856213263031089510.robh@kernel.org>
+Cc: pabeni@redhat.com, maxime.chevallier@bootlin.com, hkallweit1@gmail.com,
+	andrew@lunn.ch, edumazet@google.com, linux-kernel@vger.kernel.org,
+	krzk+dt@kernel.org, davem@davemloft.net, devicetree@vger.kernel.org,
+	netdev@vger.kernel.org, kuba@kernel.org
+Subject: Re: [PATCH v6 3/4] dt-bindings: net: ethernet-phy: add property
+ enet-phy-pair-polarity
+Message-ID: <177275412245.793285.15497822015744786237.robh@kernel.org>
 References: <20260207092539.647768-1-dam.dejean@gmail.com>
+ <20260207092539.647768-3-dam.dejean@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,22 +46,22 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260207092539.647768-1-dam.dejean@gmail.com>
+In-Reply-To: <20260207092539.647768-3-dam.dejean@gmail.com>
 
 
-On Sat, 07 Feb 2026 10:25:36 +0100, Damien Dejean wrote:
-> Add property enet-phy-pair-order to the device tree bindings to define
-> the pair order of the PHY. To simplify PCB design some manufacturers
-> allow to wire the pairs in a reverse order, and change the order in
-> software.
+On Sat, 07 Feb 2026 10:25:38 +0100, Damien Dejean wrote:
+> Add the property enet-phy-pair-polarity to describe the polarity of the
+> PHY pairs. To ease PCB designs some manufacturers allow to wire the
+> pairs with a reverse polarity and provide a way to configure it.
 > 
-> The property can be set to 0 to force the normal pair order (ABCD), or 1
-> to force the reverse pair order (DCBA).
+> The property 'enet-phy-pair-polarity' sets the polarity of each pair.
+> Bit 0 to 3 configure the polarity or pairs A to D, if set to 1 the
+> polarity is reversed for this pair.
 > 
 > Signed-off-by: Damien Dejean <dam.dejean@gmail.com>
 > ---
->  Documentation/devicetree/bindings/net/ethernet-phy.yaml | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  Documentation/devicetree/bindings/net/ethernet-phy.yaml | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
