@@ -1,37 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0A162222AC;
-	Thu,  5 Mar 2026 10:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D12536404A;
+	Thu,  5 Mar 2026 10:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772707593; cv=none; b=bbTje9pShDKJswi/tm6c6TrTYdrDQo6ZFlcK2DF4vS25C9sUJqSHp1VMRj60gD7K/7y7se0u7tkFUBOFYtGxRhICcBBvyopytLp6oiuvJ+YyCRqNUvhfxI8VypiclcLooLzdHHuy+d9eUCmxiMcVRmgRXmodnIFrHvbDu9mJjvI=
+	t=1772707693; cv=none; b=L1EaQU0JyORYPWNNY9H2FxZh0inz7FRCIgOJBC1bto/CT9wC9qS7euvKo0wx53IkBRjrKFWF+WsyxyCVJZOrNo+rNwGGX9ixpsBM/1Ap8UKH2QwaCHGsV4lFiBxgKk4PVSVlN4PUISIf199BM94nPByr69t/DgISQHJclMaoHY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772707593; c=relaxed/simple;
-	bh=gLsf5lob+ysEtsu2tZgLv9jcJO0q1TEZU82wQZrOGik=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dg9+wgt7PiMuDAyYkOyMHPDPuSCrqxKxv4nW/5o+kaQtTgjelG5ndskjk8ZSxWOcFY8H4BHQ0ClF4qbJpQ609yOw+wIN22L98IMEn/bFo/ENjsHFhbajum4bSug6TsJ4SFY+Wf/j/pMnjOTEXTMZ+SzYR7fi2dw8pgrbbBzQLZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XWE7Nbp/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772707693; c=relaxed/simple;
+	bh=Z/9hORvgxbNhGbIdVYDvsOkYohGvgtN+sIjCAlZe5fM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PpbgmK0d74w0Sh81geVe4Mm5RAqP5XBgGrRN5BmDtANiL3S9wIKdgcZMzBAyiLvC96gyHIR7Q1WcYctNEOPa11F4DetbIgm/Z6UR0+eki6A9YrGaZlXQzod/RrhcKjBIgJmcRO4AUEkmKsRzSW75vWDfN1b4UJfiAeIFVEq0PR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z5NzB6PS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XWE7Nbp/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F6BDC116C6;
-	Thu,  5 Mar 2026 10:46:33 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z5NzB6PS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F5DC116C6;
+	Thu,  5 Mar 2026 10:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772707593;
-	bh=gLsf5lob+ysEtsu2tZgLv9jcJO0q1TEZU82wQZrOGik=;
+	s=k20201202; t=1772707693;
+	bh=Z/9hORvgxbNhGbIdVYDvsOkYohGvgtN+sIjCAlZe5fM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=XWE7Nbp/QLGR2GLxgVbWpawv+nlf2HWUJNOmvMD6ZxmvWs5BH3oBjkV+t6szuuiAW
-	 TaAoB0q2A4Wr5HTbXloXDs7lAmPidEUuJZ9C2JesPJa5su1nSzsZk0sxapgtnHExdT
-	 1cCi286vAqBB+krEeHCBbD+G98mdcuLYKyHyPi3+EcA0gprUzZWLPMEXd6DZ9gtQXN
-	 HZwoUdFhAC6va74unEE5TY3RfO19vHgHL6EXcetNtQ4qNelFhEeQTPsEA3QL/dy09z
-	 SJMokZLjPAF1fFC8JFgAVGIpBZZleoj29NapFEVmrV3mTnxb1B762Dwa+gmMmc3xiW
-	 1c+wUaCM2X8hA==
+	b=Z5NzB6PSBTgr9XPyAmfXa47ML/Wywiu4wFi59s92eFynRZvU0FBH7CMsHAH/3I9+t
+	 TGyRsdr9seL4e9nl3bXlnQGlFuUMN2D1Rx52kO3CRfx1wjuLqXxpChv1mTjgaYgRET
+	 zAOkvi8J7HEg9EPQr66xGoqwCYWdhxtZRnTNHAP6wrhI+wXPJFjfqe+xM5e0VHbOrr
+	 9EDGVLxfcCLTILwi1W9T4p0VGhcx0Oo5vyt81iP3GXiA9c1MednbZPXwPgBDBUncwn
+	 ptajBadI/G36GtTpQ3ZYwLn13hGqUNcvnooIRXXgyP2YnvQv5HL0dDicSUJZURdxrM
+	 RABJuJoIApNxw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1vy6Dv-000000004CV-08sa;
-	Thu, 05 Mar 2026 11:46:31 +0100
+	id 1vy6FX-000000004ET-0MJ7;
+	Thu, 05 Mar 2026 11:48:11 +0100
 From: Johan Hovold <johan@kernel.org>
-To: Jeremy Kerr <jk@codeconstruct.com.au>,
-	Matt Johnston <matt@codeconstruct.com.au>
+To: Tobias Waldekranz <tobias@waldekranz.com>
 Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	"David S . Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
@@ -39,11 +38,10 @@ Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
 	Paolo Abeni <pabeni@redhat.com>,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Johan Hovold <johan@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] net: mctp: fix device leak on probe failure
-Date: Thu,  5 Mar 2026 11:45:49 +0100
-Message-ID: <20260305104549.16110-1-johan@kernel.org>
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH] net: mdio: mvusb: drop redundant device reference
+Date: Thu,  5 Mar 2026 11:47:22 +0100
+Message-ID: <20260305104722.16217-1-johan@kernel.org>
 X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -58,42 +56,53 @@ device while the interface is bound to a driver and there is no need to
 take additional references unless the structures are needed after
 disconnect.
 
-This driver takes a reference to the USB device during probe but does
-not to release it on probe failures.
+Drop the redundant device reference to reduce cargo culting, make it
+easier to spot drivers where an extra reference is needed, and reduce
+the risk of memory leaks when drivers fail to release it.
 
-Drop the redundant device reference to fix the leak, reduce cargo
-culting, make it easier to spot drivers where an extra reference is
-needed, and reduce the risk of further memory leaks.
-
-Fixes: 0791c0327a6e ("net: mctp: Add MCTP USB transport driver")
-Cc: stable@vger.kernel.org	# 6.15
-Cc: Jeremy Kerr <jk@codeconstruct.com.au>
 Signed-off-by: Johan Hovold <johan@kernel.org>
 ---
- drivers/net/mctp/mctp-usb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/mdio/mdio-mvusb.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/mctp/mctp-usb.c b/drivers/net/mctp/mctp-usb.c
-index ef860cfc629f..3b5dff144177 100644
---- a/drivers/net/mctp/mctp-usb.c
-+++ b/drivers/net/mctp/mctp-usb.c
-@@ -329,7 +329,7 @@ static int mctp_usb_probe(struct usb_interface *intf,
- 	SET_NETDEV_DEV(netdev, &intf->dev);
- 	dev = netdev_priv(netdev);
- 	dev->netdev = netdev;
--	dev->usbdev = usb_get_dev(interface_to_usbdev(intf));
-+	dev->usbdev = interface_to_usbdev(intf);
- 	dev->intf = intf;
- 	usb_set_intfdata(intf, dev);
+diff --git a/drivers/net/mdio/mdio-mvusb.c b/drivers/net/mdio/mdio-mvusb.c
+index 554837c21e73..f9c16c731c73 100644
+--- a/drivers/net/mdio/mdio-mvusb.c
++++ b/drivers/net/mdio/mdio-mvusb.c
+@@ -75,7 +75,7 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
  
-@@ -365,7 +365,6 @@ static void mctp_usb_disconnect(struct usb_interface *intf)
- 	mctp_unregister_netdev(dev->netdev);
- 	usb_free_urb(dev->tx_urb);
- 	usb_free_urb(dev->rx_urb);
--	usb_put_dev(dev->usbdev);
- 	free_netdev(dev->netdev);
+ 	mvusb = mdio->priv;
+ 	mvusb->mdio = mdio;
+-	mvusb->udev = usb_get_dev(interface_to_usbdev(interface));
++	mvusb->udev = interface_to_usbdev(interface);
+ 
+ 	/* Reversed from USB PCAPs, no idea what these mean. */
+ 	mvusb->buf[MVUSB_CMD_PREAMBLE0] = cpu_to_le16(0xe800);
+@@ -90,23 +90,17 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
+ 	usb_set_intfdata(interface, mvusb);
+ 	ret = of_mdiobus_register(mdio, dev->of_node);
+ 	if (ret)
+-		goto put_dev;
++		return ret;
+ 
+ 	return 0;
+-
+-put_dev:
+-	usb_put_dev(mvusb->udev);
+-	return ret;
  }
  
+ static void mvusb_mdio_disconnect(struct usb_interface *interface)
+ {
+ 	struct mvusb_mdio *mvusb = usb_get_intfdata(interface);
+-	struct usb_device *udev = mvusb->udev;
+ 
+ 	mdiobus_unregister(mvusb->mdio);
+ 	usb_set_intfdata(interface, NULL);
+-	usb_put_dev(udev);
+ }
+ 
+ static struct usb_driver mvusb_mdio_driver = {
 -- 
 2.52.0
 
