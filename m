@@ -1,56 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BE21F3FED;
-	Thu,  5 Mar 2026 18:31:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE18A3E7162;
+	Thu,  5 Mar 2026 18:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772735488; cv=none; b=rKwD5fyhE+dZpDmtmDus2Abi2hHtdl/5jEhtvY8DseJOEyUgcs7m2QWPG1Ov3CKeUJPHbKfq8p/s/P1iOeOpmhNZX2QhEvFTw5UoTYRyNlmTYvaIkHHTYWoCOYdZfXTFrT9CFsQain3XUJTCq/lyw0Oxz6/Oxf9I9r/wNUlPbCE=
+	t=1772736145; cv=none; b=UR3yjQTEzBaVUWKrqTimkYfDALHzqcZJsaCEj5uJTA1f2cUqCUldEjN19MHzuEubM0Keh+antcfdsW3vIjPVwirOTPcITLFtaP9XfXG1n3RnY4dp8V0meHn/qpgFfPcpq899xM9RvJzJbLC25loUHZnuZt/bmm6nEFSLawF3Ehc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772735488; c=relaxed/simple;
-	bh=AQVfJhoX1BRMgRzZzFWFIZQ56LXVONFDmF13tEmWmSg=;
+	s=arc-20240116; t=1772736145; c=relaxed/simple;
+	bh=mFBLekNu0pFh38RoS+ly8NDtbNgs1xYCpIaBJhYLK6s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VVVy8AqvtRuGNZsx3FdXlX8QBWtDm/a1hPQyR9wUQYj2L1FVTTk+jKbHzQkEwml1fWlPEZdLPfn+Qpvm81w9oyUA708XSiWy7pkO3pzU5nfr+cVdeQ+/A+X1iRbxuuGEduzdpq8TfZHBjVjzFmcc9ccUk8EJ4HKrJw/OBsPSoLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hjh2FJ7q; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=i7nh6+fdAtQamUCzdyMTKhkfaPKxCdUblcN0RRWFTsLo3maEJCGS2Eh6VnuZ44tSI2m1hVv0RRfro+dmBYIM/z/saV6AUT1jdOmHLC2WB4D22RilpGgtq7UfikG/W9uGB8cEccDmNnv+fKV6egMdO7cyCCsbR/OSypl52i3cJ58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZaL/avDC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hjh2FJ7q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE657C116C6;
-	Thu,  5 Mar 2026 18:31:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZaL/avDC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA36C116C6;
+	Thu,  5 Mar 2026 18:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772735488;
-	bh=AQVfJhoX1BRMgRzZzFWFIZQ56LXVONFDmF13tEmWmSg=;
+	s=k20201202; t=1772736145;
+	bh=mFBLekNu0pFh38RoS+ly8NDtbNgs1xYCpIaBJhYLK6s=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hjh2FJ7qh1/63/jpE7NBwK7OIRaYt5jVAG/eg24hM9oYj6yXxFAlfWXkwwWrCJMWm
-	 UygLmkaECtHLcntqlTzMXnKBOtdK1axNJJHx4sy0SHEEJuRx1kK9FBFOserhnWE6QV
-	 lOF4KDK3onan0UlJC7q6tzgPzuzRvfk7i06l7IHSQTEU2Kpkgew/9qr5eeIBOpCh4B
-	 v62451+SUL4jfaWoKczRbWs4eFuFI2Ay88TOMEKbAOXo9kHeyuCxbmzmWk+mfCD5ea
-	 Z1qI8MU5NtwNbXxAVVhbejHQrMs6Ydv0KW1xWABGqcD+O3zxHZDZi9gki9zZBxzG7A
-	 ihn6IGwC/02SA==
-Date: Thu, 5 Mar 2026 18:31:22 +0000
+	b=ZaL/avDCoUq1hdotZkUw4/COICPIBYrMTm9k+d4uRIetbmtsqV+GciipM7MHurTLs
+	 xHKY4E1BNjwJGd2GYjVAnecZv+VegXt/ug1yhqZmDzUTKSpx7rTJHNSrEBGXXySL/W
+	 kyIxF8P7MJ11z1jrIc2AUjshfmglqddtat59eBfoN0Oi8qusPMCySS3Om/bmYQra1a
+	 lA5GxnsDdMfBVF1ZqNLyQfG6boF98td58zsHVg7txsiJ7vE915l0hsQz3+JNEcWxDZ
+	 M/Fr5jz9XHNktZEpxJSj5qc6+1mX8szkHIZfo3b32soS53mwKvluR2akgE776dmWg/
+	 7iBc+LfwGFkvQ==
+Date: Thu, 5 Mar 2026 18:42:17 +0000
 From: Conor Dooley <conor@kernel.org>
-To: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, UNGLinuxDriver@microchip.com,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 2/8] dt-bindings: net: lan9645x: add LAN9645X
- switch bindings
-Message-ID: <20260305-reliant-parchment-0ff685a9c78e@spud>
-References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
- <20260303-dsa_lan9645x_switch_driver_base-v1-2-bff8ca1396f5@microchip.com>
- <4088b0ff-b718-4137-8518-4c9b9764d56d@lunn.ch>
- <20260303-mosaic-debate-90cf8c8bbb33@spud>
- <1db45715a3a12b76b838d20c0e5904c3222053e7.camel@microchip.com>
+To: =?utf-8?B?5p2O5b+X?= <lizhi2@eswincomputing.com>
+Cc: krzk+dt@kernel.org, Bo Gan <ganboing@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, devicetree@vger.kernel.org,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	robh@kernel.org, conor+dt@kernel.org, netdev@vger.kernel.org,
+	pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk,
+	wens@kernel.org, pjw@kernel.org, palmer@dabbelt.com,
+	aou@eecs.berkeley.edu, alex@ghiti.fr,
+	linux-riscv@lists.infradead.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	ningyu@eswincomputing.com, linmin@eswincomputing.com,
+	pinkesh.vaghela@einfochips.com, pritesh.patel@einfochips.com,
+	weishangjuan@eswincomputing.com
+Subject: Re: Re: [PATCH net-next v3 1/3] dt-bindings: ethernet: eswin: add
+ clock sampling control
+Message-ID: <20260305-goldsmith-omnivore-21958a41ff48@spud>
+References: <20260303061525.846-1-lizhi2@eswincomputing.com>
+ <20260303061637.872-1-lizhi2@eswincomputing.com>
+ <20260303163846.156d18f7@kernel.org>
+ <20260304-regulate-verdict-c3a361d2dc83@spud>
+ <05a15890-392c-41c3-9566-8eb506ddfe5f@gmail.com>
+ <20260304-capable-setback-908ba5b5c858@spud>
+ <9eaad6e.4df8.19cbbe95b3c.Coremail.lizhi2@eswincomputing.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -58,71 +60,129 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="U36N4Du8wU9KvAZH"
+	protocol="application/pgp-signature"; boundary="9LdxKbp5rG3ADm6j"
 Content-Disposition: inline
-In-Reply-To: <1db45715a3a12b76b838d20c0e5904c3222053e7.camel@microchip.com>
+In-Reply-To: <9eaad6e.4df8.19cbbe95b3c.Coremail.lizhi2@eswincomputing.com>
 
 
---U36N4Du8wU9KvAZH
-Content-Type: text/plain; charset=us-ascii
+--9LdxKbp5rG3ADm6j
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Mar 05, 2026 at 01:57:37PM +0100, Jens Emil Schulz Ostergaard wrote:
-> On Tue, 2026-03-03 at 19:04 +0000, Conor Dooley wrote:
-> > On Tue, Mar 03, 2026 at 03:18:45PM +0100, Andrew Lunn wrote:
-> > > > +        properties:
-> > > > +          microchip,led-drive-mode:
-> > > > +            $ref: /schemas/types.yaml#/definitions/uint32
-> > > > +            description: |
-> > > > +              Set the LED drive mode for the copper PHY associated=
- with
-> > > > +              this port.
-> > > > +
-> > > > +                0 - LED1 and LED2 in open-drain mode
-> > > > +                1 - LED1 in active drive mode (can be used for sin=
-gle-LED
-> > > > +                    configurations requiring active drive)
-> > > > +                2 - Reserved
-> > > > +                3 - LED1 and LED2 in active drive mode
-> > > > +            minimum: 0
-> > > > +            maximum: 3
-> > >=20
-> > > I doubt the DT Maintainers will accept that. This looks a lot like a
-> > > value you write into a register. How are active drive and open-drain
-> > > described in other DT bindings? Is there something you can reuse?
-> >=20
-> > I had a quick look and I didn't see anything really that stood out to me
-> > that would be a drop-in replacement.
-> > I also tried looking in the datasheet for more information on these
-> > modes, but I couldn't see anything obvious. For example, there were zero
-> > hits for "drain" in either LAN9645xS or LAN9645xF datasheets.
-> >=20
-> > That said, yea you're right about DT maintainer feelings about it.
-> > There's a couple things I could suggest, but I'd like to know about what
-> > mode 1 means for LED2 first. If there's actually nothing similar, what
-> > about representing each led with a child node and having open-drain be
-> > the default with a property in the child for active-drive?
-> >=20
-> > >=20
-> > > For 1, what happens to LED2? Not used at all?
+On Thu, Mar 05, 2026 at 10:52:38AM +0800, =E6=9D=8E=E5=BF=97 wrote:
 >=20
-> In mode 1 LED2 will be open-drain. This mode only makes sense if you have
-> just 1 LED. With two LEDs mode 0 or mode 3 should be used.
+>=20
+>=20
+> > -----=E5=8E=9F=E5=A7=8B=E9=82=AE=E4=BB=B6-----
+> > =E5=8F=91=E4=BB=B6=E4=BA=BA: "Conor Dooley" <conor@kernel.org>
+> > =E5=8F=91=E9=80=81=E6=97=B6=E9=97=B4:2026-03-04 17:30:57 (=E6=98=9F=E6=
+=9C=9F=E4=B8=89)
+> > =E6=94=B6=E4=BB=B6=E4=BA=BA: "Bo Gan" <ganboing@gmail.com>
+> > =E6=8A=84=E9=80=81: "Jakub Kicinski" <kuba@kernel.org>, lizhi2@eswincom=
+puting.com, devicetree@vger.kernel.org, andrew+netdev@lunn.ch, davem@daveml=
+oft.net, edumazet@google.com, robh@kernel.org, krzk+dt@kernel.org, conor+dt=
+@kernel.org, netdev@vger.kernel.org, pabeni@redhat.com, mcoquelin.stm32@gma=
+il.com, alexandre.torgue@foss.st.com, rmk+kernel@armlinux.org.uk, wens@kern=
+el.org, pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghi=
+ti.fr, linux-riscv@lists.infradead.org, linux-stm32@st-md-mailman.stormrepl=
+y.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, =
+ningyu@eswincomputing.com, linmin@eswincomputing.com, pinkesh.vaghela@einfo=
+chips.com, pritesh.patel@einfochips.com, weishangjuan@eswincomputing.com
+> > =E4=B8=BB=E9=A2=98: Re: [PATCH net-next v3 1/3] dt-bindings: ethernet: =
+eswin: add clock sampling control
+> >=20
+> > On Tue, Mar 03, 2026 at 05:23:18PM -0800, Bo Gan wrote:
+> > > Hi All,
+> > >=20
+> > > On 3/3/26 16:47, Conor Dooley wrote:
+> > > > On Tue, Mar 03, 2026 at 04:38:46PM -0800, Jakub Kicinski wrote:
+> > > > > On Tue,  3 Mar 2026 14:16:37 +0800 lizhi2@eswincomputing.com wrot=
+e:
+> > > > > > There are currently no in-tree users of the EIC7700 Ethernet dr=
+iver, so
+> > > > > > these changes are safe.
+> > > > >=20
+> > > > > What do you mean by this sentence? The commit under Fixes was par=
+t of
+> > > > > Linux v6.19 already.
+> > > >=20
+> > > > The "funny" thing is that caring about users doesn't even really ma=
+tter
+> > > > on the devicetree patch, except for this hunk:
+> > > > |@@ -81,7 +99,9 @@ properties:
+> > > > |                          or external clock selection
+> > > > |           - description: Offset of AXI clock controller Low-Power=
+ request
+> > > > |                          register
+> > > > |+          - description: Offset of register controlling TXD delay
+> > > > |           - description: Offset of register controlling TX/RX clo=
+ck delay
+> > > > |+          - description: Offset of register controlling RXD delay
+> > > > |
+> > > > | required:
+> > > > |   - compatible
+> > > > And it only matters here because an item is injected mid-list. If t=
+his
+> > > > was moved to the end with the RXD delay, the **dt-binding** changes
+> > > > don't have issues with safety. I've not looked at whether there are
+> > > > knock-on concerns about users in the driver or whatever yet, but fr=
+om a
+> > > > binding POV only that hunk can break something that currently works.
+> > >=20
+> > > This was already discussed here in v1:
+> > > https://lore.kernel.org/lkml/e7183ae1-8b8b-4e77-9f4e-3bc1b4b63556@lun=
+n.ch/
+> > >=20
+> > > The device-tree is not checked in yet by ESWIN folks, so there's curr=
+ently
+> > > no user of the dt-binding. No need to worry about backward compat.
+> >=20
+> > The binding and driver exist, there doesn't need to be a dts in tree for
+> > there to be potential users. If the break was important I might not
+> > care, but this seems to be a gratuitous break, since the new items could
+> > be added to the end of the list and compatibility maintained without
+> > incurring any more difficulty for you.
+>=20
+> Hi Conor and Krzysztof,
+>=20
+> Thanks for the reviews.
+>=20
+> - The next patch will fix the property order to avoid any breakage
+>   with existing DT bindings.
 
-Could we then have child nodes for each led, and have a property in each
-that sets the mode to either open-drain or active-drive? Or am I just
-inserting complexity by asking for that?
+Good, thanks.
 
---U36N4Du8wU9KvAZH
+> - Eth1 does have a timing issue in silicon, as discussed here:
+>   https://lore.kernel.org/lkml/32a1f814.2c79.19bfe173225.Coremail.linmin@=
+eswincomputing.com/
+>=20
+> =C2=A0 Based on this, and according to the advice from Andrew
+>   https://lore.kernel.org/lkml/59cec617-0189-4dc3-bc3f-6346155a62ae@lunn.=
+ch/
+>   https://lore.kernel.org/lkml/bd202cfa-d6eb-4d0e-982d-b49795dd25f7@lunn.=
+ch/
+> =C2=A0 adding a DT property is not a reasonable approach.
+> =C2=A0=C2=A0
+> =C2=A0 In the next patch, I will improve the description/paragraph and pr=
+operly
+>   document the timing issues.
+
+I personally don't mind having two compatibles, but I might be more
+clear about what device the new one refers to (so something like
+s/clk-inversion/eth1/g). But Krzysztof was the one who objected to
+having multiple compatibles, so it's worth waiting to see what he has to
+say.
+
+--9LdxKbp5rG3ADm6j
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaanL+gAKCRB4tDGHoIJi
-0tfIAP9B7qfOus/9VKdwPQXPg9Zhl8gG3TahJc3f6gjl3NDgWgEAmKVBQLZILMPo
-fgRdfpOBD5HexrCxMTk5nAOkDBg0qAA=
-=eDyb
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaanOiQAKCRB4tDGHoIJi
+0kTVAP9/DDa/WZb3rTbhG6Imf28y6B3b5r9J/wxYjlBtYoF2VAEAq36UpKZJpbys
+a5AO5ebrLpv/DEjmj/ymz2YiZYHVtgw=
+=oXU3
 -----END PGP SIGNATURE-----
 
---U36N4Du8wU9KvAZH--
+--9LdxKbp5rG3ADm6j--
