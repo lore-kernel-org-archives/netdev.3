@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDE915E5BB
-	for <netdev@vger.kernel.org>; Thu,  5 Mar 2026 02:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861042571BE;
+	Thu,  5 Mar 2026 02:00:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772676008; cv=none; b=NktwqZ5q9o91Flss4EfYJnr3xo/n7MPTLQRuedL691ag1uOjly2GPpJlf6+711wy9YWLIjst/QgSmeIYIz2G3X/joK12cAHHGMoue9MwztAoi9qEGCaNjFV/bHG9WF2hQ7RL8PaQFqgLied+QTLTTTMYwcN39JmG1Cwry3QYhIo=
+	t=1772676009; cv=none; b=EuCqxwkMn+kDQIY+0+KtpRUOGdHzc2ejugHErJ/R5VzLKIo17Zt5xV2aJ+mwwuRbiE/q1Yw9G1OUD+g1RDfVBQSkL8B+LwPnmOlGz0+tKw8q+PmSAd4i4O4pUhKeCt29Wr2sLIKmSu10ZQX6cc4dFM6L9fxdyLWXxVNwWsbYaRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772676008; c=relaxed/simple;
-	bh=3oBIfoSoUNeNabF21znYYwU/gfSmDQseTw8Wo/LGTt4=;
+	s=arc-20240116; t=1772676009; c=relaxed/simple;
+	bh=0kk2Gaw85VM7v8obVqo+8TWqra0YrF7sPYtvdDXgAKA=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=TDDQiBeE6STKc1RqxnIlUGedJD2sX0S7t/1nfHsEPfdh6fRMkp1Y141BnoG4hYWJ2eGnqwb7KRqcZxLk3AR3Qzg3lETuSAFaLnt1MrGQlVcWsUzi8T2T/ZFoG2TO8NX8kdOr4D69wGaj8qIMZJEme1PniPeL1PcEqCPioaXX0gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JUfogM/m; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=LenXWFQfgS9vXbLdpd+bq0WIbnWZC11TOa6F6FZuG5nGluDKMvSMCqWNQ6IcQGqxhBLjOjwzDga15lWFufhBAytoH8ouFKE1+Pe4yPMXA/ylP/KsS+IXtsqDNkVIuiHDHCiRAkS8fh6Mx8ut2N+kAAqipUK1zuO75nAGStpc0Do=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kz+dMEAQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JUfogM/m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1D5BC4CEF7;
-	Thu,  5 Mar 2026 02:00:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772676007;
-	bh=3oBIfoSoUNeNabF21znYYwU/gfSmDQseTw8Wo/LGTt4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=JUfogM/mtnlQkemzAabe81x0TW8vnZ3m4/i3brYkJqa3/pE6+zqW3MCtLD/0KQxah
-	 Enz7yDbTS9ciaAl0T6tZ6YC0vNJFgYoqOgMj6vqyhYbNbLBYV6cRBS9EWetImAEgMe
-	 99QVyzQv/Ve6tgZhW5fB5bXYfq511mJTK0HOP0KXK+t2rVsFmqeYoP0DNeJMYXyjdk
-	 t/BZrV0f1YXUwD6U7rzDQEhbYdQ8fROFJqy41jc8GVelBbCtbIpvWxlAB0d86DKAWr
-	 JrA5sZ22RudJ/tDsIKv+5cppCzgQHegGdJKv/T/Lg7hJF3mUT5lzO8q278YX5SasQb
-	 ln/+RTcfZK5iw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 400FB3808200;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kz+dMEAQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32580C4CEF7;
 	Thu,  5 Mar 2026 02:00:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772676009;
+	bh=0kk2Gaw85VM7v8obVqo+8TWqra0YrF7sPYtvdDXgAKA=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Kz+dMEAQLkFTTwcnhgXzeU/BubsO+MGbJnoYYFf34pXsrHsaRXSUd1V9opy4k3xdJ
+	 aK8diejhqM7LNeKP1H3PFkGWeys83RWpf+LhjnDCM4xQG4JT/rRUg4UNjRTQnIITfx
+	 AafYdRIMmBH+JnKjRifCFm/A+Dr7lmVuZIYJECg9zn14hcKs5vXI6yGQohD++Zddh2
+	 HLMZoGHt67h/VXCUvVO7B9iukkNyscMIJDES8BGKdeAXzcx/KwDKELraVNi94fwSiH
+	 O1rZl2Ez4x5+LZiYWoiZ4bSc3eZJCtQOThB4t1uWl1g8UL87hK63/STQP9UwZBMjSw
+	 jgUCU/1qrcJWQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA0D43808200;
+	Thu,  5 Mar 2026 02:00:10 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,36 +37,37 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] tcp: secure_seq: add back ports to TS offset
+Subject: Re: [PATCH V2] net: nfc: nci: Fix zero-length proprietary
+ notifications
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177267600779.2478763.12939988103290560852.git-patchwork-notify@kernel.org>
-Date: Thu, 05 Mar 2026 02:00:07 +0000
-References: <20260302205527.1982836-1-edumazet@google.com>
-In-Reply-To: <20260302205527.1982836-1-edumazet@google.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- ncardwell@google.com, kuniyu@google.com, w@1wt.eu, netdev@vger.kernel.org,
- eric.dumazet@gmail.com, dengzhouyan_nwpu@163.com, fw@strlen.de
+ <177267600930.2478763.3590512130422753607.git-patchwork-notify@kernel.org>
+Date: Thu, 05 Mar 2026 02:00:09 +0000
+References: <20260302163238.140576-1-ian.ray@gehealthcare.com>
+In-Reply-To: <20260302163238.140576-1-ian.ray@gehealthcare.com>
+To: Ian Ray <ian.ray@gehealthcare.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ pabeni@redhat.com, horms@kernel.org, krzk@kernel.org, jeremy@jcline.org,
+ ryasuoka@redhat.com, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
 
 Hello:
 
 This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Mon,  2 Mar 2026 20:55:27 +0000 you wrote:
-> This reverts 28ee1b746f49 ("secure_seq: downgrade to per-host timestamp offsets")
+On Mon,  2 Mar 2026 18:32:37 +0200 you wrote:
+> NCI NFC controllers may have proprietary OIDs with zero-length payload.
+> One example is: drivers/nfc/nxp-nci/core.c, NXP_NCI_RF_TXLDO_ERROR_NTF.
 > 
-> tcp_tw_recycle went away in 2017.
+> Allow a zero length payload in proprietary notifications *only*.
 > 
-> Zhouyan Deng reported off-path TCP source port leakage via
-> SYN cookie side-channel that can be fixed in multiple ways.
+> Before:
 > 
 > [...]
 
 Here is the summary with links:
-  - [net] tcp: secure_seq: add back ports to TS offset
-    https://git.kernel.org/netdev/net/c/165573e41f2f
+  - [V2] net: nfc: nci: Fix zero-length proprietary notifications
+    https://git.kernel.org/netdev/net/c/f7d92f11bd33
 
 You are awesome, thank you!
 -- 
