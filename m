@@ -1,43 +1,45 @@
-Received: from smtpbguseast1.qq.com (smtpbguseast1.qq.com [54.204.34.129])
+Received: from out198-24.us.a.mail.aliyun.com (out198-24.us.a.mail.aliyun.com [47.90.198.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87E0136A03F;
-	Fri,  6 Mar 2026 04:00:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.204.34.129
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCDF33BBD0;
+	Fri,  6 Mar 2026 04:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772769662; cv=none; b=jHFIT56q3GBcISJNuurv9E2bxYmJky14bNVbRIBIt2iu1UimeqAueSHosoyDRLB+Q2wso8a7R9LuoPWkx7H4Ha4WThs649FiEwQrXROJDrL94WmcD4cd112cFL2YQzhKYxpT4u90ZdLDYeDR9bt5HWkuzkVq1fGzLqWANcnfgYA=
+	t=1772769988; cv=none; b=o1Mj5sO0B72s3JVzxEUMmXlWD7MayciV/ExX+eWK722FGuaoD/2QIxeuQYzv8Dx5d2HNybgx1KHxDq68A99yTkgpk116gZQ4X9V1CJ7eJl5u1TeUOunlfT2mciZHU1X1CWClqZsATVFC1wZ/x8EIa8vMZ8dyaf4qGvG1EVVbFX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772769662; c=relaxed/simple;
-	bh=CJcKGBki7v36X72qsmzgsFmDkpf9cdrWvVWNI9hOGkc=;
+	s=arc-20240116; t=1772769988; c=relaxed/simple;
+	bh=ztXLN9ZZ6DHk4KVoHfAeQL3/rlMETIDcgcJYfac+EFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VluxsILZp9nsWTbpaoVtvDJqUBT1Xv4C+GMWxrafKbDNH133fRNbnSusYjIeqNbjAhNjbWrYsvL79g2lThS9oFRpz28UzuPlGts/7xWT0qJ/mysl8UtWMNDJ4hUOKjLTYMhGZrlrhe5aZrT97FOa7zwE9muniUUyYETuBTfS6Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org; spf=none smtp.mailfrom=vimux.org; arc=none smtp.client-ip=54.204.34.129
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=vimux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=vimux.org
-X-QQ-mid: esmtpsz19t1772769634t18b456ed
-X-QQ-Originating-IP: BNKoUk/EEm2ysShfV34K1wbEp9Va9qA1DojK65Fhm/I=
-Received: from localhost.localdomain ( [119.167.27.18])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Fri, 06 Mar 2026 12:00:23 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 7250432472425711869
-EX-QQ-RecipientCnt: 8
-From: Jialu Xu <xujialu@vimux.org>
-To: xujialu@vimux.org
-Cc: brgl@kernel.org,
-	kees@kernel.org,
-	krzk@kernel.org,
-	linusw@kernel.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	 MIME-Version; b=JxQXj8uJHeS1TVuKcO+JMUG6xaeGpAE57aPDo1Wv8WBab6iC/uCuXfr3n7CuGqCU4afR3AO1ZOzQcUpaL3+HG80uQV6HAHurQH7TQSpYkbWWodvRE1f5VOZ1K6mQaLZ/kZPRKX8ng81YSN6twOxfv+YU3gpftkPWSjVzKbvkkRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.gmDLiNQ_1772768103 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 06 Mar 2026 11:35:04 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
 	netdev@vger.kernel.org
-Subject: [PATCH v3 3/3] gpio: remove of_get_named_gpio() and <linux/of_gpio.h>
-Date: Fri,  6 Mar 2026 11:59:13 +0800
-Message-ID: <554DC15F66B052BB+20260306035909.2447844-7-xujialu@vimux.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <D5F95320CE72E20A+20260306035539.2443355-2-xujialu@vimux.org>
-References: <D5F95320CE72E20A+20260306035539.2443355-2-xujialu@vimux.org>
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	linux-doc@vger.kernel.org,
+	lorenzo@kernel.org,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v6 net-next 09/11] net/nebula-matrix: add Dispatch layer implementation
+Date: Fri,  6 Mar 2026 11:34:44 +0800
+Message-ID: <20260306033451.5196-10-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260306033451.5196-1-illusion.wang@nebula-matrix.com>
+References: <20260306033451.5196-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -45,184 +47,547 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpsz:vimux.org:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: Nxo56qkCB4EiaeIznA6Y2Y6th2NxT1tsNFQjMt2a7YTK9P5yndahLDZl
-	5SP0Z/qrVx+pwUk2ofkH7hnjAP/z0G1+i67T9Zd0KONbI0ZLnS82p8afRnop/rdx1LjqZ2/
-	BW4kiIH1are7rBy6ci+8d6WmFo6uMN40Ggj4HmjVBg14xI+U6iP0D6XwLVfqNDK2fA8Ay8p
-	7ZITh9pnLlwdtV5cHOeTqKePe/WAe4xn68eCF+ui2ybja+2dq/ccgqXwiq7PHM43MKt6cuI
-	EHhwmtIVTFEVCfo92EOsZOgu0xMnG6vDk0hP7F/FiMk4tdFhZWZvW2tJhqeI2xlB1D/PEE3
-	nkflU3BIk1Q6xx1TqXcvv+rIl6WRCSvGHvV4HK/UClAyCKLkWK+WWmn7F0T6M8hSKA00uwU
-	YLOcjUTgRImeYQ9SZQK4LyyrKNz41wMoiDnbZg04Q24pOKt8OGKATRXkLKZTQKvxx5r+wAl
-	T3oQbsqIxHT+KrPSzD1prACYIRWrCz/+teP2FiBEhTsVjKxmyEp/lsg8r2T25W3+kf88u/E
-	LM07dsQ6Ixco0g3B6fRFJQqtCeR5dxT5/Adw3cPT/vsMDJQxMS2rutfV0R0kFi3ZCRcs7/f
-	4s9dpcM/6Q7d1LoObSUm26LpSISaLmf1u6gAONh8VWIuTwxQAnuzN2tZ5ijeALvY7wk+T7S
-	hwuY4D5pn5mfIoUP75tznxt+r/Y5mvzvlP9aJLw3Sp1y2OExvs0JjwyWPX6k+8LMkwzjrco
-	n8QdpOUSBlGHrpKfy5pVzy8//WHT1IXue1eY+E8DASirSmlP+1mhRNo2neprIWZXLu5Yl+Z
-	Eh0XxhC9QVz/6s2ISFDMlVm8TesZlgJ+mndBSePTf7xjeriwkyISeMI0xDsP2uEXYgBMCsb
-	pFwe71mGfh7oqy6XjmVMO79UzG04JacpB19SLyj6gsM+At3d3QZ95doin2l6Y+lx5zJrEIi
-	5CGWniue+Y4thErmu6sCMNpMrHcSSAtRFZinjaOYrEfxKWRj3xQQ7oS6RSi84VZGaU7Vy1Q
-	tavcDv63g2kJI2sA6WmqXsLRanxdImCMVdAlwTPg==
-X-QQ-XMRINFO: Mp0Kj//9VHAxzExpfF+O8yhSrljjwrznVg==
-X-QQ-RECHKSPAM: 0
 
-All in-tree consumers have been converted to the descriptor-based API.
-Remove the deprecated of_get_named_gpio() helper, delete the
-<linux/of_gpio.h> header, and drop the corresponding entry from
-MAINTAINERS.
+This patch can have a quick review, function is similar
 
-Also remove the completed TODO item for this cleanup.
+The primary issue in the Dispatch layer is how to determine
+the routing approach
+Two routing ways:
+Dispatch Layer-> Resource Layer -> HW layer
+The Dispatch Layer routes tasks to Resource Layer, which may interact
+with the HW Layer for hardware writes.
 
-Signed-off-by: Jialu Xu <xujialu@vimux.org>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
+Dispatch Layer->Channel Layer
+The Dispatch Layers redirects hooks to the Channel Layer.
+
+The primary challenge at the Dispatch layer lies in determining the
+routing approach, namely, how to decide which interfaces should directly
+invoke the Resource layer's interfaces and which should transmit
+requests via channels to the management PF for processing.
+
+To address this, a ctrl_lvl (control level) mechanism is established,
+which comprises two parts: the control level declared by each interface
+and the control level configured by the upper layer. The effect is that
+when the upper layer configures a specific control level, all interfaces
+declaring this level will directly call the Resource layer's interfaces;
+otherwise, they will send requests via channels.
+
+For instance, consider a regular PF that possesses network (net)
+capabilities but lacks control (ctrl) capabilities. It will only
+configure NET_LVL at the Dispatch layer. In this scenario, all
+interfaces declaring NET_LVL will directly invoke the Resource layer's
+interfaces, while those declaring CTRL_LVL will send requests via
+channels to the management PF. Conversely, if it is the management PF,
+it will configure both NET_LVL and CTRL_LVL at the Dispatch layer.
+Consequently, interfaces declaring CTRL_LVL will also directly call the
+Resource layer's interfaces without sending requests via channels. This
+configuration logic can be dynamic.(nbl_disp_setup_ctrl_lvl)
+
+Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
 ---
- MAINTAINERS               |  1 -
- drivers/gpio/TODO         | 28 ----------------------------
- drivers/gpio/gpiolib-of.c | 27 ---------------------------
- include/linux/of_gpio.h   | 38 --------------------------------------
- 4 files changed, 94 deletions(-)
- delete mode 100644 include/linux/of_gpio.h
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.c | 410 ++++++++++++++++++
+ .../nebula-matrix/nbl/nbl_core/nbl_dispatch.h |  31 ++
+ .../nbl/nbl_include/nbl_def_dispatch.h        |  12 +
+ 3 files changed, 453 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 61bf550fd37c2..8152fa2158295 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10958,7 +10958,6 @@ F:	drivers/gpio/
- F:	include/dt-bindings/gpio/
- F:	include/linux/gpio.h
- F:	include/linux/gpio/
--F:	include/linux/of_gpio.h
- K:	(devm_)?gpio_(request|free|direction|get|set)
- K:	GPIOD_FLAGS_BIT_NONEXCLUSIVE
- K:	devm_gpiod_unhinge
-diff --git a/drivers/gpio/TODO b/drivers/gpio/TODO
-index 5acaeab029ec6..7ce80fde1f17e 100644
---- a/drivers/gpio/TODO
-+++ b/drivers/gpio/TODO
-@@ -58,34 +58,6 @@ Work items:
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+index 73818b0cc7ce..0828c57dbbf2 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
+@@ -7,6 +7,396 @@
+ #include <linux/pci.h>
+ #include "nbl_dispatch.h"
  
- -------------------------------------------------------------------------------
- 
--Get rid of <linux/of_gpio.h>
--
--This header and helpers appeared at one point when there was no proper
--driver infrastructure for doing simpler MMIO GPIO devices and there was
--no core support for parsing device tree GPIOs from the core library with
--the [devm_]gpiod_get() calls we have today that will implicitly go into
--the device tree back-end. It is legacy and should not be used in new code.
--
--Work items:
--
--- Change all consumer drivers that #include <linux/of_gpio.h> to
--  #include <linux/gpio/consumer.h> and stop doing custom parsing of the
--  GPIO lines from the device tree. This can be tricky and often involves
--  changing board files, etc.
--
--- Pull semantics for legacy device tree (OF) GPIO lookups into
--  gpiolib-of.c: in some cases subsystems are doing custom flags and
--  lookups for polarity inversion, open drain and what not. As we now
--  handle this with generic OF bindings, pull all legacy handling into
--  gpiolib so the library API becomes narrow and deep and handle all
--  legacy bindings internally. (See e.g. commits 6953c57ab172,
--  6a537d48461d etc)
--
--- Delete <linux/of_gpio.h> when all the above is complete and everything
--  uses <linux/gpio/consumer.h> or <linux/gpio/driver.h> instead.
--
---------------------------------------------------------------------------------
--
- Collect drivers
- 
- Collect GPIO drivers from arch/* and other places that should be placed
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index 3bdd9af674474..c512d735e85ff 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -14,7 +14,6 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
--#include <linux/of_gpio.h>
- #include <linux/pinctrl/pinctrl.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-@@ -446,32 +445,6 @@ static struct gpio_desc *of_get_named_gpiod_flags(const struct device_node *np,
- 	return desc;
- }
- 
--/**
-- * of_get_named_gpio() - Get a GPIO number to use with GPIO API
-- * @np:		device node to get GPIO from
-- * @propname:	Name of property containing gpio specifier(s)
-- * @index:	index of the GPIO
-- *
-- * **DEPRECATED** This function is deprecated and must not be used in new code.
-- *
-- * Returns:
-- * GPIO number to use with Linux generic GPIO API, or one of the errno
-- * value on the error condition.
-- */
--int of_get_named_gpio(const struct device_node *np, const char *propname,
--		      int index)
--{
--	struct gpio_desc *desc;
--
--	desc = of_get_named_gpiod_flags(np, propname, index, NULL);
--
--	if (IS_ERR(desc))
--		return PTR_ERR(desc);
--	else
--		return desc_to_gpio(desc);
--}
--EXPORT_SYMBOL_GPL(of_get_named_gpio);
--
- /* Converts gpio_lookup_flags into bitmask of GPIO_* values */
- static unsigned long of_convert_gpio_flags(enum of_gpio_flags flags)
++static u16 nbl_disp_chan_get_vsi_id_req(struct nbl_dispatch_mgt *disp_mgt,
++					u16 func_id, u16 type)
++{
++	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
++	struct nbl_common_info *common = disp_mgt->common;
++	struct nbl_chan_param_get_vsi_id result = { 0 };
++	struct nbl_chan_param_get_vsi_id param = { 0 };
++	struct nbl_chan_send_info chan_send;
++
++	param.type = type;
++
++	NBL_CHAN_SEND(chan_send, common->mgt_pf, NBL_CHAN_MSG_GET_VSI_ID,
++		      &param, sizeof(param), &result, sizeof(result), 1);
++	chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
++
++	return result.vsi_id;
++}
++
++static void nbl_disp_chan_get_vsi_id_resp(void *priv, u16 src_id, u16 msg_id,
++					  void *data, u32 data_len)
++{
++	struct nbl_dispatch_mgt *disp_mgt = (struct nbl_dispatch_mgt *)priv;
++	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++	struct device *dev = disp_mgt->common->dev;
++	struct nbl_chan_param_get_vsi_id *param;
++	struct nbl_chan_param_get_vsi_id result;
++	struct nbl_chan_ack_info chan_ack;
++	int err = NBL_CHAN_RESP_OK;
++	int ret;
++
++	param = (struct nbl_chan_param_get_vsi_id *)data;
++
++	result.vsi_id =
++		NBL_OPS_CALL_RET(res_ops->get_vsi_id, (p, src_id, param->type));
++
++	NBL_CHAN_ACK(chan_ack, src_id, NBL_CHAN_MSG_GET_VSI_ID, msg_id, err,
++		     &result, sizeof(result));
++	ret = chan_ops->send_ack(disp_mgt->chan_ops_tbl->priv, &chan_ack);
++	if (ret)
++		dev_err(dev,
++			"channel send ack failed with ret: %d, msg_type: %d\n",
++			ret, NBL_CHAN_MSG_GET_VSI_ID);
++}
++
++static void nbl_disp_chan_get_eth_id_req(struct nbl_dispatch_mgt *disp_mgt,
++					 u16 vsi_id, u8 *eth_mode, u8 *eth_id,
++					 u8 *logic_eth_id)
++{
++	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
++	struct nbl_common_info *common = disp_mgt->common;
++	struct nbl_chan_param_get_eth_id result = { 0 };
++	struct nbl_chan_param_get_eth_id param = { 0 };
++	struct nbl_chan_send_info chan_send;
++
++	param.vsi_id = vsi_id;
++
++	NBL_CHAN_SEND(chan_send, common->mgt_pf, NBL_CHAN_MSG_GET_ETH_ID,
++		      &param, sizeof(param), &result, sizeof(result), 1);
++	chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
++
++	*eth_mode = result.eth_mode;
++	*eth_id = result.eth_id;
++	*logic_eth_id = result.logic_eth_id;
++}
++
++static void nbl_disp_chan_get_eth_id_resp(void *priv, u16 src_id, u16 msg_id,
++					  void *data, u32 data_len)
++{
++	struct nbl_dispatch_mgt *disp_mgt = (struct nbl_dispatch_mgt *)priv;
++	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++	struct nbl_chan_param_get_eth_id result = { 0 };
++	struct device *dev = disp_mgt->common->dev;
++	struct nbl_chan_param_get_eth_id *param;
++	struct nbl_chan_ack_info chan_ack;
++	int err = NBL_CHAN_RESP_OK;
++	int ret;
++
++	param = (struct nbl_chan_param_get_eth_id *)data;
++
++	NBL_OPS_CALL(res_ops->get_eth_id,
++		     (p, param->vsi_id, &result.eth_mode, &result.eth_id,
++		      &result.logic_eth_id));
++
++	NBL_CHAN_ACK(chan_ack, src_id, NBL_CHAN_MSG_GET_ETH_ID, msg_id, err,
++		     &result, sizeof(result));
++	ret = chan_ops->send_ack(disp_mgt->chan_ops_tbl->priv, &chan_ack);
++	if (ret)
++		dev_err(dev,
++			"channel send ack failed with ret: %d, msg_type: %d\n",
++			ret, NBL_CHAN_MSG_GET_ETH_ID);
++}
++
++static void nbl_disp_deinit_chip_module(struct nbl_dispatch_mgt *disp_mgt)
++{
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++
++	NBL_OPS_CALL(res_ops->deinit_chip_module, (p));
++}
++
++static int nbl_disp_init_chip_module(struct nbl_dispatch_mgt *disp_mgt)
++{
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++
++	return NBL_OPS_CALL_RET(res_ops->init_chip_module, (p));
++}
++
++static int nbl_disp_configure_msix_map(struct nbl_dispatch_mgt *disp_mgt,
++				       u16 num_net_msix, u16 num_others_msix,
++				       bool net_msix_mask_en)
++{
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++
++	return NBL_OPS_CALL_LOCK_RET(disp_mgt, res_ops->configure_msix_map, p,
++				     0, num_net_msix, num_others_msix,
++				     net_msix_mask_en);
++}
++
++static int
++nbl_disp_chan_configure_msix_map_req(struct nbl_dispatch_mgt *disp_mgt,
++				     u16 num_net_msix, u16 num_others_msix,
++				     bool net_msix_mask_en)
++{
++	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
++	struct nbl_common_info *common = disp_mgt->common;
++	struct nbl_chan_param_cfg_msix_map param = { 0 };
++	struct nbl_chan_send_info chan_send;
++
++	param.num_net_msix = num_net_msix;
++	param.num_others_msix = num_others_msix;
++	param.msix_mask_en = net_msix_mask_en;
++
++	NBL_CHAN_SEND(chan_send, common->mgt_pf,
++		      NBL_CHAN_MSG_CONFIGURE_MSIX_MAP, &param, sizeof(param),
++		      NULL, 0, 1);
++	return chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
++}
++
++static void nbl_disp_chan_configure_msix_map_resp(void *priv, u16 src_id,
++						  u16 msg_id, void *data,
++						  u32 data_len)
++{
++	struct nbl_dispatch_mgt *disp_mgt = (struct nbl_dispatch_mgt *)priv;
++	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++	struct device *dev = disp_mgt->common->dev;
++	struct nbl_chan_param_cfg_msix_map *param;
++	struct nbl_chan_ack_info chan_ack;
++	int err = NBL_CHAN_RESP_OK;
++	int ret;
++
++	param = (struct nbl_chan_param_cfg_msix_map *)data;
++
++	ret = NBL_OPS_CALL_LOCK_RET(disp_mgt, res_ops->configure_msix_map, p,
++				    src_id, param->num_net_msix,
++				    param->num_others_msix,
++				    param->msix_mask_en);
++	if (ret)
++		err = NBL_CHAN_RESP_ERR;
++
++	NBL_CHAN_ACK(chan_ack, src_id, NBL_CHAN_MSG_CONFIGURE_MSIX_MAP, msg_id,
++		     err, NULL, 0);
++	ret = chan_ops->send_ack(disp_mgt->chan_ops_tbl->priv, &chan_ack);
++	if (ret)
++		dev_err(dev,
++			"channel send ack failed with ret: %d, msg_type: %d\n",
++			ret, NBL_CHAN_MSG_CONFIGURE_MSIX_MAP);
++}
++
++static int nbl_disp_chan_destroy_msix_map_req(struct nbl_dispatch_mgt *disp_mgt)
++{
++	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
++	struct nbl_common_info *common = disp_mgt->common;
++	struct nbl_chan_send_info chan_send;
++
++	NBL_CHAN_SEND(chan_send, common->mgt_pf, NBL_CHAN_MSG_DESTROY_MSIX_MAP,
++		      NULL, 0, NULL, 0, 1);
++	return chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
++}
++
++static void nbl_disp_chan_destroy_msix_map_resp(void *priv, u16 src_id,
++						u16 msg_id, void *data,
++						u32 data_len)
++{
++	struct nbl_dispatch_mgt *disp_mgt = (struct nbl_dispatch_mgt *)priv;
++	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++	struct device *dev = disp_mgt->common->dev;
++	struct nbl_chan_ack_info chan_ack;
++	int err = NBL_CHAN_RESP_OK;
++	int ret;
++
++	ret = NBL_OPS_CALL_LOCK_RET(disp_mgt, res_ops->destroy_msix_map, p,
++				    src_id);
++	if (ret)
++		err = NBL_CHAN_RESP_ERR;
++
++	NBL_CHAN_ACK(chan_ack, src_id, NBL_CHAN_MSG_DESTROY_MSIX_MAP, msg_id,
++		     err, NULL, 0);
++	ret = chan_ops->send_ack(disp_mgt->chan_ops_tbl->priv, &chan_ack);
++	if (ret)
++		dev_err(dev,
++			"channel send ack failed with ret: %d, msg_type: %d\n",
++			ret, NBL_CHAN_MSG_DESTROY_MSIX_MAP);
++}
++
++static int
++nbl_disp_chan_enable_mailbox_irq_req(struct nbl_dispatch_mgt *disp_mgt,
++				     u16 vector_id, bool enable_msix)
++{
++	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
++	struct nbl_chan_param_enable_mailbox_irq param = { 0 };
++	struct nbl_common_info *common = disp_mgt->common;
++	struct nbl_chan_send_info chan_send;
++
++	param.vector_id = vector_id;
++	param.enable_msix = enable_msix;
++
++	NBL_CHAN_SEND(chan_send, common->mgt_pf,
++		      NBL_CHAN_MSG_MAILBOX_ENABLE_IRQ, &param, sizeof(param),
++		      NULL, 0, 1);
++	return chan_ops->send_msg(disp_mgt->chan_ops_tbl->priv, &chan_send);
++}
++
++static void nbl_disp_chan_enable_mailbox_irq_resp(void *priv, u16 src_id,
++						  u16 msg_id, void *data,
++						  u32 data_len)
++{
++	struct nbl_dispatch_mgt *disp_mgt = (struct nbl_dispatch_mgt *)priv;
++	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++	struct nbl_chan_param_enable_mailbox_irq *param;
++	struct device *dev = disp_mgt->common->dev;
++	struct nbl_chan_ack_info chan_ack;
++	int err = NBL_CHAN_RESP_OK;
++	int ret;
++
++	param = (struct nbl_chan_param_enable_mailbox_irq *)data;
++
++	ret = NBL_OPS_CALL_LOCK_RET(disp_mgt, res_ops->enable_mailbox_irq, p,
++				    src_id, param->vector_id,
++				    param->enable_msix);
++	if (ret)
++		err = NBL_CHAN_RESP_ERR;
++
++	NBL_CHAN_ACK(chan_ack, src_id, NBL_CHAN_MSG_MAILBOX_ENABLE_IRQ, msg_id,
++		     err, NULL, 0);
++	ret = chan_ops->send_ack(disp_mgt->chan_ops_tbl->priv, &chan_ack);
++	if (ret)
++		dev_err(dev,
++			"channel send ack failed with ret: %d, msg_type: %d\n",
++			ret, NBL_CHAN_MSG_MAILBOX_ENABLE_IRQ);
++}
++
++static int nbl_disp_destroy_msix_map(struct nbl_dispatch_mgt *disp_mgt)
++{
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++
++	return NBL_OPS_CALL_LOCK_RET(disp_mgt, res_ops->destroy_msix_map, p, 0);
++}
++
++static int nbl_disp_enable_mailbox_irq(struct nbl_dispatch_mgt *disp_mgt,
++				       u16 vector_id, bool enable_msix)
++{
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++
++	return NBL_OPS_CALL_LOCK_RET(disp_mgt, res_ops->enable_mailbox_irq, p,
++				     0, vector_id, enable_msix);
++}
++
++static u16 nbl_disp_get_vsi_id(struct nbl_dispatch_mgt *disp_mgt, u16 func_id,
++			       u16 type)
++{
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++
++	return NBL_OPS_CALL_RET(res_ops->get_vsi_id, (p, func_id, type));
++}
++
++static void nbl_disp_get_eth_id(struct nbl_dispatch_mgt *disp_mgt, u16 vsi_id,
++				u8 *eth_mode, u8 *eth_id, u8 *logic_eth_id)
++{
++	struct nbl_resource_ops *res_ops = disp_mgt->res_ops_tbl->ops;
++	struct nbl_resource_mgt *p = disp_mgt->res_ops_tbl->priv;
++
++	NBL_OPS_CALL(res_ops->get_eth_id,
++		     (p, vsi_id, eth_mode, eth_id, logic_eth_id));
++}
++
++/* NBL_DISP_SET_OPS(disp_op_name, func, ctrl_lvl, msg_type, msg_req, msg_resp)
++ * ctrl_lvl is to define when this disp_op should go directly to res_op,
++ * not sending a channel msg.
++ * Use X Macros to reduce codes in channel_op and disp_op setup/remove
++ */
++#define NBL_DISP_OPS_TBL						\
++do {									\
++	NBL_DISP_SET_OPS(init_chip_module, nbl_disp_init_chip_module,	\
++			 NBL_DISP_CTRL_LVL_MGT, -1, NULL, NULL);	\
++	NBL_DISP_SET_OPS(deinit_chip_module,				\
++			 nbl_disp_deinit_chip_module,			\
++			 NBL_DISP_CTRL_LVL_MGT, -1, NULL, NULL);	\
++	NBL_DISP_SET_OPS(configure_msix_map,				\
++			 nbl_disp_configure_msix_map,			\
++			 NBL_DISP_CTRL_LVL_MGT,				\
++			 NBL_CHAN_MSG_CONFIGURE_MSIX_MAP,		\
++			 nbl_disp_chan_configure_msix_map_req,		\
++			 nbl_disp_chan_configure_msix_map_resp);	\
++	NBL_DISP_SET_OPS(destroy_msix_map, nbl_disp_destroy_msix_map,	\
++			 NBL_DISP_CTRL_LVL_MGT,				\
++			 NBL_CHAN_MSG_DESTROY_MSIX_MAP,			\
++			 nbl_disp_chan_destroy_msix_map_req,		\
++			 nbl_disp_chan_destroy_msix_map_resp);		\
++	NBL_DISP_SET_OPS(enable_mailbox_irq,				\
++			 nbl_disp_enable_mailbox_irq,			\
++			 NBL_DISP_CTRL_LVL_MGT,				\
++			 NBL_CHAN_MSG_MAILBOX_ENABLE_IRQ,		\
++			 nbl_disp_chan_enable_mailbox_irq_req,		\
++			 nbl_disp_chan_enable_mailbox_irq_resp);	\
++	NBL_DISP_SET_OPS(get_vsi_id, nbl_disp_get_vsi_id,		\
++			 NBL_DISP_CTRL_LVL_MGT, NBL_CHAN_MSG_GET_VSI_ID,\
++			 nbl_disp_chan_get_vsi_id_req,			\
++			 nbl_disp_chan_get_vsi_id_resp);		\
++	NBL_DISP_SET_OPS(get_eth_id, nbl_disp_get_eth_id,		\
++			 NBL_DISP_CTRL_LVL_MGT, NBL_CHAN_MSG_GET_ETH_ID,\
++			 nbl_disp_chan_get_eth_id_req,			\
++			 nbl_disp_chan_get_eth_id_resp);		\
++} while (0)
++
++/* Structure starts here, adding an op should not modify anything below */
++static int nbl_disp_setup_msg(struct nbl_dispatch_mgt *disp_mgt)
++{
++	struct nbl_dispatch_ops *disp_ops = disp_mgt->disp_ops_tbl->ops;
++	struct nbl_channel_ops *chan_ops = disp_mgt->chan_ops_tbl->ops;
++	struct nbl_channel_mgt *p = disp_mgt->chan_ops_tbl->priv;
++	int ret = 0;
++
++	mutex_init(&disp_mgt->ops_mutex_lock);
++
++#define NBL_DISP_SET_OPS(disp_op, func, ctrl, msg_type, msg_req, resp) \
++do {									\
++	typeof(msg_type) _msg_type = (msg_type);			\
++	typeof(ctrl) _ctrl_lvl = (ctrl);				\
++	(void)(disp_ops->NBL_NAME(disp_op));				\
++	(void)(func);							\
++	(void)(msg_req);						\
++	(void)_ctrl_lvl;						\
++	if (_msg_type >= 0)						\
++		ret += chan_ops->register_msg(p, _msg_type, resp, disp_mgt);\
++} while (0)
++	NBL_DISP_OPS_TBL;
++#undef  NBL_DISP_SET_OPS
++
++	return ret;
++}
++
++/* Ctrl lvl means that if a certain level is set, then all disp_ops that
++ * decleared this lvl will go directly to res_ops, rather than send a
++ * channel msg, and vice versa.
++ */
++static int nbl_disp_setup_ctrl_lvl(struct nbl_dispatch_mgt *disp_mgt, u32 lvl)
++{
++	struct nbl_dispatch_ops *disp_ops = disp_mgt->disp_ops_tbl->ops;
++
++	set_bit(lvl, disp_mgt->ctrl_lvl);
++
++#define NBL_DISP_SET_OPS(disp_op, func, ctrl, msg_type, msg_req, msg_resp) \
++do {									\
++	typeof(msg_type) _msg_type = (msg_type);			\
++	(void)(_msg_type);						\
++	(void)(msg_resp);						\
++	disp_ops->NBL_NAME(disp_op) =					\
++		test_bit(ctrl, disp_mgt->ctrl_lvl) ? func : msg_req;	\
++} while (0)
++	NBL_DISP_OPS_TBL;
++#undef  NBL_DISP_SET_OPS
++
++	return 0;
++}
++
+ static struct nbl_dispatch_mgt *
+ nbl_disp_setup_disp_mgt(struct nbl_common_info *common)
  {
-diff --git a/include/linux/of_gpio.h b/include/linux/of_gpio.h
-deleted file mode 100644
-index d0f66a5e1b2a7..0000000000000
---- a/include/linux/of_gpio.h
-+++ /dev/null
-@@ -1,38 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0+ */
--/*
-- * OF helpers for the GPIO API
-- *
-- * Copyright (c) 2007-2008  MontaVista Software, Inc.
-- *
-- * Author: Anton Vorontsov <avorontsov@ru.mvista.com>
-- */
--
--#ifndef __LINUX_OF_GPIO_H
--#define __LINUX_OF_GPIO_H
--
--#include <linux/compiler.h>
--#include <linux/gpio/driver.h>
--#include <linux/gpio.h>		/* FIXME: Shouldn't be here */
--#include <linux/of.h>
--
--struct device_node;
--
--#ifdef CONFIG_OF_GPIO
--
--extern int of_get_named_gpio(const struct device_node *np,
--			     const char *list_name, int index);
--
--#else /* CONFIG_OF_GPIO */
--
--#include <linux/errno.h>
--
--/* Drivers may not strictly depend on the GPIO support, so let them link. */
--static inline int of_get_named_gpio(const struct device_node *np,
--                                   const char *propname, int index)
--{
--	return -ENOSYS;
--}
--
--#endif /* CONFIG_OF_GPIO */
--
--#endif /* __LINUX_OF_GPIO_H */
+@@ -73,5 +463,25 @@ int nbl_disp_init(struct nbl_adapter *adapter, struct nbl_init_param *param)
+ 	adapter->core.disp_mgt = disp_mgt;
+ 	adapter->intf.dispatch_ops_tbl = disp_ops_tbl;
+ 
++	ret = nbl_disp_setup_msg(disp_mgt);
++	if (ret)
++		return ret;
++
++	if (param->caps.has_ctrl) {
++		ret = nbl_disp_setup_ctrl_lvl(disp_mgt, NBL_DISP_CTRL_LVL_MGT);
++		if (ret)
++			return ret;
++	}
++
++	if (param->caps.has_net) {
++		ret = nbl_disp_setup_ctrl_lvl(disp_mgt, NBL_DISP_CTRL_LVL_NET);
++		if (ret)
++			return ret;
++	}
++
++	ret = nbl_disp_setup_ctrl_lvl(disp_mgt, NBL_DISP_CTRL_LVL_ALWAYS);
++	if (ret)
++		return ret;
++
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
+index 480c400918c5..f2954565955d 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
+@@ -15,12 +15,43 @@
+ #include "nbl_def_common.h"
+ #include "nbl_core.h"
+ 
++#define NBL_OPS_CALL_LOCK(disp_mgt, func, ...)				\
++do {									\
++	typeof(disp_mgt) _disp_mgt = (disp_mgt);			\
++	typeof(func) _func = (func);					\
++									\
++	mutex_lock(&_disp_mgt->ops_mutex_lock);				\
++									\
++	if (_func)							\
++		_func(__VA_ARGS__);					\
++									\
++	mutex_unlock(&_disp_mgt->ops_mutex_lock);			\
++} while (0)
++
++#define NBL_OPS_CALL_LOCK_RET(disp_mgt, func, ...)			\
++({									\
++	typeof(disp_mgt) _disp_mgt = (disp_mgt);			\
++	typeof(func) _func = (func);					\
++	typeof(_func(__VA_ARGS__)) _ret = 0;				\
++									\
++	mutex_lock(&_disp_mgt->ops_mutex_lock);				\
++									\
++	if (_func)							\
++		_ret = _func(__VA_ARGS__);				\
++									\
++	mutex_unlock(&_disp_mgt->ops_mutex_lock);			\
++									\
++	_ret;								\
++})
++
+ struct nbl_dispatch_mgt {
+ 	struct nbl_common_info *common;
+ 	struct nbl_resource_ops_tbl *res_ops_tbl;
+ 	struct nbl_channel_ops_tbl *chan_ops_tbl;
+ 	struct nbl_dispatch_ops_tbl *disp_ops_tbl;
+ 	DECLARE_BITMAP(ctrl_lvl, NBL_DISP_CTRL_LVL_MAX);
++	/* use for the caller not in interrupt */
++	struct mutex ops_mutex_lock;
+ };
+ 
+ #endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+index 180137f3ca26..72d551a30a82 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
+@@ -17,6 +17,18 @@ enum {
+ };
+ 
+ struct nbl_dispatch_ops {
++	int (*init_chip_module)(struct nbl_dispatch_mgt *disp_mgt);
++	void (*deinit_chip_module)(struct nbl_dispatch_mgt *disp_mgt);
++	int (*configure_msix_map)(struct nbl_dispatch_mgt *disp_mgt,
++				  u16 num_net_msix, u16 num_others_msix,
++				  bool net_msix_mask_en);
++	int (*destroy_msix_map)(struct nbl_dispatch_mgt *disp_mgt);
++	int (*enable_mailbox_irq)(struct nbl_dispatch_mgt *disp_mgt,
++				  u16 vector_id, bool enable_msix);
++	u16 (*get_vsi_id)(struct nbl_dispatch_mgt *disp_mgt, u16 func_id,
++			  u16 type);
++	void (*get_eth_id)(struct nbl_dispatch_mgt *disp_mgt, u16 vsi_id,
++			   u8 *eth_mode, u8 *eth_id, u8 *logic_eth_id);
+ };
+ 
+ struct nbl_dispatch_ops_tbl {
 -- 
 2.47.3
 
