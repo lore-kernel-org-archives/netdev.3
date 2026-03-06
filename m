@@ -1,137 +1,562 @@
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-3.mail.aliyun.com (out28-3.mail.aliyun.com [115.124.28.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB20248873
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 03:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B3D4502F;
+	Fri,  6 Mar 2026 03:40:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772768423; cv=none; b=cmvEIzJUaeETUrviTAXk1IPzmsXj3JEnm0xcJrW6hI19TWgUYljORfs7kkEdz2/pTRn4S8hiu5ZI6hNBAUgkUTOZMGJd2kKlvhP2LRJKHxD+Sho0g/cHPqnX9QiMDYDUQGA/LubN3/32wWkVIg7T1+e7uWRz5U48Vx01VZJiyMA=
+	t=1772768428; cv=none; b=C1Pkuo3zYMLElb06GhPPWs4/3f5faeMlbA+6SJKi19A+NJom0V7alJ6XrsU7UH/KA2mDhe0Wypi4PT4+pBIMgk87zh9SY3F6HW666EIoZVmquDEY9TtPseIO0UI2ereUC8gzreG6/2Vkj3tAS2HzJqEbWCPy3C+62sVhxkv1lJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772768423; c=relaxed/simple;
-	bh=ZKGQMmynGH72RNGVGSJeWjju/XTm1pbnlX08xLpX844=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a01MrSele6s2HWz6bKth/F5qea13gZnZ22nTw429qrYkUFNTLv77JerUQ7JJf9WylTY0MSbdfGC7UfSOrvyJzBfOVvDGuKjjTzW60Ei7HggqRLCPeglJptCUCfyZNYHB8WU1q5cSEbtKECxeju0CFSvL6Oqw/SvSu47FLH23SX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bHxeyGom; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bHxeyGom"
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-899e87b04d8so97094336d6.3
-        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 19:40:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772768420; x=1773373220; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=myrPwAZMujLUe8MJ6Ba22b/AUfkQBCrFe4aRwPYkeIA=;
-        b=bHxeyGomsLiPvjHUQ6QJ5EM1oIHaa6BIC4AJtQoQaXaBZ9IPHK0ZHoK2sYyxqv/Mpq
-         iMeSf1gUN0TQQ6cbqwPb1qX2V3W74vuBDfXuy6i8RBEIR1SwYhU3I1RZREIW/8lraMzO
-         pYwNfNPzvwFZSj/pOQG13U7lsmxYy/zeTsLBnPM9RQd3cWqDKe5YsNYkVubFqZ8Z/a6c
-         kuLUYQyqVi/UgDhjHtqdJ/4CvPdiCaUr/aECTz4WrbKFHFAXA71ihqmxEPHPGoHCp/6/
-         X+sO0VQFVsl2j7j9p/BeRVja2KourQVop7op3Vm9rzFa30CSaZjbU3UititmedSpcvjf
-         mGHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772768420; x=1773373220;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=myrPwAZMujLUe8MJ6Ba22b/AUfkQBCrFe4aRwPYkeIA=;
-        b=pNNHCCxlqA+nKPM5HY12QL7h20aXvsBOPl6DOgTXQHw3altYmyaQA0Axur+QN3U8fF
-         Gp33tk08RqeIT6isOZPvptRp9dQHKyCdyZP0BMYodRYWYAR0irr+yn7CM8rl+dFi5x57
-         TgRqXeJ/ADu29yjC6Rr0/dlywd0ChfHn9JkQCIRj+aJuN1jub5ewFtq4dbhPVlv1SjE2
-         6ChoM3TSDvjKygTRvt7V4Cgz1Q1Oi6QNzx5gf/ZVJ3fqvZVNmvNuBpBWtTz2+JtDbBHe
-         b/ofCAXwJf7NXJ0YYdSO634jX+BpEJV3tO24X1x22V/e86sPCKnUb8z1gFweRG88fjLT
-         b3zQ==
-X-Gm-Message-State: AOJu0YzzLAdNBTE6k7fFiQ5rwh6ZEITnT9QQa+tzm591ModsKBtEk3kh
-	oF7IAL7bKcsCTc563KGF7B+hu+W3AelDINsVKoDK7xMSJXIAiV73m846F89isaSp
-X-Gm-Gg: ATEYQzz0owNzTl3PxvDO4SefS33ugDjCJYkpJW/z/xUNYHVmYqLsUW+BKpR6Ug91R/a
-	pcbQruPFLEyYi/zNEZzMcT0ndJjGbmIvEHmNwDYGVxEGFHXawFE8BEGysMq7qrR00lBMEkZgcfv
-	u9Om6kuk/AYILrSXfTPBkpaCUPH+QEFSk4evKP1f/vp56aShP4KjDFsryc/VlKhCbSPo4HCEA+A
-	coscpeZuQPuZ4EDQQVIIBwF3rUGfLl7GJDmJ7WTbeg9O4sbPuPmMmjoxcao0qa6SFYR2jI+cMDi
-	noLxIeUlNpIDHuFNHD+U9bBoiO2FMMoGKfYCF9I7k3OYveQP6SY92wMzwNR1sJAMEwAynbgcXpL
-	+EYn7LyS0G7PZ7QsdHHNM8wBGDYtM1jubtH2QUvLOVipHOQq2f7vzB6IAC8AncwKh8+ixj4ANBS
-	hTAcGLniYkQtCN8P5W6ANb2zDcLtTs1jK88AI3Osgcf8ERQqFsYVXSJQ==
-X-Received: by 2002:ad4:5769:0:b0:895:c06:8cbf with SMTP id 6a1803df08f44-89a30c2b8b3mr7786186d6.62.1772768420459;
-        Thu, 05 Mar 2026 19:40:20 -0800 (PST)
-Received: from I4-L-HQH5357-01.ad.psu.edu ([130.203.159.160])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a316f8228sm2158306d6.38.2026.03.05.19.40.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Mar 2026 19:40:20 -0800 (PST)
-From: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-To: netdev@vger.kernel.org
-Cc: kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
+	s=arc-20240116; t=1772768428; c=relaxed/simple;
+	bh=p/DXFrVWwHl8BW61C7tTaODlegL9UXlBvqF2s84NfnE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=c7HQkwuR7e5+kNb+v9W+d/W8qBfJvkndSlbV00KfTrT0MQDc3ZYrz2oaLwTqS/M54h1OY8jZ5jGLjCGFdDR1MV5OmGzyk5RETlXLB9LhXk+oulpTxqQhv0U1+N9ajy1UDD7RqxT64Az+9lGWTrInwwgs1t++8mXCt+TAuidIKN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=115.124.28.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
+Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.gmDLiKH_1772768101 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 06 Mar 2026 11:35:02 +0800
+From: "illusion.wang" <illusion.wang@nebula-matrix.com>
+To: dimon.zhao@nebula-matrix.com,
+	illusion.wang@nebula-matrix.com,
+	alvin.wang@nebula-matrix.com,
+	sam.chen@nebula-matrix.com,
+	netdev@vger.kernel.org
+Cc: andrew+netdev@lunn.ch,
+	corbet@lwn.net,
+	kuba@kernel.org,
+	linux-doc@vger.kernel.org,
+	lorenzo@kernel.org,
 	pabeni@redhat.com,
-	linux-kernel@vger.kernel.org,
-	andrew+netdev@lunn.ch,
-	gregkh@linuxfoundation.org,
 	horms@kernel.org,
-	jirislaby@kernel.org,
-	shaojijie@huawei.com,
-	jiayuan.chen@shopee.com,
-	alan@linux.intel.com,
-	Shuangpeng Bai <shuangpeng.kernel@gmail.com>
-Subject: [PATCH net v5] serial: caif: hold tty->link reference in ldisc_open and ser_release
-Date: Thu,  5 Mar 2026 22:40:06 -0500
-Message-Id: <20260306034006.3395740-1-shuangpeng.kernel@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	vadim.fedorenko@linux.dev,
+	lukas.bulwahn@redhat.com,
+	edumazet@google.com,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v6 net-next 07/11] net/nebula-matrix: add intr resource implementation
+Date: Fri,  6 Mar 2026 11:34:42 +0800
+Message-ID: <20260306033451.5196-8-illusion.wang@nebula-matrix.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260306033451.5196-1-illusion.wang@nebula-matrix.com>
+References: <20260306033451.5196-1-illusion.wang@nebula-matrix.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-A reproducer triggers a KASAN slab-use-after-free in pty_write_room()
-when caif_serial's TX path calls tty_write_room(). The faulting access
-is on tty->link->port.
+MSI-X Interrupt Configuration: 
+Dynamically allocate and manage MSI-X interrupt vectors, including
+network interrupts and other types of interrupts.
+Interrupt Mapping Table Management: Maintain the MSI-X mapping table
+(msix_map_table) to establish interrupt associations between hardware
+and software.
+Interrupt Enabling/Disabling:
+Support enabling or disabling specific interrupts through hardware
+operations.
+Interrupt Information Query: Provide interfaces to obtain the
+hardware register addresses and data of interrupts.
 
-Hold an extra kref on tty->link for the lifetime of the caif_serial line
-discipline: get it in ldisc_open() and drop it in ser_release(), and
-also drop it on the ldisc_open() error path.
-
-With this change applied, the reproducer no longer triggers the UAF in
-my testing.
-
-Link: https://gist.github.com/shuangpengbai/c898debad6bdf170a84be7e6b3d8707f
-Link: https://lore.kernel.org/netdev/20260301220525.1546355-1-shuangpeng.kernel@gmail.com
-Fixes: e31d5a05948e ("caif: tty's are kref objects so take a reference")
-Signed-off-by: Shuangpeng Bai <shuangpeng.kernel@gmail.com>
+Signed-off-by: illusion.wang <illusion.wang@nebula-matrix.com>
 ---
-Changes since v4:
-  - Fixes: reference e31d5a05948e ("caif: tty's are kref objects so take a reference")
+ .../net/ethernet/nebula-matrix/nbl/Makefile   |   1 +
+ .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  |  71 +++++
+ .../nbl_hw_leonis/nbl_resource_leonis.c       |  13 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.c  | 243 ++++++++++++++++++
+ .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.h  |  13 +
+ .../nebula-matrix/nbl/nbl_hw/nbl_resource.h   |  33 +++
+ .../nbl/nbl_include/nbl_include.h             |   2 +
+ 7 files changed, 376 insertions(+)
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c
+ create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.h
 
- drivers/net/caif/caif_serial.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/net/caif/caif_serial.c b/drivers/net/caif/caif_serial.c
-index b90890030751..1873d8287bb9 100644
---- a/drivers/net/caif/caif_serial.c
-+++ b/drivers/net/caif/caif_serial.c
-@@ -297,6 +297,7 @@ static void ser_release(struct work_struct *work)
- 			dev_close(ser->dev);
- 			unregister_netdevice(ser->dev);
- 			debugfs_deinit(ser);
-+			tty_kref_put(tty->link);
- 			tty_kref_put(tty);
- 		}
- 		rtnl_unlock();
-@@ -331,6 +332,7 @@ static int ldisc_open(struct tty_struct *tty)
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/Makefile b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+index 8e917b4c045b..0ebb4b1e3803 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/Makefile
++++ b/drivers/net/ethernet/nebula-matrix/nbl/Makefile
+@@ -10,6 +10,7 @@ nbl-objs +=       nbl_common/nbl_common.o \
+ 				nbl_hw/nbl_hw_leonis/nbl_resource_leonis.o \
+ 				nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.o \
+ 				nbl_hw/nbl_resource.o \
++				nbl_hw/nbl_interrupt.o \
+ 				nbl_core/nbl_dispatch.o \
+ 				nbl_core/nbl_dev.o \
+ 				nbl_main.o
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+index a40589c33a0a..d20cef692723 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
+@@ -62,6 +62,73 @@ static void nbl_hw_wr_regs(struct nbl_hw_mgt *hw_mgt, u64 reg, const u32 *data,
+ 	spin_unlock(&hw_mgt->reg_lock);
+ }
  
- 	ser = netdev_priv(dev);
- 	ser->tty = tty_kref_get(tty);
-+	tty_kref_get(tty->link);
- 	ser->dev = dev;
- 	debugfs_init(ser, tty);
- 	tty->receive_room = 4096;
-@@ -339,6 +341,7 @@ static int ldisc_open(struct tty_struct *tty)
- 	rtnl_lock();
- 	result = register_netdevice(dev);
- 	if (result) {
-+		tty_kref_put(tty->link);
- 		tty_kref_put(tty);
- 		rtnl_unlock();
- 		free_netdev(dev);
++static void nbl_hw_enable_mailbox_irq(struct nbl_hw_mgt *hw_mgt, u16 func_id,
++				      bool enable_msix, u16 global_vec_id)
++{
++	struct nbl_mailbox_qinfo_map_table mb_qinfo_map = { 0 };
++
++	nbl_hw_rd_regs(hw_mgt, NBL_MAILBOX_QINFO_MAP_REG_ARR(func_id),
++		       (u32 *)&mb_qinfo_map, sizeof(mb_qinfo_map));
++
++	if (enable_msix) {
++		mb_qinfo_map.msix_idx = global_vec_id;
++		mb_qinfo_map.msix_idx_valid = 1;
++	} else {
++		mb_qinfo_map.msix_idx = 0;
++		mb_qinfo_map.msix_idx_valid = 0;
++	}
++
++	nbl_hw_wr_regs(hw_mgt, NBL_MAILBOX_QINFO_MAP_REG_ARR(func_id),
++		       (u32 *)&mb_qinfo_map, sizeof(mb_qinfo_map));
++}
++
++static void nbl_hw_configure_msix_map(struct nbl_hw_mgt *hw_mgt, u16 func_id,
++				      bool valid, dma_addr_t dma_addr, u8 bus,
++				      u8 devid, u8 function)
++{
++	struct nbl_function_msix_map function_msix_map = { 0 };
++
++	if (valid) {
++		function_msix_map.msix_map_base_addr = dma_addr;
++		/* use af's bdf, because dma memmory is alloc by af */
++		function_msix_map.function = function;
++		function_msix_map.devid = devid;
++		function_msix_map.bus = bus;
++		function_msix_map.valid = 1;
++	}
++
++	nbl_hw_wr_regs(hw_mgt,
++		       NBL_PCOMPLETER_FUNCTION_MSIX_MAP_REG_ARR(func_id),
++		       (u32 *)&function_msix_map, sizeof(function_msix_map));
++}
++
++static void nbl_hw_configure_msix_info(struct nbl_hw_mgt *hw_mgt, u16 func_id,
++				       bool valid, u16 interrupt_id, u8 bus,
++				       u8 devid, u8 function, bool msix_mask_en)
++{
++	struct nbl_pcompleter_host_msix_fid_table host_msix_fid_tbl = { 0 };
++	struct nbl_host_msix_info msix_info = { 0 };
++
++	if (valid) {
++		host_msix_fid_tbl.vld = 1;
++		host_msix_fid_tbl.fid = func_id;
++
++		msix_info.intrl_pnum = 0;
++		msix_info.intrl_rate = 0;
++		msix_info.function = function;
++		msix_info.devid = devid;
++		msix_info.bus = bus;
++		msix_info.valid = 1;
++		if (msix_mask_en)
++			msix_info.msix_mask_en = 1;
++	}
++
++	nbl_hw_wr_regs(hw_mgt, NBL_PADPT_HOST_MSIX_INFO_REG_ARR(interrupt_id),
++		       (u32 *)&msix_info, sizeof(msix_info));
++	nbl_hw_wr_regs(hw_mgt, NBL_PCOMPLETER_HOST_MSIX_FID_TABLE(interrupt_id),
++		       (u32 *)&host_msix_fid_tbl, sizeof(host_msix_fid_tbl));
++}
++
+ static void nbl_hw_update_mailbox_queue_tail_ptr(struct nbl_hw_mgt *hw_mgt,
+ 						 u16 tail_ptr, u8 txrx)
+ {
+@@ -194,6 +261,9 @@ static u32 nbl_hw_get_fw_eth_map(struct nbl_hw_mgt *hw_mgt)
+ }
+ 
+ static struct nbl_hw_ops hw_ops = {
++	.configure_msix_map = nbl_hw_configure_msix_map,
++	.configure_msix_info = nbl_hw_configure_msix_info,
++
+ 	.update_mailbox_queue_tail_ptr = nbl_hw_update_mailbox_queue_tail_ptr,
+ 	.config_mailbox_rxq = nbl_hw_config_mailbox_rxq,
+ 	.config_mailbox_txq = nbl_hw_config_mailbox_txq,
+@@ -203,6 +273,7 @@ static struct nbl_hw_ops hw_ops = {
+ 	.get_real_bus = nbl_hw_get_real_bus,
+ 
+ 	.cfg_mailbox_qinfo = nbl_hw_cfg_mailbox_qinfo,
++	.enable_mailbox_irq = nbl_hw_enable_mailbox_irq,
+ 
+ 	.get_fw_eth_num = nbl_hw_get_fw_eth_num,
+ 	.get_fw_eth_map = nbl_hw_get_fw_eth_map,
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+index c69dab6e7df9..337dd8de2286 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
+@@ -12,6 +12,7 @@ static struct nbl_resource_ops res_ops = {
+ 	.get_eth_id = nbl_res_get_eth_id,
+ };
+ 
++static bool is_ops_inited;
+ static struct nbl_resource_mgt *
+ nbl_res_setup_res_mgt(struct nbl_common_info *common)
+ {
+@@ -37,11 +38,19 @@ static struct nbl_resource_ops_tbl *
+ nbl_res_setup_ops(struct device *dev, struct nbl_resource_mgt *res_mgt)
+ {
+ 	struct nbl_resource_ops_tbl *res_ops_tbl;
++	int ret;
+ 
+ 	res_ops_tbl = devm_kzalloc(dev, sizeof(*res_ops_tbl), GFP_KERNEL);
+ 	if (!res_ops_tbl)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	if (!is_ops_inited) {
++		ret = nbl_intr_setup_ops(&res_ops);
++		if (ret)
++			return ERR_PTR(-ENOMEM);
++		is_ops_inited = true;
++	}
++
+ 	res_ops_tbl->ops = &res_ops;
+ 	res_ops_tbl->priv = res_mgt;
+ 
+@@ -203,6 +212,10 @@ static int nbl_res_start(struct nbl_resource_mgt *res_mgt,
+ 		ret = nbl_res_ctrl_dev_vsi_info_init(res_mgt);
+ 		if (ret)
+ 			return ret;
++
++		ret = nbl_intr_mgt_start(res_mgt);
++		if (ret)
++			return ret;
+ 	}
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c
+new file mode 100644
+index 000000000000..c39cc45cc42c
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c
+@@ -0,0 +1,243 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ * Author:
++ */
++#include <linux/device.h>
++#include <linux/dma-mapping.h>
++#include "nbl_interrupt.h"
++
++static int nbl_res_intr_destroy_msix_map(struct nbl_resource_mgt *res_mgt,
++					 u16 func_id)
++{
++	struct nbl_interrupt_mgt *intr_mgt = res_mgt->intr_mgt;
++	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
++	struct device *dev = res_mgt->common->dev;
++	struct nbl_msix_map_table *msix_map_table;
++	u16 *interrupts;
++	u16 intr_num, i;
++
++	/* use ctrl dev bdf */
++	hw_ops->configure_msix_map(res_mgt->hw_ops_tbl->priv, func_id, false, 0,
++				   0, 0, 0);
++
++	intr_num = intr_mgt->func_intr_res[func_id].num_interrupts;
++	interrupts = intr_mgt->func_intr_res[func_id].interrupts;
++
++	WARN_ON(!interrupts);
++	for (i = 0; i < intr_num; i++) {
++		if (interrupts[i] >= NBL_MAX_OTHER_INTERRUPT)
++			clear_bit(interrupts[i] - NBL_MAX_OTHER_INTERRUPT,
++				  intr_mgt->interrupt_net_bitmap);
++		else
++			clear_bit(interrupts[i],
++				  intr_mgt->interrupt_others_bitmap);
++
++		hw_ops->configure_msix_info(res_mgt->hw_ops_tbl->priv, func_id,
++					    false, interrupts[i], 0, 0, 0,
++					    false);
++	}
++
++	kfree(interrupts);
++	intr_mgt->func_intr_res[func_id].interrupts = NULL;
++	intr_mgt->func_intr_res[func_id].num_interrupts = 0;
++
++	msix_map_table = &intr_mgt->func_intr_res[func_id].msix_map_table;
++	dma_free_coherent(dev, msix_map_table->size, msix_map_table->base_addr,
++			  msix_map_table->dma);
++	msix_map_table->size = 0;
++	msix_map_table->base_addr = NULL;
++	msix_map_table->dma = 0;
++
++	return 0;
++}
++
++static int nbl_res_intr_configure_msix_map(struct nbl_resource_mgt *res_mgt,
++					   u16 func_id, u16 num_net_msix,
++					   u16 num_others_msix,
++					   bool net_msix_mask_en)
++{
++	struct nbl_interrupt_mgt *intr_mgt = res_mgt->intr_mgt;
++	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
++	struct nbl_common_info *common = res_mgt->common;
++	struct nbl_msix_map_table *msix_map_table;
++	struct nbl_msix_map *msix_map_entries;
++	struct device *dev = common->dev;
++	u16 requested, intr_index;
++	u8 bus, devid, function;
++	bool msix_mask_en;
++	u16 *interrupts;
++	int ret = 0;
++	u16 i;
++
++	if (intr_mgt->func_intr_res[func_id].interrupts)
++		nbl_res_intr_destroy_msix_map(res_mgt, func_id);
++
++	ret = nbl_res_func_id_to_bdf(res_mgt, func_id, &bus, &devid, &function);
++	if (ret == U32_MAX)
++		return -EINVAL;
++
++	msix_map_table = &intr_mgt->func_intr_res[func_id].msix_map_table;
++	WARN_ON(msix_map_table->base_addr);
++	msix_map_table->size =
++		sizeof(struct nbl_msix_map) * NBL_MSIX_MAP_TABLE_MAX_ENTRIES;
++	msix_map_table->base_addr = dma_alloc_coherent(dev,
++						       msix_map_table->size,
++						       &msix_map_table->dma,
++						       GFP_ATOMIC | __GFP_ZERO);
++	if (!msix_map_table->base_addr) {
++		pr_err("Allocate DMA memory for function msix map table failed\n");
++		msix_map_table->size = 0;
++		return -ENOMEM;
++	}
++
++	requested = num_net_msix + num_others_msix;
++	interrupts = kcalloc(requested, sizeof(interrupts[0]), GFP_ATOMIC);
++	if (!interrupts) {
++		pr_err("Allocate function interrupts array failed\n");
++		ret = -ENOMEM;
++		goto alloc_interrupts_err;
++	}
++
++	intr_mgt->func_intr_res[func_id].interrupts = interrupts;
++	intr_mgt->func_intr_res[func_id].num_interrupts = requested;
++	intr_mgt->func_intr_res[func_id].num_net_interrupts = num_net_msix;
++
++	for (i = 0; i < num_net_msix; i++) {
++		intr_index = find_first_zero_bit(intr_mgt->interrupt_net_bitmap,
++						 NBL_MAX_NET_INTERRUPT);
++		if (intr_index == NBL_MAX_NET_INTERRUPT) {
++			pr_err("There is no available interrupt left\n");
++			ret = -EAGAIN;
++			goto get_interrupt_err;
++		}
++		interrupts[i] = intr_index + NBL_MAX_OTHER_INTERRUPT;
++		set_bit(intr_index, intr_mgt->interrupt_net_bitmap);
++	}
++
++	for (i = num_net_msix; i < requested; i++) {
++		intr_index =
++			find_first_zero_bit(intr_mgt->interrupt_others_bitmap,
++					    NBL_MAX_OTHER_INTERRUPT);
++		if (intr_index == NBL_MAX_OTHER_INTERRUPT) {
++			pr_err("There is no available interrupt left\n");
++			ret = -EAGAIN;
++			goto get_interrupt_err;
++		}
++		interrupts[i] = intr_index;
++		set_bit(intr_index, intr_mgt->interrupt_others_bitmap);
++	}
++
++	msix_map_entries = msix_map_table->base_addr;
++	for (i = 0; i < requested; i++) {
++		msix_map_entries[i].global_msix_index = interrupts[i];
++		msix_map_entries[i].valid = 1;
++
++		if (i < num_net_msix && net_msix_mask_en)
++			msix_mask_en = 1;
++		else
++			msix_mask_en = 0;
++		hw_ops->configure_msix_info(res_mgt->hw_ops_tbl->priv, func_id,
++					    true, interrupts[i], bus, devid,
++					    function, msix_mask_en);
++	}
++
++	/* use ctrl dev bdf */
++	hw_ops->configure_msix_map(res_mgt->hw_ops_tbl->priv, func_id, true,
++				   msix_map_table->dma, common->hw_bus,
++				   common->devid, common->function);
++
++	return 0;
++
++get_interrupt_err:
++	while (i--) {
++		intr_index = interrupts[i];
++		if (intr_index >= NBL_MAX_OTHER_INTERRUPT)
++			clear_bit(intr_index - NBL_MAX_OTHER_INTERRUPT,
++				  intr_mgt->interrupt_net_bitmap);
++		else
++			clear_bit(intr_index,
++				  intr_mgt->interrupt_others_bitmap);
++	}
++	kfree(interrupts);
++	intr_mgt->func_intr_res[func_id].num_interrupts = 0;
++	intr_mgt->func_intr_res[func_id].interrupts = NULL;
++
++alloc_interrupts_err:
++	dma_free_coherent(dev, msix_map_table->size, msix_map_table->base_addr,
++			  msix_map_table->dma);
++	msix_map_table->size = 0;
++	msix_map_table->base_addr = NULL;
++	msix_map_table->dma = 0;
++
++	return ret;
++}
++
++static int nbl_res_intr_enable_mailbox_irq(struct nbl_resource_mgt *res_mgt,
++					   u16 func_id, u16 vector_id,
++					   bool enable_msix)
++{
++	struct nbl_interrupt_mgt *intr_mgt = res_mgt->intr_mgt;
++	struct nbl_hw_ops *hw_ops = res_mgt->hw_ops_tbl->ops;
++	u16 global_vec_id;
++
++	global_vec_id = intr_mgt->func_intr_res[func_id].interrupts[vector_id];
++	hw_ops->enable_mailbox_irq(res_mgt->hw_ops_tbl->priv, func_id,
++				   enable_msix, global_vec_id);
++
++	return 0;
++}
++
++/* NBL_INTR_SET_OPS(ops_name, func)
++ *
++ * Use X Macros to reduce setup and remove codes.
++ */
++#define NBL_INTR_OPS_TBL						\
++do {									\
++	NBL_INTR_SET_OPS(configure_msix_map,				\
++			 nbl_res_intr_configure_msix_map);		\
++	NBL_INTR_SET_OPS(destroy_msix_map,				\
++			 nbl_res_intr_destroy_msix_map);		\
++	NBL_INTR_SET_OPS(enable_mailbox_irq,				\
++			 nbl_res_intr_enable_mailbox_irq);		\
++} while (0)
++
++/* Structure starts here, adding an op should not modify anything below */
++static struct nbl_interrupt_mgt *nbl_intr_setup_mgt(struct device *dev)
++{
++	struct nbl_interrupt_mgt *intr_mgt;
++
++	intr_mgt = devm_kzalloc(dev, sizeof(*intr_mgt), GFP_KERNEL);
++	if (!intr_mgt)
++		return ERR_PTR(-ENOMEM);
++
++	return intr_mgt;
++}
++
++int nbl_intr_mgt_start(struct nbl_resource_mgt *res_mgt)
++{
++	struct device *dev = res_mgt->common->dev;
++	struct nbl_interrupt_mgt *intr_mgt;
++	int ret;
++
++	intr_mgt = nbl_intr_setup_mgt(dev);
++	if (IS_ERR(intr_mgt)) {
++		ret = PTR_ERR(intr_mgt);
++		return ret;
++	}
++	res_mgt->intr_mgt = intr_mgt;
++	return 0;
++}
++
++int nbl_intr_setup_ops(struct nbl_resource_ops *res_ops)
++{
++#define NBL_INTR_SET_OPS(name, func)		\
++	do {					\
++		res_ops->NBL_NAME(name) = func; \
++		;				\
++	} while (0)
++	NBL_INTR_OPS_TBL;
++#undef NBL_INTR_SET_OPS
++
++	return 0;
++}
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.h
+new file mode 100644
+index 000000000000..a847c71ad6d3
+--- /dev/null
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.h
+@@ -0,0 +1,13 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Copyright (c) 2025 Nebula Matrix Limited.
++ * Author:
++ */
++
++#ifndef _NBL_INTERRUPT_H_
++#define _NBL_INTERRUPT_H_
++
++#include "nbl_resource.h"
++
++#define NBL_MSIX_MAP_TABLE_MAX_ENTRIES	(1024)
++#endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
+index e7cf1032fa5d..d3bd067f139b 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
+@@ -17,6 +17,37 @@
+ 
+ struct nbl_resource_mgt;
+ 
++/* --------- INTERRUPT ---------- */
++#define NBL_MAX_OTHER_INTERRUPT			1024
++#define NBL_MAX_NET_INTERRUPT			4096
++
++struct nbl_msix_map {
++	u16 valid:1;
++	u16 global_msix_index:13;
++	u16 rsv:2;
++};
++
++struct nbl_msix_map_table {
++	struct nbl_msix_map *base_addr;
++	dma_addr_t dma;
++	size_t size;
++};
++
++struct nbl_func_interrupt_resource_mng {
++	u16 num_interrupts;
++	u16 num_net_interrupts;
++	u16 msix_base;
++	u16 msix_max;
++	u16 *interrupts;
++	struct nbl_msix_map_table msix_map_table;
++};
++
++struct nbl_interrupt_mgt {
++	DECLARE_BITMAP(interrupt_net_bitmap, NBL_MAX_NET_INTERRUPT);
++	DECLARE_BITMAP(interrupt_others_bitmap, NBL_MAX_OTHER_INTERRUPT);
++	struct nbl_func_interrupt_resource_mng func_intr_res[NBL_MAX_FUNC];
++};
++
+ /* --------- INFO ---------- */
+ struct nbl_sriov_info {
+ 	unsigned int bdf;
+@@ -78,6 +109,8 @@ int nbl_res_func_id_to_bdf(struct nbl_resource_mgt *res_mgt, u16 func_id,
+ 			   u8 *bus, u8 *dev, u8 *function);
+ void nbl_res_get_eth_id(struct nbl_resource_mgt *res_mgt, u16 vsi_id,
+ 			u8 *eth_mode, u8 *eth_id, u8 *logic_eth_id);
++int nbl_intr_mgt_start(struct nbl_resource_mgt *res_mgt);
++int nbl_intr_setup_ops(struct nbl_resource_ops *resource_ops);
+ void nbl_res_pf_dev_vsi_type_to_hw_vsi_type(u16 src_type,
+ 					    enum nbl_vsi_serv_type *dst_type);
+ #endif
+diff --git a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+index c9d50ccb2b50..ed644fd04c10 100644
+--- a/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
++++ b/drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
+@@ -18,6 +18,8 @@
+ 
+ #define NBL_MAX_FUNC					(520)
+ #define NBL_MAX_ETHERNET				(4)
++/* Used for macros to pass checkpatch */
++#define NBL_NAME(x)					x
+ 
+ enum nbl_product_type {
+ 	NBL_LEONIS_TYPE,
 -- 
-2.34.1
+2.47.3
 
