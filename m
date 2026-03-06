@@ -1,73 +1,91 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2E133B96A;
-	Fri,  6 Mar 2026 02:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20CA1A0BF3;
+	Fri,  6 Mar 2026 02:28:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772763923; cv=none; b=OLcnx4kN76mGmbb6sLbfncYPc1JbjypF5NNaouNqUyPggHeEnZxdHNt3yp1+OIflqcUWYkT7H30NzATiNeD5QM+y9dEfILM8iknlL+dhoAItd/xVn+D0MRQkOuM6tsS3NIBvsdQoofzy/xXgmhSFaYdaNlNKvWwbbgnk1z5KoJg=
+	t=1772764128; cv=none; b=ad3yfc3zQbdZBbZ70M4iu4qLeSScL/9/hd7c6OtgxxyMb43FudUPNR+hQnZqkXdIWWhXKoPX33fyq5ipLOJFk2nu42WaWDSZpqtF9v3VAUBVg1hoSJShQochoL+GKp98bKslEmYK+OEo5+FWgMSB9wTdOw5HvTAxtvEHZQho3Bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772763923; c=relaxed/simple;
-	bh=ooqZNkuq+MbCKB3WkGV8xm7iUfWSkkLNN9oheChyRnc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AkzpZO+94KtzFa2425tU7vlDnDhlWXj9OLQ8K8sW27QqN8u8kN1tbE1bSvHV5wN2jYYzHVzkZeKnAOUoj9cdr0HbvNLSVUN8pbfEli/8Gqj7vOHQWN/k+ljKxKA8kHi4U6nv56j8TwXyhghpyfIEQpSrA0b6zGbV8HRQ3LYjCeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCKqfVhr; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772764128; c=relaxed/simple;
+	bh=x13O2jYUdVaEv7MWI0JqxXaTuDwYrIM3V27PTwPOX60=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jJan2ciQoZXORZfY0orhllG7QnmmFeaDx9sdX7Av1SpEp2xxoaQQMIkMVX8hKywRzCZArUSxa4vEDeqkCZRzbWkMHC2FxBGHqelorjawq4zh/nHAMP6f/R59jrQ6RDvCTRXQxnjbQTdEDmSGw5h4R5gBaqulB5Z+mAaByn9g9WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=QaLLuQV7; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCKqfVhr"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD27C19423;
-	Fri,  6 Mar 2026 02:25:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772763923;
-	bh=ooqZNkuq+MbCKB3WkGV8xm7iUfWSkkLNN9oheChyRnc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fCKqfVhrwS4y8gd0iYWv/hkaF4e9Q1eVroZ/WB0YN5ChA8knYnj5GLsPwFuiLYS7i
-	 yiSk151B1zd4Sh0URJwb2FdOsYC8fpwb6VZU86xK/O8p1X5p+v6bUnONutNCC6B0kT
-	 uPqO3Qhs98CFSRivejJE4p8yIdFD08a7ML1d2k+3xi9TsuHFedBcdVciIy0RO2nSrN
-	 OBvA9+xSBIbFrrmnGPiI4ubYU702BJOlV1AZC5MZMsWkGU4J02vUeNJnZk2cS6zS2g
-	 HCp2NJFBuHsXd9cLpPOytOL6bP2/cn+2fuYmrC6cAX4tIfkm8Hksm16wdXOJT7/r5x
-	 X56LHukUM3VGw==
-Date: Thu, 5 Mar 2026 18:25:21 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: "Ricardo B. =?UTF-8?B?TWFybGnDqHJl?=" <rbm@suse.com>
-Cc: Martin KaFai Lau <martin.lau@linux.dev>, Daniel Borkmann
- <daniel@iogearbox.net>, John Fastabend <john.fastabend@gmail.com>,
- Stanislav Fomichev <sdf@fomichev.me>, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Eduard Zingerman <eddyz87@gmail.com>,
- Song Liu <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, KP
- Singh <kpsingh@kernel.org>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Toke =?UTF-8?B?SMO4aWxhbmQtSsO4cmdlbnNlbg==?=
- <toke@redhat.com>, David Ahern <dsahern@kernel.org>, Jay Vosburgh
- <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, Hangbin Liu
- <liuhangbin@gmail.com>, Fernando Fernandez Mancera <fmancera@suse.de>,
- bpf@vger.kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net v3 2/3] bpf: bpf_out_neigh_v6: Fix nd_tbl NULL
- dereference when IPv6 is disabled
-Message-ID: <20260305182521.0ca7313c@kernel.org>
-In-Reply-To: <20260305-net-nd_tbl_fixes-v3-2-fde28b30a744@suse.com>
-References: <20260305-net-nd_tbl_fixes-v3-0-fde28b30a744@suse.com>
-	<20260305-net-nd_tbl_fixes-v3-2-fde28b30a744@suse.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="QaLLuQV7"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1772764123; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=gUSTZ87cLTOR+0JDrERzuuboMikdFfvlXB4/1xaThyE=;
+	b=QaLLuQV7eO9vHl+A5u5thXsXE6Imob1MKufA/rpOd8pCDe1tz/8z8p2V8lJaSl4V+8Aeem0zAuokmI6biamCNK2v3l+NYr/yCPhexeErlYCSX6LmPCqVacJ4MsObGdpE9OfICRaV/ynxcKE/qJCK2Pk8/u8XbHLHMe/68b8oxAE=
+Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0X-LaX3E_1772764122 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 06 Mar 2026 10:28:43 +0800
+Date: Fri, 6 Mar 2026 10:28:42 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com    >
+To: Kyoji Ogasawara <sawara04.o@gmail.com>
+Cc: "D. Wythe" <alibuda@linux.alibaba.com>, davem@davemloft.net,
+	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+	horms@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org,
+	netdev@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH net-next 2/2] net/smc: Add documentation for limit_smc_hs
+ and hs_ctrl
+Message-ID: <20260306022842.GA85615@j66a10360.sqa.eu95>
+References: <20260305092226.27379-1-sawara04.o@gmail.com>
+ <20260305092226.27379-3-sawara04.o@gmail.com>
+ <20260305112428.GA57792@j66a10360.sqa.eu95>
+ <CAKNDObDc55sL1fuQGfEiw13GwzG4WuNm5_ZfAf+_gZNVXuGJQw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKNDObDc55sL1fuQGfEiw13GwzG4WuNm5_ZfAf+_gZNVXuGJQw@mail.gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On Thu, 05 Mar 2026 18:29:56 -0300 Ricardo B. Marli=C3=A8re wrote:
-> +++ b/net/core/filter.c
-> @@ -2228,6 +2228,9 @@ static int bpf_out_neigh_v6(struct net *net, struct=
- sk_buff *skb,
->  			return -ENOMEM;
->  	}
-> =20
-> +	if (unlikely(!ipv6_stub->nd_tbl))
-> +		goto out_drop;
+On Fri, Mar 06, 2026 at 01:40:39AM +0900, Kyoji Ogasawara wrote:
+> > > +hs_ctrl - STRING
+> > > +     Select the SMC handshake control profile by name.
+> > > +
+> > > +     The selected profile controls whether SMC options are advertised
+> > > +     during TCP SYN/SYN-ACK handshake.
+> > > +
+> > > +     Only available when CONFIG_SMC_HS_CTRL_BPF is enabled.
+> > > +     Write an empty string to clear the current profile.
+> >
+> > It would be better to clarify that this string refers to the name of a
+> > BPF struct_ops (type smc_hs_ctrl) implemented by the user.
+> >
+> 
+> Thanks for the suggestion.
+> I updated the hs_ctrl description to clarify that the string is the
+> name of a user-implemented BPF struct_ops instance of type
+> smc_hs_ctrl.
+> Does this address your comment?
+> 
+> ```
+>  hs_ctrl - STRING
+>         Select the SMC handshake control profile by name.
+> 
+> +       This string refers to the name of a user-implemented
+> +       BPF struct_ops instance of type smc_hs_ctrl.
+> +
+>         The selected profile controls whether SMC options are advertised
+>         during TCP SYN/SYN-ACK handshake.
+> 
+>         Only available when CONFIG_SMC_HS_CTRL_BPF is enabled.
+>         Write an empty string to clear the current profile.
+> 
+>         Default: empty string
+> ```
 
-So neither Fernando nor you checked whether this code can be built
-as a module? ipv6_mod_enabled() should work just fine
+LGTM. Thanks for your contribution.
 
-SMH
+D. Wythe
+
