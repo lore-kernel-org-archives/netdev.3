@@ -1,65 +1,65 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30050372688
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 23:29:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8632437C11B
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 23:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772839746; cv=none; b=JWMxmERRsv3/IR2GkrXuesHMJ7uAtiC8yGrY3OSD7BqZxmzMzuxyvDKTrlminzibu1Rw06mTRwIf6zXcCYwC78im2e3mg/9hydwzIEls6d6ySbo33Vr+0+tpv1Vet74gcXDxFzqzaYy7SxYjmAcfYay2jHJVNht+lyrcCAFT4Tk=
+	t=1772840019; cv=none; b=i0BmeRn6Ofgm0lGMYQ3HFWk9jqQFk0PVJZxqF4YEzbparYBw8xTkC+lCRUGPJkCGht/OeNXBy3J8TXvlJA4WWn4aNReUI933VoZViQs9AdF09TDqGGBeAPLuIO2Yt1Z7TjyUI/hMeAgm80P4BOwuQZVJVSwscpmbWlqvDn98h9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772839746; c=relaxed/simple;
-	bh=UPz/1qsRdJyWIaGxAjf5OdGUVOKPj4+OWW8N2wpx+5A=;
+	s=arc-20240116; t=1772840019; c=relaxed/simple;
+	bh=plzyiDYL13gMDVwQr9Dj9f8cir0m0t5cKB6vFZUg2cY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d2gqOM50Ll+3QCOfWB3dZEBJ2q998nXVaOey+HXntLyHy1jEF3IyHVxZ1tSZV09gpXBIg2J393MRy6MlfcFBA9AZiGlPpkAbQQepg7bFVQIDwCB2ZP4i8aqg+xfa8zJSXPRntAgj6sIKOMO3cIgdsrXoKIRZhcOn1gK4MKqV9wA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DjVHqHXk; arc=none smtp.client-ip=209.85.210.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=FuEi0i166b9jt/89/fKAOEPLAW1bJ1/H7zL1b3/nRfiK3Q7Xu56OMzNWIyEM8XCaRj6cdVi2ipKB1a47SkOcYQ6jqz+mhQc3kkJjp2xrYR41NrbKnpSsKaRWiu1oghBvx4iOTz6Ng+mMgpoyfiF2FaSUbll4mrru1IglLflaZq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N/wZENZC; arc=none smtp.client-ip=209.85.216.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DjVHqHXk"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-8299f1ca86fso638364b3a.0
-        for <netdev@vger.kernel.org>; Fri, 06 Mar 2026 15:29:02 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N/wZENZC"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-3597df496f6so3989439a91.1
+        for <netdev@vger.kernel.org>; Fri, 06 Mar 2026 15:33:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772839741; x=1773444541; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1772840018; x=1773444818; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jmuJidMV1Wwe0qpdw07DaES1yYrCFjR7mRIMJgUWNXw=;
-        b=DjVHqHXkitQOgeTCFIgY1UBwagDbOg0hzzUmH5zkATA4k0xEPq7OLMlqy06EFf7SLM
-         DRUlFsNujF9SCMe91CjSRtswTjxREeuvCzDnmOD/g8DIdB7pVB3aolUkj4GjgQeZrYwz
-         yiXBN1T5uiV0scYxH9WZwweKQQ4dgZwaBatAy3x/abym6TDsrnw99Y7db1gP45MaNHgK
-         hyzsRs9m5+2HF+ZBbgOrpNsRNxzyj6JoUHkUJa81EnXKQ3UBnprP7e3pxNdStaMiMGUe
-         ZtgNKAcGiZLJrrbK51+Qge5PvmA9BQtUFvNXiM9GuUVeBVAzs/0+hUld+kWh73RAfhG2
-         A/kA==
+        bh=A3n1MjNRco+xhIuiD22YqqFeZmP/U2HpmvCL9DYQOmg=;
+        b=N/wZENZCtnWx8XFZ0kyLD+P1jMXI1eOOU4pu38Tub9fp/sFNmGx7bJ6qd13qqxBcd+
+         9FxIPe26xE++UcdJThW6DFIdREb7TCRSAGOjb6V8a0HCiCpU70tT95TNpuRqal93lshz
+         5vU67DX3D6ChDH+R/zzpwpvbFk9gPuz7Wg+Km8g8Aon1r5rnFJ+/xXlE6pXG9Qg34Thq
+         pZBOW1J0CnrWpASKBSjPOtVzyascg0vhc/yEqdDpDvuXRBOa5tzst5rcOBdoft+lriaU
+         kTtCKnDMNFjElDDX52pUfaqOQSWk4znRHWesOW63O4+fQLkSSIyQFUsNy094v+Vog9su
+         GUMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772839741; x=1773444541;
+        d=1e100.net; s=20230601; t=1772840018; x=1773444818;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=jmuJidMV1Wwe0qpdw07DaES1yYrCFjR7mRIMJgUWNXw=;
-        b=mjLzzkZ8iZCPVZlRZTgn+IRmD2+UUGVyQFxoDA5A4/PWmDZ1W/zD6NOgZE+t03N/GB
-         7i8lgA7DQiVh3H+ou22EW3x7djQDu0bqoc/ZSC9FO31y+7tLVJRLY13p6GZOVFd2FkjG
-         c2Lf1ysd3M9+JW0eBIRKo7jDB/bCFOgj0aTcll6U9gXNyMvVCISaZ5dfsEcR3q24tLeA
-         NQqT7aoLCTyGvYJ9E4HYat64SR6tgnTkLJxmLeW1/vqzRfMmfpex22EkUdyiz+jWI4t4
-         thZR3F+lN/qPrFTkn4l/iN90TWzCQaLBSem1K7KlYl7F66ZqRSKWEL2mHWGiPm1bX8A3
-         yu7w==
-X-Forwarded-Encrypted: i=1; AJvYcCU0ie/AjhdLux0MRQia5Bx7fcSt/MTMxc/Z1hMxTKxU5FCXyuyI05AhhHQPdMcbdf69/NBISAg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQ2ULVJEgmnrk0GMbOJ92gSE9FOGPkzW9qQu2cnwIck0Jk6abn
-	n2+eitinZE4CaLfXMth9lAn/mCgo992sGMq948H7TkoTMlMbaLmCs8Ct
-X-Gm-Gg: ATEYQzwZoOqyXLYYbtcLrS59owYKNbFzPQECqRvLoSHnD8ZFD33VAX3wXcAhDrClw0p
-	CNsB66zC/QOgvF/xGrI/jmaqXyS/c2BdtE10AcpxLzRgfdqFbG2+r21tDo1H7DcSGP4Ez2PhVCF
-	Se/VAVvAv6ISCYuYNJJDDC04cqt2Rz+KbGpEIkzNJDZFfjgK9qsWnGLVFnmf5YSmi1/bTR9wKXG
-	GSN5gubsk6QNoulfbxr+3DHEm/GS+3KBJjkEgPozvobM9QLq5c98qcaHVhZkqpkuE7NO2x70+ex
-	8RiXUKunBLdp/EO16RknQJdMKuvIzWtiGa+oeidTqk+OC7Onp0RJrD1iRsjWmgYyOSN0FrHCJhB
-	8h3E9vQGV+TcJQc2z/EfPU8G7mF5eRY7x4qhSoeGi0TnYmFNhB+8s9AMvoo69cUb3iceC53gOrz
-	+zn95oCayMVEy+OPHGD5Ng+4p2RkaGQVNM4fa7
-X-Received: by 2002:a05:6a00:9510:b0:829:8942:2c93 with SMTP id d2e1a72fcca58-829a2d86b43mr3749707b3a.9.1772839741072;
-        Fri, 06 Mar 2026 15:29:01 -0800 (PST)
+        bh=A3n1MjNRco+xhIuiD22YqqFeZmP/U2HpmvCL9DYQOmg=;
+        b=kGKiiEmPCnBQyfDtgLFVuehjdW4xKN/CJultbiPKZ77N0QchyIsjoIyID+tUh2bUJY
+         RPXEZM2CMa4bZp9x22T9p2zMFGfK1bjmSrlZgn6ex/aa7YfaaCmrMzNfS7hNljn/ClkJ
+         GZVtjEfaYljuKkTkZpy2LeY4YzPOcyeQ1e1b+Ngnvi34PW3vSE91ysSicgOn3w4DAo8m
+         p4nN/UsJDZr39OVWOCXBXbvt6pEzSrlh0JE6f6mP898UFRJOD4FzPqyq8aext0zo7Oke
+         8bVZRd1l5421Ps76GgCuXIWa6AqBIxMbGmeJoxFNVou0Yb/XBYyM2nSd19vdiYrW75fZ
+         baqA==
+X-Forwarded-Encrypted: i=1; AJvYcCUpvC2WTQtys9P4LokSQfJuv7Ios8BRzsvGVeCTdu+ZLSlkHTe18v/vUiVl9EVpZXqyQy6wt5M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKQRgflVQuT3HI+O6xdULyCq/cA9ay42XfWDyybk+I1p4ZaBTB
+	R5CL/dYZDnH61nsH0NqCod3UJtOGW1VjlpvWcuVAzncvPaQlBnBYKKdO
+X-Gm-Gg: ATEYQzySgzFqstMIHypoQvxlVdJHFi4+HID3SlRs1ClXZuDHaAXdkMP1DEi0E3Vjdy/
+	04ymcRE+bqk1Qn05VxQPFST9GweLEOURzFd6bl/fskniIpVVgM1h8g323XSE2QbOKv6nhpeNhw7
+	sW6/lEqFcDJ2+7+DpcETzdPKz9P4JzjMMlkktxYX9lBdx2Eon4hlotFEaUTH4Tbcama6fM3jcBX
+	fV/YJ5q0BcKb+FPMVmAr7s1USHxwApUPYbFDURbZaiJXCuGoIRbU55NiMb6KWRioqf16+DAMPRf
+	dLe9p3NfhkcdLchAlWSZqgebMr5DCnoS/BD/i8QSsR7rtajE1oE2Vhl7YpuB3nmL53AOa5IMaBG
+	0SvbosjmynArGAN7JIM4X/rrUuFk0gx6kZB3vf7YeReK2nLPAS1HbCKzGvwW4Z/VaR5G1sFgUrL
+	Quxd35NHkUAKFk/4/UvNyVojGPMLzhib4GAtBn
+X-Received: by 2002:a17:90b:38c4:b0:32e:528c:60ee with SMTP id 98e67ed59e1d1-359be31746amr3476775a91.24.1772840017833;
+        Fri, 06 Mar 2026 15:33:37 -0800 (PST)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-829a48d3621sm3213092b3a.62.2026.03.06.15.29.00
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359b2de79f6sm6579296a91.9.2026.03.06.15.33.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 15:29:00 -0800 (PST)
+        Fri, 06 Mar 2026 15:33:37 -0800 (PST)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Fri, 6 Mar 2026 15:28:59 -0800
+Date: Fri, 6 Mar 2026 15:33:36 -0800
 From: Guenter Roeck <linux@roeck-us.net>
 To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Cc: Catalin Marinas <catalin.marinas@arm.com>,
@@ -98,7 +98,7 @@ Cc: Catalin Marinas <catalin.marinas@arm.com>,
 	linux-pm@vger.kernel.org
 Subject: Re: [PATCH 10/14] watchdog: convert the Kconfig dependency on
  OF_GPIO to OF
-Message-ID: <2c6ad0ca-fd72-4bf5-9180-f45c20e60d37@roeck-us.net>
+Message-ID: <07aa5d40-96b6-41a1-b8ce-22f2c2c94aed@roeck-us.net>
 References: <20260304-gpio-of-kconfig-v1-0-d597916e79e7@oss.qualcomm.com>
  <20260304-gpio-of-kconfig-v1-10-d597916e79e7@oss.qualcomm.com>
 Precedence: bulk
@@ -113,6 +113,21 @@ In-Reply-To: <20260304-gpio-of-kconfig-v1-10-d597916e79e7@oss.qualcomm.com>
 
 On Wed, Mar 04, 2026 at 10:02:31AM +0100, Bartosz Golaszewski wrote:
 > OF_GPIO is selected automatically on all OF systems. Any symbols it
+
+Actually, that isn't really true.
+
+if GPIOLIB
+...
+config OF_GPIO
+        def_bool y
+        depends on OF
+        depends on HAS_IOMEM
+
+OF_GPIO also depends on GPIOLIB and HAS_IOMEM. I don't know why it needs
+to depend on HAS_IOMEM, but the GPIOLIB dependency is real.
+
+Guenter
+
 > controls also provide stubs so there's really no reason to select it
 > explicitly. We could simply remove the dependency but in order to avoid
 > a new symbol popping up for everyone in make config - just convert it to
@@ -134,29 +149,6 @@ On Wed, Mar 04, 2026 at 10:02:31AM +0100, Bartosz Golaszewski wrote:
 >  	tristate "Watchdog device controlled through GPIO-line"
 > -	depends on OF_GPIO
 > +	depends on OF
-
-AI feedback:
-
-  Could this change inadvertently allow the driver to be selected when GPIOLIB
-  is disabled?
-
-  In drivers/gpio/Kconfig, OF_GPIO is defined inside the "if GPIOLIB" block,
-  so it implicitly depends on GPIOLIB. By changing the dependency directly to
-  OF, the GPIOLIB dependency is lost.
-
-  If GPIOLIB is disabled, the driver will still compile because of the stubs
-  in include/linux/gpio/consumer.h, but devm_gpiod_get() will unconditionally
-  return -ENOSYS, causing the probe to fail. Since the driver's sole purpose
-  is to control a watchdog via a GPIO line, should it be prevented from being
-  configured without GPIOLIB by using something like:
-
-	depends on OF && GPIOLIB
-
-It has a point. Please update.
-
-Thanks,
-Guenter
-
 >  	select WATCHDOG_CORE
 >  	help
 >  	  If you say yes here you get support for watchdog device
