@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EBCA1E0DE8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A696630F526
 	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 02:09:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772762961; cv=none; b=U8U7AKc0GYpOKoKJAkCOB78Fjqqp3QYWhmPrFsjCcc/1ht5TSyRu26Lf4z5/V3j+xftSmNRosoVRcyxKRiXQ43eRY3sE2yiVCkQ/kc9K4wWa4eLkP2JpjIf2EKqYt8i6DF7LN3N/5Z57FvFf9GTP2yjRJffvzw5JZcggWJMYsKA=
+	t=1772762961; cv=none; b=Lxf9arFE8e+G8jO32Xdiv8BU+3IGwNYK9sQ4FKewCudDbN1+QjftsTMOZLYKQOwGOBig1UiACbL0G/by1ctxOwnV+6U5GbbzfDV28LROdFowxgV3FBu+PzPfayDMxPE9XkYFipQaIZH4TMk6XYpRdbcCptZaH9ajfh8OkiV0kpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772762961; c=relaxed/simple;
-	bh=KM5gVzQ5Jw6d3BcO7OnYNm8t9gtDXP1HoJnyuYbhRAo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aTTipJkIqQ8H1CwjxRJdwRnE8DR/bRJGTMnwTEOjjng+CIxYyzMs/4uIcU+7U04PYvrLrlxXT5YlIEvJxaIzMYT8SwzDjzSKYmuDR7adKviinJ+hsTo3YGVV86/SPWRDlvKS8tOsumWXOHITcMRVZodj9IFb+z8zzSDH5NAWWo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YNaoiV+o; arc=none smtp.client-ip=10.30.226.201
+	bh=vJEBtZyyIj7YgleHcGHNC7V6IXK+dLX2OOf0d7PsukM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uv3kkNj6WGblYN72HbD88bdNFuFJ7Z5MzkSsJfmOr/wC0eFO+FMyk7/eer8giEFki6rGkt8a2zVj4l7ZrUUUa7HTEF1hGn6yY/vLk9OEgXePOD4NJpvXOdIHyo4fy8r3fJMxWEvIqzbe/pt3Kc/LMtDxr7B7pk4dlDRqHJxNVDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rwj8nOxU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YNaoiV+o"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F4D6C116C6;
-	Fri,  6 Mar 2026 02:09:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rwj8nOxU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A32CC2BCAF;
+	Fri,  6 Mar 2026 02:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772762960;
-	bh=KM5gVzQ5Jw6d3BcO7OnYNm8t9gtDXP1HoJnyuYbhRAo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=YNaoiV+oLMXGmD+1Q8hC+wvrZCxBto+SIBqdMZusArCb/iRPMwTe6s5bHB82SR0O8
-	 /z06leDuYNH/qu/MpOwIixbJ+LVOXzyxwnm6RzUnky4sJ/s2vTWBU47NUqMsZba+iL
-	 b1Hy101wLCNK8LYvkxn0E9jfZgp7vUnB2oUPo1/rq/x0f+ZSHGapjAzJV5Ths28kTW
-	 GvEoMIaUcVxi88sE1JnqZoFi5J640hZIqUpDo2APdaATxnG1v+EzB2U9WBUFBZWnv7
-	 TAgFEcxZZIkoHUuKLxcSPMgqQERcZj5HyPOuGfRwpcf5oLFpVqs9fhLG5x8WcJj5gd
-	 g9LXjvTAIxmSg==
+	s=k20201202; t=1772762961;
+	bh=vJEBtZyyIj7YgleHcGHNC7V6IXK+dLX2OOf0d7PsukM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=rwj8nOxUKztWQZswtAR4RUZi19IDnmVLqJ2ZFNJ5WNrgSQaOaDjUthm6enZ75dqLm
+	 vEKPiesBIhIR7FQl/RWlj1MnOqbFNwZB2WZdlW3QG55JGf7BwShUFEsjn13p0T/bvN
+	 6DWx+fUHhu0Pz+8FTLGiBgufSLvSrrUDbavLr1SgqeQdLTnQjIc3z/Rztnf7dKij6J
+	 n6Uh39LX1vP35FuIhTA4QKsJSlNxsElJgSOzqwdjGuXp6RPFRMumQhwFz0U94JzQgM
+	 pKC4gx03z3VsFdWbuSf1jFPTH8EpZ9YIcSpdxgLbo+61baBLZaKwd0R2oC68OM4Tlc
+	 //d+go4W/uRrQ==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -36,10 +37,12 @@ Cc: netdev@vger.kernel.org,
 	liuhangbin@gmail.com,
 	matttbe@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next 00/10] tools: ynl: convert samples into selftests
-Date: Thu,  5 Mar 2026 18:08:51 -0800
-Message-ID: <20260306020901.524105-1-kuba@kernel.org>
+Subject: [PATCH net-next 01/10] tools: ynl: move samples to tests
+Date: Thu,  5 Mar 2026 18:08:52 -0800
+Message-ID: <20260306020901.524105-2-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260306020901.524105-1-kuba@kernel.org>
+References: <20260306020901.524105-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -48,76 +51,241 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The "samples" were always poor man's tests, used to manually
-confirm that C YNL works as expected. Since a proper tests/
-directory now exists move the samples and use the kselftest
-harness to turn them into selftests outputting KTAP.
+The "samples" were always poor man's tests (used to manually
+confirm that C YNL works).
 
-Jakub Kicinski (10):
-  tools: ynl: move samples to tests
-  tools: ynl: convert netdev sample to selftest
-  tools: ynl: convert ovs sample to selftest
-  tools: ynl: convert rt-link sample to selftest
-  tools: ynl: convert tc and tc-filter-add samples to selftest
-  tools: ynl: add netdevsim wrapper library for YNL tests
-  tools: ynl: convert devlink sample to selftest
-  tools: ynl: convert ethtool sample to selftest
-  tools: ynl: convert rt-addr sample to selftest
-  tools: ynl: convert rt-route sample to selftest
+Move all C sample programs from tools/net/ynl/samples/ to
+tools/net/ynl/tests/, "merge" the Makefiles. The subsequent
+changes will convert each sample into a proper KTAP selftests.
 
- tools/net/ynl/Makefile                      |   4 +-
- tools/net/ynl/samples/Makefile              |  36 --
- tools/net/ynl/tests/Makefile                |  70 +++-
- tools/net/ynl/samples/devlink.c             |  61 ---
- tools/net/ynl/samples/ethtool.c             |  65 ----
- tools/net/ynl/samples/netdev.c              | 128 ------
- tools/net/ynl/samples/ovs.c                 |  60 ---
- tools/net/ynl/samples/rt-addr.c             |  80 ----
- tools/net/ynl/samples/rt-link.c             | 184 ---------
- tools/net/ynl/samples/rt-route.c            |  80 ----
- tools/net/ynl/samples/tc-filter-add.c       | 335 ----------------
- tools/net/ynl/samples/tc.c                  |  80 ----
- tools/net/ynl/tests/devlink.c               | 100 +++++
- tools/net/ynl/tests/ethtool.c               |  92 +++++
- tools/net/ynl/tests/netdev.c                | 231 +++++++++++
- tools/net/ynl/tests/ovs.c                   | 104 +++++
- tools/net/ynl/tests/rt-addr.c               | 111 ++++++
- tools/net/ynl/tests/rt-link.c               | 204 ++++++++++
- tools/net/ynl/tests/rt-route.c              | 113 ++++++
- tools/net/ynl/tests/tc.c                    | 407 ++++++++++++++++++++
- tools/net/ynl/{samples => tests}/.gitignore |   3 +-
- tools/net/ynl/tests/config                  |   8 +
- tools/net/ynl/tests/devlink.sh              |   5 +
- tools/net/ynl/tests/ethtool.sh              |   5 +
- tools/net/ynl/tests/rt-addr.sh              |   5 +
- tools/net/ynl/tests/rt-route.sh             |   5 +
- tools/net/ynl/tests/ynl_nsim_lib.sh         |  35 ++
- 27 files changed, 1492 insertions(+), 1119 deletions(-)
+Since these are now tests rather than samples - default to
+enabling asan. After all we're testing user space code here.
+
+Sort the gitignore while at it, the page-pool entry was a leftover
+so delete it.
+
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+---
+ tools/net/ynl/Makefile                        |  4 +-
+ tools/net/ynl/samples/Makefile                | 36 --------------
+ tools/net/ynl/tests/Makefile                  | 47 +++++++++++++++++--
+ tools/net/ynl/{samples => tests}/devlink.c    |  0
+ tools/net/ynl/{samples => tests}/ethtool.c    |  0
+ tools/net/ynl/{samples => tests}/netdev.c     |  0
+ tools/net/ynl/{samples => tests}/ovs.c        |  0
+ tools/net/ynl/{samples => tests}/rt-addr.c    |  0
+ tools/net/ynl/{samples => tests}/rt-link.c    |  0
+ tools/net/ynl/{samples => tests}/rt-route.c   |  0
+ .../ynl/{samples => tests}/tc-filter-add.c    |  0
+ tools/net/ynl/{samples => tests}/tc.c         |  0
+ tools/net/ynl/{samples => tests}/.gitignore   |  3 +-
+ 13 files changed, 45 insertions(+), 45 deletions(-)
  delete mode 100644 tools/net/ynl/samples/Makefile
- delete mode 100644 tools/net/ynl/samples/devlink.c
- delete mode 100644 tools/net/ynl/samples/ethtool.c
- delete mode 100644 tools/net/ynl/samples/netdev.c
- delete mode 100644 tools/net/ynl/samples/ovs.c
- delete mode 100644 tools/net/ynl/samples/rt-addr.c
- delete mode 100644 tools/net/ynl/samples/rt-link.c
- delete mode 100644 tools/net/ynl/samples/rt-route.c
- delete mode 100644 tools/net/ynl/samples/tc-filter-add.c
- delete mode 100644 tools/net/ynl/samples/tc.c
- create mode 100644 tools/net/ynl/tests/devlink.c
- create mode 100644 tools/net/ynl/tests/ethtool.c
- create mode 100644 tools/net/ynl/tests/netdev.c
- create mode 100644 tools/net/ynl/tests/ovs.c
- create mode 100644 tools/net/ynl/tests/rt-addr.c
- create mode 100644 tools/net/ynl/tests/rt-link.c
- create mode 100644 tools/net/ynl/tests/rt-route.c
- create mode 100644 tools/net/ynl/tests/tc.c
+ rename tools/net/ynl/{samples => tests}/devlink.c (100%)
+ rename tools/net/ynl/{samples => tests}/ethtool.c (100%)
+ rename tools/net/ynl/{samples => tests}/netdev.c (100%)
+ rename tools/net/ynl/{samples => tests}/ovs.c (100%)
+ rename tools/net/ynl/{samples => tests}/rt-addr.c (100%)
+ rename tools/net/ynl/{samples => tests}/rt-link.c (100%)
+ rename tools/net/ynl/{samples => tests}/rt-route.c (100%)
+ rename tools/net/ynl/{samples => tests}/tc-filter-add.c (100%)
+ rename tools/net/ynl/{samples => tests}/tc.c (100%)
  rename tools/net/ynl/{samples => tests}/.gitignore (87%)
- create mode 100755 tools/net/ynl/tests/devlink.sh
- create mode 100755 tools/net/ynl/tests/ethtool.sh
- create mode 100755 tools/net/ynl/tests/rt-addr.sh
- create mode 100755 tools/net/ynl/tests/rt-route.sh
- create mode 100644 tools/net/ynl/tests/ynl_nsim_lib.sh
 
+diff --git a/tools/net/ynl/Makefile b/tools/net/ynl/Makefile
+index 9b692f368be7..d514a48dae27 100644
+--- a/tools/net/ynl/Makefile
++++ b/tools/net/ynl/Makefile
+@@ -14,12 +14,12 @@ includedir ?= $(prefix)/include
+ 
+ SPECDIR=../../../Documentation/netlink/specs
+ 
+-SUBDIRS = lib generated samples ynltool tests
++SUBDIRS = lib generated ynltool tests
+ 
+ all: $(SUBDIRS) libynl.a
+ 
++tests: | lib generated libynl.a
+ ynltool: | lib generated libynl.a
+-samples: | lib generated
+ libynl.a: | lib generated
+ 	@echo -e "\tAR $@"
+ 	@ar rcs $@ lib/ynl.o generated/*-user.o
+diff --git a/tools/net/ynl/samples/Makefile b/tools/net/ynl/samples/Makefile
+deleted file mode 100644
+index d76cbd41cbb1..000000000000
+--- a/tools/net/ynl/samples/Makefile
++++ /dev/null
+@@ -1,36 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0
+-
+-include ../Makefile.deps
+-
+-CC=gcc
+-CFLAGS += -std=gnu11 -O2 -W -Wall -Wextra -Wno-unused-parameter -Wshadow \
+-	-I../lib/ -I../generated/ -idirafter $(UAPI_PATH)
+-ifeq ("$(DEBUG)","1")
+-  CFLAGS += -g -fsanitize=address -fsanitize=leak -static-libasan
+-endif
+-
+-LDLIBS=../lib/ynl.a ../generated/protos.a
+-
+-SRCS=$(wildcard *.c)
+-BINS=$(patsubst %.c,%,${SRCS})
+-
+-include $(wildcard *.d)
+-
+-all: $(BINS)
+-
+-CFLAGS_page-pool=$(CFLAGS_netdev)
+-CFLAGS_tc-filter-add:=$(CFLAGS_tc)
+-
+-$(BINS): ../lib/ynl.a ../generated/protos.a $(SRCS)
+-	@echo -e '\tCC sample $@'
+-	@$(COMPILE.c) $(CFLAGS_$@) $@.c -o $@.o
+-	@$(LINK.c) $@.o -o $@  $(LDLIBS)
+-
+-clean:
+-	rm -f *.o *.d *~
+-
+-distclean: clean
+-	rm -f $(BINS)
+-
+-.PHONY: all clean distclean
+-.DEFAULT_GOAL=all
+diff --git a/tools/net/ynl/tests/Makefile b/tools/net/ynl/tests/Makefile
+index eb166c9550db..5fa36c877235 100644
+--- a/tools/net/ynl/tests/Makefile
++++ b/tools/net/ynl/tests/Makefile
+@@ -1,21 +1,51 @@
+ # SPDX-License-Identifier: GPL-2.0
+ # Makefile for YNL tests
+ 
++include ../Makefile.deps
++
++CC=gcc
++CFLAGS += -std=gnu11 -O2 -W -Wall -Wextra -Wno-unused-parameter -Wshadow \
++	-I../lib/ -I../generated/ -I../../../testing/selftests/ \
++	-idirafter $(UAPI_PATH)
++ifneq ("$(NDEBUG)","1")
++  CFLAGS += -g -fsanitize=address -fsanitize=leak -static-libasan
++endif
++
++LDLIBS=../lib/ynl.a ../generated/protos.a
++
+ TEST_PROGS := \
+ 	test_ynl_cli.sh \
+ 	test_ynl_ethtool.sh \
+ # end of TEST_PROGS
+ 
++SRCS=$(wildcard *.c)
++BINS=$(patsubst %.c,%,${SRCS})
++
++CFLAGS_tc-filter-add:=$(CFLAGS_tc)
++
++include $(wildcard *.d)
++
+ INSTALL_PATH ?= $(DESTDIR)/usr/share/kselftest
+ 
+-all: $(TEST_PROGS)
++all: $(BINS) $(TEST_PROGS)
++
++../lib/ynl.a:
++	@$(MAKE) -C ../lib
++
++ ../generated/protos.a:
++	@$(MAKE) -C ../generated
++
++$(BINS): ../lib/ynl.a ../generated/protos.a
++	@echo -e '\tCC test $@'
++	@$(COMPILE.c) $(CFLAGS_$@) $@.c -o $@.o
++	@$(LINK.c) $@.o -o $@  $(LDLIBS)
+ 
+ run_tests:
+ 	@for test in $(TEST_PROGS); do \
+ 		./$$test; \
+ 	done
+ 
+-install: $(TEST_PROGS)
++install: $(TEST_PROGS) $(BINS)
+ 	@mkdir -p $(INSTALL_PATH)/ynl
+ 	@cp ../../../testing/selftests/kselftest/ktap_helpers.sh $(INSTALL_PATH)/
+ 	@for test in $(TEST_PROGS); do \
+@@ -26,11 +56,18 @@ install: $(TEST_PROGS)
+ 		    $$test > $(INSTALL_PATH)/ynl/$$name; \
+ 		chmod +x $(INSTALL_PATH)/ynl/$$name; \
+ 	done
++	@for bin in $(BINS); do \
++		cp $$bin $(INSTALL_PATH)/ynl/$$bin; \
++	done
+ 	@for test in $(TEST_PROGS); do \
+ 		echo "ynl:$$test"; \
+ 	done > $(INSTALL_PATH)/kselftest-list.txt
+ 
+-clean distclean:
+-	@# Nothing to clean
++clean:
++	rm -f *.o *.d *~
+ 
+-.PHONY: all install clean run_tests
++distclean: clean
++	rm -f $(BINS)
++
++.PHONY: all install clean distclean run_tests
++.DEFAULT_GOAL=all
+diff --git a/tools/net/ynl/samples/devlink.c b/tools/net/ynl/tests/devlink.c
+similarity index 100%
+rename from tools/net/ynl/samples/devlink.c
+rename to tools/net/ynl/tests/devlink.c
+diff --git a/tools/net/ynl/samples/ethtool.c b/tools/net/ynl/tests/ethtool.c
+similarity index 100%
+rename from tools/net/ynl/samples/ethtool.c
+rename to tools/net/ynl/tests/ethtool.c
+diff --git a/tools/net/ynl/samples/netdev.c b/tools/net/ynl/tests/netdev.c
+similarity index 100%
+rename from tools/net/ynl/samples/netdev.c
+rename to tools/net/ynl/tests/netdev.c
+diff --git a/tools/net/ynl/samples/ovs.c b/tools/net/ynl/tests/ovs.c
+similarity index 100%
+rename from tools/net/ynl/samples/ovs.c
+rename to tools/net/ynl/tests/ovs.c
+diff --git a/tools/net/ynl/samples/rt-addr.c b/tools/net/ynl/tests/rt-addr.c
+similarity index 100%
+rename from tools/net/ynl/samples/rt-addr.c
+rename to tools/net/ynl/tests/rt-addr.c
+diff --git a/tools/net/ynl/samples/rt-link.c b/tools/net/ynl/tests/rt-link.c
+similarity index 100%
+rename from tools/net/ynl/samples/rt-link.c
+rename to tools/net/ynl/tests/rt-link.c
+diff --git a/tools/net/ynl/samples/rt-route.c b/tools/net/ynl/tests/rt-route.c
+similarity index 100%
+rename from tools/net/ynl/samples/rt-route.c
+rename to tools/net/ynl/tests/rt-route.c
+diff --git a/tools/net/ynl/samples/tc-filter-add.c b/tools/net/ynl/tests/tc-filter-add.c
+similarity index 100%
+rename from tools/net/ynl/samples/tc-filter-add.c
+rename to tools/net/ynl/tests/tc-filter-add.c
+diff --git a/tools/net/ynl/samples/tc.c b/tools/net/ynl/tests/tc.c
+similarity index 100%
+rename from tools/net/ynl/samples/tc.c
+rename to tools/net/ynl/tests/tc.c
+diff --git a/tools/net/ynl/samples/.gitignore b/tools/net/ynl/tests/.gitignore
+similarity index 87%
+rename from tools/net/ynl/samples/.gitignore
+rename to tools/net/ynl/tests/.gitignore
+index 05087ee323ba..045385df42a4 100644
+--- a/tools/net/ynl/samples/.gitignore
++++ b/tools/net/ynl/tests/.gitignore
+@@ -1,8 +1,7 @@
+-ethtool
+ devlink
++ethtool
+ netdev
+ ovs
+-page-pool
+ rt-addr
+ rt-link
+ rt-route
 -- 
 2.53.0
 
