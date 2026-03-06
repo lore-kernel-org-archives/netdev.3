@@ -1,177 +1,137 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012023.outbound.protection.outlook.com [52.101.53.23])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606DD38E10F;
-	Fri,  6 Mar 2026 12:08:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772798885; cv=none; b=s3sZ91qdFzGIeQvInj/CVnn/kSYofzoqdXAccObVM2hf/ddrv9QOCWb+lEODi0wot3fAoUj7lH9nsqUIo86Ests4rWr0VidT17pcAXnqHvlxnLbMEumST5gN5mjOblkDNfbpYDCuD4H5Vis7zhKwnXDHXaxSKLs4O3tim7+/Qi0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772798885; c=relaxed/simple;
-	bh=AOkKMy7Q4DfFPGIXcT/fjITfQuCQoW4Bs+ylC4rcZ6Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QZ1hFPa5A9Ud1diYNgPPGNupI8q7gTNQvKzEYwCH424A5L2fcLH8oKEWyUDbfJdtmr4k79KF8PiTspOUMUnw4A6vFUfSygmheqDHoUaucNEjIhMHDNVubaZAQ48FNzmyjEHCevpb+lIBrnnXZehKRlG5T8jqokdh03jlhpvbK4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=jbWBZLnv; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032AA37CD37;
+	Fri,  6 Mar 2026 12:11:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.23
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772799072; cv=fail; b=PxzQ7PGwfcAtnAgFuOcQqqQXe3X4OtJHXs7rjHXrhtN5cP53Hd6FfyK+DVhZKR23nNQG8HT+IGgXw1ZnFcLkmZb89o8RXJMuqF4luJtCrVafNCXXTYssFBRefN6E6bDzL0W87rn4j/sYmadCXGdSDSqkgO7XioY189rOxwfW+fs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772799072; c=relaxed/simple;
+	bh=JPM6j92NAeekZhbtP1q87149gQ+uhjs40m89OqPIZGg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LXHLhJ9qjSf+XB/mKfxlAwWFyxIPcYq/UETBOb6mEPVLg2VQYyVskem+adn4ZjOnpHXxw0cY1NUFC59vcGsGtsoUK1kkGK3HWjKut69pF75TLi9pt7pb5esKrIsBLqBCNfWnwlLaRSfCWQumadwyWVQHDbuV+Q6f7b7NXtz75SE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=JQGTSNUT; arc=fail smtp.client-ip=52.101.53.23
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="jbWBZLnv"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6264Kbk91171368;
-	Fri, 6 Mar 2026 12:07:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=k0Y8HK
-	c8LITYke4TuHe/rf3FmEyQ4SxYm63/LK4sQmI=; b=jbWBZLnvvW47NLrLv2PLiX
-	8/71+Ny6nTHYI1HfC6xQXX04xWV8ZOXLnpe4cT0Jejy73ES8bWXKtIGxNVPkM6Q3
-	lRq0TGxQH7vvcSvWtarpQORg4CZTX3KreMhA/a0NI7nXbyDgikrzP0UqjcG0y9Gb
-	erThU6SAX6dN9PXQBhDo+KUhTOq3w+MRW7gqinoM3kLtTCul8Rx89dkdOYm3HDCo
-	SHRMeNTHU06tQPJmbFsKKi1avzz8UkaeZiqQe+Kcst10L2wrfo8itE4jFmPWVuQO
-	/UDm8ufGohLUEkRnyvEalrFnJmS4jyMT1a7GjEm4pg6BDRYWzv7mFttjUlsX+RbA
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4cksk47u98-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Mar 2026 12:07:58 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 6269ngZF008796;
-	Fri, 6 Mar 2026 12:07:57 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4cmdd1qfcp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Mar 2026 12:07:57 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 626C7uqu31326746
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Mar 2026 12:07:56 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2EB6558063;
-	Fri,  6 Mar 2026 12:07:56 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C8D0758059;
-	Fri,  6 Mar 2026 12:07:50 +0000 (GMT)
-Received: from [9.39.19.120] (unknown [9.39.19.120])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  6 Mar 2026 12:07:50 +0000 (GMT)
-Message-ID: <bdcd2405-93d1-4b4c-91ae-174b577e5734@linux.ibm.com>
-Date: Fri, 6 Mar 2026 17:37:49 +0530
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="JQGTSNUT"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=rkFHDO/H3M6nqMn527jGQuXx5bvjVuya1icHmH08ywMD6vy2PxPcYgH7LK5hDORgoQs12pYeJ4+2gU4NhS/3bON52vO8fNm2PHwumMCZGaIKHXcUiUb3+SxUXW2xqo8RSeiK/kAaHJ27JCaw2+mx7ndECnBJ9ICQe0rs7uPQz+eZM6pBJG5R8qusokh87mqcFqSZZ3BRpJV1+qMXL4rslKLacpu4R4EJnLES8ArtCmCfBgvOgihRY9iOKMkT+MtxM1gi350kpIE5RlWbcZ1kBhBee4L/VfjSC3lq3fSylI0dzN6o3vHvtAbe87t5Kp7o1MhDGBjIiWBPOs98bxYlEQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=NJw6X5NyUwodtCoLBzQHI5zxrETbxdoReFC6R7I6t0o=;
+ b=y74QMzhXXUhvQM2Qu2y9H5n3qPsBXxhIGdDS/r+i2LBEIDWRvjW+lbYzeFdorpP8j0CCFWQn+oJmVZduGsWDD7Lyq43z+P2hxUNqsvOSjgmxvdbzd14X2oYxcyTADf/rz0+jgzBNztVjVYzm9n13bYWu5gCoEJhmoHaOIeep7/0qE/7Ih/oujzqzo1NgoZfy3xjP1pIDdoFTpBF6e88xkGtnmj3Wk/2X+6EiaLDHwG1+n5hNad6ah5ExUSKImO9QCA6LLGdv7rDfNLUOAHwUm7bjb4YLw02SbyTZa4xIKhBiyOGULn1S3fVVK54AjlC3+bY3ky/RbQI8eidWDFBeoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=NJw6X5NyUwodtCoLBzQHI5zxrETbxdoReFC6R7I6t0o=;
+ b=JQGTSNUTYt8fMBA61+BOyMD/bz4hCRjP21k/lRav617EFArAK4Y0FnIfN3h2MHdS9y8Opb4sZBQ3rBZh8bfE8TfMMJ+MevfYVgZKJPIsPc7L47Jb9f/BxTZzDWCOmrgPzjZWpMfOR+JE0E3tduhz1IHykgnsf+aKaK7oQcJl8EU=
+Received: from BLAPR03CA0112.namprd03.prod.outlook.com (2603:10b6:208:32a::27)
+ by PH7PR12MB7020.namprd12.prod.outlook.com (2603:10b6:510:1ba::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.17; Fri, 6 Mar
+ 2026 12:11:07 +0000
+Received: from BL6PEPF00022575.namprd02.prod.outlook.com
+ (2603:10b6:208:32a:cafe::2d) by BLAPR03CA0112.outlook.office365.com
+ (2603:10b6:208:32a::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9654.23 via Frontend Transport; Fri,
+ 6 Mar 2026 12:11:06 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL6PEPF00022575.mail.protection.outlook.com (10.167.249.43) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9678.18 via Frontend Transport; Fri, 6 Mar 2026 12:11:06 +0000
+Received: from Satlexmb09.amd.com (10.181.42.218) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 6 Mar
+ 2026 06:11:06 -0600
+Received: from airavat.amd.com (10.180.168.240) by satlexmb09.amd.com
+ (10.181.42.218) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Fri, 6 Mar
+ 2026 04:11:04 -0800
+From: Raju Rangoju <Raju.Rangoju@amd.com>
+To: <netdev@vger.kernel.org>
+CC: <linux-kernel@vger.kernel.org>, <pabeni@redhat.com>, <kuba@kernel.org>,
+	<edumazet@google.com>, <davem@davemloft.net>, <andrew+netdev@lunn.ch>, "Raju
+ Rangoju" <Raju.Rangoju@amd.com>
+Subject: [PATCH net-next 0/2] amd-xgbe: Improve power management for S0i3
+Date: Fri, 6 Mar 2026 17:40:45 +0530
+Message-ID: <20260306121047.1231755-1-Raju.Rangoju@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v3] net/smc: transition to RDMA core CQ pooling
-To: "D. Wythe" <alibuda@linux.alibaba.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dust Li
- <dust.li@linux.alibaba.com>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sidraya Jayagond <sidraya@linux.ibm.com>,
-        Wenjia Zhang <wenjia@linux.ibm.com>
-Cc: Simon Horman <horms@kernel.org>, Tony Lu <tonylu@linux.alibaba.com>,
-        Wen Gu <guwen@linux.alibaba.com>, linux-kernel@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-s390@vger.kernel.org,
-        netdev@vger.kernel.org, oliver.yang@linux.alibaba.com,
-        pasic@linux.ibm.com
-References: <20260305022323.96125-1-alibuda@linux.alibaba.com>
-Content-Language: en-US
-From: Mahanta Jambigi <mjambigi@linux.ibm.com>
-In-Reply-To: <20260305022323.96125-1-alibuda@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: 6ce2a2YXkWd_epGEgQNeRWeP-pai1ZQD
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA2MDExMSBTYWx0ZWRfX6pH5UMJ1/Rr/
- 36I00uan44a8iLSXuGg3gSx4ezrQRXu4s2v8xEsZczBhoPXZf7icqWltF5Y4q4A4clUJJwkKUHa
- vIu1PCEgD6bybawl3auwK1P9F6+Wxdwj0G3PfuWGs2ihZ8lTtRIhRrjyCRyfyCDi2/Hd/o7rUqi
- 9oxiNyiiemIMT5MQh2cc0ceTx5LKXq+uFCs48BYURntAkm+kt1KZoqN61l+rqgOE8wXEmgHDU25
- IXhaD2ngNGaYP982OrZYp04XbBwSIJCbXCNX8Py4ju5Oa1MQ/kL3zmdtc4PQT0/oKFuY0ZXiUVz
- 2GwPCKSwgo0idpMfcYa1hzoXjgh2hh9bjzkF7bt1+/WJyQ+tw0BKWFwBeGQZkNou6WN3n4A8V/u
- FC2B41ArNlA9nLFFSjxTqjD62BaPZDfzAa+H2yYvtUZljSwfszF0UW6pATMwNkTl2bUXKesCD2j
- yLDTEMpcbde4E6b8AcQ==
-X-Authority-Analysis: v=2.4 cv=csCWUl4i c=1 sm=1 tr=0 ts=69aac39e cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=cEV2uSDX2Sh9gm4Zn8EA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: MObLhJvsXRtNPJA-fLZwDpPFZsQi7c_b
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-06_04,2026-03-04_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- impostorscore=0 priorityscore=1501 suspectscore=0 malwarescore=0 adultscore=0
- clxscore=1015 bulkscore=0 phishscore=0 spamscore=0 lowpriorityscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603060111
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb09.amd.com
+ (10.181.42.218)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL6PEPF00022575:EE_|PH7PR12MB7020:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1725d662-c60d-481b-dd50-08de7b797203
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700016|82310400026|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	IpXIVw46D+65kQldjRMjqWwUGRWLD+TE7dyvqAfdR7OPtDZXfky/87qB4ofFkzSa5in6dWV30MG9OOxfQAEeNgiGifSQ3hccQ6eMgXNJOyJCWuBTX6BQ+CXZQfBCVSyxsvOY0W67qvr5yY48yRbvshiYoYaPwHEwNNcQabemP9mqL8cXyoVVnQ7U8Z4zUqxZfOATVeqY1hVgAZXHOOPTZBnztTojla3bKiW+ivXNgQfjJf+hi3EZJl0v3RSulptvz/d+YAu9DCE9QVxvqjtBkJPFE+72xOpytOHyeLArnMLIC5o8OnZgPh0c9Dp49NMjLomvh01TiWg8v6UOHJDrcsLxz3okL1GMuZQFGv8gJYdXU4tayqw2vUuVNZldWzfiEgNxp9H6Y83bDli/5OvSR7Ky8Aq/9oR9EzSWNI6c8a1oY6fOrFAmgzbCWjlm1XBDgoRHM+dBdyD8pZQVOw2eEdkGCiQ+m4zRWJxhC96jJtr3QWI/a6gkl6xvdHDmzpYiyTUkhovEjUGtow2etTePV8CQhi0mLiorgJ5PSIp4Vw4WMGeO0VeKKQxiw7UDAT85Yu7xX5cnvORO8QFyXopJ55nXtmADk3wwRK/KNOJNV/QYLgs0/x69GyZ0TAH0qYSNw02ooGRVwEXAHDvyPy0ApnsDsJXYyvYnN8IHKILF2teVHmtq5qFtGFoFsa4bQZKg77DAI9cKY9JtYs8w2JiAg5bvhTpiYlA7JDw15LOf2/YixngrBVJjobE1Y4ldVRQWBFwf9YCDQgLuLJ4ppeGg3w==
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(82310400026)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	WnrM3DBsIpd+tIhN6TOn04Edi7cr6u78+q4CJhze5EweuBuJGA6t0MHBOAg8sy1m5/OfKLk4//Q/eKLu2+7aU99zjknGctPwzmuxhLtpuF4id2Nf6W/QhJ5OwYY7egEP886w8ehQQHf2DzPqrCciIguGB+xQuYl2d7zpy4vzZY6EMoXKJjQP2M088VrrZ0pRy9D6hJgvTfLYdJBF3lrMQBWG5CXAQ2L9Oq/F8G2tkIQ8E9F973/TQOR3Llj+uUuEgFhw32e3RBkHyzARM0OTQJ7LDeliR7CP23bKbiXbnXbB0FWXHcRsM73CP9CzQTeJz3O3T8cNE/4+1SDb5ymynzFc2lAuvdeEQUjjWzFKLSVekCDyF+Sn+49vsyWt8vFVQuFqUiIKGOvPCtXE0SocppYbkR/T91Scpn16asm7ktgaxvae41NKVo6I1Ra9kf9h
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 12:11:06.6869
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1725d662-c60d-481b-dd50-08de7b797203
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL6PEPF00022575.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7020
 
+Improve the amd-xgbe power management handling to allow AMD platforms to
+reach the deepest suspend state (S0i3) when modern standby is used.
 
+The first patch cleans up the xgbe_powerdown() and xgbe_powerup()
+helpers by removing an unused caller distinction and aligning the
+ordering of operations with xgbe_stop().
 
-On 05/03/26 7:53 am, D. Wythe wrote:
-> The current SMC-R implementation relies on global per-device CQs
-> and manual polling within tasklets, which introduces severe
-> scalability bottlenecks due to global lock contention and tasklet
-> scheduling overhead, resulting in poor performance as concurrency
-> increases.
-> 
-> Refactor the completion handling to utilize the ib_cqe API and
-> standard RDMA core CQ pooling. This transition provides several key
-> advantages:
-> 
-> 1. Multi-CQ: Shift from a single shared per-device CQ to multiple
-> link-specific CQs via the CQ pool. This allows completion processing
-> to be parallelized across multiple CPU cores, effectively eliminating
-> the global CQ bottleneck.
-> 
-> 2. Leverage DIM: Utilizing the standard CQ pool with IB_POLL_SOFTIRQ
-> enables Dynamic Interrupt Moderation from the RDMA core, optimizing
-> interrupt frequency and reducing CPU load under high pressure.
-> 
-> 3. O(1) Context Retrieval: Replaces the expensive wr_id based lookup
-> logic (e.g., smc_wr_tx_find_pending_index) with direct context retrieval
-> using container_of() on the embedded ib_cqe.
-> 
-> 4. Code Simplification: This refactoring results in a reduction of
-> ~150 lines of code. It removes redundant sequence tracking, complex lookup
-> helpers, and manual CQ management, significantly improving maintainability.
-> 
-> Performance Test: redis-benchmark with max 32 connections per QP
-> Data format: Requests Per Second (RPS), Percentage in brackets
-> represents the gain/loss compared to TCP.
-> 
-> | Clients | TCP      | SMC (original)      | SMC (cq_pool)       |
-> |---------|----------|---------------------|---------------------|
-> | c = 1   | 24449    | 31172  (+27%)       | 34039  (+39%)       |
-> | c = 2   | 46420    | 53216  (+14%)       | 64391  (+38%)       |
-> | c = 16  | 159673   | 83668  (-48%)  <--  | 216947 (+36%)       |
-> | c = 32  | 164956   | 97631  (-41%)  <--  | 249376 (+51%)       |
-> | c = 64  | 166322   | 118192 (-29%)  <--  | 249488 (+50%)       |
-> | c = 128 | 167700   | 121497 (-27%)  <--  | 249480 (+48%)       |
-> | c = 256 | 175021   | 146109 (-16%)  <--  | 240384 (+37%)       |
-> | c = 512 | 168987   | 101479 (-40%)  <--  | 226634 (+34%)       |
-> 
-> The results demonstrate that this optimization effectively resolves the
-> scalability bottleneck, with RPS increasing by over 110% at c=64
-> compared to the original implementation.
+The second patch adds proper PCI power management operations, following
+the standard PCI PM model, so that the device can be cleanly put into
+D3 and resumed back to D0. Without this, the amd_pmc driver reports:
 
-Since your performance results look really-really nice on x86 but ours
-show severe degradations on s390x, one way forward could be adding the
-cq_poll mechanism but also keeping the existing mechanism for now
-(because the things are right now it works better on s390x) and making
-it either runtime or compile time configurable which of the both is
-going to be used.
+  "Last suspend didn't reach deepest state"
 
-Alternatively, we could work together making the cq_poll mechanism does
-not introduce a regression to s390x (ideally improve performance for
-s390x as well). But it that case we would like to have this change
-deferred until we find a way to make the regression disappear.
+when the amd-xgbe driver is enabled.
 
-I am aware that the first option, co-existence, would kill the
-simplification aspect of this and instead introduce added complexity.
-But we are talking about a major regression here on one end, and major
-improvements on the other end, so it might be still worth it. In any
-case, we are very motivated to eventually get rid of the old mechanism,
-provided significant performance regressions can be avoided.
+These changes have been tested on AMD platforms using S0i3 modern
+standby.
+
+Raju Rangoju (2):
+  amd-xgbe: Simplify powerdown/powerup paths
+  amd-xgbe: add PCI power management for S0i3 support
+
+ drivers/net/ethernet/amd/xgbe/xgbe-drv.c      | 47 ++++++++-----------
+ drivers/net/ethernet/amd/xgbe/xgbe-pci.c      | 41 ++++++++++++++--
+ drivers/net/ethernet/amd/xgbe/xgbe-platform.c |  4 +-
+ drivers/net/ethernet/amd/xgbe/xgbe.h          |  8 +---
+ 4 files changed, 61 insertions(+), 39 deletions(-)
+
+-- 
+2.34.1
+
