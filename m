@@ -1,129 +1,126 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3F4386459
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 12:52:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 451061F4181;
+	Fri,  6 Mar 2026 13:04:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772801540; cv=none; b=LVeywxv8ajenPZ8Kr1arieKosbrf60O9l+ouIPKPFNt5btxWDZ59pIU9BfZjv5n9ifEOyUA/UD0phxnG77+oB/k6UCd7DdGQQASZB3NHq5cvmErbgXm0XG3C8BBxVXU5pF7atPS23kBqM9ptxsv3IaeH/fDFcj6k6SH61rGEpuQ=
+	t=1772802272; cv=none; b=D8egZtNp54q+UAWhzUqrQgNyHFB5NJChaufSBeStqvIwO3bph3UoQUU3WYeZuYXKZ0Vr51EJ586Ketg0f602PsmQib2h0ggrcSBfpHCkVb/Ro1a/uygcf1mkpEA5nKxPEqdzpfAWpnGP6UansJg2FczJEEr7nK3sb2lTooouA68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772801540; c=relaxed/simple;
-	bh=HAy43ssDo0xlUcBDIU7vQZtNnpxG03JPCL6Ldi51ASI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=OBk8kI0I91psFRaIxb6nCnAzQlsc7jrXkOPW8lL7cYCosY08yfQDwAlWBFfdFs/VDuVJjD5VEdeQeMt2K4kWGgjLNXhTrRqgs6JNe7PxALDJKvt+kcJ833TRz3hKl2eb2Ft6WnKPf/6hp5Q3qm8+/Q703ixD4sF/0aDNw1BrDY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RCEse1HL; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772802272; c=relaxed/simple;
+	bh=06lrB6Cem8O0hQ+qehfrzTjYRLpjBYf5oVGxmkJ5xwU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=isrdCk+wP8qe65E886K0BjmdKe6QiBwIszlSCDMK58lCLLK9h17IkR8faWRYbXSwiP8ecitqu/oTgVkSdmSqVZjSQWR2Sm2UaWPsHR9q1x8B+oHefXfLh9otO/XF8CnV1DmOrvWvUWRG42zQyL882zqyo6u9ics1FWDJ4hjF6FQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZYl9VpUx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RCEse1HL"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-439b7c2788dso4008389f8f.1
-        for <netdev@vger.kernel.org>; Fri, 06 Mar 2026 04:52:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772801537; x=1773406337; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=y8B8kg8ACcCsMXy3SgsyRYngVEpIsqkcoCsLOS/nNqQ=;
-        b=RCEse1HLoUtQApOdbPXFvYItGrEKWhMZ5FH1L4npAxteGeWOhAEAekijg3Ur83ovNu
-         D7j0Aio5nwazNQz3y4rO88a+svlEbLx5fyxypjkMFUV4PDnOpv7HYjT9Aw1NVdIwO6l+
-         sTgZ1jssfWdVnLQwQe6naotyBRoBV2AugdTmASE0Okxrsi3juIOafyTCxnp4K0weRpaH
-         XodiSWNrkHzZSWM6/wl3D42yExGGPiuDybF+9otR/5TaBWNzrcLkSb73hvP6va35kQWK
-         mnp6OV+L7iHTbxYpTfTm4axD+IZ/Q/dtFxxA6XolA28oMQbRPK0SIHepheSZx4bgl64w
-         FM4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772801537; x=1773406337;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y8B8kg8ACcCsMXy3SgsyRYngVEpIsqkcoCsLOS/nNqQ=;
-        b=KomubXrbvHQI4WbFxBztyfrvNNRRWm7V46yQSwx0bP8PXKIJP38kAYzK+ZKWhmcd7e
-         LpS7422VcYyLywLRxlevD2YaXsF0CK6e00YpTtixakHxYs/4KxGaU21vfwYV8mRhfu7g
-         HVmxKvNQ6DTdC7wAIGT6TrcZCK4VCvgCx3z9yC62hQc8C6w+9mDnnGPvXNR74ofvvXdC
-         eVZjm56layRoEr4PTpR2F33OVSt8+HRikH7eBzIKtQ5n/lEKtmJKDHRaodAaCyFGWMWa
-         qDVoOR8VI4NIJABfsOT6OqisXLPLf+jkKpGkCY2ioRPRKK9GzW4PgIuNcKvPQilQQkgD
-         Xlnw==
-X-Forwarded-Encrypted: i=1; AJvYcCVcziiSg1n0cDakmiQXH3869FECP24dcIqrZzs8zKakP+vHT958hnq9Bp0alDnLeVtXgo0B8T4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2OF1e3PiuR4Zqpe9qXA6kz6T2CCtro6kv8eL2j4Zh2HCjWywo
-	/rZTavazOZRoq7zTvc4fGZ/yupjkTT9xRPZCKRkM9pc0UuK/KDSP4pan
-X-Gm-Gg: ATEYQzx75s3OlYg8XKMgu042++2+ZPa/CZDw09DYtnwEHHBsuylQF0+eXzcFM166JtP
-	EMuM6Nq/sGQx2WNTPNEyu1BRGci/SV005CzkExhd1KK52D/nC1c76MBxvAtioaI/+5tgNoyCg8v
-	ZFRyiqDReKfJ6JHa3YRI213dTzMluN1sZTYNSqlWI1MwW66gaDCf0myU81ehAfiAff34wmxnm8C
-	PUF0YrLYtgZl1I/ZcYM1npoL3PBOnrhaulSqhbn7S5NaZMkHLrNQm6ns1lof+7Ciju05dQpEcBe
-	pumVg15Dy+PcSXQSSQt4CULH7bbuJvZ0PHJ7dS+74i/OqFSgxD4E7LCqM5ufHYdbESx0/ERaR/z
-	CAyT3oTz6S1oMQCUTPevHjHjTbDOWhu74SqyTZETzwGnjZnfrPMa56ebQVRfYgOYW0bbx6j3O2M
-	v3CSEBiXpdFTdaLuRcqIb56JeDryaHx87SOThqnYP6gMiu7EljKYIhr572Rpgz+UIRkrYyNjL9c
-	BLmrcmhsXX4hU4X5KocoApkO04w
-X-Received: by 2002:a05:600c:8b8b:b0:483:103c:b1ee with SMTP id 5b1f17b1804b1-48526922599mr34173745e9.8.1772801536778;
-        Fri, 06 Mar 2026 04:52:16 -0800 (PST)
-Received: from skynet.lan (2a02-9142-4581-3c00-0000-0000-0000-0008.red-2a02-914.customerbaf.ipv6.rima-tde.net. [2a02:9142:4581:3c00::8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48527681a3esm76085715e9.4.2026.03.06.04.52.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 04:52:15 -0800 (PST)
-From: =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>
-To: linux@armlinux.org.uk,
-	andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	mnhagan88@gmail.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: =?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>
-Subject: [PATCH net v3] net: sfp: improve Huawei MA5671a fixup
-Date: Fri,  6 Mar 2026 13:29:55 +0100
-Message-ID: <20260306125139.213637-1-noltari@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZYl9VpUx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF74C4CEF7;
+	Fri,  6 Mar 2026 13:04:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772802271;
+	bh=06lrB6Cem8O0hQ+qehfrzTjYRLpjBYf5oVGxmkJ5xwU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZYl9VpUxVzM22P75c7uX9CKGr5Ba84nQBnvOQIKLaZVb7N6vqFjy4668XxTZh0YO0
+	 EqB60DdumnECxGfDSDDIrne3EwVmGHBjGrbuaizyhEAmhQUjvQ8GoKJRRepAECHtNS
+	 djEASD+wGdsm/e9KCkqwVYOYDBR4jM1ZREMCaFarwNIMLsecnLZuKBJR3h0WbECjfY
+	 flAvRMP9ZzvBtIUmsnN3Z5ajvKllGCPCa5IBKBc0/NZiJN2VTF0rc4AbG3UiXxrKP3
+	 eutrRgB/s0pxsUef74uwJOXKME2aoG9R8PGlrVyh8TKBj9JpHldBzBQODPo5kzP3kH
+	 rc8dm/IanJCOQ==
+Date: Fri, 6 Mar 2026 13:04:26 +0000
+From: Simon Horman <horms@kernel.org>
+To: Charles Perry <charles.perry@microchip.com>
+Cc: netdev@vger.kernel.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH net-next 3/4] net: macb: add safeguards for jumbo frame
+ larger than 10240
+Message-ID: <20260306130426.GA461701@kernel.org>
+References: <20260303180318.1814791-1-charles.perry@microchip.com>
+ <20260303180318.1814791-4-charles.perry@microchip.com>
+ <20260305114010.GD90938@kernel.org>
+ <aamSGKwG4i+7zBqV@bby-cbu-swbuild03.eng.microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <aamSGKwG4i+7zBqV@bby-cbu-swbuild03.eng.microchip.com>
 
-With the current sfp_fixup_ignore_tx_fault() fixup we ignore the TX_FAULT
-signal, but we also need to apply sfp_fixup_ignore_los() in order to be
-able to communicate with the module even if the fiber isn't connected for
-configuration purposes.
-This is needed for all the MA5671a firmwares, excluding the FS modded
-firmware.
+On Thu, Mar 05, 2026 at 06:24:24AM -0800, Charles Perry wrote:
+> On Thu, Mar 05, 2026 at 11:40:10AM +0000, Simon Horman wrote:
+> > On Tue, Mar 03, 2026 at 10:03:17AM -0800, Charles Perry wrote:
+> > > The RX buffers for GEM can have a maximum size of 16320 bytes
+> > > (0xff in the RXBS field of the DMACFG register means 255*64 =
+> > > 16320 bytes).
+> > > 
+> > > The "jumbo_max_length" field (bits 0..13) of the DCFG2 register
+> > > can take a value of up to 16383 (0x3FFF). This field is not used
+> > > when determining the max MTU, instead an hardcoded value
+> > > (jumbo_max_len) is used for each platform. Right now the maximum
+> > > value for jumbo_max_len is 10240 (0x2800).
+> > > 
+> > > GEM uses one buffer per packet which means that one buffer must
+> > > allow room for the max MTU plus L2 encapsulation and alignment.
+> > > 
+> > > This commit adds a limit to max_mtu and rx_buffer_size so that
+> > > the RXBS field can never overflow when a large MTU is used.
+> > > 
+> > > With this commit, it is now possible to add new platforms that
+> > > have their gem_jumbo_max_length set to 16383.
+> > > 
+> > > Signed-off-by: Charles Perry <charles.perry@microchip.com>
+> > 
+> > Hi Charles,
+> > 
+> > I am sorry if this question is a bit naïve.
+> > 
+> > I understand the need to clamp the max_mtu to avoid overflowing RXBS.
+> > And that this hasn't been an issue up until now due to the maximum
+> > value of jumbo_max_len used in the driver.
+> > 
+> > But I'm unclear on the relationship between DCFG2 and the max_mtu.
+> > Why does it need to be set to a value larger than that corresponding to
+> > the maximum mtu and RX buf size?
+> > 
+> 
+> Hello Simon,
+> 
+> The DCFG2 register is the max_mtu value, there's some public documentation
+> for this for AMD versal [1]. "gem_jumbo_max_length" is a define in the RTL
+> code, the hardware designer probably makes a tradeoff between gate count
+> and the max_mtu. The maximum value for this is 0x3FFF (16383).
+> 
+> The maximum buffer size is 255 * 64 = 16320
+> 
+> The GEM driver, in its current state, uses one buffer per frame, so the MTU
+> needs to be clamped at the maximum buffer size.
+> 
+> We could just set 16320 instead of 16383 into the "jumbo_max_len" of
+> "struct macb_config" but it would mix information about what the hardware
+> supports vs what the software support. My approach is to put what the
+> hardware support in "struct macb_config" and clamp it later when
+> calculating max_mtu because we know we have a software limitation.
 
-Fixes: 2069624dac19 ("net: sfp: Add tx-fault workaround for Huawei MA5671A SFP ONT")
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
----
- v3: avoid using a vendor name in the function
- v2: rebase on top of net/main instead of linux/master
+Hi Charles,
 
- drivers/net/phy/sfp.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Thanks for the explanation. I agree that it is best not to conflate
+software and hardware support. And that the approach you have taken
+here makes sense.
 
-diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
-index f4bf53da3d4f..5db841377199 100644
---- a/drivers/net/phy/sfp.c
-+++ b/drivers/net/phy/sfp.c
-@@ -367,6 +367,12 @@ static void sfp_fixup_ignore_tx_fault(struct sfp *sfp)
- 	sfp->state_ignore_mask |= SFP_F_TX_FAULT;
- }
- 
-+static void sfp_fixup_ignore_tx_fault_and_los(struct sfp *sfp)
-+{
-+	sfp_fixup_ignore_tx_fault(sfp);
-+	sfp_fixup_ignore_los(sfp);
-+}
-+
- static void sfp_fixup_ignore_hw(struct sfp *sfp, unsigned int mask)
- {
- 	sfp->state_hw_mask &= ~mask;
-@@ -530,7 +536,7 @@ static const struct sfp_quirk sfp_quirks[] = {
- 	// Huawei MA5671A can operate at 2500base-X, but report 1.2GBd NRZ in
- 	// their EEPROM
- 	SFP_QUIRK("HUAWEI", "MA5671A", sfp_quirk_2500basex,
--		  sfp_fixup_ignore_tx_fault),
-+		  sfp_fixup_ignore_tx_fault_and_los),
- 
- 	// Lantech 8330-262D-E and 8330-265D can operate at 2500base-X, but
- 	// incorrectly report 2500MBd NRZ in their EEPROM.
--- 
-2.47.3
+I do think it would be nice to add a bit more detail to the commit message,
+along the lines of the text above. But I'll leave that call up to you.
 
+Overall, this looks good to me.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
