@@ -1,248 +1,325 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA2C21576E
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 11:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772797269; cv=none; b=OE0vc5z+5nNfFjL8RG6EHc8yCDU79DGbj0vOm8zf7RbA4x3lwtMYmKJac/irWhErxyFmP2Nvsv0FiDRt7L+zYlhUfQZe90F2Cp2dC9cJfTIr9gvryLS/KmLsksJxM6FoCThzPuaBuBt8eARkkUMZaqIeyMEzKTygRENiMNVqRqM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772797269; c=relaxed/simple;
-	bh=3PD5ErdhNijk1xfS60mUdJEBwDu9jsCpqyiHZmnFQYQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ibhFZD8fqmtBS7LJ/3p/6QYmWv8WvEW/w2YrVN2ymUfL+fIg2wg4Tw3b1ZBYn6hKjjZRr+Bd+V618lvkZVwJFTMm86vSaXeyTJMnJYqEVBCGqniDYRpUEroAjvuaysd3au0omjvh7LAnus5uNfULJhMZ1RGNkQo8Sck2HpcAlQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=llEj+Pv/; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BA6367F37;
+	Fri,  6 Mar 2026 11:59:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.7
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772798377; cv=fail; b=NgZqEN/WKlkv6ESNQBTJd+19rd6KS2FtkKGh24UJQFbq8mgJoFMNvXFzUllwALjZ02rdZnEbAuwByqh3MfLcJnyljumIvqWJp0S69T8f3BsMn67zlkBPDZXzPKazEu9ZxtZ0h/GUxHWsxBhTafwnFU83qMBXYDntrPIGP7OUeXM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772798377; c=relaxed/simple;
+	bh=ez0sFH+fHP6SkEQg3lkG0OQL+JP4GdD63C9rPOtolWw=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=PeaIdjQEG2t244UGo2wPlr/ne13EXDjOXHVTgy6AELZ7eOFm+4soBeTIMNvV2HFZpGnxG2BHtZEVi7mdZx3Xw+iDMoF1IJcXKEySjbc6qVFv3TZQER8JOz2C8/lM1CQgxMLzfTbK78D3swY5LEmgPIHcccme0QXuZBhN0HFJa2E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=At/vQn6G; arc=fail smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="llEj+Pv/"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-c7382731edfso1652336a12.1
-        for <netdev@vger.kernel.org>; Fri, 06 Mar 2026 03:41:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772797267; x=1773402067; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yA4v/OvLnn3aAd/tqxXzpUyQuayltT+FVyBu9yb8xaQ=;
-        b=llEj+Pv/ZhY8WHpZOId2dFOkOxPoW/v8nigy4gPPkKhiKNavAXAyyN9qMQM3zJzxU3
-         s+HVv60B2tUB9LkPOUPrNM/+l/E50JX6j3TMlfmUsO4nMxtfID2Fd1ffgcTrMorxq4FS
-         cZXcIp1CS3o+fUnIdVwwKndIuTWxLD3mZ5vy+t4+gBjkiryBeUYS3mSRmNu0a97t7Ad/
-         twqhhBNSRfDqdpwkBJ1JgZc/qYUI5CiJowp+pdq/EnPfWH72Y9f/7qQ42u55werz9QML
-         NKgwKgMv7i1r0mRXZGQaR7VV3D25IMIjNWiQqkblrfgwbNLdomwyPYWlqtXcwT6UlRX1
-         foQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772797267; x=1773402067;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yA4v/OvLnn3aAd/tqxXzpUyQuayltT+FVyBu9yb8xaQ=;
-        b=KlDcx1IQViyWJ4T3qfFfM+r4Yiyg2tajQmIemZ9JEiFRBwrHxRGzJWDuR2PY8wuhOG
-         q+TYv2dV/S9p2hZ9ifBktuiedRm+LJG8jZUSpi1vt2kDNS8Ysvlc56i65eVWs7gXcoub
-         3VyE11Q78v5jXaZPLXpM8SRjT1K/R7VXTdXUYLp97bNS7DNqv1IYfTSABcHr1GRnG1q3
-         uhdt2pONeXYTiyyvQ4LUpv6MzXlId11vxbg+MPepEMuGUvKo9hcG80p8XetY63yJbuQs
-         h4C6t840BNDhR7o6pMAuitFUkJo4hgaXC51fwoZ9pGPkNf0qqaqRGa4DZa7XrZMOpSt1
-         v4oA==
-X-Forwarded-Encrypted: i=1; AJvYcCX3pwDfsz29PtNMLwHXTwLtlZYPCNw7d3x2ZcE1NwaH0Whzir1q+vEWzXICEI43a/g7+MeUDWY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwmlgDoKr/smAvVhriYSbBwqmbbACEFcmrE7QeDqrH7zxQvuwW2
-	n7N2G8pMDv3E7K7fdKkxQoBP0fAvkWsadD2vvuRpwCuUSjqz/LgdnAOy
-X-Gm-Gg: ATEYQzxzL99+KJtfN6ybD4RHFQPyNnpQTbEQASri1WmDP0AGKB3BZFLfuwQDzyebo5B
-	pCr1f6bcpSDV+Gy0n+TPmcW9S41H8g2k/tUvVkBnlxaHO3ej7cDFhgaVKnAO91IXDOM8LQxHUpm
-	pxPGWi11PxpZ7+WGMl4d6p/gXDWkRcv5vYg8NR6Rg0nuNQ9dz9FaXb0bLyK3txK1xve04x5BW3c
-	ldpIGuHboFjq62eNUXS97jpIchNgUyxiokW9A9VTFgL0hrY9EH7YtOBuNwuQ6oOjV2ghs1+rE5o
-	5lgJKPJsrSgWOm8FVE37tMz08sc40vTkprFsC1UOfBVMpVf0soNnUH9YtQpHwx17OcpwPtXJSHU
-	huznLG01EuuVn8Y8utEAA+ctOqXpbLSHyyQd2bAoHhbJP42iau7tsBdfEQ2A1tSE+WbnuJ89pQH
-	IXH0W7IeetkQs97i37LmByhIJrODkOwRYXSAPlcHr+wE5rSpYpPqvj
-X-Received: by 2002:a17:902:f70a:b0:2ae:8253:1a77 with SMTP id d9443c01a7336-2ae82531ae3mr21314275ad.16.1772797266953;
-        Fri, 06 Mar 2026 03:41:06 -0800 (PST)
-Received: from v4bel ([58.123.110.97])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae83f752bfsm24907725ad.60.2026.03.06.03.41.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 03:41:06 -0800 (PST)
-Date: Fri, 6 Mar 2026 20:41:02 +0900
-From: Hyunwoo Kim <imv4bel@gmail.com>
-To: Sabrina Dubroca <sd@queasysnail.net>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, horms@kernel.org, Julia.Lawall@inria.fr,
-	linux@treblig.org, nate.karstens@garmin.com, netdev@vger.kernel.org,
-	imv4bel@gmail.com
-Subject: Re: [PATCH net v2] strparser: Fix race condition in strp_done()
-Message-ID: <aaq9TgFpsjn9XWAC@v4bel>
-References: <aZgpkyTDU3aXe_V0@v4bel>
- <aZyMejqTbkI7o_VM@krikkit>
- <aaDATohaW62X_pxk@v4bel>
- <aaYY6UiXSppOig9Q@krikkit>
- <aaY-TbPsNxo6toSr@v4bel>
- <aaoTVMhnY5FKMrem@krikkit>
- <aaobmK6d_xd9ZXGj@v4bel>
- <aaqovyrmd5pJtZKq@krikkit>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="At/vQn6G"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772798375; x=1804334375;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=ez0sFH+fHP6SkEQg3lkG0OQL+JP4GdD63C9rPOtolWw=;
+  b=At/vQn6GK+t4KS/8yIlKYWwjjYud4rowbe00BmpPrXGI2WVHZj+cMspv
+   5wVVJqUe+psXpMBLACmy7c16b+Bu8/pmvhDxlTg1a9OpAc/EFZCi+bmq3
+   2jC7RfopRfiejB8QRIeq18+xezhySQ2+oCra13mbckiFotzcqxK4zcGEl
+   V3dmGOwAgpib1JvuuVtOqifTmRJvUmPv8PogCno1kpRR8PPEWsVXIL/3J
+   QMKHpnQFWexZNkJcwZkvVgkwDaL+7qsd+M0ydpKiEeSx1fzI0wMmCdSrP
+   gk0oHDl8SZVGDzbzRHJrNkcFH9lNUd0wTXgj4HM9alm3jBxo6JIzWlCOQ
+   Q==;
+X-CSE-ConnectionGUID: S1Nd8C7xT1ejFBDx9EH1ag==
+X-CSE-MsgGUID: RQAFALLkTz+yiBcrBg+HXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11720"; a="99375089"
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
+   d="scan'208";a="99375089"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 03:59:33 -0800
+X-CSE-ConnectionGUID: C2XCljhYQsG6hGz73nb8cA==
+X-CSE-MsgGUID: V/GdV/TWT4SfF46vQxbzzQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,104,1770624000"; 
+   d="scan'208";a="218982808"
+Received: from fmsmsx903.amr.corp.intel.com ([10.18.126.92])
+  by orviesa008.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 03:59:33 -0800
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 6 Mar 2026 03:59:32 -0800
+Received: from fmsedg901.ED.cps.intel.com (10.1.192.143) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Fri, 6 Mar 2026 03:59:32 -0800
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.3) by
+ edgegateway.intel.com (192.55.55.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Fri, 6 Mar 2026 03:59:32 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JRo7T5vAy4XceEdxx4C0TBlRXycQ0nysXLre7sUteOuWScA3aQco7WzpFBp15UUSChG8gSBt2x8ryIUQRRhZLFNopKxban4cikNf+jgNQx0hj7GQdUzKXMvhCB0NlHJ0c+ILiaZTGoqX1TFwR5uZ8SlE4zRM/qqEFB/NR9mojpsVF1tCvmnX5LWwrUQGqpKmUe07Fi60zb8RSkzQUomUn6AGYdX8npkPtHczEydoYT3Ki1A2G8scCQPhJPjj3KJ7Xv6z0s7cHOeln5K0AbmfMD6Uf4Nw0RiksR1LXwJL7zEtUzzAaJ1KIWJFHWZPnjbrD9jgcjlD93WOjyTTT+t/PA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=CqswgUwgBqG+FThcUHfSE3hJk1zUeOKzCxIc2qdgz8w=;
+ b=o3M6h7cF8ywl1aoyCNJEs0X7JIroBi+qRur6AbbkZ5IkKUEO1Mh8jGmopf8LAKLB67zDiH4lR9YyYHxh8EsJB3ZFd+NTB3xMxooOHhbK7IK+IoclI914he4LDMYk0GNLMX+nfcDA1ZA5hjegMQdyXm4blc90SPf4R9YkmWRBH/VQ021xhSPx/M8I0hjIuki6KMyyR9hTqBGXbG3zfzE2weigoU0hyF3r6hzq9BUCuzRVGeMsAh+WRRicMISsnmMVBAUyqZfwAqrY/dsxFMXKp2xPvMn8umKLnie6PfIh6BwaCrcieI5q2YaRf24OtuTEmOPIyjicwExPInv3C3Jwpw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
+ by IA1PR11MB7920.namprd11.prod.outlook.com (2603:10b6:208:3fc::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.5; Fri, 6 Mar
+ 2026 11:59:24 +0000
+Received: from DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c]) by DS0PR11MB8718.namprd11.prod.outlook.com
+ ([fe80::6aa:411d:4bfa:619c%5]) with mapi id 15.20.9700.003; Fri, 6 Mar 2026
+ 11:59:24 +0000
+Message-ID: <45e3ed53-bd42-4c29-abac-1d9fe74ad539@intel.com>
+Date: Fri, 6 Mar 2026 12:57:50 +0100
+User-Agent: Mozilla Thunderbird
+Subject: Re: [Intel-wired-lan] [PATCH iwl-next v3 2/5] libeth: handle creating
+ pools with unreadable buffers
+To: "Tantilov, Emil S" <emil.s.tantilov@intel.com>,
+	<intel-wired-lan@lists.osuosl.org>
+CC: Tony Nguyen <anthony.l.nguyen@intel.com>, Przemek Kitszel
+	<przemyslaw.kitszel@intel.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
+ S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
+ Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, Kohei Enju <kohei@enjuk.jp>, Jacob Keller
+	<jacob.e.keller@intel.com>, Aleksandr Loktionov
+	<aleksandr.loktionov@intel.com>, <nxne.cnse.osdt.itp.upstreaming@intel.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+References: <20260224174618.2780516-1-aleksander.lobakin@intel.com>
+ <20260224174618.2780516-3-aleksander.lobakin@intel.com>
+ <b21bbcdc-ec87-4f83-8449-e627b6353281@intel.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
+Content-Language: en-US
+In-Reply-To: <b21bbcdc-ec87-4f83-8449-e627b6353281@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: DBBPR09CA0039.eurprd09.prod.outlook.com
+ (2603:10a6:10:d4::27) To DS0PR11MB8718.namprd11.prod.outlook.com
+ (2603:10b6:8:1b9::20)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaqovyrmd5pJtZKq@krikkit>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|IA1PR11MB7920:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4e60eff4-25bf-47de-4005-08de7b77cf36
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info: qkdlnijIe3O0XlnOr/1Tboy015z/IMW5Eou/FpRCu3/pJgPWrd2fu3kUUl5W1s5EEMI/gBkOuorRE7lpUta3qzKmzCf6XWyDGNfNNAcFBvdn+vcY8SW42mCKg1KQt+xyKmfJUMLLWdLXOPBaeRAK5wXLJGIzsgrAwu9r7Q4pDjo9kViFwHCG3dJY/ng/6l2QcwMNRpwyI6Fgh14a2oOUBslcZfiAvHBbupsEdXF3R5xtQBf55Wyt00/Du+L9+AwqR4M7Xu/LZ5iH9jnWxA2aYvDPMVNxG4CGgQRvE8wO8WbbcwqujW8ci4EqCIQK5UKFgJLwbhEsQXkNHafjc5ikSZanwu7Hq7YkcEiJW14nPOhlHNyonHXPmix7xakUYPW8cfIMBUwYPcmkWk11kMuyqKUHSENSXGVwOf7mxOvrgBi2b+vAYuOezHhIwLhHTVO6CshWc9n2sbsR3UY3hbLSCEjbf6CtW9tpzSWFIR1zN6Mx4ytPMM16THlDSc+yJMhV8BlBMJQ3/m6TSKTfQFJKDb8hYGwpZnE33e16G8Z44ATOUJR8E6a7js1NKAYpCovILCdcFsNk3lt9fZ9M+8wTbETNa6dujSpCcP+v95kZDmB+hBqsHJPkyO6t377A0F2DOg44Yt5YzEwX/emoIzYbwluGoXR9OgbjUxvj40jS0hvvIugMFC6aMoUaS0vJgLT6HpCA6q7/kuQr5MDxpviHmXGgo5fFixGaIK7cKI+dr5I=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?dGg0VXp5OTYvVC92RzNYZVpzMEVWWEpTS2RndTNkQUs1R3cvcnRRQThNQ0gz?=
+ =?utf-8?B?TU9QZ3p3NUFKMkRtL1IrKzRKcXFGSWthVkYzd3ZQTUtaeWpSb3NQMUZlc2xn?=
+ =?utf-8?B?N0VQWDg3UHA2WXdITHlQYXljaGg1L1J2ZHBUV01heGRGNU5FbnhkT3NiUVZG?=
+ =?utf-8?B?c3dYTDUwSzBkQkpCdU9NSmZjcnIrejBwaC9tcEd5OVRadVZUZXJLRlZkbEQw?=
+ =?utf-8?B?KzVjT1cyVitYeEJQSUpjWVdxRGZubzR3SE9KM0FRa2NiMmg3OGk5bk5aOVZJ?=
+ =?utf-8?B?S1NLSmhVdWgrZDhERnZHNGFDRlRrS3lVcTRqL3NzRjkxNUpONjB2dU9xa1Zk?=
+ =?utf-8?B?WXpMQXZWYzIxYkMxMnRXY1NyYWZqZ3o1eWgyM0xIOHQ0aCtYVUh6czlXQm00?=
+ =?utf-8?B?a0JwbExXY1VmYklURm9Zc3NYc0FjeU4weUNzUEorZ1VQenIySXpGaTQ5andT?=
+ =?utf-8?B?SzZ5aEJJb1VRUUYxOUJ4UFBCN0JUcGI4ei9wZG8vY1RsZmdOMXU3NkIzeGlE?=
+ =?utf-8?B?bW02UkR3bG5rOU1ISUI5eXAwcGNJRWpsdTU4OFZDaGlBUS9QWDFwU3E3Y1dN?=
+ =?utf-8?B?T1lKV2xQaU9UbW05UEI0N0xJR1NPOXE5UUlJTXFQREFoL09XUDBFd3IxVEhk?=
+ =?utf-8?B?YnIyN01WQTRKMFBXRURpV3hCVkpSQjJWd21qREJpdDV2akpYWEVFT0ZUUmNW?=
+ =?utf-8?B?UDg1TlhURkwwYXRINnRrMUNicmhuYTR3ckJjSkJLSCtpdHc3RUY4NnRNZStC?=
+ =?utf-8?B?d1FLTjdDQ3hnMWJCOFZzQ2ZzL2ZzSFcyVXd3N25UMmRFdWh5OGRJSFZwL0hK?=
+ =?utf-8?B?dmE1YUhDcGJzT25XZ0tFMkFCcjR2cEt5bGk3eE9pNFp1clpFQTdZa1NQdm5J?=
+ =?utf-8?B?ZnJHbW01ODUwN1Y0NU94VG1QNDJjZHl3cGpIV0VJZlZyOWNtdmx4dmlWbTh0?=
+ =?utf-8?B?dDViSmo4QVN3TWQxQ3NyTjQ2N0YzS1NhK0JsdWQ2dmN6VlZweGo4bzJwZi9n?=
+ =?utf-8?B?YzI0N3EvaDAwVzBXMzRhQ0ZxZWtHRjdyckRGMEhaNDd1S0FqRHFJVENpS2FM?=
+ =?utf-8?B?MFAxUkRiQzRFYjNJWHE2VkZmaktXcXozUDlGS1V0YkJqUWZ1ZEVPdHFFMWxi?=
+ =?utf-8?B?UEp2WGFKdTVBdVhpRGxuYnQ5K3BHaWtNWjZhY1lFaGhJRVBGVDA5NFpZVGEx?=
+ =?utf-8?B?TVpGaUhSWTRIYThSVXdLZmpGU1ZLY0NYREVKWVJSV3J6bGo2dnE1cnBHbW93?=
+ =?utf-8?B?bUdZMEhwZFY2d240WmNtSTdDV0NKSzNDZWtDclJKM3o4M2FSS2RSdjlOempo?=
+ =?utf-8?B?UCtZb3dSZmtYN0FUNk5MZWxIa0FiMlAwT25pTm1SRmlUanRvT1FDSDBxWDE4?=
+ =?utf-8?B?ckx1MVhnSjBYNXZwZW1WMUNkcEk5SnVWbEVOTVppNXh2VmVNaG9XUHg0SXdK?=
+ =?utf-8?B?MTVsZVJwTi8yVXRaLzhHV3lRVEJwcWN6eG5IVjJSVE1teldIRnFhV0tYcHlV?=
+ =?utf-8?B?cTcrcU5wRHhaMzRtWmpQbkZVamVvZnRBczJOdTJDU1dYbk5BZTNJSEJ2TlYv?=
+ =?utf-8?B?RTRyQnEySW4weXRraFU3cmxQeU9qKzJQNXNwMUJaY2ZUaU8yZHFiMzJkWEc4?=
+ =?utf-8?B?bEVNYjVYTUdwNHlIYU1IMmo0eHRHM3g2anE5SmlILzFJMjFmYTlta2h0YVJZ?=
+ =?utf-8?B?aFZQZi94Nk44MkRKK0k4RWgvcVcvTXI2ZVU4eG04aHUxK09YWUQwSWJKVzhh?=
+ =?utf-8?B?WTdkY2VGd3FVT2ppbCt6RGpRUEc0SHpmS3NMQUpiOUFYQVZOOXZFSGkxVjNS?=
+ =?utf-8?B?ZWcyYjByR2RVNk1laE1oVUQ4akNYdTY2Q2lNbkxZbE5uWG9YRFEvOVZ3d1g5?=
+ =?utf-8?B?RkJXU2pLaUhib3JPcWR2RlZaTEphVXZPUnpRMDFPdlg4WXptcHlROXVzY05P?=
+ =?utf-8?B?L3VmQUh6eC9veXpjakN0a2F3V3cxOS9vL1dseEZJU1dMWFl5djlBZFlIQy9r?=
+ =?utf-8?B?eThteDlYUUJuSnFROHdoNjJzOUE2T01hdm1hS1JiK3ZZQVFYLzk1eElIdk90?=
+ =?utf-8?B?NXc0UXBaUU1OcTNrZ0VPcW5xZ1FKUmRqNzA4NmRGN1ZGQWw3VzNOc1ZDME11?=
+ =?utf-8?B?ZDRobU84R1lpUWQ5YnlUemJaWm53OVE0ZmN0Z09jQm5mWWI0aldMOXNWZVAr?=
+ =?utf-8?B?NWw1V05qcVZJd05BUGNOblpYT0JsNldXSVNHQ0N2SWhuQ1piYVZkMUQyL3Fw?=
+ =?utf-8?B?TXF1RHNzTkpuMEE1ZVVQU2NuVEdOTmd3OXk3QTB1OS9zTlJ5Ym9aTXJ2cC96?=
+ =?utf-8?B?WUxqZldRalhRR3d2ejZiWHNOR1dWVWxrcWhpVU5wbnhhTllTOU5mRE5LdDZJ?=
+ =?utf-8?Q?1nu3Jzn27bBgW/Wg=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4e60eff4-25bf-47de-4005-08de7b77cf36
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2026 11:59:24.3669
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: cHc001Ry1eJjKa3kjDt/GyzTz6MAkAMTt1PYOtCmS+3xD8TKi1vyk+oaeSTPbZBjgZpM2QW6htMK9y69VmJt2OHiUYc2+zBrry1n0HiY2N0=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR11MB7920
+X-OriginatorOrg: intel.com
 
-On Fri, Mar 06, 2026 at 11:13:19AM +0100, Sabrina Dubroca wrote:
-> 2026-03-06, 09:11:04 +0900, Hyunwoo Kim wrote:
-> > On Fri, Mar 06, 2026 at 12:35:48AM +0100, Sabrina Dubroca wrote:
-> > > Sorry for the delay, I wanted to think about the race condition a bit
-> > > more.
-> > > 
-> > > 2026-03-03, 10:50:05 +0900, Hyunwoo Kim wrote:
-> > > > On Tue, Mar 03, 2026 at 12:10:33AM +0100, Sabrina Dubroca wrote:
-> > > > > 2026-02-27, 06:51:10 +0900, Hyunwoo Kim wrote:
-> > > > > > On Mon, Feb 23, 2026 at 06:20:58PM +0100, Sabrina Dubroca wrote:
-> > > > > > > 2026-02-20, 18:29:55 +0900, Hyunwoo Kim wrote:
-> > > > > > > "strp stopped" is not really enough, I think we'd also need to reset
-> > > > > > > the CBs, and then grab bh_lock_sock to make sure a previously-running
-> > > > > > > ->sk_data_ready has completed. This is what kcm does, at least.
-> > > > > > 
-> > > > > > It seems that this is not something that should be handled inside strp itself, 
-> > > > > > but rather something that each caller of strp_stop() is expected to take care 
-> > > > > > of individually. Would that be the right direction?
-> > > > > 
-> > > > > Agree.
-> > > > > 
-> > > > > > It also appears that ovpn and kcm handle this by implementing their own callback 
-> > > > > > restoration logic.
-> > > > > 
-> > > > > Right. I tried to look at skmsg/psock (the other user of strp), but
-> > > > > didn't get far enough to verify if it's handling this correctly.
-> > > > > 
-> > > > > > > Without that, if strp_recv runs in parallel (not from strp->work) with
-> > > > > > > strp_done, cleaning up skb_head in strp_done seems problematic.
-> > > > > > 
-> > > > > > From the espintcp perspective, how about applying a patch along the following lines?
-> > > > > 
-> > > > > This is what I was thinking about, yes.
-> > > > 
-> > > > In my opinion, it might be cleaner to split the espintcp callback restoration work into 
-> > > > a separate patch, rather than merging it into the strparser v3 patch. What do you think?
-> > > 
-> > > Sure. But once espintcp is fixed in that way, can the original race
-> > > condition with strparser still occur? release_sock() will wait for any
-> > 
-> > If the espintcp callback restoration patch is applied, the strparser
-> > race should no longer occur in espintcp.
-> > 
-> > > espintcp_data_ready()/strp_data_ready() that's already running, and a
-> > > sk_data_ready that starts after we've changed the callbacks will not
-> > > end up in strp_data_ready() at all so it won't restart the works that
-> > > are being stopped by strp_done()?
-> > > 
-> > > It's quite reasonable to use disable*_work_sync in strp_done, but I'm
-> > > not sure there's a bug other than espintcp not terminating itself
-> > > correctly on the socket.
-> > 
-> > That said, the _cancel APIs in strparser still appear to carry some
-> > structural risk, so it might still make sense to switch to the _disable
-> > APIs for the benefit of other strp users or potential future callers.
-> 
-> Not really. Every user of strp that is open to the strp_recv vs
-> cancel_* race is also open to the strp_recv vs free race, so switching
-> from cancel_* to disable_* is only a partial fix.
-> 
-> But if we took and released the socket lock in strp_done, we would
-> solve the issue for all users even without resetting the callbacks?
-
-Looks good to me. With this change, it seems the issue can be resolved
-not only for espintcp but for all strp users.
-
-When strp_stop() runs first:
-```
-                 cpu0                                cpu1
-
-espintcp_close()
-  strp_stop()
-    strp->stopped = 1;
-                                         espintcp_data_ready()
-                                           strp_data_ready()
-                                             if (unlikely(strp->stopped)) return;
-  strp_done()
-    lock_sock();
-    release_sock();
-    cancel_delayed_work_sync(&strp->msg_timer_work);
-    kfree_skb(strp->skb_head);
-```
-
-When strp_data_ready() runs first:
-```
-                 cpu0                                cpu1
-
-                                         espintcp_data_ready()
-                                           strp_data_ready()
-                                             if (unlikely(strp->stopped)) return;
-espintcp_close()
-  strp_stop()
-    strp->stopped = 1;
-  strp_done()
-    lock_sock();
-                                             strp_read_sock()
-                                               tcp_read_sock()
-                                                 __tcp_read_sock()
-                                                   strp_recv()
-                                                     __strp_recv()
-                                                       head = strp->skb_head;
-                                                       strp_start_timer()
-                                                         mod_delayed_work(&strp->msg_timer_work);
-                                                       ...
-    release_sock();
-    cancel_delayed_work_sync(&strp->msg_timer_work);
-    kfree_skb(strp->skb_head);
-```
-In both cases, the race does not appear to cause any problem.
-
-> 
-> @@ -503,6 +503,10 @@ void strp_done(struct strparser *strp)
->  {
->  	WARN_ON(!strp->stopped);
->  
-> +	lock_sock(strp->sk);
-> +	/* sync with other code */
-> +	release_sock(strp->sk);
-> +
->  	cancel_delayed_work_sync(&strp->msg_timer_work);
->  	cancel_work_sync(&strp->work);
->  
-> 
-> 
->  - strp->stopped so any new call into strp_data_ready will not do anything
-> 
->  - lock/release need to take bh_lock_sock so any existing call to
->    strp_data_ready will have to complete before we move on to cancel*_work
-> 
-> 
-> 
-> Or maybe the requirement should be that strp_stop has to be called
-
-From my perspective, adding lock_sock() inside strp_done(), as in the
-patch above, looks cleaner.
-
-> under lock_sock() (or even just bh_lock_sock), but again I can't
-> figure out if that's ok for sockmap.
-
-sockmap/psock has a more complex call stack compared to other strp
-users, so I'm also not entirely certain about that part.
+From: Tantilov, Emil S <emil.s.tantilov@intel.com>
+Date: Thu, 5 Mar 2026 14:04:52 -0800
 
 > 
 > 
-> > With that in mind, perhaps the direct fix for this race could be handled
-> > in the espintcp callback restoration patch. For the strparser patch, I
-> > could instead adjust the commit message to reflect that it removes a
-> > potential hazard by replacing the _cancel APIs with the _disable
-> > variants, and resubmit it in that form.
+> On 2/24/2026 9:46 AM, Alexander Lobakin wrote:
+>> libeth uses netmems for quite some time already, so in order to
+>> support unreadable frags / memory providers, it only needs to set
+>> PP_FLAG_ALLOW_UNREADABLE_NETMEM when needed.
+>> Also add a couple sanity checks to make sure the driver didn't mess
+>> up the configuration options and, in case when an MP is installed,
+>> return the truesize always equal to PAGE_SIZE, so that
+>> libeth_rx_alloc() will never try to allocate frags. Memory providers
+>> manage buffers on their own and expect 1:1 buffer / HW Rx descriptor
+>> association.
+>>
+>> Bonus: mention in the libeth_sqe_type description that
+>> LIBETH_SQE_EMPTY should also be used for netmem Tx SQEs -- they
+>> don't need DMA unmapping.
+>>
+>> Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+>> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+>> Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+>> ---
+>>   include/net/libeth/tx.h                |  2 +-
+>>   drivers/net/ethernet/intel/libeth/rx.c | 42 ++++++++++++++++++++++++++
+>>   2 files changed, 43 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/include/net/libeth/tx.h b/include/net/libeth/tx.h
+>> index c3db5c6f1641..a66fc2b3a114 100644
+>> --- a/include/net/libeth/tx.h
+>> +++ b/include/net/libeth/tx.h
+>> @@ -12,7 +12,7 @@
+>>     /**
+>>    * enum libeth_sqe_type - type of &libeth_sqe to act on Tx completion
+>> - * @LIBETH_SQE_EMPTY: unused/empty OR XDP_TX/XSk frame, no action
+>> required
+>> + * @LIBETH_SQE_EMPTY: empty OR netmem/XDP_TX/XSk frame, no action
+>> required
+>>    * @LIBETH_SQE_CTX: context descriptor with empty SQE, no action
+>> required
+>>    * @LIBETH_SQE_SLAB: kmalloc-allocated buffer, unmap and kfree()
+>>    * @LIBETH_SQE_FRAG: mapped skb frag, only unmap DMA
+>> diff --git a/drivers/net/ethernet/intel/libeth/rx.c b/drivers/net/
+>> ethernet/intel/libeth/rx.c
+>> index 8874b714cdcc..11e6e8f353ef 100644
+>> --- a/drivers/net/ethernet/intel/libeth/rx.c
+>> +++ b/drivers/net/ethernet/intel/libeth/rx.c
+>> @@ -6,6 +6,7 @@
+>>   #include <linux/export.h>
+>>     #include <net/libeth/rx.h>
+>> +#include <net/netdev_queues.h>
+>>     /* Rx buffer management */
+>>   @@ -139,9 +140,47 @@ static bool
+>> libeth_rx_page_pool_params_zc(struct libeth_fq *fq,
+>>       fq->buf_len = clamp(mtu, LIBETH_RX_BUF_STRIDE, max);
+>>       fq->truesize = fq->buf_len;
+>>   +    /*
+>> +     * Allow frags only for kernel pages. `fq->truesize == pp->max_len`
+>> +     * will always fall back to regular page_pool_alloc_netmems()
+>> +     * regardless of the MTU / FQ buffer size.
+>> +     */
+>> +    if (pp->flags & PP_FLAG_ALLOW_UNREADABLE_NETMEM)
+>> +        fq->truesize = pp->max_len;
+>> +
+>>       return true;
+>>   }
+>>   +/**
+>> + * libeth_rx_page_pool_check_unread - check input params for
+>> unreadable MPs
+>> + * @fq: buffer queue to check
+>> + * @pp: &page_pool_params for the queue
+>> + *
+>> + * Make sure we don't create an invalid pool with full-frame unreadable
+>> + * buffers, bidirectional unreadable buffers or so, and configure the
+>> + * ZC payload pool accordingly.
+>> + *
+>> + * Return: true on success, false on invalid input params.
+>> + */
+>> +static bool libeth_rx_page_pool_check_unread(const struct libeth_fq *fq,
+>> +                         struct page_pool_params *pp)
+>> +{
+>> +    if (!netif_rxq_has_unreadable_mp(pp->netdev, pp->queue_idx))
+>> +        return true;
 > 
-> I'm not going to nack a patch doing s/cancel_/disable_/ in strp_done,
-> but it doesn't fully solve the race condition if the caller isn't
-> doing the right thing, and it doesn't do anything if the strp user is
-> handling the teardown correctly.
+> This is causing a crash on IDPF:
+> 
+> [  420.570632] BUG: kernel NULL pointer dereference, address:
+> 00000000000000e8
+> [  420.570684] #PF: supervisor read access in kernel mode
+> [  420.570712] #PF: error_code(0x0000) - not-present page
+> [  420.570739] PGD 0
+> [  420.570757] Oops: Oops: 0000 [#1] SMP NOPTI
+> [  420.570784] CPU: 35 UID: 0 PID: 1058 Comm: kworker/u258:8 Kdump:
+> loaded Tainted: G S         OE       7.0.0-rc1-next-devq-030526+ #34
+> PREEMPT(full)
+> [  420.570844] Tainted: [S]=CPU_OUT_OF_SPEC, [O]=OOT_MODULE,
+> [E]=UNSIGNED_MODULE
+> [  420.570872] Hardware name: Intel Corporation M50CYP2SBSTD/
+> M50CYP2SBSTD, BIOS SE5C6200.86B.0027.P10.2201070222 01/07/2022
+> [  420.570912] Workqueue: idpf-0000:83:00.0-vc_event idpf_vc_event_task
+> [idpf]
+> [  420.570967] RIP: 0010:netif_rxq_has_unreadable_mp+0xf/0x30
+> [  420.571004] Code: 2e 0f 1f 84 00 00 00 00 00 66 90 90 90 90 90 90 90
+> 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 0f 1f 44 00 00 89 f6 48 c1 e6
+> 08 <48> 03 b7 e8 00 00 00 48 83 be c8 00 00 00 00 0f 95 c0 e9 8a 25 2b
+> [  420.571078] RSP: 0018:ff6bf03aa83e7bd8 EFLAGS: 00010246
+> [  420.571109] RAX: ff3579f9888ed0d0 RBX: ff6bf03aa83e7c78 RCX:
+> 0000000000000000
+> [  420.571145] RDX: 0000000000000000 RSI: 0000000000000000 RDI:
+> 0000000000000000
+> [  420.571178] RBP: ff6bf03aa83e7be0 R08: 0000000000000040 R09:
+> 000000004b1a4093
+> [  420.571213] R10: 0000000000000003 R11: ff3579f9bed90ee0 R12:
+> ff3579f9d58c6060
+> [  420.571247] R13: ff6bf03aa83e7d88 R14: 0000000000000001 R15:
+> ff3579f9d58c6050
+> [  420.571281] FS:  0000000000000000(0000) GS:ff357a195e9db000(0000)
+> knlGS:0000000000000000
+> [  420.571320] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  420.571350] CR2: 00000000000000e8 CR3: 00000023b2e2a006 CR4:
+> 0000000000773ef0
+> [  420.571384] PKRU: 55555554
+> [  420.571402] Call Trace:
+> [  420.571419]  <TASK>
+> [  420.571436]  libeth_rx_fq_create+0x7c/0x380 [libeth]
+> [  420.571479]  libie_ctlq_init+0x304/0x460 [libie_cp]
+> [  420.571516]  libie_ctlq_xn_init+0x29/0x230 [libie_cp]
+> [  420.571550]  idpf_init_dflt_mbx+0xa7/0x170 [idpf]
+> [  420.571611]  idpf_vc_event_task+0x15d/0x2f0 [idpf]
+> [  420.571655]  process_one_work+0x226/0x730
+> [  420.571699]  worker_thread+0x19e/0x340
+> [  420.571729]  ? __pfx_worker_thread+0x10/0x10
+> [  420.571760]  kthread+0xf4/0x130
+> [  420.571785]  ? __pfx_kthread+0x10/0x10
+> [  420.571813]  ret_from_fork+0x32c/0x410
+> [  420.571844]  ? __pfx_kthread+0x10/0x10
+> [  420.571871]  ret_from_fork_asm+0x1a/0x30
+> [  420.571909]  </TASK>
+> 
+> The driver will call idpf_init_dflt_mbx() before the netdevs are created.
+> 
+> Thanks,
+> Emil
 
-I agree with your point there. Still, after the core patches addressing
-this race are applied, I plan to resubmit the _disable patch with an
-updated commit message. I think applying that change is still beneficial.
+This series is based on top of the latest net-next as the PR will be
+sent soon. net-next doesn't have libie_ctql.
 
+For the tree which contains ixd this will look different as it
+introduces ability to pass a device instead of napi_struct. Once this PR
+is accepted, we'll rebase the next-queue to handle this.
 
-Best regards,
-Hyunwoo Kim
+Thanks,
+Olek
