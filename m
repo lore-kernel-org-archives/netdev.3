@@ -1,67 +1,44 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE6B3AE19C;
-	Fri,  6 Mar 2026 14:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E5721A6821;
+	Fri,  6 Mar 2026 14:24:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772806970; cv=none; b=lYNtLsPhfmDmyvL5MCkDRu9s7swo+RETWOhpkAKlvHd6I++qeSHJyYU6/NBSQBoHUFvpPxS5scCx9SY3FqZi2/Fh4ZhJ7/io+SpH2zt9yi/PiF9KXiui+GJqvmFrspJyxmX6Ll1TSRrDu/Hw5kHUnHFCpe+amSdEltmrs8f6fHo=
+	t=1772807080; cv=none; b=s0faoZUXWZPyNQeEJONgmrqN0+6JIH5fMoKg390eOFixnNIqyXr3ek5HqTTnSpf8mZL7prLN7CJsEYi3vCzXeHxKqhJoBjciN3DX/sHmT1coKSznHy9Pmkzaz3rQ0cnZpQkuOQ7RmrBg5DFaNZV9c0LgVd4E3zLuxSWIynrlpqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772806970; c=relaxed/simple;
-	bh=lr62eg/yQj6IZ/4UWLRsanCqEf0V+VNvikqmxUvGP50=;
+	s=arc-20240116; t=1772807080; c=relaxed/simple;
+	bh=rI4ryq8KZf+a00K5dlAbYNQ2TI+H+3gBJALRx1ZwXsk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c7W3/caIDrk4q+/37foDriEB8+KsuuTKZl/mrnTJRfPFfqjVPZitodcujEfyJhsBOKhyAzCpXPkHmR0p/6W3dtJ1OQG8GF2rBlmcS1L6fFYQSKkf+iK7SM4BZAQuMaUAOF4RXRJH9ZZGdbvbC47GAelPY21qVJiMvOk1s+pPUCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=OqrV2kLP; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	 Content-Type:Content-Disposition:In-Reply-To; b=N2Xz0Vj5Az2K8rEJd+XqjPaBUPuBh2OD2HZIdbWueed/r1fYFXBlZQkWESXVBqTMAaI5rFdjqhA8pI1B9Svid35CJ1ePCkOqmGH+kcj4uA3UcRBFBr6mjTy4exwSPL8afo0ywLXYtjFagf66ol2vHMUoXVugtKPvBg+A0FjD05c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uzJm0ows; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="OqrV2kLP"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=+Oav2I00FXUykFElmVCbBYXHqmVVnU2FMhl9aCXemvI=; b=OqrV2kLPU6zYICjhuOma14NfXH
-	pXEu8FV0LZz1jLWhvIgyLbLttFQuiZ9nasMcryAsn44lWCSym1A02EtENFkeEttBO00UQSD9heX5X
-	YNKz2oGRib1nHgHuMvJMMuNuuajiq8D/SilJcapK/UlsSsY4KiaSimHJGkhkepWipPqmJvVXnjkAu
-	QvVRCrkumW8lvYY5kFfmknHnEFoaZQEaChfgVbQBZDCIZYVXXECOaMlDFRnAuXU33mNhJAkUYtxPG
-	6/Y3ksqIQtRNg05cFPZ+4SzhZjQpuNxnkOU+EWRMDqq9YCh69l8EW+hflry4VfjRWFLjDJVJlnQP6
-	a8DkAPDw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39700)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vyW4H-0000000018R-0SQ6;
-	Fri, 06 Mar 2026 14:22:17 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vyW4E-000000001Th-2OCc;
-	Fri, 06 Mar 2026 14:22:14 +0000
-Date: Fri, 6 Mar 2026 14:22:14 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>,
-	UNGLinuxDriver@microchip.com, Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Woojung Huh <woojung.huh@microchip.com>,
-	Steen Hegelund <Steen.Hegelund@microchip.com>,
-	Daniel Machon <daniel.machon@microchip.com>,
-	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH net-next 4/8] net: dsa: lan9645x: add basic dsa driver
- for LAN9645X
-Message-ID: <aarjFiS6NX_7glkr@shell.armlinux.org.uk>
-References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
- <20260303-dsa_lan9645x_switch_driver_base-v1-4-bff8ca1396f5@microchip.com>
- <aahWu2-3YT92vMuC@shell.armlinux.org.uk>
- <32b7267f84b60a4632eb643fd0b999d03c630a1d.camel@microchip.com>
- <052cf8c8-c60b-461a-86ce-aac8d7ebf4d9@lunn.ch>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uzJm0ows"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30031C4CEF7;
+	Fri,  6 Mar 2026 14:24:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772807080;
+	bh=rI4ryq8KZf+a00K5dlAbYNQ2TI+H+3gBJALRx1ZwXsk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uzJm0owssArBal9Ng5DRFON9urN/z8qjY5QUDsjqOEQ8S6xXnNWe+4LA+Tnq+L6Rm
+	 wjGXGRpD/v/tadNlqPkD02di1aRAYJBAlyiyoNfwlq/1/c3O1rNB2enhMf/bsdvtDw
+	 7XDM7Vj9CmuP5zZEUdMnssK8C2yjGHD5jtKv9zIDq8dxrMdtkLiuIa5oTqcFkMyfGJ
+	 +wyXzdI7Kg5sYzuL/IagHlsVQpvX8Mzre4BLr9uc2WwfA/gDjQjPiQEU2qY+9fqMQK
+	 5yANEzEtVx61P5kR5USNWNV1473D2qkhdnKL03bfoCMkVRYNBoE7oxHtaX5qoMKIiP
+	 2IiTYJ3RY0OcQ==
+Date: Fri, 6 Mar 2026 14:24:34 +0000
+From: Simon Horman <horms@kernel.org>
+To: Ratheesh Kannoth <rkannoth@marvell.com>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	sgoutham@marvell.com, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, donald.hunter@gmail.com,
+	jiri@resnulli.us, chuck.lever@oracle.com, matttbe@kernel.org,
+	cjubran@nvidia.com, shshitrit@nvidia.com
+Subject: Re: [PATCH v2 net-next 3/5] octeontx2-af: npc: cn20k: add subbank
+ search order control
+Message-ID: <20260306142434.GF461701@kernel.org>
+References: <20260304043032.3661647-1-rkannoth@marvell.com>
+ <20260304043032.3661647-4-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,60 +47,41 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <052cf8c8-c60b-461a-86ce-aac8d7ebf4d9@lunn.ch>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+In-Reply-To: <20260304043032.3661647-4-rkannoth@marvell.com>
 
-On Thu, Mar 05, 2026 at 03:58:16PM +0100, Andrew Lunn wrote:
-> > > > +     /* We configure delays on the MAC side. When the PHY is not responsible
-> > > > +      * for delays, the MAC is, which is why RGMII_TXID results in
-> > > > +      * rx_delay=true.
-> > > > +      */
-> > > > +     if (mode == PHY_INTERFACE_MODE_RGMII ||
-> > > > +         mode == PHY_INTERFACE_MODE_RGMII_TXID)
-> > > > +             rx_delay = true;
-> > > > +
-> > > > +     if (mode == PHY_INTERFACE_MODE_RGMII ||
-> > > > +         mode == PHY_INTERFACE_MODE_RGMII_RXID)
-> > > > +             tx_delay = true;
-> > > 
-> > > PHY_INTERFACE_MODE_RGMII means that the delays are provided by the
-> > > board layout, so this seems wrong to me. Please review the phylib
-> > > documentation concerning RGMII delays. I'd like Andrew to comment on
-> > > this too.
-> > > 
-> > 
-> > The idea with this was, if the PHY does not provide internal delay, then
-> > we do it in the MAC.
+On Wed, Mar 04, 2026 at 10:00:30AM +0530, Ratheesh Kannoth wrote:
+> CN20K NPC MCAM is split into 32 subbanks that are searched in a
+> predefined order during allocation. Lower-numbered subbanks have
+> higher priority than higher-numbered ones.
 > 
-> That is not really what we want. The default in Linux is that the PHY
-> adds the delays. In general, MAC drivers read the phy-mode, and pass
-> it directly to the PHY. The MAC does not add delays. There are a small
-> number of boards which don't respect this. In the past, there was been
-> claims that an RDK used a PHY which was not capable of adding the
-> needed delays, so the MAC had to. In practice, all the PHY drivers in
-> linux which supporting RGMII support all four configurations of
-> delays.
+> Add a runtime devlink parameter "srch_order" (
+> DEVLINK_PARAM_TYPE_U32_ARRAY) to control the order in which
+> subbanks are searched during MCAM allocation.
+> 
+> Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+> ---
+>  drivers/base/memory.c                         |  1 -
+>  .../ethernet/marvell/octeontx2/af/cn20k/npc.c | 87 ++++++++++++++++++
+>  .../ethernet/marvell/octeontx2/af/cn20k/npc.h |  2 +
+>  .../marvell/octeontx2/af/rvu_devlink.c        | 92 +++++++++++++++++--
+>  4 files changed, 171 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/base/memory.c b/drivers/base/memory.c
+> index a3091924918b..88762061e0a1 100644
+> --- a/drivers/base/memory.c
+> +++ b/drivers/base/memory.c
+> @@ -97,7 +97,6 @@ static void memory_block_release(struct device *dev)
+>  	kfree(mem);
+>  }
+>  
+> -
+>  /* Max block size to be set by memory_block_advise_max_size */
+>  static unsigned long memory_block_advised_size;
+>  static bool memory_block_advised_size_queried;
 
-Unfortunately, I've discovered another case - dwmac-qcom-ethqos::
-ethqos_rgmii_macro_init():
+Hi Ratheesh,
 
-        /* Determine if the PHY adds a 2 ns TX delay or the MAC handles it */
-        if (ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_ID ||
-            ethqos->phy_mode == PHY_INTERFACE_MODE_RGMII_TXID)
-                phase_shift = 0;
-        else
-                phase_shift = RGMII_CONFIG2_TX_CLK_PHASE_SHIFT_EN;
-
-This code was added by 164a9ebe9742 ("net: stmmac: dwmac-qcom-ethqos:
-Respect phy-mode and TX delay") which doesn't have any acks from
-phylib folk. However, before this commit, the driver always added the
-transmit delay.
-
-Sadly, too late to do anything about this now. :(
-
-Should a regexp be added to MAINTAINERS phylib entry to detect patches
-which contain PHY_INTERFACE_MODE_RGMII?
+It looks like this hunk crept into this patch by mistake.
 
 -- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+pw-bot: changes-requested
