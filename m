@@ -1,74 +1,74 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941C83A256B
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 14:29:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 628F83ACA66
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 14:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772807364; cv=none; b=i0H1nKrqtyhnXy2H8RBLfki+/YhuHHYXcSXzSbJqL6AmDlwu+VOIq4mURHE5Ux/ghqjBfahuWv8wM9UGUlsy9YElz2pKHoR6djAnqpHS4L/7vO5K0RFZArSOUffVkI7w15hGnIv9oYB+Y6/xmi+CiLj4gaYCxIn8VLxZwvzIlo8=
+	t=1772807366; cv=none; b=hv6uJnRwQGjevgDHxmYgPzthl9hnBDuP+dnGDzPXHnzc4CELY90Xg8Zm52NOpjFS6y/SeoPLD1ALmzw1a3AiCBLvo0lBaLfCVpQELQ+ajtZPZAUuhnp/d6YLfo9j3y1iw961ws+4Ft31Il60mwwOLYWJ7qnxwL2WcwE/lNWhZB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772807364; c=relaxed/simple;
-	bh=ru7BcOy2QGPb1lxmwW935BBVkRhCD2QUq5jqUemeLX0=;
+	s=arc-20240116; t=1772807366; c=relaxed/simple;
+	bh=qpc/PNFyLGSy0wVjdecxNagU/70l4dij8x1DZ5JiMVc=;
 	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-Version:Content-Type; b=biAaT86nbL3LtDogILM3vcc8uUDZGIDb3H1Ub4cu92zIZ4GVv+J/MqjQS6+tUlV11KetBG7YeXDzXoxHmc9pzgUAbffVPdKRqhGDLuP5d2wuDDr4hGTHtzpTlffc4ZLD+sJdDy4PeX6RQOA6T46vRlICdLvBm7iyb6DTqWY49+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l6RGWysP; arc=none smtp.client-ip=209.85.221.48
+	 MIME-Version:Content-Type; b=kHZq6Ox2M2yBREoBFxk1WpNdo0kAWvPeISunHDrfGGBmryJRkx5TDS6Um6opaSU8k9eEh1d0UstrpZ98Px08YlEclAKCKrPW/IDmgTJWlu2GxWYNk7/d9XIETWLruKXI6pBgSd40puKYMKlrZbV7LKyHJ2WBo4iXOL+LRpc0Rg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pjmg1dbs; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l6RGWysP"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-439d8dc4ae4so865437f8f.2
-        for <netdev@vger.kernel.org>; Fri, 06 Mar 2026 06:29:23 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pjmg1dbs"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-439b6d9c981so4047832f8f.1
+        for <netdev@vger.kernel.org>; Fri, 06 Mar 2026 06:29:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772807362; x=1773412162; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1772807364; x=1773412164; darn=vger.kernel.org;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ru7BcOy2QGPb1lxmwW935BBVkRhCD2QUq5jqUemeLX0=;
-        b=l6RGWysPT8dKMk0aiE2wq0dtj39o+xkvUM4vj4yoJHfYBKk6Mf68bwB5dLrjILSSil
-         VFdGrtcyIC6yGLYBHWSWH8CC8MgDTsjwRddf+GhwbT5f6E+qdRhoAYn9OyN6i7cDY7kS
-         6kI8ouJxlO708TcywyvUTUROgei1cL+vns66Uj93LZa1l81nkII2jSG2FYiuKbdkF/1h
-         Oe8kK3niJBEDh1Zb1EzXEYivIDXlJ9z/USqHogkRSw+UfOQuHt0jrbowrKie724+qSvk
-         oNWuRvrdnWld51NVeU+iYq5DJrvFx0jBebzxfrlaQazyzIR7dPXHOzaI+Tq8HfNCfFKl
-         K9Aw==
+        bh=qhWtiMjf5+O1tAMyGOx4KwdJWT7a8YU9k5/s63tBa0Q=;
+        b=Pjmg1dbsoqkINuGc8wQEEKBtuTmjqW79dOGarOFxJyorBZmArC1KzqhyKB1b2TwF5S
+         LylfVSh2dhc/NmxAu+qsD93G6JeTbycDCF3wVJEYCB2edhqFujk9BgxN9BPGIyGC2lF6
+         14Ewtrv/QRA2g+knYJ/TXIHek1HdSVQqCWuJR2m1FYC/OiTXxheuqYVnLJXq9Eeqien+
+         Nj1GnbV8je+sLKUvEhAkwtWgmFwWPCzVpdQvmmQfVSVFuew8uJDN9Yty5GBIjFWYus/a
+         RSd9mucuHJRASj+5yW1IEotpQblc3wxAHGst6/mXUkeGwFNDryvYVzwOY8IOtfWl6HvR
+         f7Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772807362; x=1773412162;
+        d=1e100.net; s=20230601; t=1772807364; x=1773412164;
         h=mime-version:user-agent:references:message-id:date:in-reply-to
          :subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=ru7BcOy2QGPb1lxmwW935BBVkRhCD2QUq5jqUemeLX0=;
-        b=T99oOx/L5yl8xCm4kU5OPiAykI1ncDw1a9pooBMfCZvE13rWC2pCqVu5Cm5C0BiKZc
-         stgO4JSU1lil3asD4qndb1Vn6P5+jG97Ml4dS8XNHebGnQs8PBl8S1L7KwfUmOtdeQL8
-         GD+dwHFYsFatNO6I37XgIrpr41Q95j3j0bx1qqSzNf0QbMtIuH3TWX4DTQhyZjYEloQS
-         MgqqgTW6JYmFYTwIzdVWzc7aCcVWm5FA37yEEHmqJNPUEz3fjMghSj0uWG3sPiiAFab4
-         izO+8pWuWati0Pv7Ehiu6pN9gPzbDQwoN50KMwLS/N6p3yWFAlXyStgNckBl0Fmkx0DS
-         iYnw==
-X-Forwarded-Encrypted: i=1; AJvYcCWA5udqZSYDAbitze0+wKgxFyuxDKAr2CDxTIPwBM56AAG1JQWTQake2MD3Lvj3CuL/5EY09OQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynqYHQynY2rmtmFu+JpuJ3fdC3z3EH6/IXgo58c1fviZnhTg9U
-	HyUu2iWrOcqUpd3LlStv7vOws/uSdSLw//YikiGSwDfeg7X4pwaZIMgr
-X-Gm-Gg: ATEYQzz9LQ4vo3EgPPzi9T9ZX2eYRT98spXIX6KYuNQOuBBCceLG+wn+5hHNm3MQIZX
-	Ib4eMILfvZxrVOceSM8GcQPPbcQJ2W7sZ84qd9rGMXR482j/gT/3Jfqq+zM6jVKb0CJ62R9Vf0i
-	ARD9jz4sMdMbyB/csqWzFhpIO31l8WrZKw4BONgHkaP0xiAmCfPo3Mc7TudUWDfLr8rTH1jEmUx
-	E3CmGPPW1xO/NfseL/XOfTMCEWg1JJJVwC0P3ZGpGUK05kepG1tZwYxxTnBtaHiPs/9YGrMywkw
-	3mL993sBg3+WxLkM6HXK08FRKarOHujp41r0eTe2lp2wQ8323tI68KiAMlEokcNnhglmDVryMYv
-	8HKhczDNCH/Sx5D4YwggFsqXbr9+8SRbDVraQg/x1dPsjvpraQ+wdG5+XpPnk2Qfixq6hesIN8f
-	RubdWTVNQJFx9vgJ8udqLtP+u3ZoN5NKZEj4QI
-X-Received: by 2002:a05:6000:1a8a:b0:439:d755:a895 with SMTP id ffacd0b85a97d-439da86f787mr4105638f8f.42.1772807361864;
-        Fri, 06 Mar 2026 06:29:21 -0800 (PST)
+        bh=qhWtiMjf5+O1tAMyGOx4KwdJWT7a8YU9k5/s63tBa0Q=;
+        b=HEZkbJlqk6zP7OgNKU2+KK9Wilhj1AsUZWMWcDC7WnC7E3fXDiAr8B/u1bkPpuXBG9
+         Uop6TX/qPtV9RSYTVUA067FvfCBkKfxDx3YXNM2yaDV6zRy6ex7SYhltbpVsFv+6EohY
+         eXO7GadC7SsSsRqfG/gsCKVZsoEkxFPHC8VwMlLfbsApy5Y+/82Cv1CHKet4AkuEy0oI
+         adCdEfIy7WRuxk/rebGbg3uVi8YJsXU7duE2zIsUcx+iQho6O+gNc/AKjxI4bpwIzsMF
+         b5/jE/pv7ahIQzUDpbTthTbVQFUV2EStFRPFgA7bgokTFmHu99mYebmWWnmVh4VRVZBy
+         1ynQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVaDd6Zh3AIYwIKPdp5+hBW56H0+kd9ZwOAQ9AEMb17zmQJfAKngrBOzf7rgJ6S6/PSdWOX6RU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeLE4Vu+g4m3Ib4xDBGhDNzr6AM3uf66+fkGVtOVKPRhkK3DlA
+	ykyBuwHVURskBW0zVmFHesJtW74ho9ljNBre4EhXjmIxB73l+YiSBSL7
+X-Gm-Gg: ATEYQzy9lV19I409uiNtiABTjNw2gpGqPPNQo8jPHjvIO2Qsp1OgpLlBkNBpUUf6wRp
+	X4DKT++PJdDRc2FdV08OmwnSKwXl1FDy1M5hVOmhMNKzN9QR91nUEy+XOGGxu1b/7GmtZSLfSAq
+	9ab95LGDJNXDT3aJ1vRFnYVVTn0P7oHUtlPlZa5iuDJKrd5wGn0Bb0a/TxJSC28Oi1VBrvNBCkG
+	gsexZSyKndoG7WUkfLByWMrnw+R4mmBrKNWvCt0/swLT8eR1Aj9CxUwiwdgOtJi31+veDF9XIHp
+	UuQy69JkfuQa0A9vuBQF1O65PwWRsDLx+yq3HDIRUa3ULBqhyKC2pMjyoVh7Br0uMfzTl9ZCc0i
+	c8I1AYce3Whd00iE3GyEI7CcuseLYlVy1FEJD+x9hkHM8zagfAYMhPHw4uNB5GQYK76W16BmJZA
+	qsmdLf2pDW5rAwV6daKwxyg6yX8Q==
+X-Received: by 2002:a05:6000:3113:b0:439:ce30:5b84 with SMTP id ffacd0b85a97d-439da327d13mr4238890f8f.2.1772807363559;
+        Fri, 06 Mar 2026 06:29:23 -0800 (PST)
 Received: from imac ([88.97.103.74])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dae36785sm4507302f8f.27.2026.03.06.06.29.20
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dadb29fdsm4421539f8f.16.2026.03.06.06.29.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 06:29:21 -0800 (PST)
+        Fri, 06 Mar 2026 06:29:23 -0800 (PST)
 From: Donald Hunter <donald.hunter@gmail.com>
 To: Jakub Kicinski <kuba@kernel.org>
 Cc: davem@davemloft.net,  netdev@vger.kernel.org,  edumazet@google.com,
   pabeni@redhat.com,  andrew+netdev@lunn.ch,  horms@kernel.org,
   liuhangbin@gmail.com,  matttbe@kernel.org
-Subject: Re: [PATCH net-next 06/10] tools: ynl: add netdevsim wrapper
- library for YNL tests
-In-Reply-To: <20260306020901.524105-7-kuba@kernel.org>
-Date: Fri, 06 Mar 2026 12:23:26 +0000
-Message-ID: <m2a4wli1tt.fsf@gmail.com>
+Subject: Re: [PATCH net-next 02/10] tools: ynl: convert netdev sample to
+ selftest
+In-Reply-To: <20260306020901.524105-3-kuba@kernel.org>
+Date: Fri, 06 Mar 2026 13:45:41 +0000
+Message-ID: <m25x79hy0q.fsf@gmail.com>
 References: <20260306020901.524105-1-kuba@kernel.org>
-	<20260306020901.524105-7-kuba@kernel.org>
+	<20260306020901.524105-3-kuba@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -80,10 +80,33 @@ Content-Type: text/plain
 
 Jakub Kicinski <kuba@kernel.org> writes:
 
-> Some tests need netdevsim setup which is painful to do from C.
+> Convert netdev.c to produce KTAP output with 3 tests:
+> - dev_dump: dump all netdev devices, skip if empty
+> - dev_get: query first device from dump by ifindex
+> - ntf_check: subscribe to "mgmt", create a veth via rt-link,
+>   verify netdev notification is received, then delete the veth
 >
-> Add ynl_nsim_lib.sh, a shared library providing nsim_setup and
-> nsim_cleanup functions for tests that need a netdevsim device.
+> Remove stdin/scanf-based UI. Add rt-link dependency for the veth
+> notification test.
+>
+>   TAP version 13
+>   1..3
+>   # Starting 3 tests from 1 test cases.
+>   #  RUN           netdev.dump ...
+>   #       lo[1]	xdp-features (0): xdp-rx-metadata-features (0): xsk-fea...
+>   #     sit0[2]	xdp-features (0): xdp-rx-metadata-features (0): xsk-fea...
+>   #            OK  netdev.dump
+>   ok 1 netdev.dump
+>   #  RUN           netdev.get ...
+>   #       lo[1]	xdp-features (0): xdp-rx-metadata-features (0): xsk-fea...
+>   #            OK  netdev.get
+>   ok 2 netdev.get
+>   #  RUN           netdev.ntf_check ...
+>   #    veth0[7]	xdp-features (0): xdp-rx-metadata-features (7): timesta...
+>   #            OK  netdev.ntf_check
+>   ok 3 netdev.ntf_check
+>   # PASSED: 3 / 3 tests passed.
+>   # Totals: pass:3 fail:0 xfail:0 xpass:0 skip:0 error:0
 >
 > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 
