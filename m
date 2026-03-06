@@ -1,54 +1,35 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6AF1F4615;
-	Fri,  6 Mar 2026 21:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3D7175A95
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 21:20:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772831906; cv=none; b=KEUe/sAlZkxMKBofeVW+7wMlFzQiZfJk2+LeH+XsN6tiPJVKchzTBHn7392/CwGED5sJnIQ7kV7eG33xZvGDTDFcxzJPGY3pgVqa/tiv8XYDppUmSL2tSYBYf+ulLmg755ti5Etyy/vTP69o1zQXBfCY4YXJ90xSUiAQ3fby4Ns=
+	t=1772832021; cv=none; b=hMcMYdU9OF5LfPpyIEiCey5MBA+6JlRkP/x6bz3GzVZqK5ZWIGWXUknk6BzCqqihLQ/QJ4hKiSkNnzwNnITlknIBRdN5jiAme3xQsoVXbRSe9ZX6g4H+7UtJeE8HWuHlIVV2zKBWSHoazpt68W6g9+Kg7IMqxq0PdokvGnnXIxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772831906; c=relaxed/simple;
-	bh=3owFiLN0CaXTZhTIGLSz57j3KKPz1bvn2pjRi3dJtR4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jqTk6K+aFu+Vrp3O2GOKT7nzP/byc1VtDgxOQSYq78CwawTxjmuSL3Hh8Hg6UlUmhZtcQt81IDxsqUgxiYirHBRyKSpDhxrcjv9B9H/vhwTPxVNWysl8bBjKOxmDg79a0RateS21PIvSR8jd5gS54cZwKA+Im7qSumiyrnU3njE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Rlk1VTPV; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1772832021; c=relaxed/simple;
+	bh=/jjYyUiuudx18VxvHHOiQdlKHrZ4rlrC9gyDgRJillQ=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=G5GGi8+1XHDWzA7P0Ibfk/BVt/ZW88jbA7gri990r+NGuuCNIChCWAo4L6NYd5PtdRY/Sg4t2p3zTlcVc1uawt4zYcg/vKT32ejq5UBUzokqkmWQhS0jkDXvqtYjFMBQ/UFXS8O1z/hvv41Op88nY27nKWsvhWjSoeijKmQ6UBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gY6A0mva; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Rlk1VTPV"
-Received: by linux.microsoft.com (Postfix, from userid 1173)
-	id 7CBBC20B6F02; Fri,  6 Mar 2026 13:12:46 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7CBBC20B6F02
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1772831566;
-	bh=bF+bCk7Lg3fgVXMvUmbdXZivXajPDseHDj+9XlUsCQE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Rlk1VTPVzPYDFhJUTS1HuDc3geVcWFFoIb1LTmC/LCi4DaYFh7lM9efk0RL1TmCoK
-	 SRKy0Ps8Y/KCQbLhI6LjXVbBNMUnZTlLl1a5529MSAXRiwV2EMXwPegXm+j00XuZf+
-	 GM31cMenNQV2BFZVetK5NzysMFM0TvZMMbbKmWFk=
-From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	longli@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	kotaranov@microsoft.com,
-	horms@kernel.org,
-	shradhagupta@linux.microsoft.com,
-	dipayanroy@linux.microsoft.com,
-	yury.norov@gmail.com,
-	kees@kernel.org,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Cc: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Subject: [PATCH net-next] net: mana: hardening: Validate doorbell ID from GDMA_REGISTER_DEVICE response
-Date: Fri,  6 Mar 2026 13:12:06 -0800
-Message-ID: <20260306211212.543376-1-ernis@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gY6A0mva"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C53CC4CEF7;
+	Fri,  6 Mar 2026 21:20:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772832021;
+	bh=/jjYyUiuudx18VxvHHOiQdlKHrZ4rlrC9gyDgRJillQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=gY6A0mvajtKgiSfCie93S2nOkhrl/SJdPejb5a/1m0laP9aK+mN0qZ8gY6pZa3VHB
+	 pMXCJOp15fbOAUhBsX0CwjrOW6+qJh/CF9D2Xgp08ZWH2Nd+Bt8dBpjnbTt9tyjGs/
+	 mX3Zcs/doidHBaYVZVnhqHL1EzXX31b5vAyfPBdSqyyCcRy2owPWZsjATh600w0THy
+	 vVAYeAZ019CHwELtl4u161vb5Ck9sVKhvB1v9pEghcAK5kxYrPT6mYiEaPKAco2qwu
+	 QD5+DLxIMW+KmswArVRNYpg9uFV+D+g9ULAtDyO2+hD9b/I5dgnGpbVUnH70+EKImT
+	 m5/6Z1gMkfLFA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id BA1AA3808200;
+	Fri,  6 Mar 2026 21:20:21 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -56,174 +37,51 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next v3 0/4] selftests/net: add netkit container env
+ and
+ test
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177283202030.56009.14147672888349536135.git-patchwork-notify@kernel.org>
+Date: Fri, 06 Mar 2026 21:20:20 +0000
+References: <20260305181803.2912736-1-dw@davidwei.uk>
+In-Reply-To: <20260305181803.2912736-1-dw@davidwei.uk>
+To: David Wei <dw@davidwei.uk>
+Cc: netdev@vger.kernel.org, andrew+netdev@lunn.ch, davem@davemloft.net,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, joe@dama.to,
+ weibunny@meta.com, bobbyeshleman@gmail.com, sdf@fomichev.me,
+ razor@blackwall.org
 
-As a part of MANA hardening for CVM, add validation for the doorbell
-ID (db_id) received from hardware in the GDMA_REGISTER_DEVICE response
-to prevent out-of-bounds memory access when calculating the doorbell
-page address.
+Hello:
 
-In mana_gd_ring_doorbell(), the doorbell page address is calculated as:
-  addr = db_page_base + db_page_size * db_index
-       = (bar0_va + db_page_off) + db_page_size * db_index
+This series was applied to netdev/net-next.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-A hardware could return values that cause this address to fall outside
-the BAR0 MMIO region. In Confidential VM environments, hardware responses
-cannot be fully trusted.
+On Thu,  5 Mar 2026 10:17:59 -0800 you wrote:
+> Add a new Python selftest env NetDrvContEnv that sets up a pair of
+> netkit netdevs, with one inside of a netns, and a bpf prog that forwards
+> skbs from NETIF to the netkit inside the netns.
+> 
+>   NETIF           = "eth0"
+>   LOCAL_V6        = "2001:db8:1::1"
+>   REMOTE_V6       = "2001:db8:1::2"
+>   LOCAL_PREFIX_V6 = "2001:db8:2::0/64"
+> 
+> [...]
 
-Add the following validations:
-- Store the BAR0 size (bar0_size) in gdma_context during probe.
-- Validate the doorbell page offset (db_page_off) read from device
-  registers does not exceed bar0_size during initialization, converting
-  mana_gd_init_registers() to return an error code.
-- Validate db_id from GDMA_REGISTER_DEVICE response against the
-  maximum number of doorbell pages that fit within BAR0.
+Here is the summary with links:
+  - [net-next,v3,1/4] selftests/net: Add bpf skb forwarding program
+    https://git.kernel.org/netdev/net-next/c/01748996f649
+  - [net-next,v3,2/4] selftests/net: Export Netlink class via lib.py
+    https://git.kernel.org/netdev/net-next/c/68ab8ba92775
+  - [net-next,v3,3/4] selftests/net: Add env for container based tests
+    https://git.kernel.org/netdev/net-next/c/3f74d5bb807e
+  - [net-next,v3,4/4] selftests/net: Add netkit container ping test
+    https://git.kernel.org/netdev/net-next/c/37d24994a7a0
 
-Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
----
- .../net/ethernet/microsoft/mana/gdma_main.c   | 60 ++++++++++++++-----
- include/net/mana/gdma.h                       |  4 +-
- 2 files changed, 49 insertions(+), 15 deletions(-)
-
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index aef8612b73cb..ef0dbfaac8f4 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -39,49 +39,66 @@ static u64 mana_gd_r64(struct gdma_context *g, u64 offset)
- 	return readq(g->bar0_va + offset);
- }
- 
--static void mana_gd_init_pf_regs(struct pci_dev *pdev)
-+static int mana_gd_init_pf_regs(struct pci_dev *pdev)
- {
- 	struct gdma_context *gc = pci_get_drvdata(pdev);
- 	void __iomem *sriov_base_va;
- 	u64 sriov_base_off;
- 
- 	gc->db_page_size = mana_gd_r32(gc, GDMA_PF_REG_DB_PAGE_SIZE) & 0xFFFF;
--	gc->db_page_base = gc->bar0_va +
--				mana_gd_r64(gc, GDMA_PF_REG_DB_PAGE_OFF);
-+	gc->db_page_off = mana_gd_r64(gc, GDMA_PF_REG_DB_PAGE_OFF);
- 
--	gc->phys_db_page_base = gc->bar0_pa +
--				mana_gd_r64(gc, GDMA_PF_REG_DB_PAGE_OFF);
-+	/* Validate doorbell offset is within BAR0 */
-+	if (gc->db_page_off >= gc->bar0_size) {
-+		dev_err(gc->dev,
-+			"Doorbell offset 0x%llx exceeds BAR0 size 0x%llx\n",
-+			gc->db_page_off, (u64)gc->bar0_size);
-+		return -EPROTO;
-+	}
-+
-+	gc->db_page_base = gc->bar0_va + gc->db_page_off;
-+	gc->phys_db_page_base = gc->bar0_pa + gc->db_page_off;
- 
- 	sriov_base_off = mana_gd_r64(gc, GDMA_SRIOV_REG_CFG_BASE_OFF);
- 
- 	sriov_base_va = gc->bar0_va + sriov_base_off;
- 	gc->shm_base = sriov_base_va +
- 			mana_gd_r64(gc, sriov_base_off + GDMA_PF_REG_SHM_OFF);
-+
-+	return 0;
- }
- 
--static void mana_gd_init_vf_regs(struct pci_dev *pdev)
-+static int mana_gd_init_vf_regs(struct pci_dev *pdev)
- {
- 	struct gdma_context *gc = pci_get_drvdata(pdev);
- 
- 	gc->db_page_size = mana_gd_r32(gc, GDMA_REG_DB_PAGE_SIZE) & 0xFFFF;
-+	gc->db_page_off = mana_gd_r64(gc, GDMA_REG_DB_PAGE_OFFSET);
- 
--	gc->db_page_base = gc->bar0_va +
--				mana_gd_r64(gc, GDMA_REG_DB_PAGE_OFFSET);
-+	/* Validate doorbell offset is within BAR0 */
-+	if (gc->db_page_off >= gc->bar0_size) {
-+		dev_err(gc->dev,
-+			"Doorbell offset 0x%llx exceeds BAR0 size 0x%llx\n",
-+			gc->db_page_off, (u64)gc->bar0_size);
-+		return -EPROTO;
-+	}
- 
--	gc->phys_db_page_base = gc->bar0_pa +
--				mana_gd_r64(gc, GDMA_REG_DB_PAGE_OFFSET);
-+	gc->db_page_base = gc->bar0_va + gc->db_page_off;
-+	gc->phys_db_page_base = gc->bar0_pa + gc->db_page_off;
- 
- 	gc->shm_base = gc->bar0_va + mana_gd_r64(gc, GDMA_REG_SHM_OFFSET);
-+
-+	return 0;
- }
- 
--static void mana_gd_init_registers(struct pci_dev *pdev)
-+static int mana_gd_init_registers(struct pci_dev *pdev)
- {
- 	struct gdma_context *gc = pci_get_drvdata(pdev);
- 
- 	if (gc->is_pf)
--		mana_gd_init_pf_regs(pdev);
-+		return mana_gd_init_pf_regs(pdev);
- 	else
--		mana_gd_init_vf_regs(pdev);
-+		return mana_gd_init_vf_regs(pdev);
- }
- 
- /* Suppress logging when we set timeout to zero */
-@@ -1256,6 +1273,17 @@ int mana_gd_register_device(struct gdma_dev *gd)
- 		return err ? err : -EPROTO;
- 	}
- 
-+	/* Validate that doorbell page for db_id is within the BAR0 region.
-+	 * In mana_gd_ring_doorbell(), the address is calculated as:
-+	 *   addr = db_page_base + db_page_size * db_id
-+	 *        = (bar0_va + db_page_off) + (db_page_size * db_id)
-+	 * So we need: db_page_off + db_page_size * (db_id + 1) <= bar0_size
-+	 */
-+	if (gc->db_page_off + gc->db_page_size * ((u64)resp.db_id + 1) > gc->bar0_size) {
-+		dev_err(gc->dev, "Doorbell ID %u out of range\n", resp.db_id);
-+		return -EPROTO;
-+	}
-+
- 	gd->pdid = resp.pdid;
- 	gd->gpa_mkey = resp.gpa_mkey;
- 	gd->doorbell = resp.db_id;
-@@ -1890,7 +1918,10 @@ static int mana_gd_setup(struct pci_dev *pdev)
- 	struct gdma_context *gc = pci_get_drvdata(pdev);
- 	int err;
- 
--	mana_gd_init_registers(pdev);
-+	err = mana_gd_init_registers(pdev);
-+	if (err)
-+		return err;
-+
- 	mana_smc_init(&gc->shm_channel, gc->dev, gc->shm_base);
- 
- 	gc->service_wq = alloc_ordered_workqueue("gdma_service_wq", 0);
-@@ -1996,6 +2027,7 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	mutex_init(&gc->eq_test_event_mutex);
- 	pci_set_drvdata(pdev, gc);
- 	gc->bar0_pa = pci_resource_start(pdev, 0);
-+	gc->bar0_size = pci_resource_len(pdev, 0);
- 
- 	bar0_va = pci_iomap(pdev, bar, 0);
- 	if (!bar0_va)
-diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
-index ec17004b10c0..7fe3a1b61b2d 100644
---- a/include/net/mana/gdma.h
-+++ b/include/net/mana/gdma.h
-@@ -421,10 +421,12 @@ struct gdma_context {
- 
- 	phys_addr_t		bar0_pa;
- 	void __iomem		*bar0_va;
-+	resource_size_t		bar0_size;
- 	void __iomem		*shm_base;
- 	void __iomem		*db_page_base;
- 	phys_addr_t		phys_db_page_base;
--	u32 db_page_size;
-+	u64 db_page_off;
-+	u64 db_page_size;
- 	int                     numa_node;
- 
- 	/* Shared memory chanenl (used to bootstrap HWC) */
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
