@@ -1,77 +1,54 @@
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E084A481FA9
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 21:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6AF1F4615;
+	Fri,  6 Mar 2026 21:18:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772831607; cv=none; b=kkVtzhBzayWK0NkVReVez1ZujqKRmiaIMnnKFYOfEtgqMc+EglxLyJFotPFOVuG7awLR1Z65l+nfmm1CbVLIRDNoDUZLFPdauAjW7WsGcKY0HvzLg0bUDaI50qOjUO4fKclPQZBpx/QpPbMXzeQ1AqlUo+fgMbhCHS6VAiIbnKw=
+	t=1772831906; cv=none; b=KEUe/sAlZkxMKBofeVW+7wMlFzQiZfJk2+LeH+XsN6tiPJVKchzTBHn7392/CwGED5sJnIQ7kV7eG33xZvGDTDFcxzJPGY3pgVqa/tiv8XYDppUmSL2tSYBYf+ulLmg755ti5Etyy/vTP69o1zQXBfCY4YXJ90xSUiAQ3fby4Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772831607; c=relaxed/simple;
-	bh=zmHZKOzqChOfGFaw8PX65dX4RvzOanOgiUgNjBp6msI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TbwkT1+ECvwAeYzDROm7X/WvhIG5CPJBSlRtSBcj+TIdb5oMmPugW/S9QuqO0FyGj3xyJbsIYNcW8HMN9l/APa2ksa03vEpJArFQwtYmTFe7XBfnE/kJM7BvgEhjzKoBEmeVdl9mE5j9ZxLR77gCCDfhWkkBfasoGKuln9pvKNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WeHB+x30; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1772831906; c=relaxed/simple;
+	bh=3owFiLN0CaXTZhTIGLSz57j3KKPz1bvn2pjRi3dJtR4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jqTk6K+aFu+Vrp3O2GOKT7nzP/byc1VtDgxOQSYq78CwawTxjmuSL3Hh8Hg6UlUmhZtcQt81IDxsqUgxiYirHBRyKSpDhxrcjv9B9H/vhwTPxVNWysl8bBjKOxmDg79a0RateS21PIvSR8jd5gS54cZwKA+Im7qSumiyrnU3njE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Rlk1VTPV; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WeHB+x30"
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5a133502accso2502041e87.3
-        for <netdev@vger.kernel.org>; Fri, 06 Mar 2026 13:13:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772831604; x=1773436404; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pMTRV/w5uF1FJW7BPbinMB5ysdrzJZZCY3sqGJfURo8=;
-        b=WeHB+x30zi6IWaTAYuqnv3H2gKx0k+d6i9aaqqO31rViPbq7Gpsai1N9aLteTS8DN5
-         0TVTTCGwOak0/NXtSHhSMwCPcpFgRqW6L5xzNHQVJyGXK9YnC0B+cNLOR9nhXxuJYDNX
-         lTmx7xCeiQyKCp/F5IXh3ieh8ToD03pXVf5bHz7Vk5URzJlvsR3BchW4foTE/1iJWRbs
-         EdlPNx8T2S6dQxw9jdkl78QJXkcN4ar7IqgGqLAlnmgXyHWyKJBFCuJn0iKTxS1XWNdZ
-         lp0skjd14WYZvhXSw8doLBBgxlU1Izc7IpA0cKPjRZxeKPUP4W1kOt+4hYwFhfA6KR4T
-         wx9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772831604; x=1773436404;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pMTRV/w5uF1FJW7BPbinMB5ysdrzJZZCY3sqGJfURo8=;
-        b=Bn8RqnpF0Px5FN6V1aMHoekethYR77YJaBWnyEz3KjkBkGahP/1PbwH0cathWtm85r
-         Q2iV56nHTChATO1N+Igb2RJJbDiF/Ok0/ilI80zIpl8/DBXEuMtONm8QEGFRix7ufA4w
-         jwvSr2MDZvh1ElU3jH7RJTFUheIWydPQja5C7oNMFCAWcXY0D8Q7AeV+oIUN2+th9B7S
-         q+Usv9CjyvItY1ZpenvyAgaaV7Xu0ZjByOC0Q5/SQih7I4+Zmu4/U5Y/dGaBhNluWTHM
-         4Y1AZIxTjchPrCSCzeYw2hGijbiv+gRcINl2CjFQkERJajfkaw6Zy9NfeBGPhT7I4zhD
-         fHww==
-X-Gm-Message-State: AOJu0YxVbN5g55VAFUS5xUyUAAbg3IIBzXcVqIoOq3oXGK5ohGik9W00
-	+eB6DMDMSQDjx2MPMWnKw4Beb+JtilmWsbjtg/CrvcVsJKl1lH/XCbJg
-X-Gm-Gg: ATEYQzyM1EoFDaNJYJ92mTA9n24I3Go+fIhvD4L3nHMqsjZfM1BlhNpgYwGDWECgadA
-	nnoiSbs9M9SuUEw1xYhymrRativTgynTf0AckBRjwr8RNOMJsfnglLydziYpeuBPddqHjbQGAww
-	o5ot1a5MrXbu9FRYcRexF71tBEMN1iwi/9L3rvyRCgv1VFO8lS8RHHHi/5U72rm5pSLNU9+Krx7
-	W4QY6HjfkJ/EIGLBiQPEv38VKry+ppW7ebeObXIAwQ/69xw9v3rVpjD+oT0FsankcoVmiQ8y868
-	evH1/x+gbOr9ONjR+odtzmJggbv8vX4p2E80wVjFY4+sYFwrqYJKImG5dgutwpuBgHjVmtTbbFE
-	cLlMO6FYHVd6XAPFnnePfWovYEOPutUWsnZSLtO0SycAqp3cJkHyy8rGbY1yE3ZIH5TRf8mgW5B
-	skR7ks
-X-Received: by 2002:a05:6512:3b23:b0:5a1:2f7b:b5b0 with SMTP id 2adb3069b0e04-5a13ccd4283mr1149039e87.23.1772831603857;
-        Fri, 06 Mar 2026 13:13:23 -0800 (PST)
-Received: from router-0001 ([2a01:4f9:3080:2e0f::2])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a13d07e0f1sm554433e87.58.2026.03.06.13.13.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 06 Mar 2026 13:13:22 -0800 (PST)
-From: Alex Dvoretsky <advoretsky@gmail.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	stable@vger.kernel.org,
-	kurt@linutronix.de,
-	maciej.fijalkowski@intel.com,
-	Alex Dvoretsky <advoretsky@gmail.com>
-Subject: [PATCH net 3/3] igb: add XDP transition guards in igb_xdp_setup()
-Date: Fri,  6 Mar 2026 22:13:10 +0100
-Message-ID: <20260306211310.1213330-4-advoretsky@gmail.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260306211310.1213330-1-advoretsky@gmail.com>
-References: <20260306211310.1213330-1-advoretsky@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Rlk1VTPV"
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id 7CBBC20B6F02; Fri,  6 Mar 2026 13:12:46 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 7CBBC20B6F02
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1772831566;
+	bh=bF+bCk7Lg3fgVXMvUmbdXZivXajPDseHDj+9XlUsCQE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Rlk1VTPVzPYDFhJUTS1HuDc3geVcWFFoIb1LTmC/LCi4DaYFh7lM9efk0RL1TmCoK
+	 SRKy0Ps8Y/KCQbLhI6LjXVbBNMUnZTlLl1a5529MSAXRiwV2EMXwPegXm+j00XuZf+
+	 GM31cMenNQV2BFZVetK5NzysMFM0TvZMMbbKmWFk=
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	longli@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	kotaranov@microsoft.com,
+	horms@kernel.org,
+	shradhagupta@linux.microsoft.com,
+	dipayanroy@linux.microsoft.com,
+	yury.norov@gmail.com,
+	kees@kernel.org,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Cc: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Subject: [PATCH net-next] net: mana: hardening: Validate doorbell ID from GDMA_REGISTER_DEVICE response
+Date: Fri,  6 Mar 2026 13:12:06 -0800
+Message-ID: <20260306211212.543376-1-ernis@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -80,64 +57,173 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-igb_xdp_setup() calls igb_close() + igb_open() when transitioning
-between XDP and non-XDP mode on a running device. This has two issues:
+As a part of MANA hardening for CVM, add validation for the doorbell
+ID (db_id) received from hardware in the GDMA_REGISTER_DEVICE response
+to prevent out-of-bounds memory access when calculating the doorbell
+page address.
 
-1. ndo_xsk_wakeup() runs under rcu_read_lock() and may still access
-   the rings while igb_xdp_setup() removes the XDP program. Without
-   waiting for an RCU grace period, igb_close() can tear down the
-   rings while ndo_xsk_wakeup() is still executing. Add
-   synchronize_rcu() before igb_close() when removing an XDP program
-   to ensure all in-flight RCU readers complete first.
+In mana_gd_ring_doorbell(), the doorbell page address is calculated as:
+  addr = db_page_base + db_page_size * db_index
+       = (bar0_va + db_page_off) + db_page_size * db_index
 
-2. The igb_close()/igb_open() window leaves trans_start stale from
-   before the close: the TX watchdog can fire a spurious timeout and
-   queue a reset_task that races with igb_open(). Add
-   netif_trans_update() after igb_open() to refresh the timestamp, and
-   cancel_work() to cancel any reset_task that may have been queued
-   while the device was down.
+A hardware could return values that cause this address to fall outside
+the BAR0 MMIO region. In Confidential VM environments, hardware responses
+cannot be fully trusted.
 
-Note: cancel_work_sync() cannot be used here because igb_reset_task()
-takes rtnl_lock, which is already held by the ndo_bpf caller. Plain
-cancel_work() is sufficient: if reset_task is already running, it blocks
-on rtnl_lock and will check __IGB_DOWN when it acquires it.
+Add the following validations:
+- Store the BAR0 size (bar0_size) in gdma_context during probe.
+- Validate the doorbell page offset (db_page_off) read from device
+  registers does not exceed bar0_size during initialization, converting
+  mana_gd_init_registers() to return an error code.
+- Validate db_id from GDMA_REGISTER_DEVICE response against the
+  maximum number of doorbell pages that fit within BAR0.
 
-Fixes: 9cbc948b5a20 ("igb: add XDP support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alex Dvoretsky <advoretsky@gmail.com>
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ .../net/ethernet/microsoft/mana/gdma_main.c   | 60 ++++++++++++++-----
+ include/net/mana/gdma.h                       |  4 +-
+ 2 files changed, 49 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index ddb7ce9e97bf..9ba944bf67b4 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -2913,6 +2913,9 @@ static int igb_xdp_setup(struct net_device *dev, struct netdev_bpf *bpf)
- 
- 	/* device is up and bpf is added/removed, must setup the RX queues */
- 	if (need_reset && running) {
-+		if (!prog)
-+			/* Wait for RCU readers (e.g. ndo_xsk_wakeup). */
-+			synchronize_rcu();
- 		igb_close(dev);
- 	} else {
- 		for (i = 0; i < adapter->num_rx_queues; i++)
-@@ -2936,6 +2939,14 @@ static int igb_xdp_setup(struct net_device *dev, struct netdev_bpf *bpf)
- 	if (running)
- 		igb_open(dev);
- 
-+	/* Refresh watchdog timestamp after reopen and cancel any
-+	 * reset task queued while the device was down.
-+	 */
-+	if (need_reset && running) {
-+		netif_trans_update(dev);
-+		cancel_work(&adapter->reset_task);
-+	}
-+
- 	return 0;
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index aef8612b73cb..ef0dbfaac8f4 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -39,49 +39,66 @@ static u64 mana_gd_r64(struct gdma_context *g, u64 offset)
+ 	return readq(g->bar0_va + offset);
  }
  
+-static void mana_gd_init_pf_regs(struct pci_dev *pdev)
++static int mana_gd_init_pf_regs(struct pci_dev *pdev)
+ {
+ 	struct gdma_context *gc = pci_get_drvdata(pdev);
+ 	void __iomem *sriov_base_va;
+ 	u64 sriov_base_off;
+ 
+ 	gc->db_page_size = mana_gd_r32(gc, GDMA_PF_REG_DB_PAGE_SIZE) & 0xFFFF;
+-	gc->db_page_base = gc->bar0_va +
+-				mana_gd_r64(gc, GDMA_PF_REG_DB_PAGE_OFF);
++	gc->db_page_off = mana_gd_r64(gc, GDMA_PF_REG_DB_PAGE_OFF);
+ 
+-	gc->phys_db_page_base = gc->bar0_pa +
+-				mana_gd_r64(gc, GDMA_PF_REG_DB_PAGE_OFF);
++	/* Validate doorbell offset is within BAR0 */
++	if (gc->db_page_off >= gc->bar0_size) {
++		dev_err(gc->dev,
++			"Doorbell offset 0x%llx exceeds BAR0 size 0x%llx\n",
++			gc->db_page_off, (u64)gc->bar0_size);
++		return -EPROTO;
++	}
++
++	gc->db_page_base = gc->bar0_va + gc->db_page_off;
++	gc->phys_db_page_base = gc->bar0_pa + gc->db_page_off;
+ 
+ 	sriov_base_off = mana_gd_r64(gc, GDMA_SRIOV_REG_CFG_BASE_OFF);
+ 
+ 	sriov_base_va = gc->bar0_va + sriov_base_off;
+ 	gc->shm_base = sriov_base_va +
+ 			mana_gd_r64(gc, sriov_base_off + GDMA_PF_REG_SHM_OFF);
++
++	return 0;
+ }
+ 
+-static void mana_gd_init_vf_regs(struct pci_dev *pdev)
++static int mana_gd_init_vf_regs(struct pci_dev *pdev)
+ {
+ 	struct gdma_context *gc = pci_get_drvdata(pdev);
+ 
+ 	gc->db_page_size = mana_gd_r32(gc, GDMA_REG_DB_PAGE_SIZE) & 0xFFFF;
++	gc->db_page_off = mana_gd_r64(gc, GDMA_REG_DB_PAGE_OFFSET);
+ 
+-	gc->db_page_base = gc->bar0_va +
+-				mana_gd_r64(gc, GDMA_REG_DB_PAGE_OFFSET);
++	/* Validate doorbell offset is within BAR0 */
++	if (gc->db_page_off >= gc->bar0_size) {
++		dev_err(gc->dev,
++			"Doorbell offset 0x%llx exceeds BAR0 size 0x%llx\n",
++			gc->db_page_off, (u64)gc->bar0_size);
++		return -EPROTO;
++	}
+ 
+-	gc->phys_db_page_base = gc->bar0_pa +
+-				mana_gd_r64(gc, GDMA_REG_DB_PAGE_OFFSET);
++	gc->db_page_base = gc->bar0_va + gc->db_page_off;
++	gc->phys_db_page_base = gc->bar0_pa + gc->db_page_off;
+ 
+ 	gc->shm_base = gc->bar0_va + mana_gd_r64(gc, GDMA_REG_SHM_OFFSET);
++
++	return 0;
+ }
+ 
+-static void mana_gd_init_registers(struct pci_dev *pdev)
++static int mana_gd_init_registers(struct pci_dev *pdev)
+ {
+ 	struct gdma_context *gc = pci_get_drvdata(pdev);
+ 
+ 	if (gc->is_pf)
+-		mana_gd_init_pf_regs(pdev);
++		return mana_gd_init_pf_regs(pdev);
+ 	else
+-		mana_gd_init_vf_regs(pdev);
++		return mana_gd_init_vf_regs(pdev);
+ }
+ 
+ /* Suppress logging when we set timeout to zero */
+@@ -1256,6 +1273,17 @@ int mana_gd_register_device(struct gdma_dev *gd)
+ 		return err ? err : -EPROTO;
+ 	}
+ 
++	/* Validate that doorbell page for db_id is within the BAR0 region.
++	 * In mana_gd_ring_doorbell(), the address is calculated as:
++	 *   addr = db_page_base + db_page_size * db_id
++	 *        = (bar0_va + db_page_off) + (db_page_size * db_id)
++	 * So we need: db_page_off + db_page_size * (db_id + 1) <= bar0_size
++	 */
++	if (gc->db_page_off + gc->db_page_size * ((u64)resp.db_id + 1) > gc->bar0_size) {
++		dev_err(gc->dev, "Doorbell ID %u out of range\n", resp.db_id);
++		return -EPROTO;
++	}
++
+ 	gd->pdid = resp.pdid;
+ 	gd->gpa_mkey = resp.gpa_mkey;
+ 	gd->doorbell = resp.db_id;
+@@ -1890,7 +1918,10 @@ static int mana_gd_setup(struct pci_dev *pdev)
+ 	struct gdma_context *gc = pci_get_drvdata(pdev);
+ 	int err;
+ 
+-	mana_gd_init_registers(pdev);
++	err = mana_gd_init_registers(pdev);
++	if (err)
++		return err;
++
+ 	mana_smc_init(&gc->shm_channel, gc->dev, gc->shm_base);
+ 
+ 	gc->service_wq = alloc_ordered_workqueue("gdma_service_wq", 0);
+@@ -1996,6 +2027,7 @@ static int mana_gd_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	mutex_init(&gc->eq_test_event_mutex);
+ 	pci_set_drvdata(pdev, gc);
+ 	gc->bar0_pa = pci_resource_start(pdev, 0);
++	gc->bar0_size = pci_resource_len(pdev, 0);
+ 
+ 	bar0_va = pci_iomap(pdev, bar, 0);
+ 	if (!bar0_va)
+diff --git a/include/net/mana/gdma.h b/include/net/mana/gdma.h
+index ec17004b10c0..7fe3a1b61b2d 100644
+--- a/include/net/mana/gdma.h
++++ b/include/net/mana/gdma.h
+@@ -421,10 +421,12 @@ struct gdma_context {
+ 
+ 	phys_addr_t		bar0_pa;
+ 	void __iomem		*bar0_va;
++	resource_size_t		bar0_size;
+ 	void __iomem		*shm_base;
+ 	void __iomem		*db_page_base;
+ 	phys_addr_t		phys_db_page_base;
+-	u32 db_page_size;
++	u64 db_page_off;
++	u64 db_page_size;
+ 	int                     numa_node;
+ 
+ 	/* Shared memory chanenl (used to bootstrap HWC) */
 -- 
-2.51.0
+2.34.1
 
