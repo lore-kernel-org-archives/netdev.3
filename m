@@ -1,93 +1,108 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBF873009E8
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 13:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C5743A1A35
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 13:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772804557; cv=none; b=Rg7sNEmBVYjiGkKBC40POl6QUzBbYN3sKIkcR9gPdCZdltd9Esmd67u9zCi4xuEiTSISc4cLpN6c4zNN04jGgH0DuPr4YyWb10Cw1X9+e7bHn09BsP6hhzRHJs8TOtyKhJaZ/6zW1gYAbGfxvItz9wlNgOoQrXmsxXObsVuDZ8I=
+	t=1772804998; cv=none; b=ojNuZVZd2u/7v+0/DQGq0jc1hOFWxq0BqdU/APzQsxCXCOX5nkhr7quVnTyzGgCm3uTe0TMEFFVNNSL1w9am36Dvc4OOQo0RFEK3tnnfcq81OUZZT9DXDrH1858avL9O6QW39PWynzjj4etRWa/xFVG0W1WvpGdx8HtYgw4dlVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772804557; c=relaxed/simple;
-	bh=PRcuS7YX9o7ie/hBlDl9MuX0mN21Cj30bZmcUk4lxoI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tV8VA/K3fDNklXsHGg1wEfNaDm5uX0EH63/o4MGUwL5QVpD6QRA05cjH0ie2qdKOanBCFUCcaR+GbYvrxBU41x3eUgihEAWcnl5sEn1hdSCVRC6rWR+M1YJCxJXGKVJBL7Mg7IgHkmUnCf0MtXDp6lzDf4mX4HNz2sB9QJbWKW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ESDPhxk+; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1772804998; c=relaxed/simple;
+	bh=xDkL6TzFGrTxC514XfyOIrW4ST8vZI8e5m+MG2Hs1Zo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BOJ3AvuqOucY2W6oX7alEBQISA5Hpz7N5qkqBRdpzJzgiD8iohxF3XGCT225HWbWHXnRHkmPOPRZVbx515RA5Ro1jDMOf6rzJoHucph/GMDzi+qqlItgPLusn9HA6Na+rmkDk41wHC3PqRUgDjVpI9cClUVjhFleXpGoCUevUAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=V+Lc+Q3Y; arc=none smtp.client-ip=185.171.202.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ESDPhxk+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1772804555;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PRcuS7YX9o7ie/hBlDl9MuX0mN21Cj30bZmcUk4lxoI=;
-	b=ESDPhxk+Z4oigq0/cVSNGBP91EA5ICQYKcs6nUH51hSmRvQcPRlm4jX0u1lsk9a8YaaMTU
-	P7kwe/nEKtldd+5tHXxSZ4EqYUe3/tE5rIvKccb/um67/a7IoNJv+9KxCoE8r9XisTWW5i
-	wNuPUbsGmcyUeiP47Dgh7XxJQn2jJLM=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-481-6MB5NHOoPI2bM8Wpimvo1Q-1; Fri,
- 06 Mar 2026 08:42:31 -0500
-X-MC-Unique: 6MB5NHOoPI2bM8Wpimvo1Q-1
-X-Mimecast-MFC-AGG-ID: 6MB5NHOoPI2bM8Wpimvo1Q_1772804550
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1AB871956052;
-	Fri,  6 Mar 2026 13:42:30 +0000 (UTC)
-Received: from RHTRH0061144 (unknown [10.22.88.168])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 483091958DC7;
-	Fri,  6 Mar 2026 13:42:27 +0000 (UTC)
-From: Aaron Conole <aconole@redhat.com>
-To: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-Cc: "David S . Miller" <davem@davemloft.net>,  Eric Dumazet
- <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo Abeni
- <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Shuah Khan
- <shuah@kernel.org>,  Ilya Maximets <imaximet@redhat.com>,  Eelco Chaudron
- <echaudro@redhat.com>,  Stefano Brivio <sbrivio@redhat.com>,
-  netdev@vger.kernel.org,  linux-kselftest@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  dev@openvswitch.org
-Subject: Re: [PATCH net v3 2/6] selftests: net: make ovs-dpctl.py fail when
- pyroute2 is unsupported
-In-Reply-To: <20260306000127.519064-3-aleksey.oladko@virtuozzo.com> (Aleksei
-	Oladko's message of "Fri, 6 Mar 2026 00:01:23 +0000")
-References: <20260306000127.519064-1-aleksey.oladko@virtuozzo.com>
-	<20260306000127.519064-3-aleksey.oladko@virtuozzo.com>
-Date: Fri, 06 Mar 2026 08:42:25 -0500
-Message-ID: <f7tfr6dqdku.fsf@redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="V+Lc+Q3Y"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-04.galae.net (Postfix) with ESMTPS id 000A2C40431;
+	Fri,  6 Mar 2026 13:50:08 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id D6AF35FF92;
+	Fri,  6 Mar 2026 13:49:49 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 47679103699EA;
+	Fri,  6 Mar 2026 14:49:44 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1772804988; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=c20mkraPRlwGY3oRHlW+Mslb5VLebC/91Q18kftMfIc=;
+	b=V+Lc+Q3YI20csUK/+es6cMzQASPQbm3w0yg/676z9/NKiipGSIEG+Xm0iztANxCElgi6ho
+	3SetuUv4madjjCv8utjMBKnn2LX9XiLztVnv7/xWOTO3FBB/DAIF0xnkxbDOHaUocQKppe
+	TLNSBuLsBbamRXcb9fA/myymZx6gqKHxZWim+hdnIKkWusoxhfcmm6Wi6OV7KY7+9uFLLi
+	yR8gUKiFUkq3C8uZU3g4sgtTQkN4C6bbWGuCPXMC84gv/ViTnEgv/WM8uKDd6WfqINtslQ
+	WR4Tw59PXLXt9GIhLJp1Hq2cg8/8OzgRvf1x9aVACnZvpAgc7f4H9soUuirqfA==
+Message-ID: <ff7fc863-0f8a-49e2-8e75-ee446a43df34@bootlin.com>
+Date: Fri, 6 Mar 2026 14:49:43 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v2 0/8] net: stmmac: mdio related cleanups
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>,
+ Andrew Lunn <andrew@lunn.ch>
+Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, Chen-Yu Tsai <wens@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
+ netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+ Samuel Holland <samuel@sholland.org>
+References: <aald--qJquWGIvmO@shell.armlinux.org.uk>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <aald--qJquWGIvmO@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-Aleksei Oladko <aleksey.oladko@virtuozzo.com> writes:
+Hi,
 
-> The pmtu.sh kselftest configures OVS using ovs-dpctl.py and falls back
-> to ovs-vsctl only when ovs-dpctl.py fails. However, ovs-dpctl.py exits
-> with a success status when the installed pyroute2 package version is
-> lower than 0.6, even though the OVS datapath is not configured.
->
-> As a result, pmtu.sh assumes that the setup was successful and
-> continues running the test, which later fails due to the missing
-> OVS configuration.
->
-> Fix the exit code handling in ovs-dpctl.py so that pmtu.sh can detect
-> that the setup did not complete successfully and fall back to
-> ovs-vsctl.
->
-> Fixes: 962e8a01eab9 ("selftests: openvswitch: Add version check for pyroute2")
-> Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-> ---
+On 05/03/2026 11:42, Russell King (Oracle) wrote:
+> Hi,
+> 
+> The first four patches clean up the MDC clock divisor selection code,
+> turning the three different ways we choose a divisor into tabular form,
+> rather than doing the selection purely in code.
+> 
+> Convert MDIO to use field_prep() which allows a non-constant mask to be
+> used when preparing fields.
+> 
+> Then use u32 and the associated typed GENMASK for MDIO register field
+> definitions.
+> 
+> Finally, an extra couple of patches that use appropriate types in
+> struct mdio_bus_data.
+> 
+> v2:
+> - add comments about 300MHz to commit message in patch 1
+> - fix incorrect usage of stmmac_sun8i_csr_to_mdc in patch 3
+> - fix BIT_u32()->BIT_U32() in patch 8
 
-This change looks good to me.
+I have tested this series as a whole on 2 platforms using the dwmac mdio
+driver (socfpga - KSZ9031 / imx8mp + KSZ9131), no regressions found. I'm
+not stressing the 300M case though.
 
-Reviewed-by: Aaron Conole <aconole@redhat.com>
+feel free to add my :
+
+Tested-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+
+Maxime
+
+>  drivers/net/ethernet/stmicro/stmmac/common.h       |  10 +-
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-intel.c  |   2 +-
+>  .../net/ethernet/stmicro/stmmac/dwmac-loongson.c   |  11 +--
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-sun8i.c  |   9 +-
+>  .../net/ethernet/stmicro/stmmac/dwmac1000_core.c   |   9 +-
+>  .../net/ethernet/stmicro/stmmac/dwmac100_core.c    |   9 +-
+>  drivers/net/ethernet/stmicro/stmmac/dwmac4_core.c  |   9 +-
+>  .../net/ethernet/stmicro/stmmac/dwxgmac2_core.c    |  18 ++--
+>  drivers/net/ethernet/stmicro/stmmac/stmmac_mdio.c  | 106 ++++++++++++---------
+>  include/linux/stmmac.h                             |   6 +-
+>  10 files changed, 92 insertions(+), 97 deletions(-)
+> 
 
