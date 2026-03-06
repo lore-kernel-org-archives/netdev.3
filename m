@@ -1,182 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8590E37FF6D;
-	Fri,  6 Mar 2026 23:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FDB37F006;
+	Fri,  6 Mar 2026 23:34:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772840021; cv=none; b=rUHdHI44xvT8LmP+iorqHooiiyh605VgQAzvsXpr/gprR6JL9jA38VSWUb8fVufsxFz3pBwu4KKVwKNJCGma1ffIUkApK+9PW15NjTwKKr5ZelmzvcljDd4NxpzD9Y9z811rXSkk2SX4Jt7uL140iV9AJNrtqR+endk7OMRiGUE=
+	t=1772840088; cv=none; b=H+B9CJPUubSY5Zq+Lr6fG2gvPttlV/vYkQwNDWgEvPwt3YhkTS09DPXY/Tp4LfC1e7iVPe7tr586VprNlo+y6NUxUnTZrZlKis74pp4KBnuRTuQLRo0tT7MAElbxRBSmGEwPwVTTk+l3uLC0q04LbvvjhpTDJZNepqGXXCph4uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772840021; c=relaxed/simple;
-	bh=7UOHp0koFKWsMOVPOsKMr6xxO6qySG5YPfuI/lloL+A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kxD/VFHQD5AWWDO92W92UC/Re2/DPyeNn3l2r78r1eWqIWui95XKuMprnqUzN637gQ88EJ3gjTIfwlFE9mdSDJVVuBAHNTfxMiEcDvRHI+UUARNjAIly8tT9sllJrBir7J04Mv5xAMg5ZyCU9mNwKoi4kCKwCSozOtaBlK75ko4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PtqlJnxO; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772840088; c=relaxed/simple;
+	bh=ps3c0d/laThFrETyyg/blSJDPd8l49Uxxq1tTrVn/A0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NZ/4Gkp4R8cT6L1KsNuxUHZiWEH1s9p3stO0A8bbHYbzv5b5+2dROWRo9qCxDeYim1J9Ki/HPdPMATsxhDCyoZGYeA/Q9Frj7UpCo4RfQaIXNIc/IEaBK2Hf2wSm7OUhg+a935nplPx6lR4fyyv/klt4CQA6sq4E9TLR1enkiJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Am2E2Tfx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PtqlJnxO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861ADC2BCB6;
-	Fri,  6 Mar 2026 23:33:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Am2E2Tfx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8068C4CEF7;
+	Fri,  6 Mar 2026 23:34:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772840021;
-	bh=7UOHp0koFKWsMOVPOsKMr6xxO6qySG5YPfuI/lloL+A=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PtqlJnxOsVXUMnVHMJLwFlzx0PDjDXhZdKLSjSDvvhaIOiOa4Y174vbJqw60jRXGZ
-	 ZjENzdautpl2cE5Aj8qdQl1LDidR62CjxAaaGC7AbG6SvuOGxq2pW33UdXXtoJJWWH
-	 13r/Ahn3RnSw0OD2yuON50UkxpRTy+C+H7HlcxVPcCfopTSDgIPGEqEdbzYEqkfQsl
-	 R4d1+YS2lgNh1YKRw3SGrgzyluylh124eTIH09lRQtd4QOCWfNXFG10WKPmqiqbbdr
-	 xHz0cnB+Qv23cH6Vy8saoXQGfZRAWF6TfKbLqfS981g0e3WjKJOAYop4glfhve2G0u
-	 eOEk1szZJrCNw==
+	s=k20201202; t=1772840088;
+	bh=ps3c0d/laThFrETyyg/blSJDPd8l49Uxxq1tTrVn/A0=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Am2E2TfxaZvtgSNwAErPyzTukgguwCewyDNrd3NpbBq1gD26QfLnLw0papbgCjbys
+	 9pCDg2bWpy0hCxugkN/TF4y1Uso5dF+GUlxLNRPIDBoMmL6FslAkGiTnByV9vUUd6l
+	 M1ajgoiGEC9GH4s3bi3Jgi6rSBiThDV9wbmGQVpWKANt1smzTj64j9+8ptg1xGfTVc
+	 aibUemes++w8Czfb7A5RdJwc54a9+E8C1O0NkhchcjLBCviqSkUnKGU8auqsuNducO
+	 9yNeONiZw1v6G298f8wWCH/ezhNyTpi/Jmrs86arT+aAnjymHtME6+cZnzI3eseuxQ
+	 JkI4+HvyAVpvA==
+Date: Fri, 6 Mar 2026 15:34:46 -0800
 From: Jakub Kicinski <kuba@kernel.org>
-To: xujialu@vimux.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	kees@kernel.org,
-	linux-kernel@vger.kernel.org,
-	krzk@kernel.org,
-	linusw@kernel.org,
-	linux-gpio@vger.kernel.org,
-	brgl@kernel.org
-Subject: Re: [v3,2/3] nfc: nfcmrvl: convert to gpio descriptors
-Date: Fri,  6 Mar 2026 15:33:35 -0800
-Message-ID: <20260306233335.1056182-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <A3CB5E4EB1A5B1D5+20260306035909.2447844-5-xujialu@vimux.org>
-References: <A3CB5E4EB1A5B1D5+20260306035909.2447844-5-xujialu@vimux.org>
+To: Jialu Xu <xujialu@vimux.org>
+Cc: brgl@kernel.org, kees@kernel.org, krzk@kernel.org, linusw@kernel.org,
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ netdev@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] nfc: s3fwrn5: convert to gpio descriptors
+Message-ID: <20260306153446.66ff0357@kernel.org>
+In-Reply-To: <7E5FEA920D0FD172+20260306035909.2447844-3-xujialu@vimux.org>
+References: <D5F95320CE72E20A+20260306035539.2443355-2-xujialu@vimux.org>
+	<7E5FEA920D0FD172+20260306035909.2447844-3-xujialu@vimux.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-This is an AI-generated review of your patch. The human sending this
-email has considered the AI review valid, or at least plausible.
+On Fri,  6 Mar 2026 11:59:09 +0800 Jialu Xu wrote:
+> +	phy->common.gpio_fw_wake = devm_gpiod_get(&client->dev, "wake",
+> +						   GPIOD_OUT_LOW);
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
----
-nfc: nfcmrvl: convert to gpio descriptors
-
-This commit replaces the legacy GPIO API (of_get_named_gpio() /
-gpio_request_one() / gpio_set_value()) with the descriptor-based API
-(devm_gpiod_get_optional() / gpiod_set_value()) from
-<linux/gpio/consumer.h>, removing the dependency on <linux/of_gpio.h>.
-
-> diff --git a/drivers/nfc/nfcmrvl/main.c b/drivers/nfc/nfcmrvl/main.c
-> index c51d22e4579c..46cc1386ad3b 100644
-> --- a/drivers/nfc/nfcmrvl/main.c
-> +++ b/drivers/nfc/nfcmrvl/main.c
-
-[ ... ]
-
-> @@ -112,13 +112,12 @@ struct nfcmrvl_private *nfcmrvl_nci_register_dev(enum nfcmrvl_phy phy,
->
->  	memcpy(&priv->config, pdata, sizeof(*pdata));
->
-> -	if (gpio_is_valid(priv->config.reset_n_io)) {
-> -		rc = gpio_request_one(priv->config.reset_n_io,
-> -				      GPIOF_OUT_INIT_LOW,
-> -				      "nfcmrvl_reset_n");
-> -		if (rc < 0) {
-> -			priv->config.reset_n_io = -EINVAL;
-> -			nfc_err(dev, "failed to request reset_n io\n");
-> +	if (!priv->config.reset_gpio) {
-> +		priv->config.reset_gpio =
-> +			devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
-> +		if (IS_ERR(priv->config.reset_gpio)) {
-> +			priv->config.reset_gpio = NULL;
-> +			nfc_err(dev, "failed to get reset gpio\n");
->  		}
->  	}
-
-Does the I2C and SPI paths properly initialize reset_gpio? Looking at the
-I2C path (nfcmrvl_i2c_probe -> nfcmrvl_i2c_parse_dt), the function declares
-'struct nfcmrvl_platform_data config' on the stack without zeroing and calls
-nfcmrvl_parse_dt() which now only sets hci_muxed:
-
-drivers/nfc/nfcmrvl/main.c:nfcmrvl_parse_dt() {
-	pdata->hci_muxed = of_property_read_bool(node, "hci-muxed");
-	return 0;
-}
-
-The reset_gpio field is left uninitialized with stack garbage. The same
-issue affects SPI (nfcmrvl_spi_probe -> nfcmrvl_spi_parse_dt).
-
-When the uninitialized config is passed to nfcmrvl_nci_register_dev(), the
-check 'if (!priv->config.reset_gpio)' may evaluate to false (garbage
-non-NULL pointer), causing the code to skip devm_gpiod_get_optional() and
-later use the garbage pointer in gpiod_set_value():
-
-nfcmrvl_chip_halt() {
-	if (priv->config.reset_gpio)
-		gpiod_set_value(priv->config.reset_gpio, 0);
-}
-
-Can this cause a kernel crash? The UART path was updated in this patch to
-initialize the field properly, and the USB path already uses memset to zero
-the config, so only I2C and SPI are affected.
-
-[ ... ]
-
-> @@ -233,34 +227,24 @@ void nfcmrvl_chip_reset(struct nfcmrvl_private *priv)
->  	/* Reset possible fault of previous session */
->  	clear_bit(NFCMRVL_PHY_ERROR, &priv->flags);
->
-> -	if (gpio_is_valid(priv->config.reset_n_io)) {
-> +	if (priv->config.reset_gpio) {
->  		nfc_info(priv->dev, "reset the chip\n");
-> -		gpio_set_value(priv->config.reset_n_io, 0);
-> +		gpiod_set_value(priv->config.reset_gpio, 0);
->  		usleep_range(5000, 10000);
-> -		gpio_set_value(priv->config.reset_n_io, 1);
-> +		gpiod_set_value(priv->config.reset_gpio, 1);
->  	} else
->  		nfc_info(priv->dev, "no reset available on this interface\n");
->  }
->
->  void nfcmrvl_chip_halt(struct nfcmrvl_private *priv)
->  {
-> -	if (gpio_is_valid(priv->config.reset_n_io))
-> -		gpio_set_value(priv->config.reset_n_io, 0);
-> +	if (priv->config.reset_gpio)
-> +		gpiod_set_value(priv->config.reset_gpio, 0);
->  }
-
-Are the GPIO polarity values inverted here? The DT binding documentation
-(Documentation/devicetree/bindings/net/nfc/marvell,nci.yaml) specifies
-GPIO_ACTIVE_LOW for the reset-n-io property:
-
-reset-n-io = <&gpio3 19 GPIO_ACTIVE_LOW>;
-
-With the gpiod API, gpiod_set_value() respects the active-low flag:
-  - gpiod_set_value(desc, 1) = assert (physically LOW for active-low)
-  - gpiod_set_value(desc, 0) = deassert (physically HIGH for active-low)
-
-The old gpio_set_value() ignored polarity flags and drove raw physical
-levels directly.
-
-The patch keeps the same raw values (0 then 1) but with gpiod_set_value()
-this inverts the actual behavior:
-
-nfcmrvl_chip_reset() now does:
-  - gpiod_set_value(gpio, 0) = deassert reset (chip running)
-  - usleep_range(5000, 10000)
-  - gpiod_set_value(gpio, 1) = assert reset (chip in reset)
-
-This is backwards - it leaves the chip stuck in reset after a "reset"
-operation.
-
-Similarly, nfcmrvl_chip_halt() calls gpiod_set_value(gpio, 0) which
-deasserts reset (chip runs) instead of asserting it (chip halted).
-
-Also, the GPIOD_OUT_LOW initial state in devm_gpiod_get_optional() means
-"deasserted" (physically HIGH) rather than the old GPIOF_OUT_INIT_LOW
-(physically LOW).
-
-Should the values be inverted to work correctly with the descriptor API?
-
-  - chip_reset: gpiod_set_value(gpio, 1) then gpiod_set_value(gpio, 0)
-  - chip_halt: gpiod_set_value(gpio, 1)
-  - initial state: GPIOD_OUT_HIGH
--- 
-pw-bot: cr
+Please make sure continuation line is aligned to after the opening
+bracket. There's a few of such issues in this patch.
