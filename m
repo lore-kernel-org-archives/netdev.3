@@ -1,66 +1,66 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 054573750CC
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 21:03:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410FE3F23B3
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 21:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772831020; cv=none; b=MVUUB7qEhXVZTB5WeSg8NjvPbQcKvNLn1z81i3ttlbrS6ZVJOy9t8yAHTHcvGSfLQdg1uibuS4k8DM8/IQCth1F4IXSYwNg0ni/6OosaI1vuOWYr6CxIFPt9jc6013coKpeUm7M0ZF3kT6Vxu6XqL+E/WOkyZDRs3BQVxv/jbMM=
+	t=1772831542; cv=none; b=jOShDPr6A5hy4radrpGg85CgM/MyI/6ibW+QnzLHe9rrJqfzz/azU5h19tbR0r4F05Dgg3/z24W/pB2WufrxYLH3VpTXzIKJH+yJo3qRwGgcu6oKBB/ICUQQCcsinNgBtSPrRCH7hyMT41oMcLh8KRKNuhPEsA/vN3hvrPH5CJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772831020; c=relaxed/simple;
-	bh=f9HPLplmGZJT6ekH3d6OaVwO0sJIVGcElbBUIIYf2jU=;
+	s=arc-20240116; t=1772831542; c=relaxed/simple;
+	bh=Wh94xCRt7HVtbFTu1E7hVihYsRF1gk17Jl85uGP6hOw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xc/WEIhXL2A9XjX0jNv9wN4CNk0HbIS1BDfZdEw5AkJQrctE8DDabZCJ33H2KJAMPGvUsw02hUex3VVJjMoEJZa1q5dBFDjWJGnnPpmeNDJJOJBADyg2WmkoYEnlpzvsr0Lp8V4Ody4WViEu8sJrH8xscBnfc0GCiEAispNaAqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=FuY1ViFH; arc=none smtp.client-ip=209.85.128.47
+	 In-Reply-To:Content-Type; b=WhuP9cvRSwpPdk9XGbsmYXX0BC6w/u7QtL5KbStwh9M8DlBOjPmMwLbeO19vzfeSc9Z+URtYeXCg/8fomX8+OChHB5wQKvukhswHYLkSTVdAGdLF3qlgALe1iEpGZaIR8ZAKyZi5kOqHOCCv1EwfBVaV4j2oVDv2w0pwWBuMp5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net; spf=pass smtp.mailfrom=openvpn.com; dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b=GXhVBQWw; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=openvpn.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=openvpn.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="FuY1ViFH"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-4806bf39419so78352145e9.1
-        for <netdev@vger.kernel.org>; Fri, 06 Mar 2026 13:03:38 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=openvpn.net header.i=@openvpn.net header.b="GXhVBQWw"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-439cb5af25bso3130704f8f.1
+        for <netdev@vger.kernel.org>; Fri, 06 Mar 2026 13:12:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=openvpn.net; s=google; t=1772831017; x=1773435817; darn=vger.kernel.org;
+        d=openvpn.net; s=google; t=1772831540; x=1773436340; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=LmPd7fKX1MJWS9YsyWAU5zz19VwQyuopGfhjBZOhMCI=;
-        b=FuY1ViFHTP2jvul8QpIoOb70v973prOxLeqnAjIK2d24OGCEGUXbIjvX6b/EqnpLnQ
-         awzOYN4eqjkFZkEQg66aGRRshB4plFKr4lzGET9Mq664c8cW+tDuOPYx94wB4pymR87d
-         fr94Tji/+JdsubR3YhOHQqMkkwwlJr3JtoCTFiJdUfTjCCzmXsoJpemYnWpVZUU6mN2S
-         QQiX7rIkZKLBmE9ETtIUOTWLryRqNpzm8ss6X38cal4KZnO9FpdhJQ7HGh/m7cQBFqU0
-         0IJ705v0yM2dbOwybA9+nDXwQglFE7DZaNrLbnBB71NSkCHoKoYGxj6aeJcldhqgH3hm
-         n8Ng==
+        bh=LFVUw8hQrGrYFzA9IDyVyoE7HtboAbMzwNI4WYaE3JE=;
+        b=GXhVBQWwpETw/foijQJXVwp40wKamFTtxyyymhrAWW93iC1nCmU5vbK69SifWO12zJ
+         Z5N1mHeQigIZej11J6PZL2FOQrsXEvHFMb477XKZvzu412aglLMCKbhAs97yTVOdIvbH
+         pjLKtDRXZ2IdTTK7uBp4DzSPY9BjTZCFUSq8yJ9+dyQAJYNpYn0uF0ydECYn6xWcGMLE
+         We8BkxLZNuAQ0Y33igjFVWUOSEfW1JUkqME3+yvByiZbeEaoMPp89h5B7pvAdBIJJcgo
+         mdKajddz1yIUqIrWKHNu1VpQhQtpCLEmBs4o9u6QY3mhp1s2MN+CZDxzlFLP76yWOXJf
+         h8VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772831017; x=1773435817;
+        d=1e100.net; s=20230601; t=1772831540; x=1773436340;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LmPd7fKX1MJWS9YsyWAU5zz19VwQyuopGfhjBZOhMCI=;
-        b=fhkO8Ga2rjIbnXUWRxuo9ACczVdOApd0cpbNL03j04DrW3D0Nbfmnr7dNoKUiMhPR5
-         Si9qXXNB7fVbQMDU5dLibmnLNA5IO/ZgiMYOQ0/Y4SWC+N432FjyhyUVJ69f/4c6rC15
-         LYpgu/1ZGymL5lJhxX0ei4eJmZoEAQJBJco5/4HSf4FMf26fCVdM9GsfQAaJeMuEFIFl
-         hdcWHxq2RJavmF4mDchNPnFD33YeYX79sOcIeellNaW9yDNKOt+eTOYC7CaURYEvgsJN
-         8ILg5QohFcihL1s90HfmVTFKf2Xv5xTeOaWrB7CIAYmMm7vonWXuleTU3qnIKYwWLlMd
-         2umw==
-X-Gm-Message-State: AOJu0YxoyuzYw4ldg5UjWr/XdlfC1GKU4cQpffHNI3ltQYVKGV614Tey
-	lMgcuC5Ygbk2f9stDt0aHrtaEEFp9D6ZV1Q7vsKRS+6DcLg/2wBABYkd9K8a3mM3kdbVpDi7qDV
-	gCbsT//x3Enym+VcQLdIIJQbITsXt3TJ19O145bH6WjbCMxqsi7I=
-X-Gm-Gg: ATEYQzyQn/2XB+S8KAqA2j+kH86LvYMv81Bd95VPOzLKqrbPXzs9+DZfNV+Uhd+0Av8
-	0P8+AZGP994VIeSxEJeUEbty8ub7V+0UF91rlFDmdTAF66oiNW/QQttc/mhtDYJYpWf161QIrIf
-	Snc6Z3zCSPSd1G8kt6Wv/lYxPrjFAeWaIKlZJrpub1X56m5De0PzZWpV6xQCeUzLtO7Di4H+TgD
-	6LELixvtJbdo7d2enizNIEy8FAFWKQpbyOQ8Y6Fn3SIXVnSnLvSJ9UGOeAGyyd/PXXPMg4f1VA0
-	8T4LHaWnIT0KnrKsa8HY9SwxPM2rx7P9BzYPIMUF8Eek3W29CvITvWIpa1aBHKRI9CWpwJ9fbn2
-	tOPWdVP4wFCK7hYGBfMl9cGE6wZp9TDsZfR5Z6RCtHToDSYJAiqXgJnZ6f2VpPrgc/UGy9cah4z
-	vmT1XyiccNcXcABpt6Cs/vm/TtP5+BijPoQGlXsm20dnmZRDGjrdPbUZu5XqRb3g==
-X-Received: by 2002:a05:600c:154b:b0:47d:6c36:a125 with SMTP id 5b1f17b1804b1-4852675edf7mr53802145e9.17.1772831017315;
-        Fri, 06 Mar 2026 13:03:37 -0800 (PST)
+        bh=LFVUw8hQrGrYFzA9IDyVyoE7HtboAbMzwNI4WYaE3JE=;
+        b=WFI2stWkvQORz1b5WohZJUqYqzOnSmSQkLkMNQ92vI17Tu2CDwikFJs8Zab/dbZjay
+         w2sKqIuJhG4zDDSupIWb78JZPHw567smg4f8DRSI4dg4Zs/5Z7srdDBWGd3dvJG5bESP
+         ueMnp3PpIOdb2jjfq74SMqjXOlbBCi2rPIg8Iwf30ADSzef00/UNvptzkSyPwS3J40rF
+         Bm33Wp+6mut2ciU9AYtp8LReH4Udhrgy166OM9aJSRO8z75/3xxh7Setp883ldXbDpq4
+         +6oC+8o2N3EeSd5lGD0jMdwYBDf+AgznNgooD3eMBVpcNDqwKRErjtA8NYe7sGhElyQ4
+         b84A==
+X-Gm-Message-State: AOJu0YwzC3x/TpeSZ4WFedjoAlZJMcScbkUuzjiI6plXX4YfrTmbEt12
+	lUSE+E3v/T9WUoTJG3xY9WERGqMQ+o8pLJznYCt8y3kA20gBmoxenv6aNWOAlZTM8vVMZDwB02D
+	MKE7P8dorJN9soy9J0mBWxqT5Pn2D+x5Nbg4O1EIdSeKx/pZHqso=
+X-Gm-Gg: ATEYQzwolwhT9cjXaNfghukjKCadGypixe5bmCMxgNpNM6DNPg49LqlOrdOmJ3OBqv4
+	K896rrcsJ+QY/+n40IY4vvGPp2Zp35WgqAEshNd+Px2eEbMijLUnsOJh/gtzn6iV+2y73RXR2cU
+	Q8TQfwvGBZjafaORQoX6C96065qD4omOp1OGS2lQ+2pkXkyZ3NpqRlxMhwqMYMtMal6wnhsoWVI
+	DhFUsUA07TF2gJIv6PYRbGv3/jNa8jZd9DMzxnH0VLjZafgelO0sdtxKKfqQk8VXR+3ry7mvut5
+	QoW8L9O5RreMoRgID9+aZxVcORgfbiB9nbaFBekw8n26rU4sObk8yHbxyyjT+SxDb0gJ5d1lteE
+	u15NBdPkNqZF1zntXr0iREobCt3999JaG6b+NbEHpI1jTRxoXU1XJDKAGkuLds6ivhd8tno3QsL
+	NPQuOmhcX9GRvNP7jvySBjAURNIdDJnKNNqo5W/xtE1Gxm+IpHF5HnoeeSBzsuFM8bh/5VgU2R
+X-Received: by 2002:a05:6000:400d:b0:439:bc89:6b18 with SMTP id ffacd0b85a97d-439da354cf0mr6733967f8f.9.1772831539605;
+        Fri, 06 Mar 2026 13:12:19 -0800 (PST)
 Received: from ?IPV6:2001:67c:2fbc:1:99eb:76f9:2124:56da? ([2001:67c:2fbc:1:99eb:76f9:2124:56da])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48527648a19sm58448065e9.0.2026.03.06.13.03.36
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dae2b9fbsm6436076f8f.23.2026.03.06.13.12.18
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 06 Mar 2026 13:03:36 -0800 (PST)
-Message-ID: <618d8073-8191-41ed-9fc8-e0a36f45bdea@openvpn.net>
-Date: Fri, 6 Mar 2026 22:03:35 +0100
+        Fri, 06 Mar 2026 13:12:19 -0800 (PST)
+Message-ID: <8a22df80-824c-4711-9354-b0392220bbeb@openvpn.net>
+Date: Fri, 6 Mar 2026 22:12:18 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -78,9 +78,7 @@ Cc: netdev@vger.kernel.org, Ralf Lici <ralf@mandelbit.com>,
  linux-kselftest@vger.kernel.org, shuah@kernel.org, horms@kernel.org
 References: <20260304230643.1014-1-antonio@openvpn.net>
  <20260304230643.1014-6-antonio@openvpn.net>
- <20260305191732.2bbc386b@kernel.org>
- <b3197cdc-83db-4739-966c-018f8570070d@openvpn.net>
- <20260306125738.73a17bb4@kernel.org>
+ <20260306130130.559d844f@kernel.org>
 Content-Language: en-US
 From: Antonio Quartulli <antonio@openvpn.net>
 Autocrypt: addr=antonio@openvpn.net; keydata=
@@ -119,41 +117,50 @@ Autocrypt: addr=antonio@openvpn.net; keydata=
  gg9NWuSR3XNVOui/0JRVx4qd3SnsnwsuF5xy+fD0ocYBLuksVmHa4FsJq9113Or2fM+10t1m
  yBIZwIDEBLu9zxGUYLenla/gHde+UnSs+mycN0sya9ahOBTG/57k7w/aQLc=
 Organization: OpenVPN Inc.
-In-Reply-To: <20260306125738.73a17bb4@kernel.org>
+In-Reply-To: <20260306130130.559d844f@kernel.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 06/03/2026 21:57, Jakub Kicinski wrote:
-> On Fri, 6 Mar 2026 14:05:53 +0100 Antonio Quartulli wrote:
->>> There should probably be an else branch which prints some kind of
->>>    echo "SKIP - requirements missing"
->>>
->>> Your requirements.py script prints stuff but the output needs to
->>> contain the word SKIP
->>
->> If "has_listener_requirements" is false, the test script still goes on,
->> but it won't check the received netlink notification content.
->>
->> So we're not really skipping the whole test, just one specific check
->> that requires extra tooling (which is normally found on all standard
->> distros).
->>
->>
->> Do you think we should rather SKIP the whole test so that we can easily
->> spot that something is missing?
+On 06/03/2026 22:01, Jakub Kicinski wrote:
+> On Thu,  5 Mar 2026 00:06:23 +0100 Antonio Quartulli wrote:
+>> +def check_requirements(requirements_path):
+>> +    """Return dependency issues from requirements_path, or an empty list."""
+>> +    issues = []
+>> +    with open(requirements_path, encoding="utf-8") as f:
 > 
-> No strong preference. But speaking speaking just from the netdev CI
-> perspective it's probably best to report SKIP and then keep going.
-> The system does string matches on the output. If we report FAIL after
-> the pass it will show as FAIL, if it's SKIP + PASS the report will be
-> SKIP.
+> Semi-jokingly let me also mention that you do all this requirements
+> checking here, all the dependencies seem to have been installed on
+> netdev CI already.
 
-Got it.
-I agree that reporting SKIP and then keep going is probably the best option.
+as expected :-)
 
-Will change the script accordingly.
+> One thing for which you don't check is ngrep,
+> and that was not installed.
 
-Thanks!
+yeah, because the script is only checking the python deps.
+
+> 
+> IMO the requirements checking is a waste of effort, things always
+> slip thru.
+
+I am fine with dropping the dep check if you also don't find it of much 
+value.
+We'd have to keep it updated and it won't help much once packages have 
+been installed the first time.
+
+> But unless you have a strong reason to use ngrep maybe
+> switch to a more standard tool?
+
+Any recommendation?
+
+ngrep is used to make sure that received packets start with a specific 
+pattern (OpenVPN header with certain values in it).
+
+I presume we can just replace ngrep with tcpdump, assuming it's "more 
+standard".
+
+
+Regards,
 
 
 -- 
