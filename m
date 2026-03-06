@@ -1,80 +1,105 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
+Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305792D73AE;
-	Fri,  6 Mar 2026 06:26:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D4402848A1
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 06:33:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772778399; cv=none; b=c1f9uauMTcbYc07QsVEw6yNTLryv1g1eiv2PVj9Ln/1nHGS+d0Lh7i5Gr06OJpaGkAjrbPspi5uFWvhnXETENRp8QTRtgYUTvRVnWH7beud4ZM7LWW/+mcIrJKQ71aEkowXGTksLWcM5mF7NSvYT1w/aAdRk+j4SdMf8Beybufs=
+	t=1772778829; cv=none; b=pFpQFeWCv+iftOY0fedacS4hrlCs+7A217JEukS/q9Zm63i+anqkOPQzJ0CKcb7Nz/gJrCM1j2f069+dQt073aYk8oBWhfnlrd2SzuWEOghe0gcvLg+JY8GoTDliV1H2/0CE6rJ/zsz2wvuJG8eL7eE7gie++MBTkgaHNKvWFNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772778399; c=relaxed/simple;
-	bh=25QvG2yZnP5uqJd6i/I/B0t5485vNvbOGdUykbfABmA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n5FwLx0GjFdrJ/JCaBCPxwr9TgWYwlFNr/b8Ccy7qYR4TF/Eoy8NXBMjr86PM89rmH+13odXyjRALrxHpHTfeooMzG7WKCg0gX4josgftAINlB6bmblAQ0SAAYq5S1IHp8gFb0heFQNIap6PvLTsf2OxvKlF27xXuk3qRwvW3lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=gTaoWxiF; arc=none smtp.client-ip=117.135.210.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="gTaoWxiF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=25QvG2yZnP5uqJd6i/I/B0t5485vNvbOGdUykbfABmA=;
-	b=gTaoWxiFXgZv55Q1RxJGCPTPSGVbn0Rs1V/XZKo4oUVmgbpG6lVwwHDE7Sj8hY
-	O0nrMtMToCKFh+wKpwHsC7yauVd+G0cGGn/LMAG+Y4k+TtN5pDagVwSDwlfxa80p
-	xT35qAPXhxCqVKQ5fskgFzo0yCfGAfV/3ZYfdRRQrtwEQ=
-Received: from [10.54.24.32] (unknown [])
-	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wAHBbo2c6pp7zL4PQ--.30886S2;
-	Fri, 06 Mar 2026 14:24:57 +0800 (CST)
-Message-ID: <9cd041bb-9db7-4550-aa59-e1e0db6b4f93@163.com>
-Date: Fri, 6 Mar 2026 14:24:53 +0800
+	s=arc-20240116; t=1772778829; c=relaxed/simple;
+	bh=KFZR9V8u6CMrm/XfjAFQ+uIEysANP+mps6jVcXyxpl0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Po9DdDDV2dujLleAOu0Q+9ZQW9C0yVCBoCxi9Nnt1UmRs5raD4BPjJFiqgkMwhrqDCRKktgYAvhiDvjYBIdgNrnnHVk157wAk7UfXw+Ffcn7g9e0YvEhr/sMr1nNotwtwDm4fQO/lcFQlbZji+dDy8yzCZXizhgoGQ/7dpwb0eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=18.132.163.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: zesmtpsz3t1772778764t5bb8385d
+X-QQ-Originating-IP: 6zVk8rJhE1lHF6vQ/lZRBEw7zdyeBXy9/ASDJDt/H1c=
+Received: from lap-jiawenwu.trustnetic.com ( [60.186.243.152])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 06 Mar 2026 14:32:42 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 11091958750007124057
+EX-QQ-RecipientCnt: 18
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: netdev@vger.kernel.org
+Cc: Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Kees Cook <kees@kernel.org>,
+	Joe Damato <joe@dama.to>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
+	Breno Leitao <leitao@debian.org>,
+	Jiawen Wu <jiawenwu@trustnetic.com>
+Subject: [PATCH net-next v4 01/10] net: ngbe: remove netdev->ethtool->wol_enabled setting
+Date: Fri,  6 Mar 2026 14:32:02 +0800
+Message-Id: <20260306063211.20536-2-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.21.0.windows.1
+In-Reply-To: <20260306063211.20536-1-jiawenwu@trustnetic.com>
+References: <20260306063211.20536-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH bpf v3 1/5] bpf, sockmap: Annotate af_unix sock^sk_state
- data-races
-To: Michal Luczaj <mhal@rbox.co>, John Fastabend <john.fastabend@gmail.com>,
- Jakub Sitnicki <jakub@cloudflare.com>, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Yonghong Song <yhs@fb.com>,
- Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Cong Wang <cong.wang@bytedance.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260306-unix-proto-update-null-ptr-deref-v3-0-2f0c7410c523@rbox.co>
- <20260306-unix-proto-update-null-ptr-deref-v3-1-2f0c7410c523@rbox.co>
-From: Jiayuan Chen <mrpre@163.com>
-In-Reply-To: <20260306-unix-proto-update-null-ptr-deref-v3-1-2f0c7410c523@rbox.co>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wAHBbo2c6pp7zL4PQ--.30886S2
-X-Coremail-Antispam: 1Uf129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-	VFW2AGmfu7bjvjm3AaLaJ3UbIYCTnIWIevJa73UjIFyTuYvjxU1c_-DUUUU
-X-CM-SenderInfo: xpus2vi6rwjhhfrp/xtbC6xnvl2mqczm2zwAA36
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: zesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz6b-0
+X-QQ-XMAILINFO: NS9jmIGr9NkKWls5uOOki9FvZZm8OZm79cfTNU+HXU2Znstc7Z8oQ/ZE
+	Wt02nnRNsoh+ztew6fdRT+Yb46n85rKYw1BgMSGeEjjkQ0rblcfA+lwZrxo4xNRj2m2Ps3t
+	sXqNYhLNM0/I/U5P0p2A2EISE3Sl9EW4rH9a1U2HqK6OaeI8qRfPVBPJdzJNjhIVimv2Sqn
+	FH3HasNCIza3h7BB17XE+SOxSJ7/ZWqE/y9naiJFKFKzb7k1IFq4AwjZJHZGWKmF8edrh6d
+	f216YHGCPwf0GdPajIvdyH7u02xPXdmbXEz0RQg0zKNSAUkGN9fkTIhz5jfXUltdL/Mp2/R
+	63qvqY/95xYZxXW8F97H4bfagqVWPS03+CUuVVdPTlWz0kwS5WiIOqu7xhkvEGg5MbcM456
+	XkAyH44NPIqgL+DzUM7fMeYFRrNV7Fehz0+UKP7BvwDRsoHQtMBHnQTrR86j+uDj0Bm+7H5
+	1qVmquzOcKNaMy1PxTkysANiecU/jsc6JY7/AhJpr3vm14yM6q0oCLS7cZWS1OBXb3rQb8w
+	BXuzsBsV/gM3cg8xN8N8oHGOvEXxBkFmMQuw/Yd5o9c7S9/NEB8eTF0E6fHLnyhm71KCoY9
+	SjBtz0lXxgc9pbJOxjsBHEJOfYPnL+unCZQh5P6Dg2tFiufVnr3A7kB8MVe7SOuVZNt5gob
+	cZ9MzDe3WxvlTQocrr5ywqjbGRaNRqRNup3PXCMJpYEbTWiK3rAXG+z6R9pXiB85B7KtRmz
+	L3iYzm2hg/SeS+yViQ7SRvlQsV1P1JpCEUTNEf0ZX75AtzhhnYomhKYrFzLyQ1qgwokVNXw
+	JHEKdB2jxE2hctgZyIIDZ9RusCseF4kTfUGXvrs4i1WXyCAZsnT3sk/3caVe3QupkiRWOJY
+	VQ0Us2MCXqRnUPt27e2Zh2zHANODKukeqLl11QnQWgdOrUVhSJwfVG5WmCRIgKPthjAMD/4
+	8UkaPtRuS3UjqLhzXQ0TZB4FcUio42KNGdih8uswGYSg8nlpgd5lSGqAgVWSMIVjwgyIx3Z
+	4h179PJR6ERxFefIR45Gu7IOPfdIBK8QOKitjYXF06jevGverK6Nf2hI/mIX7loF+GeRWTR
+	A==
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
+netdev->ethtool->wol_enabled is set in ethtool core code, so remove the
+redundant setting in ngbe_set_wol().
 
-On 3/6/26 7:30 AM, Michal Luczaj wrote:
-> sock_map_sk_state_allowed() and sock_map_redirect_allowed() read af_unix
-> socket sk_state locklessly.
->
-> Use READ_ONCE(). Note that for sock_map_redirect_allowed() change affects
-> not only af_unix, but all non-TCP sockets (UDP, af_vsock).
->
-> Suggested-by: Kuniyuki Iwashima <kuniyu@google.com>
-> Suggested-by: Martin KaFai Lau <martin.lau@linux.dev>
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-
+diff --git a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
+index fc04040957bf..40779fee0fdf 100644
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_ethtool.c
+@@ -37,9 +37,8 @@ static int ngbe_set_wol(struct net_device *netdev,
+ 	wx->wol = 0;
+ 	if (wol->wolopts & WAKE_MAGIC)
+ 		wx->wol = WX_PSR_WKUP_CTL_MAG;
+-	netdev->ethtool->wol_enabled = !!(wx->wol);
+ 	wr32(wx, WX_PSR_WKUP_CTL, wx->wol);
+-	device_set_wakeup_enable(&pdev->dev, netdev->ethtool->wol_enabled);
++	device_set_wakeup_enable(&pdev->dev, !!(wx->wol));
+ 
+ 	return 0;
+ }
+-- 
+2.48.1
 
