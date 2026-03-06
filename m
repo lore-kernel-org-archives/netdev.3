@@ -1,141 +1,149 @@
-Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8983A1D5AD4;
-	Fri,  6 Mar 2026 00:01:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BB922A7F0
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 00:11:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772755323; cv=none; b=HDBQgi/OTSydrh5oWOesBnj6ndssCdznO1xRmbKL0O8TDV2ZaWbC3PE70rB/nIxAYhjLoaK8xFryUZ+6FJGYG02fZ5Ub961WDJgFC1J/pS/obXKu9quwGQ0gtPFiCYbH6VC+9KyqqD2A2pzLDziBo7iMGAoTClojCgexTNU41yM=
+	t=1772755870; cv=none; b=N6OuimKNQHDnPXY5UkPVZ9joVqzK8HeoEU2Q2hPRkTnhD7FSLsGBKMHeHft8MHPLNKmzDDRijYEpr/394vP3vJxrjlGki25GKIBzwv/J5I0cCaWbq6g8NtDy5qg1x+IjtxYrfNvnk2oTsVqcs7s86PFVUiNKa+oj68jPCJY3WJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772755323; c=relaxed/simple;
-	bh=fhTfgUIcQ3y4hKSQw3oyq2gN1XbWjUDB8bmqXhAWjqs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dlv7G1hfH1LFgon/4+vX2J+ghXs+uUfGZkVl70I+tPnhL2sdOHNRTGu6OhtsLOIKsB7Md51x/6SNfdh6s/ZKNcDGGGNDGeBmeeSKu0vKXZjJalcxrg4rsDxmCUTIYg5w6nFwnxs9uyKk2BTkMNqTsud7LQAvFNSVLXThpPc9Mrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=QTuGlxsr; arc=none smtp.client-ip=130.117.225.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
+	s=arc-20240116; t=1772755870; c=relaxed/simple;
+	bh=+Itjemvwqd2IB+YSuAlR65c/VwN4MbTci4h558Q0Dfw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lW6lilP76i4MNQoqC5pXiagcIlWfDgk+AnzILKGz8MRxwOQp0NEhV+JiMQUpg7fk+2+nv46HVpBhTPNa0LzDPSQHDb913N/iOA7CAyGcYj5mB6X+iFI5Moq4b28iUWtf2nOQY66s9IsXMXTg2tfcrCeiAHZw4KYoKSw0+FusPM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DO9iA5gq; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="QTuGlxsr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
-	Content-Type; bh=mINb8Y4urQ3Ce2/gZIEe5yET0uG5j4QIGs1pRxm5EHU=; b=QTuGlxsrnyWl
-	a6AZVwKRMaNpjlrvV7beX3+TQbjdUHs3GyGEqDHDMZ5jzHSVERz7DmG6cDAU2AMImGy5mWNt+aERd
-	LCEmbwg1O4EGxR3OS0DmyxO07U8mOOx1VyH6dLdxFUMkagNXD3MP5bNBahwWj3uDpZVkR8FG9sxCH
-	ImibPGsYk4pA+x1Th0dqb1N07ng7H+Bwzr50t2xzMDBP+LSK6Mn2hXiHwKEGR/nDlMkGXZgJtwbHl
-	BWtzrKx4MgLioXa9jQKWTkWbDIYElzYYCxDHutrpD1knICsorQ/gcX1CoTQdR1v9KWJmZv3afUit+
-	61qbO2uFAlrz/5//2IEPUQ==;
-Received: from [130.117.225.5] (helo=dev004.aci.vzint.dev)
-	by relay.virtuozzo.com with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <aleksey.oladko@virtuozzo.com>)
-	id 1vyIbt-006GPD-0u;
-	Fri, 06 Mar 2026 01:01:36 +0100
-Received: from dev004.aci.vzint.dev (localhost [127.0.0.1])
-	by dev004.aci.vzint.dev (8.16.1/8.16.1) with ESMTPS id 62601cNp519107
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 6 Mar 2026 00:01:38 GMT
-Received: (from root@localhost)
-	by dev004.aci.vzint.dev (8.16.1/8.16.1/Submit) id 62601cNI519106;
-	Fri, 6 Mar 2026 00:01:38 GMT
-From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-To: "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
-        Shuah Khan <shuah@kernel.org>, Aaron Conole <aconole@redhat.com>,
-        Ilya Maximets <imaximet@redhat.com>,
-        Eelco Chaudron <echaudro@redhat.com>,
-        Stefano Brivio <sbrivio@redhat.com>
-Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-kernel@vger.kernel.org, dev@openvswitch.org,
-        Konstantin Khorenko <khorenko@virtuozzo.com>,
-        Aleksei Oladko <aleksey.oladko@virtuozzo.com>
-Subject: [PATCH net v3 5/6] selftests: net: run pmtu.sh in netns to avoid host firewall interference
-Date: Fri,  6 Mar 2026 00:01:26 +0000
-Message-ID: <20260306000127.519064-6-aleksey.oladko@virtuozzo.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260306000127.519064-1-aleksey.oladko@virtuozzo.com>
-References: <20260306000127.519064-1-aleksey.oladko@virtuozzo.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DO9iA5gq"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ae505619baso30179925ad.2
+        for <netdev@vger.kernel.org>; Thu, 05 Mar 2026 16:11:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1772755869; x=1773360669; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=G8L3iu+vCjUlAr7CshFxSYhYRBNBbOmOF2/IXNTTj8c=;
+        b=DO9iA5gqfQW6XO0BnG8t5aIOAjCIrwbgPwOTAUyzmiSx/CwFE6jUMUzabawCYAE7oR
+         4QdVZsHflSveDbXtYrzzdRZkADNZzdIBHnnT5nW9QdKT1K7dxEtJ5NT1xxq+IzDntu+1
+         Kj27IsIW8FyXXMkAHm3joO18NRk05+ZpGMegFBorr8FPWmJXDJUQxbmBbo7ZavT8FEOs
+         G+d/gNMB1Ns/8AnyUZWSGsDlbPQoBbgzzfd7/5MGdLhCyk/Y6sM9pEFXjzi5uAXCH7iB
+         iHGniRXviD78kGirLL236CSiCPvOvJMYT1aU4jTyc92ZHZ/tHzaS9wSxzqS+M+DAQyqh
+         6t1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772755869; x=1773360669;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=G8L3iu+vCjUlAr7CshFxSYhYRBNBbOmOF2/IXNTTj8c=;
+        b=eo+7NSvEXvF5QqLzqjlsjNox+rEWewXyi7E+4L4wRpGMG7pE9SaqOZeR70wub07RJA
+         Te/h6OdcxxcfNSFs+byZq/F0svHTVYmI27rY6G5gMrMaCH1btIiWK7JwK3MGvmVV6Luc
+         aGK2VEsbyzt4N6UYTpPmFcg9EM+XtGOc1r/7Kzvpfgrt5LiiIgpUDmQ8CrDP5k47wBlB
+         PvtT0kQUuGk6ryLtDPo/3KcPnzdEvKyEHsHhdmWbkaAozETdOs4uwIK7gT/i89ukrM3T
+         87n+lhTBx19e/zpB0dk0wChe6llwDaJAkhfTzeJvXRgSrptoQSEwsfqpMxfQF15iBiCg
+         Dg3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV4djTkCOe1cUz4UPOd8XEy0JnoX/1P3kUIoHgzggPza+xVPT+8YHGzvLEAA5cDnEMADPiejHg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxh94D0F8iW81z+hTisgNiAEJYqh1nZJkXXRTfjgkZic3rluIMd
+	M84srJRQwnCZuIp84l34ZiCQM7xmMx11guvQEizR00+jwQIGGzTnI2qy
+X-Gm-Gg: ATEYQzyZZa7yt+JiW7cTG996xtZBYzhAFh0L53O4V+E51vFEyDYvONkrMaLIpj9Y9hP
+	rTnRS2y7jrRJ/Y80Zl7peL6JHOQtUKZGOi7lwVmzWfTc9ZNXSX+jRMJ4aOmD+epdLAkYMHSolpR
+	IEvYwvAjWoJSBRCM60kli3CAluQ9Orhj30MELxs4ErEwhI7hASxl8PITUt5qFpzDr2ZfZUHsowF
+	Ss9PH0nGRVVWxEv7pzpvcb8bCrECsHm7tNJvmBWqPpWaNz/XcZL51eFOiEFH8btundoKX8Bk23n
+	lNz6XEuUOT8h2whhFRjRRBZwCUx5e1XzgWcKC/0wZcNg7zcx1z9jtqPYHpuvVqFLSENQGRpVRMV
+	s4QDNr/zUPwaFKsjUwWtLVnUh9FdivTxKpj3t1EeDWYBuXMtqSvqO1RgZozziST7oZvIniE2B7V
+	JDchXXs6la6vkZiSReHu/Mycqcnz4y/YwYwHuo1IxZLg==
+X-Received: by 2002:a17:902:f54e:b0:29e:9387:f2b0 with SMTP id d9443c01a7336-2ae824fcc81mr3274145ad.39.1772755868545;
+        Thu, 05 Mar 2026 16:11:08 -0800 (PST)
+Received: from v4bel ([58.123.110.97])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2ae5276097asm163202645ad.34.2026.03.05.16.11.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Mar 2026 16:11:08 -0800 (PST)
+Date: Fri, 6 Mar 2026 09:11:04 +0900
+From: Hyunwoo Kim <imv4bel@gmail.com>
+To: Sabrina Dubroca <sd@queasysnail.net>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, Julia.Lawall@inria.fr,
+	linux@treblig.org, nate.karstens@garmin.com, netdev@vger.kernel.org,
+	imv4bel@gmail.com
+Subject: Re: [PATCH net v2] strparser: Fix race condition in strp_done()
+Message-ID: <aaobmK6d_xd9ZXGj@v4bel>
+References: <aZgpkyTDU3aXe_V0@v4bel>
+ <aZyMejqTbkI7o_VM@krikkit>
+ <aaDATohaW62X_pxk@v4bel>
+ <aaYY6UiXSppOig9Q@krikkit>
+ <aaY-TbPsNxo6toSr@v4bel>
+ <aaoTVMhnY5FKMrem@krikkit>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aaoTVMhnY5FKMrem@krikkit>
 
-From: Konstantin Khorenko <khorenko@virtuozzo.com>
+On Fri, Mar 06, 2026 at 12:35:48AM +0100, Sabrina Dubroca wrote:
+> Sorry for the delay, I wanted to think about the race condition a bit
+> more.
+> 
+> 2026-03-03, 10:50:05 +0900, Hyunwoo Kim wrote:
+> > On Tue, Mar 03, 2026 at 12:10:33AM +0100, Sabrina Dubroca wrote:
+> > > 2026-02-27, 06:51:10 +0900, Hyunwoo Kim wrote:
+> > > > On Mon, Feb 23, 2026 at 06:20:58PM +0100, Sabrina Dubroca wrote:
+> > > > > 2026-02-20, 18:29:55 +0900, Hyunwoo Kim wrote:
+> > > > > "strp stopped" is not really enough, I think we'd also need to reset
+> > > > > the CBs, and then grab bh_lock_sock to make sure a previously-running
+> > > > > ->sk_data_ready has completed. This is what kcm does, at least.
+> > > > 
+> > > > It seems that this is not something that should be handled inside strp itself, 
+> > > > but rather something that each caller of strp_stop() is expected to take care 
+> > > > of individually. Would that be the right direction?
+> > > 
+> > > Agree.
+> > > 
+> > > > It also appears that ovpn and kcm handle this by implementing their own callback 
+> > > > restoration logic.
+> > > 
+> > > Right. I tried to look at skmsg/psock (the other user of strp), but
+> > > didn't get far enough to verify if it's handling this correctly.
+> > > 
+> > > > > Without that, if strp_recv runs in parallel (not from strp->work) with
+> > > > > strp_done, cleaning up skb_head in strp_done seems problematic.
+> > > > 
+> > > > From the espintcp perspective, how about applying a patch along the following lines?
+> > > 
+> > > This is what I was thinking about, yes.
+> > 
+> > In my opinion, it might be cleaner to split the espintcp callback restoration work into 
+> > a separate patch, rather than merging it into the strparser v3 patch. What do you think?
+> 
+> Sure. But once espintcp is fixed in that way, can the original race
+> condition with strparser still occur? release_sock() will wait for any
 
-The pmtu.sh kselftest sets up a multi-namespace test topology where the
-host network itself is part of the test setup. Test packets originating
-from the created namespace are expected to reach test interface created
-in the host. When firewall rules are present on the host, this traffic
-may be blocked, causing the test to fail.
+If the espintcp callback restoration patch is applied, the strparser
+race should no longer occur in espintcp.
 
-Run the test in an isolated network namespace to avoid interference
-from host firewall rules.
+> espintcp_data_ready()/strp_data_ready() that's already running, and a
+> sk_data_ready that starts after we've changed the callbacks will not
+> end up in strp_data_ready() at all so it won't restart the works that
+> are being stopped by strp_done()?
+> 
+> It's quite reasonable to use disable*_work_sync in strp_done, but I'm
+> not sure there's a bug other than espintcp not terminating itself
+> correctly on the socket.
 
-Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
-Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
----
- tools/testing/selftests/net/Makefile     | 3 ++-
- tools/testing/selftests/net/pmtu-test.sh | 4 ++--
- tools/testing/selftests/net/pmtu.sh      | 4 ++++
- 3 files changed, 8 insertions(+), 3 deletions(-)
- create mode 100755 tools/testing/selftests/net/pmtu.sh
+That said, the _cancel APIs in strparser still appear to carry some
+structural risk, so it might still make sense to switch to the _disable
+APIs for the benefit of other strp users or potential future callers.
 
-diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
-index b9eeeffa5fd2..363cd1e2cf8e 100644
---- a/tools/testing/selftests/net/Makefile
-+++ b/tools/testing/selftests/net/Makefile
-@@ -63,7 +63,7 @@ TEST_PROGS := \
- 	netns-name.sh \
- 	netns-sysctl.sh \
- 	nl_netdev.py \
--	pmtu-test.sh \
-+	pmtu.sh \
- 	psock_snd.sh \
- 	reuseaddr_ports_exhausted.sh \
- 	reuseport_addr_any.sh \
-@@ -194,6 +194,7 @@ TEST_FILES := \
- 	fcnal-test.sh \
- 	in_netns.sh \
- 	lib.sh \
-+	pmtu-test.sh \
- 	settings \
- # end of TEST_FILES
- 
-diff --git a/tools/testing/selftests/net/pmtu-test.sh b/tools/testing/selftests/net/pmtu-test.sh
-index a3323c21f001..2ba6bc0252f0 100755
---- a/tools/testing/selftests/net/pmtu-test.sh
-+++ b/tools/testing/selftests/net/pmtu-test.sh
-@@ -976,7 +976,7 @@ setup_ovs_bridge() {
- 	run_cmd ip link set ovs_br0 up
- 
- 	run_cmd ${ns_c} ip link add veth_C-A type veth peer name veth_A-C
--	run_cmd ${ns_c} ip link set veth_A-C netns 1
-+	run_cmd ${ns_c} ip link set veth_A-C netns $$
- 
- 	run_cmd         ip link set veth_A-C up
- 	run_cmd ${ns_c} ip link set veth_C-A up
-@@ -985,7 +985,7 @@ setup_ovs_bridge() {
- 	setup_ovs_add_if veth_A-C
- 
- 	# Move veth_A-R1 to init
--	run_cmd ${ns_a} ip link set veth_A-R1 netns 1
-+	run_cmd ${ns_a} ip link set veth_A-R1 netns $$
- 	run_cmd ip addr add ${prefix4}.${a_r1}.1/${veth4_mask} dev veth_A-R1
- 	run_cmd ip addr add ${prefix6}:${a_r1}::1/${veth6_mask} dev veth_A-R1
- 	run_cmd ip link set veth_A-R1 up
-diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
-new file mode 100755
-index 000000000000..1805fa44a2de
---- /dev/null
-+++ b/tools/testing/selftests/net/pmtu.sh
-@@ -0,0 +1,4 @@
-+#!/bin/sh
-+# SPDX-License-Identifier: GPL-2.0
-+
-+./in_netns.sh ./pmtu-test.sh "$@"
--- 
-2.43.0
+With that in mind, perhaps the direct fix for this race could be handled
+in the espintcp callback restoration patch. For the strparser patch, I
+could instead adjust the commit message to reflect that it removes a
+potential hazard by replacing the _cancel APIs with the _disable
+variants, and resubmit it in that form.
 
+What do you think about proceeding in that direction?
+
+
+Best regards,
+Hyunwoo Kim
