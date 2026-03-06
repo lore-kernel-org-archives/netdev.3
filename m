@@ -1,135 +1,230 @@
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D59619E98D;
-	Fri,  6 Mar 2026 05:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B342BE639;
+	Fri,  6 Mar 2026 05:55:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772776224; cv=none; b=rJQ/e6x5UKnH2MBYsI0Yk/5XVaWKNRMdCqzhqYCcQGlpZFGJg2cxqlo5zv3BDdqlbfbpv2gWGCKMX/Gudx79hTle1m+41nLYOvo4t56n5N+1duYZjVIIuqyGanL+KppL3VuHteD9fH1IYHlMJ+N2dFQFQkVj/2MQ1tGjEPM9sng=
+	t=1772776508; cv=none; b=mzZ9Rp+Vj/l8Rn9YxeCN4H07Us3LTPL59vUby/f6PwXa70j1mo9ruK2vSahYQZKhI/R2T8w5od8YE+wQYpV3VVYHAkY1CSgEF1604tKWO0F2/p2D4m/m3mLKfT1vPol/58C1M3NfMuDx6EiWNNVoxEtBjaHEWUStjTJBiSu/dVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772776224; c=relaxed/simple;
-	bh=rwJ15iDivE6V3WpEvcgvjP7uL6nLZHAyQoOBnVqUZHE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=czCeriG8emL/r3iENpQdEmSXY/EXprRcwK4Nlzr4X20SICrfu7cZRrBViAEIayJ7gTYF9SoQLGcebaRzyZRsBsiuT2vEpC3oezrbkcPBL2MBBVfdzgFBOklXwuS9DxzYjmbK82heux4KR2/GnnNwP52Tug53vZmQXejwM7YN6t4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=MGXS2+JD; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+	s=arc-20240116; t=1772776508; c=relaxed/simple;
+	bh=GUiuj7AaGmQpmRYyqhKAtU/WnjAxfsGJW6g2GYPPo9A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pSKMFv7lWWOMalo49l2D5zrZeVWBZdayhI4MFozo2FyGGEzHEfj2WC71Gmj8KCTomkpuSjkx3ifLqO7jrfQnUl5aYirDT+rjo4EWG+/9DAi1Wkb+yRKnuJg7fKGdtQexp7Ya3pDwJcLj1JGLxF3xPF5AQJ5tbunH6GLnHjuhkM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IW7pXcC7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="MGXS2+JD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=5kbz/qIutsegQX66TjAquqol90At9RQdLWUV3QaLUAA=; b=MGXS2+JDZuBTEBXu7WF1z/3eFI
-	7SD7kf2YZDlmYCAaXzdYhgykifSID+FeZrOHfLaZPWikcQ7lOff+iRDH2CmuLRb3Z5HYmL3pBaYUO
-	oetXok04+26rcihTi/Xi7rNLpRJGmxEacfGMHZewnFca5p7PxWFJu0vDXPt4SPMEAETt7u4s6BLMg
-	1LL3axsb4Ozx0cUi6rGpIAbTSUbdNPHJrp78ftj2nvLU2oLnLD+0NZWX/WFe5vVHBD9khzMTxPzs8
-	oNBHSVWxm7scyd8mqb4m5evp02aj3DrojWtHFlL3wgA7lieoEnGvUFQxqYCiDHHwB7ZH/JWVCSbb+
-	8wIL9O/A==;
-Received: from sslproxy01.your-server.de ([78.46.139.224])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1vyO4Q-000IM2-0b;
-	Fri, 06 Mar 2026 06:49:54 +0100
-Received: from localhost ([127.0.0.1])
-	by sslproxy01.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1vyO4O-000Hgk-2U;
-	Fri, 06 Mar 2026 06:49:53 +0100
-Message-ID: <99158091-834d-43ad-83c6-8e62145449ba@iogearbox.net>
-Date: Fri, 6 Mar 2026 06:49:44 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IW7pXcC7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837A1C4CEF7;
+	Fri,  6 Mar 2026 05:55:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772776507;
+	bh=GUiuj7AaGmQpmRYyqhKAtU/WnjAxfsGJW6g2GYPPo9A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IW7pXcC7Gacp2Gysrx5tfJg8SAu4O8J32A05d3jIcxRdmEeZmqPXGCvK2Jls9vGcl
+	 3NQLOG2HZBLQhGivk6C5FjU778Pfc4afWO38ViPAy5cy9EFYXe3uPb+9nLOifQUrP/
+	 Q3zSC0ZXI8wGewTCsI9PJRl5UwPT/XD8u6HUf2IdIgadOXr2MY24ylYA0X3EqK66Nj
+	 oY8oFmPXTLANw9E58LDEHK3ohqMYR17IXiKYTaPr9zHCMFp8XqyIjvNXwrI7zvOdXx
+	 uj94oWjEOiHk8ygzLEKRB5iC/U/EOdriIy4TQikAzImhmScb1XC7B2W2Ec2rag1+sa
+	 kMjaUfiRXYkZA==
+Date: Fri, 6 Mar 2026 11:24:55 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, mhi@lists.linux.dev, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH v8 1/2] net: mhi: Enable Ethernet interface support
+Message-ID: <myiqilk7t6yvqrjx5ew7srbtqh6xbk5jdd5pjqfeanwh3ymbdu@xy6lledx4hha>
+References: <20260212-eth_vdev_next-20260211-v8-0-0974b3a8d61b@qti.qualcomm.com>
+ <20260212-eth_vdev_next-20260211-v8-1-0974b3a8d61b@qti.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v8 02/16] net: Implement
- netdev_nl_queue_create_doit
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org, davem@davemloft.net,
- razor@blackwall.org, pabeni@redhat.com, willemb@google.com, sdf@fomichev.me,
- john.fastabend@gmail.com, martin.lau@kernel.org, jordan@jrife.io,
- maciej.fijalkowski@intel.com, magnus.karlsson@intel.com, dw@davidwei.uk,
- toke@redhat.com, yangzhenze@bytedance.com, wangdongdong.6@bytedance.com
-References: <20260129222830.439687-1-daniel@iogearbox.net>
- <20260129222830.439687-3-daniel@iogearbox.net>
- <20260131154523.5e495380@kernel.org>
- <5065f783-9378-4965-8266-e494cdee46d2@iogearbox.net>
- <20260305181041.7ed26e4e@kernel.org>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-Autocrypt: addr=daniel@iogearbox.net; keydata=
- xsFNBGNAkI0BEADiPFmKwpD3+vG5nsOznvJgrxUPJhFE46hARXWYbCxLxpbf2nehmtgnYpAN
- 2HY+OJmdspBntWzGX8lnXF6eFUYLOoQpugoJHbehn9c0Dcictj8tc28MGMzxh4aK02H99KA8
- VaRBIDhmR7NJxLWAg9PgneTFzl2lRnycv8vSzj35L+W6XT7wDKoV4KtMr3Szu3g68OBbp1TV
- HbJH8qe2rl2QKOkysTFRXgpu/haWGs1BPpzKH/ua59+lVQt3ZupePpmzBEkevJK3iwR95TYF
- 06Ltpw9ArW/g3KF0kFUQkGXYXe/icyzHrH1Yxqar/hsJhYImqoGRSKs1VLA5WkRI6KebfpJ+
- RK7Jxrt02AxZkivjAdIifFvarPPu0ydxxDAmgCq5mYJ5I/+BY0DdCAaZezKQvKw+RUEvXmbL
- 94IfAwTFA1RAAuZw3Rz5SNVz7p4FzD54G4pWr3mUv7l6dV7W5DnnuohG1x6qCp+/3O619R26
- 1a7Zh2HlrcNZfUmUUcpaRPP7sPkBBLhJfqjUzc2oHRNpK/1mQ/+mD9CjVFNz9OAGD0xFzNUo
- yOFu/N8EQfYD9lwntxM0dl+QPjYsH81H6zw6ofq+jVKcEMI/JAgFMU0EnxrtQKH7WXxhO4hx
- 3DFM7Ui90hbExlFrXELyl/ahlll8gfrXY2cevtQsoJDvQLbv7QARAQABzSZEYW5pZWwgQm9y
- a21hbm4gPGRhbmllbEBpb2dlYXJib3gubmV0PsLBkQQTAQoAOxYhBCrUdtCTcZyapV2h+93z
- cY/jfzlXBQJjQJCNAhsDBQkHhM4ACAsJCAcNDAsKBRUKCQgLAh4BAheAAAoJEN3zcY/jfzlX
- dkUQAIFayRgjML1jnwKs7kvfbRxf11VI57EAG8a0IvxDlNKDcz74mH66HMyhMhPqCPBqphB5
- ZUjN4N5I7iMYB/oWUeohbuudH4+v6ebzzmgx/EO+jWksP3gBPmBeeaPv7xOvN/pPDSe/0Ywp
- dHpl3Np2dS6uVOMnyIsvmUGyclqWpJgPoVaXrVGgyuer5RpE/a3HJWlCBvFUnk19pwDMMZ8t
- 0fk9O47HmGh9Ts3O8pGibfdREcPYeGGqRKRbaXvcRO1g5n5x8cmTm0sQYr2xhB01RJqWrgcj
- ve1TxcBG/eVMmBJefgCCkSs1suriihfjjLmJDCp9XI/FpXGiVoDS54TTQiKQinqtzP0jv+TH
- 1Ku+6x7EjLoLH24ISGyHRmtXJrR/1Ou22t0qhCbtcT1gKmDbTj5TcqbnNMGWhRRTxgOCYvG0
- 0P2U6+wNj3HFZ7DePRNQ08bM38t8MUpQw4Z2SkM+jdqrPC4f/5S8JzodCu4x80YHfcYSt+Jj
- ipu1Ve5/ftGlrSECvy80ZTKinwxj6lC3tei1bkI8RgWZClRnr06pirlvimJ4R0IghnvifGQb
- M1HwVbht8oyUEkOtUR0i0DMjk3M2NoZ0A3tTWAlAH8Y3y2H8yzRrKOsIuiyKye9pWZQbCDu4
- ZDKELR2+8LUh+ja1RVLMvtFxfh07w9Ha46LmRhpCzsFNBGNAkI0BEADJh65bNBGNPLM7cFVS
- nYG8tqT+hIxtR4Z8HQEGseAbqNDjCpKA8wsxQIp0dpaLyvrx4TAb/vWIlLCxNu8Wv4W1JOST
- wI+PIUCbO/UFxRy3hTNlb3zzmeKpd0detH49bP/Ag6F7iHTwQQRwEOECKKaOH52tiJeNvvyJ
- pPKSKRhmUuFKMhyRVK57ryUDgowlG/SPgxK9/Jto1SHS1VfQYKhzMn4pWFu0ILEQ5x8a0RoX
- k9p9XkwmXRYcENhC1P3nW4q1xHHlCkiqvrjmWSbSVFYRHHkbeUbh6GYuCuhqLe6SEJtqJW2l
- EVhf5AOp7eguba23h82M8PC4cYFl5moLAaNcPHsdBaQZznZ6NndTtmUENPiQc2EHjHrrZI5l
- kRx9hvDcV3Xnk7ie0eAZDmDEbMLvI13AvjqoabONZxra5YcPqxV2Biv0OYp+OiqavBwmk48Z
- P63kTxLddd7qSWbAArBoOd0wxZGZ6mV8Ci/ob8tV4rLSR/UOUi+9QnkxnJor14OfYkJKxot5
- hWdJ3MYXjmcHjImBWplOyRiB81JbVf567MQlanforHd1r0ITzMHYONmRghrQvzlaMQrs0V0H
- 5/sIufaiDh7rLeZSimeVyoFvwvQPx5sXhjViaHa+zHZExP9jhS/WWfFE881fNK9qqV8pi+li
- 2uov8g5yD6hh+EPH6wARAQABwsF8BBgBCgAmFiEEKtR20JNxnJqlXaH73fNxj+N/OVcFAmNA
- kI0CGwwFCQeEzgAACgkQ3fNxj+N/OVfFMhAA2zXBUzMLWgTm6iHKAPfz3xEmjtwCF2Qv/TT3
- KqNUfU3/0VN2HjMABNZR+q3apm+jq76y0iWroTun8Lxo7g89/VDPLSCT0Nb7+VSuVR/nXfk8
- R+OoXQgXFRimYMqtP+LmyYM5V0VsuSsJTSnLbJTyCJVu8lvk3T9B0BywVmSFddumv3/pLZGn
- 17EoKEWg4lraXjPXnV/zaaLdV5c3Olmnj8vh+14HnU5Cnw/dLS8/e8DHozkhcEftOf+puCIl
- Awo8txxtLq3H7KtA0c9kbSDpS+z/oT2S+WtRfucI+WN9XhvKmHkDV6+zNSH1FrZbP9FbLtoE
- T8qBdyk//d0GrGnOrPA3Yyka8epd/bXA0js9EuNknyNsHwaFrW4jpGAaIl62iYgb0jCtmoK/
- rCsv2dqS6Hi8w0s23IGjz51cdhdHzkFwuc8/WxI1ewacNNtfGnorXMh6N0g7E/r21pPeMDFs
- rUD9YI1Je/WifL/HbIubHCCdK8/N7rblgUrZJMG3W+7vAvZsOh/6VTZeP4wCe7Gs/cJhE2gI
- DmGcR+7rQvbFQC4zQxEjo8fNaTwjpzLM9NIp4vG9SDIqAm20MXzLBAeVkofixCsosUWUODxP
- owLbpg7pFRJGL9YyEHpS7MGPb3jSLzucMAFXgoI8rVqoq6si2sxr2l0VsNH5o3NgoAgJNIg=
-In-Reply-To: <20260305181041.7ed26e4e@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Virus-Scanned: Clear (ClamAV 1.4.3/27931/Thu Mar  5 08:24:23 2026)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260212-eth_vdev_next-20260211-v8-1-0974b3a8d61b@qti.qualcomm.com>
 
-On 3/6/26 3:10 AM, Jakub Kicinski wrote:
-> On Thu, 5 Mar 2026 05:38:06 +0100 Daniel Borkmann wrote:
->>>> +	rxq_lease = __netif_get_rx_queue(dev_lease, queue_id_lease);
->>>> +	rxq = __netif_get_rx_queue(dev, dev->real_num_rx_queues - 1);
->>>> +
->>>> +	if (rxq->lease && rxq->lease->dev != dev_lease) {
->>>
->>> IIUC the simplification of having all leases from one devices is still
->>> a netkit thing? I mean - there's nothing in the core that depends on
->>> this, just the cleanup / notifier handling in netkit? If that's the
->>> case let's move this check into netkit.
->>>
->>> Sorry if you moved this here because I asked to move as much as
->>> possible into the core.
->> Imho it was a good suggestion to move it here and I would prefer to leave
->> this in the core, and only really move it into a per-driver constraint
->> once we see a driver wanting to support such setting. Otherwise we would
->> propagate AF_XDP support on the device where some queues have support but
->> others don't.
+On Thu, Feb 12, 2026 at 04:30:22PM +0530, Vivek Pernamitta wrote:
+> From: Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>
 > 
-> Alright, let's add a comment explaining the status and plan then?
-Yep, will add.
+> Add support to configure a new client as Ethernet type over MHI by
+> setting "mhi_device_info.ethernet_if = true". Create a new Ethernet
+> interface named eth%d. This complements existing NET driver support.
+> 
+> Allocate MHI netdevs using NET_NAME_ENUM to reflect kernel-enumerated
+> naming. This updates the reported name_assign_type for MHI net
+> interfaces created by this driver, aligning naming semantics across
+> existing and new devices. No functional or interface naming changes
+> are introduced
+> 
+> Introduce IP_SW1, ETH0, and ETH1 network interfaces required for
+
+IP_SW1 is not related to this patch.
+
+> M-plane, NETCONF, and S-plane components.
+> 
+
+The main thing you want to describe in description is that IP_ETH channels are
+representing the Ethernet interface of the MHI device for which the driver is
+also creating the netdev interface so that the host can access the Ethernet
+interface of the device.
+
+> M-plane:
+> Implement DU M-Plane software for non-real-time O-RAN management
+> between O-DU and O-RU using NETCONF/YANG and O-RAN WG4 M-Plane YANG
+> models. Provide capability exchange, configuration management,
+> performance monitoring, and fault management per O-RAN.WG4.TS.MP.0-
+> R004-v18.00.
+> 
+> NETCONF:
+> Use NETCONF protocol for configuration operations such as fetching,
+> modifying, and deleting network device configurations.
+> 
+> S-plane:
+> Support frequency and time synchronization between O-DUs and O-RUs
+> using Synchronous Ethernet and IEEE 1588. Assume PTP transport over
+> L2 Ethernet (ITU-T G.8275.1) for full timing support; allow PTP over
+> UDP/IP (ITU-T G.8275.2) with reduced reliability. as per ORAN spec
+> O-RAN.WG4.CUS.0-R003-v12.00.
+> 
+> Signed-off-by: Vivek Pernamitta <vivek.pernamitta@oss.qualcomm.com>
+> ---
+>  drivers/net/mhi_net.c | 67 ++++++++++++++++++++++++++++++++++++++++++---------
+>  1 file changed, 56 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/net/mhi_net.c b/drivers/net/mhi_net.c
+> index ae169929a9d8e449b5a427993abf68e8d032fae2..aa65b267d5c06c76482eaede097c500edc1cdf7f 100644
+> --- a/drivers/net/mhi_net.c
+> +++ b/drivers/net/mhi_net.c
+> @@ -4,6 +4,7 @@
+>   * Copyright (C) 2020 Linaro Ltd <loic.poulain@linaro.org>
+>   */
+>  
+> +#include <linux/etherdevice.h>
+>  #include <linux/if_arp.h>
+>  #include <linux/mhi.h>
+>  #include <linux/mod_devicetable.h>
+> @@ -42,6 +43,7 @@ struct mhi_net_dev {
+>  
+>  struct mhi_device_info {
+>  	const char *netname;
+> +	bool ethernet_if;
+>  };
+>  
+>  static int mhi_ndo_open(struct net_device *ndev)
+> @@ -119,11 +121,29 @@ static void mhi_ndo_get_stats64(struct net_device *ndev,
+>  	} while (u64_stats_fetch_retry(&mhi_netdev->stats.tx_syncp, start));
+>  }
+>  
+> +static int mhi_mac_address(struct net_device *dev, void *p)
+> +{
+> +	if (dev->type == ARPHRD_ETHER)
+> +		return eth_mac_addr(dev, p);
+> +
+> +	return 0;
+> +}
+> +
+> +static int mhi_validate_address(struct net_device *dev)
+> +{
+> +	if (dev->type == ARPHRD_ETHER)
+> +		return eth_validate_addr(dev);
+> +
+> +	return 0;
+> +}
+> +
+>  static const struct net_device_ops mhi_netdev_ops = {
+>  	.ndo_open               = mhi_ndo_open,
+>  	.ndo_stop               = mhi_ndo_stop,
+>  	.ndo_start_xmit         = mhi_ndo_xmit,
+>  	.ndo_get_stats64	= mhi_ndo_get_stats64,
+> +	.ndo_set_mac_address    = mhi_mac_address,
+> +	.ndo_validate_addr      = mhi_validate_address,
+>  };
+>  
+>  static void mhi_net_setup(struct net_device *ndev)
+> @@ -140,6 +160,13 @@ static void mhi_net_setup(struct net_device *ndev)
+>  	ndev->tx_queue_len = 1000;
+>  }
+>  
+> +static void mhi_ethernet_setup(struct net_device *ndev)
+> +{
+> +	ndev->netdev_ops = &mhi_netdev_ops;
+> +	ether_setup(ndev);
+> +	ndev->max_mtu = ETH_MAX_MTU;
+> +}
+> +
+>  static struct sk_buff *mhi_net_skb_agg(struct mhi_net_dev *mhi_netdev,
+>  				       struct sk_buff *skb)
+>  {
+> @@ -209,16 +236,20 @@ static void mhi_net_dl_callback(struct mhi_device *mhi_dev,
+>  			mhi_netdev->skbagg_head = NULL;
+>  		}
+>  
+> -		switch (skb->data[0] & 0xf0) {
+> -		case 0x40:
+> -			skb->protocol = htons(ETH_P_IP);
+> -			break;
+> -		case 0x60:
+> -			skb->protocol = htons(ETH_P_IPV6);
+> -			break;
+> -		default:
+> -			skb->protocol = htons(ETH_P_MAP);
+> -			break;
+> +		if (!!mhi_netdev->ndev->header_ops) {
+
+Why not just if (mhi_netdev->ndev->header_ops)?
+
+But you should really check ARPHRD_ETHER type here and below.
+
+> +			skb->protocol = eth_type_trans(skb, mhi_netdev->ndev);
+> +		} else {
+> +			switch (skb->data[0] & 0xf0) {
+> +			case 0x40:
+> +				skb->protocol = htons(ETH_P_IP);
+> +				break;
+> +			case 0x60:
+> +				skb->protocol = htons(ETH_P_IPV6);
+> +				break;
+> +			default:
+> +				skb->protocol = htons(ETH_P_MAP);
+> +				break;
+> +			}
+>  		}
+>  
+>  		u64_stats_update_begin(&mhi_netdev->stats.rx_syncp);
+> @@ -306,6 +337,9 @@ static int mhi_net_newlink(struct mhi_device *mhi_dev, struct net_device *ndev)
+>  	struct mhi_net_dev *mhi_netdev;
+>  	int err;
+>  
+> +	if (!!ndev->header_ops)
+> +		eth_hw_addr_random(ndev);
+> +
+>  	mhi_netdev = netdev_priv(ndev);
+>  
+>  	dev_set_drvdata(&mhi_dev->dev, mhi_netdev);
+> @@ -356,7 +390,8 @@ static int mhi_net_probe(struct mhi_device *mhi_dev,
+>  	int err;
+>  
+>  	ndev = alloc_netdev(sizeof(struct mhi_net_dev), info->netname,
+> -			    NET_NAME_PREDICTABLE, mhi_net_setup);
+> +			    NET_NAME_ENUM, info->ethernet_if ?
+> +			    mhi_ethernet_setup : mhi_net_setup);
+>  	if (!ndev)
+>  		return -ENOMEM;
+>  
+> @@ -380,10 +415,17 @@ static void mhi_net_remove(struct mhi_device *mhi_dev)
+>  
+>  static const struct mhi_device_info mhi_hwip0 = {
+>  	.netname = "mhi_hwip%d",
+> +	.ethernet_if = false,
+
+Default state is false isn't it? No need to set it explicitly.
+
+- Mani
+
+-- 
+மணிவண்ணன் சதாசிவம்
