@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD1634028D;
-	Fri,  6 Mar 2026 03:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DD7931578E
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 03:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772767972; cv=none; b=Ff3Lf3Z4gsMzUCCYa/GoahJEdFfRbBtyZoOeQDuID/GWhGQTTJBDUP3KT4caoweBv0ZGgn4PWIiubzRZ341rgakP2Gnw7sXx+gM2qNYJtt6SkuBAKMu/kEb9qdnckjtdrVcBOOvIHuqr6ToSS60DaarEi3dhyp6iakpigWmYhnE=
+	t=1772767974; cv=none; b=fyJrzNB0gOXrlDNiOvK7ds45EeEOnFesEFXD1QOFO0nuyYDfgcRD8faGDw9BVtY7w0JeNZFk4GKQAPvy3qiAszNiKhKdOmIhLTN8qFPGznbsOtLwpoer7DAxsIH/9wMopFsI25/g2m14tGfyVPwT5/vUnHJzkn+Cj0GYovRiyj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772767972; c=relaxed/simple;
-	bh=J5WNpI9IFOZTn+5xxMTNRdxLsLhlZZ5pCnKzZHghzHU=;
+	s=arc-20240116; t=1772767974; c=relaxed/simple;
+	bh=vhNod20kfAE7wOnKP5rqijyYcGC4yv2qCfb9p+ZXvH8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=HRP1fcKkiTTvT6w0vNM7utUuMY0qRtB5O3KHrs4kNYEFsguLa9pFFjqjsl3lYxR1VWg2v+gDwWEg5CjJqWI7rZomWSv/142sc1QYgG5HE3+8Pwl9pZxfWYPpQ63sODQo92W3gyAJbJ5eTqj/IS/tavvvch8zEgU5qB67C8C8d1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CiZHaT+i; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=G7XARggQPdZCclqk26y20hlh1VfpVaMv2fU3+7woiTv/NxQ+jcQ076mEhLljO3FTBQErJ0nKdFrR1G4QDtXy4HJyeKOX57k4GDhC6gR+AG019NwXEsEENbhTqK1DJE8iUMXnqmlwc5lrfgSyLOrU0E0oZIw+yvbS1kW5vNWNaqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nYS5TTwk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CiZHaT+i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63326C116C6;
-	Fri,  6 Mar 2026 03:32:52 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nYS5TTwk"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1356DC2BCB1;
+	Fri,  6 Mar 2026 03:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772767972;
-	bh=J5WNpI9IFOZTn+5xxMTNRdxLsLhlZZ5pCnKzZHghzHU=;
+	s=k20201202; t=1772767974;
+	bh=vhNod20kfAE7wOnKP5rqijyYcGC4yv2qCfb9p+ZXvH8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=CiZHaT+iDF0JBJhKP5j+xHrw3HKoiJahdSNW1m5LuGTPLlSgRRlmggtREW6U1dtdu
-	 eO1inZLnbuc81n2FDTFA5ImteQHR8K7Bg0t6726FgJf63jOJgUMvBSTLS2j1wuHiER
-	 lDbPDz7PQ9WNn8Hh7HDoNbMVNAdO1dIXOyEPYVHlwcgA9Vay8p1Loo5INeR+2dSc30
-	 ktxCqHrbbLEEdO0HgR2MbJBI4EysmfY3ATloJ0dJpvTT1IIx0axex6J4tS6bF9v5gF
-	 Jn46/XT8RyMWYDrDfXYEaa5+Sp+KCyB8zeR/2CJUzESI2HgZT7uPBFh01v29Nzc94a
-	 PyFl4bi2dPmbw==
+	b=nYS5TTwku7/C2LmwZXloanE26Zqg8hdzO1TRrnTCarpCEpAh0/Jil5jNUhBxy0HS0
+	 nsd8O/epAEyIlq6Vdqo/xm3BjaFgTDgADzuvKbD0OQZOG3asL+RJLxkmgPBimF8oGT
+	 a1dA3IL40xFeKMgJgTwtX5YpThuV2oJr8Gc1B/N4ZwZK3p3MWRmlxD+E9ywM0GSqiP
+	 xXYkYNisrIXCYdYJsfx6oAU71UYEyqDG/KRq5SpkI2r0fUxHivmIVj+M5BXPmOIm7U
+	 N4viLEgqMg8gmyKe0Zcg5tO0EB0R6WqBbadMDWHjm7gxU01QBI1NocjDqvkInmwDgs
+	 CL/pgEdfFFWbg==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FEF53808200;
-	Fri,  6 Mar 2026 03:32:53 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 031583808200;
+	Fri,  6 Mar 2026 03:32:55 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,53 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/7] net: stmmac: qcom-ethqos: further serdes
- reorganisation
+Subject: Re: [PATCH net-next] net: mdio: xgene: Fix misleading err message in
+ xgene mdio read
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177276797180.3348267.4879154054522782350.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Mar 2026 03:32:51 +0000
-References: <aacD3osfaZkLsGxm@shell.armlinux.org.uk>
-In-Reply-To: <aacD3osfaZkLsGxm@shell.armlinux.org.uk>
-To: Russell King (Oracle) <linux@armlinux.org.uk>
-Cc: andrew@lunn.ch, alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
- linux-phy@lists.infradead.org, linux-stm32@st-md-mailman.stormreply.com,
- mohd.anwar@oss.qualcomm.com, neil.armstrong@linaro.org,
- netdev@vger.kernel.org, pabeni@redhat.com, vkoul@kernel.org
+ <177276797365.3348267.7991707746750448647.git-patchwork-notify@kernel.org>
+Date: Fri, 06 Mar 2026 03:32:53 +0000
+References: <20260304195755.2468204-1-alok.a.tiwari@oracle.com>
+In-Reply-To: <20260304195755.2468204-1-alok.a.tiwari@oracle.com>
+To: Alok Tiwari <alok.a.tiwari@oracle.com>
+Cc: hkallweit1@gmail.com, linux@armlinux.org.uk, quan@os.amperecomputing.com,
+ keyur@os.amperecomputing.com, iyappan@os.amperecomputing.com, andrew@lunn.ch,
+ kuba@kernel.org, davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
+ netdev@vger.kernel.org, alok.a.tiwarilinux@gmail.com
 
 Hello:
 
-This series was applied to netdev/net-next.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Tue, 3 Mar 2026 15:53:02 +0000 you wrote:
-> This is part 2 of the qcom-ethqos series, part 1 and patch 2 of part 2
-> has now been merged.
+On Wed,  4 Mar 2026 11:57:36 -0800 you wrote:
+> xgene_xfi_mdio_read() prints "write failed" when the MDIO management
+> interface remains busy and the read times out. Update the message to
+> "read failed" to match the operation.
 > 
-> This part of the series focuses on the generic PHY driver, but these
-> changes have dependencies on the ethernet driver, hence why
-> it will need to go via net-next. Furthermore, subsequent changes
-> depend on these patches.
-> 
-> [...]
+> Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+> ---
+>  drivers/net/mdio/mdio-xgene.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Here is the summary with links:
-  - [net-next,v2,1/7] net: stmmac: qcom-ethqos: move ethqos_set_serdes_speed()
-    https://git.kernel.org/netdev/net-next/c/fc8ca5da896e
-  - [net-next,v2,2/7] net: stmmac: qcom-ethqos: convert to use phy_set_mode_ext()
-    https://git.kernel.org/netdev/net-next/c/4999e0a2ab34
-  - [net-next,v2,3/7] phy: qcom-sgmii-eth: remove .set_speed() implementation
-    https://git.kernel.org/netdev/net-next/c/b7721597547d
-  - [net-next,v2,4/7] phy: qcom-sgmii-eth: use PHY interface mode for SerDes settings
-    https://git.kernel.org/netdev/net-next/c/d2b20acdaed8
-  - [net-next,v2,5/7] phy: qcom-sgmii-eth: remove qcom_dwmac_sgmii_phy_interface()
-    https://git.kernel.org/netdev/net-next/c/f82210ce8cb8
-  - [net-next,v2,6/7] phy: qcom-sgmii-eth: relax order of .power_on() vs .set_mode*()
-    https://git.kernel.org/netdev/net-next/c/ebe8b48b88ad
-  - [net-next,v2,7/7] net: stmmac: qcom-ethqos: remove phy_set_mode_ext() after phy_power_on()
-    https://git.kernel.org/netdev/net-next/c/038a8e8eb90d
+  - [net-next] net: mdio: xgene: Fix misleading err message in xgene mdio read
+    https://git.kernel.org/netdev/net-next/c/54f5a89da9e0
 
 You are awesome, thank you!
 -- 
