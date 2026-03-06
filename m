@@ -1,69 +1,74 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 520F9494A13;
-	Fri,  6 Mar 2026 22:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5C83FFAB4
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 22:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772835001; cv=none; b=gQn8FKIkPgfvMJDfKnQcwtoq90FkLMpwFFEGRUhTtAZhk7S26Kho050r4lmk5Wlc63cBf/9ebGzHET21VMhO2cWqxQyjNn4ufhvF9/C7hcUTvHYQVPHM3yCMfOyRQTA0EadvE+khL3Ery+Ssqq1ZIq5TJWGzMWMC3/vWsbk2Pug=
+	t=1772835008; cv=none; b=LmZ4cxeRx2fk19r6uC7so6B7tWj7mJaXC1MG5lJCpxu/fTgP8aobivzuglzdp2C2/rmlERkmNhCDPr+0SBgZzMrGMEbbsR4rUnTfLGXqyqexyOTq2DJ1uEobfDdnuKxeVT2EaI6+1gMIs+x/8N33MuTn97B1xjUGSHtnwRrp0NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772835001; c=relaxed/simple;
-	bh=RYAyxzeSLE7RG7ogsH1lNJ9UT2pOY9bqibfbO9VMaGU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l3pMI5d8urF62tXotmAng18U9XdY4tOml/csIUn7UPNiLdCEp97x6q1YUeYvjqWo+QXSAYu6of2H4mzkn0uMGkMhhbd+sB6hPqD9rIkSAQdIL4euVxvD3YNj6VTTlEenkbDGNesg4kDQW2LjKwhBhkhca06seB27N2mta4vjkKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WMXlmh4/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772835008; c=relaxed/simple;
+	bh=myFCBmCp8rc3NK49fqZqMVKU2I/M+tj2Kbqr8PdeqPo=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=iXdfX9wZ8RwT2w0eK4bd6iQFy+Ij/fVsdxtZw0PJ2++U7Ivlej1k/qherlz9KFKJ9g61zChSFOeSf2Z3Iv+dzuwXsmacbuLtWhS3/K6jl44cT8XLQFjv7qc56VxMzkwpFqBcWtpswMk7p2OEWQ2FrxIEnLg2p0lZ++KaiFzVZjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A3iK7R3k; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WMXlmh4/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BE78C4CEF7;
-	Fri,  6 Mar 2026 22:09:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A3iK7R3k"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD1DC4CEF7;
+	Fri,  6 Mar 2026 22:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772835000;
-	bh=RYAyxzeSLE7RG7ogsH1lNJ9UT2pOY9bqibfbO9VMaGU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WMXlmh4/cI1gH8JhsAVVyjOKHtdPp6URvfFSBFYfUhJYzl2V8vPS39wRMeUOKuhGL
-	 X6hB70aemwwCiAI1Hvm7Ppphwiqjfmutgn7Xb8ZoOGO1pJtziyRLiNoCcb74t6nXKU
-	 x7UervIXEWzEj8ZqipOYJ4B5TgChFNckfpnsvUcyhsBhEWGS93i8IF5zZPYbhwEPBb
-	 fuiBvQLTzo1ZwO4CrPY5RHN+MqXWtQ03XkCKbmsS6sZEiAWeeefUr26VLKTC+Ltcq/
-	 8Q6k+cxu2iNJWhXUqfYPBsVke2UelwrMv/FwGVZvB6m81qDjKd5JVbljIh67rxWFNP
-	 vVv7beqrlMoSw==
-Date: Fri, 6 Mar 2026 14:09:58 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mike Marciniszyn <mike.marciniszyn@gmail.com>
-Cc: Alexander Duyck <alexanderduyck@fb.com>, kernel-team@meta.com, Andrew
- Lunn <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Simon
- Horman <horms@kernel.org>, Russell King <linux@armlinux.org.uk>, Jacob
- Keller <jacob.e.keller@intel.com>, Lee Trager <lee@trager.us>, Mohsin
- Bashir <mohsin.bashr@gmail.com>, Dan Carpenter <dan.carpenter@linaro.org>,
- Pei Xiao <xiaopei01@kylinos.cn>, Stanislav Fomichev <sdf@fomichev.me>,
- Willem de Bruijn <willemb@google.com>, Samiullah Khawaja
- <skhawaja@google.com>, Hangbin Liu <liuhangbin@gmail.com>,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH net-next v3 3/5] eth fbnic: Add msix self test
-Message-ID: <20260306140958.42ccee3a@kernel.org>
-In-Reply-To: <aasqpPj2rOIKgnSY@PF5YBGDS.localdomain>
-References: <20260305150947.16893-1-mike.marciniszyn@gmail.com>
-	<20260305150947.16893-4-mike.marciniszyn@gmail.com>
-	<aasqpPj2rOIKgnSY@PF5YBGDS.localdomain>
+	s=k20201202; t=1772835007;
+	bh=myFCBmCp8rc3NK49fqZqMVKU2I/M+tj2Kbqr8PdeqPo=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=A3iK7R3kpI6szjSIm/xUinGQatMvau/0OIcW+Ry8Ou7gq8UxiMfZwtYP8wdBqS15/
+	 EU/VB8SzHjg2TiDu9THcqohASbNUgzu6yhFGRvWn81SPx3wKhfFsCqT4hCqWCwo9UA
+	 XlyYMa335eX0lhc9BkYzRDk7fE28hHlI3XtmevHm0XkUOPquOrpx76XhmV23lVBpHd
+	 Em4J3kT8cBwjr0zNjIvsGk+jjoH1QFjiV1w+A0EPKtkjKUKiYs4p+Gzudralm7Andg
+	 yVwizbgAvrSX8SEXI1yc1xTQviUjLfrB5zPbN49yCCxmJjAh484gTv5FrZLNXkdFvk
+	 NyU16NsYjoJlw==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02E163808200;
+	Fri,  6 Mar 2026 22:10:08 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH iproute2] remove leftover references to /usr/lib/route2
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177283500680.70173.6809575605648805585.git-patchwork-notify@kernel.org>
+Date: Fri, 06 Mar 2026 22:10:06 +0000
+References: <20260302164026.112728-1-stephen@networkplumber.org>
+In-Reply-To: <20260302164026.112728-1-stephen@networkplumber.org>
+To: Stephen Hemminger <stephen@networkplumber.org>
+Cc: netdev@vger.kernel.org, yedaya.ka@gmail.com
 
-On Fri, 6 Mar 2026 14:27:32 -0500 Mike Marciniszyn wrote:
-> There is a change in the patchworks checkpatch test the wants to see this as:
-> 
-> test_data = kzalloc_obj(*test_data, GFP_KERNEL);
-> 
-> Unfortunately, the net-next repo does not yet have this api and doesn't
-> have the checkpatch and the new api that comes in:
-> 
-> Commit 070580b0b174 ("checkpatch: Suggest kmalloc_obj family for sizeof allocations")
-> 
-> This looks like the checkpatch.pl in the test is not from net-next/main.
+Hello:
 
-I suspect your local tree is old? Or I don't get what you're saying..
+This patch was applied to iproute2/iproute2.git (main)
+by Stephen Hemminger <stephen@networkplumber.org>:
+
+On Mon,  2 Mar 2026 08:40:07 -0800 you wrote:
+> Since commit 962692356a1c ("Makefile: use /usr/share/iproute2 for config
+> files") the path was moved to /usr/share in Makefile; but there
+> were leftover references.
+> 
+> Reported-by: Yedaya Katsman <yedaya.ka@gmail.com>
+> Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+> 
+> [...]
+
+Here is the summary with links:
+  - [iproute2] remove leftover references to /usr/lib/route2
+    https://git.kernel.org/pub/scm/network/iproute2/iproute2.git/commit/?id=bf0f8e79cd13
+
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
