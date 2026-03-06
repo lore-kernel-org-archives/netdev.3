@@ -1,133 +1,201 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED98636E487
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 19:36:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772825767; cv=pass; b=jRed8futrNS52gVttBSapo9+YzL7glJJilWeRPLWMq82TTSTxblTHTNN4rPW6wBOJ/uEcYP2O2/G6s2CLjVzf0swOm3+QccM0t+czwr+ykn3IgHrRTFafSQ7PE5NB+BW+j4a1XzFa0zRBhZNEVequ9lzHWBUJl2LGAwDltj+jIE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772825767; c=relaxed/simple;
-	bh=xdj83dFgVsPH9r/XNzb+YVgn9ygjRRPVxKePJgaQ38o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wykbg8w7QjO0HgfZDNg/i8MHb+Yl8jsDjh0mdXSo/HBJLYa6ObzCtUc1QkThWD3OHKwHn9VpgdxG8w8kNbRJl1qaDrZFyqvRiyHqxYENlxWcj8pofKnzOSsuJbJHg2PAEehuicoiXEQKktVf8R9y6yHVsGWoX+hFvPgVPKyzWCk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xD0OBVPW; arc=pass smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33033374E46
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 19:37:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772825836; cv=none; b=UoRNEAytDp4Mg53gjDpGkrX41hW0d18roaJnsZudYhOX01gswQqMa1OeKjxphCEWvwyYbgcTEWraTg5qGJNaUuGV7bWnIMGysNdaCOPpjp5A8ACgF9Tohr2aOwSjTRbpsBWJjx7G80jTFxdlizVH0btYXr+qQ05X/Q/Qq3gcT+s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772825836; c=relaxed/simple;
+	bh=Wwf/rlX3fcPNX7opmKjPBceQ7Qog+/0/LSi+9Fr9rJo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qptL9+/MR0oO0yBLfG43ee5rDAuoz5PKTkWA2+r0m3hl0MkZhPN64+pFCrCkJWOtpbADIznFXD95q7+Im+Dg/r5EppxkN1qPETC69+HXziQs2QCYYUjbXIKMzqPowaohziqW8/THa0YsO4K1rTNeeZLq3Kp68rTsEvr2nf3KMfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com; spf=pass smtp.mailfrom=embeddedor.com; dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b=bI3daVns; arc=none smtp.client-ip=44.202.169.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=embeddedor.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=embeddedor.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xD0OBVPW"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-127380532eeso4299922c88.1
-        for <netdev@vger.kernel.org>; Fri, 06 Mar 2026 11:36:05 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772825765; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Ma2J3B13/ohV+Qq5aH/02svZ1S9w21gPBiSUVmxHOqAVZYXs0jimx3W7pTJZpRhPk9
-         aBY5wYj+wBdBgZkz2iHpzpWk1V8eRuIPR5qjKCM5w+mhRmyxdB8Wc/hDxR4iXPPGLn3q
-         kJ5qTOiOTVCcQYMupewDyJOPLND4972xxQcIL7iiKmm5/NdczeNZaO8y/tIE/s6Nt5QF
-         7b5hvLLkB8NNy/GkNuVpgXSPV/LIVN13LOr27KFgF4ijC1N6KPYmFaF5fPdg/s0++YpF
-         lqKjS0rRfhlwnfkCg57eUDkL+nNK1RKre87rfJ8SCO/6nnM2jMQMF5Zs7ax0/Mrc+o5W
-         8HFw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=xdj83dFgVsPH9r/XNzb+YVgn9ygjRRPVxKePJgaQ38o=;
-        fh=eswoYjFIs3xBHOaqSx8WtvTnbHViVhO5by1yylIUcEM=;
-        b=Rm4kDSMqPWWMQHW8bEAOHeaByCNM++REM9Q9aOnnofXdc1ZHxJFU/4p7ySqrpVxTsM
-         xGCH5W3Bbow5kvaLG1WDhoAKR/el3NofxVTXsQrM8xO2mRZy2LgSiuwxkchieLstyfD0
-         0y5SytIa/R2JgxWss/bHxqzaVXLXAB6LBdBTSgwnC6o27CInLPOvM+SHvwBcjayqftKN
-         iBexfcVNkRYwHEbhcnn6atQIDb7gd2rYVQDSOzUItOHtKFKqPHqRrc1RCsbqU1p+eBpc
-         6aqlhNlxQpR+W2j3CqfgmIFXFGZ10dZxxEQt/3TTwj9znmJ23KQ9Z/MB+w9v2N3it5Zy
-         /h1A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772825765; x=1773430565; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xdj83dFgVsPH9r/XNzb+YVgn9ygjRRPVxKePJgaQ38o=;
-        b=xD0OBVPWlVpZGXVZE7uR4vPE32lMwSQiRO6szKOLf7/xcDqxPcksp917LeZkxfc80k
-         dGTwQl7XdlRT2zLAfRJ1slRVTJx+YcuxNZ9bMXiNKWe7U4b0HKqnQWh4mVy3Wo7XfDLt
-         5viiV1p5keN4/VtyVYumWThNgIpSkkV51nkwiEfjRNbt48HBzIla6kQtp4jw6RgwSemr
-         6mK4stEqfUfAjU0y9Rwb8gWFoz1BAe3H0NwuLX57Bpc9EJZpzcud4DEJhHT2etK416WC
-         5FqADWnk17bDZf5rp2ZuthWhTJAN0tmYYovXVP2cgVIMqd1vS+LSR/AYdnpYhYHQqKnK
-         y2UA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772825765; x=1773430565;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xdj83dFgVsPH9r/XNzb+YVgn9ygjRRPVxKePJgaQ38o=;
-        b=owLd2BuNX//dDDratAuyyLi3QFfclh+lJS/vxgiVlQiKwSA4zkMPNCX2kOu/+JJESv
-         Wz/wLWaBOfBNaDiurlnzEr3AoEjUWJhC+f3H30KmEvOaWGC3/e5DIOWe6wCIvm0IKmdV
-         1MVNbS1ePfz/lZBhqTqiFTAZZ3jCyBo8fY5iicgvJ0T+BSbV2sj9kzyfwKV2P/wIlhBD
-         VZu4g8/HhCDnA5zMFOy4PSscoasYUxMz/lNTcna/+Na2o7U/wcYnCGvzNQ0aJDtLU6G8
-         Qa+vyaJvtwSJKWz/hFZVDWulihA/IvzkRqyohFB4wuZPM9c2aHlJzPffYuet/XwYnPSW
-         iN4w==
-X-Forwarded-Encrypted: i=1; AJvYcCW2Hij6A7I+I4BZ4MbEyiu6ks7qFTeYj0bvzsRHRT0Bq5XhjFXupzFvRKrkvKtSrUqpMYPLgq8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzb/8faHbhGY9Gn89Kk3TPjYFJ1yX5XkwcJtpBC7tSGUBldAsFY
-	QLeyka1lsT2xh8YFGcUwyrnYIdIUxtXxkFEcfNsXPC8ZcEYURCom9OLyKMDR5VUHCs/MNy2kNVn
-	Fp12QEZm6htI2OsBChnousy66dFcl5iEh8SJLkkG6
-X-Gm-Gg: ATEYQzx/wFO7feAZc+qwAv/jmDbvqLEDrNk6mSDrghs2CLvVeUb/JxMylA1+2Q8MsWk
-	z2DmRaQwRqRSyQqrK/6cMw74AytvjMDHXa2t16pWClcK6nXYhg/86BYJTjV+yF/mM66AwJh6COj
-	bA06OXHvIeCnZYqADYG7GYIP/nN8gY+EAPuP6T7L9qxDXc2EPqoTBtDjSXV8VEWC4vrwwz75AAW
-	x5nEHiiux0vYS6t4lU3Beswn+6quIUHMbM0DzIkySP+7SJov5j11CcDZfBek97Ufvi+g2TQujU5
-	PsB0U8jN6E5dOw8T/oMnhTtIJC+rcCVsfcFDJlr1G9oBahn54kBR
-X-Received: by 2002:a05:7022:e10:b0:11b:88a7:e1ac with SMTP id
- a92af1059eb24-128c2e0b9f0mr1601763c88.19.1772825764585; Fri, 06 Mar 2026
- 11:36:04 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=embeddedor.com header.i=@embeddedor.com header.b="bI3daVns"
+Received: from eig-obgw-5007b.ext.cloudfilter.net ([10.0.29.167])
+	by cmsmtp with ESMTPS
+	id yWauvBWqLKXDJyaz4vpRFz; Fri, 06 Mar 2026 19:37:14 +0000
+Received: from gator4166.hostgator.com ([108.167.133.22])
+	by cmsmtp with ESMTPS
+	id yayevsbPjV6WMyayev37pe; Fri, 06 Mar 2026 19:36:48 +0000
+X-Authority-Analysis: v=2.4 cv=E//Npbdl c=1 sm=1 tr=0 ts=69ab2cea
+ a=1YbLdUo/zbTtOZ3uB5T3HA==:117 a=k5Y5iPg+dmTXVWgYE/XtfQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=7T7KSl7uo7wA:10 a=pGLkceISAAAA:8
+ a=VwQbUJbxAAAA:8 a=ODW9KA4OjjfVspghKLMA:9 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
+ a=2aFnImwKRvkU0tJ3nQRT:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=embeddedor.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=s14wzuuHmz3UuRviyTrofkZdIBROu5zpnbLynCi7onI=; b=bI3daVnsoDPSVQtd5Z7tI2lRpp
+	g/ww7yzBZgYzPumY8rslJs/0WNMuta6MZfJRv4y2Z9FgC5NO7xz67x5QS9HI0ms/EYlANsSbKT2p7
+	nTEhiuTdw8NaAxPyBU753SBgB1soF0qZeYzMtPppnYTqwK4MiYrW0bGhYvt0d0unXssCWirbkkiaW
+	nh8JcOdqToBaAKUbA4ZCqqeK9AznmgK0dUf7yHi6SXJWjThwTdWIU83IpkR8Xf8WCuHJFXXPwj5rm
+	13xAH7Am+4kxOI11WeM0UH3ucE+BEJ7W847yR+ic0S3gA+pJep8JEI2RlWCAPN7yTQFUOASsQ5JYT
+	PC6lQE7Q==;
+Received: from [177.238.16.13] (port=47618 helo=[192.168.0.21])
+	by gator4166.hostgator.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.99.1)
+	(envelope-from <gustavo@embeddedor.com>)
+	id 1vyayb-00000001bKv-3mkP;
+	Fri, 06 Mar 2026 13:36:47 -0600
+Message-ID: <eb6c7f12-22d8-4384-b755-932fdfea5034@embeddedor.com>
+Date: Fri, 6 Mar 2026 13:36:11 +0900
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260227203457.558196-1-srutherford@google.com>
- <20260227203457.558196-2-srutherford@google.com> <6a7fbafa-cdcd-4bfa-ac00-204e68602f61@intel.com>
- <CABayD+eF30_OHRrGYiG-7qKbJjvs5=7U8H7SH9Hj=ou6aZJBbw@mail.gmail.com>
- <8b43d234-867a-481f-90e6-e155132100a5@intel.com> <CABayD+crjO3S2cC3=9HqSH+kngE1=yKp_MnKZmAdW-YwJH1idA@mail.gmail.com>
- <7c8ed118-d3c3-4bdc-913a-14f5537c44d3@intel.com>
-In-Reply-To: <7c8ed118-d3c3-4bdc-913a-14f5537c44d3@intel.com>
-From: Steve Rutherford <srutherford@google.com>
-Date: Fri, 6 Mar 2026 11:35:27 -0800
-X-Gm-Features: AaiRm53_WNbb-NVZ7tDAtTMf4_ey8XW-RibCZZ-eM0UsuoJCw8DO4Max1MVJZ18
-Message-ID: <CABayD+dJOxYxZYBpUP06sbgEf4rzMTiVfdmqbR4wnY9C677RFg@mail.gmail.com>
-Subject: Re: [RFC PATCHv2 1/1] idpf: Fix header clobber in IDPF with SWIOTLB enabled
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>, 
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>, "David S. Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Eric Dumazet <edumazet@google.com>, intel-wired-lan@lists.osuosl.org, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	David Decotigny <decot@google.com>, Anjali Singhai <anjali.singhai@intel.com>, 
-	Sridhar Samudrala <sridhar.samudrala@intel.com>, Brian Vazquez <brianvv@google.com>, 
-	Li Li <boolli@google.com>, emil.s.tantilov@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next] net: rocker: kzalloc + kcalloc to kzalloc_flex
+To: Rosen Penev <rosenp@gmail.com>, netdev@vger.kernel.org
+Cc: Jiri Pirko <jiri@resnulli.us>, Andrew Lunn <andrew+netdev@lunn.ch>,
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ open list <linux-kernel@vger.kernel.org>,
+ open "list:KERNEL" HARDENING "(not" covered by other
+ "areas):Keyword:b__counted_by(_le|_be)?b" <linux-hardening@vger.kernel.org>
+References: <20260306025449.12333-1-rosenp@gmail.com>
+Content-Language: en-US
+From: "Gustavo A. R. Silva" <gustavo@embeddedor.com>
+In-Reply-To: <20260306025449.12333-1-rosenp@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - gator4166.hostgator.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - embeddedor.com
+X-BWhitelist: no
+X-Source-IP: 177.238.16.13
+X-Source-L: No
+X-Exim-ID: 1vyayb-00000001bKv-3mkP
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: ([192.168.0.21]) [177.238.16.13]:47618
+X-Source-Auth: gustavo@embeddedor.com
+X-Email-Count: 53
+X-Org: HG=hgshared;ORG=hostgator;
+X-Source-Cap: Z3V6aWRpbmU7Z3V6aWRpbmU7Z2F0b3I0MTY2Lmhvc3RnYXRvci5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfLbwWre5+KMfuS1qq7xc3o0KYDuAQoDyu7dmOVNACgM8KzGC8VXyCCVPN+YSMBS9t7OngLjimBvLb+iEJSYdtIE2ilGRWNHKTyQc7J5bLKFOuiU139LW
+ iqPUR47idDzxq0IFDh7DPJduvALmBWQ17OlyDetGaQKPbG46+et/APtgaz3BjraFahsjqfyRPvQ4GB6E3ZylL91dylsTtNQZCYo=
 
-On Fri, Mar 6, 2026 at 6:52=E2=80=AFAM Alexander Lobakin
-<aleksander.lobakin@intel.com> wrote:
->
-> From: Steve Rutherford <srutherford@google.com>
-> Date: Wed, 4 Mar 2026 14:01:46 -0800
->
-> > I believe syncing twice isn't inherently wrong - it's more that you
-> > can't synthesize the header via the workaround and then sync, since it
-> > will pull the uninitialized header buffer from the SWIOTLB. Outside of
-> > SWIOTLB, dma syncs are more or less no-ops, while (with SWIOTLB) they
-> > are copies from/to the bounce buffers.
->
-> Ah I see.
->
-> What if I add sync_for_device after copying the header? This should
-> synchronize the bounce buffer with the copied data I guess? A bit of
-> overhead, but this W/A triggers mostly on stuff like ARP/ICMP, "hotpath"
-> L4 protos are fortunately not affected.
 
-That should work fine as well. I'm not certain I have strong
-preferences on the right answer here, other than "does it work and,
-ideally, is it less confusing?" The patch I posted is a bit
-unintuitive. I think what you are describing might make the workaround
-self-contained.
 
-thanks,
-Steve
- [And sorry for my gmail-driven top posting crimes D: ]
+On 3/6/26 11:54, Rosen Penev wrote:
+> Combining the allocations simplifies things, especially the free path.
+> 
+> Remove ofdpa_group_tbl_entry_free as a result. kfree is shorter.
+> 
+> Add __counted_by for extra runtime analysis.
+> 
+> Signed-off-by: Rosen Penev <rosenp@gmail.com>
+
+Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+
+Thanks
+-Gustavo
+
+> ---
+>   drivers/net/ethernet/rocker/rocker_ofdpa.c | 31 +++++-----------------
+>   1 file changed, 7 insertions(+), 24 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/rocker/rocker_ofdpa.c b/drivers/net/ethernet/rocker/rocker_ofdpa.c
+> index 50ea5f9ef63a..66a8ae67c3ea 100644
+> --- a/drivers/net/ethernet/rocker/rocker_ofdpa.c
+> +++ b/drivers/net/ethernet/rocker/rocker_ofdpa.c
+> @@ -104,7 +104,6 @@ struct ofdpa_group_tbl_entry {
+>   	u32 cmd;
+>   	u32 group_id; /* key */
+>   	u16 group_count;
+> -	u32 *group_ids;
+>   	union {
+>   		struct {
+>   			u8 pop_vlan;
+> @@ -123,6 +122,8 @@ struct ofdpa_group_tbl_entry {
+>   			u32 group_id;
+>   		} l3_unicast;
+>   	};
+> +
+> +	u32 group_ids[] __counted_by(group_count);
+>   };
+>   
+>   struct ofdpa_fdb_tbl_entry {
+> @@ -1059,19 +1060,6 @@ ofdpa_group_tbl_find(const struct ofdpa *ofdpa,
+>   	return NULL;
+>   }
+>   
+> -static void ofdpa_group_tbl_entry_free(struct ofdpa_group_tbl_entry *entry)
+> -{
+> -	switch (ROCKER_GROUP_TYPE_GET(entry->group_id)) {
+> -	case ROCKER_OF_DPA_GROUP_TYPE_L2_FLOOD:
+> -	case ROCKER_OF_DPA_GROUP_TYPE_L2_MCAST:
+> -		kfree(entry->group_ids);
+> -		break;
+> -	default:
+> -		break;
+> -	}
+> -	kfree(entry);
+> -}
+> -
+>   static int ofdpa_group_tbl_add(struct ofdpa_port *ofdpa_port, int flags,
+>   			       struct ofdpa_group_tbl_entry *match)
+>   {
+> @@ -1085,7 +1073,7 @@ static int ofdpa_group_tbl_add(struct ofdpa_port *ofdpa_port, int flags,
+>   
+>   	if (found) {
+>   		hash_del(&found->entry);
+> -		ofdpa_group_tbl_entry_free(found);
+> +		kfree(found);
+>   		found = match;
+>   		found->cmd = ROCKER_TLV_CMD_TYPE_OF_DPA_GROUP_MOD;
+>   	} else {
+> @@ -1122,14 +1110,14 @@ static int ofdpa_group_tbl_del(struct ofdpa_port *ofdpa_port, int flags,
+>   
+>   	spin_unlock_irqrestore(&ofdpa->group_tbl_lock, lock_flags);
+>   
+> -	ofdpa_group_tbl_entry_free(match);
+> +	kfree(match);
+>   
+>   	if (found) {
+>   		err = rocker_cmd_exec(ofdpa_port->rocker_port,
+>   				      ofdpa_flags_nowait(flags),
+>   				      ofdpa_cmd_group_tbl_del,
+>   				      found, NULL, NULL);
+> -		ofdpa_group_tbl_entry_free(found);
+> +		kfree(found);
+>   	}
+>   
+>   	return err;
+> @@ -1166,18 +1154,13 @@ static int ofdpa_group_l2_fan_out(struct ofdpa_port *ofdpa_port,
+>   {
+>   	struct ofdpa_group_tbl_entry *entry;
+>   
+> -	entry = kzalloc_obj(*entry);
+> +	entry = kzalloc_flex(*entry, group_ids, group_count);
+>   	if (!entry)
+>   		return -ENOMEM;
+>   
+> -	entry->group_id = group_id;
+>   	entry->group_count = group_count;
+> +	entry->group_id = group_id;
+>   
+> -	entry->group_ids = kcalloc(group_count, sizeof(u32), GFP_KERNEL);
+> -	if (!entry->group_ids) {
+> -		kfree(entry);
+> -		return -ENOMEM;
+> -	}
+>   	memcpy(entry->group_ids, group_ids, group_count * sizeof(u32));
+>   
+>   	return ofdpa_group_tbl_do(ofdpa_port, flags, entry);
+
