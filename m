@@ -1,72 +1,112 @@
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C66E34C121
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 14:34:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6778B34BA5B;
+	Fri,  6 Mar 2026 14:34:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772807695; cv=none; b=nrrmZua4ZkxF8tRDXxi+nR1KGKXFXAgh//zTXenmmdEIRqaKmsgthCOJ/Lj3w/bIn+puS9bqC0VMnHVlfKS/ZDpOHR8QoYk6fQmBCC3yKCo8ZvxikhIyXb7ai6QjtaMzCmQRiHwGjHhZgDvL1GqfrObRJv+9y9L59ntmlLNMPKU=
+	t=1772807698; cv=none; b=es2QCbbmKABJ8gGibvIdNcZt8ti44gcaMlLsTfB0OiAF/5f8/LnY/2OCJNdlT4upSxkmawyA+HNUxzVlE54wZZzDlo6Jnw4ANSz7wdQip6YpMS0krevcj2ALiMDr4bZv4Jp1yVExIjxoVEMrmKYyi/lP9cp+rY6S0DZyt9zR5pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772807695; c=relaxed/simple;
-	bh=vaEoDpy1fUGpWdko4iZwCqWJ0MXp1Q1rdotkgeUPpiY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IpnGdBafHM1ZG+hjJxmrnx51vEblmtpkW6eVlPWn0PgeIZeq8ERDfAVxE3R8zUhxPaG/OqlMi2XRKs4kMSew4i4jD5EOkV3E5/etzp3WKoBFgI5aZfq4C4n80o8sDvHg755154RHbpPGIBLmxo9HG5PJPSXM1406mxAfCC9+kqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=hhpqnd2i; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1772807698; c=relaxed/simple;
+	bh=sBucqM3rI0E0bs+xWumm5X7Yw4YeWBjhy0nkysJaHTo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NhexwuK/d2Q/losurpcKJYsdWWMj5Bej2tTCaD0X9iH41yLgvj39T8E4kxR0G9dNjUOElt9HlJ77GH9j6rexI51gFsrldH4WeYyGTuvDLbUAi54cfFmB0HQw+xg3dSw04olXp8DTGIcDpLS2tMT6xvU+Z9aJ7n4ZyvpuN6lqCWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mQ/8nSHB; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="hhpqnd2i"
-Message-ID: <92677272-5719-4c91-b4d4-d3e71e50d2c6@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772807681;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vaEoDpy1fUGpWdko4iZwCqWJ0MXp1Q1rdotkgeUPpiY=;
-	b=hhpqnd2i75OSY9dCdX31aGhtVXUA0kJTD97ClADMtN1oNGF+ULiwRnO8F8I2RiQJdEKkZe
-	k+bzJnx360NzWysp2c/u5FgbpbQsEzjf2/biERO4kpUWoR66BmXcibSYQ1i/legEZFQase
-	nRgZuJWO3LZYTJmKL2jWCLkJFzvCrLQ=
-Date: Fri, 6 Mar 2026 22:34:30 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mQ/8nSHB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F3DC4CEF7;
+	Fri,  6 Mar 2026 14:34:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772807698;
+	bh=sBucqM3rI0E0bs+xWumm5X7Yw4YeWBjhy0nkysJaHTo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mQ/8nSHBcnve2cyDs2qnAleZx6eiK9+HYkoQoEa7AkumPNz1UZuMhhog0tjnAFawd
+	 fazBbin+qHFFSMWNUOicRBWLHXgH3F7kqJTbxu9Fr7E5OydZfmebfUnzf4brh6uJUZ
+	 YobP3pFuPnGlqoE+vx2Dv777o+F4kR9rAc3mZ0AyGYlM1lLTZ5MgTK4uEtWjqPG6xv
+	 pKUG05eMMuLDOL+k55Q6dvT5CwD8zEz2REBuEcYVQxLV7NmGW0EM6LV3ijMAhf7wpv
+	 uxGve7Rfjy36GnVl0ToBREmM31kdDloRhcWOalcGcE/9Jsi3mDm3vLQ74CppwAMwjK
+	 XsKBVsmibRkbA==
+From: Simon Horman <horms@kernel.org>
+To: rkannoth@marvell.com
+Cc: Simon Horman <horms@kernel.org>,
+	cjubran@nvidia.com,
+	edumazet@google.com,
+	donald.hunter@gmail.com,
+	shshitrit@nvidia.com,
+	netdev@vger.kernel.org,
+	matttbe@kernel.org,
+	jiri@resnulli.us,
+	chuck.lever@oracle.com,
+	saeedm@nvidia.com,
+	kuba@kernel.org,
+	linux-kernel@vger.kernel.org,
+	davem@davemloft.net,
+	sgoutham@marvell.com,
+	pabeni@redhat.com
+Subject: Re: [v2,net-next,4/5] octeontx2-af: npc: cn20k: dynamically allocate and free default MCAM entries
+Date: Fri,  6 Mar 2026 14:28:05 +0000
+Message-ID: <20260306142803.500805-3-horms@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260304043032.3661647-5-rkannoth@marvell.com>
+References: <20260304043032.3661647-5-rkannoth@marvell.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH bpf v3 4/5] selftests/bpf: Extend bpf_iter_unix to attempt
- deadlocking
-To: Michal Luczaj <mhal@rbox.co>, John Fastabend <john.fastabend@gmail.com>,
- Jakub Sitnicki <jakub@cloudflare.com>, Eric Dumazet <edumazet@google.com>,
- Kuniyuki Iwashima <kuniyu@google.com>, Paolo Abeni <pabeni@redhat.com>,
- Willem de Bruijn <willemb@google.com>, "David S. Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Simon Horman <horms@kernel.org>, Yonghong Song <yhs@fb.com>,
- Andrii Nakryiko <andrii@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Daniel Borkmann <daniel@iogearbox.net>,
- Martin KaFai Lau <martin.lau@linux.dev>, Eduard Zingerman
- <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
- Yonghong Song <yonghong.song@linux.dev>, KP Singh <kpsingh@kernel.org>,
- Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>,
- Jiri Olsa <jolsa@kernel.org>, Shuah Khan <shuah@kernel.org>,
- Cong Wang <cong.wang@bytedance.com>
-Cc: netdev@vger.kernel.org, bpf@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20260306-unix-proto-update-null-ptr-deref-v3-0-2f0c7410c523@rbox.co>
- <20260306-unix-proto-update-null-ptr-deref-v3-4-2f0c7410c523@rbox.co>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-In-Reply-To: <20260306-unix-proto-update-null-ptr-deref-v3-4-2f0c7410c523@rbox.co>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-On 3/6/26 7:30 AM, Michal Luczaj wrote:
-> Updating a sockmap from a unix iterator prog may lead to a deadlock.
-> Piggyback on the original selftest.
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+octeontx2-af: npc: cn20k: dynamically allocate and free default MCAM entries
+
+This commit improves MCAM utilization by tying default entry lifetime to
+NIX LF usage. Default entries are allocated when NIX LF is allocated and
+freed when NIX LF is freed, with a new flag to allow the kernel PF driver
+to retain entries across suspend/resume.
+
+> diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> index badfa1d64252..0fb2d71116f4 100644
+> --- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+> +++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
+
+[ ... ]
+
+> @@ -1684,6 +1685,12 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+>  	if (is_sdp_pfvf(rvu, pcifunc))
+>  		intf = NIX_INTF_TYPE_SDP;
 >
-> Signed-off-by: Michal Luczaj <mhal@rbox.co>
+> +	if (is_cn20k(rvu->pdev)) {
+> +		rc = npc_cn20k_dft_rules_alloc(rvu, pcifunc);
+> +		if (rc)
+> +			goto free_dft;
+> +	}
+> +
+>  	err = nix_interface_init(rvu, pcifunc, intf, nixlf, rsp,
+>  				 !!(req->flags & NIX_LF_LBK_BLK_SEL));
+>  	if (err)
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Does this leak the cn20k default MCAM entries if nix_interface_init()
+fails? The npc_cn20k_dft_rules_alloc() call succeeds and allocates entries
+into the xa_pf2dfl_rmap xarray and hardware MCAM slots. When
+nix_interface_init() subsequently fails, the error path jumps to 'free_mem'
+rather than 'free_dft', skipping npc_cn20k_dft_rules_free().
 
+> @@ -1699,6 +1706,10 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
+>
+>  	goto exit;
+>
+> +free_dft:
+> +	if (is_cn20k(rvu->pdev))
+> +		npc_cn20k_dft_rules_free(rvu, pcifunc);
+> +
+>  free_mem:
+>  	nix_ctx_free(rvu, pfvf);
+>  	rc = -ENOMEM;
+
+The free_dft cleanup path exists and would handle the release, so should
+the nix_interface_init() failure case use 'goto free_dft' instead?
