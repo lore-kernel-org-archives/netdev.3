@@ -1,47 +1,58 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E8C3242D8
-	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 15:13:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6632D3537FA;
+	Fri,  6 Mar 2026 15:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772810001; cv=none; b=kRrtreBp7mZ/c2ASAdnTkV3lrleHa3/KL+tdPNT2tJoJ9v6D4CmNk6knVWPAUcNVdMOvQ1dl4zynALTK4TMa8aFEf/L7ZISqNltvO5qH91mH4OtsV4XB9Putyjwlsef2g1c1nlcjxgCpee3+/ixwy5hab7hN6t6XJaWNRs1AZvI=
+	t=1772810455; cv=none; b=oD4Do8/4bzL2txP8ee229LP8hHHaiDuNIYMCnqRFcwbuw+tvRWsAvSFRHTJVTPO6z8NNBexjyDGKZ3mhBitFfEwmggWlLauOhhWo6Q+bZvE5Cx4hg6j3ReOStMup+qtLYF5SSr9NkRdgOM4GYG+Qoiic053bk8EyrxLdby4uzhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772810001; c=relaxed/simple;
-	bh=m3yX/TuFuLRmQIgjvocQq3GX0w3ISo7+U2TC5CEV9uw=;
+	s=arc-20240116; t=1772810455; c=relaxed/simple;
+	bh=hvXgGkf2qu+jqR+sgY8DakribYb85aMMllz2F4DP0wk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VJIJqIj3VQL2GKgZYrEgHajJmZV++XNxCAjBRxjhr3mdWT+8S1hwi4I62s7eYG+DpLGx530rTOUUzE0N1BmRvi9E9+E67aLvZxG74G8LrU6eOhRXWZZRF7YZhc0LeNklf73GwXrhadUnA6C3kb+4kBaIb1yPZ6y60WwTPbMawJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jiZltdZ2; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=QNuYPQEgNf1hiS0n6LYcnnx6TSkqykxrH3PzEZMK2oYt4KKESOFZNHnkzCw8rQxTD+23UV6AhX6p5WsgtiV74NoZ+RToBiwlszznXG3qRgitZwSEKuzDxVEK4J2+aUB3ztdQmH1uUtW7xi2+VuF2cbPW5A0LfEyqBATLcfnfrYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0uFKeBR; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jiZltdZ2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC2AC4CEF7;
-	Fri,  6 Mar 2026 15:13:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0uFKeBR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E42C4CEF7;
+	Fri,  6 Mar 2026 15:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772810000;
-	bh=m3yX/TuFuLRmQIgjvocQq3GX0w3ISo7+U2TC5CEV9uw=;
+	s=k20201202; t=1772810454;
+	bh=hvXgGkf2qu+jqR+sgY8DakribYb85aMMllz2F4DP0wk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jiZltdZ2gL1FgHjce7eq7UkgNdE3B4LBXJl8Qxe8+hOJHZUbs+T/gCtq822uK3SXp
-	 xTDxNlZKmvRv+qxSeUHDc/A9eyWLuenTL/NO0qMG+kcC9WNWRn6FPehz7PW1C1PX62
-	 psecRgeyD+CRzBQS0qvbuhAFLQ7u1/guxPnWe0QoV/5rHghKcPBk+lpSfZ3A9Y6Eqp
-	 o5HlFzYcgk4FIRzFpMx1H61mJumZtuX0wmQ8iT6LcOqRhntlHBrpDPWejjuz16xD2n
-	 ZcAiOJR35oELwpol4XNVFP880WiVW/ZxVYQF1Zvyb0IDwXXEUy21kxzA2BSl6Ojqm9
-	 F0dC5Vcig7fVA==
-Date: Fri, 6 Mar 2026 16:13:18 +0100
-From: Lorenzo Bianconi <lorenzo@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
+	b=J0uFKeBR838wZP2L+gn1tFYR1pp3O0vli6BXg5dyDv8PN/I6WR3oh7MVJbVB0431b
+	 9l4GNBfabH3/dN6XVbUp8AUNikkn524uPLJt3THgfe6IY7GuydW4QxZbfPHlFES1Ik
+	 GDQ72WdIAa6ducWYHHkhov9T4/h6QE3IAxAdDbp71rzlaOr5pTrSO6bfZ8xvkUopBo
+	 j15R8RE8eaak4c2W022F7coAtxzswahcuNBHvf1nJTHNS/niETg2dbu7CGAqzgtJCe
+	 hid+bMfPNBYkFndY9iL+hicEIN3FWXILXjMBQfHlaxURfx6Xl14S+9TZotvg82doQ+
+	 cCVQs/T7fD1Ew==
+Date: Fri, 6 Mar 2026 15:20:48 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, UNGLinuxDriver@microchip.com,
+	Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net-next] net: airoha: Fix GDM2 loopback configuration
- for USB serdes
-Message-ID: <aarvDt9TAn0MkUk8@lore-desk>
-References: <20260228-airoha-fix-loopback-for-usb-serdes-v1-1-a94be0f897da@kernel.org>
- <20260303141624.GD71509@kernel.org>
- <aaftUXaSD0u5ZhO7@lore-desk>
- <20260306134226.GD461701@kernel.org>
+	Simon Horman <horms@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Woojung Huh <woojung.huh@microchip.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Steen Hegelund <Steen.Hegelund@microchip.com>,
+	Daniel Machon <daniel.machon@microchip.com>,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org
+Subject: Re: [PATCH net-next 2/8] dt-bindings: net: lan9645x: add LAN9645X
+ switch bindings
+Message-ID: <20260306-pointless-purr-210540d4dc64@spud>
+References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
+ <20260303-dsa_lan9645x_switch_driver_base-v1-2-bff8ca1396f5@microchip.com>
+ <4088b0ff-b718-4137-8518-4c9b9764d56d@lunn.ch>
+ <20260303-mosaic-debate-90cf8c8bbb33@spud>
+ <1db45715a3a12b76b838d20c0e5904c3222053e7.camel@microchip.com>
+ <20260305-reliant-parchment-0ff685a9c78e@spud>
+ <7b62ace495084794336b19a9685d6b14ea3981a0.camel@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -49,69 +60,90 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="UOcuNL+C/U/0CMjH"
+	protocol="application/pgp-signature"; boundary="kHmiwYOF/7ZYzZNz"
 Content-Disposition: inline
-In-Reply-To: <20260306134226.GD461701@kernel.org>
+In-Reply-To: <7b62ace495084794336b19a9685d6b14ea3981a0.camel@microchip.com>
 
 
---UOcuNL+C/U/0CMjH
+--kHmiwYOF/7ZYzZNz
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-> On Wed, Mar 04, 2026 at 09:29:05AM +0100, Lorenzo Bianconi wrote:
-> > > On Sat, Feb 28, 2026 at 01:20:33PM +0100, Lorenzo Bianconi wrote:
-> > > > Flow Control source port mapping for USB serdes needs to be configu=
-red
-> > > > according to the GDM port nbd parameter. This is a preliminary patch
-> > > > since nbd parameter is specific for the given port serdes and needs=
- to
-> > > > be read from the DTS (in the current codebase is assigned staticall=
-y).
+On Fri, Mar 06, 2026 at 04:08:01PM +0100, Jens Emil Schulz Ostergaard wrote:
+> On Thu, 2026-03-05 at 18:31 +0000, Conor Dooley wrote:
+> > On Thu, Mar 05, 2026 at 01:57:37PM +0100, Jens Emil Schulz Ostergaard w=
+rote:
+> > > On Tue, 2026-03-03 at 19:04 +0000, Conor Dooley wrote:
+> > > > On Tue, Mar 03, 2026 at 03:18:45PM +0100, Andrew Lunn wrote:
+> > > > > > +        properties:
+> > > > > > +          microchip,led-drive-mode:
+> > > > > > +            $ref: /schemas/types.yaml#/definitions/uint32
+> > > > > > +            description: |
+> > > > > > +              Set the LED drive mode for the copper PHY associ=
+ated with
+> > > > > > +              this port.
+> > > > > > +
+> > > > > > +                0 - LED1 and LED2 in open-drain mode
+> > > > > > +                1 - LED1 in active drive mode (can be used for=
+ single-LED
+> > > > > > +                    configurations requiring active drive)
+> > > > > > +                2 - Reserved
+> > > > > > +                3 - LED1 and LED2 in active drive mode
+> > > > > > +            minimum: 0
+> > > > > > +            maximum: 3
+> > > > >=20
+> > > > > I doubt the DT Maintainers will accept that. This looks a lot lik=
+e a
+> > > > > value you write into a register. How are active drive and open-dr=
+ain
+> > > > > described in other DT bindings? Is there something you can reuse?
 > > > >=20
-> > > > Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> > > > I had a quick look and I didn't see anything really that stood out =
+to me
+> > > > that would be a drop-in replacement.
+> > > > I also tried looking in the datasheet for more information on these
+> > > > modes, but I couldn't see anything obvious. For example, there were=
+ zero
+> > > > hits for "drain" in either LAN9645xS or LAN9645xF datasheets.
+> > > >=20
+> > > > That said, yea you're right about DT maintainer feelings about it.
+> > > > There's a couple things I could suggest, but I'd like to know about=
+ what
+> > > > mode 1 means for LED2 first. If there's actually nothing similar, w=
+hat
+> > > > about representing each led with a child node and having open-drain=
+ be
+> > > > the default with a property in the child for active-drive?
+> > > >=20
+> > > > >=20
+> > > > > For 1, what happens to LED2? Not used at all?
 > > >=20
-> > > Hi Lorenzo,
-> > >=20
-> > > Is this a fix? If so, should it have a fixes tag? And be targeted at =
-net?
-> > > Otherwise, perhaps drop the "Fix" from the subject.
+> > > In mode 1 LED2 will be open-drain. This mode only makes sense if you =
+have
+> > > just 1 LED. With two LEDs mode 0 or mode 3 should be used.
 > >=20
-> > Hi Simon,
-> >=20
-> > This is a preliminary patch in order to completely fix the loopback
-> > configuration for USB serdes but the point is we are not supporting
-> > USB serdes upstream yet (there is only OpenWrt support available at
-> > the moment). Do you think we should target net-next or net in this
-> > case?
+> > Could we then have child nodes for each led, and have a property in each
+> > that sets the mode to either open-drain or active-drive? Or am I just
+> > inserting complexity by asking for that?
 >=20
-> If there is no bug in net - given the way net can be used with in-tree co=
-de
-> - then I would not tag this as a fix.
+> I think it sounds sensible, I will add this.
 
-ack, fine.
 
-Regards,
-Lorenzo
+You don't need a property for each, just make one mode the default (prob
+open-drain given it's the 0 setting, but whatever is default out of
+reset for the part) and have the property for the other mode. Just
+some bool property like "microchip,active-drive" or whatever.
 
->=20
-> >=20
-> > >=20
-> > > Also, I think it would be worth explaining the situation
-> > > before and after this patch.
->=20
-> ...
->=20
-
---UOcuNL+C/U/0CMjH
-Content-Type: application/pgp-signature; name=signature.asc
+--kHmiwYOF/7ZYzZNz
+Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQTquNwa3Txd3rGGn7Y6cBh0uS2trAUCaarvDgAKCRA6cBh0uS2t
-rHS4AP93AGB12XIMmq1lglTzHPArpDsRGddVBWHb/RHvuaZHdAEA1mo58+20I1V4
-7y5FGuGUMVWZVwOEUq8W6grMJD84VAc=
-=ifxM
+iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaarwuwAKCRB4tDGHoIJi
+0mLvAP4niib63KhKJfXuRrVQ7tpWk5NdXsr7ixxEWKIyPCECQAEAoOiaNn9WsgYu
+8OkUBffwCl7j3bkqGx3lsEB2giDELAM=
+=4Erg
 -----END PGP SIGNATURE-----
 
---UOcuNL+C/U/0CMjH--
+--kHmiwYOF/7ZYzZNz--
