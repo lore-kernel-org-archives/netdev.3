@@ -1,94 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92D3172627;
-	Fri,  6 Mar 2026 23:50:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5114B371CFC
+	for <netdev@vger.kernel.org>; Fri,  6 Mar 2026 23:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772841018; cv=none; b=LvK6vot5a2aiRORwId9QwFAS/tX8k1WxlEB7TAnVDfG95eM/E7ige7FbWx2xVmx7Jy2B156KbTgVbmVJlbsESWiLhYDdg8BsPRJv6r5u/g3BfHR4L4182gqYKaDRauj4RCJ6ZuaB5d3b0HSjHax0A1y66WlDxRS6xRSclrUI4HY=
+	t=1772841505; cv=none; b=mvtdJouyLMxtsZMKxuRabJNkELClwexFvOtvItwDLSNuZvXAIGzZyCKObnCrBFSB325/Lkcf5qZuQ6ob6XMy1/bohCpYoUhsPaZnkDqDtRjZ6lwgRS3QGJeFOuk+MohWnD2DkqQAWbabTDYdCws+wgrr4AsEQuUqwTquka8qAGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772841018; c=relaxed/simple;
-	bh=BQW73dxoFvf8W9lwbY5JOxppl2jq+PcUgOfCJhuasFc=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=uul7qr5xbsFhPruKUO/ZgHFn6tj623NVMW8aPcP9qWykXxuP5fk+XG7JLrbZYCDU82hZxuj8Dj7TN1kcg3rX+YKUXWjA3tb0IGBomt62fwLZSRB9iCuNflCV4KT10FUVSJCi1n92bnh9OHIZmdlWPtEldzPtiL/4MK7P0WbSYSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AZeceoFW; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772841505; c=relaxed/simple;
+	bh=pzoLFbE2KvvNoQN+KoB+b2Qa2qu25BrILCK0zg8vTHQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Qv7I+ZHFDfRyLtZMhYsll+VN1SbCP3lvuROsp8NzxdI+MvqDI2H+sb+6p7Io0G99VUaWNoF5ksaYfQuie7Reh2gAzhRw8BYa2iu6zGJvl34+8OHQBv2Ans3CRxqIl6z3iF0ESso9B69rB6dXKFx5CXuKUX/v3ZFvGI8k0Cjon3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iEqnHIOx; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AZeceoFW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2844AC4CEF7;
-	Fri,  6 Mar 2026 23:50:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772841018;
-	bh=BQW73dxoFvf8W9lwbY5JOxppl2jq+PcUgOfCJhuasFc=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=AZeceoFWUBzHrcZ1cwO/gNZKKGnTGYzoaTq4ZcmJ3PkLhzEbo1YHEm2P3D5sQjNah
-	 JjVGGBxD6egmPXbetoSy8xZDIcG7gkwDbLTv3d/Vdx9zRojsBKqtn/KbKJrrR9mW+6
-	 MIV9N1wlDdcbQPQuhvlxyWU+0t50ePLZCkAUFTaj2K0//qhaOvAvcWsz8Jcc54ruep
-	 jmY9pkf1Wox7Jr4uIiIbFPmyYyKeHR3AMV/JyMKulw/n+PpejERXJxN5BzHzb1rq2e
-	 3xAf9jv6V2j0O2tQhW0Zek11e/SysJwH3PkaOZ1yaV1orDHOOdjKJP/RgKNtSEUT2f
-	 9p25rXvQLGR7w==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CF413808200;
-	Fri,  6 Mar 2026 23:50:18 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iEqnHIOx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772841503; x=1804377503;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=pzoLFbE2KvvNoQN+KoB+b2Qa2qu25BrILCK0zg8vTHQ=;
+  b=iEqnHIOxOjDjF+o7cWTI/te8f7RK1qGlQaB0Gh6kJpgJRValzypR1aHl
+   nl1MPylWsv+a1/vpk5IUIcQSk+TaZ9KxMI+n7dlJ4owb4tK8F93RQgm5N
+   bLFZh6CqJ5qmRK9sakjkFGlkuGdbX0urJilXnza9DRGWk/77cBWBUnQle
+   5f4XP3+nYfIrTuHuMXwzsnsZ8EWx3PonI9J4C+N2qvaojKvuiASWVGpKx
+   1Bx9fyzx1VeJKs4tlKLD6TNWf0UbkPRf/5j0QrGz2yWEsPrjhuIsHyNlY
+   HHzAEWrmpMOFuE414PmP/LgDCsnXf4xUmMm8sm8JgBtKuuv0NuCdwuttk
+   g==;
+X-CSE-ConnectionGUID: JU9d7v9gSi60OAhp8BXXhQ==
+X-CSE-MsgGUID: xaQZAizgT6eMop2oqEf1fw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="99426417"
+X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
+   d="scan'208";a="99426417"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 15:58:17 -0800
+X-CSE-ConnectionGUID: 6IIL0baaQbuo3/ANGq02zw==
+X-CSE-MsgGUID: t2Md9z0bTvSJFylF1Ncc8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
+   d="scan'208";a="257075411"
+Received: from lkp-server01.sh.intel.com (HELO 058beb05654c) ([10.239.97.150])
+  by orviesa001.jf.intel.com with ESMTP; 06 Mar 2026 15:58:14 -0800
+Received: from kbuild by 058beb05654c with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vyf3b-000000001Ub-2P36;
+	Fri, 06 Mar 2026 23:58:11 +0000
+Date: Sat, 7 Mar 2026 07:57:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Eric Dumazet <edumazet@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: oe-kbuild-all@lists.linux.dev, Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+	netdev@vger.kernel.org, eric.dumazet@gmail.com,
+	Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH net-next] net/sched: do not reset queues in graft
+ operations
+Message-ID: <202603070725.rEAZBlAv-lkp@intel.com>
+References: <20260306113402.435055-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next v2 0/8] net: stmmac: mdio related cleanups
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177284101730.95361.6178473364485118037.git-patchwork-notify@kernel.org>
-Date: Fri, 06 Mar 2026 23:50:17 +0000
-References: <aald--qJquWGIvmO@shell.armlinux.org.uk>
-In-Reply-To: <aald--qJquWGIvmO@shell.armlinux.org.uk>
-To: Russell King (Oracle) <linux@armlinux.org.uk>
-Cc: andrew@lunn.ch, alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch,
- wens@kernel.org, davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- linux-arm-kernel@lists.infradead.org,
- linux-stm32@st-md-mailman.stormreply.com, linux-sunxi@lists.linux.dev,
- netdev@vger.kernel.org, pabeni@redhat.com, samuel@sholland.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260306113402.435055-1-edumazet@google.com>
 
-Hello:
+Hi Eric,
 
-This series was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+kernel test robot noticed the following build warnings:
 
-On Thu, 5 Mar 2026 10:42:03 +0000 you wrote:
-> Hi,
-> 
-> The first four patches clean up the MDC clock divisor selection code,
-> turning the three different ways we choose a divisor into tabular form,
-> rather than doing the selection purely in code.
-> 
-> Convert MDIO to use field_prep() which allows a non-constant mask to be
-> used when preparing fields.
-> 
-> [...]
+[auto build test WARNING on net-next/main]
 
-Here is the summary with links:
-  - [net-next,v2,1/8] net: stmmac: mdio: convert MDC clock divisor selection to tables
-    https://git.kernel.org/netdev/net-next/c/4c7e0e081889
-  - [net-next,v2,2/8] net: stmmac: mdio: use same test for MDC clock divisor lookups
-    https://git.kernel.org/netdev/net-next/c/b6687ef97603
-  - [net-next,v2,3/8] net: stmmac: mdio: simplify MDC clock divisor lookup
-    https://git.kernel.org/netdev/net-next/c/506f78f43c58
-  - [net-next,v2,4/8] net: stmmac: mdio: convert field prep to use field_prep()
-    https://git.kernel.org/netdev/net-next/c/58bd0039002b
-  - [net-next,v2,5/8] net: stmmac: use u32 for MDIO register field masks
-    https://git.kernel.org/netdev/net-next/c/df388b4d3913
-  - [net-next,v2,6/8] net: stmmac: use GENMASK_U32() for mdio bitfields
-    https://git.kernel.org/netdev/net-next/c/a64d927aecf1
-  - [net-next,v2,7/8] net: stmmac: mdio_bus_data->default_an_inband is boolean
-    https://git.kernel.org/netdev/net-next/c/3cd963fa915c
-  - [net-next,v2,8/8] net: stmmac: make pcs_mask and phy_mask u32
-    https://git.kernel.org/netdev/net-next/c/e4fd855c52ec
+url:    https://github.com/intel-lab-lkp/linux/commits/Eric-Dumazet/net-sched-do-not-reset-queues-in-graft-operations/20260306-205258
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/20260306113402.435055-1-edumazet%40google.com
+patch subject: [PATCH net-next] net/sched: do not reset queues in graft operations
+config: alpha-defconfig (https://download.01.org/0day-ci/archive/20260307/202603070725.rEAZBlAv-lkp@intel.com/config)
+compiler: alpha-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260307/202603070725.rEAZBlAv-lkp@intel.com/reproduce)
 
-You are awesome, thank you!
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603070725.rEAZBlAv-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> Warning: net/sched/sch_generic.c:1377 function parameter 'reset_needed' not described in 'dev_deactivate_many'
+>> Warning: net/sched/sch_generic.c:1377 function parameter 'reset_needed' not described in 'dev_deactivate_many'
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
