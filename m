@@ -1,35 +1,55 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770AA18787A;
-	Sat,  7 Mar 2026 02:00:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1773E47B
+	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 02:01:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772848812; cv=none; b=GD2ulD/bJF2LbHlJPXQSCft4f12NL2noX4s4d9jAgXNL/abtv7wIp/hpIdOLhEFu1CuYAq9Mq00l5RQpGB0yWv0XQxLGVR9vvtj6K2hoU+QY3m9rL//uMUbuNiNzUMik7LiKFlzWjVjfMcT/gP+i+ZjVPL+lnfj4Q1RRIX1iUkA=
+	t=1772848921; cv=none; b=JH/0WPkMzsnnKMAyvsY4JG/Sd8bJhShXDviAWmWOPwbdCFLYygcHkV/dpqK8Smy27CL+aTToe46v5TR3vKJevexnqrQb+oBwoBBhbTRZBHOa+wDTxL68Q3LHhsFUnZ5c5wfZ0SjO0JlMKfIteUpCXYtcQ9V+qzXenvcsZp2ZXts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772848812; c=relaxed/simple;
-	bh=VijgEdxT0vRaeLpxh7yCMedpS5F6JbxQlXL3z5GtyCI=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=KyheirV5fztDOTeA6URO/ciOPQq6cSa+bzo99SLJJe48yPYRnxifCjruti0O8PKOyy+0cWy4Y/C/hM6tvCwZss2nOF9X2J67JanLVP5lZlDlpgS4F6LYx9/9kFD9QLGm3HV0bCC9frdEkaARsILVdkwNQmDqORyudZDRndgSSMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q6aOEVuv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772848921; c=relaxed/simple;
+	bh=jq1XXb3w5dDHDIPGLpDnaXdLQU6hLD53Lqu7W/qctOE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=TVelxWQgLN6acescyvo8PWqskLzWtfYyP48K8+G4gQAZrqDWVnyORUTKStP/ArTlIcsRFDe5oBt5eb6Jm9jcE7dxm2Qo+MyyUSORFEO2SiRtrYTbxohpIvYnxd8Xww4caPzZqZLwb5fFlGIgCuhNgEw1dQHQyV8I8fOeFcq5Ht8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RrK9yoD0; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q6aOEVuv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37095C4CEF7;
-	Sat,  7 Mar 2026 02:00:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772848812;
-	bh=VijgEdxT0vRaeLpxh7yCMedpS5F6JbxQlXL3z5GtyCI=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=q6aOEVuv9hpLjL/6DS4cKXM0zrf+nGPu/aU8fV1ybx+exBoo/0gP1RvcLpSdrkKLy
-	 iccdL2T/SeHDvMCmpfeStr+c4iKdoUsZVg0hameWD9qg2PG9YXY+zfGXcx6y2rC6bR
-	 hdC83kAlO4Ua9TPc/zR4JtKbAToRS1xJI57IgXhHbbuNj97cuLUBgYu6tbC4XE7FW+
-	 nBm9VUpTfV84AcjaIOx4PiXylumKMnqDLS3pVDEZTrIGaH4dMVQnErqDoQYpxdQerL
-	 kyNMsdNoHfeTDD7DxfIcIQrzEGybfTzwFjNDgV1PiusRQfx1tM9w0rh1QSY2xeibys
-	 fOd05d0i/FjuA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CDAD3808200;
-	Sat,  7 Mar 2026 02:00:12 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RrK9yoD0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1772848919; x=1804384919;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=jq1XXb3w5dDHDIPGLpDnaXdLQU6hLD53Lqu7W/qctOE=;
+  b=RrK9yoD007o4AY7Rgpovwz3nGcnAnkvrCEaE7eXzkppMB5y+oIcn3Lof
+   0E+BlFEOqEwn1ZzTo7j9fnvmUWYNcd7X8qI83BDcXysI+ZB/vfjmpnO/k
+   Za1XiiwyG0KYYlbm4K6KmjzmeS9hmLlQw7wCtFWZSI7tSXKYrhbtS4N//
+   /JaMVbXJ+KYA0wJQp8tgRERgywjGEfO0xBnYwGpOwJyOgxq4J5Dzmv7cu
+   BXmgYaxVbIY02dFhevpDhOCXy7mMlv2yk5nZrLkpow2oM4iyYPkV3aDUV
+   5UW21ZJLgUmt1bpMg7vAzq9aRiDuJZNPO+snTC3V1Zn1rxOuEJ5lmXSjl
+   A==;
+X-CSE-ConnectionGUID: GpycDPzlSd+WfkanOA4mYA==
+X-CSE-MsgGUID: X05hE9edReWwZevXSAo+LA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11721"; a="77839204"
+X-IronPort-AV: E=Sophos;i="6.23,105,1770624000"; 
+   d="scan'208";a="77839204"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Mar 2026 18:01:58 -0800
+X-CSE-ConnectionGUID: GJOabdEYRmC0WpSeHeKghw==
+X-CSE-MsgGUID: WPDC6zbAQAmqpcamPC/ELQ==
+X-ExtLoop1: 1
+Received: from dcskidmo-m40.jf.intel.com ([10.166.241.14])
+  by fmviesa003.fm.intel.com with ESMTP; 06 Mar 2026 18:01:58 -0800
+From: Joshua Hay <joshua.a.hay@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Subject: [Intel-wired-lan][PATCH iwl-net] idpf: only assign num refillqs if allocation was successful
+Date: Fri,  6 Mar 2026 18:12:47 -0800
+Message-Id: <20260307021247.1259624-1-joshua.a.hay@intel.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,42 +57,45 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] rxrpc,
- afs: Fix missing error pointer check after rxrpc_kernel_lookup_peer()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177284881104.123899.8488535259917331846.git-patchwork-notify@kernel.org>
-Date: Sat, 07 Mar 2026 02:00:11 +0000
-References: <368272.1772713861@warthog.procyon.org.uk>
-In-Reply-To: <368272.1772713861@warthog.procyon.org.uk>
-To: David Howells <dhowells@redhat.com>
-Cc: netdev@vger.kernel.org, linmq006@gmail.com, marc.dionne@auristor.com,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- horms@kernel.org, linux-afs@lists.infradead.org, linux-kernel@vger.kernel.org
 
-Hello:
+As reported by AI review [1], if the refillqs allocation fails, refillqs
+will be NULL but num_refillqs will be non-zero. The release function
+will then dereference refillqs since it thinks the refillqs are present,
+resulting in a NULL ptr dereference.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Only assign the num refillqs if the allocation was successful. This will
+prevent the release function from entering the loop and accessing
+refillqs.
 
-On Thu, 05 Mar 2026 12:31:01 +0000 you wrote:
-> rxrpc_kernel_lookup_peer() can also return error pointers in addition to
-> NULL, so just checking for NULL is not sufficient.
-> 
-> Fix this by:
-> 
->  (1) Changing rxrpc_kernel_lookup_peer() to return -ENOMEM rather than NULL
->      on allocation failure.
-> 
-> [...]
+[1] https://lore.kernel.org/netdev/20260227035625.2632753-1-kuba@kernel.org/
 
-Here is the summary with links:
-  - [net] rxrpc, afs: Fix missing error pointer check after rxrpc_kernel_lookup_peer()
-    https://git.kernel.org/netdev/net/c/4245a79003ad
+Fixes: 95af467d9a4e3 ("idpf: configure resources for RX queues")
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+---
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-You are awesome, thank you!
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 252259993022..f6b3b15364ff 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -1860,13 +1860,13 @@ static int idpf_rxq_group_alloc(struct idpf_vport *vport,
+ 			idpf_queue_assign(HSPLIT_EN, q, hs);
+ 			idpf_queue_assign(RSC_EN, q, rsc);
+ 
+-			bufq_set->num_refillqs = num_rxq;
+ 			bufq_set->refillqs = kcalloc(num_rxq, swq_size,
+ 						     GFP_KERNEL);
+ 			if (!bufq_set->refillqs) {
+ 				err = -ENOMEM;
+ 				goto err_alloc;
+ 			}
++			bufq_set->num_refillqs = num_rxq;
+ 			for (unsigned int k = 0; k < bufq_set->num_refillqs; k++) {
+ 				struct idpf_sw_queue *refillq =
+ 					&bufq_set->refillqs[k];
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.39.2
 
