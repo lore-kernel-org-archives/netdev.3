@@ -1,89 +1,285 @@
-Received: from mail-qt1-f202.google.com (mail-qt1-f202.google.com [209.85.160.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from server.couthit.com (server.couthit.com [162.240.164.96])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04FA2C158E
-	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 12:06:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E627288510;
+	Sat,  7 Mar 2026 12:28:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.240.164.96
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772885171; cv=none; b=ZuBxDD2EyV1sGL9lz33atI6r4HWB7YpbzpEjvA6Or1vwQfsbV+fPgTBHAns0UtYOunG4YjsqPS5nCeyYIAG+deTmTq56+3XdnF8PhOSbWfEcZHRZkFcuhgOlpiklhueDuaX+hpHMQCNkUApv+Wa2kaqbu6aocp088VwICKfRZWg=
+	t=1772886493; cv=none; b=Stt/FUYd+U3Rn2JFOjrtvhOxWH/Io65C+QVB5rqsjile0/DzpEx1Z9+gcw+Hk6DmK0NtLYczf53hrIgT0dHcluqjjjegdz9YIBKJh2A+YamohNpEsjVMLNYeq7Tpp+DMWlaskakaacBPq3NUkhj0O+oLk7Pba1eo1bqxVETfoeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772885171; c=relaxed/simple;
-	bh=6oGy/hX3Nt6CN2Ur+c0FUQ6Ms01HxGHW1wm45IQc3pU=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ovt6XbtY5OuOdlMVQ1D0UbyGCeUIktIcSFRlJpnVvSfQTzW44c/dlNWIt8UN0nmCO8NaA4Jk4JJ/5tZa2BELXB7bYAlP2DKiU7Tt8V5LH22z0wl+AegfMsZxsohHLZYAzz3I4N1peZuk5yCYAzqyFR6G4/88Kz2VyfACOwWli7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QqlPU/K2; arc=none smtp.client-ip=209.85.160.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
+	s=arc-20240116; t=1772886493; c=relaxed/simple;
+	bh=61vKQtd1+DXJGLlnZ0i6TtmC3aOZQw7WeXdw/2PUKKc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=dIaYPbUT/NnhhoJcoL3LaWqQ0MVAnQud3UIDqvNf0cbEzMOkbBDpWy28rVPPUll76guBYDQx9wO2gblTiDAV088q0jvGE63Ps9oHqE2ksZh+NMfe8H57PODVy0THZClBrbXp08TkVaT4vNH7VWTdeAe7GSWTK0eKnM2arde+FXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com; spf=pass smtp.mailfrom=couthit.com; dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b=007V7g+q; arc=none smtp.client-ip=162.240.164.96
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=couthit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=couthit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QqlPU/K2"
-Received: by mail-qt1-f202.google.com with SMTP id d75a77b69052e-506a07740bdso321779191cf.2
-        for <netdev@vger.kernel.org>; Sat, 07 Mar 2026 04:06:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772885169; x=1773489969; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/9pYeb+arx40oYN4KNXymAnF8wN378GYf6XSCYdq+hU=;
-        b=QqlPU/K2p3vEvLbGE5LlX1a1RROCb3FTa48QUWHqxw031C1AZ6vospmtBeePARysst
-         zqM+8/IKf6M7N/mo/Ckm5jjTZ1lLzTrGAq+ZK6328KtY8GZE7m24EfnToB6slCkNv2hg
-         CPprY6sVuFkEjtLynk6ekQN4xvnZPFSom4tdzuFIdUgSLTqMIDMSClA3z2QhcUGpgWBY
-         5NugzuXrI8zttKGgntO5M0lyh0yCfCy4y1MGc+uniZ9d50Z7O+ITP90Zz0GrHRvaqEDL
-         utLhqvDJZ5cA3edUjdXNY2p/DI5tQRUS077afSabZoJdYJnhNvjjacXQW2ZladRCDCYr
-         H2Zg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772885169; x=1773489969;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/9pYeb+arx40oYN4KNXymAnF8wN378GYf6XSCYdq+hU=;
-        b=CFRjzB7f8EMFeFT15tT8pKIbhprBl0pjiO5e78GLRavymu6Q8RMpgr7RoBY3abz3to
-         2gTMnAWj5U6qCEf3+Spzmfn9Ifpfcyiu6CuPliBshTo6zpmh9GcwkBU7Lvek3zcJOAZ4
-         Jggk1Xx+C+/t/MnLkWACOKYecN4lRYzLINgCpWL1ApK1F4ycjzNC4/P7ZnTCDbCFjQyH
-         EWjtsQ8fOHk6fNXct48wet7e+nSjHfyNwUzIiyvGfc+4/XGrJoE2RKrxw8fQwP7Q6q8V
-         r/rPLT+hFJTcX/G5QMoPM0AtW0AilpchjcQzUlRMcGPKfNradU9gySrmYY8HZAFpXKFt
-         f6aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUsKtLT3tJIYkPLFr7fa8qUS4R1CtqvWorucGhs8PbEmUVTKooBZPQzumX3Y9PdEYC+LaaowJ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxzrz8RTMZGBXy7+UwtoBkJsjGla/Epvo3h6tSlbI8SKxxsU6Uz
-	GNz1/z1ZZ9pEjILYZjrBjOuX6RqcL+tHXUwkPj2cj5/jlIN19exVLfE5XbAPQDFpp5tIqujxZRD
-	cd72OtT7xbn4bPQ==
-X-Received: from qtot26.prod.google.com ([2002:ac8:65da:0:b0:508:fe4c:e5ba])
- (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:622a:1a86:b0:509:d0a:564d with SMTP id d75a77b69052e-5090d0a6076mr1762181cf.54.1772885168633;
- Sat, 07 Mar 2026 04:06:08 -0800 (PST)
-Date: Sat,  7 Mar 2026 12:06:07 +0000
+	dkim=pass (2048-bit key) header.d=couthit.com header.i=@couthit.com header.b="007V7g+q"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
+	; s=default; h=Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=/8JAxWZBvsIgT3JdjEwbxw+itBrVTYerSzmGiXRisbE=; b=007V7g+q5d/JGg43kDw7LNGXmg
+	jf3H9HaLGUHLGKp7PYimnslJYWpyfwHdYjvFnveRnldNBsef4j010EbXMeZyPhDs3MP9RFoJi4bsi
+	sBRq9S7gJEfuSlZ5mnxpkdU2fjjwpU9kwlalNP5ZsIG1J8DLGs+ezY3PU85NCd6YtCNRbc9iWs1KW
+	vh4xQR5isDLn4LUuRQK3iCtlFbdJYb63ed1m4+VvYp5Dsopo1s0WBTqQ/wqhqF9SA+IAwCyBFfhPq
+	dTkqHyPyOcHhBUTW6A8X2NI/EV+W78bmrZEjfltdi6qM9ygNBGCYk+gTnONYmn4Z70IJYIcUY1X1Z
+	LPuqIr/w==;
+Received: from [122.175.9.182] (port=64662 helo=cypher.couthit.local)
+	by server.couthit.com with esmtpa (Exim 4.98.1)
+	(envelope-from <parvathi@couthit.com>)
+	id 1vyqlM-00000000pP7-3sGb;
+	Sat, 07 Mar 2026 07:28:09 -0500
+From: Parvathi Pudi <parvathi@couthit.com>
+To: nm@ti.com,
+	vigneshr@ti.com,
+	afd@ti.com,
+	khilman@baylibre.com,
+	rogerq@kernel.org,
+	tony@atomide.com,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	richardcochran@gmail.com,
+	aaro.koskinen@iki.fi,
+	andreas@kemnade.info
+Cc: andrew@lunn.ch,
+	linux-omap@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	danishanwar@ti.com,
+	pratheesh@ti.com,
+	j-rameshbabu@ti.com,
+	praneeth@ti.com,
+	srk@ti.com,
+	rogerq@ti.com,
+	m-malladi@ti.com,
+	krishna@couthit.com,
+	mohan@couthit.com,
+	pmohan@couthit.com,
+	basharath@couthit.com,
+	parvathi@couthit.com,
+	Murali Karicheri <m-karicheri2@ti.com>
+Subject: [PATCH v5 1/3] arm: dts: ti: Add device tree support for PRU-ICSS on AM57xx
+Date: Sat,  7 Mar 2026 17:53:55 +0530
+Message-ID: <20260307122641.738450-2-parvathi@couthit.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260307122641.738450-1-parvathi@couthit.com>
+References: <20260307122641.738450-1-parvathi@couthit.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
-Message-ID: <20260307120607.3504191-1-edumazet@google.com>
-Subject: [PATCH net-next] MAINTAINERS: include/net/tc_wrapper.h belongs to TC subsystem
-From: Eric Dumazet <edumazet@google.com>
-To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Eric Dumazet <edumazet@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.couthit.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - couthit.com
+X-Get-Message-Sender-Via: server.couthit.com: authenticated_id: parvathi@couthit.com
+X-Authenticated-Sender: server.couthit.com: parvathi@couthit.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 
-include/net/tc_wrapper.h changes should be reviewed by TC maintainers.
+From: Roger Quadros <rogerq@ti.com>
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
+The TI Sitara AM57xx series of devices consists of 2 PRU-ICSS instances
+(PRU-ICSS1 and PRU-ICSS2). This patch adds the device tree nodes for the
+PRU-ICSS2 instance to support DUAL-MAC mode of operation.
+
+Each PRU-ICSS instance consists of two PRU cores along with various
+peripherals such as the Interrupt Controller (PRU_INTC), the Industrial
+Ethernet Peripheral(IEP), the Real Time Media Independent Interface
+controller (MII_RT), and the Enhanced Capture (eCAP) event module.
+
+am57-pruss.dtsi - Adds IEP and eCAP peripheral as child nodes of
+the PRUSS subsystem node.
+
+am57xx-idk-common.dtsi - Adds PRU-ICSS2 instance node along with
+PRU eth port information and corresponding port configuration. It includes
+interrupt mapping for packet reception, HW timestamp collection, and
+PRU Ethernet ports in MII mode.
+
+am571x-idk.dts, am572x-idk.dts and am574x-idk.dts - GPIO configuration
+along with delay configuration for individual PRU Ethernet port.
+
+Signed-off-by: Roger Quadros <rogerq@ti.com>
+Signed-off-by: Andrew F. Davis <afd@ti.com>
+Signed-off-by: Murali Karicheri <m-karicheri2@ti.com>
+Signed-off-by: Basharath Hussain Khaja <basharath@couthit.com>
+Signed-off-by: Parvathi Pudi <parvathi@couthit.com>
 ---
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/ti/omap/am57-pruss.dtsi     | 11 ++++
+ arch/arm/boot/dts/ti/omap/am571x-idk.dts      |  8 ++-
+ arch/arm/boot/dts/ti/omap/am572x-idk.dts      | 10 +--
+ arch/arm/boot/dts/ti/omap/am574x-idk.dts      | 10 +--
+ .../boot/dts/ti/omap/am57xx-idk-common.dtsi   | 61 +++++++++++++++++++
+ 5 files changed, 91 insertions(+), 9 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 7b277d5bf3d1247544a2871b794b578c5675cdfb..6175c34910269fe6d1d20cbfb0985e25ab72fc5f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -25751,6 +25751,7 @@ F:	include/net/pkt_cls.h
- F:	include/net/pkt_sched.h
- F:	include/net/sch_priv.h
- F:	include/net/tc_act/
-+F:	include/net/tc_wrapper.h
- F:	include/uapi/linux/pkt_cls.h
- F:	include/uapi/linux/pkt_sched.h
- F:	include/uapi/linux/tc_act/
+diff --git a/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi b/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi
+index 46c5383f0eee..f73316625608 100644
+--- a/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am57-pruss.dtsi
+@@ -170,6 +170,17 @@ pruss2_iepclk_mux: iepclk-mux@30 {
+ 				};
+ 			};
+ 
++			pruss2_iep: iep@2e000 {
++				compatible = "ti,am5728-icss-iep";
++				reg = <0x2e000 0x31c>;
++				clocks = <&pruss2_iepclk_mux>;
++			};
++
++			pruss2_ecap: ecap@30000 {
++				compatible = "ti,pruss-ecap";
++				reg = <0x30000 0x60>;
++			};
++
+ 			pruss2_mii_rt: mii-rt@32000 {
+ 				compatible = "ti,pruss-mii", "syscon";
+ 				reg = <0x32000 0x58>;
+diff --git a/arch/arm/boot/dts/ti/omap/am571x-idk.dts b/arch/arm/boot/dts/ti/omap/am571x-idk.dts
+index 322cf79d22e9..02653b440585 100644
+--- a/arch/arm/boot/dts/ti/omap/am571x-idk.dts
++++ b/arch/arm/boot/dts/ti/omap/am571x-idk.dts
+@@ -214,5 +214,11 @@ &pruss1_mdio {
+ };
+ 
+ &pruss2_mdio {
+-	status = "disabled";
++	reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
++	reset-delay-us = <2>;   /* PHY datasheet states 1uS min */
++};
++
++&pruss2_eth {
++	ti,pruss-gp-mux-sel = <4>,      /* MII2, needed for PRUSS1_MII0 */
++			      <4>;      /* MII2, needed for PRUSS1_MII1 */
+ };
+diff --git a/arch/arm/boot/dts/ti/omap/am572x-idk.dts b/arch/arm/boot/dts/ti/omap/am572x-idk.dts
+index 94a738cb0a4d..54a8ccb9ca14 100644
+--- a/arch/arm/boot/dts/ti/omap/am572x-idk.dts
++++ b/arch/arm/boot/dts/ti/omap/am572x-idk.dts
+@@ -28,10 +28,12 @@ &mmc2 {
+ 	pinctrl-2 = <&mmc2_pins_ddr_rev20>;
+ };
+ 
+-&pruss1_mdio {
+-	status = "disabled";
++&pruss2_eth0_phy {
++	reset-gpios = <&gpio5 8 GPIO_ACTIVE_LOW>;
++	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
+ };
+ 
+-&pruss2_mdio {
+-	status = "disabled";
++&pruss2_eth1_phy {
++	reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
++	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
+ };
+diff --git a/arch/arm/boot/dts/ti/omap/am574x-idk.dts b/arch/arm/boot/dts/ti/omap/am574x-idk.dts
+index 47b9174d2353..47b6c6cb210c 100644
+--- a/arch/arm/boot/dts/ti/omap/am574x-idk.dts
++++ b/arch/arm/boot/dts/ti/omap/am574x-idk.dts
+@@ -40,10 +40,12 @@ &emif1 {
+ 	status = "okay";
+ };
+ 
+-&pruss1_mdio {
+-	status = "disabled";
++&pruss2_eth0_phy {
++	reset-gpios = <&gpio5 8 GPIO_ACTIVE_LOW>;
++	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
+ };
+ 
+-&pruss2_mdio {
+-	status = "disabled";
++&pruss2_eth1_phy {
++	reset-gpios = <&gpio5 9 GPIO_ACTIVE_LOW>;
++	reset-assert-us = <2>;   /* PHY datasheet states 1uS min */
+ };
+diff --git a/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi b/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi
+index 43e3623f079c..5eccff3bb4b6 100644
+--- a/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi
++++ b/arch/arm/boot/dts/ti/omap/am57xx-idk-common.dtsi
+@@ -155,6 +155,52 @@ src_clk_x1: src_clk_x1 {
+ 		compatible = "fixed-clock";
+ 		clock-frequency = <20000000>;
+ 	};
++
++	/* Dual-MAC Ethernet application node on PRU-ICSS2 */
++	pruss2_eth: pruss2-eth {
++		compatible = "ti,am57-prueth";
++		ti,prus = <&pru2_0>, <&pru2_1>;
++		sram = <&ocmcram1>;
++		ti,mii-rt = <&pruss2_mii_rt>;
++		ti,iep = <&pruss2_iep>;
++		ti,ecap = <&pruss2_ecap>;
++		interrupts = <20 2 2>, <21 3 3>;
++		interrupt-names = "rx_hp", "rx_lp";
++		interrupt-parent = <&pruss2_intc>;
++
++		ethernet-ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++			pruss2_emac0: ethernet-port@0 {
++				reg = <0>;
++				phy-handle = <&pruss2_eth0_phy>;
++				phy-mode = "mii";
++				interrupts = <20 2 2>, <26 6 6>, <23 6 6>;
++				interrupt-names = "rx", "emac_ptp_tx",
++						  "hsr_ptp_tx";
++				/* Filled in by bootloader */
++				local-mac-address = [00 00 00 00 00 00];
++			};
++
++			pruss2_emac1: ethernet-port@1 {
++				reg = <1>;
++				phy-handle = <&pruss2_eth1_phy>;
++				phy-mode = "mii";
++				interrupts = <21 3 3>, <27 9 7>, <24 9 7>;
++				interrupt-names = "rx", "emac_ptp_tx",
++						  "hsr_ptp_tx";
++				/* Filled in by bootloader */
++				local-mac-address = [00 00 00 00 00 00];
++			};
++		};
++	};
++
++};
++
++&pruss2_iep {
++	interrupt-parent = <&pruss2_intc>;
++	interrupts = <7 7 8>;
++	interrupt-names = "iep_cap_cmp";
+ };
+ 
+ &dra7_pmx_core {
+@@ -606,3 +652,18 @@ dpi_out: endpoint {
+ 		};
+ 	};
+ };
++
++&pruss2_mdio {
++	status = "okay";
++	pruss2_eth0_phy: ethernet-phy@0 {
++		reg = <0>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <30 IRQ_TYPE_LEVEL_LOW>;
++	};
++
++	pruss2_eth1_phy: ethernet-phy@1 {
++		reg = <1>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <31 IRQ_TYPE_LEVEL_LOW>;
++	};
++};
 -- 
-2.53.0.473.g4a7958ca14-goog
+2.43.0
 
