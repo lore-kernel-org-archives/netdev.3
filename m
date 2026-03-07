@@ -1,103 +1,274 @@
-Received: from out-180.mta1.migadu.com (out-180.mta1.migadu.com [95.215.58.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.aperture-lab.de (mail.aperture-lab.de [116.203.183.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC9A230595B;
-	Sat,  7 Mar 2026 04:36:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE592472B6;
+	Sat,  7 Mar 2026 04:46:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=116.203.183.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772858218; cv=none; b=Uywgz8hTRqKonw7pD0m8H+MpdSQHDg56Q3AD72fwBZnY/2Lufki2qPmi1nlaIFk5bphxPzHVg/G/o1NOGTtGsRTUOsOQfeXDhGlhIwm36wLKlPJa8FmnMNnFBWOORsjwrZB8PxdjC6ys0FbUT4zRQz0iMQ/InLYNd1ZOi+cZCG8=
+	t=1772858772; cv=none; b=g9eCu3eHAoN23s0SoIUJGyy5gtes1mZI9Ky7r5hwqDmVfHBU9z2J6OWdY0A60OEOiZ6YshS6UDR8g1m97R00tQiUY5gizwfACW+oaJCVxLw+STWJWMZ1sHmzi6LO0n99bYmR/fDouaPOeYaYE9h5vxvJsu8HW7sM1yI+LFTt7Y0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772858218; c=relaxed/simple;
-	bh=uuDHxErMeCKwdYdeJW+GoC4H/Sitq8KG8hvdqVi3/+U=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=saZYJ+YQFMB0r5iUdLqZ7Gy0xLa00J6h89bNjIoyVk1CASNxFqBXa7VvegDzp1QPDfuPDOzAIyil0udYTd+uUEl6d2oUCNntMjQ7Woa2nAXl+b5vTyNU3LjPyvFlIFduAeCirwTD5vFF1zcRqCYbYGetJQBuFKHUHqN49YqQZBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=YLWggLHQ; arc=none smtp.client-ip=95.215.58.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="YLWggLHQ"
+	s=arc-20240116; t=1772858772; c=relaxed/simple;
+	bh=IFecUremhg3u00+Jo1RGIULqOMOIEUZQbifAaAop3DY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=L49l3vEI5HxcXykrcpr/18I0c0U8s/MohvA8iAV3G9YTnBMAyl9LjRt4x2nGeGX6AqHbkiemzRaf3mSd1al7KYmLdVAq+KZGBZfvb9DtwdhnSt2jNjp+6WjHfkIlN33MG7zYGU3v+ryJMtkaNqIFNYsM0m50fZHVVIEkigEajmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue; spf=pass smtp.mailfrom=c0d3.blue; arc=none smtp.client-ip=116.203.183.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=c0d3.blue
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=c0d3.blue
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 24FAD54CDF2;
+	Sat,  7 Mar 2026 05:46:02 +0100 (CET)
+From: =?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
+To: bridge@lists.linux.dev
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Xiao Liang <shaw.leon@gmail.com>,
+	shuah@kernel.org,
+	petrm@nvidia.com,
+	=?UTF-8?q?Linus=20L=C3=BCssing?= <linus.luessing@c0d3.blue>
+Subject: [PATCH net-next v4 01/14] net: bridge: mcast: export ip{4,6}_active state to netlink
+Date: Sat,  7 Mar 2026 05:45:35 +0100
+Message-ID: <20260307044548.5230-2-linus.luessing@c0d3.blue>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260307044548.5230-1-linus.luessing@c0d3.blue>
+References: <20260307044548.5230-1-linus.luessing@c0d3.blue>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1772858214;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ft4IWUebvg0aCr/ykUgTkpQu0ujjA41RQl8tOtocRMI=;
-	b=YLWggLHQTBmSROfmUBS2t1Xavf8tbd5M4bGrxEpZrZUEQjY+CN+CfSAenlVmOwBLTIuprT
-	0MpNgMwN6TxMHQuiC8phvDkU42RyVqLjnZcEqd8fuI3ChHqI6I0IaUxnQ6KRy0x0yOdPVx
-	u/FVGcDgs+ZS1RY4IDjHgy1TJSuujFY=
-Date: Sat, 07 Mar 2026 04:36:51 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <8f8b43cb3b8d5b855ffd51f74340214a0b780124@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH net v1] net/smc: fix NULL dereference and UAF in
- smc_tcp_syn_recv_sock()
-To: "Eric Dumazet" <edumazet@google.com>
-Cc: netdev@vger.kernel.org,
- syzbot+827ae2bfb3a3529333e9@syzkaller.appspotmail.com, "D. Wythe"
- <alibuda@linux.alibaba.com>, "Dust Li" <dust.li@linux.alibaba.com>,
- "Sidraya Jayagond" <sidraya@linux.ibm.com>, "Wenjia Zhang"
- <wenjia@linux.ibm.com>, "Mahanta Jambigi" <mjambigi@linux.ibm.com>, "Tony
- Lu" <tonylu@linux.alibaba.com>, "Wen Gu" <guwen@linux.alibaba.com>,
- "David S. Miller" <davem@davemloft.net>, "Jakub Kicinski"
- <kuba@kernel.org>, "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman"
- <horms@kernel.org>, linux-rdma@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <CANn89iJ0V6un1un7zjG-J9d4EJQOjTO37s3EQUKTodwPWsXhFQ@mail.gmail.com>
-References: <20260307032158.372165-1-jiayuan.chen@linux.dev>
- <CANn89iJ0V6un1un7zjG-J9d4EJQOjTO37s3EQUKTodwPWsXhFQ@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-March 7, 2026 at 11:56, "Eric Dumazet" <edumazet@google.com mailto:edumaz=
-et@google.com?to=3D%22Eric%20Dumazet%22%20%3Cedumazet%40google.com%3E > w=
-rote:
+Export the new ip{4,6}_active variables to netlink, to be able to
+check from userspace that they are updated as intended.
 
+Signed-off-by: Linus Lüssing <linus.luessing@c0d3.blue>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+---
+ include/uapi/linux/if_bridge.h |  2 ++
+ include/uapi/linux/if_link.h   | 12 ++++++++++++
+ net/bridge/br_netlink.c        | 20 +++++++++++++++++++-
+ net/bridge/br_private.h        |  2 +-
+ net/bridge/br_vlan_options.c   | 25 +++++++++++++++++++++++--
+ net/core/rtnetlink.c           |  2 +-
+ 6 files changed, 58 insertions(+), 5 deletions(-)
 
->=20
->=20On Sat, Mar 7, 2026 at 4:22 AM Jiayuan Chen <jiayuan.chen@linux.dev> =
-wrote:
->=20
-[...]
->=20>  diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-> >  index d0119afcc6a1..21218b9b0f9a 100644
-> >  --- a/net/smc/af_smc.c
-> >  +++ b/net/smc/af_smc.c
-> >  @@ -131,7 +131,14 @@ static struct sock *smc_tcp_syn_recv_sock(const=
- struct sock *sk,
-> >  struct smc_sock *smc;
-> >  struct sock *child;
-> >=20
->=20>  + read_lock_bh(&((struct sock *)sk)->sk_callback_lock);
-> >=20
->=20This will not survive a SYN flood attack.
->=20
->=20Please use RCU instead.
->=20
->=20>=20
->=20> smc =3D smc_clcsock_user_data(sk);
-> >  + if (!smc) {
-> >  + read_unlock_bh(&((struct sock *)sk)->sk_callback_lock);
-> >  + return NULL;
-> >  + }
-> >  + sock_hold(&smc->sk);
-> >=20
->=20If you must take a refcount, use
->=20
->=20if (!refcount_inc_not_zero(&smc->sk->sk_refcnt)) {
->  rcu_read_unlock();
->  return NULL;
-> }
+diff --git a/include/uapi/linux/if_bridge.h b/include/uapi/linux/if_bridge.h
+index e52f8207ab27..910103b1ef03 100644
+--- a/include/uapi/linux/if_bridge.h
++++ b/include/uapi/linux/if_bridge.h
+@@ -584,6 +584,8 @@ enum {
+ 	BRIDGE_VLANDB_GOPTS_MCAST_ROUTER_PORTS,
+ 	BRIDGE_VLANDB_GOPTS_MCAST_QUERIER_STATE,
+ 	BRIDGE_VLANDB_GOPTS_MSTI,
++	BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V4,
++	BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V6,
+ 	__BRIDGE_VLANDB_GOPTS_MAX
+ };
+ #define BRIDGE_VLANDB_GOPTS_MAX (__BRIDGE_VLANDB_GOPTS_MAX - 1)
+diff --git a/include/uapi/linux/if_link.h b/include/uapi/linux/if_link.h
+index 83a96c56b8ca..66c59953d301 100644
+--- a/include/uapi/linux/if_link.h
++++ b/include/uapi/linux/if_link.h
+@@ -744,6 +744,16 @@ enum in6_addr_gen_mode {
+  * @IFLA_BR_FDB_MAX_LEARNED
+  *   Set the number of max dynamically learned FDB entries for the current
+  *   bridge.
++ *
++ * @IFLA_BR_MCAST_ACTIVE_V4
++ *   Bridge IPv4 mcast active state, read only.
++ *
++ *   1 if an IGMP querier is present, 0 otherwise.
++ *
++ * @IFLA_BR_MCAST_ACTIVE_V6
++ *   Bridge IPv6 mcast active state, read only.
++ *
++ *   1 if an MLD querier is present, 0 otherwise.
+  */
+ enum {
+ 	IFLA_BR_UNSPEC,
+@@ -796,6 +806,8 @@ enum {
+ 	IFLA_BR_MCAST_QUERIER_STATE,
+ 	IFLA_BR_FDB_N_LEARNED,
+ 	IFLA_BR_FDB_MAX_LEARNED,
++	IFLA_BR_MCAST_ACTIVE_V4,
++	IFLA_BR_MCAST_ACTIVE_V6,
+ 	__IFLA_BR_MAX,
+ };
+ 
+diff --git a/net/bridge/br_netlink.c b/net/bridge/br_netlink.c
+index 0264730938f4..7fff59c3bf76 100644
+--- a/net/bridge/br_netlink.c
++++ b/net/bridge/br_netlink.c
+@@ -1264,7 +1264,9 @@ static const struct nla_policy br_policy[IFLA_BR_MAX + 1] = {
+ 	[IFLA_BR_VLAN_STATS_ENABLED] = { .type = NLA_U8 },
+ 	[IFLA_BR_MCAST_STATS_ENABLED] = { .type = NLA_U8 },
+ 	[IFLA_BR_MCAST_IGMP_VERSION] = { .type = NLA_U8 },
++	[IFLA_BR_MCAST_ACTIVE_V4] = { .type = NLA_REJECT },
+ 	[IFLA_BR_MCAST_MLD_VERSION] = { .type = NLA_U8 },
++	[IFLA_BR_MCAST_ACTIVE_V6] = { .type = NLA_REJECT },
+ 	[IFLA_BR_VLAN_STATS_PER_PORT] = { .type = NLA_U8 },
+ 	[IFLA_BR_MULTI_BOOLOPT] =
+ 		NLA_POLICY_EXACT_LEN(sizeof(struct br_boolopt_multi)),
+@@ -1625,7 +1627,9 @@ static size_t br_get_size(const struct net_device *brdev)
+ 	       nla_total_size_64bit(sizeof(u64)) + /* IFLA_BR_MCAST_QUERY_RESPONSE_INTVL */
+ 	       nla_total_size_64bit(sizeof(u64)) + /* IFLA_BR_MCAST_STARTUP_QUERY_INTVL */
+ 	       nla_total_size(sizeof(u8)) +	/* IFLA_BR_MCAST_IGMP_VERSION */
++	       nla_total_size(sizeof(u8)) +     /* IFLA_BR_MCAST_ACTIVE_V4 */
+ 	       nla_total_size(sizeof(u8)) +	/* IFLA_BR_MCAST_MLD_VERSION */
++	       nla_total_size(sizeof(u8)) +     /* IFLA_BR_MCAST_ACTIVE_V6 */
+ 	       br_multicast_querier_state_size() + /* IFLA_BR_MCAST_QUERIER_STATE */
+ #endif
+ #if IS_ENABLED(CONFIG_BRIDGE_NETFILTER)
+@@ -1639,6 +1643,8 @@ static size_t br_get_size(const struct net_device *brdev)
+ 
+ static int br_fill_info(struct sk_buff *skb, const struct net_device *brdev)
+ {
++	struct ethhdr eth6 __maybe_unused = { .h_proto = htons(ETH_P_IPV6) };
++	struct ethhdr eth4 __maybe_unused = { .h_proto = htons(ETH_P_IP) };
+ 	struct net_bridge *br = netdev_priv(brdev);
+ 	u32 forward_delay = jiffies_to_clock_t(br->forward_delay);
+ 	u32 hello_time = jiffies_to_clock_t(br->hello_time);
+@@ -1717,12 +1723,24 @@ static int br_fill_info(struct sk_buff *skb, const struct net_device *brdev)
+ 			br->multicast_ctx.multicast_startup_query_count) ||
+ 	    nla_put_u8(skb, IFLA_BR_MCAST_IGMP_VERSION,
+ 		       br->multicast_ctx.multicast_igmp_version) ||
++	    nla_put_u8(skb, IFLA_BR_MCAST_ACTIVE_V4,
++		       netif_running(brdev) &&
++		       br_opt_get(br, BROPT_MULTICAST_ENABLED) &&
++		       !br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED) &&
++		       br_multicast_querier_exists(&br->multicast_ctx, &eth4,
++						   NULL)) ||
+ 	    br_multicast_dump_querier_state(skb, &br->multicast_ctx,
+ 					    IFLA_BR_MCAST_QUERIER_STATE))
+ 		return -EMSGSIZE;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	if (nla_put_u8(skb, IFLA_BR_MCAST_MLD_VERSION,
+-		       br->multicast_ctx.multicast_mld_version))
++		       br->multicast_ctx.multicast_mld_version) ||
++	    nla_put_u8(skb, IFLA_BR_MCAST_ACTIVE_V6,
++		       netif_running(brdev) &&
++		       br_opt_get(br, BROPT_MULTICAST_ENABLED) &&
++		       !br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED) &&
++		       br_multicast_querier_exists(&br->multicast_ctx, &eth6,
++						   NULL)))
+ 		return -EMSGSIZE;
+ #endif
+ 	clockval = jiffies_to_clock_t(br->multicast_ctx.multicast_last_member_interval);
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 9b55d38ea9ed..545be319b6cb 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -1902,7 +1902,7 @@ int br_vlan_rtm_process_global_options(struct net_device *dev,
+ bool br_vlan_global_opts_can_enter_range(const struct net_bridge_vlan *v_curr,
+ 					 const struct net_bridge_vlan *r_end);
+ bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
+-			      const struct net_bridge_vlan *v_opts);
++			      struct net_bridge_vlan *v_opts);
+ 
+ /* vlan state manipulation helpers using *_ONCE to annotate lock-free access,
+  * while br_vlan_set_state() may access data protected by multicast_lock.
+diff --git a/net/bridge/br_vlan_options.c b/net/bridge/br_vlan_options.c
+index 5514e1fc8d1f..06045d68a2d1 100644
+--- a/net/bridge/br_vlan_options.c
++++ b/net/bridge/br_vlan_options.c
+@@ -367,10 +367,13 @@ bool br_vlan_global_opts_can_enter_range(const struct net_bridge_vlan *v_curr,
+ }
+ 
+ bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
+-			      const struct net_bridge_vlan *v_opts)
++			      struct net_bridge_vlan *v_opts)
+ {
++	struct ethhdr eth6 __maybe_unused = { .h_proto = htons(ETH_P_IPV6) };
++	struct ethhdr eth4 __maybe_unused = { .h_proto = htons(ETH_P_IP) };
+ 	struct nlattr *nest2 __maybe_unused;
+ 	u64 clockval __maybe_unused;
++	bool mcact __maybe_unused;
+ 	struct nlattr *nest;
+ 
+ 	nest = nla_nest_start(skb, BRIDGE_VLANDB_GLOBAL_OPTIONS);
+@@ -385,10 +388,17 @@ bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
+ 		goto out_err;
+ 
+ #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
++	mcact = netif_running(v_opts->br->dev) &&
++		br_opt_get(v_opts->br, BROPT_MULTICAST_ENABLED) &&
++		br_opt_get(v_opts->br, BROPT_MCAST_VLAN_SNOOPING_ENABLED) &&
++		!br_multicast_ctx_vlan_global_disabled(&v_opts->br_mcast_ctx) &&
++		br_multicast_querier_exists(&v_opts->br_mcast_ctx, &eth4, NULL);
++
+ 	if (nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_SNOOPING,
+ 		       !!(v_opts->priv_flags & BR_VLFLAG_GLOBAL_MCAST_ENABLED)) ||
+ 	    nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_IGMP_VERSION,
+ 		       v_opts->br_mcast_ctx.multicast_igmp_version) ||
++	    nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V4, mcact) ||
+ 	    nla_put_u32(skb, BRIDGE_VLANDB_GOPTS_MCAST_LAST_MEMBER_CNT,
+ 			v_opts->br_mcast_ctx.multicast_last_member_count) ||
+ 	    nla_put_u32(skb, BRIDGE_VLANDB_GOPTS_MCAST_STARTUP_QUERY_CNT,
+@@ -442,8 +452,15 @@ bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
+ 	}
+ 
+ #if IS_ENABLED(CONFIG_IPV6)
++	mcact = netif_running(v_opts->br->dev) &&
++		br_opt_get(v_opts->br, BROPT_MULTICAST_ENABLED) &&
++		br_opt_get(v_opts->br, BROPT_MCAST_VLAN_SNOOPING_ENABLED) &&
++		!br_multicast_ctx_vlan_global_disabled(&v_opts->br_mcast_ctx) &&
++		br_multicast_querier_exists(&v_opts->br_mcast_ctx, &eth6, NULL);
++
+ 	if (nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_MLD_VERSION,
+-		       v_opts->br_mcast_ctx.multicast_mld_version))
++		       v_opts->br_mcast_ctx.multicast_mld_version) ||
++	    nla_put_u8(skb, BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V6, mcact))
+ 		goto out_err;
+ #endif
+ #endif
+@@ -468,7 +485,9 @@ static size_t rtnl_vlan_global_opts_nlmsg_size(const struct net_bridge_vlan *v)
+ #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
+ 		+ nla_total_size(sizeof(u8)) /* BRIDGE_VLANDB_GOPTS_MCAST_SNOOPING */
+ 		+ nla_total_size(sizeof(u8)) /* BRIDGE_VLANDB_GOPTS_MCAST_IGMP_VERSION */
++		+ nla_total_size(sizeof(u8)) /* BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V4 */
+ 		+ nla_total_size(sizeof(u8)) /* BRIDGE_VLANDB_GOPTS_MCAST_MLD_VERSION */
++		+ nla_total_size(sizeof(u8)) /* BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V6 */
+ 		+ nla_total_size(sizeof(u32)) /* BRIDGE_VLANDB_GOPTS_MCAST_LAST_MEMBER_CNT */
+ 		+ nla_total_size(sizeof(u32)) /* BRIDGE_VLANDB_GOPTS_MCAST_STARTUP_QUERY_CNT */
+ 		+ nla_total_size(sizeof(u64)) /* BRIDGE_VLANDB_GOPTS_MCAST_LAST_MEMBER_INTVL */
+@@ -650,9 +669,11 @@ static const struct nla_policy br_vlan_db_gpol[BRIDGE_VLANDB_GOPTS_MAX + 1] = {
+ 	[BRIDGE_VLANDB_GOPTS_RANGE]	= { .type = NLA_U16 },
+ 	[BRIDGE_VLANDB_GOPTS_MCAST_SNOOPING]	= { .type = NLA_U8 },
+ 	[BRIDGE_VLANDB_GOPTS_MCAST_MLD_VERSION]	= { .type = NLA_U8 },
++	[BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V6]	= { .type = NLA_REJECT },
+ 	[BRIDGE_VLANDB_GOPTS_MCAST_QUERY_INTVL]	= { .type = NLA_U64 },
+ 	[BRIDGE_VLANDB_GOPTS_MCAST_QUERIER]	= { .type = NLA_U8 },
+ 	[BRIDGE_VLANDB_GOPTS_MCAST_IGMP_VERSION]	= { .type = NLA_U8 },
++	[BRIDGE_VLANDB_GOPTS_MCAST_ACTIVE_V4]	= { .type = NLA_REJECT },
+ 	[BRIDGE_VLANDB_GOPTS_MCAST_LAST_MEMBER_CNT]	= { .type = NLA_U32 },
+ 	[BRIDGE_VLANDB_GOPTS_MCAST_STARTUP_QUERY_CNT]	= { .type = NLA_U32 },
+ 	[BRIDGE_VLANDB_GOPTS_MCAST_LAST_MEMBER_INTVL]	= { .type = NLA_U64 },
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index dad4b1054955..8febe7475f1f 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -62,7 +62,7 @@
+ 
+ #include "dev.h"
+ 
+-#define RTNL_MAX_TYPE		50
++#define RTNL_MAX_TYPE		52
+ #define RTNL_SLAVE_MAX_TYPE	44
+ 
+ struct rtnl_link {
+-- 
+2.53.0
 
-Thanks for the review.
-
-Will try rcu_read_lock() + refcount_inc_not_zero()
-and set SOCK_RCU_FREE on the listen socket.
