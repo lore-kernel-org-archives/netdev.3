@@ -1,78 +1,104 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADE862C234B;
-	Sat,  7 Mar 2026 01:40:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF59270EC1;
+	Sat,  7 Mar 2026 01:44:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772847611; cv=none; b=ox8rh12bAlGkftSBaxsRZFmQ5iEGoEu35Ad/wSZvwjXKHtGIHHiFa7BwsUeDXJ0xZj9ObcIYl57by9j5tP0L5OrU0XFKrp3dn389NauXv8ojpkrFH4egNO8FwVikLQyUVq+oBAgjIaL8GOiCn9f7pjCfDPSOkd2W+Z9SQRVtTSI=
+	t=1772847868; cv=none; b=WFhc4MabDOmEVybRkR66qqAXQ/WxL4rzBz65+jZGTLLJ758bl5rk7caPGhPlzglc9eyS2H5wolKGsgHwso/wqswOlDU1AfZ6g/irntDvRzs36KpyZVgdNFHYcqGyOp7VgrgI87AvHpGPkTZpFWolPd6Mrzx/N8Cg8t7tdsg/gs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772847611; c=relaxed/simple;
-	bh=mgMRBhHY0rQ04G43pB4XKXWyiH/QkT6t6BUb4NAq4T4=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=l8YwBdxpKmZxw7sKhWn1V2w63aha+RmEKvHqRQbULSIjkC+xzTO/jN3vnMvZSjtmHJwRpdCJAxT2Tov0oyefw9K8Zg4bGxcHnWoAvJJ1Y3ZdMCptuTSBJmd98QxCfFpkDFpL91hcQVb+rYbEo5oiSaNvo6f2jlyupNLvhIT4SwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZEwJy3oA; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZEwJy3oA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33291C4CEF7;
-	Sat,  7 Mar 2026 01:40:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772847611;
-	bh=mgMRBhHY0rQ04G43pB4XKXWyiH/QkT6t6BUb4NAq4T4=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ZEwJy3oArxinktXVjvYFXp7h/PRX/nnavhqD6q7Ad120ICKM/mBI8H9Y4PGzCaItt
-	 Z6iWe4jCl6z/P77ygJWhYTYxLzb/E9l54eui8bTZD7HKrEfdhEsN4z2jl1Bs2jhAV6
-	 4kEIVhCAoDX+SvFI99GnzhC2mIkMb+GGyrJ2SMVNdondMuZmtFK2yqOSYWd52iQIT7
-	 AWGXhv2koJ5rRV3bJb7LScCYaToclQeOSu1ZlwAkGUGDifBjaSXU1pCmuCqcWg9/XS
-	 S7+p/6qVYpLLJh8r5fq3UO9BX97Ylj2dxmqk5r0t+nmbN1TcnpJAqd1WH5ngfQcZlI
-	 xWs+ijGSHc2Yg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CE4B3808200;
-	Sat,  7 Mar 2026 01:40:11 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1772847868; c=relaxed/simple;
+	bh=QF81WmpxRrWYRBaun7KIn1uyg/V2x5q4tPvGnG722MQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EL9z3vo8F89b/1lgaUrH5Dkhlkvowv/390GujfcmQo1T4LmOgazB6NQZuJj9L966wA+5I4h4HcblgpYnYppK37LO5KAaMN11z3oipNl0VY5Y1DQLkckmqMY/R7hGbf+bLMSDHXqOi6K3lBuqT1C8EDV4R0wWiSnbST8BXepqplk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id 8061A20B6F02; Fri,  6 Mar 2026 17:44:27 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8061A20B6F02
+From: Long Li <longli@microsoft.com>
+To: "K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Shradha Gupta <shradhagupta@linux.microsoft.com>,
+	Simon Horman <horms@kernel.org>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
+	Erick Archer <erick.archer@outlook.com>,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Cc: Long Li <longli@microsoft.com>
+Subject: [PATCH 0/8] RDMA/mana_ib: Handle service reset for RDMA resources
+Date: Fri,  6 Mar 2026 17:44:04 -0800
+Message-ID: <20260307014414.556256-1-longli@microsoft.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v2] net: ncsi: fix skb leak in error paths
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177284761030.119780.6748764252279562099.git-patchwork-notify@kernel.org>
-Date: Sat, 07 Mar 2026 01:40:10 +0000
-References: <20260305060656.3357250-1-zhangjian.3032@bytedance.com>
-In-Reply-To: <20260305060656.3357250-1-zhangjian.3032@bytedance.com>
-To: ByteDance <zhangjian.3032@bytedance.com>
-Cc: sam@mendozajonas.com, fercerpav@gmail.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- joel@jms.id.au, gwshan@linux.vnet.ibm.com, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-Hello:
+When the MANA hardware undergoes a service reset, the ETH auxiliary device
+(mana.eth) used by DPDK persists across the reset cycle — it is not removed
+and re-added like RC/UD/GSI QPs. This means userspace RDMA consumers such
+as DPDK have no way of knowing that firmware handles for their PD, CQ, WQ,
+QP and MR resources have become stale.
 
-This patch was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+This series adds per-ucontext resource tracking and a reset notification
+mechanism so that:
 
-On Thu,  5 Mar 2026 14:06:55 +0800 you wrote:
-> Early return paths in NCSI RX and AEN handlers fail to release
-> the received skb, resulting in a memory leak.
-> 
-> Specifically, ncsi_aen_handler() returns on invalid AEN packets
-> without consuming the skb. Similarly, ncsi_rcv_rsp() exits early
-> when failing to resolve the NCSI device, response handler, or
-> request, leaving the skb unfreed.
-> 
-> [...]
+1. The RDMA driver is informed of service reset events via direct callbacks
+   from the ETH driver (reset_notify / resume_notify).
 
-Here is the summary with links:
-  - [net,v2] net: ncsi: fix skb leak in error paths
-    https://git.kernel.org/netdev/net/c/5c3398a54266
+2. On reset, all tracked firmware handles are invalidated (set to
+   INVALID_MANA_HANDLE), user doorbell mappings are revoked via
+   rdma_user_mmap_disassociate(), and IB_EVENT_PORT_ERR is dispatched to
+   each affected ucontext so userspace can detect the reset.
 
-You are awesome, thank you!
+3. Destroy callbacks check for INVALID_MANA_HANDLE and skip firmware
+   commands for resources already invalidated by the reset path,
+   preventing stale handles from being sent to firmware.
+
+4. A reset_rwsem serializes handle invalidation against resource creation
+   to avoid races between the reset path and new resource allocation.
+
+Patches 1-6 introduce per-ucontext tracking lists for each resource type.
+Patch 7 implements the reset/resume notification mechanism with rwsem
+serialization, mmap revocation, and IB event dispatch.
+Patch 8 adds INVALID_MANA_HANDLE checks in destroy callbacks.
+
+Tested with DPDK testpmd on Azure VM (linux-next-20260306) — confirmed
+IB_EVENT_PORT_ERR (type=10) and IB_EVENT_PORT_ACTIVE (type=9) are delivered
+to userspace during service reset, and testpmd tears down cleanly afterwards.
+
+Long Li (8):
+  RDMA/mana_ib: Track ucontext per device
+  RDMA/mana_ib: Track PD per ucontext
+  RDMA/mana_ib: Track CQ per ucontext
+  RDMA/mana_ib: Track WQ per ucontext
+  RDMA/mana_ib: Track QP per ucontext
+  RDMA/mana_ib: Track MR per ucontext
+  RDMA/mana_ib: Notify service reset events to RDMA devices
+  RDMA/mana_ib: Skip firmware commands for invalidated handles
+
+ drivers/infiniband/hw/mana/cq.c               |  44 +++++--
+ drivers/infiniband/hw/mana/device.c           | 105 ++++++++++++++++++
+ drivers/infiniband/hw/mana/main.c             |  56 +++++++++-
+ drivers/infiniband/hw/mana/mana_ib.h          |  19 ++++
+ drivers/infiniband/hw/mana/mr.c               |  33 +++++-
+ drivers/infiniband/hw/mana/qp.c               |  61 +++++++---
+ drivers/infiniband/hw/mana/wq.c               |  24 ++++
+ drivers/net/ethernet/microsoft/mana/mana_en.c |  14 ++-
+ include/net/mana/gdma.h                       |   6 +
+ 9 files changed, 331 insertions(+), 31 deletions(-)
+
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+2.43.0
