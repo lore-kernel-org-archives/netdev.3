@@ -1,30 +1,30 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD3814F9FB
-	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 20:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7825D30AD00
+	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 20:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772916026; cv=none; b=hsbY6EFvrUGJn3Z02yx13TwpuCWkKVHBXUHiUQmTIVzNvPWY3VloL2YYJoFUWcc0ABog3miKLUb4hgdyUA/euTKQkYT+LDs+mOLNj5/HQ1daY9AeWIHxPyTiziLBAV6jM0U+pW1IjmUFCv/TeiCUcAzbVrmlVPmjcfm7CLqd0qc=
+	t=1772916270; cv=none; b=t4lw85hqlo49shxoIJg3SEdkC9MTvwFmMpCo8hS81CvjBLyWIq+qqEPcOGN193v8n3R2EgZZd59xU8lHmmAawICs99XcI/PQRany8qof7vwRmNhXaazgSc/LeMaRNATIg5zxKaPJibwdmFbRw2UlftO9aMH8zLROrzIAx5K9ql8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772916026; c=relaxed/simple;
-	bh=Cpr2Uic3s9rYLSzQPLL1LKje87F3xiYZIGU4Q09hRSw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=nYN58hTWJyfwSVf0T2uF2hCdiKi0OVaz5h48TpDxY8UcpxOYnxCu9l6yjwiYPQm5A7mNGTverhA/UHlxqPGhKGJLW+p+fwOvVaHE8vrFQps+0xbUJTEvYkgMeKXRSasUehWhdsLUgdlwAk+wEojCbdPqK0SAHksUTqto1F+E4k8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CctEjTKc; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772916270; c=relaxed/simple;
+	bh=JfC9wic2WKmNMXUmTol2ANaHl6GNYBb2VvE7mHN7PaM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VAQ0NyMrmeUOkWMNqGLOV0QcJWQHiPorZnbEL4lfilo3FvIvBst3As4TDQsUZin+xbMSrrYUCpnJ7CVkzIH1rTMemTp8PnHOKiym66JaC69k90ToBVSo7bqoCHowfwQMIDBhJFIeUZuXQGAlyjKdhG2iRsK4V6bgqLfQsFReL18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MkO4C6xu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CctEjTKc"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAE6AC19422;
-	Sat,  7 Mar 2026 20:40:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MkO4C6xu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B5DC19423;
+	Sat,  7 Mar 2026 20:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772916026;
-	bh=Cpr2Uic3s9rYLSzQPLL1LKje87F3xiYZIGU4Q09hRSw=;
+	s=k20201202; t=1772916270;
+	bh=JfC9wic2WKmNMXUmTol2ANaHl6GNYBb2VvE7mHN7PaM=;
 	h=From:To:Cc:Subject:Date:From;
-	b=CctEjTKc1wApTv1oYo8PiGUqfZq3gU5o5d9iazUcSFPwoloJ3RMaXGXOmkrOdacY/
-	 i2ci+HXyQhSBALavLdpvZ11QFusuB4c2FwtmiEykTEKSjFwn9XZyq8bPH4IDOWIsQk
-	 hUJK7UAREjrBvWn8nDVOwgfc5hnmvwUsgeE4ronjv3nQamh/k5SsUzGZX4gM7IoR7J
-	 yQKw+8lJ8bil4X4POt+SiJ8Ui9h5QJR9Ub9lUga5+/7Z/+BIZF82dKOaNFHmlXm5Yz
-	 QwE4Fe8KiSZK1bWR4C68wr+V2HeJExw5RS9n0kfXoQoVARbukuVIpruT+OWF73gxpr
-	 uPHLtOQcAFS3w==
+	b=MkO4C6xu8zOjp7wbkQt14TmNCmmtGi0ZVTcDNRbyzP+dfYNfll23Fe9Kwm9NCqibL
+	 ei+xrxJvGUvPXTsLXy60/P0Y2Ca3E1rjQ1EoU4HAbCTk4mU55Jf2ArH6iPLiDPvbiT
+	 MaL1can6VwInev0Wnm/gwH6NRg/Pke0lKIEP4T888LHrzIExd+pNmH7FPaGE2YqKeW
+	 XxH2Oi9nn+cPSnIoPnpzrPK+eOu017Ly3vg/ni4zjgQYUIzvKMLcGcHUyTmAa/tGdE
+	 AoNubitXio15SpKKBgHppy0OnoF1zthAtZdkx0r30t7cHP8eM0RMcy5ml7wSytRoMd
+	 VdD29YDYTWKVw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -33,11 +33,11 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
-	hawk@kernel.org,
-	ilias.apalodimas@linaro.org
-Subject: [PATCH net] page_pool: store detach_time as ktime_t to avoid false-negatives
-Date: Sat,  7 Mar 2026 12:40:22 -0800
-Message-ID: <20260307204022.1897614-1-kuba@kernel.org>
+	kees@kernel.org,
+	alok.a.tiwari@oracle.com
+Subject: [PATCH net-next 1/2] genetlink: apply reject policy for split ops on the dispatch path
+Date: Sat,  7 Mar 2026 12:44:24 -0800
+Message-ID: <20260307204425.1900467-1-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -47,62 +47,45 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-While testing other changes in vng I noticed that
-nl_netdev.page_pool_check flakes. This never happens in real CI.
+Commit 4fa86555d1cd ("genetlink: piggy back on resv_op to default to
+a reject policy") added genl_policy_reject_all to ensure that ops
+without an explicit policy reject all attributes rather than silently
+accepting them. This change was applied to net.
 
-Turns out vng may boot and get to that test in less than a second.
-page_pool_detached() records the detach time in seconds, so if
-vng is fast enough detach time is set to 0. Other code treats
-0 as "not detached". detach_time is only used to report the state
-to the user, so it's not a huge deal in practice but let's fix it.
-Store the raw ktime_t (nanoseconds) instead. A nanosecond value
-of 0 is practically impossible.
+When split ops were later introduced in net-next in
+commit b8fd60c36a44 ("genetlink: allow families to use split ops directly"),
+genl_op_fill_in_reject_policy_split() was added and called from
+genl_op_from_split() (used for policy dumping and registration).
+However, genl_get_cmd_split(), which is called for incoming messages,
+copies split_ops entries as-is without applying the reject policy.
+This means that split ops without policy accept all inputs.
 
-Fixes: 69cb4952b6f6 ("net: page_pool: report when page pool was destroyed")
+This looks like an omission / mistake made when splitting the changes
+between net and net-next. Let's try to re-introduce the checking.
+Not considering this a fix given the regression potential.
+If anyone reports issues we should probably fill in fake policies
+for specific ops rather than reverting this.
+
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
-CC: hawk@kernel.org
-CC: ilias.apalodimas@linaro.org
+CC: kees@kernel.org
+CC: alok.a.tiwari@oracle.com
 ---
- include/net/page_pool/types.h | 2 +-
- net/core/page_pool_user.c     | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ net/netlink/genetlink.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/net/page_pool/types.h b/include/net/page_pool/types.h
-index 0d453484a585..cdd95477af7a 100644
---- a/include/net/page_pool/types.h
-+++ b/include/net/page_pool/types.h
-@@ -247,7 +247,7 @@ struct page_pool {
- 	/* User-facing fields, protected by page_pools_lock */
- 	struct {
- 		struct hlist_node list;
--		u64 detach_time;
-+		ktime_t detach_time;
- 		u32 id;
- 	} user;
- };
-diff --git a/net/core/page_pool_user.c b/net/core/page_pool_user.c
-index c82a95beceff..fb4ca27358cd 100644
---- a/net/core/page_pool_user.c
-+++ b/net/core/page_pool_user.c
-@@ -245,7 +245,7 @@ page_pool_nl_fill(struct sk_buff *rsp, const struct page_pool *pool,
- 		goto err_cancel;
- 	if (pool->user.detach_time &&
- 	    nla_put_uint(rsp, NETDEV_A_PAGE_POOL_DETACH_TIME,
--			 pool->user.detach_time))
-+			 ktime_to_seconds(pool->user.detach_time)))
- 		goto err_cancel;
+diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
+index a23d4c51c089..656d32046147 100644
+--- a/net/netlink/genetlink.c
++++ b/net/netlink/genetlink.c
+@@ -250,6 +250,7 @@ genl_get_cmd_split(u32 cmd, u8 flag, const struct genl_family *family,
+ 		if (family->split_ops[i].cmd == cmd &&
+ 		    family->split_ops[i].flags & flag) {
+ 			*op = family->split_ops[i];
++			genl_op_fill_in_reject_policy_split(family, op);
+ 			return 0;
+ 		}
  
- 	if (pool->mp_ops && pool->mp_ops->nl_fill(pool->mp_priv, rsp, NULL))
-@@ -337,7 +337,7 @@ int page_pool_list(struct page_pool *pool)
- void page_pool_detached(struct page_pool *pool)
- {
- 	mutex_lock(&page_pools_lock);
--	pool->user.detach_time = ktime_get_boottime_seconds();
-+	pool->user.detach_time = ktime_get_boottime();
- 	netdev_nl_page_pool_event(pool, NETDEV_CMD_PAGE_POOL_CHANGE_NTF);
- 	mutex_unlock(&page_pools_lock);
- }
 -- 
 2.53.0
 
