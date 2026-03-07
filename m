@@ -1,53 +1,117 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEC017A2F6;
-	Sat,  7 Mar 2026 18:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A6813D638
+	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 18:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772907845; cv=none; b=LeD4/A0gWKXOBRlbIEq6LOCsFROxLqx4xYJ9YZze92N4v4cqc6a8S7bbUVPEznrIDF3CqZ1iKVND4Zxqpt3TLTl+IbfNOo3ElLFc13kH933QMbj/oSJD34msEv244IiYs9aEr5OVeHaZuaU/pE7h7cZ2hBhjJHAzPlw1rBsE6nc=
+	t=1772908104; cv=none; b=KicEbD826faXD2HkzntPBjvz9F7d6r8VvwFVPUjftIG1YRPsmjsnBKb8kZNDra/a2Nppu5usl2bhuR6PVvGVSbPSEzTFAAbf08tVIsWKXR98iQLEy1vChtAiTq8TSEVvOhB+R6bShY5XDFTTqJNzuYAbfAzC9U4Bdg60iNE03EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772907845; c=relaxed/simple;
-	bh=EPCZ4ArqG/MUI5+2xe/0VPYA00dTt9Rg/JKVyDfs3Fk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nWMsXs7s++jdE6U8Q1iOkVWsYL1qapyJmkeBLXJC63+zpwH7okucM6fwm2k1HqeBHEyNR3lkJjGOaz9f8DSyXyidcL5fxxl8OtDbd5fqdjUnsoTHpMMxz4nESy4hyfs3nYObft/yCns3u6qMohBWsIx18cAs/EAgsZkELNZ4oV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id D65B36077F; Sat, 07 Mar 2026 19:24:00 +0100 (CET)
-Date: Sat, 7 Mar 2026 19:24:00 +0100
-From: Florian Westphal <fw@strlen.de>
-To: Hyunwoo Kim <imv4bel@gmail.com>
-Cc: pablo@netfilter.org, phil@nwl.cc, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	horms@kernel.org, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org
-Subject: Re: [PATCH net] netfilter: nf_conntrack_sctp: validate state value
- in nlattr_to_sctp()
-Message-ID: <aaxtQA0BbpqTo5t1@strlen.de>
-References: <aaxe43_A7rqHezJz@v4bel>
+	s=arc-20240116; t=1772908104; c=relaxed/simple;
+	bh=qb4WndtCGtSLK0c3sWW11sQb7vCbm5nENwK5RPKhOZQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kr9YLWRfSzxvLz3AASbjmkhhqLrRnw0ZPmqmLFGWtfj0Aaeg+gXZZsRwX9X2/PN6VCpXT2Wc/UCFjsguSODR2Vm97wJDQg1d3AqXFpn9b8LMknTx11MtNkBr+SHci+DvwWL1LDub580vRZENNSCJ5r/9eqVNLNEiNbrWys88S7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=U0sMezoF; arc=none smtp.client-ip=49.212.198.91
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="U0sMezoF"
+Received: from ms-a2 (79.25.31.150.dy.iij4u.or.jp [150.31.25.79])
+	(authenticated bits=0)
+	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 627ISK1U043213
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Sun, 8 Mar 2026 03:28:20 +0900 (JST)
+	(envelope-from kohei@enjuk.jp)
+DKIM-Signature: a=rsa-sha256; bh=HQ8r0KD4toX/rc513azQPOVmYJYl5d5vX7tPVgX5kFk=;
+        c=relaxed/relaxed; d=enjuk.jp;
+        h=From:Message-ID:To:Subject:Date;
+        s=rs20251215; t=1772908101; v=1;
+        b=U0sMezoFkOQ9cAVyLHK4zpPnJ2qlY/uDJtDQYI+1cJEnBlmjrnANnkV/W6joGAfN
+         BTRW5+olSpLpkRlMYyOspZbNKgk8HAdqXwwkobnKipPZPF/1guCi/A2Qb5ByLl0g
+         BeiMl1lRSyFZxii0OBWD8GgX6QZnkusrji0Mm2YsY7dBH+7ja4CyMB9jXRQoT6sC
+         qhBJOLfI2zIYAkHXNv3WiCTQkc9TEh2wKpRWWI9BafPN5VTaqiOIa45ToBuFdhDL
+         cwOnJNCDF7ayFN1LxuNTCbgQnF5L+hGKwXCM5WIH/+0V+kfGaoctMrQnEe7OPjQQ
+         zhktN2fOHXymaE6+JOVtxg==
+From: Kohei Enju <kohei@enjuk.jp>
+To: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, kohei.enju@gmail.com,
+        Kohei Enju <kohei@enjuk.jp>
+Subject: [PATCH iwl-next v1 2/2] igc: enable build_skb on the non-XDP small-frame RX path
+Date: Sat,  7 Mar 2026 18:27:39 +0000
+Message-ID: <20260307182808.155027-3-kohei@enjuk.jp>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260307182808.155027-1-kohei@enjuk.jp>
+References: <20260307182808.155027-1-kohei@enjuk.jp>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aaxe43_A7rqHezJz@v4bel>
+Content-Transfer-Encoding: 8bit
 
-Hyunwoo Kim <imv4bel@gmail.com> wrote:
-> diff --git a/net/netfilter/nf_conntrack_proto_sctp.c b/net/netfilter/nf_conntrack_proto_sctp.c
-> index 7c6f7c9f7332..cbee99be7b5e 100644
-> --- a/net/netfilter/nf_conntrack_proto_sctp.c
-> +++ b/net/netfilter/nf_conntrack_proto_sctp.c
-> @@ -612,6 +612,9 @@ static int nlattr_to_sctp(struct nlattr *cda[], struct nf_conn *ct)
->  	    !tb[CTA_PROTOINFO_SCTP_VTAG_REPLY])
->  		return -EINVAL;
->  
-> +	if (nla_get_u8(tb[CTA_PROTOINFO_SCTP_STATE]) >= SCTP_CONNTRACK_MAX)
-> +		return -EINVAL;
+igc implements igc_build_skb(), but it is currently unused because the
+IGC_RING_FLAG_RX_BUILD_SKB_ENABLED bit is never set. Enable the
+build_skb path when XDP is not active and the configured maximum frame
+size fits within IGC_MAX_FRAME_BUILD_SKB.
 
-Like other, similar bug classes, I would prefer this to be solved via
-netlink policy fixup.
+In a single-queue small-packet (64-byte) RX microbenchmark on my setup,
+enabling build_skb improved the receive rate from about 3.11 Mpps to
+about 3.30 Mpps, while reducing missed packets from about 484 kpps to
+about 300 kpps.
+
+Keep the XDP path unchanged for now, since it uses a different RX buffer
+layout based on XDP_PACKET_HEADROOM, and enabling it there would need
+separate validation and buffer layout adjustments.
+
+Signed-off-by: Kohei Enju <kohei@enjuk.jp>
+---
+ drivers/net/ethernet/intel/igc/igc.h      | 4 ++++
+ drivers/net/ethernet/intel/igc/igc_main.c | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/drivers/net/ethernet/intel/igc/igc.h b/drivers/net/ethernet/intel/igc/igc.h
+index e66799507f81..acbd2c237667 100644
+--- a/drivers/net/ethernet/intel/igc/igc.h
++++ b/drivers/net/ethernet/intel/igc/igc.h
+@@ -734,6 +734,10 @@ enum igc_ring_flags_t {
+ 
+ #define ring_uses_build_skb(ring) \
+ 	test_bit(IGC_RING_FLAG_RX_BUILD_SKB_ENABLED, &(ring)->flags)
++#define set_ring_uses_build_skb(ring) \
++	set_bit(IGC_RING_FLAG_RX_BUILD_SKB_ENABLED, &(ring)->flags)
++#define clear_ring_uses_build_skb(ring) \
++	clear_bit(IGC_RING_FLAG_RX_BUILD_SKB_ENABLED, &(ring)->flags)
+ 
+ static inline unsigned int igc_rx_bufsz(struct igc_ring *ring)
+ {
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 3a4c1ebe4faa..1f3ed1e4db1b 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -474,6 +474,7 @@ static void igc_clean_rx_ring(struct igc_ring *ring)
+ 		igc_clean_rx_ring_page_shared(ring);
+ 
+ 	clear_ring_uses_large_buffer(ring);
++	clear_ring_uses_build_skb(ring);
+ 
+ 	ring->next_to_alloc = 0;
+ 	ring->next_to_clean = 0;
+@@ -654,6 +655,9 @@ static void igc_configure_rx_ring(struct igc_adapter *adapter,
+ 
+ 	if (igc_xdp_is_enabled(adapter))
+ 		set_ring_uses_large_buffer(ring);
++	else if (!(adapter->flags & IGC_FLAG_RX_LEGACY) &&
++		 adapter->max_frame_size <= IGC_MAX_FRAME_BUILD_SKB)
++		set_ring_uses_build_skb(ring);
+ 
+ 	/* disable the queue */
+ 	wr32(IGC_RXDCTL(reg_idx), 0);
+-- 
+2.51.0
+
