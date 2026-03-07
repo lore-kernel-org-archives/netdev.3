@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3F6231352B
-	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 03:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D946F3101A2
+	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 03:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772854607; cv=none; b=oSTFj5x2zdxLxT+3YqbWdiNGDmJawEaSr4K/0hMseFuURcearQH5Z57HEW1r4SQla+9wG6vXOy2GeJF7d9vmolKQhgKWEM1sej7OJKRMh9RcNoJMWOow8pefm3kGXnX8GVeepFYlkLOo0Rc4+VaHRDGA+DRIHSOEjekiwP1HB9s=
+	t=1772854608; cv=none; b=r79qjk1dx5ys8M4QsT5ViUIyFzyfGahjAj0ul003SKYKqdMmAoZo3WSIG4LYCccUzyJWY6Js3XztU4qTB+n0T2t5bNiy8SoAgbngjWCxYPDWxL6+h72Vk6zOSHi6w6e+pYdZb68teU+JsOrTwVuIZJ5g2VAOSNhZbh04/MrnGMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772854607; c=relaxed/simple;
-	bh=nGi9C6cp878Z66+LkBvBTmVgEcrv9UtNuGowYxYWAn8=;
+	s=arc-20240116; t=1772854608; c=relaxed/simple;
+	bh=2fA8eLDEtwGisyMdlSXjQPp6RvVDgWD4RUmxJj2NBMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fyJRaoMJpXw8dp4CRQzRJy+Qgd7uClSAFRZwgXooIf5YZn43zevGmv36a+lhHnJ1Ov5MefhguuQeh5Q2d+OuUdcj17iqjI0yIC4dmm5SXf7ZraTd3kOCV9NI+a1CSbuGOK2IF+xB0x35fkXC7EuKFKylOy0dlutivrqfbNkVUQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EA1wFPM4; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=QMrLDWq7+fTR7Np8OYGDR5YmOwsdlvIeTwqC9HOEnJW0aNXZ+iyp6NnAOrPPNJc1DBCC+BhT5hk7uIv4uOdidnC/bKDAhjA7RYOEjJAvPHDwnvmfFcupg6UdvKKiNc4kkuZEIZHvMFjSqzwch6qvVcfnG4uXrJ5XM1QuwqEDTvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sl1+yO8I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EA1wFPM4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DABFC2BC9E;
-	Sat,  7 Mar 2026 03:36:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sl1+yO8I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43365C19422;
+	Sat,  7 Mar 2026 03:36:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772854607;
-	bh=nGi9C6cp878Z66+LkBvBTmVgEcrv9UtNuGowYxYWAn8=;
+	s=k20201202; t=1772854608;
+	bh=2fA8eLDEtwGisyMdlSXjQPp6RvVDgWD4RUmxJj2NBMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EA1wFPM4dRflNCEVGBO7idIpbNCczVCr0GsQjIl2hYyxOrr8wMaFVHDpUbV5I76+r
-	 BIcDK4fsHR+KaCvTNXI40kHtVVf4PGlsKbMh8H4xKSHuEwKfaHaKL8qnKF/1H8knU/
-	 tmxfCIDUNzg7LbOHt7ocM7TILepljKWpr31yiRXfXetZypNPQPXE56SHuq9kCAWmeO
-	 2r9vW6S6yIdDlQaR5/8oWa6iNjfCMTrjugT1c+09Wpn6QlGmglAVOtzcEwzGPQmKZ8
-	 dZOkkoCkNF2uUtvA1DyI+8t5Je+89MdT0HYW5F0FR3qa5a0HowLS0poAjAGr7qqb9Q
-	 9uktY7BmhAzWw==
+	b=sl1+yO8IVi7Yqz57ZWGBrPih4ESzlRb7A/WJpxfWN71PkRFdCKX7XlM9VMY4pYbTZ
+	 873hCWnWDS/uCfY/sysVhJxvmGELUM5w0x64Liee5XotyRfH4OYA4UQjVMT/BQpQ+2
+	 GzqeSEQ9AfKyv0C+K51ff9LEWRQemLKoDrX8BbXhQmm9ccwqW9CefwsQupLD7vAYG3
+	 D/JwO/XW6y7LuD+xZlPqMZZB+jSJH3B4rwRl/CZAemZ1QiRtB0w3JHFqB31iPjGNFj
+	 NLhq8ih12vQSLW9hOaIESKxjUpPSwQTOeORecmV4jIdrkBPTzC2oDCmmUCJBF5j+BF
+	 Q/c3m2IsI004Q==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -37,9 +37,9 @@ Cc: netdev@vger.kernel.org,
 	liuhangbin@gmail.com,
 	matttbe@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 07/10] tools: ynl: convert devlink sample to selftest
-Date: Fri,  6 Mar 2026 19:36:27 -0800
-Message-ID: <20260307033630.1396085-8-kuba@kernel.org>
+Subject: [PATCH net-next v2 09/10] tools: ynl: convert rt-addr sample to selftest
+Date: Fri,  6 Mar 2026 19:36:29 -0800
+Message-ID: <20260307033630.1396085-10-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260307033630.1396085-1-kuba@kernel.org>
 References: <20260307033630.1396085-1-kuba@kernel.org>
@@ -51,251 +51,193 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert devlink.c to use kselftest_harness.h with FIXTURE/TEST_F.
-Move devlink from BINS to TEST_GEN_FILES in the Makefile since
-it's invoked via the devlink.sh wrapper which sets up netdevsim.
+Convert rt-addr.c to use kselftest_harness.h with FIXTURE/TEST_F.
+
+Validate that the addresses configured by the wrapper (192.168.1.1
+and 2001:db8::1) appear in the dump.
 
 Output:
 
   TAP version 13
-  1..2
-  # Starting 2 tests from 1 test cases.
-  #  RUN           devlink.dump ...
-  # netdevsim/netdevsim1337
-  #            OK  devlink.dump
-  ok 1 devlink.dump
-  #  RUN           devlink.info ...
-  # netdevsim/netdevsim1337:
-  #   driver: netdevsim
-  #   running fw:
-  #     fw.mgmt: 10.20.30
-  #            OK  devlink.info
-  ok 2 devlink.info
-  # PASSED: 2 / 2 tests passed.
-  # Totals: pass:2 fail:0 xfail:0 xpass:0 skip:0 error:0
+  1..1
+  # Starting 1 tests from 1 test cases.
+  #  RUN           rt_addr.dump ...
+  #               lo: 127.0.0.1
+  #            nsim0: 192.168.1.1
+  #               lo: ::1
+  #            nsim0: 2001:db8::1
+  #            nsim0: fe80::7c66:c9ff:fe5f:bf01
+  #            OK  rt_addr.dump
+  ok 1 rt_addr.dump
+  # PASSED: 1 / 1 tests passed.
+  # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
- tools/net/ynl/tests/Makefile   |  16 ++++--
- tools/net/ynl/tests/devlink.c  | 100 +++++++++++++++++++++++----------
- tools/net/ynl/tests/devlink.sh |   5 ++
- 3 files changed, 85 insertions(+), 36 deletions(-)
- create mode 100755 tools/net/ynl/tests/devlink.sh
+ tools/net/ynl/tests/Makefile   |  3 +-
+ tools/net/ynl/tests/rt-addr.c  | 85 +++++++++++++++++++++++-----------
+ tools/net/ynl/tests/rt-addr.sh |  5 ++
+ 3 files changed, 65 insertions(+), 28 deletions(-)
+ create mode 100755 tools/net/ynl/tests/rt-addr.sh
 
 diff --git a/tools/net/ynl/tests/Makefile b/tools/net/ynl/tests/Makefile
-index a329de031add..14d399a70f10 100644
+index c380e9f331a3..52b54ea6c90f 100644
 --- a/tools/net/ynl/tests/Makefile
 +++ b/tools/net/ynl/tests/Makefile
-@@ -14,6 +14,7 @@ endif
- LDLIBS=../lib/ynl.a ../generated/protos.a
- 
+@@ -16,6 +16,7 @@ LDLIBS=../lib/ynl.a ../generated/protos.a
  TEST_PROGS := \
-+	devlink.sh \
+ 	devlink.sh \
+ 	ethtool.sh \
++	rt-addr.sh \
  	test_ynl_cli.sh \
  	test_ynl_ethtool.sh \
  # end of TEST_PROGS
-@@ -25,8 +26,11 @@ TEST_GEN_PROGS := \
- 	tc \
- # end of TEST_GEN_PROGS
- 
--BINS := \
-+TEST_GEN_FILES := \
+@@ -30,10 +31,10 @@ TEST_GEN_PROGS := \
+ TEST_GEN_FILES := \
  	devlink \
-+# end of TEST_GEN_FILES
-+
-+BINS := \
  	ethtool \
- 	rt-addr \
++	rt-addr \
+ # end of TEST_GEN_FILES
+ 
+ BINS := \
+-	rt-addr \
  	rt-route \
-@@ -41,7 +45,7 @@ include $(wildcard *.d)
+ # end of BINS
  
- INSTALL_PATH ?= $(DESTDIR)/usr/share/kselftest
- 
--all: $(TEST_GEN_PROGS) $(BINS)
-+all: $(TEST_GEN_PROGS) $(TEST_GEN_FILES) $(BINS)
- 
- ../lib/ynl.a:
- 	@$(MAKE) -C ../lib
-@@ -49,7 +53,7 @@ all: $(TEST_GEN_PROGS) $(BINS)
-  ../generated/protos.a:
- 	@$(MAKE) -C ../generated
- 
--$(TEST_GEN_PROGS) $(BINS): %: %.c ../lib/ynl.a ../generated/protos.a
-+$(TEST_GEN_PROGS) $(TEST_GEN_FILES) $(BINS): %: %.c ../lib/ynl.a ../generated/protos.a
- 	@echo -e '\tCC test $@'
- 	@$(COMPILE.c) $(CFLAGS_$@) $@.c -o $@.o
- 	@$(LINK.c) $@.o -o $@  $(LDLIBS)
-@@ -59,7 +63,7 @@ $(TEST_GEN_PROGS) $(BINS): %: %.c ../lib/ynl.a ../generated/protos.a
- 		./$$test; \
- 	done
- 
--install: $(TEST_GEN_PROGS) $(BINS)
-+install: $(TEST_GEN_PROGS) $(TEST_GEN_FILES) $(BINS)
- 	@mkdir -p $(INSTALL_PATH)/ynl
- 	@cp ../../../testing/selftests/kselftest/ktap_helpers.sh $(INSTALL_PATH)/
- 	@for test in $(TEST_PROGS); do \
-@@ -73,7 +77,7 @@ install: $(TEST_GEN_PROGS) $(BINS)
- 	@for file in $(TEST_FILES); do \
- 		cp $$file $(INSTALL_PATH)/ynl/$$file; \
- 	done
--	@for bin in $(TEST_GEN_PROGS) $(BINS); do \
-+	@for bin in $(TEST_GEN_PROGS) $(TEST_GEN_FILES) $(BINS); do \
- 		cp $$bin $(INSTALL_PATH)/ynl/$$bin; \
- 	done
- 	@for test in $(TEST_PROGS) $(TEST_GEN_PROGS); do \
-@@ -84,7 +88,7 @@ install: $(TEST_GEN_PROGS) $(BINS)
- 	rm -f *.o *.d *~
- 
- distclean: clean
--	rm -f $(TEST_GEN_PROGS) $(BINS)
-+	rm -f $(TEST_GEN_PROGS) $(TEST_GEN_FILES) $(BINS)
- 
- .PHONY: all install clean distclean run_tests
- .DEFAULT_GOAL=all
-diff --git a/tools/net/ynl/tests/devlink.c b/tools/net/ynl/tests/devlink.c
-index ac9dfb01f280..2e668bb15af1 100644
---- a/tools/net/ynl/tests/devlink.c
-+++ b/tools/net/ynl/tests/devlink.c
-@@ -4,58 +4,98 @@
- 
- #include <ynl.h>
+diff --git a/tools/net/ynl/tests/rt-addr.c b/tools/net/ynl/tests/rt-addr.c
+index 2edde5c36b18..f6c3715b2f20 100644
+--- a/tools/net/ynl/tests/rt-addr.c
++++ b/tools/net/ynl/tests/rt-addr.c
+@@ -7,9 +7,12 @@
+ #include <arpa/inet.h>
+ #include <net/if.h>
  
 +#include <kselftest_harness.h>
 +
- #include "devlink-user.h"
+ #include "rt-addr-user.h"
+ 
+-static void rt_addr_print(struct rt_addr_getaddr_rsp *a)
++static void rt_addr_print(struct __test_metadata *_metadata,
++			  struct rt_addr_getaddr_rsp *a)
+ {
+ 	char ifname[IF_NAMESIZE];
+ 	char addr_str[64];
+@@ -17,9 +20,11 @@ static void rt_addr_print(struct rt_addr_getaddr_rsp *a)
+ 	const char *name;
+ 
+ 	name = if_indextoname(a->_hdr.ifa_index, ifname);
++	EXPECT_NE(NULL, name);
+ 	if (name)
+-		printf("%16s: ", name);
++		ksft_print_msg("%16s: ", name);
+ 
++	EXPECT_TRUE(a->_len.address == 4 || a->_len.address == 16);
+ 	switch (a->_len.address) {
+ 	case 4:
+ 		addr = inet_ntop(AF_INET, a->address,
+@@ -41,40 +46,66 @@ static void rt_addr_print(struct rt_addr_getaddr_rsp *a)
+ 	printf("\n");
+ }
  
 -int main(int argc, char **argv)
-+FIXTURE(devlink)
++FIXTURE(rt_addr)
 +{
 +	struct ynl_sock *ys;
 +};
 +
-+FIXTURE_SETUP(devlink)
++FIXTURE_SETUP(rt_addr)
 +{
-+	self->ys = ynl_sock_create(&ynl_devlink_family, NULL);
++	struct ynl_error yerr;
++
++	self->ys = ynl_sock_create(&ynl_rt_addr_family, &yerr);
 +	ASSERT_NE(NULL, self->ys)
-+		TH_LOG("failed to create devlink socket");
++		TH_LOG("failed to create rt-addr socket: %s", yerr.msg);
 +}
 +
-+FIXTURE_TEARDOWN(devlink)
++FIXTURE_TEARDOWN(rt_addr)
 +{
 +	ynl_sock_destroy(self->ys);
 +}
 +
-+TEST_F(devlink, dump)
++TEST_F(rt_addr, dump)
  {
- 	struct devlink_get_list *devs;
+ 	struct rt_addr_getaddr_list *rsp;
+ 	struct rt_addr_getaddr_req *req;
+-	struct ynl_error yerr;
 -	struct ynl_sock *ys;
++	struct in6_addr v6_expected;
++	struct in_addr v4_expected;
++	bool found_v4 = false;
++	bool found_v6 = false;
  
--	ys = ynl_sock_create(&ynl_devlink_family, NULL);
--	if (!ys)
+-	ys = ynl_sock_create(&ynl_rt_addr_family, &yerr);
+-	if (!ys) {
+-		fprintf(stderr, "YNL: %s\n", yerr.msg);
 -		return 1;
-+	devs = devlink_get_dump(self->ys);
-+	ASSERT_NE(NULL, devs) {
-+		TH_LOG("dump failed: %s", self->ys->err.msg);
-+	}
+-	}
++	/* The bash wrapper for this test adds these addresses on nsim0,
++	 * make sure we can find them in the dump.
++	 */
++	inet_pton(AF_INET, "192.168.1.1", &v4_expected);
++	inet_pton(AF_INET6, "2001:db8::1", &v6_expected);
  
--	devs = devlink_get_dump(ys);
--	if (!devs)
+ 	req = rt_addr_getaddr_req_alloc();
+-	if (!req)
+-		goto err_destroy;
++	ASSERT_NE(NULL, req);
+ 
+-	rsp = rt_addr_getaddr_dump(ys, req);
++	rsp = rt_addr_getaddr_dump(self->ys, req);
+ 	rt_addr_getaddr_req_free(req);
+-	if (!rsp)
 -		goto err_close;
-+	if (ynl_dump_empty(devs)) {
-+		devlink_get_list_free(devs);
-+		SKIP(return, "no entries in dump");
-+	}
-+
-+	ynl_dump_foreach(devs, d) {
-+		EXPECT_TRUE((bool)d->_len.bus_name);
-+		EXPECT_TRUE((bool)d->_len.dev_name);
-+		ksft_print_msg("%s/%s\n", d->bus_name, d->dev_name);
-+	}
-+
-+	devlink_get_list_free(devs);
-+}
-+
-+TEST_F(devlink, info)
-+{
-+	struct devlink_get_list *devs;
-+
-+	devs = devlink_get_dump(self->ys);
-+	ASSERT_NE(NULL, devs) {
++	ASSERT_NE(NULL, rsp) {
 +		TH_LOG("dump failed: %s", self->ys->err.msg);
 +	}
-+
-+	if (ynl_dump_empty(devs)) {
-+		devlink_get_list_free(devs);
-+		SKIP(return, "no devices to query");
+ 
+-	if (ynl_dump_empty(rsp))
+-		fprintf(stderr, "Error: no addresses reported\n");
+-	ynl_dump_foreach(rsp, addr)
+-		rt_addr_print(addr);
++	ASSERT_FALSE(ynl_dump_empty(rsp)) {
++		rt_addr_getaddr_list_free(rsp);
++		TH_LOG("no addresses reported");
 +	}
++
++	ynl_dump_foreach(rsp, addr) {
++		rt_addr_print(_metadata, addr);
++
++		found_v4 |= addr->_len.address == 4 &&
++			    !memcmp(addr->address, &v4_expected, 4);
++		found_v6 |= addr->_len.address == 16 &&
++			    !memcmp(addr->address, &v6_expected, 16);
++	}
+ 	rt_addr_getaddr_list_free(rsp);
  
- 	ynl_dump_foreach(devs, d) {
- 		struct devlink_info_get_req *info_req;
- 		struct devlink_info_get_rsp *info_rsp;
--		unsigned i;
-+		unsigned int i;
- 
--		printf("%s/%s:\n", d->bus_name, d->dev_name);
-+		EXPECT_TRUE((bool)d->_len.bus_name);
-+		EXPECT_TRUE((bool)d->_len.dev_name);
-+		ksft_print_msg("%s/%s:\n", d->bus_name, d->dev_name);
- 
- 		info_req = devlink_info_get_req_alloc();
-+		ASSERT_NE(NULL, info_req);
- 		devlink_info_get_req_set_bus_name(info_req, d->bus_name);
- 		devlink_info_get_req_set_dev_name(info_req, d->dev_name);
- 
--		info_rsp = devlink_info_get(ys, info_req);
-+		info_rsp = devlink_info_get(self->ys, info_req);
- 		devlink_info_get_req_free(info_req);
--		if (!info_rsp)
--			goto err_free_devs;
-+		ASSERT_NE(NULL, info_rsp) {
-+			devlink_get_list_free(devs);
-+			TH_LOG("info_get failed: %s", self->ys->err.msg);
-+		}
- 
-+		EXPECT_TRUE((bool)info_rsp->_len.info_driver_name);
- 		if (info_rsp->_len.info_driver_name)
--			printf("    driver: %s\n", info_rsp->info_driver_name);
-+			ksft_print_msg("  driver: %s\n",
-+				       info_rsp->info_driver_name);
- 		if (info_rsp->_count.info_version_running)
--			printf("    running fw:\n");
-+			ksft_print_msg("  running fw:\n");
- 		for (i = 0; i < info_rsp->_count.info_version_running; i++)
--			printf("        %s: %s\n",
--			       info_rsp->info_version_running[i].info_version_name,
--			       info_rsp->info_version_running[i].info_version_value);
--		printf("    ...\n");
-+			ksft_print_msg("    %s: %s\n",
-+				       info_rsp->info_version_running[i].info_version_name,
-+				       info_rsp->info_version_running[i].info_version_value);
- 		devlink_info_get_rsp_free(info_rsp);
- 	}
- 	devlink_get_list_free(devs);
--
 -	ynl_sock_destroy(ys);
--
 -	return 0;
 -
--err_free_devs:
--	devlink_get_list_free(devs);
 -err_close:
 -	fprintf(stderr, "YNL: %s\n", ys->err.msg);
+-err_destroy:
 -	ynl_sock_destroy(ys);
 -	return 2;
++	EXPECT_TRUE(found_v4);
++	EXPECT_TRUE(found_v6);
  }
 +
 +TEST_HARNESS_MAIN
-diff --git a/tools/net/ynl/tests/devlink.sh b/tools/net/ynl/tests/devlink.sh
+diff --git a/tools/net/ynl/tests/rt-addr.sh b/tools/net/ynl/tests/rt-addr.sh
 new file mode 100755
-index 000000000000..a684c749aa5e
+index 000000000000..87661236d126
 --- /dev/null
-+++ b/tools/net/ynl/tests/devlink.sh
++++ b/tools/net/ynl/tests/rt-addr.sh
 @@ -0,0 +1,5 @@
 +#!/bin/bash
 +# SPDX-License-Identifier: GPL-2.0
 +source "$(dirname "$(realpath "$0")")/ynl_nsim_lib.sh"
 +nsim_setup
-+"$(dirname "$(realpath "$0")")/devlink"
++"$(dirname "$(realpath "$0")")/rt-addr"
 -- 
 2.53.0
 
