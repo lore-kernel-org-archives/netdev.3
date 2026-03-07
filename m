@@ -1,112 +1,59 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23201C13B;
-	Sat,  7 Mar 2026 00:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B46D150276
+	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 00:09:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772841931; cv=none; b=M6rGDqflgAQz+/WAuyTmkWNwbmrMy3d1z80/Yig13rCZmR6vyicW/iOLg9BVZ+Wo0WStNMXM77ONYuvVglZz8iApNx3QPxuHVb2+5Omk8ui4CJthw9uRgHRkyN+jjfwF1s0xqOtFxPH7yQQtZBt8FIHF4VwhWVq4ubm0MW0YK2M=
+	t=1772842160; cv=none; b=GMi62o+U3TULc1O/XMtVk4aZPan7Bd8u6p1vieLFP5DfElYp8A3JoUEBDUOioORwrclckNNWprtItsU47RdoPhfC1toGfs2TQB+ra4E3w23+VgJHimOaJfC6NbsYXj5wq4rut12G1Lm9ikp3DME3RdUpYoXQprFmQBsTR4c8xV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772841931; c=relaxed/simple;
-	bh=h1a75gdjqpmW7z6/ZJFcSnXVV4clbTBNT+a53CyNqlw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GrqneUwxF/xKqc9r8l2X8GE4YB66GvpWE/afRce0XdRpqWXBt1nZUIUGhswU+IOISgq5QNZZ+L14xkyKJ/UkrawuUI2nFCTHHG18W+TPeYHeExtA6q7ZDfHB4lh+p8MJBWJ+utdIv2eUOev2zfqMWAJ9gb8oQEOJSJgfrEJeQUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=NztodOTZ; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1772842160; c=relaxed/simple;
+	bh=gB5EP4vC6zUFR05nwAKYIWGgLb1WI+GpsAW6ThGAdyY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=C2lLLO+84n3ri57p1qZKtzV4fWdcRT5kKQtnSPOl3jS82Pfh99Xy2Do24NR3yFKfNLVPpOLIuI1OOIY8mp1mNB/9zw0R3gmFMGNoO6prmchX5lvKZCDzkLmD/srF1OuNIDNtfjAMwrGahlFaUkJrfmHhFphQQrlVFE0KkKlMBSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SXAOfiVj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="NztodOTZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=FsRPNID5PAvwSRgv4YV66cyR8EgMHDZN2LmKg1jcxCM=; b=NztodOTZPF9ce0GYVQJAZ+0fjy
-	KV4HTH+asXGOH0lQE3k6M2wop9lFdAzefd7jR5MM3xj6q8N9PcSjGV0+uf+jrpaeoFvji0BdL9dnf
-	SANdQViLj+hPkphrXXTiUBm3G8E8vFbOOT/tw9VmMZNTdPJfmulOohOFPbs1aoVq0Vv34oDYuT5tu
-	+p0BYZlh2rO8i4xrXVofszwbHZYp/eak0RGso5AItkqLKHWlhNHGaookuQCJEXpp06fCnenMRzzop
-	Zb7/tyfFyNR6UPxCNJ4KbGbLWyGo+0L9VgPy+xt/01N1ztatymJKwIGpIEOAG6JGhh7bXGKEfUovm
-	2YYtpyPg==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:59864)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vyfAY-000000001gD-1Kzj;
-	Sat, 07 Mar 2026 00:05:22 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vyfAU-000000001pI-2HLV;
-	Sat, 07 Mar 2026 00:05:18 +0000
-Date: Sat, 7 Mar 2026 00:05:18 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Conor Dooley <conor+dt@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>, devicetree@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Giuseppe Cavallaro <peppe.cavallaro@st.com>,
-	Jakub Kicinski <kuba@kernel.org>, Jose Abreu <joabreu@synopsys.com>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Rob Herring <robh@kernel.org>
-Subject: Re: [PATCH] dt-bindings: mark unimplemented AXI snps,kbbe snps,mb
- and snps,rb
-Message-ID: <aatrvmyW-SaHuVN7@shell.armlinux.org.uk>
-References: <E1vxq3L-0000000BsQm-4C8v@rmk-PC.armlinux.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SXAOfiVj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB114C19422;
+	Sat,  7 Mar 2026 00:09:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1772842160;
+	bh=gB5EP4vC6zUFR05nwAKYIWGgLb1WI+GpsAW6ThGAdyY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SXAOfiVjQsxEnqY3wzbl7TGOMDcvEg0Lzs+YRYw4p6w/9cPQEDtDFnRBF7H3y7u8/
+	 FtJ+HUsJdioDpiZoxgi3SIG3j8rzRMGGX08+tukSQ1TJQ+mnTZnXsoVvvUiDkO9E4q
+	 SbZ5kvStgDzvaRpSlsxwkve8EJQBGgM5D0VGNPSTWWDtjhC+KTOFuTxusAffoYe6pl
+	 8tCSaV7S3S4UYbP1APziGcSmnUP0DuCvME4gQbiHDmAr53PyQpdKK2ODKCURp6Bfdf
+	 jExq8S2XIboDm4ZgoFlPtwSsTmijdmQkmAM8sExFBu4CpFTEm5svyjv82uXzM/BiGt
+	 ep5L3mcU6ugXg==
+Date: Fri, 6 Mar 2026 16:09:19 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Donald Hunter <donald.hunter@gmail.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ pabeni@redhat.com, andrew+netdev@lunn.ch, horms@kernel.org,
+ liuhangbin@gmail.com, matttbe@kernel.org
+Subject: Re: [PATCH net-next 04/10] tools: ynl: convert rt-link sample to
+ selftest
+Message-ID: <20260306160919.61588972@kernel.org>
+In-Reply-To: <m2y0k5ghfu.fsf@gmail.com>
+References: <20260306020901.524105-1-kuba@kernel.org>
+	<20260306020901.524105-5-kuba@kernel.org>
+	<m2y0k5ghfu.fsf@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1vxq3L-0000000BsQm-4C8v@rmk-PC.armlinux.org.uk>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Any chance of a review from the DT maintainers please?
+On Fri, 06 Mar 2026 14:29:09 +0000 Donald Hunter wrote:
+> > +	/* Verify it appears in a dump */
+> > +	dreq = rt_link_getlink_req_dump_alloc();  
+> 
+> I see there's error handling for *_alloc() in helper functions but
+> not in tests. Is that intentional?
 
-Thanks.
-
-On Wed, Mar 04, 2026 at 05:30:32PM +0000, Russell King (Oracle) wrote:
-> Mark the AXI snps,kbbe snps,mb and snps,rb properties as not
-> implemented. These were introduced by commit afea03656add ("stmmac:
-> rework DMA bus setting and introduce new platform AXI structure").
-> While stmmac has code to parse these properties and save their values,
-> these are written to write-only struct members - no code in stmmac
-> has ever read their value. Hence, these properties have been non-
-> functional from day one.
-> 
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
->  Documentation/devicetree/bindings/net/snps,dwmac.yaml | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/net/snps,dwmac.yaml b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-> index 38bc34dc4f09..45dba6533458 100644
-> --- a/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-> +++ b/Documentation/devicetree/bindings/net/snps,dwmac.yaml
-> @@ -202,11 +202,11 @@ title: Synopsys DesignWare MAC
->          * snps,xit_frm, unlock on WoL
->          * snps,wr_osr_lmt, max write outstanding req. limit
->          * snps,rd_osr_lmt, max read outstanding req. limit
-> -        * snps,kbbe, do not cross 1KiB boundary.
-> +        * snps,kbbe, do not cross 1KiB boundary (not implemented)
->          * snps,blen, this is a vector of supported burst length.
->          * snps,fb, fixed-burst
-> -        * snps,mb, mixed-burst
-> -        * snps,rb, rebuild INCRx Burst
-> +        * snps,mb, mixed-burst (not implemented)
-> +        * snps,rb, rebuild INCRx Burst (not implemented)
->  
->    snps,mtl-rx-config:
->      $ref: /schemas/types.yaml#/definitions/phandle
-> -- 
-> 2.47.3
-> 
-> 
-
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+I think the tedium of the conversions just got to me by patch 4 ;)
+Let me add ASSERT_NE(NULL, *) in the relevant spots.
