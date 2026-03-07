@@ -1,38 +1,38 @@
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5537377541;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02099377572;
 	Sat,  7 Mar 2026 06:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772865856; cv=none; b=pt6KboztN71HLbiR0ejod/Q49+nKusqqSczPPkp1Ho52m87oqao6sBZtSLlFU8rZntCNzhPbtlB5FsOkUKvo9Yu930VKxx6Ar4x1j6/nFXBAnuRv4Oo7wWfJcxfC9ZwCtvF2E4zuxMdrJ40gj3h3eCdBfnxxD4WHPbyAM7Ywe7Y=
+	t=1772865857; cv=none; b=OQK1gZqF3m09x4Fqa4y9fXzcW2Y+TVgYPuMjptxrYk66+sIhVHH0MIahwM0lbNMDvGQJG4ycB6mqA/GhmGk5uQRzIgxY89vMTOmifj3z29+6iqdjHnqg6OKHcKn35ZE+9LQpF6iAF+LjlP+/8YjdOJrL2SwdG5E+6/eTwdKk4lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772865856; c=relaxed/simple;
-	bh=mu7OOqmRUUvXUDSmyImBo4YtDTMKWA5OASMjhbJ5SJs=;
+	s=arc-20240116; t=1772865857; c=relaxed/simple;
+	bh=cvjmKAKhEq1h4g27mLn1x/IfFjZtptKlo2+AsMA7DS0=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=erKTMWxNRFOma/q+tPJDI0R+Af0jmA3qEHbKxo6tQ8siFsZ8Qg9aQCYE4LXs9ffiE8ZwJ/oPFiS9F1QKvuTGvLzwldqstW47VNY62ZGzj2p46/mieOkyGQ+4L5y/2mMtoCji70ilaWZXDduBhHlo4NM28mKKhbV8sdV5c/bMjB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=D6eEopar; arc=none smtp.client-ip=113.46.200.218
+	 MIME-Version:Content-Type; b=qxvWAuyTEA0QDkqAQkc3KueSYWC25mq8+vADmX9MpKDBUmRI1PdBN2hOVSG6z+7rpDW3CcQTDXZyDWrbrhkt771F37YIrekQjat22ouSbvZn0WlEGXKUAmeVG1CHIVKDHNS/DIk0mTwor1UskwfHOnB+ODAYDrmeWCLjtKuvGZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=CbM3ef6Z; arc=none smtp.client-ip=113.46.200.224
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="D6eEopar"
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="CbM3ef6Z"
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=THRDJ+E48K6F9DD0lHqYIl3GAVa8B7RB0lSAfpLdo2Y=;
-	b=D6eEoparZ5f0HySV3WCGMvMhnP3Ff/6hS6e4bI4b/2pb/Jyfxre5k2dC4BarFeR1nysixeLwS
-	po+rJiQH7SEVjnzgZiMrjYRXgkxI+urIM3JfoEunZnLMDwoZ9En1tGjsMAQ5+m2CZn5wlnUkq+v
-	0O/C/ZQzr8B6L/c6oH6CEkg=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4fSYX70CYQzpStv;
-	Sat,  7 Mar 2026 14:39:03 +0800 (CST)
+	bh=MFA1o2Bv6mBXv9NnXLBlEOC0J1Am8EXz+TrfM0cRERo=;
+	b=CbM3ef6ZVrXSdKqOIhEYrjVDz/6YTv54D8jw4h+wqcg3Hec27M4Kp157Dnrs3fitpfVZZQ1W4
+	bycR/I4Iws5r3qasZY5AYgxnIU01x0yXPcctf0/6LdJqmA/FAUNWNzDo8mfh/1nTKQV3vwa2rPN
+	p2WzLqvV51v2x95WodYLVEg=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4fSYXQ5rfFz1cyQp;
+	Sat,  7 Mar 2026 14:39:18 +0800 (CST)
 Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7112E40363;
-	Sat,  7 Mar 2026 14:44:07 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 68F0A4055B;
+	Sat,  7 Mar 2026 14:44:11 +0800 (CST)
 Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
  kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Sat, 7 Mar 2026 14:44:06 +0800
+ 15.2.1544.36; Sat, 7 Mar 2026 14:44:10 +0800
 From: Fan Gong <gongfan1@huawei.com>
 To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>,
 	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
@@ -43,9 +43,9 @@ CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
 	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
 	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
 	<shijing34@huawei.com>, Zheng Jiezhen <zhengjiezhen@h-partners.com>
-Subject: [PATCH net-next v02 6/9] hinic3: Add PF device support and function type validation
-Date: Sat, 7 Mar 2026 14:43:45 +0800
-Message-ID: <1ed70b760ce6345c3a3d1332e62e6f5d93e931f3.1772697509.git.zhuyikai1@h-partners.com>
+Subject: [PATCH net-next v02 8/9] hinic3: Add PF/VF capability parsing and parameter validation
+Date: Sat, 7 Mar 2026 14:43:47 +0800
+Message-ID: <bcd1c72d1bb3420c6f56d1729450280c6d980572.1772697509.git.zhuyikai1@h-partners.com>
 X-Mailer: git-send-email 2.51.0.windows.1
 In-Reply-To: <cover.1772697509.git.zhuyikai1@h-partners.com>
 References: <cover.1772697509.git.zhuyikai1@h-partners.com>
@@ -60,124 +60,129 @@ Content-Type: text/plain
 X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
  kwepemf100013.china.huawei.com (7.202.181.12)
 
-  Add PF device ID to support for PF devices in driver and enhance
-function type validation to ensure proper handling of both PF and
-VF.
+  Add the ability to parse PF and VF capabilities and validate
+related parameters(SQ & RQ).
 
 Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
 Signed-off-by: Fan Gong <gongfan1@huawei.com>
 ---
- .../net/ethernet/huawei/hinic3/hinic3_hwdev.c |  4 ++++
- .../net/ethernet/huawei/hinic3/hinic3_hwif.c  | 21 +++++++++++++++++--
- .../net/ethernet/huawei/hinic3/hinic3_lld.c   |  1 +
- .../net/ethernet/huawei/hinic3/hinic3_mbox.c  |  3 ++-
- .../huawei/hinic3/hinic3_pci_id_tbl.h         |  1 +
- 5 files changed, 27 insertions(+), 3 deletions(-)
+ .../ethernet/huawei/hinic3/hinic3_hw_cfg.c    | 47 +++++++++++++++++--
+ .../ethernet/huawei/hinic3/hinic3_hw_cfg.h    |  8 ++++
+ 2 files changed, 52 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
-index 04c0385b3344..f44b3064ab2e 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hwdev.c
-@@ -434,6 +434,10 @@ static int init_cmdqs_channel(struct hinic3_hwdev *hwdev)
- static void hinic3_free_cmdqs_channel(struct hinic3_hwdev *hwdev)
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
+index ca60cf4b6282..2dfa4fb39627 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
+@@ -17,6 +17,17 @@ static void hinic3_parse_pub_res_cap(struct hinic3_hwdev *hwdev,
  {
- 	hinic3_comm_cmdqs_free(hwdev);
+ 	cap->port_id = dev_cap->port_id;
+ 	cap->supp_svcs_bitmap = dev_cap->svc_cap_en;
 +
-+	hinic3_set_wq_page_size(hwdev, hinic3_global_func_id(hwdev),
-+				HINIC3_MIN_PAGE_SIZE);
++	cap->cos_valid_bitmap = dev_cap->valid_cos_bitmap;
++	cap->port_cos_valid_bitmap = dev_cap->port_cos_valid_bitmap;
 +
- 	hinic3_ceqs_free(hwdev);
- }
- 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.c
-index 70d70556dca6..90feaa225080 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hwif.c
-@@ -70,11 +70,19 @@
- #define HINIC3_PPF_ELECTION_GET(val, member) \
- 	FIELD_GET(HINIC3_PPF_ELECTION_##member##_MASK, val)
- 
-+#define HINIC3_GET_REG_FLAG(reg)  ((reg) & (~(HINIC3_REGS_FLAG_MASK)))
- #define HINIC3_GET_REG_ADDR(reg)  ((reg) & (HINIC3_REGS_FLAG_MASK))
- 
- static void __iomem *hinic3_reg_addr(struct hinic3_hwif *hwif, u32 reg)
- {
--	return hwif->cfg_regs_base + HINIC3_GET_REG_ADDR(reg);
-+	void __iomem *addr;
-+
-+	if (HINIC3_GET_REG_FLAG(reg) == HINIC3_MGMT_REGS_FLAG)
-+		addr = hwif->mgmt_regs_base + HINIC3_GET_REG_ADDR(reg);
++	if (type != HINIC3_FUNC_TYPE_VF)
++		cap->max_vf = dev_cap->max_vf;
 +	else
-+		addr = hwif->cfg_regs_base + HINIC3_GET_REG_ADDR(reg);
++		cap->max_vf = 0;
 +
-+	return addr;
++	dev_dbg(hwdev->dev, "Port_id: 0x%x, cos_bitmap: 0x%x, Max_vf: 0x%x\n",
++		cap->port_id, cap->cos_valid_bitmap, cap->max_vf);
  }
  
- u32 hinic3_hwif_read_reg(struct hinic3_hwif *hwif, u32 reg)
-@@ -137,6 +145,7 @@ static void set_hwif_attr(struct hinic3_func_attr *attr, u32 attr0, u32 attr1,
- static int init_hwif_attr(struct hinic3_hwdev *hwdev)
- {
- 	u32 attr0, attr1, attr2, attr3, attr6;
-+	struct hinic3_func_attr *attr;
- 	struct hinic3_hwif *hwif;
+ static void hinic3_parse_l2nic_res_cap(struct hinic3_hwdev *hwdev,
+@@ -28,6 +39,13 @@ static void hinic3_parse_l2nic_res_cap(struct hinic3_hwdev *hwdev,
  
- 	hwif = hwdev->hwif;
-@@ -160,7 +169,15 @@ static int init_hwif_attr(struct hinic3_hwdev *hwdev)
- 	if (attr6 == HINIC3_PCIE_LINK_DOWN)
- 		return -EFAULT;
- 
--	set_hwif_attr(&hwif->attr, attr0, attr1, attr2, attr3, attr6);
-+	attr = &hwif->attr;
-+	set_hwif_attr(attr, attr0, attr1, attr2, attr3, attr6);
+ 	nic_svc_cap->max_sqs = min(dev_cap->nic_max_sq_id + 1,
+ 				   HINIC3_CFG_MAX_QP);
 +
-+	if (attr->func_type != HINIC3_FUNC_TYPE_VF &&
-+	    attr->func_type != HINIC3_FUNC_TYPE_PF) {
-+		dev_err(hwdev->dev, "unexpected func_type %u\n",
-+			attr->func_type);
++	nic_svc_cap->max_rqs = min(dev_cap->nic_max_rq_id + 1,
++				   HINIC3_CFG_MAX_QP);
++	nic_svc_cap->default_num_queues = dev_cap->nic_default_num_queues;
++
++	dev_dbg(hwdev->dev, "L2nic resource capbility, max_sqs: 0x%x, max_rqs: 0x%x\n",
++		nic_svc_cap->max_sqs, nic_svc_cap->max_rqs);
+ }
+ 
+ static void hinic3_parse_dev_cap(struct hinic3_hwdev *hwdev,
+@@ -44,8 +62,8 @@ static void hinic3_parse_dev_cap(struct hinic3_hwdev *hwdev,
+ 		hinic3_parse_l2nic_res_cap(hwdev, cap, dev_cap, type);
+ }
+ 
+-static int get_cap_from_fw(struct hinic3_hwdev *hwdev,
+-			   enum hinic3_func_type type)
++static int hinic3_get_cap_from_fw(struct hinic3_hwdev *hwdev,
++				  enum hinic3_func_type type)
+ {
+ 	struct mgmt_msg_params msg_params = {};
+ 	struct cfg_cmd_dev_cap dev_cap = {};
+@@ -69,6 +87,29 @@ static int get_cap_from_fw(struct hinic3_hwdev *hwdev,
+ 	return 0;
+ }
+ 
++static int hinic3_get_dev_cap(struct hinic3_hwdev *hwdev)
++{
++	enum hinic3_func_type type = HINIC3_FUNC_TYPE(hwdev);
++	int err;
++
++	switch (type) {
++	case HINIC3_FUNC_TYPE_PF:
++	case HINIC3_FUNC_TYPE_VF:
++		err = hinic3_get_cap_from_fw(hwdev, type);
++		if (err) {
++			dev_err(hwdev->dev, "Failed to get FW capability\n");
++			return err;
++		}
++		break;
++	default:
++		dev_err(hwdev->dev, "Unsupported PCI Function type: %d\n",
++			type);
 +		return -EINVAL;
 +	}
++
++	return 0;
++}
++
+ static int hinic3_init_irq_info(struct hinic3_hwdev *hwdev)
+ {
+ 	struct hinic3_cfg_mgmt_info *cfg_mgmt = hwdev->cfg_mgmt;
+@@ -215,7 +256,7 @@ void hinic3_free_irq(struct hinic3_hwdev *hwdev, u32 irq_id)
  
- 	if (!hwif->attr.num_ceqs) {
- 		dev_err(hwdev->dev, "Ceq num cfg in fw is zero\n");
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_lld.c b/drivers/net/ethernet/huawei/hinic3/hinic3_lld.c
-index a8b89eeed753..f83d5bd1041e 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_lld.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_lld.c
-@@ -426,6 +426,7 @@ static void hinic3_remove(struct pci_dev *pdev)
+ int hinic3_init_capability(struct hinic3_hwdev *hwdev)
+ {
+-	return get_cap_from_fw(hwdev, HINIC3_FUNC_TYPE_VF);
++	return hinic3_get_dev_cap(hwdev);
  }
  
- static const struct pci_device_id hinic3_pci_table[] = {
-+	{PCI_VDEVICE(HUAWEI, PCI_DEV_ID_HINIC3_PF), 0},
- 	{PCI_VDEVICE(HUAWEI, PCI_DEV_ID_HINIC3_VF), 0},
- 	{0, 0}
+ bool hinic3_support_nic(struct hinic3_hwdev *hwdev)
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h
+index 58806199bf54..361c0b6a70f0 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h
+@@ -26,6 +26,8 @@ struct hinic3_irq_info {
  
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.c b/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.c
-index 51be726d9d2e..c1bc64a50dd3 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_mbox.c
-@@ -462,7 +462,8 @@ void hinic3_free_mbox(struct hinic3_hwdev *hwdev)
+ struct hinic3_nic_service_cap {
+ 	u16 max_sqs;
++	u16 max_rqs;
++	u16 default_num_queues;
+ };
  
- 	destroy_workqueue(mbox->workq);
- 	free_mbox_wb_status(mbox);
--	hinic3_uninit_func_mbox_msg_channel(hwdev);
-+	if (HINIC3_IS_VF(hwdev))
-+		hinic3_uninit_func_mbox_msg_channel(hwdev);
- 	uninit_mgmt_msg_channel(mbox);
- 	kfree(mbox);
- }
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_pci_id_tbl.h b/drivers/net/ethernet/huawei/hinic3/hinic3_pci_id_tbl.h
-index 86c88d0bb4bd..02b2b0fbecc7 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_pci_id_tbl.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_pci_id_tbl.h
-@@ -4,6 +4,7 @@
- #ifndef _HINIC3_PCI_ID_TBL_H_
- #define _HINIC3_PCI_ID_TBL_H_
+ /* Device capabilities */
+@@ -34,6 +36,12 @@ struct hinic3_dev_cap {
+ 	u16                           supp_svcs_bitmap;
+ 	/* Physical port */
+ 	u8                            port_id;
++
++	u8                            cos_valid_bitmap;
++	u8                            port_cos_valid_bitmap;
++	/* max number of VFs that PF supports */
++	u16                           max_vf;
++
+ 	struct hinic3_nic_service_cap nic_svc_cap;
+ };
  
-+#define PCI_DEV_ID_HINIC3_PF    0x0222
- #define PCI_DEV_ID_HINIC3_VF    0x375F
- 
- #endif
 -- 
 2.43.0
 
