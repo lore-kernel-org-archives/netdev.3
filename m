@@ -1,61 +1,63 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6294E33C19C
-	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 10:58:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAB8734AB1F
+	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 10:58:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772881132; cv=none; b=Iv6L3H8gPftF2d+gmZLzJaHLHrigibzDd8ZZ8NoDONx0plRmJqwqYCkV0R+a0f2wldwgrhY34kKxkRvqulVn/Kw1651abcy76S1zBCECddj19WCkfzfttsl28RQXHa/mm355uvTwSI+JF6SsOsP/4TsZiZPo8+pyPixhrdZkDvs=
+	t=1772881134; cv=none; b=axHikzGZl+q01oxGR4ROaS2P3Np0UkGYLp2TL5aPqCdJTI03k1s0oTCFi0tX9TogJ9eHq+bBvaL9dJoDONdbWG4tSgwNHcX9dfTJV3tU0vydRwJ9/hubX13r1vvCFbw5WldkLy4vyuUJRVg+ziBNlcx1vxwe2bgsm4WKuCVFw/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772881132; c=relaxed/simple;
-	bh=gJU3t9Qn2NBIARn/PgaIfQQyjoZtt5mzQ74cZQSEMk0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CoMeVyz2Sv5bKGyi2oKCUGWdAAnHd4NJ/HYNRlcLap6A38S/OmlX2NUPxd/JB4ByEr6mAqmQMBoxAd20pXDYCjrElXciDrtSMPZumgVytCfsAAQ1+B8I7MaxPdpxpmcPzvugoEnlXfsktv///E4IeWibCiI0DmEQxsmq7Dlw1vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=S19RtV/8; arc=none smtp.client-ip=209.85.222.170
+	s=arc-20240116; t=1772881134; c=relaxed/simple;
+	bh=93TQgJ8fwIHqNzuPGnTauQWb0Q4gUaZfsNNvvAc162s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=t4KgtBr9emafWsbNlSioQKXJ7mK5YSTvTssuzVcp0nCMusvR407QtO0qOC7cjnxTWn++TP3F5Zf9TFVP+SGubwKNc31Xm0KBFN0yu7IDmPL3DCHmgK+vpz2vNVzMMEv71oD0J5T9lFruUL1M3ySpOMy61xlzwmH9bEzDsYsBnM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fzwcV/An; arc=none smtp.client-ip=209.85.222.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="S19RtV/8"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-8cb3bae8d3eso933922085a.1
-        for <netdev@vger.kernel.org>; Sat, 07 Mar 2026 02:58:51 -0800 (PST)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fzwcV/An"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-8cbc593a67aso957260685a.2
+        for <netdev@vger.kernel.org>; Sat, 07 Mar 2026 02:58:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1772881130; x=1773485930; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Vum61NAHRNR11lhX8He1XuJfBT6qGxIimD8lYF/lOZ0=;
-        b=S19RtV/8KbgKTixpjH2lAjg6t7aaxlIkdZbdHydnRnvi5lU8hnqI6rv94aNXMrtE9n
-         kiswhJ/HwDVe1dMfgQOQ4uQdMMIvCEECLcxn7+dgXQQUlhogdo1ijTHIAI+AuhW692qg
-         tguxyMOKc8tDf5Cdshk1l/xMK+oLMO4sNzvmgwkKsirOruI/nCNXgdTSyjmXkY5OT/AT
-         W7KfF+pNbFfAH3wyybYBwMcZkGuphUGcw8scwQRdRi8GSTuTfgEkAb8YwoHcWin5aIKL
-         pRQF+LKlCbvrobRBK82E9CZO4VozlMJyDAA8QYkAIz3tvqZRHG3PiNgZfLyo3RVQnCBa
-         nW/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772881130; x=1773485930;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1772881132; x=1773485932; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Vum61NAHRNR11lhX8He1XuJfBT6qGxIimD8lYF/lOZ0=;
-        b=ICt7MEn8lbq5srkpg6JHNV4vcKge9VPCJkOdBfA08Y9FF6MDO546jUWHWG9lYgFp1u
-         r23AmzPgJzFooOv2yilgWB2AVs/MXrPs/erv5zDRy5abEGJ3mVtDVhOsE0cQs9ENwWF8
-         xQha1haYTrnJ7QeQoFfctFfxtfsYWMqUpJHZp9x5qZo+Udf7USksPN1QWuVdlbkCPTLN
-         +mbTWpDLCJw1xBOMRsXzT9k3SPYcXD8fQZTpsWXLO679za9HJozx46/V2NVF3oajV8n2
-         l5fOi++ZokgorfYUn+13K4ZJor7LqWrozhNJR7noI1AiAWuFcX3NAKqXzjEAbQRB/QmL
-         eDJg==
-X-Forwarded-Encrypted: i=1; AJvYcCUVJBV8NGlzTu5qXr/PjsBn9YWir2I4y0Dyk1aMKbn2bYXZRYmMcVfEt6GarQuB18vOvNe+cJM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLgdQeMQ5Ef3HhwPGEKDZ23vge4/HeJS6HwLXmQBdsTdSTjrkN
-	vCau75AvXnqtRQnQUFbUHgY0938iPfCzDzoiv7MhrNBBHrzz4zAdXPIy
-X-Gm-Gg: ATEYQzxWgSFI4VK3pQWlqKX2KM3qfFe9UkPx7x1zwFAw1TTyNFt8X/BBTyAXJ+z9xPD
-	o0cn9f/aV+9k7EsLhzuL5EX3PPOgNRbuw0JyvJ0E0nJjyS26rGuF+DnXqTEjeaNQUCZ2bnvR3sF
-	/SigvzjcfdjViLFBaMIzZ9IwIPSxac2FlzwRBxM42S74i0JQkr0nn/UtWXYdjhgt0PiIVtIXtVK
-	7K0fb2NvdhpcOhJJWu5mnF9gBoI6Uxbm6fslPNDNe38Wga1Lom5LzThiQ+zFu3CKCSZGhqS2xrP
-	9sHctZPLQSwwq4VRCSGb9/Z+YGEphCJBRh0bSqHswcMkj7eGaG8xWx1w5Gs8jhOWoK+R2jDNd/0
-	vNXeuOZFmGijDuB+IsHBYo4jX45e84Ws9tjeLMBLglKfEIoysQ2Q+jfI4sW5ejnBcRmVhToiBpF
-	xYF2LphNi1AkhELgPbtxHHNZpKjEORARLy1Yq/0MGNvupyCmldv+JFojrF
-X-Received: by 2002:a05:620a:1085:b0:8cd:75d5:544b with SMTP id af79cd13be357-8cd75d55d48mr235483885a.58.1772881130231;
-        Sat, 07 Mar 2026 02:58:50 -0800 (PST)
+        bh=+bJqlJHeOUmKAaYm1Xbyn5/BnRtTCsqfQBFGOZH+2Y8=;
+        b=fzwcV/An2OmjpEAYf3cQlM81ZylnZ8Hqp+md6TOroRbXs/covEr3edpNtnc+r3iRsB
+         rDUEgoIo5UdDHVX2tg3x/tKd2OKNq970KkDqyFiI6g0GR1ew02UGEVpe76tGXUWxAXcQ
+         Ry4uKKZT+3SaZ5go3oW7WJQvpdz9Jsp8PTRaY8bqjfUCMDLwLa0Bv29LlhboZnVUYWjh
+         qXr2VGjUBSHz6KXlWm/kpe1GtZxP9nUMbEbOMZLUZiCzQb4gUSM+bFRXmFfau54uzAQO
+         eCTtCukCljGqNRI9WQBznP1sC4wwr7FMIZnlwOOhUCu0SfleqOtXIr+pJ9Wxv5x96wZW
+         LGBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772881132; x=1773485932;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+bJqlJHeOUmKAaYm1Xbyn5/BnRtTCsqfQBFGOZH+2Y8=;
+        b=Xb3LNboCwpbeG/AuYhWDr2FMSGJQ/e/6nR9ZKZFDZhYcWBe4Fx152Qa916CCS56Nh8
+         EHdiX958wiw9L6BCSFe/xwE9hgAxi3LoPCRzxnQu2eFwd4ZNsJmkXAh1kPDtNnuK9F4o
+         bDJYXdzzC5+UpN9/vg5a/Q9wTJk2aA3mdvO3Jb/j/CPfjwxN9Rj+W3JLFALHwELiSLQN
+         /2hDJr3WQ5hkHd4+Va2p65wXq9w1jIwpGzLSuICo+lebNQeyfJJREMV4XRQzTZSxofsd
+         OARCPCZbAdz+e6Rn0ANoO8ZrLi8mdVwVCVMg6EnEgqTezdYY4MxcQESZNmhkb/mZ4o8W
+         BWRg==
+X-Forwarded-Encrypted: i=1; AJvYcCWb73ROGBzXHDdwGPZpKMjwUuMCOIL6VCVgOr23MwgpN1Tf6j8U1u4kkO7Crb5+thTYhtX/fng=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxViK0cMS5bKsBbgCt772ME7e3dVOM8oDK/gfMxKVIhAoTBNW8
+	BQt/tR7xe8AJBeH8Rxzxa04txawcEhxRBI1IHVIWg0Of67DQ68Jertur
+X-Gm-Gg: ATEYQzymQLAKBPdmJBszAwdEA3CFCqOLpQo505IHmdH8qq1i1he0IYS5lZ2eIkdbGLt
+	ngU8U3GF7XP6i8Lczg+87dvWWlCCYnmeTQaIjX/WGkaAfgFFS8smhHqv6fdjPAxXMXegEUcEiwI
+	8gpghs3pXZjzF4sl812Qu31FjxPmpWz2+J4is9lxLTHBrqBhR5hhE/Q0SdSszxWLIHoR0YKltk+
+	ZGpTjLLDxSChQZHZUZQMcDMDw8lXqYEbSlQqNEu9bhPMhgOZ0GTytWMJbtFOSwn88If6snoH9Hk
+	+ftQTyjt8laxIuhKtjvZiEsXJpRUvUaVrWqvwECWibTKNOwZoqAkCI1uiH2dr15F2+ZV+HIhISM
+	cnq2qUuXCLUg591ABYzqo9CvRMvMaIRYxQDmCuXNKHwivTyOewoWw1CsMgAKwsiHJfnhKppAcCk
+	BaOqXhCel1AhI4wckkzxY2dh/oVHlLljxWSYb1/ALbX8Sw3vpMdoM/Ca/u
+X-Received: by 2002:a05:620a:371b:b0:8c9:f8e5:9f0d with SMTP id af79cd13be357-8cd6d37fabdmr710288885a.32.1772881131520;
+        Sat, 07 Mar 2026 02:58:51 -0800 (PST)
 Received: from PF5YBGDS.localdomain ([163.114.130.7])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cd6f4a2fdasm293278485a.17.2026.03.07.02.58.48
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8cd6f4a2fdasm293278485a.17.2026.03.07.02.58.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 Mar 2026 02:58:48 -0800 (PST)
+        Sat, 07 Mar 2026 02:58:51 -0800 (PST)
 From: mike.marciniszyn@gmail.com
 To: Alexander Duyck <alexanderduyck@fb.com>,
 	Jakub Kicinski <kuba@kernel.org>,
@@ -78,10 +80,12 @@ To: Alexander Duyck <alexanderduyck@fb.com>,
 Cc: mike.marciniszyn@gmail.com,
 	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH net-next v4 0/5] eth fbnic: Add fbnic self tests
-Date: Sat,  7 Mar 2026 05:58:42 -0500
-Message-ID: <20260307105847.1438-1-mike.marciniszyn@gmail.com>
+Subject: [PATCH net-next v4 1/5] net: export netif_open for self_test usage
+Date: Sat,  7 Mar 2026 05:58:43 -0500
+Message-ID: <20260307105847.1438-2-mike.marciniszyn@gmail.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260307105847.1438-1-mike.marciniszyn@gmail.com>
+References: <20260307105847.1438-1-mike.marciniszyn@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -92,48 +96,34 @@ Content-Transfer-Encoding: 8bit
 
 From: "Mike Marciniszyn (Meta)" <mike.marciniszyn@gmail.com>
 
-This series adds self tests to test the registers, the
-msix interrupts, the tlv, and the firmware mailbox.
+dev_open() already is exported, but drivers which use the netdev
+instance lock need to use netif_open() instead. netif_close() is
+also already exported [1] so this completes the pairing.
 
-This series assumes that the
-[PATCH net-next 0/2] Add debugfs hooks [1]
-is present.
+This export is required for the following fbnic self tests to
+avoid calling ndo_stop() and ndo_open() in favor of the
+more appropriate netif_open() and netif_close() that notifies
+any listeners that the interface went down to test and is now
+coming back up.
 
-When the self tests are run the with ethtool -t:
+Link: https://patch.msgid.link/20250309215851.2003708-1-sdf@fomichev.me [1]
+Signed-off-by: Mike Marciniszyn (Meta) <mike.marciniszyn@gmail.com>
+---
+ net/core/dev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-        ethtool -t eth0
-        The test result is PASS
-        The test extra info:
-        Register test (offline)  0
-        MSI-X Interrupt test (offline)   0
-        FW mailbox test (on/offline)     0
-
-Mike Marciniszyn (Meta) (5):
-  net: export netif_open for self_test usage
-  eth fbnic: Add register self test
-  eth fbnic: Add msix self test
-  eth fbnic: TLV support for use by MBX self test
-  eth fbnic: Add mailbox self test
-
-Link: https://patch.msgid.link/20260127200644.11640-1-mike.marciniszyn@gmail.com/ [1]
-
-v2 - add enums for test return codes 2/5, 3/5, snf 5/5
-   - correct placement of fbnic_nic forward in 2/5, 4/5
-v3 - add missing enum in 3/5
-v4 - use kzalloc_obj() vs. kzalloc with sizeof in 3/5
-
- drivers/net/ethernet/meta/fbnic/fbnic.h       |   1 +
- drivers/net/ethernet/meta/fbnic/fbnic_csr.c   | 128 ++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h   |  19 ++
- .../net/ethernet/meta/fbnic/fbnic_ethtool.c   |  93 ++++++
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c    | 100 +++++++
- drivers/net/ethernet/meta/fbnic/fbnic_fw.h    |  27 ++
- drivers/net/ethernet/meta/fbnic/fbnic_irq.c   | 154 ++++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_tlv.c   | 276 ++++++++++++++++++
- drivers/net/ethernet/meta/fbnic/fbnic_tlv.h   |  27 ++
- net/core/dev.c                                |   1 +
- 10 files changed, 857 insertions(+)
-
+diff --git a/net/core/dev.c b/net/core/dev.c
+index 203dc36aaed5..964503d403f1 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -1731,6 +1731,7 @@ int netif_open(struct net_device *dev, struct netlink_ext_ack *extack)
+ 
+ 	return ret;
+ }
++EXPORT_SYMBOL(netif_open);
+ 
+ static void __dev_close_many(struct list_head *head)
+ {
 -- 
 2.43.0
 
