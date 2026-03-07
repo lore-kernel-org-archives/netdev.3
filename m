@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7825D30AD00
-	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 20:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51C8336D4FC;
+	Sat,  7 Mar 2026 20:44:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772916270; cv=none; b=t4lw85hqlo49shxoIJg3SEdkC9MTvwFmMpCo8hS81CvjBLyWIq+qqEPcOGN193v8n3R2EgZZd59xU8lHmmAawICs99XcI/PQRany8qof7vwRmNhXaazgSc/LeMaRNATIg5zxKaPJibwdmFbRw2UlftO9aMH8zLROrzIAx5K9ql8=
+	t=1772916271; cv=none; b=Ruu3smn44fR38uGxSLy/qA0CIqs5grE7IYt9AMj9Z1U5EQf+z0oposOwPmavETU72jBC6FC9nc6ORHEngLaHgX1beuTqPwcEivyilnPc3+ZlvJ3FRKL2goBb+/5VPyWufFDVwp7Ph/kgqL5VcKZYZv8QDYXcFx0huE/RcqZyE4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772916270; c=relaxed/simple;
-	bh=JfC9wic2WKmNMXUmTol2ANaHl6GNYBb2VvE7mHN7PaM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VAQ0NyMrmeUOkWMNqGLOV0QcJWQHiPorZnbEL4lfilo3FvIvBst3As4TDQsUZin+xbMSrrYUCpnJ7CVkzIH1rTMemTp8PnHOKiym66JaC69k90ToBVSo7bqoCHowfwQMIDBhJFIeUZuXQGAlyjKdhG2iRsK4V6bgqLfQsFReL18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MkO4C6xu; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1772916271; c=relaxed/simple;
+	bh=ATuLAR1sfOT/I7RRK0Fh5KcHBOQUGFu6jWdlyU5vu1I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YQwvnxeTP3AbgOwqpw+rPsJv50/E6ftPF3IXmQltZzZGDk91fHZNjEl+/3M5ErwQnUSCNpAqI/CAiBYs5hAcu1R7jlYmDIopqlVX66VsTtSYC7sxzWoH5x9yKMLSzf/dRYNediiWCgNKgTeixOZbQ0I9SjOSAz+cPPDvDeokcLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EoNCPlCA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MkO4C6xu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B5DC19423;
-	Sat,  7 Mar 2026 20:44:29 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EoNCPlCA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D31C2BC87;
+	Sat,  7 Mar 2026 20:44:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772916270;
-	bh=JfC9wic2WKmNMXUmTol2ANaHl6GNYBb2VvE7mHN7PaM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MkO4C6xu8zOjp7wbkQt14TmNCmmtGi0ZVTcDNRbyzP+dfYNfll23Fe9Kwm9NCqibL
-	 ei+xrxJvGUvPXTsLXy60/P0Y2Ca3E1rjQ1EoU4HAbCTk4mU55Jf2ArH6iPLiDPvbiT
-	 MaL1can6VwInev0Wnm/gwH6NRg/Pke0lKIEP4T888LHrzIExd+pNmH7FPaGE2YqKeW
-	 XxH2Oi9nn+cPSnIoPnpzrPK+eOu017Ly3vg/ni4zjgQYUIzvKMLcGcHUyTmAa/tGdE
-	 AoNubitXio15SpKKBgHppy0OnoF1zthAtZdkx0r30t7cHP8eM0RMcy5ml7wSytRoMd
-	 VdD29YDYTWKVw==
+	bh=ATuLAR1sfOT/I7RRK0Fh5KcHBOQUGFu6jWdlyU5vu1I=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=EoNCPlCAH0+pZmiybC2lFiBmedFQmqkY3HqfRZvg54o2fISYf6JAcY1NR/uhROG0S
+	 6Q5gT22LDssppeg3me6Q7mTG94IvgKY99zht1q3Gih8do7Z0fyKVp2hCFeRdFZh24R
+	 +j6vGsQdzkdLvRKGLRSZqpMIfTYUMvMk0dDB9FVxFWRDtN2uvoTXjAO96LQLsttSU/
+	 PijEricOAmYFXRP5VxLgzS1zNOGEundMMOG2XSOu52zDPKRddaF2IRDprJLP8iCB/0
+	 7PHjHclmjkneuH5bkYSQF+fxdOdEF8dEfium96CZFqJTLB7Bf6KjaRuuncwARWiy6X
+	 AEGZah0i1ubgw==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -33,12 +34,14 @@ Cc: netdev@vger.kernel.org,
 	andrew+netdev@lunn.ch,
 	horms@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>,
-	kees@kernel.org,
-	alok.a.tiwari@oracle.com
-Subject: [PATCH net-next 1/2] genetlink: apply reject policy for split ops on the dispatch path
-Date: Sat,  7 Mar 2026 12:44:24 -0800
-Message-ID: <20260307204425.1900467-1-kuba@kernel.org>
+	shuah@kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH net-next 2/2] selftests: net: make sure that Netlink rejects unknown attrs in dump
+Date: Sat,  7 Mar 2026 12:44:25 -0800
+Message-ID: <20260307204425.1900467-2-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260307204425.1900467-1-kuba@kernel.org>
+References: <20260307204425.1900467-1-kuba@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,44 +50,76 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Commit 4fa86555d1cd ("genetlink: piggy back on resv_op to default to
-a reject policy") added genl_policy_reject_all to ensure that ops
-without an explicit policy reject all attributes rather than silently
-accepting them. This change was applied to net.
-
-When split ops were later introduced in net-next in
-commit b8fd60c36a44 ("genetlink: allow families to use split ops directly"),
-genl_op_fill_in_reject_policy_split() was added and called from
-genl_op_from_split() (used for policy dumping and registration).
-However, genl_get_cmd_split(), which is called for incoming messages,
-copies split_ops entries as-is without applying the reject policy.
-This means that split ops without policy accept all inputs.
-
-This looks like an omission / mistake made when splitting the changes
-between net and net-next. Let's try to re-introduce the checking.
-Not considering this a fix given the regression potential.
-If anyone reports issues we should probably fill in fake policies
-for specific ops rather than reverting this.
+Add a test case for rejecting attrs if policy is not set.
+dev_get dump has no input policy (accepts no attrs).
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
-CC: kees@kernel.org
-CC: alok.a.tiwari@oracle.com
+CC: shuah@kernel.org
+CC: linux-kselftest@vger.kernel.org
 ---
- net/netlink/genetlink.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/nl_netdev.py | 33 +++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 6 deletions(-)
 
-diff --git a/net/netlink/genetlink.c b/net/netlink/genetlink.c
-index a23d4c51c089..656d32046147 100644
---- a/net/netlink/genetlink.c
-+++ b/net/netlink/genetlink.c
-@@ -250,6 +250,7 @@ genl_get_cmd_split(u32 cmd, u8 flag, const struct genl_family *family,
- 		if (family->split_ops[i].cmd == cmd &&
- 		    family->split_ops[i].flags & flag) {
- 			*op = family->split_ops[i];
-+			genl_op_fill_in_reject_policy_split(family, op);
- 			return 0;
- 		}
+diff --git a/tools/testing/selftests/net/nl_netdev.py b/tools/testing/selftests/net/nl_netdev.py
+index 5c66421ab8aa..e3bebd8b5d35 100755
+--- a/tools/testing/selftests/net/nl_netdev.py
++++ b/tools/testing/selftests/net/nl_netdev.py
+@@ -1,11 +1,15 @@
+ #!/usr/bin/env python3
+ # SPDX-License-Identifier: GPL-2.0
+ 
+-import time
++"""
++Tests for the netdev netlink family.
++"""
++
++import errno
+ from os import system
+-from lib.py import ksft_run, ksft_exit, ksft_pr
+-from lib.py import ksft_eq, ksft_ge, ksft_ne, ksft_busy_wait
+-from lib.py import NetdevFamily, NetdevSimDev, ip
++from lib.py import ksft_run, ksft_exit
++from lib.py import ksft_eq, ksft_ge, ksft_ne, ksft_raises, ksft_busy_wait
++from lib.py import NetdevFamily, NetdevSimDev, NlError, ip
+ 
+ 
+ def empty_check(nf) -> None:
+@@ -19,6 +23,16 @@ from lib.py import NetdevFamily, NetdevSimDev, ip
+     ksft_eq(len(lo_info['xdp-rx-metadata-features']), 0)
+ 
+ 
++def dev_dump_reject_attr(nf) -> None:
++    """Test that dev-get dump rejects attributes (no dump request policy)."""
++    with ksft_raises(NlError) as cm:
++        nf.dev_get({'ifindex': 1}, dump=True)
++    ksft_eq(cm.exception.nl_msg.error, -errno.EINVAL)
++    ksft_eq(cm.exception.nl_msg.extack['msg'],
++            'Attribute failed policy validation', 'bad-attr')
++    ksft_eq(cm.exception.nl_msg.extack['bad-attr'], '.ifindex')
++
++
+ def napi_list_check(nf) -> None:
+     with NetdevSimDev(queue_count=100) as nsimdev:
+         nsim = nsimdev.nsims[0]
+@@ -243,9 +257,16 @@ from lib.py import NetdevFamily, NetdevSimDev, ip
+ 
+ 
+ def main() -> None:
++    """ Ksft boiler plate main """
+     nf = NetdevFamily()
+-    ksft_run([empty_check, lo_check, page_pool_check, napi_list_check,
+-              dev_set_threaded, napi_set_threaded, nsim_rxq_reset_down],
++    ksft_run([empty_check,
++              lo_check,
++              dev_dump_reject_attr,
++              napi_list_check,
++              napi_set_threaded,
++              dev_set_threaded,
++              nsim_rxq_reset_down,
++              page_pool_check],
+              args=(nf, ))
+     ksft_exit()
  
 -- 
 2.53.0
