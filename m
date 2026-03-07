@@ -1,79 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pidgin.makrotopia.org (pidgin.makrotopia.org [185.142.180.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4D630F812;
-	Sat,  7 Mar 2026 03:30:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A63B2C11ED;
+	Sat,  7 Mar 2026 03:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.142.180.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772854207; cv=none; b=Rs28/LdpyQlObqzY0Poeq2gMihsTSJvUkzdTEVTQ7M4tt4WKBpBEEWT/vINzFNlhu0rENYKCK64CePAM636Hy5oz4Ts7vs7QtehPSMVjDB6HS9BihNwJOHHv/VXnB5mE0bFr62cmqyAgqAdSxEsWpfFaazqrzY9euwKSbs3mFNs=
+	t=1772854212; cv=none; b=CZxGHXBz2thTl8PetiXf/t65/T1R10z+8TKTS5IPOkRMA+9kPnqSmeRcb1AGLX+WGKK7pbXS+Zy9mlCZb04UExj6PSJlvJrlwSTEkOEt2rlT0oQTGi0qKlEXOC1n1GB2j6Q2GLkdfsB880EJgXQyQCIY2rOzc6ydVTeFYJPrImE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772854207; c=relaxed/simple;
-	bh=0tmablCA/bNk8cZ7LJmdOP0lfOQxP6ewLH2P7yb2+4c=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=k5XO8Auegb5RF1WFhnsDC9nN++SbntlsRNdUc2NmHBNQ4wJxfXKU/O2Gmhb+cCh3vcSx6TAS9rbthDR52RzMBcD6EBACaMU2Ry6jN1amhZf9G6Ns4+x3opWPtB3ReWsDKqny+RQN5l+vZxrpEjUW0BE9pbz9RhZ//nfNK7fFW8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O/3ngELX; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O/3ngELX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 420EAC19422;
-	Sat,  7 Mar 2026 03:30:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1772854207;
-	bh=0tmablCA/bNk8cZ7LJmdOP0lfOQxP6ewLH2P7yb2+4c=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=O/3ngELXPyO5OSGqMeGO9e2kAd8Z+DYKbEsw1kEbJdoIZxGg5CRSJhZlGkwZGe7V/
-	 pZcfHKAt6Z95Td5z5qoSMLzzsJwrbGoD0o2Z1Wc/OT1W3qBq3dXYjWI2auBVd3ho1a
-	 Zp/rhmQM/bT5cKUqHLRls8lD7xaPfksxr0MslqajkvIFlW4gbdDqvnQcOmRULB+b/t
-	 upJEZOjbT/Onb/h/6XRbj7b2QArhJ1btSn0uzYvRpCI/f9jeKPRaGoYORBSrmIUQSl
-	 wQS31wFXTV22l4Dx+Nw3hb2aJ84M9mww/9Jtgn5NMfhtUL48cdSjn1Gg1d11/5qFc2
-	 qyNiOH/DA2TYw==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CEE53808200;
-	Sat,  7 Mar 2026 03:30:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1772854212; c=relaxed/simple;
+	bh=MnNXYCiMuHYNNUyCmKTw5o89ZC/EhAGm+px85RR3WQM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R+r1eNHbZ2PvKgma28bhjR8UmwQEh/UHs056RgV/1MQ8RIdpEg0DiWtZYbFDVfpDjKG08gLdT0g4vwegFMju51wCgvmKFekDKuN9nya+Vu9P3hHQWe2Nv5PmbbrWxHK7fcsSt6ISq6enTjXGyry0m/ULKgvBufy4sCl73Ya+SAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org; spf=pass smtp.mailfrom=makrotopia.org; arc=none smtp.client-ip=185.142.180.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=makrotopia.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=makrotopia.org
+Received: from local
+	by pidgin.makrotopia.org with esmtpsa (TLS1.3:TLS_AES_256_GCM_SHA384:256)
+	 (Exim 4.99)
+	(envelope-from <daniel@makrotopia.org>)
+	id 1vyiMi-000000003wd-0i8t;
+	Sat, 07 Mar 2026 03:30:08 +0000
+Date: Sat, 7 Mar 2026 03:30:05 +0000
+From: Daniel Golle <daniel@makrotopia.org>
+To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Liang Xu <lxu@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: [PATCH net-next 1/2] dsa: tag_mxl862xx: set
+ dsa_default_offload_fwd_mark()
+Message-ID: <d9d8e6058e635c1fdd4689c875204d48d0235295.1772853341.git.daniel@makrotopia.org>
+References: <cover.1772853341.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: usb: lan78xx: drop redundant device reference
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177285420605.140745.14809539628005382506.git-patchwork-notify@kernel.org>
-Date: Sat, 07 Mar 2026 03:30:06 +0000
-References: <20260305105006.16415-1-johan@kernel.org>
-In-Reply-To: <20260305105006.16415-1-johan@kernel.org>
-To: Johan Hovold <johan@kernel.org>
-Cc: Thangaraj.S@microchip.com, Rengarajan.S@microchip.com,
- UNGLinuxDriver@microchip.com, andrew+netdev@lunn.ch, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1772853341.git.daniel@makrotopia.org>
 
-Hello:
+The MxL862xx offloads forwarding between bridged ports to the
+hardware, so set dsa_default_offload_fwd_mark() to avoid duplicate
+forwarding of packets of (eg. flooded) frames arriving at the CPU
+port.
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Signed-off-by: Daniel Golle <daniel@makrotopia.org>
+---
+ net/dsa/tag_mxl862xx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-On Thu,  5 Mar 2026 11:50:06 +0100 you wrote:
-> Driver core holds a reference to the USB interface and its parent USB
-> device while the interface is bound to a driver and there is no need to
-> take additional references unless the structures are needed after
-> disconnect.
-> 
-> Drop the redundant device reference to reduce cargo culting, make it
-> easier to spot drivers where an extra reference is needed, and reduce
-> the risk of memory leaks when drivers fail to release it.
-> 
-> [...]
-
-Here is the summary with links:
-  - net: usb: lan78xx: drop redundant device reference
-    https://git.kernel.org/netdev/net-next/c/f4ac0cc88e99
-
-You are awesome, thank you!
+diff --git a/net/dsa/tag_mxl862xx.c b/net/dsa/tag_mxl862xx.c
+index 01f2158682718..c02f69de61cbb 100644
+--- a/net/dsa/tag_mxl862xx.c
++++ b/net/dsa/tag_mxl862xx.c
+@@ -92,6 +92,8 @@ static struct sk_buff *mxl862_tag_rcv(struct sk_buff *skb,
+ 	skb_pull_rcsum(skb, MXL862_HEADER_LEN);
+ 	dsa_strip_etype_header(skb, MXL862_HEADER_LEN);
+ 
++	dsa_default_offload_fwd_mark(skb);
++
+ 	return skb;
+ }
+ 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
-
+2.53.0
