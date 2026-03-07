@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D946F3101A2
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94FE3101B6
 	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 03:36:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772854608; cv=none; b=r79qjk1dx5ys8M4QsT5ViUIyFzyfGahjAj0ul003SKYKqdMmAoZo3WSIG4LYCccUzyJWY6Js3XztU4qTB+n0T2t5bNiy8SoAgbngjWCxYPDWxL6+h72Vk6zOSHi6w6e+pYdZb68teU+JsOrTwVuIZJ5g2VAOSNhZbh04/MrnGMI=
+	t=1772854608; cv=none; b=f0IxYQASHYFmgzqsbQKRWEXbPS+qHBqZiKCHMwRyWwNMcVjk+RGqOgXulUbBhx4pJJGa2itHMeasfEHvDWMAR9T9lEBFQU/ceM/pk1l6KUqPCyuLK66bTSIvAQZC5YfNqFG5w6rrfInPg+W0588nbHnh2/k8j8aFExNWBDRdNuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1772854608; c=relaxed/simple;
-	bh=2fA8eLDEtwGisyMdlSXjQPp6RvVDgWD4RUmxJj2NBMg=;
+	bh=8X8qYyPlONLCSDncxZGq/exN2rFPQ1YjLFrZ94E0Zt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMrLDWq7+fTR7Np8OYGDR5YmOwsdlvIeTwqC9HOEnJW0aNXZ+iyp6NnAOrPPNJc1DBCC+BhT5hk7uIv4uOdidnC/bKDAhjA7RYOEjJAvPHDwnvmfFcupg6UdvKKiNc4kkuZEIZHvMFjSqzwch6qvVcfnG4uXrJ5XM1QuwqEDTvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sl1+yO8I; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=kb0glqAYC5QYcaYRfZ2UI2M704uGp2+7a8XstLZ0XSmzGF4Wq692cggTfv/ffYrPvWSEpTQl7vSdLiIrQaSHPTneAHIlJ73HoobjdpEUP11vmL/KjkerxLFAQ6t5LuTUJmE+nFIXDfGwrPvmrFHyvi+JfdlGKlQYVvL/HcUzeqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EeFrxOmu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sl1+yO8I"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43365C19422;
-	Sat,  7 Mar 2026 03:36:48 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EeFrxOmu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42CBC2BCAF;
+	Sat,  7 Mar 2026 03:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1772854608;
-	bh=2fA8eLDEtwGisyMdlSXjQPp6RvVDgWD4RUmxJj2NBMg=;
+	bh=8X8qYyPlONLCSDncxZGq/exN2rFPQ1YjLFrZ94E0Zt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sl1+yO8IVi7Yqz57ZWGBrPih4ESzlRb7A/WJpxfWN71PkRFdCKX7XlM9VMY4pYbTZ
-	 873hCWnWDS/uCfY/sysVhJxvmGELUM5w0x64Liee5XotyRfH4OYA4UQjVMT/BQpQ+2
-	 GzqeSEQ9AfKyv0C+K51ff9LEWRQemLKoDrX8BbXhQmm9ccwqW9CefwsQupLD7vAYG3
-	 D/JwO/XW6y7LuD+xZlPqMZZB+jSJH3B4rwRl/CZAemZ1QiRtB0w3JHFqB31iPjGNFj
-	 NLhq8ih12vQSLW9hOaIESKxjUpPSwQTOeORecmV4jIdrkBPTzC2oDCmmUCJBF5j+BF
-	 Q/c3m2IsI004Q==
+	b=EeFrxOmukkpNHdww3+Jiwe2bBC00IskJmiTKqOmEUYsjkxpyKaOk+d7tCAj7LnWb6
+	 RFncpDWIl99VrzZ0FpLiwACs7fcvXasbYYeoaGfSvWSRyIR8b4rTxX8vHZpWZnGZO7
+	 lLY1j8cmQosvEnGcWIvAN89yXRG7ye9hDA+8LN9noYtEikgtyYArq/iyPIENZUMIzJ
+	 OGlKk5rA5GCLpLMMYVjOUwSEQPHnAYckax/u4OjTRn57JF7pn5e31QWslJa3TBqE4l
+	 X3OTmKvxs03AB4kOfkLMs5MZ320XuLEC+GZSKezpVCuE1csH50C0RGIHv2qIVqq6u6
+	 oN9dzTVO5FJ0Q==
 From: Jakub Kicinski <kuba@kernel.org>
 To: davem@davemloft.net
 Cc: netdev@vger.kernel.org,
@@ -37,9 +37,9 @@ Cc: netdev@vger.kernel.org,
 	liuhangbin@gmail.com,
 	matttbe@kernel.org,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH net-next v2 09/10] tools: ynl: convert rt-addr sample to selftest
-Date: Fri,  6 Mar 2026 19:36:29 -0800
-Message-ID: <20260307033630.1396085-10-kuba@kernel.org>
+Subject: [PATCH net-next v2 08/10] tools: ynl: convert ethtool sample to selftest
+Date: Fri,  6 Mar 2026 19:36:28 -0800
+Message-ID: <20260307033630.1396085-9-kuba@kernel.org>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260307033630.1396085-1-kuba@kernel.org>
 References: <20260307033630.1396085-1-kuba@kernel.org>
@@ -51,193 +51,187 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Convert rt-addr.c to use kselftest_harness.h with FIXTURE/TEST_F.
-
-Validate that the addresses configured by the wrapper (192.168.1.1
-and 2001:db8::1) appear in the dump.
+Convert ethtool.c to use kselftest_harness.h with FIXTURE/TEST_F.
+Move ethtool from BINS to TEST_GEN_FILES and add ethtool.sh wrapper
+which sets up a netdevsim device before running the test binary.
 
 Output:
 
   TAP version 13
-  1..1
-  # Starting 1 tests from 1 test cases.
-  #  RUN           rt_addr.dump ...
-  #               lo: 127.0.0.1
-  #            nsim0: 192.168.1.1
-  #               lo: ::1
-  #            nsim0: 2001:db8::1
-  #            nsim0: fe80::7c66:c9ff:fe5f:bf01
-  #            OK  rt_addr.dump
-  ok 1 rt_addr.dump
-  # PASSED: 1 / 1 tests passed.
-  # Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+  1..2
+  # Starting 2 tests from 1 test cases.
+  #  RUN           ethtool.channels ...
+  #    nsim0: combined 1
+  #            OK  ethtool.channels
+  ok 1 ethtool.channels
+  #  RUN           ethtool.rings ...
+  #    nsim0: rx 512 tx 512
+  #            OK  ethtool.rings
+  ok 2 ethtool.rings
+  # PASSED: 2 / 2 tests passed.
+  # Totals: pass:2 fail:0 xfail:0 xpass:0 skip:0 error:0
 
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 ---
  tools/net/ynl/tests/Makefile   |  3 +-
- tools/net/ynl/tests/rt-addr.c  | 85 +++++++++++++++++++++++-----------
- tools/net/ynl/tests/rt-addr.sh |  5 ++
- 3 files changed, 65 insertions(+), 28 deletions(-)
- create mode 100755 tools/net/ynl/tests/rt-addr.sh
+ tools/net/ynl/tests/ethtool.c  | 83 ++++++++++++++++++++++------------
+ tools/net/ynl/tests/ethtool.sh |  5 ++
+ 3 files changed, 62 insertions(+), 29 deletions(-)
+ create mode 100755 tools/net/ynl/tests/ethtool.sh
 
 diff --git a/tools/net/ynl/tests/Makefile b/tools/net/ynl/tests/Makefile
-index c380e9f331a3..52b54ea6c90f 100644
+index 14d399a70f10..c380e9f331a3 100644
 --- a/tools/net/ynl/tests/Makefile
 +++ b/tools/net/ynl/tests/Makefile
-@@ -16,6 +16,7 @@ LDLIBS=../lib/ynl.a ../generated/protos.a
+@@ -15,6 +15,7 @@ LDLIBS=../lib/ynl.a ../generated/protos.a
+ 
  TEST_PROGS := \
  	devlink.sh \
- 	ethtool.sh \
-+	rt-addr.sh \
++	ethtool.sh \
  	test_ynl_cli.sh \
  	test_ynl_ethtool.sh \
  # end of TEST_PROGS
-@@ -30,10 +31,10 @@ TEST_GEN_PROGS := \
+@@ -28,10 +29,10 @@ TEST_GEN_PROGS := \
+ 
  TEST_GEN_FILES := \
  	devlink \
- 	ethtool \
-+	rt-addr \
++	ethtool \
  # end of TEST_GEN_FILES
  
  BINS := \
--	rt-addr \
+-	ethtool \
+ 	rt-addr \
  	rt-route \
  # end of BINS
+diff --git a/tools/net/ynl/tests/ethtool.c b/tools/net/ynl/tests/ethtool.c
+index a7ebbd1b98db..926a75d23c9b 100644
+--- a/tools/net/ynl/tests/ethtool.c
++++ b/tools/net/ynl/tests/ethtool.c
+@@ -6,28 +6,49 @@
  
-diff --git a/tools/net/ynl/tests/rt-addr.c b/tools/net/ynl/tests/rt-addr.c
-index 2edde5c36b18..f6c3715b2f20 100644
---- a/tools/net/ynl/tests/rt-addr.c
-+++ b/tools/net/ynl/tests/rt-addr.c
-@@ -7,9 +7,12 @@
- #include <arpa/inet.h>
  #include <net/if.h>
  
 +#include <kselftest_harness.h>
 +
- #include "rt-addr-user.h"
- 
--static void rt_addr_print(struct rt_addr_getaddr_rsp *a)
-+static void rt_addr_print(struct __test_metadata *_metadata,
-+			  struct rt_addr_getaddr_rsp *a)
- {
- 	char ifname[IF_NAMESIZE];
- 	char addr_str[64];
-@@ -17,9 +20,11 @@ static void rt_addr_print(struct rt_addr_getaddr_rsp *a)
- 	const char *name;
- 
- 	name = if_indextoname(a->_hdr.ifa_index, ifname);
-+	EXPECT_NE(NULL, name);
- 	if (name)
--		printf("%16s: ", name);
-+		ksft_print_msg("%16s: ", name);
- 
-+	EXPECT_TRUE(a->_len.address == 4 || a->_len.address == 16);
- 	switch (a->_len.address) {
- 	case 4:
- 		addr = inet_ntop(AF_INET, a->address,
-@@ -41,40 +46,66 @@ static void rt_addr_print(struct rt_addr_getaddr_rsp *a)
- 	printf("\n");
- }
+ #include "ethtool-user.h"
  
 -int main(int argc, char **argv)
-+FIXTURE(rt_addr)
++FIXTURE(ethtool)
 +{
 +	struct ynl_sock *ys;
 +};
 +
-+FIXTURE_SETUP(rt_addr)
++FIXTURE_SETUP(ethtool)
 +{
-+	struct ynl_error yerr;
-+
-+	self->ys = ynl_sock_create(&ynl_rt_addr_family, &yerr);
++	self->ys = ynl_sock_create(&ynl_ethtool_family, NULL);
 +	ASSERT_NE(NULL, self->ys)
-+		TH_LOG("failed to create rt-addr socket: %s", yerr.msg);
++		TH_LOG("failed to create ethtool socket");
 +}
 +
-+FIXTURE_TEARDOWN(rt_addr)
++FIXTURE_TEARDOWN(ethtool)
 +{
 +	ynl_sock_destroy(self->ys);
 +}
 +
-+TEST_F(rt_addr, dump)
++TEST_F(ethtool, channels)
  {
- 	struct rt_addr_getaddr_list *rsp;
- 	struct rt_addr_getaddr_req *req;
--	struct ynl_error yerr;
+ 	struct ethtool_channels_get_req_dump creq = {};
+-	struct ethtool_rings_get_req_dump rreq = {};
+ 	struct ethtool_channels_get_list *channels;
+-	struct ethtool_rings_get_list *rings;
 -	struct ynl_sock *ys;
-+	struct in6_addr v6_expected;
-+	struct in_addr v4_expected;
-+	bool found_v4 = false;
-+	bool found_v6 = false;
  
--	ys = ynl_sock_create(&ynl_rt_addr_family, &yerr);
--	if (!ys) {
--		fprintf(stderr, "YNL: %s\n", yerr.msg);
+-	ys = ynl_sock_create(&ynl_ethtool_family, NULL);
+-	if (!ys)
 -		return 1;
--	}
-+	/* The bash wrapper for this test adds these addresses on nsim0,
-+	 * make sure we can find them in the dump.
-+	 */
-+	inet_pton(AF_INET, "192.168.1.1", &v4_expected);
-+	inet_pton(AF_INET6, "2001:db8::1", &v6_expected);
++	creq._present.header = 1; /* ethtool needs an empty nest */
++	channels = ethtool_channels_get_dump(self->ys, &creq);
++	ASSERT_NE(NULL, channels) {
++		TH_LOG("channels dump failed: %s", self->ys->err.msg);
++	}
  
- 	req = rt_addr_getaddr_req_alloc();
--	if (!req)
--		goto err_destroy;
-+	ASSERT_NE(NULL, req);
- 
--	rsp = rt_addr_getaddr_dump(ys, req);
-+	rsp = rt_addr_getaddr_dump(self->ys, req);
- 	rt_addr_getaddr_req_free(req);
--	if (!rsp)
+-	creq._present.header = 1; /* ethtool needs an empty nest, sigh */
+-	channels = ethtool_channels_get_dump(ys, &creq);
+-	if (!channels)
 -		goto err_close;
-+	ASSERT_NE(NULL, rsp) {
-+		TH_LOG("dump failed: %s", self->ys->err.msg);
++	if (ynl_dump_empty(channels)) {
++		ethtool_channels_get_list_free(channels);
++		SKIP(return, "no entries in channels dump");
 +	}
  
--	if (ynl_dump_empty(rsp))
--		fprintf(stderr, "Error: no addresses reported\n");
--	ynl_dump_foreach(rsp, addr)
--		rt_addr_print(addr);
-+	ASSERT_FALSE(ynl_dump_empty(rsp)) {
-+		rt_addr_getaddr_list_free(rsp);
-+		TH_LOG("no addresses reported");
-+	}
-+
-+	ynl_dump_foreach(rsp, addr) {
-+		rt_addr_print(_metadata, addr);
-+
-+		found_v4 |= addr->_len.address == 4 &&
-+			    !memcmp(addr->address, &v4_expected, 4);
-+		found_v6 |= addr->_len.address == 16 &&
-+			    !memcmp(addr->address, &v6_expected, 16);
-+	}
- 	rt_addr_getaddr_list_free(rsp);
+-	printf("Channels:\n");
+ 	ynl_dump_foreach(channels, dev) {
+-		printf("  %8s: ", dev->header.dev_name);
++		EXPECT_TRUE((bool)dev->header._len.dev_name);
++		ksft_print_msg("%8s: ", dev->header.dev_name);
++		EXPECT_TRUE(dev->_present.rx_count ||
++			    dev->_present.tx_count ||
++			    dev->_present.combined_count);
+ 		if (dev->_present.rx_count)
+ 			printf("rx %d ", dev->rx_count);
+ 		if (dev->_present.tx_count)
+@@ -37,15 +58,28 @@ int main(int argc, char **argv)
+ 		printf("\n");
+ 	}
+ 	ethtool_channels_get_list_free(channels);
++}
  
+-	rreq._present.header = 1; /* ethtool needs an empty nest.. */
+-	rings = ethtool_rings_get_dump(ys, &rreq);
+-	if (!rings)
+-		goto err_close;
++TEST_F(ethtool, rings)
++{
++	struct ethtool_rings_get_req_dump rreq = {};
++	struct ethtool_rings_get_list *rings;
++
++	rreq._present.header = 1; /* ethtool needs an empty nest */
++	rings = ethtool_rings_get_dump(self->ys, &rreq);
++	ASSERT_NE(NULL, rings) {
++		TH_LOG("rings dump failed: %s", self->ys->err.msg);
++	}
++
++	if (ynl_dump_empty(rings)) {
++		ethtool_rings_get_list_free(rings);
++		SKIP(return, "no entries in rings dump");
++	}
+ 
+-	printf("Rings:\n");
+ 	ynl_dump_foreach(rings, dev) {
+-		printf("  %8s: ", dev->header.dev_name);
++		EXPECT_TRUE((bool)dev->header._len.dev_name);
++		ksft_print_msg("%8s: ", dev->header.dev_name);
++		EXPECT_TRUE(dev->_present.rx || dev->_present.tx);
+ 		if (dev->_present.rx)
+ 			printf("rx %d ", dev->rx);
+ 		if (dev->_present.tx)
+@@ -53,13 +87,6 @@ int main(int argc, char **argv)
+ 		printf("\n");
+ 	}
+ 	ethtool_rings_get_list_free(rings);
+-
 -	ynl_sock_destroy(ys);
+-
 -	return 0;
 -
 -err_close:
--	fprintf(stderr, "YNL: %s\n", ys->err.msg);
--err_destroy:
+-	fprintf(stderr, "YNL (%d): %s\n", ys->err.code, ys->err.msg);
 -	ynl_sock_destroy(ys);
 -	return 2;
-+	EXPECT_TRUE(found_v4);
-+	EXPECT_TRUE(found_v6);
  }
 +
 +TEST_HARNESS_MAIN
-diff --git a/tools/net/ynl/tests/rt-addr.sh b/tools/net/ynl/tests/rt-addr.sh
+diff --git a/tools/net/ynl/tests/ethtool.sh b/tools/net/ynl/tests/ethtool.sh
 new file mode 100755
-index 000000000000..87661236d126
+index 000000000000..0859ddd697e8
 --- /dev/null
-+++ b/tools/net/ynl/tests/rt-addr.sh
++++ b/tools/net/ynl/tests/ethtool.sh
 @@ -0,0 +1,5 @@
 +#!/bin/bash
 +# SPDX-License-Identifier: GPL-2.0
 +source "$(dirname "$(realpath "$0")")/ynl_nsim_lib.sh"
 +nsim_setup
-+"$(dirname "$(realpath "$0")")/rt-addr"
++"$(dirname "$(realpath "$0")")/ethtool"
 -- 
 2.53.0
 
