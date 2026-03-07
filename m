@@ -1,313 +1,422 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283F33242D9;
-	Sat,  7 Mar 2026 05:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772862262; cv=fail; b=Q+TuHgicgIxSq9ofeZwpZcFuiHfRJvNIqFdkPGb64aS4Srb+imkKDUXN1LYdKXrg1Jv6A/M3aWFJjkCTLZhhZP2mvub/41HSZROqcTiKDSoV/EhSSgDfUAU+5s2YHmvqmonEcrB6lqu7VQR5rqBkWqUAPn79I1AFPwV1ClYuXP0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772862262; c=relaxed/simple;
-	bh=mhhnxrSRfT6IP1Wa9VkgV3+4qTcvg8QCdE7IecNOWIA=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=aCpy6YzkbDh3IMeRVv9hfFyLo8SYuK++UbyPZOTgo3pcOsJfa3tRlU8eILmhJ2M6J+f9z73EMtVX7fKh5l+wmSVv4TJ7SMZFmDkk/z3P7IbJladohgzE4eWDafYeUy3YHy1t/2vRH0n7MEGo1bhc4Sl/NNtpfSCsm6R0RwDo3zg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=mMq9XEOW; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=bFEESabE; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06D72701BB;
+	Sat,  7 Mar 2026 06:44:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772865844; cv=none; b=PAll2ErpuyUYJ35GSiic9E0SLC0rTfWTRhMu2oIMapDSoHAtp/PyLSyIqGE3OH2Z2jgnxDPA0RLrKPQSXUEDbbvLqi8uMJrZodJO4yPLlliwZfmlUGC0dduA3LoQ9IecPcPlW6SWatx6zyf7zgL3nQk6hYJ14++U2fNfj5ubpiE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772865844; c=relaxed/simple;
+	bh=Q8ooOczL4paX1d9fF9Hy/Nx2x6gFFDrRnpAO0nyC7j0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NvRZnVaAECPYOmbkfatw2oVvXDHzMpd0NBWk+ytBaQs/hKbcb0kIkIqTeP1uG8ucJ2vWxfPNKM1Hko+Q3XUpLJv9JJvDKzPwBIsH4MC04+NTzDRJGoGzy9QmIstnSR6U7r1kOSlinvCfqPUPXgsI+ajw8kPc1J//QlCGEULvRbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=mqPIVOlH; arc=none smtp.client-ip=113.46.200.224
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="mMq9XEOW";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="bFEESabE"
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6275cSPo1306222;
-	Sat, 7 Mar 2026 05:44:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=mSBnPhww1igK4/JxPsgm3hKQFBPkKpDHXoUKhSmIWbw=; b=
-	mMq9XEOW2IUKD4MqDoHDixBPwFhi4JlfilvmpHEih0hKhY3faMYww8rYBnzorX6d
-	OIWGrW/FFTjpXgRclCeZBcj9mrIxfnTI0mLGGmW4y8KWeyaJF+M+eHzoJ15Mkmhq
-	0mv2+MVbN9XdScWJB6QqAxO6wjIeZBmOs6g+/v4b34Q7Rd8n6ir4jSR71wnRr1jo
-	nEiEObCoFnLasGw7bHuB04UBMgHKNhX9xKtC7HyzX5ywtVVcBbZNB/ffJyq0mvH6
-	MPgy8l7LCqv38rMTgTTFxuDMGTYMP7rS/zZ7BvigQu/cXDgSbpwSF1smCafYhCS/
-	i1mmNzoYtw96YKaVQJ4pdQ==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4cre1m0025-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 07 Mar 2026 05:44:06 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 6271XcXQ039564;
-	Sat, 7 Mar 2026 05:44:06 GMT
-Received: from cy7pr03cu001.outbound.protection.outlook.com (mail-westcentralusazon11010041.outbound.protection.outlook.com [40.93.198.41])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4craf6vf50-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 07 Mar 2026 05:44:05 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=U4nZnpG5tA04bvbzAcAuMcxS9Y11QpSJdZ/8sLhQ2fL1ci08Vug+8Rjy+8nt+1tS2He12AX7cKy2nMRUtko8PokSG68CK8tQUAe1nQk4+Kh4t3JEsahi0Ya2vceLl6tZ00OGDlvwHInGk8zM+mi8EDtK9dAx73xfiWK5zStOIOjn2MaBW56j2m6q/TzsdOwtbjIo1bZ8V5ya/hiSyXG+bNjWaDmDSm2kmWUjBqr3AZMEzdTt9SWy/YeAFpH1Bn5fUoJd7upOzinsE8oikCoxka7XDuaKYUHKlOQYqdAcYf4l9n8eaK/f59vm+g40Bh+xdmXM5D31CRp+MVJHl+0pOg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mSBnPhww1igK4/JxPsgm3hKQFBPkKpDHXoUKhSmIWbw=;
- b=fXMqUG60nYCPWTRM+H0S/SKpIt4YVDeu4HOgHzcvU0Xrqu0jHdYwkC1Q7pWw+G+I8CWcvfj2vggq+ieYtN8JPSbpgQRQqBVz2ZP1MOJp0Ce3AQWB9BeBo3ukW+OzVPk8AY4lI3rwEyOM8svKNwSSFhDQwoTOfzkP+ro6Cg+aK4SE4yDjf4CBaxO9cVzMOGfa0keA9gG5yH4EJERby9hCBMOh7edov1ezF2quPKNDUNAqPPK6hzwwsqiIxCFAY8YftlpOgQqru6k3j8iGpYnBkNW0EDd8SRr6ihgOVV4tkdIg4tVIj1SNREIpI6mOUF5eDYtoI3/w9NIX9bnaA3uA+A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mSBnPhww1igK4/JxPsgm3hKQFBPkKpDHXoUKhSmIWbw=;
- b=bFEESabESihBIyMU8upW7KwLhF2+EUVmuFpBlVyshg/aLQoJLXYcRFUORDDrjxmd9li02Vv67r7SCcBtJi3yV4uVwVkbV6TiPEP9xLv5WWD6HuP7qAOp5ngXThCjiTfKFamEIxlXSylelhlwx39o3q95JVujDu1XH0OPtk3D7Ao=
-Received: from CH3PR10MB7704.namprd10.prod.outlook.com (2603:10b6:610:1a9::8)
- by CY5PR10MB6048.namprd10.prod.outlook.com (2603:10b6:930:3b::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9678.19; Sat, 7 Mar
- 2026 05:43:57 +0000
-Received: from CH3PR10MB7704.namprd10.prod.outlook.com
- ([fe80::2a5a:b9d9:26b5:25e2]) by CH3PR10MB7704.namprd10.prod.outlook.com
- ([fe80::2a5a:b9d9:26b5:25e2%6]) with mapi id 15.20.9678.017; Sat, 7 Mar 2026
- 05:43:57 +0000
-From: Praveen Kannoju <praveen.kannoju@oracle.com>
-To: Jason Gunthorpe <jgg@ziepe.ca>
-CC: "saeedm@nvidia.com" <saeedm@nvidia.com>,
-        "leon@kernel.org"
-	<leon@kernel.org>,
-        "tariqt@nvidia.com" <tariqt@nvidia.com>,
-        "mbloch@nvidia.com" <mbloch@nvidia.com>,
-        "andrew+netdev@lunn.ch"
-	<andrew+netdev@lunn.ch>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "kuba@kernel.org"
-	<kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-        "linux-rdma@vger.kernel.org" <linux-rdma@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Rama
- Nichanamatlu <rama.nichanamatlu@oracle.com>,
-        Manjunath Patil
-	<manjunath.b.patil@oracle.com>,
-        Anand Khoje <anand.a.khoje@oracle.com>
-Subject: RE: [PATCH] net/mlx5: poll mlx5 eq during irq migration
-Thread-Topic: [PATCH] net/mlx5: poll mlx5 eq during irq migration
-Thread-Index:
- AQHcq/Jc3KuDnivfpU60Ol++d2Bny7WezmGAgAFbMpCAAH/ngIAA5tgwgACUnACAAG1AUA==
-Date: Sat, 7 Mar 2026 05:43:56 +0000
-Message-ID:
- <CH3PR10MB7704D1DF6471E59D47ECEB098C7BA@CH3PR10MB7704.namprd10.prod.outlook.com>
-References: <20260304161704.910564-1-praveen.kannoju@oracle.com>
- <20260304201151.GI964116@ziepe.ca>
- <CH3PR10MB7704DD1E6B9A671796FC6B528C7DA@CH3PR10MB7704.namprd10.prod.outlook.com>
- <20260306003217.GB1687929@ziepe.ca>
- <CH3PR10MB7704ABC8F3909C60FFDFB1188C7AA@CH3PR10MB7704.namprd10.prod.outlook.com>
- <20260306231024.GF1687929@ziepe.ca>
-In-Reply-To: <20260306231024.GF1687929@ziepe.ca>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_94b7886c-3e74-443c-a58e-890de065ec46_Enabled=True;MSIP_Label_94b7886c-3e74-443c-a58e-890de065ec46_SiteId=4e2c6054-71cb-48f1-bd6c-3a9705aca71b;MSIP_Label_94b7886c-3e74-443c-a58e-890de065ec46_SetDate=2026-03-07T05:41:25.0000000Z;MSIP_Label_94b7886c-3e74-443c-a58e-890de065ec46_Name=Restricted-Including
- External
- Recipients;MSIP_Label_94b7886c-3e74-443c-a58e-890de065ec46_ContentBits=3;MSIP_Label_94b7886c-3e74-443c-a58e-890de065ec46_Method=Standard
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CH3PR10MB7704:EE_|CY5PR10MB6048:EE_
-x-ms-office365-filtering-correlation-id: e0f5a2aa-d52c-40a7-c5a5-08de7c0c866b
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|7416014|376014|366016|1800799024|38070700021;
-x-microsoft-antispam-message-info:
- 7mXuNgmldGTIqL1JKs2xdHls3WpUlhCKS0NNAfJGC7A1vMJekgjFrrcSgUmOb0po/cVi+q4ApR7h3Qulnw3DKqfGnvLymiZ+daaMmkaEVzzbGdNTyc9SMz37oqtDg1gwbltG4+dPnZwjoS/DN8mYui7rXJVyB8MPraDGysY9zh5plilWm+WjyER2OS1m1zWIOCXduek5U6C0fo9U8jHn9jH6onNMKxQRVVp0kCd9P35YH97kpygvZue0TCVAcKEHCoFD1yvgu9t9V3UcrBVK00r4U4CqmBTCtnVQM0N7eFGUYPJA5Dz2ciuzIFTO21J2AnXg2S3d3ueWZ3HDcWaugboIp+NaQWUccHe3wLRkHewAOJeFNeQm5PCCJXP53ukImPbHosMMsa82JA+utZZjJ/uxQcUPTOTwY6q4HmpoUzAZP+UPKiGAaJZH7cIwmPV3s9rrffK7WfsLZ8GdM4GmwMaeH79HU1RWKPJROcoPSiEFxeUVHHFxTXVRqM/rjotbXBC3o3UoNFceXVdI0JW7MD7AC92kqsY1T2CzVE4K5i6k90GNavJ8qmUbVfdTSy8IoZqtuq5oRE33THuUSw1dWJR9HwXWZaPLg8TgEPTudZ1tuA7rDe5ihnaoeUOfNjg+TduoCsnTovorbXJOZaNIFxf2r+i1dJ2npC9oEwgBqdklhajUxUjmVFSpeXzF2CAd9k5i2dxblVlQ9/ZuNablG4QtNYuy7H316DgNe28zx/IBB5u3tSnGiP0eGTvn5zAlJ3YushC4o9xBsoR9UFs9OGD+yWoJVUX1ASl/MPICuOg=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7704.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(38070700021);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-7?B?aEdHU3pacWlZTGpPVHlHOUxOeGdaSlBYNUxlNE5xOVl2NnB4cmxqdkFNU0Rl?=
- =?utf-7?B?MmkrLWlxd2p1Z1hySHlDeEhMVFVjZW9lUFZLOHlsMSstRmlUTDF1Z1l2VSst?=
- =?utf-7?B?RWdYOHVzZkRuNWgrLUo1ZUQ0eFM0RnR2ajdLQjRSYVVkYnlGUUxicERGVWFF?=
- =?utf-7?B?L1Q1UlZscHVRdGRDUUhpV1hjTU5OTjkwMFU0d2U0bXh3NHpzUUFNT3R3ZEJP?=
- =?utf-7?B?WWF6NVFnd3FPYzFHcFdtOEthSWJmNG1IVGF3eE9MRXFBVzgzcEFyaFRSNHVS?=
- =?utf-7?B?WFdTKy11ZXlBUml2cUVMdnNOSExkQjdHMDZCRkdKeG9lS2ZRUzVGTUpsdUdw?=
- =?utf-7?B?WnpmRHNXaHZ5R2Z5VUJVUmNWdG5oMXRjRlErLXk0VGg4aVVxMC82ZlNyKy0=?=
- =?utf-7?B?YistRXVFTklScUI2Nnhva2ZkWlFyOHpXcy9WWVd1bmpiY3VnMWlLYzBYemNm?=
- =?utf-7?B?TGFISkpvRkhWL28rLTVadEdGZ0xpUmhDanBDZmpnd2xGYUJXTkFqR3d2OVNG?=
- =?utf-7?B?cUhvUVhucXZnWnNoZi9zTkpBNkxvTnhFUzM1dzA3SGgwcjU5MkRsSmpLQ3Fs?=
- =?utf-7?B?bE1wYVppSDhQQ1ljMXFjVystWWd6ODRxdExpc3pHL21WSVEvT3QxVDFURmRz?=
- =?utf-7?B?QkZ1ZzVwT0F4bExzTE5ueWt6OHNUM2FqKy1Hc0lFOG44UUd3dFF1SlYyeXlK?=
- =?utf-7?B?dUF2d210RDN4UGI1ekxPSkRlS1R5Zlk4V2ZWa2d1WGhwL0w4aC81SHRuM2NO?=
- =?utf-7?B?T1UyWkRXTE40ZDVQaW5iV2QxT0NJeW1BV05ER3RDdmE1SUdKWURjcEpvYmRs?=
- =?utf-7?B?L3JkZlpVZzhpZnVYNTRuQ2xWM216YS9kbHZCb0sxd2p0SHZJbE1DM1ptN1RW?=
- =?utf-7?B?YVR5TXBEalNlYlRBbVJaTlBnc0xtRGJER3VNTUwxSVlWKy1EVUlyOWF4TWJm?=
- =?utf-7?B?cGtabnRtNVVueEJjRjFyeGE4YWhjSTZETUNuaHhtb3MxRGMzc3lnRzVIWGF5?=
- =?utf-7?B?aDlFdWc3VHUxbUlQRTBzdHRGQm10d0luMWRYSk1XYjhHVW9pckZSWTE0QUxU?=
- =?utf-7?B?TVV0TjVJZG1XL3JkYnVYdXZiZ3pWUzJYSldFaHVqQ3BGV0tLQmhSeUV4WlFz?=
- =?utf-7?B?eDB4cjNtMjQ2dGpxcXpMNDBBSXN4SEI3U0lmRUhnR0JqUDZ0L01WZ0svME9Y?=
- =?utf-7?B?czFabUJDdjdDNjNpSUROMVl3ZDh0TFQrLUFHUVY3Z0J3WE54cGk3U05kQjdT?=
- =?utf-7?B?U01iRnVxc3JaTFJEMWJ6Tkw4V3J2R2pDa3VCVmp4dmdsWVd0bm54NmhNU1ZO?=
- =?utf-7?B?elFxSHJJcjBaZlhEaVdGSWtUenZ0NzlScS8xMHhhUkJCWWg2bDRIN1ByRzJq?=
- =?utf-7?B?bmo4bzYycER3WGNtT1RLVDk4TDZzbmI1N2FYTGZWeFRDSmVsSGwrLUw4d2xj?=
- =?utf-7?B?Y3hvKy1tV1Q4dENrRGRPVGEyZGNUQjRCaWljNGUzcndEdkJvdWpYdGpEKy1C?=
- =?utf-7?B?Zkc3WkE2VkxsQistcEowMG4rLWFpN2h2aDh1Mk01cnlXVGtXQUgwb3NySHF3?=
- =?utf-7?B?Tlk3ME9aTnBlNkI0bGpJNUdlZW45U3dHN0g4VjBBODJTbEl5RDhCdXRXTVZS?=
- =?utf-7?B?aThXRDN5UnBOU01ob0xaRGlwZmFWVGVIM1VkS00vMlZKU2pqKy1PSUcwU01s?=
- =?utf-7?B?OXdJTDR1SXJxRystN25BRjlDT0x3QTV4b25uY2RseTNvYnVKczVQNXN0S3R6?=
- =?utf-7?B?MldoYkpLQVRLN3JKN2lKZystS2YwWTAvRjRReVNVZVJ4Ky16ZGorLUppWGhB?=
- =?utf-7?B?elNoa292L3J5NFFNd2ZHZWV3b09NM0lBeXlMZlNiQUU4OUpodkVETXpHdC9D?=
- =?utf-7?B?NFI2QTEyZW1KYVJZWlg3NHF5ZHJ1ZystUllYR1dlZGFaOVZHSFB3OEhJN1Zo?=
- =?utf-7?B?ZkZJb2hndmtBS200UFJ0emQ1djA5WDR1N3IrLU8zVElEZXlPU1ZIM1JQNHM1?=
- =?utf-7?B?UDM1TW1MYk9MTjFna2xuTkphNS9KMUV1Tkc5ZystaVNJZUI1RUJBZEY2Slpl?=
- =?utf-7?B?N1lHZ2orLXF2VjJIWmhuY3doMUxwKy1pNk5NVCstVFh3WUlHblVGcVdoN2ww?=
- =?utf-7?B?U3hDR3lGZGZDRzJabVRKalFpbXltQ3UyM1krLXVCb1E2aEhDREhaZ3dUQ055?=
- =?utf-7?B?YmE0T0ZPcHFKZlllS0RlOG5ydHNJUklVSSstcTNudWdEbmI4U29YL0VLSGN1?=
- =?utf-7?B?cXF4aGYvVW8vQVVQQW54RHgzYUJPVko5ZGRpc1VWOVNqUGJQSlB1SDFYRndk?=
- =?utf-7?B?dncxSGU1VDVIeXJNcWhKU3dPc2lwb0R4d2padzVsMUNVV2JwQkJjM2FTQXNT?=
- =?utf-7?B?RXd1bGR6LzRTdndtUmpDRmxvYTRrVGQveU5nK0FEMEFQUS0=?=
-Content-Type: text/plain; charset="utf-7"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="mqPIVOlH"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=hJdf/m4ZAH5CoQxkKdGMNYIaE7Hxu+ZmZwpKnPETOks=;
+	b=mqPIVOlHvN0ccJJVroUFzRw8/xtdV1yOHsIgxB3zh0JyanpcG6a0Hw7KzrgrD/1RO8robQNMZ
+	c3dBPDhvIZfGXfdS6VDSsZfS4kk3GUxEnUCFMdU+0fA09mMulIB5K1hgkmhJ2hBIwPR/T5vUVCT
+	9+HwqcXLWd11Lr5ZrLstR6c=
+Received: from mail.maildlp.com (unknown [172.19.163.200])
+	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4fSYX86lLxz1cyQp;
+	Sat,  7 Mar 2026 14:39:04 +0800 (CST)
+Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
+	by mail.maildlp.com (Postfix) with ESMTPS id 886054055B;
+	Sat,  7 Mar 2026 14:43:57 +0800 (CST)
+Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
+ kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Sat, 7 Mar 2026 14:43:56 +0800
+From: Fan Gong <gongfan1@huawei.com>
+To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>,
+	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
+	<andrew+netdev@lunn.ch>
+CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
+	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
+	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
+	<shijing34@huawei.com>, Zheng Jiezhen <zhengjiezhen@h-partners.com>
+Subject: [PATCH net-next v02 1/9] hinic3: Add command queue detailed-response interfaces
+Date: Sat, 7 Mar 2026 14:43:40 +0800
+Message-ID: <94791e3c7c4d262b3d111d5b0ba6d1d19f275e01.1772697509.git.zhuyikai1@h-partners.com>
+X-Mailer: git-send-email 2.51.0.windows.1
+In-Reply-To: <cover.1772697509.git.zhuyikai1@h-partners.com>
+References: <cover.1772697509.git.zhuyikai1@h-partners.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked:
-	gAKdEy6Q/s3nVUIMwCtNxzCQlrV+zOX+GK9vI0TkT5hLChKg6PkFLce1s0qJxKYk4wTFCRF6crYqqDUwQtPPuuCcebqDGak9Cz7FU72Jp/EwUd+whJ1TKcM5UwrzHCaXkATA59MXBHiAIdh1Sb7uNC2IYiXu4Pv7F0KQfIfJCWdwx5LhATBewc7DdWFMbnJRYII/sbwYtEcGbx799pnrMRjM3UAHtYcB8F1SlOHiM4o0LR6f0sCvXWtn42FuCjRJtDUPIPGlGOYJYbNWP9D9LT0FCyYXkZaNvrkvjRFnWk19EVLyK/v7Bqbby75S457BmyhWdhzzu/jlCOAqZc0YSQ==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	XBrqauk3pIhbOKX3JxG1jwBGAWqCrZuwhY5kOR+nKt5ZSfFwZBHVxP0hjOgdipmWCTbAcTj3UGjOxVFypfv5nG3fW9/AcHqrexR4yIGIwVVA8E268HlEjIaXqPDK3tNorT+/q7VXfjobyKn0eXasBSFWuuYPXJbBmR5jt2aRn7E1qmLo0AhpGn35BOyDVTJ/mB9KhNORtDKWnEgeoqqVqP/IYNM0yndVZfAFVp7ZKWOTDiMnAkvL+Z07Dnx32LYu3rK4nrr4zBuiUuPPXnqSyzvY6s3DL67cJpKi39JrDMPNwq1LjZpu/PgDV6c0PFVPAW1SgO4npv3SPM+spDtHh74u0GSoGkgIVQHRvRu94qO5eOR9zu8GuY7XsJp3t5/nq9MYLkW/m8skIvCbSnWbwjkY0T61g/6aJgP3jX2x71XniThOMl4GUDwj03X0+gFcaRvUOhkHwhQUIYTGjDMUuEcYUnP0nqIma+KcixIGh+ijPM6CY8owdGZpYQg4g94EBAJkTD/y7ImgSXlHKeNqB1FiZ4vrQpSgW3e6Fxhfzfhc7aSYXtb9a5xd31XcLD56w8nHb95jiwAyeYCJ0SZgW/EhY+SzR5oBqnZEYTapXQs=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7704.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0f5a2aa-d52c-40a7-c5a5-08de7c0c866b
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Mar 2026 05:43:56.9658
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9yyHXm02Ky25SZNDMkfbLNu6Zwip5I9pMc9zmNUeZ2KPBefEZvj7hND/4JNNAuraW7Wmqo17NhnSXjhTS6YnhW3iQYmvV4G0XBOQO08S8OM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB6048
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-07_02,2026-03-06_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 mlxlogscore=999
- adultscore=0 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2602130000
- definitions=main-2603070050
-X-Authority-Analysis: v=2.4 cv=Xsf3+FF9 c=1 sm=1 tr=0 ts=69abbb27 cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19
- a=xqWC_Br6kY4A:10 a=wzW8d0FwaosA:10 a=YU3QZWNX-B8A:10 a=Yq5XynenixoA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=3I1J8UUJPc9JN9BFgKH3:22 a=9jRdOu3wAAAA:8 a=yPCof4ZbAAAA:8 a=Ikd4Dj_1AAAA:8
- a=VwQbUJbxAAAA:8 a=J1Y8HTJGAAAA:8 a=1XWaLZrsAAAA:8 a=20KFwNOVAAAA:8
- a=Fofg-9D3AAAA:8 a=mQvHCebiAAAA:8 a=BXszkKfDAAAA:8 a=c1PdSmG1AAAA:8
- a=hggDf0hBAAAA:8 a=NSIbRwiEAAAA:8 a=XlRjxQ70AAAA:8 a=JhIueiDwKlaUrLTgxxkA:9
- a=avxi3fN6y70A:10 a=ZE6KLimJVUuLrTuGpvhn:22 a=y1Q9-5lHfBjTkpIzbSAN:22
- a=Xbaoi9ZUBzzYp91LqZJF:22 a=wsrb8zZI_WQ3QAEBCXTy:22 a=duu7wrcty9prphiCz_fF:22
- a=4iM0TfZbaBQr0p37pvCp:22 a=7ilw6d6txcz0Yr6I31bG:22 a=ijqVwrIbDdJfMQQjsWiJ:22
- a=1uMOUU2w0DxzEe95gQqD:22
-X-Proofpoint-GUID: sujwa7JJcQbtWvi-W0bBkYZrHD3AMHhK
-X-Proofpoint-ORIG-GUID: sujwa7JJcQbtWvi-W0bBkYZrHD3AMHhK
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA3MDA0OSBTYWx0ZWRfX/SZiqR9iHJHV
- npNSC5MCjsBdifTKh25r5V/n1x7UBEpZ4hw5uV0rVD8j/gypYn7keZP7mdO9yDsfw4zYMMnrKwH
- EjQlskjEXK2HZOQKGAiQGqxWrBrLAdmkdqqCYsa2QXZPD090DneGRcGTkbUH70O4FXYe98UyBAi
- vmyo7L9Y0IrMII4zF1zCljuGRW4iWK1gOzrJfMsQn1siIQi2zim4ddGciA7nO+T+dqoaomAXddP
- vxwYh7jAbyGhBhr69ArYxlfk4biUtQWpXrGcjkG1yWDGberwWFRRFhXjm6I1kmglE58MVxBfScB
- ZAeZqlpbxxpLnL6nfIC1KhPvsSwaccfHMugQATnYJ3tYM+KDjBCvSu9Gcem1pRLjv0VKENW/SV3
- kG9t7lNf6qjWZBSYr2I8fUupKvH9JZrKq4vEX7LqgoIlTQ90qCxVsDIBm9M44/BTnsuXDscyeGR
- N8LVFnaGNiwQmDBmVNw==
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ kwepemf100013.china.huawei.com (7.202.181.12)
 
+   Add new detailed response interfaces for the hinic3 command
+queue (CMDQ), enhancing its functionality to handle commands
+requiring input and output buffer pairs.
 
-Confidential - Oracle Restricted +AFw-Including External Recipients
+Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
+Signed-off-by: Fan Gong <gongfan1@huawei.com>
+---
+ .../net/ethernet/huawei/hinic3/hinic3_cmdq.c  | 166 ++++++++++++++++--
+ .../net/ethernet/huawei/hinic3/hinic3_cmdq.h  |  15 ++
+ 2 files changed, 169 insertions(+), 12 deletions(-)
 
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c
+index bc5b80c31693..f71c3c734f6e 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.c
+@@ -61,6 +61,10 @@
+ #define CMDQ_DB_HEAD_SET(val, member)  \
+ 	FIELD_PREP(CMDQ_DB_HEAD_##member##_MASK, val)
+ 
++#define SAVED_DATA_ARM_MASK          BIT(31)
++#define SAVED_DATA_SET(val, member)  \
++	FIELD_PREP(SAVED_DATA_##member##_MASK, val)
++
+ #define CMDQ_CEQE_TYPE_MASK            GENMASK(2, 0)
+ #define CMDQ_CEQE_GET(val, member)  \
+ 	FIELD_GET(CMDQ_CEQE_##member##_MASK, le32_to_cpu(val))
+@@ -84,6 +88,10 @@ enum cmdq_data_format {
+ 	CMDQ_DATA_DIRECT = 1,
+ };
+ 
++enum cmdq_scmd_type {
++	CMDQ_SET_ARM_CMD = 2,
++};
++
+ enum cmdq_ctrl_sect_len {
+ 	CMDQ_CTRL_SECT_LEN        = 1,
+ 	CMDQ_CTRL_DIRECT_SECT_LEN = 2,
+@@ -166,6 +174,11 @@ static void cmdq_clear_cmd_buf(struct hinic3_cmdq_cmd_info *cmd_info,
+ 		hinic3_free_cmd_buf(hwdev, cmd_info->buf_in);
+ 		cmd_info->buf_in = NULL;
+ 	}
++
++	if (cmd_info->buf_out) {
++		hinic3_free_cmd_buf(hwdev, cmd_info->buf_out);
++		cmd_info->buf_out = NULL;
++	}
+ }
+ 
+ static void clear_wqe_complete_bit(struct hinic3_cmdq *cmdq,
+@@ -189,6 +202,20 @@ static void clear_wqe_complete_bit(struct hinic3_cmdq *cmdq,
+ 	hinic3_wq_put_wqebbs(&cmdq->wq, CMDQ_WQE_NUM_WQEBBS);
+ }
+ 
++static int cmdq_arm_ceq_handler(struct hinic3_cmdq *cmdq,
++				struct cmdq_wqe *wqe, u16 ci)
++{
++	struct cmdq_ctrl *ctrl = &wqe->wqe_scmd.ctrl;
++	__le32 ctrl_info = ctrl->ctrl_info;
++
++	if (!CMDQ_WQE_COMPLETED(ctrl_info))
++		return -EBUSY;
++
++	clear_wqe_complete_bit(cmdq, wqe, ci);
++
++	return 0;
++}
++
+ static void cmdq_update_cmd_status(struct hinic3_cmdq *cmdq, u16 prod_idx,
+ 				   struct cmdq_wqe *wqe)
+ {
+@@ -257,6 +284,11 @@ void hinic3_cmdq_ceq_handler(struct hinic3_hwdev *hwdev, __le32 ceqe_data)
+ 			cmdq_clear_cmd_buf(cmd_info, hwdev);
+ 			clear_wqe_complete_bit(cmdq, wqe, ci);
+ 			break;
++		case HINIC3_CMD_TYPE_SET_ARM:
++			/* arm_bit was set until here */
++			if (cmdq_arm_ceq_handler(cmdq, wqe, ci))
++				return;
++			break;
+ 		default:
+ 			/* only arm bit is using scmd wqe,
+ 			 * the other wqe is lcmd
+@@ -283,6 +315,18 @@ void hinic3_cmdq_ceq_handler(struct hinic3_hwdev *hwdev, __le32 ceqe_data)
+ 	}
+ }
+ 
++static int cmdq_params_valid(const struct hinic3_hwdev *hwdev,
++			     const struct hinic3_cmd_buf *buf_in)
++{
++	if (le16_to_cpu(buf_in->size) > CMDQ_BUF_SIZE) {
++		dev_err(hwdev->dev, "Invalid CMDQ buffer size: 0x%x\n",
++			buf_in->size);
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static int wait_cmdqs_enable(struct hinic3_cmdqs *cmdqs)
+ {
+ 	unsigned long end;
+@@ -356,6 +400,7 @@ static void cmdq_prepare_wqe_ctrl(struct cmdq_wqe *wqe, u8 wrapped,
+ 				  enum cmdq_bufdesc_len buf_len)
+ {
+ 	struct cmdq_header *hdr = CMDQ_WQE_HEADER(wqe);
++	__le32 saved_data = hdr->saved_data;
+ 	enum cmdq_ctrl_sect_len ctrl_len;
+ 	struct cmdq_wqe_lcmd *wqe_lcmd;
+ 	struct cmdq_wqe_scmd *wqe_scmd;
+@@ -386,6 +431,11 @@ static void cmdq_prepare_wqe_ctrl(struct cmdq_wqe *wqe, u8 wrapped,
+ 			    CMDQ_WQE_HDR_SET(3, COMPLETE_SECT_LEN) |
+ 			    CMDQ_WQE_HDR_SET(ctrl_len, CTRL_LEN) |
+ 			    CMDQ_WQE_HDR_SET(wrapped, HW_BUSY_BIT));
++
++	saved_data &= ~cpu_to_le32(SAVED_DATA_ARM_MASK);
++	if (cmd == CMDQ_SET_ARM_CMD && mod == MGMT_MOD_COMM)
++		saved_data |= cpu_to_le32(SAVED_DATA_SET(1, ARM));
++	hdr->saved_data = saved_data;
+ }
+ 
+ static void cmdq_set_lcmd_wqe(struct cmdq_wqe *wqe,
+@@ -488,9 +538,10 @@ static int wait_cmdq_sync_cmd_completion(struct hinic3_cmdq *cmdq,
+ 	return err;
+ }
+ 
+-static int cmdq_sync_cmd_direct_resp(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
+-				     struct hinic3_cmd_buf *buf_in,
+-				     __le64 *out_param)
++static int cmdq_sync_cmd_exec(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
++			      struct hinic3_cmd_buf *buf_in,
++			      struct hinic3_cmd_buf *buf_out,
++			      __le64 *out_param, u8 cmd_type, u8 wqe_cmd)
+ {
+ 	struct hinic3_cmdq_cmd_info *cmd_info, saved_cmd_info;
+ 	int cmpt_code = CMDQ_SEND_CMPT_CODE;
+@@ -520,31 +571,35 @@ static int cmdq_sync_cmd_direct_resp(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
+ 	cmd_info = &cmdq->cmd_infos[curr_prod_idx];
+ 	init_completion(&done);
+ 	refcount_inc(&buf_in->ref_cnt);
+-	cmd_info->cmd_type = HINIC3_CMD_TYPE_DIRECT_RESP;
++	if (buf_out)
++		refcount_inc(&buf_out->ref_cnt);
++
++	cmd_info->cmd_type = cmd_type;
+ 	cmd_info->done = &done;
+ 	cmd_info->errcode = &errcode;
+ 	cmd_info->direct_resp = out_param;
+ 	cmd_info->cmpt_code = &cmpt_code;
+ 	cmd_info->buf_in = buf_in;
++	if (buf_out)
++		cmd_info->buf_out = buf_out;
++
+ 	saved_cmd_info = *cmd_info;
+-	cmdq_set_lcmd_wqe(&wqe, CMDQ_CMD_DIRECT_RESP, buf_in, NULL,
++	cmdq_set_lcmd_wqe(&wqe, wqe_cmd, buf_in, buf_out,
+ 			  wrapped, mod, cmd, curr_prod_idx);
+ 
+ 	cmdq_wqe_fill(curr_wqe, &wqe);
+ 	(cmd_info->cmdq_msg_id)++;
+ 	curr_msg_id = cmd_info->cmdq_msg_id;
+-	cmdq_set_db(cmdq, HINIC3_CMDQ_SYNC, next_prod_idx);
++	cmdq_set_db(cmdq, cmdq->cmdq_type, next_prod_idx);
+ 	spin_unlock_bh(&cmdq->cmdq_lock);
+ 
+ 	err = wait_cmdq_sync_cmd_completion(cmdq, cmd_info, &saved_cmd_info,
+ 					    curr_msg_id, curr_prod_idx,
+ 					    curr_wqe, CMDQ_CMD_TIMEOUT);
+-	if (err) {
++	if (err)
+ 		dev_err(cmdq->hwdev->dev,
+ 			"Cmdq sync command timeout, mod: %u, cmd: %u, prod idx: 0x%x\n",
+ 			mod, cmd, curr_prod_idx);
+-		err = -ETIMEDOUT;
+-	}
+ 
+ 	if (cmpt_code == CMDQ_FORCE_STOP_CMPT_CODE) {
+ 		dev_dbg(cmdq->hwdev->dev,
+@@ -557,22 +612,107 @@ static int cmdq_sync_cmd_direct_resp(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
+ 	return err ? err : errcode;
+ }
+ 
++static int cmdq_sync_cmd_direct_resp(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
++				     struct hinic3_cmd_buf *buf_in,
++				     __le64 *out_param)
++{
++	return cmdq_sync_cmd_exec(cmdq, mod, cmd, buf_in, NULL, out_param,
++				    HINIC3_CMD_TYPE_DIRECT_RESP,
++				    CMDQ_CMD_DIRECT_RESP);
++}
++
++static int cmdq_sync_cmd_detail_resp(struct hinic3_cmdq *cmdq, u8 mod, u8 cmd,
++				     struct hinic3_cmd_buf *buf_in,
++				     struct hinic3_cmd_buf *buf_out,
++				     __le64 *out_param)
++{
++	return cmdq_sync_cmd_exec(cmdq, mod, cmd, buf_in, buf_out, out_param,
++				    HINIC3_CMD_TYPE_SGE_RESP,
++				    CMDQ_CMD_SGE_RESP);
++}
++
++int hinic3_cmd_buf_pair_init(struct hinic3_hwdev *hwdev,
++			     struct hinic3_cmd_buf_pair *pair)
++{
++	pair->in = hinic3_alloc_cmd_buf(hwdev);
++	if (!pair->in)
++		goto err_out;
++
++	pair->out = hinic3_alloc_cmd_buf(hwdev);
++	if (!pair->out)
++		goto err_free_cmd_buf_in;
++
++	return 0;
++
++err_free_cmd_buf_in:
++	hinic3_free_cmd_buf(hwdev, pair->in);
++err_out:
++	return -ENOMEM;
++}
++
++void hinic3_cmd_buf_pair_uninit(struct hinic3_hwdev *hwdev,
++				struct hinic3_cmd_buf_pair *pair)
++{
++	hinic3_free_cmd_buf(hwdev, pair->in);
++	hinic3_free_cmd_buf(hwdev, pair->out);
++}
++
+ int hinic3_cmdq_direct_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
+ 			    struct hinic3_cmd_buf *buf_in, __le64 *out_param)
+ {
+ 	struct hinic3_cmdqs *cmdqs;
+ 	int err;
++	err = cmdq_params_valid(hwdev, buf_in);
++	if (err) {
++		dev_err(hwdev->dev, "Invalid CMDQ parameters\n");
++		goto err_out;
++	}
+ 
+ 	cmdqs = hwdev->cmdqs;
+ 	err = wait_cmdqs_enable(cmdqs);
+ 	if (err) {
+ 		dev_err(hwdev->dev, "Cmdq is disabled\n");
+-		return err;
++		goto err_out;
+ 	}
+ 
+ 	err = cmdq_sync_cmd_direct_resp(&cmdqs->cmdq[HINIC3_CMDQ_SYNC],
+ 					mod, cmd, buf_in, out_param);
++	if (err)
++		goto err_out;
+ 
++	return 0;
++
++err_out:
++	return err;
++}
++
++int hinic3_cmdq_detail_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
++			    struct hinic3_cmd_buf *buf_in,
++			    struct hinic3_cmd_buf *buf_out, __le64 *out_param)
++{
++	struct hinic3_cmdqs *cmdqs;
++	int err;
++
++	err = cmdq_params_valid(hwdev, buf_in);
++	if (err)
++		goto err_out;
++
++	cmdqs = hwdev->cmdqs;
++
++	err = wait_cmdqs_enable(cmdqs);
++	if (err) {
++		dev_err(hwdev->dev, "Cmdq is disabled\n");
++		goto err_out;
++	}
++
++	err = cmdq_sync_cmd_detail_resp(&cmdqs->cmdq[HINIC3_CMDQ_SYNC],
++					mod, cmd, buf_in, buf_out, out_param);
++	if (err)
++		goto err_out;
++
++	return 0;
++
++err_out:
+ 	return err;
+ }
+ 
+@@ -758,7 +898,8 @@ static int init_cmdqs(struct hinic3_hwdev *hwdev)
+ 
+ static void cmdq_flush_sync_cmd(struct hinic3_cmdq_cmd_info *cmd_info)
+ {
+-	if (cmd_info->cmd_type != HINIC3_CMD_TYPE_DIRECT_RESP)
++	if (cmd_info->cmd_type != HINIC3_CMD_TYPE_DIRECT_RESP &&
++	    cmd_info->cmd_type != HINIC3_CMD_TYPE_SGE_RESP)
+ 		return;
+ 
+ 	cmd_info->cmd_type = HINIC3_CMD_TYPE_FORCE_STOP;
+@@ -785,7 +926,8 @@ static void hinic3_cmdq_flush_cmd(struct hinic3_cmdq *cmdq)
+ 	while (cmdq_read_wqe(&cmdq->wq, &ci)) {
+ 		hinic3_wq_put_wqebbs(&cmdq->wq, CMDQ_WQE_NUM_WQEBBS);
+ 		cmd_info = &cmdq->cmd_infos[ci];
+-		if (cmd_info->cmd_type == HINIC3_CMD_TYPE_DIRECT_RESP)
++		if (cmd_info->cmd_type == HINIC3_CMD_TYPE_DIRECT_RESP ||
++		    cmd_info->cmd_type == HINIC3_CMD_TYPE_SGE_RESP)
+ 			cmdq_flush_sync_cmd(cmd_info);
+ 	}
+ 	spin_unlock_bh(&cmdq->cmdq_lock);
+diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h
+index f99c386a2780..29bad2fae7ba 100644
+--- a/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h
++++ b/drivers/net/ethernet/huawei/hinic3/hinic3_cmdq.h
+@@ -85,7 +85,9 @@ enum hinic3_cmdq_status {
+ 
+ enum hinic3_cmdq_cmd_type {
+ 	HINIC3_CMD_TYPE_NONE,
++	HINIC3_CMD_TYPE_SET_ARM,
+ 	HINIC3_CMD_TYPE_DIRECT_RESP,
++	HINIC3_CMD_TYPE_SGE_RESP,
+ 	HINIC3_CMD_TYPE_FAKE_TIMEOUT,
+ 	HINIC3_CMD_TYPE_TIMEOUT,
+ 	HINIC3_CMD_TYPE_FORCE_STOP,
+@@ -98,6 +100,11 @@ struct hinic3_cmd_buf {
+ 	refcount_t ref_cnt;
+ };
+ 
++struct hinic3_cmd_buf_pair {
++	struct hinic3_cmd_buf *in;
++	struct hinic3_cmd_buf *out;
++};
++
+ struct hinic3_cmdq_cmd_info {
+ 	enum hinic3_cmdq_cmd_type cmd_type;
+ 	struct completion         *done;
+@@ -107,6 +114,7 @@ struct hinic3_cmdq_cmd_info {
+ 	__le64                    *direct_resp;
+ 	u64                       cmdq_msg_id;
+ 	struct hinic3_cmd_buf     *buf_in;
++	struct hinic3_cmd_buf     *buf_out;
+ };
+ 
+ struct hinic3_cmdq {
+@@ -146,8 +154,15 @@ void hinic3_free_cmd_buf(struct hinic3_hwdev *hwdev,
+ 			 struct hinic3_cmd_buf *cmd_buf);
+ void hinic3_cmdq_ceq_handler(struct hinic3_hwdev *hwdev, __le32 ceqe_data);
+ 
++int hinic3_cmd_buf_pair_init(struct hinic3_hwdev *hwdev,
++			     struct hinic3_cmd_buf_pair *pair);
++void hinic3_cmd_buf_pair_uninit(struct hinic3_hwdev *hwdev,
++				struct hinic3_cmd_buf_pair *pair);
+ int hinic3_cmdq_direct_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
+ 			    struct hinic3_cmd_buf *buf_in, __le64 *out_param);
++int hinic3_cmdq_detail_resp(struct hinic3_hwdev *hwdev, u8 mod, u8 cmd,
++			    struct hinic3_cmd_buf *buf_in,
++			    struct hinic3_cmd_buf *buf_out, __le64 *out_param);
+ 
+ void hinic3_cmdq_flush_sync_cmd(struct hinic3_hwdev *hwdev);
+ int hinic3_reinit_cmdq_ctxts(struct hinic3_hwdev *hwdev);
+-- 
+2.43.0
 
-
-Confidential - Oracle Restricted +AFw-Including External Recipients
-+AD4- -----Original Message-----
-+AD4- From: Jason Gunthorpe +ADw-jgg+AEA-ziepe.ca+AD4-
-+AD4- Sent: Saturday, March 7, 2026 4:40 AM
-+AD4- To: Praveen Kannoju +ADw-praveen.kannoju+AEA-oracle.com+AD4-
-+AD4- Cc: saeedm+AEA-nvidia.com+ADs- leon+AEA-kernel.org+ADs- tariqt+AEA-nv=
-idia.com+ADs-
-+AD4- mbloch+AEA-nvidia.com+ADs- andrew+-netdev+AEA-lunn.ch+ADs- davem+AEA-=
-davemloft.net+ADs-
-+AD4- edumazet+AEA-google.com+ADs- kuba+AEA-kernel.org+ADs- pabeni+AEA-redh=
-at.com+ADs-
-+AD4- netdev+AEA-vger.kernel.org+ADs- linux-rdma+AEA-vger.kernel.org+ADs- l=
-inux-
-+AD4- kernel+AEA-vger.kernel.org+ADs- Rama Nichanamatlu
-+AD4- +ADw-rama.nichanamatlu+AEA-oracle.com+AD4AOw- Manjunath Patil
-+AD4- +ADw-manjunath.b.patil+AEA-oracle.com+AD4AOw- Anand Khoje +ADw-anand.=
-a.khoje+AEA-oracle.com+AD4-
-+AD4- Subject: Re: +AFs-PATCH+AF0- net/mlx5: poll mlx5 eq during irq migrat=
-ion
-+AD4-
-+AD4- On Fri, Mar 06, 2026 at 02:19:09PM +-0000, Praveen Kannoju wrote:
-+AD4- +AD4-
-+AD4- +AD4- +AD4- On Thu, Mar 05, 2026 at 05:08:52PM +-0000, Praveen Kannoj=
-u wrote:
-+AD4- +AD4- +AD4-
-+AD4- +AD4- +AD4- +AD4-    Regardless of the underlying causes, which may i=
-nclude IRQ loss
-+AD4- +AD4- +AD4- +AD4-    or EQ re-arming failure, the TX queue becomes st=
-uck, and the
-+AD4- +AD4- +AD4- +AD4-    timeout handler is only triggered once the queue=
- is declared
-+AD4- +AD4- +AD4- +AD4-    full. In scenarios where only specialized packet=
-s, such as
-+AD4- +AD4- +AD4- +AD4-    heartbeat packets, are sent through the queue, i=
-t takes
-+AD4- +AD4- +AD4- +AD4-    significantly longer for the queue to fill and b=
-e identified as
-+AD4- +AD4- +AD4- +AD4-    stuck. A proven solution for this issue is polli=
-ng the EQ
-+AD4- +AD4- +AD4- +AD4-    immediately after the corresponding IRQ migratio=
-n, which allows
-+AD4- +AD4- +AD4- +AD4-    for earlier recovery and prevents the transmissi=
-on queue from
-+AD4- +AD4- +AD4- +AD4-    becoming stuck.
-+AD4- +AD4- +AD4-
-+AD4- +AD4- +AD4- I undersand all of this, but for upstreaming we want the =
-root cause,
-+AD4- +AD4- +AD4- not bodges like this.
-+AD4- +AD4- +AD4-
-+AD4- +AD4- +AD4- There is no reason to do what this patch does, the IRQ sy=
-stem is not
-+AD4- +AD4- +AD4- supposed to loose interrupts on migration, if that is hap=
-pening on
-+AD4- +AD4- +AD4- your systems it is a serious bug that must be root caused=
-.
-+AD4- +AD4-
-+AD4- +AD4- Thank you, Jason.
-+AD4- +AD4- We'll evaluate more on it.
-+AD4-
-+AD4- If this is in a VM running under qemu - qemu does Lots Of Stuff whene=
-ver a
-+AD4- MSI-X is changed and that stuff has been buggy before and resulted in=
- lost
-+AD4- things.
-+AD4-
-+AD4- If it is bare metal, I'm shocked. Maybe an IOMMU driver bug in the in=
-terrupt
-+AD4- remapping?
-+AD4-
-+AD4- Jason
-
-
-Hello Jason,
-
-Yes, this is Qemu VM, on which we are having the issue.
-In bare metal environment there is NO cpu scaling.
-No issue seen on a bare metal so far. Maybe unlikely also.
-
-We are having this issue as Qemu VM's go thru cpu scaling
-based on business needs.
-
-It had been very challenging to arrive at the cause.
-we went thru many live debug sessions with Nvidia R+ACY-D team.
-but we couldn't root cause. This tells why we eventually.
-arrived at this mitigation as this issue is wide spread
-and has been hurting many and many customers in cloud.
-
--
-Praveen
