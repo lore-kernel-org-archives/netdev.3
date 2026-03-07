@@ -1,118 +1,211 @@
-Received: from www2881.sakura.ne.jp (www2881.sakura.ne.jp [49.212.198.91])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FF533A037
-	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 19:18:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.212.198.91
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBFDE3A257F
+	for <netdev@vger.kernel.org>; Sat,  7 Mar 2026 19:54:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772911138; cv=none; b=Ii4qsfyb804QzzZYANhePX9CT0YXbDKzf9WhkNHqWwWVrEjWgEhuoEvdmFPM764ohD44YHJQt7E29vZLCHwSV7dQPOu0tNfQRWYjTzS26Aqr+smurptM7RwPhDAdidqueA2IGcil52Zl/XHSSRJCpv9FWA8haPq4pcdoWX5ievI=
+	t=1772913270; cv=none; b=LWTkLsTygKyW7vmA8iEXPbO/EZl8DCCEG4U57ggJnMwgosdfYNaZUO/YNq13+zUQHOAIJcqC2kqTF9i+oGBSHjDY8x8aYeLVjvekM5yArDaq56j2O7beFNFWIKshpivyIgXQP/Df99d3RU1rFnlHzdoEtiPvKYoeiYJXtB6JY4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772911138; c=relaxed/simple;
-	bh=QDMkjuLBlHJrDIq64kYVBK5qhbH76qzRlYrBzTmfROA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAAsb/Z3fxiS/A7zXkAKJtsTt7AxnoqPnJ5UZcxPK9B5Q1Lt2r2m54RdU7ejbySy6DVOE982xG8WAYPhmLEG56YEZAv8k/xDLK0ui0YkKOPK7SI7Hei9LU2RpQ92EAXDgPn/iMMFOFofk+HGIt2n9izx1cfS31SflD4pW8FYWpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp; spf=pass smtp.mailfrom=enjuk.jp; dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b=Tpl254sK; arc=none smtp.client-ip=49.212.198.91
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enjuk.jp
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enjuk.jp
+	s=arc-20240116; t=1772913270; c=relaxed/simple;
+	bh=1y3sIRO+i9mMyJAEIpsi5HHAo6pg1KHpSiMVhy4nVYk=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
+	 References:In-Reply-To; b=pyWhYcKv/XAxaaNpyr1QgDCJ3LyxkAqn7hXJYDqy3oj8Lm36a36ROzzRjiuQacTAFP2p/HfumrFzZ/Qsp/UnONfdcde66V7neSh8Gyw2q4jI4E6nKQfo0Rbdb2rpBhFLKD+SqKlK56mXZCU8HBf7ia1mlCAzUQrkau7e3Z5rv4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=g/W15PpL; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=enjuk.jp header.i=@enjuk.jp header.b="Tpl254sK"
-Received: from ms-a2 (79.25.31.150.dy.iij4u.or.jp [150.31.25.79])
-	(authenticated bits=0)
-	by www2881.sakura.ne.jp (8.16.1/8.16.1) with ESMTPSA id 627ISFwa043186
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Sun, 8 Mar 2026 03:28:15 +0900 (JST)
-	(envelope-from kohei@enjuk.jp)
-DKIM-Signature: a=rsa-sha256; bh=wNehNCtg8C9+gzplHafZhq5oL1T1yTUahHTVgkm8zbs=;
-        c=relaxed/relaxed; d=enjuk.jp;
-        h=From:Message-ID:To:Subject:Date;
-        s=rs20251215; t=1772908095; v=1;
-        b=Tpl254sK200v8NVKeVmog7ZJfg64cufpqMtOUjVK+LzSdvzmd6L//0PgsTOcp+2m
-         59OrxPHGawG44YLA5sDxJkY1ijGAmjOqLbM1UUx19tGXCcxeUwpQ/JzIJ4SqqLOd
-         +WVnx3AEfSg0Nce3J1xbhLUJwJ6v5KkVvZF2Z30iwWEZ6LUzobKaSJbqws0HsEqP
-         7y5M89OmZDn9qnliGd5sor0QKNDXb34eHSdrZwdWTMgNpAox70z+7UUYopcfOJdp
-         8+N0SxAbi8FlvzgmC3JUD+uNfapr+XqSAv3x4JfV4Dp3+HX35ozj2dFBKuSSBKi8
-         MrSR8Df24vkjXH1iovoKLA==
-From: Kohei Enju <kohei@enjuk.jp>
-To: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org
-Cc: Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, kohei.enju@gmail.com,
-        Kohei Enju <kohei@enjuk.jp>
-Subject: [PATCH iwl-next v1 1/2] igc: set RX hardware timestamps in igc_build_skb()
-Date: Sat,  7 Mar 2026 18:27:38 +0000
-Message-ID: <20260307182808.155027-2-kohei@enjuk.jp>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260307182808.155027-1-kohei@enjuk.jp>
-References: <20260307182808.155027-1-kohei@enjuk.jp>
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="g/W15PpL"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-482f454be5bso105524695e9.0
+        for <netdev@vger.kernel.org>; Sat, 07 Mar 2026 11:54:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1772913267; x=1773518067; darn=vger.kernel.org;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wRapRrMQzfVb1zc8bjuWvKtij1EZN6NyZd+CGQgeUqY=;
+        b=g/W15PpLYwevvKhlFNQMj8vDmrLs6bnDdNjvdRwldmaau4ruLQ9TG6xRkiyCHqzwu6
+         7xFUqz4O8LyQanSHBuiWo5moUnQsBGP7NumZQvshTWRcersdQLEgMQem5MXec3g2KLZI
+         nWTobCt3XFoaHPgaYl8IegcnrhaEUmcjC3bsCuWSwc7PAUdqoQ78SlW+ERyacZrv6QOh
+         E9+7kFyRdE7mpDtH0Z1yQKuR1m8J07glTMHtNjVBtuHeoQYVQFsJhfcPD9Zt66Q7SFqe
+         /34ts4qxVxFdb8tQQfhehHrEOpjd/vzPwrEwpJ6+1l8psaJ4vH2GDlArRnkIvLPN4H6r
+         478g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1772913267; x=1773518067;
+        h=in-reply-to:references:from:to:cc:subject:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wRapRrMQzfVb1zc8bjuWvKtij1EZN6NyZd+CGQgeUqY=;
+        b=p0+K8mf37GkZ0hevkBSCeYCwMyMgPNfIe45WQIVI96d9htiqy8H1nGW2FPLtBCkXLG
+         KpVUCGO8kRQ65mKLAww9OAn6Avn59UafOxkeSB280cTvjMvQuPYFsm5mB4ygjFUeCABu
+         DJLXgWOB2aMFRdphpXwBdFBfjhUT94t/jFoHKvAcqprSGlRf3k0IqIUtkf5rhokgGgwB
+         was00P2KDh1KCQEfgX9761cGcqQesjTIGqSMwdsx2ZeWgtnUlQHfboS0bk4vDdAb4z2Y
+         gxZnBkRwXzY115dvI/Y5sg/eJEdB+hYSaPaxKMg9jIGU19DbaHuWW+e57IgVZs2RA9KH
+         dNZA==
+X-Forwarded-Encrypted: i=1; AJvYcCUE4EMKkZQYZ32q+VdjdesbViDCrlU2/palTrggGol2nFY3ji7xLxWHh8r3cprv/V9XEmE3Rfw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7P6+CjfxQQz3RonAl9eUr1eXGaziAuVPFZ7hKHuL0lB9IeA6k
+	zWvIbUAPXw1eT2j5f/eZMkZzw2VGBN9sRnZpPr95xuFFQRRz/SBt9s0A2FP64aBoBFU=
+X-Gm-Gg: ATEYQzx3bN7+zpLfYvlrEGiReo9sdW8WI8BJUMMscbeRIe6v+UFGsIwpg4N8wCLNLzK
+	yNR23AOWP0GFzg/7m2xTR2UfZtat7Me6AU6jWCbi1qbdEuH4P5oDI2T2kDvzM1BLXiqgh2Hzzdb
+	HMDwTb6eSGPaU31Dk2s1BbxgO6dFsoE7LzNIq2HWDkKzjr1Y1zh/FVYRWAwAOuKhAvFmEtKVky/
+	tSDzZIg8V/GpnperswZ3B4QKmM1kIlt50hdP4CzHMM2peMmgPpff5liWqpK6xUYsOalS3HdEESB
+	3l6zgySrIf3rN77+B7Dd3SLs9L6kbWMmwsEVd0ivJZbFfOLPfl4emYNadVotaH2RhSS9NB7vivF
+	mhP4YgeDT4zFeAWbays30BBYqS+4j2eb9gZljgOo/eWHRmMAR01ZFPBdjuOCWDq9Um2v2vLGpUU
+	pUv2HWUvKJug==
+X-Received: by 2002:a05:600c:3e0b:b0:47d:52ef:c572 with SMTP id 5b1f17b1804b1-4851ee6a3fcmr176036785e9.1.1772913267309;
+        Sat, 07 Mar 2026 11:54:27 -0800 (PST)
+Received: from localhost ([189.99.238.164])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-94e7b57ec19sm5145450241.14.2026.03.07.11.54.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 07 Mar 2026 11:54:26 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Sat, 07 Mar 2026 16:54:22 -0300
+Message-Id: <DGWTAT5RG00Q.3OB5QRCWISVA5@suse.com>
+Subject: Re: [PATCH net v3 2/3] bpf: bpf_out_neigh_v6: Fix nd_tbl NULL
+ dereference when IPv6 is disabled
+Cc: =?utf-8?b?UmljYXJkbyBCLiBNYXJsacOocmU=?= <rbm@suse.com>, "Martin KaFai
+ Lau" <martin.lau@linux.dev>, "Daniel Borkmann" <daniel@iogearbox.net>,
+ "John Fastabend" <john.fastabend@gmail.com>, "Stanislav Fomichev"
+ <sdf@fomichev.me>, "Alexei Starovoitov" <ast@kernel.org>, "Andrii Nakryiko"
+ <andrii@kernel.org>, "Eduard Zingerman" <eddyz87@gmail.com>, "Song Liu"
+ <song@kernel.org>, "Yonghong Song" <yonghong.song@linux.dev>, "KP Singh"
+ <kpsingh@kernel.org>, "Hao Luo" <haoluo@google.com>, "Jiri Olsa"
+ <jolsa@kernel.org>, "David S. Miller" <davem@davemloft.net>, "Eric Dumazet"
+ <edumazet@google.com>, "Paolo Abeni" <pabeni@redhat.com>, "Simon Horman"
+ <horms@kernel.org>, =?utf-8?q?Toke_H=C3=B8iland-J=C3=B8rgensen?=
+ <toke@redhat.com>, "David Ahern" <dsahern@kernel.org>, "Jay Vosburgh"
+ <jv@jvosburgh.net>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "Hangbin Liu"
+ <liuhangbin@gmail.com>, <bpf@vger.kernel.org>, <netdev@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+To: "Fernando Fernandez Mancera" <fmancera@suse.de>, "Jakub Kicinski"
+ <kuba@kernel.org>
+From: =?utf-8?b?UmljYXJkbyBCLiBNYXJsacOocmU=?= <rbm@suse.com>
+X-Mailer: aerc 0.21.0-120-g0a16d1784be2
+References: <20260305-net-nd_tbl_fixes-v3-0-fde28b30a744@suse.com>
+ <20260305-net-nd_tbl_fixes-v3-2-fde28b30a744@suse.com>
+ <20260305182521.0ca7313c@kernel.org>
+ <b3477010-6fdd-4bec-8951-152b12bf56e6@suse.de>
+ <20260306183914.4b13a03d@kernel.org>
+ <691d5589-46ea-4947-9510-bfd9d991ed02@suse.de>
+In-Reply-To: <691d5589-46ea-4947-9510-bfd9d991ed02@suse.de>
 
-igc_construct_skb() sets RX hardware timestamps, but igc_build_skb()
-does not. This has not been observable so far since igc currently does
-not enable the build_skb RX path.
+On Sat Mar 7, 2026 at 4:27 AM -03, Fernando Fernandez Mancera wrote:
+> On 3/7/26 3:39 AM, Jakub Kicinski wrote:
+>> On Fri, 6 Mar 2026 10:58:44 +0100 Fernando Fernandez Mancera wrote:
+>>>>> +	if (unlikely(!ipv6_stub->nd_tbl))
+>>>>> +		goto out_drop;
+>>>>
+>>>> So neither Fernando nor you checked whether this code can be built
+>>>> as a module? ipv6_mod_enabled() should work just fine
+>>>
+>>> I checked it. If IPV6=3Dm this is not fine.
+>>>
+>>> ld: vmlinux.o: in function `bpf_out_neigh_v6':
+>>> filter.c:(.text+0x3231d60): undefined reference to `ipv6_mod_enabled'
+>>=20
+>> Guess I got it backwards :/ Should we add this to the series?
+>>=20
 
-Set RX hardware timestamps in igc_build_skb() as well so that both skb
-construction paths provide the same behavior.
+Nice, thank you!
 
-Signed-off-by: Kohei Enju <kohei@enjuk.jp>
----
- drivers/net/ethernet/intel/igc/igc_main.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+>
+> No worries.
+>
+>> -->8--------
+>> Subject: ipv6: move the disable_ipv6_mod knob to core code
+>>=20
+>> Make sure disable_ipv6_mod itself is not part of the IPv6 module,
+>> in case core code wants to refer to it. We will remove support
+>> for IPv6=3Dm soon, this change helps make fixes we commit before
+>> that less messy.
+>>=20
+>> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>> ---
+>
+> Ricardo could you add it and check if it is fine? FWIW; I am sending=20
+> today the series removing IPV6=3Dm after some testing to net-next tree.
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index ebd831a4ff53..3a4c1ebe4faa 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -1964,13 +1964,16 @@ static void igc_add_rx_frag(struct igc_ring *rx_ring,
- 
- static struct sk_buff *igc_build_skb(struct igc_ring *rx_ring,
- 				     struct igc_rx_buffer *rx_buffer,
--				     struct xdp_buff *xdp)
-+				     struct igc_xdp_buff *ctx)
- {
--	unsigned int size = xdp->data_end - xdp->data;
--	unsigned int truesize = igc_get_rx_frame_truesize(rx_ring, size);
--	unsigned int metasize = xdp->data - xdp->data_meta;
-+	unsigned int size, truesize, metasize;
-+	struct xdp_buff *xdp = &ctx->xdp;
- 	struct sk_buff *skb;
- 
-+	size = xdp->data_end - xdp->data;
-+	truesize = igc_get_rx_frame_truesize(rx_ring, size);
-+	metasize = xdp->data - xdp->data_meta;
-+
- 	/* prefetch first cache line of first page */
- 	net_prefetch(xdp->data_meta);
- 
-@@ -1979,6 +1982,11 @@ static struct sk_buff *igc_build_skb(struct igc_ring *rx_ring,
- 	if (unlikely(!skb))
- 		return NULL;
- 
-+	if (ctx->rx_ts) {
-+		skb_shinfo(skb)->tx_flags |= SKBTX_HW_TSTAMP_NETDEV;
-+		skb_hwtstamps(skb)->netdev_data = ctx->rx_ts;
-+	}
-+
- 	/* update pointers within the skb to store the data */
- 	skb_reserve(skb, xdp->data - xdp->data_hard_start);
- 	__skb_put(skb, size);
-@@ -2681,7 +2689,7 @@ static int igc_clean_rx_irq(struct igc_q_vector *q_vector, const int budget)
- 		} else if (skb)
- 			igc_add_rx_frag(rx_ring, rx_buffer, skb, size);
- 		else if (ring_uses_build_skb(rx_ring))
--			skb = igc_build_skb(rx_ring, rx_buffer, &ctx.xdp);
-+			skb = igc_build_skb(rx_ring, rx_buffer, &ctx);
- 		else
- 			skb = igc_construct_skb(rx_ring, rx_buffer, &ctx);
- 
--- 
-2.51.0
+Will do!
+
+>
+> Thanks,
+> Fernando.
+>
+>>   include/linux/ipv6.h | 7 ++++++-
+>>   net/ipv4/af_inet.c   | 6 ++++++
+>>   net/ipv6/af_inet6.c  | 8 --------
+>>   3 files changed, 12 insertions(+), 9 deletions(-)
+>>=20
+>> diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
+>> index 443053a76dcf..e5b6853d517a 100644
+>> --- a/include/linux/ipv6.h
+>> +++ b/include/linux/ipv6.h
+>> @@ -333,7 +333,12 @@ struct tcp6_timewait_sock {
+>>   };
+>>  =20
+>>   #if IS_ENABLED(CONFIG_IPV6)
+>> -bool ipv6_mod_enabled(void);
+>> +extern int disable_ipv6_mod;
+>> +
+>> +static inline bool ipv6_mod_enabled(void)
+>> +{
+>> +        return disable_ipv6_mod =3D=3D 0;
+>> +}
+>>  =20
+>>   static inline struct ipv6_pinfo *inet6_sk(const struct sock *__sk)
+>>   {
+>> diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+>> index babcd75a08e2..f1944e8fd9d3 100644
+>> --- a/net/ipv4/af_inet.c
+>> +++ b/net/ipv4/af_inet.c
+>> @@ -124,6 +124,12 @@
+>>  =20
+>>   #include <trace/events/sock.h>
+>>  =20
+>> +/* Keep the definition of IPv6 disable here for now, to avoid annoying =
+linker
+>> + * issues in case IPv6=3Dm
+>> + */
+>> +int disable_ipv6_mod;
+>> +EXPORT_SYMBOL(disable_ipv6_mod);
+>> +
+>>   /* The inetsw table contains everything that inet_create needs to
+>>    * build a new socket.
+>>    */
+>> diff --git a/net/ipv6/af_inet6.c b/net/ipv6/af_inet6.c
+>> index 0b995a961359..03c175cbbdb6 100644
+>> --- a/net/ipv6/af_inet6.c
+>> +++ b/net/ipv6/af_inet6.c
+>> @@ -86,8 +86,6 @@ struct ipv6_params ipv6_defaults =3D {
+>>   	.autoconf =3D 1,
+>>   };
+>>  =20
+>> -static int disable_ipv6_mod;
+>> -
+>>   module_param_named(disable, disable_ipv6_mod, int, 0444);
+>>   MODULE_PARM_DESC(disable, "Disable IPv6 module such that it is non-fun=
+ctional");
+>>  =20
+>> @@ -97,12 +95,6 @@ MODULE_PARM_DESC(disable_ipv6, "Disable IPv6 on all i=
+nterfaces");
+>>   module_param_named(autoconf, ipv6_defaults.autoconf, int, 0444);
+>>   MODULE_PARM_DESC(autoconf, "Enable IPv6 address autoconfiguration on a=
+ll interfaces");
+>>  =20
+>> -bool ipv6_mod_enabled(void)
+>> -{
+>> -	return disable_ipv6_mod =3D=3D 0;
+>> -}
+>> -EXPORT_SYMBOL_GPL(ipv6_mod_enabled);
+>> -
+>>   static struct ipv6_pinfo *inet6_sk_generic(struct sock *sk)
+>>   {
+>>   	const int offset =3D sk->sk_prot->ipv6_pinfo_offset;
 
