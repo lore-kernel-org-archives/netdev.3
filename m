@@ -1,109 +1,95 @@
-Received: from mail-dl1-f48.google.com (mail-dl1-f48.google.com [74.125.82.48])
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D45B223DC9
-	for <netdev@vger.kernel.org>; Sun,  8 Mar 2026 03:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.48
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1772939505; cv=pass; b=p+sVHAjg8eBWpoidIEHz8t6w2dLNGpGDOma1Oudm38pKjjPuNJN8kn27Bpja7jZ9td0woXZoW2xBc72Nt6fWXBRc8SQRbdBVIccoSf0dfddQ5qM2cMnzQqlBvwaeD4IetsNJLLZxJTOeGbwSHm9Yrx5IP/qmtCGkovWvfQrOkfI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1772939505; c=relaxed/simple;
-	bh=YwX0S+s/mH+NrPegj5cKLf+BpSzkVt8udsTCnwtOTH8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=n1XVyMjb+1iwIAZ3nNJG3k89UqEzgDD1IOv7cFdQGXX+0+y1w0uEfLgjMSzaVs+0/HLV2yoydYVM39W7maO/5bNHSCbaSw/vM8NBpcDlZfO0etQXxpBeA75TdvyUSdv4NiuIJaYsTm0OKBKmmWcafMikzYYOuI3eUyt/gMxB92I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=htKG29P6; arc=pass smtp.client-ip=74.125.82.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D0924B28
+	for <netdev@vger.kernel.org>; Sun,  8 Mar 2026 03:23:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1772940189; cv=none; b=N8zsunpqQjiylfCP1KJwsv6j7W7+84qfioElnrzz5TPC6AWBiuhf/paMIvY9TT9SSPWZkzj3auhHjibYdNlT321iH7h+eGRiAApWz+pcaIQ2TkI9wSXk6q6pwYagHcd0RTRSEw0IKZb2Bu3dcjV/mg9KCc9MLBC6IR9ToHsMMTg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1772940189; c=relaxed/simple;
+	bh=EpS5hHyuSIjf/ZS9SJNOb8l8Geq8JkSLIkKOjVNvWos=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GBWdzkKTxdZIZZbToAnSU+KzWSEtHmM6NO044uAMYA4Ido8ukHKybxRGi0a1zYK7ItTM53LbkNCVNMqRUrwchQ5bPAr90fpVzUa/LUdGFAUd0aqQI4HJaM2pIAYr8WMOhXZTF7/mBUKTcDg8kmQhWqQnjG5oZL71RsHAAuNtT4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VeqE7Zku; arc=none smtp.client-ip=209.85.216.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="htKG29P6"
-Received: by mail-dl1-f48.google.com with SMTP id a92af1059eb24-12732e6a123so1168422c88.1
-        for <netdev@vger.kernel.org>; Sat, 07 Mar 2026 19:11:44 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1772939503; cv=none;
-        d=google.com; s=arc-20240605;
-        b=c86pve2FibEu+yXalMXF/5StO448d8afLrhQp+BNCSH4I3m76Xl6DeStIRBm9zFjfc
-         Bgfw4qH0Soai20bZqmoJ76P1x05OvaG9lM+fkeOPqPZthmyed4p2ovmgSYUDgj39YVmM
-         6gBJz/KFnZhFac1edL5KJqZcpbDO42m3SV9Yr44ZNtj8gdhITOL4LM+gssuY0yvorwSB
-         iDvrD1B6jCHPwr3QkOSZvtEFoU3U7yCvHYLJuyIzj1M9dmHZvbA0g5scMZ76AWTyh8sb
-         bvR10CBFhO/p0K3smzlQD1qm0aiGyFMYoZct6sMrLQZVgMxbhxg7EyMJQY6K5bYFmWiv
-         JjGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=YwX0S+s/mH+NrPegj5cKLf+BpSzkVt8udsTCnwtOTH8=;
-        fh=ALVilHoVdBURVbiwT2nTCdDqYZlAtOwR5oGIszLmBm0=;
-        b=Y8GugdoQh09R8GDuV50eEKJJl5qdMIG+oX7w4jFZ1B1lAHMp6Bru3f+eNISvawzgvg
-         8j6uDWXNt89x215jBO6ryCB8hgf6xqDBUiKNa7t7f15X1vuxXYoPbECx2+npferEHGbo
-         6HagFrauCuaoAPs3gFHqmZE0mx9kOQ6DzC1ZPXZVEy4/r7NW5+bNsJbCTG1RPBsSkv+7
-         o36U1DC2d9kslYahw9iPdYeJQgqXapPa/gQ4GihiOTqMp3gMC13gIqjWrXJqnQpg140M
-         ATJQorzDaHuVorLLLeop8W5fxSsM6WeJP78CenAl/x3XIHAP9Ly2S6Y7rjuUvkbUKJjc
-         GESg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VeqE7Zku"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3597f559e70so5165043a91.3
+        for <netdev@vger.kernel.org>; Sat, 07 Mar 2026 19:23:08 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1772939503; x=1773544303; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YwX0S+s/mH+NrPegj5cKLf+BpSzkVt8udsTCnwtOTH8=;
-        b=htKG29P6dWVyLDu23iVnA175JWFfeo5hNClEOVQa1B619CA+1raqEVzF0B15dOrhgx
-         x7CRowWdKoLKbU6er3rCCvK/Rfzi8eIDIqmWpcaPrekmavswIam+isl3xjy/7XbdhV9p
-         Lk7l/BbaoOcUwdgHEEqESOfqutVb+o2Nq/6OR4UFszsQ49Pghv8F2GohEETcYS2yJEMj
-         Sz7DfZxXl02wsGQAbhHsrf6zNC5Jf5zemM9Ukc802JXTugvScX8ULPyxoTqapk0MT/Ez
-         JHGmisZ1KxbnNneSyly5wKVCo7iAzRaaTJU8XspTVT6/QI6BYbnge8CqfaZgS6k564uX
-         8OPA==
+        d=google.com; s=20230601; t=1772940187; x=1773544987; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uk1l7u/EZQ9dYk7Ghgiuvc1wfJT8+uxRd82/b2IDS4c=;
+        b=VeqE7Zku4RJ9tVGXyZauOIIOsxu0x/ZmokFvt4DkJ/39UVdcEav6GHJ7pcyP4wyZ0N
+         ECzanWgpk1RQiDJgb3GEw+rXkJPomKtQf16vAq6MOii066yPqzYjp1mne/QkGWabHF0y
+         h40yji6ZKqun1/q3Vt7CtrfbHrN+61w8UuP2U/qby+rYGnM24maef9qlxFEcqJGLzfkS
+         XQrx0a13WTwoNKehpQBFNNodij4liBYOXHGuuzLb9Q7vdyEsVYAe1JEgHtvjJ6NqrGgt
+         6k4Q9dTFaU4diifcdoO/q9kotyHGHBaWPpoRxQpcZo2QOleVigmbNblj3+r1GhudsoiL
+         A/3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1772939503; x=1773544303;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=YwX0S+s/mH+NrPegj5cKLf+BpSzkVt8udsTCnwtOTH8=;
-        b=G2X7hXAsI/izV2YfttdC6kDRhVd1d0+mFnHlGgckrWWkhBYRZIrkoE1Irxq2K0nVWA
-         mzKvaeDXVDE+gUQZhwEzQelRVY0RmYupZSr2Q8PohJgP/WsCdckW/hnJ5cJW+ynJnF2U
-         66sZ1Sy/m39L0fr9J/SJtPpE4H/v4Ww35LuGmUWebP7NaDhyzU+ZBh+GiftV473rRafM
-         1PT7dqp3FSuJ3nvsd2nHdo9sG8xkPKnFcnGle3gX1W8QicuqD5YGK7Evjox9vFX4yMq2
-         e9eSma1PiGr2gHBfZy925X4hiNJI+/uB0pUjaPXScfSHcjMcCv6Nc9cFYcmQB5Dj8OAG
-         Quxw==
-X-Forwarded-Encrypted: i=1; AJvYcCXUHEPjlF+/jw0kXQO0rUVZjRSP0niGTJwmkWxCq+vyZTDtIuHqrPjbg4/Qg58brN8mxG2oX08=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxOaAu2bJ2I745xqoApRJjF1RLzFxyb5QhQpdBlLKnK0nFn4wq6
-	/6sZboYY7+CtkllR64l2pKLHvovXbwrfoAh27H+AI8IN0WaXjfaw1LVbddtsB4neWVzAMq44/Jo
-	ZYadz8pmjliyDnSmAIIigDfmwOgXsDhXPYD/ZrPUQ
-X-Gm-Gg: ATEYQzwSfW22y4x6itmpbU8MqDzhbhqZM8C0fi364o7aoDbSCzBlfpHxJ+wrbEAUtdR
-	nPgaBoHxpN4WFwlSmxKmpYRvOWC45OyBhNWHvRFAAGgg9NzpxV3vhpb5co+l08MVnQTCIlaT60v
-	yBQT+kBwLJUioqBfBonUBv2qje5zpCaAzcN9YW5fHYInOmKMMf7596lcdOYaJxkdD1uSwJJRRXi
-	G2gdfJweec9Wgewkd1CdNgYtHYOvx1fv107zNCQrKaG4ztUoBd07hkOw9IuPdQmTyVJlPjqM/by
-	gT2iqi4WjhiVzzcFFX4P9urzV7bck7/dMUBKJZxo0v39ucWDtzZw9w45GRGiExvuF5lm/CO6
-X-Received: by 2002:a05:7022:f85:b0:127:3440:e5d5 with SMTP id
- a92af1059eb24-128c2e995e8mr2904639c88.21.1772939502822; Sat, 07 Mar 2026
- 19:11:42 -0800 (PST)
+        d=1e100.net; s=20230601; t=1772940187; x=1773544987;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uk1l7u/EZQ9dYk7Ghgiuvc1wfJT8+uxRd82/b2IDS4c=;
+        b=txNqZNIGdsVwXt14PSeEntwovEphaLrFF1nHmTisKrAMuPwBnGjDiP5ArWTsXc7MZx
+         6m6uF2brRMYaSAjNkQOrmk4duUSpaINda76lJs1s+IPgJrECFy7QoU+LOi0M/Vr9hvVg
+         j4XvcUE6068VRCQbK6qj4Lr6rovoQAGSKfaqNTc4Wjy/ej0W3bfj+SeJ+Vi1VEGPrpY2
+         vxYxRS+JoEeBpqxRMlkcpzVm4THl5ycTTBOYc2yFNaatx8rgEfOXzdIIkl+h+OZvdSbz
+         Q3Qip24AHD23f8xdi3cBggjTTHNyw+xpDCKMEB6f3rqseZlUhdX4F/nud7pu/ELMYS/c
+         luVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVqNBUxasVTtdBLYjIRIHcnMRv94u5/AlkdJUJUcozmdRAL4ltkgI1Nt/AfL9/zoDywJHqx7rw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzR3RAGrtGNVHvBhjT/VVwqR7n1egAQyuRlCQHZ8ztzN4T42uqP
+	pBp8BijLjFyYqk1x43ReyfQS0HVWKsouNPBbQYRNHQf7L/XuGM5a3wY7wRq7+eOZbegYyaZkwcy
+	8HVLSyQ==
+X-Received: from pga7.prod.google.com ([2002:a05:6a02:4f87:b0:c6d:e340:fa67])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7283:b0:398:78c0:6dca
+ with SMTP id adf61e73a8af0-39878c0730amr2388124637.15.1772940187339; Sat, 07
+ Mar 2026 19:23:07 -0800 (PST)
+Date: Sun,  8 Mar 2026 03:22:53 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260306154322.1086539-1-edumazet@google.com>
-In-Reply-To: <20260306154322.1086539-1-edumazet@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <20260308032304.1841198-1-kuniyu@google.com>
+Subject: [PATCH v2 net 0/2] ipv6: Fix two GC issues with permanent routes
 From: Kuniyuki Iwashima <kuniyu@google.com>
-Date: Sat, 7 Mar 2026 19:11:31 -0800
-X-Gm-Features: AaiRm50R8vap_sWtLsO-TNIYEcQLs3dbXZrEzE_0JXzMNAqGwkBM6gyRmrJsZ54
-Message-ID: <CAAVpQUAi7EskEmPOMonde=cO_7ashkqk7+iTb0zJMmOpwDXwCQ@mail.gmail.com>
-Subject: Re: [PATCH net-next] tcp: avoid dst->ops->check() call in tcp_v{4,6}_do_rcv()
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Neal Cardwell <ncardwell@google.com>, netdev@vger.kernel.org, eric.dumazet@gmail.com
+To: David Ahern <dsahern@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Kui-Feng Lee <thinker.li@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
+	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Mar 6, 2026 at 7:43=E2=80=AFAM Eric Dumazet <edumazet@google.com> w=
-rote:
->
-> If incoming skb dst matches the socket cached one,
-> there is no need to call again dst->ops->check().
->
-> Network layer already validated the skb dst for us,
-> usually from tcp_v{4,6}_early_demux().
->
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+Patch 1 fixes the unbounded growth of tb6_gc_hlist due to
+permanent routes whose exception routes have all expired.
 
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Patch 2 fixes an issue where exception routes tied to
+permanent routes are not properly aged.
+
+
+Changes:
+  v2:
+    Patch 2: Fix build failure when CONFIG_IPV6=n (no net->ipv6 definition)
+
+  v1: https://lore.kernel.org/netdev/20260307024709.718395-1-kuniyu@google.com/
+
+
+Kuniyuki Iwashima (2):
+  ipv6: Remove permanent routes from tb6_gc_hlist when all exceptions
+    expire.
+  ipv6: Don't remove permanent routes with exceptions from tb6_gc_hlist.
+
+ include/net/ip6_fib.h | 19 ++++++++++++++++++-
+ net/ipv6/addrconf.c   |  4 ++--
+ net/ipv6/ip6_fib.c    | 15 +++++++++++++--
+ net/ipv6/route.c      |  2 +-
+ 4 files changed, 34 insertions(+), 6 deletions(-)
+
+-- 
+2.53.0.473.g4a7958ca14-goog
+
