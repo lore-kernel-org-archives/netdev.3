@@ -1,66 +1,86 @@
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E5B3C1970
-	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 17:37:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E8627FB3C
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 17:47:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773077864; cv=none; b=nj8/0lZo0JlRoIQwQl4FUbj1/BeCKfTwoepuwiQpLCp2UzCEBsFOKpHJ/qxAIYo4mEby4t/2HOyDpDukbwltB1BlEPRa5Qc1icMTlJ9WHt8B6cPSmbsRXx62elYbmqR0us3lAChQk3lsHl4GVYqlIaI2e7IXjbiu0NUpm6pmzno=
+	t=1773078435; cv=none; b=QSG9LUWM11BV3n/Xh1/tJQf2DJ9b6VQSalqL+5kFeV80qi9TiCo9bDUkesigylFzKFtfY5nD03NL2IOnp7qHMI4kNW0+4gpead+QfhWhlOZmmXfuCBb0t6p10AMl2msC9FrrX8QAThL9t+WRVYPDZ6ZolM/Oxs/iSMCPr0/tkYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773077864; c=relaxed/simple;
-	bh=ysL0+edsEeHwORWLhMDT+N4iqIQ5jciud+DCRLHgnOQ=;
+	s=arc-20240116; t=1773078435; c=relaxed/simple;
+	bh=amu4C3+KJMcTnDyB1qFK2SonJmt+nIs3bCqcU7NAbRM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WNLmtyz9XgseoFddkRWQyHgJsrlgFIiLVX4tOvk+zSRHFlqNuHfKCC1YfAg4LoLh6x3OdOSJp5v0Cko7oJb6ZdLjiccbE8H+HTypREPOtNAmHWyoDSaqoldKvfof7NSTpARmG2xd56r+93KE1NTXrwvuUUqTFRzsXtzLAMuBnhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=iWg1g/um; arc=none smtp.client-ip=209.85.217.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	 In-Reply-To:Content-Type; b=dQ5bNeHkNu1PuQtjdT2ePh9ekVA41jrg7fWfxLxKMKXh2wcqVB/PlRF9Y+QUO10qrTAlUbB29YMiH0qmiTLMIcvOPSIKxaek3vT1aMJCK40OUZtvWeWvWU0WKB1sn3pRw6cQLncj494BJeXzLw+IgFnZcXBNhaCvDCmLe5gg3Ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=JQcmXvXf; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CziwBWvK; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="iWg1g/um"
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-5ffc6a96665so1322161137.0
-        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 10:37:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="JQcmXvXf";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CziwBWvK"
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 629HBkkl859602
+	for <netdev@vger.kernel.org>; Mon, 9 Mar 2026 17:47:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	AEVmw5aPLupuoMRwd5bF0YyKWjnchf/iJOwFvIaVwxE=; b=JQcmXvXfIYmOhCDK
+	+xTle3Q1wpg6BVDtPRi3M89imTxtkUH6FY3wbG7KggMgUOfakyYysXUcQzYowFIH
+	iQLeW9NUjMB89wzVm52zGJGALZHc/1sPQdoARN7hXF94WdfXPv6cpW8mWnz/2Xg+
+	GZywC6p16ItDr+i9fHzyLrH45gSfvbGlQC71kxHywOC9rjl3d5k3fqCsk90gv+iY
+	PSgt/nw1teI8CeK+xllc/4lJdT+ehfbFGlkEE2hzEY4tXd/JAoDKTrTaVO63LPTb
+	5YPNNhz4Q8dTVwuzul53eTRlDvSOOELxlSJkuj2/LQGui/FlFBttg6SQPcrP+5qZ
+	YNSNNw==
+Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4csyhbrskj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 17:47:13 +0000 (GMT)
+Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8cd722c1a69so1478386785a.0
+        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 10:47:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1773077859; x=1773682659; darn=vger.kernel.org;
+        d=oss.qualcomm.com; s=google; t=1773078432; x=1773683232; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=W27N/znVmIDSI8tzJ4IRCYxWcWYYknXf+V7AqJORcfk=;
-        b=iWg1g/umiyF2fFuozSpkaW1uV/k9hqmO61A22Pttgp1UD60vbz6oO/WbQpNZyClDdx
-         CYRuGxnJerx3YSmof6xL7I3Om51aFUc9b15jlCdeIR/XpJAe6oKo35RFlg01A7Tu30wU
-         ZAVRFH0aXZtcVvw4r1lWclseU1S7lSHuqmiMu38wxvvj88CotDTIX0SQ8TYJ6GLd8uGt
-         kH5wfZZK6O1SPcN5G9RY9dfz0nCp/GCGm1DFHYVweot+2I/noJYSjutWCIJwQrMyJ3vM
-         veYMD7fCfZCD7lDXpib5377WDHDs2olTo0xPpRb7ljQUdvXyxVW/5A5EuXgNFK2yInZ0
-         zZJw==
+        bh=AEVmw5aPLupuoMRwd5bF0YyKWjnchf/iJOwFvIaVwxE=;
+        b=CziwBWvKa0DR/6RSfZId19E7zwFb1cWWoEc0cvJ47Mzz3QvCW/kr/v7gR/7CPDvv76
+         zkj28IEwK+17qjyvOEPcq0lMDflLCoFTxIDz5XaJePkZqNHwINdYUB/2fl2LH4qxuLjG
+         4i8aeGbRU0Bv95bSVrSY97fQHWJq677/dX3hUh3l9rL8UAXfJuH1uNa2uYX2K4UcKEUi
+         eFPAPwxWee3udSDrWOk1z0A1ANGwC95LKFwOuhOpQMrVCZlCO/eknckHZ63EjerDfPLo
+         F8Rq7Vs+1JGnTBEjVd0JY+HoTz7YBhjTJkMMZnKRxwJyA4JKNvRbvvH2/YSpG9diCQQd
+         xC4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773077859; x=1773682659;
+        d=1e100.net; s=20230601; t=1773078432; x=1773683232;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=W27N/znVmIDSI8tzJ4IRCYxWcWYYknXf+V7AqJORcfk=;
-        b=SqQ7StLf3YK9MaFoW5h9oD407BLTeO6mTfARWvFiFH3etqN2t51A6f3TqsJ8Z/0JD7
-         lKUuwFxsb6HXRcOUfE2HUkyx5s2TqU9KCysjPeqYIoOqoiwOiD2D5/VEGG8v3YTL0J48
-         V5ArstG5plc/Cb9K0c7bwKwRWfAiBzVfqRBuZ36VHt4Jpv0lTjk1syJnoQ1NS4QK5CJO
-         oPLtOVlaOE2/t4/ERvJkE1mo9+vrWOFdSFE/O8LOmwDdlqEB+1PF/d65mzJHSBT2pyo8
-         J5essTAzfQCFljbVQgB5RWZ7iyhUtVK9VBotinUtlT1aYeSZ2XnmnHQ3eR7+f0dhpJH8
-         mUfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWTwp17AjZ7Dxj6yPDQ1vUxF9w+sBXDpDc0BZyjRYaiY+T46bVZgyy3OG/l+zyBjAFrnPpPkDY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhnDDtrI6i58IZKeDvCLKWwnS1Ek9T8PL3To/Sb0aS+/hJs3xZ
-	vdk58HaLAaHY1BtvSeN0zYfVfMtp5ZfNFTYrAl7yRr0gEG/IRsOHPBf39CdyL3IZiQ==
-X-Gm-Gg: ATEYQzyFYYDqacgdAyhb5kRzXmzEELf79qlK5yvVeDQLDPPA0JApjX9kuwRHQbv3je/
-	NT6m9DRyuL/hgGgMvjDMMTbl6W79x2AuimrLjsfMSWfrd45tNWqXJHV53WuIH9MswKVG7lAQM3X
-	/3tqJvqQF6yWXvlFhtRt9cuKm81FRCJWEskWl5uY+nDdgxxwglP9/pQVadQIdxQIlYXyhKIwtL2
-	mf1qrnQxqfz2OHZJGvCy7HWQs/zFqCBe33JF5oRX/wK6d2ndou/hFAk/+7KEB12ULe0CqJJrFK1
-	uwEaMAN7v3PQC6UyXoLABvMGNghvXJc1PD7VV2kv3ovroQliG/fy987Ww6Cu7vkQPQB0BHhvZ7w
-	2PVLlE5aH98qDyaFf2UnKaopt7pKgO2YgQ4KlrI15p1B6/MuxD8pCySRK7zJz6w+lWnG0keQ5Lb
-	2tX2K0kT8dVM+O5q0gwEIyXjORVPxXLZM=
-X-Received: by 2002:a67:f343:0:b0:5ff:eae7:bd5d with SMTP id ada2fe7eead31-5ffeae7c791mr3068946137.22.1773077859249;
-        Mon, 09 Mar 2026 10:37:39 -0700 (PDT)
-Received: from [192.168.50.25] ([179.218.14.134])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-94e7b12e0a6sm9050337241.0.2026.03.09.10.37.35
+        bh=AEVmw5aPLupuoMRwd5bF0YyKWjnchf/iJOwFvIaVwxE=;
+        b=C+JXEmU8Hr/nJd/G2Ilo0pyxXy0lRzvLo4CAF/TVKkzPLBxDxrxRS3cG4+2lCZslFU
+         5XRZZw5ffpqeT43jAKI7NKLGRVFayTkaH0tbNOw1sMjOYO+dHxN+EXzHEbIjLlMJKxJJ
+         f7TtmWcyWiq126IM/s5msV4Z5EghJ6B35GtKmCMy56GM/3bW+iMX2pRZGaGLzB/hfyNO
+         cVmJa2/DWMEpha9wnhK4FrK9ulzCgIB3zgmsDGxnXbDBntrd8bLprV2X5xMTIXvatWRs
+         6rfEZTYBGahHbkS3Pe8WcOWZtwuoH5s/uzws711ZgbP6LRLCfIPQG//WOLI7o+5g1+DD
+         TcJw==
+X-Forwarded-Encrypted: i=1; AJvYcCWx4lOQcZMMITrLmpvwPuUtykSHYrSGtTrZgneSXCsOhNZX1TajDLl3Lc4bwSa21xTKIXwSzTk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywlg6JmktQ0hibRvVaoGrH9crDZOeZfKnlYlFOX6lY4IsktLxjn
+	T5/RPRfmskSan9bOrRqQacCUGSX0Yem+Nf5bwIFyvaGmv6PGs9Sgf02UJAErEBuH3U9FBfpCHD/
+	7mYuioPf6iRVWMxo5FmqEsSuvQTonyMMTa7AfvmhSDnu/xXI3iSY+5MpEam4=
+X-Gm-Gg: ATEYQzzoZa2pGBjgXdbBhUpOMFsnf3Z5RQsXCL3xMPKZ6tqK4BcxCBjMAOnSJv2xAwb
+	CVnCGdhhtEmT9x2A0ZhIq81ZdV59OU+9Qir/c4cf/Tln9LrPZo5he0WbrlqfucZE40p9svIe5SP
+	wYQRCqBoI03QvNU/6oLjaFPNDjdFcucQXjK1tOdNUUifF3yW6cDMqYUaUVrH/VT9k/e2c9hFuvd
+	c7FENU8vMzjRPxNmxw7nytEBAKSn+dnRPqqDQKPP/No1XeK1hCpEoANhVPTy9TLGG7LPdaGdEEh
+	bVLoGYj9QM756nQ9t4SGxwO2g2NYopm/R4GxEVsid2qsvZgiw9H9SExNhWcOErfOSZdC/P6V1x1
+	3jQ2p9JWiaAMjIXgkOZlibEbMwKzBv3C64xdNHvM4SccS5wOP
+X-Received: by 2002:a05:620a:1a8b:b0:8cd:8938:f015 with SMTP id af79cd13be357-8cd8938f423mr566094385a.51.1773078432603;
+        Mon, 09 Mar 2026 10:47:12 -0700 (PDT)
+X-Received: by 2002:a05:620a:1a8b:b0:8cd:8938:f015 with SMTP id af79cd13be357-8cd8938f423mr566091585a.51.1773078432132;
+        Mon, 09 Mar 2026 10:47:12 -0700 (PDT)
+Received: from [192.168.68.114] ([5.133.47.210])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-439dae56300sm27867521f8f.37.2026.03.09.10.47.10
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 09 Mar 2026 10:37:39 -0700 (PDT)
-Message-ID: <e9487cc0-38d2-4080-8633-60b0f2a61ca5@mojatatu.com>
-Date: Mon, 9 Mar 2026 14:37:33 -0300
+        Mon, 09 Mar 2026 10:47:11 -0700 (PDT)
+Message-ID: <36bfa98b-05fd-4788-afe5-f28751148889@oss.qualcomm.com>
+Date: Mon, 9 Mar 2026 17:47:09 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -68,59 +88,82 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net/sched: refine indirect call mitigation in
- tc_wrapper.h
-To: Eric Dumazet <edumazet@google.com>, "David S . Miller"
- <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>, Jamal Hadi Salim <jhs@mojatatu.com>,
- Jiri Pirko <jiri@resnulli.us>, netdev@vger.kernel.org,
- eric.dumazet@gmail.com, Victor Noguiera <victor@mojatatu.com>,
- Pedro Tammela <pctammela@mojatatu.ai>
-References: <20260307133601.3863071-1-edumazet@google.com>
+Subject: Re: [PATCH 3/7] dt-bindings: arm: qcom: add Arduino Monza, VENTUNOQ
+To: Krzysztof Kozlowski <krzk@kernel.org>, andersson@kernel.org,
+        konradybcio@kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+        conor+dt@kernel.org
+Cc: richardcochran@gmail.com, geert+renesas@glider.be, arnd@arndb.de,
+        dmitry.baryshkov@oss.qualcomm.com, ebiggers@kernel.org,
+        michal.simek@amd.com, luca.weiss@fairphone.com, sven@kernel.org,
+        prabhakar.mahadev-lad.rj@bp.renesas.com,
+        kuninori.morimoto.gx@renesas.com, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        netdev@vger.kernel.org, m.facchin@arduino.cc, r.mereu@arduino.cc,
+        loic.poulain@oss.qualcomm.com
+References: <20260309152420.1404349-1-srinivas.kandagatla@oss.qualcomm.com>
+ <20260309152420.1404349-4-srinivas.kandagatla@oss.qualcomm.com>
+ <82b23341-d0ac-4b44-b50d-ad0eb5509974@kernel.org>
 Content-Language: en-US
-From: Pedro Tammela <pctammela@mojatatu.com>
-In-Reply-To: <20260307133601.3863071-1-edumazet@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+In-Reply-To: <82b23341-d0ac-4b44-b50d-ad0eb5509974@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=Rcmdyltv c=1 sm=1 tr=0 ts=69af07a1 cx=c_pps
+ a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=ZsC4DHZuhs/kKio7QBcDoQ==:17
+ a=IkcTkHD0fZMA:10 a=Yq5XynenixoA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=rJkE3RaqiGZ5pbrm-msn:22
+ a=EUspDBNiAAAA:8 a=KQ5Aj9_w7GlCoQvhwioA:9 a=QEXdDO2ut3YA:10
+ a=PEH46H7Ffwr30OY-TuGO:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDE2MCBTYWx0ZWRfXyHZ3+cE2qrCP
+ Pu2omXajm0Lghre05t8NH9UqCNbbeHpSixgyaWSJ6uBqP1LxOV/kAOS8GOTO3ogEtwRPIun9RH/
+ tIR6ey9UxpiwxQKhnQtT82QSaIhHS8aXXZhuUcdBUp1t7CorcOaZOvFYmHmssPUhUMSnZoyqakH
+ paf6fR+ZsuUuyyc1WE0GGCW7g2fI5AYvvWHWvz92pbgdGrHrTX94u05GNbVmDBSXglIPHp0aYfM
+ /8WQfVrine9bVANEP1/uekqE5R1HkyiSX4KO02rdcDwnqx7tihzA3LftDCOLfeKYV3HoW4YMPnm
+ D0FuWAJCd1AQ5XcBZwJx/biQAjB7SBY32M8hzDmQEUf8IBAOqnPQKWt7dbpTXxmTNwId3Et672d
+ Cvq8odoV439As0gBdKmckqOA1EW5VLOxfxIClr0ctqIUXuqAZJPoDDa33JcViNDZuAHG6QMhdOl
+ kG9bgXveTYUsTajSpBQ==
+X-Proofpoint-GUID: MD7mO2XekTJhdQG6IRemQqc5ilExbjp7
+X-Proofpoint-ORIG-GUID: MD7mO2XekTJhdQG6IRemQqc5ilExbjp7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-03-09_04,2026-03-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 adultscore=0 suspectscore=0 spamscore=0 priorityscore=1501
+ impostorscore=0 clxscore=1015 bulkscore=0 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2602130000 definitions=main-2603090160
 
-On 07/03/2026 10:36, Eric Dumazet wrote:
-> Some modern cpus disable X86_FEATURE_RETPOLINE feature,
-> even if a direct call can still be beneficial.
+On 3/9/26 3:50 PM, Krzysztof Kozlowski wrote:
+> On 09/03/2026 16:24, Srinivas Kandagatla wrote:
+>> From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+>>
+>> Document Arduino monza, VENTUNOQ codename. It combines Monaco
+>> based SoM with STMicroelectronics STM32H5 microcontroller.
+>>
+>> Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+>> Co-developed-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+>> Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 > 
-> Even when IBRS is present, an indirect call is more expensive
-> than a direct one:
+> I wonder how two people were developing simple one compatible change and...
 > 
-> Direct Calls:
->    Compilers can perform powerful optimizations like inlining,
->    where the function body is directly inserted at the call site,
->    eliminating call overhead entirely.
+>> ---
+>>  Documentation/devicetree/bindings/arm/qcom.yaml | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/Documentation/devicetree/bindings/arm/qcom.yaml b/Documentation/devicetree/bindings/arm/qcom.yaml
+>> index 153664da91d9..2edef7e86175 100644
+>> --- a/Documentation/devicetree/bindings/arm/qcom.yaml
+>> +++ b/Documentation/devicetree/bindings/arm/qcom.yaml
+>> @@ -890,6 +890,7 @@ properties:
+>>            - enum:
+>>                - qcom,monaco-evk
+>>                - qcom,qcs8300-ride
+>> +              - arduino,monza
 > 
-> Indirect Calls:
->    Inlining is much harder, if not impossible, because the compiler
->    doesn't know the target function at compile time.
->    Techniques like Indirect Call Promotion can help by using
->    profile-guided optimization to turn frequently taken indirect calls
->    into conditional direct calls, but they still add complexity
->    and potential overhead compared to a truly direct call.
-> 
-> In this patch, I split tc_skip_wrapper in two different
-> static keys, one for tc_act() (tc_skip_wrapper_act)
-> and one for tc_classify() (tc_skip_wrapper_cls).
-> 
-> Then I enable the tc_skip_wrapper_cls only if the count
-> of builtin classifiers is above one.
-> 
-> I enable tc_skip_wrapper_act only it the count of builtin
-> actions is above one.
-> 
-> In our production kernels, we only have CONFIG_NET_CLS_BPF=y
-> and CONFIG_NET_ACT_BPF=y. Other are modules or are not compiled.
-> 
-> Tested on AMD Turin cpus, cls_bpf_classify() cost went
-> from 1% down to 0.18 %, and FDO will be able to inline
-> it in tcf_classify() for further gains.
-> 
-> Signed-off-by: Eric Dumazet <edumazet@google.com>
+> ... still place it in wrong order.
+Thanks Krzysztof, I should have looked at this carefully
 
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+> 
+> Best regards,
+> Krzysztof
+
