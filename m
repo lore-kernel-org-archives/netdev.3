@@ -1,82 +1,82 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECEAF3D34AF
-	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 14:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1383F3D34BA
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 14:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773067461; cv=none; b=GJ5eqxfXAjaO6fFV+nZNiSsHi8dAvqIBwBn0RYTuklYPq81vXJ2L+ImQ26shjx3HayNdtUjeWkmoGautZgvjLVCSeAlmC7V/cXiVGC1ew6oRbh5qPjY+7M3Dvfj6dSaISmjVqd3/wOyPU+Pnazw8gV3i1V84DR4RsYAlJOEDk1E=
+	t=1773067464; cv=none; b=I1M3xsucZ0tM6VvZN4URd3RI+4uEWRF8JqZNQeSGLirhHOrYrRooZw72wlst/QBVh8YxEbjIT9vVrzPuWKu9FcUVAD+Og6ToQzFPQlDzTj1yTKqBQcXJF56I2XtjVEzBLfbYNGbUivHWp+F8wRBLQOdlqW6YKgMdS/3wSeDoYFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773067461; c=relaxed/simple;
-	bh=H43BpKKQv430gofB8dP5yuDQW5zeecdtOs+oBquXcVI=;
+	s=arc-20240116; t=1773067464; c=relaxed/simple;
+	bh=jd6rVW63OQ8pSJgiCEr0oMytj4vQU6CpsRMW6qF2aOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQ1zZZ5GJt92h+6oVtbCNHjikEHv8nh6H7/1BqEcCnzYqE8X9BORq34aKRYC/NrVmzm3bFNU5a8j5+SEkQZgmSkDCurzvrwM7gB/iK1QncydIicunO/zm0ZYWgiJMmAMmHe3aMw1jVOsJKuEdJiE8TIZzkJ3yqvZYEET+KmbRqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KfHGMhiM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=AmEXCXrS; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version; b=lldr209wohLLuIPglaUEULuWt0e9X00S1gPElUxUwyp+HEGjsyN1jKVoEFJiXOzNRNk6Y9z+BwHkJGnHS+TbWvKpYmn3/VMEpsp8eCQFxhzjOi80JPUr+56xW/sDhZkaTwp0cfdx4ZUDR0+2AhbFjIJ9YQwSatpoQ7Jeb+ZknLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ez18DU5X; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VKYLLHyX; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KfHGMhiM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="AmEXCXrS"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ez18DU5X";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VKYLLHyX"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773067455;
+	s=mimecast20190719; t=1773067458;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=yvQ7RJ71CnrjOLAWM2Tq5Gtle5HL4cwnYoWZ22Co4Xc=;
-	b=KfHGMhiMjNAqhpc/0ECtfhOj9GxiZMCsE4RQq35fmbQlyTVbrORExzpNC1hWaicSscVcSH
-	ernnVT5REs2tnD8KrHvJBetqWxD4MiVz0P4EA6eDT7fs47da1gJrtaR2p0ZIEzJXkHgGF4
-	XeGmGoElj5ESt/A1lsTu4ISv3OzfGUs=
+	bh=ysZRQTRetlej5oepRv1ihh288NWXlq1+vjLjWCgbREs=;
+	b=Ez18DU5XqUQ6tyv+2B2sFx1kb4ppf5LpgT9zZm9slFVADqHt4LjDh192ki52arBa4bA9wF
+	rMMbvgqaeWL+Z6RiJrCmQ7k6G3JN2HHAXVKVuQ0Mr5pDcPLjyPZB1BHebira0Fk3e5D9Bi
+	yOplobCBVYLpyOFImhUyZ0VljZI83Vg=
 Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
  [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-594-wHG2JlmFOwSSnwuUjBHgsA-1; Mon, 09 Mar 2026 10:44:14 -0400
-X-MC-Unique: wHG2JlmFOwSSnwuUjBHgsA-1
-X-Mimecast-MFC-AGG-ID: wHG2JlmFOwSSnwuUjBHgsA_1773067453
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48531e8ae62so10980875e9.3
-        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 07:44:13 -0700 (PDT)
+ us-mta-374-3yop7etyN8iJJFymeyr8qg-1; Mon, 09 Mar 2026 10:44:17 -0400
+X-MC-Unique: 3yop7etyN8iJJFymeyr8qg-1
+X-Mimecast-MFC-AGG-ID: 3yop7etyN8iJJFymeyr8qg_1773067456
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-483786a09b1so4460945e9.3
+        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 07:44:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1773067452; x=1773672252; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1773067455; x=1773672255; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yvQ7RJ71CnrjOLAWM2Tq5Gtle5HL4cwnYoWZ22Co4Xc=;
-        b=AmEXCXrSlthQQgP83ytd56E5OEpL4yKvD6qQVTIQwka7jlxl7sSHccr3oMT14awFRJ
-         5kOLEs9pCEqVvsLIihmWk3wCse7vbs8N5OEeVSXZP4aBCNvLEqLF/sQffn4fhp3HmWo+
-         FR/vMhWijQNlekWZZm2QXM1DXn4Y7iblLTtffy3g2dy1BXaoMKnVkoInJleJtU/vpX8b
-         +Al5Os4wre/gOzV57m8huQ6hi7TTDApQHb1DLEh4uRPMiF5rQcRMAsp+JmWZTITHgai3
-         PLLKmDxItQnvWw/44I+79BoYEuYT1FkF70d2rcM6mZCDUAgPjwtuw7hC8ha2sx8a8UXt
-         6wqQ==
+        bh=ysZRQTRetlej5oepRv1ihh288NWXlq1+vjLjWCgbREs=;
+        b=VKYLLHyXmVZoXBVXSf06tfb2A9YiFwpSOUiorjVXHnQVZG85JEnoJBh0HIqhjj9Gs5
+         v5BRZZ6XdpCVotxhNzUrpAfYT6Q5XhmkCjXLqF0WT93n8xx42g2sZjA3ZJMFt4eMhRmk
+         3f09bVVnfU+WFovAw08UG2OUiaC2cBwJSYYZH770yiCpYFKYMYXoq+FEEjyQWvLmtczi
+         pM9BL74RRaHxe3yaOrj23Aanpf3doURszmbTivVoji2+wpISbcTHsrjVfIgBWH+UWp4X
+         N8SNswvQB7GBqsR9BOAasOuO9+8RcwizM4ZZrK9ZAJgFjv0qjVi459Y4bVb6GM2QhW3R
+         SMQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773067452; x=1773672252;
+        d=1e100.net; s=20230601; t=1773067455; x=1773672255;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=yvQ7RJ71CnrjOLAWM2Tq5Gtle5HL4cwnYoWZ22Co4Xc=;
-        b=AcZFkd4QVI6lqw56dttPT8aLQ7zL0Ni3O1MOAmiovMysbGL89uhORf6XP80r1VI0Oe
-         NX3S6R2f4r6sUv89/1TDBtD6Fqjj0+JtlqPM5jFj/+hnZJVo8x/yImcD/DkarTq2gdSL
-         BbWuNHzKZ5q3dZ4OcHD9+96q2LOVCO/04333ERmiGXHY24fIk4l1cfOznH1Fphicjz3c
-         S8APga3Xdi5+3gPhfCm+zCENPOevN4GKzQ6WzxjZXBUzVU0XPVImoY5jY6iwBxXicHlt
-         jrUkaIJqBhlY6ZZMtZTO1mtgzEYwrc8J+hJBbm6hGinr/DDGlF/7yBXoNZc7DIuEeUt8
-         2myw==
-X-Gm-Message-State: AOJu0YyyQgG1iRAy+Wm4yqbuUdmZYr8V86+7p6YaoELBOFnfgrzSU7Q2
-	iaq92OpJDynxn4BhhyD9+TPXreF2C0PR2RSvHudIeY0EKyepDlNdteMdv+YZ6N31L7kWFXgaqBo
-	wTDf8ws04Th0G7vu5Ehb8z/9nNpzT0RLi3uv1Ezo6yv6a42oLTPlQwnvhb1E7+wqBY9YG6iWhyX
-	4WQstv7sMdpZ/q4xR0cPIFyVQ7iOnuhmzlUhHpFMCz5g==
-X-Gm-Gg: ATEYQzyjxC2A/6dvuWZgS4XbIZwLLbkAm5DKwphKybgJsrYWTNT4HrzVwxJ9VWOjMEx
-	nx/Rm8/v3VZa6xNyLlo6ESoQ8Fq/rKHXrrpKRtIiTjnlPOm4qcYE0yq8dmCmj0M7DXzub2X05gR
-	P3uADvrWNd1WlmlYF5FvqQf76KtpcGMx8Cb6aZQEa8GqOd4IYj1MaDBZYQsG3oP5SmcQZcPNy82
-	Q6ob3dFVAMAjlvevnI3+4Kk1HZaOfIZYhXvlydwvxZMwH3thwDb/meI6RCLu9Qtjc2BI/m2e0SK
-	3EIcuEl3nNujGnRenNg2TEeO/C09Bzeek+cN61ePmwodhuZwp3/WnpZLoLV2RTcwjSIx43e8vyY
-	teiWSJ/1gDbvL6umXoUhyAyufxz3/F4GwnKW9CuxeTlq+Z+74FbUjeHK3Flg=
-X-Received: by 2002:a05:600c:3b8e:b0:485:35a4:939c with SMTP id 5b1f17b1804b1-48535a4a188mr99269495e9.29.1773067451573;
-        Mon, 09 Mar 2026 07:44:11 -0700 (PDT)
-X-Received: by 2002:a05:600c:3b8e:b0:485:35a4:939c with SMTP id 5b1f17b1804b1-48535a4a188mr99268525e9.29.1773067450870;
-        Mon, 09 Mar 2026 07:44:10 -0700 (PDT)
+        bh=ysZRQTRetlej5oepRv1ihh288NWXlq1+vjLjWCgbREs=;
+        b=UprU/qRoqjg92efsFsLdbrpRIrncR8VL2tPkyJvns40nM8pE3QDT8b2WhfMZaP5sgZ
+         6flv8Fq9w0NHAq/BwQECsV9ROdCJZFt4VWFrW7KNCatKt0r47BIHNiWjav9vFQZlMc4X
+         24EgjV7kfrj24/2ztv3+hGEmBXDPGswdoVUIJXJlBjWijMWsXkpOtJQnTGsJ3Nw5Y5wv
+         ZQ1FEKZRaDpo3JfU6Kp+EeXykYnC1mhAvNxIdTWzZmZCC+o5AhMkaVTRhPs5Vm8xDzbg
+         uJXYfzs6cCVPhq/qXkY442Zz1HKIZZAVKhcclZo51ci0Hku2bTpYee69/v8QJEAOmMQe
+         LZMw==
+X-Gm-Message-State: AOJu0YyG0hIjxHogm12fUgtEbl0GyGgvvpW+51p6duT7ndT0A6NQOeey
+	gQhtrxXWoNDM+YB+f1i6TYzI2YCaPfY6pcN4sFUuHeeUejqNh517feJsYf3bXVgJePuj43JUpcD
+	+jsZ158yynhDZWBN9fYeJuqKOD5j85P7UO3HTI/CSVUPliJF6X0ia/PLxTA4RTFdwcH9tQ509FU
+	Q4OVc8hUnoLKmYxaSXcYj6RLtty3zfYNeE5/sOhqBzBg==
+X-Gm-Gg: ATEYQzxVldGgrXf9kgmt68reGbrcBm9AdSLJkloXXV4f/lmQsdFXPy7rToUi4U1ZNjn
+	ZF5nOlX/ITD9CzXfGMYz0qMokZDaC0DWaMj0AvgODg8zc5Lx6It2EyBQcTlTxnK4JSvNJ+zFLI5
+	AXcBim2EyJOLbBVuchz/0fcJJ7OaQasnC0WQQo6BPBh6y/yZ2oglqBDPDNpAF+geMDoW6aLGXDR
+	Xz5QCr2sKiYlQ4VFEiPBpHbaA/T+G3xwywFe9OrdLG3XDdQ//9WmUMAXYCNxjX2BuFQwMk7JCUP
+	PrO5goA8KkPUWzj8cupSFoGZG6eENftrXk9Nqp8E1YF5HuyrafGr6zZmP13IkNt/N7oirRt9FNP
+	JYF+W9VghJeWsCtDIV/KG0E6yiEVgAVluZLOlu1vx0zu748sgz4L/kfVfRvk=
+X-Received: by 2002:a05:600c:64c7:b0:476:4efc:8ed4 with SMTP id 5b1f17b1804b1-48526923bbcmr176595345e9.11.1773067454754;
+        Mon, 09 Mar 2026 07:44:14 -0700 (PDT)
+X-Received: by 2002:a05:600c:64c7:b0:476:4efc:8ed4 with SMTP id 5b1f17b1804b1-48526923bbcmr176594765e9.11.1773067454179;
+        Mon, 09 Mar 2026 07:44:14 -0700 (PDT)
 Received: from localhost (net-93-146-155-42.cust.vodafonedsl.it. [93.146.155.42])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4853833094dsm130596095e9.13.2026.03.09.07.44.10
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4853833094dsm130604975e9.13.2026.03.09.07.44.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 09 Mar 2026 07:44:10 -0700 (PDT)
+        Mon, 09 Mar 2026 07:44:13 -0700 (PDT)
 From: Paolo Valerio <pvalerio@redhat.com>
 To: netdev@vger.kernel.org
 Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
@@ -88,9 +88,9 @@ Cc: Nicolas Ferre <nicolas.ferre@microchip.com>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Lorenzo Bianconi <lorenzo@kernel.org>,
 	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>
-Subject: [PATCH net-next v4 3/8] net: macb: Add page pool support handle multi-descriptor frame rx
-Date: Mon,  9 Mar 2026 15:43:48 +0100
-Message-ID: <20260309144353.1213770-4-pvalerio@redhat.com>
+Subject: [PATCH net-next v4 5/8] net: macb: make macb_tx_skb generic
+Date: Mon,  9 Mar 2026 15:43:50 +0100
+Message-ID: <20260309144353.1213770-6-pvalerio@redhat.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260309144353.1213770-1-pvalerio@redhat.com>
 References: <20260309144353.1213770-1-pvalerio@redhat.com>
@@ -102,646 +102,309 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Use the page pool allocator for the data buffers and enable skb
-recycling support, instead of relying on netdev_alloc_skb
-allocating the entire skb during the refill.
+The macb_tx_skb structure is renamed to macb_tx_buff with
+no functional changes.
 
-The patch also add support for receiving network frames that span
-multiple DMA descriptors in the Cadence MACB/GEM Ethernet driver.
-
-The patch removes the requirement that limited frame reception to
-a single descriptor (RX_SOF && RX_EOF), also avoiding potential
-contiguous multi-page allocation for large frames.
+This is a preparatory step for adding xdp xmit support.
 
 Signed-off-by: Paolo Valerio <pvalerio@redhat.com>
 ---
- drivers/net/ethernet/cadence/Kconfig     |   1 +
- drivers/net/ethernet/cadence/macb.h      |   5 +
- drivers/net/ethernet/cadence/macb_main.c | 412 ++++++++++++++++-------
- 3 files changed, 292 insertions(+), 126 deletions(-)
+ drivers/net/ethernet/cadence/macb.h      |  8 +-
+ drivers/net/ethernet/cadence/macb_main.c | 96 ++++++++++++------------
+ 2 files changed, 52 insertions(+), 52 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/Kconfig b/drivers/net/ethernet/cadence/Kconfig
-index 5b2a461dfd28..ae500f717433 100644
---- a/drivers/net/ethernet/cadence/Kconfig
-+++ b/drivers/net/ethernet/cadence/Kconfig
-@@ -25,6 +25,7 @@ config MACB
- 	depends on PTP_1588_CLOCK_OPTIONAL
- 	select PHYLINK
- 	select CRC32
-+	select PAGE_POOL
- 	help
- 	  The Cadence MACB ethernet interface is found on many Atmel AT32 and
- 	  AT91 parts.  This driver also supports the Cadence GEM (Gigabit
 diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
-index d84ec528c12f..2c6ba1b63aab 100644
+index 2c6ba1b63aab..1cc626088174 100644
 --- a/drivers/net/ethernet/cadence/macb.h
 +++ b/drivers/net/ethernet/cadence/macb.h
-@@ -14,6 +14,7 @@
- #include <linux/interrupt.h>
- #include <linux/phy/phy.h>
- #include <linux/workqueue.h>
-+#include <net/page_pool/helpers.h>
+@@ -965,7 +965,7 @@ struct macb_dma_desc_ptp {
+ /* Scaled PPM fraction */
+ #define PPM_FRACTION	16
  
- #define MACB_GREGS_NBR 16
- #define MACB_GREGS_VERSION 2
-@@ -1281,6 +1282,8 @@ struct macb_queue {
- 	void			*rx_buffers;
- 	struct napi_struct	napi_rx;
- 	struct queue_stats stats;
-+	struct page_pool	*page_pool;
-+	struct sk_buff		*skb;
- };
+-/* struct macb_tx_skb - data about an skb which is being transmitted
++/* struct macb_tx_buff - data about an skb which is being transmitted
+  * @skb: skb currently being transmitted, only set for the last buffer
+  *       of the frame
+  * @mapping: DMA address of the skb's fragment buffer
+@@ -973,7 +973,7 @@ struct macb_dma_desc_ptp {
+  * @mapped_as_page: true when buffer was mapped with skb_frag_dma_map(),
+  *                  false when buffer was mapped with dma_map_single()
+  */
+-struct macb_tx_skb {
++struct macb_tx_buff {
+ 	struct sk_buff		*skb;
+ 	dma_addr_t		mapping;
+ 	size_t			size;
+@@ -1267,7 +1267,7 @@ struct macb_queue {
+ 	spinlock_t		tx_ptr_lock;
+ 	unsigned int		tx_head, tx_tail;
+ 	struct macb_dma_desc	*tx_ring;
+-	struct macb_tx_skb	*tx_skb;
++	struct macb_tx_buff	*tx_buff;
+ 	dma_addr_t		tx_ring_dma;
+ 	struct work_struct	tx_error_task;
+ 	bool			txubr_pending;
+@@ -1345,7 +1345,7 @@ struct macb {
+ 	phy_interface_t		phy_interface;
  
- struct ethtool_rx_fs_item {
-@@ -1304,6 +1307,8 @@ struct macb {
- 	struct macb_dma_desc	*rx_ring_tieoff;
- 	dma_addr_t		rx_ring_tieoff_dma;
- 	size_t			rx_buffer_size;
-+	size_t			rx_headroom;
-+	unsigned int		rx_ip_align;
+ 	/* AT91RM9200 transmit queue (1 on wire + 1 queued) */
+-	struct macb_tx_skb	rm9200_txq[2];
++	struct macb_tx_buff	rm9200_txq[2];
+ 	unsigned int		max_tx_length;
  
- 	unsigned int		rx_ring_size;
- 	unsigned int		tx_ring_size;
+ 	u64			ethtool_stats[GEM_STATS_LEN + QUEUE_STATS_LEN * MACB_MAX_QUEUES];
 diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index dead0283512d..e295065b293b 100644
+index 5bf653e5879e..b0f2ba338b22 100644
 --- a/drivers/net/ethernet/cadence/macb_main.c
 +++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -1382,14 +1382,57 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
- 	return packets;
+@@ -157,10 +157,10 @@ static struct macb_dma_desc *macb_tx_desc(struct macb_queue *queue,
+ 	return &queue->tx_ring[index];
  }
  
--static int gem_rx_refill(struct macb_queue *queue)
-+static int gem_rx_data_len(struct macb *bp, struct macb_queue *queue,
-+			   u32 desc_ctrl, bool rx_sof, bool rx_eof)
-+{
-+	int len;
-+
-+	if (unlikely(!rx_sof && !queue->skb)) {
-+		if (net_ratelimit())
-+			netdev_err(bp->dev,
-+				   "Received non-starting frame while expecting a starting one\n");
-+		return -1;
-+	}
-+
-+	if (rx_eof) {
-+		len = desc_ctrl & bp->rx_frm_len_mask;
-+	} else {
-+		len = bp->rx_buffer_size;
-+		/* First frame on !RSC skips NET_IP_ALIGN */
-+		if (rx_sof)
-+			len -= bp->rx_ip_align;
-+	}
-+
-+	if (rx_eof && !rx_sof) {
-+		if (unlikely(queue->skb->len > len)) {
-+			if (net_ratelimit())
-+				netdev_err(bp->dev,
-+					   "Unexpected frame len: %d\n", len);
-+			return -1;
-+		}
-+
-+		len -= queue->skb->len;
-+	}
-+
-+	return len;
-+}
-+
-+static unsigned int gem_total_rx_buffer_size(struct macb *bp)
-+{
-+	return SKB_HEAD_ALIGN(bp->rx_buffer_size + NET_SKB_PAD);
-+}
-+
-+static int gem_rx_refill(struct macb_queue *queue, bool napi)
+-static struct macb_tx_skb *macb_tx_skb(struct macb_queue *queue,
+-				       unsigned int index)
++static struct macb_tx_buff *macb_tx_buff(struct macb_queue *queue,
++					 unsigned int index)
  {
--	unsigned int		entry;
--	struct sk_buff		*skb;
--	dma_addr_t		paddr;
- 	struct macb *bp = queue->bp;
- 	struct macb_dma_desc *desc;
-+	unsigned int entry;
-+	struct page *page;
-+	dma_addr_t paddr;
-+	gfp_t gfp_alloc;
- 	int err = 0;
-+	void *data;
-+	int offset;
+-	return &queue->tx_skb[macb_tx_ring_wrap(queue->bp, index)];
++	return &queue->tx_buff[macb_tx_ring_wrap(queue->bp, index)];
+ }
  
- 	while (CIRC_SPACE(queue->rx_prepared_head, queue->rx_tail,
- 			bp->rx_ring_size) > 0) {
-@@ -1401,25 +1444,26 @@ static int gem_rx_refill(struct macb_queue *queue)
- 		desc = macb_rx_desc(queue, entry);
+ static dma_addr_t macb_tx_dma(struct macb_queue *queue, unsigned int index)
+@@ -1098,21 +1098,21 @@ static int macb_halt_tx(struct macb *bp)
+ 					bp, TSR);
+ }
  
- 		if (!queue->rx_buff[entry]) {
--			/* allocate sk_buff for this free entry in ring */
--			skb = netdev_alloc_skb(bp->dev, bp->rx_buffer_size);
--			if (unlikely(!skb)) {
--				netdev_err(bp->dev,
--					   "Unable to allocate sk_buff\n");
-+			gfp_alloc = napi ? GFP_ATOMIC : GFP_KERNEL;
-+			page = page_pool_alloc_frag(queue->page_pool, &offset,
-+						    gem_total_rx_buffer_size(bp),
-+						    gfp_alloc | __GFP_NOWARN);
-+			if (!page) {
-+				if (net_ratelimit())
-+					netdev_err(bp->dev,
-+						   "Unable to allocate rx buffer\n");
- 				err = -ENOMEM;
- 				break;
+-static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budget)
++static void macb_tx_unmap(struct macb *bp, struct macb_tx_buff *tx_buff, int budget)
+ {
+-	if (tx_skb->mapping) {
+-		if (tx_skb->mapped_as_page)
+-			dma_unmap_page(&bp->pdev->dev, tx_skb->mapping,
+-				       tx_skb->size, DMA_TO_DEVICE);
++	if (tx_buff->mapping) {
++		if (tx_buff->mapped_as_page)
++			dma_unmap_page(&bp->pdev->dev, tx_buff->mapping,
++				       tx_buff->size, DMA_TO_DEVICE);
+ 		else
+-			dma_unmap_single(&bp->pdev->dev, tx_skb->mapping,
+-					 tx_skb->size, DMA_TO_DEVICE);
+-		tx_skb->mapping = 0;
++			dma_unmap_single(&bp->pdev->dev, tx_buff->mapping,
++					 tx_buff->size, DMA_TO_DEVICE);
++		tx_buff->mapping = 0;
+ 	}
+ 
+-	if (tx_skb->skb) {
+-		napi_consume_skb(tx_skb->skb, budget);
+-		tx_skb->skb = NULL;
++	if (tx_buff->skb) {
++		napi_consume_skb(tx_buff->skb, budget);
++		tx_buff->skb = NULL;
+ 	}
+ }
+ 
+@@ -1158,7 +1158,7 @@ static void macb_tx_error_task(struct work_struct *work)
+ 	u32			queue_index;
+ 	u32			packets = 0;
+ 	u32			bytes = 0;
+-	struct macb_tx_skb	*tx_skb;
++	struct macb_tx_buff	*tx_buff;
+ 	struct macb_dma_desc	*desc;
+ 	struct sk_buff		*skb;
+ 	unsigned int		tail;
+@@ -1198,16 +1198,16 @@ static void macb_tx_error_task(struct work_struct *work)
+ 
+ 		desc = macb_tx_desc(queue, tail);
+ 		ctrl = desc->ctrl;
+-		tx_skb = macb_tx_skb(queue, tail);
+-		skb = tx_skb->skb;
++		tx_buff = macb_tx_buff(queue, tail);
++		skb = tx_buff->skb;
+ 
+ 		if (ctrl & MACB_BIT(TX_USED)) {
+ 			/* skb is set for the last buffer of the frame */
+ 			while (!skb) {
+-				macb_tx_unmap(bp, tx_skb, 0);
++				macb_tx_unmap(bp, tx_buff, 0);
+ 				tail++;
+-				tx_skb = macb_tx_skb(queue, tail);
+-				skb = tx_skb->skb;
++				tx_buff = macb_tx_buff(queue, tail);
++				skb = tx_buff->skb;
  			}
  
--			/* now fill corresponding descriptor entry */
--			paddr = dma_map_single(&bp->pdev->dev, skb->data,
--					       bp->rx_buffer_size,
--					       DMA_FROM_DEVICE);
--			if (dma_mapping_error(&bp->pdev->dev, paddr)) {
--				dev_kfree_skb(skb);
--				break;
--			}
-+			paddr = page_pool_get_dma_addr(page) + NET_SKB_PAD + offset;
-+
-+			dma_sync_single_for_device(&bp->pdev->dev,
-+						   paddr, bp->rx_buffer_size,
-+						   page_pool_get_dma_dir(queue->page_pool));
- 
--			queue->rx_buff[entry] = skb;
-+			data = page_address(page) + offset;
-+			queue->rx_buff[entry] = data;
- 
- 			if (entry == bp->rx_ring_size - 1)
- 				paddr |= MACB_BIT(RX_WRAP);
-@@ -1429,20 +1473,6 @@ static int gem_rx_refill(struct macb_queue *queue)
- 			 */
- 			dma_wmb();
- 			macb_set_addr(bp, desc, paddr);
--
--			/* Properly align Ethernet header.
--			 *
--			 * Hardware can add dummy bytes if asked using the RBOF
--			 * field inside the NCFGR register. That feature isn't
--			 * available if hardware is RSC capable.
--			 *
--			 * We cannot fallback to doing the 2-byte shift before
--			 * DMA mapping because the address field does not allow
--			 * setting the low 2/3 bits.
--			 * It is 3 bits if HW_DMA_CAP_PTP, else 2 bits.
--			 */
--			if (!(bp->caps & MACB_CAPS_RSC))
--				skb_reserve(skb, NET_IP_ALIGN);
- 		} else {
- 			desc->ctrl = 0;
- 			dma_wmb();
-@@ -1483,17 +1513,21 @@ static void discard_partial_frame(struct macb_queue *queue, unsigned int begin,
- static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
- 		  int budget)
- {
-+	struct skb_shared_info *shinfo;
- 	struct macb *bp = queue->bp;
--	unsigned int		len;
--	unsigned int		entry;
--	struct sk_buff		*skb;
--	struct macb_dma_desc	*desc;
--	int			count = 0;
-+	struct macb_dma_desc *desc;
-+	unsigned int entry;
-+	struct page *page;
-+	void *buff_head;
-+	int count = 0;
-+	int data_len;
-+	int nr_frags;
-+
- 
- 	while (count < budget) {
--		u32 ctrl;
-+		bool rxused, first_frame, last_frame;
- 		dma_addr_t addr;
--		bool rxused;
-+		u32 ctrl;
- 
- 		entry = macb_rx_ring_wrap(bp, queue->rx_tail);
- 		desc = macb_rx_desc(queue, entry);
-@@ -1515,58 +1549,124 @@ static int gem_rx(struct macb_queue *queue, struct napi_struct *napi,
- 		queue->rx_tail++;
- 		count++;
- 
--		if (!(ctrl & MACB_BIT(RX_SOF) && ctrl & MACB_BIT(RX_EOF))) {
--			netdev_err(bp->dev,
--				   "not whole frame pointed by descriptor\n");
-+		buff_head = queue->rx_buff[entry];
-+		if (unlikely(!buff_head)) {
-+			if (net_ratelimit())
-+				netdev_err(bp->dev,
-+					   "inconsistent Rx descriptor chain\n");
- 			bp->dev->stats.rx_dropped++;
- 			queue->stats.rx_dropped++;
- 			break;
- 		}
--		skb = queue->rx_buff[entry];
--		if (unlikely(!skb)) {
--			netdev_err(bp->dev,
--				   "inconsistent Rx descriptor chain\n");
--			bp->dev->stats.rx_dropped++;
--			queue->stats.rx_dropped++;
--			break;
-+
-+		first_frame = ctrl & MACB_BIT(RX_SOF);
-+		last_frame = ctrl & MACB_BIT(RX_EOF);
-+
-+		data_len = gem_rx_data_len(bp, queue, ctrl, first_frame,
-+					   last_frame);
-+		if (data_len < 0)
-+			goto free_frags;
-+
-+		addr += first_frame ? bp->rx_ip_align : 0;
-+
-+		dma_sync_single_for_cpu(&bp->pdev->dev,	addr, data_len,
-+					page_pool_get_dma_dir(queue->page_pool));
-+
-+		if (first_frame) {
-+			if (unlikely(queue->skb)) {
-+				if (net_ratelimit())
-+					netdev_warn(bp->dev, "Previous packet incomplete\n");
-+				dev_kfree_skb(queue->skb);
-+				bp->dev->stats.rx_dropped++;
-+				queue->stats.rx_dropped++;
-+			}
-+
-+			queue->skb = napi_build_skb(buff_head, gem_total_rx_buffer_size(bp));
-+			if (unlikely(!queue->skb)) {
-+				if (net_ratelimit())
-+					netdev_err(bp->dev,
-+						   "Unable to allocate sk_buff\n");
-+				goto free_frags;
-+			}
-+
-+			/* Properly align Ethernet header.
-+			 *
-+			 * Hardware can add dummy bytes if asked using the RBOF
-+			 * field inside the NCFGR register. That feature isn't
-+			 * available if hardware is RSC capable.
-+			 *
-+			 * We cannot fallback to doing the 2-byte shift before
-+			 * DMA mapping because the address field does not allow
-+			 * setting the low 2/3 bits.
-+			 * It is 3 bits if HW_DMA_CAP_PTP, else 2 bits.
-+			 */
-+			skb_reserve(queue->skb, bp->rx_headroom);
-+			skb_mark_for_recycle(queue->skb);
-+			skb_put(queue->skb, data_len);
-+		} else {
-+			shinfo = skb_shinfo(queue->skb);
-+			page = virt_to_head_page(buff_head);
-+			nr_frags = shinfo->nr_frags;
-+
-+			if (unlikely(nr_frags >= ARRAY_SIZE(shinfo->frags)))
-+				goto free_frags;
-+
-+			skb_add_rx_frag(queue->skb, nr_frags, page,
-+					buff_head - page_address(page) + NET_SKB_PAD,
-+					data_len, gem_total_rx_buffer_size(bp));
- 		}
-+
- 		/* now everything is ready for receiving packet */
- 		queue->rx_buff[entry] = NULL;
--		len = ctrl & bp->rx_frm_len_mask;
--
--		netdev_vdbg(bp->dev, "gem_rx %u (len %u)\n", entry, len);
- 
--		skb_put(skb, len);
--		dma_unmap_single(&bp->pdev->dev, addr,
--				 bp->rx_buffer_size, DMA_FROM_DEVICE);
-+		netdev_vdbg(bp->dev, "%s %u (len %u)\n", __func__, entry, data_len);
- 
--		skb->protocol = eth_type_trans(skb, bp->dev);
--		skb_checksum_none_assert(skb);
--		if (bp->dev->features & NETIF_F_RXCSUM &&
--		    !(bp->dev->flags & IFF_PROMISC) &&
--		    GEM_BFEXT(RX_CSUM, ctrl) & GEM_RX_CSUM_CHECKED_MASK)
--			skb->ip_summed = CHECKSUM_UNNECESSARY;
-+		if (last_frame) {
-+			bp->dev->stats.rx_packets++;
-+			queue->stats.rx_packets++;
-+			bp->dev->stats.rx_bytes += queue->skb->len;
-+			queue->stats.rx_bytes += queue->skb->len;
- 
--		bp->dev->stats.rx_packets++;
--		queue->stats.rx_packets++;
--		bp->dev->stats.rx_bytes += skb->len;
--		queue->stats.rx_bytes += skb->len;
--
--		gem_ptp_do_rxstamp(bp, skb, desc);
-+			queue->skb->protocol = eth_type_trans(queue->skb, bp->dev);
-+			skb_checksum_none_assert(queue->skb);
-+			if (bp->dev->features & NETIF_F_RXCSUM &&
-+			    !(bp->dev->flags & IFF_PROMISC) &&
-+			    GEM_BFEXT(RX_CSUM, ctrl) & GEM_RX_CSUM_CHECKED_MASK)
-+				queue->skb->ip_summed = CHECKSUM_UNNECESSARY;
- 
-+			gem_ptp_do_rxstamp(bp, queue->skb, desc);
- #if defined(DEBUG) && defined(VERBOSE_DEBUG)
--		netdev_vdbg(bp->dev, "received skb of length %u, csum: %08x\n",
--			    skb->len, skb->csum);
--		print_hex_dump(KERN_DEBUG, " mac: ", DUMP_PREFIX_ADDRESS, 16, 1,
--			       skb_mac_header(skb), 16, true);
--		print_hex_dump(KERN_DEBUG, "data: ", DUMP_PREFIX_ADDRESS, 16, 1,
--			       skb->data, 32, true);
-+			netdev_vdbg(bp->dev, "received skb of length %u, csum: %08x\n",
-+				    queue->skb->len, queue->skb->csum);
-+			print_hex_dump_debug(" mac: ", DUMP_PREFIX_ADDRESS, 16, 1,
-+					     skb_mac_header(queue->skb), 16, true);
-+			print_hex_dump_debug("data: ", DUMP_PREFIX_ADDRESS, 16, 1,
-+					     queue->skb->data, 32, true);
- #endif
- 
--		napi_gro_receive(napi, skb);
-+			napi_gro_receive(napi, queue->skb);
-+			queue->skb = NULL;
-+		}
-+
-+		continue;
-+
-+free_frags:
-+		if (queue->skb) {
-+			dev_kfree_skb(queue->skb);
-+			queue->skb = NULL;
-+		}
-+
-+		if (buff_head)
-+			page_pool_put_full_page(queue->page_pool,
-+						virt_to_head_page(buff_head),
-+						false);
-+
-+		bp->dev->stats.rx_dropped++;
-+		queue->stats.rx_dropped++;
-+		queue->rx_buff[entry] = NULL;
- 	}
- 
--	gem_rx_refill(queue);
-+	gem_rx_refill(queue, true);
- 
- 	return count;
- }
-@@ -2501,12 +2601,22 @@ static netdev_tx_t macb_start_xmit(struct sk_buff *skb, struct net_device *dev)
- 	return ret;
- }
- 
--static void macb_init_rx_buffer_size(struct macb *bp, size_t size)
-+static void macb_init_rx_buffer_size(struct macb *bp, unsigned int mtu)
- {
-+	unsigned int overhead;
-+	size_t size;
-+
- 	if (!macb_is_gem(bp)) {
- 		bp->rx_buffer_size = MACB_RX_BUFFER_SIZE;
- 	} else {
--		bp->rx_buffer_size = size;
-+		size = mtu + ETH_HLEN + ETH_FCS_LEN;
-+		bp->rx_buffer_size = SKB_DATA_ALIGN(size + bp->rx_ip_align);
-+		if (gem_total_rx_buffer_size(bp) > PAGE_SIZE) {
-+			overhead = bp->rx_headroom +
-+				SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+			bp->rx_buffer_size = rounddown(PAGE_SIZE - overhead,
-+						       RX_BUFFER_MULTIPLE);
-+		}
- 
- 		if (bp->rx_buffer_size % RX_BUFFER_MULTIPLE) {
- 			netdev_dbg(bp->dev,
-@@ -2517,17 +2627,16 @@ static void macb_init_rx_buffer_size(struct macb *bp, size_t size)
- 		}
- 	}
- 
--	netdev_dbg(bp->dev, "mtu [%u] rx_buffer_size [%zu]\n",
--		   bp->dev->mtu, bp->rx_buffer_size);
-+	netdev_dbg(bp->dev, "mtu [%u] rx_buffer_size [%zu] rx_headroom [%zu] total [%u]\n",
-+		   bp->dev->mtu, bp->rx_buffer_size, bp->rx_headroom,
-+		   gem_total_rx_buffer_size(bp));
- }
- 
- static void gem_free_rx_buffers(struct macb *bp)
- {
--	struct sk_buff		*skb;
--	struct macb_dma_desc	*desc;
- 	struct macb_queue *queue;
--	dma_addr_t		addr;
- 	unsigned int q;
-+	void *data;
- 	int i;
- 
- 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
-@@ -2535,22 +2644,25 @@ static void gem_free_rx_buffers(struct macb *bp)
- 			continue;
- 
- 		for (i = 0; i < bp->rx_ring_size; i++) {
--			skb = queue->rx_buff[i];
--
--			if (!skb)
-+			data = queue->rx_buff[i];
-+			if (!data)
- 				continue;
- 
--			desc = macb_rx_desc(queue, i);
--			addr = macb_get_addr(bp, desc);
-+			page_pool_put_full_page(queue->page_pool,
-+						virt_to_head_page(data),
-+						false);
-+			queue->rx_buff[i] = NULL;
-+		}
- 
--			dma_unmap_single(&bp->pdev->dev, addr, bp->rx_buffer_size,
--					DMA_FROM_DEVICE);
--			dev_kfree_skb_any(skb);
--			skb = NULL;
-+		if (queue->skb) {
-+			dev_kfree_skb(queue->skb);
-+			queue->skb = NULL;
+ 			/* ctrl still refers to the first buffer descriptor
+@@ -1236,7 +1236,7 @@ static void macb_tx_error_task(struct work_struct *work)
+ 			desc->ctrl = ctrl | MACB_BIT(TX_USED);
  		}
  
- 		kfree(queue->rx_buff);
- 		queue->rx_buff = NULL;
-+		page_pool_destroy(queue->page_pool);
-+		queue->page_pool = NULL;
+-		macb_tx_unmap(bp, tx_skb, 0);
++		macb_tx_unmap(bp, tx_buff, 0);
  	}
- }
  
-@@ -2612,13 +2724,12 @@ static int gem_alloc_rx_buffers(struct macb *bp)
- 	int size;
+ 	netdev_tx_completed_queue(netdev_get_tx_queue(bp->dev, queue_index),
+@@ -1314,7 +1314,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 	spin_lock_irqsave(&queue->tx_ptr_lock, flags);
+ 	head = queue->tx_head;
+ 	for (tail = queue->tx_tail; tail != head && packets < budget; tail++) {
+-		struct macb_tx_skb	*tx_skb;
++		struct macb_tx_buff	*tx_buff;
+ 		struct sk_buff		*skb;
+ 		struct macb_dma_desc	*desc;
+ 		u32			ctrl;
+@@ -1334,8 +1334,8 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
  
- 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
--		size = bp->rx_ring_size * sizeof(struct sk_buff *);
-+		size = bp->rx_ring_size * sizeof(*queue->rx_buff);
- 		queue->rx_buff = kzalloc(size, GFP_KERNEL);
- 		if (!queue->rx_buff)
- 			return -ENOMEM;
- 		else
--			netdev_dbg(bp->dev,
--				   "Allocated %d RX buff entries at %p\n",
-+			netdev_dbg(bp->dev, "Allocated %d RX buff entries at %p\n",
- 				   bp->rx_ring_size, queue->rx_buff);
+ 		/* Process all buffers of the current transmitted frame */
+ 		for (;; tail++) {
+-			tx_skb = macb_tx_skb(queue, tail);
+-			skb = tx_skb->skb;
++			tx_buff = macb_tx_buff(queue, tail);
++			skb = tx_buff->skb;
+ 
+ 			/* First, update TX stats if needed */
+ 			if (skb) {
+@@ -1355,7 +1355,7 @@ static int macb_tx_complete(struct macb_queue *queue, int budget)
+ 			}
+ 
+ 			/* Now we can safely release resources */
+-			macb_tx_unmap(bp, tx_skb, budget);
++			macb_tx_unmap(bp, tx_buff, budget);
+ 
+ 			/* skb is set only for the last buffer of the frame.
+ 			 * WARNING: at this point skb has been freed by
+@@ -2233,8 +2233,8 @@ static unsigned int macb_tx_map(struct macb *bp,
+ 	unsigned int f, nr_frags = skb_shinfo(skb)->nr_frags;
+ 	unsigned int len, i, tx_head = queue->tx_head;
+ 	u32 ctrl, lso_ctrl = 0, seq_ctrl = 0;
++	struct macb_tx_buff *tx_buff = NULL;
+ 	unsigned int eof = 1, mss_mfs = 0;
+-	struct macb_tx_skb *tx_skb = NULL;
+ 	struct macb_dma_desc *desc;
+ 	unsigned int offset, size;
+ 	dma_addr_t mapping;
+@@ -2257,7 +2257,7 @@ static unsigned int macb_tx_map(struct macb *bp,
+ 
+ 	offset = 0;
+ 	while (len) {
+-		tx_skb = macb_tx_skb(queue, tx_head);
++		tx_buff = macb_tx_buff(queue, tx_head);
+ 
+ 		mapping = dma_map_single(&bp->pdev->dev,
+ 					 skb->data + offset,
+@@ -2266,10 +2266,10 @@ static unsigned int macb_tx_map(struct macb *bp,
+ 			goto dma_error;
+ 
+ 		/* Save info to properly release resources */
+-		tx_skb->skb = NULL;
+-		tx_skb->mapping = mapping;
+-		tx_skb->size = size;
+-		tx_skb->mapped_as_page = false;
++		tx_buff->skb = NULL;
++		tx_buff->mapping = mapping;
++		tx_buff->size = size;
++		tx_buff->mapped_as_page = false;
+ 
+ 		len -= size;
+ 		offset += size;
+@@ -2286,7 +2286,7 @@ static unsigned int macb_tx_map(struct macb *bp,
+ 		offset = 0;
+ 		while (len) {
+ 			size = umin(len, bp->max_tx_length);
+-			tx_skb = macb_tx_skb(queue, tx_head);
++			tx_buff = macb_tx_buff(queue, tx_head);
+ 
+ 			mapping = skb_frag_dma_map(&bp->pdev->dev, frag,
+ 						   offset, size, DMA_TO_DEVICE);
+@@ -2294,10 +2294,10 @@ static unsigned int macb_tx_map(struct macb *bp,
+ 				goto dma_error;
+ 
+ 			/* Save info to properly release resources */
+-			tx_skb->skb = NULL;
+-			tx_skb->mapping = mapping;
+-			tx_skb->size = size;
+-			tx_skb->mapped_as_page = true;
++			tx_buff->skb = NULL;
++			tx_buff->mapping = mapping;
++			tx_buff->size = size;
++			tx_buff->mapped_as_page = true;
+ 
+ 			len -= size;
+ 			offset += size;
+@@ -2306,13 +2306,13 @@ static unsigned int macb_tx_map(struct macb *bp,
  	}
- 	return 0;
-@@ -2706,6 +2817,40 @@ static int macb_alloc_consistent(struct macb *bp)
- 	return -ENOMEM;
- }
  
-+static int gem_create_page_pool(struct macb_queue *queue)
-+{
-+	struct page_pool_params pp_params = {
-+		.order = 0,
-+		.flags = PP_FLAG_DMA_MAP,
-+		.pool_size = queue->bp->rx_ring_size,
-+		.nid = NUMA_NO_NODE,
-+		.dma_dir = DMA_FROM_DEVICE,
-+		.dev = &queue->bp->pdev->dev,
-+		.netdev = queue->bp->dev,
-+		.napi = &queue->napi_rx,
-+		.max_len = PAGE_SIZE,
-+	};
-+	struct page_pool *pool;
-+	int err = 0;
-+
-+	/* This can happen in the case of HRESP error.
-+	 * Do nothing as page pool is already existing.
-+	 */
-+	if (queue->page_pool)
-+		return err;
-+
-+	pool = page_pool_create(&pp_params);
-+	if (IS_ERR(pool)) {
-+		netdev_err(queue->bp->dev, "cannot create rx page pool\n");
-+		err = PTR_ERR(pool);
-+		pool = NULL;
-+	}
-+
-+	queue->page_pool = pool;
-+
-+	return err;
-+}
-+
- static void macb_init_tieoff(struct macb *bp)
- {
- 	struct macb_dma_desc *desc = bp->rx_ring_tieoff;
-@@ -2741,12 +2886,19 @@ static int gem_init_rings(struct macb *bp, bool fail_early)
- 		queue->rx_tail = 0;
- 		queue->rx_prepared_head = 0;
+ 	/* Should never happen */
+-	if (unlikely(!tx_skb)) {
++	if (unlikely(!tx_buff)) {
+ 		netdev_err(bp->dev, "BUG! empty skb!\n");
+ 		return 0;
+ 	}
  
-+		/* This is a hard failure. In case of HRESP error
-+		 * recovery we always reuse the existing page pool.
-+		 */
-+		last_err = gem_create_page_pool(queue);
-+		if (last_err)
-+			break;
-+
- 		/* We get called in two cases:
- 		 *  - open: we can propagate alloc errors (so fail early),
- 		 *  - HRESP error: cannot propagate, we attempt to reinit
- 		 *    all queues in case of failure.
+ 	/* This is the last buffer of the frame: save socket buffer */
+-	tx_skb->skb = skb;
++	tx_buff->skb = skb;
+ 
+ 	/* Update TX ring: update buffer descriptors in reverse order
+ 	 * to avoid race condition
+@@ -2343,10 +2343,10 @@ static unsigned int macb_tx_map(struct macb *bp,
+ 
+ 	do {
+ 		i--;
+-		tx_skb = macb_tx_skb(queue, i);
++		tx_buff = macb_tx_buff(queue, i);
+ 		desc = macb_tx_desc(queue, i);
+ 
+-		ctrl = (u32)tx_skb->size;
++		ctrl = (u32)tx_buff->size;
+ 		if (eof) {
+ 			ctrl |= MACB_BIT(TX_LAST);
+ 			eof = 0;
+@@ -2369,7 +2369,7 @@ static unsigned int macb_tx_map(struct macb *bp,
+ 			ctrl |= MACB_BF(MSS_MFS, mss_mfs);
+ 
+ 		/* Set TX buffer descriptor */
+-		macb_set_addr(bp, desc, tx_skb->mapping);
++		macb_set_addr(bp, desc, tx_buff->mapping);
+ 		/* desc->addr must be visible to hardware before clearing
+ 		 * 'TX_USED' bit in desc->ctrl.
  		 */
--		err = gem_rx_refill(queue);
-+		err = gem_rx_refill(queue, false);
- 		if (err) {
- 			last_err = err;
- 			if (fail_early)
-@@ -2890,39 +3042,40 @@ static void macb_configure_dma(struct macb *bp)
- 	unsigned int q;
- 	u32 dmacfg;
+@@ -2385,9 +2385,9 @@ static unsigned int macb_tx_map(struct macb *bp,
+ 	netdev_err(bp->dev, "TX DMA map failed\n");
  
--	buffer_size = bp->rx_buffer_size / RX_BUFFER_MULTIPLE;
--	if (macb_is_gem(bp)) {
--		dmacfg = gem_readl(bp, DMACFG) & ~GEM_BF(RXBS, -1L);
--		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
--			if (q)
--				queue_writel(queue, RBQS, buffer_size);
--			else
--				dmacfg |= GEM_BF(RXBS, buffer_size);
--		}
--		if (bp->dma_burst_length)
--			dmacfg = GEM_BFINS(FBLDO, bp->dma_burst_length, dmacfg);
--		dmacfg |= GEM_BIT(TXPBMS) | GEM_BF(RXBMS, -1L);
--		dmacfg &= ~GEM_BIT(ENDIA_PKT);
-+	if (!macb_is_gem((bp)))
-+		return;
+ 	for (i = queue->tx_head; i != tx_head; i++) {
+-		tx_skb = macb_tx_skb(queue, i);
++		tx_buff = macb_tx_buff(queue, i);
  
--		if (bp->native_io)
--			dmacfg &= ~GEM_BIT(ENDIA_DESC);
-+	buffer_size = bp->rx_buffer_size / RX_BUFFER_MULTIPLE;
-+	dmacfg = gem_readl(bp, DMACFG) & ~GEM_BF(RXBS, -1L);
-+	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
-+		if (q)
-+			queue_writel(queue, RBQS, buffer_size);
- 		else
--			dmacfg |= GEM_BIT(ENDIA_DESC); /* CPU in big endian */
-+			dmacfg |= GEM_BF(RXBS, buffer_size);
-+	}
-+	if (bp->dma_burst_length)
-+		dmacfg = GEM_BFINS(FBLDO, bp->dma_burst_length, dmacfg);
-+	dmacfg |= GEM_BIT(TXPBMS) | GEM_BF(RXBMS, -1L);
-+	dmacfg &= ~GEM_BIT(ENDIA_PKT);
+-		macb_tx_unmap(bp, tx_skb, 0);
++		macb_tx_unmap(bp, tx_buff, 0);
+ 	}
  
--		if (bp->dev->features & NETIF_F_HW_CSUM)
--			dmacfg |= GEM_BIT(TXCOEN);
--		else
--			dmacfg &= ~GEM_BIT(TXCOEN);
-+	if (bp->native_io)
-+		dmacfg &= ~GEM_BIT(ENDIA_DESC);
-+	else
-+		dmacfg |= GEM_BIT(ENDIA_DESC); /* CPU in big endian */
+ 	return -ENOMEM;
+@@ -2710,8 +2710,8 @@ static void macb_free_consistent(struct macb *bp)
+ 	dma_free_coherent(dev, size, bp->queues[0].rx_ring, bp->queues[0].rx_ring_dma);
  
--		dmacfg &= ~GEM_BIT(ADDR64);
--		if (macb_dma64(bp))
--			dmacfg |= GEM_BIT(ADDR64);
--		if (macb_dma_ptp(bp))
--			dmacfg |= GEM_BIT(RXEXT) | GEM_BIT(TXEXT);
--		netdev_dbg(bp->dev, "Cadence configure DMA with 0x%08x\n",
--			   dmacfg);
--		gem_writel(bp, DMACFG, dmacfg);
--	}
-+	if (bp->dev->features & NETIF_F_HW_CSUM)
-+		dmacfg |= GEM_BIT(TXCOEN);
-+	else
-+		dmacfg &= ~GEM_BIT(TXCOEN);
-+
-+	dmacfg &= ~GEM_BIT(ADDR64);
-+	if (macb_dma64(bp))
-+		dmacfg |= GEM_BIT(ADDR64);
-+	if (macb_dma_ptp(bp))
-+		dmacfg |= GEM_BIT(RXEXT) | GEM_BIT(TXEXT);
-+	netdev_dbg(bp->dev, "Cadence configure DMA with 0x%08x\n",
-+		   dmacfg);
-+	gem_writel(bp, DMACFG, dmacfg);
- }
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+-		kfree(queue->tx_skb);
+-		queue->tx_skb = NULL;
++		kfree(queue->tx_buff);
++		queue->tx_buff = NULL;
+ 		queue->tx_ring = NULL;
+ 		queue->rx_ring = NULL;
+ 	}
+@@ -2789,9 +2789,9 @@ static int macb_alloc_consistent(struct macb *bp)
+ 		queue->rx_ring = rx + macb_rx_ring_size_per_queue(bp) * q;
+ 		queue->rx_ring_dma = rx_dma + macb_rx_ring_size_per_queue(bp) * q;
  
- static void macb_init_hw(struct macb *bp)
-@@ -3085,7 +3238,6 @@ static void macb_set_rx_mode(struct net_device *dev)
+-		size = bp->tx_ring_size * sizeof(struct macb_tx_skb);
+-		queue->tx_skb = kmalloc(size, GFP_KERNEL);
+-		if (!queue->tx_skb)
++		size = bp->tx_ring_size * sizeof(struct macb_tx_buff);
++		queue->tx_buff = kmalloc(size, GFP_KERNEL);
++		if (!queue->tx_buff)
+ 			goto out_err;
+ 	}
  
- static int macb_open(struct net_device *dev)
- {
--	size_t bufsz = dev->mtu + ETH_HLEN + ETH_FCS_LEN + NET_IP_ALIGN;
- 	struct macb *bp = netdev_priv(dev);
- 	struct macb_queue *queue;
- 	unsigned int q;
-@@ -3098,7 +3250,7 @@ static int macb_open(struct net_device *dev)
- 		return err;
- 
- 	/* RX buffers initialization */
--	macb_init_rx_buffer_size(bp, bufsz);
-+	macb_init_rx_buffer_size(bp, dev->mtu);
- 
- 	err = macb_alloc_consistent(bp);
- 	if (err) {
-@@ -5778,6 +5930,14 @@ static int macb_probe(struct platform_device *pdev)
- 	if (err)
- 		goto err_out_phy_exit;
- 
-+	if (macb_is_gem(bp)) {
-+		bp->rx_headroom = NET_SKB_PAD;
-+		if (!(bp->caps & MACB_CAPS_RSC)) {
-+			bp->rx_ip_align = NET_IP_ALIGN;
-+			bp->rx_headroom += NET_IP_ALIGN;
-+		}
-+	}
-+
- 	netif_carrier_off(dev);
- 
- 	err = register_netdev(dev);
 -- 
 2.53.0
 
