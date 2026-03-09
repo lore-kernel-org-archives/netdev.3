@@ -1,116 +1,159 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11FC274641
-	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 14:10:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773065460; cv=none; b=aAUguHWecKp7bsGy0rr+n98j3hlZgAeb9xg1Hx9N6ZW85++irGik+1zJdHZixazGp3vAabZI4+FrhvtKsJGQih58eLT9yyssVmdEc2btehWPfKJHtdvyH3lidE5bCriasn19ArpYflBVRoxEeHjopd5zAVchQVqxs5Dp2FoEKOI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773065460; c=relaxed/simple;
-	bh=06y9i1blvXKT+0qakd+4jlyn/5w+VGLU+tv5laJuacE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XkJJCrVzsl1aBD/0KNrhCZUEeWMbBr8YyeHELL7f/d47XFatZN0nebUWM1RwQTht6SQxLoo7YN5D7MgsVBZetq9KU8qaWffLxCzdKyME4vldAuHI09xnop8D1QxZw75l2nV6ANir/hFV+prXN+JAlJa9BDDResQxQjdKrTn4iEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V9XABxvJ; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8DB3A784E
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 14:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773065501; cv=pass; b=WlNT8a+cAR2h0NcxkFSOvPJm60/qoqM2X1WcZJyHX+UEWTUyRZSJahAdGX3719xI41qTAR88T0uzDYZR4J4pi/f7FxD3id2enhev+gvDefP+kyPBEBCd4P3wYT0UyTntEvvAzm8IJYrISbN1iLTODGAhtaZzWqy43R2gggLT1nU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773065501; c=relaxed/simple;
+	bh=Gmt2IhSQ+DdRbn0HHDY1QXYzL1n46E4i1+XgIiFgEGw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MzrkANcBOYZx9kCmbOcpchez2wB83fcyzD/dhZXGHWDsZhX8gN0ZyH23oGdOo/yAUGjBuE8sW6axi3H+KMihg+z+lNdO5KCTRtu90QEvfjA8h51PYNwL7W9MbiiyidTTtyA4zef/1yhANrdotAnTeqiJX+DqFodtDOMuQ58RLM4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O/P4MUiV; arc=pass smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V9XABxvJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1773065458; x=1804601458;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=06y9i1blvXKT+0qakd+4jlyn/5w+VGLU+tv5laJuacE=;
-  b=V9XABxvJelLVvE0Jxu7IrSz2FSLtO/AoQjPRZkd/uzmpSSi84JqhNsrg
-   f3YQYF5D9+f7VZqjdFeQnVtw8+lxeKI008B2ZuKgROAui74oAU7u7ffgq
-   etFkThrA321cwXypcLiTSUzHfdoY5pR9WjswXQwUZDeWZ92AEqZWBStm3
-   fcs7QOOA0jXvwIceFTGbOFFYGxZubG/iO+ts1XsRGel2viODCsXQsOg0K
-   GAW1/9v2QDJs3xDgujoRgnX7KoKIBJniaXvTxRcgtuaq0etH6/HyHwIwf
-   LTTV5qdis93k/rHYQkiD7C+x9TzA/93n2H3uhg0iyJonxcYeLp8+4l2rJ
-   A==;
-X-CSE-ConnectionGUID: 39iiSQA3TqKgymw1CB5zRA==
-X-CSE-MsgGUID: lNixy9MhTEOo4mObqhst/g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="99558355"
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
-   d="scan'208";a="99558355"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 07:10:57 -0700
-X-CSE-ConnectionGUID: EvA5GxjlRc+V+c7JNax0gg==
-X-CSE-MsgGUID: blDyQXPBTiiuXBnTw85/ew==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
-   d="scan'208";a="224463312"
-Received: from pae-d-dell-r7525-263.igk.intel.com ([172.28.191.240])
-  by fmviesa005.fm.intel.com with ESMTP; 09 Mar 2026 07:10:56 -0700
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>
-Subject: [PATCH iwl-next] i40e: PTP: set supported flags in ptp_clock_info
-Date: Mon,  9 Mar 2026 15:11:51 +0100
-Message-ID: <20260309141220.343224-1-przemyslaw.korba@intel.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O/P4MUiV"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-5069b3e0c66so165000691cf.1
+        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 07:11:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773065500; cv=none;
+        d=google.com; s=arc-20240605;
+        b=T5XLsTcYP31LTZC6hwpIzOCY177GixOD465SIEVTvKJ2LGRgbXKRw2HI9doKu+CNQO
+         8s8binEkzw3Dd9n5G6yqW23iO6gynkInq+6VQgLUzEm8aW2VVJ+d4pw+GTYsxbBe4mDR
+         9bNWXRx7xeYJlrMT1XMhlf8g/YBnv+uKlRrqDRWEoY+4qVzSg/Fl5Dyj/09eSNiM2HOF
+         XuVfeNuApE9PwZKbus11E6ObVmL9loZPf6aLN0z42/a4eMu1UxqCeYtSLIQsLv6mfCnZ
+         xlxxsKipZAWDOiQJxkcJMycgJVRYDSqB0xiPpg6kPw4dtIHq4UM+XT5A+d+cB3AllO/V
+         7kIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=7Irjwyp9vJHQvlP1QVUxqnj5+cpvLgsfPnq/IDud2XM=;
+        fh=1tWPLyKQRrJHpdO6ah1QjAwm7s9yr9j5OJcl1CCRU0s=;
+        b=cy/uoffdfLC2zxyGaG/AXDTbgM7s6L+MPfAE5wv/v+PbnQQl100pzCsk0urq5j+zTH
+         mHhvza/G/5JI+N9FlGUztm7IEfXvwdgvJPd+I9Q/RyyucmithynjaHH6RvbHBXpHfdSr
+         bB59RI9e95ngIuxGDHPZ61sE/IHcRg1zFfEFivXbhcevzE1YoHUmtscSs0xCbWe2GhJ/
+         re5+pB/75HEGJY1la13NxBpwokR4AIaQg9/BEnvHxwp/UzqQgTolqbGJgovRIa0gaXkA
+         M9biJPZu3XEBP8pA9deFX9LmeH1oUF0IR5XzyaeWH4wlldCVJdc26lRfb6Ak7AYD47oo
+         WaWg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773065500; x=1773670300; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7Irjwyp9vJHQvlP1QVUxqnj5+cpvLgsfPnq/IDud2XM=;
+        b=O/P4MUiVnyC+fSxzVfbXIOxq5IqOKmyeagM2WYAc5L56N0BRAvKygB1B1aGFyj4ljO
+         OX5ai8s1PR7ohd0z+VwfpUaoC93Be9uQR8g1tdjPiU9NV5jOzqg3BwJK//fhEScb2F2K
+         xpWcO0G2pQDDiYsFW/PHsfQFpMWusY830Kq43l6r4pUzfFkJvtTmCBN/t3Wlw7PCn907
+         lSs7/23qzoWLTu6qqgdYogn3FhFJ4/zT+dCTOT8MqA8B3UcJ99nRf1T0drhcqK/5kKWe
+         ZdMQo/I7xMP/Jw4ouAZ1+NiBYqbrKgtCo+E+w2x9C7PJ7eX4qQn6PgY6pEupn1/wfAkd
+         HYtw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773065500; x=1773670300;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=7Irjwyp9vJHQvlP1QVUxqnj5+cpvLgsfPnq/IDud2XM=;
+        b=YStKLe3q4Iaiim7YP7XOXqs+rIvlnhIQefXouKgzxzzDIq1N29EdGp9a8cABJxl+7O
+         qGhfERAVBtjTxlHIKLbNGqRHOnb0fP9c3hHylDpToGUe1BUjvQxcGtWIusYmfxgK7/jR
+         BWJjgBgD5I1PdQT/OofBk693SlcCn4o/HU4vucIVEQ5tI1Chp7bUm9+lreOXSymbUuV2
+         8Tmlw1oeufEiKqvCLIPXh0NtNjVMUX10hQTyjARYHjQIL7dz8h4d29Wdjd8ByyclE1dP
+         nDjq8M3BuAoAWBvfQBmbNQEZlNi8Hl/D9bWOef99BEl70Jg/hHGwUcm34CGHJVwiwGDP
+         5xNQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXcAu7Woi1X07wrlIw2BQ8HoLCZi252K4zF74ZGhacrF+h0vahnFUemlGARoVmBuhQ8P26BYCM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGDi3GWkJDoZc9jgKi8bqtZQtPu9W6TUMedNJP5e3VbU6Uu90D
+	ShtUbMzb7egr6dP0kbDTcs1esO2Pr9JlYZu9SrQjxehpJrQpd/i5JloFPGesKp0QoatgOIFUPn6
+	qYW+ZwN3w89+lVPJMZMettnYcwrcQod8FrapCbsZq
+X-Gm-Gg: ATEYQzzgZGUVOeKA1ISZpd9egSkRmGzVY6SQRQTgXFLIaJiDO8dCNGZGftc2gZd3Iu+
+	PkkEuoFQHrOusWeR0gqdHYvwvYbhCFF5pzIdYokby4PQ6gidbnXnFtP7lQ2Gn7VmBpXP4Dw/rii
+	z+dQ8jPrGB0N+D3hqH1vdjy7wQMuLw9qp6SgCSBPoYKj5SXdoeNSzzvMKQB+2g11Gytxl5CYbdo
+	SttSkRaiBs+ir5o9+u63B/TNJfeYmAgK+/BKW4H+pa3x+0G++sbvxHGEBsY9N3U06HE4lOa54ye
+	Yp960LE=
+X-Received: by 2002:a05:622a:1303:b0:509:1554:77cf with SMTP id
+ d75a77b69052e-5091554794bmr55116321cf.20.1773065499025; Mon, 09 Mar 2026
+ 07:11:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260309122055.1226507-1-edumazet@google.com> <20260309134355.GC606826@noisy.programming.kicks-ass.net>
+ <CANn89iKmqhKH6pUkRiSG3u6gtpDaPBTVj739dgf3dh8uZHX3HA@mail.gmail.com> <CANpmjNMi-J3E=ZjLOnZVzs6iNDpTxUik6G07fbph5TvyjDpSTw@mail.gmail.com>
+In-Reply-To: <CANpmjNMi-J3E=ZjLOnZVzs6iNDpTxUik6G07fbph5TvyjDpSTw@mail.gmail.com>
+From: Eric Dumazet <edumazet@google.com>
+Date: Mon, 9 Mar 2026 15:11:27 +0100
+X-Gm-Features: AaiRm52coincgTVRjdxMGQFm8vHsd-Ce_5smV2zWc6qadZF7ma4i88OpIBMZhAg
+Message-ID: <CANn89iJ=uDWXTUiJwTA9mXA1FLUJarH0AFKrN_7meeMTu4mkSw@mail.gmail.com>
+Subject: Re: [PATCH] locking/local_lock: Reduce local_[un]lock_nested_bh() overhead
+To: Marco Elver <elver@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	linux-kernel <linux-kernel@vger.kernel.org>, Eric Dumazet <eric.dumazet@gmail.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since upstream commit d9f3e9ecc456 ("net: ptp: introduce
-.supported_perout_flags to ptp_clock_info") and commit 7c571ac57d9d ("net:
-ptp: introduce .supported_extts_flags to ptp_clock_info"), kernel core now
-requires that the driver set the .supported_perout_flags and
-.supported_extts_flags fields in PTP clock info. Otherwise, the additional
-flags will be rejected by the kernel automatically.
+On Mon, Mar 9, 2026 at 3:06=E2=80=AFPM Marco Elver <elver@google.com> wrote=
+:
+>
+> On Mon, 9 Mar 2026 at 14:49, Eric Dumazet <edumazet@google.com> wrote:
+> >
+> > On Mon, Mar 9, 2026 at 2:44=E2=80=AFPM Peter Zijlstra <peterz@infradead=
+.org> wrote:
+> > >
+> > > On Mon, Mar 09, 2026 at 12:20:55PM +0000, Eric Dumazet wrote:
+> > >
+> > > > diff --git a/include/linux/local_lock.h b/include/linux/local_lock.=
+h
+> > > > index b8830148a8591c17c22e36470fbc13ff5c354955..40c2da54a0b720265be=
+7b6327e0922a49befd8fc 100644
+> > > > --- a/include/linux/local_lock.h
+> > > > +++ b/include/linux/local_lock.h
+> > > > @@ -94,12 +94,19 @@ DEFINE_LOCK_GUARD_1(local_lock_irqsave, local_l=
+ock_t __percpu,
+> > > >                   local_unlock_irqrestore(_T->lock, _T->flags),
+> > > >                   unsigned long flags)
+> > > >
+> > > > +#if defined(WARN_CONTEXT_ANALYSIS) || defined(CONFIG_PREEMPT_RT) |=
+| \
+> > > > +    defined(CONFIG_DEBUG_LOCK_ALLOC)
+> > > >  #define local_lock_nested_bh(_lock)                          \
+> > > >       __local_lock_nested_bh(__this_cpu_local_lock(_lock))
+> > > >
+> > > >  #define local_unlock_nested_bh(_lock)                             =
+   \
+> > > >       __local_unlock_nested_bh(__this_cpu_local_lock(_lock))
+> > > >
+> > > > +#else
+> > > > +static inline void local_lock_nested_bh(local_lock_t *_lock) {}
+> > > > +static inline void local_unlock_nested_bh(local_lock_t *__lock) {}
+> > > > +#endif
+> > >
+> > > This isn't going to work; WARN_CONTEXT_ANALYSIS is unconditional on
+> > > clang >=3D 22.1
+> > >
+> > > How come that this isn't DCEd properly?
+> >
+> > BTW I wonder if the following WARN_CONTEXT_ANALYSIS should be
+> > CONFIG_WARN_CONTEXT_ANALYSIS
+> >
+> > include/linux/local_lock_internal.h:318:#if defined(WARN_CONTEXT_ANALYS=
+IS)
+> > include/linux/local_lock_internal.h:337:#else  /* WARN_CONTEXT_ANALYSIS=
+ */
+> > include/linux/local_lock_internal.h:339:#endif /* WARN_CONTEXT_ANALYSIS=
+ */
+>
+> Even if enabled in Kconfig, our make rules set -DWARN_CONTEXT_ANALYSIS
+> for translation units where we actually want to compile with
+> -Wthread-safety. So WARN_CONTEXT_ANALYSIS should be ok.
+>
+> But for !CONFIG_PREEMPT_RT and !CONFIG_DEBUG_LOCK_ALLOC builds, where
+> we build with context analysis (which is purely static, no dynamic
+> overhead) we should be able to get the same better codegen as well.
 
-i40e does not support perout flags, so reject any request with perout
-flags.
-
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
----
- drivers/net/ethernet/intel/i40e/i40e_ptp.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-index 7bcea7d9720f..8d7958692235 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
-@@ -601,10 +601,18 @@ static int i40e_ptp_feature_enable(struct ptp_clock_info *ptp,
- 	/* TODO: Implement flags handling for EXTTS and PEROUT */
- 	switch (rq->type) {
- 	case PTP_CLK_REQ_EXTTS:
-+		if (rq->extts.flags & ~(PTP_ENABLE_FEATURE |
-+					PTP_RISING_EDGE |
-+					PTP_FALLING_EDGE |
-+					PTP_STRICT_FLAGS))
-+			return -EOPNOTSUPP;
-+
- 		func = PTP_PF_EXTTS;
- 		chan = rq->extts.index;
- 		break;
- 	case PTP_CLK_REQ_PEROUT:
-+		if (rq->perout.flags)
-+			return -EOPNOTSUPP;
- 		func = PTP_PF_PEROUT;
- 		chan = rq->perout.index;
- 		break;
-@@ -1340,7 +1348,9 @@ static int i40e_init_pin_config(struct i40e_pf *pf)
- 	pf->ptp_caps.n_ext_ts = 2;
- 	pf->ptp_caps.pps = 1;
- 	pf->ptp_caps.n_per_out = 2;
--
-+	pf->ptp_caps.supported_extts_flags = PTP_RISING_EDGE |
-+					     PTP_FALLING_EDGE |
-+					     PTP_STRICT_FLAGS;
- 	pf->ptp_caps.pin_config = kzalloc_objs(*pf->ptp_caps.pin_config,
- 					       pf->ptp_caps.n_pins);
- 	if (!pf->ptp_caps.pin_config)
-
-base-commit: d5fbc991435eac7a1ead7cd2ddb5a743528718bb
--- 
-2.43.0
-
+Ah ok, a bit confusing ....
