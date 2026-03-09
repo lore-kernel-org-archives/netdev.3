@@ -1,223 +1,111 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91CDD33C18B;
-	Mon,  9 Mar 2026 21:21:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C007344056;
+	Mon,  9 Mar 2026 21:22:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773091320; cv=none; b=ZtrR1BKvPMMRep5wy2m1Actj42HniZF5blgef8Yx0SniAnGo9hEF+MhL8bD5Hz/5l9SRzRzHHHRSDVgLFVqElji/e2sACcGiVO3Zm52BJDHx7+QhJnY+koJfsWvIL9773FmKZhYBM/YjJttK0et8nF4606ItG6JR6UMaCBXyqV4=
+	t=1773091334; cv=none; b=Wksg1DOLNM1nXxsfjxgLdjDs8QI4d40bMEQKcBIiijkup+Aca6Ya/fVH+Ch6/uUgF/GIFojQGRkCET3Szw2JYjJDM/yjIN78d1e7+HcmYWU0hOkAS6cpVI239gk9UVxsxF0ZbVG6fRcdhRjLqjku6crMMaI52Tz4y/y1kDf11VQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773091320; c=relaxed/simple;
-	bh=k14W8w7kq2m9e99Lv1gKIw4BrO6iuzmuPK4RgYTfpNI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PU+kjABZQL5AG2MnBmbanIe5L53zHmf02kAQ8BwatnwStQ+GwuiWduVN8tgAFS/x2hegxSB1qEDvbpAG+LvH5jodmS1R5WOsQW4WSOob1Zrva7isNnGgXBbgIsQs8oLCmfT0EUuHiHXyQkEz4eym4i/PUKjWUDqXqhxE/dIsDzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=RAAoLQef; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="RAAoLQef"
-Received: by linux.microsoft.com (Postfix, from userid 1006)
-	id 6BB7320B7001; Mon,  9 Mar 2026 14:21:59 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6BB7320B7001
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1773091319;
-	bh=yKmLaS+MDTUl0J7jpvzKqcd8ps7dyEEAoJV0XwrsNN0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RAAoLQefjik7gZQUNCr7XOAnoMCwsMBofA0pzEVPhWS8/cvsr3Q3LFNpJ6K7bQx4v
-	 xmdEzaps+4JHkv+i1KQl2iEkO11UNLe5gQxNG8UGNmg6e/pikhE6tQBBwzViaZpY/B
-	 ISTDY6MLnpyQMeL9UnHMB9UtFNYrkZehesuHdBLc=
-From: Haiyang Zhang <haiyangz@linux.microsoft.com>
-To: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	s=arc-20240116; t=1773091334; c=relaxed/simple;
+	bh=d90gpbBPC3PluRAYfjB6TkGxh4phVO9cEThq8OWp0l4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GEFelsmCSCZH6SPViFnn1zbtfYLbAruTmWHdOhva3Z0kPPqo/ENjW/dbOfOBM6OBlcnl3BFdc+/R2Bexh71nL+DR8nmhCVyukqNA+LvUd1G54bmz7HzPCTAHVptF1D/3d+VllWTYyCirkKW6rRRYThqITy76V/rjdePehPj0bMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 5A05E60D39; Mon, 09 Mar 2026 22:22:10 +0100 (CET)
+Date: Mon, 9 Mar 2026 22:22:10 +0100
+From: Florian Westphal <fw@strlen.de>
+To: Eric Woudstra <ericwouds@gmail.com>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	Simon Horman <horms@kernel.org>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Dipayaan Roy <dipayanroy@linux.microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Kees Cook <kees@kernel.org>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Aditya Garg <gargaditya@linux.microsoft.com>,
-	Breno Leitao <leitao@debian.org>,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Cc: paulros@microsoft.com
-Subject: [PATCH net-next,V4, 3/3] net: mana: Add ethtool counters for RX CQEs in coalesced type
-Date: Mon,  9 Mar 2026 14:20:45 -0700
-Message-ID: <20260309212106.764156-4-haiyangz@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20260309212106.764156-1-haiyangz@linux.microsoft.com>
-References: <20260309212106.764156-1-haiyangz@linux.microsoft.com>
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH v2 nf] netfilter: nf_flow_table_ip: Introduce
+ nf_flow_vlan_push()
+Message-ID: <aa86Ai1FRuJzthEF@strlen.de>
+References: <20260227162955.122471-1-ericwouds@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260227162955.122471-1-ericwouds@gmail.com>
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+Eric Woudstra <ericwouds@gmail.com> wrote:
 
-For RX CQEs with type CQE_RX_COALESCED_4, to measure the coalescing
-efficiency, add counters to count how many contains 2, 3, 4 packets
-respectively.
-Also, add a counter for the error case of first packet with length == 0.
+Hi Eric
 
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 21 ++++++++++++++++++-
- .../ethernet/microsoft/mana/mana_ethtool.c    | 15 +++++++++++--
- include/net/mana/mana.h                       |  9 +++++---
- 3 files changed, 39 insertions(+), 6 deletions(-)
+> With double vlan tagged packets in the fastpath, getting the error:
+> 
+> skb_vlan_push got skb with skb->data not at mac header (offset 18)
+> 
+> Introduce nf_flow_vlan_push(), that can correctly push the inner vlan
+> in the fastpath. It is closedly modelled on existing nf_flow_pppoe_push()
+> 
+> Fixes: c653d5a78f34 ("netfilter: flowtable: inline vlan encapsulation in xmit path")
+> Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+  
+> +static int nf_flow_vlan_push(struct sk_buff *skb, __be16 proto, u16 id)
+> +{
+> +	if (skb_vlan_tag_present(skb)) {
+> +		struct vlan_hdr *vhdr;
+> +
+> +		if (skb_cow_head(skb, VLAN_HLEN))
+> +			return -1;
+> +
+> +		__skb_push(skb, VLAN_HLEN);
+> +		skb_reset_network_header(skb);
+> +
+> +		vhdr = (struct vlan_hdr *)(skb->data);
+> +		vhdr->h_vlan_TCI = htons(id);
+> +		vhdr->h_vlan_encapsulated_proto = skb->protocol;
+> +		skb->protocol = proto;
+> +	} else {
+> +		__vlan_hwaccel_put_tag(skb, proto, id);
+> +	}
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index fa30046dcd3d..85f7a56d0d90 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -2148,11 +2148,23 @@ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
- 		old_buf = NULL;
- 		pktlen = oob->ppi[i].pkt_len;
- 		if (pktlen == 0) {
--			if (i == 0)
-+			/* Collect coalesced CQE count based on packets processed.
-+			 * Coalesced CQEs have at least 2 packets, so index is i - 2.
-+			 */
-+			if (i > 1) {
-+				u64_stats_update_begin(&rxq->stats.syncp);
-+				rxq->stats.coalesced_cqe[i - 2]++;
-+				u64_stats_update_end(&rxq->stats.syncp);
-+			} else if (i == 0) {
-+				/* Error case stat */
-+				u64_stats_update_begin(&rxq->stats.syncp);
-+				rxq->stats.pkt_len0_err++;
-+				u64_stats_update_end(&rxq->stats.syncp);
- 				netdev_err_once(
- 					ndev,
- 					"RX pkt len=0, rq=%u, cq=%u, rxobj=0x%llx\n",
- 					rxq->gdma_id, cq->gdma_id, rxq->rxobj);
-+			}
- 			break;
- 		}
- 
-@@ -2175,6 +2187,13 @@ static void mana_process_rx_cqe(struct mana_rxq *rxq, struct mana_cq *cq,
- 		if (!coalesced)
- 			break;
- 	}
-+
-+	/* Coalesced CQE with all 4 packets */
-+	if (coalesced && i == MANA_RXCOMP_OOB_NUM_PPI) {
-+		u64_stats_update_begin(&rxq->stats.syncp);
-+		rxq->stats.coalesced_cqe[MANA_RXCOMP_OOB_NUM_PPI - 2]++;
-+		u64_stats_update_end(&rxq->stats.syncp);
-+	}
- }
- 
- static void mana_poll_rx_cq(struct mana_cq *cq)
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-index 4b234b16e57a..6a4b42fe0944 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_ethtool.c
-@@ -149,7 +149,7 @@ static void mana_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
- {
- 	struct mana_port_context *apc = netdev_priv(ndev);
- 	unsigned int num_queues = apc->num_queues;
--	int i;
-+	int i, j;
- 
- 	if (stringset != ETH_SS_STATS)
- 		return;
-@@ -168,6 +168,9 @@ static void mana_get_strings(struct net_device *ndev, u32 stringset, u8 *data)
- 		ethtool_sprintf(&data, "rx_%d_xdp_drop", i);
- 		ethtool_sprintf(&data, "rx_%d_xdp_tx", i);
- 		ethtool_sprintf(&data, "rx_%d_xdp_redirect", i);
-+		ethtool_sprintf(&data, "rx_%d_pkt_len0_err", i);
-+		for (j = 0; j < MANA_RXCOMP_OOB_NUM_PPI - 1; j++)
-+			ethtool_sprintf(&data, "rx_%d_coalesced_cqe_%d", i, j + 2);
- 	}
- 
- 	for (i = 0; i < num_queues; i++) {
-@@ -201,6 +204,8 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 	u64 xdp_xmit;
- 	u64 xdp_drop;
- 	u64 xdp_tx;
-+	u64 pkt_len0_err;
-+	u64 coalesced_cqe[MANA_RXCOMP_OOB_NUM_PPI - 1];
- 	u64 tso_packets;
- 	u64 tso_bytes;
- 	u64 tso_inner_packets;
-@@ -209,7 +214,7 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 	u64 short_pkt_fmt;
- 	u64 csum_partial;
- 	u64 mana_map_err;
--	int q, i = 0;
-+	int q, i = 0, j;
- 
- 	if (!apc->port_is_up)
- 		return;
-@@ -239,6 +244,9 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 			xdp_drop = rx_stats->xdp_drop;
- 			xdp_tx = rx_stats->xdp_tx;
- 			xdp_redirect = rx_stats->xdp_redirect;
-+			pkt_len0_err = rx_stats->pkt_len0_err;
-+			for (j = 0; j < MANA_RXCOMP_OOB_NUM_PPI - 1; j++)
-+				coalesced_cqe[j] = rx_stats->coalesced_cqe[j];
- 		} while (u64_stats_fetch_retry(&rx_stats->syncp, start));
- 
- 		data[i++] = packets;
-@@ -246,6 +254,9 @@ static void mana_get_ethtool_stats(struct net_device *ndev,
- 		data[i++] = xdp_drop;
- 		data[i++] = xdp_tx;
- 		data[i++] = xdp_redirect;
-+		data[i++] = pkt_len0_err;
-+		for (j = 0; j < MANA_RXCOMP_OOB_NUM_PPI - 1; j++)
-+			data[i++] = coalesced_cqe[j];
- 	}
- 
- 	for (q = 0; q < num_queues; q++) {
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index a7f89e7ddc56..3336688fed5e 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -61,8 +61,11 @@ enum TRI_STATE {
- 
- #define MAX_PORTS_IN_MANA_DEV 256
- 
-+/* Maximum number of packets per coalesced CQE */
-+#define MANA_RXCOMP_OOB_NUM_PPI 4
-+
- /* Update this count whenever the respective structures are changed */
--#define MANA_STATS_RX_COUNT 5
-+#define MANA_STATS_RX_COUNT (6 + MANA_RXCOMP_OOB_NUM_PPI - 1)
- #define MANA_STATS_TX_COUNT 11
- 
- #define MANA_RX_FRAG_ALIGNMENT 64
-@@ -73,6 +76,8 @@ struct mana_stats_rx {
- 	u64 xdp_drop;
- 	u64 xdp_tx;
- 	u64 xdp_redirect;
-+	u64 pkt_len0_err;
-+	u64 coalesced_cqe[MANA_RXCOMP_OOB_NUM_PPI - 1];
- 	struct u64_stats_sync syncp;
- };
- 
-@@ -227,8 +232,6 @@ struct mana_rxcomp_perpkt_info {
- 	u32 pkt_hash;
- }; /* HW DATA */
- 
--#define MANA_RXCOMP_OOB_NUM_PPI 4
--
- /* Receive completion OOB */
- struct mana_rxcomp_oob {
- 	struct mana_cqe_header cqe_hdr;
--- 
-2.34.1
+I did not apply this because I'm not sure if this preserves correct tag
+order.  Can you clarify?
 
+Lets consider vlan-offload-doesn't-exist case.
+
+First loop pushes vlan tag 1, we get:
+
+  [vlan1][inet]
+
+2nd items pushes vlan tag 2, we get:
+  [vlan2][vlan1][inet]
+
+Now lets consider with-offload.  We have one tag only, so we get 1 skb with hwaccel
+tag in the sk_buff.  This is fine, HW will insert it for us.
+
+But now lets consider two tags:
+
+First loop pushes vlan1, we get the vlan1 tag in sk_buff vlan info.
+Packet is: [inet].
+
+2nd loop pushes vlan2, we get:
+	[vlan2][inet].
+
+Now, when packet is transmitted, where will the HW insert the tag?
+
+[vlan1][vlan2][inet]?
+Or will this be [vlan2][vlan1][inet]?
+
+reading though the SW-side (no hw support), it seems it will do the right
+thing (i.e.. the hw tag gets added as the inner tag, right before inet
+and not added as outermost tag.
+
+Can you confirm thats the case?
+
+Sorry for not responding sooner, there are lots of patches atm and
+I forgot about this one when I yanked it off the previous pull request
+at the last second.
