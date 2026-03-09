@@ -1,138 +1,277 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com [209.85.215.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9FA3E47B;
-	Mon,  9 Mar 2026 11:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06BD39B497
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 11:20:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773055252; cv=none; b=Uv6lkPBzZKGI+FJtbwNPHA4AssgQ4arfuxh21WlwCP18bHh/6soFbAg86fjYhLhU9r5AvVYoszSHvq4TAg/NKrN3An+97mi7knTCoGq++J+Zb0+D0jN3sdJFAW3m+koYDslu5JZsoF8EXzVn0XE7Mbv2AXvytik6LtxSBMlZBbU=
+	t=1773055256; cv=none; b=MOlFzux7Q1oEsV4HzcN/CMGMqxKDYd9/ArqZqVZgpmh9zsQthcz9p9C8csUdMNCxvU28OEfzD4awSRLVN2wRuyf8q8s/wR9uTJ+g7xvfXVBFoQYedvj0s17uH8ZgAOROGhsoZr7xcE61A7s4oQ8U2ezNCv0vILb7CKppzUdV9fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773055252; c=relaxed/simple;
-	bh=/SVhfNMbj8uN8eVTMqX3CKjSWtyIIvXIH0MZrglxMVw=;
-	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=Pipaj7df8oh3+pnoNN6y8fLqyQqmuqB7mRK30OrcVL4AhoIC13ca+KkIAKY0kim3Lex/I7TlXZIizYdMwcSRAQckxcAjsDSPYZFQlLRVVKbFLiQjp/cBWgjoJEXwnGDfWRtUF8OL4S3OpkBmS+KY3ATKPUGKS2lc5x8ZcSnGtAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=l9n+GHY+; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1773055256; c=relaxed/simple;
+	bh=wN87b0sS2HrldoFpqiLcr4k18HQojyR3aP0M3cEjZJA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ifT6gseUSvNSCV8lLji8ETSGQQXNENXjYe+tKNBPrpdiE0UiGGPTQvV6wEFLd19S5pV55rOcWZjPPPGV8hu4o2+Rk3vqUJMcYT5TN017RYmGFfF2BRsaeghgLlBEqOJkWPutY+s5dA++YnZgvXJQGlYNeJiZR9xQZUH/RB5EFnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OBXh9ums; arc=none smtp.client-ip=209.85.215.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="l9n+GHY+"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
-	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=QLrzcOgBdh9SWNZ88PcuD4QPZfRZTAt20JyH8b5V4Nc=; b=l9n+GHY+g6PM9wzSPFpkGNC46h
-	L75CfzioCHzoRlRtagPzTB6Eqo3mJGynIwLIcWtEkI65hCgEsKXAbwqBGA960x4TkRoZWfgm2IX7/
-	RJ0lTjmpuKKJFss+Xb0g1DQ/pYJP11fNbw4Mv/7015WISUYm+QwPw+GxYUhxNhcKMxsFAYwe50BkM
-	SOYxThs+Px3ecZHeHdBOH7I/nrCx36LzFQWUaD6WCZ+KsuMndYv3Hq/OG2YnmtBPALpfdSUCqeOQC
-	ZVJ4MUoqMJL2WNnmhNtt8OLba5qOR8Oq8oO58+dFyUi2YOHQMJpbXc2hJOobWKsRDlPn+32lEmkTG
-	EizCm07Q==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:49944 helo=rmk-PC.armlinux.org.uk)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vzYfD-000000003gQ-2pji;
-	Mon, 09 Mar 2026 11:20:43 +0000
-Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vzYfC-0000000CZyn-2DDs;
-	Mon, 09 Mar 2026 11:20:42 +0000
-In-Reply-To: <aa6sofjFxyi2nkpr@shell.armlinux.org.uk>
-References: <aa6sofjFxyi2nkpr@shell.armlinux.org.uk>
-From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OBXh9ums"
+Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-c738fecf349so1363856a12.0
+        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 04:20:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773055253; x=1773660053; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sRo4gUuuqXEPBk2ckCAhWMzcsGZEb+oY+1jP8WL93Bs=;
+        b=OBXh9umsauk2ijJkMN4iX7F5RKiwSuzpPMFcC6IM749Ov0z4oZWL+6y1Ja5k4oMnlP
+         PccGA2qG7ZRHAFyKzl3TvBL5HEZtVnaF2GYilWnRY7ngBSmPnUIOO7Fp6NYfiQMGjsVC
+         sC+UyE7TWuL6zXI6I2v63Lodmg/xEBqA5oLOpumyNI08+LtBS8p5ObYQml8i2+3Fecim
+         7ht2/1EaAprf5wIxwDwDC0cBUSQP09s2CiZdDREJStg/wU4fSkVyZXBtg9gEZuAxDt11
+         V+X7G3lonQAgOdCXlSIA4ybbs/gxV3sdbWFZNSZouKxSrjgERyM+PGvngNy7tccv2VHM
+         7GeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773055253; x=1773660053;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sRo4gUuuqXEPBk2ckCAhWMzcsGZEb+oY+1jP8WL93Bs=;
+        b=OaIPQRGZLLv+ZTlDVYBK/ueinGTKkwO0NlWNnz04UUvaaeZeiwwRQkapBe5A4WkXR9
+         Jz2sVE8cq3lr9fS7oRpedCgbWFg5vQSC6SpFwYo1u88enS1WvLuoyzgOcus6YY2a7Cgw
+         A6azSG5nZA6XzXzQ5LJnjesadWDMPTGCMTSra4f8Mxulq5Gt+57qA7NO+ScCxaPd9vHA
+         xd23VCkUW+n9LURCNWZabmGF+PBYZGrfEhspL5cjLbeHfLn6n41ekuwnxrwHYVCbFHOo
+         xZtPZEGNbD3mbgSUB+Lpao+cSPThVqkovleZrn5WVDNKiUYQXKKCMFeQL03q9Zk8HYSo
+         1vZg==
+X-Forwarded-Encrypted: i=1; AJvYcCWv/3rwvhdufl7Tbg0pXNmkGNeHvPypsk4HmF/QzRUpFRlb7y+xb/wxS7ZeQURoflPuGy2CDQ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWsE/Z9HED+POItvWsermg7J0NXIrO9n0/FNv41cm4ne9U/9H0
+	c2g1goPLwxs1aTMctvcvKnZ1lOajTh3NQwcaYD4Ko9QxEBlLDSl6Se+Do2rHJHpRwhK+YA==
+X-Gm-Gg: ATEYQzzvowUOOn5tHorAcPcORw557AAxk9mdTsl1IRc3NWg3fpL4KWbSO1Jq5Tv6uKq
+	Z/h9VfF5fEv/TKZKRgBuFhz2HjCe5vDzKbz7Ayw/0aLJmVX0l1luBliBVNisFI0j0urxkZexdmw
+	lPiUBiIeKifqj4yvOmmgo/xWV8Ry7KgQkVx1TKZ3QSl6wd27nahFerSOglfgs/Y1fuDMpx6HoKB
+	WO/hFaQK8VWlPUsqQR5Oi0sJQQl66uL+xLn9vzgmTcWvlkyHGYI2yjqFJ0vwatrVQLcI1EJktzy
+	3Wfutk9BcIYPCekqfPjefo11uectsbqEYI2ChDT+J4GvgfkUZgsvpzxIDwNybAQ3izdPy7vbxCj
+	aVvGIZ5tXdgxNp/6qnFEnTLf5RgXpH5RaEJjWwG5Sfpq94BFVMmIf6oVsn6BagAiLvqnlbX1I8s
+	VQU2NI9la/QAV9Elwroe2QZgqV9ZD8sEHjLKvOX6szkRSwyLlJaBxDKzAkICYbGmghAiATxQ==
+X-Received: by 2002:a05:6a21:7182:b0:398:69a7:ba3a with SMTP id adf61e73a8af0-39869a7bcfcmr6577283637.16.1773055252848;
+        Mon, 09 Mar 2026 04:20:52 -0700 (PDT)
+Received: from henry-machine.taileee5f2.ts.net ([2408:8606:18c1:c673:8291:e4d6:2556:af63])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c739e16cebbsm8740234a12.16.2026.03.09.04.20.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Mar 2026 04:20:52 -0700 (PDT)
+From: bsdhenrymartin@gmail.com
+To: linux-nfs@vger.kernel.org
+Cc: Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <Dai.Ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
 	netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH RFC net-next v3 4/8] net: stmmac: use integrated PCS for
- BASE-X modes
+	linux-kernel@vger.kernel.org,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] sunrpc: fix TLS connect_worker rpc_clnt lifetime UAF
+Date: Mon,  9 Mar 2026 19:19:53 +0800
+Message-ID: <20260309112041.1336519-1-bsdhenrymartin@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vzYfC-0000000CZyn-2DDs@rmk-PC.armlinux.org.uk>
-Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 09 Mar 2026 11:20:42 +0000
 
-dwmac-qcom-ethqos supports SGMII and 2500BASE-X using the integrated
-PCS, so we need to expand the PCS support to include support for
-BASE-X modes.
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-Add support to the prereset configuration to detect 2500BASE-X, and
-arrange for stmmac_mac_select_pcs() to return the integrated PCS if
-its supported_interfaces bitmap reports support for the interface mode.
+In xs_connect(), transport->clnt is assigned from task->tk_client
+without taking a reference when a TLS connect worker is queued.
 
-This results in priv->hw->pcs now being write-only, so remove it.
+If the RPC task finishes before connect_worker runs, tk_client can be
+released and its cl_cred can be freed. Later, xs_tcp_tls_setup_socket()
+dereferences upper_clnt->cl_cred and passes it to rpc_create(), where
+rpc_new_client() calls get_cred() and triggers a slab-use-after-free.
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+[   93.358371] ==================================================================
+[   93.359597] BUG: KASAN: slab-use-after-free in rpc_new_client+0x387/0xdcc
+[   93.360748] Write of size 4 at addr ffff88810d67bfa8 by task kworker/u4:4/44
+[   93.361919] 
+[   93.362225] CPU: 0 UID: 0 PID: 44 Comm: kworker/u4:4 Tainted: G                 N  7.0.0-rc3 #2 PREEMPT(full) 
+[   93.362297] Tainted: [N]=TEST
+[   93.362313] Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   93.362348] Workqueue: xprtiod xs_tcp_tls_setup_socket
+[   93.362433] Call Trace:
+[   93.362447]  <TASK>
+[   93.362462]  dump_stack_lvl+0xad/0xf9
+[   93.362513]  ? rpc_new_client+0x387/0xdcc
+[   93.362574]  print_report+0x171/0x4d6
+[   93.362653]  ? __virt_addr_valid+0x353/0x364
+[   93.362719]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   93.362784]  ? kmem_cache_debug_flags+0x11/0x26
+[   93.362839]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   93.362913]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   93.362978]  ? kasan_complete_mode_report_info+0x1c2/0x1d1
+[   93.363057]  ? rpc_new_client+0x387/0xdcc
+[   93.363122]  kasan_report+0xb3/0xe2
+[   93.363202]  ? rpc_new_client+0x387/0xdcc
+[   93.363266]  __asan_report_store4_noabort+0x1b/0x21
+[   93.363339]  rpc_new_client+0x387/0xdcc
+[   93.363399]  ? __sanitizer_cov_trace_pc+0x24/0x5a
+[   93.363451]  rpc_create_xprt+0x1ac/0x3b4
+[   93.363519]  rpc_create+0x5f9/0x703
+[   93.363588]  ? __pfx_rpc_create+0x10/0x10
+[   93.363654]  ? __sanitizer_cov_trace_pc+0x24/0x5a
+[   93.363706]  ? __pfx_default_wake_function+0x10/0x10
+[   93.363808]  ? __dequeue_entity+0x5d2/0x6c3
+[   93.363887]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   93.363952]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   93.364016]  ? write_comp_data+0x2e/0x8e
+[   93.364063]  xs_tcp_tls_setup_socket+0x476/0xff0
+[   93.364151]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   93.364217]  ? __pfx_xs_tcp_tls_setup_socket+0x10/0x10
+[   93.364315]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   93.364386]  ? __kasan_check_write+0x18/0x1e
+[   93.364468]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   93.364540]  ? set_work_data+0x70/0x9c
+[   93.364603]  process_scheduled_works+0x66c/0xa15
+[   93.364699]  ? __sanitizer_cov_trace_pc+0x24/0x5a
+[   93.364763]  worker_thread+0x440/0x547
+[   93.364867]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   93.364937]  ? __pfx_worker_thread+0x10/0x10
+[   93.365024]  kthread+0x375/0x38a
+[   93.365097]  ? __pfx_kthread+0x10/0x10
+[   93.365185]  ret_from_fork+0xa8/0x872
+[   93.365247]  ? __pfx_ret_from_fork+0x10/0x10
+[   93.365309]  ? __sanitizer_cov_trace_pc+0x24/0x5a
+[   93.365364]  ? srso_alias_return_thunk+0x5/0xfbef5
+[   93.365428]  ? __switch_to+0xc44/0xc5a
+[   93.365509]  ? __pfx_kthread+0x10/0x10
+[   93.365593]  ret_from_fork_asm+0x1a/0x30
+[   93.365684]  </TASK>
+[   93.365701] 
+[   93.405276] Allocated by task 392:
+[   93.405852]  kasan_save_stack+0x3c/0x5e
+[   93.406581]  kasan_save_track+0x18/0x32
+[   93.407230]  kasan_save_alloc_info+0x3b/0x49
+[   93.407932]  __kasan_slab_alloc+0x52/0x62
+[   93.408606]  kmem_cache_alloc_noprof+0x266/0x304
+[   93.409359]  prepare_creds+0x32/0x338
+[   93.409965]  copy_creds+0x188/0x425
+[   93.410545]  copy_process+0x1022/0x5320
+[   93.411208]  kernel_clone+0x23d/0x61a
+[   93.411870]  __do_sys_clone+0xf8/0x139
+[   93.412530]  __x64_sys_clone+0xde/0xed
+[   93.413192]  x64_sys_call+0x33f/0x2105
+[   93.413883]  do_syscall_64+0x1b3/0x420
+[   93.414588]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[   93.416895] 
+[   93.417169] Freed by task 396:
+[   93.417673]  kasan_save_stack+0x3c/0x5e
+[   93.418321]  kasan_save_track+0x18/0x32
+[   93.418972]  kasan_save_free_info+0x43/0x52
+[   93.419652]  poison_slab_object+0x33/0x3c
+[   93.420315]  __kasan_slab_free+0x25/0x4a
+[   93.420973]  kmem_cache_free+0x1e5/0x2e4
+[   93.421616]  put_cred_rcu+0x2e7/0x2f4
+[   93.422219]  rcu_do_batch+0x5b6/0xa82
+[   93.422833]  rcu_core+0x264/0x298
+[   93.423475]  rcu_core_si+0x12/0x18
+[   93.424086]  handle_softirqs+0x21c/0x488
+[   93.424750]  __do_softirq+0x14/0x1a
+[   93.425346] 
+[   93.425612] Last potentially related work creation:
+[   93.426358]  kasan_save_stack+0x3c/0x5e
+[   93.427024]  kasan_record_aux_stack+0x92/0x9e
+[   93.427739]  call_rcu+0xe4/0xb2b
+[   93.428337]  __put_cred+0x13e/0x14c
+[   93.428937]  put_cred_many+0x50/0x5e
+[   93.429530]  exit_creds+0x95/0xbc
+[   93.430099]  __put_task_struct+0x173/0x26a
+[   93.430770]  __put_task_struct_rcu_cb+0x22/0x29
+[   93.431513]  rcu_do_batch+0x5b6/0xa82
+[   93.432144]  rcu_core+0x264/0x298
+[   93.432737]  rcu_core_si+0x12/0x18
+[   93.433345]  handle_softirqs+0x21c/0x488
+[   93.434030]  __do_softirq+0x14/0x1a
+[   93.434632] 
+[   93.434910] The buggy address belongs to the object at ffff88810d67bf00
+[   93.434910]  which belongs to the cache cred of size 184
+[   93.436720] The buggy address is located 168 bytes inside of
+[   93.436720]  freed 184-byte region [ffff88810d67bf00, ffff88810d67bfb8)
+[   93.438582] 
+[   93.438868] The buggy address belongs to the physical page:
+[   93.439734] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10d67b
+[   93.440982] memcg:ffff88810d67b0c9
+[   93.441546] flags: 0x200000000000000(node=0|zone=2)
+[   93.442327] page_type: f5(slab)
+[   93.442878] raw: 0200000000000000 ffff88810088d140 dead000000000122 0000000000000000
+[   93.444091] raw: 0000000000000000 0000010000100010 00000000f5000000 ffff88810d67b0c9
+[   93.445365] page dumped because: kasan: bad access detected
+[   93.446334] 
+[   93.446638] Memory state around the buggy address:
+[   93.447505]  ffff88810d67be80: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+[   93.448748]  ffff88810d67bf00: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   93.449973] >ffff88810d67bf80: fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc fc
+[   93.451147]                                   ^
+[   93.452039]  ffff88810d67c000: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[   93.453227]  ffff88810d67c080: fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc fc
+[   93.454455] ==================================================================
+[   93.577640] Disabling lock debugging due to kernel taint
+[ 1206.114037] kworker/u4:1 (26) used greatest stack depth: 24168 bytes left
+
+Fix this by taking a client reference when queuing a TLS connect worker
+and dropping that reference when the worker exits. Also release any
+still-pinned client in xs_destroy() after cancel_delayed_work_sync() to
+cover the case where queued work is canceled before execution.
+
+Fixes: 75eb6af7acdf ("SUNRPC: Add a TCP-with-TLS RPC transport class")
+Cc: stable@vger.kernel.org # 6.5+
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
 ---
- drivers/net/ethernet/stmicro/stmmac/common.h      | 4 ----
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 8 ++------
- 2 files changed, 2 insertions(+), 10 deletions(-)
+ net/sunrpc/xprtsock.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/common.h b/drivers/net/ethernet/stmicro/stmmac/common.h
-index 46454e2886ce..b7d29a621db1 100644
---- a/drivers/net/ethernet/stmicro/stmmac/common.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/common.h
-@@ -278,9 +278,6 @@ struct stmmac_safety_stats {
- #define FLOW_TX		2
- #define FLOW_AUTO	(FLOW_TX | FLOW_RX)
+diff --git a/net/sunrpc/xprtsock.c b/net/sunrpc/xprtsock.c
+index 2e1fe6013361..6bf1cf20a86e 100644
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -1362,6 +1362,10 @@ static void xs_destroy(struct rpc_xprt *xprt)
+ 	dprintk("RPC:       xs_destroy xprt %p\n", xprt);
  
--/* PCS defines */
--#define STMMAC_PCS_SGMII	(1 << 1)
--
- #define SF_DMA_MODE 1		/* DMA STORE-AND-FORWARD Operation Mode */
+ 	cancel_delayed_work_sync(&transport->connect_worker);
++	if (transport->clnt != NULL) {
++		rpc_release_client(transport->clnt);
++		transport->clnt = NULL;
++	}
+ 	xs_close(xprt);
+ 	cancel_work_sync(&transport->recv_worker);
+ 	cancel_work_sync(&transport->error_worker);
+@@ -2758,6 +2762,8 @@ static void xs_tcp_tls_setup_socket(struct work_struct *work)
+ out_unlock:
+ 	current_restore_flags(pflags, PF_MEMALLOC);
+ 	upper_transport->clnt = NULL;
++	if (upper_clnt != NULL)
++		rpc_release_client(upper_clnt);
+ 	xprt_unlock_connect(upper_xprt, upper_transport);
+ 	return;
  
- /* DMA HW feature register fields */
-@@ -632,7 +629,6 @@ struct mac_device_info {
- 	unsigned int unicast_filter_entries;
- 	unsigned int mcast_bits_log2;
- 	unsigned int rx_csum;
--	unsigned int pcs;
- 	unsigned int num_vlan;
- 	u32 vlan_filter[32];
- 	bool vlan_fail_q_en;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index f0160ff54a59..7b5ba672cc0e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -946,11 +946,8 @@ static struct phylink_pcs *stmmac_mac_select_pcs(struct phylink_config *config,
- 			return pcs;
- 	}
+@@ -2805,7 +2811,11 @@ static void xs_connect(struct rpc_xprt *xprt, struct rpc_task *task)
+ 	} else
+ 		dprintk("RPC:       xs_connect scheduled xprt %p\n", xprt);
  
--	/* The PCS control register is only relevant for SGMII, TBI and RTBI
--	 * modes. We no longer support TBI or RTBI, so only configure this
--	 * register when operating in SGMII mode with the integrated PCS.
--	 */
--	if (priv->hw->pcs & STMMAC_PCS_SGMII && priv->integrated_pcs)
-+	if (priv->integrated_pcs &&
-+	    test_bit(interface, priv->integrated_pcs->pcs.supported_interfaces))
- 		return &priv->integrated_pcs->pcs;
- 
- 	return NULL;
-@@ -1209,7 +1206,6 @@ static void stmmac_check_pcs_mode(struct stmmac_priv *priv)
- 
- 	if (priv->dma_cap.pcs && interface == PHY_INTERFACE_MODE_SGMII) {
- 		netdev_dbg(priv->dev, "PCS SGMII support enabled\n");
--		priv->hw->pcs = STMMAC_PCS_SGMII;
- 
- 		switch (speed) {
- 		case SPEED_10:
+-	transport->clnt = task->tk_client;
++	if (transport->connect_worker.work.func == xs_tcp_tls_setup_socket) {
++		WARN_ON_ONCE(transport->clnt != NULL);
++		refcount_inc(&task->tk_client->cl_count);
++		transport->clnt = task->tk_client;
++	}
+ 	queue_delayed_work(xprtiod_workqueue,
+ 			&transport->connect_worker,
+ 			delay);
 -- 
-2.47.3
-
+2.43.0
