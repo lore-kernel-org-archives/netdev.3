@@ -1,153 +1,116 @@
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE5F3D1CA7
-	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 14:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773065170; cv=pass; b=CzHHDXDmLNv9/i44vRF1uDFPSSIO3jys5s5PwNkY1HxBy5f6m6H+CGH1beL34c9HjC8izEuVgzBOns69igtvtJe5cVzcyUnKh/4/cUHyzIA36cNXUAbB/68L4LrFRojMcSoiPaqYt2VvsjD2pq4u6VRJxQS3UDW2XxTa+cLqCco=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773065170; c=relaxed/simple;
-	bh=EDrtdSdvhbbGJbxEgho956YbKacANNo9zs8Bz8kde4g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=boenqKEjtGjDs1UobH/iFXgQbZxmfW/oW3jL0u8p2YsKocP/CaeNoh4I1eSTv4DMbxTcJGhNmCyxHOgEb1RII5jOUWcB+SHAubimZ73kHfb6fPnVz7dJ9WrhcmYPeFng2f5ktVAqVzniOX/11pz2x6hjFHEDRIJBUwfdO5w5L6k=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oE7zNPK6; arc=pass smtp.client-ip=74.125.82.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11FC274641
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 14:10:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773065460; cv=none; b=aAUguHWecKp7bsGy0rr+n98j3hlZgAeb9xg1Hx9N6ZW85++irGik+1zJdHZixazGp3vAabZI4+FrhvtKsJGQih58eLT9yyssVmdEc2btehWPfKJHtdvyH3lidE5bCriasn19ArpYflBVRoxEeHjopd5zAVchQVqxs5Dp2FoEKOI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773065460; c=relaxed/simple;
+	bh=06y9i1blvXKT+0qakd+4jlyn/5w+VGLU+tv5laJuacE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XkJJCrVzsl1aBD/0KNrhCZUEeWMbBr8YyeHELL7f/d47XFatZN0nebUWM1RwQTht6SQxLoo7YN5D7MgsVBZetq9KU8qaWffLxCzdKyME4vldAuHI09xnop8D1QxZw75l2nV6ANir/hFV+prXN+JAlJa9BDDResQxQjdKrTn4iEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V9XABxvJ; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oE7zNPK6"
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-126ea4e9694so7222684c88.1
-        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 07:06:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773065166; cv=none;
-        d=google.com; s=arc-20240605;
-        b=bXYp4H8KmP+ADMdYykjIgVdKItoVcGts2tXWBLA/gfo2QygElGIdciz14/cjb3NTeh
-         a1dI8MXJmTsZS8P0vONy5hkjiuPUEhfJowfrwtK322sGmtXZpMxd7jeGE6TnMTmTg5j1
-         bfTq8+IjpbtlDxo1zLoR98Nm15ZaStMR3ERTC2lQ3gXHZSWde1brdXtcZQT0NjJC8qO8
-         eNh9dJnDNeFx+WlPPksK9T3qnlUjHmVTAaFlv3YI663TJI+tysTNbYi3dcmQidJj+O0Y
-         TcWC+6t7xy96JRMq0jFFPtSu5RH61p87+zJKIl3o1wlVpDtrplJFWayq+HmKan+SHjfW
-         60zQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=1J9tEkQRBAqi4shGo0VGbBaqNg+2aL3YU2WjpSdnZw0=;
-        fh=egngfQq40JC/WxZjOrH2u1CCy0Ej7U4B4WhWKg8C+iQ=;
-        b=D6rDFwEyH7LkZKMRBdFMEqMovpP9Uj/jytawWVTj7BvLHziE3Mgk+rjrnRu6pbb7Vt
-         cj5dSeBvVApQlAnhlwjSvLlDLRLOsZ3Vtx8ppuQqShNK5+P0/9Q0wZzqsn6Iaiv1neeh
-         AlHMJEbcB50JXl+n2TCe4PFg6wjamQwaKA8n+CQhEBzqf+woS6iPsZ0/ahGaGKAv399q
-         f3JKzXS0PjMQb8GblO/SrXIapjXzr+70MOQbjlTh+XM70BriW8LhoYipjVaHxuq6x/AK
-         dsiK6A2Enxtx4LXYbUgGdI8FqqGTzjH1d2ATzxJM+GGMXKqGAKEkRq/nGHRhhg0oBWRt
-         eRKw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1773065166; x=1773669966; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1J9tEkQRBAqi4shGo0VGbBaqNg+2aL3YU2WjpSdnZw0=;
-        b=oE7zNPK6QGh7jHw2xpcPaRD8sVETGswKGFvUrJ0eAnICIGGKXiwdRpU4mbbnd5MhdW
-         sbdWlPY3cC+Vx0/+pE9xyl0jpzFM2hTwsbOE+dC4Q5myPJiHdV/HiYihaq8Xkskvpnz+
-         b/b+k43Kk+C7aWrqxG6R4f1irBMNF2eCuIhA8mZ7vWP8ehy9gUidk1/3gbC2/xwY+VcY
-         ubLS/OuXwj6NyM8uyJPpcNNyzapb7J6zg+cvQCpuHLkg/B+Gs+W56oKkbjx+10dJS+Zk
-         /NXttFmAaZuoZl4SY/2luGS6go5eBUQIKE25/FZCTIboDyclf+wDDl2gDD8jZCimHoPc
-         7Ehg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773065166; x=1773669966;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=1J9tEkQRBAqi4shGo0VGbBaqNg+2aL3YU2WjpSdnZw0=;
-        b=RlsxA3Mn52zU6VLq/OITX8U6tVIn/SGEQwuXHTwLL+MqC7JqI6Jt3XYLYxqkF1hqTn
-         vH8Bv2Wt45nRoMHX9qx+cBFB1zSvNqnKq5Dl9BMQNJooGkJFRFnsuqcI/ri3hw7B/cH6
-         jBh2NOtCLySIoZD+eQyQd4wvvSSHYPtlHsV3ddqv9f+PXMph6TBOtE9u2CveXjsaLQxn
-         FU8NKDrOiMCeNy9L1nrZBpOogNuzIdlo5Kg/j5DEg82cOVHX07LtF/zrihXzQY+z8sF0
-         nlsGJNCFGjMl6Y/7iJshcYqCv6FVMK2iXieVqSLxibcVs+jpEpaWdDNSFDa8jqnZICK5
-         dQRw==
-X-Forwarded-Encrypted: i=1; AJvYcCWCUHglC99xKAAw4YsOrLOYdTal0r5GOc//sqvpfufARo/X/iD18oCaLXcURQftn6wGu+RIaLQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7MDB5Qaepe6JIAWQLVu7yLeCb0Wn7yBRXImt3HGoRIgi3kgjj
-	2zVMT1mkH0eftNfh3rhGGHuZmQwW1fKHhvsbgwPq0wsuDQHvO7GgZlq3SE/V/GS6KymJs0kiCK5
-	/D6IOOl8AtpV9O2MBzfQZoRv2oxWLNeAuDkg4ci8jR7CNUpFg8iAKopSmfE0=
-X-Gm-Gg: ATEYQzyu26rm6CWXfOv5Y0LgoyTkJcc5UtMKJioqELewSf7v+U6896IT1X/EThs6NvM
-	C79OhWiuikZRXGlXEyXn46hZ51VN+dzfnf/B/SjJDWgdvr/tW2SSYahEC/q6+AI0meK6B/MDPC1
-	eLgXSlXwvTyj7bogh9PQqpRVyYsWCpjgNS8xHkhbLPbMaienXR2SJ4XhZUW78XOibFZWKj4/XLE
-	9N7kRanYGQfRR05+hSQC+Ej1HkneMDfk3EyYz27wXnW3S/49KxomyyiFwp0l9OWgVk+Tv3efeY1
-	Sl9RPk1JPc+gBjOfTMHpOx1eeKl10C/W7kG9mzM=
-X-Received: by 2002:a05:7022:6182:b0:128:d51a:5161 with SMTP id
- a92af1059eb24-128d51a5664mr1829406c88.27.1773065165905; Mon, 09 Mar 2026
- 07:06:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V9XABxvJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773065458; x=1804601458;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=06y9i1blvXKT+0qakd+4jlyn/5w+VGLU+tv5laJuacE=;
+  b=V9XABxvJelLVvE0Jxu7IrSz2FSLtO/AoQjPRZkd/uzmpSSi84JqhNsrg
+   f3YQYF5D9+f7VZqjdFeQnVtw8+lxeKI008B2ZuKgROAui74oAU7u7ffgq
+   etFkThrA321cwXypcLiTSUzHfdoY5pR9WjswXQwUZDeWZ92AEqZWBStm3
+   fcs7QOOA0jXvwIceFTGbOFFYGxZubG/iO+ts1XsRGel2viODCsXQsOg0K
+   GAW1/9v2QDJs3xDgujoRgnX7KoKIBJniaXvTxRcgtuaq0etH6/HyHwIwf
+   LTTV5qdis93k/rHYQkiD7C+x9TzA/93n2H3uhg0iyJonxcYeLp8+4l2rJ
+   A==;
+X-CSE-ConnectionGUID: 39iiSQA3TqKgymw1CB5zRA==
+X-CSE-MsgGUID: lNixy9MhTEOo4mObqhst/g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11723"; a="99558355"
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
+   d="scan'208";a="99558355"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 07:10:57 -0700
+X-CSE-ConnectionGUID: EvA5GxjlRc+V+c7JNax0gg==
+X-CSE-MsgGUID: blDyQXPBTiiuXBnTw85/ew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,109,1770624000"; 
+   d="scan'208";a="224463312"
+Received: from pae-d-dell-r7525-263.igk.intel.com ([172.28.191.240])
+  by fmviesa005.fm.intel.com with ESMTP; 09 Mar 2026 07:10:56 -0700
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+To: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org,
+	anthony.l.nguyen@intel.com,
+	przemyslaw.kitszel@intel.com,
+	Przemyslaw Korba <przemyslaw.korba@intel.com>
+Subject: [PATCH iwl-next] i40e: PTP: set supported flags in ptp_clock_info
+Date: Mon,  9 Mar 2026 15:11:51 +0100
+Message-ID: <20260309141220.343224-1-przemyslaw.korba@intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260309122055.1226507-1-edumazet@google.com> <20260309134355.GC606826@noisy.programming.kicks-ass.net>
- <CANn89iKmqhKH6pUkRiSG3u6gtpDaPBTVj739dgf3dh8uZHX3HA@mail.gmail.com>
-In-Reply-To: <CANn89iKmqhKH6pUkRiSG3u6gtpDaPBTVj739dgf3dh8uZHX3HA@mail.gmail.com>
-From: Marco Elver <elver@google.com>
-Date: Mon, 9 Mar 2026 15:05:29 +0100
-X-Gm-Features: AaiRm53m-8mHo_6z78hz0h8e4k44SR9EH_2PhaI5btcezPMvBCujmBbel4AtwnM
-Message-ID: <CANpmjNMi-J3E=ZjLOnZVzs6iNDpTxUik6G07fbph5TvyjDpSTw@mail.gmail.com>
-Subject: Re: [PATCH] locking/local_lock: Reduce local_[un]lock_nested_bh() overhead
-To: Eric Dumazet <edumazet@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, Eric Dumazet <eric.dumazet@gmail.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Mon, 9 Mar 2026 at 14:49, Eric Dumazet <edumazet@google.com> wrote:
->
-> On Mon, Mar 9, 2026 at 2:44=E2=80=AFPM Peter Zijlstra <peterz@infradead.o=
-rg> wrote:
-> >
-> > On Mon, Mar 09, 2026 at 12:20:55PM +0000, Eric Dumazet wrote:
-> >
-> > > diff --git a/include/linux/local_lock.h b/include/linux/local_lock.h
-> > > index b8830148a8591c17c22e36470fbc13ff5c354955..40c2da54a0b720265be7b=
-6327e0922a49befd8fc 100644
-> > > --- a/include/linux/local_lock.h
-> > > +++ b/include/linux/local_lock.h
-> > > @@ -94,12 +94,19 @@ DEFINE_LOCK_GUARD_1(local_lock_irqsave, local_loc=
-k_t __percpu,
-> > >                   local_unlock_irqrestore(_T->lock, _T->flags),
-> > >                   unsigned long flags)
-> > >
-> > > +#if defined(WARN_CONTEXT_ANALYSIS) || defined(CONFIG_PREEMPT_RT) || =
-\
-> > > +    defined(CONFIG_DEBUG_LOCK_ALLOC)
-> > >  #define local_lock_nested_bh(_lock)                          \
-> > >       __local_lock_nested_bh(__this_cpu_local_lock(_lock))
-> > >
-> > >  #define local_unlock_nested_bh(_lock)                               =
- \
-> > >       __local_unlock_nested_bh(__this_cpu_local_lock(_lock))
-> > >
-> > > +#else
-> > > +static inline void local_lock_nested_bh(local_lock_t *_lock) {}
-> > > +static inline void local_unlock_nested_bh(local_lock_t *__lock) {}
-> > > +#endif
-> >
-> > This isn't going to work; WARN_CONTEXT_ANALYSIS is unconditional on
-> > clang >=3D 22.1
-> >
-> > How come that this isn't DCEd properly?
->
-> BTW I wonder if the following WARN_CONTEXT_ANALYSIS should be
-> CONFIG_WARN_CONTEXT_ANALYSIS
->
-> include/linux/local_lock_internal.h:318:#if defined(WARN_CONTEXT_ANALYSIS=
-)
-> include/linux/local_lock_internal.h:337:#else  /* WARN_CONTEXT_ANALYSIS *=
-/
-> include/linux/local_lock_internal.h:339:#endif /* WARN_CONTEXT_ANALYSIS *=
-/
+Since upstream commit d9f3e9ecc456 ("net: ptp: introduce
+.supported_perout_flags to ptp_clock_info") and commit 7c571ac57d9d ("net:
+ptp: introduce .supported_extts_flags to ptp_clock_info"), kernel core now
+requires that the driver set the .supported_perout_flags and
+.supported_extts_flags fields in PTP clock info. Otherwise, the additional
+flags will be rejected by the kernel automatically.
 
-Even if enabled in Kconfig, our make rules set -DWARN_CONTEXT_ANALYSIS
-for translation units where we actually want to compile with
--Wthread-safety. So WARN_CONTEXT_ANALYSIS should be ok.
+i40e does not support perout flags, so reject any request with perout
+flags.
 
-But for !CONFIG_PREEMPT_RT and !CONFIG_DEBUG_LOCK_ALLOC builds, where
-we build with context analysis (which is purely static, no dynamic
-overhead) we should be able to get the same better codegen as well.
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+---
+ drivers/net/ethernet/intel/i40e/i40e_ptp.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_ptp.c b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+index 7bcea7d9720f..8d7958692235 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_ptp.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_ptp.c
+@@ -601,10 +601,18 @@ static int i40e_ptp_feature_enable(struct ptp_clock_info *ptp,
+ 	/* TODO: Implement flags handling for EXTTS and PEROUT */
+ 	switch (rq->type) {
+ 	case PTP_CLK_REQ_EXTTS:
++		if (rq->extts.flags & ~(PTP_ENABLE_FEATURE |
++					PTP_RISING_EDGE |
++					PTP_FALLING_EDGE |
++					PTP_STRICT_FLAGS))
++			return -EOPNOTSUPP;
++
+ 		func = PTP_PF_EXTTS;
+ 		chan = rq->extts.index;
+ 		break;
+ 	case PTP_CLK_REQ_PEROUT:
++		if (rq->perout.flags)
++			return -EOPNOTSUPP;
+ 		func = PTP_PF_PEROUT;
+ 		chan = rq->perout.index;
+ 		break;
+@@ -1340,7 +1348,9 @@ static int i40e_init_pin_config(struct i40e_pf *pf)
+ 	pf->ptp_caps.n_ext_ts = 2;
+ 	pf->ptp_caps.pps = 1;
+ 	pf->ptp_caps.n_per_out = 2;
+-
++	pf->ptp_caps.supported_extts_flags = PTP_RISING_EDGE |
++					     PTP_FALLING_EDGE |
++					     PTP_STRICT_FLAGS;
+ 	pf->ptp_caps.pin_config = kzalloc_objs(*pf->ptp_caps.pin_config,
+ 					       pf->ptp_caps.n_pins);
+ 	if (!pf->ptp_caps.pin_config)
+
+base-commit: d5fbc991435eac7a1ead7cd2ddb5a743528718bb
+-- 
+2.43.0
+
