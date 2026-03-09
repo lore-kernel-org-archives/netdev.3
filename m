@@ -1,66 +1,66 @@
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB4C3E8C6F
-	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 16:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694393E8C6F
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 16:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773075412; cv=none; b=WVX+r3yWvfRKtQymxvmVSoUuK+Hp911YeTFkolABTsTxSRSrEJXtacifISWkn81r+QdvKJYTb+2Pg0I67rgRt8uUHegCutZD4rQTZBF9iZvYtv/x7podSTqn2SCu8V7Fk4guv63/uE2SPpm8AcyQ/km8kQuTg5/0qz6sg6H4ypY=
+	t=1773075421; cv=none; b=LXwoJ5yMwo5iBdCpFzZWHWQYoyiCS/KYshjbKklwmWovEF7bwL+KYHJboT7K41xzuCuSTsFt8VS4PSzJdzs0FLKnvHB3Yi8tY5yzwD74MlttvKP+mpdrVFKk2sqkuB/H2aDDdXUx78L8RFUYNXdWBiaZH4VFhtzDCK+QMLFc3RE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773075412; c=relaxed/simple;
-	bh=SKwscCFhkRkWAEkHP7Bf/xEi1e6bolPPjdvBVmQngaY=;
+	s=arc-20240116; t=1773075421; c=relaxed/simple;
+	bh=n+qrbntEZHCcj+hFDxl5B5IlAY7k6qlt4lrmHo/04+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kV9IZ1/vnOhJWE6cMg/4Z83vjIagMJh9smrGacZmdrh6GLdYEmYBni08C+5kltDOypvit2GbaXm2rWm7TcXtK+T76yt3PbT1CaCtJ6Bpa+M9jDEeRYdHxxZvctZMpFpK9GCuRJDict4MnqggWDTvzXmho9AtFfPZK0iuJf3zIqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=NWStC1Mt; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=NWStC1Mt; arc=none smtp.client-ip=195.135.223.130
+	 MIME-Version; b=lLeu29QIV2j4wJokR19ZPzj9EEpMScscs5Vt0rqM6FIsyo7TbHlyksoyt8uCCzcyqBCM1sdZbwXXtyi+SLakX5ioZdzalMkEaH5X0ZX9292W2WQzDFi8ScaiweSwnJefi5PA0YzH78Sag+WuVhMUwUw3tMh9U0NxL8vXpRw7F+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=kRpB4Ied; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=kRpB4Ied; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="NWStC1Mt";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="NWStC1Mt"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="kRpB4Ied";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="kRpB4Ied"
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 62CD34D24E;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id AEFE54D24F;
 	Mon,  9 Mar 2026 16:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
 	t=1773075384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=v9NN7nS+ZF5iB2eP+TT56PvoPMPMAryFYQyR358z/nE=;
-	b=NWStC1MtRf+9UrflSrWMKZRkqMTmkbcMdRHUJaax2uuHymVj84rQvyy441rV7jSCrbTSux
-	+UwxicuQ1BHCAutz00StakutKg3thdbxwVi98pngl30KdnJUumyxzmUkqGe6Zt3psI0xOP
-	o5fBu7gy2dommCYyzamVqPm9LTb1Upk=
+	bh=PRCFBTbCIUI2AwpNK16vUiAWgPqlgBr6jZaCBMOtvy0=;
+	b=kRpB4Iedm9QtuqZHxRGfomMTjoqu+5Zsf2zBWcBc64cx2jjrsS8xHufjhIFr3YLSPYuQy1
+	MLfgvWYnc2BlDFCt6zNJrOf3M9VBL5V0O41aV+T64WO8M7MAmDEJ86r2CpcOeICl97cqld
+	ypplbsLmdDzpUiTiPJcYWcDknJT+gsU=
 Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=NWStC1Mt
+	dkim=pass header.d=suse.com header.s=susede1 header.b=kRpB4Ied
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
 	t=1773075384; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=v9NN7nS+ZF5iB2eP+TT56PvoPMPMAryFYQyR358z/nE=;
-	b=NWStC1MtRf+9UrflSrWMKZRkqMTmkbcMdRHUJaax2uuHymVj84rQvyy441rV7jSCrbTSux
-	+UwxicuQ1BHCAutz00StakutKg3thdbxwVi98pngl30KdnJUumyxzmUkqGe6Zt3psI0xOP
-	o5fBu7gy2dommCYyzamVqPm9LTb1Upk=
+	bh=PRCFBTbCIUI2AwpNK16vUiAWgPqlgBr6jZaCBMOtvy0=;
+	b=kRpB4Iedm9QtuqZHxRGfomMTjoqu+5Zsf2zBWcBc64cx2jjrsS8xHufjhIFr3YLSPYuQy1
+	MLfgvWYnc2BlDFCt6zNJrOf3M9VBL5V0O41aV+T64WO8M7MAmDEJ86r2CpcOeICl97cqld
+	ypplbsLmdDzpUiTiPJcYWcDknJT+gsU=
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 429583EFD8;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8D7E23EFD8;
 	Mon,  9 Mar 2026 16:56:24 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cPMoD7j7rmlXZAAAD6G6ig
+	id 6PR0Ibj7rmlXZAAAD6G6ig
 	(envelope-from <oneukum@suse.com>); Mon, 09 Mar 2026 16:56:24 +0000
 From: Oliver Neukum <oneukum@suse.com>
 To: andrew@lunn.ch,
 	bjorn@mork.no,
 	netdev@vger.kernel.org
 Cc: Oliver Neukum <oneukum@suse.com>
-Subject: [RFCv3 06/13] net: usb: usbnet: add cdc_state to struct usbnet
-Date: Mon,  9 Mar 2026 17:53:29 +0100
-Message-ID: <20260309165614.861929-6-oneukum@suse.com>
+Subject: [RFCv3 08/13] net: usb: usbnet: allow drivers to specify private space needed
+Date: Mon,  9 Mar 2026 17:53:31 +0100
+Message-ID: <20260309165614.861929-8-oneukum@suse.com>
 X-Mailer: git-send-email 2.53.0
 In-Reply-To: <20260309165614.861929-1-oneukum@suse.com>
 References: <20260309165614.861929-1-oneukum@suse.com>
@@ -71,8 +71,6 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
 X-Spamd-Result: default: False [-3.01 / 50.00];
 	BAYES_HAM(-3.00)[100.00%];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
@@ -93,66 +91,116 @@ X-Spamd-Result: default: False [-3.01 / 50.00];
 	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
 	FROM_HAS_DN(0.00)[];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:mid,suse.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:mid,suse.com:dkim,suse.com:email,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
 	RCVD_TLS_ALL(0.00)[];
 	FROM_EQ_ENVFROM(0.00)[];
 	RCPT_COUNT_THREE(0.00)[4];
 	DKIM_SIGNED(0.00)[suse.com:s=susede1];
 	DKIM_TRACE(0.00)[suse.com:+]
-X-Rspamd-Queue-Id: 62CD34D24E
+X-Rspamd-Action: no action
 X-Spam-Flag: NO
 X-Spam-Score: -3.01
 X-Spam-Level: 
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Queue-Id: AEFE54D24F
 
-This allows centralisation of code using cdc_state in usbnet, reducing
-code duplication. No functional change intended.
+usbnet has been providing a fixed space of unsigned long[5]
+for minidrivers. This has led to various constructions in drivers
+this is not enough space for.
+Allow minidrivers to tell usbnet how much they need by means
+of struct driver_info. For backwards compatibility zero
+is taken to mean enough space for unsigned long[5]
 
 Signed-off-by: Oliver Neukum <oneukum@suse.com>
 ---
- include/linux/usb/usbnet.h | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/usb/qmi_wwan.c   | 3 ---
+ drivers/net/usb/sierra_net.c | 3 ---
+ drivers/net/usb/usbnet.c     | 5 ++++-
+ include/linux/usb/usbnet.h   | 6 +++++-
+ 4 files changed, 9 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
+index 3a4985b582cb..fc2591ccb682 100644
+--- a/drivers/net/usb/qmi_wwan.c
++++ b/drivers/net/usb/qmi_wwan.c
+@@ -753,9 +753,6 @@ static int qmi_wwan_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	struct qmi_wwan_state *info = (void *)&dev->data;
+ 	struct usb_cdc_parsed_header hdr;
+ 
+-	BUILD_BUG_ON((sizeof(((struct usbnet *)0)->data) <
+-		      sizeof(struct qmi_wwan_state)));
+-
+ 	/* set up initial state */
+ 	info->control = intf;
+ 	info->data = intf;
+diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
+index 4d3ed642b3e7..5a32796a7a89 100644
+--- a/drivers/net/usb/sierra_net.c
++++ b/drivers/net/usb/sierra_net.c
+@@ -855,9 +855,6 @@ static struct sk_buff *sierra_net_tx_fixup(struct usbnet *dev,
+ 	u16 len;
+ 	bool need_tail;
+ 
+-	BUILD_BUG_ON(sizeof_field(struct usbnet, data)
+-				< sizeof(struct cdc_state));
+-
+ 	dev_dbg(&dev->udev->dev, "%s", __func__);
+ 	if (priv->link_up && check_ethip_packet(skb, dev) && is_ip(skb)) {
+ 		/* enough head room as is? */
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 8a9e0d98d9c6..b3cc3428b342 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -1734,6 +1734,7 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
+ 	int				status;
+ 	const char			*name;
+ 	struct usb_driver 	*driver = to_usb_driver(udev->dev.driver);
++	unsigned int extra;
+ 
+ 	/* usbnet already took usb runtime pm, so have to enable the feature
+ 	 * for usb interface, otherwise usb_autopm_get_interface may return
+@@ -1756,7 +1757,9 @@ usbnet_probe(struct usb_interface *udev, const struct usb_device_id *prod)
+ 	status = -ENOMEM;
+ 
+ 	// set up our own records
+-	net = alloc_etherdev(sizeof(*dev));
++	extra = info->required_room ?
++		info->required_room : 5 * sizeof(unsigned long);
++	net = alloc_etherdev(sizeof(*dev) + extra);
+ 	if (!net)
+ 		goto out;
+ 
 diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
-index 4a97845be62c..766862427620 100644
+index 766862427620..41582346360f 100644
 --- a/include/linux/usb/usbnet.h
 +++ b/include/linux/usb/usbnet.h
-@@ -16,6 +16,14 @@
- #include <linux/usb.h>
- #include <linux/spinlock.h>
- 
-+struct cdc_state {
-+	struct usb_cdc_header_desc      *header;
-+	struct usb_cdc_union_desc       *u;
-+	struct usb_cdc_ether_desc       *ether;
-+	struct usb_interface            *control;
-+	struct usb_interface            *data;
-+};
-+
- /* interface from usbnet core to each USB networking link we handle */
- struct usbnet {
- 	/* housekeeping */
-@@ -41,6 +49,7 @@ struct usbnet {
- 	/* protocol/interface state */
+@@ -50,7 +50,6 @@ struct usbnet {
  	struct net_device	*net;
  	int			msg_enable;
-+	struct cdc_state	cdc;		/* too common to leave out*/
- 	unsigned long		data[5];
+ 	struct cdc_state	cdc;		/* too common to leave out*/
+-	unsigned long		data[5];
  	u32			xid;
  	u32			hard_mtu;	/* count any extra framing */
-@@ -215,13 +224,6 @@ static inline void *usbnet_priv(struct usbnet *dev)
-  * (notably, using multiple interfaces according to the CDC
-  * union descriptor) get some helper code.
+ 	size_t			rx_urb_size;	/* size for rx urbs */
+@@ -93,6 +92,8 @@ struct usbnet {
+  * that must be broken
   */
--struct cdc_state {
--	struct usb_cdc_header_desc	*header;
--	struct usb_cdc_union_desc	*u;
--	struct usb_cdc_ether_desc	*ether;
--	struct usb_interface		*control;
--	struct usb_interface		*data;
--};
+ #		define EVENT_UNPLUG		31
++
++	DECLARE_FLEX_ARRAY(unsigned long, data);
+ };
  
- extern void usbnet_cdc_update_filter(struct usbnet *dev);
- extern int usbnet_generic_cdc_bind(struct usbnet *, struct usb_interface *);
+ static inline bool usbnet_going_away(struct usbnet *ubn)
+@@ -142,6 +143,9 @@ struct driver_info {
+ #define FLAG_RX_ASSEMBLE	0x4000	/* rx packets may span >1 frames */
+ #define FLAG_NOARP		0x8000	/* device can't do ARP */
+ 
++	/* tells us how much private space is need in the descriptor */
++	unsigned int	required_room;
++
+ 	/* init device ... can sleep, or cause probe() failure */
+ 	int	(*bind)(struct usbnet *, struct usb_interface *);
+ 
 -- 
 2.53.0
 
