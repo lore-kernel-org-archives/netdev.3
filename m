@@ -1,157 +1,174 @@
-Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FBF2D239B
-	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 17:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2DD2C0268
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 17:04:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773075857; cv=none; b=O6/m3zwa2PZggv8S7m2lzzJTeN3nVgRkKW3+pLrgvOMD5v0A4RdHrMD9tR/vNxIrt95HPqME6nIUbaBY7Vd3B/IS5poHLGMf3ShpzDi0nANUBTD9QhaXahFxJW6bwTzTIv+yFaKolkxO+4yyj7I1pozzsT/ngOaGbxAi78WkXaU=
+	t=1773075892; cv=none; b=ZFbWPsgV5FWbYt81qe0tpWPfHd+Hq2I5gS08e8Va2gyh9uBM8hBPCO6M1DFPR5IdaLS1bFkIAMy5cDE2GedGzUIhK9LPtyF7O3pu5fn3WcZkTQy5jYtiuU2jOPtWOGJM5Px4bHpxf3/HPUbUPGbuGCebb1IpEQ/k7HheaLWXgJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773075857; c=relaxed/simple;
-	bh=NiF6bFfgTim6jzSR75qsynoAVuuE+F+Fq0yIfiEY/kc=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:From:Subject:Cc:
-	 References:In-Reply-To; b=dr/STvgyZbmOReKW6Orf/INLRrd1ZuVBXZHTjVlsvAJWUNXwU00GUDPhBaB8vSfi8n2wZPp/k2PYTJtAvDE3umgnJyMo8UUH50j72piU+D1qq7XVs0MdeEulfdczmf7UeMRvIdZLKV/M84fuKxVEk7vaOlx55JAGcI+T9/IgvAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=WgoNt6ez; arc=none smtp.client-ip=185.246.85.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
+	s=arc-20240116; t=1773075892; c=relaxed/simple;
+	bh=/dIZrM5IUttYsSyyQTMorm0yElUCp9TuGSDmE5kDcdU=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=H/ENlYVpsx+2iP+XG6OAvBWIyBPmbIafwyAYXsffUnaied2Ms9bx6Mq/fgLDyOLrbj+mPPjbyi0jSeHAVsEOuDlUduyAKaMbYQQJzrnkuVqunSwNMo9EpQd2vtlL+dEPuNJx0lDtX1NsOU0PPe0OY1DkNHw1uKqScT1qYTgGH1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KVuu04LI; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="WgoNt6ez"
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-03.galae.net (Postfix) with ESMTPS id CED8A4E425DB;
-	Mon,  9 Mar 2026 17:04:11 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id A2A225FFB8;
-	Mon,  9 Mar 2026 17:04:11 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D923910369BCE;
-	Mon,  9 Mar 2026 18:04:06 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1773075850; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=kHhouP4qyGD8tDVu8tvq9+4XEQtGMkz7O9rBI79x4X8=;
-	b=WgoNt6ezw9NfGRY0PQGcHBq0PYT+vZRCnsAYB19frTRJMUCf55cylecWelc6ALxrFH/Opi
-	l7J2I5Spj+a7nCcHLz6uWkHnHSfdHInKIKguxjHOx76q12/eXZh6WlDg8u5O1k/FKF/mlC
-	TwbYCvMvd/lwgtao+do5IpTpBOrpu1QCjDffYrmtXsnv3wMQd7yHR/IYmtrcJzZka0+r5A
-	LJ1fq2kQ/oGgnR9eGAOMai0Mltn+PqMq7W1zin/m5gl4jpRtumIX9RlgFmD1FxPpXfSu0Y
-	9C2KJ9z2qE3bRWcaQcX6qvn7ye8LM2q8KCSUTPJrgghe+eEqs563CZ1hk9Z4Yg==
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KVuu04LI"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48534b59cf3so12693965e9.2
+        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 10:04:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1773075888; x=1773680688; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=EjqtMmTP6qLcmK14ISsOFqL48TISXYv0ejZVuQlmDiE=;
+        b=KVuu04LIzBcrXS8Qv2YGmaAZKHlNy/Pw/EBzYhuFrf43rd0oesqY0zbpHtY6OERqqG
+         HWr8R15kFzUjuaYfq+mhKk4ULaisDyx/xn/GyC7f+Fc8vhWJOK/brMzRJ9z+0bVYaKsb
+         LchZaUJHepnJZVTKnD9lxawN3EKEQHQ36tizAvHkx5sfYX3b8sKnjW8MqH92Wk4TuEiq
+         Fk7UoHw0TW9NChdRNnVEs5/X2Q/P2dnD4gso3iiFJt6QWghaPWU/SYvjxU7ywKCwyWr0
+         ge6CutE7K1zS4kyiIYOaNnBs4Fbqi+5/S+zMNSiYjEkE5DSDcfTgBDHMyzwryt49mcME
+         KMDg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773075888; x=1773680688;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EjqtMmTP6qLcmK14ISsOFqL48TISXYv0ejZVuQlmDiE=;
+        b=vqNrgwOjSBqI7/anPuxqsi5vzgGODHHs6tzrN8yUKn8aJdaZ+vMy9jQrBcp8tYthET
+         kL9JksS5Qu7iUS/E7j5uEOKrSpUEoODbWjknQ7vAmD3RobkofFD/cUNhxq9AiPzKH/3g
+         tqbYmbZKuMLeKJ8wlrZja6SzMXU6xvtDYl0bkkZkMQRwvS6/TimWfyuwMDofoKXtZ+aV
+         iyckud80KA6nrU+xdtIRzs25dXVrKHa/ZDJCvC4iImC+adGAPsAuMkaRQ6Fd5fTgNjaX
+         jKKkqck8Un8cgpPTEaLboZ2uJ5zbRoJNo4wihxJQTvznggbeAhuJ9IhZSjiZoxctKjDl
+         FfLw==
+X-Gm-Message-State: AOJu0YwC7bd5/u9fw07VpV30EP8xw1508GvJNDZTPKMLu5EhOWCkmgUE
+	XzmxhzbuMuoCbwv5gh/DlT1im17bhRQxzSqQadZy4vbyhkCDM9KZ1kn8
+X-Gm-Gg: ATEYQzya5+Px4Orv0rIyx9gxStrdHKBJ/NdPIcwnSrPbopS0EtP15CsMiqzG69itGRk
+	6YLFhR00TGTpS9Ez+iGs6isibFKIXHErngNNt2Wn/6+S85NcxjX9Xekhf2IiNssMdYj7Dhi62Cy
+	jqQImWZQIfaxaXUe/1fLliT/O9pdoCamAM2VfB8McpqMmEUSlYTRekeCHq3PcNQFoVXRVTwGXcQ
+	rerXaWRJ3R5vl0yqDMeqbKysLREnrhk/0mdwEVhHNaqx9sHx0uZYVHFefFdE3gMVTcoAKtlJdap
+	DIYs0z52UyP1HWLQ5q3Diq3j7Ax/jtJDnbTc7wTcdnmzH5wC0ZzBgkiOsDcrGnG7lOr267st9dQ
+	br8paF9eaL3KlVQ77DlauqHfY76U5GyEr0UFLwWFnG5fSwBSVBUeJBUCJqu7K+MbR+QIbDTuE2i
+	cpzHcuaEZyogXR62g4zik/Z0dhNSBxod0NVKxnLVhGKXHhib+40mv8mCEgt20WbkzmSVustwNqM
+	SYmrfYr5JOVHIZYJBe1f5xnK/8afDDgBVDRfm5Y0Tf4AiC0/Ya4d97pSZJRq6o=
+X-Received: by 2002:a05:600c:34d0:b0:477:5cc6:7e44 with SMTP id 5b1f17b1804b1-48526923c5cmr193755105e9.11.1773075887324;
+        Mon, 09 Mar 2026 10:04:47 -0700 (PDT)
+Received: from ?IPV6:2003:ea:8f46:ce00:5f9:7f3c:5f9a:2a3d? (p200300ea8f46ce0005f97f3c5f9a2a3d.dip0.t-ipconnect.de. [2003:ea:8f46:ce00:5f9:7f3c:5f9a:2a3d])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48541a9e549sm4543125e9.12.2026.03.09.10.04.46
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Mar 2026 10:04:46 -0700 (PDT)
+Message-ID: <b15b378a-fda2-44b9-9d63-bf82919b71b2@gmail.com>
+Date: Mon, 9 Mar 2026 18:04:46 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: [PATCH v2 net-next 4/5] net: phy: move registering mdio_bus_class and
+ mdio_bus_type to libphy
+From: Heiner Kallweit <hkallweit1@gmail.com>
+To: Andrew Lunn <andrew@lunn.ch>,
+ Russell King - ARM Linux <linux@armlinux.org.uk>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ David Miller <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
+ <sboyd@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ Philipp Zabel <p.zabel@pengutronix.de>,
+ linux-arm-msm <linux-arm-msm@vger.kernel.org>, linux-clk@vger.kernel.org,
+ linux-phy@lists.infradead.org
+References: <9d5724bc-e525-4f8f-b3f8-b16dd5a1164e@gmail.com>
+Content-Language: en-US
+In-Reply-To: <9d5724bc-e525-4f8f-b3f8-b16dd5a1164e@gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 09 Mar 2026 18:04:06 +0100
-Message-Id: <DGYEXIY7VNHX.1IUJHFGOJ1B9S@bootlin.com>
-To: "Jakub Kicinski" <kuba@kernel.org>, =?utf-8?q?Th=C3=A9o_Lebrun?=
- <theo.lebrun@bootlin.com>
-From: =?utf-8?q?Th=C3=A9o_Lebrun?= <theo.lebrun@bootlin.com>
-Subject: Re: [PATCH net-next 1/2] net: macb: implement
- ethtool_ops.get|set_channels()
-Cc: "Nicolas Ferre" <nicolas.ferre@microchip.com>, "Claudiu Beznea"
- <claudiu.beznea@tuxon.dev>, "Andrew Lunn" <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>, "Eric Dumazet" <edumazet@google.com>,
- "Paolo Abeni" <pabeni@redhat.com>, <netdev@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>, "Vladimir Kondratiev"
- <vladimir.kondratiev@mobileye.com>, "Gregory CLEMENT"
- <gregory.clement@bootlin.com>, =?utf-8?q?Beno=C3=AEt_Monin?=
- <benoit.monin@bootlin.com>, "Tawfik Bayouk" <tawfik.bayouk@mobileye.com>,
- "Thomas Petazzoni" <thomas.petazzoni@bootlin.com>, "Paolo Valerio"
- <pvalerio@redhat.com>, "Alexandre Belloni" <alexandre.belloni@bootlin.com>
-X-Mailer: aerc 0.21.0-0-g5549850facc2
-References: <20260305-macb-set-channels-v1-0-28e3a96a3dc3@bootlin.com>
- <20260305-macb-set-channels-v1-1-28e3a96a3dc3@bootlin.com>
- <20260306190948.44d23f8f@kernel.org>
-In-Reply-To: <20260306190948.44d23f8f@kernel.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Transfer-Encoding: 7bit
 
-On Sat Mar 7, 2026 at 4:09 AM CET, Jakub Kicinski wrote:
-> On Thu, 05 Mar 2026 18:20:14 +0100 Th=C3=A9o Lebrun wrote:
->> +	if (!(bp->caps & MACB_CAPS_QUEUE_DISABLE))
->> +		return -EOPNOTSUPP;
->
-> Why not set max to 1 in this case?
+The MDIO consumer side shouldn't register class and bus_type.
+Therefore move this to libphy.
 
-With !QUEUE_DISABLE, we only know how to run with all queues enabled.
-It doesn't imply that max_num_queues =3D=3D 1.
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
+ drivers/net/phy/mdio_bus.c   | 23 -----------------------
+ drivers/net/phy/phy_device.c | 13 +++++++++++++
+ 2 files changed, 13 insertions(+), 23 deletions(-)
 
-MACB_CAPS_QUEUE_DISABLE means that the field QUEUE_DISABLE (BIT0) in the
-per-queue register RBQP disables queue Rx. If we don't have that
-capability we can have multiple queues (if HW supports it) but we must
-always run with all enabled.
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index c9a495390d2..9fb47332602 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -905,28 +905,5 @@ const struct bus_type mdio_bus_type = {
+ };
+ EXPORT_SYMBOL(mdio_bus_type);
+ 
+-static int __init mdio_bus_init(void)
+-{
+-	int ret;
+-
+-	ret = class_register(&mdio_bus_class);
+-	if (!ret) {
+-		ret = bus_register(&mdio_bus_type);
+-		if (ret)
+-			class_unregister(&mdio_bus_class);
+-	}
+-
+-	return ret;
+-}
+-
+-static void __exit mdio_bus_exit(void)
+-{
+-	class_unregister(&mdio_bus_class);
+-	bus_unregister(&mdio_bus_type);
+-}
+-
+-subsys_initcall(mdio_bus_init);
+-module_exit(mdio_bus_exit);
+-
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("MDIO bus/device layer");
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index d1cbcfc3d2a..0edff47478c 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3913,6 +3913,14 @@ static int __init phy_init(void)
+ {
+ 	int rc;
+ 
++	rc = class_register(&mdio_bus_class);
++	if (rc)
++		return rc;
++
++	rc = bus_register(&mdio_bus_type);
++	if (rc)
++		goto err_class;
++
+ 	rtnl_lock();
+ 	ethtool_set_ethtool_phy_ops(&phy_ethtool_phy_ops);
+ 	phylib_register_stubs();
+@@ -3941,6 +3949,9 @@ static int __init phy_init(void)
+ 	phylib_unregister_stubs();
+ 	ethtool_set_ethtool_phy_ops(NULL);
+ 	rtnl_unlock();
++	bus_unregister(&mdio_bus_type);
++err_class:
++	class_unregister(&mdio_bus_class);
+ 
+ 	return rc;
+ }
+@@ -3953,6 +3964,8 @@ static void __exit phy_exit(void)
+ 	phylib_unregister_stubs();
+ 	ethtool_set_ethtool_phy_ops(NULL);
+ 	rtnl_unlock();
++	bus_unregister(&mdio_bus_type);
++	class_unregister(&mdio_bus_class);
+ }
+ 
+ subsys_initcall(phy_init);
+-- 
+2.53.0
 
-The correct way to deal with `!(bp->caps & MACB_CAPS_QUEUE_DISABLE)`
-would be something like:
 
-static void macb_get_channels(struct net_device *netdev,
-			      struct ethtool_channels *ch)
-{
-	struct macb *bp =3D netdev_priv(netdev);
-
-	ch->max_combined =3D bp->max_num_queues;
-	ch->combined_count =3D bp->num_queues;
-
-	if (bp->caps & MACB_CAPS_QUEUE_DISABLE)
-		/* we know how disable individual queues */
-		ch->min_combined =3D 1;
-	else
-		/* we only support running with all queues active */
-		ch->min_combined =3D bp->max_num_queues;
-}
-
-But ch->min_combined does not exist.
-
->
->> +	if (!count || ch->rx_count || ch->tx_count)
->> +		return -EINVAL;
->
-> Core should check this for you already
->
->> +	if (count > bp->max_num_queues)
->> +		return -EINVAL;
->
-> and this
-
-Noted thanks!
-
->> +	if (count =3D=3D old_count)
->> +		return 0;
->> +
->> +	if (running)
->> +		macb_close(bp->dev);
->> +
->> +	bp->num_queues =3D count;
->> +	netif_set_real_num_queues(bp->dev, count, count);
->> +
->> +	if (running) {
->> +		ret =3D macb_open(bp->dev);
->> +		if (ret) {
->> +			bp->num_queues =3D old_count;
->> +			netif_set_real_num_queues(bp->dev, old_count, old_count);
->> +			macb_open(bp->dev);
->
-> both macb_open() calls may fail under memory pressure
-> For new functionality we ask drivers to allocate all necessary
-> resources upfront then just swap them in and reconfigure HW
-
-The main reason we want to set queue count is memory savings. If we take
-the Mobileye EyeQ5 SoC, it has a small 32MiB RAM alias usable for DMA.
-If we waste it on networking we have less available for the remaining
-peripherals. Is there some way we could avoid upfront allocations?
-
-.set_ringparam() can help to avoid memory waste by using many small
-queues. But our main target config is a single large queue (common with
-AF_XDP zero-copy when userspace wants a single socket). In that case we
-waste `(max_num_queues - 1) / max_num_queues` percent: 75% with
-max_num_queues=3D4 on Mobileye EyeQ5 & EyeQ6H, ie Mobileye boards on my
-desk at the moment.
-
-I wonder if we'll see GEM IPs that have >4 queues. HW manual indicates
-up to 16 is supported.
-
-Thanks Jakub,
-
---
-Th=C3=A9o Lebrun, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
