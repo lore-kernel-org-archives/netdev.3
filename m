@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1755363C63;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD6B367F27;
 	Mon,  9 Mar 2026 08:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773043426; cv=none; b=D1e4HZK3n59WHZ9f2qHn52ODD+NRu2Gj1rA0MlsKgQiUehWt5eh17+/4RR1VB8H7WejJf48qY/IT9Oo0J+r0X+yqoZj4d7b+KVB6pi0L1O+ClO4X8NqW3Cn8+upxOnb9L2w1a8uCK9B5L491ye8NepIeGQF0nAAzddNAZ09Bh44=
+	t=1773043426; cv=none; b=mGVYlnS/VJe5vUyrejcV2V/MIwiNUMcTYYI16Oeg474ukcY/I5H1k6G2GIBbFxEN2Nnr3juo1xuxkf4Fn9Sna76Gk4ufaCBO5NeTGgQHU+yWWin4fN/Mn0+oWQNtvy3ETVZpmj0vSC8LeZhiWVijiJctmBU8WsPIEht+Bf9njyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1773043426; c=relaxed/simple;
-	bh=U6eOZs3iNxBCZqrgik+0s/86JK4oBEk09rxPxv6C1jc=;
+	bh=SbrAJGk70EbIW4bgCwqcNeA0pD4BpRhVNFzp7yOtJi8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=O1OI1Md9Nz9xlujJ+bagvEJpng3jUleXB5jFT9BcG+lwmER4vX4bOmwAj5hEPvuVqYdKWeM1SdPvYvGxzRSck7O3/j1n1+w3srrpbtugiAbxiZ6ZWQg/z3SJ/D430d09v5Hs1jkj9ryxDNVXg93td2eG5pthSFzyj0IavX0629I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vhjxp+Tz; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=R7qoTZK87wWiQnaQvT35x5TMlnthCLIKpHWaO/FI1Hj6eQLV3pIgadzndZPyv/aO3ZgM5h4O/wtjxvhxDsHimAWORMGrrudnwjw1JkpdFjbzQ/4QsHVR/Q3YpZi+I71bfFBnCE6SOOcZmjmXD3sK4uMC9mFE/l70H0T6BV2eo4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CEv3G+sF; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vhjxp+Tz"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6EB55C2BC87;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CEv3G+sF"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 8C288C2BCB0;
 	Mon,  9 Mar 2026 08:03:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1773043426;
-	bh=U6eOZs3iNxBCZqrgik+0s/86JK4oBEk09rxPxv6C1jc=;
+	bh=SbrAJGk70EbIW4bgCwqcNeA0pD4BpRhVNFzp7yOtJi8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Vhjxp+TzGcrl9Uu+gCftb9lUUbQwVQq3qygNlH4kUhLqY827Ph0rKVqKGnjPfgfqH
-	 NQLCgWuLPGkZOB1Cz6aIa3a29sRLeUX3Xmo/4j8sb31WL4vSN87TkcxOhkg6T8ptB0
-	 8IQNtKBjZqADri0bWm8qgqfFWMjbXMeej1e8yThK7JMCLbHLkN1wwM1VWbXJGEUzf2
-	 jZASe+9elgTFryZ3gc6a3vLm8KmoJuQOn/Ne3AuuXcpWOu1aXLSNhrWGxs65Vk0+BO
-	 PTT0wDcJzNLQflk399xUD4I+RsqxjBHbCD9s6G0zBRb0CU+IG832svcsdP5sqmxSlV
-	 p0bKeHKK+GhXQ==
+	b=CEv3G+sFENvoUP3eYAHiYa0LR1jTIU2qbjakGQDpCVz2NKn6apDqroVnUAqLZn71F
+	 zdJZ9NIyPb3NQ6gqbrs6LEWJWzvvVCuRcQYzdc+B4zb0UGh1yhUKVA/5xT6pQJI/ZJ
+	 xkU/BGPGPO8X3BEKOCUHDi0cAdk5OrB2d+6FRz55li8q2ryDYeU1JJGFd/hYtj9tnc
+	 ZgjvA2FYLDJA4B82oDopBk0RZLNpkGqLKhFRK37Pq1DVQQWUCz31wwchCbLUP+P7NV
+	 IXd4gqSKIEtoLhUKF5A4NEe07DGeBRFaYrM2SqP60p7IKCCwHdyTIhYrhFzVuCg6fR
+	 9FlP0+xg7V4QQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5D591EF36FB;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 824F6EF3706;
 	Mon,  9 Mar 2026 08:03:46 +0000 (UTC)
 From: Simon Baatz via B4 Relay <devnull+gmbnomis.gmail.com@kernel.org>
-Date: Mon, 09 Mar 2026 09:02:27 +0100
-Subject: [PATCH net-next v3 2/6] mptcp: keep rcv_mwnd_seq in sync with
- subflow rcv_wnd
+Date: Mon, 09 Mar 2026 09:02:29 +0100
+Subject: [PATCH net-next v3 4/6] selftests/net: packetdrill: add
+ tcp_rcv_wnd_shrink_nomem.pkt
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260309-tcp_rfc7323_retract_wnd_rfc-v3-2-4c7f96b1ec69@gmail.com>
+Message-Id: <20260309-tcp_rfc7323_retract_wnd_rfc-v3-4-4c7f96b1ec69@gmail.com>
 References: <20260309-tcp_rfc7323_retract_wnd_rfc-v3-0-4c7f96b1ec69@gmail.com>
 In-Reply-To: <20260309-tcp_rfc7323_retract_wnd_rfc-v3-0-4c7f96b1ec69@gmail.com>
 To: Eric Dumazet <edumazet@google.com>, 
@@ -58,11 +58,11 @@ Cc: netdev@vger.kernel.org, linux-doc@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
  mptcp@lists.linux.dev, Simon Baatz <gmbnomis@gmail.com>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773043425; l=1316;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773043425; l=6675;
  i=gmbnomis@gmail.com; s=20260220; h=from:subject:message-id;
- bh=ChftbPgxBgowAH5jlThlLmD2ZcIdQ5MNv0dOVMZk0bc=;
- b=ebwxj9jswhY7N+FX93x/tqn0TUOf6ljdixhMtvB9X8ZTBTSLzUET9CMuG0w7U6djoehuAO9z1
- K6f847zwt1VANVMgE8WgLKsGJzlx1Qb2yKGdLXsQZf0vswy9hFLWe/W
+ bh=N/81u3UphdzG27V80GBzm+l0tP/HFFOfJpFHiI1//LI=;
+ b=O6x0ANLGhslVcC1+3RGJ5nFPK+fcPMRzB4O0ymz76PjW+o4CTIwgiCU1iTUE5+i24Jcz/9EJP
+ t4n8hUyXVyuDPjjAlT9nSgVACT1jy1vPFra7fTpVnE0+xh2xq37MYQN
 X-Developer-Key: i=gmbnomis@gmail.com; a=ed25519;
  pk=T/JIz/6F5bf1uQJr69lmyi7czVG+F9TVZ/8x5z9Wtqw=
 X-Endpoint-Received: by B4 Relay for gmbnomis@gmail.com/20260220 with
@@ -72,41 +72,161 @@ Reply-To: gmbnomis@gmail.com
 
 From: Simon Baatz <gmbnomis@gmail.com>
 
-MPTCP shares a receive window across subflows and applies it at the
-subflow level by adjusting each subflow's rcv_wnd when needed.  With
-the new TCP tracking of the maximum advertised window sequence,
-rcv_mwnd_seq must stay consistent with these subflow-level rcv_wnd
-adjustments.
+This test verifies
+- the sequence number checks using the maximum advertised window
+  sequence number and
+- the logic for handling received data in tcp_data_queue()
+
+for the cases:
+
+1. The window is reduced to zero because of memory
+
+2. The window grows again but still does not reach the originally
+   advertised window
 
 Signed-off-by: Simon Baatz <gmbnomis@gmail.com>
 ---
- net/mptcp/options.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../net/packetdrill/tcp_rcv_wnd_shrink_nomem.pkt   | 132 +++++++++++++++++++++
+ 1 file changed, 132 insertions(+)
 
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index 43df4293f58bfbd8a8df6bf24b9f15e0f9e238f6..8a1c5698983cff3082d68290626dd8f1e044527f 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -1076,6 +1076,7 @@ static void rwin_update(struct mptcp_sock *msk, struct sock *ssk,
- 	 * resync.
- 	 */
- 	tp->rcv_wnd += mptcp_rcv_wnd - subflow->rcv_wnd_sent;
-+	tcp_update_max_rcv_wnd_seq(tp);
- 	subflow->rcv_wnd_sent = mptcp_rcv_wnd;
- }
- 
-@@ -1338,8 +1339,9 @@ static void mptcp_set_rwin(struct tcp_sock *tp, struct tcphdr *th)
- 		 */
- 		rcv_wnd_new = rcv_wnd_old;
- 		win = rcv_wnd_old - ack_seq;
--		tp->rcv_wnd = min_t(u64, win, U32_MAX);
--		new_win = tp->rcv_wnd;
-+		new_win = min_t(u64, win, U32_MAX);
-+		tp->rcv_wnd = new_win;
-+		tcp_update_max_rcv_wnd_seq(tp);
- 
- 		/* Make sure we do not exceed the maximum possible
- 		 * scaled window.
+diff --git a/tools/testing/selftests/net/packetdrill/tcp_rcv_wnd_shrink_nomem.pkt b/tools/testing/selftests/net/packetdrill/tcp_rcv_wnd_shrink_nomem.pkt
+new file mode 100644
+index 0000000000000000000000000000000000000000..69b060c548eac50f5dc5c034c90f0b8eae4b4fa6
+--- /dev/null
++++ b/tools/testing/selftests/net/packetdrill/tcp_rcv_wnd_shrink_nomem.pkt
+@@ -0,0 +1,132 @@
++// SPDX-License-Identifier: GPL-2.0
++// When tcp_receive_window() < tcp_max_receive_window(), tcp_sequence() accepts
++// packets that would be dropped under normal conditions (i.e. tcp_receive_window()
++// equal to tcp_max_receive_window()).
++// Test that such packets are handled as expected for RWIN == 0 and for RWIN > 0.
++
++--mss=1000
++
++`./defaults.sh`
++
++    0 `nstat -n`
++
++// Establish a connection.
++   +0 socket(..., SOCK_STREAM, IPPROTO_TCP) = 3
++   +0 setsockopt(3, SOL_SOCKET, SO_REUSEADDR, [1], 4) = 0
++   +0 setsockopt(3, SOL_SOCKET, SO_RCVBUF, [1000000], 4) = 0
++   +0 bind(3, ..., ...) = 0
++   +0 listen(3, 1) = 0
++
++   +0 < S 0:0(0) win 32792 <mss 1000,nop,nop,sackOK,nop,wscale 7>
++   +0 > S. 0:0(0) ack 1 win 65535 <mss 1460,nop,nop,sackOK,nop,wscale 4>
++   +0 < . 1:1(0) ack 1 win 257
++
++   +0 accept(3, ..., ...) = 4
++
++// Put 1040000 bytes into the receive buffer
++   +0 < P. 1:65001(65000) ack 1 win 257
++    * > .  1:1(0) ack 65001
++   +0 < P. 65001:130001(65000) ack 1 win 257
++    * > .  1:1(0) ack 130001
++   +0 < P. 130001:195001(65000) ack 1 win 257
++    * > .  1:1(0) ack 195001
++   +0 < P. 195001:260001(65000) ack 1 win 257
++    * > .  1:1(0) ack 260001
++   +0 < P. 260001:325001(65000) ack 1 win 257
++    * > .  1:1(0) ack 325001
++   +0 < P. 325001:390001(65000) ack 1 win 257
++    * > .  1:1(0) ack 390001
++   +0 < P. 390001:455001(65000) ack 1 win 257
++    * > .  1:1(0) ack 455001
++   +0 < P. 455001:520001(65000) ack 1 win 257
++    * > .  1:1(0) ack 520001
++   +0 < P. 520001:585001(65000) ack 1 win 257
++    * > .  1:1(0) ack 585001
++   +0 < P. 585001:650001(65000) ack 1 win 257
++    * > .  1:1(0) ack 650001
++   +0 < P. 650001:715001(65000) ack 1 win 257
++    * > .  1:1(0) ack 715001
++   +0 < P. 715001:780001(65000) ack 1 win 257
++    * > .  1:1(0) ack 780001
++   +0 < P. 780001:845001(65000) ack 1 win 257
++    * > .  1:1(0) ack 845001
++   +0 < P. 845001:910001(65000) ack 1 win 257
++    * > .  1:1(0) ack 910001
++   +0 < P. 910001:975001(65000) ack 1 win 257
++    * > .  1:1(0) ack 975001
++   +0 < P. 975001:1040001(65000) ack 1 win 257
++    * > .  1:1(0) ack 1040001
++
++// Trigger an extreme memory squeeze by shrinking SO_RCVBUF
++   +0 setsockopt(4, SOL_SOCKET, SO_RCVBUF, [16000], 4) = 0
++
++   +0 < P. 1040001:1105001(65000) ack 1 win 257
++    * > .  1:1(0) ack 1040001 win 0
++// Check LINUX_MIB_TCPRCVQDROP has been incremented
++   +0 `nstat -s | grep TcpExtTCPRcvQDrop| grep -q " 1 "`
++
++// RWIN == 0: rcv_wup = 1040001, rcv_wnd = 0, rcv_mwnd_seq > 1105001 (significantly larger, typically ~1970000)
++
++// Accept pure ack with seq in max adv. window
++   +0 write(4, ..., 1000) = 1000
++   +0 > P. 1:1001(1000) ack 1040001 win 0
++   +0 < .  1105001:1105001(0) ack 1001 win 257
++
++// In order segment, in max adv. window -> drop (SKB_DROP_REASON_TCP_ZEROWINDOW)
++   +0 < P. 1040001:1041001(1000) ack 1001 win 257
++   +0 > .  1001:1001(0) ack 1040001 win 0
++// Ooo partial segment, in max adv. window -> drop (SKB_DROP_REASON_TCP_ZEROWINDOW)
++   +0 < P. 1039001:1041001(2000) ack 1001 win 257
++   +0 > .  1001:1001(0) ack 1040001 win 0 <nop,nop,sack 1039001:1040001>
++// Check LINUX_MIB_TCPZEROWINDOWDROP has been incremented twice
++   +0 `nstat -s | grep TcpExtTCPZeroWindowDrop| grep -q " 2 "`
++
++// Ooo segment, in max adv. window -> drop (SKB_DROP_REASON_TCP_OVERWINDOW)
++   +0 < P. 1105001:1106001(1000) ack 1001 win 257
++   +0 > .  1001:1001(0) ack 1040001 win 0
++// Ooo segment, beyond max adv. window -> drop (SKB_DROP_REASON_TCP_INVALID_SEQUENCE)
++   +0 < P. 2000001:2001001(1000) ack 1001 win 257
++   +0 > .  1001:1001(0) ack 1040001 win 0
++// Check LINUX_MIB_BEYOND_WINDOW has been incremented twice
++   +0 `nstat -s | grep TcpExtBeyondWindow | grep -q " 2 "`
++
++// Read all data
++   +0 read(4, ..., 2000000) = 1040000
++    * > .  1001:1001(0) ack 1040001
++
++// RWIN > 0: rcv_wup = 1040001, 0 < rcv_wnd < 32000, rcv_mwnd_seq > 1105001 (significantly larger, typically ~1970000)
++
++// Accept pure ack with seq in max adv. window, beyond adv. window
++   +0 write(4, ..., 1000) = 1000
++   +0 > P.  1001:2001(1000) ack 1040001
++   +0 < . 1105001:1105001(0) ack 2001 win 257
++
++// In order segment, in max adv. window, in adv. window -> accept
++// Note: This also ensures that we cannot hit the empty queue exception in tcp_sequence() in the following tests
++   +0 < P. 1040001:1041001(1000) ack 2001 win 257
++    * > .  2001:2001(0) ack 1041001
++
++// Ooo partial segment, in adv. window -> accept
++   +0 < P. 1040001:1042001(2000) ack 2001 win 257
++   +0 > .  2001:2001(0) ack 1042001 <nop,nop,sack 1040001:1041001>
++
++// Ooo segment, in max adv. window, beyond adv. window -> drop (SKB_DROP_REASON_TCP_OVERWINDOW)
++   +0 < P. 1105001:1106001(1000) ack 2001 win 257
++   +0 > .  2001:2001(0) ack 1042001
++// Ooo segment, beyond max adv. window, beyond adv. window -> drop (SKB_DROP_REASON_TCP_INVALID_SEQUENCE)
++   +0 < P. 2000001:2001001(1000) ack 2001 win 257
++   +0 > .  2001:2001(0) ack 1042001
++// Check LINUX_MIB_BEYOND_WINDOW has been incremented twice
++   +0 `nstat -s | grep TcpExtBeyondWindow | grep -q " 4 "`
++
++// We are allowed to go beyond the window and buffer with one packet
++   +0 < P. 1042001:1062001(20000) ack 2001 win 257
++    * > .  2001:2001(0) ack 1062001
++   +0 < P. 1062001:1082001(20000) ack 2001 win 257
++    * > .  2001:2001(0) ack 1082001 win 0
++
++// But not more: In order segment, in max adv. window -> drop (SKB_DROP_REASON_TCP_ZEROWINDOW) 
++   +0 < P. 1082001:1083001(1000) ack 2001 win 257
++    * > .  2001:2001(0) ack 1082001
++// Check LINUX_MIB_TCPZEROWINDOWDROP has been incremented again
++   +0 `nstat -s | grep TcpExtTCPZeroWindowDrop| grep -q " 3 "`
 
 -- 
 2.53.0
