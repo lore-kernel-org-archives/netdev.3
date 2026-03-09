@@ -1,30 +1,30 @@
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BB93ACA7A;
-	Mon,  9 Mar 2026 12:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 311933B3C02;
+	Mon,  9 Mar 2026 12:05:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773057934; cv=none; b=IUXKcPnMLdKK3MZls9u5LbCp1zgemR7MsUfxZKYf81oJjLdK/aEx668j6ixRW4pfczX+/yELcJSSB0Rk8GyFKcUDYTe9lGOkgrHOscCVdhiLvpfK0/X1OaQdSVVEM5qPd3AGYCITdpHaV9fA/0S6WwRGGjYIjtrcV0R8Q79oTzg=
+	t=1773057935; cv=none; b=NgrNy5lUstgKpye505MXjp+p6aub5hVHHQnjJWjajfvs8/v1qoMLLUPC+td3elAu0hS6GHOv3bZ6oHY/PwCB2NZ0H5uRFS6UQ/GrrSaqDTwBv7MBgesuVSdbSruPVrzDU/QXaVFHEgH914dV1Iwox4kFKIdOu25IviWOwbhCqps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773057934; c=relaxed/simple;
-	bh=CChOn9aEVQUfvh6RPRMAiLVLDFjlpoMLp2EqAXaGRVk=;
+	s=arc-20240116; t=1773057935; c=relaxed/simple;
+	bh=6Pumgs9aKvTbPRWiTgq6PeLMTuhaF5ZPLEmtoaBUO8k=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bpOkVhWwsxMW8TwzhgaO03RDJybH3uxmRX5jtuooAGsPx4H9VTDy5slZRLMOwn/+sJMseFs1wNPFhyOPssXi+durs2EsvMGtMrqTpZ+PAcH/1TNkn1O1kk0vJ4Wxo0IRJmShhKxzF8IxELZQQX0I6TsM0YNEXQWtrFWfORL4A5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=jz/PAkIy; arc=none smtp.client-ip=60.244.123.138
+	 MIME-Version:Content-Type; b=EsTbJ2cvmQp3SdWJte+XEIzU7OltTSld2YMyyATlVNe6Dvxrp6okyZlof2XNlXSrfPoBLGqbsNuFnW467nn/HZNMsCr/cfuln18ljEyYKh1Yb1ZUWB7Z5fdF9541ekzNJEFb0GE6vZI3Bza8ghrhBdGev5lvDF4SgQOgLLh4K38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=PneR0djy; arc=none smtp.client-ip=210.61.82.184
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="jz/PAkIy"
-X-UUID: 3f6de9a01bb011f1a02d4725871ece0b-20260309
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="PneR0djy"
+X-UUID: 3dd64b1e1bb011f1a39cd589f645bc18-20260309
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=vAd/7izSALu5ywCdo9uRmUdtaYOKbi9RYzSqvtklZuI=;
-	b=jz/PAkIyZt05FEA6KBvqDLSiRpZ1o1lJ23xlSCBZjFfbiStVt9MxGN4N87LfksXfabtAthgHCPRpDUOrkU8pfKZUv2tcc7ecS+iz9FQta0fY6HUCE2KejgsF4Riu6aZzgZCCH8T1FQFVDPHxiNRMMzWs73LJgQAjwHthNKOKz8Y=;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=FRI44TdrdZ3Legx0P7loaEhsz45HIny8Im0Ko5rp3s8=;
+	b=PneR0djy53DBUyiMFQDOf+8gWHHU1lQQmsvDcGsXKWcS8KlEhXFP/RnaVWxcmLQ9qXZ1pZVLHWfPA0IXd03XJf7KpOo5NiW5tCZMbdCJDHFHUyR+5XPU1pFPodSpHj7zrX1Ka/rzGKj5DYGWH+6bx/oTX/EurvtPxf7EGgE7sn4=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.3.11,REQID:69c5d8aa-5388-484e-b274-6fa75bef3157,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:89c9d04,CLOUDID:bbc66aea-ef90-4382-9c6f-55f2a0689a6b,B
+X-CID-O-INFO: VERSION:1.3.11,REQID:da60a2ea-a7fe-46d1-99a8-d090398c5f3f,IP:0,U
+	RL:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:
+	release,TS:0
+X-CID-META: VersionHash:89c9d04,CLOUDID:6e1f6ff1-16bd-4243-b4ca-b08ca08ab1d8,B
 	ulkID:nil,BulkQuantity:0,Recheck:0,SF:81|82|102|836|888|898,TC:-5,Content:
 	0|15|50,EDM:-3,IP:nil,URL:0,File:130,RT:0,Bulk:nil,QS:nil,BEC:-1,COL:0,OSI
 	:0,OSA:0,AV:0,LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
@@ -32,18 +32,18 @@ X-CID-BVR: 2,SSN|SDN
 X-CID-BAS: 2,SSN|SDN,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR
 X-CID-RHF: D41D8CD98F00B204E9800998ECF8427E
-X-UUID: 3f6de9a01bb011f1a02d4725871ece0b-20260309
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
+X-UUID: 3dd64b1e1bb011f1a39cd589f645bc18-20260309
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw02.mediatek.com
 	(envelope-from <irving-ch.lin@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1470702178; Mon, 09 Mar 2026 20:05:21 +0800
+	with ESMTP id 514206857; Mon, 09 Mar 2026 20:05:19 +0800
 Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- mtkmbs13n1.mediatek.inc (172.21.101.193) with Microsoft SMTP Server
+ mtkmbs13n2.mediatek.inc (172.21.101.108) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.29; Mon, 9 Mar 2026 20:05:20 +0800
+ 15.2.2562.29; Mon, 9 Mar 2026 20:05:17 +0800
 Received: from mtksitap99.mediatek.inc (10.233.130.16) by
  mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.2562.29 via Frontend Transport; Mon, 9 Mar 2026 20:05:20 +0800
+ 15.2.2562.29 via Frontend Transport; Mon, 9 Mar 2026 20:05:17 +0800
 From: irving.ch.lin <irving-ch.lin@mediatek.com>
 To: Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
 	<sboyd@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
@@ -59,9 +59,9 @@ CC: <linux-clk@vger.kernel.org>, <devicetree@vger.kernel.org>,
 	<qiqi.wang@mediatek.com>, <sirius.wang@mediatek.com>,
 	<vince-wl.liu@mediatek.com>, <jh.hsu@mediatek.com>,
 	<irving-ch.lin@mediatek.com>
-Subject: [PATCH v6 17/18] clk: mediatek: Add MT8189 ufs clock support
-Date: Mon, 9 Mar 2026 20:04:59 +0800
-Message-ID: <20260309120512.3624804-18-irving-ch.lin@mediatek.com>
+Subject: [PATCH v6 02/18] clk: mediatek: clk-mux: Make sure bypass clk enabled while setting MFG rate
+Date: Mon, 9 Mar 2026 20:04:44 +0800
+Message-ID: <20260309120512.3624804-3-irving-ch.lin@mediatek.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20260309120512.3624804-1-irving-ch.lin@mediatek.com>
 References: <20260309120512.3624804-1-irving-ch.lin@mediatek.com>
@@ -76,147 +76,43 @@ Content-Type: text/plain
 
 From: Irving-CH Lin <irving-ch.lin@mediatek.com>
 
-Add support for the MT8189 ufs clock controller,
-which provides clock gate control for Universal Flash Storage.
+Enable bypass clock before MFG changing rate, to make sure
+MFG reference clock available during transient.
 
+Fixes: b66add7a74e8 ("clk: mediatek: mux: add clk notifier functions")
 Signed-off-by: Irving-CH Lin <irving-ch.lin@mediatek.com>
 ---
- drivers/clk/mediatek/Kconfig          | 12 ++++
- drivers/clk/mediatek/Makefile         |  1 +
- drivers/clk/mediatek/clk-mt8189-ufs.c | 89 +++++++++++++++++++++++++++
- 3 files changed, 102 insertions(+)
- create mode 100644 drivers/clk/mediatek/clk-mt8189-ufs.c
+ drivers/clk/mediatek/clk-mux.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/mediatek/Kconfig b/drivers/clk/mediatek/Kconfig
-index 4bf111c9efb5..5f48e7174070 100644
---- a/drivers/clk/mediatek/Kconfig
-+++ b/drivers/clk/mediatek/Kconfig
-@@ -939,6 +939,18 @@ config COMMON_CLK_MT8189_SCP
- 	  management for SCP-related features, ensuring proper clock
- 	  distribution and gating for power efficiency and functionality.
+diff --git a/drivers/clk/mediatek/clk-mux.c b/drivers/clk/mediatek/clk-mux.c
+index 5f4b07e7c757..574e35a42115 100644
+--- a/drivers/clk/mediatek/clk-mux.c
++++ b/drivers/clk/mediatek/clk-mux.c
+@@ -414,16 +414,21 @@ static int mtk_clk_mux_notifier_cb(struct notifier_block *nb,
+ 	struct clk_notifier_data *data = _data;
+ 	struct clk_hw *hw = __clk_get_hw(data->clk);
+ 	struct mtk_mux_nb *mux_nb = to_mtk_mux_nb(nb);
++	struct clk_hw *p_hw = clk_hw_get_parent_by_index(hw, mux_nb->bypass_index);
+ 	int ret = 0;
  
-+config COMMON_CLK_MT8189_UFS
-+	tristate "Clock driver for MediaTek MT8189 ufs"
-+	depends on COMMON_CLK_MT8189
-+	default COMMON_CLK_MT8189
-+	help
-+	  Enable this to support the clock management for the Universal Flash
-+	  Storage (UFS) interface on MediaTek MT8189 SoCs. This includes
-+	  clock sources, dividers, and gates that are specific to the UFS
-+	  feature of the MT8189 platform. It is recommended to enable this
-+	  option if the system includes a UFS device that relies on the MT8189
-+	  SoC for clock management.
-+
- config COMMON_CLK_MT8192
- 	tristate "Clock driver for MediaTek MT8192"
- 	depends on ARM64 || COMPILE_TEST
-diff --git a/drivers/clk/mediatek/Makefile b/drivers/clk/mediatek/Makefile
-index 819c67395e1b..4179808dba7b 100644
---- a/drivers/clk/mediatek/Makefile
-+++ b/drivers/clk/mediatek/Makefile
-@@ -135,6 +135,7 @@ obj-$(CONFIG_COMMON_CLK_MT8189_MDPSYS) += clk-mt8189-mdpsys.o
- obj-$(CONFIG_COMMON_CLK_MT8189_MFG) += clk-mt8189-mfg.o
- obj-$(CONFIG_COMMON_CLK_MT8189_MMSYS) += clk-mt8189-dispsys.o
- obj-$(CONFIG_COMMON_CLK_MT8189_SCP) += clk-mt8189-scp.o
-+obj-$(CONFIG_COMMON_CLK_MT8189_UFS) += clk-mt8189-ufs.o
- obj-$(CONFIG_COMMON_CLK_MT8192) += clk-mt8192-apmixedsys.o clk-mt8192.o
- obj-$(CONFIG_COMMON_CLK_MT8192_AUDSYS) += clk-mt8192-aud.o
- obj-$(CONFIG_COMMON_CLK_MT8192_CAMSYS) += clk-mt8192-cam.o
-diff --git a/drivers/clk/mediatek/clk-mt8189-ufs.c b/drivers/clk/mediatek/clk-mt8189-ufs.c
-new file mode 100644
-index 000000000000..541f9e05d567
---- /dev/null
-+++ b/drivers/clk/mediatek/clk-mt8189-ufs.c
-@@ -0,0 +1,89 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2025 MediaTek Inc.
-+ * Author: Qiqi Wang <qiqi.wang@mediatek.com>
-+ */
-+
-+#include <linux/clk-provider.h>
-+#include <linux/module.h>
-+#include <linux/of_device.h>
-+#include <linux/platform_device.h>
-+
-+#include "clk-mtk.h"
-+#include "clk-gate.h"
-+
-+#include <dt-bindings/clock/mediatek,mt8189-clk.h>
-+
-+static const struct mtk_gate_regs ufscfg_ao_reg_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0xc,
-+	.sta_ofs = 0x4,
-+};
-+
-+#define GATE_UFSCFG_AO_REG(_id, _name, _parent, _shift)		\
-+	GATE_MTK(_id, _name, _parent, &ufscfg_ao_reg_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
-+
-+static const struct mtk_gate ufscfg_ao_reg_clks[] = {
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_TX_SYM,
-+			   "ufscfg_ao_unipro_tx_sym", "clk26m", 1),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_RX_SYM0,
-+			   "ufscfg_ao_unipro_rx_sym0", "clk26m", 2),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_RX_SYM1,
-+			   "ufscfg_ao_unipro_rx_sym1", "clk26m", 3),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_UNIPRO_SYS,
-+			   "ufscfg_ao_unipro_sys", "ufs_sel", 4),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_U_SAP_CFG,
-+			   "ufscfg_ao_u_sap_cfg", "clk26m", 5),
-+	GATE_UFSCFG_AO_REG(CLK_UFSCFG_AO_REG_U_PHY_TOP_AHB_S_BUS,
-+			   "ufscfg_ao_u_phy_ahb_s_bus", "axi_u_sel", 6),
-+};
-+
-+static const struct mtk_clk_desc ufscfg_ao_reg_mcd = {
-+	.clks = ufscfg_ao_reg_clks,
-+	.num_clks = ARRAY_SIZE(ufscfg_ao_reg_clks),
-+};
-+
-+static const struct mtk_gate_regs ufscfg_pdn_reg_cg_regs = {
-+	.set_ofs = 0x8,
-+	.clr_ofs = 0xc,
-+	.sta_ofs = 0x4,
-+};
-+
-+#define GATE_UFSCFG_PDN_REG(_id, _name, _parent, _shift)	\
-+	GATE_MTK(_id, _name, _parent, &ufscfg_pdn_reg_cg_regs, _shift, &mtk_clk_gate_ops_setclr)
-+
-+static const struct mtk_gate ufscfg_pdn_reg_clks[] = {
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_UFS,
-+			    "ufscfg_ufshci_ufs", "ufs_sel", 0),
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_AES,
-+			    "ufscfg_ufshci_aes", "aes_ufsfde_sel", 1),
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_U_AHB,
-+			    "ufscfg_ufshci_u_ahb", "axi_u_sel", 3),
-+	GATE_UFSCFG_PDN_REG(CLK_UFSCFG_REG_UFSHCI_U_AXI,
-+			    "ufscfg_ufshci_u_axi", "mem_sub_u_sel", 5),
-+};
-+
-+static const struct mtk_clk_desc ufscfg_pdn_reg_mcd = {
-+	.clks = ufscfg_pdn_reg_clks,
-+	.num_clks = ARRAY_SIZE(ufscfg_pdn_reg_clks),
-+};
-+
-+static const struct of_device_id of_match_clk_mt8189_ufs[] = {
-+	{ .compatible = "mediatek,mt8189-ufscfg-ao", .data = &ufscfg_ao_reg_mcd },
-+	{ .compatible = "mediatek,mt8189-ufscfg-pdn", .data = &ufscfg_pdn_reg_mcd },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, of_match_clk_mt8189_ufs);
-+
-+static struct platform_driver clk_mt8189_ufs_drv = {
-+	.probe = mtk_clk_simple_probe,
-+	.remove = mtk_clk_simple_remove,
-+	.driver = {
-+		.name = "clk-mt8189-ufs",
-+		.of_match_table = of_match_clk_mt8189_ufs,
-+	},
-+};
-+
-+module_platform_driver(clk_mt8189_ufs_drv);
-+MODULE_DESCRIPTION("MediaTek MT8189 ufs clocks driver");
-+MODULE_LICENSE("GPL");
+ 	switch (event) {
+ 	case PRE_RATE_CHANGE:
+-		mux_nb->original_index = mux_nb->ops->get_parent(hw);
+-		ret = mux_nb->ops->set_parent(hw, mux_nb->bypass_index);
++		ret = clk_prepare_enable(p_hw->clk);
++		if (ret == 0) {
++			mux_nb->original_index = mux_nb->ops->get_parent(hw);
++			ret = mux_nb->ops->set_parent(hw, mux_nb->bypass_index);
++		}
+ 		break;
+ 	case POST_RATE_CHANGE:
+ 	case ABORT_RATE_CHANGE:
+ 		ret = mux_nb->ops->set_parent(hw, mux_nb->original_index);
++		clk_disable_unprepare(p_hw->clk);
+ 		break;
+ 	}
+ 
 -- 
 2.45.2
 
