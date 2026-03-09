@@ -1,63 +1,227 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CB425A2B4
-	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 21:21:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773091287; cv=none; b=Zk9S+AjI9MOXvE5CmxYE899o/oviJ4bLhOuFGS4XgXoQMkbhYuceU0Refxw9qhULAHJ9J8Q1OGWY8aTlR602BIb+41PWYeVkE+vok2U4Ks4IPjAdi4YwX66iDjKV9tVwjkcxK1Up4qBpQbnJigrudDv7s6TQNz7f0E4ICGGHmLs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773091287; c=relaxed/simple;
-	bh=oe9ddW4pLbC7lONtqKIRzyfPji7D5xo0kfNqyHjFWnI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l/U+xk1h9mL84USMCyXZSWXxb88itjIuVsAGktNcWWdqILoq35k6I8R0Mie66FV079cCnc2h5ukX3WCWHd87WSfMUHWOePuITl5/K8lYHk9q6MsKAu+//o5DjZMXfCIY+UTw1Cl19xvAau0+eX87v+TJTTLGUFvxLTvlz5aCWSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uYSj+h9z; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uYSj+h9z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D53EC4CEF7;
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC61733C18B;
 	Mon,  9 Mar 2026 21:21:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773091287;
-	bh=oe9ddW4pLbC7lONtqKIRzyfPji7D5xo0kfNqyHjFWnI=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=uYSj+h9zYUbUy5/w5ZnNU5AiRYrtoqxr3z3I9ntmG3XdDTtOGJknHkeCsZ7QWsKw9
-	 ysWOh81mPvfWSfmRzApGyIj4hql3weofWoT3TaY8Cx8uW0G0X+qHwj2P4xSCbMSpEO
-	 AG2wziet9/04roW2zHsjaI1EcbKq38IAnlCv9tLcUugvsoWH8+J/MgqLqwc/3ZHgb8
-	 5jTkJqoCfvsQohJbVDVNiv4JiCfhjZXM5DzgyXyWy2gkPhtKmcIICpHIn4Co4qB5NV
-	 DIEkTR7WWLM/yUomnHESX6hPijsmsGLLvJJZpBr7Z9uVvV5vFO/lwjvNTl4LIgC6sS
-	 qjMfT9BX586eQ==
-Date: Mon, 9 Mar 2026 14:21:26 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Cosmin Ratiu <cratiu@nvidia.com>
-Cc: "pabeni@redhat.com" <pabeni@redhat.com>, Dragos Tatulea
- <dtatulea@nvidia.com>, "edumazet@google.com" <edumazet@google.com>,
- "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "andrew+netdev@lunn.ch"
- <andrew+netdev@lunn.ch>, "sd@queasysnail.net" <sd@queasysnail.net>,
- "davem@davemloft.net" <davem@davemloft.net>
-Subject: Re: [PATCH net v3 0/3] macsec: Add support for VLAN filtering in
- offload mode
-Message-ID: <20260309142126.2fe0cd73@kernel.org>
-In-Reply-To: <678c4e9e9f2e54e47e67005e1a230641300e40dd.camel@nvidia.com>
-References: <20260306151004.2862198-1-cratiu@nvidia.com>
-	<20260306115353.28f322e0@kernel.org>
-	<20260306115405.0febac64@kernel.org>
-	<678c4e9e9f2e54e47e67005e1a230641300e40dd.camel@nvidia.com>
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773091289; cv=none; b=GFOp9KJCmQXXukNZek8ZNLOG5K0QvPjYbfzviJ99xcgCqKgEkWWZzrdJPkzWC3dvdi33SKtlnfS5ROoBIQCPG/LvInHiCR3Ph8r/Y/55kXPXIbLG6NubYWk9vaoNXPAKPG+IQtcIqA3Of9nMwuYR5YhtM/dL/D0lF50WfRNajaM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773091289; c=relaxed/simple;
+	bh=ZjpQiHtNAaS5LFI62C8zACHMj2QEe04oG7hntNQrOgM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=eIQ9Qya2Rn3ECqpaMXnHx4ovUyArzBleQzAqMPzFG9Dim8y5Xu6ZqbSdo0HZOV1mHlxZnY1Aod+uxAqOVA9cnZdSDPMjLlHKUpUHkddaYZ+Z7pZSetrKUm/2Eeex4rBySNipohpjQUiEtxshzA2vqZNW50d65DtkrEijkQbaYtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=IK4ZNeQu; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="IK4ZNeQu"
+Received: by linux.microsoft.com (Postfix, from userid 1006)
+	id BA01C20B710C; Mon,  9 Mar 2026 14:21:27 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com BA01C20B710C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1773091287;
+	bh=Fq7q9rl4Q/OOimOveUu4mF0Owb2cGJSM+ebh2G6WOis=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=IK4ZNeQuur+mx1d5C70OB8dXRB+hA4X/MeFh5vhA6o+yaBtcn1MeiYte5SKmcVNw4
+	 IbHefCecPV1ZL4KVQw+6mAXtfYbjl0BeUHvjmi+SPxHtCXOvlPdIErb1GWDXQ4EZB0
+	 L5eu3XhZ/H0XtxmGWd9ehRTJ95MaR9XWQzy+db+k=
+From: Haiyang Zhang <haiyangz@linux.microsoft.com>
+To: linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Kory Maincent (Dent Project)" <kory.maincent@bootlin.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Cc: haiyangz@microsoft.com,
+	paulros@microsoft.com
+Subject: [PATCH net-next,V4, 1/3] net: ethtool: add ethtool COALESCE_RX_CQE_FRAMES/NSECS
+Date: Mon,  9 Mar 2026 14:20:43 -0700
+Message-ID: <20260309212106.764156-2-haiyangz@linux.microsoft.com>
+X-Mailer: git-send-email 2.43.7
+In-Reply-To: <20260309212106.764156-1-haiyangz@linux.microsoft.com>
+References: <20260309212106.764156-1-haiyangz@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Mon, 9 Mar 2026 16:23:22 +0000 Cosmin Ratiu wrote:
-> What's your request here?
-> Would you like me to move that test out of netdevsim and have it work
-> with real devices as well? Or just add the VLAN part as a separate test
-> somewhere? Or we leave it like this and keep it in mind for future
-> tests.
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-The first option - adding a test that can run on real HW as well as
-netdevsim will increase the code the test exercises by an order of
-magnitude.
+Add two parameters for drivers supporting Rx CQE Coalescing.
+
+ETHTOOL_A_COALESCE_RX_CQE_FRAMES:
+Maximum number of frames that can be coalesced into a CQE.
+
+ETHTOOL_A_COALESCE_RX_CQE_NSECS:
+Time out value in nanoseconds after the first packet arrival in a
+coalesced CQE to be sent.
+
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+---
+ Documentation/netlink/specs/ethtool.yaml       |  8 ++++++++
+ Documentation/networking/ethtool-netlink.rst   | 10 ++++++++++
+ include/linux/ethtool.h                        |  6 +++++-
+ include/uapi/linux/ethtool_netlink_generated.h |  2 ++
+ net/ethtool/coalesce.c                         | 14 +++++++++++++-
+ 5 files changed, 38 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
+index 4707063af3b4..d254e26c014c 100644
+--- a/Documentation/netlink/specs/ethtool.yaml
++++ b/Documentation/netlink/specs/ethtool.yaml
+@@ -861,6 +861,12 @@ attribute-sets:
+         name: tx-profile
+         type: nest
+         nested-attributes: profile
++      -
++        name: rx-cqe-frames
++        type: u32
++      -
++        name: rx-cqe-nsecs
++        type: u32
+ 
+   -
+     name: pause-stat
+@@ -2257,6 +2263,8 @@ operations:
+             - tx-aggr-time-usecs
+             - rx-profile
+             - tx-profile
++            - rx-cqe-frames
++            - rx-cqe-nsecs
+       dump: *coalesce-get-op
+     -
+       name: coalesce-set
+diff --git a/Documentation/networking/ethtool-netlink.rst b/Documentation/networking/ethtool-netlink.rst
+index 32179168eb73..a9fbb16891fa 100644
+--- a/Documentation/networking/ethtool-netlink.rst
++++ b/Documentation/networking/ethtool-netlink.rst
+@@ -1076,6 +1076,8 @@ Kernel response contents:
+   ``ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS``    u32     time (us), aggr, Tx
+   ``ETHTOOL_A_COALESCE_RX_PROFILE``            nested  profile of DIM, Rx
+   ``ETHTOOL_A_COALESCE_TX_PROFILE``            nested  profile of DIM, Tx
++  ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES``         u32     max packets, Rx CQE
++  ``ETHTOOL_A_COALESCE_RX_CQE_NSECS``          u32     delay (ns), Rx CQE
+   ===========================================  ======  =======================
+ 
+ Attributes are only included in reply if their value is not zero or the
+@@ -1109,6 +1111,12 @@ well with frequent small-sized URBs transmissions.
+ to DIM parameters, see `Generic Network Dynamic Interrupt Moderation (Net DIM)
+ <https://www.kernel.org/doc/Documentation/networking/net_dim.rst>`_.
+ 
++Rx CQE coalescing allows multiple received packets to be coalesced into a single
++Completion Queue Entry (CQE). ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES`` describes the
++maximum number of frames that can be coalesced into a CQE.
++``ETHTOOL_A_COALESCE_RX_CQE_NSECS`` describes max time in nanoseconds after the
++first packet arrival in a coalesced CQE to be sent.
++
+ COALESCE_SET
+ ============
+ 
+@@ -1147,6 +1155,8 @@ Request contents:
+   ``ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS``    u32     time (us), aggr, Tx
+   ``ETHTOOL_A_COALESCE_RX_PROFILE``            nested  profile of DIM, Rx
+   ``ETHTOOL_A_COALESCE_TX_PROFILE``            nested  profile of DIM, Tx
++  ``ETHTOOL_A_COALESCE_RX_CQE_FRAMES``         u32     max packets, Rx CQE
++  ``ETHTOOL_A_COALESCE_RX_CQE_NSECS``          u32     delay (ns), Rx CQE
+   ===========================================  ======  =======================
+ 
+ Request is rejected if it attributes declared as unsupported by driver (i.e.
+diff --git a/include/linux/ethtool.h b/include/linux/ethtool.h
+index 83c375840835..656d465bcd06 100644
+--- a/include/linux/ethtool.h
++++ b/include/linux/ethtool.h
+@@ -332,6 +332,8 @@ struct kernel_ethtool_coalesce {
+ 	u32 tx_aggr_max_bytes;
+ 	u32 tx_aggr_max_frames;
+ 	u32 tx_aggr_time_usecs;
++	u32 rx_cqe_frames;
++	u32 rx_cqe_nsecs;
+ };
+ 
+ /**
+@@ -380,7 +382,9 @@ bool ethtool_convert_link_mode_to_legacy_u32(u32 *legacy_u32,
+ #define ETHTOOL_COALESCE_TX_AGGR_TIME_USECS	BIT(26)
+ #define ETHTOOL_COALESCE_RX_PROFILE		BIT(27)
+ #define ETHTOOL_COALESCE_TX_PROFILE		BIT(28)
+-#define ETHTOOL_COALESCE_ALL_PARAMS		GENMASK(28, 0)
++#define ETHTOOL_COALESCE_RX_CQE_FRAMES		BIT(29)
++#define ETHTOOL_COALESCE_RX_CQE_NSECS		BIT(30)
++#define ETHTOOL_COALESCE_ALL_PARAMS		GENMASK(30, 0)
+ 
+ #define ETHTOOL_COALESCE_USECS						\
+ 	(ETHTOOL_COALESCE_RX_USECS | ETHTOOL_COALESCE_TX_USECS)
+diff --git a/include/uapi/linux/ethtool_netlink_generated.h b/include/uapi/linux/ethtool_netlink_generated.h
+index 114b83017297..8134baf7860f 100644
+--- a/include/uapi/linux/ethtool_netlink_generated.h
++++ b/include/uapi/linux/ethtool_netlink_generated.h
+@@ -371,6 +371,8 @@ enum {
+ 	ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS,
+ 	ETHTOOL_A_COALESCE_RX_PROFILE,
+ 	ETHTOOL_A_COALESCE_TX_PROFILE,
++	ETHTOOL_A_COALESCE_RX_CQE_FRAMES,
++	ETHTOOL_A_COALESCE_RX_CQE_NSECS,
+ 
+ 	__ETHTOOL_A_COALESCE_CNT,
+ 	ETHTOOL_A_COALESCE_MAX = (__ETHTOOL_A_COALESCE_CNT - 1)
+diff --git a/net/ethtool/coalesce.c b/net/ethtool/coalesce.c
+index 3e18ca1ccc5e..349bb02c517a 100644
+--- a/net/ethtool/coalesce.c
++++ b/net/ethtool/coalesce.c
+@@ -118,6 +118,8 @@ static int coalesce_reply_size(const struct ethnl_req_info *req_base,
+ 	       nla_total_size(sizeof(u32)) +	/* _TX_AGGR_MAX_BYTES */
+ 	       nla_total_size(sizeof(u32)) +	/* _TX_AGGR_MAX_FRAMES */
+ 	       nla_total_size(sizeof(u32)) +	/* _TX_AGGR_TIME_USECS */
++	       nla_total_size(sizeof(u32)) +	/* _RX_CQE_FRAMES */
++	       nla_total_size(sizeof(u32)) +	/* _RX_CQE_NSECS */
+ 	       total_modersz * 2;		/* _{R,T}X_PROFILE */
+ }
+ 
+@@ -269,7 +271,11 @@ static int coalesce_fill_reply(struct sk_buff *skb,
+ 	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_TX_AGGR_MAX_FRAMES,
+ 			     kcoal->tx_aggr_max_frames, supported) ||
+ 	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS,
+-			     kcoal->tx_aggr_time_usecs, supported))
++			     kcoal->tx_aggr_time_usecs, supported) ||
++	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_RX_CQE_FRAMES,
++			     kcoal->rx_cqe_frames, supported) ||
++	    coalesce_put_u32(skb, ETHTOOL_A_COALESCE_RX_CQE_NSECS,
++			     kcoal->rx_cqe_nsecs, supported))
+ 		return -EMSGSIZE;
+ 
+ 	if (!req_base->dev || !req_base->dev->irq_moder)
+@@ -338,6 +344,8 @@ const struct nla_policy ethnl_coalesce_set_policy[] = {
+ 	[ETHTOOL_A_COALESCE_TX_AGGR_MAX_BYTES] = { .type = NLA_U32 },
+ 	[ETHTOOL_A_COALESCE_TX_AGGR_MAX_FRAMES] = { .type = NLA_U32 },
+ 	[ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS] = { .type = NLA_U32 },
++	[ETHTOOL_A_COALESCE_RX_CQE_FRAMES] = { .type = NLA_U32 },
++	[ETHTOOL_A_COALESCE_RX_CQE_NSECS] = { .type = NLA_U32 },
+ 	[ETHTOOL_A_COALESCE_RX_PROFILE] =
+ 		NLA_POLICY_NESTED(coalesce_profile_policy),
+ 	[ETHTOOL_A_COALESCE_TX_PROFILE] =
+@@ -570,6 +578,10 @@ __ethnl_set_coalesce(struct ethnl_req_info *req_info, struct genl_info *info,
+ 			 tb[ETHTOOL_A_COALESCE_TX_AGGR_MAX_FRAMES], &mod);
+ 	ethnl_update_u32(&kernel_coalesce.tx_aggr_time_usecs,
+ 			 tb[ETHTOOL_A_COALESCE_TX_AGGR_TIME_USECS], &mod);
++	ethnl_update_u32(&kernel_coalesce.rx_cqe_frames,
++			 tb[ETHTOOL_A_COALESCE_RX_CQE_FRAMES], &mod);
++	ethnl_update_u32(&kernel_coalesce.rx_cqe_nsecs,
++			 tb[ETHTOOL_A_COALESCE_RX_CQE_NSECS], &mod);
+ 
+ 	if (dev->irq_moder && dev->irq_moder->profile_flags & DIM_PROFILE_RX) {
+ 		ret = ethnl_update_profile(dev, &dev->irq_moder->rx_profile,
+-- 
+2.34.1
+
