@@ -1,80 +1,120 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD9A366DAE;
-	Mon,  9 Mar 2026 08:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603023624B2;
+	Mon,  9 Mar 2026 08:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773044567; cv=none; b=c7sAmFlkNs9dT4OLm0pYTaJeLCgeey8IXhGy2pfAXb13HOCJpCsiTC4Rt2DN3X1YYTtLI437Ejku/lDSBde1/wUT2jfIRdrfQ0qRC1B5PZCeyVI9b8zo2s9t+mMQu9OSuztElv1np0o2DeE00I52zuNa1/5aeflaXWEf+qaIyFM=
+	t=1773044821; cv=none; b=AmwnDtz6DNxt4CwRN7dhBQlFMWYjN+3WwbY8K13ryARFMr8FvCD0HNKaokT+PkiDqaVNJwhdIaEWxIEb3bJQUcKmaHDH6TGAvEdoGmuEwYBpgQqTpqI2PQH5CEdxZvcdy86ZQ7Ck+0j7DDJ8tF1Qerdndd3H/s2qs7FxDrs2x6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773044567; c=relaxed/simple;
-	bh=dwOb26n+ndlLmoZCocyESbjisGLEC0JSCWvIfFI6yw0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DfbdBGXUqdLWaU9Ikrsj/Zn/IpJy+0ieEW+6bkiOW+HAv60e8Iu5q6aE87EJKDfIpT5vwQvTVr/IHD9jsicNR+tYcXOeugkpRvrvgUAuOxm7n+LLLuowVJBaqrEBHuZt0k8dmnr4HzKOGq3bsFZs+il3XX+vOCR4zuOOPfnxZBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZcgMHH6k; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773044821; c=relaxed/simple;
+	bh=nkhRxlSg9kyFVG1AEvMQ0w/ilhipFuBU7NMSyf52418=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=azpAxTX5SxYCRq7di4bgkz/rZs5Azh8QRzl49E68zk+M80lo6dwGbyDLckA075km2WwJCtuRq2g/XhXFNhrTqAr84vcOxn8rX3khNt5AIFYpulm2AYKsPmOqXrYpDJ//ReSgTSTHdgzr9iJoBnZTor+Urtws/7bf/b953CTjdgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DYlyUkCG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZcgMHH6k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C222C4CEF7;
-	Mon,  9 Mar 2026 08:22:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DYlyUkCG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054FCC4CEF7;
+	Mon,  9 Mar 2026 08:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773044567;
-	bh=dwOb26n+ndlLmoZCocyESbjisGLEC0JSCWvIfFI6yw0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZcgMHH6kZRxZ3Z3gIfrcXaU70ljJsobap+10i7s1uhAKE0HNV7LZTtuLyqMBSq743
-	 sEaWBEhQWdn++wyX8tXqzbpLj5ULAG+Xkt2bTC5mwzFNK19VHLpoklWqctbFnu3/vN
-	 GZdEWROgicL5ggyxtpQnUfLj6kVh3YtTdcqIx5N6KKZENM0SXR/ld2ZQfTSLHkhTt7
-	 RtSfm8Phe/oRR/i6nmcW/dKbYUj3IpDw4yYoAR2dQIoifeIz9FBJjT9+KjR3OEIk2q
-	 UU0brJgOKXG8HELuUeVqH9yAV15ULGV4YgEZe8HlG3wV9iMkFrhdM4gR86EhNghxZu
-	 oNFHQJM8nor2A==
+	s=k20201202; t=1773044821;
+	bh=nkhRxlSg9kyFVG1AEvMQ0w/ilhipFuBU7NMSyf52418=;
+	h=From:To:Cc:Subject:Date:From;
+	b=DYlyUkCGDWRRIgtAhmO63QBKdJGOSGRjvKhT6PCeMAFP4i+zS65g+1PRh9T3gAA9K
+	 /KbMXhCoDPQXlzDSQm8GAqEBW5NqmmFbPJA0UmWuvpXZ2cHal37j2xM3vz1qNOT+1X
+	 psuPqKXxeyJ9tzz0RXLbUhl95tJqeDvQd1WMMBH1A58C/2W9ooFMsvcgifhhuspCjV
+	 FrRjLJNKMxQ6Bw0GyaNjO3TPa/BXNYASKiBObTipFxbcKQcDcTp96eYKxqNRbMM4dh
+	 lOO6M2ZN2b0sfAQaNdpuK59QUtkMc6wdf554dQjOvnQElA0PsLNDqffTZdeFmiGMYs
+	 W5bLtNfMn0Dcw==
 Received: from johan by xi.lan with local (Exim 4.98.2)
 	(envelope-from <johan@kernel.org>)
-	id 1vzVsy-000000003bl-2fnF;
-	Mon, 09 Mar 2026 09:22:44 +0100
-Date: Mon, 9 Mar 2026 09:22:44 +0100
+	id 1vzVx4-0000000043e-2287;
+	Mon, 09 Mar 2026 09:26:58 +0100
 From: Johan Hovold <johan@kernel.org>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: Tobias Waldekranz <tobias@waldekranz.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
+To: Tobias Waldekranz <tobias@waldekranz.com>
+Cc: Andrew Lunn <andrew@lunn.ch>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
 	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] net: mdio: mvusb: drop redundant device reference
-Message-ID: <aa6DVKUgvkW9r80K@hovoldconsulting.com>
-References: <20260305104722.16217-1-johan@kernel.org>
- <20260306191923.4ae5a6e1@kernel.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH v2] net: mdio: mvusb: drop redundant device reference
+Date: Mon,  9 Mar 2026 09:26:41 +0100
+Message-ID: <20260309082641.15574-1-johan@kernel.org>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260306191923.4ae5a6e1@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-On Fri, Mar 06, 2026 at 07:19:22PM -0800, Jakub Kicinski wrote:
-> On Thu,  5 Mar 2026 11:47:22 +0100 Johan Hovold wrote:
-> >  	ret = of_mdiobus_register(mdio, dev->of_node);
-> >  	if (ret)
-> > -		goto put_dev;
-> > +		return ret;
-> >  
-> >  	return 0;
-> > -
-> > -put_dev:
-> > -	usb_put_dev(mvusb->udev);
-> > -	return ret;
-> 
-> better still:
-> 
-> 	return of_mdiobus_register(mdio, dev->of_node);
-> 
-> and you can remove int ret; as well
+Driver core holds a reference to the USB interface and its parent USB
+device while the interface is bound to a driver and there is no need to
+take additional references unless the structures are needed after
+disconnect.
 
-I tend to prefer explicit error paths as combining the two at the end of
-a function is a common source of errors where drivers fail to clean up
-before returning.
+Drop the redundant device reference to reduce cargo culting, make it
+easier to spot drivers where an extra reference is needed, and reduce
+the risk of memory leaks when drivers fail to release it.
 
-But I'll drop ret in a v2.
+Signed-off-by: Johan Hovold <johan@kernel.org>
+---
+ drivers/net/mdio/mdio-mvusb.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
-Johan
+diff --git a/drivers/net/mdio/mdio-mvusb.c b/drivers/net/mdio/mdio-mvusb.c
+index 554837c21e73..86786ecaa4b1 100644
+--- a/drivers/net/mdio/mdio-mvusb.c
++++ b/drivers/net/mdio/mdio-mvusb.c
+@@ -67,7 +67,6 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
+ 	struct device *dev = &interface->dev;
+ 	struct mvusb_mdio *mvusb;
+ 	struct mii_bus *mdio;
+-	int ret;
+ 
+ 	mdio = devm_mdiobus_alloc_size(dev, sizeof(*mvusb));
+ 	if (!mdio)
+@@ -75,7 +74,7 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
+ 
+ 	mvusb = mdio->priv;
+ 	mvusb->mdio = mdio;
+-	mvusb->udev = usb_get_dev(interface_to_usbdev(interface));
++	mvusb->udev = interface_to_usbdev(interface);
+ 
+ 	/* Reversed from USB PCAPs, no idea what these mean. */
+ 	mvusb->buf[MVUSB_CMD_PREAMBLE0] = cpu_to_le16(0xe800);
+@@ -88,25 +87,16 @@ static int mvusb_mdio_probe(struct usb_interface *interface,
+ 	mdio->write = mvusb_mdio_write;
+ 
+ 	usb_set_intfdata(interface, mvusb);
+-	ret = of_mdiobus_register(mdio, dev->of_node);
+-	if (ret)
+-		goto put_dev;
+ 
+-	return 0;
+-
+-put_dev:
+-	usb_put_dev(mvusb->udev);
+-	return ret;
++	return of_mdiobus_register(mdio, dev->of_node);
+ }
+ 
+ static void mvusb_mdio_disconnect(struct usb_interface *interface)
+ {
+ 	struct mvusb_mdio *mvusb = usb_get_intfdata(interface);
+-	struct usb_device *udev = mvusb->udev;
+ 
+ 	mdiobus_unregister(mvusb->mdio);
+ 	usb_set_intfdata(interface, NULL);
+-	usb_put_dev(udev);
+ }
+ 
+ static struct usb_driver mvusb_mdio_driver = {
+-- 
+2.52.0
+
