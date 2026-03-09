@@ -1,260 +1,84 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B12883A9DB0;
-	Mon,  9 Mar 2026 12:10:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EA1198A17;
+	Mon,  9 Mar 2026 12:12:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773058250; cv=none; b=mwDW1SIRMf1crZ2GnIm/Cide8Tmd9jg1cC1yYWfW3YqchBoojzyB/Mnnh8OFH94aW7IBLFZTaiGpqaSMqgfDSpqtFNfRcag1hVPG7IqccSreJlROt9dzdOyxO+2q+20zJmerGzMQq82FaRyn/T310iIorpp/Slx7IWQKd8q6jSs=
+	t=1773058366; cv=none; b=BBchczJNN8JWNv60q4fLtXRXRU8SGNvL7mvn7cm1lY6hb/p3aCZBNE2Vq23hprWlo7kdpKK5zemOKw22W0/1uuYOPyb9EXaBhCyJw8fFiUmGvHMGqFy1gBalPXdyeWDgXJhEzhz7P73Sp0P9zvwTLsSodb47MmLcpCw8mjp+Ol4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773058250; c=relaxed/simple;
-	bh=CxC4gPRhEx+EnX12NY8NGaQLgGbGEevJeK1eAo6Pdx8=;
-	h=Message-ID:Subject:From:To:CC:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=BaTmNTdflAbQClw8uSbmOwtJMkmm//xznwJDDV506wCrxxY4wK853BLyZnyHWBIHJeRCpoQe4NT79O4XoRd20ArOlPta/BPALxiR7c5RGdjRtTl9aBYGLA7HGDEVHEgypeTg4sf8b1DuS5qFJrIPIHsPg6wJT2C2KmF2lljBcFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=2NWOGvqC; arc=none smtp.client-ip=68.232.153.233
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
+	s=arc-20240116; t=1773058366; c=relaxed/simple;
+	bh=1Tcki6VKO82QeDNN/6Ln1MgIAkRnNY7OOgxREDS2lg8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zd6PzapdHyKzfR7apUnlS/hDgcJ91dmPoQupMzP4egXSo1BFG7HPaOe6ccQAhw6fr752nOhoBNN8laDodZx8o54pxLm9Q13i/mzp6j4G9oGmKCf5Ynnr6d6Ai5dbnGWI9FOJxye/7ErjgU2MJHRoU7DIlkEvfGn9jdFACL+gFCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MQJ4jIM/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="2NWOGvqC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1773058248; x=1804594248;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=CxC4gPRhEx+EnX12NY8NGaQLgGbGEevJeK1eAo6Pdx8=;
-  b=2NWOGvqCrWmKyOaoW0poa4Qn4kmGMB4zgxHwpXKtREZknqadw8xotM3D
-   DVTpiF/s/7o8X6NLstnYMz9mh1WUydpsq7moB2n0zbLgskaDhRGlhbhyP
-   jGWkkfi7OU1Y9riZ/zXFlFVhJVlL9xUiEVzgtMc4/rOBuXbFSy8Flxq+6
-   9AKxiC6mUXB+fyS8j/OTr/TQnd/3zfnA/C6Uf5bAzgFT988/WZQFlZ0Ol
-   oH6ru05H4GdnN6c7jLTwtN/xhT3sB1O78O6ov7HWVDYqJ2HUrV3VYUA8J
-   JvltMza6bwRnwBnWuhKtjkP4w1myjl42yFUEwj8+wzPlq6hlxEGYhhyBs
-   g==;
-X-CSE-ConnectionGUID: lABlYgOLRx6xa1tNtlPVIg==
-X-CSE-MsgGUID: cDPRv21cQ2igkbk4b9k7Pg==
-X-IronPort-AV: E=Sophos;i="6.23,109,1770620400"; 
-   d="scan'208";a="61927052"
-X-Amp-Result: SKIPPED(no attachment in message)
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Mar 2026 05:10:47 -0700
-Received: from chn-vm-ex01.mchp-main.com (10.10.87.71) by
- chn-vm-ex2.mchp-main.com (10.10.87.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.35; Mon, 9 Mar 2026 05:10:07 -0700
-Received: from [10.205.29.43] (10.10.85.11) by chn-vm-ex01.mchp-main.com
- (10.10.85.143) with Microsoft SMTP Server id 15.1.2507.58 via Frontend
- Transport; Mon, 9 Mar 2026 05:10:04 -0700
-Message-ID: <1d70dd8d53f976d5f189d4154049129ef0df0c38.camel@microchip.com>
-Subject: Re: [PATCH net-next 5/8] net: dsa: lan9645x: add bridge support
-From: Jens Emil Schulz Ostergaard <jensemil.schulzostergaard@microchip.com>
-To: Vladimir Oltean <olteanv@gmail.com>
-CC: <UNGLinuxDriver@microchip.com>, Andrew Lunn <andrew@lunn.ch>, "David S.
- Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, "Jakub
- Kicinski" <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Woojung Huh
-	<woojung.huh@microchip.com>, Russell King <linux@armlinux.org.uk>, "Steen
- Hegelund" <Steen.Hegelund@microchip.com>, Daniel Machon
-	<daniel.machon@microchip.com>, <linux-kernel@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <devicetree@vger.kernel.org>
-Date: Mon, 9 Mar 2026 13:09:53 +0100
-In-Reply-To: <20260303145130.rbp3qycr3eh5ifcp@skbuf>
-References: <20260303-dsa_lan9645x_switch_driver_base-v1-0-bff8ca1396f5@microchip.com>
-	 <20260303-dsa_lan9645x_switch_driver_base-v1-5-bff8ca1396f5@microchip.com>
-	 <20260303145130.rbp3qycr3eh5ifcp@skbuf>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MQJ4jIM/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17205C4CEF7;
+	Mon,  9 Mar 2026 12:12:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773058365;
+	bh=1Tcki6VKO82QeDNN/6Ln1MgIAkRnNY7OOgxREDS2lg8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MQJ4jIM/gXouzeG/XPSB18gYyBzFVUAKEFCSA3dKUunXusUUdJR4ookUG4aBGvpYS
+	 xcA/kZFYTDfyqhzntohONv3HgXUMPaFZ7SvhpaNKvs5yPWk3rUNiTR79Da2z+hwCeP
+	 GshAqMdQXBjzbmTEPsq40HtUs8MulIAXX0MRlemGQ/bXnPwBVn7TCimq1xL/rZV+DM
+	 RdYL4RRcfHAbi3vlttBVeEc8nSLcXoBrGFjfEswRP1dTeb9VG7dTSAQ/eyM05THc6r
+	 43T4o6a5cxB2p7kPlIGjLgT32CGEYG5VfVhbLzicfUE5G9261XcIzmmRapxAhpwzN9
+	 F3pujEn+avESA==
+Date: Mon, 9 Mar 2026 12:12:40 +0000
+From: Simon Horman <horms@kernel.org>
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, Jiayuan Chen <jiayuan.chen@shopee.com>,
+	syzbot+d5ace703ed883df56e42@syzkaller.appspotmail.com,
+	Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko <jiri@resnulli.us>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Kees Cook <kees@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH net-next v1] net: sched: cls_u32: Avoid memcpy()
+ false-positive warning in u32_init_knode()
+Message-ID: <20260309121240.GH461701@kernel.org>
+References: <20260305073343.250702-1-jiayuan.chen@linux.dev>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260305073343.250702-1-jiayuan.chen@linux.dev>
 
-On Tue, 2026-03-03 at 16:51 +0200, Vladimir Oltean wrote:
-> EXTERNAL EMAIL: Do not click links or open attachments unless you know th=
-e content is safe
->=20
-> On Tue, Mar 03, 2026 at 01:22:31PM +0100, Jens Emil Schulz =C3=98stergaar=
-d wrote:
-> > Add support for hardware offloading of the bridge. We support a single
-> > bridge device.
-> >=20
-> > Reviewed-by: Steen Hegelund <Steen.Hegelund@microchip.com>
-> > Signed-off-by: Jens Emil Schulz =C3=98stergaard <jensemil.schulzosterga=
-ard@microchip.com>
-> > ---
-> >  drivers/net/dsa/microchip/lan9645x/lan9645x_main.c | 196 +++++++++++++=
-++++++++
-> >  drivers/net/dsa/microchip/lan9645x/lan9645x_main.h |  11 ++
-> >  drivers/net/dsa/microchip/lan9645x/lan9645x_port.c |   2 +
-> >  3 files changed, 209 insertions(+)
-> >=20
-> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c b/drive=
-rs/net/dsa/microchip/lan9645x/lan9645x_main.c
-> > index 739013f049d0..b6efaf669a3f 100644
-> > --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_main.c
-> > @@ -171,6 +171,8 @@ static int lan9645x_setup(struct dsa_switch *ds)
-> >               return err;
-> >       }
-> >=20
-> > +     mutex_init(&lan9645x->fwd_domain_lock);
-> > +
-> >       /* Link Aggregation Mode: NETDEV_LAG_HASH_L2 */
-> >       lan_wr(ANA_AGGR_CFG_AC_SMAC_ENA |
-> >              ANA_AGGR_CFG_AC_DMAC_ENA,
-> > @@ -288,6 +290,192 @@ static void lan9645x_port_phylink_get_caps(struct=
- dsa_switch *ds, int port,
-> >       lan9645x_phylink_get_caps(ds->priv, port, config);
-> >  }
-> >=20
-> > +static int lan9645x_set_ageing_time(struct dsa_switch *ds, unsigned in=
-t msecs)
-> > +{
-> > +     u32 age_secs =3D max(1, msecs / 1000 / 2);
->=20
-> s/1000/MSEC_PER_SEC/
->=20
+On Thu, Mar 05, 2026 at 03:33:43PM +0800, Jiayuan Chen wrote:
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> 
+> Syzbot reported a warning in u32_init_knode() [1].
+> 
+> Similar to commit 7cba18332e36 ("net: sched: cls_u32: Avoid memcpy()
+> false-positive warning") which addressed the same issue in u32_change(),
+> use unsafe_memcpy() in u32_init_knode() to work around the compiler's
+> inability to see into composite flexible array structs.
+> 
+> This silences the false-positive reported by syzbot:
+> 
+>   memcpy: detected field-spanning write (size 32) of single field
+>   "&new->sel" at net/sched/cls_u32.c:855 (size 16)
+> 
+> Since the memory is correctly allocated with kzalloc_flex() using
+> s->nkeys, this is purely a false positive and does not need a Fixes tag.
+> 
+> [1] https://syzkaller.appspot.com/bug?extid=d5ace703ed883df56e42
+> 
+> Reported-by: syzbot+d5ace703ed883df56e42@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/69a811b9.a70a0220.b118c.0019.GAE@google.com/T/
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> Made-with: Cursor
 
-I will change this.
+FWIIW, Made-with is a new tag to me, I would have expected Assisted-by.
 
-> > +     struct lan9645x *lan9645x =3D ds->priv;
-> > +
-> > +     /* Entry is must suffer two aging scans before it is removed, so =
-an
->=20
-> "An entry must suffer (...), so it is aged"
+That notwithstanding, this looks good to me.
 
-I will change this.
+Reviewed-by: Simon Horman <horms@kernel.org>
 
->=20
-> > +      * entry is aged after 2*AGE_PERIOD, and the unit is in seconds.
-> > +      * An age period of 0 disables automatic aging.
-> > +      */
-> > +     lan_rmw(ANA_AUTOAGE_AGE_PERIOD_SET(age_secs),
-> > +             ANA_AUTOAGE_AGE_PERIOD,
-> > +             lan9645x, ANA_AUTOAGE);
-> > +     return 0;
-> > +}
-> > +
-> > +static int lan9645x_port_pre_bridge_flags(struct dsa_switch *ds, int p=
-ort,
-> > +                                       struct switchdev_brport_flags f=
-lags,
-> > +                                       struct netlink_ext_ack *extack)
-> > +{
-> > +     if (flags.mask &
-> > +         ~(BR_LEARNING | BR_FLOOD | BR_MCAST_FLOOD | BR_BCAST_FLOOD))
-> > +             return -EINVAL;
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +static void lan9645x_port_pgid_set(struct lan9645x *lan9645x, u16 pgid=
-,
-> > +                                int chip_port, bool enabled)
-> > +{
-> > +     u32 reg_msk, port_msk;
-> > +
-> > +     WARN_ON(chip_port > CPU_PORT);
-> > +
-> > +     port_msk =3D ANA_PGID_PGID_SET(enabled ? BIT(chip_port) : 0);
-> > +     reg_msk =3D ANA_PGID_PGID_SET(BIT(chip_port));
-> > +
-> > +     lan_rmw(port_msk, reg_msk, lan9645x, ANA_PGID(pgid));
-> > +}
-> > +
-> > +static void lan9645x_port_set_learning(struct lan9645x *lan9645x, int =
-port,
-> > +                                    bool enabled)
-> > +{
-> > +     struct lan9645x_port *p;
-> > +
-> > +     lan_rmw(ANA_PORT_CFG_LEARN_ENA_SET(enabled), ANA_PORT_CFG_LEARN_E=
-NA,
-> > +             lan9645x, ANA_PORT_CFG(port));
->=20
-> Actually, the port may be in an STP state where learning shouldn't be
-> enabled, when this function is called. Enabling the "learning" bridge
-> port flag shouldn't change that.
->=20
-
-Thank you, I will check stp_state before writing to HW, similar to=C2=A0
-set_stp_state.
-
-> > +
-> > +     p =3D lan9645x_to_port(lan9645x, port);
-> > +     p->learn_ena =3D enabled;
-> > +}
-> > +
-> > +static int lan9645x_port_bridge_flags(struct dsa_switch *ds, int port,
-> > +                                   struct switchdev_brport_flags f,
-> > +                                   struct netlink_ext_ack *extack)
-> > +{
-> > +     struct lan9645x *l =3D ds->priv;
->=20
-> Could we have some consistency in variable naming throughout the driver,
-> at least for the main private structure? I don't have an issue with it
-> being called l, it's just that I would prefer it being called the same
-> everywhere.
->=20
-
-I will use lan9645x everywhere.
-
-> > +
-> > +     if (WARN_ON(port =3D=3D l->npi))
-> > +             return -EINVAL;
-> > +
-> > +     if (f.mask & BR_LEARNING)
-> > +             lan9645x_port_set_learning(l, port, !!(f.val & BR_LEARNIN=
-G));
-> > +
-> > +     if (f.mask & BR_FLOOD)
-> > +             lan9645x_port_pgid_set(l, PGID_UC, port, !!(f.val & BR_FL=
-OOD));
-> > +
-> > +     if (f.mask & BR_MCAST_FLOOD) {
-> > +             bool ena =3D !!(f.val & BR_MCAST_FLOOD);
-> > +
-> > +             lan9645x_port_pgid_set(l, PGID_MC, port, ena);
-> > +             lan9645x_port_pgid_set(l, PGID_MCIPV4, port, ena);
-> > +             lan9645x_port_pgid_set(l, PGID_MCIPV6, port, ena);
-> > +     }
-> > +
-> > +     if (f.mask & BR_BCAST_FLOOD)
-> > +             lan9645x_port_pgid_set(l, PGID_BC, port,
-> > +                                    !!(f.val & BR_BCAST_FLOOD));
-> > +
-> > +     return 0;
-> > +}
-> > diff --git a/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c b/drive=
-rs/net/dsa/microchip/lan9645x/lan9645x_port.c
-> > index 038868ae0a32..b60c64458957 100644
-> > --- a/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
-> > +++ b/drivers/net/dsa/microchip/lan9645x/lan9645x_port.c
-> > @@ -15,6 +15,8 @@ int lan9645x_port_init(struct lan9645x *lan9645x, int=
- port)
-> >               ANA_PORT_CFG_LEARN_ENA,
-> >               lan9645x, ANA_PORT_CFG(p->chip_port));
-> >=20
-> > +     p->learn_ena =3D false;
-> > +
->=20
-> This is already zero-initialized memory.
-
-Removed.
-
->=20
-> >       lan9645x_port_set_maxlen(lan9645x, port, ETH_DATA_LEN);
-> >=20
-> >       lan9645x_phylink_port_down(lan9645x, port);
-> >=20
-> > --
-> > 2.52.0
-> >=20
-
-
-
-Thanks,
-Emil
