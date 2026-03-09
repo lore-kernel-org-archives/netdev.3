@@ -1,713 +1,396 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013052.outbound.protection.outlook.com [40.107.162.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A967C27B347;
-	Mon,  9 Mar 2026 02:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773024437; cv=none; b=Poehfai01merTBJp9QxUO6Ujdt8r2nU74hXaKhTZCSC0h0hnPJzCzroRxaEqViPGm8CPCDffOnrzvrPFOM5ZAS+qYDI/esMIKPOgsA8W0Ajq0PWv7qHTl9mjaTFnnEJzcty+67vDCJb/xyHYK0J+OK7q1Zqw10tm5g+bj2+Fcm4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773024437; c=relaxed/simple;
-	bh=Wo6H6oBb195n17cYoqzF2DfVf6lMUJFEbMJZUc0uq5A=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZR97LQ+NSPB7aouAgn44vBAYJN/vm1avy2gUUkXDYEH97PRp4D/lxx5lFgJp0HdXd/AxJqxn30Z+CVraQL18NlL1x0gJeNJrTPDrY9mSbfSgJDibqy24XLwe94yx18B0znapihNBKH9lp5ySZj3ja8ri9igrZZ+2oLUjGJDpJvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=k70LotyG; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9623A246BBA;
+	Mon,  9 Mar 2026 03:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773025360; cv=fail; b=nGn1tPy9hdm1afXxfDaAhy6vbocBWiUrbSF3n/glhB60/KhUNZ6fZsMM3Zt9iHiMq5BxSdeSWkoIzXAEA+5t3sa6iBzsW/3PrrYH9Ix/MUxqKQ1SkKsd7dcACCi30mILZQ+JHv5Cx9gFAVUvy0zPmMnpzThT5rLvZuY7W95oWVc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773025360; c=relaxed/simple;
+	bh=+z5t/mPvBtA1oHtE2pXXzAOUXv2t6BGSNkR9KWbBfV8=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=A7uPZWwXsaO9/mDscy3F3nNY+MGLTdPQSN0RDmIt66CN93saJmJXRjFIzAaiou2MNUKa2AGawgeKEhd/pKSLQO+KZ5N/kJADYpusDXS4KXN6yuikOGsy539mt6FJIkiwuv3VD9Fwk/4bhJu3rLKPgJR+KfJ1RLFpI18KrDRq9Jg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=lOEuKHk9; arc=fail smtp.client-ip=40.107.162.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="k70LotyG"
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 628LkgLb1319922;
-	Sun, 8 Mar 2026 19:46:53 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=f
-	F6qPbj0Ssp7huoiNgwVmrs1hcR7r6uAvCgbUTaH5wY=; b=k70LotyG28Z/us9au
-	3OoEqm5W6ROjLczKa3zDgrJU8KTRDFIG+lRmvYp92vCswcqXiqsf4jE71TNrnSUe
-	twA+UTo2U0SD0v5Q63YFfm1ou1Bapa5D8oJwsMa4SZR6rocxiDHfDaDxa3bc5hnk
-	V8LBQ9gTvwg8UaeB9nZx6mcPSwjPKLs43N2VuepP44yUnvJf1v+/HvYvjDGP6r1Z
-	EktqJr3rLaW1q9BVayCnRRX6MNS8n0a/KIXLOTRLDdNKKo5C87ercqU2fMsZSe13
-	OexvVv5LJuoanuxyA5sNqzo6ZpEUG3Hu0N4CXD4oykJImlDYfJD0DWzWpayDTA7f
-	sDBMw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4crmdnj93t-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 08 Mar 2026 19:46:53 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sun, 8 Mar 2026 19:46:52 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Sun, 8 Mar 2026 19:46:52 -0700
-Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id B92FB3F707D;
-	Sun,  8 Mar 2026 19:46:47 -0700 (PDT)
-From: Ratheesh Kannoth <rkannoth@marvell.com>
-To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-CC: <sgoutham@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
-        <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
-        <donald.hunter@gmail.com>, <jiri@resnulli.us>,
-        <chuck.lever@oracle.com>, <matttbe@kernel.org>, <cjubran@nvidia.com>,
-        <shshitrit@nvidia.com>, "Ratheesh
- Kannoth" <rkannoth@marvell.com>
-Subject: [PATCH v3 net-next 4/5] octeontx2-af: npc: cn20k: dynamically allocate and free default MCAM entries
-Date: Mon, 9 Mar 2026 08:16:18 +0530
-Message-ID: <20260309024619.898211-5-rkannoth@marvell.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260309024619.898211-1-rkannoth@marvell.com>
-References: <20260309024619.898211-1-rkannoth@marvell.com>
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="lOEuKHk9"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Qyk6h8yzn9BOWRHTKC2Cen0tb2F0f5A4VHJrWOoHoORHdutUh4vNMFJK9lu2MQXFlC9MO7uCc/2GsL0pi8/PQ17tqGTbh6At0lbg4aOul8XFrk7d0nvAcy0fG7ibGD+hImAL+2bPsRiy5svDNjOPXdu971o7J4rpntY4cQc0kbd89ks9Bne5zM3ZWE78r1liNRbrCeGZA7UGWHZpZOcoaEcaSQAyP2RIhiXEYigoQYmqdriMEauZOMYSsCGTieMe3cyhVZCovED162u2r9F7VpWzu9ZoB08OCiyrCUke+vaD8zpDvOBgWg1whKdJdx5Yn0n7SW47a7nCKVINcFF4lA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=BkChTElwT6u60fguYYTUYGYqmdSq+y2CdqcNjM/0c1U=;
+ b=BxV4Kr8jn4HWIOXNAJ6wfR1QXFGsVirp1XREeOQVZjD/No4S5MiDTPmEJIqcZsmo7YHdJZlPMvNHMcY/fWGHG8d7Oj2BiiUr/9GEXpdrriatS0uPTABpDMkzr/LZRgOExC3AyrNQbczTwUA7AjtNWEmgi+WbOMWudNhAPqKU7zZoswgB4QHao7kimXdO8J7PojkMNyQ+RLllGxK39EuSXQGLSinQhMkppLFtjSuQMx8CItwOCToESCowayytQCBMiHFX80+qp8anr/4jGaCAF4LoCG/7s8gbzxFo7eqVaIdXmaWST23I6tc4tSXuAINn37EwzZQtGKNll9ruAa8/eA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=BkChTElwT6u60fguYYTUYGYqmdSq+y2CdqcNjM/0c1U=;
+ b=lOEuKHk9v8gjZc8ZIiGEbCKUvrnGNyWjyoqxG26Qr24jWwj2+oU9hyruvnlWr5A7oWa6HuarSE1fabSn79lFfXt2XyJRmBDG4x5UeFYH19+eZGMLY8Eh8djvOKGpC0Ct1CbmlkWqSuiNV8X29DIxMwq2hSO8u0NZ7WvMb7z41ErXPvfyz9JcNzQg+ATo8Dlh42lOlIXvQLoF6pbV1ciQmg66sJc/8D2G/+lkqOwVULgkWBDuX2dIvPkFKScJTbZvSRwrmLdhvre5Wl+ivX8LFX6H+S8gY3rZ/CwoG7SSJUDG3qjapib+GVwoAAcS09sew957AoTQxs4oG+xz5iLjBw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by PAXPR04MB8457.eurprd04.prod.outlook.com (2603:10a6:102:1d8::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9654.22; Mon, 9 Mar
+ 2026 03:02:25 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::b476:c19a:24cd:3694%3]) with mapi id 15.20.9678.017; Mon, 9 Mar 2026
+ 03:02:24 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux@armlinux.org.uk,
+	Frank.Li@nxp.com
+Cc: netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev
+Subject: [PATCH v2 net] net: enetc: safely reinitialize TX BD ring when it has unsent frames
+Date: Mon,  9 Mar 2026 11:04:12 +0800
+Message-Id: <20260309030412.2716984-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MA0PR01CA0003.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:a01:80::16) To PAXPR04MB8510.eurprd04.prod.outlook.com
+ (2603:10a6:102:211::7)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: w2Cwgja8YkJ7H7e6UOryU4LDEIz86GqD
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDAyNCBTYWx0ZWRfXzmHWW35PcvkX
- Kn22QaZhCzqWO1KtYIjQmmW3vk+7s/VXGtUmYJpY/JwKnR6PzyhqYy0iOLC131D9oIDNa/J8lPI
- uQeie0JqVm/A91sY8P2Jxyd5KjARewat30/NqCo0DsQb6F6arRlozhtDpjdi0EL558W1hnPRxHz
- V3IG1ls5eFPceuQ7tFwLWs5uL3rNchjqmqZKJp9sNvqe20zqst/nsbF51DkmeTvIc348lqHCOMn
- TnxQmQchKdswFKh7vd/MMgwb5yCgDdJyNxEcKGP1cfR9QXnOQ595KWJCFEWcAvBmIndROnUkVAj
- BpIcjDDWK8mBkmUDQgTvh6hRx+DpKHBXWvEfJibQLdsP2pr3V4eeFi05LniCYn99Wuxy0DgMh6C
- n+COp3EVuthz+DI/SmVidptJkRYmxS35278n0/rdxdq3l2qGt3aP33xPadTAiDhGf0/Wj6BiJ3A
- YTgdJqdzt3yW8fxn01g==
-X-Authority-Analysis: v=2.4 cv=K6Qv3iWI c=1 sm=1 tr=0 ts=69ae349d cx=c_pps
- a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
- a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=QXcCYyLzdtTjyudCfB6f:22 a=M5GUcnROAAAA:8 a=WDb9-8Tz2aN2ynPxKakA:9
- a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: w2Cwgja8YkJ7H7e6UOryU4LDEIz86GqD
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-03-09_01,2026-03-06_02,2025-10-01_01
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|PAXPR04MB8457:EE_
+X-MS-Office365-Filtering-Correlation-Id: c124ee0b-8edc-46d4-df04-08de7d884a1c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|52116014|376014|1800799024|366016|19092799006|38350700014|921020;
+X-Microsoft-Antispam-Message-Info:
+	GdPU0q22ppBX1FPyGhZ1/apuVSov2xXJV8aC+KfoLQ9Wzk8StZWML/CXSqQfM71Fvas/rzfv9IYgYnMWJ6VCYOctjBtXkiTUWlhXZsoayJY0BK9+uQMc6Niv8b0sNAdVTx2hdIDCCQiqLzQzaHooe1PxXXwjT8oMMOHI7wIRoU1nLurTtiTUVWdHwONSgsRnNBiOdyS8gsXGweXjdT9sIzNr7tLe3N/Z7SZGNUDZs5ulYdF9+KPIqMeympxTsTlvhW0UHJXIMxS2XKZh0wH24IYwLxy2M+9VH9yx1Y5E1Xr+0HCEbToVnn68omiUrQ5e7jQVthmMio3/WIbsq/c0EikFx0B1IxrMMsDuUnk0ZQe+wRF44fh0fASvLGhcgWjBBNbp96CeUWua+EYiBNWcCOBtSQLgEARrUdjlGCA6PSXXUvTZPftoGPC8Apr/SHjDtyVlvO38c1HdjZt6VFJeZ42ND3xsDEVGVCCGHqebqgRXnZiMyf4Lfoc4lYypaKurHBd36Pv4SsjjPo2wPyus9YYLu+j1qjauQRzQEITDcaCw7kds3dmOD0OZhiJvQaCo0J2rWBUn1k9NhJ8N1lTqeRaZgqBgoukU0DTxqLQ1d9/4SqZqGLc9oCI0ImpwBk2B0OI4hBIsvGQwelWNidquTFKnx48UjWPFyul6P4ulwOhjddqmk7vFcgZuaQ9ZIDpRoZynmfpf8sVyHvmSEyqKhY/EOjy131ZrXZ0A2RHYnlZFyLi+EYUvFymZRoByeezY6JM9aYBb0BjAXPfUU7pTte35iUlxdE2/HJzp8O6jN16fK1xkTQ+icIRJtvCrCJsj
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(366016)(19092799006)(38350700014)(921020);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?/5vXKSjZnDGFFbbT6JmSvBUEXxbNREYjLIbJOrldl8AWZ8zRynWH4GwUN+Yv?=
+ =?us-ascii?Q?bCw75x52oaK/WyEAT65NkGliqlUkfGL1ZGuN6RDFincGh5gm9AO++oPWnpcd?=
+ =?us-ascii?Q?WHwAdjrIjtkrE4Qtlkn+YlzBDdYFoaPsrmy0yDW1MkNryhepUQIK+wPa3HOm?=
+ =?us-ascii?Q?Oy2VVhBC7+BCFiXBr4MPKLosLbPAXXjXpB3tWz7Zbo2BklmaAMwOA+CQC2D2?=
+ =?us-ascii?Q?MTDX/iq9g0lMnsj+aYp6m/1/UOQXJ7GeQwonE5E2txI5SF/CDSkvVwuQfK24?=
+ =?us-ascii?Q?GYjQqGs7B97UVFxYEMRlKx/zXZEDbL24tCJZ6Zm6BVEfeR/PghLi5dp9EFLr?=
+ =?us-ascii?Q?KH32mi/umz/XTpBsnYZiFQwBFiMsmOa/WFqsN/KU8nu6P+gbogARtGyK2Oh5?=
+ =?us-ascii?Q?Sn28VHXJsXojR1x82GIdItf/qMkvy11Kp+D7KM9IeUnO+4I02meD6YUUw5Pc?=
+ =?us-ascii?Q?mTDM4X+pp61c1Jkr1sFvScFePv4UmE58KJJpWFjV7+ic9auTU7nGBXOr/iog?=
+ =?us-ascii?Q?gfYxydMv54OuxrSXiMgRF6K8e3esFGuE/FwU1b3njEy2v712suyYa9CXm5bO?=
+ =?us-ascii?Q?E+yMRplRf7x7RXDHN27lqqwsoGhNs4ezFXvtlkGs1Qee5PQIiMyip0FHUhbH?=
+ =?us-ascii?Q?NjDcJp92H6dgen67w4R2cMEDg7ryZTvo9vr4DnP7Z3W9MGyZ8dy3pFmHW8lR?=
+ =?us-ascii?Q?qO0YB/N5fKAxQyj5MfMd8JhxR+jsYEj1Cuw5XJ19bN3TJr/aLT8k/isA+QQ2?=
+ =?us-ascii?Q?ukUuC+zj6413bFrkDHDlihA4X5cEtUPdqHX8aGcdJiROuZi0dQlhCNscvljA?=
+ =?us-ascii?Q?LpEbKlI30np7NEFudMvJkTTcNGpIkwY6lYqdJrcT6+nj/Se/LlS6F0zAF5pO?=
+ =?us-ascii?Q?9BGsQWpjh56UXR2Im1gngHXQGSuqBXIbA9ZPmLojVD29WwF+HcRboR5N3stO?=
+ =?us-ascii?Q?R7fzXci5wwj1vbTS4vIQyPDZBjOqnPpqy/EimdE7fJR0DW60SigihH5kI0Qd?=
+ =?us-ascii?Q?PbtspEyldd1lE+Up2ui+vGeC3PYAzWtrgItVgFOS9nq9HrtDsG0PrfJsMuVP?=
+ =?us-ascii?Q?a6pZpn5aweO8h7O1zb6XJjyWbN81RLX6XLtz7oze5vLDuodwYB9dGX/soTrX?=
+ =?us-ascii?Q?5MA8bqTamz/P+oWTzPByfDym1egFadLvnYivpUw+sDMltKJcInUg9Xs9fcT3?=
+ =?us-ascii?Q?7j8TkYAT366DfRK8B0XKURvT+D+NlOMHzYAH5afVlaMXEc9tIWhzo0Ux2RTG?=
+ =?us-ascii?Q?uZEQ5EdtA4IdXg+iHPXnd2Gt4CTHYz5IAdVA2Af/1vUcnHzqn6K9ZDor/t0d?=
+ =?us-ascii?Q?01z16tWDcHsOOZicXmEK/zztdqSW3fJUX02uAriAOUI1mIOAtxURnursIC9W?=
+ =?us-ascii?Q?VuBiswlyTC7rn4qDCm4sTptZCKD7havQzVhTLGxUER2BGHPHE08KX1QB7jwL?=
+ =?us-ascii?Q?zlQwS3O7H1et9PeU9j+ysvZlVFhVjUjmSJfBEDJx0nudRVhMDrxJKDyMK5X6?=
+ =?us-ascii?Q?rgk+9T3HsFjxRhS8kvXYI0tWtCIbAXlq3qxbIwovleQG1WSz39DlO6Du1Haf?=
+ =?us-ascii?Q?kOb4n3YGH5ILpZLdcBZ7Ah+YqLIZnNACV8CFuuTP3kA8eEEIvhX8O+Y6S37E?=
+ =?us-ascii?Q?SOp2aR2tN9MgZoq55CoGATupvWKyqgsKyaVfl8lZ0rnkFsc7vPOpFtYOmX+M?=
+ =?us-ascii?Q?Z4g/lkB6oAfZ2NF7CS7uKBUE0FkRChiURpvJz+JsDVuUnknS?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c124ee0b-8edc-46d4-df04-08de7d884a1c
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 03:02:24.7791
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZJX7y0ziHAfcccB9PqlPtnIen8HADDIssZETQGyFit2TTfLKx/VQHPVDfs5T1VKFnJf8QBmmfWIlTiJ0sNjGmA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB8457
 
-Improve MCAM utilization by tying default (broadcast, multicast,
-promisc, ucast) entry lifetime to NIX LF usage.
+Currently the driver does not reset the producer index register (PIR) and
+consumer index register (CIR) when initializing a TX BD ring. The driver
+only reads the PIR and CIR and initializes the software indexes. If the
+TX BD ring is reinitialized when it still contains unsent frames, its PIR
+and CIR will not be equal after the reinitialization. However, the BDs
+between CIR and PIR have been freed and become invalid and this can lead
+to a hardware malfunction, causing the TX BD ring will not work perperly.
 
-- On NIX LF alloc (e.g. kernel or DPDK), allocate default MCAM entries
-  if missing; on NIX LF free, release them so they return to the pool.
-- Add NIX_LF_DONT_FREE_DFT_IDXS so the kernel PF driver can free the
-  NIX LF without releasing default entries (e.g. across suspend/resume).
-- When NIX LF is used by DPDK, default entries are allocated on first
-  use and freed when the LF is released if NIX_LF_DONT_FREE_DFT_IDXS is
-  not set
+Since the PIR and CIR are sofeware-configurable on ENETC v4. Therefore,
+the driver must reset them if they are not equal when reinitializing
+the TX BD ring.
 
-Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
+However, resetting the PIR and CIR alone is insufficient, it cannot
+completely solve the problem. When a link-down event occurs while the
+the TX BD ring is transmitting frames, subsequent reinitialization of
+the TX BD ring may cause it to malfunction. For example, the following
+steps may reproduce the problem (not 100% reproducible).
+
+1. Unplug the cable when the TX BD ring is busy transmitting frames.
+2. Disable the network interface (ifconfig eth0 down).
+3. Re-enable the network interface (ifconfig eth0 up).
+4. Plug in the cable, the TX BD ring may fail to transmit packets.
+
+When the link-down event occurs, enetc4_pl_mac_link_down() only clears
+PMa_COMMAND_CONFIG[TX_EN] to disable MAC transmit data path. It doesn't
+set PORT[TXDIS] to 1 to flush the TX BD ring. Therefore, reinitializing
+the TX BD ring at this point is unsafe. To safely reinitialize the TX BD
+ring after a link-down event, we checked with the NETC IP team, a proper
+Ethernet MAC graceful stop is necessary. Therefore, add the Ethernet MAC
+graceful stop to the link-down event handler enetc4_pl_mac_link_down().
+
+Fixes: 99100d0d9922 ("net: enetc: add preliminary support for i.MX95 ENETC PF")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
 ---
- .../ethernet/marvell/octeontx2/af/cn20k/npc.c | 108 +++++++++++----
- .../ethernet/marvell/octeontx2/af/cn20k/npc.h |   1 +
- .../net/ethernet/marvell/octeontx2/af/mbox.h  |   1 +
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   |  16 ++-
- .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 128 +++++++++++++-----
- .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |   6 +-
- 6 files changed, 191 insertions(+), 69 deletions(-)
+v2:
+1. Remove unused register macros (ENETC_SISR and SISR_TX_BUSY)
+2. Remove spurious semicolon from enetc4_mac_wait_rx_empty()
+---
+ drivers/net/ethernet/freescale/enetc/enetc.c  |   9 ++
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |  11 ++
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 126 ++++++++++++++++--
+ 3 files changed, 132 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-index 348a72c4ee43..8dad272fd069 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.c
-@@ -808,6 +808,11 @@ npc_cn20k_enable_mcam_entry(struct rvu *rvu, int blkaddr,
- 	u64 cfg, hw_prio;
- 	u8 kw_type;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index 70768392912c..825a5d1f2965 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -2578,6 +2578,7 @@ EXPORT_SYMBOL_GPL(enetc_free_si_resources);
  
-+	if (index < 0 || index >= mcam->total_entries) {
-+		WARN(1, "Wrong mcam index %d\n", index);
-+		return;
+ static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
+ {
++	struct enetc_si *si = container_of(hw, struct enetc_si, hw);
+ 	int idx = tx_ring->index;
+ 	u32 tbmr;
+ 
+@@ -2595,6 +2596,14 @@ static void enetc_setup_txbdr(struct enetc_hw *hw, struct enetc_bdr *tx_ring)
+ 	tx_ring->next_to_use = enetc_txbdr_rd(hw, idx, ENETC_TBPIR);
+ 	tx_ring->next_to_clean = enetc_txbdr_rd(hw, idx, ENETC_TBCIR);
+ 
++	if (tx_ring->next_to_use != tx_ring->next_to_clean &&
++	    !is_enetc_rev1(si)) {
++		tx_ring->next_to_use = 0;
++		tx_ring->next_to_clean = 0;
++		enetc_txbdr_wr(hw, idx, ENETC_TBPIR, 0);
++		enetc_txbdr_wr(hw, idx, ENETC_TBCIR, 0);
 +	}
 +
- 	enable ? set_bit(index, npc_priv.en_map) :
- 		clear_bit(index, npc_priv.en_map);
+ 	/* enable Tx ints by setting pkt thr to 1 */
+ 	enetc_txbdr_wr(hw, idx, ENETC_TBICR0, ENETC_TBICR0_ICEN | 0x1);
  
-@@ -1053,6 +1058,11 @@ void npc_cn20k_config_mcam_entry(struct rvu *rvu, int blkaddr, int index,
- 	int kw = 0;
- 	u8 kw_type;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
+index 3ed0f7a02767..1ce6551e186c 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc4_hw.h
+@@ -134,6 +134,12 @@
  
-+	if (index < 0 || index >= mcam->total_entries) {
-+		WARN(1, "Wrong mcam index %d\n", index);
-+		return;
-+	}
+ /* Port operational register */
+ #define ENETC4_POR			0x4100
++#define  POR_TXDIS			BIT(0)
++#define  POR_RXDIS			BIT(1)
 +
- 	/* Disable before mcam entry update */
- 	npc_cn20k_enable_mcam_entry(rvu, blkaddr, index, false);
++/* Port status register */
++#define ENETC4_PSR			0x4100
++#define  PSR_RX_BUSY			BIT(1)
  
-@@ -1132,6 +1142,11 @@ void npc_cn20k_copy_mcam_entry(struct rvu *rvu, int blkaddr, u16 src, u16 dest)
- 	int bank, i, sb, db;
- 	int dbank, sbank;
+ /* Port traffic class a transmit maximum SDU register */
+ #define ENETC4_PTCTMSDUR(a)		((a) * 0x20 + 0x4208)
+@@ -173,6 +179,11 @@
+ /* Port internal MDIO base address, use to access PCS */
+ #define ENETC4_PM_IMDIO_BASE		0x5030
  
-+	if (src >= mcam->total_entries || dest >= mcam->total_entries) {
-+		WARN(1, "Wrong mcam index src=%u dest=%u\n", src, dest);
-+		return;
-+	}
++/* Port MAC 0/1 Interrupt Event Register */
++#define ENETC4_PM_IEVENT(mac)		(0x5040 + (mac) * 0x400)
++#define  PM_IEVENT_TX_EMPTY		BIT(5)
++#define  PM_IEVENT_RX_EMPTY		BIT(6)
 +
- 	dbank = npc_get_bank(mcam, dest);
- 	sbank = npc_get_bank(mcam, src);
- 	npc_mcam_idx_2_key_type(rvu, src, &src_kwtype);
-@@ -1190,11 +1205,24 @@ void npc_cn20k_read_mcam_entry(struct rvu *rvu, int blkaddr, u16 index,
- 	int kw = 0, bank;
- 	u8 kw_type;
+ /* Port MAC 0/1 Pause Quanta Register */
+ #define ENETC4_PM_PAUSE_QUANTA(mac)	(0x5054 + (mac) * 0x400)
  
-+	if (index >= mcam->total_entries) {
-+		WARN(1, "Wrong mcam index %u\n", index);
-+		return;
-+	}
-+
- 	npc_mcam_idx_2_key_type(rvu, index, &kw_type);
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+index 689b9f13c5eb..6103f1535d43 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+@@ -444,20 +444,11 @@ static void enetc4_set_trx_frame_size(struct enetc_pf *pf)
+ 	enetc4_pf_reset_tc_msdu(&si->hw);
+ }
  
- 	bank = npc_get_bank(mcam, index);
- 	index &= (mcam->banksize - 1);
- 
-+	cfg = rvu_read64(rvu, blkaddr,
-+			 NPC_AF_CN20K_MCAMEX_BANKX_ACTIONX_EXT(index, bank, 0));
-+	entry->action = cfg;
-+
-+	cfg = rvu_read64(rvu, blkaddr,
-+			 NPC_AF_CN20K_MCAMEX_BANKX_ACTIONX_EXT(index, bank, 1));
-+	entry->vtag_action = cfg;
-+
- 	cfg = rvu_read64(rvu, blkaddr,
- 			 NPC_AF_CN20K_MCAMEX_BANKX_CAMX_INTF_EXT(index,
- 								 bank, 1)) & 3;
-@@ -1244,7 +1272,7 @@ void npc_cn20k_read_mcam_entry(struct rvu *rvu, int blkaddr, u16 index,
- 									bank,
- 									0));
- 		npc_cn20k_fill_entryword(entry, kw + 3, cam0, cam1);
--		goto read_action;
-+		return;
- 	}
- 
- 	for (bank = 0; bank < mcam->banks_per_entry; bank++, kw = kw + 4) {
-@@ -1289,17 +1317,6 @@ void npc_cn20k_read_mcam_entry(struct rvu *rvu, int blkaddr, u16 index,
- 		npc_cn20k_fill_entryword(entry, kw + 3, cam0, cam1);
- 	}
- 
--read_action:
--	/* 'action' is set to same value for both bank '0' and '1'.
--	 * Hence, reading bank '0' should be enough.
--	 */
--	cfg = rvu_read64(rvu, blkaddr,
--			 NPC_AF_CN20K_MCAMEX_BANKX_ACTIONX_EXT(index, 0, 0));
--	entry->action = cfg;
+-static void enetc4_enable_trx(struct enetc_pf *pf)
+-{
+-	struct enetc_hw *hw = &pf->si->hw;
 -
--	cfg = rvu_read64(rvu, blkaddr,
--			 NPC_AF_CN20K_MCAMEX_BANKX_ACTIONX_EXT(index, 0, 1));
--	entry->vtag_action = cfg;
+-	/* Enable port transmit/receive */
+-	enetc_port_wr(hw, ENETC4_POR, 0);
+-}
+-
+ static void enetc4_configure_port(struct enetc_pf *pf)
+ {
+ 	enetc4_configure_port_si(pf);
+ 	enetc4_set_trx_frame_size(pf);
+ 	enetc_set_default_rss_key(pf);
+-	enetc4_enable_trx(pf);
  }
  
- int rvu_mbox_handler_npc_cn20k_mcam_write_entry(struct rvu *rvu,
-@@ -1671,8 +1688,8 @@ int npc_mcam_idx_2_key_type(struct rvu *rvu, u16 mcam_idx, u8 *key_type)
- 
- 	/* mcam_idx should be less than (2 * bank depth) */
- 	if (mcam_idx >= npc_priv.bank_depth * 2) {
--		dev_err(rvu->dev, "%s: bad params\n",
--			__func__);
-+		dev_err(rvu->dev, "%s: bad params mcam_idx=%u\n",
-+			__func__, mcam_idx);
- 		return -EINVAL;
- 	}
- 
-@@ -4024,6 +4041,13 @@ int npc_cn20k_dft_rules_idx_get(struct rvu *rvu, u16 pcifunc, u16 *bcast,
- 	void *val;
- 	int i, j;
- 
-+	for (int i = 0; i < ARRAY_SIZE(ptr); i++) {
-+		if (!ptr[i])
-+			continue;
-+
-+		*ptr[i] = USHRT_MAX;
-+	}
-+
- 	if (!npc_priv.init_done)
- 		return 0;
- 
-@@ -4039,7 +4063,6 @@ int npc_cn20k_dft_rules_idx_get(struct rvu *rvu, u16 pcifunc, u16 *bcast,
- 				 npc_dft_rule_name[NPC_DFT_RULE_PROMISC_ID],
- 				 pcifunc);
- 
--			*ptr[0] = USHRT_MAX;
- 			return -ESRCH;
- 		}
- 
-@@ -4059,7 +4082,6 @@ int npc_cn20k_dft_rules_idx_get(struct rvu *rvu, u16 pcifunc, u16 *bcast,
- 				 npc_dft_rule_name[NPC_DFT_RULE_UCAST_ID],
- 				 pcifunc);
- 
--			*ptr[3] = USHRT_MAX;
- 			return -ESRCH;
- 		}
- 
-@@ -4079,7 +4101,6 @@ int npc_cn20k_dft_rules_idx_get(struct rvu *rvu, u16 pcifunc, u16 *bcast,
- 				 __func__,
- 				 npc_dft_rule_name[i], pcifunc);
- 
--			*ptr[j] = USHRT_MAX;
- 			continue;
- 		}
- 
-@@ -4174,7 +4195,7 @@ int rvu_mbox_handler_npc_get_dft_rl_idxs(struct rvu *rvu, struct msg_req *req,
- 	return 0;
+ static int enetc4_init_ntmp_user(struct enetc_si *si)
+@@ -801,15 +792,120 @@ static void enetc4_set_tx_pause(struct enetc_pf *pf, int num_rxbdr, bool tx_paus
+ 	enetc_port_wr(hw, ENETC4_PPAUOFFTR, pause_off_thresh);
  }
  
--static bool npc_is_cgx_or_lbk(struct rvu *rvu, u16 pcifunc)
-+bool npc_is_cgx_or_lbk(struct rvu *rvu, u16 pcifunc)
- {
- 	return is_pf_cgxmapped(rvu, rvu_get_pf(rvu->pdev, pcifunc)) ||
- 		is_lbk_vf(rvu, pcifunc);
-@@ -4182,9 +4203,10 @@ static bool npc_is_cgx_or_lbk(struct rvu *rvu, u16 pcifunc)
- 
- void npc_cn20k_dft_rules_free(struct rvu *rvu, u16 pcifunc)
- {
--	struct npc_mcam_free_entry_req free_req = { 0 };
-+	struct npc_mcam *mcam = &rvu->hw->mcam;
-+	struct rvu_npc_mcam_rule *rule, *tmp;
- 	unsigned long index;
--	struct msg_rsp rsp;
-+	int blkaddr;
- 	u16 ptr[4];
- 	int rc, i;
- 	void *map;
-@@ -4209,7 +4231,7 @@ void npc_cn20k_dft_rules_free(struct rvu *rvu, u16 pcifunc)
- 		index = NPC_DFT_RULE_ID_MK(pcifunc, NPC_DFT_RULE_PROMISC_ID);
- 		map = xa_erase(&npc_priv.xa_pf2dfl_rmap, index);
- 		if (!map)
--			dev_dbg(rvu->dev,
-+			dev_err(rvu->dev,
- 				"%s: Err from delete %s mcam idx from xarray (pcifunc=%#x\n",
- 				__func__,
- 				npc_dft_rule_name[NPC_DFT_RULE_PROMISC_ID],
-@@ -4223,7 +4245,7 @@ void npc_cn20k_dft_rules_free(struct rvu *rvu, u16 pcifunc)
- 		index = NPC_DFT_RULE_ID_MK(pcifunc, NPC_DFT_RULE_UCAST_ID);
- 		map = xa_erase(&npc_priv.xa_pf2dfl_rmap, index);
- 		if (!map)
--			dev_dbg(rvu->dev,
-+			dev_err(rvu->dev,
- 				"%s: Err from delete %s mcam idx from xarray (pcifunc=%#x\n",
- 				__func__,
- 				npc_dft_rule_name[NPC_DFT_RULE_UCAST_ID],
-@@ -4237,21 +4259,47 @@ void npc_cn20k_dft_rules_free(struct rvu *rvu, u16 pcifunc)
- 		index = NPC_DFT_RULE_ID_MK(pcifunc, i);
- 		map = xa_erase(&npc_priv.xa_pf2dfl_rmap, index);
- 		if (!map)
--			dev_dbg(rvu->dev,
-+			dev_err(rvu->dev,
- 				"%s: Err from delete %s mcam idx from xarray (pcifunc=%#x\n",
- 				__func__, npc_dft_rule_name[i],
- 				pcifunc);
- 	}
- 
- free_rules:
-+	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
-+	if (blkaddr < 0)
-+		return;
- 
--	free_req.hdr.pcifunc = pcifunc;
--	free_req.all = 1;
--	rc = rvu_mbox_handler_npc_mcam_free_entry(rvu, &free_req, &rsp);
--	if (rc)
--		dev_err(rvu->dev,
--			"%s: Error deleting default entries (pcifunc=%#x\n",
--			__func__, pcifunc);
-+	for (int i = 0; i < 4; i++) {
-+		if (ptr[i] == USHRT_MAX)
-+			continue;
+-static void enetc4_enable_mac(struct enetc_pf *pf, bool en)
++static void enetc4_mac_wait_tx_empty(struct enetc_si *si, int mac)
++{
++	u32 timeout = 0;
 +
-+		mutex_lock(&mcam->lock);
-+		npc_mcam_clear_bit(mcam, ptr[i]);
-+		mcam->entry2pfvf_map[ptr[i]] = NPC_MCAM_INVALID_MAP;
-+		npc_cn20k_enable_mcam_entry(rvu, blkaddr, ptr[i], false);
-+		mcam->entry2target_pffunc[ptr[i]] = 0x0;
-+		mutex_unlock(&mcam->lock);
-+
-+		rc = npc_cn20k_idx_free(rvu, &ptr[i], 1);
-+		if (rc)
-+			dev_err(rvu->dev,
-+				"%s:%d Error deleting default entries (pcifunc=%#x) mcam_idx=%u\n",
-+				__func__, __LINE__, pcifunc, ptr[i]);
-+	}
-+
-+	mutex_lock(&mcam->lock);
-+	list_for_each_entry_safe(rule, tmp, &mcam->mcam_rules, list) {
-+		for (int i = 0; i < 4; i++) {
-+			if (ptr[i] != rule->entry)
-+				continue;
-+
-+			list_del(&rule->list);
-+			kfree(rule);
++	while (!(enetc_port_rd(&si->hw, ENETC4_PM_IEVENT(mac)) &
++		 PM_IEVENT_TX_EMPTY)) {
++		if (timeout >= 100) {
++			dev_warn(&si->pdev->dev,
++				 "MAC %d TX is not empty\n", mac);
 +			break;
 +		}
++
++		usleep_range(100, 110);
++		timeout++;
 +	}
-+	mutex_unlock(&mcam->lock);
- }
- 
- int npc_cn20k_dft_rules_alloc(struct rvu *rvu, u16 pcifunc)
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
-index b168ecfbc5c8..0fa56f5382b4 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/cn20k/npc.h
-@@ -345,5 +345,6 @@ int npc_mcam_idx_2_subbank_idx(struct rvu *rvu, u16 mcam_idx,
- 			       int *sb_off);
- const u32 *npc_cn20k_search_order_get(bool *restricted_order, u32 *sz);
- int npc_cn20k_search_order_set(struct rvu *rvu, u32 arr[32], int cnt);
-+bool npc_is_cgx_or_lbk(struct rvu *rvu, u16 pcifunc);
- 
- #endif /* NPC_CN20K_H */
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-index dc42c81c0942..e07fbf842b94 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/mbox.h
-@@ -1009,6 +1009,7 @@ struct nix_lf_free_req {
- 	struct mbox_msghdr hdr;
- #define NIX_LF_DISABLE_FLOWS		BIT_ULL(0)
- #define NIX_LF_DONT_FREE_TX_VTAG	BIT_ULL(1)
-+#define NIX_LF_DONT_FREE_DFT_IDXS	BIT_ULL(2)
- 	u64 flags;
- };
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index ef5b081162eb..bd671b553df5 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -16,6 +16,7 @@
- #include "cgx.h"
- #include "lmac_common.h"
- #include "rvu_npc_hash.h"
-+#include "cn20k/npc.h"
- 
- static void nix_free_tx_vtag_entries(struct rvu *rvu, u16 pcifunc);
- static int rvu_nix_get_bpid(struct rvu *rvu, struct nix_bp_cfg_req *req,
-@@ -1684,10 +1685,16 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
- 	if (is_sdp_pfvf(rvu, pcifunc))
- 		intf = NIX_INTF_TYPE_SDP;
- 
-+	if (is_cn20k(rvu->pdev)) {
-+		rc = npc_cn20k_dft_rules_alloc(rvu, pcifunc);
-+		if (rc)
-+			goto free_mem;
-+	}
++}
 +
- 	err = nix_interface_init(rvu, pcifunc, intf, nixlf, rsp,
- 				 !!(req->flags & NIX_LF_LBK_BLK_SEL));
- 	if (err)
--		goto free_mem;
-+		goto free_dft;
- 
- 	/* Disable NPC entries as NIXLF's contexts are not initialized yet */
- 	rvu_npc_disable_default_entries(rvu, pcifunc, nixlf);
-@@ -1699,6 +1706,10 @@ int rvu_mbox_handler_nix_lf_alloc(struct rvu *rvu,
- 
- 	goto exit;
- 
-+free_dft:
-+	if (is_cn20k(rvu->pdev))
-+		npc_cn20k_dft_rules_free(rvu, pcifunc);
-+
- free_mem:
- 	nix_ctx_free(rvu, pfvf);
- 	rc = -ENOMEM;
-@@ -1775,6 +1786,9 @@ int rvu_mbox_handler_nix_lf_free(struct rvu *rvu, struct nix_lf_free_req *req,
- 
- 	nix_ctx_free(rvu, pfvf);
- 
-+	if (is_cn20k(rvu->pdev) && !(req->flags & NIX_LF_DONT_FREE_DFT_IDXS))
-+		npc_cn20k_dft_rules_free(rvu, pcifunc);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-index c2ca5ed1d028..352dc5f1d5b9 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
-@@ -165,12 +165,20 @@ int npc_get_nixlf_mcam_index(struct npc_mcam *mcam,
- 
- 		switch (type) {
- 		case NIXLF_BCAST_ENTRY:
-+			if (bcast == USHRT_MAX)
-+				return -EINVAL;
- 			return bcast;
- 		case NIXLF_ALLMULTI_ENTRY:
-+			if (mcast == USHRT_MAX)
-+				return -EINVAL;
- 			return mcast;
- 		case NIXLF_PROMISC_ENTRY:
-+			if (promisc == USHRT_MAX)
-+				return -EINVAL;
- 			return promisc;
- 		case NIXLF_UCAST_ENTRY:
-+			if (ucast == USHRT_MAX)
-+				return -EINVAL;
- 			return ucast;
- 		default:
- 			return -EINVAL;
-@@ -237,12 +245,8 @@ void npc_enable_mcam_entry(struct rvu *rvu, struct npc_mcam *mcam,
- 	int bank = npc_get_bank(mcam, index);
- 	int actbank = bank;
- 
--	if (is_cn20k(rvu->pdev)) {
--		if (index < 0 || index >= mcam->banksize * mcam->banks)
--			return;
--
-+	if (is_cn20k(rvu->pdev))
- 		return npc_cn20k_enable_mcam_entry(rvu, blkaddr, index, enable);
--	}
- 
- 	index &= (mcam->banksize - 1);
- 	for (; bank < (actbank + mcam->banks_per_entry); bank++) {
-@@ -1113,7 +1117,7 @@ void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
- 		index = mcam_index;
- 	}
- 
--	if (index >= mcam->total_entries)
-+	if (index < 0 || index >= mcam->total_entries)
- 		return;
- 
- 	bank = npc_get_bank(mcam, index);
-@@ -1158,16 +1162,18 @@ void rvu_npc_update_flowkey_alg_idx(struct rvu *rvu, u16 pcifunc, int nixlf,
- 		/* If PF's promiscuous  entry is enabled,
- 		 * Set RSS action for that entry as well
- 		 */
--		npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index,
--						  blkaddr, alg_idx);
-+		if (index >= 0)
-+			npc_update_rx_action_with_alg_idx(rvu, action, pfvf,
-+							  index, blkaddr, alg_idx);
- 
- 		index = npc_get_nixlf_mcam_index(mcam, pcifunc,
- 						 nixlf, NIXLF_ALLMULTI_ENTRY);
- 		/* If PF's allmulti  entry is enabled,
- 		 * Set RSS action for that entry as well
- 		 */
--		npc_update_rx_action_with_alg_idx(rvu, action, pfvf, index,
--						  blkaddr, alg_idx);
-+		if (index >= 0)
-+			npc_update_rx_action_with_alg_idx(rvu, action, pfvf,
-+							  index, blkaddr, alg_idx);
- 	}
- }
- 
-@@ -1212,8 +1218,13 @@ static void npc_enadis_default_entries(struct rvu *rvu, u16 pcifunc,
++static void enetc4_mac_tx_graceful_stop(struct enetc_pf *pf)
  {
- 	struct rvu_pfvf *pfvf = rvu_get_pfvf(rvu, pcifunc);
- 	struct npc_mcam *mcam = &rvu->hw->mcam;
-+	int type = NIXLF_UCAST_ENTRY;
- 	int index, blkaddr;
++	struct enetc_hw *hw = &pf->si->hw;
+ 	struct enetc_si *si = pf->si;
+ 	u32 val;
  
-+	/* only CGX or LBK interfaces have default entries */
-+	if (is_cn20k(rvu->pdev) && !npc_is_cgx_or_lbk(rvu, pcifunc))
-+		return;
++	val = enetc_port_rd(hw, ENETC4_POR);
++	val |= POR_TXDIS;
++	enetc_port_wr(hw, ENETC4_POR, val);
 +
- 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
- 	if (blkaddr < 0)
- 		return;
-@@ -1221,8 +1232,11 @@ static void npc_enadis_default_entries(struct rvu *rvu, u16 pcifunc,
- 	/* Ucast MCAM match entry of this PF/VF */
- 	if (npc_is_feature_supported(rvu, BIT_ULL(NPC_DMAC),
- 				     pfvf->nix_rx_intf)) {
-+		if (is_cn20k(rvu->pdev) && is_lbk_vf(rvu, pcifunc))
-+			type = NIXLF_PROMISC_ENTRY;
++	enetc4_mac_wait_tx_empty(si, 0);
++	if (si->hw_features & ENETC_SI_F_QBU)
++		enetc4_mac_wait_tx_empty(si, 1);
 +
- 		index = npc_get_nixlf_mcam_index(mcam, pcifunc,
--						 nixlf, NIXLF_UCAST_ENTRY);
-+						 nixlf, type);
- 		npc_enable_mcam_entry(rvu, mcam, blkaddr, index, enable);
- 	}
+ 	val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
+-	val &= ~(PM_CMD_CFG_TX_EN | PM_CMD_CFG_RX_EN);
+-	val |= en ? (PM_CMD_CFG_TX_EN | PM_CMD_CFG_RX_EN) : 0;
++	val &= ~PM_CMD_CFG_TX_EN;
++	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
++}
++
++static void enetc4_mac_tx_enable(struct enetc_pf *pf)
++{
++	struct enetc_hw *hw = &pf->si->hw;
++	struct enetc_si *si = pf->si;
++	u32 val;
  
-@@ -1232,9 +1246,13 @@ static void npc_enadis_default_entries(struct rvu *rvu, u16 pcifunc,
- 	if ((pcifunc & RVU_PFVF_FUNC_MASK) && !rvu->hw->cap.nix_rx_multicast)
- 		return;
- 
-+	type = NIXLF_BCAST_ENTRY;
-+	if (is_cn20k(rvu->pdev) && is_lbk_vf(rvu, pcifunc))
-+		type = NIXLF_PROMISC_ENTRY;
++	val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
++	val |= PM_CMD_CFG_TX_EN;
++	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
 +
- 	/* add/delete pf_func to broadcast MCE list */
- 	npc_enadis_default_mce_entry(rvu, pcifunc, nixlf,
--				     NIXLF_BCAST_ENTRY, enable);
-+				     type, enable);
- }
- 
- void rvu_npc_disable_default_entries(struct rvu *rvu, u16 pcifunc, int nixlf)
-@@ -1244,6 +1262,9 @@ void rvu_npc_disable_default_entries(struct rvu *rvu, u16 pcifunc, int nixlf)
- 
- 	npc_enadis_default_entries(rvu, pcifunc, nixlf, false);
- 
-+	if (is_cn20k(rvu->pdev) && is_vf(pcifunc))
-+		return;
++	val = enetc_port_rd(hw, ENETC4_POR);
++	val &= ~POR_TXDIS;
++	enetc_port_wr(hw, ENETC4_POR, val);
++}
 +
- 	/* Delete multicast and promisc MCAM entries */
- 	npc_enadis_default_mce_entry(rvu, pcifunc, nixlf,
- 				     NIXLF_ALLMULTI_ENTRY, false);
-@@ -1301,6 +1322,10 @@ void rvu_npc_disable_mcam_entries(struct rvu *rvu, u16 pcifunc, int nixlf)
- 	if (blkaddr < 0)
- 		return;
- 
-+	/* only CGX or LBK interfaces have default entries */
-+	if (is_cn20k(rvu->pdev) && !npc_is_cgx_or_lbk(rvu, pcifunc))
-+		return;
++static void enetc4_mac_wait_rx_empty(struct enetc_si *si, int mac)
++{
++	u32 timeout = 0;
 +
- 	mutex_lock(&mcam->lock);
- 
- 	/* Disable MCAM entries directing traffic to this 'pcifunc' */
-@@ -1345,6 +1370,8 @@ void rvu_npc_free_mcam_entries(struct rvu *rvu, u16 pcifunc, int nixlf)
- 	/* Free all MCAM counters owned by this 'pcifunc' */
- 	npc_mcam_free_all_counters(rvu, mcam, pcifunc);
- 
-+	rvu_npc_disable_default_entries(rvu, pcifunc, nixlf);
-+
- 	/* Delete MCAM entries owned by this 'pcifunc' */
- 	list_for_each_entry_safe(rule, tmp, &mcam->mcam_rules, list) {
- 		if (rule->owner == pcifunc && !rule->default_rule) {
-@@ -1355,7 +1382,6 @@ void rvu_npc_free_mcam_entries(struct rvu *rvu, u16 pcifunc, int nixlf)
- 
- 	mutex_unlock(&mcam->lock);
- 
--	rvu_npc_disable_default_entries(rvu, pcifunc, nixlf);
- }
- 
- static void npc_program_mkex_rx(struct rvu *rvu, int blkaddr,
-@@ -2504,33 +2530,58 @@ void npc_mcam_clear_bit(struct npc_mcam *mcam, u16 index)
- static void npc_mcam_free_all_entries(struct rvu *rvu, struct npc_mcam *mcam,
- 				      int blkaddr, u16 pcifunc)
- {
-+	u16 dft_idxs[NPC_DFT_RULE_MAX_ID] = {[0 ... NPC_DFT_RULE_MAX_ID - 1] = USHRT_MAX};
- 	u16 index, cntr;
-+	bool dft_rl;
- 	int rc;
- 
-+	npc_cn20k_dft_rules_idx_get(rvu, pcifunc,
-+				    &dft_idxs[NPC_DFT_RULE_BCAST_ID],
-+				    &dft_idxs[NPC_DFT_RULE_MCAST_ID],
-+				    &dft_idxs[NPC_DFT_RULE_PROMISC_ID],
-+				    &dft_idxs[NPC_DFT_RULE_UCAST_ID]);
-+
- 	/* Scan all MCAM entries and free the ones mapped to 'pcifunc' */
- 	for (index = 0; index < mcam->bmap_entries; index++) {
--		if (mcam->entry2pfvf_map[index] == pcifunc) {
--			mcam->entry2pfvf_map[index] = NPC_MCAM_INVALID_MAP;
--			/* Free the entry in bitmap */
--			npc_mcam_clear_bit(mcam, index);
--			/* Disable the entry */
--			npc_enable_mcam_entry(rvu, mcam, blkaddr, index, false);
--
--			/* Update entry2counter mapping */
--			cntr = mcam->entry2cntr_map[index];
--			if (cntr != NPC_MCAM_INVALID_MAP)
--				npc_unmap_mcam_entry_and_cntr(rvu, mcam,
--							      blkaddr, index,
--							      cntr);
--			mcam->entry2target_pffunc[index] = 0x0;
--			if (is_cn20k(rvu->pdev)) {
--				rc = npc_cn20k_idx_free(rvu, &index, 1);
--				if (rc)
--					dev_err(rvu->dev,
--						"Failed to free mcam idx=%u pcifunc=%#x\n",
--						index, pcifunc);
-+		if (mcam->entry2pfvf_map[index] != pcifunc)
-+			continue;
-+
-+		mcam->entry2pfvf_map[index] = NPC_MCAM_INVALID_MAP;
-+
-+		dft_rl = false;
-+		if (is_cn20k(rvu->pdev)) {
-+			if (dft_idxs[NPC_DFT_RULE_BCAST_ID] == index ||
-+			    dft_idxs[NPC_DFT_RULE_MCAST_ID] == index ||
-+			    dft_idxs[NPC_DFT_RULE_PROMISC_ID] == index ||
-+			    dft_idxs[NPC_DFT_RULE_UCAST_ID] == index) {
-+				dft_rl = true;
- 			}
- 		}
-+
-+		/* Free the entry in bitmap.*/
-+		if (!dft_rl)
-+			npc_mcam_clear_bit(mcam, index);
-+
-+		/* Disable the entry */
-+		npc_enable_mcam_entry(rvu, mcam, blkaddr, index, false);
-+
-+		/* Update entry2counter mapping */
-+		cntr = mcam->entry2cntr_map[index];
-+		if (cntr != NPC_MCAM_INVALID_MAP)
-+			npc_unmap_mcam_entry_and_cntr(rvu, mcam,
-+						      blkaddr, index,
-+						      cntr);
-+		mcam->entry2target_pffunc[index] = 0x0;
-+		if (is_cn20k(rvu->pdev)) {
-+			if (dft_rl)
-+				continue;
-+
-+			rc = npc_cn20k_idx_free(rvu, &index, 1);
-+			if (rc)
-+				dev_err(rvu->dev,
-+					"Failed to free mcam idx=%u pcifunc=%#x\n",
-+					index, pcifunc);
++	while (!(enetc_port_rd(&si->hw, ENETC4_PM_IEVENT(mac)) &
++		 PM_IEVENT_RX_EMPTY)) {
++		if (timeout >= 100) {
++			dev_warn(&si->pdev->dev,
++				 "MAC %d RX is not empty\n", mac);
++			break;
 +		}
- 	}
++
++		usleep_range(100, 110);
++		timeout++;
++	}
++}
++
++static void enetc4_mac_rx_graceful_stop(struct enetc_pf *pf)
++{
++	struct enetc_hw *hw = &pf->si->hw;
++	struct enetc_si *si = pf->si;
++	u32 timeout = 0;
++	u32 val;
++
++	if (si->hw_features & ENETC_SI_F_QBU) {
++		val = enetc_port_rd(hw, ENETC4_PM_CMD_CFG(1));
++		val &= ~PM_CMD_CFG_RX_EN;
++		enetc_port_wr(hw, ENETC4_PM_CMD_CFG(1), val);
++		enetc4_mac_wait_rx_empty(si, 1);
++	}
++
++	val = enetc_port_rd(hw, ENETC4_PM_CMD_CFG(0));
++	val &= ~PM_CMD_CFG_RX_EN;
++	enetc_port_wr(hw, ENETC4_PM_CMD_CFG(0), val);
++	enetc4_mac_wait_rx_empty(si, 0);
++
++	while (enetc_port_rd(hw, ENETC4_PSR) & PSR_RX_BUSY) {
++		if (timeout >= 100) {
++			dev_warn(&si->pdev->dev, "Port RX busy\n");
++			break;
++		}
++
++		usleep_range(100, 110);
++		timeout++;
++	}
++
++	val = enetc_port_rd(hw, ENETC4_POR);
++	val |= POR_RXDIS;
++	enetc_port_wr(hw, ENETC4_POR, val);
++}
++
++static void enetc4_mac_rx_enable(struct enetc_pf *pf)
++{
++	struct enetc_hw *hw = &pf->si->hw;
++	struct enetc_si *si = pf->si;
++	u32 val;
++
++	val = enetc_port_rd(hw, ENETC4_POR);
++	val &= ~POR_RXDIS;
++	enetc_port_wr(hw, ENETC4_POR, val);
++
++	val = enetc_port_mac_rd(si, ENETC4_PM_CMD_CFG(0));
++	val |= PM_CMD_CFG_RX_EN;
+ 	enetc_port_mac_wr(si, ENETC4_PM_CMD_CFG(0), val);
  }
  
-@@ -3917,13 +3968,22 @@ void rvu_npc_clear_ucast_entry(struct rvu *rvu, int pcifunc, int nixlf)
- 	struct npc_mcam *mcam = &rvu->hw->mcam;
- 	struct rvu_npc_mcam_rule *rule;
- 	int ucast_idx, blkaddr;
-+	u8 type;
+@@ -853,7 +949,8 @@ static void enetc4_pl_mac_link_up(struct phylink_config *config,
+ 	enetc4_set_hd_flow_control(pf, hd_fc);
+ 	enetc4_set_tx_pause(pf, priv->num_rx_rings, tx_pause);
+ 	enetc4_set_rx_pause(pf, rx_pause);
+-	enetc4_enable_mac(pf, true);
++	enetc4_mac_tx_enable(pf);
++	enetc4_mac_rx_enable(pf);
+ }
  
- 	blkaddr = rvu_get_blkaddr(rvu, BLKTYPE_NPC, 0);
- 	if (blkaddr < 0)
- 		return;
+ static void enetc4_pl_mac_link_down(struct phylink_config *config,
+@@ -862,7 +959,8 @@ static void enetc4_pl_mac_link_down(struct phylink_config *config,
+ {
+ 	struct enetc_pf *pf = phylink_to_enetc_pf(config);
  
-+	type = NIXLF_UCAST_ENTRY;
-+	if (is_cn20k(rvu->pdev) && is_lbk_vf(rvu, pcifunc))
-+		type = NIXLF_PROMISC_ENTRY;
-+
- 	ucast_idx = npc_get_nixlf_mcam_index(mcam, pcifunc,
--					     nixlf, NIXLF_UCAST_ENTRY);
-+					     nixlf, type);
-+
-+	/* In cn20k, default rules are freed before detach rsrc */
-+	if (ucast_idx < 0)
-+		return;
+-	enetc4_enable_mac(pf, false);
++	enetc4_mac_rx_graceful_stop(pf);
++	enetc4_mac_tx_graceful_stop(pf);
+ }
  
- 	npc_enable_mcam_entry(rvu, mcam, blkaddr, ucast_idx, false);
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-index ee623476e5ff..81b088f5a016 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_pf.c
-@@ -1053,7 +1053,6 @@ irqreturn_t otx2_pfaf_mbox_intr_handler(int irq, void *pf_irq)
- 	/* Clear the IRQ */
- 	otx2_write64(pf, RVU_PF_INT, BIT_ULL(0));
- 
--
- 	mbox_data = otx2_read64(pf, RVU_PF_PFAF_MBOX0);
- 
- 	if (mbox_data & MBOX_UP_MSG) {
-@@ -1729,7 +1728,7 @@ int otx2_init_hw_resources(struct otx2_nic *pf)
- 	mutex_lock(&mbox->lock);
- 	free_req = otx2_mbox_alloc_msg_nix_lf_free(mbox);
- 	if (free_req) {
--		free_req->flags = NIX_LF_DISABLE_FLOWS;
-+		free_req->flags = NIX_LF_DISABLE_FLOWS | NIX_LF_DONT_FREE_DFT_IDXS;
- 		if (otx2_sync_mbox_msg(mbox))
- 			dev_err(pf->dev, "%s failed to free nixlf\n", __func__);
- 	}
-@@ -1803,7 +1802,7 @@ void otx2_free_hw_resources(struct otx2_nic *pf)
- 	/* Reset NIX LF */
- 	free_req = otx2_mbox_alloc_msg_nix_lf_free(mbox);
- 	if (free_req) {
--		free_req->flags = NIX_LF_DISABLE_FLOWS;
-+		free_req->flags = NIX_LF_DISABLE_FLOWS | NIX_LF_DONT_FREE_DFT_IDXS;
- 		if (!(pf->flags & OTX2_FLAG_PF_SHUTDOWN))
- 			free_req->flags |= NIX_LF_DONT_FREE_TX_VTAG;
- 		if (otx2_sync_mbox_msg(mbox))
-@@ -1926,7 +1925,6 @@ int otx2_alloc_queue_mem(struct otx2_nic *pf)
- 	struct otx2_qset *qset = &pf->qset;
- 	struct otx2_cq_poll *cq_poll;
- 
--
- 	/* RQ and SQs are mapped to different CQs,
- 	 * so find out max CQ IRQs (i.e CINTs) needed.
- 	 */
+ static const struct phylink_mac_ops enetc_pl_mac_ops = {
 -- 
-2.43.0
+2.34.1
 
