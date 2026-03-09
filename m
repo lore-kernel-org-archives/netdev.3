@@ -1,166 +1,165 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712B12765ED
-	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 16:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773073168; cv=pass; b=W4xqDelmubRG8n7TrhE4mE0IBy9E3V13/dA/fNxLhSo7LWeO7RTqCM0HM13lStQycIjGVQgUKtkExSYPtIaBPNHOZos1xlNYu/pkht8HIy0otcKJ+3D8zSQg2R5COzFQNwPLdkETsyTJGKfMbbRkkoHDzIkfIlDEh9x5OeXqz9Q=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773073168; c=relaxed/simple;
-	bh=npjQ4dJEtN2ZM/ygoYX33pzfdCh2ReaDCN5TkbeMZPY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OkDMgTWqA0YRSs2rXf/PXtpFWfAI0GK37ly4e32+zRcNY4dYhsmlOC8XdgpsdUrkEuTeqpim6cS5CNJUY0tN3AJr8W+1CZWPZyhd2xbWPxUvu6+Bzx99UHS0C3lLdQT+52ja4VpAdSOdwfLum5mm4X4RJWUZGzhkVcugfiaj0ik=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com; spf=none smtp.mailfrom=mojatatu.com; dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b=UoCtfRZ2; arc=pass smtp.client-ip=209.85.210.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mojatatu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=mojatatu.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284D91925BC
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 16:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773073299; cv=none; b=Xq2zGfY9Dc9j3bbgxs/24MzrabRE4ufrgUWID2nBOn9YLSnL/f2n4849nqCN+oqypaXJJWKEQEULDASm1SvJg4h3ONrpkXbZqqxY0a6FxUudSHw1u7el0ycdp2DUb+dhzfVw9RugvQ6Ig5wuzhR1fHG+r2nVc/Ogomse5PW5yb4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773073299; c=relaxed/simple;
+	bh=td74bMx8ZXiHQfNV+QzmTZxdoVL+td/b5gqEqpcrNW8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=tBszx9DpHBQRscA/Uj/fKFAg0vuLNroyD3HOxMFB1g9JVX7XceJyxF8S0nXJR4nE4SNLNk+6i+I+oQKGM/40BoEDCRXLh7vfbZUmZbxx4U+getEICM6V9bUzqkof6yDl47Bk2cHIFKguOdchhKtikb6kD78A2h90z+XmBUnLR8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com; spf=pass smtp.mailfrom=etsalapatis.com; dkim=pass (2048-bit key) header.d=etsalapatis-com.20230601.gappssmtp.com header.i=@etsalapatis-com.20230601.gappssmtp.com header.b=0W3ncEka; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=etsalapatis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=etsalapatis.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mojatatu-com.20230601.gappssmtp.com header.i=@mojatatu-com.20230601.gappssmtp.com header.b="UoCtfRZ2"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-829ac8d56c5so2637434b3a.3
-        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 09:19:26 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1773073165; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ROeoqJ8or19xPyvV1iWaDBDI3CMnlZeJ6ihm+LdIU2tvAbUGq2/UJc3B0K3lE5qhGe
-         ftjXbUWeNDXt+UrXEYzUCsEeQUlANygf8VTLb1GQV27nHTxkvg0QAdwDRCsQztp81Iku
-         D8yuXI+9XWse6hoKgxuZjpyhfiVMPmCl6Sv0uBe4M/TNvu5yfE+HNPLcR1efp0PGL4ey
-         BhqdfBqwC23epeYqS7QPQdMgcobZ77H5nVE8krmMPo5ntfMy/npgGN23E+mICLg4I7rN
-         0Ut/luHQFvW23ivvdrdE9u4fHB0RU7fbRNwduvdrAw5lUgyKUdPM5pmQl8NLlfHw1KXl
-         Lhxg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=04/3nkAw3QYcCQXa/GCi4vzcFPBnDNpm2cIJ7650XQs=;
-        fh=Fz1jHJhz2j/DIMoUWGw1oz9gzLHnORdoMNc6GA2LNvQ=;
-        b=KaZ/TXsjYEQ8xZ3h+b7OHX4UL/SJ4hdLWIiDtheW6bDkW9Qtek0OF4UCoV3U8GjfBU
-         A63TeDQUCryI2UUtIjfyrTxRLN/F2a7FHlULwPvZYL9tO4Tpx2lPTr9NVNChmfMksJpx
-         /FKxPdcBN+w52EnnO9QcuWb+IPkQpk5Xrl2hqOR2hzIdMj0dPcDBCn2njysmndJuxE+W
-         nI2MaXlAbsjiuLBD9RUcnhz0YnJ+fDroL18ZwpnfvLrWFMFK9yNAwIhVBPaoQbvjFc/C
-         49rZOMMi30r6cZcPWwrdCOFI6Y3bI+lN0IXrTYvIwFIZXTWAqojKH7Mo8gnmjxgOLpnd
-         3UzA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=etsalapatis-com.20230601.gappssmtp.com header.i=@etsalapatis-com.20230601.gappssmtp.com header.b="0W3ncEka"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-89a06bc2f1bso134023896d6.1
+        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 09:21:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mojatatu-com.20230601.gappssmtp.com; s=20230601; t=1773073165; x=1773677965; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=etsalapatis-com.20230601.gappssmtp.com; s=20230601; t=1773073295; x=1773678095; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=04/3nkAw3QYcCQXa/GCi4vzcFPBnDNpm2cIJ7650XQs=;
-        b=UoCtfRZ2G9WNNgZ9dZzLvCEUfn3vTQViDGMAFjrbcQgtU3NkNGncRHkBBOwjjSh17r
-         H4o3WDK7S3P1CFYMjILINUCA/7bL0vbpbVffx3kwccoarkbY1FatrfMAmQzP+F9uCsEl
-         BZcke8U50X8yzEUVDZLj9cVELBYwdHyoqUGwxCS95a9zZXbndG+sXcSg/PdtXQFP9UVA
-         39uMUn9c7go524ei3PdMfoxww/jWaNLH+knotLyDe0b27E4hoKYSNGJdZgHRJNqTHsj+
-         MWkHVOd0BFtH6H8aQAT3TFfd3L9IeEkYlLhBwBbadmqOPC4N8rBCdjXKZLaPGvF4aapP
-         9Ipw==
+        bh=k907me6g0lW0BSeww/pGmw3mgtqq3eewfWPpggfLHN8=;
+        b=0W3ncEkak6FmKdEAn7axM9i9i9wM5esprQoKh2aufozwfj0y74EEcJcTJ214MYhQwq
+         CEzSD4TVDx5sc/bPeyA5h4mc2Ac+e/F1zTsU4TUizNErQqKh83Uuo7ghiSXTIUrR/Gaw
+         j84Q93kWQyx7iDLtuKl5gpYdhwPKVONGZaz+f7NJ0c6H/wm/ZEbPsKp4sdsKhhauAfiM
+         KFSfR4UxUi7VDLVEslX6NJ01a9qtoclhy0KFnhR5y+Y7VMIL3RqXS0nyoL+f5da+nvhD
+         7TjCdKqP8ZUr6ZKuVcknIH09oP379ZBdhMNI2qHoDv97wRqrwiIjJPdDoCqsLhCI1MIV
+         Fv7Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773073165; x=1773677965;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=04/3nkAw3QYcCQXa/GCi4vzcFPBnDNpm2cIJ7650XQs=;
-        b=Kdmd+EwoArpR2bGdvrC/oCM7RreOQrGhy1X8kf2wgPQSOZxGh1leK0fNwZkf3PA3yB
-         05n4y7bLamCYnws47ydnv6rrh604l4XBI8SKrVFIiZeYkVeTQlrFFCK72uf2W3GLBk6I
-         ksJMzenjcNQyKY9Xxav18vxKkVSH+lIiL0tygbRg/KBtdCRHn2/UqZd6w2p6U695lJHe
-         SMJwSFr77luqlpt+oWLT+ZpdEpACccGe3iDZlNaw6G2D5aCrZ6xAAQsthV2JGrl5JMOF
-         kW0HgplEMD/fy1ocpsCKM3AHNllm2gQ07MoKDUm/RGPOUEC4urVcvomUBpRXd8wPNkUt
-         cP2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUYLbhof6/ov/sx5t+Hyqmo5N09XocwJZmQ0ayShfRErSTTmd7PkrhEKB+ea/buSxq23kphyvU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyZ+OPil8sErmZoMKZ8z3hCUQpOhcMEXe+ZbewVtKXbwrRsdl1R
-	Mfa4HNOjCH9VaVZzrvKMjPRgmbO6HlbFmlVqjdg+oUUgralYFHwmTq4rVl/ldqVgeIef029IxtD
-	uwLXRFYCSZ1xbhR/C0XLBmIefab2XNMIBemMy/oWA
-X-Gm-Gg: ATEYQzx1AiKpLNRkwv2RwIT6lqDT/QwQrmr8jI3pSVbLGSObGaUroThilJY6N0Crpcb
-	xXzDgZ+20Qw0L8hoHOGkfnY2g2tPoll/WK17tFwVfKMrPildERv4Cc1gw1buZIz5fo8DNE55ERT
-	kmnjwWv+AfKfhjgfU5RWJOGMiwgKwz+ZT+dwcTN6xtCZy9OVRivHOITHSwxSiKR7o3lmzXHQNJF
-	hNcyQBkXTMyQu95Cz1dfgwvleMRAncb6daB6sXnKLIjoTbIiGrUyIlL/hbJKMjWWE5QeCYBkWn1
-	sc9a0XxSGycUhIoP4watt4orrA==
-X-Received: by 2002:a05:6a00:4fd5:b0:827:4372:dd15 with SMTP id
- d2e1a72fcca58-829a2ea9d06mr10995054b3a.40.1773073165604; Mon, 09 Mar 2026
- 09:19:25 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1773073295; x=1773678095;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=k907me6g0lW0BSeww/pGmw3mgtqq3eewfWPpggfLHN8=;
+        b=s5m/IrjlYP+ANxrlPq9FdlSyPtKBVvO8p2ejZpPAwHecXtZgm9KXY0kZIS6APOx+Oz
+         DUCJYSP1FhEIzx2wINtlVZ3i3vp0nR9o6u9mSRgTrXXsyATSfJGs/2c+7YDS7kJijIXD
+         MwcfAG6nm9cWxRzHaKihaxBNPbHg2owx7+01Ps6gZ9N7gphVmvyJEWtnGNmuBEjDkzDi
+         so9o6Oh9dbVMU9yR/OAQ+2Fmbzzb8wZneMJ5GaWWum4JWtu8i0uUKOjNeyAggRq4/vDg
+         0g1HGhGWwN7ahL6pJYjqvVe3+drt/pPEr+ScCg+6YcSJXvv3a5OkrP7sECtglGZN/ESj
+         MQKA==
+X-Forwarded-Encrypted: i=1; AJvYcCWUJUTKdFLgDsfwxom5Lz3O3xukDb7sW3EVjA7s9R37skJJK3V8+ZnWrFvyJfL9Z9/f9dakP8M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKfKzxHNdxpNt4Dsbb9Hq5ewu+XKzmpaOV3rcvuEAUym0gEwtp
+	HgotSQaQUQZS5hXJigBZm0ALl87h34ToBbaA1uneirTaiPsGk5IMHjAqrMwmboKZ5dKMopIZolu
+	MjqcH
+X-Gm-Gg: ATEYQzzXWeUtt8WelF4D6OzbuT6Od1+laPGhEYIXiF4LP/Ny0AtHzi5NNcTlbUZEFMN
+	QPgPXzo2JmXpvM+jQF1cAtH3dI7zv2+Tds6oS4oeIugAccv2dG6GIMbvSKXra5JVdSzGO8PY1PU
+	IgAujTUcCMzcurDFBDoY6VRr8vc7epZr0h3HpBMXoDLiIw8Wk1g+I6RGYjPRmtM3bTenp4y4EOW
+	5m8m/xOG40okPhO2JwB5xwLAngv5uFP7lV6YiE4tTXwzcUysw8Rt8JGsiPcKA58ucLaACGrKX91
+	cqdDlEZ44Shka4L8D2GKSDbKmaBpWwFi7PuA53TYLm8BhPi0/weCivPnpnjXaV331cqPpEx5Bss
+	UR4SWdwYdwysnstGbhW8EwWWNhO10n+be4QxZgBNpDj63+9Jkm7TVBqgTBhHzSRAV/cgkGrtq0e
+	7+KMbbdHnm0Wj7CvqTGf5m8k4QA6QzwjfHGw==
+X-Received: by 2002:a05:6214:262d:b0:899:f601:788b with SMTP id 6a1803df08f44-89a30a1799bmr185913076d6.3.1773073294650;
+        Mon, 09 Mar 2026 09:21:34 -0700 (PDT)
+Received: from localhost ([140.174.219.137])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a57bf772csm988956d6.24.2026.03.09.09.21.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 09 Mar 2026 09:21:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260307133601.3863071-1-edumazet@google.com> <CAM0EoMmEaXQO5YbLvmty0rcpe3=P9ckbNtskiXZ_vvHeVVk9cg@mail.gmail.com>
- <CANn89iLKXBAiPkdh3SsBLD=_JheoNwhz=V4EqHM4bddJVyEYug@mail.gmail.com>
-In-Reply-To: <CANn89iLKXBAiPkdh3SsBLD=_JheoNwhz=V4EqHM4bddJVyEYug@mail.gmail.com>
-From: Jamal Hadi Salim <jhs@mojatatu.com>
-Date: Mon, 9 Mar 2026 12:19:14 -0400
-X-Gm-Features: AaiRm52MrfGUktdtPa-S4-6og_YtqcNNFt5jRFZsmdMv1qYZ_QZXXj2gsqFa02k
-Message-ID: <CAM0EoM=9CfXbQmUiPTLP+ojL0mrsbsF7bfM9ENqqDzsBvYe47w@mail.gmail.com>
-Subject: Re: [PATCH net-next] net/sched: refine indirect call mitigation in tc_wrapper.h
-To: Eric Dumazet <edumazet@google.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Jiri Pirko <jiri@resnulli.us>, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Victor Noguiera <victor@mojatatu.com>, Pedro Tammela <pctammela@mojatatu.ai>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Mon, 09 Mar 2026 12:21:32 -0400
+Message-Id: <DGYE0XY2UKQV.2COXLK9T9HG9S@etsalapatis.com>
+Cc: "daniel@iogearbox.net" <daniel@iogearbox.net>, "ast@kernel.org"
+ <ast@kernel.org>, "andrii@kernel.org" <andrii@kernel.org>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>
+Subject: Re: [PATCH bpf v2] bpf: fix constant blinding bypass for
+ PROBE_MEM32 stores
+From: "Emil Tsalapatis" <emil@etsalapatis.com>
+To: "CyFun" <xcyfun@protonmail.com>, "bpf@vger.kernel.org"
+ <bpf@vger.kernel.org>
+X-Mailer: aerc 0.20.1
+References: <ymj6l4pBrhKjzHeR2XYjQcvWswW_741UgkR05M3iYsrzxzhD-3AfAZ1rNJ5k1b6ex0tosQAorJP38DfNDkyqbhkY-DD6RW_qTfuJ0z86psE=@protonmail.com>
+In-Reply-To: <ymj6l4pBrhKjzHeR2XYjQcvWswW_741UgkR05M3iYsrzxzhD-3AfAZ1rNJ5k1b6ex0tosQAorJP38DfNDkyqbhkY-DD6RW_qTfuJ0z86psE=@protonmail.com>
 
-On Sat, Mar 7, 2026 at 6:54=E2=80=AFPM Eric Dumazet <edumazet@google.com> w=
-rote:
+On Fri Mar 6, 2026 at 4:03 AM EST, CyFun wrote:
+> To: bpf@vger.kernel.org
+> Cc: daniel@iogearbox.net, ast@kernel.org, andrii@kernel.org, netdev@vger.=
+kernel.org
+> Subject: [PATCH bpf v2] bpf: fix constant blinding bypass for PROBE_MEM32=
+ stores
 >
-> On Sat, Mar 7, 2026 at 10:44=E2=80=AFPM Jamal Hadi Salim <jhs@mojatatu.co=
-m> wrote:
-> >
-> > On Sat, Mar 7, 2026 at 8:36=E2=80=AFAM Eric Dumazet <edumazet@google.co=
-m> wrote:
-> > >
-> > > Some modern cpus disable X86_FEATURE_RETPOLINE feature,
-> > > even if a direct call can still be beneficial.
-> > >
-> > > Even when IBRS is present, an indirect call is more expensive
-> > > than a direct one:
-> > >
-> > > Direct Calls:
-> > >   Compilers can perform powerful optimizations like inlining,
-> > >   where the function body is directly inserted at the call site,
-> > >   eliminating call overhead entirely.
-> > >
-> > > Indirect Calls:
-> > >   Inlining is much harder, if not impossible, because the compiler
-> > >   doesn't know the target function at compile time.
-> > >   Techniques like Indirect Call Promotion can help by using
-> > >   profile-guided optimization to turn frequently taken indirect calls
-> > >   into conditional direct calls, but they still add complexity
-> > >   and potential overhead compared to a truly direct call.
-> > >
-> > > In this patch, I split tc_skip_wrapper in two different
-> > > static keys, one for tc_act() (tc_skip_wrapper_act)
-> > > and one for tc_classify() (tc_skip_wrapper_cls).
-> > >
-> > > Then I enable the tc_skip_wrapper_cls only if the count
-> > > of builtin classifiers is above one.
-> > >
-> > > I enable tc_skip_wrapper_act only it the count of builtin
-> > > actions is above one.
-> > >
-> >
-> > Sorry, not clear from reading the patch - why "above one"?
-> >
+> BPF_ST | BPF_PROBE_MEM32 immediate stores are not handled by
+> bpf_jit_blind_insn(), allowing user-controlled 32-bit immediates to
+> survive unblinded into JIT-compiled native code when bpf_jit_harden >=3D =
+1.
 >
-> Rationale of the code before my patch is :
+> The root cause is that convert_ctx_accesses() rewrites BPF_ST|BPF_MEM
+> to BPF_ST|BPF_PROBE_MEM32 for arena pointer stores during verification,
+> before bpf_jit_blind_constants() runs during JIT compilation. The
+> blinding switch only matches BPF_ST|BPF_MEM (mode 0x60), not
+> BPF_ST|BPF_PROBE_MEM32 (mode 0xa0). The instruction falls through
+> unblinded.
 >
-> For platforms with IBRS, it is not worth having many tests that could hav=
-e bad
-> branch predictions, only to avoid one indirect branch which is okay.
+> Add BPF_ST|BPF_PROBE_MEM32 cases to bpf_jit_blind_insn() alongside the
+> existing BPF_ST|BPF_MEM cases. The blinding transformation is identical:
+> load the blinded immediate into BPF_REG_AX via mov+xor, then convert
+> the immediate store to a register store (BPF_STX).
 >
-> My patch refines the logic to still allow _one_ conditional to allow
-> one direct call,
-> because we know this construct is better, even with IBRS.
->
-> This is the reason we do not have static keys guarding many INDIRECT_CALL=
-()
-> in networking stack. Only TC seemed to care about that.
->
-> Our use case is only having CLS_BPF as a builtin, I will let people
-> needing 2 or 3 builtins
-> amend the code with their performance numbers.
+> The rewritten STX instruction must preserve the BPF_PROBE_MEM32 mode so
+> the architecture JIT emits the correct arena addressing (R12-based on
+> x86-64). Cannot use the BPF_STX_MEM() macro here because it hardcodes
+> BPF_MEM mode; construct the instruction directly instead.
 >
 
-Thanks. I was initially worried it was highly workload-specific.
+Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
 
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Though:
 
-cheers,
-jamal
+> Fixes: 6082b6c328b5 ("bpf: Recognize addr_space_cast instruction in the v=
+erifier.")
+> Signed-off-by: s4ch <xcyfun@protonmail.com>
+
+IIRC pseudonyms are not allowed on the SOB line so you will probably have t=
+o update it.
+
+> ---
+> v2: Rebased onto current bpf tree (commit 56145d237385).
+>     v1 had a malformed diff header that caused CI to reject it.
+> ---
+>  kernel/bpf/core.c | 18 ++++++++++++++++++
+>  1 file changed, 18 insertions(+)
+>
+> diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+> index 3ece2da55..bb2fa75de 100644
+> --- a/kernel/bpf/core.c
+> +++ b/kernel/bpf/core.c
+> @@ -1422,6 +1422,24 @@ static int bpf_jit_blind_insn(const struct bpf_ins=
+n *from,
+>  		*to++ =3D BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
+>  		*to++ =3D BPF_STX_MEM(from->code, from->dst_reg, BPF_REG_AX, from->off=
+);
+>  		break;
+> +
+> +	case BPF_ST | BPF_PROBE_MEM32 | BPF_DW:
+> +	case BPF_ST | BPF_PROBE_MEM32 | BPF_W:
+> +	case BPF_ST | BPF_PROBE_MEM32 | BPF_H:
+> +	case BPF_ST | BPF_PROBE_MEM32 | BPF_B:
+> +		*to++ =3D BPF_ALU64_IMM(BPF_MOV, BPF_REG_AX, imm_rnd ^
+> +				      from->imm);
+> +		*to++ =3D BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
+> +		/* Cannot use BPF_STX_MEM() here: it hardcodes BPF_MEM
+> +		 * mode which would lose BPF_PROBE_MEM32 and break the
+> +		 * arena addressing in the architecture JIT. */
+> +		*to++ =3D (struct bpf_insn) {
+> +			.code  =3D BPF_STX | BPF_PROBE_MEM32 | BPF_SIZE(from->code),
+> +			.dst_reg =3D from->dst_reg,
+> +			.src_reg =3D BPF_REG_AX,
+> +			.off   =3D from->off,
+> +		};
+> +		break;
+>  	}
+>  out:
+>  	return to - to_buff;
+> --
+> 2.53.0
+
