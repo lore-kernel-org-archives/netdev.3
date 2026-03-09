@@ -1,60 +1,59 @@
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916853368B2;
-	Mon,  9 Mar 2026 02:47:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8145279903;
+	Mon,  9 Mar 2026 02:47:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773024425; cv=none; b=nIFwnlDl57MqaBNOqgSCozTy+rICYlArqLXbhNlyIV5X9IdNg3g+8rkG3nv6uaHB+lvnfrjfLNllEehj5bHRMbzsBhqed8ibot/mB6xKcCbpkoqK86jmG1J/nGOCWHpHXQeGEBmL8E6y3OSJw8usqohrg2/cAf+8K2Kl0ONWxEY=
+	t=1773024428; cv=none; b=H8gHrwrBrlOOdAegxZWcJZu/d6zwTwvAsLH0VlTzkfQcTQ9ksBsrVM87XZr9BlDNbyz873/VwBU4wOWHOj5WELAaktKZqHcwoYs7ySBdDMc0ZkwVC2O9YMPuoLX2cZIDlR5v80qV0SWMfJvLBX2ptKOBwCJlcJf14DcMqF5rNXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773024425; c=relaxed/simple;
-	bh=Ffp+wtWi5+OCKbJ1fuXyo42JIu61X8jT6ao6c2/J6uM=;
+	s=arc-20240116; t=1773024428; c=relaxed/simple;
+	bh=00o2hAyhJxUc5Smp0yKOtW1lunKu+6CR+lu0EvimHVs=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IP1y3AdyUSuxE8IL5rl066dEYuQ5bfnt1FI4FhQ6tZnZ9xCGJXX8eXsaMznOkKYgk0oFmTWGF3kE9/1KPKzLGQMqcs3TKiE6jNkqA8X5GUSePjI3IVyNsBgGrYfIlRb6xjSh5my3yNqWi7lN80eEiWry8fstqO4Q5xLjv0/KwIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=a8cphnkC; arc=none smtp.client-ip=67.231.156.173
+	 MIME-Version:Content-Type; b=E5XoYdxFei8kerQ1hKAskT/b/tQ+fy0sQ5AWLCx/ly0g+snbE/MifqiBF0IyyNSu+RZgHpAw7io+exkiX7VizYM7aHOIiux9wMpzBY3B7UgU6gwclELjAoLlzZPA6P7jdGA/CAxPTVLtN2cxrWQJac3Ub2tz6OY5zOwzNPctfyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=jonrO4fN; arc=none smtp.client-ip=67.231.148.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="a8cphnkC"
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 628Mm70A1725605;
-	Sun, 8 Mar 2026 19:46:43 -0700
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="jonrO4fN"
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 628Ng7v13507751;
+	Sun, 8 Mar 2026 19:46:58 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
 	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=W
-	ghhLV0ixXAX9QRM5rrNpGoB4V4NHyh2lfCs8120ukI=; b=a8cphnkCb3aLeCk/p
-	FqiDpVlUgDQSPLADYJDNlcpRR1GCiS0jMT95A+RmbMGb1pszxyHMo1jIAsQuLrzr
-	QIEpzdOYhza0li9BA3tLFichuKLkgm5Jmv7CzvwqN/33P/D2sgjEo/mvedc8lBR7
-	VGhccqzSs6wlBBjreDsrLM1oWqqkeSTDQg6oitvnxwcKsZHhWlNootWPRN7N/uPl
-	2KIyofvSTu4pg44TJ44v7F2Kz6Ck4yx87S0A6Ma1ptn3Yvrp353RG7OEqXUhydh/
-	Gq7FhFdVH5ftGFHgXRCIO+qYXrWWioB0aCJwZAi0qHudlOkY+B4h4xRzuplfITIN
-	nS99A==
+	:message-id:mime-version:references:subject:to; s=pfpt0220; bh=S
+	6Ey/ZmBzedhUx+dGm4/mezYe+oopquIu4Dd9mGe3rw=; b=jonrO4fNOeW+xNqCt
+	TvJXxSth0pAz+6sQjrZ7S8FN2f4NsyW2OqbjYev80JiWcZ+FgK2UkL+sk0mFa+r0
+	pP9aa1YGjJrHKA9qweTJ8mFz8rdiXPZnPqHeFODRe5s9X4wNBebiDgbPnZeRVujd
+	QuZdR6BimveCV0nPKmQfWnM0KLyr8CoNdXj/2q1e5cYZQBAbbiQ9fVn4aoTwKTw1
+	GjYxaex8YmQUxetIJX0GpOrgTmx0mbdHHT4mAmGt8ju5L7hBGVXPY36cRk7DneDF
+	VMch3fbroVdD1SANRDfytRYeVjAHtGxZixWfTcW+NvNghZWDj7c9RR1Q8JnU5+2t
+	yGAaQ==
 Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4cs5nc92u7-1
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 4crj8qtf83-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 08 Mar 2026 19:46:43 -0700 (PDT)
+	Sun, 08 Mar 2026 19:46:57 -0700 (PDT)
 Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
  DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Sun, 8 Mar 2026 19:46:42 -0700
+ 15.2.1544.25; Sun, 8 Mar 2026 19:46:57 -0700
 Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
  (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.25 via Frontend
- Transport; Sun, 8 Mar 2026 19:46:42 -0700
+ Transport; Sun, 8 Mar 2026 19:46:57 -0700
 Received: from rkannoth-OptiPlex-7090.. (unknown [10.28.36.165])
-	by maili.marvell.com (Postfix) with ESMTP id B383E3F707D;
-	Sun,  8 Mar 2026 19:46:37 -0700 (PDT)
+	by maili.marvell.com (Postfix) with ESMTP id DAFF23F707D;
+	Sun,  8 Mar 2026 19:46:52 -0700 (PDT)
 From: Ratheesh Kannoth <rkannoth@marvell.com>
 To: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 CC: <sgoutham@marvell.com>, <davem@davemloft.net>, <edumazet@google.com>,
         <kuba@kernel.org>, <pabeni@redhat.com>, <horms@kernel.org>,
         <donald.hunter@gmail.com>, <jiri@resnulli.us>,
         <chuck.lever@oracle.com>, <matttbe@kernel.org>, <cjubran@nvidia.com>,
-        <shshitrit@nvidia.com>, "Saeed
- Mahameed" <saeedm@nvidia.com>,
-        Ratheesh Kannoth <rkannoth@marvell.com>
-Subject: [PATCH v3 net-next 2/5] devlink: Implement devlink param multi attribute nested data values
-Date: Mon, 9 Mar 2026 08:16:16 +0530
-Message-ID: <20260309024619.898211-3-rkannoth@marvell.com>
+        <shshitrit@nvidia.com>, "Ratheesh
+ Kannoth" <rkannoth@marvell.com>
+Subject: [PATCH v3 net-next 5/5] octeontx2-af: Add support for loading custom KPU profile from filesystem
+Date: Mon, 9 Mar 2026 08:16:19 +0530
+Message-ID: <20260309024619.898211-6-rkannoth@marvell.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260309024619.898211-1-rkannoth@marvell.com>
 References: <20260309024619.898211-1-rkannoth@marvell.com>
@@ -66,294 +65,424 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: q424x7Y00h3TlNqwkmtluuiG4-1iDIl5
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDAyNCBTYWx0ZWRfX7S2o1PQm8LP/
- 01m/wgg/KyeuVw0ZAAU5E6dp5DHa0R0cwScnhD5aOUgbWvn/euRm4GBnmcf25F8uXkhEZOWoLMF
- /aiOueglX4NpLw6r4bPrPSizBukejBquNbcIFNSt/Xn2H4qoT1Ku/FARqpSduutGKuiEQM8bKqN
- x4dk/5oGX/QfQPRowVY8kwV112q4BBGnYGXsiBtb4C1mui2C1F8zsIQ+VY4E2lbgSnnq17Puwt2
- oi6jyYxtkC1QGuxHSiceHM+TCHrHSyCiFKJsNLuEQ8qReiyqwL7p4BhZPU8ljeszosWwyeytU7p
- /9YUw/+b/yu7FV91RWABg0rZXW9gLHQcn7eXX2QW6AzgSUc5DTVlAzFUu96stAfEiMFMhQMPQ2B
- z3xjRFqMTaLssJj8ViJcCSpkyZSJSNi9heCmKRZ0/YJnc/+dG/XNbxXpFVf7QI6QNyLNLvdQtxw
- mBFJbBywCBDs1UZyT0w==
-X-Authority-Analysis: v=2.4 cv=V8twEOni c=1 sm=1 tr=0 ts=69ae3493 cx=c_pps
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMzA5MDAyNCBTYWx0ZWRfXxNfaDTHSmyeL
+ f8N00ywIp1SfPZ2R7uEnUcXlQEg7lX6aLEjSTeys7tWha7gFAqQvgVhD6HfdzGwc/l/xGP1V/Y0
+ O2PpOrHUiWlImG9aidKrY0xZvyfwC3dePSCgNZKlq6PWpVk3lWSWwYgGZNfa3kwLxmfWUIkfHC2
+ E8x6h9kQAnwLGIRrqsrxw27bxDyiTn+Io7hnhUb7UnwWGbKV8AXdMtIfXihoEZCFRJ/+qDMEydP
+ hSAKUjM3LlY8889AVr/ZCH7HISWFDsSfKctfiW1P/jBoaJKAXLdnXwgt8qAeQ0eJFxqWEJOhVwb
+ wRUEFlt79wBMix29+GfqcxnnnVHomj9tBsuX6w65sOJwv/zpEcXsRmE6bLvPosBuEOq9pmW7li1
+ V6JZFljutzYtFv6Z6xU9JciMX8+wP1VFhW/hr+0GWAkzjOQR0J9N8kN7Xw5bF9hxsWirDhZLbGf
+ XLZ9v+UxAoEfxIT/oTg==
+X-Proofpoint-GUID: lJq_dLBQy5mO-UbHKh252YpoMeQt88FN
+X-Proofpoint-ORIG-GUID: lJq_dLBQy5mO-UbHKh252YpoMeQt88FN
+X-Authority-Analysis: v=2.4 cv=WbwBqkhX c=1 sm=1 tr=0 ts=69ae34a1 cx=c_pps
  a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17
  a=Yq5XynenixoA:10 a=VkNPw1HP01LnGYTKEx00:22 a=l0iWHRpgs5sLHlkKQ1IR:22
- a=qit2iCtTFQkLgVSMPQTB:22 a=Ikd4Dj_1AAAA:8 a=M5GUcnROAAAA:8
- a=sSlqG2hmm6If27J4_lgA:9 a=OBjm3rFKGHvpk9ecZwUJ:22
-X-Proofpoint-GUID: q424x7Y00h3TlNqwkmtluuiG4-1iDIl5
+ a=EAYMVhzMl8SCOHhVQcBL:22 a=M5GUcnROAAAA:8 a=wlbaZ-2X3v7ZcC-DwWoA:9
+ a=OBjm3rFKGHvpk9ecZwUJ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-03-09_01,2026-03-06_02,2025-10-01_01
 
-From: Saeed Mahameed <saeedm@nvidia.com>
+Flashing updated firmware on deployed devices is cumbersome. Provide a
+mechanism to load a custom KPU (Key Parse Unit) profile directly from
+the filesystem at module load time.
 
-Devlink param value attribute is not defined since devlink is handling
-the value validating and parsing internally, this allows us to implement
-multi attribute values without breaking any policies.
+When the rvu_af module is loaded with the kpu_profile parameter, the
+specified profile is read from /lib/firmware/kpu and programmed into
+the KPU registers. Add npc_kpu_profile_cam2 for the extended cam format
+used by filesystem-loaded profiles and support ptype/ptype_mask in
+npc_config_kpucam when profile->from_fs is set.
 
-Devlink param multi-attribute values are considered to be dynamically
-sized arrays of u32 values, by introducing a new devlink param type
-DEVLINK_PARAM_TYPE_U32_ARRAY, driver and user space can set a variable
-count of u32 values into the DEVLINK_ATTR_PARAM_VALUE_DATA attribute.
+Usage:
+  1. Copy the KPU profile file to /lib/firmware/kpu.
+  2. Build OCTEONTX2_AF as a module.
+  3. Load: insmod rvu_af.ko kpu_profile=<profile_name>
 
-Implement get/set parsing and add to the internal value structure passed
-to drivers.
-
-This is useful for devices that need to configure a list of values for
-a specific configuration.
-
-example:
-$ devlink dev param show pci/... name multi-value-param
-name multi-value-param type driver-specific
-values:
-cmode permanent value: 0,1,2,3,4,5,6,7
-
-$ devlink dev param set pci/... name multi-value-param \
-		value 4,5,6,7,0,1,2,3 cmode permanent
-
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Ratheesh Kannoth <rkannoth@marvell.com>
 ---
- Documentation/netlink/specs/devlink.yaml |  4 ++
- include/net/devlink.h                    |  8 +++
- include/uapi/linux/devlink.h             |  1 +
- net/devlink/netlink_gen.c                |  2 +
- net/devlink/param.c                      | 81 ++++++++++++++++++------
- 5 files changed, 78 insertions(+), 18 deletions(-)
+ .../net/ethernet/marvell/octeontx2/af/npc.h   |  14 ++
+ .../net/ethernet/marvell/octeontx2/af/rvu.h   |   5 +-
+ .../ethernet/marvell/octeontx2/af/rvu_npc.c   | 180 +++++++++++++++---
+ .../ethernet/marvell/octeontx2/af/rvu_reg.h   |   1 +
+ 4 files changed, 169 insertions(+), 31 deletions(-)
 
-diff --git a/Documentation/netlink/specs/devlink.yaml b/Documentation/netlink/specs/devlink.yaml
-index 837112da6738..e8a8287c4f19 100644
---- a/Documentation/netlink/specs/devlink.yaml
-+++ b/Documentation/netlink/specs/devlink.yaml
-@@ -226,6 +226,10 @@ definitions:
-         value: 10
-       -
-         name: binary
-+      -
-+        name: u32-array
-+        value: 129
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/npc.h b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
+index cefc5d70f3e4..5928c4d3cc8b 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/npc.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/npc.h
+@@ -265,6 +265,19 @@ struct npc_kpu_profile_cam {
+ 	u16 dp2_mask;
+ } __packed;
+ 
++struct npc_kpu_profile_cam2 {
++	u8 state;
++	u8 state_mask;
++	u16 dp0;
++	u16 dp0_mask;
++	u16 dp1;
++	u16 dp1_mask;
++	u16 dp2;
++	u16 dp2_mask;
++	u8 ptype;
++	u8 ptype_mask;
++} __packed;
 +
-   -
-     name: rate-tc-index-max
-     type: const
-diff --git a/include/net/devlink.h b/include/net/devlink.h
-index cb839e0435a1..0a496715da99 100644
---- a/include/net/devlink.h
-+++ b/include/net/devlink.h
-@@ -432,6 +432,13 @@ enum devlink_param_type {
- 	DEVLINK_PARAM_TYPE_U64 = DEVLINK_VAR_ATTR_TYPE_U64,
- 	DEVLINK_PARAM_TYPE_STRING = DEVLINK_VAR_ATTR_TYPE_STRING,
- 	DEVLINK_PARAM_TYPE_BOOL = DEVLINK_VAR_ATTR_TYPE_FLAG,
-+	DEVLINK_PARAM_TYPE_U32_ARRAY = DEVLINK_VAR_ATTR_TYPE_U32_ARRAY,
-+};
-+
-+#define __DEVLINK_PARAM_MAX_ARRAY_SIZE 32
-+struct devlink_param_u32_array {
-+	u32 size;
-+	u32 val[__DEVLINK_PARAM_MAX_ARRAY_SIZE];
+ struct npc_kpu_profile_action {
+ 	u8 errlev;
+ 	u8 errcode;
+@@ -290,6 +303,7 @@ struct npc_kpu_profile {
+ 	int action_entries;
+ 	struct npc_kpu_profile_cam *cam;
+ 	struct npc_kpu_profile_action *action;
++	struct npc_kpu_profile_cam2 *cam2;
  };
  
- union devlink_param_value {
-@@ -441,6 +448,7 @@ union devlink_param_value {
- 	u64 vu64;
- 	char vstr[__DEVLINK_PARAM_MAX_STRING_VALUE];
- 	bool vbool;
-+	struct devlink_param_u32_array u32arr;
+ /* NPC KPU register formats */
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+index a466181cf908..1efc53b63b67 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
+@@ -553,8 +553,8 @@ struct npc_kpu_profile_adapter {
+ 	const char			*name;
+ 	u64				version;
+ 	const struct npc_lt_def_cfg	*lt_def;
+-	const struct npc_kpu_profile_action	*ikpu; /* array[pkinds] */
+-	const struct npc_kpu_profile	*kpu; /* array[kpus] */
++	struct npc_kpu_profile_action	*ikpu; /* array[pkinds] */
++	struct npc_kpu_profile	*kpu; /* array[kpus] */
+ 	union npc_mcam_key_prfl {
+ 		struct npc_mcam_kex		*mkex;
+ 					/* used for cn9k and cn10k */
+@@ -564,6 +564,7 @@ struct npc_kpu_profile_adapter {
+ 	bool				custom;
+ 	size_t				pkinds;
+ 	size_t				kpus;
++	bool				from_fs;
  };
  
- struct devlink_param_gset_ctx {
-diff --git a/include/uapi/linux/devlink.h b/include/uapi/linux/devlink.h
-index e7d6b6d13470..768d0d88710f 100644
---- a/include/uapi/linux/devlink.h
-+++ b/include/uapi/linux/devlink.h
-@@ -404,6 +404,7 @@ enum devlink_var_attr_type {
- 	DEVLINK_VAR_ATTR_TYPE_BINARY,
- 	__DEVLINK_VAR_ATTR_TYPE_CUSTOM_BASE = 0x80,
- 	/* Any possible custom types, unrelated to NLA_* values go below */
-+	DEVLINK_VAR_ATTR_TYPE_U32_ARRAY,
- };
- 
- enum devlink_attr {
-diff --git a/net/devlink/netlink_gen.c b/net/devlink/netlink_gen.c
-index f4c61c2b4f22..e5a80eb467b8 100644
---- a/net/devlink/netlink_gen.c
-+++ b/net/devlink/netlink_gen.c
-@@ -32,6 +32,8 @@ devlink_attr_param_type_validate(const struct nlattr *attr,
- 	case DEVLINK_VAR_ATTR_TYPE_NUL_STRING:
- 		fallthrough;
- 	case DEVLINK_VAR_ATTR_TYPE_BINARY:
-+		fallthrough;
-+	case DEVLINK_VAR_ATTR_TYPE_U32_ARRAY:
- 		return 0;
- 	}
- 	NL_SET_ERR_MSG_ATTR(extack, attr, "invalid enum value");
-diff --git a/net/devlink/param.c b/net/devlink/param.c
-index cf95268da5b0..519cfa1ce459 100644
---- a/net/devlink/param.c
-+++ b/net/devlink/param.c
-@@ -252,6 +252,14 @@ devlink_nl_param_value_put(struct sk_buff *msg, enum devlink_param_type type,
- 				return -EMSGSIZE;
- 		}
- 		break;
-+	case DEVLINK_PARAM_TYPE_U32_ARRAY:
-+		if (val.u32arr.size > __DEVLINK_PARAM_MAX_ARRAY_SIZE)
-+			return -EMSGSIZE;
-+
-+		for (int i = 0; i < val.u32arr.size; i++)
-+			if (nla_put_u32(msg, nla_type, val.u32arr.val[i]))
-+				return -EMSGSIZE;
-+		break;
- 	}
- 	return 0;
- }
-@@ -304,8 +312,8 @@ static int devlink_nl_param_fill(struct sk_buff *msg, struct devlink *devlink,
- 				 u32 portid, u32 seq, int flags,
- 				 struct netlink_ext_ack *extack)
+ #define RVU_SWITCH_LBK_CHAN	63
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+index 352dc5f1d5b9..05aabe26f030 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_npc.c
+@@ -1583,8 +1583,12 @@ static void npc_config_kpucam(struct rvu *rvu, int blkaddr,
+ 			      const struct npc_kpu_profile_cam *kpucam,
+ 			      int kpu, int entry)
  {
--	union devlink_param_value default_value[DEVLINK_PARAM_CMODE_MAX + 1];
--	union devlink_param_value param_value[DEVLINK_PARAM_CMODE_MAX + 1];
-+	union devlink_param_value (*default_value)[DEVLINK_PARAM_CMODE_MAX + 1];
-+	union devlink_param_value (*param_value)[DEVLINK_PARAM_CMODE_MAX + 1];
- 	bool default_value_set[DEVLINK_PARAM_CMODE_MAX + 1] = {};
- 	bool param_value_set[DEVLINK_PARAM_CMODE_MAX + 1] = {};
- 	const struct devlink_param *param = param_item->param;
-@@ -316,44 +324,57 @@ static int devlink_nl_param_fill(struct sk_buff *msg, struct devlink *devlink,
- 	int err;
- 	int i;
++	const struct npc_kpu_profile_cam2 *kpucam2 = (void *)kpucam;
++	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
+ 	struct npc_kpu_cam cam0 = {0};
+ 	struct npc_kpu_cam cam1 = {0};
++	u64 *val = (u64 *)&cam1;
++	u64 *mask = (u64 *)&cam0;
  
-+	default_value = kmalloc_obj(*default_value);
-+	if (!default_value)
-+		return -ENOMEM;
+ 	cam1.state = kpucam->state & kpucam->state_mask;
+ 	cam1.dp0_data = kpucam->dp0 & kpucam->dp0_mask;
+@@ -1596,6 +1600,14 @@ static void npc_config_kpucam(struct rvu *rvu, int blkaddr,
+ 	cam0.dp1_data = ~kpucam->dp1 & kpucam->dp1_mask;
+ 	cam0.dp2_data = ~kpucam->dp2 & kpucam->dp2_mask;
+ 
++	if (profile->from_fs) {
++		u8 ptype = kpucam2->ptype;
++		u8 pmask = kpucam2->ptype_mask;
 +
-+	param_value = kmalloc_obj(*param_value);
-+	if (!param_value) {
-+		kfree(default_value);
-+		return -ENOMEM;
++		*val |= FIELD_PREP(GENMASK_ULL(57, 56), ptype & pmask);
++		*mask |= FIELD_PREP(GENMASK_ULL(57, 56), ~ptype & pmask);
 +	}
 +
- 	/* Get value from driver part to driverinit configuration mode */
- 	for (i = 0; i <= DEVLINK_PARAM_CMODE_MAX; i++) {
- 		if (!devlink_param_cmode_is_supported(param, i))
- 			continue;
- 		if (i == DEVLINK_PARAM_CMODE_DRIVERINIT) {
--			if (param_item->driverinit_value_new_valid)
--				param_value[i] = param_item->driverinit_value_new;
--			else if (param_item->driverinit_value_valid)
--				param_value[i] = param_item->driverinit_value;
--			else
--				return -EOPNOTSUPP;
-+			if (param_item->driverinit_value_new_valid) {
-+				(*param_value)[i] = param_item->driverinit_value_new;
-+			} else if (param_item->driverinit_value_valid) {
-+				(*param_value)[i] = param_item->driverinit_value;
-+			} else {
-+				err = -EOPNOTSUPP;
-+				goto get_put_fail;
-+			}
+ 	rvu_write64(rvu, blkaddr,
+ 		    NPC_AF_KPUX_ENTRYX_CAMX(kpu, entry, 0), *(u64 *)&cam0);
+ 	rvu_write64(rvu, blkaddr,
+@@ -1610,6 +1622,7 @@ u64 npc_enable_mask(int count)
+ static void npc_program_kpu_profile(struct rvu *rvu, int blkaddr, int kpu,
+ 				    const struct npc_kpu_profile *profile)
+ {
++	struct npc_kpu_profile_adapter *adapter = &rvu->kpu;
+ 	int entry, num_entries, max_entries;
+ 	u64 entry_mask;
  
- 			if (param_item->driverinit_value_valid) {
--				default_value[i] = param_item->driverinit_default;
-+				(*default_value)[i] = param_item->driverinit_default;
- 				default_value_set[i] = true;
- 			}
- 		} else {
- 			ctx.cmode = i;
- 			err = devlink_param_get(devlink, param, &ctx, extack);
- 			if (err)
--				return err;
--			param_value[i] = ctx.val;
-+				goto get_put_fail;
-+			(*param_value)[i] = ctx.val;
+@@ -1621,10 +1634,15 @@ static void npc_program_kpu_profile(struct rvu *rvu, int blkaddr, int kpu,
  
- 			err = devlink_param_get_default(devlink, param, &ctx,
- 							extack);
- 			if (!err) {
--				default_value[i] = ctx.val;
-+				(*default_value)[i] = ctx.val;
- 				default_value_set[i] = true;
- 			} else if (err != -EOPNOTSUPP) {
--				return err;
-+				goto get_put_fail;
- 			}
- 		}
- 		param_value_set[i] = true;
- 	}
+ 	max_entries = rvu->hw->npc_kpu_entries;
  
-+	err = -EMSGSIZE;
- 	hdr = genlmsg_put(msg, portid, seq, &devlink_nl_family, flags, cmd);
- 	if (!hdr)
--		return -EMSGSIZE;
-+		goto get_put_fail;
++	WARN(profile->cam_entries > max_entries,
++	     "KPU%u: err: hw max entries=%u, input entries=%u\n",
++	     kpu,  rvu->hw->npc_kpu_entries, profile->cam_entries);
++
+ 	/* Program CAM match entries for previous KPU extracted data */
+ 	num_entries = min_t(int, profile->cam_entries, max_entries);
+ 	for (entry = 0; entry < num_entries; entry++)
+ 		npc_config_kpucam(rvu, blkaddr,
++				  adapter->from_fs ? (void *)&profile->cam2[entry] :
+ 				  &profile->cam[entry], kpu, entry);
  
- 	if (devlink_nl_put_handle(msg, devlink))
- 		goto genlmsg_cancel;
-@@ -383,8 +404,8 @@ static int devlink_nl_param_fill(struct sk_buff *msg, struct devlink *devlink,
- 		if (!param_value_set[i])
- 			continue;
- 		err = devlink_nl_param_value_fill_one(msg, param->type,
--						      i, param_value[i],
--						      default_value[i],
-+						      i, (*param_value)[i],
-+						      (*default_value)[i],
- 						      default_value_set[i]);
- 		if (err)
- 			goto values_list_nest_cancel;
-@@ -393,6 +414,8 @@ static int devlink_nl_param_fill(struct sk_buff *msg, struct devlink *devlink,
- 	nla_nest_end(msg, param_values_list);
- 	nla_nest_end(msg, param_attr);
- 	genlmsg_end(msg, hdr);
-+	kfree(default_value);
-+	kfree(param_value);
- 	return 0;
- 
- values_list_nest_cancel:
-@@ -401,7 +424,10 @@ static int devlink_nl_param_fill(struct sk_buff *msg, struct devlink *devlink,
- 	nla_nest_cancel(msg, param_attr);
- genlmsg_cancel:
- 	genlmsg_cancel(msg, hdr);
--	return -EMSGSIZE;
-+get_put_fail:
-+	kfree(default_value);
-+	kfree(param_value);
-+	return err;
+ 	/* Program this KPU's actions */
+@@ -1678,26 +1696,50 @@ static void npc_prepare_default_kpu(struct rvu *rvu,
+ 	npc_cn20k_update_action_entries_n_flags(rvu, profile);
  }
  
- static void devlink_param_notify(struct devlink *devlink,
-@@ -507,7 +533,7 @@ devlink_param_value_get_from_info(const struct devlink_param *param,
- 				  union devlink_param_value *value)
++static int npc_alloc_kpu_cam2_n_action(struct rvu *rvu, int kpu_num,
++				       int num_entries)
++{
++	struct npc_kpu_profile_adapter *adapter = &rvu->kpu;
++	struct npc_kpu_profile *kpu;
++
++	kpu = &adapter->kpu[kpu_num];
++
++	kpu->cam2 = devm_kcalloc(rvu->dev, num_entries,
++				 sizeof(*kpu->cam2), GFP_KERNEL);
++	if (!kpu->cam2)
++		return -ENOMEM;
++
++	kpu->action = devm_kcalloc(rvu->dev, num_entries,
++				   sizeof(*kpu->action), GFP_KERNEL);
++	if (!kpu->action)
++		return -ENOMEM;
++
++	return 0;
++}
++
+ static int npc_apply_custom_kpu(struct rvu *rvu,
+-				struct npc_kpu_profile_adapter *profile)
++				struct npc_kpu_profile_adapter *profile,
++				bool from_fs)
  {
- 	struct nlattr *param_data;
--	int len;
-+	int len, cnt, rem;
+ 	size_t hdr_sz = sizeof(struct npc_kpu_profile_fwdata), offset = 0;
+ 	struct npc_kpu_profile_action *action;
++	struct npc_kpu_profile_fwdata *sfw;
+ 	struct npc_kpu_profile_fwdata *fw;
++	struct npc_kpu_profile_cam2 *cam2;
+ 	struct npc_kpu_profile_cam *cam;
+ 	struct npc_kpu_fwdata *fw_kpu;
+-	int entries;
++	int entries, ret;
+ 	u16 kpu, entry;
  
- 	param_data = info->attrs[DEVLINK_ATTR_PARAM_VALUE_DATA];
+ 	if (is_cn20k(rvu->pdev))
+ 		return npc_cn20k_apply_custom_kpu(rvu, profile);
  
-@@ -547,6 +573,25 @@ devlink_param_value_get_from_info(const struct devlink_param *param,
- 			return -EINVAL;
- 		value->vbool = nla_get_flag(param_data);
- 		break;
+-	fw = rvu->kpu_fwdata;
+-
+ 	if (rvu->kpu_fwdata_sz < hdr_sz) {
+ 		dev_warn(rvu->dev, "Invalid KPU profile size\n");
+ 		return -EINVAL;
+ 	}
 +
-+	case DEVLINK_PARAM_TYPE_U32_ARRAY:
-+		cnt = 0;
-+		nla_for_each_attr_type(param_data,
-+				       DEVLINK_ATTR_PARAM_VALUE_DATA,
-+				       genlmsg_data(info->genlhdr),
-+				       genlmsg_len(info->genlhdr), rem) {
-+			if (cnt >= __DEVLINK_PARAM_MAX_ARRAY_SIZE)
-+				return -EMSGSIZE;
++	fw = rvu->kpu_fwdata;
+ 	if (le64_to_cpu(fw->signature) != KPU_SIGN) {
+ 		dev_warn(rvu->dev, "Invalid KPU profile signature %llx\n",
+ 			 fw->signature);
+@@ -1731,31 +1773,80 @@ static int npc_apply_custom_kpu(struct rvu *rvu,
+ 		return -EINVAL;
+ 	}
+ 
++	sfw = devm_kcalloc(rvu->dev, 1, sizeof(*sfw), GFP_KERNEL);
++	if (!sfw)
++		return -ENOMEM;
 +
-+			if (nla_len(param_data) != sizeof(u32))
++	memcpy(sfw, fw, sizeof(*sfw));
++
+ 	profile->custom = 1;
+-	profile->name = fw->name;
++	profile->name = sfw->name;
+ 	profile->version = le64_to_cpu(fw->version);
+-	profile->mcam_kex_prfl.mkex = &fw->mkex;
+-	profile->lt_def = &fw->lt_def;
++	profile->mcam_kex_prfl.mkex = &sfw->mkex;
++	profile->lt_def = &sfw->lt_def;
++
++	/* Binary blob contains ikpu actions entries at start of data[0] */
++	if (from_fs) {
++		action = (struct npc_kpu_profile_action *)(fw->data + offset);
++
++		if (rvu->kpu_fwdata_sz < hdr_sz + sizeof(ikpu_action_entries))
++			return -ENOMEM;
++
++		memcpy((void *)profile->ikpu, action, sizeof(ikpu_action_entries));
++		offset += sizeof(ikpu_action_entries);
++	}
+ 
+ 	for (kpu = 0; kpu < fw->kpus; kpu++) {
+ 		fw_kpu = (struct npc_kpu_fwdata *)(fw->data + offset);
+-		if (fw_kpu->entries > KPU_MAX_CST_ENT)
+-			dev_warn(rvu->dev,
+-				 "Too many custom entries on KPU%d: %d > %d\n",
+-				 kpu, fw_kpu->entries, KPU_MAX_CST_ENT);
+-		entries = min(fw_kpu->entries, KPU_MAX_CST_ENT);
+-		cam = (struct npc_kpu_profile_cam *)fw_kpu->data;
+-		offset += sizeof(*fw_kpu) + fw_kpu->entries * sizeof(*cam);
++		if (!from_fs) {
++			if (fw_kpu->entries > KPU_MAX_CST_ENT)
++				dev_warn(rvu->dev,
++					 "Too many custom entries on KPU%d: %d > %d\n",
++					 kpu, fw_kpu->entries, KPU_MAX_CST_ENT);
++			entries = min(fw_kpu->entries, KPU_MAX_CST_ENT);
++			cam = (struct npc_kpu_profile_cam *)fw_kpu->data;
++			offset += sizeof(*fw_kpu) + fw_kpu->entries * sizeof(*cam);
++			action = (struct npc_kpu_profile_action *)(fw->data + offset);
++			offset += fw_kpu->entries * sizeof(*action);
++			if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
++				dev_warn(rvu->dev,
++					 "Profile size mismatch on KPU%i parsing.\n",
++					 kpu + 1);
 +				return -EINVAL;
++			}
++			for (entry = 0; entry < entries; entry++) {
++				profile->kpu[kpu].cam[entry] = cam[entry];
++				profile->kpu[kpu].action[entry] = action[entry];
++			}
++			continue;
++		}
++		entries = fw_kpu->entries;
++		dev_info(rvu->dev,
++			 "Loading %u entries on KPU%d\n", entries, kpu);
 +
-+			value->u32arr.val[cnt] = nla_get_u32(param_data);
-+			cnt++;
++		cam2 = (struct npc_kpu_profile_cam2 *)fw_kpu->data;
++		offset += sizeof(*fw_kpu) + fw_kpu->entries * sizeof(*cam2);
+ 		action = (struct npc_kpu_profile_action *)(fw->data + offset);
+ 		offset += fw_kpu->entries * sizeof(*action);
+ 		if (rvu->kpu_fwdata_sz < hdr_sz + offset) {
+ 			dev_warn(rvu->dev,
+-				 "Profile size mismatch on KPU%i parsing.\n",
++				 "profile size mismatch on kpu%i parsing.\n",
+ 				 kpu + 1);
+ 			return -EINVAL;
+ 		}
++
++		profile->kpu[kpu].cam_entries = entries;
++		profile->kpu[kpu].action_entries = entries;
++		ret = npc_alloc_kpu_cam2_n_action(rvu, kpu, entries);
++		if (ret) {
++			dev_warn(rvu->dev,
++				 "profile entry allocation failed for kpu=%d for %d entries\n",
++				 kpu, entries);
++			return -EINVAL;
 +		}
 +
-+		value->u32arr.size = cnt;
-+		break;
+ 		for (entry = 0; entry < entries; entry++) {
+-			profile->kpu[kpu].cam[entry] = cam[entry];
++			profile->kpu[kpu].cam2[entry] = cam2[entry];
+ 			profile->kpu[kpu].action[entry] = action[entry];
+ 		}
  	}
- 	return 0;
+@@ -1853,7 +1944,10 @@ void npc_load_kpu_profile(struct rvu *rvu)
+ 	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
+ 	const char *kpu_profile = rvu->kpu_pfl_name;
+ 	const struct firmware *fw = NULL;
+-	bool retry_fwdb = false;
++	int len, ret;
++	char *path;
++
++	profile->from_fs = false;
+ 
+ 	/* If user not specified profile customization */
+ 	if (!strncmp(kpu_profile, def_pfl_name, KPU_NAME_LEN))
+@@ -1866,27 +1960,53 @@ void npc_load_kpu_profile(struct rvu *rvu)
+ 	 * Firmware database method.
+ 	 * Default KPU profile.
+ 	 */
+-	if (!request_firmware_direct(&fw, kpu_profile, rvu->dev)) {
+-		dev_info(rvu->dev, "Loading KPU profile from firmware: %s\n",
+-			 kpu_profile);
++
++#define PDIR "kpu/"
++	len = strlen(kpu_profile) + sizeof(PDIR);
++	path = kmalloc(len, GFP_KERNEL);
++	if (!path)
++		return;
++
++	strscpy(path, PDIR, len);
++	strcat(path, kpu_profile);
++	if (!request_firmware_direct(&fw, path, rvu->dev)) {
++		dev_info(rvu->dev, "Loading KPU profile from filesystem: %s\n",
++			 path);
+ 		rvu->kpu_fwdata = kzalloc(fw->size, GFP_KERNEL);
+ 		if (rvu->kpu_fwdata) {
+ 			memcpy(rvu->kpu_fwdata, fw->data, fw->size);
+ 			rvu->kpu_fwdata_sz = fw->size;
+ 		}
+ 		release_firmware(fw);
+-		retry_fwdb = true;
+-		goto program_kpu;
++		kfree(path);
++
++		ret = npc_apply_custom_kpu(rvu, profile, true);
++		kfree(rvu->kpu_fwdata);
++		rvu->kpu_fwdata = NULL;
++
++		/* If an error occurs during firmware loading from filesystem, there is no way
++		 * to revert as we modified default profile memory. In this case, User should delete
++		 * the corrupted firmware image, reboot the device and copy corrected firmware.
++		 * This decision not to rollback is to save memory.
++		 */
++		if (ret) {
++			rvu->kpu_fwdata_sz = 0;
++			dev_err(rvu->dev,
++				"Loading KPU profile from filesystem failed\n");
++			return;
++		}
++
++		profile->from_fs = true;
++		return;
+ 	}
++	kfree(path);
+ 
+-load_image_fwdb:
+ 	/* Loading the KPU profile using firmware database */
+ 	if (npc_load_kpu_profile_fwdb(rvu, kpu_profile))
+ 		goto revert_to_default;
+ 
+-program_kpu:
+ 	/* Apply profile customization if firmware was loaded. */
+-	if (!rvu->kpu_fwdata_sz || npc_apply_custom_kpu(rvu, profile)) {
++	if (!rvu->kpu_fwdata_sz || npc_apply_custom_kpu(rvu, profile, false)) {
+ 		/* If image from firmware filesystem fails to load or invalid
+ 		 * retry with firmware database method.
+ 		 */
+@@ -1900,10 +2020,6 @@ void npc_load_kpu_profile(struct rvu *rvu)
+ 			}
+ 			rvu->kpu_fwdata = NULL;
+ 			rvu->kpu_fwdata_sz = 0;
+-			if (retry_fwdb) {
+-				retry_fwdb = false;
+-				goto load_image_fwdb;
+-			}
+ 		}
+ 
+ 		dev_warn(rvu->dev,
+@@ -1927,6 +2043,7 @@ void npc_load_kpu_profile(struct rvu *rvu)
+ 
+ static void npc_parser_profile_init(struct rvu *rvu, int blkaddr)
+ {
++	struct npc_kpu_profile_adapter *profile = &rvu->kpu;
+ 	struct rvu_hwinfo *hw = rvu->hw;
+ 	int num_pkinds, num_kpus, idx;
+ 
+@@ -1958,6 +2075,11 @@ static void npc_parser_profile_init(struct rvu *rvu, int blkaddr)
+ 
+ 	for (idx = 0; idx < num_kpus; idx++)
+ 		npc_program_kpu_profile(rvu, blkaddr, idx, &rvu->kpu.kpu[idx]);
++
++	if (profile->from_fs) {
++		rvu_write64(rvu, blkaddr, NPC_AF_PKINDX_TYPE(54), 0x03);
++		rvu_write64(rvu, blkaddr, NPC_AF_PKINDX_TYPE(58), 0x03);
++	}
  }
+ 
+ void npc_mcam_rsrcs_deinit(struct rvu *rvu)
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h
+index 62cdc714ba57..ab89b8c6e490 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_reg.h
+@@ -596,6 +596,7 @@
+ #define NPC_AF_INTFX_KEX_CFG(a)		(0x01010 | (a) << 8)
+ #define NPC_AF_PKINDX_ACTION0(a)	(0x80000ull | (a) << 6)
+ #define NPC_AF_PKINDX_ACTION1(a)	(0x80008ull | (a) << 6)
++#define NPC_AF_PKINDX_TYPE(a)		(0x80010ull | (a) << 6)
+ #define NPC_AF_PKINDX_CPI_DEFX(a, b)	(0x80020ull | (a) << 6 | (b) << 3)
+ #define NPC_AF_KPUX_ENTRYX_CAMX(a, b, c) \
+ 		(0x100000 | (a) << 14 | (b) << 6 | (c) << 3)
 -- 
 2.43.0
 
