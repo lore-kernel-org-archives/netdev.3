@@ -1,75 +1,63 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AC025A2B4;
-	Mon,  9 Mar 2026 21:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8CB425A2B4
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 21:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773091278; cv=none; b=EhHpxgm4/cuXTn4HbETIftlAulCQL2+qrpM57juB5PGXbR18n6WMT56eZFuilwFiP7e3FEgy9ZZG5ymrO2bi1ZY+IPU6ISy2OPXVWVGuAtVdWpmrJV7+VstvCJ4Lnwji8idVBurHrLla48brgxIecW4+sM6IySdPPU4ABelZ+yw=
+	t=1773091287; cv=none; b=Zk9S+AjI9MOXvE5CmxYE899o/oviJ4bLhOuFGS4XgXoQMkbhYuceU0Refxw9qhULAHJ9J8Q1OGWY8aTlR602BIb+41PWYeVkE+vok2U4Ks4IPjAdi4YwX66iDjKV9tVwjkcxK1Up4qBpQbnJigrudDv7s6TQNz7f0E4ICGGHmLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773091278; c=relaxed/simple;
-	bh=nd/1n3VdfhJSGBvD3Xr7ncEBlNZMS5jiyOT7E7O689s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CZzOwiPtmVOMcfdo44+gjvYIeTDJ89E5rc43+fCRseAJnS/pii6TgAryhWOrwjlSvkdCAu42Pte1/H+1u1W3/YF5y0t/ZzAl5orFIEr1vhzSt+f4MjvJ8DxblzBaQkud1C/HceFM8AQFezK+zrl5sG85qjEeRn282RDUSmqW1fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Qc2xbnpi; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1773091287; c=relaxed/simple;
+	bh=oe9ddW4pLbC7lONtqKIRzyfPji7D5xo0kfNqyHjFWnI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l/U+xk1h9mL84USMCyXZSWXxb88itjIuVsAGktNcWWdqILoq35k6I8R0Mie66FV079cCnc2h5ukX3WCWHd87WSfMUHWOePuITl5/K8lYHk9q6MsKAu+//o5DjZMXfCIY+UTw1Cl19xvAau0+eX87v+TJTTLGUFvxLTvlz5aCWSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uYSj+h9z; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Qc2xbnpi"
-Received: by linux.microsoft.com (Postfix, from userid 1006)
-	id 20C6220B710C; Mon,  9 Mar 2026 14:21:17 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 20C6220B710C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1773091277;
-	bh=MAn2K1+Ub1L02MCyhWyLXhSTj3Aa/+L+stijV3Wcpio=;
-	h=From:To:Cc:Subject:Date:From;
-	b=Qc2xbnpikdM32h2rEuHMDmolnS1QrTX7KFoRuOO3/T7xn4NKWsro5hzwMsMosXWk8
-	 hEdKlc2vPYB/OR8MbnA1EuTU6tdV1jK3tzEvKIMEzyUW15cB9l67HvAppiDEkdFaHX
-	 2J+b5I4s/G4xFJwy5YXgJKuWWoGQ1RdJEBLuyY20=
-From: Haiyang Zhang <haiyangz@linux.microsoft.com>
-To: linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org
-Cc: haiyangz@microsoft.com,
-	paulros@microsoft.com
-Subject: [PATCH net-next,V4, 0/3] add ethtool COALESCE_RX_CQE_FRAMES/NSECS and use it in MANA driver
-Date: Mon,  9 Mar 2026 14:20:42 -0700
-Message-ID: <20260309212106.764156-1-haiyangz@linux.microsoft.com>
-X-Mailer: git-send-email 2.43.7
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uYSj+h9z"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D53EC4CEF7;
+	Mon,  9 Mar 2026 21:21:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773091287;
+	bh=oe9ddW4pLbC7lONtqKIRzyfPji7D5xo0kfNqyHjFWnI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=uYSj+h9zYUbUy5/w5ZnNU5AiRYrtoqxr3z3I9ntmG3XdDTtOGJknHkeCsZ7QWsKw9
+	 ysWOh81mPvfWSfmRzApGyIj4hql3weofWoT3TaY8Cx8uW0G0X+qHwj2P4xSCbMSpEO
+	 AG2wziet9/04roW2zHsjaI1EcbKq38IAnlCv9tLcUugvsoWH8+J/MgqLqwc/3ZHgb8
+	 5jTkJqoCfvsQohJbVDVNiv4JiCfhjZXM5DzgyXyWy2gkPhtKmcIICpHIn4Co4qB5NV
+	 DIEkTR7WWLM/yUomnHESX6hPijsmsGLLvJJZpBr7Z9uVvV5vFO/lwjvNTl4LIgC6sS
+	 qjMfT9BX586eQ==
+Date: Mon, 9 Mar 2026 14:21:26 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Cosmin Ratiu <cratiu@nvidia.com>
+Cc: "pabeni@redhat.com" <pabeni@redhat.com>, Dragos Tatulea
+ <dtatulea@nvidia.com>, "edumazet@google.com" <edumazet@google.com>,
+ "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "andrew+netdev@lunn.ch"
+ <andrew+netdev@lunn.ch>, "sd@queasysnail.net" <sd@queasysnail.net>,
+ "davem@davemloft.net" <davem@davemloft.net>
+Subject: Re: [PATCH net v3 0/3] macsec: Add support for VLAN filtering in
+ offload mode
+Message-ID: <20260309142126.2fe0cd73@kernel.org>
+In-Reply-To: <678c4e9e9f2e54e47e67005e1a230641300e40dd.camel@nvidia.com>
+References: <20260306151004.2862198-1-cratiu@nvidia.com>
+	<20260306115353.28f322e0@kernel.org>
+	<20260306115405.0febac64@kernel.org>
+	<678c4e9e9f2e54e47e67005e1a230641300e40dd.camel@nvidia.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+On Mon, 9 Mar 2026 16:23:22 +0000 Cosmin Ratiu wrote:
+> What's your request here?
+> Would you like me to move that test out of netdevsim and have it work
+> with real devices as well? Or just add the VLAN part as a separate test
+> somewhere? Or we leave it like this and keep it in mind for future
+> tests.
 
-Add two parameters for drivers supporting Rx CQE Coalescing.
-
-ETHTOOL_A_COALESCE_RX_CQE_FRAMES:
-Maximum number of frames that can be coalesced into a CQE.
-
-ETHTOOL_A_COALESCE_RX_CQE_NSECS:
-Time out value in nanoseconds after the first packet arrival in a
-coalesced CQE to be sent.
-
-Also implement in MANA driver with the new parameter and
-counters.
-
-
-Haiyang Zhang (3):
-  net: ethtool: add ethtool COALESCE_RX_CQE_FRAMES/NSECS
-  net: mana: Add support for RX CQE Coalescing
-  net: mana: Add ethtool counters for RX CQEs in coalesced type
-
- Documentation/netlink/specs/ethtool.yaml      |  8 ++
- Documentation/networking/ethtool-netlink.rst  | 10 ++
- drivers/net/ethernet/microsoft/mana/mana_en.c | 93 +++++++++++++------
- .../ethernet/microsoft/mana/mana_ethtool.c    | 75 ++++++++++++++-
- include/linux/ethtool.h                       |  6 +-
- include/net/mana/mana.h                       | 17 +++-
- .../uapi/linux/ethtool_netlink_generated.h    |  2 +
- net/ethtool/coalesce.c                        | 14 ++-
- 8 files changed, 189 insertions(+), 36 deletions(-)
-
--- 
-2.34.1
-
+The first option - adding a test that can run on real HW as well as
+netdevsim will increase the code the test exercises by an order of
+magnitude.
