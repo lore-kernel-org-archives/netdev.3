@@ -1,173 +1,125 @@
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013056.outbound.protection.outlook.com [40.93.196.56])
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22403876D7;
-	Mon,  9 Mar 2026 09:56:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.196.56
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773050180; cv=fail; b=Vz4ZUI6FLlq/ai7D9ZaEpcAOMXpAVNV6ztYY5Y4bwUFP1Fds0Gw5N56icg9bsqQrcv488+tGHKg9s0LmRNco1u+n3iLU+LU0Y5ZpwOXB5MjobGdwmQASPRW1+mloDSfCGEgQRq8XH8/x1QnZRmNb4F95RUZWm0g0uCKlMB7iPt4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773050180; c=relaxed/simple;
-	bh=8r4F3+HNX5x5BN3eBDy/L0c0BsY8otxUZmNwwL0y4+I=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jZ8OWcL2TlFYYfrs961N00CQ40COLgRvjdRzBnR/PjOrn+cfmXZNgJi+xMYOjq03WHlGgH3Vnt/4WWVgq4/J1mAJEecdrIb2cC+MiYLNRD/cHAIY2d56t+AGQJb3tlRSMgQvO7COb9FOATq0tbO6P8G8r/D3MPNPySyqbkBB1o8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pVEzR/BK; arc=fail smtp.client-ip=40.93.196.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC473815E6
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 09:58:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773050286; cv=none; b=IB+Lq8CeUz/erPejUApubSeTyO6rQlqQheeIs2LFP6TyydIO32yYBw3arx9iDDVTyd2ZE6EWNt28HSN2pk06kOletjVCS2o0xudMWJ2B3CootKiLhTO2jpAdNPkAEfW7hgys79MiH2C+THVlTVz6He7+/HOQA1+GX1ppFWslrz4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773050286; c=relaxed/simple;
+	bh=/cusK6uUT0tB3v/1gQr2okzkXaL3CNhhf8xkPa+xN90=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b1GM6qQmSQs61QScLWGTEle/wrSOFtEkE2I+fLlu57J4ytkNfmOQANExCRj2sp4LjGUSfP/742F96kDIWImwi/KYQmNy4C7rAhSrcl7DRVegFVl6QzfJtVeb1o1Ei68RWL9SA7p/KK7L1FVmpiBG9BZ2FVCvNrGiA3aAKtjZ8ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=CDbOn1tZ; arc=none smtp.client-ip=95.215.58.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pVEzR/BK"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=g2jZWZKUH7Rixmy79ilY+dksyHPXaRtM7UnlDcMat7VyMYAen8KOqG88zN3X32nADy5wWO34eNfndfEtZ8TbTkNuUVdfgiJS8wdhFoEl6oF/7O/4Qb5o9ig2MrBEO2k0We4Hpt9V5H8fV55lnp987HG6GkGkpe012W6Sk/wFEyx1Eh83Opa86lvt165+1Dg/7OQxyUwxEl3DkgMc/Rvc3W5EpbeWR0YEJBp+O7renqaZb5siD5D4H4vvZjgtUkxrra6tg4V6pQ/HZIegEviFJgTHdrOLHFrE6RaDXIkRKK4U+x6f0QcsQJ6c3NsK7qGhUe/UqTs/wxSscgZyDztBbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=nhCTITag6ajj85qUDm4vHAMgJvEx/gqo2IpExRwUW28=;
- b=Gxl+ub8IMAE5kDZku7de9o34CDS2LrlL4+7Om5ipx9shpZM7UqVG+E4dlCqWONhrNlko7rgnE1OBtndRowPHHBHmFyWb6xp0AG6Ybov0js3sYMcQNZBCAPLFRL/U7EkgaqEfx1EiuO9UgfpYwSyaR7fPR6G0YyCJhCNiNFT6zk4lAkfEOpl7ym/RQ0+WgIeZEoQyGbbPjfpeTvPxFDlS8UlSlu7Hiwu+ZRy6tWSsgiX3Lb88XHn4dWfGqZTz9aADTiGadZCmGYSEJdsd6oCcKrhtEnsRvEe2wJmInXRI3q26tpnm8xlq2Ye517XlLhZp+kcxrwIA3M1j9XIeiIukNQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=google.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=nhCTITag6ajj85qUDm4vHAMgJvEx/gqo2IpExRwUW28=;
- b=pVEzR/BKhEsquRtsxtDV508eX8ZjU5LrBaFgyvtGJhkXhgig3P0ZGPEPDPxI0S8JGwt5HsCT76R3d2WqfSEmDnBU28FSh7DcbGA82O0Rhgqw1bp6pLrdyqNC2C5NORqaKr7MCfm0UkDODqyylirSYuE7yj9Tn6jZxOT8v2ZcjgG/FbdZlmap/fMdLWsNfFNlLniroWA/BZXwXaxaM13gzaFt/hn3flPZwuFgnVApZCIgyIDCrCClRTcbyOthejrrzOs3SWdeGdbem22JthgommeRgB7FHIsNtD+rwJkS9shbnbpDkGEkqJE+D5AQ4z/SBEDYtiKspXlX1L8n67yjWQ==
-Received: from SJ0PR13CA0070.namprd13.prod.outlook.com (2603:10b6:a03:2c4::15)
- by CH0PR12MB8529.namprd12.prod.outlook.com (2603:10b6:610:18d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.10; Mon, 9 Mar
- 2026 09:56:10 +0000
-Received: from SJ5PEPF000001F4.namprd05.prod.outlook.com
- (2603:10b6:a03:2c4:cafe::da) by SJ0PR13CA0070.outlook.office365.com
- (2603:10b6:a03:2c4::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9678.24 via Frontend Transport; Mon,
- 9 Mar 2026 09:55:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- SJ5PEPF000001F4.mail.protection.outlook.com (10.167.242.72) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9678.18 via Frontend Transport; Mon, 9 Mar 2026 09:56:09 +0000
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 9 Mar
- 2026 02:55:56 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail205.nvidia.com
- (10.129.68.10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 9 Mar
- 2026 02:55:54 -0700
-Received: from vdi.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.9)
- with Microsoft SMTP Server id 15.2.2562.20 via Frontend Transport; Mon, 9 Mar
- 2026 02:55:50 -0700
-From: Tariq Toukan <tariqt@nvidia.com>
-To: Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David
- S. Miller" <davem@davemloft.net>
-CC: Saeed Mahameed <saeedm@nvidia.com>, Tariq Toukan <tariqt@nvidia.com>,
-	"Mark Bloch" <mbloch@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
-	<netdev@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, Gal Pressman <gal@nvidia.com>, Moshe Shemesh
-	<moshe@nvidia.com>, Dragos Tatulea <dtatulea@nvidia.com>
-Subject: [PATCH net-next V2 5/5] net/mlx5e: Report stop and wake TX queue stats
-Date: Mon, 9 Mar 2026 11:55:19 +0200
-Message-ID: <20260309095519.1854805-6-tariqt@nvidia.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20260309095519.1854805-1-tariqt@nvidia.com>
-References: <20260309095519.1854805-1-tariqt@nvidia.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="CDbOn1tZ"
+Date: Mon, 9 Mar 2026 17:57:43 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773050273;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TceeNjJusAWfwGzlU79ZpIWRyKWKQ7R2YG/ZX3AO7Mk=;
+	b=CDbOn1tZ12NrfcxllHrmHj9vJ48ou4Ytjo3669DTy4tHZb31I4VWaXjp1Dg6EmGcYuK1Zj
+	9b4GldZx04JMtngQEGzR78KwiSg7OzJs33DViyWO3EJiRNVJfDZXlDJ1UCqCnLHTGtrTQ/
+	kFxClFn9dPTK7kAvm8N5hJot8J0bYeM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: Deepanshu Kartikey <kartikey406@gmail.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
+	pabeni@redhat.com, horms@kernel.org, kees@kernel.org, mingo@kernel.org, 
+	tglx@kernel.org, jiayuan.chen@shopee.com, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, syzbot+f50072212ab792c86925@syzkaller.appspotmail.com, 
+	jiayuan.chen@linux.dev
+Subject: Re: [PATCH] atm: lec: fix use-after-free in sock_def_readable()
+Message-ID: <jx557w6llomwcm2tbwz7u74get3uvl4ebo3x2gvhghlfsjd67m@76yu4bwvcdhv>
+References: <20260309093614.502094-1-kartikey406@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001F4:EE_|CH0PR12MB8529:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3fc2cc4c-bc64-4a5f-186c-08de7dc21729
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|36860700016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	sGreQusgqpbuxhAR0cYs90xW84doJcAbw7q06ZcaQ70J37fFKjSpE20qPNMLMlEPrAHbdhZmZA/GiIJGhDH0MjVdGR7RAnmNbg4LNGQCi0yypMqpAkmjmNzgUm4scg66uxg2DjhbdMrMAiblbJETOEnLdcCcMZTzynWPvD5WZcOHQNL+jLdrFur0pbVT1yULSzcrhnFGx/H85AmeZaktZuJ+CxEqqaUVZ3hs8yalB2ghuYW80OiBgKthn+pJv7Ex1cbDRTWLJiP+wsyqfoEhFx6owvh+9ZCKLaJTxICqoR8vFSDJkslFsJKA6gfed3A71Ef6mDcj4tJJTX/gPGP4jtD/TOfEX/3oZooP6b30LGm7hKyYIpwOivTXXRiaHjXhdqYN/IR+1hxlubtFHbj8i6o6xVxcORqvvl6s87DxeZ4cfMwwvV3xCt92vMQgaNYrWG03fQF/v6dQf3q6uiTt8obpe0oUP9uFG69KuRu1j3L/MkEKQHPTBeNvYw6hFe1l5UZ2lKm9dbA7xosQy+E74ihlCfFkIzLHTuuIjyM8/94seMaTV6UjuLtRfxKZPfdvs+k7jcudKCsAqD2fZfebeH6Umu3wTwnz+01ZY82ppXqSpeuWeQzm6OdZp5if1E49XRNZFF+SbtrOQ+TCu2M6Kt8aVs5ylV9zd0GOBnDmCWM7FZubbHx406QD7OtNis0AGxNkDcGc/JKtvPfMxVwmm3cgcU7630sED9FNOMfjorzuSCEeumYl8e+yakaWuTsnU3hhl9TMvPNzp35E/K+xDA==
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(376014)(36860700016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	+RJKUsFPZ3FHmEMC40V3E/ufUFKHInZcE180dPm+yAkE25g4xEZBZkCg2pQ2J8pAoYAJfLiLfnnyOPzGE/8i8Won2ITeuJ1JCNe2KEFuah5lt6ieka0Na68z8kW29p1c+rfc1opqqrVlhXzFB0bd1SC7QpVg2ymmwvYhA/u7nQxL2By9pbOvogaCCs6GoG0YhcFX3l8Fyb5q8CfP4MX1ujmxFgXBfRflP8MZoLwrxYVLRZQxJzJOHWKLkHxCP3wYBKa+R5tXJs37Pklcu4WhtDxnLLPvAVt0R3AQvSa4F5xP1VU7rp2GYgkncZ/NteuSaqSU0fqsmIQurbMsawqxcTxE1rUMxHJFbI8xSBfFPbbOENTXAxAbAM0aJlH3Vz3BRkQWRHGz/HDFnkbBpNpFJaSQPT5mBo7egN5wCnnL479/QiklIXghGgTDTd5zJlsB
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Mar 2026 09:56:09.8614
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3fc2cc4c-bc64-4a5f-186c-08de7dc21729
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001F4.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8529
+In-Reply-To: <20260309093614.502094-1-kartikey406@gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-From: Gal Pressman <gal@nvidia.com>
+On Mon, Mar 09, 2026 at 03:06:14PM +0800, Deepanshu Kartikey wrote:
+> A race condition exists between lec_atm_close() setting priv->lecd = NULL
+> and concurrent access to priv->lecd in send_to_lecd(), lec_handle_bridge(),
+> and lec_atm_send(). When the socket is freed via RCU while another thread
+> is still using it, a use-after-free occurs in sock_def_readable() when
+> accessing the socket's wait queue.
+> 
+> The root cause is that lec_atm_close() clears priv->lecd without holding
+> lec_arp_lock, while callers dereference priv->lecd without any protection
+> against concurrent teardown.
+> 
+> Fix this by:
+> - Protecting priv->lecd = NULL in lec_atm_close() with lec_arp_lock to
+>   synchronize with callers that already hold the lock (e.g. lec_arp_resolve)
+> - Using sock_hold/sock_put in send_to_lecd() to pin the socket while in
+>   use. This is safe because send_to_lecd() is called under lec_arp_lock
+>   by lec_arp_resolve(), preventing concurrent NULL assignment of lecd.
+> - Using lec_arp_lock + sock_hold/sock_put in lec_handle_bridge() and
+>   lec_atm_send() where the lock is not held by the caller, with proper
+>   skb cleanup on early exit to avoid memory leaks.
 
-Report TX queue stop and wake statistics via the netdev queue stats API
-by mapping the existing stopped and wake counters to the stop and wake
-fields.
+This is wrong. send_to_lecd() is also called from lec_arp_expire_arp() without lec_arp_lock.
+  lec_arp_expire_arp()        // no lec_arp_lock held
+    → send_to_lecd()
+      → sk = sk_atm(priv->lecd)  // UAF: lecd already freed
+      → sock_hold(sk)             // too late
 
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
----
- drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+The sock_hold() is placed after the dereference of priv->lecd,
+so it cannot prevent the UAF — the dangling pointer has already been followed.
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-index a03fbf1cb362..ebab82297231 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
-@@ -5500,6 +5500,9 @@ static void mlx5e_get_queue_stats_tx(struct net_device *dev, int i,
- 	stats->csum_none = sq_stats->csum_none;
- 	stats->needs_csum =
- 		sq_stats->csum_partial + sq_stats->csum_partial_inner;
-+
-+	stats->stop = sq_stats->stopped;
-+	stats->wake = sq_stats->wake;
- }
- 
- static void mlx5e_get_base_stats(struct net_device *dev,
-@@ -5563,6 +5566,8 @@ static void mlx5e_get_base_stats(struct net_device *dev,
- 	tx->hw_gso_bytes = 0;
- 	tx->csum_none = 0;
- 	tx->needs_csum = 0;
-+	tx->stop = 0;
-+	tx->wake = 0;
- 
- 	for (i = 0; i < priv->stats_nch; i++) {
- 		struct mlx5e_channel_stats *channel_stats = priv->channel_stats[i];
-@@ -5596,6 +5601,8 @@ static void mlx5e_get_base_stats(struct net_device *dev,
- 			tx->csum_none += sq_stats->csum_none;
- 			tx->needs_csum += sq_stats->csum_partial +
- 					  sq_stats->csum_partial_inner;
-+			tx->stop += sq_stats->stopped;
-+			tx->wake += sq_stats->wake;
- 		}
- 	}
- 
-@@ -5621,6 +5628,8 @@ static void mlx5e_get_base_stats(struct net_device *dev,
- 			tx->csum_none += sq_stats->csum_none;
- 			tx->needs_csum += sq_stats->csum_partial +
- 					  sq_stats->csum_partial_inner;
-+			tx->stop += sq_stats->stopped;
-+			tx->wake += sq_stats->wake;
- 		}
- 	}
- }
--- 
-2.44.0
+> Note: Patch testing via syzbot was attempted but the test VM crashed
+> due to a QEMU AHCI emulation assertion failure (hw/ide/core.c:934)
+> unrelated to this fix. The QEMU crash is caused by syzbot's disk I/O
+> fuzzing triggering a known QEMU NCQ emulation bug, not by this patch.
+> Compile testing with "make W=1 net/atm/lec.o" passes cleanly.
+> 
+> Reported-by: syzbot+f50072212ab792c86925@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=f50072212ab792c86925
+> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+> ---
+>  net/atm/lec.c | 31 +++++++++++++++++++++++++++----
+>  1 file changed, 27 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/atm/lec.c b/net/atm/lec.c
+> index fb93c6e1c329..7e051174a92b 100644
+> --- a/net/atm/lec.c
+> +++ b/net/atm/lec.c
+> @@ -131,6 +131,7 @@ static void lec_handle_bridge(struct sk_buff *skb, struct net_device *dev)
+>  {
+>  	char *buff;
+>  	struct lec_priv *priv;
+> +	unsigned long flags;
+>  
+>  	/*
+>  	 * Check if this is a BPDU. If so, ask zeppelin to send
+> @@ -154,10 +155,19 @@ static void lec_handle_bridge(struct sk_buff *skb, struct net_device *dev)
+>  					/* 0x01 is topology change */
+>  
+>  		priv = netdev_priv(dev);
+> -		atm_force_charge(priv->lecd, skb2->truesize);
+> +		spin_lock_irqsave(&priv->lec_arp_lock, flags);
+> +		if (!priv->lecd) {
+> +			spin_unlock_irqrestore(&priv->lec_arp_lock, flags);
+> +			kfree_skb(skb2);
+> +			return;
+> +		}
+>  		sk = sk_atm(priv->lecd);
+> +		sock_hold(sk);
+> +		spin_unlock_irqrestore(&priv->lec_arp_lock, flags);
+> +		atm_force_charge(priv->lecd, skb2->truesize);
+
+After the unlock, lec_atm_close() can set priv->lecd = NULL
 
