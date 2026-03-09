@@ -1,76 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.cybernetics.com (mail.cybernetics.com [72.215.153.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3ADD34D392;
-	Mon,  9 Mar 2026 21:33:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB4E220F2D
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 21:34:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.215.153.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773092002; cv=none; b=jeC/R41SuB0aiW89YhdP/SKQUiNSiM2OS4zh/8sTs4z9pccU/FNACuGhWzPAEHGyHqHRMWK56tMdR4p6cAEXU3X50tcZlTksCyIbwIb0WjCEtK+W57BzDFCjuCNW8Ci9Z+1xjeix2+8pXxwYnJRnWpHunpSnakPqrdo8kcgNllc=
+	t=1773092080; cv=none; b=p7ptbC6yzrPy7X0craNxWS0S78Bp3vWtO4MDub+xKO9ZV8FEPybVCQFj4NyXsIsuPBRJM68TR4f4Ndu5TrVwILEXmz/+Gzu/Es17sDUM1G96ByHEknJcSb7jY//TKL2OeHISlCAr+jrEdwbzO9yLPDD4pzwbZBhr2SBltlt2I/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773092002; c=relaxed/simple;
-	bh=Vh1+RU+c7dqwjx1AepujXslb7COs6f1ooMHYXz5ni5k=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JckefipZO4BTVx74zKr0dHNgwY4IBA+nC2ZcuOuV9UevlJStTLlcXsqZeRX981vH0yxZ/mq+Ij0LciLPb02hIEGTPez6guuEgNiGVifiKt5cjzeSoeWMxjIVpO5Nb5vQljFBC3KGTyB1kgrO+AhTx7CzXeFhJ9BCk9DwkNTTa3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mfXAGRoa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773092080; c=relaxed/simple;
+	bh=Ok6eF+GftazIxpYrdRG70Q2VyR3xpD0Cdi9/4UF5+l8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tZgmpIUA7VYTDXV3Zi7Rxz0CBO1n29vNFbftfotfMfr0Q9jwPST+rHiy9SZXtNWBu+og0O0hG9Yzbh5NdpSST7QUzXcJCOtroZSXHJMT1fVOEO9zjdlMpqdMSWaTuRBYx7IHcjlNdY9+ws8jHVYV6BiCEFVJosZCb2NIVEWvOGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cybernetics.com; spf=pass smtp.mailfrom=cybernetics.com; dkim=pass (1024-bit key) header.d=cybernetics.com header.i=@cybernetics.com header.b=qWDNv+x5; arc=none smtp.client-ip=72.215.153.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cybernetics.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cybernetics.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mfXAGRoa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953D0C4CEF7;
-	Mon,  9 Mar 2026 21:33:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773092002;
-	bh=Vh1+RU+c7dqwjx1AepujXslb7COs6f1ooMHYXz5ni5k=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mfXAGRoa2FiUJIHD4r4HV2krCDP9BFXfMSpTF/zvUtV4uAYkSjMN65YDbU2tzC63H
-	 Eoa5OHr1DQ0El9jeOtW+FqfUBQ9bjL565j336880h27y20YMp3o1cDzQgxJ1icoWVx
-	 ROkTh6+Mzu4JE8tAu2ZZcjB01zKTn5SnY3EOkpVDAxmCInVQzCAxVewKiszhC/YTJA
-	 6LJPYvNjk8w8UMXnfGLfrVYLLhYX+5xiGxu30/KfDy2ThLsHcOOQBAgrfOJrrTaj9+
-	 EMSTJZw1zjXiH0JJQpfSlYIIQhe3sUGM7p+gptZH0WCwdtXiNGulsPobSL+Io6EUlr
-	 4sin3LSJsbilA==
-Date: Mon, 9 Mar 2026 14:33:20 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Mark Bloch <mbloch@nvidia.com>
-Cc: Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Saeed Mahameed <saeedm@nvidia.com>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>,
- linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org,
- netdev@vger.kernel.org, Gal Pressman <gal@nvidia.com>, Dragos Tatulea
- <dtatulea@nvidia.com>, Moshe Shemesh <moshe@nvidia.com>, Shay Drory
- <shayd@nvidia.com>, Alexei Lazar <alazar@nvidia.com>
-Subject: Re: [PATCH mlx5-next 8/8] {net/RDMA}/mlx5: Add LAG demux table API
- and vport demux rules
-Message-ID: <20260309143320.1cee163d@kernel.org>
-In-Reply-To: <a10faf04-36c2-4070-ac8b-86b110e6976c@nvidia.com>
-References: <20260308065559.1837449-1-tariqt@nvidia.com>
-	<20260308065559.1837449-9-tariqt@nvidia.com>
-	<20260308085248.2427feed@kernel.org>
-	<a10faf04-36c2-4070-ac8b-86b110e6976c@nvidia.com>
+	dkim=pass (1024-bit key) header.d=cybernetics.com header.i=@cybernetics.com header.b="qWDNv+x5"
+Received: from cybernetics.com ([10.10.4.126]) by mail.cybernetics.com with ESMTP id Yjth4GmSgi4SVCY0; Mon, 09 Mar 2026 17:18:35 -0400 (EDT)
+X-Barracuda-Envelope-From: tonyb@cybernetics.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.10.4.126
+X-ASG-Whitelist: Client
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=cybernetics.com; s=mail;
+	bh=juwwqoR0TQdvhEwmLjJNiRO2kvCT0d1TyAi3AmiRBWo=;
+	h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:Cc:To:
+	Content-Language:Subject:MIME-Version:Date:Message-ID; b=qWDNv+x5oxQ+jfTee9vw
+	slKh615rjUJI6lzUt6SBZFXwWYnTHpKw0q6CiRSTJAi362LkMciIfahxjUoETZZVJMMasF0K7SYk3
+	rBLzpbPGMADnMztqPd3b/V9UmQd+BrOcRF4iaIxR1CnwORe+jjNDrfXojloG2dCjZw64ZD2lYI=
+Received: from [10.157.2.224] (HELO [192.168.200.1])
+  by cybernetics.com (CommuniGate SPEC SMTP 8.0.5)
+  with ESMTPS id 14451450; Mon, 09 Mar 2026 17:18:35 -0400
+Message-ID: <cb925a24-c4a2-46cd-98e8-2be5e2aa2152@cybernetics.com>
+X-Barracuda-RBL-Trusted-Forwarder: 10.157.2.224
+Date: Mon, 9 Mar 2026 17:18:35 -0400
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Long delay in freeing skbs
+Content-Language: en-US
+X-ASG-Orig-Subj: Re: Long delay in freeing skbs
+To: Eric Dumazet <edumazet@google.com>
+Cc: netdev@vger.kernel.org, Simon Horman <horms@kernel.org>,
+ Kuniyuki Iwashima <kuniyu@google.com>, Willem de Bruijn
+ <willemb@google.com>, eric.dumazet@gmail.com,
+ "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?=
+ <toke@redhat.com>, Jason Xing <kerneljasonxing@gmail.com>
+References: <20251106202935.1776179-1-edumazet@google.com>
+ <20251106202935.1776179-3-edumazet@google.com>
+ <a4686348-ad60-481b-8898-9c68e9c27a50@cybernetics.com>
+ <CANn89iJziPq9Au9A8DK8Um6Nn2F-xTcG3+r5x0tVMf+7TUJEMg@mail.gmail.com>
+From: Tony Battersby <tonyb@cybernetics.com>
+In-Reply-To: <CANn89iJziPq9Au9A8DK8Um6Nn2F-xTcG3+r5x0tVMf+7TUJEMg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Barracuda-Connect: UNKNOWN[10.10.4.126]
+X-Barracuda-Start-Time: 1773091115
+X-Barracuda-URL: https://10.10.4.122:443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at cybernetics.com
+X-Barracuda-Scan-Msg-Size: 2352
+X-Barracuda-BRTS-Status: 1
+X-ASG-Debug-ID: 1773091115-1cf43940a6bfa00001-BZBGGp
 
-On Sun, 8 Mar 2026 20:34:26 +0200 Mark Bloch wrote:
-> Thanks for catching this. We=E2=80=99ll address it.
->=20
-> Also, I saw IA flagged issues con
-> =E2=80=9Cnet/mlx5: LAG, replace pf array with xarray=E2=80=9D.
-> Just for context, lag_lock is already a known problematic
-> area for us, and we do have plans to remove it. I ran the
-> review prompts locally in ORC mode, so I assume I saw the
-> same comments as NIPA.
->=20
-> So the issue raised there is not really a new one. lag_lock
-> already has some known issues today, but we do not expect to
-> hit this particular case in practice, since by the time
-> execution reaches mdev removal, the LAG should already have
-> been destroyed and the netdevs already removed for the driver
-> internal structures.
+On 3/9/26 17:07, Eric Dumazet wrote:
+> On Mon, Mar 9, 2026 at 10:00 PM Tony Battersby <tonyb@cybernetics.com> wrote:
+>> I have some out-of-tree code that was broken by commit e20dfbad8aab
+>> ("net: fix napi_consume_skb() with alien skbs") in kernel 6.19.  I
+>> retested with 7.0-rc3 with the same results.  I'm not sure if the change
+>> in behavior that I am seeing is expected or if it is a bug, so I thought
+>> I would ask.  Omitting irrelevant details, my kernel code does the
+>> following:
+>>
+>> 1) allocate a buffer
+>> 2) perform some network I/O using the buffer (cmd over iscsi_tcp)
+>> 3) wait for the I/O to complete
+>> 4) wait for the buffer page refcounts to drop back to their values for
+>> idle I/O
+>> 5) reuse the buffer for more I/O
+>>
+>> Step 4 is necessary in this case due to some of those irrelevant details
+>> that I omitted, and that is where it trips up.  Commit e20dfbad8aab
+>> seems to keep the page refcounts elevated long after the I/O has
+>> completed (hours or longer), presumably because the deferred skb free
+>> isn't happening for a long time.  So:
+>>
+>> 1) Is this long delay expected, or is this a bug?
+>>
+>> 2) If the delay is expected, is there a way for me to force the network
+>> system to process the deferred skb frees on request?  e.g. write to a
+>> file in /sys, or call a kernel function to flush the deferred frees?
+>>
+>> Worst case is that I can redesign my code to kfree() the buffer if it is
+>> busy and allocate a new one, and let the old buffer be freed
+>> asynchronously when the skb is freed at some indeterminate time in the
+>> future.
+>>
+>> Thanks,
+>> Tony Battersby
+>
+> If you are using zero copy, please look at:
+>
+> Maybe you should make sure your code is compatible with it.
+>
+> commit 0943404b1f3b178e1e54386dadcbf4f2729c7762
+> Author: Eric Dumazet <edumazet@google.com>
+> Date:   Mon Feb 16 19:36:53 2026 +0000
+>
+>     net: do not delay zero-copy skbs in skb_attempt_defer_free()
+>
+>     After the blamed commit, TCP tx zero copy notifications could be
+>     arbitrarily delayed and cause regressions in applications waiting
+>     for them.
+>
+The I/O is being sent by a userspace program via the SCSI generic driver
+(drivers/scsi/sg.c) over iSCSI (drivers/scsi/iscsi_tcp.c).  I don't see
+any mention of zero copy in iscsi_tcp.c.
 
-Ack, I haven't looked at the AI reivew TBH.
-As usual with known AI flags - should the explanation be part=20
-of the commit message?
+Tony
+
