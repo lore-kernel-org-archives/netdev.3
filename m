@@ -1,127 +1,98 @@
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8B33ACA5B
-	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 18:00:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599E5169AD2
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 18:08:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773079215; cv=none; b=JT+C4VlkmqLnsbaxnudyBqjq1rj7mXdKdeiWEAGczBG1sozXS01BLjVOq9+Q+Kch0/rDn9hzC4qM6nvR+B0T1cIdI+Kg5eOd7f1Zg/nPiafypcz3XtH4TqFMGx1OPsTUng5aRWZLkMi8ashn+LaTodJrLOGpYwBXJ6UqH3vWAxE=
+	t=1773079702; cv=none; b=D1ZzCutcGgkvqIFyzidg63KdZ6DaQgIoC88KYHIqVOm9QlxSBI5+I+dA1shBjiiD+bhf3eYNzEKX1rjLi3IjAYrJwxh38LVYmInw/IdpTTdC4n5+7fpwCky0fL9QsYQvR2wwLtoQPLJl6Twg6lHhMJc65MMVUPkn2lYQokR1XoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773079215; c=relaxed/simple;
-	bh=F3drlmrtmgypJmAyZsCGu+W7xIZaAJlnNGXhGVtzb24=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=tM5AiaV+E3c4Lj4x0W9zuuFhbhTglw0pXaO1Q8qdj8N5ZyTJH9ls85AVswjZFF3p6iDlmrTEFFa6MZstgGZYoC4G11pWqLGA9gCmKkle5y3l6JN3+06bApCXZ1TERFy5l6KgWo7N6DuNh42rdOFGDlLBmQDpqzt1tthnhyPcric=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=gduvc8dn; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
+	s=arc-20240116; t=1773079702; c=relaxed/simple;
+	bh=pHXO8GZNKzWHHjS11uVUoeVDBKj6DMaEjf7vf7shg1k=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=DbKCFWus/gi8KMCvec/av5YomCY8wT5keqaG5ih+b3uu3UDmU4J8fjA/zrMgb7YGDNnCaK4ljbn9ipfaDBsFIk/LariaKIvbx2U1/Hvcl8eaTMxymdSiXgcGbDEbgARqSZm9luJnZGue4lpvlCH31vX1jf9W9eVBvjZOAHX7/AY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aYkwAkM5; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--kuniyu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="gduvc8dn"
-Authentication-Results: dilbert.mork.no;
-	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=gduvc8dn;
-	dkim-atps=neutral
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10e2:d900:0:0:0:1])
-	(authenticated bits=0)
-	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 629HkdRw3567357
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Mon, 9 Mar 2026 17:46:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1773078399; bh=N6j9M5xHDNeHmrOAnX/HemDgg7iRf++X9IZrr0coNIE=;
-	h=From:To:Cc:Subject:References:Date:Message-ID:From;
-	b=gduvc8dnAZv9fn+ydQPZR9KKWI0BXKp+u0sOq6JpjEhJ8CL8xRSMTJEp3FeOYyxd+
-	 NG9Q67G/0G13F5bBsR4TAG1tYKiedrjEiBirf2BQJeCKHnIMEKqgrBX/8rqst9GmlT
-	 JpLxG/dlmhB9NSZ0HdrbYYw9/Gl1TYvs9TG4I+S4=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10e2:d90a:6f50:7559:681d:630c])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 629HkdAJ117497
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Mon, 9 Mar 2026 18:46:39 +0100
-Received: (nullmailer pid 649465 invoked by uid 1000);
-	Mon, 09 Mar 2026 17:46:39 -0000
-From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To: Oliver Neukum <oneukum@suse.com>
-Cc: andrew@lunn.ch, netdev@vger.kernel.org
-Subject: Re: [RFCv5 05/13] net: usb: use accessor helper for usbnet private
- data
-In-Reply-To: <20260309165614.861929-5-oneukum@suse.com> (Oliver Neukum's
-	message of "Mon, 9 Mar 2026 17:53:28 +0100")
-Organization: m
-References: <20260309165614.861929-1-oneukum@suse.com>
-	<20260309165614.861929-5-oneukum@suse.com>
-Date: Mon, 09 Mar 2026 18:46:39 +0100
-Message-ID: <87y0k0q4jk.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aYkwAkM5"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-b630753cc38so54000986a12.1
+        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 11:08:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773079701; x=1773684501; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SSvyxLEWYpsT1FmHWkL0pWV32hlYY8paSDx6+V25IME=;
+        b=aYkwAkM5+Nx5iMhDrmprZTN76uaMogt3prRW6w4YHgpxhxafIlpVm69utC8DUf3RY6
+         bxC2gSA7uYPOq9gjin1d6UaO98leAW5nUTKNXzCGTT8CNMEdGNdAbzlp6pFuAg4pJRjZ
+         M4V1wQ0q6NLNR3zpwNjPygyV/7njf0JQ7X+zSv2qj6UBJVV7HugTpKjq/p9SYCgSgcMZ
+         cgbCQtQIG4a12M5NjjS27N7hZFHaAtBGhdpfObbUSXHTA9JHAlokxEQH1UYfSIxWfXzu
+         3GbOaxetg+2NfQcqfdPaSmTefH4riBp8cj/krPkBRmAbbB5eQ3NyFu/YNaZKb7ojYyfx
+         Ctpg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773079701; x=1773684501;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SSvyxLEWYpsT1FmHWkL0pWV32hlYY8paSDx6+V25IME=;
+        b=MjVT2uMzMECnUGCSPhFMKfXz6Nk4VzEU4wtSRn834mLSR9PsXEytLOSqAI6Ps3hPf+
+         aUGkLbEMV5ss5VHZKeOcuZz7eN+uwN795RL1mvJPnFl7tjzJpEGpF1/xXKEm4iJLsY5/
+         0BBKU7JoljUO/lgkq1jOnfxRYSqesy9F4GzQSLTMqSsGC8GNQsxo8arfCp3YlCtCWnT3
+         mELUIGgT8CPijEmLTk7ERgPEWQ3QvO+wQIDLOS33f/0FkqCLxYKiBTA5tgg665mXGlRj
+         +CVlzQ43vxVRHK0tSZsx1AbHs2gbwBsTqfOSqJ2CwfVv+wYBQkuY2Hk3ECiBGUUgvjLC
+         8sGw==
+X-Forwarded-Encrypted: i=1; AJvYcCVbLXvrvDGQqIhv4aVfs1cvPRcEJUV4QjQ7/SEMUnO93A4Xala6BbN4ooi54/i2yHs2xbI0GbQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzboSYrmQ0tFzf9/dTKh5r0zKFzXEPiXSowZJBT2yL12F+1LkBl
+	vUS9t097Nf/eYoM4aD3d/kojxPCKivn+87yH+i+eMAm2wUnjQ7CilTkoehyFlhLdY9186ROLYsO
+	RBgeTYA==
+X-Received: from pfbjr8.prod.google.com ([2002:a05:6a00:9148:b0:7f4:e7a0:9b05])
+ (user=kuniyu job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b53:b0:829:8bb4:1030
+ with SMTP id d2e1a72fcca58-829a2eaa5c1mr11138096b3a.42.1773079700462; Mon, 09
+ Mar 2026 11:08:20 -0700 (PDT)
+Date: Mon,  9 Mar 2026 18:06:47 +0000
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 1.4.3 at canardo.mork.no
-X-Virus-Status: Clean
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.53.0.473.g4a7958ca14-goog
+Message-ID: <20260309180804.3471287-1-kuniyu@google.com>
+Subject: [PATCH v3 net 0/2] ipv6: Fix two GC issues with permanent routes.
+From: Kuniyuki Iwashima <kuniyu@google.com>
+To: David Ahern <dsahern@kernel.org>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>
+Cc: Kui-Feng Lee <thinker.li@gmail.com>, Xin Long <lucien.xin@gmail.com>, 
+	Simon Horman <horms@kernel.org>, Kuniyuki Iwashima <kuniyu@google.com>, 
+	Kuniyuki Iwashima <kuni1840@gmail.com>, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-Oliver Neukum <oneukum@suse.com> writes:
+Patch 1 fixes the unbounded growth of tb6_gc_hlist due to
+permanent routes whose exception routes have all expired.
 
-> diff --git a/drivers/net/usb/cdc_mbim.c b/drivers/net/usb/cdc_mbim.c
-> index dbf01210b0e7..5522dc137d45 100644
-> --- a/drivers/net/usb/cdc_mbim.c
-> +++ b/drivers/net/usb/cdc_mbim.c
-> @@ -43,7 +43,7 @@ enum cdc_mbim_flags {
->  /* using a counter to merge subdriver requests with our own into a combi=
-ned state */
->  static int cdc_mbim_manage_power(struct usbnet *dev, int on)
->  {
-> -	struct cdc_mbim_state *info =3D (void *)&dev->data;
-> +	struct cdc_mbim_state *info =3D usbnet_priv(dev);
->  	int rv =3D 0;
->=20=20
->  	dev_dbg(&dev->intf->dev, "%s() pmcount=3D%d, on=3D%d\n", __func__, atom=
-ic_read(&info->pmcount), on);
+Patch 2 fixes an issue where exception routes tied to
+permanent routes are not properly aged.
 
 
-I'm not sure I'm following all the conversions, but you are aware that
-cdc_mbim and cdc_ncm share a few functions struct cdc_ncm_ctx state, the
-and therefore have to cooperate wrt the private data layout?
+Changes:
+  v3:
+    Patch 2: Use IS_ENABLED()
 
-The 'struct cdc_mbim_state' has a ctx field which is supposed to be
-managed by the cdc_ncm part of the driver:
+  v2: https://lore.kernel.org/netdev/20260308032304.1841198-1-kuniyu@google.com/
+    Patch 2: Fix build failure when CONFIG_IPV6=n (no net->ipv6 definition)
 
-struct cdc_mbim_state {
-	struct cdc_ncm_ctx *ctx;
-	atomic_t pmcount;
-	struct usb_driver *subdriver;
-	unsigned long _unused;
-	unsigned long flags;
-};
-
-The cdc_mbim driver currently depends on cdc_ncm_bind_common(), which is
-called from cdc_mbim_bind(), to allocate the 'struct cdc_ncm_ctx' data.
-It will later call other functions, like cdc_ncm_fill_tx_frame(), which
-depend on that 'struct cdc_ncm_ctx *ctx' field.
-
-I don't understand how you make the patch above work in cooperation with
-this:
+  v1: https://lore.kernel.org/netdev/20260307024709.718395-1-kuniyu@google.com/
 
 
-@@ -1203,7 +1187,7 @@ static struct usb_cdc_ncm_ndp32 *cdc_ncm_ndp32(struct=
- cdc_ncm_ctx *ctx, struct s
- struct sk_buff *
- cdc_ncm_fill_tx_frame(struct usbnet *dev, struct sk_buff *skb, __le32 sign)
- {
--	struct cdc_ncm_ctx *ctx =3D (struct cdc_ncm_ctx *)dev->data[0];
-+	struct cdc_ncm_ctx *ctx =3D usbnet_priv(dev);
- 	union {
- 		struct usb_cdc_ncm_nth16 *nth16;
- 		struct usb_cdc_ncm_nth32 *nth32;
+Kuniyuki Iwashima (2):
+  ipv6: Remove permanent routes from tb6_gc_hlist when all exceptions
+    expire.
+  ipv6: Don't remove permanent routes with exceptions from tb6_gc_hlist.
 
+ include/net/ip6_fib.h | 19 ++++++++++++++++++-
+ net/ipv6/addrconf.c   |  4 ++--
+ net/ipv6/ip6_fib.c    | 15 +++++++++++++--
+ net/ipv6/route.c      |  2 +-
+ 4 files changed, 34 insertions(+), 6 deletions(-)
 
-Looks like the cdc_mbim driver will use the same usbnet_priv(dev) as
-both 'struct cdc_ncm_ctx' and 'struct cdc_mbim_state'.
+-- 
+2.53.0.473.g4a7958ca14-goog
 
-Yes, I know this too magic, and should be rewritten on so many levels.
-But it is what it is.
-
-
-
-Bj=C3=B8rn
