@@ -1,43 +1,43 @@
 Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A467D39A80D;
-	Mon,  9 Mar 2026 11:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA12839A7E6;
+	Mon,  9 Mar 2026 11:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773055262; cv=none; b=OguxEZ6TdUVIVidYiiiRWf/Pv4ddUm1jT/ExINx4nPxVFUDbYckDH7br6H6cQBZGPAdqUYSI7W4J6C74pXHcxDTDsWdJcmJ14Qy0xa7sznlxdasLAZoP3IULyw9fbFfLZtKkAuM85q8HtHEO72qaPYeD0WDrjgzASETskX1CjE4=
+	t=1773055269; cv=none; b=dIZSn4KxdTF9LtZNJoIBXcvdCZLK9nADfI5M21DnNpSx18bgoDARYiNja6sKN+gMjBcHjrgM26+6j4iV68+sDPbsPKrXbFWrIpIEzUtbks1K6SAxd0o7sVo7psov2ciHolZFKwwt4UIlx1853qaXZi0D8az/NrBlgaIM3hK/rls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773055262; c=relaxed/simple;
-	bh=oKFyYHf/aoPiF8JZnPguTIS9nvmksyJppn7rLrNzCnI=;
+	s=arc-20240116; t=1773055269; c=relaxed/simple;
+	bh=YMx4dpaIthI+hElQaLsUncOD1fenREc6IuXMweNhG2A=;
 	h=In-Reply-To:References:From:To:Cc:Subject:MIME-Version:
-	 Content-Disposition:Content-Type:Message-Id:Date; b=PQ3gftvhQ3LsmxkwYDtxJuUIY8GPMJT2Ed74mfDpPb5fN2jdzeC8tvxPa8k0pep/2Bk0xPVskCE3iEx/8egJpMkEAi9SXd+OboiOC9Q3ZXoCbVX28tezCEzaeU8DMIKmX1MrgDC9Ehwp9AdCC3CrzW4teRgteFATi8x5g3TtWeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=E54wk/Vf; arc=none smtp.client-ip=78.32.30.218
+	 Content-Disposition:Content-Type:Message-Id:Date; b=MRCwBuXaxCNMG478JZjWQtTlJw007yN7SXRQKZGKZFP3WxG8A5m5Z6KUUX4hnmflzdPVdFJNlLOdrV9PVkg/zE+YeL64CGJRz1QEP6hKDreyDlOV7bXNBmCE7AgEfW0qu6uThBZZeTMJlGvAJFOL+j80gZayPT61u+i3oKf6MBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=Fp7pDA/q; arc=none smtp.client-ip=78.32.30.218
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="E54wk/Vf"
+	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="Fp7pDA/q"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=armlinux.org.uk; s=pandora-2019; h=Date:Sender:Message-Id:Content-Type:
 	Content-Transfer-Encoding:MIME-Version:Subject:Cc:To:From:References:
 	In-Reply-To:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
 	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=4Gy9w1lMcCKC9bnL1+CEjLmpiBafBvfVDB4ZfurXfK8=; b=E54wk/Vfw0r34vV19xxyTbdBIh
-	I3aSfhzbQcnBMJZ3HV6wFJd4NhUB6CBUGtEYrLWqLt1YXpp5LgZFqZdnXmrAPw1SOIzY5Vtd+7Dxn
-	t7l28k7+Ao4aygIqkIk80Z0QRC37+BS288NTXGg6BpxYi74mOXQIgpxm+gHCAZCONOWHIUKfh/orB
-	D1KYL+g+n+ihNfXo9zgGp3uQ175BEfhvqgTvoSqtaH8PB5PrwYM3L8urkgT0v11HXIhPhEZD5hHMd
-	yhWVOWj1rxp38trFKRiz+v0P21dk9WI+pBlUJmqyNfTwPb/Q2SB9Eb3kBWu04wmzHWu6JkIPV7Eys
-	Ek/s5Drw==;
-Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:35272 helo=rmk-PC.armlinux.org.uk)
+	bh=3109av5iM3O+VA2C/sAJJXqcf6yd9RkTWGdUatYtVu4=; b=Fp7pDA/qClwIR8LB2NSmsNJQyA
+	KmjbMwkeLbYWZkP8UReXNSA8t06PM1I9gwWIlfAt4emBYsgwSfLpip8Q+UB23/GoHbNIp3CgiE21b
+	QrhAnvHB9yU8tECJ/4UFLrREZZwvOrK8FFIKS8p9nMuCe1nGBAXvi34MfV8/FyltuiDi/0SKKgV2Q
+	zaHEE3V6hCi1Z6Hq/L1327RIh4e8VSKflUbqvuHu7LkPGKKRDmYPDuQhR/sMb1Xzk8lDAgWbmVPJa
+	x97IJr359cqjym5Qkq1660j1SUJuUIIArqXFdzTPgSjqq7EmTQ2A6SrhGftD+A9FF6XZAWbuDywhA
+	iHrY6JuQ==;
+Received: from e0022681537dd.dyn.armlinux.org.uk ([fd8f:7570:feb6:1:222:68ff:fe15:37dd]:35288 helo=rmk-PC.armlinux.org.uk)
 	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <rmk@armlinux.org.uk>)
-	id 1vzYfP-000000003h4-0719;
-	Mon, 09 Mar 2026 11:20:55 +0000
+	id 1vzYfT-000000003hM-1ToA;
+	Mon, 09 Mar 2026 11:20:59 +0000
 Received: from rmk by rmk-PC.armlinux.org.uk with local (Exim 4.98.2)
 	(envelope-from <rmk@rmk-PC.armlinux.org.uk>)
-	id 1vzYfM-0000000CZz0-3HXq;
-	Mon, 09 Mar 2026 11:20:52 +0000
+	id 1vzYfR-0000000CZz6-3lVI;
+	Mon, 09 Mar 2026 11:20:57 +0000
 In-Reply-To: <aa6sofjFxyi2nkpr@shell.armlinux.org.uk>
 References: <aa6sofjFxyi2nkpr@shell.armlinux.org.uk>
 From: "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
@@ -53,8 +53,8 @@ Cc: Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>,
 	netdev@vger.kernel.org,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH RFC net-next v3 6/8] net: stmmac: qcom-ethqos: enable inband
- mode for SGMII
+Subject: [PATCH RFC net-next v3 7/8] net: stmmac: configure SGMII AN control
+ according to phylink
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -64,34 +64,72 @@ MIME-Version: 1.0
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="utf-8"
-Message-Id: <E1vzYfM-0000000CZz0-3HXq@rmk-PC.armlinux.org.uk>
+Message-Id: <E1vzYfR-0000000CZz6-3lVI@rmk-PC.armlinux.org.uk>
 Sender: Russell King <rmk@armlinux.org.uk>
-Date: Mon, 09 Mar 2026 11:20:52 +0000
+Date: Mon, 09 Mar 2026 11:20:57 +0000
 
-qcom-ethqos is manually enabling the PCS ANE bit for SGMII modes while
-phylink remains in outband mode. With support for SGMII inband mode now
-supported by the stmmac PCS code, switch phylink to use inband mode for
-SGMII. Phylink will switch back to outband mode for 2500BASE-X since the
-PCS code reports no BASE-X AN support.
+Provide phylink with the integrated PCS autonegotiation capabilities,
+and configure the PCS's AN settings according to phylink's requested
+requirements.
+
+This may cause regressions.
 
 Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 ---
- drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../net/ethernet/stmicro/stmmac/stmmac_pcs.c  | 24 +++++++++++++------
+ 1 file changed, 17 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-index f4b63544895e..1f38e4ee0195 100644
---- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
-@@ -831,6 +831,8 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
- 		plat_dat->flags |= STMMAC_FLAG_SERDES_SUPPORTS_2500M;
- 	}
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
+index 5dbb8fd41099..c56765b5aea4 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_pcs.c
+@@ -32,6 +32,9 @@ static unsigned int dwmac_integrated_pcs_inband_caps(struct phylink_pcs *pcs,
+ 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
+ 	unsigned int ib_caps;
  
-+	plat_dat->mdio_bus_data->default_an_inband = true;
++	if (interface == PHY_INTERFACE_MODE_SGMII)
++		return LINK_INBAND_ENABLE | LINK_INBAND_DISABLE;
 +
- 	/* Enable TSO on queue0 and enable TBS on rest of the queues */
- 	for (i = 1; i < plat_dat->tx_queues_to_use; i++)
- 		plat_dat->tx_queues_cfg[i].tbs_en = 1;
+ 	if (phy_interface_mode_is_8023z(interface)) {
+ 		ib_caps = LINK_INBAND_DISABLE;
+ 
+@@ -135,22 +138,29 @@ static int dwmac_integrated_pcs_config(struct phylink_pcs *pcs,
+ 				       bool permit_pause_to_mac)
+ {
+ 	struct stmmac_pcs *spcs = phylink_pcs_to_stmmac_pcs(pcs);
+-	bool changed = false, ane = true;
++	void __iomem *an_control = spcs->base + GMAC_AN_CTRL(0);
++	bool ane, changed = false;
++	u32 ctrl;
++
++	ane = neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED;
+ 
+ 	/* Only configure the advertisement and allow AN in BASE-X mode if
+ 	 * the core supports TBI/RTBI. AN will be filtered out by via phylink
+ 	 * and the .pcs_inband_caps() method above.
+ 	 */
+ 	if (phy_interface_mode_is_8023z(interface) &&
+-	    spcs->support_tbi_rtbi) {
+-		ane = neg_mode == PHYLINK_PCS_NEG_INBAND_ENABLED;
+-
++	    spcs->support_tbi_rtbi)
+ 		changed = dwmac_integrated_pcs_config_aneg(spcs, interface,
+ 							   advertising);
+-	}
+ 
+-	dwmac_ctrl_ane(spcs->base, 0, ane,
+-		       spcs->priv->hw->reverse_sgmii_enable);
++	ctrl = readl(an_control) & ~(GMAC_AN_CTRL_ANE | GMAC_AN_CTRL_SGMRAL);
++	if (spcs->priv->hw->reverse_sgmii_enable)
++		ctrl |= GMAC_AN_CTRL_SGMRAL | GMAC_AN_CTRL_ANE;
++	else if (ane)
++		ctrl |= GMAC_AN_CTRL_ANE;
++	else
++		ctrl |= GMAC_AN_CTRL_SGMRAL;
++	writel(ctrl, an_control);
+ 
+ 	return changed;
+ }
 -- 
 2.47.3
 
