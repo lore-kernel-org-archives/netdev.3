@@ -1,146 +1,170 @@
-Received: from mail-43167.protonmail.ch (mail-43167.protonmail.ch [185.70.43.167])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBD026AE5
-	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 17:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.167
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88DC03E95B6;
+	Mon,  9 Mar 2026 17:55:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773078646; cv=none; b=C8okMZolq28gHP4hBU9vgOSZ8SXgQp17zuiCFpcaVj18K553hBElqjfa147iPXW0HETeNsFU+kyYq82YhAKeyOc4EU9otJeq879MKOOREiWuWLIYZKFFCfeYLmPG0NJVrOmvjoTkkaq0Byo350IRRBGgjJO6v7VrZr2fyPMfYwc=
+	t=1773078936; cv=none; b=ujJGKbvXeyQfYQDINKwu6et6p2vY6j/PvzPa3KKY85Bqd44VdxE6XAgOmIldnTs6EM9TYy3bgt8y4CllnOgsQTDcKpufzYIIekTGclMfHd3bZvJaSH0XUkG0sMluTYV6krcbf446BrLdfuvIyUIvuNCyDYNNziT36JdiCd6S4x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773078646; c=relaxed/simple;
-	bh=VshT7Vq3c5zGynCinrsS3vb7XLVkUIJLBqUJR7attjc=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=UKBo+Zx4Jekr+6w+8cb5lfvaHQTXzwgilDLS1SdcGgNi26Y+dF/XXZScyBdLqWkg8c8SScrNkaK8R4lkkZrO4I4IXinLOaB9ocv2kldA1Ys1JlFwtnf+Rux2qA50baiRqCdIzh+rGr5yBT43SOYohc7znVWwKKPjIa46IaE7wcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=c5jLyZz7; arc=none smtp.client-ip=185.70.43.167
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1773078936; c=relaxed/simple;
+	bh=tVDFFZNNq+3cx8vwsO+uDpr3OUAYyGNXUn5yFrn4B/A=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=dhMXAP4Yi73vOZBd2ZQQG4nGmlCFewkj8PRpYpUJhldLsCE1H71lIONTl6e7dBh7eJhHeTiDynZr4rVrgQIiLfCMUdsny/C+X7a2jGf9Ic54mAyFHwBjOwoaBRnYtYm9Qbo3Ob/5Ecp4xN/LZparWMsWywoVu0hl5Egs8+T5R9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n0FYS2z7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="c5jLyZz7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1773078635; x=1773337835;
-	bh=9griTMnJyaBpxwmATvAiBepoJAgeJ3ngdZVcHM4W3fA=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=c5jLyZz7GkFMnnlYFTYt+f+nFXDjVf/cFr4YCSWmFh903CvXPjmaNeW9wtsmFeHSZ
-	 ER6RWNVbJZeo3Cp/jZ5jMT12PBUXpBCPk0L2/ZXJLwsifKdqcpC6/hlZzfuSKM9eY2
-	 tzfbeZREpxVHB3xDpIJctP8AisYUr3CWUGkTTMLYGribo0cZTadaON2it79zVxPnse
-	 uo3SAsJVYBC14awpkUegfxxtWz5/z2cXeQhicadOnyaZT2Kf0z3/LQah+DcqW32QOu
-	 Ua8jYqsZypu/QIsN+QuCny7UnMgP8p+M42H9B1YtOaT6Qpkid//kdPehibUoH16ThL
-	 G9P8nCjhz1G0A==
-Date: Mon, 09 Mar 2026 17:50:31 +0000
-To: "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-From: Sachin Kumar <xcyfun@protonmail.com>
-Cc: "daniel@iogearbox.net" <daniel@iogearbox.net>, "ast@kernel.org" <ast@kernel.org>, "andrii@kernel.org" <andrii@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "jolsa@kernel.org" <jolsa@kernel.org>, "haoluo@google.com" <haoluo@google.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>, "john.fastabend@gmail.com" <john.fastabend@gmail.com>, "martin.lau@linux.dev" <martin.lau@linux.dev>, "song@kernel.org" <song@kernel.org>, "yonghong.song@linux.dev" <yonghong.song@linux.dev>, "eddyz87@gmail.com" <eddyz87@gmail.com>, "sdf@fomichev.me" <sdf@fomichev.me>, "puranjay@kernel.org" <puranjay@kernel.org>, "emil@etsalapatis.com" <emil@etsalapatis.com>
-Subject: [PATCH bpf v3] bpf: fix constant blinding bypass for PROBE_MEM32 stores
-Message-ID: <S17sb-p71I59mreLZe4X_OOMw-HYrBr5vgnqwkKot5DN69iGriLx77wet16-_Hy7FHXKoCPwjc0zAy3G7o1C0A3amEpSPwVStZOF7x9qaig=@protonmail.com>
-Feedback-ID: 42070492:user:proton
-X-Pm-Message-ID: 194f8e61108226c429f71594d66a8adb7671cdbc
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n0FYS2z7"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 412FDC2BC87;
+	Mon,  9 Mar 2026 17:55:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773078936;
+	bh=tVDFFZNNq+3cx8vwsO+uDpr3OUAYyGNXUn5yFrn4B/A=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=n0FYS2z7jiGBg4DOJZ7LSyxEMh4sKKlt7ejVuuvb8VXwm222dPC99FjS3G9aL27gU
+	 lYAJkcT2Z9RyX0YEgi70fK8SfD0uQ2ox4HHPWBswMiNlVTSfdmUsYk16EwXE4FKqlJ
+	 HZLlJaIHrtqtAojq4LBrikrkNKu/l31VnbZ23Vxs1XZqiGo+R7jFnkIP+DOwMqdC1B
+	 PSKAPCV9gMbZGyYssIAMWzER13+BdkiFuk2a5B7nv1DbdSxAIUvJWPPbK5fO44euSC
+	 /ABITc5Li0dPeBhxSo9ZzzgHvv7lRp/6i18hlD86ocU6nWkj9XCeG4HXH3fCuKhini
+	 7D94T7HlDK5Cg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 385C2FCA173;
+	Mon,  9 Mar 2026 17:55:36 +0000 (UTC)
+From: Jan Petrous via B4 Relay <devnull+jan.petrous.oss.nxp.com@kernel.org>
+Date: Mon, 09 Mar 2026 18:55:23 +0100
+Subject: [PATCH v8 4/5] dt-bindings: net: nxp,s32-dwmac: Declare per-queue
+ interrupts
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha512; boundary="------a5267023e7a579fcb78ee15134eb3219a56b5c271ca989a81a542099508d204a"; charset=utf-8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260309-dwmac_multi_irq-v8-4-f0cc5bc811a7@oss.nxp.com>
+References: <20260309-dwmac_multi_irq-v8-0-f0cc5bc811a7@oss.nxp.com>
+In-Reply-To: <20260309-dwmac_multi_irq-v8-0-f0cc5bc811a7@oss.nxp.com>
+To: Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Chester Lin <chester62515@gmail.com>, Matthias Brugger <mbrugger@suse.com>, 
+ Ghennadi Procopciuc <ghennadi.procopciuc@oss.nxp.com>, 
+ NXP S32 Linux Team <s32@nxp.com>, Shawn Guo <shawnguo@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Fabio Estevam <festevam@gmail.com>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Frank Li <Frank.Li@nxp.com>
+Cc: netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ imx@lists.linux.dev, devicetree@vger.kernel.org, rmk+kernel@armlinux.org.uk, 
+ vladimir.oltean@nxp.com, boon.khai.ng@altera.com, 
+ "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773078934; l=3455;
+ i=jan.petrous@oss.nxp.com; s=20240922; h=from:subject:message-id;
+ bh=Ulgz8SoBFJZWXNyBqoPUpgpX/c4gObaapFU2nTXzIJo=;
+ b=ergnlc+wxNhdFd9fZAaVc89ycrqccTBtO+1Fv3e7Lq+1bN5IceECAGwLw26cK3xmGS7ggv8sC
+ iXraSEw3XS3CwNqXm6V86D1O/JaLuthvSIkWM66/8W6KfSBCbc17rwL
+X-Developer-Key: i=jan.petrous@oss.nxp.com; a=ed25519;
+ pk=Ke3wwK7rb2Me9UQRf6vR8AsfJZfhTyoDaxkUCqmSWYY=
+X-Endpoint-Received: by B4 Relay for jan.petrous@oss.nxp.com/20240922 with
+ auth_id=217
+X-Original-From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
+Reply-To: jan.petrous@oss.nxp.com
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------a5267023e7a579fcb78ee15134eb3219a56b5c271ca989a81a542099508d204a
-Content-Type: multipart/mixed;boundary=---------------------c6870ddadfc9ab00f0b0b3e6ffacd203
+From: "Jan Petrous (OSS)" <jan.petrous@oss.nxp.com>
 
------------------------c6870ddadfc9ab00f0b0b3e6ffacd203
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;charset=utf-8
+The DWMAC IP on NXP S32G/R SoCs has connected queue-based IRQ lines,
+set them to allow using Multi-IRQ mode.
 
-BPF_ST | BPF_PROBE_MEM32 immediate stores are not handled by
-bpf_jit_blind_insn(), allowing user-controlled 32-bit immediates to
-survive unblinded into JIT-compiled native code when bpf_jit_harden >=3D 1=
-.
-
-The root cause is that convert_ctx_accesses() rewrites BPF_ST|BPF_MEM
-to BPF_ST|BPF_PROBE_MEM32 for arena pointer stores during verification,
-before bpf_jit_blind_constants() runs during JIT compilation. The
-blinding switch only matches BPF_ST|BPF_MEM (mode 0x60), not
-BPF_ST|BPF_PROBE_MEM32 (mode 0xa0). The instruction falls through
-unblinded.
-
-Add BPF_ST|BPF_PROBE_MEM32 cases to bpf_jit_blind_insn() alongside the
-existing BPF_ST|BPF_MEM cases. The blinding transformation is identical:
-load the blinded immediate into BPF_REG_AX via mov+xor, then convert
-the immediate store to a register store (BPF_STX).
-
-The rewritten STX instruction must preserve the BPF_PROBE_MEM32 mode so
-the architecture JIT emits the correct arena addressing (R12-based on
-x86-64). Cannot use the BPF_STX_MEM() macro here because it hardcodes
-BPF_MEM mode; construct the instruction directly instead.
-
-Fixes: 6082b6c328b5 ("bpf: Recognize addr_space_cast instruction in the ve=
-rifier.")
-Reviewed-by: Puranjay Mohan <puranjay@kernel.org>
-Reviewed-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Sachin Kumar <xcyfun@protonmail.com>
+Reviewed-by: Matthias Brugger <mbrugger@suse.com>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Signed-off-by: Jan Petrous (OSS) <jan.petrous@oss.nxp.com>
 ---
-v3: Use legal name in Signed-off-by per DCO requirement.
-    Fix block comment style (trailing */ on separate line).
-    Added Reviewed-by tags. CC all maintainers.
-v2: Rebased onto current bpf tree (commit 56145d237385).
-    v1 had a malformed diff header that caused CI to reject it.
----
- kernel/bpf/core.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ .../devicetree/bindings/net/nxp,s32-dwmac.yaml     | 44 +++++++++++++++++++---
+ 1 file changed, 39 insertions(+), 5 deletions(-)
 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index 3ece2da55..bb2fa75de 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -1422,6 +1422,25 @@ static int bpf_jit_blind_insn(const struct bpf_insn=
- *from,
- 		*to++ =3D BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
- 		*to++ =3D BPF_STX_MEM(from->code, from->dst_reg, BPF_REG_AX, from->off)=
-;
- 		break;
-+
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_DW:
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_W:
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_H:
-+	case BPF_ST | BPF_PROBE_MEM32 | BPF_B:
-+		*to++ =3D BPF_ALU64_IMM(BPF_MOV, BPF_REG_AX,
-+				      imm_rnd ^ from->imm);
-+		*to++ =3D BPF_ALU64_IMM(BPF_XOR, BPF_REG_AX, imm_rnd);
-+		/*
-+		 * Cannot use BPF_STX_MEM() macro here as it
-+		 * hardcodes BPF_MEM mode, losing PROBE_MEM32
-+		 * and breaking arena addressing in the JIT.
-+		 */
-+		*to++ =3D (struct bpf_insn) {
-+			.code  =3D BPF_STX | BPF_PROBE_MEM32 |
-+				 BPF_SIZE(from->code),
-+			.dst_reg =3D from->dst_reg,
-+			.src_reg =3D BPF_REG_AX,
-+			.off   =3D from->off,
-+		};
-+		break;
- 	}
- out:
- 	return to - to_buff;
---
-2.53.0
------------------------c6870ddadfc9ab00f0b0b3e6ffacd203--
+diff --git a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+index 1b2934f3c87c..3a0e41b63c3d 100644
+--- a/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
++++ b/Documentation/devicetree/bindings/net/nxp,s32-dwmac.yaml
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+-# Copyright 2021-2024 NXP
++# Copyright 2021-2026 NXP
+ %YAML 1.2
+ ---
+ $id: http://devicetree.org/schemas/net/nxp,s32-dwmac.yaml#
+@@ -16,6 +16,8 @@ description:
+   the SoC S32R45 has two instances. The devices can use RGMII/RMII/MII
+   interface over Pinctrl device or the output can be routed
+   to the embedded SerDes for SGMII connectivity.
++  The DWMAC instances have connected all RX/TX queues interrupts,
++  enabling load balancing of data traffic across all CPU cores.
+ 
+ properties:
+   compatible:
+@@ -45,10 +47,22 @@ properties:
+       FlexTimer Modules connect to GMAC_0.
+ 
+   interrupts:
+-    maxItems: 1
++    minItems: 11
++    maxItems: 11
+ 
+   interrupt-names:
+-    const: macirq
++    items:
++      - const: macirq
++      - const: tx-queue-0
++      - const: rx-queue-0
++      - const: tx-queue-1
++      - const: rx-queue-1
++      - const: tx-queue-2
++      - const: rx-queue-2
++      - const: tx-queue-3
++      - const: rx-queue-3
++      - const: tx-queue-4
++      - const: rx-queue-4
+ 
+   clocks:
+     items:
+@@ -88,8 +102,28 @@ examples:
+               <0x0 0x4007c004 0x0 0x4>;    /* GMAC_0_CTRL_STS */
+         nxp,phy-sel = <&gpr 0x4>;
+         interrupt-parent = <&gic>;
+-        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>;
+-        interrupt-names = "macirq";
++        interrupts = <GIC_SPI 57 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 0: tx, rx */
++                     <GIC_SPI 58 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 59 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 1: tx, rx */
++                     <GIC_SPI 60 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 61 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 2: tx, rx */
++                     <GIC_SPI 62 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 63 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 3: tx, rx */
++                     <GIC_SPI 64 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 65 IRQ_TYPE_LEVEL_HIGH>,
++                     /* CHN 4: tx, rx */
++                     <GIC_SPI 66 IRQ_TYPE_LEVEL_HIGH>,
++                     <GIC_SPI 67 IRQ_TYPE_LEVEL_HIGH>;
++        interrupt-names = "macirq",
++                          "tx-queue-0", "rx-queue-0",
++                          "tx-queue-1", "rx-queue-1",
++                          "tx-queue-2", "rx-queue-2",
++                          "tx-queue-3", "rx-queue-3",
++                          "tx-queue-4", "rx-queue-4";
+         snps,mtl-rx-config = <&mtl_rx_setup>;
+         snps,mtl-tx-config = <&mtl_tx_setup>;
+         clocks = <&clks 24>, <&clks 17>, <&clks 16>, <&clks 15>;
 
---------a5267023e7a579fcb78ee15134eb3219a56b5c271ca989a81a542099508d204a
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
+-- 
+2.47.0
 
------BEGIN PGP SIGNATURE-----
-Version: ProtonMail
-
-wroEARYKAG0FgmmvCFgJEDdFhOkF7h23RRQAAAAAABwAIHNhbHRAbm90YXRp
-b25zLm9wZW5wZ3Bqcy5vcmedqL3CgZ4ZUEXfoY6eDqehB1/GCnBVpLeLq1mU
-zoJMBhYhBDNZauekw/1HTib39jdFhOkF7h23AAD1KAD/RDgb+FMiAUZ5/pwF
-fjmEBBAzTfGjYBUg6ro2yAYXjQwA+NjoGO2hYnjb9nk/DX1g/5Jg9nzCFiKK
-Upy67eJAmws=
-=XdT+
------END PGP SIGNATURE-----
-
-
---------a5267023e7a579fcb78ee15134eb3219a56b5c271ca989a81a542099508d204a--
 
