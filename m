@@ -1,197 +1,141 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.virtuozzo.com (relay.virtuozzo.com [130.117.225.111])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567D03D412B
-	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 15:10:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FBD3D9055;
+	Mon,  9 Mar 2026 15:20:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=130.117.225.111
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773069041; cv=none; b=NNOOwjLm3aW/gJ6GPkw5ub3U4BRxCFy+kwQP4o2w9ky6MnxOIXH+bvQMg3n/Pv2MFxvmXKtNkEmGz8csE5h+FDvxyMAZMSM3GLUrKRasW0Oq7AzExUUkTm4ARbRlTAVV7yGLHK4CsrZnIrfXtfpU0JJ8tesC7/GrQWUvq0unoYY=
+	t=1773069639; cv=none; b=kYcQxYKb4/v5nX/t4mInJm04neHB7gD+zNhtvC6vvSnrtlOOBHi/LPXpXqQqZwApF6VclzBM0v9ntowb5lropx4ttQOeb8f4IN13RL8SGrkkmk+jukM5+6QqWtx9GE7IeDASGYO8jAJNIyTP7nwunJloQlVz0eao5X6trW8wHnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773069041; c=relaxed/simple;
-	bh=FJ5QRyc0Mi7LX+9SN/owBTv48MK1EeTX/3eUuCRTMTw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Tp3CJvgqn5Pf5FqGQbJG3A+SdTIKJVyWrt7dqKkI7cE5Rm2NV9gcI3iHw2w25oMqdZ6HRzWp4jiqoxr0N/8vNkN9UPB/S6C8n5cHtknZHdQ4HyQzU+I1rtpHhCCsbMeaPyziXZkzRlyaTr3qeB5zq+3fUtxi3kHCefWPMp1s9II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Vp6uUlqC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hM1kNg2n; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Vp6uUlqC; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hM1kNg2n; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1773069639; c=relaxed/simple;
+	bh=r1R0k+yX9Ms7pIHEWvGqPr7hU9BrJYZBEPB0TBiT+Co=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lLSeu6bTbgQ5LSWGNiiWIpF/EzVUW4L812PjCWNF7HiIUh5onKIR0eNR35BGnbbeoZQ7GskHcBg0hhzmVA1c9PGmB01cYPSJWD330bznrhdW+5efQm6PgLZu2Pv6NclvgEpE21W806wOdc7FMC2aq7YmKhpSvQW/zkNmJTdYC8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=GifeNRD1; arc=none smtp.client-ip=130.117.225.111
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Vp6uUlqC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hM1kNg2n";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Vp6uUlqC";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hM1kNg2n"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id AAF814D231;
-	Mon,  9 Mar 2026 15:10:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773069038; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4Fhwnjjyyy0wyFYIZTD5wvdqT3pYi9L5F9iUpNgbxrc=;
-	b=Vp6uUlqC1LYJS+tncQL7e2PFZGqa5At9PoRDEn19qZOkVEkW8gQaZul6PT8qPCopNn1li8
-	oJ34idPrQnNDWHzxnBlKWzjeUe7YVMGSyZCMXgaeHk/ilLvAckO6zpOF/g3GY9AZe48swj
-	wU0ZyXXT2OUDFADHOQY8TqNyOK2FBMk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773069038;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4Fhwnjjyyy0wyFYIZTD5wvdqT3pYi9L5F9iUpNgbxrc=;
-	b=hM1kNg2nLWMGckaUFoxxPA/IikwK1PzGZ3ZuZON8UpgwgJNMdJKr8BIyvJGuagIz0terUD
-	vIqMWjOpzqFGNpDA==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1773069038; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4Fhwnjjyyy0wyFYIZTD5wvdqT3pYi9L5F9iUpNgbxrc=;
-	b=Vp6uUlqC1LYJS+tncQL7e2PFZGqa5At9PoRDEn19qZOkVEkW8gQaZul6PT8qPCopNn1li8
-	oJ34idPrQnNDWHzxnBlKWzjeUe7YVMGSyZCMXgaeHk/ilLvAckO6zpOF/g3GY9AZe48swj
-	wU0ZyXXT2OUDFADHOQY8TqNyOK2FBMk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1773069038;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4Fhwnjjyyy0wyFYIZTD5wvdqT3pYi9L5F9iUpNgbxrc=;
-	b=hM1kNg2nLWMGckaUFoxxPA/IikwK1PzGZ3ZuZON8UpgwgJNMdJKr8BIyvJGuagIz0terUD
-	vIqMWjOpzqFGNpDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2343B3EF6D;
-	Mon,  9 Mar 2026 15:10:38 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id teXBBO7irmnudAAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Mon, 09 Mar 2026 15:10:38 +0000
-Message-ID: <dc670a8c-1245-4949-bf7f-53e8a1c5070a@suse.de>
-Date: Mon, 9 Mar 2026 16:10:28 +0100
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="GifeNRD1"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=virtuozzo.com; s=relay; h=MIME-Version:Message-ID:Date:Subject:From:
+	Content-Type; bh=Vr7al+iWN+e4tYvS2CbIZPEqTcbsm+V8cnInmH15LVQ=; b=GifeNRD1Q1T8
+	l9ffQIoyLHST0QKW6NZ364fGyV2nyUxDnjMHNEtwy8co9gtCKy/VgoDRFDenF4zk2yyGMS8hP7Gho
+	kroW/RGODzYJPWqH79FYAPUxMnIkCnFBzFxxwMfvZS+U+n2sQ28K+Y9JzYbmjGKpeHY7ljyWBlVJe
+	eiaIuFOUKznhAcuFnw9gqErLotfb6MicUzlI/tzHDBNO2GV7rFA550JGqofiVTuetDkkVFvC4FFoe
+	9CLRDmfNaI9ycuXcuvgYqJ847ulB2IKhfEqM0blcnc51MEUAU9idv/kLxhyXNoGDSU01eh/J0hCPZ
+	O2hsX/2gLxpHmSlOQS40rQ==;
+Received: from [130.117.225.5] (helo=dev004.aci.vzint.dev)
+	by relay.virtuozzo.com with esmtps  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <aleksey.oladko@virtuozzo.com>)
+	id 1vzcNX-006Tf9-1Z;
+	Mon, 09 Mar 2026 16:20:14 +0100
+Received: from dev004.aci.vzint.dev (localhost [127.0.0.1])
+	by dev004.aci.vzint.dev (8.16.1/8.16.1) with ESMTPS id 629FKMSZ565253
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Mon, 9 Mar 2026 15:20:22 GMT
+Received: (from root@localhost)
+	by dev004.aci.vzint.dev (8.16.1/8.16.1/Submit) id 629FKLF8565252;
+	Mon, 9 Mar 2026 15:20:21 GMT
+From: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+To: "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+        Shuah Khan <shuah@kernel.org>, Aaron Conole <aconole@redhat.com>,
+        Ilya Maximets <imaximet@redhat.com>,
+        Eelco Chaudron <echaudro@redhat.com>,
+        Stefano Brivio <sbrivio@redhat.com>
+Cc: netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-kernel@vger.kernel.org, dev@openvswitch.org,
+        Konstantin Khorenko <khorenko@virtuozzo.com>,
+        Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+Subject: [PATCH net v4 4/5] selftests: net: run pmtu.sh in netns to avoid host firewall interference
+Date: Mon,  9 Mar 2026 15:20:12 +0000
+Message-ID: <20260309152013.565216-5-aleksey.oladko@virtuozzo.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260309152013.565216-1-aleksey.oladko@virtuozzo.com>
+References: <20260309152013.565216-1-aleksey.oladko@virtuozzo.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/10 net-next] Convert CONFIG_IPV6 to built-in and remove
- stubs
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- davem@davemloft.net, edumazet@google.com, pabeni@redhat.com,
- horms@kernel.org, dsahern@kernel.org
-References: <20260309022013.5199-1-fmancera@suse.de>
- <20260309074758.0ea95a18@kernel.org>
-Content-Language: en-US
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-In-Reply-To: <20260309074758.0ea95a18@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.30
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.998];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
 
-On 3/9/26 3:47 PM, Jakub Kicinski wrote:
-> On Mon,  9 Mar 2026 03:19:33 +0100 Fernando Fernandez Mancera wrote:
->> Historically, the Linux kernel has supported compiling the IPv6 stack as
->> a loadable module. While this made sense in the early days of IPv6
->> adoption, modern deployments and distributions overwhelmingly either
->> build IPv6 directly into the kernel (CONFIG_IPV6=y) or disable it
->> entirely (CONFIG_IPV6=n). The modular IPv6 use-case provides little to
->> no practical benefit today.
-> 
-> Have you tested this? Every single VM config we have in CI dies with:
-> 
+From: Konstantin Khorenko <khorenko@virtuozzo.com>
 
-Hi Jakub,
+The pmtu.sh kselftest sets up a multi-namespace test topology where the
+host network itself is part of the test setup. Test packets originating
+from the created namespace are expected to reach test interface created
+in the host. When firewall rules are present on the host, this traffic
+may be blocked, causing the test to fail.
 
-I did and I just booted a VM with the series. I just discovered that it 
-dies with virtme-ng. Changing the fs_initcall() to device_initcall() 
-fixes it so this is likely a race condition.. probably due to loopback?
+Run the test in an isolated network namespace to avoid interference
+from host firewall rules.
 
-Sorry about the noise. I do not understand why this didn't happen on my 
-libvirt setup but it did happen on virtme-ng.
+Signed-off-by: Konstantin Khorenko <khorenko@virtuozzo.com>
+Signed-off-by: Aleksei Oladko <aleksey.oladko@virtuozzo.com>
+---
+ tools/testing/selftests/net/Makefile     | 3 ++-
+ tools/testing/selftests/net/pmtu-test.sh | 4 ++--
+ tools/testing/selftests/net/pmtu.sh      | 4 ++++
+ 3 files changed, 8 insertions(+), 3 deletions(-)
+ create mode 100755 tools/testing/selftests/net/pmtu.sh
 
-Well, if there is consensus that we want to go ahead with this, I will 
-address this on the V2.
-
-Thanks for letting me know.
-Fernando.
-
-> [    0.774671][    T1] Oops: general protection fault, probably for non-canonical address 0xdffffc0000000187: 0000 [#1] SMP KASAN
-> [    0.775165][    T1] KASAN: null-ptr-deref in range [0x0000000000000c38-0x0000000000000c3f]
-> [    0.775165][    T1] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 7.0.0-rc2-virtme #1 PREEMPT(full)
-> [    0.775165][    T1] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-> [    0.775165][    T1] RIP: 0010:ipv6_add_dev+0x32/0x1e0
-> [    0.775165][    T1] Code: fb 48 83 ec 08 e8 0e 48 a8 ff 85 c0 0f 84 65 01 00 00 48 8d bb 39 0c 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 48 89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 54 01 00 00
-> [    0.775165][    T1] RSP: 0018:ffa0000000017d10 EFLAGS: 00010216
-> [    0.775165][    T1] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000001
-> [    0.775165][    T1] RDX: 0000000000000187 RSI: 0000000000000008 RDI: 0000000000000c39
-> [    0.775165][    T1] RBP: 0000000000000100 R08: ffffffffa3eed8dc R09: fffffbfff4f10288
-> [    0.775165][    T1] R10: fffffbfff4f10289 R11: 0000000000000001 R12: dffffc0000000000
-> [    0.775165][    T1] R13: dffffc0000000000 R14: ff11000001f1cc00 R15: ffffffffa8216a90
-> [    0.775165][    T1] FS:  0000000000000000(0000) GS:ff1100008707a000(0000) knlGS:0000000000000000
-> [    0.775165][    T1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    0.775165][    T1] CR2: ff11000036a1e000 CR3: 000000003453b001 CR4: 0000000000771ef0
-> [    0.775165][    T1] PKRU: 55555554
-> [    0.775165][    T1] Call Trace:
-> [    0.775165][    T1]  <TASK>
-> [    0.775165][    T1]  addrconf_init+0xa9/0x160
-> [    0.775165][    T1]  inet6_init+0x287/0x410
-> [    0.775165][    T1]  do_one_initcall+0xd7/0x4a0
-> [    0.775165][    T1]  ? trace_event_raw_event_initcall_level+0x210/0x210
-> [    0.775165][    T1]  ? __kmalloc_noprof+0x2c5/0x730
-> [    0.775165][    T1]  kernel_init_freeable+0x57d/0x620
-> [    0.775165][    T1]  ? rest_init+0x200/0x200
-> [    0.775165][    T1]  kernel_init+0x1e/0x170
-> [    0.775165][    T1]  ? _raw_spin_unlock_irq+0x33/0x50
-> [    0.775165][    T1]  ret_from_fork+0x472/0x6b0
-> [    0.775165][    T1]  ? arch_exit_to_user_mode_prepare.isra.0+0x140/0x140
-> [    0.775165][    T1]  ? __switch_to+0x538/0xcf0
-> [    0.775165][    T1]  ? rest_init+0x200/0x200
-> [    0.775165][    T1]  ret_from_fork_asm+0x11/0x20
-> [    0.775165][    T1]  </TASK>
-> [    0.775165][    T1] Modules linked in:
-> [    0.816998][    T1] ---[ end trace 0000000000000000 ]---
-> [    0.818082][    T1] RIP: 0010:ipv6_add_dev+0x32/0x1e0
-> [    0.819103][    T1] Code: fb 48 83 ec 08 e8 0e 48 a8 ff 85 c0 0f 84 65 01 00 00 48 8d bb 39 0c 00 00 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 48 89 fa 83 e2 07 38 d0 7f 08 84 c0 0f 85 54 01 00 00
-> [    0.822985][    T1] RSP: 0018:ffa0000000017d10 EFLAGS: 00010216
-> [    0.824176][    T1] RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000001
-> [    0.825749][    T1] RDX: 0000000000000187 RSI: 0000000000000008 RDI: 0000000000000c39
-> [    0.827317][    T1] RBP: 0000000000000100 R08: ffffffffa3eed8dc R09: fffffbfff4f10288
-> [    0.828892][    T1] R10: fffffbfff4f10289 R11: 0000000000000001 R12: dffffc0000000000
-> [    0.830460][    T1] R13: dffffc0000000000 R14: ff11000001f1cc00 R15: ffffffffa8216a90
-> [    0.832037][    T1] FS:  0000000000000000(0000) GS:ff1100008707a000(0000) knlGS:0000000000000000
-> [    0.833800][    T1] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    0.835095][    T1] CR2: ff11000036a1e000 CR3: 000000003453b001 CR4: 0000000000771ef0
-> [    0.836670][    T1] PKRU: 55555554
-> [    0.837358][    T1] Kernel panic - not syncing: Fatal exception
-> [    0.838351][    T1] ---[ end Kernel panic - not syncing: Fatal exception ]---
+diff --git a/tools/testing/selftests/net/Makefile b/tools/testing/selftests/net/Makefile
+index 8fa6ef771757..09bcfd2db593 100644
+--- a/tools/testing/selftests/net/Makefile
++++ b/tools/testing/selftests/net/Makefile
+@@ -63,7 +63,7 @@ TEST_PROGS := \
+ 	netns-name.sh \
+ 	netns-sysctl.sh \
+ 	nl_netdev.py \
+-	pmtu-test.sh \
++	pmtu.sh \
+ 	psock_snd.sh \
+ 	reuseaddr_ports_exhausted.sh \
+ 	reuseport_addr_any.sh \
+@@ -190,6 +190,7 @@ TEST_FILES := \
+ 	fcnal-test.sh \
+ 	in_netns.sh \
+ 	lib.sh \
++	pmtu-test.sh \
+ 	settings \
+ # end of TEST_FILES
+ 
+diff --git a/tools/testing/selftests/net/pmtu-test.sh b/tools/testing/selftests/net/pmtu-test.sh
+index a3323c21f001..2ba6bc0252f0 100755
+--- a/tools/testing/selftests/net/pmtu-test.sh
++++ b/tools/testing/selftests/net/pmtu-test.sh
+@@ -976,7 +976,7 @@ setup_ovs_bridge() {
+ 	run_cmd ip link set ovs_br0 up
+ 
+ 	run_cmd ${ns_c} ip link add veth_C-A type veth peer name veth_A-C
+-	run_cmd ${ns_c} ip link set veth_A-C netns 1
++	run_cmd ${ns_c} ip link set veth_A-C netns $$
+ 
+ 	run_cmd         ip link set veth_A-C up
+ 	run_cmd ${ns_c} ip link set veth_C-A up
+@@ -985,7 +985,7 @@ setup_ovs_bridge() {
+ 	setup_ovs_add_if veth_A-C
+ 
+ 	# Move veth_A-R1 to init
+-	run_cmd ${ns_a} ip link set veth_A-R1 netns 1
++	run_cmd ${ns_a} ip link set veth_A-R1 netns $$
+ 	run_cmd ip addr add ${prefix4}.${a_r1}.1/${veth4_mask} dev veth_A-R1
+ 	run_cmd ip addr add ${prefix6}:${a_r1}::1/${veth6_mask} dev veth_A-R1
+ 	run_cmd ip link set veth_A-R1 up
+diff --git a/tools/testing/selftests/net/pmtu.sh b/tools/testing/selftests/net/pmtu.sh
+new file mode 100755
+index 000000000000..1805fa44a2de
+--- /dev/null
++++ b/tools/testing/selftests/net/pmtu.sh
+@@ -0,0 +1,4 @@
++#!/bin/sh
++# SPDX-License-Identifier: GPL-2.0
++
++./in_netns.sh ./pmtu-test.sh "$@"
+-- 
+2.43.0
 
