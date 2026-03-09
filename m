@@ -1,82 +1,109 @@
-Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D1B38E128;
-	Mon,  9 Mar 2026 10:14:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7BD922759C;
+	Mon,  9 Mar 2026 10:22:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773051271; cv=none; b=AxZ4dmvfSrLcoKB9kaypwd1NE60GpPz6b2Dy8IGUH4RgbpPXnrXhp22S42VWeUkLMAzparPbrztkYhxOK701vKyKFvGUpwdt6s1caZN+b5gdKw9q7wP10xwDe08b1dGYFDFDZejUf88O0liICeo51S/5D1l9spuNPuIEzqK0VSY=
+	t=1773051747; cv=none; b=kCnyISOxoVKLqasOc1B20EwMWAuYS8XmXo6y1AlUIIUw6QMa1J9g3Yoj+k7WANBl6SaFuZLFKVF/+sYASuBMjw+H32NCph2RyOWeRSzTi+EyhDSxV8HqYFe9GGI92ArUT6TrCodxhn1Qda6BW3iq9Ym39Lxlv01Sl1Pm7brlHdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773051271; c=relaxed/simple;
-	bh=1lP/kjBmNsqQJ31uYFevxonVc4fUtm8RHiROqmdKA1c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Yt31Ji7ILeH87+wgl8cu3iDmR+RBXMQUJxZ1ozCstjiKBd9lGs/7pYLBx3zYyFvqt3Ks99hI+7cHf7Fx5yK4DeGnmKVfpsbiNYPTBo7H1SokIisu26bu3BcWVi5OSHg6R5ADWHMGe0agf9ax5Hh5wkfofl0jvWtTegE2utZbHfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=gjO6nNGZ; arc=none smtp.client-ip=78.32.30.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+	s=arc-20240116; t=1773051747; c=relaxed/simple;
+	bh=kXKb1J+6pry8GUW4hH+8aUUpyZrR0VDDH+5QU4fvJgU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o8joyQwsjh1Ud1mXPVoHdudHmkCLuGV2IHMxXfKn0z+8Wh75M5/71ZmLL+uoo6InFWdYwSWTaJ5obTsl1bG8wGtzhxIELYEiKUASVk0QFhOzXOXrgrij19W/vV3Y/UVWm1a/oyZCWpv1yXr9TMf2lq9c6qXJR0l06xbx0Q7q9ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f0X7oB6i; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="gjO6nNGZ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=JQCAnUp7//V84f3pl77t9PEUZW5Z6f4XI9axZUwQSpE=; b=gjO6nNGZJMw2ib+A7rYOZ/Lfp6
-	EvWePfBeLy40Gmt3Be9/E1FiJhzGv1F0eJ0HgYLYDU5S+nIkqAZb2kQZ3LBJqIW/58OkWuMIFzgAa
-	EOi31iaGawCON0kunT882/6dSCR63dxCIpyoyaMJ3txpgEJEkBht/dcUgg2ZO9hMfXK9/2d9XYg5D
-	+DvPE2jSb/LwDpcpab5u9Udece83MQMxKqeme+EQPy6VDfB7KeYNGhN8R2U+BAVE16glZ94qFkhBP
-	JxFd4Mke/czOAluzjcBTREAhI1F6gJxMvtpV5KO69y4NGpDjPMR8q+LirGuwA9hXiNw7r2VD4Bv0b
-	iR1POeXw==;
-Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:54824)
-	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <linux@armlinux.org.uk>)
-	id 1vzXcw-000000003aa-0iHa;
-	Mon, 09 Mar 2026 10:14:18 +0000
-Received: from linux by shell.armlinux.org.uk with local (Exim 4.98.2)
-	(envelope-from <linux@shell.armlinux.org.uk>)
-	id 1vzXct-000000004EK-2MNk;
-	Mon, 09 Mar 2026 10:14:15 +0000
-Date: Mon, 9 Mar 2026 10:14:15 +0000
-From: "Russell King (Oracle)" <linux@armlinux.org.uk>
-To: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
-Cc: Andrew Lunn <andrew@lunn.ch>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>, Vinod Koul <vkoul@kernel.org>
-Subject: Re: [PATCH RFC net-next v2 0/7] net: stmmac: improve PCS support
-Message-ID: <aa6dd6vQWex9Kinv@shell.armlinux.org.uk>
-References: <aafxqCvJ_XY4YbWw@shell.armlinux.org.uk>
- <aandp3FYSJbwoZxo@oss.qualcomm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f0X7oB6i"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98754C4CEF7;
+	Mon,  9 Mar 2026 10:22:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773051747;
+	bh=kXKb1J+6pry8GUW4hH+8aUUpyZrR0VDDH+5QU4fvJgU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=f0X7oB6i210FzjhF1XAuwyatiWlmrQLB+FPMXqwznU5jEcH2NLCVM8rWfdLzRGdAw
+	 89EKQ5yvGsrFZTfspDJELA/YWxRnhAXZoM/T3JCtCW5NNwNddItfYrUOKJ77fzgOOq
+	 Ze6cRm6TNpAjza0iEPsIBPSOVkxCmpPQ40QIJyv2MqqQoNogOF3tzmH8WNu9djEL8R
+	 CtNfuYRIEomVtE1WRYeon4QOmPI7YzLH6KBdS8JHA5lsXZVhocXa+y48kzSqL5vcJV
+	 GVtoYF2qGRpR9wE8vtM2Z0Wa1cbqaJhMfumvNeQ/PGCaFFAswFLjzNe8CTbCvLHkfd
+	 Wn+yZ7ALyixhw==
+Message-ID: <48ccec3f-dbc8-45c8-afda-e4f7e8f150d6@kernel.org>
+Date: Mon, 9 Mar 2026 11:22:23 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aandp3FYSJbwoZxo@oss.qualcomm.com>
-Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10 net-next] Convert CONFIG_IPV6 to built-in and remove
+ stubs
+To: Fernando Fernandez Mancera <fmancera@suse.de>, netdev@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, dsahern@kernel.org
+References: <20260309022013.5199-1-fmancera@suse.de>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 a/A=
+In-Reply-To: <20260309022013.5199-1-fmancera@suse.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, Mar 06, 2026 at 01:16:47AM +0530, Mohd Ayaan Anwar wrote:
->   - Link up at 2.5G, 1G, and 100M is fine (phylink logs below). The PCS
->     link takes a moment to stabilize, but after that it's stable.
->   - The warning ("PCS configuration changed from phylink by glue;
->     ANE 0 -> 1") is observed when the link comes up at 1G/100M.
+On 09/03/2026 03:19, Fernando Fernandez Mancera wrote:
+> Historically, the Linux kernel has supported compiling the IPv6 stack as
+> a loadable module. While this made sense in the early days of IPv6
+> adoption, modern deployments and distributions overwhelmingly either
+> build IPv6 directly into the kernel (CONFIG_IPV6=y) or disable it
+> entirely (CONFIG_IPV6=n). The modular IPv6 use-case provides little to
+> no practical benefit today.
 
-Something else to try...
+It does. We all use generic kernels, thus it is one configuration for
+all boards and some setups have IPv6 and some not. The ones without IPv6
+just don't use that module.
 
-It may avoid some PCS link state bouncing if the writel() came before
-the printing of the changes in dwmac_ctrl_ane(), as printing those
-changes will be relatively slow.
+Also, with these generic kernels (so again all machines are using same
+ones, e.g. distro) users can easily blacklist the module.
 
--- 
-RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
-FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
+Best regards,
+Krzysztof
