@@ -1,117 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpout-03.galae.net (smtpout-03.galae.net [185.246.85.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2BF3B9605;
-	Mon,  9 Mar 2026 14:11:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E16617A305
+	for <netdev@vger.kernel.org>; Mon,  9 Mar 2026 14:16:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.246.85.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773065511; cv=none; b=jELjAaKZ1K2nyh5dcNaWe/ycBgCMPKE+LpW5CMdJ2SL0OQC5mzuAW5wEQ3y+MsM7UjZ8TSMYMmBnYYT7BHrt5//o10X+UesCNS4kUDQUFy7tLja+IaRZ12hymBk1mn758ZgW0F/QEKJk/E3k4fdRVFnCARQrX4sENxA/UYF8VWI=
+	t=1773065818; cv=none; b=NNokkkIfc4nhqGuLmkI2IUCKDQWC8F/DPQ6E8lNwFNft8hKEtppaTAFHCiMf2eSxAtyQQx5Xv19MrsXJb872C3m7M67AyKJTCQ9XPWhtatKBBgxN1WbRJ+WNzOPITfdIRe1ah8s1z/FIVwRHbklLuJpMOoBTUo3f/yaan7/6BZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773065511; c=relaxed/simple;
-	bh=eU3p9YG5GnWj0CimWx09QBU2c22dNqQdlfhvs6jTrCk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oa8YJv+fKWUN+HLngTTvDk01dTiuwmQKl6Dk8PJcThICcArpHiHK1vfDQeAOiNSAEVReH5VRlrx4mQTxzmj+bE2zimd4KzFUbF2/pwxl2YljIhf0OWiUF1JUOakjFQbokotyAjN6v03/4vjyG70iSzOgldLIpcc0xjZu0YB5in4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AQ9QDWKH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773065818; c=relaxed/simple;
+	bh=8liySUEDGYrpUI1rMgWcIxLKUNWyHE5MJ7BpW1iSeNo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F1cm1OH0x6rQJkPCZHO3z4pg/nvLJXMDNjZUbFSbGqMsTW5lZC6ZqSBHAH8SM2QqulkhWkfrqYCOAnkmK4E/V/I9HpBwXp/fURrJueo5Q5/oD84rLPnMLGGYRanpVnWlHJyRzeaJ3oCnYCZNi8UCjAIqHDmjDLvaaSrXIr0p8c8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=X5Pq2wBX; arc=none smtp.client-ip=185.246.85.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AQ9QDWKH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D789C4CEF7;
-	Mon,  9 Mar 2026 14:11:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773065510;
-	bh=eU3p9YG5GnWj0CimWx09QBU2c22dNqQdlfhvs6jTrCk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AQ9QDWKHBsALDsFDu+FCDUGjGJQiCXlQr1xtTVG9N3bn7d3Pi4i9BFYVHPC7FwRGD
-	 aNVP+dlyfmorKMEQUyV1tsXJYkg3LjdZDkBw9PrabWG3Xx/clUt4JYHO38m1o/beVv
-	 OYay9BxCYGCxQSMkt5tB9TBbfNmHsutbFGaDqi3X4CN2K4n68Whe/N3cts23tKZFaV
-	 w+a1lYg/YlcxHtt6LEtYLJRziT6dj5b1317DlhTIoEqSCioRDSVu9eRfZ/KCEJlpq4
-	 abDpNFn7CRndEsJz77lp7yRQft7jOk7GGa8ZoCA9xoNmOFmScFDdO8CwTOlv7L8eMl
-	 UlZcKEcIYZybQ==
-Date: Mon, 9 Mar 2026 14:11:45 +0000
-From: Simon Horman <horms@kernel.org>
-To: MD Danish Anwar <danishanwar@ti.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Meghana Malladi <m-malladi@ti.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
-	Roger Quadros <rogerq@kernel.org>
-Subject: Re: [PATCH net-next] net: ti: icssg-prueth: Add HSR multicast FDB
- port membership management
-Message-ID: <20260309141145.GI461701@kernel.org>
-References: <20260305125251.1828326-1-danishanwar@ti.com>
+	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="X5Pq2wBX"
+Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
+	by smtpout-03.galae.net (Postfix) with ESMTPS id 9F70C4E425D5;
+	Mon,  9 Mar 2026 14:16:54 +0000 (UTC)
+Received: from mail.galae.net (mail.galae.net [212.83.136.155])
+	by smtpout-01.galae.net (Postfix) with ESMTPS id 6CE825FFB8;
+	Mon,  9 Mar 2026 14:16:54 +0000 (UTC)
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B71C910369A24;
+	Mon,  9 Mar 2026 15:16:45 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
+	t=1773065813; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to:references;
+	bh=B6Sfd+3RAw+T1+wBoUFyStbgtRDwov9ZbOCNeaAw/iE=;
+	b=X5Pq2wBXmLmNdseOmRz8sJ1oQbGCKF/UO0qIGck3B8QYoU4lPzZnRkCriDP+scGSrLw0p8
+	1hh3Q4mDb3f5VbnqPjfcqncqGVvwY36KjcSr/N30fE7lQDnXVTK+YF8qci7NGGN8OBEAL8
+	IgO+lbuiq5tfdzHj3RZjKzNHNYGtugJWUyY3nEOk1TpeVzwgdbZwP4sEIBD9zqTXOXuZTP
+	prlcO0ODgdF0rLSeU4eeWUzlaC0cmUOsoFQzutXbtad10TnqyGPAsxV0tsg3kNMCPbBf1W
+	ZIHKEKCP90/uerxYc/VjRKkLl9xAcVAUz06AEQ0Z1LuMkhmy9sXl7kDqIaGqDQ==
+Message-ID: <456697d6-c0d8-4edf-abd2-85062f4b25ab@bootlin.com>
+Date: Mon, 9 Mar 2026 15:16:45 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260305125251.1828326-1-danishanwar@ti.com>
-
-On Thu, Mar 05, 2026 at 06:22:51PM +0530, MD Danish Anwar wrote:
-> In HSR offload mode, multicast addresses can be added via HSR master
-> (hsr0) or directly to slave ports (eth1/eth2). The FDB must track port
-> membership: P0 (0x1) for HSR master, P1 (0x2) for slave port 1, and P2
-> (0x4) for slave port 2. When the same address is added from multiple
-> paths, memberships must accumulate.
-> 
-> Implement a hybrid approach using __dev_mc_sync() callbacks to track
-> basic add/delete operations, checking netdev_hw_addr->synced to
-> distinguish HSR-synced addresses from direct additions. Post-process
-> to handle overlapping memberships by checking refcount:
-> - refcount=2 with synced=1: HSR only (P0)
-> - refcount>=3 with synced=1: HSR + direct (P0|P1/P2)
-> - synced=0 with P0 set: HSR removed, clean up orphaned P0
-> 
-> On add operations, accumulate new membership with existing ports. On
-> delete operations, remove only the specific port and clean up orphaned
-> P0 bits if needed.
-> 
-> Add error handling for icssg_fdb_lookup() which can return negative
-> error codes (e.g., -ETIMEDOUT). On lookup failure in add/delete path,
-> default to no existing membership. In the post-processing path, skip
-> the address update to avoid corrupting FDB entries with garbage values.
-> 
-> VLAN Interface Handling:
-> Add support for multicast addresses added to VLAN interfaces on the HSR
-> master (e.g., hsr0.7). These addresses require P0 (HSR master) bit to be
-> set along with the port bits, since VLAN-tagged packets use separate FDB
-> entries per VLAN ID. Without P0, the HSR master would not receive
-> multicast packets on VLAN interfaces.
-> 
-> Track whether the add/del operation came from a VLAN interface path and
-> set P0 when in HSR offload mode with VLAN interfaces. Update orphaned P0
-> cleanup logic to preserve P0 for VLAN interfaces.
-> 
-> Signed-off-by: MD Danish Anwar <danishanwar@ti.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC net-next v2 1/6] ethtool: Add loopback netlink UAPI
+ definitions
+To: =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+ netdev@vger.kernel.org, Donald Hunter <donald.hunter@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>, "David S. Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Saeed Mahameed <saeedm@nvidia.com>,
+ Tariq Toukan <tariqt@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Andrew Lunn <andrew@lunn.ch>, Michael Chan <michael.chan@broadcom.com>,
+ Hariprasad Kelam <hkelam@marvell.com>, Ido Schimmel <idosch@nvidia.com>,
+ Danielle Ratson <danieller@nvidia.com>, linux-kernel@vger.kernel.org,
+ linux-rdma@vger.kernel.org, Russell King <linux@armlinux.org.uk>
+References: <20260308124016.3134012-1-bjorn@kernel.org>
+ <20260308124016.3134012-2-bjorn@kernel.org>
+From: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Content-Language: en-US
+In-Reply-To: <20260308124016.3134012-2-bjorn@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
 Hi,
 
-This patch is doing quite a lot.
-I understand that there is a relationship between those things.
-But I am wondering if you considered breaking the patch up.
-Or is there too much interdependency going on?
-
-> ---
->  drivers/net/ethernet/ti/icssg/icssg_prueth.c | 233 +++++++++++++++++--
->  1 file changed, 217 insertions(+), 16 deletions(-)
+On 08/03/2026 13:40, Björn Töpel wrote:
+> Add the netlink YAML spec and auto-generated UAPI header for a unified
+> loopback interface covering MAC, PCS, PHY, and pluggable module
+> components.
 > 
-> diff --git a/drivers/net/ethernet/ti/icssg/icssg_prueth.c b/drivers/net/ethernet/ti/icssg/icssg_prueth.c
-
-...
-
-> @@ -1077,8 +1191,95 @@ static void emac_ndo_set_rx_mode_work(struct work_struct *work)
->  	}
+> Each loopback point is described by a nested entry attribute
+> containing:
+> 
+>  - component  where in the path (MAC, PCS, PHY, MODULE)
+>  - name       subsystem label, e.g. "cmis-host" or "cmis-media"
+>  - id         optional instance selector (e.g. PHY id, port id)
+>  - supported  bitmask of supported directions
+>  - direction  NEAR_END, FAR_END, or 0 (disabled)
+> 
+> Signed-off-by: Björn Töpel <bjorn@kernel.org>
+> ---
+>  Documentation/netlink/specs/ethtool.yaml      | 115 ++++++++++++++++++
+>  .../uapi/linux/ethtool_netlink_generated.h    |  52 ++++++++
+>  2 files changed, 167 insertions(+)
+> 
+> diff --git a/Documentation/netlink/specs/ethtool.yaml b/Documentation/netlink/specs/ethtool.yaml
+> index 4707063af3b4..05ebad6ae4e0 100644
+> --- a/Documentation/netlink/specs/ethtool.yaml
+> +++ b/Documentation/netlink/specs/ethtool.yaml
+> @@ -211,6 +211,39 @@ definitions:
+>          name: discard
+>          value: 31
 >  
->  	if (emac->prueth->is_hsr_offload_mode) {
+> +  -
+> +    name: loopback-component
+> +    type: enum
+> +    doc: |
+> +      Loopback component. Identifies where in the network path the
+> +      loopback is applied.
+> +    entries:
+> +      -
+> +        name: mac
+> +        doc: MAC loopback
+> +      -
+> +        name: pcs
+> +        doc: PCS loopback
+> +      -
+> +        name: phy
+> +        doc: PHY loopback
+> +      -
+> +        name: module
+> +        doc: Pluggable module (e.g. CMIS (Q)SFP) loopback
 
-In a similar vein, this condition is now doing a lot:
-about 90 lines more than it used to.
+Should we also add "serdes" ?
 
-I'm wondering if you considered placing the new logic in a separate function?
+> +  -
+> +    name: loopback-direction
+> +    type: flags
+> +    doc: |
+> +      Loopback direction flags. Used as a bitmask in supported, and as
+> +      a single value in direction.
+> +    entries:
+> +      -
+> +        name: near-end
+> +        doc: Near-end loopback; host-loop-host
+> +      -
+> +        name: far-end
+> +        doc: Far-end loopback; line-loop-line
+> +
+>  attribute-sets:
+>    -
+>      name: header
+> @@ -1903,6 +1936,60 @@ attribute-sets:
+>          name: link
+>          type: nest
+>          nested-attributes: mse-snapshot
+> +  -
+> +    name: loopback-entry
+> +    doc: Per-component loopback configuration entry.
+> +    attr-cnt-name: __ethtool-a-loopback-entry-cnt
+> +    attributes:
+> +      -
+> +        name: unspec
+> +        type: unused
+> +        value: 0
+> +      -
+> +        name: component
+> +        type: u32
+> +        enum: loopback-component
+> +        doc: Loopback component
+> +      -
+> +        name: id
+> +        type: u32
+> +        doc: |
+> +          Optional component instance identifier. Required for PHY,
+> +          optional for MODULE, omitted for MAC and PCS.
 
-...
+it doesn't have to be required for PHY. The current idea is that if you
+don't pass any PHY index when issueing a PHY-targetting command, then it
+means you're targetting net_device->phydev, that is the PHY device
+attached to the netdev (if any).
+
+I think we can keep that behaviour, as systems with multiple PHYs are
+not very common.
+
+> +      -
+> +        name: name
+> +        type: string
+> +        doc: |
+> +          Subsystem-specific name for the loopback point within the
+> +          component.
+
+We'll need to be careful about keeping this subsystem-specific and not
+driver-specific :)
+
+> +      -
+> +        name: supported
+> +        type: u32
+> +        enum: loopback-direction
+> +        enum-as-flags: true
+> +        doc: Bitmask of supported loopback directions
+> +      -
+> +        name: direction
+> +        type: u32
+> +        enum: loopback-direction
+> +        doc: Current loopback direction, 0 means disabled
+
+no need for an u32 for 3 different values I think :)
+
+Maxime
+
