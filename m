@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18ADF2E2286;
-	Tue, 10 Mar 2026 03:00:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761623AE1B5
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 03:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773111616; cv=none; b=Z79ARAZFQChmgp7IEeh8q+tdfhT6Z92xxppYOXV3+n5I9CJJrJt8ghqLgB6c2MMWdQ+0ew8NF0Y7IV/qkcAqh08qyvfXpe0UCasXMr6qxN13/HXxDJd4JxMltcSXCaixFT+QOFdwe1b+KnWBB7wsIoj6Ca2fUfwQdKLkERaXhF8=
+	t=1773111617; cv=none; b=DGgiXax2M4vgO5HgPEl+G9QdLItwFOjbQd09RFIk1ueIgn39oQXcrCxrGp1oGNvqHznvnB/FhN0Npj4fYU7TEHuP+3GAQ3rw17HkAF1POu1o96yT/3folmHHVGVc+KQncPD2RiwZDojlgS5IbOTrSXACpqYr6ASHwvNXv/9dpas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773111616; c=relaxed/simple;
-	bh=GQKellaCP2xSQpjXnu/7/RmNqtkHfIFv+jYcqY1KHOI=;
+	s=arc-20240116; t=1773111617; c=relaxed/simple;
+	bh=+e2yBgyYxwj8sqWAw2NywShhZMa+o5Jo4d8QnO1DC+U=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=so36hTrHVTcahdpUuYKMj+1QS0CpQMo8+reZAiA3jUzoT7aY/OijnMLGDpOl1eZBmrak8mzL4mvN1N8F4ykgZO7etfrMpA98pkLa+xD6ZlNqRncMV+o9/SbKhyF9l+4UZTZNeRgZFyOp6SkLtWWOYBE1QyOKS5nAUn1oDxsOU0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=arel5jJt; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=dpfkvS8b/jKk+lDD/VTZRRiYM5QlVE/utCPzg2h9kai1PNmKmCq+BEJaF5bLxT19VNsSTRSw0i02TwYZ5Uo7wSgam5UfOTIABRQpZ2VCjqGGGrvbsCAxw+CI6ZoKEp1Ex04FWF4iCDivCM+1oly225i48x3ZKtfq0g2nMcvgAtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CZ/WDWGo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="arel5jJt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE11C4CEF7;
-	Tue, 10 Mar 2026 03:00:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CZ/WDWGo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24ABDC4CEF7;
+	Tue, 10 Mar 2026 03:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773111615;
-	bh=GQKellaCP2xSQpjXnu/7/RmNqtkHfIFv+jYcqY1KHOI=;
+	s=k20201202; t=1773111617;
+	bh=+e2yBgyYxwj8sqWAw2NywShhZMa+o5Jo4d8QnO1DC+U=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=arel5jJt4RX//ZHQLCscCZtITHUr5B04Opo0KFJTqqa3qKZhWVcUYdvGm4B7FevuR
-	 tWPDthxm/WHlcCfEfn4FhJMzcssIfhkojZjaCTnkclpVWhfv/D4eeffvGv2woTCWCA
-	 nzOA7bc2kccbJkKDgN6spCHZMj4eFZrwtXkG6XvVFHsi08QvRAg9ZuHjkptLx60Qed
-	 ddukfaQBpXtCu2CphAm1oOIwijQfopd311IiOCNEkbi4arAqbx/UuOIBBST6Cp/DYA
-	 7H1T5ubth6i3ENMeDD7jXButYcH0h0bGZGycTAwi4F46N+QiAJeiToZKynurC52YgC
-	 lmwoP6l5p+4Yw==
+	b=CZ/WDWGoHi/QwRAnHVRGhUVRyVQ54d/IfEtvG5z3ih7aezWGTo4372mdSpKcuCIsR
+	 uWIR1iIhkHlp7trn1grQI+vLgiIzO7vTrBEGEnl9lEBRiaWv4DB4Y5BibCaunPbd/F
+	 u3OvAWwjkQz/PKW7+nxzUYKJKM6y1DHv1dLx0bi1E4Ov44YlSdH62EEevpJy75sA2Q
+	 pYd35pefggHVMzF8kWnmMQEKcdM6pmsQMZvRcnOCdipGxaUjxaSMR1JUoj+qAKjS2r
+	 7FKCYHo3smGgJCTNfe/QcpEaH38bmVuO4pPYi7IvFUUORZJHZZ5ZOqrIVwsEZv6lA4
+	 aDLEw3Tk1lOHA==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02DF13808200;
-	Tue, 10 Mar 2026 03:00:14 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D08D3808200;
+	Tue, 10 Mar 2026 03:00:15 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,47 +37,39 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v1 0/4] net: usb: lan78xx: accumulated bug fixes
+Subject: Re: [PATCH net] bnxt_en: Fix RSS table size check when changing
+ ethtool
+ channels
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177311161279.2039470.10457228707033865923.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Mar 2026 03:00:12 +0000
-References: <20260305143429.530909-1-o.rempel@pengutronix.de>
-In-Reply-To: <20260305143429.530909-1-o.rempel@pengutronix.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, woojung.huh@microchip.com, andrew+netdev@lunn.ch,
- Thangaraj.S@microchip.com, Rengarajan.S@microchip.com, kernel@pengutronix.de,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- UNGLinuxDriver@microchip.com
+ <177311161404.2039470.4258340536798777418.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Mar 2026 03:00:14 +0000
+References: <20260306225854.3575672-1-michael.chan@broadcom.com>
+In-Reply-To: <20260306225854.3575672-1-michael.chan@broadcom.com>
+To: Michael Chan <michael.chan@broadcom.com>
+Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
+ pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com, bjorn@kernel.org
 
 Hello:
 
-This series was applied to netdev/net.git (main)
+This patch was applied to netdev/net.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Thu,  5 Mar 2026 15:34:25 +0100 you wrote:
-> This series contains a collection of standalone bug fixes for the
-> Microchip LAN78xx driver, addressing packet handling, TX statistics,
-> invalid register accesses, and a kernel warning during disconnect.
+On Fri,  6 Mar 2026 14:58:54 -0800 you wrote:
+> From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 > 
-> Oleksij Rempel (4):
->   net: usb: lan78xx: fix silent drop of packets with checksum errors
->   net: usb: lan78xx: fix TX byte statistics for small packets
->   net: usb: lan78xx: skip LTM configuration for LAN7850
->   net: usb: lan78xx: fix WARN in __netif_napi_del_locked on disconnect
+> When changing channels, the current check in bnxt_set_channels()
+> is not checking for non-default RSS contexts when the RSS table size
+> changes. The current check for IFF_RXFH_CONFIGURED is only sufficient
+> for the default RSS context. Expand the check to include the presence
+> of any non-default RSS contexts.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net,v1,1/4] net: usb: lan78xx: fix silent drop of packets with checksum errors
-    https://git.kernel.org/netdev/net/c/e4f774a0cc95
-  - [net,v1,2/4] net: usb: lan78xx: fix TX byte statistics for small packets
-    https://git.kernel.org/netdev/net/c/50988747c30d
-  - [net,v1,3/4] net: usb: lan78xx: skip LTM configuration for LAN7850
-    https://git.kernel.org/netdev/net/c/d9cc0e440f06
-  - [net,v1,4/4] net: usb: lan78xx: fix WARN in __netif_napi_del_locked on disconnect
-    https://git.kernel.org/netdev/net/c/312c816c6bc3
+  - [net] bnxt_en: Fix RSS table size check when changing ethtool channels
+    https://git.kernel.org/netdev/net/c/0d9a60a0618d
 
 You are awesome, thank you!
 -- 
