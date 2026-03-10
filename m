@@ -1,68 +1,68 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320F43EFD21
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 08:25:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F52140B6E8
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 08:37:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773131150; cv=none; b=q/NCpACnhhZWbblOLP1QGJq5TQG6B6pehiDRPsdvW7gPI1HwloJ+gOIQw3SBDsPPhEjOznUxUl0PGuhhEwmN6LMeyeh4RG3k02eoBt8B0iNaAPOvqGk4LJvkSwHcrT4Nx5oi10hT4uk0uQxg8H9u/vERKNzMKWc/s85wDyy6nJk=
+	t=1773131826; cv=none; b=gYbUR1pqSOSps5VsdgXcs9j9qffi7YjFBSWtHSeTgBKPxobbZAhvhZ++h5iRmO5RSo/RnPfhvp2u7L9bsYilFo/Ui+qTTE6Rp73xheB7qrsUA1HBeCJ95CGJJfkyG7Kyjctyz1AFGCvXFeXYk5rxBWUXySLC177KMBB5fg20j/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773131150; c=relaxed/simple;
-	bh=2QCzLp0F2pYx6+dlRlsKBe0b3nFaOmqYmIDT/PUKLd0=;
+	s=arc-20240116; t=1773131826; c=relaxed/simple;
+	bh=SkOW0Me5Mei+6+811W8wfI40/OJEsEajTjQbZP2i/9k=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=U9R5Qcrpsw9brxzRYRTA9eT+UeUCll05hRRY7WTw+SWmP9P53J7SCc9nZzxzXUZChQz25iwcZOzuNl1E2fbmSHRkl7Hwxx40T0OXpKsCg24q9hIQZqz8ZR8fK7M0ijdCTok5QfZxV4y6dpEB9yUyF6wIkalOWfbQWjfd1VssdQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZvLRhApr; arc=none smtp.client-ip=209.85.208.49
+	 In-Reply-To:Content-Type; b=VwGADJcOPJYqnEbhLTnS19pGcDG7AFDf2h6coqlNNhQxXuFFH4IN2bVZl0X5uw4hSiW5Sh/QMAubb2/RhNejGJ0R4OWuCnvoWX8XABziCLjnOWcEq4zgdIau9zksa4xqJjVgV62pJSgoTPpZTY/MqXAKQthNgzte6EuQRPIbVeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j0Y3DZZx; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZvLRhApr"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6611e4aefdcso9879689a12.3
-        for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 01:25:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j0Y3DZZx"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-662e7450a8aso225731a12.0
+        for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 01:37:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773131147; x=1773735947; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1773131824; x=1773736624; darn=vger.kernel.org;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=Oly3B87PA63gHRv66eFhTHd4PtYqp9cSgK81C/xTgFU=;
-        b=ZvLRhAprredcnxq0ktx/IeNW4ILpm1nZeQiYEnsgEWvkHz3IMvWdVTbJJt97d9nBTm
-         98LoiMW+VXShfrcxWRGvGcZZGzE0iBrDQascT32v6DTZYuGgn+3Fg3l1TZRrpwl7D4TJ
-         xaasv0PN4RqciBhPbyw7rIi9nBbBS0bs3QSN7MrtA46BcoKRcz+7qUsrzyHQCWjkDpYe
-         YZ+GF4rvYl2BsfYWvAvpDu0LG45rl3U60FAHRJQqN23SXRmttlABWmNCB+5NNsvq1iUW
-         8cmr+Uk5SwIHu6hv4w5nmtoNxWWi0BeigDZF+3zvQgtRODWb++rAfvxEMbKEkiLZFYDz
-         2l2w==
+        bh=Nmp2C2LK1KcB7kS8d+inf4YkPeQ+OioLOT0ROrHIx4Q=;
+        b=j0Y3DZZxqWzBx0w0jrGAC3EzKuM0bm64IyMhsaadSYJRSy9gMDrRpUrtORyP7h/yiT
+         WdNGTx9e6eAoyHsiLMifexwfVePSkN8amSjtZHsZaUTLZsCbpeBpZipYTx+Wn7E27Bex
+         NOFTjlEH+cu3YDMkMfQizQkTJJ0fHuDwcGPMB608+GjpJcyGh3Qe9wFxuDhwoOgLM0Pd
+         yCbC7fOecB2xPGK5H+yeAEIl8PqvX6gslzonNhR5qWxwhBGY7Fk3npb2zKe95yaxx+jh
+         HTXrKS5pyvAFXWe/7aGPOdz2H3PsMLmC/mpyx+pTdofMl21VsKZSnlP+fkGl1X+0h3zl
+         4HGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773131147; x=1773735947;
+        d=1e100.net; s=20230601; t=1773131824; x=1773736624;
         h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Oly3B87PA63gHRv66eFhTHd4PtYqp9cSgK81C/xTgFU=;
-        b=qMpcnfGgrfVH5ih7f/EF9XmW566KD2PEbgn8CQlHlZ+ytwsvG/ZVjqXSeb6PssDx2T
-         /iwJMiqH8V5vrLwhmMSf6ik5H/iukUQIs1VN1Yoyx/jn2YiYjJl7LTkyrp2kmrNdNH3d
-         uNtnOsqPHg8gLdBtN6hGASelHAGUCDGptwSR6+ZD6SoPr3SB94oCy64Wx4t1Qi2SxaVS
-         Ps3hwfzjFfBrXM2ogtny3pu8hfnuOwrHcNfE7S5qehadDUXudiG+5T9eei4rjqRkIevp
-         3fsx+w8HTsqjrjR3xJPYMhg5OgnYn7SexwSzaW1vV5bnYmfoYU8ABJqbd8YkK5aKKr/+
-         H1UQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUKKk2NLlHntZnQRT2zjKQVGNvgr4nfZ8Zk9NbU9m/jI3LgYMNHWyuOk1rjufwyibU9vS2JMcE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxfOQEGoEyKUtH0/H2KpFyTfoX1L/M2c1cs+Jl9ie47eTcysGSI
-	9ydL1bIX6Z6wJNRSCG/pZuml7tjkVRm2ZE0RpFNfz7fUWnwbfHc11GyY
-X-Gm-Gg: ATEYQzxSlHGh+AouDevCzzgwL9XaPtYjGXMRzIs2N9xeUe9G7yUzPmKEt0Iy73x7v6k
-	QUlG2aGpGuQHpVsku2n5hVKPMFfRO8fAngXmepAdoO9+B078batzqAyf7owHBku6GNjzfY1zkia
-	Loislq6n6cA0Xv/fsq163QH73qJhnySoQ/1cYcXPYAjuDTnGZtOdZfhw7Ffiz1ztYv6WwE6pv/9
-	5g6WPizqh0crpgRbTWPFMlKmtUpNazpnM8LF/0H6OyDa2anYIQTPIrdfpEkImI5SXDT2Q+sC3Yu
-	AoYE7DszO9qTstT2IHDftu7Vq3Cp2lL1f/L+4RjI0yzMRRyDAYlEnHWwKgLWCLu1ohuCJMp7p9t
-	+Fy90yLrzMU1AbZrJnT7euwNmUbAyuCX5wIu+e7f0vMB4KIR8APUCYa7qp7MI5aci1RuDZy1wtJ
-	QjVTKr89xhP5SVq/22HTiwvbUG5LDMJBzq0doUcPpBqr1wuW4DrIrmr1+KXMeJhL+TklItC7n+p
-	F4E+9WvAh4TZJtfICKlSRw1EqeCo+cbc/pTQJJjzqTeVs70wbGo6jmciF9C3cgvQ8fgEC7R57Fg
-	H+VcWHM1oOrmq5M2BC5m+OIoQOpMybkKsg==
-X-Received: by 2002:a17:907:97d5:b0:b86:e938:1b3a with SMTP id a640c23a62f3a-b942dced156mr805331566b.17.1773131147211;
-        Tue, 10 Mar 2026 01:25:47 -0700 (PDT)
+        bh=Nmp2C2LK1KcB7kS8d+inf4YkPeQ+OioLOT0ROrHIx4Q=;
+        b=lHsvPqTZ7itGaEmMvmtTCCD78wAK+/5iJ28axmj6n4lCtwswAjg9VrwFys1oNV1Uz2
+         cNYtAgB88r+96+gvJSWW7SI6P3xQUJMuxSK2hMYAzgzwORAUEs7OaH81TQXNkZXM+NIh
+         tjL+DmsuL+NZE7kPcre+0KNy2Ad7bKzwTYcMeknZziiGoOhRKhB68M1TrMc7e6adlHzN
+         bz4ravLv1W8WDqXj8hSenxgvofjfPbM9bBsPT4Zox8FV9XA8/dD9mPvt+a9VA1KBORqT
+         7lcGwmlNv96jk56UDPJm+VbuqPtoVKVXSFeo7JIMLTUQ8rRBRWD6dIK/9JkE0XCsGhw1
+         4nHw==
+X-Forwarded-Encrypted: i=1; AJvYcCUyNyZ5yJSEjjwGBa4hpufweuu9AaBq9RVvTo9qX3ySx4ZLNdfr9fu8yktL5nbx96mkeOfx/gs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx66yMDFDoO9lVm/pYmjkLQ2ZltViQ4FASE93GmKT5feQyTjn2E
+	P4YJAWlHAfmqi+Z2yEVvJz5PsvY5oYpHvqKFnfKLyvEC1ryDzKXJVPMn
+X-Gm-Gg: ATEYQzytUkmburjCAjVUrSP8KR932EvOXpqzl6g3iaM3AeosdPYeDoU+iQYVz1Y45Um
+	NnRYIP9lOcySfyoGOJ8P+F0FM9kF57k+LMQbd+omR4xzcdD2S+dtg+xVmB78BXEt/Dt2tyYBIKK
+	3YpARd0ojktOrJ0ccSOHkngB5pKZ1n6u0WpoBDJ6hjk5lROFRWv6LSTi0yLEZ0kkbQ6oc96Naqr
+	l4nWbwNdlwtOYKvdQmPw1Kxqe3OXNp6k0hUrL1tcyMjbdhX0HUBNj+rqWbG6k7vBl+x7+I9aRnf
+	GGfVvxBgZHkgRxSZWDAdxkdQxh/6Otzl0vlqSP4T9sFLPkKNUwD1rGae9LlSqzoLRPw2Ilk9VZt
+	mWZ4kFtlcdZLoHZk38Ty6/eznF0NJAyhkSgUKHVXVJpp0tES5HfK8jHH7myEaVNlaMugNthKSbe
+	LQag9ksDhDbNyJtXwzWzZxAJ+jqNFOZlYGWNoVhUscfqUwOFavaRbD2elZ6fVPBHhzwsSsrtrHC
+	L3UPyuxdBjziqvjku8vwSLzYZKkFbaj0ocAKaIlQvTA2Iqcf7/UeTOQkFQMfVbn+uAHnQQNG2Rp
+	wAcm+VgfTtNkAiLBTZfSvuuHLQ/rzT55Ew==
+X-Received: by 2002:a05:6402:13cb:b0:660:ce49:f6d1 with SMTP id 4fb4d7f45d1cf-6619d53ce70mr7697726a12.30.1773131823379;
+        Tue, 10 Mar 2026 01:37:03 -0700 (PDT)
 Received: from ?IPV6:2001:1c00:20d:1300:1b1c:4449:176a:89ea? (2001-1c00-020d-1300-1b1c-4449-176a-89ea.cable.dynamic.v6.ziggo.nl. [2001:1c00:20d:1300:1b1c:4449:176a:89ea])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b942f139e24sm460611466b.38.2026.03.10.01.25.46
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-661a3e61eb6sm4096796a12.8.2026.03.10.01.37.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Mar 2026 01:25:46 -0700 (PDT)
-Message-ID: <5f8c4194-5066-4a55-898f-257bfdce4a6c@gmail.com>
-Date: Tue, 10 Mar 2026 09:25:46 +0100
+        Tue, 10 Mar 2026 01:37:02 -0700 (PDT)
+Message-ID: <76b3546a-37c5-4dab-9074-4df0cbe48524@gmail.com>
+Date: Tue, 10 Mar 2026 09:37:00 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -70,116 +70,131 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 nf] netfilter: nf_flow_table_ip: Introduce
- nf_flow_vlan_push()
-To: Florian Westphal <fw@strlen.de>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>, Phil Sutter <phil@nwl.cc>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
- netdev@vger.kernel.org
-References: <20260227162955.122471-1-ericwouds@gmail.com>
- <aa86Ai1FRuJzthEF@strlen.de>
+Subject: Re: [PATCH v19 nf-next 5/5] netfilter: nft_chain_filter: Add bridge
+ double vlan and pppoe
+To: Florian Westphal <fw@strlen.de>, Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ netdev@vger.kernel.org, Nikolay Aleksandrov <razor@blackwall.org>,
+ Simon Horman <horms@kernel.org>, Eric Dumazet <edumazet@google.com>,
+ Ido Schimmel <idosch@nvidia.com>, netfilter-devel@vger.kernel.org,
+ bridge@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
+ Phil Sutter <phil@nwl.cc>, Michal Ostrowski <mostrows@earthlink.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>
+References: <20260224065307.120768-1-ericwouds@gmail.com>
+ <20260224065307.120768-6-ericwouds@gmail.com>
 From: Eric Woudstra <ericwouds@gmail.com>
 Content-Language: en-US
-In-Reply-To: <aa86Ai1FRuJzthEF@strlen.de>
+In-Reply-To: <20260224065307.120768-6-ericwouds@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 
-On 3/9/26 10:22 PM, Florian Westphal wrote:
-> Eric Woudstra <ericwouds@gmail.com> wrote:
+On 2/24/26 7:53 AM, Eric Woudstra wrote:
+> In nft_do_chain_bridge() pktinfo is only fully populated for plain packets
+> and packets encapsulated in single 802.1q or 802.1ad.
 > 
-> Hi Eric
+> When implementing the software bridge-fastpath and testing all possible
+> encapulations, there can be more encapsulations:
 > 
->> With double vlan tagged packets in the fastpath, getting the error:
->>
->> skb_vlan_push got skb with skb->data not at mac header (offset 18)
->>
->> Introduce nf_flow_vlan_push(), that can correctly push the inner vlan
->> in the fastpath. It is closedly modelled on existing nf_flow_pppoe_push()
->>
->> Fixes: c653d5a78f34 ("netfilter: flowtable: inline vlan encapsulation in xmit path")
->> Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
->   
->> +static int nf_flow_vlan_push(struct sk_buff *skb, __be16 proto, u16 id)
->> +{
->> +	if (skb_vlan_tag_present(skb)) {
->> +		struct vlan_hdr *vhdr;
->> +
->> +		if (skb_cow_head(skb, VLAN_HLEN))
->> +			return -1;
->> +
->> +		__skb_push(skb, VLAN_HLEN);
->> +		skb_reset_network_header(skb);
->> +
->> +		vhdr = (struct vlan_hdr *)(skb->data);
->> +		vhdr->h_vlan_TCI = htons(id);
->> +		vhdr->h_vlan_encapsulated_proto = skb->protocol;
->> +		skb->protocol = proto;
->> +	} else {
->> +		__vlan_hwaccel_put_tag(skb, proto, id);
->> +	}
+> The packet could (also) be encapsulated in PPPoE, or the packet could be
+> encapsulated in an inner 802.1q, combined with an outer 802.1ad or 802.1q
+> encapsulation.
 > 
-> I did not apply this because I'm not sure if this preserves correct tag
-> order.  Can you clarify?
+> nft_flow_offload_eval() also examines the L4 header, with the L4 protocol
+> known from the conntrack-tuplehash. To access the header it uses
+> nft_thoff(), but for these packets it returns zero.
 > 
-> Lets consider vlan-offload-doesn't-exist case.
+> Introduce nft_set_bridge_pktinfo() to help populate pktinfo with the
+> offsets.
 > 
-> First loop pushes vlan tag 1, we get:
+> Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
+> ---
+>  net/netfilter/nft_chain_filter.c | 55 +++++++++++++++++++++++++++++---
+>  1 file changed, 51 insertions(+), 4 deletions(-)
 > 
->   [vlan1][inet]
+> diff --git a/net/netfilter/nft_chain_filter.c b/net/netfilter/nft_chain_filter.c
+> index d4d5eadaba9c..66ef30c60e56 100644
+> --- a/net/netfilter/nft_chain_filter.c
+> +++ b/net/netfilter/nft_chain_filter.c
+> @@ -227,21 +227,68 @@ static inline void nft_chain_filter_inet_fini(void) {}
+>  #endif /* CONFIG_NF_TABLES_IPV6 */
+>  
+>  #if IS_ENABLED(CONFIG_NF_TABLES_BRIDGE)
+> +static int nft_set_bridge_pktinfo(struct nft_pktinfo *pkt, struct sk_buff *skb,
+> +				  const struct nf_hook_state *state,
+> +				  __be16 *proto)
+> +{
+> +	nft_set_pktinfo(pkt, skb, state);
+> +
+> +	switch (*proto) {
+> +	case htons(ETH_P_PPP_SES): {
+> +		struct ppp_hdr {
+> +			struct pppoe_hdr hdr;
+> +			__be16 proto;
+> +		} *ph, _ph;
+> +
+> +		ph = skb_header_pointer(skb, 0, sizeof(_ph), &_ph);
+> +		if (!ph) {
+> +			*proto = 0;
+> +			return -1;
+> +		}
+> +		switch (ph->proto) {
+> +		case htons(PPP_IP):
+> +			*proto = htons(ETH_P_IP);
+> +			return PPPOE_SES_HLEN;
+> +		case htons(PPP_IPV6):
+> +			*proto = htons(ETH_P_IPV6);
+> +			return PPPOE_SES_HLEN;
+> +		}
+> +		break;
+> +	}
+> +	case htons(ETH_P_8021Q): {
+> +		struct vlan_hdr *vhdr, _vhdr;
+> +
+> +		vhdr = skb_header_pointer(skb, 0, sizeof(_vhdr), &_vhdr);
+> +		if (!vhdr) {
+> +			*proto = 0;
+> +			return -1;
+> +		}
+> +		*proto = vhdr->h_vlan_encapsulated_proto;
+> +		return VLAN_HLEN;
+> +	}
+> +	}
+> +	return 0;
+> +}
+> +
+>  static unsigned int
+>  nft_do_chain_bridge(void *priv,
+>  		    struct sk_buff *skb,
+>  		    const struct nf_hook_state *state)
+>  {
+>  	struct nft_pktinfo pkt;
+> +	__be16 proto;
+> +	int offset;
+>  
+> -	nft_set_pktinfo(&pkt, skb, state);
+> +	proto = eth_hdr(skb)->h_proto;
+> +
+> +	offset = nft_set_bridge_pktinfo(&pkt, skb, state, &proto);
+>  
+> -	switch (eth_hdr(skb)->h_proto) {
+> +	switch (proto) {
+>  	case htons(ETH_P_IP):
+> -		nft_set_pktinfo_ipv4_validate(&pkt, 0);
+> +		nft_set_pktinfo_ipv4_validate(&pkt, offset);
+>  		break;
+>  	case htons(ETH_P_IPV6):
+> -		nft_set_pktinfo_ipv6_validate(&pkt, 0);
+> +		nft_set_pktinfo_ipv6_validate(&pkt, offset);
+>  		break;
+>  	default:
+>  		nft_set_pktinfo_unspec(&pkt);
 
-Always !skb_vlan_tag_present (all vlan tags are pulled before the push
-in the fastpath), so vlan1 is always stored in skb->vlan_all.
+Just in case, I'm sending a kind and small reminder, before it is too
+late in the cycle.
 
-> 
-> 2nd items pushes vlan tag 2, we get:
->   [vlan2][vlan1][inet]
-> 
+Regards,
 
-The second is pushed directly [vlan2][inet]. At a later moment the
-contents of skb->vlan_all is pushed by SW. Ending up with
-[vlan1][vlan2][inet].
-
-> Now lets consider with-offload.  We have one tag only, so we get 1 skb with hwaccel
-> tag in the sk_buff.  This is fine, HW will insert it for us.
-> 
-> But now lets consider two tags:
-> 
-> First loop pushes vlan1, we get the vlan1 tag in sk_buff vlan info.
-> Packet is: [inet].
-
-Correct, so same as SW, vlan1 in skb->vlan_all.
-
-> 
-> 2nd loop pushes vlan2, we get:
-> 	[vlan2][inet].
-> 
-
-Correct, [vlan2][inet].
-
-> Now, when packet is transmitted, where will the HW insert the tag?
-> 
-> [vlan1][vlan2][inet]?
-> Or will this be [vlan2][vlan1][inet]?
-
-The contents of skb->vlan_all is pushed by HW. Ending up with
-[vlan1][vlan2][inet], same as SW.
-
-Hope this is enough to clarify, but you can double-check it looking at
-nf_flow_tuple_encap(). With 2 vlan tags, the contents of skb->vlan_all,
-is always vlan1, the first in the encap array, which is the outer tag.
-
-> reading though the SW-side (no hw support), it seems it will do the right
-> thing (i.e.. the hw tag gets added as the inner tag, right before inet
-> and not added as outermost tag.
-> 
-> Can you confirm thats the case?
-> 
-> Sorry for not responding sooner, there are lots of patches atm and
-> I forgot about this one when I yanked it off the previous pull request
-> at the last second.
-
+Eric
 
