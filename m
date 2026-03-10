@@ -1,237 +1,154 @@
-Received: from n169-110.mail.139.com (n169-110.mail.139.com [120.232.169.110])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F21E3EBF34;
-	Tue, 10 Mar 2026 08:04:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=120.232.169.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7598429DB6A;
+	Tue, 10 Mar 2026 08:09:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773129868; cv=none; b=MYni21z09/z9Heq6aCHFnxPqW0TP0cXOm/nldkPyht2iJifuGr5wcAb5IEUjayUSRBSSiQSa/eUKxmOug02VdfrSmQVp2PVn8abF/eMzXNqPk6mTJek3hTmn0tSBFJT5IqP6N56m5YrE2Y2H7YlLS4ejxFrI5xoY4aFwDnfnUcA=
+	t=1773130171; cv=none; b=PbRHtEGfJ2myOKvbTUMg88V3fjDVV5JfsjT87/bJFvZbHph0SJGH/clfTz/uu0DBzkEGgY/7j3bdfCBipZc6V0aIsSloNyWtLLwkJlaRIhB3kCbr2EggaOHqQCb9p0VucF5Kk+E+R+Lyvr4PR6ocfoT9XM+TDypcXrjekwEx/AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773129868; c=relaxed/simple;
-	bh=dl7cFGu/krscEUd4X4c2fSMgudGGbvCNgTfInuMm0JI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=M8PPpPSKTwUxq8WLIN32TmaDlisRdSi+YsFGKyv9jV8unGZ/z3eukpfEvCFqD6p93W0ogEsoXLMhN+wBaPLbjKxkTcdNcgoAiRwKYrOFMFI+9i2aygzBDP0x1YtbXgp1XylbiFfT36WjHuZDk2MtssXOVSE6hcITJp6pxX3elUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com; spf=pass smtp.mailfrom=139.com; dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b=Lu/tSzCm; arc=none smtp.client-ip=120.232.169.110
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=139.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=139.com
+	s=arc-20240116; t=1773130171; c=relaxed/simple;
+	bh=fyxdW4yZLM/QBT6DaWDRFhNx2Iad5yVhiTbU7gZmarY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hKPPGuOkwl5sbBYAJj9pyL3IZvGdP78cZOuc7k9Y2fVJzhat2m+1r8s1HyDoRBxp19VM3UaQBAYj4EGpksgfLVEeC9ZEAs/uDZkQCFdeBH99xCHnpfrHfb1SLRGj2KEP+3G+KrI5QEOIMWP/M0qpm0QeOGl9rK5FRExGNKTJnFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DPcgR2N3; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=139.com header.i=@139.com header.b="Lu/tSzCm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=139.com; s=dkim; l=0;
-	h=from:subject:message-id:to:cc:mime-version;
-	bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-	b=Lu/tSzCmsVobKT2GToBAIM84pTfLIgIg4+sPxdS9Dry+o01QeOIHVphGbqxyXTw8vKhrETrUvv4Ek
-	 7LCSZKy6Lb6ortHNiQUovnF7ToRTLlCVzoFCCOqy3OvgpFsUhSMfiqO9ByfFCKtrFW4vLZ5PivronS
-	 n7wJjoO5EF1rZ2Qo=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM:                                                                                        
-X-RM-SPAM-FLAG:00000000
-Received:from China-kernel-team (unknown[60.247.85.88])
-	by rmsmtp-lg-appmail-09-12087 (RichMail) with SMTP id 2f3769afd069396-023cc;
-	Tue, 10 Mar 2026 16:04:12 +0800 (CST)
-X-RM-TRANSID:2f3769afd069396-023cc
-From: XiaoHua Wang <561399680@139.com>
-To: gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: pablo@netfilter.org,
-	netdev@vger.kernel.org,
-	sbrivio@redhat.com,
-	XiaoHua Wang <561399680@139.com>
-Subject: [PATCH 6.1.y 1/2] netfilter: nf_tables: missing objects with no memcg accounting
-Date: Tue, 10 Mar 2026 16:02:45 +0800
-Message-Id: <20260310080246.3543546-1-561399680@139.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DPcgR2N3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C851C19423;
+	Tue, 10 Mar 2026 08:09:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773130171;
+	bh=fyxdW4yZLM/QBT6DaWDRFhNx2Iad5yVhiTbU7gZmarY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=DPcgR2N3EvgQXwzVDlz+dYXRb6mNgvI1kcNVEMg3KV2JK5PRyKpKjep+FrbCzCGkw
+	 tBE6iwa3A1diNd8s0ZynTe2bTIX+8EoQaAOXv06f6S2Ts2F0q0G3E2I3G0A9qeOCqW
+	 emhs9Je2mce98Pt6Mm2qK9yt7ZtyykdOAfUxWDbcthoHCjflfMblBjmN6l76XhWHce
+	 oSmHNtnVBOsPt/EJ0ZlBXXIVei4xdrawuEUgqBuBGBLlvW8oHexHRgtLhynKhOxfvY
+	 RoWxe42pFKDJpnZDNsEZiIpM64az4odfksXIRfSUeL5HVYcNm6CzZAhO0n2KKyo4Ps
+	 EAk+LR5Gb5baw==
+From: Thomas Gleixner <tglx@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, Jiri Slaby
+ <jirislaby@kernel.org>, Stefan Hajnoczi <stefanha@redhat.com>, Stefano
+ Garzarella <sgarzare@redhat.com>, kvm@vger.kernel.org,
+ virtualization@lists.linux.dev, Netdev <netdev@vger.kernel.org>,
+ rcu@vger.kernel.org, MPTCP Linux <mptcp@lists.linux.dev>, Linux Kernel
+ <linux-kernel@vger.kernel.org>, Shinichiro Kawasaki
+ <shinichiro.kawasaki@wdc.com>, "Paul E. McKenney" <paulmck@kernel.org>,
+ Dave Hansen <dave.hansen@linux.intel.com>, luto@kernel.org, Michal
+ =?utf-8?Q?Koutn=C3=BD?=
+ <MKoutny@suse.com>, Waiman Long <longman@redhat.com>, Marco Elver
+ <elver@google.com>
+Subject: Re: Stalls when starting a VSOCK listening socket: soft lockups,
+ RCU stalls, timeout
+In-Reply-To: <0ae4d678-5676-4523-bae3-5ad73b526e27@kernel.org>
+References: <863a5291-a636-47d0-891c-bb0524d2e134@kernel.org>
+ <20260302114636.GL606826@noisy.programming.kicks-ass.net>
+ <717310d8-6274-4b7f-8a19-561c45f5f565@kernel.org>
+ <a2b573b4-af61-4b84-a7d1-012ed6bb23c9@kernel.org>
+ <ba067933-bf3b-476d-a0bb-53eda56996ca@kernel.org> <87zf4m2qvo.ffs@tglx>
+ <47cba228-bba7-4e58-a69d-ea41f8de6602@kernel.org> <87tsuu2i59.ffs@tglx>
+ <7efde2b5-3b72-4858-9db0-22493d446301@kernel.org> <87qzpx2sck.ffs@tglx>
+ <20260306152458.GT606826@noisy.programming.kicks-ass.net>
+ <87ldg42eu7.ffs@tglx> <87h5qr2rzi.ffs@tglx> <87eclu3coa.ffs@tglx>
+ <87v7f61cnl.ffs@tglx> <57c1e171-9520-4288-9e2d-10a72a499968@kernel.org>
+ <87pl5ds88r.ffs@tglx> <0ae4d678-5676-4523-bae3-5ad73b526e27@kernel.org>
+Date: Tue, 10 Mar 2026 09:09:27 +0100
+Message-ID: <87eclsrtqg.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+Matthieu!
 
-[ Upstream commit 69e687cea79fc99a17dfb0116c8644b9391b915e ]
+On Mon, Mar 09 2026 at 13:23, Matthieu Baerts wrote:
+> On 09/03/2026 09:43, Thomas Gleixner wrote:
+>> That should provide enough information to decode this mystery.
 
-Several ruleset objects are still not using GFP_KERNEL_ACCOUNT for
-memory accounting, update them. This includes:
+That was wishful thinking, but at least it narrows down the search space.
 
-- catchall elements
-- compat match large info area
-- log prefix
-- meta secctx
-- numgen counters
-- pipapo set backend datastructure
-- tunnel private objects
+> Thank you for the debug patch and the clear instructions. I managed to
+> reproduce the issue with the extra debug. The ouput is available here:
+>
+>   https://github.com/user-attachments/files/25841808/issue-617-debug.txt.gz
 
-Fixes: 33758c891479 ("memcg: enable accounting for nft objects")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[ The function pipapo_realloc_mt() does not exist in 6.1.y,
-so the fix for pipapo_realloc_mt() was not backported. ]
-Signed-off-by: XiaoHua Wang <561399680@139.com>
----
- net/netfilter/nf_tables_api.c  |  2 +-
- net/netfilter/nft_compat.c     |  6 +++---
- net/netfilter/nft_log.c        |  2 +-
- net/netfilter/nft_meta.c       |  2 +-
- net/netfilter/nft_numgen.c     |  2 +-
- net/netfilter/nft_set_pipapo.c | 10 +++++-----
- net/netfilter/nft_tunnel.c     |  5 +++--
- 7 files changed, 15 insertions(+), 14 deletions(-)
+Thank you for testing. So what I can see from the trace is:
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index ac3618395651..4bf42e4f8595 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -6177,7 +6177,7 @@ static int nft_setelem_catchall_insert(const struct net *net,
- 		}
- 	}
- 
--	catchall = kmalloc(sizeof(*catchall), GFP_KERNEL);
-+	catchall = kmalloc(sizeof(*catchall), GFP_KERNEL_ACCOUNT);
- 	if (!catchall)
- 		return -ENOMEM;
- 
-diff --git a/net/netfilter/nft_compat.c b/net/netfilter/nft_compat.c
-index 4f674a472bb6..37090ada8e8d 100644
---- a/net/netfilter/nft_compat.c
-+++ b/net/netfilter/nft_compat.c
-@@ -537,7 +537,7 @@ nft_match_large_init(const struct nft_ctx *ctx, const struct nft_expr *expr,
- 	struct xt_match *m = expr->ops->data;
- 	int ret;
- 
--	priv->info = kmalloc(XT_ALIGN(m->matchsize), GFP_KERNEL);
-+	priv->info = kmalloc(XT_ALIGN(m->matchsize), GFP_KERNEL_ACCOUNT);
- 	if (!priv->info)
- 		return -ENOMEM;
- 
-@@ -814,7 +814,7 @@ nft_match_select_ops(const struct nft_ctx *ctx,
- 		goto err;
- 	}
- 
--	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL);
-+	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL_ACCOUNT);
- 	if (!ops) {
- 		err = -ENOMEM;
- 		goto err;
-@@ -904,7 +904,7 @@ nft_target_select_ops(const struct nft_ctx *ctx,
- 		goto err;
- 	}
- 
--	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL);
-+	ops = kzalloc(sizeof(struct nft_expr_ops), GFP_KERNEL_ACCOUNT);
- 	if (!ops) {
- 		err = -ENOMEM;
- 		goto err;
-diff --git a/net/netfilter/nft_log.c b/net/netfilter/nft_log.c
-index 0e13c003f0c1..4eb59c3f42b8 100644
---- a/net/netfilter/nft_log.c
-+++ b/net/netfilter/nft_log.c
-@@ -163,7 +163,7 @@ static int nft_log_init(const struct nft_ctx *ctx,
- 
- 	nla = tb[NFTA_LOG_PREFIX];
- 	if (nla != NULL) {
--		priv->prefix = kmalloc(nla_len(nla) + 1, GFP_KERNEL);
-+		priv->prefix = kmalloc(nla_len(nla) + 1, GFP_KERNEL_ACCOUNT);
- 		if (priv->prefix == NULL)
- 			return -ENOMEM;
- 		nla_strscpy(priv->prefix, nla, nla_len(nla) + 1);
-diff --git a/net/netfilter/nft_meta.c b/net/netfilter/nft_meta.c
-index 6e8332192622..587ef60c8f32 100644
---- a/net/netfilter/nft_meta.c
-+++ b/net/netfilter/nft_meta.c
-@@ -888,7 +888,7 @@ static int nft_secmark_obj_init(const struct nft_ctx *ctx,
- 	if (tb[NFTA_SECMARK_CTX] == NULL)
- 		return -EINVAL;
- 
--	priv->ctx = nla_strdup(tb[NFTA_SECMARK_CTX], GFP_KERNEL);
-+	priv->ctx = nla_strdup(tb[NFTA_SECMARK_CTX], GFP_KERNEL_ACCOUNT);
- 	if (!priv->ctx)
- 		return -ENOMEM;
- 
-diff --git a/net/netfilter/nft_numgen.c b/net/netfilter/nft_numgen.c
-index 45d3dc9e96f2..5b4dde41ec36 100644
---- a/net/netfilter/nft_numgen.c
-+++ b/net/netfilter/nft_numgen.c
-@@ -66,7 +66,7 @@ static int nft_ng_inc_init(const struct nft_ctx *ctx,
- 	if (priv->offset + priv->modulus - 1 < priv->offset)
- 		return -EOVERFLOW;
- 
--	priv->counter = kmalloc(sizeof(*priv->counter), GFP_KERNEL);
-+	priv->counter = kmalloc(sizeof(*priv->counter), GFP_KERNEL_ACCOUNT);
- 	if (!priv->counter)
- 		return -ENOMEM;
- 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 863162c82330..ad9d0bb43248 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -874,7 +874,7 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
- 		return;
- 	}
- 
--	new_lt = kvzalloc(lt_size + NFT_PIPAPO_ALIGN_HEADROOM, GFP_KERNEL);
-+	new_lt = kvzalloc(lt_size + NFT_PIPAPO_ALIGN_HEADROOM, GFP_KERNEL_ACCOUNT);
- 	if (!new_lt)
- 		return;
- 
-@@ -1150,7 +1150,7 @@ static int pipapo_realloc_scratch(struct nft_pipapo_match *clone,
- 		scratch = kzalloc_node(struct_size(scratch, map,
- 						   bsize_max * 2) +
- 				       NFT_PIPAPO_ALIGN_HEADROOM,
--				       GFP_KERNEL, cpu_to_node(i));
-+				       GFP_KERNEL_ACCOUNT, cpu_to_node(i));
- 		if (!scratch) {
- 			/* On failure, there's no need to undo previous
- 			 * allocations: this means that some scratch maps have
-@@ -1324,7 +1324,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
- 	int i;
- 
- 	new = kmalloc(sizeof(*new) + sizeof(*dst) * old->field_count,
--		      GFP_KERNEL);
-+		      GFP_KERNEL_ACCOUNT);
- 	if (!new)
- 		return ERR_PTR(-ENOMEM);
- 
-@@ -1354,7 +1354,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
- 		new_lt = kvzalloc(src->groups * NFT_PIPAPO_BUCKETS(src->bb) *
- 				  src->bsize * sizeof(*dst->lt) +
- 				  NFT_PIPAPO_ALIGN_HEADROOM,
--				  GFP_KERNEL);
-+				  GFP_KERNEL_ACCOUNT);
- 		if (!new_lt)
- 			goto out_lt;
- 
-@@ -1368,7 +1368,7 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
- 		if (src->rules > (INT_MAX / sizeof(*src->mt)))
- 			goto out_mt;
- 
--		dst->mt = kvmalloc(src->rules * sizeof(*src->mt), GFP_KERNEL);
-+		dst->mt = kvmalloc(src->rules * sizeof(*src->mt), GFP_KERNEL_ACCOUNT);
- 		if (!dst->mt)
- 			goto out_mt;
- 
-diff --git a/net/netfilter/nft_tunnel.c b/net/netfilter/nft_tunnel.c
-index be741db50ffa..cdbfbd88efd1 100644
---- a/net/netfilter/nft_tunnel.c
-+++ b/net/netfilter/nft_tunnel.c
-@@ -503,13 +503,14 @@ static int nft_tunnel_obj_init(const struct nft_ctx *ctx,
- 			return err;
- 	}
- 
--	md = metadata_dst_alloc(priv->opts.len, METADATA_IP_TUNNEL, GFP_KERNEL);
-+	md = metadata_dst_alloc(priv->opts.len, METADATA_IP_TUNNEL,
-+				GFP_KERNEL_ACCOUNT);
- 	if (!md)
- 		return -ENOMEM;
- 
- 	memcpy(&md->u.tun_info, &info, sizeof(info));
- #ifdef CONFIG_DST_CACHE
--	err = dst_cache_init(&md->u.tun_info.dst_cache, GFP_KERNEL);
-+	err = dst_cache_init(&md->u.tun_info.dst_cache, GFP_KERNEL_ACCOUNT);
- 	if (err < 0) {
- 		metadata_dst_free(md);
- 		return err;
--- 
-2.43.0
+[    2.101917] virtme-n-68        3d..1. 703536us : mmcid_user_add: t=00000000e4425b1d mm=00000000a22be644 users=3
+[    2.102057] virtme-n-68        3d..1. 703537us : mmcid_getcid: mm=00000000a22be644 cid=00000002
+[    2.102195] virtme-n-68        3d..2. 703548us : sched_switch: prev_comm=virtme-ng-init prev_pid=68 prev_prio=120 prev_state=D ==> next_comm=swapper/3 next_pid=0 next_prio=120
+
+This one creates the third thread related to the mm and schedules
+out. The new thread schedules in a moment later:
+
+[    2.102828]   <idle>-0         2d..2. 703565us : sched_switch: prev_comm=swapper/2 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=virtme-ng-init next_pid=69 next_prio=120
+[    2.103039]   <idle>-0         2d..2. 703567us : mmcid_cpu_update: cpu=2 mm=00000000a22be644 cid=00000002
+
+[    2.104283]   <idle>-0         0d..2. 703642us : sched_switch: prev_comm=swapper/0 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=virtme-ng-init next_pid=1 next_prio=120
+[    2.104493]   <idle>-0         0d..2. 703643us : mmcid_cpu_update: cpu=0 mm=00000000a22be644 cid=00000000
+
+virtme-n-1 owns CID 0 and after scheduled in it creates the 4th thread,
+which is still in the CID space (0..3)
+
+[    2.104616] virtme-n-1         0d..1. 703690us : mmcid_user_add: t=0000000031a5ee91 mm=00000000a22be644 users=4
+
+Unsurprisingly this assignes CID 3:
+
+[    2.104757] virtme-n-1         0d..1. 703691us : mmcid_getcid: mm=00000000a22be644 cid=00000003
+
+And the newly created task schedules in on CPU3:
+
+[    2.104880]   <idle>-0         3d..2. 703708us : sched_switch: prev_comm=swapper/3 prev_pid=0 prev_prio=120 prev_state=R ==> next_comm=virtme-ng-init next_pid=70 next_prio=120
+[    2.105091]   <idle>-0         3d..2. 703708us : mmcid_cpu_update: cpu=3 mm=00000000a22be644 cid=00000003
+
+Now n-1 continues and creates the 5th thread:
+
+[    2.105227] virtme-n-1         0d..1. 703730us : mmcid_user_add: t=00000000f2e4a8c8 mm=00000000a22be644 users=5
+
+which makes it switch to per CPU ownership mode. Then it continues to go
+through the tasks in mm_cid_do_fixup_tasks_to_cpus() and fixes up:
+
+[    2.105368] virtme-n-1         0d..1. 703730us : mmcid_task_update: t=00000000c923c125 mm=00000000a22be644 cid=20000000
+[    2.105509] virtme-n-1         0d..1. 703731us : mmcid_cpu_update: cpu=0 mm=00000000a22be644 cid=20000000
+
+Itself to be in TRANSIT mode
+
+[    2.105632] virtme-n-1         0d..2. 703731us : mmcid_task_update: t=00000000478c5e8d mm=00000000a22be644 cid=80000000
+[    2.105773] virtme-n-1         0d..2. 703731us : mmcid_putcid: mm=00000000a22be644 cid=00000001
+
+Drops the CID of one task which is not on a CPU
+
+[    2.105896] virtme-n-1         0d..2. 703731us : mmcid_task_update: t=0000000031a5ee91 mm=00000000a22be644 cid=20000003
+[    2.106037] virtme-n-1         0d..2. 703731us : mmcid_cpu_update: cpu=3 mm=00000000a22be644 cid=20000003
+
+and puts the third one correctly into TRANSIT mode
+
+[    2.106174] virtme-n-69        2d..2. 703736us : sched_switch: prev_comm=virtme-ng-init prev_pid=69 prev_prio=120 prev_state=S ==> next_comm=swapper/2 next_pid=0 next_prio=120
+
+Here the one which owns CID 2 schedules out without notice, which is
+just wrong as the above should have already moved it over to TRANSIT
+mode. Why didn't that happen?
+
+So the only circumstances where mm_cid_do_fixup_tasks_to_cpus() fails to
+do that are:
+
+   1) task->mm != mm.
+
+or
+
+   2) task is not longer in the task list w/o going through do_exit()
+
+How the heck is either one of them possible?
+
+Just for the record. The picture Jiri decoded from the VM crash dump is
+exactly the same. One task is not listed.
+
+Confused
+
+        tglx
 
 
