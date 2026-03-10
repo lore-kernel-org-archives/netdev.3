@@ -1,61 +1,84 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA773B8920;
-	Tue, 10 Mar 2026 03:14:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 538CA186284
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 03:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773112488; cv=none; b=GSfdoUMpeOM25tGGneoLQymXVEDKzeu9jWPcKr4LeHtr6g4JC2QCOyJW6hYbeT1Idj9FFjj32eXugAew0TsRT+69VAga06RO8VOPsQnBCxMVDQcYSh3v72rDYdbEaPv1IU6AXZItkxE0VbIA/oZM/1utTQE01C6wo1XpkkIGP6o=
+	t=1773112804; cv=none; b=b01QM7N6+3yJAGd7TdVB8Wrfjvy0dhH/gLRRe+lTvtxXGHMbsGd1mGQUfM1h6pO6vxG8VeQqtBuFg8z9bae6Azo2F1fGDMg9uZjgIe1XwWe9H2ASD3O5idqlLf5dv8qvyFFGXBXm1g8Jbmjguws9E9V9hZxv/8tuYgYcf1IplfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773112488; c=relaxed/simple;
-	bh=KWwgmJ31cx7H8q/1ETyeAo45S86SvVyT2Kvku18GGJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mWzoupbQXm9if/mQLjLIUwJ+QgyQB43VMxdkhVJuJ9g1qU0V/gvmTiUBs/EG6BhPrbNLSdopXZ3uX5xA6K0bTf9iRFXjVz+F9+tXUrDiFwtp3TP161CUr6R574WV0gvnYMBxJIt6BqUl34ztMQSYhpESNvUc2cCmrMCdVL+rrW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sUTfncbQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773112804; c=relaxed/simple;
+	bh=+x7Gbh/MowER54PCDUhUo/uZ9Zk2GPuZsumBm4hYMro=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iIUF48gVPeFb0N5pbvTqkiDlMuZgXmVFAalwkjWPtlPJVTAOk87anHsqJwJROIDz10/3ZcTAoBVzMvobVRKQe71YSjTOh3JoSY1qT2JxfE1C87fTmthiCZff6nNhNDU7zQGAmK9qPUBECgWN8tyXe7gYPD6SNLQgwZyjyyGSDD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bBiG9SLz; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sUTfncbQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D54BDC4CEF7;
-	Tue, 10 Mar 2026 03:14:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773112488;
-	bh=KWwgmJ31cx7H8q/1ETyeAo45S86SvVyT2Kvku18GGJA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sUTfncbQjnzfZ28bFWiED/g0tOVc+3JVksJE7ArOTdbnI5nUjSf81ArkoiifxKsCa
-	 RnVF4liyp2PG30aRPbRt+HAfqVPzLoUEdVszmEr+NWrv3zTCp9KlgPhgMSKij4j9AD
-	 AGkcx7Y6JiYs1yW0cEjI5T032AXj9kVFGBYl6SF+5L1SRqFNVKl4MFRRs3CzN8hecB
-	 MUQTR9Hv/JxaSSzFVaGSLMUyO6UEupJTuepjqV6mPRCWpAjShkaQ6g7OQrp7dLE7vV
-	 LWg4PICDaOj+qiY07JeULl/URkDkQS3SBEzSV7ybgMTMhOtXHO/zkzGWJvhVOMLTp6
-	 nZlzy00pcekhw==
-Date: Mon, 9 Mar 2026 20:14:47 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Chuck Lever <cel@kernel.org>
-Cc: john.fastabend@gmail.com, sd@queasysnail.net, <netdev@vger.kernel.org>,
- <kernel-tls-handshake@lists.linux.dev>, Chuck Lever
- <chuck.lever@oracle.com>
-Subject: Re: [PATCH v1 0/6] TLS read_sock performance scalability
-Message-ID: <20260309201447.56dbb14f@kernel.org>
-In-Reply-To: <20260305211402.39408-1-cel@kernel.org>
-References: <20260305211402.39408-1-cel@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bBiG9SLz"
+Date: Tue, 10 Mar 2026 11:19:38 +0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773112800;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VPzwk8mYXvU3xAfs2Sh8DnOi8USzPO+Hy0PEkYl4BAA=;
+	b=bBiG9SLz8A5KzXH/1MwfTS0hyjpT9uyGrjXz7CwNdGkaDlVd/dPp7qPh+5z0I8CHeBInZo
+	gCC5DOKnBrafZSGRAR9m88ztuCAIRzTskQS13RcnO2LOzNwo4YDV4GQSjy95Dsls57ccig
+	1bRh5U4199CsSVXP/dU97z8XzhROOWA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
+To: Wesley Atwell <atwellwea@gmail.com>
+Cc: edumazet@google.com, ncardwell@google.com, davem@davemloft.net, 
+	dsahern@kernel.org, kuba@kernel.org, pabeni@redhat.com, kuniyu@google.com, 
+	horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] tcp: use WRITE_ONCE() for tsoffset in tcp_v6_connect()
+Message-ID: <sdyelt66tgfd55anansdmp3argjouxtpqlzumlwgcxher4i5ym@5z552zecejtz>
+References: <20260310012604.145661-1-atwellwea@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260310012604.145661-1-atwellwea@gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-On Thu,  5 Mar 2026 16:13:56 -0500 Chuck Lever wrote:
-> I'd like to encourage in-kernel kTLS consumers (i.e., NFS and
-> NVMe/TCP) to coalesce on the use of read_sock. When I suggested
-> this to Hannes, he reported a number of nagging performance
-> scalability issues with read_sock. This series is an attempt to
-> run these issues down and get them fixed before we convert the
-> above sock_recvmsg consumers over to read_sock.
+On Mon, Mar 09, 2026 at 07:26:04PM +0800, Wesley Atwell wrote:
 
-This series seems to be lacking polish:
- - every patch which complicates the codebase should come with clear
-   characterization of the perf win
- - increasing duplication / copy paste between recv and read sock paths
- - wouldn't the data_ready suppression equally apply to the recvmsg
-   path?
+You should use [PATCH net] instead of [PATCH] to indicate which tree 
+this patch is intended for.
+
+> Commit dd23c9f1e8d5 ("tcp: annotate data-races around tp->tsoffset")
+> updated do_tcp_getsockopt() to read tp->tsoffset with READ_ONCE()
+> for TCP_TIMESTAMP because another CPU may change it concurrently.
+> 
+> tcp_v6_connect() still stores tp->tsoffset with a plain write. That
+> store runs under lock_sock() via inet_stream_connect(), but the socket
+> lock does not serialize a concurrent getsockopt(TCP_TIMESTAMP) from
+> another task sharing the socket.
+> 
+> Use WRITE_ONCE() for the tcp_v6_connect() store so the connect-time
+> writer matches the lockless TCP_TIMESTAMP reader. This also makes the
+> IPv6 path consistent with tcp_v4_connect().
+> 
+> Signed-off-by: Wesley Atwell <atwellwea@gmail.com>
+> ---
+>  net/ipv6/tcp_ipv6.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+> index bb09d5ccf599..ba7cd7d3d4da 100644
+> --- a/net/ipv6/tcp_ipv6.c
+> +++ b/net/ipv6/tcp_ipv6.c
+> @@ -325,7 +325,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
+>  						 inet->inet_dport);
+>  		if (!tp->write_seq)
+>  			WRITE_ONCE(tp->write_seq, st.seq);
+> -		tp->tsoffset = st.ts_off;
+> +		WRITE_ONCE(tp->tsoffset, st.ts_off);
+>  	}
+>  
+>  	if (tcp_fastopen_defer_connect(sk, &err))
