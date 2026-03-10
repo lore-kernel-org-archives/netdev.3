@@ -1,283 +1,119 @@
-Received: from smtp153-168.sina.com.cn (smtp153-168.sina.com.cn [61.135.153.168])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31F0334D4CF
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 03:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.135.153.168
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773113281; cv=none; b=sx+QLoq+jieJ1vZ/IWlrC7uJWitkdCiVRkfwi9igt0ifVZyOEi76m3DvivW0I2u/tWsCi16NaM+pbMirHUUvG+jPkwlyt4vL8iWiNlUFn1ALn2KOmSZD+4feFo8WYfkBKY2ABA+FThobdrdjWULhB6E5tZM/gi8v1ay4/GIHoAw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773113281; c=relaxed/simple;
-	bh=3GTE2BLCNFDmKE+Ue5/OLTk2Qapxkp6/4dwpWTstFRE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gl8kdw1Afk7S1SC6N/xI/AYL/wjajG1NTw8aI06SqygFirbsU1eUFiCb2jBtMw4K2Uzf/nEuXNcMj3lfqmGOWOkRSkTGc7t8ocWG2ILlPnLpvdiUOlMJ5nDcCZhP/7cs5hn3g1OpXJjq3N4+5mpr2DuJ2gs+F3FQun2gMi9yVb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com; spf=pass smtp.mailfrom=sina.com; dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b=WYExmZzD; arc=none smtp.client-ip=61.135.153.168
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sina.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sina.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2D028468E
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 03:40:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773114047; cv=pass; b=GroTYSlb3s5ZKIRuhD7lYMxgR2FLLWGkfCWz8qz5xa8q5wNbQKUrvZx96PCk0Oi6sHNQUVqkDs+FN8er63PEzYhowducgtTJIpslvGUR95ztiP2f4KHr++/re5IT+IfWrplycwb6ZnV+lV48PYBcJvg+6zC24QKr87T8MWfSggQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773114047; c=relaxed/simple;
+	bh=q3GLmGFiEnoiLMQqthpZyHVNEeXRy1ezR9xFUHto+h8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SJTvqmGCeUkaOoiJ8cVOiY0aRnqYjEGMdjc4jkJit9D19Y75iVX7j65/oZ8OGPNHfyiOtDqYKFQ4dM7M2luqc78Q9nRwzm5LAfPCwJDOzGGiyIwAxVI1vdkq0jqb7Sc4lUTNg35RS0F3Dp29jyv02pYYnQGTXHtV9LB3cGmUwSM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xPZaCJTb; arc=pass smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=sina.com header.i=@sina.com header.b="WYExmZzD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sina.com; s=201208; t=1773113274;
-	bh=5/m5WGbRVXtJuhdQ34UpLwjS+/NlykDt8Y/BbaUqvCA=;
-	h=From:Subject:Date:Message-ID;
-	b=WYExmZzDqV/WAJP1sUCKIiXE2hsUFYjPPgWAjv1ckcmkeMQDn9+0/rwQnzHJFad1E
-	 K9etBfjDMwK2GFW4SxXEf80/w0l3OQeqBCbatjN2p/xFTTZuvBNq9LVO9cwcJ7/Uuz
-	 auaFIgTb/Qeohc1Yv6MXNBVjOUrmhmxJZrFkBpj0=
-X-SMAIL-HELO: localhost.localdomain
-Received: from unknown (HELO localhost.localdomain)([114.249.62.144])
-	by sina.com (10.54.253.33) with ESMTP
-	id 69AF8D730000173F; Tue, 10 Mar 2026 11:18:14 +0800 (CST)
-X-Sender: hdanton@sina.com
-X-Auth-ID: hdanton@sina.com
-Authentication-Results: sina.com;
-	 spf=none smtp.mailfrom=hdanton@sina.com;
-	 dkim=none header.i=none;
-	 dmarc=none action=none header.from=hdanton@sina.com
-X-SMAIL-MID: 8737146685004
-X-SMAIL-UIID: 0382335DBF6D47A09D3C1E697C097572-20260310-111814-1
-From: Hillf Danton <hdanton@sina.com>
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: edumazet@google.com,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	syzbot+f50072212ab792c86925@syzkaller.appspotmail.com
-Subject: Re: [PATCH v2] atm: lec: fix use-after-free in sock_def_readable()
-Date: Tue, 10 Mar 2026 11:18:04 +0800
-Message-ID: <20260310031805.752-1-hdanton@sina.com>
-In-Reply-To: <20260309155908.508768-1-kartikey406@gmail.com>
-References: 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xPZaCJTb"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-506a6cf8242so92076081cf.1
+        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 20:40:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773114046; cv=none;
+        d=google.com; s=arc-20240605;
+        b=F1EXwyi5wM18PZKqe3GSXpKZ0uN1UAvQ2DzcxUnPi9vqtyOMydYdnpP2+rJSvB+Rv9
+         VeTfIseq8ZcfJ6LHDLqruRWI7xNh/BbHk1R08BrhpzsQ41XzncxxXS44OFCGPJ63JpIl
+         tqfwSKcbv4DRBoZMjlz6oCHfRKLOPF27ZP0VyYO+0i5+b7Zc0sD+DgOZVLaaELe94Ez7
+         5p/h5/bE2/xXbZg+Bpz7o4DlIpxUTX8dSMqjq/yLpR7O2uv7DNnO0ui3D2wF5+8HufY5
+         HFHXLAYuF6IeKqBYNh4G4xxKau+N2FwQZbAvhty+FtcMstWSQgYz2i4UhjnfKH9OHU4l
+         vtuw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=Aq+74U2aKSX5+7csFtq9apolsu5h7SkJnqBW1PWfM7E=;
+        fh=viqldx6YNyTi1IMhIp8ZqCGfGHLa7Iutr8B4/6ccfw0=;
+        b=LMsp7b3qTgBEDFybECRcOOgdckU8zuwxK40PiMXtlBj3YrT8FClUDJd+QYf7EvFjyi
+         DRUTiVO24tU6YEVDvmXMSmOS6B7mIYNv6fklizxD6PsSHsixqX2o9nYNZpwYE7loCFzd
+         3ZA48VZgS7ZKO8ZqpsXu2HBZjBZbXmXx0UoygUzXNwLnq48ti/5tP8zfXilZ5z6FiVh3
+         LCvZ92lG5BRJ3XOXPNNSFOMZLu+uoF0AXI5GHyvYeQMvmP3r1wrcltXo8HLqd15EdMhY
+         sZT0lBUwH+2Y2k57Q+8Q5gWl90M3cE1a1eFVtRGJFZl1c+Rj6EBJZZsxgnF4Z2064Yy+
+         QVsA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773114046; x=1773718846; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Aq+74U2aKSX5+7csFtq9apolsu5h7SkJnqBW1PWfM7E=;
+        b=xPZaCJTb6Cd/BaK0mUQYwASaK/29NvMTWBhe06VgREkJXzPD1auUx5OijH4aQL5nO6
+         HXjPxLAWnKbSAK/sgx1rb7fto3Aaets8/Wrjqr2xy3D+yXZpRhmtW/ybbZgbOdNj8e9l
+         EYAIP6cRkHRdU/mk0oZe88qLTITbwvdZ8pO9rZXXi0OoYWz002g4EB73sWRCdWlFoyt0
+         j3sBPfdGe6zwLRCjLi1MduM2MZVPNmb3o5iMoJy4cPLXmf6jvz7k+fuQeF6SlSbup8kv
+         pP4OCIybkD7BYaaaQpqDiwZbwQl1ye/JiWDtg+bUKluPwKhzpR5qNFgwMEoHZgkMM7qp
+         /I5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773114046; x=1773718846;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Aq+74U2aKSX5+7csFtq9apolsu5h7SkJnqBW1PWfM7E=;
+        b=PUKKSEuD+kbqto85M5jtaSpq16UF9PX+GVOxn//MdZCLnQCnieadc6YAMP8qIcumxP
+         m+U9W7HBoldUWHGkLQKeI2LeZpmSbtoZtfFxhZRvXL2VqfKzCgF8iJCHd8CUZcFhmd6p
+         VF9j2VEtZ2qKKCViYylZw52+YeMtzDtP1AuYL2bxUJgWrlfqwOT/XFw3QgbkaZvaM2rW
+         LDmFsdqpmmTcDudQ/wVzM3edGHhZK5TgUgcfVvu9T6sASJaFXn7kGBvaOCmr7v+NIJC8
+         A3FOtVBsLh04NNswXshtrOSsDGlqDYgjFBcmljjPLWPsUSE96QIdbt/+I3wwppOkGYYE
+         dfDg==
+X-Forwarded-Encrypted: i=1; AJvYcCWGU5r3Pkehtl6Zm9zAOra0tzeN59XyLyJp8e5i/zSQDnaArtYDA0LXVgK3P8vhvnKqLtmjRQA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytS8txBm80hvYRq6UjMX2/WSY4UPGldYAjPPhg1stGtRgys07k
+	q3uru/Nm2ULNt3Oq0CojS5kk1s/oZog5w790A2LTL5pKdxrn4ZNh/on6sV5TxiagbSKAtwwi6yN
+	LzRItHSy7tSecxzmJkyymizfnbqI2At4++99192yj
+X-Gm-Gg: ATEYQzyZMvyc0ef3vhdrjmh3Wb2OEyvPjSkwzQhIwykjNhhgmEBgX+8QOOp/opThOui
+	exIp4//xGOL3XZyPlzC3+kN7iFXkDcrmENSnPzAugJ3EFeaeONdRmgqLVqSmpwYXqBpgflr/W4g
+	UDaLaqGhTrLpV0c/PODuLm5vzkO9RSp78/WUZML5PhF7ecSLuCZmovKJ2Rbgr6yRxHiiWFfM9Li
+	Beex/w+G1suWXgAJKxcZ1AATBR9yt/yvOM9PBNd8FPxJe18wtgFnvmzAFLgOFEXmM2ThoyRcOef
+	ndWHE4AS
+X-Received: by 2002:ac8:5845:0:b0:509:1c90:e186 with SMTP id
+ d75a77b69052e-5091c90e8acmr60689611cf.73.1773114045191; Mon, 09 Mar 2026
+ 20:40:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260310012604.145661-1-atwellwea@gmail.com> <sdyelt66tgfd55anansdmp3argjouxtpqlzumlwgcxher4i5ym@5z552zecejtz>
+In-Reply-To: <sdyelt66tgfd55anansdmp3argjouxtpqlzumlwgcxher4i5ym@5z552zecejtz>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 10 Mar 2026 04:40:34 +0100
+X-Gm-Features: AaiRm51ZvLNjq2CnjyclwRmG8WS5KKT4ks1ZUODq11o18fczZuvUD7Mvz503Q88
+Message-ID: <CANn89iKZ0Pw95W6V=DK8od-3gpO580yDvf7W5pUE9Gr6KWvVTA@mail.gmail.com>
+Subject: Re: [PATCH] tcp: use WRITE_ONCE() for tsoffset in tcp_v6_connect()
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: Wesley Atwell <atwellwea@gmail.com>, ncardwell@google.com, davem@davemloft.net, 
+	dsahern@kernel.org, kuba@kernel.org, pabeni@redhat.com, kuniyu@google.com, 
+	horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon,  9 Mar 2026 21:29:08 +0530 Deepanshu Kartikey wrote:
-> A race condition exists between lec_atm_close() setting priv->lecd
-> to NULL and concurrent access to priv->lecd in send_to_lecd(),
-> lec_handle_bridge(), and lec_atm_send(). When the socket is freed
-> via RCU while another thread is still using it, a use-after-free
-> occurs in sock_def_readable() when accessing the socket's wait queue.
-> 
-> The root cause is that lec_atm_close() clears priv->lecd without
-> any synchronization, while callers dereference priv->lecd without
-> any protection against concurrent teardown.
-> 
-> Fix this by converting priv->lecd to an RCU-protected pointer:
-> - Mark priv->lecd as __rcu in lec.h
-> - Use rcu_assign_pointer() in lec_atm_close() and lecd_attach()
->   for safe pointer assignment
-> - Use rcu_access_pointer() for NULL checks that do not dereference
->   the pointer in lec_start_xmit(), lec_push(), send_to_lecd() and
->   lecd_attach()
-> - Use rcu_read_lock/rcu_dereference/rcu_read_unlock in send_to_lecd(),
->   lec_handle_bridge() and lec_atm_send() to safely access lecd
-> - Use rcu_assign_pointer() followed by synchronize_rcu() in
->   lec_atm_close() to ensure all readers have completed before
->   proceeding. This is safe since lec_atm_close() is called from
->   vcc_release() which holds lock_sock(), a sleeping lock.
-> - Remove the manual sk_receive_queue drain from lec_atm_close()
->   since vcc_destroy_socket() already drains it after lec_atm_close()
->   returns.
-> 
-> v2: Switch from spinlock + sock_hold/put approach to RCU to properly
->     fix the race. The v1 spinlock approach had two issues pointed out
->     by Eric Dumazet:
->     1. priv->lecd was still accessed directly after releasing the
->        lock instead of using a local copy.
->     2. The spinlock did not prevent packets being queued after
->        lec_atm_close() drains sk_receive_queue since timer and
->        workqueue paths bypass netif_stop_queue().
-> 
-> Note: Syzbot patch testing was attempted but the test VM terminated
->     unexpectedly with "Connection to localhost closed by remote host",
->     likely due to a QEMU AHCI emulation issue unrelated to this fix.
->     Compile testing with "make W=1 net/atm/lec.o" passes cleanly.
-> 
-> Reported-by: syzbot+f50072212ab792c86925@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=f50072212ab792c86925
-> Link: https://lore.kernel.org/all/20260309093614.502094-1-kartikey406@gmail.com/T/ [v1]
-> Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-> ---
->  net/atm/lec.c | 70 +++++++++++++++++++++++++++++++++------------------
->  net/atm/lec.h |  2 +-
->  2 files changed, 46 insertions(+), 26 deletions(-)
-> 
-> diff --git a/net/atm/lec.c b/net/atm/lec.c
-> index fb93c6e1c329..32adf28663a0 100644
-> --- a/net/atm/lec.c
-> +++ b/net/atm/lec.c
-> @@ -154,10 +154,19 @@ static void lec_handle_bridge(struct sk_buff *skb, struct net_device *dev)
->  					/* 0x01 is topology change */
->  
->  		priv = netdev_priv(dev);
-> -		atm_force_charge(priv->lecd, skb2->truesize);
-> -		sk = sk_atm(priv->lecd);
-> -		skb_queue_tail(&sk->sk_receive_queue, skb2);
-> -		sk->sk_data_ready(sk);
-> +		struct atm_vcc *vcc;
-> +
-> +		rcu_read_lock();
-> +		vcc = rcu_dereference(priv->lecd);
-> +		if (vcc) {
-> +			atm_force_charge(vcc, skb2->truesize);
-> +			sk = sk_atm(vcc);
-> +			skb_queue_tail(&sk->sk_receive_queue, skb2);
-> +			sk->sk_data_ready(sk);
-> +		} else {
-> +			dev_kfree_skb(skb2);
-> +		}
-> +		rcu_read_unlock();
->  	}
->  }
->  #endif /* IS_ENABLED(CONFIG_BRIDGE) */
-> @@ -216,7 +225,7 @@ static netdev_tx_t lec_start_xmit(struct sk_buff *skb,
->  	int is_rdesc;
->  
->  	pr_debug("called\n");
-> -	if (!priv->lecd) {
-> +	if (!rcu_access_pointer(priv->lecd)) {
->  		pr_info("%s:No lecd attached\n", dev->name);
->  		dev->stats.tx_errors++;
->  		netif_stop_queue(dev);
-> @@ -449,10 +459,19 @@ static int lec_atm_send(struct atm_vcc *vcc, struct sk_buff *skb)
->  				break;
->  			skb2->len = sizeof(struct atmlec_msg);
->  			skb_copy_to_linear_data(skb2, mesg, sizeof(*mesg));
-> -			atm_force_charge(priv->lecd, skb2->truesize);
-> -			sk = sk_atm(priv->lecd);
-> -			skb_queue_tail(&sk->sk_receive_queue, skb2);
-> -			sk->sk_data_ready(sk);
-> +			struct atm_vcc *vcc;
-> +
-> +			rcu_read_lock();
-> +			vcc = rcu_dereference(priv->lecd);
-> +			if (vcc) {
-> +				atm_force_charge(vcc, skb2->truesize);
-> +				sk = sk_atm(vcc);
-> +				skb_queue_tail(&sk->sk_receive_queue, skb2);
-> +				sk->sk_data_ready(sk);
-> +			} else {
-> +				dev_kfree_skb(skb2);
-> +			}
-> +			rcu_read_unlock();
->  		}
->  	}
->  #endif /* IS_ENABLED(CONFIG_BRIDGE) */
-> @@ -468,23 +486,16 @@ static int lec_atm_send(struct atm_vcc *vcc, struct sk_buff *skb)
->  
->  static void lec_atm_close(struct atm_vcc *vcc)
->  {
-> -	struct sk_buff *skb;
->  	struct net_device *dev = (struct net_device *)vcc->proto_data;
->  	struct lec_priv *priv = netdev_priv(dev);
->  
-> -	priv->lecd = NULL;
-> +	rcu_assign_pointer(priv->lecd, NULL);
-> +	synchronize_rcu();
->  	/* Do something needful? */
->  
-At this point priv->lecd is no longer used, so why not make lecd valid
-throughout the lifespan of priv and free it after stopping dev queue,
-instead of the tedious rcu trick?
+On Tue, Mar 10, 2026 at 4:20=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
+>
+> On Mon, Mar 09, 2026 at 07:26:04PM +0800, Wesley Atwell wrote:
+>
+> You should use [PATCH net] instead of [PATCH] to indicate which tree
+> this patch is intended for.
+>
 
->  	netif_stop_queue(dev);
->  	lec_arp_destroy(priv);
->  
-> -	if (skb_peek(&sk_atm(vcc)->sk_receive_queue))
-> -		pr_info("%s closing with messages pending\n", dev->name);
-> -	while ((skb = skb_dequeue(&sk_atm(vcc)->sk_receive_queue))) {
-> -		atm_return(vcc, skb->truesize);
-> -		dev_kfree_skb(skb);
-> -	}
-> -
->  	pr_info("%s: Shut down!\n", dev->name);
->  	module_put(THIS_MODULE);
->  }
-> @@ -510,12 +521,14 @@ send_to_lecd(struct lec_priv *priv, atmlec_msg_type type,
->  	     const unsigned char *mac_addr, const unsigned char *atm_addr,
->  	     struct sk_buff *data)
->  {
-> +	struct atm_vcc *vcc;
->  	struct sock *sk;
->  	struct sk_buff *skb;
->  	struct atmlec_msg *mesg;
->  
-> -	if (!priv || !priv->lecd)
-> +	if (!priv || !rcu_access_pointer(priv->lecd))
->  		return -1;
-> +
->  	skb = alloc_skb(sizeof(struct atmlec_msg), GFP_ATOMIC);
->  	if (!skb)
->  		return -1;
-> @@ -532,18 +545,27 @@ send_to_lecd(struct lec_priv *priv, atmlec_msg_type type,
->  	if (atm_addr)
->  		memcpy(&mesg->content.normal.atm_addr, atm_addr, ATM_ESA_LEN);
->  
-> -	atm_force_charge(priv->lecd, skb->truesize);
-> -	sk = sk_atm(priv->lecd);
-> +	rcu_read_lock();
-> +	vcc = rcu_dereference(priv->lecd);
-> +	if (!vcc) {
-> +		rcu_read_unlock();
-> +		kfree_skb(skb);
-> +		return -1;
-> +	}
-> +
-> +	atm_force_charge(vcc, skb->truesize);
-> +	sk = sk_atm(vcc);
->  	skb_queue_tail(&sk->sk_receive_queue, skb);
->  	sk->sk_data_ready(sk);
->  
->  	if (data != NULL) {
->  		pr_debug("about to send %d bytes of data\n", data->len);
-> -		atm_force_charge(priv->lecd, data->truesize);
-> +		atm_force_charge(vcc, data->truesize);
->  		skb_queue_tail(&sk->sk_receive_queue, data);
->  		sk->sk_data_ready(sk);
->  	}
->  
-> +	rcu_read_unlock();
->  	return 0;
->  }
->  
-> @@ -618,7 +640,7 @@ static void lec_push(struct atm_vcc *vcc, struct sk_buff *skb)
->  
->  		atm_return(vcc, skb->truesize);
->  		if (*(__be16 *) skb->data == htons(priv->lecid) ||
-> -		    !priv->lecd || !(dev->flags & IFF_UP)) {
-> +		    !rcu_access_pointer(priv->lecd) || !(dev->flags & IFF_UP)) {
->  			/*
->  			 * Probably looping back, or if lecd is missing,
->  			 * lecd has gone down
-> @@ -753,12 +775,12 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
->  		priv = netdev_priv(dev_lec[i]);
->  	} else {
->  		priv = netdev_priv(dev_lec[i]);
-> -		if (priv->lecd)
-> +		if (rcu_access_pointer(priv->lecd))
->  			return -EADDRINUSE;
->  	}
->  	lec_arp_init(priv);
->  	priv->itfnum = i;	/* LANE2 addition */
-> -	priv->lecd = vcc;
-> +	rcu_assign_pointer(priv->lecd, vcc);
->  	vcc->dev = &lecatm_dev;
->  	vcc_insert_socket(sk_atm(vcc));
->  
-> diff --git a/net/atm/lec.h b/net/atm/lec.h
-> index be0e2667bd8c..ec85709bf818 100644
-> --- a/net/atm/lec.h
-> +++ b/net/atm/lec.h
-> @@ -91,7 +91,7 @@ struct lec_priv {
->  						 */
->  	spinlock_t lec_arp_lock;
->  	struct atm_vcc *mcast_vcc;		/* Default Multicast Send VCC */
-> -	struct atm_vcc *lecd;
-> +	struct atm_vcc __rcu *lecd;
->  	struct delayed_work lec_arp_work;	/* C10 */
->  	unsigned int maximum_unknown_frame_count;
->  						/*
-> -- 
-> 2.43.0
+I saw the discrepancy while cooking
+
+commit 165573e41f2f66ef98940cf65f838b2cb575d9d1    tcp: secure_seq:
+add back ports to TS offset
+
+For this reason, it is better to use net-next tree and avoid merge conflict=
+s.
+
+Note that TCP_TIMESTAMP getsockopt() is probably not used while
+another thread is doing a connect(),
+it is mostly used for TCP_REPAIR. No need for stable backports.
+
+Reviewed-by: Eric Dumazet <edumazet@google.com>
