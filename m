@@ -1,172 +1,146 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A859387361
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 11:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F483876D0
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 11:28:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773141851; cv=none; b=IAwXMZkSqZiWIheAGxWsd6NsGc+n1RvYfBNxox/uGbeesTAeGNvWhqBw1wV1sOX5hc1ERClbBZnu5drck/PMuo1l4d8YOHGued55CcVjfElkDSt1H/M33t4NEihuWRF7p0ccAjvs4KjazPU1Lkr5GifHef9f4T9G2yfXIU3dXpk=
+	t=1773142121; cv=none; b=lZUvlyJcj9klIiZjx0dx3WJDf9kBNjM11b84FuZE89Ht/si2XgwY1/tgzBMtS1OZQhoiHDOxRnpCc+hfRwlm/zQmoDDezZnrrHYzon/3LLfiHWblDKBPOwfoDL6349JYcNmzuaJ1SGvmFI/GBha9ir8d22wDn44X2kl53nT4b1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773141851; c=relaxed/simple;
-	bh=o/uqIjeuUzOOdf1q1N1+cQPwX7j5NTyoms2N9zoaY98=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iE+W1XF6uq+XX4MNNy2wZb+x0Bm17VUaqJan7qBMNNARvqeCq3MY1X3tgcls90QQDlkZf5dKS4VDo4+Ww0SeWCyyFv2tKJzb1FTq5jnVp5t5b5F9dNZY7nMdxoYWZNoM8pd/Yyi/rDXZ5Z+NnUHqmm3VJd8c2vLSdr5VDva1Xz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zf8QWLRV; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773142121; c=relaxed/simple;
+	bh=KQqnhr6YlAa/gpy+sTU5GHwCZhZ6qW8rmLEx/uTsI6M=;
+	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
+	 In-Reply-To:References; b=fxmqUmJ9fTZ1W6yEjEmjN6DmNlxx0EDbUoPSbrLBwqtBOt1jx+v7EaMEnSj5nGUwPXPIdOz2FMnnrDKmgYZ/b5owksXxBRO9I2QcmlR9G+IPJqwdTZXB0a73bj/FE3YCWgOUHWaA9TmbVneNxSHQ0xgFVIovORNLMjrobPVpO2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iaqdFc3R; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zf8QWLRV"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48534e9076fso17389635e9.0
-        for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 04:24:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773141848; x=1773746648; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zwm5kS48yTdTQ1D8tWJC+uRL7HDVBPU6IqwJ3u69y1E=;
-        b=Zf8QWLRVNTuEIVpyaW080ywpJGB+2vtg+MVVrT413Bea3LfydSSQ1m9D4Xf2HmDbov
-         q47DIX8xXrj098qMSN6FRNAN7D/wyEx87Mum3LK8JCIBsaDIaPUvTll5OfDm8pgMk0BI
-         9IpnHLAzDawuOduKXgfFWaexDlIj6yvV7QpabpDq8vfcDfMWLrJfFeif4xrj6oYKN9m+
-         m4u7V+qRPZTNPzFFMPzIYWYq2UEm4TOg+a1sTm7JupRvYH1dR2GpusvPeKmPX/vm4T5h
-         G4fdH/qsdeRr7zQFPDwLBhSw8ejoej2n2C8BC55DWmfdNpeMk47EPBo+iMgPv06e7o0/
-         kCdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773141848; x=1773746648;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zwm5kS48yTdTQ1D8tWJC+uRL7HDVBPU6IqwJ3u69y1E=;
-        b=Bzduw4YYQ4Ej6VmUtSBAgOVI56h0ZxSnIHGtCPwHVpVRYkWUcqU3FdS40wkd9V4pMP
-         CkmYN9BQ8Vf9xI6tUVbzNGUoTr4Z8fv301e3ki9czYSF8BR8EvDKXB8TDdSOWW082JWQ
-         0bi0rACmZW1T4OuEw9ZijgVZd1Sv9oiSt9MPgfm2xvQM8TyIzIBg3m3kTy52eeBqmJEZ
-         gh2fJmJEJr/kne2QxOlzolHRhvZafxViWOpVSFgPS4ikDg/EaAJ/rwSUF+L31SV1zEJr
-         2q2MjATc+G/bimlTW8jNN3egsOSrKgIflyg5XinJphz01penReTshv+6RycJ88Wxu+aG
-         4XGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWZk2Krzr0jTbXZkFq0T2lBSCi2OHo3ElX+bsRGZXgwDG4jr1oQBP34RUv4OWQUX+nHu4HSTIc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlW0YhIV4T4TJcvLHHwPAnoeTgeBM96TbHveDfnpiyeCBfSA0A
-	rz+74ilSrATGDhwrQJ6KaxOIDztNRBdP+RIbQeYJamS8HO6jqcBV9RD6
-X-Gm-Gg: ATEYQzzjINE5Ws3mnIjCLnXpI+wJ5ll9S4iwHvoymyDlpnhyOlbafMYC6sRy8u5Ppgo
-	VKpJh+0b/PAk1uut2AypvoKd8IfKZOKPsZcsGOZavw9JjplrGWw6Lvl5vm3Ic4oB8SxiQpqhe17
-	cTZLDUzk+LSBiTYCGrdzUI1gSyZqC/hczR4S97VBnS0T9GS9n3YDPd6yH/Yzu1MY7Lum9JtTZqG
-	txTLyoN3kquvoR2+6DSzpS6DtX0hMqNXRGoW3ws0d5BD7a5k5ROOWWUg+Wl7CDYJ/MZwd6HHET5
-	XilCWMtPnEDFXTbpYHidnnmV4oboKr36dfUsj0qgdTMR2wk88zpY20kF6yVp2njcuDMc/+Fb8MA
-	+Y0+nrL8aQRvGDKXLHJbV/0f+eh+2dcUMRp6Z6kltemCBaJjU6yQP7lkqKShVDnhFLnGydAWPQm
-	34T0YZJ+H8VW7ul40GWJcqLAHQusOZmDA1MA==
-X-Received: by 2002:a05:600c:4445:b0:483:a27e:6706 with SMTP id 5b1f17b1804b1-48526922533mr263095895e9.9.1773141847742;
-        Tue, 10 Mar 2026 04:24:07 -0700 (PDT)
-Received: from T15.. ([46.175.113.10])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-439dad97abasm32238560f8f.10.2026.03.10.04.24.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 04:24:07 -0700 (PDT)
-From: Wojciech Slenska <wojciech.slenska@gmail.com>
-To: Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Alex Elder <elder@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	Wojciech Slenska <wojciech.slenska@gmail.com>
-Subject: [PATCH v2 2/2] arm64: dts: qcom: agatti: Add IPA nodes
-Date: Tue, 10 Mar 2026 12:22:31 +0100
-Message-ID: <20260310112309.79261-3-wojciech.slenska@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260310112309.79261-1-wojciech.slenska@gmail.com>
-References: <20260310112309.79261-1-wojciech.slenska@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iaqdFc3R"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1773142108;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QEgXSRi8An7XY2t213VJlqkfT5N4BKHBSmPFM54cjbw=;
+	b=iaqdFc3RsLQKWQKQN/Dj5JCr7ZNoeWvtHZhT7DR5h1QYm2oa4XgZvbw4/kPBEWPd89jzwA
+	0gP34tz/uVYgVBFIgPMRmTV3V7rgQhBJ19wM5DjxuFlL1/L572bIg2VeFVMWWrBNrZQNMx
+	LClaA0J8SKfUHY/P7jBfYRlDUzZRa50=
+Date: Tue, 10 Mar 2026 11:28:25 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
+Message-ID: <215d34adafe389a6792b2ca111ac3ec7ccc079ca@linux.dev>
+TLS-Required: No
+Subject: Re: [PATCH net v1] net/rose: fix NULL pointer dereference in
+ rose_transmit_link on reconnect
+To: "Eric Dumazet" <edumazet@google.com>
+Cc: netdev@vger.kernel.org, "Jiayuan Chen" <jiayuan.chen@shopee.com>,
+ syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com, "David S. Miller"
+ <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
+ <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Kees Cook"
+ <kees@kernel.org>, "Takamitsu Iwai" <takamitz@amazon.co.jp>, "Pwnverse"
+ <stanksal@purdue.edu>, "Ingo Molnar" <mingo@kernel.org>,
+ linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <CANn89iL3g7+MpkDrY8-v+Zswy5Woe_VvEMqbvHYRxQGpk_OSEQ@mail.gmail.com>
+References: <20260310101349.50993-1-jiayuan.chen@linux.dev>
+ <CANn89iL3g7+MpkDrY8-v+Zswy5Woe_VvEMqbvHYRxQGpk_OSEQ@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
 
-Added IPA nodes and definitions.
+March 10, 2026 at 18:24, "Eric Dumazet" <edumazet@google.com mailto:eduma=
+zet@google.com?to=3D%22Eric%20Dumazet%22%20%3Cedumazet%40google.com%3E > =
+wrote:
 
-Signed-off-by: Wojciech Slenska <wojciech.slenska@gmail.com>
----
- arch/arm64/boot/dts/qcom/agatti.dtsi | 53 ++++++++++++++++++++++++++++
- 1 file changed, 53 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/agatti.dtsi b/arch/arm64/boot/dts/qcom/agatti.dtsi
-index 76b93b7bd50f..dbaae258f3e7 100644
---- a/arch/arm64/boot/dts/qcom/agatti.dtsi
-+++ b/arch/arm64/boot/dts/qcom/agatti.dtsi
-@@ -433,6 +433,18 @@ wlan_smp2p_in: wlan-wpss-to-ap {
- 			interrupt-controller;
- 			#interrupt-cells = <2>;
- 		};
-+
-+		ipa_smp2p_out: ipa-ap-to-modem {
-+			qcom,entry-name = "ipa";
-+			#qcom,smem-state-cells = <1>;
-+		};
-+
-+		ipa_smp2p_in: ipa-modem-to-ap {
-+			qcom,entry-name = "ipa";
-+			interrupt-controller;
-+			#interrupt-cells = <2>;
-+		};
-+
- 	};
- 
- 	soc: soc@0 {
-@@ -1641,6 +1653,47 @@ usb_dwc3_ss: endpoint {
- 			};
- 		};
- 
-+		ipa: ipa@5840000 {
-+			compatible = "qcom,qcm2290-ipa", "qcom,sc7180-ipa";
-+
-+			iommus = <&apps_smmu 0x140 0x0>;
-+			reg = <0x0 0x05840000 0x0 0x7000>,
-+			      <0x0 0x05847000 0x0 0x2000>,
-+			      <0x0 0x05804000 0x0 0x2c000>;
-+			reg-names = "ipa-reg",
-+				    "ipa-shared",
-+				    "gsi";
-+
-+			interrupts-extended = <&intc GIC_SPI 257 IRQ_TYPE_EDGE_RISING>,
-+					      <&intc GIC_SPI 259 IRQ_TYPE_LEVEL_HIGH>,
-+					      <&ipa_smp2p_in 0 IRQ_TYPE_EDGE_RISING>,
-+					      <&ipa_smp2p_in 1 IRQ_TYPE_EDGE_RISING>;
-+			interrupt-names = "ipa",
-+					  "gsi",
-+					  "ipa-clock-query",
-+					  "ipa-setup-ready";
-+
-+			clocks = <&rpmcc RPM_SMD_IPA_CLK>;
-+			clock-names = "core";
-+
-+			interconnects = <&system_noc MASTER_IPA RPM_ALWAYS_TAG
-+					 &bimc SLAVE_EBI1 RPM_ALWAYS_TAG>,
-+					<&system_noc MASTER_IPA RPM_ALWAYS_TAG
-+					 &system_noc SLAVE_IMEM RPM_ALWAYS_TAG>,
-+					<&bimc MASTER_APPSS_PROC RPM_ACTIVE_TAG
-+					 &config_noc SLAVE_IPA_CFG RPM_ACTIVE_TAG>;
-+			interconnect-names = "memory",
-+					     "imem",
-+					     "config";
-+
-+			qcom,smem-states = <&ipa_smp2p_out 0>,
-+					   <&ipa_smp2p_out 1>;
-+			qcom,smem-state-names = "ipa-clock-enabled-valid",
-+						"ipa-clock-enabled";
-+
-+			status = "disabled";
-+		};
-+
- 		gpu: gpu@5900000 {
- 			compatible = "qcom,adreno-07000200", "qcom,adreno";
- 			reg = <0x0 0x05900000 0x0 0x40000>,
--- 
-2.43.0
+>=20
+>=20On Tue, Mar 10, 2026 at 11:14 AM Jiayuan Chen <jiayuan.chen@linux.dev=
+> wrote:
+>=20
+>=20>=20
+>=20> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+> >=20
+>=20>  syzkaller reported a bug [1], and the reproducer is available at [=
+2].
+> >=20
+>=20>  When rose_connect() is called a second time on an already-connecti=
+ng
+> >  socket, it overwrites rose->neighbour with the result of rose_get_ne=
+igh()
+> >  without releasing the previous reference. If rose_get_neigh() return=
+s
+> >  NULL, the socket is left in an inconsistent state: rose->state remai=
+ns
+> >  ROSE_STATE_1 from the first connect while rose->neighbour is NULL.
+> >=20
+>=20>  When the socket is subsequently closed, rose_release() sees ROSE_S=
+TATE_1
+> >  and calls rose_write_internal() -> rose_transmit_link(skb, NULL), ca=
+using
+> >  a NULL pointer dereference when accessing neigh->loopback.
+> >=20
+>=20>  Fix this by:
+> >  1. Releasing the old neighbour reference before attempting a reconne=
+ct
+> >  2. Resetting rose->state to ROSE_STATE_0 before the new connect atte=
+mpt,
+> >  so a failure leaves the socket in a clean state
+> >  3. Setting rose->neighbour to NULL in all error paths after
+> >  rose_neigh_put() to prevent use-after-free on subsequent reconnects
+> >=20
+>=20>  [1] https://syzkaller.appspot.com/bug?extid=3Dd00f90e0af54102fb271
+> >  [2] https://gist.github.com/mrpre/9e6779e0d13e2c66779b1653fef80516
+> >=20
+>=20>  Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> >  Reported-by: syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com
+> >  Closes: https://lore.kernel.org/all/69694d6f.050a0220.58bed.0027.GAE=
+@google.com/T/
+> >  Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+> >  Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> >  ---
+> >  net/rose/af_rose.c | 11 +++++++++++
+> >  1 file changed, 11 insertions(+)
+> >=20
+>=20Normally, a connect() on a socket already connected should return an =
+error.
+>=20
+>=20disconnect is a special operation involving AF_UNSPEC
+>=20
+>=20man connect
+> ...
+>  Some protocol sockets (e.g., TCP sockets as well as datagram
+> sockets in the UNIX and Internet domains) may dissolve the association
+> by
+>  connecting to an address with the sa_family member of sockaddr
+> set to AF_UNSPEC; thereafter, the socket can be connected to another
+> ad=E2=80=90
+>  dress. (AF_UNSPEC is supported since Linux 2.2.)
+>
 
+Thanks for pointing this out. I should have checked the man page earlier.
+
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index 841d62481048..ba56213e0a2a 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -811,6 +811,11 @@ static int rose_connect(struct socket *sock, struct =
+sockaddr_unsized *uaddr, int
+                goto out_release;
+        }
+
++       if (sk->sk_state =3D=3D TCP_SYN_SENT) {
++               err =3D -EALREADY;
++               goto out_release;
++       }
++
+        sk->sk_state   =3D TCP_CLOSE;
+        sock->state =3D SS_UNCONNECTED;
+
+
+Tested and the panic is gone. Will send v2 after the cool-down period.
