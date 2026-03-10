@@ -1,169 +1,241 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A385362123
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 07:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773128828; cv=none; b=tJrHJv3SuR7XDTuuYwutaTfQoeNnqUpW6dPWfNipIoM+OBEUUHSdnMAl9kuWoyyDwsQvgyUiNCUnjLMqbwJ4G5Wvo8eM3tWjlFLORQ4jOmr7KDk2csOhDKN+XjtZLn7qIjL2zG/yYeSoCkiEjJx+pIKahJF3DZNYRwyo+8iwHWg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773128828; c=relaxed/simple;
-	bh=bXnDNSFidNz36SeGMTKr9aEsO9Td+iPTz2QUPB6xp3c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ed3OHTWTrrFWnuX1luCunFXup8WF/P/XkdiATzGMy9p1EpyYnjgM/RZH7nApxjv0IVec2Hrwg0JYtQ2lIGg/v7IJEyHaOi1f3qTJc2fY4rz3MqmeZgEVRJQLUVp0+Jki8h1XczWE20N8UV04LicqZUAeT0yjABjT7415S8bSVss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gow9+562; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CC13603F2;
+	Tue, 10 Mar 2026 07:47:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773128855; cv=fail; b=agWtkEJ9ck+jDrEVY3le5NlQvPOQzc519z7Y1aQHxzK6KLJv06LCZfBw4hyE0mmNC+XI1S8q1hBkInLnBAl+g6MqG07g8XqKGmbZ3Eo5C5sYiNfdVENYOcVsS5NSqWrRcwt0EcgvrwqrEuo5z6W7WH6AYC7KFYLOUfAGSs2N8ZQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773128855; c=relaxed/simple;
+	bh=1PazGrKLV4guyjePkujUHjXtOxRLfUKQ+hnNimXi298=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=XM/9XvXCIXVmOO3HlznUKDQ1ZE+QwStGmTryQp8viSwghDJJfvVA+BaibdMQgN8+zosjWwGsRV6VhEdiRdG/ATmq8FMejqXp+087H3a9gPcCxiCsT58jRaatx+lYI3LBicsF0l1oN8HBi91/39+J6IUKEKauO/sZ6UdfoqFk7QE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=isCQWd/8; arc=fail smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gow9+562"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-359f8502ea8so65537a91.2
-        for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 00:47:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773128826; x=1773733626; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3MrEEXv7Xy2jJrXRIKwxLssaRaTIm50HmDgCOhNMffI=;
-        b=Gow9+562BFRpy9U2GY8TssgH+Gaw7cOuYfzpcHt/I9pTfBraDfXUoMpUslObZ9eBQG
-         YUGImjaSUqlb9txAuu/rxdFyx5Kl4B+xQLu6gr9T6oMvmiw5dS2HULs3moEFFbASS6aT
-         /CBAEwLpm/3xJsJZRGwT4zIdAGPo4+Mreu0zucrYPQszeGNQHm3Gdt9y6MfDNTToR6KE
-         oKLqlF3kuP8zYPf99UQE70vYW15bpnWp6ODajaOg1ma+MEGtjXUfGTAzU5TnuCMd6Cmd
-         XKCNBIun0VDfKe8rTVNNMFPa1yxSOBES4x7JwuRHRiBbbwCZ4voHn2rpFy2UUd+A8FTp
-         GV3A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773128826; x=1773733626;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3MrEEXv7Xy2jJrXRIKwxLssaRaTIm50HmDgCOhNMffI=;
-        b=WfLrbYV02OfhQ9Qtu6w9PlOfxcu6awhqaBkqJEnXATfpczQH8jn5DX76JCtcenLJVo
-         JaR1gR8X/N+K1TE+sUigX9y2d6/13nWNsba0gz3kdfPUjyKK1X97KjJLh53jeUGFWWaD
-         LhSigYOub4rL5AmCrl9SzD+8p2HiFlb6JGO5tbAWyaIGFKJd8MmrNBYPWYRpdKm8yt3S
-         gBev5MZOKr3VKnKXeOXTcJZKZ9r4uhzMYbl4+BnpyT7r7xPLYaksgBqGNWYJHTOsAyV8
-         xo0WoQfTDZJw1jCKiiKDZMPP9EZFsVOSaexP7oPlmJD/uBYOz2GRJBUpO4K2vYfh+TPb
-         VdKg==
-X-Gm-Message-State: AOJu0YxD3FwYthAae06lD4XgABOVlnJWFPIQpb9CY33X1W1zDSTOgUYn
-	iksRwEXIWJJBTATqWUWFDoy5R4RzKPoqa8XXZCiAYtYqRYVzhN621Qgh
-X-Gm-Gg: ATEYQzyjKKhl8WBOAmLketoNcM66/V0JAonXX6nb1Sy6YXBig/6ekvyMoyvHnj+bJ1+
-	3ZV0ofyl1H50Aiqnim256dI1YBIF8Omjs7MagiPQedWKUqATGxHnFw2uDwR6XXt4YgaFjXPZa/N
-	m67Khpm9+EyvoEkis/v+skXMcjXcZCljNJkyhtjNe2x6kX1lSD5VtI8H37B65bb3By3puroz0Mq
-	xxMEkTMyOuZBovA66Mwv5qX11ZpvgmGl1yPV3Aph8D6opm028DUvPBiSbEp+S3n4/ZogC6SphdO
-	HnPWceJ1HhoBhyOy0PNIP8SsLIlUfs19v+Cnzjf8cn20911aEinR/9PNqnHAMYFqPhq4HyuuFi4
-	WZSstR09E7Lv09JMwFoG+snsBsF+TsmpNDtuCeIcLZrjMJM9UPxBJ6X8uMDeGAYWF9FA4C9F5hC
-	L5tCqebnX2qjBbB00D8BYwTBDYQEtlU3ACulb/U9KObaIKpZ/3PtbTtpuQqi6Ft1erlOihnZqht
-	tNeP3WhbhGTcoxSbBYDOfcIJxYateG1Ly2C4CIMSqI=
-X-Received: by 2002:a17:90b:5252:b0:359:9bad:13d9 with SMTP id 98e67ed59e1d1-359be29eea6mr12832642a91.15.1773128826073;
-        Tue, 10 Mar 2026 00:47:06 -0700 (PDT)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([209.132.188.88])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-359bc7ef38csm7260607a91.2.2026.03.10.00.47.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 00:47:05 -0700 (PDT)
-From: Hangbin Liu <liuhangbin@gmail.com>
-Date: Tue, 10 Mar 2026 15:45:07 +0800
-Subject: [PATCH net-next 3/3] net: no need to disable LRO specifically
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="isCQWd/8"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773128853; x=1804664853;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=1PazGrKLV4guyjePkujUHjXtOxRLfUKQ+hnNimXi298=;
+  b=isCQWd/8tt/yjiv351Gnvqf/JtlzMW7TowAj+89RN5QllmII6UsJRy0E
+   Y43gWS2cbLwnjhgF5kHOwKNd8WZZhfzzu9nksJZnOsJXLLyUli3Q5NLlx
+   UOUaxbYEboQ/apVOl+xmKN7HH/zLxh/HlrrB8xFPE5kmyH3z396ZtwLMM
+   adpCLONJ2S8/XjoS+mXzMvJdglqwHCUOMYpt/rxgP2qvXk27+mUNRbbzW
+   7FDNrnIfbOCB9s6Gdv0i0OA44vpCzxtifyzofhO3yUhHcgWdVuPhaWT05
+   Ep3NIMbT0rAk9erSD4U4pqBdpnWGIHLseWMsm+oWMzyqhfN5483U66NW3
+   w==;
+X-CSE-ConnectionGUID: rsSh5LqwSq6TZIbL5M+1jQ==
+X-CSE-MsgGUID: 90aZ997JQM69vA/K4Kq91A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11724"; a="84802803"
+X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
+   d="scan'208";a="84802803"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 00:47:32 -0700
+X-CSE-ConnectionGUID: WFXpH8z3R9+f5Yp1GVFJcA==
+X-CSE-MsgGUID: OkuexWi2R5607YCHg2sO9g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,111,1770624000"; 
+   d="scan'208";a="219980276"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa009.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 00:47:30 -0700
+Received: from FMSMSX903.amr.corp.intel.com (10.18.126.92) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 10 Mar 2026 00:47:29 -0700
+Received: from fmsedg902.ED.cps.intel.com (10.1.192.144) by
+ FMSMSX903.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 10 Mar 2026 00:47:29 -0700
+Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.51) by
+ edgegateway.intel.com (192.55.55.82) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 10 Mar 2026 00:47:29 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MM2Fky7tTiRYtdXL+pja9RUOY51YC6rsH9Hnlj99R6Luxg4eymtO7OCCi0AnBytuRPWQxr4Ebm3dy6UV285KMcEGVb4bg7FadalCDtjYd8SUmYCV+z5oRqhm844GvG92OFsL64t3FcNV1NvyrCVN8zeHCen0pUSN979yj1gHIautLwkCYoCScVwdfSNXWhPtNaRWgy9yHfpRk49WKZTQh6Ith9Opwq1VdLxiz1X5YUptyGWYWiX/HMlDzFnV3MbQGkMT0d5oX/SSJdN4NlFLNjAOTM+MUChRaNrIwbtTOv+8wNO8gz8BDToKICJKGuj4mJFaZCobfwXNRd3sR/rIow==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=UUB8FAqX29PtzmbdKRzRCbbcdYRUip8lKL02ArJ5+ts=;
+ b=M/4mZzWf32E9d+7yx7x2KD8CpoRCQL++BuCa/iGs3NAVsw7T36oeqIStJ/EQcmHCd2PkVwrHaj8r6g06GLh894tWPVqeXEqAS2X1ldG9eqfzsEDnhvZC6f04lf5xPylWbnSNjyeNUdSw1caZLuX3Z8Ig+oCH/g0HAojXBWjcKMW7Ucc5DmSmeBlNvLrF/Y1c/ony7YyCm7p7aXeeCsk7sux/4L4CozeF6wYOSA9TV3B3CeoTEEp5d6SPnyJuCGrpT83L7nkp/aqqZQ3x7kI/toJkST2vnlogQFiytrFKHpGLfErdiiJeLKeKn8fqDniUHfwA3GonU2SOe4jc9RCfTQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com (2603:10b6:208:577::21)
+ by BL3PR11MB6409.namprd11.prod.outlook.com (2603:10b6:208:3b8::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9700.11; Tue, 10 Mar
+ 2026 07:47:25 +0000
+Received: from IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c]) by IA3PR11MB8986.namprd11.prod.outlook.com
+ ([fe80::e6f0:6afb:6ef9:ab5c%5]) with mapi id 15.20.9700.010; Tue, 10 Mar 2026
+ 07:47:25 +0000
+From: "Loktionov, Aleksandr" <aleksandr.loktionov@intel.com>
+To: Alex Dvoretsky <advoretsky@gmail.com>, "intel-wired-lan@lists.osuosl.org"
+	<intel-wired-lan@lists.osuosl.org>
+CC: "netdev@vger.kernel.org" <netdev@vger.kernel.org>, "Nguyen, Anthony L"
+	<anthony.l.nguyen@intel.com>, "Kitszel, Przemyslaw"
+	<przemyslaw.kitszel@intel.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>, "kurt@linutronix.de" <kurt@linutronix.de>,
+	"Fijalkowski, Maciej" <maciej.fijalkowski@intel.com>
+Subject: RE: [Intel-wired-lan] [PATCH net 3/3] igb: add XDP transition guards
+ in igb_xdp_setup()
+Thread-Topic: [Intel-wired-lan] [PATCH net 3/3] igb: add XDP transition guards
+ in igb_xdp_setup()
+Thread-Index: AQHcra5EC3a4K48yFU6YxbguIBnPibWnaNJw
+Date: Tue, 10 Mar 2026 07:47:25 +0000
+Message-ID: <IA3PR11MB89862CE33EA56675FD66E8D8E546A@IA3PR11MB8986.namprd11.prod.outlook.com>
+References: <20260306211310.1213330-1-advoretsky@gmail.com>
+ <20260306211310.1213330-4-advoretsky@gmail.com>
+In-Reply-To: <20260306211310.1213330-4-advoretsky@gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: IA3PR11MB8986:EE_|BL3PR11MB6409:EE_
+x-ms-office365-filtering-correlation-id: b71ad6de-ba02-4d09-1857-08de7e794589
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|376014|1800799024|366016|38070700021;
+x-microsoft-antispam-message-info: RH5jU25rMXOGmR2W4IWC2XFo4F3Mq3mcn7oxAiEwm6xChoRiB4pcmE91LY4Cfb+46NWaMyZVZI9/OuEZYEwVwLPYKTAlU+XdegVmYRLOdd59LnYUiiashOAdtzz71vnTbukco0t8WLmAIkBBtR89nUGopjbda6U+ZV3NVXxzNnit9caA6rbItNu0w/hWKYeK/wgxNM4JarJ06AyZEqWsnZgAzvt/U25UlmrDrsrnAYiC9A5AptPNexUJ+XLzjUYZ6DYJ1IUmBP90V/wCtelewCgqI2t4dveJ+yPrTiEWzAm+L1zuXj/cXgEagltT+beKm6iIqpt19BqIAz+r4dYnr3mkoIw/uNLFkriwCpQKSrYKog+Me5HurgjMX+/PKqMpBTw1J+XspOhnTGVYbpQ6ejb/jMJ68cAEMxyBnd1tjKTk2oKOthIxHfp7w1j0k8TCPPEEpRZhT12EOHhjsAKmlJDSzyx9BHKhTKKa2bg6V1/CNWiTwEXbvgvUv6p0BrTquTiGa7nSp7XUwXRjdl6L1Y5OXhDKK+EI0jD+4VeMfjccSJwfXAHl85JJL15D8KEIToRXGE0HFx3CNt7bdZfxP7NwfHxTssZnTl29ZVqlJCSUeKOrZhG+W/tws4Ku1c8bX+gSGUnc0mO5C5hzMN1MEE5S8/qXVfCFSFAQaiurMvGZRADC+IXkSkNrM4VnejrWN5SjcUxllLjYsQglreqV3n6yKi3DtD0RnB19MLh9T9aYCnivsV2+QPDf0RaxsVea7YRbOq/M8A+4chSYvlHriOAG82wdJL9hvmxu1yko7j0=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA3PR11MB8986.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(38070700021);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?lG9su8NMeAJRNX/VK1pc7h/OWEMb5MhscLdDOxHgXrsJYNQaHXwnLJ42LN0W?=
+ =?us-ascii?Q?4NtWTYStAlj5svj2a0/4MtX1KICgKQGuLiKjdx+Q9lTfBqropJhSJb95rZAP?=
+ =?us-ascii?Q?9wwUBjwnuoCM5fIJpHX1gYND326B2NsN6u32lwkcRx28fxYnUYYR01IJFDws?=
+ =?us-ascii?Q?QnlBg/XQG+noWVmteM/ZuiEMlumyaNZ45eRT19aEf9At1SvpF9N6UYOpojpd?=
+ =?us-ascii?Q?wqV7KRJNK3Nl+RDMcQ03YitIKVMk4O73rSzsb0n79uuhjGNMpLHLYIEZ9sDt?=
+ =?us-ascii?Q?UtnmU6ExrL11b04vjmEGEA5x/1vmLaXiuilS4vc6YYEWPS9RHQcfK9Yr7d2q?=
+ =?us-ascii?Q?+al4n8H8YO2f6EU/KgHylT/0bEyHdKDnpAwhSOHMqYd9cfMlNYhoWHpFqQpm?=
+ =?us-ascii?Q?jFKMiy3d1ruN1FQ0KRjAvOM/oXC7+E383KtNNmsvAXVhX8vAUWc556j3xQVb?=
+ =?us-ascii?Q?rG0Q4V/jo+m8+ujybhX5+6nwsncwGwaPBmERhvLd+RXDJ8sQjWxWnuOdNfnA?=
+ =?us-ascii?Q?R00TWKAJQppM99ymMQf7nPp4kWywFrztkyj34dIR1M1ZSckhKTUM0j5SJrUk?=
+ =?us-ascii?Q?H00brkKvR5VlgZd5h88Bfk0bs+evGlEEMpwAzxfMvC1oeCO5xtUgXtR3NPH0?=
+ =?us-ascii?Q?YMeEJUDWu3CeJYNcmZBAXqL0k1uGtI2JVOjqYR6flyg0GkzWtEYiofDNnSt3?=
+ =?us-ascii?Q?gMBj1xcZgT1X3nDyXHyZOu/rf9HxDDoLVp79f5gQ3/OYjOfibFDJV7VE72GY?=
+ =?us-ascii?Q?gOcA2oW8qn+EP7m8ZF+w3WSEDCgCdBiA315jIzaez0Dkf+LzXEXMxODvuXE5?=
+ =?us-ascii?Q?mdJJKA4miONb/AYhnWQm9V4zPKbG2LhdofOBtK7EpVLCOLMgBS5ts5mWPVdd?=
+ =?us-ascii?Q?nArKvIKIaPbGJEho2JsA6rHLBbPIoMBPf6TbZ4Y7CNNO7GfTlSe97F8N+eI4?=
+ =?us-ascii?Q?xOwEZ1sEnbD5MlcdJCeJlmtA1OBS8oaN7VPSrxZwdpK7JEubMkz09ppg9Bei?=
+ =?us-ascii?Q?MQ3qksqExCzKAnfKpILJ9tFUVl5HHJwC5Jd5YNxSKTv1vIR+HJ/Jh33nRf2p?=
+ =?us-ascii?Q?9TMLaxsO7UrnhLAWhcuIJ+5bWJTLFy3EmLNXoSlqHsHRVd41kx++h5Qpjm7C?=
+ =?us-ascii?Q?BD2uKu3SiT0vVcpGVKDuYZg9662FZIXoNLRlC1hDnNT9N1QZRh9xCTPx4dsZ?=
+ =?us-ascii?Q?61COiBV1IwwCgwr+1cof3TTSznMUFSO+HfzSD2HdO+XtxSIRXJvYcoYqRcEc?=
+ =?us-ascii?Q?ozvqoNV5+ZDzgDYFsDzbjn8Fo1c748pyBiGvQYMpSTq5DKWtM71uYzYY94nd?=
+ =?us-ascii?Q?tl4qw0Dfcg/kh0y7qREdRjSQK3F6oYMHbDT7dQbWhwGVrSkNh/jY/A5+zU+j?=
+ =?us-ascii?Q?qGIZTM3n8Xbx0mbHKoWJjmQTeylACEX3m0/hcP1aw5jtUwMi8fCjxiSZvbAy?=
+ =?us-ascii?Q?g5MHP3dZR56vbY2P6gvjl18KuIegLca4qeMiehDz72HiRjMA0t1q5eY71NzQ?=
+ =?us-ascii?Q?CCGYF0nvmgM1sR3Jrq3ZlUIW5OG89y/NKLQvOdg7pqGefeo0t30D2RF2x1WU?=
+ =?us-ascii?Q?VtSZfKUDUruFJr5ZqUnz1DZqbrNNvs+6hTjPiljd4nGLaa6sW0qTo0+48rKx?=
+ =?us-ascii?Q?XiS1icsuRhDAPYXV2Zj7yGTFV9wpBcfCD/DyA1Ai0ReZeLTuuBdXLCURYcdJ?=
+ =?us-ascii?Q?kXwUWHuG1wvQCzbFKdkxty0xeoFYmqfAI8vCdF60cPQjHGzC/26THN395tKg?=
+ =?us-ascii?Q?2XVaunCXiHuZ9eI8kemIdSC/OEzI2s0=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-offload_compute-v1-3-3df79c09ea65@gmail.com>
-References: <20260310-offload_compute-v1-0-3df79c09ea65@gmail.com>
-In-Reply-To: <20260310-offload_compute-v1-0-3df79c09ea65@gmail.com>
-To: Jay Vosburgh <jv@jvosburgh.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Jiri Pirko <jiri@resnulli.us>, Nikolay Aleksandrov <razor@blackwall.org>, 
- Ido Schimmel <idosch@nvidia.com>, Simon Horman <horms@kernel.org>, 
- Sridhar Samudrala <sridhar.samudrala@intel.com>
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
- bridge@lists.linux.dev, Hangbin Liu <liuhangbin@gmail.com>
-X-Mailer: b4 0.14.3
+X-Exchange-RoutingPolicyChecked: vC6tK1iHzedlGGYR0LjbhAVFGcFYAZ7is/JhzHez1bZWuOFY8ydlnLMGgelCZ9TchN/VXLWGF82yrHjWC3EL3ELmOEkFSovTFKqtsYhciDZrproEvKmjSgD5yFxzpfjD5skbDZ+IZVzb1Wmz/O+zMPAhhVTco+Ad9e5iB7tvZYl/5dlLv/CNckRtn7t5qmfye6C6RBLA7gDXYhQKXXjXqFh6g7X0splzGjuGjOx70cdfd6ec8m3+VyuHVFQteU1nOwbjfmXxBk7SvdjBLAidj69lvjVfdsLfvSMCpP2lZh8uyJZZAfHaettm4NlScp2Xla2CsYcF1cQ9Me9gIoCkxg==
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: IA3PR11MB8986.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b71ad6de-ba02-4d09-1857-08de7e794589
+X-MS-Exchange-CrossTenant-originalarrivaltime: 10 Mar 2026 07:47:25.5474
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ksMygpQE2FwAZZvOdpM4YgbunJo0CWUYhwOjh6/zFAxTziRt6785+ClQ187sLGS6/QLNqArcIjrOSMGDqwq5VDzDnQmDYjx/alhBrLkNBws=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6409
+X-OriginatorOrg: intel.com
 
-In commit "net: use ndo_set_features to set offload features for
-bonding/bridge/team" we called netdev_change_features() in
-__netdev_upper_dev_link(), which will disable LRO automatically on lower
-device if upper device doesn't have LRO enabled. So we don't need to
-dev_disable_lro() again after netdev_upper_dev_link().
 
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
----
- drivers/net/bonding/bond_main.c | 3 ---
- drivers/net/team/team_core.c    | 3 ---
- net/8021q/vlan.c                | 2 --
- net/bridge/br_if.c              | 2 --
- net/hsr/hsr_slave.c             | 1 -
- 5 files changed, 11 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 4d32b06079ee..5b117acb1138 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -2177,9 +2177,6 @@ int bond_enslave(struct net_device *bond_dev, struct net_device *slave_dev,
- 	}
- #endif
- 
--	if (!(bond_dev->features & NETIF_F_LRO))
--		dev_disable_lro(slave_dev);
--
- 	res = netdev_rx_handler_register(slave_dev, bond_handle_frame,
- 					 new_slave);
- 	if (res) {
-diff --git a/drivers/net/team/team_core.c b/drivers/net/team/team_core.c
-index 4906ea3717b1..73d4f68a7ccd 100644
---- a/drivers/net/team/team_core.c
-+++ b/drivers/net/team/team_core.c
-@@ -1191,9 +1191,6 @@ static int team_port_add(struct team *team, struct net_device *port_dev,
- 		goto err_enable_netpoll;
- 	}
- 
--	if (!(dev->features & NETIF_F_LRO))
--		dev_disable_lro(port_dev);
--
- 	err = netdev_rx_handler_register(port_dev, team_handle_frame,
- 					 port);
- 	if (err) {
-diff --git a/net/8021q/vlan.c b/net/8021q/vlan.c
-index 2b74ed56eb16..fda3a80e9340 100644
---- a/net/8021q/vlan.c
-+++ b/net/8021q/vlan.c
-@@ -193,8 +193,6 @@ int register_vlan_dev(struct net_device *dev, struct netlink_ext_ack *extack)
- 	vlan_group_set_device(grp, vlan->vlan_proto, vlan_id, dev);
- 	grp->nr_vlan_devs++;
- 
--	netdev_update_features(dev);
--
- 	return 0;
- 
- out_unregister_netdev:
-diff --git a/net/bridge/br_if.c b/net/bridge/br_if.c
-index 030248bc94c5..0aa653a1e651 100644
---- a/net/bridge/br_if.c
-+++ b/net/bridge/br_if.c
-@@ -620,8 +620,6 @@ int br_add_if(struct net_bridge *br, struct net_device *dev,
- 	if (err)
- 		goto err5;
- 
--	dev_disable_lro(dev);
--
- 	list_add_rcu(&p->list, &br->port_list);
- 
- 	nbp_update_port_count(br);
-diff --git a/net/hsr/hsr_slave.c b/net/hsr/hsr_slave.c
-index 44f83c8c56a7..4b6ab185392b 100644
---- a/net/hsr/hsr_slave.c
-+++ b/net/hsr/hsr_slave.c
-@@ -169,7 +169,6 @@ static int hsr_portdev_setup(struct hsr_priv *hsr, struct net_device *dev,
- 	res = netdev_rx_handler_register(dev, hsr_handle_frame, port);
- 	if (res)
- 		goto fail_rx_handler;
--	dev_disable_lro(dev);
- 
- 	return 0;
- 
+> -----Original Message-----
+> From: Intel-wired-lan <intel-wired-lan-bounces@osuosl.org> On Behalf
+> Of Alex Dvoretsky
+> Sent: Friday, March 6, 2026 10:13 PM
+> To: intel-wired-lan@lists.osuosl.org
+> Cc: netdev@vger.kernel.org; Nguyen, Anthony L
+> <anthony.l.nguyen@intel.com>; Kitszel, Przemyslaw
+> <przemyslaw.kitszel@intel.com>; stable@vger.kernel.org;
+> kurt@linutronix.de; Fijalkowski, Maciej
+> <maciej.fijalkowski@intel.com>; Alex Dvoretsky <advoretsky@gmail.com>
+> Subject: [Intel-wired-lan] [PATCH net 3/3] igb: add XDP transition
+> guards in igb_xdp_setup()
+>=20
+> igb_xdp_setup() calls igb_close() + igb_open() when transitioning
+> between XDP and non-XDP mode on a running device. This has two issues:
+>=20
+> 1. ndo_xsk_wakeup() runs under rcu_read_lock() and may still access
+>    the rings while igb_xdp_setup() removes the XDP program. Without
+>    waiting for an RCU grace period, igb_close() can tear down the
+>    rings while ndo_xsk_wakeup() is still executing. Add
+>    synchronize_rcu() before igb_close() when removing an XDP program
+>    to ensure all in-flight RCU readers complete first.
+>=20
+> 2. The igb_close()/igb_open() window leaves trans_start stale from
+>    before the close: the TX watchdog can fire a spurious timeout and
+>    queue a reset_task that races with igb_open(). Add
+>    netif_trans_update() after igb_open() to refresh the timestamp, and
+>    cancel_work() to cancel any reset_task that may have been queued
+>    while the device was down.
+>=20
+> Note: cancel_work_sync() cannot be used here because igb_reset_task()
+> takes rtnl_lock, which is already held by the ndo_bpf caller. Plain
+> cancel_work() is sufficient: if reset_task is already running, it
+> blocks on rtnl_lock and will check __IGB_DOWN when it acquires it.
+>=20
+> Fixes: 9cbc948b5a20 ("igb: add XDP support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Alex Dvoretsky <advoretsky@gmail.com>
+> ---
+>  drivers/net/ethernet/intel/igb/igb_main.c | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
+>=20
+> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c
+> b/drivers/net/ethernet/intel/igb/igb_main.c
+> index ddb7ce9e97bf..9ba944bf67b4 100644
+> --- a/drivers/net/ethernet/intel/igb/igb_main.c
+> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
+> @@ -2913,6 +2913,9 @@ static int igb_xdp_setup(struct net_device *dev,
+> struct netdev_bpf *bpf)
+>=20
+>  	/* device is up and bpf is added/removed, must setup the RX
+> queues */
+>  	if (need_reset && running) {
+> +		if (!prog)
+> +			/* Wait for RCU readers (e.g. ndo_xsk_wakeup). */
+> +			synchronize_rcu();
+>  		igb_close(dev);
+>  	} else {
+>  		for (i =3D 0; i < adapter->num_rx_queues; i++) @@ -2936,6
+> +2939,14 @@ static int igb_xdp_setup(struct net_device *dev, struct
+> netdev_bpf *bpf)
+>  	if (running)
+>  		igb_open(dev);
+>=20
+> +	/* Refresh watchdog timestamp after reopen and cancel any
+> +	 * reset task queued while the device was down.
+> +	 */
+> +	if (need_reset && running) {
+> +		netif_trans_update(dev);
+> +		cancel_work(&adapter->reset_task);
+> +	}
+> +
+>  	return 0;
+>  }
+>=20
+> --
+> 2.51.0
 
--- 
-Git-155)
-
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
