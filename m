@@ -1,154 +1,307 @@
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5679D3CEB9E;
-	Tue, 10 Mar 2026 21:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354ED3CFF75
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 21:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773177768; cv=none; b=ZQj6jzHO4uOrUEIsub1O7OpDJ2HKg4gBfzqEtKgst9B4vT6vak2gevxUKnEYP27yqnIDHIk+/lzhzx+U/90LC/BYAJ9jX7gpcKGUh7GndNLVceSqarCh2Cgw29jyXOiItq5xmHUj34KJq8dMao5vG8PnQqUH2ByOzZiQzpzOxqA=
+	t=1773177769; cv=none; b=hbTHFoH37vMcTNLZVDxqlcG3cOJ4DG/Uz59yy8rjliWOZT1RYaV3S8HSXGOoOXTBfLLR94WQ7JVPXJLL38Ml6t7rB36Lha9iTA1/5ZZeuACPnjtdrMaUXZQMoFREbqUUoDUZVKPUMo0tO7svp9yj//kTGlxoYLdU6eDI0UFCYQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773177768; c=relaxed/simple;
-	bh=uW/SHTU/bmzAxq69+5aquBUZCuf5Yy0XrivWZ/q8OEs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Vey6PaXBsbT/g2lLrKORr4n7judRAbM17OZ3+NZHdDWM4uMXPSUrWSNooKksAmQTzn6XH21aYacyXWUts43s9HvdqNsdk1CydtF8ARxO6EaA8jzO0JAAk6uDAkIBbVwjqCRDF9jh1fO08A9IzF+LQZppN1toISxCPeffCe3+ozo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=XehxLy1d; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
+	s=arc-20240116; t=1773177769; c=relaxed/simple;
+	bh=KPVuKItZd1MhwLbF0SvCW6nyq/QrT40WF9DJe9SLVVE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=nG2ZWNsb5SW8b+7FpHhcNNHpo1PvPh5CO0pN05IKMKbZ5Lu0faIIdmpxNlrrfhh40F3mdqUFAOxNfOcAj6mmrmaEMPtuzosfBEFrB7NWJnCyZcO18bQykgE2bVmJzQ6/dyn1GY7UZNNgBrNlwF21EbyGJsLmc0AR5az986T/GmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=a1aRl5RA; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="XehxLy1d"
-Authentication-Results: dilbert.mork.no;
-	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=XehxLy1d;
-	dkim-atps=neutral
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10e2:d900:0:0:0:1])
-	(authenticated bits=0)
-	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 62ALICW34119410
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Tue, 10 Mar 2026 21:18:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1773177492; bh=uW/SHTU/bmzAxq69+5aquBUZCuf5Yy0XrivWZ/q8OEs=;
-	h=From:To:Cc:Subject:References:Date:Message-ID:From;
-	b=XehxLy1dP2hexPsyxBZBiYDt/ZKIsdMfw6dXSR0tS4w+wHD4C7MuVJdRWjblVJ4vN
-	 f1m6MVEq3Cv94mvAZbpeaPr7+ir8ONDcWdEb+OsChqmet/YhuA31w47Bmp/rKkxQ9s
-	 rMW/hB/Ky4PFf0e5UjQoOJEZFR0hLcpBMaWErYd0=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10e2:d90a:6f50:7559:681d:630c])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 62ALIBSw285875
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Tue, 10 Mar 2026 22:18:12 +0100
-Received: (nullmailer pid 737464 invoked by uid 1000);
-	Tue, 10 Mar 2026 21:18:10 -0000
-From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: =?utf-8?Q?Kolbj=C3=B8rn?= Barmen <linux-m68k@kolla.no>,
-        Krzysztof
- Kozlowski <krzk@kernel.org>,
-        Fernando Fernandez Mancera <fmancera@suse.de>,
-        Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
-        Geert
- Uytterhoeven <geert@linux-m68k.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Andrew Lunn <andrew+netdev@lunn.ch>,
-        "David S . Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>, Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>, Simon Horman <horms@kernel.org>,
-        Saurav Kashyap <skashyap@marvell.com>,
-        Javed Hasan <jhasan@marvell.com>,
-        "maintainer:BROADCOM BNX2FC 10 GIGABIT FCOE DRIVER" <GR-QLogic-Storage-Upstream@marvell.com>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Nilesh Javali <njavali@marvell.com>,
-        Manish Rangankar <mrangankar@marvell.com>,
-        Varun Prakash <varun@chelsio.com>,
-        Alexander Aring <aahringo@redhat.com>,
-        David
- Teigland <teigland@redhat.com>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        David Ahern <dsahern@kernel.org>,
-        Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-        David Howells <dhowells@redhat.com>,
-        Marc Dionne <marc.dionne@auristor.com>,
-        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-        Xin Long <lucien.xin@gmail.com>, Jon
- Maloy <jmaloy@redhat.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-        Eric Biggers <ebiggers@kernel.org>,
-        Michal Simek <michal.simek@amd.com>,
-        Luca
- Weiss <luca.weiss@fairphone.com>, Sven Peter <sven@kernel.org>,
-        "Lad,
- Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>,
-        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        David Gow <david@davidgow.net>,
-        Herbert
- Xu <herbert@gondor.apana.org.au>,
-        Ryota Sakamoto <sakamo.ryota@gmail.com>,
-        Kuniyuki Iwashima <kuniyu@google.com>, Kir
- Chou <note351@hotmail.com>,
-        Kuan-Wei Chiu <visitorckw@gmail.com>,
-        Vikas Gupta <vikas.gupta@broadcom.com>,
-        Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
-        Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
-        Markus =?utf-8?Q?Bl=C3=B6chl?= <markus@blochl.de>,
-        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
-        "open
- list:INFINIBAND SUBSYSTEM" <linux-rdma@vger.kernel.org>,
-        "open
- list:NETRONOME ETHERNET DRIVERS" <oss-drivers@corigine.com>,
-        "open
- list:BROADCOM BNX2FC 10 GIGABIT FCOE DRIVER" <linux-scsi@vger.kernel.org>,
-        "open list:DISTRIBUTED LOCK MANAGER (DLM)" <gfs2@lists.linux.dev>,
-        "open
- list:ETHERNET BRIDGE" <bridge@lists.linux.dev>,
-        "open list:NETFILTER" <netfilter-devel@vger.kernel.org>,
-        "open list:NETFILTER" <coreteam@netfilter.org>,
-        "open list:RXRPC SOCKETS (AF_RXRPC)" <linux-afs@lists.infradead.org>,
-        "open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>,
-        "open list:TIPC NETWORK LAYER" <tipc-discussion@lists.sourceforge.net>
-Subject: Re: [PATCH 01/10 net-next] ipv6: convert CONFIG_IPV6 to built-in
- only and clean up Kconfigs
-In-Reply-To: <5c4b6043-a484-479d-83bc-a86ecdb8f810@app.fastmail.com> (Arnd
-	Bergmann's message of "Tue, 10 Mar 2026 20:58:15 +0100")
-Organization: m
-References: <20260309022013.5199-1-fmancera@suse.de>
-	<20260309022013.5199-2-fmancera@suse.de>
-	<01a4936f-77cd-4c60-a1be-cabec872a2bb@kernel.org>
-	<e54d887c-5a70-b8c9-aeef-433c5134dd14@kolla.no>
-	<5c4b6043-a484-479d-83bc-a86ecdb8f810@app.fastmail.com>
-Date: Tue, 10 Mar 2026 22:18:10 +0100
-Message-ID: <87bjgvpenh.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="a1aRl5RA"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-359894e17b8so6916398a91.1
+        for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 14:22:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1773177766; x=1773782566; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=im3H2jdH9CTQLzHqJHTpkhsVYCfPOcqP+VrdKZHbyAg=;
+        b=a1aRl5RAfE8J5vxCEc+8wuXY29QYEcNJvSAXsaY5+ZR1AlWD1aUFlkpUzMX53eNpSt
+         zuO42pGwkzzBi1iHXq+MGEYfMUc1867JImm/ZFy6HU+W+2OdqrAnbpf9Tq5qJEZacrEC
+         CvgMnEIg2CfEfbh7NtLR1ldYo5onZSBf3odvEsPK3fhXQbLuJ6/Tjtqk+d/EPb6RfEQi
+         Nz3DhYCDPfk1GmIXmj18y6kJXBQ9CkDOck+cEyVpN26epXMe9KJOvx0KNRDEBXi4ZSMU
+         nOsLAXtYv7U1UyoSCi61ZPeCBwETx1AoSzC+gtt9cd7Exn40OFny4HPVr2PFh/So59oB
+         7zSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773177766; x=1773782566;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=im3H2jdH9CTQLzHqJHTpkhsVYCfPOcqP+VrdKZHbyAg=;
+        b=dAB41dBFbAiIrS4LkiXOjypXs0SUNNIY3+NozUMSGthFMuPTBO+wjUPLRHrsoNi+hs
+         KfHSR3Jg9mPQL51ia7twnl+VkML+xOOAAqlWTcFRBlefa4bmYXFR0BSaiDZYZFJ62aUh
+         MFJIJ8cnEC0P+aZHn19kTiBSt/1fPw15OgGCozNPpy5ovgv+TLRmf2G602yYO7TYrqnZ
+         EbzxAdpvQAI4iqQCEkU/oP7Js6cQuYak4ExytQ7+GLs/Fy64iRnMoEwYJagAW86cU3zb
+         Q769/wnJyDvuhqzqoSbj0YwaE9z4HTgbqd4izUGG0T/Ft4aZNsROO3/xDFiBcb+9MdWj
+         hCJA==
+X-Gm-Message-State: AOJu0YzJpXUdVwBQ1NMA/Cm+k74HlCU/gTlNcz4E3B07y+sTMmXUWFAG
+	BtSt5YFy5WFStkERF+Xu7/w1dt6KXz4P/yK2yKHw69QMX/2uZHS4QYfZydvYCN3QvTG6fK3Z2u1
+	hu8/B1T8=
+X-Gm-Gg: ATEYQzzCRUWELSvVegGJt2Z9HJjS6cr7/Qkxl/O3Prhv+fSllKd3W7W/QjiC8xkxMpN
+	nT4lA2a80Hevi2UYMFqsFZhttGP5AJEUG22rcI5eMYiHBGoO/XTRDkMbIQVr0CfLqaR8mERzndk
+	N1w5/t/hN85qWyBUxb/NA//DqOwGYAC3Wz7Rrr0CyWPit+X7Rprrm/G/kEd9S+Yq0FRkZGNhBF4
+	lYXgwJ9Elbe4Z+Pk9qcNx88+c79CrMhC3p1hzeL2FjKs1yY7/xm1cfmeH4TAIOhU23rWVDtn6Dl
+	PyYQxMQew9NYAi8Cc6b2vR9cPYgBiiV3YPrlelTsKQjnATZeLTC1DuPg71M0Vyya43utxcUOJKQ
+	G2aFxtY5cxZanlyUpIxNqSRuYizaMMBNqSkYTwRYCjmmugAYvZsJkYcBQZ18exKYS8e34rIJV93
+	KL3Yc=
+X-Received: by 2002:a17:90b:380a:b0:359:fd9a:c513 with SMTP id 98e67ed59e1d1-35a012c383emr247308a91.24.1773177765930;
+        Tue, 10 Mar 2026 14:22:45 -0700 (PDT)
+Received: from localhost ([2a03:2880:2ff:6::])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-35a02474a97sm37744a91.11.2026.03.10.14.22.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Mar 2026 14:22:45 -0700 (PDT)
+From: Joe Damato <joe@dama.to>
+To: netdev@vger.kernel.org,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>
+Cc: michael.chan@broadcom.com,
+	pavan.chebbi@broadcom.com,
+	linux-kernel@vger.kernel.org,
+	Joe Damato <joe@dama.to>
+Subject: [RFC net-next 02/10] net: tso: Add tso_dma_map helpers
+Date: Tue, 10 Mar 2026 14:21:50 -0700
+Message-ID: <20260310212209.2263939-3-joe@dama.to>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260310212209.2263939-1-joe@dama.to>
+References: <20260310212209.2263939-1-joe@dama.to>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 1.4.3 at canardo.mork.no
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 8bit
 
-"Arnd Bergmann" <arnd@arndb.de> writes:
+Add helpers to initialize, iterate, and clean up a tso_dma_map:
 
-> The list does not include openwrt though, and I know that in
-> previous releases, there was an optional kmod-ipv6 package
-> that could be left out of an install without rebuilding
-> the kernel.
+tso_dma_map_init(): DMA-maps the linear payload region and all frags
+upfront into the tso_dma_map struct. Returns 0 on success, cleans up
+partial mappings on failure.
 
-The kmod-ipv6 package was dropped in 2016:
-https://github.com/openwrt/openwrt/commit/33beafa8d88e51907acba6fdece5a35f5=
-09934df
+tso_dma_map_cleanup(): unmaps all DMA regions. Used on error paths.
 
-And IPv6 was unconditionally enabled in OpenWrt in 2022:
-https://github.com/openwrt/openwrt/commit/832e7b817221d288df76b763ca12c5853=
-65db5d8
+tso_dma_map_count(): counts how many descriptors the next N bytes of
+payload will need, without advancing the iterator.
 
+tso_dma_map_next(): yields the next (dma_addr, chunk_len) pair.
+Indicates when a chunk starts a new DMA mapping so the driver can set
+dma_unmap_len on that BD for completion-time unmapping.
 
-Bj=C3=B8rn
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Joe Damato <joe@dama.to>
+---
+ include/net/tso.h |   8 +++
+ net/core/tso.c    | 165 ++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 173 insertions(+)
+
+diff --git a/include/net/tso.h b/include/net/tso.h
+index 9a508e60ee19..dcb93c7fb917 100644
+--- a/include/net/tso.h
++++ b/include/net/tso.h
+@@ -65,4 +65,12 @@ struct tso_dma_map {
+ 	} frags[MAX_SKB_FRAGS];
+ };
+ 
++int tso_dma_map_init(struct tso_dma_map *map, struct device *dev,
++		     const struct sk_buff *skb, unsigned int hdr_len);
++void tso_dma_map_cleanup(struct tso_dma_map *map);
++unsigned int tso_dma_map_count(const struct tso_dma_map *map, unsigned int len);
++bool tso_dma_map_next(struct tso_dma_map *map, dma_addr_t *addr,
++		      unsigned int *chunk_len, unsigned int *mapping_len,
++		      unsigned int seg_remaining);
++
+ #endif	/* _TSO_H */
+diff --git a/net/core/tso.c b/net/core/tso.c
+index 6df997b9076e..48348ad94501 100644
+--- a/net/core/tso.c
++++ b/net/core/tso.c
+@@ -3,6 +3,7 @@
+ #include <linux/if_vlan.h>
+ #include <net/ip.h>
+ #include <net/tso.h>
++#include <linux/dma-mapping.h>
+ #include <linux/unaligned.h>
+ 
+ void tso_build_hdr(const struct sk_buff *skb, char *hdr, struct tso_t *tso,
+@@ -87,3 +88,167 @@ int tso_start(struct sk_buff *skb, struct tso_t *tso)
+ 	return hdr_len;
+ }
+ EXPORT_SYMBOL(tso_start);
++
++/**
++ * tso_dma_map_init - DMA-map GSO payload regions
++ * @map: map struct to initialize
++ * @dev: device for DMA mapping
++ * @skb: the GSO skb
++ * @hdr_len: per-segment header length in bytes
++ *
++ * DMA-maps the linear payload (after headers) and all frags.
++ * Positions the iterator at byte 0 of the payload.
++ *
++ * Returns 0 on success, -ENOMEM on DMA mapping failure (partial mappings
++ * are cleaned up internally).
++ */
++int tso_dma_map_init(struct tso_dma_map *map, struct device *dev,
++		     const struct sk_buff *skb, unsigned int hdr_len)
++{
++	unsigned int linear_len = skb_headlen(skb) - hdr_len;
++	unsigned int nr_frags = skb_shinfo(skb)->nr_frags;
++	int i;
++
++	map->dev = dev;
++	map->skb = skb;
++	map->hdr_len = hdr_len;
++	map->frag_idx = -1;
++	map->offset = 0;
++	map->linear_len = 0;
++	map->nr_frags = 0;
++
++	if (linear_len > 0) {
++		map->linear_dma = dma_map_single(dev, skb->data + hdr_len,
++						 linear_len, DMA_TO_DEVICE);
++		if (dma_mapping_error(dev, map->linear_dma))
++			return -ENOMEM;
++		map->linear_len = linear_len;
++	}
++
++	for (i = 0; i < nr_frags; i++) {
++		skb_frag_t *frag = &skb_shinfo(skb)->frags[i];
++
++		map->frags[i].len = skb_frag_size(frag);
++		map->frags[i].dma = skb_frag_dma_map(dev, frag, 0,
++						     map->frags[i].len,
++						     DMA_TO_DEVICE);
++		if (dma_mapping_error(dev, map->frags[i].dma)) {
++			tso_dma_map_cleanup(map);
++			return -ENOMEM;
++		}
++		map->nr_frags = i + 1;
++	}
++
++	if (linear_len == 0 && nr_frags > 0)
++		map->frag_idx = 0;
++
++	return 0;
++}
++EXPORT_SYMBOL(tso_dma_map_init);
++
++/**
++ * tso_dma_map_cleanup - unmap all DMA regions in a tso_dma_map
++ * @map: the map to clean up
++ *
++ * Unmaps linear payload and all mapped frags. Used on error paths.
++ * Success paths use the driver's completion path to handle unmapping.
++ */
++void tso_dma_map_cleanup(struct tso_dma_map *map)
++{
++	int i;
++
++	if (map->linear_len)
++		dma_unmap_single(map->dev, map->linear_dma, map->linear_len,
++				 DMA_TO_DEVICE);
++
++	for (i = 0; i < map->nr_frags; i++)
++		dma_unmap_page(map->dev, map->frags[i].dma, map->frags[i].len,
++			       DMA_TO_DEVICE);
++
++	map->linear_len = 0;
++	map->nr_frags = 0;
++}
++EXPORT_SYMBOL(tso_dma_map_cleanup);
++
++/**
++ * tso_dma_map_count - count descriptors for a payload range
++ * @map: the payload map
++ * @len: number of payload bytes in this segment
++ *
++ * Counts how many contiguous DMA region chunks the next @len bytes
++ * will span, without advancing the iterator. Uses frag sizes from
++ * the current position.
++ *
++ * Returns the number of descriptors needed for @len bytes of payload.
++ */
++unsigned int tso_dma_map_count(const struct tso_dma_map *map, unsigned int len)
++{
++	unsigned int offset = map->offset;
++	int idx = map->frag_idx;
++	unsigned int count = 0;
++
++	while (len > 0) {
++		unsigned int region_len, chunk;
++
++		if (idx == -1)
++			region_len = map->linear_len;
++		else
++			region_len = map->frags[idx].len;
++
++		chunk = min(len, region_len - offset);
++		len -= chunk;
++		count++;
++		offset = 0;
++		idx++;
++	}
++
++	return count;
++}
++EXPORT_SYMBOL(tso_dma_map_count);
++
++/**
++ * tso_dma_map_next - yield the next DMA address range
++ * @map: the payload map
++ * @addr: output DMA address
++ * @chunk_len: output chunk length
++ * @mapping_len: output full mapping length when this is the first BD of
++ *               a DMA mapping (driver should set dma_unmap_len to this),
++ *               or 0 when continuing a previous mapping
++ * @seg_remaining: bytes left in current segment
++ *
++ * Yields the next (dma_addr, chunk_len) pair and advances the iterator.
++ *
++ * Returns true if a chunk was yielded, false when @seg_remaining is 0.
++ */
++bool tso_dma_map_next(struct tso_dma_map *map, dma_addr_t *addr,
++		      unsigned int *chunk_len, unsigned int *mapping_len,
++		      unsigned int seg_remaining)
++{
++	unsigned int region_len, chunk;
++
++	if (!seg_remaining)
++		return false;
++
++	if (map->frag_idx == -1) {
++		region_len = map->linear_len;
++		chunk = min(seg_remaining, region_len - map->offset);
++		*addr = map->linear_dma + map->offset;
++		*mapping_len = (map->offset == 0) ? region_len : 0;
++	} else {
++		region_len = map->frags[map->frag_idx].len;
++		chunk = min(seg_remaining, region_len - map->offset);
++		*addr = map->frags[map->frag_idx].dma + map->offset;
++		*mapping_len = (map->offset == 0) ? region_len : 0;
++	}
++
++	*chunk_len = chunk;
++	map->offset += chunk;
++
++	if (map->offset >= region_len) {
++		map->frag_idx++;
++		map->offset = 0;
++	}
++
++	return true;
++}
++EXPORT_SYMBOL(tso_dma_map_next);
+-- 
+2.52.0
+
