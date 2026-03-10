@@ -1,146 +1,98 @@
-Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78F483876D0
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 11:28:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7899B3BA23E;
+	Tue, 10 Mar 2026 11:28:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773142121; cv=none; b=lZUvlyJcj9klIiZjx0dx3WJDf9kBNjM11b84FuZE89Ht/si2XgwY1/tgzBMtS1OZQhoiHDOxRnpCc+hfRwlm/zQmoDDezZnrrHYzon/3LLfiHWblDKBPOwfoDL6349JYcNmzuaJ1SGvmFI/GBha9ir8d22wDn44X2kl53nT4b1Q=
+	t=1773142134; cv=none; b=a1Y3vrS88vRlq2/xC0E2SfQytsJt1ldAQIj8/xBZGlq2r5gL+St8szotyjWmnIZ/JWbWOHytBQg6Oi2EvzXql8gM+BkjKp/WGC5imMTf0L9IomKRNRvaKWOUvVsw2FyoTFHFgNDwMOuS9MaKfHTPPnEeHw5YQTK/yESz6H3VRX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773142121; c=relaxed/simple;
-	bh=KQqnhr6YlAa/gpy+sTU5GHwCZhZ6qW8rmLEx/uTsI6M=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=fxmqUmJ9fTZ1W6yEjEmjN6DmNlxx0EDbUoPSbrLBwqtBOt1jx+v7EaMEnSj5nGUwPXPIdOz2FMnnrDKmgYZ/b5owksXxBRO9I2QcmlR9G+IPJqwdTZXB0a73bj/FE3YCWgOUHWaA9TmbVneNxSHQ0xgFVIovORNLMjrobPVpO2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=iaqdFc3R; arc=none smtp.client-ip=95.215.58.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1773142134; c=relaxed/simple;
+	bh=QccW6cyqKoTAs/xHLg87J6mZAwKWfrQURGqDAox24ns=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HhjxCP4Nm1AlnWeZV7hYIRJcMQqvnum/4I3guXrDzVjhL7nK5EIbTw17hqyCJp9DCSa0tHr9fBfP3je85Bhroj6a/vCRvOyVAuhzfLTxHmhFMhtlqLs3dhpxsEXXdG14HS46rERFjy5Z9Jl4h6ZCCnPD82vfPYNq3SS+XIqa4js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RDBg3PIA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="iaqdFc3R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RDBg3PIA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555ECC19423;
+	Tue, 10 Mar 2026 11:28:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773142134;
+	bh=QccW6cyqKoTAs/xHLg87J6mZAwKWfrQURGqDAox24ns=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=RDBg3PIA2qzj2QD+Ep5sJebpW3Priao8zlLJ/f/ieP0zvHvrYRLoAwY3EKRHBVBEg
+	 C2mJ4+Mx40MPJYUj9mZd9MsWLaIi220C9uC/LAek0XPT++RJUD2ZLa9lP2eaAC7i9k
+	 E5JgfeZh7wDIj7y5jbQrxSeN6XImdpOfDIJu5Akitnu/+knWa3nRfmAZzohoL1RDC+
+	 8IuWMmZDrgLdaF/3Honc8gIq9ciBcq3UqNOdemgx649E13Bn7C5EMpPIE3NvxV9rjK
+	 H9j07aSqKEdqlSizuYfa4S1zhITh3+AT6+QJIx97iMuLrOJWLQ7bQxGsjP18XP/bDG
+	 e+UAegBUbdXiQ==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Thomas Gleixner <tglx@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org,
+	Joe Damato <joe@dama.to>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 222/314] i40e: Fix preempt count leak in napi poll tracepoint
+Date: Tue, 10 Mar 2026 07:18:01 -0400
+Message-ID: <785978f2387f8e19eb824c7dd368ffa1fc09c513.1773141555.git.sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <cover.1773141554.git.sashal@kernel.org>
+References: <cover.1773141554.git.sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773142108;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QEgXSRi8An7XY2t213VJlqkfT5N4BKHBSmPFM54cjbw=;
-	b=iaqdFc3RsLQKWQKQN/Dj5JCr7ZNoeWvtHZhT7DR5h1QYm2oa4XgZvbw4/kPBEWPd89jzwA
-	0gP34tz/uVYgVBFIgPMRmTV3V7rgQhBJ19wM5DjxuFlL1/L572bIg2VeFVMWWrBNrZQNMx
-	LClaA0J8SKfUHY/P7jBfYRlDUzZRa50=
-Date: Tue, 10 Mar 2026 11:28:25 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Jiayuan Chen" <jiayuan.chen@linux.dev>
-Message-ID: <215d34adafe389a6792b2ca111ac3ec7ccc079ca@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH net v1] net/rose: fix NULL pointer dereference in
- rose_transmit_link on reconnect
-To: "Eric Dumazet" <edumazet@google.com>
-Cc: netdev@vger.kernel.org, "Jiayuan Chen" <jiayuan.chen@shopee.com>,
- syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com, "David S. Miller"
- <davem@davemloft.net>, "Jakub Kicinski" <kuba@kernel.org>, "Paolo Abeni"
- <pabeni@redhat.com>, "Simon Horman" <horms@kernel.org>, "Kees Cook"
- <kees@kernel.org>, "Takamitsu Iwai" <takamitz@amazon.co.jp>, "Pwnverse"
- <stanksal@purdue.edu>, "Ingo Molnar" <mingo@kernel.org>,
- linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <CANn89iL3g7+MpkDrY8-v+Zswy5Woe_VvEMqbvHYRxQGpk_OSEQ@mail.gmail.com>
-References: <20260310101349.50993-1-jiayuan.chen@linux.dev>
- <CANn89iL3g7+MpkDrY8-v+Zswy5Woe_VvEMqbvHYRxQGpk_OSEQ@mail.gmail.com>
-X-Migadu-Flow: FLOW_OUT
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 
-March 10, 2026 at 18:24, "Eric Dumazet" <edumazet@google.com mailto:eduma=
-zet@google.com?to=3D%22Eric%20Dumazet%22%20%3Cedumazet%40google.com%3E > =
-wrote:
+From: Thomas Gleixner <tglx@kernel.org>
 
+[ Upstream commit 4b3d54a85bd37ebf2d9836f0d0de775c0ff21af9 ]
 
->=20
->=20On Tue, Mar 10, 2026 at 11:14 AM Jiayuan Chen <jiayuan.chen@linux.dev=
-> wrote:
->=20
->=20>=20
->=20> From: Jiayuan Chen <jiayuan.chen@shopee.com>
-> >=20
->=20>  syzkaller reported a bug [1], and the reproducer is available at [=
-2].
-> >=20
->=20>  When rose_connect() is called a second time on an already-connecti=
-ng
-> >  socket, it overwrites rose->neighbour with the result of rose_get_ne=
-igh()
-> >  without releasing the previous reference. If rose_get_neigh() return=
-s
-> >  NULL, the socket is left in an inconsistent state: rose->state remai=
-ns
-> >  ROSE_STATE_1 from the first connect while rose->neighbour is NULL.
-> >=20
->=20>  When the socket is subsequently closed, rose_release() sees ROSE_S=
-TATE_1
-> >  and calls rose_write_internal() -> rose_transmit_link(skb, NULL), ca=
-using
-> >  a NULL pointer dereference when accessing neigh->loopback.
-> >=20
->=20>  Fix this by:
-> >  1. Releasing the old neighbour reference before attempting a reconne=
-ct
-> >  2. Resetting rose->state to ROSE_STATE_0 before the new connect atte=
-mpt,
-> >  so a failure leaves the socket in a clean state
-> >  3. Setting rose->neighbour to NULL in all error paths after
-> >  rose_neigh_put() to prevent use-after-free on subsequent reconnects
-> >=20
->=20>  [1] https://syzkaller.appspot.com/bug?extid=3Dd00f90e0af54102fb271
-> >  [2] https://gist.github.com/mrpre/9e6779e0d13e2c66779b1653fef80516
-> >=20
->=20>  Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> >  Reported-by: syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com
-> >  Closes: https://lore.kernel.org/all/69694d6f.050a0220.58bed.0027.GAE=
-@google.com/T/
-> >  Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
-> >  Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-> >  ---
-> >  net/rose/af_rose.c | 11 +++++++++++
-> >  1 file changed, 11 insertions(+)
-> >=20
->=20Normally, a connect() on a socket already connected should return an =
-error.
->=20
->=20disconnect is a special operation involving AF_UNSPEC
->=20
->=20man connect
-> ...
->  Some protocol sockets (e.g., TCP sockets as well as datagram
-> sockets in the UNIX and Internet domains) may dissolve the association
-> by
->  connecting to an address with the sa_family member of sockaddr
-> set to AF_UNSPEC; thereafter, the socket can be connected to another
-> ad=E2=80=90
->  dress. (AF_UNSPEC is supported since Linux 2.2.)
->
+Using get_cpu() in the tracepoint assignment causes an obvious preempt
+count leak because nothing invokes put_cpu() to undo it:
 
-Thanks for pointing this out. I should have checked the man page earlier.
+  softirq: huh, entered softirq 3 NET_RX with preempt_count 00000100, exited with 00000101?
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index 841d62481048..ba56213e0a2a 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -811,6 +811,11 @@ static int rose_connect(struct socket *sock, struct =
-sockaddr_unsized *uaddr, int
-                goto out_release;
-        }
+This clearly has seen a lot of testing in the last 3+ years...
 
-+       if (sk->sk_state =3D=3D TCP_SYN_SENT) {
-+               err =3D -EALREADY;
-+               goto out_release;
-+       }
-+
-        sk->sk_state   =3D TCP_CLOSE;
-        sock->state =3D SS_UNCONNECTED;
+Use smp_processor_id() instead.
 
+Fixes: 6d4d584a7ea8 ("i40e: Add i40e_napi_poll tracepoint")
+Signed-off-by: Thomas Gleixner <tglx@kernel.org>
+Cc: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: intel-wired-lan@lists.osuosl.org
+Cc: netdev@vger.kernel.org
+Reviewed-by: Joe Damato <joe@dama.to>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/ethernet/intel/i40e/i40e_trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Tested and the panic is gone. Will send v2 after the cool-down period.
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_trace.h b/drivers/net/ethernet/intel/i40e/i40e_trace.h
+index 759f3d1c4c8f0..dde0ccd789ed1 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_trace.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_trace.h
+@@ -88,7 +88,7 @@ TRACE_EVENT(i40e_napi_poll,
+ 		__entry->rx_clean_complete = rx_clean_complete;
+ 		__entry->tx_clean_complete = tx_clean_complete;
+ 		__entry->irq_num = q->irq_num;
+-		__entry->curr_cpu = get_cpu();
++		__entry->curr_cpu = smp_processor_id();
+ 		__assign_str(qname);
+ 		__assign_str(dev_name);
+ 		__assign_bitmask(irq_affinity, cpumask_bits(&q->affinity_mask),
+-- 
+2.51.0
+
