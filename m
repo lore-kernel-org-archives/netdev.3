@@ -1,180 +1,96 @@
-Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25D7271468;
-	Tue, 10 Mar 2026 10:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF432271468
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 10:36:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773138838; cv=none; b=gGb6OTR5g+R5GQR/dcbIO6Ai8Y9LdcZkStgVbmiovfMdEMcf41wK/YsHpRaaG/OWqy6EU1Nc8kr0/wduVa0HDgARboYM5En5vAjRDnu3K2LNxwICPDFnNf80mtcBJoMrrMc+dblozHT7YzLvvxFKKWSJzbkA4W9N9gKfoszC08c=
+	t=1773138962; cv=none; b=TLM3CWPWNJ+fNONzvyoA08EY0AHyWPa6guFVLk3j5sjBVp6ieSsyHRcKwNBomwTuLHEUdVZN5kYZd6JwMrBsRYM0PxqVmeqlxnGt/GJKXbwobocOMjPbRsyYUeA5KtaRfoQgUun5K3dx4dLcgrhDJ46YUn3JGHxJG5fPpYKN3oA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773138838; c=relaxed/simple;
-	bh=a55lUpeA26zDb/0g4h/jfJ8mwz9U47tGl4tVQmz+BbM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Hyd1GeFWgMu8+K1ZR2jeGR1WDSiPPt/46/gmQanYIKCQ6TKKz/GJ1YVto9n/lF4PR3e+kvE3YRkJJe44m/hdueFKYyy+DUbdogBzR0ZaZyELrt4cSRUpPZ/MwhvxEDsiYNupW8Xn6vMOqN5vhm3QTk2+FkFIGwV7JQMh/bdduJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=Qd7WgNiy; arc=none smtp.client-ip=217.70.190.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="Qd7WgNiy"
-Received: from netfilter.org (mail-agni [217.70.190.124])
-	by mail.netfilter.org (Postfix) with UTF8SMTPSA id 8DE3E6055C;
-	Tue, 10 Mar 2026 11:33:47 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
-	s=2025; t=1773138827;
-	bh=tUSmWE2RbjPu+6It5uyYg4McPg3jKQUPLt/9npl99ks=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qd7WgNiycBeA7rXcR66BE3SIun2alGmDjd+8hy3/qNkWsdsFvIIWe6w+NWtBHaXJK
-	 /vNrbt/naN5KfqbEGcA4DxOrD8HZ7jK14krHmH0vbafla3dxeLhKrAOiGYTS4D1Fuq
-	 /OFvohcVBUdY8sftOLmbzeeu69bIC8Q5i/dGD9B+pVpIn0t1A58otY8GEHMrtIIOdQ
-	 c75rRS0nQI0xyFI/YvgFBTgyekOenxmekxmYCKgJrd89x+RtTUuA0kAPPxDukxIZnP
-	 PkEKgGAcpNWJg0HJM+076biq/fG/QkDy5lc8ZEvDmk0z0CyFN4vMcQGFzsiUeje8S7
-	 nlU5RQsRFl9/Q==
-Date: Tue, 10 Mar 2026 11:33:44 +0100
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Eric Woudstra <ericwouds@gmail.com>
-Cc: Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netfilter-devel@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH v2 nf] netfilter: nf_flow_table_ip: Introduce
- nf_flow_vlan_push()
-Message-ID: <aa_ziMdBBa1kHNhl@chamomile>
-References: <20260227162955.122471-1-ericwouds@gmail.com>
- <aa86Ai1FRuJzthEF@strlen.de>
- <5f8c4194-5066-4a55-898f-257bfdce4a6c@gmail.com>
+	s=arc-20240116; t=1773138962; c=relaxed/simple;
+	bh=zrWMNn/NnSmL4C1as0kAxNg4jV7/eQEEWkOOrniMVbc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hLIHO76Aj7BqN5v80uWxHHzZSpF1EQBJQvzYFwJIgHtaeSAGLoLRCjyuM45vuw8pInQ6C+JieAFVMjM+RJYnw2aWRAfsxIXkgs4+2Dz6Usjea2W0SJvBjy5EiCeH1FCFPvBdyizpN4s/AAuxf65yL3CirtkTv1O+Z7RGAg7MPvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vzuRO-0001Kn-Ik; Tue, 10 Mar 2026 11:35:54 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vzuRM-004gN1-0P;
+	Tue, 10 Mar 2026 11:35:53 +0100
+Received: from blackshift.org (p4ffb2dc6.dip0.t-ipconnect.de [79.251.45.198])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 306DB4FD2B0;
+	Tue, 10 Mar 2026 10:35:53 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de
+Subject: [PATCH net 0/2] pull-request: can 2026-03-10
+Date: Tue, 10 Mar 2026 11:30:33 +0100
+Message-ID: <20260310103547.2299403-1-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="0i2WGxtpAoAh3qoB"
-Content-Disposition: inline
-In-Reply-To: <5f8c4194-5066-4a55-898f-257bfdce4a6c@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: netdev@vger.kernel.org
 
+Hello netdev-team,
 
---0i2WGxtpAoAh3qoB
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+this is a pull request of 2 patches for net/main.
 
-On Tue, Mar 10, 2026 at 09:25:46AM +0100, Eric Woudstra wrote:
-> 
-> 
-> On 3/9/26 10:22 PM, Florian Westphal wrote:
-> > Eric Woudstra <ericwouds@gmail.com> wrote:
-> > 
-> > Hi Eric
-> > 
-> >> With double vlan tagged packets in the fastpath, getting the error:
-> >>
-> >> skb_vlan_push got skb with skb->data not at mac header (offset 18)
-> >>
-> >> Introduce nf_flow_vlan_push(), that can correctly push the inner vlan
-> >> in the fastpath. It is closedly modelled on existing nf_flow_pppoe_push()
-> >>
-> >> Fixes: c653d5a78f34 ("netfilter: flowtable: inline vlan encapsulation in xmit path")
-> >> Signed-off-by: Eric Woudstra <ericwouds@gmail.com>
-> >   
-> >> +static int nf_flow_vlan_push(struct sk_buff *skb, __be16 proto, u16 id)
-> >> +{
-> >> +	if (skb_vlan_tag_present(skb)) {
-> >> +		struct vlan_hdr *vhdr;
-> >> +
-> >> +		if (skb_cow_head(skb, VLAN_HLEN))
-> >> +			return -1;
-> >> +
-> >> +		__skb_push(skb, VLAN_HLEN);
-> >> +		skb_reset_network_header(skb);
-> >> +
-> >> +		vhdr = (struct vlan_hdr *)(skb->data);
-> >> +		vhdr->h_vlan_TCI = htons(id);
-> >> +		vhdr->h_vlan_encapsulated_proto = skb->protocol;
-> >> +		skb->protocol = proto;
-> >> +	} else {
-> >> +		__vlan_hwaccel_put_tag(skb, proto, id);
-> >> +	}
-> > 
-> > I did not apply this because I'm not sure if this preserves correct tag
-> > order.  Can you clarify?
-> > 
-> > Lets consider vlan-offload-doesn't-exist case.
-> > 
-> > First loop pushes vlan tag 1, we get:
-> > 
-> >   [vlan1][inet]
-> 
-> Always !skb_vlan_tag_present (all vlan tags are pulled before the push
-> in the fastpath), so vlan1 is always stored in skb->vlan_all.
-> 
-> > 
-> > 2nd items pushes vlan tag 2, we get:
-> >   [vlan2][vlan1][inet]
-> > 
-> 
-> The second is pushed directly [vlan2][inet]. At a later moment the
-> contents of skb->vlan_all is pushed by SW. Ending up with
-> [vlan1][vlan2][inet].
-> 
-> > Now lets consider with-offload.  We have one tag only, so we get 1 skb with hwaccel
-> > tag in the sk_buff.  This is fine, HW will insert it for us.
-> > 
-> > But now lets consider two tags:
-> > 
-> > First loop pushes vlan1, we get the vlan1 tag in sk_buff vlan info.
-> > Packet is: [inet].
-> 
-> Correct, so same as SW, vlan1 in skb->vlan_all.
-> 
-> > 
-> > 2nd loop pushes vlan2, we get:
-> > 	[vlan2][inet].
-> > 
-> 
-> Correct, [vlan2][inet].
-> 
-> > Now, when packet is transmitted, where will the HW insert the tag?
-> > 
-> > [vlan1][vlan2][inet]?
-> > Or will this be [vlan2][vlan1][inet]?
-> 
-> The contents of skb->vlan_all is pushed by HW. Ending up with
-> [vlan1][vlan2][inet], same as SW.
-> 
-> Hope this is enough to clarify, but you can double-check it looking at
-> nf_flow_tuple_encap(). With 2 vlan tags, the contents of skb->vlan_all,
-> is always vlan1, the first in the encap array, which is the outer tag.
+Haibo Chen's patch fixes the maximum allowed bit rate error, which was
+broken in v6.19.
 
-In your patch, if vlan offload is present, then this outer (second)
-VLAN header is pushed with the outer vlan ID.
+Wenyuan Li contributes a patch for the hi311x driver that adds missing
+error checking in the caller of the hi3110_power_enable() function,
+hi3110_open().
 
-This goes against the assumption that the outer VLAN header is always
-offloaded.
+regards,
+Marc
 
-Probably it is easier to fix this by resetting the mac header (see
-your patch).
+---
 
-But if you prefer, just fix your patch to be similar to
-skb_vlan_push().
+The following changes since commit e3f5e0f22cfc2371e7471c9fd5b4da78f9df7c69:
 
---0i2WGxtpAoAh3qoB
-Content-Type: text/x-diff; charset=utf-8
-Content-Disposition: attachment; filename="fix.patch"
+  mctp: i2c: fix skb memory leak in receive path (2026-03-10 11:10:55 +0100)
 
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index 3fdb10d9bf7f..ab58ba0c5ff6 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -738,6 +738,9 @@ static int nf_flow_encap_push(struct sk_buff *skb,
- 		switch (tuple->encap[i].proto) {
- 		case htons(ETH_P_8021Q):
- 		case htons(ETH_P_8021AD):
-+			skb_reset_mac_header(skb);
-+			skb_reset_mac_len(skb);
-+
- 			if (skb_vlan_push(skb, tuple->encap[i].proto,
- 					  tuple->encap[i].id) < 0)
- 				return -1;
+are available in the Git repository at:
 
---0i2WGxtpAoAh3qoB--
+  git://git.kernel.org/pub/scm/linux/kernel/git/mkl/linux-can.git tags/linux-can-fixes-for-7.0-20260310
+
+for you to fetch changes up to 47bba09b14fa21712398febf36cb14fd4fc3bded:
+
+  can: hi311x: hi3110_open(): add check for hi3110_power_enable() return value (2026-03-10 11:12:52 +0100)
+
+----------------------------------------------------------------
+linux-can-fixes-for-7.0-20260310
+
+----------------------------------------------------------------
+Haibo Chen (1):
+      can: dev: keep the max bitrate error at 5%
+
+Wenyuan Li (1):
+      can: hi311x: hi3110_open(): add check for hi3110_power_enable() return value
+
+ drivers/net/can/dev/calc_bittiming.c | 2 +-
+ drivers/net/can/spi/hi311x.c         | 5 ++++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
