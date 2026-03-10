@@ -1,38 +1,38 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.94])
+Received: from mail.avm.de (mail.avm.de [212.42.244.119])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB3447CC87;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E005447CC81;
 	Tue, 10 Mar 2026 11:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773143756; cv=none; b=DvCgIXCDL8LvNRoq+TSXoIaSgBEds6zRuD9f8zqxeffVmU+xgAPTOPYQMQ9zAqCIrHmbGwegasUzOfbHVl8cve9mjAYKEhdJ6z+zPKgPtc5Rccy+XczcpkWro8WaSKHwwnxwOnhVZUZRyCeLEJE6do8gToLjHVdoWRB7XJ9syII=
+	t=1773143755; cv=none; b=GBVGOGO5dLjueeq1T7ahiJM4VR5pIJkhmwT9rFiU4kfEylzVEjAI7X20KixRmGoadFlvk2mE7S+4HPgBbNrdus3rJOPirkopb751FR2vm/qaZOphWjy2avXjOQxN7uQuLYhaZniDH6gXWDbkZjBbiV5ZVkMlZVDPgpQEru2g5eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773143756; c=relaxed/simple;
-	bh=a1YtuPUr/A4Jokjiqoyr22dEN0gVE+OOIk5/iCzuB9k=;
+	s=arc-20240116; t=1773143755; c=relaxed/simple;
+	bh=gXi6ivSyh7ZdNYhxQJgA68gjpGeiYyVoxWZ9PHNV1mk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=B6PNs0l+TgA2lZOwBROg4z/x6d7rwCNIr/lhdsNHa7sHQceDXuVDSgtYhphHIa9Rl6H4uFPjH/l3isN7BPFscFhMU2l/3Q1cbQfxvkyJh27NurJcjyQxGyldWHqaYiMAuYF4gX9Sx6HMlysGyk2aVNK/eC/JajLh/mzgdal5msk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=BoFkjZya; arc=none smtp.client-ip=212.42.244.94
+	 In-Reply-To:To:Cc; b=Yc5BflULDnrRhmn1OwCzji+SNuVsrW3f6IpTysyqJAdJXY3Opk9H7BkexANIe+s7f1ap6Yl7sgR6/6wgCkfI2mFafargNxTPho7eSSjEZ6C+1oSVT5quhP/wI4kVKPpbL8U3OuKJXoxCbVZT79DW/oV5Y5TrbrrjyL8Xs7d74aQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=nVgVwpQb; arc=none smtp.client-ip=212.42.244.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="BoFkjZya"
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="nVgVwpQb"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143728; bh=a1YtuPUr/A4Jokjiqoyr22dEN0gVE+OOIk5/iCzuB9k=;
+	t=1773143728; bh=gXi6ivSyh7ZdNYhxQJgA68gjpGeiYyVoxWZ9PHNV1mk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=BoFkjZyaKFG4I+0my0U16P/ZlsfjMrTgDD1a+wOsKM3wW6Hyckunq05e6+k99D3Gi
-	 4kV+7om5pC/Efx3ZEKmiJFTqpv4USFiYyuVuVp1V1iQJ18dYlrQIte47hFcyWAgg5r
-	 KM84isD0nokr7A5umpY1I9BsMYrFHMDwFBwVekfs=
-Received: from [212.42.244.71] (helo=mail.avm.de)
+	b=nVgVwpQbQWVMIcsitG/nCb398yEVy7ZQQB9WySrZ33OpPnd8uZOvEz24brifCCUI4
+	 uTCn5X5/IzU2QfC4sx78qnwXqZhpyZtzNlWK6nrp5aYEaEStYeOKZWKGER0Hzx4EK5
+	 ReXfmrtV8ruqr+7pomn1vmNIP3a/IcvZitkmj99s=
+Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006af-e21d-7f0000032729-7f000001baa8-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:27 +0100
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
+	id 69b006b0-2367-7f0000032729-7f000001ca00-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:28 +0100
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:27 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:28 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:13 +0100
-Subject: [PATCH 47/61] nfc: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 12:49:17 +0100
+Subject: [PATCH 51/61] leds: Prefer IS_ERR_OR_NULL over manual NULL check
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-47-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-51-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -71,21 +71,21 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Mark Greer <mgreer@animalcreek.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1019; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=a1YtuPUr/A4Jokjiqoyr22dEN0gVE+OOIk5/iCzuB9k=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZ1Y/UGouoeQcc9WQ8MxrI8d8MHBXHMF2nKS
- xW2sTsLmvSJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGdQAKCRA0LQZT0ays
- 20jSB/99EGQGPGXfwgc9aoZkEd87WlbZAw/E49hsk8skwCBZpOQIbZBOjpLkfsW3KBFKwpYL6hr
- zj+vjAPS0Kbx/wu/htgTOseyb8dlXJs2DJCBqPrRUWk2pbJhfh9SL0jieoNOSPl5SCoElM11Tk7
- rVQVkuo82qw4WSlg3liLUmo4Aasw+ALrReSJUM+VyOL2Xm/NrCTSIkyRe46UeXgqxXym8K01Jiw
- UcwLAnfIONTcOH9YPD1gA7uZh9C/pYgWe8DkJu23THTdXZuc/7KopxZDLw5gOH2D1JgCmfeTZcx
- ZHAC2ZLeQRVUrAJ1qKHgI4k8WSRe11aWcTzhA96+gLBGdLHb
+Cc: Lee Jones <lee@kernel.org>, Pavel Machek <pavel@kernel.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=923; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=gXi6ivSyh7ZdNYhxQJgA68gjpGeiYyVoxWZ9PHNV1mk=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAaDRzpibZr08PkdSw8N3Wy2DsiAYuwbT7jaR
+ Q+T5qeGz2qJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGgwAKCRA0LQZT0ays
+ 2y8ACACMKWU5TdDg1OYJ2RnR6HQxJ+2JBIhOyDk8x3FmHidd0wyjcAKA49FqYhtFEhdjGJpgNO3
+ wlcNr4zJ0vDoKzMmVWNj4Kco49QymIlKxd4ko1v9jLom22gL6FIw+i0pd7JG7Dw9K0M9qv/g65X
+ psKPmTQlkBRnjyq+gEp1UF+Z+aW8svU4fmV048TA2bEb7zgfrp0dmnA9hbj2JEYjWrt/pHjBWtC
+ 27oF1sxBbFSjPkNzuaBpb0y9RWyLO/07lImA1AItNHZGlvNpydtzvqp/I3qxgt9sXKt1PHRt8iZ
+ u4zVb/lltaBI2wPScPn/3+nmKc5y9QbdtT1oK6vzRsjkH2h6
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143727-9367AF2F-C803A085/0/0
+X-purgate-ID: 149429::1773143728-97CB7E1F-C67FA391/0/0
 X-purgate-type: clean
-X-purgate-size: 1021
+X-purgate-size: 925
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
@@ -95,28 +95,28 @@ check.
 
 Change generated with coccinelle.
 
-To: Mark Greer <mgreer@animalcreek.com>
-Cc: linux-wireless@vger.kernel.org
-Cc: netdev@vger.kernel.org
+To: Lee Jones <lee@kernel.org>
+To: Pavel Machek <pavel@kernel.org>
+Cc: linux-leds@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- drivers/nfc/trf7970a.c | 2 +-
+ drivers/leds/trigger/ledtrig-tty.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
-index d17c701c7888b3be0b46cf95c4b77182313c97c0..f62fc2b80b05bd7a82269334d7f50e6394bfe80f 100644
---- a/drivers/nfc/trf7970a.c
-+++ b/drivers/nfc/trf7970a.c
-@@ -651,7 +651,7 @@ static void trf7970a_send_upstream(struct trf7970a *trf)
- 	dev_kfree_skb_any(trf->tx_skb);
- 	trf->tx_skb = NULL;
+diff --git a/drivers/leds/trigger/ledtrig-tty.c b/drivers/leds/trigger/ledtrig-tty.c
+index 8eb6286b33ac3cdcbb72ed9ad5ad7105e15d20b6..3725571144d910b225ca9605771fc0f0c8355efd 100644
+--- a/drivers/leds/trigger/ledtrig-tty.c
++++ b/drivers/leds/trigger/ledtrig-tty.c
+@@ -220,7 +220,7 @@ static void ledtrig_tty_work(struct work_struct *work)
+ 			goto out;
  
--	if (trf->rx_skb && !IS_ERR(trf->rx_skb) && !trf->aborting)
-+	if (!IS_ERR_OR_NULL(trf->rx_skb) && !trf->aborting)
- 		print_hex_dump_debug("trf7970a rx data: ", DUMP_PREFIX_NONE,
- 				     16, 1, trf->rx_skb->data, trf->rx_skb->len,
- 				     false);
+ 		tty = tty_kopen_shared(devno);
+-		if (IS_ERR(tty) || !tty)
++		if (IS_ERR_OR_NULL(tty))
+ 			/* What to do? retry or abort */
+ 			goto out;
+ 
 
 -- 
 2.43.0
