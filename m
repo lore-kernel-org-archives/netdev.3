@@ -1,38 +1,38 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C0547CC86;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB3447CC87;
 	Tue, 10 Mar 2026 11:55:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773143757; cv=none; b=fcMMwi9edtOohfoJyFIX+qx4J6AHia7hXkIgJmP3rkhX4H+sEE+w/eAgiZ1/fZLGIxUR8jKEnVSSrB6NEVrMZOjLuhW/JZU0A1ZR1ePE9pDtxEeTfCduUxr2KjOqeM3vT7CLe0ICehfIpLAztaWq3pTqmVewjaT9Uh97p4m8/QQ=
+	t=1773143756; cv=none; b=DvCgIXCDL8LvNRoq+TSXoIaSgBEds6zRuD9f8zqxeffVmU+xgAPTOPYQMQ9zAqCIrHmbGwegasUzOfbHVl8cve9mjAYKEhdJ6z+zPKgPtc5Rccy+XczcpkWro8WaSKHwwnxwOnhVZUZRyCeLEJE6do8gToLjHVdoWRB7XJ9syII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773143757; c=relaxed/simple;
-	bh=qcffqXWHqw29zikXSaMyeqsF5SNAPike03t0qIAEHZQ=;
+	s=arc-20240116; t=1773143756; c=relaxed/simple;
+	bh=a1YtuPUr/A4Jokjiqoyr22dEN0gVE+OOIk5/iCzuB9k=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=fqGt4WiXAsDO5QFzMP7II636r0p86wq2o4MDswyLPlpbHJTaK8ZY7zPbFGlErmaiTlryjX2q55fBT+5MxdltdJSX9OqQTstQX/zt/JC3LAzxekSfVIU+FiRG6VIdJnmecfgztF2Ed1wH0VkNMXaZKaosaheddkoqieEEDRTMkrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=TM6eg5Is; arc=none smtp.client-ip=212.42.244.119
+	 In-Reply-To:To:Cc; b=B6PNs0l+TgA2lZOwBROg4z/x6d7rwCNIr/lhdsNHa7sHQceDXuVDSgtYhphHIa9Rl6H4uFPjH/l3isN7BPFscFhMU2l/3Q1cbQfxvkyJh27NurJcjyQxGyldWHqaYiMAuYF4gX9Sx6HMlysGyk2aVNK/eC/JajLh/mzgdal5msk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=BoFkjZya; arc=none smtp.client-ip=212.42.244.94
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="TM6eg5Is"
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="BoFkjZya"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143728; bh=qcffqXWHqw29zikXSaMyeqsF5SNAPike03t0qIAEHZQ=;
+	t=1773143728; bh=a1YtuPUr/A4Jokjiqoyr22dEN0gVE+OOIk5/iCzuB9k=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=TM6eg5IsKDZmgxp7GUG67+/57rD9rEUbWduf95eT5FiKywsNOkOROxJd1HgADueu0
-	 XiuppY49OLz9JAJVzWK6kmZAydSEKk8Yfb3LCk0edxsTMHOI+GxxxY6TToBD+hBFBa
-	 LA63nSKl0Z508Ju4IKsVgpiypr/7gGuby3A+F088=
+	b=BoFkjZyaKFG4I+0my0U16P/ZlsfjMrTgDD1a+wOsKM3wW6Hyckunq05e6+k99D3Gi
+	 4kV+7om5pC/Efx3ZEKmiJFTqpv4USFiYyuVuVp1V1iQJ18dYlrQIte47hFcyWAgg5r
+	 KM84isD0nokr7A5umpY1I9BsMYrFHMDwFBwVekfs=
 Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006b0-2367-7f0000032729-7f000001ca0e-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:28 +0100
+	id 69b006af-e21d-7f0000032729-7f000001baa8-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:27 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:28 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:27 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:18 +0100
-Subject: [PATCH 52/61] gpib: Prefer IS_ERR_OR_NULL over manual NULL check
+Date: Tue, 10 Mar 2026 12:49:13 +0100
+Subject: [PATCH 47/61] nfc: Prefer IS_ERR_OR_NULL over manual NULL check
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-52-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-47-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -71,21 +71,21 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Dave Penkler <dpenkler@gmail.com>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=943; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=qcffqXWHqw29zikXSaMyeqsF5SNAPike03t0qIAEHZQ=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAaHLW+SPsUXBzKjRGA9Sr6z74iUa0aNCqDAC
- Dpk7k/CQsGJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGhwAKCRA0LQZT0ays
- 2xngB/9RQuwf5oN7K+t7LSQdZxyrxHOJcTw0116pWThU0XUv9UqQRCLX3DDjBAMUn8ivSrQQu3j
- eCXsK6Di/TiAzICtmQnhlrY1llqErJMK6D3gMknGUqPIUGtryg9JlZS983aqFsnI2NTWJkyhY62
- zoummbxiGOU/XB7LGr2KWmHwNok02P+rt7tXG3k25rPUmB1lXXK0IEKQHC6AYoy/xbYJ43MpYYP
- x2moPKs1et3YrKZ7IUmRwsJyLGDoTojj8VT1rAmn5p4RXjrw+bZItwBB2HSkOSM+PFx6Orfgajc
- 95nvtBvD0Mtdm01bQJociZB8XX6BHHZ3h1K5cS12ZujFOnCS
+Cc: Mark Greer <mgreer@animalcreek.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1019; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=a1YtuPUr/A4Jokjiqoyr22dEN0gVE+OOIk5/iCzuB9k=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAZ1Y/UGouoeQcc9WQ8MxrI8d8MHBXHMF2nKS
+ xW2sTsLmvSJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGdQAKCRA0LQZT0ays
+ 20jSB/99EGQGPGXfwgc9aoZkEd87WlbZAw/E49hsk8skwCBZpOQIbZBOjpLkfsW3KBFKwpYL6hr
+ zj+vjAPS0Kbx/wu/htgTOseyb8dlXJs2DJCBqPrRUWk2pbJhfh9SL0jieoNOSPl5SCoElM11Tk7
+ rVQVkuo82qw4WSlg3liLUmo4Aasw+ALrReSJUM+VyOL2Xm/NrCTSIkyRe46UeXgqxXym8K01Jiw
+ UcwLAnfIONTcOH9YPD1gA7uZh9C/pYgWe8DkJu23THTdXZuc/7KopxZDLw5gOH2D1JgCmfeTZcx
+ ZHAC2ZLeQRVUrAJ1qKHgI4k8WSRe11aWcTzhA96+gLBGdLHb
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143728-BBCBFE1F-82CC5BFD/0/0
+X-purgate-ID: 149429::1773143727-9367AF2F-C803A085/0/0
 X-purgate-type: clean
-X-purgate-size: 945
+X-purgate-size: 1021
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
@@ -95,26 +95,28 @@ check.
 
 Change generated with coccinelle.
 
-To: Dave Penkler <dpenkler@gmail.com>
+To: Mark Greer <mgreer@animalcreek.com>
+Cc: linux-wireless@vger.kernel.org
+Cc: netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- drivers/gpib/common/iblib.c | 2 +-
+ drivers/nfc/trf7970a.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpib/common/iblib.c b/drivers/gpib/common/iblib.c
-index b672dd6aad25f2f4f36d2a0ed78a0625651ac8ba..18188228a90178ba0bf7c6c923924a99a8ace1bb 100644
---- a/drivers/gpib/common/iblib.c
-+++ b/drivers/gpib/common/iblib.c
-@@ -249,7 +249,7 @@ int iboffline(struct gpib_board *board)
- 	if (!board->interface)
- 		return -ENODEV;
+diff --git a/drivers/nfc/trf7970a.c b/drivers/nfc/trf7970a.c
+index d17c701c7888b3be0b46cf95c4b77182313c97c0..f62fc2b80b05bd7a82269334d7f50e6394bfe80f 100644
+--- a/drivers/nfc/trf7970a.c
++++ b/drivers/nfc/trf7970a.c
+@@ -651,7 +651,7 @@ static void trf7970a_send_upstream(struct trf7970a *trf)
+ 	dev_kfree_skb_any(trf->tx_skb);
+ 	trf->tx_skb = NULL;
  
--	if (board->autospoll_task && !IS_ERR(board->autospoll_task)) {
-+	if (!IS_ERR_OR_NULL(board->autospoll_task)) {
- 		retval = kthread_stop(board->autospoll_task);
- 		if (retval)
- 			dev_err(board->gpib_dev, "kthread_stop returned %i\n", retval);
+-	if (trf->rx_skb && !IS_ERR(trf->rx_skb) && !trf->aborting)
++	if (!IS_ERR_OR_NULL(trf->rx_skb) && !trf->aborting)
+ 		print_hex_dump_debug("trf7970a rx data: ", DUMP_PREFIX_NONE,
+ 				     16, 1, trf->rx_skb->data, trf->rx_skb->len,
+ 				     false);
 
 -- 
 2.43.0
