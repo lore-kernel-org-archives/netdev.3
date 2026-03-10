@@ -1,255 +1,140 @@
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09845C8F0
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 08:40:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.119
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773132058; cv=none; b=on+r4wqmT3eUUMktmdcMDHAvw4kRchBgxLujOEEKlsnUCLoeEuYJixWJViFUxqAeFqEsCdfLOVGqKpefgh9cJY9xwusMG8K/hNT/d8zIv4Q++wIatr0hIRp9jR/Sx1o+u3iN/HH2dEbeTw8pi/WvRDyfnVdsZUvCW774hz04TwE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773132058; c=relaxed/simple;
-	bh=//cC0mocz8jaym8o8kY642f5CJM1C+CpTyJbcTFrSAk=;
-	h=Message-ID:Subject:Date:From:To:Cc:References:In-Reply-To:
-	 Content-Type; b=mNtMxL4Y90Hjvi8h+AAU2kAhtuINsC6WGUtywYnHstno0mZgbcVm2B+QYDyw8UujznnFhn/FJQrHIHSuxa3iR48pyrAPWH/a6+RThk2G+hJf5bTHz+lFf5dd7RHA265t8HS49bKPByWfDrQOtdF3z3Fw6WOkNDQtYcOiD4UFfCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=H5r6UlQq; arc=none smtp.client-ip=115.124.30.119
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3723326461F;
+	Tue, 10 Mar 2026 08:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773132138; cv=pass; b=P0aj3B1J7RA/dOrE9mfCDO/rLknWG7Jj5cEdUkvASkjSm12hiuDMSQT65bvd2sYV8oG9r9gCKkhHgIaVaFWnM11eIob25njICHcj5AlNfzftJktU8d2aMKqvPf+TeTU3NNm+w5HERHZr/MPe2MqaA3Aje2I3Nl7yd1VD+sQuWOc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773132138; c=relaxed/simple;
+	bh=O+PtupKhJUb1UiVgJ52/W3koo44cp91XMGRu/Yk+jj8=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jQQ0PSxc+yx3ecA5CyTMFM8618RxyRkjrJCKSOOnJYeeruivwDepF6LXT1tB7khh2S+WXfYFw/Dl05hj//WslQjGiyrVkta41aSNyaUwyOgVckBpxIcjfRBjGlpIp14bnxIRkfdhXp9VNZ4NdJnyxhPU0B0Xki3F4MZdrjT3sps=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=mIO2iMDW; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pigmoral.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="H5r6UlQq"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1773132053; h=Message-ID:Subject:Date:From:To:Content-Type;
-	bh=rujYVY5Fv98QolAP6Cl6fC/eHgCxMjVW9dNmmnp+dLQ=;
-	b=H5r6UlQqCdYPPLISo3rC7K1qu1wMxVT2vuAVD5ShMIibH397fAdfLiaoSWKH9Ezz0l05989VCMFMeAJ39nYDANcI/dsNZtzP7GZcctdB0c3R5hR08P1Ya7PQ9fdoqgswe730/+N/2XkbxFdccsrIKmP9tiGV3AATRSISM1fBt3Y=
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0X-fWRCW_1773132051 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 10 Mar 2026 16:40:51 +0800
-Message-ID: <1773132028.5063865-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH net v8 1/2] virtio-net: correct hdr_len handling for VIRTIO_NET_F_GUEST_HDRLEN
-Date: Tue, 10 Mar 2026 16:40:28 +0800
-From: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To: Jason Wang <jasowang@redhat.com>
-Cc: netdev@vger.kernel.org,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S. Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>,
- Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
- "Michael S. Tsirkin" <mst@redhat.com>,
- =?utf-8?q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>,
- Jiri Pirko <jiri@resnulli.us>,
- Alvaro Karsz <alvaro.karsz@solid-run.com>,
- virtualization@lists.linux.dev
-References: <20260305031938.24518-1-xuanzhuo@linux.alibaba.com>
- <20260305031938.24518-2-xuanzhuo@linux.alibaba.com>
- <CACGkMEsmDiTP1tz1hur_tduOUFU1bYqNzQm9nQgPUfdfHrmcKw@mail.gmail.com>
-In-Reply-To: <CACGkMEsmDiTP1tz1hur_tduOUFU1bYqNzQm9nQgPUfdfHrmcKw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="mIO2iMDW"
+ARC-Seal: i=1; a=rsa-sha256; t=1773132104; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=Qd3h3KFo8CtJ0BcQ9PmwEuSZGAFvxHDPBUX+IuoAi5TPTveJMtETpmnpDzBpmfdGI9S7uQXxAMF/yLZStUfAEPuHmXgt8DO7uxACbXvdhEg4o7WkqzcJsikwcFHoTZxnC0YBZgKzRTxhjeJf6jxEu3XfB4nTlUYb20BN9PJLjTs=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1773132104; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=6QAKNaYZQ3oPbyfRehX2Ps756j69nJ1JrR6pbMmlzHI=; 
+	b=HYTsmRQTLlpE83eSqdybsp9GvqEVLDH7c01y1e30TPtbgarHQLNURfLP3TeuTP7KjXpE7PGTzKtwx06bVkr87hYe9yzAbvvSAENIa1Caxz4Pt1kFVx+Hb8vfMsQVKyiQ9btrdTk4VRXVnCfXUUzNfeN90mzPkYd23kFNgFbmrXU=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=pigmoral.tech;
+	spf=pass  smtp.mailfrom=junhui.liu@pigmoral.tech;
+	dmarc=pass header.from=<junhui.liu@pigmoral.tech>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773132104;
+	s=zmail; d=pigmoral.tech; i=junhui.liu@pigmoral.tech;
+	h=From:From:Subject:Subject:Date:Date:Message-Id:Message-Id:MIME-Version:Content-Type:Content-Transfer-Encoding:To:To:Cc:Cc:Reply-To;
+	bh=6QAKNaYZQ3oPbyfRehX2Ps756j69nJ1JrR6pbMmlzHI=;
+	b=mIO2iMDWPi71XBeTyfVNIkwLFXY1LkkYQf17cONxWCj/t9GAPD85ay3yKKMETCw5
+	SLEMZTa0tq1fvD4znvgQu77PhX+vw3CVZ6NW0Acij2pfHbDF8bo+gIpivAsKMD1ZDI2
+	PkaYMQ41mXhKcT2YsYLJoSLP4t/1EsmKhD31WHfY=
+Received: by mx.zohomail.com with SMTPS id 1773132101727222.80993575966113;
+	Tue, 10 Mar 2026 01:41:41 -0700 (PDT)
+From: Junhui Liu <junhui.liu@pigmoral.tech>
+Subject: [PATCH RFC 0/8] clk: sunxi-ng: Add support for Allwinner A733 CCU
+ and PRCM
+Date: Tue, 10 Mar 2026 16:33:53 +0800
+Message-Id: <20260310-a733-clk-v1-0-36b4e9b24457@pigmoral.tech>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAAAAAAAC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDIKGbaG5srJuck61rkGKSlmxgkGiZZpmsBFReUJSallkBNipaKcjNWSm
+ 2thYAxo8A6F8AAAA=
+X-Change-ID: 20260202-a733-clk-0d4fc00a9f9c
+To: Michael Turquette <mturquette@baylibre.com>, 
+ Stephen Boyd <sboyd@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Chen-Yu Tsai <wens@kernel.org>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Samuel Holland <samuel@sholland.org>, 
+ Philipp Zabel <p.zabel@pengutronix.de>, 
+ Junhui Liu <junhui.liu@pigmoral.tech>, Paul Walmsley <pjw@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Ghiti <alex@ghiti.fr>, Richard Cochran <richardcochran@gmail.com>
+Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+ netdev@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773132092; l=3110;
+ i=junhui.liu@pigmoral.tech; s=20251228; h=from:subject:message-id;
+ bh=O+PtupKhJUb1UiVgJ52/W3koo44cp91XMGRu/Yk+jj8=;
+ b=LCoE9uot8A3TIPpldMu+FwiyMrSb7oaPhzcG1a5yrSDDfPFX9wLrX2xjT2hzw2TAqEHJJecU0
+ jGR11DR8AEbA5rykLaol+JTtYu8QPfSVi0wz5T9AXt5NwJoGI4cVTZb
+X-Developer-Key: i=junhui.liu@pigmoral.tech; a=ed25519;
+ pk=3vU0qIPJAH8blXmLyqBhKx+nLOjcLwwYhZXelEpw7h4=
+X-ZohoMailClient: External
 
-On Tue, 10 Mar 2026 11:05:46 +0800, Jason Wang <jasowang@redhat.com> wrote:
-> On Thu, Mar 5, 2026 at 11:19=E2=80=AFAM Xuan Zhuo <xuanzhuo@linux.alibaba=
-.com> wrote:
-> >
-> > The commit be50da3e9d4a ("net: virtio_net: implement exact header length
-> > guest feature") introduces support for the VIRTIO_NET_F_GUEST_HDRLEN
-> > feature in virtio-net.
-> >
-> > This feature requires virtio-net to set hdr_len to the actual header
-> > length of the packet when transmitting, the number of
-> > bytes from the start of the packet to the beginning of the
-> > transport-layer payload.
-> >
-> > However, in practice, hdr_len was being set using skb_headlen(skb),
-> > which is clearly incorrect. This commit fixes that issue.
-> >
-> > Fixes: be50da3e9d4a ("net: virtio_net: implement exact header length gu=
-est feature")
-> > Signed-off-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> > ---
-> >  drivers/net/tun_vnet.h     |  2 +-
-> >  drivers/net/virtio_net.c   |  6 +++-
-> >  include/linux/virtio_net.h | 58 ++++++++++++++++++++++++++++++--------
-> >  3 files changed, 53 insertions(+), 13 deletions(-)
-> >
-> > diff --git a/drivers/net/tun_vnet.h b/drivers/net/tun_vnet.h
-> > index a5f93b6c4482..fa5cab9d3e55 100644
-> > --- a/drivers/net/tun_vnet.h
-> > +++ b/drivers/net/tun_vnet.h
-> > @@ -244,7 +244,7 @@ tun_vnet_hdr_tnl_from_skb(unsigned int flags,
-> >
-> >         if (virtio_net_hdr_tnl_from_skb(skb, tnl_hdr, has_tnl_offload,
-> >                                         tun_vnet_is_little_endian(flags=
-),
-> > -                                       vlan_hlen, true)) {
-> > +                                       vlan_hlen, true, false)) {
-> >                 struct virtio_net_hdr_v1 *hdr =3D &tnl_hdr->hash_hdr.hd=
-r;
-> >                 struct skb_shared_info *sinfo =3D skb_shinfo(skb);
-> >
-> > diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
-> > index 72d6a9c6a5a2..7106333ef904 100644
-> > --- a/drivers/net/virtio_net.c
-> > +++ b/drivers/net/virtio_net.c
-> > @@ -3267,8 +3267,12 @@ static int xmit_skb(struct send_queue *sq, struc=
-t sk_buff *skb, bool orphan)
-> >         struct virtio_net_hdr_v1_hash_tunnel *hdr;
-> >         int num_sg;
-> >         unsigned hdr_len =3D vi->hdr_len;
-> > +       bool feature_hdrlen;
-> >         bool can_push;
-> >
-> > +       feature_hdrlen =3D virtio_has_feature(vi->vdev,
-> > +                                           VIRTIO_NET_F_GUEST_HDRLEN);
-> > +
-> >         pr_debug("%s: xmit %p %pM\n", vi->dev->name, skb, dest);
-> >
-> >         /* Make sure it's safe to cast between formats */
-> > @@ -3288,7 +3292,7 @@ static int xmit_skb(struct send_queue *sq, struct=
- sk_buff *skb, bool orphan)
-> >
-> >         if (virtio_net_hdr_tnl_from_skb(skb, hdr, vi->tx_tnl,
-> >                                         virtio_is_little_endian(vi->vde=
-v), 0,
-> > -                                       false))
-> > +                                       false, feature_hdrlen))
-> >                 return -EPROTO;
-> >
-> >         if (vi->mergeable_rx_bufs)
-> > diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-> > index 75dabb763c65..23f42bb8ece0 100644
-> > --- a/include/linux/virtio_net.h
-> > +++ b/include/linux/virtio_net.h
-> > @@ -207,20 +207,40 @@ static inline int virtio_net_hdr_to_skb(struct sk=
-_buff *skb,
-> >         return __virtio_net_hdr_to_skb(skb, hdr, little_endian, hdr->gs=
-o_type);
-> >  }
-> >
-> > -static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
-> > -                                         struct virtio_net_hdr *hdr,
-> > -                                         bool little_endian,
-> > -                                         bool has_data_valid,
-> > -                                         int vlan_hlen)
-> > +static inline void virtio_net_set_hdrlen(const struct sk_buff *skb,
-> > +                                        struct virtio_net_hdr *hdr,
-> > +                                        bool little_endian,
-> > +                                        bool feature_hdrlen)
-> > +{
-> > +       u16 hdr_len;
-> > +
-> > +       if (feature_hdrlen) {
-> > +               hdr_len =3D skb_transport_offset(skb);
-> > +
-> > +               if (hdr->gso_type =3D=3D VIRTIO_NET_HDR_GSO_UDP_L4)
-> > +                       hdr_len +=3D sizeof(struct udphdr);
-> > +               else
-> > +                       hdr_len +=3D tcp_hdrlen(skb);
->
-> I may miss soemthing but this still looks wrong as we could have e.g
-> USO and other UDP GSO packets.
+Add support for the main CCU and the PRCM module (R-CCU) found in the
+Allwinner A733 SoC. The clock architecture of the A733 is an evolution
+of the previous A523 design but introduces several significant changes.
 
-Could you say more?
+One of the key changes is the introduction of a "pll-ref" clock that
+normalizes the physical oscillator frequency (which can be 19.2MHz,
+24MHz, or 26MHz) into a consistent 24MHz reference for the entire clock
+tree. Additionally, while the A733 inherits many module clock structures
+from the A523, the MCU_CCU has been removed, and the overall clock tree
+has been expanded to support more new functional units.
 
-Thanks.
+Also update the sunxi-ng SDM (Sigma-Delta Modulation) helper to support
+a new dual-pattern register design. On the A733, the SDM enable bit has
+been moved from the main PLL register to a second pattern register
+(PATTERN1). The driver is updated to handle this register layout to
+ensure accurate frequency synthesis for "pll-audio0".
 
+This is marked as RFC because the parent clocks for several instances in
+the main CCU are difficult to determine as the user manual provides
+limited information on their specific clock sources. In these cases, the
+implementation follows vendor practices and previous SoC designs,
+generally defaulting to "hosc" where documentation is lacking. In
+contrast, the bus clock gates in the PRCM (R-CCU) are explicitly defined
+based on the Memory Map in the manual, which clearly associates each
+module with its respective bus. Feedback or insights on these specific
+clock parents would be greatly appreciated.
 
->
-> > +       } else {
-> > +               /* This is a hint as to how much should be linear. */
-> > +               hdr_len =3D skb_headlen(skb);
-> > +       }
-> > +
-> > +       hdr->hdr_len =3D __cpu_to_virtio16(little_endian, hdr_len);
-> > +}
-> > +
-> > +static inline int __virtio_net_hdr_from_skb(const struct sk_buff *skb,
-> > +                                           struct virtio_net_hdr *hdr,
-> > +                                           bool little_endian,
-> > +                                           bool has_data_valid,
-> > +                                           bool feature_hdrlen,
-> > +                                           int vlan_hlen)
-> >  {
-> >         memset(hdr, 0, sizeof(*hdr));   /* no info leak */
-> >
-> >         if (skb_is_gso(skb)) {
-> >                 struct skb_shared_info *sinfo =3D skb_shinfo(skb);
-> >
-> > -               /* This is a hint as to how much should be linear. */
-> > -               hdr->hdr_len =3D __cpu_to_virtio16(little_endian,
-> > -                                                skb_headlen(skb));
-> >                 hdr->gso_size =3D __cpu_to_virtio16(little_endian,
-> >                                                   sinfo->gso_size);
-> >                 if (sinfo->gso_type & SKB_GSO_TCPV4)
-> > @@ -231,6 +251,10 @@ static inline int virtio_net_hdr_from_skb(const st=
-ruct sk_buff *skb,
-> >                         hdr->gso_type =3D VIRTIO_NET_HDR_GSO_UDP_L4;
-> >                 else
-> >                         return -EINVAL;
-> > +
-> > +               virtio_net_set_hdrlen(skb, hdr, little_endian,
-> > +                                     feature_hdrlen);
-> > +
-> >                 if (sinfo->gso_type & SKB_GSO_TCP_ECN)
-> >                         hdr->gso_type |=3D VIRTIO_NET_HDR_GSO_ECN;
-> >         } else
-> > @@ -250,6 +274,16 @@ static inline int virtio_net_hdr_from_skb(const st=
-ruct sk_buff *skb,
-> >         return 0;
-> >  }
-> >
-> > +static inline int virtio_net_hdr_from_skb(const struct sk_buff *skb,
-> > +                                         struct virtio_net_hdr *hdr,
-> > +                                         bool little_endian,
-> > +                                         bool has_data_valid,
-> > +                                         int vlan_hlen)
-> > +{
-> > +       return __virtio_net_hdr_from_skb(skb, hdr, little_endian,
-> > +                                        has_data_valid, false, vlan_hl=
-en);
-> > +}
-> > +
-> >  static inline unsigned int virtio_l3min(bool is_ipv6)
-> >  {
-> >         return is_ipv6 ? sizeof(struct ipv6hdr) : sizeof(struct iphdr);
-> > @@ -385,7 +419,8 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *s=
-kb,
-> >                             bool tnl_hdr_negotiated,
-> >                             bool little_endian,
-> >                             int vlan_hlen,
-> > -                           bool has_data_valid)
-> > +                           bool has_data_valid,
-> > +                           bool feature_hdrlen)
-> >  {
-> >         struct virtio_net_hdr *hdr =3D (struct virtio_net_hdr *)vhdr;
-> >         unsigned int inner_nh, outer_th;
-> > @@ -395,8 +430,9 @@ virtio_net_hdr_tnl_from_skb(const struct sk_buff *s=
-kb,
-> >         tnl_gso_type =3D skb_shinfo(skb)->gso_type & (SKB_GSO_UDP_TUNNE=
-L |
-> >                                                     SKB_GSO_UDP_TUNNEL_=
-CSUM);
-> >         if (!tnl_gso_type)
-> > -               return virtio_net_hdr_from_skb(skb, hdr, little_endian,
-> > -                                              has_data_valid, vlan_hle=
-n);
-> > +               return __virtio_net_hdr_from_skb(skb, hdr, little_endia=
-n,
-> > +                                                has_data_valid,
-> > +                                                feature_hdrlen, vlan_h=
-len);
-> >
-> >         /* Tunnel support not negotiated but skb ask for it. */
-> >         if (!tnl_hdr_negotiated)
-> > --
-> > 2.32.0.3.g01195cf9f
-> >
->
-> Thanks
->
+This functionally relies on the RTC series for the A733 SoC [1].
+
+Link: https://lore.kernel.org/all/20260121-a733-rtc-v1-0-d359437f23a7@pigmoral.tech/ [1]
+
+---
+Junhui Liu (8):
+      dt-bindings: clk: sun60i-a733-ccu: Add allwinner A733 support
+      clk: sunxi-ng: sdm: Add dual patterns support
+      clk: sunxi-ng: a733: Add PRCM CCU
+      clk: sunxi-ng: a733: Add PLL clocks support
+      clk: sunxi-ng: a733: Add bus clocks support
+      clk: sunxi-ng: a733: Add mod clocks support
+      clk: sunxi-ng: a733: Add bus clock gates
+      clk: sunxi-ng: a733: Add reset lines
+
+ .../bindings/clock/allwinner,sun60i-a733-ccu.yaml  |  107 +
+ drivers/clk/sunxi-ng/Kconfig                       |   10 +
+ drivers/clk/sunxi-ng/Makefile                      |    4 +
+ drivers/clk/sunxi-ng/ccu-sun60i-a733-r.c           |  276 +++
+ drivers/clk/sunxi-ng/ccu-sun60i-a733.c             | 2375 ++++++++++++++++++++
+ drivers/clk/sunxi-ng/ccu_sdm.c                     |   51 +-
+ drivers/clk/sunxi-ng/ccu_sdm.h                     |   32 +-
+ include/dt-bindings/clock/sun60i-a733-ccu.h        |  289 +++
+ include/dt-bindings/clock/sun60i-a733-r-ccu.h      |   39 +
+ include/dt-bindings/reset/sun60i-a733-ccu.h        |  131 ++
+ include/dt-bindings/reset/sun60i-a733-r-ccu.h      |   23 +
+ 11 files changed, 3311 insertions(+), 26 deletions(-)
+---
+base-commit: 6de23f81a5e08be8fbf5e8d7e9febc72a5b5f27f
+change-id: 20260202-a733-clk-0d4fc00a9f9c
+
+Best regards,
+-- 
+Junhui Liu <junhui.liu@pigmoral.tech>
+
