@@ -1,87 +1,83 @@
-Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 193823EAC79;
-	Tue, 10 Mar 2026 12:48:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2022D33B6C4;
+	Tue, 10 Mar 2026 12:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773146902; cv=none; b=Zes1Pgf3W7hBL7urhSYnfvlBbZSEa1L9MoXVz6fyoa20ZmdlszPGzMlzmWlxOjgO+pKTCFf8M2yWuRK/9aqBOvj0NdVgMIBv2maVBG6RU7Lww28zYmo2RZTghE+GyAUxWaTYbK5cglC3XKIQV1uykJR4x31Ho4Kdgd1Zi9fSMuQ=
+	t=1773147010; cv=none; b=NKcaOwyxPxmTmXoZV2iDrK0F3Hh3Nd3GqA6f0WNaM2HIRMFIjDwQaxFiB+1122UsZyn337qdItFv0iF/2n9MWOngxUgbyg3lu77F5X1afr+DG8Gb4wULGvnNGU+iYmv/AVvkj/jzQR8vNnZT62XK8szJOqVwJVDZ0L2pKxFWIWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773146902; c=relaxed/simple;
-	bh=qNGGCa7zSLy60uRtB/BOsU5umBjyfHQuZsyfQ9l4IHw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CI0eqINuxZyjd0JTy4HzkYGFoaY+uoRC2U0Ff8q+l3P7Cnb0mQcxY63b+CK2Md8ziAjQzeHJpA8KUxnBQxJG8gwXvxHYMj2TIgvqrjo6iC8MZOUnsp+cWv2k2v+E2ojZNu/fS2bWWbrKUxgBCl+QR7CpECize30WaWUHdiaN3DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
-Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
-	id DB8D46052A; Tue, 10 Mar 2026 13:48:18 +0100 (CET)
-Date: Tue, 10 Mar 2026 13:48:19 +0100
-From: Florian Westphal <fw@strlen.de>
-To: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, netfilter-devel@vger.kernel.org
-Subject: Re: [PATCH net 00/10] netfilter: updates for net
-Message-ID: <abATEzuA5yD5lAFQ@strlen.de>
-References: <20260309210845.15657-1-fw@strlen.de>
- <aa_4w9gXCkzQ06Nk@chamomile>
- <abAPlfmkO7gr142k@strlen.de>
- <abARZGTs_eP6yDu4@chamomile>
+	s=arc-20240116; t=1773147010; c=relaxed/simple;
+	bh=6nzgzuyEmJtzi+mALa1difNFw8fG3ZBIhax6V+8GNA0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=UFNBl+SveD/WJkj/jP2+AcdxvOWb9AqWTX1Fw1EC725Y6ghzLBkiZ/4P0LUg18w2UfFYK55pbJcvdzd003uyUxPShW8TX+rWft0ibsNVbJs67lInzyQTXAeT7ZS72jm0IiDvxOc2sEbmWM96PRYaK4DCP5B9x6A8DhKXDzd3ncQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q+z2LrtC; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q+z2LrtC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C0B7C2BC86;
+	Tue, 10 Mar 2026 12:50:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773147009;
+	bh=6nzgzuyEmJtzi+mALa1difNFw8fG3ZBIhax6V+8GNA0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=q+z2LrtCIKX6h+2UUUrqLGw/6kFwrSiSw1GjdaYnmlSYBB1FzpCaVmmyF5c4zkkIO
+	 dNbrXmLxNDq4mnBhgLTw/h74C2AhJAkoZIkhzvXGXLTOFUv2LdVZ2IkePdEsXp1iJj
+	 2zN0Qc6hYTXPL7xpQCQa+HUYRJlX4NM6rMXpe6bYudfa8Y2R+HskpfIVb+guMpz3bz
+	 MrYYathTaU8s7Z8SinzTzGGyUbVvOGFGmJgAbbJWbPJrHLelwvBbDJ1BSJWgBYhnY0
+	 q2MShAXBMT6RalJJzg1honmpj22CSJ2/4eanBH1TOPp/isZnSBKdxxSE7+g29qzqc2
+	 vcN5Wfu6a+87Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D0683808200;
+	Tue, 10 Mar 2026 12:50:07 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <abARZGTs_eP6yDu4@chamomile>
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net-next] net: mana: hardening: Validate doorbell ID from
+ GDMA_REGISTER_DEVICE response
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177314700605.2274408.12987784829211108904.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Mar 2026 12:50:06 +0000
+References: <20260306211212.543376-1-ernis@linux.microsoft.com>
+In-Reply-To: <20260306211212.543376-1-ernis@linux.microsoft.com>
+To: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+ decui@microsoft.com, longli@microsoft.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ kotaranov@microsoft.com, horms@kernel.org, shradhagupta@linux.microsoft.com,
+ dipayanroy@linux.microsoft.com, yury.norov@gmail.com, kees@kernel.org,
+ linux-hyperv@vger.kernel.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-rdma@vger.kernel.org
 
-Pablo Neira Ayuso <pablo@netfilter.org> wrote:
-> Are sure that adding refcount bump is the way to go?
+Hello:
 
-No, but I don't have a better idea at this time.
+This patch was applied to netdev/net-next.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-The obvious alternative is to grab a reference at expectation
-creation time.
-
-But this would pin the creating conntrack in memory.
-In some cases, this will pin it forever, even if someone
-runs 'conntrack -F/conntrack -D' to delete it if a helper
-creates a forever-expectation.
-
-> # git grep "nfct_help(exp->master)" net/netfilter/
-> net/netfilter/nf_conntrack_expect.c:    struct nf_conn_help *master_help = nfct_help(exp->master);
-> net/netfilter/nf_conntrack_expect.c:    struct nf_conn_help *master_help = nfct_help(exp->master);
-> net/netfilter/nf_conntrack_helper.c:    struct nf_conn_help *help = nfct_help(exp->master);
-> net/netfilter/nf_conntrack_netlink.c:   m_help = nfct_help(exp->master);
-> net/netfilter/nf_conntrack_sip.c:                   nfct_help(exp->master)->helper != nfct_help(ct)->helper ||
+On Fri,  6 Mar 2026 13:12:06 -0800 you wrote:
+> As a part of MANA hardening for CVM, add validation for the doorbell
+> ID (db_id) received from hardware in the GDMA_REGISTER_DEVICE response
+> to prevent out-of-bounds memory access when calculating the doorbell
+> page address.
 > 
-> These callsites need auditing.
+> In mana_gd_ring_doorbell(), the doorbell page address is calculated as:
+>   addr = db_page_base + db_page_size * db_index
+>        = (bar0_va + db_page_off) + db_page_size * db_index
+> 
+> [...]
 
-Yes, but I don't have infinite time.  I am almost working non-stop
-since these things got reported.
-I cannot accelerate things any further.
+Here is the summary with links:
+  - [net-next] net: mana: hardening: Validate doorbell ID from GDMA_REGISTER_DEVICE response
+    https://git.kernel.org/netdev/net-next/c/89fe91c65992
 
-> Yes, I just wonder if this can be fixed without adding checks
-> everywhere in the code, I would need a bit more time too.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-Another option is to stop releasing exp area with kfree()
-and move back to kfree_rcu.  But still, I fear thats not enough.
 
-What if we're releasing the master conntrack (refcount already 0)
-and we're in object reuse scenario?
-
-Then, master->ext can be krealloc'd in parallel.
-
-TL;DR: I see no alternative to these refcount dances ATM and I also
-think we need to add confirmed-bit check.
-
-I hope I can condense this later with some new helper function that
-can be used so we avoid open-coding this.
-
-If you think that its better to yank these fixes and do the slow
-audit, then fine, but I don't have any evidence that its a better
-approach compared to incremental fixups.
