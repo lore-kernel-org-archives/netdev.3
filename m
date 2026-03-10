@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F42F18AE3
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 03:00:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6C118AE3
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 03:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773111635; cv=none; b=Lg3Mhu5KCHcd9JBZAFK+OpLheCJL4E00iJsptH3bdOE7xRKIE6cAbtIJgtpfTLUrzn+ebD+Aee3vrxgajdivEl9I1iPlL1Ry9XTiG+7bEOTdwORId+loaCLqxSQpRxGuQ4c9RZHhanJOY/vJ51cCSQh5+6lnYIFfxzzd/NSCu/w=
+	t=1773111637; cv=none; b=ljoh4e3KZZE+8rSTbBLqZKxrgoGKPsL6BEaWlN2IU3VHt/Umok4PRujBQFQi1eDdM4EK57QloF8mFeS1IAeLgdR4zveMRTi7nxVTPywHoaRbLDihg5p0nNHUJRziIXn1qWZGD3itygLUffBSYf+xHkCq6A4n3/Clq4JG4NkDYUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773111635; c=relaxed/simple;
-	bh=JIVVxGQjXd1Cf4O7igWlJ/JjWWiFlO+jsTKMKo7qS6E=;
+	s=arc-20240116; t=1773111637; c=relaxed/simple;
+	bh=SJCZn77p59ni0n3KfO/wQ85ZNr0Ptm8j/Dj7VIdNef8=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=pyNsGZWt1jn8LkYPVEF87rDfb3SDAAcNcuoYAHqZRxDQnWrofbfFqKtKMWojOGRBOseFBjb3S5dKIz8sMhxGxJaPaIQxaTI12RZ7cvKbtCy+LCefQPhoQUDoQKjffEurilQV5/ulHsJLzsgp4PFcflbPvwdfy7M0JzPv8H8404w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gfm06AzE; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=qST6DHeNa9EoHnBpWMK0v3N/7OG/6rL+TBLGUmuOE2ImUplwGUbVkKMbMJBkDVkyU+dGgzvqgRoMiBV0cAherJlZeB+YL3UcBNtQs71LG7I51P/xyAPQwg4Tq3ZwCZgeVvFdTCJ437xJqaSkEEfXLm4ZHu/VUXe+ldCElxmf7cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1/DRLvJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gfm06AzE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21FA0C19423;
-	Tue, 10 Mar 2026 03:00:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1/DRLvJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7208C2BCB0;
+	Tue, 10 Mar 2026 03:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773111635;
-	bh=JIVVxGQjXd1Cf4O7igWlJ/JjWWiFlO+jsTKMKo7qS6E=;
+	s=k20201202; t=1773111636;
+	bh=SJCZn77p59ni0n3KfO/wQ85ZNr0Ptm8j/Dj7VIdNef8=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=gfm06AzELJa+oyoHrkw/uod36rhUIMOkaDGpyuW+jKADimo8znH4PbhnttfzLefse
-	 eQva4f/9I/BKMKTkjvn3qf2XCeDkJwqkIraFLvfBba7l7zCMjFNYyiHDJMhE7lD/7W
-	 D8QdLt7YOjnRFp7epz70hbYNHFOd+dW2l3WRqgjWZiMwPshhOR1Mc8jzoo/p10V0qi
-	 A0v2YBtWPsjJ906vATU5WFbrwmokkx/uQ16vWS7MjAcJhNw7BO6/7KxOmKgZr3B8wh
-	 xIgX4dsXtRjOojhr4qWzIxyf3EBwyJXZGFIP8O/L+YqwGqJmx1OEtdJs/DEvb1U4r7
-	 XRq6E62Zgyokw==
+	b=h1/DRLvJmmDeMOQeJzQzxvU4LKX1yGooddF2t+ibuH0u2cZFWkx4e998R2dcQvGLY
+	 X4kFWPG4VOAsnUc5ji7qRoYMA+aR7UQDWWth0dCCBKVVpe/bOqzhpgG35QtEU5wp3y
+	 ya8h9oFSOCM9nmcDyn/SqyOrTZ7KDEwm0P50IG9FwfxRszHkpdxlRslBvzjopRSy5q
+	 B7HqrmqfLiuUIoxDKzN5LPMR+LzDp6eAJDa1HxTw1Kw/DrvzpiNubrFqTHLX+onZNO
+	 MageDnQT+iCsWQdIw6c25CrhVmdrlhJiZ08W1QiYnJqXtOY5aMKEL29pAVfg3kghHm
+	 MZvI48Thpte2Q==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CD863808200;
-	Tue, 10 Mar 2026 03:00:33 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02BF53808200;
+	Tue, 10 Mar 2026 03:00:35 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,13 +37,14 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] tcp: move tp->chrono_type next tp->chrono_stat[]
+Subject: Re: [PATCH net-next] tcp: move sysctl_tcp_shrink_window to
+ netns_ipv4_read_txrx group
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177311163204.2039470.12236470908983671120.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Mar 2026 03:00:32 +0000
-References: <20260308122302.2895067-1-edumazet@google.com>
-In-Reply-To: <20260308122302.2895067-1-edumazet@google.com>
+ <177311163355.2039470.2125643117412064333.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Mar 2026 03:00:33 +0000
+References: <20260307092214.2433548-1-edumazet@google.com>
+In-Reply-To: <20260307092214.2433548-1-edumazet@google.com>
 To: Eric Dumazet <edumazet@google.com>
 Cc: davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
  ncardwell@google.com, kuniyu@google.com, netdev@vger.kernel.org,
@@ -54,19 +55,19 @@ Hello:
 This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Sun,  8 Mar 2026 12:23:02 +0000 you wrote:
-> chrono_type is currently in tcp_sock_read_txrx group, which
-> is supposed to hold read-mostly fields.
+On Sat,  7 Mar 2026 09:22:14 +0000 you wrote:
+> Commit 18fd64d25422 ("netns-ipv4: reorganize netns_ipv4 fast path
+> variables") missed that __tcp_select_window() is reading
+> net->ipv4.sysctl_tcp_shrink_window.
 > 
-> But chrono_type is mostly written in tx path, it should
-> be moved to tcp_sock_write_tx group, close to other
-> chrono fields (chrono_stat[], chrono_start).
+> Move this field to netns_ipv4_read_txrx group, as __tcp_select_window()
+> is used both in tx and rx paths.
 > 
 > [...]
 
 Here is the summary with links:
-  - [net-next] tcp: move tp->chrono_type next tp->chrono_stat[]
-    https://git.kernel.org/netdev/net-next/c/4b78c9cbd8f1
+  - [net-next] tcp: move sysctl_tcp_shrink_window to netns_ipv4_read_txrx group
+    https://git.kernel.org/netdev/net-next/c/e8eb33d650cd
 
 You are awesome, thank you!
 -- 
