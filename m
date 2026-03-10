@@ -1,197 +1,186 @@
-Received: from out198-12.us.a.mail.aliyun.com (out198-12.us.a.mail.aliyun.com [47.90.198.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E0EA3A758F;
-	Tue, 10 Mar 2026 12:10:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B583F3AF643;
+	Tue, 10 Mar 2026 12:10:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773144625; cv=none; b=oLIfV83QBm/V91wa4Ky6ohP0tfsOEAtAaWyPigeRbsQKtRn3nhBxZrZoKgL6bG5svTZqgSwhpwfAnbsxGCGIiX8NPND95faGR0X8pXydVW1HaFXkl2qgaGE5cSjJHgSjZjTCMIYzpVR8fH6Byfi0JfJCyRcH5akyb77KdJ1bpJg=
+	t=1773144631; cv=none; b=o71I+eue7zFV4irrfpj3HbCccHT8UVSGjHhL8Y/znCkiUn62h1LcDi1U+TFYZecG+WubyKOp2NZ+9CQr3kCg7UgEktP/2MeUz0KiuMIfBUCNLWyh1d9OUu/9cP7xKmali2wVx0y+Tzk7hDN9ZxRn6FOeoyEisB1YrksqmsL/q8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773144625; c=relaxed/simple;
-	bh=46vc5iIhAv+fZWfo6C4ZdqW4endqKzAWVx66Ape5qig=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gxPq/E21uh8ue3ZZL1xVMWTY4MCscVpx3/2Ny3A3ITkN/z7k9GFaodZjOZd70LMC/JLfDq09L35bl6JFAtE0gAHcTvYopg+YkJpL9rOP0Q+jTvRRBaJFC+VHAGJLQzx/rerQVkcG2kpu2D6ewueK/7+TYUpR7KfBruJ/Pm3KV94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com; spf=pass smtp.mailfrom=nebula-matrix.com; arc=none smtp.client-ip=47.90.198.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nebula-matrix.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nebula-matrix.com
-Received: from localhost.localdomain(mailfrom:illusion.wang@nebula-matrix.com fp:SMTPD_---.gpIYKSq_1773144602 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Tue, 10 Mar 2026 20:10:02 +0800
-From: "illusion.wang" <illusion.wang@nebula-matrix.com>
-To: dimon.zhao@nebula-matrix.com,
-	illusion.wang@nebula-matrix.com,
-	alvin.wang@nebula-matrix.com,
-	sam.chen@nebula-matrix.com,
-	netdev@vger.kernel.org
-Cc: andrew+netdev@lunn.ch,
-	corbet@lwn.net,
-	kuba@kernel.org,
-	linux-doc@vger.kernel.org,
-	lorenzo@kernel.org,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	vadim.fedorenko@linux.dev,
-	lukas.bulwahn@redhat.com,
-	edumazet@google.com,
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH v7 net-next 00/11] nbl driver for Nebulamatrix NICs
-Date: Tue, 10 Mar 2026 20:09:44 +0800
-Message-ID: <20260310120959.22015-1-illusion.wang@nebula-matrix.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1773144631; c=relaxed/simple;
+	bh=23fDxMo4xHy1EdAru6003n7+54nLBKHhNf3N9eMsvmE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S8wr/Bo/0A1w0DDEKZXNOp8iRRl2X87dFQqzApIg/dEubjbqoDOXWdDcR6xW8d/yobTqgu9fSfp6loFBHnQM0g7p0yBFygYe/wclQlNvHqVMVW7PxVQ0dMZaXmiRxj1IYY/tAMtlzYrAYEwoG9i0cmyQbR4iZJ6LTyUBFiCcV7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=esbFHyJU; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="esbFHyJU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D072C19423;
+	Tue, 10 Mar 2026 12:10:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773144631;
+	bh=23fDxMo4xHy1EdAru6003n7+54nLBKHhNf3N9eMsvmE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=esbFHyJUClN9ir49CHpIDKhs+H20RGPu+wVQFm0oPuzWgAt6b45cTzMlVhL76SN//
+	 nIyhRmvxgDLi6HslyCGD+do86TN6mO+nT5bHHCrTT9ia7oBj5zkuEZF/fZ2ziBhxcA
+	 couq0541qNncgf4ysPb3VoGDTAQqspVQwxiliQjIQPKkFhrlz2AqMThjdmTO5DPvsG
+	 ytB04eLHKQrjAMjNiqiG3oIgA9wcww5+LbNTYeWvOHoWMFC5ow6CHeNm9Ed4zGcRtO
+	 pI+NoY30AaLZ+h2BH5904jSaICxZkuIUM5u2MPT8h+dmCWOF/e3J2O2N5yvFqwTucH
+	 APH7Q4CvCGlQg==
+Date: Tue, 10 Mar 2026 12:10:24 +0000
+From: Lee Jones <lee@kernel.org>
+To: Rong Zhang <i@rong.moe>, Andrew Lunn <andrew+netdev@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>, netdev@vger.kernel.org
+Cc: Pavel Machek <pavel@kernel.org>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Benson Leung <bleung@chromium.org>,
+	Guenter Roeck <groeck@chromium.org>,
+	Marek =?iso-8859-1?Q?Beh=FAn?= <kabel@kernel.org>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	"Derek J. Clark" <derekjohn.clark@gmail.com>,
+	Hans de Goede <hansg@kernel.org>,
+	Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Ike Panhc <ikepanhc@gmail.com>, Vishnu Sankar <vishnuocv@gmail.com>,
+	vsankar@lenovo.com, linux-kernel@vger.kernel.org,
+	linux-leds@vger.kernel.org, chrome-platform@lists.linux.dev,
+	platform-driver-x86@vger.kernel.org
+Subject: Re: [RFC PATCH 0/9] leds: Add support for hw initiated hw control
+ trigger transition
+Message-ID: <20260310121024.GJ183676@google.com>
+References: <20260227190617.271388-1-i@rong.moe>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260227190617.271388-1-i@rong.moe>
 
-This patch series represents the first phase. We plan to integrate it in
-two phases: the first phase covers mailbox and chip configuration,
-while the second phase involves net dev configuration.
-Together, they will provide basic PF-based Ethernet port transmission and
-reception capabilities.
+I'd like for the netdev folks to take a look at this please.
 
-After that, we will consider other features, such as ethtool support,
-flow management, adminq messaging, VF support, debugfs support, etc.
-Changes v6->v7
-Link to v6:https://lore.kernel.org/netdev/20260306033451.5196-1-illusion.wang@nebula-matrix.com/
-1.Issue found by Jakub
-2.AI review issue
-Changes v5->v6
-Link to V5:https://lore.kernel.org/netdev/20260226073840.3222-1-illusion.wang@nebula-matrix.com/
-1.put all standard linux includes files the .c file which needs it & others
---Andrew
-2.AI review issue
-Changes v4->v5
-Link to V4:https://lore.kernel.org/netdev/20260206021608.85381-1-illusion.wang@nebula-matrix.com/
-1.change nbl_core to nbl & change ** pointers to *pointers & others
---Andrew
-2.AI review issue
-Changes v3->v4
-Link to v3: https://lore.kernel.org/netdev/20260123011804.31263-1-illusion.wang@nebula-matrix.com
-1.cut down to part of a mini driver(mailbox and chip init)
---Jakub Kicinski Simon Horman(some sort of staged approached)
-2.modify issues found by ai.
-3. Reverse Christmas tree/nbl_err/devm_kfree/remove some macros/
-void type to real type/others
---Andrew Lunn
-4.change deprecated pci_enable_msix_range to pci_alloc_irq_vectors
-5.delete service layer
-6.the style of kconfig---Randy Dunlap
-7.add to Documentation/networking/device_drivers/ethernet/index.rst
---Simon Horman
-Changes v2 →v3
-Link to v2: https://lore.kernel.org/netdev/20260109100146.63569-1-illusion.wang@nebula-matrix.com/
-1.cut down to a mini driver:
-    delete vf support
-    use promisc mode to cut down flow management
-    drop patch15 in v2
-    delete adminq msg
-    delete abnormal handling
-    delete some unimportant interfaces
-2.modify issues found by ai review
-Changes v1->v2
-Link to v1: https://lore.kernel.org/netdev/20251223035113.31122-1-illusion.wang@nebula-matrix.com/
-1.Format Issues and Compilation Issues
-- Paolo Abeni
-2.add sysfs patch and drop coexisting patch
-- Andrew Lunn
-3.delete some unimportant ndo operations
-4.add machine generated headers patch
-5.Modify the issues found in patch1-2 and apply the same fixes to other
-patches
-6.modify issues found by nipa
-
-illusion.wang (11):
-  net/nebula-matrix: add minimum nbl build framework
-  net/nebula-matrix: add our driver architecture
-  net/nebula-matrix: add chip related definitions
-  net/nebula-matrix: channel msg value and msg struct
-  net/nebula-matrix: add channel layer
-  net/nebula-matrix: add common resource implementation
-  net/nebula-matrix: add intr resource implementation
-  net/nebula-matrix: add vsi resource implementation
-  net/nebula-matrix: add Dispatch layer implementation
-  net/nebula-matrix: add common/ctrl dev init/reinit operation
-  net/nebula-matrix: add common dev start/stop operation
-
- .../device_drivers/ethernet/index.rst         |    1 +
- .../ethernet/nebula-matrix/nbl.rst            |   47 +
- MAINTAINERS                                   |   10 +
- drivers/net/ethernet/Kconfig                  |    1 +
- drivers/net/ethernet/Makefile                 |    1 +
- drivers/net/ethernet/nebula-matrix/Kconfig    |   34 +
- drivers/net/ethernet/nebula-matrix/Makefile   |    6 +
- .../net/ethernet/nebula-matrix/nbl/Makefile   |   21 +
- .../nbl/nbl_channel/nbl_channel.c             |  842 +++++
- .../nbl/nbl_channel/nbl_channel.h             |  157 +
- .../nebula-matrix/nbl/nbl_common/nbl_common.c |  209 ++
- .../nebula-matrix/nbl/nbl_common/nbl_common.h |   31 +
- .../net/ethernet/nebula-matrix/nbl/nbl_core.h |   47 +
- .../nebula-matrix/nbl/nbl_core/nbl_dev.c      |  444 +++
- .../nebula-matrix/nbl/nbl_core/nbl_dev.h      |   55 +
- .../nebula-matrix/nbl/nbl_core/nbl_dispatch.c |  486 +++
- .../nebula-matrix/nbl/nbl_core/nbl_dispatch.h |   56 +
- .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c  |  816 +++++
- .../nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h  |  483 +++
- .../nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.c | 2901 +++++++++++++++++
- .../nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.h |   11 +
- .../nbl_hw_leonis/nbl_resource_leonis.c       |  256 ++
- .../nbl_hw_leonis/nbl_resource_leonis.h       |   10 +
- .../nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h     |   66 +
- .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.c  |  242 ++
- .../nebula-matrix/nbl/nbl_hw/nbl_interrupt.h  |   12 +
- .../nebula-matrix/nbl/nbl_hw/nbl_resource.c   |  136 +
- .../nebula-matrix/nbl/nbl_hw/nbl_resource.h   |  116 +
- .../nebula-matrix/nbl/nbl_hw/nbl_vsi.c        |   51 +
- .../nebula-matrix/nbl/nbl_hw/nbl_vsi.h        |   11 +
- .../nbl/nbl_include/nbl_def_channel.h         |  362 ++
- .../nbl/nbl_include/nbl_def_common.h          |   75 +
- .../nbl/nbl_include/nbl_def_dev.h             |   14 +
- .../nbl/nbl_include/nbl_def_dispatch.h        |   40 +
- .../nbl/nbl_include/nbl_def_hw.h              |   52 +
- .../nbl/nbl_include/nbl_def_resource.h        |   34 +
- .../nbl/nbl_include/nbl_include.h             |   77 +
- .../nbl/nbl_include/nbl_product_base.h        |   18 +
- .../net/ethernet/nebula-matrix/nbl/nbl_main.c |  318 ++
- 39 files changed, 8549 insertions(+)
- create mode 100644 Documentation/networking/device_drivers/ethernet/nebula-matrix/nbl.rst
- create mode 100644 drivers/net/ethernet/nebula-matrix/Kconfig
- create mode 100644 drivers/net/ethernet/nebula-matrix/Makefile
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/Makefile
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_channel/nbl_channel.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_common/nbl_common.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dev.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_core/nbl_dispatch.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_hw_leonis_regs.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_leonis/nbl_resource_leonis.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_hw_reg.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_interrupt.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_resource.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_vsi.c
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_hw/nbl_vsi.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_channel.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_common.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dev.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_dispatch.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_hw.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_def_resource.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_include.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_include/nbl_product_base.h
- create mode 100644 drivers/net/ethernet/nebula-matrix/nbl/nbl_main.c
+> Some laptops can tune their keyboard backlight according to ambient
+> light sensors (auto mode). This capability is essentially a hw control
+> trigger. Meanwhile, such laptops also offer a shrotcut for cycling
+> through brightness levels and auto mode. For example, on ThinkBook,
+> pressing Fn+Space cycles keyboard backlight levels in the following
+> sequence:
+> 
+>   1 => 2 => 0 => auto => 1 ...
+> 
+> Recent ThinkPad models should have similar sequence too.
+> 
+> However, there are some issues preventing us from using hw control
+> trigger:
+> 
+> 1. We want a mechanism to tell userspace which trigger is the hw control
+>    trigger, so that userspace can determine if auto mode is on/off or
+>    turing it on/off programmatically without obtaining the hw control
+>    trigger's name via other channels
+> 2. Turing on/off auto mode via the shortcut cannot activate/deactivate
+>    the hw control trigger, making the software state out-of-sync
+> 3. Even with #1 resolved, deactivating the hw control trigger after
+>    receiving the event indicating "auto => 1" has a side effect of
+>    emitting LED_OFF, breaking the shortcut cycle
+> 
+> This RFC series tries to demonstrate a path on solving these issues:
+> 
+> - Introduce an attribute called trigger_may_offload, so that userspace
+>    can determine:
+>    - if the LED device supports hw control (supported => visible)
+>    - which trigger is the hw control trigger
+>    - if the hw control trigger is selected
+>    - if the hw control trigger is in hw control (i.e., offloaded)
+>      - A callback offloaded() is added so that LED triggers can report
+>        their hw control state
+> - Add led_trigger_notify_hw_control_changed() interface, so that LED
+>   drivers can notify the LED core about hardware initiated hw control
+>   state transitions. The LED core will then determine if the transition
+>   is allowed and turning on/off the hw control trigger accordingly
+> - Tune the logic of trigger deactivation so that it won't emit LED_OFF
+>   when the deactivation is triggered by hardware
+> 
+> The last two patches are included into the RFC series to demonstrate how
+> to utilize these interfaces to add support for auto keyboard backlight
+> to ThinkBook. They will be submitted separately once the dust settles.
+> 
+> Currently no Kconfig entry is provided to disable either interface. If
+> needed, I will add one later.
+> 
+> [ Summary of other approaches ]
+> 
+> < custom attribute >
+> 
+> Pros:
+> - simplicity, KISS
+> - no need to touch the LED core
+> - extensible as long as it has a sensor-neutral name
+>   - a sensor-related name could potentially lead to a mess if a future
+>     device implements auto mode based on multiple different sensors
+> 
+> Cons:
+> - must have zero influence on brightness_set[_blocking] callbacks
+>   in order not to break triggers
+>   - potential interference with triggers and the brightness attribute
+> - weird semantic (an attribute other than "brightness" and "trigger"
+>   changes the brightness)
+> 
+> < hw control trigger (this series) >
+> 
+> Pros:
+> - mutually exclusive with other triggers (hence less chaos)
+> - semantic correctness
+> - acts as an aggregate switch to turn on/off auto mode even a future
+>   device implements auto mode based on multiple different sensors
+>   - extensibility (through trigger attributes)
+> 
+> Cons:
+> - complexity
+> 
+> [ Previous discussion threads ]
+> 
+> https://lore.kernel.org/r/08580ec5-1d7b-4612-8a3f-75bc2f40aad2@app.fastmail.com
+> 
+> https://lore.kernel.org/r/1dbfcf656cdb4af0299f90d7426d2ec7e2b8ac9e.camel@rong.moe
+> 
+> Thanks,
+> Rong
+> 
+> Rong Zhang (9):
+>   leds: Load trigger modules on-demand if used as hw control trigger
+>   leds: Add callback offloaded() to query the state of hw control
+>     trigger
+>   leds: cros_ec: Implement offloaded() callback for trigger
+>   leds: turris-omnia: Implement offloaded() callback for trigger
+>   leds: trigger: netdev: Implement offloaded() callback
+>   leds: Add trigger_may_offload attribute
+>   leds: trigger: Add led_trigger_notify_hw_control_changed() interface
+>   platform/x86: ideapad-laptop: Decouple HW & cdev brightness for kbd
+>     backlight
+>   platform/x86: ideapad-laptop: Fully support auto kbd backlight
+> 
+>  .../obsolete/sysfs-class-led-trigger-netdev   |  15 ++
+>  Documentation/ABI/testing/sysfs-class-led     |  22 ++
+>  .../testing/sysfs-class-led-trigger-netdev    |  13 --
+>  Documentation/leds/leds-class.rst             |  72 ++++++-
+>  drivers/leds/led-class.c                      |  23 +++
+>  drivers/leds/led-triggers.c                   | 176 +++++++++++++++-
+>  drivers/leds/leds-cros_ec.c                   |   6 +
+>  drivers/leds/leds-turris-omnia.c              |   7 +
+>  drivers/leds/leds.h                           |   3 +
+>  drivers/leds/trigger/ledtrig-netdev.c         |  10 +
+>  drivers/platform/x86/lenovo/Kconfig           |   1 +
+>  drivers/platform/x86/lenovo/ideapad-laptop.c  | 194 ++++++++++++++----
+>  include/linux/leds.h                          |   6 +
+>  13 files changed, 492 insertions(+), 56 deletions(-)
+>  create mode 100644 Documentation/ABI/obsolete/sysfs-class-led-trigger-netdev
+> 
+> 
+> base-commit: a75cb869a8ccc88b0bc7a44e1597d9c7995c56e5
+> -- 
+> 2.51.0
+> 
 
 -- 
-2.47.3
-
+Lee Jones [李琼斯]
