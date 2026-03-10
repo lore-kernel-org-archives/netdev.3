@@ -1,155 +1,154 @@
-Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1973C3CB2C7
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 21:22:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5679D3CEB9E;
+	Tue, 10 Mar 2026 21:22:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773177766; cv=none; b=lTM4BTwxPdJ4zzC5J1dcOq4UK4GTzYr+Uiq0lyxmONjzfGrxkKCnaL6ZVOOCGDKofyJDBIGujjQGvU9gejnWHLtbL7jGDNEXTSbEnAQW7bVkvJhm83cetTOMSoJsbOTyFQR+msv9hY6sLOS4wan0VlXvxyYq2lWn1lXNiN59Ahs=
+	t=1773177768; cv=none; b=ZQj6jzHO4uOrUEIsub1O7OpDJ2HKg4gBfzqEtKgst9B4vT6vak2gevxUKnEYP27yqnIDHIk+/lzhzx+U/90LC/BYAJ9jX7gpcKGUh7GndNLVceSqarCh2Cgw29jyXOiItq5xmHUj34KJq8dMao5vG8PnQqUH2ByOzZiQzpzOxqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773177766; c=relaxed/simple;
-	bh=zvBLdH4BAnKwNC0mMbvEM7gYtBsX4O90UZ6qJh816nM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIeew7as9N05/zHDCR/C4fAj9u1gpOB1NtjggEy2hJlRtCIR/3gTCLFYLMrjAuSTIxts1Ba8aYDwFJRwAxyvPoQShCtVjNcTNq7eqDNzGKITAnj8vnvjI6eoqYCuXFSkk/fmqTqBZA68KunbAzlHoR8Qp2CdrLMgTJ3OgwbOaWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to; spf=none smtp.mailfrom=dama.to; dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b=Dw1lXr6x; arc=none smtp.client-ip=209.85.215.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dama.to
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=dama.to
+	s=arc-20240116; t=1773177768; c=relaxed/simple;
+	bh=uW/SHTU/bmzAxq69+5aquBUZCuf5Yy0XrivWZ/q8OEs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Vey6PaXBsbT/g2lLrKORr4n7judRAbM17OZ3+NZHdDWM4uMXPSUrWSNooKksAmQTzn6XH21aYacyXWUts43s9HvdqNsdk1CydtF8ARxO6EaA8jzO0JAAk6uDAkIBbVwjqCRDF9jh1fO08A9IzF+LQZppN1toISxCPeffCe3+ozo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=XehxLy1d; arc=none smtp.client-ip=65.108.154.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mork.no
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dama-to.20230601.gappssmtp.com header.i=@dama-to.20230601.gappssmtp.com header.b="Dw1lXr6x"
-Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-c739561f0d3so4018148a12.3
-        for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 14:22:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dama-to.20230601.gappssmtp.com; s=20230601; t=1773177764; x=1773782564; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=USJsgtHmtoDgSFTSjAgvcXraSNpVggb2xq+PXWw1f2A=;
-        b=Dw1lXr6xR0eAMuodlBAMfTX408+O4jCjFi+hMhQFKdrwqH1jpcQqbfvqTgcAyN494O
-         FLwzXAMNM7BnqBLd/YMjXwFCjy2Tn70GDq4RysN4I2MUCbfJY29AkW/qFUrrxcdW/UPm
-         5k+kPW/Wf17lcD75tK7QXBEdUpQxUPm0IDcPWrqts736/R1XKBMy22GQUNn7RcaiYYuj
-         i3KOkUGKLYZcDKfoN5Ukoi52gY3iq5PjMUWYBZXZ6Vi/1hB5ad+14XOxnnR29fuAUGBj
-         Pd48v5lnuV4SnGGNsyp+RF3/K58yjm3mPaa1/xcOvV7p84P/YPWn429hm2ePelnR8E1C
-         M3+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773177764; x=1773782564;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=USJsgtHmtoDgSFTSjAgvcXraSNpVggb2xq+PXWw1f2A=;
-        b=iGA5YR1w9mtr68/EO2oIEkICZ4kQDbcm93HUizU/Le+Qhg4j0vYNUkTNbHsjvvVkFQ
-         F71bz09cJvzYLmoCeByJ4LXm4BLiSqkA5veFMcOvdobZZr5diRozRteao/p+6Rj/Z8q3
-         W8y76C3qiDgFHIKtVcdC2/6i1GNHbrba4il2NJP+Gp0TLYfuQLRgkeLZK07n25ogzdOE
-         CQqXu2jXLI+Ez1LXmoa+x+uFa74CjNgySoI4DHO6gA9JNWsugLPSkn7HIf2fY4b0ENo4
-         bNlFUwg+tdgW5j1h9AWMehUQPSDH0p65kgwjYvZ09Oxb4D2b0oDwbb2VEonRntTjDn8n
-         pwag==
-X-Gm-Message-State: AOJu0Yyy+tskiz5NOOwXMorZUpGS0gAIJnAk/BWx8A0PTgOXNTyJOYaR
-	/m6AqM097FH55hg47zudDb4Oi5QDhsPOi7fz+DLyuRWOuLSRQ7JTmar4XfEzja9aox13fIuqYXv
-	FnDHjxJM=
-X-Gm-Gg: ATEYQzxbsjTzN/5476Mfv2Z1de45b5mIGlZ1J3LIs0TQUteXLXa0yC2umQz2foTf5/7
-	fde9qJKFbdyvoir9WkYKJVtUxTw9RrPWO6ynKFMHWO8D13uc0TEyAGZyhsKV68fsFLfQndPri/2
-	btBDhrMYkUhW3x5ROoWQohTp7fwnhl4cedOXzKRfa5MqnHG4x+7ax3nQH81ta/dIWeHOga4iW2X
-	PVaam3ljYCTZUQMYRlhAPxRZmJsjpXaEVCklZ8YTF0bz7ftmqD9/f/VlePacG0XbeCe8D4IY3lE
-	nr8pA8S7t6ay7XQAxvuLOhMeLnovP5v3hO8XtSrBBNEE5WaqkSMUpgiBN44g4TJrp1C802gKM34
-	QRw0b5omo740siNnXVtrVNhMeDfHcdU7d+oKIQecJtMKaAWrAD9jdaJHqYv/aOCexLXvs5pL0Wq
-	ZFqHA=
-X-Received: by 2002:a17:903:2b0c:b0:2ad:d5ea:4c89 with SMTP id d9443c01a7336-2aeae7c04bcmr2078045ad.22.1773177763969;
-        Tue, 10 Mar 2026 14:22:43 -0700 (PDT)
-Received: from localhost ([2a03:2880:2ff:1::])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2aeae222dddsm2372365ad.19.2026.03.10.14.22.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 Mar 2026 14:22:43 -0700 (PDT)
-From: Joe Damato <joe@dama.to>
-To: netdev@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>
-Cc: michael.chan@broadcom.com,
-	pavan.chebbi@broadcom.com,
-	linux-kernel@vger.kernel.org,
-	Joe Damato <joe@dama.to>
-Subject: [RFC net-next 01/10] net: tso: Introduce tso_dma_map
-Date: Tue, 10 Mar 2026 14:21:49 -0700
-Message-ID: <20260310212209.2263939-2-joe@dama.to>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260310212209.2263939-1-joe@dama.to>
-References: <20260310212209.2263939-1-joe@dama.to>
+	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="XehxLy1d"
+Authentication-Results: dilbert.mork.no;
+	dkim=pass (1024-bit key; secure) header.d=mork.no header.i=@mork.no header.a=rsa-sha256 header.s=b header.b=XehxLy1d;
+	dkim-atps=neutral
+Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10e2:d900:0:0:0:1])
+	(authenticated bits=0)
+	by dilbert.mork.no (8.18.1/8.18.1) with ESMTPSA id 62ALICW34119410
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Tue, 10 Mar 2026 21:18:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
+	t=1773177492; bh=uW/SHTU/bmzAxq69+5aquBUZCuf5Yy0XrivWZ/q8OEs=;
+	h=From:To:Cc:Subject:References:Date:Message-ID:From;
+	b=XehxLy1dP2hexPsyxBZBiYDt/ZKIsdMfw6dXSR0tS4w+wHD4C7MuVJdRWjblVJ4vN
+	 f1m6MVEq3Cv94mvAZbpeaPr7+ir8ONDcWdEb+OsChqmet/YhuA31w47Bmp/rKkxQ9s
+	 rMW/hB/Ky4PFf0e5UjQoOJEZFR0hLcpBMaWErYd0=
+Received: from miraculix.mork.no ([IPv6:2a01:799:10e2:d90a:6f50:7559:681d:630c])
+	(authenticated bits=0)
+	by canardo.dyn.mork.no (8.18.1/8.18.1) with ESMTPSA id 62ALIBSw285875
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Tue, 10 Mar 2026 22:18:12 +0100
+Received: (nullmailer pid 737464 invoked by uid 1000);
+	Tue, 10 Mar 2026 21:18:10 -0000
+From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: =?utf-8?Q?Kolbj=C3=B8rn?= Barmen <linux-m68k@kolla.no>,
+        Krzysztof
+ Kozlowski <krzk@kernel.org>,
+        Fernando Fernandez Mancera <fmancera@suse.de>,
+        Netdev <netdev@vger.kernel.org>, linux-kernel@vger.kernel.org,
+        Geert
+ Uytterhoeven <geert@linux-m68k.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Selvin Xavier <selvin.xavier@broadcom.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S . Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>, Simon Horman <horms@kernel.org>,
+        Saurav Kashyap <skashyap@marvell.com>,
+        Javed Hasan <jhasan@marvell.com>,
+        "maintainer:BROADCOM BNX2FC 10 GIGABIT FCOE DRIVER" <GR-QLogic-Storage-Upstream@marvell.com>,
+        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Nilesh Javali <njavali@marvell.com>,
+        Manish Rangankar <mrangankar@marvell.com>,
+        Varun Prakash <varun@chelsio.com>,
+        Alexander Aring <aahringo@redhat.com>,
+        David
+ Teigland <teigland@redhat.com>,
+        Andreas Gruenbacher <agruenba@redhat.com>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
+        David Ahern <dsahern@kernel.org>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>, Phil Sutter <phil@nwl.cc>,
+        David Howells <dhowells@redhat.com>,
+        Marc Dionne <marc.dionne@auristor.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Xin Long <lucien.xin@gmail.com>, Jon
+ Maloy <jmaloy@redhat.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+        Bjorn Andersson <bjorn.andersson@oss.qualcomm.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+        Eric Biggers <ebiggers@kernel.org>,
+        Michal Simek <michal.simek@amd.com>,
+        Luca
+ Weiss <luca.weiss@fairphone.com>, Sven Peter <sven@kernel.org>,
+        "Lad,
+ Prabhakar" <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Gow <david@davidgow.net>,
+        Herbert
+ Xu <herbert@gondor.apana.org.au>,
+        Ryota Sakamoto <sakamo.ryota@gmail.com>,
+        Kuniyuki Iwashima <kuniyu@google.com>, Kir
+ Chou <note351@hotmail.com>,
+        Kuan-Wei Chiu <visitorckw@gmail.com>,
+        Vikas Gupta <vikas.gupta@broadcom.com>,
+        Bhargava Marreddy <bhargava.marreddy@broadcom.com>,
+        Rajashekar Hudumula <rajashekar.hudumula@broadcom.com>,
+        Markus =?utf-8?Q?Bl=C3=B6chl?= <markus@blochl.de>,
+        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
+        "open
+ list:INFINIBAND SUBSYSTEM" <linux-rdma@vger.kernel.org>,
+        "open
+ list:NETRONOME ETHERNET DRIVERS" <oss-drivers@corigine.com>,
+        "open
+ list:BROADCOM BNX2FC 10 GIGABIT FCOE DRIVER" <linux-scsi@vger.kernel.org>,
+        "open list:DISTRIBUTED LOCK MANAGER (DLM)" <gfs2@lists.linux.dev>,
+        "open
+ list:ETHERNET BRIDGE" <bridge@lists.linux.dev>,
+        "open list:NETFILTER" <netfilter-devel@vger.kernel.org>,
+        "open list:NETFILTER" <coreteam@netfilter.org>,
+        "open list:RXRPC SOCKETS (AF_RXRPC)" <linux-afs@lists.infradead.org>,
+        "open list:SCTP PROTOCOL" <linux-sctp@vger.kernel.org>,
+        "open list:TIPC NETWORK LAYER" <tipc-discussion@lists.sourceforge.net>
+Subject: Re: [PATCH 01/10 net-next] ipv6: convert CONFIG_IPV6 to built-in
+ only and clean up Kconfigs
+In-Reply-To: <5c4b6043-a484-479d-83bc-a86ecdb8f810@app.fastmail.com> (Arnd
+	Bergmann's message of "Tue, 10 Mar 2026 20:58:15 +0100")
+Organization: m
+References: <20260309022013.5199-1-fmancera@suse.de>
+	<20260309022013.5199-2-fmancera@suse.de>
+	<01a4936f-77cd-4c60-a1be-cabec872a2bb@kernel.org>
+	<e54d887c-5a70-b8c9-aeef-433c5134dd14@kolla.no>
+	<5c4b6043-a484-479d-83bc-a86ecdb8f810@app.fastmail.com>
+Date: Tue, 10 Mar 2026 22:18:10 +0100
+Message-ID: <87bjgvpenh.fsf@miraculix.mork.no>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Virus-Scanned: clamav-milter 1.4.3 at canardo.mork.no
+X-Virus-Status: Clean
 
-Add struct tso_dma_map to tso.h for tracking DMA addresses of mapped
-GSO payload data.
+"Arnd Bergmann" <arnd@arndb.de> writes:
 
-The struct combines DMA mapping storage (linear_dma, frags[]) with
-iterator state (frag_idx, offset), allowing drivers to walk pre-mapped
-DMA regions linearly. Helpers to initialize and operate on this struct
-will be added in the next commit.
+> The list does not include openwrt though, and I know that in
+> previous releases, there was an optional kmod-ipv6 package
+> that could be left out of an install without rebuilding
+> the kernel.
 
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Joe Damato <joe@dama.to>
----
- include/net/tso.h | 37 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 37 insertions(+)
+The kmod-ipv6 package was dropped in 2016:
+https://github.com/openwrt/openwrt/commit/33beafa8d88e51907acba6fdece5a35f5=
+09934df
 
-diff --git a/include/net/tso.h b/include/net/tso.h
-index e7e157ae0526..9a508e60ee19 100644
---- a/include/net/tso.h
-+++ b/include/net/tso.h
-@@ -3,6 +3,7 @@
- #define _TSO_H
- 
- #include <linux/skbuff.h>
-+#include <linux/dma-mapping.h>
- #include <net/ip.h>
- 
- #define TSO_HEADER_SIZE		256
-@@ -28,4 +29,40 @@ void tso_build_hdr(const struct sk_buff *skb, char *hdr, struct tso_t *tso,
- void tso_build_data(const struct sk_buff *skb, struct tso_t *tso, int size);
- int tso_start(struct sk_buff *skb, struct tso_t *tso);
- 
-+/**
-+ * struct tso_dma_map - DMA mapping state for GSO payload
-+ * @dev: device used for DMA mapping
-+ * @skb: the GSO skb being mapped
-+ * @hdr_len: per-segment header length
-+ * @frag_idx: current region (-1 = linear, 0..nr_frags-1 = frag)
-+ * @offset: byte offset within current region
-+ * @linear_dma: DMA address of the linear payload (after headers)
-+ * @linear_len: length of the linear payload
-+ * @nr_frags: number of frags successfully DMA-mapped
-+ * @frags: per-frag DMA address and length
-+ *
-+ * Struct that DMA-maps the payload regions of a GSO skb
-+ * (linear data + frags) upfront, then provides iteration to yield
-+ * (dma_addr, chunk_len) pairs bounded by region boundaries.
-+ *
-+ * Drivers set dma_unmap_len on the first descriptor touching each DMA
-+ * mapping; the completion path unmaps via per-descriptor dma_unmap_len.
-+ */
-+struct tso_dma_map {
-+	struct device		*dev;
-+	const struct sk_buff	*skb;
-+	unsigned int		hdr_len;
-+	/* Iterator state */
-+	int			frag_idx;
-+	unsigned int		offset;
-+	/* Pre-mapped regions */
-+	dma_addr_t		linear_dma;
-+	unsigned int		linear_len;
-+	unsigned int		nr_frags;
-+	struct {
-+		dma_addr_t	dma;
-+		unsigned int	len;
-+	} frags[MAX_SKB_FRAGS];
-+};
-+
- #endif	/* _TSO_H */
--- 
-2.52.0
+And IPv6 was unconditionally enabled in OpenWrt in 2022:
+https://github.com/openwrt/openwrt/commit/832e7b817221d288df76b763ca12c5853=
+65db5d8
 
+
+Bj=C3=B8rn
