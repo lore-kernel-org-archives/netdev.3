@@ -1,109 +1,145 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F113C3427
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 11:56:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C3E472796;
+	Tue, 10 Mar 2026 11:55:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773143781; cv=none; b=hdxhVGRcscPkOz7LEWhCidseZIZa1UXsO7CYwMdiOc8Bx627zomB/xhv+9a2RdsiOCfHa368JBElZgbuxXWRoiydI4Xqg0yoQ7awfCyIM7kTqjZi0CG4pcQJk6UpzotN1MyK/FrGT3/rJb1TpfmJdRa9uop8x8L5gU9S6FWWlC8=
+	t=1773143749; cv=none; b=UrcDOlD+7zWLmEFj9bXEL/pRtdtRHFK142I7dk99eA4nuc0pAVrhJTJi+I6u1MiMYIeOAM0LWYPzTqE8pfWuFV3CQ0pQv8kJG6fUfUtJXcyRqqgYiDpj7V4C5PwiJUPIlOCgjEhApqao9hQUCq7Tq6d11UtDvKvGi9iGdYrn0AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773143781; c=relaxed/simple;
-	bh=EB8zPrZzX5eiVEuYcpw86IjU4EzIIg4/IQv9+3/U6KE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JiHnBDx4bUjcExO3xLVViSxJ/73KvjFFn0o4DC4JckwgFE7onvCyGjXcqecdI4sZ59KeM88OP5PHu8EZuheZK2pwltKNff+k5WcHhdfO+OG0fklvXLZv5NCdi/0h0SEa1Tl/EWfyfWxejkMGxQ8R58WzHV5ggOlWMOW7L9Enf8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gZHSYEVV; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1773143749; c=relaxed/simple;
+	bh=U4MQ2UyTEtTm9FfUFN8u0E2v86RR/vLyOkwrg7Rl0HM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=IZIFSgxMnvDcw20+31r9qX+AgN0X0tyVBWDHquxdZV+vVzDiNrNkknnSPEiDnGZGkN0Y/iy5NGFDdefm2S4L/I5w1WWJvrQiCqktnTDBr3cyFG6AigcvqrQ4Bt0Duh668BTTljVSJlR+ozp1WCQxvlsdQp/my2Y4GqgDaV+k6k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=iZgR9Qp/; arc=none smtp.client-ip=212.42.244.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gZHSYEVV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773143777;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=2Tl0rqhKy3+HoN9UE1g3Gni0kMosYIJ5CSDPC/4uRtk=;
-	b=gZHSYEVV2KnktL+7iWKHmlybqYk5GjHYqNSxTAOd4k7N2xNSOS7wQih+vU/0b2T/oslQIn
-	sT9d4sRSE0AxmLJSBppdyLoXSEMKZoPyZEJ/oxoio1rT/TW9RWoeJGMykjG5ogKS2RTxFl
-	Vx0aVXKrDGx248f+ngPVtSQg4OC+Brc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-104-gzfeU9fbMz2c57R595sXwg-1; Tue,
- 10 Mar 2026 07:56:13 -0400
-X-MC-Unique: gzfeU9fbMz2c57R595sXwg-1
-X-Mimecast-MFC-AGG-ID: gzfeU9fbMz2c57R595sXwg_1773143771
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4D64619560B7;
-	Tue, 10 Mar 2026 11:56:10 +0000 (UTC)
-Received: from jramaseu-thinkpadt14gen5.tpbc.csb (unknown [10.43.3.226])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id B055A1800576;
-	Tue, 10 Mar 2026 11:56:08 +0000 (UTC)
-From: Jakub Ramaseuski <jramaseu@redhat.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	anthony.l.nguyen@intel.com,
-	przemyslaw.kitszel@intel.com,
-	przemyslaw.korba@intel.com,
-	Jakub Ramaseuski <jramaseu@redhat.com>
-Subject: [Intel-wired-lan] [PATCH iwl-net] ice: enable NETIF_F_HW_CSUM for GSO packets
-Date: Tue, 10 Mar 2026 12:55:56 +0100
-Message-ID: <20260310115556.1004263-1-jramaseu@redhat.com>
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="iZgR9Qp/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
+	t=1773143726; bh=U4MQ2UyTEtTm9FfUFN8u0E2v86RR/vLyOkwrg7Rl0HM=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=iZgR9Qp/lpX/OmreeYrgDIq0nKrn+2xXsmJ+ujKKHWj38gCjeIaXC0HXbLenxcKHn
+	 eZNL4G3CPb7QgYlqv4ksyr0oQNQgvUXSGiVD/dqs5vJU27jmBKVg8iLhZmsc9hNUgC
+	 53HbVKeoFbQObql2T4QVWLDcbSGiyf68GGOL/0jI=
+Received: from [2001:bf0:244:244::71] (helo=mail.avm.de)
+	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
+	(envelope-from <phahn-oss@avm.de>)
+	id 69b006ad-2367-7f0000032729-7f0000019d92-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:25 +0100
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Tue, 10 Mar 2026 12:55:25 +0100 (CET)
+From: Philipp Hahn <phahn-oss@avm.de>
+Date: Tue, 10 Mar 2026 12:48:51 +0100
+Subject: [PATCH 25/61] net/bluetooth: Prefer IS_ERR_OR_NULL over manual
+ NULL check
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260310-b4-is_err_or_null-v1-25-bd63b656022d@avm.de>
+References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
+To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
+ bpf@vger.kernel.org, ceph-devel@vger.kernel.org, cocci@inria.fr, 
+ dm-devel@lists.linux.dev, dri-devel@lists.freedesktop.org, 
+ gfs2@lists.linux.dev, intel-gfx@lists.freedesktop.org, 
+ intel-wired-lan@lists.osuosl.org, iommu@lists.linux.dev, 
+ kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-block@vger.kernel.org, linux-bluetooth@vger.kernel.org, 
+ linux-btrfs@vger.kernel.org, linux-cifs@vger.kernel.org, 
+ linux-clk@vger.kernel.org, linux-erofs@lists.ozlabs.org, 
+ linux-ext4@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, linux-hyperv@vger.kernel.org, 
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-leds@vger.kernel.org, linux-media@vger.kernel.org, 
+ linux-mips@vger.kernel.org, linux-mm@kvack.org, 
+ linux-modules@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ linux-nfs@vger.kernel.org, linux-omap@vger.kernel.org, 
+ linux-phy@lists.infradead.org, linux-pm@vger.kernel.org, 
+ linux-rockchip@lists.infradead.org, linux-s390@vger.kernel.org, 
+ linux-scsi@vger.kernel.org, linux-sctp@vger.kernel.org, 
+ linux-security-module@vger.kernel.org, linux-sh@vger.kernel.org, 
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-trace-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+ linux-wireless@vger.kernel.org, netdev@vger.kernel.org, 
+ ntfs3@lists.linux.dev, samba-technical@lists.samba.org, 
+ sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
+ tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
+ Philipp Hahn <phahn-oss@avm.de>
+Cc: Marcel Holtmann <marcel@holtmann.org>, 
+ Johan Hedberg <johan.hedberg@gmail.com>, 
+ Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1522; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=U4MQ2UyTEtTm9FfUFN8u0E2v86RR/vLyOkwrg7Rl0HM=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAYq6Vp4tN82O3UqmYAB2rCpxamSEi8qzxQbQ
+ a7J5ECg00uJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGKgAKCRA0LQZT0ays
+ 2zTjB/4mjCTr3iXgM6OBkpfxhcEN7EQQZ1y9EXzSAaaFnPJ4J6dbscyHQ/vrwihzqSCkid2ehYX
+ PXWgLr3enkVF+dbM8V9NRPpLg6F53eMyK7CDWQG9AEEJdJq5IDVkThiVxeIs2iOyPBRVnnYWh+Q
+ FhA5NtTEwVLOnsWfWahJLqDe7jVY+yfeXhrX4z5N5WnqSQs4m5vScZRnTkdBPMBPzYgMtNL5igV
+ SF/croNsrnotNJXtafaXYhWm05HCgfm5TNLHJLZIRe+0bC9Er8RwnfgRXEDKBgK6ljnqVy3QgCk
+ bdr+gnx+ukbOMXU8jf2GxeDozNZ6NjdS7QCYNHlx/c+fJCr+
+X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
+ fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
+X-purgate-ID: 149429::1773143725-82488E1F-09EB3E40/0/0
+X-purgate-type: clean
+X-purgate-size: 1524
+X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
+X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
+X-purgate: clean
 
-IPv4 over IPv6 GRE currently fails on E810 with skb_warn_bad_offload,
-while IPv6 over IPv6 GRE falls back to software segmentation.
-This happens because the kernel's GSO engine requires the generic HW_CSUM
-flag to trust the hardware with complex encapsulation offloads.
+Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+check.
 
-Add NETIF_F_HW_CSUM to the device's csumo_features to satisfy the network
-stack and unlock full hardware segmentation for GRE tunnels.
-To prevent checksum corruption on standard traffic, evaluate the packet
-in ice_features_check() and dynamically clear the NETIF_F_HW_CSUM bit
-if it is not a GSO frame. This forces the driver to fall back to safe,
-protocol-specific checksum features for non-GSO packets
-while preserving the generic offload for tunnels.
+Change generated with coccinelle.
 
-Signed-off-by: Jakub Ramaseuski <jramaseu@redhat.com>
+To: Marcel Holtmann <marcel@holtmann.org>
+To: Johan Hedberg <johan.hedberg@gmail.com>
+To: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: linux-bluetooth@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/bluetooth/mgmt.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index e7308e381e2f..9b4ad03e1a32 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3565,6 +3565,7 @@ void ice_set_netdev_features(struct net_device *netdev)
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index a7238fd3b03bb54f39af1afee74dc1acd931c324..06d2da67bbe14e17ee478aa939de26526c333d91 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -4169,7 +4169,7 @@ static void set_default_phy_complete(struct hci_dev *hdev, void *data, int err)
+ 		mgmt_phy_configuration_changed(hdev, cmd->sk);
+ 	}
  
- 	csumo_features = NETIF_F_RXCSUM	  |
- 			 NETIF_F_IP_CSUM  |
-+			 NETIF_F_HW_CSUM  |
- 			 NETIF_F_SCTP_CRC |
- 			 NETIF_F_IPV6_CSUM;
+-	if (skb && !IS_ERR(skb))
++	if (!IS_ERR_OR_NULL(skb))
+ 		kfree_skb(skb);
  
-@@ -9789,6 +9790,14 @@ ice_features_check(struct sk_buff *skb,
- 	if (skb->ip_summed != CHECKSUM_PARTIAL)
- 		return features;
+ 	mgmt_pending_free(cmd);
+@@ -5730,7 +5730,7 @@ static void read_local_oob_data_complete(struct hci_dev *hdev, void *data,
+ 			  MGMT_STATUS_SUCCESS, &mgmt_rp, rp_size);
  
-+	/* Hardware requires strictly-typed Tx descriptors for non-GSO frames.
-+	 * Leaving generic NETIF_F_HW_CSUM enabled corrupts checksums,
-+	 * causing TCP drops. We strip it here to force safe,
-+	 * protocol-specific IPv4/IPv6 offloads instead.
-+	 */
-+	if (!gso)
-+		features &= ~NETIF_F_HW_CSUM;
-+
- 	/* We cannot support GSO if the MSS is going to be less than
- 	 * 64 bytes. If it is then we need to drop support for GSO.
- 	 */
+ remove:
+-	if (skb && !IS_ERR(skb))
++	if (!IS_ERR_OR_NULL(skb))
+ 		kfree_skb(skb);
+ 
+ 	mgmt_pending_free(cmd);
+@@ -8277,7 +8277,7 @@ static void read_local_oob_ext_data_complete(struct hci_dev *hdev, void *data,
+ 				 mgmt_rp, sizeof(*mgmt_rp) + eir_len,
+ 				 HCI_MGMT_OOB_DATA_EVENTS, cmd->sk);
+ done:
+-	if (skb && !IS_ERR(skb))
++	if (!IS_ERR_OR_NULL(skb))
+ 		kfree_skb(skb);
+ 
+ 	kfree(mgmt_rp);
+
 -- 
-2.52.0
+2.43.0
 
