@@ -1,306 +1,141 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0BB72D8DD0
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 15:38:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFF93B2FC7;
+	Tue, 10 Mar 2026 15:45:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773157090; cv=none; b=ZhxHnkAc59vnOrnuqRj59TPP4l/XOxL7mbMBUJu/ha0Ln/Vj1tpIr8C+KBcCCKfM86X8LWqUy7d8aUTXu6YRBRMEigOboy34VZ4D2yuwsceeI0rMEk3Ta9BuS2MzrmVc0FUvkIZviIOLUiKCRXlK3/741phHVGSkxJinqukcEHM=
+	t=1773157531; cv=none; b=KQxAOm+oSb/Ja3tJOGCyi4yGrvCd2EIFEHb9HNIkHSwI85gMWmAU/weGVtSfxPwcHInW2ftM25LH/JHNBXVAbGAliUl+SQSZfx9dIieneMsxNo6DMN+RPYQPsDjhQDcOGEa/u6oAy46vrI+Bk/sfYpK2Aq2INFmkJaI/+jeRMHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773157090; c=relaxed/simple;
-	bh=oS9q0igtCx73pgzVz0pCz/CxGmX+bJAFamXv+sWsHx4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ex0l5+SgCaOOUrgQpPm8hTobZjwOCXnQn+dk5oXtBanuDP/q/jz59aeaHYXGCqlkzJI0oGfgyYu7YDGPY4WeoG/WpG26BAiQ4sd1z814SraKHtbCc+oxou6v6In03+JKh8nsNdZhp5TpBFmK6/jK9zQhIrsuD516KBD/2WMKdNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A36E23F79A;
-	Tue, 10 Mar 2026 15:37:31 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id F34BC3F519;
-	Tue, 10 Mar 2026 15:37:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uO4WOLk6sGlKXwAAD6G6ig
-	(envelope-from <fmancera@suse.de>); Tue, 10 Mar 2026 15:37:29 +0000
-From: Fernando Fernandez Mancera <fmancera@suse.de>
-To: netdev@vger.kernel.org
-Cc: rbm@suse.com,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
+	s=arc-20240116; t=1773157531; c=relaxed/simple;
+	bh=Cv97Ws/zNwbo6YWXcHsBsuy9O/qYjJBZgOhqLepgki0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ehbj5EtYW8LVPVFwPwxJM9GYxgBJhscZLNxC5YyEE1vQwfBH2OLHVclHExoxXTAPp16IOTuBQWuonv5p6pS+fbDTtRa90vkNbI0f7/q0EkEyS4lKQ7TUj4KiNwnW+ZhZY5Acx0SM4C0NmWUO3hm6dvOAj2r7OnP59w/8L0GWfOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C5naDtzJ; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C5naDtzJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773157530; x=1804693530;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Cv97Ws/zNwbo6YWXcHsBsuy9O/qYjJBZgOhqLepgki0=;
+  b=C5naDtzJtBiIGBZ1+iCj1hq6mnXKOH/B4R1+Rng3O7qF/h+tANxY3NX4
+   1BDjbD7amf3vafT9Ag53vkCrb+61j5uIF+PUQcIJei6TIYlDVPyJruynq
+   6xSf8hOeo4NfguJ/+dmzZ7F6VEIgZBrqbQlrtrUI+h2p1fpP5Ex2KLUfY
+   EMbUcVSbsg4hfWkWDVxA4qNDrf31rz4D0rMZePk5gdbkZI8N1vcUs/dy2
+   vWPVxg5XwoEaTj0LQKmO0WMQ5PlflirH/Qxm0WxKantHqQxGz2kJMPIol
+   NKK2/vn/qK2U0qbaxvbBjf6vFb9ZMGYuHtXGMCZg1x4+/rTE/ao+TzPkW
+   Q==;
+X-CSE-ConnectionGUID: Z6Y+7uEGS7WP/+Rvr6K6iw==
+X-CSE-MsgGUID: D2ltXs4hQgWMKLjApoi9zA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="85563507"
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
+   d="scan'208";a="85563507"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 08:45:29 -0700
+X-CSE-ConnectionGUID: jEw2x5dgTzGHsXowmShwPw==
+X-CSE-MsgGUID: KYAMdssUQ96LnOJT768SxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
+   d="scan'208";a="220337301"
+Received: from lkp-server01.sh.intel.com (HELO 434e41ea3c86) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 10 Mar 2026 08:45:23 -0700
+Received: from kbuild by 434e41ea3c86 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vzzGp-000000002AS-30bv;
+	Tue, 10 Mar 2026 15:45:19 +0000
+Date: Tue, 10 Mar 2026 23:45:12 +0800
+From: kernel test robot <lkp@intel.com>
+To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Simon Horman <horms@kernel.org>,
-	Alexander Aring <alex.aring@gmail.com>,
-	Stefan Schmidt <stefan@datenfreihafen.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Jon Maloy <jmaloy@redhat.com>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Breno Leitao <leitao@debian.org>,
-	Kees Cook <kees@kernel.org>,
-	Stanislav Fomichev <sdf@fomichev.me>,
-	linux-kernel@vger.kernel.org (open list),
-	linux-wpan@vger.kernel.org (open list:IEEE 802.15.4 SUBSYSTEM),
-	dev@openvswitch.org (open list:OPENVSWITCH),
-	tipc-discussion@lists.sourceforge.net (open list:TIPC NETWORK LAYER)
-Subject: [PATCH 07/10 net-next v2] net: convert remaining ipv6_stub users to direct function calls
-Date: Tue, 10 Mar 2026 16:34:30 +0100
-Message-ID: <20260310153506.5181-8-fmancera@suse.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260310153506.5181-1-fmancera@suse.de>
-References: <20260310153506.5181-1-fmancera@suse.de>
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	netdev@vger.kernel.org, Frank Wunderlich <frankwu@gmx.de>,
+	Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Liang Xu <lxu@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH net-next v2 2/2] net: dsa: mxl862xx: implement bridge
+ offloading
+Message-ID: <202603102333.SSWo6WNe-lkp@intel.com>
+References: <f6fb8c9c6d38585c0efce72b3d1aebe923277d5a.1773102942.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[];
-	TAGGED_RCPT(0.00)[]
-X-Rspamd-Queue-Id: A36E23F79A
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f6fb8c9c6d38585c0efce72b3d1aebe923277d5a.1773102942.git.daniel@makrotopia.org>
 
-As IPv6 is built-in only, the ipv6_stub infrastruture is no longer
-necessary.
+Hi Daniel,
 
-Convert remaining ipv6_stub users to make direct function calls. The
-fallback functions introduced previously will prevent linkage errors
-when CONFIG_IPV6 is disabled.
+kernel test robot noticed the following build errors:
 
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
----
-v2: no changes
----
- include/net/udp_tunnel.h      | 2 +-
- net/ieee802154/6lowpan/tx.c   | 2 +-
- net/mpls/af_mpls.c            | 3 +--
- net/openvswitch/actions.c     | 3 ++-
- net/sched/sch_frag.c          | 4 ++--
- net/tipc/udp_media.c          | 9 +++------
- net/xfrm/espintcp.c           | 5 +----
- net/xfrm/xfrm_nat_keepalive.c | 4 ++--
- net/xfrm/xfrm_output.c        | 3 +--
- 9 files changed, 14 insertions(+), 21 deletions(-)
+[auto build test ERROR on net-next/main]
 
-diff --git a/include/net/udp_tunnel.h b/include/net/udp_tunnel.h
-index d9c6d04bb3b5..277f1ce1c02d 100644
---- a/include/net/udp_tunnel.h
-+++ b/include/net/udp_tunnel.h
-@@ -230,7 +230,7 @@ static inline void udp_tunnel_encap_enable(struct sock *sk)
- 
- #if IS_ENABLED(CONFIG_IPV6)
- 	if (READ_ONCE(sk->sk_family) == PF_INET6)
--		ipv6_stub->udpv6_encap_enable();
-+		udpv6_encap_enable();
- #endif
- 	udp_encap_enable();
- }
-diff --git a/net/ieee802154/6lowpan/tx.c b/net/ieee802154/6lowpan/tx.c
-index 0c07662b44c0..69ec02386aaa 100644
---- a/net/ieee802154/6lowpan/tx.c
-+++ b/net/ieee802154/6lowpan/tx.c
-@@ -59,7 +59,7 @@ int lowpan_header_create(struct sk_buff *skb, struct net_device *ldev,
- 	} else {
- 		__le16 short_addr = cpu_to_le16(IEEE802154_ADDR_SHORT_UNSPEC);
- 
--		n = neigh_lookup(&nd_tbl, &hdr->daddr, ldev);
-+		n = neigh_lookup(ipv6_get_nd_tbl(), &hdr->daddr, ldev);
- 		if (n) {
- 			llneigh = lowpan_802154_neigh(neighbour_priv(n));
- 			read_lock_bh(&n->lock);
-diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
-index ae85a7654b1f..8b4c0b7d55a2 100644
---- a/net/mpls/af_mpls.c
-+++ b/net/mpls/af_mpls.c
-@@ -24,7 +24,6 @@
- #if IS_ENABLED(CONFIG_IPV6)
- #include <net/ipv6.h>
- #endif
--#include <net/ipv6_stubs.h>
- #include <net/rtnh.h>
- #include "internal.h"
- 
-@@ -642,7 +641,7 @@ static struct net_device *inet6_fib_lookup_dev(struct net *net,
- 
- 	memset(&fl6, 0, sizeof(fl6));
- 	memcpy(&fl6.daddr, addr, sizeof(struct in6_addr));
--	dst = ipv6_stub->ipv6_dst_lookup_flow(net, NULL, &fl6, NULL);
-+	dst = ip6_dst_lookup_flow(net, NULL, &fl6, NULL);
- 	if (IS_ERR(dst))
- 		return ERR_CAST(dst);
- 
-diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-index 792ca44a461d..140388a18ae0 100644
---- a/net/openvswitch/actions.c
-+++ b/net/openvswitch/actions.c
-@@ -21,6 +21,7 @@
- #include <net/ip.h>
- #include <net/ipv6.h>
- #include <net/ip6_fib.h>
-+#include <net/ip6_route.h>
- #include <net/checksum.h>
- #include <net/dsfield.h>
- #include <net/mpls.h>
-@@ -810,7 +811,7 @@ static void ovs_fragment(struct net *net, struct vport *vport,
- 		skb_dst_set_noref(skb, &ovs_rt.dst);
- 		IP6CB(skb)->frag_max_size = mru;
- 
--		ipv6_stub->ipv6_fragment(net, skb->sk, skb, ovs_vport_output);
-+		ip6_fragment(net, skb->sk, skb, ovs_vport_output);
- 		refdst_drop(orig_dst);
- 	} else {
- 		WARN_ONCE(1, "Failed fragment ->%s: eth=%04x, MRU=%d, MTU=%d.",
-diff --git a/net/sched/sch_frag.c b/net/sched/sch_frag.c
-index d1d87dce7f3f..75ee52750919 100644
---- a/net/sched/sch_frag.c
-+++ b/net/sched/sch_frag.c
-@@ -6,6 +6,7 @@
- #include <net/dst.h>
- #include <net/ip.h>
- #include <net/ip6_fib.h>
-+#include <net/ip6_route.h>
- 
- struct sch_frag_data {
- 	unsigned long dst;
-@@ -127,8 +128,7 @@ static int sch_fragment(struct net *net, struct sk_buff *skb,
- 		skb_dst_set_noref(skb, &sch_frag_rt.dst);
- 		IP6CB(skb)->frag_max_size = mru;
- 
--		ret = ipv6_stub->ipv6_fragment(net, skb->sk, skb,
--					       sch_frag_xmit);
-+		ret = ip6_fragment(net, skb->sk, skb, sch_frag_xmit);
- 		local_unlock_nested_bh(&sch_frag_data_storage.bh_lock);
- 		refdst_drop(orig_dst);
- 	} else {
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index 2b8e385d1e51..2c66b356025a 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -44,7 +44,6 @@
- #include <net/sock.h>
- #include <net/ip.h>
- #include <net/udp_tunnel.h>
--#include <net/ipv6_stubs.h>
- #include <linux/tipc_netlink.h>
- #include "core.h"
- #include "addr.h"
-@@ -207,9 +206,8 @@ static int tipc_udp_xmit(struct net *net, struct sk_buff *skb,
- 				.saddr = src->ipv6,
- 				.flowi6_proto = IPPROTO_UDP
- 			};
--			ndst = ipv6_stub->ipv6_dst_lookup_flow(net,
--							       ub->ubsock->sk,
--							       &fl6, NULL);
-+			ndst = ip6_dst_lookup_flow(net, ub->ubsock->sk,
-+						   &fl6, NULL);
- 			if (IS_ERR(ndst)) {
- 				err = PTR_ERR(ndst);
- 				goto tx_error;
-@@ -418,8 +416,7 @@ static int enable_mcast(struct udp_bearer *ub, struct udp_media_addr *remote)
- #if IS_ENABLED(CONFIG_IPV6)
- 	} else {
- 		lock_sock(sk);
--		err = ipv6_stub->ipv6_sock_mc_join(sk, ub->ifindex,
--						   &remote->ipv6);
-+		err = ipv6_sock_mc_join(sk, ub->ifindex, &remote->ipv6);
- 		release_sock(sk);
- #endif
- 	}
-diff --git a/net/xfrm/espintcp.c b/net/xfrm/espintcp.c
-index 998832419097..a2756186e13a 100644
---- a/net/xfrm/espintcp.c
-+++ b/net/xfrm/espintcp.c
-@@ -7,9 +7,6 @@
- #include <linux/skmsg.h>
- #include <net/inet_common.h>
- #include <trace/events/sock.h>
--#if IS_ENABLED(CONFIG_IPV6)
--#include <net/ipv6_stubs.h>
--#endif
- #include <net/hotdata.h>
- 
- static void handle_nonesp(struct espintcp_ctx *ctx, struct sk_buff *skb,
-@@ -43,7 +40,7 @@ static void handle_esp(struct sk_buff *skb, struct sock *sk)
- 	local_bh_disable();
- #if IS_ENABLED(CONFIG_IPV6)
- 	if (sk->sk_family == AF_INET6)
--		ipv6_stub->xfrm6_rcv_encap(skb, IPPROTO_ESP, 0, TCP_ENCAP_ESPINTCP);
-+		xfrm6_rcv_encap(skb, IPPROTO_ESP, 0, TCP_ENCAP_ESPINTCP);
- 	else
- #endif
- 		xfrm4_rcv_encap(skb, IPPROTO_ESP, 0, TCP_ENCAP_ESPINTCP);
-diff --git a/net/xfrm/xfrm_nat_keepalive.c b/net/xfrm/xfrm_nat_keepalive.c
-index ebf95d48e86c..d47f2ed8005c 100644
---- a/net/xfrm/xfrm_nat_keepalive.c
-+++ b/net/xfrm/xfrm_nat_keepalive.c
-@@ -98,14 +98,14 @@ static int nat_keepalive_send_ipv6(struct sk_buff *skb,
- 	local_lock_nested_bh(&nat_keepalive_sk_ipv6.bh_lock);
- 	sk = this_cpu_read(nat_keepalive_sk_ipv6.sock);
- 	sock_net_set(sk, net);
--	dst = ipv6_stub->ipv6_dst_lookup_flow(net, sk, &fl6, NULL);
-+	dst = ip6_dst_lookup_flow(net, sk, &fl6, NULL);
- 	if (IS_ERR(dst)) {
- 		local_unlock_nested_bh(&nat_keepalive_sk_ipv6.bh_lock);
- 		return PTR_ERR(dst);
- 	}
- 
- 	skb_dst_set(skb, dst);
--	err = ipv6_stub->ip6_xmit(sk, skb, &fl6, skb->mark, NULL, 0, 0);
-+	err = ip6_xmit(sk, skb, &fl6, skb->mark, NULL, 0, 0);
- 	sock_net_set(sk, &init_net);
- 	local_unlock_nested_bh(&nat_keepalive_sk_ipv6.bh_lock);
- 	return err;
-diff --git a/net/xfrm/xfrm_output.c b/net/xfrm/xfrm_output.c
-index 54222fcbd7fd..a9652b422f51 100644
---- a/net/xfrm/xfrm_output.c
-+++ b/net/xfrm/xfrm_output.c
-@@ -20,7 +20,6 @@
- 
- #if IS_ENABLED(CONFIG_IPV6)
- #include <net/ip6_route.h>
--#include <net/ipv6_stubs.h>
- #endif
- 
- #include "xfrm_inout.h"
-@@ -900,7 +899,7 @@ int xfrm6_tunnel_check_size(struct sk_buff *skb)
- 		skb->protocol = htons(ETH_P_IPV6);
- 
- 		if (xfrm6_local_dontfrag(sk))
--			ipv6_stub->xfrm6_local_rxpmtu(skb, mtu);
-+			xfrm6_local_rxpmtu(skb, mtu);
- 		else if (sk)
- 			xfrm_local_error(skb, mtu);
- 		else
+url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Golle/dsa-tag_mxl862xx-set-dsa_default_offload_fwd_mark/20260310-084425
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/f6fb8c9c6d38585c0efce72b3d1aebe923277d5a.1773102942.git.daniel%40makrotopia.org
+patch subject: [PATCH net-next v2 2/2] net: dsa: mxl862xx: implement bridge offloading
+config: x86_64-randconfig-004-20260310 (https://download.01.org/0day-ci/archive/20260310/202603102333.SSWo6WNe-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260310/202603102333.SSWo6WNe-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603102333.SSWo6WNe-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/net/dsa/mxl862xx/mxl862xx.c:655:2: error: call to undeclared function 'ether_addr_copy'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     655 |         ether_addr_copy(param.mac, addr);
+         |         ^
+   drivers/net/dsa/mxl862xx/mxl862xx.c:676:2: error: call to undeclared function 'ether_addr_copy'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     676 |         ether_addr_copy(param.mac, addr);
+         |         ^
+   2 errors generated.
+
+
+vim +/ether_addr_copy +655 drivers/net/dsa/mxl862xx/mxl862xx.c
+
+   640	
+   641	static int mxl862xx_port_fdb_add(struct dsa_switch *ds, int port,
+   642					 const unsigned char *addr, u16 vid, struct dsa_db db)
+   643	{
+   644		struct mxl862xx_mac_table_add param = { };
+   645		int fid = mxl862xx_get_fid(ds, db), ret;
+   646		struct mxl862xx_priv *priv = ds->priv;
+   647	
+   648		if (fid < 0)
+   649			return fid;
+   650	
+   651		param.port_id = cpu_to_le32(port);
+   652		param.static_entry = true;
+   653		param.fid = cpu_to_le16(fid);
+   654		param.tci = cpu_to_le16(FIELD_PREP(MXL862XX_TCI_VLAN_ID, vid));
+ > 655		ether_addr_copy(param.mac, addr);
+   656	
+   657		ret = MXL862XX_API_WRITE(priv, MXL862XX_MAC_TABLEENTRYADD, param);
+   658		if (ret)
+   659			dev_err(ds->dev, "failed to add FDB entry on port %d\n", port);
+   660	
+   661		return ret;
+   662	}
+   663	
+
 -- 
-2.53.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
