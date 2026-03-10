@@ -1,35 +1,71 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834471F3D56;
-	Tue, 10 Mar 2026 10:50:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA81E36E47E
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 10:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773139808; cv=none; b=IJemUxpP6EN5812JaDeTJCdI7xO4DOKGVngLbJ5V+hYD6meikLiIsQfti84EyUsLVdXrLLX/huDVVP/Z8Vk7wa34TvH+AxwSssPnWwSRVBT49z/VhFKtdcZIo0LJCfdHt88sG4rQ6KzLpSO1ieOukEM1sQyKdWnJqqguZzzlbck=
+	t=1773139909; cv=none; b=At100z6Dmj8Hd4nk/UFcf9c7R3/REubJf+DMLGk6jLz0s30jBZyS71i4kxb62Dts8GeKueQ/3oYu+ZPIMTxkbTfHL+DaadjUV+Hs30fMpc0TYe9IaLFgmieLHkh9CK5uri5G0Y3nYvUGKDGptT8LoUNYjvLRrzXqNq86ZeKbr88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773139808; c=relaxed/simple;
-	bh=+WZCUwj9wOZLW5BgabvQZQsWHdNInRB76UgzhpwK+mg=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=YNKsYKY6rxvk2Eu9NkYeQPCB5bBnRwb+Db5atRPwAdiUdVtHwqPscnOgGKvPSxh2eXDfVVL/P4XyMteC80YY5UKvSsCKhY++LOaGV4jocye20bRSMWiGTvXBeOgd3ESgUaaB3jXoJpkxDv4MZJ3dbOFxa3DPIpsXJ0lQj+SSO7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ll4ooBFw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1773139909; c=relaxed/simple;
+	bh=iCthyEbs4qL5//qCDSmTJYB59LoErQYQ/NLPVHYahFA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DNVDaiOpxk2eM+sYYZ+MkK4CoP0in9d6kzutUypsL9G5LJgkrVWLnm6w7OrFlHMsjcwCbcmGKIOnm3+earRfK+oJFa3mneS0hn+uF0+BG+Lvy3VsGJGPxgs8HZDtLF8ZW1/QGKW/WbrQ5NI6dh9RQLfhoopllIDJpWnnf1tq9bY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E4v2VjB/; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ll4ooBFw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21D73C19423;
-	Tue, 10 Mar 2026 10:50:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773139808;
-	bh=+WZCUwj9wOZLW5BgabvQZQsWHdNInRB76UgzhpwK+mg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=ll4ooBFwEpJqDW7kpa+yk38PSkiVVqqGLbUG8UvMh7/ltNHQwjU+G6Np6Rp4TehfW
-	 QFIKYZp/sLNWU5DNv9JjQpaingkA78HqMyaQYBS+5cakXlY0T+Qe0glEQzNSuLvDkp
-	 +JOdRhcLL/X83lRM2ARwSPRUeJWeZsSrS8ayVA8K0vPNxRryVwnD46EmZNcYAqwuUS
-	 DRln3c+xuPNh77X0QoG2mlT3YBT0XvDK1IIDas0l+GsUD+JHvDR43cfBrAWqfy6xEM
-	 fGDQbRc7YH+ga5JvGemsldBxro/hxLT38cKnF7HWBWU6xGFEZ6r6kOyXT6nulap5/e
-	 L8nsiu39W7Rwg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FE013808200;
-	Tue, 10 Mar 2026 10:50:06 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E4v2VjB/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773139906;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QmxaYQwdX0pNQ0ouRn9aWVbVIzE4xQyxEMU6u3LVzs0=;
+	b=E4v2VjB/GyikHBoKW+hW4YcxyiuQSb4E+VMyRkHgr5fRA/GRGib+Sq0WnUEey5vvbgvf32
+	VDZ5CSa+zcitUKONntYQXrvUxg4mqim9paUrR+0VY4q7DhB8O0SFLu+AphJlhTfpv4QBWT
+	b89cELOF+PUyeaMJCZBB6PxxbGUm+c0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-294-l1k_SNAQMdGZdmB5nD-WBw-1; Tue,
+ 10 Mar 2026 06:51:45 -0400
+X-MC-Unique: l1k_SNAQMdGZdmB5nD-WBw-1
+X-Mimecast-MFC-AGG-ID: l1k_SNAQMdGZdmB5nD-WBw_1773139902
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3F1A2195609D;
+	Tue, 10 Mar 2026 10:51:41 +0000 (UTC)
+Received: from gerbillo.redhat.com (unknown [10.45.225.133])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BCF0A1800759;
+	Tue, 10 Mar 2026 10:51:34 +0000 (UTC)
+From: Paolo Abeni <pabeni@redhat.com>
+To: jiawenwu@trustnetic.com
+Cc: kees@kernel.org,
+	michal.swiatkowski@linux.intel.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	andrew+netdev@lunn.ch,
+	richardcochran@gmail.com,
+	mengyuanlou@net-swift.com,
+	jacob.e.keller@intel.com,
+	joe@dama.to,
+	linux@armlinux.org.uk,
+	abdun.nihaal@gmail.com,
+	edumazet@google.com,
+	horms@kernel.org,
+	davem@davemloft.net,
+	larysa.zaremba@intel.com,
+	netdev@vger.kernel.org,
+	leitao@debian.org
+Subject: Re: [net-next,v4,09/10] net: wangxun: add Tx timeout process
+Date: Tue, 10 Mar 2026 11:51:27 +0100
+Message-ID: <20260310105127.167195-1-pabeni@redhat.com>
+In-Reply-To: <20260306063211.20536-10-jiawenwu@trustnetic.com>
+References: <20260306063211.20536-10-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -37,44 +73,123 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3] mctp: route: hold key->lock in
- mctp_flow_prepare_output()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177313980505.2187053.18363180029918103615.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Mar 2026 10:50:05 +0000
-References: <20260306031402.857224-1-dg573847474@gmail.com>
-In-Reply-To: <20260306031402.857224-1-dg573847474@gmail.com>
-To: Chengfeng Ye <dg573847474@gmail.com>
-Cc: jk@codeconstruct.com.au, matt@codeconstruct.com.au,
- netdev@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, horms@kernel.org,
- linux-kernel@vger.kernel.org
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-Hello:
+This is an AI-generated review of your patch. The human sending this
+email has considered the AI review valid, or at least plausible.
 
-This patch was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+---
+net: wangxun: add Tx timeout process
 
-On Fri,  6 Mar 2026 03:14:02 +0000 you wrote:
-> mctp_flow_prepare_output() checks key->dev and may call
-> mctp_dev_set_key(), but it does not hold key->lock while doing so.
-> 
-> mctp_dev_set_key() and mctp_dev_release_key() are annotated with
-> __must_hold(&key->lock), so key->dev access is intended to be
-> serialized by key->lock. The mctp_sendmsg() transmit path reaches
-> mctp_flow_prepare_output() via mctp_local_output() -> mctp_dst_output()
-> without holding key->lock, so the check-and-set sequence is racy.
-> 
-> [...]
+This commit implements .ndo_tx_timeout to handle Tx side timeout events.
+When a Tx timeout occurs, it triggers a driver reset process.
 
-Here is the summary with links:
-  - [v3] mctp: route: hold key->lock in mctp_flow_prepare_output()
-    https://git.kernel.org/netdev/net/c/7d86aa41c073
+> diff --git a/drivers/net/ethernet/wangxun/libwx/Makefile b/drivers/net/ethernet/wangxun/libwx/Makefile
+> index a71b0ad77de3..c8724bb129aa 100644
+> --- a/drivers/net/ethernet/wangxun/libwx/Makefile
+> +++ b/drivers/net/ethernet/wangxun/libwx/Makefile
+> @@ -4,5 +4,5 @@
+>
+>  obj-$(CONFIG_LIBWX) += libwx.o
+>
+> -libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o
+> +libwx-objs := wx_hw.o wx_lib.o wx_ethtool.o wx_ptp.o wx_mbx.o wx_sriov.o wx_err.o
+>  libwx-objs += wx_vf.o wx_vf_lib.o wx_vf_common.o
+> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_err.c b/drivers/net/ethernet/wangxun/libwx/wx_err.c
+> new file mode 100644
+> index 000000000000..bb77bdce69d2
+> --- /dev/null
+> +++ b/drivers/net/ethernet/wangxun/libwx/wx_err.c
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+[ ... ]
 
+> diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+> index c65240ca3c28..5a21478a592b 100644
+> --- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+> +++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+
+[ ... ]
+
+> @@ -742,6 +743,48 @@ static struct netdev_queue *wx_txring_txq(const struct wx_ring *ring)
+>  	return netdev_get_tx_queue(ring->netdev, ring->queue_index);
+>  }
+>
+> +static u64 wx_get_tx_pending(struct wx_ring *ring)
+> +{
+> +	unsigned int head, tail;
+> +
+> +	head = ring->next_to_clean;
+> +	tail = ring->next_to_use;
+> +
+> +	return ((head <= tail) ? tail : tail + ring->count) - head;
+> +}
+> +
+> +bool wx_check_tx_hang(struct wx_ring *ring)
+> +{
+> +	u64 tx_done_old = ring->tx_stats.tx_done_old;
+> +	u64 tx_pending = wx_get_tx_pending(ring);
+> +	u64 tx_done = ring->stats.packets;
+> +
+> +	clear_bit(WX_TX_DETECT_HANG, ring->state);
+> +
+> +	/*
+> +	 * Check for a hung queue, but be thorough. This verifies
+> +	 * that a transmit has been completed since the previous
+> +	 * check AND there is at least one packet pending. The
+> +	 * ARMED bit is set to indicate a potential hang. The
+> +	 * bit is cleared if a pause frame is received to remove
+> +	 * false hang detection due to PFC or 802.3x frames. By
+> +	 * requiring this to fail twice we avoid races with
+> +	 * pfc clearing the ARMED bit and conditions where we
+> +	 * run the check_tx_hang logic with a transmit completion
+> +	 * pending but without time to complete it yet.
+> +	 */
+
+The comment here mentions that "the bit is cleared if a pause frame is
+received to remove false hang detection due to PFC or 802.3x frames."
+However, I don't see any code in the wangxun driver that clears
+WX_HANG_CHECK_ARMED when pause frames are received.
+
+Looking at where WX_HANG_CHECK_ARMED is used in the driver:
+
+drivers/net/ethernet/wangxun/libwx/wx_lib.c:wx_check_tx_hang() {
+    ...
+    clear_bit(WX_TX_DETECT_HANG, ring->state);
+    ...
+    if (tx_done_old == tx_done && tx_pending)
+        return test_and_set_bit(WX_HANG_CHECK_ARMED, ring->state);
+    ...
+    clear_bit(WX_HANG_CHECK_ARMED, ring->state);
+    return false;
+}
+
+The bit is only cleared within wx_check_tx_hang() itself when packets
+have completed or when there are no pending packets. The driver does
+support flow control (both ngbe and txgbe implement get_pauseparam and
+set_pauseparam and advertise MAC_SYM_PAUSE/MAC_ASYM_PAUSE capabilities).
+
+Won't legitimate TX stalls caused by pause frames be misidentified as
+hangs after two service timer intervals, triggering unnecessary adapter
+resets? The ixgbe driver this appears to be based on has
+ixgbe_update_xoff_received() which clears __IXGBE_HANG_CHECK_ARMED when
+flow control pause frames are received.
+
+Should the wangxun driver implement similar pause frame handling to
+prevent false hang detections, or should the comment be updated to
+reflect the current behavior?
+
+> +	if (tx_done_old == tx_done && tx_pending)
+> +		/* make sure it is true for two checks in a row */
+> +		return test_and_set_bit(WX_HANG_CHECK_ARMED, ring->state);
+> +
+> +	/* update completed stats and continue */
+> +	ring->tx_stats.tx_done_old = tx_done;
+> +	/* reset the countdown */
+> +	clear_bit(WX_HANG_CHECK_ARMED, ring->state);
+> +
+> +	return false;
+> +}
+
+[ ... ]
 
