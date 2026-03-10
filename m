@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4212314D08;
-	Tue, 10 Mar 2026 17:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AC33D16E4;
+	Tue, 10 Mar 2026 17:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773163153; cv=none; b=ourzFSpVk+wez0eaa1GfsILlmc6500x2pLzoYqTV0NLleWR6gagTMNVxWw1jwxiVxcmO1LOsHVi5ICQzLiuRgDSgiArcDnZXtCAZGqP78GHUzL+Xd+k4/0Dw6yQjWl/ftI52J+NF4PRcrMx52fOUKs1nT09IqwU7exOhAnjRNmU=
+	t=1773163159; cv=none; b=fItoApdTuEabraOB20P+eZyNrlk3hHVDFrhqxPr5/+Cn4rZzRds6CazqV8TN4RUHBooCq7CIiIw7a31uJcHOPTD29+4Vscp0t1i2Z3URn4zW1t0QxkoSaw7QPVEs5UWKNsaT2J6+7HV91iDEUJwPWA0cUJjo9IonmU/empLKEmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773163153; c=relaxed/simple;
-	bh=hLF9AXo3lnRxCyN0gi/H0Xuz7Ot4l/b2adjyOOaaEI4=;
+	s=arc-20240116; t=1773163159; c=relaxed/simple;
+	bh=ljysWJaHe8TEOROZCjjrq6HOXubs9dLzcABTz31qQqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lo4KgMDjbqQo+AIQtDwhVfQ5ZzeQErMwPoBQkQA3bhbAz9gWT4i0tytwOA0G3uXrC1dyDbkbfylkhkADV07YpKdICs/MDOj9egr7//gJkzJp7R9PXFsQKaw425CXkCBUHopxLFI8Rvej1sgvHylFbhI8QhXl74F5zfKEG4JqMCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bwf9qDw/; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=XHhIHCVhxuazdncwfD8oZxVfcJQMJ/3U6gg1ovFXqEqVcZwjO2+iWuT2AzDi4LY7dbsXanueh0+4luE1nEtbbfM1bihIJp0zhTDfs3+jYsA5MH03aUCwva5nIjtMjbC//iDKdyeaAUGqZVVJpiG3y3v/ReYXxNtCZUvIp+4kXfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sFJsCBlf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bwf9qDw/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45606C2BCB3;
-	Tue, 10 Mar 2026 17:19:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sFJsCBlf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E71C2BCAF;
+	Tue, 10 Mar 2026 17:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773163153;
-	bh=hLF9AXo3lnRxCyN0gi/H0Xuz7Ot4l/b2adjyOOaaEI4=;
+	s=k20201202; t=1773163159;
+	bh=ljysWJaHe8TEOROZCjjrq6HOXubs9dLzcABTz31qQqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bwf9qDw/MyxKklGxC1YMHWeNHNONf3PTOcwDD4Egre0SngpWtcsBvesiwLKTh50Mx
-	 twUPpUQyBtpbZ9HFZd2z1eKEIzF2czgc+UvQqRIuCs53UI7vjAFJhfep22/GZC+c2D
-	 DWhGCXdky/T/eSKNQGz/cuC053Mgz7Uf7b1K3Zh1eyPd4tSXCKVZiR8OaA7aOXRtn9
-	 mc/hhN9BKI/c0ii/rKR6VidQ5QHZu2fpqyvMsM8vbZTGqsbdAuk/1OGcisp4Ua08LS
-	 E53Qb8ui27LsD9n+MWnaC9ihLePi9a54xC2vEMsU+yUxyt21j0vau9OY4HAZWJ5/0j
-	 z7vizcfy6LPlQ==
+	b=sFJsCBlfOp/+RVCBRcXXRDAX0DDEVTZ54xZU3HKWcvbEWBHtH8oQod1FI6ylRq+5L
+	 tbLNkweb2IOj0ypPoDiJP79RgVEvGqdMq6a6udNg3SHcE632oaAtQr5pkkIZwmYnZh
+	 kcr0aXdW75xqNnJtj6TTz0spk7EBHBDiHJ55nW3n7zQ1EgipthDYJZyncVQSben4xb
+	 k9GAftYqmcWWC9DLNt9IeuCugHkGWTSQ1r/6ZsGtzc+O2QVsahG5W7chZQ/sp2Y/4R
+	 BhQEe9Eyq4r8A8FcxAHY+nruyrhEeZhpL4boNhVnwY3xOoMgrfwMmTscEbQuDBUkZo
+	 YmpiMFlaVtujw==
 From: Conor Dooley <conor@kernel.org>
 To: netdev@vger.kernel.org
 Cc: conor@kernel.org,
@@ -57,9 +57,9 @@ Cc: conor@kernel.org,
 	Abin Joseph <abin.joseph@amd.com>,
 	=?UTF-8?q?Th=C3=A9o=20Lebrun?= <theo.lebrun@bootlin.com>,
 	Ryan.Wanner@microchip.com
-Subject: [PATCH net-next v3 05/10] net: macb: np4 doesn't need a usrio pointer
-Date: Tue, 10 Mar 2026 17:17:12 +0000
-Message-ID: <20260310-stubbed-passenger-30e7c6736c8f@spud>
+Subject: [PATCH net-next v3 06/10] net: macb: add mpfs specific usrio configuration
+Date: Tue, 10 Mar 2026 17:17:13 +0000
+Message-ID: <20260310-diaphragm-bagginess-7879e62495e5@spud>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260310-moneyless-dispense-7bce14b16388@spud>
 References: <20260310-moneyless-dispense-7bce14b16388@spud>
@@ -69,32 +69,88 @@ List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=785; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=F9UBzeUId/kao0gPpAeZyIh8nfmZqgwg0AfcGoyheCk=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJkbgnRnL/waZl51aLHuooOxwpu1ZV4f5ND/qXL4K/s11 ynlgs4HO0pZGMS4GGTFFFkSb/e1SK3/47LDuectzBxWJpAhDFycAjARpVBGhn3be72Xx19sM54R xsaVtjxmCluD96SI/ZkeecynY3bM+sHIcC2hKF/LUIFvZvyiR2pvzXz/i4XrpPvEdjAcqd7g+fE MIwA=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2759; i=conor.dooley@microchip.com; h=from:subject:message-id; bh=RSFyKfnVzDv/pOh5f8+B27Gurr5waqnAxeJRhx9T438=; b=owGbwMvMwCVWscWwfUFT0iXG02pJDJkbgvR+unE+4/fsbd68etee3lcnOVe8vnFV4yyPyRo5E cu+8NofHaUsDGJcDLJiiiyJt/tapNb/cdnh3PMWZg4rE8gQBi5OAZjIigkM/wOzHse2i+d5Zto9 jFFZEVbsOkW1jPWGw6TTjyapKkzaasDI0JRS/CoxNLfjxZ6uTTbP16Rvdd/M6GwqWeVb/9nsacR LJgA=
 X-Developer-Key: i=conor.dooley@microchip.com; a=openpgp; fpr=F9ECA03CF54F12CD01F1655722E2C55B37CF380C
 Content-Transfer-Encoding: 8bit
 
 From: Conor Dooley <conor.dooley@microchip.com>
 
-USRIO is disabled on this platform, having a pointer to a usrio config
-structure doesn't actually do anything other than look weird.
+On mpfs the driver needs to make sure the tsu clock source is not the
+fabric, as this requires that the hardware is in Timer Adjust mode,
+which is not compatible with the linux driver trying to control the
+hardware. It is unlikely that this will be set, as the peripheral is
+reset during probe, but if the resets are not provided in devicetree
+it's probable that this bit is set incorrectly, as U-Boot's macb driver
+has the same issue with using usrio settings for at91 platforms as the
+default.
 
+Fixes: 8aad66aa59be5 ("net: macb: add polarfire soc reset support")
 Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/cadence/macb.h      |  2 ++
+ drivers/net/ethernet/cadence/macb_main.c | 12 ++++++++++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index 1f9e46cf7e1cb..414a8fa3f99d9 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5349,7 +5349,6 @@ static const struct macb_config np4_config = {
- 	.caps = MACB_CAPS_USRIO_DISABLED,
- 	.clk_init = macb_clk_init,
- 	.init = macb_init,
--	.usrio = &at91_default_usrio,
+diff --git a/drivers/net/ethernet/cadence/macb.h b/drivers/net/ethernet/cadence/macb.h
+index 9cd565cb87e4c..cdb9fb2218c6f 100644
+--- a/drivers/net/ethernet/cadence/macb.h
++++ b/drivers/net/ethernet/cadence/macb.h
+@@ -781,6 +781,7 @@
+ #define MACB_CAPS_NO_LSO			BIT(24)
+ #define MACB_CAPS_USRIO_HAS_MII			BIT(25)
+ #define MACB_CAPS_USRIO_HAS_REFCLK_SOURCE	BIT(26)
++#define MACB_CAPS_USRIO_HAS_TSUCLK_SOURCE	BIT(27)
+ 
+ /* LSO settings */
+ #define MACB_LSO_UFO_ENABLE			0x01
+@@ -1214,6 +1215,7 @@ struct macb_usrio_config {
+ 	u32 refclk;
+ 	u32 clken;
+ 	u32 hdfctlen;
++	u32 tsu_source;
+ 	bool refclk_default_external;
  };
  
- static const struct macb_config zynqmp_config = {
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 414a8fa3f99d9..b476bc9663ecd 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -4650,6 +4650,9 @@ static int macb_init(struct platform_device *pdev)
+ 				val |= bp->usrio->refclk;
+ 		}
+ 
++		if (bp->caps & MACB_CAPS_USRIO_HAS_TSUCLK_SOURCE)
++			val |= bp->usrio->tsu_source;
++
+ 		macb_or_gem_writel(bp, USRIO, val);
+ 	}
+ 
+@@ -5244,6 +5247,10 @@ static const struct macb_usrio_config at91_default_usrio = {
+ 	.clken = MACB_BIT(CLKEN),
+ };
+ 
++static const struct macb_usrio_config mpfs_usrio = {
++	.tsu_source = 0,
++};
++
+ static const struct macb_usrio_config sama7g5_gem_usrio = {
+ 	.mii = 0,
+ 	.rmii = 1,
+@@ -5376,11 +5383,12 @@ static const struct macb_config zynq_config = {
+ static const struct macb_config mpfs_config = {
+ 	.caps = MACB_CAPS_GIGABIT_MODE_AVAILABLE |
+ 		MACB_CAPS_JUMBO |
+-		MACB_CAPS_GEM_HAS_PTP,
++		MACB_CAPS_GEM_HAS_PTP |
++		MACB_CAPS_USRIO_HAS_TSUCLK_SOURCE,
+ 	.dma_burst_length = 16,
+ 	.clk_init = macb_clk_init,
+ 	.init = init_reset_optional,
+-	.usrio = &at91_default_usrio,
++	.usrio = &mpfs_usrio,
+ 	.max_tx_length = 4040, /* Cadence Erratum 1686 */
+ 	.jumbo_max_len = 4040,
+ };
 -- 
 2.51.0
 
