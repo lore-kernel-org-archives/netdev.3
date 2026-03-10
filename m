@@ -1,61 +1,64 @@
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9053E8C41;
-	Tue, 10 Mar 2026 21:23:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.154.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60E13D88EE;
+	Tue, 10 Mar 2026 21:23:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=68.232.153.233
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773177805; cv=none; b=HjVKEq0uPZ/uhQmt5B5WILf2uebQ+ZJikJ+akfDPyt53Gxt4LJ98YHA3K0erb4ouKf6GMt55F+xwDcBNFaLmgo9l6btDjkROV5FRpefbU35SNEtRQu4qfaM1WG8sCykppAxfDYBb8B9TqvREBbTW0Ywp59+cuh4P49U/b7xwDA4=
+	t=1773177809; cv=none; b=SG3XchEzodu4TDSg2W2XAptY7FM4mLlvcpsN/Q79+DpjMJGKP/mpDqT3HaH1v5sCm+UZL1lEpYCU4KOOUFJ/bR3X+SUcmCV0hpl0HJBx2am3GaqpWW1uo+Yz/N+TIaToI8A9qdXzhzEpHT21SsmUaXgfJ8SfRGBre5OEsw9mtQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773177805; c=relaxed/simple;
-	bh=hkczP+cRn1ooydd+akAnJcSKxQz5P80wL/hb/h7uxDI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=E05OZlk2MMdx0s03JbK0g3PtFIHAI+qUxe3XIoN8BOjl/evJz3AcMURX9J5Z/6UajXZzP3Ldqo/dsL4YlcfhBXks/D6/d2S++P/pYMPMgMMUbfpdiUXFzXPtfQAmmN0F+oKi6Ugxam5DjqAivv2e/LxLvuEypPrYw1fLe1mPhp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=wl29lbmD; arc=none smtp.client-ip=68.232.154.123
+	s=arc-20240116; t=1773177809; c=relaxed/simple;
+	bh=vVOBq2eof8ur3RVqKGazvNw6MhBj1bl2tFAJnyqgdiw=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=fmq5LqIkq0gVGfbJSZWO3oIJbh6TIANnR0H23K5IcNzjH58Nv9RgcETfQafMrKnui9GBKAx9zY2m3JTlY+KeD65xEndmgf1Das+7cWv8nTtpM3X/JQ9iFkDdvGnIBT9tySLabwjXGoJUuA+EZlWM3TznKqsiQkyZwZ3UCRH746o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com; spf=pass smtp.mailfrom=microchip.com; dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b=chtY+wJW; arc=none smtp.client-ip=68.232.153.233
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microchip.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microchip.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="wl29lbmD"
+	dkim=pass (2048-bit key) header.d=microchip.com header.i=@microchip.com header.b="chtY+wJW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1773177798; x=1804713798;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=hkczP+cRn1ooydd+akAnJcSKxQz5P80wL/hb/h7uxDI=;
-  b=wl29lbmDAKs85P6/emI+iuo+9SfWr0XInCXFgFxZDvktbbYCcZswRQr3
-   G3KyqxUVZjUCJxWDY/q61SGH4OeHFAzXc2p1KunKgtyt4RSz1DMgMG4LQ
-   VgqiM5khG5RnI319CpXuzH6f8B8TgY4/ZlgHeyZh7IBpCSzaZqtFCT+/n
-   4rsSQe7kN2aRiG/M34QNn4ZXEWxCVZXOixHwZFej6m7wUsXmB3pCK+RPJ
-   Ec1I0cTHVQ99rIEKhy/zn4eXN6Qg9c43DQFHbX1KAkcuORFe0WeE5CQYn
-   SasBY8yYx/k8P1OzwHnDdjefA5tSJuNfDV6MpJilO7ceNOq+msjElZbAB
-   g==;
-X-CSE-ConnectionGUID: A5M1IvIGR8Kc/SXjbvrhaA==
-X-CSE-MsgGUID: nzPHh1C4QD+X/xOpJMLlZw==
+  t=1773177800; x=1804713800;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=vVOBq2eof8ur3RVqKGazvNw6MhBj1bl2tFAJnyqgdiw=;
+  b=chtY+wJWutUj0RLrfo4jVT+GTyH431Nwbm8RUN2OqmQcZtQc6jSgVMUp
+   xqc1DL5AsSdl+mbLMB5i1/+H6IsIgqiwnHmtUHMGKUlhCWptaybnXQPws
+   NFSNY5fpw0lxYNYDOW2AOZTQhSSiMSxnsV2+1qMEi3l2zLDQ2daj0tZWM
+   rE4A/Hcq52sxeuuRDFQRMAqtzTZ9F8DSBPRA/rCw3hagRP3hdtod+8ljX
+   vBfVysPjBbXTfOLSG/by0Rmwi02YejXOGtJ54oZ0FbfSPBmA7UXUjqPx3
+   Jr0/ncs5nrhb9Q4CJEKheXWnkceGKvp6wmcqD8gwRoAicaJ8UVulbl8vB
+   A==;
+X-CSE-ConnectionGUID: Fckl8p3GQOSmyEqqzS7I1g==
+X-CSE-MsgGUID: AT4g6QgZRCWL7jJkxby+lQ==
 X-IronPort-AV: E=Sophos;i="6.23,112,1770620400"; 
-   d="scan'208";a="54912636"
+   d="scan'208";a="62045476"
 X-Amp-Result: SKIPPED(no attachment in message)
 Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa2.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES128-GCM-SHA256; 10 Mar 2026 14:23:17 -0700
-Received: from chn-vm-ex02.mchp-main.com (10.10.85.144) by
- chn-vm-ex03.mchp-main.com (10.10.85.151) with Microsoft SMTP Server
+  by esa1.microchip.iphmx.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 14:23:12 -0700
+Received: from chn-vm-ex02.mchp-main.com (10.10.87.72) by
+ chn-vm-ex4.mchp-main.com (10.10.87.33) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.58; Tue, 10 Mar 2026 14:22:47 -0700
+ 15.2.2562.35; Tue, 10 Mar 2026 14:22:57 -0700
 Received: from bby-cbu-swbuild03.eng.microchip.com (10.10.85.11) by
  chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server id
- 15.1.2507.58 via Frontend Transport; Tue, 10 Mar 2026 14:22:46 -0700
+ 15.1.2507.58 via Frontend Transport; Tue, 10 Mar 2026 14:22:56 -0700
 From: Charles Perry <charles.perry@microchip.com>
 To: <netdev@vger.kernel.org>
-CC: Charles Perry <charles.perry@microchip.com>, Andrew Lunn
-	<andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, "Eric
- Dumazet" <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Nicolas Ferre
-	<nicolas.ferre@microchip.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	<devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>, Simon Horman
-	<horms@kernel.org>
-Subject: [PATCH net-next v2 0/3] Initial support for PIC64-HPSC/HX Ethernet endpoint
-Date: Tue, 10 Mar 2026 14:21:59 -0700
-Message-ID: <20260310212202.3991199-1-charles.perry@microchip.com>
+CC: Charles Perry <charles.perry@microchip.com>, Simon Horman
+	<horms@kernel.org>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+	<davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+	<kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Rob Herring
+	<robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+	<conor+dt@kernel.org>, Nicolas Ferre <nicolas.ferre@microchip.com>, "Claudiu
+ Beznea" <claudiu.beznea@tuxon.dev>, <devicetree@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: [PATCH net-next v2 2/3] net: macb: add safeguards for jumbo frame larger than 10240
+Date: Tue, 10 Mar 2026 14:22:01 -0700
+Message-ID: <20260310212202.3991199-3-charles.perry@microchip.com>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260310212202.3991199-1-charles.perry@microchip.com>
+References: <20260310212202.3991199-1-charles.perry@microchip.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -65,44 +68,66 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 
-Hello,
+The RX buffers for GEM can have a maximum size of 16320 bytes
+(0xff in the RXBS field of the DMACFG register means 255*64 =
+16320 bytes).
 
-This series add basic support for Microchip "PIC64-HPSC" and "PIC64HX"
-Ethernet endpoint. Both SoCs contain 4 GEM IP with support for
-MII/RGMII/SGMII/USXGMII at rates of 10M to 10G. Only RGMII and SGMII at a
-rate of 1G is tested for now. Each GEM IP has 8 priority queues and the
-revision register reads 0x220c010e.
+The GEM IP has configurable maximum jumbo frame length that can go up to
+16383. The actual value for this limit can be found in the
+       "jumbo_max_length" field (bits 0..13) of the DCFG2 register.
+Currently, the macb driver doesn't use the DCFG2 register when
+determining the max MTU, instead an hardcoded value (jumbo_max_len in
+struct macb_config) is used for each platform. Right now the maximum
+value for jumbo_max_len is 10240 (0x2800).
 
-One particularity of this instantiation of GEM is that the MDIO controller
-within the GEM IP is disconnected from any physical pin and the SoC rely on
-another standalone MDIO controller.
+GEM uses one buffer per packet which means that one buffer must allow
+room for the max MTU plus L2 encapsulation and alignment. This is a
+limitation of the driver.
 
-The maximum jumbo frame size also seems to be different on PIC64-HPSC/HX
-(16383) than what most other platforms use (10240). I've found that I need
-to tweak a bit the MTU calculation for this, otherwise the RXBS field of
-the DMACFG register overflows. See patch 2 for more details.
+This commit adds a limit to max_mtu and rx_buffer_size so that the RXBS
+field can never overflow when a large MTU is used.
 
-PIC64-HPSC/HX also supports other features guarded behind CAPS bit like
-MACB_CAPS_QBV but I've omitted those intentionally because I didn't test
-these.
+With this commit, it is now possible to add new platforms with a
+jumbo_max_len of 16383 so that the hardware properties of each IP can be
+properly captured in struct macb_config.
 
-Thanks,
-Charles
+Signed-off-by: Charles Perry <charles.perry@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+---
+ drivers/net/ethernet/cadence/macb_main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-Changes in v2:
-  - Use separate compatibles for PIC64-HPSC and PIC64HX
-  - "p64h" -> "pic64hpsc"
-  - Merge patch 2 into patch 1
-
-Charles Perry (3):
-  dt-bindings: net: cdns,macb: add a compatible for Microchip pic64hpsc
-  net: macb: add safeguards for jumbo frame larger than 10240
-  net: macb: add support for Microchip pic64hpsc ethernet endpoint
-
- .../devicetree/bindings/net/cdns,macb.yaml    | 19 +++++++++++++++++++
- drivers/net/ethernet/cadence/macb_main.c      | 16 ++++++++++++++--
- 2 files changed, 33 insertions(+), 2 deletions(-)
-
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index dc661e5a0769..96e15f58e173 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -50,6 +50,7 @@ struct sifive_fu540_macb_mgmt {
+ 
+ #define MACB_RX_BUFFER_SIZE	128
+ #define RX_BUFFER_MULTIPLE	64  /* bytes */
++#define RX_BUFFER_MAX		(0xFF * RX_BUFFER_MULTIPLE) /* 16320 bytes */
+ 
+ #define DEFAULT_RX_RING_SIZE	512 /* must be power of 2 */
+ #define MIN_RX_RING_SIZE	64
+@@ -2393,7 +2394,7 @@ static void macb_init_rx_buffer_size(struct macb *bp, size_t size)
+ 	if (!macb_is_gem(bp)) {
+ 		bp->rx_buffer_size = MACB_RX_BUFFER_SIZE;
+ 	} else {
+-		bp->rx_buffer_size = size;
++		bp->rx_buffer_size = MIN(size, RX_BUFFER_MAX);
+ 
+ 		if (bp->rx_buffer_size % RX_BUFFER_MULTIPLE) {
+ 			netdev_dbg(bp->dev,
+@@ -5588,7 +5589,8 @@ static int macb_probe(struct platform_device *pdev)
+ 	/* MTU range: 68 - 1518 or 10240 */
+ 	dev->min_mtu = GEM_MTU_MIN_SIZE;
+ 	if ((bp->caps & MACB_CAPS_JUMBO) && bp->jumbo_max_len)
+-		dev->max_mtu = bp->jumbo_max_len - ETH_HLEN - ETH_FCS_LEN;
++		dev->max_mtu = MIN(bp->jumbo_max_len, RX_BUFFER_MAX) -
++				ETH_HLEN - ETH_FCS_LEN;
+ 	else
+ 		dev->max_mtu = 1536 - ETH_HLEN - ETH_FCS_LEN;
+ 
 -- 
 2.47.3
 
