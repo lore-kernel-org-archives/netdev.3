@@ -1,38 +1,39 @@
 Received: from mail.avm.de (mail.avm.de [212.42.244.119])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DBE1480DF9;
-	Tue, 10 Mar 2026 11:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F19478869;
+	Tue, 10 Mar 2026 11:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773143759; cv=none; b=jfUxk+KYOndhae6qDR0yN4CxJXLBUaegc7iipVmd3QbQP4Nr97QxK7vAz1kgrTN3EHVcUd3Yu/lr9iSVYzr7GI3Hn7JD5rRkqPPJt/frnyV5J+4Plitn0u1qajr4rrCWt0BwKtH5DrouNDQPWF88nDYBxJsuachHYl8EBichzUs=
+	t=1773143751; cv=none; b=rHSRhsXkLkZ7GsblTXITMQcbLbveHY8R7Nmb5OGmtZq+E8xrfHs+NByBa1LxaeJ06dEvaottrd4/0c5Utt/uNOFXB9Xc8LJ1RsNHE3X+VA4qVW4Ucd4iAUyZO4f2CkKzl4O2JUkCLNKS7g2FIeNHCq2xAkgos3XfhbC4QrQlIUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773143759; c=relaxed/simple;
-	bh=BZdZKAXpTi8WGNXN2fiMzetM/noYEEE0kBAl+EzvNzY=;
+	s=arc-20240116; t=1773143751; c=relaxed/simple;
+	bh=uPgyjK+s+NGMdE+cG5MPshRhc7ZZgUWwr7PoRjCZSpk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UdzcZYnsq11b1ncHEnZPKiqtO4Y/xznWt7ZVIWh6XqAEnoBdbvoGzvbzZCwostyUGGjN7+ERfrCrQUMIVlErNJOTp2wFeuilWhIFC5rqqflakhbmds42zWmkux6VUOOh6MyMQ4Xn49arZNJVkqTXWeKBhnKsz5jFs5ErM6C4U7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=TIbH7crS; arc=none smtp.client-ip=212.42.244.119
+	 In-Reply-To:To:Cc; b=q2a2TvZXQgmW2GyCk65SRwAM8raSVzZ/mKB01kBOePht2sbqluYIudF3KYuiVSBN7Y0mczkf/iQF+fhm01G9bNf5+7OV9BYNCv7ecVrR7XEdGNrkYml9NZqGHpSiZ8GDpQOzSvDr9SpPJg2rxgNxTg13FTdqIzs9IuFNzDk3KrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=LL5fkEPt; arc=none smtp.client-ip=212.42.244.119
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="TIbH7crS"
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="LL5fkEPt"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1773143729; bh=BZdZKAXpTi8WGNXN2fiMzetM/noYEEE0kBAl+EzvNzY=;
+	t=1773143726; bh=uPgyjK+s+NGMdE+cG5MPshRhc7ZZgUWwr7PoRjCZSpk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=TIbH7crS0SmEGXdWYXiB338cx2RG5o2kmg7yTrotd2tHsLApaCsary2KGcodujAHU
-	 1zev4KPVi0Zbv11oZIIukDmu4zoiaTsO5E1fIsAx2k5eCnOYIW+bfhx20WkjdEzFnJ
-	 0Znlt2X5Bcfw0fHrIvFCMZOxvVHPIhC2D1cR+o/8=
+	b=LL5fkEPtuV9CbSpN4lCeRhwj9wOtYG14bBrYQwlDsOiRDOGvFMxFrXR7ICbQv7yjD
+	 Nh2HAS9PUSY6cF2/IYciLO3m4j1I9tMFQwKZtaHKKl6PFiu+Ec72Q+OEgh5iBsI71c
+	 w1fC3wa9FfW9t6cnmITmf5Kz51IBZsPxU1ekALWo=
 Received: from [212.42.244.71] (helo=mail.avm.de)
 	by mail.avm.de with ESMTP (eXpurgate 4.55.2)
 	(envelope-from <phahn-oss@avm.de>)
-	id 69b006b1-2367-7f0000032729-7f000001ca5e-1
-	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:29 +0100
+	id 69b006ad-2367-7f0000032729-7f0000019da0-1
+	for <multiple-recipients>; Tue, 10 Mar 2026 12:55:25 +0100
 Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
 	by mail.avm.de (Postfix) with ESMTPS;
-	Tue, 10 Mar 2026 12:55:29 +0100 (CET)
+	Tue, 10 Mar 2026 12:55:25 +0100 (CET)
 From: Philipp Hahn <phahn-oss@avm.de>
-Date: Tue, 10 Mar 2026 12:49:27 +0100
-Subject: [PATCH 61/61] file: Drop unlikely() around IS_ERR_OR_NULL()
+Date: Tue, 10 Mar 2026 12:48:55 +0100
+Subject: [PATCH 29/61] net/sctp: Prefer IS_ERR_OR_NULL over manual NULL
+ check
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -41,7 +42,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-b4-is_err_or_null-v1-61-bd63b656022d@avm.de>
+Message-Id: <20260310-b4-is_err_or_null-v1-29-bd63b656022d@avm.de>
 References: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 In-Reply-To: <20260310-b4-is_err_or_null-v1-0-bd63b656022d@avm.de>
 To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com, 
@@ -71,55 +72,61 @@ To: amd-gfx@lists.freedesktop.org, apparmor@lists.ubuntu.com,
  sched-ext@lists.linux.dev, target-devel@vger.kernel.org, 
  tipc-discussion@lists.sourceforge.net, v9fs@lists.linux.dev, 
  Philipp Hahn <phahn-oss@avm.de>
-Cc: Christian Brauner <brauner@kernel.org>, 
- Jeff Layton <jlayton@kernel.org>
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1020; i=phahn-oss@avm.de;
- h=from:subject:message-id; bh=BZdZKAXpTi8WGNXN2fiMzetM/noYEEE0kBAl+EzvNzY=;
- b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAamjmr2YH1D6NIv4bWMOoOgSjqlNw1AkTnEk
- z4zblGz3BCJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGpgAKCRA0LQZT0ays
- 24dkB/9I2IH2WVtNuAbc4pN8k/UWfzfn7IBk5SYldKbG4a3vAt2BCQOMLY6KBgHTT+SL+30NFE0
- eqhT72U09tRMvyWUaeodCCSJABvxL6Unq+gQWaX6/P1+X8+kVa/Fa0v8GHtiYqiopntbOsAjZBr
- sS0Bbptn0GuVsdoMNke4vQD0A9rA3xW5nWOgDpK1U8FjC9uaXfz1Bfzn2XQq/Me0fZtcNCJpNlZ
- qjNOLRSw3BZGb7IPqnUrcjHIuuNd6dYbs6wYHOgbyiibTqQrj6tp6SnoDxHnYU93V6GBh2lMfHt
- 9qSEynUbZNIYOnoqI2ah9KWLVKFkMsTrddsdp5JisL6z2WZS
+Cc: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>, 
+ Xin Long <lucien.xin@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1169; i=phahn-oss@avm.de;
+ h=from:subject:message-id; bh=uPgyjK+s+NGMdE+cG5MPshRhc7ZZgUWwr7PoRjCZSpk=;
+ b=owEBbQGS/pANAwAKATQtBlPRrKzbAcsmYgBpsAY4baP8me9X19X7pKru5bhCt+OcLVsbTz9gw
+ 3EXL2x+9HiJATMEAAEKAB0WIQQ5bPBtrWDUcDQCppg0LQZT0ays2wUCabAGOAAKCRA0LQZT0ays
+ 20eCB/9R10a8QtWnOE8FDIK68et8w+x4vBIl7DAH3ljWsVvEsJtllIM7WoriXoMKcy69weBfdTt
+ udsIaDDf3FpSbi6d23LNVWvY7/j8StHi4Mb7YRTkDtjVuH7qFkxhMIEkO0P72RZbdjNmUsWZOT+
+ 4yfdZZ4sqiFeE73LKQ05t8sm9/1XHgZKcnk5I6ebEYNeQeVfoiugFSvaTmWSBPUItBis/2y3N1h
+ 19AfztgUerK/fadW7Y/vZ3pDRpIi5ZAslPLWaCgGa6B5OoDoVAvOz5XPc/Ut45LGyZkJYA2qiTr
+ TmaKunQohnKINyK0THlxz9DBNJM47y+p9em5r+zCNMTJFQSn
 X-Developer-Key: i=phahn-oss@avm.de; a=openpgp;
  fpr=58AF7C2E007CDBE62C59E078F50EFDCF8AD04B1A
-X-purgate-ID: 149429::1773143729-A2CB9E1F-E26B4D9C/0/0
+X-purgate-ID: 149429::1773143725-1CCB5E1F-58F0DA51/0/0
 X-purgate-type: clean
-X-purgate-size: 1022
+X-purgate-size: 1171
 X-purgate-Ad: Categorized by eleven eXpurgate (R) https://www.eleven.de
 X-purgate: This mail is considered clean (visit https://www.eleven.de for further information)
 X-purgate: clean
 
-IS_ERR_OR_NULL() already uses likely(!ptr) internally. checkpatch does
-not like nesting it:
-> WARNING: nested (un)?likely() calls, IS_ERR_OR_NULL already uses
-> unlikely() internally
-Remove the explicit use of unlikely().
+Prefer using IS_ERR_OR_NULL() over using IS_ERR() and a manual NULL
+check.
 
 Change generated with coccinelle.
 
-To: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
+To: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+To: Xin Long <lucien.xin@gmail.com>
+To: "David S. Miller" <davem@davemloft.net>
+To: Eric Dumazet <edumazet@google.com>
+To: Jakub Kicinski <kuba@kernel.org>
+To: Paolo Abeni <pabeni@redhat.com>
+To: Simon Horman <horms@kernel.org>
+Cc: linux-sctp@vger.kernel.org
+Cc: netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org
 Signed-off-by: Philipp Hahn <phahn-oss@avm.de>
 ---
- include/linux/file.h | 2 +-
+ net/sctp/socket.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/file.h b/include/linux/file.h
-index 27484b444d3155685cdbb89f546f26ef66e3e1b4..007b9b9d365a052c1c056e12571eaf4f8ef5a45c 100644
---- a/include/linux/file.h
-+++ b/include/linux/file.h
-@@ -163,7 +163,7 @@ static inline void class_fd_prepare_destructor(const struct fd_prepare *fdf)
- {
- 	if (unlikely(fdf->__fd >= 0))
- 		put_unused_fd(fdf->__fd);
--	if (unlikely(!IS_ERR_OR_NULL(fdf->__file)))
-+	if (!IS_ERR_OR_NULL(fdf->__file))
- 		fput(fdf->__file);
- }
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 05fb00c9c33576d1e18ee31c34974d8b76efa768..a0596c94be4ad6afae6be13adb3bce17140264e9 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -5349,7 +5349,7 @@ struct sctp_transport *sctp_transport_get_idx(struct net *net,
+ 	if (!pos)
+ 		return SEQ_START_TOKEN;
  
+-	while ((t = sctp_transport_get_next(net, iter)) && !IS_ERR(t)) {
++	while (!IS_ERR_OR_NULL((t = sctp_transport_get_next(net, iter)))) {
+ 		if (!--pos)
+ 			break;
+ 		sctp_transport_put(t);
 
 -- 
 2.43.0
