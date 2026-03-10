@@ -1,79 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB3633CBE68
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 12:30:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4713D47A2;
+	Tue, 10 Mar 2026 12:33:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773145809; cv=none; b=HWEjLvJwpeGJLuwQLwrSPw6mBS9QQPUBlYABJI70Kx+XejxoEcgh7KLGCbsptLqowxDw1UvTLTY0qMVGDtGRtM8SAukyaIoWuJ+nDibopErBNtvGLISXB6jnFlgirenqDSNtw5eTcypULnpS87nH4M24scipkEJRdpWn1T9yXjo=
+	t=1773146009; cv=none; b=IyLmIn1tW2t8hUCKx9K7K5U/erti4cQ6q0rE19bzwlj0pevnMkQz/9BAtFU/ie5HFDOsoR3JLIZSWJBTIDQbHN8iK0wChR67kvVXoCuZ5/PwGcLv9u3eCv9i/mlDuLphd97vAt1hqqvAkm4sSZOGB1Gcu4WTcBIBMnlSmbL2KRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773145809; c=relaxed/simple;
-	bh=TzlCotxcVT6dvedJ0FiuS4FRNkDSl+AbCRH0nt2v3jU=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=IdICRW10DTauYeEbJRzHtsoTC8DzpWQfrY6S1Z1p+vlAaszUn7HYRrW3XRS51jWZLbYnqEMoHT1fvrGzad9B1VF/p+nzVrYwJYo8zbvlAL7emsKex3WodhQtzTPpR71prC8ZqbEx3qA2/mkeq1jDcx+ujIZPkPa8YxS35tNVYQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oMuqiL5K; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oMuqiL5K"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D47C19425;
-	Tue, 10 Mar 2026 12:30:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773145809;
-	bh=TzlCotxcVT6dvedJ0FiuS4FRNkDSl+AbCRH0nt2v3jU=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=oMuqiL5KD/vE1T73WmdbrD7Ys72rQc4Gj/7cE98alu6HSeOGlVn/QMZYHFrt3ZXHM
-	 TMcZ4f2OE9l6gnGZxp8LUFqKYIUCHVJtZgsDspWwhqIo1NpsRAj2dZsz/OSDf3ki5n
-	 cAaDVOx+oF+SclLCMH/HYHssnfVPAgjt8+p5geEAt1hb4YjznDLyHDKHOH3QUzM21U
-	 5MCW68OxflZWKyfojLH67hpcKx+VP0U+JakijCwEBRBIqy8NqHnPvWYFRxVhrexNrv
-	 CBb2r6BJRJT0/TSafCp4wLTQBFIYS995fb24DFVSycGil1bmoxZ/FmIaQONKcGKTbc
-	 YiJ4YfCJh04Ww==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7CDF53808200;
-	Tue, 10 Mar 2026 12:30:07 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1773146009; c=relaxed/simple;
+	bh=YkfpishWw5v2wYEjjJuA0hAqEVcBUj0se89FfkOjNNE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A6RX5Mml2dOKJVv/VeHefagsMBkAPG2tFYHtM48h92gBGEe+Uq6A0pgBmyluQEgeRQxXJkWTCXVDmYZTGZm/vakEf93Qw5/Xi4tn36IUcJcsx/jK2Ek+pCu6FFvPdtMWKGkESjXwA6BV3nkYLiL2gCl9/rJ6ahbrhajEYFZg48k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: by Chamillionaire.breakpoint.cc (Postfix, from userid 1003)
+	id 446756052A; Tue, 10 Mar 2026 13:33:25 +0100 (CET)
+Date: Tue, 10 Mar 2026 13:33:25 +0100
+From: Florian Westphal <fw@strlen.de>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netdev@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, netfilter-devel@vger.kernel.org
+Subject: Re: [PATCH net 00/10] netfilter: updates for net
+Message-ID: <abAPlfmkO7gr142k@strlen.de>
+References: <20260309210845.15657-1-fw@strlen.de>
+ <aa_4w9gXCkzQ06Nk@chamomile>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net-next] net: airoha: Move GDM forward port configuration
- in ndo_open/ndo_stop callbacks
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <177314580605.2263385.3496529123194142050.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Mar 2026 12:30:06 +0000
-References: 
- <20260306-airoha-gdm-forward-ndo-open-stop-v1-1-7b7a20dd9ef0@kernel.org>
-In-Reply-To: 
- <20260306-airoha-gdm-forward-ndo-open-stop-v1-1-7b7a20dd9ef0@kernel.org>
-To: Lorenzo Bianconi <lorenzo@kernel.org>
-Cc: andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, linux-arm-kernel@lists.infradead.org,
- linux-mediatek@lists.infradead.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aa_4w9gXCkzQ06Nk@chamomile>
 
-Hello:
-
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Fri, 06 Mar 2026 16:09:47 +0100 you wrote:
-> This change allows to set GDM forward port configuration to
-> FE_PSE_PORT_DROP stopping the network device. Hw design requires to stop
-> packet forwarding putting the interface down.  Moreover, PPE firmware
-> requires to use PPE1 for GDM3 or GDM4.
+Pablo Neira Ayuso <pablo@netfilter.org> wrote:
+> On Mon, Mar 09, 2026 at 10:08:35PM +0100, Florian Westphal wrote:
+> > 7-9) fix access bugs in the ctnetlink expectation handling.
+> >      Problem is that while RCU prevents the referenced nf_conn entry
+> >      from going way, nf_conn entries have an extension area that can
+> >      only be safely accessed if the cpu holds a reference to the
+> >      conntrack.  Else the extension area can be free'd at any time.
+> >      Fix is to grab references before the accesses happen.
+> >      These bugs are old, v3.10 resp. even pre-git days.
+> >      All fixes from Hyunwoo Kim.
 > 
-> Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+> I am not sure 7-9 are correct.
 > 
-> [...]
+> nfct_help() is accessed via exp->master in other existing paths,
+> I think these fixes are papering an underlying problem since the
+> typesafe rcu infrastructure was introduced in nf_conntrack.
 
-Here is the summary with links:
-  - [net-next] net: airoha: Move GDM forward port configuration in ndo_open/ndo_stop callbacks
-    https://git.kernel.org/netdev/net-next/c/46097d011f77
+AFAICS these patchers are correct and other areas need to be fixed too.
+I am currently auditing other conntrack helper usage for this bug
+type.  I'm working as fast as I can given the volume of bugs coming
+in.  I don't think that not taking these patches now is better in any
+way.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Its possible these changes do miss a check for confirmed bit, to
+avoid handling new, unconfirmed conntracks during object reuse.
 
+Expect further patches in this area.
 
+But I'm not sure this is related to rcu infra usage.
+
+I would not be surprised if this bug has always been there:
+20+ years ago, without KASAN/UBSAN it would likely have never
+been found.
