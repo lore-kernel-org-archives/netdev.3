@@ -1,85 +1,54 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.42.203.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED055382391
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 11:06:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70A383803CD;
+	Tue, 10 Mar 2026 11:07:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.42.203.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773140796; cv=none; b=YiKxR4T/uG3xgJRZng4M8JbTwGLMVgmzgn6H7/IjJE/ftIewj1b70u5XMBkz8vp8MXvRVKgNI9xI582HoShT6mo/CZHwzQF6hWYjUHGTPPbGnXBQmc3kMk8P2+WkbnV+DKvP+eeLTPs1953FLv+Y8W+/bveUth/9BAnPJBzBBnk=
+	t=1773140863; cv=none; b=eNqgm7OVQ6XNjEFYlM9NKpW0x7AMkgkyivfYb+iG/er/qT/yoBrIE7vlwmgMdRX/L3EjOBMNwZiHx7n92TzqCPMncionk1cOd2V4gaaxqbYhwaQ7sQKjVb84QT14f5BXZhC4/kkFFAc7Yba7AbAcvr+NSmYbL8+OBV7VxluI6CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773140796; c=relaxed/simple;
-	bh=xizap0WDd3bk+cV05bm/94G/gSVnO8jIIE/fLVblhCM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b2Cw1KI22UW87YUHzl8jVe0hexEQtqCjX22fikNgWlC/GVQI0bGJwPSi9IbwU19iFEIrTFzOFnieSGBX11aNkrdGNPFo6e65leHHXFGEYSgOOT3woNbyUGvBFAn1h2gSKbZ2uSJ6I5UwqUEh1LRFWfTRpWYG5+WpAEBZl679Gnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Yp38DEhX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UNw8lqSI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1773140863; c=relaxed/simple;
+	bh=pLArxNf9/4MXpQ5+ElSNDUiKKfXBjfNaMPEiUl84KKI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=Ni/PdS/tXP7mKMHGnMuTpntOlErYfJHTDbEnXVnR4hSzkv/y4E2Kd/PQA/H1h79HFf5aiMSWm4DRiB7+KMmXdQQXmli5dbxWUDF6JdZv0W8TiCRmq4jJq8damOzlfEkb4ikCilbqwe/I9GkoMemZSpOvLQA4/GgHAZxNkUhPR+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=eRXd1+ST; arc=none smtp.client-ip=52.42.203.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Yp38DEhX";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UNw8lqSI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1773140792;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iQmnv8N9Rzvz3Q1rfAEua10tLTzUnmwhpxs3ijK8p7g=;
-	b=Yp38DEhX2K+ZZYR6i2Md9j2YIBHo04MXxVp41j1FPT8RNNyGQpUrWsLC+fIisliaR9rb0N
-	VQ4ns3LuxtL6jkos3uh+gvGO+VxfxrPTiUuoLGB8Url44CJPTWaqpEkZRhFKk+Z6v/7p/3
-	W4Ewu4fZcvmIxQDUxk+xfhtNxplPyFo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-270-Kaju4Y_yNoOtKK_AjLz8lA-1; Tue, 10 Mar 2026 07:06:31 -0400
-X-MC-Unique: Kaju4Y_yNoOtKK_AjLz8lA-1
-X-Mimecast-MFC-AGG-ID: Kaju4Y_yNoOtKK_AjLz8lA_1773140790
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4839fc4cef6so116758245e9.0
-        for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 04:06:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="eRXd1+ST"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1773140789; x=1773745589; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=iQmnv8N9Rzvz3Q1rfAEua10tLTzUnmwhpxs3ijK8p7g=;
-        b=UNw8lqSIlp/yBM1augfXCRiPPh/5eoitI4666G+vd3ZoGsJ4/oLnGuXYMZ8IAOD55p
-         Y2vtl0NLsboMfcpabbThMP3quikSP6285iGGu0PwJg+thFouTDwSrkKCPToKZnb/AAfF
-         uHnEKeVGeSSFnJ0uRnf8K5oC0o1lROk6A0lrtV8US+MqgZk+MWCUtxDK4XdmVW2VUKFy
-         PSGsRyqd+9s+pxomlKAzTjlMGlIy5YnbRoEJ0VZhkYVXcuVrzJ1WEu3ojIewzIQN2nLy
-         AYwDvr+IFOqGgxwRsvvCGN9F4+vVpBR7ls5/A4RbLXsHoSTX74dDMwfD1WLbJgdYP3Fg
-         hEAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773140789; x=1773745589;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iQmnv8N9Rzvz3Q1rfAEua10tLTzUnmwhpxs3ijK8p7g=;
-        b=amazUgsUSmKkD1nrbVBQlvBpVgWq1weX3VSX111HC89hfkpsM31L/gc3e32QQUX5Cd
-         5VQhXyID6RgK5x4uct6b+FqXkvEmOafZ+YxF9kEJzbNFuWqlMrpMhl1uEZF3A6GpcAii
-         igBRDS8CfkfRhkNurQR2vJTH1LiJzps1RJleJl4nyvPm4NeW8r8ae8FrA372+PhA0G7o
-         w1iI2sLLZryM9VTX6joXQcji48NZ8aktweK3tgi68pimmf9LK0vBNM84DJHtfYhad9Pf
-         /oH34Sp5WEe0jTTrsvrWBliGoS817ZNko5a/STlfK6n/Ce4KSN6QTNnhqhQeZTYjiyEq
-         Cxww==
-X-Forwarded-Encrypted: i=1; AJvYcCUuGluNlWc4zk/SyG835fK2qA9GN/6dzBqhMS4E6s1VUvuh1ZxkCagBiJxpRX1L3YX1Er+mlxc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7BfuEQof6YgKcCy78qgLXtu+OLvIhfKj+5q7ARFNgQl0iknT0
-	j8C6c5rZV+IbsMK6U1QoTMvlYQPIaEdoCL/zEGAVzV9n2CREv1lZ5benbU3a9Cx9+fslKThm+Js
-	XML94gAmGuEKbrbZZU85jCkwl+/5F2GEEr5Kkyuy1xdaAPSYQyWoysktQKi1EhWbtfA==
-X-Gm-Gg: ATEYQzwKgjiRxdIWg86AH4GBROJdv7lGrFCAGf455zMwy13TGRvfVJIJhufcdTd3OLy
-	kpOxveuaepX9n6vJUMhVWucmngB55HqblqQcGyIzADAxlnsfwuYxRBkHADi29T8t8/zM6N8GIvw
-	tjnnRvO4jv0hnvGzQToliU6FbC4oPUbAmZAs3OTX6LClhfHryRfIBW4i/5y99mfHWR3qn1MyJ5H
-	8tBThL6+mEkIkC0wP6DzW0rtD+XCdbnk39MSEXHcQipqMfYTwnkbhg402670i2M101sQ22/BvWL
-	d6sSlq3cPLlW0U84mro+yjEM9a/036w2gIPW6KD4J6776PENNJ3NtC4sNiSoCfLetL1n5K7yZSv
-	lrq6+HJqNoH7VGOzs0AlWaRTivZ3z6mkjPY4IKf3DLsB5RgLG80kilKms
-X-Received: by 2002:a05:600c:1d04:b0:485:3428:774c with SMTP id 5b1f17b1804b1-485419a286cmr48914585e9.4.1773140789264;
-        Tue, 10 Mar 2026 04:06:29 -0700 (PDT)
-X-Received: by 2002:a05:600c:1d04:b0:485:3428:774c with SMTP id 5b1f17b1804b1-485419a286cmr48913995e9.4.1773140788630;
-        Tue, 10 Mar 2026 04:06:28 -0700 (PDT)
-Received: from [192.168.88.32] ([150.228.25.224])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48541b6f6b7sm90558735e9.9.2026.03.10.04.06.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Mar 2026 04:06:27 -0700 (PDT)
-Message-ID: <965eb715-4e15-4ee2-bb29-bcb523411869@redhat.com>
-Date: Tue, 10 Mar 2026 12:06:26 +0100
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1773140860; x=1804676860;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pLArxNf9/4MXpQ5+ElSNDUiKKfXBjfNaMPEiUl84KKI=;
+  b=eRXd1+STZ5k59cLB5o1+Dc951TJy0yePX6dzQnY/XI2BCcezKm12auGf
+   AIOGqkvN241D3y5ghpjruWLLqp7zX16kAnpYnGHQJXLjy+NntBb3+N+JI
+   L6m/GoagDnZNkH0m27+2QKg0YyR/vs+ha3izVhCT2N/SRlDKrm1owk9e1
+   w/n/oudxAEfghBPV8CCRgIngz/HZxPcVZIbk0XzD9hByFHbGrNmL8M7gb
+   s7FZ6wVRrODkKwuEgWUwpe5B/vHYuWZuMHRLFbxL/9MhcvfZrh3trPkMf
+   jM9ixbWC+fB0p/X7NRvhq9WYEVG5Vdsm5ddnmDHrQtCSsWsg75U06EIht
+   w==;
+X-CSE-ConnectionGUID: FqRddif1QKWeHiPdIPpCnQ==
+X-CSE-MsgGUID: oMiUQHQCQaeLSvv9w3uicQ==
+X-IronPort-AV: E=Sophos;i="6.23,112,1770595200"; 
+   d="scan'208";a="14700786"
+Received: from ip-10-5-6-203.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.6.203])
+  by internal-pdx-out-008.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 11:07:37 +0000
+Received: from EX19MTAUWA001.ant.amazon.com [205.251.233.182:2123]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.3:2525] with esmtp (Farcaster)
+ id 9969de31-71d8-490a-bcac-5948bb110c2c; Tue, 10 Mar 2026 11:07:37 +0000 (UTC)
+X-Farcaster-Flow-ID: 9969de31-71d8-490a-bcac-5948bb110c2c
+Received: from EX19D020UWC004.ant.amazon.com (10.13.138.149) by
+ EX19MTAUWA001.ant.amazon.com (10.250.64.204) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Tue, 10 Mar 2026 11:07:37 +0000
+Received: from [0.0.0.0] (172.19.99.218) by EX19D020UWC004.ant.amazon.com
+ (10.13.138.149) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Tue, 10 Mar 2026
+ 11:07:32 +0000
+Message-ID: <79351c96-3b8c-4ebb-82c7-7f18ac88bd68@amazon.com>
+Date: Tue, 10 Mar 2026 12:07:30 +0100
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -87,197 +56,89 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 net 2/3] amd-xgbe: prevent CRC errors during RX
- adaptation with AN disabled
-To: Raju Rangoju <Raju.Rangoju@amd.com>, netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, kuba@kernel.org, edumazet@google.com,
- davem@davemloft.net, andrew+netdev@lunn.ch, horms@kernel.org,
- Shyam-sundar.S-k@amd.com
-References: <20260306111629.1515676-1-Raju.Rangoju@amd.com>
- <20260306111629.1515676-3-Raju.Rangoju@amd.com>
+Subject: Re: [net-next, v4] vsock: add G2H fallback for CIDs not owned by H2G
+ transport
+To: Paolo Abeni <pabeni@redhat.com>
+CC: <vishnu.dasa@broadcom.com>, <stefanha@redhat.com>,
+	<virtualization@lists.linux.dev>, <kvm@vger.kernel.org>,
+	<bcm-kernel-feedback-list@broadcom.com>, <arnd@arndb.de>,
+	<netdev@vger.kernel.org>, <eperezma@redhat.com>,
+	<gregkh@linuxfoundation.org>, <mst@redhat.com>, <jasowang@redhat.com>,
+	<corbet@lwn.net>, <nh-open-source@amazon.com>, <bryan-bt.tan@broadcom.com>,
+	<syzbot@syzkaller.appspotmail.com>, <sgarzare@redhat.com>,
+	<linux-kernel@vger.kernel.org>
+References: <20260304230027.59857-1-graf@amazon.com>
+ <20260310091843.101237-1-pabeni@redhat.com>
+ <ef3435b1-5d86-4137-903f-bddeca3deb91@redhat.com>
 Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20260306111629.1515676-3-Raju.Rangoju@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Alexander Graf <graf@amazon.com>
+In-Reply-To: <ef3435b1-5d86-4137-903f-bddeca3deb91@redhat.com>
+X-ClientProxiedBy: EX19D046UWB004.ant.amazon.com (10.13.139.164) To
+ EX19D020UWC004.ant.amazon.com (10.13.138.149)
+Content-Type: text/plain; charset="utf-8"; format="flowed"
+Content-Transfer-Encoding: base64
 
-On 3/6/26 12:16 PM, Raju Rangoju wrote:
-> When operating in 10GBASE-KR mode with auto-negotiation disabled and RX
-> adaptation enabled, CRC errors can occur during the RX adaptation
-> process. This happens because the driver continues transmitting and
-> receiving packets while adaptation is in progress.
-> 
-> Fix this by stopping TX/RX immediately when the link goes down and RX
-> adaptation needs to be re-triggered, and only re-enabling TX/RX after
-> adaptation completes and the link is confirmed up. Introduce a flag to
-> track whether TX/RX was disabled for adaptation so it can be restored
-> correctly.
-> 
-> This prevents packets from being transmitted or received during the RX
-> adaptation window and avoids CRC errors from corrupted frames.
-> 
-> The flag tracking the data path state is synchronized with hardware
-> state in xgbe_start() to prevent stale state after device restarts.
-> This ensures that after a restart cycle (where xgbe_stop disables
-> TX/RX and xgbe_start re-enables them), the flag correctly reflects
-> that the data path is active.
-> 
-> Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
-> Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-> ---
-> Changes since v1:
->  - Change the data_path_stopped flag to boolean type
->    as it is only used as a true/false indicator.
-> Changes since v2:
->  - change the data_path_stopped flag to be cleared in phy_start() to
->    ensure it is reset on device restart
-> 
->  drivers/net/ethernet/amd/xgbe/xgbe-drv.c    |  4 ++
->  drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 63 ++++++++++++++++++++-
->  drivers/net/ethernet/amd/xgbe/xgbe.h        |  4 ++
->  3 files changed, 69 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-> index 8b79d88480db..39da2f811858 100644
-> --- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-> +++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-> @@ -1277,6 +1277,10 @@ static int xgbe_start(struct xgbe_prv_data *pdata)
->  
->  	hw_if->enable_tx(pdata);
->  	hw_if->enable_rx(pdata);
-> +	/* Synchronize flag with hardware state after enabling TX/RX.
-> +	 * This prevents stale state after device restart cycles.
-> +	 */
-> +	pdata->data_path_stopped = false;
->  
->  	udp_tunnel_nic_reset_ntf(netdev);
->  
-> diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-> index b330e888c944..59a074ed312a 100644
-> --- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-> +++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
-> @@ -2017,6 +2017,48 @@ static void xgbe_phy_rx_adaptation(struct xgbe_prv_data *pdata)
->  	xgbe_rx_adaptation(pdata);
->  }
->  
-> +/*
-> + * xgbe_phy_stop_data_path - Stop TX/RX to prevent packet corruption
-> + * @pdata: driver private data
-> + *
-> + * This function stops the data path (TX and RX) to prevent packet
-> + * corruption during critical PHY operations like RX adaptation.
-> + * Must be called before initiating RX adaptation when link goes down.
-> + */
-> +static void xgbe_phy_stop_data_path(struct xgbe_prv_data *pdata)
-> +{
-> +	if (pdata->data_path_stopped)
-> +		return;
-> +
-> +	/* Stop TX/RX to prevent packet corruption during RX adaptation */
-> +	pdata->hw_if.disable_tx(pdata);
-> +	pdata->hw_if.disable_rx(pdata);
-> +	pdata->data_path_stopped = true;
-> +
-> +	netif_dbg(pdata, link, pdata->netdev,
-> +		  "stopping data path for RX adaptation\n");
-> +}
-> +
-> +/*
-> + * xgbe_phy_start_data_path - Re-enable TX/RX after RX adaptation
-> + * @pdata: driver private data
-> + *
-> + * This function re-enables the data path (TX and RX) after RX adaptation
-> + * has completed successfully. Only called when link is confirmed up.
-> + */
-> +static void xgbe_phy_start_data_path(struct xgbe_prv_data *pdata)
-> +{
-> +	if (!pdata->data_path_stopped)
-> +		return;
-> +
-> +	pdata->hw_if.enable_rx(pdata);
-> +	pdata->hw_if.enable_tx(pdata);
-> +	pdata->data_path_stopped = false;
-> +
-> +	netif_dbg(pdata, link, pdata->netdev,
-> +		  "restarting data path after RX adaptation\n");
-> +}
-> +
->  static void xgbe_phy_rx_reset(struct xgbe_prv_data *pdata)
->  {
->  	int reg;
-> @@ -2826,13 +2868,27 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
->  	if (pdata->en_rx_adap) {
->  		/* if the link is available and adaptation is done,
->  		 * declare link up
-> +		 *
-> +		 * Note: When link is up and adaptation is done, we can
-> +		 * safely re-enable the data path if it was stopped
-> +		 * for adaptation.
->  		 */
-> -		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done)
-> +		if ((reg & MDIO_STAT1_LSTATUS) && pdata->rx_adapt_done) {
-> +			xgbe_phy_start_data_path(pdata);
->  			return 1;
-> +		}
->  		/* If either link is not available or adaptation is not done,
->  		 * retrigger the adaptation logic. (if the mode is not set,
->  		 * then issue mailbox command first)
->  		 */
-> +
-> +		/* CRITICAL: Stop data path BEFORE triggering RX adaptation
-> +		 * to prevent CRC errors from packets corrupted during
-> +		 * the adaptation process. This is especially important
-> +		 * when AN is OFF in 10G KR mode.
-> +		 */
-> +		xgbe_phy_stop_data_path(pdata);
-> +
->  		if (pdata->mode_set) {
->  			xgbe_phy_rx_adaptation(pdata);
->  		} else {
-> @@ -2840,8 +2896,11 @@ static int xgbe_phy_link_status(struct xgbe_prv_data *pdata, int *an_restart)
->  			xgbe_phy_set_mode(pdata, phy_data->cur_mode);
->  		}
->  
-> -		if (pdata->rx_adapt_done)
-> +		if (pdata->rx_adapt_done) {
-> +			/* Adaptation complete, safe to re-enable data path */
-> +			xgbe_phy_start_data_path(pdata);
->  			return 1;
-> +		}
->  	} else if (reg & MDIO_STAT1_LSTATUS)
->  		return 1;
-
-AI says:
-
----
-What happens if en_rx_adap transitions from true to false while
-data_path_stopped is true?
-
-Consider this scenario during an SFP hot-swap from a passive cable (which
-enables rx_adap) to an active cable (which disables rx_adap):
-
-1. Initially with passive cable: en_rx_adap=true, link down
-2. xgbe_phy_link_status() enters the if (pdata->en_rx_adap) block
-3. xgbe_phy_stop_data_path() sets data_path_stopped=true and disables TX/RX
-4. Hot-swap to active cable: xgbe_phy_sfi_mode() sets en_rx_adap=0
-5. Next call to xgbe_phy_link_status(): en_rx_adap is now false
-6. The entire if (pdata->en_rx_adap) block is skipped
-7. Link is up, so falls through to: else if (reg & MDIO_STAT1_LSTATUS)
-return 1
-8. Returns link up, but TX/RX hardware remains disabled
-
-At this point, data_path_stopped=true and the hardware TX/RX is disabled,
-but there's no code path to re-enable it when en_rx_adap becomes false
-(except a full device restart cycle through xgbe_stop + xgbe_start).
-
-Would it be safer to check data_path_stopped in the else branch and call
-xgbe_phy_start_data_path() if needed before returning link up?
----
-
-I think the remark is not correct, as AFAICS xgbe_phy_sfi_mode() is only
-invoked by xgbe_phy_link_status(), after checking `en_rx_adap` and ev.
-re-starting the ring. Reporting the remark here in case I misread the
-code and this actually need a follow-up.
-
-/P
+Ck9uIDEwLjAzLjI2IDEwOjI2LCBQYW9sbyBBYmVuaSB3cm90ZToKPiBIaSwKPgo+IE9uIDMvMTAv
+MjYgMTA6MTggQU0sIFBhb2xvIEFiZW5pIHdyb3RlOgo+PiBUaGlzIGlzIGFuIEFJLWdlbmVyYXRl
+ZCByZXZpZXcgb2YgeW91ciBwYXRjaC4gVGhlIGh1bWFuIHNlbmRpbmcgdGhpcwo+PiBlbWFpbCBo
+YXMgY29uc2lkZXJlZCB0aGUgQUkgcmV2aWV3IHZhbGlkLCBvciBhdCBsZWFzdCBwbGF1c2libGUu
+Cj4+Cj4+IEZvciBsb2NhbCByZXByb2R1Y3Rpb24gc3RlcHMgc2VlIGh0dHBzOi8vbmV0ZGV2LWFp
+LmJvdHMubGludXguZGV2L2FpLWxvY2FsLmh0bWwKPj4gLS0tCj4+PiBAQCAtNTgxLDExICs1ODUs
+MjEgQEAgaW50IHZzb2NrX2Fzc2lnbl90cmFuc3BvcnQoc3RydWN0IHZzb2NrX3NvY2sgKnZzaywg
+c3RydWN0IHZzb2NrX3NvY2sgKnBzaykKPj4+ICAgICAgIGNhc2UgU09DS19TRVFQQUNLRVQ6Cj4+
+PiAgICAgICAgICAgICAgIGlmICh2c29ja191c2VfbG9jYWxfdHJhbnNwb3J0KHJlbW90ZV9jaWQp
+KQo+Pj4gICAgICAgICAgICAgICAgICAgICAgIG5ld190cmFuc3BvcnQgPSB0cmFuc3BvcnRfbG9j
+YWw7Cj4+PiAtICAgICAgICAgICAgZWxzZSBpZiAocmVtb3RlX2NpZCA8PSBWTUFERFJfQ0lEX0hP
+U1QgfHwgIXRyYW5zcG9ydF9oMmcgfHwKPj4+ICsgICAgICAgICAgICBlbHNlIGlmIChyZW1vdGVf
+Y2lkIDw9IFZNQUREUl9DSURfSE9TVCB8fAo+Pj4gICAgICAgICAgICAgICAgICAgICAgICAocmVt
+b3RlX2ZsYWdzICYgVk1BRERSX0ZMQUdfVE9fSE9TVCkpCj4+PiAgICAgICAgICAgICAgICAgICAg
+ICAgbmV3X3RyYW5zcG9ydCA9IHRyYW5zcG9ydF9nMmg7Cj4+PiAtICAgICAgICAgICAgZWxzZQo+
+Pj4gKyAgICAgICAgICAgIGVsc2UgaWYgKHRyYW5zcG9ydF9oMmcgJiYKPj4+ICsgICAgICAgICAg
+ICAgICAgICAgICAoIXRyYW5zcG9ydF9oMmctPmhhc19yZW1vdGVfY2lkIHx8Cj4+PiArICAgICAg
+ICAgICAgICAgICAgICAgIHRyYW5zcG9ydF9oMmctPmhhc19yZW1vdGVfY2lkKHZzaywgcmVtb3Rl
+X2NpZCkpKQo+Pj4gKyAgICAgICAgICAgICAgICAgICAgbmV3X3RyYW5zcG9ydCA9IHRyYW5zcG9y
+dF9oMmc7Cj4+PiArICAgICAgICAgICAgZWxzZSBpZiAoc29ja19uZXQoc2spLT52c29jay5nMmhf
+ZmFsbGJhY2sgJiYKPj4+ICsgICAgICAgICAgICAgICAgICAgICB0cmFuc3BvcnRfZzJoICYmIHRy
+YW5zcG9ydF9nMmgtPmhhc19yZW1vdGVfY2lkICYmCj4+PiArICAgICAgICAgICAgICAgICAgICAg
+dHJhbnNwb3J0X2cyaC0+aGFzX3JlbW90ZV9jaWQodnNrLCByZW1vdGVfY2lkKSkgewo+Pj4gKyAg
+ICAgICAgICAgICAgICAgICAgdnNrLT5yZW1vdGVfYWRkci5zdm1fZmxhZ3MgfD0gVk1BRERSX0ZM
+QUdfVE9fSE9TVDsKPj4+ICsgICAgICAgICAgICAgICAgICAgIG5ld190cmFuc3BvcnQgPSB0cmFu
+c3BvcnRfZzJoOwo+Pj4gKyAgICAgICAgICAgIH0gZWxzZSB7Cj4+PiAgICAgICAgICAgICAgICAg
+ICAgICAgbmV3X3RyYW5zcG9ydCA9IHRyYW5zcG9ydF9oMmc7Cj4+PiArICAgICAgICAgICAgfQo+
+Pj4gICAgICAgICAgICAgICBicmVhazsKPj4gVGhlIG9sZCBjb2RlIGhhZCBgIXRyYW5zcG9ydF9o
+MmdgIGluIHRoZSBzZWNvbmQgZWxzZS1pZiBjb25kaXRpb24gYXQgbGluZQo+PiAtNTgzLCB3aGlj
+aCByb3V0ZWQgYWxsIENJRCA+IFZNQUREUl9DSURfSE9TVCB0cmFmZmljIHRvIHRyYW5zcG9ydF9n
+Mmggd2hlbgo+PiBubyBIMkcgdHJhbnNwb3J0IHdhcyBsb2FkZWQuIFRoZSBuZXcgY29kZSByZW1v
+dmVzIHRoaXMgY2hlY2suCj4+Cj4+IFdoZW4gdHJhbnNwb3J0X2gyZyBpcyBOVUxMIChubyBIMkcg
+dHJhbnNwb3J0IGxvYWRlZCkgYW5kIHRoZSBHMkggdHJhbnNwb3J0Cj4+IGRvZXMgbm90IGltcGxl
+bWVudCBoYXNfcmVtb3RlX2NpZCAoYXMgaXMgdGhlIGNhc2UgZm9yIFZNQ0kgYW5kIEh5cGVyLVYK
+Pj4gdHJhbnNwb3J0cyksIHdoYXQgaGFwcGVucz8KPj4KPj4gVGhlIEcySCBmYWxsYmFjayBicmFu
+Y2ggYXQgbGluZSArNTk2IHJlcXVpcmVzCj4+IGB0cmFuc3BvcnRfZzJoLT5oYXNfcmVtb3RlX2Np
+ZGAgdG8gYmUgbm9uLU5VTEwuIElmIGl0J3MgTlVMTCwgdGhlCj4+IHNob3J0LWNpcmN1aXQgZXZh
+bHVhdGlvbiBza2lwcyB0aGlzIGJyYW5jaCBhbmQgZXhlY3V0ZXMgdGhlIGZpbmFsIGVsc2UgYXQK
+Pj4gbGluZSArNjAxLCBzZXR0aW5nIGBuZXdfdHJhbnNwb3J0ID0gdHJhbnNwb3J0X2gyZ2AgKHdo
+aWNoIGlzIE5VTEwpLAo+PiB1bHRpbWF0ZWx5IHJldHVybmluZyAtRU5PREVWLgo+Pgo+PiBUaGUg
+Y29tbWl0IG1lc3NhZ2UgZXhwbGljaXRseSBzdGF0ZXMgdGhlIGludGVudCB0byBwcmVzZXJ2ZSB0
+aGUgZXhpc3RpbmcKPj4gbm8tSDJHIGZhbGxiYWNrIGJlaGF2aW9yLiBEb2VzIHRoaXMgaW1wbGVt
+ZW50YXRpb24gYnJlYWsgaXQgZm9yIEcySAo+PiB0cmFuc3BvcnRzIHRoYXQgZG8gbm90IGltcGxl
+bWVudCB0aGUgbmV3IG9wdGlvbmFsIGhhc19yZW1vdGVfY2lkIGNhbGxiYWNrPwo+Pgo+PiBUaGlz
+IGFmZmVjdHMgVk1DSSBhbmQgSHlwZXItViBlbnZpcm9ubWVudHM6IHdoZW4gbm8gSDJHIHRyYW5z
+cG9ydCBpcwo+PiBsb2FkZWQsIENJRCA+IDIgY29ubmVjdGlvbnMgdGhhdCBwcmV2aW91c2x5IGZl
+bGwgYmFjayB0byBHMkggbm93IGdldAo+PiBFTk9ERVYuCj4gT3RoZXIgY29tbWVudHMgZnJvbSBB
+SSBsb29rZWQgbGlrZSBuaXQgcGlja2luZyB0byBtZSwgYnV0IHRoZSBhYm92ZSBvbmUKPiBsb29r
+cyByZWxldmFudC4gSSBmb3J3YXJkZWQgdmVyYmF0aW0gYWxsIHRoZSBmZWVkYmFjayBmb3IgY29t
+cGxldGVuZXNzLgoKClllcywgdGhpcyBpcyBvbiBwdXJwb3NlLiBJbnN0ZWFkIG9mIGhhdmluZyBi
+aS1tb2RhbGl0eSBiYXNlZCBvbiB3aGV0aGVyIAp0aGUgdmhvc3RfdnNvY2sga2VybmVsIG1vZHVs
+ZSBpcyBsb2FkZWQsIHdlIG5vdyBjbGVhcmx5IGRlZmluZSB0aGF0IHdpdGggCnRoZSBzeXNjdGwg
+b2ZmLCB5b3UgZ2V0IHRoZSBzYW1lIG1vZGUgdGhhdCAidmhvc3RfdnNvY2sgaXMgbG9hZGVkIiBn
+YXZlIAp5b3UgYmVmb3JlLiBUaGUgb2RkYmFsbCBjYXNlIG9mICJ2aG9zdF92c29jayBpcyBub3Qg
+bG9hZGVkIiB0aGF0IG1lYW50IApldmVyeXRoaW5nIGdvZXMgdG8gdGhlIEcySCB0cmFuc3BvcnQg
+YW5kIGNvbmZ1c2VkIHVzZXJzIGlzIHJlYWxseSBub3QgCndvcnRoIGtlZXBpbmcgSU1ITy4gSXQn
+cyByZXBsYWNlZCBieSB0aGUgYXV0by1mYWxsYmFjayBsb2dpYy4KCkJyb2FkY29tIGFsc28gbWVu
+dGlvbmVkIHRoYXQgRzJIIGZvciBDSUQgPiAyIGRvZXMgbm90IGV4aXN0LiBJSVVDIApIeXBlci1W
+IGFsc28gZG9lcyBub3Qgc3VwcG9ydCBDSUQgPiAyLgoKCkFsZXgKCgoKCkFtYXpvbiBXZWIgU2Vy
+dmljZXMgRGV2ZWxvcG1lbnQgQ2VudGVyIEdlcm1hbnkgR21iSApUYW1hcmEtRGFuei1TdHIuIDEz
+CjEwMjQzIEJlcmxpbgpHZXNjaGFlZnRzZnVlaHJ1bmc6IENocmlzdG9mIEhlbGxtaXMsIEFuZHJl
+YXMgU3RpZWdlcgpFaW5nZXRyYWdlbiBhbSBBbXRzZ2VyaWNodCBDaGFybG90dGVuYnVyZyB1bnRl
+ciBIUkIgMjU3NzY0IEIKU2l0ejogQmVybGluClVzdC1JRDogREUgMzY1IDUzOCA1OTcK
 
