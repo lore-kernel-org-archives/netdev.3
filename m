@@ -1,76 +1,102 @@
-Received: from mail.tipi-net.de (mail.tipi-net.de [194.13.80.246])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D000271468
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 23:21:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.13.80.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C885C363C51
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 23:38:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773184915; cv=none; b=LpgjTgDGUHJL19ztAa3DDbsDqFiBl0xefjvOvoueY9/O67uOnBhkLZzcwroX5PBJ4H2jzNOCudFK1MQ9QolhycKp2ZO0ScgLqh5rV9rIilj0ppHEeNuYxZ24jV/FUkIG0W7cV0r+wpptz44O64ijEq3VeF+v5jcLUF48pmrVbJg=
+	t=1773185925; cv=none; b=T4xePy1a92JhnCyPNSW9eVtZUPlcTJu1GyCwQQCS1NTlKTjowHmql4nAnOkQzoxFDRK8Ya7+2MzMZo7+e9jlOpU9zYrTk0nEMxahiYpFDlBsEZ03RfEOxJTUL5oXBfPk09SBZwd1c81Gke2Vul3QA/Foy9GlpnRvENkUkdHZf4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773184915; c=relaxed/simple;
-	bh=bvqzWANvPjz6RqUPpsIg3jA1o1pFcI/n2qiTmXiY2cA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqk9F4ZNzSG0+ucCIYXDiRZ8CAQUlGW4w/E8upwosevYQHM7/ryNkzEBBDM246T35B65QR+ZtTNF9zkLl0KUfwf9w9OroayxWB9SR3UgvH4PUIe1J4NYP7gixly+Sh8koNdmqJA6e/RCpj+B31XKGxzl5+E1bkg7R00mxBTCbqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de; spf=pass smtp.mailfrom=tipi-net.de; dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b=n6kW/ZRl; arc=none smtp.client-ip=194.13.80.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tipi-net.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tipi-net.de
+	s=arc-20240116; t=1773185925; c=relaxed/simple;
+	bh=ojiXvpP7i21cNwmHmFAHmwnvjKQ6gz9OdecP7pefKkc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=o1HlAcTtUNRI6bnexwB0OxXfmtK2Thd7wptBKArNzVV0fAf4nQqkqOLR30VoObmQJ7wd+1hmlpLimW3s/wOJX/FxW8DHPuw4MemFOZAaMHbG89jX61m+RxgnPnqTJnpxk1RGN4OkYA3jFn2d5NTkzNKWQj4FUv+dAKRlZjDbTrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gj6CyWLS; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tipi-net.de header.i=@tipi-net.de header.b="n6kW/ZRl"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 3B2F2A38F7;
-	Wed, 11 Mar 2026 00:21:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tipi-net.de; s=dkim;
-	t=1773184909; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=WwEWWzIpFNOFe1BaTV+lhWg06jRJbYhvQ1ALST3655o=;
-	b=n6kW/ZRl8Fb2IJlSXDtc6sCnqqaIUE9CA1/b0Ssq+6h6dgSw1/of2QVL00cPf8vEhHUrR/
-	OzsLei+IX99tpjSW2HdTGcyFRhw/O32fSVIT2P64Lm2IC0Inst3WZMW31pYgrojA0sjevR
-	B+FlY9Lx22wEogM+iqAKJwxmqYjrD0ggFerXCuKPtAn0p3180PmAGNIRJk2QQ3Lh9mLdjt
-	WOaTKcSRUSvBsKJCj7VEK7mnfj3g1COaYz7+JLudllcjEaxYl+sArz143Rie5RSaT4Q0Uh
-	T+woqsQ1BcHTvjIWTYGbMylWzX2TDORAVsTgEmSHFT+gRj0OOSV/4ojLD0Actw==
-From: Nicolai Buchwitz <nb@tipi-net.de>
-To: pvalerio@redhat.com
-Cc: netdev@vger.kernel.org,
-	Nicolai Buchwitz <nb@tipi-net.de>
-Subject: Re: [PATCH v4 7/8] net: macb: add XDP support for gem
-Date: Wed, 11 Mar 2026 00:21:19 +0100
-Message-ID: <20260310232119.1254817-1-nb@tipi-net.de>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260309144353.1213770-8-pvalerio@redhat.com>
-References: <20260309144353.1213770-1-pvalerio@redhat.com> <20260309144353.1213770-8-pvalerio@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gj6CyWLS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18A99C19423;
+	Tue, 10 Mar 2026 23:38:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1773185925;
+	bh=ojiXvpP7i21cNwmHmFAHmwnvjKQ6gz9OdecP7pefKkc=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=gj6CyWLSeQKZc82mFPhnCEowzLLoZ3bd9eE1mHkqjSfHxZPUpD17JglKfTAipTPmF
+	 iLtfP5zQwO67XIwtKZ+DXvrEycj/CTetpCmChUX08Im+MewEjlNPW4+wv4Hl6LEaOh
+	 VsvO1KZVmgCD7NHCkQ7rFojngetpDiPaMk8YdAliIEIQ4Ezc1+dkb6goSV52eSFB1G
+	 b7fio8dWxLGPEI0Qk53zvYGNGYosxh9dGWgD5V9QPfxkBNWphY39q+uazrPdsM/Vc6
+	 IroM0dPBznSg0S6flOLxT5P4fhHH5PR1ovxKx/2h8JyivhgEMi4qvSr8oEBz12iOsR
+	 S2EGDJ6nBF8qg==
+Date: Tue, 10 Mar 2026 16:38:44 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Davide Caratti <dcaratti@redhat.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Paolo Abeni
+ <pabeni@redhat.com>, Jamal Hadi Salim <jhs@mojatatu.com>, Jiri Pirko
+ <jiri@resnulli.us>, netdev@vger.kernel.org
+Subject: Re: [PATCH net-next 2/4] netdevsim: generalize taprio offload
+Message-ID: <20260310163844.58f66f93@kernel.org>
+In-Reply-To: <52ae15a7e42d7754487bb744c1a1718246d032ef.1773165520.git.dcaratti@redhat.com>
+References: <cover.1773165520.git.dcaratti@redhat.com>
+	<52ae15a7e42d7754487bb744c1a1718246d032ef.1773165520.git.dcaratti@redhat.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi Paolo,
+On Tue, 10 Mar 2026 19:06:29 +0100 Davide Caratti wrote:
+> -static void nsim_taprio_stats(struct tc_taprio_qopt_stats *stats)
+> -{
+> -	stats->window_drops = 0;
+> -	stats->tx_overruns = 0;
+> -}
+> +static LIST_HEAD(nsim_block_cb_list);
+>  
+> -static int nsim_setup_tc_taprio(struct net_device *dev,
+> -				struct tc_taprio_qopt_offload *offload)
+> -{
+> -	int err = 0;
+> -
+> -	switch (offload->cmd) {
+> -	case TAPRIO_CMD_REPLACE:
+> -	case TAPRIO_CMD_DESTROY:
+> -		break;
+> -	case TAPRIO_CMD_STATS:
+> -		nsim_taprio_stats(&offload->stats);
+> -		break;
+> -	default:
+> -		err = -EOPNOTSUPP;
+> -	}
+> +#define QDISC_OFFLOAD_HANDLERS(X)					\
+> +	X(taprio, tc_taprio_qopt_offload, cmd, TAPRIO_CMD_REPLACE,	\
+> +	  TAPRIO_CMD_DESTROY, TAPRIO_CMD_STATS, stats)			\
+>  
+> -	return err;
+> +#define QH(NAME, OL_TYPE, CMD_FLD, O_REPLACE, O_DESTROY, O_STATS, STATS_FLD) \
+> +static int handle_##NAME(struct net_device *dev, struct OL_TYPE *offload) \
+> +{									\
+> +	switch (offload->CMD_FLD) {					\
+> +	case O_REPLACE:							\
+> +	case O_DESTROY:							\
+> +		/* Do nothing, accept offload */			\
+> +		return 0;						\
+> +	case O_STATS:							\
+> +		/* Zero out the requested stats block */		\
+> +		memset(&offload->STATS_FLD, 0, sizeof(offload->STATS_FLD)); \
+> +		return 0;						\
+> +	default:							\
+> +		return -EOPNOTSUPP;					\
+> +	}								\
+>  }
+>  
+> -static LIST_HEAD(nsim_block_cb_list);
+> +QDISC_OFFLOAD_HANDLERS(QH)
+> +#undef QH
 
-Nice series! One issue I spotted that interacts with the EEE support
-that's currently in net-next:
-
-> +	spin_lock(&bp->lock);
-> +	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
-> +	spin_unlock(&bp->lock);
-
-macb_xdp_submit_frame() writes TSTART without first waking the MAC
-from LPI. The regular TX path in macb_start_xmit() calls
-macb_tx_lpi_wake(bp) before TSTART for this reason -- the GEM MAC
-has no auto-wake mechanism, so when TXLPIEN is set in NCR, TX is
-blocked and frames will sit in the FIFO indefinitely.
-
-This affects XDP_TX, XDP_REDIRECT and ndo_xdp_xmit. The fix should
-be straightforward:
-
-	spin_lock(&bp->lock);
-	macb_tx_lpi_wake(bp);
-	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(TSTART));
-	spin_unlock(&bp->lock);
-
-macb_tx_lpi_wake() is a no-op when EEE is not active, so there's no
-overhead in the non-EEE case.
-
-Thanks,
-Nicolai
+Please just type the code in. These sort of macros are too ugly to live
+in code I directly maintain, sorry.
+-- 
+pw-bot: cr
