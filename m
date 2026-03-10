@@ -1,44 +1,44 @@
 Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E166426461F;
-	Tue, 10 Mar 2026 08:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2802D0600;
+	Tue, 10 Mar 2026 08:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773132157; cv=pass; b=e2H3jiTuDrpAQq8/l9FEwyUgmv/DWMdmkvIF8PQnTPSVPikd2PBu3QogFUU4eCYxdgvQqr5jMQIQAxB35ee3ZfyENGLfP1FR8px/L38t3Dmpx6lYRIZDf48V7BBB+GcA/jCCm+3tEHTquBct/9j4wXaCMdDy2ya/KS9cjGVQ1Kc=
+	t=1773132173; cv=pass; b=guR2RWsw91hVJAeBfXJxetE3GPHvGuk31vEV6L5cHnp3j2FuJMnHVBjCOxlBw+hKyzJ8J+PJ1lVf+bltHpAV3Y/yjARviijbc0J7MSmt4wdNKML6p6Y8cLMWBF/J3G5yON52kvdgrqX9V+KpIGYd7kR2c4p93u7uLrDEnv2ubfo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773132157; c=relaxed/simple;
-	bh=i6GPRxBukKlemF/25P9vZMqH46GM2kRueFPk0VKiS8c=;
+	s=arc-20240116; t=1773132173; c=relaxed/simple;
+	bh=HtxmFOI8Q42PtnTwtZVDl7nJsFiJiS6vOTLzORmX4tY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZNveYVcEoDiseOqPO1OoWxOystcNPK504qQI3iG88cR5nAQG2N0vyKHqNMlTSPtKydTu0E9iZLr7CqwhUxxZdk4Xc3uqUluo62o9sX7lrKr1MZV/SVHmimP3TQsUIcGrmsbXbJg+9H8ngiX+Q5cMOR2lqbUBE+HvYD0cLjl5sZ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=dV8JkoDE; arc=pass smtp.client-ip=136.143.188.12
+	 In-Reply-To:To:Cc; b=Sa7Qdm/qMU+s4/PU0D5172WCMnUFUV2Dc+OhT0JXAsHRP7dlIjhGyZnMluSOKSgus59zZuuiSTvOSnGmmj4FKZwnajWOh/XldC5AjFouU4kZfOY7Z8Bf8rq9s8NH9zx3t8zSq9KmX9+vRKfr7uUTr1B3eTtDPOTuDO9T/oZZkPI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech; spf=pass smtp.mailfrom=pigmoral.tech; dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b=UmI90r6T; arc=pass smtp.client-ip=136.143.188.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pigmoral.tech
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pigmoral.tech
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="dV8JkoDE"
-ARC-Seal: i=1; a=rsa-sha256; t=1773132134; cv=none; 
+	dkim=pass (1024-bit key) header.d=pigmoral.tech header.i=junhui.liu@pigmoral.tech header.b="UmI90r6T"
+ARC-Seal: i=1; a=rsa-sha256; t=1773132154; cv=none; 
 	d=zohomail.com; s=zohoarc; 
-	b=SX+Z1GB3JI23xvhTEUP0fnf39lCuBpDLO8IEwmBdOoK8vfEczRm2NsVRWFDhY59OZuPIeTYXqVCdNczzWooMmLmqm5ZhgqIv7FP385PUcixao1EvWo1tazbmOxz8myqNoRWmLL8ML6i0h5IpxElwJLG2hgWkuHOKLvhHUxvb0pU=
+	b=V+aR1bP4IeGPJLBtcJLwcJlysBs0n1ykZpvKV/ehFvqoXqQ8y1z4MiWaqHAZ7mccn2Vnkma1mblpSFk62BANDALn9xXBcxLTQSTTxG3b0VlDGP/4Gz0vOMRLOj1kZZKGdY0bi09lm8mwrh04nmP+TNcO3KG5+sYQQg6+tZscPxQ=
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1773132134; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=kEUUb0MAPglLapjVVQDQ6Fo99l0liL610OV60OwkAOA=; 
-	b=B+EiAWgA6LYDGIayZUAn5VBvnKQFLEFZMA8H/i1HjO+6H6nAmKS+l/KeWqlxzX9r9scTMGUh8nhozNyTzkKA7lHvkBOUKTBZal4sMZLmq0Tay8F+hz7LlnBk8tMKPgEim3AyCtOihdbdQ5FbcITZOiYOvSdl1XUTXNC9P16WahA=
+	t=1773132154; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=FWjn+Xn9ibfzj3/eOMbbIcVWYw4TIKxFMrzDRcoxlL4=; 
+	b=j+QFzThm6DLFXs7XTju7ogPR/hmeS87drnHln5tcTvXiWH2CgYCH9fJ4v/Xg70A7yspQkQ0WCoduTE55BPilXG1GgKv4lrJWGmYWt3JaYT//5ZpZFHvb8pYgQk+/SNSDtAkz/gwOuN8NBFV4fLJIMx/9k4QyQXzX/+FwYkeCKM4=
 ARC-Authentication-Results: i=1; mx.zohomail.com;
 	dkim=pass  header.i=pigmoral.tech;
 	spf=pass  smtp.mailfrom=junhui.liu@pigmoral.tech;
 	dmarc=pass header.from=<junhui.liu@pigmoral.tech>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773132134;
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1773132154;
 	s=zmail; d=pigmoral.tech; i=junhui.liu@pigmoral.tech;
 	h=From:From:Date:Date:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Message-Id:References:In-Reply-To:To:To:Cc:Cc:Reply-To;
-	bh=kEUUb0MAPglLapjVVQDQ6Fo99l0liL610OV60OwkAOA=;
-	b=dV8JkoDEVGqdFQZKHAvmNFJMPgjGbLPQDZKAPdg7L0y9Wm0ul5n8m8/9vSXQ87Ec
-	wBzpAYJAizt6ZjBXIF/Dw1tlFe12X+l/vrHNQelvazOMJQQqmTvnViXu3OWQt7s8LUS
-	ot2Zaph2VEP7qtg44qt5YZWkhfrAciRYV+HFfT2Q=
-Received: by mx.zohomail.com with SMTPS id 1773132131427467.46458830798497;
-	Tue, 10 Mar 2026 01:42:11 -0700 (PDT)
+	bh=FWjn+Xn9ibfzj3/eOMbbIcVWYw4TIKxFMrzDRcoxlL4=;
+	b=UmI90r6T3QtnCKoPJcQYemdmlmQTOfNH+bFJ9S/iR0UxFH7pGP78gzgDvYZ0p4Tb
+	lJH0Bv8uFYsRlILZpx/l57ZjOwGlwrf8oxiDABTq6O2rKJt9QqzBqXqnJa2OE+abstF
+	NfYkTe3QvNyyk+IW3Ex3m6eciUGX3dQrjES2hIXE=
+Received: by mx.zohomail.com with SMTPS id 1773132151327259.6130910029673;
+	Tue, 10 Mar 2026 01:42:31 -0700 (PDT)
 From: Junhui Liu <junhui.liu@pigmoral.tech>
-Date: Tue, 10 Mar 2026 16:33:56 +0800
-Subject: [PATCH RFC 3/8] clk: sunxi-ng: a733: Add PRCM CCU
+Date: Tue, 10 Mar 2026 16:33:58 +0800
+Subject: [PATCH RFC 5/8] clk: sunxi-ng: a733: Add bus clocks support
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -47,7 +47,7 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260310-a733-clk-v1-3-36b4e9b24457@pigmoral.tech>
+Message-Id: <20260310-a733-clk-v1-5-36b4e9b24457@pigmoral.tech>
 References: <20260310-a733-clk-v1-0-36b4e9b24457@pigmoral.tech>
 In-Reply-To: <20260310-a733-clk-v1-0-36b4e9b24457@pigmoral.tech>
 To: Michael Turquette <mturquette@baylibre.com>, 
@@ -65,349 +65,206 @@ Cc: linux-clk@vger.kernel.org, devicetree@vger.kernel.org,
  linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
  netdev@vger.kernel.org
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1773132092; l=12305;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1773132092; l=6909;
  i=junhui.liu@pigmoral.tech; s=20251228; h=from:subject:message-id;
- bh=i6GPRxBukKlemF/25P9vZMqH46GM2kRueFPk0VKiS8c=;
- b=VDag9ZsHfEtyRbtHBdu/kr1fWH1tgKXP135UxKIcw8GAQTW+0AXuZl2ELXvYivu9Qd2UXbYYS
- m15R6bR63dRBrThPW64dtKsouZf/m9OiTNa/qhP9p3voAhhvAtMcmgN
+ bh=HtxmFOI8Q42PtnTwtZVDl7nJsFiJiS6vOTLzORmX4tY=;
+ b=fvujAYfom/CLtvUNwlxRK5z0pP279E297wEIHqzeUeANEuAlo78UAKS4ABEJUO8q8S3KQbO/9
+ dUPw3gsMPpRDLTHE9S9fSaIM56oaUpkbJ8/DyEbkDXwdXAnIV4K2yoj
 X-Developer-Key: i=junhui.liu@pigmoral.tech; a=ed25519;
  pk=3vU0qIPJAH8blXmLyqBhKx+nLOjcLwwYhZXelEpw7h4=
 X-ZohoMailClient: External
 
-Add support for the Power Reset Clock Management (PRCM) module found in
-the Allwinner A733 SoC. This clock controller manages the clock control
-and reset functions for device modules within the CPUS domain.
+Add the essential bus clocks in the Allwinner A733 CCU, including AHB,
+APB0, APB1, APB_UART, NSI, and MBUS. These buses are necessary for many
+other functional modules. Additionally clocks such as trace, gic and
+cpu_peri are also added as they fall within the register address range
+of the bus clocks, even though they are not strictly bus clocks.
 
-The PRCM module includes the management of three primary buses: r-ahb,
-r-apb0, and r-apb1. It also provides clocking for several key
-peripherals, such as R-UART, R-I2C, R-SPI, and the R-RISCV subsystem.
-Additionally, the reset lines for these modules are integrated.
+The MBUS clock is marked as critical to ensure the memory bus remains
+operational at all times. For the NSI and MBUS clocks, the hardware
+requires an update bit (bit 27) to be set so that the configuration
+takes effect and the updated parameters can be correctly read back.
 
 Signed-off-by: Junhui Liu <junhui.liu@pigmoral.tech>
 ---
- drivers/clk/sunxi-ng/Kconfig             |   5 +
- drivers/clk/sunxi-ng/Makefile            |   2 +
- drivers/clk/sunxi-ng/ccu-sun60i-a733-r.c | 276 +++++++++++++++++++++++++++++++
- 3 files changed, 283 insertions(+)
+ drivers/clk/sunxi-ng/ccu-sun60i-a733.c | 131 +++++++++++++++++++++++++++++++++
+ 1 file changed, 131 insertions(+)
 
-diff --git a/drivers/clk/sunxi-ng/Kconfig b/drivers/clk/sunxi-ng/Kconfig
-index 6af2d020e03e..202e793dc754 100644
---- a/drivers/clk/sunxi-ng/Kconfig
-+++ b/drivers/clk/sunxi-ng/Kconfig
-@@ -67,6 +67,11 @@ config SUN55I_A523_R_CCU
- 	default ARCH_SUNXI
- 	depends on ARM64 || COMPILE_TEST
+diff --git a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
+index cf819504c51f..68457813dbbb 100644
+--- a/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
++++ b/drivers/clk/sunxi-ng/ccu-sun60i-a733.c
+@@ -19,6 +19,7 @@
+ #include "ccu_common.h"
  
-+config SUN60I_A733_R_CCU
-+	tristate "Support for the Allwinner A733 PRCM CCU"
-+	default ARCH_SUNXI
-+	depends on ARM64 || COMPILE_TEST
-+
- config SUN4I_A10_CCU
- 	tristate "Support for the Allwinner A10/A20 CCU"
- 	default ARCH_SUNXI
-diff --git a/drivers/clk/sunxi-ng/Makefile b/drivers/clk/sunxi-ng/Makefile
-index a1c4087d7241..d3702bdb7a23 100644
---- a/drivers/clk/sunxi-ng/Makefile
-+++ b/drivers/clk/sunxi-ng/Makefile
-@@ -36,6 +36,7 @@ obj-$(CONFIG_SUN50I_H616_CCU)	+= sun50i-h616-ccu.o
- obj-$(CONFIG_SUN55I_A523_CCU)	+= sun55i-a523-ccu.o
- obj-$(CONFIG_SUN55I_A523_MCU_CCU)	+= sun55i-a523-mcu-ccu.o
- obj-$(CONFIG_SUN55I_A523_R_CCU)	+= sun55i-a523-r-ccu.o
-+obj-$(CONFIG_SUN60I_A733_R_CCU)	+= sun60i-a733-r-ccu.o
- obj-$(CONFIG_SUN4I_A10_CCU)	+= sun4i-a10-ccu.o
- obj-$(CONFIG_SUN5I_CCU)		+= sun5i-ccu.o
- obj-$(CONFIG_SUN6I_A31_CCU)	+= sun6i-a31-ccu.o
-@@ -64,6 +65,7 @@ sun50i-h616-ccu-y		+= ccu-sun50i-h616.o
- sun55i-a523-ccu-y		+= ccu-sun55i-a523.o
- sun55i-a523-mcu-ccu-y		+= ccu-sun55i-a523-mcu.o
- sun55i-a523-r-ccu-y		+= ccu-sun55i-a523-r.o
-+sun60i-a733-r-ccu-y		+= ccu-sun60i-a733-r.o
- sun4i-a10-ccu-y			+= ccu-sun4i-a10.o
- sun5i-ccu-y			+= ccu-sun5i.o
- sun6i-a31-ccu-y			+= ccu-sun6i-a31.o
-diff --git a/drivers/clk/sunxi-ng/ccu-sun60i-a733-r.c b/drivers/clk/sunxi-ng/ccu-sun60i-a733-r.c
-new file mode 100644
-index 000000000000..06679be1eaae
---- /dev/null
-+++ b/drivers/clk/sunxi-ng/ccu-sun60i-a733-r.c
-@@ -0,0 +1,276 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2023 rengaomin@allwinnertech.com
-+ * Copyright (C) 2026 Junhui Liu <junhui.liu@pigmoral.tech>
-+ * Based on the A523 CCU driver:
-+ *   Copyright (C) 2024 Arm Ltd.
-+ */
-+
-+#include <linux/clk-provider.h>
-+#include <linux/module.h>
-+#include <linux/platform_device.h>
-+
-+#include <dt-bindings/clock/sun60i-a733-r-ccu.h>
-+#include <dt-bindings/reset/sun60i-a733-r-ccu.h>
-+
-+#include "ccu_common.h"
-+#include "ccu_reset.h"
-+
-+#include "ccu_gate.h"
+ #include "ccu_div.h"
 +#include "ccu_mp.h"
+ #include "ccu_mult.h"
+ #include "ccu_nkmp.h"
+ #include "ccu_nm.h"
+@@ -65,6 +66,16 @@ static const struct clk_hw *pll_ref_hws[] = {
+ 	&pll_ref_clk.common.hw
+ };
+ 
++/*
++ * There is a non-software-configurable mux selecting between the DCXO and the
++ * PLL_REF in hardware, whose output is fed to the sys-24M clock. Although both
++ * sys-24M and pll-ref are fixed at 24 MHz, define a 1:1 fixed factor clock to
++ * provide logical separation:
++ * - pll-ref is dedicated to feeding other PLLs
++ * - sys-24M serves as reference clock for downstream functional modules
++ */
++static CLK_FIXED_FACTOR_HWS(sys_24M_clk, "sys-24M", pll_ref_hws, 1, 1, 0);
 +
-+static const struct clk_parent_data r_ahb_parents[] = {
-+	{ .fw_name = "hosc" },
+ #define SUN60I_A733_PLL_DDR_REG		0x020
+ static struct ccu_nkmp pll_ddr_clk = {
+ 	.enable		= BIT(27),
+@@ -371,6 +382,107 @@ static SUNXI_CCU_M_HWS(pll_de_4x_clk, "pll-de-4x", pll_de_hws,
+ static SUNXI_CCU_M_HWS(pll_de_3x_clk, "pll-de-3x", pll_de_hws,
+ 		       SUN60I_A733_PLL_DE_REG, 16, 3, 0);
+ 
++/**************************************************************************
++ *                           bus clocks                                   *
++ **************************************************************************/
++
++static const struct clk_parent_data ahb_apb_parents[] = {
++	{ .hw = &sys_24M_clk.hw },
 +	{ .fw_name = "losc" },
 +	{ .fw_name = "iosc" },
-+	{ .fw_name = "pll-periph0-200m" },
-+	{ .fw_name = "pll-periph0-300m" },
++	{ .hw = &pll_periph0_600M_clk.hw },
 +};
-+static SUNXI_CCU_M_DATA_WITH_MUX(r_ahb_clk, "r-ahb", r_ahb_parents, 0x000,
-+				 0, 5,	/* M */
-+				 24, 3,	/* mux */
++
++static SUNXI_CCU_M_DATA_WITH_MUX(ahb_clk, "ahb", ahb_apb_parents, 0x500,
++				 0, 5,		/* M */
++				 24, 2,		/* mux */
 +				 0);
 +
-+static const struct clk_parent_data r_apb_parents[] = {
-+	{ .fw_name = "hosc" },
++static SUNXI_CCU_M_DATA_WITH_MUX(apb0_clk, "apb0", ahb_apb_parents, 0x510,
++				 0, 5,		/* M */
++				 24, 2,		/* mux */
++				 0);
++
++static SUNXI_CCU_M_DATA_WITH_MUX(apb1_clk, "apb1", ahb_apb_parents, 0x518,
++				 0, 5,		/* M */
++				 24, 2,		/* mux */
++				 0);
++
++static const struct clk_parent_data apb_uart_parents[] = {
++	{ .hw = &sys_24M_clk.hw },
 +	{ .fw_name = "losc" },
 +	{ .fw_name = "iosc" },
-+	{ .fw_name = "pll-periph0-200m" },
-+	{ .fw_name = "sys-24m" },
++	{ .hw = &pll_periph0_600M_clk.hw },
++	{ .hw = &pll_periph0_480M_clk.common.hw },
 +};
-+
-+static SUNXI_CCU_M_DATA_WITH_MUX(r_apb0_clk, "r-apb0", r_apb_parents, 0x00c,
-+				 0, 5,	/* M */
-+				 24, 3,	/* mux */
++static SUNXI_CCU_M_DATA_WITH_MUX(apb_uart_clk, "apb-uart", apb_uart_parents, 0x538,
++				 0, 5,		/* M */
++				 24, 3,		/* mux */
 +				 0);
 +
-+static SUNXI_CCU_M_DATA_WITH_MUX(r_apb1_clk, "r-apb1", r_apb_parents, 0x010,
-+				 0, 5,	/* M */
-+				 24, 3,	/* mux */
-+				 0);
-+
-+static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(r_cpu_timer0, "r-timer0", r_apb_parents, 0x100,
-+				       0, 0,	/* no M */
-+				       1, 3,	/* P */
-+				       4, 3,	/* mux */
-+				       BIT(0),	/* gate */
-+				       0);
-+static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(r_cpu_timer1, "r-timer1", r_apb_parents, 0x104,
-+				       0, 0,	/* no M */
-+				       1, 3,	/* P */
-+				       4, 3,	/* mux */
-+				       BIT(0),	/* gate */
-+				       0);
-+static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(r_cpu_timer2, "r-timer2", r_apb_parents, 0x108,
-+				       0, 0,	/* no M */
-+				       1, 3,	/* P */
-+				       4, 3,	/* mux */
-+				       BIT(0),	/* gate */
-+				       0);
-+static SUNXI_CCU_MP_DATA_WITH_MUX_GATE(r_cpu_timer3, "r-timer3", r_apb_parents, 0x10c,
-+				       0, 0,	/* no M */
-+				       1, 3,	/* P */
-+				       4, 3,	/* mux */
-+				       BIT(0),	/* gate */
-+				       0);
-+
-+static SUNXI_CCU_GATE_HW(bus_r_timer_clk, "bus-r-timer", &r_ahb_clk.common.hw, 0x11c, BIT(0), 0);
-+static SUNXI_CCU_GATE_HW(bus_r_twd_clk, "bus-r-twd", &r_apb0_clk.common.hw, 0x12c, BIT(0), 0);
-+
-+static const struct clk_parent_data r_pwmctrl_parents[] = {
-+	{ .fw_name = "hosc" },
++static const struct clk_parent_data trace_parents[] = {
++	{ .hw = &sys_24M_clk.hw },
 +	{ .fw_name = "losc" },
 +	{ .fw_name = "iosc" },
-+	{ .fw_name = "sys-24m" },
++	{ .hw = &pll_periph0_300M_clk.hw },
++	{ .hw = &pll_periph0_400M_clk.hw },
 +};
-+static SUNXI_CCU_MUX_DATA_WITH_GATE(r_pwmctrl_clk, "r-pwmctrl", r_pwmctrl_parents, 0x130,
-+				    24, 2,	/* mux */
-+				    BIT(31),	/* gate */
-+				    0);
-+static SUNXI_CCU_GATE_HW(bus_r_pwmctrl_clk, "bus-r-pwmctrl",
-+			 &r_apb0_clk.common.hw, 0x13c, BIT(0), 0);
++static SUNXI_CCU_M_DATA_WITH_MUX_GATE(trace_clk, "trace", trace_parents, 0x540,
++				 0, 5,		/* M */
++				 24, 3,		/* mux */
++				 BIT(31),	/* gate */
++				 0);
 +
-+static const struct clk_parent_data r_spi_parents[] = {
-+	{ .fw_name = "hosc" },
-+	{ .fw_name = "pll-periph0-200m" },
-+	{ .fw_name = "pll-periph0-300m" },
-+	{ .fw_name = "pll-periph1-300m" },
-+	{ .fw_name = "sys-24m" },
-+};
-+static SUNXI_CCU_DUALDIV_MUX_GATE(r_spi_clk, "r-spi", r_spi_parents, 0x150,
-+				  0, 5,		/* M */
-+				  8, 5,		/* N */
-+				  24, 3,	/* mux */
-+				  BIT(31),	/* gate */
-+				  0);
-+static SUNXI_CCU_GATE_HW(bus_r_spi_clk, "bus-r-spi", &r_ahb_clk.common.hw, 0x15c, BIT(0), 0);
-+
-+static SUNXI_CCU_GATE_HW(bus_r_msgbox_clk, "bus-r-msgbox", &r_ahb_clk.common.hw, 0x17c, BIT(0), 0);
-+
-+static SUNXI_CCU_GATE_HW(bus_r_uart0_clk, "bus-r-uart0", &r_apb1_clk.common.hw, 0x18c, BIT(0), 0);
-+static SUNXI_CCU_GATE_HW(bus_r_uart1_clk, "bus-r-uart1", &r_apb1_clk.common.hw, 0x18c, BIT(1), 0);
-+
-+static SUNXI_CCU_GATE_HW(bus_r_i2c0_clk, "bus-r-i2c0", &r_apb1_clk.common.hw, 0x19c, BIT(0), 0);
-+static SUNXI_CCU_GATE_HW(bus_r_i2c1_clk, "bus-r-i2c1", &r_apb1_clk.common.hw, 0x19c, BIT(1), 0);
-+static SUNXI_CCU_GATE_HW(bus_r_i2c2_clk, "bus-r-i2c2", &r_apb1_clk.common.hw, 0x19c, BIT(2), 0);
-+
-+static SUNXI_CCU_GATE_HW(bus_r_ppu_clk, "bus-r-ppu", &r_apb0_clk.common.hw, 0x1ac, BIT(0), 0);
-+
-+static SUNXI_CCU_GATE_HW(bus_r_tzma_clk, "bus-r-tzma", &r_apb0_clk.common.hw, 0x1b0, BIT(0), 0);
-+static SUNXI_CCU_GATE_HW(bus_r_cpu_bist_clk, "bus-r-cpu-bist", &r_apb0_clk.common.hw,
-+			 0x1bc, BIT(0), 0);
-+
-+static const struct clk_parent_data r_ir_rx_parents[] = {
++static const struct clk_parent_data gic_cpu_peri_parents[] = {
++	{ .hw = &sys_24M_clk.hw },
 +	{ .fw_name = "losc" },
-+	{ .fw_name = "hosc" },
-+	{ .fw_name = "sys-24m" },
++	{ .hw = &pll_periph0_600M_clk.hw },
++	{ .hw = &pll_periph0_480M_clk.common.hw },
++	{ .hw = &pll_periph0_400M_clk.hw },
 +};
-+static SUNXI_CCU_M_DATA_WITH_MUX_GATE(r_ir_rx_clk, "r-ir-rx", r_ir_rx_parents, 0x1c0,
++static SUNXI_CCU_M_DATA_WITH_MUX_GATE(gic_clk, "gic", gic_cpu_peri_parents, 0x560,
 +				      0, 5,	/* M */
-+				      24, 2,	/* mux */
++				      24, 3,	/* mux */
 +				      BIT(31),	/* gate */
 +				      0);
-+static SUNXI_CCU_GATE_HW(bus_r_ir_rx_clk, "bus-r-ir-rx", &r_apb0_clk.common.hw, 0x1cc, BIT(0), 0);
 +
-+static SUNXI_CCU_GATE_HW(bus_r_rtc_clk, "bus-r-rtc", &r_ahb_clk.common.hw, 0x20c, BIT(0), 0);
++static SUNXI_CCU_M_DATA_WITH_MUX_GATE(cpu_peri_clk, "cpu-peri", gic_cpu_peri_parents, 0x568,
++				      0, 5,	/* M */
++				      24, 3,	/* mux */
++				      BIT(31),	/* gate */
++				      0);
 +
-+static const struct clk_parent_data r_riscv_parents[] = {
-+	{ .fw_name = "hosc" },
-+	{ .fw_name = "losc" },
-+	{ .fw_name = "iosc" },
++static const struct clk_parent_data nsi_parents[] = {
++	{ .hw = &sys_24M_clk.hw },
++	{ .hw = &pll_ddr_clk.common.hw },
++	{ .hw = &pll_periph0_800M_clk.common.hw },
++	{ .hw = &pll_periph0_600M_clk.hw },
++	{ .hw = &pll_periph0_480M_clk.common.hw },
++	{ .hw = &pll_de_3x_clk.common.hw },
 +};
-+static SUNXI_CCU_MUX_DATA_WITH_GATE(r_riscv_clk, "r-riscv", r_riscv_parents, 0x210,
-+				  24, 2,	/* mux */
-+				  BIT(31),	/* gate */
-+				  0);
-+static SUNXI_CCU_GATE_HW(bus_r_riscv_clk, "bus-r-riscv", &r_apb0_clk.common.hw,
-+			 0x21c, BIT(0), 0);
-+static SUNXI_CCU_GATE_HW(bus_r_riscv_cfg_clk, "bus-r-riscv-cfg", &r_apb0_clk.common.hw,
-+			 0x21c, BIT(1), 0);
++static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_FEAT(nsi_clk, "nsi", nsi_parents, 0x580,
++					    0, 5,	/* M */
++					    0, 0,	/* no P */
++					    24, 3,	/* mux */
++					    BIT(31),	/* gate */
++					    0, CCU_FEATURE_UPDATE_BIT);
 +
-+static SUNXI_CCU_GATE_HW(bus_r_cpucfg_clk, "bus-r-cpucfg", &r_apb0_clk.common.hw,
-+			 0x22c, BIT(0), CLK_IS_CRITICAL);
-+
-+static struct ccu_common *sun60i_a733_r_ccu_clks[] = {
-+	&r_ahb_clk.common,
-+	&r_apb0_clk.common,
-+	&r_apb1_clk.common,
-+	&r_cpu_timer0.common,
-+	&r_cpu_timer1.common,
-+	&r_cpu_timer2.common,
-+	&r_cpu_timer3.common,
-+	&bus_r_timer_clk.common,
-+	&bus_r_twd_clk.common,
-+	&r_pwmctrl_clk.common,
-+	&bus_r_pwmctrl_clk.common,
-+	&r_spi_clk.common,
-+	&bus_r_spi_clk.common,
-+	&bus_r_msgbox_clk.common,
-+	&bus_r_uart0_clk.common,
-+	&bus_r_uart1_clk.common,
-+	&bus_r_i2c0_clk.common,
-+	&bus_r_i2c1_clk.common,
-+	&bus_r_i2c2_clk.common,
-+	&bus_r_ppu_clk.common,
-+	&bus_r_tzma_clk.common,
-+	&bus_r_cpu_bist_clk.common,
-+	&r_ir_rx_clk.common,
-+	&bus_r_ir_rx_clk.common,
-+	&bus_r_rtc_clk.common,
-+	&r_riscv_clk.common,
-+	&bus_r_riscv_clk.common,
-+	&bus_r_riscv_cfg_clk.common,
-+	&bus_r_cpucfg_clk.common,
++static const struct clk_parent_data mbus_parents[] = {
++	{ .hw = &sys_24M_clk.hw },
++	{ .hw = &pll_periph1_600M_clk.hw },
++	{ .hw = &pll_ddr_clk.common.hw },
++	{ .hw = &pll_periph1_480M_clk.common.hw },
++	{ .hw = &pll_periph1_400M_clk.hw },
++	{ .hw = &pll_npu_clk.common.hw },
 +};
++static SUNXI_CCU_MP_DATA_WITH_MUX_GATE_FEAT(mbus_clk, "mbus", mbus_parents, 0x588,
++					    0, 5,	/* M */
++					    0, 0,	/* no P */
++					    24, 3,	/* mux */
++					    BIT(31),	/* gate */
++					    CLK_IS_CRITICAL,
++					    CCU_FEATURE_UPDATE_BIT);
 +
-+static struct clk_hw_onecell_data sun60i_a733_r_hw_clks = {
-+	.hws = {
-+		[CLK_R_AHB]		= &r_ahb_clk.common.hw,
-+		[CLK_R_APB0]		= &r_apb0_clk.common.hw,
-+		[CLK_R_APB1]		= &r_apb1_clk.common.hw,
-+		[CLK_R_TIMER0]		= &r_cpu_timer0.common.hw,
-+		[CLK_R_TIMER1]		= &r_cpu_timer1.common.hw,
-+		[CLK_R_TIMER2]		= &r_cpu_timer2.common.hw,
-+		[CLK_R_TIMER3]		= &r_cpu_timer3.common.hw,
-+		[CLK_BUS_R_TIMER]	= &bus_r_timer_clk.common.hw,
-+		[CLK_BUS_R_TWD]		= &bus_r_twd_clk.common.hw,
-+		[CLK_R_PWMCTRL]		= &r_pwmctrl_clk.common.hw,
-+		[CLK_BUS_R_PWMCTRL]	= &bus_r_pwmctrl_clk.common.hw,
-+		[CLK_R_SPI]		= &r_spi_clk.common.hw,
-+		[CLK_BUS_R_SPI]		= &bus_r_spi_clk.common.hw,
-+		[CLK_BUS_R_MSGBOX]	= &bus_r_msgbox_clk.common.hw,
-+		[CLK_BUS_R_UART0]	= &bus_r_uart0_clk.common.hw,
-+		[CLK_BUS_R_UART1]	= &bus_r_uart1_clk.common.hw,
-+		[CLK_BUS_R_I2C0]	= &bus_r_i2c0_clk.common.hw,
-+		[CLK_BUS_R_I2C1]	= &bus_r_i2c1_clk.common.hw,
-+		[CLK_BUS_R_I2C2]	= &bus_r_i2c2_clk.common.hw,
-+		[CLK_BUS_R_PPU]		= &bus_r_ppu_clk.common.hw,
-+		[CLK_BUS_R_TZMA]	= &bus_r_tzma_clk.common.hw,
-+		[CLK_BUS_R_CPU_BIST]	= &bus_r_cpu_bist_clk.common.hw,
-+		[CLK_R_IR_RX]		= &r_ir_rx_clk.common.hw,
-+		[CLK_BUS_R_IR_RX]	= &bus_r_ir_rx_clk.common.hw,
-+		[CLK_BUS_R_RTC]		= &bus_r_rtc_clk.common.hw,
-+		[CLK_R_RISCV]		= &r_riscv_clk.common.hw,
-+		[CLK_BUS_R_RISCV]	= &bus_r_riscv_clk.common.hw,
-+		[CLK_BUS_R_RISCV_CFG]	= &bus_r_riscv_cfg_clk.common.hw,
-+		[CLK_BUS_R_CPUCFG]	= &bus_r_cpucfg_clk.common.hw,
-+	},
-+	.num = CLK_BUS_R_CPUCFG + 1,
-+};
-+
-+static struct ccu_reset_map sun60i_a733_r_ccu_resets[] = {
-+	[RST_BUS_R_TIMER]	= { 0x11c, BIT(16) },
-+	[RST_BUS_R_PWM]		= { 0x13c, BIT(16) },
-+	[RST_BUS_R_SPI]		= { 0x15c, BIT(16) },
-+	[RST_BUS_R_MSGBOX]	= { 0x17c, BIT(16) },
-+	[RST_BUS_R_UART0]	= { 0x18c, BIT(16) },
-+	[RST_BUS_R_UART1]	= { 0x18c, BIT(17) },
-+	[RST_BUS_R_I2C0]	= { 0x19c, BIT(16) },
-+	[RST_BUS_R_I2C1]	= { 0x19c, BIT(17) },
-+	[RST_BUS_R_I2C2]	= { 0x19c, BIT(18) },
-+	[RST_BUS_R_IR_RX]	= { 0x1cc, BIT(16) },
-+	[RST_BUS_R_RTC]		= { 0x20c, BIT(16) },
-+	[RST_BUS_R_RISCV_CFG]	= { 0x21c, BIT(16) },
-+	[RST_BUS_R_CPUCFG]	= { 0x22c, BIT(16) },
-+};
-+
-+static const struct sunxi_ccu_desc sun60i_a733_r_ccu_desc = {
-+	.ccu_clks	= sun60i_a733_r_ccu_clks,
-+	.num_ccu_clks	= ARRAY_SIZE(sun60i_a733_r_ccu_clks),
-+
-+	.hw_clks	= &sun60i_a733_r_hw_clks,
-+
-+	.resets		= sun60i_a733_r_ccu_resets,
-+	.num_resets	= ARRAY_SIZE(sun60i_a733_r_ccu_resets),
-+};
-+
-+static int sun60i_a733_r_ccu_probe(struct platform_device *pdev)
-+{
-+	void __iomem *reg;
-+
-+	reg = devm_platform_ioremap_resource(pdev, 0);
-+	if (IS_ERR(reg))
-+		return PTR_ERR(reg);
-+
-+	return devm_sunxi_ccu_probe(&pdev->dev, reg, &sun60i_a733_r_ccu_desc);
-+}
-+
-+static const struct of_device_id sun60i_a733_r_ccu_ids[] = {
-+	{ .compatible = "allwinner,sun60i-a733-r-ccu" },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, sun60i_a733_r_ccu_ids);
-+
-+static struct platform_driver sun60i_a733_r_ccu_driver = {
-+	.probe	= sun60i_a733_r_ccu_probe,
-+	.driver	= {
-+		.name			= "sun60i-a733-r-ccu",
-+		.suppress_bind_attrs	= true,
-+		.of_match_table		= sun60i_a733_r_ccu_ids,
-+	},
-+};
-+module_platform_driver(sun60i_a733_r_ccu_driver);
-+
-+MODULE_IMPORT_NS("SUNXI_CCU");
-+MODULE_DESCRIPTION("Support for the Allwinner A733 PRCM CCU");
-+MODULE_LICENSE("GPL");
+ /*
+  * Contains all clocks that are controlled by a hardware register. They
+  * have a (sunxi) .common member, which needs to be initialised by the common
+@@ -407,11 +519,21 @@ static struct ccu_common *sun60i_a733_ccu_clks[] = {
+ 	&pll_de_clk.common,
+ 	&pll_de_4x_clk.common,
+ 	&pll_de_3x_clk.common,
++	&ahb_clk.common,
++	&apb0_clk.common,
++	&apb1_clk.common,
++	&apb_uart_clk.common,
++	&trace_clk.common,
++	&gic_clk.common,
++	&cpu_peri_clk.common,
++	&nsi_clk.common,
++	&mbus_clk.common,
+ };
+ 
+ static struct clk_hw_onecell_data sun60i_a733_hw_clks = {
+ 	.hws	= {
+ 		[CLK_PLL_REF]		= &pll_ref_clk.common.hw,
++		[CLK_SYS_24M]		= &sys_24M_clk.hw,
+ 		[CLK_PLL_DDR]		= &pll_ddr_clk.common.hw,
+ 		[CLK_PLL_PERIPH0_4X]	= &pll_periph0_4x_clk.common.hw,
+ 		[CLK_PLL_PERIPH0_2X]	= &pll_periph0_2x_clk.common.hw,
+@@ -453,6 +575,15 @@ static struct clk_hw_onecell_data sun60i_a733_hw_clks = {
+ 		[CLK_PLL_DE]		= &pll_de_clk.common.hw,
+ 		[CLK_PLL_DE_4X]		= &pll_de_4x_clk.common.hw,
+ 		[CLK_PLL_DE_3X]		= &pll_de_3x_clk.common.hw,
++		[CLK_AHB]		= &ahb_clk.common.hw,
++		[CLK_APB0]		= &apb0_clk.common.hw,
++		[CLK_APB1]		= &apb1_clk.common.hw,
++		[CLK_APB_UART]		= &apb_uart_clk.common.hw,
++		[CLK_TRACE]		= &trace_clk.common.hw,
++		[CLK_GIC]		= &gic_clk.common.hw,
++		[CLK_CPU_PERI]		= &cpu_peri_clk.common.hw,
++		[CLK_NSI]		= &nsi_clk.common.hw,
++		[CLK_MBUS]		= &mbus_clk.common.hw,
+ 	},
+ 	.num	= CLK_FANOUT3 + 1,
+ };
 
 -- 
 2.52.0
