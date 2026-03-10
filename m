@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761623AE1B5
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 03:00:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117E11917F1
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 03:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773111617; cv=none; b=DGgiXax2M4vgO5HgPEl+G9QdLItwFOjbQd09RFIk1ueIgn39oQXcrCxrGp1oGNvqHznvnB/FhN0Npj4fYU7TEHuP+3GAQ3rw17HkAF1POu1o96yT/3folmHHVGVc+KQncPD2RiwZDojlgS5IbOTrSXACpqYr6ASHwvNXv/9dpas=
+	t=1773111634; cv=none; b=MFgaL+qNSyZoSaR9f1woLlhhx6oAZn1hqJ/LM8hMRWurGl2ENg63tveznykcC26KXx0p18U2RjwTZwcytEXhM/ipVVDQA99M6Tmx2sKDcik7N3hv7lDw1bb0Ugza6pYsysw/wFFq9EULVlRX2ycSVjIcxz4KRvnuEsoii8OodrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773111617; c=relaxed/simple;
-	bh=+e2yBgyYxwj8sqWAw2NywShhZMa+o5Jo4d8QnO1DC+U=;
+	s=arc-20240116; t=1773111634; c=relaxed/simple;
+	bh=VSUwhH1hBaKFIVPCypOuL5S0XwPeD6ulUIg5BptrmTY=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=dpfkvS8b/jKk+lDD/VTZRRiYM5QlVE/utCPzg2h9kai1PNmKmCq+BEJaF5bLxT19VNsSTRSw0i02TwYZ5Uo7wSgam5UfOTIABRQpZ2VCjqGGGrvbsCAxw+CI6ZoKEp1Ex04FWF4iCDivCM+1oly225i48x3ZKtfq0g2nMcvgAtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CZ/WDWGo; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=YtWKDNK4Lujoir8Qu3xUM4tk+5s6RLL4w/D1Pxg3umPKtntTFJefLPknNwxfODEAKjh4AmakeMJ0R0kC0eiZkpz2ABneon2iLw+6KyBo23ZyzlCJQmQ4slFSAEjZby1UQnnaFUjqwlggH1F1sRLnyyB/zjFoVO3iY4pSFlp4VRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o77oV0ym; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CZ/WDWGo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24ABDC4CEF7;
-	Tue, 10 Mar 2026 03:00:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o77oV0ym"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8ACC4CEF7;
+	Tue, 10 Mar 2026 03:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773111617;
-	bh=+e2yBgyYxwj8sqWAw2NywShhZMa+o5Jo4d8QnO1DC+U=;
+	s=k20201202; t=1773111633;
+	bh=VSUwhH1hBaKFIVPCypOuL5S0XwPeD6ulUIg5BptrmTY=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=CZ/WDWGoHi/QwRAnHVRGhUVRyVQ54d/IfEtvG5z3ih7aezWGTo4372mdSpKcuCIsR
-	 uWIR1iIhkHlp7trn1grQI+vLgiIzO7vTrBEGEnl9lEBRiaWv4DB4Y5BibCaunPbd/F
-	 u3OvAWwjkQz/PKW7+nxzUYKJKM6y1DHv1dLx0bi1E4Ov44YlSdH62EEevpJy75sA2Q
-	 pYd35pefggHVMzF8kWnmMQEKcdM6pmsQMZvRcnOCdipGxaUjxaSMR1JUoj+qAKjS2r
-	 7FKCYHo3smGgJCTNfe/QcpEaH38bmVuO4pPYi7IvFUUORZJHZZ5ZOqrIVwsEZv6lA4
-	 aDLEw3Tk1lOHA==
+	b=o77oV0ymMg+21gSWAkR87WeRBhwiJ/7/X8c2th1iD+dFlZDLIxO/IdXrkH6lq9Hjd
+	 iHpB5SbgYakQamGuuniPiWR/3JZlics7y5aSu0t1t1e7lKbRjQXWR6eZI4bPy04KbW
+	 IMErCtQ5vFWEzPHQDIocgV4DuUD19dOyTEQWGopoMWeW3uSUqKcNP2j0J2IIl8n6OD
+	 +0a9Fd9s9XuSKeggxClMesNq0YCaa40BhvtLBBsv3Av3WVDVudomod8PcOgvm5tB/A
+	 CN9zRxf1aBTHmhcuTRs8ImerDRakiOJJlbHALTT2ZssXpc8xVwDpv7sBkb7Sx5T9gU
+	 QeRe2eXIuXFlQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7D08D3808200;
-	Tue, 10 Mar 2026 03:00:15 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 02D8E3808200;
+	Tue, 10 Mar 2026 03:00:32 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
@@ -37,39 +37,38 @@ List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] bnxt_en: Fix RSS table size check when changing
- ethtool
- channels
+Subject: Re: [PATCH net-next] net: stmmac: remove stmmac_dwmac4_get_mac_addr()
 From: patchwork-bot+netdevbpf@kernel.org
 Message-Id: 
- <177311161404.2039470.4258340536798777418.git-patchwork-notify@kernel.org>
-Date: Tue, 10 Mar 2026 03:00:14 +0000
-References: <20260306225854.3575672-1-michael.chan@broadcom.com>
-In-Reply-To: <20260306225854.3575672-1-michael.chan@broadcom.com>
-To: Michael Chan <michael.chan@broadcom.com>
-Cc: davem@davemloft.net, netdev@vger.kernel.org, edumazet@google.com,
- kuba@kernel.org, pabeni@redhat.com, andrew+netdev@lunn.ch,
- pavan.chebbi@broadcom.com, andrew.gospodarek@broadcom.com, bjorn@kernel.org
+ <177311163054.2039470.4262235716273124396.git-patchwork-notify@kernel.org>
+Date: Tue, 10 Mar 2026 03:00:30 +0000
+References: <E1vypJM-0000000CSiJ-48yO@rmk-PC.armlinux.org.uk>
+In-Reply-To: <E1vypJM-0000000CSiJ-48yO@rmk-PC.armlinux.org.uk>
+To: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Cc: andrew@lunn.ch, alexandre.torgue@foss.st.com, andrew+netdev@lunn.ch,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ linux-stm32@st-md-mailman.stormreply.com, netdev@vger.kernel.org,
+ pabeni@redhat.com
 
 Hello:
 
-This patch was applied to netdev/net.git (main)
+This patch was applied to netdev/net-next.git (main)
 by Jakub Kicinski <kuba@kernel.org>:
 
-On Fri,  6 Mar 2026 14:58:54 -0800 you wrote:
-> From: Pavan Chebbi <pavan.chebbi@broadcom.com>
+On Sat, 07 Mar 2026 10:55:08 +0000 you wrote:
+> stmmac_dwmac4_get_mac_addr() is identical to stmmac_get_mac_addr().
+> Remove stmmac_dwmac4_get_mac_addr() to avoid this code duplication.
 > 
-> When changing channels, the current check in bnxt_set_channels()
-> is not checking for non-default RSS contexts when the RSS table size
-> changes. The current check for IFF_RXFH_CONFIGURED is only sufficient
-> for the default RSS context. Expand the check to include the presence
-> of any non-default RSS contexts.
-> 
-> [...]
+> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> ---
+>  .../net/ethernet/stmicro/stmmac/dwmac4_core.c  |  4 ++--
+>  .../net/ethernet/stmicro/stmmac/dwmac4_lib.c   | 18 ------------------
+>  2 files changed, 2 insertions(+), 20 deletions(-)
 
 Here is the summary with links:
-  - [net] bnxt_en: Fix RSS table size check when changing ethtool channels
-    https://git.kernel.org/netdev/net/c/0d9a60a0618d
+  - [net-next] net: stmmac: remove stmmac_dwmac4_get_mac_addr()
+    https://git.kernel.org/netdev/net-next/c/c127d4087930
 
 You are awesome, thank you!
 -- 
