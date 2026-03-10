@@ -1,188 +1,170 @@
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7C82F83B7;
-	Tue, 10 Mar 2026 01:05:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD8B924679F
+	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 01:10:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773104736; cv=none; b=ptXyzC0pcDxOLfNKiDO/d03CuAk5vBW+lQPRY1Xd8ViJhKy20cuqyVKPRDhzcI+t68Qh62QmBcpGsHTpsbuhoeICL+5rQ7IMWDtLinJhAYdXVP7csRz4mT7hGo3oCuXNhkksK7g2rN3ToCc5ur6nLJQndtCW1jjQINbc8XlLaAw=
+	t=1773105051; cv=none; b=A0AbVqSsnE39crFSIQoy1V6jhUEYjHnCd+KC/VtxghroiJteLPmlkGpzKo+Y2qZLp2xYp9X3id8bgEGLfcJH6wIPb4XJdPWba07vbhBh0YhlALfaH1RdI+KHLoD2Qg4o6Cf87eha1msh2WSuV0XaM5pyx7yi9IdRb4mEx8DaB6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773104736; c=relaxed/simple;
-	bh=cvjmKAKhEq1h4g27mLn1x/IfFjZtptKlo2+AsMA7DS0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Wx9gYQjBEVODUmfzYzVLpGsCGvO+E2Z1wY2nXz14StVsUp67THupW2VA2ZHWLEpLBdaBwaW0jdNSz2QWJR2VVYGlp7E3T8cpR3jo4EAxEANmt+JdjppVpTkIed4QIfh/iWFu6fK9KImdfpT6+QjRTmEb2xErVxSW1yYS+Q0egZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=CbM3ef6Z; arc=none smtp.client-ip=113.46.200.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1773105051; c=relaxed/simple;
+	bh=KTWcRe1uEdBcdV3dSWnFRmmQqhKcuVtF4VSklt2P5Ak=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ekwt8hMzzTJn5uuKY+MyvqVDRg8nRr7DIdkNwj3Uqis/gD+jNvwq8uUxDaqeTcpcx9DeeLUo8LyQTdjCeAh49r+s+ZbBNUiDEhQPevRxQh7SZYoDkjl9YvHgl216EB+p8inks9jj26M1CKyXHJz+/7zUVT9JkpZLfUToQsJU1wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cqifN+fw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=KZXjQUJc; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="CbM3ef6Z"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=MFA1o2Bv6mBXv9NnXLBlEOC0J1Am8EXz+TrfM0cRERo=;
-	b=CbM3ef6ZVrXSdKqOIhEYrjVDz/6YTv54D8jw4h+wqcg3Hec27M4Kp157Dnrs3fitpfVZZQ1W4
-	bycR/I4Iws5r3qasZY5AYgxnIU01x0yXPcctf0/6LdJqmA/FAUNWNzDo8mfh/1nTKQV3vwa2rPN
-	p2WzLqvV51v2x95WodYLVEg=
-Received: from mail.maildlp.com (unknown [172.19.163.200])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4fVFt25Q6zz1cyT6;
-	Tue, 10 Mar 2026 09:00:26 +0800 (CST)
-Received: from kwepemf100013.china.huawei.com (unknown [7.202.181.12])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0CAFD4055B;
-	Tue, 10 Mar 2026 09:05:21 +0800 (CST)
-Received: from DESKTOP-62GVMTR.china.huawei.com (10.174.189.124) by
- kwepemf100013.china.huawei.com (7.202.181.12) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Tue, 10 Mar 2026 09:05:19 +0800
-From: Fan Gong <gongfan1@huawei.com>
-To: Fan Gong <gongfan1@huawei.com>, Zhu Yikai <zhuyikai1@h-partners.com>,
-	<netdev@vger.kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
-	<pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Andrew Lunn
-	<andrew+netdev@lunn.ch>
-CC: <linux-kernel@vger.kernel.org>, <linux-doc@vger.kernel.org>, luosifu
-	<luosifu@huawei.com>, Xin Guo <guoxin09@huawei.com>, Zhou Shuai
-	<zhoushuai28@huawei.com>, Wu Like <wulike1@huawei.com>, Shi Jing
-	<shijing34@huawei.com>, Zheng Jiezhen <zhengjiezhen@h-partners.com>
-Subject: [PATCH net-next v03 8/9] hinic3: Add PF/VF capability parsing and parameter validation
-Date: Tue, 10 Mar 2026 09:04:56 +0800
-Message-ID: <ac4733f2c0409bb778b4624ed1632dcb2ded6632.1773062356.git.zhuyikai1@h-partners.com>
-X-Mailer: git-send-email 2.51.0.windows.1
-In-Reply-To: <cover.1773062356.git.zhuyikai1@h-partners.com>
-References: <cover.1773062356.git.zhuyikai1@h-partners.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cqifN+fw";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="KZXjQUJc"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1773105048;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KTWcRe1uEdBcdV3dSWnFRmmQqhKcuVtF4VSklt2P5Ak=;
+	b=cqifN+fwey2uuNWJKbAsGYioMmWLpfgqH57gQOr1PYOkFE6fvblDYnVtz2nA7OVLf1W5TS
+	5pnW1Z3YgQuM3ev3hHmotlAOQD0KB6EBjEz6R/FzU7qYJ9QbgfKpGOIpLLDEWZBdlN8365
+	Dn+ceKEbOO7qeSVvEZKcY0r5oYDHTSI=
+Received: from mail-qv1-f71.google.com (mail-qv1-f71.google.com
+ [209.85.219.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-43-AtN1VGREOuKWpwv1eo7UWQ-1; Mon, 09 Mar 2026 21:10:47 -0400
+X-MC-Unique: AtN1VGREOuKWpwv1eo7UWQ-1
+X-Mimecast-MFC-AGG-ID: AtN1VGREOuKWpwv1eo7UWQ_1773105047
+Received: by mail-qv1-f71.google.com with SMTP id 6a1803df08f44-89a304f24a2so263085766d6.0
+        for <netdev@vger.kernel.org>; Mon, 09 Mar 2026 18:10:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1773105047; x=1773709847; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=KTWcRe1uEdBcdV3dSWnFRmmQqhKcuVtF4VSklt2P5Ak=;
+        b=KZXjQUJcjgAHJDetunx4foLlQCvQaZjkAubtSBZ/Xb6KdQx4sq/PHRRIHywxiIxORW
+         kmi06fwVKuHqaA9W/mKKq5aDE298F0xRx1jBVAIOPtonDJqxxOCgiJNB13hldcEaVOrm
+         h56qVNjQ6gzSZlAZqnc7hysf2SqW/rIG9ndGme9t5ntz8eTwHOMTsKJvd1G+cRMZxpQK
+         xudYNP77IsqOvCdBjdxrCUTBLL9NJUgi+Ns7pPdt9d2j7rMjZHPdlFepp6WDlrDs3LK3
+         4E/ikrvQoHYUU7/kHmubyH7T4tCdzqSsudkcXCyM5dxFgrxQPcNqnM7bTe6y+tnArFn7
+         Ej/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773105047; x=1773709847;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KTWcRe1uEdBcdV3dSWnFRmmQqhKcuVtF4VSklt2P5Ak=;
+        b=ICjazeENuzHi43SOV3VoSC+uOCNm6Ja7TAp/sCY9dm6EtWiuLvpQKucgffIShuJxsR
+         CNQ4sR0ujneQSci8Uuy9Jar1fFLCeSnOK6m5zEMFR/DI0k1HiaY8A1Qjzw6i/7uR7dq5
+         Eyro0p93o93O7+zdoyJVoTSp8GHugGxzCWHpmhTqc/YdPutfCyxy6YupEr6lG7bHHwh7
+         M5WD82GNK9woPwvXP2lCxtVWJQUd3xlr5vdMiRdezdXGP0Xbf2FYQj4z78swP1W4g7+w
+         oaUsoWVkofjYwrE1hzBvOAjtbnXSL66UJG5IxrMfbIJTe1HnJ3xVEpR6TAKeW4uzof5V
+         YYXA==
+X-Forwarded-Encrypted: i=1; AJvYcCUaErEmvUBkDwAwU4DPlwNds4ti9e5n2zfoJqGo6EuYo5gmxtaw1F5FxO+Iy6BzqpBPYR384kA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzNQpEvgkCc2uDwoXBtPl1z9bvfTXi4dQFHCNhbOjv1MKILNGs
+	J190vHElNkdTNWCU/7t8pzsjqwEBhWxMez5NycVMln/f9d06DPJYwfBzOvh4JjQ7s7bEu7bZEix
+	uIlWJllnyoe4qwsIpag11ZZpfB2qzqrO1ADXg5bMF8GZZyE/J6Wpk4S+lHQ==
+X-Gm-Gg: ATEYQzyhI1hT3pyqH7yIZEdUizCQgRtFaQ/Ipy2ggsqyxAMdq8xSkjNjATxwl7ABVsM
+	juFrziiHCrtHHPBY41W/A8OjHWP07vIqNDg9OKh7sLfgRMcacnRWOIO5J/bCElFKiXEFVs+CWfa
+	bjq6TP5DsCfJuGkRDsQEHNNvcqvmPRnIpmnRmbCjI9UAvPbcv6uApVwBgcYQYRjXiFzjgHH9F5m
+	TadUo3wa57vFXx5Fe+CPAkVDkYGp2tXFJ0cBii5a4msclInVVuDsUKK1/209gIbcFzzkvK5nJDk
+	MbXQsQTgAOEbKWrcUT97Z2lZndF4S0d3+k44iZqroYWgL/5fO3EfIDSmEyufyzK4bD+/0hd2G3j
+	qQbC/RIjcPb5mpN+GNXfh09Fex50lkjvT0ZfG5thO6dOWTr6/aeMfq4eaowJDihS3E4jhjKykmn
+	uSNu5uVVvU7pVayQ==
+X-Received: by 2002:a05:6214:d8b:b0:89a:258:c1d1 with SMTP id 6a1803df08f44-89a30ad1c78mr197365186d6.42.1773105047111;
+        Mon, 09 Mar 2026 18:10:47 -0700 (PDT)
+X-Received: by 2002:a05:6214:d8b:b0:89a:258:c1d1 with SMTP id 6a1803df08f44-89a30ad1c78mr197364236d6.42.1773105046575;
+        Mon, 09 Mar 2026 18:10:46 -0700 (PDT)
+Received: from thinkpad-p1.localdomain (pool-174-112-193-187.cpe.net.cable.rogers.com. [174.112.193.187])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a57a18252sm10681656d6.10.2026.03.09.18.10.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Mar 2026 18:10:45 -0700 (PDT)
+Message-ID: <4728554b256f016d9a5f3e019ed831387b0f059b.camel@redhat.com>
+Subject: Re: [PATCH net-next v7 0/7] net: stmmac: qcom-ethqos: add support
+ for SCMI power domains
+From: Radu Rendec <rrendec@redhat.com>
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Bjorn
+ Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>,
+ Rob Herring <robh@kernel.org>,  Krzysztof Kozlowski	 <krzk+dt@kernel.org>,
+ Conor Dooley <conor+dt@kernel.org>, Richard Cochran	
+ <richardcochran@gmail.com>, Andrew Lunn <andrew+netdev@lunn.ch>, "David S.
+ Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub
+ Kicinski <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, Maxime
+ Coquelin <mcoquelin.stm32@gmail.com>, Alexandre Torgue	
+ <alexandre.torgue@foss.st.com>, Vinod Koul <vkoul@kernel.org>, Giuseppe
+ Cavallaro <peppe.cavallaro@st.com>, Jose Abreu <joabreu@synopsys.com>,
+ Chen-Yu Tsai <wens@kernel.org>,  Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Samuel Holland <samuel@sholland.org>, Matthew Gerlach	
+ <matthew.gerlach@altera.com>, Neil Armstrong <neil.armstrong@linaro.org>, 
+ Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>,
+ Martin Blumenstingl	 <martin.blumenstingl@googlemail.com>, Keguang Zhang
+ <keguang.zhang@gmail.com>,  Shawn Guo <shawnguo@kernel.org>, Sascha Hauer
+ <s.hauer@pengutronix.de>, Pengutronix Kernel Team	 <kernel@pengutronix.de>,
+ Fabio Estevam <festevam@gmail.com>, Jan Petrous	 <jan.petrous@oss.nxp.com>,
+ s32@nxp.com, Romain Gantois	 <romain.gantois@bootlin.com>, Lad Prabhakar	
+ <prabhakar.mahadev-lad.rj@bp.renesas.com>, Heiko Stuebner
+ <heiko@sntech.de>,  Chen Wang <unicorn_wang@outlook.com>, Inochi Amaoto
+ <inochiama@gmail.com>, Emil Renner Berthing	 <kernel@esmil.dk>, Minda Chen
+ <minda.chen@starfivetech.com>, Drew Fustini	 <fustini@kernel.org>, Guo Ren
+ <guoren@kernel.org>, Fu Wei <wefu@redhat.com>,  Nobuhiro Iwamatsu
+ <nobuhiro.iwamatsu.x90@mail.toshiba>, Geert Uytterhoeven
+ <geert+renesas@glider.be>, Magnus Damm	 <magnus.damm@gmail.com>, Maxime
+ Ripard <mripard@kernel.org>, Shuang Liang	
+ <liangshuang@eswincomputing.com>, Zhi Li <lizhi2@eswincomputing.com>, 
+ Shangjuan Wei <weishangjuan@eswincomputing.com>, "G. Jaya Kumaran"
+ <vineetha.g.jaya.kumaran@intel.com>,  Clark Wang <xiaoning.wang@nxp.com>,
+ Linux Team <linux-imx@nxp.com>, Frank Li <Frank.Li@nxp.com>, David Wu	
+ <david.wu@rock-chips.com>, Samin Guo <samin.guo@starfivetech.com>, 
+ Christophe Roullier <christophe.roullier@foss.st.com>, Swathi K S
+ <swathi.ks@samsung.com>, Bartosz Golaszewski	 <brgl@kernel.org>, Mohd Ayaan
+ Anwar <mohd.anwar@oss.qualcomm.com>
+Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
+	linux-stm32@st-md-mailman.stormreply.com,
+ linux-arm-kernel@lists.infradead.org,  Drew Fustini
+ <dfustini@tenstorrent.com>, linux-sunxi@lists.linux.dev,
+ linux-amlogic@lists.infradead.org, 	linux-mips@vger.kernel.org,
+ imx@lists.linux.dev, 	linux-renesas-soc@vger.kernel.org,
+ linux-rockchip@lists.infradead.org, 	sophgo@lists.linux.dev,
+ linux-riscv@lists.infradead.org, Bartosz Golaszewski	
+ <bartosz.golaszewski@linaro.org>, Krzysztof Kozlowski	
+ <krzysztof.kozlowski@oss.qualcomm.com>, Konrad Dybcio	
+ <konrad.dybcio@oss.qualcomm.com>
+Date: Mon, 09 Mar 2026 21:10:41 -0400
+In-Reply-To: <20260306-qcom-sa8255p-emac-v7-0-d6a3013094b7@oss.qualcomm.com>
+References: <20260306-qcom-sa8255p-emac-v7-0-d6a3013094b7@oss.qualcomm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemf100013.china.huawei.com (7.202.181.12)
 
-  Add the ability to parse PF and VF capabilities and validate
-related parameters(SQ & RQ).
+On Fri, 2026-03-06 at 16:46 +0100, Bartosz Golaszewski wrote:
+> Add support for the firmware-managed variant of the DesignWare MAC on
+> the sa8255p platform. This series contains new DT bindings and driver
+> changes required to support the MAC in the STMMAC driver.
+>=20
+> It also reorganizes the ethqos code quite a bit to make the introduction
+> of power domains into the driver a bit easier on the eye.
+>=20
+> The DTS changes will go in separately.
 
-Co-developed-by: Zhu Yikai <zhuyikai1@h-partners.com>
-Signed-off-by: Zhu Yikai <zhuyikai1@h-partners.com>
-Signed-off-by: Fan Gong <gongfan1@huawei.com>
----
- .../ethernet/huawei/hinic3/hinic3_hw_cfg.c    | 47 +++++++++++++++++--
- .../ethernet/huawei/hinic3/hinic3_hw_cfg.h    |  8 ++++
- 2 files changed, 52 insertions(+), 3 deletions(-)
+As Jakub pointed out, it conflicts with the latest net-next, but does
+apply cleanly on the latest mainline, so I tested there (on a SA8775P
+board running the SCMI firmware).
 
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
-index ca60cf4b6282..2dfa4fb39627 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.c
-@@ -17,6 +17,17 @@ static void hinic3_parse_pub_res_cap(struct hinic3_hwdev *hwdev,
- {
- 	cap->port_id = dev_cap->port_id;
- 	cap->supp_svcs_bitmap = dev_cap->svc_cap_en;
-+
-+	cap->cos_valid_bitmap = dev_cap->valid_cos_bitmap;
-+	cap->port_cos_valid_bitmap = dev_cap->port_cos_valid_bitmap;
-+
-+	if (type != HINIC3_FUNC_TYPE_VF)
-+		cap->max_vf = dev_cap->max_vf;
-+	else
-+		cap->max_vf = 0;
-+
-+	dev_dbg(hwdev->dev, "Port_id: 0x%x, cos_bitmap: 0x%x, Max_vf: 0x%x\n",
-+		cap->port_id, cap->cos_valid_bitmap, cap->max_vf);
- }
- 
- static void hinic3_parse_l2nic_res_cap(struct hinic3_hwdev *hwdev,
-@@ -28,6 +39,13 @@ static void hinic3_parse_l2nic_res_cap(struct hinic3_hwdev *hwdev,
- 
- 	nic_svc_cap->max_sqs = min(dev_cap->nic_max_sq_id + 1,
- 				   HINIC3_CFG_MAX_QP);
-+
-+	nic_svc_cap->max_rqs = min(dev_cap->nic_max_rq_id + 1,
-+				   HINIC3_CFG_MAX_QP);
-+	nic_svc_cap->default_num_queues = dev_cap->nic_default_num_queues;
-+
-+	dev_dbg(hwdev->dev, "L2nic resource capbility, max_sqs: 0x%x, max_rqs: 0x%x\n",
-+		nic_svc_cap->max_sqs, nic_svc_cap->max_rqs);
- }
- 
- static void hinic3_parse_dev_cap(struct hinic3_hwdev *hwdev,
-@@ -44,8 +62,8 @@ static void hinic3_parse_dev_cap(struct hinic3_hwdev *hwdev,
- 		hinic3_parse_l2nic_res_cap(hwdev, cap, dev_cap, type);
- }
- 
--static int get_cap_from_fw(struct hinic3_hwdev *hwdev,
--			   enum hinic3_func_type type)
-+static int hinic3_get_cap_from_fw(struct hinic3_hwdev *hwdev,
-+				  enum hinic3_func_type type)
- {
- 	struct mgmt_msg_params msg_params = {};
- 	struct cfg_cmd_dev_cap dev_cap = {};
-@@ -69,6 +87,29 @@ static int get_cap_from_fw(struct hinic3_hwdev *hwdev,
- 	return 0;
- }
- 
-+static int hinic3_get_dev_cap(struct hinic3_hwdev *hwdev)
-+{
-+	enum hinic3_func_type type = HINIC3_FUNC_TYPE(hwdev);
-+	int err;
-+
-+	switch (type) {
-+	case HINIC3_FUNC_TYPE_PF:
-+	case HINIC3_FUNC_TYPE_VF:
-+		err = hinic3_get_cap_from_fw(hwdev, type);
-+		if (err) {
-+			dev_err(hwdev->dev, "Failed to get FW capability\n");
-+			return err;
-+		}
-+		break;
-+	default:
-+		dev_err(hwdev->dev, "Unsupported PCI Function type: %d\n",
-+			type);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+}
-+
- static int hinic3_init_irq_info(struct hinic3_hwdev *hwdev)
- {
- 	struct hinic3_cfg_mgmt_info *cfg_mgmt = hwdev->cfg_mgmt;
-@@ -215,7 +256,7 @@ void hinic3_free_irq(struct hinic3_hwdev *hwdev, u32 irq_id)
- 
- int hinic3_init_capability(struct hinic3_hwdev *hwdev)
- {
--	return get_cap_from_fw(hwdev, HINIC3_FUNC_TYPE_VF);
-+	return hinic3_get_dev_cap(hwdev);
- }
- 
- bool hinic3_support_nic(struct hinic3_hwdev *hwdev)
-diff --git a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h
-index 58806199bf54..361c0b6a70f0 100644
---- a/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h
-+++ b/drivers/net/ethernet/huawei/hinic3/hinic3_hw_cfg.h
-@@ -26,6 +26,8 @@ struct hinic3_irq_info {
- 
- struct hinic3_nic_service_cap {
- 	u16 max_sqs;
-+	u16 max_rqs;
-+	u16 default_num_queues;
- };
- 
- /* Device capabilities */
-@@ -34,6 +36,12 @@ struct hinic3_dev_cap {
- 	u16                           supp_svcs_bitmap;
- 	/* Physical port */
- 	u8                            port_id;
-+
-+	u8                            cos_valid_bitmap;
-+	u8                            port_cos_valid_bitmap;
-+	/* max number of VFs that PF supports */
-+	u16                           max_vf;
-+
- 	struct hinic3_nic_service_cap nic_svc_cap;
- };
- 
--- 
-2.43.0
+The two NICs come up as expected. Basic iperf3 throughput and jitter
+tests look good. I would offer a Tested-by tag and a summary of the
+test results, but I think it's a moot point because you'll have to
+submit a new version anyway.
+
+I will wait for you to rebase, then test again and come back with the
+results.
+
+--=20
+Best regards,
+Radu
 
