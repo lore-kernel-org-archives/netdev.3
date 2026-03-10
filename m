@@ -1,40 +1,39 @@
-Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8822C32C937
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 05:28:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDB9F4FA;
+	Tue, 10 Mar 2026 05:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773120510; cv=none; b=j9QoNmtlb8LtpzEU5ojNMM1cYuJZ7XE221KHUZATiSrm23Vf2e+KvdOvqT7cFtFt3PUtV/Cz4/QrK1XHiE+e7Q4wzZKsfn0CHwO6dlolkxrYEMYJPpeNdgskt90z30NWIOQvnjVk+IUBc8C1C71cICKgVNrFIIQd84rQI3xd/W8=
+	t=1773121749; cv=none; b=iIEMLwghc9DgIBxFve426h/oaf+HE0/mR3GvCBafEmOlqVFKY981fqFRwLOcZg5KXMkUt7iZWZbjPf/Q4JdG2rLA+1Ec0SihAxU7+iWkkAXLmaAve18hiKDCPxGYB26mE3B8wk1lopkLSrByBaOJlcMxJUk29Js+RSJNMAKIajA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773120510; c=relaxed/simple;
-	bh=Y1xe48gAzTPbSXKbiH5g7POS/gt4IjnNnFPdB4Qf+fU=;
+	s=arc-20240116; t=1773121749; c=relaxed/simple;
+	bh=inTJ4RiT66cwtILyiP+TRzObVIOKVcmZTSglIFd+BPk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xf2Y7SIUTrqGvvp5WgtZCm9JVZPfel2TDeszOmYyfG1vYAyIkViKG2qRgfETux1OYt86a0lOg7Ns40aaytO6c4JNRX90N4HQ4fKRc7Xx/MMA1d6iI3DiGAvDNhCjn3Kn29+EkkNf7yFPCtg+kwPRM/nDELKeDsfjnHOwNUaJSDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=PKHy1fqh; arc=none smtp.client-ip=91.218.175.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=dCOs40r6pCHo+FTD6kWblOmtwvkPnvQLILNIHl0fJA41EQLenc595zUbmF2wbrbN0P7kqEpvGY8U5NJYYE32JRvUZxn3QULmEm3uuDNyAx+7wXV0d0RuoUB0lGpJDXp/zPkkX5Cj1Eetc3YFc6iyaqfjnHaaOVcdRB4M/oiibmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=tXC2RbA5; arc=none smtp.client-ip=115.124.30.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="PKHy1fqh"
-Date: Tue, 10 Mar 2026 13:28:12 +0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1773120506;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4og8BexH1PjXrbQtBKxnHmDZU0IU91AS9lelhsT6RsI=;
-	b=PKHy1fqhxkBJSnzHaJFjhxA9xNZG0q/w6Qs+krT7vdroeDHrxP12f2XunN0F8r+P+LWstP
-	7tek/qgYRSR/2xUTO4wK075xgqinqYTjlgggb6Bi9lsDafqBtDUyHMhYd318uaif11UzhM
-	URz/B4h/uljh+6vvGtXWUF+8OXaXhYw=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
-To: Wesley Atwell <atwellwea@gmail.com>
-Cc: edumazet@google.com, ncardwell@google.com, davem@davemloft.net, 
-	dsahern@kernel.org, kuba@kernel.org, pabeni@redhat.com, kuniyu@google.com, 
-	horms@kernel.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] tcp: use WRITE_ONCE() for tsoffset in tcp_v6_connect()
-Message-ID: <3bd4mwncqnakjtcgibi4ygaseemsheittzsdsriu7i5el3nbk2@3h7ul3264vqf>
-References: <20260310012604.145661-1-atwellwea@gmail.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="tXC2RbA5"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1773121742; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=KgERvp3Zd6HKrE1IZEhDd8xhZg6rlFUC5JACfjNthtc=;
+	b=tXC2RbA5qfAjWgaSR1gdqqvx1dQuZ6+F0HIclP9+UwVtxTiSJGZ9/1lzNtKi8K4ucCmV7rVV80NGbTrNLDj31jW6gs9ajIqiSXOEZbnoyhGBPheEways33eHqkhpf32/ArzFXvftyHYqF5bwydFJrlwcoFbiALIOosY70WVAAK0=
+Received: from localhost(mailfrom:alibuda@linux.alibaba.com fp:SMTPD_---0X-eu4DB_1773121741 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 10 Mar 2026 13:49:02 +0800
+Date: Tue, 10 Mar 2026 13:49:01 +0800
+From: "D. Wythe" <alibuda@linux.alibaba.com    >
+To: sawara04.o@gmail.com
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, horms@kernel.org, corbet@lwn.net,
+	skhan@linuxfoundation.org, netdev@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: Re: [PATCH v2 net-next 0/2] smc-sysctl formatting and missing entries
+Message-ID: <20260310054901.GA40558@j66a10360.sqa.eu95>
+References: <20260309124541.22723-1-sawara04.o@gmail.com>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
@@ -43,43 +42,36 @@ List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260310012604.145661-1-atwellwea@gmail.com>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20260309124541.22723-1-sawara04.o@gmail.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On Mon, Mar 09, 2026 at 07:26:04PM +0800, Wesley Atwell wrote:
-> Commit dd23c9f1e8d5 ("tcp: annotate data-races around tp->tsoffset")
-> updated do_tcp_getsockopt() to read tp->tsoffset with READ_ONCE()
-> for TCP_TIMESTAMP because another CPU may change it concurrently.
+On Mon, Mar 09, 2026 at 09:45:38PM +0900, sawara04.o@gmail.com wrote:
+> From: Kyoji Ogasawara <sawara04.o@gmail.com>
 > 
-> tcp_v6_connect() still stores tp->tsoffset with a plain write. That
-> store runs under lock_sock() via inet_stream_connect(), but the socket
-> lock does not serialize a concurrent getsockopt(TCP_TIMESTAMP) from
-> another task sharing the socket.
+> Hi,
 > 
-> Use WRITE_ONCE() for the tcp_v6_connect() store so the connect-time
-> writer matches the lockless TCP_TIMESTAMP reader. This also makes the
-> IPv6 path consistent with tcp_v4_connect().
+> this series updates SMC sysctl documentation in two small steps.
 > 
-> Signed-off-by: Wesley Atwell <atwellwea@gmail.com>
+> - patch 1 fixes indentation in the smcr_buf_type section
+> - patch 2 documents missing sysctl parameters limit_smc_hs and hs_ctrl,
+>   including values/defaults and hs_ctrl usage notes
+> 
+> No code or runtime behavior is changed.
+> 
+> Thanks,
+> Kyoji
+> 
+> Kyoji Ogasawara (2):
+>   net/smc: fix indentation in smcr_buf_type section
+>   net/smc: Add documentation for limit_smc_hs and hs_ctrl
+> 
+>  Documentation/networking/smc-sysctl.rst | 43 ++++++++++++++++++++-----
+>  1 file changed, 35 insertions(+), 8 deletions(-)
+> 
+> -- 
+> 2.43.0
+>
 
-I think maintainer will apply it to net-next tree after noticing Eric's comment..
+Thanks for your contribution. The whole series looks good to me.
 
-Reviewed-by: Jiayuan Chen <jiayuan.chen@shopee.com>
-
-> ---
->  net/ipv6/tcp_ipv6.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-> index bb09d5ccf599..ba7cd7d3d4da 100644
-> --- a/net/ipv6/tcp_ipv6.c
-> +++ b/net/ipv6/tcp_ipv6.c
-> @@ -325,7 +325,7 @@ static int tcp_v6_connect(struct sock *sk, struct sockaddr_unsized *uaddr,
->  						 inet->inet_dport);
->  		if (!tp->write_seq)
->  			WRITE_ONCE(tp->write_seq, st.seq);
-> -		tp->tsoffset = st.ts_off;
-> +		WRITE_ONCE(tp->tsoffset, st.ts_off);
->  	}
->  
->  	if (tcp_fastopen_defer_connect(sk, &err))
+Reviewed-by: D. Wythe<alibuda@linux.alibaba.com>
