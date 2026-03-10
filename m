@@ -1,118 +1,138 @@
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675BF30ACEE
-	for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 15:08:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79FF83090FF;
+	Tue, 10 Mar 2026 15:13:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773155338; cv=none; b=lSU/qwgMDz/IVw9yNseN7+7EbVXTdavdvzrCVdeDBg6ShjP7Miy4hIsXOoys3V8QHidtuTPXxIAd9yZv//Ie0E0xFmSzwErrXi4xv4PEli5iepEzE3aR8cmRC6jSCsgZdyb93YOz6NGTQ1R4LZ4ARCCIBeLL6H+QfE2RJL5mQ3I=
+	t=1773155603; cv=none; b=X6V9lzE8E7fG/F6LkFdTaB5T8YBM+A1T3CAec+UzUZdxxLwSTxvj84xnhC8CJCW7SLCDSfzlYE1FHQTWxrLLI41xasf9k0XH6Pf2Q8pvHaIO/ZHMg47VLwlsEqNv5ZzXy6dLNgyfvNsZ4P7z+CPsl6DzMCZ3O6fD/8AxlNVNgRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773155338; c=relaxed/simple;
-	bh=ZgD5MStF+xn1LMDxFS9O0OmQhAa39GXxTWNAUPE4uJk=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=mtHxvp2HP7cGG0fTMy/UTV4rhf0qgdI7FHDa5CD59w2f/rlHZdO3RLiXemtbFsx2trQFAEqWQvND8gmabIXyyIzLvtr0nsps1XcQ6JmgQqqOtHWTKsM9YsOxr6pZHLPwpyDAj21x+Lzs8CPa0AOJjjTmNKPJfdk2xLPwl5cqkTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=neVo7mcU; arc=none smtp.client-ip=209.85.222.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1773155603; c=relaxed/simple;
+	bh=HcwXFR0BZU04L0TE60XkSDcUfw0nCPDh63QT4nmIVHA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hWnPRG9AUhwX743PIwwLuqs0Ejj3RZfWSjNYs/k9LLBNIVK91qHz4xz9ym902BUGg/KVoiq/Da11LiMiFQ2bAb++uZPx6zvkoVwq0E/3u8arh2RUyh6SzpO4zQtnkRltYbkPgpsmMvSONZ3fNHKDXnK1b3/J7lm+Ys7hbN5xIOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F0H6UNSH; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="neVo7mcU"
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8cb5c9ba82bso2070870085a.2
-        for <netdev@vger.kernel.org>; Tue, 10 Mar 2026 08:08:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1773155336; x=1773760136; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=I+M+DGV2i7zEMUOxNzxG/k9Qg2/2QSO8OMx1QsElDM4=;
-        b=neVo7mcUDeXZ/Et/YUC/Ns8nEkhOcF9Nt9h6awZ0eUFf/a/bx4IfApmkOUPb08n36j
-         RObjWE4w5SGkMJUbW6bUFmKjlO3MklzrWlWMAh/BbLjrh83yRbpUEC9dbzYiejfM0NhO
-         aIBPrwq8Zxa/WzNQkdtbARFWaG6vVcReTTyxAdYFSSs07nsNue74shsl0Uhm1bm9+2tM
-         yuTfBPWDpGZxHV3Tn6ZVvTmAK8SKiKEQ0eZWeR8Epf6tkHB18TZgEtDSibJhZpooTpe/
-         C4pLUTlZ+WyDUTFtM6krmSk+TNtlonQ6CMyWyFz9IAJnKLuUZ0IFZNNDeBRwpc9o/dRY
-         wG1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1773155336; x=1773760136;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:subject:from:user-agent:mime-version:date:message-id:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=I+M+DGV2i7zEMUOxNzxG/k9Qg2/2QSO8OMx1QsElDM4=;
-        b=f2GWM1s33YMYp77GJMVEuq2y16uqrBkNg3LdroqnSpbpWFMEu2XZ7m5xd6Mv1AHfhc
-         yklxrg6I49xlhtWZuCQZdhRvxo6pJZTt4U0Sv+QoKG4Q5nnLAXDpC59D4IstyVaMHpSy
-         WxO73B5auAg0R4DKkWjfEFVc78w6apYBx1cE2W6nV+iReUo0jjbTcP0iJqSH8tyvfLiq
-         Lm+PnuKtszMnzAHc/9jD/iCSXmjEL8hsY4tWNUaLPuQaLKcAnJMX+zeA9lWZy6Ax5N8Y
-         ou23sLvKXVicBYIlEOpltBTVlIuqMnC24FCtQoGx8hzzvW/iApnF1JV82wvtmIgbe9Ti
-         vwAA==
-X-Forwarded-Encrypted: i=1; AJvYcCXi76w2cj+Jre62Iu6W8zQH5d5fH118JlqNmz467uUydiiUhE9KutcjGKHM7LPBrwV11kyxKbI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzKJuhI3l+rqHxYtHw6prUxx+FDG1ZLHQBYHvp9CyLnRU8b3M0t
-	cqlA4Gz8YvyywUq+QQ6EdZeOttuzAyTk/Fymp7/Uw/cPhUOw6kJXv9QLYsqv3g==
-X-Gm-Gg: ATEYQzx+ue67lTs2PwQKe+vphj7I1ZCAOdZ0bLEe4oicWj5LtXN9QMSOzRH7jdIJYKE
-	f/0cxNH/iUhxkXMsqdpJCAuO29rujoLUriCjRB7iCWRo94udvrFannt/PHtAW6jfq13uSzwI2h9
-	td4o5kkpGINWV9z/bTdlkhDwzeTCzTF+jEfCs6u+mQgNLgzaJsoCDAsCN9lVQ+r3N5zYL2kNgK/
-	GcNkk00J2vtOrxsBGMPe81J0UojmBOF/9aZ0hGbNXQruRd5k8nB0G9A7CIyVXkDLLbp/33wPwTN
-	ocgPXm87sq677B29nCfkWrQ4xJFgS/6E7M83qNL43NXCxBh83tNjkMDQ0cDXTmQyxTjJekA2YCD
-	k74FU4IBUaWwp5bEQF52GIa0EoBooAeAfPa9eqlr42e4sraeFIp9BcbEcYA4dCztqCKret3ddi5
-	v5IjkFnAObV7uOveuFMmrdQxIwSgIlFR2usF2A6vWRo2QT4k863G21wD2MNxbwfNw4HA==
-X-Received: by 2002:ac8:5787:0:b0:509:2579:283e with SMTP id d75a77b69052e-50925792a15mr52058371cf.28.1773155336179;
-        Tue, 10 Mar 2026 08:08:56 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1145:4:3c5c:86e0:6cbd:e5d8? ([2620:10d:c091:500::1:4b47])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89a57c2c482sm20643576d6.42.2026.03.10.08.08.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 10 Mar 2026 08:08:55 -0700 (PDT)
-Message-ID: <9b7c4207-1bdd-4d56-a3fe-ea3e25e62559@gmail.com>
-Date: Tue, 10 Mar 2026 11:08:52 -0400
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F0H6UNSH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1773155603; x=1804691603;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HcwXFR0BZU04L0TE60XkSDcUfw0nCPDh63QT4nmIVHA=;
+  b=F0H6UNSHwAvdwIk4kJ1xPLmnbKBhUAKP4mEbDo5IQf4Ydk/ILskrYzv8
+   ZPpYUvj5WIrYgNV715DM2lQSfvORbmVo+VjtMZVizbFAbqgUtBt8hkSCh
+   7iRKrhwxsRXljeN+T1iM++ZG4/bQ2/8ndK+IEGA/3qAXbkGsI4McbiYoW
+   l+g6iF2jhhOrRFBlEW2dtovISsvl/S3PBQWda3XJ7bqqtqt7wT1cAcar7
+   /N6oUOzxmc86QCvr0a+bj4uCd/qozGrGkOPtYYF84kdR8KR6vcYHQdqx0
+   4h1vx+00dNXUrdzD1S67WKv1Rtk+v9Y5P2hq745woEzrJU0CfjR6ZF8AY
+   A==;
+X-CSE-ConnectionGUID: zLlNmiBUT9G9QDSEJCxGEw==
+X-CSE-MsgGUID: IpaqhsuYRkmCvTs/v0QOSQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11725"; a="73905999"
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
+   d="scan'208";a="73905999"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2026 08:13:18 -0700
+X-CSE-ConnectionGUID: cs0c6UAnT/afM9ucvlIxLA==
+X-CSE-MsgGUID: 1H3Lok8/QfmhajCA3HQBiw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,112,1770624000"; 
+   d="scan'208";a="220327038"
+Received: from lkp-server01.sh.intel.com (HELO 434e41ea3c86) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 10 Mar 2026 08:13:13 -0700
+Received: from kbuild by 434e41ea3c86 with local (Exim 4.98.2)
+	(envelope-from <lkp@intel.com>)
+	id 1vzylh-0000000027E-3rVa;
+	Tue, 10 Mar 2026 15:13:09 +0000
+Date: Tue, 10 Mar 2026 23:12:43 +0800
+From: kernel test robot <lkp@intel.com>
+To: Daniel Golle <daniel@makrotopia.org>, Andrew Lunn <andrew@lunn.ch>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, netdev@vger.kernel.org,
+	Frank Wunderlich <frankwu@gmx.de>, Chad Monroe <chad@monroe.io>,
+	Cezary Wilmanski <cezary.wilmanski@adtran.com>,
+	Liang Xu <lxu@maxlinear.com>,
+	"Benny (Ying-Tsan) Weng" <yweng@maxlinear.com>,
+	Jose Maria Verdu Munoz <jverdu@maxlinear.com>,
+	Avinash Jayaraman <ajayaraman@maxlinear.com>,
+	John Crispin <john@phrozen.org>
+Subject: Re: [PATCH net-next v2 2/2] net: dsa: mxl862xx: implement bridge
+ offloading
+Message-ID: <202603102342.ymeQ8hLm-lkp@intel.com>
+References: <f6fb8c9c6d38585c0efce72b3d1aebe923277d5a.1773102942.git.daniel@makrotopia.org>
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Daniel Zahka <daniel.zahka@gmail.com>
-Subject: Re: [PATCH v3 net-next 2/5] psp: add new netlink cmd for dev-assoc
- and dev-disassoc
-To: Wei Wang <weibunny.kernel@gmail.com>, netdev@vger.kernel.org,
- Jakub Kicinski <kuba@kernel.org>,
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
- David Wei <dw@davidwei.uk>, Andrew Lunn <andrew+netdev@lunn.ch>,
- "David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>
-Cc: Wei Wang <weibunny@fb.com>
-References: <20260309183454.2872967-1-weibunny.kernel@gmail.com>
- <20260309183454.2872967-3-weibunny.kernel@gmail.com>
-Content-Language: en-US
-In-Reply-To: <20260309183454.2872967-3-weibunny.kernel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f6fb8c9c6d38585c0efce72b3d1aebe923277d5a.1773102942.git.daniel@makrotopia.org>
+
+Hi Daniel,
+
+kernel test robot noticed the following build errors:
+
+[auto build test ERROR on net-next/main]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Daniel-Golle/dsa-tag_mxl862xx-set-dsa_default_offload_fwd_mark/20260310-084425
+base:   net-next/main
+patch link:    https://lore.kernel.org/r/f6fb8c9c6d38585c0efce72b3d1aebe923277d5a.1773102942.git.daniel%40makrotopia.org
+patch subject: [PATCH net-next v2 2/2] net: dsa: mxl862xx: implement bridge offloading
+config: sh-randconfig-001-20260310 (https://download.01.org/0day-ci/archive/20260310/202603102342.ymeQ8hLm-lkp@intel.com/config)
+compiler: sh4-linux-gcc (GCC) 15.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260310/202603102342.ymeQ8hLm-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202603102342.ymeQ8hLm-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   drivers/net/dsa/mxl862xx/mxl862xx.c: In function 'mxl862xx_port_fdb_add':
+>> drivers/net/dsa/mxl862xx/mxl862xx.c:655:9: error: implicit declaration of function 'ether_addr_copy'; did you mean 'inetpeer_addr_cmp'? [-Wimplicit-function-declaration]
+     655 |         ether_addr_copy(param.mac, addr);
+         |         ^~~~~~~~~~~~~~~
+         |         inetpeer_addr_cmp
 
 
+vim +655 drivers/net/dsa/mxl862xx/mxl862xx.c
 
-On 3/9/26 2:34 PM, Wei Wang wrote:
-> @@ -131,8 +263,7 @@ void psp_nl_notify_dev(struct psp_dev *psd, u32 cmd)
->   	struct genl_info info;
->   	struct sk_buff *ntf;
->   
-> -	if (!genl_has_listeners(&psp_nl_family, dev_net(psd->main_netdev),
-> -				PSP_NLGRP_MGMT))
-> +	if (!psp_nl_has_listeners_any_ns(psd, PSP_NLGRP_MGMT))
->   		return;
->   
->   	ntf = genlmsg_new(GENLMSG_DEFAULT_SIZE, GFP_KERNEL);
-> @@ -140,13 +271,13 @@ void psp_nl_notify_dev(struct psp_dev *psd, u32 cmd)
->   		return;
->   
->   	genl_info_init_ntf(&info, &psp_nl_family, cmd);
-> +	genl_info_net_set(&info, dev_net(psd->main_netdev));
->   	if (psp_nl_dev_fill(psd, ntf, &info)) {
->   		nlmsg_free(ntf);
->   		return;
->   	}
->   
-> -	genlmsg_multicast_netns(&psp_nl_family, dev_net(psd->main_netdev), ntf,
-> -				0, PSP_NLGRP_MGMT, GFP_KERNEL);
-> +	psp_nl_multicast_all_ns(psd, ntf, PSP_NLGRP_MGMT);
->   }
+   640	
+   641	static int mxl862xx_port_fdb_add(struct dsa_switch *ds, int port,
+   642					 const unsigned char *addr, u16 vid, struct dsa_db db)
+   643	{
+   644		struct mxl862xx_mac_table_add param = { };
+   645		int fid = mxl862xx_get_fid(ds, db), ret;
+   646		struct mxl862xx_priv *priv = ds->priv;
+   647	
+   648		if (fid < 0)
+   649			return fid;
+   650	
+   651		param.port_id = cpu_to_le32(port);
+   652		param.static_entry = true;
+   653		param.fid = cpu_to_le16(fid);
+   654		param.tci = cpu_to_le16(FIELD_PREP(MXL862XX_TCI_VLAN_ID, vid));
+ > 655		ether_addr_copy(param.mac, addr);
+   656	
+   657		ret = MXL862XX_API_WRITE(priv, MXL862XX_MAC_TABLEENTRYADD, param);
+   658		if (ret)
+   659			dev_err(ds->dev, "failed to add FDB entry on port %d\n", port);
+   660	
+   661		return ret;
+   662	}
+   663	
 
-I don't think this will work correctly when there are listeners outside 
-of dev_net(psd->main_netdev). psp_nl_dev_fill() will prepare a 
-notification containing the unfiltered assoc list, but then that will be 
-broadcast out to all listeners regardless of netns, so those listeners 
-will see peer nsids relative to a different netns.
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
