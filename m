@@ -1,162 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f174.google.com (mail-qt1-f174.google.com [209.85.160.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800523563FB;
-	Wed, 11 Mar 2026 08:21:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1773217268; cv=none; b=QlzqWGzyNiN5sysB+E24MPa5Gl3Wl2pcD9Mfsnma/TRbgwxe5H0e/eg5MW8nrBhzlu5nSo9FfP61wXodD5h+1pRC5j4QCCpvvREEk00eAsTG3YGAAXojLI9Ha3UWb8SjCoaiDpWhefxNb8+l0XQoMGhDC9vb6R7ZnTbi3PNYULE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1773217268; c=relaxed/simple;
-	bh=yoy2hHq0mlIZwc0kYZnvrnYvl8EpuwxGFzXVdSAUfiw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KKs+GW6YYIlcnCHOkN9ph5Hx5+pODwYbeeVIHbNVh0468N1vWInXZaEDSTpZNMK3IbymxQqJeN3yzDBUINjCnNmVV6FcmvqEpSLP69a/IlzFlPq75mGKVMqxzTgj1aOg+I9dPDqxne9HY9I50GD17WFD3Acr0djsnkGUyOSf7Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cTf0RnmN; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA4222126C
+	for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 08:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.174
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1773217502; cv=pass; b=bmMkxb47ZYYCk/FZczSNx/tUgqRQfEMgjv2UTHqXc4v41vZwId2co+GII+CUajpYNOiLNwBxzyWjF5nzVLwfk0p85XhqaNRuqp+U+6jNqQ+BXThFF/D/GwqtOZelLUsc9cVeN8Uu2GRuPk78TE4JQCtPFwG/JtTwUWhgL9/M+NY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1773217502; c=relaxed/simple;
+	bh=bh6U49eCiCBbIvwEknUz7QsV9A4ESrZsJ/9XWVh19mc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jNEumYcwlzL4VPBuQROmkPRQWY1dg9QrSdW5S+gyL4nb/TGeHFHAxoTsWz3gw5zsZbVL27K0ADUTVn/9JQJdDyxFP3GUSNHCAP1AZ6cz+wVUYaSZV5tt9SI1j16+n+J1m+jm2LOgJHZlVTiHp8oZ8rEOKG7XJRZJNb3u+G/9U2U=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pexCnYug; arc=pass smtp.client-ip=209.85.160.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cTf0RnmN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA254C4CEF7;
-	Wed, 11 Mar 2026 08:20:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1773217268;
-	bh=yoy2hHq0mlIZwc0kYZnvrnYvl8EpuwxGFzXVdSAUfiw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=cTf0RnmNDiJr/UaiIX68oNKNUMmk3eM19LeszXExEX5Januo2/40zQJ3oD4JOmvzx
-	 Q2n49GaHe97cnoonNB/JqiqpsNtHzHtLAbRLdZ6sYh863gpXifwvSx7D1dp/3sEvyZ
-	 Cz19hxeRzhZi2oJc0Wnk73bnhQ7wwkYnI2D4U6uKEPrCI8z4dlK812Jb3PAW7M303a
-	 WltTUBSwdhPNJlyqR7bREVbYU/2K/pT8iN+GLG9OQeR/gH5ZpF6uteOR+s/mrsI5qK
-	 e+MW9EWzf5J2dJKuPFzc/B0cyPzhCcoIHrW0iFi+aZAA5GHI2ocqzHfiCCK5nJI5En
-	 3rzrG7ue05B/Q==
-Message-ID: <9cd2794a-63c6-4645-b42b-10412899865f@kernel.org>
-Date: Wed, 11 Mar 2026 09:20:53 +0100
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pexCnYug"
+Received: by mail-qt1-f174.google.com with SMTP id d75a77b69052e-5091d71aa11so8559621cf.1
+        for <netdev@vger.kernel.org>; Wed, 11 Mar 2026 01:24:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1773217499; cv=none;
+        d=google.com; s=arc-20240605;
+        b=k1GutKHqCpUvVKcPdnl0z2MQmjtPp085WIydD7bI9bBS7VKKQ/yUgSHHBcIUhzT6Nb
+         eYhGt8xwRWeJxptSu0+AfyJTndNsAyq6v9SguJlkk1lYH5U6QwTR9IzebwCuYr1SxI31
+         xkUOhG0XYrX9gJYUgZaGc22x6OPg7u2mXewVyq+1BWHdBBCSkkObYpr2KbD4TIie93pJ
+         3LjKBWvKBdUVll+ihBDKAVQbDMqW8OyjLpQKNGgqX5Rlx+vx3KjIrDLkLT5ErnrlF0aX
+         mk7biGFUemScyaMmqYk2FhxFPv095++tSGJ2fDqu+WU7CSNsnCuu5snt7q7gFGvxDTOP
+         ngoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=bh6U49eCiCBbIvwEknUz7QsV9A4ESrZsJ/9XWVh19mc=;
+        fh=RyFZCfKDFsLtmoI4wM6B7Purrtu3SlrqUF+t1/8sJ7c=;
+        b=GhtC77K90omSRh94H223ZMRtxRTueExUqVDJrSHf/4lHgrWzNkTHcNjdddaKekaZ1K
+         5PT5go8B27tfrxDSGDbRj1vzSt90bBfX2ePoH4XgvkaeRqQIJmfsOQG/20d7vqJQQSvP
+         dAdKT7gh08FHeRHTqqSFQJKEYYNb+5xDUgNDno+3ha+qfPuYwQdiRM7Hzpmygx7Wso/E
+         36FpCemvCUAzXStVkSj1BblTBeAnjpJKDwTUi6LA7eYbNYyyzFcoxzIeftnjTbSSUDvI
+         a6hnM3jjClxj4cn5EPw2+F7qLxzeYZ9owKp5G37HIBAxzcLVkihnrpD+AVVmMHB/Ru7o
+         HQFQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1773217499; x=1773822299; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bh6U49eCiCBbIvwEknUz7QsV9A4ESrZsJ/9XWVh19mc=;
+        b=pexCnYugPMRnQt3MsAuJ5g+koHlN/GxcIaJ4EZs20CzSu2b5bAoN8F8/Rfd6Pd7YYc
+         7NSkaaVRkIX/qvWhHQm60t7YTedMIhyeJtuUVJDiDb1MWcVLs0Gx8Z37u0gyAjloGs3j
+         iAxrG7dSdWu+S1sHEu0k277zq9zDOTqD0FFMc2dipY4lGDUqV/zi2qO2h5uTVI2V1wRX
+         Os0uSb+gKk2ATyWEiIYiVpoIe4luZ0qFgm/lewfgWG1MFrM6XGwwYegNEybZa0zaGNpP
+         bkf3hjoxD956x6GMKks3P53X0cmSkwmivsjLJ4bxbqNcCHqE67KT9An0YHNH4Ajx70c5
+         0SdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1773217499; x=1773822299;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=bh6U49eCiCBbIvwEknUz7QsV9A4ESrZsJ/9XWVh19mc=;
+        b=t+3LI2vpL98CDUA73PPgfnKnHMMI8iVpLkph0j4mlFM38bd9noSHIiZ88Lf57RaOAs
+         uqAr9P/xKa2YNtHD2ckwtGs6N0dk+1PAhJRu7P48sh5R7SDq+NQfAFcaZjtii0XZZNfh
+         Q9FYNE+ekA0PgngxohtrbhhPjSt/T/KUHMjCZaWs/8lAKymSBUBQaovmHZTzisTe+hcn
+         KrLtsmqxr1RQghYBVdStrS8gpKDiStMQXLoIdy46fMMbKf8Dy00MuWd5KCabYho7T9VG
+         YTigoTgqY2blOuNSOQ+lE2XOzgxDwy/8/FrmV+Ryfl+0r5ygPHcW7uP5mJvvwEU1X9oP
+         GqVA==
+X-Gm-Message-State: AOJu0YzSwS0pb9JZpb5Xe0vR9i5lSo39bxL7ZpV5DW7OgXSV7UY2q6cj
+	+eoPcS/BX3QsNHy6u1xvCafh8HelwcR358T6UkN5Wx3eKZJ5zLkzMYtLDFDtU5Fofm72UgFwTc+
+	UX8m1gxMZH/YlSwx4iqCujNkRXX2KuZW3k2uql6B7
+X-Gm-Gg: ATEYQzyKvPjsnOr1u4SDiMAmkcILK5OSDx0yFi6ZGvaFjGV6FmMJ9n0KxY8cfsigSCD
+	jB4Z7FilEQXFA/A012V8VxadYfwyy1roLM8oih7nk6s4NPTqrXIjzqiiuIgxnC5CRfCT60n0jrb
+	mn+tRvqXf7+MDHweQph/0XMZXn1KyfoTRzu3I3dF9WEvb8Y7Z2zl8bdjbTt+CrBPY75fPdjlrou
+	uV83garC+HJsObPdYXzDpnbIIjmT8CORkevrfrGBZ2LaFe7Wlp3AVxoT97XYEvoVq+AnVBlnLvA
+	SgKvtwsx
+X-Received: by 2002:a05:622a:54:b0:509:f1e:41fb with SMTP id
+ d75a77b69052e-50925fcd943mr73573621cf.6.1773217498516; Wed, 11 Mar 2026
+ 01:24:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: netdev@vger.kernel.org
 List-Id: <netdev.vger.kernel.org>
 List-Subscribe: <mailto:netdev+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:netdev+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 15/16] mm: rename zap_vma_ptes() to
- zap_special_vma_range()
-To: "Lorenzo Stoakes (Oracle)" <ljs@kernel.org>
-Cc: linux-kernel@vger.kernel.org, "linux-mm @ kvack . org"
- <linux-mm@kvack.org>, Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@kernel.org>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- David Rientjes <rientjes@google.com>, Shakeel Butt <shakeel.butt@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Alice Ryhl <aliceryhl@google.com>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Jarkko Sakkinen <jarkko@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Christian Brauner <brauner@kernel.org>,
- Carlos Llamas <cmllamas@google.com>, Ian Abbott <abbotti@mev.co.uk>,
- H Hartley Sweeten <hsweeten@visionengravers.com>,
- Jani Nikula <jani.nikula@linux.intel.com>,
- Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
- Rodrigo Vivi <rodrigo.vivi@intel.com>, Tvrtko Ursulin
- <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Jason Gunthorpe <jgg@ziepe.ca>,
- Leon Romanovsky <leon@kernel.org>,
- Dimitri Sivanich <dimitri.sivanich@hpe.com>, Arnd Bergmann <arnd@arndb.de>,
- Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Andrii Nakryiko <andrii@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Arnaldo Carvalho de Melo <acme@kernel.org>,
- Namhyung Kim <namhyung@kernel.org>, Andy Lutomirski <luto@kernel.org>,
- Vincenzo Frascino <vincenzo.frascino@arm.com>,
- Eric Dumazet <edumazet@google.com>, Neal Cardwell <ncardwell@google.com>,
- "David S. Miller" <davem@davemloft.net>, David Ahern <dsahern@kernel.org>,
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
- Miguel Ojeda <ojeda@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- kvm@vger.kernel.org, linux-s390@vger.kernel.org, linux-sgx@vger.kernel.org,
- intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
- linux-rdma@vger.kernel.org, bpf@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, x86@kernel.org
-References: <20260227200848.114019-1-david@kernel.org>
- <20260227200848.114019-16-david@kernel.org>
- <c77c1bed-f04e-4f21-87d9-6c5da3f0ad69@lucifer.local>
-From: "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=david@kernel.org; keydata=
- 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
- qIws/H2t
-In-Reply-To: <c77c1bed-f04e-4f21-87d9-6c5da3f0ad69@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260311070611.76913-1-jiayuan.chen@linux.dev>
+In-Reply-To: <20260311070611.76913-1-jiayuan.chen@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
+Date: Wed, 11 Mar 2026 09:24:47 +0100
+X-Gm-Features: AaiRm52SdgCeU51Y-1e-Sk6l4P3zSL-DgLPLdP1cnJA8BQG1vPHxIiVp-Wp5uO4
+Message-ID: <CANn89i+MTAhm+T3dR9T45wOBU3xjiyKfsKXHen3bBLu2T8JD9Q@mail.gmail.com>
+Subject: Re: [PATCH net v2] net/rose: fix NULL pointer dereference in
+ rose_transmit_link on reconnect
+To: Jiayuan Chen <jiayuan.chen@linux.dev>
+Cc: netdev@vger.kernel.org, Jiayuan Chen <jiayuan.chen@shopee.com>, 
+	syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com, 
+	"David S. Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Simon Horman <horms@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Takamitsu Iwai <takamitz@amazon.co.jp>, Thomas Gleixner <tglx@kernel.org>, Pwnverse <stanksal@purdue.edu>, 
+	Ingo Molnar <mingo@kernel.org>, linux-hams@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 3/6/26 13:41, Lorenzo Stoakes (Oracle) wrote:
-> On Fri, Feb 27, 2026 at 09:08:46PM +0100, David Hildenbrand (Arm) wrote:
->> zap_vma_ptes() is the only zapping function we export to modules.
->>
->> It's essentially a wrapper around zap_vma_range(), however, with some
->> safety checks:
->> * That the passed range fits fully into the VMA
->> * That it's only used for VM_PFNMAP
->>
->> We might want to support VM_MIXEDMAP soon as well, so use the
-> 
-> I think you should say we _are_ going to since patch 16/16 does that :)
+On Wed, Mar 11, 2026 at 8:06=E2=80=AFAM Jiayuan Chen <jiayuan.chen@linux.de=
+v> wrote:
+>
+> From: Jiayuan Chen <jiayuan.chen@shopee.com>
+>
+> syzkaller reported a bug [1], and the reproducer is available at [2].
+>
+> ROSE sockets use four sk->sk_state values: TCP_CLOSE, TCP_LISTEN,
+> TCP_SYN_SENT, and TCP_ESTABLISHED. rose_connect() already rejects
+> calls for TCP_ESTABLISHED (-EISCONN) and TCP_CLOSE with SS_CONNECTING
+> (-ECONNREFUSED), but lacks a check for TCP_SYN_SENT.
+>
+> When rose_connect() is called a second time while the first connection
+> attempt is still in progress (TCP_SYN_SENT), it overwrites
+> rose->neighbour via rose_get_neigh(). If that returns NULL, the socket
+> is left with rose->state =3D=3D ROSE_STATE_1 but rose->neighbour =3D=3D N=
+ULL.
+> When the socket is subsequently closed, rose_release() sees
+> ROSE_STATE_1 and calls rose_write_internal() ->
+> rose_transmit_link(skb, NULL), causing a NULL pointer dereference.
+>
+> Per connect(2), a second connect() while a connection is already in
+> progress should return -EALREADY. Add this missing check for
+> TCP_SYN_SENT to complete the state validation in rose_connect().
+>
+> [1] https://syzkaller.appspot.com/bug?extid=3Dd00f90e0af54102fb271
+> [2] https://gist.github.com/mrpre/9e6779e0d13e2c66779b1653fef80516
+>
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Reported-by: syzbot+d00f90e0af54102fb271@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/all/69694d6f.050a0220.58bed.0027.GAE@goog=
+le.com/T/
+> Suggested-by: Eric Dumazet <edumazet@google.com>
+> Cc: Jiayuan Chen <jiayuan.chen@linux.dev>
+> Signed-off-by: Jiayuan Chen <jiayuan.chen@shopee.com>
+> ---
 
-Heh, had that patch separate first before I decided to support
-VM_MIXEDMAP in the same series.
-
-@Andrew, can you fix that up? Thanks!
-
-"We will add support for VM_MIXEDMAP next, so ..."
-
--- 
-Cheers,
-
-David
+Reviewed-by: Eric Dumazet <edumazet@google.com>
